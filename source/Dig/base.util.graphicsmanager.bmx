@@ -157,14 +157,20 @@ Type TGraphicsManager
 
 			?Win32
 			'on win32 we could try to fallback to DX7
+			If not _g and renderer <> RENDERER_DIRECTX9
+				Notify "Graphics initiation error! The game will try to open in DirectX 9 mode."
+				SetGraphicsDriver D3D7Max2DDriver()
+				_g = Graphics(realWidth, realHeight, colorDepth*fullScreen, hertz, flags)
+			endif
+			'on win32 we could try to fallback to DX7
 			If not _g and renderer <> RENDERER_DIRECTX7
-				Throw "Graphics initiation error! The game will try to open in DirectX 7 mode."
+				Notify "Graphics initiation error! The game will try to open in DirectX 7 mode."
 				SetGraphicsDriver D3D7Max2DDriver()
 				_g = Graphics(realWidth, realHeight, colorDepth*fullScreen, hertz, flags)
 			endif
 			'or to OpenGL
 			If not _g and renderer <> RENDERER_OPENGL
-				Throw "Graphics initiation error! The game will try to open in OpenGL mode."
+				Notify "Graphics initiation error! The game will try to open in OpenGL mode."
 				SetGraphicsDriver GLMax2DDriver()
 				_g = Graphics(realWidth, realHeight, colorDepth*fullScreen, hertz, flags)
 			endif

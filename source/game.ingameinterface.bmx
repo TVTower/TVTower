@@ -115,7 +115,7 @@ Type TInGameInterface
 					'real programme
 					If TProgramme(obj)
 						Local programme:TProgramme = TProgramme(obj)
-						CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_genre_" + programme.data.GetGenre(), "gfx_interface_tv_programme_none")
+						CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_genre_" + TVTProgrammeGenre.GetGenreStringID(programme.data.GetGenre()), "gfx_interface_tv_programme_none")
 						If programme.isSeries()
 							CurrentProgrammeText = programme.licence.parentLicence.GetTitle() + " ("+ (programme.GetEpisodeNumber()+1) + "/" + programme.GetEpisodeCount()+"): " + programme.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
 						Else

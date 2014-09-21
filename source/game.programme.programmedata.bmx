@@ -8,6 +8,7 @@ Import "Dig/base.util.localization.bmx"
 Import "game.world.worldtime.bmx"
 Import "game.programme.programmeperson.bmx"
 Import "game.broadcast.genredefinition.movie.bmx"
+Import "game.gameconstants.bmx"
 
 
 Type TProgrammeDataCollection
@@ -434,8 +435,9 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 
 
 	Method GetGenreString:String(_genre:Int=-1)
-		If _genre > 0 Then Return GetLocale("PROGRAMME_GENRE_" + _genre)
-		Return GetLocale("PROGRAMME_GENRE_" + Self.genre)
+		If _genre < 0 Then _genre = self.genre
+		'eg. PROGRAMME_GENRE_ACTION
+		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetGenreStringID(Self.genre))
 	End Method
 
 

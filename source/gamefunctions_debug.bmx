@@ -70,7 +70,7 @@
 
 		If attraction.BroadcastType = TBroadcastMaterial.TYPE_PROGRAMME Then
 			If (attraction.BaseAttraction <> Null) Then
-				genre = GetLocale("PROGRAMME_GENRE_"+attraction.Genre)
+				genre = GetLocale("PROGRAMME_GENRE_"+TVTProgrammeGenre.GetGenreStringID(attraction.Genre))
 			Endif
 		ElseIf attraction.BroadcastType = TBroadcastMaterial.TYPE_NEWSSHOW Then
 			If (attraction.BaseAttraction <> Null) Then

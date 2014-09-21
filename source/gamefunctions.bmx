@@ -960,8 +960,8 @@ End Type
 
 'a graphical representation of multiple object ingame
 Type TGUIGameListItem Extends TGUIListItem
-	Field assetNameDefault:String = "gfx_movie0"
-	Field assetNameDragged:String = "gfx_movie0"
+	Field assetNameDefault:String = "gfx_movie_undefined"
+	Field assetNameDragged:String = "gfx_movie_undefined"
 	Field asset:TSprite = Null
 	Field assetDefault:TSprite = Null
 	Field assetDragged:TSprite = Null

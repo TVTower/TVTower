@@ -2758,7 +2758,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 		GuiListSuitcase.acceptType		= TGUIProgrammeLicenceSlotList.acceptAll
 		GuiListSuitcase.SetItemLimit(GameRules.maxProgrammeLicencesInSuitcase)
-		GuiListSuitcase.SetSlotMinDimension(GetSpriteFromRegistry("gfx_movie0").area.GetW(), GetSpriteFromRegistry("gfx_movie0").area.GetH())
+		GuiListSuitcase.SetSlotMinDimension(GetSpriteFromRegistry("gfx_movie_undefined").area.GetW(), GetSpriteFromRegistry("gfx_movie_undefined").area.GetH())
 		GuiListSuitcase.SetAcceptDrop("TGUIProgrammeLicence")
 
 		DudeArea = new TGUISimpleRect.Create(new TVec2D.Init(600,100), new TVec2D.Init(200, 350), "archive" )
@@ -3173,10 +3173,12 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		GuiListSeries.SetItemLimit(listSeries.length)
 		GuiListSuitcase.SetItemLimit(GameRules.maxProgrammeLicencesInSuitcase)
 
-		GuiListMoviesGood.SetSlotMinDimension(GetSpriteFromRegistry("gfx_movie0").area.GetW(), GetSpriteFromRegistry("gfx_movie0").area.GetH())
-		GuiListMoviesCheap.SetSlotMinDimension(GetSpriteFromRegistry("gfx_movie0").area.GetW(), GetSpriteFromRegistry("gfx_movie0").area.GetH())
-		GuiListSeries.SetSlotMinDimension(GetSpriteFromRegistry("gfx_movie0").area.GetW(), GetSpriteFromRegistry("gfx_movie0").area.GetH())
-		GuiListSuitcase.SetSlotMinDimension(GetSpriteFromRegistry("gfx_movie0").area.GetW(), GetSpriteFromRegistry("gfx_movie0").area.GetH())
+		local videoCase:TSprite = GetSpriteFromRegistry("gfx_movie_undefined")
+
+		GuiListMoviesGood.SetSlotMinDimension(videoCase.area.GetW(), videoCase.area.GetH())
+		GuiListMoviesCheap.SetSlotMinDimension(videoCase.area.GetW(), videoCase.area.GetH())
+		GuiListSeries.SetSlotMinDimension(videoCase.area.GetW(), videoCase.area.GetH())
+		GuiListSuitcase.SetSlotMinDimension(videoCase.area.GetW(), videoCase.area.GetH())
 
 		GuiListMoviesGood.SetAcceptDrop("TGUIProgrammeLicence")
 		GuiListMoviesCheap.SetAcceptDrop("TGUIProgrammeLicence")

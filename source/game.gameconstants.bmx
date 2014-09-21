@@ -87,6 +87,43 @@ Type TVTProgrammeGenre
 	'Reportage-Genre 300+
 	const Undefined_Reportage:int = 300
 	const YellowPress:int = 301
+
+	'returns a textual version of the id
+	Function GetGenreStringID:string(id:int)
+		Select id
+			case Adventure				return "adventure"
+			case Action					return "action"
+			case Animation				return "animation"
+			case Crime					return "crime"
+			case Comedy					return "comedy"
+			case Documentary			return "documentary"
+			case Drama					return "drama"
+			case Erotic					return "erotic"
+			case Family					return "family"
+			case Fantasy				return "fantasy"
+			case History				return "history"
+			case Horror					return "horror"
+			case Monumental				return "monumental"
+			case Mystery				return "mystery"
+			case Romance				return "romance"
+			case SciFi					return "scifi"
+			case Thriller				return "thriller"
+			case Western				return "western"
+			'Show-Genre 100+
+			case Undefined_Show			return "showevent_undefined"
+			'Event-Genre 200+
+			case Politics				return "showevent_politics"
+			case Music					return "showevent_music"
+			case Sport					return "showevent_sport"
+			case Showbiz				return "showevent_showbiz"
+			'Reportage-Genre 300+
+			case Undefined_Reportage	return "reportage_undefined"
+			case YellowPress			return "reportage_yellowpress"
+
+			case Undefined				return "undefined"
+			default						return "undefined"
+		End Select
+	End Function
 End Type
 
 

@@ -1069,7 +1069,7 @@ Type TgfxProgrammelist extends TPlannerList
 				Local filterName:string = ""
 				For local entry:int = EachIn visibleFilters[i].GetGenres()
 					if filterName <> "" then filterName :+ " & "
-					filterName :+ GetLocale("PROGRAMME_GENRE_" + entry)
+					filterName :+ GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetGenreStringID(entry))
 				Next
 				if filterName = ""
 					local flag:int = 0
@@ -2042,37 +2042,15 @@ End Type
 Type TGUIProgrammeLicence extends TGUIGameListItem
 	Field licence:TProgrammeLicence
 
-rem
-
-	'programmeblock
-	For i = 0 To 11
-		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
-		DragAndDrop.slot = i
-		DragAndDrop.typ = "programmeblock"
-		DragAndDrop.pos.setXY( 394, 17 + i * GetSpriteFromRegistry("pp_programmeblock1").h )
-		DragAndDrop.w = GetSpriteFromRegistry("pp_programmeblock1").w
-		DragAndDrop.h = GetSpriteFromRegistry("pp_programmeblock1").h
-		If Not TProgrammeBlock.DragAndDropList Then TProgrammeBlock.DragAndDropList = CreateList()
-		TProgrammeBlock.DragAndDropList.AddLast(DragAndDrop)
-		SortList TProgrammeBlock.DragAndDropList
-	Next
-
-	For i = 0 To 11
-		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
-		DragAndDrop.slot = i+11
-		DragAndDrop.typ = "programmeblock"
-		DragAndDrop.pos.setXY( 67, 17 + i * GetSpriteFromRegistry("pp_programmeblock1").h )
-		DragAndDrop.w = GetSpriteFromRegistry("pp_programmeblock1").w
-		DragAndDrop.h = GetSpriteFromRegistry("pp_programmeblock1").h
-		If Not TProgrammeBlock.DragAndDropList Then TProgrammeBlock.DragAndDropList = CreateList()
-		TProgrammeBlock.DragAndDropList.AddLast(DragAndDrop)
-		SortList TProgrammeBlock.DragAndDropList
-	Next
-endrem
-
 
     Method Create:TGUIProgrammeLicence(pos:TVec2D=null, dimension:TVec2D=null, value:String="")
 		Super.Create(pos, dimension, value)
+
+		'override defaults - with the default genre identifier
+		'(eg. "undefined" -> "gfx_movie_undefined")
+		self.assetNameDefault = "gfx_movie_"+TVTProgrammeGenre.GetGenreStringID(-1)
+		self.assetNameDragged = "gfx_movie_"+TVTProgrammeGenre.GetGenreStringID(-1)
+
 		return self
 	End Method
 
@@ -2087,16 +2065,29 @@ endrem
 	Method SetProgrammeLicence:TGUIProgrammeLicence(licence:TProgrammeLicence)
 		self.licence = licence
 
-		local genre:int = Min(15, Max(0,licence.GetGenre()))
+		'get the string identifier of the genre (eg. "adventure" or "action")
+		local genreString:string = TVTProgrammeGenre.GetGenreStringID(licence.GetGenre())
+		local assetName:string = ""
 
 		'if it is a collection or series
 		if licence.isCollection()
-			self.InitAssets("gfx_movie" + genre, "gfx_movie" + genre + "_dragged")
+			assetName = "gfx_movie_" + genreString
 		elseif licence.isSeries()
-			self.InitAssets("gfx_serie" + genre, "gfx_serie" + genre + "_dragged")
+			assetName = "gfx_series_" + genreString
 		else
-			self.InitAssets("gfx_movie" + genre, "gfx_movie" + genre + "_dragged")
+			assetName = "gfx_movie_" + genreString
 		endif
+
+		'use the name of the returned sprite - default or specific one
+		assetName = GetSpriteFromRegistry(assetName, assetNameDefault).GetName()
+
+		'check if "dragged" exists
+		local assetNameDragged:string = assetName+".dragged"
+		if GetSpriteFromRegistry(assetNameDragged).GetName() <> assetNameDragged
+			assetNameDragged = assetName
+		endif
+		
+		self.InitAssets(assetName, assetNameDragged)
 
 		return self
 	End Method
