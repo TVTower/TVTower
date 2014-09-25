@@ -70,6 +70,19 @@ Type TAdContractBaseCollection
 	End Method
 
 
+	Method GetRandomByFilter:TAdContractBase(filter:TAdContractBaseFilter)
+		Local contracts:TAdContractBase[]
+
+		For local contract:TAdContractBase = EachIn entries.Values()
+			if not filter.DoesFilter(contract) then continue
+
+			'add it to candidates list
+			contracts :+ [contract]
+		Next
+		Return GetRandom(contracts)
+	End Method	
+
+
 	Method GetAllAsArray:TAdContractBase[]()
 		local array:TAdContractBase[]
 		'create a full array containing all elements
@@ -77,19 +90,6 @@ Type TAdContractBaseCollection
 			array :+ [obj]
 		Next
 		return array
-	End Method
-
-
-	Method GetRandomWithLimitedAudienceQuote:TAdContractBase(minAudienceQuote:float=0.0, maxAudienceQuote:Float=0.35)
-		'maxAudienceQuote - xx% market share as maximum
-		'filter to entries we need
-		Local array:TAdContractBase[]
-		For local obj:TAdContractBase = EachIn entries.Values()
-			If obj.minAudienceBase >= minAudienceQuote AND obj.minAudienceBase <= maxAudienceQuote
-				array :+ [obj]
-			EndIf
-		Next
-		Return GetRandom(array)
 	End Method
 
 
@@ -978,3 +978,62 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 	'===== END AI-LUA HELPER FUNCTIONS =====
 End Type
+
+
+
+
+'a filter for adcontract(base)s
+Type TAdContractBaseFilter
+	Field minAudienceMin:Float = -1.0
+	Field minAudienceMax:Float = -1.0
+	Field minImageMin:Float = -1.0
+	Field minImageMax:Float = -1.0
+
+	Global filters:TList = CreateList()
+
+
+	Function Add:TAdContractBaseFilter(filter:TAdContractBaseFilter)
+		filters.AddLast(filter)
+
+		return filter
+	End Function
+
+
+	Method SetAudience:TAdContractBaseFilter(minAudienceQuote:float=-1.0, maxAudienceQuote:Float=-1.0)
+		minAudienceMin = minAudienceQuote
+		minAudienceMax = maxAudienceQuote
+		Return self
+	End Method
+
+
+	Method SetImage:TAdContractBaseFilter(minImage:float=-1.0, maxImage:Float=-1.0)
+		minImageMin = minImage
+		minImageMax = maxImage
+		Return self
+	End Method
+
+
+	Function GetCount:Int()
+		return filters.Count()
+	End Function
+
+
+	Function GetAtIndex:TAdContractBaseFilter(index:int)
+		return TAdContractBaseFilter(filters.ValueAtIndex(index))
+	End Function
+
+
+	'checks if the given adcontract fits into the filter criteria
+	Method DoesFilter:Int(contract:TAdContractBase)
+		if not contract then return False
+
+		if minAudienceMin >= 0 and contract.minAudienceBase < minAudienceMin then return False
+		if minAudienceMax >= 0 and contract.minAudienceBase > minAudienceMax then return False
+
+		if minImageMin >= 0 and contract.minImageBase < minImageMin then return False
+		if minImageMax >= 0 and contract.minImageBase > minImageMax then return False
+
+		return True
+	End Method
+End Type
+	

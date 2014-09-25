@@ -465,8 +465,12 @@ Type TGame {_exposeToLua="selected"}
 			'give 1 call in
 			ProgrammeCollection.AddProgrammeLicence(GetProgrammeLicenceCollection().GetRandomByFilter(filterCallIn))
 
+
+			local cheapFilter:TAdContractBaseFilter = new TAdContractbaseFilter
+			cheapFilter.SetAudience(0.0, 0.10)
+
 			For Local i:Int = 0 To 2
-				ProgrammeCollection.AddAdContract(New TAdContract.Create(GetAdContractBaseCollection().GetRandomWithLimitedAudienceQuote(0, 0.15)) )
+				ProgrammeCollection.AddAdContract(New TAdContract.Create(GetAdContractBaseCollection().GetRandomByFilter(cheapFilter)) )
 			Next
 		Next
 	End Method

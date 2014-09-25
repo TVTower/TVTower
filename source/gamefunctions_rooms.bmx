@@ -5044,13 +5044,30 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		endif
 
 
+		local cheapListFilter:TAdContractBaseFilter = new TAdContractbaseFilter
+		cheapListFilter.SetAudience(0.0, contractCheapAudienceMaximum)
+		'TODO: calculate average "market share" reached
+		'TODO 2: calculate average image
+		local normalListFilter:TAdContractBaseFilter = new TAdContractbaseFilter
+		normalListFilter.SetAudience(0.01, 0.15)
+		normalListFilter.SetImage(0.0, 0.05) 'till 5 % image
+		local normalListFilter2:TAdContractBaseFilter = new TAdContractbaseFilter
+		normalListFilter2.SetAudience(0.10, -1)
+		normalListFilter2.SetImage(0.0, 0.05) 'till 5 % image
+
 		for local j:int = 0 to lists.length-1
 			for local i:int = 0 to lists[j].length-1
 				'if exists and is valid...skip it
 				if lists[j][i] and lists[j][i].base then continue
 
-				if lists[j] = listNormal then contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandom() )
-				if lists[j] = listCheap then contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomWithLimitedAudienceQuote(0.0, contractCheapAudienceMaximum) )
+				if lists[j] = listNormal
+					if j mod 2 = 0
+						contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(normalListFilter) )
+					else
+						contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(normalListFilter2) )
+					endif
+				endif
+				if lists[j] = listCheap then contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(cheapListFilter) )
 
 				'add new contract to slot
 				if contract
