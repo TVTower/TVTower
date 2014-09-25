@@ -893,13 +893,16 @@ Type RoomHandler_Office extends TRoomHandler
 	'screens are only handled by real players
 	Function onEnterProgrammePlannerScreen:int(triggerEvent:TEventBase)
 		'==== EMPTY/DELETE GUI-ELEMENTS =====
-
 		hoveredGuiProgrammePlanElement = null
 		draggedGuiProgrammePlanElement = null
 
 		'remove all entries
 		RemoveAllGuiElements(true)
 		RefreshGUIElements()
+
+		'=== INITIALIZE VIEW ===
+		'set the planning day to the current one
+		ChangePlanningDay(GetWorldTime().GetDay())
 	End Function
 
 
@@ -1300,12 +1303,6 @@ Type RoomHandler_Office extends TRoomHandler
 		GUIManager.Draw("programmeplanner|programmeplanner_buttons",-1000,-1000, GUIMANAGER_TYPES_DRAGGED)
 
 
-		if hoveredGuiProgrammePlanElement
-			'draw the current sheet
-			hoveredGuiProgrammePlanElement.DrawSheet(30, 35, 700)
-		endif
-
-
 		SetColor 255,255,255
 		If room.owner = GetPlayerCollection().playerID
 			If PPprogrammeList.GetOpen() > 0
@@ -1322,6 +1319,11 @@ Type RoomHandler_Office extends TRoomHandler
 				PPcontractList.hoveredAdContract.ShowSheet(30,20)
 			endif
 		EndIf
+
+		if hoveredGuiProgrammePlanElement
+			'draw the current sheet
+			hoveredGuiProgrammePlanElement.DrawSheet(30, 35, 700)
+		endif
 
 
 		local oldAlpha:Float = GetAlpha()
@@ -1415,6 +1417,8 @@ Type RoomHandler_Office extends TRoomHandler
 
 		local listsOpened:int = (PPprogrammeList.enabled Or PPcontractList.enabled)
 		'only handly programmeblocks if the lists are closed
+		'else you will end up with nearly no space on the screen not showing
+		'a licence sheet.
 		if not listsOpened
 			GUIManager.Update("programmeplanner|programmeplanner_buttons")
 		'if a list is opened, we cannot have a hovered gui element

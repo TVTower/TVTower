@@ -41,7 +41,10 @@ Type TPublicImage {_exposeToLua="selected"}
 	Function Create:TPublicImage(playerID:int)
 		Local obj:TPublicImage = New TPublicImage
 		obj.playerID = playerID
-		obj.ImageValues = TAudience.CreateAndInit(100, 100, 100, 100, 100, 100, 100, 100, 100)
+
+		'we start with an image of 0 in all target groups
+		obj.ImageValues = TAudience.CreateAndInit(0, 0, 0, 0, 0, 0, 0, 0, 0)
+		'obj.ImageValues = TAudience.CreateAndInit(100, 100, 100, 100, 100, 100, 100, 100, 100)
 		'add to collection
 		GetPublicImageCollection().Set(playerID, obj)
 		Return obj
@@ -53,8 +56,17 @@ Type TPublicImage {_exposeToLua="selected"}
 	End Method
 
 
+	'returns the average image of all target groups
+	Method GetAverageImage:Float()
+		return ImageValues.GetAverage()
+	End Method
+
+
 	Method ChangeImage(imageChange:TAudience)
 		ImageValues.Add(imageChange)
+		'avoid negative values -> cut to at least 0
+		ImageValues.CutMinimumFloat(0)
+		
 		TLogger.Log("ChangePublicImage()", "Change player '" + playerID + "' public image: " + imageChange.ToString(), LOG_DEBUG)
 	End Method
 
@@ -62,7 +74,28 @@ Type TPublicImage {_exposeToLua="selected"}
 	Function ChangeForTargetGroup(playerAudience:TMap, targetGroup:Int, attrList:TList, compareFunc( o1:Object,o2:Object )=CompareObjects)
 		Local tempList:TList = attrList.Copy()
 		SortList(tempList,False,compareFunc)
+		'RONNY:
+		'instead of subtracting won image from other players ("sum stays constant")
+		'we subtract only a portion from others - so every broadcast should be a
+		'potential gain to the image of each player.
+		'BUT ... there should be situations in which image gets lost (broadcasting
+		'outtage, sending Xrated before 22:00, sending infomercials ...)
+		If (tempList.Count() = 4)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(0)).Id) )).SetValue(targetGroup, 0.7)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(1)).Id) )).SetValue(targetGroup, 0.4)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(2)).Id) )).SetValue(targetGroup, 0.1)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(3)).Id) )).SetValue(targetGroup, -0.2)
+		Elseif (tempList.Count() = 3) Then
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(0)).Id) )).SetValue(targetGroup, 0.7)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(1)).Id) )).SetValue(targetGroup, 0.3)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(2)).Id) )).SetValue(targetGroup, -0.2)
+		Elseif (tempList.Count() = 2) Then
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(0)).Id) )).SetValue(targetGroup, 0.75)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(1)).Id) )).SetValue(targetGroup, -0.2)
+		EndIf
 
+		rem
+		old
 		If (tempList.Count() = 4) Then
 			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(0)).Id) )).SetValue(targetGroup, 1)
 			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(1)).Id) )).SetValue(targetGroup, 0.5)
@@ -76,5 +109,6 @@ Type TPublicImage {_exposeToLua="selected"}
 			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(0)).Id) )).SetValue(targetGroup, 1)
 			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(1)).Id) )).SetValue(targetGroup, -1)
 		EndIf
+		EndRem
 	End Function
 End Type

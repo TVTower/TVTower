@@ -554,7 +554,7 @@ Type TGame {_exposeToLua="selected"}
 		TLogger.Log("TGame", "Start saving - inform AI.", LOG_DEBUG | LOG_SAVELOAD)
 		'inform player AI that we are saving now
 		For local player:TPlayer = eachin GetPlayerCollection().players
-			If player.GetFigure().isAI() then player.PlayerKI.CallOnSave()
+			If player.isAI() then player.PlayerKI.CallOnSave()
 		Next
 	End Function
 

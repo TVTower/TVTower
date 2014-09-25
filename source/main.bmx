@@ -663,25 +663,10 @@ endif
 				GetBitmapFontManager().baseFont.draw("recalculate", 5, startY + 15)
 			EndIf
 
-			'room states: debug fuer sushitv
-			Local occupants:String = "-"
-			If GetRoomCollection().GetFirstByDetails("adagency").HasOccupant()
-				occupants = ""
-				For Local figure:TFigure = EachIn GetRoomCollection().GetFirstByDetails("adagency").occupants
-					occupants :+ figure.name+" "
-				Next
-			EndIf
-			GetBitmapFontManager().baseFont.draw("AdA. : "+occupants, 5, 340)
 
-			occupants = "-"
-			If GetRoomCollection().GetFirstByDetails("movieagency").HasOccupant()
-				occupants = ""
-				For Local figure:TFigure = EachIn GetRoomCollection().GetFirstByDetails("movieagency").occupants
-					occupants :+ figure.name+" "
-				Next
-			EndIf
-			GetBitmapFontManager().baseFont.draw("MoA. : "+occupants, 5, 355)
-
+			For Local i:Int = 0 To 3
+				GetBitmapFontManager().baseFont.Draw("Image #"+i+": "+GetPublicImageCollection().Get(i+1).GetAverageImage(), 10, 320 + i*13)
+			Next
 
 			if not GetPlayer().GetFigure().inRoom
 				GetWorld().RenderDebug(660,0, 140, 130)

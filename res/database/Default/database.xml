@@ -3107,11 +3107,11 @@ Nach dem Roman von Agatha Christie.</de>
 		</programme>
 		<programme id="5cc4c784-b339-44ad-967a-d26e2cd590ed" product="1" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="0">
 			<title>
-				<de>MacGeifer - Jäger des Atlantisschatzes</de>
+				<de>MacGreifer - Jäger des Atlantisschatzes</de>
 				<en></en>
 			</title>
 			<description>
-				<de>MacGyver macht sich mit seinem alten Professor auf die Suche nach dem sagenumwobenen Schatz von Atlantis.|Nach dem Ende der Serie drehte R. D. Anderson noch zwei TV-Filme als Angus MacGyver</de>
+				<de>MacGreifer macht sich mit seinem alten Professor auf die Suche nach dem sagenumwobenen Schatz von Atlantis.|Nach dem Ende der Serie drehte R. D. Anderson noch zwei TV-Filme als Angus MacGreifer</de>
 				<en></en>
 			</description>
 			<staff>
@@ -3124,11 +3124,11 @@ Nach dem Roman von Agatha Christie.</de>
 		</programme>
 		<programme id="439b0566-02cc-46eb-99de-e5f1d826755c" product="1" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="0">
 			<title>
-				<de>MacGeifer - Sackgasse Hölle</de>
+				<de>MacGreifer - Sackgasse Hölle</de>
 				<en></en>
 			</title>
 			<description>
-				<de>MacGyver reist zur Geburtstagsfeier eines alten Freundes. Als dieser bei einem Anschlag ums Leben kommt, nimmt MacGyver die Verfolgung der Verbrecher auf, die ihn geradewegs in den Untergrund führt...</de>
+				<de>MacGreifer reist zur Geburtstagsfeier eines alten Freundes. Als dieser bei einem Anschlag ums Leben kommt, nimmt MacGreifer die Verfolgung der Verbrecher auf, die ihn geradewegs in den Untergrund führt...</de>
 				<en></en>
 			</description>
 			<staff>
@@ -11528,7 +11528,7 @@ Bieten die beiden genügend Stoff für eine spannende Runde?</de>
 				<de>Raumschiffe, Phaserwaffen, Marsschürfrechte. Bei Aeroswift diese Woche mit knallhart kalkulierten Preisen im Angebot.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="39.2" min_image="39" target_group="4" />
+			<conditions min_audience="25" min_image="39" target_group="4" />
 			<data infomercial="0" quality="0" repetitions="6" duration="3" fix_price="0" profit="3000" penalty="3000" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="755bb894-d87e-46ba-b988-2198cf1a6fe1" creator="684">
@@ -11541,7 +11541,7 @@ Bieten die beiden genügend Stoff für eine spannende Runde?</de>
 Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="66.7" min_image="19" target_group="4" />
+			<conditions min_audience="20" min_image="19" target_group="4" />
 			<data infomercial="0" quality="0" repetitions="4" duration="2" fix_price="0" profit="450" penalty="3000" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="b9940d8e-2b39-4292-b7d8-7bc46556a350" creator="1">
@@ -11554,7 +11554,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 				<en></en>
 			</description>
 			<conditions min_audience="0" min_image="0" target_group="3" />
-			<data infomercial="0" quality="0" repetitions="5" duration="2" fix_price="0" profit="1500" penalty="1500" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data infomercial="0" quality="0" repetitions="5" duration="2" fix_price="1" profit="1500" penalty="1500" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="bf8701ce-0143-41a1-abb0-00bfc4aa69ad" creator="684">
 			<title>
@@ -11565,7 +11565,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 				<de>Berlin, du bist so wunderbar</de>
 				<en></en>
 			</description>
-			<conditions min_audience="66.7" min_image="0" target_group="0" />
+			<conditions min_audience="17" min_image="0" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="5" duration="6" fix_price="0" profit="600" penalty="3000" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="e916d23a-ee32-4fe0-9fdd-eeab15dbad4c" creator="684">
@@ -11577,7 +11577,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 				<de>Mmmmhmmm - das IST ein leckerer Burger. Wenn Du auf Burger stehst, mußt Du die probieren!</de>
 				<en></en>
 			</description>
-			<conditions min_audience="47.1" min_image="0" target_group="7" />
+			<conditions min_audience="18" min_image="0" target_group="7" />
 			<data infomercial="0" quality="0" repetitions="2" duration="2" fix_price="0" profit="450" penalty="600" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="25bd491f-12b2-4082-a9cd-770ae7fba18b" creator="1">
@@ -11589,7 +11589,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 				<de>Aktionswoche bei Bikeshop. Beim Kauf eines Fahrrads gibt eines umsonst.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="7.8" min_image="0" target_group="2" />
+			<conditions min_audience="10" min_image="0" target_group="2" />
 			<data infomercial="0" quality="0" repetitions="2" duration="2" fix_price="0" profit="1500" penalty="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="c1c03652-5698-43b6-9fa9-0ede8ee76fac" creator="1234">
@@ -11601,7 +11601,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 				<de>Boxershorts vom Dorf. Garantiert nur einmal getragen - pro Seite.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="78.4" min_image="7" target_group="9" />
+			<conditions min_audience="21" min_image="10" target_group="9" />
 			<data infomercial="0" quality="0" repetitions="3" duration="2" fix_price="0" profit="750" penalty="1050" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="f696a290-8829-4e6d-a367-baeda5f7d405" creator="1">
@@ -11625,7 +11625,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 				<de>Kein Bier mehr? Schick nicht die Frau, ruf Call-A-Beer!</de>
 				<en></en>
 			</description>
-			<conditions min_audience="15.7" min_image="19" target_group="9" />
+			<conditions min_audience="12.5" min_image="15" target_group="9" />
 			<data infomercial="0" quality="0" repetitions="2" duration="1" fix_price="0" profit="1050" penalty="600" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="4ce39d95-e3c8-4cd4-881b-1cd22d033eee" creator="5458">
@@ -11637,7 +11637,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 				<de>Der Schlummertrunk aus der Alutüte.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="27.5" min_image="0" target_group="2" />
+			<conditions min_audience="14" min_image="10" target_group="2" />
 			<data infomercial="0" quality="0" repetitions="2" duration="2" fix_price="0" profit="3000" penalty="1500" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="43b0ad95-217b-4fe3-a564-0c883ee79541" creator="5458">
@@ -11649,7 +11649,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 				<de>Beim Kauf einer Flasche Rotwein gibts jetzt zwei Kopfschmerztabletten gratis dazu.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="27.5" min_image="0" target_group="5" />
+			<conditions min_audience="7.5" min_image="5" target_group="5" />
 			<data infomercial="0" quality="0" repetitions="2" duration="2" fix_price="0" profit="3000" penalty="450" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="4879af34-2d3b-4b5a-bc78-dc4cbf8a7439" creator="1">
@@ -11661,7 +11661,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 				<de>Raub-Kopien sehen fast so gut aus wie die Originale. Wir verkaufen auch Permanentmarker!</de>
 				<en></en>
 			</description>
-			<conditions min_audience="3.9" min_image="0" target_group="0" />
+			<conditions min_audience="7.5" min_image="0" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="3" duration="3" fix_price="1" profit="3000" penalty="12000" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="628a11fe-89cb-4337-a871-e2c313a9625a" creator="1234">
@@ -11673,7 +11673,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 				<de>Knusprig knackiger Knabberspass mit feurig scharfer Chilinote. Nur für kurze Zeit mit Tiermotiven.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="19.6" min_image="70" target_group="5" />
+			<conditions min_audience="19" min_image="25" target_group="5" />
 			<data infomercial="0" quality="0" repetitions="3" duration="3" fix_price="0" profit="900" penalty="1500" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="e6808d0c-ca35-46b4-ba2c-40c294d112c5" creator="684">
@@ -11685,7 +11685,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 				<de>Nicht nur Furrest Gomp trinkt leidenschaftlich Dr. Papper.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="27.5" min_image="39" target_group="2" />
+			<conditions min_audience="23" min_image="30" target_group="2" />
 			<data infomercial="0" quality="0" repetitions="4" duration="6" fix_price="0" profit="750" penalty="3000" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="6bd02067-6e16-4657-9141-387809400e58" creator="1">
@@ -11697,7 +11697,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 				<de>Reisen sie an die größten Strände der Welt, ob Gobi oder Sahara. Dubantours bringt sie hin.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="19.6" min_image="0" target_group="4" />
+			<conditions min_audience="17.5" min_image="0" target_group="4" />
 			<data infomercial="0" quality="0" repetitions="5" duration="3" fix_price="0" profit="1800" penalty="2250" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="065a5ffa-ea81-4e50-8d9f-45bd6a0a4488" creator="1">
@@ -11709,7 +11709,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 				<de>Bestellen Sie jetzt und sichern sie sich den Duft der Frauen betört und ihre WC-Gäste bezaubert. Neu: Zitrone!</de>
 				<en></en>
 			</description>
-			<conditions min_audience="3.9" min_image="0" target_group="0" />
+			<conditions min_audience="8" min_image="0" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="3" duration="2" fix_price="1" profit="1000" penalty="1" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="74fd9470-fdd8-4e23-b8d3-70873a66302d" creator="1">
@@ -11721,7 +11721,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 				<de>Computerschrott ab 50 Eurocent das Kilo. Jetzt auch moderne S/W-Monitore im Angebot.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="27.5" min_image="0" target_group="0" />
+			<conditions min_audience="12.5" min_image="5" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="2" duration="3" fix_price="0" profit="1500" penalty="1500" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="dd344174-3ea9-49ae-bcb6-c095f6d9fb06" creator="684">
@@ -11734,7 +11734,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 In Tempelhof und Steglitz</de>
 				<en></en>
 			</description>
-			<conditions min_audience="7.8" min_image="0" target_group="2" />
+			<conditions min_audience="7.5" min_image="5" target_group="2" />
 			<data infomercial="0" quality="0" repetitions="2" duration="3" fix_price="0" profit="2400" penalty="360" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="c75ac6a8-08ba-47d2-ba89-40ba227d3ddb" creator="5458">
@@ -11746,7 +11746,7 @@ In Tempelhof und Steglitz</de>
 				<de>Das Auge isst man mit!</de>
 				<en></en>
 			</description>
-			<conditions min_audience="39.2" min_image="0" target_group="3" />
+			<conditions min_audience="5" min_image="0" target_group="3" />
 			<data infomercial="0" quality="0" repetitions="3" duration="2" fix_price="0" profit="2580" penalty="450" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="9333604f-dadb-4423-8bd0-6dfbd4f6221c" creator="1">
@@ -11758,7 +11758,7 @@ In Tempelhof und Steglitz</de>
 				<de>Der neue Fort ist da. Mehr Sicherheit und ein ansprechendes Design zu einem unschlagbaren Preis.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="58.8" min_image="0" target_group="0" />
+			<conditions min_audience="15" min_image="30" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="5" duration="3" fix_price="0" profit="450" penalty="450" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="466cc323-a64c-4591-8269-13892ca2dd34" creator="1">
@@ -11770,7 +11770,7 @@ In Tempelhof und Steglitz</de>
 				<de>Höre reifen Frauen beim Stricken zu. </de>
 				<en></en>
 			</description>
-			<conditions min_audience="3.9" min_image="0" target_group="2" />
+			<conditions min_audience="2.5" min_image="0" target_group="2" />
 			<data infomercial="0" quality="0" repetitions="7" duration="7" fix_price="0" profit="450" penalty="300" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="f1bdcd08-6aa0-45b8-b758-d26484ed0309" creator="684">
@@ -11783,7 +11783,7 @@ In Tempelhof und Steglitz</de>
 Die GS2 ist der Nachfolger der GS aus dem Hause Sunny.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="86.3" min_image="0" target_group="2" />
+			<conditions min_audience="15" min_image="15" target_group="2" />
 			<data infomercial="0" quality="0" repetitions="6" duration="4" fix_price="0" profit="750" penalty="600" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="f3ba150e-46fa-463e-803e-b726ac1f4701" creator="1234">
@@ -11795,7 +11795,7 @@ Die GS2 ist der Nachfolger der GS aus dem Hause Sunny.</de>
 				<de>Die natürlichen Bestandteile von Gib Pfote wird ihr Hund lieben. Lecker Pudel.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="11.8" min_image="15" target_group="0" />
+			<conditions min_audience="10" min_image="10" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="2" duration="2" fix_price="0" profit="750" penalty="600" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="414f433a-57d7-460a-a8f5-1af3ea99e6f1" creator="684">
@@ -11807,7 +11807,7 @@ Die GS2 ist der Nachfolger der GS aus dem Hause Sunny.</de>
 				<de>Mit Mach 4 oder NOCH schneller fliegt der Rasierer über die Geischtshaut eines echten Kerls - für das Beste im Mann.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="58.8" min_image="0" target_group="9" />
+			<conditions min_audience="7.5" min_image="30" target_group="9" />
 			<data infomercial="0" quality="0" repetitions="4" duration="4" fix_price="0" profit="450" penalty="3000" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="1a515479-a679-4989-8b35-83668f4d9316" creator="1">
@@ -11819,7 +11819,7 @@ Die GS2 ist der Nachfolger der GS aus dem Hause Sunny.</de>
 				<de>Hau dem Opa die Zähne aus, ab heute gibt es Geld gegen Gold. Achtung: Gelb ist nicht gleich Gold!</de>
 				<en></en>
 			</description>
-			<conditions min_audience="11.8" min_image="0" target_group="5" />
+			<conditions min_audience="2.5" min_image="5" target_group="5" />
 			<data infomercial="0" quality="0" repetitions="2" duration="5" fix_price="0" profit="3000" penalty="3000" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="856a20da-b8cc-4e51-8b7b-6b3598f0da9a" creator="684">
@@ -11831,19 +11831,19 @@ Die GS2 ist der Nachfolger der GS aus dem Hause Sunny.</de>
 				<de>Das Honigmonster präsentiert sein Leibgericht</de>
 				<en></en>
 			</description>
-			<conditions min_audience="78.4" min_image="0" target_group="1" />
+			<conditions min_audience="12.5" min_image="15" target_group="1" />
 			<data infomercial="0" quality="0" repetitions="1" duration="1" fix_price="0" profit="450" penalty="600" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="aca90c41-75ca-4d23-b43f-e1614e91e269" creator="684">
 			<title>
-				<de>Hanz Tomato Ketchup</de>
+				<de>Hanzis Tomatenketchup</de>
 				<en></en>
 			</title>
 			<description>
 				<de>Das Ketchup für diejenigen, die ihre Pommes nicht in Mayonnaise ersäufen. Auch geeignet für Buletten, Wurst und Hühnchen.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="39.2" min_image="0" target_group="0" />
+			<conditions min_audience="15" min_image="25" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="2" duration="3" fix_price="0" profit="300" penalty="150" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="9acedd8e-e00b-4db0-b476-bcbdb325a380" creator="1234">
@@ -11856,7 +11856,7 @@ Die GS2 ist der Nachfolger der GS aus dem Hause Sunny.</de>
 Aktionswoche: Pfandfrei.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="19.6" min_image="0" target_group="9" />
+			<conditions min_audience="5" min_image="5" target_group="9" />
 			<data infomercial="0" quality="0" repetitions="4" duration="2" fix_price="0" profit="600" penalty="450" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="0987c64e-58a5-474c-a18f-2d9aaa381702" creator="1234">
@@ -11868,7 +11868,7 @@ Aktionswoche: Pfandfrei.</de>
 				<de>Hier fallen nicht nur Späne, nein auch die Preise. Ein Hobelmarkt ist sicher auch in Ihrer Nähe.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="31.4" min_image="39" target_group="9" />
+			<conditions min_audience="10" min_image="0" target_group="9" />
 			<data infomercial="0" quality="0" repetitions="3" duration="2" fix_price="0" profit="750" penalty="450" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="8a2362f5-dd99-4bb9-881f-a10cb96c9acd" creator="684">
@@ -11880,7 +11880,7 @@ Aktionswoche: Pfandfrei.</de>
 				<de>Wurth Paris liefert den Duft ausgewählter Essenzen für ein edles Parfüm.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="68.6" min_image="0" target_group="8" />
+			<conditions min_audience="15" min_image="20" target_group="8" />
 			<data infomercial="0" quality="0" repetitions="3" duration="2" fix_price="0" profit="450" penalty="600" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="e00fc6aa-6643-4fd6-a3a4-acc3d36bf8c2" creator="684">
@@ -11892,7 +11892,7 @@ Aktionswoche: Pfandfrei.</de>
 				<de>Wir sorgen für ihre Sanitäranlagen. Schon ab 10 € - ohne Scheiß!</de>
 				<en></en>
 			</description>
-			<conditions min_audience="7.8" min_image="0" target_group="4" />
+			<conditions min_audience="2.5" min_image="0" target_group="4" />
 			<data infomercial="0" quality="0" repetitions="2" duration="2" fix_price="0" profit="1500" penalty="1500" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="fb1cc6fb-2bb4-41d3-9824-1d1917341326" creator="1234">
@@ -11904,7 +11904,7 @@ Aktionswoche: Pfandfrei.</de>
 				<de>Der lecker Knabberspass für Jung und Alt. Aus Reifen gemacht, in 5 bunten Geschmacksrichtungen.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="23.5" min_image="0" target_group="0" />
+			<conditions min_audience="10" min_image="0" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="7" duration="2" fix_price="0" profit="900" penalty="2400" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="850fd638-4bde-4154-82a1-93962c07a113" creator="0">
@@ -11916,7 +11916,7 @@ Aktionswoche: Pfandfrei.</de>
 				<de>Von Katzen für Katzen. Nahrhaftes Dosenfutter für ihren Stubentiger.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="19.6" min_image="0" target_group="3" />
+			<conditions min_audience="12.5" min_image="0" target_group="3" />
 			<data infomercial="0" quality="0" repetitions="2" duration="1" fix_price="0" profit="450" penalty="1500" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="1476dc8e-57f4-47c5-a18f-cc969362ffa2" creator="5458">
@@ -11928,19 +11928,19 @@ Aktionswoche: Pfandfrei.</de>
 				<de>Ihre Baguettes in 1, 2 oder 3 Meter Länge!</de>
 				<en></en>
 			</description>
-			<conditions min_audience="39.2" min_image="0" target_group="0" />
+			<conditions min_audience="10" min_image="0" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="1" duration="1" fix_price="1" profit="24000" penalty="3000" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="5cff333f-6a6d-46b0-82f4-f986224fcfdc" creator="5458">
 			<title>
-				<de>Lacoast</de>
+				<de>La Côte</de>
 				<en></en>
 			</title>
 			<description>
 				<de>Die Markenkleidung mit dem Sonnenschirm. Modische Schnitte und trendige Farben inklusive.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="78.4" min_image="0" target_group="0" />
+			<conditions min_audience="15" min_image="25" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="5" duration="5" fix_price="0" profit="600" penalty="600" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="d828c4ab-5851-444d-85d5-e37d331a870f" creator="684">
@@ -11952,7 +11952,7 @@ Aktionswoche: Pfandfrei.</de>
 				<de>Schon längst zum Schulkameraden geworden: Die Patronen, die den Füller füllen.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="9.8" min_image="0" target_group="2" />
+			<conditions min_audience="10" min_image="10" target_group="2" />
 			<data infomercial="0" quality="0" repetitions="1" duration="1" fix_price="0" profit="1500" penalty="1500" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="079084e1-694a-44a5-977c-4cb35d6743b2" creator="1">
@@ -11977,7 +11977,7 @@ Aktionswoche: Pfandfrei.</de>
 Ich fühl mich wohl mit Lemor</de>
 				<en></en>
 			</description>
-			<conditions min_audience="49" min_image="0" target_group="3" />
+			<conditions min_audience="17.5" min_image="10" target_group="3" />
 			<data infomercial="0" quality="0" repetitions="4" duration="5" fix_price="0" profit="450" penalty="3000" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="33dd5d35-d36b-4d70-b81e-0231b63869c0" creator="1234">
@@ -11989,7 +11989,7 @@ Ich fühl mich wohl mit Lemor</de>
 				<de>Der schnelle Bonbon gegen Husten. Jetzt auch als Nikotinersatz.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="19.6" min_image="19" target_group="0" />
+			<conditions min_audience="12.5" min_image="5" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="3" duration="2" fix_price="0" profit="900" penalty="600" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="f9c2e266-778e-4188-872a-686aefed19bc" creator="1234">
@@ -12001,19 +12001,19 @@ Ich fühl mich wohl mit Lemor</de>
 				<de>Hoher Tragekomfort und nahezu unsichtbar - die neuen Maike-Hygieneeinlagen.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="19.6" min_image="39" target_group="8" />
+			<conditions min_audience="7.5" min_image="5" target_group="8" />
 			<data infomercial="0" quality="0" repetitions="3" duration="4" fix_price="0" profit="900" penalty="1350" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="11ca616c-5fc7-46e3-90b8-21c308c157d2" creator="684">
 			<title>
-				<de>Märzedes</de>
+				<de>Bonze</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Der neueste Luxus-Schlitten aus dem Hause Märzedes: Ästethisch einwandfreies Design, robust, klassisch.</de>
+				<de>Der neueste Luxus-Schlitten aus dem Hause Bonze: Ästethisch einwandfreies Design, robust, klassisch.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="88.2" min_image="0" target_group="6" />
+			<conditions min_audience="25" min_image="15" target_group="6" />
 			<data infomercial="0" quality="0" repetitions="6" duration="2" fix_price="0" profit="750" penalty="600" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="76c8f8b6-39b1-423e-a235-c8ba860d0202" creator="684">
@@ -12022,10 +12022,10 @@ Ich fühl mich wohl mit Lemor</de>
 				<en></en>
 			</title>
 			<description>
-				<de>MacGyver als Werbeträger für die MasterCard: R. D. Anderson noch einmal in seiner Paraderolle - unbezahlbar</de>
+				<de>MacGreifer als Werbeträger für die MasterCard: R. D. Anderson noch einmal in seiner Paraderolle - unbezahlbar</de>
 				<en></en>
 			</description>
-			<conditions min_audience="86.3" min_image="0" target_group="7" />
+			<conditions min_audience="10" min_image="10" target_group="7" />
 			<data infomercial="0" quality="0" repetitions="1" duration="1" fix_price="0" profit="750" penalty="600" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="937ac855-039b-4413-88b9-27a75cb308a2" creator="1234">
@@ -12037,7 +12037,7 @@ Ich fühl mich wohl mit Lemor</de>
 				<de>Quietscht Ihre Matratze? Rufen Sie den Matratzendoktor. Inklusive Probestunde.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="3.9" min_image="0" target_group="3" />
+			<conditions min_audience="5" min_image="0" target_group="3" />
 			<data infomercial="0" quality="0" repetitions="3" duration="3" fix_price="0" profit="450" penalty="330" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="e975875c-62c7-4b31-a8c4-030676f97d3f" creator="684">
@@ -12046,10 +12046,10 @@ Ich fühl mich wohl mit Lemor</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Richard Dean Anderson präsentiert für die Telecom USA in zwei Spots eine nützliche Telephonkarte.</de>
+				<de>R. D. Anderson präsentiert für die Telecom USA in zwei Spots eine nützliche Telephonkarte.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="58.8" min_image="0" target_group="0" />
+			<conditions min_audience="14" min_image="5" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="2" duration="1" fix_price="0" profit="3000" penalty="1500" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="f1f12f28-1d9e-4f2d-981c-b533d0a96299" creator="1">
@@ -12061,7 +12061,7 @@ Ich fühl mich wohl mit Lemor</de>
 				<de>Wir sind Blöd. Wir schmeissen unsere Ware zu Spottpreisen raus. Also ab in den nächsten Mödie-Markt</de>
 				<en></en>
 			</description>
-			<conditions min_audience="39.2" min_image="58" target_group="4" />
+			<conditions min_audience="5" min_image="15" target_group="4" />
 			<data infomercial="0" quality="0" repetitions="5" duration="3" fix_price="0" profit="3000" penalty="450" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="76a57a14-a851-4c72-8aa6-927a571c0e72" creator="684">
@@ -12073,7 +12073,7 @@ Ich fühl mich wohl mit Lemor</de>
 				<de>Der unvergleichliche Schokoriegel mit dem hinreißenden Geschmack</de>
 				<en></en>
 			</description>
-			<conditions min_audience="49" min_image="0" target_group="2" />
+			<conditions min_audience="10" min_image="15" target_group="2" />
 			<data infomercial="0" quality="0" repetitions="3" duration="5" fix_price="0" profit="3000" penalty="1500" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="0eb38938-06c2-45b8-8620-266bcf7b7f60" creator="0">
@@ -12085,7 +12085,7 @@ Ich fühl mich wohl mit Lemor</de>
 				<de>Neun Jahre zuvor in den USA eingeführt, kommt Mr. Ploper 1967 nach Deutschland und etabliert sich als der beliebteste Haushaltsreiniger</de>
 				<en></en>
 			</description>
-			<conditions min_audience="58.8" min_image="0" target_group="3" />
+			<conditions min_audience="7.5" min_image="15" target_group="3" />
 			<data infomercial="0" quality="0" repetitions="5" duration="5" fix_price="0" profit="450" penalty="450" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="37ad3e83-d96a-465e-b6e9-2753d1c2442a" creator="1234">
@@ -12097,7 +12097,7 @@ Ich fühl mich wohl mit Lemor</de>
 				<de>Günstige Urlaubstrips. Jetzt mit Datingbörse für Pauschaltouristen und "Gepäck zurück"-Garantie.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="39.2" min_image="19" target_group="0" />
+			<conditions min_audience="5" min_image="5" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="3" duration="3" fix_price="0" profit="1050" penalty="900" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="c8a5d3bf-488c-4b0a-8cea-20d22641fc0c" creator="684">
@@ -12109,12 +12109,12 @@ Ich fühl mich wohl mit Lemor</de>
 				<de>Pflegeprodukte rund um die Haut. Salben/Crèmes, Badezusatz, Deodorants uvm.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="29.4" min_image="0" target_group="0" />
+			<conditions min_audience="10" min_image="15" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="5" duration="7" fix_price="0" profit="3000" penalty="1500" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="88658c81-60b7-4058-b561-0e21448724b5" creator="684">
 			<title>
-				<de>Okea</de>
+				<de>Möbler</de>
 				<en></en>
 			</title>
 			<description>
@@ -12122,7 +12122,7 @@ Ich fühl mich wohl mit Lemor</de>
 Habt Ihr das zu bieten? Alter Schwede!</de>
 				<en></en>
 			</description>
-			<conditions min_audience="49" min_image="0" target_group="0" />
+			<conditions min_audience="10" min_image="15" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="5" duration="2" fix_price="0" profit="600" penalty="450" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="073bd473-d740-4c45-88d2-6ecaaec1c1be" creator="684">
@@ -12134,7 +12134,7 @@ Habt Ihr das zu bieten? Alter Schwede!</de>
 				<de>Das Fruchtsaftgetränk in der weltberühmten bauchigen Flasche. Teuer, aber so gut wie immer richtig.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="78.4" min_image="0" target_group="4" />
+			<conditions min_audience="7.5" min_image="15" target_group="4" />
 			<data infomercial="0" quality="0" repetitions="5" duration="4" fix_price="0" profit="750" penalty="600" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="6decd816-9ff0-40a1-804b-c29e5cca72e1" creator="1234">
@@ -12146,7 +12146,7 @@ Habt Ihr das zu bieten? Alter Schwede!</de>
 				<de>Unsere Windeln haben einen hohen Tragekomfort und sind geeignet für Jung und Alt.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="39.2" min_image="39" target_group="8" />
+			<conditions min_audience="5" min_image="20" target_group="8" />
 			<data infomercial="0" quality="0" repetitions="4" duration="4" fix_price="0" profit="450" penalty="1050" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="167a85df-11dd-4c5d-b2cd-1ae5413f8267" creator="1">
@@ -12158,7 +12158,7 @@ Habt Ihr das zu bieten? Alter Schwede!</de>
 				<de>Populärster Konkurrent von Koka Cola - doch geschmacklich auch so rein?</de>
 				<en></en>
 			</description>
-			<conditions min_audience="66.7" min_image="58" target_group="2" />
+			<conditions min_audience="12.5" min_image="20" target_group="2" />
 			<data infomercial="0" quality="0" repetitions="4" duration="2" fix_price="0" profit="600" penalty="600" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="b51c0d99-6e31-4771-b9a3-0d98944a1860" creator="1234">
@@ -12170,7 +12170,7 @@ Habt Ihr das zu bieten? Alter Schwede!</de>
 				<de>Prickelndes Hopfengold. Für die kritischen Tage im Monat sollte Mann immer Plöpp-Bier im Haus haben.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="19.6" min_image="19" target_group="9" />
+			<conditions min_audience="5" min_image="5" target_group="9" />
 			<data infomercial="0" quality="0" repetitions="3" duration="4" fix_price="0" profit="600" penalty="300" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="91122a1a-35d4-4dc3-8536-d82203edef24" creator="1234">
@@ -12183,7 +12183,7 @@ Habt Ihr das zu bieten? Alter Schwede!</de>
 Für kurze Zeit Action-Märkel und Chaoz-Rözler zum Preis von einem.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="39.2" min_image="27" target_group="1" />
+			<conditions min_audience="5" min_image="10" target_group="1" />
 			<data infomercial="0" quality="0" repetitions="5" duration="3" fix_price="0" profit="1050" penalty="2250" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="33f2c18c-4213-4982-b61b-9b9d4f7e88fb" creator="684">
@@ -12195,7 +12195,7 @@ Für kurze Zeit Action-Märkel und Chaoz-Rözler zum Preis von einem.</de>
 				<de>Polsterwerkstatt Dobrawa seit 1933</de>
 				<en></en>
 			</description>
-			<conditions min_audience="7.8" min_image="0" target_group="4" />
+			<conditions min_audience="2.5" min_image="0" target_group="4" />
 			<data infomercial="0" quality="0" repetitions="1" duration="1" fix_price="0" profit="180" penalty="300" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="e4283b49-0ea1-480f-b4fd-141ff6918768" creator="684">
@@ -12208,7 +12208,7 @@ Für kurze Zeit Action-Märkel und Chaoz-Rözler zum Preis von einem.</de>
 Der Vorteil: Kein Porto für Überweisungsträger</de>
 				<en></en>
 			</description>
-			<conditions min_audience="19.6" min_image="0" target_group="4" />
+			<conditions min_audience="10" min_image="5" target_group="4" />
 			<data infomercial="0" quality="0" repetitions="3" duration="1" fix_price="0" profit="3000" penalty="450" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="a960cfb4-0a7e-41a2-807c-e310101ab72a" creator="684">
@@ -12220,7 +12220,7 @@ Der Vorteil: Kein Porto für Überweisungsträger</de>
 				<de>Puzzeln, spielen, Spaß haben. Rabensburger empfiehlt Neuheiten und Klassiker aus seinem Sortiment.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="19.6" min_image="0" target_group="1" />
+			<conditions min_audience="15" min_image="15" target_group="1" />
 			<data infomercial="0" quality="0" repetitions="3" duration="5" fix_price="0" profit="3000" penalty="1500" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="0b5209d9-6d0d-4d33-ae49-fb5aad2fb41c" creator="1">
@@ -12244,7 +12244,7 @@ Der Vorteil: Kein Porto für Überweisungsträger</de>
 				<de>Die Nummer 1 im Modellbau. Ob Messerschmitt, Panther oder U.S.S. Enterprise - Ravell führt es.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="19.6" min_image="0" target_group="9" />
+			<conditions min_audience="7.5" min_image="20" target_group="9" />
 			<data infomercial="0" quality="0" repetitions="3" duration="3" fix_price="0" profit="1500" penalty="1500" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="ca1d016b-959f-443a-a507-c5edfbd8e160" creator="5458">
@@ -12256,7 +12256,7 @@ Der Vorteil: Kein Porto für Überweisungsträger</de>
 				<de>Schnäppchenpreise für exklusive Rucksack-Touren. Proviant und Pflaster nicht im Preis enthalten.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="68.6" min_image="0" target_group="4" />
+			<conditions min_audience="7.5" min_image="0" target_group="4" />
 			<data infomercial="0" quality="0" repetitions="2" duration="2" fix_price="0" profit="1500" penalty="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="c116a893-8dfc-41f1-a522-aca7da1820ee" creator="1">
@@ -12268,7 +12268,7 @@ Der Vorteil: Kein Porto für Überweisungsträger</de>
 				<de>Räm Bäm Bäääm - Bestell Dir jetzt Deinen Klingelton im Sparabo.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="7.8" min_image="0" target_group="2" />
+			<conditions min_audience="2.5" min_image="0" target_group="2" />
 			<data infomercial="0" quality="0" repetitions="6" duration="5" fix_price="0" profit="1200" penalty="900" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="a77b825b-1951-44e4-87d3-76975eded371" creator="1234">
@@ -12280,19 +12280,19 @@ Der Vorteil: Kein Porto für Überweisungsträger</de>
 				<de>Das neue Modell des renommierten Autoherstellers Saipien verzückt die Presse - auch Sie?</de>
 				<en></en>
 			</description>
-			<conditions min_audience="39.2" min_image="58" target_group="0" />
+			<conditions min_audience="15" min_image="10" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="2" duration="4" fix_price="0" profit="1350" penalty="1800" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="e2b94004-aef4-460f-85eb-f6244a90352b" creator="684">
 			<title>
-				<de>Saratti</de>
+				<de>Schorotti</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Der Saratti-Mohr bietet traumhafte Schokolade. Zugreifen und dahinschmelzen.</de>
+				<de>Der Schorotti-Mohr bietet traumhafte Schokolade. Zugreifen und dahinschmelzen.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="29.4" min_image="0" target_group="0" />
+			<conditions min_audience="12.5" min_image="15" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="3" duration="4" fix_price="0" profit="3000" penalty="450" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="2b4e3389-c1b0-4dc0-90bc-38e040f2d889" creator="5458">
@@ -12304,7 +12304,7 @@ Der Vorteil: Kein Porto für Überweisungsträger</de>
 				<de>Verlieren Sie 50 Kilo innerhalb eines Monats!</de>
 				<en></en>
 			</description>
-			<conditions min_audience="86.3" min_image="0" target_group="8" />
+			<conditions min_audience="5" min_image="5" target_group="8" />
 			<data infomercial="0" quality="0" repetitions="4" duration="3" fix_price="0" profit="600" penalty="600" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="00a67cd1-1964-4a90-aa92-685138e9bd66" creator="1234">
@@ -12316,12 +12316,12 @@ Der Vorteil: Kein Porto für Überweisungsträger</de>
 				<de>Freundliche Frauen aus Osteuropa erstellen Ihr Horoskop "live" am Telefon.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="39.2" min_image="58" target_group="8" />
+			<conditions min_audience="5" min_image="5" target_group="8" />
 			<data infomercial="0" quality="0" repetitions="3" duration="6" fix_price="0" profit="600" penalty="450" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="4b9a5be0-ce30-4454-8cb5-6641cd4482aa" creator="684">
 			<title>
-				<de>Snuckers</de>
+				<de>Trickers</de>
 				<en></en>
 			</title>
 			<description>
@@ -12329,7 +12329,7 @@ Der Vorteil: Kein Porto für Überweisungsträger</de>
 Daran hat man zu kauen.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="39.2" min_image="0" target_group="2" />
+			<conditions min_audience="15" min_image="20" target_group="2" />
 			<data infomercial="0" quality="0" repetitions="3" duration="3" fix_price="0" profit="3000" penalty="450" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="b841b652-65d1-42c2-a50e-4229e68ca495" creator="684">
@@ -12341,7 +12341,7 @@ Daran hat man zu kauen.</de>
 				<de>Speck-Seife steht seit Jahrzenten für Qualität und saubere Hände.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="19.6" min_image="0" target_group="3" />
+			<conditions min_audience="10" min_image="25" target_group="3" />
 			<data infomercial="0" quality="0" repetitions="2" duration="3" fix_price="0" profit="300" penalty="60" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="3e027a96-fb38-4453-9d80-b60d7836dde2" creator="1234">
@@ -12353,16 +12353,16 @@ Daran hat man zu kauen.</de>
 				<de>Unsere Limonade beinhaltet nur natürliche Aromastoffe. Hmm lecker Käferflügel...</de>
 				<en></en>
 			</description>
-			<conditions min_audience="39.2" min_image="19" target_group="2" />
+			<conditions min_audience="12.5" min_image="15" target_group="2" />
 			<data infomercial="0" quality="0" repetitions="5" duration="7" fix_price="0" profit="840" penalty="1260" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="062cdcdc-0964-4257-a5ce-23ad465cedd8" creator="1">
 			<title>
-				<de>StyleDJ</de>
-				<en>StyleDJ</en>
+				<de>Stilvento</de>
+				<en>Stilvento</en>
 			</title>
 			<description>
-				<de>Ist ihre Party mal wieder total langweilig? Buchen Sie StyleDJ und ihr Anlass ist gerettet.</de>
+				<de>Ist ihre Party mal wieder total langweilig? Buchen Sie Stilvento.de und ihr Anlass ist gerettet.</de>
 				<en></en>
 			</description>
 			<conditions min_audience="11.8" min_image="3" target_group="0" />
@@ -12378,7 +12378,7 @@ Daran hat man zu kauen.</de>
 It's a sunny</de>
 				<en></en>
 			</description>
-			<conditions min_audience="88.2" min_image="0" target_group="9" />
+			<conditions min_audience="12.5" min_image="15" target_group="9" />
 			<data infomercial="0" quality="0" repetitions="4" duration="5" fix_price="0" profit="750" penalty="750" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="cc8c217f-f429-42f7-b537-068128af0fc1" creator="5458">
@@ -12390,7 +12390,7 @@ It's a sunny</de>
 				<de>Gestalten Sie ihre Möbel selber!</de>
 				<en></en>
 			</description>
-			<conditions min_audience="0" min_image="0" target_group="9" />
+			<conditions min_audience="5" min_image="0" target_group="9" />
 			<data infomercial="0" quality="0" repetitions="6" duration="3" fix_price="0" profit="1500" penalty="750" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="34cf9903-9783-43a6-9253-7282c32b3c87" creator="684">
@@ -12399,10 +12399,10 @@ It's a sunny</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Ein reines Wasser muß durch einen tiefen Stein</de>
+				<de>Aus den Tiefen Sylts kommt dieses herrlich prickelnde Mineralwasser.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="58.8" min_image="0" target_group="4" />
+			<conditions min_audience="12.5" min_image="10" target_group="4" />
 			<data infomercial="0" quality="0" repetitions="3" duration="4" fix_price="0" profit="600" penalty="600" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="4e2c6aa2-20ab-416c-91a9-512939f79e53" creator="1234">
@@ -12414,7 +12414,7 @@ It's a sunny</de>
 				<de>Qualität die überzeugt. Nur wir ziehen Sie über den Echtholztisch.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="78.4" min_image="0" target_group="0" />
+			<conditions min_audience="7.5" min_image="0" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="3" duration="3" fix_price="0" profit="600" penalty="600" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="1b46a761-65c0-436f-abad-5f1390be2d19" creator="1">
@@ -12438,20 +12438,20 @@ It's a sunny</de>
 				<de>Kein Geld für den Urlaub oder die Yacht? Wir schicken Postkarten aus Uganda oder fälschen Fotos.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="11.8" min_image="3" target_group="5" />
+			<conditions min_audience="5" min_image="10" target_group="5" />
 			<data infomercial="0" quality="0" repetitions="4" duration="3" fix_price="0" profit="900" penalty="750" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="452b6079-aec8-47f0-a45c-b86cb6437b9b" creator="684">
 			<title>
-				<de>Tublerone</de>
+				<de>Tubenkrone</de>
 				<en></en>
 			</title>
 			<description>
 				<de>Na und?
-Tublerone - Schokolade mit Charakter.</de>
+Tubenkrone - Schokolade mit Charakter.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="49" min_image="0" target_group="0" />
+			<conditions min_audience="15" min_image="10" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="2" duration="1" fix_price="0" profit="3000" penalty="3000" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="5ca3134b-fa5b-4af7-af60-148741dfd18c" creator="1234">
@@ -12463,7 +12463,7 @@ Tublerone - Schokolade mit Charakter.</de>
 				<de>Nette Frauen aus aus dem Katalog. Dank Fernabsatz Rückgabe ohne Probleme möglich.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="0" min_image="0" target_group="9" />
+			<conditions min_audience="2.5" min_image="0" target_group="9" />
 			<data infomercial="0" quality="0" repetitions="3" duration="5" fix_price="0" profit="900" penalty="750" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="fbc09e8f-be1b-45d4-b6aa-aa232835898c" creator="5458">
@@ -12476,7 +12476,7 @@ Tublerone - Schokolade mit Charakter.</de>
 Aber nur mit Ulbricht Umzüge!</de>
 				<en></en>
 			</description>
-			<conditions min_audience="27.5" min_image="0" target_group="4" />
+			<conditions min_audience="7.5" min_image="0" target_group="4" />
 			<data infomercial="0" quality="0" repetitions="2" duration="2" fix_price="0" profit="1500" penalty="1500" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="4c5bf2fd-4360-4302-8b74-b8fe056f9770" creator="684">
@@ -12485,10 +12485,10 @@ Aber nur mit Ulbricht Umzüge!</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Die "Vitalon Foods Company" aus Taiwan läßt Richard Dean Anderson als MacGyver für ihren Sports Drink werben: auf dem Fahrrad, im Jeep, beim Tai Chi und auf dem Motorboot.</de>
+				<de>Die "Vitalon Foods Company" aus Taiwan läßt R. D. Anderson als MacGreifer für ihren Sports Drink werben: auf dem Fahrrad, im Jeep, beim Tai Chi und auf dem Motorboot.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="68.6" min_image="0" target_group="7" />
+			<conditions min_audience="17.5" min_image="15" target_group="7" />
 			<data infomercial="0" quality="0" repetitions="4" duration="3" fix_price="0" profit="600" penalty="450" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="3bf2ca48-2003-4031-aa49-02971a58c297" creator="684">
@@ -12500,7 +12500,7 @@ Aber nur mit Ulbricht Umzüge!</de>
 				<de>Deo, Duschmittel, Badezusatz: Körperpflege in vielen Variationen.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="3.9" min_image="0" target_group="0" />
+			<conditions min_audience="10" min_image="10" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="2" duration="1" fix_price="0" profit="450" penalty="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="ed96049d-0fe8-48a9-9693-71f1a0778d20" creator="5458">
@@ -12512,7 +12512,7 @@ Aber nur mit Ulbricht Umzüge!</de>
 				<de>Waschen Sie ihre Wäsche mit "Weisser Friese" porentief rein!</de>
 				<en></en>
 			</description>
-			<conditions min_audience="27.5" min_image="0" target_group="3" />
+			<conditions min_audience="12.5" min_image="15" target_group="3" />
 			<data infomercial="0" quality="0" repetitions="2" duration="3" fix_price="0" profit="3000" penalty="3000" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="61504292-de47-4a13-b101-3240e089639d" creator="684">
@@ -12524,19 +12524,19 @@ Aber nur mit Ulbricht Umzüge!</de>
 				<de>Des Wodkas reine Seele</de>
 				<en></en>
 			</description>
-			<conditions min_audience="19.6" min_image="0" target_group="9" />
+			<conditions min_audience="10" min_image="15" target_group="9" />
 			<data infomercial="0" quality="0" repetitions="4" duration="2" fix_price="0" profit="3000" penalty="450" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="243e525c-d3c9-42fa-b479-14265fd359c4" creator="684">
 			<title>
-				<de>Zaturn</de>
+				<de>Zaturno</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Geiz sei geil, so die Botschaft dieser Werbung.</de>
+				<de>Reiz macht geil, so die Botschaft dieser Werbung.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="58.8" min_image="58" target_group="0" />
+			<conditions min_audience="15" min_image="20" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="4" duration="2" fix_price="0" profit="450" penalty="600" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="94b9ee6d-f943-4a13-b86d-d5097b507333" creator="1234">
@@ -12548,7 +12548,7 @@ Aber nur mit Ulbricht Umzüge!</de>
 				<de>Lecker Zimtstäbchen mit Reizhustenallergie. Noch nie war so trocken...so lecker.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="0" min_image="0" target_group="1" />
+			<conditions min_audience="5" min_image="10" target_group="1" />
 			<data infomercial="0" quality="0" repetitions="4" duration="5" fix_price="0" profit="270" penalty="300" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 	</allads>

@@ -6,11 +6,21 @@
 
 
 Type TPlayerCollection extends TPlayerBaseCollection
+	Global _registeredEvents:int = False
+
+
+	Method New()
+		if not _registeredEvents
+			EventManager.registerListenerFunction("figure.onEnterRoom", OnFigureEnterRoom)
+			_registeredEvents = True
+		endif
+	End Method
+
+
 	'override - create a PlayerCollection instead of PlayerBaseCollection
 	Function GetInstance:TPlayerCollection()
 		if not _instance
 			_instance = new TPlayerCollection
-
 		'if the instance was created, but was a "base" one, create
 		'a new and take over the values
 		'==== ATTENTION =====
@@ -29,6 +39,15 @@ Type TPlayerCollection extends TPlayerBaseCollection
 
 	Method Get:TPlayer(id:Int=-1)
 		return TPlayer(Super.Get(id))
+	End Method
+
+
+	Method GetByFigure:TPlayer(figure:TFigure)
+		'check all players if this was their figure
+		For local player:TPlayer = EachIn players
+			if player.figure = figure then return player
+		Next
+		return null
 	End Method
 
 
@@ -52,6 +71,28 @@ Type TPlayerCollection extends TPlayerBaseCollection
 	Method IsLocalPlayer:Int(number:Int)
 		Return IsLocalPlayer(number)
 	End Method
+
+
+	'=== EVENTS ===
+	'events
+	Function OnFigureEnterRoom:int(triggerEvent:TEventBase)
+		local figure:TFigure = TFigure(triggerEvent.GetSender())
+		if not figure or figure.playerID = 0 then return False
+
+		'alternatively search by "playerID" - but maybe we delete that
+		'property somewhen
+		local player:TPlayer = GetInstance().GetByFigure(figure)
+		if not player then return False
+
+		'send out event: player entered room
+		local door:object = triggerEvent.GetData().Get("door")
+		local room:TRoom = TRoom(triggerEvent.GetData().Get("room"))
+		if not room then return False
+		EventManager.triggerEvent( TEventSimple.Create("player.onEnterRoom", new TData.Add("door", door), player, room) )
+		
+	 	'inform player AI that figure entered a room
+	 	If player.isAI() Then player.PlayerKI.CallOnEnterRoom(room.id)
+	End Function
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -86,8 +127,9 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	End Method
 
 
+	'returns whether a player contains a player AI
 	Method IsAI:Int() {_exposeToLua}
-		Return playerKI and GetFigure().IsAI()
+		Return playerKI<>null
 	End Method
 
 

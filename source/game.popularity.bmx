@@ -53,6 +53,11 @@ Type TPopularityManager
 	End Method
 
 
+	Method RemovePopularity(popularity:TPopularity)
+		Popularities.Remove(popularity)
+	End Method
+
+
 	Method AddPopularity(popularity:TPopularity)
 		Popularities.addLast(popularity)
 	End Method

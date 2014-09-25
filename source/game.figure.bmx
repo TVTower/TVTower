@@ -181,10 +181,18 @@ Type TFigure extends TFigureBase
 	End Method
 
 
+
 	Method IsAI:Int()
-		If id > 4 Then Return True
-		If ControlledByID = 0 or (GetPlayerCollection().Get(playerID) and GetPlayerCollection().Get(playerID).playerKI) Then Return True
+		'controlled by nobody - or AI player 
+		If ControlledByID = 0 or IsAIPlayer() Then Return True
 		Return False
+	End Method
+
+
+	Method IsAIPlayer:Int()
+		if playerID <= 0 then return False
+		'checks if the figure is connected to an ai player
+		return GetPlayerCollection().Get(playerID) and GetPlayerCollection().Get(playerID).IsAI()
 	End Method
 
 
@@ -447,7 +455,7 @@ endrem
 
 
 	 	'inform AI that we reached a room
-	 	If playerID > 0 And isAI()
+	 	If isAIPlayer()
 			If room
 				GetPlayer(playerID).PlayerKI.CallOnReachRoom(room.id)
 			Else
@@ -505,7 +513,7 @@ endrem
 		'room for now
 		if room.IsBlocked()
 			'inform player AI
-			If isAI() then GetPlayer(playerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_NOTALLOWED)
+			If isAIPlayer() then GetPlayer(playerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_NOTALLOWED)
 			'tooltip only for active user
 			If isActivePlayer() then GetBuilding().CreateRoomBlockedTooltip(door, room)
 			return FALSE
@@ -517,7 +525,7 @@ endrem
 				'only player-figures need such handling (events etc.)
 				If playerID and not playerID = room.owner
 					'inform player AI
-					If isAI() then GetPlayer(playerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_INUSE)
+					If isAIPlayer() then GetPlayer(playerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_INUSE)
 					'tooltip only for active user
 					If isActivePlayer() then GetBuilding().CreateRoomUsedTooltip(door, room)
 					return FALSE
@@ -550,17 +558,9 @@ endrem
 
 	Method FinishEnterRoom:Int(room:TRoomBase, door:TRoomDoorBase)
 		'=== INFORM OTHERS ===
-		'inform figure that it now entered the room
+		'inform that figure now enters the room
+		'(eg. for players informing the ai)
 		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterRoom", new TData.Add("room", room).Add("door", door) , self, room) )
-		'maybe move this lines to TPlayer
-		If playerID > 0
-			EventManager.triggerEvent( TEventSimple.Create("player.onEnterRoom", new TData.Add("door", door), GetPlayerCollection().Get(playerID), room) )
-		EndIf
-		
-	 	'inform player AI that figure entered a room
-	 	If playerID > 0 And isAI()
-			GetPlayer(playerID).PlayerKI.CallOnEnterRoom(room.id)
-		EndIf
 
 		'=== SET IN ROOM ===
 		SetInRoom(room)
@@ -624,7 +624,7 @@ endrem
 		EndIf
 
 		'inform player AI
-		If GetPlayer(playerID) And isAI()
+		If isAIPlayer()
 			local roomID:int = 0
 			if room then roomID = room.id
 			GetPlayer(playerID).PlayerKI.CallOnLeaveRoom(roomID)
@@ -793,11 +793,6 @@ endrem
 		EventManager.triggerEvent( TEventSimple.Create("figure.onChangeTarget", self ) )
 
 		return TRUE
-	End Method
-
-
-	Method IsGameLeader:Int()
-		Return (id = GetPlayerCollection().playerID Or (IsAI() And GetPlayerCollection().playerID = Game.isGameLeader()))
 	End Method
 
 
