@@ -294,8 +294,8 @@ Type TDatabaseLoader
 			else
 				'30 is the factor the old v2-values got multiplied with
 				'after normalizing - so do this to make them comparable
-				profit	= 30 * xml.FindValueInt(nodeChild,"profit", 0)
-				penalty	= 30 * xml.FindValueInt(nodeChild,"penalty", 0)
+				profit	= 30 * xml.FindValueFloat(nodeChild,"profit", 0)
+				penalty	= 30 * xml.FindValueFloat(nodeChild,"penalty", 0)
 			endif
 			daystofinish= xml.FindValueInt(nodeChild,"duration", 1)
 
@@ -531,7 +531,7 @@ Type TDatabaseLoader
 		local data:TData = new TData
 		xml.LoadValuesToData(nodeData, data, [..
 			"infomercial", "quality", "repetitions", ..
-			"fixed_price", "duration", "profit", "penalty", ..
+			"fix_price", "duration", "profit", "penalty", ..
 			"pro_pressure_groups", "contra_pressure_groups" ..
 		])
 			
@@ -542,12 +542,12 @@ Type TDatabaseLoader
 		adContract.quality = 0.5
 
 		adContract.spotCount = data.GetInt("repetitions", adContract.spotcount)
-		adContract.fixedPrice = data.GetInt("fixed_price", adContract.fixedPrice)
+		adContract.fixedPrice = data.GetInt("fix_price", adContract.fixedPrice)
 		adContract.daysToFinish = data.GetInt("duration", adContract.daysToFinish)
 		adContract.proPressureGroups = data.GetInt("pro_pressure_groups", adContract.proPressureGroups)
 		adContract.contraPressureGroups = data.GetInt("contra_pressure_groups", adContract.contraPressureGroups)
-		adContract.profitBase = data.GetInt("profit", adContract.profitBase)
-		adContract.penaltyBase = data.GetInt("penalty", adContract.penaltyBase)
+		adContract.profitBase = data.GetFloat("profit", adContract.profitBase)
+		adContract.penaltyBase = data.GetFloat("penalty", adContract.penaltyBase)
 	
 
 		'=== CONDITIONS ===

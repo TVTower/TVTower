@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvgdb>
+	<version value="3" />
+	<allads>
+		<ad id="ronny-ad-bundi-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Kambalott</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Lecker Kompott wie von Omi. Der einzig wahre Nachtisch - mit Kernbeiss-Garantie.</de>
+				<en></en>
+			</description>
+			<conditions min_audience="1.5" min_image="1" target_group="0" />
+			<data infomercial="1" quality="5" repetitions="3" duration="3" fix_price="0" profit="15" penalty="18" pro_pressure_groups="0" contra_pressure_groups="0" />
+		</ad>
+		<ad id="ronny-ad-brucey-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Brucey</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Frauen schwören auf den Nerd in Dir. Lass sie Ihn riechen!
+Brucey - herber Duft für Männer vom Fach.</de>
+				<en></en>
+			</description>
+			<conditions min_audience="0" min_image="3" target_group="0" />
+			<data infomercial="1" quality="15" repetitions="4" duration="4" fix_price="1" profit="3500" penalty="7050" pro_pressure_groups="0" contra_pressure_groups="0" />
+		</ad>
+	</allads>
+</tvgdb>

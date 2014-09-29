@@ -36,13 +36,13 @@ Rem
 EndRem
 SuperStrict
 Import brl.Map
+Import brl.Reflection
 'Import brl.retro
 ?Threaded
 Import Brl.threads
 ?
 Import "base.util.logger.bmx"
 Import "base.util.data.bmx"
-Import "base.util.helper.bmx"
 Import "base.util.time.bmx"
 
 
@@ -90,6 +90,17 @@ Type TEventManager
 	End Method
 
 
+	Method GetRegisteredListenersCount:int()
+		local count:int = 0
+		For local list:TList = EachIn _listeners.Values()
+			For local listener:TEventListenerBase = EachIn list
+				count :+1
+			Next
+		Next
+		return count
+	End Method
+
+
 	'add a new listener to a trigger
 	Method registerListener:TLink(trigger:String, eventListener:TEventListenerBase)
 		trigger = Lower(trigger)
@@ -126,8 +137,8 @@ Type TEventManager
 		For Local list:TList = EachIn _listeners
 			For Local listener:TEventListenerBase = EachIn list
 				'if one of both limits hits, remove that listener
-				If THelper.ObjectsAreEqual(listener._limitToSender, limitSender) Or..
-				   THelper.ObjectsAreEqual(listener._limitToReceiver, limitReceiver)
+				If ObjectsAreEqual(listener._limitToSender, limitSender) Or..
+				   ObjectsAreEqual(listener._limitToReceiver, limitReceiver)
 					list.remove(listener)
 				EndIf
 			Next
@@ -145,8 +156,8 @@ Type TEventManager
 			Local triggerListeners:TList = TList(_listeners.ValueForKey( Lower(trigger) ))
 			For Local listener:TEventListenerBase = EachIn triggerListeners
 				'if one of both limits hits, remove that listener
-				If THelper.ObjectsAreEqual(listener._limitToSender, limitSender) Or..
-				   THelper.ObjectsAreEqual(listener._limitToReceiver, limitReceiver)
+				If ObjectsAreEqual(listener._limitToSender, limitSender) Or..
+				   ObjectsAreEqual(listener._limitToReceiver, limitReceiver)
 					triggerListeners.remove(listener)
 				EndIf
 			Next
@@ -225,6 +236,35 @@ Type TEventManager
 			EndIf
 		EndIf
 	End Method
+
+
+	'check whether a checkedObject equals to a limitObject
+	'1) is the same object
+	'2) is of the same type
+	'3) is extended from same type
+	Function ObjectsAreEqual:int(checkedObject:object, limit:object)
+		'one of both is empty
+		if not checkedObject then return FALSE
+		if not limit then return FALSE
+		'same object
+		if checkedObject = limit then return TRUE
+
+		'check if both are strings
+		if string(limit) and string(checkedObject)
+			return string(limit) = string(checkedObject)
+		endif
+
+		'check if classname / type is the same (type-name given as limit )
+		if string(limit)<>null
+			local typeId:TTypeId = TTypeId.ForName(string(limit))
+			'if we haven't got a valid classname
+			if not typeId then return FALSE
+			'if checked object is same type or does extend from that type
+			if TTypeId.ForObject(checkedObject).ExtendsType(typeId) then return TRUE
+		endif
+
+		return FALSE
+	End Function
 End Type
 
 
@@ -253,7 +293,7 @@ Type TEventListenerBase
 			'we want a sender but got none - ignore (albeit objects are NOT equal)
 			If Not triggerEvent._sender Then Return True
 
-			If Not THelper.ObjectsAreEqual(triggerEvent._sender, _limitToSender) Then Return True
+			If Not TEventManager.ObjectsAreEqual(triggerEvent._sender, _limitToSender) Then Return True
 		EndIf
 
 		'Check limit for "receiver" - but only if receiver is set
@@ -264,7 +304,7 @@ Type TEventListenerBase
 			'we want a receiver but got none - ignore (albeit objects are NOT equal)
 			If Not triggerEvent._receiver Then Return True
 
-			If Not THelper.ObjectsAreEqual(triggerEvent._receiver, _limitToReceiver) Then Return True
+			If Not TEventManager.ObjectsAreEqual(triggerEvent._receiver, _limitToReceiver) Then Return True
 		EndIf
 
 		Return False

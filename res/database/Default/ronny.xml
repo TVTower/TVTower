@@ -66,19 +66,4 @@
 			</episode>
 		</news>
 	</allnews>
-	<allads>
-		<ad>
-			<title>Kambalott</title>
-			<description>Lecker Kompott wie von Omi. Der einzig wahre Nachtisch - mit Kernbeiss-Garantie.</description>
-			<data repetitions="3" profit="15" penalty="12" duration="3" />
-			<created_by name="Ronny" userID="5578" />
-		</ad>
-		<ad>
-			<title>Brucey</title>
-			<description>Frauen schwören auf den Nerd in Dir. Lass sie Ihn riechen!
-Brucey - herber Duft für Männer vom Fach.</description>
-			<data repetitions="4" profit="17" penalty="15" duration="4" />
-			<created_by name="Ronny" userID="5578" />
-		</ad>
-	</allads>
 </tvgdb>

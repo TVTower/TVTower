@@ -3,6 +3,7 @@ Import "base.framework.entity.bmx"
 Import "base.gfx.bitmapfont.bmx"
 Import "base.gfx.renderconfig.bmx"
 Import "base.util.event.bmx"
+Import "base.util.input.bmx"
 
 
 Type TToastMessageCollection extends TStaticEntity

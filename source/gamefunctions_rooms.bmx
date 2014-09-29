@@ -4492,7 +4492,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Global contractsPerLine:int	= 4
 	Global contractsNormalAmount:int = 12
 	Global contractsCheapAmount:int	= 4
-	Global contractCheapAudienceMaximum:float = 0.05 '5% market share
+	'1% market share -> 1mio reach means 10.000 people!
+	Global contractCheapAudienceMaximum:float = 0.01
 
 	Global _instance:RoomHandler_AdAgency
 	Global _initDone:int = FALSE
@@ -5049,10 +5050,10 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'TODO: calculate average "market share" reached
 		'TODO 2: calculate average image
 		local normalListFilter:TAdContractBaseFilter = new TAdContractbaseFilter
-		normalListFilter.SetAudience(0.01, 0.15)
+		normalListFilter.SetAudience(0.001, 0.075)
 		normalListFilter.SetImage(0.0, 0.05) 'till 5 % image
 		local normalListFilter2:TAdContractBaseFilter = new TAdContractbaseFilter
-		normalListFilter2.SetAudience(0.10, -1)
+		normalListFilter2.SetAudience(0.075, -1)
 		normalListFilter2.SetImage(0.0, 0.05) 'till 5 % image
 
 		for local j:int = 0 to lists.length-1

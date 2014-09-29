@@ -80,6 +80,11 @@ Type TMouseManager
 
 	'amount of pixels moved (0=zero, -upwards, +downwards)
 	Field scrollWheelMoved:int = 0
+	'position at the screen when a button was "HIT"
+	Field _hitPosition:TVec2D[4]
+	'position at the screen when a button was "CLICKED"
+	'(first click in a series)
+	Field _clickPosition:TVec2D[4]
 	'current status of the buttons
 	Field _keyStatus:Int[] = [0,0,0,0]
 	'time since when the button is pressed
@@ -109,6 +114,8 @@ Type TMouseManager
 		_keyStatus[key] = KEY_STATE_NORMAL
 		_keyHitCount[key] = 0
 		_keyClickCount[key] = 0
+		_hitPosition[key] = null
+		_clickPosition[key] = null
 		ResetClicked(key)
 		Return KEY_STATE_UP
 	End Method
@@ -202,6 +209,16 @@ Type TMouseManager
 	End Method
 
 
+	Method GetClickPosition:TVec2D(key:Int)
+		return _clickPosition[key]
+	End Method
+
+
+	Method GetHitPosition:TVec2D(key:Int)
+		return _hitPosition[key]
+	End Method
+
+
 	'returns how many milliseconds a button is down
 	Method GetDownTime:Int(key:Int)
 		If _keyDownTime[key] > 0
@@ -279,13 +296,21 @@ Type TMouseManager
 		'long enough for another hit)
 		'-> if the hit evolved into a click, this should have been
 		'handled already after the last call of UpdateKey()
-		if _keyHitTime[i] = 0 then _keyHitCount[i] = 0
-
+		if _keyHitTime[i] = 0
+			_keyHitCount[i] = 0
+			'reset clickposition
+			_clickPosition[i] = null
+		endif
+		
 		'set to non-clicked - for "isClicked()"
 		_keyClicked[i] = false
 
 		If _keyStatus[i] = KEY_STATE_NORMAL
-			If MouseHit(i) then _keyStatus[i] = KEY_STATE_HIT
+			If MouseHit(i)
+				_keyStatus[i] = KEY_STATE_HIT
+				'also store the position of this hit
+				_hitPosition[i] = new TVec2D.Init(x, y)
+			EndIf
 		ElseIf _keyStatus[i] = KEY_STATE_HIT
 			If MouseDown(i) Then _keyStatus[i] = KEY_STATE_DOWN Else _keyStatus[i] = KEY_STATE_UP
 		ElseIf _keyStatus[i] = KEY_STATE_DOWN
@@ -301,6 +326,11 @@ Type TMouseManager
 		If _keyStatus[i] = KEY_STATE_HIT
 			'increase hit count of this button
 			_keyHitCount[i] :+1
+
+			'store the position of the first click
+			if _clickPosition[i] = null
+				_clickPosition[i] = new TVec2D.Init(x,y)
+			endif
 
 			'refresh hit time - so we wait for more hits
 			'-> time gone -> "click" happened

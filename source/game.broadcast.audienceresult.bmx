@@ -16,8 +16,6 @@ Type TAudienceResultBase
 	Field Title:String
 	'was it an outage (programme was not sent)?
 	Field broadcastOutage:Int = False
-	'previous audience result (so advertisement sees who watched programme)
-	Field previousAudienceResult:TAudienceResultBase = Null
 	'Die Zahl der Zuschauer die erreicht wurden.
 	'Sozusagen das Ergenis das zählt und angezeigt wird.
 	Field Audience:TAudience

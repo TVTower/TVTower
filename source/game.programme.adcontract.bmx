@@ -15,6 +15,8 @@ Import "game.world.worldtime.bmx"
 'to fetch maximum audience
 Import "game.stationmap.bmx"
 Import "game.broadcastmaterial.base.bmx"
+'to access gamerules (definitions)
+Import "game.gamerules.bmx"
 
 
 
@@ -185,7 +187,7 @@ Type TAdContractBase extends TGameObject {_exposeToLua}
 	'block length
 	Field blocks:int = 1
 	'target group of the spot
-	Field limitedToTargetGroup:Int
+	Field limitedToTargetGroup:Int = -1
 	'is the ad broadcasting limit to a specific genre?
 	'eg. "horror"
 	Field limitedToGenre:Int = -1
@@ -402,10 +404,9 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 		'calculate
 		result = GetProfit() / GetSpotCount()
-		result :* 0.001 'way down for reasonable prices
-		'so currently we end up with the price equal to
-		'the price of a successful contract / GetSpotCount()
-
+		'cut down to the price of 1 spot
+		result :* 0.001
+	
 		'now cut this to the given infomercialCutFactor
 		result :* TAdContractBase.infomercialCutFactor
 		result :* TAdContractBase.infomercialCutFactorDevModifier
@@ -528,6 +529,21 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Function GetCPM:Double(baseCPM:Double, maxCPM:Double, influence:float)
+		'no money - ignore influence
+		if baseCPM = 0 then return 0
+		'lower cpm means it should not get influenced either
+		if baseCPM < maxCPM then return baseCPM
+
+		'at "strength" the logisticalInfluence_Euler changes growth direction
+		'so we have to scale back the percentage
+		local logisticInfluence:Float =	THelper.LogisticalInfluence_Euler(influence, 3)
+
+		'at least return maxCPM
+		return Max(maxCPM, maxCPM + (baseCPM - maxCPM)*(1.0-logisticInfluence))
+	End Function
+
+
 	'calculate prices (profits, penalties...)
 	Method CalculatePrices:Int(baseValue:Float=0, playerID:Int=-1) {_exposeToLua}
 		'=== FIXED PRICE ===
@@ -540,27 +556,20 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 
 		'=== DYNAMIC PRICE ===
-		'maximum value for
-		'spotCount = 1
-		'baseValue/profit/penalty = 100%,
-		'minAudience = 100%
-		'maxAudience = 80 000 000 (whole Germany)
-		'baseCPM * baseValue * spotcount * minAudienceInNumbers
-		'baseCPM * 1.0       * 1         * (80 000 000 * 1.0)
-		'= baseCPM * 80 000 000
-
 		Local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG", new TData.Init()))
-		'baseCPM is a balancing factor!
 		Local balancingFactor:float = devConfig.GetFloat("DEV_AD_BALANCING_FACTOR", 1.0)
-		Local minCPM:float = devConfig.GetFloat("DEV_AD_MINIMUM_CPM", 7.5)
 		Local limitedToGenreMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_GENRE_MULTIPLIER", 2.0)
-		Local limitedToTargetGroupMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_TARGETGROUP_MULTIPLIER", 2.0)
+		Local limitedToTargetGroupMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_TARGETGROUP_MULTIPLIER", 3.0)
+
+		local maxCPM:float = GameRules.maxAdContractPricePerSpot / (GetStationMapCollection().GetPopulation()/1000)
 		Local price:Float
 
-		'1) calculate a CPM-Value: a value paid "per 1000 viewer"
-
-		'baseValue is "baseCPM" here, a value paid for 1000 viewers
-		price = baseValue * GetSpotCount()
+		'calculate a price/CPM using the "getCPM"-function
+		price = GetCPM(baseValue, maxCPM, getRawMinAudience(playerID) / GetStationMapCollection().GetPopulation())
+		'multiply by amount of "1000 viewers"-blocks
+		price :* ceil(getRawMinAudience(playerID)/1000)
+		'value cannot be higher than "maxAdContractPricePerSpot"
+		price = Min(GameRules.maxAdContractPricePerSpot, price )
 		'adjust by a balancing factor
 		price :* balancingFactor
 
@@ -569,14 +578,12 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'limiting to specific genres change the price too
 		If GetLimitedToGenre() > 0 Then price :* limitedToGenreMultiplier
 
-		'2) calculate final value by multiplying with required audience 
-		'To avoid "dumping prices" we do at least multiply with "minCPM"
-		'or higher
-		price :* Max(minCPM, getRawMinAudience(playerID)/1000)
+		'multiply price by spotcount to get a "total price"
+		price :* GetSpotCount()
 
-		'print GetTitle()+": "+GetMinAudiencePercentage() +" -- price " +price +" ---raw audience "+getRawMinAudience(playerID)
+		print GetTitle()+": "+GetMinAudiencePercentage() +" -- price " +price +" ---raw audience "+getRawMinAudience(playerID)
 
-		'3) return "beautiful" prices
+		'return "beautiful" prices
 		Return TFunctions.RoundToBeautifulValue(price)
 	End Method
 
@@ -593,11 +600,13 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 			useAudience = GetStationMapCollection().GetMap(playerID).GetReach()
 		endif
 
+		Return useAudience * GetMinAudiencePercentage()
+
 		'no more than 50 percent of whole germany will watch TV at the
 		'same time, so convert "whole germany watches"-based audience
 		'percentage to a useable one:
 		'cut it by 0.5
-		Return Floor(0.5 * useAudience * GetMinAudiencePercentage())
+		'Return Floor(0.5 * useAudience * GetMinAudiencePercentage())
 	End Method
 
 
@@ -664,6 +673,11 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	Method GetLimitedToTargetGroup:Int() {_exposeToLua}
+		'with no required audience, we cannot limit to target groups
+		'except hmm ... we want that at least 1 of the target group
+		'is watching 
+		if GetMinAudience() = 0 then return 0
+
 		Return base.limitedToTargetGroup
 	End Method
 
@@ -681,6 +695,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	Method GetLimitedToGenre:Int() {_exposeToLua}
+		return 3
 		Return base.limitedToGenre
 	End Method
 

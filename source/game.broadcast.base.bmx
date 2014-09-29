@@ -28,15 +28,10 @@ Type TBroadcastManager
 
 	Field audienceResults:TAudienceResult[]
 
-	'the current broadcast of each player
-	Field currentBroadcastMaterial:TBroadcastMaterial[]
-
-	'Field currentBroadcast:TBroadcast = Null
-	'Field currentProgammeBroadcast:TBroadcast = Null
-	'Field currentNewsShowBroadcast:TBroadcast = Null
-
-	'Field lastProgrammeBroadcast:TBroadcast = Null
-	'Field lastNewsShowBroadcast:TBroadcast = Null
+	'the current broadcast of each player, split by type
+	Field currentAdvertisementBroadcastMaterial:TBroadcastMaterial[]
+	Field currentProgrammeBroadcastMaterial:TBroadcastMaterial[]
+	Field currentNewsShowBroadcastMaterial:TBroadcastMaterial[]
 
 	'Für die Manipulationen von außen... funktioniert noch nicht
 	Field PotentialAudienceManipulations:TMap = CreateMap()
@@ -77,10 +72,13 @@ Type TBroadcastManager
 		Return Sequence.GetCurrentBroadcast()
 	End Method
 
-	
+
 	'Führt die Berechnung für die Einschaltquoten der Sendeblöcke durch
 	Method BroadcastProgramme(day:Int=-1, hour:Int, recompute:Int = 0, bc:TBroadcast = null)
 		BroadcastCommon(hour, TBroadcastMaterial.TYPE_PROGRAMME, recompute, bc)
+
+		'assign current programme broadcastmaterial
+		currentProgrammeBroadcastMaterial = GetCurrentBroadcast().PlayersBroadcasts
 	End Method
 
 
@@ -95,28 +93,91 @@ Type TBroadcastManager
 	End Method
 
 
-	Method GetCurrentBroadcastMaterial:TBroadcastMaterial(playerID:int)
-		if playerID <= 0 or playerID > currentBroadcastMaterial.length then return Null
+	Method GetCurrentProgrammeBroadcastMaterial:TBroadcastMaterial(playerID:int)
+		if playerID <= 0 or playerID > currentProgrammeBroadcastMaterial.length then return Null
 
-		return currentBroadcastMaterial[playerID-1]
+		return currentProgrammeBroadcastMaterial[playerID-1]
 	End Method
 
 
-	Method SetCurrentBroadcastMaterial:int(playerID:int, material:TBroadcastMaterial)
+	Method SetCurrentProgrammeBroadcastMaterial:int(playerID:int, material:TBroadcastMaterial)
 		if playerID <= 0 then return False
 
-		if playerID > currentBroadcastMaterial.length then currentBroadcastMaterial = currentBroadcastMaterial[..playerID]
-		currentBroadcastMaterial[playerID-1] = material
+		if playerID > currentProgrammeBroadcastMaterial.length then currentProgrammeBroadcastMaterial = currentProgrammeBroadcastMaterial[..playerID]
+		currentProgrammeBroadcastMaterial[playerID-1] = material
+		return True
+	End Method	
+
+
+	Method GetCurrentNewsShowBroadcastMaterial:TBroadcastMaterial(playerID:int)
+		if playerID <= 0 or playerID > currentNewsShowBroadcastMaterial.length then return Null
+
+		return currentNewsShowBroadcastMaterial[playerID-1]
+	End Method
+
+
+	Method SetCurrentNewsShowBroadcastMaterial:int(playerID:int, material:TBroadcastMaterial)
+		if playerID <= 0 then return False
+
+		if playerID > currentNewsShowBroadcastMaterial.length then currentNewsShowBroadcastMaterial = currentNewsShowBroadcastMaterial[..playerID]
+		currentNewsShowBroadcastMaterial[playerID-1] = material
+		return True
+	End Method	
+
+
+	Method GetCurrentAdvertisementBroadcastMaterial:TBroadcastMaterial(playerID:int)
+		if playerID <= 0 or playerID > currentAdvertisementBroadcastMaterial.length then return Null
+
+		return currentAdvertisementBroadcastMaterial[playerID-1]
+	End Method
+
+
+	Method SetCurrentAdvertisementBroadcastMaterial:int(playerID:int, material:TBroadcastMaterial)
+		if playerID <= 0 then return False
+
+		if playerID > currentAdvertisementBroadcastMaterial.length then currentAdvertisementBroadcastMaterial = currentAdvertisementBroadcastMaterial[..playerID]
+		currentAdvertisementBroadcastMaterial[playerID-1] = material
+		return True
+	End Method	
+
+
+	Method GetCurrentBroadcastMaterial:TBroadcastMaterial[](broadcastedAsType:int)
+		Select broadcastedAsType
+			case TBroadcastMaterial.TYPE_NEWSSHOW
+				return currentNewsShowBroadcastMaterial
+			case TBroadcastMaterial.TYPE_ADVERTISEMENT
+				return currentAdvertisementBroadcastMaterial
+			default
+				return currentProgrammeBroadcastMaterial
+		End Select
+	End Method
+
+
+	Method SetCurrentBroadcastMaterial:int(playerID:int, material:TBroadcastMaterial, broadcastedAsType:int)
+		if playerID <= 0 then return False
+
+		Select broadcastedAsType
+			case TBroadcastMaterial.TYPE_NEWSSHOW
+				return SetCurrentNewsShowBroadcastMaterial(playerID, material)
+			case TBroadcastMaterial.TYPE_ADVERTISEMENT
+				return SetCurrentAdvertisementBroadcastMaterial(playerID, material)
+			default
+				return SetCurrentProgrammeBroadcastMaterial(playerID, material)
+		End Select
+
 		return True
 	End Method	
 
 	'===== Manipulationen =====
 
 	'sets the current broadcast as malfunction
-	Method SetBroadcastMalfunction:int(playerID:int)
+	Method SetBroadcastMalfunction:int(playerID:int, broadcastType:int = -1)
 		'adjust what is broadcasted now
-		SetCurrentBroadcastMaterial(playerID, null)
-		GetCurrentBroadcast().PlayersBroadcasts = currentBroadcastMaterial
+		'to do this we need to know what kind of broadcast this was
+		if broadcastType = -1 then broadcastType = TBroadcastMaterial.TYPE_PROGRAMME
+		SetCurrentBroadcastMaterial(playerID, null, broadcastType)
+
+		GetCurrentBroadcast().PlayersBroadcasts = GetCurrentBroadcastMaterial(broadcastType)
 		'recalculate the players audience
 		ReComputePlayerAudience(playerID)
 
@@ -185,8 +246,14 @@ Type TBroadcastManager
 		Sequence.SetCurrentBroadcast(bc)
 
 		bc.AscertainPlayerMarkets()							'Aktuelle Märkte (um die konkuriert wird) festlegen
-		bc.PlayersBroadcasts = currentBroadcastMaterial		'Die Programmwahl der Spieler "einloggen"
-		'even if currentBroadcastMaterial is empty - fill
+
+		'Die Programmwahl der Spieler "einloggen"
+		if broadcastType = TBroadcastMaterial.TYPE_NEWSSHOW
+			bc.PlayersBroadcasts = currentNewsShowBroadcastMaterial
+		else
+			bc.PlayersBroadcasts = currentProgrammeBroadcastMaterial
+		endif
+		'even if currentBroadcastMaterialdd is empty - fill
 		'playersBroadcasts to a length of 4
 		'-> access to playersBroadcast[0-3] is valid
 		bc.PlayersBroadcasts = bc.PlayersBroadcasts[..4]

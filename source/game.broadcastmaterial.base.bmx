@@ -1,4 +1,5 @@
-﻿Import "game.gameobject.bmx"
+﻿SuperStrict
+Import "game.gameobject.bmx"
 Import "game.broadcast.genredefinition.base.bmx"
 Import "game.broadcast.audienceattraction.bmx"
 Import "game.broadcast.audienceresult.bmx"

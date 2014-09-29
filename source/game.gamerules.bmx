@@ -21,6 +21,8 @@ Type TGameRules {_exposeToLua}
 
 	'x coordinate figures are when "offscreen" (left the building)
 	Field offscreenX:int = -200
+	'maximum price (profit/penalty) for a single adspot
+	Field maxAdContractPricePerSpot:int = 1000000
 
 	'does the boss has to get visited daily?
 	Field dailyBossVisit:int = True

@@ -771,7 +771,7 @@ Type TGUIListItem Extends TGUIobject
 	End Method
 
 	'override default
-	Method onClick:Int(triggerEvent:TEventBase)
+	Method onHit:Int(triggerEvent:TEventBase)
 		Local data:TData = triggerEvent.GetData()
 		If Not data Then Return False
 
@@ -782,9 +782,14 @@ Type TGUIListItem Extends TGUIobject
 		triggerEvent.SetAccepted(True)
 
 		If isDragged()
-			drop(new TVec2D.Init(data.getInt("x",-1), data.getInt("y",-1)))
+			'instead of using auto-coordinates, we use the coord of the
+			'mouseposition when the "hit" started
+			'drop(new TVec2D.Init(data.getInt("x",-1), data.getInt("y",-1)))
+			drop(MouseManager.GetClickPosition(1))
 		Else
-			drag(new TVec2D.Init(data.getInt("x",-1), data.getInt("y",-1)))
+			'same for dragging
+			'drag(new TVec2D.Init(data.getInt("x",-1), data.getInt("y",-1)))
+			drag(MouseManager.GetClickPosition(1))
 		EndIf
 	End Method
 

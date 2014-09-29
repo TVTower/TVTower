@@ -43,33 +43,53 @@ Import "base.util.math.bmx"
 
 'collection of useful functions
 Type THelper
-	'check whether a checkedObject equals to a limitObject
-	'1) is the same object
-	'2) is of the same type
-	'3) is extended from same type
-	Function ObjectsAreEqual:int(checkedObject:object, limit:object)
-		'one of both is empty
-		if not checkedObject then return FALSE
-		if not limit then return FALSE
-		'same object
-		if checkedObject = limit then return TRUE
+	'the logistic function is a fast-to-slow-growing function
+	'higher values are more likely returning nearly the maximum value
+	'http://de.wikipedia.org/wiki/Logistische_Funktion
+	'returns a value between 0-maximumValue subtracted by "fZero"
+	Function logisticFunction:Float(value:Float, maximumValue:Float, proportionalityFactor:Float = 1.0, fZero:Float=0.5)
+		Rem
+			formula:
+			f(t) =                 1
+					G * ------------------------------
+						1 + e^(-k*G*t) * (  G        )
+										 (----   - 1 )
+										 (f(0)       )
 
-		'check if both are strings
-		if string(limit) and string(checkedObject)
-			return string(limit) = string(checkedObject)
-		endif
+			e = euler value ("exp" in coding langugaes)
+			G = maximumValue
+			k = proportionalityFactor
+			t = value
+			f(0) = fZero
+		End Rem
 
-		'check if classname / type is the same (type-name given as limit )
-		if string(limit)<>null
-			local typeId:TTypeId = TTypeId.ForName(string(limit))
-			'if we haven't got a valid classname
-			if not typeId then return FALSE
-			'if checked object is same type or does extend from that type
-			if TTypeId.ForObject(checkedObject).ExtendsType(typeId) then return TRUE
-		endif
-
-		return FALSE
+		return maximumValue * 1.0/(1.0 + exp(-proportionalityFactor*maximumValue*value) * (maximumValue/fZero - 1))
 	End Function
+
+
+	'returns a value between 0-1.0 for a given percentage value (0-1.0)
+	Function LogisticalInfluence:Float(percentage:Float, proportionalityFactor:Float= 0.11)
+		return 1.0 - logisticFunction(percentage*100, 1.0, proportionalityFactor, 0.001)
+	End function
+	
+
+	Function LogisticalInfluence_Tangens:Float(percentage:Float, strength:Float=1.0, addRandom:int=True)
+		'sinus is there for some "randomness"
+		'2.5 = "base strength" so 100% will reach "1.0"
+		return Min(1.0, Max(0.0, tanh(percentage*(2.5*strength)) + addRandom * abs(0.03*sin(95*percentage))))
+	End Function
+	
+
+	'higher strength values have a stronger decrease per percentage
+	'higher strength can lead to Value(0.5) > Value(0.7)
+	'higher percentages return a higher influence (in 100% = out ~100%)
+	'value growth changes at bei 1/strength!!
+	'-> we cut "used" percentage" so 100% = 1/strength
+	Function LogisticalInfluence_Euler:Float(percentage:Float, strength:Float=1.0, addRandom:int=True)
+		'sinus is there for some "randomness"
+		return 1 - ( exp(-strength * percentage) + addRandom * abs(0.01 * sin(155*percentage)) )
+	End Function
+
 
 
 	'returns whether the mouse is within the given rectangle coords

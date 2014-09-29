@@ -19,11 +19,22 @@
 			     Default: 130
 				<DEV_ELEVATOR_SPEED value="140" />
 			-->
+
 			<DEV_DAILY_BOSS_VISIT value="0" />
 
-			<DEV_AD_FACTOR1 value="5.0" />
-			<DEV_AD_MINIMUM_CPM value="7.5" />
-			<DEV_AD_LIMITED_GENRE_MULTIPLIER value="2.0" />
+			<!-- profit/penalty get multiplied with this value if there
+			     is a limiting targetgroup.
+			     Default: 3.0
+				<DEV_AD_LIMITED_TARGETGROUP_MULTIPLIER value="3.0" />
+			-->
+			<!-- profit/penalty get multiplied with this value if there
+			     is a limiting genre defined.
+			     Default: 2.0
+				<DEV_AD_LIMITED_GENRE_MULTIPLIER value="2.0" />
+			-->
+
+			<!-- general balancing factor -->
+			<DEV_AD_BALANCING_FACTOR value="1.0" />
 
 			<!-- TRUE/1   FALSE/0 -->
 			<DEV_ROUND_TO_BEAUTIFUL_VALUES value="TRUE" />

@@ -16,6 +16,7 @@ Import "game.broadcastmaterial.base.bmx"
 Import "game.programme.adcontract.bmx"
 Import "game.publicimage.bmx"
 Import "game.broadcast.genredefinition.movie.bmx"
+Import "game.broadcast.base.bmx"
 
 
 'ad spot
@@ -176,14 +177,35 @@ endrem
 		endif
 
 
+		local successful:int = False
+
 		'programme broadcasting outage = ad fails too!
 		If audienceResult.broadcastOutage
+			successful = False
+		'condition not fulfilled
+		ElseIf audienceResult.Audience.GetSum() < contract.GetMinAudience()
+			successful = False
+		'limited to a specific target group - and not fulfilled
+		ElseIf contract.GetLimitedToTargetGroup() > 0 and audienceResult.Audience.GetValue(contract.GetLimitedToTargetGroup()) < contract.GetMinAudience()
+			successful = False
+		'limited to a specific genre - and not fulfilled
+		ElseIf contract.GetLimitedToGenre() >= 0
+			'check current programme of the owner
+			local broadcastMaterial:TBroadcastMaterial = GetBroadcastManager().GetCurrentProgrammeBroadcastMaterial(owner)
+			'should not happen - as it else is a broadcastOutage
+			if not broadcastMaterial
+				successful = False
+			else
+				local genreDefinition:TGenreDefinitionBase = broadcastMaterial.GetGenreDefinition()
+				if genreDefinition and genreDefinition.GenreId <> contract.GetLimitedToGenre()
+					successful = False
+				endif
+			endif
+		EndIf
+
+
+		if not successful
 			setState(STATE_FAILED)
-		'ad failed (audience lower than needed)
-		Else If audienceResult.Audience.GetSum() < contract.GetMinAudience()
-			setState(STATE_FAILED)
-			'TLogger.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" sent FAILED spot "+contract.spotsSent+"/"+contract.GetSpotCount()+". Title: "+contract.GetTitle()+". Time: day "+(day-GetWorldTime().GetStartDay())+", "+hour+":"+minute+".", LOG_DEBUG)
-		'ad is ok
 		Else
 			setState(STATE_OK)
 			'successful sent - so increase the value the contract

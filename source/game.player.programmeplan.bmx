@@ -640,7 +640,7 @@ endrem
 		If RemoveObjectInstances(obj, TBroadcastMaterial.TYPE_PROGRAMME, -1, removeCurrentRunning)
 			'if the object is the current broadcasted thing, reset audience
 			If programme And obj = programme
-				GetBroadcastManager().SetBroadcastMalfunction(owner)
+				GetBroadcastManager().SetBroadcastMalfunction(owner, TBroadcastMaterial.TYPE_PROGRAMME)
 			EndIf
 			doneSomething = True
 		EndIf
@@ -1055,21 +1055,25 @@ endrem
 		If minute = 0
 			obj = GetNewsShow()
 			'log in current broadcast
-			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj)
+			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj, TBroadcastMaterial.TYPE_NEWSSHOW)
 
 		'=== BEGIN OF PROGRAMME ===
 		ElseIf minute = 5
 			obj = GetProgramme(day, hour)
 			'log in current broadcast
-			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj)
+			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj, TBroadcastMaterial.TYPE_PROGRAMME)
+
+		'=== BEGIN OF ADVERTISEMENT ===
+		ElseIf minute = 5
+			obj = GetAdvertisement(day, hour)
+			'log in current broadcast
+			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj, TBroadcastMaterial.TYPE_ADVERTISEMENT)
 		EndIf
 	End Method
 
 
 	'STEP 2/3: calculate audience (for all players at once)
 	Function CalculateCurrentBroadcastAudience:Int(day:Int, hour:Int, minute:Int)
-		Local obj:TBroadcastMaterial = Null
-
 		'=== BEGIN OF NEWSSHOW ===
 		If minute = 0
 			'calculate audience
@@ -1079,6 +1083,11 @@ endrem
 		ElseIf minute = 5
 			'calculate audience
 			GetBroadcastManager().BroadcastProgramme(day, hour)
+
+		'=== BEGIN OF ADVERTISEMENT ===
+		ElseIf minute = 55
+			'nothing to do yet
+			'GetBroadcastManager().BroadcastAdvertisement(day, hour)
 		EndIf
 	End Function
 
