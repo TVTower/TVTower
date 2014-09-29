@@ -887,6 +887,29 @@ Type RoomHandler_Office extends TRoomHandler
 	End Function
 
 
+	Function RefreshHoveredProgrammePlanElement:int()
+		For local guiObject:TGuiProgrammePlanElement = eachin GuiListProgrammes._slots
+			if guiObject.isDragged() or guiObject.mouseOver
+				hoveredGuiProgrammePlanElement = guiObject
+				return True
+			endif
+		Next
+		For local guiObject:TGuiProgrammePlanElement = eachin GuiListAdvertisements._slots
+			if guiObject.isDragged() or guiObject.mouseOver
+				hoveredGuiProgrammePlanElement = guiObject
+				return True
+			endif
+		Next
+		For local guiObject:TGuiProgrammePlanElement = eachin GuiManager.ListDragged
+			if guiObject.isDragged() or guiObject.mouseOver
+				hoveredGuiProgrammePlanElement = guiObject
+				return True
+			endif
+		Next
+		return False
+	End Function
+
+
 	'=== EVENTS ===
 
 	'clear the guilist if a player enters
@@ -972,6 +995,9 @@ Type RoomHandler_Office extends TRoomHandler
 'print "onChangeProgrammePlan: running RefreshGuiElements"
 '		haveToRefreshGuiElements = TRUE
 		RefreshGuiElements()
+
+		'RefreshHoveredProgrammePlanElement()
+		GUIManager.Update("programmeplanner")
 	End Function
 
 
@@ -1294,7 +1320,7 @@ Type RoomHandler_Office extends TRoomHandler
 		If planningDay < GetWorldTime().getDay() Then SetColor 100,100,0
 		If planningDay > GetWorldTime().getDay() Then SetColor 0,0,0
 		local day:int = 1+ planningDay - GetWorldTime().getDay(GetWorldTime().GetTimeStart())
-'		GetBitmapFont("default", 11).drawBlock(day+". "+GetLocale("DAY")+"~n"+GetWorldTime().GetFormattedDayLong(day),712, 6, 56, 30, ALIGN_CENTER_CENTER)
+		'GetBitmapFont("default", 11).drawBlock(day+". "+GetLocale("DAY")+"~n"+GetWorldTime().GetFormattedDayLong(day),712, 6, 56, 30, ALIGN_CENTER_CENTER)
 		GetBitmapFont("default", 11).drawBlock(day+". "+GetLocale("DAY"),712, 7, 56, 26, ALIGN_CENTER_TOP)
 		GetBitmapFont("default", 10).drawBlock(GetWorldTime().GetFormattedDayLong(day),712, 7, 56, 26, ALIGN_CENTER_BOTTOM)
 		SetColor 255,255,255
@@ -1309,7 +1335,7 @@ Type RoomHandler_Office extends TRoomHandler
 				PPprogrammeList.Draw()
 				openedProgrammeListThisVisit = True
 			endif
-			If PPcontractList.GetOpen()  > 0 Then PPcontractList.Draw()
+			If PPcontractList.GetOpen() > 0 Then PPcontractList.Draw()
 			'draw lists sheet
 			If PPprogrammeList.GetOpen() and PPprogrammeList.hoveredLicence
 				PPprogrammeList.hoveredLicence.ShowSheet(30,20)
@@ -1320,6 +1346,7 @@ Type RoomHandler_Office extends TRoomHandler
 			endif
 		EndIf
 
+		'if not hoveredGuiProgrammePlanElement then RefreshHoveredProgrammePlanElement()
 		if hoveredGuiProgrammePlanElement
 			'draw the current sheet
 			hoveredGuiProgrammePlanElement.DrawSheet(30, 35, 700)
