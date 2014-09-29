@@ -225,7 +225,7 @@
 		<ad>
 			<title>Dörrobst Toni</title>
 			<description>Ganz neu Dörrgemüse bei uns im Spezialitäten-Regal. In den Sorten Dörr-Kuerbis, Dörr-Gurke und Dörr-Wassermelone!</description>
-			<data repetitions="3" profit="1.4" penalty="1.7" targetgroup="0" duration="3"/>
+			<data minaudience="50" repetitions="3" profit="1.4" penalty="1.7" targetgroup="0" duration="3"/>
 			<created_by name="SpeedMinister" />
 		</ad>
 	</allads>

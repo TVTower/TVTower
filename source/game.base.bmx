@@ -471,11 +471,14 @@ Type TGame {_exposeToLua="selected"}
 
 
 			local cheapFilter:TAdContractBaseFilter = new TAdContractbaseFilter
-			cheapFilter.SetAudience(0.0, 0.10)
+			cheapFilter.SetAudience(0.0, 0.02)
 
-			For Local i:Int = 0 To 2
+			For Local i:Int = 0 To 1
 				ProgrammeCollection.AddAdContract(New TAdContract.Create(GetAdContractBaseCollection().GetRandomByFilter(cheapFilter)) )
 			Next
+			'and one with 0 audience requirement
+			cheapFilter.SetAudience(0.0, 0.0)
+			ProgrammeCollection.AddAdContract(New TAdContract.Create(GetAdContractBaseCollection().GetRandomByFilter(cheapFilter)) )
 		Next
 	End Method
 

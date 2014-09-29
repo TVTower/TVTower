@@ -567,7 +567,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'calculate a price/CPM using the "getCPM"-function
 		price = GetCPM(baseValue, maxCPM, getRawMinAudience(playerID) / GetStationMapCollection().GetPopulation())
 		'multiply by amount of "1000 viewers"-blocks
-		price :* ceil(getRawMinAudience(playerID)/1000)
+		price :* Max(1, getRawMinAudience(playerID)/1000)
 		'value cannot be higher than "maxAdContractPricePerSpot"
 		price = Min(GameRules.maxAdContractPricePerSpot, price )
 		'adjust by a balancing factor
@@ -581,7 +581,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'multiply price by spotcount to get a "total price"
 		price :* GetSpotCount()
 
-		print GetTitle()+": "+GetMinAudiencePercentage() +" -- price " +price +" ---raw audience "+getRawMinAudience(playerID)
+		'print GetTitle()+": "+GetMinAudiencePercentage() +" -- price " +price +" ---raw audience "+getRawMinAudience(playerID)
 
 		'return "beautiful" prices
 		Return TFunctions.RoundToBeautifulValue(price)

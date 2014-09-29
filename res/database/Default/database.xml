@@ -11529,7 +11529,7 @@ Bieten die beiden genügend Stoff für eine spannende Runde?</de>
 				<en></en>
 			</description>
 			<conditions min_audience="15" min_image="39" target_group="4" />
-			<data infomercial="0" quality="0" repetitions="6" duration="3" fix_price="0" profit="300" penalty="300" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data infomercial="0" quality="0" repetitions="6" duration="3" fix_price="0" profit="80" penalty="100" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="755bb894-d87e-46ba-b988-2198cf1a6fe1" creator="684">
 			<title>
@@ -11638,7 +11638,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 				<en></en>
 			</description>
 			<conditions min_audience="7" min_image="10" target_group="2" />
-			<data infomercial="0" quality="0" repetitions="2" duration="2" fix_price="0" profit="300" penalty="150" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data infomercial="0" quality="0" repetitions="2" duration="2" fix_price="0" profit="110" penalty="150" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="43b0ad95-217b-4fe3-a564-0c883ee79541" creator="5458">
 			<title>
@@ -11650,7 +11650,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 				<en></en>
 			</description>
 			<conditions min_audience="3.8" min_image="5" target_group="5" />
-			<data infomercial="0" quality="0" repetitions="2" duration="2" fix_price="0" profit="300" penalty="45" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data infomercial="0" quality="0" repetitions="2" duration="2" fix_price="0" profit="120" penalty="45" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="4879af34-2d3b-4b5a-bc78-dc4cbf8a7439" creator="1">
 			<title>
