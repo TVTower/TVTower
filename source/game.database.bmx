@@ -650,7 +650,7 @@ Type TDatabaseLoader
 
 		'for movies/series set a releaseDay until we have that
 		'in the db.
-		if not parentLicence or node.GetName().ToLower() <> "episode"
+		if not parentLicence
 			releaseDayCounter :+ 1
 			programmeData.releaseDay = releaseDayCounter mod GetWorldTime().GetDaysPerYear()
 		endif
@@ -713,7 +713,7 @@ Type TDatabaseLoader
 
 		
 		'=== EPISODES ===
-		local nodeEpisodes:TxmlNode = xml.FindElementNode(node, "episodes")
+		local nodeEpisodes:TxmlNode = xml.FindElementNode(node, "children")
 		For local nodeEpisode:TxmlNode = EachIn xml.GetNodeChildElements(nodeEpisodes)
 			'skip other elements than programme data
 			If nodeEpisode.getName() <> "programme" then continue
@@ -727,10 +727,10 @@ Type TDatabaseLoader
 
 			'add the episode
 			programmeLicence.AddSubLicence(episodeLicence)
+
+'			print programmeLicence.isSeries() +"  " +programmeLicence.GetSubLicenceCount()
 		Next
 
-
-		
 		if programmeLicence.isSeries() and programmeLicence.GetSubLicenceCount() = 0
 			programmeData.programmeType = TProgrammeData.TYPE_MOVIE
 			print "Series with 0 episodes found. Converted to movie: "+programmeLicence.GetTitle()

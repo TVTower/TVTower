@@ -13,22 +13,6 @@
 			<data actors="Patty Glansen" director="Henry Cutamaran" country="D" year="1985" genre="19"  blocks="2" price="45" critics="80" speed="70" outcome="105" />
 			<created_by name="Ronny" userID="5578" />
 		</movie>
-		<!-- manuell hinzufuegen, solange nicht in V3-Datenbank enthalten -->
-		<movie>
-			<title>Der Hammer fällt LIVE</title>
-			<description>Nur im Fernsehen und nirgends sonst werden diese Ramschartikel an Ahnungslose versteigert.</description>
-			<data  country="BEL" year="2011" genre="20"  blocks="2" price="20" critics="10" speed="6" outcome="0" />
-		</movie>
-		<movie>
-			<title>Die große Verarsche-Show</title>
-			<description>Hier treten Männer gegen Frauen an. Das Geschlecht mit den meisten Anrufen gewinnt.</description>
-			<data  country="D" year="2000" genre="20"  blocks="2" price="15" critics="15" speed="20" outcome="0" />
-		</movie>
-		<movie>
-			<title>TED am Morgen</title>
-			<description>Der Tele Dialog am Morgen befragt Zuschauer zu brisanten Themen. Meinungsbildend und Gewinnbringend.</description>
-			<data  director="Heiner Trubbl" country="D" year="2001" genre="20"  blocks="1" time="9" price="30" critics="30" speed="10" outcome="0" />
-		</movie>
 	</allmovies>
 	<allseries>
 		<serie>
