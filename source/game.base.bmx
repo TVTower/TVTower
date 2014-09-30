@@ -135,8 +135,13 @@ Type TGame {_exposeToLua="selected"}
 	Method InitWorld()
 		local worldConfig:TData = TData(GetRegistry().Get("WORLDCONFIG", New TData))
 
+		GetWorld().Init(1*3600, worldConfig)
+	End Method
 
-		local world:TWorld = GetWorld().Init(1*3600, worldConfig)
+
+	Method InitWorldWeatherEffects()
+		local world:TWorld = GetWorld()
+
 		'we draw them in front of the background buildings
 		world.autoRenderSnow = False
 		world.autoRenderRain = False
@@ -169,6 +174,9 @@ Type TGame {_exposeToLua="selected"}
 		TLogger.Log("Game.PrepareStart()", "drawing doors, plants and lights on the building-sprite", LOG_DEBUG)
 		'also registers events...
 		GetBuilding().Init()
+
+		'(re-)inits weather effects (raindrops, snow flakes etc)
+		InitWorldWeatherEffects()
 	End Method
 
 
@@ -535,18 +543,8 @@ Type TGame {_exposeToLua="selected"}
 
 	'run when loading finished
 	Function onSaveGameLoad(triggerEvent:TEventBase)
-		TLogger.Log("TGame", "Savegame loaded - reassigning sprites to world/weather.", LOG_DEBUG | LOG_SAVELOAD)
-		'reconnect sky sprites
-		GetWorld().InitSky(..
-			GetSpriteFromRegistry("gfx_world_sky_gradient"), ..
-			GetSpriteFromRegistry("gfx_world_sky_moon"), ..
-			GetSpriteFromRegistry("gfx_world_sky_sun"), ..
-			GetSpriteFromRegistry("gfx_world_sky_sunrays") ..
-		)
-		GetWorld().rainEffect.ReassignSprites(GetSpriteGroupFromRegistry("gfx_world_sky_rain"))
-		GetWorld().snowEffect.ReassignSprites(GetSpriteGroupFromRegistry("gfx_world_sky_snow"))
-		GetWorld().lightningEffect.ReassignSprites(GetSpriteGroupFromRegistry("gfx_world_sky_lightning"), GetSpriteGroupFromRegistry("gfx_world_sky_lightning_side"))
-		GetWorld().cloudEffect.ReassignSprites(GetSpriteGroupFromRegistry("gfx_world_sky_clouds"))
+		TLogger.Log("TGame", "Savegame loaded - reinit weather effects.", LOG_DEBUG | LOG_SAVELOAD)
+		GetInstance().InitWorldWeatherEffects()
 
 
 		TLogger.Log("TGame", "Savegame loaded - colorize players.", LOG_DEBUG | LOG_SAVELOAD)

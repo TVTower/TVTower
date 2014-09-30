@@ -87,7 +87,7 @@ Type TWeatherEffectRain extends TWeatherEffectBase
 	End Method
 
 
-	'reassign sprites for each snowflake
+	'reassign sprites for each raindrop
 	Method ReassignSprites:int(useSprites:TSprite[])
 		'assign new sprites to use
 		SetUseSprites(useSprites)
@@ -222,7 +222,7 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 	End Method
 
 
-	'reassign sprites for each snowflake
+	'reassign sprites for each lightning strike
 	Method ReassignSprites:int(useSprites:TSprite[], useSpritesSide:TSprite[])
 		'assign new sprites to use
 		SetUseSprites(useSprites)

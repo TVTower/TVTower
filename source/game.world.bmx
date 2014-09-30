@@ -13,17 +13,17 @@ Type TWorld
 
 	'=== RAIN ===
 	'rain effect (rain drops)
-	Field rainEffect:TWeatherEffectRain
+	Field rainEffect:TWeatherEffectRain {nosave}
 	'snow effect (flakes)
-	Field snowEffect:TWeatherEffectSnow
+	Field snowEffect:TWeatherEffectSnow {nosave}
 	'lightning effects
-	Field lightningEffect:TWeatherEffectLightning
+	Field lightningEffect:TWeatherEffectLightning {nosave}
 	'adjust DayNightCycle-color according this weather color
 	Field rainColorFadeState:TFadingState = new TFadingState
 	Field rainColorFadeDuration:int = 1000
 
 	'=== CLOUDS ===
-	Field cloudEffect:TWeatherEffectClouds
+	Field cloudEffect:TWeatherEffectClouds {nosave}
 	Field cloudColorFadeState:TFadingState = new TFadingState
 	Field cloudColorFadeDuration:int = 1000
 
