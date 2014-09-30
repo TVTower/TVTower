@@ -1912,12 +1912,12 @@ Type TGUINews extends TGUIGameListItem
 			TBitmapFont.SetRenderTarget(cacheTextOverlay)
 
 			'default texts (title, text,...)
-			GetBitmapFontManager().basefontBold.drawBlock(news.GetTitle(), 15, 4, 330, 15 + 8, null, TColor.CreateGrey(20))
-			GetBitmapFontManager().baseFont.drawBlock(news.GetDescription(), 15, 19, 340, 50 + 8, null, TColor.CreateGrey(100))
+			GetBitmapFontManager().basefontBold.drawBlock(news.GetTitle(), 15, 2, 330, 15, null, TColor.CreateGrey(20))
+			GetBitmapFontManager().baseFont.drawBlock(news.GetDescription(), 15, 17, 340, 50 + 8, null, TColor.CreateGrey(100))
 
 			local oldAlpha:float = GetAlpha()
 			SetAlpha 0.3*oldAlpha
-			GetBitmapFont("Default", 9).drawBlock(news.GetGenreString(), 15, 74, 120, 15, null, TColor.clBlack)
+			GetBitmapFont("Default", 9).drawBlock(news.GetGenreString(), 15, 73, 120, 15, null, TColor.clBlack)
 			SetAlpha 1.0*oldAlpha
 
 			'set back to screen Rendering
@@ -1963,15 +1963,15 @@ Type TGUINews extends TGUIGameListItem
 
 			'===== DRAW NON-CACHED TEXTS =====
 			if not news.paid
-				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice() + ",-", screenX + 262, screenY + 72, 90, -1, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
+				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice() + ",-", screenX + 262, screenY + 70, 90, -1, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
 			else
-				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice() + ",-", screenX + 262, screenY + 72, 90, -1, new TVec2D.Init(ALIGN_RIGHT), TColor.CreateGrey(50))
+				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice() + ",-", screenX + 262, screenY + 70, 90, -1, new TVec2D.Init(ALIGN_RIGHT), TColor.CreateGrey(50))
 			endif
 
 			Select GetWorldTime().GetDay() - GetWorldTime().GetDay(news.newsEvent.happenedTime)
-				case 0	GetBitmapFontManager().baseFont.drawBlock(GetLocale("TODAY")+" " + GetWorldTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack )
-				case 1	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("YESTERDAY")+" "+ GetWorldTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
-				case 2	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("TWO_DAYS_AGO")+" " + GetWorldTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
+				case 0	GetBitmapFontManager().baseFont.drawBlock(GetLocale("TODAY")+" " + GetWorldTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 73, 140, 15, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack )
+				case 1	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("YESTERDAY")+" "+ GetWorldTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 73, 140, 15, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
+				case 2	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("TWO_DAYS_AGO")+" " + GetWorldTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 73, 140, 15, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
 			End Select
 
 			SetColor 255, 255, 255
