@@ -774,13 +774,16 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		if data.GetDirectorsString() <> ""
 			fontSemiBold.drawBlock(GetLocale("MOVIE_DIRECTOR")+":", currX + 6, currY, 280, 13, null, textColor)
 			fontNormal.drawBlock(data.GetDirectorsString(), currX + 6 + 5 + currTextWidth, currY , 280 - 15 - currTextWidth, 15, null, textColor)
+			currY :+ 13
 		endif
-		currY :+ 13
 
 		'actors
 		if data.GetActorsString() <> ""
 			fontSemiBold.drawBlock(GetLocale("MOVIE_ACTORS")+":", currX + 6 , currY, 280, 26, null, textColor)
 			fontNormal.drawBlock(data.GetActorsString(), currX + 6 + 5 + currTextWidth, currY, 280 - 15 - currTextWidth, 30, null, textColor)
+		endif
+		if data.GetDirectorsString() = ""
+			currY :+ 13
 		endif
 		currY :+ 26
 		currY :+ 3 'subcontent end with offset
