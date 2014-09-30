@@ -188,9 +188,6 @@ Type TAdContractBase extends TGameObject {_exposeToLua}
 	Field blocks:int = 1
 	'target group of the spot
 	Field limitedToTargetGroup:Int = -1
-	'is the ad broadcasting limit to a specific genre?
-	'eg. "horror"
-	Field limitedToGenre:Int = -1
 	'is the ad broadcasting limit to a specific programme type?
 	'eg. "series", "movies"
 	Field limitedToProgrammeType:Int = -1
@@ -695,8 +692,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	Method GetLimitedToGenre:Int() {_exposeToLua}
-		return 3
-		Return base.limitedToGenre
+		Return base.limitedToProgrammeGenre
 	End Method
 
 

@@ -201,6 +201,8 @@ endrem
 					successful = False
 				endif
 			endif
+		Else
+			successful = True
 		EndIf
 
 
