@@ -291,12 +291,12 @@ End Type
 
 
 Type TInGameScreen_Room extends TInGameScreen
-	'the room connected to this screen
-	Field roomID:int = -1
-	Field roomName:string
-	Field currentRoom:TRoomBase
+	'the rooms connected to this screen
+	Field roomIDs:int[]
+	Field currentRoomID:int = -1
 	global shortcutTarget:TRoomBase = null 'whacky hack
 	global _registeredEvents:int = False
+
 
 	Method Create:TInGameScreen_Room(name:string)
 		Super.Create(name)
@@ -310,10 +310,18 @@ Type TInGameScreen_Room extends TInGameScreen
 	End Method
 
 
-	Method SetRoom(room:TRoomBase)
-		roomID = room.id
-		'store the identifier
-		roomName = room.name
+	Method AddRoom:int(room:TRoomBase)
+		if IsConnectedToRoom(room) then return False
+		
+		roomIDs :+ [room.id]
+	End Method
+
+
+	Method IsConnectedToRoom:int(room:TRoomBase)
+		For local i:int = 0 until roomIDs.length
+			if roomIDs[i] = room.id then return True
+		Next
+		return False
 	End Method
 
 
@@ -328,7 +336,7 @@ Type TInGameScreen_Room extends TInGameScreen
 	'so the screen for "all" offices is getting returned
 	Function GetByRoom:TInGameScreen_Room(room:TRoomBase)
 		For local screen:TInGameScreen_Room = eachin ScreenCollection.screens.Values()
-			if screen.roomName = room.name then return screen
+			if screen.IsConnectedToRoom(room) then return screen
 		Next
 		return Null
 	End Function
@@ -371,7 +379,6 @@ Type TInGameScreen_Room extends TInGameScreen
 
 		'Set the players current screen when changing rooms
 		ScreenCollection.GoToScreen(GetByRoom(room))
-
 		'remove potential shortcutTargets
 		shortcutTarget = null
 
@@ -381,28 +388,26 @@ Type TInGameScreen_Room extends TInGameScreen
 
 	'override default
 	Method UpdateContent:int(deltaTime:Float)
-		'instead of relying on GetPlayerCollection().Get().inRoom each time
-		'use currentRoom as inRoom gets reset during room change
-		'now we got the correct instance (eg. office from player 1)
-		if GetPlayer().GetFigure().inRoom then currentRoom = GetPlayer().GetFigure().inRoom
-		if not currentRoom then return FALSE
-
-		currentRoom.update()
+		'if the player is in a specific room, store that ID, so next
+		'time GetRoom() might return "null" but we still know what room
+		'we have to care for
+		if GetRoom() then currentRoomID = GetRoom().id
+		if currentRoomID then GetRoomBaseCollection().Get(currentRoomID).update()
 	End Method
 
 
 	'override default
 	Method DrawContent:int(tweenValue:Float)
-		'instead of relying on GetPlayerCollection().Get().inRoom each time
-		'use currentRoom as inRoom gets reset during room change
-		'now we got the correct instance (eg. office from player 1)
-		if GetPlayer().GetFigure().inRoom then currentRoom = GetPlayer().GetFigure().inRoom
-		if not currentRoom then return FALSE
+		'cache current room id
+		if GetRoom() then currentRoomID = GetRoom().id
+		if not currentRoomID then return False
 
 		'TProfiler.Enter("Draw-Room")
 		'drawing a subscreen (not the room itself)
-		if GetBackground() and not currentRoom.GetBackground() then GetBackground().Draw(0, 0)
-		currentRoom.Draw()
+		local room:TRoomBase = GetRoomBaseCollection().Get(currentRoomID)
+
+		if GetBackground() and not room.GetBackground() then GetBackground().Draw(0, 0)
+		room.Draw()
 		'TProfiler.Leave("Draw-Room")
 	End Method
 End Type

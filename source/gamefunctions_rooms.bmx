@@ -5713,8 +5713,6 @@ Function Init_CreateAllRooms()
 		'==== SCREEN ====
 		local screen:TInGameScreen_Room = TInGameScreen_Room(ScreenCollection.GetScreen(vars.GetString("screen") ))
 
-
-
 		'==== ROOM ====
 		local room:TRoom = new TRoom
 		room.Init(..
@@ -5726,7 +5724,7 @@ Function Init_CreateAllRooms()
 			vars.GetInt("owner",-1),  ..
 			vars.GetInt("size", 1)  ..
 		)
-		if screen then screen.SetRoom(room)
+		if screen then screen.AddRoom(room)
 		room.fakeRoom = vars.GetBool("fake", FALSE)
 
 
