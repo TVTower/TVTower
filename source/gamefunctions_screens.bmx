@@ -291,22 +291,27 @@ End Type
 
 
 Type TInGameScreen_Room extends TInGameScreen
+	'the room connected to this screen
+	Field roomID:int = -1
 	Field roomName:string
 	Field currentRoom:TRoomBase
-	Field rooms:TList = CreateList()  'rooms connected to this screen (eg office 1-4 )
 	global shortcutTarget:TRoomBase = null 'whacky hack
+	global _registeredEvents:int = False
 
 	Method Create:TInGameScreen_Room(name:string)
 		Super.Create(name)
+
+		if not _registeredEvents
+			EventManager.registerListenerFunction("room.onBeginEnter", OnRoomBeginEnter)
+			EventManager.registerListenerFunction("room.onEnter", OnRoomEnter)
+		endif
+		
 		return self
 	End Method
 
 
 	Method SetRoom(room:TRoomBase)
-		EventManager.registerListenerMethod("room.onBeginEnter", self, "OnRoomBeginEnter", room)
-		EventManager.registerListenerMethod("room.onEnter", self, "OnRoomEnter", room)
-
-		rooms.addLast(room)
+		roomID = room.id
 		'store the identifier
 		roomName = room.name
 	End Method
@@ -343,9 +348,9 @@ Type TInGameScreen_Room extends TInGameScreen
 	End Method
 
 
-	Method OnRoomEnter:int(triggerEvent:TEventBase)
+	Function OnRoomEnter:int(triggerEvent:TEventBase)
 		local room:TRoomBase = TRoomBase(triggerEvent.GetSender())
-		if not room or not rooms.contains(room) then return FALSE
+		if not room then return FALSE
 
 		'only interested in figures entering the room
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
@@ -353,25 +358,25 @@ Type TInGameScreen_Room extends TInGameScreen
 
 		'try to change played music when entering a room
 		TSoundManager.GetInstance().PlayMusicPlaylist(room.name)
-	End Method
+	End Function
 
 
-	Method OnRoomBeginEnter:int(triggerEvent:TEventBase)
+	Function OnRoomBeginEnter:int(triggerEvent:TEventBase)
 		local room:TRoomBase = TRoomBase(triggerEvent.GetSender())
-		if not room or not rooms.contains(room) then return FALSE
+		if not room then return FALSE
 
 		'only interested in figures entering the room
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or not figure.isActivePlayer() then return FALSE
 
 		'Set the players current screen when changing rooms
-		ScreenCollection.GoToScreen(self)
+		ScreenCollection.GoToScreen(GetByRoom(room))
 
 		'remove potential shortcutTargets
 		shortcutTarget = null
 
 		return TRUE
-	End Method
+	End Function
 
 
 	'override default

@@ -251,7 +251,6 @@ End Type
 
 
 Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
-	Field room:TRoomBase
 	'uses description
 	Field showTooltip:Int = True
 	Field tooltip:TRoomDoorTooltip = null
@@ -259,9 +258,9 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 
 	'create room and use preloaded image
-	Method Init:TRoomDoor(room:TRoomBase, doorSlot:int=-1, onFloor:Int=0, doorType:Int=-1)
+	Method Init:TRoomDoor(roomID:int, doorSlot:int=-1, onFloor:Int=0, doorType:Int=-1)
 		'assign variables
-		self.room = room
+		self.roomID = roomID
 
 		DoorTimer.setInterval( TRoomBase.ChangeRoomSpeed )
 
@@ -282,6 +281,12 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 	Method GetSoundSource:TDoorSoundSource()
 		if not _soundSource then _soundSource = TDoorSoundSource.Create(self)
 		return _soundSource
+	End Method
+
+
+	Method GetRoom:TRoom()
+		if not roomID then return Null
+		return GetRoomCollection().Get(roomID)
 	End Method
 
 
@@ -317,6 +322,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 		'skip invisible doors (without door-sprite)
 		'Ronny TODO: maybe replace "invisible doors" with hotspots + room signes (if visible in elevator)
+		local room:TRoom = GetRoom()
 		If room = null then Return FALSE
 		If room.name = "roomboard" OR room.name = "credits" OR room.name = "porter" then Return FALSE
 
@@ -339,6 +345,9 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 
 	Method UpdateTooltip:Int()
+		local room:TRoom = GetRoom()
+		if not room then return False
+
 		'only show tooltip if not "empty" and mouse in door-rect
 		If room.GetDescription(1) <> "" and GetPlayerCollection().Get().GetFigure().IsInBuilding() And THelper.MouseIn(GetScreenX(), GetScreenY() - area.GetH(), area.GetW(), area.GetH())
 			If not tooltip
@@ -386,7 +395,9 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 			doorSprite.Draw(xOffset + GetScreenX(), yOffset + GetScreenY(), getDoorType(), ALIGN_LEFT_BOTTOM)
 		EndIf
 
-
+		local room:TRoom = GetRoom()
+		if not room then return False
+		
 		'==== DRAW DOOR OWNER SIGN ====
 		'draw on same height than door startY
 		If room.owner < 5 And room.owner >=0
@@ -431,6 +442,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 	'override to return owner of room
 	Method GetOwner:Int()
+		local room:TRoom = GetRoom()
 		if room then return room.owner
 		return Super.GetOwner()
 	End Method
@@ -438,6 +450,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 	'override to add rooms description
 	Method GetOwnerName:String()
+		local room:TRoom = GetRoom()
 		if room then return room.GetDescription(1)
 		return super.GetOwnerName()
 	End Method
@@ -449,7 +462,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 		if not room then return res
 
 		For Local door:TRoomDoor = EachIn GetRoomDoorBaseCollection().list
-			if door.room = room then res :+ [door]
+			if door.GetRoom() = room then res :+ [door]
 		Next
 		return res
 	End Function
@@ -470,10 +483,13 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 		For Local door:TRoomDoor = EachIn GetRoomDoorBaseCollection().list
 			'skip wrong floors
 			if floor >=0 and door.GetOnFloor() <> floor then continue
-			'skip wrong owners
-			if door.room.owner <> owner then continue
 
-			If door.room.name = name Then Return door
+			local room:TRoom = door.GetRoom()
+			if not room then continue 
+			'skip wrong owners
+			if room.owner <> owner then continue
+
+			If room.name = name Then Return door
 		Next
 		Return Null
 	End Function
@@ -5718,7 +5734,7 @@ Function Init_CreateAllRooms()
 		'==== DOOR ====
 		local door:TRoomDoor = new TRoomDoor
 		door.Init(..
-			room,..
+			room.id,..
 			vars.GetInt("doorslot"), ..
 			vars.GetInt("floor"), ..
 			vars.GetInt("doortype") ..

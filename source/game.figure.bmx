@@ -501,7 +501,7 @@ endrem
 		if isChangingRoom then return TRUE
 
 		'assign room if not done yet
-		if not room and door then room = door.room
+		if not room and door then room = door.GetRoom()
 
 		'if already in another room, leave that first
 		if inRoom then LeaveRoom(True)
@@ -769,7 +769,7 @@ endrem
 		endif
 
 		local targetRoom:TRoomBase
-		if TRoomDoor(newTargetObj) then targetRoom = TRoomDoor(newTargetObj).room 
+		if TRoomDoor(newTargetObj) then targetRoom = TRoomDoor(newTargetObj).GetRoom() 
 
 
 		'=== CHECK IF ALREADY THERE ===
@@ -883,8 +883,8 @@ endrem
 			'do not fade when it is a fake room
 			if inRoom and inRoom.ShowsOccupants() then alpha = 1.0
 			if fromRoom and fromRoom.ShowsOccupants() then alpha = 1.0
-			if TRoomDoor(targetObj) and TRoomDoor(targetObj).room
-				if TRoomDoor(targetObj).room.ShowsOccupants() then alpha = 1.0
+			if TRoomDoor(targetObj) and TRoomDoor(targetObj).GetRoom()
+				if TRoomDoor(targetObj).GetRoom().ShowsOccupants() then alpha = 1.0
 			endif
 			
 			SetAlpha(alpha * oldAlpha)

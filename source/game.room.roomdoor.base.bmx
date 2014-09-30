@@ -101,6 +101,8 @@ End Function
 Type TRoomDoorBase extends TStaticEntity  {_exposeToLua="selected"}
 	'time is set in Init() depending on changeRoomSpeed..
 	Field DoorTimer:TIntervalTimer = TIntervalTimer.Create(1)
+	'the id of the room
+	Field roomID:int = -1
 	'floor in the building
 	Field onFloor:Int = -1
 	'door 1-4 on floor (<0 is invisible, -1 is unset)

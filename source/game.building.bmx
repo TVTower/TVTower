@@ -139,7 +139,6 @@ Type TBuilding Extends TStaticEntity
 			GetInstance().AddDoor(door)
 		Next
 
-
 		'reposition hotspots, prepare building sprite...
 		GetInstance().Init()
 	End Function

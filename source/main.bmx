@@ -803,6 +803,7 @@ Type TSaveGame
 	Field _RoomHandler_MovieAgency:RoomHandler_MovieAgency
 	Field _RoomHandler_AdAgency:RoomHandler_AdAgency
 	Field _RoomDoorBaseCollection:TRoomDoorBaseCollection
+	Field _RoomBaseCollection:TRoomBaseCollection
 	Const MODE_LOAD:Int = 0
 	Const MODE_SAVE:Int = 1
 
@@ -810,6 +811,7 @@ Type TSaveGame
 	Method RestoreGameData:Int()
 		_Assign(_FigureCollection, TFigureCollection._instance, "FigureCollection", MODE_LOAD)
 		_Assign(_RoomDoorBaseCollection, TRoomDoorBaseCollection._instance, "RoomDoorBaseCollection", MODE_LOAD)
+		_Assign(_RoomBaseCollection, TRoomBaseCollection._instance, "RoomBaseCollection", MODE_LOAD)
 
 		_Assign(_AdContractCollection, TAdContractCollection._instance, "AdContractCollection", MODE_LOAD)
 		_Assign(_AdContractBaseCollection, TAdContractBaseCollection._instance, "AdContractBaseCollection", MODE_LOAD)
@@ -849,6 +851,7 @@ Type TSaveGame
 
 		_Assign(Game, _Game, "Game", MODE_SAVE)
 		_Assign(TBuilding._instance, _Building, "Building", MODE_SAVE)
+		_Assign(TRoomBaseCollection._instance, _RoomBaseCollection, "RoomBaseCollection", MODE_SAVE)
 		_Assign(TRoomDoorBaseCollection._instance, _RoomDoorBaseCollection, "RoomDoorBaseCollection", MODE_SAVE)
 		_Assign(TFigureCollection._instance, _FigureCollection, "FigureCollection", MODE_SAVE)
 		_Assign(TPlayerCollection._instance, _PlayerCollection, "PlayerCollection", MODE_SAVE)
@@ -1247,7 +1250,7 @@ Type TFigureTerrorist Extends TFigure
 				if roomDoor then sign = TRoomBoardSign.GetByCurrentPosition(roomDoor.doorSlot, roomDoor.onFloor)
 
 				if sign and sign.door
-					TLogger.Log("TFigureTerrorist", self.name+" is sent to room "+TRoomDoor(sign.door).room.name+" (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
+					TLogger.Log("TFigureTerrorist", self.name+" is sent to room "+TRoomDoor(sign.door).GetRoom().name+" (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
 					SendToDoor(sign.door)
 				else
 					TLogger.Log("TFigureTerrorist", self.name+" cannot send to a room, sign of target over empty room slot (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)

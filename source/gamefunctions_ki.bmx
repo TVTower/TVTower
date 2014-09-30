@@ -437,7 +437,7 @@ endrem
 		local player:TPlayer = GetPlayerCollection().Get(self.ME)
 		local roomDoor:TRoomDoor = TRoomDoor(player.figure.targetObj)
 		
-		If roomDoor and roomDoor.room then Return roomDoor.room.id
+		If roomDoor and roomDoor.GetRoom() then Return roomDoor.GetRoom().id
 
 		Return self.RESULT_NOTFOUND
 	End Method
