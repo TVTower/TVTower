@@ -59,10 +59,10 @@ Type TInGameInterface
 
 
 		'=== SETUP SPAWNPOINTS FOR TOASTMESSAGES ===
-		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(20,10, 380,200), new TVec2D.Init(0,0), "TOPLEFT" )
-		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(400,10, 380,200), new TVec2D.Init(1,0), "TOPRIGHT" )
-		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(20,230, 380,150), new TVec2D.Init(0,1), "BOTTOMLEFT" )
-		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(400,230, 380,150), new TVec2D.Init(1,1), "BOTTOMRIGHT" )
+		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(5,5, 395,200), new TVec2D.Init(0,0), "TOPLEFT" )
+		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(400,5, 395,200), new TVec2D.Init(1,0), "TOPRIGHT" )
+		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(5,230, 395,150), new TVec2D.Init(0,1), "BOTTOMLEFT" )
+		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(400,230, 395,150), new TVec2D.Init(1,1), "BOTTOMRIGHT" )
 		
 
 		Return self
