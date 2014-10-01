@@ -2,11 +2,12 @@ SuperStrict
 
 'Application: TVGigant/TVTower
 'Author: Ronny Otto / Manuel Voegele
-
+?Not MacOS
 ' creates version.txt and puts date in it
 ' @bmk include source/version_script.bmk
 ' @bmk doVersion source/version.txt
-'
+?
+
 
 'Framework brl.glmax2d
 Framework BRL.StandardIO
@@ -17,7 +18,7 @@ Import "source/main.bmx"
 Incbin "source/version.txt"
 
 ?Win32
-rem
+Rem
 	Function SetIcon(iconname$, TheWindow%)
 		Local icon:Int=ExtractIconA(TheWindow,iconname,0)
 		Local WM_SETICON:Int = $80

@@ -52,7 +52,12 @@ Type TPublicImage {_exposeToLua="selected"}
 
 
 	Method GetAttractionMods:TAudience()
-		Return ImageValues.Copy().DivideFloat(100)
+		'a mod is a modifier - so "1.0" does modify nothing, "2.0" doubles
+		'and "0.5" halves
+		'our image ranges between 0 and 100 so adding 100 results in
+		'a value a bit bigger than 1.0
+		'ex: teenager-image of "2": (2+100)/100 = 1.02 
+		Return ImageValues.Copy().AddFloat(100).DivideFloat(100)
 	End Method
 
 
@@ -65,7 +70,8 @@ Type TPublicImage {_exposeToLua="selected"}
 	Method ChangeImage(imageChange:TAudience)
 		ImageValues.Add(imageChange)
 		'avoid negative values -> cut to at least 0
-		ImageValues.CutMinimumFloat(0)
+		'also avoid values > 100
+		ImageValues.CutMinimumFloat(0).CutMaximumFloat(100)
 		
 		TLogger.Log("ChangePublicImage()", "Change player '" + playerID + "' public image: " + imageChange.ToString(), LOG_DEBUG)
 	End Method
