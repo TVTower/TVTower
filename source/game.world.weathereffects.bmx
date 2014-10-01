@@ -2,6 +2,7 @@ SuperStrict
 Import "Dig/base.framework.entity.bmx"
 Import "Dig/base.framework.entity.spriteentity.bmx"
 Import "Dig/base.util.fadingstate.bmx"
+Import "Dig/base.util.math.bmx"
 Import "game.world.worldtime.bmx"
 
 
@@ -376,8 +377,8 @@ End Type
 
 Type TWeatherEffectSnow extends TWeatherEffectBase
 	Field flakes:TList = CreateList()
-	Field flakeLifetimeMin:int = 2500
-	Field flakeLifetimeMax:int = 3500
+	Field flakeLifetimeMin:int = 2800
+	Field flakeLifetimeMax:int = 4000
 	Field nextFlakeTime:int = 0
 	Field nextFlakeIntervalMin:int = 75
 	Field nextFlakeIntervalMax:int = 140
@@ -433,9 +434,11 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 		flake.AddNumber("lifetimeBase", lifetime)
 		flake.AddNumber("spriteNumber", spriteNumber)
 		flake.AddNumber("direction", rand(0,1))
-		
-		flake.Add("position", new TVec2D.Init(rand(area.GetX(), area.GetX2()), area.GetY() - rand(0, -60) - spriteHeight ))
-		flake.Add("velocity", new TVec2D.Init(rand(-100,100)/10.0, rand(100, 140) ))
+
+		local pos:TVec2D = new TVec2D.Init(rand(area.GetX(), area.GetX2()), area.GetY() - rand(0, -60) - spriteHeight )
+		flake.Add("position", pos)
+		flake.Add("oldPosition", pos.copy())	
+		flake.Add("velocity", new TVec2D.Init(rand(-10,10)/10.0, rand(75, 90) ))
 		
 		flakes.AddLast(flake)
 
@@ -455,8 +458,12 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 
 			vel = TVec2D(flake.Get("velocity", new TVec2D))
 			pos = TVec2D(flake.Get("position", new TVec2D))
+			flake.Add("oldPosition", pos.copy())	
 			pos.x :+ GetDeltaTimer().GetDelta() * vel.x
 			pos.y :+ GetDeltaTimer().GetDelta() * vel.y
+
+			'adjust position
+			pos.AddXY(sin(pos.y * 0.75)*1.25, 0)
 
 			'below ground
 			if pos.y > area.GetY2() then flakes.Remove(flake)
@@ -502,13 +509,14 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 			if not sprite then continue
 			
 			pos = TVec2D(flake.Get("position", new TVec2D))
+			local oldPosition:TVec2D = TVec2D(flake.Get("oldPosition", new TVec2D))
 			direction = flake.GetInt("direction", 0)
 			lifetime = flake.GetFloat("lifetime", 1.0)
 
-			'adjust position
-			pos = pos.copy()
-			pos.AddXY(sin(pos.y / 10) * 20, 0)
-
+			local tweenPos:TVec2D = new TVec2D.Init(..
+				MathHelper.Tween(oldPosition.x, pos.getX(), GetDeltaTimer().GetTween()), ..
+				MathHelper.Tween(oldPosition.y, pos.getY(), GetDeltaTimer().GetTween()) ..
+			)
 			if lifetime < 0.5
 				SetAlpha(oldColor.a * effectAlpha * lifetime*2.0)
 			else
@@ -521,11 +529,11 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 				GetScale(oldScaleX, oldScaleY)
 				SetScale(-1 * oldScaleX, oldScaleY)
 
-				sprite.Draw(pos.x, pos.y)
+				sprite.Draw(tweenPos.x, tweenPos.y)
 
 				SetScale(oldScaleX, oldScaleY)
 			else
-				sprite.Draw(pos.x, pos.y)
+				sprite.Draw(tweenPos.x, tweenPos.y)
 			endif
 		Next
 		

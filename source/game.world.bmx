@@ -119,12 +119,20 @@ Type TWorld
 
 
 	Method InitSnowEffect:int(startFlakes:int = 10, sprites:TSprite[])
-		snowEffect = new TWeatherEffectSnow.Init(area.copy(), startFlakes, sprites)
+		'to make effect start "offscreen" we increase size a bit
+		local effectArea:TRectangle = area.copy()
+		effectArea.position.AddX(-50)
+		effectArea.dimension.AddX(50)
+		snowEffect = new TWeatherEffectSnow.Init(effectArea, startFlakes, sprites)
 	End Method
 
 
 	Method InitRainEffect:int(layers:int = 2, sprites:TSprite[])
-		rainEffect = new TWeatherEffectRain.Init(area.copy(), layers, sprites)
+		'to make effect start "offscreen" we increase size a bit
+		local effectArea:TRectangle = area.copy()
+		effectArea.position.AddX(-50)
+		effectArea.dimension.AddX(50)
+		rainEffect = new TWeatherEffectRain.Init(effectArea, layers, sprites)
 	End Method
 
 
