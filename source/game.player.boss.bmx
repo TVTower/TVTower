@@ -81,8 +81,8 @@ Type TPlayerBoss
 	Field awaitingPlayerVisitTillTime:Long = 0
 	'did the player accept and is on his way to the boss?
 	Field awaitingPlayerAccepted:Int = False
-	'did the boss create a toastmessage already?
-	Field announcedAwaitingPlayerVisit:Int = False
+	'was the player already called (toastmessage for active player)?
+	Field awaitingPlayerCalled:Int = False
 	
 	'in the case of the player sends a favorite movie, this might
 	'brighten the mood of the boss
@@ -138,9 +138,15 @@ Type TPlayerBoss
 		endif
 
 		'call the player if needed
-		If awaitingPlayerVisit and not announcedAwaitingPlayerVisit
+		If awaitingPlayerVisit and not awaitingPlayerCalled
 			CallPlayer()
 		EndIf
+
+		'check if the player knows he has to visit but did not visit
+		'the boss yet - force him to visit NOW
+		if awaitingPlayerCalled and not awaitingPlayerAccepted and awaitingPlayerVisitTillTime < GetWorldTime().GetTimeGone()
+			CallPlayerForced()
+		endif
 	End Method
 
 	
@@ -175,8 +181,8 @@ Type TPlayerBoss
 		if not player or playerID <> player.playerID then return False
 
 
-		'reset boss announcement so boss can announce again
-		announcedAwaitingPlayerVisit = False
+		'reset boss call state so boss can call player again
+		awaitingPlayerCalled = False
 	End Method
 
 	
@@ -219,11 +225,25 @@ Type TPlayerBoss
 	Method CallPlayer:Int()
 		'give the player 2 hrs
 		awaitingPlayerVisitTillTime = GetWorldTime().GetTimeGone() + 7200
-		announcedAwaitingPlayerVisit = True
+		awaitingPlayerCalled = True
 		awaitingPlayerAccepted = False
 
 		'send out event that the boss wants to see his player
 		EventManager.triggerEvent(TEventSimple.Create("playerboss.onCallPlayer", new TData.AddNumber("latestTime", awaitingPlayerVisitTillTime), Self, GetPlayerBaseCollection().Get(playerID)))
+	End Method
+
+	
+	'call this method to force the player to visit the boss NOW
+	'-> this creates an event the game listens to
+	Method CallPlayerForced:Int()
+		awaitingPlayerCalled = True
+
+		'so the boss does no longer wait for the player to accept
+		InformPlayerAcceptedCall()
+
+		'send out event that the boss wants to see his player immediately
+		'latestTime = -1 so event knows "now"
+		EventManager.triggerEvent(TEventSimple.Create("playerboss.onCallPlayerForced", new TData.AddNumber("latestTime", -1), Self, GetPlayerBaseCollection().Get(playerID)))
 	End Method
 
 

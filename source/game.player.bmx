@@ -211,7 +211,7 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 
 	'remove this helper as soon as "player" class gets a single importable
 	'file
-	Method SendToBoss:Int()
+	Method SendToBoss:Int()	{_exposeToLua}
 		GetFigure().SendToDoor( TRoomDoor.GetByDetails("boss", playerID), True )
 
 		'inform the boss that the player accepted the call

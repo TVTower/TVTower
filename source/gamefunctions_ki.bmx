@@ -159,6 +159,19 @@ Type KI
 		End Try
 	End Method
 
+
+	Method CallOnBossCalls(latestWorldTime:int=0)
+		Local args:Object[1]
+		args[0] = String(latestWorldTime)
+		if (KIRunning) then LuaEngine.CallLuaFunction("OnBossCalls", args)
+	End Method
+
+
+	Method CallOnBossCallsForced()
+		if (KIRunning) then LuaEngine.CallLuaFunction("OnBossCallsForced")
+	End Method
+
+
 	Method CallOnLeaveRoom(roomId:int)
 	    Try
 			Local args:Object[1]

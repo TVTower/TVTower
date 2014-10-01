@@ -2603,13 +2603,26 @@ Type GameEvents
 	End Function
 
 
+	Function PlayerBoss_OnCallPlayerForced:Int(triggerEvent:TEventBase)
+		local latestTime:Long = triggerEvent.GetData().GetLong("latestTime", GetWorldTime().GetTimeGone() + 2*3600)
+		local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
+		local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
+
+		'inform ai before
+		if player.IsAI() then player.PlayerKI.CallOnBossCallsForced()
+		'send playert to boss now
+		player.SendToBoss()
+	End Function
+	
+
 	Function PlayerBoss_OnCallPlayer:Int(triggerEvent:TEventBase)
 		local latestTime:Long = triggerEvent.GetData().GetLong("latestTime", GetWorldTime().GetTimeGone() + 2*3600)
 		local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
 		local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
 
+		'inform ai about the request
 		if player.IsAI()
-			'inform ai
+			player.PlayerKI.CallOnBossCalls(latestTime)
 		else
 			'send out a toast message
 			local toast:TGameToastMessage = new TGameToastMessage

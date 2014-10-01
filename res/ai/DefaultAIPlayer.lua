@@ -257,6 +257,15 @@ function getAIPlayer()
 end
 
 -- ##### EVENTS #####
+function OnBossCalls(latestWorldTime)
+	infoMsg("Boss calls me! " .. latestWorldTime)
+end
+
+function OnBossCallsForced()
+	infoMsg("Boss calls me NOW!")
+end
+
+
 function OnMoneyChanged()
 end
 
