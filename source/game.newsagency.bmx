@@ -50,8 +50,9 @@ Type TNewsAgency
 		'As we use "randRange" this will produce the same random values
 		'on all clients - so they should be sync'd all the time.
 		
+		ProcessUpcomingNewsEvents()
+
 		If NextEventTime < GetWorldTime().GetTimeGone() Then AnnounceNewNewsEvent()
-		If NextChainTime < GetWorldTime().GetTimeGone() Then ProcessNewsEventChains()
 		If terroristUpdateTime < GetWorldTime().GetTimeGone() Then UpdateTerrorists()
 		If weatherUpdateTime < GetWorldTime().GetTimeGone() Then UpdateWeather()
 	End Method
@@ -107,7 +108,6 @@ Type TNewsAgency
 			'reset level if limit reached, also delay by 2 levels so
 			'things do not happen one after another
 			if terroristAggressionLevel[i] >= 5 + 1
-				print terroristAggressionLevel[i]
 				'reset to level 0
 				terroristAggressionLevel[i] = 0
 			endif
@@ -157,9 +157,7 @@ Type TNewsAgency
 				return null
 		End Select
 
-		Local NewsEvent:TNewsEvent = TNewsEvent.Create(title, description, genre, quality, price)
-		'remove news from available list to avoid repetition
-		NewsEventCollection.Remove(NewsEvent)
+		Local NewsEvent:TNewsEvent = new TNewsEvent.Init(title, description, genre, quality, price, TVTNewsType.InitialNewsByInGameEvent)
 
 		'send out terrorist
 		if aggressionLevel = 4
@@ -177,6 +175,7 @@ Type TNewsAgency
 			NewsEvent.AddHappenEffect(effect)
 		endif
 
+		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
 		Return NewsEvent
 	End Method
 	
@@ -292,9 +291,15 @@ Type TNewsAgency
 			description :+ GetLocale("TEMPERATURE_IS_CONSTANT_AT_X").replace("%TEMPERATURE%", tempMin)
 		endif
 		
-		Local NewsEvent:TNewsEvent = TNewsEvent.Create(title, description, TNewsEvent.GENRE_CURRENTS, quality, price)
-		'remove news from available list to avoid repetition
-		NewsEventCollection.Remove(NewsEvent)
+		Local NewsEvent:TNewsEvent = new TNewsEvent.Init(title, description, TNewsEvent.GENRE_CURRENTS, quality, price, TVTNewsType.InitialNewsByInGameEvent)
+
+		'TODO
+		'add weather->audience effects
+		'rain = more audience
+		'sun = less audience
+		'...
+
+		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
 
 		Return NewsEvent
 	End Method
@@ -326,10 +331,9 @@ Type TNewsAgency
 		description = Self._ReplaceProgrammeData(description, licence.GetData())
 
 		'quality and price are based on the movies data
-		Local NewsEvent:TNewsEvent = TNewsEvent.Create(title, description, TNewsEvent.GENRE_SHOWBIZ, licence.GetData().review/2.0, licence.GetData().outcome/3.0)
-		'remove news from available list as we do not want to have them repeated :D
-		NewsEventCollection.Remove(NewsEvent)
-
+		Local NewsEvent:TNewsEvent = new TNewsEvent.Init(title, description, TNewsEvent.GENRE_SHOWBIZ, licence.GetData().review/2.0, licence.GetData().outcome/3.0, TVTNewsType.InitialNewsByInGameEvent)
+		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
+		
 		Return NewsEvent
 	End Method
 
@@ -377,27 +381,16 @@ Type TNewsAgency
 	End Method
 
 
-	'announces new news chain elements
-	Method ProcessNewsEventChains:Int()
+	'announces planned news events (triggered by news some time before)
+	Method ProcessUpcomingNewsEvents:Int()
 		Local announced:Int = 0
-		Local newsEvent:TNewsEvent = Null
-		For Local chainElement:TNewsEvent = EachIn activeChains
-			If Not chainElement.isLastEpisode() Then newsEvent = chainElement.GetNextNewsEventFromChain()
-			'remove the "old" one, the new element will get added instead (if existing)
-			activeChains.Remove(chainElement)
+		For local newsEvent:TNewsEvent = EachIn GetNewsEventCollection().GetUpcomingNewsList()
+			'skip news events not happening yet
+			If newsEvent.happenedTime > GetWorldTime().GetTimeGone() then continue
 
-			'ignore if the chain ended already
-			If Not newsEvent Then Continue
-
-			If chainElement.happenedTime + newsEvent.getHappenDelay() < GetWorldTime().GetTimeGone()
-				announceNewsEvent(newsEvent)
-				announced:+1
-			EndIf
+			announceNewsEvent(newsEvent)
+			announced:+1
 		Next
-
-		'check every x-y game minutes
-		NextChainTime = GetWorldTime().GetTimeGone() + 60 * randRange(NextChainTimeInterval[0], NextChainTimeInterval[1])
-
 		Return announced
 	End Method
 
@@ -456,8 +449,6 @@ Type TNewsAgency
 		For Local i:Int = 1 To 4
 			AddNewsEventToPlayer(newsEvent, i, forceAdd)
 		Next
-
-		If newsEvent.episodes.count() > 0 Then activeChains.AddLast(newsEvent)
 	End Method
 
 
@@ -476,7 +467,8 @@ Type TNewsAgency
 		'=== TYPE RANDOM NEWS ===
 		'if no "special case" triggered, just use a random news
 		If Not newsEvent
-			newsEvent = NewsEventCollection.GetRandom()
+			newsEvent = GetNewsEventCollection().GetRandomAvailable()
+			newsEvent.doHappen()
 		EndIf
 
 		return newsEvent

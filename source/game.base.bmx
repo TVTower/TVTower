@@ -793,10 +793,6 @@ Type TGame {_exposeToLua="selected"}
 		'ago)
 		GetWorld().UpdateWeather()
 
-		'==== HANDLE TIMED EVENTS ====
-		'check if it is time for new news
-		GetNewsAgency().Update()
-
 
 		'==== CHECK BOMBS ====
 		'this triggers potential bombs

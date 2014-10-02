@@ -814,7 +814,7 @@ Type TSaveGame
 		_Assign(_PlayerProgrammePlanCollection, TPlayerProgrammePlanCollection._instance, "PlayerProgrammePlanCollection", MODE_LOAD)
 		_Assign(_PublicImageCollection, TPublicImageCollection._instance, "PublicImageCollection", MODE_LOAD)
 
-		_Assign(_NewsEventCollection, NewsEventCollection, "NewsEventCollection", MODE_LOAD)
+		_Assign(_NewsEventCollection, TNewsEventCollection._instance, "NewsEventCollection", MODE_LOAD)
 		_Assign(_NewsAgency, TNewsAgency._instance, "NewsAgency", MODE_LOAD)
 		_Assign(_Building, TBuilding._instance, "Building", MODE_LOAD)
 		_Assign(_EventManagerEvents, EventManager._events, "Events", MODE_LOAD)
@@ -856,7 +856,7 @@ Type TSaveGame
 		'database data for programmes
 		_Assign(TProgrammeDataCollection._instance, _ProgrammeDataCollection, "ProgrammeDataCollection", MODE_SAVE)
 		_Assign(TProgrammeLicenceCollection._instance, _ProgrammeLicenceCollection, "ProgrammeLicenceCollection", MODE_SAVE)
-		_Assign(NewsEventCollection, _NewsEventCollection, "NewsEventCollection", MODE_SAVE)
+		_Assign(TNewsEventCollection._instance, _NewsEventCollection, "NewsEventCollection", MODE_SAVE)
 		_Assign(TNewsAgency._instance, _NewsAgency, "NewsAgency", MODE_SAVE)
 		_Assign(EventManager._events, _EventManagerEvents, "Events", MODE_SAVE)
 		_Assign(TPopularityManager._instance, _PopularityManager, "PopularityManager", MODE_SAVE)
@@ -2707,6 +2707,11 @@ Type GameEvents
 		'the popularity manager takes care itself whether to do something
 		'or not (update intervals)
 		GetPopularityManager().Update(triggerEvent)
+
+
+		'=== UPDATE NEWS AGENCY ===
+		'check if it is time for new news
+		GetNewsAgency().Update()
 
 
 		'=== CHANGE OFFER OF MOVIEAGENCY AND ADAGENCY ===

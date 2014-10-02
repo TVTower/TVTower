@@ -3,82 +3,184 @@ Rem
 	NewsEvent data - basic of broadcastable news
 	====================================================================
 EndRem
+SuperStrict
 Import "Dig/base.util.mersenne.bmx"
 'for TBroadcastSequence
 Import "game.broadcast.base.bmx"
 Import "game.gameobject.bmx"
+Import "game.gameconstants.bmx"
 Import "game.world.worldtime.bmx"
 
 
 
 
 Type TNewsEventCollection
+	'holding all existent news events (also triggered news)
+	Field allNewsEvents:TMap = CreateMap()
+	'=== CACHE ===
+	'cache for faster access
+
 	'holding already announced news
-	Field usedList:TList = CreateList()
-	'holding single news and first/parent of news-chains (start)
-	Field List:TList = CreateList()
+	Field _usedNewsEvents:TList = CreateList() {nosave}
+	'holding news coming in a defined future
+	Field _upcomingNewsEvents:TList = CreateList() {nosave}
+	'holding all (initial) news events available to "happen"
+	Field _availableNewsEvents:TList = CreateList() {nosave}
+	Field _initialNewsEvents:TList = CreateList() {nosave}
+	Field _followingNewsEvents:TList = CreateList() {nosave}
+	Global _instance:TNewsEventCollection
 
 
+	Function GetInstance:TNewsEventCollection()
+		if not _instance then _instance = new TNewsEventCollection
+		return _instance
+	End Function
+	
+
+	Method _InvalidateCaches()
+		_usedNewsEvents = Null
+		_upcomingNewsEvents = Null
+		_availableNewsEvents = Null
+		_initialNewsEvents = Null
+		_followingNewsEvents = Null
+	End Method
+
+	
 	Method Add:int(obj:TNewsEvent)
-		List.AddLast(obj)
+		'add to common map
+		'special lists get filled when using their Getters
+		allNewsEvents.Insert(obj.GetGUID(), obj)
+
+		_InvalidateCaches()
+
 		return TRUE
+	End Method
+
+
+	Method AddOneTimeEvent:int(obj:TNewsEvent)
+		obj.reuseable = False
+		obj.skippable = False
+		Add(obj)
 	End Method
 
 
 	Method Remove:int(obj:TNewsEvent)
-		List.Remove(obj)
+		allNewsEvents.Remove(obj.GetGUID())
+
+		_InvalidateCaches()
+
 		return TRUE
 	End Method
 
 
-	Method Get:TNewsEvent(id:Int)
-		Local news:TNewsEvent = Null
-		For Local i:Int = 0 To List.Count()-1
-			news = TNewsEvent(List.ValueAtIndex(i))
-			If news and news.id = id
-				news.doHappen()
-				Return news
-			endif
-		Next
-		Return Null
+	Method Get:TNewsEvent(GUID:String)
+		Return TNewsEvent(allNewsEvents.ValueForKey(GUID))
 	End Method
 
 
 	Method SetOldNewsUnused(daysAgo:int=1)
-		For local news:TNewsEvent = eachin usedList
+		For local news:TNewsEvent = eachin allNewsEvents.Values()
 			if abs(GetWorldTime().GetDay(news.happenedTime) - GetWorldTime().GetDay()) >= daysAgo
-				usedList.Remove(news)
-				list.addLast(news)
+				'reset happenedTime so it is available again
 				news.happenedTime = -1
+				
+				'add it again to the list, this resets the caches
+				'and therefore adds it to the available list again
+				Add(news)
 			endif
 		Next
 	End Method
 
 
-	Method GetRandom:TNewsEvent()
+	Method GetRandomAvailable:TNewsEvent()
+	
 		'if no news is available, make older ones available again
 		'start with 7 days ago and lower until we got a news
 		local days:int = 7
-		While List.Count() = 0 and days >= 0
+		While GetAvailableNewsList().Count() = 0 and days >= 0
 			SetOldNewsUnused(days)
 			days :- 1
 		Wend
-		if days < 7
-			print "NewsEventCollection.GetRandom(): used=" + usedList.Count() + " unused="+list.Count() + " refreshedDaysAgo="+(days+1)
-		endif
 		
-		if List.Count() = 0
+		if GetAvailableNewsList().Count() = 0
 			'This should only happen if no news events were found in the database
 			Throw "TNewsEventCollection.GetRandom(): no unused news events found."
 		endif
 		
 		'fetch a random news
-		Local news:TNewsEvent = TNewsEvent(List.ValueAtIndex((randRange(0, List.Count() - 1))))
+		return TNewsEvent(GetAvailableNewsList().ValueAtIndex(randRange(0, GetAvailableNewsList().Count() - 1)))
+	End Method
 
-		news.doHappen()
 
-		'Print "get random news: "+news.title + " ("+news.episode+"/"+news.getEpisodesCount()+")"
-		Return news
+	'returns (and creates if needed) a list containing only available news
+	Method GetAvailableNewsList:TList()
+		if not _availableNewsEvents
+			_availableNewsEvents = CreateList()
+			'GetInitialNewsList() does NOT contain "initialInGameNews",
+			'use "allNewsEvents.Values()" to have them included too.
+			'But skip "followingNews" then!
+			For local event:TNewsEvent = EachIn GetInitialNewsList()
+				'skip news happened somewhen (past or future)
+				if event.happenedTime <> -1 then continue
+				_availableNewsEvents.AddLast(event)
+			Next
+		endif
+		return _availableNewsEvents
+	End Method
+
+
+	'returns (and creates if needed) a list containing only already used
+	'news
+	Method GetUsedNewsList:TList()
+		if not _usedNewsEvents
+			_usedNewsEvents = CreateList()
+			For local event:TNewsEvent = EachIn allNewsEvents.Values()
+				'skip not happened events - or upcoming events
+				if event.happenedTime = -1 or event.happenedTime >= GetWorldTime().GetTimeGone() then continue
+				_usedNewsEvents.AddLast(event)
+			Next
+		endif
+		return _usedNewsEvents
+	End Method	
+
+
+	'returns (and creates if needed) a list containing only initial news
+	Method GetInitialNewsList:TList()
+		if not _initialNewsEvents
+			_initialNewsEvents = CreateList()
+			For local event:TNewsEvent = EachIn allNewsEvents.Values()
+				if event.newsType <> TVTNewsType.InitialNews then continue
+				_initialNewsEvents.AddLast(event)
+			Next
+		endif
+		return _initialNewsEvents
+	End Method
+
+
+	'returns (and creates if needed) a list containing only follow up news
+	Method GetFollowingNewsList:TList()
+		if not _followingNewsEvents
+			_followingNewsEvents = CreateList()
+			For local event:TNewsEvent = EachIn allNewsEvents.Values()
+				if event.newsType <> TVTNewsType.FollowingNews then continue
+				_followingNewsEvents.AddLast(event)
+			Next
+		endif
+		return _followingNewsEvents
+	End Method
+
+
+	'returns (and creates if needed) a list containing only initial news
+	Method GetUpcomingNewsList:TList()
+		if not _upcomingNewsEvents
+			_upcomingNewsEvents = CreateList()
+			For local event:TNewsEvent = EachIn allNewsEvents.Values()
+				'skip events already happened or not happened at all (-> "-1")
+				if event.happenedTime < GetWorldTime().GetTimeGone() then continue
+				_upcomingNewsEvents.AddLast(event)
+			Next
+		endif
+		return _upcomingNewsEvents
 	End Method
 
 
@@ -87,13 +189,22 @@ Type TNewsEventCollection
 		if time = 0 then time = GetWorldTime().GetTimeGone()
 		news.happenedtime = time
 
-		if not news.parent
-			self.usedList.addLast(news)
-			self.list.remove(news)
-		endif
+		'reset only specific caches, so news gets in the correct list
+		'- no need to invalidate newstype-specific caches
+		_usedNewsEvents = Null
+		_upcomingNewsEvents = Null
+		_availableNewsEvents = Null
+
+		'remove the news if it cannot happen again
+		if not news.IsReuseable() then Remove(news)
 	End Method
 End Type
-Global NewsEventCollection:TNewsEventCollection = new TNewsEventCollection
+
+'===== CONVENIENCE ACCESSOR =====
+'return collection instance
+Function GetNewsEventCollection:TNewsEventCollection()
+	Return TNewsEventCollection.GetInstance()
+End Function
 
 
 
@@ -106,26 +217,20 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	'TODO: Es muss definiert werden welchen Rahmen price hat. In der DB
 	'      sind fast alle Werte 0. Der Höchstwert ist 99.
 	Field price:Int	= 0
-	Field episode:Int = 0
-	Field episodes:TList = CreateList()
+	'time when something happened or will happen. "-1" = not happened
 	Field happenedTime:Double = -1
-	'params for delay generation  [A,B,C,D]
-	Field happenDelayData:int[]	= [5,0,0,0]
-	'what kind of delay do we have?
-	'1 = "A" days from now
-	'2 = "A" hours from now
-	'3 = "A" days from now at "B":00
-	Field happenDelayType:int = 2
-	'effects which get triggered on "doHappen"
 	Field happenEffects:TNewsEffect[]
 	'effects which get triggered on "doBroadcast"
 	Field broadcastEffects:TNewsEffect[]
-	'is this news a child of a chain?
-	Field parent:TNewsEvent = Null
+	'type of the news event according to TVTNewsType
+	Field newsType:int = 0 'initialNews
 	'can the "happening" get skipped ("happens later")
 	'eg. if no player listens to the genre
 	'news like "terrorist will attack" happen in all cases => NOT skippable
 	Field skippable:int = True
+	'can the event happen again - or only once?
+	'eg. dynamically created weather news should set this to FALSE
+	Field reuseable:int = True
 
 	Const GENRE_POLITICS:Int = 0	{_exposeToLua}
 	Const GENRE_SHOWBIZ:Int  = 1	{_exposeToLua}
@@ -134,57 +239,15 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	Const GENRE_CURRENTS:Int = 4	{_exposeToLua}
 
 
-	Function Create:TNewsEvent(title:String, description:String, Genre:Int, quality:Int=0, price:Int=0)
-		Local obj:TNewsEvent =New TNewsEvent
-		obj.title       = title
-		obj.description = description
-		obj.genre       = Genre
-		obj.episode     = 0
-		obj.quality     = quality
-		obj.price       = price
+	Method Init:TNewsEvent(title:String, description:String, Genre:Int, quality:Int=0, price:Int=0, newsType:int=0)
+		self.title       = title
+		self.description = description
+		self.genre       = Genre
+		self.quality     = quality
+		self.price       = price
+		self.newsType	 = newsType
 
-		NewsEventCollection.Add(obj)
-		Return obj
-	End Function
-
-
-	Method AddEpisode:TNewsEvent(title:String, description:String, Genre:Int, episode:Int=0,quality:Int=0, price:Int=0, id:Int=0)
-		Local obj:TNewsEvent =New TNewsEvent
-		obj.title       = title
-		obj.description = description
-		obj.Genre       = Genre
-		obj.quality     = quality
-		obj.price       = price
-
-	    obj.episode     = episode
-		obj.parent		= Self
-
-		obj.happenDelayType		= 2 'data is hours
-		obj.happenDelayData[0]	= 5 '5hrs default
-		'add to parent
-		Self.episodes.AddLast(obj)
-		SortList(Self.episodes)
-
-		Return obj
-	End Method
-
-
-	'returns the next news out of a chain
-	Method GetNextNewsEventFromChain:TNewsEvent()
-		Local news:TNewsEvent=Null
-		'if element is an episode of a chain
-		If self.parent
-			news = TNewsEvent(self.parent.episodes.ValueAtIndex(Max(0,self.episode -1)))
-		'if it is the parent of a chain
-		elseif self.episodes.count() > 0
-			news = TNewsEvent(self.episodes.ValueAtIndex(0))
-		endif
-		if news
-			news.doHappen()
-			Return news
-		endif
-		'if something strange happens - better return self than nothing
-		return self
+		Return self
 	End Method
 
 
@@ -270,24 +333,9 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method getHappenDelay:int()
-		'data is days from now
-		if self.happenDelayType = 1 then return self.happenDelayData[0]*60*60*24
-		'data is hours from now
-		if self.happenDelayType = 2 then return self.happenDelayData[0]*60*60
-		'data is days from now at X:00
-		if self.happenDelayType = 3
-			local time:int = GetWorldTime().MakeTime(GetWorldTime().GetYear(), GetWorldTime().GetDayOfYear() + self.happenDelayData[0], self.happenDelayData[1],0)
-			return time - GetWorldTime().getTimeGone()
-		endif
-
-		return 0
-	End Method
-
-
 	Method doHappen(time:int = 0)
 		'set happened time, add to collection list...
-		NewsEventCollection.setNewsHappened(self, time)
+		GetNewsEventCollection().setNewsHappened(self, time)
 
 		'trigger happenEffects
 		local effectParams:TData = new TData.Add("newsEvent", self)
@@ -309,19 +357,13 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	End Method
 	
 
-	Method getEpisodesCount:int()
-		if self.parent then return self.parent.episodes.Count()
-		return self.episodes.Count()
-	End Method
-
-
-	Method IsLastEpisode:int()
-		return self.parent<>null and self.episode = self.parent.episodes.count()
-	End Method
-
-
 	Method IsSkippable:int()
 		return skippable
+	End Method
+
+
+	Method IsReuseable:int()
+		return reuseable
 	End Method
 
 
@@ -403,6 +445,79 @@ Type TNewsEffect
 		print "data: "+GetData().ToString()
 		print "params: "+params.ToString()
 	
+		return True
+	End Method
+End Type
+
+
+
+Type TNewsEffect_TriggerNews extends TNewsEffect
+	Field triggerNewsGUID:string
+	'params for time generation  [A,B,C,D]
+	Field happenTimeData:int[]	= [5,9,0,0]
+	'what kind of happen time data do we have?
+	'1 = "A" days from now
+	'2 = "A" hours from now
+	'3 = "A" days from now at "B":00
+	'4 = "A"-"B" hours from now
+	Field happenTimeType:int = 4
+
+	
+	Method ToString:string()
+		local name:string = data.GetString("name", "default")
+		return "TNewsEffect_TriggerNews ("+name+")"
+	End Method
+
+	'default params trigger the news 5 hours after the triggering one
+	Method Init:TNewsEffect_TriggerNews(triggerNewsGUID:string, happentimeType:int = -1, happenTimeData:int[] = null)
+		self.triggerNewsGUID = triggerNewsGUID
+		if happenTimeType > 0
+			self.happenTimeType = happenTimeType
+		endif
+		if happenTimeData and happenTimeData.length = 4
+			self.happenTimeData = happenTimeData
+		endif
+		return self
+	End Method
+
+
+	Method GetHappenTime:Double()
+		Select happenTimeType
+			'data is days from now
+			case 1
+				local happenTime:Double = GetWorldTime().getTimeGone()
+				return happenTime + happenTimeData[0]*60*60*24
+			'data is hours from now
+			case 2
+				local happenTime:Double = GetWorldTime().getTimeGone()
+				return happenTime + happenTimeData[0]*60*60
+			'data is days from now at X:00
+			case 3
+				return GetWorldTime().MakeTime(GetWorldTime().GetYear(), GetWorldTime().GetDayOfYear() + happenTimeData[0], happenTimeData[1], 0)
+			'data is hours "a - b" from now
+			case 4
+				local happenTime:Double = GetWorldTime().getTimeGone()
+				'add starthour "a"
+				happenTime :+ happenTimeData[0] * 60*60
+				'add random seconds between "a" and "b"
+				happenTime :+ randRange(0, (happenTimeData[1] - happenTimeData[0]) *60*60)
+				'7-9 = 7:00, 7:01, ... 9:00
+				return happenTime
+		End Select
+		return 0
+	End Method
+	
+
+	'override to trigger a specific news
+	Method EffectFunc:int(params:TData)
+		'set the happenedTime of the defined news to somewhere in the future
+		local news:TNewsEvent = GetNewsEventCollection().Get(triggerNewsGUID)
+		if not news
+			TLogger.Log("TNewsEffect_TriggerNews", "cannot find news to trigger: "+triggerNewsGUID, LOG_ERROR)
+			return false
+		endif
+		GetNewsEventCollection().setNewsHappened(news, GetHappenTime())
+
 		return True
 	End Method
 End Type

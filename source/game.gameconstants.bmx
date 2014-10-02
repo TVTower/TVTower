@@ -9,10 +9,9 @@ EndRem
 SuperStrict
 
 Type TVTNewsType
-	const SingleNews:int = 0
-	const InitialNewsAutomatic:int = 1
-	const InitialNewsInGameEvent:int = 2
-	const FollowingNews:int =3
+	const InitialNews:int = 0
+	const InitialNewsByInGameEvent:int = 1
+	const FollowingNews:int = 2
 End Type
 
 

@@ -104,7 +104,7 @@ Type TDatabaseLoader
 		Local fixedPrice:Int
 		Local profit:Float
 		Local penalty:Float
-
+		local price:int
 		Local quality:Float
 
 		local nodeParent:TxmlNode
@@ -312,6 +312,7 @@ Type TDatabaseLoader
 
 
 		'===== IMPORT ALL NEWS INCLUDING EPISODES =====
+		Local newsEvent:TNewsEvent
 
 		nodeParent		= xml.FindRootChild("allnews")
 		For nodeChild = EachIn TXmlHelper.GetNodeChildElements(nodeParent)
@@ -321,22 +322,34 @@ Type TDatabaseLoader
 			description	= xml.FindValue(nodeChild,"description", "")
 			genre		= xml.FindValueInt(nodeChild,"genre", 0)
 			quality		= xml.FindValueInt(nodeChild,"topicality", 0)
-			local price:int		= xml.FindValueInt(nodeChild,"price", 0)
-			Local parentNewsEvent:TNewsEvent = TNewsEvent.Create(title, description, Genre, quality, price)
+			price		= xml.FindValueInt(nodeChild,"price", 0)
+		
+			newsEvent = new TNewsEvent.Init(title, description, Genre, quality, price, TVTNewsType.InitialNews)
+			GetNewsEventCollection().Add(newsEvent)
 
 			'load episodes
 			Local EpisodeNum:Int = 0
 			For nodeEpisode = EachIn TXmlHelper.GetNodeChildElements(nodeChild)
-				If nodeEpisode.getName() = "episode"
-					EpisodeNum		= xml.FindValueInt(nodeEpisode,"number", EpisodeNum+1)
-					title			= xml.FindValue(nodeEpisode,"title", "unknown Newstitle")
-					description		= xml.FindValue(nodeEpisode,"description", "")
-					genre			= xml.FindValueInt(nodeEpisode,"genre", genre)
-					quality			= xml.FindValueInt(nodeEpisode,"topicality", quality)
-					price			= xml.FindValueInt(nodeEpisode,"price", price)
-					parentNewsEvent.AddEpisode(title,description, Genre, EpisodeNum,quality, price)
-					totalnewscount :+1
-				EndIf
+				If nodeEpisode.getName() <> "episode" then continue
+				EpisodeNum		= xml.FindValueInt(nodeEpisode,"number", EpisodeNum+1)
+				title			= xml.FindValue(nodeEpisode,"title", "unknown Newstitle")
+				description		= xml.FindValue(nodeEpisode,"description", "")
+				genre			= xml.FindValueInt(nodeEpisode,"genre", genre)
+				quality			= xml.FindValueInt(nodeEpisode,"topicality", quality)
+				price			= xml.FindValueInt(nodeEpisode,"price", price)
+
+				'in V2 triggeredNews are of type "followingNews" !
+				local triggeredNewsEvent:TNewsEvent = new TNewsEvent.Init(title, description, Genre, quality, price, TVTNewsType.FollowingNews)
+				GetNewsEventCollection().Add(triggeredNewsEvent)
+
+				'add the found episode as a triggereffect to the news
+				newsEvent.AddHappenEffect(new TNewsEffect_TriggerNews.Init(triggeredNewsEvent.GetGUID()))
+
+				'set the found episode as current newsEvent, so the next
+				'episode gets added as triggereffect to that news episode then
+				newsEvent = triggeredNewsEvent
+
+				totalnewscount :+1
 			Next
 
 			newsCount :+ 1
@@ -505,7 +518,85 @@ Type TDatabaseLoader
 
 		return person
 	End Method
+
+
+rem
+
+	Method LoadV3NewsEventFromNode:TNewsEvent(node:TxmlNode, xml:TXmlHelper)
+		local GUID:String = xml.FindValue(node,"id", "")
+		local doAdd:int = True
+		'try to fetch an existing one
+		local adContract:TAdContractBase = GetAdContractBaseCollection().GetByGUID(GUID)
+		if not adContract
+			adContract = new TAdContractBase
+			adContract.title = new TLocalizedString
+			adContract.description = new TLocalizedString
+			adContract.GUID = GUID
+		else
+			doAdd = False
+		endif
+		
+		'=== LOCALIZATION DATA ===
+		adContract.title.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "title")) )
+		adContract.description.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "description")) )
+
+
+		'=== DATA ===
+		local nodeData:TxmlNode = xml.FindElementNode(node, "data")
+		local data:TData = new TData
+		xml.LoadValuesToData(nodeData, data, [..
+			"infomercial", "quality", "repetitions", ..
+			"fix_price", "duration", "profit", "penalty", ..
+			"pro_pressure_groups", "contra_pressure_groups" ..
+		])
+			
+
+'aktivieren, wenn Datenbank Eintraege enthaelt, die infomercials erlauben
+'				adContract.infomercialAllowed = data.GetBool("infomercial", adContract.infomercialAllowed)
+'				adContract.quality = data.GetBool("quality", adContract.quality)
+		adContract.quality = 0.5
+
+		adContract.spotCount = data.GetInt("repetitions", adContract.spotcount)
+		adContract.fixedPrice = data.GetInt("fix_price", adContract.fixedPrice)
+		adContract.daysToFinish = data.GetInt("duration", adContract.daysToFinish)
+		adContract.proPressureGroups = data.GetInt("pro_pressure_groups", adContract.proPressureGroups)
+		adContract.contraPressureGroups = data.GetInt("contra_pressure_groups", adContract.contraPressureGroups)
+		adContract.profitBase = data.GetFloat("profit", adContract.profitBase)
+		adContract.penaltyBase = data.GetFloat("penalty", adContract.penaltyBase)
 	
+
+		'=== CONDITIONS ===
+		local nodeConditions:TxmlNode = xml.FindElementNode(node, "conditions")
+		'do not reset "data" before - it contains the pressure groups
+		xml.LoadValuesToData(nodeConditions, data, [..
+			"min_audience", "min_image", "target_group", ..
+			"allowed_programme_type", "allowed_genre", ..
+			"prohibited_genre", "prohibited_programme_type" ..
+		])
+		'0-100% -> 0.0 - 1.0
+		adContract.minAudienceBase = 0.01 * data.GetFloat("min_audience", adContract.minAudienceBase*100.0)
+		adContract.minImageBase = 0.01 * data.GetFloat("min_image", adContract.minImageBase*100.0)
+		adContract.limitedToTargetGroup = data.GetInt("target_group", adContract.limitedToTargetGroup)
+		adContract.limitedToProgrammeGenre = data.GetInt("allowed_genre", adContract.limitedToProgrammeGenre)
+		adContract.limitedToProgrammeType = data.GetInt("allowed_programme_type", adContract.limitedToProgrammeType)
+		adContract.forbiddenProgrammeGenre = data.GetInt("prohibited_genre", adContract.forbiddenProgrammeGenre)
+		adContract.forbiddenProgrammeType = data.GetInt("prohibited_programme_type", adContract.forbiddenProgrammeType)
+		'if only one group
+		adContract.proPressureGroups = data.GetInt("pro_pressure_groups", adContract.proPressureGroups)
+		adContract.contraPressureGroups = data.GetInt("contra_pressure_groups", adContract.contraPressureGroups)
+
+
+
+		'=== ADD TO COLLECTION ===
+		if doAdd
+			GetAdContractBaseCollection().Add(adContract)
+			contractsCount :+ 1
+			totalContractsCount :+ 1
+		endif
+
+		return adContract
+	End Method	
+endrem
 
 	Method LoadV3AdContractBaseFromNode:TAdContractBase(node:TxmlNode, xml:TXmlHelper)
 		local GUID:String = xml.FindValue(node,"id", "")

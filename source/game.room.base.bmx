@@ -372,6 +372,8 @@ Type TRoomBase {_exposeToLua="selected"}
 	Method Draw:int()
 		'emit event so custom draw functions can run
 		EventManager.triggerEvent( TEventSimple.Create("room.onDraw", null, self) )
+		'emit event limited to a specific room id (allows id-specific listeners)
+		EventManager.triggerEvent( TEventSimple.Create("room."+self.id+".onDraw", null, self) )
 
 		return 0
 	End Method
@@ -399,6 +401,8 @@ Type TRoomBase {_exposeToLua="selected"}
 	Method Update:Int()
 		'emit event so custom updaters can handle
 		EventManager.triggerEvent( TEventSimple.Create("room.onUpdate", null, self) )
+		'emit event limited to a specific room id (allows id-specific listeners)
+		EventManager.triggerEvent( TEventSimple.Create("room."+self.id+".onUpdate", null, self) )
 
 		return 0
 	End Method

@@ -223,7 +223,8 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 	Function Create:TNews(text:String="unknown", publishdelay:Int=0, useNewsEvent:TNewsEvent=Null)
 		If not useNewsEvent
-			useNewsEvent = NewsEventCollection.GetRandom()
+			useNewsEvent = GetNewsEventCollection().GetRandomAvailable()
+			useNewsEvent.doHappen()
 		endif
 
 		'if no happened time is set, use the Game time
