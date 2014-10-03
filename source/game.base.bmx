@@ -845,9 +845,18 @@ Type TGame {_exposeToLua="selected"}
 		For Local i:Int = 1 to missedMinutes
 			'add back another gone minute each loop
 			worldTime._timeGone :+ 60
-
+			 
 			'day
 			If worldTime.GetDayHour() = 0 And worldTime.GetDayMinute() = 0
+				'year
+				If worldTime.GetDayOfYear() = 0
+					EventManager.triggerEvent(TEventSimple.Create("Game.OnYear", new TData.addNumber("minute", worldTime.GetDayMinute()).addNumber("hour", worldTime.GetDayHour()).addNumber("day", worldTime.GetDay()) ))
+
+					'reset availableNewsEventList - maybe this is a year
+					'with some more news
+					GetNewsEventCollection().RefreshAvailable()
+				EndIf
+
 			 	'automatically change current-plan-day on day change
 			 	'but do it silently (without affecting the)
 			 	RoomHandler_Office.ChangePlanningDay(worldTime.GetDay())

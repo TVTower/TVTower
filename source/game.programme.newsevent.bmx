@@ -5,6 +5,7 @@ Rem
 EndRem
 SuperStrict
 Import "Dig/base.util.mersenne.bmx"
+Import "Dig/base.util.math.bmx"
 'for TBroadcastSequence
 Import "game.broadcast.base.bmx"
 Import "game.gameobject.bmx"
@@ -73,7 +74,15 @@ Type TNewsEventCollection
 	End Method
 
 
-	Method Get:TNewsEvent(GUID:String)
+	'helper for external callers so they do not need to know
+	'the internal structure of the collection
+	Method RefreshAvailable:int()
+		_availableNewsEvents = Null
+		GetAvailableNewsList()
+	End Method
+	
+
+	Method GetByGUID:TNewsEvent(GUID:String)
 		Return TNewsEvent(allNewsEvents.ValueForKey(GUID))
 	End Method
 
@@ -122,6 +131,10 @@ Type TNewsEventCollection
 			For local event:TNewsEvent = EachIn GetInitialNewsList()
 				'skip news happened somewhen (past or future)
 				if event.happenedTime <> -1 then continue
+				'skip news not available to "happen" (eg. wrong year)
+				if not event.CanHappen() then continue
+				
+				'skip news which cannot happen now
 				_availableNewsEvents.AddLast(event)
 			Next
 		endif
@@ -209,14 +222,11 @@ End Function
 
 
 Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
-	Field title:string = ""
-	Field description:string = ""
+	Field title:TLocalizedString
+	Field description:TLocalizedString
 	Field genre:Int = 0
-	'TODO: Quality wird nirgends definiert... keine Werte in der DB.
-	Field quality:Int = 0
-	'TODO: Es muss definiert werden welchen Rahmen price hat. In der DB
-	'      sind fast alle Werte 0. Der Höchstwert ist 99.
-	Field price:Int	= 0
+	Field quality:Float = 0.5
+	Field priceModifier:Float = 1.0
 	'time when something happened or will happen. "-1" = not happened
 	Field happenedTime:Double = -1
 	Field happenEffects:TNewsEffect[]
@@ -224,6 +234,8 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	Field broadcastEffects:TNewsEffect[]
 	'type of the news event according to TVTNewsType
 	Field newsType:int = 0 'initialNews
+	Field availableYearRangeFrom:int = -1
+	Field availableYearRangeTo:int = -1
 	'can the "happening" get skipped ("happens later")
 	'eg. if no player listens to the genre
 	'news like "terrorist will attack" happen in all cases => NOT skippable
@@ -239,15 +251,50 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	Const GENRE_CURRENTS:Int = 4	{_exposeToLua}
 
 
-	Method Init:TNewsEvent(title:String, description:String, Genre:Int, quality:Int=0, price:Int=0, newsType:int=0)
+	Method Init:TNewsEvent(GUID:string, title:TLocalizedString, description:TLocalizedString, Genre:Int, quality:Float=-1, priceModifier:Float=-1, newsType:int=0)
+		self.SetGUID(GUID)
 		self.title       = title
 		self.description = description
 		self.genre       = Genre
-		self.quality     = quality
-		self.price       = price
+		if quality >= 0 then SetQuality(quality)
+		if priceModifier >= 0 then SetPriceModifier(priceModifier)
 		self.newsType	 = newsType
 
 		Return self
+	End Method
+
+
+	Method ToString:String()
+		return "newsEvent: title=" + GetTitle() + "  quality=" + quality + "  priceModifier=" + priceModifier + "  broadcastEffects=" + broadcastEffects.length + "  happenEffects="+happenEffects.length
+	End Method
+
+
+	Method GetTitle:string() {_exposeToLua}
+		if title then return title.Get()
+	End Method
+
+
+	Method GetDescription:string() {_exposeToLua}
+		if description then return description.Get()
+		return ""
+	End Method
+
+	
+	Method SetGUID:Int(GUID:String)
+		if GUID="" then GUID = "generic-newsevent-"+id
+		self.GUID = GUID
+	End Method
+
+
+	Method SetQuality:Int(quality:Float)
+		'clamp between 0-1.0
+		self.quality = MathHelper.Clamp(quality, 0.0, 1.0)
+	End Method
+
+
+	Method SetPriceModifier:Int(priceModifier:Float)
+		'avoid negative modifiers
+		self.priceModifier = Max(0.0, priceModifier)
 	End Method
 
 
@@ -259,6 +306,43 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 		If Genre = 4 Then Return GetLocale("NEWS_CURRENTAFFAIRS")
 		Return Genre+ " unbekannt"
 	End Function
+
+
+	Method CanHappen:int()
+		local result:int = True
+		if availableYearRangeFrom >= 0 and availableYearRangeTo >= 0
+			if GetWorldTime().GetYear() < availableYearRangeFrom or GetWorldTime().GetYear() > availableYearRangeTo
+				result = False
+			endif
+		endif
+
+		return result
+	End Method
+
+
+	Method AddEffectByData:int(effectData:TData)
+		if not effectData then return False
+
+		Select effectData.GetString("type").ToLower()
+			case "triggernews"
+				local triggerGUID:string = effectData.GetString("parameter1", "")
+				local happenTimeType:int = effectData.GetInt("parameter2", -1)
+				local happenTimeData:int[] = [..
+					effectData.GetInt("parameter3", -1), ..
+					effectData.GetInt("parameter4", -1), ..
+					effectData.GetInt("parameter5", -1), ..
+					effectData.GetInt("parameter6", -1) ..
+				]
+				if triggerGUID = "" then return False
+				
+				AddHappenEffect(..
+					new TNewsEffect_TriggerNews.Init( ..
+						triggerGUID, happenTimeType, happenTimeData ..
+				))
+				return True
+		End Select
+		return False
+	End Method
 
 
 	'checks if an effect was already added before
@@ -371,22 +455,21 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 		'the older the less ppl want to watch - 1hr = 0.95%, 2hr = 0.90%...
 		'means: after 20 hrs, the topicality is 0
 		local ageHours:int = floor( float(GetWorldTime().GetTimeGone() - self.happenedTime)/3600.0 )
-		Local age:float = Max(0,100-5*Max(0, ageHours) )
-		return age*2.55 ',max is 255
+		Local age:float = 0.01 * Max(0,100-5*Max(0, ageHours) )
+		'value 0-1.0
+		return age
 	End Method
 
 
 	Method GetAttractiveness:Float() {_exposeToLua}
-		Return 0.30*((quality+5)/255) + 0.4*ComputeTopicality()/255 + 0.2*price/255 + 0.1
+		return 0.35*quality + 0.6*ComputeTopicality() + 0.05
 	End Method
 
 
 	Method GetQuality:Float(luckFactor:Int = 1) {_exposeToLua}
 		Local qualityTemp:Float = 0.0
 
-		qualityTemp = Float(ComputeTopicality()) / 255.0 * 0.45 ..
-			+ Float(quality) / 255.0 * 0.35 ..
-			+ Float(price) / 255.0 * 0.2
+		qualityTemp = GetAttractiveness()
 
 		If luckFactor = 1 Then
 			qualityTemp = qualityTemp * 0.97 + (Float(RandRange(10, 30)) / 1000.0) '1%-Punkte bis 3%-Punkte Basis-Qualität
@@ -401,8 +484,7 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 
 	Method ComputeBasePrice:Int() {_exposeToLua}
 		'price ranges from 0-10.000
-		Return 100 * ceil( 100 * float(0.6*quality + 0.3*price + 0.1*self.ComputeTopicality())/255.0 )
-		'Return Floor(Float(quality * price / 100 * 2 / 5)) * 100 + 1000  'Teuerstes in etwa 10000+1000
+		Return 100 * ceil(100 * GetAttractiveness() * priceModifier)
 	End Method
 End Type
 
@@ -475,7 +557,12 @@ Type TNewsEffect_TriggerNews extends TNewsEffect
 			self.happenTimeType = happenTimeType
 		endif
 		if happenTimeData and happenTimeData.length = 4
-			self.happenTimeData = happenTimeData
+			'only use values defined in the happenTimeData-array
+			local happenTimeDataNew:int[] = [happenTimeData[0],happenTimeData[1],happenTimeData[2],happenTimeData[3]]
+			for local i:int = 0 until happenTimeData.length
+				if happenTimeData[i] >= 0 then happenTimeDataNew[i] = happenTimeData[i]
+			Next
+			self.happenTimeData = happenTimeDataNew
 		endif
 		return self
 	End Method
@@ -511,7 +598,7 @@ Type TNewsEffect_TriggerNews extends TNewsEffect
 	'override to trigger a specific news
 	Method EffectFunc:int(params:TData)
 		'set the happenedTime of the defined news to somewhere in the future
-		local news:TNewsEvent = GetNewsEventCollection().Get(triggerNewsGUID)
+		local news:TNewsEvent = GetNewsEventCollection().GetByGUID(triggerNewsGUID)
 		if not news
 			TLogger.Log("TNewsEffect_TriggerNews", "cannot find news to trigger: "+triggerNewsGUID, LOG_ERROR)
 			return false

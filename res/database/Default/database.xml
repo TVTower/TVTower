@@ -5398,22 +5398,6 @@ Vielleicht der beste Laurel &amp; Hardy; nach der gleichnamigen Oper von Auber</
 			<data country="USA" year="1933" distribution="0" maingenre="5" subgenre="0" flags="0" blocks="2" time="0" price_mod="0.33" />
 			<ratings critics="56" speed="80" outcome="75" />
 		</programme>
-		<programme id="d048db9c-a6ef-4622-b916-ccf2000cee5c" product="2" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-			<title>
-				<de>XXX</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Nighttalk mit Kultmoderator Jey Lenault</de>
-				<en></en>
-			</description>
-			<staff>
-				<member index="0" function="2">c60c2577-5f60-41f3-a0f4-928d876939bf</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="2003" distribution="0" maingenre="100" subgenre="0" flags="0" blocks="1" time="0" price_mod="1" />
-			<ratings critics="47" speed="70" outcome="47" />
-		</programme>
 		<programme id="4c409c07-75c5-4ffa-be96-1e277ea91539" product="1" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Yams Pond 005 - Bronzedaumen</de>
@@ -10693,22 +10677,7 @@ Aber nur mit Ulbricht Umzüge!</de>
 			<data genre="3" price="3" topicality="33" />
 			<conditions fix_year="-1" year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news id="01a3a964-bc77-4594-8881-987d81770bf4" thread_id="0f44afa9-11b5-4d9d-895b-fcbf44a24c03" type="0" creator="">
-			<title>
-				<de>Bretz neuer Trainer in Berlin?</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Dem Rekordtorschützen Michel Bretz wurde von seinem alten Verein der Trainerposten angeboten. Bretz sei interessiert, so der Vorstand.</de>
-				<en></en>
-			</description>
-			<effects>
-				<effect type="triggernews" parameter1="21106b68-d7dd-4f04-8eeb-af6dba9a076d" />
-			</effects>
-			<data genre="2" price="0" topicality="49" />
-			<conditions fix_year="-1" year_range_from="-1" year_range_to="-1" />
-		</news>
-		<news id="21106b68-d7dd-4f04-8eeb-af6dba9a076d" thread_id="0f44afa9-11b5-4d9d-895b-fcbf44a24c03" type="2" creator="">
+		<news id="21106b68-d7dd-4f04-8eeb-af6dba9a076d" thread_id="0f44afa9-11b5-4d9d-895b-fcbf44a24c03" type="0" creator="">
 			<title>
 				<de>Bretz neuer Trainer in Berlin?</de>
 				<en></en>

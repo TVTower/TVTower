@@ -307,13 +307,13 @@ endrem
 
 	'override default
     Method GetTitle:string() {_exposeToLua}
-		return newsEvent.title
+		return newsEvent.GetTitle()
     End Method
 
 
 	'override default
     Method GetDescription:string() {_exposeToLua}
-		return newsEvent.description
+		return newsEvent.GetDescription()
     End Method
 
 

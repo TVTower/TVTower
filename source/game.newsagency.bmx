@@ -117,8 +117,8 @@ Type TNewsAgency
 
 	Method GetTerroristNewsEvent:TNewsEvent(terroristGroup:int = 0)
 		Local aggressionLevel:int = terroristAggressionLevel[terroristGroup]
-		Local quality:int = randRange(50,60) + aggressionLevel * 5
-		Local price:int = randRange(45,50) + aggressionLevel * 5
+		Local quality:Float = 0.01 * (randRange(50,60) + aggressionLevel * 5)
+		Local price:Float = 1.0 + 0.01 * (randRange(45,50) + aggressionLevel * 5)
 		Local title:String
 		Local description:String
 
@@ -157,7 +157,13 @@ Type TNewsAgency
 				return null
 		End Select
 
-		Local NewsEvent:TNewsEvent = new TNewsEvent.Init(title, description, genre, quality, price, TVTNewsType.InitialNewsByInGameEvent)
+		local localizeTitle:TLocalizedString = new TLocalizedString
+		localizeTitle.Set(title, "de")
+		local localizeDescription:TLocalizedString = new TLocalizedString
+		localizeDescription.Set(description, "de")
+
+
+		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, genre, quality, price, TVTNewsType.InitialNewsByInGameEvent)
 
 		'send out terrorist
 		if aggressionLevel = 4
@@ -196,8 +202,8 @@ Type TNewsAgency
 
 	Method GetWeatherNewsEvent:TNewsEvent()
 		'quality and price are nearly the same everytime
-		Local quality:int = randRange(50,60)
-		Local price:int = randRange(45,50)
+		Local quality:Float = 0.01 * randRange(50,60)
+		Local price:int = 1.0 + 0.01 * randRange(-5,10)
 		local beginHour:int = GetWorldTime().GetDayHour()+1
 		local endHour:int = GetWorldTime().GetDayHour(weatherUpdateTime)
 		Local description:string = ""
@@ -290,8 +296,13 @@ Type TNewsAgency
 		else
 			description :+ GetLocale("TEMPERATURE_IS_CONSTANT_AT_X").replace("%TEMPERATURE%", tempMin)
 		endif
+
+		local localizeTitle:TLocalizedString = new TLocalizedString
+		localizeTitle.Set(title) 'use default lang
+		local localizeDescription:TLocalizedString = new TLocalizedString
+		localizeDescription.Set(description) 'use default lang
 		
-		Local NewsEvent:TNewsEvent = new TNewsEvent.Init(title, description, TNewsEvent.GENRE_CURRENTS, quality, price, TVTNewsType.InitialNewsByInGameEvent)
+		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TNewsEvent.GENRE_CURRENTS, quality, price, TVTNewsType.InitialNewsByInGameEvent)
 
 		'TODO
 		'add weather->audience effects
@@ -330,8 +341,18 @@ Type TNewsAgency
 		title = Self._ReplaceProgrammeData(title, licence.GetData())
 		description = Self._ReplaceProgrammeData(description, licence.GetData())
 
+		local localizeTitle:TLocalizedString = new TLocalizedString
+		localizeTitle.Set(title) 'use default lang
+		local localizeDescription:TLocalizedString = new TLocalizedString
+		localizeDescription.Set(description) 'use default lang
+		
 		'quality and price are based on the movies data
-		Local NewsEvent:TNewsEvent = new TNewsEvent.Init(title, description, TNewsEvent.GENRE_SHOWBIZ, licence.GetData().review/2.0, licence.GetData().outcome/3.0, TVTNewsType.InitialNewsByInGameEvent)
+		'quality of movie news never can reach quality of "real" news
+		'so cut them to a specific range (0-0.75) 
+		local quality:Float = 0.75*licence.GetData().review
+		'if outcome is less than 50%, it subtracts the price, else it increases
+		local priceModifier:Float = 1.0 + 0.2 * (licence.GetData().outcome - 0.5)
+		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TNewsEvent.GENRE_SHOWBIZ, quality, priceModifier, TVTNewsType.InitialNewsByInGameEvent)
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
 		
 		Return NewsEvent
