@@ -1,4 +1,4 @@
-'likely a kind of agency providing news...
+﻿'likely a kind of agency providing news...
 'at the moment only a base object
 Type TNewsAgency
 	'when to announce a new newsevent
@@ -408,6 +408,7 @@ Type TNewsAgency
 		For local newsEvent:TNewsEvent = EachIn GetNewsEventCollection().GetUpcomingNewsList()
 			'skip news events not happening yet
 			If newsEvent.happenedTime > GetWorldTime().GetTimeGone() then continue
+			newsEvent.doHappen()
 
 			announceNewsEvent(newsEvent)
 			announced:+1
@@ -465,7 +466,8 @@ Type TNewsAgency
 
 
 	Method announceNewsEvent:Int(newsEvent:TNewsEvent, happenedTime:Int=0, forceAdd:Int=False)
-		newsEvent.doHappen(happenedTime)
+		'do not "doHappen" here again - already done
+		'newsEvent.doHappen(happenedTime)
 
 		For Local i:Int = 1 To 4
 			AddNewsEventToPlayer(newsEvent, i, forceAdd)
@@ -513,7 +515,7 @@ Type TNewsAgency
 			EndIf
 
 			If not skipNews or forceAdd
-				'Print "[LOCAL] AnnounceNewNews: added news title="+news.title+", day="+GetWorldTime().getDay(news.happenedtime)+", time="+GetWorldTime().GetFormattedTime(news.happenedtime)
+				'Print "[LOCAL] AnnounceNewNews: added news title="+newsEvent.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
 				announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone() + delayAnnouncement, forceAdd)
 			EndIf
 		EndIf

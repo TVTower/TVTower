@@ -334,7 +334,6 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 					effectData.GetInt("parameter6", -1) ..
 				]
 				if triggerGUID = "" then return False
-				
 				AddHappenEffect(..
 					new TNewsEffect_TriggerNews.Init( ..
 						triggerGUID, happenTimeType, happenTimeData ..
@@ -550,6 +549,7 @@ Type TNewsEffect_TriggerNews extends TNewsEffect
 		return "TNewsEffect_TriggerNews ("+name+")"
 	End Method
 
+
 	'default params trigger the news 5 hours after the triggering one
 	Method Init:TNewsEffect_TriggerNews(triggerNewsGUID:string, happentimeType:int = -1, happenTimeData:int[] = null)
 		self.triggerNewsGUID = triggerNewsGUID
@@ -558,10 +558,11 @@ Type TNewsEffect_TriggerNews extends TNewsEffect
 		endif
 		if happenTimeData and happenTimeData.length = 4
 			'only use values defined in the happenTimeData-array
-			local happenTimeDataNew:int[] = [happenTimeData[0],happenTimeData[1],happenTimeData[2],happenTimeData[3]]
+			local happenTimeDataNew:int[] = [self.happenTimeData[0], self.happenTimeData[1], self.happenTimeData[2], self.happenTimeData[3]]
 			for local i:int = 0 until happenTimeData.length
 				if happenTimeData[i] >= 0 then happenTimeDataNew[i] = happenTimeData[i]
 			Next
+
 			self.happenTimeData = happenTimeDataNew
 		endif
 		return self
