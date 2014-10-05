@@ -1658,6 +1658,10 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiStartYear.SetValue(Game.userStartYear)
 		guiPlayerNames[0].SetValue(game.username)
 		guiChannelNames[0].SetValue(game.userchannelname)
+
+		GetPlayerCollection().Get(1).Name = game.username
+		GetPlayerCollection().Get(1).Channelname = game.userchannelname
+
 		guiGameTitle.SetValue(game.title)
 	End Method
 
