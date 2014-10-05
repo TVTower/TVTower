@@ -714,6 +714,14 @@ Type RoomHandler_Office extends TRoomHandler
 		plannerPreviousDayButton = new TGUIButton.Create(new TVec2D.Init(684, 6), new TVec2D.Init(28, 28), "<", "programmeplanner_buttons")
 		plannerPreviousDayButton.spriteName = "gfx_gui_button.datasheet"
 
+		'so we can handle clicks to the daychange-buttons while some
+		'programmeplan elements are dragged
+		'ATTENTION: this makes the button drop-targets, so take care of
+		'vetoing try-drop-events
+		plannerNextDayButton.SetOption(GUI_OBJECT_ACCEPTS_DROP)
+		plannerPreviousDayButton.SetOption(GUI_OBJECT_ACCEPTS_DROP)
+		EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropProgrammePlanElementOnDayButton, "TGUIProgrammePlanElement")
+
 
 		ProgrammePlannerButtons[0] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 0*54), null, GetLocale("PLANNER_ADS"), "programmeplanner_buttons")
 		ProgrammePlannerButtons[0].spriteName = "gfx_programmeplanner_btn_ads"
@@ -1094,6 +1102,7 @@ Type RoomHandler_Office extends TRoomHandler
 	Function onTryDropProgrammePlanElement:int(triggerEvent:TEventBase)
 		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
 		if not item then return FALSE
+		
 		local list:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent.GetReceiver())
 		if not list then return FALSE
 
@@ -1103,6 +1112,32 @@ Type RoomHandler_Office extends TRoomHandler
 		return TRUE
 	End Function
 
+
+	Function onTryDropProgrammePlanElementOnDayButton:int(triggerEvent:TEventBase)
+		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
+		if not item then return FALSE
+
+		'dropping on daychangebuttons means trying to change the day
+		'while elements are dragged
+		if plannerPreviousDayButton = triggerEvent.GetReceiver()
+			triggerEvent.SetVeto()
+
+			ChangePlanningDay(planningDay-1)
+			'reset mousebutton
+			MouseManager.ResetKey(1)
+
+			return False
+		elseif plannerNextDayButton = triggerEvent.GetReceiver()
+			triggerEvent.SetVeto()
+
+			ChangePlanningDay(planningDay+1)
+			'reset mousebutton
+			MouseManager.ResetKey(1)
+
+			return False
+		endif
+	End Function
+	
 
 	'remove the material from the programme plan
 	Function onRemoveItemFromSlotList:int(triggerEvent:TEventBase)

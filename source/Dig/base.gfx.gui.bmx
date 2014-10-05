@@ -1048,6 +1048,11 @@ Type TGUIobject
 	End Method
 
 
+	Method IsClickable:int()
+		return _flags & GUI_OBJECT_CLICKABLE
+	End Method
+
+
 	Method IsVisible:Int()
 		'i am invisible if my parent is not visible
 '		if _parent and not _parent.IsVisible() then return FALSE
@@ -1535,7 +1540,7 @@ Type TGUIobject
 		'=== HANDLE MOUSE CLICKS / POSITION ===
 
 		'skip non-clickable objects
-		if not (_flags & GUI_OBJECT_CLICKABLE) then return FALSE
+		if not IsClickable() then return FALSE
 		'skip objects the mouse is not over.
 		'ATTENTION: this differs to self.mouseOver (which is set later on)
 		if not containsXY(mousePos.x, mousePos.y) then return FALSE
