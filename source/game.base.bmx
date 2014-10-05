@@ -400,6 +400,8 @@ Type TGame {_exposeToLua="selected"}
 		GetNewsAgency().AnnounceNewNewsEvent(-60, True)
 		GetNewsAgency().AnnounceNewNewsEvent(-120, True)
 		GetNewsAgency().AnnounceNewNewsEvent(-120, True)
+		'adjust news agency to wait some time until next news
+		GetNewsAgency().ResetNextEventTime()
 
 		'place them into the players news shows
 		local newsToPlace:TNews
@@ -467,6 +469,23 @@ Type TGame {_exposeToLua="selected"}
 	Method SpreadStartProgramme:int()
 		local filterCallIn:TProgrammeLicenceFilter = new TProgrammeLicenceFilter
 		filterCallIn.AddFlag(TProgrammeData.FLAG_PAID)
+
+		'all players get the same adContractBase (but of course another
+		'contract for each of them)
+		local adContractBases:TAdContractBase[]
+		local cheapFilter:TAdContractBaseFilter = new TAdContractbaseFilter
+		'some easy ones
+		cheapFilter.SetAudience(0.0, 0.02)
+		'do not allow limited ones
+		cheapFilter.SetSkipLimitedToProgrammeGenre()
+		cheapFilter.SetSkipLimitedToTargetGroup()
+		For Local i:int = 0 to 1
+			adContractBases :+ [GetAdContractBaseCollection().GetRandomByFilter(cheapFilter)]
+		Next
+		'and one with 0 audience requirement
+		cheapFilter.SetAudience(0.0, 0.0)
+		adContractBases :+ [GetAdContractBaseCollection().GetRandomByFilter(cheapFilter)]
+
 		
 		For Local playerids:Int = 1 To 4
 			Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(playerids)
@@ -480,16 +499,10 @@ Type TGame {_exposeToLua="selected"}
 			'give 1 call in
 			ProgrammeCollection.AddProgrammeLicence(GetProgrammeLicenceCollection().GetRandomByFilter(filterCallIn))
 
-
-			local cheapFilter:TAdContractBaseFilter = new TAdContractbaseFilter
-			cheapFilter.SetAudience(0.0, 0.02)
-
-			For Local i:Int = 0 To 1
-				ProgrammeCollection.AddAdContract(New TAdContract.Create(GetAdContractBaseCollection().GetRandomByFilter(cheapFilter)) )
+			'add create contracts out of the preselected adcontractbases
+			For local adContractBase:TAdContractBase = EachIn adContractBases
+				ProgrammeCollection.AddAdContract(New TAdContract.Create(adContractBase))
 			Next
-			'and one with 0 audience requirement
-			cheapFilter.SetAudience(0.0, 0.0)
-			ProgrammeCollection.AddAdContract(New TAdContract.Create(GetAdContractBaseCollection().GetRandomByFilter(cheapFilter)) )
 		Next
 	End Method
 

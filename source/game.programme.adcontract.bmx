@@ -999,6 +999,11 @@ Type TAdContractBaseFilter
 	Field minAudienceMax:Float = -1.0
 	Field minImageMin:Float = -1.0
 	Field minImageMax:Float = -1.0
+	Field limitedToProgrammeGenres:int[]
+	Field limitedToTargetGroups:int[]
+	Field skipLimitedProgrammeGenre:int = False
+	Field skipLimitedTargetGroup:int = False
+
 
 	Global filters:TList = CreateList()
 
@@ -1024,6 +1029,30 @@ Type TAdContractBaseFilter
 	End Method
 
 
+	Method SetLimitedToTargetGroup:TAdContractBaseFilter(groups:int[])
+		limitedToTargetGroups = groups
+		Return self
+	End Method
+
+
+	Method SetLimitedToProgrammeGenre:TAdContractBaseFilter(genres:int[])
+		limitedToProgrammeGenres = genres
+		Return self
+	End Method
+
+
+	Method SetSkipLimitedToProgrammeGenre:TAdContractBaseFilter(bool:int = True)
+		skipLimitedProgrammeGenre = bool
+		Return self
+	End Method
+
+
+	Method SetSkipLimitedToTargetGroup:TAdContractBaseFilter(bool:int = True)
+		skipLimitedTargetGroup = bool
+		Return self
+	End Method
+
+
 	Function GetCount:Int()
 		return filters.Count()
 	End Function
@@ -1043,6 +1072,28 @@ Type TAdContractBaseFilter
 
 		if minImageMin >= 0 and contract.minImageBase < minImageMin then return False
 		if minImageMax >= 0 and contract.minImageBase > minImageMax then return False
+
+		'first check if we have to check for limits
+		if skipLimitedProgrammeGenre and contract.limitedToProgrammeGenre >= 0 then return False
+		if skipLimitedTargetGroup and contract.limitedToTargetGroup > 0 then return False
+
+		
+		'limited to one of the defined target groups?
+		if limitedToTargetGroups and limitedToTargetGroups.length > 0
+			For local group:int = EachIn limitedToTargetGroups
+				if contract.limitedToTargetGroup = group then return True
+			Next
+			return False
+		endif
+
+		'limited to one of the defined programme genre?
+		if limitedToProgrammeGenres and limitedToProgrammeGenres.length > 0
+			For local genre:int = EachIn limitedToProgrammeGenres
+				if contract.limitedToProgrammeGenre = genre then return True
+			Next
+			return False
+		endif
+
 
 		return True
 	End Method

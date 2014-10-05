@@ -2,15 +2,9 @@
 'at the moment only a base object
 Type TNewsAgency
 	'when to announce a new newsevent
-	Field NextEventTime:Double = 0
+	Field NextEventTime:Double = -1
 	'check for a new news every x-y minutes
-	Field NextEventTimeInterval:int[] = [60, 95]
-	'when to announce a new news from a newschain
-	Field NextChainTime:Double = 0
-	'check for a new newschain every x-y minutes
-	Field NextChainTimeInterval:int[] = [20, 30]
-	'holding chained news from the past hours/day
-	Field activeChains:TList = CreateList()
+	Field NextEventTimeInterval:int[] = [120, 180]
 
 
 	'=== WEATHER HANDLING ===
@@ -181,6 +175,7 @@ Type TNewsAgency
 			NewsEvent.AddHappenEffect(effect)
 		endif
 
+		NewsEvent.doHappen() 'happen now
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
 		Return NewsEvent
 	End Method
@@ -203,7 +198,7 @@ Type TNewsAgency
 	Method GetWeatherNewsEvent:TNewsEvent()
 		'quality and price are nearly the same everytime
 		Local quality:Float = 0.01 * randRange(50,60)
-		Local price:int = 1.0 + 0.01 * randRange(-5,10)
+		Local price:Float = 1.0 + 0.01 * randRange(-5,10)
 		local beginHour:int = GetWorldTime().GetDayHour()+1
 		local endHour:int = GetWorldTime().GetDayHour(weatherUpdateTime)
 		Local description:string = ""
@@ -303,13 +298,17 @@ Type TNewsAgency
 		localizeDescription.Set(description) 'use default lang
 		
 		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TNewsEvent.GENRE_CURRENTS, quality, price, TVTNewsType.InitialNewsByInGameEvent)
-
+print "wetter: "+NewsEvent.ComputeBasePrice()
+print "wetter attr: "+NewsEvent.GetAttractiveness()
+print "wetter pricemod: "+NewsEvent.priceModifier
+print "wetter topicality: " +NewsEvent.ComputeTopicality()
 		'TODO
 		'add weather->audience effects
 		'rain = more audience
 		'sun = less audience
 		'...
 
+		NewsEvent.doHappen() 'happen now
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
 
 		Return NewsEvent
@@ -353,6 +352,7 @@ Type TNewsAgency
 		'if outcome is less than 50%, it subtracts the price, else it increases
 		local priceModifier:Float = 1.0 + 0.2 * (licence.GetData().outcome - 0.5)
 		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TNewsEvent.GENRE_SHOWBIZ, quality, priceModifier, TVTNewsType.InitialNewsByInGameEvent)
+		NewsEvent.doHappen() 'happen now
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
 		
 		Return NewsEvent
@@ -527,9 +527,9 @@ Type TNewsAgency
 
 
 	Method ResetNextEventTime:int()
-		'between 20 and 50 minutes until next news
+		'adjust time until next news
 		NextEventTime = GetWorldTime().GetTimeGone() + 60 * randRange(NextEventTimeInterval[0], NextEventTimeInterval[1])
-		'50% chance to have an even longer time
+		'50% chance to have an even longer time (up to 2x)
 		If RandRange(0,10) > 5
 			NextEventTime = + randRange(NextEventTimeInterval[0], NextEventTimeInterval[1])
 		EndIf

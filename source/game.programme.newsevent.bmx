@@ -535,7 +535,7 @@ End Type
 Type TNewsEffect_TriggerNews extends TNewsEffect
 	Field triggerNewsGUID:string
 	'params for time generation  [A,B,C,D]
-	Field happenTimeData:int[]	= [5,9,0,0]
+	Field happenTimeData:int[]	= [8,16,0,0]
 	'what kind of happen time data do we have?
 	'1 = "A" days from now
 	'2 = "A" hours from now
