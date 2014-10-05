@@ -600,9 +600,8 @@ Type TBuilding Extends TStaticEntity
 		'if no door was given, use main door of room
 		if not door and room then door = TRoomDoor.GetMainDoorToRoom(room)
 		if not door then return FALSE
-
-		roomUsedTooltip	= TTooltip.Create("Besetzt", "In diesem Raum ist schon jemand", 0,0,-1,-1,2000)
-		roomUsedTooltip.area.position.SetY(door.GetScreenY() - door.area.GetH())
+		roomUsedTooltip	= TTooltip.Create(GetLocale("ROOM_IS_OCCUPIED"), GetLocale("ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM"), 0,0,-1,-1, 2000)
+		roomUsedTooltip.area.position.SetY(door.GetScreenY() - door.area.GetH() - roomUsedTooltip.GetHeight())
 		roomUsedTooltip.area.position.SetX(door.GetScreenX() + door.area.GetW()/2 - roomUsedTooltip.GetWidth()/2)
 		roomUsedTooltip.enabled = 1
 
@@ -614,9 +613,8 @@ Type TBuilding Extends TStaticEntity
 		'if no door was given, use main door of room
 		if not door and room then door = TRoomDoor.GetMainDoorToRoom(room)
 		if not door then return FALSE
-
 		roomUsedTooltip = TTooltip.Create(GetLocale("BLOCKED"), GetLocale("ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE"), 0,0,-1,-1,2000)
-		roomUsedTooltip.area.position.SetY(door.GetScreenY() - door.area.GetH())
+		roomUsedTooltip.area.position.SetY(door.GetScreenY() - door.area.GetH() - roomUsedTooltip.GetHeight())
 		roomUsedTooltip.area.position.SetX(door.GetScreenX() + door.area.GetW()/2 - roomUsedTooltip.GetWidth()/2)
 		roomUsedTooltip.enabled = 1
 

@@ -97,6 +97,8 @@ PLANNER_IMAGE     = Image
 PLANNER_MESSAGES  = Mitteilungen
 
 ROOM_IS_BLOCKED = Raum ist blockiert!
+ROOM_IS_OCCUPIED = Raumis occupied!
+ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = There is already someone in the room.
 
 ROOM_ELEVATORPLAN		= Fahrstuhlziel-Planer
 ROOM_NEWSPLANNER		= Newsplaner

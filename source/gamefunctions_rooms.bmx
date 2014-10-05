@@ -362,8 +362,8 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 		If tooltip AND tooltip.enabled
 			if tooltip.Update()
-				tooltip.area.position.SetY( GetScreenY() - area.GetH() - 20 )
-				tooltip.area.position.setX( GetScreenX() + area.GetW()/2 - tooltip.GetWidth()/2 )
+				tooltip.area.position.SetY(GetScreenY() - area.GetH() - tooltip.GetHeight())
+				tooltip.area.position.SetX(GetScreenX() + area.GetW()/2 - tooltip.GetWidth()/2)
 			else
 				'delete old tooltips
 				tooltip = null
@@ -4535,11 +4535,9 @@ Type RoomHandler_Chief extends TRoomHandler
 			EndIf
 			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_DECLINE"+Rand(1,3)), - 2))
 			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))
-			Local ChefDialog:TDialogue = TDialogue.Create(350, 60, 450, 200)
-			ChefDialog.AddText(Chefdialoge[0])
-			ChefDialog.AddText(Chefdialoge[1])
-			ChefDialog.AddText(Chefdialoge[2])
-			ChefDialog.AddText(Chefdialoge[3])
+			Local ChefDialog:TDialogue = new TDialogue
+			ChefDialog.SetArea(new TRectangle.Init(350, 60, 450, 200))
+			ChefDialog.AddTexts(Chefdialoge)
 			Dialogues.AddLast(ChefDialog)
 		EndIf
 
@@ -5536,7 +5534,7 @@ Type RoomHandler_Betty extends TRoomHandler
 			GetPlayerCollection().Get(i).Figure.Sprite.DrawClipped(new TRectangle.Init(x, y, -1, sprite.area.GetH()-16), null, 8)
 		Next
 
-		DrawDialog("default", 440, 120, 280, 110, "StartLeftDown", 0, GetLocale("DIALOGUE_BETTY_WELCOME"), GetBitmapFont("Default",14))
+		TDialogue.DrawDialog("default", 440, 120, 280, 110, "StartLeftDown", 0, GetLocale("DIALOGUE_BETTY_WELCOME"), GetBitmapFont("Default",14))
 	End Function
 
 

@@ -40,6 +40,7 @@ Import "Dig/base.framework.tooltip.bmx"
 Import "basefunctions_network.bmx"
 Import "basefunctions.bmx"
 Import "basefunctions_screens.bmx"
+Import "common.misc.dialogue.bmx"
 Import "game.world.bmx"
 Import "game.toastmessage.bmx"
 Import "game.figure.base.bmx"
@@ -392,6 +393,8 @@ Type TApp
 					if KEYMANAGER.IsHit(KEY_Y)
 						'print "send to chef:"
 						'GetPlayer().GetFigure().SendToDoor( TRoomDoor.GetByDetails("boss", 1), True )
+						GetPlayer().SendToBoss()
+
 						GetWorld().Weather.SetPressure(-14)
 						GetWorld().Weather.SetTemperature(-10)
 					endif

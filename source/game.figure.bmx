@@ -491,6 +491,13 @@ endrem
 	End Method
 
 
+	'removes potential targets of the figure
+	Method ResetTarget:Int()
+		target = Null
+		targetObj = Null
+	End Method
+
+
 	'figure wants to enter a room
 	'"onEnterRoom" is called when successful
 	'@param door         door to use
@@ -516,6 +523,10 @@ endrem
 			If isAIPlayer() then GetPlayer(playerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_NOTALLOWED)
 			'tooltip only for active user
 			If isActivePlayer() then GetBuilding().CreateRoomBlockedTooltip(door, room)
+
+			'reset target
+			ResetTarget()
+
 			return FALSE
 		endif
 
@@ -528,6 +539,10 @@ endrem
 					If isAIPlayer() then GetPlayer(playerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_INUSE)
 					'tooltip only for active user
 					If isActivePlayer() then GetBuilding().CreateRoomUsedTooltip(door, room)
+
+					'reset target
+					ResetTarget()
+		
 					return FALSE
 				EndIf
 			EndIf
@@ -817,7 +832,6 @@ endrem
 				targetObj = null
 			elseif TRoomDoor(targetObj)
 				local targetDoor:TRoomDoor = TRoomDoor(targetObj)
-
 				'do not remove the target room as it is done during
 				'"entering the room" (which can be animated and so we
 				'just trust the method to do it)
