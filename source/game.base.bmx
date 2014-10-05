@@ -499,7 +499,7 @@ Type TGame {_exposeToLua="selected"}
 			'give 1 call in
 			ProgrammeCollection.AddProgrammeLicence(GetProgrammeLicenceCollection().GetRandomByFilter(filterCallIn))
 
-			'add create contracts out of the preselected adcontractbases
+			'create contracts out of the preselected adcontractbases
 			For local adContractBase:TAdContractBase = EachIn adContractBases
 				ProgrammeCollection.AddAdContract(New TAdContract.Create(adContractBase))
 			Next

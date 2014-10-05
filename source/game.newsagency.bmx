@@ -298,10 +298,7 @@ Type TNewsAgency
 		localizeDescription.Set(description) 'use default lang
 		
 		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TNewsEvent.GENRE_CURRENTS, quality, price, TVTNewsType.InitialNewsByInGameEvent)
-print "wetter: "+NewsEvent.ComputeBasePrice()
-print "wetter attr: "+NewsEvent.GetAttractiveness()
-print "wetter pricemod: "+NewsEvent.priceModifier
-print "wetter topicality: " +NewsEvent.ComputeTopicality()
+
 		'TODO
 		'add weather->audience effects
 		'rain = more audience
