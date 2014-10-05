@@ -201,11 +201,11 @@
 
 		<room name="roomboard" owner="0" screen="screen_roomboard" fake="1">
 			<tooltip text="ROOM_ROOMBOARD" />
-			<door doorslot="4" x="340" floor="0" doortype="1" doorwidth="59" />
+			<door doorslot="4" x="380" floor="0" doortype="1" doorwidth="60" />
 		</room>
 		<room name="credits" owner="0" screen="screen_credits" fake="1">
 			<tooltip text="ROOM_CREDITS" />
-			<door doorslot="4" x="370" floor="13" doortype="1" doorwidth="52" />
+			<door doorslot="4" x="410" floor="13" doortype="1" doorwidth="55" />
 		</room>
 		<room name="porter" owner="0" screen="screen_credits" fake="1">
 			<tooltip text="ROOM_PORTER" />
