@@ -2613,11 +2613,24 @@ Type GameEvents
 
 		'inform ai before
 		if player.IsAI() then player.PlayerKI.CallOnBossCallsForced()
-		'send playert to boss now
+		'send player to boss now
 		player.SendToBoss()
 	End Function
 	
 
+	Function PlayerBoss_OnPlayerEnterBossRoom:Int(triggerEvent:TEventBase)
+		local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
+		local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
+		'only interested in the real player
+		if not player or not player.isActivePlayer() then return False
+
+		'remove potentially existing toastmessages
+		local toastGUID:string = "toastmessage-playerboss-callplayer"+player.playerID
+		local toast:TToastMessage = GetToastMessageCollection().GetMessageByGUID(toastGUID)
+		GetToastMessageCollection().RemoveMessage( toast )
+	End Function
+
+	
 	Function PlayerBoss_OnCallPlayer:Int(triggerEvent:TEventBase)
 		local latestTime:Long = triggerEvent.GetData().GetLong("latestTime", GetWorldTime().GetTimeGone() + 2*3600)
 		local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
@@ -2628,7 +2641,10 @@ Type GameEvents
 			player.PlayerKI.CallOnBossCalls(latestTime)
 		else
 			'send out a toast message
-			local toast:TGameToastMessage = new TGameToastMessage
+			local toastGUID:string = "toastmessage-playerboss-callplayer"+player.playerID
+			'try to fetch an existing one
+			local toast:TGameToastMessage = TGameToastMessage(GetToastMessageCollection().GetMessageByGUID(toastGUID))
+			if not toast then toast = new TGameToastMessage
 		
 			'until 2 hours
 			toast.SetCloseAtWorldTime(latestTime)
@@ -2639,7 +2655,13 @@ Type GameEvents
 			toast.SetOnCloseFunction(PlayerBoss_onClosePlayerCallMessage)
 			toast.GetData().Add("boss", boss)
 			toast.GetData().Add("player", player)
-			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+
+			'if this was a new message, the guid will differ
+			if toast.GetGUID() <> toastGUID
+				toast.SetGUID(toastGUID)
+				'new messages get added to a list
+				GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+			endif
 		endif
 	End Function
 
@@ -2847,7 +2869,9 @@ Type AppEvents
 
 		EventManager.registerListenerFunction("guiModalWindow.onClose", onGuiModalWindowClose, "TGUIModalWindow")
 		EventManager.registerListenerFunction("guiModalWindow.onCreate", onGuiModalWindowCreate)
+		EventManager.registerListenerFunction("ToastMessageCollection.onAddMessage", onToastMessageCollectionAddMessage)
 		EventManager.registerListenerFunction("app.onStart", onAppStart)
+
 	End Function
 
 
@@ -2858,6 +2882,12 @@ Type AppEvents
 
 
 	Function onGuiModalWindowCreate:Int(triggerEvent:TEventBase)
+		'play a sound with the default sfxchannel
+		SimpleSoundSource.PlayRandomSfx("gui_open_window")
+	End Function
+
+
+	Function onToastMessageCollectionAddMessage:Int(triggerEvent:TEventBase)
 		'play a sound with the default sfxchannel
 		SimpleSoundSource.PlayRandomSfx("gui_open_window")
 	End Function

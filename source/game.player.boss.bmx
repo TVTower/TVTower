@@ -215,6 +215,9 @@ Type TPlayerBoss
 
 		'just clear the talk subjects
 		talkSubjects = new TPlayerBossTalkSubjects[0]
+
+		'send out event that the player enters the bosses room
+		EventManager.triggerEvent(TEventSimple.Create("playerboss.onPlayerEnterBossRoom", null, Self, player))
 	End Method
 	
 

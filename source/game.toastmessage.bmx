@@ -139,7 +139,12 @@ Type TGameToastMessage extends TToastMessage
 		if showBackgroundSprite
 			'set type again to reload sprite
 			if not backgroundSprite or backgroundSprite.name = "defaultsprite" then SetMessageType(messageType)
-			if backgroundSprite then backgroundSprite.DrawArea(xOffset + GetScreenX(), yOffset + GetScreenY(), area.GetW(), area.GetH())
+			if backgroundSprite
+				local oldAlpha:float = GetAlpha()
+				SetAlpha oldAlpha * 0.80
+				backgroundSprite.DrawArea(xOffset + GetScreenX(), yOffset + GetScreenY(), area.GetW(), area.GetH())
+				SetAlpha oldAlpha
+			endif
 		endif
 	End Method
 

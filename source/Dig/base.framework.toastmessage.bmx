@@ -117,6 +117,16 @@ Type TToastMessageCollection extends TStaticEntity
 	End Method
 
 
+	Method GetMessageByGUID:TToastMessage(guid:string)
+		local m:TToastMessage = null
+		for local spawnPoint:TToastMessageSpawnPoint = EachIn spawnPoints.Values()
+			m = spawnPoint.GetMessageByGUID(guid)
+			if m then return m
+		next
+		return Null
+	End Method
+
+
 	Method Render:Int(xOffset:Float=0, yOffset:Float=0)
 		For local spawnPoint:TToastMessageSpawnPoint = EachIn spawnPoints.Values()
 			spawnPoint.Render(xOffset, yOffset)
@@ -162,6 +172,9 @@ Type TToastMessageSpawnPoint extends TEntity
 		message.SetParent(self)
 
 		messages.AddLast(message)
+
+		'send out event - eg for sounds
+		EventManager.triggerEvent(TEventSimple.Create("ToastMessageCollection.onAddMessage", new TData.Add("spawnPoint", self), null, message ))
 		return True
 	End Method
 
@@ -184,6 +197,14 @@ Type TToastMessageSpawnPoint extends TEntity
 
 	Method ContainsMessage:Int(message:TToastMessage)
 		return messages.Contains(message)
+	End Method
+
+
+	Method GetMessageByGUID:TToastMessage(guid:string)
+		For local m:TToastMessage = EachIn messages
+			if m.GetGUID() = guid then return m
+		Next
+		return Null
 	End Method
 
 
@@ -266,6 +287,8 @@ Const TOASTMESSAGE_OPENING_OR_CLOSING:Int = 4
 Type TToastMessage extends TEntity
 	'a potential canvas to draw things on
 	Field canvasImage:TImage = null
+	'the guid of this message
+	Field guid:String = ""
 	Field _status:Int = 1 'closed
 	'time the animation for opening/closing takes, 0 to disable 
 	Field _openCloseDuration:Float = 0.25
@@ -280,6 +303,17 @@ Type TToastMessage extends TEntity
 	Method New()
 		area.dimension.SetXY(200,50)
 		Open()
+	End Method
+
+
+	Method SetGUID:int(guid:string="")
+		if not guid then guid = "generic-toastmessage-"+id
+		self.guid = guid
+	End Method
+
+
+	Method GetGUID:string()
+		return guid
 	End Method
 
 
