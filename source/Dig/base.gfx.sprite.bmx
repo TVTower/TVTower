@@ -171,7 +171,11 @@ End Type
 
 
 Type TSprite
+	'defines how many pixels have to get offset from a given position
 	Field offset:TRectangle = new TRectangle.Init(0,0,0,0)
+	'defines at which pixels of the area the content "starts"
+	'or how many pixels from the last row/col the content "ends"
+	Field padding:TRectangle = new TRectangle.Init(0,0,0,0)
 	Field area:TRectangle = new TRectangle.Init(0,0,0,0)
 	'the id is NOT globally unique but a value to make it selectable
 	'from a TSpritePack without knowing the name
@@ -292,6 +296,11 @@ Type TSprite
 		return name
 	End Method
 
+
+	Method SetPadding:int(padding:TRectangle)
+		self.padding = padding
+	End Method
+	
 
 	Method IsNinePatchEnabled:int()
 		return ninePatchEnabled
@@ -449,22 +458,22 @@ Type TSprite
 
 
 	Method GetWidth:int(includeOffset:int=TRUE)
-		'substract 2 pixles (left and right) ?
+		'substract 2 pixels (left and right) ?
 		local ninePatchPixels:int = 0
 		if ninePatchEnabled then ninePatchPixels = 2
 
 		'todo: advanced calculation
 		if rotated = 90 or rotated = -90
 			if includeOffset
-				return area.GetH() - offset.GetTop() - offset.GetBottom() - ninePatchPixels
+				return area.GetH() - offset.GetTop() - offset.GetBottom() - (padding.GetTop() + padding.GetBottom()) - ninePatchPixels
 			else
-				return area.GetH() - ninePatchPixels
+				return area.GetH() - (padding.GetTop() + padding.GetBottom()) - ninePatchPixels
 			endif
 		else
 			if includeOffset
-				return area.GetW() - offset.GetLeft() - offset.GetRight() - ninePatchPixels
+				return area.GetW() - offset.GetLeft() - offset.GetRight() - (padding.GetLeft() + padding.GetRight()) - ninePatchPixels
 			else
-				return area.GetW() - ninePatchPixels
+				return area.GetW() - (padding.GetLeft() + padding.GetRight()) - ninePatchPixels
 			endif
 		endif
 	End Method
@@ -708,9 +717,6 @@ Type TSprite
 
 
 	Method Draw(x:Float, y:Float, frame:Int=-1, alignment:TVec2D=null, scale:float=1.0, drawCompleteImage:Int=FALSE)
-		x:- offset.GetLeft() * scale
-		y:- offset.GetTop() * scale
-
 		if drawCompleteImage then frame = -1
 
 		rem
@@ -730,6 +736,13 @@ Type TSprite
 			alignX = alignment.x
 			alignY = alignment.y
 		endif
+	
+		'add offset
+		x:- offset.GetLeft() * scale
+		Y:- offset.GetTop() * scale
+'		x:- offset.GetRight() * scale
+'		Y:- offset.GetBottom() * scale
+
 
 		'for a correct rotation calculation
 		if scale <> 1.0 then SetScale(scale, scale)

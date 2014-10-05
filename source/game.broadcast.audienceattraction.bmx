@@ -99,12 +99,15 @@ Type TAudienceAttraction Extends TAudience
 
 	Method Recalculate()
 		Local result:TAudience = new TAudience
+		'start with an attraction of "100%"
+		result.AddFloat(1.0)
+
 		result.AddFloat(GenrePopularityMod)
 		result.Add(GenreTargetGroupMod)
 		result.Add(TrailerMod)
 		result.Add(MiscMod)
 		result.AddFloat(GenreTimeMod)
-		result.AddFloat(QualityOverTimeEffectMod)
+'		result.AddFloat(QualityOverTimeEffectMod)
 
 		Self.PublicImageAttraction = result.Copy()
 		Self.PublicImageAttraction.AddFloat(1)
@@ -112,14 +115,16 @@ Type TAudienceAttraction Extends TAudience
 
 		result.Add(PublicImageMod)
 		result.Add(LuckMod)
-
-		result.AddFloat(1)
 		result.MultiplyFloat(Quality)
 		result.Add(AudienceFlowBonus)
 		Self.BaseAttraction = result.Copy()
 
 		'result.Add(AudienceFlowBonus)
 		result.Add(SequenceEffect)
+
+		'avoid negative attraction values or values > 100%
+		'-> else you could have a negative audience
+		result.CutBordersFloat(0.0, 1.0)
 
 		Self.FinalAttraction = result
 		Self.SetValuesFrom(result)

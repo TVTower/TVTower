@@ -43,6 +43,7 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 		fieldNames :+ ["name", "id"]
 		fieldNames :+ ["x", "y", "w", "h"]
 		fieldNames :+ ["offsetLeft", "offsetTop", "offsetRight", "offsetBottom"]
+		fieldNames :+ ["paddingLeft", "paddingTop", "paddingRight", "paddingBottom"]
 		fieldNames :+ ["frames|f"]
 		fieldNames :+ ["ninepatch"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
@@ -60,6 +61,7 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 			childFieldNames :+ ["name", "id"]
 			childFieldNames :+ ["x", "y", "w", "h"]
 			childFieldNames :+ ["offsetLeft", "offsetTop", "offsetRight", "offsetBottom"]
+			childFieldNames :+ ["paddingLeft", "paddingTop", "paddingRight", "paddingBottom"]
 			childFieldNames :+ ["frames|f"]
 			childFieldNames :+ ["ninepatch"]
 			childFieldNames :+ ["rotated"]
@@ -151,6 +153,13 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 			)
 			'rotation
 			sprite.rotated = childData.GetInt("rotated", 0)
+			'padding
+			sprite.SetPadding(new TRectangle.Init(..
+				childData.GetInt("paddingTop"), ..
+				childData.GetInt("paddingLeft"), ..
+				childData.GetInt("paddingBottom"), ..
+				childData.GetInt("paddingRight") ..
+			))
 
 			'search for ninepatch
 			if childData.GetBool("ninepatch")

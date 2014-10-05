@@ -285,10 +285,13 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Method GetPerViewerRevenue:Float() {_exposeToLua}
 		local result:float = 0.0
 		If HasFlag(FLAG_PAID)
-			result :+ GetSpeed() * 127.5
-			result :+ GetReview() * 51
-			'cut to 50%
-			result :* 0.5
+			'leads to a maximum of "0.25 * (20+10)" if speed/review
+			'reached 100%
+			'-> 8 Euro per Viewer
+			result :+ GetSpeed() * 22
+			result :+ GetReview() * 10
+			'cut to 25%
+			result :* 0.25
 			'adjust by topicality
 			result :* (GetTopicality()/GetMaxTopicality())
 		Else
@@ -441,6 +444,28 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	End Method
 
 
+	Method GetFlagsString:String(delimiter:string=" / ")
+		local result:String = ""
+		'checkspecific
+		local checkFlags:int[] = [FLAG_LIVE, FLAG_PAID]
+
+		'checkall
+		'local checkFlags:int[]
+		'for local i:int = 0 to 10 '1-1024 
+		'	checkFlags :+ [2^i]
+		'next
+
+		for local i:int = eachin checkFlags
+			if flags & i > 0
+				if result <> "" then result :+ delimiter
+				result :+ GetLocale("PROGRAMME_FLAG_" + i)
+			endif
+		Next
+
+		return result
+	End Method
+
+
 	Method GetTitle:string()
 		if title then return title.Get()
 		return ""
@@ -481,6 +506,11 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 
 	Method IsXRated:int()
 		return HasFlag(FLAG_XRATED)
+	End Method
+
+
+	Method IsPaid:int()
+		return HasFlag(FLAG_PAID)
 	End Method
 
 

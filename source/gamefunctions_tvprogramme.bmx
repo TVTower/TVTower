@@ -248,10 +248,13 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 						EndIf
 						'xrated
 						if TProgramme(broadcastMaterial) and TProgramme(broadcastMaterial).data.IsXRated()
-							local addPixel:int = 0
-							if GetAssetBaseName() = "pp_programmeblock" then addPixel = 1
-							GetSpriteFromRegistry("pp_xrated").Draw(GetScreenX() + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth() +addPixel, GetScreenY(),  -1, new TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP))
+							GetSpriteFromRegistry("pp_xrated").Draw(GetScreenX() + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth(), GetScreenY(),  -1, new TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP))
 						endif
+						'paid
+						if TProgramme(broadcastMaterial) and TProgramme(broadcastMaterial).data.IsPaid()
+							GetSpriteFromRegistry("pp_paid").Draw(GetScreenX() + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth(), GetScreenY(),  -1, new TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP))
+						endif
+
 						titleIsVisible = TRUE
 				case 2	'middle
 						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(new TRectangle.Init(drawPos.x, drawPos.y, -1, 15), new TVec2D.Init(0, 30))
@@ -1393,7 +1396,8 @@ endrem
 		if openState <3
 			If MOUSEMANAGER.IsHit(1) AND THelper.MouseIn(genresRect.GetX(), genresRect.GetY() + genresStartY, genresRect.GetW(), genreSize.GetY()*TProgrammeLicenceFilter.GetVisibleCount())
 				SetOpen(2)
-				currentGenre = Floor((MouseManager.y - (genresRect.GetY() + genresStartY)) / genreSize.GetY())
+				local visibleFilters:TProgrammeLicenceFilter[] = TProgrammeLicenceFilter.GetVisible()
+				currentGenre = Max(0, Min(visibleFilters.length, Floor((MouseManager.y - (genresRect.GetY() + genresStartY)) / genreSize.GetY())))
 				MOUSEMANAGER.ResetKey(1)
 			EndIf
 		endif

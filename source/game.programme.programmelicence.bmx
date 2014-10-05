@@ -732,14 +732,14 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		elseif isEpisode()
 			'title of "series"
 			'default is size "12" so resize to 13
-			GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(parentLicence.GetTitle(), currX + 6, currY, 280, 16, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+			GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(parentLicence.GetTitle(), currX + 6, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
 			currY :+ 18
 			'episode num/max + episode title
-			fontNormal.drawBlock((parentLicence.GetSubLicencePosition(self)+1) + "/" + parentLicence.GetSubLicenceCount() + ": " + data.GetTitle(), currX + 6, currY, 280, 16, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+			fontNormal.drawBlock((parentLicence.GetSubLicencePosition(self)+1) + "/" + parentLicence.GetSubLicenceCount() + ": " + data.GetTitle(), currX + 6, currY, 280, 15, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
 			currY :+ 16
 		else ' = if isMovie()
 			'default is size "12" so resize to 13
-			GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), currX + 6, currY, 280, 18, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+			GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), currX + 6, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
 			currY :+ 18
 		endif
 
@@ -896,7 +896,7 @@ endrem
 		Local fontBold:TBitmapFont = GetBitmapFontManager().baseFontBold
 		Local fontSemiBold:TBitmapFont = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
 
-		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), currX + 6, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), currX + 6, y + 8, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
 		currY :+ 18
 		fontNormal.drawBlock(GetLocale("TRAILER"), currX + 6, currY, 280, 15, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
 		currY :+ 16

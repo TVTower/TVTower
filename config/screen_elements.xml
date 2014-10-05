@@ -206,14 +206,15 @@
 			<url>res/gfx/office/screen_programmeplanner_blocks.png</url>
 			<children>
 				<child name="pp_adblock1"							x="220"	y="184"	w="85"	h="30" />
-				<child name="pp_adblock1_dragged"					x="0"	y="180"	w="94"	h="40" offsettop="4" offsetleft="4" offsetbottom="6" offsetright="5" />
+				<child name="pp_adblock1_dragged"					x="0"	y="180"	w="94"	h="40" offsetTop="4" offsetLeft="4" offsetbottom="6" offsetright="5" />
 				<child name="pp_adblock2"							x="220"	y="114"	w="85"	h="60" />
-				<child name="pp_adblock2_dragged"					x="0"	y="110"	w="94"	h="70" offsettop="4" offsetleft="4" offsetbottom="6" offsetright="5" />
+				<child name="pp_adblock2_dragged"					x="0"	y="110"	w="94"	h="70" offsetTop="4" offsetLeft="4" offsetbottom="6" offsetright="5" />
 				<child name="pp_programmeblock1"					x="220"	y="74"	w="205"	h="30" />
-				<child name="pp_programmeblock1_dragged"			x="0"	y="70"	w="214"	h="40" offsettop="4" offsetleft="4" offsetbottom="6" offsetright="5" />
+				<child name="pp_programmeblock1_dragged"			x="0"	y="70"	w="214"	h="40" offsetTop="4" offsetLeft="4" offsetbottom="6" offsetright="5" />
 				<child name="pp_programmeblock2"					x="220"	y="4"	w="205"	h="60" />
-				<child name="pp_programmeblock2_dragged"			x="0"	y="0"	w="214"	h="70" offsettop="4" offsetleft="4" offsetbottom="6" offsetright="5" />
-				<child name="pp_xrated"								x="322"	y="114"	w="12"	h="12" />
+				<child name="pp_programmeblock2_dragged"			x="0"	y="0"	w="214"	h="70" offsetTop="4" offsetLeft="4" offsetbottom="6" offsetright="5" />
+				<child name="pp_xrated"								x="321"	y="110"	w="13"	h="12" offsetTop="0" />
+				<child name="pp_paid"								x="334"	y="110"	w="13"	h="12" offsetTop="-2" />
 			</children>
 		</spritepack>
 

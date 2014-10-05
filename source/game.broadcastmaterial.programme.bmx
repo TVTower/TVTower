@@ -149,7 +149,14 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	End Method
 	
 	Method GetMiscMod:TAudience()
-		Return TAudience.CreateAndInitValue(0) 'TODO
+		if data.IsPaid()
+			'really less interest in paid programming
+			'use a really high value until audience flow is corrected
+			'for such programmes
+			Return TAudience.CreateAndInitValue(-1.1)
+		else
+			Return TAudience.CreateAndInitValue(0) 'TODO
+		endif
 	End Method
 
 	Method GetAudienceFlowBonus:TAudience(block:Int, result:TAudienceAttraction, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction)

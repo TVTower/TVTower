@@ -995,7 +995,7 @@ Horror vom Feinsten</de>
 			</description>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="BEL" year="2011" distribution="0" maingenre="0" subgenre="0" flags="128" blocks="2" time="0" price_mod="0.13" />
-			<ratings critics="3" speed="2" outcome="0" />
+			<ratings critics="5" speed="35" outcome="0" />
 		</programme>
 		<programme id="d542406c-9a00-4383-81fb-a96b4ad33170" product="1" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
@@ -1476,7 +1476,7 @@ Bunte Action mit Gurt Ruessel</de>
 			</description>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="2000" distribution="0" maingenre="0" subgenre="0" flags="128" blocks="2" time="0" price_mod="0.1" />
-			<ratings critics="5" speed="7" outcome="0" />
+			<ratings critics="9" speed="30" outcome="0" />
 		</programme>
 		<programme id="bb4ea9f8-19df-4b59-8735-89323376abb5" product="1" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
@@ -4790,7 +4790,7 @@ Aufwendiges Actionspektakel von Regisseur Giroland Emmerling</de>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="2001" distribution="0" maingenre="0" subgenre="0" flags="128" blocks="1" time="0" price_mod="0.2" />
-			<ratings critics="11" speed="3" outcome="0" />
+			<ratings critics="25" speed="10" outcome="0" />
 		</programme>
 		<programme id="5a2b8baa-2c5c-44b2-9627-e3264283028c" product="1" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
@@ -6042,7 +6042,7 @@ Tragische Liebesgeschichte</de>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="2009" distribution="0" maingenre="0" subgenre="0" flags="128" blocks="1" time="0" price_mod="0.1" />
-			<ratings critics="1" speed="7" outcome="0" />
+			<ratings critics="2" speed="25" outcome="0" />
 			<children>
 				<programme id="ad749168-d377-4782-a08b-ca5908e1867c" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6053,7 +6053,7 @@ Tragische Liebesgeschichte</de>
 						<de>Um ein Stammpublikum einzurichten werden in der ersten Folge die Lösungen gleich mit eingeblendet.</de>
 						<en></en>
 					</description>
-					<ratings critics="3" speed="6" />
+					<ratings critics="3" speed="28" />
 				</programme>
 				<programme id="25ea8a99-3782-4d71-af88-627c4cf8479e" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6064,7 +6064,7 @@ Tragische Liebesgeschichte</de>
 						<de>Der Moderator suggeriert schwere Fragen, dabei sind es die gleichen wie in der Premierensendung.</de>
 						<en></en>
 					</description>
-					<ratings critics="1" speed="7" />
+					<ratings critics="3" speed="20" />
 				</programme>
 				<programme id="3f4e4c50-6a76-4add-96e4-43b5b5354938" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6075,7 +6075,7 @@ Tragische Liebesgeschichte</de>
 						<de>In der diesigen Ausgabe sollen die Anrufer die Frage nach dem Sinn des Lebens beantworten. Gewinnern spendiert die Sendung eine Reise zum Mond.</de>
 						<en></en>
 					</description>
-					<ratings critics="1" speed="7" />
+					<ratings critics="3" speed="25" />
 				</programme>
 				<programme id="39019a15-f5c8-4cf3-9442-17bedbb9a8a3" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6086,7 +6086,7 @@ Tragische Liebesgeschichte</de>
 						<de>Der Moderator stellt unangenehme Fragen die alle Anrufer über sich ergehen lassen müssen um zu gewinnen.</de>
 						<en></en>
 					</description>
-					<ratings critics="3" speed="9" />
+					<ratings critics="5" speed="22" />
 				</programme>
 			</children>
 		</programme>
@@ -6167,8 +6167,8 @@ Tragische Liebesgeschichte</de>
 				<member index="0" function="1">54fccbfa-e363-4e79-9eb6-74590cbfe753</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2009" distribution="0" maingenre="0" subgenre="0" flags="128" blocks="2" time="0" price_mod="0.13" />
-			<ratings critics="1" speed="3" outcome="0" />
+			<data country="D" year="2009" distribution="0" maingenre="8" subgenre="0" flags="128" blocks="2" time="0" price_mod="0.13" />
+			<ratings critics="2" speed="35" outcome="0" />
 			<children>
 				<programme id="1d8bac9b-5148-4395-80e5-47db630b79a0" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6179,7 +6179,7 @@ Tragische Liebesgeschichte</de>
 						<de>Anrufer Tommy kennt Sängerin Susi persönlich und hat sie auch schon im Freibad gesehen. Dennoch scheint er sich bei den Brüsten zu verschätzen.</de>
 						<en></en>
 					</description>
-					<ratings critics="1" speed="3" />
+					<ratings critics="5" speed="30" />
 				</programme>
 				<programme id="2452f96c-81ca-41ed-8b42-de40ea3c0b11" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6190,7 +6190,7 @@ Tragische Liebesgeschichte</de>
 						<de>Diesmal werden die Zuschauer vom Foto eines Bauarbeiter-Dekolettes in die Irre geführt. Zum Haare raufen.</de>
 						<en></en>
 					</description>
-					<ratings critics="1" speed="3" />
+					<ratings critics="8" speed="25" />
 				</programme>
 				<programme id="90ca6a90-9452-4f67-afe6-78f035e3b574" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6201,7 +6201,7 @@ Tragische Liebesgeschichte</de>
 						<de>Gast-Quizmaster heute die prominente Erotikdarstellerin Mella Melone. Die Gewinnchancen für Anrufer verfolgen den IQ der Moderatorin.</de>
 						<en></en>
 					</description>
-					<ratings critics="1" speed="7" />
+					<ratings critics="15" speed="30" />
 				</programme>
 			</children>
 		</programme>
@@ -6220,7 +6220,7 @@ Tragische Liebesgeschichte</de>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1999" distribution="0" maingenre="0" subgenre="0" flags="128" blocks="2" time="0" price_mod="0.13" />
-			<ratings critics="1" speed="1" outcome="0" />
+			<ratings critics="2" speed="15" outcome="0" />
 			<children>
 				<programme id="6b296323-f8df-4950-99d0-09253d4610b0" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6231,7 +6231,7 @@ Tragische Liebesgeschichte</de>
 						<de>Zwar kommt der Anruf aus der Regie, dennoch erreicht Mariusz angeblich den verstorbenen Vater</de>
 						<en></en>
 					</description>
-					<ratings critics="1" speed="1" />
+					<ratings critics="1" speed="18" />
 				</programme>
 				<programme id="080518b7-f7e6-47db-a6d1-4444f175bb31" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6242,7 +6242,7 @@ Tragische Liebesgeschichte</de>
 						<de>Marlene aus Berlin möchte wissen, ob der entlaufene Pudel Rudi je wieder nach Hause kommen wird. </de>
 						<en></en>
 					</description>
-					<ratings critics="1" speed="1" />
+					<ratings critics="5" speed="12" />
 				</programme>
 				<programme id="12a0c215-6daf-47f4-87f1-84ef50158fc7" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6253,7 +6253,7 @@ Tragische Liebesgeschichte</de>
 						<de>Mariusz und Beatrix versuchen in dieser Ausgabe so vielen Anrufern wie möglich zu helfen - deren Themen müssen variieren.</de>
 						<en></en>
 					</description>
-					<ratings critics="4" speed="3" />
+					<ratings critics="2" speed="20" />
 				</programme>
 			</children>
 		</programme>
@@ -6764,8 +6764,8 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en></en>
 			</description>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2005" distribution="0" maingenre="0" subgenre="0" flags="128" blocks="2" time="0" price_mod="0.2" />
-			<ratings critics="1" speed="13" outcome="0" />
+			<data country="D" year="2005" distribution="0" maingenre="8" subgenre="0" flags="128" blocks="2" time="0" price_mod="0.2" />
+			<ratings critics="5" speed="30" outcome="0" />
 			<children>
 				<programme id="d98fc50e-42de-4088-b972-9b531783d202" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6776,7 +6776,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 						<de>Heute moderiert Daniela die Sendung. Kniffelige, nahezu unlösbare Aufgaben werden gestellt. Richtige Lösungen sorgen für einen Strip von Daniela.</de>
 						<en></en>
 					</description>
-					<ratings critics="1" speed="13" />
+					<ratings critics="4" speed="32" />
 				</programme>
 				<programme id="2d0d7ec9-2ebb-427d-a7a5-32ababe247d4" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6787,7 +6787,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 						<de>Heute moderiert Sabine, früher Björn, die Sendung. Ihr Höschen behält Sie aber an.</de>
 						<en></en>
 					</description>
-					<ratings critics="1" speed="11" />
+					<ratings critics="8" speed="28" />
 				</programme>
 				<programme id="3c9bd449-fe29-4aa7-ab7f-5acd9a99fd78" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6798,7 +6798,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 						<de>Mandy ist ein echtes Cowgirl, die Quizfragen allerdings zum Mäusemelken.</de>
 						<en></en>
 					</description>
-					<ratings critics="3" speed="13" />
+					<ratings critics="5" speed="23" />
 				</programme>
 				<programme id="0b0e5e6d-4553-499b-9a22-faca7770b25b" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6809,7 +6809,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 						<de>Peggy kommt vom Lande und alle Fragen drehen sich um die dicksten Kartoffeln der Bäuerin.</de>
 						<en></en>
 					</description>
-					<ratings critics="1" speed="13" />
+					<ratings critics="7" speed="26" />
 				</programme>
 			</children>
 		</programme>

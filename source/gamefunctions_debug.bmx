@@ -144,7 +144,6 @@
 
 		font.Draw("Finale Attraktivität (Effektiv)", 25, offset+330, TColor.clRed)
 		If attraction.FinalAttraction Then DrawAudiencePercent(attraction.FinalAttraction, 200, offset+330, false, true);
-
 rem
 		font.Draw("Basis-Attraktivität", 25, offset+230, TColor.clRed)
 		'DrawAudiencePercent(attraction, 200, offset+260)
