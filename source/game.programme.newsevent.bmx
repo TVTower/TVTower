@@ -482,8 +482,8 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 
 
 	Method ComputeBasePrice:Int() {_exposeToLua}
-		'price ranges from 0-10.000
-		Return 100 * ceil(100 * GetAttractiveness() * priceModifier)
+		'price ranges from 500-10.000
+		Return  Max(500, 100 * ceil(100 * GetAttractiveness() * priceModifier))
 	End Method
 End Type
 
