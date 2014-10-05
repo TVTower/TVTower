@@ -233,7 +233,7 @@ Type TAdContractBase extends TGameObject {_exposeToLua}
 	'by which factor do we cut the profit when send as infomercial
 	'compared to the profit a single ad would generate
 	'- for all
-	Global infomercialCutFactor:Float = 0.2
+	Global infomercialCutFactor:Float = 0.1
 	Global infomercialCutFactorDevModifier:Float = 1.0
 	'- for the individual base
 	'Field infomercialCutFactorModifier:Float = 1.0

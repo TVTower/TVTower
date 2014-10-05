@@ -5,7 +5,11 @@
 			<DEV_KEYS value="TRUE" />
 			<DEV_OSD value="FALSE" />
 			<DEV_LOG value="TRUE" />
-			<DEV_INFOMERCIALCUTFACTOR value="0.1" />
+			<!-- a modifier cutting the used factor to calculate the
+			     revenue of a infomercial: 0.5 would cut the result to 50%
+			     Default: 1.0
+				<DEV_INFOMERCIALCUTFACTOR value="1.0" />
+			-->
 
 			<!-- milliseconds waiting on a floor (incl. animation).
 			     Default: 1500
@@ -20,7 +24,7 @@
 				<DEV_ELEVATOR_SPEED value="140" />
 			-->
 
-			<DEV_DAILY_BOSS_VISIT value="0" />
+			<DEV_DAILY_BOSS_VISIT value="1" />
 
 			<!-- profit/penalty get multiplied with this value if there
 			     is a limiting targetgroup.

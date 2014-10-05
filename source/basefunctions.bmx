@@ -272,18 +272,31 @@ Type TFunctions
 	End Function
 
 
-	Function dottedValue:String(value:Float)
-		'find out amount of digits before decimal point
-		local intValue:int = int(value)
-		local length:int = string(intValue).length
+	Function dottedValue:String(value:Double, thousandsDelimiter:string=".", decimalDelimiter:string=",")
+		'is there a "minus" in front ?
+		local addSign:string = ""
+		if value < 0 then addSign="-"
 
-		if length <= 10 and length > 6
-			return int(floor(int(value) / 1000000))+"."+int(floor(int(value) / 1000))+"."+Left( abs(int((int(value) - int(floor(int(value) / 1000000)*1000000)))) +"000",3)
-		elseif length <= 7 and length > 3
-			return int(floor(int(value) / 1000))+"."+Left( abs(int((int(value) - int(floor(int(value) / 1000)*1000)))) +"000",3)
-		else
-			return int(value)
-		endif
+		local stringValue:String = String(Abs(value))
+		'find out amount of digits before decimal point
+		local length:int = String(Abs(Long(value))).length
+		'add 2 to length, as this contains the "." delimiter
+		local fractionalValue:String = Mid(stringValue, length+2, -1)
+		local decimalValue:String = Left(stringValue, length)
+		local result:String = ""
+
+		'do we have a fractionalValue <> ".000" ?
+		if Long(fractionalValue) > 0 then result :+ decimalDelimiter + fractionalValue
+	
+		for local i:int = decimalValue.length-1 to 0 step -1
+			result = Chr(decimalValue[i]) + result
+
+			'every 3rd char, but not if the last one (avoid 100 -> .100)
+			if (decimalValue.length-i) mod 3 = 0 and i > 0 
+				result = thousandsDelimiter + result 
+			endif
+		Next
+		return addSign+result
 	End Function
 
 
