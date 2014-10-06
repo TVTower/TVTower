@@ -282,6 +282,7 @@ Type TGame {_exposeToLua="selected"}
 			local tip:string[] = string[](StartTips.valueAtIndex(tipNumber))
 
 			StartTipWindow = new TGUIGameModalWindow.Create(new TVec2D, new TVec2D.Init(400,350), "InGame")
+			StartTipWindow.screenArea = new TRectangle.Init(0,0,800,385)
 			StartTipWindow.DarkenedArea = new TRectangle.Init(0,0,800,385)
 			StartTipWindow.SetCaptionAndValue( tip[0], tip[1] )
 		endif
@@ -641,7 +642,9 @@ Type TGame {_exposeToLua="selected"}
 
 				'0 days = "today", -1 days = ended
 				If contract.GetDaysLeft() < 0
-					Player.GetFinance(day).PayPenalty(contract.GetPenalty(), contract)
+					'inform contract
+					contract.Fail(GetWorldTime().MakeTime(0, day, 0, 0))
+					'remove
 					Player.GetProgrammeCollection().RemoveAdContract(contract)
 				EndIf
 			Next

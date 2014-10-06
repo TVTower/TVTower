@@ -423,7 +423,8 @@ OPTION_ON = Option an
 OPTION_OFF = Option aus
 AVAILABLE_GAMES = Verfügbare Spiele
 ALREADY_OVER = Schon vorbei...?
-DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME = Willst Du das Spiel wirklich beenden?
+DO_YOU_REALLY_WANT_TO_QUIT = Willst Du wirklich aufhören?
+DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN = Willst Du das Spiel wirklich beenden und zum Hauptmenü zurückkehren?
 
 HINT_PRESSING_ALT_WILL_SHOW_DETAILS = "ALT"-Taste drücken für mehr Details.
 HINT_PROGRAMMEPLANER_SHORTCUTS = ALT: tauscht Datenblatt | STRG+Klick: Programmkopie | SHIFT+Klick: nächste Episode

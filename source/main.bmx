@@ -726,7 +726,19 @@ Type TApp
 
 
 		'approve exit
-		If buttonNumber = 0 Then TApp.ExitApp = True
+		If buttonNumber = 0
+			'if within a game - just return to mainmenu
+			if Game.gamestate = TGame.STATE_RUNNING
+				'adjust darkened Area to fullscreen!
+				'but do not set new screenArea to avoid "jumping"
+				ExitAppDialogue.darkenedArea.Init(0,0,800,600)
+				'ExitAppDialogue.screenArea.Init(0,0,800,600)
+
+				Game.SetGameState(TGame.STATE_MAINMENU)
+			else
+				TApp.ExitApp = True
+			endif
+		EndIf
 		'remove connection to global value (guimanager takes care of fading)
 		TApp.ExitAppDialogue = Null
 
@@ -751,9 +763,15 @@ Type TApp
 		'limit to "screen" area
 		If game.gamestate = TGame.STATE_RUNNING
 			ExitAppDialogue.darkenedArea = New TRectangle.Init(0,0,800,385)
+			'center to this area
+			ExitAppDialogue.screenArea = New TRectangle.Init(0,0,800,385)
 		EndIf
 
-		ExitAppDialogue.SetCaptionAndValue( GetLocale("ALREADY_OVER"), GetLocale("DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME") )
+		if game.gamestate = TGame.STATE_RUNNING
+			ExitAppDialogue.SetCaptionAndValue( GetLocale("ALREADY_OVER"), GetLocale("DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN") )
+		else
+			ExitAppDialogue.SetCaptionAndValue( GetLocale("ALREADY_OVER"), GetLocale("DO_YOU_REALLY_WANT_TO_QUIT") )
+		endif
 	End Function
 
 End Type

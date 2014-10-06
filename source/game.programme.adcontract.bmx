@@ -506,6 +506,26 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	'call this to set the contract failed (and pay a penalty)
+	Method Fail:int(time:Double=0)
+		'send out event for potential listeners (eg. ingame notification)
+		EventManager.triggerEvent(TEventSimple.Create("adContract.onFail", New TData.addNumber("time", time), Self))
+
+		'pay penalty
+		GetPlayerFinanceCollection().Get(owner ,GetWorldTime().GetDay(time)).PayPenalty(GetPenalty(), self)
+	End Method
+	
+
+	'call this to set the contract successful and finished (and earn profit)
+	Method Finish:int(time:Double=0)
+		'send out event for potential listeners (eg. ingame notification)
+		EventManager.triggerEvent(TEventSimple.Create("adContract.onFinish", New TData.addNumber("time", time), Self))
+
+		'give money
+		GetPlayerFinanceCollection().Get(owner, GetWorldTime().GetDay(time)).EarnAdProfit(GetProfit(), self)
+	End Method
+	
+
 	'if targetgroup is set, the price is doubled
 	Method GetProfit:Int(playerID:Int= -1) {_exposeToLua}
 		'already calculated and data for owner requested

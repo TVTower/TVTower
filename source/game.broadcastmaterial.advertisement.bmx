@@ -191,6 +191,9 @@ endrem
 		'limited to a specific genre - and not fulfilled
 		ElseIf contract.GetLimitedToGenre() >= 0
 			'check current programme of the owner
+			'TODO: check if that has flaws playing with high speed
+			'      (check if current broadcast is correctly set at this
+			'      time)
 			local broadcastMaterial:TBroadcastMaterial = GetBroadcastManager().GetCurrentProgrammeBroadcastMaterial(owner)
 			'should not happen - as it else is a broadcastOutage
 			if not broadcastMaterial
@@ -213,13 +216,6 @@ endrem
 			'successful sent - so increase the value the contract
 			contract.spotsSent:+1
 			'TLogger.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" sent SUCCESSFUL spot "+contract.spotsSent+"/"+contract.GetSpotCount()+". Title: "+contract.GetTitle()+". Time: day "+(day-GetWorldTime().GetStartDay())+", "+hour+":"+minute+".", LOG_DEBUG)
-
-			'successful sent all needed spots?
-			If contract.isSuccessful()
-				TLogger.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" finished ad contract, earned "+contract.GetProfit()+CURRENCYSIGN+" with an audience of "+ audienceResult.audience.GetSum(), LOG_DEBUG)
-				'give money
-				GetPlayerFinanceCollection().Get(owner, day).EarnAdProfit(contract.GetProfit(), contract)
-			EndIf
 		EndIf
 		return TRUE
 	End Method

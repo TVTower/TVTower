@@ -14,6 +14,8 @@ Import "base.gfx.gui.button.bmx"
 
 Type TGUIModalWindow Extends TGUIWindowBase
 	Field DarkenedArea:TRectangle = Null
+	'the area the window centers to
+	Field screenArea:TRectangle = Null
 	Field buttons:TGUIButton[]
 	Field autoAdjustHeight:Int = True
 	'=== CLOSING VARIABLES ===
@@ -106,12 +108,12 @@ Type TGUIModalWindow Extends TGUIWindowBase
 		'center the window
 		Local centerX:Float=0.0
 		Local centerY:Float=0.0
-		If Not darkenedArea
+		If Not screenArea
 			centerX = VirtualWidth()/2
 			centerY = VirtualHeight()/2
 		Else
-			centerX = DarkenedArea.getX() + DarkenedArea.GetW()/2
-			centerY = DarkenedArea.getY() + DarkenedArea.GetH()/2
+			centerX = screenArea.getX() + screenArea.GetW()/2
+			centerY = screenArea.getY() + screenArea.GetH()/2
 		EndIf
 
 		If Not moveBy Then moveBy = new TVec2D.Init(0,0)

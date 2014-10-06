@@ -1186,6 +1186,9 @@ endrem
 						'removes them also from programmes (shopping show)
 						RemoveProgrammeInstances(obj, False)
 
+						'inform contract and earn money
+						TAdvertisement(obj).contract.Finish( GetWorldTime().MakeTime(0, day, hour, minute) )
+
 						'remove contract from collection (and suitcase)
 						'contract is still stored within advertisements (until they get deleted)
 						GetPlayerProgrammeCollectionCollection().Get(owner).RemoveAdContract(TAdvertisement(obj).contract)
