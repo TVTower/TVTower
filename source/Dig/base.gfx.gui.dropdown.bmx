@@ -305,21 +305,23 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 	End Method
 
 
-	Method Draw()
+	'override to select another parent
+	Method GetRestrictingViewPortObject:TGUIObject()
+		return GetParent("TGUIListBase")
+	End Method
+
+
+	'override
+	Method DrawContent()
 		local oldCol:TColor = new TColor.Get()
 		SetAlpha oldCol.a * GetScreenAlpha()
 
 		local upperParent:TGUIObject = GetParent("TGUIListBase")
 		upperParent.RestrictContentViewPort()
 
-		Super.Draw()
+		DrawValue()
 
 		upperParent.ResetViewPort()
 		oldCol.SetRGBA()
-	End Method
-
-
-	Method DrawContent()
-		DrawValue()
 	End Method
 End Type

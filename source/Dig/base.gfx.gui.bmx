@@ -1133,6 +1133,12 @@ Type TGUIobject
 	End Method
 
 
+	Method GetState:string()
+		if state <> "" then return Mid(state, 1)
+		return ""
+	End Method
+
+
 	Method SetPadding:Int(top:Int,Left:Int,bottom:Int,Right:Int)
 		if not _padding
 			_padding = new TRectangle.Init(top, left, bottom, right)
@@ -1509,14 +1515,20 @@ Type TGUIobject
 		Endif
 
 
+		'=== HANDLE MOUSE ===
+		if not GUIManager.UpdateState_mouseButtonDown[1]
+			mouseIsDown	= Null
+			'remove hover/active state
+			setState("")
+		endif
 		'=== HANDLE MOUSE OVER ===
 
 		'if nothing of the obj is visible or the mouse is not in
 		'the visible part - reset the mouse states
 		If Not containsXY(mousePos.x, mousePos.y)
-			mouseIsDown		= Null
-			mouseIsClicked	= Null
-			mouseover		= 0
+			'reset clicked position as soon as leaving the widget
+			mouseIsClicked = Null
+			mouseover = 0
 			setState("")
 
 			'mouseclick somewhere - should deactivate active object

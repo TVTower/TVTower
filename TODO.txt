@@ -24,12 +24,6 @@ TODO
     eines Menschen (John Candy, Paul Walker) ... wie diese behandeln?
   -> bei fiktiven Personen: Eignung als Newssprecher, Moderatoren, Darsteller, ...
 
-* XML-Dateien: Animationskonfiguration
-	- TAsset -> global "currentDeltaTime"
-	- TAsset -> global "updateList" haelt Assets die in einer Update-Runde aktualisiert werden muessen
-	- TAsset -> Sprites mit Animationskonfiguration setzen sich in diese "updateList"
-	- TAsset -> TAsset.UpdateAll() ruft die Updates auf (currentDeltaTime -> animationen etc)
-
 * Fensterverschiebung in Windows stoppt Programmablauf bis loslassen
 	- DirectX -> eigene WindowDeco - stylen
 	- OpenGL ... - WindowDeco nicht stylebar
@@ -37,7 +31,7 @@ TODO
 * Live-Events:
 	- Fussball, Formel1, Konzerte, ... fehlen noch
 
-* Eigenproduktionen:
+s* Eigenproduktionen:
 	- Filme - die auch bspweise in den Wiederverkauf
 	  gelangen koennen. Hier sollte evtl der "Kino"-Wert
 	  erst nach der Erstausstrahlung definiert werden
