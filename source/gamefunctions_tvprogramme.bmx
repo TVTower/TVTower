@@ -1397,7 +1397,7 @@ endrem
 			If MOUSEMANAGER.IsHit(1) AND THelper.MouseIn(genresRect.GetX(), genresRect.GetY() + genresStartY, genresRect.GetW(), genreSize.GetY()*TProgrammeLicenceFilter.GetVisibleCount())
 				SetOpen(2)
 				local visibleFilters:TProgrammeLicenceFilter[] = TProgrammeLicenceFilter.GetVisible()
-				currentGenre = Max(0, Min(visibleFilters.length, Floor((MouseManager.y - (genresRect.GetY() + genresStartY)) / genreSize.GetY())))
+				currentGenre = Max(0, Min(visibleFilters.length-1, Floor((MouseManager.y - (genresRect.GetY() + genresStartY)) / genreSize.GetY())))
 				MOUSEMANAGER.ResetKey(1)
 			EndIf
 		endif
