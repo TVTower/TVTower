@@ -8,7 +8,6 @@ Type TPopularityManager
 	Field Popularities:TList = CreateList()
 	Field updateInterval:int = 720	'update every x minutes (720 = 12*60)
 	Field updateTimeLeft:int = 720	'time till next update (in game minutes)
-	Field _initialized:int = FALSE
 	Global _instance:TPopularityManager
 
 
@@ -18,20 +17,9 @@ Type TPopularityManager
 	End Function
 
 
-	'reinitializes the manager
-	Method Reset()
-		_initialized = FALSE
-		Initialize()
-	End Method
-
-
 	Method Initialize:int()
-		if _initialized then return TRUE
-
 		'reset list
 		Popularities = CreateList()
-
-		_initialized = TRUE
 	End Method
 
 

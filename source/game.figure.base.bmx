@@ -40,6 +40,14 @@ Type TFigureBaseCollection
 	End Method
 
 
+	Method GetByName:TFigureBase(name:string)
+		For local figure:TFigureBase = eachin List
+			if figure.name = name then return figure
+		Next
+		return Null
+	End Method
+	
+
 	Method Add:int(figure:TFigureBase)
 		'if there is a figure with the same id, remove that first
 		if figure.id > 0

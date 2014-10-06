@@ -727,6 +727,8 @@ Type TApp
 
 		'approve exit
 		If buttonNumber = 0
+rem
+	disable until "new game" works properly
 			'if within a game - just return to mainmenu
 			if Game.gamestate = TGame.STATE_RUNNING
 				'adjust darkened Area to fullscreen!
@@ -738,6 +740,8 @@ Type TApp
 			else
 				TApp.ExitApp = True
 			endif
+endrem
+			TApp.ExitApp = True
 		EndIf
 		'remove connection to global value (guimanager takes care of fading)
 		TApp.ExitAppDialogue = Null
@@ -760,6 +764,9 @@ Type TApp
 		ExitAppDialogue = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D.Init(400,150), "SYSTEM")
 		ExitAppDialogue.SetDialogueType(2)
 		ExitAppDialogue.SetZIndex(100000)
+
+rem
+	disable until "new game" works properly
 		'limit to "screen" area
 		If game.gamestate = TGame.STATE_RUNNING
 			ExitAppDialogue.darkenedArea = New TRectangle.Init(0,0,800,385)
@@ -772,6 +779,8 @@ Type TApp
 		else
 			ExitAppDialogue.SetCaptionAndValue( GetLocale("ALREADY_OVER"), GetLocale("DO_YOU_REALLY_WANT_TO_QUIT") )
 		endif
+endrem
+		ExitAppDialogue.SetCaptionAndValue( GetLocale("ALREADY_OVER"), GetLocale("DO_YOU_REALLY_WANT_TO_QUIT") )
 	End Function
 
 End Type
@@ -779,14 +788,8 @@ End Type
 
 'just an object holding all data which has to get saved
 'it is kind of an "DataCollectionCollection" ;D
-Type TSaveGame
+Type TGameState
 	Field _Game:TGame = Null
-	'store the time gone since when the app started - timers rely on this
-	'and without, times will differ after "loading" (so elevator stops
-	'closing doors etc.)
-	'this allows to have "realtime" (independend from "logic updates")
-	'effects - for visual effects (fading), sound ...
-	Field _Time_timeGone:Long = 0
 	Field _WorldTime:TWorldTime = Null
 	Field _World:TWorld = Null
 	Field _GameRules:TGamerules = Null
@@ -815,6 +818,41 @@ Type TSaveGame
 	Field _RoomBaseCollection:TRoomBaseCollection
 	Const MODE_LOAD:Int = 0
 	Const MODE_SAVE:Int = 1
+
+
+	Method Initialize:Int()
+		GetStationMapCollection().InitializeAll()
+		GetPlayerProgrammeCollectionCollection().InitializeAll()
+		GetPlayerProgrammePlanCollection().InitializeAll()
+		GetAdContractCollection().Initialize()
+		GetPopularityManager().Initialize()
+		GetBuilding().Initialize()
+		'building already initializes elevator
+		'GetElevator().Initialize()
+
+		GetAdContractBaseCollection().Initialize()
+		GetProgrammeDataCollection().Initialize()
+		GetProgrammeLicenceCollection().Initialize()
+		GetNewsEventCollection().Initialize()
+
+		rem
+			GetWorldTime().Initialize()
+			GetWorld().Initialize()
+			GetBetty().Initialize()
+			GetFigureCollection().Initialize()
+			GetPlayerCollection().Initialize()
+			GetPlayerFinanceCollection().Initialize()
+			GetPlayerFinanceHistoryListCollection().Initialize()
+			GetPublicImageCollection().Initialize()
+			GetBroadcastManager().Initialize()
+			GetBuilding().Initialize()
+			GetNewsAgency().Initialize()
+			_RoomHandler_MovieAgency.Initialize()
+			_RoomHandler_AdAgency.Initialize()
+			GetRoomDoorBaseCollection().Initialize()
+			GetRoomBaseCollection().Initialize()
+		endrem
+	End Method
 
 
 	Method RestoreGameData:Int()
@@ -849,15 +887,10 @@ Type TSaveGame
 		_Assign(_RoomHandler_MovieAgency, RoomHandler_MovieAgency._instance, "MovieAgency", MODE_LOAD)
 		_Assign(_RoomHandler_AdAgency, RoomHandler_AdAgency._instance, "AdAgency", MODE_LOAD)
 		_Assign(_Game, Game, "Game")
-		'restore "time gone since start"
-		Time.SetTimeGone(_Time_timeGone)
 	End Method
 
 
 	Method BackupGameData:Int()
-		'store "time gone since start"
-		_Time_timeGone = Time.GetTimeGone()
-
 		_Assign(Game, _Game, "Game", MODE_SAVE)
 		_Assign(TBuilding._instance, _Building, "Building", MODE_SAVE)
 		_Assign(TRoomBaseCollection._instance, _RoomBaseCollection, "RoomBaseCollection", MODE_SAVE)
@@ -892,7 +925,54 @@ Type TSaveGame
 		_Assign(RoomHandler_AdAgency._instance, _RoomHandler_AdAgency, "AdAgency", MODE_Save)
 	End Method
 
+	
+	Method _Assign(objSource:Object Var, objTarget:Object Var, name:String="DATA", mode:Int=0)
+		If objSource
+			objTarget = objSource
+			If mode = MODE_LOAD
+				TLogger.Log("TGameState.RestoreGameData()", "Restore object "+name, LOG_DEBUG)
+			Else
+				TLogger.Log("TGameState.BackupGameData()", "Backup object "+name, LOG_DEBUG)
+			EndIf
+		Else
+			TLogger.Log("TGameState", "object "+name+" was NULL - ignored", LOG_DEBUG)
+		EndIf
+	End Method
+End Type
 
+
+Type TSaveGame extends TGameState
+	'store the time gone since when the app started - timers rely on this
+	'and without, times will differ after "loading" (so elevator stops
+	'closing doors etc.)
+	'this allows to have "realtime" (independend from "logic updates")
+	'effects - for visual effects (fading), sound ...
+	Field _Time_timeGone:Long = 0
+
+	'override to do nothing
+	Method Initialize:Int()
+		'
+	End Method
+
+
+	'override to add time adjustment
+	Method RestoreGameData:Int()
+		Super.RestoreGameData()
+		'restore "time gone since start"
+		Time.SetTimeGone(_Time_timeGone)
+	End Method
+
+
+	'override to add time storage
+	Method BackupGameData:Int()
+		Super.BackupGameData()
+
+		'store "time gone since start"
+		_Time_timeGone = Time.GetTimeGone()
+	End Method
+	
+
+	'override to output differing log texts
 	Method _Assign(objSource:Object Var, objTarget:Object Var, name:String="DATA", mode:Int=0)
 		If objSource
 			objTarget = objSource
@@ -2193,7 +2273,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 	'was "startGame()" called already?
 	Field startGameCalled:Int = False
 	'was "prepareGame()" called already?
-	Field prepareGameCalled:Int = False
+'	Field prepareGameCalled:Int = False
 	'was "SpreadConfiguration()" called already?
 	Field spreadConfigurationCalled:Int = False
 	'was "SpreadStartData()" called already?
@@ -2246,7 +2326,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 	Method Reset:Int()
 		startGameCalled = False
-		prepareGameCalled = False
+'		prepareGameCalled = False
 		spreadConfigurationCalled = False
 		spreadStartDataCalled = False
 		canStartGame = False
@@ -2284,7 +2364,9 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		'=== STEPS ===
 		'MP = MultiPlayer, SP = SinglePlayer, ALL = all modes
 		'1. MP:  Spread configuration (database / name)
+'no longer needed
 		'2. ALL: Prepare game (load database, color figures)
+'
 		'3. MP:  Check if ready to start game
 		'4. ALL: Start game (if ready)
 
@@ -2293,29 +2375,34 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		If game.networkGame
 			SpreadConfiguration()
 			spreadConfigurationCalled = True
+			StartMultiplayerSyncStarted = Time.GetTimeGone()
 		EndIf
 
 
+rem
+	do not prepare as things might have to get prepared "FIRST" (first game start)
 		'=== STEP 2 ===
 		If Not prepareGameCalled
 			Game.PrepareStart()
 			StartMultiplayerSyncStarted = Time.GetTimeGone()
 			prepareGameCalled = True
 		EndIf
-
+endrem
 
 		'=== STEP 3 ===
-		'ask other players if they are ready (ask every 500ms)
-		If Game.isGameLeader() And SendGameReadyTimer < Time.GetTimeGone()
-			NetworkHelper.SendGameReady(GetPlayerCollection().playerID)
-			SendGameReadyTimer = Time.GetTimeGone() + 500
-		EndIf
-		'go back to game settings if something takes longer than expected
-		If Time.GetTimeGone() - StartMultiplayerSyncStarted > 10000
-			Print "sync timeout"
-			StartMultiplayerSyncStarted = 0
-			game.SetGamestate(TGame.STATE_SETTINGSMENU)
-			Return False
+		If game.networkGame
+			'ask other players if they are ready (ask every 500ms)
+			If Game.isGameLeader() And SendGameReadyTimer < Time.GetTimeGone()
+				NetworkHelper.SendGameReady(GetPlayerCollection().playerID)
+				SendGameReadyTimer = Time.GetTimeGone() + 500
+			EndIf
+			'go back to game settings if something takes longer than expected
+			If Time.GetTimeGone() - StartMultiplayerSyncStarted > 10000
+				Print "sync timeout"
+				StartMultiplayerSyncStarted = 0
+				game.SetGamestate(TGame.STATE_SETTINGSMENU)
+				Return False
+			EndIf
 		EndIf
 
 		If Not startGameCalled
@@ -2556,6 +2643,36 @@ End Type
 
 
 Type GameEvents
+	Function RegisterEventListeners:int()
+		'react on right clicks during a rooms update (leave room)
+		EventManager.registerListenerFunction("room.onUpdate", RoomOnUpdate)
+
+		'=== REGISTER PLAYER EVENTS ===
+		'events get ignored by non-gameleaders
+		EventManager.registerListenerFunction("Game.OnMinute", PlayersOnMinute)
+		EventManager.registerListenerFunction("Game.OnDay", PlayersOnDay)
+		EventManager.registerListenerFunction("Time.OnSecond", Time_OnSecond)
+
+		EventManager.registerListenerFunction("PlayerFinance.onChangeMoney", PlayerFinanceOnChangeMoney)
+		EventManager.registerListenerFunction("PlayerFinance.onTransactionFailed", PlayerFinanceOnTransactionFailed)
+		EventManager.registerListenerFunction("PlayerBoss.onCallPlayer", PlayerBoss_OnCallPlayer)
+		EventManager.registerListenerFunction("PlayerBoss.onCallPlayerForced", PlayerBoss_OnCallPlayerForced)
+		EventManager.registerListenerFunction("PlayerBoss.onPlayerEnterBossRoom", PlayerBoss_OnPlayerEnterBossRoom)
+
+		'visually inform that selling the last station is impossible
+		EventManager.registerListenerFunction("StationMap.onTrySellLastStation", StationMapOnTrySellLastStation)
+		'trigger audience recomputation when a station is trashed/sold
+		EventManager.registerListenerFunction("StationMap.removeStation", StationMapOnSellStation)
+
+		EventManager.registerListenerFunction("BroadcastManager.BroadcastMalfunction", PlayerBroadcastMalfunction)
+
+		'listen to failed or successful ending adcontracts to send out
+		'ingame toastmessages
+		EventManager.registerListenerFunction("AdContract.onFinish", AdContract_OnFinish)
+		EventManager.registerListenerFunction("AdContract.onFail", AdContract_OnFail)
+	End Function
+	
+
 	Function Time_OnSecond:Int(triggerEvent:TEventBase)
 		'only AI handling: only gameleader interested
 		If not Game.isGameLeader() then return False
@@ -2696,6 +2813,44 @@ Type GameEvents
 		if not boss or not player then return False
 
 		player.SendToBoss()
+	End Function
+
+	
+	Function AdContract_OnFinish:Int(triggerEvent:TEventBase)
+		local contract:TAdContract = TAdContract(triggerEvent.GetSender())
+		if not contract then return False
+
+		'only interest in active players contracts
+		 if contract.owner <> GetPlayerCollection().playerID then return False
+
+		'send out a toast message
+		local toast:TGameToastMessage = new TGameToastMessage
+	
+		'show it for some seconds
+		toast.SetLifeTime(8)
+		toast.SetMessageType(2) 'positive
+		toast.SetCaption(GetLocale("ADCONTRACT_FINISHED"))
+		toast.SetText(GetLocale("ADCONTRACT_X_SUCCESSFULLY_FINISHED__PROFIT_OF_Y_GOT_CREDITED").Replace("%TITLE%", contract.GetTitle()).Replace("%MONEY%", "|b|"+TFunctions.DottedValue(contract.GetProfit())+getLocale("CURRENCY")+"|/b|"))
+		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+	End Function
+
+	
+	Function AdContract_OnFail:Int(triggerEvent:TEventBase)
+		local contract:TAdContract = TAdContract(triggerEvent.GetSender())
+		if not contract then return False
+
+		'only interest in active players contracts
+		 if contract.owner <> GetPlayerCollection().playerID then return False
+
+		'send out a toast message
+		local toast:TGameToastMessage = new TGameToastMessage
+	
+		'show it for some more seconds
+		toast.SetLifeTime(12)
+		toast.SetMessageType(3) 'negative
+		toast.SetCaption(GetLocale("ADCONTRACT_FAILED"))
+		toast.SetText(GetLocale("ADCONTRACT_X_FAILED__PENALTY_OF_Y_WAS_PAID").Replace("%TITLE%", contract.GetTitle()).Replace("%MONEY%", "|b|"+TFunctions.DottedValue(contract.GetPenalty())+getLocale("CURRENCY")+"|/b|"))
+		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 	End Function
 
 

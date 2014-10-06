@@ -82,31 +82,35 @@ Type TBuilding Extends TStaticEntity
 
 
 	Function GetInstance:TBuilding()
-		if not _instance then _instance = new TBuilding.Create()
+		if not _instance
+			_instance = new TBuilding
+			_instance.Initialize()
+		endif
 		return _instance
 	End Function
 
 
-	Method Create:TBuilding()
+	Method Initialize:TBuilding()
 		area.position.SetX(0)
 		area.dimension.SetXY(800, floorCount * floorHeight + 50) 'occupy full area
 
 		'create an entity spawning the complete inner area of the building
 		'this entity can be used as parent for other entities - which
 		'want to layout to the "inner area" of the building (eg. doors)
-		buildingInner = new TStaticEntity
-		buildingInner.area.position.SetXY(leftWallX + innerX, 0)
-		'subtract missing "splitter wall" of last floor
-		buildingInner.area.dimension.SetXY(floorWidth, floorCount * floorHeight - 7)
-		'set building as parent for proper alignment
-		buildingInner.SetParent(self)
-
+		if not buildingInner
+			buildingInner = new TStaticEntity
+			buildingInner.area.position.SetXY(leftWallX + innerX, 0)
+			'subtract missing "splitter wall" of last floor
+			buildingInner.area.dimension.SetXY(floorWidth, floorCount * floorHeight - 7)
+			'set building as parent for proper alignment
+			buildingInner.SetParent(self)
+		endif
 
 		'call to set graphics, paths for objects and other stuff
 		InitGraphics()
 
 		area.position.SetY(0 - gfx_building.area.GetH() + 5 * floorHeight)
-		Elevator = TElevator.GetInstance().Init()
+		Elevator = GetElevator().Initialize()
 		Elevator.SetParent(self.buildingInner)
 		Elevator.area.position.SetX(floorWidth/2 - Elevator.GetDoorWidth()/2)
 		Elevator.area.position.SetY(GetFloorY2(Elevator.CurrentFloor) - Elevator.spriteInner.area.GetH())
@@ -275,7 +279,6 @@ Type TBuilding Extends TStaticEntity
 		For local figure:TFigureBase = EachIn GetFigureBaseCollection().list
 			figure.setParent(self.buildingInner)
 		Next
-
 
 		PrepareBuildingSprite()
 	End Method

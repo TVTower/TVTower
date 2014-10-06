@@ -412,6 +412,11 @@ ALREADY_OVER = Already over...?
 DO_YOU_REALLY_WANT_TO_QUIT = Do you really want to quit?
 DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN = Do you really want to quit the game and return to startscreen?
 
+ADCONTRACT_FINISHED = Advertisement contract finished
+ADCONTRACT_FAILED = Advertisement contract failed
+ADCONTRACT_X_SUCCESSFULLY_FINISHED__PROFIT_OF_Y_GOT_CREDITED = Advertisement contract "%TITLE%" successfully finished. Profit of %MONEY% got credited.
+ADCONTRACT_X_FAILED__PENALTY_OF_Y_WAS_PAID = Advertisement contract "%TITLE%" failed. Penalty of %MONEY% was paid.
+
 HINT_PRESSING_ALT_WILL_SHOW_DETAILS = Pressing "ALT"-key will show details.
 HINT_PROGRAMMEPLANER_SHORTCUTS = ALT: switch data sheet | CTRL+Click: copy programme | SHIFT+Click: next episode
 HINT = Hint

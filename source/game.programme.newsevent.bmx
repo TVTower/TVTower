@@ -36,6 +36,14 @@ Type TNewsEventCollection
 		if not _instance then _instance = new TNewsEventCollection
 		return _instance
 	End Function
+
+
+	Method Initialize:TNewsEventCollection()
+		allNewsEvents.Clear()
+		_InvalidateCaches()
+
+		return self
+	End Method
 	
 
 	Method _InvalidateCaches()

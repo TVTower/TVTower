@@ -71,7 +71,16 @@ Type TElevator extends TEntity
 
 
 
-	Method Init:TElevator()
+	Method Initialize:TElevator()
+		ElevatorStatus = 0
+		DoorStatus = 0
+		CurrentFloor = 8
+		TargetFloor = 0
+		Direction:Int = 1
+		ReadyForBoarding = false
+		Speed = 130
+		WaitAtFloorTime = 1500
+
 		'limit speed between 50 - 240 pixels per second, default 120
 		Speed = Max(50, Min(240, App.devConfig.GetInt("DEV_ELEVATOR_SPEED", self.speed)))
 		'adjust wait at floor time : 1000 - 2000 ms, default 1700
@@ -83,7 +92,10 @@ Type TElevator extends TEntity
 		'create timer
 		WaitAtFloorTimer = TIntervalTimer.Create(WaitAtFloorTime)
 
-
+		'reset floor route list and passengers
+		FloorRouteList.Clear()
+		Passengers.Clear()
+	
 		PassengerPosition  = PassengerPosition[..6]
 		PassengerOffset    = PassengerOffset[..6]
 		PassengerOffset[0] = new TVec2D.Init(0, 0)
@@ -598,10 +610,14 @@ Type TFloorRoute
 	End Method
 End Type
 
+'===== CONVENIENCE ACCESSOR =====
+'return elevator instance
+Function GetElevator:TElevator()
+	Return TElevator.GetInstance()
+End Function
 
 
-'###############################################################
-'###############################################################
+
 '###############################################################
 'Hier beginnt die konkrete Implementierung der TElevatorSmartLogic
 

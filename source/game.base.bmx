@@ -110,10 +110,6 @@ Type TGame {_exposeToLua="selected"}
 
 		networkgame = 0
 
-		'=== ADJUST GAME RULES ===
-		'how many contracts can a player possess
-		GameRules.maxContracts = 10
-
 		'set basic game speed to 20 gameseconds per second
 		GetWorldTime().SetTimeFactor(20.0)
 		'set start year
@@ -125,7 +121,7 @@ Type TGame {_exposeToLua="selected"}
 		If initializePlayer Then CreateInitialPlayers()
 
 		'creates all Rooms - with the names assigned at this moment
-		If initializeRoom Then Init_CreateAllRooms()
+'		If initializeRoom Then Init_CreateAllRooms()
 
 		Return self
 	End Method
@@ -186,6 +182,9 @@ Type TGame {_exposeToLua="selected"}
 
 		Game.InitWorld()
 
+		'create rooms and connect handlers
+		Init_CreateAllRooms()
+
 		GetPopularityManager().Initialize()
 		GetBroadcastManager().Initialize()
 
@@ -240,28 +239,8 @@ Type TGame {_exposeToLua="selected"}
 
 
 		'=== REGISTER GENERIC EVENTS ===
-		'react on right clicks during a rooms update (leave room)
-		EventManager.registerListenerFunction("room.onUpdate", GameEvents.RoomOnUpdate)
-
-		'=== REGISTER PLAYER EVENTS ===
-		'events get ignored by non-gameleaders
-		EventManager.registerListenerFunction("Game.OnMinute", GameEvents.PlayersOnMinute)
-		EventManager.registerListenerFunction("Game.OnDay", GameEvents.PlayersOnDay)
-		EventManager.registerListenerFunction("Time.OnSecond", GameEvents.Time_OnSecond)
-
-		EventManager.registerListenerFunction("PlayerFinance.onChangeMoney", GameEvents.PlayerFinanceOnChangeMoney)
-		EventManager.registerListenerFunction("PlayerFinance.onTransactionFailed", GameEvents.PlayerFinanceOnTransactionFailed)
-		EventManager.registerListenerFunction("PlayerBoss.onCallPlayer", GameEvents.PlayerBoss_OnCallPlayer)
-		EventManager.registerListenerFunction("PlayerBoss.onCallPlayerForced", GameEvents.PlayerBoss_OnCallPlayerForced)
-		EventManager.registerListenerFunction("PlayerBoss.onPlayerEnterBossRoom", GameEvents.PlayerBoss_OnPlayerEnterBossRoom)
-
-		'visually inform that selling the last station is impossible
-		EventManager.registerListenerFunction("StationMap.onTrySellLastStation", GameEvents.StationMapOnTrySellLastStation)
-		'trigger audience recomputation when a station is trashed/sold
-		EventManager.registerListenerFunction("StationMap.removeStation", GameEvents.StationMapOnSellStation)
-
-		EventManager.registerListenerFunction("BroadcastManager.BroadcastMalfunction", GameEvents.PlayerBroadcastMalfunction)
-
+		GameEvents.RegisterEventListeners()
+		
 		'init finished
 		_firstGamePreparationDone = True
 	End Function
@@ -290,10 +269,16 @@ Type TGame {_exposeToLua="selected"}
 
 
 	Method PrepareNewGame:int()
+		'=== RESET VALUES ===
+		new TGameState.Initialize()
+
+
+		'=== LOAD DATABASES ===
 		'load all movies, news, series and ad-contracts
 		'do this here, as saved games already contain the database
 		TLogger.Log("Game.PrepareNewGame()", "loading database", LOG_DEBUG)
 		LoadDatabase(userDBDir)
+
 
 		'=== FIGURES ===
 		'set all non human players to AI
@@ -320,25 +305,32 @@ Type TGame {_exposeToLua="selected"}
 
 		'also create/move other figures of the building
 		'all of them are created at "offscreen position"
-		local fig:TFigure
-		fig = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("janitor"), GameRules.offscreenX, 0, 65)
+		local fig:TFigure = GetFigureCollection().GetByName("Hausmeister")
+		if not fig then fig = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("janitor"), GameRules.offscreenX, 0, 65)
+		fig.MoveToOffscreen()
 		fig.SetParent(GetBuilding().buildingInner)
 		fig.SendToDoor(TRoomDoor.GetByDetails("supermarket",-1), True)
 
-		fig = New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), GameRules.offscreenX - 90, 0, 65, 0)
+		fig = GetFigureCollection().GetByName("Bote1")
+		if not fig then fig = New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), GameRules.offscreenX - 90, 0, 65, 0)
+		fig.MoveToOffscreen()
 		fig.SetParent(GetBuilding().buildingInner)
 		fig.SendToDoor(TRoomDoor.GetByDetails("boss", 1), True)
 
-		fig = New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), GameRules.offscreenX -60, 0, -65, 0)
+		fig = GetFigureCollection().GetByName("Bote2")
+		if not fig then fig = New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), GameRules.offscreenX -60, 0, -65, 0)
+		fig.MoveToOffscreen()
 		fig.SetParent(GetBuilding().buildingInner)
 		fig.SendToDoor(TRoomDoor.GetByDetails("boss", 3), True)
 		
-
-		terrorists[0] = New TFigureTerrorist.Create("Terrorist1", GetSpriteFromRegistry("Terrorist1"), GameRules.offscreenX, 0, 65)
-		'terrorists[0].MoveToOffscreen()
+		terrorists[0] = TFigureTerrorist(GetFigureCollection().GetByName("Terrorist1"))
+		if not terrorists[0] then terrorists[0] = New TFigureTerrorist.Create("Terrorist1", GetSpriteFromRegistry("Terrorist1"), GameRules.offscreenX, 0, 65)
+		terrorists[0].MoveToOffscreen()
 		terrorists[0].SetParent(GetBuilding().buildingInner)
-		terrorists[1] = New TFigureTerrorist.Create("Terrorist2", GetSpriteFromRegistry("Terrorist2"), GameRules.offscreenX, 0, 65)
-		'terrorists[1].MoveToOffscreen()
+		
+		terrorists[1] = TFigureTerrorist(GetFigureCollection().GetByName("Terrorist2"))
+		if not terrorists[1] then terrorists[1] = New TFigureTerrorist.Create("Terrorist2", GetSpriteFromRegistry("Terrorist2"), GameRules.offscreenX, 0, 65)
+		terrorists[1].MoveToOffscreen()
 		terrorists[1].SetParent(GetBuilding().buildingInner)
 
 		'we want all players to alreay wait in front of the elevator
@@ -359,6 +351,7 @@ Type TGame {_exposeToLua="selected"}
 
 		'create base stations
 		For Local i:Int = 1 To 4
+			'add new station
 			GetPlayerCollection().Get(i).GetStationMap().AddStation( TStation.Create( new TVec2D.Init(310, 260),-1, GetStationMapCollection().stationRadius, i ), False )
 		Next
 
@@ -658,7 +651,7 @@ Type TGame {_exposeToLua="selected"}
 		Local playerColors:TList = TList(GetRegistry().Get("playerColors"))
 		If playerColors = Null Then Throw "no playerColors found in configuration"
 		For Local col:TColor = EachIn playerColors
-			col.AddToList()
+			col.AddToList(True) 'true = try to remove them at first
 		Next
 
 		'create players, draws playerfigures on figures-image

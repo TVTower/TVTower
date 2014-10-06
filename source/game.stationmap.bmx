@@ -59,6 +59,13 @@ Type TStationMapCollection
 	End Function
 
 
+	Method InitializeAll:int()
+		For local map:TStationMap = eachin stationMaps
+			map.Initialize()
+		Next
+	End Method
+
+
 	'as soon as a station gets active (again), the sharemap has to get
 	'regenerated (for a correct audience calculation)
 	Function onSetStationActive(triggerEvent:TEventBase)
@@ -554,12 +561,21 @@ Type TStationMap {_exposeToLua="selected"}
 	Function Create:TStationMap(playerID:int)
 		Local obj:TStationMap = New TStationMap
 		obj.owner = playerID
-		obj.showStations = [1,1,1,1]
+
+		obj.Initialize()
 
 		GetStationMapCollection().Add(obj)
 
 		Return obj
 	End Function
+
+
+	Method Initialize:Int()
+		changed = False
+		stations.Clear()
+		reach = 0
+		showStations = [1,1,1,1]
+	End Method
 
 
 	'returns the maximum reach of the stations on that map

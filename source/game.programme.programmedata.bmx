@@ -76,6 +76,14 @@ Type TProgrammeDataCollection
 	End Function
 
 
+	Method Initialize:TProgrammeDataCollection()
+		entries.Clear()
+		entriesCount = -1
+
+		return self
+	End Method
+
+
 	Method GetByGUID:TProgrammeData(GUID:String)
 		Return TProgrammeData(entries.ValueForKey(GUID))
 	End Method

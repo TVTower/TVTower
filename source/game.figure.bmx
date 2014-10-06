@@ -45,6 +45,11 @@ Type TFigureCollection extends TFigureBaseCollection
 	End Method
 
 
+	Method GetByName:TFigure(name:string)
+		Return TFigure(Super.GetByName(name))
+	End Method
+	
+
 	'=== EVENTS ===
 
 	'gets called when the figure really enters a room (fadeout animation finished etc)

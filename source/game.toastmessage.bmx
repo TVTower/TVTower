@@ -104,7 +104,10 @@ Type TGameToastMessage extends TToastMessage
 		'caption singleline
 		height :+ GetBitmapFontManager().baseFontBold.GetMaxCharHeight()
 		'text
-		height :+ GetBitmapFontManager().baseFont.GetBlockDimension(text, area.GetW(), -1).GetY()
+		'attention: subtract some pixels from width (to avoid texts fitting
+		'because of rounding errors - but then when drawing they do not
+		'fit)
+		height :+ GetBitmapFontManager().baseFont.GetBlockDimension(text, area.GetW() - 3, -1).GetY()
 		'gfx padding
 		if showBackgroundSprite and backgroundSprite
 			height :+ backgroundSprite.GetNinePatchContentBorder().GetTop()

@@ -60,6 +60,13 @@ endrem
 		If playerID <= 0 Or playerID > plans.length Then Return Null
 		Return plans[playerID-1]
 	End Method
+
+
+	Method InitializeAll:int()
+		For local obj:TPlayerProgrammePlan = eachin plans
+			obj.Initialize()
+		Next
+	End Method
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -76,13 +83,16 @@ End Function
 
 
 Type TPlayerProgrammePlan {_exposeToLua="selected"}
-	Field programmes:TBroadcastMaterial[]		= New TBroadcastMaterial[0]
-	Field news:TBroadcastMaterial[]				= New TBroadcastMaterial[3]	'single news -> eg for specials
-	Field newsShow:TBroadcastMaterial[]			= New TBroadcastMaterial[0] 'news show
-	Field advertisements:TBroadcastMaterial[]	= New TBroadcastMaterial[0]
+	Field programmes:TBroadcastMaterial[] = New TBroadcastMaterial[0]
+	'single news -> eg for specials
+	Field news:TBroadcastMaterial[]	= New TBroadcastMaterial[3]
+	'news show
+	Field newsShow:TBroadcastMaterial[]	= New TBroadcastMaterial[0]
+	Field advertisements:TBroadcastMaterial[] = New TBroadcastMaterial[0]
 	Field owner:Int
 
-	Global fireEvents:Int						= True		'FALSE to avoid recursive handling (network)
+	'FALSE to avoid recursive handling (network)
+	Global fireEvents:Int = True
 
 	'===== COMMON FUNCTIONS =====
 
@@ -91,6 +101,14 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Self.owner = playerID
 		GetPlayerProgrammePlanCollection().Set(playerID, Self)
 		Return Self
+	End Method
+
+
+	Method Initialize:Int()
+		programmes = programmes[..0]
+		news = news[..0]
+		newsShow = newsShow[..0]
+		advertisements = advertisements[..0]
 	End Method
 
 

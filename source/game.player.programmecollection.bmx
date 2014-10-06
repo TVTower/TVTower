@@ -35,6 +35,13 @@ Type TPlayerProgrammeCollectionCollection
 		if playerID <= 0 or playerID > plans.length then return null
 		return plans[playerID-1]
 	End Method
+
+
+	Method InitializeAll:int()
+		For local obj:TPlayerProgrammeCollection = eachin plans
+			obj.Initialize()
+		Next
+	End Method
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -71,7 +78,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
-	Method ClearLists()
+	Method Initialize:Int()
 		programmeLicences.Clear()
 		movieLicences.Clear()
 		seriesLicences.Clear()

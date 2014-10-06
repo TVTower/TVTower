@@ -35,6 +35,16 @@ Type TProgrammeLicenceCollection
 	End Function
 
 
+	Method Initialize:TProgrammeLicenceCollection()
+		licences.Clear()
+		collections.Clear()
+		movies.Clear()
+		series.Clear()
+		
+		return self
+	End Method
+
+
 	Method PrintMovies:int()
 		print "--------- movies: "+movies.Count()
 		For local movie:TProgrammeLicence = Eachin movies

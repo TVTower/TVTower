@@ -32,6 +32,12 @@ Type TAdContractBaseCollection
 	End Function
 
 
+	Method Initialize()
+		entries.clear()
+		entriesCount = -1
+	End Method
+
+
 	Method GetByGUID:TAdContractBase(GUID:String)
 		Return TAdContractBase(entries.ValueForKey(GUID))
 	End Method
@@ -141,6 +147,11 @@ Type TAdContractCollection
 		if not _instance then _instance = new TAdContractCollection
 		return _instance
 	End Function
+
+
+	Method Initialize()
+		list.clear()
+	End Method
 
 
 	Method Get:TAdContract(id:Int)
