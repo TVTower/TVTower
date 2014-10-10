@@ -97,8 +97,8 @@ PLANNER_IMAGE     = Image
 PLANNER_MESSAGES  = Mitteilungen
 
 ROOM_IS_BLOCKED = Raum ist blockiert!
-ROOM_IS_OCCUPIED = Raumis occupied!
-ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = There is already someone in the room.
+ROOM_IS_OCCUPIED = Raum ist besetzt
+ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = Da ist schon jemand in diesem Raum.
 
 ROOM_ELEVATORPLAN		= Fahrstuhlziel-Planer
 ROOM_NEWSPLANNER		= Newsplaner
@@ -428,8 +428,12 @@ DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN = Willst Du das Sp
 
 ADCONTRACT_FINISHED = Werbevertrag beendet
 ADCONTRACT_FAILED = Werbevertrag fehlgeschlagen
-ADCONTRACT_X_SUCCESSFULLY_FINISHED__PROFIT_OF_Y_GOT_CREDITED = Werbevertrag "%TITLE%" erfolgreich abgeschlossen. Der Gewinn von %MONEY% wurde gutgeschrieben.
-ADCONTRACT_X_FAILED__PENALTY_OF_Y_WAS_PAID = Werbevertrag "%TITLE%" fehlgeschlagen. Die Strafe von %MONEY% wurde beglichen.
+ADCONTRACT_X_SUCCESSFULLY_FINISHED = Werbevertrag "%TITLE%" erfolgreich abgeschlossen.
+PROFIT_OF_X_GOT_CREDITED = Der Gewinn von %MONEY% wurde gutgeschrieben.
+ADCONTRACT_X_FAILED = Werbevertrag "%TITLE%" fehlgeschlagen.
+PENALTY_OF_X_WAS_PAID = Die Strafe von %MONEY% wurde beglichen.
+BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = Die Ausstrahlung des FSK18-Programmes "%TITLE%" ist tagsüber nicht erlaubt.
+AUTHORITIES_STOPPED_BROADCAST = Behörden stoppen Ausstrahlung
 
 HINT_PRESSING_ALT_WILL_SHOW_DETAILS = "ALT"-Taste drücken für mehr Details.
 HINT_PROGRAMMEPLANER_SHORTCUTS = ALT: tauscht Datenblatt | STRG+Klick: Programmkopie | SHIFT+Klick: nächste Episode

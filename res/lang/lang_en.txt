@@ -414,8 +414,12 @@ DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN = Do you really wa
 
 ADCONTRACT_FINISHED = Advertisement contract finished
 ADCONTRACT_FAILED = Advertisement contract failed
-ADCONTRACT_X_SUCCESSFULLY_FINISHED__PROFIT_OF_Y_GOT_CREDITED = Advertisement contract "%TITLE%" successfully finished. Profit of %MONEY% got credited.
-ADCONTRACT_X_FAILED__PENALTY_OF_Y_WAS_PAID = Advertisement contract "%TITLE%" failed. Penalty of %MONEY% was paid.
+ADCONTRACT_X_SUCCESSFULLY_FINISHED = Advertisement contract "%TITLE%" successfully finished.
+PROFIT_OF_X_GOT_CREDITED = Profit of %MONEY% got credited.
+ADCONTRACT_X_FAILED = Advertisement contract "%TITLE%" failed.
+PENALTY_OF_X_WAS_PAID = Penalty of %MONEY% was paid.
+BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = Broadcast of x-rated programme "%TITLE%" not allowed during daytime.
+AUTHORITIES_STOPPED_BROADCAST = Authorities stopped broadcast
 
 HINT_PRESSING_ALT_WILL_SHOW_DETAILS = Pressing "ALT"-key will show details.
 HINT_PROGRAMMEPLANER_SHORTCUTS = ALT: switch data sheet | CTRL+Click: copy programme | SHIFT+Click: next episode

@@ -41,6 +41,8 @@ Type TGame {_exposeToLua="selected"}
 	'0 = Mainmenu, 1=Running, ...
 	Field gamestate:Int = -1
 
+	Field nextXRatedCheckMinute:Int = -1
+
 	'last sync
 	Field stateSyncTime:Int	= 0
 	'sync every
@@ -110,8 +112,13 @@ Type TGame {_exposeToLua="selected"}
 
 		networkgame = 0
 
-		'set basic game speed to 20 gameseconds per second
-		GetWorldTime().SetTimeFactor(20.0)
+		'MAD TV speed:
+		'slow:   10 game minutes = 30 seconds  -> 1 sec = 20 ingameseconds
+		'middle: 10 game minutes = 20 seconds  -> 1 sec = 30 ingameseconds
+		'fast:   10 game minutes = 10 seconds  -> 1 sec = 60 ingameseconds
+
+		'set basic game speed to 30 gameseconds per second
+		GetWorldTime().SetTimeFactor(30.0)
 		'set start year
 		GetWorldTime().SetStartYear(userStartYear)
 		title = "unknown"
@@ -592,6 +599,20 @@ Type TGame {_exposeToLua="selected"}
 		randomSeedValue = value
 		'seed the random base for MERSENNE TWISTER (seedrnd for the internal one)
 		SeedRand(randomSeedValue)
+	End Method
+
+
+	Method ComputeNextXRatedCheckMinute()
+		'do not use the timeslots 50-54 ... maybe thats too late?
+		'-9 till 0 are "no check"
+		nextXRatedCheckMinute = RandRange(-9, 49)
+		if nextXRatedCheckMinute <= 0 then nextXRatedCheckMinute = -1
+		print "computed nextcheck minute: "+nextXRatedCheckMinute
+	End Method
+
+
+	Method GetNextXRatedCheckMinute:int()
+		return nextXRatedCheckMinute
 	End Method
 
 

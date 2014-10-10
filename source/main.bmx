@@ -2659,6 +2659,11 @@ Type GameEvents
 		EventManager.registerListenerFunction("PlayerBoss.onCallPlayerForced", PlayerBoss_OnCallPlayerForced)
 		EventManager.registerListenerFunction("PlayerBoss.onPlayerEnterBossRoom", PlayerBoss_OnPlayerEnterBossRoom)
 
+		'=== PUBLIC AUTHORITIES ===
+		'-> create ingame notifications
+		EventManager.registerListenerFunction("publicAuthorities.onStopXRatedBroadcast", publicAuthorities_onStopXRatedBroadcast)
+
+
 		'visually inform that selling the last station is impossible
 		EventManager.registerListenerFunction("StationMap.onTrySellLastStation", StationMapOnTrySellLastStation)
 		'trigger audience recomputation when a station is trashed/sold
@@ -2815,13 +2820,36 @@ Type GameEvents
 		player.SendToBoss()
 	End Function
 
+
+	Function PublicAuthorities_onStopXRatedBroadcast:Int(triggerEvent:TEventBase)
+		local programme:TProgramme = TProgramme(triggerEvent.GetSender())
+		local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
+
+		'inform ai before
+		if player.IsAI() then player.PlayerKI.CallOnPublicAuthoritiesStopXRatedBroadcast()
+
+		'only interest in active players contracts
+		if programme.owner <> GetPlayerCollection().playerID then return False
+
+		local toast:TGameToastMessage = new TGameToastMessage
+		'show it for some seconds
+		toast.SetLifeTime(15)
+		toast.SetMessageType(1) 'attention
+		toast.SetCaption(GetLocale("AUTHORITIES_STOPPED_BROADCAST"))
+		toast.SetText( ..
+			GetLocale("BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME").Replace("%TITLE%", "|b|"+programme.GetTitle()+"|/b|") + " " + ..
+			GetLocale("PENALTY_OF_X_WAS_PAID").Replace("%MONEY%", "|b|"+TFunctions.DottedValue(GameRules.sentXRatedPenalty)+getLocale("CURRENCY")+"|/b|") ..
+		)
+		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+	End Function
+
 	
 	Function AdContract_OnFinish:Int(triggerEvent:TEventBase)
 		local contract:TAdContract = TAdContract(triggerEvent.GetSender())
 		if not contract then return False
 
 		'only interest in active players contracts
-		 if contract.owner <> GetPlayerCollection().playerID then return False
+		if contract.owner <> GetPlayerCollection().playerID then return False
 
 		'send out a toast message
 		local toast:TGameToastMessage = new TGameToastMessage
@@ -2830,7 +2858,10 @@ Type GameEvents
 		toast.SetLifeTime(8)
 		toast.SetMessageType(2) 'positive
 		toast.SetCaption(GetLocale("ADCONTRACT_FINISHED"))
-		toast.SetText(GetLocale("ADCONTRACT_X_SUCCESSFULLY_FINISHED__PROFIT_OF_Y_GOT_CREDITED").Replace("%TITLE%", contract.GetTitle()).Replace("%MONEY%", "|b|"+TFunctions.DottedValue(contract.GetProfit())+getLocale("CURRENCY")+"|/b|"))
+		toast.SetText( ..
+			GetLocale("ADCONTRACT_X_SUCCESSFULLY_FINISHED").Replace("%TITLE%", contract.GetTitle()) + " " + ..
+			GetLocale("PROFIT_OF_X_GOT_CREDITED").Replace("%MONEY%", "|b|"+TFunctions.DottedValue(contract.GetProfit())+getLocale("CURRENCY")+"|/b|") ..
+		)
 		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 	End Function
 
@@ -2849,7 +2880,10 @@ Type GameEvents
 		toast.SetLifeTime(12)
 		toast.SetMessageType(3) 'negative
 		toast.SetCaption(GetLocale("ADCONTRACT_FAILED"))
-		toast.SetText(GetLocale("ADCONTRACT_X_FAILED__PENALTY_OF_Y_WAS_PAID").Replace("%TITLE%", contract.GetTitle()).Replace("%MONEY%", "|b|"+TFunctions.DottedValue(contract.GetPenalty())+getLocale("CURRENCY")+"|/b|"))
+		toast.SetText( ..
+			GetLocale("ADCONTRACT_X_FAILED").Replace("%TITLE%", contract.GetTitle()) + " " + ..
+			GetLocale("PENALTY_OF_X_WAS_PAID").Replace("%MONEY%", "|b|"+TFunctions.DottedValue(contract.GetPenalty())+getLocale("CURRENCY")+"|/b|") ..
+		)
 		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 	End Function
 
@@ -2972,6 +3006,52 @@ Type GameEvents
 			'calculate audience
 			TPlayerProgrammePlan.CalculateCurrentBroadcastAudience(day, hour, minute)
 		EndIf
+
+
+		'=== CHECK FOR X-RATED PROGRAMME ===
+		'calculate each hour if not or when the current broadcasts are
+		'checked for XRated.
+		'do this to create some tension :p
+		if minute = 0 then Game.ComputeNextXRatedCheckMinute()
+
+		'time to check for Xrated programme?
+		if minute = Game.GetNextXRatedCheckMinute()
+			'only check between 6:00-21:59 o'clock (there it is NOT allowed)
+			if hour <= 21 and hour >= 6
+				local currentProgramme:TProgramme
+				For Local player:TPlayer = EachIn GetPlayerCollection().players
+					currentProgramme = TProgramme(player.GetProgrammePlan().GetProgramme(day, hour))
+					'skip non-programme broadcasts or malfunction
+					if not currentProgramme then continue
+					'skip "normal" programme
+					if not currentProgramme.data.IsXRated() then continue
+
+					'pay penalty
+					player.GetFinance().PayMisc(GameRules.sentXRatedPenalty)
+					'remove programme from plan
+					player.GetProgrammePlan().RemoveProgramme(currentProgramme, day, hour)
+					'set current broadcast to malfunction
+					GetBroadcastManager().SetBroadcastMalfunction(player.playerID, TBroadcastMaterial.TYPE_PROGRAMME)
+
+					'chance of 25% the programme will get (tried) to get confiscated
+					local confiscateProgramme:int = RandRange(0,100) < 25
+
+					if confiscateProgramme
+						'TODO: send out clerk/public servant to confiscate
+						'      the programme - if send to another archive
+						'      just take a "random programme"
+						print "TODO: Beamten losschicken um Programm zu pfaenden."
+
+						EventManager.triggerEvent(TEventSimple.Create("publicAuthorities.onStartSeizeProgramme", new TData.AddString("broadcastMaterialGUID", currentProgramme.GetGUID()).AddNumber("owner", player.playerID), currentProgramme, player))
+					endif
+
+					'emit event (eg.for ingame toastmessages)
+					print "xrated gesendet: " +currentProgramme.GetTitle()
+
+					EventManager.triggerEvent(TEventSimple.Create("publicAuthorities.onStopXRatedBroadcast",Null , currentProgramme, player))
+				Next
+			endif
+		endif
 
 
 		'=== INFORM BROADCASTS ===

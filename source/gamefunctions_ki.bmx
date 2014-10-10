@@ -172,6 +172,11 @@ Type KI
 	End Method
 
 
+	Method CallOnPublicAuthoritiesStopXRatedBroadcast()
+		if (KIRunning) then LuaEngine.CallLuaFunction("OnPublicAuthoritiesStopXRatedBroadcast")
+	End Method
+
+
 	Method CallOnLeaveRoom(roomId:int)
 	    Try
 			Local args:Object[1]
