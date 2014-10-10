@@ -2,7 +2,7 @@
 -- ============================
 -- === AI Engine ===
 -- ============================
--- Autor: Manuel Vögele (STARS_crazy@gmx.de)
+-- Autor: Manuel VÃ¶gele (STARS_crazy@gmx.de)
 -- Version: 22.02.2014
 -- Erstellt: 12.12.2007
 
@@ -60,15 +60,15 @@ function AIPlayer:initialize()
 end
 
 function AIPlayer:initializePlayer()
-	--Zum überschreiben
+	--Zum Ã¼berschreiben
 end
 
 function AIPlayer:initializeTasks()
-	--Zum überschreiben
+	--Zum Ã¼berschreiben
 end
 
 function AIPlayer:ValidateRound()
-	--Zum überschreiben
+	--Zum Ã¼berschreiben
 end
 
 function AIPlayer:Tick()
@@ -86,11 +86,11 @@ function AIPlayer:Tick()
 end
 
 function AIPlayer:TickAnalyse()
-	--Zum überschreiben
+	--Zum Ã¼berschreiben
 end
 
 function AIPlayer:BeginNewTask()
-	--TODO: Warte-Task einfügen, wenn sich ein Task wiederholt
+	--TODO: Warte-Task einfÃ¼gen, wenn sich ein Task wiederholt
 	self.CurrentTask = self:SelectTask()
 	if self.CurrentTask == nil then
 		debugMsg("AIPlayer:BeginNewTask - task is nil... " )
@@ -116,7 +116,7 @@ function AIPlayer:SelectTask()
 end
 
 function AIPlayer:OnDayBegins()
-	--Zum überschreiben
+	--Zum Ã¼berschreiben
 end
 
 function AIPlayer:OnReachRoom(roomId)
@@ -125,28 +125,28 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- Ein Task repräsentiert eine zu erledigende KI-Aufgabe die sich üblicherweise wiederholt. Diese kann wiederum aus verschiedenen Jobs bestehen
+-- Ein Task reprÃ¤sentiert eine zu erledigende KI-Aufgabe die sich Ã¼blicherweise wiederholt. Diese kann wiederum aus verschiedenen Jobs bestehen
 _G["AITask"] = class(KIDataObjekt, function(c)
 	KIDataObjekt.init(c)	-- must init base!
 	c.Id = nil -- Der eindeutige Name des Tasks
 	c.Status = TASK_STATUS_OPEN -- Der Status der Aufgabe
 	c.CurrentJob = nil -- Welcher Job wird aktuell bearbeitet und bei jedem Tick benachrichtigt
-	c.BasePriority = 0 -- Grundlegende Priorität der Aufgabe (zwischen 1 und 10)
-	c.SituationPriority = 0 -- Dieser Wert kann sich ändern, wenn besondere Ereignisse auftreten, die von einer bestimmen Aufgabe eine höhere Priorität erfordert. Üblicherweise zwischen 0 und 10. Hat aber kein Maximum
-	c.CurrentPriority = 0 -- Berechnet: Aktuelle Priorität dieser Aufgabe
+	c.BasePriority = 0 -- Grundlegende PrioritÃ¤t der Aufgabe (zwischen 1 und 10)
+	c.SituationPriority = 0 -- Dieser Wert kann sich Ã¤ndern, wenn besondere Ereignisse auftreten, die von einer bestimmen Aufgabe eine hÃ¶here PrioritÃ¤t erfordert. Ãœblicherweise zwischen 0 und 10. Hat aber kein Maximum
+	c.CurrentPriority = 0 -- Berechnet: Aktuelle PrioritÃ¤t dieser Aufgabe
 	c.LastDone = 0 -- Zeit, wann der Task zuletzt abgeschlossen wurde
 	c.StartTask = 0 -- Zeit, wann der Task zuletzt gestartet wurde
-	c.TickCounter = 0 -- Gibt die Anzahl der Ticks an seit dem der Task läuft
+	c.TickCounter = 0 -- Gibt die Anzahl der Ticks an seit dem der Task lÃ¤uft
 	c.MaxTicks = 30 --Wie viele Ticks darf der Task maximal laufen?
-	c.TargetRoom = -1 -- Wie lautet die ID des Standard-Zielraumes? !!! Muss überschrieben werden !!!
-	c.CurrentBudget = 0 -- Wie viel Geld steht der KI noch zur Verfügung um diese Aufgabe zu erledigen.
+	c.TargetRoom = -1 -- Wie lautet die ID des Standard-Zielraumes? !!! Muss Ã¼berschrieben werden !!!
+	c.CurrentBudget = 0 -- Wie viel Geld steht der KI noch zur VerfÃ¼gung um diese Aufgabe zu erledigen.
 	
-	c.BudgetWholeDay = 0 -- Wie hoch war das Budget das die KI für diese Aufgabe an diesem Tag einkalkuliert hat.
+	c.BudgetWholeDay = 0 -- Wie hoch war das Budget das die KI fÃ¼r diese Aufgabe an diesem Tag einkalkuliert hat.
 	c.BudgetWeigth = 0 -- Wie viele Budgetanteile verlangt diese Aufgabe vom Gesamtbudget?
 	
 	c.InvestmentWeigth = 0 -- Wie viele Budgetanteile werden gespart
 	c.InvestmentSavings = 0 -- Wie viel wurde bereits gespart?
-	c.NeededInvestmentBudget = -1 -- Wie viel Geld benötigt die KI für eine Großinvestition
+	c.NeededInvestmentBudget = -1 -- Wie viel Geld benÃ¶tigt die KI fÃ¼r eine GroÃŸinvestition
 	c.UseInvestment = false
 end)
 
@@ -188,7 +188,7 @@ function AITask:Activate()
 end
 
 function AITask:OnDayBegins()
-	--kann überschrieben werden
+	--kann Ã¼berschrieben werden
 end
 
 --Wird aufgerufen, wenn der Task zur Bearbeitung ausgewaehlt wurde (NICHT UEBERSCHREIBEN!)
@@ -196,7 +196,7 @@ function AITask:StartNextJob()
 	--debugMsg("StartNextJob")
 	local roomNumber = TVT.GetPlayerRoom()
 	--debugMsg("Player-Raum: " .. roomNumber .. " - Target-Raum: " .. self.TargetRoom)
-	if TVT.GetPlayerRoom() ~= self.TargetRoom then --sorgt dafür, dass der Spieler in den richtigen Raum geht!
+	if TVT.GetPlayerRoom() ~= self.TargetRoom then --sorgt dafÃ¼r, dass der Spieler in den richtigen Raum geht!
 		self.Status = TASK_STATUS_PREPARE
 		self.CurrentJob = self:getGotoJob()
 	else
@@ -364,7 +364,7 @@ function AIJob:ReDoCheck(pWait)
 end
 
 function AIJob:OnReachRoom(roomId)
-	--Kann überschrieben werden
+	--Kann Ã¼berschrieben werden
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 

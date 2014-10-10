@@ -1,6 +1,6 @@
 -- File: DefaultAIPlayer
 -- ============================
--- Autor: Manuel Vögele (STARS_crazy@gmx.de)
+-- Autor: Manuel VÃ¶gele (STARS_crazy@gmx.de)
 -- Version: 22.02.2014
 
 APP_VERSION = "1.3"
@@ -45,9 +45,9 @@ _G["TASK_BOSS"] = TASK_BOSS
 _G["DefaultAIPlayer"] = class(AIPlayer, function(c)
 	AIPlayer.init(c)	-- must init base!
 	c.CurrentTask = nil
-	--c.Budget = nil  --darf nicht überschrieben werden
-	--c.Stats = nil  --darf nicht überschrieben werden
-	--c.Requisitions = nil  --darf nicht überschrieben werden
+	--c.Budget = nil  --darf nicht Ã¼berschrieben werden
+	--c.Stats = nil  --darf nicht Ã¼berschrieben werden
+	--c.Requisitions = nil  --darf nicht Ã¼berschrieben werden
 end)
 
 function DefaultAIPlayer:typename()
@@ -76,7 +76,7 @@ function DefaultAIPlayer:initializeTasks()
 	--self.TaskList[TASK_BOSS]			= TVTBossTask()
 	--self.TaskList[TASK_ARCHIVE]			= TVTArchive()
 
-	--TODO: WarteTask erstellen. Gehört aber in AIEngine
+	--TODO: WarteTask erstellen. GehÃ¶rt aber in AIEngine
 end
 
 function DefaultAIPlayer:TickAnalyse()
@@ -252,7 +252,7 @@ function getAIPlayer()
 	if globalPlayer == nil then
 		globalPlayer = DefaultAIPlayer()
 		globalPlayer:initialize()
-		_G["globalPlayer"] = globalPlayer --Macht "GlobalPlayer" als globale Variable verfügbar auch in eingebundenen Dateien
+		_G["globalPlayer"] = globalPlayer --Macht "GlobalPlayer" als globale Variable verfÃ¼gbar auch in eingebundenen Dateien
 	end
 	return globalPlayer
 end
@@ -350,12 +350,12 @@ function OnMinute(number, array)
 		-- RON: changed as "programme" is NIL if not existing/placed
 		local averageMovieQualityByLevel = 0
 		if ( programme ~= nil) then
-			averageMovieQualityByLevel = programme.GetQuality(0) -- Die Durchschnittsquote dieses Qualitätslevels
+			averageMovieQualityByLevel = programme.GetQuality(0) -- Die Durchschnittsquote dieses QualitÃ¤tslevels
 		end
 
-		local level = task:GetQualityLevel(WorldTime.GetDayHour()) --Welchen Qualitätslevel sollte ein Film/Werbung um diese Uhrzeit haben
-		local globalPercentageByHour = task:GetMaxAudiencePercentageByHour(WorldTime.GetDayHour()) -- Die Maximalquote: Entspricht ungefähr "maxAudiencePercentage"
-		--local averageMovieQualityByLevel = task:GetAverageMovieQualityByLevel(level) -- Die Durchschnittsquote dieses Qualitätslevels
+		local level = task:GetQualityLevel(WorldTime.GetDayHour()) --Welchen QualitÃ¤tslevel sollte ein Film/Werbung um diese Uhrzeit haben
+		local globalPercentageByHour = task:GetMaxAudiencePercentageByHour(WorldTime.GetDayHour()) -- Die Maximalquote: Entspricht ungefÃ¤hr "maxAudiencePercentage"
+		--local averageMovieQualityByLevel = task:GetAverageMovieQualityByLevel(level) -- Die Durchschnittsquote dieses QualitÃ¤tslevels
 		local guessedAudience2 = averageMovieQualityByLevel * globalPercentageByHour * MY.GetMaxAudience()
 
 		if ( programme ~= nil) then

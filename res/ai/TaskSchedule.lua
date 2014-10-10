@@ -14,7 +14,7 @@ _G["TaskSchedule"] = class(AITask, function(c)
 	c.Player = nil
 end)
 
---Mˆgliche Probleme:
+--M√∂gliche Probleme:
 --GetPreviousContractCountById vergleicht nur den Namen des Contracts. Es kann also sein, dass ein Contract der vor mehreren Tagen schon mal gesendet wurde da mit reingerechnet wird.
 
 function TaskSchedule:typename()
@@ -107,13 +107,13 @@ function TaskSchedule:GetMaxAudiencePercentageByHour(hour)
 	end
 end
 
--- Berechnet die Vermutung wie viel Zuschauer wohl zu dieser Stunde wohl erreicht werden kˆnnen
+-- Berechnet die Vermutung wie viel Zuschauer wohl zu dieser Stunde wohl erreicht werden k√∂nnen
 function TaskSchedule:GuessedAudienceForHourAndLevel(hour)
-	local level = self:GetQualityLevel(hour) --Welchen Qualit‰tslevel sollte ein Film/Werbung um diese Uhrzeit haben
-	local globalPercentageByHour = self:GetMaxAudiencePercentageByHour(hour) -- Die Maximalquote: Entspricht ungef‰hr "maxAudiencePercentage"
-	local averageMovieQualityByLevel = self:GetAverageMovieQualityByLevel(level) -- Die Durchschnittsquote dieses Qualit‰tslevels
+	local level = self:GetQualityLevel(hour) --Welchen Qualit√§tslevel sollte ein Film/Werbung um diese Uhrzeit haben
+	local globalPercentageByHour = self:GetMaxAudiencePercentageByHour(hour) -- Die Maximalquote: Entspricht ungef√§hr "maxAudiencePercentage"
+	local averageMovieQualityByLevel = self:GetAverageMovieQualityByLevel(level) -- Die Durchschnittsquote dieses Qualit√§tslevels
 
-	--Formel: Filmqualit‰t * Potentielle Quote nach Uhrzeit (maxAudiencePercentage) * Echte Maximalzahl der Zuschauer
+	--Formel: Filmqualit√§t * Potentielle Quote nach Uhrzeit (maxAudiencePercentage) * Echte Maximalzahl der Zuschauer
 	--TODO: Auchtung! Muss eventuell an die neue Quotenberechnung angepasst werden
 	local guessedAudience = averageMovieQualityByLevel * globalPercentageByHour * MY.GetMaxAudience()
 	--debugMsg("GuessedAudienceForHourAndLevel - Hour: " .. hour .. "  Level: " .. level .. "  globalPercentageByHour: " .. globalPercentageByHour .. "  averageMovieQualityByLevel: " .. averageMovieQualityByLevel .. "  guessedAudience: " .. guessedAudience)
@@ -129,13 +129,13 @@ function TaskSchedule:GetQualityLevel(hour)
 	elseif (maxAudience <= 0.15) then
 		return 3 -- Nachmittag
 	elseif (maxAudience <= 0.25) then
-		return 4 -- Vorabend / Sp‰t
+		return 4 -- Vorabend / Sp√§t
 	else
 		return 5 -- Primetime
 	end
 end
 
---TODO sp‰ter dynamisieren
+--TODO sp√§ter dynamisieren
 function TaskSchedule:GetAverageMovieQualityByLevel(level)
 	if (level == 1) then
 		return 0.03 --Nachtprogramm
@@ -144,7 +144,7 @@ function TaskSchedule:GetAverageMovieQualityByLevel(level)
 	elseif (level == 3) then
 		return 0.13 -- Nachmittag
 	elseif (level == 4) then
-		return 0.18 -- Vorabend / Sp‰t
+		return 0.18 -- Vorabend / Sp√§t
 	elseif (level == 5) then
 		return 0.22 -- Primetime
 	end
@@ -155,7 +155,7 @@ function TaskSchedule:AddSpotRequisition(level, day, hour)
 	slotReq.Day = day;
 	slotReq.Hour = hour;
 
-	debugMsg("Erhˆhe Bedarf an Spots des Levels " .. level .. " f¸r Sendeplatz " .. day .. "/" .. hour)
+	debugMsg("Erh√∂he Bedarf an Spots des Levels " .. level .. " f√ºr Sendeplatz " .. day .. "/" .. hour)
 	for k,v in pairs(self.SpotRequisition) do
 		if (v.Level == level) then
 			v.Count = v.Count + 1
@@ -228,7 +228,7 @@ function JobFulfillRequisition:typename()
 end
 
 function JobFulfillRequisition:Prepare(pParams)
-	debugMsg("Erf¸lle ƒnderungs-Anforderungen an den Programmplan!")
+	debugMsg("Erf√ºlle √Ñnderungs-Anforderungen an den Programmplan!")
 
 	self.Player = _G["globalPlayer"]
 	self.SpotSlotRequisitions = self.Player:GetRequisitionsByTaskId(_G["TASK_SCHEDULE"])
@@ -246,7 +246,7 @@ function JobFulfillRequisition:Tick()
 				local result = TVT.of_setAdvertisementSlot(TVT.of_getAdContractByID(value.ContractId), value.Day, value.Hour) --Setzt den neuen Eintrag
 				if (result < 0) then debugMsg("###### ERROR 2: " .. value.Day .. "/" .. value.Hour .. " = " .. value.ContractId .. "   Result: " .. result) end
 			else
-				debugMsg("Zu sp‰t dran: " .. value.Day .. "/" .. value.Hour .. " = " .. value.ContractId)
+				debugMsg("Zu sp√§t dran: " .. value.Day .. "/" .. value.Hour .. " = " .. value.ContractId)
 			end
 			value:Complete()
 		end
@@ -269,7 +269,7 @@ function JobEmergencySchedule:typename()
 end
 
 function JobEmergencySchedule:Prepare(pParams)
-	debugMsg("Pr¸fe ob dringende Programm- und Werbeplanungen notwendig sind")
+	debugMsg("Pr√ºfe ob dringende Programm- und Werbeplanungen notwendig sind")
 	if (unitTestMode) then
 		self:UnitTest()
 	end
@@ -317,7 +317,7 @@ function JobEmergencySchedule:CheckEmergencyCase(howManyHours, day, hour)
 end
 
 function JobEmergencySchedule:FillIntervals(howManyHours)
-	--Aufgabe: So schnell wie mˆglich die L¸cken f¸llen
+	--Aufgabe: So schnell wie m√∂glich die L√ºcken f√ºllen
 	--Zuschauerberechnung: ZuschauerquoteAufGrundderStunde * Programmquali * MaximalzuschauerproSpieler
 
 	local fixedDay, fixedHour = 0
@@ -328,13 +328,13 @@ function JobEmergencySchedule:FillIntervals(howManyHours)
 		fixedDay, fixedHour = self:FixDayAndHour(currentDay, i)
 		--debugMsg("FillIntervals --- Tag: " .. fixedDay .. " - Stunde: " .. fixedHour)
 
-		--Werbung: Pr¸fen ob ne L¸cke existiert, wenn ja => f¸llen
+		--Werbung: Pr√ºfen ob ne L√ºcke existiert, wenn ja => f√ºllen
 		local ad = MY.GetProgrammePlan().GetAdvertisement(fixedDay, fixedHour)
 		if (ad == nil) then
 			self:SetContractToEmptyBlock(fixedDay, fixedHour)
 		end
 
-		--Film: Pr¸fen ob ne L¸cke existiert, wenn ja => f¸llen
+		--Film: Pr√ºfen ob ne L√ºcke existiert, wenn ja => f√ºllen
 		local programme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
 		if (programme == nil) then
 			self:SetMovieToEmptyBlock(fixedDay, fixedHour)
@@ -349,8 +349,8 @@ function JobEmergencySchedule:SetContractToEmptyBlock(day, hour)
 
 	local currentSpotList = self:GetFittingSpotList(guessedAudience, false, true, level, fixedDay, fixedHour)
 	if (table.count(currentSpotList) == 0) then
-		--Neue Anfoderung stellen: Passenden Werbevertrag abschlieﬂen (f¸r die Zukunft)
-	--	debugMsg("Melde Bedarf f¸r Spots bis " .. guessedAudience .. " Zuschauer an.")
+		--Neue Anfoderung stellen: Passenden Werbevertrag abschlie√üen (f√ºr die Zukunft)
+	--	debugMsg("Melde Bedarf f√ºr Spots bis " .. guessedAudience .. " Zuschauer an.")
 	--	local requisition = SpotRequisition()
 	--	requisition.guessedAudience = guessedAudience
 	--	local player = _G["globalPlayer"]
@@ -395,7 +395,7 @@ function JobEmergencySchedule:SetMovieToEmptyBlock(day, hour)
 	local choosenLicence = nil
 
 	licenceList = self:GetFilteredProgrammeLicenceList(level, level, 0, fixedDay)
-	--Bedarf erhˆhen
+	--Bedarf erh√∂hen
 	if (table.count(licenceList) == 0) then licenceList = self:GetFilteredProgrammeLicenceList(level, 1, 0, fixedDay) end
 
 	if (table.count(licenceList) == 0) then licenceList = self:GetFilteredProgrammeLicenceList(level, 1, 2, fixedDay) end
@@ -493,7 +493,7 @@ function JobEmergencySchedule:FilterSpotList(spotList)
 			table.insert(currentSpotList, v)
 		end
 	end
-	--TODO: Optimum hinzuf¸gen
+	--TODO: Optimum hinzuf√ºgen
 	if (table.count(currentSpotList) > 0) then
 		return currentSpotList
 	else

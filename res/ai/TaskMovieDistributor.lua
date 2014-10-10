@@ -48,7 +48,7 @@ function TaskMovieDistributor:GetNextJobInTargetRoom()
 end
 
 function TaskMovieDistributor:BudgetSetup()
-	self.CurrentBargainBudget = self.BudgetWholeDay / 2 -- Tagesbudget f¸r gute Angebote ohne konkreten Bedarf
+	self.CurrentBargainBudget = self.BudgetWholeDay / 2 -- Tagesbudget f√ºr gute Angebote ohne konkreten Bedarf
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -163,7 +163,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 	local qualityStats = nil
 --RON
 --TVT.PrintOut("RON: AppraiseMovie")
-	--Allgemeine Minimalvorraussetzungen erf¸llt?
+	--Allgemeine Minimalvorraussetzungen erf√ºllt?
 	if (licence.IsMovie()) then
 		if (CheckMovieBuyConditions(licence, self.MovieMaxPrice, self.DayMovieMinQuality)) then
 			pricePerBlockStats = stats.MoviePricePerBlockAcceptable
@@ -180,7 +180,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 		end
 	end
 
-	-- Je g¸nstiger desto besser
+	-- Je g√ºnstiger desto besser
 	local financeFactor = licence:GetPricePerBlock() / pricePerBlockStats.AverageValue
 	financeFactor = CutFactor(financeFactor, 0.2, 2)
 	--debugMsg("licence.GetPricePerBlock: " .. licence.GetPricePerBlock() .. " ; pricePerBlockStats.AverageValue: " .. pricePerBlockStats.AverageValue)
@@ -217,13 +217,13 @@ end
 function JobBuyMovies:Tick()
 	local movies = self.MovieDistributorTask.MoviesAtDistributor
 
-	--TODO: Pr¸fen wie viele Filme ¸berhaupt gebraucht werden
+	--TODO: Pr√ºfen wie viele Filme √ºberhaupt gebraucht werden
 
 	for k,v in pairs(movies) do
 		if (v:GetPrice() <= self.MovieDistributorTask.CurrentBudget) then
-			if (v:GetPrice() <= self.MovieDistributorTask.CurrentBargainBudget) then -- Tagesbudget f¸r gute Angebote ohne konkreten Bedarf
+			if (v:GetPrice() <= self.MovieDistributorTask.CurrentBargainBudget) then -- Tagesbudget f√ºr gute Angebote ohne konkreten Bedarf
 				if (v.GetAttractiveness() > 1) then
-					--debugMsg("Kaufe Film: " .. v.GetId() .. " - Attraktivit‰t: ".. v.GetAttractiveness() .. " - Preis: " .. v:GetPrice() .. " - Qualit‰t: " .. v.GetQuality(0))
+					--debugMsg("Kaufe Film: " .. v.GetId() .. " - Attraktivit√§t: ".. v.GetAttractiveness() .. " - Preis: " .. v:GetPrice() .. " - Qualit√§t: " .. v.GetQuality(0))
 					debugMsg("Kaufe Film: " .. v.GetTitle() .. " (" .. v.GetId() .. ") - Preis: " .. v:GetPrice())
 					TVT.addToLog("Kaufe Film: " .. v.GetTitle() .. " (" .. v.GetId() .. ") - Preis: " .. v:GetPrice())
 					TVT.md_doBuyProgrammeLicence(v.GetId())

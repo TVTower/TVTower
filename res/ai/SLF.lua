@@ -2,7 +2,7 @@
 -- ============================
 -- === Simple Lua Framework ===
 -- ============================
--- Autor: Manuel Vögele (STARS_crazy@gmx.de)
+-- Autor: Manuel VÃ¶gele (STARS_crazy@gmx.de)
 -- Version: 22.02.2014
 -- Erstellt: 12.12.2007
 
@@ -89,11 +89,11 @@ _G["SLFDataObject"] = class(SLFObject, function(c)
 end)
 
 function SLFDataObject:typename()
-	return "SLFDataObject" --Hier muss der "Klassen"-Name zurückgeliefert werden
+	return "SLFDataObject" --Hier muss der "Klassen"-Name zurÃ¼ckgeliefert werden
 end
 
 function SLFDataObject:resume()
-	--wird nach dem Laden aufgerufen // Hier auf "InvalidDataObject" prüfen
+	--wird nach dem Laden aufgerufen // Hier auf "InvalidDataObject" prÃ¼fen
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -118,7 +118,7 @@ function SLFManager:load(pStoreData)
 	-- Standard-Methode zum laden von vorhandenen Daten
 	SLFManager.StoreData = pStoreData or SLFManager.StoreData
 	_G["LoadCache"] = {}
-	loadstring(SLFManager.StoreData)()	-- Führt das Skript aus
+	loadstring(SLFManager.StoreData)()	-- FÃ¼hrt das Skript aus
 	debugMsg("Loaded objects: " .. table.count(LoadCache))
 	
 	for k,v in pairs(LoadCache) do

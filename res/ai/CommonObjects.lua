@@ -57,12 +57,12 @@ end
 
 function SpotRequisition:UseThisContract(contract)
 	--debugMsg("SpotRequisition:UseThisContract - Start")
-	--Als Folge der erf¸llten Anforderung, werden nun Anforderungen an den Programmplan gestellt
+	--Als Folge der erf√ºllten Anforderung, werden nun Anforderungen an den Programmplan gestellt
 	local conCount = contract.GetSpotCount()
 
 	local player = _G["globalPlayer"]
 	for k,v in pairs(self.SlotReqs) do
-		if (self.FulfilledCount >= self.Count) then --Es werden keine weiteren SpotSlots benˆtigt um die Anforderung zu erf¸llen
+		if (self.FulfilledCount >= self.Count) then --Es werden keine weiteren SpotSlots ben√∂tigt um die Anforderung zu erf√ºllen
 		--	debugMsg("SpotRequisition:UseThisContract - Complete")
 			self:Complete()
 			return
@@ -126,7 +126,7 @@ function AIToolsClass:GetAverageMovieQualityByLevel(level)
 	elseif (level == 3) then
 		return 0.13 -- Nachmittag
 	elseif (level == 4) then
-		return 0.18 -- Vorabend / Sp‰t
+		return 0.18 -- Vorabend / Sp√§t
 	elseif (level == 5) then
 		return 0.22 -- Primetime
 	end
@@ -148,11 +148,11 @@ end
 
 function AIToolsClass:GuessedAudienceForLevel(level)
 	--debugMsg("GuessedAudienceForLevel - level: " .. level)
-	local globalPercentageByHour = self:GetMaxAudiencePercentageByLevel(level) -- Die Maximalquote: Entspricht ungef‰hr "maxAudiencePercentage"
+	local globalPercentageByHour = self:GetMaxAudiencePercentageByLevel(level) -- Die Maximalquote: Entspricht ungef√§hr "maxAudiencePercentage"
 	--debugMsg("globalPercentageByHour: " .. globalPercentageByHour)
-	local averageMovieQualityByLevel = self:GetAverageMovieQualityByLevel(level) -- Die Durchschnittsquote dieses Qualit‰tslevels
+	local averageMovieQualityByLevel = self:GetAverageMovieQualityByLevel(level) -- Die Durchschnittsquote dieses Qualit√§tslevels
 
-	--Formel: Filmqualit‰t * Potentielle Quote nach Uhrzeit (maxAudiencePercentage) * Echte Maximalzahl der Zuschauer
+	--Formel: Filmqualit√§t * Potentielle Quote nach Uhrzeit (maxAudiencePercentage) * Echte Maximalzahl der Zuschauer
 	local guessedAudience = averageMovieQualityByLevel * globalPercentageByHour * MY.GetMaxAudience()
 
 	--debugMsg("GuessedAudienceForLevel: " .. guessedAudience .. " = averageMovieQualityByLevel (" .. averageMovieQualityByLevel .. ") * globalPercentageByHour (" .. globalPercentageByHour .. ") *  MY.GetMaxAudience() (" .. MY.GetMaxAudience() .. ")")

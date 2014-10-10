@@ -52,7 +52,7 @@ function JobNewsAgencyAbonnements:typename()
 end
 
 function JobNewsAgencyAbonnements:Prepare(pParams)
-	debugMsg("Prüfe/Schließe Nachrichtenabonnements")
+	debugMsg("PrÃ¼fe/SchlieÃŸe Nachrichtenabonnements")
 end
 
 function JobNewsAgencyAbonnements:Tick()
@@ -100,7 +100,7 @@ function JobNewsAgency:Prepare(pParams)
 end
 
 function JobNewsAgency:Tick()
-	--TODO: EInfache Lösung
+	--TODO: EInfache LÃ¶sung
 	local price = 0
 
 	if (table.count(self.Newslist) > 0) then

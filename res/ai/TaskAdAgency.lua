@@ -107,7 +107,7 @@ function AppraiseSpots:typename()
 end
 
 function AppraiseSpots:Prepare(pParams)
-	debugMsg("Bewerte/Vergleiche Werbevertr‰ge")
+	debugMsg("Bewerte/Vergleiche Werbevertr√§ge")
 	self.CurrentSpotIndex = 0
 end
 
@@ -155,7 +155,7 @@ function AppraiseSpots:AppraiseSpot(spot)
 	audienceFactor = CutFactor(audienceFactor, 0.3, 2)
 	--debugMsg("audienceFactor: " .. audienceFactor .. " ; stats.Audience.AverageValue: " .. stats.Audience.AverageValue .. " ; spot.Audience:" .. spot.Audience)
 
-	-- 2 = Risiko und Strafe sind im Verh‰ltnis gering  / 0.3 = Risiko und Strafe sind Verh‰ltnis hoch
+	-- 2 = Risiko und Strafe sind im Verh√§ltnis gering  / 0.3 = Risiko und Strafe sind Verh√§ltnis hoch
 	local riskFactor = stats.SpotPenalty.AverageValue / spot.GetPenalty()
 	riskFactor = CutFactor(riskFactor, 0.3, 2)
 	riskFactor = riskFactor * audienceFactor
@@ -174,9 +174,9 @@ function AppraiseSpots:AppraiseSpot(spot)
 
 	--financeBase
 
-	-- Je hˆher der Gewinn desto besser
-	-- Je hˆher die Strafe desto schlechter
-	-- Je geringer die benˆtigten Zuschauer desto besser
+	-- Je h√∂her der Gewinn desto besser
+	-- Je h√∂her die Strafe desto schlechter
+	-- Je geringer die ben√∂tigten Zuschauer desto besser
 	-- Je weniger Spots desto besser
 	-- Je mehr Zeit desto besser
 end
@@ -195,7 +195,7 @@ function SignRequisitedContracts:typename()
 end
 
 function SignRequisitedContracts:Prepare(pParams)
-	debugMsg("Unterschreibe benˆtigte Werbevertr‰ge")
+	debugMsg("Unterschreibe ben√∂tigte Werbevertr√§ge")
 	self.CurrentSpotIndex = 0
 
 	self.Player = _G["globalPlayer"]
@@ -221,10 +221,10 @@ function SignRequisitedContracts:Tick()
 		if (signedContracts == 0) then
 			signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.6))
 			if (signedContracts == 0) then
-				guessedAudience = guessedAudience + 5000 -- Die 5000 sind einfach ein Erfahrungswert, denn es gibt kaum kleinere Werbevertr‰ge... die Sinnhaftigkeit sollte nochmal gepr¸ft werden
+				guessedAudience = guessedAudience + 5000 -- Die 5000 sind einfach ein Erfahrungswert, denn es gibt kaum kleinere Werbevertr√§ge... die Sinnhaftigkeit sollte nochmal gepr√ºft werden
 				signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.6))
 				if (signedContracts == 0) then
-					guessedAudience = guessedAudience + 5000 -- Die 5000 sind einfach ein Erfahrungswert, denn es gibt kaum kleinere Werbevertr‰ge... die Sinnhaftigkeit sollte nochmal gepr¸ft werden
+					guessedAudience = guessedAudience + 5000 -- Die 5000 sind einfach ein Erfahrungswert, denn es gibt kaum kleinere Werbevertr√§ge... die Sinnhaftigkeit sollte nochmal gepr√ºft werden
 					signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.6))
 				end
 			end
@@ -253,8 +253,8 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 
 		if ((minAudience < guessedAudience) and (minAudience > minguessedAudience)) then
 			--Passender Spot... also kaufen
-			debugMsg("Schlieﬂe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil benˆtigt. Level: " .. requisition.Level)
-			TVT.addToLog("Schlieﬂe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil benˆtigt. Level: " .. requisition.Level)
+			debugMsg("Schlie√üe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil ben√∂tigt. Level: " .. requisition.Level)
+			TVT.addToLog("Schlie√üe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil ben√∂tigt. Level: " .. requisition.Level)
 			TVT.sa_doBuySpot(value.GetID())
 			requisition:UseThisContract(value)
 			table.insert(buyedContracts, value)
@@ -270,7 +270,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 	end
 
 	if (table.count(buyedContracts) > 0) then
-		debugMsg("Entferne " .. table.count(buyedContracts) .. " abgeschlossene Werbevertr‰ge aus der Shop-Liste.")
+		debugMsg("Entferne " .. table.count(buyedContracts) .. " abgeschlossene Werbevertr√§ge aus der Shop-Liste.")
 		table.removeCollection(self.AdAgencyTask.SpotsInAgency, buyedContracts)
 	end
 
@@ -293,7 +293,7 @@ end
 
 --self.SpotRequisition = self.Player:GetRequisitionsByOwner(_G["TASK_SCHEDULE"])
 function SignContracts:Prepare(pParams)
-	debugMsg("Unterschreibe lukrative Werbevertr‰ge")
+	debugMsg("Unterschreibe lukrative Werbevertr√§ge")
 	self.CurrentSpotIndex = 0
 end
 
@@ -318,7 +318,7 @@ function SignContracts:Tick()
 			if MY.GetProgrammeCollection().GetAdContractCount() >= GameRules.maxContracts then break end
 			if (openSpots > 0) then
 				openSpots = openSpots - value.GetSpotCount()
-				debugMsg("Schlieﬂe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ")")
+				debugMsg("Schlie√üe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ")")
 				TVT.sa_doBuySpot(value.GetID())
 			end
 		end
