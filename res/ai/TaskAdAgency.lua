@@ -254,6 +254,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 		if ((minAudience < guessedAudience) and (minAudience > minguessedAudience)) then
 			--Passender Spot... also kaufen
 			debugMsg("Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil benötigt. Level: " .. requisition.Level)
+			TVT.addToLog("Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil benötigt. Level: " .. requisition.Level)
 			TVT.sa_doBuySpot(value.GetID())
 			requisition:UseThisContract(value)
 			table.insert(buyedContracts, value)

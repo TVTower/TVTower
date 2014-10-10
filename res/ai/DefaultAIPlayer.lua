@@ -15,6 +15,7 @@ dofile("res/ai/TaskMovieDistributor.lua")
 dofile("res/ai/TaskNewsAgency.lua")
 dofile("res/ai/TaskAdAgency.lua")
 dofile("res/ai/TaskSchedule.lua")
+dofile("res/ai/TaskStationMap.lua")
 if (unitTestMode) then
 	dofile("res/ai/UnitTests.lua")
 end
@@ -23,20 +24,20 @@ end
 aiIsActive = true
 
 TASK_MOVIEDISTRIBUTOR	= "MovieDistributor"
-TASK_NEWSAGENCY	= "NewsAgency"
-TASK_ARCHIVE		= "Archive"
-TASK_ADAGENCY		= "AdAgency"
-TASK_SCHEDULE		= "Schedule"
-TASK_STATIONS		= "Stations"
-TASK_BETTY		= "Betty"
-TASK_BOSS			= "Boss"
+TASK_NEWSAGENCY			= "NewsAgency"
+TASK_ARCHIVE			= "Archive"
+TASK_ADAGENCY			= "AdAgency"
+TASK_SCHEDULE			= "Schedule"
+TASK_STATIONMAP			= "StationMap"
+TASK_BETTY				= "Betty"
+TASK_BOSS				= "Boss"
 
 _G["TASK_MOVIEDISTRIBUTOR"] = TASK_MOVIEDISTRIBUTOR
 _G["TASK_NEWSAGENCY"] = TASK_NEWSAGENCY
 _G["TASK_ARCHIVE"] = TASK_ARCHIVE
 _G["TASK_ADAGENCY"] = TASK_ADAGENCY
 _G["TASK_SCHEDULE"] = TASK_SCHEDULE
-_G["TASK_STATIONS"] = TASK_STATIONS
+_G["TASK_STATIONMAP"] = TASK_STATIONMAP
 _G["TASK_BETTY"] = TASK_BETTY
 _G["TASK_BOSS"] = TASK_BOSS
 
@@ -69,8 +70,8 @@ function DefaultAIPlayer:initializeTasks()
 	self.TaskList[TASK_NEWSAGENCY]		= TaskNewsAgency()
 	self.TaskList[TASK_ADAGENCY]		= TaskAdAgency()
 	self.TaskList[TASK_SCHEDULE]		= TaskSchedule()
-
-	--self.TaskList[TASK_STATIONS]		= TVTStations()
+	self.TaskList[TASK_STATIONMAP]		= TaskStationMap()
+	
 	--self.TaskList[TASK_BETTY]			= TVTBettyTask()
 	--self.TaskList[TASK_BOSS]			= TVTBossTask()
 	--self.TaskList[TASK_ARCHIVE]			= TVTArchive()

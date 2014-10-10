@@ -47,7 +47,7 @@ function TaskMovieDistributor:GetNextJobInTargetRoom()
 	self:SetWait()
 end
 
-function AITask:OnDayBegins()
+function TaskMovieDistributor:BudgetSetup()
 	self.CurrentBargainBudget = self.BudgetWholeDay / 2 -- Tagesbudget für gute Angebote ohne konkreten Bedarf
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -207,7 +207,6 @@ end
 
 function JobBuyMovies:Prepare(pParams)
 	debugMsg("Kaufe Filme")
-	--debugMsg("CurrentBudget: " .. self.MovieDistributorTask.CurrentBudget .. " - CurrentBargainBudget: " .. self.MovieDistributorTask.CurrentBargainBudget)
 
 	local sortMethod = function(a, b)
 		return a.GetAttractiveness() > b.GetAttractiveness()
@@ -226,8 +225,10 @@ function JobBuyMovies:Tick()
 				if (v.GetAttractiveness() > 1) then
 					--debugMsg("Kaufe Film: " .. v.GetId() .. " - Attraktivität: ".. v.GetAttractiveness() .. " - Preis: " .. v:GetPrice() .. " - Qualität: " .. v.GetQuality(0))
 					debugMsg("Kaufe Film: " .. v.GetTitle() .. " (" .. v.GetId() .. ") - Preis: " .. v:GetPrice())
+					TVT.addToLog("Kaufe Film: " .. v.GetTitle() .. " (" .. v.GetId() .. ") - Preis: " .. v:GetPrice())
 					TVT.md_doBuyProgrammeLicence(v.GetId())
-					self.MovieDistributorTask.CurrentBudget = self.MovieDistributorTask.CurrentBudget - v:GetPrice()
+					
+					self.MovieDistributorTask:PayFromBudget(v:GetPrice())
 					self.MovieDistributorTask.CurrentBargainBudget = self.MovieDistributorTask.CurrentBargainBudget - v:GetPrice()
 				end
 			end

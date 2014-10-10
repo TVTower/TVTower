@@ -1,4 +1,4 @@
-REM
+﻿REM
 	===========================================================
 	code for stationmap and broadcasting stations
 	===========================================================
@@ -643,7 +643,7 @@ Type TStationMap {_exposeToLua="selected"}
 
 
 	'buy a new station at the given coordinates
-	Method BuyStation:Int(x:Int,y:Int)
+	Method BuyStation:Int(x:Int,y:Int) {_exposeToLua}
 		Return AddStation( getTemporaryStation( x, y ), True )
 	End Method
 
@@ -768,7 +768,7 @@ End Type
 'provides the option to buy new stations
 'functions are calculation of audiencesums and drawing of stations
 Type TStation Extends TGameObject {_exposeToLua="selected"}
-	Field pos:TVec2D
+	Field pos:TVec2D {_exposeToLua}
 	Field reach:Int	= -1
 	'increase of reach at when bought
 	Field reachIncrease:Int = -1

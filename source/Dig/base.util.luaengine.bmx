@@ -1,4 +1,4 @@
-SuperStrict
+﻿SuperStrict
 Import Pub.Lua
 Import Brl.Retro
 'using custom to have support for const/function reflection
