@@ -643,7 +643,7 @@ Type TStationMap {_exposeToLua="selected"}
 
 
 	'buy a new station at the given coordinates
-	Method BuyStation:Int(x:Int,y:Int) {_exposeToLua}
+	Method BuyStation:Int(x:Int,y:Int)
 		Return AddStation( getTemporaryStation( x, y ), True )
 	End Method
 

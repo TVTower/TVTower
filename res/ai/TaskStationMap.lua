@@ -50,11 +50,11 @@ function JobBuyStation:typename()
 end
 
 function JobBuyStation:Prepare(pParams)
-	--debugMsg("Prüfe Stationenkauf")
+	--debugMsg("PrÃ¼fe Stationenkauf")
 end
 
 function JobBuyStation:Tick()
-	debugMsg("Prüfe Stationenkauf! Verfügbares Budget: " .. self.Task.CurrentBudget)
+	debugMsg("PrÃ¼fe Stationenkauf! VerfÃ¼gbares Budget: " .. self.Task.CurrentBudget)
 	
 	local bestOffer = nil
 	local bestAttraction = 0
@@ -64,7 +64,7 @@ function JobBuyStation:Tick()
 		local price = tempStation.getPrice()
 		local pricePerViewer = tempStation.getReachIncrease() / price
 				
-		--debugMsg("Prüfe Station " .. i .. "  " .. tempStation.pos.GetIntX() .. "/" .. tempStation.pos.GetIntY() .. " - R: " .. tempStation.getReach() .. " - Inc: " .. tempStation.getReachIncrease() .. " - Price: " .. tempStation.getPrice() .. " F: " .. pricePerViewer)
+		--debugMsg("PrÃ¼fe Station " .. i .. "  " .. tempStation.pos.GetIntX() .. "/" .. tempStation.pos.GetIntY() .. " - R: " .. tempStation.getReach() .. " - Inc: " .. tempStation.getReachIncrease() .. " - Price: " .. tempStation.getPrice() .. " F: " .. pricePerViewer)
 		
 		if price <= self.Task.CurrentBudget and tempStation.getReachIncrease() > 5000 then -- Liegt im Budget und lohnt sich minimal
 			local priceDiff = self.Task.CurrentBudget - price
@@ -85,7 +85,7 @@ function JobBuyStation:Tick()
 		local price = bestOffer.getPrice()
 		debugMsg("Kaufe Station " .. bestOffer.pos.GetIntX() .. "/" .. bestOffer.pos.GetIntY() .. " Inc: " .. bestOffer.getReachIncrease() .. " => Price: " .. price)
 		TVT.addToLog("Kaufe Station " .. bestOffer.pos.GetIntX() .. "/" .. bestOffer.pos.GetIntY() .. " Inc: " .. bestOffer.getReachIncrease() .. " => Price: " .. price)
-		MY.GetStationMap().BuyStation(bestOffer.pos.GetIntX(), bestOffer.pos.GetIntY())
+		TVT.of_buyStation(bestOffer.pos.GetIntX(), bestOffer.pos.GetIntY())
 		self.Task:PayFromBudget(price)
 	end
 
