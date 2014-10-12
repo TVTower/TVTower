@@ -6,6 +6,38 @@ Rem
 	Various helpers to work with strings.
 
 
+
+	====================================================================
+	function UTF8toISO8859:
+	-----------------------
+	Source: https://github.com/maxmods/bah.mod/blob/master/
+	        gtkmaxgui.mod/gtkcommon.bmx
+
+	Modified: by Ronny Otto, changed to string-parameter
+
+	Licence
+	Copyright (c) 2006-2009 Bruce A Henderson
+	Permission is hereby granted, free of charge, to any person
+	obtaining a copy of this software and associated documentation files
+	(the "Software"), to deal in the Software without restriction,
+	including without limitation the rights to use, copy, modify, merge,
+	publish, distribute, sublicense, and/or sell copies of the Software,
+	and to permit persons to whom the Software is furnished to do so,
+	subject to the following conditions:
+
+	The above copyright notice and this permission notice shall be
+	included in all copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+	EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+	OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+	NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+	BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+	ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+	CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+	SOFTWARE.
+
+
 	====================================================================
 	function printf:
 	----------------
@@ -70,6 +102,35 @@ Import "base.util.math.bmx"
 
 
 Type StringHelper
+
+	Function UTF8toISO8859:String(s:string)
+		Local b:Short[] = New Short[s.length]
+		Local bc:Int = -1
+		Local c:Int, d:Int, e:Int
+		For Local i:Int = 0 Until s.length
+			bc:+1
+			c = s[i]
+			If c<128 
+				b[bc] = c
+				Continue
+			End If
+			i:+1
+			d=s[i]
+			If c<224 
+				b[bc] = (c-192)*64+(d-128)
+				Continue
+			End If
+			i:+1
+			e = s[i]
+			If c < 240 
+				b[bc] = (c-224)*4096+(d-128)*64+(e-128)
+				Continue
+			End If
+		Next
+
+		Return String.fromshorts(b, bc + 1)
+	End Function
+
 
 	'fill a given string with the args provided
 	'examples:

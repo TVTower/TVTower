@@ -7,6 +7,7 @@ SuperStrict
 Import BRL.LinkedList
 Import BRL.Retro		'for lset()
 Import BRL.System		'for currenttime()
+Import "base.util.string.bmx"
 
 'create a basic log file
 Global AppLog:TLogFile = TLogFile.Create("App Log v1.0", "log.app.txt")
@@ -129,9 +130,21 @@ Type TLogger
 				showFunctionText = functiontext
 			endif
 
+			rem
+			message = message.replace("ü", "ue")
+			message = message.replace("Ü", "Ue")
+			message = message.replace("ö", "oe")
+			message = message.replace("Ö", "Oe")
+			message = message.replace("ä", "ae")
+			message = message.replace("Ä", "Ae")
+			message = message.replace("ß", "ss")
+			endrem
+			message = StringHelper.UTF8toISO8859(message)
+
 			print "[" + CurrentTime() + "] " + debugtext + Upper(showFunctionText) + ": " + message
 		endif
 	End Function
+
 End Type
 
 
