@@ -392,11 +392,15 @@ Type TApp
 
 					if KEYMANAGER.IsHit(KEY_Y)
 						'print "send to chef:"
-						'GetPlayer().GetFigure().SendToDoor( TRoomDoor.GetByDetails("boss", 1), True )
-						GetPlayer().SendToBoss()
+						'GetPlayer().SendToBoss()
 
-						GetWorld().Weather.SetPressure(-14)
-						GetWorld().Weather.SetTemperature(-10)
+						'GetWorld().Weather.SetPressure(-14)
+						'GetWorld().Weather.SetTemperature(-10)
+
+						'select a random licence
+						local licence:TProgrammeLicence = GetPlayer().GetProgrammeCollection().GetRandomMovieLicence()
+						'send marshal to confiscate the licence
+						Game.marshals[rand(0,1)].AddConfiscationJob( licence.GetGUID() )
 					endif
 
 				
@@ -440,19 +444,15 @@ Type TApp
 
 				'send terrorist to a random room
 				If KEYMANAGER.IsHit(KEY_T) and not Game.networkGame
-					If KEYMANAGER.IsDown(KEY_LSHIFT) Or KEYMANAGER.IsDown(KEY_RSHIFT)
-						GenerateRandomToast()
-					Else
-						Global whichTerrorist:int = 1
-						whichTerrorist = 1 - whichTerrorist
+					Global whichTerrorist:int = 1
+					whichTerrorist = 1 - whichTerrorist
 
-						local targetRoom:TRoom
-						Repeat
-							targetRoom = GetRoomCollection().GetRandom()
-						until targetRoom.name <> "building"
-						
-						Game.terrorists[whichTerrorist].SetDeliverToRoom( targetRoom )
-					EndIf
+					local targetRoom:TRoom
+					Repeat
+						targetRoom = GetRoomCollection().GetRandom()
+					until targetRoom.name <> "building"
+					
+					Game.terrorists[whichTerrorist].SetDeliverToRoom( targetRoom )
 				EndIf
 
 				If Game.isGameLeader()
@@ -518,33 +518,6 @@ Type TApp
 
 
 
-	Function GenerateRandomToast()
-			local toast:TGameToastMessage = new TGameToastMessage
-			toast.SetLifeTime( Rand(10000,15000)/1000.0 )
-			toast.SetMessageType(rand(0,3))
-			toast.SetPriority(rand(0,10))
-			toast.SetCaption("Testnachricht" + Millisecs())
-			toast.SetText("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam")
-
-			if rand(0,1) = 1
-				toast.SetCaption("Der Chef will Dich sehen!")
-				toast.SetLifeTime(-1)
-				'close in 1 worldTime minute
-				toast.SetCloseAtWorldTime( GetWorldTime().GetTimeGone() + rand(60,120))
-			endif
-
-			Select rand(0,3)
-				case 0
-					GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
-				case 1
-					GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
-				case 2
-					GetToastMessageCollection().AddMessage(toast, "BOTTOMLEFT")
-				case 3
-					GetToastMessageCollection().AddMessage(toast, "BOTTOMRIGHT")
-			EndSelect
-	End Function
-	
 
 	Function Render:Int()
 		TProfiler.Enter("Draw")
@@ -1263,10 +1236,11 @@ End Type
 
 
 
-Type TFigureTerrorist Extends TFigure
+'base figure type for figures coming from outside the building looking
+'for a room at the roomboard etc.
+Type TFigureDeliveryBoy Extends TFigure
 	'did the figure check the roomboard where to go to?
 	Field checkedRoomboard:int = False
-	'where to deliver the "package"
 	Field deliverToRoom:TRoomBase
 	'was the "package" delivered already?
 	Field deliveryDone:int = True
@@ -1275,7 +1249,7 @@ Type TFigureTerrorist Extends TFigure
 
 
 	'we need to overwrite it to have a custom type - with custom update routine
-	Method Create:TFigureTerrorist(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int, ControlledByID:Int = -1)
+	Method Create:TFigureDeliveryBoy(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int, ControlledByID:Int = -1)
 		Super.Create(FigureName, sprite, x, onFloor, speed, ControlledByID)
 		Return Self
 	End Method
@@ -1283,7 +1257,7 @@ Type TFigureTerrorist Extends TFigure
 
 	'used in news effect function
 	Function SendFigureToRoom(data:TData, params:TData)
-		local figure:TFigureTerrorist = TFigureTerrorist(data.Get("figure"))
+		local figure:TFigureDeliveryBoy = TFigureDeliveryBoy(data.Get("figure"))
 		local room:TRoomBase = TRoomBase(data.Get("room"))
 		if not figure or not room then return
 
@@ -1306,7 +1280,7 @@ Type TFigureTerrorist Extends TFigure
 
 
 	'set the room the figure should go to.
-	'Terrorist do not know where the room will be, so they
+	'DeliveryBoys do not know where the room will be, so they
 	'go to the roomboard first
 	Method SetDeliverToRoom:int(room:TRoomBase)
 		'to go to this room, we have to first visit the roomboard
@@ -1327,7 +1301,7 @@ Type TFigureTerrorist Extends TFigure
 			'before directly going to a room, ask the roomboard where
 			'to go
 			If Not checkedRoomboard
-				TLogger.Log("TFigureTerrorist", self.name+" is sent to roomboard", LOG_DEBUG | LOG_AI, True)
+				TLogger.Log("TFigureDeliveryBoy", self.name+" is sent to roomboard", LOG_DEBUG | LOG_AI, True)
 				SendToDoor(TRoomDoor.GetByDetails("roomboard", 0))
 			Else
 				'instead of sending the figure to the correct door, we
@@ -1339,10 +1313,10 @@ Type TFigureTerrorist Extends TFigure
 				if roomDoor then sign = TRoomBoardSign.GetByCurrentPosition(roomDoor.doorSlot, roomDoor.onFloor)
 
 				if sign and sign.door
-					TLogger.Log("TFigureTerrorist", self.name+" is sent to room "+TRoomDoor(sign.door).GetRoom().name+" (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
+					TLogger.Log("TFigureDeliveryBoy", self.name+" is sent to room "+TRoomDoor(sign.door).GetRoom().name+" (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
 					SendToDoor(sign.door)
 				else
-					TLogger.Log("TFigureTerrorist", self.name+" cannot send to a room, sign of target over empty room slot (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
+					TLogger.Log("TFigureDeliveryBoy", self.name+" cannot send to a room, sign of target over empty room slot (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
 					'send home again
 					deliveryDone = True
 					SendToOffscreen()
@@ -1355,16 +1329,31 @@ Type TFigureTerrorist Extends TFigure
 
 			'delivery finished - send home again
 			If deliveryDone
-				'place bomb
-				deliverToRoom.PlaceBomb()
+				FinishDelivery()
 
 				deliverToRoom = Null
-				SendToOffscreen()
 			EndIf
 
 			'leave that room so we can find a new target
 			leaveRoom()
 		EndIf
+	End Method
+
+
+	Method FinishDelivery:Int()
+		'nothing
+	End Method
+End Type
+
+
+Type TFigureTerrorist Extends TFigureDeliveryBoy
+
+	'override to place a bomb when delivered
+	Method FinishDelivery:Int()
+		'place bomb
+		deliverToRoom.PlaceBomb()
+
+		SendToOffscreen()
 	End Method
 
 
@@ -1377,6 +1366,128 @@ Type TFigureTerrorist Extends TFigure
 		'depending on floor use "grr" or "?!"
 		return 0 + 2*((1 + GetBuilding().GetFloor(area.GetY()) mod 2)-1)
 	End Method	
+End Type
+
+
+
+
+'person who confiscates licences/programmes
+Type TFigureMarshal Extends TFigureDeliveryBoy
+	'arrays containing information of GUID->owner (so it stores the
+	'owner of the licence in the moment of the task creation)
+	Field confiscateProgammeLicenceGUID:String[]
+	Field confiscateProgammeLicenceFromOwner:int[]
+
+	'used in news effect function
+	Function CreateConfiscationJob(data:TData, params:TData)
+		local figure:TFigureMarshal = TFigureMarshal(data.Get("figure"))
+		local licenceGUID:string = data.GetString("confiscateProgrammeLicenceGUID")
+		if not figure or not licenceGUID then return
+
+		figure.AddConfiscationJob(licenceGUID)
+	End Function
+
+
+	Method AddConfiscationJob:Int(confiscateGUID:string, owner:int=-1)
+		local licence:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID(confiscateGUID)
+		'no valid licence found
+		if not licence then return False
+
+		if owner = -1 then owner = licence.owner
+		'only confiscate from players ?
+		if not GetPlayerCollection().isPlayer(owner) then return False
+
+		confiscateProgammeLicenceGUID :+ [licence.GetGUID()]
+		confiscateProgammeLicenceFromOwner :+ [owner]
+
+		return True
+	End Method
+
+
+	Method StartNextConfiscationJob:int()
+		if confiscateProgammeLicenceFromOwner.length = 0 then return False
+
+		'when confiscating programmes: start with your authorization
+		'letter
+		sprite = GetSpriteFromRegistry(GetBaseSpriteName()+".letter")
+
+		'send figure to the archive of the stored owner
+		SetDeliverToRoom(GetRoomCollection().GetFirstByDetails("archive", GetConfiscateProgrammeLicenceFromOwner()))
+	End Method
+
+
+	Method RemoveCurrentConfiscationJob()
+		confiscateProgammeLicenceGUID = confiscateProgammeLicenceGUID[1..]
+		confiscateProgammeLicenceFromOwner = confiscateProgammeLicenceFromOwner[1..]
+	End Method
+	
+
+	Method GetConfiscateProgrammeLicenceGUID:string()
+		if confiscateProgammeLicenceGUID.length = 0 then return ""
+		return confiscateProgammeLicenceGUID[0]
+	End Method
+
+
+	Method GetConfiscateProgrammeLicenceFromOwner:int()
+		if confiscateProgammeLicenceFromOwner.length = 0 then return -1
+		return confiscateProgammeLicenceFromOwner[0]
+	End Method
+	
+
+	Method GetBaseSpriteName:string()
+		local dotPosition:int = sprite.GetName().Find(".")
+		if dotPosition > 0
+			return Left(sprite.GetName(), dotPosition)
+		else
+			return sprite.GetName()
+		endif
+	End Method
+	
+
+	'override to try to fetch the programme they should confiscate
+	Method FinishDelivery:Int()
+		'try to get the licence from the owner of the room we are now in
+		local roomOwner:int = -1
+		if inRoom then roomOwner = inRoom.owner
+
+		if not GetPlayerCollection().isPlayer(roomOwner)
+			'block room for x hours - like terror attack ?
+		else
+			'try to get the licence from the player - if that player does
+			'not own the licence (eg. someone switched roomSigns), take
+			'a random one ... :p
+			local licence:TProgrammeLicence = GetPlayer(roomOwner).GetProgrammeCollection().GetProgrammeLicenceByGUID( GetConfiscateProgrammeLicenceGUID() )
+			if not licence then licence = GetPlayer(roomOwner).GetProgrammeCollection().GetRandomProgrammeLicence()
+
+			'hmm player does not have programme licences at all...skip
+			'removal in that case
+			if not licence then return False
+				
+			GetPlayer(roomOwner).GetProgrammeCollection().RemoveProgrammeLicence(licence)
+
+			'inform others - including taken and originally intended
+			'licence (so we see if the right one was took ... to inform
+			'players correctly)
+			EventManager.triggerEvent( TEventSimple.Create("publicAuthorities.onConfiscateProgrammeLicence", new TData.AddString("targetProgrammeGUID", GetConfiscateProgrammeLicenceGUID() ).AddString("confiscatedProgrammeGUID", licence.GetGUID()), null, GetPlayer(roomOwner)) )
+
+			'switch used sprite - we confiscated something
+			sprite = GetSpriteFromRegistry(GetBaseSpriteName()+".box")
+		endif
+
+		'remove the current job, we are done with it
+		RemoveCurrentConfiscationJob()
+
+		'send to offscreen again when finished
+		SendToOffscreen()
+	End Method
+
+
+	Method UpdateCustom:Int()
+		'try to start another job when doing nothing
+		If isOffscreen() and IsIdling() then StartNextConfiscationJob()
+
+		Super.UpdateCustom()
+	End Method
 End Type
 
 
@@ -2662,7 +2773,7 @@ Type GameEvents
 		'=== PUBLIC AUTHORITIES ===
 		'-> create ingame notifications
 		EventManager.registerListenerFunction("publicAuthorities.onStopXRatedBroadcast", publicAuthorities_onStopXRatedBroadcast)
-
+		EventManager.registerListenerFunction("publicAuthorities.onConfiscateProgrammeLicence", publicAuthorities_onConfiscateProgrammeLicence)
 
 		'visually inform that selling the last station is impossible
 		EventManager.registerListenerFunction("StationMap.onTrySellLastStation", StationMapOnTrySellLastStation)
@@ -2843,6 +2954,33 @@ Type GameEvents
 		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 	End Function
 
+
+	Function PublicAuthorities_onConfiscateProgrammeLicence:Int(triggerEvent:TEventBase)
+		local targetProgrammeLicence:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID( triggerEvent.GetData().GetString("targetProgrammeGUID") )
+		local confiscatedProgrammeLicence:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID( triggerEvent.GetData().GetString("confiscatedProgrammeGUID") )
+		local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
+
+		'inform ai before
+		if player.IsAI() then player.PlayerKI.CallOnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedProgrammeLicence, targetProgrammeLicence)
+
+		'only interest in active players contracts
+		if confiscatedProgrammeLicence.owner <> GetPlayerCollection().playerID then return False
+
+		local toast:TGameToastMessage = new TGameToastMessage
+		'show it for some seconds
+		toast.SetLifeTime(15)
+		toast.SetMessageType(1) 'attention
+		toast.SetCaption(GetLocale("AUTHORITIES_CONFISCATED_LICENCE"))
+		local text:string = GetLocale("PROGRAMMELICENCE_X_GOT_CONFISCATED").Replace("%TITLE%", "|b|"+confiscatedProgrammeLicence.GetTitle()+"|/b|") + " "
+		if confiscatedProgrammeLicence <> targetProgrammeLicence
+			text :+ GetLocale("SEEMS_AUTHORITIES_VISITED_THE_WRONG_ROOM")
+		else
+			text :+ GetLocale("BETTER_WATCH_OUT_NEXT_TIME")
+		endif
+		
+		toast.SetText(text)
+		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+	End Function
 	
 	Function AdContract_OnFinish:Int(triggerEvent:TEventBase)
 		local contract:TAdContract = TAdContract(triggerEvent.GetSender())
@@ -3037,12 +3175,15 @@ Type GameEvents
 					local confiscateProgramme:int = RandRange(0,100) < 25
 
 					if confiscateProgramme
-						'TODO: send out clerk/public servant to confiscate
+						'TODO: send out clerk/marshal to confiscate
 						'      the programme - if send to another archive
 						'      just take a "random programme"
 						print "TODO: Beamten losschicken um Programm zu pfaenden."
 
-						EventManager.triggerEvent(TEventSimple.Create("publicAuthorities.onStartSeizeProgramme", new TData.AddString("broadcastMaterialGUID", currentProgramme.GetGUID()).AddNumber("owner", player.playerID), currentProgramme, player))
+						EventManager.triggerEvent(TEventSimple.Create("publicAuthorities.onStartConfiscateProgramme", new TData.AddString("broadcastMaterialGUID", currentProgramme.GetGUID()).AddNumber("owner", player.playerID), currentProgramme, player))
+
+						'Send out first marshal - Mr. Czwink or Mr. Czwank
+						Game.marshals[randRange(0,1)].AddConfiscationJob(currentProgramme.GetGUID())
 					endif
 
 					'emit event (eg.for ingame toastmessages)

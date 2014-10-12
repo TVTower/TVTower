@@ -434,6 +434,11 @@ ADCONTRACT_X_FAILED = Werbevertrag "%TITLE%" fehlgeschlagen.
 PENALTY_OF_X_WAS_PAID = Die Strafe von %MONEY% wurde beglichen.
 BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = Die Ausstrahlung des FSK18-Programmes "%TITLE%" ist tagsüber nicht erlaubt.
 AUTHORITIES_STOPPED_BROADCAST = Behörden stoppen Ausstrahlung
+AUTHORITIES_CONFISCATED_LICENCE = Behörden beschlagnahmen Lizenz
+PROGRAMMELICENCE_X_GOT_CONFISCATED = Programmlizenz "%TITLE%" wurde beschlagnahmt.
+SEEMS_AUTHORITIES_VISITED_THE_WRONG_ROOM = Es scheint die Behörden haben den falschen Raum aufgesucht.
+BETTER_WATCH_OUT_NEXT_TIME = Pass das nächste Mal lieber auf.
+
 
 HINT_PRESSING_ALT_WILL_SHOW_DETAILS = "ALT"-Taste drücken für mehr Details.
 HINT_PROGRAMMEPLANER_SHORTCUTS = ALT: tauscht Datenblatt | STRG+Klick: Programmkopie | SHIFT+Klick: nächste Episode

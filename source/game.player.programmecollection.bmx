@@ -451,6 +451,14 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
+	Method GetProgrammeLicenceByGUID:TProgrammeLicence(GUID:String) {_exposeToLua}
+		For Local licence:TProgrammeLicence = EachIn programmeLicences
+			If licence.GetGUID() = GUID Then Return licence
+		Next
+		Return Null
+	End Method
+	
+
 	Method GetAdContract:TAdContract(id:Int) {_exposeToLua}
 		For Local contract:TAdContract=EachIn adContracts
 			If contract.id = id Then Return contract

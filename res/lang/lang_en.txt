@@ -420,6 +420,11 @@ ADCONTRACT_X_FAILED = Advertisement contract "%TITLE%" failed.
 PENALTY_OF_X_WAS_PAID = Penalty of %MONEY% was paid.
 BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = Broadcast of x-rated programme "%TITLE%" not allowed during daytime.
 AUTHORITIES_STOPPED_BROADCAST = Authorities stopped broadcast
+AUTHORITIES_CONFISCATED_LICENCE = Authorities confiscated licence
+PROGRAMMELICENCE_X_GOT_CONFISCATED = Programme licence "%TITLE%" got confiscated.
+SEEMS_AUTHORITIES_VISITED_THE_WRONG_ROOM = Seems authorities visited the wrong room.
+BETTER_WATCH_OUT_NEXT_TIME = Better watch out next time.
+
 
 HINT_PRESSING_ALT_WILL_SHOW_DETAILS = Pressing "ALT"-key will show details.
 HINT_PROGRAMMEPLANER_SHORTCUTS = ALT: switch data sheet | CTRL+Click: copy programme | SHIFT+Click: next episode

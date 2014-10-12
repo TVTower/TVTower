@@ -177,6 +177,14 @@ Type KI
 	End Method
 
 
+	Method CallOnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedLicence:TProgrammeLicence, targetLicence:TProgrammeLicence)
+		Local args:Object[2]
+		args[0] = confiscatedLicence
+		args[1] = targetLicence
+		if (KIRunning) then LuaEngine.CallLuaFunction("OnPublicAuthoritiesConfiscateProgrammeLicence")
+	End Method
+	
+
 	Method CallOnLeaveRoom(roomId:int)
 	    Try
 			Local args:Object[1]

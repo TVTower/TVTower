@@ -72,6 +72,7 @@ Type TGame {_exposeToLua="selected"}
 	Field onlinegame:Int = 0
 
 	Field terrorists:TFigureTerrorist[2]
+	Field marshals:TFigureMarshal[2]  
 
 	Global _instance:TGame
 	Global _initDone:int = FALSE
@@ -329,16 +330,30 @@ Type TGame {_exposeToLua="selected"}
 		fig.MoveToOffscreen()
 		fig.SetParent(GetBuilding().buildingInner)
 		fig.SendToDoor(TRoomDoor.GetByDetails("boss", 3), True)
-		
-		terrorists[0] = TFigureTerrorist(GetFigureCollection().GetByName("Terrorist1"))
-		if not terrorists[0] then terrorists[0] = New TFigureTerrorist.Create("Terrorist1", GetSpriteFromRegistry("Terrorist1"), GameRules.offscreenX, 0, 65)
-		terrorists[0].MoveToOffscreen()
-		terrorists[0].SetParent(GetBuilding().buildingInner)
-		
-		terrorists[1] = TFigureTerrorist(GetFigureCollection().GetByName("Terrorist2"))
-		if not terrorists[1] then terrorists[1] = New TFigureTerrorist.Create("Terrorist2", GetSpriteFromRegistry("Terrorist2"), GameRules.offscreenX, 0, 65)
-		terrorists[1].MoveToOffscreen()
-		terrorists[1].SetParent(GetBuilding().buildingInner)
+
+
+		'create 2 terrorists
+		For local i:int = 0 to 1
+			terrorists[i] = TFigureTerrorist(GetFigureCollection().GetByName("Terrorist"+(i+1)))
+			if not terrorists[i]
+				terrorists[i] = New TFigureTerrorist
+				terrorists[i].Create("Terrorist"+(i+1), GetSpriteFromRegistry("Terrorist"+(i+1)), GameRules.offscreenX, 0, 65)
+			endif
+			terrorists[i].MoveToOffscreen()
+			terrorists[i].SetParent(GetBuilding().buildingInner)
+		Next
+
+		'create 2 marshals (to confiscate different things we use
+		'multiple marshals)
+		For local i:int = 0 to 1
+			marshals[i] = TFigureMarshal(GetFigureCollection().GetByName("Marshal"+(i+1)))
+			if not marshals[i]
+				marshals[i] = New TFigureMarshal
+				marshals[i].Create("Marshal"+(i+1), GetSpriteFromRegistry("Marshal"+(i+1)), GameRules.offscreenX, 0, 65)
+			endif
+			marshals[i].MoveToOffscreen()
+			marshals[i].SetParent(GetBuilding().buildingInner)
+		Next
 
 		'we want all players to alreay wait in front of the elevator
 		'and not only 1 player sending it while all others wait
@@ -607,7 +622,6 @@ Type TGame {_exposeToLua="selected"}
 		'-9 till 0 are "no check"
 		nextXRatedCheckMinute = RandRange(-9, 49)
 		if nextXRatedCheckMinute <= 0 then nextXRatedCheckMinute = -1
-		print "computed nextcheck minute: "+nextXRatedCheckMinute
 	End Method
 
 
