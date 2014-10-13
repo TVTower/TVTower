@@ -92,7 +92,9 @@ Type TSpriteEntity extends TEntity
 		Super.Update()
 
 		'=== UPDATE ANIMATION ===
-		if frameAnimations then frameAnimations.GetCurrent().Update()
+		'instead of deltatime, we use the modified value including the
+		'world speed factor
+		if frameAnimations then frameAnimations.Update( GetDeltaTimer().GetDelta() * GetWorldSpeedFactor() )
 	End Method
 
 

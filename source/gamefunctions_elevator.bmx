@@ -99,11 +99,11 @@ Type TElevator extends TEntity
 		PassengerPosition  = PassengerPosition[..6]
 		PassengerOffset    = PassengerOffset[..6]
 		PassengerOffset[0] = new TVec2D.Init(0, 0)
-		PassengerOffset[1] = new TVec2D.Init(-12, 0)
-		PassengerOffset[2] = new TVec2D.Init(-6, 0)
-		PassengerOffset[3] = new TVec2D.Init(3, 0)
-		PassengerOffset[4] = new TVec2D.Init(-3, 0)
-		PassengerOffset[5] = new TVec2D.Init(-8, 0)
+		PassengerOffset[1] = new TVec2D.Init(-13, 0)
+		PassengerOffset[2] = new TVec2D.Init(12, 0)
+		PassengerOffset[3] = new TVec2D.Init(-7, 0)
+		PassengerOffset[4] = new TVec2D.Init(8, 0)
+		PassengerOffset[5] = new TVec2D.Init(-3, 0)
 
 		'create door
 		door = new TSpriteEntity
@@ -256,6 +256,7 @@ Type TElevator extends TEntity
 		Return new TVec3D.Init(GetBuilding().area.GetX() + area.GetX() + door.sprite.framew/2, area.GetY() + door.sprite.frameh/2 + 56, -25)
 	End Method
 
+
 	'===== Offset-Funktionen =====
 
 	Method SetFigureOffset(figure:TFigure)
@@ -264,58 +265,89 @@ Type TElevator extends TEntity
 		next
 	End Method
 
+
 	Method RemoveFigureOffset(figure:TFigure)
 		for local i:int = 0 to len(PassengerOffset) -1
 			If PassengerPosition[i] = figure Then PassengerPosition[i] = null; Exit
 		next
 		figure.PosOffset.SetXY(0, 0)
 	End Method
+	
 
-	Method MovePassengerToPosition() 'Aktualisiert das Offset und bewegt die Figur an die richtige Position
+	'Aktualisiert das Offset und bewegt die Figur an die richtige Position
+	Method MovePassengerToPosition()
+		local deltaTime:Float = GetDeltaTimer().GetDelta() * GetWorldSpeedFactor()
+
 		for local i:int = 0 to len(PassengerPosition) - 1
 			local figure:TFigure = PassengerPosition[i]
-			If figure <> null
-				local offset:TVec2D = PassengerOffset[i]
-				If figure.PosOffset.getX() <> offset.getX()
-					'set to 1 -> indicator we are moving in the elevator (boarding)
-					figure.boardingState = 1
+			If not figure then continue
 
-					'avoid rounding errors ("jittering") and set to target if distance is smaller than movement
-					'we only do that if offsets differ to avoid doing it if no offset is set
-					if abs(figure.PosOffset.getX() - offset.getX()) <= 0.4
-						'set x to the target so it settles to that value
-						figure.PosOffset.setX( offset.getX())
-						'set state to 0 so figures can recognize they reached the displaced x
-						figure.boardingState = 0
+			'move with 50% of normal movement speed
+			local moveX:Float = 0.5 * figure.initialDX * deltaTime
+
+			If figure.PosOffset.getX() <> PassengerOffset[i].getX()
+				'set to 1 -> indicator we are moving in the elevator (boarding)
+				figure.boardingState = 1
+
+				'avoid rounding errors ("jittering") and set to target
+				'if distance is smaller than movement
+				'we only do that if offsets differ to avoid doing it if
+				'no offset is set
+				if abs(figure.PosOffset.getX() - PassengerOffset[i].getX()) <= moveX
+					'set x to the target so it settles to that value
+					figure.PosOffset.setX( PassengerOffset[i].getX())
+					'set state to 0 so figures can recognize they
+					'reached the displaced x
+					figure.boardingState = 0
+				else
+					if figure.PosOffset.getX() > PassengerOffset[i].getX()
+						figure.PosOffset.AddX( -moveX )
 					else
-					if figure.PosOffset.getX() > offset.getX() Then figure.PosOffset.setX(figure.PosOffset.getX() -0.4) Else figure.PosOffset.setX(figure.PosOffset.getX() +0.4)
+						figure.PosOffset.AddX( +moveX )
 					endif
-				Endif
+				endif
 			Endif
 		next
 	End Method
 
-	Method MoveDeboardingPassengersToCenter() 'Aktualisiert das Offset und bewegt die Figur zum Ausgang
+
+	'Aktualisiert das Offset und bewegt die Figur zum Ausgang
+	Method MoveDeboardingPassengersToCenter()
+		local deltaTime:Float = GetDeltaTimer().GetDelta() * GetWorldSpeedFactor()
+	
 		for local i:int = 0 to len(PassengerPosition) - 1
 			local figure:TFigure = PassengerPosition[i]
-			If figure <> null
-				If GetRouteByPassenger(figure, 0).floornumber = CurrentFloor 'Will die Person aussteigen?
-					If figure.PosOffset.getX() <> 0
-						'set state to -1 -> indicator we are moving in the elevator but from Offset to 0 (different to boarding)
-						figure.boardingState = -1
+			If not figure then continue
 
-						'avoid rounding errors ("jittering") and set to target if distance is smaller than movement
-						'we only do that if offsets differ to avoid doing it if no offset is set
-						if abs(figure.PosOffset.getX()) <= 0.5
-							'set x to 0 so it settles to that value
-							'set "y" to 0 so figures can recognize they reached the displaced x
-							figure.PosOffset.setX( 0 )
-							'set state to 0 so figures can recognize they reached the displaced x
-							figure.boardingState = 0
+			'move with 50% of normal movement speed
+			local moveX:Float = 0.5 * figure.initialDX * deltaTime
+
+			'Will die Person aussteigen?
+			If GetRouteByPassenger(figure, 0).floornumber = CurrentFloor
+				If figure.PosOffset.getX() <> 0
+					'set state to -1 -> indicator we are moving in the
+					'elevator but from Offset to 0 (different to boarding)
+					figure.boardingState = -1
+
+					'avoid rounding errors ("jittering") and set to
+					'target if distance is smaller than movement
+					'we only do that if offsets differ to avoid doing it
+					'if no offset is set
+					if abs(figure.PosOffset.getX()) <= moveX
+						'set x to 0 so it settles to that value
+						'set "y" to 0 so figures can recognize they
+						'reached the displaced x
+						figure.PosOffset.setX( 0 )
+						'set state to 0 so figures can recognize they
+						'reached the displaced x
+						figure.boardingState = 0
+					else
+						if figure.PosOffset.getX() > 0
+							figure.PosOffset.AddX( -moveX )
 						else
-						if figure.PosOffset.getX() > 0 Then figure.PosOffset.setX(figure.PosOffset.getX() -0.5) Else figure.PosOffset.setX(figure.PosOffset.getX() +0.5)
+							figure.PosOffset.AddX( +moveX )
 						endif
-					Endif
+					endif
 				Endif
 			Endif
 		next
@@ -482,6 +514,7 @@ Type TElevator extends TEntity
 
 		local parentY:int = GetScreenY()
 		if parent then parentY = parent.GetScreenY()
+
 		'draw the door the elevator is currently at (eg. for animation)
 		'instead of using GetScreenY() we fix our y coordinate to the
 		'current floor
@@ -533,7 +566,6 @@ Type TElevator extends TEntity
 		DrawRect(GetScreenX(), Max(parentY, 0) , 44, 385)
 		SetColor 255, 255, 255
 		spriteInner.Draw(GetScreenX(), GetScreenY() + 3.0)
-
 
 		'Draw Figures
 		If Not passengers.IsEmpty()

@@ -47,8 +47,8 @@ Type TSpriteFrameAnimationCollection
 	End Method
 
 
-	Method Update:int()
-		GetCurrent().Update()
+	Method Update:int(deltaTime:Float = -1.0)
+		GetCurrent().Update(deltaTime)
 	End Method
 End Type
 
@@ -97,13 +97,16 @@ Type TSpriteFrameAnimation
 	End Function
 
 
-	Method Update:int()
+	Method Update:int(deltaTime:Float = -1)
 		'skip update if only 1 frame is set
 		'skip if paused
 		If paused or frames.length <= 1 then return 0
 
+		'use given or default deltaTime?
+		if deltaTime < 0 then deltaTime = GetDeltaTimer().GetDelta()
+
 		if frameTimer = null then ResetFrameTimer()
-		frameTimer :- GetDeltaTimer().GetDelta()
+		frameTimer :- deltaTime
 
 		'time for next frame
 		if frameTimer <= 0.0

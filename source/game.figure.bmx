@@ -119,7 +119,7 @@ Type TFigure extends TFigureBase
 		name = Figurename
 		area = new TRectangle.Init(x, GetBuilding().GetFloorY2(onFloor), sprite.framew, sprite.frameh )
 		velocity.SetX(0)
-		initialdx = speed
+		initialdx = abs(speed)
 
 		Self.ControlledByID	= ControlledByID
 
@@ -352,7 +352,6 @@ endrem
 
 		return result
 	End Method
-
 
 
 	Method GetGreetingTypeForFigure:int(figure:TFigure)
