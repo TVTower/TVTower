@@ -3170,6 +3170,8 @@ Type GameEvents
 					player.GetProgrammePlan().RemoveProgramme(currentProgramme, day, hour)
 					'set current broadcast to malfunction
 					GetBroadcastManager().SetBroadcastMalfunction(player.playerID, TBroadcastMaterial.TYPE_PROGRAMME)
+					'decrease image by 0.5%
+					player.GetPublicImage().ChangeImage(New TAudience.AddFloat(-0.5))
 
 					'chance of 25% the programme will get (tried) to get confiscated
 					local confiscateProgramme:int = RandRange(0,100) < 25
@@ -3187,8 +3189,6 @@ Type GameEvents
 					endif
 
 					'emit event (eg.for ingame toastmessages)
-					print "xrated gesendet: " +currentProgramme.GetTitle()
-
 					EventManager.triggerEvent(TEventSimple.Create("publicAuthorities.onStopXRatedBroadcast",Null , currentProgramme, player))
 				Next
 			endif
