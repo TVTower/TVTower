@@ -3135,11 +3135,18 @@ Type GameEvents
 		'=== ADJUST CURRENT BROADCASTS ===
 		'broadcasts change at xx:00, xx:05, xx:55
 		If minute = 5 Or minute = 55 Or minute = 0
+			local broadcastMaterial:TBroadcastMaterial
+
 			'step 1/2
 			'log in current broadcasted media
 			For Local player:TPlayer = EachIn GetPlayerCollection().players
-				player.GetProgrammePlan().LogInCurrentBroadcast(day, hour, minute)
+				broadcastMaterial = player.GetProgrammePlan().LogInCurrentBroadcast(day, hour, minute)
+				'adjust currently broadcasted block
+				if broadcastMaterial
+					broadcastMaterial.currentBlockBroadcasting = player.GetProgrammePlan().GetObjectBlock(broadcastMaterial.usedAsType, day, hour)
+				endif
 			Next
+			
 			'step 2/2
 			'calculate audience
 			TPlayerProgrammePlan.CalculateCurrentBroadcastAudience(day, hour, minute)

@@ -1066,7 +1066,7 @@ endrem
 	'function, there is no need to place it in this file
 	'
 	'STEP 1/3: function fills current broadcast, does NOT calculate audience
-	Method LogInCurrentBroadcast:Int(day:Int, hour:Int, minute:Int)
+	Method LogInCurrentBroadcast:TBroadcastMaterial(day:Int, hour:Int, minute:Int)
 		Local obj:TBroadcastMaterial = Null
 
 		'=== BEGIN OF NEWSSHOW ===
@@ -1080,13 +1080,15 @@ endrem
 			obj = GetProgramme(day, hour)
 			'log in current broadcast
 			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj, TBroadcastMaterial.TYPE_PROGRAMME)
-
+			return obj
 		'=== BEGIN OF ADVERTISEMENT ===
 		ElseIf minute = 5
 			obj = GetAdvertisement(day, hour)
 			'log in current broadcast
 			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj, TBroadcastMaterial.TYPE_ADVERTISEMENT)
+			return obj
 		EndIf
+		return null
 	End Method
 
 

@@ -112,7 +112,6 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 
 	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
 		self.SetState(self.STATE_RUNNING)
-		Self.currentBlockBroadcasting = 1
 	End Method
 
 
@@ -127,7 +126,6 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	Method ContinueBroadcasting:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
-		Self.currentBlockBroadcasting :+ 1
 		'print "continue broadcasting the next block of: "+GetTitle()
 	End Method
 
