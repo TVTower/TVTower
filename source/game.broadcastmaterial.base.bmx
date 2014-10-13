@@ -177,7 +177,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	End Method	
 	
 	'default implementation
-	Method GetMiscMod:TAudience()
+	Method GetMiscMod:TAudience(hour:Int)
 		Return TAudience.CreateAndInitValue(0)
 	End Method
 	
@@ -293,7 +293,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 			result.TrailerMod = GetTrailerMod()
 
 			'5 - Flags und anderes
-			result.MiscMod = GetMiscMod()
+			result.MiscMod = GetMiscMod(hour)
 
 			'6 - Image
 			result.PublicImageMod = GetPublicImageMod()

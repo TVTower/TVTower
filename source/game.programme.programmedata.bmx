@@ -1,4 +1,4 @@
-REM
+﻿REM
 	===========================================================
 	code for programme-objects (movies, ..) in programme planning
 	===========================================================
@@ -511,7 +511,36 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		return ""
 	End Method
 
-
+	
+	Method IsLive:int()
+		return HasFlag(FLAG_LIVE)
+	End Method
+	
+	
+	Method IsAnimation:Int()
+		return HasFlag(FLAG_ANIMATION)
+	End Method
+	
+	
+	Method IsCulture:Int()
+		return HasFlag(FLAG_CULTURE)
+	End Method	
+		
+	
+	Method IsCult:Int()
+		return HasFlag(FLAG_CULT)
+	End Method
+	
+	
+	Method IsTrash:Int()
+		return HasFlag(FLAG_TRASH)
+	End Method
+	
+	Method IsBMovie:Int()
+		return HasFlag(FLAG_BMOVIE)
+	End Method
+	
+	
 	Method IsXRated:int()
 		return HasFlag(FLAG_XRATED)
 	End Method
@@ -582,7 +611,11 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		'individual price modifier - default is 1.0
 		'until we revisited the database, it only has a 20% influence
 		value :* (0.8+0.2*priceModifier)
-	
+		
+		If Self.IsBMovie()
+			value :* 0.3
+		End If
+			
 		'round to next "1000" block
 		value = Int(Floor(value / 1000) * 1000)
 
@@ -593,7 +626,18 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 
 
 	Method GetMaxTopicality:Float()
-		return 0.01 * (Max(0, 100 - Max(0, GetWorldTime().GetYear() - year) - Min(40, GetTimesAired() * 4))) 'simplest form ;D
+		Local age:Int = Max(0, GetWorldTime().GetYear() - year)
+		Local timeAired:Int = Min(40, GetTimesAired() * 4)
+		
+		If Self.IsCult() 'Bei Kult-Filmen ist der Nachteil des Filmalters und der Anzahl der Ausstrahlungen deutlich verringert.
+			If age >= 20
+				return 0.01 * Max(10, 80 - Max(40, (age - 20) * 0.5) - timeAired * 0.5)
+			Else
+				return 0.01 * Max(10, 100 - age - timeAired * 0.5)
+			Endif
+		Else
+			return 0.01 * Max(1, 100 - age - timeAired) 'simplest form ;D
+		EndIf
 	End Method
 
 
