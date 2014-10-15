@@ -106,7 +106,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	Method Initialize:Int()
 		programmes = programmes[..0]
-		news = news[..0]
+		news = New TBroadcastMaterial[3]
 		newsShow = newsShow[..0]
 		advertisements = advertisements[..0]
 	End Method
