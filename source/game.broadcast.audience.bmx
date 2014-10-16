@@ -1,4 +1,4 @@
-SuperStrict
+﻿SuperStrict
 Import "Dig/base.util.numbersortmap.bmx"
 Import "Dig/base.util.helper.bmx" 'for roundInt()
 Import "game.exceptions.bmx"

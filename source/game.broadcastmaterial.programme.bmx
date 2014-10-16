@@ -169,16 +169,12 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 				result.Add(TAudience.CreateAndInit(1, 1, 2, 2, 1.5, 1, 1, 1.5, 1.5))
 			EndIf
 		EndIf
-		
+				
 		if data.IsAnimation() 'Bonus bei Kindern / Jugendlichen. Malus bei Rentnern / Managern.
-			If hour >= 7 and hour <= 17 'Laufen Morgens und Mittags bei Kindern gut
-				result.Add(TAudience.CreateAndInit(2.5, 0.5, -0.2, -0.4, 0, -0.6, -0.6, 0, 0))
-			ElseIf hour > 0 and hour < 6 'Laufen auch im Nachtprogramm ganz gut: Dann aber nicht so bei Kindern
-				result.Add(TAudience.CreateAndInit(0.3, 0.5, -0.6, 0.1, 0.1, -0.2, -1, 0, 0))
-			Else 'Prime-Time-Animationsfilms, können durchaus funktionieren
-				result.Add(TAudience.CreateAndInit(2, 0.5, -0.2, -0.1, 0, -0.6, -0.6, 0, 0))
-			EndIf
-		EndIf
+			'Da es jetzt doch ein Genre gibt, brauchen wir Animation nicht mehr.
+			'Eventuell kann man daraus ein Kids-Genre machen... aber das kann man auch eventuell über Zielgruppen regeln.
+			'Dennoch ist Kinds wohl besser als Animation. Animation kann nähmlich sowohl Southpark als auch Biene Maja sein. Das hat definitiv andere Zielgruppen.
+		EndIf		
 		
 		if data.IsCulture() 'Bonus bei Betty und bei Managern
 			result.Add(TAudience.CreateAndInit(-0.7, -0.5, -0.3, -0.3, -0.4, 2, 0, 0, 0))
@@ -218,6 +214,74 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		
 		Return result
 	End Method
+	
+	Rem - Neue Variante
+	Method GetMiscMod:TAudience(hour:Int)
+		Local result:TAudience = TAudience.CreateAndInitValue(0)
+	
+		if data.IsLive() 'Genereller Quotenbonus!
+			If hour >= 18
+				result.Add(TAudience.CreateAndInit(2, 2, 2, 2, 2, 2, 2, 2, 2))
+			Else
+				result.Add(TAudience.CreateAndInit(1, 1, 1.2, 1.2, 1.2, 1, 1, 1.2, 1.2))
+			EndIf
+		EndIf
+		
+		if data.IsAnimation() 'Bonus bei Kindern / Jugendlichen. Malus bei Rentnern / Managern.
+			'Da es jetzt doch ein Genre gibt, brauchen wir Animation nicht mehr.
+			'Eventuell kann man daraus ein Kids-Genre machen... aber das kann man auch eventuell über Zielgruppen regeln.
+			'Dennoch ist Kinds wohl besser als Animation. Animation kann nähmlich sowohl Southpark als auch Biene Maja sein. Das hat definitiv andere Zielgruppen.
+			
+			'If genre <> 3	
+			'	If hour >= 7 and hour <= 17 'Laufen Morgens und Mittags bei Kindern gut
+			'		result.Add(TAudience.CreateAndInit(1, 0.5, -0.2, -0.4, 0, -0.6, -0.6, 0, 0))
+			'	ElseIf hour > 0 and hour < 6 'Laufen auch im Nachtprogramm ganz gut: Dann aber nicht so bei Kindern
+			'		result.Add(TAudience.CreateAndInit(0.3, 0.5, -0.6, 0.1, 0.1, -0.2, -1, 0, 0))
+			'	Else 'Prime-Time-Animationsfilms, können durchaus funktionieren
+			'		result.Add(TAudience.CreateAndInit(1, 0.5, -0.2, -0.1, 0, -0.6, -0.6, 0, 0))
+			'	EndIf
+			'EndIf
+		EndIf
+		
+		if data.IsCulture() 'Bonus bei Betty und bei Managern
+			result.Add(TAudience.CreateAndInit(-2, -1.5, -0.8, -1, -1.2, 1.5, 0.5, 0, 0))
+		EndIf					
+	
+		if data.IsCult() 'Verringert die Nachteile des Filmalters. Bonus bei Rentnern. 'Höhere Serientreue bei Serien.
+			result.Add(TAudience.CreateAndInit(-0.3, 0, 0.3, 0.3, 0.2, 0.2, 0.7, 0.2, 0.2))
+		EndIf
+		
+		if data.IsTrash() 'Bonus bei Arbeitslosen und Hausfrauen. Malus bei Arbeitnehmern und Managern. Trash läuft morgens und mittags gut => Bonus!
+			If hour >= 6 and hour <= 17
+				result.Add(TAudience.CreateAndInit(-0.2, 0, 0.5, 0, 0.5, -1.8, 0.2, 0, 0))
+			Else
+				result.Add(TAudience.CreateAndInit(-1, -0.5, 0, -1, 0, -2, -0.5, -0.5, -0.5))	
+			End If			
+		EndIf	
+		
+		'Nochmal deutlich verringerter Preis. Verringert die Nachteile des Filmalters. Bonus bei Jugendlichen. Malus bei allen anderen Zielgruppen. Bonus in der Nacht!		
+		if data.IsBMovie()
+			If hour >= 22 or hour <= 6
+				result.Add(TAudience.CreateAndInit(0, 0.5, -0.7, -0.3, 0.1, -1, -1.7, 0, 0))
+			Else
+				result.Add(TAudience.CreateAndInit(0, 0.2, -1.5, -1.5, -1, -1.3, -2, -1, -0.5))
+			EndIf
+		EndIf		
+			
+		if data.IsXRated() 'Kleiner Bonus für Jugendliche, Arbeitnehmer, Arbeitslose, (Männer). Kleiner Malus für Kinder, Hausfrauen, Rentner, (Frauen).
+			result.Add(TAudience.CreateAndInit(-1, 0.5, -0.2, 0.2, 0.2, 0.1, -0.5, -0.2, 0.3))
+		EndIf		
+
+		if data.IsPaid()
+			'really less interest in paid programming
+			'use a really high value until audience flow is corrected
+			'for such programmes
+			result.Add(TAudience.CreateAndInit(-0.5, -0.5, -0.3, -1, -0.3, -1.5, -0.5, -0.5, -0.5))
+		EndIf
+		
+		Return result
+	End Method	
+	Endrem
 
 	Method GetAudienceFlowBonus:TAudience(block:Int, result:TAudienceAttraction, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction)
 		If block = 1 And lastMovieBlockAttraction Then 'AudienceFlow

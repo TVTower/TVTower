@@ -1,4 +1,4 @@
-SuperStrict
+﻿SuperStrict
 Import "game.broadcast.audience.bmx"
 Import "game.broadcast.genredefinition.base.bmx"
 
@@ -130,6 +130,62 @@ Type TAudienceAttraction Extends TAudience
 		Self.SetValuesFrom(result)
 	End Method
 
+rem - Später - Neue Berechnung
+	Method Recalculate()
+		'Neues Punktesystem
+		Local result:TAudience = new TAudience
+				
+		result.AddFloat(GenrePopularityMod)
+		result.Add(GenreTargetGroupMod)
+		result.Add(TrailerMod)
+		result.Add(MiscMod)
+		result.AddFloat(GenreTimeMod)
+
+		Self.PublicImageAttraction = result.Copy()
+		'Self.PublicImageAttraction.AddFloat(1)
+		'Self.PublicImageAttraction.MultiplyFloat(Quality)
+
+		result.Add(PublicImageMod)
+		result.Add(LuckMod)
+		result.MultiplyFloat(Quality)
+		result.Add(AudienceFlowBonus)
+		Self.BaseAttraction = result.Copy()
+
+		'result.Add(AudienceFlowBonus)
+		result.AddFloat(QualityOverTimeEffectMod)		
+		result.Add(SequenceEffect)
+
+		'avoid negative attraction values or values > 100%
+		'-> else you could have a negative audience
+		result.CutBordersFloat(0.0, 1.0)
+
+		Self.FinalAttraction = result
+		Self.SetValuesFrom(result)
+	End Method
+
+	Method ManipulateAudienceResult:TAudience(quality:Float, manipulation:TAudience)
+		Local qualityTemp:Float = quality
+		
+		If quality > 30
+			qualityTemp = 30 + (quality / 5)
+		End If
+		
+		manipulation.Children = 0
+		manipulation.Teenagers = 0
+		manipulation.HouseWifes = 0
+		manipulation.Employees = 0
+		manipulation.Unemployed = 0
+		manipulation.Manager = 0
+		manipulation.Pensioners = 0
+		manipulation.Women = 0
+		manipulation.Men = 0		
+	End Method
+	
+	Method FixMultiplicator:Float(multiplicator:Float)
+				
+	End Method
+endrem	
+	
 	Method CopyBaseAttractionFrom(otherAudienceAttraction:TAudienceAttraction)
 		Quality = otherAudienceAttraction.Quality
 		GenrePopularityMod = otherAudienceAttraction.GenrePopularityMod

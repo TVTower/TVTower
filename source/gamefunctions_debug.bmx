@@ -273,7 +273,8 @@ endrem
 		If gray Then color = TColor.CreateGrey(150)
 
 		If Not hideAverage Then
-			val = MathHelper.floatToString(audience.GetAverage() * 100,2) + "%"
+			'val = MathHelper.floatToString(audience.GetAverage() * 100,2) + "%"
+			val = MathHelper.floatToString(audience.GetAverage(),2)
 			If gray Then
 				font.drawBlock(val, x, y, 65, 25, ALIGN_RIGHT_TOP, TColor.Create(150, 80, 80))
 			Else
@@ -282,7 +283,8 @@ endrem
 		End if
 
 		for local i:int = 1 to 7
-			val = MathHelper.floatToString(audience.GetValue(i) * 100,2) + "%"
+			'val = MathHelper.floatToString(audience.GetValue(i) * 100,2) + "%"
+			val = MathHelper.floatToString(audience.GetValue(i),2)
 			font.drawBlock(val, x2 + 70*(i-1), y, 65, 25, ALIGN_RIGHT_TOP, color)
 		Next
 	End Function

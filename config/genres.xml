@@ -12,6 +12,15 @@
 			timeMods:     modifier for broadcast times
 			audienceAttractions:
 			              modifier for different targetgroups
+							-2 extrem unpopular
+							-1 unpopular
+							0  average
+							+1 popular
+							+2 extrem popular
+							
+			Sources:
+			http://de.statista.com/statistik/daten/studie/168613/umfrage/die-beliebtesten-filmgenres-in-deutschland/
+			http://www.ffa.de/downloads/publikationen/Filmgenres_2010-2011.pdf
 		-->
 		<genre id="0" name="various" outcome-mod="0" review-mod="0.3" speed-mod="0.7">
 			<goodFollower></goodFollower>
@@ -43,15 +52,15 @@
 				<timeMod time="23" value="0.9"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.4" />
-				<audienceAttraction id="Teenagers" value="0.4" />
-				<audienceAttraction id="HouseWifes" value="0.7" />
-				<audienceAttraction id="Employees" value="0.4" />
-				<audienceAttraction id="Unemployed" value="0.7" />
-				<audienceAttraction id="Manager" value="0.1" />
-				<audienceAttraction id="Pensioners" value="0.2" />
-				<audienceAttraction id="Women" value="0.4" />
-				<audienceAttraction id="Men" value="0.4" />
+				<audienceAttraction id="Children" value="0" />
+				<audienceAttraction id="Teenagers" value="0" />
+				<audienceAttraction id="HouseWifes" value="0" />
+				<audienceAttraction id="Employees" value="0" />
+				<audienceAttraction id="Unemployed" value="0" />
+				<audienceAttraction id="Manager" value="0" />
+				<audienceAttraction id="Pensioners" value="0" />
+				<audienceAttraction id="Women" value="0" />
+				<audienceAttraction id="Men" value="0" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="1" name="adventure" outcome-mod="0.45" review-mod="0.25" speed-mod="0.3">
@@ -84,15 +93,15 @@
 				<timeMod time="23" value="1.2"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.4" />
-				<audienceAttraction id="Teenagers" value="0.9" />
-				<audienceAttraction id="HouseWifes" value="0.2" />
-				<audienceAttraction id="Employees" value="0.6" />
+				<audienceAttraction id="Children" value="-0.3" />
+				<audienceAttraction id="Teenagers" value="1.2" />
+				<audienceAttraction id="HouseWifes" value="0" />
+				<audienceAttraction id="Employees" value="0.4" />
 				<audienceAttraction id="Unemployed" value="0.7" />
-				<audienceAttraction id="Manager" value="0.3" />
-				<audienceAttraction id="Pensioners" value="0.1" />
-				<audienceAttraction id="Women" value="0.5" />
-				<audienceAttraction id="Men" value="0.8" />
+				<audienceAttraction id="Manager" value="-0.7" />
+				<audienceAttraction id="Pensioners" value="-1.2" />
+				<audienceAttraction id="Women" value="0" />
+				<audienceAttraction id="Men" value="0.9" />
 			</audienceAttractions>			
 		</genre>		
 		<genre id="2" name="action" outcome-mod="0.5" review-mod="0.2" speed-mod="0.3">
@@ -125,15 +134,15 @@
 				<timeMod time="23" value="1.2"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.4" />
-				<audienceAttraction id="Teenagers" value="0.9" />
-				<audienceAttraction id="HouseWifes" value="0.2" />
-				<audienceAttraction id="Employees" value="0.6" />
-				<audienceAttraction id="Unemployed" value="0.7" />
-				<audienceAttraction id="Manager" value="0.3" />
-				<audienceAttraction id="Pensioners" value="0.1" />
-				<audienceAttraction id="Women" value="0.5" />
-				<audienceAttraction id="Men" value="0.8" />
+				<audienceAttraction id="Children" value="-1" />
+				<audienceAttraction id="Teenagers" value="1.7" />
+				<audienceAttraction id="HouseWifes" value="-1" />
+				<audienceAttraction id="Employees" value="0.3" />
+				<audienceAttraction id="Unemployed" value="0.8" />
+				<audienceAttraction id="Manager" value="-0.7" />
+				<audienceAttraction id="Pensioners" value="-1.8" />
+				<audienceAttraction id="Women" value="0" />
+				<audienceAttraction id="Men" value="1.5" />
 			</audienceAttractions>			
 		</genre>		
 		<genre id="3" name="cartoon" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">
@@ -166,15 +175,15 @@
 				<timeMod time="23" value="0.8"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="1.0" />
-				<audienceAttraction id="Teenagers" value="0.9" />
-				<audienceAttraction id="HouseWifes" value="0.4" />
-				<audienceAttraction id="Employees" value="0.5" />
-				<audienceAttraction id="Unemployed" value="0.6" />
-				<audienceAttraction id="Manager" value="0.2" />
-				<audienceAttraction id="Pensioners" value="0.1" />
-				<audienceAttraction id="Women" value="0.6" />
-				<audienceAttraction id="Men" value="0.6" />
+				<audienceAttraction id="Children" value="2" />
+				<audienceAttraction id="Teenagers" value="1.2" />
+				<audienceAttraction id="HouseWifes" value="-0.3" />
+				<audienceAttraction id="Employees" value="0.3" />
+				<audienceAttraction id="Unemployed" value="0.5" />
+				<audienceAttraction id="Manager" value="-1" />
+				<audienceAttraction id="Pensioners" value="-1.5" />
+				<audienceAttraction id="Women" value="0.3" />
+				<audienceAttraction id="Men" value="0.3" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="4" name="crime" outcome-mod="0.3" review-mod="0.4" speed-mod="0.3">
@@ -207,15 +216,15 @@
 				<timeMod time="23" value="1.1"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.3" />
+				<audienceAttraction id="Children" value="-1" />
 				<audienceAttraction id="Teenagers" value="0.5" />
-				<audienceAttraction id="HouseWifes" value="0.9" />
-				<audienceAttraction id="Employees" value="0.8" />
-				<audienceAttraction id="Unemployed" value="0.7" />
+				<audienceAttraction id="HouseWifes" value="1.8" />
+				<audienceAttraction id="Employees" value="1" />
+				<audienceAttraction id="Unemployed" value="0.8" />
 				<audienceAttraction id="Manager" value="0.8" />
-				<audienceAttraction id="Pensioners" value="0.7" />
-				<audienceAttraction id="Women" value="0.8" />
-				<audienceAttraction id="Men" value="0.7" />
+				<audienceAttraction id="Pensioners" value="1.3" />
+				<audienceAttraction id="Women" value="1" />
+				<audienceAttraction id="Men" value="0.6" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="5" name="comedy" outcome-mod="0.5" review-mod="0.2" speed-mod="0.3">
@@ -248,15 +257,15 @@
 				<timeMod time="23" value="0.9"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.9" />
-				<audienceAttraction id="Teenagers" value="0.8" />
-				<audienceAttraction id="HouseWifes" value="0.7" />
-				<audienceAttraction id="Employees" value="0.7" />
-				<audienceAttraction id="Unemployed" value="0.7" />
-				<audienceAttraction id="Manager" value="0.3" />
-				<audienceAttraction id="Pensioners" value="0.5" />
-				<audienceAttraction id="Women" value="0.8" />
-				<audienceAttraction id="Men" value="0.7" />
+				<audienceAttraction id="Children" value="1.2" />
+				<audienceAttraction id="Teenagers" value="1.2" />
+				<audienceAttraction id="HouseWifes" value="0.8" />
+				<audienceAttraction id="Employees" value="1" />
+				<audienceAttraction id="Unemployed" value="0.8" />
+				<audienceAttraction id="Manager" value="-0.5" />
+				<audienceAttraction id="Pensioners" value="0" />
+				<audienceAttraction id="Women" value="1" />
+				<audienceAttraction id="Men" value="0.5" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="6" name="documentation" outcome-mod="0.1" review-mod="0.4" speed-mod="0.1">
@@ -289,15 +298,15 @@
 				<timeMod time="23" value="1.3"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.1" />
-				<audienceAttraction id="Teenagers" value="0.2" />
-				<audienceAttraction id="HouseWifes" value="0.4" />
-				<audienceAttraction id="Employees" value="0.5" />
-				<audienceAttraction id="Unemployed" value="0.2" />
-				<audienceAttraction id="Manager" value="1.0" />
-				<audienceAttraction id="Pensioners" value="0.8" />
-				<audienceAttraction id="Women" value="0.8" />
-				<audienceAttraction id="Men" value="0.7" />
+				<audienceAttraction id="Children" value="-2" />
+				<audienceAttraction id="Teenagers" value="-1" />
+				<audienceAttraction id="HouseWifes" value="-0.3" />
+				<audienceAttraction id="Employees" value="-0.3" />
+				<audienceAttraction id="Unemployed" value="-1" />
+				<audienceAttraction id="Manager" value="1.5" />
+				<audienceAttraction id="Pensioners" value="1.3" />
+				<audienceAttraction id="Women" value="0.5" />
+				<audienceAttraction id="Men" value="0.5" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="7" name="drama" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">
@@ -330,15 +339,15 @@
 				<timeMod time="23" value="0.9"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.2" />
-				<audienceAttraction id="Teenagers" value="0.4" />
-				<audienceAttraction id="HouseWifes" value="1.0" />
-				<audienceAttraction id="Employees" value="0.7" />
-				<audienceAttraction id="Unemployed" value="0.7" />
-				<audienceAttraction id="Manager" value="0.4" />
-				<audienceAttraction id="Pensioners" value="0.8" />
-				<audienceAttraction id="Women" value="0.8" />
-				<audienceAttraction id="Men" value="0.5" />
+				<audienceAttraction id="Children" value="-1.5" />
+				<audienceAttraction id="Teenagers" value="-0.5" />
+				<audienceAttraction id="HouseWifes" value="1.5" />
+				<audienceAttraction id="Employees" value="0.8" />
+				<audienceAttraction id="Unemployed" value="0.5" />
+				<audienceAttraction id="Manager" value="0" />
+				<audienceAttraction id="Pensioners" value="1.2" />
+				<audienceAttraction id="Women" value="1" />
+				<audienceAttraction id="Men" value="0" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="8" name="erotic" outcome-mod="0.2" review-mod="0.2" speed-mod="0.6">
@@ -371,15 +380,15 @@
 				<timeMod time="23" value="1.3"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.1" />
-				<audienceAttraction id="Teenagers" value="0.3" />
-				<audienceAttraction id="HouseWifes" value="0.3" />
-				<audienceAttraction id="Employees" value="0.6" />
-				<audienceAttraction id="Unemployed" value="0.6" />
-				<audienceAttraction id="Manager" value="0.5" />
-				<audienceAttraction id="Pensioners" value="0.2" />
-				<audienceAttraction id="Women" value="0.3" />
-				<audienceAttraction id="Men" value="0.8" />
+				<audienceAttraction id="Children" value="-2" />
+				<audienceAttraction id="Teenagers" value="0.5" />
+				<audienceAttraction id="HouseWifes" value="-0.5" />
+				<audienceAttraction id="Employees" value="0" />
+				<audienceAttraction id="Unemployed" value="0.5" />
+				<audienceAttraction id="Manager" value="-0.5" />
+				<audienceAttraction id="Pensioners" value="-0.5" />
+				<audienceAttraction id="Women" value="0" />
+				<audienceAttraction id="Men" value="1" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="9" name="family" outcome-mod="0.40" review-mod="0.3" speed-mod="0.3">
@@ -412,15 +421,15 @@
 				<timeMod time="23" value="0.9"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.9" />
-				<audienceAttraction id="Teenagers" value="0.8" />
-				<audienceAttraction id="HouseWifes" value="0.8" />
-				<audienceAttraction id="Employees" value="0.7" />
-				<audienceAttraction id="Unemployed" value="0.7" />
-				<audienceAttraction id="Manager" value="0.3" />
-				<audienceAttraction id="Pensioners" value="0.5" />
-				<audienceAttraction id="Women" value="0.7" />
-				<audienceAttraction id="Men" value="0.6" />
+				<audienceAttraction id="Children" value="1.5" />
+				<audienceAttraction id="Teenagers" value="0.5" />
+				<audienceAttraction id="HouseWifes" value="1" />
+				<audienceAttraction id="Employees" value="0.8" />
+				<audienceAttraction id="Unemployed" value="0.3" />
+				<audienceAttraction id="Manager" value="-1.5" />
+				<audienceAttraction id="Pensioners" value="0" />
+				<audienceAttraction id="Women" value="0.5" />
+				<audienceAttraction id="Men" value="0.3" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="10" name="fantasy" outcome-mod="0.6" review-mod="0.2" speed-mod="0.2">
@@ -453,15 +462,15 @@
 				<timeMod time="23" value="1.1"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.6" />
-				<audienceAttraction id="Teenagers" value="0.8" />
-				<audienceAttraction id="HouseWifes" value="0.3" />
-				<audienceAttraction id="Employees" value="0.7" />
-				<audienceAttraction id="Unemployed" value="0.5" />
-				<audienceAttraction id="Manager" value="0.2" />
-				<audienceAttraction id="Pensioners" value="0.2" />
-				<audienceAttraction id="Women" value="0.5" />
-				<audienceAttraction id="Men" value="0.6" />
+				<audienceAttraction id="Children" value="1.5" />
+				<audienceAttraction id="Teenagers" value="1.5" />
+				<audienceAttraction id="HouseWifes" value="0.5" />
+				<audienceAttraction id="Employees" value="1" />
+				<audienceAttraction id="Unemployed" value="0.7" />
+				<audienceAttraction id="Manager" value="0" />
+				<audienceAttraction id="Pensioners" value="-1.5" />
+				<audienceAttraction id="Women" value="0" />
+				<audienceAttraction id="Men" value="0.3" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="11" name="history" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">
@@ -494,15 +503,15 @@
 				<timeMod time="23" value="0.9"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.1" />
-				<audienceAttraction id="Teenagers" value="0.3" />
-				<audienceAttraction id="HouseWifes" value="0.6" />
-				<audienceAttraction id="Employees" value="0.8" />
-				<audienceAttraction id="Unemployed" value="0.6" />
-				<audienceAttraction id="Manager" value="0.5" />
-				<audienceAttraction id="Pensioners" value="0.8" />
-				<audienceAttraction id="Women" value="0.5" />
-				<audienceAttraction id="Men" value="0.8" />
+				<audienceAttraction id="Children" value="-1.5" />
+				<audienceAttraction id="Teenagers" value="-0.8" />
+				<audienceAttraction id="HouseWifes" value="0.3" />
+				<audienceAttraction id="Employees" value="0.3" />
+				<audienceAttraction id="Unemployed" value="0" />
+				<audienceAttraction id="Manager" value="1" />
+				<audienceAttraction id="Pensioners" value="1.5" />
+				<audienceAttraction id="Women" value="0" />
+				<audienceAttraction id="Men" value="1" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="12" name="horror" outcome-mod="0.4" review-mod="0.2" speed-mod="0.4">
@@ -535,15 +544,15 @@
 				<timeMod time="23" value="1.3"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.1" />
-				<audienceAttraction id="Teenagers" value="0.6" />
-				<audienceAttraction id="HouseWifes" value="0.2" />
-				<audienceAttraction id="Employees" value="0.5" />
-				<audienceAttraction id="Unemployed" value="0.6" />
-				<audienceAttraction id="Manager" value="0.2" />
-				<audienceAttraction id="Pensioners" value="0.1" />
-				<audienceAttraction id="Women" value="0.5" />
-				<audienceAttraction id="Men" value="0.7" />
+				<audienceAttraction id="Children" value="-2" />
+				<audienceAttraction id="Teenagers" value="1.2" />
+				<audienceAttraction id="HouseWifes" value="-1" />
+				<audienceAttraction id="Employees" value="0.1" />
+				<audienceAttraction id="Unemployed" value="0.3" />
+				<audienceAttraction id="Manager" value="-0.5" />
+				<audienceAttraction id="Pensioners" value="-2" />
+				<audienceAttraction id="Women" value="0" />
+				<audienceAttraction id="Men" value="0.5" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="13" name="monumental" outcome-mod="0.4" review-mod="0.4" speed-mod="0.2">
@@ -576,15 +585,15 @@
 				<timeMod time="23" value="1.2"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.1" />
-				<audienceAttraction id="Teenagers" value="0.2" />
-				<audienceAttraction id="HouseWifes" value="0.4" />
-				<audienceAttraction id="Employees" value="0.6" />
-				<audienceAttraction id="Unemployed" value="0.2" />
+				<audienceAttraction id="Children" value="-1.2" />
+				<audienceAttraction id="Teenagers" value="-0.8" />
+				<audienceAttraction id="HouseWifes" value="0.2" />
+				<audienceAttraction id="Employees" value="0.7" />
+				<audienceAttraction id="Unemployed" value="-0.5" />
 				<audienceAttraction id="Manager" value="0.7" />
-				<audienceAttraction id="Pensioners" value="0.8" />
-				<audienceAttraction id="Women" value="0.4" />
-				<audienceAttraction id="Men" value="0.5" />
+				<audienceAttraction id="Pensioners" value="1.2" />
+				<audienceAttraction id="Women" value="-0.3" />
+				<audienceAttraction id="Men" value="0" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="14" name="mystery" outcome-mod="0.6" review-mod="0.2" speed-mod="0.2">
@@ -617,14 +626,14 @@
 				<timeMod time="23" value="1.1"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.6" />
-				<audienceAttraction id="Teenagers" value="0.8" />
-				<audienceAttraction id="HouseWifes" value="0.3" />
-				<audienceAttraction id="Employees" value="0.7" />
-				<audienceAttraction id="Unemployed" value="0.6" />
-				<audienceAttraction id="Manager" value="0.3" />
-				<audienceAttraction id="Pensioners" value="0.2" />
-				<audienceAttraction id="Women" value="0.5" />
+				<audienceAttraction id="Children" value="-0.5" />
+				<audienceAttraction id="Teenagers" value="1.3" />
+				<audienceAttraction id="HouseWifes" value="-0.5" />
+				<audienceAttraction id="Employees" value="0.2" />
+				<audienceAttraction id="Unemployed" value="0.5" />
+				<audienceAttraction id="Manager" value="-0.8" />
+				<audienceAttraction id="Pensioners" value="-1.2" />
+				<audienceAttraction id="Women" value="0" />
 				<audienceAttraction id="Men" value="0.7" />
 			</audienceAttractions>			
 		</genre>
@@ -658,15 +667,15 @@
 				<timeMod time="23" value="0.9"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.2" />
-				<audienceAttraction id="Teenagers" value="0.4" />
-				<audienceAttraction id="HouseWifes" value="1.0" />
-				<audienceAttraction id="Employees" value="0.7" />
-				<audienceAttraction id="Unemployed" value="0.7" />
-				<audienceAttraction id="Manager" value="0.4" />
-				<audienceAttraction id="Pensioners" value="0.8" />
-				<audienceAttraction id="Women" value="0.8" />
-				<audienceAttraction id="Men" value="0.5" />
+				<audienceAttraction id="Children" value="-1" />
+				<audienceAttraction id="Teenagers" value="-0.3" />
+				<audienceAttraction id="HouseWifes" value="2" />
+				<audienceAttraction id="Employees" value="0.2" />
+				<audienceAttraction id="Unemployed" value="0.2" />
+				<audienceAttraction id="Manager" value="-0.3" />
+				<audienceAttraction id="Pensioners" value="1.5" />
+				<audienceAttraction id="Women" value="1.5" />
+				<audienceAttraction id="Men" value="0" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="16" name="sci-fi" outcome-mod="0.6" review-mod="0.2" speed-mod="0.2">
@@ -700,14 +709,14 @@
 			</timeMods>
 			<audienceAttractions>
 				<audienceAttraction id="Children" value="0.5" />
-				<audienceAttraction id="Teenagers" value="0.8" />
-				<audienceAttraction id="HouseWifes" value="0.2" />
-				<audienceAttraction id="Employees" value="0.7" />
+				<audienceAttraction id="Teenagers" value="1.5" />
+				<audienceAttraction id="HouseWifes" value="-1.5" />
+				<audienceAttraction id="Employees" value="0.5" />
 				<audienceAttraction id="Unemployed" value="0.5" />
-				<audienceAttraction id="Manager" value="0.3" />
-				<audienceAttraction id="Pensioners" value="0.1" />
-				<audienceAttraction id="Women" value="0.3" />
-				<audienceAttraction id="Men" value="0.7" />
+				<audienceAttraction id="Manager" value="-0.5" />
+				<audienceAttraction id="Pensioners" value="-1.7" />
+				<audienceAttraction id="Women" value="-0.6" />
+				<audienceAttraction id="Men" value="0.6" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="17" name="thriller" outcome-mod="0.3" review-mod="0.4" speed-mod="0.3">
@@ -740,15 +749,15 @@
 				<timeMod time="23" value="1.1"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.3" />
-				<audienceAttraction id="Teenagers" value="0.5" />
-				<audienceAttraction id="HouseWifes" value="0.9" />
+				<audienceAttraction id="Children" value="-1.5" />
+				<audienceAttraction id="Teenagers" value="1" />
+				<audienceAttraction id="HouseWifes" value="0.7" />
 				<audienceAttraction id="Employees" value="0.8" />
-				<audienceAttraction id="Unemployed" value="0.7" />
-				<audienceAttraction id="Manager" value="0.8" />
-				<audienceAttraction id="Pensioners" value="0.7" />
-				<audienceAttraction id="Women" value="0.8" />
-				<audienceAttraction id="Men" value="0.7" />
+				<audienceAttraction id="Unemployed" value="0.5" />
+				<audienceAttraction id="Manager" value="0" />
+				<audienceAttraction id="Pensioners" value="-0.3" />
+				<audienceAttraction id="Women" value="0.9" />
+				<audienceAttraction id="Men" value="0.6" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="18" name="western" outcome-mod="0.4" review-mod="0.3" speed-mod="0.3">
@@ -781,15 +790,15 @@
 				<timeMod time="23" value="1.0"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.6" />
-				<audienceAttraction id="Teenagers" value="0.3" />
-				<audienceAttraction id="HouseWifes" value="0.1" />
-				<audienceAttraction id="Employees" value="0.5" />
-				<audienceAttraction id="Unemployed" value="0.4" />
-				<audienceAttraction id="Manager" value="0.2" />
-				<audienceAttraction id="Pensioners" value="0.3" />
-				<audienceAttraction id="Women" value="0.3" />
-				<audienceAttraction id="Men" value="0.7" />
+				<audienceAttraction id="Children" value="0.8" />
+				<audienceAttraction id="Teenagers" value="0" />
+				<audienceAttraction id="HouseWifes" value="-1" />
+				<audienceAttraction id="Employees" value="0.2" />
+				<audienceAttraction id="Unemployed" value="-0.3" />
+				<audienceAttraction id="Manager" value="0" />
+				<audienceAttraction id="Pensioners" value="-0.5" />
+				<audienceAttraction id="Women" value="-0.5" />
+				<audienceAttraction id="Men" value="0.5" />
 			</audienceAttractions>			
 		</genre>
 
@@ -824,15 +833,15 @@
 				<timeMod time="23" value="1.1"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.8" />
-				<audienceAttraction id="Teenagers" value="0.4" />
-				<audienceAttraction id="HouseWifes" value="1.0" />
-				<audienceAttraction id="Employees" value="0.8" />
-				<audienceAttraction id="Unemployed" value="0.5" />
-				<audienceAttraction id="Manager" value="0.2" />
-				<audienceAttraction id="Pensioners" value="1.0" />
-				<audienceAttraction id="Women" value="0.7" />
-				<audienceAttraction id="Men" value="0.5" />
+				<audienceAttraction id="Children" value="0" />
+				<audienceAttraction id="Teenagers" value="0" />
+				<audienceAttraction id="HouseWifes" value="0" />
+				<audienceAttraction id="Employees" value="0" />
+				<audienceAttraction id="Unemployed" value="0" />
+				<audienceAttraction id="Manager" value="0" />
+				<audienceAttraction id="Pensioners" value="0" />
+				<audienceAttraction id="Women" value="0" />
+				<audienceAttraction id="Men" value="0" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="201" name="showevent_politics" outcome-mod="0.2" review-mod="0.7" speed-mod="0.3">
@@ -865,15 +874,15 @@
 				<timeMod time="23" value="1.1"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.5" />
-				<audienceAttraction id="Teenagers" value="0.6" />
-				<audienceAttraction id="HouseWifes" value="0.4" />
-				<audienceAttraction id="Employees" value="0.6" />
-				<audienceAttraction id="Unemployed" value="0.3" />
-				<audienceAttraction id="Manager" value="0.8" />
-				<audienceAttraction id="Pensioners" value="0.8" />
-				<audienceAttraction id="Women" value="0.5" />
-				<audienceAttraction id="Men" value="0.7" />
+				<audienceAttraction id="Children" value="-2" />
+				<audienceAttraction id="Teenagers" value="-1.2" />
+				<audienceAttraction id="HouseWifes" value="0.5" />
+				<audienceAttraction id="Employees" value="0.5" />
+				<audienceAttraction id="Unemployed" value="-0.5" />
+				<audienceAttraction id="Manager" value="1" />
+				<audienceAttraction id="Pensioners" value="1" />
+				<audienceAttraction id="Women" value="0" />
+				<audienceAttraction id="Men" value="0.6" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="202" name="showevent_music" outcome-mod="0.2" review-mod="0.5" speed-mod="0.6">
@@ -906,15 +915,15 @@
 				<timeMod time="23" value="1.1"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.7" />
-				<audienceAttraction id="Teenagers" value="1.0" />
-				<audienceAttraction id="HouseWifes" value="0.6" />
-				<audienceAttraction id="Employees" value="0.4" />
-				<audienceAttraction id="Unemployed" value="0.7" />
-				<audienceAttraction id="Manager" value="0.1" />
-				<audienceAttraction id="Pensioners" value="0.2" />
-				<audienceAttraction id="Women" value="0.8" />
-				<audienceAttraction id="Men" value="0.5" />
+				<audienceAttraction id="Children" value="0" />
+				<audienceAttraction id="Teenagers" value="0.7" />
+				<audienceAttraction id="HouseWifes" value="0" />
+				<audienceAttraction id="Employees" value="0" />
+				<audienceAttraction id="Unemployed" value="-0.5" />
+				<audienceAttraction id="Manager" value="-1" />
+				<audienceAttraction id="Pensioners" value="0" />
+				<audienceAttraction id="Women" value="0" />
+				<audienceAttraction id="Men" value="0" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="203" name="showevent_sport" outcome-mod="0.2" review-mod="0.3" speed-mod="0.6">
@@ -946,15 +955,15 @@
 				<timeMod time="23" value="1.1"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.2" />
+				<audienceAttraction id="Children" value="0" />
 				<audienceAttraction id="Teenagers" value="0.7" />
-				<audienceAttraction id="HouseWifes" value="0.2" />
-				<audienceAttraction id="Employees" value="0.8" />
-				<audienceAttraction id="Unemployed" value="0.8" />
-				<audienceAttraction id="Manager" value="0.8" />
-				<audienceAttraction id="Pensioners" value="0.6" />
-				<audienceAttraction id="Women" value="0.4" />
-				<audienceAttraction id="Men" value="0.8" />
+				<audienceAttraction id="HouseWifes" value="-1" />
+				<audienceAttraction id="Employees" value="1.2" />
+				<audienceAttraction id="Unemployed" value="1" />
+				<audienceAttraction id="Manager" value="1" />
+				<audienceAttraction id="Pensioners" value="0" />
+				<audienceAttraction id="Women" value="-0.5" />
+				<audienceAttraction id="Men" value="1" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="204" name="showevent_showbiz" outcome-mod="0.3" review-mod="0.3" speed-mod="0.7">
@@ -988,14 +997,14 @@
 			</timeMods>
 			<audienceAttractions>
 				<audienceAttraction id="Children" value="0.2" />
-				<audienceAttraction id="Teenagers" value="0.6" />
-				<audienceAttraction id="HouseWifes" value="0.8" />
-				<audienceAttraction id="Employees" value="0.6" />
-				<audienceAttraction id="Unemployed" value="0.6" />
-				<audienceAttraction id="Manager" value="0.1" />
-				<audienceAttraction id="Pensioners" value="0.5" />
+				<audienceAttraction id="Teenagers" value="0.4" />
+				<audienceAttraction id="HouseWifes" value="1.5" />
+				<audienceAttraction id="Employees" value="0.3" />
+				<audienceAttraction id="Unemployed" value="0.5" />
+				<audienceAttraction id="Manager" value="-1.5" />
+				<audienceAttraction id="Pensioners" value="0" />
 				<audienceAttraction id="Women" value="0.7" />
-				<audienceAttraction id="Men" value="0.3" />
+				<audienceAttraction id="Men" value="-0.7" />
 			</audienceAttractions>			
 		</genre>
 
@@ -1031,15 +1040,15 @@
 				<timeMod time="23" value="1.0"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.6" />
-				<audienceAttraction id="Teenagers" value="0.7" />
-				<audienceAttraction id="HouseWifes" value="0.8" />
-				<audienceAttraction id="Employees" value="1.0" />
-				<audienceAttraction id="Unemployed" value="0.7" />
-				<audienceAttraction id="Manager" value="0.6" />
-				<audienceAttraction id="Pensioners" value="0.6" />
-				<audienceAttraction id="Women" value="0.7" />
-				<audienceAttraction id="Men" value="0.6" />
+				<audienceAttraction id="Children" value="0.3" />
+				<audienceAttraction id="Teenagers" value="0.6" />
+				<audienceAttraction id="HouseWifes" value="0.9" />
+				<audienceAttraction id="Employees" value="1.5" />
+				<audienceAttraction id="Unemployed" value="0.6" />
+				<audienceAttraction id="Manager" value="0.3" />
+				<audienceAttraction id="Pensioners" value="0.3" />
+				<audienceAttraction id="Women" value="0.6" />
+				<audienceAttraction id="Men" value="0.3" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="9" name="kidsmovie" outcome-mod="0.4" review-mod="0.4" speed-mod="0.2">
@@ -1072,15 +1081,15 @@
 				<timeMod time="23" value="0.7"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="1.0" />
-				<audienceAttraction id="Teenagers" value="0.6" />
-				<audienceAttraction id="HouseWifes" value="0.3" />
-				<audienceAttraction id="Employees" value="0.2" />
-				<audienceAttraction id="Unemployed" value="0.2" />
-				<audienceAttraction id="Manager" value="0.1" />
-				<audienceAttraction id="Pensioners" value="0.2" />
-				<audienceAttraction id="Women" value="0.3" />
-				<audienceAttraction id="Men" value="0.2" />
+				<audienceAttraction id="Children" value="1.5" />
+				<audienceAttraction id="Teenagers" value="0.3" />
+				<audienceAttraction id="HouseWifes" value="-0.6" />
+				<audienceAttraction id="Employees" value="-0.9" />
+				<audienceAttraction id="Unemployed" value="-0.9" />
+				<audienceAttraction id="Manager" value="-1.2" />
+				<audienceAttraction id="Pensioners" value="-0.9" />
+				<audienceAttraction id="Women" value="-0.6" />
+				<audienceAttraction id="Men" value="-0.9" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="16" name="news" outcome-mod="0" review-mod="0.4" speed-mod="0.6">
@@ -1113,15 +1122,15 @@
 				<timeMod time="23" value="1.0"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.2" />
-				<audienceAttraction id="Teenagers" value="0.3" />
-				<audienceAttraction id="HouseWifes" value="0.3" />
-				<audienceAttraction id="Employees" value="0.7" />
-				<audienceAttraction id="Unemployed" value="0.4" />
-				<audienceAttraction id="Manager" value="1.0" />
-				<audienceAttraction id="Pensioners" value="0.8" />
-				<audienceAttraction id="Women" value="0.4" />
-				<audienceAttraction id="Men" value="0.6" />
+				<audienceAttraction id="Children" value="-0.9" />
+				<audienceAttraction id="Teenagers" value="-0.6" />
+				<audienceAttraction id="HouseWifes" value="-0.6" />
+				<audienceAttraction id="Employees" value="0.6" />
+				<audienceAttraction id="Unemployed" value="-0.3" />
+				<audienceAttraction id="Manager" value="1.5" />
+				<audienceAttraction id="Pensioners" value="0.9" />
+				<audienceAttraction id="Women" value="-0.3" />
+				<audienceAttraction id="Men" value="0.3" />
 			</audienceAttractions>			
 		</genre>
 		<genre id="20" name="paidprograming" outcome-mod="0" review-mod="0.2" speed-mod="0.8">
@@ -1154,15 +1163,15 @@
 				<timeMod time="23" value="0.9"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction id="Children" value="0.2" />
-				<audienceAttraction id="Teenagers" value="0.2" />
-				<audienceAttraction id="HouseWifes" value="0.9" />
-				<audienceAttraction id="Employees" value="0.5" />
-				<audienceAttraction id="Unemployed" value="0.6" />
-				<audienceAttraction id="Manager" value="0.1" />
-				<audienceAttraction id="Pensioners" value="0.3" />
-				<audienceAttraction id="Women" value="0.6" />
-				<audienceAttraction id="Men" value="0.4" />
+				<audienceAttraction id="Children" value="-0.9" />
+				<audienceAttraction id="Teenagers" value="-0.9" />
+				<audienceAttraction id="HouseWifes" value="1.2" />
+				<audienceAttraction id="Employees" value="0" />
+				<audienceAttraction id="Unemployed" value="0.3" />
+				<audienceAttraction id="Manager" value="-1.2" />
+				<audienceAttraction id="Pensioners" value="-0.6" />
+				<audienceAttraction id="Women" value="0.3" />
+				<audienceAttraction id="Men" value="-0.3" />
 			</audienceAttractions>			
 		</genre>
 -->
