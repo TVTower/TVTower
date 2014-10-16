@@ -157,7 +157,7 @@ Type TNewsEventCollection
 			_usedNewsEvents = CreateList()
 			For local event:TNewsEvent = EachIn allNewsEvents.Values()
 				'skip not happened events - or upcoming events
-				if event.happenedTime = -1 or event.happenedTime >= GetWorldTime().GetTimeGone() then continue
+				if not event.HasHappened() then continue
 				_usedNewsEvents.AddLast(event)
 			Next
 		endif
@@ -197,7 +197,7 @@ Type TNewsEventCollection
 			_upcomingNewsEvents = CreateList()
 			For local event:TNewsEvent = EachIn allNewsEvents.Values()
 				'skip events already happened or not happened at all (-> "-1")
-				if event.happenedTime < GetWorldTime().GetTimeGone() then continue
+				if event.HasHappened() or event.happenedTime = -1 then continue
 				_upcomingNewsEvents.AddLast(event)
 			Next
 		endif
@@ -314,6 +314,17 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 		If Genre = 4 Then Return GetLocale("NEWS_CURRENTAFFAIRS")
 		Return Genre+ " unbekannt"
 	End Function
+
+
+	Method HasHappened:Int()
+		'avoid that "-1" (the default for "unset") is fetched in the
+		'next check ("time gone?")
+		If happenedTime = -1 Then Return False
+		'check if the time is gone already
+		If happenedTime >= GetWorldTime().GetTimeGone() Then Return False
+
+		return True
+	End Method
 
 
 	Method CanHappen:int()
