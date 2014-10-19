@@ -13,7 +13,13 @@
 	<fallbacklocalip>192.168.0.3</fallbacklocalip>
 
 	<fullscreen>FALSE</fullscreen>
-	<directx>0</directx>
+	<!-- possible values:
+		OPENGL         = 0
+		DIRECTX7       = 1
+		DIRECTX9       = 2
+		BUFFEREDOPENGL = 3
+	-->
+	<renderer>0</renderer>
 	<colordepth>16</colordepth>
 
 	<sound_effects>TRUE</sound_effects>

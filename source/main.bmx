@@ -2582,6 +2582,7 @@ Type TSettingsWindow
 		data.AddBoolString("sound_music", checkMusic.IsChecked())
 		data.AddBoolString("sound_effects", checkSfx.IsChecked())
 
+		data.Add("renderer", dropdownRenderer.GetSelectedEntry().data.GetString("value", "0"))
 		data.AddBoolString("fullscreen", checkFullscreen.IsChecked())
 		data.Add("gamename", inputGameName.GetValue())
 		data.Add("onlineport", inputOnlinePort.GetValue())
@@ -2598,8 +2599,26 @@ Type TSettingsWindow
 		inputDatabase.SetValue(data.GetString("databaseDir", "res/database/Default"))
 		checkMusic.SetChecked(data.GetBool("sound_music", True))
 		checkSfx.SetChecked(data.GetBool("sound_effects", True))
-
 		checkFullscreen.SetChecked(data.GetBool("fullscreen", False))
+
+
+		'check available renderer entries
+		local selectedDropDownItem:TGUIDropDownItem
+		For local item:TGUIDropDownItem = EachIn dropdownRenderer.GetEntries()
+			local renderer:int = item.data.GetInt("value")
+			'if the same renderer - select this
+			if renderer = data.GetInt("renderer", 0)
+				selectedDropDownItem = item
+				exit
+			endif
+		Next
+		'select the first if nothing was preselected
+		if not selectedDropDownItem
+			dropdownRenderer.SetSelectedEntryByPos(0)
+		else
+			dropdownRenderer.SetSelectedEntry(selectedDropDownItem)
+		endif
+		
 
 		inputGameName.SetValue(data.GetString("gamename", "New Game"))
 		inputOnlinePort.SetValue(data.GetInt("onlineport", 4544))

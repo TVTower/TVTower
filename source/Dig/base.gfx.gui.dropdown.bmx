@@ -183,7 +183,31 @@ Type TGUIDropDown Extends TGUIInput
 		selectedEntry = item
 		SetValue(item.GetValue())
 	End Method
-	
+
+
+	Method GetSelectedEntry:TGUIObject()
+		return selectedEntry
+	End Method
+
+
+	Method SetSelectedEntryByPos:Int(itemPos:int=0)
+		local item:TGUIObject = GetSelectedEntryByPos(itemPos)
+		if item then SetSelectedEntry(item)
+	End Method
+
+
+	Method GetSelectedEntryByPos:TGUIObject(itemPos:int=0)
+		local item:TGUIObject = TGUIObject(list.entries.ValueAtIndex(itemPos))
+		if not item then return Null
+
+		return Item
+	End Method
+
+
+	Method GetEntries:TList()
+		return list.entries
+	End Method
+
 
 	'sets the height of the lists content area (ignoring padding)
 	Method SetListContentHeight:int(height:Float)
