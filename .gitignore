@@ -13,3 +13,4 @@ TVTower.blpo
 screenshot*.png
 screenshot*.jpg
 /TVTower_noPulseAudio
+.DS_Store
