@@ -1,0 +1,21 @@
+# MacOS post build script
+#
+#
+@define doPostInstall
+
+	# only interested for Mac platform
+	
+	if bmk.Platform() == "macos" then
+		
+		#replace icon
+		sys.CopyFile(%buildpath% .. "/Misc/appData/mac_icon.icns", %exepath% .. "/../Resources/" .. %outfile% .. ".icns")
+
+		#replace info.plist
+		#sys.CopyFile(%buildpath% .. "/Misc/appData/info.plist", %exepath% .. "/../info.plist")
+
+	end
+
+@end
+
+# run the post install
+doPostInstall

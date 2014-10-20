@@ -9,16 +9,16 @@ SuperStrict
 ?
 
 
-'Framework brl.glmax2d
 Framework BRL.StandardIO
 ?Win32
-'	Import "tvtower_icon.o"
+	'import icon resource file
+	Import "Misc/appData/win32_icon.o"
 ?
 Import "source/main.bmx"
 Incbin "source/version.txt"
 
 ?Win32
-Rem
+	'set the icon of the app
 	Function SetIcon(iconname$, TheWindow%)
 		Local icon:Int=ExtractIconA(TheWindow,iconname,0)
 		Local WM_SETICON:Int = $80
@@ -34,7 +34,6 @@ Rem
 	End Extern
 
 	SetIcon(AppFile, GetActiveWindow())
-endrem
 ?
 
 'Start Game
