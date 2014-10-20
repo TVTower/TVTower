@@ -1,20 +1,22 @@
-# MacOS post build script
-#
-#
 @define doPostInstall
-
-	# only interested for Mac platform
-	
+	# MAC: replace icon 
 	if bmk.Platform() == "macos" then
 		
 		#replace icon
-		sys.CopyFile(%buildpath% .. "/Misc/appData/mac_icon.icns", %exepath% .. "/../Resources/" .. %outfile% .. ".icns")
+		sys.CopyFile( %buildpath% .. "/Misc/appData/mac_icon.icns", %exepath% .. "/../Resources/" .. %outfile% .. ".icns" )
 
 		#replace info.plist
-		#sys.CopyFile(%buildpath% .. "/Misc/appData/info.plist", %exepath% .. "/../info.plist")
-
+		#sys.CopyFile( %buildpath% .. "/Misc/appData/info.plist", %exepath% .. "/../info.plist" )
 	end
 
+	# LINUX/MAC: strip binary when doing a releasebuild
+	if bmk.IsDebugBuild() == 0 then
+		if bmk.Platform() == "linux" then
+			bmk.Sys( "strip --strip-all " .. %exepath% .. "/" .. %outfile% )
+		elseif bmk.Platform() == "macos" then
+			bmk.Sys( "strip " .. %exepath% .. "/" .. %outfile% )
+		end
+	end
 @end
 
 # run the post install
