@@ -22,7 +22,7 @@ Type TStationMapCollection
 	'map containing bitmask-coded information for "used" pixels
 	Field shareMap:TMap = Null {nosave}
 	Field shareCache:TMap = Null {nosave}
-	Field stationRadius:Int = 15
+	Field stationRadius:Int = 18
 	Field population:Int = 0 {nosave}
 	Field populationmap:Int[,] {nosave}
 	Field populationMapSize:TVec2D = new TVec2D.Init() {nosave}
@@ -959,24 +959,29 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		If selected
 			'white border around the colorized circle
 			SetAlpha 0.25 * oldAlpha
-			DrawOval(pos.x - radius -2, pos.y - radius -2 ,radius*2+4,radius*2+4)
+			DrawOval(pos.x - radius - 2, pos.y - radius -2, 2 * (radius + 2), 2 * (radius + 2))
 
 			SetAlpha Min(0.9, Max(0,Sin(Time.GetTimeGone()/3)) + 0.5 ) * oldAlpha
 		Else
 			SetAlpha 0.4 * oldAlpha
 		EndIf
 
+		local color:TColor
 		Select owner
-			Case 1,2,3,4	TColor.GetByOwner(owner).SetRGB()
+			Case 1,2,3,4	color = TColor.GetByOwner(owner)
 							sprite = GetSpriteFromRegistry("stationmap_antenna"+owner)
-			Default			SetColor 255, 255, 255
+			Default			color = TColor.clWhite
 							sprite = GetSpriteFromRegistry("stationmap_antenna0")
 		End Select
+		color.SetRGB()
 		DrawOval(pos.x - radius, pos.y - radius, 2 * radius, 2 * radius)
+		color.Copy().Mix(TColor.clWhite, 0.75).SetRGB()
+		DrawOval(pos.x - radius + 2, pos.y - radius + 2, 2 * (radius - 2), 2 * (radius - 2))
+
 
 		SetColor 255,255,255
 		SetAlpha OldAlpha
-		sprite.Draw(pos.x, pos.y + radius - sprite.area.GetH() - 2, -1, new TVec2D.Init(ALIGN_CENTER, ALIGN_TOP))
+		sprite.Draw(pos.x, pos.y + 1, -1, ALIGN_CENTER_CENTER)
 	End Method
 
 

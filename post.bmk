@@ -13,11 +13,13 @@
 
 
 	# LINUX/MAC: strip binary when doing a releasebuild
-	if bmk.IsDebugBuild() == 0 then
-		if bmk.Platform() == "linux" then
-			bmk.Sys( "strip --strip-all " .. %exepath% .. "/" .. %outfile% )
-		elseif bmk.Platform() == "macos" then
-			bmk.Sys( "strip " .. %exepath% .. "/" .. %outfile% )
+	if bmk.Platform() == "macos" or bmk.Platform() == "linux" then
+		if bmk.IsDebugBuild() == 0 then
+			if bmk.Platform() == "linux" then
+				bmk.Sys( "strip --strip-all " .. %exepath% .. "/" .. %outfile% )
+			elseif bmk.Platform() == "macos" then
+				bmk.Sys( "strip " .. %exepath% .. "/" .. %outfile% )
+			end
 		end
 	end
 @end

@@ -1502,7 +1502,6 @@ Type TScreen_MainMenu Extends TGameScreen
 	Field guiLanguageDropDown:TGUISpriteDropDown
 	Field settingsWindow:TSettingsWindow
 
-
 	Method Create:TScreen_MainMenu(name:String)
 		Super.Create(name)
 
@@ -3436,6 +3435,7 @@ Function ColorizePlayerExtras()
 		GetPlayerCollection().Get(i).RecolorFigure()
 		Local color:TColor = GetPlayerCollection().Get(i).color
 
+		GetRegistry().Set("stationmap_antenna"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("stationmap_antenna0").GetColorizedImage(color,-1, COLORIZEMODE_OVERLAY), "stationmap_antenna"+i))
 		GetRegistry().Set("gfx_building_sign_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_base").GetColorizedImage(color), "gfx_building_sign_"+i))
 		GetRegistry().Set("gfx_roomboard_sign_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base").GetColorizedImage(color,-1, COLORIZEMODE_OVERLAY), "gfx_roomboard_sign_"+i))
 		GetRegistry().Set("gfx_roomboard_sign_dragged_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base_dragged").GetColorizedImage(color, -1, COLORIZEMODE_OVERLAY), "gfx_roomboard_sign_dragged_"+i))

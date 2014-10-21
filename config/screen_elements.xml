@@ -168,15 +168,7 @@
 
 		
 		<!-- OFFICE: STATIONMAP -->
-		<sprite name="stationmap_antenna" url="res/gfx/office/screen_stationmap_antenna.png">
-			<scripts>
-				<script	do="ColorizeCopy"	dest="stationmap_antenna0"	r="255"	g="255"	b="255" />
-				<script	do="ColorizeCopy"	dest="stationmap_antenna1"	r="100"	g="20"	b="20" />
-				<script do="ColorizeCopy"	dest="stationmap_antenna2"	r="20"	g="100"	b="20" />
-				<script do="ColorizeCopy"	dest="stationmap_antenna3"	r="50"	g="50"	b="100" />
-				<script do="ColorizeCopy"	dest="stationmap_antenna4"	r="100"	g="100"	b="0" />
-			</scripts>
-		</sprite>
+		<sprite name="stationmap_antenna0" url="res/gfx/office/screen_stationmap_antenna.png" />
 
 		
 		<!-- OFFICE: FINANCIAL SCREEN -->

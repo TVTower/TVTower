@@ -761,6 +761,9 @@ Type TSprite
 
 
 		If frame = -1 Or framew = 0
+			'cast handle-offsets to "int" to avoid subpixel offsets
+			'which lead to visual garbage on thin pixel lines in images
+			'(they are a little off and therefore have other alpha values)
 			DrawSubImageRect(parent.image,..
 							 x,..
 							 y,..
@@ -770,8 +773,8 @@ Type TSprite
 							 area.GetY(),..
 							 area.GetW(),..
 							 area.GetH(),..
-							 alignX * area.GetW(), ..
-							 alignY * area.GetH(), ..
+							 int(alignX * area.GetW()), ..
+							 int(alignY * area.GetH()), ..
 							 0)
 		Else
 			Local MaxFramesInCol:Int	= Ceil(area.GetW() / framew)
@@ -787,8 +790,8 @@ Type TSprite
 							 area.GetY() + framerow * frameH,..
 							 framew,..
 							 frameh,..
-							 alignX * frameW, ..
-							 alignY * frameH, ..
+							 int(alignX * frameW), ..
+							 int(alignY * frameH), ..
 							 0)
 		EndIf
 

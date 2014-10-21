@@ -139,12 +139,13 @@ Type TColor
 	End Method
 
 
-	Method AdjustSaturation(percentage:Float=1.0)
+	Method AdjustSaturation:TColor(percentage:Float=1.0)
 		'maybe better convert to HSL instead of this simple approach
 		local luminance:float = 0.3 * r + 0.6 * g + 0.1 * b
 		r = r + percentage * (luminance - r)
 		g = g + percentage * (luminance - g)
 		b = b + percentage * (luminance - b)
+		return self
 	End Method
 
 
