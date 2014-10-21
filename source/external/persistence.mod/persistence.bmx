@@ -376,16 +376,29 @@ Type TPersist
 								End If
 
 								dims = fieldType.ArrayDimensions(f.Get(obj))
+
+								'skip handling 0 sized arrays
+								local arrSize:int = fieldType.ArrayLength(f.Get(obj))
+								'on mac os x "0 sized"-arrays sometimes return dims to be veeeery big 
+								if arrSize = 0 then dims = 1
+								'if f.name() ="cast" then print "cast arraySize="+arrSize+" dimensions="+dims
+
 								If dims > 1 Then
-									Local scales:String
-									For Local i:Int = 0 Until dims - 1
-										scales :+ (fieldType.ArrayLength(f.Get(obj), i) / fieldType.ArrayLength(f.Get(obj), i + 1))
-										scales :+ ","
-									Next
+									'if arrSize = 0
+									'	print f.name()+":"+fieldType.name()+" is 0 size array"
+									'else
+										Local scales:String
+										For Local i:Int = 0 Until dims - 1
+											'instead of relying on the array length,
+											'we use Max(1, value) to avoid div_by_zero
+											scales :+ (fieldType.ArrayLength(f.Get(obj), i) / Max(1, fieldType.ArrayLength(f.Get(obj), i + 1)))
+											scales :+ ","
+										Next
 
-									scales:+ fieldType.ArrayLength(f.Get(obj), dims - 1)
+										scales:+ fieldType.ArrayLength(f.Get(obj), dims - 1)
 
-									fieldNode.setAttribute("scales", scales)
+										fieldNode.setAttribute("scales", scales)
+									'endif
 								End If
 
 
