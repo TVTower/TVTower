@@ -62,7 +62,7 @@ Type TWeatherEffectRain extends TWeatherEffectBase
 	Field alphaMax:Float = 0.5
 	Field colorMax:int = 150
 
-	Field windVelocity:TVec2D
+	Field windVelocity:Float = 0
 
 
 	Method Init:TWeatherEffectRain(area:TRectangle, layers:int = 2, useSprites:TSprite[])
@@ -131,7 +131,9 @@ Type TWeatherEffectRain extends TWeatherEffectBase
 			endif
 		endif
 
-
+		if not position then position = new TVec2D
+		if not velocity then velocity = new TVec2D
+		
 		'move the sprite "above"
 		position.AddXY(0, -layerSprites[layerNumber-1].GetHeight())
 		'move the sprite a bit to the left
@@ -148,7 +150,7 @@ Type TWeatherEffectRain extends TWeatherEffectBase
 
 		For local i:int = 0 until layerPositions.length
 			'move layer
-			layerPositions[i].x :+ GetDeltaTimer().GetDelta() * layerVelocities[i].x * windVelocity.x
+			layerPositions[i].x :+ GetDeltaTimer().GetDelta() * layerVelocities[i].x * windVelocity
 			layerPositions[i].y :+ GetDeltaTimer().GetDelta() * layerVelocities[i].y
 
 			'the layer is drawn on the whole area (tiled) so go back to

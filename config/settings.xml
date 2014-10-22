@@ -22,6 +22,20 @@
 	<renderer>0</renderer>
 	<colordepth>16</colordepth>
 
+	<!--
+		disable all weather effects?
+	<worldconfig>
+		<showClouds>FALSE</showClouds>
+		<showLightning>FALSE</showLightning>
+		<showMoon>FALSE</showMoon>
+		<showRain>FALSE</showRain>
+		<showSkyGradient>FALSE</showSkyGradient>
+		<showSnow>FALSE</showSnow>
+		<showStars>FALSE</showStars>
+		<showSun>FALSE</showSun>
+	</worldconfig>
+	-->
+	
 	<sound_effects>TRUE</sound_effects>
 	<sound_music>TRUE</sound_music>
 

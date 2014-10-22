@@ -137,9 +137,11 @@ Type TGame {_exposeToLua="selected"}
 
 
 	Method InitWorld()
-		local worldConfig:TData = TData(GetRegistry().Get("WORLDCONFIG", New TData))
+		local appConfig:TData = GetDataFromRegistry("appConfig", new TData)
+		local worldConfig:TData = TData(appConfig.Get("worldConfig", New TData))
 
-		GetWorld().Init(1*3600, worldConfig)
+		GetWorld().Init(1*3600)
+		GetWorld().SetConfiguration(worldConfig)
 	End Method
 
 

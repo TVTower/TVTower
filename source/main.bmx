@@ -223,6 +223,9 @@ Type TApp
 
 		'load custom config and merge to a useable "total" config
 		config = configBase.copy().Append(storage.Load(settingsUserPath))
+
+		'make config available via registry
+		GetRegistry().Set("appConfig", config)
 	End Method
 
 

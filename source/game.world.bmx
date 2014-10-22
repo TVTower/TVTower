@@ -66,6 +66,8 @@ Type TWorld
 	Field autoRenderLightning:int = True
 
 	Global useClsMethod:int = True
+	'reference to a world configuration data set
+	Global _config:TData
 	Global _instance:TWorld
 
 
@@ -75,8 +77,7 @@ Type TWorld
 	End Function
 
 
-	Method Init:TWorld(startTime:Double = 5*3600, config:TData = null)
-		if not config then config = new TData
+	Method Init:TWorld(startTime:Double = 5*3600)
 		'=== INITIALIZE ===
 		area = new TRectangle.Init(0,0,800,385)
 		centerPoint = new TVec2D.Init(400, 570 + area.GetY())
@@ -86,6 +87,39 @@ Type TWorld
 		weather = new TWorldWeather.Init(0, 18, 0, 3600)
 		lighting = new TWorldLighting.Init()
 
+		'adjust effect display
+		RenewConfiguration()
+
+		'we do not save stars in savegames, so we externalized
+		'initialization to make it more convenient to call
+		InitStars(GetConfiguration().GetInt("starsAmount", 60))
+
+		return Self
+	End Method
+
+
+	Method SetSpeed:int(newSpeed:int)
+		'newSpeed = Min(50000, Max(1, newSpeed))
+		GetWorldTime().SetTimeFactor(newSpeed)
+	End Method
+
+
+	Function SetConfiguration:Int(config:TData)
+		_config = config
+
+		GetInstance().RenewConfiguration()
+	End Function
+
+
+	Function GetConfiguration:TData()
+		if not _config then _config = new TData
+		return _config
+	End Function
+
+
+	'renews settings whether to display certain effects
+	Method RenewConfiguration:int(config:TData = Null)
+		if not config then config = GetConfiguration()
 
 		showRain = config.GetBool("showRain", True)
 		showLightning = config.GetBool("showLightning", True)
@@ -95,18 +129,6 @@ Type TWorld
 		showStars = config.GetBool("showStars", True)
 		showMoon = config.GetBool("showMoon", True)
 		showSkyGradient = config.GetBool("showSkyGradient", True)
-
-		'we do not save stars in savegames, so we externalized
-		'initialization to make it more convenient to call
-		InitStars(config.GetInt("starsAmount", 60))
-
-		return Self
-	End Method
-
-
-	Method SetSpeed:int(newSpeed:int)
-		'newSpeed = Min(50000, Max(1, newSpeed))
-		GetWorldTime().SetTimeFactor(newSpeed)
 	End Method
 
 
@@ -171,6 +193,10 @@ Type TWorld
 					if rainEffect.IsActive() then rainEffect.Stop()
 				endif
 			endif
+
+			'inform rain about current wind
+			rainEffect.windVelocity = Weather.GetWindVelocity()
+			
 			rainEffect.Update()
 		endif
 

@@ -112,10 +112,19 @@ Type TRegistry
 	End Method
 End Type
 
-'convenience function
+'===== CONVENIENCE REGISTRY ACCESSORS =====
 Function GetRegistry:TRegistry()
 	return TRegistry.GetInstance()
 End Function
+
+Function GetDataFromRegistry:TData(name:string, defaultNameOrObject:object = Null)
+	Return TData( GetRegistry().Get(name, defaultNameOrObject, "data") )
+End Function
+
+Function GetStringFromRegistry:String(name:string, defaultNameOrObject:object = Null)
+	Return String( GetRegistry().Get(name, defaultNameOrObject, "string") )
+End Function
+
 
 
 
