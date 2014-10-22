@@ -406,7 +406,6 @@ Type TNewsAgency
 			'skip news events not happening yet
 			If newsEvent.happenedTime > GetWorldTime().GetTimeGone() then continue
 			newsEvent.doHappen()
-
 			announceNewsEvent(newsEvent)
 			announced:+1
 		Next
@@ -447,6 +446,7 @@ Type TNewsAgency
 		'If Not Game.isLocalPlayer(forPlayer) And Not Game.isAIPlayer(forPlayer) Then Return 'TODO: Wenn man gerade Spieler 2 ist/verfolgt (Taste 2) dann bekommt Spieler 1 keine News
 		If Player.newsabonnements[newsEvent.genre] > 0 or forceAdd
 			local news:TNews = TNews.Create("", 0, newsEvent)
+			'Print "[LOCAL] AddNewsEventToPlayer "+forPlayer+": added news title="+news.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
 
 			if Player.newsabonnements[newsEvent.genre] >0
 				news.publishDelay = GetNewsAbonnementDelay(newsEvent.genre, Player.newsabonnements[newsEvent.genre] )
@@ -488,7 +488,6 @@ Type TNewsAgency
 		'if no "special case" triggered, just use a random news
 		If Not newsEvent
 			newsEvent = GetNewsEventCollection().GetRandomAvailable()
-			newsEvent.doHappen()
 		EndIf
 
 		return newsEvent
@@ -512,6 +511,11 @@ Type TNewsAgency
 			EndIf
 
 			If not skipNews or forceAdd
+				'mark them as "happened", run triggers etc.
+				'doing it HERE does not mark news as happened when nobody
+				'listens and the news could get skipped
+				newsEvent.doHappen()
+
 				'Print "[LOCAL] AnnounceNewNews: added news title="+newsEvent.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
 				announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone() + delayAnnouncement, forceAdd)
 			EndIf
@@ -528,7 +532,7 @@ Type TNewsAgency
 		NextEventTime = GetWorldTime().GetTimeGone() + 60 * randRange(NextEventTimeInterval[0], NextEventTimeInterval[1])
 		'50% chance to have an even longer time (up to 2x)
 		If RandRange(0,10) > 5
-			NextEventTime = + randRange(NextEventTimeInterval[0], NextEventTimeInterval[1])
+			NextEventTime :+ randRange(NextEventTimeInterval[0], NextEventTimeInterval[1])
 		EndIf
 	End Method
 End Type

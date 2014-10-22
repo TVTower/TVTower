@@ -321,7 +321,7 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 		'next check ("time gone?")
 		If happenedTime = -1 Then Return False
 		'check if the time is gone already
-		If happenedTime >= GetWorldTime().GetTimeGone() Then Return False
+		If happenedTime > GetWorldTime().GetTimeGone() Then Return False
 
 		return True
 	End Method
@@ -394,7 +394,7 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 		Next
 		
 		'set new array
-		happenEffects = newEffects
+		broadcastEffects = newEffects
 		return True
 	End Method
 
@@ -460,7 +460,8 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	
 
 	Method IsSkippable:int()
-		return skippable
+		'cannot skip events with "happeneffects"
+		return skippable and happenEffects.length = 0
 	End Method
 
 
