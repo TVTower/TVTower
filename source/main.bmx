@@ -1437,14 +1437,25 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 
 
 	Method StartNextConfiscationJob:int()
-		if confiscateProgammeLicenceFromOwner.length = 0 then return False
+		if not HasNextConfiscationJob() then return False
 
+		'remove invalid jobs (eg after loading a savegame)
+		if GetConfiscateProgrammeLicenceGUID() = ""
+			RemoveCurrentConfiscationJob()
+			return False
+		endif
+		
 		'when confiscating programmes: start with your authorization
 		'letter
 		sprite = GetSpriteFromRegistry(GetBaseSpriteName()+".letter")
 
 		'send figure to the archive of the stored owner
 		SetDeliverToRoom(GetRoomCollection().GetFirstByDetails("archive", GetConfiscateProgrammeLicenceFromOwner()))
+	End Method
+
+
+	Method HasNextConfiscationJob:int()
+		return confiscateProgammeLicenceFromOwner.length > 0
 	End Method
 
 
