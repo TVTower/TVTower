@@ -17,6 +17,8 @@ Import "game.stationmap.bmx"
 Import "game.broadcastmaterial.base.bmx"
 'to access gamerules (definitions)
 Import "game.gamerules.bmx"
+'to access genres
+Import "game.gameconstants.bmx"
 
 
 
@@ -712,18 +714,26 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 	Method GetLimitedToTargetGroupString:String(group:Int=-1) {_exposeToLua}
 		'if no group given, use the one of the object
-		if group < 0 then group = self.base.limitedToTargetGroup
+		if group < 0 then group = base.limitedToTargetGroup
 
 		If group >= 1 And group <=9
-			Return GetLocale("AD_GENRE_"+group)
+			Return GetLocale("AD_TARGETGROUP_"+group)
 		else
-			Return GetLocale("AD_GENRE_NONE")
+			Return GetLocale("AD_TARGETGROUP_NONE")
 		EndIf
 	End Method
 
 
 	Method GetLimitedToGenre:Int() {_exposeToLua}
 		Return base.limitedToProgrammeGenre
+	End Method
+
+
+	Method GetLimitedToGenreString:String(genre:Int=-1) {_exposeToLua}
+		'if no genre given, use the one of the object
+		if genre < 0 then genre = base.limitedToProgrammeGenre
+
+		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetGenreStringID(genre))
 	End Method
 
 
@@ -839,10 +849,15 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		currY :+ sprite.GetHeight()
 
 		'warn if special target group
-		If base.limitedToTargetGroup > 0
+		If GetLimitedToTargetGroup() > 0
 			sprite = GetSpriteFromRegistry("gfx_datasheet_subMessageTargetGroup"); sprite.Draw(currX, currY)
 			currY :+ sprite.GetHeight()
 		EndIf
+		If GetLimitedToGenre() >= 0
+			sprite = GetSpriteFromRegistry("gfx_datasheet_subMessageTargetGroup"); sprite.Draw(currX, currY)
+			currY :+ sprite.GetHeight()
+		EndIf
+
 
 		'warn if short of time
 		If daysLeft <= 1
@@ -882,9 +897,16 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 
 		'warn if special target group
-		If base.limitedToTargetGroup > 0
+		If GetLimitedToTargetGroup() > 0
 			currY :+ 4 'top content padding of that line
 			fontSemiBold.drawBlock(getLocale("AD_TARGETGROUP")+": "+GetLimitedToTargetGroupString(), currX + 35, currY, 245, 15, ALIGN_CENTER_CENTER, textWarningColor, 0,1,1.0,True, True)
+			currY :+ 15 + 8 'lineheight + bottom content padding
+		Endif
+
+		'warn if special genre
+		If GetLimitedToGenre() >= 0
+			currY :+ 4 'top content padding of that line
+			fontSemiBold.drawBlock(getLocale("AD_PLEASE_GENRE_X").Replace("%GENRE%", GetLimitedToGenreString()), currX + 35, currY, 245, 15, ALIGN_CENTER_CENTER, textWarningColor, 0,1,1.0,True, True)
 			currY :+ 15 + 8 'lineheight + bottom content padding
 		Endif
 

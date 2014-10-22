@@ -177,36 +177,11 @@ endrem
 		endif
 
 
+		'check if the ad satisfies all requirements
 		local successful:int = False
-
-		'programme broadcasting outage = ad fails too!
-		If audienceResult.broadcastOutage
-			successful = False
-		'condition not fulfilled
-		ElseIf audienceResult.Audience.GetSum() < contract.GetMinAudience()
-			successful = False
-		'limited to a specific target group - and not fulfilled
-		ElseIf contract.GetLimitedToTargetGroup() > 0 and audienceResult.Audience.GetValue(contract.GetLimitedToTargetGroup()) < contract.GetMinAudience()
-			successful = False
-		'limited to a specific genre - and not fulfilled
-		ElseIf contract.GetLimitedToGenre() >= 0
-			'check current programme of the owner
-			'TODO: check if that has flaws playing with high speed
-			'      (check if current broadcast is correctly set at this
-			'      time)
-			local broadcastMaterial:TBroadcastMaterial = GetBroadcastManager().GetCurrentProgrammeBroadcastMaterial(owner)
-			'should not happen - as it else is a broadcastOutage
-			if not broadcastMaterial
-				successful = False
-			else
-				local genreDefinition:TGenreDefinitionBase = broadcastMaterial.GetGenreDefinition()
-				if genreDefinition and genreDefinition.GenreId <> contract.GetLimitedToGenre()
-					successful = False
-				endif
-			endif
-		Else
+		if "OK" = IsPassingRequirements(audienceResult, GetBroadcastManager().GetCurrentProgrammeBroadcastMaterial(owner))
 			successful = True
-		EndIf
+		endif
 
 
 		if not successful
@@ -218,6 +193,49 @@ endrem
 			'TLogger.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" sent SUCCESSFUL spot "+contract.spotsSent+"/"+contract.GetSpotCount()+". Title: "+contract.GetTitle()+". Time: day "+(day-GetWorldTime().GetStartDay())+", "+hour+":"+minute+".", LOG_DEBUG)
 		EndIf
 		return TRUE
+	End Method
+
+
+	'checks if the contract/ad passes specific requirements
+	'-> min audience, target groups, ...
+	'returns "OK" when passing, or another String with the reason for failing
+	Method IsPassingRequirements:String(audienceResult:TAudienceResult, previouslyRunningBroadcastMaterial:TBroadcastMaterial = Null)
+		'checks against audience
+		If audienceResult
+			'programme broadcasting outage = ad fails too!
+			If audienceResult.broadcastOutage
+				return "OUTAGE"
+			'condition not fulfilled
+			ElseIf audienceResult.Audience.GetSum() < contract.GetMinAudience()
+				return "SUM"
+			'limited to a specific target group - and not fulfilled
+			ElseIf contract.GetLimitedToTargetGroup() > 0 and audienceResult.Audience.GetValue(contract.GetLimitedToTargetGroup()) < contract.GetMinAudience()
+				return "TARGETGROUP"
+			EndIf
+		EndIf
+
+		'limited to a specific genre - and not fulfilled
+		If contract.GetLimitedToGenre() >= 0
+			'check current programme of the owner
+			'TODO: check if that has flaws playing with high speed
+			'      (check if current broadcast is correctly set at this
+			'      time)
+
+			'if no previous material was given, use the currently running one
+			if not previouslyRunningBroadcastMaterial then previouslyRunningBroadcastMaterial = GetBroadcastManager().GetCurrentProgrammeBroadcastMaterial(owner)
+
+			'should not happen - as it else is a broadcastOutage
+			if not previouslyRunningBroadcastMaterial
+				Return "OUTAGE"
+			else
+				local genreDefinition:TGenreDefinitionBase = previouslyRunningBroadcastMaterial.GetGenreDefinition()
+				if genreDefinition and genreDefinition.GenreId <> contract.GetLimitedToGenre()
+					Return "GENRE"
+				endif
+			endif
+		EndIf
+
+		return "OK"
 	End Method
 
 

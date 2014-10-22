@@ -182,7 +182,23 @@ Type TInGameInterface
 							If not programmePlan.GetProgramme()
 								content :+ "~n ~n|b||color=200,100,100|"+getLocale("NEXT_ADBLOCK")+":|/color||/b|~n" + obj.GetTitle()+" ("+ GetLocale("INVALID_BY_BROADCAST_OUTAGE") +")"
 							Else
-								content :+ "~n ~n|b||color=100,150,100|"+getLocale("NEXT_ADBLOCK")+":|/color||/b|~n" + obj.GetTitle()+" ("+ GetLocale("MIN_AUDIENCE") +": "+ TFunctions.convertValue(TAdvertisement(obj).contract.getMinAudience())+")"
+								local minAudienceText:string = TFunctions.convertValue(TAdvertisement(obj).contract.getMinAudience())
+								'check if the ad passes all checks for the current broadcast
+								local passingRequirements:String = TAdvertisement(obj).IsPassingRequirements(GetBroadcastManager().GetAudienceResult(programmePlan.owner))
+								if passingRequirements = "OK"
+									minAudienceText = "|color=100,200,100|" + minAudienceText + "|/color|"
+								else
+									Select passingRequirements
+										case "TARGETGROUP"
+											minAudienceText = "|color=200,100,100|" + minAudienceText + " " + TAdvertisement(obj).contract.GetLimitedToTargetGroupString()+ "!|/color|"
+										case "GENRE"
+											minAudienceText = "|color=200,100,100|" + minAudienceText + " " + TAdvertisement(obj).contract.GetLimitedToGenreString()+ "!|/color|"
+										default
+											minAudienceText = "|color=200,100,100|" + minAudienceText + "|/color|"
+									End Select
+								endif
+								
+								content :+ "~n ~n|b||color=100,150,100|"+getLocale("NEXT_ADBLOCK")+":|/color||/b|~n" + "|b|"+obj.GetTitle()+"|/b|~n" + GetLocale("MIN_AUDIENCE") +": "+ minAudienceText
 							EndIf
 						ElseIf TProgramme(obj)
 							content :+ "~n ~n|b|"+getLocale("NEXT_ADBLOCK")+":|/b|~n"+ GetLocale("TRAILER")+": " + obj.GetTitle()
@@ -279,13 +295,6 @@ Type TInGameInterface
 		'=== RENDER TOASTMESSAGES ===
 		'below everything else of the interface: our toastmessages
 		GetToastMessageCollection().Render(0,0)
-rem
-		SetBlend ALPHABLEND
-		GetSpriteFromRegistry("gfx_interface_top").Draw(0,0)
-		GetSpriteFromRegistry("gfx_interface_leftright").DrawClipped(new TRectangle.Init(0, 20, 27, 363))
-		SetBlend SOLIDBLEND
-		GetSpriteFromRegistry("gfx_interface_leftright").DrawClipped(new TRectangle.Init(780, 20, 20, 363), new TVec2D.Init(27,0))
-endrem
 
 		If BottomImgDirty
 			'draw bottom, aligned "bottom"
