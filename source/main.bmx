@@ -182,6 +182,8 @@ Type TApp
 	
 			obj.LoadSettings()
 			obj.ApplySettings()
+			'override settings with app arguments (params when executing)
+			obj.ApplyAppArguments()
 	
 			GetGraphicsManager().SetVsync(vsync)
 			GetGraphicsManager().SetResolution(800,600)
@@ -194,6 +196,33 @@ Type TApp
 
 		Return obj
 	End Function
+
+
+	'check for various arguments to the binary (eg. "TVTower -opengl")
+	Method ApplyAppArguments:int()
+		local argNumber:int = 0
+		For local arg:string = EachIn AppArgs
+			'only interested in args starting with "-"
+			if arg.Find("-") <> 0 then continue
+
+			Select arg.ToLower()
+				?Win32
+				case "-directx7", "-directx"
+					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: DirectX 7", LOG_LOADING)
+					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_DIRECTX7)
+				case "-directx9"
+					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: DirectX 9", LOG_LOADING)
+					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_DIRECTX9)
+				?
+				case "-opengl"
+					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: OpenGL", LOG_LOADING)
+					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_OPENGL)
+				case "-bufferedopengl"
+					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: Buffered OpenGL", LOG_LOADING)
+					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_BUFFEREDOPENGL)
+			End Select
+		Next
+	End Method
 
 
 	'if no startup-music was defined, try to play menu music if some
