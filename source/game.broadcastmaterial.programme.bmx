@@ -72,10 +72,13 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
 		Super.BeginBroadcasting:int(day, hour, minute, audienceResult)
 
-		'remove old "last audience" data to avoid wrong "average values"
-		licence.GetBroadcastStatistic().RemoveLastAudienceResult(licence.owner)
-		'store audience for this block
-		licence.GetBroadcastStatistic().SetAudienceResult(licence.owner, currentBlockBroadcasting, audienceResult)
+		'only fetch new audience stats when send as programme (ignore trailer)
+		if self.usedAsType = TBroadcastMaterial.TYPE_PROGRAMME
+			'remove old "last audience" data to avoid wrong "average values"
+			licence.GetBroadcastStatistic().RemoveLastAudienceResult(licence.owner)
+			'store audience for this block
+			licence.GetBroadcastStatistic().SetAudienceResult(licence.owner, currentBlockBroadcasting, audienceResult)
+		endif
 	End Method
 
 
