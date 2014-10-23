@@ -304,6 +304,7 @@ Type TInGameScreen_Room extends TInGameScreen
 		if not _registeredEvents
 			EventManager.registerListenerFunction("room.onBeginEnter", OnRoomBeginEnter)
 			EventManager.registerListenerFunction("room.onEnter", OnRoomEnter)
+			_registeredEvents = True
 		endif
 		
 		return self

@@ -207,7 +207,14 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'this is needed as assigning to "getObjectArray"-arrays is not possible for now
 	Method SetObjectArrayEntry:Int(obj:TBroadcastMaterial, slotType:Int=0, arrayIndex:Int)
 		'resize array if needed
-		If arrayIndex >= GetObjectArray(slotType).length Then ResizeObjectArray(slotType, arrayIndex + 1 + obj.GetBlocks() - 1)
+		If arrayIndex >= GetObjectArray(slotType).length
+			If obj
+				ResizeObjectArray(slotType, arrayIndex + 1 + obj.GetBlocks() - 1)
+			'null is used to unset an objectarray 
+			Else
+				ResizeObjectArray(slotType, arrayIndex + 1)
+			EndIf
+		EndIf
 		If arrayIndex < 0 Then Throw "[ERROR] SetObjectArrayEntry: arrayIndex is negative"
 
 		If slotType = TBroadcastMaterial.TYPE_PROGRAMME Then programmes[arrayIndex] = obj
@@ -958,7 +965,7 @@ endrem
 		If slot < 0 Or slot >= news.length Then Return False
 
 		'do not continue if pay not possible but needed
-		If Not newsObject.paid And Not newsObject.Pay() Then Return False
+		If Not newsObject.Pay() Then Return False
 
 		'if just dropping on the own slot ...do nothing
 		If news[slot] = newsObject Then Return True

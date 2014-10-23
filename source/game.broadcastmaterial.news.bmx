@@ -294,7 +294,7 @@ endrem
 		'only pay if not already done
 		if not paid then paid = GetPlayerFinanceCollection().Get(owner).PayNews(GetPrice(), self)
 		'store the paid price as the price "sinks" during aging
-		if paid then paidPrice = GetPrice()
+		if paid and paidPrice = 0 then paidPrice = GetPrice()
 		return paid
     End Method
 

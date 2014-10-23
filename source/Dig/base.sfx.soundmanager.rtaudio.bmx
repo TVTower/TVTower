@@ -497,18 +497,22 @@ Type TSoundManager
 		If HasMutedMusic() Then Return True
 
 		If fromPlaylist
-			nextMusicTitleStream = GeTDigAudioStream("", name)
+			nextMusicTitleStream = GetDigAudioStream("", name)
 			nextMusicTitleVolume = GetMusicVolume(name)
 			If nextMusicTitleStream
 				SetCurrentPlaylist(name)
-				TLogger.Log("PlayMusicOrPlaylist", "GeTDigAudioStream from Playlist ~q"+name+"~q. Also set current playlist to it.", LOG_DEBUG)
+				TLogger.Log("PlayMusicOrPlaylist", "GetDigAudioStream from Playlist ~q"+name+"~q. Also set current playlist to it.", LOG_DEBUG)
 			Else
-				TLogger.Log("PlayMusicOrPlaylist", "GeTDigAudioStream from Playlist ~q"+name+"~q not possible. No Playlist.", LOG_DEBUG)
+				TLogger.Log("PlayMusicOrPlaylist", "GetDigAudioStream from Playlist ~q"+name+"~q not possible. No Playlist.", LOG_DEBUG)
 			EndIf
 		Else
-			nextMusicTitleStream = GeTDigAudioStream(name, "")
+			nextMusicTitleStream = GetDigAudioStream(name, "")
 			nextMusicTitleVolume = GetMusicVolume(name)
-			TLogger.Log("PlayMusicOrPlaylist", "GeTDigAudioStream by name ~q"+name+"~q", LOG_DEBUG)
+			if nextMusicTitleStream
+				TLogger.Log("PlayMusicOrPlaylist", "GetDigAudioStream by name ~q"+name+"~q", LOG_DEBUG)
+			else
+				TLogger.Log("PlayMusicOrPlaylist", "GetDigAudioStream by name ~q"+name+"~q not possible. Not found.", LOG_DEBUG)
+			endif
 		EndIf
 
 		forceNextMusicTitle = True
@@ -516,7 +520,8 @@ Type TSoundManager
 		'Wenn der Musik-Channel noch nicht laeuft, dann jetzt starten
 		If Not activeMusicChannel Or Not activeMusicChannel.Playing()
 			If Not nextMusicTitleStream
-				TLogger.Log("PlayMusicOrPlaylist", "could not start activeMusicChannel: no next music found", LOG_DEBUG)
+				'already logged with "no playlist" / "not found"
+				'TLogger.Log("PlayMusicOrPlaylist", "could not start activeMusicChannel: no next music found", LOG_DEBUG)
 			Else
 				TLogger.Log("PlayMusicOrPlaylist", "start activeMusicChannel", LOG_DEBUG)
 				Local musicVolume:Float = nextMusicTitleVolume
@@ -540,19 +545,19 @@ Type TSoundManager
 	End Method
 
 
-	Method GeTDigAudioStream:TDigAudioStream(music:String="", playlist:String="")
+	Method GetDigAudioStream:TDigAudioStream(music:String="", playlist:String="")
 		Local result:TDigAudioStream
 
 		If playlist=""
 			result = TDigAudioStream(soundFiles.ValueForKey(Lower(music)))
-			TLogger.Log("TSoundManager.GeTDigAudioStream()", "Play music: " + music, LOG_DEBUG)
+			TLogger.Log("TSoundManager.GetDigAudioStream()", "Play music: " + music, LOG_DEBUG)
 		Else
 			result = GetRandomMusicFromPlaylist(playlist, nextMusicTitleStream)
 			Rem
 			if result
-				TLogger.log("TSoundManager.GeTDigAudioStream()", "Play random music from playlist: ~q" + playlist +"~q  file: ~q"+result.url+"~q", LOG_DEBUG)
+				TLogger.log("TSoundManager.GetDigAudioStream()", "Play random music from playlist: ~q" + playlist +"~q  file: ~q"+result.url+"~q", LOG_DEBUG)
 			else
-				TLogger.log("TSoundManager.GeTDigAudioStream()", "Cannot play random music from playlist: ~q" + playlist +"~q, nothing found.", LOG_DEBUG)
+				TLogger.log("TSoundManager.GetDigAudioStream()", "Cannot play random music from playlist: ~q" + playlist +"~q, nothing found.", LOG_DEBUG)
 			endif
 			endrem
 		EndIf

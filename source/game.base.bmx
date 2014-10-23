@@ -433,8 +433,10 @@ Type TGame {_exposeToLua="selected"}
 					'throw "Game.PrepareNewGame: initial news " + i + " missing."
 					continue
 				endif
-				'set it paid
+				'set it paid - so money does not change
 				newsToPlace.paid = true
+				'calculate paid Price of the news
+				newsToPlace.Pay()
 				'set planned
 				GetPlayerProgrammePlanCollection().Get(playerID).SetNews(newsToPlace, i)
 			Next
