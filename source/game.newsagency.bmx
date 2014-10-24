@@ -199,8 +199,10 @@ Type TNewsAgency
 		'quality and price are nearly the same everytime
 		Local quality:Float = 0.01 * randRange(50,60)
 		Local price:Float = 1.0 + 0.01 * randRange(-5,10)
+		'append 1 hour to both: forecast is done eg. at 7:30 - so it
+		'cannot be a weatherforecast for 7-10 but for 8-11
 		local beginHour:int = GetWorldTime().GetDayHour()+1
-		local endHour:int = GetWorldTime().GetDayHour(weatherUpdateTime)
+		local endHour:int = GetWorldTime().GetDayHour(weatherUpdateTime)+1
 		Local description:string = ""
 		local title:string = GetLocale("WEATHER_FORECAST_FOR_X_TILL_Y").replace("%BEGINHOUR%", beginHour).replace("%ENDHOUR%", endHour)
 		local forecastHours:int = ceil((weatherUpdateTime - GetWorldTime().GetTimeGone()) / 3600.0)

@@ -1030,12 +1030,13 @@ Type RoomHandler_Office extends TRoomHandler
 		local plan:TPlayerProgrammePlan = TPlayerProgrammePlan(triggerEvent.GetSender())
 		if not plan then return FALSE
 		if plan.owner <> GetPlayerCollection().playerID then return FALSE
-'print "onChangeProgrammePlan: running RefreshGuiElements"
-'		haveToRefreshGuiElements = TRUE
-		RefreshGuiElements()
 
-		'RefreshHoveredProgrammePlanElement()
-		GUIManager.Update("programmeplanner")
+		'recreate gui elements
+		RefreshGuiElements()
+		'refetch the hovered element (if there was one before)
+		'so it can get drawn correctly in the render calls until the
+		'next update call would fetch the hovered item again
+		FindHoveredPlanElement()
 	End Function
 
 
@@ -1464,8 +1465,11 @@ Type RoomHandler_Office extends TRoomHandler
 		Next
 
 		'delete unused and create new gui elements
-		if haveToRefreshGuiElements then RefreshGUIElements()
-
+		if haveToRefreshGuiElements
+				RefreshGuiElements()
+				'reassign a potential hovered/dragged element
+				FindHoveredPlanElement()
+		endif
 
 		if planningDay-1 < GetWorldTime().getDay(GetWorldTime().GetTimeStart())
 			plannerPreviousDayButton.disable()
@@ -1653,7 +1657,9 @@ Type RoomHandler_Office extends TRoomHandler
 		'FALSE: without removing dragged
 		'->ONLY keeps newly created, not ones dragged from a slot
 		RemoveAllGuiElements(FALSE)
+
 		RefreshGuiElements()
+		FindHoveredPlanElement()
 	end Function
 
 
@@ -1695,6 +1701,31 @@ Type RoomHandler_Office extends TRoomHandler
 
 		'set to backupped value
 		talkToProgrammePlanner = oldTalk
+	End Function
+
+
+	Function FindHoveredPlanElement:int()
+'		hoveredGuiProgrammePlanElement = Null
+
+		local obj:TGUIProgrammePlanElement
+		For obj = eachin GuiManager.ListDragged
+			if obj.containsXY(MouseManager.x, MouseManager.y)
+				hoveredGuiProgrammePlanElement = obj
+				return True
+			endif
+		Next
+		For obj = eachin GuiListProgrammes._slots
+			if obj.containsXY(MouseManager.x, MouseManager.y)
+				hoveredGuiProgrammePlanElement = obj
+				return True
+			endif
+		Next
+		For obj = eachin GuiListAdvertisements._slots
+			if obj.containsXY(MouseManager.x, MouseManager.y)
+				hoveredGuiProgrammePlanElement = obj
+				return True
+			endif
+		Next
 	End Function
 
 
