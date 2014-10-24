@@ -202,12 +202,14 @@ table.count = function(pTable)
 end
 
 table.first = function(pTable)
+	if pTable == nil then return nil end
 	for k,v in pairs(pTable) do
 		return v
 	end
 end
 
 table.contains = function(pTable, item)
+	if pTable == nil then return false end
     for key, value in pairs(pTable) do
         if value == item then return true end
     end
@@ -228,6 +230,7 @@ table.sortByKeys = function(t, f)
 end
 
 table.getKey = function(pTable, item)
+	if pTable == nil then return nil end
     for key, value in pairs(pTable) do
         if value == item then
 			return key
@@ -237,6 +240,7 @@ table.getKey = function(pTable, item)
 end
 
 table.getIndex = function(pTable, item)
+	if pTable == nil then return -1 end
 	local index = 0
     for key, value in pairs(pTable) do
         if value == item then
