@@ -139,7 +139,7 @@ Type TLogger
 			message = message.replace("Ä", "Ae")
 			message = message.replace("ß", "ss")
 			endrem
-			message = StringHelper.UTF8toISO8859(message)
+			'message = StringHelper.UTF8toISO8859(message)
 
 			print "[" + CurrentTime() + "] " + debugtext + Upper(showFunctionText) + ": " + message
 		endif

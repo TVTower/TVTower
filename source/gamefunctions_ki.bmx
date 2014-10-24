@@ -412,6 +412,8 @@ endrem
 
 
 	Method PrintOut:Int(text:String)
+		text = StringHelper.UTF8toISO8859(text)
+
 		TLogger.log("AI "+self.ME, text, LOG_AI)
 		Return self.RESULT_OK
 	EndMethod
@@ -419,6 +421,8 @@ endrem
 
 	'only printed if TLogger.setPrintMode(LOG_AI | LOG_DEBUG) is set
 	Method PrintOutDebug:int(text:string)
+		text = StringHelper.UTF8toISO8859(text)
+
 		TLogger.log("AI "+self.ME+" DEBUG", text, LOG_AI & LOG_DEBUG)
 		Return self.RESULT_OK
 	End Method
