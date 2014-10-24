@@ -207,7 +207,10 @@ End Type
 Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
     Field newsEvent:TNewsEvent	= Null	{_exposeToLua}
     'delay the news for a certain time (depending on the abonnement-level)
-    Field publishDelay:Int 		= 0
+    Field publishDelay:Int = 0
+    'store the event happenedTime here, so the event could get used
+    'multiple times without changing the news
+    Field happenedTime:Double = -1
     'modificators to this news (stored here: is individual for each player)
     'absolute: value just gets added
     'relative: fraction of base price (eg. 0.3 -> 30%)
@@ -238,6 +241,12 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		
 		Return obj
 	End Function
+
+
+	Method GetHappenedTime:Double()
+		if happenedTime = -1 then happenedTime = newsEvent.happenedTime
+		return happenedTime
+	End Method
 
 
 	'override default to inform contained "newsEvent" too
@@ -318,12 +327,12 @@ endrem
 
 
     Method GetPublishTime:int() {_exposeToLua}
-		return newsEvent.happenedtime + publishdelay
+		return GetHappenedTime() + publishdelay
     End Method
 
 
 	Method IsReadyToPublish:Int() {_exposeToLua}
-		Return (newsEvent.happenedtime + publishDelay <= GetWorldTime().GetTimeGone())
+		Return (GetHappenedtime() + publishDelay <= GetWorldTime().GetTimeGone())
 	End Method
 
 

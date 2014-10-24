@@ -98,9 +98,12 @@ Type TNewsEventCollection
 	Method SetOldNewsUnused(daysAgo:int=1)
 		For local news:TNewsEvent = eachin allNewsEvents.Values()
 			if abs(GetWorldTime().GetDay(news.happenedTime) - GetWorldTime().GetDay()) >= daysAgo
+				if news.happenedTime = -1 then continue
+				'only reset time if the news can happen again
+				If not news.IsReuseable() then continue
+
 				'reset happenedTime so it is available again
 				news.happenedTime = -1
-				
 				'add it again to the list, this resets the caches
 				'and therefore adds it to the available list again
 				Add(news)

@@ -473,11 +473,12 @@ endrem
 		'Advertisements: adjust planned
 		If TAdvertisement(obj) Then TAdvertisement(obj).contract.SetSpotsPlanned( GetAdvertisementsPlanned(TAdvertisement(obj).contract) )
 
+		'local time:int = GetWorldTime().MakeTime(0, day, hour, 0)
+		'if obj.owner = 1 then print "..addObject day="+day+" hour="+hour+" array[" +arrayIndex + "] " + GetWorldTime().GetYear(time) + " " + GetWorldTime().GetDayOfYear(time) + ".Tag " + GetWorldTime().GetDayHour(time) + ":00 : " + obj.getTitle()+" ("+obj.getReferenceID()+")"
+
 		'emit an event
 		If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("programmeplan.addObject", New TData.add("object", obj).add("removedObjects", removedObjects).addNumber("slotType", slotType).addNumber("day", day).addNumber("hour", hour), Self))
 
-		'local time:int = GetWorldTime().MakeTime(0, day, hour, 0)
-		'print "..addObject day="+day+" hour="+hour+" array[" +arrayIndex + "] " + GetWorldTime().GetYear(time) + " " + GetWorldTime().GetDayOfYear(time) + ".Tag " + GetWorldTime().GetDayHour(time) + ":00 : " + obj.getTitle()+" ("+obj.getReferenceID()+")"
 		Return True
 	End Method
 
@@ -508,6 +509,9 @@ endrem
 			If TProgramme(obj) Then RecalculatePlannedProgramme(TProgramme(obj))
 			'Advertisements: adjust planned amount
 			If TAdvertisement(obj) Then TAdvertisement(obj).contract.SetSpotsPlanned( GetAdvertisementsPlanned(TAdvertisement(obj).contract) )
+
+			'local time:int = GetWorldTime().MakeTime(0, programmedDay, programmedHour, 0)
+			'if obj.owner = 1 then print "..removeObject day="+programmedDay+" hour="+programmedHour+" array[" +GetArrayIndex(programmedDay*24 + programmedHour) + "] " + GetWorldTime().GetYear(time) + " " + GetWorldTime().GetDayOfYear(time) + ".Tag " + GetWorldTime().GetDayHour(time) + ":00 : " + obj.getTitle()+" ("+obj.getReferenceID()+")"
 
 			'inform others
 			If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("programmeplan.removeObject", New TData.add("object", obj).addNumber("slotType", slotType).addNumber("day", programmedDay).addNumber("hour", programmedHour), Self))

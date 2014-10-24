@@ -3312,7 +3312,7 @@ Type GameEvents
 			For Local i:Int = 1 To 4
 				Local news:TNews
 				For news = EachIn GetPlayerCollection().Get(i).GetProgrammeCollection().news
-					If day - GetWorldTime().getDay(news.newsEvent.happenedtime) >= 2
+					If day - GetWorldTime().getDay(news.GetHappenedTime()) >= 2
 						GetPlayerCollection().Get(i).GetProgrammePlan().RemoveNews(news)
 					EndIf
 				Next
