@@ -506,7 +506,9 @@ Type TWorld
 		local dy:int = 5
 		DrawText("== World Data ==", x + 10, y + dy)
 		dy :+ 12
-		DrawText("time: "+GetWorldTime().GetDayHour()+":00 "+GetWorldTime().GetDayPhaseText(), x + 10, y + dy)
+		local minute:string = GetWorldTime().GetDayMinute()
+		if minute.length = 1 then minute = "0"+minute
+		DrawText("time: "+GetWorldTime().GetDayHour()+":"+minute+" "+GetWorldTime().GetDayPhaseText(), x + 10, y + dy)
 		dy :+ 12
 		DrawText("year: "+GetWorldTime().GetYear()+"  season: "+GetWorldTime().GetSeason()+"/4", x + 10, y + dy)
 		dy :+ 12
