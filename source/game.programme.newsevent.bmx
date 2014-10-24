@@ -95,18 +95,40 @@ Type TNewsEventCollection
 	End Method
 
 
-	Method SetOldNewsUnused(daysAgo:int=1)
-		For local news:TNewsEvent = eachin allNewsEvents.Values()
-			if abs(GetWorldTime().GetDay(news.happenedTime) - GetWorldTime().GetDay()) >= daysAgo
-				if news.happenedTime = -1 then continue
-				'only reset time if the news can happen again
-				If not news.IsReuseable() then continue
+	Method RemoveOutdatedNewsEvents(minAgeInDays:int=5)
+		For local newsEvent:TNewsEvent = eachin allNewsEvents.Values()
+			if abs(GetWorldTime().GetDay(newsEvent.happenedTime) - GetWorldTime().GetDay()) >= minAgeInDays
+				'not happened yet
+				if newsEvent.happenedTime = -1 then continue
+				
+				'if the news event cannot get used again remove them
+				'from all lists
+				If not newsEvent.IsReuseable() then Remove(newsEvent)
 
 				'reset happenedTime so it is available again
-				news.happenedTime = -1
-				'add it again to the list, this resets the caches
-				'and therefore adds it to the available list again
-				Add(news)
+				newsEvent.happenedTime = -1
+
+				'reset caches, so lists get filled correctly
+				_InvalidateCaches()
+			endif
+		Next
+	End Method
+
+
+	'resets already used news events of the past so they can get used again
+	Method ResetReuseableNewsEvents(minAgeInDays:int=5)
+		For local newsEvent:TNewsEvent = eachin allNewsEvents.Values()
+			if abs(GetWorldTime().GetDay(newsEvent.happenedTime) - GetWorldTime().GetDay()) >= minAgeInDays
+				'not happened yet
+				if newsEvent.happenedTime = -1 then continue
+				'not reuseable
+				If not newsEvent.IsReuseable() then continue
+
+				'reset happenedTime so it is available again
+				newsEvent.happenedTime = -1
+
+				'reset caches, so lists get filled correctly
+				_InvalidateCaches()
 			endif
 		Next
 	End Method
@@ -115,10 +137,10 @@ Type TNewsEventCollection
 	Method GetRandomAvailable:TNewsEvent()
 	
 		'if no news is available, make older ones available again
-		'start with 7 days ago and lower until we got a news
-		local days:int = 7
+		'start with 5 days ago and lower until we got a news
+		local days:int = 5
 		While GetAvailableNewsList().Count() = 0 and days >= 0
-			SetOldNewsUnused(days)
+			RemoveOutdatedNewsEvents(days)
 			days :- 1
 		Wend
 		

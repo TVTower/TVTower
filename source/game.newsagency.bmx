@@ -4,7 +4,7 @@ Type TNewsAgency
 	'when to announce a new newsevent
 	Field NextEventTime:Double = -1
 	'check for a new news every x-y minutes
-	Field NextEventTimeInterval:int[] = [120, 180]
+	Field NextEventTimeInterval:int[] = [180, 330]
 
 
 	'=== WEATHER HANDLING ===

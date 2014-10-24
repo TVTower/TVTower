@@ -3308,15 +3308,38 @@ Type GameEvents
 			'reset room signs each day to their normal position
 			TRoomBoardSign.ResetPositions()
 
-			'remove old news from the players (only unset ones)
+
+			'=== REMOVE OLD NEWS AND NEWSEVENTS ===
+			'news and newsevents both have a "happenedTime" but they must
+			'not be the same (multiple news with the same event but happened
+			'to different times)
+			local daysToKeep:int = 2
+	
+			'remove old news from the all player plans and collections
 			For Local i:Int = 1 To 4
-				Local news:TNews
-				For news = EachIn GetPlayerCollection().Get(i).GetProgrammeCollection().news
-					If day - GetWorldTime().getDay(news.GetHappenedTime()) >= 2
-						GetPlayerCollection().Get(i).GetProgrammePlan().RemoveNews(news)
+				'COLLECTION
+				'news could stay there for 2 days (including today)
+				daysToKeep = 2
+				For local news:TNews = EachIn GetPlayerCollection().Get(i).GetProgrammeCollection().news
+					If day - GetWorldTime().getDay(news.GetHappenedTime()) >= daysToKeep
+						GetPlayer(i).GetProgrammeCollection().RemoveNews(news)
+					EndIf
+				Next
+
+				'PLAN
+				'news could get send a day longer (3 days incl. today)
+				daysToKeep = 3
+				For local news:TNews = EachIn GetPlayerCollection().Get(i).GetProgrammePlan().news
+					If day - GetWorldTime().getDay(news.GetHappenedTime()) >= daysToKeep
+						GetPlayer(i).GetProgrammePlan().RemoveNews(news)
 					EndIf
 				Next
 			Next
+
+			'NEWSEVENTS
+			'remove old news events - wait a day more than "plan time"
+			daysToKeep = 4
+			GetNewsEventCollection().RemoveOutdatedNewsEvents(daysToKeep)
 		EndIf
 
 		Return True
