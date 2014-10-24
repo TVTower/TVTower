@@ -195,6 +195,7 @@ math.round = function(pNumber, pPosition)
 end
 
 table.count = function(pTable)
+	if pTable == nil then return 0 end
 	local Count = 0
 	for k,v in pairs(pTable) do Count = Count + 1 end
 	return Count
