@@ -18,8 +18,8 @@ Schön sind auch motivierende Plaudereien hier im Forum;)
 Im Moment ist das Spiel als Endlosspiel spielbar.
 Die KI funktioniert, ist aber noch nicht in der endgültigen Fassung.
 
-Am Ende der Anleitung gibt es eine Liste mit Tastenkürzeln für
-diese Entwicklerversion.
+Am Ende der Anleitung gibt es eine Liste mit Tastenkürzeln für diese
+Entwicklerversion.
 
 
 ========================================================================
@@ -40,7 +40,8 @@ Inhalt:
 - Senderkauf
 - Chef-Kredit-Bettelei
 - Terrorist
-- Interface
+- FSK 18 und Gerichtsvollzieher
+@Interface
 @Abläufe im Hintergrund
 @Veränderungen durch den Spieler
 @Tastenkürzel für die Entwicklerversion
@@ -123,8 +124,8 @@ haben, wir hier kurz alles beschrieben.
 Um in die Programmplanung zu gelangen, müßt Ihr zuvor das
 Spielerbüro betreten. Linksklick auf die Tür oder im Fahrstuhlplaner
 auswählen und Eure Spielfigur wird sich dorthin bewegen.
-Im Büro steht ein Computer. Und diesen mit links angeklickt, wird
-Euch den Programmplaner präsentieren.
+Im Büro steht ein Computer. Und diesen mit links angeklickt, wird Euch
+den Programmplaner präsentieren.
 
 Ihr seht als erstes den aktuellen Tag. Da sind bei Spielbeginn schon
 ein paar Filme und Werbungen platziert. Diese wählt das Spiel zum
@@ -143,17 +144,17 @@ hängt die Sendung am Mauszeiger. Zum Ablegen klickt wieder links.
 Wenn Ihr (auch bereits gesendete) Sendungen/Werbungen noch an anderer
 Stelle platzieren wollt, so drückt die STRG-Taste und klickt dann
 mit links darauf. Die eigentliche Sendung bleibt liegen, das Duplikat
-hängt an Eurer Hand und läßt sich durch erneuten Linksklick an
-der aktuellen Stelle ablegen.
+hängt an Eurer Hand und läßt sich durch erneuten Linksklick an der
+aktuellen Stelle ablegen.
 
 Wenn Ihr Werbung oder Serien mehrfach ablegen wollt, so drückt
 die „Shift“-Taste und klickt mit lins darauf. Solange ihr die
 „Shift“-Taste gedrückt lasst, wird mit jedem Linksklick eine
 Sendung/Werbung abgelegt.
 
-Legt Ihr eine Werbung auf einem Sendungsplatz ab, so wird daraus
-eine Dauerwerbesendung. Diese spielt pro Zuschauer eine bestimmte
-Geldmenge ein.
+Legt Ihr eine Werbung auf einem Sendungsplatz ab, so wird daraus eine
+Dauerwerbesendung. Diese spielt pro Zuschauer eine bestimmte Geldmenge
+ein.
 Legt Ihr hingegen eine Sendung auf einen Werbeplatz, so entsteht
 ein Trailer für die entsprechende Sendung. Dieser Trailer sorgt
 dafür, daß mehr Zuschauer die Sendung sehen. Allerdings sind
@@ -164,15 +165,15 @@ bringt dann keinen zusätzlichen Zuschauergewinn.
 
 Wenn Ihr das Programm des nächsten, übernächsten,
 überübernächsten oder eines gar noch weiter in der Zukunft liegenden
-Tages sehen oder verändern wollt, dann nutzt die kleinen Pfeile
-rechts oben. Freilich könnt Ihr dort auch wieder zurückblättern.
+Tages sehen oder verändern wollt, dann nutzt die kleinen Pfeile rechts
+oben. Freilich könnt Ihr dort auch wieder zurückblättern.
 
 Vorhanden Werbung und Programme sind durch Linksklick auf die
 jeweiligen Menüpunkte rechts ersichtlich. Hier gibt’s wieder
 Tooltips, wenn Ihr den Mauszeiger über die Sendung/Werbung führt. Mit
-Linksklick hebt Ihr die Sendung an. Mit Linksklick legt Ihr sie
-wieder ab. „Shift“ und Linksklick legt die Sendung so oft ab,
-wie Ihr die „Shift“-Taste gedrückt haltet.
+Linksklick hebt Ihr die Sendung an. Mit Linksklick legt Ihr sie wieder
+ab. „Shift“ und Linksklick legt die Sendung so oft ab, wie Ihr die
+„Shift“-Taste gedrückt haltet.
 
 
 Ebenfalls rechts neben der Programmplanung findet Ihr den Punkt
@@ -187,19 +188,19 @@ Die anderen Features im Programmplaner sind derzeit noch nicht aktiv.
 - Archiv
 --------
 
-Im Archiv trefft Ihr den Archivar. Ihn braucht Ihr, wenn Ihr Filme
-aus Eurem Besitz verkaufen wollt.
+Im Archiv trefft Ihr den Archivar. Ihn braucht Ihr, wenn Ihr Filme aus
+Eurem Besitz verkaufen wollt.
 Klickt auf den Archivar und Ihr bekommt eine Liste der Genres
 angezeigt. Besitzt Ihr Filme eines bestimmten Genres, so ist dieses
 schwarz geschriftet, jeweils daneben grüne Striche, die auf die Anzahl
-von Filmen unter diesem Genre hinweisen. Klickt also auf ein Genre
-und wählt den Film aus, den Ihr zum Filmverleih schleppen wollt,
-klickt auf diesen und legt ihn im Koffer ab.
+von Filmen unter diesem Genre hinweisen. Klickt also auf ein Genre und
+wählt den Film aus, den Ihr zum Filmverleih schleppen wollt, klickt
+auf diesen und legt ihn im Koffer ab.
 
 Aber Vorsicht! Legt Ihr einen Film im Koffer ab, der derzeit in der
-Programmplanung gesetzt ist und verlaßt damit den Raum, so wird
-dieser aus der Programmplanung gelöscht. Ihr müßt später diese
-Lücke wieder füllen.
+Programmplanung gesetzt ist und verlaßt damit den Raum, so wird dieser
+aus der Programmplanung gelöscht. Ihr müßt später diese Lücke
+wieder füllen.
 
 
 
@@ -210,33 +211,33 @@ Lücke wieder füllen.
 Sie dient zum Erwerb und Verkauf von Filmen.
 Lins seht Ihr den Agenten hinter seinem Schreibtisch. Rechts ein
 Regal. In der Mitte ist Euer Koffer.
-Seid Ihr gerade aus dem Archiv gekommen, befinden sich eventuell
-darin die von Euch zum Verkauf ausgesuchten Filme. Wenn Ihr sie
-verkaufen wollt, klickt mit links darauf, und klickt mitsamt dem
-Film auf den Filmagenten. Dann ist der Film weg. Ober er je wieder
-im Regal auftaucht, ist ungewiß.
+Seid Ihr gerade aus dem Archiv gekommen, befinden sich eventuell darin
+die von Euch zum Verkauf ausgesuchten Filme. Wenn Ihr sie verkaufen
+wollt, klickt mit links darauf, und klickt mitsamt dem Film auf
+den Filmagenten. Dann ist der Film weg. Ober er je wieder im Regal
+auftaucht, ist ungewiß.
 
 Zum Erwerb gibt es zwei Möglichkeiten.
 
 Einmal die Filme im Regal. Fahrt mit dem Mauszeiger über die Schuber
 und es werden Informationen zu den jeweiligen Filmen auftauchen.
 Freilich der Preis. Der sagt aus, ob Ihr ihn Euch leisten
-könnt. Wichtiger für die Einschaltquoten aber sind die Balken
-für Tempo, Kinokasse und Kritik. Und auch die Aktualität. Diese
-verringert sich mit jedem Senden. Und damit auch der Geldwert des
-Films. Wird der Film eine Weile nicht gesendet, frischt sich die
-Aktualität bis zu einem gewissen Grad wieder auf.
+könnt. Wichtiger für die Einschaltquoten aber sind die Balken für
+Tempo, Kinokasse und Kritik. Und auch die Aktualität. Diese verringert
+sich mit jedem Senden. Und damit auch der Geldwert des Films. Wird der
+Film eine Weile nicht gesendet, frischt sich die Aktualität bis zu
+einem gewissen Grad wieder auf.
 Klickt auf einen Film, bewegt ihn über den Koffer und klickt erneut,
 dann landet er im Koffer.
 Das stellt nur eine Vorauswahl dar. Zwar wird Euch das Geld sofort
-abgezogen, wenn Ihr aber wiederum auf den Film klickt und ihn zum
-Regal bewegt, dort wieder klickt, landet er im Regal und das Geld
-ist wieder auf Eurem Konto.
+abgezogen, wenn Ihr aber wiederum auf den Film klickt und ihn zum Regal
+bewegt, dort wieder klickt, landet er im Regal und das Geld ist wieder
+auf Eurem Konto.
 Verlaßt Ihr aber den Raum mit dem Film im Koffer, dann landet der Film
-unweigerlich im Archiv und steht automatisch für Eure Sendeplanung
-zur Verfügung.
-Sollte der Koffer mal voller Filme sein, so verlaßt den Raum,
-betretet ihn wieder und Ihr habt genug Platz zum Weitershoppen. 
+unweigerlich im Archiv und steht automatisch für Eure Sendeplanung zur
+Verfügung.
+Sollte der Koffer mal voller Filme sein, so verlaßt den Raum, betretet
+ihn wieder und Ihr habt genug Platz zum Weitershoppen. 
 Ganz nebenbei: Die vorher durch Euren Einkauf geschaffenen Lücken
 wurden in der Zwischenzeit vom Agenten aufgefüllt.
 
@@ -249,8 +250,8 @@ drüberfahren mit der Maus zeigt Euch wieder die Informationen zum
 Film.
 Klickt darauf und Ihr habt ein Angebot gemacht. Das Geld wird sofort
 vom Konto abgezogen. Sollte bis Mitternacht kein weiterer Spieler
-bieten, landet der Film automatisch in Eurem Archiv und steht für
-die Sendeplanung bereit.
+bieten, landet der Film automatisch in Eurem Archiv und steht für die
+Sendeplanung bereit.
 
 
 
@@ -259,8 +260,8 @@ die Sendeplanung bereit.
 -------------
 
 Das ist der gute Mann, der uns die Mäuse fängt. Nun eigentlich
-schwatzt er uns Sachen auf, die den Zuschauern den Film vermiesen
-oder Platz schaffen, um Chips zu holen.
+schwatzt er uns Sachen auf, die den Zuschauern den Film vermiesen oder
+Platz schaffen, um Chips zu holen.
 Kurz und gut: Hier gibt’s die Werbeblöcke, die stündlich gesendet
 dafür sorgen, daß wir Geld reinkriegen.
 Ihr seht auf dem Tisch und an der Wand Ordner stehen und rechts oben
@@ -276,8 +277,8 @@ Ende sendet. Oder sie nach der Frist verfällt.
 Fahrt mit den Mauszeigern über die Ordner und ihr seht die
 Werberelevanten Informationen.
 Die Prämie muß ich nicht weiter erläutern. Die Strafe wird fällig,
-wenn Ihr die erforderlichen Blöcke nicht in der angegebenen Zeit
-mit den geforderten Zuschauern sendet.
+wenn Ihr die erforderlichen Blöcke nicht in der angegebenen Zeit mit
+den geforderten Zuschauern sendet.
 Im Sendeplan wird Euch übrigens auch angezeigt, wie oft die Werbung
 schon eingeplant bzw. gesendet wurde.
 
@@ -285,9 +286,9 @@ Auch hier werden die gerissenen Lücken nach Verlassen des Raumes
 wieder aufgefüllt. Also schnell nochmal rein, ob noch was Günstiges
 hinzugekommen ist.
 
-Bitte beschwert Euch nicht allzusehr, daß die Werbeprämien noch
-nicht so richtig ausbalanciert sind. Das ist ein weites Feld und
-nicht so nebenbei zu erledigen. Wir arbeiten aber daran.
+Bitte beschwert Euch nicht allzusehr, daß die Werbeprämien noch nicht
+so richtig ausbalanciert sind. Das ist ein weites Feld und nicht so
+nebenbei zu erledigen. Wir arbeiten aber daran.
 
 
 
@@ -299,15 +300,15 @@ Im Nachrichtenstudio werden, wie nicht anders zu erwarten, die
 Nachrichten produziert.
 Ihr seht rechts die Sprecherkabine. Die soll einfach gut
 aussehen. Links sind fünf farbige Tafeln mit verschiedenen Symbolen
-angebracht. Dort könnt Ihr die Abolevels einstellen. Der Tooltip
-zeigt Euch, welches Symbol zu welchem Genre gehört.
+angebracht. Dort könnt Ihr die Abolevels einstellen. Der Tooltip zeigt
+Euch, welches Symbol zu welchem Genre gehört.
 Die Abolevel unterscheiden sich in der Zeitverzögerung mit der Ihr
 die Nachrichten zugestellt bekommt. Bei 0 bekommt Ihr für dieses
 Genre gar keine Nachrichten. Bei 3 erhaltet Ihr sie sofort, wenn sie
 erscheinen. Analog dazu kostet Abolevel 0 auch nichts, 3 dafür am
 meisten.
-Die Nachrichten können Zuschauer von anderen Sendern abziehen,
-die dann auch die Sendung bei Euch schauen könnten.
+Die Nachrichten können Zuschauer von anderen Sendern abziehen, die
+dann auch die Sendung bei Euch schauen könnten.
 Zu beachten ist, daß jeweils das Level für die Abrechnung zugrunde
 gelegt wird, das am Tag als höchstes eingestellt war. Also lohnt
 Runterschalten erst kurz vor 0 Uhr. 
@@ -319,10 +320,10 @@ Klickt Ihr auf die Pinnwand, kommt Ihr zum eigentlichen Herzstück: Dem
 Angebot an Nachrichten – links – und die zur Sendung ausgewählten
 – rechts.
 
-Wie üblich auf die zu platzierende Sendung linksklicken und sie an
-den Platz bewegen, wo sie hinsoll. Die zuvor dort gelegene habt Ihr
-dann an der Hand. Legt sie per Linksklick in der Auswahlliste ab oder
-entsorgt sie per Rechtsklick.
+Wie üblich auf die zu platzierende Sendung linksklicken und sie an den
+Platz bewegen, wo sie hinsoll. Die zuvor dort gelegene habt Ihr dann an
+der Hand. Legt sie per Linksklick in der Auswahlliste ab oder entsorgt
+sie per Rechtsklick.
 
 Da die Nachrichten eine eigene Einschaltquotenberechnung besitzen,
 könnte es schon interessant sein, da einige Kombinationen
@@ -342,20 +343,20 @@ Filme?
 Zu finden ist das Menü für den Senderkauf per Linksklick auf die
 Landkarte ganz rechts am Rand.
 
-Wenn Ihr dann auf „Sendemast kaufen“ klickt, erscheint an der
-Maushand ein Sendemastsymbol, das Ihr über die Karte bewegen
-könnt. Dabei wird Euch angezeigt, wieviele Zuschauer Ihr an
-der jeweiligen Stelle erreichen könnt. Dazu wird auch immer
-ausgewiesen, wieviele neue Zuschauer Ihr im Einzugsbereich habt. Das
-wird wichtig, wenn in Ballungszentren mehrere Sendemasten stehen, die
-sich gegebenenfalls überschneiden könnten. Da zählt dann freilich
-jeder mögliche Zuschauer nur einmal.
+Wenn Ihr dann auf „Sendemast kaufen“ klickt, erscheint an
+der Maushand ein Sendemastsymbol, das Ihr über die Karte bewegen
+könnt. Dabei wird Euch angezeigt, wieviele Zuschauer Ihr an der
+jeweiligen Stelle erreichen könnt. Dazu wird auch immer ausgewiesen,
+wieviele neue Zuschauer Ihr im Einzugsbereich habt. Das wird
+wichtig, wenn in Ballungszentren mehrere Sendemasten stehen, die sich
+gegebenenfalls überschneiden könnten. Da zählt dann freilich jeder
+mögliche Zuschauer nur einmal.
 
 Nicht zu vergessen in der untersten Zeile der Information: Der zu
 erwartende Kaufpreis.
 
-Habt Ihr eine passende Stelle für den Masten gefunden, fixiert ihn
-per Linksklick und bestätigt mit dem Button „Sendemast kaufen“.
+Habt Ihr eine passende Stelle für den Masten gefunden, fixiert ihn per
+Linksklick und bestätigt mit dem Button „Sendemast kaufen“.
 Wollt Ihr nach dem Platzieren doch lieber nochmal gucken, dann könnt
 Ihr den Sendemast per Rechtsklick wieder entfernen.
 Habt Ihr den Button „kaufen“ schon angeklickt, ist es dafür
@@ -377,12 +378,19 @@ animierten Zigarrenqualm.
 Der tut allerdings nicht zur Sache.
 
 Was es hier zu tun oder zu lassen gibt, wird in der Sprechblase
-angezeigt. Klickt einfach auf das, Eurem Anliegen entsprechende,
-wobei es sich ausschließlich um Geldwerte Optionen handelt. Zahlt
-zurück oder nehmt neuen Kredit auf.
+angezeigt. Klickt einfach auf das Eurem Anliegen Entsprechende, wobei
+es sich ausschließlich um geldwerte Optionen handelt. Zahlt zurück
+oder nehmt neuen Kredit auf.
 
 In Zukunft wird die Kreditvergabe von verschiedenen Faktoren
 abhängen. Im Moment funktioniert es einfach.
+
+Von Zeit zu Zeit erscheint eine Meldung, daß Euch der Chef sehen
+will. Er läßt Euch dafür 2 Spielstunden Zeit. Laßt Ihr die
+Zeit verstreichen, bewegt sich die Spielfigur selbsttätig ins
+Direktionsbüro. Sie weiß halt, was sich gehört.
+Durch Linksklick auf die Meldung könnt Ihr den Besuch sofort
+ausführen.
 
 
 
@@ -391,7 +399,7 @@ abhängen. Im Moment funktioniert es einfach.
 -----------
 
 Das ist der Mann für's Grobe. Nicht unumstritten sorgt er dafür, daß
-immer genügend freie Räume im Haus zu Verfügung stellen. Denn freie
+immer genügend freie Räume im Haus zu Verfügung stehen. Denn freie
 Räume sind knapp und im späteren Spielverlauf braucht es größere
 Studios. Das erste, das Euer Eigen ist, hat nur die Größe eins. Je
 weiter rechts, desto größer die Räume.
@@ -402,7 +410,7 @@ andere Seite ist das eigentliche Ziel. Die Terrorgefahr wird im
 späteren Verlauf mit einer Nachricht angekündigt.
 
 Kurz darauf betritt der Terrorist das Gebäude und geht zur
-Informationstafel. Da wird Euer Mittun nötig. Denn Ihr könnt die
+Informationstafel. Da wird Euer Mittun möglich. Denn Ihr könnt die
 Schilder auf der Informationstafel vertauschen. Hängt nun das Schild
 der Botschaft des Landes, das als Ziel für einen möglichen Angriff
 in den Nachrichten erwähnt wurde, an eine beliebige Stelle und der
@@ -415,25 +423,56 @@ könnt Ihr mittels „T“-Taste sein Erscheinen erwirken.
 
 
 
-- Interface
------------
+- FSK 18 und Gerichtsvollzieher
+-------------------------------
+
+Filme mit dem Hinweis FSK 18 dürfen laut den Jugendschutzgesetzen im
+TVTower-Land nicht zwischen 18 und 22 Uhr gesendet werden. Es bleibt
+Euch jedoch überlassen, ob Ihr Euch daran haltet. Immerhin degradiert
+eine solche Regelung ja 16jährige zu kindlichen Menschen.
+Allerdings hat die Sache einen Haken. Oder besser zwei. Die Behörden
+können schon in der Programmplanung erkennen, daß Ihr vorhabt ein
+Gesetz zu unterlaufen. Daraufhin wird eine Strafzahlung fällig und der
+Film wird aus dem Programmplaner entfernt. Die Lücke müßt Ihr dann
+wieder füllen.
+Habt Ihr es geschafft, den Film unbemerkt an der Zensur
+vorbeizuschmuggeln, gibt es nach der Ausstrahlung immer noch eine
+25%ige Chance, daß einer der beiden Gerichtsvollzieher (Mr. Czwink
+und Mr. Czwank) erscheint. Da sie sich nicht so gut auskennen im
+TVTower, informieren sie sich ganz wie der Herr Terrorist an der
+Informationstafel. Vertauscht die Archivschilder zweckdienlich und ein
+Film der Konkurrenz könnte beschlagnahmt werden.
+
+Wurde ein Film beschlagnahmt, so erhaltet Ihr eine Meldung darüber.
+
+Wie im wirklichen Leben verringern die FSK18-Ausstrahlungen zur
+falschen Zeit das Image. Derzeit um 0.5 Prozentpunkte.
+
+
+
+
+
+
+@Interface
+==========
 
 Das meint hier den unteren Teil des Spielbildschirms, der Euch durch
 das gesamte Spiel begleiten wird.
-Links ist der Fernseher, der das laufende Programm der einzelnen
-Sender anzeigt.
+Links ist der Fernseher, der das laufende Programm der einzelnen Sender
+anzeigt.
 Den könnt Ihr ausschalten. Was im Moment aber nur das Flimmern
 entfernt.
 Desweiteren könnt Ihr über die farbigen Tasten auswählen, welchem
 Sender Ihr ins laufende Programm schauen wollt. 
-Geplant ist, für jedes Filmgenre ein eigenes Bild zu zeigen. Wenn
-Ihr die Maushand auf dem Bildschirm platziert, wird angezeigt, welcher
-Film mit welcher Einschaltquote läuft. Zusätzlich bei Eurem eigenen
-Sender ein Hinweis, ob ein passender Werbeblock gesetzt ist.
+Geplant ist, für jedes Filmgenre ein eigenes Bild zu zeigen. Wenn Ihr
+die Maushand auf dem Bildschirm platziert, wird angezeigt, welcher Film
+mit welcher Einschaltquote läuft. Zusätzlich bei Eurem eigenen Sender
+ein Hinweis, ob ein passender Werbeblock gesetzt ist.
 Die anderen Anzeigen sind zu Eurer Information gedacht.
 Der rechte Bildschirm soll einmal die jeweiligen Zielgruppen zeigen,
 die vom Programm erreicht werden. Angedeutet wird es ja schon.
 Die Anzeigen in der Mitte sind ja dank der Tooltips selbsterklärend.
+
 
 
 
@@ -447,10 +486,11 @@ Hier soll im Moment noch nicht viel erklärt werden. So ist es sicher
 leichter, daß Ihr auf Ungereimtheiten aufmerksam werdet und sie uns
 gegebenenfalls mitteilt. Da die meisten, die uns in den Weiten des
 Netzes finden, erfahrene Spieler und Spielerinnen sein dürften, ist
-die Intuition ein nicht zu unterschätzender Faktor zu Verbesserung
-des Spiels.
+die Intuition ein nicht zu unterschätzender Faktor zu Verbesserung des
+Spiels.
 Und wir wollen die Ungereimtheiten nicht durch schlaue Wichtigkeiten
 schon im Vorhinein wegreden.
+
 
 
 
@@ -464,6 +504,9 @@ Diese enthält eine Menge Sachen, die per Editor verändert werden
 können.
 Denkt aber dran, daß das nächste Update eine neue Datei settings.xml
 mit sich bringt und Eure überschreiben würde;)
+Mittlerweile wird einiges aber schon in nutzerdefinierten Dateien
+abgelegt.
+
 
 
 
