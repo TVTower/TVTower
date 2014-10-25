@@ -1704,7 +1704,7 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 
 
 		local price:int = GetNextBid()
-		If player.getFinance().PayAuctionBid(price, self)
+		If player.getFinance().PayAuctionBid(price, self.GetLicence())
 			'another player was highest bidder, we pay him back the
 			'bid he gave (which is the currently highest bid...)
 			If bestBidder and GetPlayerCollection().Get(bestBidder)

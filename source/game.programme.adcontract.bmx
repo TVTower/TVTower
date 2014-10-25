@@ -190,7 +190,7 @@ End Function
 
 'contracts bases for advertisement - straight from the DB
 'they just contain data to base new contracts of
-Type TAdContractBase extends TGameObject {_exposeToLua}
+Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 	Field title:TLocalizedString
 	Field description:TLocalizedString
 	'days to fullfill a (signed) contract
