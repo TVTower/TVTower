@@ -302,6 +302,7 @@ Type TFunctions
 
 	'formats a value: 1000400 = 1,0 Mio
 	Function convertValue:String(value:float, digitsAfterDecimalPoint:int=2, typ:Int=0, delimeter:string=",")
+		typ = MathHelper.Clamp(typ, 0,3)
       ' typ 1: 250000 = 250Tsd
       ' typ 2: 250000 = 0,25Mio
       ' typ 3: 250000 = 0,0Mrd

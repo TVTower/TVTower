@@ -2003,7 +2003,7 @@ endrem
 			else
 				logCol = "color=35,130,30"
 			Endif
-			logFont.DrawBlock("|"+logCol+"|"+TFunctions.convertValue(abs(history.GetMoney()),, -2, ".")+" "+getLocale("CURRENCY")+"|/color| "+history.GetDescription(), 501 + screenOffsetX + 5, 41 + screenOffsetY + logSlot*logH, 238 - 2*5, logH, ALIGN_LEFT_CENTER, clLog)
+			logFont.DrawBlock("|"+logCol+"|"+TFunctions.dottedValue(abs(history.GetMoney()))+" "+getLocale("CURRENCY")+"|/color| "+history.GetDescription(), 501 + screenOffsetX + 5, 41 + screenOffsetY + logSlot*logH, 238 - 2*5, logH, ALIGN_LEFT_CENTER, clLog)
 			logSlot:+1
 		Next
 
@@ -2031,7 +2031,7 @@ endrem
 		else
 			GetSpriteFromRegistry("screen_financial_negativeBalance").DrawArea(250 + screenOffsetX, 332 + screenOffsetY, 200, 25)
 		endif
-		captionFont.DrawBlock(TFunctions.convertValue(profit,,-2,"."), 250 + screenOffsetX, 332 + screenOffsetY, 200, 25, ALIGN_CENTER_CENTER, TColor.clWhite, 2, 1, 0.75)
+		captionFont.DrawBlock(TFunctions.dottedValue(profit), 250 + screenOffsetX, 332 + screenOffsetY, 200, 25, ALIGN_CENTER_CENTER, TColor.clWhite, 2, 1, 0.75)
 
 		'draw label backgrounds
 		local labelBGX:int = 20 + screenOffsetX
@@ -2087,39 +2087,39 @@ endrem
 		GetSpriteFromRegistry("screen_financial_balanceInfo").Draw(valueBGX, labelStartY + 1 + 6*valueH)
 
 		'draw balance values: income
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_programmeLicences,,-2,"."), valueIncomeX, valueStartY + 0*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_ads,,-2,"."), valueIncomeX, valueStartY + 1*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_callerRevenue,,-2,"."), valueIncomeX, valueStartY + 2*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_sponsorshipRevenue,,-2,"."), valueIncomeX, valueStartY + 3*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_programmeLicences), valueIncomeX, valueStartY + 0*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_ads), valueIncomeX, valueStartY + 1*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_callerRevenue), valueIncomeX, valueStartY + 2*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_sponsorshipRevenue), valueIncomeX, valueStartY + 3*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
 		'news: generate no income
 		'newsagencies: generate no income
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_stations,,-2,"."), valueIncomeX, valueStartY + 6*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_stations), valueIncomeX, valueStartY + 6*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
 		'scripts: generate no income
 		'actors and productionstuff: generate no income
 		'studios: generate no income
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_balanceInterest,,-2,"."), valueIncomeX, valueStartY + 10*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_creditTaken,,-2,"."), valueIncomeX, valueStartY + 11*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_misc,,-2,"."), valueIncomeX, valueStartY + 12*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_balanceInterest), valueIncomeX, valueStartY + 10*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_creditTaken), valueIncomeX, valueStartY + 11*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_misc), valueIncomeX, valueStartY + 12*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
 		'spacer for total
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_total,,-2,"."), valueIncomeX, valueStartY + 14*valueH +5, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_total), valueIncomeX, valueStartY + 14*valueH +5, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
 
 
 		'draw balance values: expenses
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_programmeLicences,,-2,"."), valueExpenseX, valueStartY + 0*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_penalty,,-2,"."), valueExpenseX, valueStartY + 1*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_programmeLicences), valueExpenseX, valueStartY + 0*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_penalty), valueExpenseX, valueStartY + 1*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
 		'no callin expenses ?
 		'no expenses for sponsorships ?
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_news,,-2,"."), valueExpenseX, valueStartY + 4*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_newsAgencies,,-2,"."), valueExpenseX, valueStartY + 5*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_stationFees + finance.expense_stations,,-2,"."), valueExpenseX, valueStartY + 6*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_scripts,,-2,"."), valueExpenseX, valueStartY + 7*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_productionStuff,,-2,"."), valueExpenseX, valueStartY + 8*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_rent,,-2,"."), valueExpenseX, valueStartY + 9*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_drawingCreditInterest,,-2,"."), valueExpenseX, valueStartY + 10*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_creditRepayed,,-2,"."), valueExpenseX, valueStartY + 11*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_creditInterest,,-2,"."), valueExpenseX, valueStartY + 12*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_news), valueExpenseX, valueStartY + 4*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_newsAgencies), valueExpenseX, valueStartY + 5*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_stationFees + finance.expense_stations), valueExpenseX, valueStartY + 6*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_scripts), valueExpenseX, valueStartY + 7*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_productionStuff), valueExpenseX, valueStartY + 8*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_rent), valueExpenseX, valueStartY + 9*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_drawingCreditInterest), valueExpenseX, valueStartY + 10*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_creditRepayed), valueExpenseX, valueStartY + 11*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_creditInterest), valueExpenseX, valueStartY + 12*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
 		'spacer for total
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_total,,-2,"."), valueExpenseX, valueStartY + 14*valueH +5, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_total), valueExpenseX, valueStartY + 14*valueH +5, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
 
 
 
@@ -2145,10 +2145,10 @@ endrem
 			textFont.DrawBlock(GetLocale("FINANCES_STATIONS_FEES"), labelX, labelStartY + 6*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_STATION])
 			textFont.DrawBlock(GetLocale("FINANCES_STATIONS_BUY_SELL"), labelX, labelStartY + 7*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_STATION])
 
-			textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_stationFees,,-2,"."), valueExpenseX, valueStartY + 6*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+			textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_stationFees), valueExpenseX, valueStartY + 6*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
 
-			textBoldFont.drawBlock(TFunctions.convertValue(finance.income_stations,,-2,"."), valueIncomeX, valueStartY + 7*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
-			textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_stations,,-2,"."), valueExpenseX, valueStartY + 7*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+			textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_stations), valueIncomeX, valueStartY + 7*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
+			textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_stations), valueExpenseX, valueStartY + 7*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
 		endif
 
 
@@ -2200,9 +2200,9 @@ endrem
 			local time:int = GetWorldTime().MakeTime(0, hoveredDay, 0, 0)
 			local gameDay:string = GetWorldTime().GetDayOfYear(time)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(time)
 			if GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money > 0
-				textSmallFont.Draw(GetLocale("GAMEDAY")+" "+gameDay+": |color=50,110,50|"+TFunctions.convertValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money,,-2,".")+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
+				textSmallFont.Draw(GetLocale("GAMEDAY")+" "+gameDay+": |color=50,110,50|"+TFunctions.dottedValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money)+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
 			Else
-				textSmallFont.Draw(GetLocale("GAMEDAY")+" "+gameDay+": |color=110,50,50|"+TFunctions.convertValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money,,-2,".")+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
+				textSmallFont.Draw(GetLocale("GAMEDAY")+" "+gameDay+": |color=110,50,50|"+TFunctions.dottedValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money)+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
 			Endif
 
 			local hoverX:int = curveArea.GetX() + (slot-0.5) * slotWidth
