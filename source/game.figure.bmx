@@ -87,11 +87,9 @@ End Function
 'all kind of characters walking through the building
 '(players, terrorists and so on)
 Type TFigure extends TFigureBase
-	'active as soon as figure leaves/enters rooms
-	Field isChangingRoom:int = False
-	'true as soon as a specific target object (door, hotspot) is reached
-	'value gets reset as soon as "reachTarget()" gets called
-	Field arrivedAtTargetObj:int = False {nosave}
+	Field changingRoomStart:Long = 0 {nosave}
+	Field fadeOnChangingRoom:int = False
+	
 	'the door used (there might be multiple)
 	Field fromDoor:TRoomDoorBase = Null
 	'coming from room
@@ -149,7 +147,9 @@ Type TFigure extends TFigureBase
 		if inRoom then inRoom = GetRoomCollection().Get(inRoom.id)
 		if fromRoom then fromRoom = GetRoomCollection().Get(fromRoom.id)
 		if fromDoor then fromDoor = GetRoomDoorBaseCollection().Get(fromDoor.id)
-		if TRoomDoorBase(targetObj) then targetObj = GetRoomDoorBaseCollection().Get(TRoomDoorBase(targetObj).id)
+		For local target:object = EachIn targets
+			if TRoomDoorBase(target) then target = GetRoomDoorBaseCollection().Get(TRoomDoorBase(target).id)
+		Next
 		'set as room occupier again (so rooms occupant list gets refilled)
 		if inRoom and not inRoom.isOccupant(self)
 			inRoom.addOccupant(Self)
@@ -158,8 +158,8 @@ Type TFigure extends TFigureBase
 
 
 	Method HasToChangeFloor:Int()
-		if not self.target then return FALSE
-		Return GetFloor(self.target) <> GetFloor()
+		if not GetTarget() then return FALSE
+		Return GetFloor( GetTargetMoveToPosition() ) <> GetFloor()
 	End Method
 
 
@@ -216,40 +216,52 @@ Type TFigure extends TFigureBase
 	End Method
 
 
+	'override to enter the target after waiting
+	'step 2/2
+	Method ReachTargetStep2:int()
+		'call BEFORE step 2, as step 2 removes the target
+		if CanEnterTarget() then EnterTarget()
+
+		Super.ReachTargetStep2()
+	End Method
+
+
 	Method FigureMovement:int()
 		'stop movement, will get set to a value if we have a target to move to
 		velocity.setX(0)
 
-		If not CanMove() then return False
-
-
-		'we have a target to move to
-		if target
+		'we have a target to move to and are not yet entering it
+		'check if we reach it now
+		if GetTarget() and currentReachTargetStep = 0
+			'does the center of the figure will reach the target during update?
+			'can happen even when not able to move (manual position set
+			'or target acquired without moving)
+			local reachTemporaryTarget:int = FALSE
 			'get a temporary target coordinate so we can manipulate that safely
-			Local targetX:Int = target.getIntX()
-
+			Local targetX:Int = GetTargetMoveToPosition().getIntX()
 			'do we have to change the floor?
 			'if that is the case - change temporary target to elevator
 			If HasToChangeFloor() Then targetX = GetBuilding().Elevator.GetDoorCenterX()
 
-			'check whether the target is left or right side of the figure
-			If targetX < area.GetX()
-				velocity.SetX( -(Abs(initialdx)))
-			ElseIf targetX > area.GetX()
-				velocity.SetX(  (Abs(initialdx)))
-			EndIf
+			'we stand in front of the target -> reach target!
+			if GetVelocity().GetX() = 0 and abs(area.getX() - targetX) < 1.0 then reachTemporaryTarget=true
 
+			'if able to move, check if the movement will lead to reaching
+			'the target
+			if CanMove()
+				'check whether the target is left or right side of the figure
+				If targetX < area.GetX()
+					velocity.SetX( -(Abs(initialdx)))
+				ElseIf targetX > area.GetX()
+					velocity.SetX(  (Abs(initialdx)))
+				EndIf
 
-			'does the center of the figure will reach the target during update?
-			local dx:float = GetVelocity().GetX() * GetDeltaTimer().GetDelta() * GetWorldSpeedFactor()
-			local reachTemporaryTarget:int = FALSE
-			'move to right and next step is more right than target
-			if dx > 0 and ceil(area.getX() + dx) >= targetX then reachTemporaryTarget=true
-			'move to left and next step is more left than target
-			if dx < 0 and ceil(area.getX() + dx) <= targetX then reachTemporaryTarget=true
-			'we stand in front of the target
-			if dx = 0 and abs(area.getX() - targetX) < 1.0 then reachTemporaryTarget=true
-
+				local dx:float = GetVelocity().GetX() * GetDeltaTimer().GetDelta() * GetWorldSpeedFactor()
+				'move to right and next step is more right than target
+				if dx > 0 and ceil(area.getX() + dx) >= targetX then reachTemporaryTarget=true
+				'move to left and next step is more left than target
+				if dx < 0 and ceil(area.getX() + dx) <= targetX then reachTemporaryTarget=true
+			endif
 
 			'we reached our current target (temp or real)
 			If reachTemporaryTarget
@@ -262,7 +274,7 @@ Type TFigure extends TFigureBase
 					'the elevator - this avoids going into the elevator
 					'plan without really leaving the elevator
 					If not GetBuilding().Elevator.passengers.Contains(Self)
-						ReachTarget()
+						ReachTargetStep1()
 					endif
 				else
 					'set to elevator-targetx
@@ -272,11 +284,11 @@ Type TFigure extends TFigureBase
 			endif
 		endif
 
-		'targetObj means, the figure has to wait a bit until it can
-		'enter/leave
-		'CanEnterTarget() checks if the figure can enter the target
-		'in this moment (or it might have to wait a bit longer)
-		if not target and targetObj and CanEnterTarget() then EnterTarget()
+		'we have a target and are in this moment entering it
+		if GetTarget() and currentReachTargetStep = 1
+			'if waitingtime is over, call step 2 of the entering sequence
+			if not IsWaitingToEnter() then ReachTargetStep2()
+		endif
 
 
 		'decide if we have to play sound
@@ -322,27 +334,12 @@ Type TFigure extends TFigureBase
 				If boardingState * PosOffset.GetX() > 0 Then result = "walkRight"
 				If boardingState * PosOffset.GetX() < 0 Then result = "walkLeft"
 			EndIf
-rem
-			'by default show backside
-			result = "standBack"
-
-			'show front:
-			'in elevator
-			If IsInElevator() then result = "standFront"
-			'when idleing
-		'	If not target and not targetObj then result = "standFront"
-			'coming out of a room
-			If isChangingRoom and fromRoom then result = "standFront"
-endrem			
 
 			'show the backside if at elevator to change floor
 			If hasToChangeFloor() And Not IsInElevator() And IsAtElevator()
 				result = "standBack"
 			'not moving but wants to go to somewhere
-			ElseIf arrivedAtTargetObj
-				result = "standBack"
-			'going into a room
-			ElseIf isChangingRoom and TRoomDoor(targetObj)
+			ElseIf currentAction = ACTION_ENTERING
 				result = "standBack"
 			'in a room (or standing in front of a fake room - looking at plan)
 			ElseIf inRoom and inRoom.ShowsOccupants()
@@ -416,12 +413,17 @@ endrem
 		'in a fake room?
 		if inRoom and inRoom.ShowsOccupants() then return True
 		
-		return (IsInBuilding() or isChangingRoom)
+		return (IsInBuilding() or isChangingRoom())
+	End Method
+
+
+	Method IsChangingRoom:int()
+		return currentAction = ACTION_ENTERING or currentAction = ACTION_LEAVING
 	End Method
 
 
 	Method IsInBuilding:int()
-		If isChangingRoom Then Return False
+		If isChangingRoom() Then Return False
 		If inRoom Then Return False
 		Return True
 	End Method
@@ -439,24 +441,15 @@ endrem
 	Method SetInRoom:Int(room:TRoomBase)
 		'in all cases: close the door (even if we cannot enter)
 		'Ronny TODO: really needed?
-		If room and TRoomDoorBase(targetObj) then TRoomDoorBase(targetObj).Close(self)
+		If room and TRoomDoorBase(GetTarget()) then TRoomDoorBase(GetTarget()).Close(self)
 
 		If room and not room.IsOccupant(self) then room.addOccupant(Self)
-
-		'remove target if we are going in a room
-		if room then targetObj = null
 
 		'backup old room as origin
 		fromRoom = inRoom
 
 		'set new room
 	 	inRoom = room
-
-		'room change finished
-		isChangingRoom = FALSE
-		'also arrival state can get reset
-		arrivedAtTargetObj = False
-
 
 	 	'inform AI that we reached a room
 	 	If isAIPlayer()
@@ -495,13 +488,6 @@ endrem
 	End Method
 
 
-	'removes potential targets of the figure
-	Method ResetTarget:Int()
-		target = Null
-		targetObj = Null
-	End Method
-
-
 	'figure wants to enter a room
 	'"onEnterRoom" is called when successful
 	'@param door         door to use
@@ -509,7 +495,7 @@ endrem
 	'@param forceEnter   kick without being the room owner
 	Method EnterRoom:Int(door:TRoomDoor, room:TRoomBase, forceEnter:int=FALSE)
 		'skip command if we already are entering/leaving
-		if isChangingRoom then return TRUE
+		if isChangingRoom() then return TRUE
 
 		'assign room if not done yet
 		if not room and door then room = door.GetRoom()
@@ -528,9 +514,6 @@ endrem
 			'tooltip only for active user
 			If isActivePlayer() then GetBuilding().CreateRoomBlockedTooltip(door, room)
 
-			'reset target
-			ResetTarget()
-
 			return FALSE
 		endif
 
@@ -543,10 +526,7 @@ endrem
 					If isAIPlayer() then GetPlayer(playerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_INUSE)
 					'tooltip only for active user
 					If isActivePlayer() then GetBuilding().CreateRoomUsedTooltip(door, room)
-
-					'reset target
-					ResetTarget()
-		
+	
 					return FALSE
 				EndIf
 			EndIf
@@ -559,12 +539,18 @@ endrem
 		if event.IsVeto() then return False
 		
 		'enter is allowed - set time of start
-		isChangingRoom = Time.GetTimeGone()
+		changingRoomStart = Time.GetTimeGone()
 
 		'actually enter the room
 		room.BeginEnter(door, self, TRoom.ChangeRoomSpeed/2)
 
+		'inform what the figure does now
+		currentAction = ACTION_ENTERING
 
+		'do not fade when it is a fake room
+		fadeOnChangingRoom = True
+		if room.ShowsOccupants() then fadeOnChangingRoom = False
+	
 		'kick other figures from the room if figure is the owner 
 		'only player-figures need such handling (events etc.)
 		If playerID and playerID = room.owner
@@ -575,11 +561,15 @@ endrem
 	End Method
 
 
+
 	Method FinishEnterRoom:Int(room:TRoomBase, door:TRoomDoorBase)
 		'=== INFORM OTHERS ===
 		'inform that figure now enters the room
 		'(eg. for players informing the ai)
 		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterRoom", new TData.Add("room", room).Add("door", door) , self, room) )
+
+		'reset action
+		currentAction = ACTION_IDLE
 
 		'=== SET IN ROOM ===
 		SetInRoom(room)
@@ -607,11 +597,12 @@ endrem
 	'command to leave a room - "onLeaveRoom" is called when successful
 	Method LeaveRoom:Int(force:Int=False)
 		'skip command if in no room or already leaving
-		if not inroom or isChangingRoom then return True
+		if not inroom or isChangingRoom() then return True
 
 		'=== CHECK IF LEAVING IS ALLOWED ===
 		'skip leaving if not allowed to do so
 		if not force and not CanLeaveroom(inroom) then return False
+
 
 		'ask if somebody is against leaving that room
 		'but ignore the result if figure is forced to leave
@@ -627,7 +618,14 @@ endrem
 
 		'=== LEAVE ===
 		'leave is allowed - set time of start
-		isChangingRoom = Time.GetTimeGone()
+		changingRoomStart = Time.GetTimeGone()
+
+		'inform what the figure does now
+		currentAction = ACTION_LEAVING
+
+		'do not fade when it is a fake room
+		fadeOnChangingRoom = True
+		if inRoom.ShowsOccupants() then fadeOnChangingRoom = False
 
 		inRoom.BeginLeave(null, self, TRoom.ChangeRoomSpeed/2)
 	End Method
@@ -651,6 +649,9 @@ endrem
 
 		'enter target -> null = building
 		SetInRoom( null )
+
+		'reset action
+		currentAction = ACTION_IDLE
 
 		'activate timer to wait a bit after leaving a room
 		WaitLeavingTimer = Time.GetTimeGone() + WaitEnterLeavingTime
@@ -719,9 +720,37 @@ endrem
 
 
 	Method GoOnBoardAndSendElevator:Int()
-		if not target then return FALSE
-		If GetBuilding().Elevator.EnterTheElevator(Self, Self.getFloor(target))
-			GetBuilding().Elevator.SendElevator(Self.getFloor(target), Self)
+		if not GetTarget() then return FALSE
+		If GetBuilding().Elevator.EnterTheElevator(Self, GetFloor(GetTargetMoveToPosition()))
+			GetBuilding().Elevator.SendElevator(GetFloor(GetTargetMoveToPosition()), Self)
+		EndIf
+	End Method
+
+
+	'overridden to add roomdoor/hotspot
+	'returns the coordinate the figure has to walk to, to reach that
+	'target
+	Method GetTargetMoveToPosition:TVec2D()
+		local target:object = GetTarget()
+		if TVec2D(target)
+			return TVec2D(target)
+		elseif TRoomDoorBase(target)
+			return new TVec2D.Init(TRoomDoorBase(target).area.GetX() + TRoomDoorBase(target).area.GetW()/2, TRoomDoorBase(target).area.GetY())
+		elseif THotspot(target)
+			return new TVec2D.Init(THotspot(target).area.GetX() + 5, THotspot(target).area.GetY())
+		endif
+		
+		return Null
+	End Method
+
+
+	'override to wait when reaching a target door/hotspot
+	Method customReachTargetStep1:Int()
+		'start waiting in front of the target
+		If TRoomDoorBase(GetTarget()) or THotspot(GetTarget())
+			WaitEnterTimer = Time.GetTimeGone() + WaitEnterLeavingTime
+		Else
+			Super.customReachTargetStep1()
 		EndIf
 	End Method
 
@@ -741,17 +770,15 @@ endrem
 		'only change target if it's your figure or you are game leader
 		If self <> GetPlayerCollection().Get().figure And Not Game.isGameLeader() Then Return False
 
-
 		'=== CALCULATE NEW TARGET/TARGET-OBJECT ===
-		local newTargetObj:TStaticEntity = Null
-		local newTarget:TVec2D = Null
+		local newTarget:object = Null
 	
 		'only a partial target was given
 		if x=-1 or y=-1
 			'change current target
-			if target
-				If x<>-1 Then x = target.x
-				If y<>-1 Then y = target.y
+			if TVec2D( GetTarget() )
+				If x<>-1 Then x = TVec2D( GetTarget() ).x
+				If y<>-1 Then y = TVec2D( GetTarget() ).y
 			'create a new target
 			else
 				If x=-1 Then x = area.position.x
@@ -762,12 +789,17 @@ endrem
 		'y is not of floor 0 -13
 		If GetBuilding().GetFloor(y) < 0 Or GetBuilding().GetFloor(y) > 13 Then Return False
 
+		local newTargetCoord:TVec2D
+
 		'set new target, y is recalculated to "basement"-y of that floor
-		newTarget = new TVec2D.Init(x, GetBuilding().GetFloorY2(GetBuilding().GetFloor(y)) )
+		newTargetCoord = new TVec2D.Init(x, GetBuilding().GetFloorY2(GetBuilding().GetFloor(y)) )
+		newTarget = newTargetCoord
 
 		'when targeting a room, set target to center of door
-		newTargetObj = TRoomDoor.GetByCoord(newTarget.x, newTarget.y)
-		If newTargetObj then newTarget.setX(newTargetObj.area.GetX() + ceil(newTargetObj.area.GetW()/2))
+		if TRoomDoor.GetByCoord(newTargetCoord.x, newTargetCoord.y)
+			newTarget = TRoomDoor.GetByCoord(newTargetCoord.x, newTargetCoord.y)
+			newTargetCoord = TRoomDoor(newTarget).area.position.copy()
+		endif
 
 		'limit target coordinates
 		'on the base floor we can walk outside the building, so just
@@ -781,27 +813,28 @@ endrem
 		local leftLimit:int = 15 '200
 
 		if GetBuilding().GetFloor(y) = 0
-			If Floor(newTarget.x) >= rightLimit Then newTarget.X = rightLimit
+			If Floor(newTargetCoord.x) >= rightLimit Then newTargetCoord.X = rightLimit
 		else
-			If Floor(newTarget.x) <= leftLimit Then newTarget.X = leftLimit
-			If Floor(newTarget.x) >= rightLimit Then newTarget.X = rightLimit
+			If Floor(newTargetCoord.x) <= leftLimit Then newTargetCoord.X = leftLimit
+			If Floor(newTargetCoord.x) >= rightLimit Then newTargetCoord.X = rightLimit
 		endif
 
 		local targetRoom:TRoomBase
-		if TRoomDoor(newTargetObj) then targetRoom = TRoomDoor(newTargetObj).GetRoom() 
+		if TRoomDoor(newTarget) then targetRoom = TRoomDoor(newTarget).GetRoom() 
 
 
 		'=== CHECK IF ALREADY THERE ===
 		'check if figure is already at this target
-		if newTargetObj and newTargetObj = targetObj then return False
-		if newTarget and target and newTarget.isSame(target) then return False
+		if newTarget and newTarget = GetTarget() then return False
+		'new target and current target are positions and the same?
+		if TVec2D(newTarget) and TVec2D(GetTarget()) and TVec2D(newTarget).isSame(TVec2D(GetTarget())) then return False
 		'or if already in this room
 		if targetRoom and targetRoom = inRoom then return False
 
+
 		'=== SET NEW TARGET ===
 		'new target - so go to it
-		target = newTarget.Copy()
-		targetObj = newTargetObj
+		AddTarget(newTarget)
 
 		'if still in a room, but targetting another one ... leave first
 		'this is needed as computer players do not "leave a room", they
@@ -827,21 +860,18 @@ endrem
 
 	'override to add support for hotspots/rooms
 	Method EnterTarget:Int()
-		'emit an event
-		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterTarget", null, self, targetObj ) )
+		if not GetTarget() then return False
 
-		if targetObj
-			if THotspot(targetObj)
-				'remove targeted hotspot
-				targetObj = null
-			elseif TRoomDoor(targetObj)
-				local targetDoor:TRoomDoor = TRoomDoor(targetObj)
-				'do not remove the target room as it is done during
-				'"entering the room" (which can be animated and so we
-				'just trust the method to do it)
-				EnterRoom(targetDoor, null)
-			EndIf
-		endif
+		'emit an event
+		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterTarget", null, self, GetTarget() ) )
+
+		local targetDoor:TRoomDoor = TRoomDoor(GetTarget())
+		if targetDoor
+			'do not remove the target room as it is done during
+			'"entering the room" (which can be animated and so we
+			'just trust the method to do it)
+			EnterRoom(targetDoor, null)
+		EndIf
 	End Method
 
 
@@ -863,7 +893,7 @@ endrem
 			EndIf
 
 			If IsInElevator() and GetBuilding().Elevator.ReadyForBoarding
-				If (not target OR GetBuilding().Elevator.CurrentFloor = GetFloor(target))
+				If (not GetTarget() OR GetBuilding().Elevator.CurrentFloor = GetFloor(GetTargetMovetoPosition()))
 					GetBuilding().Elevator.LeaveTheElevator(Self)
 				EndIf
 			EndIf
@@ -882,36 +912,35 @@ endrem
 		if not sprite or not isVisible() then return FALSE
 
 		'skip figures in rooms or in rooms not showing a figure
-		If inRoom and not inRoom.ShowsOccupants() then return False
+		If not IsChangingRoom() and inRoom and not inRoom.ShowsOccupants() then return False
 
 		local oldAlpha:Float = GetAlpha()
-		if isChangingRoom
-			local alpha:float = Min(1.0, float(Time.GetTimeGone() - isChangingRoom) / (TRoom.ChangeRoomSpeed / 2))
+		if isChangingRoom() and fadeOnChangingRoom
+			local alpha:float = Min(1.0, float(Time.GetTimeGone() - changingRoomStart) / (TRoom.ChangeRoomSpeed / 2.0))
 			'to building -> fade in
-			if inroom
+			if currentAction = ACTION_LEAVING
 				'nothing to do
 			'from building -> fade out
-			else
+			elseif currentAction = ACTION_ENTERING
 				alpha = 1.0 - alpha
-				'only fade when targeting something
-				'avoids fading on elevator plan
-				if not targetObj then alpha = 1.0 
 			endif
-
-			'do not fade when it is a fake room
-			if inRoom and inRoom.ShowsOccupants() then alpha = 1.0
-			if fromRoom and fromRoom.ShowsOccupants() then alpha = 1.0
-			if TRoomDoor(targetObj) and TRoomDoor(targetObj).GetRoom()
-				if TRoomDoor(targetObj).GetRoom().ShowsOccupants() then alpha = 1.0
-			endif
-			
 			SetAlpha(alpha * oldAlpha)
 		endif
 
+
+		local renderPos:TVec2D = GetRenderAtPosition()
+		RenderAt(renderPos.GetIntX(), renderPos.GetIntY())
+
+		SetAlpha(oldAlpha)
+
+		if greetOthers then GreetPeopleOnSameFloor()
+	End Method
+
+
+	Method GetRenderAtPosition:TVec2D()
 		'avoid shaking figures when standing - only use tween
 		'position when moving
 		local tweenPos:TVec2D
-
 		
 		'also do not move with WorldTime being paused
 		'alternatively (also do not move when gamespeed is "0")
@@ -925,17 +954,59 @@ endrem
 			tweenPos = area.position.Copy()
 		endif
 
+		'center figure
+		tweenPos.AddXY(- ceil(area.GetW()/2) + PosOffset.getX(), - sprite.area.GetH() + PosOffset.getY())
 
-		'draw x-centered at current position, with int
-		if parent
-			'with parent: draw local to parent (add parents screen coord)
-			RenderAt( int(parent.GetScreenX() + tweenPos.X - ceil(area.GetW()/2) + PosOffset.getX()), int(parent.GetScreenY() + tweenPos.Y - sprite.area.GetH() + PosOffset.getY()))
-		else
-			RenderAt( int(tweenPos.X - ceil(area.GetW()/2) + PosOffset.getX()), int(tweenPos.Y - sprite.area.GetH() + PosOffset.getY()))
+		'with parent: set local to parent (add parents screen coord)
+		if parent then tweenPos.AddXY(parent.GetScreenX(), parent.GetScreenY())
+
+		return tweenPos
+	End Method 
+
+
+	Method RenderDebug(pos:TVec2D = Null)
+		if not pos
+			pos = GetRenderAtPosition()
+			pos.AddXY(40, -100)
+		endif
+
+		local oldCol:TColor = new TColor.Get()
+
+		SetAlpha oldCol.a * 0.5
+		SetColor 0,0,0
+		DrawRect(pos.x, pos.y, 100, 100)
+
+
+		local fromDoorText:string = ""
+		local fromRoomText:string = ""
+		local inRoomText:string = ""
+		local targetText:string = ""
+		local targetObjText:string = ""
+		if TRoomDoor(fromDoor) then fromDoorText = TRoomDoor(fromDoor).GetRoom().GetName()
+		if TRoom(fromRoom) then fromRoomText = TRoom(fromRoom).GetName()
+		if TRoom(inRoom) then inRoomText = TRoom(inRoom).GetName()
+		if GetTarget()
+			targetText = int(GetTargetMovetoPosition().x)+", "+int(GetTargetMovetoPosition().y)
+			if TRoomDoor(GetTarget())
+				targetObjText = TRoomDoor(GetTarget()).GetRoom().GetName()
+			elseif THotSpot(GetTarget())
+				targetObjText = "Hotspot"
+			endif
 		endif
 		
-		SetAlpha(oldAlpha)
+		SetAlpha oldCol.a
+		SetColor 255,255,255
+		GetBitMapFont("default").Draw(name, pos.x + 5, pos.y + 5)
+		GetBitMapFont("default").Draw("isChangingRoom: "+isChangingRoom(), pos.x+ 5, pos.y + 5 + 1*12)
+		GetBitMapFont("default").Draw("IsControllable(): "+IsControllable(), pos.x+ 5, pos.y + 5 + 2*12)
+		GetBitMapFont("default").Draw("CanMove(): "+CanMove(), pos.x+ 5, pos.y + 5 + 3*12)
+		GetBitMapFont("default").Draw("fromDoor: "+fromDoorText, pos.x+ 5, pos.y + 5 + 4*12)
+		GetBitMapFont("default").Draw("fromRoom: "+fromRoomText, pos.x+ 5, pos.y + 5 + 5*12)
+		GetBitMapFont("default").Draw("inRoom: "+inRoomText, pos.x+ 5, pos.y + 5 + 6*12)
+		GetBitMapFont("default").Draw("target: "+targetText, pos.x+ 5, pos.y + 5 + 7*12)
+		GetBitMapFont("default").Draw("targetObj: "+targetObjText, pos.x+ 5, pos.y + 5 + 8*12)
 
-		if greetOthers then GreetPeopleOnSameFloor()
+		'restore col/alpha
+		oldCol.SetRGBA()
 	End Method
 End Type

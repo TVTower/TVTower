@@ -202,7 +202,7 @@ Type TPlayerBoss
 
 
 		'TODO: generate talks - for now, just remove what we collected
-		print "TODO: GENERATE BOSS DIALOGUE !"
+		if playerID = GetPlayerBaseCollection().playerID  then print "TODO: GENERATE BOSS DIALOGUE !"
 
 		local foundProgrammeMalfunctions:int = 0
 		local foundNewsMalfunctions:int = 0
@@ -210,9 +210,11 @@ Type TPlayerBoss
 			if subject.subjectType = subject.TYPE_PROGRAMME_MALFUNCTION then foundProgrammeMalfunctions :+1
 			if subject.subjectType = subject.TYPE_NEWS_MALFUNCTION then foundNewsMalfunctions :+1
 		Next
-		if foundProgrammeMalfunctions > 0 then print "TODO: TALK ABOUT "+foundProgrammeMalfunctions+"x MALFUNCTIONS."
-		if foundNewsMalfunctions > 0 then print "TODO: TALK ABOUT "+foundNewsMalfunctions+"x MALFUNCTIONS."
-
+		if playerID = GetPlayerBaseCollection().playerID
+			if foundProgrammeMalfunctions > 0 then print "TODO: TALK ABOUT "+foundProgrammeMalfunctions+"x MALFUNCTIONS."
+			if foundNewsMalfunctions > 0 then print "TODO: TALK ABOUT "+foundNewsMalfunctions+"x MALFUNCTIONS."
+		endif
+		
 		'just clear the talk subjects
 		talkSubjects = new TPlayerBossTalkSubjects[0]
 

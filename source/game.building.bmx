@@ -343,7 +343,7 @@ Type TBuilding Extends TStaticEntity
 		'ignore clicks to elevator plans on OTHER floors
 		'in this case just move to the target, but do not "enter" the room
 		If hotspot.name <> "elevatorplan" OR GetInstance().GetFloor(hotspot.area.GetY()) = GetInstance().GetFloor(GetPlayerCollection().Get().figure.area.GetY())
-			GetPlayerCollection().Get().figure.targetObj = hotspot
+			GetPlayerCollection().Get().figure.SetTarget(hotspot)
 		EndIf
 		
 		MOUSEMANAGER.ResetKey(1)
@@ -396,7 +396,7 @@ Type TBuilding Extends TStaticEntity
 		'handle player target changes
 		If Not GetPlayer().GetFigure().inRoom
 			If MOUSEMANAGER.isClicked(1) And Not GUIManager._ignoreMouse
-				If Not GetPlayer().GetFigure().isChangingRoom
+				If Not GetPlayer().GetFigure().isChangingRoom()
 					If THelper.IsIn(MouseManager.x, MouseManager.y, 0, 0, 800, 385)
 						'convert mouse position to building-coordinates
 						local x:int = MouseManager.x - buildingInner.GetScreenX()

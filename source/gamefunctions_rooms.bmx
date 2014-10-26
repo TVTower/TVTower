@@ -540,7 +540,7 @@ Type TRoomHandler
 	Function CheckPlayerInRoom:int(roomName:string)
 		'check if we are in the correct room
 		local figure:TFigure = GetPlayerCollection().Get().GetFigure()
-		If figure.isChangingRoom Then Return False
+		If figure.isChangingRoom() Then Return False
 		If not figure.inRoom Then Return False
 		if figure.inRoom.name <> roomName then return FALSE
 		return TRUE

@@ -294,7 +294,7 @@ Type TInGameScreen_Room extends TInGameScreen
 	'the rooms connected to this screen
 	Field roomIDs:int[]
 	Field currentRoomID:int = -1
-	global shortcutTarget:TRoomBase = null 'whacky hack
+	global temporaryDisableScreenChangeEffects:int = False
 	global _registeredEvents:int = False
 
 
@@ -349,7 +349,7 @@ Type TInGameScreen_Room extends TInGameScreen
 		'room screen -> dev keys
 
 		'skip animation if a shortcutTargets exists
-		if TInGameScreen_Room(otherScreen) or shortcutTarget
+		if TInGameScreen_Room(otherScreen) or temporaryDisableScreenChangeEffects
 			return FALSE
 		else
 			return TRUE
@@ -380,8 +380,8 @@ Type TInGameScreen_Room extends TInGameScreen
 
 		'Set the players current screen when changing rooms
 		ScreenCollection.GoToScreen(GetByRoom(room))
-		'remove potential shortcutTargets
-		shortcutTarget = null
+		'reset potentially disabled screenChangeEffectsEnabled
+		temporaryDisableScreenChangeEffects = False
 
 		return TRUE
 	End Function
@@ -406,6 +406,7 @@ Type TInGameScreen_Room extends TInGameScreen
 		'TProfiler.Enter("Draw-Room")
 		'drawing a subscreen (not the room itself)
 		local room:TRoomBase = GetRoomBaseCollection().Get(currentRoomID)
+		if not room then return False
 
 		if GetBackground() and not room.GetBackground() then GetBackground().Draw(0, 0)
 		room.Draw()

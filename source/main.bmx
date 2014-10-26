@@ -132,7 +132,7 @@ TLogger.setLogMode(LOG_ALL)
 TLogger.setPrintMode(LOG_ALL )
 
 'print "ALLE MELDUNGEN AUS"
-'TLogger.SetPrintMode(0)
+TLogger.SetPrintMode(0)
 
 'TLogger.setPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
@@ -436,7 +436,7 @@ Type TApp
 					endif
 
 				
-					if not GetPlayer().GetFigure().isChangingRoom
+					if not GetPlayer().GetFigure().isChangingRoom()
 						If KEYMANAGER.IsHit(KEY_1) Then Game.SetActivePlayer(1)
 						If KEYMANAGER.IsHit(KEY_2) Then Game.SetActivePlayer(2)
 						If KEYMANAGER.IsHit(KEY_3) Then Game.SetActivePlayer(3)
@@ -666,6 +666,11 @@ Type TApp
 
 			if not GetPlayer().GetFigure().inRoom
 				GetWorld().RenderDebug(660,0, 140, 130)
+			endif
+
+
+			if not GetPlayer().GetFigure().inRoom
+				GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
 			endif
 		EndIf
 		'show quotes even without "DEV_OSD = true"
@@ -1250,16 +1255,16 @@ Type TFigureJanitor Extends TFigure
 			'chose actions
 			'only clean with a chance of 30% when on the way to something
 			'and do not clean if target is a room near figure
-			Local targetDoor:TRoomDoor = TRoomDoor(targetObj)
-			If target And (Not targetDoor Or (20 < Abs(targetDoor.GetScreenX() - area.GetX()) Or targetDoor.GetOnFloor() <> GetFloor()))
+			Local targetDoor:TRoomDoor = TRoomDoor(GetTarget())
+			If GetTarget() And (Not targetDoor Or (20 < Abs(targetDoor.GetScreenX() - area.GetX()) Or targetDoor.GetOnFloor() <> GetFloor()))
 				If Rand(0,100) < NormalCleanChance Then currentAction = 1
 			EndIf
 			'if just standing around give a chance to clean
-			If Not target And Rand(0,100) < BoredCleanChance Then currentAction = 1
+			If Not GetTarget() And Rand(0,100) < BoredCleanChance Then currentAction = 1
 		EndIf
 
-		If targetObj
-			If Not useDoors And TRoomDoor(targetObj) Then targetObj = Null
+		If GetTarget()
+			If Not useDoors And TRoomDoor(GetTarget()) Then RemoveCurrentTarget()
 		EndIf
 	End Method
 End Type
@@ -1324,7 +1329,7 @@ Type TFigureDeliveryBoy Extends TFigure
 
 	Method UpdateCustom:Int()
 		'nothing to do - move to offscreen (leave building)
-		If not deliverToRoom and not target
+		If not deliverToRoom and not GetTarget()
 			if not IsOffScreen() then SendToOffscreen()
 		EndIf
 
@@ -3515,18 +3520,22 @@ End Function
 Function DEV_switchRoom:Int(room:TRoom)
 	If Not room Then Return False
 
-	Local oldEffects:Int = TScreenCollection.useChangeEffects
-	Local oldSpeed:Int = TRoom.ChangeRoomSpeed
+	'skip if already there
+	if GetPlayer().GetFigure().inRoom = room then return False
 
 	'to avoid seeing too much animation
-	TRoom.ChangeRoomSpeed = 0
-	TScreenCollection.useChangeEffects = False
+	TInGameScreen_Room.temporaryDisableScreenChangeEffects = True
 
-	TInGameScreen_Room.shortcutTarget = room 'to skip animation
-	GetPlayer().GetFigure().EnterRoom(Null, room)
+	'leave first
+	if GetPlayer().GetFigure().inRoom
+		GetPlayer().GetFigure().LeaveRoom(True)
+	endif
+	'a) add the room as new target before all others
+	'GetPlayer().GetFigure().PrependTarget(TRoomDoor.GetMainDoorToRoom(room))
+	'b) set it as the only route
+	GetPlayer().GetFigure().SetTarget(TRoomDoor.GetMainDoorToRoom(room))
+	GetPlayer().GetFigure().MoveToCurrentTarget()
 
-	TRoom.ChangeRoomSpeed = 500
-	TScreenCollection.useChangeEffects = True
 
 	Return True
 End Function

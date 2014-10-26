@@ -102,9 +102,16 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	'0=no boarding, 1=boarding, -1=deboarding
 	Field boardingState:Int = 0
 
-	Field target:TVec2D	= Null {_exposeToLua}
-	'targetting a special object (door, hotspot) ?
-	Field targetObj:TStaticEntity
+	'could be
+	'- TVec2D: simple position
+	'- TRoomDoorBase: a room door
+	'- THotspot: a hotspot
+	Field targets:object[]
+	'indicator whether the current target was reached already (eg. it is
+	'still waiting to enter a room)
+	Field currentReachTargetStep:int = 0
+	Field currentAction:int = 0
+
 	'how long to wait until entering the target (door/hotspot)
 	'or how long to wait until start moving when having left
 	'a door
@@ -134,8 +141,13 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Global greetTime:int = 1000
 	'how long to wait intil I greet the same person again
 	Global greetEvery:int = 8000
-
 	Global _initDone:int = FALSE
+
+
+	Const ACTION_IDLE:int = 0
+	Const ACTION_WALK:int = 1
+	Const ACTION_ENTERING:int = 2
+	Const ACTION_LEAVING:int = 3
 
 
 	Method onLoad:int()
@@ -156,7 +168,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	Method IsIdling:int()
-		If target or targetObj then return False
+		If GetTarget() then return False
 		If IsWaitingToEnter() or IsWaitingToLeave() then return False
 
 		return True
@@ -195,6 +207,49 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetTarget:object()
+		if targets.length = 0 then return Null
+		return targets[0]
+	End Method
+
+
+	'add a target AFTER all others
+	Method AddTarget(target:object)
+		targets :+ [target]
+	End Method
+
+
+	'sets the current target, removes all other targets
+	Method SetTarget(target:object)
+		ClearTargets()
+		AddTarget(target)
+	End Method
+
+
+	Method PrependTarget(target:object)
+		targets = [target] + targets
+	End Method
+	
+
+	Method RemoveCurrentTarget:int()
+		if targets.length = 0 then return False
+		targets = targets[1..]
+		return True
+	End Method
+
+
+	Method ClearTargets:int()
+		targets = new object[0]
+	End Method
+
+
+	Method MoveToCurrentTarget:int()
+		if not GetTarget() then return False
+
+		area.position = GetTargetMoveToPosition().copy()
+	End Method
+
+
 	'change the target of the figure
 	'@forceChange   defines wether the target could change target
 	'               even when not controllable
@@ -222,44 +277,71 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		return _ChangeTarget(x,y, False)
 	End Method
 
+	'returns the coordinate the figure has to walk to, to reach that
+	'target
+	Method GetTargetMoveToPosition:TVec2D()
+		local target:object = GetTarget()
+		if TVec2D(target) then return TVec2D(target)
 
-	Method ReachTarget:int()
-		'regain control
-		controllable = True
+		return Null
+	End Method
+
+
+	'split into two steps to allow a "waiting time"
+	'step 1/2
+	Method ReachTargetStep1:int()
+		if not GetTarget() then return False
 
 		velocity.SetX(0)
+		
 		'set target as current position - so we are exactly there we want to be
-		if target then area.position.setX( target.getX() )
-		'remove target
-		target = null
+		local targetPosition:TVec2D = GetTargetMoveToPosition()
+		if targetPosition then area.position.setX( targetPosition.getX() )
+
+		currentReachTargetStep = 1
 
 		'emit an event
-		EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", null, self, targetObj ) )
+		EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", null, self, GetTarget() ) )
 
-		'start waiting in front of the target
-		If targetObj
-			WaitEnterTimer = Time.GetTimeGone() + WaitEnterLeavingTime
-		EndIf
+		'run custom onReachTarget method - eg to wait until entering a door
+		'or just remove the current target
+		customReachTargetStep1()
+	End Method
+	
+
+	'step 2/2
+	Method ReachTargetStep2:int()
+		'remove target
+		RemoveCurrentTarget()
+
+		'reset current step to 0 so figure can call step 1 again
+		currentReachTargetStep = 0
+
+		'regain control if there is no other target waiting
+		'TODO: place this in a custom "Route"-object? so there could
+		'      be a chain of targets which you cannot skip
+		if not GetTarget() then controllable = True
+	End Method
+
+
+	Method customReachTargetStep1:Int()
+		'disable WaitEnterTimer
+		WaitEnterTimer = -1
 	End Method
 
 
 	Method EnterTarget:int()
 		'emit an event
-		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterTarget", null, self, targetObj ) )
-
-		'reset target
-		targetObj = Null
-
-		'disable waiting
-		WaitEnterTimer = -1
+		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterTarget", null, self, GetTarget() ) )
 	End Method
 
 
 	Method CanEnterTarget:Int()
-		'if still going to somewhere
-		if target then return False
-		'if you do not have a target, you cannot enter one
-		if not targetObj then return False
+		'cannot enter a non-target
+		if not GetTarget() then return False
+
+		'no waiting needed
+		if WaitEnterTimer = -1 then return True
 
 		return not IsWaitingToEnter()
 	End Method
@@ -269,6 +351,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		Return WaitEnterTimer > Time.GetTimeGone()
 	End Method
 
+
 	Method IsWaitingToLeave:Int()
 		Return WaitLeavingTimer > Time.GetTimeGone()
 	End Method
@@ -277,9 +360,14 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	'returns what animation has to get played in that moment
 	Method GetAnimationToUse:string()
 		local result:string = "standBack"
+
 		'if standing
 		If GetVelocity().GetX() = 0 or not moveable
-			result = "standFront"
+			if currentAction = ACTION_ENTERING
+				result = "standBack"
+			else
+				result = "standFront"
+			endif
 		Else
 			If GetVelocity().GetX() > 0 Then result = "walkRight"
 			If GetVelocity().GetX() < 0 Then result = "walkLeft"

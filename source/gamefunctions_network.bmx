@@ -420,13 +420,27 @@ Type TNetworkHelper
 		obj.SetInt( 1, figure.id )		'playerID
 		obj.SetFloat( 2, figure.area.GetX() )	'position.x
 		obj.SetFloat( 3, figure.area.GetY() )	'...
-		obj.SetFloat( 4, figure.target.x )
-		obj.SetFloat( 5, figure.target.y )
-		if figure.inRoom then obj.setInt( 6, figure.inRoom.id)
-		if TRoomDoor(figure.targetObj) then obj.setInt( 7, figure.targetObj.id)
-		if THotSpot(figure.targetObj) then obj.setInt( 8, figure.targetObj.id)
-		if figure.fromRoom then obj.setInt( 9, figure.fromRoom.id)
-		if figure.fromDoor then obj.setInt(10, figure.fromDoor.id)
+		local target:object = figure.GetTarget()
+		if not target
+			obj.SetInt( 4, 0 ) 'type = null
+			obj.SetFloat( 5, -1 )
+			obj.SetFloat( 6, -1 )
+		elseif TVec2D(target)
+			obj.SetInt( 4, 1 ) 'type = vec2d
+			obj.SetFloat( 5, TVec2D(target).x )
+			obj.SetFloat( 6, TVec2D(target).y )
+		elseif TRoomDoorBase(target)
+			obj.SetInt( 4, 2 ) 'type = roomdoorbase
+			obj.SetFloat( 5, TRoomDoorBase(target).id )
+			obj.SetFloat( 6, -1 )
+		elseif THotspot(target)
+			obj.SetInt( 4, 3 ) 'type = hotspot
+			obj.SetFloat( 5, THotspot(target).id )
+			obj.SetFloat( 6, -1 )
+		endif
+		if figure.inRoom then obj.setInt( 7, figure.inRoom.id)
+		if figure.fromRoom then obj.setInt( 8, figure.fromRoom.id)
+		if figure.fromDoor then obj.setInt( 9, figure.fromDoor.id)
 		Network.BroadcastNetworkObject( obj )
 	End Method
 	
@@ -438,13 +452,47 @@ Type TNetworkHelper
 
 		local posX:Float = obj.getFloat(2)
 		local posY:Float = obj.getFloat(3)
-		local targetX:Float	= obj.getFloat(4)
-		local targetY:Float	= obj.getFloat(5)
-		local inRoomID:int = obj.getInt( 6, -1,TRUE)
-		local targetDoorID:int = obj.getInt( 7, -1,TRUE)
-		local targetHotspotID:int = obj.getInt( 8, -1,TRUE)
-		local fromRoomID:int = obj.getInt( 9, -1,TRUE)
-		local fromDoorID:int = obj.getInt(10, -1,TRUE)
+		local targetType:int = obj.getInt(4)
+		local targetValue1:float = obj.getFloat(5)
+		local targetValue2:float = obj.getFloat(6)
+
+		local inRoomID:int = obj.getInt( 7, -1,TRUE)
+		local fromRoomID:int = obj.getInt( 8, -1,TRUE)
+		local fromDoorID:int = obj.getInt( 9, -1,TRUE)
+
+		If inRoomID <= 0 Then figure.inRoom = Null
+		If figure.inRoom
+			If inRoomID > 0 and figure.inRoom.id <> inRoomID
+				figure.inRoom = GetRoomCollection().Get(inRoomID)
+			EndIf
+		EndIf
+
+		REM
+			TODO
+
+			Maybe replace that whole thing with an network package
+			containing the "send"-event so it does not need to know
+			the target list
+
+			Select targetType
+				'null
+				case 0
+					'nothing
+				'tvec2d
+				case 1
+					figure.target
+
+				... 
+			if targetDoorID then figure.targetObj = GetRoomDoorBaseCollection().Get( targetDoorID )
+			if targetHotspotID then figure.targetObj = THotspot.Get( targetHotspotID )
+		endrem
+		local targetX:float = 0
+		local targetY:float = 0
+
+		if targetType = 1
+			local targetX:float = targetValue1
+			local targetY:float = targetValue2
+		endif
 
 		If not figure.IsInElevator()
 			'only set X if wrong floor or x differs > 10 pixels
@@ -454,18 +502,10 @@ Type TNetworkHelper
 				figure.area.position.setXY(posX,posY)
 			endif
 		endif
-		figure.target.setXY(targetX,targetY)
+		'figure.target.setXY(targetX,targetY)
 
-		If inRoomID <= 0 Then figure.inRoom = Null
-		If figure.inRoom
-			If inRoomID > 0 and figure.inRoom.id <> inRoomID
-				figure.inRoom = GetRoomCollection().Get(inRoomID)
-			EndIf
-		EndIf
-
-		if targetDoorID then figure.targetObj = GetRoomDoorBaseCollection().Get( targetDoorID )
-		if targetHotspotID then figure.targetObj = THotspot.Get( targetHotspotID )
-
+		
+		
 		If fromRoomID <= 0 Then figure.fromRoom = Null
 		If fromRoomID > 0 And figure.fromroom
 			If figure.fromRoom.id <> fromRoomID

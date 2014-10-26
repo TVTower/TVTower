@@ -855,7 +855,11 @@ Type TSmartFloorRoute Extends TFloorRoute
 	End Method
 
 	Method IntendedFollowingTarget:int()
-		Return who.getFloor(who.target)
+		if who.GetTarget()
+			Return who.getFloor(who.GetTargetMoveToPosition())
+		else
+			Return who.getFloor(new TVec2D.Init())
+		endif
 	End Method
 
 	Method IntendedDirection:int()

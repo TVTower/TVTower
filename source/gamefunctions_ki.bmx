@@ -465,7 +465,7 @@ endrem
 
 	Method getPlayerTargetRoom:Int()
 		local player:TPlayer = GetPlayerCollection().Get(self.ME)
-		local roomDoor:TRoomDoor = TRoomDoor(player.figure.targetObj)
+		local roomDoor:TRoomDoor = TRoomDoor(player.figure.GetTarget())
 		
 		If roomDoor and roomDoor.GetRoom() then Return roomDoor.GetRoom().id
 

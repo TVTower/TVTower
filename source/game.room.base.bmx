@@ -457,7 +457,8 @@ Rem
 			-> ev: room.onLeave (delayed --> door anim)
 				-> room.FinishLeave()
 					-> remove occupant (when door closes)
-					-> figure.onLeaveRoom()
+				-> figureCollection.onLeaveRoom()
+					-> figure.FinishLeaveRoom()
 						-> ev: figure.onLeaveRoom
 						-> figure.SetInRoom(null)
 End Rem
