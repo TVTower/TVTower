@@ -974,7 +974,7 @@ Type TFigure extends TFigureBase
 
 		SetAlpha oldCol.a * 0.5
 		SetColor 0,0,0
-		DrawRect(pos.x, pos.y, 100, 100)
+		DrawRect(pos.x, pos.y, 140, 110)
 
 
 		local fromDoorText:string = ""

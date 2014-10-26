@@ -1980,8 +1980,60 @@ Type TGUINews extends TGUIGameListItem
 
 			SetColor 255, 255, 255
 			SetAlpha oldAlpha
+	
 			self.resetViewport()
 		endif
+
+		if TVTDebugInfos
+			local oldAlpha:Float = GetAlpha()
+			SetAlpha oldAlpha * 0.75
+			SetColor 0,0,0
+
+			local w:int = rect.GetW()
+			local h:int = rect.GetH()
+			local screenX:float = int(GetScreenX())
+			local screenY:float = int(GetScreenY())
+			DrawRect(screenX, screenY, w,h)
+		
+			SetColor 255,255,255
+			SetAlpha 1.0
+
+			local textY:int = screenY + 2
+			local fontBold:TBitmapFont = GetBitmapFontManager().basefontBold
+			local fontNormal:TBitmapFont = GetBitmapFontManager().basefont
+			
+			fontBold.draw("News: " + news.newsEvent.GetTitle(), screenX + 5, textY)
+			textY :+ 14	
+			fontNormal.draw("Preis: " + news.GetPrice()+"  (Preismodifikator: "+news.newsEvent.priceModifier+")", screenX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("Qualitaet: "+news.GetQuality() +" (Event:"+ news.newsEvent.quality + ")", screenX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("Attraktivitaet: "+news.newsEvent.GetAttractiveness()+"    Aktualitaet: " + news.newsEvent.ComputeTopicality(), screenX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("Alter: " + Long(GetWorldTime().GetTimeGone() - news.GetHappenedtime()) + " Sekunden  (" + (GetWorldTime().GetDay() - GetWorldTime().GetDay(news.GetHappenedtime())) + " Tage)", screenX + 5, textY)
+			textY :+ 12	
+			rem
+			local eventCan:string = ""
+			if news.newsEvent.skippable
+				eventCan :+ "ueberspringbar)"
+			else
+				eventCan :+ "nicht ueberspringbar"
+			endif
+			if eventCan <> "" then eventCan :+ ",  "
+			if news.newsEvent.reuseable
+				eventCan :+ "erneut nutzbar"
+			else
+				eventCan :+ "nicht erneut nutzbar"
+			endif
+			
+			fontNormal.draw("Ist: " + eventCan, screenX + 5, textY)
+			textY :+ 12	
+			endrem
+			fontNormal.draw("Effekte: " + news.newsEvent.happenEffects.Length + "x onHappen, "+news.newsEvent.broadcastEffects.Length + "x onBroadcast    Newstyp: " + news.newsEvent.newsType + "   Genre: "+news.newsEvent.genre, screenX + 5, textY)
+			textY :+ 12	
+
+			SetAlpha oldAlpha
+		Endif
 	End Method
 End Type
 

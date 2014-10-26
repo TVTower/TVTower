@@ -460,7 +460,7 @@ Type TApp
 				If KEYMANAGER.IsHit(KEY_7) Then GetWorldTime().SetTimeFactor(180*60.0) '180 minutes per second
 				If KEYMANAGER.IsHit(KEY_8) Then GetWorldTime().SetTimeFactor(240*60.0) '240 minute per second
 				If KEYMANAGER.IsHit(KEY_9) Then GetWorldTime().SetTimeFactor(1*60.0)   '1 minute per second
-				If KEYMANAGER.IsHit(KEY_Q) Then Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
+				If KEYMANAGER.IsHit(KEY_Q) Then TVTDebugQuoteInfos = 1 - TVTDebugQuoteInfos
 				'If KEYMANAGER.IsHit(KEY_P) Then GetPlayerCollection().Get().GetProgrammePlan().printOverview()
 
 '				If KEYMANAGER.IsHit(KEY_P) Then GetProgrammeLicenceCollection().PrintMovies()
@@ -472,7 +472,7 @@ Type TApp
 
 				If KEYMANAGER.IsHit(KEY_L) Then TSaveGame.Load("savegame.xml")
 
-				If KEYMANAGER.IsHit(KEY_D) Then Game.DebugInfos = 1 - Game.DebugInfos
+				If KEYMANAGER.IsHit(KEY_D) Then TVTDebugInfos = 1 - TVTDebugInfos
 
 				'send terrorist to a random room
 				If KEYMANAGER.IsHit(KEY_T) and not Game.networkGame
@@ -600,7 +600,7 @@ Type TApp
 			EndIf
 		EndIf
 
-		If Game.DebugInfos
+		If TVTDebugInfos and not GetPlayer().GetFigure().inRoom
 			SetAlpha GetAlpha() * 0.5
 			SetColor 0,0,0
 			DrawRect(0,0,160,385)
@@ -664,19 +664,12 @@ Type TApp
 				GetBitmapFontManager().baseFont.Draw("Image #"+i+": "+GetPublicImageCollection().Get(i+1).GetAverageImage(), 10, 320 + i*13)
 			Next
 
-			if not GetPlayer().GetFigure().inRoom
-				GetWorld().RenderDebug(660,0, 140, 130)
-			endif
 
-
-			if not GetPlayer().GetFigure().inRoom
-				GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
-			endif
+			GetWorld().RenderDebug(660,0, 140, 130)
+			GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
 		EndIf
 		'show quotes even without "DEV_OSD = true"
-		If Game.DebugQuoteInfos
-			Game.DebugAudienceInfo.Draw()
-		EndIf
+		If TVTDebugQuoteInfos then Game.DebugAudienceInfo.Draw()
 
 
 		'draw loading resource information

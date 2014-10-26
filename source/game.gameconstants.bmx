@@ -8,6 +8,10 @@ Rem
 EndRem	
 SuperStrict
 
+
+Global TVTDebugInfos:int = False
+Global TVTDebugQuoteInfos:int = False	
+
 Type TVTNewsType
 	const InitialNews:int = 0
 	const InitialNewsByInGameEvent:int = 1

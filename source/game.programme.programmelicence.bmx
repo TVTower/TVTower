@@ -859,7 +859,7 @@ rem
 		endif
 endrem
 		local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(owner, -1)
-		if not finance or finance.canAfford(getPrice())
+		if not finance or finance.canAfford(GetPrice())
 			fontBold.drawBlock(TFunctions.DottedValue(GetPrice()), currX + 227, currY, 55, 15, ALIGN_RIGHT_CENTER, textColor, 0,1,1.0,True, True)
 		else
 			fontBold.drawBlock(TFunctions.DottedValue(GetPrice()), currX + 227, currY, 55, 15, ALIGN_RIGHT_CENTER, TColor.Create(200,0,0), 0,1,1.0,True, True)
@@ -869,6 +869,47 @@ endrem
 		'=== X-Rated Overlay ===
 		If data.IsXRated()
 			GetSpriteFromRegistry("gfx_datasheet_xrated").Draw(currX + GetSpriteFromRegistry("gfx_datasheet_title").GetWidth(), y, -1, ALIGN_RIGHT_TOP)
+		Endif
+
+
+		If TVTDebugInfos
+			local oldAlpha:Float = GetAlpha()
+			SetAlpha oldAlpha * 0.75
+			SetColor 0,0,0
+
+			local w:int = GetSpriteFromRegistry("gfx_datasheet_title").area.GetW() - 20
+			local h:int = Max(120, currY-y)
+			DrawRect(currX, y, w,h)
+		
+			SetColor 255,255,255
+			SetAlpha oldAlpha
+
+			local textY:int = y + 5
+			fontBold.draw("Programm: "+GetTitle(), currX + 5, textY)
+			textY :+ 14	
+			fontNormal.draw("Letzte Stunde im Plan: "+latestPlannedEndHour, currX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("Tempo: "+data.GetSpeed(), currX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("Kritik: "+data.GetReview(), currX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("Kinokasse: "+data.GetOutcome(), currX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("Preismodifikator: "+data.priceModifier, currX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("Qualitaet roh: "+data.GetQualityRaw()+"  (ohne Alter, Wdh.)", currX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("Qualitaet: "+data.GetQuality(), currX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("Aktualitaet: "+data.GetTopicality()+" von " + data.GetMaxTopicality(), currX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("Bloecke: "+data.GetBlocks(), currX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("Ausgestrahlt: "+data.GetTimesAired(owner)+"x Spieler, "+data.GetTimesAired()+"x alle", currX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(owner, -1).audience.GetSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetSum())+" (alle)", currX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("Preis: "+GetPrice(), currX + 5, textY)
 		Endif
 	End Method
 
@@ -928,6 +969,30 @@ endrem
 			SetAlpha GetAlpha()*4.0
 			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1, data.trailerTopicality*200, 10))
 		endif
+
+
+		If TVTDebugInfos
+			local oldAlpha:Float = GetAlpha()
+			SetAlpha oldAlpha * 0.75
+			SetColor 0,0,0
+
+			local w:int = GetSpriteFromRegistry("gfx_datasheet_title").area.GetW() - 20
+			local h:int = currY-y
+			DrawRect(currX, y, w,h)
+		
+			SetColor 255,255,255
+			SetAlpha oldAlpha
+
+			local textY:int = y + 5
+			fontBold.draw("Trailer: "+GetTitle(), currX + 5, textY)
+			textY :+ 14	
+			fontNormal.draw("Traileraktualitaet: "+data.trailerTopicality+" von " + data.trailerMaxTopicality, currX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("Ausstrahlungen: "+data.trailerAired, currX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("Ausstrahlungen seit letzter Sendung: "+data.trailerAiredSinceShown, currX + 5, textY)
+
+		Endif
 	End Method
 
 

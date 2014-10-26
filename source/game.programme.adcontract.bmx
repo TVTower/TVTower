@@ -390,7 +390,6 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	Field attractiveness:Float = -1
 
 
-
 	Method New()
 		GetAdContractCollection().Add(self)
 	End Method
@@ -732,6 +731,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	Method GetLimitedToGenreString:String(genre:Int=-1) {_exposeToLua}
 		'if no genre given, use the one of the object
 		if genre < 0 then genre = base.limitedToProgrammeGenre
+		if genre < 0 then return ""
 
 		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetGenreStringID(genre))
 	End Method
@@ -826,6 +826,27 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 			SetAlpha GetAlpha()*4.0
 			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1, base.GetInfomercialTopicality()*200, 10))
 		endif
+
+
+		If TVTDebugInfos
+			local oldAlpha:Float = GetAlpha()
+			SetAlpha oldAlpha * 0.75
+			SetColor 0,0,0
+
+			local w:int = GetSpriteFromRegistry("gfx_datasheet_title").area.GetW() - 20
+			local h:int = currY-y
+			DrawRect(currX, y, w,h)
+		
+			SetColor 255,255,255
+			SetAlpha oldAlpha
+
+			local textY:int = y + 5
+			fontBold.draw("Dauerwerbesendung: "+GetTitle(), currX + 5, textY)
+			textY :+ 14	
+			fontNormal.draw("TKP: "+GetPerViewerRevenue(), currX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("Aktualität: "+base.GetInfomercialTopicality(), currX + 5, textY)
+		Endif
 	End Method
 
 
@@ -953,6 +974,65 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'profit
 		fontBold.drawBlock(TFunctions.convertValue(GetProfit(), 2), currX+224, currY , 58, 15, ALIGN_RIGHT_CENTER, textProfitColor, 0,1,1.0,True, True)
 		currY :+ 15 + 8 'lineheight + bottom content padding
+
+
+
+		If TVTDebugInfos
+			local oldAlpha:Float = GetAlpha()
+			SetAlpha oldAlpha * 0.75
+			SetColor 0,0,0
+
+			local w:int = GetSpriteFromRegistry("gfx_datasheet_title").area.GetW() - 20
+			local h:int = Max(120, currY-y)
+			DrawRect(currX, y, w,h)
+		
+			SetColor 255,255,255
+			SetAlpha oldAlpha
+
+			local textY:int = y + 5
+			fontBold.draw("Werbung: "+GetTitle(), currX + 5, textY)
+			textY :+ 14	
+			if base.fixedPrice
+				fontNormal.draw("Fester Profit: "+GetProfit() + "  (profitBase: "+base.profitBase+")", currX + 5, textY)
+				textY :+ 12	
+				fontNormal.draw("Feste Strafe: "+GetPenalty() + "  (penaltyBase: "+base.penaltyBase+")", currX + 5, textY)
+				textY :+ 12
+			else
+				fontNormal.draw("Dynamischer Profit: "+GetProfit() + "  (profitBase: "+base.profitBase+")", currX + 5, textY)
+				textY :+ 12	
+				fontNormal.draw("Dynamische Strafe: "+GetPenalty() + "  (penaltyBase: "+base.penaltyBase+")", currX + 5, textY)
+				textY :+ 12	
+			endif
+			fontNormal.draw("Spots zu senden "+GetSpotsToSend()+" von "+GetSpotCount(), currX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("Spots: "+GetSpotsSent()+" gesendet, "+GetSpotsPlanned()+" geplant", currX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("Zuschaueranforderung: "+GetMinAudience() + "  ("+GetMinAudiencePercentage()+"%)", currX + 5, textY)
+			textY :+ 12
+			fontNormal.draw("MindestImage: " + base.minImageBase, currX + 5, textY)
+			textY :+ 12
+			fontNormal.draw("Zielgruppe: " + GetLimitedToTargetGroup() + " (" + GetLimitedToTargetGroupString() + ")", currX + 5, textY)
+			textY :+ 12
+			if GetLimitedToGenre() >= 0
+				fontNormal.draw("Genre: " + GetLimitedToGenre() + " ("+ GetLimitedToGenreString() + ")", currX + 5, textY)
+			else
+				fontNormal.draw("Genre: " + GetLimitedToGenre() + " (keine Einschraenkung)", currX + 5, textY)
+			endif
+			textY :+ 12
+			fontNormal.draw("Verfuegbarkeitszeitraum: --- noch nicht integriert ---", currX + 5, textY)
+			textY :+ 12
+			if owner > 0
+				fontNormal.draw("Tage bis Vertragsende: "+GetDaysLeft(), currX + 5, textY)
+				textY :+ 12
+				fontNormal.draw("Unterschrieben: "+owner, currX + 5, textY)
+				textY :+ 12
+			else
+				fontNormal.draw("Laufzeit: "+GetDaysToFinish(), currX + 5, textY)
+				textY :+ 12
+				fontNormal.draw("Unterschrieben: nicht unterschrieben", currX + 5, textY)
+				textY :+ 12
+			endif
+		Endif
 	End Method
 
 

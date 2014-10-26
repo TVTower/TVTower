@@ -1,11 +1,6 @@
 
 'Game - holds time, audience, money and other variables (typelike structure makes it easier to save the actual state)
 Type TGame {_exposeToLua="selected"}
-	'globals are not saveloaded/exposed
-	'0=no debug messages; 1=some debugmessages
-	Global debugMode:Int = 0
-	Global debugInfos:Int = 0
-	Global debugQuoteInfos:Int = 0
 	Field debugAudienceInfo:TDebugAudienceInfos = new TDebugAudienceInfos
 
 	'===== GAME STATES =====

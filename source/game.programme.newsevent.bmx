@@ -258,7 +258,7 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	Field title:TLocalizedString
 	Field description:TLocalizedString
 	Field genre:Int = 0
-	Field quality:Float = 0.5
+	Field quality:Float = -1.0 'none
 	Field priceModifier:Float = 1.0
 	'time when something happened or will happen. "-1" = not happened
 	Field happenedTime:Double = -1
@@ -511,6 +511,8 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 
 
 	Method GetQuality:Float(luckFactor:Int = 1) {_exposeToLua}
+		if quality >= 0 then return quality
+		
 		Local qualityTemp:Float = 0.0
 
 		qualityTemp = GetAttractiveness()
@@ -522,7 +524,9 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 		EndIf
 
 		'no minus quote
-		Return Max(0, qualityTemp)
+		quality = Max(0, qualityTemp)
+
+		return quality
 	End Method
 
 

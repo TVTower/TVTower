@@ -426,7 +426,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 
 		'==== DRAW DEBUG TEXT ====
-		if Game.DebugInfos
+		if TVTDebugInfos
 			local textY:int = GetScreenY() - area.GetH() - 10
 			if room.hasOccupant()
 				for local figure:TFigure = eachin room.occupants
