@@ -47,7 +47,7 @@ Type TPlayerFinanceHistoryEntry
 	Field typeID:int = 0
 	'the specific object (eg. movie)
 	Field obj:object
-	Field money:int = 0
+	Field money:Long = 0
 	Field worldTime:Double = 0
 
 	Const TYPE_CREDIT_REPAY:int = 11

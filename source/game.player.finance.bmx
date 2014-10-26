@@ -76,7 +76,7 @@ Type TPlayerFinance
 	Field expense_creditRepayed:int		= 0	'paid back credit today
 	Field expense_creditInterest:int	= 0	'interest to pay for the current credit
 	Field expense_drawingCreditInterest:int	= 0	'interest to pay for having a negative balance
-	Field expense_total:Int 			= 0
+	Field expense_total:Long 			= 0
 
 	Field income_programmeLicences:Int	= 0
 	Field income_ads:Int				= 0
@@ -87,9 +87,9 @@ Type TPlayerFinance
 	Field income_stations:Int			= 0
 	Field income_creditTaken:Int		= 0 'freshly taken credit today
 	Field income_balanceInterest:int	= 0	'interest for money "on the bank"
-	Field revenue_before:Int 			= 0
-	Field revenue_after:Int 			= 0
-	Field money:Int						= 0
+	Field revenue_before:Long 			= 0
+	Field revenue_after:Long 			= 0
+	Field money:Long					= 0
 	Field credit:Int 					= 0
 	Field ListLink:TLink
 	Field playerID:int					= Null
