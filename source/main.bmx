@@ -378,6 +378,11 @@ Type TApp
 		MouseManager.Enable(2)
 
 		GUIManager.Update("SYSTEM")
+
+		'=== UPDATE TOASTMESSAGES ===
+		GetToastMessageCollection().Update()
+
+
 		'as long as the exit dialogue is open, do not accept clicks to
 		'non gui elements (eg. to leave rooms)
 		If App.ExitAppDialogue
@@ -461,9 +466,9 @@ Type TApp
 				If KEYMANAGER.IsHit(KEY_8) Then GetWorldTime().SetTimeFactor(240*60.0) '240 minute per second
 				If KEYMANAGER.IsHit(KEY_9) Then GetWorldTime().SetTimeFactor(1*60.0)   '1 minute per second
 				If KEYMANAGER.IsHit(KEY_Q) Then TVTDebugQuoteInfos = 1 - TVTDebugQuoteInfos
-				'If KEYMANAGER.IsHit(KEY_P) Then GetPlayerCollection().Get().GetProgrammePlan().printOverview()
 
-'				If KEYMANAGER.IsHit(KEY_P) Then GetProgrammeLicenceCollection().PrintMovies()
+				If KEYMANAGER.IsHit(KEY_P) Then GetPlayerCollection().Get().GetProgrammePlan().printOverview()
+				'If KEYMANAGER.IsHit(KEY_P) Then GetProgrammeLicenceCollection().PrintMovies()
 
 				'Save game only when in a game
 				If game.gamestate = TGame.STATE_RUNNING
@@ -554,6 +559,11 @@ Type TApp
 	Function Render:Int()
 		TProfiler.Enter("Draw")
 		ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
+
+		'=== RENDER TOASTMESSAGES ===
+		'below everything else of the interface: our toastmessages
+		GetToastMessageCollection().Render(0,0)
+
 
 '		SetBlend AlphaBlend
 		Local textX:Int = 5

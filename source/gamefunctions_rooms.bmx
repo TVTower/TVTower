@@ -897,8 +897,11 @@ Type RoomHandler_Office extends TRoomHandler
 	Function AbortScreenActions:Int()
 		'=== PROGRAMMEPLANNER ===
 		if draggedGuiProgrammePlanElement
-			'Try to drop back the element
-			draggedGuiProgrammePlanElement.dropBackToOrigin()
+			'Try to drop back the element, except it is a freshly
+			'created one
+			if draggedGuiProgrammePlanElement.inList
+				draggedGuiProgrammePlanElement.dropBackToOrigin()
+			endif
 			'successful or not - get rid of the gui element
 			'(if it was a clone with no dropback-possibility this
 			'just removes the clone, no worries)
@@ -4093,13 +4096,18 @@ Type RoomHandler_News extends TRoomHandler
 
 	Function AbortScreenActions:Int()
 		if draggedGuiNews
-			if KeyManager.IsHit(KEY_ESCAPE)
-				'try to drop the licence back
-				draggedGuiNews.dropBackToOrigin()
-				draggedGuiNews = null
-				hoveredGuiNews = null
-			endif
+			'try to drop the licence back
+			draggedGuiNews.dropBackToOrigin()
+			draggedGuiNews = null
+			hoveredGuiNews = null
 		endif
+
+		'Try to drop back dragged elements
+		For local obj:TGUINews = eachIn GuiManager.ListDragged
+			obj.dropBackToOrigin()
+			'successful or not - get rid of the gui element
+			obj.Remove()
+		Next
 	End Function
 
 

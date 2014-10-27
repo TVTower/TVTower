@@ -70,10 +70,6 @@ Type TInGameInterface
 
 
 	Method Update(deltaTime:Float=1.0)
-		'=== UPDATE TOASTMESSAGES ===
-		GetToastMessageCollection().Update()
-
-
 		local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(ShowChannel)
 
 		'reset current programme sprites
@@ -292,10 +288,6 @@ Type TInGameInterface
 
 	'draws the interface
 	Method Draw(tweenValue:Float=1.0)
-		'=== RENDER TOASTMESSAGES ===
-		'below everything else of the interface: our toastmessages
-		GetToastMessageCollection().Render(0,0)
-
 		If BottomImgDirty
 			'draw bottom, aligned "bottom"
 			GetSpriteFromRegistry("gfx_interface_bottom").Draw(0, GetGraphicsManager().GetHeight(), 0, ALIGN_LEFT_BOTTOM)
