@@ -10,7 +10,8 @@ _G["BudgetManager"] = class(KIDataObjekt, function(c)
 	c.TodayStartAccountBalance = 0 -- Kontostand zu Beginn des Tages
 	c.BudgetMinimum = 0  -- Minimalbetrag des Budgets
 	c.BudgetMaximum = 0  -- Maximalbetrag des Budgets
-	c.BudgetHistory = {} -- Die Budgets der letzten Tage	
+	c.BudgetHistory = {} -- Die Budgets der letzten Tage
+	c.InvestmentSavings = 0 -- Geld das für Investitionen angespart wird.
 end)
 
 function BudgetManager:typename()
@@ -75,10 +76,10 @@ function BudgetManager:CalculateBudget() -- Diese Methode wird immer zu Beginn d
 	self.BudgetHistory[TODAY_BUDGET] = myBudget
 
 	
-	local investmentSavings = self:CutInvestmentSavingIfNeeded(myBudget)
+	self:CutInvestmentSavingIfNeeded(myBudget)
 	
 	-- Das Budget auf die Tasks verteilen
-	self:AllocateBudgetToTasks(myBudget, investmentSavings)
+	self:AllocateBudgetToTasks(myBudget)
 	
 	TVT.addToLog("======")
 end
@@ -96,37 +97,18 @@ end
 
 function BudgetManager:CutInvestmentSavingIfNeeded(pBudget)
 	local player = _G["globalPlayer"] --Zugriff die globale Variable
-	local savings = self:GetInvestmentSavingSum()
 	
-	if (pBudget * 0.8) < savings then -- zu viel gespart... Ersparnisse angreifen oder Kredit!!! aufnehmen
-		TVT.addToLog("Kürze Ersparnisse. Ersparnisse: " .. savings .. ". Budget nur " .. pBudget )
-		for k,v in pairs(player.TaskList) do
-			v.InvestmentSavings = v.InvestmentSavings / 2
-		end
-		savings = self:GetInvestmentSavingSum()
+	if (pBudget * 0.8) < self.InvestmentSavings then -- zu viel gespart... Ersparnisse angreifen oder Kredit!!! aufnehmen
+		TVT.addToLog("Kürze Ersparnisse: " .. self.InvestmentSavings .. ". Budget aber nur " .. pBudget .. ". Ersparnisse werden halbiert." )
+		self.InvestmentSavings = self.InvestmentSavings / 2
 	end
 	
-	if (pBudget * 0.7) < savings then -- zu viel gespart... Ersparnisse angreifen oder Kredit!!! aufnehmen
-		TVT.addToLog("Streiche Ersparnisse komplett. Ersparnisse " .. savings .. ". Budget nur " .. pBudget )
-		for k,v in pairs(player.TaskList) do
-			v.InvestmentSavings = 0
-		end
-		savings = 0
+	if (pBudget * 0.6) < self.InvestmentSavings then -- zu viel gespart... Ersparnisse angreifen oder Kredit!!! aufnehmen
+		TVT.addToLog("Streiche Ersparnisse komplett. Ersparnisse " .. savings .. ". Budget aber nur " .. pBudget .. ".")
+		self.InvestmentSavings = 0
 	end
 
 	return savings
-end
-
-function BudgetManager:GetInvestmentSavingSum()
-	local player = _G["globalPlayer"] --Zugriff die globale Variable
-	local sum = 0
-	
-	-- Zählen wie viele Budgetanteile es insgesamt gibt
-	for k,v in pairs(player.TaskList) do
-		sum = sum + v.InvestmentSavings
-	end
-	
-	return sum
 end
 
 function BudgetManager:CalculateAverageBudget(pCurrentAccountBalance, pTurnOver)
@@ -141,7 +123,7 @@ function BudgetManager:CalculateAverageBudget(pCurrentAccountBalance, pTurnOver)
 	return math.round(TempSum, -3) --Das ganze wird nun noch gerundet
 end
 
-function BudgetManager:AllocateBudgetToTasks(pBudget, pInvestmentSavings)
+function BudgetManager:AllocateBudgetToTasks(pBudget)
 	local player = _G["globalPlayer"] --Zugriff die globale Variable
 
 	-- Zählen wie viele Budgetanteile es insgesamt gibt
@@ -150,33 +132,43 @@ function BudgetManager:AllocateBudgetToTasks(pBudget, pInvestmentSavings)
 		budgetUnits = budgetUnits + v:getBudgetUnits()
 	end
 	if budgetUnits == 0 then budgetUnits = 1 end	
+		
+	-- Ersparnisse erhöhen und das nun reale Budget bestimmen, dass verteilt werden soll.
+	local tempBudget = pBudget - self.InvestmentSavings
+	self.InvestmentSavings = self.InvestmentSavings + math.round(tempBudget / 5) -- Ein Fünftel ansparen	
+	local realBudget = pBudget - self.InvestmentSavings -- Schließlich echtes Budget bestimmen
+	TVT.addToLog("# Budget: " .. realBudget .. "            (+ Ersparnisse (" .. self.InvestmentSavings .. ") = " .. pBudget .. ")")
 	
 	-- Wert einer Budgeteinheit bestimmen
-	local realBudget = pBudget - pInvestmentSavings
-	local budgetUnitValue = realBudget / budgetUnits
-	
-	TVT.addToLog("# Budget: " .. realBudget .. "            (mit alten Rücklagen: " .. pBudget .. ")")
-	
-	-- Die Budgets zuweisen
+	local budgetUnitValue = realBudget / budgetUnits	
+		
+	-- Prios der Aufgaben nochmal aktualisieren und sortieren
+	player:SortTasksByPrio()	
+
+	local investmentDone = false		
+		
+	-- Die Budgets den Tasks zuweisen
 	for k,v in pairs(player.TaskList) do
 		--debugMsg(v:typename() .. "- Altes Budget: " .. v.CurrentBudget .. " / " .. v.BudgetWholeDay)		
-		local budgetTemp = math.round(v.BudgetWeigth * budgetUnitValue) 
-		local savingTemp = math.round(v.InvestmentWeigth * budgetUnitValue)
+		v.CurrentBudget = math.round(v.BudgetWeigth * budgetUnitValue) 			
 		
-		v.InvestmentSavings = v.InvestmentSavings + savingTemp
-		
-		if (budgetTemp + v.InvestmentSavings) >= v.NeededInvestmentBudget then
-			v.CurrentBudget = budgetTemp + v.InvestmentSavings
-			v.UseInvestment = true
+		-- Eventuell die Ersparnisse investieren
+		if (not investmentDone) and v.NeededInvestmentBudget > 0 then
+			if (v.CurrentBudget + self.InvestmentSavings) >= v.NeededInvestmentBudget then
+				v.CurrentBudget = v.CurrentBudget + self.InvestmentSavings
+				v.UseInvestment = true
+				investmentDone = true				
+			else
+				v.UseInvestment = false				
+			end
 		else
-			v.CurrentBudget = budgetTemp
 			v.UseInvestment = false
 		end		
-				
-		v.BudgetWholeDay = v.CurrentBudget
+		
+		v.BudgetWholeDay = v.CurrentBudget		
 		v:BudgetSetup()
 		debugMsg(v:typename() .. "- BudgetWholeDay: " .. v.BudgetWholeDay)
-		TVT.addToLog(v:typename() .. ": " .. v.BudgetWholeDay .. "         (Ersparnisse:" .. (v.InvestmentSavings) .. ")")
+		TVT.addToLog(v:typename() .. ": " .. v.BudgetWholeDay)								
 	end	
 end
 

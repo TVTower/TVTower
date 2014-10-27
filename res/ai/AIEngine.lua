@@ -100,6 +100,20 @@ function AIPlayer:BeginNewTask()
 	end
 end
 
+function AIPlayer:RecalculateTaskPrio()
+	for k,v in pairs(self.TaskList) do
+		v:RecalcPriority()
+	end
+end
+
+function AIPlayer:SortTasksByPrio()
+	self:RecalculateTaskPrio()	
+	local sortMethod = function(a, b)
+		return a.CurrentPriority > b.CurrentPriority
+	end
+	table.sort(self.TaskList, sortMethod)	
+end
+
 function AIPlayer:SelectTask()
 	local BestPrio = -1
 	local BestTask = nil
@@ -144,8 +158,8 @@ _G["AITask"] = class(KIDataObjekt, function(c)
 	c.BudgetWholeDay = 0 -- Wie hoch war das Budget das die KI für diese Aufgabe an diesem Tag einkalkuliert hat.
 	c.BudgetWeigth = 0 -- Wie viele Budgetanteile verlangt diese Aufgabe vom Gesamtbudget?
 	
-	c.InvestmentWeigth = 0 -- Wie viele Budgetanteile werden gespart
-	c.InvestmentSavings = 0 -- Wie viel wurde bereits gespart?
+	c.InvestmentWeigth = 0 -- Wie wichtig sind die Investitionen in diesen Bereich?
+	--c.InvestmentSavings = 0 -- Wie viel wurde bereits gespart?
 	c.NeededInvestmentBudget = -1 -- Wie viel Geld benötigt die KI für eine Großinvestition
 	c.UseInvestment = false
 end)
@@ -155,14 +169,10 @@ function AITask:typename()
 end
 
 function AITask:getBudgetUnits()
-	return self.BudgetWeigth + self.InvestmentWeigth
+	return self.BudgetWeigth
 end
 
 function AITask:PayFromBudget(value)
-	if self.UseInvestment then
-		self.InvestmentWeigthSum = 0
-	end
-	
 	self.CurrentBudget = self.CurrentBudget - value
 end
 
@@ -201,7 +211,7 @@ function AITask:StartNextJob()
 		self.CurrentJob = self:getGotoJob()
 	else
 		self.Status = TASK_STATUS_RUN
-		self.StartTask = WorldTime.GetTimeGone()
+		self.StartTask = WorldTime.GetTimeGoneAsMinute()
 		self.CurrentJob = self:GetNextJobInTargetRoom()
 
 		if (self.Status == TASK_STATUS_DONE) or (self.Status == TASK_STATUS_CANCEL) then
@@ -257,10 +267,10 @@ function AITask:getGotoJob()
 end
 
 function AITask:RecalcPriority()
-	if (self.LastDone == 0) then self.LastDone = WorldTime.GetTimeGone() end
+	if (self.LastDone == 0) then self.LastDone = WorldTime.GetTimeGoneAsMinute() end
 
 	local Ran1 = math.random(75, 125) / 100
-	local TimeDiff = math.round(WorldTime.GetTimeGone() - self.LastDone)
+	local TimeDiff = math.round(WorldTime.GetTimeGoneAsMinute() - self.LastDone)
 	local player = _G["globalPlayer"]
 	local requisitionPriority = player:GetRequisitionPriority(self.Id)
 
@@ -286,7 +296,7 @@ function AITask:SetDone()
 	debugMsg("<<< Task abgeschlossen!")
 	self.Status = TASK_STATUS_DONE
 	self.SituationPriority = 0
-	self.LastDone = WorldTime.GetTimeGone()
+	self.LastDone = WorldTime.GetTimeGoneAsMinute()
 end
 
 function AITask:SetCancel()
@@ -335,8 +345,8 @@ end
 
 function AIJob:Start(pParams)
 	self.StartParams = pParams
-	self.StartJob = WorldTime.GetTimeGone()
-	self.LastCheck = WorldTime.GetTimeGone()
+	self.StartJob = WorldTime.GetTimeGoneAsMinute()
+	self.LastCheck = WorldTime.GetTimeGoneAsMinute()
 	self.Ticks = 0
 	self:Prepare(pParams)
 end
@@ -355,10 +365,10 @@ function AIJob:Tick()
 end
 
 function AIJob:ReDoCheck(pWait)
-	if ((self.LastCheck + pWait) < WorldTime.GetTimeGone()) then
-		--debugMsg("ReDoCheck")
+	if ((self.LastCheck + pWait) < WorldTime.GetTimeGoneAsMinute()) then
+		debugMsg("ReDoCheck: (" .. self.LastCheck .. " + " .. pWait .. ") < " .. WorldTime.GetTimeGoneAsMinute())
 		self.Status = JOB_STATUS_REDO
-		self.LastCheck = WorldTime.GetTimeGone()
+		self.LastCheck = WorldTime.GetTimeGoneAsMinute()
 		self:Prepare(self.StartParams)
 	end
 end
@@ -389,13 +399,13 @@ function AIJobGoToRoom:OnReachRoom(roomId)
 		elseif (self:ShouldIWait()) then
 			debugMsg("Dann wart ich eben...")
 			self.IsWaiting = true
-			self.WaitSince = WorldTime.GetTimeGone()
+			self.WaitSince = WorldTime.GetTimeGoneAsMinute()
 			self.WaitTill = self.WaitSince + 3 + (self.Task.CurrentPriority / 6)
 			if ((self.WaitTill - self.WaitSince) > 20) then
 				self.WaitTill = self.WaitSince + 20
 			end
 			local rand = math.random(50, 75)
-			debugMsg("Gehe etwas zur Seite: " .. rand)
+			debugMsg("Gehe etwas zur Seite (" .. rand .. ") und warte bis " .. self.WaitTill)
 			TVT.doGoToRelative(rand)
 		else
 			debugMsg("Ne ich warte nicht!")
@@ -425,6 +435,7 @@ end
 
 function AIJobGoToRoom:Prepare(pParams)
 	if ((self.Status == JOB_STATUS_NEW) or (self.Status == TASK_STATUS_PREPARE) or (self.Status == JOB_STATUS_REDO)) then
+		debugMsg("DoGoToRoom: " .. self.TargetRoom .. " => " .. self.Status)
 		TVT.DoGoToRoom(self.TargetRoom)
 		self.Status = JOB_STATUS_RUN
 	end
@@ -436,9 +447,11 @@ function AIJobGoToRoom:Tick()
 		if (TVT.isRoomUnused(self.TargetRoom) == 1) then
 			debugMsg("Jetzt ist frei!")
 			TVT.DoGoToRoom(self.TargetRoom)
-		elseif ((self.WaitTill - WorldTime.GetTimeGone()) <= 0) then
+		elseif ((self.WaitTill - WorldTime.GetTimeGoneAsMinute()) <= 0) then
 			debugMsg("Ach... ich geh...")
 			self.Status = JOB_STATUS_CANCEL
+		else
+			debugMsg("Warten... " .. self.WaitTill .. "/" .. WorldTime.GetTimeGoneAsMinute())
 		end
 	elseif (self.Status ~= JOB_STATUS_DONE) then
 		self:ReDoCheck(10)

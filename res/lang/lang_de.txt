@@ -24,7 +24,7 @@ STARTHINT_TEXT1 = Mit der STRG+Taste könnt ihr ein Programm mehrfach im Planer 
 STARTHINT_TITLE2 = Programmplanung
 STARTHINT_TEXT2 = Der Erfolg einer Ausstrahlung hängt maßgeblich von der Qualität/Wertung des Programmes ab. Ebenso entscheidend ist die Sendezeit und die Beliebtheit des Genres, der Zuschauerfluss aufeinanderfolgender Programme (die möglichst ähnlich sind), sowie die Anzahl der gesendeten Trailer, die Qualität der Nachrichtensendung und weiterer Faktoren.\n\nProgramme mancher Genre, wie z.B. Komödien, können zudem häufiger gesendet werden, als andere.
 STARTHINT_TITLE3 = Werbeverträge
-STARTHINT_TEXT3 = Werbeverträge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und natürlich auch die Gewinne/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.\n\nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbeverträge abzuschließen.
+STARTHINT_TEXT3 = Werbeverträge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und natürlich auch die Prämien/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.\n\nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbeverträge abzuschließen.
 
 GAME_TITLE = Spieltitel
 START_YEAR = Startjahr
@@ -160,7 +160,7 @@ NEXT_ADBLOCK		= folgender Werbeblock
 NEXT_PROGRAMME		= folgendes Programm
 NEXT_NOTHINGSET		= nicht gesetzt!
 
-AD_PROFIT		= Gewinn
+AD_PROFIT		= Prämie
 AD_PLANNED		= eingeplant
 AD_TOSEND		= zu senden
 AD_PENALTY		= Strafe
@@ -431,7 +431,7 @@ DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN = Willst Du das Sp
 ADCONTRACT_FINISHED = Werbevertrag beendet
 ADCONTRACT_FAILED = Werbevertrag fehlgeschlagen
 ADCONTRACT_X_SUCCESSFULLY_FINISHED = Werbevertrag "%TITLE%" erfolgreich abgeschlossen.
-PROFIT_OF_X_GOT_CREDITED = Der Gewinn von %MONEY% wurde gutgeschrieben.
+PROFIT_OF_X_GOT_CREDITED = Die Prämie von %MONEY% wurde gutgeschrieben.
 ADCONTRACT_X_FAILED = Werbevertrag "%TITLE%" fehlgeschlagen.
 PENALTY_OF_X_WAS_PAID = Die Strafe von %MONEY% wurde beglichen.
 BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = Die Ausstrahlung des FSK18-Programmes "%TITLE%" ist tagsüber nicht erlaubt.

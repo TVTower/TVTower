@@ -138,6 +138,7 @@ TLogger.SetPrintMode(0)
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
 '@MANUEL: comment out when doing DEV to see LOG_DEV-messages
 'TLogger.changePrintMode(LOG_DEV, FALSE)
+'TLogger.changePrintMode(LOG_ERROR | LOG_DEV | LOG_AI, true)
 
 
 

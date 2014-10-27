@@ -325,12 +325,16 @@ end
 
 
 function OnRealTimeSecond(millisecondsPassed)
-	if (aiIsActive) then
-		getAIPlayer():Tick()
-	end
+	--if (aiIsActive) then
+		--getAIPlayer():Tick()
+	--end
 end
 
 function OnMinute(number, array)
+	if (aiIsActive) then
+		getAIPlayer():Tick()
+	end
+	--debugMsg("tick" .. number)
 --	if (aiIsActive) then
 --		getAIPlayer():Tick()
 --	end

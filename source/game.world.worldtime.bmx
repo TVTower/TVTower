@@ -132,8 +132,15 @@ Type TWorldTime {_exposeToLua="selected"}
 
 
 	Method GetTimeGone:Double() {_exposeToLua}
-		return _timeGone
+		Return _timeGone
 	End Method
+	
+	
+	Method GetTimeGoneAsMinute:Double(sinceStart:Int=False) {_exposeToLua}
+		Local useTime:Double = _timeGone
+		If sinceStart Then useTime = (_timeGone - _timeStart)	
+		Return Int(Floor(useTime / 60))
+	End Method	
 
 
 	Method SetTimeStart(timeStart:Double)
