@@ -58,6 +58,11 @@ Type TGameToastMessage extends TToastMessage
 	End Method
 
 
+	Method SetCloseAtWorldTimeText:int(text:string)
+		_closeAtWorldTimeText = text
+	End Method
+
+
 	Method AddCloseOnEvent(eventKey:String)
 		local listenerLink:TLink = EventManager.registerListenerMethod(eventKey, self, "onReceiveCloseEvent", self)
 		_registeredEventListener :+ [listenerLink]
@@ -172,7 +177,7 @@ Type TGameToastMessage extends TToastMessage
 
 		'worldtime close hint
 		if _closeAtWorldTime > 0 and _closeAtWorldTimeText <> ""
-			local text:String = _closeAtWorldTimeText
+			local text:String = GetLocale(_closeAtWorldTimeText)
 			text = text.Replace("%H%", GetWorldTime().GetDayHour(_closeAtWorldTime))
 			text = text.Replace("%I%", GetWorldTime().GetDayMinute(_closeAtWorldTime))
 			text = text.Replace("%S%", GetWorldTime().GetDaySecond(_closeAtWorldTime))

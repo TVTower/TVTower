@@ -27,6 +27,7 @@ STARTHINT_TEXT2 = The success of a broadcast is heavily based on the quality/rat
 STARTHINT_TITLE3 = Ad contracts
 STARTHINT_TEXT3 = Ad contracts have defined requirements to the minimum audience. This and of course profits/penalties are directly attached to the maximum audience a channel can reach currently.\n\nTherefore it is sometimes better to sign new contracts right before buying new stations.
 
+CLOSES_AT_TIME = Closes at %TIME%
 
 GAME_TITLE = Game title
 START_YEAR = Start year

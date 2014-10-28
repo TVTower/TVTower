@@ -1259,14 +1259,17 @@ Type TFigureJanitor Extends TFigure
 			currentAction = 0
 
 			'chose actions
-			'only clean with a chance of 30% when on the way to something
-			'and do not clean if target is a room near figure
-			Local targetDoor:TRoomDoor = TRoomDoor(GetTarget())
-			If GetTarget() And (Not targetDoor Or (20 < Abs(targetDoor.GetScreenX() - area.GetX()) Or targetDoor.GetOnFloor() <> GetFloor()))
-				If Rand(0,100) < NormalCleanChance Then currentAction = 1
-			EndIf
-			'if just standing around give a chance to clean
-			If Not GetTarget() And Rand(0,100) < BoredCleanChance Then currentAction = 1
+			'- only if not outside the building
+			if area.position.GetX() > GetBuilding().leftWallX
+				'only clean with a chance of 30% when on the way to something
+				'and do not clean if target is a room near figure
+				Local targetDoor:TRoomDoor = TRoomDoor(GetTarget())
+				If GetTarget() And (Not targetDoor Or (20 < Abs(targetDoor.GetScreenX() - area.GetX()) Or targetDoor.GetOnFloor() <> GetFloor()))
+					If Rand(0,100) < NormalCleanChance Then currentAction = 1
+				EndIf
+				'if just standing around give a chance to clean
+				If Not GetTarget() And Rand(0,100) < BoredCleanChance Then currentAction = 1
+			endif
 		EndIf
 
 		If GetTarget()
@@ -2383,7 +2386,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 					If responseArray <> Null
 						Network.OnlineIP = responseArray[0]
 						Network.intOnlineIP = HostIp(Network.OnlineIP)
-						Print "set your onlineIP"+responseArray[0]
+						Print "set your onlineIP: "+responseArray[0]
 					EndIf
 				Wend
 				CloseStream Onlinestream
@@ -2392,14 +2395,17 @@ Type TScreen_NetworkLobby Extends TGameScreen
 	'TODO: [ron] rewrite handling
 					Network.LastOnlineRequestTimer = MilliSecs()
 					Local Onlinestream:TStream   = ReadStream("http::www.tvgigant.de/lobby/lobby.php?action=ListGames")
-					Local timeouttimer:Int = MilliSecs()+2500 '2.5 seconds okay?
-					Local timeout:Byte = False
+					Local timeOutTimer:Int = MilliSecs()+2500 '2.5 seconds okay?
+					Local timeOut:int = False
+					
 					If Not Onlinestream Then Throw ("Not Online?")
+
 					While Not Eof(Onlinestream) Or timeout
 						If timeouttimer < MilliSecs() Then timeout = True
+						
 						Local responsestring:String = ReadLine(Onlinestream)
 						Local responseArray:String[] = responsestring.split("|")
-						If responseArray <> Null
+						If responseArray and responseArray.length > 3
 							Local gameTitle:String	= "[ONLINE] "+Network.URLDecode(responseArray[0])
 							Local slotsUsed:Int		= Int(responseArray[1])
 							Local slotsMax:Int		= 4
@@ -2977,6 +2983,7 @@ Type GameEvents
 		
 			'until 2 hours
 			toast.SetCloseAtWorldTime(latestTime)
+			toast.SetCloseAtWorldTimeText("CLOSES_AT_TIME")
 			toast.SetMessageType(1)
 			toast.SetPriority(10)
 			toast.SetCaption("Dein Chef will dich sehen")

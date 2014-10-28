@@ -31,6 +31,7 @@ Const NET_TYPE_UINT16:int  = 4
 Const NET_TYPE_FLOAT16:int = 5
 Const NET_TYPE_FLOAT32:int = 6
 Const NET_TYPE_DOUBLE:int  = 7
+Const NET_TYPE_LONG:int    = 8
 
 '=== NETWORK PACKET TYPES ===
 Const NET_CONNECT:Int           = 1      ' ALL: Connect Attempt
@@ -1169,6 +1170,11 @@ Type TNetworkObject
 	Method SetDouble( index:int, data:Double )
 		WriteSlot( index ).SetDouble( data )
 	End Method
+	
+
+	Method SetLong( index:int, data:Long )
+		WriteSlot( index ).SetLong( data )
+	End Method
 
 
 	Method SetString( index:int, data:string )
@@ -1188,6 +1194,11 @@ Type TNetworkObject
 
 	Method GetDouble:Double( index:int, defaultValue:Double=0.0, defaultProvided:int=FALSE  )
 		Return slots[index].GetDouble( defaultValue, defaultProvided )
+	End Method
+
+
+	Method GetLong:Long( index:int, defaultValue:Long=0, defaultProvided:int=FALSE  )
+		Return slots[index].GetLong( defaultValue, defaultProvided )
 	End Method
 
 
@@ -1294,6 +1305,8 @@ Type TNetworkObject
 				Case NET_TYPE_UINT16    size:+3
 				Case NET_TYPE_FLOAT16   size:+3
 				Case NET_TYPE_FLOAT32   size:+5
+				Case NET_TYPE_DOUBLE    size:+3+GetString(index).length
+				Case NET_TYPE_LONG	    size:+3+GetString(index).length
 				Case NET_TYPE_STRING    size:+3+GetString(index).length
 			End Select
 		Next
@@ -1308,47 +1321,67 @@ Type TNetworkObject
 					continue
 				Case NET_TYPE_INT
 					n = GetInt( index )
-				    p[0]=NET_TYPE_INT Shl 5 | index
-				    p[1]=n Shr 24
-					p[2]=n Shr 16
-					p[3]=n Shr 8
-					p[4]=n Shr 0
-					p:+5
+				    p[0] = NET_TYPE_INT Shl 5 | index
+				    p[1] = n Shr 24
+					p[2] = n Shr 16
+					p[3] = n Shr 8
+					p[4] = n Shr 0
+					p:+ 5
 				Case NET_TYPE_UINT8
 					n = GetInt( index )
-					p[0]=NET_TYPE_UINT8 Shl 5 | index
-					p[1]=n
-					p:+2
+					p[0] = NET_TYPE_UINT8 Shl 5 | index
+					p[1] = n
+					p:+ 2
 				Case NET_TYPE_UINT16
 					n = GetInt( index )
-					p[0]=NET_TYPE_UINT16 Shl 5 | index
-					p[1]=n Shr 8
-					p[2]=n Shr 0
-					p:+3
+					p[0] = NET_TYPE_UINT16 Shl 5 | index
+					p[1] = n Shr 8
+					p[2] = n Shr 0
+					p:+ 3
 				Case NET_TYPE_FLOAT16
 					n = PackFloat16( GetFloat(index) )
-					p[0]=NET_TYPE_FLOAT16 Shl 5 | index
-					p[1]=n Shr 8
-					p[2]=n Shr 0
-					p:+3
+					p[0] = NET_TYPE_FLOAT16 Shl 5 | index
+					p[1] = n Shr 8
+					p[2] = n Shr 0
+					p:+ 3
 				Case NET_TYPE_FLOAT32
 					n = PackFloat32( GetFloat(index) )
-					p[0]=NET_TYPE_FLOAT32 Shl 5 | index
-					p[1]=n Shr 24
-					p[2]=n Shr 16
-					p[3]=n Shr 8
-					p[4]=n Shr 0
-					p:+5
+					p[0] = NET_TYPE_FLOAT32 Shl 5 | index
+					p[1] = n Shr 24
+					p[2] = n Shr 16
+					p[3] = n Shr 8
+					p[4] = n Shr 0
+					p:+ 5
 				Case NET_TYPE_STRING
-					local dataStr:string =GetString( index )
+					local dataStr:string = GetString( index )
 					n = dataStr.length
-					p[0]=NET_TYPE_STRING Shl 5 | index
-					p[1]=n Shr 8
-					p[2]=n Shr 0
+					p[0] = NET_TYPE_STRING Shl 5 | index
+					p[1] = n Shr 8
+					p[2] = n Shr 0
 					Local t:Byte Ptr=dataStr.ToCString()
+					MemCopy(p + 3, t, n)
+					MemFree(t)
+					p:+ 3 + n
+				Case NET_TYPE_DOUBLE
+					local dataStr:string = string( GetDouble( index ) )
+					n = dataStr.length
+					p[0] = NET_TYPE_DOUBLE Shl 5 | index
+					p[1] = n Shr 8
+					p[2] = n Shr 0
+					Local t:Byte Ptr = dataStr.ToCString()
+					MemCopy(p + 3, t, n)
+					MemFree(t)
+					p:+ 3 + n
+				Case NET_TYPE_LONG
+					local dataStr:string = string( GetLong( index ) )
+					n = dataStr.length
+					p[0] = NET_TYPE_STRING Shl 5 | index
+					p[1] = n Shr 8
+					p[2] = n Shr 0
+					Local t:Byte Ptr = dataStr.ToCString()
 					MemCopy(p+3, t, n)
 					MemFree(t)
-					p:+3+n
+					p:+ 3 + n
 				Default
 					Throw "Invalid TNetworkObjectSlot data type"
 			End Select
@@ -1388,6 +1421,16 @@ Type TNetworkObject
 				Case NET_TYPE_STRING
 					local length:int = p[0] Shl 8 | p[1]
 					SetString(index, String.FromBytes( p+2, length ))
+					p:+2 +length
+					'print "slot "+index+" is type "+typ+" (string)"
+				Case NET_TYPE_DOUBLE
+					local length:int = p[0] Shl 8 | p[1]
+					SetDouble(index, String.FromBytes( p+2, length ).toDouble())
+					p:+2 +length
+					'print "slot "+index+" is type "+typ+" (string)"
+				Case NET_TYPE_LONG
+					local length:int = p[0] Shl 8 | p[1]
+					SetLong(index, String.FromBytes( p+2, length ).toLong())
 					p:+2 +length
 					'print "slot "+index+" is type "+typ+" (string)"
 				Default
@@ -1498,6 +1541,14 @@ Type TNetworkObjectSlot
 	End Method
 
 
+	Method SetLong( data:Long )
+		Assert slottype=0 Or slottype = NET_TYPE_LONG
+		'store as string
+		_string = String.FromDouble(data)
+		slottype = NET_TYPE_LONG
+	End Method
+
+
 	Method SetString( data:string )
 		Assert slottype = 0 Or slottype = NET_TYPE_STRING
 		_string	= data
@@ -1558,7 +1609,25 @@ Type TNetworkObjectSlot
 			Return _string.ToDouble()
 		endif
 	End Method
-	
+
+
+	Method GetLong:Long(defaultValue:Long=0, defaultProvided:int=FALSE)
+		'long/double/float/int/string don't have real NULL, so we have to
+		'rely on defaultProvided
+		'if a defaultValue is set, return it as long as field type is
+		'differing
+		if defaultProvided
+			if slottype = NET_TYPE_Long
+				Return _string.ToLong()
+			else
+				Return defaultValue
+			endif
+		else
+			Assert slottype = NET_TYPE_LONG, "Wrong slot type. No LONG but "+slottype
+			Return _string.ToLong()
+		endif
+	End Method
+		
 
 	Method GetString:string(defaultValue:string="", defaultProvided:int=FALSE)
 		'float/int/string don't have real NULL, so we have to rely on

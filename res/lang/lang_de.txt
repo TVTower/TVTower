@@ -26,6 +26,8 @@ STARTHINT_TEXT2 = Der Erfolg einer Ausstrahlung hängt maßgeblich von der Quali
 STARTHINT_TITLE3 = Werbeverträge
 STARTHINT_TEXT3 = Werbeverträge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und natürlich auch die Prämien/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.\n\nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbeverträge abzuschließen.
 
+CLOSES_AT_TIME = Schließt sich um %TIME%
+
 GAME_TITLE = Spieltitel
 START_YEAR = Startjahr
 
