@@ -679,10 +679,8 @@ Type TApp
 
 
 			GetWorld().RenderDebug(660,0, 140, 130)
+			'GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
 		EndIf
-		if GetPlayer() and GetPlayer().GetFigure()
-			GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
-		endif
 		'show quotes even without "DEV_OSD = true"
 		If TVTDebugQuoteInfos then Game.DebugAudienceInfo.Draw()
 

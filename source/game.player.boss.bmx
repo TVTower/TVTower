@@ -83,6 +83,7 @@ Type TPlayerBoss
 	Field awaitingPlayerAccepted:Int = False
 	'was the player already called (toastmessage for active player)?
 	Field awaitingPlayerCalled:Int = False
+	Field playerVisitsMe:int = False
 	
 	'in the case of the player sends a favorite movie, this might
 	'brighten the mood of the boss
@@ -130,8 +131,8 @@ Type TPlayerBoss
 		Local day:Int = triggerEvent.GetData().GetInt("day",-1)
 
 		'=== CHECK IF BOSS WANTS TO SEE PLAYER ===
-		'await the player each day at 16:00
-		if GameRules.dailyBossVisit
+		'await the player each day at 16:00 (except player is already there)
+		if GameRules.dailyBossVisit and not playerVisitsMe
 			If minute = 0 and hour = 16 and not awaitingPlayerVisit
 				awaitingPlayerVisit = True
 			EndIf
@@ -183,6 +184,8 @@ Type TPlayerBoss
 
 		'reset boss call state so boss can call player again
 		awaitingPlayerCalled = False
+
+		playerVisitsMe = False
 	End Method
 
 	
@@ -199,6 +202,8 @@ Type TPlayerBoss
 
 		'no longer await the visit of this player
 		awaitingPlayerVisit = False
+
+		playerVisitsMe = True
 
 
 		'TODO: generate talks - for now, just remove what we collected
