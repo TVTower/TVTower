@@ -141,9 +141,14 @@ function AIPlayer:OnDayBegins()
 	--Zum überschreiben
 end
 
-function AIPlayer:OnReachRoom(roomId)
-	self.CurrentTask:OnReachRoom(roomId)
+function AIPlayer:OnBeginEnterRoom(roomId, result)
+	self.CurrentTask:OnBeginEnterRoom(roomId, result)
 end
+
+function AIPlayer:OnEnterRoom(roomId)
+	self.CurrentTask:OnEnterRoom(roomId)
+end
+
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -313,12 +318,20 @@ function AITask:SetCancel()
 	self.SituationPriority = self.SituationPriority / 2
 end
 
-function AITask:OnReachRoom(roomId)
+function AITask:OnEnterRoom(roomId)
 	--debugMsg("OnReachRoom!")
 	if (self.CurrentJob ~= nil) then
-		self.CurrentJob:OnReachRoom(roomId)
+		self.CurrentJob:OnEnterRoom(roomId)
 	end
 end
+
+function AITask:OnBeginEnterRoom(roomId, result)
+	--debugMsg("OnReachRoom!")
+	if (self.CurrentJob ~= nil) then
+		self.CurrentJob:OnBeginEnterRoom(roomId, result)
+	end
+end
+
 
 function AITask:BudgetSetup()
 end
@@ -381,8 +394,16 @@ function AIJob:ReDoCheck(pWait)
 	end
 end
 
-function AIJob:OnReachRoom(roomId)
+function AIJob:OnBeginEnterRoom(roomId, result)
 	--Kann überschrieben werden
+	--wird aufgerufen, sobald die Figur versucht den Raum zu betreten
+	--roomId = der Raum
+	--result = Ergebnis des Versuchs. Bspweise TVT.RESULT_INUSE (besetzt)
+end
+
+function AIJob:OnEnterRoom(roomId)
+	--Kann überschrieben werden
+	--wird aufgerufen, sobald die Figur IM Raum ist
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -400,8 +421,9 @@ function AIJobGoToRoom:typename()
 	return "AIJobGoToRoom"
 end
 
-function AIJobGoToRoom:OnReachRoom(roomId)
-	if (roomId == "-32" or roomId == -32) then --RESULT_INUSE
+function AIJobGoToRoom:OnBeginEnterRoom(roomId, result)
+	local resultId = tonumber(result)
+	if (resultId == TVT.RESULT_INUSE) then
 		if (self.IsWaiting) then
 			debugMsg("Okay... aber nur noch 'n kleines bisschen...")
 		elseif (self:ShouldIWait()) then
@@ -419,10 +441,15 @@ function AIJobGoToRoom:OnReachRoom(roomId)
 			debugMsg("Ne ich warte nicht!")
 			self.Status = JOB_STATUS_CANCEL
 		end
-	else
-		--debugMsg("AIJobGoToRoom DONE!")
-		self.Status = JOB_STATUS_DONE
+	elseif(resultId == TVT.RESULT_OK) then
+		debugMsg("Darf Raum betreten " .. roomId)
 	end
+end
+
+function AIJobGoToRoom:OnEnterRoom(roomId)
+	debugMsg("Raum betreten " .. roomId)
+	--debugMsg("AIJobGoToRoom DONE!")
+	self.Status = JOB_STATUS_DONE
 end
 
 function AIJobGoToRoom:ShouldIWait()

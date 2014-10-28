@@ -132,7 +132,7 @@ TLogger.setLogMode(LOG_ALL)
 TLogger.setPrintMode(LOG_ALL )
 
 'print "ALLE MELDUNGEN AUS"
-TLogger.SetPrintMode(0)
+'TLogger.SetPrintMode(0)
 
 'TLogger.setPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS

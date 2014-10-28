@@ -287,16 +287,29 @@ function OnDayBegins()
 	end
 end
 
+function OnLeaveRoom()
+	debugMsg("OnLeaveRoom")
+end
+
+-- figure approached the target room - will try to open the door soon
 function OnReachRoom(roomId)
+	--debugMsg("OnReachRoom" .. roomId)
+end
+
+-- figure is now trying to enter this room ("open door")
+function OnBeginEnterRoom(roomId, result)
+	--debugMsg("OnBeginEnterRoom" .. roomId .. " result=" .. result)
 	if (aiIsActive) then
-		getAIPlayer():OnReachRoom(roomId)
+		getAIPlayer():OnBeginEnterRoom(roomId, result)
 	end
 end
 
-function OnLeaveRoom()
-end
-
-function OnEnterRoom()
+-- figure is now in this room
+function OnEnterRoom(roomId)
+	--debugMsg("OnEnterRoom " .. roomId)
+	if (aiIsActive) then
+		getAIPlayer():OnEnterRoom(roomId)
+	end
 end
 
 function OnSave()
@@ -334,7 +347,7 @@ function OnMinute(number, array)
 	if (aiIsActive) then
 		getAIPlayer():Tick()
 	end
-	--debugMsg("tick" .. number)
+	debugMsg("tick" .. number)
 --	if (aiIsActive) then
 --		getAIPlayer():Tick()
 --	end

@@ -149,17 +149,6 @@ Type KI
 	End Method
 
 
-	Method CallOnReachRoom(roomId:Int)
-	    Try
-			Local args:Object[1]
-			args[0] = String(roomId)
-			if (KIRunning) then LuaEngine.CallLuaFunction("OnReachRoom", args)
-		Catch ex:Object
-			TLogger.log("KI.CallOnReachRoom", "Script "+scriptFileName+" does not contain function ~qOnReachRoom~q.", LOG_ERROR)
-		End Try
-	End Method
-
-
 	Method CallOnBossCalls(latestWorldTime:int=0)
 		Local args:Object[1]
 		args[0] = String(latestWorldTime)
@@ -183,7 +172,7 @@ Type KI
 		args[1] = targetLicence
 		if (KIRunning) then LuaEngine.CallLuaFunction("OnPublicAuthoritiesConfiscateProgrammeLicence")
 	End Method
-	
+
 
 	Method CallOnLeaveRoom(roomId:int)
 	    Try
@@ -195,6 +184,31 @@ Type KI
 		End Try
 	End Method
 
+
+	Method CallOnReachRoom(roomId:Int)
+	    Try
+			Local args:Object[1]
+			args[0] = String(roomId)
+			if (KIRunning) then LuaEngine.CallLuaFunction("OnReachRoom", args)
+		Catch ex:Object
+			TLogger.log("KI.CallOnReachRoom", "Script "+scriptFileName+" does not contain function ~qOnReachRoom~q.", LOG_ERROR)
+		End Try
+	End Method
+
+
+
+	Method CallOnBeginEnterRoom(roomId:int, result:int)
+	    Try
+			Local args:Object[2]
+			args[0] = String(roomId)
+			args[1] = String(result)
+			if (KIRunning) then LuaEngine.CallLuaFunction("OnBeginEnterRoom", args)
+		Catch ex:Object
+			TLogger.log("KI.CallOnBeginEnterRoom", "Script "+scriptFileName+" does not contain function ~qOnBeginEnterRoom~q.", LOG_ERROR)
+		End Try
+	End Method
+	
+
 	Method CallOnEnterRoom(roomId:int)
 	    Try
 			Local args:Object[1]
@@ -204,6 +218,7 @@ Type KI
 			TLogger.log("KI.CallOnEnterRoom", "Script "+scriptFileName+" does not contain function ~qOnEnterRoom~q.", LOG_ERROR)
 		End Try
 	End Method
+
 	
 	Method CallOnDayBegins()
 	    Try
@@ -212,6 +227,7 @@ Type KI
 			TLogger.log("KI.CallOnDayBegins", "Script "+scriptFileName+" does not contain function ~qOnDayBegins~q.", LOG_ERROR)
 		End Try
 	End Method
+	
 
 	Method CallOnMoneyChanged()
 	    Try

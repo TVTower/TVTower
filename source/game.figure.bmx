@@ -451,14 +451,16 @@ Type TFigure extends TFigureBase
 		'set new room
 	 	inRoom = room
 
-	 	'inform AI that we reached a room
+		rem
+	 	'inform AI that we are now in a room
 	 	If isAIPlayer()
 			If room
-				GetPlayer(playerID).PlayerKI.CallOnReachRoom(room.id)
+				GetPlayer(playerID).PlayerKI.CallOnSetInRoom(room.id)
 			Else
-				GetPlayer(playerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_NOTFOUND)
+				GetPlayer(playerID).PlayerKI.CallOnSetInRoom(LuaFunctions.RESULT_NOTFOUND)
 			EndIf
 		EndIf
+		endrem
 
 		'inform others that room is changed
 		EventManager.triggerEvent( TEventSimple.Create("figure.SetInRoom", self, inroom) )
@@ -510,7 +512,7 @@ Type TFigure extends TFigureBase
 		'room for now
 		if room.IsBlocked()
 			'inform player AI
-			If isAIPlayer() then GetPlayer(playerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_NOTALLOWED)
+			If isAIPlayer() then GetPlayer(playerID).PlayerKI.CallOnBeginEnterRoom(room.id, LuaFunctions.RESULT_NOTALLOWED)
 			'tooltip only for active user
 			If isActivePlayer() then GetBuilding().CreateRoomBlockedTooltip(door, room)
 
@@ -523,7 +525,7 @@ Type TFigure extends TFigureBase
 				'only player-figures need such handling (events etc.)
 				If playerID and not playerID = room.owner
 					'inform player AI
-					If isAIPlayer() then GetPlayer(playerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_INUSE)
+					If isAIPlayer() then GetPlayer(playerID).PlayerKI.CallOnBeginEnterRoom(room.id, LuaFunctions.RESULT_INUSE)
 					'tooltip only for active user
 					If isActivePlayer() then GetBuilding().CreateRoomUsedTooltip(door, room)
 	
@@ -546,6 +548,10 @@ Type TFigure extends TFigureBase
 
 		'inform what the figure does now
 		currentAction = ACTION_ENTERING
+
+		'inform player AI
+		If isAIPlayer() then GetPlayer(playerID).PlayerKI.CallOnBeginEnterRoom(room.id, LuaFunctions.RESULT_OK)
+
 
 		'do not fade when it is a fake room
 		fadeOnChangingRoom = True
