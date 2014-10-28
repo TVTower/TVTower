@@ -2869,6 +2869,7 @@ Type GameEvents
 		Local timeGone:Int = triggerEvent.GetData().getInt("timeGone", 0)
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
+			If player.isAI() Then player.PlayerKI.ConditionalCallOnTick()
 			If player.isAI() Then player.PlayerKI.CallOnRealtimeSecond(timeGone)
 		Next
 		Return True
@@ -2882,6 +2883,7 @@ Type GameEvents
 		If minute < 0 Then Return False
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
+			If player.isAI() Then player.PlayerKI.ConditionalCallOnTick()
 			If player.isAI() Then player.PlayerKI.CallOnMinute(minute)
 		Next
 		Return True

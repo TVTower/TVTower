@@ -343,11 +343,17 @@ function OnRealTimeSecond(millisecondsPassed)
 	--end
 end
 
-function OnMinute(number, array)
+
+function OnTick(timeGone)
+	--debugMsg("tick" .. timeGone)
 	if (aiIsActive) then
 		getAIPlayer():Tick()
 	end
-	debugMsg("tick" .. number)
+end
+
+
+function OnMinute(number)
+--	debugMsg("OnMinute " .. number)
 --	if (aiIsActive) then
 --		getAIPlayer():Tick()
 --	end

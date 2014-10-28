@@ -17,7 +17,10 @@ Type KI
 	Field playerID:int
 	Field LuaEngine:TLuaEngine {nosave}
 	Field scriptFileName:String
-	Field scriptSaveState:string 'contains the code used to reinitialize the AI
+	'contains the code used to reinitialize the AI
+	Field scriptSaveState:string
+	'time in milliseconds of the last "onTick"-call
+	Field LastTickTime:Long
 
 
 	Method Create:KI(playerID:Int, luaScriptFileName:String)
@@ -119,6 +122,30 @@ Type KI
 		End Try
 
 		return scriptSaveState
+	End Method
+
+
+	'only calls the AI "onTick" if the calculated interval passed
+	'in our case this is:
+	'- more than 1 RealTime second passed since last tick
+	'or
+	'- another InGameMinute passed since last tick
+	Method ConditionalCallOnTick:Int()
+		'time between two ticks = time between two GameMinutes or maximum
+		'1 second (eg. if speed is 0)
+		local tickInterval:Long = 1000
+		if GetWorldTime().GetVirtualMinutesPerSecond() > 0
+			tickInterval = Min(1000.0 , 1000.0 / GetWorldTime().GetVirtualMinutesPerSecond())
+		endif
+
+		'more time gone than the set interval?
+		if abs(Time.GetTimeGone() - LastTickTime) > tickInterval
+			'store time of this tick
+			LastTickTime = Time.GetTimeGone()
+
+			Local args:Object[] = [String(LastTickTime)]
+			if KIRunning then LuaEngine.CallLuaFunction("OnTick", args)
+		endif
 	End Method
 
 
