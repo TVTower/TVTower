@@ -277,6 +277,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		return _ChangeTarget(x,y, False)
 	End Method
 
+
 	'returns the coordinate the figure has to walk to, to reach that
 	'target
 	Method GetTargetMoveToPosition:TVec2D()
@@ -284,6 +285,11 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		if TVec2D(target) then return TVec2D(target)
 
 		return Null
+	End Method
+
+
+	'call this as soon as 
+	Method OnFinishGoTargetTask:int()
 	End Method
 
 
@@ -311,16 +317,23 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 	'step 2/2
 	Method ReachTargetStep2:int()
-		'remove target
-		RemoveCurrentTarget()
-
 		'reset current step to 0 so figure can call step 1 again
 		currentReachTargetStep = 0
-
+		RemoveCurrentTarget()
+		
 		'regain control if there is no other target waiting
 		'TODO: place this in a custom "Route"-object? so there could
 		'      be a chain of targets which you cannot skip
 		if not GetTarget() then controllable = True
+	End Method
+
+
+	'by default we know no targets which need to get entered
+	Method TargetNeedsToGetEntered:int()
+		'if not GetTarget() then return False
+		'if TVec2D(GetTarget()) then return False
+
+		return False
 	End Method
 
 
@@ -339,6 +352,8 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Method CanEnterTarget:Int()
 		'cannot enter a non-target
 		if not GetTarget() then return False
+
+		if TVec2D(GetTarget()) then return False
 
 		'no waiting needed
 		if WaitEnterTimer = -1 then return True

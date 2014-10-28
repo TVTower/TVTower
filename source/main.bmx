@@ -679,8 +679,10 @@ Type TApp
 
 
 			GetWorld().RenderDebug(660,0, 140, 130)
-			GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
 		EndIf
+		if GetPlayer() and GetPlayer().GetFigure()
+			GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
+		endif
 		'show quotes even without "DEV_OSD = true"
 		If TVTDebugQuoteInfos then Game.DebugAudienceInfo.Draw()
 
@@ -3258,11 +3260,6 @@ Type GameEvents
 					local confiscateProgramme:int = RandRange(0,100) < 25
 
 					if confiscateProgramme
-						'TODO: send out clerk/marshal to confiscate
-						'      the programme - if send to another archive
-						'      just take a "random programme"
-						print "TODO: Beamten losschicken um Programm zu pfaenden."
-
 						EventManager.triggerEvent(TEventSimple.Create("publicAuthorities.onStartConfiscateProgramme", new TData.AddString("broadcastMaterialGUID", currentProgramme.GetGUID()).AddNumber("owner", player.playerID), currentProgramme, player))
 
 						'Send out first marshal - Mr. Czwink or Mr. Czwank

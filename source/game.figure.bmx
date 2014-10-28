@@ -226,13 +226,22 @@ Type TFigure extends TFigureBase
 	End Method
 
 
-	'override to enter the target after waiting
-	'step 2/2
-	Method ReachTargetStep2:int()
-		'call BEFORE step 2, as step 2 removes the target
-		if CanEnterTarget() then EnterTarget()
+	'override to wait when reaching a target door/hotspot
+	Method customReachTargetStep1:Int()
+		'start waiting in front of the target
+		If TRoomDoorBase(GetTarget()) or THotspot(GetTarget())
+			WaitEnterTimer = Time.GetTimeGone() + WaitEnterLeavingTime
+		Else
+			Super.customReachTargetStep1()
+		EndIf
+	End Method
 
-		Super.ReachTargetStep2()
+
+	'override to 
+	Method TargetNeedsToGetEntered:int()
+		if TRoomDoorBase(GetTarget()) then return True
+
+		return Super.TargetNeedsToGetEntered()
 	End Method
 
 
@@ -296,8 +305,16 @@ Type TFigure extends TFigureBase
 
 		'we have a target and are in this moment entering it
 		if GetTarget() and currentReachTargetStep = 1
-			'if waitingtime is over, call step 2 of the entering sequence
-			if not IsWaitingToEnter() then ReachTargetStep2()
+			if not TargetNeedsToGetEntered()
+				ReachTargetStep2()
+			else
+				'if waitingtime is over, start going-into-animation (takes
+				'some time too -> FinishEnterRoom is called when that is
+				'finished too)
+				if not IsWaitingToEnter()
+					if CanEnterTarget() then EnterTarget()
+				endif
+			endif
 		endif
 
 
@@ -589,6 +606,9 @@ Type TFigure extends TFigureBase
 
 		'=== SET IN ROOM ===
 		SetInRoom(room)
+
+		'finish reaching-target-steps (and remove current target)
+		ReachTargetStep2()
 	End Method
 
 
@@ -760,16 +780,6 @@ Type TFigure extends TFigureBase
 	End Method
 
 
-	'override to wait when reaching a target door/hotspot
-	Method customReachTargetStep1:Int()
-		'start waiting in front of the target
-		If TRoomDoorBase(GetTarget()) or THotspot(GetTarget())
-			WaitEnterTimer = Time.GetTimeGone() + WaitEnterLeavingTime
-		Else
-			Super.customReachTargetStep1()
-		EndIf
-	End Method
-
 
 	'overridden
 	'change the target of the figure
@@ -847,10 +857,9 @@ Type TFigure extends TFigureBase
 		'or if already in this room
 		if targetRoom and targetRoom = inRoom then return False
 
-
 		'=== SET NEW TARGET ===
-		'new target - so go to it
-		AddTarget(newTarget)
+		'new target - so go to it, remove other previously set targets
+		SetTarget(newTarget)
 
 		'if still in a room, but targetting another one ... leave first
 		'this is needed as computer players do not "leave a room", they
