@@ -288,7 +288,7 @@ function OnDayBegins()
 end
 
 function OnLeaveRoom()
-	debugMsg("OnLeaveRoom")
+	--debugMsg("OnLeaveRoom")
 end
 
 -- figure approached the target room - will try to open the door soon

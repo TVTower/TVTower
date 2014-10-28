@@ -480,6 +480,8 @@ Type TApp
 
 				If KEYMANAGER.IsHit(KEY_D) Then TVTDebugInfos = 1 - TVTDebugInfos
 
+				If KEYMANAGEr.Ishit(KEY_K) then GetFigureCollection().KickAllFromRooms()
+
 				'send terrorist to a random room
 				If KEYMANAGER.IsHit(KEY_T) and not Game.networkGame
 					Global whichTerrorist:int = 1

@@ -48,6 +48,16 @@ Type TFigureCollection extends TFigureBaseCollection
 	Method GetByName:TFigure(name:string)
 		Return TFigure(Super.GetByName(name))
 	End Method
+
+
+	Method KickAllFromRooms:int()
+		TLogger.log("TFigureCollection.KickAllFromRooms()", "Player kicks all figures out of the rooms.", LOG_DEBUG)
+		
+		local playerFig:TFigure = GetPlayer().GetFigure()
+		For local fig:TFigure = EachIn list
+			if fig.inRoom then playerFig.KickFigureFromRoom(fig, fig.inroom)
+		Next
+	End Method
 	
 
 	'=== EVENTS ===
