@@ -234,6 +234,8 @@ Type TBroadcastManager
 			audienceResult.AudienceAttraction.SetPlayerId(playerID)
 		EndIf
 
+		audienceResult.playerId = playerID
+
 		audienceResults[playerID-1] = audienceResult
 	End Method
 

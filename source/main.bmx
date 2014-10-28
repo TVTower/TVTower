@@ -3324,6 +3324,22 @@ Type GameEvents
 			TRoomBoardSign.ResetPositions()
 
 
+			'remove no longer needed DailyBroadcastStatistics
+			'by default we store maximally 3 days
+			GetDailyBroadcastStatisticCollection().RemoveBeforeDay( day - 3 )
+
+			'TODO: give image points or something like it for best programme
+			'of day?!
+			local stat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic( day - 1 )
+			if stat.bestBroadcast
+				local audience:string = ""
+				if stat.bestAudience then audience = Long(stat.bestAudience.GetSum())+", player: "+stat.bestBroadcast.owner
+				TLogger.Log("OnDay", "BestBroadcast: "+stat.bestBroadcast.GetTitle() + " (audience: "+audience+")", LOG_INFO)
+			else
+				TLogger.Log("OnDay", "BestBroadcast: No best broadcast found for today", LOG_INFO)
+			endif
+
+
 			'=== REMOVE OLD NEWS AND NEWSEVENTS ===
 			'news and newsevents both have a "happenedTime" but they must
 			'not be the same (multiple news with the same event but happened

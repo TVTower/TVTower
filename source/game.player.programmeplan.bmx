@@ -13,6 +13,7 @@ Import "game.programme.newsevent.bmx"
 Import "game.broadcastmaterial.programme.bmx"
 Import "game.broadcastmaterial.advertisement.bmx"
 Import "game.broadcastmaterial.news.bmx"
+Import "game.broadcast.dailybroadcaststatistic.bmx"
 Import "game.player.programmecollection.bmx"
 
 
@@ -1170,7 +1171,13 @@ endrem
 					obj.ContinueBroadcasting(day, hour, minute, audienceResult)
 					eventKey = "broadcasting.continue"
 				EndIf
+				'store audience/broadcast for daily stats
+				GetDailyBroadcastStatistic( day, true ).SetBroadcastResult(obj, owner, hour, audienceResult.audience)
+			else
+				'store audience/broadcast for daily stats
+				GetDailyBroadcastStatistic( day, true).SetBroadcastResult(null, owner, hour, null)
 			EndIf
+			
 			'inform others (eg. boss), "broadcastMaterial" could be null!
 			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TBroadcastMaterial.TYPE_PROGRAMME).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 

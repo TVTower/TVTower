@@ -5212,16 +5212,24 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		endif
 
 
+		local avgImage:TPublicImage = GetPublicImageCollection().GetAverage()
+		local avgAudience:TAudience = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudience()
+		local avgReach:Int = GetStationMapCollection().GetAverageReach()
+		local avgQuote:Float = 0.0
+		if avgReach > 0 then avgQuote = avgAudience.GetSum() / avgReach
+
 		local cheapListFilter:TAdContractBaseFilter = new TAdContractbaseFilter
 		cheapListFilter.SetAudience(0.0, contractCheapAudienceMaximum)
 		'TODO: calculate average "market share" reached
 		'TODO 2: calculate average image
 		local normalListFilter:TAdContractBaseFilter = new TAdContractbaseFilter
-		normalListFilter.SetAudience(0.001, 0.075)
-		normalListFilter.SetImage(0.0, 0.05) 'till 5 % image
+		normalListFilter.SetAudience(0.0, avgReach)
+		'0% - avgImage %
+		normalListFilter.SetImage(0.0, 0.01 * avgImage.GetAverageImage())
+
 		local normalListFilter2:TAdContractBaseFilter = new TAdContractbaseFilter
-		normalListFilter2.SetAudience(0.075, -1)
-		normalListFilter2.SetImage(0.0, 0.05) 'till 5 % image
+		normalListFilter2.SetAudience(0.5 * avgReach, Max(0.01, 1.5 * avgReach))
+		normalListFilter2.SetImage(0.0, -1) 'till 5 % image
 
 		for local j:int = 0 to lists.length-1
 			for local i:int = 0 to lists[j].length-1

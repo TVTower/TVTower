@@ -22,10 +22,130 @@
 			<description>
 				<de>Frauen schwören auf den Nerd in Dir. Lass sie Ihn riechen!
 Brucey - herber Duft für Männer vom Fach.</de>
-				<en></en>
+				<en>Women absolutely love the nerd in you. Let them take your scent!
+Brucey - harsh fragrance for male experts.</en>
 			</description>
 			<conditions min_audience="0" min_image="3" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="4" duration="4" fix_price="1" profit="3500" penalty="7050" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
+		<ad id="ronny-ad-laola-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Laola</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Das freche Jugendmagazin. Wir beantworten Fragen zu Liebe und Sex nur im Winter.</de>
+				<en>The naughty youth magazine. We answer your intimate questions without a grin :-).</en>
+			</description>
+			<!-- targetgroup: teenagers -->
+			<conditions min_audience="0.25" min_image="2" target_group="2" />
+			<data infomercial="1" quality="30" repetitions="5" duration="3" fix_price="0" profit="35" penalty="50" />
+		</ad>		
+		<ad id="ronny-ad-kalua-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Kalua</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Der Knallerkaubonbon aus Hawaii. Noch nie schmeckte Zucker so tro-tro-tropisch.</de>
+				<en>The hit chewy candy from Hawaii. Never before sugar tasted that tro-tro-tropical.</en>
+			</description>
+			<!-- targetgroup: children -->
+			<conditions min_audience="0.25" min_image="5" target_group="1" />
+			<data infomercial="0" quality="20" repetitions="5" duration="2" fix_price="0" profit="50" penalty="50" />
+		</ad>		
+		<ad id="ronny-ad-kalua-02" creator="5578" created_by="Ronny">
+			<title>
+				<de>Kalua BBQ</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Der hawaiianische Kaubonbon jetzt mit neuem Trendgeschmack. Kandierte Hühnerkrallen verleihen die faszinierende Würze.</de>
+				<en>The Hawaiian chewy candy now with a brand new and trendy taste. Candied chicken claws create this fascinating seasoning.</en>
+			</description>
+			<!-- targetgroup: children -->
+			<conditions min_audience="0.25" min_image="7" target_group="1" />
+			<data infomercial="0" quality="25" repetitions="6" duration="3" fix_price="0" profit="55" penalty="65" />
+		</ad>		
+		<ad id="ronny-ad-allhits-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Alle Hits 1</de>
+				<en>All Hits 1</en>
+			</title>
+			<description>
+				<de>Dein Musiksampler! Alle Hits der vergangenen 3 Tage auf einer randvoll gefüllten 90 Minuten Kassette. In Stereo!</de>
+				<en>Your music sampler! All hits of the last 3 days on one brimful filled 90 minutes audio cassette. In stereo!</en>
+			</description>
+			<!-- targetgroup: teenager -->
+			<conditions min_audience="0.5" min_image="5" target_group="2" />
+			<data infomercial="1" quality="35" repetitions="4" duration="3" fix_price="0" profit="60" penalty="90" year_range_from="1985" year_range_to="1986" />
+		</ad>		
+		<ad id="ronny-ad-allhits-02" creator="5578" created_by="Ronny">
+			<title>
+				<de>Alle Hits 2</de>
+				<en>All Hits 2</en>
+			</title>
+			<description>
+				<de>"Alle Hits" ist wieder da! 40 Wahnsinnshits auf einer Doppel-MC. Nur jetzt mit Faltposter zum selbst bemalen.</de>
+				<en>"All Hits 2" is back again!! 40 mega hits on one double MC. Only now with poster ready to get painted!</en>
+			</description>
+			<!-- targetgroup: teenager -->
+			<conditions min_audience="1.0" min_image="7" target_group="2" />
+			<data infomercial="1" quality="45" repetitions="7" duration="4" fix_price="0" profit="60" penalty="85" year_range_from="1987" year_range_to="1988" />
+		</ad>		
+		<ad id="ronny-ad-allhits-03" creator="5578" created_by="Ronny">
+			<title>
+				<de>Alle Hits Best Of</de>
+				<en>All Hits Best Of</en>
+			</title>
+			<description>
+				<de>Nicht eine Kassette, nicht zwei, nicht drei! Unglaubliche 4 Musikkassetten haben wir mit den Hits der letzten 5 Jahre bespielt. Euer Walkman wird nie wieder etwas anderes spielen wollen!</de>
+				<en>Not one cassette, not two or three! Unbelieveable 4 music cassettes got filled with hits of the last 5 years. Your walkman never will play other music!</en>
+			</description>
+			<!-- targetgroup: all -->
+			<conditions min_audience="1.5" min_image="9" target_group="0" />
+			<data infomercial="1" quality="40" repetitions="5" duration="3" fix_price="0" profit="65" penalty="80" year_range_from="1988" year_range_to="1990" />
+		</ad>		
+		<ad id="ronny-ad-reunionbeer-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Wendebier</de>
+				<en>Reunion Beer</en>
+			</title>
+			<description>
+				<de>Aus dem Osten der Hopfen, aus dem Westen die Luft ... und das Gold. Lecker Bierchen für Väter aller Länder.</de>
+				<en>Eastern Germanys hop, and the bottles from Western Germany created this fascinating beer. Tasty beer for fathers of all countries.</en>
+			</description>
+			<!-- targetgroup: men - so require "more" -->
+			<conditions min_audience="5" min_image="5" target_group="256" />
+			<data infomercial="1" quality="40" repetitions="4" duration="2" fix_price="0" profit="57" penalty="40" year_range_from="1990" year_range_to="1993" />
+		</ad>		
+		<ad id="ronny-ad-zickschnack-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Zick-Schnack</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Die Szenekneipe für Tussis und andere Tratschtanten. Dienstags Frei-Secco bei bunten Fingernägeln.</de>
+				<en>The trendy pub for birds and other chatterboxes. Tuesday free-secco if you come with multicolored finger nails.</en>
+			</description>
+			<!-- targetgroup: women - so require "more" than average -->
+			<conditions min_audience="2" min_image="0" target_group="128" />
+			<data infomercial="1" quality="20" repetitions="3" duration="1" fix_price="0" profit="35" penalty="20" />
+		</ad>		
+		<ad id="ronny-ad-guten-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Gutendruck</de>
+				<!-- "Gutenprint" is a project so and as Gutenberg was German,
+				     we keep the name :p -->
+				<en>Gutendruck</en>
+			</title>
+			<description>
+				<de>Bei uns wird Ihr Buch noch gewalzt! Egal ob Stammbuch oder Tagebuch, wir bringen Ihr Werk unters Volk.</de>
+				<en>We still mill your book! Whether register or diary, we propagate it to the hoi poloi.</en>
+			</description>
+			<!-- targetgroup: all -->
+			<conditions min_audience="2.5" min_image="2" target_group="0" />
+			<data infomercial="1" quality="30" repetitions="4" duration="2" fix_price="0" profit="39" penalty="25" />
+		</ad>		
 	</allads>
 </tvgdb>

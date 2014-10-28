@@ -24,6 +24,23 @@ Type TPublicImageCollection
 		if playerID <= 0 or playerID > entries.length then return null
 		return entries[playerID-1]
 	End Method
+
+
+	'returns the average publicimage of all players
+	Method GetAverage:TPublicImage()
+		local avgImage:TPublicImage = new TPublicImage
+		local players:int = 0
+		avgImage.playerID = -1
+		avgImage.ImageValues = new TAudience
+		For local i:int = 1 to 4
+			if Get(i)
+				avgImage.ImageValues.Add(Get(i).ImageValues)
+				players :+ 1
+			endif
+		Next
+		if players > 0 then avgImage.ImageValues.DivideFloat(players)
+		return avgImage
+	End Method
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
