@@ -12,6 +12,7 @@ _G["BudgetManager"] = class(KIDataObjekt, function(c)
 	c.BudgetMaximum = 0  -- Maximalbetrag des Budgets
 	c.BudgetHistory = {} -- Die Budgets der letzten Tage
 	c.InvestmentSavings = 0 -- Geld das für Investitionen angespart wird.
+	c.SavingParts = 0.2 -- Wie viel Prozent des Budgets werden für Investitionen aufgespart?
 end)
 
 function BudgetManager:typename()
@@ -135,7 +136,7 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 		
 	-- Ersparnisse erhöhen und das nun reale Budget bestimmen, dass verteilt werden soll.
 	local tempBudget = pBudget - self.InvestmentSavings
-	self.InvestmentSavings = self.InvestmentSavings + math.round(tempBudget / 5) -- Ein Fünftel ansparen	
+	self.InvestmentSavings = self.InvestmentSavings + math.round(tempBudget * self.SavingParts) -- Einen Teil ansparen
 	local realBudget = pBudget - self.InvestmentSavings -- Schließlich echtes Budget bestimmen
 	TVT.addToLog("# Budget: " .. realBudget .. "            (+ Ersparnisse (" .. self.InvestmentSavings .. ") = " .. pBudget .. ")")
 	
@@ -143,7 +144,7 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 	local budgetUnitValue = realBudget / budgetUnits	
 		
 	-- Prios der Aufgaben nochmal aktualisieren und sortieren
-	player:SortTasksByPrio()	
+	player:SortTasksByInvestmentPrio()	
 
 	local investmentDone = false		
 		

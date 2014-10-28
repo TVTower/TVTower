@@ -114,6 +114,14 @@ function AIPlayer:SortTasksByPrio()
 	table.sort(self.TaskList, sortMethod)	
 end
 
+function AIPlayer:SortTasksByInvestmentPrio()
+	self:RecalculateTaskPrio()	
+	local sortMethod = function(a, b)
+		return a.InvestmentPriority > b.InvestmentPriority
+	end
+	table.sort(self.TaskList, sortMethod)	
+end
+
 function AIPlayer:SelectTask()
 	local BestPrio = -1
 	local BestTask = nil
@@ -158,7 +166,7 @@ _G["AITask"] = class(KIDataObjekt, function(c)
 	c.BudgetWholeDay = 0 -- Wie hoch war das Budget das die KI für diese Aufgabe an diesem Tag einkalkuliert hat.
 	c.BudgetWeigth = 0 -- Wie viele Budgetanteile verlangt diese Aufgabe vom Gesamtbudget?
 	
-	c.InvestmentWeigth = 0 -- Wie wichtig sind die Investitionen in diesen Bereich?
+	c.InvestmentPriority = 0 -- Wie wichtig sind die Investitionen in diesen Bereich?
 	--c.InvestmentSavings = 0 -- Wie viel wurde bereits gespart?
 	c.NeededInvestmentBudget = -1 -- Wie viel Geld benötigt die KI für eine Großinvestition
 	c.UseInvestment = false
@@ -366,7 +374,7 @@ end
 
 function AIJob:ReDoCheck(pWait)
 	if ((self.LastCheck + pWait) < WorldTime.GetTimeGoneAsMinute()) then
-		debugMsg("ReDoCheck: (" .. self.LastCheck .. " + " .. pWait .. ") < " .. WorldTime.GetTimeGoneAsMinute())
+		--debugMsg("ReDoCheck: (" .. self.LastCheck .. " + " .. pWait .. ") < " .. WorldTime.GetTimeGoneAsMinute())
 		self.Status = JOB_STATUS_REDO
 		self.LastCheck = WorldTime.GetTimeGoneAsMinute()
 		self:Prepare(self.StartParams)
@@ -435,7 +443,7 @@ end
 
 function AIJobGoToRoom:Prepare(pParams)
 	if ((self.Status == JOB_STATUS_NEW) or (self.Status == TASK_STATUS_PREPARE) or (self.Status == JOB_STATUS_REDO)) then
-		debugMsg("DoGoToRoom: " .. self.TargetRoom .. " => " .. self.Status)
+		--debugMsg("DoGoToRoom: " .. self.TargetRoom .. " => " .. self.Status)
 		TVT.DoGoToRoom(self.TargetRoom)
 		self.Status = JOB_STATUS_RUN
 	end
