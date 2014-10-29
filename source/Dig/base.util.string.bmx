@@ -132,6 +132,19 @@ Type StringHelper
 	End Function
 
 
+	Function RemoveUmlauts:string(text:string)
+		text = text.replace("ü", "ue")
+		text = text.replace("Ü", "Ue")
+		text = text.replace("ö", "oe")
+		text = text.replace("Ö", "Oe")
+		text = text.replace("ä", "ae")
+		text = text.replace("Ä", "Ae")
+		text = text.replace("ß", "ss")
+		return text
+	End function
+	
+
+
 	'fill a given string with the args provided
 	'examples:
 	'print StringHelper.printf("price %3.3f", ["12.12399"])

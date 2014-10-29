@@ -494,6 +494,9 @@ Type TGame {_exposeToLua="selected"}
 		local cheapFilter:TAdContractBaseFilter = new TAdContractbaseFilter
 		'some easy ones
 		cheapFilter.SetAudience(0.0, 0.01)
+		'only without image requirements? not needed for start programme
+		'you might have luck to get a better paid one :D
+		'cheapFilter.SetImage(0.0, 0.0)
 		'do not allow limited ones
 		cheapFilter.SetSkipLimitedToProgrammeGenre()
 		cheapFilter.SetSkipLimitedToTargetGroup()

@@ -5246,6 +5246,9 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		local cheapListFilter:TAdContractBaseFilter = new TAdContractbaseFilter
 		'0.5% market share -> 1mio reach means 5.000 people!
 		cheapListFilter.SetAudience(0.0, 0.005)
+		'no image requirements - or not more than the lowest image
+		'(so all could sign this)
+		cheapListFilter.SetImage(0.0, 0.01 * lowestChannelImage)
 		'cheap contracts should in now case limit genre/groups
 		cheapListFilter.SetSkipLimitedToProgrammeGenre()
 		cheapListFilter.SetSkipLimitedToTargetGroup()

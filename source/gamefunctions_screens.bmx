@@ -392,8 +392,14 @@ Type TInGameScreen_Room extends TInGameScreen
 		'if the player is in a specific room, store that ID, so next
 		'time GetRoom() might return "null" but we still know what room
 		'we have to care for
-		if GetRoom() then currentRoomID = GetRoom().id
-		if currentRoomID then GetRoomBaseCollection().Get(currentRoomID).update()
+		if GetRoom()
+			currentRoomID = GetRoom().id
+
+			GetRoom().Update()
+		else
+			local room:TRoomBase = GetRoomBaseCollection().Get(currentRoomID)
+			if room then room.update()
+		endif
 	End Method
 
 

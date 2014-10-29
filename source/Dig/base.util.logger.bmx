@@ -130,16 +130,8 @@ Type TLogger
 				showFunctionText = functiontext
 			endif
 
-			rem
-			message = message.replace("ü", "ue")
-			message = message.replace("Ü", "Ue")
-			message = message.replace("ö", "oe")
-			message = message.replace("Ö", "Oe")
-			message = message.replace("ä", "ae")
-			message = message.replace("Ä", "Ae")
-			message = message.replace("ß", "ss")
-			endrem
 			'message = StringHelper.UTF8toISO8859(message)
+			'message = StringHelper.RemoveUmlauts(message)
 
 			print "[" + CurrentTime() + "] " + debugtext + Upper(showFunctionText) + ": " + message
 		endif
