@@ -670,7 +670,7 @@ Type TDatabaseLoader
 		])
 		'0-100% -> 0.0 - 1.0
 		adContract.minAudienceBase = 0.01 * data.GetFloat("min_audience", adContract.minAudienceBase*100.0)
-		adContract.minImageBase = 0.01 * data.GetFloat("min_image", adContract.minImageBase*100.0)
+		adContract.minImage = 0.01 * data.GetFloat("min_image", adContract.minImage*100.0)
 		adContract.limitedToTargetGroup = data.GetInt("target_group", adContract.limitedToTargetGroup)
 		adContract.limitedToProgrammeGenre = data.GetInt("allowed_genre", adContract.limitedToProgrammeGenre)
 		adContract.limitedToProgrammeType = data.GetInt("allowed_programme_type", adContract.limitedToProgrammeType)

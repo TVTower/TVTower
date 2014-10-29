@@ -2245,8 +2245,20 @@ Type TGuiAdContract extends TGUIGameListItem
 	Method Update:int()
 		super.Update()
 
+		'disable dragging if not signable
+		if contract.owner <= 0
+			if not contract.IsAvailableToSign(GetPlayer().playerID)
+				SetOption(GUI_OBJECT_DRAGABLE, False)
+			else
+				SetOption(GUI_OBJECT_DRAGABLE, True)
+			endif
+		endif
+			
+
 		'set mouse to "hover"
-		if contract.owner = GetPlayerCollection().playerID or contract.owner <= 0 and mouseover then Game.cursorstate = 1
+		if contract.owner = GetPlayer().playerID or contract.owner <= 0 and mouseover then Game.cursorstate = 1
+				
+		
 		'set mouse to "dragged"
 		if isDragged() then Game.cursorstate = 2
 	End Method
@@ -2298,16 +2310,23 @@ Type TGuiAdContract extends TGUIGameListItem
 
 	Method Draw:Int()
 		SetColor 255,255,255
-		local oldAlpha:float = GetAlpha()
+		local oldCol:TColor = new TColor.Get()
 
 		'make faded as soon as not "dragable" for us
-		if contract.owner <> GetPlayerCollection().playerID and contract.owner>0 then SetAlpha 0.75*oldAlpha
-		if not isDragable() then SetColor 200,200,200
+		if not isDragable()
+			'in our collection
+			if contract.owner = GetPlayerCollection().playerID
+				SetAlpha 0.80*oldCol.a
+				SetColor 200,200,200
+			else
+				SetAlpha 0.70*oldCol.a
+				SetColor 250,200,150
+			endif
+		endif
 
 		Super.Draw()
 
-		SetAlpha oldalpha
-		SetColor 255,255,255
+		oldCol.SetRGBA()
 	End Method
 End Type
 

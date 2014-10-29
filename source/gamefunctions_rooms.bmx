@@ -4653,8 +4653,6 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Global contractsPerLine:int	= 4
 	Global contractsNormalAmount:int = 12
 	Global contractsCheapAmount:int	= 4
-	'1% market share -> 1mio reach means 10.000 people!
-	Global contractCheapAudienceMaximum:float = 0.01
 
 	Global _instance:RoomHandler_AdAgency
 	Global _initDone:int = FALSE
@@ -4982,7 +4980,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 	Function isCheapContract:int(contract:TAdContract)
-		return contract.GetMinAudiencePercentage() < contractCheapAudienceMaximum
+		return contract.adAgencyClassification = 1
 	End Function
 
 
@@ -5212,37 +5210,108 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		endif
 
 
-		local avgImage:TPublicImage = GetPublicImageCollection().GetAverage()
-		local avgAudience:TAudience = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudience()
-		local avgReach:Int = GetStationMapCollection().GetAverageReach()
-		local avgQuote:Float = 0.0
-		if avgReach > 0 then avgQuote = avgAudience.GetSum() / avgReach
+		'=== CALCULATE VARIOUS INFORMATION FOR FILTERS ===
+		'we calculate the "average quote" using yesterdays audience but
+		'todays reach ... so it is not 100% accurate (buying stations today
+		'will lower the quote)
+		local averageChannelImage:Float = GetPublicImageCollection().GetAverage().GetAverageImage()
+		local averageChannelReach:Int = GetStationMapCollection().GetAverageReach()
+		local averageChannelQuote:Float = 0.0
+		if averageChannelReach > 0
+			averageChannelQuote = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudience().GetSum() / averageChannelReach
+		endif
+		
+		local highestChannelImage:Float = averageChannelImage
+		local highestChannelQuote:Float = 0.0
 
+		local lowestChannelImage:Float = averageChannelImage
+		local lowestChannelQuote:Float = -1
+
+		For local i:int = 1 to 4
+			local image:Float = GetPublicImageCollection().Get(i).GetAverageImage()
+			if image > highestChannelImage then highestChannelImage = image
+			if image < lowestChannelImage then lowestChannelImage = image
+
+			if averageChannelReach > 0
+				local audience:Float = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudience(i).GetSum()
+				local quote:Float = audience / averageChannelReach
+				if lowestChannelQuote < 0 then lowestChannelQuote = quote
+				if lowestChannelQuote > quote then lowestChannelQuote = quote
+			endif
+		Next
+
+
+		'=== SETUP FILTERS ===
+		'the cheap list contains really low contracts
 		local cheapListFilter:TAdContractBaseFilter = new TAdContractbaseFilter
-		cheapListFilter.SetAudience(0.0, contractCheapAudienceMaximum)
-		'TODO: calculate average "market share" reached
-		'TODO 2: calculate average image
-		local normalListFilter:TAdContractBaseFilter = new TAdContractbaseFilter
-		normalListFilter.SetAudience(0.0, avgReach)
-		'0% - avgImage %
-		normalListFilter.SetImage(0.0, 0.01 * avgImage.GetAverageImage())
+		'0.5% market share -> 1mio reach means 5.000 people!
+		cheapListFilter.SetAudience(0.0, 0.005)
+		'cheap contracts should in now case limit genre/groups
+		cheapListFilter.SetSkipLimitedToProgrammeGenre()
+		cheapListFilter.SetSkipLimitedToTargetGroup()
 
-		local normalListFilter2:TAdContractBaseFilter = new TAdContractbaseFilter
-		normalListFilter2.SetAudience(0.5 * avgReach, Max(0.01, 1.5 * avgReach))
-		normalListFilter2.SetImage(0.0, -1) 'till 5 % image
+		'the 12 contracts are divided into 3 groups
+		'4x fitting the lowest requirements
+		'8x fitting the average requirements
+		'4x fitting the highest requirements
+		
+		local levelFilters:TAdContractBaseFilter[3]
+		'=== LOWEST ===
+		levelFilters[0] = new TAdContractbaseFilter
+		'from 1% of avg to 100% of avg
+		levelFilters[0].SetAudience(0.0, lowestChannelQuote)
+		'1% - avgImage %
+		levelFilters[0].SetImage(0.0, 0.01 * lowestChannelImage)
+		'lowest should be without "limits"
+		levelFilters[0].SetSkipLimitedToProgrammeGenre()
+		levelFilters[0].SetSkipLimitedToTargetGroup()
 
+		'=== AVERAGE ===
+		levelFilters[1] = new TAdContractbaseFilter
+		'from 50% of avg to 150% of avg
+		levelFilters[1].SetAudience(0.5 * averageChannelQuote, Max(0.01, 1.5 * averageChannelQuote))
+		'0-100% of average Image
+		levelFilters[1].SetImage(0, 0.01 * averageChannelImage)
+
+		'=== HIGH ===
+		levelFilters[2] = new TAdContractbaseFilter
+		'from 50% of avg to 150% of avg, at least 1-3%
+		levelFilters[2].SetAudience(Max(0.01, 0.5 * highestChannelQuote), Max(0.02, 1.5 * highestChannelQuote))
+		'0-100% of highest Image
+		levelFilters[2].SetImage(0, 0.01 * highestChannelImage)
+
+rem
+print "REFILL:"
+print "level0:  audience "+"0.0"+" - "+lowestChannelQuote
+print "level0:  image    "+"0.0"+" - "+(0.01 * lowestChannelImage)
+print "level1:  audience "+(0.5 * averageChannelQuote)+" - "+Max(0.01, 1.5 * averageChannelQuote)
+print "level1:  image     0.00 - "+(0.01 * averageChannelImage)
+print "level2:  audience "+(Max(0.01, 0.5 * highestChannelQuote))+" - "+Max(0.03, 1.5 * highestChannelQuote)
+print "level2:  image     0.00 - "+(0.01 * highestChannelImage)
+print "------------------"
+endrem
+		'=== ACTUALLY CREATE CONTRACTS ===
 		for local j:int = 0 to lists.length-1
 			for local i:int = 0 to lists[j].length-1
 				'if exists and is valid...skip it
 				if lists[j][i] and lists[j][i].base then continue
 
+				'=== PLAYER ORIENTED LIST ===
 				if lists[j] = listNormal
-					if j mod 2 = 0
-						contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(normalListFilter) )
-					else
-						contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(normalListFilter2) )
-					endif
+					Select (i mod 4)
+						case 0
+							'levelFilters[0]
+							contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[0]) )
+						case 1,2
+							'levelFilters[1]
+							contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[1]) )
+						case 3
+							'levelFilters[2]
+							contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[2]) )
+					End Select
 				endif
+
+				'=== CHEAP LIST ===
 				if lists[j] = listCheap then contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(cheapListFilter) )
 
 				'add new contract to slot
@@ -5251,6 +5320,11 @@ Type RoomHandler_AdAgency extends TRoomHandler
 					lists[j][i] = contract
 				else
 					TLogger.log("AdAgency.ReFillBlocks", "Not enough contracts to fill ad agency in list "+i, LOG_ERROR)
+
+					'try again without filter - to avoid "empty room"
+					contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandom() )
+					contract.owner = -1
+					lists[j][i] = contract
 				endif
 			Next
 		Next

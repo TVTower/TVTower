@@ -3190,13 +3190,17 @@ Type GameEvents
 			'delay if there is one in this room
 			If GetRoomCollection().GetFirstByDetails("adagency").hasOccupant()
 				Game.refillAdAgencyTime :+ 15
-				Game.refillAdAgencyTime :+ 15
 			Else
 				'reset but with a bit randomness
 				Game.refillAdAgencyTime = Game.refillAdAgencyTimer + randrange(0,20)-10
 
 				TLogger.Log("GameEvents.OnMinute", "partly refilling adagency", LOG_DEBUG)
-				RoomHandler_adagency.GetInstance().ReFillBlocks(True, 0.5)
+				if Game.refillAdAgencyOverridePercentage <> Game.refillAdAgencyPercentage
+					RoomHandler_adagency.GetInstance().ReFillBlocks(True, Game.refillAdAgencyOverridePercentage)
+					Game.refillAdAgencyOverridePercentage = Game.refillAdAgencyPercentage
+				else
+					RoomHandler_adagency.GetInstance().ReFillBlocks(True, Game.refillAdAgencyPercentage)
+				endif
 			EndIf
 		EndIf
 
@@ -3327,6 +3331,13 @@ Type GameEvents
 			'remove no longer needed DailyBroadcastStatistics
 			'by default we store maximally 3 days
 			GetDailyBroadcastStatisticCollection().RemoveBeforeDay( day - 3 )
+
+
+			'force adagency to refill their sortiment a bit more intensive
+			'the next time
+			'Game.refillAdAgencyTime = -1
+			Game.refillAdAgencyOverridePercentage = 0.75
+			
 
 			'TODO: give image points or something like it for best programme
 			'of day?!
@@ -3556,6 +3567,10 @@ Function DEV_switchRoom:Int(room:TRoom)
 	if GetPlayer().GetFigure().inRoom
 		GetPlayer().GetFigure().LeaveRoom(True)
 	endif
+
+	'remove potential elevator passenger 
+	GetElevator().LeaveTheElevator(GetPlayer().GetFigure())
+	
 	'a) add the room as new target before all others
 	'GetPlayer().GetFigure().PrependTarget(TRoomDoor.GetMainDoorToRoom(room))
 	'b) set it as the only route

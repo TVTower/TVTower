@@ -182,6 +182,7 @@ AD_TILL_TOMORROW		= till tomorrow!
 AD_STILL_X_DAYS			= still %1 days
 AD_TIME					= time
 
+AD_CHANNEL_IMAGE_TO_LOW = Channel image to low. %CHANNELIMAGE%% < %IMAGE%%.
 AD_PLEASE_GENRE_X = Please genre %GENRE%
 
 AD_TARGETGROUP_NONE		= "All"

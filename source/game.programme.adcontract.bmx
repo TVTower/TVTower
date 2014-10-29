@@ -19,7 +19,8 @@ Import "game.broadcastmaterial.base.bmx"
 Import "game.gamerules.bmx"
 'to access genres
 Import "game.gameconstants.bmx"
-
+'to access player id
+Import "game.player.base.bmx"
 
 
 Type TAdContractBaseCollection
@@ -225,7 +226,7 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 	'minimum audience (real value calculated on sign)
 	Field minAudienceBase:Float
 	'minimum image base value (real value calculated on sign)
-	Field minImageBase:Float
+	Field minImage:Float
 	'flag wether price is fixed or not
 	Field fixedPrice:Int = False
 	'base of profit (real value calculated on sign)
@@ -270,7 +271,7 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 		self.spotCount = spotCount
 		self.limitedToTargetGroup = targetGroup
 		self.minAudienceBase = minAudience
-		self.minImageBase = minImage
+		self.minImage = minImage
 		self.fixedPrice = fixedPrice
 		self.profitBase	= profit
 		self.penaltyBase = penalty
@@ -388,6 +389,13 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	Field minAudience:Int = -1
 	' KI: Wird nur in der Lua-KI verwendet du die Filme zu bewerten
 	Field attractiveness:Float = -1
+	'the classification of this contract
+	' 0 = none
+	' 1 = cheap
+	' 2 = lower end
+	' 3 = average
+	' 4 = top
+	Field adAgencyClassification:int = 0 {nosave}
 
 
 	Method New()
@@ -452,6 +460,8 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	Method Sign:int(owner:int, day:int=-1)
 		if self.owner = owner then return FALSE
 
+		if not IsAvailableToSign(owner) then return FALSE
+
 		'attention: GetProfit/GetPenalty/GetMinAudience default to "owner"
 		'           if we set the owner BEFORE, the functions wont use
 		'           the "average" of all players -> set owner afterwards
@@ -468,9 +478,15 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method IsAvailableToSign:Int() {_exposeToLua}
-		'maybe add other checks here - even if something
-		'is not signed yet, it might not be able to get signed...
+	'returns whether a contract could get signed
+	'ATTENTION: AI could use this to check if a player is able to
+	'sign this (fulfills certain maybe not visible factors).
+	'so it exposes some kind of information
+	Method IsAvailableToSign:Int(playerID:int) {_exposeToLua}
+		'not enough channel image?
+		if GetMinImage() > 0 and 0.01*GetPublicImageCollection().Get(playerID).GetAverageImage() < GetMinImage() then return False
+
+
 		Return (not IsSigned())
 	End Method
 
@@ -701,6 +717,11 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetMinImage:Float() {_exposeToLua}
+		Return base.minImage
+	End Method
+
+
 	Method GetLimitedToTargetGroup:Int() {_exposeToLua}
 		'with no required audience, we cannot limit to target groups
 		'except hmm ... we want that at least 1 of the target group
@@ -845,7 +866,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 			textY :+ 14	
 			fontNormal.draw("TKP: "+GetPerViewerRevenue(), currX + 5, textY)
 			textY :+ 12	
-			fontNormal.draw("Aktualität: "+base.GetInfomercialTopicality(), currX + 5, textY)
+			fontNormal.draw("Aktualitaet: "+base.GetInfomercialTopicality(), currX + 5, textY)
 		Endif
 	End Method
 
@@ -875,8 +896,15 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 			currY :+ sprite.GetHeight()
 		EndIf
 		If GetLimitedToGenre() >= 0
-			sprite = GetSpriteFromRegistry("gfx_datasheet_subMessageTargetGroup"); sprite.Draw(currX, currY)
+			sprite = GetSpriteFromRegistry("gfx_datasheet_subMessageWarning"); sprite.Draw(currX, currY)
 			currY :+ sprite.GetHeight()
+		EndIf
+		'only show image hint when NOT signed (after signing the image is not required anymore)
+		If owner <= 0
+			if GetMinImage() > 0 and 0.01*GetPublicImageCollection().Get(GetPlayerBaseCollection().playerID).GetAverageImage() < GetMinImage()
+				sprite = GetSpriteFromRegistry("gfx_datasheet_subMessageWarning"); sprite.Draw(currX, currY)
+				currY :+ sprite.GetHeight()
+			endif
 		EndIf
 
 
@@ -900,6 +928,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		local textProfitColor:TColor = TColor.Create(45,80,10)
 		local textPenaltyColor:TColor = TColor.Create(80,45,10)
 		local textWarningColor:TColor = TColor.Create(80,45,10)
+		local textErrorColor:TColor = TColor.Create(150,10,10)
 		Local fontNormal:TBitmapFont = GetBitmapFontManager().baseFont
 		Local fontBold:TBitmapFont = GetBitmapFontManager().baseFontBold
 		Local fontSemiBold:TBitmapFont   = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
@@ -930,6 +959,16 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 			fontSemiBold.drawBlock(getLocale("AD_PLEASE_GENRE_X").Replace("%GENRE%", GetLimitedToGenreString()), currX + 35, currY, 245, 15, ALIGN_CENTER_CENTER, textWarningColor, 0,1,1.0,True, True)
 			currY :+ 15 + 8 'lineheight + bottom content padding
 		Endif
+
+		If owner <= 0
+			if GetMinImage() > 0 and 0.01*GetPublicImageCollection().Get(GetPlayerBaseCollection().playerID).GetAverageImage() < GetMinImage()
+				currY :+ 4 'top content padding of that line
+				local requiredImage:string = MathHelper.floatToString(GetMinImage()*100,2)
+				local channelImage:string = MathHelper.floatToString(GetPublicImageCollection().Get(GetPlayerBaseCollection().playerID).GetAverageImage(),2)
+				fontSemiBold.drawBlock(getLocale("AD_CHANNEL_IMAGE_TO_LOW").Replace("%IMAGE%", requiredImage).Replace("%CHANNELIMAGE%", channelImage), currX + 35, currY, 245, 15, ALIGN_CENTER_CENTER, textErrorColor, 0,1,1.0, True, True)
+				currY :+ 15 + 8 'lineheight + bottom content padding
+			endif
+		endif
 
 		'warn if short of time
 		If daysLeft <= 1
@@ -1009,7 +1048,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 			textY :+ 12	
 			fontNormal.draw("Zuschaueranforderung: "+GetMinAudience() + "  ("+GetMinAudiencePercentage()+"%)", currX + 5, textY)
 			textY :+ 12
-			fontNormal.draw("MindestImage: " + base.minImageBase, currX + 5, textY)
+			fontNormal.draw("MindestImage: " + base.minImage, currX + 5, textY)
 			textY :+ 12
 			fontNormal.draw("Zielgruppe: " + GetLimitedToTargetGroup() + " (" + GetLimitedToTargetGroupString() + ")", currX + 5, textY)
 			textY :+ 12
@@ -1203,8 +1242,8 @@ Type TAdContractBaseFilter
 		if minAudienceMin >= 0 and contract.minAudienceBase < minAudienceMin then return False
 		if minAudienceMax >= 0 and contract.minAudienceBase > minAudienceMax then return False
 
-		if minImageMin >= 0 and contract.minImageBase < minImageMin then return False
-		if minImageMax >= 0 and contract.minImageBase > minImageMax then return False
+		if minImageMin >= 0 and contract.minImage < minImageMin then return False
+		if minImageMax >= 0 and contract.minImage > minImageMax then return False
 
 		'first check if we have to check for limits
 		if skipLimitedProgrammeGenre and contract.limitedToProgrammeGenre >= 0 then return False

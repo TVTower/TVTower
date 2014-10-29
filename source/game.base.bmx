@@ -56,6 +56,9 @@ Type TGame {_exposeToLua="selected"}
 	Field refillAdAgencyTimer:Int = 240
 	'minutes till ad agency gets refilled again
 	Field refillAdAgencyTime:Int = 240
+	'refill completely on next refill run?
+	Field refillAdAgencyPercentage:Float = 0.5
+	Field refillAdAgencyOverridePercentage:Float = 0.5
 
 
 	'--networkgame auf "isNetworkGame()" umbauen
@@ -490,7 +493,7 @@ Type TGame {_exposeToLua="selected"}
 		local adContractBases:TAdContractBase[]
 		local cheapFilter:TAdContractBaseFilter = new TAdContractbaseFilter
 		'some easy ones
-		cheapFilter.SetAudience(0.0, 0.02)
+		cheapFilter.SetAudience(0.0, 0.01)
 		'do not allow limited ones
 		cheapFilter.SetSkipLimitedToProgrammeGenre()
 		cheapFilter.SetSkipLimitedToTargetGroup()

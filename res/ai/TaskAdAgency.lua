@@ -83,7 +83,7 @@ function JobCheckSpots:CheckSpot()
 	end
 
 	local spot = TVT.convertToAdContract(response.data)
-	if (spot.IsAvailableToSign() == 1) then
+	if (spot.IsAvailableToSign(TVT.ME) == 1) then
 		--debugMsg("Signable")
 		local player = _G["globalPlayer"]
 		self.AdAgencyTask.SpotsInAgency[self.CurrentSpotIndex] = spot
