@@ -5291,6 +5291,7 @@ print "level2:  image     0.00 - "+(0.01 * highestChannelImage)
 print "------------------"
 endrem
 		'=== ACTUALLY CREATE CONTRACTS ===
+		local classification:int = 0
 		for local j:int = 0 to lists.length-1
 			for local i:int = 0 to lists[j].length-1
 				'if exists and is valid...skip it
@@ -5302,27 +5303,36 @@ endrem
 						case 0
 							'levelFilters[0]
 							contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[0]) )
+							classification = 2
 						case 1,2
 							'levelFilters[1]
 							contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[1]) )
+							classification = 3
 						case 3
 							'levelFilters[2]
 							contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[2]) )
+							classification = 4
 					End Select
 				endif
 
 				'=== CHEAP LIST ===
-				if lists[j] = listCheap then contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(cheapListFilter) )
+				if lists[j] = listCheap
+					contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(cheapListFilter) )
+					classification = 1
+				endif
 
-				'add new contract to slot
-				if contract
-					contract.owner = -1
-					lists[j][i] = contract
-				else
-					TLogger.log("AdAgency.ReFillBlocks", "Not enough contracts to fill ad agency in list "+i, LOG_ERROR)
 
+				if not contract
+					TLogger.log("AdAgency.ReFillBlocks", "Not enough contracts to fill ad agency in list "+i+". Using absolutely random one without limitations.", LOG_ERROR)
 					'try again without filter - to avoid "empty room"
 					contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandom() )
+				endif
+				
+				'add new contract to slot
+				if contract
+					'set classification so contract knows its "origin"
+					contract.adAgencyClassification = classification
+
 					contract.owner = -1
 					lists[j][i] = contract
 				endif
