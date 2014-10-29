@@ -405,6 +405,10 @@ function AIJob:OnEnterRoom(roomId)
 	--Kann überschrieben werden
 	--wird aufgerufen, sobald die Figur IM Raum ist
 end
+
+function AIJob:SetCancel()
+	debugMsg("SetCancel(): Implementiere mich: " .. type(self))
+end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

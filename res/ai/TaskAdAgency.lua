@@ -209,6 +209,18 @@ function SignRequisitedContracts:Tick()
 	local sortMethod = function(a, b)
 		return a.GetAttractiveness() > b.GetAttractiveness()
 	end
+	--RONNY: Achtung, es muss ueberprueft werden, ob die Liste NULL-
+	--       Eintraege enthaelt (evtl "verschwunden", oder durch einen
+	--       "Refill"-Aufruf nicht mehr beim Makler zu haben.)
+	--       Dach kann sortiert werden, ohne "Null-Zugriffe" innerhalb
+	--       der Sortiermethode.
+	for i=#self.AdAgencyTask.SpotsInAgency,1,-1 do
+		if self.AdAgencyTask.SpotsInAgency[i] == nil then
+			--TVT.PrintOut("======== ENTFERNE UNGUELTIGEN WERBEVERTRAG ========")
+			table.remove(self.AdAgencyTask.SpotsInAgency, i)
+		end
+	end
+	
 	table.sort(self.AdAgencyTask.SpotsInAgency, sortMethod)
 
 	for k,requisition in pairs(self.SpotRequisitions) do
