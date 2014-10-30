@@ -250,7 +250,9 @@ Type TBuilding Extends TBuildingBase
 			hotspot.setParent(self.buildingInner)
 
 			'move elevatorplan hotspots to the elevator
+			'also make them enterable
 			If hotspot.name = "elevatorplan"
+				hotspot.SetEnterable(true)
 				hotspot.area.position.setX( Elevator.area.getX() )
 				hotspot.area.dimension.setXY( Elevator.GetDoorWidth(), 58 )
 			EndIf

@@ -125,7 +125,7 @@ Type TFigure extends TFigureBase
 		GetFrameAnimations().Set("standBack", TSpriteFrameAnimation.Create([ [10,1000] ], -1, 0 ) )
 
 		name = Figurename
-		area = new TRectangle.Init(x, GetBuilding().GetFloorY2(onFloor), sprite.framew, sprite.frameh )
+		area = new TRectangle.Init(x, TBuildingBase.GetFloorY2(onFloor), sprite.framew, sprite.frameh )
 		velocity.SetX(0)
 		initialdx = abs(speed)
 
@@ -176,23 +176,23 @@ Type TFigure extends TFigureBase
 	Method GetFloor:Int(pos:TVec2D = Null)
 		'if we have no floor set in the pos, we return the current floor
 		If not pos Then pos = area.position
-		Return GetBuilding().getFloor(pos.y)
+		Return GetBuildingBase().getFloor(pos.y)
 	End Method
 
 
 	Method IsOnFloor:Int()
-		Return area.GetY() = GetBuilding().GetFloorY2(GetFloor())
+		Return area.GetY() = TBuildingBase.GetFloorY2(GetFloor())
 	End Method
 
 
 	'ignores y
 	Method IsAtElevator:int()
-		Return GetBuilding().Elevator.IsFigureInFrontOfDoor(Self)
+		Return GetElevator().IsFigureInFrontOfDoor(Self)
 	End Method
 
 
 	Method IsInElevator:int()
-		Return GetBuilding().Elevator.IsFigureInElevator(Self)
+		Return GetElevator().IsFigureInElevator(Self)
 	End Method
 
 
@@ -207,7 +207,7 @@ Type TFigure extends TFigureBase
 	Method IsAIPlayer:Int()
 		if playerID <= 0 then return False
 		'checks if the figure is connected to an ai player
-		return GetPlayerCollection().Get(playerID) and GetPlayerCollection().Get(playerID).IsAI()
+		return GetPlayer(playerID) and GetPlayer(playerID).IsAI()
 	End Method
 
 
@@ -240,6 +240,8 @@ Type TFigure extends TFigureBase
 	'override to 
 	Method TargetNeedsToGetEntered:int()
 		if TRoomDoorBase(GetTarget()) then return True
+		'if hotspot, ask it whether enter is wanted
+		if THotSpot(GetTarget()) then return THotSpot(GetTarget()).IsEnterable()
 
 		return Super.TargetNeedsToGetEntered()
 	End Method
@@ -260,7 +262,7 @@ Type TFigure extends TFigureBase
 			Local targetX:Int = GetTargetMoveToPosition().getIntX()
 			'do we have to change the floor?
 			'if that is the case - change temporary target to elevator
-			If HasToChangeFloor() Then targetX = GetBuilding().Elevator.GetDoorCenterX()
+			If HasToChangeFloor() Then targetX = GetElevator().GetDoorCenterX()
 
 			'we stand in front of the target -> reach target!
 			if GetVelocity().GetX() = 0 and abs(area.getX() - targetX) < 1.0 then reachTemporaryTarget=true
@@ -292,7 +294,7 @@ Type TFigure extends TFigureBase
 					'you can only reach target when not a passenger of
 					'the elevator - this avoids going into the elevator
 					'plan without really leaving the elevator
-					If not GetBuilding().Elevator.passengers.Contains(Self)
+					If not GetElevator().passengers.Contains(Self)
 						ReachTargetStep1()
 					endif
 				else
@@ -328,14 +330,14 @@ Type TFigure extends TFigureBase
 
 		'adjust/limit position based on location
 		If Not IsInElevator()
-			If Not IsOnFloor() and not useAbsolutePosition Then area.position.setY( GetBuilding().GetFloorY2(GetFloor()) )
+			If Not IsOnFloor() and not useAbsolutePosition Then area.position.setY( TBuildingBase.GetFloorY2(GetFloor()) )
 		EndIf
 
 		'limit player position (only within floor 13 and floor 0 allowed)
 		if not useAbsolutePosition
 			'beim Vergleich oben nicht "self.sprite.area.GetH()" abziehen... das war falsch und führt zum Ruckeln im obersten Stock
-			If area.GetY() < GetBuilding().GetFloorY2(13) Then area.position.setY( GetBuilding().GetFloorY2(13) )
-			If area.GetY() - sprite.area.GetH() > GetBuilding().GetFloorY2(0) Then area.position.setY( GetBuilding().GetFloorY2(0) )
+			If area.GetY() < TBuildingBase.GetFloorY2(13) Then area.position.setY( TBuildingBase.GetFloorY2(13) )
+			If area.GetY() - sprite.area.GetH() > TBuildingBase.GetFloorY2(0) Then area.position.setY( TBuildingBase.GetFloorY2(0) )
 		endif
 	End Method
 
@@ -386,7 +388,7 @@ Type TFigure extends TFigureBase
 		'if both figures are "players" we display "GRRR" or "?!!?"
 		If figure.playerID and playerID
 			'depending on floor use "grr" or "?!"
-			return 0 + 2*((1 + GetBuilding().GetFloor(area.GetY()) mod 2)-1)
+			return 0 + 2*((1 + GetBuildingBase().GetFloor(area.GetY()) mod 2)-1)
 		'display "hi"
 		else
 			return 1
@@ -716,13 +718,13 @@ Type TFigure extends TFigureBase
 
 	'send a figure to the offscreen position
 	Method SendToOffscreen:Int()
-		ChangeTarget(GameRules.offscreenX, GetBuilding().GetFloorY2(0) - 5)
+		ChangeTarget(GameRules.offscreenX, TBuildingBase.GetFloorY2(0) - 5)
 	End Method
 
 
 	'instantly move a figure to the offscreen position
 	Method MoveToOffscreen:Int()
-		area.position.SetXY(GameRules.offscreenX, GetBuilding().GetFloorY2(0))
+		area.position.SetXY(GameRules.offscreenX, TBuildingBase.GetFloorY2(0))
 	End Method
 
 
@@ -734,9 +736,9 @@ Type TFigure extends TFigureBase
 
 	Method GoToCoordinatesRelative:Int(relX:Int = 0, relYFloor:Int = 0)
 		Local newX:Int = area.GetX() + relX
-		Local newY:Int = GetBuilding().area.GetY() + GetBuilding().GetFloorY2(GetFloor() + relYFloor) - 5
+		Local newY:Int = GetBuildingBase().area.GetY() + TBuildingBase.GetFloorY2(GetFloor() + relYFloor) - 5
 
-		newX = MathHelper.Clamp(newX, 10, GetBuilding().floorWidth - 10)
+		newX = MathHelper.Clamp(newX, 10, GetBuildingBase().floorWidth - 10)
 
  		ChangeTarget(newX, newY)
 	End Method
@@ -749,17 +751,17 @@ Type TFigure extends TFigureBase
 		If IsElevatorCalled() Then Return False 'Wenn er bereits gerufen wurde, dann abbrechen
 
 		'Wenn der Fahrstuhl schon da ist, dann auch abbrechen. TODOX: Muss überprüft werden
-		If GetBuilding().Elevator.CurrentFloor = GetFloor() And IsAtElevator() Then Return False
+		If GetElevator().CurrentFloor = GetFloor() And IsAtElevator() Then Return False
 
 		'Fahrstuhl darf man nur rufen, wenn man davor steht
-		If IsAtElevator() Then GetBuilding().Elevator.CallElevator(Self)
+		If IsAtElevator() Then GetElevator().CallElevator(Self)
 	End Method
 
 
 	Method GoOnBoardAndSendElevator:Int()
 		if not GetTarget() then return FALSE
-		If GetBuilding().Elevator.EnterTheElevator(Self, GetFloor(GetTargetMoveToPosition()))
-			GetBuilding().Elevator.SendElevator(GetFloor(GetTargetMoveToPosition()), Self)
+		If GetElevator().EnterTheElevator(Self, GetFloor(GetTargetMoveToPosition()))
+			GetElevator().SendElevator(GetFloor(GetTargetMoveToPosition()), Self)
 		EndIf
 	End Method
 
@@ -774,7 +776,7 @@ Type TFigure extends TFigureBase
 		elseif TRoomDoorBase(target)
 			return new TVec2D.Init(TRoomDoorBase(target).area.GetX() + TRoomDoorBase(target).area.GetW()/2, TRoomDoorBase(target).area.GetY())
 		elseif THotspot(target)
-			return new TVec2D.Init(THotspot(target).area.GetX() + 5, THotspot(target).area.GetY())
+			return new TVec2D.Init(THotspot(target).area.GetX() + THotspot(target).area.GetW()/2, THotspot(target).area.GetY())
 		endif
 		
 		return Null
@@ -793,7 +795,7 @@ Type TFigure extends TFigureBase
 		if not forceChange and not IsControllable() then Return False
 
 		'if player is in elevator dont accept changes
-		if not forceChange and GetBuilding().Elevator.passengers.Contains(Self) Then Return False
+		if not forceChange and GetElevator().passengers.Contains(Self) Then Return False
 		'only change target if it's your figure or you are game leader
 		If self <> GetPlayerCollection().Get().figure And Not Game.isGameLeader() Then Return False
 
@@ -814,12 +816,12 @@ Type TFigure extends TFigureBase
 		endif
 
 		'y is not of floor 0 -13
-		If GetBuilding().GetFloor(y) < 0 Or GetBuilding().GetFloor(y) > 13 Then Return False
+		If GetBuildingBase().GetFloor(y) < 0 Or GetBuildingBase().GetFloor(y) > 13 Then Return False
 
 		local newTargetCoord:TVec2D
 
 		'set new target, y is recalculated to "basement"-y of that floor
-		newTargetCoord = new TVec2D.Init(x, GetBuilding().GetFloorY2(GetBuilding().GetFloor(y)) )
+		newTargetCoord = new TVec2D.Init(x, TBuildingBase.GetFloorY2(GetBuildingBase().GetFloor(y)) )
 		newTarget = newTargetCoord
 
 		'when targeting a room, set target to center of door
@@ -836,10 +838,10 @@ Type TFigure extends TFigureBase
 
 		'TODO: do this in a GetLimitX() method to make it overrideable
 		'      by bigger figures - like the the janitor
-		local rightLimit:int = TBuilding.floorWidth-15 '603
+		local rightLimit:int = TBuildingBase.floorWidth-15 '603
 		local leftLimit:int = 15 '200
 
-		if GetBuilding().GetFloor(y) = 0
+		if GetBuildingBase().GetFloor(y) = 0
 			If Floor(newTargetCoord.x) >= rightLimit Then newTargetCoord.X = rightLimit
 		else
 			If Floor(newTargetCoord.x) <= leftLimit Then newTargetCoord.X = leftLimit
@@ -875,7 +877,7 @@ Type TFigure extends TFigureBase
 
 
 	Method IsElevatorCalled:Int()
-		For Local floorRoute:TFloorRoute = EachIn GetBuilding().Elevator.FloorRouteList
+		For Local floorRoute:TFloorRoute = EachIn GetElevator().FloorRouteList
 			If floorRoute.who.id = Self.id
 				Return True
 			EndIf
@@ -911,16 +913,16 @@ Type TFigure extends TFigureBase
 				'TODOX: Blockiert.. weil noch einer aus dem Plan auswählen will
 
 				'Ist der Fahrstuhl da? Kann ich einsteigen?
-				If GetBuilding().Elevator.CurrentFloor = GetFloor() And GetBuilding().Elevator.ReadyForBoarding
+				If GetElevator().CurrentFloor = GetFloor() And GetElevator().ReadyForBoarding
 					GoOnBoardAndSendElevator()
 				Else 'Ansonsten ruf ich ihn halt
 					CallElevator()
 				EndIf
 			EndIf
 
-			If IsInElevator() and GetBuilding().Elevator.ReadyForBoarding
-				If (not GetTarget() OR GetBuilding().Elevator.CurrentFloor = GetFloor(GetTargetMovetoPosition()))
-					GetBuilding().Elevator.LeaveTheElevator(Self)
+			If IsInElevator() and GetElevator().ReadyForBoarding
+				If (not GetTarget() OR GetElevator().CurrentFloor = GetFloor(GetTargetMovetoPosition()))
+					GetElevator().LeaveTheElevator(Self)
 				EndIf
 			EndIf
 		EndIf

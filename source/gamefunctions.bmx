@@ -851,6 +851,7 @@ Type THotspot extends TStaticEntity
 	Field tooltipText:String = ""
 	Field tooltipDescription:String	= ""
 	Field hovered:Int = False
+	Field enterable:int = False
 	Global list:TList = CreateList()
 
 
@@ -875,6 +876,16 @@ Type THotspot extends TStaticEntity
 	Method setTooltipText( text:String="", description:String="" )
 		Self.tooltipText		= text
 		Self.tooltipDescription = description
+	End Method
+
+
+	Method SetEnterable(bool:int = True)
+		enterable = bool
+	End Method
+
+
+	Method IsEnterable:int()
+		return enterable
 	End Method
 
 
