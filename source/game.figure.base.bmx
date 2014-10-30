@@ -150,6 +150,11 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Const ACTION_LEAVING:int = 3
 
 
+	Method GetFloor:Int(pos:TVec2D = Null) abstract
+	Method IsActivePlayer:Int() abstract
+
+
+
 	Method onLoad:int()
 		'reassign sprite
 		if sprite and sprite.name then sprite = GetSpriteFromRegistry(sprite.name)
@@ -171,6 +176,11 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		If GetTarget() then return False
 		If IsWaitingToEnter() or IsWaitingToLeave() then return False
 
+		return True
+	End Method
+
+
+	Method IsInBuilding:int()
 		return True
 	End Method
 	

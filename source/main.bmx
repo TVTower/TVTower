@@ -65,7 +65,8 @@ Import "game.player.finance.bmx"
 Import "game.player.boss.bmx"
 'Import "game.player.bmx"
 Import "game.stationmap.bmx"
-
+Import "game.building.base.bmx"
+Import "game.building.elevator.bmx"
 'needed by gamefunctions
 Import "game.broadcastmaterial.programme.bmx"
 'needed by game.player.bmx
@@ -98,7 +99,6 @@ Include "gamefunctions_production.bmx"			'Alles was mit Filmproduktion zu tun ha
 Include "gamefunctions_debug.bmx"
 Include "gamefunctions_network.bmx"
 
-Include "gamefunctions_elevator.bmx"
 Include "game.figure.bmx"
 Include "game.building.bmx"
 Include "game.newsagency.bmx"
@@ -144,7 +144,6 @@ TLogger.setPrintMode(LOG_ALL )
 
 'Enthaelt Verbindung zu Einstellungen und Timern, sonst nix
 Type TApp
-	Field devConfig:TData = New TData
 	'developer/base configuration
 	Field configBase:TData = New TData
 	'configuration containing base + user
@@ -400,7 +399,7 @@ Type TApp
 			'keywrapper has "key every milliseconds" functionality
 			If KEYWRAPPER.hitKey(KEY_ESCAPE) Then TApp.CreateConfirmExitAppDialogue()
 
-			If App.devConfig.GetBool("DEV_KEYS", False)
+			If GameRules.devConfig.GetBool("DEV_KEYS", False)
 				'(un)mute sound
 				'M: (un)mute all sounds
 				'SHIFT+M: (un)mute all sound effects
@@ -573,7 +572,7 @@ Type TApp
 		local oldCol:TColor = new TColor.Get()
 		SetAlpha oldCol.a * 0.25
 		SetColor 0,0,0
-		If App.devConfig.GetBool("DEV_OSD", False)
+		If GameRules.devConfig.GetBool("DEV_OSD", False)
 			DrawRect(0,0, 800,13)
 		else
 			DrawRect(0,0, 175,13)
@@ -587,7 +586,7 @@ Type TApp
 		GetBitmapFontManager().baseFont.draw("UPS: " + Int(GetDeltaTimer().currentUps), textX,0)
 		textX:+50
 
-		If App.devConfig.GetBool("DEV_OSD", False)
+		If GameRules.devConfig.GetBool("DEV_OSD", False)
 			GetBitmapFontManager().baseFont.draw("Loop: "+Int(GetDeltaTimer().getLoopTimeAverage())+"ms", textX,0)
 			textX:+100
 			'update time per second
@@ -657,7 +656,7 @@ Type TApp
 			If GetBuilding().elevator.Direction = 1 Then directionString = "down"
 			Local debugString:String =	"floor:" + GetBuilding().elevator.currentFloor +..
 										"->" + GetBuilding().elevator.targetFloor +..
-										" doorState:"+GetBuilding().elevator.ElevatorStatus
+										" status:"+GetBuilding().elevator.ElevatorStatus
 
 			GetBitmapFontManager().baseFont.draw(debugString, 5, startY)
 
@@ -3587,18 +3586,18 @@ End Function
 Function StartApp:Int()
 	TProfiler.Enter("StartApp")
 	'assign dev config (resources are now loaded)
-	App.devConfig = TData(GetRegistry().Get("DEV_CONFIG", New TData))
+	GameRules.devConfig = TData(GetRegistry().Get("DEV_CONFIG", New TData))
 
 	'disable log from now on (if dev wished so)
-	If not App.devConfig.GetBool("DEV_LOG", True)
+	If not GameRules.devConfig.GetBool("DEV_LOG", True)
 		TLogger.SetPrintMode(0)
 	EndIf
 
 	'override infomercialCutFactor if given
-	TAdContractBase.infomercialCutFactorDevModifier = App.devConfig.GetFloat("DEV_INFOMERCIALCUTFACTOR", 1.0)
+	TAdContractBase.infomercialCutFactorDevModifier = GameRules.devConfig.GetFloat("DEV_INFOMERCIALCUTFACTOR", 1.0)
 
 
-	TFunctions.roundToBeautifulEnabled = App.devConfig.GetBool("DEV_ROUND_TO_BEAUTIFUL_VALUES", True)
+	TFunctions.roundToBeautifulEnabled = GameRules.devConfig.GetBool("DEV_ROUND_TO_BEAUTIFUL_VALUES", True)
 	If TFunctions.roundToBeautifulEnabled
 		TLogger.Log("StartTVTower()", "DEV RoundToBeautiful is enabled", LOG_DEBUG | LOG_LOADING)
 	Else

@@ -108,9 +108,9 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 
 		'not working yet
 		case NET_ELEVATORROUTECHANGE
-				GetBuilding().Elevator.Network_ReceiveRouteChange( networkObject )
+				NetworkHelper.ReceiveElevatorRouteChange( networkObject )
 		case NET_ELEVATORSYNCHRONIZE
-				GetBuilding().Elevator.Network_ReceiveSynchronize( networkObject )
+				NetworkHelper.ReceiveElevatorSynchronize( networkObject )
 
 		case NET_NEWSSUBSCRIPTIONCHANGE
 				NetworkHelper.ReceiveNewsSubscriptionChange( networkObject )
@@ -579,6 +579,14 @@ print "[NET] ReceiveGameReady"
 	End Method
 
 
+	Method ReceiveElevatorRouteChange( obj:TNetworkObject )
+		print "IMPLEMENT ReceiveElevatorRouteChange()"
+	End Method
+
+
+	Method ReceiveElevatorSynchronize( obj:TNetworkObject )
+		print "IMPLEMENT ReceiveElevatorSynchronize()"
+	End Method
 
 'checked
 	Method SendNewsSubscriptionChange(playerID:Int, genre:int, level:int)

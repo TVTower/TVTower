@@ -364,7 +364,7 @@ Type TGame {_exposeToLua="selected"}
 
 
 		'=== ADJUST GAME RULES ===
-		GameRules.dailyBossVisit = App.devConfig.GetInt("DEV_DAILY_BOSS_VISIT", TRUE)
+		GameRules.dailyBossVisit = GameRules.devConfig.GetInt("DEV_DAILY_BOSS_VISIT", TRUE)
 
 
 		'=== STATION MAP ===

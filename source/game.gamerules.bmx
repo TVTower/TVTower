@@ -1,3 +1,6 @@
+SuperStrict
+Import "Dig/base.util.data.bmx"
+
 'specific variables shared across the whole game
 Type TGameRules {_exposeToLua}
 	'how many movies does a player get on a new game
@@ -29,6 +32,8 @@ Type TGameRules {_exposeToLua}
 
 	'does the boss has to get visited daily?
 	Field dailyBossVisit:int = True
+
+	Field devConfig:TData = new TData
 End Type
 
 Global GameRules:TGameRules = new TGameRules

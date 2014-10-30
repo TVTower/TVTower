@@ -31,7 +31,7 @@ Type TSoundManager
 	Field fadeOutVolume:Int = 1000
 	Field fadeInVolume:Int = 0
 
-	Field soundSources:TList = CreateList()
+	Field soundSources:TMap = CreateMap()
 	Field receiver:TSoundSourcePosition
 
 	Field _currentPlaylistName:String = "default"
@@ -255,10 +255,19 @@ Type TSoundManager
 	End Method
 
 
-	Method RegisterSoundSource(soundSource:TSoundSourceElement)
-		If Not soundSources.Contains(soundSource) Then soundSources.AddLast(soundSource)
+	Method RegisterSoundSource:int(soundSource:TSoundSourceElement)
+		if not soundSource then return False
+		If Not soundSources.ValueForKey(soundSource.GetGUID())
+			soundSources.Insert(soundSource.GetGUID(), soundSource)
+		endif
 	End Method
 
+
+	Method GetSoundSource:TSoundSourceElement(GUID:string)
+		return TSoundSourceElement(soundSources.ValueForKey(GUID))
+	End Method
+
+	
 
 	Method IsPlaying:Int()
 		If Not activeMusicChannel Then Return False
@@ -283,7 +292,7 @@ Type TSoundManager
 		Else
 			TLogger.Log("TSoundManager.MuteSfx()", "Unmuting all sound effects", LOG_DEBUG)
 		EndIf
-		For Local element:TSoundSourceElement = EachIn soundSources
+		For Local element:TSoundSourceElement = EachIn soundSources.Values()
 			element.mute(bool)
 		Next
 
@@ -331,7 +340,7 @@ Type TSoundManager
 		If isMuted() Then Return True
 
 		If sfxOn
-			For Local element:TSoundSourceElement = EachIn soundSources
+			For Local element:TSoundSourceElement = EachIn soundSources.Values()
 				element.Update()
 			Next
 		EndIf
@@ -773,22 +782,47 @@ End Type
 
 
 Type TSoundSourcePosition 'Basisklasse für verschiedene Wrapper
-	Method GetID:String() Abstract
+	Field ID:int = 0
+	Global _lastID:int = 0
+
 	Method GetCenter:TVec3D() Abstract
 	Method IsMovable:Int() Abstract
+	Method GetClassIdentifier:string() Abstract
+
+
+	Method New()
+		_lastID :+ 1
+		ID = _lastID
+	End Method
+
+
+	Method GetGUID:string()
+		return GetClassIdentifier()+"-"+ID
+	End Method
 End Type
 
 
 
 
 Type TSoundSourceElement Extends TSoundSourcePosition
+	Field GUID:String = ""
 	Field SfxChannels:TMap = CreateMap()
-
 
 	Method GetIsHearable:Int() Abstract
 	Method GetChannelForSfx:TSfxChannel(sfx:String) Abstract
 	Method GetSfxSettings:TSfxSettings(sfx:String) Abstract
 	Method OnPlaySfx:Int(sfx:String) Abstract
+
+
+	Method GetGUID:string()
+		if GUID = "" then return GetClassIdentifier()+"-"+ID
+		return GUID
+	End Method
+
+
+	Method SetGUID(newGUID:string)
+		GUID = newGUID
+	End Method
 
 
 	Method GetReceiver:TSoundSourcePosition()
@@ -809,7 +843,7 @@ Type TSoundSourceElement Extends TSoundSourcePosition
 	Method PlaySfxOrPlaylist(name:String, sfxSettings:TSfxSettings=Null, playlistMode:Int=False)
 		If Not GetIsHearable() Then Return
 		If Not OnPlaySfx(name) Then Return
-		'print GetID() + " # PlaySfx: " + sfx
+		'print GetGUID() + " # PlaySfx: " + sfx
 
 		TSoundManager.GetInstance().RegisterSoundSource(Self)
 
@@ -826,7 +860,7 @@ Type TSoundSourceElement Extends TSoundSourcePosition
 		Else
 			channel.PlaySfx(name, settings)
 		EndIf
-		'print GetID() + " # End PlaySfx: " + sfx
+		'print GetGUID() + " # End PlaySfx: " + sfx
 	End Method
 
 

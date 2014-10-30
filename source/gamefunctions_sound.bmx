@@ -1,35 +1,13 @@
-Type TSfxFloorSoundBarrierSettings Extends TSfxSettings
-
-	Method GetVolumeByDistance:Float(source:TSoundSourceElement, receiver:TSoundSourcePosition)
-		Local floorNumberSource:Int = TBuilding.getFloorByPixelExactPoint(source.GetCenter().toVec2D())
-		Local floorNumberTarget:Int = TBuilding.getFloorByPixelExactPoint(receiver.GetCenter().toVec2D())
-		Local floorDistance:Int = Abs(floorNumberSource - floorNumberTarget)
-'		print "floorDistance: " + floorDistance + " - " + Exponential(0.5, floorDistance) + " # " + floorNumberSource + " $ " + floorNumberTarget
-		Return Super.GetVolumeByDistance(source, receiver) * Exponential(0.5, floorDistance)
-	End Method
-
-	Method Exponential:Float(base:Float, expo:Float)
-'		print "Exponential1: " + base + " - " + expo
-		Local result:Float = base
-		If expo >= 2
-			For Local i:Int = 1 To expo - 1
-				result = result * base
-			Next
-		EndIf
-'		print "Exponential2: " + result
-		Return result
-	End Method
-
-End Type
-
 Type TPlayerSoundSourcePosition Extends TSoundSourcePosition
 	Function Create:TPlayerSoundSourcePosition ()
 		Return New TPlayerSoundSourcePosition
 	End Function
 
-	Method GetID:String()
+
+	Method GetClassIdentifier:String()
 		Return "Player"
 	End Method
+	
 
 	Method GetCenter:TVec3D()
 		Return GetPlayerCollection().Get().Figure.area.GetAbsoluteCenterVec().ToVec3D()
@@ -45,88 +23,6 @@ Type TPlayerSoundSourcePosition Extends TSoundSourcePosition
 End Type
 
 
-Type TElevatorSoundSource Extends TSoundSourceElement
-	Field Elevator:TElevator = Null
-	Field Movable:Int = True
-
-	Function Create:TElevatorSoundSource(_elevator:TElevator, _movable:Int)
-		Local result:TElevatorSoundSource  = New TElevatorSoundSource
-		result.Elevator = _elevator
-		result.Movable = ­_movable
-
-		result.AddDynamicSfxChannel("Main")
-		result.AddDynamicSfxChannel("Door")
-
-		Return result
-	End Function
-
-	Method GetID:String()
-		Return "Elevator"
-	End Method
-
-	Method GetCenter:TVec3D()
-		Return Elevator.GetElevatorCenterPos()
-	End Method
-
-	Method IsMovable:Int()
-		Return ­Movable
-	End Method
-
-	Method GetIsHearable:Int()
-		Return (GetPlayerCollection().Get().GetFigure().inRoom = Null)
-	End Method
-
-	Method GetChannelForSfx:TSfxChannel(sfx:String)
-		Select sfx
-			Case "elevator_door_open"
-				Return GetSfxChannelByName("Door")
-			Case "elevator_door_close"
-				Return GetSfxChannelByName("Door")
-			Case "elevator_engine"
-				Return GetSfxChannelByName("Main")
-		EndSelect
-	End Method
-
-	Method GetSfxSettings:TSfxSettings(sfx:String)
-		Select sfx
-			Case "elevator_door_open"
-				Return GetDoorOptions()
-			Case "elevator_door_close"
-				Return GetDoorOptions()
-			Case "elevator_engine"
-				Return GetEngineOptions()
-		EndSelect
-	End Method
-
-	Method OnPlaySfx:Int(sfx:String)
-		Select sfx
-			Case "elevator_door_open"
-				GetChannelForSfx("elevator_engine").stop()
-		EndSelect
-
-		Return True
-	End Method
-
-	Method GetDoorOptions:TSfxSettings()
-		Local result:TSfxSettings = New TSfxFloorSoundBarrierSettings
-		result.nearbyDistanceRange = 50
-		result.maxDistanceRange = 500
-		result.nearbyRangeVolume = 1
-		result.midRangeVolume = 0.5
-		result.minVolume = 0
-		Return result
-	End Method
-
-	Method GetEngineOptions:TSfxSettings()
-		Local result:TSfxSettings = New TSfxSettings
-		result.nearbyDistanceRange = 0
-		result.maxDistanceRange = 500
-		result.nearbyRangeVolume = 0.5
-		result.midRangeVolume = 0.25
-		result.minVolume = 0.05
-		Return result
-	End Method
-End Type
 
 Type TDoorSoundSource Extends TSoundSourceElement
 	Field door:TRoomDoor
@@ -202,7 +98,7 @@ Type TDoorSoundSource Extends TSoundSourceElement
 		Super.Update()
 	End Method
 
-	Method GetID:String()
+	Method GetClassIdentifier:String()
 		Return "Door"
 	End Method
 
@@ -284,8 +180,8 @@ Type TFigureSoundSource Extends TSoundSourceElement
 		Return result
 	End Function
 
-	Method GetID:String()
-		Return "Figure" + Figure.id
+	Method GetClassIdentifier:String()
+		Return "Figure" ' + Figure.id
 	End Method
 
 	Method GetCenter:TVec3D()
@@ -304,11 +200,12 @@ Type TFigureSoundSource Extends TSoundSourceElement
 		Select sfx
 			Case "steps"
 				If Not Self.ChannelInitialized
-					Self.AddDynamicSfxChannel("Steps" + Self.GetID()) 'Channel erst hier hinzufügen... am Anfang hat Figure noch keine id
+					'Channel erst hier hinzufügen... am Anfang hat Figure noch keine id
+					Self.AddDynamicSfxChannel("Steps" + Self.GetGUID())
 					Self.ChannelInitialized = True
 				EndIf
 
-				Return GetSfxChannelByName("Steps" + Self.GetID())
+				Return GetSfxChannelByName("Steps" + Self.GetGUID())
 		EndSelect
 	End Method
 
@@ -369,7 +266,7 @@ Type TSimpleSoundSource extends TSoundSourceElement
 			channel.PlaySfx(name, settings)
 		endif
 
-		'print GetID() + " # End PlaySfx: " + name
+		'print GetClassIdentifier() + " # End PlaySfx: " + name
 	End Method
 
 
@@ -393,7 +290,7 @@ Type TSimpleSoundSource extends TSoundSourceElement
 		Return GetSfxChannelByName(sfx)
 	End Method
 
-	Method GetID:String()
+	Method GetClassIdentifier:String()
 		Return "SimpleSfx"
 	End Method
 

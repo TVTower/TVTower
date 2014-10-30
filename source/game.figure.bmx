@@ -449,6 +449,7 @@ Type TFigure extends TFigureBase
 	End Method
 
 
+	'override to add room support
 	Method IsInBuilding:int()
 		If isChangingRoom() Then Return False
 		If inRoom Then Return False
