@@ -725,10 +725,8 @@ endrem
 		local gameItem:TGUIGameEntry = TGUIGameEntry(item)
 		if gameItem
 			For Local olditem:TGUIListItem = EachIn Self.entries
-				'skip other items
-				if gameItem.data.GetInt("hostPort") <> olditem.data.GetInt("hostPort") then continue
-				if gameItem.data.GetString("hostIP") <> olditem.data.GetString("hostIP") then continue
-				
+				'skip other items (same ip:port-combination)
+				if gameItem.data.GetInt("hostPort") <> olditem.data.GetInt("hostPort") OR gameItem.data.GetString("hostIP") <> olditem.data.GetString("hostIP") then continue
 				'refresh lifetime
 				olditem.setLifeTime(olditem.initialLifeTime)
 				'unset the new one
@@ -759,6 +757,9 @@ Type TGUIGameEntry Extends TGUISelectListItem
 		Self.data.AddNumber("slotsUsed", slotsUsed)
 		Self.data.AddNumber("slotsMax", slotsMax)
 
+		'resize it
+		GetDimension()
+
 		Return Self
 	End Method
 
@@ -771,9 +772,7 @@ Type TGUIGameEntry Extends TGUISelectListItem
 		SetLifetime(30000) '30 seconds
 		SetValue(":D")
 		SetValueColor(TColor.Create(0,0,0))
-
-'		Resize( dimension.x, dimension.y )
-
+		
 		GUIManager.add(Self)
 
 		Return Self
@@ -783,7 +782,8 @@ Type TGUIGameEntry Extends TGUISelectListItem
 	Method getDimension:TVec2D()
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
-		Local maxWidth:Int = parentPanel.getContentScreenWidth() '- GetScreenWidth()
+		Local maxWidth:Int = 200
+		if parentPanel then maxWidth = parentPanel.getContentScreenWidth() '- GetScreenWidth()
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
 		Local dimension:TVec2D = new TVec2D.Init(maxWidth, GetBitmapFontManager().baseFont.GetMaxCharHeight())
@@ -811,7 +811,7 @@ Type TGUIGameEntry Extends TGUISelectListItem
 		Local textColor:TColor = Null
 		Local textDim:TVec2D = Null
 		'line: title by hostname (slotsused/slotsmax)
-
+'DrawRect(GetScreenX(), GetScreenY(), GetDimension().x, GetDimension().y)
 		text 		= Self.Data.getString("gameTitle","#unknowngametitle#")
 		textColor	= TColor(Self.Data.get("gameTitleColor", TColor.Create(150,80,50)) )
 		textDim		= GetBitmapFontManager().baseFontBold.drawStyled(text, Self.getScreenX() + move.x, Self.getScreenY() + move.y, textColor, 2, 1,0.5)

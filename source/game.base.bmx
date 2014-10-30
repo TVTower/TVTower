@@ -64,8 +64,8 @@ Type TGame {_exposeToLua="selected"}
 	'--networkgame auf "isNetworkGame()" umbauen
 	'are we playing a network game? 0=false, 1=true, 2
 	Field networkgame:Int = 0
-	'is the network game ready - all options set? 0=false
-	Field networkgameready:Int = 0
+	'start the game now?
+	Field startNetworkGame:Int = 0
 	'playing over internet? 0=false
 	Field onlinegame:Int = 0
 

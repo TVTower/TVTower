@@ -190,7 +190,7 @@ Type TStationMapCollection
 
 	'return the stationmap of other players
 	'do not expose to Lua... else they get access to buy/sell
-	Method GetMap:TStationMap(playerID:Int)
+	Method GetMap:TStationMap(playerID:Int, createIfMissing:int = False)
 		'check boundaries
 		If playerID < 1 or playerID > stationMaps.length
 			Throw "GetStationMapCollection().GetMap: playerID ~q"+playerID+"~q is out of bounds."
@@ -201,6 +201,11 @@ Type TStationMapCollection
 			Throw("StationMapCollection: station order corrupt?!")
 		EndIf
 
+		'create if missing
+		if not stationMaps[playerID-1] and createIfMissing
+			stationMaps[playerID-1] = TStationMap.Create(playerID)
+		endif
+		
 		'zero based
 		Return stationMaps[playerID-1]
 	End Method

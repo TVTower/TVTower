@@ -1,25 +1,26 @@
 'handles network events
 
 'first 100 ids reserved for base network events
-'Const NET_SETSLOT:Int					= 101		' SERVER: command from server to set to a given playerslot
-'Const NET_SLOTSET:Int					= 102		' ALL: 	  response to all, that IP uses slot X now
+'Const NET_SETSLOT:Int					= 101	' SERVER: command from server to set to a given playerslot
+'Const NET_SLOTSET:Int					= 102	' ALL: 	  response to all, that IP uses slot X now
 
-Const NET_SENDGAMESTATE:Int				= 102		' ALL:    sends a ReadyFlag
-Const NET_GAMEREADY:Int					= 103		' ALL:    sends a ReadyFlag
-Const NET_STARTGAME:Int					= 104		' SERVER: sends a StartFlag
-Const NET_CHATMESSAGE:Int				= 105		' ALL:    a sent chatmessage ;D
-Const NET_PLAYERDETAILS:Int				= 106		' ALL:    name, channelname...
-Const NET_FIGUREPOSITION:Int			= 107		' ALL:    x,y,room,target...
-Const NET_ELEVATORSYNCHRONIZE:Int		= 111		' SERVER: synchronizing the elevator
-Const NET_ELEVATORROUTECHANGE:Int		= 112		' ALL:    elevator routes have changed
-Const NET_NEWSSUBSCRIPTIONCHANGE:Int	= 113		' ALL:	  sends Changes in subscription levels of news-agencies
-Const NET_STATIONMAPCHANGE:Int			= 114		' ALL:    stations have changes (added ...)
-Const NET_MOVIEAGENCYCHANGE:Int			= 115		' ALL:    sends changes of programme in movieshop
-Const NET_ROOMAGENCYCHANGE:Int			= 116		' ALL:    sends changes to room details (owner changes etc.)
-Const NET_PROGRAMMECOLLECTIONCHANGE:Int = 117		' ALL:    programmecollection was changed (removed, sold...)
-Const NET_PROGRAMMEPLAN_CHANGE:Int		= 118		' ALL:    playerprogramme has changed (added, removed, ...movies,ads ...)
+Const NET_SENDGAMESTATE:Int				= 102	' ALL:    sends a ReadyFlag
+Const NET_GAMEREADY:Int					= 103	' ALL:    sends a ReadyFlag
+Const NET_PREPAREGAME:Int				= 104	' SERVER: sends a request to change gamestate
+Const NET_STARTGAME:Int					= 105	' SERVER: sends a StartFlag
+Const NET_CHATMESSAGE:Int				= 106	' ALL:    a sent chatmessage ;D
+Const NET_PLAYERDETAILS:Int				= 107	' ALL:    name, channelname...
+Const NET_FIGUREPOSITION:Int			= 108	' ALL:    x,y,room,target...
+Const NET_ELEVATORSYNCHRONIZE:Int		= 111	' SERVER: synchronizing the elevator
+Const NET_ELEVATORROUTECHANGE:Int		= 112	' ALL:    elevator routes have changed
+Const NET_NEWSSUBSCRIPTIONCHANGE:Int	= 113	' ALL:	  sends Changes in subscription levels of news-agencies
+Const NET_STATIONMAPCHANGE:Int			= 114	' ALL:    stations have changes (added ...)
+Const NET_MOVIEAGENCYCHANGE:Int			= 115	' ALL:    sends changes of programme in movieshop
+Const NET_ROOMAGENCYCHANGE:Int			= 116	' ALL:    sends changes to room details (owner changes etc.)
+Const NET_PROGRAMMECOLLECTIONCHANGE:Int = 117	' ALL:    programmecollection was changed (removed, sold...)
+Const NET_PROGRAMMEPLAN_CHANGE:Int		= 118	' ALL:    playerprogramme has changed (added, removed, ...movies,ads ...)
 Const NET_PLAN_SETNEWS:Int				= 119
-Const NET_GAMESETTINGS:Int				= 121		' SERVER: send extra settings (random seed value etc.)
+Const NET_GAMESETTINGS:Int				= 121	' SERVER: send extra settings (random seed value etc.)
 
 Const NET_DELETE:Int					= 0
 Const NET_ADD:Int						= 1000
@@ -50,6 +51,8 @@ End Function
 
 '=== EVENTS FOR CLIENT ===
 Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetworkObject)
+	local inGame:int = (Game.gamestate = TGame.STATE_RUNNING)
+
 	Select networkObject.evType
 		case NET_PLAYERJOINED
 			local playerID:int = NetworkObject.getInt(1)
@@ -77,7 +80,6 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 			endif
 			TLogger.Log("Network.ClientEventHandler", "got join response.", LOG_DEBUG | LOG_NETWORK)
 
-
 		case NET_GAMESETTINGS
 			if not Network.client.joined then return
 			if Network.isServer then return
@@ -86,8 +88,14 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 			local randomSeedValue:int = NetworkObject.getInt(2)
 			Game.SetRandomizerBase( randomSeedValue )
 
+
+		case NET_PREPAREGAME
+				print "NET: received preparegame"
+				Game.SetGameState(TGame.STATE_PREPAREGAMESTART)
+
 		case NET_STARTGAME
-				Game.networkgameready = 1
+				print "NET: received startgame"
+				Game.startNetworkGame = True
 
 		case NET_GAMEREADY
 				NetworkHelper.ReceiveGameReady( networkObject )
@@ -99,42 +107,42 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 				NetworkHelper.ReceivePlayerDetails( networkObject )
 
 		case NET_FIGUREPOSITION
-				NetworkHelper.ReceiveFigurePosition( networkObject )
-
+				if inGame then NetworkHelper.ReceiveFigurePosition( networkObject )
 'untested
-
 		case NET_CHATMESSAGE
 				NetworkHelper.ReceiveChatMessage( networkObject )
 
 		'not working yet
 		case NET_ELEVATORROUTECHANGE
-				NetworkHelper.ReceiveElevatorRouteChange( networkObject )
+				if inGame then NetworkHelper.ReceiveElevatorRouteChange( networkObject )
 		case NET_ELEVATORSYNCHRONIZE
-				NetworkHelper.ReceiveElevatorSynchronize( networkObject )
+				if inGame then NetworkHelper.ReceiveElevatorSynchronize( networkObject )
 
 		case NET_NEWSSUBSCRIPTIONCHANGE
-				NetworkHelper.ReceiveNewsSubscriptionChange( networkObject )
+				if inGame then NetworkHelper.ReceiveNewsSubscriptionChange( networkObject )
 		case NET_MOVIEAGENCYCHANGE
-				NetworkHelper.ReceiveMovieAgencyChange( networkObject )
+				if inGame then NetworkHelper.ReceiveMovieAgencyChange( networkObject )
 		case NET_ROOMAGENCYCHANGE
-				NetworkHelper.ReceiveRoomAgencyChange( networkObject )
+				if inGame then NetworkHelper.ReceiveRoomAgencyChange( networkObject )
 		case NET_PROGRAMMECOLLECTIONCHANGE
-				NetworkHelper.ReceiveProgrammeCollectionChange( networkObject )
+				if inGame then NetworkHelper.ReceiveProgrammeCollectionChange( networkObject )
 		case NET_STATIONMAPCHANGE
-				NetworkHelper.ReceiveStationmapChange( networkObject )
+				if inGame then NetworkHelper.ReceiveStationmapChange( networkObject )
 
 		case NET_PROGRAMMEPLAN_CHANGE
-				NetworkHelper.ReceiveProgrammePlanChange(networkObject)
+				if inGame then NetworkHelper.ReceiveProgrammePlanChange(networkObject)
 		case NET_PLAN_SETNEWS
-				NetworkHelper.ReceivePlanSetNews( networkObject )
+				if inGame then NetworkHelper.ReceivePlanSetNews( networkObject )
 
 		default
 				if networkObject.evType>=100
-					print "client got unused event:" + networkObject.evType
+					TLogger.Log("Network.ClientEventHandler", "got unused event: "+networkObject.evType+".", LOG_DEBUG | LOG_NETWORK)
 				endif
 	EndSelect
 
 End Function
+
+
 
 
 '=== EVENTS FROM INFO CHANNEL ===
@@ -299,10 +307,10 @@ Type TNetworkHelper
 					endif
 
 			case "programmecollection.addprogrammelicencetosuitcase"
-					local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().get("programme"))
+					local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().get("programmeLicence"))
 					NetworkHelper.SendProgrammeCollectionProgrammeLicenceChange(owner, licence, NET_TOSUITCASE)
 			case "programmecollection.removeprogrammelicencefromsuitcase"
-					local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().get("programme"))
+					local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().get("programmeLicence"))
 					NetworkHelper.SendProgrammeCollectionProgrammeLicenceChange(owner, licence, NET_FROMSUITCASE)
 
 			case "programmecollection.removeadcontract"
@@ -516,8 +524,28 @@ Type TNetworkHelper
 	End Method
 
 
+	Method SendPrepareGame()
+		print "[NET] inform all to switch gamestate"
+		Network.BroadcastNetworkObject( TNetworkObject.Create( NET_PREPAREGAME ), NET_PACKET_RELIABLE )
+	End Method
+	
+
+	Method SendStartGame()
+		local allReady:int = 1
+		for local otherclient:TNetworkclient = eachin Network.server.clients
+			if not GetPlayerCollection().Get(otherclient.playerID).networkstate then allReady = false
+		Next
+		if allReady
+			'send game start - maybe wait for "receive" too
+			Game.startNetworkGame = 1
+			print "[NET] allReady so send game start to all others"
+			Network.BroadcastNetworkObject( TNetworkObject.Create( NET_STARTGAME ), NET_PACKET_RELIABLE )
+			return
+		endif
+	End Method
 
 'checked
+	'ask players if they are ready to start a game
 	Method SendGameReady(playerID:Int, onlyTo:Int=-1)
 		local obj:TNetworkObject = TNetworkObject.Create( NET_GAMEREADY )
 		obj.setInt(1, playerID)
@@ -531,50 +559,19 @@ Type TNetworkHelper
 			if GetPlayerCollection().Get(i).figure.controlledByID = 0 then GetPlayerCollection().Get(i).networkstate = 1
 		Next
 
-		if Network.isServer
-
-			local allReady:int = 1
-			for local otherclient:TNetworkclient = eachin Network.server.clients
-				if not GetPlayerCollection().Get(otherclient.playerID).networkstate then allReady = false
-			Next
-			if allReady
-				'send game start
-				Game.networkgameready = 1
-				print "[NET] allReady so send game start to all others"
-				Network.BroadcastNetworkObject( TNetworkObject.Create( NET_STARTGAME ), NET_PACKET_RELIABLE )
-				return
-			endif
-		endif
+		if Network.isServer then SendStartGame()
 	End Method
 
+	'server asks me if i am ready to start the game
 	Method ReceiveGameReady( obj:TNetworkObject )
-print "[NET] ReceiveGameReady"
+		print "[NET] ReceiveGameReady"
+
+		'set remote player as ready
 		local remotePlayerID:int = obj.getInt(1)
 		GetPlayerCollection().Get(remotePlayerID).networkstate = 1
 
-		'all players have their start programme?
-		local allReady:int = 1
-		local player:TPlayer
-		for local i:int = 1 to 4
-			player = GetPlayerCollection().Get(i)
-			if player.GetProgrammeCollection().GetMovieLicenceCount() < GameRules.startMovieAmount
-				print "movie missing player("+i+") " + player.GetProgrammeCollection().GetMovieLicenceCount() + " < " + GameRules.startMovieAmount
-				allReady = false
-				exit
-			endif
-			if player.GetProgrammeCollection().GetSeriesLicenceCount() < GameRules.startSeriesAmount
-				print "serie missing player("+i+") " + player.GetProgrammeCollection().GetSeriesLicenceCount() + " < " + GameRules.startSeriesAmount
-				allReady = false
-				exit
-			endif
-			if player.GetProgrammeCollection().GetAdContractCount() < GameRules.startAdAmount
-				print "ad missing player("+i+") " + player.GetProgrammeCollection().GetAdContractCount() + " < " + GameRules.startAdAmount
-				allReady = false
-				exit
-			endif
-		Next
-		if allReady and Game.GAMESTATE <> TGame.STATE_RUNNING
-			SendGameReady( GetPlayerCollection().playerID, 0)
+		if Game.GAMESTATE <> TGame.STATE_RUNNING
+			SendGameReady( GetPlayerCollection().playerID, 0 )
 		endif
 	End Method
 
@@ -699,7 +696,21 @@ print "[NET] ReceiveGameReady"
 		local radius:int		= obj.getInt(5)
 		if not GetPlayerCollection().IsPlayer(playerID) then return FALSE
 
-		local station:TStation	= GetStationMapCollection().GetMap(playerID).getStation(pos.x, pos.y)
+rem
+		local station:TStation
+		if GetStationMapCollection()
+			print "mapcoll ok"
+			if GetStationMapCollection().GetMap(playerID)
+				print "map ok"
+				if GetStationMapCollection().GetMap(playerID).getStation(pos.x, pos.y)
+					station = GetStationMapCollection().GetMap(playerID).getStation(pos.x, pos.y)
+					print "station ok"
+				endif
+			endif
+		endif
+		if not station then return False
+endrem
+		local station:TStation	= GetStationMapCollection().GetMap(playerID, True).getStation(pos.x, pos.y)
 
 		'disable events - ignore it to avoid recursion
 		TStationMap.fireEvents = FALSE
@@ -707,7 +718,7 @@ print "[NET] ReceiveGameReady"
 		select action
 			case NET_ADD
 					'create the station if not existing
-					if not station then TStation.Create(pos,-1, radius, playerID)
+					if not station then station = TStation.Create(pos,-1, radius, playerID)
 
 					GetStationMapCollection().GetMap(playerID).AddStation( station, FALSE )
 					print "[NET] StationMap player "+playerID+" - add station "+station.pos.GetIntX()+","+station.pos.GetIntY()
@@ -727,6 +738,7 @@ print "[NET] ReceiveGameReady"
 	Method SendProgrammeCollectionProgrammeLicenceChange(playerID:int= -1, licence:TProgrammeLicence, action:int=0)
 		self.SendProgrammeCollectionChange(playerID, 1, licence.id, action)
 	End Method
+	
 	Method SendProgrammeCollectionContractChange(playerID:int= -1, contract:TAdContract, action:int=0)
 		local id:int = contract.id
 		'when adding a new contract, we do not send the contract id

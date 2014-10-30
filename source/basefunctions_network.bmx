@@ -1305,8 +1305,8 @@ Type TNetworkObject
 				Case NET_TYPE_UINT16    size:+3
 				Case NET_TYPE_FLOAT16   size:+3
 				Case NET_TYPE_FLOAT32   size:+5
-				Case NET_TYPE_DOUBLE    size:+3+GetString(index).length
-				Case NET_TYPE_LONG	    size:+3+GetString(index).length
+				Case NET_TYPE_DOUBLE    size:+3+String(GetDouble(index)).length
+				Case NET_TYPE_LONG	    size:+3+String(GetLong(index)).length
 				Case NET_TYPE_STRING    size:+3+GetString(index).length
 			End Select
 		Next

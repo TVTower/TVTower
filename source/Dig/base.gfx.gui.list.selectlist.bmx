@@ -151,7 +151,7 @@ Type TGUISelectListItem Extends TGUIListItem
 	End Method
 
 	
-	Method Draw:Int()
+	Method Draw()
 		local upperParent:TGUIObject = GetUppermostParent()
 		upperParent.RestrictViewPort()
 

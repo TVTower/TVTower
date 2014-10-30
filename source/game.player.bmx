@@ -134,10 +134,8 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 
 
 	Method GetStationMap:TStationMap() {_exposeToLua}
-		'fetch from StationMap-list
-		local map:TStationMap = GetStationMapCollection().GetMap(playerID)
-		'still not existing - create it
-		if not map then map = TStationMap.Create(self.playerID)
+		'fetch from StationMap-list - or create if missing
+		local map:TStationMap = GetStationMapCollection().GetMap(playerID, True)
 		return map
 	End Method
 

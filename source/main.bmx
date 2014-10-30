@@ -1962,7 +1962,10 @@ Type TScreen_GameSettings Extends TGameScreen
 						guiAnnounce.SetChecked(False)
 						Network.StopAnnouncing()
 					EndIf
+					'set self into preparation state
 					Game.SetGamestate(TGame.STATE_PREPAREGAMESTART)
+					'demand others to do the same
+					NetworkHelper.SendPrepareGame()
 
 			Case guiButtonBack
 					If Game.networkgame
@@ -2367,29 +2370,40 @@ Type TScreen_NetworkLobby Extends TGameScreen
 	End Method
 
 
+	Method GetOnlineIP:int()
+		Local Onlinestream:TStream	= ReadStream("http::www.tvgigant.de/lobby/lobby.php?action=MyIP")
+		Local timeouttimer:Int		= MilliSecs()+5000 '5 seconds okay?
+		Local timeout:Byte			= False
+		If Not Onlinestream Then Throw ("Not Online?")
+		While Not Eof(Onlinestream) Or timeout
+			If timeouttimer < MilliSecs() Then timeout = True
+			Local responsestring:String = ReadLine(Onlinestream)
+			Local responseArray:String[] = responsestring.split("|")
+			If responseArray <> Null
+				Network.OnlineIP = responseArray[0]
+				Network.intOnlineIP = HostIp(Network.OnlineIP)
+				Print "[NET] set your onlineIP: "+responseArray[0]
+			EndIf
+		Wend
+		CloseStream Onlinestream
+	End Method
+
+
 	'override default update
 	Method Update:Int(deltaTime:Float)
 		'register for events if not done yet
 		NetworkHelper.RegisterEventListeners()
 
+		if guiGameList.GetSelectedEntry()
+			guiButtonJoin.enable()
+		else
+			guiButtonJoin.disable()
+		endif
+
 		If Game.onlinegame
-			If Network.OnlineIP = ""
-				Local Onlinestream:TStream	= ReadStream("http::www.tvgigant.de/lobby/lobby.php?action=MyIP")
-				Local timeouttimer:Int		= MilliSecs()+5000 '5 seconds okay?
-				Local timeout:Byte			= False
-				If Not Onlinestream Then Throw ("Not Online?")
-				While Not Eof(Onlinestream) Or timeout
-					If timeouttimer < MilliSecs() Then timeout = True
-					Local responsestring:String = ReadLine(Onlinestream)
-					Local responseArray:String[] = responsestring.split("|")
-					If responseArray <> Null
-						Network.OnlineIP = responseArray[0]
-						Network.intOnlineIP = HostIp(Network.OnlineIP)
-						Print "set your onlineIP: "+responseArray[0]
-					EndIf
-				Wend
-				CloseStream Onlinestream
-			Else
+			If Network.OnlineIP = "" then GetOnlineIP()
+
+			If Network.OnlineIP
 				If Network.LastOnlineRequestTimer + Network.LastOnlineRequestTime < MilliSecs()
 	'TODO: [ron] rewrite handling
 					Network.LastOnlineRequestTimer = MilliSecs()
@@ -2413,7 +2427,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 							Local _hostPort:Int		= Int(responseArray[3])
 
 							guiGamelist.addItem( New TGUIGameEntry.CreateSimple(_hostIP, _hostPort, _hostName, gameTitle, slotsUsed, slotsMax) )
-							Print "added "+gameTitle
+							Print "[NET] added "+gameTitle
 						EndIf
 					Wend
 					CloseStream Onlinestream
@@ -2442,7 +2456,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 	'was "startGame()" called already?
 	Field startGameCalled:Int = False
 	'was "prepareGame()" called already?
-'	Field prepareGameCalled:Int = False
+	Field prepareGameCalled:Int = False
 	'was "SpreadConfiguration()" called already?
 	Field spreadConfigurationCalled:Int = False
 	'was "SpreadStartData()" called already?
@@ -2479,13 +2493,13 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		If Game.networkgame
 			GetBitmapFontManager().baseFont.draw(GetLocale("SYNCHRONIZING_START_CONDITIONS")+"...", messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
 			messageDY :+ 20
+			local allReady:int = True
 			For Local i:Int = 1 To 4
-				GetBitmapFontManager().baseFont.draw(GetLocale("PLAYER")+" "+i+"..."+GetPlayerCollection().Get(i).networkstate+" MovieListCount: "+GetPlayerCollection().Get(i).GetProgrammeCollection().GetProgrammeLicenceCount(), messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
+				if not GetPlayerCollection().Get(i).networkstate then allReady = False
+				GetBitmapFontManager().baseFont.draw(GetLocale("PLAYER")+" "+i+"..."+GetPlayerCollection().Get(i).networkstate, messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
 				messageDY :+ 20
 			Next
-			If Not Game.networkgameready = 1
-				GetBitmapFontManager().baseFont.draw("not ready!!", messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
-			EndIf
+			If Not allReady then GetBitmapFontManager().baseFont.draw("not ready!!", messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
 		Else
 			GetBitmapFontManager().baseFont.draw(GetLocale("PREPARING_START_DATA")+"...", messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
 		EndIf
@@ -2533,11 +2547,8 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		'=== STEPS ===
 		'MP = MultiPlayer, SP = SinglePlayer, ALL = all modes
 		'1. MP:  Spread configuration (database / name)
-'no longer needed
-		'2. ALL: Prepare game (load database, color figures)
-'
-		'3. MP:  Check if ready to start game
-		'4. ALL: Start game (if ready)
+		'2. MP:  Check if ready to start game
+		'3. ALL: Start game (if ready)
 
 
 		'=== STEP 1 ===
@@ -2548,17 +2559,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		EndIf
 
 
-rem
-	do not prepare as things might have to get prepared "FIRST" (first game start)
 		'=== STEP 2 ===
-		If Not prepareGameCalled
-			Game.PrepareStart()
-			StartMultiplayerSyncStarted = Time.GetTimeGone()
-			prepareGameCalled = True
-		EndIf
-endrem
-
-		'=== STEP 3 ===
 		If game.networkGame
 			'ask other players if they are ready (ask every 500ms)
 			If Game.isGameLeader() And SendGameReadyTimer < Time.GetTimeGone()
@@ -2567,7 +2568,7 @@ endrem
 			EndIf
 			'go back to game settings if something takes longer than expected
 			If Time.GetTimeGone() - StartMultiplayerSyncStarted > 10000
-				Print "sync timeout"
+				Print "[NET] sync timeout"
 				StartMultiplayerSyncStarted = 0
 				game.SetGamestate(TGame.STATE_SETTINGSMENU)
 				Return False
@@ -2577,22 +2578,24 @@ endrem
 		If Not startGameCalled
 			'singleplayer games can always start
 			If Not Game.networkGame
-'				if Time.GetTimeGone() - wait > 5000
-					canStartGame = True
-'				endif
+				canStartGame = True
 			'multiplayer games can start if all players are ready
 			Else
-				If Game.networkgameready = 1
+				print "game not started..."
+				If Game.startNetworkGame
 					ScreenGameSettings.guiAnnounce.SetChecked(False)
 					GetPlayerCollection().Get().networkstate = 1
 					canStartGame = True
+					'reset flag, no longer needed
+					Game.startNetworkGame = False
 				EndIf
 			EndIf
 		EndIf
 		
 
-		'=== STEP 4 ===
+		'=== STEP 3 ===
 		If canStartGame And Not startGameCalled
+			if Game.networkGame then print "[NET] StartNewGame"
 			'register events and start game
 			Game.StartNewGame()
 			'reset randomizer
