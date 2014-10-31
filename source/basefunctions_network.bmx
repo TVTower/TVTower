@@ -100,7 +100,7 @@ Type TNetworkClient extends TNetworkConnection
 	Field server:TNetworkServer
 	Field link:TLink
 	Field playerID:int =-1
-	Field playerName:string	= ""
+	Field playerName:string	= "playerName"
 
 	Field callback(client:TNetworkClient,evType:Int,networkObject:TNetworkObject)
 	Field latency:Int
@@ -275,7 +275,7 @@ Type TNetworkClient extends TNetworkConnection
 
 					Self.connected	= 1
 					local obj:TNetworkObject = TNetworkObject.Create(NET_JOINREQUEST )
-					obj.setString(1,"Name")
+					obj.setString(1, playerName)
 					self.Send(obj)
 				endif
 				
@@ -314,65 +314,6 @@ Type TNetworkClient extends TNetworkConnection
 		local obj:TNetworkObject = TNetworkObject.Create(NET_PINGREQUEST)
 		obj.setInt(1, Time.GetTimeGone())
 		Return Send(obj)
-rem
-		Const disconnecttimeout:Int=1000
-		Local packet:TNetworkPacket=New TNetworkPacket,addr:Byte Ptr,eneTNetworkPacket:Byte Ptr,ev:EnetEvent,result:Int,id:Int,start:Int
-
-		'ping local ?
-		If self.ip=ip And self.port=port then ip=0
-
-		If Not enethost then RuntimeError("Can't ping remote client.")
-		If ip > 0
-			If pingpeer
-				enet_peer_disconnect(pingpeer)
-				pingpeer=Null
-			EndIf
-
-			ev		= New EnetEvent
-			addr	= enet_address_create(ip,port)
-			pingpeer= enet_host_connect(enethost,addr,1)
-			enet_address_destroy(addr)
-			If pingpeer
-				start = Time.GetTimeGone()
-				Repeat
-					If Time.GetTimeGone() - start > disconnecttimeout
-						enet_peer_disconnect(pingpeer)
-						pingpeer=Null
-						'Print "Connect timeout"
-						Return 0
-					EndIf
-					If enet_host_service(enethost,ev,0)
-						id=ConvertEvent(ev,packet)
-						if id = NET_CONNECT then exit
-					EndIf
-				Forever
-				local obj:TNetworkObject = CreateNetworkObject(NET_PINGREQUEST)
-				obj.setInt(1, Time.GetTimeGone() )
-
-				packet = obj.ToPacket()
-				If packet
-					Local data:Byte[] = New Byte[packet._bank.size()]
-					MemCopy(Varptr data[0],packet._bank.buf(),packet._bank.size())
-					eneTNetworkPacket=enet_packet_create(data,data.length,0)
-					If enet_peer_send(pingpeer,0,eneTNetworkPacket)=0
-						Return 1
-					Else
-						enet_peer_disconnect(pingpeer)
-						pingpeer=Null
-						'Print "can't send packet"
-						Return 0
-					EndIf
-				endif
-			Else
-				'Print "Cant connect to peer at "+ip+", "+port
-				Return 0
-			EndIf
-		Else
-			local response:TNetworkObject = CreateNetworkObject(NET_PINGREQUEST)
-			response.setInt(1, Time.GetTimeGone())
-			Return Send(response)
-		EndIf
-endrem
 	End Method
 End Type
 
@@ -505,7 +446,8 @@ Type TNetworkServer Extends TNetworkConnection
 					clientmap.insert(client.name,client)
 					clients.AddLast(client)
 					client.playerID = clients.count()
-					'answer the clients join request
+					'answer the clients join request, inform about the
+					'playerID the client has to assign
 					answer = TNetworkObject.Create(NET_JOINRESPONSE)
 					answer.setInt(1, 1)
 					answer.setInt(2, clients.count()) 'change to GetSlot() or so
@@ -785,9 +727,8 @@ Type TDigNetwork
 
 
 	Method DisconnectFromServer()
-		if not server then return
-		if not client then return
-		server.Disconnect(client) ' Disconnect
+		if server then server.Disconnect(client)
+		if client then client.Disconnect(True)
 	End Method
 
 

@@ -264,6 +264,8 @@ Type TProgrammePersonJob
 	Const JOB_DIRECTOR:int = 1
 	Const JOB_ACTOR:int = 2
 	Const JOB_WRITER:int = 4
+	Const JOB_MODERATOR:int = 8
+	Const JOB_MUSICIAN:int = 16
 
 
 	Method Init:TProgrammePersonJob(person:TProgrammePersonBase, job:int, characterName:string="")

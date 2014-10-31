@@ -11,7 +11,7 @@ Const NET_STARTGAME:Int					= 105	' SERVER: sends a StartFlag
 Const NET_CHATMESSAGE:Int				= 106	' ALL:    a sent chatmessage ;D
 Const NET_PLAYERDETAILS:Int				= 107	' ALL:    name, channelname...
 Const NET_FIGUREPOSITION:Int			= 108	' ALL:    x,y,room,target...
-Const NET_FIGURECHANGETARGET:Int		= 108	' ALL:    coordinates of the new target...
+Const NET_FIGURECHANGETARGET:Int		= 109	' ALL:    coordinates of the new target...
 Const NET_ELEVATORSYNCHRONIZE:Int		= 111	' SERVER: synchronizing the elevator
 Const NET_ELEVATORROUTECHANGE:Int		= 112	' ALL:    elevator routes have changed
 Const NET_NEWSSUBSCRIPTIONCHANGE:Int	= 113	' ALL:	  sends Changes in subscription levels of news-agencies
@@ -58,39 +58,47 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 		case NET_PLAYERJOINED
 			local playerID:int = NetworkObject.getInt(1)
 			local playerName:string	= NetworkObject.getString(2)
-			if GetPlayerCollection().IsPlayer(playerID)
-				GetPlayer(playerID).Figure.playerID = playerID
+			'skip invalid players
+			if not GetPlayer(playerID) then return
 
-				if GetPlayerCollection().playerID <> playerID
-					GetPlayer(playerID).SetRemoteHumanControlled(playerID)
-					print "set playerID " + playerID +" as remote human"
-				endif
+			'a package from a REMOTE player, not me
+			if GetPlayerCollection().playerID <> playerID
+				GetPlayer(playerID).SetRemoteHumanControlled(playerID)
+				print "set playerID " + playerID +" as remote human"
 			endif
 
 			'send others all important extra game data
 			local gameData:TNetworkObject = TNetworkObject.Create( NET_GAMESETTINGS )
 			gameData.setInt(1, GetPlayerCollection().playerID)
 			gameData.setInt(2, Game.GetRandomizerBase() )
+			'TODO: add game settings/rules
 			Network.BroadcastNetworkObject( gameData, NET_PACKET_RELIABLE )
 
 
 		case NET_JOINRESPONSE
-			if not Network.client.joined then return
+			'=== ONLY CLIENTS ===
 			if Network.isServer then return
+			if not Network.client.joined then return
+
 			'we are not the gamemaster and got a playerID
 			local joined:int = NetworkObject.getInt(1)
 			local playerID:int = NetworkObject.getInt(2)
-			if GetPlayerCollection().IsPlayer(playerID)
+			if GetPlayer(playerID)
 				GetPlayerCollection().playerID = playerID
 				Network.client.playerID = playerID
+				GetPlayerCollection().Get(playerID).SetLocalHumanControlled()
+
+				TLogger.Log("Network.ClientEventHandler", "got join response. Server requested to to set playerID to "+playerID, LOG_DEBUG | LOG_NETWORK)
+			else
+				TLogger.Log("Network.ClientEventHandler", "got join response. Server request contained invalid playerID ~q"+playerID+"~q", LOG_DEBUG | LOG_NETWORK)
 			endif
-			TLogger.Log("Network.ClientEventHandler", "got join response. Set my playerID to "+playerID, LOG_DEBUG | LOG_NETWORK)
 
 
 		case NET_GAMESETTINGS
-			if not Network.client.joined then return
+			'=== ONLY CLIENTS ===
 			if Network.isServer then return
-			'we are not the gamemaster and got a playerID
+			if not Network.client.joined then return
+			
 			local hostPlayerID:int = NetworkObject.getInt(1)
 			local randomSeedValue:int = NetworkObject.getInt(2)
 			Game.SetRandomizerBase( randomSeedValue )
@@ -119,10 +127,8 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 		case NET_FIGURECHANGETARGET
 				if inGame then NetworkHelper.ReceiveFigureChangeTarget( networkObject )
 
-
-'untested
 		case NET_CHATMESSAGE
-				NetworkHelper.ReceiveChatMessage( networkObject )
+			NetworkHelper.ReceiveChatMessage( networkObject )
 
 		'not working yet
 		case NET_ELEVATORROUTECHANGE
@@ -306,7 +312,6 @@ Type TNetworkHelper
 		local x:int = triggerEvent.GetData().GetInt("x", 0)
 		local y:int = triggerEvent.GetData().GetInt("y", 0)
 		local forceChange:int = triggerEvent.GetData().GetInt("forceChange", 0)
-print "NET: sendFigureChangetarget"
 		NetworkHelper.SendFigureChangeTarget(figure, x, y, forceChange)
 	End Function
 
@@ -413,34 +418,65 @@ print "NET: sendFigureChangetarget"
 
 				local obj:TNetworkObject = TNetworkObject.Create( NET_PLAYERDETAILS )
 				obj.SetInt(	1, player.playerID )
-				obj.SetString( 2, Player.name )			'name
-				obj.SetString( 3, Player.channelname )	'...
+				obj.SetString( 2, Player.name )
+				obj.SetString( 3, Player.channelname )
 				obj.SetInt(	4, Player.color.toInt() )
 				obj.SetInt(	5, Player.figurebase )
-				obj.SetInt(	6, Player.figure.playerID )
-
+				obj.SetInt(	6, Player.playerType )
+				obj.SetInt(	7, Player.playerControlledByID )
+				
 				Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
 			EndIf
 		Next
 	End Method
 
 	Method ReceivePlayerDetails( obj:TNetworkObject )
-		Local playerID:Int			= obj.getInt(1)
-		local player:TPlayer		= GetPlayerCollection().Get(playerID)
-		if player = null then return
+		Local playerID:Int = obj.getInt(1)
+		local player:TPlayer = GetPlayer(playerID)
+		if not player then return
 
-		Local name:string			= obj.getString(2)
-		Local channelName:string	= obj.getString(3)
-		Local color:int				= obj.getInt(4)
-		Local figureBase:int		= obj.getInt(5)
-		Local figurePlayerID:int	= obj.getInt(6)
+		Local name:string = obj.getString(2)
+		Local channelName:string = obj.getString(3)
+		Local color:int	= obj.getInt(4)
+		Local figureBase:int = obj.getInt(5)
+		Local playerType:int = obj.getInt(6)
+		Local playerControlledByID:int = obj.getInt(7)
 
-		If figureBase <> player.figurebase Then player.UpdateFigureBase(figureBase)
-		If player.color.toInt() <> color
-			player.color.fromInt(color)
-			player.RecolorFigure()
-		EndIf
-		If playerID <> GetPlayerCollection().playerID
+		'=== ADJUST PLAYER TYPE ===
+		'do not adjust data for our very own player
+		if playerID <> GetPlayerCollection().playerID
+			Select playerType
+				case TPlayer.PLAYERTYPE_REMOTE_AI
+					'if the player is AI, check if we control it
+					if playerControlledByID = GetPlayerCollection().playerID
+						player.SetLocalAIControlled()
+					endif
+				case TPlayer.PLAYERTYPE_LOCAL_AI
+					'this means, it is local to the game leader
+					player.SetRemoteAIControlled(playerControlledByID)
+				case TPlayer.PLAYERTYPE_LOCAL_HUMAN
+					'this means, it is local to the game leader
+					player.SetRemoteHumanControlled(playerControlledByID)
+				case TPlayer.PLAYERTYPE_REMOTE_HUMAN
+					'if the player is AI, check if we control it
+					if playerControlledByID = GetPlayerCollection().playerID
+						player.SetLocalHumanControlled()
+					endif
+			End Select
+		endif
+		
+		'=== REFRESH PLAYER DATA ===
+		'only refresh for players we do not control
+		If playerControlledByID <> GetPlayerCollection().playerID 
+			If figureBase <> player.figurebase
+				player.UpdateFigureBase(figureBase)
+			endif
+			
+			If player.color.toInt() <> color
+				player.color.fromInt(color)
+				player.RecolorFigure()
+			EndIf
+
 			player.name = name
 			player.channelname = channelName
 			local screen:TScreen_GameSettings = TScreen_GameSettings(ScreenCollection.GetScreen("GameSettings"))
@@ -526,8 +562,8 @@ print "NET: sendFigureChangetarget"
 			obj.SetInt( 4, y )
 			obj.SetInt( 5, forceChange )
 		endif
+		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
 	End Method
-
 
 	Method ReceiveFigureChangeTarget( obj:TNetworkObject )
 		Local figureID:Int = obj.getInt(1)
@@ -538,7 +574,6 @@ print "NET: sendFigureChangetarget"
 		local posX:Int = obj.getInt( 3, -1 )
 		local posY:Int = obj.getInt( 4, -1 )
 		local forceChange:Int = obj.getInt( 5,  0 )
-
 		if add
 			figure._changeTarget(posX, posY, forceChange)
 		else

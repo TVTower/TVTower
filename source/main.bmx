@@ -1974,7 +1974,13 @@ Type TScreen_GameSettings Extends TGameScreen
 
 			Case guiButtonBack
 					If Game.networkgame
-						If Game.networkgame Then Network.DisconnectFromServer()
+						If Game.networkgame
+							if Network.isServer
+								Network.DisconnectFromServer()
+							else
+								Network.client.Disconnect()
+							endif
+						endif
 						GetPlayerCollection().playerID = 1
 						GetPlayerBossCollection().playerID = 1
 						Game.SetGamestate(TGame.STATE_NETWORKLOBBY)
@@ -2066,9 +2072,9 @@ Type TScreen_GameSettings Extends TGameScreen
 		GUIManager.Draw(name, 0, 100)
 
 		Local slotPos:TVec2D = New TVec2D.Init(guiPlayersPanel.GetContentScreenX(),guiPlayersPanel.GetContentScreeny())
-		For Local i:Int = 0 To 3
+		For Local i:Int = 1 To 4
 			'draw colors
-			Local colorRect:TRectangle = New TRectangle.Init(slotPos.GetIntX()+2, Int(guiChannelNames[i].GetContentScreenY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
+			Local colorRect:TRectangle = New TRectangle.Init(slotPos.GetIntX()+2, Int(guiChannelNames[i-1].GetContentScreenY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
 			For Local obj:TColor = EachIn TColor.List
 				If obj.ownerID = 0
 					colorRect.position.AddXY(colorRect.GetW(), 0)
@@ -2079,8 +2085,24 @@ Type TScreen_GameSettings Extends TGameScreen
 
 			'draw player figure
 			SetColor 255,255,255
-			GetPlayerCollection().Get(i+1).Figure.Sprite.Draw(Int(slotPos.GetX() + playerBoxDimension.GetX()/2 - GetPlayerCollection().Get(1).Figure.Sprite.framew / 2), Int(colorRect.GetY() - GetPlayerCollection().Get(1).Figure.Sprite.area.GetH()), 8)
+			GetPlayer(i).Figure.Sprite.Draw(Int(slotPos.GetX() + playerBoxDimension.GetX()/2 - GetPlayerCollection().Get(1).Figure.Sprite.framew / 2), Int(colorRect.GetY() - GetPlayerCollection().Get(1).Figure.Sprite.area.GetH()), 8)
 
+			if Game.networkgame
+				local hintX:int = Int(slotPos.GetX()) + 12
+				local hintY:int = int(guiPlayersPanel.GetContentScreeny())+40
+				local hint:string = "undefined playerType"
+				if GetPlayer(i).IsRemoteHuman()
+					hint = "remote player"
+				elseif GetPlayer(i).IsRemoteAI()
+					hint = "remote AI"
+				elseif GetPlayer(i).IsLocalAI()
+					hint = "local AI"
+				elseif GetPlayer(i).IsLocalHuman()
+					hint = "local player"
+				endif
+				GetBitMapFontManager().Get("default", 10).Draw(hint, hintX, hintY, TColor.CreateGrey(100))
+			endif
+			
 			'move to next slot position
 			slotPos.AddXY(playerSlotGap + playerBoxDimension.GetX(), 0)
 		Next
