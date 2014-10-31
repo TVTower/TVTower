@@ -280,7 +280,6 @@ Type TNetworkClient extends TNetworkConnection
 				endif
 				
 			Case NET_JOINRESPONSE
-				TLogger.Log("Network.EvaluateEvent()", "Got join response.", LOG_DEBUG | LOG_NETWORK)
 				'got join - if ok then also set playerID
 				joined = response.getInt(1)
 				local playerID:int = response.getInt(2)
@@ -289,6 +288,7 @@ Type TNetworkClient extends TNetworkConnection
 				else
 					self.playerID = Max(0,playerID)
 				endif
+				TLogger.Log("Network.EvaluateEvent()", "Got join response. Set playerID to " +self.playerID, LOG_DEBUG | LOG_NETWORK)
 				
 			Case NET_PINGREQUEST
 				'change ev type from ping request to response

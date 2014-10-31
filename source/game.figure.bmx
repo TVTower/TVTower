@@ -114,7 +114,7 @@ Type TFigure extends TFigureBase
 	Field useAbsolutePosition:int = FALSE
 
 
-	Method Create:TFigure(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int, ControlledByID:Int = -1)
+	Method Create:TFigure(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int)
 		'adjust sprite animations
 
 		SetSprite(sprite)
@@ -128,8 +128,6 @@ Type TFigure extends TFigureBase
 		area = new TRectangle.Init(x, TBuildingBase.GetFloorY2(onFloor), sprite.framew, sprite.frameh )
 		velocity.SetX(0)
 		initialdx = abs(speed)
-
-		Self.ControlledByID	= ControlledByID
 
 		GetFigureCollection().Add(self)
 
@@ -196,23 +194,15 @@ Type TFigure extends TFigureBase
 	End Method
 
 
-
-	Method IsAI:Int()
-		'controlled by nobody - or AI player 
-		If ControlledByID = 0 or IsAIPlayer() Then Return True
-		Return False
-	End Method
-
-
-	Method IsAIPlayer:Int()
+	Method IsLocalAIPlayer:Int()
 		if playerID <= 0 then return False
-		'checks if the figure is connected to an ai player
-		return GetPlayer(playerID) and GetPlayer(playerID).IsAI()
+		return GetPlayer(playerID) and GetPlayer(playerID).IsLocalAI()
 	End Method
 
 
 	Method IsActivePlayer:Int()
-		return (playerID = GetPlayerCollection().playerID)
+		if playerID <= 0 then return False
+		return GetPlayer(playerID) and GetPlayer(playerID).IsLocalHuman()
 	End Method
 
 
@@ -483,7 +473,7 @@ Type TFigure extends TFigureBase
 
 		rem
 	 	'inform AI that we are now in a room
-	 	If isAIPlayer()
+	 	If isLocalAIPlayer()
 			If room
 				GetPlayer(playerID).PlayerKI.CallOnSetInRoom(room.id)
 			Else
@@ -542,7 +532,7 @@ Type TFigure extends TFigureBase
 		'room for now
 		if room.IsBlocked()
 			'inform player AI
-			If isAIPlayer() then GetPlayer(playerID).PlayerKI.CallOnBeginEnterRoom(room.id, LuaFunctions.RESULT_NOTALLOWED)
+			If isLocalAIPlayer() then GetPlayer(playerID).PlayerAI.CallOnBeginEnterRoom(room.id, LuaFunctions.RESULT_NOTALLOWED)
 			'tooltip only for active user
 			If isActivePlayer() then GetBuilding().CreateRoomBlockedTooltip(door, room)
 
@@ -555,7 +545,7 @@ Type TFigure extends TFigureBase
 				'only player-figures need such handling (events etc.)
 				If playerID and not playerID = room.owner
 					'inform player AI
-					If isAIPlayer() then GetPlayer(playerID).PlayerKI.CallOnBeginEnterRoom(room.id, LuaFunctions.RESULT_INUSE)
+					If isLocalAIPlayer() then GetPlayer(playerID).PlayerAI.CallOnBeginEnterRoom(room.id, LuaFunctions.RESULT_INUSE)
 					'tooltip only for active user
 					If isActivePlayer() then GetBuilding().CreateRoomUsedTooltip(door, room)
 	
@@ -580,7 +570,7 @@ Type TFigure extends TFigureBase
 		currentAction = ACTION_ENTERING
 
 		'inform player AI
-		If isAIPlayer() then GetPlayer(playerID).PlayerKI.CallOnBeginEnterRoom(room.id, LuaFunctions.RESULT_OK)
+		If isLocalAIPlayer() then GetPlayer(playerID).PlayerAI.CallOnBeginEnterRoom(room.id, LuaFunctions.RESULT_OK)
 
 
 		'do not fade when it is a fake room
@@ -680,10 +670,10 @@ Type TFigure extends TFigureBase
 		EndIf
 
 		'inform player AI
-		If isAIPlayer()
+		If isLocalAIPlayer()
 			local roomID:int = 0
 			if room then roomID = room.id
-			GetPlayer(playerID).PlayerKI.CallOnLeaveRoom(roomID)
+			GetPlayer(playerID).PlayerAI.CallOnLeaveRoom(roomID)
 		endif
 
 		'enter target -> null = building
@@ -870,7 +860,7 @@ Type TFigure extends TFigureBase
 		If targetRoom and targetRoom <> inRoom Then LeaveRoom(forceChange)
 
 		'emit an event
-		EventManager.triggerEvent( TEventSimple.Create("figure.onChangeTarget", self ) )
+		EventManager.triggerEvent( TEventSimple.Create("figure.onChangeTarget", new TData.AddNumber("x", x).AddNumber("y", y).AddNumber("forceChange", forceChange), self, null ) )
 
 		return TRUE
 	End Method

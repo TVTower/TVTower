@@ -291,9 +291,9 @@ Type TGame {_exposeToLua="selected"}
 		'=== FIGURES ===
 		'set all non human players to AI
 		If Game.isGameLeader()
-			For Local playerids:Int = 1 To 4
-				If GetPlayerCollection().IsPlayer(playerids) And Not GetPlayerCollection().IsHuman(playerids)
-					GetPlayerCollection().Get(playerids).SetAIControlled("res/ai/DefaultAIPlayer.lua")
+			For Local id:Int = 1 To 4
+				If GetPlayer(id).IsLocalAI()
+					GetPlayer(id).InitAI("res/ai/DefaultAIPlayer.lua")
 				EndIf
 			Next
 		EndIf
@@ -320,13 +320,13 @@ Type TGame {_exposeToLua="selected"}
 		fig.SendToDoor(TRoomDoor.GetByDetails("supermarket",-1), True)
 
 		fig = GetFigureCollection().GetByName("Bote1")
-		if not fig then fig = New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), GameRules.offscreenX - 90, 0, 65, 0)
+		if not fig then fig = New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), GameRules.offscreenX - 90, 0, 65)
 		fig.MoveToOffscreen()
 		fig.SetParent(GetBuilding().buildingInner)
 		fig.SendToDoor(TRoomDoor.GetByDetails("boss", 1), True)
 
 		fig = GetFigureCollection().GetByName("Bote2")
-		if not fig then fig = New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), GameRules.offscreenX -60, 0, -65, 0)
+		if not fig then fig = New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), GameRules.offscreenX -60, 0, -65)
 		fig.MoveToOffscreen()
 		fig.SetParent(GetBuilding().buildingInner)
 		fig.SendToDoor(TRoomDoor.GetByDetails("boss", 3), True)
@@ -600,7 +600,7 @@ Type TGame {_exposeToLua="selected"}
 		TLogger.Log("TGame", "Start saving - inform AI.", LOG_DEBUG | LOG_SAVELOAD)
 		'inform player AI that we are saving now
 		For local player:TPlayer = eachin GetPlayerCollection().players
-			If player.isAI() then player.PlayerKI.CallOnSave()
+			If player.isLocalAI() then player.PlayerAI.CallOnSave()
 		Next
 	End Function
 
@@ -697,15 +697,20 @@ Type TGame {_exposeToLua="selected"}
 		'create players, draws playerfigures on figures-image
 		'TColor.GetByOwner -> get first unused color,
 		'TPlayer.Create sets owner of the color
-		SetPlayer(1, TPlayer.Create(1, userName, userChannelName, GetSpriteFromRegistry("Player1"),	150,  2, 90, TColor.getByOwner(0), 1, "Player 1"))
-		SetPlayer(2, TPlayer.Create(2, "Sandra", "SunTV", GetSpriteFromRegistry("Player2"),	180,  5, 90, TColor.getByOwner(0), 0, "Player 2"))
-		SetPlayer(3, TPlayer.Create(3, "Seidi", "FunTV", GetSpriteFromRegistry("Player3"),	140,  8, 90, TColor.getByOwner(0), 0, "Player 3"))
-		SetPlayer(4, TPlayer.Create(4, "Alfi", "RatTV", GetSpriteFromRegistry("Player4"),	190, 13, 90, TColor.getByOwner(0), 0, "Player 4"))
+		SetPlayer(1, TPlayer.Create(1, userName, userChannelName, GetSpriteFromRegistry("Player1"),	150,  2, 90, TColor.getByOwner(0), "Player 1"))
+		SetPlayer(2, TPlayer.Create(2, "Sandra", "SunTV", GetSpriteFromRegistry("Player2"),	180,  5, 90, TColor.getByOwner(0), "Player 2"))
+		SetPlayer(3, TPlayer.Create(3, "Seidi", "FunTV", GetSpriteFromRegistry("Player3"),	140,  8, 90, TColor.getByOwner(0), "Player 3"))
+		SetPlayer(4, TPlayer.Create(4, "Alfi", "RatTV", GetSpriteFromRegistry("Player4"),	190, 13, 90, TColor.getByOwner(0), "Player 4"))
 
 		'set different figures for other players
 		GetPlayer(2).UpdateFigureBase(9)
 		GetPlayer(3).UpdateFigureBase(2)
 		GetPlayer(4).UpdateFigureBase(6)
+
+		'by default all other players are "AI" and handled by local player
+		GetPlayer(2).SetLocalAIControlled()
+		GetPlayer(3).SetLocalAIControlled()
+		GetPlayer(4).SetLocalAIControlled()
 	End Method
 
 
@@ -716,6 +721,21 @@ Type TGame {_exposeToLua="selected"}
 
 	Method IsGameLeader:Int()
 		Return (Game.networkgame And Network.isServer) Or (Not Game.networkgame)
+	End Method
+
+
+	Method IsControllingPlayer:Int(playerID:int)
+		if not GetPlayer(playerID) then return False
+		
+		if not networkgame
+			return TRUE
+		else
+			'it's me
+			if GetPlayerCollection().isLocalPlayer(playerID) then return True
+			'it's an AI player and I am the master
+			if GetPlayer(playerID).IsLocalAI() and IsGameLeader() then return True
+			return False
+		endif 
 	End Method
 
 

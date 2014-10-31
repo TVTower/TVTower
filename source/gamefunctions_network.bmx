@@ -11,6 +11,7 @@ Const NET_STARTGAME:Int					= 105	' SERVER: sends a StartFlag
 Const NET_CHATMESSAGE:Int				= 106	' ALL:    a sent chatmessage ;D
 Const NET_PLAYERDETAILS:Int				= 107	' ALL:    name, channelname...
 Const NET_FIGUREPOSITION:Int			= 108	' ALL:    x,y,room,target...
+Const NET_FIGURECHANGETARGET:Int		= 108	' ALL:    coordinates of the new target...
 Const NET_ELEVATORSYNCHRONIZE:Int		= 111	' SERVER: synchronizing the elevator
 Const NET_ELEVATORROUTECHANGE:Int		= 112	' ALL:    elevator routes have changed
 Const NET_NEWSSUBSCRIPTIONCHANGE:Int	= 113	' ALL:	  sends Changes in subscription levels of news-agencies
@@ -58,7 +59,12 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 			local playerID:int = NetworkObject.getInt(1)
 			local playerName:string	= NetworkObject.getString(2)
 			if GetPlayerCollection().IsPlayer(playerID)
-				GetPlayerCollection().Get(playerID).Figure.ControlledByID = playerID
+				GetPlayer(playerID).Figure.playerID = playerID
+
+				if GetPlayerCollection().playerID <> playerID
+					GetPlayer(playerID).SetRemoteHumanControlled(playerID)
+					print "set playerID " + playerID +" as remote human"
+				endif
 			endif
 
 			'send others all important extra game data
@@ -78,7 +84,8 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 				GetPlayerCollection().playerID = playerID
 				Network.client.playerID = playerID
 			endif
-			TLogger.Log("Network.ClientEventHandler", "got join response.", LOG_DEBUG | LOG_NETWORK)
+			TLogger.Log("Network.ClientEventHandler", "got join response. Set my playerID to "+playerID, LOG_DEBUG | LOG_NETWORK)
+
 
 		case NET_GAMESETTINGS
 			if not Network.client.joined then return
@@ -108,6 +115,11 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 
 		case NET_FIGUREPOSITION
 				if inGame then NetworkHelper.ReceiveFigurePosition( networkObject )
+
+		case NET_FIGURECHANGETARGET
+				if inGame then NetworkHelper.ReceiveFigureChangeTarget( networkObject )
+
+
 'untested
 		case NET_CHATMESSAGE
 				NetworkHelper.ReceiveChatMessage( networkObject )
@@ -201,8 +213,9 @@ Type TNetworkHelper
 		'listen to events to refresh figure position 
 		EventManager.registerListenerFunction("figure.onSyncTimer", TNetworkHelper.onFigurePositionChanged)
 		EventManager.registerListenerFunction("figure.onReachTarget", TNetworkHelper.onFigurePositionChanged)
-		EventManager.registerListenerFunction("figure.onChangeTarget", TNetworkHelper.onFigurePositionChanged)
 		EventManager.registerListenerFunction("figure.onSetInRoom", TNetworkHelper.onFigurePositionChanged)
+		'as soon as a figure changes its target (add it to the "route")
+		EventManager.registerListenerFunction("figure.onChangeTarget", TNetworkHelper.onFigureChangeTarget)
 
 		'changes in movieagency
 		EventManager.registerListenerFunction("ProgrammeLicenceAuction.setBid", TNetworkHelper.onChangeMovieAgency)
@@ -240,7 +253,7 @@ Type TNetworkHelper
 		if slot < 0 then return 0
 
 		'ignore ai player's events if no gameleader
-		if not Game.isGameLeader() and GetPlayerCollection().Get(news.owner).isAi() then return false
+		if not Game.isGameLeader() and GetPlayer(news.owner).isLocalAi() then return false
 		'do not allow events from players for other players objects
 		if news.owner <> GetPlayerCollection().playerID and not Game.isGameLeader() then return FALSE
 
@@ -257,7 +270,7 @@ Type TNetworkHelper
 		if not station then return FALSE
 
 		'ignore ai player's events if no gameleader
-		if not Game.isGameLeader() and GetPlayerCollection().Get(station.owner).isAi() then return false
+		if not Game.isGameLeader() and GetPlayer(station.owner).isLocalAi() then return false
 		'do not allow events from players for other players objects
 		if station.owner <> GetPlayerCollection().playerID and not Game.isGameLeader() then return FALSE
 
@@ -278,13 +291,33 @@ Type TNetworkHelper
 	End Function
 
 
+	Function onFigureChangeTarget:int( triggerEvent:TEventBase )
+		local figure:TFigure = TFigure(triggerEvent.GetSender())
+		if not figure then return FALSE
+
+		'only send changes for figures WE control
+		local playerID:int = GetPlayerBaseCollection().playerID
+		'other player ?
+		if figure.playerID > 0 and figure.playerID <> playerID then return False
+		'other figures are controlled by GameLeader
+		if figure.playerID = 0 and not Game.IsGameLeader() then return False
+	
+
+		local x:int = triggerEvent.GetData().GetInt("x", 0)
+		local y:int = triggerEvent.GetData().GetInt("y", 0)
+		local forceChange:int = triggerEvent.GetData().GetInt("forceChange", 0)
+print "NET: sendFigureChangetarget"
+		NetworkHelper.SendFigureChangeTarget(figure, x, y, forceChange)
+	End Function
+
+
 	Function onChangeProgrammeCollection:int( triggerEvent:TEventBase )
 		local programmeCollection:TPlayerProgrammeCollection = TPlayerProgrammeCollection(triggerEvent._sender)
 		if not programmeCollection then return 0
 
 		local owner:int = programmeCollection.owner
 		'ignore ai player's events if no gameleader
-		if GetPlayerCollection().Get(owner).isAi() and not Game.isGameLeader() then return false
+		if GetPlayer(owner).isLocalAi() and not Game.isGameLeader() then return false
 		'do not allow events from players for other players objects
 		if owner <> GetPlayerCollection().playerID and not Game.isGameLeader() then return FALSE
 
@@ -375,7 +408,7 @@ Type TNetworkHelper
 
 		for local player:TPlayer = EachIn GetPlayerCollection().players
 			'it's me or i'm hosting and its an AI player
-			if player.playerID = Network.client.playerID OR (Network.isServer and Player.isAI())
+			if player.playerID = Network.client.playerID OR (Network.isServer and Player.isLocalAI())
 				'Print "[NET] send playerdetails of ME and IF I'm the host also from AI players"
 
 				local obj:TNetworkObject = TNetworkObject.Create( NET_PLAYERDETAILS )
@@ -384,7 +417,7 @@ Type TNetworkHelper
 				obj.SetString( 3, Player.channelname )	'...
 				obj.SetInt(	4, Player.color.toInt() )
 				obj.SetInt(	5, Player.figurebase )
-				obj.SetInt(	6, Player.figure.controlledByID )
+				obj.SetInt(	6, Player.figure.playerID )
 
 				Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
 			EndIf
@@ -400,7 +433,7 @@ Type TNetworkHelper
 		Local channelName:string	= obj.getString(3)
 		Local color:int				= obj.getInt(4)
 		Local figureBase:int		= obj.getInt(5)
-		Local controlledByID:int	= obj.getInt(6)
+		Local figurePlayerID:int	= obj.getInt(6)
 
 		If figureBase <> player.figurebase Then player.UpdateFigureBase(figureBase)
 		If player.color.toInt() <> color
@@ -413,7 +446,7 @@ Type TNetworkHelper
 			local screen:TScreen_GameSettings = TScreen_GameSettings(ScreenCollection.GetScreen("GameSettings"))
 			screen.guiPlayerNames[ playerID-1 ].value = name
 			screen.guiChannelNames[ playerID-1 ].value = channelName
-			player.figure.controlledByID = controlledByID
+			player.figure.playerID = playerID
 		EndIf
 	End Method
 
@@ -421,34 +454,16 @@ Type TNetworkHelper
 
 'checked
 	Method SendFigurePosition:int(figure:TFigure)
-		'no player figures can only be send from Master
+		'"not-player" figures can only be send from Master
 		if figure.playerID and not Network.isServer then return Null
 
 		local obj:TNetworkObject = TNetworkObject.Create( NET_FIGUREPOSITION )
 		obj.SetInt( 1, figure.id )		'playerID
 		obj.SetFloat( 2, figure.area.GetX() )	'position.x
 		obj.SetFloat( 3, figure.area.GetY() )	'...
-		local target:object = figure.GetTarget()
-		if not target
-			obj.SetInt( 4, 0 ) 'type = null
-			obj.SetFloat( 5, -1 )
-			obj.SetFloat( 6, -1 )
-		elseif TVec2D(target)
-			obj.SetInt( 4, 1 ) 'type = vec2d
-			obj.SetFloat( 5, TVec2D(target).x )
-			obj.SetFloat( 6, TVec2D(target).y )
-		elseif TRoomDoorBase(target)
-			obj.SetInt( 4, 2 ) 'type = roomdoorbase
-			obj.SetFloat( 5, TRoomDoorBase(target).id )
-			obj.SetFloat( 6, -1 )
-		elseif THotspot(target)
-			obj.SetInt( 4, 3 ) 'type = hotspot
-			obj.SetFloat( 5, THotspot(target).id )
-			obj.SetFloat( 6, -1 )
-		endif
-		if figure.inRoom then obj.setInt( 7, figure.inRoom.id)
-		if figure.fromRoom then obj.setInt( 8, figure.fromRoom.id)
-		if figure.fromDoor then obj.setInt( 9, figure.fromDoor.id)
+		if figure.inRoom then obj.setInt( 4, figure.inRoom.id)
+		if figure.fromRoom then obj.setInt( 5, figure.fromRoom.id)
+		if figure.fromDoor then obj.setInt( 6, figure.fromDoor.id)
 		Network.BroadcastNetworkObject( obj )
 	End Method
 	
@@ -460,13 +475,9 @@ Type TNetworkHelper
 
 		local posX:Float = obj.getFloat(2)
 		local posY:Float = obj.getFloat(3)
-		local targetType:int = obj.getInt(4)
-		local targetValue1:float = obj.getFloat(5)
-		local targetValue2:float = obj.getFloat(6)
-
-		local inRoomID:int = obj.getInt( 7, -1,TRUE)
-		local fromRoomID:int = obj.getInt( 8, -1,TRUE)
-		local fromDoorID:int = obj.getInt( 9, -1,TRUE)
+		local inRoomID:int = obj.getInt( 4, -1, TRUE )
+		local fromRoomID:int = obj.getInt( 5, -1, TRUE )
+		local fromDoorID:int = obj.getInt( 6, -1, TRUE )
 
 		If inRoomID <= 0 Then figure.inRoom = Null
 		If figure.inRoom
@@ -475,43 +486,18 @@ Type TNetworkHelper
 			EndIf
 		EndIf
 
-		REM
-			TODO
 
-			Maybe replace that whole thing with an network package
-			containing the "send"-event so it does not need to know
-			the target list
-
-			Select targetType
-				'null
-				case 0
-					'nothing
-				'tvec2d
-				case 1
-					figure.target
-
-				... 
-			if targetDoorID then figure.targetObj = GetRoomDoorBaseCollection().Get( targetDoorID )
-			if targetHotspotID then figure.targetObj = THotspot.Get( targetHotspotID )
-		endrem
-		local targetX:float = 0
-		local targetY:float = 0
-
-		if targetType = 1
-			local targetX:float = targetValue1
-			local targetY:float = targetValue2
-		endif
-
-		If not figure.IsInElevator()
-			'only set X if wrong floor or x differs > 10 pixels
-			if posY = targetY
-				if Abs(posX - targetX) > 10 then figure.area.position.setXY(posX,posY)
-			else
-				figure.area.position.setXY(posX,posY)
+		if figure.GetTarget()
+			If not figure.IsInElevator()
+				local targetPos:TVec2D = figure.GetTargetMoveToPosition()
+				'only set X if wrong floor or x differs > 10 pixels
+				if posY = targetPos.x
+					if Abs(posX - targetPos.x) > 10 then figure.area.position.setXY(posX, posY)
+				else
+					figure.area.position.setXY(posX, posY)
+				endif
 			endif
 		endif
-		'figure.target.setXY(targetX,targetY)
-
 		
 		
 		If fromRoomID <= 0 Then figure.fromRoom = Null
@@ -523,6 +509,43 @@ Type TNetworkHelper
 		EndIf
 	End Method
 
+
+	Method SendFigureChangeTarget:int(figure:TFigure, x:int, y:int, forceChange:int)
+		local obj:TNetworkObject = TNetworkObject.Create( NET_FIGURECHANGETARGET )
+		obj.SetInt( 1, figure.id )
+
+		'no target? send something so remote deletes potential targets too
+		if not figure.GetTarget()
+			obj.SetInt( 2,  0 )
+			obj.SetInt( 3, -1 )
+			obj.SetInt( 4, -1 )
+			obj.SetInt( 5,  0 )
+		else
+			obj.SetInt( 2, 1 )
+			obj.SetInt( 3, x )
+			obj.SetInt( 4, y )
+			obj.SetInt( 5, forceChange )
+		endif
+	End Method
+
+
+	Method ReceiveFigureChangeTarget( obj:TNetworkObject )
+		Local figureID:Int = obj.getInt(1)
+		local figure:TFigure = GetFigureCollection().Get( figureID )
+		if figure = null then return
+
+		local add:Int = obj.getInt( 2, 0 )
+		local posX:Int = obj.getInt( 3, -1 )
+		local posY:Int = obj.getInt( 4, -1 )
+		local forceChange:Int = obj.getInt( 5,  0 )
+
+		if add
+			figure._changeTarget(posX, posY, forceChange)
+		else
+			figure.ClearTargets()
+		endif
+	End Method
+	
 
 	Method SendPrepareGame()
 		print "[NET] inform all to switch gamestate"
@@ -556,7 +579,7 @@ Type TNetworkHelper
 
 		for local i:int = 1 to 4
 			'set AI players ready
-			if GetPlayerCollection().Get(i).figure.controlledByID = 0 then GetPlayerCollection().Get(i).networkstate = 1
+			if GetPlayerCollection().IsLocalAi(i) then GetPlayerCollection().Get(i).networkstate = 1
 		Next
 
 		if Network.isServer then SendStartGame()

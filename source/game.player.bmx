@@ -58,18 +58,28 @@ Type TPlayerCollection extends TPlayerBaseCollection
 	
 
 	Method IsHuman:Int(number:Int)
-		Return (IsPlayer(number) And Not TPlayer(Get(number)).GetFigure().IsAI())
+		if not IsPlayer(number) then return False
+		Return Get(number).IsLocalHuman() or Get(number).IsRemoteHuman()
 	End Method
 
 
-	'the negative of "isHumanPlayer" - also "no human player" is possible
-	Method IsAI:Int(number:Int)
-		Return (IsPlayer(number) And TPlayer(Get(number)).GetFigure().IsAI())
+	Method IsLocalHuman:Int(number:Int)
+		Return playerID = GetPlayerCollection().playerID
 	End Method
 
 
-	Method IsLocalPlayer:Int(number:Int)
-		Return IsLocalPlayer(number)
+	Method IsRemoteHuman:Int(number:Int)
+		Return (IsPlayer(number) And Get(number).IsRemoteHuman())
+	End Method
+
+
+	Method IsRemoteAI:Int(number:Int)
+		Return (IsPlayer(number) And Get(number).IsRemoteAI())
+	End Method
+
+
+	Method IsLocalAI:Int(number:Int)
+		Return (IsPlayer(number) And Get(number).IsLocalAI())
 	End Method
 
 
@@ -91,7 +101,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		EventManager.triggerEvent( TEventSimple.Create("player.onEnterRoom", new TData.Add("door", door), player, room) )
 		
 	 	'inform player AI that figure entered a room
-	 	If player.isAI() Then player.PlayerKI.CallOnEnterRoom(room.id)
+	 	If player.isLocalAI() Then player.PlayerAI.CallOnEnterRoom(room.id)
 	End Function
 End Type
 
@@ -109,27 +119,34 @@ End Function
 
 'class holding name, channelname, infos about the figure, programmeplan, programmecollection and so on - from a player
 Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
-	Field PlayerKI:KI
+	Field playerAI:KI
+	'type of the player, local/remote human/ai
+	Field playerType:int = 0
+	'ID of a remote player who controls this (ai) player
+	field playerControlledByID:int = -1
+
+	'distinguishing between LOCAL and REMOTE ai allows multiple players
+	'to control multiple AI without needing to share "THEIR" AI files
+	'-> maybe this allows for some kind of "AI fight" (or "team1 vs team2"
+	'   games)
+	Const PLAYERTYPE_LOCAL_HUMAN:int = 0
+	Const PLAYERTYPE_LOCAL_AI:int = 1
+	Const PLAYERTYPE_REMOTE_HUMAN:int = 2
+	Const PLAYERTYPE_REMOTE_AI:int = 3
 
 
 	Method onLoad:int(triggerEvent:TEventBase)
-		if IsAi()
+		if IsLocalAi()
 			'reconnect AI engine
-			PlayerKI.Start()
+			playerAI.Start()
 			'load savestate
-			PlayerKI.CallOnLoad()
+			playerAI.CallOnLoad()
 		endif
 	End Method
 
 
 	Method GetFigure:TFigure()
 		return TFigure(figure)
-	End Method
-
-
-	'returns whether a player contains a player AI
-	Method IsAI:Int() {_exposeToLua}
-		Return playerKI<>null
 	End Method
 
 
@@ -174,14 +191,14 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	'creates and returns a player
 	'-creates the given playercolor and a figure with the given
 	' figureimage, a programmecollection and a programmeplan
-	Function Create:TPlayer(playerID:int, Name:String, channelname:String = "", sprite:TSprite, x:Int, onFloor:Int = 13, dx:Int, color:TColor, ControlledByID:Int = 1, FigureName:String = "")
+	Function Create:TPlayer(playerID:int, Name:String, channelname:String = "", sprite:TSprite, x:Int, onFloor:Int = 13, dx:Int, color:TColor, FigureName:String = "")
 		Local Player:TPlayer = New TPlayer
 
 		Player.Name	= Name
 		Player.playerID	= playerID
 		Player.color = color.AddToList(True).SetOwner(playerID)
 		Player.channelname = channelname
-		Player.Figure = New TFigure.Create(FigureName, sprite, x, onFloor, dx, ControlledByID)
+		Player.Figure = New TFigure.Create(FigureName, sprite, x, onFloor, dx)
 		Player.Figure.playerID = playerID
 
 		TPublicImage.Create(Player.playerID)
@@ -199,11 +216,72 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	End Function
 
 
+'	Method IsAI:Int() {_exposeToLua}
+'		return IsLocalAI() or IsRemoteAI()
+'	End Method
 
-	Method SetAIControlled(luafile:String="")
-		figure.controlledByID = 0
-		PlayerKI = new KI.Create(playerID, luafile)
-		PlayerKI.Start()
+
+	Method IsHuman:Int()
+		Return IsLocalHuman() or IsRemoteHuman()
+	End Method
+
+
+	Method IsLocalHuman:Int()
+		Return playerID = GetPlayerCollection().playerID
+		'Return playerType = PLAYERTYPE_LOCAL_HUMAN
+	End Method
+
+
+	Method IsRemoteHuman:Int()
+		Return playerType = TPlayer.PLAYERTYPE_REMOTE_HUMAN
+	End Method
+
+
+	Method IsRemoteAI:Int()
+		Return playerType = TPlayer.PLAYERTYPE_REMOTE_AI
+	End Method
+
+
+	Method IsLocalAI:Int()
+		Return playerType = TPlayer.PLAYERTYPE_LOCAL_AI
+	End Method
+
+
+	Method SetPlayerType(playerType:int)
+		self.playerType = playerType
+	End Method
+
+
+	Method SetLocalHumanControlled()
+		playerAI = Null
+		playerControlledByID = GetPlayerCollection().playerID
+		SetPlayerType(PLAYERTYPE_LOCAL_HUMAN)
+	End Method
+
+
+	Method SetLocalAIControlled()
+		playerControlledByID = GetPlayerCollection().playerID
+		SetPlayerType(PLAYERTYPE_LOCAL_AI)
+	End Method
+
+
+	Method SetRemoteHumanControlled(remotePlayerID:int)
+		playerAI = Null
+		playerControlledByID = remotePlayerID
+		SetPlayerType(PLAYERTYPE_REMOTE_HUMAN)
+	End Method
+
+
+	Method SetRemoteAiControlled(remotePlayerID:int)
+		playerAI = Null
+		playerControlledByID = remotePlayerID
+		SetPlayerType(PLAYERTYPE_REMOTE_AI)
+	End Method
+
+
+	Method InitAI(luafile:String="")
+		PlayerAI = new KI.Create(playerID, luafile)
+		PlayerAI.Start()
 	End Method
 
 

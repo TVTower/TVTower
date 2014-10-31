@@ -495,10 +495,10 @@ Type TApp
 				EndIf
 
 				If Game.isGameLeader()
-					If KEYMANAGER.Ishit(Key_F1) And GetPlayerCollection().Get(1).isAI() Then GetPlayerCollection().Get(1).PlayerKI.reloadScript()
-					If KEYMANAGER.Ishit(Key_F2) And GetPlayerCollection().Get(2).isAI() Then GetPlayerCollection().Get(2).PlayerKI.reloadScript()
-					If KEYMANAGER.Ishit(Key_F3) And GetPlayerCollection().Get(3).isAI() Then GetPlayerCollection().Get(3).PlayerKI.reloadScript()
-					If KEYMANAGER.Ishit(Key_F4) And GetPlayerCollection().Get(4).isAI() Then GetPlayerCollection().Get(4).PlayerKI.reloadScript()
+					If KEYMANAGER.Ishit(Key_F1) And GetPlayer(1).isLocalAI() Then GetPlayer(1).PlayerAI.reloadScript()
+					If KEYMANAGER.Ishit(Key_F2) And GetPlayer(2).isLocalAI() Then GetPlayer(2).PlayerAI.reloadScript()
+					If KEYMANAGER.Ishit(Key_F3) And GetPlayer(3).isLocalAI() Then GetPlayer(3).PlayerAI.reloadScript()
+					If KEYMANAGER.Ishit(Key_F4) And GetPlayer(4).isLocalAI() Then GetPlayer(4).PlayerAI.reloadScript()
 				EndIf
 
 				'only announce news in single player mode - as announces
@@ -1108,8 +1108,8 @@ Type TFigurePostman Extends TFigure
 	Field nextActionTimer:TIntervalTimer = TIntervalTimer.Create(1500, 0, 0, 5000)
 
 	'we need to overwrite it to have a custom type - with custom update routine
-	Method Create:TFigurePostman(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int, ControlledByID:Int = -1)
-		Super.Create(FigureName, sprite, x, onFloor, speed, ControlledByID)
+	Method Create:TFigurePostman(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int)
+		Super.Create(FigureName, sprite, x, onFloor, speed)
 		Return Self
 	End Method
 
@@ -1169,8 +1169,8 @@ Type TFigureJanitor Extends TFigure
 
 
 	'we need to overwrite it to have a custom type - with custom update routine
-	Method Create:TFigureJanitor(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int, ControlledByID:Int = -1)
-		Super.Create(FigureName, sprite, x, onFloor, speed, ControlledByID)
+	Method Create:TFigureJanitor(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int)
+		Super.Create(FigureName, sprite, x, onFloor, speed)
 		area.dimension.setX(14)
 
 		GetFrameAnimations().Set("cleanRight", TSpriteFrameAnimation.Create([ [11,130], [12,130] ], -1, 0) )
@@ -1294,8 +1294,8 @@ Type TFigureDeliveryBoy Extends TFigure
 
 
 	'we need to overwrite it to have a custom type - with custom update routine
-	Method Create:TFigureDeliveryBoy(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int, ControlledByID:Int = -1)
-		Super.Create(FigureName, sprite, x, onFloor, speed, ControlledByID)
+	Method Create:TFigureDeliveryBoy(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int)
+		Super.Create(FigureName, sprite, x, onFloor, speed)
 		Return Self
 	End Method
 
@@ -2062,14 +2062,6 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		Local slotPos:TVec2D = New TVec2D.Init(guiPlayersPanel.GetContentScreenX(),guiPlayersPanel.GetContentScreeny())
 		For Local i:Int = 0 To 3
-			If Game.networkgame Or GetPlayerCollection().playerID=1
-				If Game.gamestate <> TGame.STATE_PREPAREGAMESTART And GetPlayerCollection().Get(i+1).Figure.ControlledByID = GetPlayerCollection().playerID Or (GetPlayerCollection().Get(i+1).Figure.ControlledByID = 0 And GetPlayerCollection().playerID = 1)
-					SetColor 255,255,255
-				Else
-					SetColor 225,255,150
-				EndIf
-			EndIf
-
 			'draw colors
 			Local colorRect:TRectangle = New TRectangle.Init(slotPos.GetIntX()+2, Int(guiChannelNames[i].GetContentScreenY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
 			For Local obj:TColor = EachIn TColor.List
@@ -2146,7 +2138,7 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		For Local i:Int = 0 To 3
 			If Game.networkgame Or Game.isGameLeader()
-				If Game.gamestate <> TGame.STATE_PREPAREGAMESTART And GetPlayerCollection().Get(i+1).Figure.ControlledByID = GetPlayerCollection().playerID Or (GetPlayerCollection().Get(i+1).Figure.ControlledByID = 0 And GetPlayerCollection().playerID=1)
+				If Game.gamestate <> TGame.STATE_PREPAREGAMESTART And Game.IsControllingPlayer(i+1)
 					guiPlayerNames[i].enable()
 					guiChannelNames[i].enable()
 					guiFigureArrows[i*2].enable()
@@ -2191,9 +2183,11 @@ Type TScreen_GameSettings Extends TGameScreen
 
 					'skip if outside of rect
 					If Not THelper.MouseInRect(colorRect) Then Continue
-					If (GetPlayerCollection().Get(i+1).Figure.ControlledByID = GetPlayerCollection().playerID Or (GetPlayerCollection().Get(i+1).Figure.ControlledByID = 0 And GetPlayerCollection().playerID = 1))
+					'only allow mod if you control the player or if the
+					'player is AI and you are the master player
+					If Game.IsControllingPlayer(i+1)
 						modifiedPlayers=True
-						GetPlayerCollection().Get(i+1).RecolorFigure(obj)
+						GetPlayer(i+1).RecolorFigure(obj)
 					EndIf
 				Next
 				'move to next slot position
@@ -2348,6 +2342,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 		Local _hostIP:String = entry.data.getString("hostIP","0.0.0.0")
 		Local _hostPort:Int = entry.data.getInt("hostPort",0)
 		Local gameTitle:String = entry.data.getString("gameTitle","#unknowngametitle#")
+
 
 		If Network.ConnectToServer( HostIp(_hostIP), _hostPort )
 			Network.isServer = False
@@ -2877,8 +2872,8 @@ Type GameEvents
 		Local timeGone:Int = triggerEvent.GetData().getInt("timeGone", 0)
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
-			If player.isAI() Then player.PlayerKI.ConditionalCallOnTick()
-			If player.isAI() Then player.PlayerKI.CallOnRealtimeSecond(timeGone)
+			If player.isLocalAI() Then player.PlayerAI.ConditionalCallOnTick()
+			If player.isLocalAI() Then player.PlayerAI.CallOnRealtimeSecond(timeGone)
 		Next
 		Return True
 	End Function
@@ -2891,8 +2886,8 @@ Type GameEvents
 		If minute < 0 Then Return False
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
-			If player.isAI() Then player.PlayerKI.ConditionalCallOnTick()
-			If player.isAI() Then player.PlayerKI.CallOnMinute(minute)
+			If player.isLocalAI() Then player.PlayerAI.ConditionalCallOnTick()
+			If player.isLocalAI() Then player.PlayerAI.CallOnMinute(minute)
 		Next
 		Return True
 	End Function
@@ -2905,7 +2900,7 @@ Type GameEvents
 		If minute < 0 Then Return False
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
-			If player.isAI() Then player.PlayerKI.CallOnDayBegins()
+			If player.isLocalAI() Then player.PlayerAI.CallOnDayBegins()
 		Next
 		Return True
 	End Function
@@ -2916,7 +2911,7 @@ Type GameEvents
 		Local player:TPlayer = GetPlayerCollection().Get(playerID)
 		If Not player Then Return False
 
-		If player.isAI() Then player.PlayerKI.CallOnMalfunction()
+		If player.isLocalAI() Then player.playerAI.CallOnMalfunction()
 	End Function
 
 
@@ -2926,7 +2921,7 @@ Type GameEvents
 		Local value:Int = triggerEvent.GetData().GetInt("value", 0)
 		If playerID = -1 Or Not player Then Return False
 
-		If player.isAI() Then player.PlayerKI.CallOnMoneyChanged()
+		If player.isLocalAI() Then player.playerAI.CallOnMoneyChanged()
 		If player.isActivePlayer() Then GetInGameInterface().BottomImgDirty = True
 	End Function
 
@@ -2949,7 +2944,7 @@ Type GameEvents
 		local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
 
 		'inform ai before
-		if player.IsAI() then player.PlayerKI.CallOnBossCallsForced()
+		if player.isLocalAI() then player.playerAI.CallOnBossCallsForced()
 		'send player to boss now
 		player.SendToBoss()
 	End Function
@@ -2974,8 +2969,8 @@ Type GameEvents
 		local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
 
 		'inform ai about the request
-		if player.IsAI()
-			player.PlayerKI.CallOnBossCalls(latestTime)
+		if player.isLocalAI()
+			player.playerAI.CallOnBossCalls(latestTime)
 		else
 			'send out a toast message
 			local toastGUID:string = "toastmessage-playerboss-callplayer"+player.playerID
@@ -3020,7 +3015,7 @@ Type GameEvents
 		local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
 
 		'inform ai before
-		if player.IsAI() then player.PlayerKI.CallOnPublicAuthoritiesStopXRatedBroadcast()
+		if player.isLocalAI() then player.playerAI.CallOnPublicAuthoritiesStopXRatedBroadcast()
 
 		'only interest in active players contracts
 		if programme.owner <> GetPlayerCollection().playerID then return False
@@ -3044,7 +3039,7 @@ Type GameEvents
 		local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
 
 		'inform ai before
-		if player.IsAI() then player.PlayerKI.CallOnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedProgrammeLicence, targetProgrammeLicence)
+		if player.isLocalAI() then player.playerAI.CallOnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedProgrammeLicence, targetProgrammeLicence)
 
 		'only interest in active players contracts
 		if confiscatedProgrammeLicence.owner <> GetPlayerCollection().playerID then return False

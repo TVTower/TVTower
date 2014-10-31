@@ -123,7 +123,6 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Field figureID:Int = 0
 	'does the figure accept manual (AI or user) ChangeTarget-commands?
 	Field controllable:Int = True
-	Field ControlledByID:Int = -1
 	Field alreadyDrawn:Int = 0 			{nosave}
 
 	'whether this figure can move or not (eg. for debugging)
