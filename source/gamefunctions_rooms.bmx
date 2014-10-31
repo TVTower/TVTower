@@ -3148,7 +3148,7 @@ Type RoomHandler_Archive extends TRoomHandler
 	Function onEnterRoom:int( triggerEvent:TEventBase )
 		'we are not interested in other figures than our player's
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
-		if not figure or not figure.IsActivePlayer() then return FALSE
+		if not figure or GetPlayerBase().GetFigure() <> figure then return FALSE
 		'only handle archives
 		if not IsMyRoom(TRoomBase(triggerEvent.GetSender())) then return False
 
@@ -4826,7 +4826,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'are in)
 		if not figure.playerID then return False
 
-		if figure.IsActivePlayer()
+		if figure = GetPlayerBase().GetFigure()
 			GetInstance().ResetContractOrder()
 		endif
 

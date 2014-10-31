@@ -11,7 +11,10 @@ Type TPlayerCollection extends TPlayerBaseCollection
 
 	Method New()
 		if not _registeredEvents
+			EventManager.registerListenerFunction("figure.onFailEnterRoom", OnFigureFailEnterRoom)
+			EventManager.registerListenerFunction("figure.onBeginEnterRoom", OnFigureBeginEnterRoom)
 			EventManager.registerListenerFunction("figure.onEnterRoom", OnFigureEnterRoom)
+			EventManager.registerListenerFunction("figure.onLeaveRoom", OnFigureLeaveRoom)
 			_registeredEvents = True
 		endif
 	End Method
@@ -84,7 +87,65 @@ Type TPlayerCollection extends TPlayerBaseCollection
 
 
 	'=== EVENTS ===
-	'events
+
+	Function OnFigureLeaveRoom:int(triggerEvent:TEventBase)
+		local figure:TFigure = TFigure(triggerEvent.GetSender())
+		if not figure or figure.playerID = 0 then return False
+		local player:TPlayer = GetPlayer(figure.playerID)
+		if not player then return False
+
+		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
+
+		EventManager.triggerEvent( TEventSimple.Create("player.onLeaveRoom", null, player, room) )
+
+		'inform player AI
+		If player.isLocalAI()
+			local roomID:int = 0
+			if room then roomID = room.id
+			GetPlayer(figure.playerID).PlayerAI.CallOnLeaveRoom(roomID)
+		endif
+	End Function
+
+
+	Function OnFigureFailEnterRoom:int(triggerEvent:TEventBase)
+		local figure:TFigure = TFigure(triggerEvent.GetSender())
+		if not figure or figure.playerID = 0 then return False
+		local player:TPlayer = GetPlayer(figure.playerID)
+		if not player then return False
+
+		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
+		local door:TRoomDoorBase = TRoomDoorBase(triggerEvent.GetData().Get("door"))
+		local reason:string = triggerEvent.GetData().GetString("reason", "")
+
+		if reason = "inuse"
+			'inform player AI
+			If player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, LuaFunctions.RESULT_INUSE)
+			'tooltip only for active user
+			If player.isLocalHuman() then GetBuilding().CreateRoomUsedTooltip(door, room)
+		elseif reason = "blocked"
+			'inform player AI
+			If player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, LuaFunctions.RESULT_NOTALLOWED)
+			'tooltip only for active user
+			If player.isLocalHuman() then GetBuilding().CreateRoomBlockedTooltip(door, room)
+		endif
+	End Function
+
+
+	Function OnFigureBeginEnterRoom:int(triggerEvent:TEventBase)
+		local figure:TFigure = TFigure(triggerEvent.GetSender())
+		if not figure or figure.playerID = 0 then return False
+		local player:TPlayer = GetPlayer(figure.playerID)
+		if not player then return False
+
+		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
+
+		EventManager.triggerEvent( TEventSimple.Create("player.onBeginEnterRoom", null, player, room) )
+
+		'inform player AI
+		If room and player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, LuaFunctions.RESULT_OK)
+	End Function
+	
+
 	Function OnFigureEnterRoom:int(triggerEvent:TEventBase)
 		local figure:TFigure = TFigure(triggerEvent.GetSender())
 		if not figure or figure.playerID = 0 then return False

@@ -306,7 +306,7 @@ Type TGame {_exposeToLua="selected"}
 			GetPlayer(i).GetFigure().area.position.x :+ i*3 + (i mod 2)*15
 			'forcefully send (no controlling possible until reaching the target)
 			'GetPlayer(i).GetFigure().SendToDoor( TRoomDoor.GetByDetails("office", i), True)
-			GetPlayer(i).figure.ForceChangeTarget(TRoomDoor.GetByDetails("news", i).area.GetX() + 60, TRoomDoor.GetByDetails("news", i).area.GetY())
+			GetPlayer(i).GetFigure().ForceChangeTarget(TRoomDoor.GetByDetails("news", i).area.GetX() + 60, TRoomDoor.GetByDetails("news", i).area.GetY())
 		Next
 'debug
 '		GetPlayer(1).GetFigure().area.position.SetXY(TRoomDoor.GetByDetails("news", 1).area.GetX() + 60, TRoomDoor.GetByDetails("news", 1).area.GetY())

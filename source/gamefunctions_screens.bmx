@@ -256,7 +256,7 @@ Type TInGameScreen_World extends TInGameScreen
 
 	Function onLeaveRoom:int( triggerEvent:TEventBase )
 		local figure:TFigure = TFigure( triggerEvent._sender )
-		if not figure or not figure.isActivePlayer() then return FALSE
+		if not figure or GetPlayerBase().GetFigure() <> figure then return FALSE
 
 		'Set the players current screen when leaving a room
 		ScreenCollection.GoToScreen(instance)
@@ -363,7 +363,7 @@ Type TInGameScreen_Room extends TInGameScreen
 
 		'only interested in figures entering the room
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
-		if not figure or not figure.isActivePlayer() then return FALSE
+		if not figure or GetPlayerBase().GetFigure() <> figure then return FALSE
 
 		'try to change played music when entering a room
 		TSoundManager.GetInstance().PlayMusicPlaylist(room.name)
@@ -376,7 +376,7 @@ Type TInGameScreen_Room extends TInGameScreen
 
 		'only interested in figures entering the room
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
-		if not figure or not figure.isActivePlayer() then return FALSE
+		if not figure or GetPlayerBase().GetFigure() <> figure then return FALSE
 
 		'Set the players current screen when changing rooms
 		ScreenCollection.GoToScreen(GetByRoom(room))

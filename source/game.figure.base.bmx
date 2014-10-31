@@ -150,8 +150,6 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	Method GetFloor:Int(pos:TVec2D = Null) abstract
-	Method IsActivePlayer:Int() abstract
-
 
 
 	Method onLoad:int()
@@ -282,7 +280,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 	
 
-	Method ChangeTarget:Int(x:Int=-1, y:Int=-1) {_exposeToLua}
+	Method ChangeTarget:Int(x:Int=-1, y:Int=-1)
 		return _ChangeTarget(x,y, False)
 	End Method
 

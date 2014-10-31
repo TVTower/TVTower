@@ -864,7 +864,7 @@ Type TElevatorSmartLogic Extends TElevatorRouteLogic
 			SortList(tempList, True, PlayerPreferenceRouteSort)
 			local currRoute:TFloorRoute = TFloorRoute(tempList.First())
 			if currRoute <> null
-				If currRoute.who.IsActivePlayer()
+				If currRoute.who = GetPlayerBase().GetFigure()
 					local target:int = currRoute.floornumber
 
 					If Elevator.CurrentFloor = target
@@ -891,14 +891,14 @@ Type TElevatorSmartLogic Extends TElevatorRouteLogic
 	Function PlayerPreferenceRouteSort:Int( o1:Object, o2:Object )
 		local route1:TSmartFloorRoute = TSmartFloorRoute(o1)
 		local route2:TSmartFloorRoute = TSmartFloorRoute(o2)
-		If route1.who.IsActivePlayer()
-			If route2.who.IsActivePlayer()
+		If route1.who = GetPlayerBase().GetFigure()
+			If route2.who = route1.who
 				Return GetRouteIndexOfFigure(route1.who) - GetRouteIndexOfFigure(route2.who)
 			Else
 				Return -1
 			Endif
 		Else
-			If route2.who.IsActivePlayer()
+			If route2.who = GetPlayerBase().GetFigure()
 				Return 1
 			Endif
 		Endif

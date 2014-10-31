@@ -479,7 +479,12 @@ Type TApp
 
 				If KEYMANAGER.IsHit(KEY_D) Then TVTDebugInfos = 1 - TVTDebugInfos
 
-				If KEYMANAGEr.Ishit(KEY_K) then GetFigureCollection().KickAllFromRooms()
+				If KEYMANAGER.Ishit(KEY_K)
+					TLogger.log("KickAllFromRooms", "Player kicks all figures out of the rooms.", LOG_DEBUG)
+					For local fig:TFigure = EachIn GetFigureCollection().list
+						if fig.inRoom then GetPlayer().GetFigure().KickFigureFromRoom(fig, fig.inroom)
+					Next
+				endif
 
 				'send terrorist to a random room
 				If KEYMANAGER.IsHit(KEY_T) and not Game.networkGame
@@ -519,13 +524,13 @@ Type TApp
 				If KEYMANAGER.Ishit(Key_F10)
 					If (KIRunning)
 						For Local fig:TFigure = EachIn GetFigureCollection().list
-							If Not fig.isActivePlayer() Then fig.moveable = False
+							if GetPlayerBase().GetFigure() <> fig Then fig.moveable = False
 						Next
 						TLogger.Log("CORE", "AI Figures deactivated", LOG_INFO | LOG_DEV )
 						KIRunning = False
 					Else
 						For Local fig:TFigure = EachIn GetFigureCollection().list
-							If Not fig.isActivePlayer() Then fig.moveable = True
+							if GetPlayerBase().GetFigure() <> fig Then fig.moveable = True
 						Next
 						TLogger.Log("CORE", "AI activated", LOG_INFO | LOG_DEV )
 						KIRunning = True

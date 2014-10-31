@@ -1,4 +1,5 @@
 'SuperStrict
+'SuperStrict
 'Import "game.gameobject.bmx"
 
 
@@ -49,16 +50,6 @@ Type TFigureCollection extends TFigureBaseCollection
 		Return TFigure(Super.GetByName(name))
 	End Method
 
-
-	Method KickAllFromRooms:int()
-		TLogger.log("TFigureCollection.KickAllFromRooms()", "Player kicks all figures out of the rooms.", LOG_DEBUG)
-		
-		local playerFig:TFigure = GetPlayer().GetFigure()
-		For local fig:TFigure = EachIn list
-			if fig.inRoom then playerFig.KickFigureFromRoom(fig, fig.inroom)
-		Next
-	End Method
-	
 
 	'=== EVENTS ===
 
@@ -191,18 +182,6 @@ Type TFigure extends TFigureBase
 
 	Method IsInElevator:int()
 		Return GetElevator().IsFigureInElevator(Self)
-	End Method
-
-
-	Method IsLocalAIPlayer:Int()
-		if playerID <= 0 then return False
-		return GetPlayer(playerID) and GetPlayer(playerID).IsLocalAI()
-	End Method
-
-
-	Method IsActivePlayer:Int()
-		if playerID <= 0 then return False
-		return GetPlayer(playerID) and GetPlayer(playerID).IsLocalHuman()
 	End Method
 
 
@@ -471,17 +450,6 @@ Type TFigure extends TFigureBase
 		'set new room
 	 	inRoom = room
 
-		rem
-	 	'inform AI that we are now in a room
-	 	If isLocalAIPlayer()
-			If room
-				GetPlayer(playerID).PlayerKI.CallOnSetInRoom(room.id)
-			Else
-				GetPlayer(playerID).PlayerKI.CallOnSetInRoom(LuaFunctions.RESULT_NOTFOUND)
-			EndIf
-		EndIf
-		endrem
-
 		'inform others that room is changed
 		EventManager.triggerEvent( TEventSimple.Create("figure.SetInRoom", self, inroom) )
 	End Method
@@ -531,10 +499,8 @@ Type TFigure extends TFigureBase
 		'something (bomb, renovation, ...) does not allow access to this
 		'room for now
 		if room.IsBlocked()
-			'inform player AI
-			If isLocalAIPlayer() then GetPlayer(playerID).PlayerAI.CallOnBeginEnterRoom(room.id, LuaFunctions.RESULT_NOTALLOWED)
-			'tooltip only for active user
-			If isActivePlayer() then GetBuilding().CreateRoomBlockedTooltip(door, room)
+			'inform ALL about this (eg. inform AI or Player )
+			EventManager.triggerEvent(TEventSimple.Create("figure.onFailEnterRoom", new TData.AddString("reason", "blocked").Add("door", door), self, room))
 
 			return FALSE
 		endif
@@ -543,12 +509,11 @@ Type TFigure extends TFigureBase
 		if not CanEnterRoom(room) and not forceEnter
 			If room.hasOccupant() and not room.isOccupant(self)
 				'only player-figures need such handling (events etc.)
+				'all others just enter
 				If playerID and not playerID = room.owner
-					'inform player AI
-					If isLocalAIPlayer() then GetPlayer(playerID).PlayerAI.CallOnBeginEnterRoom(room.id, LuaFunctions.RESULT_INUSE)
-					'tooltip only for active user
-					If isActivePlayer() then GetBuilding().CreateRoomUsedTooltip(door, room)
-	
+					'inform ALL about this (eg. inform AI or Player )
+					EventManager.triggerEvent(TEventSimple.Create("figure.onFailEnterRoom", new TData.AddString("reason", "inuse").Add("door", door), self, room))
+
 					return FALSE
 				EndIf
 			EndIf
@@ -569,8 +534,8 @@ Type TFigure extends TFigureBase
 		'inform what the figure does now
 		currentAction = ACTION_ENTERING
 
-		'inform player AI
-		If isLocalAIPlayer() then GetPlayer(playerID).PlayerAI.CallOnBeginEnterRoom(room.id, LuaFunctions.RESULT_OK)
+		'inform ALL about this
+		EventManager.triggerEvent(TEventSimple.Create("figure.onBeginEnterRoom", null, self, room))
 
 
 		'do not fade when it is a fake room
@@ -663,18 +628,8 @@ Type TFigure extends TFigureBase
 	'gets called when the figure really leaves the room (animation finished etc)
 	Method FinishLeaveRoom(room:TRoomBase)
 		'inform others that a figure left the room
+		'-> triggers Player-AI etc.
 		EventManager.triggerEvent( TEventSimple.Create("figure.onLeaveRoom", null, self, room ) )
-		'maybe move this lines to TPlayer
-		If playerID > 0
-			EventManager.triggerEvent( TEventSimple.Create("player.onLeaveRoom", null, GetPlayer(playerID), room) )
-		EndIf
-
-		'inform player AI
-		If isLocalAIPlayer()
-			local roomID:int = 0
-			if room then roomID = room.id
-			GetPlayer(playerID).PlayerAI.CallOnLeaveRoom(roomID)
-		endif
 
 		'enter target -> null = building
 		SetInRoom( null )
@@ -786,8 +741,6 @@ Type TFigure extends TFigureBase
 
 		'if player is in elevator dont accept changes
 		if not forceChange and GetElevator().passengers.Contains(Self) Then Return False
-		'only change target if it's your figure or you are game leader
-		If self <> GetPlayerCollection().Get().figure And Not Game.isGameLeader() Then Return False
 
 		'=== CALCULATE NEW TARGET/TARGET-OBJECT ===
 		local newTarget:object = Null
