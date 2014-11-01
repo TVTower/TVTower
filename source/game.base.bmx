@@ -171,7 +171,12 @@ Type TGame {_exposeToLua="selected"}
 	
 
 	'run this before EACH started game
-	Method PrepareStart()
+	Method PrepareStart(startNewGame:int)
+		'=== FIRST GAME ===
+		'if no game run before : prepare something more
+		if not _firstGamePreparationDone then PrepareFirstGameStart()
+
+		'=== ALL GAMES ===
 		TLogger.Log("Game.PrepareStart()", "colorizing images corresponding to playercolors", LOG_DEBUG)
 		ColorizePlayerExtras()
 
@@ -181,6 +186,10 @@ Type TGame {_exposeToLua="selected"}
 
 		'(re-)inits weather effects (raindrops, snow flakes etc)
 		InitWorldWeatherEffects()
+
+		'=== NEW GAMES ===
+		'new games need some initializations (database etc.)
+		if startNewGame then PrepareNewGame()
 	End Method
 
 
@@ -534,19 +543,13 @@ Type TGame {_exposeToLua="selected"}
 
 
 	Method StartLoadedSaveGame:int()
+		PrepareStart(False)
 		_Start(False)
 	End Method
 
 
 	'run when a specific game starts
 	Method _Start:int(startNewGame:int = TRUE)
-		if not _firstGamePreparationDone then PrepareFirstGameStart()
-		'run in all cases
-		PrepareStart()
-
-		'new games need some initializations
-		if startNewGame then PrepareNewGame()
-
 		'disable chat if not networkgaming
 		If Not game.networkgame
 			InGame_Chat.hide()

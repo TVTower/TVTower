@@ -18,6 +18,10 @@ Import "source/main.bmx"
 Incbin "source/version.txt"
 
 ?Win32
+rem
+	'needed ??
+	'seems to work even without
+	
 	'set the icon of the app
 	Function SetIcon(iconname$, TheWindow%)
 		Local icon:Int=ExtractIconA(TheWindow,iconname,0)
@@ -34,6 +38,7 @@ Incbin "source/version.txt"
 	End Extern
 
 	SetIcon(AppFile, GetActiveWindow())
+endrem
 ?
 
 'Start Game

@@ -1962,15 +1962,19 @@ Type TScreen_GameSettings Extends TGameScreen
 			Case guiButtonStart
 					If Not Game.networkgame And Not Game.onlinegame
 						TLogger.Log("Game", "Start a new singleplayer game", LOG_DEBUG)
+
+						'set self into preparation state
+						Game.SetGamestate(TGame.STATE_PREPAREGAMESTART)
 					Else
 						TLogger.Log("Game", "Start a new multiplayer game", LOG_DEBUG)
 						guiAnnounce.SetChecked(False)
 						Network.StopAnnouncing()
+
+						'demand others to do the same
+						NetworkHelper.SendPrepareGame()
+						'set self into preparation state
+						Game.SetGamestate(TGame.STATE_PREPAREGAMESTART)
 					EndIf
-					'set self into preparation state
-					Game.SetGamestate(TGame.STATE_PREPAREGAMESTART)
-					'demand others to do the same
-					NetworkHelper.SendPrepareGame()
 
 			Case guiButtonBack
 					If Game.networkgame
@@ -2531,7 +2535,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 	Method Reset:Int()
 		startGameCalled = False
-'		prepareGameCalled = False
+		prepareGameCalled = False
 		spreadConfigurationCalled = False
 		spreadStartDataCalled = False
 		canStartGame = False
@@ -2569,16 +2573,25 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		'=== STEPS ===
 		'MP = MultiPlayer, SP = SinglePlayer, ALL = all modes
 		'1. MP:  Spread configuration (database / name)
+		'2. ALL: Prepare Game (load database, colorize things)
 		'2. MP:  Check if ready to start game
 		'3. ALL: Start game (if ready)
 
 
 		'=== STEP 1 ===
-		If game.networkGame
+		If game.networkGame and not spreadConfigurationCalled
 			SpreadConfiguration()
 			spreadConfigurationCalled = True
 			StartMultiplayerSyncStarted = Time.GetTimeGone()
 		EndIf
+
+
+		If not prepareGameCalled
+			'prepare game data so game could just start (switch
+			'to building)
+			Game.PrepareStart(True)
+			prepareGameCalled = True
+		endif
 
 
 		'=== STEP 2 ===
@@ -2618,7 +2631,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		'=== STEP 3 ===
 		If canStartGame And Not startGameCalled
 			if Game.networkGame then print "[NET] StartNewGame"
-			'register events and start game
+			'just switch to the game, preparation is done
 			Game.StartNewGame()
 			'reset randomizer
 			Game.SetRandomizerBase( Game.GetRandomizerBase() )

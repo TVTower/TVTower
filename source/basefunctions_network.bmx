@@ -240,6 +240,12 @@ Type TNetworkClient extends TNetworkConnection
 
 	'sends a packet from this client to the connected server
 	Method Send:Int(NetworkObject:TNetworkObject=Null,flags:Int=0,channel:Int=0)
+		if not server
+			print "Trying to send packet without server."
+			'we return TRUE so the package seems to get sent successful.
+			return True
+		endif
+		
 		if not NetworkObject then return 0
 		local packet:TNetworkPacket = NetworkObject.ToPacket()
 		if not packet then return 0
