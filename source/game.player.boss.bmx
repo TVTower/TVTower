@@ -124,6 +124,18 @@ Type TPlayerBoss
 	End Method
 
 
+	Method GetMood:int()
+		return mood
+	End Method
+
+
+	Method ChangeMood:int(value:int)
+		mood :+ value
+		mood = Min(100, Max(0, mood))
+		return mood
+	End Method
+
+
 	'=== EVENTS THE BOSS LISTENS TO ===
 	Method onGameMinute:Int(triggerEvent:TEventSimple)
 		Local minute:Int = triggerEvent.GetData().GetInt("minute",-1)

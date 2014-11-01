@@ -345,6 +345,11 @@ Type TGUIChat Extends TGUIPanel
 
 		If guiChat.guiInputHistory.last() <> guiInput.value
 			guiChat.guiInputHistory.AddLast(guiInput.value)
+
+			'limit history to 50 entries
+			While guiChat.guiInputHistory.Count() > 50
+				guichat.guiInputHistory.RemoveFirst()
+			Wend
 		EndIf
 
 		'reset input field
@@ -359,6 +364,11 @@ Type TGUIChat Extends TGUIPanel
 		'found a chat - but it is another chat
 		If guiChat And guiChat <> Self Then Return False
 
+		'DO NOT WRITE COMMANDS !
+		if GetCommandFromText(triggerEvent.GetData().GetString("text")) <> CHAT_COMMAND_NONE
+			return False
+		endif
+
 		'here we could add code to exlude certain other chat channels
 		Local sendToChannels:Int = triggerEvent.getData().getInt("channels", 0)
 		If Self.isListeningToChannel(sendToChannels)
@@ -371,7 +381,7 @@ Type TGUIChat Extends TGUIPanel
 
 	Function getChannelsFromText:Int(text:String)
 		Local sendToChannels:Int = 0 'by default send to no channel
-		Select getSpecialCommandFromText(text)
+		Select GetCommandFromText(text)
 			Case CHAT_COMMAND_WHISPER
 				sendToChannels :| CHAT_CHANNEL_PRIVATE
 			Case CHAT_COMMAND_SYSTEM
@@ -383,33 +393,29 @@ Type TGUIChat Extends TGUIPanel
 	End Function
 
 
-	Function getSpecialCommandFromText:Int(text:String)
+	Function GetPayloadFromText:string(text:string)
 		text = text.Trim()
+		If Left( text,1 ) <> "/" Then Return ""
 
-		If Left( text,1 ) <> "/" Then Return CHAT_COMMAND_NONE
+		Return Right(text, text.length - Instr(text, " "))
+	End Function
 
-		Local spacePos:Int = Instr(text, " ")
-		Local commandString:String = Mid(text, 2, spacePos-2 ).toLower()
-		Local payload:String = Right(text, text.length -spacePos)
 
-		Select commandString
+	Function GetCommandStringFromText:string(text:string)
+		text = text.Trim()
+		If Left( text,1 ) <> "/" Then Return ""
+
+		Return Mid(text, 2, Instr(text, " ") - 2 )
+	End Function
+	
+
+	Function GetCommandFromText:Int(text:String)
+		Select GetCommandStringFromText(text).ToLower()
 			Case "fluestern", "whisper", "w"
-				'local spacePos:int = instr(payload, " ")
-				'local target:string = Mid(payload, 1, spacePos-1 ).toLower()
-				'local message:string = Right(payload, payload.length -spacePos)
-				'print "whisper to: " + "-"+target+"-"
-				'print "whisper msg:" + message
 				Return CHAT_COMMAND_WHISPER
 			Case "dev", "sys"
-				'local spacePos:int = instr(payload, " ")
-				'local target:string = Mid(payload, 1, spacePos-1 ).toLower()
-				'local message:string = Right(payload, payload.length -spacePos)
-				'print "whisper to: " + "-"+target+"-"
-				'print "whisper msg:" + message
 				Return CHAT_COMMAND_SYSTEM
 			Default
-				'print "command: -"+commandString+"-"
-				'print "payload: -"+payload+"-"
 				Return CHAT_COMMAND_NONE
 		End Select
 	End Function
@@ -429,14 +435,14 @@ Type TGUIChat Extends TGUIPanel
 
 		local sendingPlayer:TPlayerBase = GetPlayerCollection().Get(senderID)
 
-		If sendingPlayer
+		If sendingPlayer and senderID > 0
 			senderName	= sendingPlayer.Name
 			senderColor	= sendingPlayer.color
 			If Not textColor Then textColor = Self._defaultTextColor
 		Else
 			senderName	= "SYSTEM"
-			senderColor	= TColor.Create(255,100,100)
-			textColor	= TColor.Create(255,100,100)
+			senderColor	= TColor.Create(220,50,50)
+			textColor	= TColor.Create(220,80,70)
 		EndIf
 
 		'finally add to the chat box

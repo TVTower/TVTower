@@ -87,6 +87,9 @@ Type TGame {_exposeToLua="selected"}
 			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
 			EventManager.registerListenerFunction("SaveGame.OnBeginSave", onSaveGameBeginSave)
 
+			'we want to handle "/dev bla"-commands via chat
+			EventManager.registerListenerFunction("chat.onAddEntry", onChatAddEntry )
+
 			_initDone = TRUE
 		Endif
 	End Method
@@ -605,6 +608,89 @@ Type TGame {_exposeToLua="selected"}
 		For local player:TPlayer = eachin GetPlayerCollection().players
 			If player.isLocalAI() then player.PlayerAI.CallOnSave()
 		Next
+	End Function
+
+
+	Function onChatAddEntry:int(triggerEvent:TEventBase)
+		local text:string = triggerEvent.GetData().GetString("text")
+		'only interested in system/dev-commands
+		if TGUIChat.GetCommandFromText(text) <> CHAT_COMMAND_SYSTEM then return False
+
+		'skip "/sys " and only return the payload
+		'-> "/sys addmoney 1000" gets "addmoney 1000"
+		text = TGUIChat.GetPayloadFromText(text)
+		text = text.Trim()
+
+		local command:string, payload:string
+		FillCommandPayload(text, command, payload)
+
+		'try to fetch a player (saves to repeat those lines over and over)
+		local playerS:String, paramS:string
+		FillCommandPayload(payload, playerS, paramS)
+		local player:TPlayer = GetPlayer(int(playerS))
+
+		local PLAYER_NOT_FOUND:String = "[DEV] player not found."
+
+		Select command.toLower()
+			case "help"
+				local commands:string = ""
+				commands :+ "money [player#] [+- money]~n"
+				commands :+ "bossmood [player#] [+- mood %]~n"
+				commands :+ "image [player#] [+- image %]~n"
+				SendSystemMessage("[DEV] available commands:~n"+commands)
+
+			case "bossmood"
+				if not player then Return SendSystemMessage(PLAYER_NOT_FOUND)
+
+				local changed:string = ""
+				if paramS <> ""
+					GetPlayerBoss(player.playerID).ChangeMood(int(paramS))
+
+					if int(paramS) > 0 then paramS = "+"+int(paramS)
+					changed = " ("+paramS+"%)"
+				endif
+				SendSystemMessage("[DEV] Mood of boss "+playerS+": "+GetPlayerBoss(player.playerID).GetMood()+"%." + changed)
+
+			case "money"
+				if not player then Return SendSystemMessage(PLAYER_NOT_FOUND)
+
+				local changed:string = ""
+				if paramS <> ""
+					player.GetFinance().ChangeMoney(int(paramS))
+
+					if int(paramS) > 0 then paramS = "+"+int(paramS)
+					changed = " ("+paramS+")"
+				endif
+				SendSystemMessage("[DEV] Money of player "+playerS+": "+player.GetFinance().money+"." + changed)
+
+			case "image"
+				if not player then Return SendSystemMessage(PLAYER_NOT_FOUND)
+
+				local changed:string = ""
+				if paramS <> ""
+					player.GetPublicImage().ChangeImage( new TAudience.AddFloat(int(paramS)))
+					
+					if int(paramS) > 0 then paramS = "+"+int(paramS)
+					changed = " ("+paramS+"%)"
+				endif
+				SendSystemMessage("[DEV] Image of player "+playerS+": "+player.GetPublicImage().GetAverageImage()+"%." + changed)
+
+			default
+				SendSystemMessage("[DEV] unknown command: ~q"+command+"~q")
+		End Select
+
+
+		'internal helper function
+		Function FillCommandPayload(text:string, command:string var, payload:string var)
+			local spacePos:int = text.Find(" ")
+			if spacePos <= 0
+				command = text
+				payload = ""
+			else
+				command = Left(text, spacePos)
+				payload = Right(text, text.length - (spacePos+1))
+			endif
+		End Function
 	End Function
 
 
