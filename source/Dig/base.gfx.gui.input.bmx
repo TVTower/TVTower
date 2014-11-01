@@ -13,7 +13,8 @@ Import "base.gfx.sprite.bmx"
 Type TGUIinput Extends TGUIobject
     Field maxLength:Int
     Field color:TColor = new TColor.Create(120,120,120)
-    Field maxTextWidth:Int
+    Field maxTextWidthBase:Int
+    Field maxTextWidthCurrent:Int
     Field spriteName:String = "gfx_gui_input.default"
 
 	'=== OVERLAY ===
@@ -68,6 +69,11 @@ Type TGUIinput Extends TGUIobject
 
 	Method SetMaxLength:Int(maxLength:Int)
 		Self.maxLength = maxLength
+	End Method
+
+
+	Method SetMaxTextWidth(maxTextWidth:Int)
+		maxTextWidthBase = maxTextWidth
 	End Method
 
 
@@ -242,7 +248,7 @@ Type TGUIinput Extends TGUIobject
 		'else just draw it like a normal gui object
 		If _editable AND Self = GuiManager.GetKeystrokeReceiver()
 			color.copy().AdjustFactor(-80).SetRGB()
-			While Len(printvalue) >1 And GetFont().getWidth(printValue + "_") > maxTextWidth
+			While Len(printvalue) >1 And GetFont().getWidth(printValue + "_") > maxTextWidthCurrent
 				printvalue = printValue[1..]
 			Wend
 			GetFont().draw(printValue, position.GetIntX(), position.GetIntY())
@@ -254,7 +260,7 @@ Type TGUIinput Extends TGUIobject
 			SetAlpha oldAlpha
 	    Else
 			color.setRGB()
-			While GetFont().GetWidth(printValue) > maxTextWidth And printvalue.length > 0
+			While GetFont().GetWidth(printValue) > maxTextWidthCurrent And printvalue.length > 0
 				printvalue = printValue[..printvalue.length - 1]
 			Wend
 
@@ -271,12 +277,13 @@ Type TGUIinput Extends TGUIobject
 
 		Local textPos:TVec2D
 		Local widgetWidth:Int = rect.GetW()
+
 		If Not valueDisplacement
 			'add "false" to GetMaxCharHeight so it ignores parts of
 			'characters with parts below baseline.
 			'avoids "above center"-look if value does not contain such
 			'characters
-			textPos = new TVec2D.Init(5, (rect.GetH() - GetFont().GetMaxCharHeight(False)) /2)
+			textPos = new TVec2D.Init(2, (rect.GetH() - GetFont().GetMaxCharHeight(False)) /2)
 		Else
 			textPos = valueDisplacement.copy()
 		EndIf
@@ -297,13 +304,18 @@ Type TGUIinput Extends TGUIobject
 
 			sprite.DrawArea(atPoint.GetX(), atPoint.getY(), widgetWidth, rect.GetH())
 			'move text according to content borders
-			textPos.SetX(Max(textPos.GetX(), sprite.GetNinePatchContentBorder().GetLeft()))
+			textPos.AddX(sprite.GetNinePatchContentBorder().GetLeft())
+			'textPos.SetX(Max(textPos.GetX(), sprite.GetNinePatchContentBorder().GetLeft()))
 		EndIf
 
 
 		'=== DRAW TEXT/CONTENT ===
 		'limit maximal text width
-		Self.maxTextWidth = widgetWidth - textPos.GetX()*2
+		if maxTextWidthBase > 0
+			Self.maxTextWidthCurrent = Min(maxTextWidthBase, widgetWidth - textPos.GetX()*2)
+		else
+			Self.maxTextWidthCurrent = widgetWidth - textPos.GetX()*2
+		endif
 		'actually draw
 		DrawInputContent(atPoint.Copy().AddXY(textPos.GetX(), textPos.GetY()))
 

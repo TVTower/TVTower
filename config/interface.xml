@@ -46,6 +46,23 @@
  			</children>
 		</spritepack>
 
+		<spritepack name="gfx_interface_ingamechat_elements">
+ 			<url>res/gfx/interface/interface_ingamechat.png</url>
+ 			<children>
+				<child name="gfx_interface_ingamechat_bg"					x="0"	y="0" w="290" h="215" />
+				<child name="gfx_interface_ingamechat_input"				x="378"	y="21" w="77" h="32" ninepatch="true" />
+				<child name="gfx_interface_ingamechat_input.active"			x="300"	y="21" w="77" h="32" ninepatch="true" />
+				<child name="gfx_interface_ingamechat_input.hover"			x="300"	y="21" w="77" h="32" ninepatch="true" />
+				<child name="gfx_interface_ingamechat_arrow.down.highlight"	x="300"	y="0" w="20" h="20" />
+				<child name="gfx_interface_ingamechat_arrow.down.default"	x="320"	y="0" w="20" h="20" />
+				<child name="gfx_interface_ingamechat_arrow.down.active"	x="340"	y="0" w="20" h="20" />
+				<child name="gfx_interface_ingamechat_arrow.up.highlight"	x="360"	y="0" w="20" h="20" />
+				<child name="gfx_interface_ingamechat_arrow.up.default"		x="380"	y="0" w="20" h="20" />
+				<child name="gfx_interface_ingamechat_arrow.up.active"		x="400"	y="0" w="20" h="20" />
+ 			</children>
+		</spritepack>
+
+
 
 		<!-- PROGRAMME GENRE PICTURES -->
 		<!-- IDs from source/game.gameconstants.bmx : TVTProgrammeGenre -->

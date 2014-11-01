@@ -198,21 +198,11 @@ Type TInGameScreen extends TScreen
 		UpdateContent(deltaTime)
 
 
-		'ingamechat
-		If Game.networkgame And KEYMANAGER.IsHit(KEY_ENTER)
-			If Not InGame_Chat.guiInput.hasFocus()
-				If InGame_Chat.antiSpamTimer < Time.GetTimeGone()
-					GUIManager.setFocus( InGame_Chat.guiInput )
-				Else
-					Print "no spam pls (input stays deactivated)"
-				EndIf
-			EndIf
-		EndIf
+		Game.UpdateInGameChat()
 
 		If Not GetWorldTime().IsPaused()
 			Game.Update(deltaTime)
 			GetInGameInterface().Update(deltaTime)
-'			If GetPlayerCollection().Get().Figure.inRoom = Null Then Building.Update(deltaTime)
 			GetBuilding().Elevator.Update()
 			GetFigureCollection().UpdateAll()
 		EndIf

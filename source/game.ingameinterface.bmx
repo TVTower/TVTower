@@ -18,7 +18,9 @@ Type TInGameInterface
 	Field noiseDisplace:Trectangle = new TRectangle.Init(0,0,0,0)
 	Field ChangeNoiseTimer:Float= 0.0
 	Field ShowChannel:Byte 	= 1
-	Field BottomImgDirty:Byte = 1
+	Field ShowChat:int = False
+	Field ShowChatForcedHidden:int = False
+	Field BottomImgDirty:Int = 1
 
 	Global _instance:TInGameInterface
 
@@ -63,11 +65,23 @@ Type TInGameInterface
 		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(400,5, 395,200), new TVec2D.Init(1,0), "TOPRIGHT" )
 		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(5,230, 395,150), new TVec2D.Init(0,1), "BOTTOMLEFT" )
 		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(400,230, 395,150), new TVec2D.Init(1,1), "BOTTOMRIGHT" )
+
+
+		'show chat if an chat entry was added
+		EventManager.registerListenerFunction( "chat.onAddEntry", onIngameChatAddEntry )
 		
 
 		Return self
 	End Method
 
+
+	Function onIngameChatAddEntry:Int( triggerEvent:TEventBase )
+		'ignore if not in a game
+		If not Game.PlayingAGame() then return False
+			
+		GetInstance().ShowChat = True
+	End Function
+	
 
 	Method Update(deltaTime:Float=1.0)
 		local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(ShowChannel)
@@ -258,6 +272,8 @@ Type TInGameInterface
 			BettyToolTip.enabled = 1
 			BettyToolTip.Hover()
 		EndIf
+
+
 	End Method
 
 
@@ -377,11 +393,19 @@ Type TInGameInterface
 'DrawRect(366, 542, 112, 15)
 		GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetWorldTime().getFormattedTime() + " "+GetLocale("OCLOCK"), 366, 540, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(220,220,220), 2, 1, 0.5)
 
+		if ShowChat
+			GetSpriteFromRegistry("gfx_interface_ingamechat_bg").Draw(800, 600, -1, ALIGN_RIGHT_BOTTOM)
+			'arrows
+		else
+			'arrows
+		endif
+		
+	    GUIManager.Draw("InGame")
+
 		For local tip:TTooltip = eachin tooltips
 			If tip.enabled Then tip.Render()
 		Next
 
-	    GUIManager.Draw("InGame")
 
 		TError.DrawErrors()
 	End Method

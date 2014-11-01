@@ -214,25 +214,25 @@ Type TGame {_exposeToLua="selected"}
 
 		'=== GUI SETUP ===
 		'TLogger.Log("TGame", "Creating ingame GUIelements", LOG_DEBUG)
-		InGame_Chat = New TGUIChat.Create(new TVec2D.Init(520, 418), new TVec2D.Init(280,190), "InGame")
+		InGame_Chat = New TGUIChat.Create(new TVec2D.Init(518, 404), new TVec2D.Init(275,180), "InGame")
 		InGame_Chat.setDefaultHideEntryTime(10000)
-		InGame_Chat.guiList.backgroundColor = TColor.Create(0,0,0,0.2)
-		InGame_Chat.guiList.backgroundColorHovered = TColor.Create(0,0,0,0.7)
+'		InGame_Chat.guiList.backgroundColor = TColor.Create(0,0,0,0.8)
+'		InGame_Chat.guiList.backgroundColorHovered = TColor.Create(0,0,0,0.7)
 		InGame_Chat.setOption(GUI_OBJECT_CLICKABLE, False)
 		InGame_Chat.SetDefaultTextColor( TColor.Create(255,255,255) )
 		InGame_Chat.guiList.autoHideScroller = True
 		'remove unneeded elements
 		InGame_Chat.SetBackground(null)
 
-
 		'reposition input
-		InGame_Chat.guiInput.rect.position.setXY( 275, 387)
+		InGame_Chat.guiInput.rect.position.setXY( 515, 354 )
+		InGame_Chat.guiInput.Resize( 280, 30 )
 		InGame_Chat.guiInput.setMaxLength(200)
 		InGame_Chat.guiInput.setOption(GUI_OBJECT_POSITIONABSOLUTE, True)
-		InGame_Chat.guiInput.maxTextWidth = 200
-		InGame_Chat.guiInput.spriteName = "Chat_IngameOverlay"
-		InGame_Chat.guiInput.color.AdjustRGB(255,255,255,True)
-		InGame_Chat.guiInput.SetValueDisplacement(0,5)
+		InGame_Chat.guiInput.SetMaxTextWidth(255)
+		InGame_Chat.guiInput.spriteName = "gfx_interface_ingamechat_input"
+		InGame_Chat.guiInput.color.AdjustRGB(30,30,30,True)
+		InGame_Chat.guiInput.SetValueDisplacement(3,5)
 
 
 		'===== EVENTS =====
@@ -552,9 +552,9 @@ Type TGame {_exposeToLua="selected"}
 	Method _Start:int(startNewGame:int = TRUE)
 		'disable chat if not networkgaming
 		If Not game.networkgame
-			InGame_Chat.hide()
+'			InGame_Chat.hide()
 		Else
-			InGame_Chat.show()
+'			InGame_Chat.show()
 		EndIf
 
 
@@ -624,6 +624,30 @@ Type TGame {_exposeToLua="selected"}
 		SeedRand(randomSeedValue)
 	End Method
 
+
+	Method UpdateInGameChat()
+		'ingamechat
+		'If Game.networkgame And
+		If KEYMANAGER.IsHit(KEY_ENTER)
+			If Not InGame_Chat.guiInput.hasFocus()
+				InGame_Chat.show()
+				
+				If InGame_Chat.antiSpamTimer < Time.GetTimeGone()
+					GUIManager.setFocus( InGame_Chat.guiInput )
+				Else
+					Print "no spam pls (input stays deactivated)"
+				EndIf
+			EndIf
+		EndIf
+	End Method
+
+
+	Method PlayingAGame:int()
+		if gamestate <> TGame.STATE_RUNNING then return False
+
+		return True
+	End Method
+	
 
 	Method ComputeNextXRatedCheckMinute()
 		'do not use the timeslots 50-54 ... maybe thats too late?

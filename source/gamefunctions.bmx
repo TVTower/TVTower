@@ -374,6 +374,8 @@ Type TGUIChat Extends TGUIPanel
 		Select getSpecialCommandFromText(text)
 			Case CHAT_COMMAND_WHISPER
 				sendToChannels :| CHAT_CHANNEL_PRIVATE
+			Case CHAT_COMMAND_SYSTEM
+				sendToChannels :| CHAT_CHANNEL_SYSTEM
 			Default
 				sendToChannels :| CHAT_CHANNEL_GLOBAL
 		End Select
@@ -398,6 +400,13 @@ Type TGUIChat Extends TGUIPanel
 				'print "whisper to: " + "-"+target+"-"
 				'print "whisper msg:" + message
 				Return CHAT_COMMAND_WHISPER
+			Case "dev", "sys"
+				'local spacePos:int = instr(payload, " ")
+				'local target:string = Mid(payload, 1, spacePos-1 ).toLower()
+				'local message:string = Right(payload, payload.length -spacePos)
+				'print "whisper to: " + "-"+target+"-"
+				'print "whisper msg:" + message
+				Return CHAT_COMMAND_SYSTEM
 			Default
 				'print "command: -"+commandString+"-"
 				'print "payload: -"+payload+"-"
