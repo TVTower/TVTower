@@ -85,6 +85,11 @@ Type TPublicImage {_exposeToLua="selected"}
 
 
 	Method ChangeImage(imageChange:TAudience)
+		if not imageChange
+			print "ChangeImage(): imageChange missing !"
+			end
+		endif
+
 		ImageValues.Add(imageChange)
 		'avoid negative values -> cut to at least 0
 		'also avoid values > 100

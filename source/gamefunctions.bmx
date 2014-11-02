@@ -294,6 +294,17 @@ Type TGUIChat Extends TGUIPanel
 	End Method
 
 
+	'only hides the box with the messages
+	Method HideChat:int()
+		guiList.Hide()
+	End Method
+
+
+	Method ShowChat:int()
+		guiList.Show()
+	End Method
+	
+
 	'returns boolean whether chat listens to a channel
 	Method isListeningToChannel:Int(channel:Int)
 		Return Self._channels & channel

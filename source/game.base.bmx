@@ -223,7 +223,8 @@ Type TGame {_exposeToLua="selected"}
 '		InGame_Chat.guiList.backgroundColorHovered = TColor.Create(0,0,0,0.7)
 		InGame_Chat.setOption(GUI_OBJECT_CLICKABLE, False)
 		InGame_Chat.SetDefaultTextColor( TColor.Create(255,255,255) )
-		InGame_Chat.guiList.autoHideScroller = True
+		'bugged:
+		'InGame_Chat.guiList.autoHideScroller = True
 		'remove unneeded elements
 		InGame_Chat.SetBackground(null)
 
@@ -716,8 +717,6 @@ Type TGame {_exposeToLua="selected"}
 		'If Game.networkgame And
 		If KEYMANAGER.IsHit(KEY_ENTER)
 			If Not InGame_Chat.guiInput.hasFocus()
-				InGame_Chat.show()
-				
 				If InGame_Chat.antiSpamTimer < Time.GetTimeGone()
 					GUIManager.setFocus( InGame_Chat.guiInput )
 				Else

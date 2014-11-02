@@ -18,8 +18,9 @@ Type TInGameInterface
 	Field noiseDisplace:Trectangle = new TRectangle.Init(0,0,0,0)
 	Field ChangeNoiseTimer:Float= 0.0
 	Field ShowChannel:Byte 	= 1
-	Field ShowChat:int = False
-	Field ShowChatForcedHidden:int = False
+	Field ChatShow:int = False
+	Field ChatContainsUnread:int = False
+	Field ChatShowHideLocked:int = False
 	Field BottomImgDirty:Int = 1
 
 	Global _instance:TInGameInterface
@@ -78,8 +79,14 @@ Type TInGameInterface
 	Function onIngameChatAddEntry:Int( triggerEvent:TEventBase )
 		'ignore if not in a game
 		If not Game.PlayingAGame() then return False
-			
-		GetInstance().ShowChat = True
+
+		'mark that there is something to read
+		GetInstance().ChatContainsUnread = True
+
+		'if user did not lock the current view
+		If not GetInstance().ChatShowHideLocked
+			GetInstance().ChatShow = True
+		EndIf
 	End Function
 	
 
@@ -274,6 +281,48 @@ Type TInGameInterface
 		EndIf
 
 
+		'=== SHOW / HIDE / LOCK CHAT ===
+		if not ChatShow
+			'arrow area
+			if MouseManager.IsHit(1) and THelper.MouseIn(540, 397, 200, 20)
+				'reset unread
+				ChatContainsUnread = False
+
+				ChatShow = True
+				InGame_Chat.ShowChat()
+
+				MouseManager.ResetKey(1)
+			endif
+			'lock area
+			if MouseManager.IsHit(1) and THelper.MouseIn(770, 397, 20, 20)
+				ChatShowHideLocked = 1- ChatShowHideLocked
+			endif
+		else
+			'arrow area
+			if MouseManager.IsHit(1) and THelper.MouseIn(540, 583, 200, 17)
+				'reset unread
+				ChatContainsUnread = False
+
+				ChatShow = False
+				InGame_Chat.HideChat()
+
+				MouseManager.ResetKey(1)
+			endif
+			'lock area
+			if MouseManager.IsHit(1) and THelper.MouseIn(770, 583, 20, 20)
+				ChatShowHideLocked = 1 - ChatShowHideLocked
+			endif
+		endif
+
+		if not ChatShowHideLocked
+			if not ChatShow
+				InGame_Chat.HideChat()
+			else
+				InGame_Chat.ShowChat()
+			endif
+		endif
+		'====
+
 	End Method
 
 
@@ -393,12 +442,38 @@ Type TInGameInterface
 'DrawRect(366, 542, 112, 15)
 		GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetWorldTime().getFormattedTime() + " "+GetLocale("OCLOCK"), 366, 540, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(220,220,220), 2, 1, 0.5)
 
-		if ShowChat
+
+		'=== DRAW CHAT OVERLAY + ARROWS ===
+		local arrowPos:int = 0
+		local arrowDir:string = ""
+		local arrowMode:string = "default"
+		local lockMode:string = "unlocked"
+		if ChatShowHideLocked then lockMode = "locked"
+		if ChatContainsUnread then arrowMode = "highlight"
+
+		if ChatShow
 			GetSpriteFromRegistry("gfx_interface_ingamechat_bg").Draw(800, 600, -1, ALIGN_RIGHT_BOTTOM)
-			'arrows
+			arrowPos = 583
+			arrowDir = "up"
 		else
-			'arrows
+			arrowPos = 397
+			arrowDir = "down"
 		endif
+	
+		if THelper.MouseIn(540, arrowPos, 200, 20)
+			arrowMode = "active"
+		endif
+		if THelper.MouseIn(770, arrowPos, 20, 20)
+			lockMode = "active"
+		endif
+		
+		'arrows
+		GetSpriteFromRegistry("gfx_interface_ingamechat_arrow."+arrowDir+"."+arrowMode).Draw(540, arrowPos)
+		GetSpriteFromRegistry("gfx_interface_ingamechat_arrow."+arrowDir+"."+arrowMode).Draw(720, arrowPos)
+		'key
+		GetSpriteFromRegistry("gfx_interface_ingamechat_key."+lockMode).Draw(770, arrowPos)
+		'===
+
 		
 	    GUIManager.Draw("InGame")
 

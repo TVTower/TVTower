@@ -59,6 +59,9 @@
 				<child name="gfx_interface_ingamechat_arrow.up.highlight"	x="360"	y="0" w="20" h="20" />
 				<child name="gfx_interface_ingamechat_arrow.up.default"		x="380"	y="0" w="20" h="20" />
 				<child name="gfx_interface_ingamechat_arrow.up.active"		x="400"	y="0" w="20" h="20" />
+				<child name="gfx_interface_ingamechat_key.locked"			x="420"	y="0" w="17" h="20" />
+				<child name="gfx_interface_ingamechat_key.unlocked"			x="437"	y="0" w="17" h="20" />
+				<child name="gfx_interface_ingamechat_key.active"			x="454"	y="0" w="17" h="20" />
  			</children>
 		</spritepack>
 
