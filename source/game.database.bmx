@@ -900,7 +900,7 @@ Type TDatabaseLoader
 				data.genre = TVTProgrammeGenre.Undefined
 				data.SetFlag(TProgrammeData.FLAG_TRASH)
 			case 17 'old SHOW
-				data.genre = TVTProgrammeGenre.Undefined_Show
+				data.genre = TVTProgrammeGenre.Show
 			case 18 'old MONUMENTAL
 				data.genre = TVTProgrammeGenre.Monumental
 			case 19 'TProgrammeData.GENRE_FILLER 'TV films etc.

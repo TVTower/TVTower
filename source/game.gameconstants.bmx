@@ -77,19 +77,22 @@ Type TVTProgrammeGenre
 	const SciFi:int = 16
 	const Thriller:int = 17
 	const Western:int = 18
- 
+
 	'Show-Genre 100+
-	const Undefined_Show:int = 200
+	const Show:int = 100			'Shows Allgemein
+	const ShowPolitics:int = 101	'Polit-Talks
+	const ShowMusic:int = 102		'Musik-Sendungen
 
 	'Event-Genre 200+
-	const Politics:int = 201 'Wahlen, Große Reden, Bundestagsdebatte
-	const Music:int = 202 'AC/DC-Konzert
-	const Sport:int = 203 'Fussball WM, Olymische Spiele
-	const Showbiz:int = 204 'Oscarverleihung, Golden Globes, Gala-Abend
+	const Event:int	= 200			'allgemeine "Ereignisse"
+	const EventPolitics:int = 201	'Wahlen, Große Reden, Bundestagsdebatte
+	const EventMusic:int = 202		'AC/DC-Konzert
+	const EventSport:int = 203		'Fussball WM, Olymische Spiele
+	const EventShowbiz:int = 204	'Oscarverleihung, Golden Globes, Gala-Abend
  
 	'Reportage-Genre 300+
-	const Undefined_Reportage:int = 300
-	const YellowPress:int = 301
+	const Feature:int = 300
+	const FeatureYellowPress:int = 301
 
 	'returns a textual version of the id
 	Function GetGenreStringID:string(id:int)
@@ -113,15 +116,18 @@ Type TVTProgrammeGenre
 			case Thriller				return "thriller"
 			case Western				return "western"
 			'Show-Genre 100+
-			case Undefined_Show			return "showevent_undefined"
+			case Show					return "show"
+			case ShowMusic				return "show_music"
+			case ShowPolitics			return "show_politics"
 			'Event-Genre 200+
-			case Politics				return "showevent_politics"
-			case Music					return "showevent_music"
-			case Sport					return "showevent_sport"
-			case Showbiz				return "showevent_showbiz"
+			case Event					return "event"
+			case EventPolitics			return "event_politics"
+			case EventMusic				return "event_music"
+			case EventSport				return "event_sport"
+			case EventShowbiz			return "event_showbiz"
 			'Reportage-Genre 300+
-			case Undefined_Reportage	return "reportage_undefined"
-			case YellowPress			return "reportage_yellowpress"
+			case Feature				return "feature"
+			case FeatureYellowPress		return "feature_yellowpress"
 
 			case Undefined				return "undefined"
 			default						return "undefined"

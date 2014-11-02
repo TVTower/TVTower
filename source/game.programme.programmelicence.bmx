@@ -1065,6 +1065,7 @@ End Type
 TProgrammeLicenceFilter.Init()
 
 Type TProgrammeLicenceFilter
+	Field caption:string = ""
 	Field genres:Int[]
 	Field flags:int
 	Field notFlags:int
@@ -1093,10 +1094,11 @@ Type TProgrammeLicenceFilter
 		CreateVisible().AddNotFlag(categoryFlags).AddGenres([2])			'action
 		CreateVisible().AddNotFlag(categoryFlags).AddGenres([4, 17])		'crime & thriller
 		CreateVisible().AddNotFlag(categoryFlags).AddGenres([5])			'comedy
-		CreateVisible().AddNotFlag(categoryFlags).AddGenres([6, 300])		'documentation & reportage
+		'documentation & reportage
+		CreateVisible().AddNotFlag(categoryFlags).AddGenres([6, 300]).SetCaption("PROGRAMME_GENRE_DOCUMENTARIES_AND_FEATURES")
 		CreateVisible().AddNotFlag(categoryFlags).AddGenres([7])			'drama
 		CreateVisible().AddNotFlag(categoryFlags).AddGenres([8])			'erotic
-		CreateVisible().AddNotFlag(categoryFlags).AddGenres([9, 3])		'family & cartoons
+		CreateVisible().AddNotFlag(categoryFlags).AddGenres([9, 3])			'family & cartoons
 		CreateVisible().AddNotFlag(categoryFlags).AddGenres([10, 14])		'fantasy & mystery
 		CreateVisible().AddNotFlag(categoryFlags).AddGenres([11])			'history
 		CreateVisible().AddNotFlag(categoryFlags).AddGenres([12])			'horror
@@ -1105,10 +1107,11 @@ Type TProgrammeLicenceFilter
 		CreateVisible().AddNotFlag(categoryFlags).AddGenres([16])			'scifi
 		CreateVisible().AddNotFlag(categoryFlags).AddGenres([18])			'western
 		CreateVisible().AddNotFlag(categoryFlags).AddGenres([0])			'undefined
-		CreateVisible().AddNotFlag(categoryFlags).AddGenres([200])		'show/event
-		CreateVisible().AddFlag(TProgrammeData.FLAG_LIVE)		'live
-		CreateVisible().AddFlag(TProgrammeData.FLAG_TRASH)		'Trash
-		CreateVisible().AddFlag(TProgrammeData.FLAG_PAID)		'Call-In
+		'show/event -> all categories
+		CreateVisible().AddNotFlag(categoryFlags).AddGenres([100, 101, 102, 200, 201, 202, 203, 204]).SetCaption("PROGRAMME_GENRE_SHOW_AND_EVENTS")
+		CreateVisible().AddFlag(TProgrammeData.FLAG_LIVE)					'live
+		CreateVisible().AddFlag(TProgrammeData.FLAG_TRASH).AddGenres([301])	'Trash + Yellow Press
+		CreateVisible().AddFlag(TProgrammeData.FLAG_PAID)					'Call-In
 	End Function
 
 
@@ -1133,6 +1136,35 @@ Type TProgrammeLicenceFilter
 
 		return filter
 	End Function
+
+
+	Method SetCaption(caption:String)
+		self.caption = caption
+	End Method
+
+
+	Method GetCaption:string()
+		if caption then return GetLocale(caption)
+
+		local result:string
+'		if result = ""
+			local flag:int = 0
+			For local flagNumber:int = 0 to 7
+				flag = 2^flagNumber
+				'contains that flag?
+				if flags & flag > 0
+					if result <> "" then result :+ " & "
+					result :+ GetLocale("PROGRAMME_FLAG_" + int(2^flagNumber))
+				endif
+			Next
+'		endif
+
+		For local entry:int = EachIn GetGenres()
+			if result <> "" then result :+ " & "
+			result :+ GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetGenreStringID(entry))
+		Next
+		return result
+	End Method
 
 
 	Function GetCount:Int()

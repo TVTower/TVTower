@@ -1069,22 +1069,7 @@ Type TgfxProgrammelist extends TPlannerList
 
 
 				Local licenceCount:Int = programmeCollection.GetFilteredLicenceCount(visibleFilters[i])
-				Local filterName:string = ""
-				For local entry:int = EachIn visibleFilters[i].GetGenres()
-					if filterName <> "" then filterName :+ " & "
-					filterName :+ GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetGenreStringID(entry))
-				Next
-				if filterName = ""
-					local flag:int = 0
-					For local flagNumber:int = 0 to 7
-						flag = 2^flagNumber
-						'contains that flag?
-						if visibleFilters[i].flags & flag > 0
-							if filterName <> "" then filterName :+ " & "
-							filterName :+ GetLocale("PROGRAMME_FLAG_" + int(2^flagNumber))
-						endif
-					Next
-				endif
+				Local filterName:string = visibleFilters[i].GetCaption()
 
 				
 				If licenceCount > 0
