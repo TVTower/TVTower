@@ -9,6 +9,7 @@ Import "Dig/base.util.registry.spriteloader.bmx"
 Import "game.gameobject.bmx"
 Import "game.broadcastmaterial.base.bmx"
 Import "game.programme.programmedata.bmx"
+Import "game.player.base.bmx"
 Import "game.player.finance.bmx"
 Import "game.broadcast.audience.bmx"
 Import "game.broadcast.broadcaststatistic.bmx"
@@ -849,17 +850,25 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 		
 		'price
-rem
-	to enable this, code must be restructured (player class)
 		local finance:TPlayerFinance
 		'only check finances if it is no other player (avoids exposing
 		'that information to us)
-		if GetPlayerCollection().playerID = owner
-			finance = GetPlayerFinanceCollection().Get(owner, -1)
+		if owner <= 0 or GetPlayerBaseCollection().playerID = owner
+			finance = GetPlayerFinanceCollection().Get(GetPlayerBaseCollection().playerID, -1)
 		endif
-endrem
-		local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(owner, -1)
-		if not finance or finance.canAfford(GetPrice())
+		local canAfford:int = False
+		'possessing player always can
+		if GetPlayerBaseCollection().playerID = owner
+			canAfford = True
+		'if it is another player... just display "can afford"
+		elseif owner >= 0
+			canAfford = True
+		'not our licence but enough money to buy
+		elseif finance and finance.canAfford(GetPrice())
+			canAfford = True
+		endif
+		
+		if canAfford
 			fontBold.drawBlock(TFunctions.DottedValue(GetPrice()), currX + 227, currY, 55, 15, ALIGN_RIGHT_CENTER, textColor, 0,1,1.0,True, True)
 		else
 			fontBold.drawBlock(TFunctions.DottedValue(GetPrice()), currX + 227, currY, 55, 15, ALIGN_RIGHT_CENTER, TColor.Create(200,0,0), 0,1,1.0,True, True)
