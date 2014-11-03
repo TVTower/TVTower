@@ -296,6 +296,27 @@ Type TGUIListBase Extends TGUIobject
 	End Method
 
 
+	Method IsAtListBottom:int()
+		local result:int = 1 > Floor(Abs(guiEntriesPanel.scrollLimit.GetY() - guiEntriesPanel.scrollPosition.getY()))
+
+		'if all items fit on the screen, scroll limit will be
+		'lower than the container panel 
+		if Abs(guiEntriesPanel.scrollLimit.GetY()) < guiEntriesPanel.GetScreenHeight()
+			'if scrolled = 0 this could also mean we scrolled up to the top part
+			'in this case we check if the last item in the list fits into the
+			'panel
+			if guiEntriesPanel.scrollPosition.getY() = 0
+				result = 1
+				local lastItem:TGUIListItem = TGUIListItem(entries.Last())
+				if lastItem and lastItem.GetScreenY() > guiEntriesPanel.getScreenY() + guiEntriesPanel.getScreenheight()
+					result = 0
+				endif
+			endif
+		endif
+		return result
+	End Method
+
+
 	'recalculate scroll maximas, item positions...
 	Method RecalculateElements:Int()
 		local startPos:TVec3D = _entriesBlockDisplacement.copy()
@@ -379,10 +400,10 @@ Type TGUIListBase Extends TGUIobject
 				'determine if we did not scroll the list to a middle
 				'position so this is true if we are at the very bottom
 				'of the list aka "the end"
-				Local atListBottom:Int = 1 > Floor(Abs(guiEntriesPanel.scrollLimit.GetY() - guiEntriesPanel.scrollPosition.getY()))
+				Local atListBottom:Int = IsAtListBottom()
 
 				'set scroll limits:
-				If autoscroll or dimension.getY() < guiEntriesPanel.getScreenheight()
+				if dimension.getY() < guiEntriesPanel.getScreenheight()
 					'if there are only some elements, they might be
 					'"less high" than the available area - no need to
 					'align them at the bottom
@@ -401,7 +422,6 @@ Type TGUIListBase Extends TGUIobject
 							guiEntriesPanel.SetLimits(0, - (dimension.getY() - guiEntriesPanel.getScreenheight()))
 '						endif
 					endif
-
 					'in case of auto scrolling we should consider
 					'scrolling to the next visible part
 					If autoscroll And (Not scrollerUsed Or atListBottom) Then scrollToLastItem()
@@ -436,6 +456,10 @@ Type TGUIListBase Extends TGUIobject
 				EndIf
 
 		End Select
+
+		guiScrollerH.SetValueRange(0, dimension.getX())
+		guiScrollerV.SetValueRange(0, dimension.getY())
+
 
 		'if not all entries fit on the panel, enable scroller
 		SetScrollerState(..
@@ -591,12 +615,23 @@ endrem
 
 		'by default scroll by 2 pixels
 		Local scrollAmount:Int = data.GetInt("scrollAmount", 2)
-'print "onScroll"
 		'this should be "calculate height and change amount"
 		If data.GetString("direction") = "up" Then guiList.ScrollEntries(0, +scrollAmount)
 		If data.GetString("direction") = "down" Then guiList.ScrollEntries(0, -scrollAmount)
 		If data.GetString("direction") = "left" Then guiList.ScrollEntries(+scrollAmount,0)
 		If data.GetString("direction") = "right" Then guiList.ScrollEntries(-scrollAmount,0)
+
+		'maybe data was given in percents - so something like a
+		'"scrollTo"-value
+		If data.getString("changeType") = "percentage"
+			local percentage:Float = data.GetFloat("percentage", 0)
+			print percentage
+			if guiSender = guiList.guiScrollerH
+				guiList.SetScrollPercentageX(percentage)
+			elseif guiSender = guiList.guiScrollerV
+				guiList.SetScrollPercentageY(percentage)
+			endif
+		endif
 		'from now on the user decides if he wants the end of the chat or stay inbetween
 		guiList.scrollerUsed = True
 	End Function
@@ -605,6 +640,28 @@ endrem
 	'positive values scroll to top or left
 	Method ScrollEntries(dx:float, dy:float)
 		guiEntriesPanel.scroll(dx,dy)
+	End Method
+
+
+	Method GetScrollPercentageY:Float()
+		return guiEntriesPanel.GetScrollPercentageY()
+	End Method
+
+
+	Method GetScrollPercentageX:Float()
+		return guiEntriesPanel.GetScrollPercentageX()
+	End Method
+
+
+	Method SetScrollPercentageX:Float(percentage:float = 0.0)
+		guiScrollerH.SetRelativeValue(percentage)
+		return guiEntriesPanel.SetScrollPercentageX(percentage)
+	End Method
+
+
+	Method SetScrollPercentageY:Float(percentage:float = 0.0)
+		guiScrollerH.SetRelativeValue(percentage)
+		return guiEntriesPanel.SetScrollPercentageY(percentage)
 	End Method
 
 
@@ -678,8 +735,7 @@ endrem
 	Method DrawContent()
 		'
 	End Method
-
-
+	
 
 	Method DrawDebug()
 		If _debugMode

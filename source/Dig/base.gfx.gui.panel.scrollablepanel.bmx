@@ -75,16 +75,54 @@ Type TGUIScrollablePanel Extends TGUIPanel
 	End Method
 
 
-	Method Scroll:Int(dx:Float,dy:Float)
-		scrollPosition.AddXY(dx, dy)
+	Method ScrollToX:Int(x:Float)
+		scrollPosition.SetX(x)
 
 		'check limits
-		scrollPosition.SetY(Min(0, scrollPosition.GetY()))
-		scrollPosition.SetY(Max(scrollPosition.GetY(), scrollLimit.GetY()))
-
-		scrollPosition.SetX(Min(0, scrollPosition.GetX()))
-		scrollPosition.SetX(Max(scrollPosition.GetX(), scrollLimit.GetX()))
+		scrollPosition.SetX(Max(Min(0, scrollPosition.GetX()), scrollLimit.GetX()))
 	End Method
+
+
+	Method ScrollToY:Int(y:Float)
+		scrollPosition.SetY(Y)
+
+		'check limits
+		scrollPosition.SetY(Max(Min(0, scrollPosition.GetY()), scrollLimit.GetY()))
+	End Method
+
+
+	Method Scroll:Int(dx:Float,dy:Float)
+		ScrollToX(scrollPosition.GetX() + dx)
+		ScrollToY(scrollPosition.GetY() + dy)
+	End Method
+
+
+	Method GetScrollPercentageX:Float()
+		if scrollLimit.GetX() = 0 then return 0
+		return Max(0, Min(100, scrollPosition.getX() / scrollLimit.GetX()))
+	End Method
+
+
+	Method GetScrollPercentageY:Float()
+		if scrollLimit.GetY() = 0 then return 0
+		return Max(0, Min(100, scrollPosition.getY() / scrollLimit.GetY()))
+	End Method
+
+
+	Method SetScrollPercentageX:Float(percentage:float = 0.0)
+		percentage = Max(0, Min(100, percentage))
+		scrollPosition.SetX( percentage * scrollLimit.GetX() )
+		return scrollPosition.GetX()
+	End Method
+
+
+	Method SetScrollPercentageY:Float(percentage:float = 0.0)
+		percentage = Max(0, Min(100, percentage))
+		scrollPosition.SetY( percentage * scrollLimit.GetY() )
+		return scrollPosition.GetY()
+	End Method
+
+	
 
 
 	Method RestrictViewport:Int()

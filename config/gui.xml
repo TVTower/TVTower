@@ -15,6 +15,9 @@
 				<child name="gfx_gui_button.round"						x="288"	y="40"	w="36"	h="36" ninepatch="true" />
 				<child name="gfx_gui_button.round.hover"				x="324"	y="40"	w="36"	h="36" ninepatch="true" />
 				<child name="gfx_gui_button.round.active"				x="360"	y="40"	w="36"	h="36" ninepatch="true" />
+				<child name="gfx_gui_button.rounded"					x="396"	y="40"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.rounded.hover"				x="421"	y="40"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.rounded.active"				x="446"	y="40"	w="25"	h="25" ninepatch="true" />
 
 				<!-- input sprites -->
 				<child name="gfx_gui_input.default"						x="0"	y="40"	w="36"	h="36" ninepatch="true" />

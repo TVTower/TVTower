@@ -17,6 +17,12 @@ Type TGUIScroller Extends TGUIobject
 	Field mouseDownTime:Int = 250	'milliseconds until we react on "mousedown"
 	Field guiButtonMinus:TGUIArrowButton = Null
 	Field guiButtonPlus:TGUIArrowButton	= Null
+	Field minValue:Double = 0
+	Field maxValue:Double = 100
+	'area showing progress / react to clicks
+	Field progressRect:TRectangle = new TRectangle.Init()
+	Field progressRectHovered:int = False
+	Field currentValue:Double
 	Field _orientation:int = GUI_OBJECT_ORIENTATION_VERTICAL
 
 
@@ -26,6 +32,9 @@ Type TGUIScroller Extends TGUIobject
 		'create buttons
 		guiButtonMinus = New TGUIArrowButton.Create(Null, null, "UP", "")
 		guiButtonPlus = New TGUIArrowButton.Create(Null, null, "DOWN", "")
+
+		guiButtonMinus.spriteButtonBaseName = "gfx_gui_button.rounded"
+		guiButtonPlus.spriteButtonBaseName = "gfx_gui_button.rounded"
 
 		'set the buttons to ignore focus setting
 		guiButtonMinus.setOption(GUI_OBJECT_CAN_GAIN_FOCUS, False)
@@ -91,7 +100,74 @@ Type TGUIScroller Extends TGUIobject
 		guiButtonMinus.rect.position.SetXY(0, 0)
 		'move the second button to the most right and bottom position
 		guiButtonPlus.rect.position.SetXY(GetScreenWidth() - guiButtonPlus.GetScreenWidth(), GetScreenHeight() - guiButtonPlus.GetScreenHeight())
+
+
+		'=== PROGRESS RECT ===
+		'fill whole area
+		progressRect.SetXYWH(0,0,GetScreenWidth(),GetScreenHeight())
+		'subtract buttons
+		Select _orientation
+			case GUI_OBJECT_ORIENTATION_HORIZONTAL
+				progressRect.position.AddY(+guiButtonMinus.rect.GetH()/4)
+				progressRect.dimension.SetY(+guiButtonMinus.rect.GetH()/2)
+				
+				progressRect.position.AddX(+guiButtonMinus.rect.GetW() - 2)
+				progressRect.dimension.AddX(-guiButtonMinus.rect.GetW() - guiButtonPlus.rect.GetW() + 2)
+			case GUI_OBJECT_ORIENTATION_VERTICAL
+				progressRect.position.AddX(+guiButtonMinus.rect.GetW()/4)
+				progressRect.dimension.SetX(+guiButtonMinus.rect.GetW()/2)
+
+				progressRect.position.AddY(+guiButtonMinus.rect.GetH() - 2)
+				progressRect.dimension.AddY(-guiButtonMinus.rect.GetH() - guiButtonPlus.rect.GetH() + 2)
+		End Select
 	End Method
+
+
+	Method SetMinValue(value:Double)
+		minValue = value
+
+		'sort min max
+		if minValue > maxValue
+			local old:Double = minValue
+			minValue = maxValue
+			maxValue = minValue
+		endif
+	End Method
+
+
+	Method SetMaxValue(value:Double)
+		maxValue = value
+
+		'sort min max
+		if minValue > maxValue
+			local old:Double = minValue
+			minValue = maxValue
+			maxValue = minValue
+		endif
+	End Method
+
+
+	Method SetValueRange(minValue:Double, maxValue:Double)
+		SetMinValue(minValue)
+		SetMaxValue(maxValue)
+	End Method
+
+
+	Method SetCurrentValue(currentValue:Double)
+		self.currentValue = Max(minValue, Min(maxValue, currentValue))
+	End Method
+
+
+	Method GetRelativeValue:Float()
+		return Min(1.0, Max(0.0, currentValue / (maxValue - minValue)))
+	End Method
+
+
+	Method SetRelativeValue:Double(percentage:Float)
+		SetCurrentValue(percentage * (maxValue - minValue))
+		return currentValue
+	End Method
+
 
 
 	Method SetOrientation:int(orientation:Int=0)
@@ -173,26 +249,74 @@ Type TGUIScroller Extends TGUIobject
 	End Method
 
 
+	'override to add progressRect-click support
+	Method Update:int()
+		Super.Update()
+
+		'check if mouse over progressRect
+		if not mouseover
+			progressRectHovered = False
+
+		else
+			local overPos:TVec2D = new TVec2D.Init( MouseManager.x -GetScreenX(), MouseManager.y -GetScreenY())
+			if progressRect.ContainsVec(overPos)
+				progressRectHovered = True
+			endif
+
+			'check if mouse clicked on the progressRect
+			if mouseIsClicked
+				'convert clicked position to local widget coordinates
+				local clickPos:TVec2D = mouseIsClicked.Copy()
+				clickPos.AddXY(-GetScreenX(), -GetScreenY())
+				if progressRect.ContainsVec(clickPos)
+'					clickPos.AddXY(progressRect.GetX(), progressRect.GetY())
+					local progress:float = 0
+				
+					Select _orientation
+						case GUI_OBJECT_ORIENTATION_HORIZONTAL
+							if progressRect.GetW() > 0
+								'subtract progress start from position
+								progress = clickPos.x / progressRect.GetW()
+							endif
+						case GUI_OBJECT_ORIENTATION_VERTICAL
+							if progressRect.GetH() > 0
+								'subtract progress start from position
+								clickPos.y :- progressRect.GetY()
+								progress = clickPos.y / progressRect.GetH()
+							endif
+					End Select
+					'scroll to the percentage
+					SetRelativeValue(progress)
+					'inform others
+					EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("changeType", "percentage").AddNumber("percentage", GetRelativeValue()), self ) )
+
+					'reset clicked state and button state
+					mouseIsClicked = Null
+					MouseManager.ResetKey(1)
+				endif
+			endif
+		endif
+	End Method
+	
+
 	Method DrawContent()
 		local oldCol:TColor = new TColor.Get()
 		SetAlpha oldCol.a * GetScreenAlpha() * 0.20
 
-		SetColor 125,0,0
-		Local width:Int = guiButtonMinus.GetScreenWidth()
-		Local height:Int = guiButtonMinus.GetScreenHeight()
-rem
+		'draw a area to click on
+		if progressRectHovered
+			SetColor 125,0,0
+		else
+			SetColor 125,50,50
+		endif
+		DrawRect(GetScreenX() + progressRect.GetX(), GetScreenY() + progressRect.GetY(), progressRect.GetW(), progressRect.GetH())
+
+		SetAlpha oldCol.a * GetScreenAlpha() * 0.5
 		Select _orientation
-			Case GUI_OBJECT_ORIENTATION_VERTICAL
-				DrawRect(GetScreenX() + width/4, GetScreenY() + height/2, width/2, GetScreenHeight() - height)
-			Default
-				DrawRect(GetScreenX() + width/2, GetScreenY() + height/4, GetScreenWidth() - width, height/2)
-		End Select
-endrem
-		Select _orientation
-			Case GUI_OBJECT_ORIENTATION_VERTICAL
-				DrawRect(GetScreenX() + width/4, GetScreenY() + 0.75*height, width/2, GetScreenHeight() - 1.25*height)
-			Default
-				DrawRect(GetScreenX() + 0.75*width, GetScreenY() + height/4, GetScreenWidth() - 1.25*width, height/2)
+			case GUI_OBJECT_ORIENTATION_HORIZONTAL
+				DrawRect(GetScreenX() + progressRect.GetX() + GetRelativeValue() * progressRect.GetW(), GetScreenY() + progressRect.GetY(), 3, progressRect.GetH())
+			case GUI_OBJECT_ORIENTATION_VERTICAL
+				DrawRect(GetScreenX() + progressRect.GetX(), GetScreenY() + progressRect.GetY() + GetRelativeValue() * progressRect.GetH(), progressRect.GetW(), 3)
 		End Select
 
 		oldCol.SetRGBA()
