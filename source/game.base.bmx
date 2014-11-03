@@ -632,14 +632,7 @@ Type TGame {_exposeToLua="selected"}
 
 		local PLAYER_NOT_FOUND:String = "[DEV] player not found."
 
-		Select command.toLower()
-			case "help"
-				local commands:string = ""
-				commands :+ "money [player#] [+- money]~n"
-				commands :+ "bossmood [player#] [+- mood %]~n"
-				commands :+ "image [player#] [+- image %]~n"
-				SendSystemMessage("[DEV] available commands:~n"+commands)
-
+		Select command.Trim().toLower()
 			case "bossmood"
 				if not player then Return SendSystemMessage(PLAYER_NOT_FOUND)
 
@@ -676,11 +669,23 @@ Type TGame {_exposeToLua="selected"}
 				endif
 				SendSystemMessage("[DEV] Image of player "+playerS+": "+player.GetPublicImage().GetAverageImage()+"%." + changed)
 
+			case "help"
+				SendHelp()
+
 			default
-				SendSystemMessage("[DEV] unknown command: ~q"+command+"~q")
+				SendHelp()
+				'SendSystemMessage("[DEV] unknown command: ~q"+command+"~q")
 		End Select
 
 
+		Function SendHelp()
+				local commands:string = ""
+				commands :+ "money [player#] [+- money]~n"
+				commands :+ "bossmood [player#] [+- mood %]~n"
+				commands :+ "image [player#] [+- image %]"
+				SendSystemMessage("[DEV] available commands:~n"+commands)
+		End Function
+		
 		'internal helper function
 		Function FillCommandPayload(text:string, command:string var, payload:string var)
 			local spacePos:int = text.Find(" ")

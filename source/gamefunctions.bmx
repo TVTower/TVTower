@@ -613,6 +613,8 @@ Type TGUIChatEntry Extends TGUIListItem
 		SetValue(text)
 		SetValueColor(textColor)
 
+		GetDimension()
+
 		Return Self
 	End Method
 
