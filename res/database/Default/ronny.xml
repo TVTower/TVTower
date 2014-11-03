@@ -1,53 +1,286 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
-	<allmovies>
-		<movie>
-			<title>Wahre Pantoffelhelden</title>
-			<description>Gudrun erbt die Pantoffelfabrik ihres Vaters - der Bürgermeister intrigiert und die Stadt braucht ...wahre Pantoffelhelden um die Fabrik zu retten.</description>
-			<data actors="Patty Glansen" director="Henry Cutamaran" country="D" year="1983" genre="19"  blocks="2" price="35" critics="100" speed="50" outcome="120" />
-			<created_by name="Ronny" userID="5578" />
-		</movie>
-		<movie>
-			<title>Die Kartoffelkönigin</title>
-			<description>Glansen verzückt die Bauern. Dicke Kartoffeln und Dumme Bauern sucht man vergebens in dieser herzlich warmen und romantischen Fernsehkomödie.</description>
-			<data actors="Patty Glansen" director="Henry Cutamaran" country="D" year="1985" genre="19"  blocks="2" price="45" critics="80" speed="70" outcome="105" />
-			<created_by name="Ronny" userID="5578" />
-		</movie>
-	</allmovies>
-	<allseries>
-		<serie>
-			<title>Brisante Ufer</title>
-			<description>Ein Kamerateam begleitet Rettungsschwimmer und andere Helden unserer heimischen Gewässer.</description>
-			<data actors="Laiendarsteller" director="Klaus Grobe" country="D" year="1982" genre="19"  blocks="1" price="30" critics="110" speed="50" />
-			<created_by name="Ronny" userID="5578" />
-			<episode number="1">
-				<title>Die Wasserwacht</title>
-				<description>Männer mit wettergegerbter Haut, viel Spritzwasser und eine launische See sind die Helden dieser Folge.</description>
-				<data price="35" critics="120" />
-			</episode>
-			<episode number="2">
-				<title>Das Elb-Wehr</title>
-				<description>Scheinbar langweilig aber doch enorm wichtig: die Instandhaltung eines Wehrs der Elbe. Zeigt einmalige, aber langweilige, Unterwasseraufnahmen.</description>
-				<data critics="60" speed="30" />
-			</episode>
-			<episode number="3">
-				<title>SOS im Freibad Gammelau</title>
-				<description>Dramatische Szenenm, eingefangen im Freibad Gammelau: Ist es ein Schokoriegel?</description>
-				<data critics="40" speed="140" />
-			</episode>
-		</serie>
-	</allseries>
+	<version value="3" comment="Daten von Nicht_die_Betty" />
+	<insignificantpeople>
+		<person id="ronny-person-amateurs-01" first_name="" last_name="Laiendarsteller" nick_name="Laiendarsteller" />
+	</insignificantpeople>
+	
+	<allprogrammes>
+		<programme id="ronny-programme-pantoffeln-01" product="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Wahre Pantoffelhelden</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Gudrun erbt die Pantoffelfabrik ihres Vaters - der Bürgermeister intrigiert und die Stadt braucht ...wahre Pantoffelhelden um die Fabrik zu retten.</de>
+				<en></en>
+			</description>
+			<staff>
+				<member index="0" function="1">72d0cfa6-bb40-4766-9b86-9a3ffd257f73</member>
+				<member index="0" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="1983" distribution="0" maingenre="19" subgenre="0" flags="20" blocks="2" time="0" price_mod="0.9" />
+			<ratings critics="40" speed="20" outcome="48" />
+		</programme>
+		<programme id="ronny-programme-kartoffeln-01" product="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Die Kartoffelkönigin</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Glansen verzückt die Bauern. Dicke Kartoffeln und Dumme Bauern sucht man vergebens in dieser herzlich warmen und romantischen Fernsehkomödie.</de>
+				<en></en>
+			</description>
+			<staff>
+				<member index="0" function="1">72d0cfa6-bb40-4766-9b86-9a3ffd257f73</member>
+				<member index="0" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="1985" distribution="0" maingenre="19" subgenre="0" flags="20" blocks="2" time="0" price_mod="0.95" />
+			<ratings critics="32" speed="28" outcome="42" />
+		</programme>
+		<!-- Series -->
+		<programme id="ronny-programme-brisanteufer-01" product="2" creator="5578" created_by="Ronny">
+			<title>
+				<de>Brisante Ufer</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Ein Kamerateam begleitet Rettungsschwimmer und andere Helden unserer heimischen Gewässer.</de>
+				<en></en>
+			</description>
+			<staff>
+				<!-- klaus grobe -->
+				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
+				<!-- Laiendarsteller -->
+				<member index="0" function="2">ronny-person-amateurs-01</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="1982" distribution="0" maingenre="0" blocks="1" />
+			<ratings critics="44" speed="20" />
+			<!-- Episodes -->
+			<children>
+				<programme id="ronny-programme-brisanteufer-01-ep-01" product="4" creator="5578" created_by="Ronny">
+					<title>
+						<de>Die Wasserwacht</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Männer mit wettergegerbter Haut, viel Spritzwasser und eine launische See sind die Helden dieser Folge.</de>
+						<en></en>
+					</description>
+					<data price_mod="0.95" />
+					<ratings critics="48"  />
+				</programme>
+				<programme id="ronny-programme-brisanteufer-01-ep-02" product="4" creator="5578" created_by="Ronny">
+					<title>
+						<de>Das Elb-Wehr</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Scheinbar langweilig aber doch enorm wichtig: die Instandhaltung eines Wehrs der Elbe. Zeigt einmalige, aber langweilige, Unterwasseraufnahmen.</de>
+						<en></en>
+					</description>
+					<data price_mod="1.0" />
+					<ratings critics="34" speed="12"  />
+				</programme>
+				<programme id="ronny-programme-brisanteufer-01-ep-03" product="4" creator="5578" created_by="Ronny">
+					<title>
+						<de>SOS im Freibad Gammelau</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Dramatische Szenen, eingefangen im Freibad Gammelau: Ist es ein Schokoriegel?</de>
+						<en></en>
+					</description>
+					<ratings critics="26" speed="56"  />
+				</programme>
+			</children>
+		</programme>
+	</allprogrammes>
+
 	<allnews>
-		<news>
-			<title>Spitzelaffäre</title>
-			<description>Auf der Toilette des Bundestags wurde ein Gespräch zwischen zwei nicht genannten Politikern aufgezeichnet. Audiomaterial scheinbar zensiert, Pfeif- und Zischgeräusche überdecken Gespräch.</description>
-			<data genre="0" price="25" topicality="70" />
-			<created_by name="Ronny" userID="5578" />
-			<episode number="1">
-				<title>Spitzelaffäre - Zensur herausgefiltert</title>
-				<description>Das Audiomaterial des Toilettenmitschnitts konnte bereinigt werden. Über die kodierte Frage &quot;Hast Du mal noch Papier?&quot; rätseln Experten.</description>
-				<data genre="0" price="37" topicality="60" />
-			</episode>
+		<!-- news type:
+				initial news = 0
+				initial news by game event = 1
+				following news (follow up) = 2
+
+				News vom Typ 1 und 2 werden nicht per "Zufall" ausgeloest
+		-->
+		<news id="ronny-news-spitzel-01" type="0" creator="5578" created_by="Ronny">
+			<title>
+				<de>Spitzelaffäre</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Auf der Toilette des Bundestags wurde ein Gespräch zwischen zwei nicht genannten Politikern aufgezeichnet. Audiomaterial scheinbar zensiert, Pfeif- und Zischgeräusche überdecken Gespräch.</de>
+				<en></en>
+			</description>
+			<effects>
+				<effect type="triggernews" parameter1="ronny-news-spitzel-02" />
+			</effects>
+			<data genre="0" price="10" quality="28" />
+		</news>
+		<news id="ronny-news-spitzel-02" type="2" creator="5578" created_by="Ronny">
+			<title>
+				<de>Spitzelaffäre - Zensur herausgefiltert</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Das Audiomaterial des Toilettenmitschnitts konnte bereinigt werden. Über die kodierte Frage &quot;Hast Du mal noch Papier?&quot; rätseln Experten.</de>
+				<en></en>
+			</description>
+			<data genre="0" price="15" quality="24" />
 		</news>
 	</allnews>
+
+
+	<allads>
+		<ad id="ronny-ad-bundi-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Kambalott</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Lecker Kompott wie von Omi. Der einzig wahre Nachtisch - mit Kernbeiss-Garantie.</de>
+				<en></en>
+			</description>
+			<conditions min_audience="1.5" min_image="1" target_group="0" />
+			<data infomercial="1" quality="5" repetitions="3" duration="3" fix_price="0" profit="15" penalty="18" pro_pressure_groups="0" contra_pressure_groups="0" />
+		</ad>
+		<ad id="ronny-ad-brucey-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Brucey</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Frauen schwören auf den Nerd in Dir. Lass sie Ihn riechen!
+Brucey - herber Duft für Männer vom Fach.</de>
+				<en>Women absolutely love the nerd in you. Let them take your scent!
+Brucey - harsh fragrance for male experts.</en>
+			</description>
+			<conditions min_audience="0" min_image="3" target_group="0" />
+			<data infomercial="1" quality="15" repetitions="4" duration="4" fix_price="1" profit="3500" penalty="7050" pro_pressure_groups="0" contra_pressure_groups="0" />
+		</ad>
+		<ad id="ronny-ad-laola-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Laola</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Das freche Jugendmagazin. Wir beantworten Fragen zu Liebe und Sex nur im Winter.</de>
+				<en>The naughty youth magazine. We answer your intimate questions without a grin :-).</en>
+			</description>
+			<!-- targetgroup: teenagers -->
+			<conditions min_audience="0.25" min_image="2" target_group="2" />
+			<data infomercial="1" quality="30" repetitions="5" duration="3" fix_price="0" profit="35" penalty="50" />
+		</ad>		
+		<ad id="ronny-ad-kalua-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Kalua</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Der Knallerkaubonbon aus Hawaii. Noch nie schmeckte Zucker so tro-tro-tropisch.</de>
+				<en>The hit chewy candy from Hawaii. Never before sugar tasted that tro-tro-tropical.</en>
+			</description>
+			<!-- targetgroup: children -->
+			<conditions min_audience="0.25" min_image="5" target_group="1" />
+			<data infomercial="0" quality="20" repetitions="5" duration="2" fix_price="0" profit="50" penalty="50" />
+		</ad>		
+		<ad id="ronny-ad-kalua-02" creator="5578" created_by="Ronny">
+			<title>
+				<de>Kalua BBQ</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Der hawaiianische Kaubonbon jetzt mit neuem Trendgeschmack. Kandierte Hühnerkrallen verleihen die faszinierende Würze.</de>
+				<en>The Hawaiian chewy candy now with a brand new and trendy taste. Candied chicken claws create this fascinating seasoning.</en>
+			</description>
+			<!-- targetgroup: children -->
+			<conditions min_audience="0.25" min_image="7" target_group="1" />
+			<data infomercial="0" quality="25" repetitions="6" duration="3" fix_price="0" profit="55" penalty="65" />
+		</ad>		
+		<ad id="ronny-ad-allhits-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Alle Hits 1</de>
+				<en>All Hits 1</en>
+			</title>
+			<description>
+				<de>Dein Musiksampler! Alle Hits der vergangenen 3 Tage auf einer randvoll gefüllten 90 Minuten Kassette. In Stereo!</de>
+				<en>Your music sampler! All hits of the last 3 days on one brimful filled 90 minutes audio cassette. In stereo!</en>
+			</description>
+			<!-- targetgroup: teenager -->
+			<conditions min_audience="0.5" min_image="5" target_group="2" />
+			<data infomercial="1" quality="35" repetitions="4" duration="3" fix_price="0" profit="60" penalty="90" year_range_from="1985" year_range_to="1986" />
+		</ad>		
+		<ad id="ronny-ad-allhits-02" creator="5578" created_by="Ronny">
+			<title>
+				<de>Alle Hits 2</de>
+				<en>All Hits 2</en>
+			</title>
+			<description>
+				<de>"Alle Hits" ist wieder da! 40 Wahnsinnshits auf einer Doppel-MC. Nur jetzt mit Faltposter zum selbst bemalen.</de>
+				<en>"All Hits 2" is back again!! 40 mega hits on one double MC. Only now with poster ready to get painted!</en>
+			</description>
+			<!-- targetgroup: teenager -->
+			<conditions min_audience="1.0" min_image="7" target_group="2" />
+			<data infomercial="1" quality="45" repetitions="7" duration="4" fix_price="0" profit="60" penalty="85" year_range_from="1987" year_range_to="1988" />
+		</ad>		
+		<ad id="ronny-ad-allhits-03" creator="5578" created_by="Ronny">
+			<title>
+				<de>Alle Hits Best Of</de>
+				<en>All Hits Best Of</en>
+			</title>
+			<description>
+				<de>Nicht eine Kassette, nicht zwei, nicht drei! Unglaubliche 4 Musikkassetten haben wir mit den Hits der letzten 5 Jahre bespielt. Euer Walkman wird nie wieder etwas anderes spielen wollen!</de>
+				<en>Not one cassette, not two or three! Unbelieveable 4 music cassettes got filled with hits of the last 5 years. Your walkman never will play other music!</en>
+			</description>
+			<!-- targetgroup: all -->
+			<conditions min_audience="1.5" min_image="9" target_group="0" />
+			<data infomercial="1" quality="40" repetitions="5" duration="3" fix_price="0" profit="65" penalty="80" year_range_from="1988" year_range_to="1990" />
+		</ad>		
+		<ad id="ronny-ad-reunionbeer-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Wendebier</de>
+				<en>Reunion Beer</en>
+			</title>
+			<description>
+				<de>Aus dem Osten der Hopfen, aus dem Westen die Luft ... und das Gold. Lecker Bierchen für Väter aller Länder.</de>
+				<en>Eastern Germanys hop, and the bottles from Western Germany created this fascinating beer. Tasty beer for fathers of all countries.</en>
+			</description>
+			<!-- targetgroup: men - so require "more" -->
+			<conditions min_audience="5" min_image="5" target_group="256" />
+			<data infomercial="1" quality="40" repetitions="4" duration="2" fix_price="0" profit="57" penalty="40" year_range_from="1990" year_range_to="1993" />
+		</ad>		
+		<ad id="ronny-ad-zickschnack-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Zick-Schnack</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Die Szenekneipe für Tussis und andere Tratschtanten. Dienstags Frei-Secco bei bunten Fingernägeln.</de>
+				<en>The trendy pub for birds and other chatterboxes. Tuesday free-secco if you come with multicolored finger nails.</en>
+			</description>
+			<!-- targetgroup: women - so require "more" than average -->
+			<conditions min_audience="2" min_image="0" target_group="128" />
+			<data infomercial="1" quality="20" repetitions="3" duration="1" fix_price="0" profit="35" penalty="20" />
+		</ad>		
+		<ad id="ronny-ad-guten-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Gutendruck</de>
+				<!-- "Gutenprint" is a project so and as Gutenberg was German,
+				     we keep the name :p -->
+				<en>Gutendruck</en>
+			</title>
+			<description>
+				<de>Bei uns wird Ihr Buch noch gewalzt! Egal ob Stammbuch oder Tagebuch, wir bringen Ihr Werk unters Volk.</de>
+				<en>We still mill your book! Whether register or diary, we propagate it to the hoi poloi.</en>
+			</description>
+			<!-- targetgroup: all -->
+			<conditions min_audience="2.5" min_image="2" target_group="0" />
+			<data infomercial="1" quality="30" repetitions="4" duration="2" fix_price="0" profit="39" penalty="25" />
+		</ad>		
+	</allads>
 </tvgdb>

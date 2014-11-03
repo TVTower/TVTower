@@ -41,7 +41,8 @@ Type TVTNewsEffect
 	const TerroristAttack:int = 4
 End Type
 
-	
+
+'"product" in the DB
 Type TVTProgrammeType
 	const Undefined:int = 0
 	const Movie:int = 1

@@ -25,7 +25,8 @@ Type TXmlHelper
 
 
 	Method GetRootNode:TxmlNode()
-		return xmlDoc.getRootElement()
+		if xmlDoc then return xmlDoc.getRootElement()
+		return Null
 	End Method
 
 
@@ -85,6 +86,7 @@ Type TXmlHelper
 
 	'non recursive child finding
 	Function FindChild:TxmlNode(node:TxmlNode, nodeName:String)
+		if not node then return Null
 		nodeName = nodeName.ToLower()
 		For Local child:TxmlNode = EachIn GetNodeChildElements(node)
 			If child.getName().ToLower() = nodeName Then Return child
