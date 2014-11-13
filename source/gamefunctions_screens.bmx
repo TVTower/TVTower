@@ -116,7 +116,7 @@ Type TInGameScreen extends TScreen
 
 
 	Method ToString:string()
-		return "TInGameScreen"
+		return "TInGameScreen: name="+name
 	End Method
 
 
@@ -143,7 +143,6 @@ Type TInGameScreen extends TScreen
 	Method Enter:int(fromScreen:TScreen=null)
 		local screenName:string = ""
 		if fromScreen then screenName = fromScreen.ToString().toUpper()
-
 
 		'no change effect when going to a subscreen or parent (aka screen has parent)
 		If not HasScreenChangeEffect(fromScreen)
@@ -244,6 +243,11 @@ Type TInGameScreen_World extends TInGameScreen
 	End Method
 
 
+	Method ToString:string()
+		return "TInGameScreen_World: name="+name
+	End Method
+
+
 	Function onLeaveRoom:int( triggerEvent:TEventBase )
 		local figure:TFigure = TFigure( triggerEvent._sender )
 		if not figure or GetPlayerBase().GetFigure() <> figure then return FALSE
@@ -298,6 +302,16 @@ Type TInGameScreen_Room extends TInGameScreen
 		endif
 		
 		return self
+	End Method
+
+
+	Method ToString:string()
+		local rooms:string = ""
+		for local roomID:int = EachIn roomIDs
+			if rooms <> "" then rooms :+ ","
+			rooms :+ roomID
+		Next
+		return "TInGameScreen_Room: name="+name+" roomIDs="+rooms
 	End Method
 
 

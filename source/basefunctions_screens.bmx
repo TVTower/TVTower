@@ -95,7 +95,9 @@ Type TScreenCollection
 		if screen <> currentScreen
 			if screen then screen.Enter(currentScreen)
 			currentScreen = screen
-			screen.Start()
+
+			'if not currentScreen then currentScreen = baseScreen
+			if currentScreen then currentScreen.Start()
 		endif
 		return TRUE
 	End Method

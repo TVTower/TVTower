@@ -562,9 +562,26 @@ Type TGame {_exposeToLua="selected"}
 		EndIf
 
 
+
+				'when a game is loaded we should try set the right screen
+				'not just the default building screen
+				if GetPlayer().GetFigure().inRoom
+					local screen:TScreen = ScreenCollection.GetCurrentScreen()
+					'something is wrong .. in a room, but not having a
+					'current screen ... fetch the one of the room
+					if not screen
+						screen = TInGameScreen_Room.GetByRoom(GetPlayer().GetFigure().inRoom) 
+						if not screen then Throw "ERROR: Player in a room without screen."
+					endif
+					ScreenCollection.GoToScreen(screen)
+				else
+					ScreenCollection.GoToScreen(GameScreen_world)
+				endif
+
 		'set force=true so the gamestate is set even if already in this
 		'state (eg. when loaded)
 		Game.SetGamestate(TGame.STATE_RUNNING, TRUE)
+
 
 
 		if startNewGame

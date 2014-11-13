@@ -73,7 +73,9 @@ Type TRoom extends TRoomBase {_exposeToLua="selected"}
 			_initDone = TRUE
 		endif
 
-		GetRoomCollection().Add(self)
+		'do not add the room automatically ... it might lead to
+		'duplicates in the collection when loading games
+		'GetRoomCollection().Add(self)
 	End Method
 
 
@@ -5944,6 +5946,9 @@ Function Init_CreateAllRooms()
 	Local roomMap:TMap = TMap(GetRegistry().Get("rooms"))
 	if not roomMap then Throw("ERROR: no room definition loaded!")
 
+	'remove all previous rooms
+	GetRoomCollection().Reset()
+
 	For Local vars:TData = EachIn roomMap.Values()
 		'==== SCREEN ====
 		local screen:TInGameScreen_Room = TInGameScreen_Room(ScreenCollection.GetScreen(vars.GetString("screen") ))
@@ -5962,7 +5967,12 @@ Function Init_CreateAllRooms()
 		if screen then screen.AddRoom(room)
 		room.fakeRoom = vars.GetBool("fake", FALSE)
 
-
+		'only add if not already there
+		if not GetRoomCollection().Get(room.id)
+			GetRoomCollection().Add(room)
+		else
+			room = GetRoomCollection().Get(room.id)
+		endif
 
 		'==== DOOR ====
 		local door:TRoomDoor = new TRoomDoor

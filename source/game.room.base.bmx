@@ -28,6 +28,13 @@ Type TRoomBaseCollection
 	End Function
 
 
+	Method Reset:int()
+		list.Clear()
+		'also set back the ids
+		TRoomBase.LastID = 0
+	End Method
+	
+
 	Method Add:int(room:TRoomBase)
 		List.AddLast(room)
 		return TRUE
