@@ -422,7 +422,6 @@ Type TDatabaseLoader
 		'!!!!
 		local nodeAllProgrammes:TxmlNode = xml.FindRootChild("allprogrammes")
 		if nodeAllProgrammes
-			local programmeData:TProgrammeData
 			For local nodeProgramme:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllProgrammes)
 				If nodeProgramme.getName() <> "programme" then continue
 
@@ -857,6 +856,11 @@ Type TDatabaseLoader
 		Next
 		endrem
 
+		'=== ADD PROGRAMMEDATA TO COLLECTION ===
+		'when reaching this point, nothing stopped the creation of this
+		'licence ... so add this specific programmeData to the global
+		'data collection
+		GetProgrammeDataCollection().Add(programmeData)
 
 		return programmeLicence
 	End Method

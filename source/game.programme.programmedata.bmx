@@ -262,8 +262,8 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		obj.releaseDay		= day
 		obj.liveHour		= Max(-1,livehour)
 		obj.topicality		= obj.GetTopicality()
-
 		GetProgrammeDataCollection().Add(obj)
+
 		Return obj
 	End Function
 
