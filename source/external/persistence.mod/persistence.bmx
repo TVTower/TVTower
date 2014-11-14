@@ -316,111 +316,139 @@ Type TPersist
 
 				' special case for String object
 				If tid = StringTypeId Then
-					' escape special chars
-					Local s:String = doc.encodeEntities(String(obj))
+					Local s:String = string(obj)
 
-					node.SetContent(s)
+					' only if not empty
+					if s
+						' escape special chars
+						s = doc.encodeEntities(s)
+						if s then node.SetContent(s)
+					endif
 				End If
 
-				For Local f:TField = EachIn tid.EnumFields()
 
-					If f.MetaData("nosave") Then
-						Continue
-					End If
+				'check if there is a special "SerializeToString" Method
+				'defined for the object
+				'only do serialization, if the way back is defined too
+				Local mth:TMethod = tid.FindMethod("SerializeToString")
+				local mth2:TMethod = tid.FindMethod("DeSerializeFromString")
+				If mth and mth2
+'					local serializedString:string = mth.Invoke(obj, [data])
+					local serializedString:string = string( mth.Invoke(obj) )
 
-					Local fieldType:TTypeId = f.TypeId()
+					Local fieldNode:TxmlNode = node.addChild("serialized")
+					fieldNode.setContent(serializedString)
 
-					Local fieldNode:TxmlNode = node.addChild("field")
-					fieldNode.setAttribute("name", f.Name())
 
-					Local t:String
-					Select fieldType
-						Case ByteTypeId
-							t = "byte"
-							fieldNode.setContent(f.GetInt(obj))
-						Case ShortTypeId
-							t = "short"
-							fieldNode.setContent(f.GetInt(obj))
-						Case IntTypeId
-							t = "int"
-							fieldNode.setContent(f.GetInt(obj))
-						Case LongTypeId
-							t = "long"
-							fieldNode.setContent(f.GetLong(obj))
-						Case FloatTypeId
-							t = "float"
-							fieldNode.setContent(f.GetFloat(obj))
-						Case DoubleTypeId
-							t = "double"
-							fieldNode.setContent(f.GetDouble(obj))
-						Case StringTypeId
-							t = "string"
-							' only if not empty
-							Local s:String = f.GetString(obj)
-							If s Then
-								'escape special chars
-								s = doc.encodeEntities(s)
-								fieldNode.setContent(s)
-							End If
-						Default
-							t = fieldType.Name()
+				'if the method is not existing - parse each field
+				Else
 
-							If fieldType.ExtendsType( ArrayTypeId ) Then
+					For Local f:TField = EachIn tid.EnumFields()
 
-								' prefix and strip brackets
-								Local dims:Int = t.split("[").length
-								If dims = 1 Then
-									t = "array:" + t.Replace("[]", "")
-								Else
-									t = "array:" + t
+						If f.MetaData("nosave") Then
+							Continue
+						End If
+
+						Local fieldType:TTypeId = f.TypeId()
+
+						Local fieldNode:TxmlNode = node.addChild("field")
+						fieldNode.setAttribute("name", f.Name())
+
+						Local t:String
+						Select fieldType
+							Case ByteTypeId
+								t = "byte"
+								fieldNode.setContent(f.GetInt(obj))
+							Case ShortTypeId
+								t = "short"
+								fieldNode.setContent(f.GetInt(obj))
+							Case IntTypeId
+								t = "int"
+								fieldNode.setContent(f.GetInt(obj))
+							Case LongTypeId
+								t = "long"
+								fieldNode.setContent(f.GetLong(obj))
+							Case FloatTypeId
+								t = "float"
+								'if the float is xx.0000, write it without
+								'the ".0000" part (-> as int)
+								local v:Float = f.GetFloat(obj)
+								if float(int(v)) = v
+									fieldNode.setContent(int(v))
+								else
+									fieldNode.setContent(v)
+								endif
+							Case DoubleTypeId
+								t = "double"
+								fieldNode.setContent(f.GetDouble(obj))
+							Case StringTypeId
+								t = "string"
+								' only if not empty
+								Local s:String = f.GetString(obj)
+								If s Then
+									'escape special chars
+									s = doc.encodeEntities(s)
+									fieldNode.setContent(s)
 								End If
+							Default
+								t = fieldType.Name()
 
-								dims = fieldType.ArrayDimensions(f.Get(obj))
+								If fieldType.ExtendsType( ArrayTypeId ) Then
 
-								'skip handling 0 sized arrays
-								local arrSize:int = fieldType.ArrayLength(f.Get(obj))
-								'on mac os x "0 sized"-arrays sometimes return dims to be veeeery big 
-								if arrSize = 0 then dims = 1
-								'if f.name() ="cast" then print "cast arraySize="+arrSize+" dimensions="+dims
-
-								If dims > 1 Then
-									'if arrSize = 0
-									'	print f.name()+":"+fieldType.name()+" is 0 size array"
-									'else
-										Local scales:String
-										For Local i:Int = 0 Until dims - 1
-											'instead of relying on the array length,
-											'we use Max(1, value) to avoid div_by_zero
-											scales :+ (fieldType.ArrayLength(f.Get(obj), i) / Max(1, fieldType.ArrayLength(f.Get(obj), i + 1)))
-											scales :+ ","
-										Next
-
-										scales:+ fieldType.ArrayLength(f.Get(obj), dims - 1)
-
-										fieldNode.setAttribute("scales", scales)
-									'endif
-								End If
-
-
-								ProcessArray(f.Get(obj), fieldType.ArrayLength(f.Get(obj)), fieldNode, fieldType)
-
-							Else
-								Local fieldObject:Object = f.Get(obj)
-								Local fieldRef:String = GetObjRef(fieldObject)
-
-								If fieldObject Then
-									If Not Contains(fieldRef, fieldObject) Then
-										SerializeObject(fieldObject, fieldNode)
+									' prefix and strip brackets
+									Local dims:Int = t.split("[").length
+									If dims = 1 Then
+										t = "array:" + t.Replace("[]", "")
 									Else
-										fieldNode.setAttribute("ref", fieldRef)
+										t = "array:" + t
+									End If
+
+									dims = fieldType.ArrayDimensions(f.Get(obj))
+
+									'skip handling 0 sized arrays
+									local arrSize:int = fieldType.ArrayLength(f.Get(obj))
+									'on mac os x "0 sized"-arrays sometimes return dims to be veeeery big 
+									if arrSize = 0 then dims = 1
+									'if f.name() ="cast" then print "cast arraySize="+arrSize+" dimensions="+dims
+
+									If dims > 1 Then
+										'if arrSize = 0
+										'	print f.name()+":"+fieldType.name()+" is 0 size array"
+										'else
+											Local scales:String
+											For Local i:Int = 0 Until dims - 1
+												'instead of relying on the array length,
+												'we use Max(1, value) to avoid div_by_zero
+												scales :+ (fieldType.ArrayLength(f.Get(obj), i) / Max(1, fieldType.ArrayLength(f.Get(obj), i + 1)))
+												scales :+ ","
+											Next
+
+											scales:+ fieldType.ArrayLength(f.Get(obj), dims - 1)
+
+											fieldNode.setAttribute("scales", scales)
+										'endif
+									End If
+
+
+									ProcessArray(f.Get(obj), fieldType.ArrayLength(f.Get(obj)), fieldNode, fieldType)
+
+								Else
+									Local fieldObject:Object = f.Get(obj)
+									Local fieldRef:String = GetObjRef(fieldObject)
+
+									If fieldObject Then
+										If Not Contains(fieldRef, fieldObject) Then
+											SerializeObject(fieldObject, fieldNode)
+										Else
+											fieldNode.setAttribute("ref", fieldRef)
+										End If
 									End If
 								End If
-							End If
-					End Select
+						End Select
 
-					fieldNode.setAttribute("type", t)
-
-				Next
+						fieldNode.setAttribute("type", t)
+					Next
+				End If
 			End If
 
 		End If
@@ -641,6 +669,16 @@ Type TPersist
 				' does the node contain child nodes?
 				If node.getChildren() <> Null Then
 					For Local fieldNode:TxmlNode = EachIn node.getChildren()
+
+						' serialized data?
+						If fieldNode.GetName() = "serialized" Then
+							'check if there is a special
+							'"DeSerializeFromString" method defined
+							'for the object
+							Local mth:TMethod = objType.FindMethod("DeSerializeFromString")
+							If mth then mth.Invoke(obj, [fieldNode.GetContent()])
+						endif
+
 
 						' this should be a field
 						If fieldNode.GetName() = "field" Then

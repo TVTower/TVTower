@@ -17,6 +17,20 @@ Type TVec2D {_exposeToLua="selected"}
 	End Method
 
 
+	Method SerializeToString:string()
+		local xS:string = x; if float(int(x)) = x then xS = int(x)
+		local yS:string = y; if float(int(y)) = y then yS = int(y)
+		return xS+","+yS
+	End Method
+
+
+	Method DeSerializeFromString(text:String)
+		local vars:string[] = text.split(",")
+		if vars.length > 0 then x = float(vars[0])
+		if vars.length > 1 then y = float(vars[1])
+	End Method
+
+
 	Method ToString:String()
 		if string(int(x)) = string(x) and string(int(y)) = string(y)
 			return int(x)+", "+int(y)
@@ -257,6 +271,22 @@ Type TVec3D {_exposeToLua="selected"}
 	Method Init:TVec3D(_x:Float=0.0, _y:Float=0.0, _z:Float=0.0)
 		SetXYZ(_x, _y, _z)
 		Return self
+	End Method
+
+
+	Method SerializeToString:string()
+		local xS:string = x; if float(int(x)) = x then xS = int(x)
+		local yS:string = y; if float(int(y)) = y then yS = int(y)
+		local zS:string = z; if float(int(z)) = z then zS = int(z)
+		return xS+","+yS+","+zS
+	End Method
+
+
+	Method DeSerializeFromString(text:String)
+		local vars:string[] = text.split(",")
+		if vars.length > 0 then x = float(vars[0])
+		if vars.length > 1 then y = float(vars[1])
+		if vars.length > 2 then z = float(vars[2])
 	End Method
 
 

@@ -9,7 +9,9 @@ Type TStaticEntity
 	Field visible:int = True
 	Field id:int = 0
 	Field parent:TStaticEntity = null
+	Field _options:int = 0
 	Global LastID:int = 0
+	Const OPTION_IGNORE_PARENT_SCREENLIMIT:int = 1
 
 
 	Method New()
@@ -22,6 +24,15 @@ Type TStaticEntity
 		LastID:+1
 		'assign a new id
 		id = LastID
+	End Method
+
+
+	Method setOption(option:Int, enable:Int=True)
+		If enable
+			_options :| option
+		Else
+			_options :& ~option
+		EndIf
 	End Method
 
 
@@ -65,7 +76,7 @@ Type TStaticEntity
 
 
 	Method GetScreenWidth:Float()
-		if parent
+		if parent and not _options & OPTION_IGNORE_PARENT_SCREENLIMIT
 			'parent has auto-size wont limit the entity, so use full size
 			if parent.area.GetW() < 0 then return Max(0, area.GetW())
 
@@ -90,7 +101,7 @@ Type TStaticEntity
 
 
 	Method GetScreenHeight:Float()
-		if parent
+		if parent and not _options & OPTION_IGNORE_PARENT_SCREENLIMIT
 			'parent has auto-size wont limit the entity, so use full size
 			if parent.area.GetH() < 0 then return Max(0, area.GetH())
 
@@ -135,6 +146,16 @@ Type TStaticEntity
 
 	Method SetVisible:int(bool:int=True)
 		visible = bool
+	End Method
+
+
+	Method SetSize(width:Float, height:Float)
+		area.dimension.SetXY(width, height)
+	End Method
+
+
+	Method SetPosition(x:Float, y:Float)
+		area.position.SetXY(x, y)
 	End Method
 
 
@@ -188,7 +209,13 @@ Type TEntity extends TStaticEntity
 	End Method
 
 
-	Method Update:Int()
+	Method GetSpeed:Float()
+		if not velocity then return 0
+		return sqr(velocity.x^2 + velocity.y^2)
+	End Method
+
+
+	Method Move:int()
 		local deltaTime:Float = GetDeltaTimer().GetDelta() * GetWorldSpeedFactor()
 
 		'=== UPDATE MOVEMENT ===
@@ -196,5 +223,10 @@ Type TEntity extends TStaticEntity
 		oldPosition.SetXY(area.position.x, area.position.y)
 		'set new position
 		area.position.AddXY( deltaTime * GetVelocity().x, deltaTime * GetVelocity().y )
+	End Method
+
+
+	Method Update:Int()
+		Move()
 	End Method
 End Type

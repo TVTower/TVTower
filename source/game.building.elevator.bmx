@@ -228,7 +228,8 @@ Type TElevator extends TEntity
 	'===== Hilfsmethoden =====
 
 	Method AddFloorRoute:Int(floornumber:Int, call:Int = 0, who:TFigureBase)
-		If Not ElevatorCallIsDuplicate(floornumber, who) Then 'Prüfe auf Duplikate
+		'Prüfe auf Duplikate
+		If Not ElevatorCallIsDuplicate(floornumber, who)
 			FloorRouteList.AddLast(RouteLogic.CreateFloorRoute(floornumber, call, who))
 			RouteLogic.AddFloorRoute(floornumber, call, who)
 		EndIf
@@ -316,7 +317,17 @@ Type TElevator extends TEntity
 		next
 		figure.PosOffset.SetXY(0, 0)
 	End Method
-	
+
+
+	Method HasDeboardingPassengers:int()
+		For local i:int = 0 to len(PassengerPosition) - 1
+			local figure:TFigureBase = PassengerPosition[i]
+			If not figure then continue
+			if figure.boardingState = -1 then return True
+		Next
+		Return False
+	End Method
+
 
 	'Aktualisiert das Offset und bewegt die Figur an die richtige Position
 	Method MovePassengerToPosition()
@@ -366,8 +377,11 @@ Type TElevator extends TEntity
 			'move with 50% of normal movement speed
 			local moveX:Float = 0.5 * figure.initialDX * deltaTime
 
+			local route:TFloorRoute = GetRouteByPassenger(figure, 0)
+
 			'Will die Person aussteigen?
-			If GetRouteByPassenger(figure, 0).floornumber = CurrentFloor
+			'-> elevator on same floor and route is a "SEND"-route
+			If route and route.floornumber = CurrentFloor and route.call = 0 
 				If figure.PosOffset.getX() <> 0
 					'set state to -1 -> indicator we are moving in the
 					'elevator but from Offset to 0 (different to boarding)
@@ -449,7 +463,8 @@ Type TElevator extends TEntity
 
 		'1 = close doors
 		If ElevatorStatus = 1
-			If doorStatus <> 0 And doorStatus <> 3 And waitAtFloorTimer.isExpired() Then CloseDoor() 'Wenn die Wartezeit vorbei ist, dann Türen schließen
+			'Wenn die Wartezeit vorbei ist, dann Türen schließen
+			If doorStatus <> 0 And doorStatus <> 3 And waitAtFloorTimer.isExpired() Then CloseDoor()
 
 			'wait until door animation finished
 			If door.GetFrameAnimations().getCurrentAnimationName() = "closedoor"
