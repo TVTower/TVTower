@@ -3,7 +3,7 @@ Import "Dig/base.framework.entity.bmx"
 Import "Dig/base.util.math.bmx"
 
 
-Type TBuildingBase Extends TStaticEntity
+Type TBuildingBase Extends TRenderableEntity
 	Global _instance:TBuildingBase
 
 	'position of the start of the left wall (aka the building sprite)

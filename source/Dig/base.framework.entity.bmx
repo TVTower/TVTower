@@ -1,29 +1,156 @@
 SuperStrict
+Import Brl.Map
 Import "base.util.rectangle.bmx"
 Import "base.util.deltatimer.bmx"
 
 
-Type TStaticEntity
+
+Type TEntityCollection
+	Field entries:TMap = CreateMap()
+	Field entriesCount:int = -1
+	Field _entriesMapEnumerator:TNodeEnumerator {nosave}
+
+	Method Initialize:TEntityCollection()
+		entries.Clear()
+		entriesCount = -1
+
+		return self
+	End Method
+
+
+	Method GetByGUID:TEntityBase(GUID:String)
+		Return TEntityBase(entries.ValueForKey(GUID))
+	End Method
+
+
+	Method GetCount:Int()
+		if entriesCount >= 0 then return entriesCount
+
+		entriesCount = 0
+		For Local base:TEntityBase = EachIn entries.Values()
+			entriesCount :+1
+		Next
+		return entriesCount
+	End Method
+
+
+	Method Add:int(obj:TEntityBase)
+		if entries.Insert(obj.GetGUID(), obj)
+			'invalidate count
+			entriesCount = -1
+
+			return TRUE
+		endif
+
+		return False
+	End Method
+
+
+	Method Remove:int(obj:TEntityBase)
+		if obj.GetGuid() and entries.Remove(obj.GetGUID())
+			'invalidate count
+			entriesCount = -1
+
+			return True
+		endif
+
+		return False
+	End Method
+
+
+	'=== ITERATOR ===
+	'for "EachIn"-support
+
+	'Set iterator to begin of array
+	Method ObjectEnumerator:TEntityCollection()
+		_entriesMapEnumerator = entries.Values()._enumerator
+		'_iteratorPos = 0
+		Return Self
+	End Method
+	
+
+	'checks if there is another element
+	Method HasNext:Int()
+		Return _entriesMapEnumerator.HasNext()
+
+		'If _iteratorPos > GetCount() Then Return False
+		'Return True
+	End Method
+
+
+	'return next element, and increase position
+	Method NextObject:Object()
+		Return _entriesMapEnumerator.NextObject()
+
+		'_iteratorPos :+ 1
+		'Return entries.ValueAtIndex(_iteratorPos-1)
+	End Method
+End Type
+
+
+
+Type TEntityBase {_exposeToLua="selected"}
+	Field id:Int = 0	{_exposeToLua}
+	Field GUID:String	{_exposeToLua}
+	Global LastID:Int = 0
+
+
+	Method New()
+		LastID :+ 1
+		'assign the new id
+		id = LastID
+
+		'create a new guid
+		SetGUID("")
+	End Method
+
+
+	Method GetID:Int() {_exposeToLua}
+		Return id
+	End Method
+
+
+	Method GetGUID:String() {_exposeToLua}
+		if GUID="" then GUID = GenerateGUID()
+		Return GUID
+	End Method
+
+
+	Method SetGUID:Int(GUID:String="")
+		if GUID="" then GUID = GenerateGUID()
+		self.GUID = GUID
+	End Method
+
+
+	Method GenerateGUID:string()
+		return "entitybase-"+id
+	End Method
+
+
+	'overrideable method for cleanup actions
+	Method Remove()
+	End Method
+End Type
+
+
+
+
+Type TRenderableEntity extends TEntityBase
 	Field area:TRectangle = new TRectangle
 	Field name:string
 	Field visible:int = True
-	Field id:int = 0
-	Field parent:TStaticEntity = null
+	Field parent:TRenderableEntity = null
 	Field _options:int = 0
-	Global LastID:int = 0
 	Const OPTION_IGNORE_PARENT_SCREENLIMIT:int = 1
 
 
 	Method New()
-		name = "TStaticEntity"
-		GenerateID()
+		name = "TRenderableEntity"
 	End Method
 
 
-	Method GenerateID:int()
-		LastID:+1
-		'assign a new id
-		id = LastID
+	Method GenerateGUID:string()
+		return "renderableentity-"+id
 	End Method
 
 
@@ -36,11 +163,6 @@ Type TStaticEntity
 	End Method
 
 
-	Method Remove:Int()
-		'cleanup
-	End Method
-
-
 '	Method Render:Int(xOffset:Float=0, yOffset:Float=0) abstract
 	Method Render:Int(xOffset:Float=0, yOffset:Float=0)
 		'implement in extension
@@ -50,6 +172,17 @@ Type TStaticEntity
 '	Method Update:Int()
 	'do nothing
 '	End Method
+
+	'returns whether two (Render)Entities overlap eachother visually
+	Method Overlaps:int(other:TRenderableEntity)
+		if not other then return False
+		return GetBoundingBox().intersects(other.GetBoundingBox())
+	End Method
+
+
+	Method GetBoundingBox:TRectangle()
+		return GetScreenArea()
+	End Method
 
 
 	Method GetScreenArea:TRectangle()
@@ -127,19 +260,19 @@ Type TStaticEntity
 
 	'return at which x position a child (or all) start
 	'	returns an offset, not a screen coordinate!
-	Method GetChildX:Float(child:TStaticEntity = Null)
+	Method GetChildX:Float(child:TRenderableEntity = Null)
 		return 0
 	End Method
 
 
 	'return at which y position a child (or all) start
 	'	returns an offset, not a screen coordinate!
-	Method GetChildY:Float(child:TStaticEntity = Null)
+	Method GetChildY:Float(child:TRenderableEntity = Null)
 		return 0
 	End Method
 
 
-	Method SetParent:Int(parent:TStaticEntity)
+	Method SetParent:Int(parent:TRenderableEntity)
 		self.parent = parent
 	End Method
 
@@ -177,7 +310,8 @@ End Type
 
 
 
-Type TEntity extends TStaticEntity
+'a moveable and drawable entity
+Type TEntity extends TRenderableEntity
 	'for tweening
 	Field oldPosition:TVec2D = new TVec2D
 	'moving direction
@@ -192,6 +326,10 @@ Type TEntity extends TStaticEntity
 		name = "TEntity"
 	End Method
 
+
+	Method GenerateGUID:string()
+		return "entity-"+id
+	End Method
 
 	Method GetWorldSpeedFactor:float()
 		if worldSpeedFactor < 0 then return globalWorldSpeedFactor

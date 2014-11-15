@@ -29,8 +29,8 @@ Import "game.gamerules.bmx"
 
 Type TElevator extends TEntity
 	'=== Referenzen ===
-	'Alle aktuellen Passagiere als TFigure
-	Field Passengers:TList = CreateList()
+	'Alle aktuellen Passagiere als GUID->TFigure
+	Field Passengers:TMap = CreateMap()
 	Field RouteLogic:TElevatorRouteLogic = null
 	'Die Liste mit allen Fahrstuhlanfragen und Sendekommandos in der
 	'Reihenfolge in der sie gestellt wurden
@@ -73,8 +73,10 @@ Type TElevator extends TEntity
 	'ein paar Offsets im Fahrstuhl
 	Field PassengerOffset:TVec2D[]
 	'Hier wird abgelegt, welches Offset schon in Benutzung ist und von
-	'welcher Figur
-	Field PassengerPosition:TFigureBase[]
+	'welcher Figur(GUID)
+
+	Field PassengerPosition:string[]
+
 
 	'globals are not saved
 	Global _soundSource:TSoundSourceElement
@@ -182,24 +184,14 @@ Type TElevator extends TEntity
 
 	Method EnterTheElevator:int(figure:TFigureBase, myTargetFloor:int=-1) 'bzw. einsteigen
 		If Not IsAllowedToEnterToElevator(figure, myTargetFloor) Then Return False
-		If Not Passengers.Contains(figure)
-			Passengers.AddLast(figure)
-			SetFigureOffset(figure)
-			RemoveRouteOfPlayer(figure, 1) 'Call-Route entfernen
-			Return true
-		Endif
-		Return false
+
+		Return AddPassenger(figure)
 	End Method
 
 
 	'aussteigen
-	Method LeaveTheElevator(figure:TFigureBase)
-		'Das Offset auf jeden Fall zurücksetzen
-		RemoveFigureOffset(figure)
-		'Send-Route entfernen
-		RemoveRouteOfPlayer(figure, 0)
-		'Aus der Passagierliste entfernen
-		Passengers.remove(figure)
+	Method LeaveTheElevator:int(figure:TFigureBase)
+		Return RemovePassenger(figure)
 	End Method
 
 
@@ -210,11 +202,6 @@ Type TElevator extends TEntity
 	End Method
 
 
-	Method IsFigureInElevator:Int(figure:TFigureBase)
-		Return passengers.Contains(figure)
-	End Method
-	
-
 	Method GetDoorCenterX:int()
 		Return area.GetX() + door.sprite.framew/2
 	End Method
@@ -223,9 +210,34 @@ Type TElevator extends TEntity
 	Method GetDoorWidth:int()
 		Return door.sprite.framew
 	End Method
-	
+
 
 	'===== Hilfsmethoden =====
+
+	Method AddPassenger:int(figure:TFigureBase)
+		If Passengers.Contains(figure.GetGUID()) then return False
+
+		Passengers.Insert(figure.GetGUID(), figure)
+		SetFigureOffset(figure)
+		RemoveRouteOfPlayer(figure, 1) 'Call-Route entfernen
+		Return True
+	End Method
+
+
+	Method RemovePassenger:int(figure:TFigureBase)
+		'Das Offset auf jeden Fall zurücksetzen
+		RemoveFigureOffset(figure)
+		'Send-Route entfernen
+		RemoveRouteOfPlayer(figure, 0)
+		'Aus der Passagierliste entfernen
+		Passengers.remove(figure.GetGUID())
+	End Method
+	
+
+	Method HasPassenger:int(figure:TFigureBase)
+		Return passengers.Contains(figure.GetGUID())
+	End Method
+
 
 	Method AddFloorRoute:Int(floornumber:Int, call:Int = 0, who:TFigureBase)
 		'Prüfe auf Duplikate
@@ -253,7 +265,8 @@ Type TElevator extends TEntity
 	Method RemoveIgnoredRoutes()
 		For Local route:TFloorRoute = EachIn FloorRouteList
 			If route.floornumber = CurrentFloor And route.call = 1
-				If Passengers.Contains(route.who)
+				If HasPassenger(route.who)
+
 					'Diesen Fehler lassen... er zeigt das noch ein
 					'Programmierfehler vorliegt der sonst "verschluckt"
 					'werden würde
@@ -304,24 +317,39 @@ Type TElevator extends TEntity
 
 	'===== Offset-Funktionen =====
 
-	Method SetFigureOffset(figure:TFigureBase)
-		for local i:int = 0 to len(PassengerOffset) -1
-			If PassengerPosition[i] = null Then PassengerPosition[i] = figure; Exit
-		next
+	Method SetFigureOffset:int(figure:TFigureBase)
+		For local i:int = 0 until len(PassengerOffset)
+			'skip occupied slots
+			If PassengerPosition[i] <> "" then continue
+
+			PassengerPosition[i] = figure.GetGUID()
+			return i
+		Next
+		return -1
 	End Method
 
 
-	Method RemoveFigureOffset(figure:TFigureBase)
-		for local i:int = 0 to len(PassengerOffset) -1
-			If PassengerPosition[i] = figure Then PassengerPosition[i] = null; Exit
+	Method RemoveFigureOffset:int(figure:TFigureBase)
+		local offset:int = -1
+		for local i:int = 0 until len(PassengerOffset)
+			'skip other passengers
+			If PassengerPosition[i] <> figure.GetGUID() then continue
+
+			PassengerPosition[i] = ""
+			offset = i
+			Exit
 		next
 		figure.PosOffset.SetXY(0, 0)
+		return offset
 	End Method
 
 
 	Method HasDeboardingPassengers:int()
 		For local i:int = 0 to len(PassengerPosition) - 1
-			local figure:TFigureBase = PassengerPosition[i]
+			local figureGUID:string = PassengerPosition[i]
+			if not figureGUID then continue
+
+			local figure:TFigureBase = GetFigureBaseCollection().GetByGUID(figureGUID)
 			If not figure then continue
 			if figure.boardingState = -1 then return True
 		Next
@@ -334,7 +362,10 @@ Type TElevator extends TEntity
 		local deltaTime:Float = GetDeltaTimer().GetDelta() * GetWorldSpeedFactor()
 
 		for local i:int = 0 to len(PassengerPosition) - 1
-			local figure:TFigureBase = PassengerPosition[i]
+			local figureGUID:string = PassengerPosition[i]
+			if not figureGUID then continue
+
+			local figure:TFigureBase = GetFigureBaseCollection().GetByGUID(figureGUID)
 			If not figure then continue
 
 			'move with 50% of normal movement speed
@@ -371,7 +402,10 @@ Type TElevator extends TEntity
 		local deltaTime:Float = GetDeltaTimer().GetDelta() * GetWorldSpeedFactor()
 	
 		for local i:int = 0 to len(PassengerPosition) - 1
-			local figure:TFigureBase = PassengerPosition[i]
+			local figureGUID:string = PassengerPosition[i]
+			if not figureGUID then continue
+
+			local figure:TFigureBase = GetFigureBaseCollection().GetByGUID(figureGUID)
 			If not figure then continue
 
 			'move with 50% of normal movement speed
@@ -512,7 +546,7 @@ Type TElevator extends TEntity
 				endif
 
 				'move figures in elevator together with the inner part
-				For Local figure:TFigureBase = EachIn Passengers
+				For Local figure:TFigureBase = EachIn Passengers.Values()
 					figure.area.position.setY( area.GetY() + spriteInner.area.GetH())
 				Next
 			EndIf
@@ -631,7 +665,8 @@ Type TElevator extends TEntity
 
 		'Draw Figures
 		If Not passengers.IsEmpty()
-			For Local passenger:TFigureBase = EachIn passengers
+			For Local passenger:TFigureBase = EachIn Passengers.Values()
+
 				passenger.Draw()
 				passenger.alreadydrawn = 1
 			Next

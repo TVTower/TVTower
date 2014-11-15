@@ -106,30 +106,30 @@ function JobNewsAgency:Tick()
 	if (table.count(self.Newslist) > 0) then
 		price = self.Newslist[1].GetPrice()
 		if (self.Task.CurrentBudget >= price) then			
-			debugMsg("Kaufe Nachricht: " .. self.Newslist[1].GetTitle() .. " (" .. self.Newslist[1].id .. ") - Slot: 1 - Preis: " .. price)
-			TVT.addToLog("Kaufe Nachricht: " .. self.Newslist[1].GetTitle() .. " (" .. self.Newslist[1].id .. ") - Slot: 1 - Preis: " .. price)
+			debugMsg("Kaufe Nachricht: " .. self.Newslist[1].GetTitle() .. " (" .. self.Newslist[1].GetID() .. ") - Slot: 1 - Preis: " .. price)
+			TVT.addToLog("Kaufe Nachricht: " .. self.Newslist[1].GetTitle() .. " (" .. self.Newslist[1].GetID() .. ") - Slot: 1 - Preis: " .. price)
 			TVT.ne_doNewsInPlan(0)
-			TVT.ne_doNewsInPlan(0, self.Newslist[1].id)
+			TVT.ne_doNewsInPlan(0, self.Newslist[1].GetID())
 			self.Task:PayFromBudget(price)
 		end
 	end
 	if (table.count(self.Newslist) > 1) then
 		price = self.Newslist[2].GetPrice()
 		if (self.Task.CurrentBudget >= price) then
-			debugMsg("Kaufe Nachricht: " .. self.Newslist[2].GetTitle() .. " (" .. self.Newslist[2].id .. ") - Slot: 2 - Preis: " .. price)
-			TVT.addToLog("Kaufe Nachricht: " .. self.Newslist[2].GetTitle() .. " (" .. self.Newslist[2].id .. ") - Slot: 2 - Preis: " .. price)
+			debugMsg("Kaufe Nachricht: " .. self.Newslist[2].GetTitle() .. " (" .. self.Newslist[2].GetID() .. ") - Slot: 2 - Preis: " .. price)
+			TVT.addToLog("Kaufe Nachricht: " .. self.Newslist[2].GetTitle() .. " (" .. self.Newslist[2].GetID() .. ") - Slot: 2 - Preis: " .. price)
 			TVT.ne_doNewsInPlan(1)
-			TVT.ne_doNewsInPlan(1, self.Newslist[2].id)
+			TVT.ne_doNewsInPlan(1, self.Newslist[2].GetID())
 			self.Task:PayFromBudget(price)
 		end
 	end
 	if (table.count(self.Newslist) > 2) then
 		price = self.Newslist[3].GetPrice()
 		if (self.Task.CurrentBudget >= price) then
-			debugMsg("Kaufe Nachricht: " .. self.Newslist[3].GetTitle() .. " (" .. self.Newslist[3].id .. ") - Slot: 3 - Preis: " .. price)
-			TVT.addToLog("Kaufe Nachricht: " .. self.Newslist[3].GetTitle() .. " (" .. self.Newslist[3].id .. ") - Slot: 3 - Preis: " .. price)
+			debugMsg("Kaufe Nachricht: " .. self.Newslist[3].GetTitle() .. " (" .. self.Newslist[3].GetID() .. ") - Slot: 3 - Preis: " .. price)
+			TVT.addToLog("Kaufe Nachricht: " .. self.Newslist[3].GetTitle() .. " (" .. self.Newslist[3].GetID() .. ") - Slot: 3 - Preis: " .. price)
 			TVT.ne_doNewsInPlan(2)
-			TVT.ne_doNewsInPlan(2, self.Newslist[3].id)
+			TVT.ne_doNewsInPlan(2, self.Newslist[3].GetID())
 			self.Task:PayFromBudget(price)
 		end
 	end

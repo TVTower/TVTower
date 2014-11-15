@@ -872,7 +872,7 @@ End Type
 
 
 
-Type THotspot extends TStaticEntity
+Type THotspot extends TRenderableEntity
 	Field name:String = ""
 	Field tooltipEnabled:int = True
 	Field tooltip:TTooltip = Null

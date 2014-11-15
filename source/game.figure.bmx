@@ -32,8 +32,9 @@ Type TFigureCollection extends TFigureBaseCollection
 		'to this "whacky hack"
 		elseif not TFigureCollection(_instance)
 			local collection:TFigureCollection = new TFigureCollection
-			collection.list = _instance.list
-			collection.lastFigureID = _instance.lastFigureID
+			collection.entries = _instance.entries
+			collection.entriesCount = _instance.entriesCount
+			'collection.lastFigureID = _instance.lastFigureID
 			'now the new collection is the instance
 			_instance = collection
 		endif
@@ -122,7 +123,7 @@ Type TFigure extends TFigureBase
 
 		GetFigureCollection().Add(self)
 
-		self.figureID = GetFigureCollection().GenerateID()
+		'self.figureID = GetFigureCollection().GenerateID()
 
 		if not _initdone
 			_initDone = TRUE
@@ -181,7 +182,7 @@ Type TFigure extends TFigureBase
 
 
 	Method IsInElevator:int()
-		Return GetElevator().IsFigureInElevator(Self)
+		Return GetElevator().HasPassenger(Self)
 	End Method
 
 
@@ -263,7 +264,7 @@ Type TFigure extends TFigureBase
 					'you can only reach target when not a passenger of
 					'the elevator - this avoids going into the elevator
 					'plan without really leaving the elevator
-					If not GetElevator().passengers.Contains(Self)
+					If not IsInElevator()
 						ReachTargetStep1()
 					endif
 				else
@@ -366,7 +367,7 @@ Type TFigure extends TFigureBase
 
 
 	Method GreetPeopleOnSameFloor()
-		For Local Figure:TFigure = EachIn GetFigureCollection().List
+		For Local Figure:TFigure = EachIn GetFigureCollection().entries.Values()
 			'skip other figures
 			if self = Figure then continue
 			'skip if both can't see each other to me
@@ -740,7 +741,7 @@ Type TFigure extends TFigureBase
 		if not forceChange and not IsControllable() then Return False
 
 		'if player is in elevator dont accept changes
-		if not forceChange and GetElevator().passengers.Contains(Self) Then Return False
+		if not forceChange and IsInElevator() Then Return False
 
 		'=== CALCULATE NEW TARGET/TARGET-OBJECT ===
 		local newTarget:object = Null

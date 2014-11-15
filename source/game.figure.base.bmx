@@ -3,9 +3,7 @@ Import "Dig/base.framework.entity.spriteentity.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
 
 
-Type TFigureBaseCollection
-	Field list:TList = CreateList()
-	Field lastFigureID:int = 0
+Type TFigureBaseCollection extends TEntityCollection
 	Global _eventsRegistered:int= FALSE
 	Global _instance:TFigureBaseCollection
 
@@ -26,14 +24,19 @@ Type TFigureBaseCollection
 	End Function
 
 
-	Method GenerateID:int()
-		lastFigureID :+1
-		return lastFigureID
+	Method Initialize:TFigureBaseCollection()
+		Super.Initialize()
+		return self
+	End Method
+
+
+	Method GetByGUID:TFigureBase(GUID:String)
+		Return TFigureBase(entries.ValueForKey(GUID))
 	End Method
 
 
 	Method Get:TFigureBase(figureID:int)
-		For local figure:TFigureBase = eachin List
+		For local figure:TFigureBase = eachin entries.Values()
 			if figure.id = figureID then return figure
 		Next
 		return Null
@@ -41,34 +44,15 @@ Type TFigureBaseCollection
 
 
 	Method GetByName:TFigureBase(name:string)
-		For local figure:TFigureBase = eachin List
+		For local figure:TFigureBase = eachin entries.Values()
 			if figure.name = name then return figure
 		Next
 		return Null
 	End Method
 	
 
-	Method Add:int(figure:TFigureBase)
-		'if there is a figure with the same id, remove that first
-		if figure.id > 0
-			local existingFigure:TFigureBase = Get(figure.id)
-			if existingFigure then Remove(existingFigure)
-		endif
-
-		List.AddLast(figure)
-		'List.Sort()
-		return TRUE
-	End Method
-
-
-	Method Remove:int(figure:TFigureBase)
-		List.Remove(figure)
-		return TRUE
-	End Method
-
-
 	Method UpdateAll:int()
-		For Local Figure:TFigureBase = EachIn list
+		For Local Figure:TFigureBase = EachIn entries.Values()
 			Figure.Update()
 		Next
 	End Method
@@ -77,7 +61,7 @@ Type TFigureBaseCollection
 	'run when loading finished
 	Function onSaveGameLoad(triggerEvent:TEventBase)
 		TLogger.Log("TFigureBaseCollection", "Savegame loaded - reassigning sprites", LOG_DEBUG | LOG_SAVELOAD)
-		For local figure:TFigureBase = eachin _instance.list
+		For local figure:TFigureBase = eachin _instance.entries.Values()
 			figure.onLoad()
 		Next
 	End Function

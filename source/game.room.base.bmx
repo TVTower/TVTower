@@ -101,7 +101,7 @@ End Function
 
 
 
-Type TRoomBase {_exposeToLua="selected"}
+Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 	Field name:string
 	'description, eg. "Bettys bureau" (+ "name of the owner" for "adagency ... owned by X")
 	Field description:String[] = ["", ""]
@@ -131,8 +131,7 @@ Type TRoomBase {_exposeToLua="selected"}
 	Field fakeRoom:int = FALSE
 	'size of this room (eg. for studios)
 	Field size:int = 1
-	Field id:int = 0
-	Global LastID:int = 0
+
 	Global _initDone:int = FALSE
 
 	'=== CONFIG FOR ALL ROOMS ===
@@ -147,12 +146,6 @@ Type TRoomBase {_exposeToLua="selected"}
 	Const BLOCKEDSTATE_BOMB:int       = 1 'eg. after terrorists attacked
 	Const BLOCKEDSTATE_RENOVATION:int = 2 'eg. for rooms not "bombable"
 	Const BLOCKEDSTATE_MARSHAL:int    = 3 'eg. archive when not enough money
-
-
-	Method New()
-		LastID:+1
-		id = LastID
-	End Method
 
 
 	Method onLoad:int()
@@ -171,6 +164,11 @@ Type TRoomBase {_exposeToLua="selected"}
 		if name = "studio" then SetUsableAsStudio(true)
 
 		return self
+	End Method
+
+
+	Method GenerateGUID:string()
+		return "roombase-"+id
 	End Method
 
 

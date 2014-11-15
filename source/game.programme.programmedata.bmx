@@ -11,9 +11,7 @@ Import "game.broadcast.genredefinition.movie.bmx"
 Import "game.gameconstants.bmx"
 
 
-Type TProgrammeDataCollection
-	Field entries:TMap = CreateMap()
-	Field entriesCount:int = -1
+Type TProgrammeDataCollection Extends TGameObjectCollection
 
 	'factor by what a programmes topicality DECREASES by sending it
 	Field wearoffFactor:float = 0.65
@@ -77,52 +75,15 @@ Type TProgrammeDataCollection
 
 
 	Method Initialize:TProgrammeDataCollection()
-		entries.Clear()
-		entriesCount = -1
-
+		Super.Initialize()
 		return self
 	End Method
 
 
 	Method GetByGUID:TProgrammeData(GUID:String)
-		Return TProgrammeData(entries.ValueForKey(GUID))
+		Return TProgrammeData( Super.GetByGUID(GUID) )
 	End Method
 
-
-	Method GetCount:Int()
-		if entriesCount >= 0 then return entriesCount
-
-		entriesCount = 0
-		For Local base:TProgrammeData = EachIn entries.Values()
-			entriesCount :+1
-		Next
-		return entriesCount
-	End Method
-
-
-	Method Remove:int(obj:TProgrammeData)
-		if obj.GetGuid() and entries.Remove(obj.GetGUID())
-			'invalidate count
-			entriesCount = -1
-
-			return True
-		endif
-
-		return False
-	End Method
-
-
-	Method Add:int(obj:TProgrammeData)
-		if entries.Insert(obj.GetGUID(), obj)
-			'invalidate count
-			entriesCount = -1
-
-			return TRUE
-		endif
-
-		return False
-	End Method
-	
 
 	Method GetGenreRefreshModifier:float(genre:int=-1)
 		if genre < self.genreRefreshModifier.length then return self.genreRefreshModifier[genre]

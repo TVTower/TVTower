@@ -98,7 +98,7 @@ End Function
 
 
 
-Type TRoomDoorBase extends TStaticEntity  {_exposeToLua="selected"}
+Type TRoomDoorBase extends TRenderableEntity  {_exposeToLua="selected"}
 	'time is set in Init() depending on changeRoomSpeed..
 	Field DoorTimer:TIntervalTimer = TIntervalTimer.Create(1)
 	'the id of the room
@@ -109,6 +109,11 @@ Type TRoomDoorBase extends TStaticEntity  {_exposeToLua="selected"}
 	Field doorSlot:Int = -1
 	Field doorType:Int = -1
 
+
+	Method GenerateGUID:string()
+		return "roomdoorbase-"+id
+	End Method
+	
 
 	Method GetOnFloor:int()
 		return onFloor

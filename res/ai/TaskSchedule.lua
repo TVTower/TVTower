@@ -362,13 +362,13 @@ function JobEmergencySchedule:SetContractToEmptyBlock(day, hour)
 	local choosenSpot = self:GetBestMatchingSpot(filteredCurrentSpotList)
 	if (choosenSpot ~= nil) then
 		debugMsg("Setze Spot: " .. fixedDay .. " / " .. fixedHour .. "  Name: " .. choosenSpot.GetTitle() .. "  MinAud: " .. choosenSpot.GetMinAudience())
-		local result = TVT.of_setAdvertisementSlot(TVT.of_getAdContractByID(choosenSpot.Id), fixedDay, fixedHour)
+		local result = TVT.of_setAdvertisementSlot(TVT.of_getAdContractByID(choosenSpot.GetID()), fixedDay, fixedHour)
 	else
 		--nochmal ohne Filter!
 		choosenSpot = self:GetBestMatchingSpot(currentSpotList)
 		if (choosenSpot ~= nil) then
 			debugMsg("Setze Spot - ungefiltert! Tag: " .. fixedDay .. " - Stunde: " .. fixedHour .. " Name: " .. choosenSpot.GetTitle())
-			local result = TVT.of_setAdvertisementSlot(TVT.of_getAdContractByID(choosenSpot.Id), fixedDay, fixedHour)
+			local result = TVT.of_setAdvertisementSlot(TVT.of_getAdContractByID(choosenSpot.GetID()), fixedDay, fixedHour)
 		else
 			debugMsg("Keinen Spot gefunden! Tag: " .. fixedDay .. " - Stunde: " .. fixedHour)
 		end

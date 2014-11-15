@@ -1,6 +1,93 @@
+SuperStrict
+Import Brl.Map
+
+Type TGameObjectCollection
+	Field entries:TMap = CreateMap()
+	Field entriesCount:int = -1
+	Field _entriesMapEnumerator:TNodeEnumerator {nosave}
+
+	Method Initialize:TGameObjectCollection()
+		entries.Clear()
+		entriesCount = -1
+
+		return self
+	End Method
+
+
+	Method GetByGUID:TGameObject(GUID:String)
+		Return TGameObject(entries.ValueForKey(GUID))
+	End Method
+
+
+	Method GetCount:Int()
+		if entriesCount >= 0 then return entriesCount
+
+		entriesCount = 0
+		For Local base:TGameObject = EachIn entries.Values()
+			entriesCount :+1
+		Next
+		return entriesCount
+	End Method
+
+
+	Method Add:int(obj:TGameObject)
+		if entries.Insert(obj.GetGUID(), obj)
+			'invalidate count
+			entriesCount = -1
+
+			return TRUE
+		endif
+
+		return False
+	End Method
+
+
+	Method Remove:int(obj:TGameObject)
+		if obj.GetGuid() and entries.Remove(obj.GetGUID())
+			'invalidate count
+			entriesCount = -1
+
+			return True
+		endif
+
+		return False
+	End Method
+
+
+	'=== ITERATOR ===
+	'for "EachIn"-support
+
+	'Set iterator to begin of array
+	Method ObjectEnumerator:TGameObjectCollection()
+		_entriesMapEnumerator = entries.Values()._enumerator
+		'_iteratorPos = 0
+		Return Self
+	End Method
+	
+
+	'checks if there is another element
+	Method HasNext:Int()
+		Return _entriesMapEnumerator.HasNext()
+
+		'If _iteratorPos > GetCount() Then Return False
+		'Return True
+	End Method
+
+
+	'return next element, and increase position
+	Method NextObject:Object()
+		Return _entriesMapEnumerator.NextObject()
+
+		'_iteratorPos :+ 1
+		'Return Array[Iteration-1]
+	End Method
+End Type
+
+
+
 Type TGameObject {_exposeToLua="selected"}
-	Field id:Int = 0 	{_exposeToLua}
-	Field GUID:String {_exposeToLua}
+	Field id:Int = 0
+	Field GUID:String
 	Global LastID:Int = 0
 
 	Method New()
@@ -24,7 +111,7 @@ Type TGameObject {_exposeToLua="selected"}
 
 
 	Method SetGUID:Int(GUID:String)
-		if GUID="" then GUID = "generic-gameobject-"+id
+		if GUID="" then GUID = "gameobject-"+id
 		self.GUID = GUID
 	End Method
 
@@ -50,6 +137,8 @@ Type TOwnedGameObject Extends TGameObject {_exposeToLua="selected"}
 		Return owner
 	End Method
 End Type
+
+
 
 
 Type TNamedGameObject Extends TOwnedGameObject {_exposeToLua="selected"}

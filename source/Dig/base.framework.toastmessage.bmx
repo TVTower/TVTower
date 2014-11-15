@@ -6,7 +6,7 @@ Import "base.util.event.bmx"
 Import "base.util.input.bmx"
 
 
-Type TToastMessageCollection extends TStaticEntity
+Type TToastMessageCollection extends TRenderableEntity
 	'spawnPoints contain the messages
 	Field spawnPoints:TMap = CreateMap()
 	Global _instance:TToastMessageCollection
@@ -209,7 +209,7 @@ Type TToastMessageSpawnPoint extends TEntity
 
 
 	'override to allow alignment
-	Method GetChildX:Float(child:TStaticEntity = Null)
+	Method GetChildX:Float(child:TRenderableEntity = Null)
 		if not child then return Super.GetChildX()
 
 		return alignment.GetX() * (GetScreenWidth() - child.area.GetW())
@@ -217,7 +217,7 @@ Type TToastMessageSpawnPoint extends TEntity
 
 
 	'override to displace if there are other entities
-	Method GetChildY:Float(child:TStaticEntity = Null)
+	Method GetChildY:Float(child:TRenderableEntity = Null)
 		if not child then return Super.GetChildY()
 
 		local result:Float = 0
@@ -287,8 +287,6 @@ Const TOASTMESSAGE_OPENING_OR_CLOSING:Int = 4
 Type TToastMessage extends TEntity
 	'a potential canvas to draw things on
 	Field canvasImage:TImage = null
-	'the guid of this message
-	Field guid:String = ""
 	Field _status:Int = 1 'closed
 	'time the animation for opening/closing takes, 0 to disable 
 	Field _openCloseDuration:Float = 0.25
@@ -306,16 +304,10 @@ Type TToastMessage extends TEntity
 	End Method
 
 
-	Method SetGUID:int(guid:string="")
-		if not guid then guid = "generic-toastmessage-"+id
-		self.guid = guid
+	Method GenerateGUID:string()
+		return "toastmessage-"+id
 	End Method
-
-
-	Method GetGUID:string()
-		return guid
-	End Method
-
+	
 
 	'sets a function to call when the message gets closed
 	Method SetOnCloseFunction(onCloseFunction(sender:TToastMessage))

@@ -42,9 +42,19 @@ Type TRectangle {_exposeToLua="selected"}
 
 	'returns if the rect overlaps with the given one
 	Method Intersects:int(rect:TRectangle) {_exposeToLua}
-		return ( containsXY( rect.GetX(), rect.GetY() ) ..
-		         OR containsXY( rect.GetX() + rect.GetW(),  rect.GetY() + rect.GetH() ) ..
-		       )
+		'checking if topleft or bottomright of the rect
+		'is contained in our rect via "containsXY" also returns true
+		'for rects next to each other:
+		'rectA = 0,0 - 10,10
+		'rectB = 10,10 - 20,10
+		'-> rectA contains point "10,10"
+		'return ( containsXY( rect.GetX(), rect.GetY() ) ..
+		'         OR containsXY( rect.GetX() + rect.GetW(),  rect.GetY() + rect.GetH() ) ..
+		'       )
+
+		'to avoid this, we use "exclusive" ranges (> instead of >=)
+		Return ( GetX() < rect.GetX2() AND GetY() < rect.GetY2() ) AND ..
+		       ( GetX2() > rect.GetX() AND GetY2() > rect.GetY() )
 	End Method
 
 
@@ -95,13 +105,13 @@ Type TRectangle {_exposeToLua="selected"}
 
 	'returns whether x is within the x-coords of the rectangle
 	Method ContainsX:int(x:float) {_exposeToLua}
-		return (x >= GetX() And x < GetX2())
+		return (x >= GetX() And x <= GetX2())
 	End Method
 
 
 	'returns whether y is within the y-coords of the rectangle
 	Method ContainsY:int(y:float) {_exposeToLua}
-		return (y >= GetY() And y < GetY2() )
+		return (y >= GetY() And y <= GetY2() )
 	End Method
 
 
@@ -110,6 +120,24 @@ Type TRectangle {_exposeToLua="selected"}
 		return (    x >= GetX() And x < GetX2() ..
 		        And y >= GetY() And y < GetY2() ..
 		       )
+	End Method
+
+
+	'resizes a rectangle by the given values (like scaling but with
+	'fixed numbers)
+	Method Grow:TRectangle(dx:Float, dy:Float, dw:Float, dh:Float)
+		position.AddXY(-dx, -dy)
+		dimension.AddXY(dx + dw, dy + dh)
+		return self
+	End Method
+
+
+	Method Scale:TRectangle(sx:Float, sy:Float)
+		local centerX:Float = 0.5 * GetW()
+		local centerY:Float = 0.5 * GetH()
+		position.AddXY( -(sx - 1.0) * centerX, -(sy - 1.0) * centerY)
+		dimension.AddXY( +2*(sx - 1.0) * centerX, +2*(sy - 1.0) * centerY)
+		return self
 	End Method
 
 

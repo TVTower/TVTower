@@ -32,7 +32,7 @@ Type TBuilding Extends TBuildingBase
 
 	'an entity with the area spawning the whole inner part of
 	'the building (for proper alignment)
-	Field buildingInner:TStaticEntity
+	Field buildingInner:TRenderableEntity
 
 	Global softDrinkMachineActive:int = False
 	Global softDrinkMachine:TSpriteEntity
@@ -78,7 +78,7 @@ Type TBuilding Extends TBuildingBase
 		'this entity can be used as parent for other entities - which
 		'want to layout to the "inner area" of the building (eg. doors)
 		if not buildingInner
-			buildingInner = new TStaticEntity
+			buildingInner = new TRenderableEntity
 			buildingInner.area.position.SetXY(leftWallX + innerX, 0)
 			'subtract missing "splitter wall" of last floor
 			buildingInner.area.dimension.SetXY(floorWidth, floorCount * floorHeight - 7)
@@ -258,7 +258,7 @@ Type TBuilding Extends TBuildingBase
 			EndIf
 		Next
 
-		For local figure:TFigureBase = EachIn GetFigureBaseCollection().list
+		For local figure:TFigureBase = EachIn GetFigureBaseCollection()
 			figure.setParent(self.buildingInner)
 		Next
 
@@ -393,7 +393,7 @@ Type TBuilding Extends TBuildingBase
 
 		'reset drawn for all figures... so they can get drawn
 		'correct at their "z-indexes" (behind building, elevator or on floor )
-		For Local Figure:TFigureBase = EachIn GetFigureBaseCollection().list
+		For Local Figure:TFigureBase = EachIn GetFigureBaseCollection()
 			Figure.alreadydrawn = False
 		Next
 
@@ -423,7 +423,7 @@ Type TBuilding Extends TBuildingBase
 		Endif
 
 
-		For Local Figure:TFigureBase = EachIn GetFigureBaseCollection().list
+		For Local Figure:TFigureBase = EachIn GetFigureBaseCollection()
 			'draw figure later if outside of building
 '			If figure.GetScreenX() < GetScreenX() + 127 Then Continue
 			If figure.GetScreenX() + figure.GetScreenWidth() < buildingInner.GetScreenX() Then Continue
@@ -462,7 +462,7 @@ Type TBuilding Extends TBuildingBase
 			'brightness and full brightness (white)
 			TColor.CreateGrey(GetWorld().lighting.GetSkyBrightness() * 255).Mix(TColor.clWhite, 0.7).SetRGB()
 			'draw figures outside the wall
-			For Local Figure:TFigure = EachIn GetFigureCollection().list
+			For Local Figure:TFigure = EachIn GetFigureCollection().entries.Values()
 				If Not Figure.alreadydrawn Then Figure.Draw()
 			Next
 

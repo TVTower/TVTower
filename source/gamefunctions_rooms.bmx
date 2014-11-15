@@ -259,6 +259,11 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 	Field _soundSource:TDoorSoundSource = Null {nosave}
 
 
+	Method GenerateGUID:string()
+		return "roomdoor-"+id
+	End Method
+
+
 	'create room and use preloaded image
 	Method Init:TRoomDoor(roomID:int, doorSlot:int=-1, onFloor:Int=0, doorType:Int=-1)
 		'assign variables
@@ -271,9 +276,10 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 		self.doorType = doorType
 		self.onFloor = onFloor
 
-		'give it an ID
-		GenerateID()
-		
+		'generate a new guid
+		SetGUID("")
+
+		'add to collection
 		GetRoomDoorBaseCollection().Add(self)
 
 		Return self
