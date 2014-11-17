@@ -365,7 +365,7 @@ Brucey - harsh fragrance for male experts.</en>
 			</description>
 			<!-- targetgroup: all -->
 			<conditions min_audience="0.5" min_image="0" target_group="0" />
-			<data infomercial="1" quality="20" repetitions="3" duration="2" fix_price="0" profit="30" penalty="29" />
+			<data infomercial="1" quality="20" repetitions="3" duration="2" fix_price="0" profit="80" penalty="99" />
 		</ad>		
 		<ad id="ronny-ad-portaet-01" creator="5578" created_by="Ronny">
 			<title>
@@ -378,7 +378,7 @@ Brucey - harsh fragrance for male experts.</en>
 			</description>
 			<!-- targetgroup: pensioners -->
 			<conditions min_audience="0.2" min_image="0" target_group="64" />
-			<data infomercial="1" quality="18" repetitions="2" duration="1" fix_price="0" profit="24" penalty="22" />
+			<data infomercial="1" quality="18" repetitions="2" duration="1" fix_price="0" profit="74" penalty="62" />
 		</ad>		
 		<ad id="ronny-ad-batterietanke-01" creator="5578" created_by="Ronny">
 			<title>
@@ -391,9 +391,8 @@ Wir bieten Lade-Vollautomaten. Batterie einlegen, Münzschacht befüllen. Knopf 
 				<en>No time to recharge batteries yourself?
 We offer fully automatic charging. Insert battery, fill coin slot. Press the button - and after 72 hours, you can take your fully charged batteries. Charging has never been as simple as that.</en>
 			</description>
-			<!-- targetgroup: pensioners -->
-			<conditions min_audience="0.1" min_image="0" target_group="64" />
-			<data infomercial="1" quality="15" repetitions="3" duration="2" fix_price="0" profit="18" penalty="14" />
+			<conditions min_audience="0" min_image="0" />
+			<data infomercial="1" quality="15" repetitions="3" duration="2" fix_price="1" profit="1250" penalty="3100" />
 		</ad>		
 		<ad id="ronny-ad-rentnerreisen-01" creator="5578" created_by="Ronny">
 			<title>
@@ -406,7 +405,7 @@ We offer fully automatic charging. Insert battery, fill coin slot. Press the but
 			</description>
 			<!-- targetgroup: pensioners -->
 			<conditions min_audience="0.1" min_image="0" target_group="64" />
-			<data infomercial="1" quality="12" repetitions="5" duration="2" fix_price="0" profit="17" penalty="50" />
+			<data infomercial="1" quality="12" repetitions="5" duration="2" fix_price="0" profit="74" penalty="90" />
 		</ad>
 		<ad id="ronny-ad-sanitaxi-01" creator="5578" created_by="Ronny">
 			<title>
@@ -419,7 +418,7 @@ We offer fully automatic charging. Insert battery, fill coin slot. Press the but
 			</description>
 			<!-- targetgroup: pensioners -->
 			<conditions min_audience="0.15" min_image="0" target_group="64" />
-			<data infomercial="1" quality="18" repetitions="3" duration="1" fix_price="0" profit="21" penalty="30" />
+			<data infomercial="1" quality="18" repetitions="3" duration="1" fix_price="0" profit="34" penalty="39" />
 		</ad>
 		<ad id="ronny-ad-sanitaxi-01" creator="5578" created_by="Ronny">
 			<title>
@@ -432,7 +431,20 @@ We offer fully automatic charging. Insert battery, fill coin slot. Press the but
 			</description>
 			<!-- targetgroup: all -->
 			<conditions min_audience="0" min_image="0" target_group="" />
-			<data infomercial="1" quality="21" repetitions="4" duration="2" fix_price="0" profit="19" penalty="25" />
+			<data infomercial="1" quality="21" repetitions="4" duration="2" fix_price="1" profit="950" penalty="1200" />
+		</ad>
+
+
+		<!-- Anpassungen an der Original-DB -->
+		<!-- Leckerfett -->
+		<ad id="e0433c39-f332-4638-9c4b-112fff85179b">
+			<title>
+				<en>Tasty Fat</en>
+			</title>
+			<description>
+				<en>The perfect mix of goose fat and natural vegetable fat makes Tasty Fat that incredibly deeeelicious.</en>
+			</description>
+			<data  fix_price="1" profit="800" penalty="1600" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 	</allads>
 </tvgdb>
