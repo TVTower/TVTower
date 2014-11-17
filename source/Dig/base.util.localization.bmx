@@ -246,6 +246,28 @@ Type TLocalizedString
 		endif
 	End Method
 
+rem
+	Method SerializeToString:string()
+		local s:string = ""
+		'concencate all into one string
+		'de::TextGerman::en::TextEnglish::...
+		For local language:string = EachIn values.Keys()
+			if s <> "" then s :+ "::"
+			s :+ language.replace.("\","\\").replace("::", "\::")
+			s :+ "::"
+			s :+ string(values.ValueForKey(language)).replace.("\","\\").replace("::", "\::")
+		Next
+		return s
+	End Method
+
+
+	Method DeSerializeFromString(text:String)
+		local vars:string[] = text.Replace("\)split(",")
+		if vars.length > 0 then x = float(vars[0])
+		if vars.length > 1 then y = float(vars[1])
+		if vars.length > 2 then z = float(vars[2])
+	End Method
+endrem
 
 	Method Append:Int(other:TLocalizedString)
 		if not other then return False

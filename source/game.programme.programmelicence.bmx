@@ -904,7 +904,7 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 			textY :+ 12	
 			fontNormal.draw("Kinokasse: "+data.GetOutcome(), currX + 5, textY)
 			textY :+ 12	
-			fontNormal.draw("Preismodifikator: "+data.priceModifier, currX + 5, textY)
+			fontNormal.draw("Preismodifikator: "+data.GetModifier("price"), currX + 5, textY)
 			textY :+ 12	
 			fontNormal.draw("Qualitaet roh: "+data.GetQualityRaw()+"  (ohne Alter, Wdh.)", currX + 5, textY)
 			textY :+ 12	

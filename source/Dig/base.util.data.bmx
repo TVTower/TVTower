@@ -78,7 +78,12 @@ Type TData
 
 		For local key:string = eachin data.Keys()
 			key = key.ToLower()
-			dataCopy.Add(key, data.ValueForKey(key))
+			local value:object = data.ValueForKey(key)
+			if TData(value)
+				dataCopy.Add(key, TData(value).Copy())
+			else
+				dataCopy.Add(key, value)
+			endif
 		Next
 		
 		return dataCopy

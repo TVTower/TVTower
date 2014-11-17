@@ -128,11 +128,12 @@ Type TDatabaseLoader
 			Genre 		= xml.FindValueInt(nodeChild,"genre", 0 )
 			duration    = xml.FindValueInt(nodeChild,"blocks", 2)
 			xrated 		= xml.FindValueInt(nodeChild,"xrated", 0)
-			priceModifier = xml.FindValueInt(nodeChild,"price", 255) / 255.0 /1.5 'normalize to "normal = 1.0", original values are bit higher
 			review 		= xml.FindValueInt(nodeChild,"critics", 0) / 255.0
 			speed 		= xml.FindValueInt(nodeChild,"speed", 0) / 255.0
 			Outcome 	= xml.FindValueInt(nodeChild,"outcome", 0) / 255.0
 			livehour 	= xml.FindValueInt(nodeChild,"time", 0)
+			'modifiers
+			priceModifier = xml.FindValueInt(nodeChild,"price", 255) / 255.0 /1.5 'normalize to "normal = 1.0", original values are bit higher
 			refreshModifier	= xml.FindValueFloat(nodeChild,"refreshModifier", 1.0)
 			wearoffModifier	= xml.FindValueFloat(nodeChild,"wearoffModifier", 1.0)
 			If duration < 0 Or duration > 12 Then duration =1
@@ -153,8 +154,13 @@ Type TDatabaseLoader
 			local localizeDescription:TLocalizedString = new TLocalizedString
 			localizeDescription.Set(description, "de")
 
+			local modifiers:TData = new TData
+			modifiers.AddNumber("price", priceModifier)
+			modifiers.AddNumber("refresh", refreshModifier)
+			modifiers.AddNumber("wearoff", wearoffModifier)
+			
 			local movieLicence:TProgrammeLicence = new TProgrammeLicence
-			movieLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, priceModifier, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_MOVIE))
+			movieLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, modifiers, Genre, duration, xrated, TProgrammeData.TYPE_MOVIE))
 
 			'convert old genre definition to new one
 			convertV2genreToV3(movieLicence.data)
@@ -207,10 +213,15 @@ Type TDatabaseLoader
 			local localizeDescription:TLocalizedString = new TLocalizedString
 			localizeDescription.Set(description, "de")
 
+			local modifiers:TData = new TData
+			modifiers.AddNumber("price", priceModifier)
+			modifiers.AddNumber("refresh", refreshModifier)
+			modifiers.AddNumber("wearoff", wearoffModifier)
+
 			'create a licence for that series - with title and series description
 			local seriesLicence:TProgrammeLicence = new TProgrammeLicence
 			'sets the "overview"-data of the series as series header
-			seriesLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, priceModifier, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_SERIES))
+			seriesLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, modifiers, Genre, duration, xrated, TProgrammeData.TYPE_SERIES))
 
 			'convert old genre definition to new one
 			convertV2genreToV3(seriesLicence.data)
@@ -253,8 +264,13 @@ Type TDatabaseLoader
 					local localizeDescription:TLocalizedString = new TLocalizedString
 					localizeDescription.Set(description, "de")
 
+					local modifiers:TData = new TData
+					modifiers.AddNumber("price", priceModifier)
+					modifiers.AddNumber("refresh", refreshModifier)
+					modifiers.AddNumber("wearoff", wearoffModifier)
+
 					local episodeLicence:TProgrammeLicence = new TProgrammeLicence
-					episodeLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, priceModifier, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_EPISODE))
+					episodeLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, modifiers, Genre, duration, xrated, TProgrammeData.TYPE_EPISODE))
 					'add that episode to the series licence
 					seriesLicence.AddSubLicence(episodeLicence)
 
@@ -751,7 +767,10 @@ Type TDatabaseLoader
 		programmeData.distributionChannel = data.GetInt("distribution", programmeData.distributionChannel)
 		programmeData.blocks = data.GetInt("blocks", programmeData.blocks)
 		programmeData.liveHour = data.GetInt("time", programmeData.liveHour)
-		programmeData.priceModifier = data.GetFloat("price_mod", programmeData.priceModifier)
+		'compatibility: load price mod from "price_mod" first... later
+		'override with "modifiers"-data
+		programmeData.SetModifier("price", data.GetFloat("price_mod", programmeData.GetModifier("price")))
+
 		programmeData.flags = data.GetInt("flags", programmeData.flags)
 
 		programmeData.genre = data.GetInt("maingenre", programmeData.genre)
@@ -809,6 +828,20 @@ Type TDatabaseLoader
 		programmeData.speed = 0.01 * data.GetFloat("speed", programmeData.speed*100)
 		programmeData.outcome = 0.01 * data.GetFloat("outcome", programmeData.outcome*100)
 
+
+		'=== MODIFIERS ===
+		'reuses existing (parent) modifiers and overrides it with custom
+		'ones
+		local nodeModifiers:TxmlNode = xml.FindElementNode(node, "modifiers")
+		For local nodeModifier:TxmlNode = EachIn xml.GetNodeChildElements(nodeModifiers)
+			If nodeModifier.getName() <> "modifier" then continue
+
+			local modKey:string = xml.FindValue(nodeModifier, "name", "mod")
+			local modValue:Float = xml.FindValueFloat(nodeModifier, "value", programmeData.GetModifier(modKey))
+
+			programmeData.SetModifier(modKey, modValue)
+		Next
+		
 
 		'=== LICENCE TYPE ===
 		'the licenceType is adjusted as soon as "AddData" was used

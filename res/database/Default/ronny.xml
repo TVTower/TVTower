@@ -41,6 +41,78 @@
 			<ratings critics="32" speed="28" outcome="42" />
 		</programme>
 		<!-- Series -->
+		<programme id="ronny-programme-kochenmitpatty-01" product="2" creator="5578" created_by="Ronny">
+			<title>
+				<de>Kochen mit [1|Full]</de>
+				<en>Cooking with [1|Full]</en>
+			</title>
+			<description>
+				<de>[1|Full] zeigt in heimeliger Atmosphäre wie die Hausfrau von Heute ihrem Mann und den Liebsten leckere Speisen auf den Tisch zaubern kann. Eine Weinverkostung gehört zu jeder Folge.</de>
+				<en>[1|Full] shows the audience how to cook for their husbands and her dearest. Each episode also contains a wine tasting.</en>
+			</description>
+			<staff>
+				<!-- klaus grobe -->
+				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
+				<!-- Patty Glansen -->
+				<member index="0" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="1984" distribution="0" maingenre="0" blocks="1" tags="cooking,80s" />
+			<modifiers>
+				<!-- the programme ages faster than average -->
+				<modifier name="topicality::age" value="1.5" />
+				<!-- the programme is cheaper than average -->
+				<modifier name="price" value="0.7" />
+			</modifiers>
+			<ratings critics="70" speed="25" />
+			<!-- Episodes -->
+			<children>
+				<programme id="ronny-programme-kochenmitpatty-01-ep-01" product="4" creator="5578" created_by="Ronny">
+					<title>
+						<de>Toast Hawaii</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Ganz neu und schon im Trend. Das Geheimnis der süßen Ananas wird bei einem Glas Silvaner aufgedeckt.</de>
+						<en>Brand new and already in vogue. The secret of the sweet pineapple is revealed with a glass of Silvaner.</en>
+					</description>
+					<ratings critics="75" speed="35" />
+				</programme>
+				<programme id="ronny-programme-kochenmitpatty-01-ep-02" product="4" creator="5578" created_by="Ronny">
+					<title>
+						<de>Gefüllte Eier</de>
+						<en>Filled eggs</en>
+					</title>
+					<description>
+						<de>Einfach, aber schlicht der Hingucker auf den Dinnerparties des Jahres 1984. Das Ei ist schnell gekocht und so hat Frau [1|Last] mehr Zeit für den Traminer der Saison.</de>
+						<en>Easy to create, but simply an eye on the dinner parties of the year 1984. The egg is boiled quickly and therefore Mrs. [1|Last] has more time for the Traminer of the season.</en>
+					</description>
+					<ratings critics="50" speed="40" />
+				</programme>
+				<programme id="ronny-programme-kochenmitpatty-01-ep-03" product="4" creator="5578" created_by="Ronny">
+					<title>
+						<de>Pumpernickel mal anders</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Roggenmischbrot war gestern. Angesagt und lecker ist Pumpernickel. Schnell geschmiert und angerichtet - dazu passt ein würziger rubinroter Pinot Noir.</de>
+						<en>Rye bread was yesterday. Hip and delicious is pumpernickel. Quickly lubricated and already done - fits perfectly to a spicy ruby red Pinot Noir.</en>
+					</description>
+					<ratings critics="73" speed="19" />
+				</programme>
+				<programme id="ronny-programme-kochenmitpatty-01-ep-03" product="4" creator="5578" created_by="Ronny">
+					<title>
+						<de>Shrimps-Cocktail</de>
+						<en></en>
+					</title>
+					<description>
+						<de>[1|First] pult heute Shrimps. Dazu gibt es hausgemachte Mayonnaise. Ein trockener Riesling passt nicht perfekt, aber erhält trotzdem seine halbe Stunde Sendezeit.</de>
+						<en>[1|First] shells shrimps today. They are served with homemade mayonnaise. A dry Riesling does not fit perfectly, but still receives his half hour of broadcasting.</en>
+					</description>
+					<ratings critics="67" speed="22" />
+				</programme>
+			</children>
+		</programme>
 		<programme id="ronny-programme-brisanteufer-01" product="2" creator="5578" created_by="Ronny">
 			<title>
 				<de>Brisante Ufer</de>
@@ -282,5 +354,85 @@ Brucey - harsh fragrance for male experts.</en>
 			<conditions min_audience="2.5" min_image="2" target_group="0" />
 			<data infomercial="1" quality="30" repetitions="4" duration="2" fix_price="0" profit="39" penalty="25" />
 		</ad>		
+		<ad id="ronny-ad-bargeld-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Bargeld-Kalle</de>
+				<en>Cash-Dave</en>
+			</title>
+			<description>
+				<de>Antikes und Kram zu Spottpreisen. Egal was, egal woher - wir zahlen für Ihren alten Mist! Gern auch Hausbesuche. Einfach den Schlüssel unter den Abstreicher, wir kümmern uns um den Rest.</de>
+				<en>Antique and stuff at rock bottom prices. No matter what, no matter whenceever - we will pay for your old crap! House calls are no problem. Simply put the key under the plow, we take care of the rest.</en>
+			</description>
+			<!-- targetgroup: all -->
+			<conditions min_audience="0.5" min_image="0" target_group="0" />
+			<data infomercial="1" quality="20" repetitions="3" duration="2" fix_price="0" profit="30" penalty="29" />
+		</ad>		
+		<ad id="ronny-ad-portaet-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>1-2-3-Porträt</de>
+				<en>1-2-3-Portrait</en>
+			</title>
+			<description>
+				<de>Wir bannen Sie oder Ihre Familie auf die Leinwand. Wenn Sie keine Zeit haben sollten, pausen wir auch von Fotos ab. Für andere ... Kunstprojekte ... bitte Termin vereinbaren.</de>
+				<en>We bring you or your family on a canvas. If you do not have time, we also trace from photos. For other ... art projects ... please make an appointment.</en>
+			</description>
+			<!-- targetgroup: pensioners -->
+			<conditions min_audience="0.2" min_image="0" target_group="64" />
+			<data infomercial="1" quality="18" repetitions="2" duration="1" fix_price="0" profit="24" penalty="22" />
+		</ad>		
+		<ad id="ronny-ad-batterietanke-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Batterie-Tanke</de>
+				<en>Battery-Station</en>
+			</title>
+			<description>
+				<de>Keine Zeit Ihre Akkus selbst aufzuladen?
+Wir bieten Lade-Vollautomaten. Batterie einlegen, Münzschacht befüllen. Knopf drücken - und schon nach 72 Stunden können Sie ihre vollgeladenen Batterien entnehmen. Laden war noch nie so einfach.</de>
+				<en>No time to recharge batteries yourself?
+We offer fully automatic charging. Insert battery, fill coin slot. Press the button - and after 72 hours, you can take your fully charged batteries. Charging has never been as simple as that.</en>
+			</description>
+			<!-- targetgroup: pensioners -->
+			<conditions min_audience="0.1" min_image="0" target_group="64" />
+			<data infomercial="1" quality="15" repetitions="3" duration="2" fix_price="0" profit="18" penalty="14" />
+		</ad>		
+		<ad id="ronny-ad-rentnerreisen-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Rentner-Reisen</de>
+				<en>Retiree-Routes</en>
+			</title>
+			<description>
+				<de>Sie haben Keine Lust den Lebensabend allein zu verbringen? Sie genießen die Anwesenheit anderer Ruheständler? Wir bieten Tagesreisen in die schönsten Dörfer - und die besten Rheumadecken.</de>
+				<en>You do not want to spend the evening of life alone? You enjoy to do things with of other retirees? We offer day trips to the most beautiful villages - and the best rheumatism blankets.</en>
+			</description>
+			<!-- targetgroup: pensioners -->
+			<conditions min_audience="0.1" min_image="0" target_group="64" />
+			<data infomercial="1" quality="12" repetitions="5" duration="2" fix_price="0" profit="17" penalty="50" />
+		</ad>
+		<ad id="ronny-ad-sanitaxi-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Sanitaxi</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Der Rollator verrostet? Die Verwandten glänzen seit Jahren mit Abwesenheit? Sanitaxi versorgt sie mit allen notwendigen Hygieneartikeln. Jetzt mit trendigen Motiven auf jeder zweiten Einlage.</de>
+				<en>The walker is rusted? Your relatives shine with absence since years? Sanitaxi provides you with all the necessary hygiene products. Now with trendy designs on every second liner.</en>
+			</description>
+			<!-- targetgroup: pensioners -->
+			<conditions min_audience="0.15" min_image="0" target_group="64" />
+			<data infomercial="1" quality="18" repetitions="3" duration="1" fix_price="0" profit="21" penalty="30" />
+		</ad>
+		<ad id="ronny-ad-sanitaxi-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Einkaufseck</de>
+				<en>Corner Shop</en>
+			</title>
+			<description>
+				<de>Braten, Brot und Bier! Wir haben alles für alleinstehende Männer und Familien mit kochscheuen Hausfrauen.</de>
+				<en>Barbecue, bread and beer! We have everything for single men and families with housewives having cooking-phobia.</en>
+			</description>
+			<!-- targetgroup: all -->
+			<conditions min_audience="0" min_image="0" target_group="" />
+			<data infomercial="1" quality="21" repetitions="4" duration="2" fix_price="0" profit="19" penalty="25" />
+		</ad>
 	</allads>
 </tvgdb>

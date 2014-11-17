@@ -130,18 +130,25 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Field targetGroups:int = 0
 	Field proPressureGroups:int = 0
 	Field contraPressureGroups:int = 0
-	'changes how much a programme "regenerates" (multiplied with genreModifier)
-	Field refreshModifier:float = 1.0
-	'changes how much a programme loses during sending it
-	Field wearoffModifier:Float	= 1.0
 	Field liveHour:Int = -1
 	Field outcome:Float	= 0
 	Field review:Float = 0
 	Field speed:Float = 0
-	Field priceModifier:Float = 1.0
 	Field genre:Int	= 0
 	Field subGenre:Int = 0
 	Field blocks:Int = 1
+	Rem
+	extra data block containing various information (if set)
+	"maxTopicality::ageInfluence" - influence of the age on the max topicality
+	oder nur
+	"maxTopicality"
+
+	"price"
+	"wearoff" - changes how much a programme loses during sending it
+	"refresh" - changes how much a programme "regenerates" (multiplied with genreModifier)
+	endrem
+	Field modifiers:TData = new TData
+	
 	'flags contains bitwise encoded things like xRated, paid, trash ...
 	Field flags:Int = 0
 	'which kind of distribution was used? Cinema, Custom production ...
@@ -202,18 +209,17 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Const FLAG_SERIES:Int = 256
 
 
-	Function Create:TProgrammeData(GUID:String, title:TLocalizedString, description:TLocalizedString, cast:TProgrammePersonJob[], country:String, year:Int, day:int=0, livehour:Int, Outcome:Float, review:Float, speed:Float, priceModifier:Float, Genre:Int, blocks:Int, xrated:Int, refreshModifier:float=1.0, wearoffModifier:float=1.0, programmeType:Int=1) {_private}
+	Function Create:TProgrammeData(GUID:String, title:TLocalizedString, description:TLocalizedString, cast:TProgrammePersonJob[], country:String, year:Int, day:int=0, livehour:Int, Outcome:Float, review:Float, speed:Float, modifiers:TData, Genre:Int, blocks:Int, xrated:Int, programmeType:Int=1) {_private}
 		Local obj:TProgrammeData = New TProgrammeData
 		obj.SetGUID(GUID)
 		obj.title = title
 		obj.description = description
 		obj.programmeType	= programmeType
-		obj.refreshModifier = Max(0.0, refreshModifier)
-		obj.wearoffModifier = Max(0.0, wearoffModifier)
 		obj.review			= Max(0,Min(1.0, review))
 		obj.speed			= Max(0,Min(1.0, speed))
 		obj.outcome			= Max(0,Min(1.0, Outcome))
-		obj.priceModifier   = Max(0,priceModifier) '- modificator. > 100% increases price
+		'modificators: > 1.0 increases price (1.0 = 100%)
+		obj.modifiers		= modifiers.Copy()
 		obj.genre			= Max(0,Genre)
 		obj.blocks			= blocks
 		obj.SetFlag(FLAG_XRATED, xrated)
@@ -232,7 +238,8 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Function CreateMinimal:TProgrammeData(title:TLocalizedString = null, genre:Int = 0, fixQuality:Float, year:Int = 1985)
 		Local quality:Int = fixQuality
 		if not title then title = new TLocalizedString
-		Return TProgrammeData.Create("", title, new TLocalizedString, Null, Null, year, 0, 0, quality, quality, quality, 0, genre, 0, 0, 1, 1, 1)
+		local modifiers:TData = new TData
+		Return TProgrammeData.Create("", title, new TLocalizedString, Null, Null, year, 0, 0, quality, quality, quality, modifiers, genre, 0, 0, 1)
 	End Function
 
 
@@ -380,12 +387,12 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 
 
 	Method GetRefreshModifier:float()
-		return self.refreshModifier
+		return GetModifier("topicality::refresh")
 	End Method
 
 
 	Method GetWearoffModifier:float()
-		return self.wearoffModifier
+		return GetModifier("topicality::wearoff")
 	End Method
 
 
@@ -435,41 +442,66 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	End Method
 
 
+	Method _LocalizeContent:string(content:string)
+		local result:string = content
+		if result.find("|") >= 0
+			if result.find("[") >= 0
+				local job:TProgrammePersonJob
+				for local i:int = 0 to 5
+					job = GetCastAtIndex(i)
+					if not job
+						result = result.replace("["+i+"|Full]", "John Doe")
+						result = result.replace("["+i+"|First]", "John")
+						result = result.replace("["+i+"|Last]", "Doe")
+					else
+						result = result.replace("["+i+"|Full]", job.person.GetFullName())
+						result = result.replace("["+i+"|First]", job.person.GetFirstName())
+						result = result.replace("["+i+"|Last]", job.person.GetLastName())
+					endif
+				Next
+			endif
+			'replace left "|" entries with newlines
+			'TODO: remove when fixed in DB
+			result = result.replace("|", chr(13))
+		endif
+		return result
+	End Method
+
+
 	Method GetTitle:string()
-		if title then return title.Get()
+		if title
+			'cache the now processed result
+			title.Set( _LocalizeContent(title.Get()) )
+			return title.Get()
+		endif
 		return ""
 	End Method
 
 
 	Method GetDescription:string()
 		if description
-			local result:string = description.Get()
-			if result.find("|") >= 0
-				if result.find("[") >= 0
-					local job:TProgrammePersonJob
-					for local i:int = 0 to 5
-						job = GetCastAtIndex(i)
-						if not job
-							result = result.replace("["+i+"|Full]", "John Doe")
-							result = result.replace("["+i+"|First]", "John")
-							result = result.replace("["+i+"|Last]", "Doe")
-						else
-							result = result.replace("["+i+"|Full]", job.person.GetFullName())
-							result = result.replace("["+i+"|First]", job.person.GetFirstName())
-							result = result.replace("["+i+"|Last]", job.person.GetLastName())
-						endif
-					Next
-				endif
-				'replace left "|" entries with newlines
-				'TODO: remove when fixed in DB
-				result = result.replace("|", chr(13))
-
-				'cache the now processed result
-				description.Set(result)
-			endif
-			return result
+			'cache the now processed result
+			description.Set( _LocalizeContent(description.Get()) )
+			return description.Get()
 		endif
 		return ""
+	End Method
+
+
+	'returns the stored value for a modifier - defaults to "100%"
+	Method GetModifier:Float(modifierKey:string, defaultValue:Float = 1.0)
+		return modifiers.GetFloat(modifierKey, defaultValue)
+	End Method
+
+
+	'stores a modifier value
+	Method SetModifier:int(modifierKey:string, value:Float)
+		'skip adding the modifier if it is the same - or a default value
+		'-> keeps datasets smaller
+		if GetModifier(modifierKey) = value then return False
+		
+		modifiers.AddNumber(modifierKey, value)
+		return True
 	End Method
 
 	
@@ -539,7 +571,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		Local value:int = 0
 
 		'maximum price is
-		'basefactor * topicalityModifier * priceModifier
+		'basefactor * topicalityModifier * GetModifier("price")
 
 		'movies run in cinema (outcome >0)
 		If isMovie() and GetOutcome() > 0
@@ -571,7 +603,9 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 
 		'individual price modifier - default is 1.0
 		'until we revisited the database, it only has a 20% influence
-		value :* (0.8+0.2*priceModifier)
+		'value :* (0.8 + 0.2 * GetModifier("price"))
+
+		value :* GetModifier("price")
 		
 		If Self.IsBMovie()
 			value :* 0.3
@@ -589,15 +623,19 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Method GetMaxTopicality:Float()
 		Local age:Int = Max(0, GetWorldTime().GetYear() - year)
 		Local timeAired:Int = Min(40, GetTimesAired() * 4)
+
+		'modifiers could increase or decrease influences of age/aired/...
+		local ageInfluence:Float = age * GetModifier("topicality::age")
+		local timeAiredInfluence:Float = timeAired * GetModifier("topicality::aired")
 		
 		If Self.IsCult() 'Bei Kult-Filmen ist der Nachteil des Filmalters und der Anzahl der Ausstrahlungen deutlich verringert.
 			If age >= 20
-				return 0.01 * Max(10, 80 - Max(40, (age - 20) * 0.5) - timeAired * 0.5)
+				return 0.01 * Max(10, 80 - Max(40, (ageInfluence - 20) * 0.5) - timeAiredInfluence * 0.5)
 			Else
-				return 0.01 * Max(10, 100 - age - timeAired * 0.5)
+				return 0.01 * Max(10, 100 - ageInfluence - timeAiredInfluence * 0.5)
 			Endif
 		Else
-			return 0.01 * Max(1, 100 - age - timeAired) 'simplest form ;D
+			return 0.01 * Max(1, 100 - ageInfluence - timeAiredInfluence)
 		EndIf
 	End Method
 
