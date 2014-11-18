@@ -418,9 +418,9 @@ We offer fully automatic charging. Insert battery, fill coin slot. Press the but
 			</description>
 			<!-- targetgroup: pensioners -->
 			<conditions min_audience="0.15" min_image="0" target_group="64" />
-			<data infomercial="1" quality="18" repetitions="3" duration="1" fix_price="0" profit="34" penalty="39" />
+			<data infomercial="1" quality="18" repetitions="3" duration="1" fix_price="0" profit="74" penalty="109" />
 		</ad>
-		<ad id="ronny-ad-sanitaxi-01" creator="5578" created_by="Ronny">
+		<ad id="ronny-ad-einkaufseck-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>Einkaufseck</de>
 				<en>Corner Shop</en>
@@ -432,6 +432,19 @@ We offer fully automatic charging. Insert battery, fill coin slot. Press the but
 			<!-- targetgroup: all -->
 			<conditions min_audience="0" min_image="0" target_group="" />
 			<data infomercial="1" quality="21" repetitions="4" duration="2" fix_price="1" profit="950" penalty="1200" />
+		</ad>
+		<ad id="ronny-ad-speckfett-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Speckfett</de>
+				<en>Fatty Bacon</en>
+			</title>
+			<description>
+				<de>Griebenschmalz aus dem Ergebirge! Von stark behaarten Männern empfohlen. "Ruff off de Bemme" seit 1951.</de>
+				<en>Crackling fat made in the Ironore Mountains! Recommended by heavily haired men. "Just this and bread" since 1951.</en>
+			</description>
+			<!-- targetgroup: all -->
+			<conditions min_audience="0.5" min_image="1" target_group="" />
+			<data infomercial="1" quality="31" repetitions="3" duration="2" fix_price="0" profit="60" penalty="50" />
 		</ad>
 
 

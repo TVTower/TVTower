@@ -829,6 +829,7 @@ Type TGameState
 	Field _EventManagerEvents:TList = Null
 	Field _PopularityManager:TPopularityManager = Null
 	Field _BroadcastManager:TBroadcastManager = Null
+	Field _DailyBroadcastStatisticCollection:TDailyBroadcastStatisticCollection = Null
 	Field _StationMapCollection:TStationMapCollection = Null
 	Field _Building:TBuilding 'includes, sky, moon, ufo, elevator
 	Field _NewsAgency:TNewsAgency
@@ -854,6 +855,7 @@ Type TGameState
 		GetProgrammeDataCollection().Initialize()
 		GetProgrammeLicenceCollection().Initialize()
 		GetNewsEventCollection().Initialize()
+		GetDailyBroadcastStatisticCollection().Initialize()
 
 		rem
 			GetWorldTime().Initialize()
@@ -899,6 +901,7 @@ Type TGameState
 		_Assign(_EventManagerEvents, EventManager._events, "Events", MODE_LOAD)
 		_Assign(_PopularityManager, TPopularityManager._instance, "PopularityManager", MODE_LOAD)
 		_Assign(_BroadcastManager, TBroadcastManager._instance, "BroadcastManager", MODE_LOAD)
+		_Assign(_DailyBroadcastStatisticCollection, TDailyBroadcastStatisticCollection._instance, "DailyBroadcastStatisticCollection", MODE_LOAD)
 		_Assign(_StationMapCollection, TStationMapCollection._instance, "StationMapCollection", MODE_LOAD)
 		_Assign(_Betty, TBetty._instance, "Betty", MODE_LOAD)
 		_Assign(_World, TWorld._instance, "World", MODE_LOAD)
@@ -935,6 +938,7 @@ Type TGameState
 		_Assign(EventManager._events, _EventManagerEvents, "Events", MODE_SAVE)
 		_Assign(TPopularityManager._instance, _PopularityManager, "PopularityManager", MODE_SAVE)
 		_Assign(TBroadcastManager._instance, _BroadcastManager, "BroadcastManager", MODE_SAVE)
+		_Assign(TDailyBroadcastStatisticCollection._instance, _DailyBroadcastStatisticCollection, "DailyBroadcastStatisticCollection", MODE_SAVE)
 		_Assign(TStationMapCollection._instance, _StationMapCollection, "StationMapCollection", MODE_SAVE)
 		_Assign(TBetty._instance, _Betty, "Betty", MODE_SAVE)
 		_Assign(TWorld._instance, _World, "World", MODE_SAVE)
@@ -3379,12 +3383,16 @@ Type GameEvents
 			'TODO: give image points or something like it for best programme
 			'of day?!
 			local stat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic( day - 1 )
-			if stat.bestBroadcast
+			if stat and stat.bestBroadcast
 				local audience:string = ""
 				if stat.bestAudience then audience = Long(stat.bestAudience.GetSum())+", player: "+stat.bestBroadcast.owner
 				TLogger.Log("OnDay", "BestBroadcast: "+stat.bestBroadcast.GetTitle() + " (audience: "+audience+")", LOG_INFO)
 			else
-				TLogger.Log("OnDay", "BestBroadcast: No best broadcast found for today", LOG_INFO)
+				if stat
+					TLogger.Log("OnDay", "BestBroadcast: No best broadcast found for today", LOG_INFO)
+				else
+					TLogger.Log("OnDay", "GetDailyBroadcastStatistic() failed - nothing available for that day", LOG_DEBUG)
+				endif
 			endif
 
 

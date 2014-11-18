@@ -12,10 +12,18 @@ Type TDailyBroadcastStatisticCollection
 	Function GetInstance:TDailyBroadcastStatisticCollection()
 		if not _instance
 			_instance = new TDailyBroadcastStatisticCollection
-			_instance.time = MillisecS()
+			_instance.Initialize()
 		endif
 		return _instance
 	End Function
+
+
+	Method Initialize:TDailyBroadcastStatisticCollection()
+		statistics.Clear()
+		time = MillisecS()
+
+		return self
+	End Method
 
 
 	Method Add:int(statistic:TDailyBroadcastStatistic, day:int)

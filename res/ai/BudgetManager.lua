@@ -105,7 +105,7 @@ function BudgetManager:CutInvestmentSavingIfNeeded(pBudget)
 	end
 	
 	if (pBudget * 0.6) < self.InvestmentSavings then -- zu viel gespart... Ersparnisse angreifen oder Kredit!!! aufnehmen
-		TVT.addToLog("Streiche Ersparnisse komplett. Ersparnisse " .. savings .. ". Budget aber nur " .. pBudget .. ".")
+		TVT.addToLog("Streiche Ersparnisse komplett. Ersparnisse " .. self.InvestmentSavings .. ". Budget aber nur " .. pBudget .. ".")
 		self.InvestmentSavings = 0
 	end
 

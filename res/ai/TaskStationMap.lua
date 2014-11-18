@@ -93,12 +93,26 @@ function JobBuyStation:Tick()
 	
 	for i = 1, 30 do
 		local tempStation = MY.GetStationMap().getTemporaryStation(math.random(35, 560), math.random(1, 375))
-		local price = tempStation.getPrice()
-		local pricePerViewer = tempStation.getReachIncrease() / price
 				
-		--debugMsg("Prüfe Station " .. i .. "  " .. tempStation.pos.GetIntX() .. "/" .. tempStation.pos.GetIntY() .. " - R: " .. tempStation.getReach() .. " - Inc: " .. tempStation.getReachIncrease() .. " - Price: " .. tempStation.getPrice() .. " F: " .. pricePerViewer)
+		--debugMsg("Prüfe Station " .. i .. "  " .. tempStation.pos.GetIntX() .. "/" .. tempStation.pos.GetIntY() .. " - R: " .. tempStation.getReach() .. " - Inc: " .. tempStation.getReachIncrease() .. " - Price: " .. tempStation.getPrice() .. " F: " .. (tempStation.getReachIncrease() / tempStation.getPrice()))
+
+		--filter criterias
+		--1) price to high
+		if price > self.Task.CurrentBudget then
+			tempStation = nil
+		--2) increase to low
+		elseif tempStation.getReachIncrease() < 7500 then
+			tempStation = nil
+		--3)  reach to low
+		elseif tempStation.getReach() < 1000 then
+			tempStation = nil
+		end
+
 		
-		if price <= self.Task.CurrentBudget and tempStation.getReachIncrease() > 7500 then -- Liegt im Budget und lohnt sich minimal
+		-- Liegt im Budget und lohnt sich minimal -> erfuellt Kriterien
+		if tempStation ~= nil then
+			local price = tempStation.getPrice()
+			local pricePerViewer = tempStation.getReachIncrease() / price
 			local priceDiff = self.Task.CurrentBudget - price
 			local attraction = pricePerViewer - (priceDiff / self.Task.CurrentBudget / 10)
 			--debugMsg("Attraction: " .. attraction .. "     -> " .. pricePerViewer .. " - (" .. priceDiff .. " / " .. self.Task.CurrentBudget .. " / 10)")
