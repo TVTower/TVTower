@@ -1138,6 +1138,11 @@ endrem
 				'inform news show that broadcasting started
 				'(which itself informs the broadcasted news)
 				obj.BeginBroadcasting(day, hour, minute, audienceResult)
+				'store audience/broadcast for daily stats
+				GetDailyBroadcastStatistic( day, true ).SetNewsBroadcastResult(obj, owner, hour, audienceResult.audience)
+			Else
+				'store audience/broadcast for daily stats - outage
+				GetDailyBroadcastStatistic( day, true).SetNewsBroadcastResult(null, owner, hour, null)
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
 			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TBroadcastMaterial.TYPE_NEWSSHOW).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))

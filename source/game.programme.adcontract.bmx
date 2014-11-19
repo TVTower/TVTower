@@ -252,17 +252,6 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 	'- for the individual base
 	'Field infomercialCutFactorModifier:Float = 1.0
 
-	Const TARGETGROUP_CHILDREN:Int = 1
-	Const TARGETGROUP_TEENAGER:Int = 2
-	Const TARGETGROUP_HOUSEWIFES:Int = 3
-	Const TARGETGROUP_EMPLOYEES:Int = 4
-	Const TARGETGROUP_UNEMPLOYED:Int = 5
-	Const TARGETGROUP_MANAGER:Int = 6
-	Const TARGETGROUP_PENSIONERS:Int = 7
-	Const TARGETGROUP_WOMEN:Int = 8
-	Const TARGETGROUP_MEN:Int = 9
-
-
 	Method Create:TAdContractBase(GUID:String, title:TLocalizedString, description:TLocalizedString, daysToFinish:Int, spotCount:Int, targetgroup:Int, minAudience:Float, minImage:Float, fixedPrice:Int, profit:Float, penalty:Float)
 		self.SetGUID(GUID)
 		self.title = title
@@ -736,8 +725,8 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'if no group given, use the one of the object
 		if group < 0 then group = base.limitedToTargetGroup
 
-		If group >= 1 And group <=9
-			Return GetLocale("AD_TARGETGROUP_"+group)
+		If group > 0 And group <= TVTTargetGroup.GetGroupID(TVTTargetGroup.count)
+			Return GetLocale("AD_TARGETGROUP_"+TVTTargetGroup.GetGroupString(group))
 		else
 			Return GetLocale("AD_TARGETGROUP_NONE")
 		EndIf

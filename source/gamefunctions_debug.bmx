@@ -258,8 +258,8 @@ endrem
 			font.drawBlock(val, x, y, 65, 25, ALIGN_RIGHT_TOP, TColor.clRed)
 		End If
 
-		for local i:int = 1 to 7
-			val = TFunctions.convertValue(audience.GetValue(i), 2)
+		for local i:int = 1 to TVTTargetGroup.baseGroupCount
+			val = TFunctions.convertValue(audience.GetValue(TVTTargetGroup.GetGroupID(i)), 2)
 			font.drawBlock(val, x2 + 70*(i-1), y, 65, 25, ALIGN_RIGHT_TOP, color)
 		next
 	End Function
@@ -282,9 +282,8 @@ endrem
 			End If
 		End if
 
-		for local i:int = 1 to 7
-			'val = MathHelper.floatToString(audience.GetValue(i) * 100,2) + "%"
-			val = MathHelper.floatToString(audience.GetValue(i),2)
+		for local i:int = 1 to TVTTargetGroup.baseGroupCount
+			val = MathHelper.floatToString(audience.GetValue(TVTTargetGroup.GetGroupID(i)),2)
 			font.drawBlock(val, x2 + 70*(i-1), y, 65, 25, ALIGN_RIGHT_TOP, color)
 		Next
 	End Function

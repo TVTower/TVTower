@@ -185,16 +185,17 @@ AD_TIME					= time
 AD_CHANNEL_IMAGE_TO_LOW = Channel image to low. %CHANNELIMAGE%% < %IMAGE%%.
 AD_PLEASE_GENRE_X = Please genre %GENRE%
 
-AD_TARGETGROUP_NONE		= "All"
-AD_TARGETGROUP_1		= "Children"
-AD_TARGETGROUP_2		= "Teenagers"
-AD_TARGETGROUP_3		= "Housewives"
-AD_TARGETGROUP_4		= "Employees"
-AD_TARGETGROUP_5		= "Unemployed"
-AD_TARGETGROUP_6		= "Manager"
-AD_TARGETGROUP_7		= "Retiree"
-AD_TARGETGROUP_8		= "Women"
-AD_TARGETGROUP_9		= "Men"
+AD_TARGETGROUP_ALL = All
+AD_TARGETGROUP_CHILDREN	= Children
+AD_TARGETGROUP_TEENAGERS = Teenagers
+AD_TARGETGROUP_HOUSEWIVES = Housewives
+AD_TARGETGROUP_EMPLOYEES = Employees
+AD_TARGETGROUP_UNEMPLOYED = Unemployed
+AD_TARGETGROUP_MANAGER = Manager
+AD_TARGETGROUP_PENSIONERS = Pensioners
+AD_TARGETGROUP_WOMEN = Women
+AD_TARGETGROUP_MEN = Men
+
 AD_INFOMERCIAL			= You get paid for airing infomercials. Income depends on audience.
 AD_INFOMERCIAL_NOT_AVAILABLE = There is no infomercial possible for this advertisement.
 AD_INFOMERCIAL_PROFIT	= Income: %PROFIT% per 1000 people watching

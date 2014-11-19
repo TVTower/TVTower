@@ -58,7 +58,7 @@ Type TNewsGenreDefinition Extends TGenreDefinitionBase
 		AudienceAttraction = New TAudience
 		AudienceAttraction.Children = String(data.ValueForKey("Children")).ToFloat()
 		AudienceAttraction.Teenagers = String(data.ValueForKey("Teenagers")).ToFloat()
-		AudienceAttraction.HouseWifes = String(data.ValueForKey("HouseWifes")).ToFloat()
+		AudienceAttraction.HouseWives = String(data.ValueForKey("HouseWives")).ToFloat()
 		AudienceAttraction.Employees = String(data.ValueForKey("Employees")).ToFloat()
 		AudienceAttraction.Unemployed = String(data.ValueForKey("Unemployed")).ToFloat()
 		AudienceAttraction.Manager = String(data.ValueForKey("Manager")).ToFloat()

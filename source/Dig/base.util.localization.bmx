@@ -246,26 +246,69 @@ Type TLocalizedString
 		endif
 	End Method
 
-rem
+
 	Method SerializeToString:string()
 		local s:string = ""
 		'concencate all into one string
 		'de::TextGerman::en::TextEnglish::...
 		For local language:string = EachIn values.Keys()
 			if s <> "" then s :+ "::"
-			s :+ language.replace.("\","\\").replace("::", "\::")
+			s :+ language.replace("\","\\").replace(":", "\:")
 			s :+ "::"
-			s :+ string(values.ValueForKey(language)).replace.("\","\\").replace("::", "\::")
+			s :+ string(values.ValueForKey(language)).replace("\","\\").replace(":", "\:")
 		Next
 		return s
 	End Method
 
 
 	Method DeSerializeFromString(text:String)
-		local vars:string[] = text.Replace("\)split(",")
-		if vars.length > 0 then x = float(vars[0])
-		if vars.length > 1 then y = float(vars[1])
-		if vars.length > 2 then z = float(vars[2])
+		local vars:string[] = text.split("::")
+		local language:string, value:string
+		local mode:int = 0
+		For local s:string = EachIn vars
+			s = s.replace("\:", ":").replace("\\", "\")
+			if mode = 0
+				language = s
+				mode :+ 1
+			else
+				value = s
+				mode = 0
+				Set(value, language)
+			endif
+		Next
+	End Method
+rem
+	Method SerializeToString:string()
+		local s:string = ""
+		'concencate all into one string
+		'de::TextGerman::en::TextEnglish::...
+		local q:string = "~~"
+		For local language:string = EachIn values.Keys()
+			if s <> "" then s :+ "::"
+			s :+ language.replace(q,q+q).replace(":", q+":")
+			s :+ "::"
+			s :+ string(values.ValueForKey(language)).replace(q,q+q).replace(":", q+":")
+		Next
+		return s
+	End Method
+
+
+	Method DeSerializeFromString(text:String)
+		local vars:string[] = text.split("::")
+		local language:string, value:string
+		local mode:int = 0
+		local q:string = "~~"
+		For local s:string = EachIn vars
+			s = s.replace(q+":", ":").replace(q+q, q)
+			if mode = 0
+				language = s
+				mode :+ 1
+			else
+				value = s
+				mode = 0
+				Set(value, language)
+			endif
+		Next
 	End Method
 endrem
 

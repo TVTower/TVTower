@@ -619,6 +619,10 @@ Type RoomHandler_Office extends TRoomHandler
 	Global financeShowDay:int = 0
 	Global clTypes:TColor[6]
 
+	'=== STATISTICS SCREEN ===
+	global statisticsPreviousDayButton:TGUIArrowButton
+	global statisticsNextDayButton:TGUIArrowButton
+	Global statisticsShowDay:int = 0
 
 
 	Function Init()
@@ -627,6 +631,7 @@ Type RoomHandler_Office extends TRoomHandler
 		InitStationMap()
 		InitProgrammePlanner()
 		InitFinancialScreen()
+		InitStatisticsScreen()
 
 		'localize gui elements
 		SetLanguage()
@@ -636,7 +641,7 @@ Type RoomHandler_Office extends TRoomHandler
 		super._RegisterScreenHandler( onUpdateOffice, onDrawOffice, ScreenCollection.GetScreen("screen_office") )
 		super._RegisterScreenHandler( onUpdateProgrammePlanner, onDrawProgrammePlanner, ScreenCollection.GetScreen("screen_office_programmeplanner") )
 		super._RegisterScreenHandler( onUpdateFinancials, onDrawFinancials, ScreenCollection.GetScreen("screen_office_financials") )
-		super._RegisterScreenHandler( onUpdateImage, onDrawImage, ScreenCollection.GetScreen("screen_office_image") )
+		super._RegisterScreenHandler( onUpdateStatistics, onDrawStatistics, ScreenCollection.GetScreen("screen_office_statistics") )
 		super._RegisterScreenHandler( onUpdateStationMap, onDrawStationMap, ScreenCollection.GetScreen("screen_office_stationmap") )
 
 		'===== REGISTER EVENTS =====
@@ -1586,7 +1591,7 @@ Type RoomHandler_Office extends TRoomHandler
 		If button = ProgrammePlannerButtons[1] Then return PPprogrammeList.SetOpen(1)		'opens programme genre list
 
 		If button = ProgrammePlannerButtons[2] then return ScreenCollection.GoToSubScreen("screen_office_financials")
-		If button = ProgrammePlannerButtons[3] then return ScreenCollection.GoToSubScreen("screen_office_image")
+		If button = ProgrammePlannerButtons[3] then return ScreenCollection.GoToSubScreen("screen_office_statistics")
 		'If button = ProgrammePlannerButtons[4] then return ScreenCollection.GoToSubScreen("screen_office_messages")
 		'If button = ProgrammePlannerButtons[5] then return ScreenCollection.GoToSubScreen("screen_office_unknown")
 	End Function
@@ -1923,6 +1928,8 @@ endrem
 	End Function
 
 
+	'===== OFFICE FINANCIALS SCREEN =====
+
 	Function InitFinancialScreen:int()
 		clTypes[TPlayerFinanceHistoryEntry.GROUP_NEWS] = new TColor.Create(0, 31, 83)
 		clTypes[TPlayerFinanceHistoryEntry.GROUP_PROGRAMME] = new TColor.Create(89, 40, 0)
@@ -1930,10 +1937,10 @@ endrem
 		clTypes[TPlayerFinanceHistoryEntry.GROUP_PRODUCTION] = new TColor.Create(44, 0, 78)
 		clTypes[TPlayerFinanceHistoryEntry.GROUP_STATION] = new TColor.Create(0, 75, 69)
 
-		financeHistoryUpButton = new TGUIArrowButton.Create(new TVec2D.Init(500 + 20, 180), new TVec2D.Init(120, 15), "DOWN", "officeFinancialScreen")
-		financeHistoryDownButton = new TGUIArrowButton.Create(new TVec2D.Init(500 + 120 + 20, 180), new TVec2D.Init(120, 15), "UP", "officeFinancialScreen")
+		financeHistoryUpButton = new TGUIArrowButton.Create(new TVec2D.Init(500 + 20, 180), new TVec2D.Init(130, 15), "DOWN", "officeFinancialScreen")
+		financeHistoryDownButton = new TGUIArrowButton.Create(new TVec2D.Init(500 + 130 + 20, 180), new TVec2D.Init(130, 15), "UP", "officeFinancialScreen")
 
-		financePreviousDayButton = new TGUIArrowButton.Create(new TVec2D.Init(20 + 20, 10 + 10), new TVec2D.Init(26, 26), "LEFT", "officeFinancialScreen")
+		financePreviousDayButton = new TGUIArrowButton.Create(new TVec2D.Init(20, 10 + 10), new TVec2D.Init(26, 26), "LEFT", "officeFinancialScreen")
 		financeNextDayButton = new TGUIArrowButton.Create(new TVec2D.Init(20 + 175 + 20, 10 + 10), new TVec2D.Init(26, 26), "RIGHT", "officeFinancialScreen")
 
 		'listen to clicks on the four buttons
@@ -1943,9 +1950,6 @@ endrem
 		local screen:TScreen = ScreenCollection.GetScreen("screen_office_financials")
 		if screen then EventManager.registerListenerFunction("screen.onEnter", onEnterFinancialScreen, screen)
 	End Function
-
-
-	'===== OFFICE FINANCIALS SCREEN =====
 
 	'=== EVENTS ===
 
@@ -1989,7 +1993,7 @@ endrem
 		'=== DAY CHANGER ===
 		local today:int = GetWorldTime().MakeTime(0, financeShowDay, 0, 0)
 		local todayText:string = GetWorldTime().GetDayOfYear(today)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(today)
-		textFont.DrawBlock(GetLocale("GAMEDAY")+" "+todayText, 50 + screenOffsetX, 15 +  screenOffsetY, 140, 20, ALIGN_CENTER_CENTER, TColor.CreateGrey(90), 2, 1, 0.2)
+		textFont.DrawBlock(GetLocale("GAMEDAY")+" "+todayText, 30 + screenOffsetX, 15 +  screenOffsetY, 160, 20, ALIGN_CENTER_CENTER, TColor.CreateGrey(90), 2, 1, 0.2)
 
 
 
@@ -2008,13 +2012,13 @@ endrem
 			history = TPlayerFinancehistoryEntry(list.ValueAtIndex(i))
 			if not history then continue
 
-			GetSpriteFromRegistry("screen_financial_newsLog"+history.GetTypeGroup()).DrawArea(501 + screenOffsetX, 39 + screenOffsetY + logSlot*logH , 238, logH)
+			GetSpriteFromRegistry("screen_financial_newsLog"+history.GetTypeGroup()).DrawArea(501 + screenOffsetX, 39 + screenOffsetY + logSlot*logH , 258, logH)
 			if history.GetMoney() < 0
 				logCol = "color=190,30,30"
 			else
 				logCol = "color=35,130,30"
 			Endif
-			logFont.DrawBlock("|"+logCol+"|"+TFunctions.dottedValue(abs(history.GetMoney()))+" "+getLocale("CURRENCY")+"|/color| "+history.GetDescription(), 501 + screenOffsetX + 5, 41 + screenOffsetY + logSlot*logH, 238 - 2*5, logH, ALIGN_LEFT_CENTER, clLog)
+			logFont.DrawBlock("|"+logCol+"|"+TFunctions.dottedValue(abs(history.GetMoney()))+" "+getLocale("CURRENCY")+"|/color| "+history.GetDescription(), 501 + screenOffsetX + 5, 41 + screenOffsetY + logSlot*logH, 258 - 2*5, logH, ALIGN_LEFT_CENTER, clLog)
 			logSlot:+1
 		Next
 
@@ -2022,12 +2026,12 @@ endrem
 
 		'=== BALANCE TABLE ===
 
-		local labelX:int = 20 + screenOffsetX
+		local labelX:int = 20
 		local labelStartY:int = 39 + screenOffsetY
-		local labelH:int = 19, labelW:int = 220
+		local labelH:int = 19, labelW:int = 240
 
-		local valueIncomeX:int = 240 + screenOffsetX
-		local valueExpenseX:int = 360 + screenOffsetX
+		local valueIncomeX:int = labelX + labelW
+		local valueExpenseX:int = valueIncomeX + 120
 		local valueStartY:int = 39 + screenOffsetY
 		local valueH:int = 19, valueW:int = 95
 
@@ -2045,9 +2049,9 @@ endrem
 		captionFont.DrawBlock(TFunctions.dottedValue(profit), 250 + screenOffsetX, 332 + screenOffsetY, 200, 25, ALIGN_CENTER_CENTER, TColor.clWhite, 2, 1, 0.75)
 
 		'draw label backgrounds
-		local labelBGX:int = 20 + screenOffsetX
-		local labelBGW:int = 220
-		local valueBGX:int = 20 + labelBGW + 1 + screenOffsetX
+		local labelBGX:int = 20
+		local labelBGW:int = 240
+		local valueBGX:int = labelBGX + labelBGW + 1
 		local labelBGs:TSprite[6]
 		for local i:int = 1 to 5
 			labelBGs[i] = GetSpriteFromRegistry("screen_financial_balanceLabel"+i)
@@ -2067,14 +2071,14 @@ endrem
 		labelBGs[TPlayerFinanceHistoryEntry.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 11*valueH, labelBGW, labelH)
 		labelBGs[TPlayerFinanceHistoryEntry.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 12*valueH, labelBGW, labelH)
 
-		labelBGs[TPlayerFinanceHistoryEntry.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 14*valueH +5, labelBGW, labelH)
+		labelBGs[TPlayerFinanceHistoryEntry.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 14*valueH +4, labelBGW, labelH)
 
 		'draw value backgrounds
 		local balanceValueBG:TSprite = GetSpriteFromRegistry("screen_financial_balanceValue")
 		for local i:int = 0 to 12
 			balanceValueBG.DrawArea(valueBGX, labelStartY + i*valueH, balanceValueBG.GetWidth(), labelH)
 		Next
-		balanceValueBG.DrawArea(valueBGX, labelStartY + 14*valueH + 5, balanceValueBG.GetWidth(), labelH)
+		balanceValueBG.DrawArea(valueBGX, labelStartY + 14*valueH + 4, balanceValueBG.GetWidth(), labelH)
 
 		'draw balance labels
 		textFont.DrawBlock(GetLocale("FINANCES_TRADING_PROGRAMMELICENCES"), labelX, labelStartY + 0*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_PROGRAMME])
@@ -2091,7 +2095,7 @@ endrem
 		textFont.DrawBlock(GetLocale("FINANCES_CREDIT_TAKEN__REPAYED"), labelX, labelStartY + 11*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_DEFAULT])
 		textFont.DrawBlock(GetLocale("FINANCES_MISC"), labelX, labelStartY + 12*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_DEFAULT])
 		'spacer for total
-		textBoldFont.DrawBlock(GetLocale("FINANCES_TOTAL"), labelX, labelStartY + 14*valueH+5, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_DEFAULT])
+		textBoldFont.DrawBlock(GetLocale("FINANCES_TOTAL"), labelX, labelStartY + 14*valueH+4, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_DEFAULT])
 
 
 		'draw "grouped"-info-sign
@@ -2112,7 +2116,7 @@ endrem
 		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_creditTaken), valueIncomeX, valueStartY + 11*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
 		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_misc), valueIncomeX, valueStartY + 12*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
 		'spacer for total
-		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_total), valueIncomeX, valueStartY + 14*valueH +5, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_total), valueIncomeX, valueStartY + 14*valueH +4, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
 
 
 		'draw balance values: expenses
@@ -2130,12 +2134,12 @@ endrem
 		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_creditRepayed), valueExpenseX, valueStartY + 11*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
 		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_creditInterest), valueExpenseX, valueStartY + 12*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
 		'spacer for total
-		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_total), valueExpenseX, valueStartY + 14*valueH +5, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_total), valueExpenseX, valueStartY + 14*valueH +4, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
 
 
 
 		'=== DRAW GROUP HOVERS ===
-		local balanceEntryW:int = labelBGX + labelBGW - labelX + labelW
+		local balanceEntryW:int = labelBGW + balanceValueBG.GetWidth() +2
 		'"station group"
 		if THelper.MouseIn(labelX, labelStartY + 6*valueH, balanceEntryW, labelH)
 			local bgcol:TColor = new TColor.Get()
@@ -2164,12 +2168,12 @@ endrem
 
 
 		'==== DRAW MONEY CURVE====
-		captionFont.DrawBlock(GetLocale("FINANCES_FINANCIAL_CURVES"), 500 + screenOffsetX, 207 + screenOffsetY,  240, captionHeight, ALIGN_CENTER_CENTER, captionColor, 1,,0.5)
+		captionFont.DrawBlock(GetLocale("FINANCES_FINANCIAL_CURVES"), 500 + screenOffsetX, 207 + screenOffsetY,  260, captionHeight, ALIGN_CENTER_CENTER, captionColor, 1,,0.5)
 
 		'how much days to draw
 		local showDays:int = 10
 		'where to draw + dimension
-		local curveArea:TRectangle = new TRectangle.Init(509 + screenOffsetX,239 + screenOffsetY, 220, 70)
+		local curveArea:TRectangle = new TRectangle.Init(509 + screenOffsetX,239 + screenOffsetY, 240, 70)
 		'heighest reached money value of that days
 		Local maxValue:int = 0
 		'minimum money (may be negative)
@@ -2320,10 +2324,40 @@ endrem
 	End Function
 
 
+
+
 	'===== OFFICE IMAGE SCREEN =====
 
+	Function InitStatisticsScreen:int()
+		statisticsPreviousDayButton = new TGUIArrowButton.Create(new TVec2D.Init(20, 10 + 10), new TVec2D.Init(26, 26), "LEFT", "officeStatisticsScreen")
+		statisticsNextDayButton = new TGUIArrowButton.Create(new TVec2D.Init(20 + 175 + 20, 10 + 10), new TVec2D.Init(26, 26), "RIGHT", "officeStatisticsScreen")
 
-	Function onDrawImage:int( triggerEvent:TEventBase )
+		'listen to clicks on the four buttons
+		EventManager.registerListenerFunction("guiobject.onClick", onClickStatisticsButtons, "TGUIArrowButton")
+
+		'reset show day when entering a screen
+		local screen:TScreen = ScreenCollection.GetScreen("screen_office_statistics")
+		if screen then EventManager.registerListenerFunction("screen.onEnter", onEnterStatisticsScreen, screen)
+	End Function
+
+	'=== EVENTS ===
+
+	'reset statistics show day to current when entering the screen
+	Function onEnterStatisticsScreen:int( triggerEvent:TEventBase )
+		statisticsShowDay = GetWorldTime().getDay()
+	End function
+
+	
+	Function onClickStatisticsButtons:int(triggerEvent:TEventBase)
+		local arrowButton:TGUIArrowButton = TGUIArrowButton(triggerEvent.GetSender())
+		if not arrowButton then return False
+
+		if arrowButton = statisticsNextDayButton then statisticsShowDay :+ 1
+		if arrowButton = statisticsPreviousDayButton then statisticsShowDay :- 1
+	End Function
+
+
+	Function onDrawStatistics:int( triggerEvent:TEventBase )
 		'local screen:TScreen	= TScreen(triggerEvent._sender)
 		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
@@ -2332,14 +2366,175 @@ endrem
 		GetBitmapFont("Default",13).drawBlock(GetLocale("IMAGE_REACH") , 55, 233, 330, 20, null, fontColor)
 		GetBitmapFont("Default",12).drawBlock(GetLocale("IMAGE_SHARETOTAL") , 55, 45, 330, 20, null, fontColor)
 		GetBitmapFont("Default",12).drawBlock(MathHelper.floatToString(100.0 * GetPlayerCollection().Get(room.owner).GetStationMap().getCoverage(), 2) + "%", 280, 45, 93, 20, new TVec2D.Init(ALIGN_RIGHT), fontColor)
-	End Function
 
-	Function onUpdateImage:int( triggerEvent:TEventBase )
-		'local screen:TScreen	= TScreen(triggerEvent._sender)
-		'local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
-		'if not room then return 0
+		local captionColor:TColor = new TColor.CreateGrey(70)
+		local captionFont:TBitmapFont = GetBitmapFont("Default", 14, BOLDFONT)
+		local captionHeight:int = 20 'to center it to table header according "font Baseline"
+		local textFont:TBitmapFont = GetBitmapFont("Default", 14)
+
+
+		'=== DAY CHANGER ===
+		local today:int = GetWorldTime().MakeTime(0, financeShowDay, 0, 0)
+		local todayText:string = GetWorldTime().GetDayOfYear(today)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(today)
+		textFont.DrawBlock(GetLocale("GAMEDAY")+" "+todayText, 30, 25, 160, 20, ALIGN_CENTER_CENTER, TColor.CreateGrey(90), 2, 1, 0.2)
+
+		'=== DRAW MONEY CURVE ===
+		captionFont.DrawBlock("Quoten", 30, 250,  760, captionHeight, ALIGN_LEFT_CENTER, captionColor, 1,, 0.5)
+
+		'how much days to draw
+		local showHours:int = 24
+		'where to draw + dimension
+		local curveArea:TRectangle = new TRectangle.Init(29, 284, 738, 70)
+		'heighest reached audience value of that hours
+		Local maxValue:int = 0
+		'minimum audience
+		Local minValue:int = 0
+		'color of labels
+		Local labelColor:TColor = new TColor.CreateGrey(80)
+
+		'statistic for today
+		local dailyBroadcastStatistic:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(statisticsShowDay, true)
+		'first get the maximum value so we know how to scale the rest
+		maxValue = dailyBroadcastStatistic.GetBestAudience(room.owner).GetSum()
+		maxValue = max(maxValue, dailyBroadcastStatistic.GetBestNewsAudience(room.owner).GetSum())
+rem
+		'first get the maximum value so we know how to scale the rest
+		For local i:Int = GetWorldTime().GetHour()-showHours To GetWorldTime().GetHour()
+			local day:int = GetWorldTime().GetDay( GetWorldTime().MakeTime()
+			'skip if day is less than startday (saves calculations)
+			if i < GetWorldTime().GetStartHour() then continue
+
+			For Local player:TPlayer = EachIn GetPlayerCollection().players
+				maxValue = max(maxValue, player.GetFinance(i).money)
+				minValue = min(minValue, player.GetFinance(i).money)
+			Next
+		Next
+endrem
+
+		local slot:int				= 0
+		local slotPos:TVec2D		= new TVec2D.Init(0,0)
+		local previousSlotPos:TVec2D= new TVec2D.Init(0,0)
+		'add 1 hour so half a slot could get added most left and right
+		'to "center" the curve
+		local slotWidth:Float 		= curveArea.GetW() / (showHours)
+
+		local yPerViewer:Float = 0
+		local yOfZero:Float = curveArea.GetH()
+		if maxValue > 0 then yPerViewer = curveArea.GetH() / float(maxValue)
+
+		local hoveredHour:int = -1
+		For local i:Int = 0 To 23
+			if THelper.MouseIn(curveArea.GetX() + slot * slotWidth, curveArea.GetY(), slotWidth, curveArea.GetH())
+				hoveredHour = i
+				'leave for loop
+				exit
+			EndIf
+			slot :+ 1
+		Next
+
+		if hoveredHour >= 0
+rem
+			local time:int = GetWorldTime().MakeTime(0, hoveredDay, hoveredHour, 0)
+			local gameDay:string = GetWorldTime().GetDay(time)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(time)
+			if GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money > 0
+				textSmallFont.Draw(GetLocale("GAMEDAY")+" "+gameDay+": |color=50,110,50|"+TFunctions.dottedValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money)+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
+			Else
+				textSmallFont.Draw(GetLocale("GAMEDAY")+" "+gameDay+": |color=110,50,50|"+TFunctions.dottedValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money)+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
+			Endif
+endrem
+			local hoverX:int = curveArea.GetX() + slot * slotWidth
+			local hoverW:int = Min(curveArea.GetX() + curveArea.GetW() - hoverX, slotWidth)
+			if hoverX < curveArea.GetX() then hoverW = slotWidth / 2
+			hoverX = Max(curveArea.GetX(), hoverX)
+
+			local col:TColor = new TColor.Get()
+			SetBlend LightBlend
+			SetAlpha 0.1 * col.a
+			DrawRect(hoverX, curveArea.GetY(), hoverW, curveArea.GetH())
+			SetBlend AlphaBlend
+			col.SetRGBA()
+		EndIf
+
+		'draw the curves
+		SetLineWidth(2)
+		GlEnable(GL_LINE_SMOOTH)
+
+		local maxHour:int = 23
+		if statisticsShowDay = GetWorldTime().GetDay() then maxHour = GetWorldTime().GetDayHour()
+
+		local audience:TAudience
+		local broadcastType:int = 0
+		local color:TColor[2]
+		color[0] = new TColor.Create(110,180,100)
+		color[1] = new TColor.Create(110,100,180)
+
+		'NEWS and PROGRAMME
+		for local broadcastType:int = 0 to 1
+			slot = 0
+			slotPos.SetXY(0,0)
+			previousSlotPos.SetXY(0,0)
+			For local i:Int = 0 To maxHour
+				if broadcastType = 0
+					audience = dailyBroadcastStatistic.GetAudience(room.owner, i)
+				else
+					audience = dailyBroadcastStatistic.GetNewsAudience(room.owner, i)
+				endif
+				'skip not yet broadcasted programme
+				if broadcastType = 0 and i = GetWorldTime().GetDayHour() and GetWorldTime().GetDayMinute() < 5 then continue
+
+				previousSlotPos.SetXY(slotPos.x, slotPos.y)
+				'outtage?
+				if not audience
+					slotPos.SetXY((slot+0.5) * slotWidth, yOfZero)
+					TColor.clRed.setRGB()
+				else
+					slotPos.SetXY((slot+0.5) * slotWidth, yOfZero - audience.GetSum() * yPerViewer)
+					color[broadcastType].setRGB()
+				endif
+				
+				SetAlpha 0.4
+				DrawOval(curveArea.GetX() + slotPos.GetX()-3, curveArea.GetY() + slotPos.GetY()-3,6,6)
+				SetAlpha 1.0
+				'line color is not "red" if it is an outtage, only the ovals
+				color[broadcastType].copy().AdjustRelative(-0.2).setRGB()
+				if slot > 0
+					DrawLine(curveArea.GetX() + previousSlotPos.GetX(), curveArea.GetY() + previousSlotPos.GetY(), curveArea.GetX() + slotPos.GetX(), curveArea.GetY() + slotPos.GetY())
+				endif
+				slot :+ 1
+			Next
+		Next
+		SetColor 255,255,255
+
+		SetLineWidth(1)
+
+		'coord descriptor
+		'textSmallFont.drawBlock(TFunctions.convertValue(maxvalue,2,0), curveArea.GetX(), curveArea.GetY(), curveArea.GetW(), 20, new TVec2D.Init(ALIGN_RIGHT), labelColor)
+		'textSmallFont.drawBlock(TFunctions.convertValue(minvalue,2,0), curveArea.GetX(), curveArea.GetY() + curveArea.GetH()-20, curveArea.GetW(), 20, new TVec2D.Init(ALIGN_RIGHT, ALIGN_BOTTOM), labelColor)
+
+
+		GuiManager.Draw("officeStatisticsScreen")
+	End Function
+	
+
+	Function onUpdateStatistics:int( triggerEvent:TEventBase )
+		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
+		if not room then return 0
+
+		'disable "previou" or "newxt" button of finance display
+		if statisticsShowDay = 0 or statisticsShowDay = GetWorldTime().GetStartDay()
+			statisticsPreviousDayButton.Disable()
+		else
+			statisticsPreviousDayButton.Enable()
+		endif
+
+		if statisticsShowDay = GetWorldTime().getDay()
+			statisticsNextDayButton.Disable()
+		else
+			statisticsNextDayButton.Enable()
+		endif
 
 		Game.cursorstate = 0
+		GuiManager.Update("officeStatisticsScreen")
 	End Function
 
 

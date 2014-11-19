@@ -172,7 +172,7 @@ rem - Später - Neue Berechnung
 		
 		manipulation.Children = 0
 		manipulation.Teenagers = 0
-		manipulation.HouseWifes = 0
+		manipulation.HouseWives = 0
 		manipulation.Employees = 0
 		manipulation.Unemployed = 0
 		manipulation.Manager = 0

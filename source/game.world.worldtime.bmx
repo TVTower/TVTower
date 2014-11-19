@@ -168,6 +168,12 @@ Type TWorldTime {_exposeToLua="selected"}
 	End Method
 
 
+	'returns the hour world started running
+	Method GetStartHour:Int() {_exposeToLua}
+		Return GetHour(_timeStart)
+	End Method
+
+	
 	'returns the day world started running
 	Method GetStartDay:Int() {_exposeToLua}
 		Return GetDay(_timeStart)
@@ -225,6 +231,15 @@ Type TWorldTime {_exposeToLua="selected"}
 			Case 12, 1, 2  return 4
 		End Select
 		return 0
+	End Method
+
+
+	'attention: LUA uses a default param of "0"
+	'-> so for this and other functions we have to use "<=0" instead of "<0"
+	Method GetHour:int(useTime:Double = -1.0) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
+
+		return floor(useTime / (DAYLENGTH/24)) +1
 	End Method
 
 

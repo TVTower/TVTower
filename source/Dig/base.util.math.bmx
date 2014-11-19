@@ -109,7 +109,9 @@ Type MathHelper
 		'and compare the original value if it is negative
 		'- this is needed because "-0.1" would be "0" as int (one char less)
 		local lengthBeforeDecimalPoint:int = string(abs(int(s))).length
-		if value < 0 then lengthBeforeDecimalPoint:+1 'minus sign
+		'instead of comparing "value" we use the rounded one - a value
+		'of "0.000" is sometimes represented using "-2xxxxxxx.xxxx"
+		if Float(s) < 0 then lengthBeforeDecimalPoint:+1 'minus sign
 		'remove unneeded digits (length = BEFORE + . + AFTER)
 		s = Left(s, lengthBeforeDecimalPoint + 1 + digitsAfterDecimalPoint)
 
@@ -133,6 +135,7 @@ Type MathHelper
 
 	'round a number using weighted non-truncate rounding.
 	Function RoundNumber:Double(number:Double, digitsAfterDecimalPoint:Byte = 2)
+		if number = 0 then return 0
 		Local t:Long = 10 ^ digitsAfterDecimalPoint
 		Return RoundInt(number * t) / Double(t)
 	End Function

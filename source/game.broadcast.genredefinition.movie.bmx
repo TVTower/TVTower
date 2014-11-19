@@ -77,7 +77,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		AudienceAttraction = New TAudience
 		AudienceAttraction.Children = String(data.ValueForKey("Children")).ToFloat()
 		AudienceAttraction.Teenagers = String(data.ValueForKey("Teenagers")).ToFloat()
-		AudienceAttraction.HouseWifes = String(data.ValueForKey("HouseWifes")).ToFloat()
+		AudienceAttraction.HouseWives = String(data.ValueForKey("HouseWives")).ToFloat()
 		AudienceAttraction.Employees = String(data.ValueForKey("Employees")).ToFloat()
 		AudienceAttraction.Unemployed = String(data.ValueForKey("Unemployed")).ToFloat()
 		AudienceAttraction.Manager = String(data.ValueForKey("Manager")).ToFloat()
@@ -107,7 +107,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		AudienceAttraction = New TAudience
 		AudienceAttraction.Children = 0.5
 		AudienceAttraction.Teenagers = 0.5
-		AudienceAttraction.HouseWifes = 0.5
+		AudienceAttraction.HouseWives = 0.5
 		AudienceAttraction.Employees = 0.5
 		AudienceAttraction.Unemployed = 0.5
 		AudienceAttraction.Manager = 0.5

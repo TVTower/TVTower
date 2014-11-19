@@ -335,10 +335,11 @@ Type TPersist
 				If mth and mth2
 '					local serializedString:string = mth.Invoke(obj, [data])
 					local serializedString:string = string( mth.Invoke(obj) )
+					if serializedString
+						serializedString = doc.encodeEntities(serializedString)
 
-					Local fieldNode:TxmlNode = node.addChild("serialized")
-					fieldNode.setContent(serializedString)
-
+						node.addChild("serialized").setContent(serializedString)
+					endif
 
 				'if the method is not existing - parse each field
 				Else

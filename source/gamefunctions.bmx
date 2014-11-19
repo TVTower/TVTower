@@ -1269,28 +1269,16 @@ Type TTooltipAudience Extends TTooltip
 			Self.Usefont.draw(GetLocale("HINT_PRESSING_ALT_WILL_SHOW_DETAILS") , lineX, lineY, TColor.CreateGrey(150))
 		Else
 			'add lines so we can have an easier "for loop"
-			Local lines:String[9]
-			Local percents:String[9]
+			Local lines:String[TVTTargetGroup.count]
+			Local percents:String[TVTTargetGroup.count]
 			local audienceQuote:TAudience = audienceResult.GetAudienceQuote()
-			lines[0]	= getLocale("AD_TARGETGROUP_1") + ": " + TFunctions.convertValue(audienceResult.Audience.Children, 0)
-			percents[0]	= MathHelper.floatToString(audienceQuote.Children * 100,2)
-			lines[1]	= getLocale("AD_TARGETGROUP_2") + ": " + TFunctions.convertValue(audienceResult.Audience.Teenagers, 0)
-			percents[1]	= MathHelper.floatToString(audienceQuote.Teenagers * 100,2)
-			lines[2]	= getLocale("AD_TARGETGROUP_3") + ": " + TFunctions.convertValue(audienceResult.Audience.HouseWifes, 0)
-			percents[2]	= MathHelper.floatToString(audienceQuote.HouseWifes * 100,2)
-			lines[3]	= getLocale("AD_TARGETGROUP_4") + ": " + TFunctions.convertValue(audienceResult.Audience.Employees, 0)
-			percents[3]	= MathHelper.floatToString(audienceQuote.Employees * 100,2)
-			lines[4]	= getLocale("AD_TARGETGROUP_5") + ": " + TFunctions.convertValue(audienceResult.Audience.Unemployed, 0)
-			percents[4]	= MathHelper.floatToString(audienceQuote.Unemployed * 100,2)
-			lines[5]	= getLocale("AD_TARGETGROUP_6") + ": " + TFunctions.convertValue(audienceResult.Audience.Manager, 0)
-			percents[5]	= MathHelper.floatToString(audienceQuote.Manager * 100,2)
-			lines[6]	= getLocale("AD_TARGETGROUP_7") + ": " + TFunctions.convertValue(audienceResult.Audience.Pensioners, 0)
-			percents[6]	= MathHelper.floatToString(audienceQuote.Pensioners * 100,2)
-			lines[7]	= getLocale("AD_TARGETGROUP_8") + ": " + TFunctions.convertValue(audienceResult.Audience.Women, 0)
-			percents[7]	= MathHelper.floatToString(audienceQuote.Women * 100,2)
-			lines[8]	= getLocale("AD_TARGETGROUP_9") + ": " + TFunctions.convertValue(audienceResult.Audience.Men, 0)
-			percents[8]	= MathHelper.floatToString(audienceQuote.Men * 100,2)
-
+			local targetGroupID:int = 0
+			for local i:int = 1 to TVTTargetGroup.count
+				targetGroupID = TVTTargetGroup.GetGroupID(i)
+				lines[i-1] = getLocale("AD_TARGETGROUP_"+TVTTargetGroup.GetGroupString(targetGroupID)) + ": " + TFunctions.convertValue(audienceResult.Audience.GetValue(targetGroupID), 0)
+				percents[i-1] = MathHelper.floatToString(audienceQuote.GetValue(targetGroupID) * 100,2)
+			Next
+			
 			Local colorLight:TColor = TColor.CreateGrey(240)
 			Local colorDark:TColor = TColor.CreateGrey(230)
 			Local colorTextLight:TColor = colorLight.copy().AdjustFactor(-110)

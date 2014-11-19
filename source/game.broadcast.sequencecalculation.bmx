@@ -18,24 +18,25 @@ Type TSequenceCalculation
 		If riseMod <> null Then riseModCopy = riseMod.Copy().CutBordersFloat(0.8, 1.25)
 		If shrinkMod <> null Then shrinkModCopy = shrinkMod.Copy().CutBordersFloat(0.25, 1.25)
 
-		For Local i:Int = 1 To 9 'Für jede Zielgruppe
+		For Local i:Int = 1 To TVTTargetGroup.count
+			Local targetGroupID:int = TVTTargetGroup.GetGroupID(i)
 			If Predecessor
-				predecessorValue = Predecessor.FinalAttraction.GetValue(i)
+				predecessorValue = Predecessor.FinalAttraction.GetValue(targetGroupID)
 			Else
 				predecessorValue = 0
 			EndIf
-			successorValue = Successor.BaseAttraction.GetValue(i)
+			successorValue = Successor.BaseAttraction.GetValue(targetGroupID)
 
 			Local riseModTemp:Float = 1
-			If riseModCopy Then riseModTemp = riseModCopy.GetValue(i)
+			If riseModCopy Then riseModTemp = riseModCopy.GetValue(targetGroupID)
 			Local shrinkModTemp:Float = 1
-			If shrinkModCopy Then shrinkModTemp = shrinkModCopy.GetValue(i)
+			If shrinkModCopy Then shrinkModTemp = shrinkModCopy.GetValue(targetGroupID)
 
-			Local predShareOnRiseForTG:Float = PredecessorShareOnRise.GetValue(i)
-			Local predShareOnShrinkForTG:Float = PredecessorShareOnShrink.GetValue(i)
+			Local predShareOnRiseForTG:Float = PredecessorShareOnRise.GetValue(targetGroupID)
+			Local predShareOnShrinkForTG:Float = PredecessorShareOnShrink.GetValue(targetGroupID)
 			Local sequence:Float = CalcSequenceCase(predecessorValue, successorValue, riseModTemp, shrinkModTemp, predShareOnRiseForTG, predShareOnShrinkForTG)
 
-			result.SetValue(i, sequence)
+			result.SetValue(targetGroupID, sequence)
 		Next
 
 		Return result

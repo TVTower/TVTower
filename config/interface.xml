@@ -36,7 +36,7 @@
 				<!-- target group icons -->
 				<child name="gfx_targetGroup1" id="Children"	x="252"	y="386"	w="15" h="15" />
 				<child name="gfx_targetGroup2" id="Teenagers"	x="267"	y="386"	w="15" h="15" />
-				<child name="gfx_targetGroup3" id="HouseWifes"	x="282"	y="386"	w="15" h="15" />
+				<child name="gfx_targetGroup3" id="HouseWives"	x="282"	y="386"	w="15" h="15" />
 				<child name="gfx_targetGroup4" id="Employees"	x="297"	y="386"	w="15" h="15" />
 				<child name="gfx_targetGroup5" id="Unemployed"	x="312"	y="386"	w="15" h="15" />
 				<child name="gfx_targetGroup6" id="Manager"		x="327"	y="386"	w="15" h="15" />

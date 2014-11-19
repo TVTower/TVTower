@@ -154,13 +154,39 @@ Type TVTTargetGroup
 	const All:int = 0
 	const Children:int = 1
 	const Teenagers:int = 2
-	const HouseWifes:int = 4
+	const HouseWives:int = 4
 	const Employees:int = 8
 	const Unemployed:int = 16
 	const Manager:int = 32
 	const Pensioners:int = 64
 	const Women:int = 128
 	const Men:int = 256
+	'amount of target groups
+	const count:int = 9
+	'without women/men
+	const baseGroupCount:int = 7
+
+	Function GetGroupID:int(position:int = 0)
+		if position <= 0 then return 0
+		return 2^(position-1)
+	End Function
+
+
+	Function GetGroupString:String(groupKey:int = 0)
+		Select groupKey
+			case 1    return "children"
+			case 2    return "teenagers"
+			case 4    return "housewives"
+			case 8    return "employees"
+			case 16   return "unemployed"
+			case 32   return "manager"
+			case 64   return "pensioners"
+			case 128  return "women"
+			case 256  return "men"
+			case 0    return "all"
+			default   return "all"
+		End Select
+	End Function
 End Type
 
 

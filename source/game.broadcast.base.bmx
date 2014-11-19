@@ -299,15 +299,15 @@ Type TBroadcastManager
 					EndIf
 				Next
 
-				TPublicImage.ChangeForTargetGroup(map, 1, attrList, TAudience.ChildrenSort)
-				TPublicImage.ChangeForTargetGroup(map, 2, attrList, TAudience.TeenagersSort)
-				TPublicImage.ChangeForTargetGroup(map, 3, attrList, TAudience.HouseWifesSort)
-				TPublicImage.ChangeForTargetGroup(map, 4, attrList, TAudience.EmployeesSort)
-				TPublicImage.ChangeForTargetGroup(map, 5, attrList, TAudience.UnemployedSort)
-				TPublicImage.ChangeForTargetGroup(map, 6, attrList, TAudience.ManagerSort)
-				TPublicImage.ChangeForTargetGroup(map, 7, attrList, TAudience.PensionersSort)
-				TPublicImage.ChangeForTargetGroup(map, 8, attrList, TAudience.WomenSort)
-				TPublicImage.ChangeForTargetGroup(map, 9, attrList, TAudience.MenSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.Children, attrList, TAudience.ChildrenSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.Teenagers, attrList, TAudience.TeenagersSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.HouseWives, attrList, TAudience.HouseWivesSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.Employees, attrList, TAudience.EmployeesSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.Unemployed, attrList, TAudience.UnemployedSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.Manager, attrList, TAudience.ManagerSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.Pensioners, attrList, TAudience.PensionersSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.Women, attrList, TAudience.WomenSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.Men, attrList, TAudience.MenSort)
 
 				For Local i:Int = 1 To 4 'TODO: Was passiert wenn ein Spieler ausscheidet?
 					Local audience:TAudience = TAudience(map.ValueForKey(string.FromInt(i)))
@@ -733,9 +733,9 @@ Type TBroadcastFeedback
 				ElseIf allowedTemp.Teenagers >= 1 And kv.Key = "1" Then
 					AudienceInterest.Teenagers = AttractionToInterest(attr.Teenagers, maxAudience.Teenagers, allowedTemp.Teenagers - 1)
 					If AudienceInterest.Teenagers > 0 Then familyMemberCount :- 1
-				ElseIf allowedTemp.HouseWifes >= 1 And kv.Key = "2" Then
-					AudienceInterest.HouseWifes = AttractionToInterest(attr.HouseWifes, maxAudience.HouseWifes, allowedTemp.HouseWifes - 1)
-					If AudienceInterest.HouseWifes > 0 Then familyMemberCount :- 1
+				ElseIf allowedTemp.HouseWives >= 1 And kv.Key = "2" Then
+					AudienceInterest.HouseWives = AttractionToInterest(attr.HouseWives, maxAudience.HouseWives, allowedTemp.HouseWives - 1)
+					If AudienceInterest.HouseWives > 0 Then familyMemberCount :- 1
 				ElseIf allowedTemp.Employees >= 1 And kv.Key = "3" Then
 					AudienceInterest.Employees = AttractionToInterest(attr.Employees, maxAudience.Employees, allowedTemp.Employees - 1)
 					If AudienceInterest.Employees > 0 Then familyMemberCount :- 1
@@ -786,12 +786,12 @@ Type TBroadcastFeedback
 	Method GetFirstAllowed:TKeyValueNumber(sortMap:TNumberSortMap, allowed:TAudience)
 		For local kv:TKeyValueNumber = eachin sortMap.Content
 			If allowed.Children >= 1 And kv.Key = "0" Then Return kv
-			If allowed.Teenagers >= 1 And kv.Key = "1" Then Return kv
-			If allowed.HouseWifes >= 1 And kv.Key = "2" Then Return kv
-			If allowed.Employees >= 1 And kv.Key = "3" Then Return kv
-			If allowed.Unemployed >= 1 And kv.Key = "4" Then Return kv
-			If allowed.Manager >= 1 And kv.Key = "5" Then Return kv
-			If allowed.Pensioners >= 1 And kv.Key = "6" Then Return kv
+			If allowed.Teenagers >= 1 And kv.Key = TVTTargetGroup.Children Then Return kv
+			If allowed.HouseWives >= 1 And kv.Key = TVTTargetGroup.Teenagers Then Return kv
+			If allowed.Employees >= 1 And kv.Key = TVTTargetGroup.HouseWives Then Return kv
+			If allowed.Unemployed >= 1 And kv.Key = TVTTargetGroup.Employees Then Return kv
+			If allowed.Manager >= 1 And kv.Key = TVTTargetGroup.Unemployed Then Return kv
+			If allowed.Pensioners >= 1 And kv.Key = TVTTargetGroup.Manager Then Return kv
 		Next
 	End Method
 
@@ -985,7 +985,7 @@ Type TAudienceMarketCalculation
 			Else
 				attrRange.Children = attrRange.Children + (1 - attrRange.Children) * attraction.Children
 				attrRange.Teenagers = attrRange.Teenagers + (1 - attrRange.Teenagers) * attraction.Teenagers
-				attrRange.HouseWifes = attrRange.HouseWifes + (1 - attrRange.HouseWifes) * attraction.HouseWifes
+				attrRange.HouseWives = attrRange.HouseWives + (1 - attrRange.HouseWives) * attraction.HouseWives
 				attrRange.Employees = attrRange.Employees + (1 - attrRange.Employees) * attraction.Employees
 				attrRange.Unemployed = attrRange.Unemployed + (1 - attrRange.Unemployed) * attraction.Unemployed
 				attrRange.Manager = attrRange.Manager + (1 - attrRange.Manager) * attraction.Manager

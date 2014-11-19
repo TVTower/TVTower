@@ -601,11 +601,55 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		'topicality has a certain value influence
 		value :* GetTopicality()
 
+		Rem
 		'individual price modifier - default is 1.0
 		'until we revisited the database, it only has a 20% influence
 		'value :* (0.8 + 0.2 * GetModifier("price"))
-
+		End Rem
 		value :* GetModifier("price")
+rem
+- "Statistikbildschirm" -eventuell "zwei buttons" oben drauf
++------------------------------+
+| [quote] [image]              |
+| +-------------------------+  |
+| |00 13Mio (+20%)  |13 ... |  |
+| |01               |14 ... |  |
+| |..               |.. ... |  |
+| |12               |23 ... |  |
+| +-------------------------+  |
+|  _______________________     |
+| |        .----.__.'     |    |
+| |.-.-_.-'               |    |
+| |_______________________|    |
++------------------------------+
+
+oder
++------------------------------+
+| [quote] [image]              |
+| +-------------------------+  |
+| |Rekord Heute             |  |   Tooltip im Design von "Interfacetooltips" ?
+| |  Programm               |  |   +-------tooltip-------+
+| |  News                   |  |   | Programm bla        |
+| |Rekord Gesamt            |  |   | Quote: Total        |
+| |  Programm #1            |  |   |        Männer       |
+| |  Programm #2            |  |   |        Frauen       |
+| |  Programm #3            |  |   |        ...          |
+| |  News #1                |  |   +---------------------+
+| |  News #2                |  |
+| |  News #3                |  |
+| |Durchschnitt		        |  |
+| |  Programm - Heute       |  |
+| |  Programm - Total       |  |
+| |  News - Heute           |  |
+| |  News - Total           |  |
+| +-------------------------+  |
+|  _______________________     |
+| |        .----.__.'     |    |
+| |.-.-_.-'               |    |
+| |_______________________|    |
++------------------------------+
+endrem
+
 		
 		If Self.IsBMovie()
 			value :* 0.3

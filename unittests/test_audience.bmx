@@ -5,7 +5,7 @@ Type TAudienceTest Extends TTest
 		assertEqualsI(0, audience.Id)
 		assertEqualsF(100, audience.Children)
 		assertEqualsF(200, audience.Teenagers)
-		assertEqualsF(300, audience.HouseWifes)
+		assertEqualsF(300, audience.HouseWives)
 		assertEqualsF(400, audience.Employees)
 		assertEqualsF(500, audience.Unemployed)
 		assertEqualsF(600, audience.Manager)
@@ -18,7 +18,7 @@ Type TAudienceTest Extends TTest
 		assertEqualsI(0, audience.Id)
 		assertEqualsF(100, audience.Children)
 		assertEqualsF(200, audience.Teenagers)
-		assertEqualsF(300, audience.HouseWifes)
+		assertEqualsF(300, audience.HouseWives)
 		assertEqualsF(400, audience.Employees)
 		assertEqualsF(500, audience.Unemployed)
 		assertEqualsF(600, audience.Manager)
@@ -76,7 +76,7 @@ Type TAudienceTest Extends TTest
 		audience.CalcGenderBreakdown()
 		assertEqualsAud(TAudience.CreateAndInit(1000, 1000, 1000, 1000, 1000, 1000, 1000, 3500, 3500 ), audience)
 		
-		audience.HouseWifes = 2000
+		audience.HouseWives = 2000
 		audience.CalcGenderBreakdown()
 			
 	End Method
@@ -87,7 +87,7 @@ Type TAudienceTest Extends TTest
 		assertEqualsF(100, audience.Men)
 		
 		audience.Employees = 300 
-		audience.HouseWifes = 200
+		audience.HouseWives = 200
 		
 		Local expected:TAudience = audience.Copy()
 		expected.Women = 500
@@ -132,16 +132,10 @@ Type TAudienceTest Extends TTest
 		Catch ex:Object 'falsche excpetion			
 			fail("Wrong Exception: " + ex.ToString())
 		End Try			
-		
-		assertEqualsI(100, audience.GetValue(1))
-		assertEqualsI(200, audience.GetValue(2))
-		assertEqualsI(300, audience.GetValue(3))
-		assertEqualsI(400, audience.GetValue(4))
-		assertEqualsI(500, audience.GetValue(5))
-		assertEqualsI(600, audience.GetValue(6))
-		assertEqualsI(700, audience.GetValue(7))
-		assertEqualsI(800, audience.GetValue(8))
-		assertEqualsI(900, audience.GetValue(9))		
+
+		for local i:int = 1 to 9
+			assertEqualsI(i*100, audience.GetValue(TVTTargetGroup.GetGroupID(i)))
+		Next
 	End Method
 	
 	Method SetValue() { test }
@@ -167,16 +161,9 @@ Type TAudienceTest Extends TTest
 			fail("Wrong Exception: " + ex.ToString())
 		End Try			
 		
-		audience.SetValue(1, 100)
-		audience.SetValue(2, 200)
-		audience.SetValue(3, 300)
-		audience.SetValue(4, 400)
-		audience.SetValue(5, 500)
-		audience.SetValue(6, 600)
-		audience.SetValue(7, 700)
-		audience.SetValue(8, 800)
-		audience.SetValue(9, 900)
-		
+		for local i:int = 1 to 9
+			audience.SetValue(TVTTargetGroup.GetGroupID(i), i*100)
+		Next
 		assertEqualsAud(TAudience.CreateAndInit(100, 200, 300, 400, 500, 600, 700, 800, 900 ), audience)
 	End Method	
 	

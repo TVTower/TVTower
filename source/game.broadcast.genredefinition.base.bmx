@@ -20,13 +20,14 @@ Type TGenreDefinitionBase
 		Local successorValue:Float
 		Local rise:Int = false
 
-		For Local i:Int = 1 To 9 'Für jede Zielgruppe
+		For Local i:Int = 1 To TVTTargetGroup.count
+			Local targetGroupID:int = TVTTargetGroup.GetGroupID(i)
 			If predecessor
-				predecessorValue = predecessor.BlockAttraction.GetValue(i)
+				predecessorValue = predecessor.BlockAttraction.GetValue(targetGroupID)
 			Else
 				predecessorValue = 0
 			EndIf
-			successorValue = successor.BlockAttraction.GetValue(i)
+			successorValue = successor.BlockAttraction.GetValue(targetGroupID)
 			If (predecessorValue < successorValue) 'Steigende Quote
 				rise = true
 				predecessorValue :* effectRise
@@ -38,12 +39,12 @@ Type TGenreDefinitionBase
 			Local sum:Float = predecessorValue + successorValue
 			Local sequence:Float = sum - successor.BlockAttraction.GetValue(i)
 			If rise Then
-				sequence :* riseMod.GetValue(i)
+				sequence :* riseMod.GetValue(targetGroupID)
 			Else
-				sequence :* shrinkMod.GetValue(i)
+				sequence :* shrinkMod.GetValue(targetGroupID)
 			End If
 			'TODO: Faktoren berücksichtigen und Audience-Flow usw.
-			result.SetValue(i, sequence)
+			result.SetValue(targetGroupID, sequence)
 		Next
 		Return result
 	End Function

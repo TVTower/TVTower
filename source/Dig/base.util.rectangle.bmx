@@ -24,6 +24,24 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 
+	Method SerializeToString:string()
+		local xS:string = position.x; if float(int(position.x)) = position.x then xS = int(position.x)
+		local yS:string = position.y; if float(int(position.y)) = position.y then yS = int(position.y)
+		local wS:string = dimension.x; if float(int(dimension.x)) = dimension.x then wS = int(dimension.x)
+		local hS:string = dimension.y; if float(int(dimension.y)) = dimension.y then hS = int(dimension.y)
+		return xS+","+yS+","+wS+","+hS
+	End Method
+
+
+	Method DeSerializeFromString(text:String)
+		local vars:string[] = text.split(",")
+		if vars.length > 0 then position.SetX(float(vars[0]))
+		if vars.length > 1 then position.SetY(float(vars[1]))
+		if vars.length > 2 then dimension.SetX(float(vars[2]))
+		if vars.length > 3 then dimension.SetY(float(vars[3]))
+	End Method
+
+
 	'create a new rectangle with the same values
 	Method Copy:TRectangle()
 		return new TRectangle.Init(position.x, position.y, dimension.x, dimension.y)

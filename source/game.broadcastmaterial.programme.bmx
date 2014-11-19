@@ -301,9 +301,10 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		Local flowModBaseTemp:Float
 
 		'AudienceFlow anhand der Differenz und ob steigend oder sinkend. Nur sinkend gibt richtig AudienceFlow
-		For Local i:Int = 1 To 9 'Für jede Zielgruppe
-			Local predecessorValue:Float = Min(lastMovieBlockAttraction.FinalAttraction.GetValue(i), lastNewsBlockAttraction.FinalAttraction.GetValue(i))
-			Local successorValue:Float = currentAttraction.BaseAttraction.GetValue(i) 'FinalAttraction ist noch nicht verfügbar. BaseAttraction ist also akzeptabel.
+		For Local i:Int = 1 To TVTTargetGroup.count
+			Local targetGroupID:int = TVTTargetGroup.GetGroupID(i)
+			Local predecessorValue:Float = Min(lastMovieBlockAttraction.FinalAttraction.GetValue(targetGroupID), lastNewsBlockAttraction.FinalAttraction.GetValue(targetGroupID))
+			Local successorValue:Float = currentAttraction.BaseAttraction.GetValue(targetGroupID) 'FinalAttraction ist noch nicht verfügbar. BaseAttraction ist also akzeptabel.
 
 			If (predecessorValue < successorValue) 'Steigende Quote = kaum AudienceFlow
 				flowModBaseTemp = predecessorValue * 0.05
@@ -311,7 +312,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 				flowModBaseTemp = (predecessorValue - successorValue) * 0.75
 			Endif
 
-			flowModBase.SetValue(i, Max(0.05, flowModBaseTemp))
+			flowModBase.SetValue(targetGroupID, Max(0.05, flowModBaseTemp))
 		Next
 
 		'Wie gut ist der Follower? Gleiche Genre passen perfekt zusammen, aber es gibt auch gute und schlechte Followerer anderer genre
