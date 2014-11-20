@@ -351,9 +351,37 @@ Type TElevator extends TEntity
 
 			local figure:TFigureBase = GetFigureBaseCollection().GetByGUID(figureGUID)
 			If not figure then continue
+
 			if figure.boardingState = -1 then return True
 		Next
 		Return False
+	End Method
+
+
+	'checks if figure wants to deboard, but boardingState is bugged
+	'in that case it corrects the boardingState
+	Method FixDeboardingPassengers:int()
+		local fixedSomething:int = False
+		For local i:int = 0 to len(PassengerPosition) - 1
+			local figureGUID:string = PassengerPosition[i]
+			if not figureGUID then continue
+
+			local figure:TFigureBase = GetFigureBaseCollection().GetByGUID(figureGUID)
+			If not figure then continue
+
+			'skip correctly deboarding figures
+			if figure.boardingState = -1 then continue
+
+			'fetch "send" route ... if existing
+			local route:TFloorRoute = GetRouteByPassenger(figure, 0)
+			'-> elevator on same floor
+			If route and route.floornumber = CurrentFloor
+				'fix boarding state -> set to deboarding
+				figure.boardingState = -1
+				fixedSomething = True
+			endif
+		Next
+		return fixedSomething
 	End Method
 
 
@@ -382,9 +410,6 @@ Type TElevator extends TEntity
 				if abs(figure.PosOffset.getX() - PassengerOffset[i].getX()) <= moveX
 					'set x to the target so it settles to that value
 					figure.PosOffset.setX( PassengerOffset[i].getX())
-					'set state to 0 so figures can recognize they
-					'reached the displaced x
-					figure.boardingState = 0
 				else
 					if figure.PosOffset.getX() > PassengerOffset[i].getX()
 						figure.PosOffset.AddX( -moveX )
@@ -393,6 +418,14 @@ Type TElevator extends TEntity
 					endif
 				endif
 			Endif
+
+			'unset boarding state in all cases - to avoid keeping
+			'"boarding" when loading a savegame
+			if abs(figure.PosOffset.getX() - PassengerOffset[i].getX()) <= moveX
+				'set state to 0 so figures can recognize they
+				'reached the displaced x
+				figure.boardingState = 0
+			endif
 		next
 	End Method
 
@@ -430,9 +463,6 @@ Type TElevator extends TEntity
 						'set "y" to 0 so figures can recognize they
 						'reached the displaced x
 						figure.PosOffset.setX( 0 )
-						'set state to 0 so figures can recognize they
-						'reached the displaced x
-						figure.boardingState = 0
 					else
 						if figure.PosOffset.getX() > 0
 							figure.PosOffset.AddX( -moveX )
@@ -441,6 +471,16 @@ Type TElevator extends TEntity
 						endif
 					endif
 				Endif
+
+				'unset in all cases
+				if abs(figure.PosOffset.getX()) <= moveX
+					'set state to 0 so figures can recognize they
+					'reached the displaced x
+					figure.boardingState = 0
+					'manually call leaving because figure only calls
+					'if they have no target
+					LeaveTheElevator(figure)
+				endif
 			Endif
 		next
 	End Method
@@ -485,14 +525,28 @@ Type TElevator extends TEntity
 
 		'0 = wait for next task
 		If ElevatorStatus = 0
-			'get next target on a route
-			TargetFloor = CalculateNextTarget()
-			'found new target
-			If CurrentFloor <> TargetFloor
-				ReadyForBoarding = false
-				'close doors
-				ElevatorStatus = 1
-			Endif
+			if waitAtFloorTimer.isExpired()
+				'fix potentially borked deboarding states
+				if FixDeboardingPassengers()
+					'if there was something to fix - wait a bit more
+					waitAtFloorTimer.SetInterval(0.5 * waitAtFloorTime / TEntity.globalWorldSpeedFactor, true)
+				endif
+			endif
+
+			'do we still have deboarding passengers?
+			'-> let them deboard before starting the next route
+			if HasDeboardingPassengers()
+				MoveDeboardingPassengersToCenter()
+			else
+				'get next target on a route
+				TargetFloor = CalculateNextTarget()
+				'found new target
+				If CurrentFloor <> TargetFloor
+					ReadyForBoarding = false
+					'close doors
+					ElevatorStatus = 1
+				Endif
+			endif
 		Endif
 
 		'1 = close doors
