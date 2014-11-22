@@ -238,6 +238,12 @@ function AITask:StartNextJob()
 end
 
 function AITask:Tick()
+	--sometimes a figure is stuck in the adagency... we cancel jobs in
+	--that case
+	if (self.Status == TASK_STATUS_OPEN) then
+		self:SetDone()
+	end
+
 	if ((self.Status == TASK_STATUS_RUN) or (self.Status == TASK_STATUS_WAIT)) then
 		self.TickCounter = self.TickCounter + 1
 		--debugMsg("MaxTickCount: " .. self.TickCounter .. " > " .. self.MaxTicks)

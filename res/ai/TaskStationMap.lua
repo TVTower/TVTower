@@ -97,8 +97,11 @@ function JobBuyStation:Tick()
 		--debugMsg("Prüfe Station " .. i .. "  " .. tempStation.pos.GetIntX() .. "/" .. tempStation.pos.GetIntY() .. " - R: " .. tempStation.getReach() .. " - Inc: " .. tempStation.getReachIncrease() .. " - Price: " .. tempStation.getPrice() .. " F: " .. (tempStation.getReachIncrease() / tempStation.getPrice()))
 
 		--filter criterias
+		--0) skip checks if there is no tempstation
+		if tempStation == nil then
+			-- debugMsg("tempStation is nil!")
 		--1) price to high
-		if price > self.Task.CurrentBudget then
+		elseif tempStation.getPrice() > self.Task.CurrentBudget then
 			tempStation = nil
 		--2) increase to low
 		elseif tempStation.getReachIncrease() < 7500 then
