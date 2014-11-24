@@ -3385,7 +3385,7 @@ Type GameEvents
 			local stat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic( day - 1 )
 			if stat and stat.bestBroadcast
 				local audience:string = ""
-				if stat.bestAudience then audience = Long(stat.bestAudience.GetSum())+", player: "+stat.bestBroadcast.owner
+				if stat.bestAudienceResult then audience = Long(stat.bestAudienceResult.audience.GetSum())+", player: "+stat.bestBroadcast.owner
 				TLogger.Log("OnDay", "BestBroadcast: "+stat.bestBroadcast.GetTitle() + " (audience: "+audience+")", LOG_INFO)
 			else
 				if stat

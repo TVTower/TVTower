@@ -19,7 +19,7 @@ Type TGUICheckBox Extends TGUIButton
 	Field valueUnchecked:string = ""
 	Field captionDisplacement:TVec2D = new TVec2D.Init(5,0)
 	
-	Global _checkboxMinDimension:TVec2D = new TVec2D.Init(15,15)
+	Global _checkboxMinDimension:TVec2D = new TVec2D.Init(20,20)
 	Global _typeDefaultFont:TBitmapFont
 
 

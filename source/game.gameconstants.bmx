@@ -151,16 +151,16 @@ End Type
 
 
 Type TVTTargetGroup
-	const All:int = 0
-	const Children:int = 1
-	const Teenagers:int = 2
-	const HouseWives:int = 4
-	const Employees:int = 8
-	const Unemployed:int = 16
-	const Manager:int = 32
-	const Pensioners:int = 64
-	const Women:int = 128
-	const Men:int = 256
+	const All:int = 0				'0
+	const Children:int = 1			'1
+	const Teenagers:int = 2			'2
+	const HouseWives:int = 4		'3
+	const Employees:int = 8			'4
+	const Unemployed:int = 16		'5
+	const Manager:int = 32			'6
+	const Pensioners:int = 64		'7
+	const Women:int = 128			'8
+	const Men:int = 256				'9
 	'amount of target groups
 	const count:int = 9
 	'without women/men

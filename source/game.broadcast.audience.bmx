@@ -85,13 +85,13 @@ Type TAudience
 
 
 	Method GetAverage:Float()
-		Return (Children + Teenagers + HouseWives + Employees + Unemployed + Manager + Pensioners) / 7
+		Return GetSum() / 7
 	End Method
 
 
 	Method CalcGenderBreakdown()
-		Women		= Children * 0.5 + Teenagers * 0.5 + HouseWives * 0.9 + Employees * 0.4 + Unemployed * 0.4 + Manager * 0.25 + Pensioners * 0.55
-		Men			= Children * 0.5 + Teenagers * 0.5 + HouseWives * 0.1 + Employees * 0.6 + Unemployed * 0.6 + Manager * 0.75 + Pensioners * 0.45
+		Women = Children * 0.5 + Teenagers * 0.5 + HouseWives * 0.9 + Employees * 0.4 + Unemployed * 0.4 + Manager * 0.25 + Pensioners * 0.55
+		Men   = Children * 0.5 + Teenagers * 0.5 + HouseWives * 0.1 + Employees * 0.6 + Unemployed * 0.6 + Manager * 0.75 + Pensioners * 0.45
 	End Method
 
 
@@ -161,6 +161,8 @@ Type TAudience
 
 	Method GetValue:Float(targetID:int)
 		Select targetID
+			Case TVTTargetGroup.All
+				Return GetSum()
 			Case TVTTargetGroup.Children
 				Return Children
 			Case TVTTargetGroup.Teenagers
@@ -180,6 +182,7 @@ Type TAudience
 			Case TVTTargetGroup.Men
 				Return Men
 			Default
+				print "unknown"
 				Throw TArgumentException.Create("targetID", String.FromInt(targetID))
 		End Select
 	End Method
@@ -387,8 +390,17 @@ Type TAudience
 	Function InnerSort:Int(targetId:Int, o1:Object, o2:Object)
 		Local s1:TAudience = TAudience(o1)
 		Local s2:TAudience = TAudience(o2)
-		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.GetValue(targetId)*1000)-(s2.GetValue(targetId)*1000)
+		' Objekt nicht gefunden, an das Ende der Liste setzen
+		If Not s2 Then Return 1
+        Return 1000 * (s1.GetValue(targetId) - s2.GetValue(targetId))
+	End Function
+
+	
+	Function AllSort:Int(o1:Object, o2:Object)
+		Local s1:TAudience = TAudience(o1)
+		Local s2:TAudience = TAudience(o2)
+		If Not s2 Then Return 1
+        Return s1.GetSum() - s2.GetSum()
 	End Function
 
 

@@ -13,6 +13,7 @@ EndRem
 SuperStrict
 Import "game.broadcast.audience.bmx"
 Import "game.broadcast.audienceattraction.bmx"
+Import "game.broadcast.audienceresult.bmx"
 Import "game.broadcast.genredefinition.movie.bmx"
 Import "game.broadcast.genredefinition.news.bmx"
 Import "game.publicimage.bmx"
@@ -468,7 +469,7 @@ Type TBroadcast
 		If lastNewsShowBroadcast then lastNewsShowAttraction = lastNewsShowBroadcast.Attractions[playerId-1]
 
 		If broadcastedMaterial Then
-			GetAudienceResult(playerId).Title = broadcastedMaterial.GetTitle()
+			GetAudienceResult(playerId).broadcastMaterial = broadcastedMaterial
 			'3. Qualität meines Programmes
 			Attractions[playerId-1] = broadcastedMaterial.GetAudienceAttraction(GetWorldTime().GetDayHour(), broadcastedMaterial.currentBlockBroadcasting, lastMovieAttraction, lastNewsShowAttraction, True, true)
 		Else 'dann Sendeausfall! TODO: Chef muss böse werden!
@@ -1043,7 +1044,8 @@ Type TBroadcastSequence
 					'also remove no longer needed "special data"
 					curr.Attractions = new TAudienceAttraction[4]
 					For local i:int = 0 to 3
-						curr.AudienceResults[i].PotentialMaxAudience = null
+						'keep potential - for history analysis (market share)
+						'curr.AudienceResults[i].PotentialMaxAudience = null
 						curr.AudienceResults[i].ChannelSurferToShare = null
 						curr.AudienceResults[i].AudienceAttraction = null
 						curr.AudienceResults[i].EffectiveAudienceAttraction = null
@@ -1059,7 +1061,7 @@ Type TBroadcastSequence
 					'also remove no longer needed "special data"
 					curr.Attractions = new TAudienceAttraction[4]
 					For local i:int = 0 to 3
-						curr.AudienceResults[i].PotentialMaxAudience = null
+						'curr.AudienceResults[i].PotentialMaxAudience = null
 						curr.AudienceResults[i].ChannelSurferToShare = null
 						curr.AudienceResults[i].AudienceAttraction = null
 						curr.AudienceResults[i].EffectiveAudienceAttraction = null

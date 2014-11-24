@@ -1176,9 +1176,9 @@ Type TTooltipAudience Extends TTooltip
 
 	Method GetContentWidth:Int()
 		If audienceResult
-			Return Self.useFont.GetWidth( GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.floatToString(100.0 * audienceResult.GetPotentialMaxAudienceQuote().GetAverage(), 2) + "%)" )
+			Return Self.useFont.GetWidth( GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.floatToString(100.0 * audienceResult.GetPotentialMaxAudienceQuote().GetAverage(), 2) + "%)" )
 		Else
-			Return Self.Usefont.GetWidth( GetLocale("MAX_AUDIENCE_RATING") + ": 100 (100%)")
+			Return Self.Usefont.GetWidth( GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": 100 (100%)")
 		EndIf
 	End Method
 
@@ -1211,8 +1211,8 @@ Type TTooltipAudience Extends TTooltip
 
 		local reach:int = GetStationMapCollection().GetMap(GetPlayerCollection().playerID).reach
 		local totalReach:int = GetStationMapCollection().population
-		result:+ Self.Usefont.GetHeight(GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.floatToString(100.0 * audienceResult.GetPotentialMaxAudienceQuote().GetAverage(), 2) + "%)")
-		result:+ Self.Usefont.GetHeight(GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 0) + " (" + MathHelper.floatToString(100.0 * float(reach)/totalReach, 2) + "%)")
+		result:+ Usefont.GetHeight(GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.floatToString(100.0 * audienceResult.GetPotentialMaxAudienceQuote().GetAverage(), 2) + "%)")
+		result:+ Usefont.GetHeight(GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 0) + " (" + MathHelper.floatToString(100.0 * float(reach)/totalReach, 2) + "%)")
 		result:+ 1*lineHeight
 
 		If showDetails
@@ -1250,7 +1250,7 @@ Type TTooltipAudience Extends TTooltip
 		Local lineTextDY:Int = lineIconDY + 2
 
 		'draw overview text
-		lineText = GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.floatToString(100.0 * audienceResult.GetPotentialMaxAudienceQuote().GetAverage(), 2) + "%)"
+		lineText = GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.floatToString(100.0 * audienceResult.GetPotentialMaxAudienceQuote().GetAverage(), 2) + "%)"
 		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
 		lineY :+ 1 * Self.Usefont.GetHeight(lineText)
 

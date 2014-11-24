@@ -311,6 +311,8 @@ Type TFunctions
 		'find out amount of digits before decimal point
 		local intValue:int = int(value)
 		local length:int = string(intValue).length
+		'avoid problems with "0.000" being shown as "-21213234923"
+		if value = 0 then intValue = 0;length = 1
 		'do not count negative signs.
 		if intValue < 0 then length:-1
 
@@ -331,7 +333,7 @@ Type TFunctions
 		elseif length <= 7 and length > 3
 			return int(floor(int(value) / 1000))+"."+Left( abs(int((int(value) - int(floor(int(value) / 1000)*1000)))) +"000",3)
 		else
-			return int(value)
+			return intValue
 		endif
 		'Return convertValue
     End Function

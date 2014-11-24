@@ -139,12 +139,32 @@ Type TColor
 	End Method
 
 
+	'faster than using the RGB-HSL-RGB conversion
+	'but corrects are not exactly the same
+	Method AdjustSaturationRGB:TColor(percentage:Float = 0.0)
+		'convert relative param to absolute param
+		percentage = 1.0 + percentage
+		'long
+		local luminance:float = sqr(0.299 * r*r + 0.587 * g*g + 0.114 * b*b)
+		r = Min(255, Max(0, luminance + (r - luminance) * percentage))
+		g = Min(255, Max(0, luminance + (g - luminance) * percentage))
+		b = Min(255, Max(0, luminance + (b - luminance) * percentage))
+		return self
+	End Method
+
+	
 	Method AdjustSaturation:TColor(percentage:Float=1.0)
-		'maybe better convert to HSL instead of this simple approach
-		local luminance:float = 0.3 * r + 0.6 * g + 0.1 * b
-		r = r + percentage * (luminance - r)
-		g = g + percentage * (luminance - g)
-		b = b + percentage * (luminance - b)
+		local h:float, s:float, l:float
+		ToHSL(h,s,l)
+		FromHSL(h,s * (1.0 + percentage), l)
+		return self
+	End Method
+	
+	
+	Method AdjustBrightness:TColor(percentage:Float=1.0)
+		local h:float, s:float, l:float
+		ToHSL(h,s,l)
+		FromHSL(h,s, l * (1.0 + percentage))
 		return self
 	End Method
 
@@ -166,6 +186,143 @@ Type TColor
 			self.b :+b
 		endif
 		return self
+	End Method
+
+
+	Method ToHSL(h:float var, s:float var, l:float var)
+		Local rk:float = r / 255.0
+		local gk:float = g / 255.0
+		local bk:float = b / 255.0
+
+		Local maxV:float = rk
+		local minV:float = gk
+	
+		If gk > maxV Then maxV = gk
+		If bk > maxV Then maxV = bk
+		If rk < minV Then minV = rk
+		If bk < minV Then minV = bk
+	
+		If maxV = minV
+			h = 0
+			s = 0
+			l = maxV
+		Else
+			If maxV = rk
+				h = (60 * (gk - bk) / (maxV - minV)) Mod 360
+			ElseIf maxV = gk
+				h = (60 * (bk - rk) / (maxV - minV)) + 120
+			ElseIf maxV = bk
+				h = (60 * (rk - gk) / (maxV - minV)) + 240
+			EndIf
+		
+			l = (maxV + minV) / 2
+			If l <= 0.5
+				s = (maxV - minV) / (2 * l)
+			ElseIf l > 0.5
+				s = (maxV - minV) / (2 - 2*l)
+			EndIf
+		EndIf
+	End Method
+	
+
+	'code based on Yashas work:
+	'http://www.blitzmax.com/codearcs/codearcs.php?code=2333
+	Method FromHSL(h:float, s:float, l:float)
+		Local p:float, q:float
+		
+		If l < 0.5
+			q = l * (1 + s)
+		Else
+			q = l + s - (l*s)
+		EndIf
+		p = 2*l - q
+		
+		Local tR:float = h + 0.3333; If tR > 1 Then tR:- 1
+		Local tG:float = h
+		Local tB:float = h - 0.3333; If tB < 0 Then tB:+ 1
+		r = p*255
+		g = p*255
+		b = p*255
+		
+		If tR < 0.1666
+			r = 255 * (p + ((q - p) * 6 * tR))
+		ElseIf tR < 0.5 And tR >= 0.1666
+			r = 255 * (q)
+		ElseIf tR < 0.6666 And tR >= 0.5
+			r = 255 * (p + ((q - p) * 6 * (0.6666 - tR)))
+		EndIf
+		
+		If tG < 0.1666
+			g = 255 * (p + ((q - p) * 6 * tG))
+		ElseIf tG < 0.5 And tG >= 0.1666
+			g = 255 * (q)
+		ElseIf tG < 0.6666 And tG >= 0.5
+			g = 255 * (p + ((q - p) * 6 * (0.6666 - tG)))
+		EndIf
+		
+		If tB < 0.1666
+			b = 255 * (p + ((q - p) * 6 * tB))
+		ElseIf tB < 0.5 And tB >= 0.1666
+			b = 255 * (q)
+		ElseIf tB < 0.6666 And tB >= 0.5
+			b = 255 * (p + ((q - p) * 6 * (0.6666 - tB)))
+		EndIf
+	End Method
+
+
+	'code based on Yashas work:
+	'http://www.blitzmax.com/codearcs/codearcs.php?code=2333
+	Method ToHSV(h:float var, s:float var, v:float var)
+		Local mn:float, mx:float, dif:float, ad:float, dv:float, md:float
+		If(r < g and r < b)
+			mn = r/255.0
+		ElseIf (g < b)
+			mn = g/255.0
+		Else
+			mn = b/255.0
+		EndIf
+
+		If(r > g and r > b)
+			mx = r/255.0
+			dif = (g - b)/255.0
+			ad = 0.0
+		ElseIf(g > b)
+			mx = g/255.0
+			dif = (b - r)/255.0
+			ad = 120.0
+		Else
+			mx = b/255.0
+			dif = (r - g)/255.0
+			ad = 240.0
+		EndIf
+		
+		md = mx - mn
+
+		h = (60.0 * (dif / md)) + ad
+		s = md / mx
+		v = mx
+	End Method
+
+
+	Method FromHSV:TColor(h:float, s:float, v:float, a:float = 1.0)
+		Local hi:int, f:float, p:float, q:float, t:float
+		f = h / 60.0
+		hi = Int(f) Mod 6
+		f :- hi
+		p = v * (1 - s)
+		q = v * (1 - (f * s))
+		t = v * (1 - ((1 - f) * s))
+		Select hi
+			Case 0; r=v; g=t; b=p
+			Case 1; r=q; g=v; b=p
+			Case 2; r=p; g=v; b=t
+			Case 3; r=p; g=q; b=v
+			Case 4; r=t; g=p; b=v
+			Case 5; r=v; g=p; b=q
+		End Select
+
+		Self.a = a
+		Return Self
 	End Method
 
 

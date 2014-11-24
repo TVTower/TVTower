@@ -188,7 +188,7 @@ Type TInGameInterface
 			CurrentProgrammeToolTip.SetTitle(CurrentProgrammeText)
 			local content:String = ""
 			If programmePlan
-				content	= GetLocale("AUDIENCE_RATING")+": "+programmePlan.getFormattedAudience()+ " (MA: "+MathHelper.floatToString(programmePlan.GetAudiencePercentage()*100,2)+"%)"
+				content	= GetLocale("AUDIENCE_NUMBER")+": "+programmePlan.getFormattedAudience()+ " ("+MathHelper.floatToString(programmePlan.GetAudiencePercentage()*100,2)+"%)"
 
 				'show additional information if channel is player's channel
 				If ShowChannel = GetPlayerCollection().playerID
@@ -249,7 +249,7 @@ Type TInGameInterface
 		If THelper.MouseIn(355,468,130,30)
 			local playerProgrammePlan:TPlayerProgrammePlan = GetPlayerCollection().Get().GetProgrammePlan()
 			if playerProgrammePlan
-				CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_RATING")+": "+playerProgrammePlan.getFormattedAudience()+ " (MA: "+MathHelper.floatToString(playerProgrammePlan.GetAudiencePercentage() * 100,2)+"%)")
+				CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_NUMBER")+": "+playerProgrammePlan.getFormattedAudience()+ " ("+MathHelper.floatToString(playerProgrammePlan.GetAudiencePercentage() * 100,2)+"%)")
 				CurrentAudienceToolTip.SetAudienceResult(GetBroadcastManager().GetAudienceResult(playerProgrammePlan.owner))
 				CurrentAudienceToolTip.enabled = 1
 				CurrentAudienceToolTip.Hover()
@@ -266,9 +266,9 @@ Type TInGameInterface
 		If THelper.MouseIn(355,415,130,30)
 			MoneyToolTip.title = getLocale("MONEY")
 			local content:String = ""
-			content	= "|b|"+getLocale("MONEY")+":|/b| "+GetPlayerCollection().Get().GetMoney() + getLocale("CURRENCY")
+			content	= "|b|"+getLocale("MONEY")+":|/b| "+TFunctions.DottedValue(GetPlayerCollection().Get().GetMoney()) + getLocale("CURRENCY")
 			content	:+ "~n"
-			content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ GetPlayerCollection().Get().GetCredit() + getLocale("CURRENCY")+"|/color|"
+			content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ TFunctions.DottedValue(GetPlayerCollection().Get().GetCredit()) + getLocale("CURRENCY")+"|/color|"
 			MoneyTooltip.SetContent(content)
 			MoneyToolTip.enabled 	= 1
 			MoneyToolTip.Hover()

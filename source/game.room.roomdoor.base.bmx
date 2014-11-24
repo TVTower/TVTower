@@ -37,6 +37,14 @@ Type TRoomDoorBaseCollection
 	End Method
 
 
+	Method GetByGUID:TRoomDoorBase(GUID:String)
+		For local door:TRoomDoorBase = eachin List
+			if door.GetGUID() = GUID then return door 
+		Next
+		return Null
+	End Method
+	
+
 	Method Add:int(door:TRoomDoorBase)
 		'if there is a room with the same id, remove that first
 		if door.id > 0
@@ -111,7 +119,7 @@ Type TRoomDoorBase extends TRenderableEntity  {_exposeToLua="selected"}
 
 
 	Method GenerateGUID:string()
-		return "roomdoorbase-"+id
+		return "roomdoor-"+roomID+"-"+doorSlot+"-"+onFloor
 	End Method
 	
 

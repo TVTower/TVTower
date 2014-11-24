@@ -1139,7 +1139,7 @@ endrem
 				'(which itself informs the broadcasted news)
 				obj.BeginBroadcasting(day, hour, minute, audienceResult)
 				'store audience/broadcast for daily stats
-				GetDailyBroadcastStatistic( day, true ).SetNewsBroadcastResult(obj, owner, hour, audienceResult.audience)
+				GetDailyBroadcastStatistic( day, true ).SetNewsBroadcastResult(obj, owner, hour, audienceResult)
 			Else
 				'store audience/broadcast for daily stats - outage
 				GetDailyBroadcastStatistic( day, true).SetNewsBroadcastResult(null, owner, hour, null)
@@ -1177,7 +1177,7 @@ endrem
 					eventKey = "broadcasting.continue"
 				EndIf
 				'store audience/broadcast for daily stats
-				GetDailyBroadcastStatistic( day, true ).SetBroadcastResult(obj, owner, hour, audienceResult.audience)
+				GetDailyBroadcastStatistic( day, true ).SetBroadcastResult(obj, owner, hour, audienceResult)
 			else
 				'store audience/broadcast for daily stats
 				GetDailyBroadcastStatistic( day, true).SetBroadcastResult(null, owner, hour, null)
@@ -1197,10 +1197,12 @@ endrem
 				Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
 				If obj.GetBlocks() = GetProgrammeBlock(day, hour)
 					If obj.FinishBroadcasting(day, hour, minute, audienceResult)
-						'for programmes: refresh planned state - for next hour
+						'only for programmes:
 						If TProgramme(obj)
+							'refresh planned state (for next hour)
 							RecalculatePlannedProgramme(TProgramme(obj), -1, hour+1)
 						EndIf
+						
 						'eventKey = "broadcasting.finish"
 					EndIf
 				Else

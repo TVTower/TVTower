@@ -28,11 +28,11 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 
 
 	'override to inform contained news too
-	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
-		Super.BeginBroadcasting(day, hour, minute, audienceResult)
+	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
+		Super.BeginBroadcasting(day, hour, minute, audienceData)
 
 		For local newsEntry:TBroadcastMaterial = EachIn news
-			newsEntry.BeginBroadcasting(day, hour, minute, audienceResult)
+			newsEntry.BeginBroadcasting(day, hour, minute, audienceData)
 		Next
 	End Method
 
@@ -250,8 +250,8 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	'override default to inform contained "newsEvent" too
-	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
-		Super.BeginBroadcasting(day, hour, minute, audienceResult)
+	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
+		Super.BeginBroadcasting(day, hour, minute, audienceData)
 
 		'inform newsEvent that it gets broadcasted by a player
 		newsEvent.doBroadcast(owner)

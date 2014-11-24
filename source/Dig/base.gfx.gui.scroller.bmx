@@ -30,8 +30,8 @@ Type TGUIScroller Extends TGUIobject
 		setParent(parent)
 
 		'create buttons
-		guiButtonMinus = New TGUIArrowButton.Create(Null, null, "UP", "")
-		guiButtonPlus = New TGUIArrowButton.Create(Null, null, "DOWN", "")
+		guiButtonMinus = New TGUIArrowButton.Create(Null, new TVec2D.Init(22,22), "UP", "")
+		guiButtonPlus = New TGUIArrowButton.Create(Null, new TVec2D.Init(22,22), "DOWN", "")
 
 		guiButtonMinus.spriteButtonBaseName = "gfx_gui_button.rounded"
 		guiButtonPlus.spriteButtonBaseName = "gfx_gui_button.rounded"

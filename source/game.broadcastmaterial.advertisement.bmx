@@ -142,11 +142,11 @@ rem
 endrem
 
 	'override
-	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
-		Super.FinishBroadcasting(day,hour,minute, audienceResult)
+	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
+		Super.FinishBroadcasting(day,hour,minute, audienceData)
 
 		if usedAsType = TBroadcastMaterial.TYPE_PROGRAMME
-			FinishBroadcastingAsProgramme(day, hour, minute, audienceResult)
+			FinishBroadcastingAsProgramme(day, hour, minute, audienceData)
 		elseif usedAsType = TBroadcastMaterial.TYPE_ADVERTISEMENT
 			'nothing happening - ads get paid on "beginBroadcasting"
 		endif
@@ -156,9 +156,11 @@ endrem
 
 
 	'ad got send as infomercial
-	Method FinishBroadcastingAsProgramme:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
+	Method FinishBroadcastingAsProgramme:int(day:int, hour:int, minute:int, audienceData:object)
 		self.SetState(self.STATE_OK)
+		
 		'give money
+		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 		Local earn:Int = audienceResult.Audience.GetSum() * contract.GetPerViewerRevenue()
 		TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial sent, earned "+earn+CURRENCYSIGN+" with an audience of " + audienceResult.Audience.GetSum(), LOG_DEBUG)
 		GetPlayerFinanceCollection().Get(owner).EarnInfomercialRevenue(earn, contract)
@@ -168,14 +170,15 @@ endrem
 	End Method
 
 
-	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
-		Super.BeginBroadcasting(day,hour,minute, audienceResult)
+	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
+		Super.BeginBroadcasting(day,hour,minute, audienceData)
 		'run as infomercial
 		if self.usedAsType = TBroadcastMaterial.TYPE_PROGRAMME
 			'no need to do further checks
 			return TRUE
 		endif
 
+		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 
 		'check if the ad satisfies all requirements
 		local successful:int = False

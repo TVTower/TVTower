@@ -2,7 +2,6 @@
 Import "game.gameobject.bmx"
 Import "game.broadcast.genredefinition.base.bmx"
 Import "game.broadcast.audienceattraction.bmx"
-Import "game.broadcast.audienceresult.bmx"
 Import "game.broadcast.sequencecalculation.bmx"
 Import "game.publicimage.bmx"
 
@@ -110,22 +109,22 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
+	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		self.SetState(self.STATE_RUNNING)
 	End Method
 
 
-	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
+	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		'print "finished broadcasting of: "+GetTitle()
 	End Method
 
 
-	Method BreakBroadcasting:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
+	Method BreakBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		'print "finished broadcasting a block of: "+GetTitle()
 	End Method
 
 
-	Method ContinueBroadcasting:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
+	Method ContinueBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		'print "continue broadcasting the next block of: "+GetTitle()
 	End Method
 

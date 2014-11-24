@@ -1,6 +1,7 @@
 ﻿SuperStrict
 Import "game.broadcastmaterial.base.bmx"
 Import "game.broadcast.base.bmx"
+Import "game.broadcast.audienceresult.bmx"
 Import "game.programme.programmelicence.bmx"
 Import "game.player.finance.bmx"
 Import "game.publicimage.bmx"
@@ -31,14 +32,14 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	End Function
 
 
-	Method CheckHourlyBroadcastingRevenue:int(audienceResult:TAudienceResult)
-		if not audienceResult then return False
+	Method CheckHourlyBroadcastingRevenue:int(audience:TAudience)
+		if not audience then return False
 
 		'callin-shows earn for each sent block... so BREAKs and FINISHs
 		'same for "sponsored" programmes
 		if self.usedAsType = TBroadcastMaterial.TYPE_PROGRAMME
 			'fetch the rounded revenue for broadcasting this programme
-			Local revenue:Int = audienceResult.Audience.GetSum() * Max(0, data.GetPerViewerRevenue())
+			Local revenue:Int = audience.GetSum() * Max(0, data.GetPerViewerRevenue())
 
 			if revenue > 0
 				'earn revenue for callin-shows
@@ -54,14 +55,14 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	'override
-	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
-		Super.FinishBroadcasting(day, hour, minute, audienceResult)
+	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
+		Super.FinishBroadcasting(day, hour, minute, audienceData)
 		if owner <= 0 then return False
 
 		if usedAsType = TBroadcastMaterial.TYPE_PROGRAMME
-			FinishBroadcastingAsProgramme(day, hour, minute, audienceResult)
+			FinishBroadcastingAsProgramme(day, hour, minute, audienceData)
 		elseif usedAsType = TBroadcastMaterial.TYPE_ADVERTISEMENT
-			FinishBroadcastingAsTrailer(day, hour, minute, audienceResult)
+			FinishBroadcastingAsTrailer(day, hour, minute, audienceData)
 		endif
 
 		return TRUE
@@ -69,8 +70,10 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	'override
-	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
-		Super.BeginBroadcasting:int(day, hour, minute, audienceResult)
+	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
+		Super.BeginBroadcasting:int(day, hour, minute, audienceData)
+
+		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 
 		'only fetch new audience stats when send as programme (ignore trailer)
 		if self.usedAsType = TBroadcastMaterial.TYPE_PROGRAMME
@@ -83,8 +86,10 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	'override
-	Method ContinueBroadcasting:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
-		Super.ContinueBroadcasting(day, hour, minute, audienceResult)
+	Method ContinueBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
+		Super.ContinueBroadcasting(day, hour, minute, audienceData)
+
+		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 
 		'store audience for this block
 		licence.GetBroadcastStatistic().SetAudienceResult(licence.owner, currentBlockBroadcasting, audienceResult)
@@ -92,15 +97,17 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	'override
-	Method BreakBroadcasting:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
-		Super.BreakBroadcasting:int(day, hour, minute, audienceResult)
+	Method BreakBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
+		Super.BreakBroadcasting:int(day, hour, minute, audienceData)
+
+		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 
 		'check if revenues have to get paid (call-in-shows, sponsorships)
-		CheckHourlyBroadcastingRevenue(audienceResult)
+		CheckHourlyBroadcastingRevenue(audienceResult.audience)
 	End Method
 
 
-	Method FinishBroadcastingAsTrailer:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
+	Method FinishBroadcastingAsTrailer:int(day:int, hour:int, minute:int, audienceData:object)
 		self.SetState(self.STATE_OK)
 		data.CutTrailerTopicality(GetTrailerTopicalityCutToFactor())
 		data.trailerAired:+1
@@ -108,12 +115,14 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	End Method
 
 
-	Method FinishBroadcastingAsProgramme:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
+	Method FinishBroadcastingAsProgramme:int(day:int, hour:int, minute:int, audienceData:object)
 		self.SetState(self.STATE_OK)
 
 		If self.owner > 0 Then 'Möglichkeit für Unit-Tests. Unschön....
+			local audienceResult:TAudienceResult = TAudienceResult(audienceData)
+
 			'check if revenues have to get paid (call-in-shows, sponsorships)
-			CheckHourlyBroadcastingRevenue(audienceResult)
+			CheckHourlyBroadcastingRevenue(audienceResult.audience)
 
 			'adjust trend/popularity
 			Local popularity:TGenrePopularity = data.GetGenreDefinition().Popularity

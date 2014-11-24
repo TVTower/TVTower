@@ -1,6 +1,7 @@
 SuperStrict
 Import "game.broadcast.audience.bmx"
 Import "game.broadcast.audienceattraction.bmx"
+Import "game.broadcastmaterial.base.bmx"
 
 
 'Das TAudienceResultBase ist sowas wie das zusammengefasste Ergebnis einer
@@ -10,10 +11,11 @@ Import "game.broadcast.audienceattraction.bmx"
 Type TAudienceResultBase
 	'Optional: Die Id des Spielers zu dem das Result gehört.
 	Field PlayerId:Int
-	'Zu welcher Stunde gehört das Result
-	Field Hour:Int
 	'Der Titel des Programmes
 	Field Title:String
+	'Zu welcher Stunde gehört das Result
+	Field Hour:Int
+	Field broadcastMaterial:TBroadcastMaterial
 	'was it an outage (programme was not sent)?
 	Field broadcastOutage:Int = False
 	'Die Zahl der Zuschauer die erreicht wurden.
@@ -47,18 +49,30 @@ Type TAudienceResultBase
 		For local audienceResultBase:TAudienceResultBase = EachIn audienceResultBases
 			result.Audience.Add(audienceResultBase.Audience)
 			result.WholeMarket.Add(audienceResultBase.WholeMarket)
-			result.PotentialMaxAudience.Add(audienceResultBase.PotentialMaxAudience)
+			result.GetPotentialMaxAudience().Add(audienceResultBase.GetPotentialMaxAudience())
 		Next
 
 		If audienceResultBases.length > 1
 			result.Audience.DivideFloat(audienceResultBases.length)
 			result.WholeMarket.DivideFloat(audienceResultBases.length)
-			result.PotentialMaxAudience.DivideFloat(audienceResultBases.length)
+			result.GetPotentialMaxAudience().DivideFloat(audienceResultBases.length)
 		Endif
 		
 		return result
 	End Function
 
+
+	Method GetTitle:string()
+		if title <> "" then return title
+		if broadcastMaterial then return broadcastMaterial.GetTitle()
+		return ""
+	End Method
+
+
+	Method GetPotentialMaxAudience:TAudience()
+		if not PotentialMaxAudience then PotentialMaxAudience = new TAudience
+		return PotentialMaxAudience
+	End Method
 
 	'instead of storing "audienceQuote" as field (bigger savegames)
 	'we can create it on the fly
@@ -67,7 +81,7 @@ Type TAudienceResultBase
 		if not Audience then return new TAudience
 
 		'quote = audience / maxAudience
-		return Audience.Copy().Divide(PotentialMaxAudience)
+		return Audience.Copy().Divide( GetPotentialMaxAudience() )
 	End Method
 
 
@@ -78,10 +92,10 @@ Type TAudienceResultBase
 	Method GetPotentialMaxAudienceQuote:TAudience()
 		'no need to calculate a quote if the audience itself is 0 already
 		'-> avoids "nan"-values when dividing with "0.0f" values
-		If PotentialMaxAudience.GetSum() = 0 then return new TAudience
+		If GetPotentialMaxAudience().GetSum() = 0 then return new TAudience
 
 		'potential quote = potential audience / whole market
-		return PotentialMaxAudience.Copy().Divide(WholeMarket)
+		return GetPotentialMaxAudience().Copy().Divide(WholeMarket)
 	End Method
 
 
@@ -135,6 +149,7 @@ Type TAudienceResult extends TAudienceResultBase
 		base.PlayerId = self.PlayerId
 		base.Hour = self.Hour
 		base.Title = self.Title
+		base.broadcastMaterial = self.broadcastMaterial
 		base.Audience = self.Audience
 		base.PotentialMaxAudience = self.PotentialMaxAudience
 		base.WholeMarket = self.WholeMarket

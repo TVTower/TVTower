@@ -203,29 +203,58 @@ Type TRectangle {_exposeToLua="selected"}
 
 
 	'setter when using "sides" insteadsof coords
-	Method setTLBR(top:float, left:float, bottom:float, right:float)
+	Method setTLBR:TRectangle(top:float, left:float, bottom:float, right:float)
 		position.setXY(top, left)
 		dimension.setXY(bottom, right)
+		return self
 	End Method
 
 
-	Method SetTop:int(value:float)
+	Method SetTop:TRectangle(value:float)
 		position.SetX(value)
+		return self
 	End Method
 
 
-	Method SetLeft:int(value:float)
+	Method SetLeft:TRectangle(value:float)
 		position.SetY(value)
+		return self
 	End Method
 
 
-	Method SetBottom:int(value:float)
+	Method SetBottom:TRectangle(value:float)
 		dimension.SetX(value)
+		return self
 	End Method
 
 
-	Method SetRight:int(value:float)
+	Method SetRight:TRectangle(value:float)
 		dimension.SetY(value)
+		return self
+	End Method
+
+
+	Method SetX:TRectangle(value:float)
+		position.SetX(value)
+		return self
+	End Method
+
+
+	Method SetY:TRectangle(value:float)
+		position.SetY(value)
+		return self
+	End Method
+
+
+	Method SetW:TRectangle(value:float)
+		dimension.SetX(value)
+		return self
+	End Method
+
+
+	Method SetH:TRectangle(value:float)
+		dimension.SetY(value)
+		return self
 	End Method
 
 

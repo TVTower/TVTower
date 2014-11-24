@@ -1063,8 +1063,7 @@ Type TGame {_exposeToLua="selected"}
 				EndIf
 
 			 	'automatically change current-plan-day on day change
-			 	'but do it silently (without affecting the)
-			 	RoomHandler_Office.ChangePlanningDay(worldTime.GetDay())
+			 	TScreenHandler_ProgrammePlanner.ChangePlanningDay(worldTime.GetDay())
 
 				EventManager.triggerEvent(TEventSimple.Create("Game.OnDay", new TData.addNumber("minute", worldTime.GetDayMinute()).addNumber("hour", worldTime.GetDayHour()).addNumber("day", worldTime.GetDay()) ))
 			EndIf

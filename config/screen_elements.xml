@@ -187,7 +187,9 @@
 				<child name="screen_financial_balanceLabel3" x="0" 	y="167"  w="220"  h="21" ninepatch="true" />
 				<child name="screen_financial_balanceLabel4" x="0" 	y="188"  w="220"  h="21" ninepatch="true" />
 				<child name="screen_financial_balanceLabel5" x="0" 	y="209"  w="220"  h="21" ninepatch="true" />
-				<child name="screen_financial_balanceValue"  x="0" 	y="230"  w="219"  h="21" ninepatch="true" />
+				<child name="screen_financial_balanceValue"  x="0" 	y="230"  w="219"  h="8" ninepatch="true" />
+				<child name="screen_financial_balanceValue2" x="0" 	y="238"  w="219"  h="8" ninepatch="true" />
+				<child name="screen_financial_balanceValue2filled" x="0" 	y="246"  w="219"  h="8" ninepatch="true" />
 				<child name="screen_financial_balanceInfo"   x="41"  y="1"  w="14"  h="17" />
 			</children>
 		</spritepack>
@@ -272,7 +274,7 @@
 				<child name="gfx_programmeplanner_btn_programme"		x="403"	y="1"	w="108"	h="54" />
 				<child name="gfx_programmeplanner_btn_ads"				x="403"	y="55"	w="108"	h="54" />
 				<child name="gfx_programmeplanner_btn_financials"		x="403"	y="109"	w="108"	h="54" />
-				<child name="gfx_programmeplanner_btn_image"			x="403"	y="163"	w="108"	h="54" />
+				<child name="gfx_programmeplanner_btn_statistics"		x="403"	y="163"	w="108"	h="54" />
 				<child name="gfx_programmeplanner_btn_messages"			x="403"	y="217"	w="108"	h="54" />
 				<child name="gfx_programmeplanner_btn_unknown"			x="403"	y="271"	w="108"	h="54" />
 			</children>

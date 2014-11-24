@@ -607,48 +607,6 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		'value :* (0.8 + 0.2 * GetModifier("price"))
 		End Rem
 		value :* GetModifier("price")
-rem
-- "Statistikbildschirm" -eventuell "zwei buttons" oben drauf
-+------------------------------+
-| [quote] [image]              |
-| +-------------------------+  |
-| |00 13Mio (+20%)  |13 ... |  |
-| |01               |14 ... |  |
-| |..               |.. ... |  |
-| |12               |23 ... |  |
-| +-------------------------+  |
-|  _______________________     |
-| |        .----.__.'     |    |
-| |.-.-_.-'               |    |
-| |_______________________|    |
-+------------------------------+
-
-oder
-+------------------------------+
-| [quote] [image]              |
-| +-------------------------+  |
-| |Rekord Heute             |  |   Tooltip im Design von "Interfacetooltips" ?
-| |  Programm               |  |   +-------tooltip-------+
-| |  News                   |  |   | Programm bla        |
-| |Rekord Gesamt            |  |   | Quote: Total        |
-| |  Programm #1            |  |   |        Männer       |
-| |  Programm #2            |  |   |        Frauen       |
-| |  Programm #3            |  |   |        ...          |
-| |  News #1                |  |   +---------------------+
-| |  News #2                |  |
-| |  News #3                |  |
-| |Durchschnitt		        |  |
-| |  Programm - Heute       |  |
-| |  Programm - Total       |  |
-| |  News - Heute           |  |
-| |  News - Total           |  |
-| +-------------------------+  |
-|  _______________________     |
-| |        .----.__.'     |    |
-| |.-.-_.-'               |    |
-| |_______________________|    |
-+------------------------------+
-endrem
 
 		
 		If Self.IsBMovie()

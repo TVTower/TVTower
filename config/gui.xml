@@ -12,12 +12,15 @@
 				<child name="gfx_gui_button.default"					x="0"	y="0"	w="36"	h="36" ninepatch="true" />
 				<child name="gfx_gui_button.default.hover"				x="36"	y="0"	w="36"	h="36" ninepatch="true" />
 				<child name="gfx_gui_button.default.active"				x="72"	y="0"	w="36"	h="36" ninepatch="true" />
-				<child name="gfx_gui_button.round"						x="288"	y="40"	w="36"	h="36" ninepatch="true" />
-				<child name="gfx_gui_button.round.hover"				x="324"	y="40"	w="36"	h="36" ninepatch="true" />
-				<child name="gfx_gui_button.round.active"				x="360"	y="40"	w="36"	h="36" ninepatch="true" />
-				<child name="gfx_gui_button.rounded"					x="396"	y="40"	w="25"	h="25" ninepatch="true" />
-				<child name="gfx_gui_button.rounded.hover"				x="421"	y="40"	w="25"	h="25" ninepatch="true" />
-				<child name="gfx_gui_button.rounded.active"				x="446"	y="40"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.rounded"					x="400"	y="0"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.rounded.hover"				x="425"	y="0"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.rounded.active"				x="450"	y="0"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.roundedMore"				x="400"	y="25"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.roundedMore.hover"			x="425"	y="25"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.roundedMore.active"			x="450"	y="25"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.round"						x="400"	y="50"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.round.hover"				x="425"	y="50"	w="25"	h="25" ninepatch="true" />
+				<child name="gfx_gui_button.round.active"				x="450"	y="50"	w="25"	h="25" ninepatch="true" />
 
 				<!-- input sprites -->
 				<child name="gfx_gui_input.default"						x="0"	y="40"	w="36"	h="36" ninepatch="true" />
