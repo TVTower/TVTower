@@ -44,6 +44,7 @@ Type TAdContractBaseCollection
 	Method GetByGUID:TAdContractBase(GUID:String)
 		Return TAdContractBase(entries.ValueForKey(GUID))
 	End Method
+	
 
 	'this is not guaranteed to be unique!
 	Method GetByTitle:TAdContractBase(title:String, language:String="")
@@ -76,7 +77,6 @@ Type TAdContractBaseCollection
 	Method GetRandom:TAdContractBase(array:TAdContractBase[] = null)
 		if array = Null or array.length = 0 then array = GetAllAsArray()
 		If array.length = 0 Then Return Null
-
 		Return array[(randRange(0, array.length-1))]
 	End Method
 
@@ -446,10 +446,13 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	'sign the contract -> calculate values and change owner
-	Method Sign:int(owner:int, day:int=-1)
+	Method Sign:int(owner:int, day:int=-1, skipChecks:int = False)
 		if self.owner = owner then return FALSE
-
-		if not IsAvailableToSign(owner) then return FALSE
+		
+		if not skipChecks
+			'run checks if sign is allowed
+			if not IsAvailableToSign(owner) then return FALSE
+		endif
 
 		'attention: GetProfit/GetPenalty/GetMinAudience default to "owner"
 		'           if we set the owner BEFORE, the functions wont use

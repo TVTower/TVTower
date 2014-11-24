@@ -3368,7 +3368,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 
 		'recreate room plan
 		TRoomBoardSign.list.Clear()
-		For local door:TRoomDoorBase = EachIn GetBuilding().doors
+		For local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
 			'create the sign in the roomplan (if not "invisible door")
 			If door.doorType >= 0 then new TRoomBoardSign.Init(door)
 		Next
@@ -3814,8 +3814,9 @@ Function Init_CreateAllRooms()
 		if not GetRoomDoorBaseCollection().GetByGUID( door.GetGUID() )
 			GetRoomDoorBaseCollection().Add( door )
 		endif
-		
+		'add the door to the building (sets parent etc)
 		GetBuilding().AddDoor(door)
+
 		'override defaults
 		if not vars.GetBool("doortooltip") then door.showTooltip = False
 		if vars.GetInt("doorwidth") > 0 then door.area.dimension.setX( vars.GetInt("doorwidth") )

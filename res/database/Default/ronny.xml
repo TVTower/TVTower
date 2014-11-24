@@ -364,7 +364,7 @@ Brucey - harsh fragrance for male experts.</en>
 				<en>Antique and stuff at rock bottom prices. No matter what, no matter whenceever - we will pay for your old crap! House calls are no problem. Simply put the key under the plow, we take care of the rest.</en>
 			</description>
 			<!-- targetgroup: all -->
-			<conditions min_audience="0.5" min_image="0" target_group="0" />
+			<conditions min_audience="0.7" min_image="0" target_group="0" />
 			<data infomercial="1" quality="20" repetitions="3" duration="2" fix_price="0" profit="80" penalty="99" />
 		</ad>		
 		<ad id="ronny-ad-portaet-01" creator="5578" created_by="Ronny">
@@ -444,10 +444,64 @@ We offer fully automatic charging. Insert battery, fill coin slot. Press the but
 			</description>
 			<!-- targetgroup: all -->
 			<conditions min_audience="0.5" min_image="1" target_group="" />
-			<data infomercial="1" quality="31" repetitions="3" duration="2" fix_price="0" profit="60" penalty="50" />
+			<data infomercial="1" quality="31" repetitions="3" duration="2" fix_price="0" profit="90" penalty="80" />
 		</ad>
+		<ad id="ronny-ad-schminkstift-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Schminkstift</de>
+				<en>Beauty Pen</en>
+			</title>
+			<description>
+				<de>Verschönert Lippen, Augenlider und auch Wände. Von Frauen und Kindern erprobt!.
 
+Erhältlich in jeder gut sortierten Drogerie.</de>
+				<en>Decorate lips, eyelids and even walls. Tested by women and children !.
 
+Available in any well-stocked drugstore.</en>
+			</description>
+			<!-- targetgroup: all -->
+			<conditions min_audience="0.7" min_image="0" target_group="" />
+			<data infomercial="1" quality="21" repetitions="4" duration="3" fix_price="0" profit="80" penalty="70" />
+		</ad>
+		<ad id="ronny-ad-arthritis-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>SOS Arthritis</de>
+			</title>
+			<description>
+				<de>Sie hassen es, keinen Finger krumm zu machen? SOS Arthritis lindert die Beschwerden innerhalb weniger Stunden. Jetzt bestellen und 1 Flasche Schlangenöl umsonst dazubekommen.</de>
+				<en>You hate to not lift a finger? SOS Arthritis relieves the discomfort within a few hours. Order now and get 1 bottle snake oil for free.</en>
+			</description>
+			<!-- targetgroup: all -->
+			<conditions min_audience="0.4" min_image="0.1" />
+			<data infomercial="1" quality="15" repetitions="5" duration="2" fix_price="0" profit="90" penalty="80" />
+		</ad>
+		<ad id="ronny-ad-zockomo-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Zockomo</de>
+				<en>Screwmatic</en>
+			</title>
+			<description>
+				<de>Sie zuviel Geld auf hoher Kante? Wir helfen finden ferne Verwandte für Vererbung!</de>
+				<en>You having to many moneys? We helping you to find distant relatives for te bequeth!</en>
+			</description>
+			<!-- targetgroup: all -->
+			<conditions min_audience="0.6" min_image="0.0" />
+			<data infomercial="1" quality="35" repetitions="3" duration="1" fix_price="0" profit="80" penalty="70" />
+		</ad>
+		<ad id="ronny-ad-litfasssaeule-01" creator="5578" created_by="Ronny">
+			<title>
+				<de>Litfaßsäule</de>
+				<en>Morris Column</en>
+			</title>
+			<description>
+				<de>Sie finden sich hübsch? Zeigen Sie Ihren Nachbarn ihre beste Seite: Auf der Plakatwand um die Ecke.</de>
+				<en>You think you are pretty beautiful? Show your neighbors your best side: On the morris column around the corner.</en>
+			</description>
+			<!-- targetgroup: all -->
+			<conditions min_audience="0.2" min_image="0.0" />
+			<data infomercial="1" quality="35" repetitions="4" duration="2" fix_price="0" profit="85" penalty="125" />
+		</ad>
+		
 		<!-- Anpassungen an der Original-DB -->
 		<!-- Leckerfett -->
 		<ad id="e0433c39-f332-4638-9c4b-112fff85179b">

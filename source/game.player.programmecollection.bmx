@@ -148,10 +148,11 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
-	Method AddAdContract:Int(contract:TAdContract)
-		If not contract then return FALSE
+	Method AddAdContract:Int(contract:TAdContract, forceAdd:int = False)
+		If not contract then return False
+		if adContracts.contains(contract) then return False
 
-		if contract.sign( owner ) and not adContracts.contains(contract)
+		if contract.sign(owner, -1, forceAdd)		
 			adContracts.AddLast(contract)
 			'if stored in suitcase ...remove it from there as we signed it
 			suitcaseAdContracts.Remove(contract)
@@ -335,6 +336,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 
 	Method GetRandomAdContract:TAdContract() {_exposeToLua}
+		if adContracts.count() = 0 then return NULL
 		Return TAdContract(adContracts.ValueAtIndex(rand(0, adContracts.count() - 1)))
 	End Method
 

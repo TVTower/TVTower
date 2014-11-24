@@ -9,7 +9,6 @@ Type TBuilding Extends TBuildingBase
 	Field ufo_normal:TSpriteEntity 				{nosave}
 	Field ufo_beaming:TSpriteEntity				{nosave}
 	Field Elevator:TElevator
-	Field doors:TList = CreateList()
 
 	Field UFO_Path:TCatmullRomSpline = New TCatmullRomSpline {nosave}
 	Field UFO_PathCurrentDistanceOld:Float = 0.0
@@ -119,7 +118,7 @@ Type TBuilding Extends TBuildingBase
 
 		'reassign self as parent to all doors
 		'-> just re-add them
-		For local door:TRoomDoorBase = EachIn GetInstance().doors
+		For local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
 			GetInstance().AddDoor(door)
 		Next
 
@@ -151,7 +150,7 @@ Type TBuilding Extends TBuildingBase
 			Next
 
 			'=== DRAW DOORS ===
-			For Local door:TRoomDoorBase = EachIn doors
+			For Local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
 				'skip invisible doors (without door-sprite)
 				If not door.IsVisible() then continue
 
@@ -274,9 +273,6 @@ Type TBuilding Extends TBuildingBase
 		'move door accordingly
 		door.area.position.SetX(GetDoorXFromDoorSlot(door.doorSlot))
 		door.area.position.SetY(GetFloorY2(door.onFloor))
-
-		'add to list if not done already
-		if not doors.contains(door) then doors.AddLast(door)
 	End Method
 
 

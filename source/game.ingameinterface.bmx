@@ -62,10 +62,10 @@ Type TInGameInterface
 
 
 		'=== SETUP SPAWNPOINTS FOR TOASTMESSAGES ===
-		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(5,5, 395,200), new TVec2D.Init(0,0), "TOPLEFT" )
-		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(400,5, 395,200), new TVec2D.Init(1,0), "TOPRIGHT" )
-		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(5,230, 395,150), new TVec2D.Init(0,1), "BOTTOMLEFT" )
-		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(400,230, 395,150), new TVec2D.Init(1,1), "BOTTOMRIGHT" )
+		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(5,5, 395,300), new TVec2D.Init(0,0), "TOPLEFT" )
+		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(400,5, 395,300), new TVec2D.Init(1,0), "TOPRIGHT" )
+		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(5,230, 395,50), new TVec2D.Init(0,1), "BOTTOMLEFT" )
+		GetToastMessageCollection().AddNewSpawnPoint( new TRectangle.Init(400,230, 395,50), new TVec2D.Init(1,1), "BOTTOMRIGHT" )
 
 
 		'show chat if an chat entry was added

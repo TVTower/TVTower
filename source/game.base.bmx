@@ -472,13 +472,15 @@ Type TGame {_exposeToLua="selected"}
 			Local addWidth:Int = GetSpriteFromRegistry("pp_programmeblock1").area.GetW()
 			Local addHeight:Int = GetSpriteFromRegistry("pp_adblock1").area.GetH()
 
-			playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 0 )
-			playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 1 )
-			playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 2 )
-			playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 3 )
-			playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 4 )
-			playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 5 )
-
+			'is there a random contract available?
+			if playerCollection.GetRandomAdContract()
+				playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 0 )
+				playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 1 )
+				playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 2 )
+				playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 3 )
+				playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 4 )
+				playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 5 )
+			endif
 			Local currentLicence:TProgrammeLicence = Null
 			Local currentHour:Int = 0
 			For Local i:Int = 0 To 3
@@ -520,6 +522,10 @@ Type TGame {_exposeToLua="selected"}
 		cheapFilter.SetAudience(0.0, 0.0)
 		adContractBases :+ [GetAdContractBaseCollection().GetRandomByFilter(cheapFilter)]
 
+		if adContractBases.length = 0
+			TLogger.Log("SpreadStartProgramme", "adContractBases is empty.", LOG_ERROR)
+		endif
+
 		
 		For Local playerids:Int = 1 To 4
 			Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(playerids)
@@ -535,7 +541,8 @@ Type TGame {_exposeToLua="selected"}
 
 			'create contracts out of the preselected adcontractbases
 			For local adContractBase:TAdContractBase = EachIn adContractBases
-				ProgrammeCollection.AddAdContract(New TAdContract.Create(adContractBase))
+				'forcefully add to the collection (skips requirements checks)
+				ProgrammeCollection.AddAdContract(New TAdContract.Create(adContractBase), True)
 			Next
 		Next
 	End Method
