@@ -1,7 +1,6 @@
-TVTower
+![TVTower - Ein Tribut an Mad TV | A tribute to Mad TV.](https://cloud.githubusercontent.com/assets/2625226/5182437/c1ddaea0-74a2-11e4-8cbf-0e66ad375505.png)
 =======
 
-Ein Tribut an Mad TV | A tribute to Mad TV.
 
 ###Deutsch
 Du bist Manager eines Fernsehsenders in diesem __kostenlosen Spiel__ . Lenke was gesendet wird und wann. Verdiene Geld durch Werbeeinnahmen und treibe die Konkurrenz in den Bankrott. Hole Zuschauer vor die Flimmerkiste in dem Du branntheisse Nachrichtenstories sendest und mit spannenden Livesendungen Millionen von Mitmenschen am Einschlafen hinterst. Fertigprodukte aus Hollywood sind nicht so dein Ding? Tja, Eigenproduktionen koennten Quotenhits werden - oder aber teure Millionengraeber.
@@ -15,6 +14,7 @@ In this __free game__ you are the manager of a television channel. Control what 
 - Homepage (+Downloads Linux/Mac/Linux): http://www.tvgigant.de
 - Forum: http://www.gamezworld.de/phpforum
 
+![Screenshot](https://cloud.githubusercontent.com/assets/2625226/5182430/b714aa28-74a2-11e4-9409-e99083dc677e.png)
 
 ***
 
