@@ -162,9 +162,12 @@ endrem
 		'give money
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 		Local earn:Int = audienceResult.Audience.GetSum() * contract.GetPerViewerRevenue()
-		TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial sent, earned "+earn+CURRENCYSIGN+" with an audience of " + audienceResult.Audience.GetSum(), LOG_DEBUG)
-		GetPlayerFinanceCollection().Get(owner).EarnInfomercialRevenue(earn, contract)
-
+		if earn > 0
+			TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial sent, earned "+earn+CURRENCYSIGN+" with an audience of " + audienceResult.Audience.GetSum(), LOG_DEBUG)
+			GetPlayerFinanceCollection().Get(owner).EarnInfomercialRevenue(earn, contract)
+		else
+			Notify "FinishBroadcastingAsProgramme: earn value is negative: "+earn 
+		endif
 		'reduce topicality for infomercials
 		contract.base.CutInfomercialTopicality(GetInfomercialTopicalityCutModifier())
 	End Method

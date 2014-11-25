@@ -25,7 +25,7 @@ Type TAudience
 	Function CreateAndInit:TAudience(children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float, women:Float=-1, men:Float=-1)
 		Local obj:TAudience = New TAudience
 		obj.SetValues(children, teenagers, HouseWives, employees, unemployed, manager, pensioners, women, men)
-		If (women = -1 And men = -1) Then obj.CalcGenderBreakdown()
+		If (women = -1 Or men = -1) Then obj.CalcGenderBreakdown()
 		Return obj
 	End Function
 
@@ -85,7 +85,12 @@ Type TAudience
 
 
 	Method GetAverage:Float()
-		Return GetSum() / 7
+		local result:Float = GetSum()
+		if result = 0
+			return 0.0
+		else
+			return result / 7
+		endif
 	End Method
 
 
@@ -96,12 +101,20 @@ Type TAudience
 
 
 	Method FixGenderCount()
+		'fix gender count if needed
+		if Women < 0 or Men < 0 then CalcGenderBreakdown()
+
 		Local GenderSum:Float = Women + Men
-		Local AudienceSum:Int = GetSum();
+		Local AudienceSum:Int = GetSum()
+
+		'skip division (potential div by zero) without women or men
+		'gendersum = 0 allows "-1 and 1" or "0 and 0"
+		if GenderSum = 0 or women = 0 or men = 0 then return
 
 		Women = Ceil(AudienceSum / GenderSum * Women)
 		Men = Ceil(AudienceSum / GenderSum * Men)
-		Men :+ AudienceSum - Women - Men 'Den Rest bei den Männern draufrechnen/abziehen
+		'add remainder (because of rounding) to men
+		Men :+ AudienceSum - Women - Men
 	End Method
 
 
@@ -313,6 +326,17 @@ Type TAudience
 			'set all values to 0 (new Audience has 0 as default)
 			SetValuesFrom(new TAudience)
 		Else
+			'check for div/0 first 
+			if audience.Children = 0 then throw "TAudience.Divide: Div/0 - audience.Children is 0"
+			if audience.Teenagers = 0 then throw "TAudience.Divide: Div/0 - audience.Teenagers is 0"
+			if audience.HouseWives = 0 then throw "TAudience.Divide: Div/0 - audience.HouseWives is 0"
+			if audience.Employees = 0 then throw "TAudience.Divide: Div/0 - audience.Employees is 0"
+			if audience.Unemployed = 0 then throw "TAudience.Divide: Div/0 - audience.Unemployed is 0"
+			if audience.Manager = 0 then throw "TAudience.Divide: Div/0 - audience.Manager is 0"
+			if audience.Pensioners = 0 then throw "TAudience.Divide: Div/0 - audience.Pensioners is 0"
+			if audience.Women = 0 then throw "TAudience.Divide: Div/0 - audience.Women is 0"
+			if audience.Men = 0 then throw "TAudience.Divide: Div/0 - audience.Men is 0"
+
 			Children	:/ audience.Children
 			Teenagers	:/ audience.Teenagers
 			HouseWives	:/ audience.HouseWives
@@ -328,6 +352,8 @@ Type TAudience
 
 
 	Method DivideFloat:TAudience(number:Float)
+		if number = 0 then Throw "TAudience.DivideFloat(): Division by zero."
+
 		Children	:/ number
 		Teenagers	:/ number
 		HouseWives	:/ number
@@ -351,6 +377,7 @@ Type TAudience
 		Pensioners	= MathHelper.RoundInt(Pensioners)
 		Women		= MathHelper.RoundInt(Women)
 		Men			= MathHelper.RoundInt(Men)
+		FixGenderCount()
 		Return Self
 	End Method
 
@@ -373,17 +400,17 @@ Type TAudience
 
 	Method ToStringMinimal:String()
 		Local dec:Int = 0
-		Return "C:" + MathHelper.floatToString(Children,dec) + " / T:" + MathHelper.floatToString(Teenagers,dec) + " / H:" + MathHelper.floatToString(HouseWives,dec) + " / E:" + MathHelper.floatToString(Employees,dec) + " / U:" + MathHelper.floatToString(Unemployed,dec) + " / M:" + MathHelper.floatToString(Manager,dec) + " /P:" + MathHelper.floatToString(Pensioners,dec)
+		Return "C:" + MathHelper.NumberToString(Children,dec) + " / T:" + MathHelper.NumberToString(Teenagers,dec) + " / H:" + MathHelper.NumberToString(HouseWives,dec) + " / E:" + MathHelper.NumberToString(Employees,dec) + " / U:" + MathHelper.NumberToString(Unemployed,dec) + " / M:" + MathHelper.NumberToString(Manager,dec) + " /P:" + MathHelper.NumberToString(Pensioners,dec)
 	End Method
 
 	Method ToString:String()
 		Local dec:Int = 4
-		Return "Sum: " + Int(Ceil(GetSum())) + "  ( 0: " + MathHelper.floatToString(Children,dec) + "  - 1: " + MathHelper.floatToString(Teenagers,dec) + "  - 2: " + MathHelper.floatToString(HouseWives,dec) + "  - 3: " + MathHelper.floatToString(Employees,dec) + "  - 4: " + MathHelper.floatToString(Unemployed,dec) + "  - 5: " + MathHelper.floatToString(Manager,dec) + "  - 6: " + MathHelper.floatToString(Pensioners,dec) + ") - [[ W: " + MathHelper.floatToString(Women,dec) + "  - M: " + MathHelper.floatToString(Men ,dec) + " ]]"
+		Return "Sum: " + Int(Ceil(GetSum())) + "  ( 0: " + MathHelper.NumberToString(Children,dec) + "  - 1: " + MathHelper.NumberToString(Teenagers,dec) + "  - 2: " + MathHelper.NumberToString(HouseWives,dec) + "  - 3: " + MathHelper.NumberToString(Employees,dec) + "  - 4: " + MathHelper.NumberToString(Unemployed,dec) + "  - 5: " + MathHelper.NumberToString(Manager,dec) + "  - 6: " + MathHelper.NumberToString(Pensioners,dec) + ") - [[ W: " + MathHelper.NumberToString(Women,dec) + "  - M: " + MathHelper.NumberToString(Men ,dec) + " ]]"
 	End Method
 
 
 	Method ToStringAverage:String()
-		Return "Avg: " + MathHelper.floatToString(GetAverage(),3) + "  ( 0: " + MathHelper.floatToString(Children,3) + "  - 1: " + MathHelper.floatToString(Teenagers,3) + "  - 2: " + MathHelper.floatToString(HouseWives,3) + "  - 3: " + MathHelper.floatToString(Employees,3) + "  - 4: " + MathHelper.floatToString(Unemployed,3) + "  - 5: " + MathHelper.floatToString(Manager,3) + "  - 6: " + MathHelper.floatToString(Pensioners,3) + ")"
+		Return "Avg: " + MathHelper.NumberToString(GetAverage(),3) + "  ( 0: " + MathHelper.NumberToString(Children,3) + "  - 1: " + MathHelper.NumberToString(Teenagers,3) + "  - 2: " + MathHelper.NumberToString(HouseWives,3) + "  - 3: " + MathHelper.NumberToString(Employees,3) + "  - 4: " + MathHelper.NumberToString(Unemployed,3) + "  - 5: " + MathHelper.NumberToString(Manager,3) + "  - 6: " + MathHelper.NumberToString(Pensioners,3) + ")"
 	End Method
 
 

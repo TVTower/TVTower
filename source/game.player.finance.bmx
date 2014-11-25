@@ -83,10 +83,10 @@ Type TPlayerFinance
 	Field income_callerRevenue:Int		= 0
 	Field income_sponsorshipRevenue:Int	= 0
 	Field income_misc:Int				= 0
-	Field income_total:Int				= 0
 	Field income_stations:Int			= 0
 	Field income_creditTaken:Int		= 0 'freshly taken credit today
 	Field income_balanceInterest:int	= 0	'interest for money "on the bank"
+	Field income_total:Long				= 0
 	Field revenue_before:Long 			= 0
 	Field revenue_after:Long 			= 0
 	Field money:Long					= 0
@@ -100,7 +100,7 @@ Type TPlayerFinance
 	Global List:TList					= CreateList()
 
 
-	Method Create:TPlayerFinance(playerID:int, startmoney:Int=500000, startcredit:Int = 500000)
+	Method Create:TPlayerFinance(playerID:int, startmoney:Long=500000, startcredit:Int = 500000)
 		money = startmoney
 		revenue_before = startmoney
 		revenue_after = startmoney
@@ -134,12 +134,12 @@ Type TPlayerFinance
 	End Method
 
 
-	Method GetCurrentProfit:Int()
+	Method GetCurrentProfit:Long()
 		return revenue_after - revenue_before
 	End Method
 
 
-	Method ChangeMoney(value:Int)
+	Method ChangeMoney(value:int)
 		'TLogger.log("TFinancial.ChangeMoney()", "Player "+player.playerID+" changed money by "+value, LOG_DEBUG)
 		money			:+ value
 		revenue_after	:+ value

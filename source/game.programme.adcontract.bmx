@@ -955,8 +955,8 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		If owner <= 0
 			if GetMinImage() > 0 and 0.01*GetPublicImageCollection().Get(GetPlayerBaseCollection().playerID).GetAverageImage() < GetMinImage()
 				currY :+ 4 'top content padding of that line
-				local requiredImage:string = MathHelper.floatToString(GetMinImage()*100,2)
-				local channelImage:string = MathHelper.floatToString(GetPublicImageCollection().Get(GetPlayerBaseCollection().playerID).GetAverageImage(),2)
+				local requiredImage:string = MathHelper.NumberToString(GetMinImage()*100,2)
+				local channelImage:string = MathHelper.NumberToString(GetPublicImageCollection().Get(GetPlayerBaseCollection().playerID).GetAverageImage(),2)
 				fontSemiBold.drawBlock(getLocale("AD_CHANNEL_IMAGE_TO_LOW").Replace("%IMAGE%", requiredImage).Replace("%CHANNELIMAGE%", channelImage), currX + 35, currY, 245, 15, ALIGN_CENTER_CENTER, textErrorColor, 0,1,1.0, True, True)
 				currY :+ 15 + 8 'lineheight + bottom content padding
 			endif

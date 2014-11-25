@@ -322,11 +322,11 @@ Type TFunctions
 			If length >= 10 Then typ=3
 		endif
 		'250000 = 250Tsd -> divide by 1000
-		if typ=1 then return MathHelper.floatToString(value/1000.0, 0)+" Tsd"
+		if typ=1 then return MathHelper.NumberToString(value/1000.0, 0)+" "+GetLocale("ABBREVIATION_THOUSAND")
 		'250000 = 0,25Mio -> divide by 1000000
-		if typ=2 then return MathHelper.floatToString(value/1000000.0, 2)+" Mio"
+		if typ=2 then return MathHelper.NumberToString(value/1000000.0, 2)+" "+GetLocale("ABBREVIATION_MILLION")
 		'250000 = 0,0Mrd -> divide by 1000000000
-		if typ=3 then return MathHelper.floatToString(value/1000000000.0, 2)+" Mrd"
+		if typ=3 then return MathHelper.NumberToString(value/1000000000.0, 2)+" "+GetLocale("ABBREVIATION_BILLION")
 		'add thousands-delimiter: 10000 = 10.000
 		if length <= 10 and length > 6
 			return int(floor(int(value) / 1000000))+"."+int(floor(int(value) / 1000))+"."+Left( abs(int((int(value) - int(floor(int(value) / 1000000)*1000000)))) +"000",3)

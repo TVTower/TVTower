@@ -146,6 +146,10 @@ ROOM_AUCTION			= Auktion
 ROOM_AUCTION_SUB		= Film- und Serienauktion
 ROOM_SIZE				= Raumgröße: %SIZE%
 
+ABBREVIATION_THOUSAND = Tsd
+ABBREVIATION_MILLION = Mio
+ABBREVIATION_BILLION = Mrd
+
 BROADCASTING_OUTAGE = Sendeausfall !!
 ADVERTISMENT        = Werbung
 BLOCK               = Block

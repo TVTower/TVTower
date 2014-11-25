@@ -984,16 +984,11 @@ Type TAudienceMarketCalculation
 			If attrRange = Null Then
 				attrRange = attraction.Copy()
 			Else
-				attrRange.Children = attrRange.Children + (1 - attrRange.Children) * attraction.Children
-				attrRange.Teenagers = attrRange.Teenagers + (1 - attrRange.Teenagers) * attraction.Teenagers
-				attrRange.HouseWives = attrRange.HouseWives + (1 - attrRange.HouseWives) * attraction.HouseWives
-				attrRange.Employees = attrRange.Employees + (1 - attrRange.Employees) * attraction.Employees
-				attrRange.Unemployed = attrRange.Unemployed + (1 - attrRange.Unemployed) * attraction.Unemployed
-				attrRange.Manager = attrRange.Manager + (1 - attrRange.Manager) * attraction.Manager
-				attrRange.Pensioners = attrRange.Pensioners + (1 - attrRange.Pensioners) * attraction.Pensioners
-
-				attrRange.Women = attrRange.Women + (1 - attrRange.Women) * attraction.Women
-				attrRange.Men = attrRange.Men + (1 - attrRange.Men) * attraction.Men
+				For local i:int = 1 to TVTTargetGroup.count
+					local groupKey:int = TVTTargetGroup.GetGroupID(i)
+					local rangeValue:Float = attrRange.GetValue(groupKey)
+					attrRange.SetValue(groupKey, rangeValue + (1 - rangeValue) * attraction.GetValue(groupKey))
+				Next
 			EndIf
 		Next
 
@@ -1003,6 +998,25 @@ Type TAudienceMarketCalculation
 			result = attrRange.Copy()
 
 			If result.GetSum() > 0 And attrSum.GetSum() > 0 Then
+				'attention: attrSum could contain "0" values (div/0 !)
+				'so a blind "result.Divide(attrSum)" is no solution!
+				'-> check all values for 0 and handle them!
+
+				For local i:int = 1 to TVTTargetGroup.count
+					local groupKey:int = TVTTargetGroup.GetGroupID(i)
+					'one of the targetgroups is not attracted at all
+					'-> reduce to 0 (just set the same value so
+					'   result/attr = 1.0 )
+					if attrSum.GetValue(groupKey) = 0
+						if result.GetValue(groupKey) <> 0
+							attrSum.SetValue( groupKey, result.GetValue(groupKey) )
+						else
+							'does not matter what value we set, it will
+							'be the divisor of "0" (0/1 = 0)
+							attrSum.SetValue( groupKey, 1 )
+						endif
+					endif
+				Next
 				result.Divide(attrSum)
 			EndIf
 		EndIf

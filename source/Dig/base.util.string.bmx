@@ -269,7 +269,7 @@ Type StringHelper
 					'Ronny: replaced code with a rounding one from
 					'       our framework
 					Local df:Float = Float(args[argnum])
-					result :+ MathHelper.FloatToString(df, formatDP)
+					result :+ MathHelper.NumberToString(df, formatDP)
 				ElseIf formatType = "c"
 					If foundPadding Or foundMinus
 						Throw "StringHelper.printf(): Error parsing format string!"

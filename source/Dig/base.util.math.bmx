@@ -100,10 +100,11 @@ Type MathHelper
 	End Function
 
 
-	'convert a float to a string
-	'float is rounded to the requested amount of digits after comma
-	Function floatToString:String(value:Float, digitsAfterDecimalPoint:int = 2)
+	'convert a double to a string
+	'double is rounded to the requested amount of digits after comma
+	Function NumberToString:String(value:Double, digitsAfterDecimalPoint:int = 2)
 		Local s:String = RoundNumber(value, digitsAfterDecimalPoint + 1)
+		
 		'calculate amount of digits before "."
 		'instead of just string(int(s))).length we use the "Abs"-value
 		'and compare the original value if it is negative
@@ -127,7 +128,14 @@ Type MathHelper
 
 
 	'round to an integer value
-	Function RoundInt:Int(f:Double)
+	Function RoundInt:Int(f:Float)
+		'http://www.blitzbasic.com/Community/posts.php?topic=92064
+	    Return f + 0.5 * Sgn(f)
+	End Function
+
+
+	'round to an Long value
+	Function RoundLong:Long(f:Double)
 		'http://www.blitzbasic.com/Community/posts.php?topic=92064
 	    Return f + 0.5 * Sgn(f)
 	End Function
@@ -137,7 +145,7 @@ Type MathHelper
 	Function RoundNumber:Double(number:Double, digitsAfterDecimalPoint:Byte = 2)
 		if number = 0 then return 0
 		Local t:Long = 10 ^ digitsAfterDecimalPoint
-		Return RoundInt(number * t) / Double(t)
+		Return RoundLong(number * t) / Double(t)
 	End Function
 
 

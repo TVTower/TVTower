@@ -654,7 +654,7 @@ Type TScreenHandler_ProgrammePlanner
 		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
-		GUIManager.Draw("programmeplanner",-1000,-1000, GUIMANAGER_TYPES_NONDRAGGED)
+		GUIManager.Draw("programmeplanner",,, GUIMANAGER_TYPES_NONDRAGGED)
 
 		'overlay old days
 		If GetWorldTime().getDay() > planningDay
@@ -678,8 +678,8 @@ Type TScreenHandler_ProgrammePlanner
 		GetBitmapFont("default", 10).drawBlock(GetWorldTime().GetFormattedDayLong(day),712, 7, 56, 26, ALIGN_CENTER_BOTTOM)
 		SetColor 255,255,255
 
-		GUIManager.Draw("programmeplanner_buttons",-1000,-1000, GUIMANAGER_TYPES_NONDRAGGED)
-		GUIManager.Draw("programmeplanner|programmeplanner_buttons",-1000,-1000, GUIMANAGER_TYPES_DRAGGED)
+		GUIManager.Draw("programmeplanner_buttons",,, GUIMANAGER_TYPES_NONDRAGGED)
+		GUIManager.Draw("programmeplanner|programmeplanner_buttons",,, GUIMANAGER_TYPES_DRAGGED)
 
 
 		SetColor 255,255,255

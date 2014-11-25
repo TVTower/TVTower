@@ -227,7 +227,7 @@ Type TDailyBroadcastStatistic
 
 
 		local result:int[]
-		result = result[..TVTTargetGroup.Count]
+		result = result[..TVTTargetGroup.Count + 1]
 	
 		'store all available audiences in one list for a later sort
 		local availableAudiences:TList = CreateList()
@@ -237,7 +237,7 @@ Type TDailyBroadcastStatistic
 			'fill with player id for identification
 			if audience.id <= 0 then audience.id = i
 
-			if audience then availableAudiences.AddLast(audience)
+			availableAudiences.AddLast(audience)
 		Next
 
 		'sort and store

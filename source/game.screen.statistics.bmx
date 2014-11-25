@@ -171,14 +171,14 @@ Type TScreenHandler_Statistics
 				textFont.DrawBlock(GetLocale("BROADCASTING_AREA")+":", labelArea.GetX(), labelArea.GetY() + 2*labelArea.GetH(), labelArea.GetW(), labelArea.GetH(), ALIGN_LEFT_CENTER, fontColor)
 
 				boldTextFont.drawBlock(TFunctions.dottedValue(audienceResult.audience.GetSum()), valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
-				boldTextFont.drawBlock(MathHelper.floatToString(100.0 * audienceResult.GetAudienceQuote().GetAverage(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), ALIGN_RIGHT_CENTER, lightFontColor)
+				boldTextFont.drawBlock(MathHelper.NumberToString(100.0 * audienceResult.GetAudienceQuote().GetAverage(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), ALIGN_RIGHT_CENTER, lightFontColor)
 				TextFont.drawBlock("#"+audienceRanks[0], valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW(), valueArea.GetH(), ALIGN_RIGHT_CENTER, rankFontColor)
 
 				boldTextFont.drawBlock(TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0), valueArea.GetX(), valueArea.GetY() + 1*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
-				boldTextFont.drawBlock(MathHelper.floatToString(100.0 * audienceResult.GetPotentialMaxAudienceQuote().GetAverage(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 1*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), ALIGN_RIGHT_CENTER, lightFontColor)
+				boldTextFont.drawBlock(MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuote().GetAverage(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 1*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), ALIGN_RIGHT_CENTER, lightFontColor)
 
 				boldTextFont.drawBlock(TFunctions.convertValue(audienceResult.WholeMarket.GetSum(),0), valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
-				boldTextFont.drawBlock(MathHelper.floatToString(audienceResult.WholeMarket.GetSum() / GetStationMapCollection().GetPopulation(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), ALIGN_RIGHT_CENTER, lightFontColor)
+				boldTextFont.drawBlock(MathHelper.NumberToString(audienceResult.WholeMarket.GetSum() / GetStationMapCollection().GetPopulation(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), ALIGN_RIGHT_CENTER, lightFontColor)
 
 				'target groups
 				local halfWidth:int = 0.5 * (valueArea.GetX2() - labelArea.GetX())

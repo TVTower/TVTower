@@ -148,6 +148,10 @@ ROOM_AUCTION			= Auction
 ROOM_AUCTION_SUB		= Auction of movies and series
 ROOM_SIZE				= Room size: %SIZE%
 
+ABBREVIATION_THOUSAND = K
+ABBREVIATION_MILLION = M
+ABBREVIATION_BILLION = bn
+
 BROADCASTING_OUTAGE		= Broadcasting outage !!
 ADVERTISMENT			= Advertisment
 BLOCK					= block
