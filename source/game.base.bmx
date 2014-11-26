@@ -177,7 +177,7 @@ Type TGame {_exposeToLua="selected"}
 	Method PrepareStart(startNewGame:int)
 		'=== FIRST GAME ===
 		'if no game run before : prepare something more
-		if not _firstGamePreparationDone then PrepareFirstGameStart()
+		if not _firstGamePreparationDone then PrepareFirstGameStart(startNewGame)
 
 		'=== ALL GAMES ===
 		TLogger.Log("Game.PrepareStart()", "colorizing images corresponding to playercolors", LOG_DEBUG)
@@ -197,13 +197,14 @@ Type TGame {_exposeToLua="selected"}
 
 
 	'run this BEFORE the first game is started
-	Function PrepareFirstGameStart:int()
+	Function PrepareFirstGameStart:int(startNewGame:int)
 		if _firstGamePreparationDone then return False
 
 		Game.InitWorld()
 
-		'create rooms and connect handlers
-		Init_CreateAllRooms()
+		if startNewGame then Init_CreateAllRooms()
+
+		Init_ConnectRoomHandlers()
 
 		GetPopularityManager().Initialize()
 		GetBroadcastManager().Initialize()
@@ -561,29 +562,20 @@ Type TGame {_exposeToLua="selected"}
 
 	'run when a specific game starts
 	Method _Start:int(startNewGame:int = TRUE)
-		'disable chat if not networkgaming
-		If Not game.networkgame
-'			InGame_Chat.hide()
-		Else
-'			InGame_Chat.show()
-		EndIf
-
-
-
-				'when a game is loaded we should try set the right screen
-				'not just the default building screen
-				if GetPlayer().GetFigure().inRoom
-					local screen:TScreen = ScreenCollection.GetCurrentScreen()
-					'something is wrong .. in a room, but not having a
-					'current screen ... fetch the one of the room
-					if not screen
-						screen = TInGameScreen_Room.GetByRoom(GetPlayer().GetFigure().inRoom) 
-						if not screen then Throw "ERROR: Player in a room without screen."
-					endif
-					ScreenCollection.GoToScreen(screen)
-				else
-					ScreenCollection.GoToScreen(GameScreen_world)
-				endif
+		'when a game is loaded we should try set the right screen
+		'not just the default building screen
+		if GetPlayer().GetFigure().inRoom
+			local screen:TScreen = ScreenCollection.GetCurrentScreen()
+			'something is wrong .. in a room, but not having a
+			'current screen ... fetch the one of the room
+			if not screen
+				screen = ScreenCollection.GetScreen(GetPlayer().GetFigure().inRoom.screenName) 
+				if not screen then Throw "ERROR: Player in a room without screen."
+			endif
+			ScreenCollection.GoToScreen(screen)
+		else
+			ScreenCollection.GoToScreen(GameScreen_world)
+		endif
 
 		'set force=true so the gamestate is set even if already in this
 		'state (eg. when loaded)
@@ -605,7 +597,7 @@ Type TGame {_exposeToLua="selected"}
 	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
 		'if not done yet: run preparation for first game
 		'(eg. if loading is done from mainmenu)
-		PrepareFirstGameStart()
+		PrepareFirstGameStart(False)
 	End Function
 
 
@@ -939,7 +931,7 @@ Type TGame {_exposeToLua="selected"}
 
 		'get currently shown screen of that player
 		if GetPlayer().GetFigure().inRoom
-			ScreenCollection.GoToScreen(TInGameScreen_Room.GetByRoom(GetPlayer().GetFigure().inRoom))
+			ScreenCollection.GoToScreen(ScreenCollection.GetScreen(GetPlayer().GetFigure().inRoom.screenName))
 		'go to building
 		else
 			ScreenCollection.GoToScreen(GameScreen_World)

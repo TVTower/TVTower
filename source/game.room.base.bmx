@@ -119,6 +119,7 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 	Field bombPlacedTime:Double = -1
 	'if > 0 : a bomb explosion will be drawn
 	Field bombExplosionTime:Double = -1
+	field screenName:string = ""
 	
 	'the image used in the room (store individual backgrounds depending on "money")
 	Field _background:TSprite {nosave}
@@ -148,11 +149,6 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 	Const BLOCKEDSTATE_MARSHAL:int    = 3 'eg. archive when not enough money
 
 
-	Method onLoad:int()
-		'
-	End Method
-
-
 	'init a room base with basic variables
 	Method Init:TRoomBase(name:String="unknown", description:String[], owner:int, size:int=1)
 		self.name = name
@@ -168,7 +164,7 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 
 
 	Method GenerateGUID:string()
-		return "roombase-"+id
+		return "roombase-"+name+"-"+owner
 	End Method
 
 

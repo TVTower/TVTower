@@ -54,6 +54,8 @@ Type TBuilding Extends TBuildingBase
 
 			_eventsRegistered = TRUE
 		Endif
+
+		Initialize()
 	End Method
 
 
@@ -63,7 +65,7 @@ Type TBuilding Extends TBuildingBase
 		'if not done already
 		if not TBuilding(_instance)
 			_instance = new TBuilding
-			_instance.Initialize()
+
 		endif
 		return TBuilding(_instance)
 	End Function
@@ -88,22 +90,16 @@ Type TBuilding Extends TBuildingBase
 		'call to set graphics, paths for objects and other stuff
 		InitGraphics()
 
+		'now "gfx_building" exists and we can displace the building
 		area.position.SetY(0 - gfx_building.area.GetH() + 5 * floorHeight)
+
+		'=== SETUP ELEVATOR ===
 		Elevator = GetElevator().Initialize()
 		Elevator.SetParent(self.buildingInner)
 		Elevator.area.position.SetX(floorWidth/2 - Elevator.GetDoorWidth()/2)
 		Elevator.area.position.SetY(GetFloorY2(Elevator.CurrentFloor) - Elevator.spriteInner.area.GetH())
-
 		Elevator.RouteLogic = TElevatorSmartLogic.Create(Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 heißt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich Spaß
 
-
-		'=== SETUP SOFTDRINK MACHINE ===
-		softDrinkMachine = new TSpriteEntity
-		softDrinkMachine.SetSprite(GetSpriteFromRegistry("gfx_building_softdrinkmachine"))
-		softDrinkMachine.GetFrameAnimations().Set("default", TSpriteFrameAnimation.Create([ [0,70] ], 0, 0) )
-		softDrinkMachine.GetFrameAnimations().Set("use", TSpriteFrameAnimation.CreateSimple(15, 50))
-		softDrinkMachineActive = False
-		
 		Return self
 	End Method
 
@@ -236,6 +232,14 @@ Type TBuilding Extends TBuildingBase
 		gfx_buildingEntranceWall = GetSpriteFromRegistry("gfx_building_EingangWand")
 		gfx_buildingFence = GetSpriteFromRegistry("gfx_building_Zaun")
 		gfx_buildingRoof = GetSpriteFromRegistry("gfx_building_roof")
+
+
+		'=== SETUP SOFTDRINK MACHINE ===
+		softDrinkMachine = new TSpriteEntity
+		softDrinkMachine.SetSprite(GetSpriteFromRegistry("gfx_building_softdrinkmachine"))
+		softDrinkMachine.GetFrameAnimations().Set("default", TSpriteFrameAnimation.Create([ [0,70] ], 0, 0) )
+		softDrinkMachine.GetFrameAnimations().Set("use", TSpriteFrameAnimation.CreateSimple(15, 50))
+		softDrinkMachineActive = False
 	End Method
 
 

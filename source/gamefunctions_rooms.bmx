@@ -3769,6 +3769,27 @@ End Type
 
 
 
+Function Init_ConnectRoomHandlers()
+	'connect Update/Draw-Events
+	RoomHandler_Office.Init()
+	RoomHandler_News.Init()
+	RoomHandler_Chief.Init()
+	RoomHandler_Archive.Init()
+
+	RoomHandler_AdAgency.GetInstance().Init()
+	RoomHandler_MovieAgency.GetInstance().Init()
+	RoomHandler_RoomAgency.Init()
+
+	RoomHandler_Betty.Init()
+
+	RoomHandler_ElevatorPlan.Init()
+	RoomHandler_Roomboard.Init()
+
+	RoomHandler_Credits.Init()
+End Function
+
+
+
 Function Init_CreateAllRooms()
 	local room:TRoom = null
 	Local roomMap:TMap = TMap(GetRegistry().Get("rooms"))
@@ -3778,9 +3799,6 @@ Function Init_CreateAllRooms()
 	GetRoomCollection().Reset()
 
 	For Local vars:TData = EachIn roomMap.Values()
-		'==== SCREEN ====
-		local screen:TInGameScreen_Room = TInGameScreen_Room(ScreenCollection.GetScreen(vars.GetString("screen") ))
-
 		'==== ROOM ====
 		local room:TRoom = new TRoom
 		room.Init(..
@@ -3792,8 +3810,9 @@ Function Init_CreateAllRooms()
 			vars.GetInt("owner",-1),  ..
 			vars.GetInt("size", 1)  ..
 		)
-		if screen then screen.AddRoom(room)
 		room.fakeRoom = vars.GetBool("fake", FALSE)
+		room.screenName = vars.GetString("screen")
+
 
 		'only add if not already there
 		if not GetRoomCollection().Get(room.id)
@@ -3810,10 +3829,7 @@ Function Init_CreateAllRooms()
 			vars.GetInt("floor"), ..
 			vars.GetInt("doortype") ..
 		)
-		'add to collection if not done
-		if not GetRoomDoorBaseCollection().GetByGUID( door.GetGUID() )
-			GetRoomDoorBaseCollection().Add( door )
-		endif
+		GetRoomDoorBaseCollection().Add( door )
 		'add the door to the building (sets parent etc)
 		GetBuilding().AddDoor(door)
 
@@ -3849,22 +3865,5 @@ Function Init_CreateAllRooms()
 		endif
 
 	Next
-
-	'connect Update/Draw-Events
-	RoomHandler_Office.Init()
-	RoomHandler_News.Init()
-	RoomHandler_Chief.Init()
-	RoomHandler_Archive.Init()
-
-	RoomHandler_AdAgency.GetInstance().Init()
-	RoomHandler_MovieAgency.GetInstance().Init()
-	RoomHandler_RoomAgency.Init()
-
-	RoomHandler_Betty.Init()
-
-	RoomHandler_ElevatorPlan.Init()
-	RoomHandler_Roomboard.Init()
-
-	RoomHandler_Credits.Init()
 End Function
 

@@ -286,7 +286,7 @@ End Type
 
 Type TInGameScreen_Room extends TInGameScreen
 	'the rooms connected to this screen
-	Field roomIDs:int[]
+'	Field roomIDs:int[]
 	Field currentRoomID:int = -1
 	global temporaryDisableScreenChangeEffects:int = False
 	global _registeredEvents:int = False
@@ -307,44 +307,38 @@ Type TInGameScreen_Room extends TInGameScreen
 
 	Method ToString:string()
 		local rooms:string = ""
-		for local roomID:int = EachIn roomIDs
+		for local room:TRoomBase = EachIn GetRoomBaseCollection().list
+			if not IsConnectedToRoom(room) then continue
+
 			if rooms <> "" then rooms :+ ","
-			rooms :+ roomID
+			rooms :+ room.name
 		Next
-		return "TInGameScreen_Room: name="+name+" roomIDs="+rooms
+
+		return "TInGameScreen_Room: name="+ name +" rooms="+rooms
 	End Method
 
-
-	Method AddRoom:int(room:TRoomBase)
-		if IsConnectedToRoom(room) then return False
-		
-		roomIDs :+ [room.id]
-	End Method
 
 
 	Method IsConnectedToRoom:int(room:TRoomBase)
-		For local i:int = 0 until roomIDs.length
-			if roomIDs[i] = room.id then return True
-		Next
-		return False
+		return (room.screenName = name)
 	End Method
 
 
-	Method GetRoom:TRoomBase()
+	Method GetCurrentRoom:TRoomBase()
+		'if the player is in a specific room, store that ID, so next
+		'time GetRoom() might return "null" but we still know what room
+		'we have to care for
+
 		'the room of this screen MUST be the room the active player
 		'figure is in ...
-		return GetPlayerCollection().Get().GetFigure().inRoom
+		local room:TRoomBase = GetPlayerCollection().Get().GetFigure().inRoom
+		if room
+			currentRoomID = room.id
+		else
+			room = GetRoomBaseCollection().Get(currentRoomID)
+		endif 
+		return room
 	End Method
-
-
-	'instead of comparing rooms directly we check for names
-	'so the screen for "all" offices is getting returned
-	Function GetByRoom:TInGameScreen_Room(room:TRoomBase)
-		For local screen:TInGameScreen_Room = eachin ScreenCollection.screens.Values()
-			if screen.IsConnectedToRoom(room) then return screen
-		Next
-		return Null
-	End Function
 
 
 	'override parental function
@@ -383,7 +377,7 @@ Type TInGameScreen_Room extends TInGameScreen
 		if not figure or GetPlayerBase().GetFigure() <> figure then return FALSE
 
 		'Set the players current screen when changing rooms
-		ScreenCollection.GoToScreen(GetByRoom(room))
+		ScreenCollection.GoToScreen( ScreenCollection.GetScreen(room.screenName) )
 		'reset potentially disabled screenChangeEffectsEnabled
 		temporaryDisableScreenChangeEffects = False
 
@@ -393,29 +387,14 @@ Type TInGameScreen_Room extends TInGameScreen
 
 	'override default
 	Method UpdateContent:int(deltaTime:Float)
-		'if the player is in a specific room, store that ID, so next
-		'time GetRoom() might return "null" but we still know what room
-		'we have to care for
-		if GetRoom()
-			currentRoomID = GetRoom().id
-
-			GetRoom().Update()
-		else
-			local room:TRoomBase = GetRoomBaseCollection().Get(currentRoomID)
-			if room then room.update()
-		endif
+		local room:TRoomBase = GetCurrentRoom()
+		if room then room.update()
 	End Method
 
 
 	'override default
 	Method DrawContent:int(tweenValue:Float)
-		'cache current room id
-		if GetRoom() then currentRoomID = GetRoom().id
-		if not currentRoomID then return False
-
-		'TProfiler.Enter("Draw-Room")
-		'drawing a subscreen (not the room itself)
-		local room:TRoomBase = GetRoomBaseCollection().Get(currentRoomID)
+		local room:TRoomBase = GetCurrentRoom()
 		if not room then return False
 
 		if GetBackground() and not room.GetBackground() then GetBackground().Draw(0, 0)
