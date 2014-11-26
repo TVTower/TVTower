@@ -1271,11 +1271,13 @@ Type TTooltipAudience Extends TTooltip
 			'add lines so we can have an easier "for loop"
 			Local lines:String[TVTTargetGroup.count]
 			Local percents:String[TVTTargetGroup.count]
+			Local numbers:String[TVTTargetGroup.count]
 			local audienceQuote:TAudience = audienceResult.GetAudienceQuote()
 			local targetGroupID:int = 0
 			for local i:int = 1 to TVTTargetGroup.count
 				targetGroupID = TVTTargetGroup.GetGroupID(i)
-				lines[i-1] = getLocale("AD_TARGETGROUP_"+TVTTargetGroup.GetGroupString(targetGroupID)) + ": " + TFunctions.convertValue(audienceResult.Audience.GetValue(targetGroupID), 0)
+				lines[i-1] = getLocale("AD_TARGETGROUP_"+TVTTargetGroup.GetGroupString(targetGroupID)) + ": "
+				numbers[i-1] = TFunctions.convertValue(audienceResult.Audience.GetValue(targetGroupID), 0)
 				percents[i-1] = MathHelper.NumberToString(audienceQuote.GetValue(targetGroupID) * 100,2)
 			Next
 			
@@ -1295,9 +1297,11 @@ Type TTooltipAudience Extends TTooltip
 				'draw text
 				If i Mod 2 = 0
 					Usefont.drawBlock(lines[i-1], lineIconX, lineY + lineTextDY,  w, lineHeight, Null, ColorTextLight)
+					Usefont.drawBlock(numbers[i-1], lineIconX, lineY + lineTextDY, lineIconWidth - 5 - 50, lineIconHeight, new TVec2D.Init(ALIGN_RIGHT), ColorTextLight)
 					Usefont.drawBlock(percents[i-1]+"%", lineIconX, lineY + lineTextDY, lineIconWidth - 5, lineIconHeight, new TVec2D.Init(ALIGN_RIGHT), ColorTextLight)
 				Else
 					Usefont.drawBlock(lines[i-1], lineIconX, lineY + lineTextDY,  w, lineHeight, Null, ColorTextDark)
+					Usefont.drawBlock(numbers[i-1], lineIconX, lineY + lineTextDY, lineIconWidth - 5 - 50, lineIconHeight, new TVec2D.Init(ALIGN_RIGHT), ColorTextDark)
 					Usefont.drawBlock(percents[i-1]+"%", lineIconX, lineY + lineTextDY, lineIconWidth - 5, lineIconHeight, new TVec2D.Init(ALIGN_RIGHT), ColorTextDark)
 				EndIf
 
