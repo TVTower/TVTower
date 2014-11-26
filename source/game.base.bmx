@@ -562,6 +562,8 @@ Type TGame {_exposeToLua="selected"}
 
 	'run when a specific game starts
 	Method _Start:int(startNewGame:int = TRUE)
+rem
+	no longer needed, done by savegame itself
 		'when a game is loaded we should try set the right screen
 		'not just the default building screen
 		if GetPlayer().GetFigure().inRoom
@@ -576,6 +578,7 @@ Type TGame {_exposeToLua="selected"}
 		else
 			ScreenCollection.GoToScreen(GameScreen_world)
 		endif
+endrem
 
 		'set force=true so the gamestate is set even if already in this
 		'state (eg. when loaded)

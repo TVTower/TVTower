@@ -228,6 +228,29 @@ Type TScreen
 	End Method
 
 
+	Method HasParentScreen:int(screenName:string)
+		if not parentScreen then return False
+
+		if parentScreen.name = screenName
+			return True
+		else
+			return parentScreen.HasParentScreen(screenName)
+		endif
+	End Method
+	
+
+	Method HasSubScreen:int(screenName:string)
+		if not subScreens then return False
+
+		For local subScreen:TScreen = EachIn subScreens.Values()
+			if subScreen.name = screenName then return True
+
+			if subScreen.HasSubScreen(screenName) then return True
+		Next
+		return False
+	End Method
+
+
 	Method AddSubScreen:int(screen:TScreen)
 		screen.parentScreen = self
 		subScreens.insert(screen.name, screen)
@@ -237,11 +260,6 @@ Type TScreen
 	Method RemoveSubScreen:int(screen:TScreen)
 		screen.parentScreen = null
 		subScreens.Remove(screen.name)
-	End Method
-
-
-	Method HasSubScreen:int(name:string="")
-		return subScreens.Contains(name)
 	End Method
 
 

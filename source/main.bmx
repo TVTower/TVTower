@@ -837,6 +837,7 @@ Type TGameState
 	Field _RoomHandler_AdAgency:RoomHandler_AdAgency
 	Field _RoomDoorBaseCollection:TRoomDoorBaseCollection
 	Field _RoomBaseCollection:TRoomBaseCollection
+	Field _CurrentScreenName:string
 	Const MODE_LOAD:Int = 0
 	Const MODE_SAVE:Int = 1
 
@@ -914,6 +915,9 @@ Type TGameState
 
 
 	Method BackupGameData:Int()
+		'name of the current screen (or base screen)
+		_CurrentScreenName = ScreenCollection.GetCurrentScreen().name
+		
 		_Assign(Game, _Game, "Game", MODE_SAVE)
 		_Assign(TBuilding._instance, _Building, "Building", MODE_SAVE)
 		_Assign(TRoomBaseCollection._instance, _RoomBaseCollection, "RoomBaseCollection", MODE_SAVE)
@@ -1071,6 +1075,17 @@ Type TSaveGame extends TGameState
 		'tell everybody we finished loading (eg. for clearing GUI-lists)
 		'payload is saveName and saveGame-object
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnLoad", New TData.addString("saveName", saveName).add("saveGame", saveGame)))
+
+		'only set the screen if the figure is in this room ... this
+		'allows modifying the player in the savegame
+		if GetPlayer().GetFigure().inRoom
+			local playerScreen:TScreen = ScreenCollection.GetScreen(saveGame._CurrentScreenName)
+			if playerScreen.HasParentScreen(GetPlayer().GetFigure().inRoom.screenName)
+				ScreenCollection.GoToScreen(playerScreen)
+				'just set the current screen... no animation
+				ScreenCollection._SetCurrentScreen(playerScreen)
+			endif
+		endif
 
 		'call game that game continues/starts now
 		Game.StartLoadedSaveGame()
