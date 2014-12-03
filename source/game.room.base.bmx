@@ -48,7 +48,7 @@ Type TRoomBaseCollection
 
 
 	Function Get:TRoomBase(ID:int)
-		For Local room:TRoomBase = EachIn _instance.list
+		For Local room:TRoomBase = EachIn GetInstance().list
 			If room.id = ID Then Return room
 		Next
 		Return Null
@@ -56,14 +56,14 @@ Type TRoomBaseCollection
 
 
 	Function GetRandom:TRoomBase()
-		return TRoomBase( _instance.list.ValueAtIndex( Rand(_instance.list.Count() - 1) ) )
+		return TRoomBase( GetInstance().list.ValueAtIndex( Rand(GetInstance().list.Count() - 1) ) )
 	End Function
 
 
 	'returns all room fitting to the given details
 	Function GetAllByDetails:TRoomBase[]( name:String, owner:Int=-1000 ) {_exposeToLua}
 		local rooms:TRoomBase[]
-		For Local room:TRoomBase = EachIn _instance.list
+		For Local room:TRoomBase = EachIn GetInstance().list
 			'print name+" <> "+room.name+"   "+owner+" <> "+room.owner
 			'skip wrong owners
 			if owner <> -1000 and room.owner <> owner then continue
@@ -86,7 +86,7 @@ Type TRoomBaseCollection
 	'run when loading finished
 	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
 		TLogger.Log("TRoomCollection", "Savegame started loading - clean occupants list", LOG_DEBUG | LOG_SAVELOAD)
-		For local room:TRoomBase = eachin _instance.list
+		For local room:TRoomBase = eachin GetInstance().list
 			room.occupants.Clear()
 		Next
 	End Function
@@ -103,6 +103,7 @@ End Function
 
 Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 	Field name:string
+	Field originalName:string
 	'description, eg. "Bettys bureau" (+ "name of the owner" for "adagency ... owned by X")
 	Field description:String[] = ["", ""]
 	'playerID or -1 for system/artificial person
@@ -152,6 +153,7 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 	'init a room base with basic variables
 	Method Init:TRoomBase(name:String="unknown", description:String[], owner:int, size:int=1)
 		self.name = name
+		self.originalName = name
 		self.owner = owner
 		self.description = description
 		self.size = Max(0, Min(3, size))
@@ -373,8 +375,8 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 	Method Draw:int()
 		'emit event so custom draw functions can run
 		EventManager.triggerEvent( TEventSimple.Create("room.onDraw", null, self) )
-		'emit event limited to a specific room id (allows id-specific listeners)
-		EventManager.triggerEvent( TEventSimple.Create("room."+self.id+".onDraw", null, self) )
+		'emit event limited to a specific room name
+		EventManager.triggerEvent( TEventSimple.Create("room."+self.name+".onDraw", null, self) )
 
 		return 0
 	End Method
@@ -402,8 +404,8 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 	Method Update:Int()
 		'emit event so custom updaters can handle
 		EventManager.triggerEvent( TEventSimple.Create("room.onUpdate", null, self) )
-		'emit event limited to a specific room id (allows id-specific listeners)
-		EventManager.triggerEvent( TEventSimple.Create("room."+self.id+".onUpdate", null, self) )
+		'emit event limited to a specific room name
+		EventManager.triggerEvent( TEventSimple.Create("room."+self.name+".onUpdate", null, self) )
 
 		return 0
 	End Method

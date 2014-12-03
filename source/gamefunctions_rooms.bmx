@@ -515,16 +515,145 @@ End Type
 
 
 
+Type TRoomHandlerCollection
+	Field handlers:TMap = CreateMap()
+	'instead of a temporary variable
+	Global currentHandler:TRoomHandler
+
+	Global _instance:TRoomHandlerCollection
+	Global _initDone:int = False
+
+
+	Function GetInstance:TRoomHandlerCollection()
+		if not _instance then _instance = new TRoomHandlerCollection
+		if not _initDone then _instance.Initialize()
+		return _instance
+	End Function
+
+
+	Method Initialize:int()
+		if _initDone then return False
+		_initDone = True
+
+		EventManager.registerListenerFunction( "room.onUpdate", onHandleRoom )
+		EventManager.registerListenerFunction( "room.onDraw", onHandleRoom )
+		EventManager.registerListenerFunction( "room.onEnter", onHandleRoom )
+		EventManager.registerListenerFunction( "room.onLeave", onHandleRoom )
+		EventManager.registerListenerFunction( "figure.onTryLeaveRoom", onHandleFigureInRoom )
+		EventManager.registerListenerFunction( "figure.onForcefullyLeaveRoom", onHandleFigureInRoom )
+
+		EventManager.registerListenerFunction( "Language.onSetLanguage", onSetLanguage )
+		'handle savegame loading
+		EventManager.registerListenerFunction( "SaveGame.OnBeginLoad", onSaveGameBeginLoad )
+		EventManager.registerListenerFunction( "SaveGame.OnLoad", onSaveGameLoad )
+	End Method
+
+
+	Method SetHandler(roomName:string, handler:TRoomHandler)
+		handlers.insert(roomName, handler)
+	End Method
+
+
+	Method GetHandler:TRoomHandler(roomName:string = "")
+		return TRoomHandler(handlers.ValueForKey(roomName))
+	End Method
+
+
+
+
+
+	'=== EVENTS FOR ALL HANDLERS ===
+	
+	Function onSetLanguage:int( triggerEvent:TEventBase )
+		For local handler:TRoomHandler = EachIn GetInstance().handlers.Values()
+			handler.SetLanguage()
+		Next
+	End Function
+	
+
+	Function onSaveGameBeginLoad:int( triggerEvent:TEventBase )
+		For local handler:TRoomHandler = EachIn GetInstance().handlers.Values()
+			handler.onSaveGameBeginLoad( triggerEvent )
+		Next
+	End Function
+
+
+	Function onSaveGameLoad:int( triggerEvent:TEventBase )
+		For local handler:TRoomHandler = EachIn GetInstance().handlers.Values()
+			handler.onSaveGameLoad( triggerEvent )
+		Next
+	End Function
+
+
+
+
+	'=== EVENTS FOR INDIVIDUAL HANDLERS ===
+	Function onHandleFigureInRoom:int( triggerEvent:TEventBase )
+		local room:TRoom = TRoom( triggerEvent.GetReceiver())
+		if not room then print "onHandleFigureInRoom: room stored elsewhere: "+triggerEvent._trigger.toLower()
+		if not room then return 0
+
+		currentHandler = GetInstance().GetHandler(room.name)
+		if not currentHandler then return False
+
+		Select triggerEvent._trigger.toLower()
+			case "figure.ontryleaveroom"
+				currentHandler.onTryLeaveRoom( triggerEvent )
+			case "figure.onforcefullyleaveroom"
+				currentHandler.onForcefullyLeaveRoom( triggerEvent )
+		End Select
+	End Function
+
+	
+	Function onHandleRoom:int( triggerEvent:TEventBase )
+		local room:TRoom = TRoom( triggerEvent.GetSender())
+		if not room then print "onHandleRoom: room stored elsewhere: "+triggerEvent._trigger.toLower()
+		if not room then return 0
+
+		currentHandler = GetInstance().GetHandler(room.name)
+		if not currentHandler then return False
+		
+		Select triggerEvent._trigger.toLower()
+			case "room.onupdate"
+				'no handling needed when exit dialogue is open
+				If TApp.ExitAppDialogue then return 0
+				currentHandler.onUpdateRoom( triggerEvent )
+			case "room.ondraw"
+				currentHandler.onDrawRoom( triggerEvent )
+			case "room.onenter"
+				currentHandler.onEnterRoom( triggerEvent )
+			case "room.onleave"
+				currentHandler.onLeaveRoom( triggerEvent )
+		End Select
+	End Function
+End Type
+
+'===== CONVENIENCE ACCESSOR =====
+'return collection instance
+Function GetRoomHandlerCollection:TRoomHandlerCollection()
+	Return TRoomHandlerCollection.GetInstance()
+End Function
+
+
 
 Type TRoomHandler
-	Function _RegisterHandler(updateFunc(triggerEvent:TEventBase), drawFunc(triggerEvent:TEventBase), room:TRoom = null)
-		'register for this special room id (so it survives load/save)
-		'instead of the generic ones
-		if room
-			EventManager.registerListenerFunction( "room."+room.id+".onUpdate", updateFunc)
-			EventManager.registerListenerFunction( "room."+room.id+".onDraw", drawFunc)
-		endif
-	End Function
+	Method onUpdateRoom:int( triggerEvent:TEventBase ); return True; End Method
+	Method onDrawRoom:int( triggerEvent:TEventBase ); return True; End Method
+	Method onLeaveRoom:int( triggerEvent:TEventBase ); return True; End Method
+	Method onEnterRoom:int( triggerEvent:TEventBase ); return True; End Method
+	Method onTryLeaveRoom:int( triggerEvent:TEventBase ); return True; End Method
+	Method onForcefullyLeaveRoom:int( triggerEvent:TEventBase ); return True; End Method
+	Method onSaveGameBeginLoad:int( triggerEvent:TEventBase ); return True; End Method
+	Method onSaveGameLoad:int( triggerEvent:TEventBase ); return True; End Method
+	'called to create all needed things (GUI) AND Reset
+	Method Initialize:int() abstract
+	'called to return to default state
+	'Method Reset() abstract
+
+	'call this function if the visual user actions need to get aborted
+	Method AbortScreenActions:Int(); End Method
+
+	Method SetLanguage(); End Method
 
 
 	'special events for screens used in rooms - only this event has the room as sender
@@ -534,11 +663,6 @@ Type TRoomHandler
 			EventManager.registerListenerFunction( "room.onScreenUpdate", updateFunc, screen )
 			EventManager.registerListenerFunction( "room.onScreenDraw", drawFunc, screen )
 		endif
-	End Function
-	
-
-	Function IsMyRoom:int(room:TRoomBase)
-		return False
 	End Function
 
 
@@ -552,14 +676,6 @@ Type TRoomHandler
 	End Function
 
 
-	'call this function if the visual user actions need to get aborted
-	Function AbortScreenActions:Int()
-		'by default nothing has to get done
-	End Function
-
-'	Function Init() abstract
-'	Function Update:int( triggerEvent:TEventBase ) abstract
-'	Function Draw:int( triggerEvent:TEventBase ) abstract
 End Type
 
 
@@ -571,12 +687,23 @@ Include "game.screen.statistics.bmx"
 'Office: handling the players room
 Type RoomHandler_Office extends TRoomHandler
 	'=== OFFICE ROOM ===
-	global StationsToolTip:TTooltip
-	global PlannerToolTip:TTooltip
-	global SafeToolTip:TTooltip
+	Global StationsToolTip:TTooltip
+	Global PlannerToolTip:TTooltip
+	Global SafeToolTip:TTooltip
 
+	Global _instance:RoomHandler_Office
+	Global _initDone:int = False
 
-	Function Init()
+	Function GetInstance:RoomHandler_Office()
+		if not _instance then _instance = new RoomHandler_Office
+		if not _initDone then _instance.Initialize()
+		return _instance
+	End Function
+
+	
+	Method Initialize:Int()
+		if _initDone then return False
+		_initDone = True
 		'===== RUN SCREEN SPECIFIC INIT =====
 		'(event connection etc.)
 		TScreenHandler_StationMap.Init()
@@ -584,98 +711,89 @@ Type RoomHandler_Office extends TRoomHandler
 		TScreenHandler_Financials.Init()
 		TScreenHandler_Statistics.Init()
 
-		SetLanguage()
 
-		'inform if language changes
-		EventManager.registerListenerFunction("Language.onSetLanguage", onSetLanguage)
+		GetRoomHandlerCollection().SetHandler("office", self)
 
 		'===== REGISTER SCREEN HANDLERS =====
-		'no need for individual screens, all can be handled by one function (room is param)
-		super._RegisterScreenHandler( onUpdateOffice, onDrawOffice, ScreenCollection.GetScreen("screen_office") )
-	End Function
+		'handle the "office" itself (not computer etc)
+		'using this approach avoids "tooltips" to be visible in subscreens
+		_RegisterScreenHandler( onUpdateOffice, onDrawOffice, ScreenCollection.GetScreen("screen_office") )
+	End Method
 
 
-	Function onSetLanguage:int(triggerEvent:TEventBase)
-		SetLanguage()
-	End Function
+	Method onDrawRoom:int( triggerEvent:TEventBase )
+		'
+	End Method
 
 
-	Function SetLanguage()
-		'nothing up to now
-	End Function
-
-
-	Function IsMyRoom:int(room:TRoomBase)
-		For local i:int = 1 to 4
-			if room = GetRoomCollection().GetFirstByDetails("office", i) then return True
-		Next
-		return False
-	End Function
+	Method onUpdateRoom:int( triggerEvent:TEventBase )
+		'
+	End Method
 
 
 	Function onDrawOffice:int( triggerEvent:TEventBase )
 		'local screen:TScreen	= TScreen( triggerEvent._sender )
-		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
+		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
 		if room.GetBackground() then room.GetBackground().draw(0, 0)
 
-		'allowed for owner only
-		If room AND room.owner = GetPlayerCollection().playerID
+		'allowed for owner only - or with key
+		If GetPlayer().HasMasterKey() OR (room.owner = GetPlayerCollection().playerID)
 			If StationsToolTip Then StationsToolTip.Render()
+			'allowed for all - if having keys
+			If PlannerToolTip Then PlannerToolTip.Render()
+
+			If SafeToolTip Then SafeToolTip.Render()
 		EndIf
-
-		'allowed for all - if having keys
-		If PlannerToolTip <> Null Then PlannerToolTip.Render()
-
-		If SafeToolTip <> Null Then SafeToolTip.Render()
 	End Function
 
 
 	Function onUpdateOffice:int( triggerEvent:TEventBase )
-		'local screen:TScreen	= TScreen(triggerEvent._sender)
-		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
+		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
-		GetPlayerCollection().Get().GetFigure().fromroom = Null
+
+		GetPlayer().GetFigure().fromroom = Null
 		If MOUSEMANAGER.IsClicked(1)
 			If THelper.IsIn(MouseManager.x,MouseManager.y,25,40,150,295)
-				GetPlayerCollection().Get().GetFigure().LeaveRoom()
+				GetPlayer().GetFigure().LeaveRoom()
 				MOUSEMANAGER.resetKey(1)
 			EndIf
 		EndIf
 
-		Game.cursorstate = 0
-		'safe - reachable for all
-		If THelper.IsIn(MouseManager.x, MouseManager.y, 165,85,70,100)
-			If SafeToolTip = Null Then SafeToolTip = TTooltip.Create(GetLocale("ROOM_SAFE"), GetLocale("FOR_PRIVATE_AFFAIRS"), 140, 100,-1,-1)
-			SafeToolTip.enabled = 1
-			SafeToolTip.minContentWidth = 150
-			SafeToolTip.Hover()
-			Game.cursorstate = 1
-			If MOUSEMANAGER.IsClicked(1)
-				MOUSEMANAGER.resetKey(1)
-				Game.cursorstate = 0
 
-				ScreenCollection.GoToSubScreen("screen_office_safe")
-			endif
-		EndIf
+		'allowed for owner only - or with key
+		If GetPlayer().HasMasterKey() OR (room.owner = GetPlayerCollection().playerID)
+			Game.cursorstate = 0
+			'safe - reachable for all
+			If THelper.MouseIn(165,85,70,100)
+				If not SafeToolTip Then SafeToolTip = TTooltip.Create(GetLocale("ROOM_SAFE"), GetLocale("FOR_PRIVATE_AFFAIRS"), 140, 100,-1,-1)
+				SafeToolTip.enabled = 1
+				SafeToolTip.minContentWidth = 150
+				SafeToolTip.Hover()
+				Game.cursorstate = 1
+				If MOUSEMANAGER.IsClicked(1)
+					MOUSEMANAGER.resetKey(1)
+					Game.cursorstate = 0
 
-		'planner - reachable for all
-		If THelper.IsIn(MouseManager.x, MouseManager.y, 600,140,128,210)
-			If PlannerToolTip = Null Then PlannerToolTip = TTooltip.Create(GetLocale("ROOM_PROGRAMMEPLANNER"), GetLocale("AND_STATISTICS"), 580, 140)
-			PlannerToolTip.enabled = 1
-			PlannerToolTip.Hover()
-			Game.cursorstate = 1
-			If MOUSEMANAGER.IsClicked(1)
-				MOUSEMANAGER.resetKey(1)
-				Game.cursorstate = 0
-				ScreenCollection.GoToSubScreen("screen_office_programmeplanner")
-			endif
-		EndIf
+					ScreenCollection.GoToSubScreen("screen_office_safe")
+				endif
+			EndIf
 
-		'station map - only reachable for owner
-		If room.owner = GetPlayerCollection().playerID
+			'planner - reachable for all
+			If THelper.IsIn(MouseManager.x, MouseManager.y, 600,140,128,210)
+				If not PlannerToolTip Then PlannerToolTip = TTooltip.Create(GetLocale("ROOM_PROGRAMMEPLANNER"), GetLocale("AND_STATISTICS"), 580, 140)
+				PlannerToolTip.enabled = 1
+				PlannerToolTip.Hover()
+				Game.cursorstate = 1
+				If MOUSEMANAGER.IsClicked(1)
+					MOUSEMANAGER.resetKey(1)
+					Game.cursorstate = 0
+					ScreenCollection.GoToSubScreen("screen_office_programmeplanner")
+				endif
+			EndIf
+
 			If THelper.IsIn(MouseManager.x, MouseManager.y, 732,45,160,170)
 				If not StationsToolTip Then StationsToolTip = TTooltip.Create(GetLocale("ROOM_STATIONMAP"), GetLocale("BUY_AND_SELL"), 650, 80, 0, 0)
 				StationsToolTip.enabled = 1
@@ -687,11 +805,11 @@ Type RoomHandler_Office extends TRoomHandler
 					ScreenCollection.GoToSubScreen("screen_office_stationmap")
 				endif
 			EndIf
-			If StationsToolTip Then StationsToolTip.Update()
-		EndIf
 
-		If PlannerToolTip Then PlannerToolTip.Update()
-		If SafeToolTip Then SafeToolTip.Update()
+			If StationsToolTip Then StationsToolTip.Update()
+			If PlannerToolTip Then PlannerToolTip.Update()
+			If SafeToolTip Then SafeToolTip.Update()
+		EndIf
 	End Function
 End Type
 
@@ -699,21 +817,32 @@ End Type
 
 'Archive: handling of players programmearchive - for selling it later, ...
 Type RoomHandler_Archive extends TRoomHandler
-	Global hoveredGuiProgrammeLicence:TGuiProgrammeLicence = null
-	Global draggedGuiProgrammeLicence:TGuiProgrammeLicence = null
-	Global openCollectionTooltip:TTooltip
+	Field hoveredGuiProgrammeLicence:TGuiProgrammeLicence = null
+	Field draggedGuiProgrammeLicence:TGuiProgrammeLicence = null
+	Field openCollectionTooltip:TTooltip
 
-	Global programmeList:TgfxProgrammelist
-	Global haveToRefreshGuiElements:int = TRUE
-	Global GuiListSuitcase:TGUIProgrammeLicenceSlotList = null
-	Global DudeArea:TGUISimpleRect	'allows registration of drop-event
+	Field programmeList:TgfxProgrammelist
+	Field haveToRefreshGuiElements:int = TRUE
+	Field GuiListSuitcase:TGUIProgrammeLicenceSlotList = null
+	Field DudeArea:TGUISimpleRect	'allows registration of drop-event
 
 	'configuration
-	Global suitcasePos:TVec2D				= new TVec2D.Init(40,270)
-	Global suitcaseGuiListDisplace:TVec2D	= new TVec2D.Init(14,25)
+	Field suitcasePos:TVec2D				= new TVec2D.Init(40,270)
+	Field suitcaseGuiListDisplace:TVec2D	= new TVec2D.Init(14,25)
+
+	Global _instance:RoomHandler_Archive
 
 
-	Function Init()
+	Function GetInstance:RoomHandler_Archive()
+		if not _instance
+			_instance = new RoomHandler_Archive
+			_instance.Initialize()
+		endif
+		return _instance
+	End Function
+
+
+	Method Initialize:int()
 		'===== CREATE GUI LISTS =====
 		GuiListSuitcase	= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200, 80), "archive")
 		GuiListSuitcase.guiEntriesPanel.minSize.SetXY(200,80)
@@ -740,35 +869,14 @@ Type RoomHandler_Archive extends TRoomHandler
 		'check right clicks on a gui block
 		EventManager.registerListenerFunction( "guiobject.onClick", onClickProgrammeLicence, "TGUIProgrammeLicence" )
 
+
 		'register self for all archives-rooms
-		For local i:int = 1 to 4
-			local room:TRoom = GetRoomCollection().GetFirstByDetails("archive", i)
-			if room then super._RegisterHandler(onUpdate, onDraw, room)
-		Next
-
-		'figure enters room - reset the suitcase's guilist, limit listening to the 4 rooms
-		EventManager.registerListenerFunction( "room.onEnter", onEnterRoom )
-		EventManager.registerListenerFunction( "figure.onTryLeaveRoom", onTryLeaveRoom )
-		EventManager.registerListenerFunction( "room.onLeave", onLeaveRoom )
-		'player leaves office forcefully - clean up
-		EventManager.registerListenerFunction("figure.onForcefullyLeaveRoom", onForcefullyLeaveRoom)
+		GetRoomHandlerCollection().SetHandler("archive", self)
+	End Method
 
 
-		'handle savegame loading (remove old gui elements)
-		EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
-	End Function
-
-
-	Function IsMyRoom:int(room:TRoomBase)
-		For local i:int = 1 to 4
-			if room = GetRoomCollection().GetFirstByDetails("archive", i) then return True
-		Next
-		return False
-	End Function
-
-
-	'clear the screen (remove dragged elements)
-	Function AbortScreenActions:Int()
+	'override: clear the screen (remove dragged elements)
+	Method AbortScreenActions:Int()
 		'abort handling dragged elements
 		If draggedGuiProgrammeLicence
 			draggedGuiProgrammeLicence.dropBackToOrigin()
@@ -776,10 +884,11 @@ Type RoomHandler_Archive extends TRoomHandler
 			draggedGuiProgrammeLicence = null
 			hoveredGuiProgrammeLicence = null
 		EndIf
-	End Function
+	End Method
 
 
-	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
+	'override
+	Method onSaveGameBeginLoad( triggerEvent:TEventBase )
 		'for further explanation of this, check
 		'RoomHandler_Office.onSaveGameBeginLoad()
 
@@ -788,13 +897,11 @@ Type RoomHandler_Archive extends TRoomHandler
 		GuiListSuitcase.EmptyList()
 
 		haveToRefreshGuiElements = true
-	End Function
+	End Method
 
 
-	Function onTryLeaveRoom:int( triggerEvent:TEventBase )
-		'only handle archives
-		if not IsMyRoom(TRoomBase(triggerEvent.GetReceiver())) then return False
-
+	'override
+	Method onTryLeaveRoom:int( triggerEvent:TEventBase )
 		'non players can always leave
 		local figure:TFigure = TFigure(triggerEvent.GetSender())
 		if not figure or not figure.playerID then return FALSE
@@ -814,14 +921,11 @@ Type RoomHandler_Archive extends TRoomHandler
 		endif
 
 		return TRUE
-	End Function
+	End Method
 
 
 	'remove suitcase licences from a players programme plan
-	Function onLeaveRoom:int( triggerEvent:TEventBase )
-		'only handle archives
-		if not IsMyRoom(TRoom(triggerEvent._sender)) then return False
-
+	Method onLeaveRoom:int( triggerEvent:TEventBase )
 		'non players can always leave
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or not figure.playerID then return FALSE
@@ -836,15 +940,13 @@ Type RoomHandler_Archive extends TRoomHandler
 		'programmeList.SetOpen(0)
 		
 		return TRUE
-	End Function
+	End Method
 
 
 	'called as soon as a players figure is forced to leave the room
-	Function onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
+	Method onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
 		'only handle the players figure
 		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
-		'only handle archives
-		if not IsMyRoom(TRoomBase(triggerEvent.GetReceiver())) then return False
 
 		AbortScreenActions()
 
@@ -852,10 +954,10 @@ Type RoomHandler_Archive extends TRoomHandler
 		'from the plan we readd all licences from the suitcase back to
 		'the players collection
 		GetPlayerProgrammeCollectionCollection().Get(GetPlayer().playerID).ReaddProgrammeLicencesFromSuitcase()
-	End Function
+	End Method
 
 
-	Function RefreshGuiElements:int()
+	Method RefreshGuiElements:int()
 		'===== REMOVE UNUSED =====
 		'remove gui elements with licences the player does not have any
 		'longer in the suitcase
@@ -879,7 +981,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		Next
 
 		haveToRefreshGuiElements = FALSE
-	End Function
+	End Method
 
 
 
@@ -917,7 +1019,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		local owner:int = guiBlock.licence.owner
 
 		select receiverList
-			case GuiListSuitcase
+			case GetInstance().GuiListSuitcase
 				'check if still in collection - if so, remove
 				'from collection and add to suitcase
 				if GetPlayerCollection().Get().GetProgrammeCollection().HasProgrammeLicence(guiBlock.licence)
@@ -949,7 +1051,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		local guiBlock:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent._sender)
 		local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
 		if not guiBlock or not receiver then return FALSE
-		if receiver <> DudeArea then return FALSE
+		if receiver <> GetInstance().DudeArea then return FALSE
 
 		'add back to collection
 		GetPlayerCollection().Get().GetProgrammeCollection().RemoveProgrammeLicenceFromSuitcase(guiBlock.licence)
@@ -965,11 +1067,11 @@ Type RoomHandler_Archive extends TRoomHandler
 		local item:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent.GetSender())
 		if item = Null then return FALSE
 
-		hoveredGuiProgrammeLicence = item
+		GetInstance().hoveredGuiProgrammeLicence = item
 		if item.isDragged()
-			draggedGuiProgrammeLicence = item
+			GetInstance().draggedGuiProgrammeLicence = item
 			'if we have an item dragged... we cannot have a menu open
-			programmeList.SetOpen(0)
+			GetInstance().programmeList.SetOpen(0)
 		endif
 
 		return TRUE
@@ -977,22 +1079,20 @@ Type RoomHandler_Archive extends TRoomHandler
 
 
 	'clear the guilist for the suitcase if a player enters
-	Function onEnterRoom:int( triggerEvent:TEventBase )
+	Method onEnterRoom:int( triggerEvent:TEventBase )
 		'we are not interested in other figures than our player's
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or GetPlayerBase().GetFigure() <> figure then return FALSE
-		'only handle archives
-		if not IsMyRoom(TRoomBase(triggerEvent.GetSender())) then return False
 
 		'empty the guilist / delete gui elements
 		'- the real list still may contain elements with gui-references
 		guiListSuitcase.EmptyList()
-	End Function
+	End Method
 
 
-	Function onDraw:int( triggerEvent:TEventBase )
+	Method onDrawRoom:int( triggerEvent:TEventBase )
+		'only draw custom elements for players room
 		local room:TRoom = TRoom(triggerEvent._sender)
-		if not room then return 0
 		if room.owner <> GetPlayerCollection().playerID then return FALSE
 
 		programmeList.Draw()
@@ -1018,13 +1118,12 @@ Type RoomHandler_Archive extends TRoomHandler
 			'draw the current sheet
 			hoveredGuiProgrammeLicence.DrawSheet()
 		endif
-	End Function
+	End Method
 
 
-	Function onUpdate:int( triggerEvent:TEventBase )
+	Method onUpdateRoom:int( triggerEvent:TEventBase )
+		'only handle custom elements for players room
 		local room:TRoom = TRoom(triggerEvent._sender)
-		if not room then return 0
-
 		if room.owner <> GetPlayerCollection().playerID then return FALSE
 
 		Game.cursorstate = 0
@@ -1073,7 +1172,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		draggedGuiProgrammeLicence = null
 
 		GUIManager.Update("archive")
-	End Function
+	End Method
 End Type
 
 
@@ -1112,12 +1211,12 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 	Function GetInstance:RoomHandler_MovieAgency()
 		if not _instance then _instance = new RoomHandler_MovieAgency
-		if not _initDone then _instance.Init()
+		if not _initDone then _instance.Initialize()
 		return _instance
 	End Function
 
 
-	Method Init:int()
+	Method Initialize:int()
 		if _initDone then return FALSE
 
 		'resize arrays
@@ -1176,31 +1275,14 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'drop on vendor - sell things
 		EventManager.registerListenerFunction("guiobject.onDropOnTarget", onDropProgrammeLicenceOnVendor, "TGUIProgrammeLicence")
 
-		'figure enters room - reset the suitcase's guilist, limit listening to this room
-		EventManager.registerListenerFunction("room.onEnter", onEnterRoom)
-		'figure leaves room - only without dragged blocks
-		EventManager.registerListenerFunction("figure.onTryLeaveRoom", onTryLeaveRoom)
-		EventManager.registerListenerFunction("room.onLeave", onLeaveRoom)
-		'player leaves movieagency forcefully - drop back potentially dragged elements
-		EventManager.registerListenerFunction("figure.onForcefullyLeaveRoom", onForcefullyLeaveRoom)
-
 		super._RegisterScreenHandler( onUpdateMovieAgency, onDrawMovieAgency, ScreenCollection.GetScreen("screen_movieagency"))
 		super._RegisterScreenHandler( onUpdateMovieAuction, onDrawMovieAuction, ScreenCollection.GetScreen("screen_movieauction"))
-
-		'handle savegame loading (remove old gui elements)
-		EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
 
 		_initDone = true
 	End Method
 
 
-	Function IsMyRoom:int(room:TRoomBase)
-		if room = GetRoomCollection().GetFirstByDetails("movieagency") then return True
-		return False
-	End Function
-
-
-	Function AbortScreenActions:Int()
+	Method AbortScreenActions:Int()
 		if draggedGuiProgrammeLicence
 			if KeyManager.IsHit(KEY_ESCAPE)
 				'try to drop the licence back
@@ -1209,10 +1291,10 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 				hoveredGuiProgrammeLicence = null
 			endif
 		endif
-	End Function
+	End Method
 
 
-	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
+	Method onSaveGameBeginLoad( triggerEvent:TEventBase )
 		'as soon as a savegame gets loaded, we remove every
 		'guiElement this room manages
 		'Afterwards we force the room to update the gui elements
@@ -1222,14 +1304,11 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		GetInstance().RemoveAllGuiElements()
 		haveToRefreshGuiElements = true
-	End Function
+	End Method
 
 
 	'clear the guilist for the suitcase if a player enters
-	Function onEnterRoom:int( triggerEvent:TEventBase )
-		'only handle movieagency
-		if not IsMyRoom(TRoomBase(triggerEvent.GetSender())) then return False
-
+	Method onEnterRoom:int( triggerEvent:TEventBase )
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure then return FALSE
 
@@ -1240,13 +1319,11 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		'fill all open slots in the agency
 		GetInstance().ReFillBlocks()
-	End Function
+	End Method
 
 
-	Function onTryLeaveRoom:int( triggerEvent:TEventBase )
-		'only handle movieagency
-		if not IsMyRoom(TRoomBase(triggerEvent.GetReceiver())) then return False
-
+	'override: figure leaves room - only without dragged blocks
+	Method onTryLeaveRoom:int( triggerEvent:TEventBase )
 		'non players can always leave
 		local figure:TFigure = TFigure(triggerEvent.GetSender())
 		if not figure or not figure.playerID then return FALSE
@@ -1257,15 +1334,12 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			return FALSE
 		endif
 		return TRUE
-	End Function
+	End Method
 
 
 	'add back the programmes from the suitcase
 	'also fill empty blocks, remove gui elements
-	Function onLeaveRoom:int( triggerEvent:TEventBase )
-		'only handle movieagency
-		if not IsMyRoom(TRoomBase(triggerEvent.GetSender())) then return False
-
+	Method onLeaveRoom:int( triggerEvent:TEventBase )
 		'non players can always leave
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or not figure.playerID then return FALSE
@@ -1273,18 +1347,16 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		GetPlayerProgrammeCollectionCollection().Get(figure.playerID).ReaddProgrammeLicencesFromSuitcase()
 
 		return TRUE
-	End Function
+	End Method
 
 
 	'called as soon as a players figure is forced to leave a room
-	Function onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
-		'only handle movieagency
-		if not IsMyRoom(TRoomBase(triggerEvent.GetReceiver())) then return False
+	Method onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
 		'only handle the players figure
 		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
 
 		AbortScreenActions()
-	End Function
+	End Method
 
 	'===================================
 	'Movie Agency: common TFunctions
@@ -1751,7 +1823,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		Game.cursorstate = 0
 
 		'if we have a licence dragged ... we should take care of "ESC"-Key
-		if KeyManager.IsHit(KEY_ESCAPE) then AbortScreenActions()
+		if KeyManager.IsHit(KEY_ESCAPE) then GetInstance().AbortScreenActions()
 
 
 		'show a auction-tooltip (but not if we dragged a block)
@@ -1824,7 +1896,7 @@ End Type
 
 'News room
 Type RoomHandler_News extends TRoomHandler
-	global PlannerToolTip:TTooltip
+	Global PlannerToolTip:TTooltip
 	Global NewsGenreButtons:TGUIButton[5]
 	Global NewsGenreTooltip:TTooltip			'the tooltip if hovering over the genre buttons
 	Global currentRoom:TRoom					'holding the currently updated room (so genre buttons can access it)
@@ -1838,7 +1910,21 @@ Type RoomHandler_News extends TRoomHandler
 	Global draggedGuiNews:TGuiNews = null
 	Global hoveredGuiNews:TGuiNews = null
 
-	Function Init()
+	Global _instance:RoomHandler_News
+	Global _initDone:int = False
+
+
+	Function GetInstance:RoomHandler_News()
+		if not _instance then _instance = new RoomHandler_News
+		if not _initDone then _instance.Initialize()
+		return _instance
+	End Function
+
+
+	Method Initialize:int()
+		if _initDone then return False
+		_initDone = True
+		
 		'create genre buttons
 		'ATTENTION: We could do this in order of The NewsGenre-Values
 		'           But better add it to the buttons.data-property
@@ -1906,27 +1992,12 @@ Type RoomHandler_News extends TRoomHandler
 		'also we want to interrupt leaving a room with dragged items
 		EventManager.registerListenerFunction("screen.OnLeave", onLeaveNewsPlannerScreen, screen)
 
-		'player leaves newsagency forcefully - drop back potentially dragged elements
-		EventManager.registerListenerFunction("figure.onForcefullyLeaveRoom", onForcefullyLeaveRoom)
-
 		super._RegisterScreenHandler( onUpdateNews, onDrawNews, ScreenCollection.GetScreen("screen_newsstudio") )
 		super._RegisterScreenHandler( onUpdateNewsPlanner, onDrawNewsPlanner, ScreenCollection.GetScreen("screen_newsstudio_newsplanner") )
+	End Method
 
 
-		'handle savegame loading (remove old gui elements)
-		EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
-	End Function
-
-
-	Function IsMyRoom:int(room:TRoomBase)
-		For local i:int = 1 to 4
-			if room = GetRoomCollection().GetFirstByDetails("news", i) then return True
-		Next
-		return False
-	End Function
-
-
-	Function AbortScreenActions:Int()
+	Method AbortScreenActions:Int()
 		if draggedGuiNews
 			'try to drop the licence back
 			draggedGuiNews.dropBackToOrigin()
@@ -1940,10 +2011,10 @@ Type RoomHandler_News extends TRoomHandler
 			'successful or not - get rid of the gui element
 			obj.Remove()
 		Next
-	End Function
+	End Method
 
 
-	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
+	Method onSaveGameBeginLoad( triggerEvent:TEventBase )
 		'for further explanation of this, check
 		'RoomHandler_Office.onSaveGameBeginLoad()
 
@@ -1951,18 +2022,16 @@ Type RoomHandler_News extends TRoomHandler
 		draggedGuiNews = null
 
 		RemoveAllGuiElements()
-	End Function
+	End Method
 
 
 	'called as soon as a players figure is forced to leave the room
-	Function onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
-		'only handle news studios
-		if not IsMyRoom(TRoomBase(triggerEvent.GetReceiver())) then return False
+	Method onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
 		'only handle the players figure
 		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
 
 		AbortScreenActions()
-	End Function
+	End Method
 
 
 	'===================================
@@ -2004,22 +2073,6 @@ Type RoomHandler_News extends TRoomHandler
 				ScreenCollection.GoToSubScreen("screen_newsstudio_newsplanner")
 			endif
 		endif
-Rem
-	Sjaele wants to use this printer differently
-
-		'printer
-		If THelper.IsIn(MouseManager.x, MouseManager.y, 165,240,240,110)
-			If not PlannerToolTip Then PlannerToolTip = TTooltip.Create("Newsplaner", "Hinzufügen und entfernen", 180, 260, 0, 0)
-			PlannerToolTip.enabled = 1
-			PlannerToolTip.Hover()
-			Game.cursorstate = 1
-			If MOUSEMANAGER.IsClicked(1)
-				MOUSEMANAGER.resetKey(1)
-				Game.cursorstate = 0
-				ScreenCollection.GoToSubScreen("screen_newsstudio_newsplanner")
-			endif
-		endif
-EndRem
 	End Function
 
 
@@ -2237,12 +2290,12 @@ EndRem
 		if not room then return 0
 
 		'if we have a licence dragged ... we should take care of "ESC"-Key
-		if KeyManager.IsHit(KEY_ESCAPE) then AbortScreenActions()
+		if KeyManager.IsHit(KEY_ESCAPE) then GetInstance().AbortScreenActions()
 
 		Game.cursorstate = 0
 
 		'delete unused and create new gui elements
-		if haveToRefreshGuiElements then RefreshGUIElements()
+		if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()
 
 		'reset dragged block - will get set automatically on gui-update
 		hoveredGuiNews = null
@@ -2332,13 +2385,30 @@ EndRem
 	End Function
 End Type
 
+
+
+
 'Chief: credit and emmys - your boss :D
 Type RoomHandler_Chief extends TRoomHandler
 	'smoke effect
 	Global smokeEmitter:TSpriteParticleEmitter
 	Global Dialogues:TList = CreateList()
 
-	Function Init()
+	Global _instance:RoomHandler_Chief
+	Global _initDone:int = False
+
+
+	Function GetInstance:RoomHandler_Chief()
+		if not _instance then _instance = new RoomHandler_Chief
+		if not _initDone then _instance.Initialize()
+		return _instance
+	End Function
+
+
+	Method Initialize:int()
+		if _initDone then return False
+		_initDone = True
+		
 		local smokeConfig:TData = new TData
 		smokeConfig.Add("sprite", GetSpriteFromRegistry("gfx_misc_smoketexture"))
 		smokeConfig.AddNumber("velocityMin", 5.0)
@@ -2360,18 +2430,14 @@ Type RoomHandler_Chief extends TRoomHandler
 
 		smokeEmitter = new TSpriteParticleEmitter.Init(emitterConfig, smokeConfig)
 
-
-		'register self for all bosses
-		For local i:int = 1 to 4
-			local room:TRoom = GetRoomCollection().GetFirstByDetails("boss", i)
-			if room then super._RegisterHandler(RoomHandler_Chief.Update, RoomHandler_Chief.Draw, room)
-		Next
 		'register dialogue handlers
 		EventManager.registerListenerFunction("dialogue.onAcceptBossCredit", onAcceptBossCredit)
 		EventManager.registerListenerFunction("dialogue.onRepayBossCredit", onRepayBossCredit)
 
 
-	End Function
+		'register self for all boss rooms
+		GetRoomHandlerCollection().SetHandler("boss", self)
+	End Method
 
 
 	Function onAcceptBossCredit:int(triggerEvent:TEventBase)
@@ -2386,22 +2452,16 @@ Type RoomHandler_Chief extends TRoomHandler
 	End Function
 
 
-	Function Draw:int( triggerEvent:TEventBase )
-		local room:TRoom = TRoom(triggerEvent._sender)
-		if not room then return 0
-
+	Method onDrawRoom:int( triggerEvent:TEventBase )
 		smokeEmitter.Draw()
 
 		For Local dialog:TDialogue = EachIn Dialogues
 			dialog.Draw()
 		Next
-	End Function
+	End Method
 
 
-	Function Update:int( triggerEvent:TEventBase )
-		local room:TRoom = TRoom(triggerEvent._sender)
-		if not room then return 0
-
+	Method onUpdateRoom:int( triggerEvent:TEventBase )
 		GetPlayerCollection().Get().GetFigure().fromroom = Null
 
 		If Dialogues.Count() <= 0
@@ -2453,7 +2513,7 @@ Type RoomHandler_Chief extends TRoomHandler
 				Dialogues.Remove(dialog)
 			endif
 		Next
-	End Function
+	End Method
 End Type
 
 
@@ -2490,13 +2550,14 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 	Function GetInstance:RoomHandler_AdAgency()
 		if not _instance then _instance = new RoomHandler_AdAgency
-		if not _initDone then _instance.Init()
+		if not _initDone then _instance.Initialize()
 		return _instance
 	End Function
 
 
-	Method Init:int()
+	Method Initialize:int()
 		if _initDone then return FALSE
+		_initDone = true
 
 		'===== CREATE/RESIZE LISTS =====
 
@@ -2551,13 +2612,6 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		EventManager.registerListenerFunction( "programmecollection.addAdContract", onChangeProgrammeCollection )
 		EventManager.registerListenerFunction( "programmecollection.removeAdContract", onChangeProgrammeCollection )
 
-		'figure enters room - reset guilists and refill slots
-		EventManager.registerListenerFunction( "room.onEnter", onEnterRoom )
-		EventManager.registerListenerFunction( "figure.onTryLeaveRoom", onTryLeaveRoom)
-		EventManager.registerListenerFunction( "room.onLeave", onLeaveRoom)
-		'player leaves agency forcefully - clean up
-		EventManager.registerListenerFunction("figure.onForcefullyLeaveRoom", onForcefullyLeaveRoom)
-
 		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
 		'is only emitted if the drop is successful (so it "visually" happened)
 		'drop ... to vendor or suitcase
@@ -2572,24 +2626,12 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'this lists want to delete the item if a right mouse click happens...
 		EventManager.registerListenerFunction("guiobject.onClick", onClickContract, "TGuiAdContract")
 
-		super._RegisterScreenHandler( onUpdateAdAgency, onDrawAdAgency, ScreenCollection.GetScreen("screen_adagency") )
 
-		'handle savegame loading (remove old gui elements)
-		EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
-		'handle faulty adcontracts (after data got loaded)
-		EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
-
-		_initDone = true
+		GetRoomHandlerCollection().SetHandler("adagency", self)
 	End Method
 
 
-	Function IsMyRoom:int(room:TRoomBase)
-		if room = GetRoomCollection().GetFirstByDetails("adagency") then return True
-		return False
-	End Function
-
-
-	Function AbortScreenActions:Int()
+	Method AbortScreenActions:Int()
 		if draggedGuiAdContract
 			if KeyManager.IsHit(KEY_ESCAPE)
 				'try to drop the licence back
@@ -2616,12 +2658,12 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			obj.InitAssets(obj.getAssetName(-1, FALSE), obj.getAssetName(-1, TRUE))
 		Next
 
-	End Function
+	End Method
 
 
 
 
-	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
+	Method onSaveGameBeginLoad:int( triggerEvent:TEventBase )
 		'as soon as a savegame gets loaded, we remove every
 		'guiElement this room manages
 		'Afterwards we force the room to update the gui elements
@@ -2634,20 +2676,18 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		GetInstance().RemoveAllGuiElements()
 
 		haveToRefreshGuiElements = true
-	End Function
+	End Method
 	
 
 	'run AFTER the savegame data got loaded
-	Function onSaveGameLoad(triggerEvent:TEventBase)
+	'handle faulty adcontracts (after data got loaded)
+	Method onSaveGameLoad:int( triggerEvent:TEventBase )
 		'in the case of being empty (should not happen)
 		GetInstance().RefillBlocks()
-	End Function
+	End Method
 
 
-	Function onEnterRoom:int(triggerEvent:TEventBase)
-		'only handle adagency
-		if not IsMyRoom(TRoomBase(triggerEvent.GetSender())) then return False
-
+	Method onEnterRoom:int( triggerEvent:TEventBase )
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure then return FALSE
 
@@ -2663,13 +2703,11 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'refill the empty blocks, also sets haveToRefreshGuiElements=true
 		'so next call the gui elements will be redone
 		GetInstance().ReFillBlocks()
-	End function
+	End Method
 
 
-	Function onTryLeaveRoom:int( triggerEvent:TEventBase )
-		'only handle archives
-		if not IsMyRoom(TRoomBase(triggerEvent.GetReceiver())) then return False
-
+	'override
+	Method onTryLeaveRoom:int( triggerEvent:TEventBase )
 		'non players can always leave
 		local figure:TFigure = TFigure(triggerEvent.GetSender())
 		if not figure or not figure.playerID then return FALSE
@@ -2680,15 +2718,12 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			return FALSE
 		endif
 		return TRUE
-	End Function
+	End Method
 
 
 	'add back the programmes from the suitcase
 	'also fill empty blocks, remove gui elements
-	Function onLeaveRoom:int( triggerEvent:TEventBase )
-		'only handle adagency
-		if not IsMyRoom(TRoomBase(triggerEvent.GetSender())) then return False
-
+	Method onLeaveRoom:int( triggerEvent:TEventBase )
 		'non players can always leave
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or not figure.playerID then return FALSE
@@ -2702,22 +2737,20 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		Next
 
 		return TRUE
-	End Function
+	End Method
 
 
 	'called as soon as a players figure is forced to leave the room
-	Function onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
+	Method onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
 		'only handle the players figure
 		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
-		'only handle adagency
-		if not IsMyRoom(TRoomBase(triggerEvent.GetReceiver())) then return False
 
 		'instead of leaving the room and accidentially adding contracts
 		'we delete all unsigned contracts from the list
 		GetPlayerProgrammeCollectionCollection().Get(GetPlayer().playerID).suitcaseAdContracts.Clear()
 
 		AbortScreenActions()
-	End Function
+	End Method
 
 
 	'===================================
@@ -3309,7 +3342,7 @@ endrem
 	End Function
 
 
-	Function onDrawAdAgency:int( triggerEvent:TEventBase )
+	Method onDrawRoom:int( triggerEvent:TEventBase )
 		'make suitcase/vendor glow if needed
 		local glowSuitcase:string = ""
 		if draggedGuiAdContract
@@ -3328,16 +3361,12 @@ endrem
 			'draw the current sheet
 			hoveredGuiAdContract.DrawSheet()
 		endif
+	End Method
 
-	End Function
 
-
-	Function onUpdateAdAgency:int( triggerEvent:TEventBase )
-		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
-		if not room then return 0
-
+	Method onUpdateRoom:int( triggerEvent:TEventBase )
 		'if we have a licence dragged ... we should take care of "ESC"-Key
-		if KeyManager.IsHit(KEY_ESCAPE) then AbortScreenActions()
+		if KeyManager.IsHit(KEY_ESCAPE) then GetInstance().AbortScreenActions()
 
 		Game.cursorstate = 0
 
@@ -3350,7 +3379,7 @@ endrem
 		draggedGuiAdContract = null
 
 		GUIManager.Update("adagency")
-	End Function
+	End Method
 
 End Type
 
@@ -3362,11 +3391,29 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 	const signSlot3:int	= 417
 	const signSlot4:int	= 599
 
+	Global _instance:RoomHandler_ElevatorPlan
+	Global _initDone:int = False
 
-	Function Init()
-		super._RegisterHandler(onUpdate, onDraw, GetRoomCollection().GetFirstByDetails("elevatorplan") )
+	Function GetInstance:RoomHandler_ElevatorPlan()
+		if not _instance then _instance = new RoomHandler_ElevatorPlan
+		if not _initDone then _instance.Initialize()
+		return _instance
+	End Function
 
-		'recreate room plan
+	
+	Method Initialize:Int()
+		if _initDone then return False
+		_initDone = True
+
+		GetRoomHandlerCollection().SetHandler("elevatorplan", self)
+
+		'create an intial plan (might be empty if no doors are loaded yet)
+		'so pay attention to run it once AFTER room creation/loading
+		ReCreatePlan()
+	End Method
+
+
+	Function ReCreatePlan()
 		TRoomBoardSign.list.Clear()
 		For local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
 			'create the sign in the roomplan (if not "invisible door")
@@ -3375,21 +3422,12 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 	End Function
 
 
-	Function onDraw:int( triggerEvent:TEventBase )
-		local room:TRoom = TRoom(triggerEvent._sender)
-		if not room then return 0
-
+	Method onDrawRoom:int( triggerEvent:TEventBase )
 		TRoomBoardSign.DrawAll()
-	End Function
+	End Method
 
 
-	Function onUpdate:int( triggerEvent:TEventBase )
-		local room:TRoom = TRoom(triggerEvent._sender)
-		if not room then return 0
-
-		'no handling needed when exit dialogue is open
-		If TApp.ExitAppDialogue then return 0
-
+	Method onUpdateRoom:int( triggerEvent:TEventBase )
 		local mouseClicked:int = MouseManager.IsClicked(1)
 
 		Game.cursorstate = 0
@@ -3402,7 +3440,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 		endif
 
 		TRoomBoardSign.UpdateAll(False)
-	End Function
+	End Method
 
 
 	'returns the door defined by a sign at X,Y
@@ -3428,33 +3466,34 @@ End Type
 
 
 Type RoomHandler_Roomboard extends TRoomHandler
-	Function Init()
-		super._RegisterHandler(onUpdate, onDraw, GetRoomCollection().GetFirstByDetails("roomboard"))
 
-		EventManager.registerListenerFunction("figure.onTryLeaveRoom", onTryLeaveRoom)
-		'player leaves planner forcefully - clean up
-		EventManager.registerListenerFunction("figure.onForcefullyLeaveRoom", onForcefullyLeaveRoom)
+	Global _instance:RoomHandler_Roomboard
+	Global _initDone:int = False
+
+	Function GetInstance:RoomHandler_Roomboard()
+		if not _instance then _instance = new RoomHandler_Roomboard
+		if not _initDone then _instance.Initialize()
+		return _instance
 	End Function
 
+	
+	Method Initialize:Int()
+		if _initDone then return False
+		_initDone = True
 
-	Function IsMyRoom:int(room:TRoomBase)
-		if room = GetRoomCollection().GetFirstByDetails("roomboard") then return True
-		return False
-	End Function
+		GetRoomHandlerCollection().SetHandler("roomboard", self)
+	End Method
 
 
-	Function AbortScreenActions:Int()
+	Method AbortScreenActions:Int()
 		TRoomBoardSign.DropBackDraggedSigns()
 		TRoomBoardSign.UpdateAll(False)
-	End Function
+	End Method
 	
 
-	'gets called if somebody tries to leave the roomboard
-	Function onTryLeaveRoom:int(triggerEvent:TEventBase )
+	Method onTryLeaveRoom:int( triggerEvent:TEventBase )
 		local figure:TFigure = TFigure( triggerEvent.GetSender())
 		if not figure then return FALSE
-		'only handle roomboard
-		if not IsMyRoom(TRoomBase(triggerEvent.GetReceiver())) then return False
 
 		'only pay attention to players
 		if figure.playerID
@@ -3466,43 +3505,38 @@ Type RoomHandler_Roomboard extends TRoomHandler
 		endif
 
 		return TRUE
-	End Function
+	End Method
 
 
 	'called as soon as a players figure is forced to leave the room
-	Function onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
+	Method onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
 		'only handle the players figure
 		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
-		'only handle roomboard
-		if not IsMyRoom(TRoomBase(triggerEvent.GetReceiver())) then return False
 
 		AbortScreenActions()
-	End Function
+	End Method
 
 	
 
-	Function onDraw:int( triggerEvent:TEventBase )
-		if not TRoom(triggerEvent._sender) then return 0
-
+	Method onDrawRoom:int( triggerEvent:TEventBase )
 		TRoomBoardSign.DrawAll()
-	End Function
+	End Method
 
 
-	Function onUpdate:int( triggerEvent:TEventBase )
-		if not TRoom(triggerEvent._sender) then return 0
-
+	Method onUpdateRoom:int( triggerEvent:TEventBase )
 		Game.cursorstate = 0
 
 		if KeyManager.IsHit(KEY_ESCAPE) then AbortScreenActions()
 
 		'only allow dragging of roomsigns when no exitapp-dialoge exists
-		if not TApp.ExitAppDialogue
+'RONNY
+'		if not TApp.ExitAppDialogue
 			TRoomBoardSign.UpdateAll(True)
-		else
-			TRoomBoardSign.DropBackDraggedSigns()
-			TRoomBoardSign.UpdateAll(False)
-		endif
-	End Function
+'		else
+'			TRoomBoardSign.DropBackDraggedSigns()
+'			TRoomBoardSign.UpdateAll(False)
+'		endif
+	End Method
 End Type
 
 
@@ -3510,14 +3544,25 @@ End Type
 
 'Betty
 Type RoomHandler_Betty extends TRoomHandler
-	Function Init()
-		super._RegisterHandler(onUpdate, onDraw, GetRoomCollection().GetFirstByDetails("betty"))
+	Global _instance:RoomHandler_Betty
+	Global _initDone:int = False
+
+	Function GetInstance:RoomHandler_Betty()
+		if not _instance then _instance = new RoomHandler_Betty
+		if not _initDone then _instance.Initialize()
+		return _instance
 	End Function
 
+	
+	Method Initialize:Int()
+		if _initDone then return False
+		_initDone = True
 
-	Function onDraw:int( triggerEvent:TEventBase )
-		if not TRoom(triggerEvent._sender) then return 0
+		GetRoomHandlerCollection().SetHandler("betty", self)
+	End Method
 
+
+	Method onDrawRoom:int( triggerEvent:TEventBase )
 		For Local i:Int = 1 To 4
 			local sprite:TSprite = GetSpriteFromRegistry("gfx_room_betty_picture1")
 			Local picY:Int = 240
@@ -3534,21 +3579,34 @@ Type RoomHandler_Betty extends TRoomHandler
 		Next
 
 		TDialogue.DrawDialog("default", 440, 120, 280, 110, "StartLeftDown", 0, GetLocale("DIALOGUE_BETTY_WELCOME"), GetBitmapFont("Default",14))
-	End Function
+	End Method
 
 
-	Function onUpdate:int( triggerEvent:TEventBase )
+	Method onUpdateRoom:int( triggerEvent:TEventBase )
 		'nothing yet
-	End Function
+	End Method
 End Type
 
 
 
 'RoomAgency
 Type RoomHandler_RoomAgency extends TRoomHandler
-	Function Init()
-		super._RegisterHandler(onUpdate, onDraw, GetRoomCollection().GetFirstByDetails("roomagency"))
+	Global _instance:RoomHandler_RoomAgency
+	Global _initDone:int = False
+
+	Function GetInstance:RoomHandler_RoomAgency()
+		if not _instance then _instance = new RoomHandler_RoomAgency
+		if not _initDone then _instance.Initialize()
+		return _instance
 	End Function
+
+	
+	Method Initialize:Int()
+		if _initDone then return False
+		_initDone = True	
+
+		GetRoomHandlerCollection().SetHandler("roomagency", self)
+	End Method
 
 
 	Function RentRoom:int(room:TRoom, owner:int=0)
@@ -3560,16 +3618,6 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 	Function CancelRoom:int(room:TRoom)
 		print "RoomHandler_RoomAgency.CancelRoom()"
 		room.ChangeOwner(0)
-	End Function
-
-
-	Function onDraw:int( triggerEvent:TEventBase )
-		'nothing yet
-	End Function
-
-
-	Function onUpdate:int( triggerEvent:TEventBase )
-		'nothing yet
 	End Function
 End Type
 
@@ -3605,11 +3653,21 @@ Type RoomHandler_Credits extends TRoomHandler
 	Global fadeRole:int = TRUE
 	Global fadeValue:float = 0.0
 
-	Function Init()
-		super._RegisterHandler(onUpdate, onDraw, GetRoomCollection().GetFirstByDetails("credits"))
+	Global _instance:RoomHandler_Credits
+	Global _initDone:int = False
 
-		'player figure enters screen - reset the current displayed role
-		EventManager.registerListenerFunction("room.onEnter", OnEnterRoom)
+	Function GetInstance:RoomHandler_Credits()
+		if not _instance then _instance = new RoomHandler_Credits
+		if not _initDone then _instance.Initialize()
+		return _instance
+	End Function
+
+	
+	Method Initialize:Int()
+		if _initDone then return False
+		_initDone = True	
+
+		GetRoomHandlerCollection().SetHandler("credits", self)
 
 
 		local role:TCreditsRole
@@ -3628,6 +3686,9 @@ Type RoomHandler_Credits extends TRoomHandler
 		role = CreateRole("KI-Entwicklung", TColor.Create(140,240,250))
 		role.addCast("Ronny Otto~n(KI-Anbindung)")
 		role.addCast("Manuel Vögele~n(KI-Verhalten & -Anbindung)")
+
+		role = CreateRole("Handbuch", TColor.Create(170,210,250))
+		role.addCast("Själe")
 
 		role = CreateRole("Datenbank-Team", TColor.Create(210,120,250))
 		role.addCast("Ronny Otto")
@@ -3662,13 +3723,7 @@ Type RoomHandler_Credits extends TRoomHandler
 		role = CreateRole("", TColor.clWhite)
 		role.addCast("")
 
-	End Function
-
-
-	Function IsMyRoom:int(room:TRoomBase)
-		if room = GetRoomCollection().GetFirstByDetails("credits") then return True
-		return False
-	End Function
+	End Method
 
 
 	'helper to create a role and store it in the array
@@ -3708,22 +3763,19 @@ Type RoomHandler_Credits extends TRoomHandler
 
 
 	'reset to start role when entering
-	Function onEnterRoom:int(triggerEvent:TEventBase)
-		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
-		if not figure then return FALSE
-		'only handle credits
-		if not IsMyRoom(TRoomBase(triggerEvent.GetSender())) then return False
-
+	Method onEnterRoom:int( triggerEvent:TEventBase )
+		'only handle the players figure
+		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
 
 		fadeTimer.Reset()
 		changeRoleTimer.Reset()
 		currentRolePosition = 0
 		currentCastPosition = 0
 		fadeMode = 0
-	End Function
+	End Method
 
 
-	Function onDraw:int( triggerEvent:TEventBase )
+	Method onDrawRoom:int( triggerEvent:TEventBase )
 		SetAlpha fadeValue
 
 		local fontRole:TBitmapFont = GetBitmapFont("Default",28, BOLDFONT)
@@ -3734,10 +3786,10 @@ Type RoomHandler_Credits extends TRoomHandler
 		if GetCast() then fontCast.DrawBlock(GetCast(), 150,210, GetGraphicsManager().GetWidth() - 300, 80, new TVec2D.Init(ALIGN_CENTER), TColor.CreateGrey(230), 2, 1, 0.6)
 
 		SetAlpha 1.0
-	End Function
+	End Method
 
 
-	Function onUpdate:int( triggerEvent:TEventBase )
+	Method onUpdateRoom:int( triggerEvent:TEventBase )
 		if fadeTimer.isExpired() and fadeMode < 2
 			fadeMode:+1
 			fadeTimer.Reset()
@@ -3764,28 +3816,28 @@ Type RoomHandler_Credits extends TRoomHandler
 		if fadeMode = 0 then fadeValue = fadeValue
 		if fadeMode = 1 then fadeValue = 1.0
 		if fadeMode = 2 then fadeValue = 1.0 - fadeValue
-	End Function
+	End Method
 End Type
 
 
 
 Function Init_ConnectRoomHandlers()
 	'connect Update/Draw-Events
-	RoomHandler_Office.Init()
-	RoomHandler_News.Init()
-	RoomHandler_Chief.Init()
-	RoomHandler_Archive.Init()
+	RoomHandler_Office.GetInstance()
+	RoomHandler_News.GetInstance()
+	RoomHandler_Chief.GetInstance()
+	RoomHandler_Archive.GetInstance()
 
-	RoomHandler_AdAgency.GetInstance().Init()
-	RoomHandler_MovieAgency.GetInstance().Init()
-	RoomHandler_RoomAgency.Init()
+	RoomHandler_AdAgency.GetInstance()
+	RoomHandler_MovieAgency.GetInstance()
+	RoomHandler_RoomAgency.GetInstance()
 
-	RoomHandler_Betty.Init()
+	RoomHandler_Betty.GetInstance()
 
-	RoomHandler_ElevatorPlan.Init()
-	RoomHandler_Roomboard.Init()
+	RoomHandler_ElevatorPlan.GetInstance()
+	RoomHandler_Roomboard.GetInstance()
 
-	RoomHandler_Credits.Init()
+	RoomHandler_Credits.GetInstance()
 End Function
 
 

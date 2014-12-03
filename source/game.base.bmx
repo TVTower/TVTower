@@ -190,6 +190,11 @@ Type TGame {_exposeToLua="selected"}
 		'(re-)inits weather effects (raindrops, snow flakes etc)
 		InitWorldWeatherEffects()
 
+
+		'refreshcreate the elevator roomboard
+		TLogger.Log("Game.PrepareStart()", "Creating elevator plan", LOG_DEBUG)
+		RoomHandler_ElevatorPlan.ReCreatePlan()
+
 		'=== NEW GAMES ===
 		'new games need some initializations (database etc.)
 		if startNewGame then PrepareNewGame()
@@ -204,6 +209,7 @@ Type TGame {_exposeToLua="selected"}
 
 		if startNewGame then Init_CreateAllRooms()
 
+		GetRoomHandlerCollection().Initialize()
 		Init_ConnectRoomHandlers()
 
 		GetPopularityManager().Initialize()
