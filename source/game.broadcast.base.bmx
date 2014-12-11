@@ -640,13 +640,18 @@ Type TBroadcast
 End Type
 
 
-'Diese Klasse ist dazu da dem UI Feedback über die aktuelle Ausstrahlung zu geben.
-'For allem für die Zuschauer vor der Mattscheibe (rechts unten im Bildschirm)...
-'man kann an dieser Klasse ablesen, welche Personen sichtbar sind und wie aktiv.
-'Und man könnte Statements (Sprechblasen) einblenden und Feedback zum aktuellen Programm zu geben.
+'Diese Klasse ist dazu da dem UI Feedback über die aktuelle Ausstrahlung
+'zu geben. Vor allem für die Zuschauer vor der Mattscheibe (rechts unten
+'im Bildschirm)...
+'Man kann an dieser Klasse ablesen, welche Personen sichtbar sind und
+'wie aktiv. Und man könnte Statements (Sprechblasen) einblenden und
+'Feedback zum aktuellen Programm zu geben.
 Type TBroadcastFeedback
 	Field PlayerId:Int
-	Field AudienceInterest:TAudience				'Wie sehr ist das Publikum interessiert. Werte: 0 = kein Interesse, 1 = etwas Interesse, 2 = großes Interesse, 3 = begeistert
+	'Wie sehr ist das Publikum interessiert.
+	'Werte: 0 = kein Interesse,   1 = etwas Interesse,
+	'       2 = großes Interesse, 3 = begeistert
+	Field AudienceInterest:TAudience
 	Field FeedbackStatements:TList = CreateList()
 
 	Const QUALITY:String = "QUALITY"
@@ -665,7 +670,7 @@ Type TBroadcastFeedback
 		Local attr:TAudienceAttraction = result.AudienceAttraction
 
 		CalculateAudienceInterest(bc, attr)
-
+ 
 		If Not attr.Malfunction Then
 			If (attr.Quality < 0.1) Then
 				AddFeedbackStatement(8, QUALITY, -2)
@@ -698,7 +703,8 @@ Type TBroadcastFeedback
 			EndIf
 		EndIf
 
-		'Ein erster Test für das Feedback... später ist natürlich ein besseres Feedback geplatn
+		'Ein erster Test für das Feedback... später ist natürlich ein
+		'besseres Feedback geplant
 
 		'Gute Uhrzeit?
 		'Kommentare zu Flags
@@ -707,8 +713,12 @@ Type TBroadcastFeedback
 		'Kommentare zum Genre
 	End Method
 
+
 	Method CalculateAudienceInterestForAllowed(attr:TAudienceAttraction, maxAudience:TAudience, plausibility:TAudience, minAttraction:Float)
-		'plausibility: Wer scheit wahrscheinlich zu: 0 = auf keinen Fall; 1 = möglich, aber nicht wahrscheinlich; 2 = wahrscheinlich
+		'plausibility: Wer schaut wahrscheinlich zu:
+		'0 = auf keinen Fall
+		'1 = möglich, aber nicht wahrscheinlich
+		'2 = wahrscheinlich
 		Local averageAttraction:Float = attr.GetAverage()
 
 		Local allowedTemp:TAudience = plausibility
@@ -760,27 +770,28 @@ Type TBroadcastFeedback
 		EndIf
 	End Method
 
+
 	Method CalculateAudienceInterest(bc:TBroadcast, attr:TAudienceAttraction)
 		Local maxAudience:TAudience = TBroadcast.GetPotentialAudienceForHour(TAudience.CreateAndInitValue(1), bc.Hour)
 
 		AudienceInterest = New TAudience
 
 		If (bc.Hour >= 0 And bc.Hour <= 1)
-			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 1, 2, 1, 2, 1, 2, 0, 0), 0.2)
+			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 1, 2, 1, 2, 1, 2, 0, 0), 0.10)
 		Elseif (bc.Hour >= 2 And bc.Hour <= 5)
-			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 0, 1, 0, 2, 0, 2, 0, 0), 0.35)
+			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 0, 1, 0, 2, 0, 2, 0, 0), 0.225)
 		Elseif (bc.Hour = 6)
-			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 1, 1, 1, 1, 0, 1, 1, 0, 0), 0.3)
+			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 1, 1, 1, 1, 0, 1, 1, 0, 0), 0.20)
 		Elseif (bc.Hour >= 7 And bc.Hour <= 8)
-			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 1, 1, 1, 1, 0, 1, 1, 0, 0), 0.2)
+			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 1, 1, 1, 1, 0, 1, 1, 0, 0), 0.125)
 		Elseif (bc.Hour >= 9 And bc.Hour <= 11)
-			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 0, 2, 0, 1, 0, 2, 0, 0), 0.2)
+			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 0, 2, 0, 1, 0, 2, 0, 0), 0.125)
 		ElseIf (bc.Hour >= 13 And bc.Hour <= 16)
-			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 2, 2, 2, 0, 2, 0, 2, 0, 0), 0.15)
+			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 2, 2, 2, 0, 2, 0, 2, 0, 0), 0.05)
 		ElseIf (bc.Hour >= 22 And bc.Hour <= 23)
-			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 1, 2, 2, 2, 2, 2, 0, 0), 0.15)
+			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 1, 2, 2, 2, 2, 2, 0, 0), 0.05)
 		Else
-			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 1, 2, 2, 2, 2, 1, 2, 0, 0), 0.15)
+			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 1, 2, 2, 2, 2, 1, 2, 0, 0), 0.05)
 		EndIf
 	End Method
 
