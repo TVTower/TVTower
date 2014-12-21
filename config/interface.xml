@@ -31,6 +31,7 @@
 				<child name="gfx_interface_audience_grandpa"	x="221"	y="151"	w="60"	h="150" />
 				<child name="gfx_interface_audience_girl"		x="282"	y="151"	w="60"	h="150" />
 				<child name="gfx_interface_audience_teen"		x="343"	y="151"	w="60"	h="150" />
+				<child name="gfx_interface_audience_unemployed"	x="404"	y="151"	w="80"	h="150" />
 
 
 				<!-- target group icons -->

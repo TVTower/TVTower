@@ -340,6 +340,7 @@ Type TInGameInterface
 		endif
 
 		if (feedback.AudienceInterest.Pensioners > 0) then result :+ ["grandpa"]
+		if (feedback.AudienceInterest.Unemployed > 0) then result :+ ["unemployed"]
 
 		if (feedback.AudienceInterest.Teenagers > 0)
 			'in school monday-friday - in school from till 7 to 13 - needs no sleep :D
@@ -381,11 +382,21 @@ Type TInGameInterface
 				'if nothing is displayed, a empty/dark room is shown
 				'by default (on interface bg)
 				'-> just care if family is watching
-				if familyMembersUsed > 0
+				if familyMembersUsed >= 0
 					GetSpriteFromRegistry("gfx_interface_audience_bg").Draw(520, GetGraphicsManager().GetHeight()-31, 0, ALIGN_LEFT_BOTTOM)
 					local currentSlot:int = 0
+
+					'unemployed always on the "most left slot"
 					For local member:string = eachin members
-						GetSpriteFromRegistry("gfx_interface_audience_"+member).Draw(figureslots[currentslot], GetGraphicsManager().GetHeight()-181)
+						if member = "unemployed"
+							figureSlots[0] = 540
+							GetSpriteFromRegistry("gfx_interface_audience_"+member).Draw(figureslots[currentslot], GetGraphicsManager().GetHeight()-176)
+							currentslot:+1 'occupy a slot
+						endif
+					Next
+
+					For local member:string = eachin members
+						GetSpriteFromRegistry("gfx_interface_audience_"+member).Draw(figureslots[currentslot], GetGraphicsManager().GetHeight()-176)
 						currentslot:+1 'occupy a slot
 					Next
 					'draw the small electronic parts - "the inner tv"
