@@ -340,12 +340,20 @@ Type TInGameInterface
 		endif
 
 		if (feedback.AudienceInterest.Pensioners > 0) then result :+ ["grandpa"]
-		if (feedback.AudienceInterest.Unemployed > 0) then result :+ ["unemployed"]
 
 		if (feedback.AudienceInterest.Teenagers > 0)
 			'in school monday-friday - in school from till 7 to 13 - needs no sleep :D
 			'If Game.GetWeekday()>6 or (GetWorldTime().GetDayHour() < 7 or GetWorldTime().GetDayHour() >= 13) then result :+ ["teen"] 'manuel: muss im Feedback-Code geprüft werden.
 			result :+ ["teen"]
+		endif
+
+		if (feedback.AudienceInterest.Unemployed > 0)
+			result :+ ["unemployed"]
+		else
+			'if there is some audience, show the sleeping unemployed
+			if GetPlayer().GetProgrammePlan().GetAudiencePercentage() > 0.05
+				result :+ ["unemployed.bored"]
+			endif
 		endif
 
 		return result
@@ -382,13 +390,13 @@ Type TInGameInterface
 				'if nothing is displayed, a empty/dark room is shown
 				'by default (on interface bg)
 				'-> just care if family is watching
-				if familyMembersUsed >= 0
+				if familyMembersUsed > 0
 					GetSpriteFromRegistry("gfx_interface_audience_bg").Draw(520, GetGraphicsManager().GetHeight()-31, 0, ALIGN_LEFT_BOTTOM)
 					local currentSlot:int = 0
 
 					'unemployed always on the "most left slot"
 					For local member:string = eachin members
-						if member = "unemployed"
+						if member = "unemployed" or member = "unemployed.bored"
 							figureSlots[0] = 540
 							GetSpriteFromRegistry("gfx_interface_audience_"+member).Draw(figureslots[currentslot], GetGraphicsManager().GetHeight()-176)
 							currentslot:+1 'occupy a slot
@@ -396,6 +404,9 @@ Type TInGameInterface
 					Next
 
 					For local member:string = eachin members
+						'unemployed already handled
+						if member = "unemployed" or member = "unemployed.bored" then continue
+						
 						GetSpriteFromRegistry("gfx_interface_audience_"+member).Draw(figureslots[currentslot], GetGraphicsManager().GetHeight()-176)
 						currentslot:+1 'occupy a slot
 					Next
