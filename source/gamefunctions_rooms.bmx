@@ -1278,6 +1278,10 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		super._RegisterScreenHandler( onUpdateMovieAgency, onDrawMovieAgency, ScreenCollection.GetScreen("screen_movieagency"))
 		super._RegisterScreenHandler( onUpdateMovieAuction, onDrawMovieAuction, ScreenCollection.GetScreen("screen_movieauction"))
 
+
+		'register self for movieagency
+		GetRoomHandlerCollection().SetHandler("movieagency", self)
+
 		_initDone = true
 	End Method
 
@@ -1994,6 +1998,9 @@ Type RoomHandler_News extends TRoomHandler
 
 		super._RegisterScreenHandler( onUpdateNews, onDrawNews, ScreenCollection.GetScreen("screen_newsstudio") )
 		super._RegisterScreenHandler( onUpdateNewsPlanner, onDrawNewsPlanner, ScreenCollection.GetScreen("screen_newsstudio_newsplanner") )
+
+		'register self for all news rooms
+		GetRoomHandlerCollection().SetHandler("news", self)
 	End Method
 
 
