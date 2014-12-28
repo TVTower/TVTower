@@ -292,11 +292,12 @@ Type TApp
 
 
 	Method SetLanguage:Int(languageCode:String="de")
-		'skip if the same language is already set
-		If TLocalization.GetCurrentLanguageCode() = languageCode Then Return False
-
 		'select language
 		TLocalization.SetCurrentLanguage(languageCode)
+		TLocalizedString.SetCurrentLanguage(languageCode)
+
+		'skip further actions if the same language is already set
+		If TLocalization.GetCurrentLanguageCode() = languageCode Then Return False
 
 		'store in config - for auto save of user settings
 		config.Add("language", languageCode)
@@ -3762,7 +3763,10 @@ TProfiler.Leave("InitialLoading")
 
 
 
-	'b) everything loaded - normal game loop
+	'b) set language
+	App.SetLanguage(App.config.GetString("language", "en"))
+
+	'c) everything loaded - normal game loop
 TProfiler.Enter("GameLoop")
 	StartApp()
 	Repeat

@@ -227,6 +227,19 @@ End Type
 Type TLocalizedString
 	Field values:TMap = CreateMap()
 	Global defaultLanguage:string = "de"
+	Global currentLanguage:string = "de"
+
+
+	Function SetCurrentLanguage(language:String)
+		currentLanguage = language
+	End Function
+
+
+	'Returns the current language
+	Function GetCurrentLanguage:String()
+		if currentLanguage then return currentLanguage
+		return ""
+	End Function
 
 
 	'to ease "setting" (mystring.set(value)) the language
@@ -238,8 +251,8 @@ Type TLocalizedString
 
 
 	Method Get:String(language:String="")
-		if language="" then language=defaultLanguage
-		if values.Contains(language) or language = defaultLanguage
+		if language="" then language = currentLanguage
+		if values.Contains(language)
 			return string(values.ValueForKey(language))
 		else
 			return string(values.ValueForKey(defaultLanguage))
