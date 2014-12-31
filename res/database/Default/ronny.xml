@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
-	<version value="3" comment="Daten von Nicht_die_Betty" />
+	<version value="3" comment="Ronnys Programme" />
 	<insignificantpeople>
 		<person id="ronny-person-amateurs-01" first_name="" last_name="Laiendarsteller" nick_name="Laiendarsteller" />
 	</insignificantpeople>
@@ -209,7 +209,7 @@
 
 
 	<allads>
-		<ad id="ronny-ad-bundi-01" creator="5578" created_by="Ronny">
+		<ad id="ronny-ad-kambalott-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>Kambalott</de>
 				<en></en>

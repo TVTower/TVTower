@@ -2399,7 +2399,6 @@ End Type
 Type RoomHandler_Chief extends TRoomHandler
 	'smoke effect
 	Global smokeEmitter:TSpriteParticleEmitter
-	Global Dialogues:TList = CreateList()
 
 	Global _instance:RoomHandler_Chief
 	Global _initDone:int = False
@@ -2462,7 +2461,9 @@ Type RoomHandler_Chief extends TRoomHandler
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		smokeEmitter.Draw()
 
-		For Local dialog:TDialogue = EachIn Dialogues
+		local boss:TPlayerBoss = GetPlayerBoss(GetPlayer().playerID)
+		if not boss then return False
+		For Local dialog:TDialogue = EachIn boss.Dialogues
 			dialog.Draw()
 		Next
 	End Method
@@ -2471,53 +2472,19 @@ Type RoomHandler_Chief extends TRoomHandler
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
 		GetPlayerCollection().Get().GetFigure().fromroom = Null
 
-		If Dialogues.Count() <= 0
-			Local ChefDialoge:TDialogueTexts[5]
-			ChefDialoge[0] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_WELCOME").replace("%1", GetPlayerCollection().Get().name) )
-			ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_WILLNOTDISTURB"), - 2, Null))
-			ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_ASKFORCREDIT"), 1, Null))
-
-			If GetPlayerCollection().Get().GetCredit() > 0
-				ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_REPAYCREDIT"), 3, Null))
-			endif
-			If GetPlayerCollection().Get().GetCreditAvailable() > 0
-				local acceptEvent:TEventSimple = TEventSimple.Create("dialogue.onAcceptBossCredit", new TData.AddNumber("value", GetPlayerCollection().Get().GetCreditAvailable()))
-				ChefDialoge[1] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_CREDIT_OK").replace("%1", GetPlayerCollection().Get().GetCreditAvailable()))
-				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT"), 2, acceptEvent))
-				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_DECLINE"+Rand(1,3)), - 2))
-			Else
-				ChefDialoge[1] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_CREDIT_REPAY").replace("%1", GetPlayerCollection().Get().GetCredit()))
-				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT"), 3))
-				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_DECLINE"+Rand(1,3)), - 2))
-			EndIf
-			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))
-
-			ChefDialoge[2] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_BACKTOWORK").replace("%1", GetPlayerCollection().Get().name) )
-			ChefDialoge[2].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_BACKTOWORK_OK"), - 2))
-
-			ChefDialoge[3] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE") )
-			If GetPlayerCollection().Get().GetCredit() >= 100000 And GetPlayerCollection().Get().GetMoney() >= 100000
-				local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", 100000))
-				ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CREDIT_REPAY_100K"), - 2, payBackEvent))
-			EndIf
-			If GetPlayerCollection().Get().GetCredit() < GetPlayerCollection().Get().GetMoney()
-				local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", GetPlayerCollection().Get().GetCredit()))
-				ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CREDIT_REPAY_ALL").replace("%1", GetPlayerCollection().Get().GetCredit()), - 2, payBackEvent))
-			EndIf
-			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_DECLINE"+Rand(1,3)), - 2))
-			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))
-			Local ChefDialog:TDialogue = new TDialogue
-			ChefDialog.SetArea(new TRectangle.Init(350, 60, 450, 200))
-			ChefDialog.AddTexts(Chefdialoge)
-			Dialogues.AddLast(ChefDialog)
-		EndIf
 
 		smokeEmitter.Update()
+		
 
-		For Local dialog:TDialogue = EachIn Dialogues
+		local boss:TPlayerBoss = GetPlayerBoss(GetPlayer().playerID)
+		if not boss then return False
+
+		'generate the dialogue if not done yet
+		If boss.Dialogues.Count() <= 0 then boss.GenerateDialogues()
+		For Local dialog:TDialogue = EachIn boss.Dialogues
 			If dialog.Update() = 0
-				GetPlayerCollection().Get().GetFigure().LeaveRoom()
-				Dialogues.Remove(dialog)
+				GetPlayer().GetFigure().LeaveRoom()
+				boss.Dialogues.Remove(dialog)
 			endif
 		Next
 	End Method
@@ -3585,7 +3552,7 @@ Type RoomHandler_Betty extends TRoomHandler
 			GetPlayerCollection().Get(i).Figure.Sprite.DrawClipped(new TRectangle.Init(x, y, -1, sprite.area.GetH()-16), null, 8)
 		Next
 
-		TDialogue.DrawDialog("default", 440, 120, 280, 110, "StartLeftDown", 0, GetLocale("DIALOGUE_BETTY_WELCOME"), GetBitmapFont("Default",14))
+		TDialogue.DrawDialog("default", 440, 120, 280, 110, "StartLeftDown", 0, GetLocale("DIALOGUE_BETTY_WELCOME"), 0, GetBitmapFont("Default",14))
 	End Method
 
 

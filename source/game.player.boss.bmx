@@ -11,6 +11,10 @@ Import "game.room.base.bmx"
 Import "game.player.base.bmx"
 'to access game rules
 Import "game.gamerules.bmx"
+'for ingame dialogues
+Import "common.misc.dialogue.bmx"
+'to access parent of adcontract
+Import "game.gameobject.bmx"
 
 
 Type TPlayerBossCollection
@@ -74,7 +78,7 @@ End Function
 'class containing information/values for the player's boss
 Type TPlayerBoss
 	'in which mood is the boss?
-	Field mood:Int = 0
+	Field mood:Float = 50.0
 	'does the player have to visit the boss?
 	Field awaitingPlayerVisit:Int = False
 	'time the player has to visit the boss
@@ -84,20 +88,46 @@ Type TPlayerBoss
 	'was the player already called (toastmessage for active player)?
 	Field awaitingPlayerCalled:Int = False
 	Field playerVisitsMe:int = False
-	
+	'amount the boss is likely to give the player
+	Field creditMaximum:Int	= 600000
+
 	'in the case of the player sends a favorite movie, this might
 	'brighten the mood of the boss
 	Field favoriteMovieGUID:String = ""
 	'things the boss wants to talk about
 	Field talkSubjects:TPlayerBossTalkSubjects[]
+	'dialogues for the things the boss can talk about
+	Field Dialogues:TList = CreateList()
+
+	Field registeredProgrammeMalfunctions:int = 0
+	Field registeredNewsMalfunctions:int = 0
 	Field playerID:int = -1
 
 	'event listeners - so we can remove them at the end
 	Field _registeredListeners:TList = CreateList() {nosave}
+	Global registeredEvents:int = False
+
+	Const MOODADJUSTMENT_BROADCAST_POS1:Float             = 0.075
+	Const MOODADJUSTMENT_BROADCAST_POS2:Float             = 0.04
+	Const MOODADJUSTMENT_FINISH_CONTRACT:Float            = 0.05
+	Const MOODADJUSTMENT_FAIL_CONTRACT:Float              = -0.1
+	Const MOODADJUSTMENT_MALFUNCTION_PROGRAMME:Float      = -2.0
+	Const MOODADJUSTMENT_MALFUNCTION_PROGRAMME_EACH:Float = -0.5
+	Const MOODADJUSTMENT_MALFUNCTION_NEWS:Float           = -1.0
+	Const MOODADJUSTMENT_MALFUNCTION_NEWS_EACH:Float      = -0.25
+	Const MOOD_EXCITED:Float    =100.0
+	Const MOOD_HAPPY:Float      = 90.0
+	Const MOOD_FRIENDLY:Float   = 70.0
+	Const MOOD_NEUTRAL:Float    = 50.0
+	Const MOOD_UNHAPPY:Float    = 30.0
+	Const MOOD_UNFRIENDLY:Float = 10.0
+	Const MOOD_ANGRY:Float      =  0.0
 
 
 	Method New()
 		RegisterEvents()
+
+		mood = MOOD_NEUTRAL
 	End Method
 
 	Method Delete()
@@ -106,12 +136,24 @@ Type TPlayerBoss
 
 
 	Method RegisterEvents:Int()
-		EventManager.registerListenerMethod("broadcasting.finish", self, "onFinishBroadcasting")
-		EventManager.registerListenerMethod("player.onEnterRoom", self, "onPlayerEnterRoom")
-		EventManager.registerListenerMethod("player.onLeaveRoom", self, "onPlayerLeaveRoom")
-		'instead of updating the boss way to often, we update each
-		'boss once a ingame minute
-		EventManager.registerListenerMethod("Game.OnMinute", self, "onGameMinute")
+		'register events for all bosses
+		if not registeredEvents
+			EventManager.registerListenerFunction("broadcasting.finish", onFinishBroadcasting)
+			'instead of updating the boss way to often, we update bosses
+			'once a ingame minute
+			EventManager.registerListenerFunction("Game.OnMinute", onGameMinute)
+
+			EventManager.registerListenerFunction("AdContract.onFinish", onFinishOrFailAdContract)
+			EventManager.registerListenerFunction("AdContract.onFail", onFinishOrFailAdContract)
+
+			EventManager.registerListenerFunction("player.onEnterRoom", onPlayerEnterRoom)
+			EventManager.registerListenerFunction("player.onLeaveRoom", onPlayerLeaveRoom)
+
+			registeredEvents = True
+		endif
+
+		'boss specific events
+		' - none for now -
 	End Method
 
 
@@ -129,116 +171,129 @@ Type TPlayerBoss
 	End Method
 
 
-	Method ChangeMood:int(value:int)
+	Method ChangeMood:int(value:Float)
 		mood :+ value
-		mood = Min(100, Max(0, mood))
+		mood = Min(100.0, Max(0.0, mood))
 		return mood
 	End Method
 
 
-	'=== EVENTS THE BOSS LISTENS TO ===
-	Method onGameMinute:Int(triggerEvent:TEventSimple)
-		Local minute:Int = triggerEvent.GetData().GetInt("minute",-1)
-		Local hour:Int = triggerEvent.GetData().GetInt("hour",-1)
-		Local day:Int = triggerEvent.GetData().GetInt("day",-1)
-
-		'=== CHECK IF BOSS WANTS TO SEE PLAYER ===
-		'await the player each day at 16:00 (except player is already there)
-		if GameRules.dailyBossVisit and not playerVisitsMe
-			If minute = 0 and hour = 16 and not awaitingPlayerVisit
-				awaitingPlayerVisit = True
-			EndIf
-		endif
-
-		'call the player if needed
-		If awaitingPlayerVisit and not awaitingPlayerCalled
-			CallPlayer()
-		EndIf
-
-		'check if the player knows he has to visit but did not visit
-		'the boss yet - force him to visit NOW
-		if awaitingPlayerCalled and not awaitingPlayerAccepted and awaitingPlayerVisitTillTime < GetWorldTime().GetTimeGone()
-			CallPlayerForced()
-		endif
+	Method IsInMoodOrWorse:int(mood:Float)
+		return self.mood <= mood
 	End Method
 
-	
-	Method onFinishBroadcasting:Int(triggerEvent:TEventSimple)
-		'not interested in other channels ?!
-		local programmePlan:TPlayerProgrammePlan = TPlayerProgrammePlan(triggerEvent.GetSender())
-		if not programmePlan or programmePlan.owner <> playerID then return False
+	Method IsInMoodOrBetter:int(mood:Float)
+		return self.mood >= mood
+	End Method
 
-		local broadcastMaterial:TBroadcastMaterial = TBroadcastMaterial(triggerEvent.GetData().Get("broadcastMaterial"))
-		local broadcastedAsType:Int = triggerEvent.GetData().GetInt("broadcastedAsType",-1)
 
-		'register malfunctions
-		If not broadcastMaterial
-			if broadcastedAsType = TBroadcastMaterial.TYPE_NEWSSHOW
-				talkSubjects :+ [new TPlayerBossTalkSubjects.InitNewsMalfunctionSubject(broadcastMaterial)]
-			elseif broadcastedAsType = TBroadcastMaterial.TYPE_PROGRAMME
-				talkSubjects :+ [new TPlayerBossTalkSubjects.InitProgrammeMalfunctionSubject(broadcastMaterial)]
+	Method GetCreditMaximum:int()
+		if isInMoodOrWorse(MOOD_ANGRY) then return 0
+		if isInMoodOrWorse(MOOD_UNFRIENDLY) then return 0.25 * creditMaximum
+		if isInMoodOrWorse(MOOD_UNHAPPY) then return 0.5 * creditMaximum
+		if isInMoodOrWorse(MOOD_NEUTRAL) then return creditMaximum
+		if isInMoodOrWorse(MOOD_FRIENDLY) then return 1.25 * creditMaximum
+		if isInMoodOrWorse(MOOD_HAPPY) then return 1.5 * creditMaximum
+		if isInMoodOrWorse(MOOD_EXCITED) then return 2.0 * creditMaximum
+
+		return creditMaximum
+	End Method
+
+
+	Method ResetDialogues()
+		Dialogues.Clear()
+	End Method
+
+
+	Method GenerateDialogues()
+		'each array entry is a "topic" the chef could talk about
+		Local ChefDialoge:TDialogueTexts[5]
+		local text:string
+
+
+		local isUnfriendly:int = isInMoodOrWorse(MOOD_UNFRIENDLY) or registeredNewsMalfunctions > 0 or registeredProgrammeMalfunctions > 0
+
+		if isUnfriendly
+			text = GetRandomLocale("DIALOGUE_BOSS_MAIN_TITLE_UNFRIENDLY")
+		else
+			text = GetRandomLocale("DIALOGUE_BOSS_MAIN_TITLE_DEFAULT")
+		endif
+		if registeredNewsMalfunctions > 0 or registeredProgrammeMalfunctions > 0
+			if registeredProgrammeMalfunctions > 0
+				text :+ "~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_PROGRAMMEMALFUNCTION")
 			endif
+			if registeredNewsMalfunctions > 0
+				text :+ "~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_NEWSMALFUNCTION")
+			endif
+		else
+			text :+ "~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_DEFAULT")
 		endif
-	End Method
-
-
-	'called as soon as a player leaves the boss' room
-	Method onPlayerLeaveRoom:Int(triggerEvent:TEventSimple)
-		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
-		if not room then return False
-		'wrong room?
-		if room.name <> "boss" or room.owner <> playerID then return False
-
-		'only interested in the visit of the own player
-		local player:TPlayerBase = TPlayerBase(triggerEvent.GetSender())
-		if not player or playerID <> player.playerID then return False
-
-
-		'reset boss call state so boss can call player again
-		awaitingPlayerCalled = False
-
-		playerVisitsMe = False
-	End Method
-
-	
-	'called as soon as a player enters the boss' room
-	Method onPlayerEnterRoom:Int(triggerEvent:TEventSimple)
-		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
-		if not room then return False
-		'wrong room?
-		if room.name <> "boss" or room.owner <> playerID then return False
-
-		'only interested in the visit of the own player
-		local player:TPlayerBase = TPlayerBase(triggerEvent.GetSender())
-		if not player or playerID <> player.playerID then return False
-
-		'no longer await the visit of this player
-		awaitingPlayerVisit = False
-
-		playerVisitsMe = True
-
-
-		'TODO: generate talks - for now, just remove what we collected
-		if playerID = GetPlayerBaseCollection().playerID  then print "TODO: GENERATE BOSS DIALOGUE !"
-
-		local foundProgrammeMalfunctions:int = 0
-		local foundNewsMalfunctions:int = 0
-		For local subject:TPlayerBossTalkSubjects = EachIn talkSubjects
-			if subject.subjectType = subject.TYPE_PROGRAMME_MALFUNCTION then foundProgrammeMalfunctions :+1
-			if subject.subjectType = subject.TYPE_NEWS_MALFUNCTION then foundNewsMalfunctions :+1
-		Next
-		if playerID = GetPlayerBaseCollection().playerID
-			if foundProgrammeMalfunctions > 0 then print "TODO: TALK ABOUT "+foundProgrammeMalfunctions+"x MALFUNCTIONS."
-			if foundNewsMalfunctions > 0 then print "TODO: TALK ABOUT "+foundNewsMalfunctions+"x MALFUNCTIONS."
+		if isUnfriendly
+			text :+ "~n~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY")
+		else
+			text :+ "~n~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_ENDING_DEFAULT")
 		endif
+
+		text = text.replace("%PROGRAMMEMALFUNCTION%", registeredProgrammeMalfunctions)
+		text = text.replace("%NEWSMALFUNCTION%", registeredNewsMalfunctions)
+		text = text.replace("%PLAYERNAME%", GetPlayerBase().name)
 		
-		'just clear the talk subjects
-		talkSubjects = new TPlayerBossTalkSubjects[0]
+		ChefDialoge[0] = TDialogueTexts.Create(text)
+		ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_WILLNOTDISTURB"), - 2, Null))
+		ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_ASKFORCREDIT"), 1, Null))
 
-		'send out event that the player enters the bosses room
-		EventManager.triggerEvent(TEventSimple.Create("playerboss.onPlayerEnterBossRoom", null, Self, player))
+		'add repay option if having a credit
+		If GetPlayerBase().GetCredit() > 0
+			ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_REPAYCREDIT"), 3, Null))
+		endif
+		'creditMax - credit taken
+		If GetPlayerBase().GetCreditAvailable() > 0
+			local acceptEvent:TEventSimple = TEventSimple.Create("dialogue.onAcceptBossCredit", new TData.AddNumber("value", GetPlayerBase().GetCreditAvailable()))
+			local acceptHalfEvent:TEventSimple = TEventSimple.Create("dialogue.onAcceptBossCredit", new TData.AddNumber("value", 0.5 * GetPlayerBase().GetCreditAvailable()))
+			ChefDialoge[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK").replace("%CREDIT%", TFunctions.DottedValue(GetPlayerBase().GetCreditAvailable())))
+			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT").replace("%CREDIT%",TFunctions.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())), 2, acceptEvent))
+			'avoid micro credits
+			if GetPlayerBase().GetCreditAvailable() > 50000
+				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF").replace("%CREDITHALF%", TFunctions.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())),2, acceptHalfEvent))
+			endif
+			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), - 2))
+		Else
+			ChefDialoge[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY").replace("%CREDIT%", GetPlayerBase().GetCredit()))
+			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT"), 3))
+			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), - 2))
+		EndIf
+		ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))
+
+		ChefDialoge[2] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_BACKTOWORK").replace("%PLAYERNAME%", GetPlayerBase().name) )
+		ChefDialoge[2].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_BACKTOWORK_OK"), - 2))
+
+		'repay credit + options
+		ChefDialoge[3] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE") )
+		If GetPlayerBase().GetCredit() >= 100000 And GetPlayerBase().GetMoney() >= 100000
+			local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", 100000))
+			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_100K"), - 2, payBackEvent))
+		EndIf
+		If GetPlayerBase().GetCredit() >= 500000 And GetPlayerBase().GetMoney() >= 500000
+			local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", 500000))
+			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_500K"), - 2, payBackEvent))
+		EndIf
+		If GetPlayerBase().GetCredit() < GetPlayerBase().GetMoney()
+			local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", GetPlayerBase().GetCredit()))
+			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_ALL").replace("%CREDIT%", GetPlayerBase().GetCredit()), - 2, payBackEvent))
+		EndIf
+		ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), - 2))
+		ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))
+
+
+		Local ChefDialog:TDialogue = new TDialogue
+		ChefDialog.SetArea(new TRectangle.Init(350, 60, 460, 230))
+		ChefDialog.AddTexts(Chefdialoge)
+
+		Dialogues.AddLast(ChefDialog)
+
+		'clear the talk subjects - boss talked about them
+		talkSubjects = new TPlayerBossTalkSubjects[0]
 	End Method
-	
 
 
 	'call this method to request the player to visit the boss
@@ -274,6 +329,151 @@ Type TPlayerBoss
 	Method InformPlayerAcceptedCall:Int()
 		awaitingPlayerAccepted = True
 	End Method
+
+
+
+
+	'=== EVENTS THE BOSSES LISTEN TO ===
+	Function onGameMinute:Int(triggerEvent:TEventBase)
+		Local minute:Int = triggerEvent.GetData().GetInt("minute",-1)
+		Local hour:Int = triggerEvent.GetData().GetInt("hour",-1)
+		Local day:Int = triggerEvent.GetData().GetInt("day",-1)
+
+		For local boss:TPlayerBoss = Eachin GetPlayerBossCollection().bosses
+			'=== RESET REGISTERED MALFUNCTIONS ===
+			'reset them at a given time?
+			If minute = 0 and hour = 3 
+				boss.registeredNewsMalfunctions = 0
+				boss.registeredProgrammeMalfunctions = 0
+			EndIf
+		
+			'=== CHECK IF BOSS WANTS TO SEE PLAYER ===
+			'await the player each day at 16:00 (except player is already there)
+			if GameRules.dailyBossVisit and not boss.playerVisitsMe
+				If minute = 0 and hour = 16 and not boss.awaitingPlayerVisit
+					boss.awaitingPlayerVisit = True
+				EndIf
+			endif
+
+			'call the player if needed
+			If boss.awaitingPlayerVisit and not boss.awaitingPlayerCalled
+				boss.CallPlayer()
+			EndIf
+
+			'check if the player knows he has to visit but did not visit
+			'the boss yet - force him to visit NOW
+			if boss.awaitingPlayerCalled and not boss.awaitingPlayerAccepted and boss.awaitingPlayerVisitTillTime < GetWorldTime().GetTimeGone()
+				boss.CallPlayerForced()
+			endif
+		Next
+	End Function
+
+
+	Function onFinishOrFailAdContract:Int(triggerEvent:TEventBase)
+		local contract:TNamedGameObject = TNamedGameObject(triggerEvent.GetSender())
+		if not contract then return False
+		local boss:TPlayerBoss = GetPlayerBoss(contract.owner)
+		if not boss then return False
+
+		if triggerEvent.isTrigger("AdContract.onFinish")
+			boss.ChangeMood(MOODADJUSTMENT_FINISH_CONTRACT)
+		elseif triggerEvent.isTrigger("AdContract.onFail")
+			boss.ChangeMood(MOODADJUSTMENT_FAIL_CONTRACT)
+		endif
+	End Function
+
+	
+	Function onFinishBroadcasting:Int(triggerEvent:TEventBase)
+		local programmePlan:TPlayerProgrammePlan = TPlayerProgrammePlan(triggerEvent.GetSender())
+		if not programmePlan then return False
+
+		local boss:TPlayerBoss = GetPlayerBoss(programmePlan.owner)
+		if not boss then return False
+
+		local broadcastMaterial:TBroadcastMaterial = TBroadcastMaterial(triggerEvent.GetData().Get("broadcastMaterial"))
+		local broadcastedAsType:Int = triggerEvent.GetData().GetInt("broadcastedAsType",-1)
+
+		'register malfunctions
+		If not broadcastMaterial
+			if broadcastedAsType = TBroadcastMaterial.TYPE_NEWSSHOW
+				boss.talkSubjects :+ [new TPlayerBossTalkSubjects.InitNewsMalfunctionSubject(broadcastMaterial)]
+				boss.registeredNewsMalfunctions :+1
+				
+				if boss.registeredNewsMalfunctions = 1
+					boss.ChangeMood(MOODADJUSTMENT_MALFUNCTION_NEWS)
+				else
+					boss.ChangeMood(MOODADJUSTMENT_MALFUNCTION_NEWS_EACH)
+				endif
+			elseif broadcastedAsType = TBroadcastMaterial.TYPE_PROGRAMME
+				boss.talkSubjects :+ [new TPlayerBossTalkSubjects.InitProgrammeMalfunctionSubject(broadcastMaterial)]
+				boss.registeredProgrammeMalfunctions :+1
+
+				if boss.registeredProgrammeMalfunctions = 1
+					boss.ChangeMood(MOODADJUSTMENT_MALFUNCTION_PROGRAMME)
+				else
+					boss.ChangeMood(MOODADJUSTMENT_MALFUNCTION_PROGRAMME_EACH)
+				endif
+			endif
+		endif
+
+		'TODO - or unneeded?
+		rem
+		'register top 1 or top 2 audience quote
+		'we check on "finish" - because now the blocks of all players
+		'are running
+		if broadcastMaterial
+			if broadcastedAsType = TBroadcastMaterial.TYPE_PROGRAMME
+			endif
+		endif
+		endrem
+	End Function
+
+
+	'called as soon as a player leaves the boss' room
+	Function onPlayerLeaveRoom:Int(triggerEvent:TEventBase)
+		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
+		if not room or room.name <> "boss" then return False
+
+		'only interested in the visit of the player linked to this room
+		local player:TPlayerBase = TPlayerBase(triggerEvent.GetSender())
+		if not player or room.owner <> player.playerID then return False
+
+		local boss:TPlayerBoss = GetPlayerBoss(room.owner)
+		if not boss then return False
+
+		'reset boss call state so boss can call player again
+		boss.awaitingPlayerCalled = False
+
+		boss.playerVisitsMe = False
+	End Function
+
+	
+	'called as soon as a player enters the boss' room
+	Function onPlayerEnterRoom:Int(triggerEvent:TEventBase)
+		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
+		if not room or room.name <> "boss" then return False
+
+		'only interested in the visit of the player linked to this room
+		local player:TPlayerBase = TPlayerBase(triggerEvent.GetSender())
+		if not player or room.owner <> player.playerID then return False
+
+		local boss:TPlayerBoss = GetPlayerBoss(room.owner)
+		if not boss then return False
+
+
+		'no longer await the visit of this player
+		boss.awaitingPlayerVisit = False
+
+		boss.playerVisitsMe = True
+
+
+		'remove an old (maybe obsolete) dialogue
+		boss.ResetDialogues()
+		boss.GenerateDialogues()
+
+		'send out event that the player enters the bosses room
+		EventManager.triggerEvent(TEventSimple.Create("playerboss.onPlayerEnterBossRoom", null, boss, player))
+	End Function
 End Type
 
 

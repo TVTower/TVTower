@@ -11,10 +11,12 @@ Type TDialogue
 	Field _texts:TList = CreateList()
 	Field _currentText:Int = 0
 	Field _rect:TRectangle = new TRectangle.Init(0,0,0,0)
+	Field contentWidth:Int = 0
 
 
 	Method SetArea:TDialogue(rect:TRectangle)
 		_rect = rect.copy()
+		contentWidth = _rect.GetW()
 		Return Self
 	End Method
 
@@ -40,7 +42,7 @@ Type TDialogue
 
 		Local nextText:Int = _currentText
 		If Self._texts.Count() > 0
-			Local returnValue:Int = TDialogueTexts(_texts.ValueAtIndex(_currentText)).Update(Self._rect.getX() + 10, Self._rect.getY() + 10, Self._rect.getW() - 60, Self._rect.getH(), clicked)
+			Local returnValue:Int = TDialogueTexts(_texts.ValueAtIndex(_currentText)).Update(_rect.getX() + 10, _rect.getY() + 10, contentWidth - 20 - 45, _rect.getH(), clicked)
 			If returnValue <> - 1 Then nextText = returnValue
 		EndIf
 		_currentText = nextText
@@ -49,29 +51,50 @@ Type TDialogue
 	End Method
 
 
-	Function DrawDialog(dialogueType:String="default", x:Int, y:Int, width:Int, Height:Int, DialogStart:String = "StartDownLeft", DialogStartMove:Int = 0, DialogText:String = "", DialogFont:TBitmapFont = Null)
+	Function DrawDialog(dialogueType:String="default", x:Int, y:Int, width:Int, Height:Int, DialogStart:String = "StartDownLeft", DialogStartMove:Int = 0, DialogText:String = "", DialogWidth:int = 0, DialogFont:TBitmapFont = Null)
 		Local dx:Float, dy:Float
 		Local DialogSprite:TSprite = GetSpriteFromRegistry(DialogStart)
 		height = Max(95, height ) 'minheight
-		If DialogStart = "StartLeftDown" Then dx = x - 48;dy = y + Height/3 + DialogStartMove;width:-48
-		If DialogStart = "StartRightDown" Then dx = x + width - 12;dy = y + Height/2 + DialogStartMove;width:-48
-		If DialogStart = "StartDownRight" Then dx = x + width/2 + DialogStartMove;dy = y + Height - 12;Height:-53
-		If DialogStart = "StartDownLeft" Then dx = x + width/2 + DialogStartMove;dy = y + Height - 12;Height:-53
+		Select DialogStart
+			case "StartLeftDown"
+				dx = x - 48
+				dy = y + Height/3 + DialogStartMove
+				width :- 48
+				if DialogWidth = 0 then DialogWidth = width - 15
+			case "StartRightDown"
+				dx = x + width - 12
+				dy = y + Height/2 + DialogStartMove
+				width :- 48
+				if DialogWidth = 0 then DialogWidth = width - 15
+			case "StartDownRight"
+				dx = x + width/2 + DialogStartMove
+				dy = y + Height - 12
+				Height:-53
+			case "StartDownLeft"
+				dx = x + width/2 + DialogStartMove
+				dy = y + Height - 12
+				Height:-53
+		End Select
+
+		'limit text width to available width
+		DialogWidth = Min(width - 10 - 10, DialogWidth)
 
 		GetSpriteFromRegistry("dialogue."+dialogueType).DrawArea(x,y,width,height)
-
 		DialogSprite.Draw(dx, dy)
-		If DialogText <> "" Then DialogFont.drawBlock(DialogText, x + 10, y + 10, width - 25, Height - 16, Null, TColor.clBlack)
+
+		If DialogText <> ""
+			DialogFont.drawBlock(DialogText, x + 10, y + 10, DialogWidth - 20, Height - 16, Null, TColor.clBlack)
+		EndIf
 	End Function
 
 
 
 	Method Draw()
 		SetColor 255, 255, 255
-	    DrawDialog("default", _rect.getX(), _rect.getY(), _rect.getW(), _rect.getH(), "StartLeftDown", 0, "", GetBitmapFont("Default", 14))
+	    DrawDialog("default", _rect.getX(), _rect.getY(), _rect.getW(), _rect.getH(), "StartLeftDown", 0, "", contentWidth, GetBitmapFont("Default", 14))
 		SetColor 0, 0, 0
 		If Self._texts.Count() > 0
-			TDialogueTexts(Self._texts.ValueAtIndex(Self._currentText)).Draw(Self._rect.getX() + 10, Self._rect.getY() + 10, Self._rect.getW() - 60, Self._rect.getH())
+			TDialogueTexts(Self._texts.ValueAtIndex(Self._currentText)).Draw(_rect.getX() + 10, _rect.getY() + 10, contentWidth - 20 - 45, _rect.getH())
 		endif
 		SetColor 255, 255, 255
 	End Method
@@ -151,7 +174,7 @@ Type TDialogueTexts
 		For Local answer:TDialogueAnswer = EachIn(Self._answers)
 			Local returnValue:Int = answer.Update(x + 9, y + ydisplace, w - 9, h, clicked)
 			If returnValue <> - 1 Then _goTo = returnValue
-			ydisplace:+GetBitmapFont("Default", 14).getHeight(answer._text) + 2
+			ydisplace :+ GetBitmapFont("Default", 14).getHeight(answer._text) + 2
 		Next
 		Return _goTo
 	End Method

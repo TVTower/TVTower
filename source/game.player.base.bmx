@@ -81,7 +81,6 @@ Type TPlayerBase {_exposeToLua="selected"}
 
 	'1=ready, 0=not set, ...
 	Field networkstate:Int = 0
-	Field CreditMaximum:Int	= 600000
 
 	'=== NEWS ABONNEMENTS ===
 	'abonnementlevels for the newsgenres
@@ -104,6 +103,25 @@ Type TPlayerBase {_exposeToLua="selected"}
 
 	Method HasMasterKey:int()
 		return masterKey
+	End Method
+
+
+	'returns value boss will give as credit
+	Method GetCreditAvailable:Int() {_exposeToLua}
+		Return 0
+	End Method
+
+
+	'returns the currently taken credit
+	Method GetCredit:Int(day:Int=-1) {_exposeToLua}
+		Return 0
+	End Method
+
+
+	'attention: when used through LUA without param, the param gets "0"
+	'instead of "-1"
+	Method GetMoney:Int(day:Int=-1) {_exposeToLua}
+		Return 0
 	End Method
 
 

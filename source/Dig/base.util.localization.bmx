@@ -34,6 +34,28 @@ Type TLocalization
 	End Function
 
 
+	Function GetRandomString:String(Key:String, limit:int=-1)
+		if not currentLanguage then return Key
+
+		local availableStrings:int = 1
+		local subKey:string = ""
+		Repeat
+			subKey = Key
+			if availableStrings > 0 then subKey :+ availableStrings
+			if currentLanguage.Get(subKey) <> subKey
+				availableStrings :+1
+				continue
+			endif
+
+			if availableStrings = 1
+				return currentLanguage.Get(Key).replace("\n", Chr(13))
+			else
+				return currentLanguage.Get(Key + Rand(1, availableStrings-1)).replace("\n", Chr(13))
+			endif
+		Forever
+	End Function
+
+
 	Function GetLanguage:TLocalizationLanguage(languageCode:string)
 		return TLocalizationLanguage(languages.ValueForKey(languageCode))
 	End Function
@@ -145,7 +167,12 @@ End Type
 'convenience helper function
 Function GetLocale:string(key:string)
 	return TLocalization.getString(key)
-end Function
+End Function
+
+
+Function GetRandomLocale:string(baseKey:string)
+	return TLocalization.GetRandomString(baseKey)
+End Function
 
 
 

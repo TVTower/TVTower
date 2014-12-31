@@ -437,9 +437,9 @@ Rem
 endrem
 
 
-	'returns value boss will give as credit
+	'overridden
 	Method GetCreditAvailable:Int() {_exposeToLua}
-		Return Max(0, CreditMaximum - GetFinance().credit)
+		Return Max(0, GetPlayerBoss(playerID).GetCreditMaximum() - GetFinance().credit)
 	End Method
 
 
@@ -449,8 +449,7 @@ endrem
 	End Method
 
 
-	'attention: when used through LUA without param, the param gets "0"
-	'instead of "-1"
+	'overridden
 	Method GetMoney:Int(day:Int=-1) {_exposeToLua}
 		Return GetFinance(day).money
 	End Method
@@ -461,7 +460,7 @@ endrem
 		Return TFunctions.convertValue(GetFinance(day).credit, 2)
 	End Method
 
-
+	'overridden
 	Method GetCredit:Int(day:Int=-1) {_exposeToLua}
 		Return GetFinance(day).credit
 	End Method

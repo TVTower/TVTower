@@ -292,12 +292,13 @@ Type TApp
 
 
 	Method SetLanguage:Int(languageCode:String="de")
+		local oldLang:String = TLocalization.GetCurrentLanguageCode()
 		'select language
 		TLocalization.SetCurrentLanguage(languageCode)
 		TLocalizedString.SetCurrentLanguage(languageCode)
 
 		'skip further actions if the same language is already set
-		If TLocalization.GetCurrentLanguageCode() = languageCode Then Return False
+		if oldLang = languageCode Then Return False
 
 		'store in config - for auto save of user settings
 		config.Add("language", languageCode)
@@ -680,6 +681,10 @@ Type TApp
 
 			For Local i:Int = 0 To 3
 				GetBitmapFontManager().baseFont.Draw("Image #"+i+": "+GetPublicImageCollection().Get(i+1).GetAverageImage(), 10, 320 + i*13)
+			Next
+
+			For Local i:Int = 0 To 3
+				GetBitmapFontManager().baseFont.Draw("Boss #"+i+": "+GetPlayerBoss(i+1).mood, 10, 270 + i*13)
 			Next
 
 

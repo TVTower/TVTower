@@ -354,24 +354,41 @@ NEWS_ANNOUNCE_MOVIE_DESCRIPTION3	= Letzte Arbeiten am Film «%MOVIETITLE%». %AC
 NEWS_ANNOUNCE_MOVIE_DESCRIPTION4	= Erster Trailer zu «%MOVIETITLE%» veröffentlicht. %DIRECTORNAME1%: "Bester Film des Jahres".
 
 
-DIALOGUE_BOSS_WELCOME					=	Was ist %1 ?!\nHaben Sie nichts besseres zu tun als meine Zeit zu verschwenden?\n  \nAb an die Arbeit oder jemand anderes erledigt Ihren Job...!
+DIALOGUE_BOSS_MAIN_TITLE_DEFAULT1             = Was ist %PLAYERNAME% ?!
+DIALOGUE_BOSS_MAIN_TITLE_DEFAULT2             = %PLAYERNAME%, Sie schon wieder ?!
+DIALOGUE_BOSS_MAIN_TITLE_UNFRIENDLY1          = Sie ... Sie wagen es?!
+DIALOGUE_BOSS_MAIN_TITLE_UNFRIENDLY2          = Sind Sie noch bei Trost?
+DIALOGUE_BOSS_MAIN_TEXT_DEFAULT1              = Haben Sie nichts besseres zu tun als meine Zeit zu verschwenden?
+DIALOGUE_BOSS_MAIN_TEXT_PROGRAMMEMALFUNCTION1 = Unglaublich diese Inkompetenz, Sie haben |b|%PROGRAMMEMALFUNCTION%x|/b| kein Programm gesendet.
+DIALOGUE_BOSS_MAIN_TEXT_NEWSMALFUNCTION1      = Statt |b|%NEWSMALFUNCTION%x|/b| keine Nachrichten zu senden, strahlen Sie lieber den Wetterbericht vom letzten Jahr aus!
+DIALOGUE_BOSS_MAIN_ENDING_DEFAULT1            = Ab an die Arbeit oder jemand anderes erledigt Ihren Job...!
+DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY1         = Der Goldhamster meines Sohnes könnte Ihren Job wohl besser erledigen!
+DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY2         = Noch so ein Schnitzer und Ihr Job geht an den Nächstbesten der an der Tür klopft.
+
 DIALOGUE_BOSS_WILLNOTDISTURB			=	Ja, ist ja schon gut Chef ich störe nicht weiter!
 DIALOGUE_BOSS_ASKFORCREDIT				=	Ich wollte wegen *ähm* einem Kredit nachfragen.
 DIALOGUE_BOSS_REPAYCREDIT				=	Ich will etwas von meinem Kredit abbezahlen...
-DIALOGUE_BOSS_CREDIT_OK					=	Schon wieder neue Kohle?\nNaja, Sie machen Ihren Job ja besser als andere Praktikanten.\nAllerdings sind nicht mehr als %1€ drin, verstanden!?
-DIALOGUE_BOSS_CREDIT_OK_ACCEPT			=	Ja, den Kredit nehme ich dann wohl.
+DIALOGUE_BOSS_CREDIT_OK1				=	Schon wieder neue Kohle?\nNaja, Sie machen Ihren Job ja besser als andere Praktikanten.\nAllerdings sind nicht mehr als |b|%CREDIT%€|/b| drin, verstanden!?
+DIALOGUE_BOSS_CREDIT_OK2				=	Sie verprassen mein gutes Geld!\nIch hoffe für Sie, dass was vernünftiges bei rauskommt.\nMehr als |b|%CREDIT%€|/b| kann ich aber nicht anbieten. Einverstanden?
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT1			=	Ja, den Kredit nehme ich dann wohl.
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT2			=	Danke Chef, das Geld ist gut angelegt!
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF1	=	Danke Boss, mir reicht die Hälfte, also %CREDITHALF%€.
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF2	=	Ich bin schon mit %CREDITHALF%€ zufrieden!
 DIALOGUE_BOSS_DECLINE1					=	Ach, nein Danke Boss, hab's mir anders überlegt.
 DIALOGUE_BOSS_DECLINE2					=	Hab's mir doch anders überlegt, bis später Chef.
 DIALOGUE_BOSS_DECLINE3					=	Öhm, ich schau dann wohl später nochmal vorbei.
-DIALOGUE_BOSS_CREDIT_REPAY				=	Wollen Sie nicht erstmal den alten Kredit zurückzahlen?\nSie schulden mir noch %1€ - zahlen Sie die ersteinmal ab!\nUnd nun raus bevor ich mich vergesse!!
+DIALOGUE_BOSS_CREDIT_REPAY				=	Wollen Sie nicht erstmal den alten Kredit zurückzahlen?\nSie schulden mir noch |b|%CREDIT%€|/b| - zahlen Sie das ersteinmal ab!\nUnd nun raus bevor ich mich vergesse!!
 DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT		=	Ja, dann zahl ich halt etwas zurück.
 DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE	=	Soso, wenigstens eine gute Nachricht für den heutigen Tag.\n \nWieviel wollen Sie denn zurückzahlen?
-DIALOGUE_BOSS_CREDIT_REPAY_100K			=	Naja, so 100000€ könnte ich zurückzahlen.
-DIALOGUE_BOSS_CREDIT_REPAY_ALL			=	Eigentlich gleich den kompletten Kredit, also %1€.
+DIALOGUE_BOSS_CREDIT_REPAY_100K			=	Naja, so |b|100.000€|/b| könnte ich zurückzahlen.
+DIALOGUE_BOSS_CREDIT_REPAY_500K			=	Hmm, ich könnte |b|500.000€|/b| zurückzahlen.
+DIALOGUE_BOSS_CREDIT_REPAY_ALL			=	Eigentlich gleich den kompletten Kredit, also |b|%CREDIT%€|/b|.
 
-DIALOGUE_BOSS_CHANGETOPIC				=	Können wir nicht über etwas anderes reden?
-DIALOGUE_BOSS_BACKTOWORK				=	So und nun an die Arbeit %1!
+DIALOGUE_BOSS_CHANGETOPIC1				=	Können wir nicht über etwas anderes reden?
+DIALOGUE_BOSS_CHANGETOPIC2				=	Ähh, mal über was Anderes...
+DIALOGUE_BOSS_BACKTOWORK				=	So und nun an die Arbeit %PLAYERNAME%!
 DIALOGUE_BOSS_BACKTOWORK_OK				=	Ok, bin ja schon weg.
+
 
 DIALOGUE_BETTY_WELCOME = Na Du?\nDu könntest ruhig mal öfters bei mir vorbeischauen.
 
