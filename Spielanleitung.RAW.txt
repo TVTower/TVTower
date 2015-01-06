@@ -1,5 +1,7 @@
 Spielanleitung der Entwicklerversion
 ========================================================================
+
+
 Autor: Själe
 
 
@@ -7,7 +9,9 @@ Autor: Själe
 
 Bitte habt immer im Hinterkopf, daß dies eine Entwicklerversion ist. Es ist also noch nicht alles perfekt, manches fehlt noch. Nichtdestotrotz sind wir bemüht, daß ihr immer eine spielbare Software runterladet.
 Dafür sind wir auf Eure Hilfe angewiesen. Meldet uns Fehler, bringt Ideen ein, diskutiert mit uns über Sinn und Unsinn des Spiels oder legt mit Hand an, falls Ihr eine spieldienliche Begabung habt.
-Schön sind auch motivierende Plaudereien hier im Forum;)
+Schön sind auch motivierende Plaudereien im Forum:
+
+http://www.gamezworld.de/phpforum/
 
 Im Moment ist das Spiel als Endlosspiel spielbar.
 Die KI funktioniert, ist aber noch nicht in der endgültigen Fassung.
@@ -16,6 +20,8 @@ Am Ende der Anleitung gibt es eine Liste mit Tastenkürzeln für diese Entwickle
 
 
 ========================================================================
+
+
 
 Inhalt:
 =======
@@ -34,6 +40,7 @@ Inhalt:
 - Terrorist
 - FSK 18 und Gerichtsvollzieher
 @Interface
+@Chat und Cheaten
 @Abläufe im Hintergrund
 @Veränderungen durch den Spieler
 @Tastenkürzel für die Entwicklerversion
@@ -55,6 +62,7 @@ Laden - Taste „l“
 
 
 
+
 @Spielgeschwindigkeit
 =====================
 
@@ -72,7 +80,8 @@ Sollte ein Raum besetzt sein, wird der Avatar davor stehen bleiben.
 In den Räumen werden die Aktionen ebenfalls mit Linksklick ausgelöst.
 Mit einem Klick auf die rechte Maustaste verlasst ihr das jeweils aktuelle Menü bzw. den Raum, in dem Ihr Euch befindet.
 
-Die „Esc“-Taste wird hingegen immer die „Spielverlassen: Ja-Nein“-Abfrage aktivieren.
+Die „Esc“-Taste wird hingegen immer die „Spielverlassen:
+Ja-Nein“-Abfrage aktivieren.
 
 
 Empfohlen sei Euch, ehe Ihr so richtig loslegt:
@@ -84,14 +93,15 @@ Speichert gleich zu Beginn das Spiel und schlendert erstmal durchs Haus. Viellei
 @Funktionsfähige Features:
 ==========================
 
-Die grundlegenden Dinge werden auf einem Video erklärt:
+Die grundlegenden Dinge werden in einem Video erklärt:
+
 https://www.youtube.com/watch?v=9reFu18PIJg
 
 Tom.io stellte das Spiel mit einer (fast) umfassenden Erklärung vor:
 https://www.youtube.com/watch?v=LaXdh_o3HA4
 
 
-Für jene, die lieber lesen oder schon eine ausgelastete Flatrate haben, wir hier kurz alles beschrieben.
+Für jene, die lieber lesen, es auf dem aktuellsten Stand wissen wollen oder schon eine ausgelastete Flatrate haben, wird hier kurz alles beschrieben.
 
 
 
@@ -100,10 +110,10 @@ Für jene, die lieber lesen oder schon eine ausgelastete Flatrate haben, wir hie
 -----------------
 
 Um in die Programmplanung zu gelangen, müßt Ihr zuvor das Spielerbüro betreten. Linksklick auf die Tür oder im Fahrstuhlplaner auswählen und Eure Spielfigur wird sich dorthin bewegen.
-Im Büro steht ein Computer. Und diesen mit links angeklickt, wird Euch den Programmplaner präsentieren.
+Im Büro steht ein Computer. Diesen mit links angeklickt, wird Euch den Programmplaner präsentieren.
 
 Ihr seht als erstes den aktuellen Tag. Da sind bei Spielbeginn schon ein paar Filme und Werbungen platziert. Diese wählt das Spiel zum Spielstart zufällig aus. 
-Solange die Programm oder Werbeblöcke grau eingefärbt sind, könnt Ihr sie auf andere Sendeplätze verschieben. Andere Einfärbungen deuten darauf hin, daß sie gerade gesendet werden oder wurden.
+Solange die Programm- oder Werbeblöcke grau eingefärbt sind, könnt Ihr sie auf andere Sendeplätze verschieben. Andere Einfärbungen deuten darauf hin, daß sie gerade gesendet werden oder wurden.
 
 Führt Ihr den Mauszeiger über einen Sendung oder eine Werbung, erscheint ein Tooltip, der Informationen zur gewählten Sendung enthält.
 
@@ -111,14 +121,14 @@ Zum Bewegen der Sendungen/Werbung klickt einfach mit links darauf, dann hängt d
 
 Wenn Ihr (auch bereits gesendete) Sendungen/Werbungen noch an anderer Stelle platzieren wollt, so drückt die STRG-Taste und klickt dann mit links darauf. Die eigentliche Sendung bleibt liegen, das Duplikat hängt an Eurer Hand und läßt sich durch erneuten Linksklick an der aktuellen Stelle ablegen.
 
-Wenn Ihr Werbung oder Serien mehrfach ablegen wollt, so drückt die „Shift“-Taste und klickt mit lins darauf. Solange ihr die „Shift“-Taste gedrückt lasst, wird mit jedem Linksklick eine Sendung/Werbung abgelegt.
+Wenn Ihr Werbung oder Serien mehrfach ablegen wollt, so drückt die „Shift“-Taste und klickt mit links darauf. Solange ihr die „Shift“-Taste gedrückt lasst, wird mit jedem Linksklick eine Sendung/Werbung abgelegt.
 
 Legt Ihr eine Werbung auf einem Sendungsplatz ab, so wird daraus eine Dauerwerbesendung. Diese spielt pro Zuschauer eine bestimmte Geldmenge ein.
 Legt Ihr hingegen eine Sendung auf einen Werbeplatz, so entsteht ein Trailer für die entsprechende Sendung. Dieser Trailer sorgt dafür, daß mehr Zuschauer die Sendung sehen. Allerdings sind die zusätzlichen Zuschauer davon abhängig, wieviele die Sendung vor dem Trailer gesehen haben. Mehrfaches Senden verstärkt diesen Effekt. Allerdings bis zu einer Obergrenze. Jeder weitere Trailer bringt dann keinen zusätzlichen Zuschauergewinn.
 
 Wenn Ihr das Programm des nächsten, übernächsten, überübernächsten oder eines gar noch weiter in der Zukunft liegenden Tages sehen oder verändern wollt, dann nutzt die kleinen Pfeile rechts oben. Freilich könnt Ihr dort auch wieder zurückblättern.
 
-Vorhanden Werbung und Programme sind durch Linksklick auf die jeweiligen Menüpunkte rechts ersichtlich. Hier gibt’s wieder Tooltips, wenn Ihr den Mauszeiger über die Sendung/Werbung führt. Mit Linksklick hebt Ihr die Sendung an. Mit Linksklick legt Ihr sie wieder ab. „Shift“ und Linksklick legt die Sendung so oft ab, wie Ihr die „Shift“-Taste gedrückt haltet.
+Vorhandene Werbung und Programme sind durch Linksklick auf die jeweiligen Menüpunkte rechts ersichtlich. Hier gibt’s wieder Tooltips, wenn Ihr den Mauszeiger über die Sendung/Werbung führt. Mit Linksklick hebt Ihr die Sendung an. Mit Linksklick legt Ihr sie wieder ab. „Shift“ und Linksklick legt die Sendung so oft ab, wie Ihr die „Shift“-Taste gedrückt haltet.
 
 
 Ebenfalls rechts neben der Programmplanung findet Ihr den Punkt „Finanzen“. Linksklick darauf, lädt einen Finanzbildschirm, der Euch detaillierte Angaben über die Einnahmen und Ausgaben ausweist.
@@ -132,7 +142,7 @@ Die anderen Features im Programmplaner sind derzeit noch nicht aktiv.
 --------
 
 Im Archiv trefft Ihr den Archivar. Ihn braucht Ihr, wenn Ihr Filme aus Eurem Besitz verkaufen wollt.
-Klickt auf den Archivar und Ihr bekommt eine Liste der Genres angezeigt. Besitzt Ihr Filme eines bestimmten Genres, so ist dieses schwarz geschriftet, jeweils daneben grüne Striche, die auf die Anzahl von Filmen unter diesem Genre hinweisen. Klickt also auf ein Genre und wählt den Film aus, den Ihr zum Filmverleih schleppen wollt, klickt auf diesen und legt ihn im Koffer ab.
+Klickt auf den Archivar und Ihr bekommt eine Liste der Genres angezeigt. Besitzt Ihr Filme eines bestimmten Genres, so ist dieses schwarz eingefärbt, jeweils daneben grüne Striche, die auf die Anzahl von Filmen unter diesem Genre hinweisen. Klickt also auf ein Genre und wählt den Film aus, den Ihr zum Filmverleih schleppen wollt, klickt auf diesen und legt ihn im Koffer ab.
 
 Aber Vorsicht! Legt Ihr einen Film im Koffer ab, der derzeit in der Programmplanung gesetzt ist und verlaßt damit den Raum, so wird dieser aus der Programmplanung gelöscht. Ihr müßt später diese Lücke wieder füllen.
 
@@ -143,13 +153,32 @@ Aber Vorsicht! Legt Ihr einen Film im Koffer ab, der derzeit in der Programmplan
 -------------
 
 Sie dient zum Erwerb und Verkauf von Filmen.
-Lins seht Ihr den Agenten hinter seinem Schreibtisch. Rechts ein Regal. In der Mitte ist Euer Koffer.
+Links seht Ihr den Agenten hinter seinem Schreibtisch. Rechts ein Regal. In der Mitte ist Euer Koffer.
 Seid Ihr gerade aus dem Archiv gekommen, befinden sich eventuell darin die von Euch zum Verkauf ausgesuchten Filme. Wenn Ihr sie verkaufen wollt, klickt mit links darauf, und klickt mitsamt dem Film auf den Filmagenten. Dann ist der Film weg. Ober er je wieder im Regal auftaucht, ist ungewiß.
 
 Zum Erwerb gibt es zwei Möglichkeiten.
 
 Einmal die Filme im Regal. Fahrt mit dem Mauszeiger über die Schuber und es werden Informationen zu den jeweiligen Filmen auftauchen.
 Freilich der Preis. Der sagt aus, ob Ihr ihn Euch leisten könnt. Wichtiger für die Einschaltquoten aber sind die Balken für Tempo, Kinokasse und Kritik. Und auch die Aktualität. Diese verringert sich mit jedem Senden. Und damit auch der Geldwert des Films. Wird der Film eine Weile nicht gesendet, frischt sich die Aktualität bis zu einem gewissen Grad wieder auf.
+
+
+Wie die Filmeigenschaften zu bewerten sind, beschrieb STARSCrazy:
+
+ "Tempo: Wie interessant finden Normalos den Film (entspricht Zuschauer-Ratings)
+ Kritik: Wie interessant finden Kritiker den Film (entspricht Kritiker-Ratings)
+ Kinokasse: Wie erfolgreich war der Film an der Kinokasse.
+
+ Bei allen drei Werten gilt: je höher desto besser.
+
+ Je nach Genre sind aber manche Werte wichtiger als andere:
+ - Kritik ist vor allem wichtig bei Kultur, Live, Musik, Show.
+ - Tempo ist wichtig bei Erotik, Sport, Klatsch, Bezahlfernsehen
+ - Kinokasse ist wichtig bei Action, Sci-Fi, Fantasy, Komödie, Liebe"
+
+
+
+
+
 Klickt auf einen Film, bewegt ihn über den Koffer und klickt erneut, dann landet er im Koffer.
 Das stellt nur eine Vorauswahl dar. Zwar wird Euch das Geld sofort abgezogen, wenn Ihr aber wiederum auf den Film klickt und ihn zum Regal bewegt, dort wieder klickt, landet er im Regal und das Geld ist wieder auf Eurem Konto.
 Verlaßt Ihr aber den Raum mit dem Film im Koffer, dann landet der Film unweigerlich im Archiv und steht automatisch für Eure Sendeplanung zur Verfügung.
@@ -172,7 +201,7 @@ Kurz und gut: Hier gibt’s die Werbeblöcke, die stündlich gesendet dafür sor
 Ihr seht auf dem Tisch und an der Wand Ordner stehen und rechts oben wieder einen Koffer. In diesem Koffer stehen auch schon Ordner. Das sind die bereits abgeschlossenen Werbeverträge. Drei davon spendiert das Spiel gleich beim Spielstart.
 Daß die drei Ordner im Koffer stehen und nicht irgendwo im Archiv, soll Euch darauf hinweisen, daß der Platz im Koffer beschränkt ist. Ist der Koffer voll, so könnt Ihr keinen neuen Werbevertrag abschließen. Platz schaffen funktioniert nur, indem Ihr Werbung zu Ende sendet. Oder sie nach der Frist verfällt.
 
-Fahrt mit den Mauszeigern über die Ordner und ihr seht die Werberelevanten Informationen.
+Fahrt mit den Mauszeigern über die Ordner und ihr seht die werberelevanten Informationen.
 Die Prämie muß ich nicht weiter erläutern. Die Strafe wird fällig, wenn Ihr die erforderlichen Blöcke nicht in der angegebenen Zeit mit den geforderten Zuschauern sendet.
 Im Sendeplan wird Euch übrigens auch angezeigt, wie oft die Werbung schon eingeplant bzw. gesendet wurde.
 
@@ -187,15 +216,17 @@ Bitte beschwert Euch nicht allzusehr, daß die Werbeprämien noch nicht so richt
 -------------------
 
 Im Nachrichtenstudio werden, wie nicht anders zu erwarten, die Nachrichten produziert.
-Ihr seht rechts die Sprecherkabine. Die soll einfach gut aussehen. Links sind fünf farbige Tafeln mit verschiedenen Symbolen angebracht. Dort könnt Ihr die Abolevels einstellen. Der Tooltip zeigt Euch, welches Symbol zu welchem Genre gehört.
+Ihr seht rechts die Sprecherkabine. Die soll einfach gut aussehen. 
+Links sind fünf farbige Tafeln mit verschiedenen Symbolen angebracht. Dort könnt Ihr die Abolevels einstellen. Der Tooltip zeigt Euch, welches Symbol zu welchem Genre gehört.
 Die Abolevel unterscheiden sich in der Zeitverzögerung mit der Ihr die Nachrichten zugestellt bekommt. Bei 0 bekommt Ihr für dieses Genre gar keine Nachrichten. Bei 3 erhaltet Ihr sie sofort, wenn sie erscheinen. Analog dazu kostet Abolevel 0 auch nichts, 3 dafür am meisten.
 Die Nachrichten können Zuschauer von anderen Sendern abziehen, die dann auch die Sendung bei Euch schauen könnten.
 Zu beachten ist, daß jeweils das Level für die Abrechnung zugrunde gelegt wird, das am Tag als höchstes eingestellt war. Also lohnt Runterschalten erst kurz vor 0 Uhr. 
 Ihr braucht keine Angst zu haben, wenn Ihr die Level mal durchschaltet. Die Änderung tritt erst nach einigen Sekunden finanzträchtig inkraft.
 
-Klickt Ihr auf die Pinnwand, kommt Ihr zum eigentlichen Herzstück: Dem Angebot an Nachrichten – links – und die zur Sendung ausgewählten – rechts.
+Klickt Ihr auf die Pinnwand, kommt Ihr zum eigentlichen Herzstück:
+Dem Angebot an Nachrichten – links – und die zur Ausstrahlung ausgewählten – rechts.
 
-Wie üblich auf die zu platzierende Sendung linksklicken und sie an den Platz bewegen, wo sie hinsoll. Die zuvor dort gelegene habt Ihr dann an der Hand. Legt sie per Linksklick in der Auswahlliste ab oder entsorgt sie per Rechtsklick.
+Wie üblich auf die zu platzierende Sendung linksklicken und sie an den Platz bewegen, wo sie hin soll. Die zuvor dort gelegene habt Ihr dann an der Hand. Legt sie per Linksklick in der Auswahlliste ab oder entsorgt sie per Rechtsklick.
 
 Da die Nachrichten eine eigene Einschaltquotenberechnung besitzen, könnte es schon interessant sein, da einige Kombinationen auszuprobieren. Es ist durchaus möglich, die Nachrichteneinschaltquote höherzupushen als die der vorangegangenen Sendung. Was der nachfolgenden Sendung dann wiederum mehr Zuschauer bescheren kann.
 
@@ -229,9 +260,9 @@ Das Chef-Zimmer ist rechts neben dem Fahrstuhl auf Eurer Etage.
 Der ist ein Chef der alten Schule, achtet bitte auf den vorzüglich animierten Zigarrenqualm.
 Der tut allerdings nicht zur Sache.
 
-Was es hier zu tun oder zu lassen gibt, wird in der Sprechblase angezeigt. Klickt einfach auf das Eurem Anliegen Entsprechende, wobei es sich ausschließlich um geldwerte Optionen handelt. Zahlt zurück oder nehmt neuen Kredit auf.
+Was es hier zu tun oder zu lassen gibt, wird in der Sprechblase angezeigt. Klickt einfach auf das Eurem Anliegen Entsprechende, wobei es sich derzeit ausschließlich um geldwerte Optionen handelt. Zahlt zurück oder nehmt neuen Kredit auf.
 
-In Zukunft wird die Kreditvergabe von verschiedenen Faktoren abhängen. Im Moment funktioniert es einfach.
+Die Kreditvergabe hängt von verschiedenen Faktoren ab. So veränderen nicht eingehaltene Werbeverträge oder Sendeausfälle Chefs Laune, was momentan aber nur Auswirkungen auf den Kreditrahmen hat.
 
 Von Zeit zu Zeit erscheint eine Meldung, daß Euch der Chef sehen will. Er läßt Euch dafür 2 Spielstunden Zeit. Laßt Ihr die Zeit verstreichen, bewegt sich die Spielfigur selbsttätig ins Direktionsbüro. Sie weiß halt, was sich gehört.
 Durch Linksklick auf die Meldung könnt Ihr den Besuch sofort ausführen.
@@ -256,7 +287,7 @@ Der Terror ist noch nicht vollständig ins Spiel eingebaut. Im Moment könnt Ihr
 - FSK 18 und Gerichtsvollzieher
 -------------------------------
 
-Filme mit dem Hinweis FSK 18 dürfen laut den Jugendschutzgesetzen im TVTower-Land nicht zwischen 18 und 22 Uhr gesendet werden. Es bleibt Euch jedoch überlassen, ob Ihr Euch daran haltet. Immerhin degradiert eine solche Regelung ja 16jährige zu kindlichen Menschen.
+Filme mit dem Hinweis FSK 18 dürfen laut den Jugendschutzgesetzen im TVTower-Land nicht zwischen 6 und 22 Uhr gesendet werden. Es bleibt Euch jedoch überlassen, ob Ihr Euch daran haltet. Immerhin degradiert eine solche Regelung ja 16jährige zu kindlichen Menschen.
 Allerdings hat die Sache einen Haken. Oder besser zwei. Die Behörden können schon in der Programmplanung erkennen, daß Ihr vorhabt ein Gesetz zu unterlaufen. Daraufhin wird eine Strafzahlung fällig und der Film wird aus dem Programmplaner entfernt. Die Lücke müßt Ihr dann wieder füllen.
 Habt Ihr es geschafft, den Film unbemerkt an der Zensur vorbeizuschmuggeln, gibt es nach der Ausstrahlung immer noch eine 25%ige Chance, daß einer der beiden Gerichtsvollzieher (Mr. Czwink und Mr. Czwank) erscheint. Da sie sich nicht so gut auskennen im TVTower, informieren sie sich ganz wie der Herr Terrorist an der Informationstafel. Vertauscht die Archivschilder zweckdienlich und ein Film der Konkurrenz könnte beschlagnahmt werden.
 
@@ -284,6 +315,12 @@ Die Anzeigen in der Mitte sind ja dank der Tooltips selbsterklärend.
 
 
 
+[b]@Chat und Cheaten[/b]
+
+Der InGame-Chat wird mit der "Enter"-Taste aufgerufen. Der Chat kann in der Entwicklerversion verschiedene Kommandos entgegennehmen. Der Befehl "/dev help" listet die verfuegbaren Befehle auf. So wuerde zum Beispiel ein "/dev money 1 1000" dem ersten Spieler 1000 Euro aufs Konto gutschreiben.
+
+
+
 
 @Abläufe im Hintergrund
 =======================
@@ -301,9 +338,9 @@ Und wir wollen die Ungereimtheiten nicht durch schlaue Wichtigkeiten schon im Vo
 
 Im Spieleverzeichnis liegt ein config-Ordner. In diesem wiederum gibt es eine Datei „settings.xml“.
 Diese enthält eine Menge Sachen, die per Editor verändert werden können.
-Denkt aber dran, daß das nächste Update eine neue Datei settings.xml mit sich bringt und Eure überschreiben würde;)
-Mittlerweile wird einiges aber schon in nutzerdefinierten Dateien abgelegt.
+Wenn Ihr in den "Einstellungen" etwas verändert, was von den Vorgaben abweicht, wird eine "settings.user.xml" angelegt - in dieser können auch händische Abaenderungen stattfinden, die vormals in der "settings.xml" zu hinterlegen waren.
 
+Kurz: die settings.user.xml enthält die  Abweichungen zu den vorgesehenen Einstellungen aus settings.xml 
 
 
 
@@ -325,10 +362,6 @@ Cursor Links/Rechts : Laufgeschwindigkeit +/-
 
 Raeume:
 -------
-M: Musik/Soundausgabe an/aus
-Shift+M: Soundeffekte an/aus
-Strg+M: Musik an/aus
-
 W: Werbemakler
 A: Archiv
 B: Betty
@@ -350,10 +383,15 @@ T: Terroristen losschicken [neu]
 Q: Quoten-Debugbildschirm an/aus
 D: Debug-Infos ein/ausblenden
 P: Programmplanübersicht in Konsole ausgeben
+K: ALLE Figuren werden aus den Raeumen gekickt
 1-4 : Spieler wechseln
 F1-F4 : Falls KI-spieler, KI-Script neu laden
 
-F5: Neue News veroeffentlichen
+F5: Neue News veröffentlichen
 F6: Musik spielen
 F9: KI an/aus 
 F10: Alle Fremdfiguren de-/aktivieren
+
+M: Musik/Soundausgabe an/aus
+Shift+M: Soundeffekte an/aus
+Strg+M: Musik an/aus
