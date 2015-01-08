@@ -194,6 +194,7 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	Const PLAYERTYPE_LOCAL_AI:int = 1
 	Const PLAYERTYPE_REMOTE_HUMAN:int = 2
 	Const PLAYERTYPE_REMOTE_AI:int = 3
+	Const PLAYERTYPE_INACTIVE:int = 4
 
 
 	Method onLoad:int(triggerEvent:TEventBase)
@@ -324,7 +325,11 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 		playerControlledByID = GetPlayerCollection().playerID
 		SetPlayerType(PLAYERTYPE_LOCAL_AI)
 	End Method
-
+	
+	Method SetInactive()
+		playerControlledByID = GetPlayerCollection().playerID
+		SetPlayerType(PLAYERTYPE_INACTIVE)
+	End Method
 
 	Method SetRemoteHumanControlled(remotePlayerID:int)
 		playerAI = Null

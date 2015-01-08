@@ -241,6 +241,8 @@ function AITask:Tick()
 	--sometimes a figure is stuck in the adagency... we cancel jobs in
 	--that case
 	if (self.Status == TASK_STATUS_OPEN) then
+		debugMsg("Status OPEN! Darf nicht sein!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+		debugMsg(self:typename())
 		self:SetDone()
 	end
 

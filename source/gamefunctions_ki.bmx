@@ -883,12 +883,17 @@ endrem
 	End Method
 
 'untested
-	Method md_getAuctionProgrammeLicence:Int(ArrayID:Int = -1)
-		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
+	Method md_getAuctionProgrammeLicence:TLuaFunctionResult(ArrayID:Int = -1)
+		If Not _PlayerInRoom("movieagency") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
-		If ArrayID >= TAuctionProgrammeBlocks.List.Count() Or arrayID < 0 Then Return -2
+		If ArrayID >= TAuctionProgrammeBlocks.List.Count() Or arrayID < 0 then Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+
 		Local Block:TAuctionProgrammeBlocks = TAuctionProgrammeBlocks(TAuctionProgrammeBlocks.List.ValueAtIndex(ArrayID))
-		If Block Then Return Block.licence.id Else Return self.RESULT_NOTFOUND
+		If Block and Block.licence
+			Return TLuaFunctionResult.Create(self.RESULT_OK, Block.licence)
+		else
+			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+		endif		
 	End Method
 
 'untested

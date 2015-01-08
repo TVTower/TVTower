@@ -156,6 +156,7 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 		-- Eventuell die Ersparnisse investieren
 		if (not investmentDone) and v.NeededInvestmentBudget > 0 then
 			if (v.CurrentBudget + self.InvestmentSavings) >= v.NeededInvestmentBudget then
+				debugMsg(v:typename() .. "- Use Investment: " .. self.InvestmentSavings)
 				v.CurrentBudget = v.CurrentBudget + self.InvestmentSavings
 				v.UseInvestment = true
 				investmentDone = true				
