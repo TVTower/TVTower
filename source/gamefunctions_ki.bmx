@@ -903,8 +903,20 @@ endrem
 		return TAuctionProgrammeBlocks.List.count()
 	End Method
 
-'untested
-	Method md_doBidAuctionProgrammeLicence:Int(ArrayID:int= -1)
+
+	Method md_doBidAuctionProgrammeLicence:Int(licenceID:int= -1)
+		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
+
+
+		For local Block:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
+			If Block.licence.GetReferenceID() = licenceID Then Return Block.SetBid( self.ME )
+		Next
+
+		Return self.RESULT_NOTFOUND
+	End Method
+
+
+	Method md_doBidAuctionProgrammeLicenceAtIndex:Int(ArrayID:int= -1)
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
 		local Block:TAuctionProgrammeBlocks = self.md_getAuctionMovieBlock(ArrayID)
