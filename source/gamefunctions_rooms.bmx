@@ -2396,16 +2396,16 @@ End Type
 
 
 'Chief: credit and emmys - your boss :D
-Type RoomHandler_Chief extends TRoomHandler
+Type RoomHandler_Boss extends TRoomHandler
 	'smoke effect
 	Global smokeEmitter:TSpriteParticleEmitter
 
-	Global _instance:RoomHandler_Chief
+	Global _instance:RoomHandler_Boss
 	Global _initDone:int = False
 
 
-	Function GetInstance:RoomHandler_Chief()
-		if not _instance then _instance = new RoomHandler_Chief
+	Function GetInstance:RoomHandler_Boss()
+		if not _instance then _instance = new RoomHandler_Boss
 		if not _initDone then _instance.Initialize()
 		return _instance
 	End Function
@@ -2436,26 +2436,9 @@ Type RoomHandler_Chief extends TRoomHandler
 
 		smokeEmitter = new TSpriteParticleEmitter.Init(emitterConfig, smokeConfig)
 
-		'register dialogue handlers
-		EventManager.registerListenerFunction("dialogue.onAcceptBossCredit", onAcceptBossCredit)
-		EventManager.registerListenerFunction("dialogue.onRepayBossCredit", onRepayBossCredit)
-
-
 		'register self for all boss rooms
 		GetRoomHandlerCollection().SetHandler("boss", self)
 	End Method
-
-
-	Function onAcceptBossCredit:int(triggerEvent:TEventBase)
-		local value:int = triggerEvent.GetData().GetInt("value", 0)
-		GetPlayerCollection().Get().GetFinance().TakeCredit(value)
-	End Function
-
-
-	Function onRepayBossCredit:int(triggerEvent:TEventBase)
-		local value:int = triggerEvent.GetData().GetInt("value", 0)
-		GetPlayerCollection().Get().GetFinance().RepayCredit(value)
-	End Function
 
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
@@ -3799,7 +3782,7 @@ Function Init_ConnectRoomHandlers()
 	'connect Update/Draw-Events
 	RoomHandler_Office.GetInstance()
 	RoomHandler_News.GetInstance()
-	RoomHandler_Chief.GetInstance()
+	RoomHandler_Boss.GetInstance()
 	RoomHandler_Archive.GetInstance()
 
 	RoomHandler_AdAgency.GetInstance()

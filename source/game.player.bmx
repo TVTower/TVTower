@@ -444,7 +444,7 @@ endrem
 
 	'overridden
 	Method GetCreditAvailable:Int() {_exposeToLua}
-		Return Max(0, GetPlayerBoss(playerID).GetCreditMaximum() - GetFinance().credit)
+		Return Max(0, GetPlayerBoss(playerID).GetCreditMaximum() - GetFinance().GetCredit())
 	End Method
 
 
@@ -462,11 +462,11 @@ endrem
 
 	'returns formatted value of actual credit
 	Method GetCreditFormatted:String(day:Int=-1)
-		Return TFunctions.convertValue(GetFinance(day).credit, 2)
+		Return TFunctions.convertValue(GetFinance(day).GetCredit(), 2)
 	End Method
 
 	'overridden
 	Method GetCredit:Int(day:Int=-1) {_exposeToLua}
-		Return GetFinance(day).credit
+		Return GetFinance(day).GetCredit()
 	End Method
 End Type

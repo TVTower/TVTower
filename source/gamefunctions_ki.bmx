@@ -422,34 +422,6 @@ endrem
 		ret.ROOM_BOSS_PLAYER_ME = GetRoomCollection().GetFirstByDetails("boss", pPlayerId).id
 		ret.ROOM_OFFICE_PLAYER_ME = GetRoomCollection().GetFirstByDetails("office", pPlayerId).id
 
-		REM
-		ret.ROOM_START_STUDIO_PLAYER_ME = GetRoomCollection().GetFirstByDetails("studio", pPlayerId).id
-
-		ret.ROOM_ARCHIVE_PLAYER1 = GetRoomCollection().GetFirstByDetails("archive", 1).id
-		ret.ROOM_NEWSAGENCY_PLAYER1 = GetRoomCollection().GetFirstByDetails("news", 1).id
-		ret.ROOM_BOSS_PLAYER1 = GetRoomCollection().GetFirstByDetails("boss", 1).id
-		ret.ROOM_OFFICE_PLAYER1 = GetRoomCollection().GetFirstByDetails("office", 1).id
-		ret.ROOM_START_STUDIO_PLAYER1 = GetRoomCollection().GetFirstByDetails("studio", 1).id
-
-		ret.ROOM_ARCHIVE_PLAYER2 = GetRoomCollection().GetFirstByDetails("archive", 2).id
-		ret.ROOM_NEWSAGENCY_PLAYER2 = GetRoomCollection().GetFirstByDetails("news", 2).id
-		ret.ROOM_BOSS_PLAYER2 = GetRoomCollection().GetFirstByDetails("boss", 2).id
-		ret.ROOM_OFFICE_PLAYER2 = GetRoomCollection().GetFirstByDetails("office", 2).id
-		ret.ROOM_START_STUDIO_PLAYER2 = GetRoomCollection().GetFirstByDetails("studio", 2).id
-
-		ret.ROOM_ARCHIVE_PLAYER3 = GetRoomCollection().GetFirstByDetails("archive", 3).id
-		ret.ROOM_NEWSAGENCY_PLAYER3 = GetRoomCollection().GetFirstByDetails("news", 3).id
-		ret.ROOM_BOSS_PLAYER3 = GetRoomCollection().GetFirstByDetails("boss", 3).id
-		ret.ROOM_OFFICE_PLAYER3 = GetRoomCollection().GetFirstByDetails("office", 3).id
-		ret.ROOM_START_STUDIO_PLAYER3 = GetRoomCollection().GetFirstByDetails("studio", 3).id
-
-		ret.ROOM_ARCHIVE_PLAYER4 = GetRoomCollection().GetFirstByDetails("archive", 4).id
-		ret.ROOM_NEWSAGENCY_PLAYER4 = GetRoomCollection().GetFirstByDetails("news", 4).id
-		ret.ROOM_BOSS_PLAYER4 = GetRoomCollection().GetFirstByDetails("boss", 4).id
-		ret.ROOM_OFFICE_PLAYER4 = GetRoomCollection().GetFirstByDetails("office", 4).id
-		ret.ROOM_START_STUDIO_PLAYER4 = GetRoomCollection().GetFirstByDetails("studio", 4).id
-		End Rem
-
 		Return ret
 	End Function
 
@@ -586,9 +558,9 @@ endrem
 
 
 
-'- - - - - -
-' Office
-'- - - - - -
+	'=== OFFICE ===
+	'players bureau
+
 	Method of_buyStation:int(x:int, y:int)
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 
@@ -716,21 +688,8 @@ endrem
 		return 0
 	End Method
 
-	'
-	'LUA_isHoliday
-	'
-	'LUA_of_getPlayerMoviecount
-	'LUA_of_getPlayerMovie
-	'LUA_of_getPlayerSpot
-	'
-	'LUA_ne_getPlayerNewscount
-	'LUA_ne_getPlayernews
-	'LUA_ne_getPossibleNewscount
-	'LUA_ne_getPossibleNews
-	'LUA_ne_DelayNewsagency
-	'LUA_ne_doActivatenewsagency
-	'LUA_ne_doNewsInProgram
 
+	'=== NEWS ROOM ===
 
 	Method ne_doNewsInPlan:Int(slot:int=1, ObjectID:Int = -1)
 		If Not (_PlayerInRoom("newsroom", True) or _PlayerInRoom("news", True)) Then Return self.RESULT_WRONGROOM
@@ -757,17 +716,8 @@ endrem
 	End Method
 
 
+	'=== SPOT AGENCY ===
 
-	'
-	'LUA_be_getSammyPoints
-	'LUA_be_getBettyLove
-	'LUA_be_getSammyGenre
-	'
-
-'- - - - - -
-' Spot Agency
-'- - - - - -
-'untested
 	Method sa_getSpotCount:Int()
 		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
 
@@ -813,6 +763,7 @@ endrem
 		Return self.RESULT_NOTFOUND
 	End Method
 
+
 	Method sa_doGiveBackSpot:Int(contractID:Int = -1)
 		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
 
@@ -826,9 +777,9 @@ endrem
 	End Method
 
 
-'- - - - - -
-' Movie Dealer - Movie Agency
-'- - - - - -
+	'=== MOVIE AGENCY ===
+	'main screen
+	
 	Method md_getProgrammeLicenceCount:Int()
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
@@ -870,10 +821,10 @@ endrem
 		Return self.RESULT_NOTFOUND
 	End Method
 
-'- - - - - -
-' Movie Dealer - Movie Agency - Auctions
-'- - - - - -
-'untested
+
+	'=== MOVIE DEALER ===
+	'Movie Agency - Auctions
+
 	Method md_getAuctionMovieBlock:TAuctionProgrammeBlocks(ArrayID:Int = -1)
 		If Not _PlayerInRoom("movieagency") Then Return null
 		If ArrayID >= TAuctionProgrammeBlocks.List.Count() Or arrayID < 0 Then Return null
@@ -882,7 +833,7 @@ endrem
 		If Block Then Return Block Else Return null
 	End Method
 
-'untested
+
 	Method md_getAuctionProgrammeLicence:TLuaFunctionResult(ArrayID:Int = -1)
 		If Not _PlayerInRoom("movieagency") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
@@ -940,12 +891,68 @@ endrem
 	End Method
 
 
+	'=== BOSS ROOM ===
+
+	'returns maximum credit limit (regardless of already taken credit)
+	Method bo_getCreditMaximum:int()
+		If Not _PlayerInRoom("boss") Then Return self.RESULT_WRONGROOM
+
+		return GetPlayerBoss(self.ME).GetCreditMaximum()
+	End Method
+
+
+	'returns how much credit the boss will give (maximum minus taken credit)
+	Method bo_getCreditAvailable:int()
+		If Not _PlayerInRoom("boss") Then Return self.RESULT_WRONGROOM
+
+		return GetPlayerBase(self.ME).GetCreditAvailable()
+	End Method
+
+
+	'amounts bigger than the available credit just take all possible
+	Method bo_doTakeCredit:int(amount:int)
+		If Not _PlayerInRoom("boss") Then Return self.RESULT_WRONGROOM
+
+		if GetPlayerBoss(self.ME).PlayerTakesCredit(amount)
+			return True
+		else
+			return self.RESULT_FAILED
+		endif
+	End Method
+
+
+	'amounts bigger than the credit taken will repay everything
+	'amounts bigger than the owned money will fail
+	Method bo_doRepayCredit:int(amount:int)
+		If Not _PlayerInRoom("boss") Then Return self.RESULT_WRONGROOM
+
+		if GetPlayerBoss(self.ME).PlayerTakesCredit(amount)
+			return True
+		else
+			return self.RESULT_FAILED
+		endif
+	End Method
+
+	'returns the mood of the boss - rounded to 10% steps
+	'(makes it a bit harder for the AI)
+	'TODO: remove step rounding if players get a exact value displayed
+	'      somehow
+	Method bo_getBossMoodlevel:int()
+		If Not _PlayerInRoom("boss") Then Return self.RESULT_WRONGROOM
+		return int(GetPlayerBoss(Self.ME).GetMood()) / 10
+	End Method
+
+	'
+	'LUA_be_getSammyPoints
+	'LUA_be_getBettyLove
+	'LUA_be_getSammyGenre
+	'
+
 	'LUA_ar_getMovieInBagCount
 	'LUA_ar_getMovieInBag
 	'LUA_ar_doMovieInBag
 	'LUA_ar_doMovieOutBag
 	'
-	'LUA_bo_doPayCredit
 End Type
 
 Global LuaFunctions:TLuaFunctions = new TLuaFunctions

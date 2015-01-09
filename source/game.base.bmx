@@ -783,7 +783,7 @@ endrem
 			'stationfees
 			Player.GetFinance().PayStationFees( Player.GetStationMap().CalculateStationCosts())
 			'interest rate for your current credit
-			Player.GetFinance().PayCreditInterest( Player.GetFinance().credit * TPlayerFinance.creditInterestRate )
+			Player.GetFinance().PayCreditInterest( Player.GetFinance().GetCredit() * TPlayerFinance.creditInterestRate )
 
 			'newsagencyfees
 			Local newsagencyfees:Int =0

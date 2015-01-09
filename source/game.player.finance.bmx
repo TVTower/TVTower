@@ -57,6 +57,9 @@ Function GetPlayerFinanceCollection:TPlayerFinanceCollection()
 	Return TPlayerFinanceCollection.GetInstance()
 End Function
 
+Function GetPlayerFinance:TPlayerFinance(playerID:int, day:int=-1)
+	Return TPlayerFinanceCollection.GetInstance().Get(playerID, day)
+End Function
 
 
 
@@ -136,6 +139,11 @@ Type TPlayerFinance
 
 	Method GetCurrentProfit:Long()
 		return revenue_after - revenue_before
+	End Method
+
+
+	Method GetCredit:Long()
+		return credit
 	End Method
 
 

@@ -149,6 +149,10 @@ Type TPlayerBoss
 			EventManager.registerListenerFunction("player.onEnterRoom", onPlayerEnterRoom)
 			EventManager.registerListenerFunction("player.onLeaveRoom", onPlayerLeaveRoom)
 
+			'register dialogue handlers
+			EventManager.registerListenerFunction("dialogue.onTakeBossCredit", onDialogueTakeCredit)
+			EventManager.registerListenerFunction("dialogue.onRepayBossCredit", onDialogueRepayCredit)
+
 			registeredEvents = True
 		endif
 
@@ -194,7 +198,7 @@ Type TPlayerBoss
 		if isInMoodOrWorse(MOOD_NEUTRAL) then return creditMaximum
 		if isInMoodOrWorse(MOOD_FRIENDLY) then return 1.25 * creditMaximum
 		if isInMoodOrWorse(MOOD_HAPPY) then return 1.5 * creditMaximum
-		if isInMoodOrWorse(MOOD_EXCITED) then return 2.0 * creditMaximum
+		if isInMoodOrBetter(MOOD_EXCITED) then return 2.0 * creditMaximum
 
 		return creditMaximum
 	End Method
@@ -248,8 +252,8 @@ Type TPlayerBoss
 		endif
 		'creditMax - credit taken
 		If GetPlayerBase().GetCreditAvailable() > 0
-			local acceptEvent:TEventSimple = TEventSimple.Create("dialogue.onAcceptBossCredit", new TData.AddNumber("value", GetPlayerBase().GetCreditAvailable()))
-			local acceptHalfEvent:TEventSimple = TEventSimple.Create("dialogue.onAcceptBossCredit", new TData.AddNumber("value", 0.5 * GetPlayerBase().GetCreditAvailable()))
+			local acceptEvent:TEventSimple = TEventSimple.Create("dialogue.onTakeBossCredit", new TData.AddNumber("value", GetPlayerBase().GetCreditAvailable()))
+			local acceptHalfEvent:TEventSimple = TEventSimple.Create("dialogue.onTakeBossCredit", new TData.AddNumber("value", 0.5 * GetPlayerBase().GetCreditAvailable()))
 			ChefDialoge[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK").replace("%CREDIT%", TFunctions.DottedValue(GetPlayerBase().GetCreditAvailable())))
 			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT").replace("%CREDIT%",TFunctions.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())), 2, acceptEvent))
 			'avoid micro credits
@@ -331,6 +335,34 @@ Type TPlayerBoss
 	End Method
 
 
+	Method PlayerRepaysCredit:int(value:int)
+		'limit repay value to credit
+		value = Min(value, GetPlayerFinance(playerID).GetCredit())
+
+		'without credit return successful, but do not emit an event
+		if value = 0 then return True
+
+		local result:int = False
+		if GetPlayerFinance(playerID).CanAfford(value)
+			GetPlayerFinance(playerID).RepayCredit(value)
+			result = True
+		endif
+
+		EventManager.triggerEvent(TEventSimple.Create("playerboss.onPlayerRepaysCredit", new TData.AddNumber("value", value).AddNumber("success", result), Self))
+		return result
+	End Method
+
+
+	Method PlayerTakesCredit:int(value:int)
+		local result:int = False
+		if GetPlayerBase(playerID).GetCreditAvailable() >= value
+			GetPlayerFinance(playerID).TakeCredit(value)
+			result = True
+		endif
+
+		EventManager.triggerEvent(TEventSimple.Create("playerboss.onPlayerTakesCredit", new TData.AddNumber("value", value).AddNumber("success", result), Self))
+		return result
+	End Method
 
 
 	'=== EVENTS THE BOSSES LISTEN TO ===
@@ -474,6 +506,19 @@ Type TPlayerBoss
 		'send out event that the player enters the bosses room
 		EventManager.triggerEvent(TEventSimple.Create("playerboss.onPlayerEnterBossRoom", null, boss, player))
 	End Function
+
+
+	Function onDialogueTakeCredit:int(triggerEvent:TEventBase)
+		local value:int = triggerEvent.GetData().GetInt("value", 0)
+		GetPlayerBoss().PlayerTakesCredit(value)
+	End Function
+
+
+	Function onDialogueRepayCredit:int(triggerEvent:TEventBase)
+		local value:int = triggerEvent.GetData().GetInt("value", 0)
+		GetPlayerBoss().PlayerRepaysCredit(value)
+	End Function
+
 End Type
 
 
