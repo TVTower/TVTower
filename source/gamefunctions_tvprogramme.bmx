@@ -1656,9 +1656,26 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 		if bestBidder
 			local player:TPlayer = GetPlayerCollection().Get(bestBidder)
 			player.GetProgrammeCollection().AddProgrammeLicence(licence)
-			Print "player "+player.name + " won the auction for: "+licence.GetTitle()
+
+			if player.isLocalAI()
+				player.PlayerAI.CallOnProgrammeLicenceAuctionWin(licence, bestBid)
+			endif
+
+			'emit event so eg. toastmessages could attach
+			local evData:TData = new TData
+			evData.Add("licence", licence)
+			evData.AddNumber("bestBidder", player.playerID)
+			evData.AddNumber("bestBid", bestBid)
+			EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.onWin", evData, self))
 		End If
-		EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.endAuction", new TData.Add("licence", licence).AddNumber("bestBidder", bestBidder).AddNumber("bestBid", bestBid).AddNumber("bidSavings", bidSavings), self))
+
+		'emit event
+		local evData:TData = new TData
+		evData.Add("licence", licence)
+		evData.AddNumber("bestBidder", bestBidder)
+		evData.AddNumber("bestBid", bestBid)
+		evData.AddNumber("bidSavings", bidSavings)
+		EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.onEndAuction", evData, self))
 
 		'found nobody to buy this licence
 		'so we decrease price a bit
@@ -1680,29 +1697,48 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 
 
 	Method SetBid:int(playerID:Int)
-		local player:TPlayer = GetPlayerCollection().Get(playerID)
+		local player:TPlayer = GetPlayer(playerID)
 		If not player then return -1
 		'if the playerID was -1 ("auto") we should assure we have a correct id now
 		playerID = player.playerID
 		'already highest bidder, no need to add another bid
 		if playerID = bestBidder then return 0
 
-
 		local price:int = GetNextBid()
 		If player.getFinance().PayAuctionBid(price, self.GetLicence())
 			'another player was highest bidder, we pay him back the
 			'bid he gave (which is the currently highest bid...)
-			If bestBidder and GetPlayerCollection().Get(bestBidder)
-				GetPlayerFinanceCollection().Get(bestBidder).PayBackAuctionBid(bestBid, self)
+			If bestBidder and GetPlayer(bestBidder)
+				GetPlayerFinance(bestBidder).PayBackAuctionBid(bestBid, self)
+
+				'inform player AI that their bid was overbid
+				if GetPlayer(bestBidder).isLocalAI()
+					GetPlayer(bestBidder).PlayerAI.CallOnProgrammeLicenceAuctionGetOutbid(GetLicence(), price, playerID)
+				endif
+				
+				'emit event so eg. toastmessages could attach
+				local evData:TData = new TData
+				evData.Add("licence", GetLicence())
+				evData.AddNumber("previousBestBidder", bestBidder)
+				evData.AddNumber("previousBestBid", bestBid)
+				evData.AddNumber("bestBidder", playerID)
+				evData.AddNumber("bestBid", price)
+				EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.onGetOutbid", evData, self))
 			EndIf
 			'set new bid values
 			bestBidder = playerID
 			bestBid = price
 
+
 			'reset so cache gets renewed
 			_imageWithText = null
 
-			EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.setBid", new TData.Add("licence", licence).AddNumber("bestBidder", bestBidder).AddNumber("bestBid", bestBid), self))
+			'emit event
+			local evData:TData = new TData
+			evData.Add("licence", GetLicence())
+			evData.AddNumber("bestBidder", bestBidder)
+			evData.AddNumber("bestBid", bestBid)
+			EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.setBid", evData, self))
 		EndIf
 		return price
 	End Method

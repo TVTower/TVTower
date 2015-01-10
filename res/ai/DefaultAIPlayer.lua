@@ -287,6 +287,22 @@ function OnDayBegins()
 	end
 end
 
+
+function OnProgrammeLicenceAuctionGetOutbid(licence, bid, bidderID)
+	--todo
+	debugMsg("TODO: you have been outbid on auction: " .. licence.GetTitle())
+end
+
+function OnProgrammeLicenceAuctionWin(licence, bid)
+	--todo
+	debugMsg("TODO: Won auction: " .. licence.GetTitle())
+end
+
+function OnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedLicence, targetLicence)
+	--todo
+	debugMsg("Programme licence confiscated: " .. confiscatedLicence.GetTitle())
+end
+
 function OnLeaveRoom()
 	--debugMsg("OnLeaveRoom")
 end

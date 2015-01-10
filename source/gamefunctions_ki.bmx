@@ -176,6 +176,23 @@ Type KI
 	End Method
 
 
+	Method CallOnProgrammeLicenceAuctionGetOutbid(licence:TProgrammeLicence, bid:int, bidderID:int)
+		Local args:Object[3]
+		args[0] = licence
+		args[1] = string(bid)
+		args[2] = string(bidderID)
+		if (KIRunning) then LuaEngine.CallLuaFunction("OnProgrammeLicenceAuctionGetOutbid", args)
+	End Method
+
+
+	Method CallOnProgrammeLicenceAuctionWin(licence:TProgrammeLicence, bid:int)
+		Local args:Object[2]
+		args[0] = licence
+		args[1] = string(bid)
+		if (KIRunning) then LuaEngine.CallLuaFunction("OnProgrammeLicenceAuctionWin", args)
+	End Method
+
+
 	Method CallOnBossCalls(latestWorldTime:int=0)
 		Local args:Object[1]
 		args[0] = String(latestWorldTime)
@@ -197,7 +214,7 @@ Type KI
 		Local args:Object[2]
 		args[0] = confiscatedLicence
 		args[1] = targetLicence
-		if (KIRunning) then LuaEngine.CallLuaFunction("OnPublicAuthoritiesConfiscateProgrammeLicence")
+		if (KIRunning) then LuaEngine.CallLuaFunction("OnPublicAuthoritiesConfiscateProgrammeLicence", args)
 	End Method
 
 

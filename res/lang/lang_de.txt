@@ -448,6 +448,16 @@ PROGRAMMELICENCE_X_GOT_CONFISCATED = Programmlizenz "%TITLE%" wurde beschlagnahm
 SEEMS_AUTHORITIES_VISITED_THE_WRONG_ROOM = Es scheint die Behörden haben den falschen Raum aufgesucht.
 BETTER_WATCH_OUT_NEXT_TIME = Pass das nächste Mal lieber auf.
 
+YOU_HAVE_BEEN_OUTBID = Du wurdest überboten
+SOMEONE_BID_MORE_THAN_YOU_FOR_X = Jemand hat mehr für "%TITLE%" geboten.
+YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED = Dein altes Gebot von %MONEY% wurde zurückerstattet. 
+
+YOU_HAVE_WON_AN_AUCTION = Du hast eine Auktion gewonnen
+THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL = Die Lizenz "%TITLE%" steht Dir nun zur Verfügung. 
+
+YOUR_BOSS_WANTS_TO_SEE_YOU = Dein Chef will dich sehen
+YOU_HAVE_GOT_X_HOURS TO_VISIT_HIM = Du hast %HOURS% Stunden, um dich bei Ihm zu melden.
+CLICK_HERE_TO_START_YOUR_VISIT_AHEAD_OF_TIME = Hier klicken um den Besuch vorzeitig zu starten.
 
 HINT_PRESSING_ALT_WILL_SHOW_DETAILS = "ALT"-Taste drücken für mehr Details.
 HINT_PROGRAMMEPLANER_SHORTCUTS = ALT: tauscht Datenblatt | STRG+Klick: Programmkopie | SHIFT+Klick: nächste Episode

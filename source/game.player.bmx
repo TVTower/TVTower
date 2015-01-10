@@ -87,6 +87,27 @@ Type TPlayerCollection extends TPlayerBaseCollection
 
 
 	'=== EVENTS ===
+	Function OnFigureReachTarget:int(triggerEvent:TEventBase)
+		local figure:TFigure = TFigure(triggerEvent.GetSender())
+		if not figure or figure.playerID = 0 then return False
+		local player:TPlayer = GetPlayer(figure.playerID)
+		if not player then return False
+
+		'only interested in target of type "door" (rooms)
+		local roomDoor:TRoomDoorBase = TRoomDoorBase(triggerEvent.GetReceiver())
+		if not roomDoor then return False
+
+		local room:TRoomBase = GetRoomBaseCollection().Get(roomDoor.roomID)
+		if not room then return False
+
+		EventManager.triggerEvent( TEventSimple.Create("player.onReachRoom", null, player, room) )
+
+		'inform player AI
+		If player.isLocalAI()
+			player.PlayerAI.CallOnReachRoom(room.id)
+		endif
+	End Function
+
 
 	Function OnFigureLeaveRoom:int(triggerEvent:TEventBase)
 		local figure:TFigure = TFigure(triggerEvent.GetSender())
@@ -102,7 +123,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		If player.isLocalAI()
 			local roomID:int = 0
 			if room then roomID = room.id
-			GetPlayer(figure.playerID).PlayerAI.CallOnLeaveRoom(roomID)
+			player.PlayerAI.CallOnLeaveRoom(roomID)
 		endif
 	End Function
 

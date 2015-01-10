@@ -2926,6 +2926,9 @@ Type GameEvents
 		'ingame toastmessages
 		EventManager.registerListenerFunction("AdContract.onFinish", AdContract_OnFinish)
 		EventManager.registerListenerFunction("AdContract.onFail", AdContract_OnFail)
+		EventManager.registerListenerFunction("ProgrammeLicenceAuction.onGetOutbid", ProgrammeLicenceAuction_OnGetOutbid)
+		EventManager.registerListenerFunction("ProgrammeLicenceAuction.onWin", ProgrammeLicenceAuction_OnWin)
+
 	End Function
 	
 
@@ -3048,8 +3051,12 @@ Type GameEvents
 			toast.SetCloseAtWorldTimeText("CLOSES_AT_TIME")
 			toast.SetMessageType(1)
 			toast.SetPriority(10)
-			toast.SetCaption("Dein Chef will dich sehen")
-			toast.SetText("Der Chef gibt dir 2 Stunden, sich bei Ihm zu melden. Hier klicken um den Besuch vorzeitig zu starten.")
+
+			toast.SetCaption(GetLocale("YOUR_BOSS_WANTS_TO_SEE_YOU"))
+			toast.SetText(..
+				GetLocale("YOU_HAVE_GOT_X_HOURS TO_VISIT_HIM").replace("%HOURS%", 2) + " " +..
+				"|i|"+GetLocale("CLICK_HERE_TO_START_YOUR_VISIT_AHEAD_OF_TIME") + "|/i|" ..
+			)
 			toast.SetOnCloseFunction(PlayerBoss_onClosePlayerCallMessage)
 			toast.GetData().Add("boss", boss)
 			toast.GetData().Add("player", player)
@@ -3124,13 +3131,67 @@ Type GameEvents
 		toast.SetText(text)
 		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 	End Function
+
+
+	Function ProgrammeLicenceAuction_OnGetOutbid:Int(triggerEvent:TEventBase)
+		'only interested in auctions in which the player got overbid
+		local previousBestBidder:int = triggerEvent.GetData().GetInt("previousBestBidder")
+		if GetPlayer().playerID <> previousBestBidder then return False
+
+		local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().Get("licence"))
+		local bestBidder:int = triggerEvent.GetData().GetInt("bestBidder")
+		local bestBid:int = triggerEvent.GetData().GetInt("bestBidder")
+		local previousBestBid:int = triggerEvent.GetData().GetInt("previousBestBid")
+		if not licence or not GetPlayer(bestBidder) then return False
+
+
+		'send out a toast message
+		local toast:TGameToastMessage = new TGameToastMessage
+	
+		'show it for some seconds
+		toast.SetLifeTime(6)
+		toast.SetMessageType(1) 'attention
+		toast.SetCaption(GetLocale("YOU_HAVE_BEEN_OUTBID"))
+		toast.SetText( ..
+			GetLocale("SOMEONE_BID_MORE_THAN_YOU_FOR_X").Replace("%TITLE%", licence.GetTitle()) + " " + ..
+			GetLocale("YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED").Replace("%MONEY%", "|b|"+TFunctions.DottedValue(previousBestBid)+getLocale("CURRENCY")+"|/b|") ..
+		)
+		'play a special sound instead of the default one
+		toast.GetData().AddString("onAddMessageSFX", "positiveMoneyChange")
+
+		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+
+	End Function
+
+
+	Function ProgrammeLicenceAuction_OnWin:Int(triggerEvent:TEventBase)
+		'only interested in auctions the player won
+		local bestBidder:int = triggerEvent.GetData().GetInt("bestBidder")
+		if GetPlayer().playerID <> bestBidder then return False
+
+		local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().Get("licence"))
+		local bestBid:int = triggerEvent.GetData().GetInt("bestBidder")
+		if not licence or not GetPlayer(bestBidder) then return False
+
+
+		'send out a toast message
+		local toast:TGameToastMessage = new TGameToastMessage
+	
+		'show it for some seconds
+		toast.SetLifeTime(8)
+		toast.SetMessageType(2) 'positive
+		toast.SetCaption(GetLocale("YOU_HAVE_WON_AN_AUCTION"))
+		toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", licence.GetTitle()))
+		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+	End Function	
+
 	
 	Function AdContract_OnFinish:Int(triggerEvent:TEventBase)
 		local contract:TAdContract = TAdContract(triggerEvent.GetSender())
 		if not contract then return False
 
 		'only interest in active players contracts
-		if contract.owner <> GetPlayerCollection().playerID then return False
+		if contract.owner <> GetPlayer().playerID then return False
 
 		'send out a toast message
 		local toast:TGameToastMessage = new TGameToastMessage
@@ -3143,6 +3204,9 @@ Type GameEvents
 			GetLocale("ADCONTRACT_X_SUCCESSFULLY_FINISHED").Replace("%TITLE%", contract.GetTitle()) + " " + ..
 			GetLocale("PROFIT_OF_X_GOT_CREDITED").Replace("%MONEY%", "|b|"+TFunctions.DottedValue(contract.GetProfit())+getLocale("CURRENCY")+"|/b|") ..
 		)
+		'play a special sound instead of the default one
+		toast.GetData().AddString("onAddMessageSFX", "positiveMoneyChange")
+
 		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 	End Function
 
@@ -3485,8 +3549,14 @@ Type AppEvents
 
 
 	Function onToastMessageCollectionAddMessage:Int(triggerEvent:TEventBase)
-		'play a sound with the default sfxchannel
-		SimpleSoundSource.PlayRandomSfx("gui_open_window")
+		local toastMessage:TToastMessage = TToastMessage(triggerEvent.GetReceiver())
+		if not toastMessage then return False
+
+		local sfx:string = toastMessage.getData().getString("onAddMessageSFX")
+		if sfx = "" then sfx = "gui_open_window"
+
+		'play a random sound of the given playlist with the default sfxchannel
+		SimpleSoundSource.PlayRandomSfx(sfx)
 	End Function
 
 

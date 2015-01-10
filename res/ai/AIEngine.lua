@@ -149,6 +149,7 @@ function AIPlayer:OnEnterRoom(roomId)
 	self.CurrentTask:OnEnterRoom(roomId)
 end
 
+
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -334,7 +335,7 @@ function AITask:OnEnterRoom(roomId)
 end
 
 function AITask:OnBeginEnterRoom(roomId, result)
-	--debugMsg("OnReachRoom!")
+	--debugMsg("OnBeginEnterRoom!")
 	if (self.CurrentJob ~= nil) then
 		self.CurrentJob:OnBeginEnterRoom(roomId, result)
 	end

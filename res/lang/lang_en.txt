@@ -454,6 +454,16 @@ PROGRAMMELICENCE_X_GOT_CONFISCATED = Programme licence "%TITLE%" got confiscated
 SEEMS_AUTHORITIES_VISITED_THE_WRONG_ROOM = Seems authorities visited the wrong room.
 BETTER_WATCH_OUT_NEXT_TIME = Better watch out next time.
 
+YOU_HAVE_BEEN_OUTBID = You've been outbid
+SOMEONE_BID_MORE_THAN_YOU_FOR_X = Someone bid more than you for "%TITLE%"
+YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED = Your previous bid of %MONEY% was refunded. 
+
+YOU_HAVE_WON_AN_AUCTION = You've won an auction
+THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL = The licence of "%TITLE%" is now at your disposal. 
+
+YOUR_BOSS_WANTS_TO_SEE_YOU = Your boss wants to see you
+YOU_HAVE_GOT_X_HOURS TO_VISIT_HIM = You've got %HOURS% hours to visit him.
+CLICK_HERE_TO_START_YOUR_VISIT_AHEAD_OF_TIME = Click here to start your visit ahead of time.
 
 HINT_PRESSING_ALT_WILL_SHOW_DETAILS = Pressing "ALT"-key will show details.
 HINT_PROGRAMMEPLANER_SHORTCUTS = ALT: switch data sheet | CTRL+Click: copy programme | SHIFT+Click: next episode

@@ -56,5 +56,7 @@
 
 		<sfx name="sound_sfx_gui_close_fade_window" url="res/sfx/closeFadeWindow.ogg" playlists="gui_close_fade_window" />
 		<sfx name="sound_sfx_gui_open_window" url="res/sfx/openWindow.ogg" playlists="gui_open_window" />
+
+		<sfx name="sound_sfx_cashregister" url="res/sfx/cashRegister.ogg" playlists="positiveMoneyChange" />
 	</resources>
 </tvt>
