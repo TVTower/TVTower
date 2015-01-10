@@ -7,7 +7,7 @@ Import "Dig/base.gfx.bitmapfont.bmx"
 
 
 'signs used in elevator-plan /room-plan
-Type TRoomBoardSign Extends TBlockMoveable
+Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 	Field door:TRoomDoorBase
 	Field signSlot:int = 0
 	Field signFloor:int = 0
@@ -97,7 +97,7 @@ Type TRoomBoardSign Extends TBlockMoveable
 	End Function
 
 
-	'return the sign originally at the given position
+	'return the sign which originally was at the given position
 	Function GetByOriginalPosition:TRoomBoardSign(signSlot:int, signFloor:int)
 		For local sign:TRoomBoardSign = eachin list
 			if sign.door.doorSlot = signSlot and sign.door.onFloor = signFloor
@@ -117,7 +117,74 @@ Type TRoomBoardSign Extends TBlockMoveable
 		Next
 		return Null
 	End Function
-	
+
+
+	'return the first sign leading to a specific room
+	Function GetFirstByRoom:TRoomBoardSign(roomID:int)
+		For local sign:TRoomBoardSign = eachin list
+			if sign.door and sign.door.roomID = roomID
+				return sign
+			endif
+		Next
+		return Null
+	End Function
+
+
+	Function SwitchSigns:int(signA:TRoomBoardSign, signB:TRoomBoardSign)
+		if not signA or not signB then return False
+
+		local tmpStartPos:TVec2D
+		local tmpPos:TVec2D
+
+		tmpStartPos = signA.StartPos.Copy()
+		tmpPos = signA.rect.position.Copy()
+
+		signA.StartPos = signB.StartPos
+		signA.rect.position = signB.rect.position
+
+		signB.StartPos = tmpStartPos
+		signB.rect.position = tmpPos
+
+		return True
+	End Function
+
+
+	Function SwitchSignPositions:int(slotA:int, floorA:int, slotB:int, floorB:int)
+		Local signA:TRoomBoardSign = GetByCurrentPosition(slotA, floorA)
+		Local signB:TRoomBoardSign = GetByCurrentPosition(slotB, floorB)
+
+		if signA
+			local x:Int = GetSlotX(slotB)
+			Local y:Int = GetFloorY(floorB)
+			signA.StartPos.SetXY(x,y)
+			signA.rect.position.SetXY(x,y)
+		endif
+
+		if signB
+			local x:Int = GetSlotX(slotA)
+			Local y:Int = GetFloorY(floorA)
+			signB.StartPos.SetXY(x,y)
+			signB.rect.position.SetXY(x,y)
+		endif
+
+		'at least one existed
+		if signA or signB then return True
+		return False
+	End Function
+
+
+	Method IsAtOriginalPosition:int() {_exposeToLua}
+		if door.doorSlot <> GetSlot(StartPos.GetX()) then return False
+		if door.onFloor <> GetFloor(StartPos.GetY()) then return False
+
+		return True
+	End Method
+
+
+	Method GetOwner:int() {_exposeToLua}
+		return door.GetOwner()
+	End Method
+
 
 	'as soon as a language changes, remove the cached images
 	'to get them regenerated

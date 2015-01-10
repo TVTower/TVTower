@@ -959,6 +959,98 @@ endrem
 		return int(GetPlayerBoss(Self.ME).GetMood()) / 10
 	End Method
 
+
+	'=== ROOM BOARD ===
+	'the plan on the basement which enables switching room signs
+
+	Method rb_GetSignCount:Int()
+		If Not _PlayerInRoom("roomboard") Then Return self.RESULT_WRONGROOM
+
+		return TRoomBoardSign.List.count()
+	End Method
+
+
+	Method rb_GetSignAtIndex:TLuaFunctionResult(ArrayID:Int = -1)
+		If Not _PlayerInRoom("roomboard") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
+
+		If ArrayID >= TRoomBoardSign.List.Count() Or arrayID < 0 then Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+
+		Local sign:TRoomBoardSign = TRoomBoardSign(TRoomBoardSign.List.ValueAtIndex(ArrayID))
+		If sign
+			Return TLuaFunctionResult.Create(self.RESULT_OK, sign)
+		else
+			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+		endif		
+	End Method
+
+
+	'returns the sign at the given position
+	Method rb_GetSignAtPosition:TLuaFunctionResult(signSlot:int, signFloor:int)
+		If Not _PlayerInRoom("roomboard") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
+
+		local sign:TRoomBoardSign = TRoomBoardSign.GetByCurrentPosition(signSlot, signFloor)
+		If sign
+			Return TLuaFunctionResult.Create(self.RESULT_OK, sign)
+		else
+			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+		endif		
+	End Method
+
+
+	'returns the sign which originally was at the given position
+	'(might be the same if it wasnt switched)
+	Method rb_GetOriginalSignAtPosition:TLuaFunctionResult(signSlot:int, signFloor:int)
+		If Not _PlayerInRoom("roomboard") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
+
+		local sign:TRoomBoardSign = TRoomBoardSign.GetByOriginalPosition(signSlot, signFloor)
+		If sign
+			Return TLuaFunctionResult.Create(self.RESULT_OK, sign)
+		else
+			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+		endif		
+	End Method
+
+
+	'returns the first sign leading to the given room(ID)
+	Method rb_GetFirstSignOfRoom:TLuaFunctionResult(roomID:int)
+		If Not _PlayerInRoom("roomboard") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
+
+		local sign:TRoomBoardSign = TRoomBoardSign.GetFirstByRoom(roomID)
+		If sign
+			Return TLuaFunctionResult.Create(self.RESULT_OK, sign)
+		else
+			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+		endif		
+	End Method
+
+
+	'switch two existing signs on the board
+	Method rb_SwitchSigns:int(signA:TRoomBoardSign, signB:TRoomBoardSign)
+		If Not _PlayerInRoom("roomboard") Then Return self.RESULT_WRONGROOM
+
+		If TRoomBoardSign.SwitchSigns(signA, signB)
+			Return self.RESULT_OK
+		Else
+			Return self.RESULT_FAILED
+		Endif		
+	End Method
+
+
+	'switch signs on the given positions.
+	'a potential sign on slotA/floorA will get moved to slotB/floorB
+	'and vice versa. It is NOT needed to have to valid signs on there 
+	Method rb_SwitchSignPositions:int(slotA:int, floorA:int, slotB:int, floorB:int)
+		If Not _PlayerInRoom("roomboard") Then Return self.RESULT_WRONGROOM
+
+		If TRoomBoardSign.SwitchSignPositions(slotA, floorA, slotB, floorB)
+			Return self.RESULT_OK
+		Else
+			Return self.RESULT_FAILED
+		Endif		
+	End Method
+
+
+
 	'
 	'LUA_be_getSammyPoints
 	'LUA_be_getBettyLove
