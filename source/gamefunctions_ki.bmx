@@ -966,16 +966,14 @@ endrem
 	Method rb_GetSignCount:Int()
 		If Not _PlayerInRoom("roomboard") Then Return self.RESULT_WRONGROOM
 
-		return TRoomBoardSign.List.count()
+		return GetRoomBoard().GetSignCount()
 	End Method
 
 
 	Method rb_GetSignAtIndex:TLuaFunctionResult(ArrayID:Int = -1)
 		If Not _PlayerInRoom("roomboard") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
-		If ArrayID >= TRoomBoardSign.List.Count() Or arrayID < 0 then Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
-
-		Local sign:TRoomBoardSign = TRoomBoardSign(TRoomBoardSign.List.ValueAtIndex(ArrayID))
+		Local sign:TRoomBoardSign = GetRoomBoard().GetSignAtIndex(ArrayID)
 		If sign
 			Return TLuaFunctionResult.Create(self.RESULT_OK, sign)
 		else
@@ -988,7 +986,7 @@ endrem
 	Method rb_GetSignAtPosition:TLuaFunctionResult(signSlot:int, signFloor:int)
 		If Not _PlayerInRoom("roomboard") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
-		local sign:TRoomBoardSign = TRoomBoardSign.GetByCurrentPosition(signSlot, signFloor)
+		local sign:TRoomBoardSign = GetRoomBoard().GetSignByCurrentPosition(signSlot, signFloor)
 		If sign
 			Return TLuaFunctionResult.Create(self.RESULT_OK, sign)
 		else
@@ -1002,7 +1000,7 @@ endrem
 	Method rb_GetOriginalSignAtPosition:TLuaFunctionResult(signSlot:int, signFloor:int)
 		If Not _PlayerInRoom("roomboard") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
-		local sign:TRoomBoardSign = TRoomBoardSign.GetByOriginalPosition(signSlot, signFloor)
+		local sign:TRoomBoardSign = GetRoomBoard().GetSignByOriginalPosition(signSlot, signFloor)
 		If sign
 			Return TLuaFunctionResult.Create(self.RESULT_OK, sign)
 		else
@@ -1015,7 +1013,7 @@ endrem
 	Method rb_GetFirstSignOfRoom:TLuaFunctionResult(roomID:int)
 		If Not _PlayerInRoom("roomboard") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
-		local sign:TRoomBoardSign = TRoomBoardSign.GetFirstByRoom(roomID)
+		local sign:TRoomBoardSign = GetRoomBoard().GetFirstSignByRoom(roomID)
 		If sign
 			Return TLuaFunctionResult.Create(self.RESULT_OK, sign)
 		else
@@ -1028,7 +1026,7 @@ endrem
 	Method rb_SwitchSigns:int(signA:TRoomBoardSign, signB:TRoomBoardSign)
 		If Not _PlayerInRoom("roomboard") Then Return self.RESULT_WRONGROOM
 
-		If TRoomBoardSign.SwitchSigns(signA, signB)
+		If GetRoomBoard().SwitchSigns(signA, signB)
 			Return self.RESULT_OK
 		Else
 			Return self.RESULT_FAILED
@@ -1042,7 +1040,7 @@ endrem
 	Method rb_SwitchSignPositions:int(slotA:int, floorA:int, slotB:int, floorB:int)
 		If Not _PlayerInRoom("roomboard") Then Return self.RESULT_WRONGROOM
 
-		If TRoomBoardSign.SwitchSignPositions(slotA, floorA, slotB, floorB)
+		If GetRoomBoard().SwitchSignPositions(slotA, floorA, slotB, floorB)
 			Return self.RESULT_OK
 		Else
 			Return self.RESULT_FAILED

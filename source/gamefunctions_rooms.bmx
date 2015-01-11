@@ -3343,11 +3343,6 @@ End Type
 
 'Dies hier ist die Raumauswahl im Fahrstuhl.
 Type RoomHandler_ElevatorPlan extends TRoomHandler
-	const signSlot1:int	= 26
-	const signSlot2:int	= 208
-	const signSlot3:int	= 417
-	const signSlot4:int	= 599
-
 	Global _instance:RoomHandler_ElevatorPlan
 	Global _initDone:int = False
 
@@ -3371,7 +3366,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 
 
 	Function ReCreatePlan()
-		TRoomBoardSign.list.Clear()
+		GetRoomBoard().Reset()
 		For local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
 			'create the sign in the roomplan (if not "invisible door")
 			If door.doorType >= 0 then new TRoomBoardSign.Init(door)
@@ -3380,7 +3375,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
-		TRoomBoardSign.DrawAll()
+		GetRoomBoard().DrawSigns()
 	End Method
 
 
@@ -3391,34 +3386,13 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 
 		'if possible, change the target to the clicked door
 		if mouseClicked
-			local door:TRoomDoorBase = GetDoorByPlanXY(MouseManager.x,MouseManager.y)
-			if door then GetPlayer().GetFigure().SendToDoor(door)
+			local sign:TRoomBoardSign = GetRoomBoard().GetSignByXY(MouseManager.x,MouseManager.y)
+			if sign and sign.door then GetPlayer().GetFigure().SendToDoor(sign.door)
 			if mouseClicked then MouseManager.ResetKey(1)
 		endif
 
-		TRoomBoardSign.UpdateAll(False)
+		GetRoomBoard().UpdateSigns(False)
 	End Method
-
-
-	'returns the door defined by a sign at X,Y
-	Function GetDoorByPlanXY:TRoomDoorBase(x:Int=-1, y:Int=-1)
-		For Local sign:TRoomBoardSign = EachIn TRoomBoardSign.List
-			'virtual rooms
-			If sign.rect.GetX() < 0 then continue
-
-			If sign.rect.containsXY(x,y)
-				Local xpos:Int = 0
-				If sign.rect.GetX() = signSlot1 Then xpos = 1
-				If sign.rect.GetX() = signSlot2 Then xpos = 2
-				If sign.rect.GetX() = signSlot3 Then xpos = 3
-				If sign.rect.GetX() = signSlot4 Then xpos = 4
-				Local door:TRoomDoorBase = GetRoomDoorBaseCollection().GetByMapPos(xpos, 13 - Ceil((y-41)/23))
-				if door then return door
-			EndIf
-		Next
-
-		return null
-	End Function
 End Type
 
 
@@ -3443,8 +3417,8 @@ Type RoomHandler_Roomboard extends TRoomHandler
 
 
 	Method AbortScreenActions:Int()
-		TRoomBoardSign.DropBackDraggedSigns()
-		TRoomBoardSign.UpdateAll(False)
+		GetRoomBoard().DropBackDraggedSigns()
+		GetRoomBoard().UpdateSigns(False)
 	End Method
 	
 
@@ -3455,7 +3429,7 @@ Type RoomHandler_Roomboard extends TRoomHandler
 		'only pay attention to players
 		if figure.playerID
 			'roomboard left without animation as soon as something dragged but leave forced
-			If TRoomBoardSign.AdditionallyDragged > 0
+			If GetRoomBoard().AdditionallyDragged > 0
 				triggerEvent.setVeto()
 				return FALSE
 			endif
@@ -3476,7 +3450,7 @@ Type RoomHandler_Roomboard extends TRoomHandler
 	
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
-		TRoomBoardSign.DrawAll()
+		GetRoomBoard().DrawSigns()
 	End Method
 
 
@@ -3488,7 +3462,7 @@ Type RoomHandler_Roomboard extends TRoomHandler
 		'only allow dragging of roomsigns when no exitapp-dialoge exists
 'RONNY
 '		if not TApp.ExitAppDialogue
-			TRoomBoardSign.UpdateAll(True)
+			GetRoomBoard().UpdateSigns(True)
 '		else
 '			TRoomBoardSign.DropBackDraggedSigns()
 '			TRoomBoardSign.UpdateAll(False)

@@ -1385,7 +1385,7 @@ Type TFigureDeliveryBoy Extends TFigure
 				local roomDoor:TRoomDoorBase = TRoomDoor.GetMainDoorToRoom(deliverToRoom)
 				'2) get sign which is now at the slot/floor of the room
 				local sign:TRoomBoardSign
-				if roomDoor then sign = TRoomBoardSign.GetByCurrentPosition(roomDoor.doorSlot, roomDoor.onFloor)
+				if roomDoor then sign = GetRoomBoard().GetSignByCurrentPosition(roomDoor.doorSlot, roomDoor.onFloor)
 
 				if sign and sign.door
 					TLogger.Log("TFigureDeliveryBoy", self.name+" is sent to room "+TRoomDoor(sign.door).GetRoom().name+" (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
@@ -3451,7 +3451,7 @@ Type GameEvents
 			TAuctionProgrammeBlocks.EndAllAuctions() 'won auctions moved to programmecollection of player
 
 			'reset room signs each day to their normal position
-			TRoomBoardSign.ResetPositions()
+			GetRoomBoard().ResetPositions()
 
 
 			'remove no longer needed DailyBroadcastStatistics
