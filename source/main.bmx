@@ -75,6 +75,8 @@ Import "game.player.programmecollection.bmx"
 'needed by game.player.bmx
 Import "game.player.programmeplan.bmx"
 
+Import "game.production.bmx"
+
 Import "game.room.base.bmx"
 Import "game.misc.roomboardsign.bmx"
 Import "game.betty.bmx"
@@ -95,8 +97,6 @@ Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_ki.bmx"					'LUA connection
 Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
-Include "gamefunctions_people.bmx"				'Angestellte und Personen
-Include "gamefunctions_production.bmx"			'Alles was mit Filmproduktion zu tun hat
 Include "gamefunctions_debug.bmx"
 Include "gamefunctions_network.bmx"
 

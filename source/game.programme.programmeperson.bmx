@@ -1,5 +1,6 @@
 SuperStrict
 Import Brl.Map
+Import Brl.Math
 Import "Dig/base.util.mersenne.bmx"
 Import "game.gameobject.bmx"
 
@@ -211,17 +212,28 @@ Type TProgrammePerson extends TProgrammePersonBase
 	field dayOfBirth:string	= "0000-00-00"
 	field dayOfDeath:string	= "0000-00-00"
 	field gender:int = 0
+	field debut:Int	= 0	
 	field country:string = ""
 	'how prominent is a person 0-1.0 = 0-100%
 	field prominence:float = 0.0
+	'income +, reviews +++, bonus in some genres (drama!)
+	'directors, musicians: how good is he doing his "craftmanships"
 	field skill:float = 0.0
+	'income +, speed +++, bonus in some genres (action)
+	Field power:float = 0.0
+	'income +, speed +++, bonus in some genres (comedy)
+	Field humor:float = 0.0
+	'income +, reviews ++, bonus in some genres (love, drama, comedy)
+	Field charisma:float = 0.0
+	'income ++, speed +, bonus in some genres (erotic, love, action)	
+	Field appearance:float = 0.0
+	'income +++
+	'how famous is this person?
 	field fame:float = 0.0
+	'price manipulation. varying price but constant "quality" 
 	field priceModifier:Float = 1.0
+	'of interest for shows or special events / trigger for news / 0-1.0
 	field scandalizing:float = 0.0
-	field power:float = 0.0
-	field humor:float = 0.0
-	field charisma:float = 0.0
-	field appearance:float = 0.0
 	'at which genres this person is doing his best job
 	'TODO: maybe change this later to a general genreExperience-Container
 	'which increases over time
@@ -248,6 +260,24 @@ Type TProgrammePerson extends TProgrammePersonBase
 		if date = "" then date = "0000-00-00"
 		self.dayOfDeath = date
 	End Method
+
+
+	'the base fee when engaged as actor
+	Method GetActorBaseFee:Int()
+		'TODO: überarbeiten
+		'(50 - 650)
+		local sum:float = 50 + 100*(power + humor + charisma + appearance + 2*skill)
+		Local factor:Float = (fame*0.8 + scandalizing*0.2)
+		
+		Return 3000 + Floor(Int(800 * sum * factor * priceModifier)/100)*100
+	End Method
+	
+	'the base fee when engaged as a guest in a show
+	Method GetGuestFee:Int()
+		'TODO: überarbeiten
+		local sum:float = 100 + 200*(fame*2 + scandalizing*0.5 + humor*0.3 + charisma*0.3 + appearance*0.3 + skill)
+		Return 100 + Floor(Int(sum * priceModifier)/100)*100
+	End Method	
 End Type
 
 
