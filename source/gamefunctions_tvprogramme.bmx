@@ -2314,21 +2314,6 @@ Type TGuiAdContract extends TGUIGameListItem
 	End Method
 
 
-	Method DrawGhost()
-		'by default a shaded version of the gui element is drawn at the original position
-		self.SetOption(GUI_OBJECT_IGNORE_POSITIONMODIFIERS, TRUE)
-		SetAlpha 0.5
-
-		local backupAssetName:string = self.asset.getName()
-		self.asset = GetSpriteFromRegistry(assetNameDefault)
-		self.Draw()
-		self.asset = GetSpriteFromRegistry(backupAssetName)
-
-		SetAlpha 1.0
-		self.SetOption(GUI_OBJECT_IGNORE_POSITIONMODIFIERS, FALSE)
-	End Method
-
-
 	Method Draw:Int()
 		SetColor 255,255,255
 		local oldCol:TColor = new TColor.Get()

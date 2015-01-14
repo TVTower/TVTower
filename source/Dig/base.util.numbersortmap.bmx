@@ -7,7 +7,7 @@ Rem
 	====================================================================
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2014 Manuel Vögele
+	Copyright (C) 2014-2015 Manuel Vögele
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable

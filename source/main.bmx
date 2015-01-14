@@ -41,6 +41,7 @@ Import "basefunctions_network.bmx"
 Import "basefunctions.bmx"
 Import "basefunctions_screens.bmx"
 Import "common.misc.dialogue.bmx"
+Import "common.misc.gamelist.bmx"
 Import "game.world.bmx"
 Import "game.toastmessage.bmx"
 Import "game.figure.base.bmx"
@@ -2276,7 +2277,8 @@ Type TScreen_NetworkLobby Extends TGameScreen
 	Field guiButtonCreate:TGUIButton
 	Field guiButtonBack:TGUIButton
 	Field guiGameListWindow:TGUIGameWindow
-	Field guiGameList:TGUIGameList			'available games list
+	'available games list
+	Field guiGameList:TGUIGameEntryList
 
 
 	Method Create:TScreen_NetworkLobby(name:String)
@@ -2311,7 +2313,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 		guiGameListWindow.guiBackground.spriteAlpha = 0.5
 		Local guiGameListPanel:TGUIBackgroundBox = guiGameListWindow.AddContentBox(0,0,-1,-1)
 		'add list to the panel (which is located in the window
-		guiGameList	= New TGUIGameList.Create(New TVec2D.Init(0,0), New TVec2D.Init(guiGameListPanel.GetContentScreenWidth(),guiGameListPanel.GetContentScreenHeight()), name)
+		guiGameList	= New TGUIGameEntryList.Create(New TVec2D.Init(0,0), New TVec2D.Init(guiGameListPanel.GetContentScreenWidth(),guiGameListPanel.GetContentScreenHeight()), name)
 		guiGameList.SetBackground(Null)
 		guiGameList.SetPadding(0, 0, 0, 0)
 
@@ -3532,7 +3534,18 @@ Type AppEvents
 		EventManager.registerListenerFunction("guiModalWindow.onCreate", onGuiModalWindowCreate)
 		EventManager.registerListenerFunction("ToastMessageCollection.onAddMessage", onToastMessageCollectionAddMessage)
 		EventManager.registerListenerFunction("app.onStart", onAppStart)
+		EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverGUIObject)
 
+	End Function
+
+	Function onMouseOverGUIObject:Int(triggerEvent:TEventBase)
+		local obj:TGUIObject = TGUIObject(triggerEvent.GetSender())
+		if not obj then return false
+		
+		if obj.isDragable() and Game.cursorstate = 0
+			Game.cursorstate = 1
+		endif
+		if obj.isDragged() then Game.cursorstate = 2
 	End Function
 
 

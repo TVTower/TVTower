@@ -1,8 +1,38 @@
 Rem
-	===========================================================
+	====================================================================
 	Vector Classes (2D + 3D vectors/vecs)
-	===========================================================
-End Rem
+	====================================================================
+
+	Functionality for 2D and 3D vectors.
+
+	====================================================================
+	If not otherwise stated, the following code is available under the
+	following licence:
+
+	LICENCE: zlib/libpng
+
+	Copyright (C) 2002-2015 Ronny Otto, digidea.de
+
+	This software is provided 'as-is', without any express or
+	implied warranty. In no event will the authors be held liable
+	for any	damages arising from the use of this software.
+
+	Permission is granted to anyone to use this software for any
+	purpose, including commercial applications, and to alter it
+	and redistribute it freely, subject to the following restrictions:
+
+	1. The origin of this software must not be misrepresented; you
+	   must not claim that you wrote the original software. If you use
+	   this software in a product, an acknowledgment in the product
+	   documentation would be appreciated but is not required.
+
+	2. Altered source versions must be plainly marked as such, and
+	   must not be misrepresented as being the original software.
+
+	3. This notice may not be removed or altered from any source
+	   distribution.
+	====================================================================
+EndRem
 SuperStrict
 Import Brl.Math
 
@@ -14,20 +44,6 @@ Type TVec2D {_exposeToLua="selected"}
 	Method Init:TVec2D(x:Float=0.0, y:Float=0.0)
 		SetXY(x, y)
 		Return self
-	End Method
-
-
-	Method SerializeToString:string()
-		local xS:string = x; if float(int(x)) = x then xS = int(x)
-		local yS:string = y; if float(int(y)) = y then yS = int(y)
-		return xS+","+yS
-	End Method
-
-
-	Method DeSerializeFromString(text:String)
-		local vars:string[] = text.split(",")
-		if vars.length > 0 then x = float(vars[0])
-		if vars.length > 1 then y = float(vars[1])
 	End Method
 
 
@@ -271,22 +287,6 @@ Type TVec3D {_exposeToLua="selected"}
 	Method Init:TVec3D(_x:Float=0.0, _y:Float=0.0, _z:Float=0.0)
 		SetXYZ(_x, _y, _z)
 		Return self
-	End Method
-
-
-	Method SerializeToString:string()
-		local xS:string = x; if float(int(x)) = x then xS = int(x)
-		local yS:string = y; if float(int(y)) = y then yS = int(y)
-		local zS:string = z; if float(int(z)) = z then zS = int(z)
-		return xS+","+yS+","+zS
-	End Method
-
-
-	Method DeSerializeFromString(text:String)
-		local vars:string[] = text.split(",")
-		if vars.length > 0 then x = float(vars[0])
-		if vars.length > 1 then y = float(vars[1])
-		if vars.length > 2 then z = float(vars[2])
 	End Method
 
 

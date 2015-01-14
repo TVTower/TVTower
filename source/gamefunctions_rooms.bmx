@@ -861,7 +861,7 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		'===== REGISTER EVENTS =====
 		'we want to know if we hover a specific block - to show a datasheet
-		EventManager.registerListenerFunction( "guiGameObject.OnMouseOver", onMouseOverProgrammeLicence, "TGUIProgrammeLicence" )
+		EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverProgrammeLicence, "TGUIProgrammeLicence" )
 		'drop programme ... so sell/buy the thing
 		EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropProgrammeLicence, "TGUIProgrammeLicence" )
 		'drop programme on dude - add back to player's collection
@@ -1271,7 +1271,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'is dragging even allowed? - eg. intercept if not enough money
 		EventManager.registerListenerFunction("guiobject.onDrag", onDragProgrammeLicence, "TGUIProgrammeLicence")
 		'we want to know if we hover a specific block - to show a datasheet
-		EventManager.registerListenerFunction("guiGameObject.OnMouseOver", onMouseOverProgrammeLicence, "TGUIProgrammeLicence")
+		EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverProgrammeLicence, "TGUIProgrammeLicence")
 		'drop on vendor - sell things
 		EventManager.registerListenerFunction("guiobject.onDropOnTarget", onDropProgrammeLicenceOnVendor, "TGUIProgrammeLicence")
 
@@ -1987,7 +1987,7 @@ Type RoomHandler_News extends TRoomHandler
 		EventManager.registerListenerFunction("programmecollection.addNews", onChangeNews )
 		EventManager.registerListenerFunction("programmecollection.removeNews", onChangeNews )
 		'we want to know if we hover a specific block
-		EventManager.registerListenerFunction("guiGameObject.OnMouseOver", onMouseOverNews, "TGUINews" )
+		EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverNews, "TGUINews" )
 
 		'for all news rooms - register if someone goes into the planner
 		local screen:TScreen = ScreenCollection.GetScreen("screen_newsstudio_newsplanner")
@@ -2576,7 +2576,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'drop on vendor - sell things
 		EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropContractOnVendor, "TGuiAdContract" )
 		'we want to know if we hover a specific block - to show a datasheet
-		EventManager.registerListenerFunction( "guiGameObject.OnMouseOver", onMouseOverContract, "TGuiAdContract" )
+		EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverContract, "TGuiAdContract" )
 		'figure leaves room - only without dragged blocks
 
 

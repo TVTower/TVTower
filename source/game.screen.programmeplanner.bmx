@@ -117,7 +117,7 @@ Type TScreenHandler_ProgrammePlanner
 		EventManager.registerListenerFunction("guiList.TryAddItem", onTryAddItemToSlotList, GuiListProgrammes)
 		EventManager.registerListenerFunction("guiList.TryAddItem", onTryAddItemToSlotList, GuiListAdvertisements)
 		'we want to know if we hover a specific block - to show a datasheet
-		EventManager.registerListenerFunction("guiGameObject.OnMouseOver", onMouseOverProgrammePlanElement, "TGUIProgrammePlanElement" )
+		EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverProgrammePlanElement, "TGUIProgrammePlanElement" )
 		'these lists want to delete the item if a right mouse click happens...
 		EventManager.registerListenerFunction("guiobject.onClick", onClickProgrammePlanElement, "TGUIProgrammePlanElement")
 		'handle dragging of dayChangeProgrammePlanElements (eg. when dropping an item on them)

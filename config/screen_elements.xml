@@ -81,6 +81,20 @@
 		</spritepack>
 
 
+		<!-- SCRIPT AGENCY -->
+		<spritepack name="gfx_screen_scriptagency_pack">
+ 			<url>res/gfx/scriptagency/screen_scriptagency_elements.png</url>
+			<children>
+				<child name="gfx_scripts_0_dragged"	x="0"	y="0"	w="15"	h="52" />
+				<child name="gfx_scripts_1_dragged"	x="15"	y="0"	w="15"	h="52" />
+				<child name="gfx_scripts_2_dragged"	x="30"	y="0"	w="15"	h="52" />
+
+				<child name="gfx_scripts_0"	x="0"	y="52"	w="34"	h="59" />
+				<child name="gfx_scripts_1"	x="15"	y="52"	w="34"	h="59" />
+				<child name="gfx_scripts_2"	x="30"	y="52"	w="34"	h="59" />
+			</children>
+		</spritepack>
+
 
 		<!-- MOVIEAGENCY -->
 		<spritepack name="screen_movieagency_elements">

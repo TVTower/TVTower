@@ -1,5 +1,6 @@
 Type TScript
 	Field id:String					= ""
+	Field owner:int = 0
 	Field title:string				= ""
 	Field description:string		= ""
 	Field ownProduction:Int			= false

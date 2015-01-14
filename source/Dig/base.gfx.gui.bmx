@@ -1590,16 +1590,15 @@ Type TGUIobject
 
 				'do not create "mouseover" for dragged objects
 				If Not isDragged()
-					'create events
-					'onmouseenter
+					'create event: onmouseenter
 					If mouseover = 0
-						EventManager.triggerEvent( TEventSimple.Create( "guiobject.OnMouseEnter", new TData, Self ) )
+						EventManager.triggerEvent( TEventSimple.Create( "guiobject.OnMouseEnter", null, Self ) )
 						mouseover = 1
 					EndIf
-					'onmousemove
-					EventManager.triggerEvent( TEventSimple.Create("guiobject.OnMouseOver", new TData, Self ) )
 					GUIManager.UpdateState_foundHoverObject = True
 				EndIf
+				'create event: onmouseover
+				EventManager.triggerEvent( TEventSimple.Create("guiobject.OnMouseOver", null, Self ) )
 
 				'somone decided to say the button is pressed above the object
 				If MouseIsDown
