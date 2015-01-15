@@ -177,36 +177,6 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Field cachedDirectors:TProgrammePersonBase[] {nosave}
 	Field genreDefinitionCache:TMovieGenreDefinition = Null {nosave}
 
-	Const TYPE_UNKNOWN:int		= 1
-	Const TYPE_EPISODE:int		= 2
-	Const TYPE_SERIES:int		= 4
-	Const TYPE_MOVIE:int		= 8
-	Const TYPE_COLLECTION:int	= 16
-
-	'Genereller Quotenbonus!
-	Const FLAG_LIVE:Int = 1
-	'Bonus bei Kindern / Jugendlichen. Malues bei Rentnern / Managern.
-	Const FLAG_ANIMATION:Int = 2
-	'Bonus bei Betty und bei Managern
-	Const FLAG_CULTURE:Int = 4
-	'Verringert die Nachteile des Filmalters. Bonus bei Rentnern.
-	'Höhere Serientreue bei Serien.
-	Const FLAG_CULT:Int = 8
-	'Bonus bei Arbeitslosen und Hausfrauen. Malus bei Arbeitnehmern und
-	'Managern. Trash läuft morgens und mittags gut => Bonus!
-	Const FLAG_TRASH:Int = 16
-	'Nochmal deutlich verringerter Preis. Verringert die Nachteile des
-	'Filmalters. Bonus bei Jugendlichen. Malus bei allen anderen
-	'Zielgruppen. Bonus in der Nacht!
-	Const FLAG_BMOVIE:Int = 32
-	'Kleiner Bonus für Jugendliche, Arbeitnehmer, Arbeitslose, (Männer).
-	'Kleiner Malus für Kinder, Hausfrauen, Rentner, (Frauen).
-	Const FLAG_XRATED:Int = 64
-	'Call-In-Shows
-	Const FLAG_PAID:Int = 128
-	'Ist ne Serie! Vielleicht besser als den ProgrammeType... so kann
-	'auch ne Reportage ne Serie sein.
-	Const FLAG_SERIES:Int = 256
 
 
 	Function Create:TProgrammeData(GUID:String, title:TLocalizedString, description:TLocalizedString, cast:TProgrammePersonJob[], country:String, year:Int, day:int=0, livehour:Int, Outcome:Float, review:Float, speed:Float, modifiers:TData, Genre:Int, blocks:Int, xrated:Int, programmeType:Int=1) {_private}
@@ -222,7 +192,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		obj.modifiers		= modifiers.Copy()
 		obj.genre			= Max(0,Genre)
 		obj.blocks			= blocks
-		obj.SetFlag(FLAG_XRATED, xrated)
+		obj.SetFlag(TVTProgrammeFlag.XRATED, xrated)
 		obj.country			= country
 		obj.cast			= cast
 		obj.year			= year
@@ -260,7 +230,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	'what to earn for each viewer
 	Method GetPerViewerRevenue:Float() {_exposeToLua}
 		local result:float = 0.0
-		If HasFlag(FLAG_PAID)
+		If HasFlag(TVTProgrammeFlag.PAID)
 			'leads to a maximum of "0.25 * (20+10)" if speed/review
 			'reached 100%
 			'-> 8 Euro per Viewer
@@ -416,14 +386,14 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Method GetGenreString:String(_genre:Int=-1)
 		If _genre < 0 Then _genre = self.genre
 		'eg. PROGRAMME_GENRE_ACTION
-		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetGenreStringID(Self.genre))
+		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetGenreStringID(_genre))
 	End Method
 
 
 	Method GetFlagsString:String(delimiter:string=" / ")
 		local result:String = ""
 		'checkspecific
-		local checkFlags:int[] = [FLAG_LIVE, FLAG_PAID]
+		local checkFlags:int[] = [TVTProgrammeFlag.LIVE, TVTProgrammeFlag.PAID]
 
 		'checkall
 		'local checkFlags:int[]
@@ -506,41 +476,41 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 
 	
 	Method IsLive:int()
-		return HasFlag(FLAG_LIVE)
+		return HasFlag(TVTProgrammeFlag.LIVE)
 	End Method
 	
 	
 	Method IsAnimation:Int()
-		return HasFlag(FLAG_ANIMATION)
+		return HasFlag(TVTProgrammeFlag.ANIMATION)
 	End Method
 	
 	
 	Method IsCulture:Int()
-		return HasFlag(FLAG_CULTURE)
+		return HasFlag(TVTProgrammeFlag.CULTURE)
 	End Method	
 		
 	
 	Method IsCult:Int()
-		return HasFlag(FLAG_CULT)
+		return HasFlag(TVTProgrammeFlag.CULT)
 	End Method
 	
 	
 	Method IsTrash:Int()
-		return HasFlag(FLAG_TRASH)
+		return HasFlag(TVTProgrammeFlag.TRASH)
 	End Method
 	
 	Method IsBMovie:Int()
-		return HasFlag(FLAG_BMOVIE)
+		return HasFlag(TVTProgrammeFlag.BMOVIE)
 	End Method
 	
 	
 	Method IsXRated:int()
-		return HasFlag(FLAG_XRATED)
+		return HasFlag(TVTProgrammeFlag.XRATED)
 	End Method
 
 
 	Method IsPaid:int()
-		return HasFlag(FLAG_PAID)
+		return HasFlag(TVTProgrammeFlag.PAID)
 	End Method
 
 
@@ -831,26 +801,26 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 
 	Method isReleased:int()
 		'call-in shows are kind of "live"
-		if HasFlag(FLAG_PAID) then return True
+		if HasFlag(TVTProgrammeFlag.PAID) then return True
 
 		return (year <= GetWorldTime().getYear() and releaseDay <= GetWorldTime().getDay())
 	End Method
 
 
 	Method isMovie:int()
-		return programmeType & TYPE_MOVIE
+		return programmeType & TVTProgrammeLicenceType.MOVIE
 	End Method
 
 	Method isSeries:int()
-		return (programmeType & TYPE_SERIES)
+		return (programmeType & TVTProgrammeLicenceType.SERIES)
 	End Method
 
 	Method isEpisode:int()
-		return (programmeType & TYPE_EPISODE)
+		return (programmeType & TVTProgrammeLicenceType.EPISODE)
 	End Method
 
 	Method isCollection:int()
-		return (programmeType & TYPE_COLLECTION)
+		return (programmeType & TVTProgrammeLicenceType.COLLECTION)
 	End Method
 
 	Method isType:int(typeID:int)

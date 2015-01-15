@@ -1,5 +1,6 @@
 SuperStrict
 Import Brl.Map
+Import "Dig/base.util.mersenne.bmx"
 
 Type TGameObjectCollection
 	Field entries:TMap = CreateMap()
@@ -18,6 +19,19 @@ Type TGameObjectCollection
 		Return TGameObject(entries.ValueForKey(GUID))
 	End Method
 
+
+	Method GetRandom:TGameObject()
+		local array:TGameObject[]
+		'create a full array containing all elements
+		For local obj:TGameObject = EachIn entries.Values()
+			array :+ [obj]
+		Next
+		if array.length = 0 then return Null
+		if array.length = 1 then return array[0]
+
+		Return array[(randRange(0, array.length-1))]
+	End Method
+	
 
 	Method GetCount:Int()
 		if entriesCount >= 0 then return entriesCount

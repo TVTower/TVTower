@@ -84,6 +84,7 @@ Type TPlayerFinance
 	Field income_programmeLicences:Int	= 0
 	Field income_ads:Int				= 0
 	Field income_callerRevenue:Int		= 0
+	Field income_scripts:Int	= 0
 	Field income_sponsorshipRevenue:Int	= 0
 	Field income_misc:Int				= 0
 	Field income_stations:Int			= 0
@@ -217,6 +218,17 @@ Type TPlayerFinance
 		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_SELL_STATION, +price).AddTo(playerID)
 
 		income_stations :+ price
+		AddIncome(price)
+		Return True
+	End Method
+	
+
+	Method SellScript:Int(price:Int)
+		TLogger.Log("TFinancial.SellScript()", "Player "+playerID+" sold a script for "+price, LOG_DEBUG)
+		'add this to our history
+		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_SELL_SCRIPT, +price).AddTo(playerID)
+
+		income_scripts :+ price
 		AddIncome(price)
 		Return True
 	End Method

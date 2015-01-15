@@ -215,7 +215,7 @@ Type TScreenHandler_Financials
 		'news: generate no income
 		'newsagencies: generate no income
 		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_stations), valueIncomeX, valueStartY + 6*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
-		'scripts: generate no income
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_scripts), valueIncomeX, valueStartY + 7*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
 		'actors and productionstuff: generate no income
 		'studios: generate no income
 		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_balanceInterest), valueIncomeX, valueStartY + 10*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)

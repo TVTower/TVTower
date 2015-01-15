@@ -160,7 +160,7 @@ Type TDatabaseLoader
 			modifiers.AddNumber("wearoff", wearoffModifier)
 			
 			local movieLicence:TProgrammeLicence = new TProgrammeLicence
-			movieLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, modifiers, Genre, duration, xrated, TProgrammeData.TYPE_MOVIE))
+			movieLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, modifiers, Genre, duration, xrated, TVTProgrammeLicenceType.MOVIE))
 
 			'convert old genre definition to new one
 			convertV2genreToV3(movieLicence.data)
@@ -221,7 +221,7 @@ Type TDatabaseLoader
 			'create a licence for that series - with title and series description
 			local seriesLicence:TProgrammeLicence = new TProgrammeLicence
 			'sets the "overview"-data of the series as series header
-			seriesLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, modifiers, Genre, duration, xrated, TProgrammeData.TYPE_SERIES))
+			seriesLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, modifiers, Genre, duration, xrated, TVTProgrammeLicenceType.SERIES))
 
 			'convert old genre definition to new one
 			convertV2genreToV3(seriesLicence.data)
@@ -270,7 +270,7 @@ Type TDatabaseLoader
 					modifiers.AddNumber("wearoff", wearoffModifier)
 
 					local episodeLicence:TProgrammeLicence = new TProgrammeLicence
-					episodeLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, modifiers, Genre, duration, xrated, TProgrammeData.TYPE_EPISODE))
+					episodeLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, modifiers, Genre, duration, xrated, TVTProgrammeLicenceType.EPISODE))
 					'add that episode to the series licence
 					seriesLicence.AddSubLicence(episodeLicence)
 
@@ -850,9 +850,9 @@ Type TDatabaseLoader
 		'the licenceType is adjusted as soon as "AddData" was used
 		'so correct it if needed
 		Select programmeType
-			case 1	 programmeData.programmeType = TProgrammeData.TYPE_MOVIE
-			case 2	 programmeData.programmeType = TProgrammeData.TYPE_SERIES
-			case 4	 programmeData.programmeType = TProgrammeData.TYPE_EPISODE
+			case 1	 programmeData.programmeType = TVTProgrammeLicenceType.MOVIE
+			case 2	 programmeData.programmeType = TVTProgrammeLicenceType.SERIES
+			case 4	 programmeData.programmeType = TVTProgrammeLicenceType.EPISODE
 		End Select
 
 
@@ -877,7 +877,7 @@ Type TDatabaseLoader
 		Next
 
 		if programmeLicence.isSeries() and programmeLicence.GetSubLicenceCount() = 0
-			programmeData.programmeType = TProgrammeData.TYPE_MOVIE
+			programmeData.programmeType = TVTProgrammeLicenceType.MOVIE
 			print "Series with 0 episodes found. Converted to movie: "+programmeLicence.GetTitle()
 		endif
 
@@ -922,7 +922,7 @@ Type TDatabaseLoader
 				data.genre = TVTProgrammeGenre.Western
 			case 8 'old LIVE
 				data.genre = TVTProgrammeGenre.Undefined
-				data.SetFlag(TProgrammeData.FLAG_LIVE)
+				data.SetFlag(TVTProgrammeFlag.LIVE)
 			case 9 'old KIDS
 				data.genre = TVTProgrammeGenre.Family
 			case 10 'old CARTOON
@@ -938,7 +938,7 @@ Type TDatabaseLoader
 			case 15 'old YELLOWPRESS
 				'hier sind nur "Trash"-Programme drin
 				data.genre = TVTProgrammeGenre.Undefined
-				data.SetFlag(TProgrammeData.FLAG_TRASH)
+				data.SetFlag(TVTProgrammeFlag.TRASH)
 			case 17 'old SHOW
 				data.genre = TVTProgrammeGenre.Show
 			case 18 'old MONUMENTAL
@@ -947,7 +947,7 @@ Type TDatabaseLoader
 				data.genre = TVTProgrammeGenre.Undefined
 			case 20 'old CALLINSHOW
 				data.genre = TVTProgrammeGenre.Undefined
-				data.SetFlag(TProgrammeData.FLAG_PAID)
+				data.SetFlag(TVTProgrammeFlag.PAID)
 			default
 				data.genre = TVTProgrammeGenre.Undefined
 		End Select

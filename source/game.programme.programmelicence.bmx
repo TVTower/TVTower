@@ -149,11 +149,11 @@ Type TProgrammeLicenceCollection
 	'also just access "progList" in all cases...
 	Method _GetList:TList(programmeType:int=0)
 		Select programmeType
-			case TProgrammeData.TYPE_MOVIE
+			case TVTProgrammeLicenceType.MOVIE
 				return movies
-			case TProgrammeData.TYPE_SERIES
+			case TVTProgrammeLicenceType.SERIES
 				return series
-			case TProgrammeData.TYPE_COLLECTION
+			case TVTProgrammeLicenceType.COLLECTION
 				return collections
 			default
 				return licences
@@ -306,7 +306,7 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	'the latest hour-(from-start) one of the planned programmes ends
 	Field latestPlannedEndHour:int = -1
 	'series are parent of episodes
-	Field parentLicence:TProgrammeLicence
+	Field parentLicenceGUID:string = ""
 	'other licences this licence covers
 	Field subLicences:TProgrammeLicence[]
 	'store stats for each owner
@@ -356,7 +356,7 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 		'as each licence is individual we easily can set the main licence
 		'as parent (so sublicences can ask for sibling licences).
-		licence.parentLicence = self
+		licence.parentLicenceGUID = self.GetGUID()
 
 		'add to array of sublicences
 		subLicences :+ [licence]
@@ -443,7 +443,7 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 	'buy means pay and set owner, but in players collection only if left the room!!
 	Method Buy:Int(playerID:Int=-1)
-		local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(playerID, -1)
+		local finance:TPlayerFinance = GetPlayerFinance(playerID, -1)
 		if not finance then return False
 
 		If finance.PayProgrammeLicence(getPrice(), self)
@@ -455,8 +455,8 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	Method GetParentLicence:TProgrammeLicence() {_exposeToLua}
-		if not self.parentLicence then return self
-		return self.parentLicence
+		if not self.parentLicenceGUID then return self
+		return GetProgrammeLicenceCollection().GetByGUID(self.parentLicenceGUID)
 	End Method
 
 
@@ -471,14 +471,14 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 	'returns the next licence of a licences parent sublicences
 	Method GetNextSubLicence:TProgrammeLicence() {_exposeToLua}
-		if not parentLicence then return Null
+		if not parentLicenceGUID then return Null
 
 		'find my position and add 1
-		local nextArrayIndex:int = parentLicence.GetSubLicencePosition(self) + 1
+		local nextArrayIndex:int = GetParentLicence().GetSubLicencePosition(self) + 1
 		'if we are at the last position, return the first one
-		if nextArrayIndex >= parentLicence.GetSubLicenceCount() then nextArrayIndex = 0
+		if nextArrayIndex >= GetParentLicence().GetSubLicenceCount() then nextArrayIndex = 0
 
-		return parentLicence.GetSubLicenceAtIndex(nextArrayIndex)
+		return GetParentLicence().GetSubLicenceAtIndex(nextArrayIndex)
 	End Method
 
 
@@ -673,7 +673,7 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 			endif
 		endif
 
-		If data.HasFlag(TProgrammeData.FLAG_PAID) then showEarnInfo = True
+		If data.HasFlag(TVTProgrammeFlag.PAID) then showEarnInfo = True
 
 'debug
 'showPlannedWarning = True
@@ -743,10 +743,10 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		elseif isEpisode()
 			'title of "series"
 			'default is size "12" so resize to 13
-			GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(parentLicence.GetTitle(), currX + 6, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+			GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetParentLicence().GetTitle(), currX + 6, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
 			currY :+ 18
 			'episode num/max + episode title
-			fontNormal.drawBlock((parentLicence.GetSubLicencePosition(self)+1) + "/" + parentLicence.GetSubLicenceCount() + ": " + data.GetTitle(), currX + 6, currY, 280, 15, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+			fontNormal.drawBlock((GetParentLicence().GetSubLicencePosition(self)+1) + "/" + GetParentLicence().GetSubLicenceCount() + ": " + data.GetTitle(), currX + 6, currY, 280, 15, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
 			currY :+ 16
 		else ' = if isMovie()
 			'default is size "12" so resize to 13
@@ -757,7 +757,7 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		'country + genre
 		'country/year + genre   - for non-callin-shows
 		local countryYear:String = data.country
-		If not data.HasFlag(TProgrammeData.FLAG_PAID)
+		If not data.HasFlag(TVTProgrammeFlag.PAID)
 			countryYear :+ " " + data.year
 		endif
 		fontNormal.drawBlock(countryYear, currX + 6, currY, 65, 16, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
@@ -1097,7 +1097,7 @@ Type TProgrammeLicenceFilter
 		filters = CreateList()
 
 		'flags having custom categories
-		local categoryFlags:int = TProgrammeData.FLAG_PAID | TProgrammeData.FLAG_LIVE | TprogrammeData.FLAG_TRASH
+		local categoryFlags:int = TVTProgrammeFlag.PAID | TVTProgrammeFlag.LIVE | TVTProgrammeFlag.TRASH
 
 		CreateVisible().AddNotFlag(categoryFlags).AddGenres([1])			'adventure
 		CreateVisible().AddNotFlag(categoryFlags).AddGenres([2])			'action
@@ -1118,9 +1118,9 @@ Type TProgrammeLicenceFilter
 		CreateVisible().AddNotFlag(categoryFlags).AddGenres([0])			'undefined
 		'show/event -> all categories
 		CreateVisible().AddNotFlag(categoryFlags).AddGenres([100, 101, 102, 200, 201, 202, 203, 204]).SetCaption("PROGRAMME_GENRE_SHOW_AND_EVENTS")
-		CreateVisible().AddFlag(TProgrammeData.FLAG_LIVE)					'live
-		CreateVisible().AddFlag(TProgrammeData.FLAG_TRASH).AddGenres([301])	'Trash + Yellow Press
-		CreateVisible().AddFlag(TProgrammeData.FLAG_PAID)					'Call-In
+		CreateVisible().AddFlag(TVTProgrammeFlag.LIVE)						'live
+		CreateVisible().AddFlag(TVTProgrammeFlag.TRASH).AddGenres([301])	'Trash + Yellow Press
+		CreateVisible().AddFlag(TVTProgrammeFlag.PAID)						'Call-In
 	End Function
 
 

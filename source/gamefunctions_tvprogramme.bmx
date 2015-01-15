@@ -373,10 +373,10 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 				if TProgramme(broadcastMaterial)
 					Local programme:TProgramme	= TProgramme(broadcastMaterial)
 					text = programme.data.getGenreString()
-					if programme.isSeries()
+					if programme.isSeries() and programme.licence.parentLicenceGUID
 						'use the genre of the parent
-						text = programme.licence.parentLicence.data.getGenreString()
-						title = programme.licence.parentLicence.GetTitle()
+						text = programme.licence.GetParentLicence().data.getGenreString()
+						title = programme.licence.GetParentLicence().GetTitle()
 						'uncomment if you wish episode number in title
 						'titleAppend = " (" + programme.GetEpisodeNumber() + "/" + programme.GetEpisodeCount() + ")"
 						text:+"-"+GetLocale("SERIES_SINGULAR")
@@ -2339,7 +2339,7 @@ End Type
 
 
 
-Type TGUIAdContractSlotList extends TGUISlotList
+Type TGUIAdContractSlotList extends TGUIGameSlotList
 
     Method Create:TGUIAdContractSlotList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
@@ -2354,52 +2354,5 @@ Type TGUIAdContractSlotList extends TGUISlotList
 		Next
 		return FALSE
 	End Method
-
-
-	'override to add sort
-	Method AddItem:int(item:TGUIobject, extra:object=null)
-		if super.AddItem(item, extra)
-			GUIManager.sortLists()
-			return TRUE
-		endif
-		return FALSE
-	End Method
-
-
-	'override default event handler
-	Function onDropOnTarget:int( triggerEvent:TEventBase )
-		local item:TGUIListItem = TGUIListItem(triggerEvent.GetSender())
-		if item = Null then return FALSE
-
-		'ATTENTION:
-		'Item is still in dragged state!
-		'Keep this in mind when sorting the items
-
-		'only handle if coming from another list ?
-		local parent:TGUIobject = item._parent
-		if TGUIPanel(parent) then parent = TGUIPanel(parent)._parent
-		local fromList:TGUIListBase = TGUIListBase(parent)
-		if not fromList then return FALSE
-
-		local toList:TGUIListBase = TGUIListBase(triggerEvent.GetReceiver())
-		if not toList then return FALSE
-
-		local data:TData = triggerEvent.getData()
-		if not data then return FALSE
-
-		'move item if possible
-		fromList.removeItem(item)
-		'try to add the item, if not able, readd
-		if not toList.addItem(item, data)
-			if fromList.addItem(item) then return TRUE
-
-			'not able to add to "toList" but also not to "fromList"
-			'so set veto and keep the item dragged
-			triggerEvent.setVeto()
-		endif
-
-
-		return TRUE
-	End Function
 End Type
 

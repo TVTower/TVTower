@@ -138,15 +138,39 @@ End Type
 
 
 Type TVTProgrammeFlag
-	const Live:Int = 1		'Genereller Quotenbonus!
-	const Animation:Int = 2	'Bonus bei Kindern / Jugendlichen. Malues bei Rentnern / Managern.
-	const Culture:Int = 4	'Bonus bei Betty und bei Managern
-	const Cult:Int = 8		'Verringert die Nachteile des Filmalters. Bonus bei Rentnern. Höhere Serientreue bei Serien.
-	const Trash:Int = 16	'Bonus bei Arbeitslosen und Hausfrauen. Malus bei Arbeitnehmern und Managern. Trash läuft morgens und mittags gut => Bonus!
-	const BMovie:Int = 32	'Nochmal deutlich verringerter Preis. Verringert die Nachteile des Filmalters. Bonus bei Jugendlichen. Malus bei allen anderen Zielgruppen. Bonus in der Nacht!
-	const XRated:Int = 64	'Kleiner Bonus für Jugendliche, Arbeitnehmer, Arbeitslose, (Männer). Kleiner Malus für Kinder, Hausfrauen, Rentner, (Frauen).
-	const Paid:Int = 128	'Call-In-Shows
-	const Series:Int = 256	'Ist ne Serie! Vielleicht besser als den ProgrammeType... so kann auch ne Reportage ne Serie sein.
+	'Genereller Quotenbonus!
+	Const LIVE:Int = 1
+	'Bonus bei Kindern / Jugendlichen. Malues bei Rentnern / Managern.
+	Const ANIMATION:Int = 2
+	'Bonus bei Betty und bei Managern
+	Const CULTURE:Int = 4
+	'Verringert die Nachteile des Filmalters. Bonus bei Rentnern.
+	'Höhere Serientreue bei Serien.
+	Const CULT:Int = 8
+	'Bonus bei Arbeitslosen und Hausfrauen. Malus bei Arbeitnehmern und
+	'Managern. Trash läuft morgens und mittags gut => Bonus!
+	Const TRASH:Int = 16
+	'Nochmal deutlich verringerter Preis. Verringert die Nachteile des
+	'Filmalters. Bonus bei Jugendlichen. Malus bei allen anderen
+	'Zielgruppen. Bonus in der Nacht!
+	Const BMOVIE:Int = 32
+	'Kleiner Bonus für Jugendliche, Arbeitnehmer, Arbeitslose, (Männer).
+	'Kleiner Malus für Kinder, Hausfrauen, Rentner, (Frauen).
+	Const XRATED:Int = 64
+	'Call-In-Shows
+	Const PAID:Int = 128
+	'Ist ne Serie! Vielleicht besser als den ProgrammeType... so kann
+	'auch ne Reportage ne Serie sein.
+	Const SERIES:Int = 256
+End Type
+
+
+Type TVTProgrammeLicenceType
+	Const UNKNOWN:int    = 1
+	Const EPISODE:int    = 2
+	Const SERIES:int     = 4
+	Const MOVIE:int      = 8
+	Const COLLECTION:int = 16
 End Type
 
 

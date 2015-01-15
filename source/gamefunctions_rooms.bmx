@@ -642,13 +642,20 @@ Type TRoomHandler
 	Method onLeaveRoom:int( triggerEvent:TEventBase ); return True; End Method
 	Method onEnterRoom:int( triggerEvent:TEventBase ); return True; End Method
 	Method onTryLeaveRoom:int( triggerEvent:TEventBase ); return True; End Method
-	Method onForcefullyLeaveRoom:int( triggerEvent:TEventBase ); return True; End Method
 	Method onSaveGameBeginLoad:int( triggerEvent:TEventBase ); return True; End Method
 	Method onSaveGameLoad:int( triggerEvent:TEventBase ); return True; End Method
 	'called to create all needed things (GUI) AND Reset
 	Method Initialize:int() abstract
 	'called to return to default state
 	'Method Reset() abstract
+
+	Method onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
+		'only handle the players figure
+		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
+		AbortScreenActions()
+		return True;
+	End Method
+
 
 	'call this function if the visual user actions need to get aborted
 	Method AbortScreenActions:Int(); End Method
@@ -945,10 +952,7 @@ Type RoomHandler_Archive extends TRoomHandler
 
 	'called as soon as a players figure is forced to leave the room
 	Method onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
-		'only handle the players figure
-		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
-
-		AbortScreenActions()
+		if not super.onForcefullyLeaveRoom(triggerEvent) then return False
 
 		'instead of leaving the room and accidentially removing programmes
 		'from the plan we readd all licences from the suitcase back to
@@ -1354,14 +1358,6 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	End Method
 
 
-	'called as soon as a players figure is forced to leave a room
-	Method onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
-		'only handle the players figure
-		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
-
-		AbortScreenActions()
-	End Method
-
 	'===================================
 	'Movie Agency: common TFunctions
 	'===================================
@@ -1603,9 +1599,9 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 				'if exists...skip it
 				if lists[j][i] then continue
 
-				if lists[j] = listMoviesGood then licence = GetProgrammeLicenceCollection().GetRandomWithPrice(75000,-1, TProgrammeData.TYPE_MOVIE)
-				if lists[j] = listMoviesCheap then licence = GetProgrammeLicenceCollection().GetRandomWithPrice(0,75000, TProgrammeData.TYPE_MOVIE)
-				if lists[j] = listSeries then licence = GetProgrammeLicenceCollection().GetRandom(TProgrammeData.TYPE_SERIES)
+				if lists[j] = listMoviesGood then licence = GetProgrammeLicenceCollection().GetRandomWithPrice(75000,-1, TVTProgrammeLicenceType.MOVIE)
+				if lists[j] = listMoviesCheap then licence = GetProgrammeLicenceCollection().GetRandomWithPrice(0,75000, TVTProgrammeLicenceType.MOVIE)
+				if lists[j] = listSeries then licence = GetProgrammeLicenceCollection().GetRandom(TVTProgrammeLicenceType.SERIES)
 
 				'add new licence at slot
 				if licence
@@ -2029,15 +2025,6 @@ Type RoomHandler_News extends TRoomHandler
 		draggedGuiNews = null
 
 		RemoveAllGuiElements()
-	End Method
-
-
-	'called as soon as a players figure is forced to leave the room
-	Method onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
-		'only handle the players figure
-		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
-
-		AbortScreenActions()
 	End Method
 
 
@@ -2476,7 +2463,7 @@ End Type
 
 
 
-'Movie agency
+'Ad agency
 Type RoomHandler_AdAgency extends TRoomHandler
 	Global hoveredGuiAdContract:TGuiAdContract = null
 	Global draggedGuiAdContract:TGuiAdContract = null
@@ -3341,6 +3328,702 @@ endrem
 End Type
 
 
+'Script agency
+Type RoomHandler_ScriptAgency extends TRoomHandler
+	Global hoveredGuiScript:TGuiScript = null
+	Global draggedGuiScript:TGuiScript = null
+
+	'allows registration of drop-event
+	Global VendorArea:TGUISimpleRect
+	'arrays holding the different blocks
+	'we use arrays to find "free slots" and set to a specific slot
+	Field listNormal:TScript[]
+	Field listNormal2:TScript[]
+
+	'graphical lists for interaction with blocks
+	Global haveToRefreshGuiElements:int = TRUE
+	Global GuiListNormal:TGUIScriptSlotList[]
+	Global GuiListNormal2:TGUIScriptSlotList = null
+	Global GuiListSuitcase:TGUIScriptSlotList = null
+
+	'configuration
+	Global suitcasePos:TVec2D = new TVec2D.Init(370,270)
+	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(19,32)
+	Global scriptsPerLine:int = 1
+	Global scriptsNormalAmount:int = 5
+	Global scriptsNormal2Amount:int	= 2
+
+	Global _instance:RoomHandler_ScriptAgency
+	Global _initDone:int = FALSE
+
+
+	Function GetInstance:RoomHandler_ScriptAgency()
+		if not _instance then _instance = new RoomHandler_ScriptAgency
+		if not _initDone then _instance.Initialize()
+		return _instance
+	End Function
+
+
+	Method Initialize:int()
+		if _initDone then return FALSE
+		_initDone = true
+
+		'===== CREATE/RESIZE LISTS =====
+
+		listNormal = listNormal[..scriptsNormalAmount]
+		listNormal2 = listNormal2[..scriptsNormal2Amount]
+
+
+		'===== CREATE GUI LISTS =====
+		GuiListNormal	= GuiListNormal[..3]
+		local sprite:TSprite = GetSpriteFromRegistry("gfx_scripts_0")
+		for local i:int = 0 to GuiListNormal.length-1
+			GuiListNormal[i] = new TGUIScriptSlotList.Create(new TVec2D.Init(130 + (GuiListNormal.length-1 - i)*18, 170 + i*12), new TVec2D.Init(17, 52), "adagency")
+			GuiListNormal[i].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+			GuiListNormal[i].SetItemLimit( scriptsNormalAmount / GuiListNormal.length  )
+			GuiListNormal[i].Resize(sprite.area.GetW() * (scriptsNormalAmount / GuiListNormal.length), sprite.area.GetH() )
+			GuiListNormal[i].SetSlotMinDimension(sprite.area.GetW(), sprite.area.GetH())
+			GuiListNormal[i].SetAcceptDrop("TGuiScript")
+			GuiListNormal[i].setZindex(i)
+		Next
+
+		GuiListSuitcase	= new TGUIScriptSlotlist.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200,80), "scriptagency")
+		GuiListSuitcase.SetAutofillSlots(true)
+
+		GuiListNormal2 = new TGUIScriptSlotlist.Create(new TVec2D.Init(34, 52), new TVec2D.Init(10 + sprite.area.GetW()*scriptsNormal2Amount, sprite.area.GetH()), "scriptagency")
+		GuiListNormal2.setEntriesBlockDisplacement(18, 12)
+
+		GuiListNormal2.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+		GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+
+		GuiListNormal2.SetItemLimit(listNormal2.length)
+		GuiListSuitcase.SetItemLimit(GameRules.maxScriptsInSuitcase)
+
+		GuiListNormal2.SetSlotMinDimension(sprite.area.GetW(), sprite.area.GetH())
+		GuiListSuitcase.SetSlotMinDimension(sprite.area.GetW(), sprite.area.GetH())
+
+		GuiListNormal2.SetEntryDisplacement( -scriptsNormal2Amount * GuiListNormal[0]._slotMinDimension.x, 5)
+		GuiListSuitcase.SetEntryDisplacement( 0, 0 )
+
+		GuiListNormal2.SetAcceptDrop("TGuiScript")
+		GuiListSuitcase.SetAcceptDrop("TGuiScript")
+
+		VendorArea = new TGUISimpleRect.Create(new TVec2D.Init(386, 110), new TVec2D.Init(GetSpriteFromRegistry("gfx_screen_adagency_drophint").area.GetW(), GetSpriteFromRegistry("gfx_screen_adagency_drophint").area.GetH()), "scriptagency" )
+		'vendor should accept drop - else no recognition
+		VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
+
+
+		'===== REGISTER EVENTS =====
+
+		'to react on changes in the programmeCollection (eg. contract finished)
+		EventManager.registerListenerFunction( "programmecollection.addScript", onChangeProgrammeCollection )
+		EventManager.registerListenerFunction( "programmecollection.removeScript", onChangeProgrammeCollection )
+
+		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
+		'is only emitted if the drop is successful (so it "visually" happened)
+		'drop ... to vendor or suitcase
+		EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropScript, "TGuiScript" )
+		'drop on vendor - sell things
+		EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropScriptOnVendor, "TGuiScript" )
+		'we want to know if we hover a specific block - to show a datasheet
+		EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverScript, "TGuiScript" )
+
+		'this lists want to delete the item if a right mouse click happens...
+		EventManager.registerListenerFunction("guiobject.onClick", onClickScript, "TGuiScript")
+
+
+		GetRoomHandlerCollection().SetHandler("scriptagency", self)
+	End Method
+
+
+	Method AbortScreenActions:Int()
+		if draggedGuiScript
+			if KeyManager.IsHit(KEY_ESCAPE)
+				'try to drop the licence back
+				draggedGuiScript.dropBackToOrigin()
+				draggedGuiScript = null
+				hoveredGuiScript = null
+			endif
+		endif
+
+		'change look to "stand on furniture look"
+		For local i:int = 0 to GuiListNormal.length-1
+			For Local obj:TGUIGameListItem = EachIn GuiListNormal[i]._slots
+				obj.InitAssets(obj.getAssetName(-1, FALSE), obj.getAssetName(-1, TRUE))
+			Next
+		Next
+		For Local obj:TGUIGameListItem = EachIn GuiListNormal2._slots
+			obj.InitAssets(obj.getAssetName(-1, FALSE), obj.getAssetName(-1, TRUE))
+		Next
+
+	End Method
+
+
+	Method onSaveGameBeginLoad:int( triggerEvent:TEventBase )
+		'as soon as a savegame gets loaded, we remove every
+		'guiElement this room manages
+		'Afterwards we force the room to update the gui elements
+		'during next update.
+		'Not RefreshGUIElements() in this function as the
+		'new contracts are not loaded yet
+
+		'We cannot rely on "onEnterRoom" as we could have saved
+		'in this room
+		GetInstance().RemoveAllGuiElements()
+
+		haveToRefreshGuiElements = true
+	End Method
+	
+
+	'run AFTER the savegame data got loaded
+	'handle faulty adcontracts (after data got loaded)
+	Method onSaveGameLoad:int( triggerEvent:TEventBase )
+		'in the case of being empty (should not happen)
+		GetInstance().RefillBlocks()
+	End Method
+
+
+	Method onEnterRoom:int( triggerEvent:TEventBase )
+		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
+		if not figure then return FALSE
+
+		'only interested in player figures (they cannot be in one room
+		'simultaneously, others like postman should not refill while you
+		'are in)
+		if not figure.playerID then return False
+
+		if figure = GetPlayerBase().GetFigure()
+			GetInstance().ResetScriptOrder()
+		endif
+
+		'refill the empty blocks, also sets haveToRefreshGuiElements=true
+		'so next call the gui elements will be redone
+		GetInstance().ReFillBlocks()
+	End Method
+
+
+	'override
+	Method onTryLeaveRoom:int( triggerEvent:TEventBase )
+		'non players can always leave
+		local figure:TFigure = TFigure(triggerEvent.GetSender())
+		if not figure or not figure.playerID then return FALSE
+
+		'do not allow leaving as long as we have a dragged block
+		if draggedGuiScript
+			triggerEvent.setVeto()
+			return FALSE
+		endif
+		return TRUE
+	End Method
+
+
+	'add back the scripts from the suitcase
+	'also fill empty blocks, remove gui elements
+	Method onLeaveRoom:int( triggerEvent:TEventBase )
+		'non players can always leave
+		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
+		if not figure or not figure.playerID then return FALSE
+
+		'sign all new contracts
+		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(figure.playerID)
+		For Local script:TScript = EachIn programmeCollection.suitcaseScripts
+			'if successful, this also removes the script from the suitcase
+			programmeCollection.AddScript(script)
+		Next
+
+		return TRUE
+	End Method
+
+
+
+	'===================================
+	'Script Agency: common Functions
+	'===================================
+
+	Method GetScriptsInStock:int()
+		Local ret:Int = 0
+		local lists:TScript[][] = [listNormal,listNormal2]
+		For local j:int = 0 to lists.length-1
+			For Local script:TScript = EachIn lists[j]
+				If script Then ret:+1
+			Next
+		Next
+		return ret
+	End Method
+
+
+	Method GetScriptByPosition:TScript(position:int)
+		if position > GetScriptsInStock() then return null
+		local currentPosition:int = 0
+		local lists:TScript[][] = [listNormal,listNormal2]
+		For local j:int = 0 to lists.length-1
+			For Local script:TScript = EachIn lists[j]
+				if script
+					if currentPosition = position then return script
+					currentPosition:+1
+				endif
+			Next
+		Next
+		return null
+	End Method
+
+
+	Method HasScript:int(script:TScript)
+		local lists:TScript[][] = [listNormal,listNormal2]
+		For local j:int = 0 to lists.length-1
+			For Local s:TScript = EachIn lists[j]
+				if s = script then return TRUE
+			Next
+		Next
+		return FALSE
+	End Method
+
+
+	Method GetScriptByID:TScript(scriptID:int)
+		local lists:TScript[][] = [listNormal,listNormal2]
+		For local j:int = 0 to lists.length-1
+			For Local script:TScript = EachIn lists[j]
+				if script and script.id = scriptID then return script
+			Next
+		Next
+		return null
+	End Method
+
+
+	Method SellScriptToPlayer:int(script:TScript, playerID:int)
+		if script.owner = playerID then return FALSE
+
+		if not GetPlayerCollection().IsPlayer(playerID) then return FALSE
+
+		'try to add to suitcase of player
+		if not GetPlayerProgrammeCollection(playerID).AddScriptToSuitcase(script)
+			return FALSE
+		endif
+
+		'remove from agency's lists
+		local lists:TScript[][] = [listNormal2,listNormal]
+		For local j:int = 0 to lists.length-1
+			For local i:int = 0 to lists[j].length-1
+				if lists[j][i] = script then lists[j][i] = null
+			Next
+		Next
+
+		return TRUE
+	End Method
+
+
+	Method BuyScriptFromPlayer:int(script:TScript)
+		local buy:int = (script.owner > 0)
+
+		'remove from player (lists and suitcase) - and give him money
+		if GetPlayerCollection().IsPlayer(script.owner)
+			GetPlayerProgrammeCollection(script.owner).RemoveScript(script, TRUE)
+		endif
+
+		'add to agency's lists - if not existing yet
+		if not HasScript(script) then AddScript(script)
+
+		return TRUE
+	End Method
+
+
+	Method ResetScriptOrder:int()
+		local scripts:TList = CreateList()
+		for local script:TScript = eachin listNormal
+			scripts.addLast(script)
+		Next
+		for local script:TScript = eachin listNormal2
+			scripts.addLast(script)
+		Next
+		listNormal = new TScript[listNormal.length]
+		listNormal2 = new TScript[listNormal2.length]
+
+		scripts.sort()
+
+		'add again - so it gets sorted
+		for local script:TScript = eachin scripts
+			AddScript(script)
+		Next
+
+		RemoveAllGuiElements()
+	End Method
+
+
+	Method RemoveScript:int(script:TScript)
+		local foundScript:int = FALSE
+		'remove from agency's lists
+		local lists:TScript[][] = [listNormal,listNormal2]
+		For local j:int = 0 to lists.length-1
+			For local i:int = 0 to lists[j].length-1
+				if lists[j][i] = script
+					lists[j][i] = null
+					foundScript = True
+				endif
+			Next
+		Next
+
+		return foundScript
+	End Method
+
+
+	Method AddScript:int(script:TScript)
+		'try to fill the script into the corresponding list
+		'we use multiple lists - if the first is full, try second
+		local lists:TScript[][]
+
+		lists = [listNormal,listNormal2]
+
+		'loop through all lists - as soon as we find a spot
+		'to place the programme - do so and return
+		for local j:int = 0 to lists.length-1
+			for local i:int = 0 to lists[j].length-1
+				if lists[j][i] then continue
+				script.owner = -1
+				lists[j][i] = script
+				return TRUE
+			Next
+		Next
+
+		'there was no empty slot to place that script
+		'so just give it back to the pool
+		script.owner = 0
+
+		return FALSE
+	End Method
+
+
+
+	'deletes all gui elements (eg. for rebuilding)
+	Function RemoveAllGuiElements:int()
+		For local i:int = 0 to GuiListNormal.length-1
+			GuiListNormal[i].EmptyList()
+		Next
+		GuiListNormal2.EmptyList()
+		GuiListSuitcase.EmptyList()
+		For local guiScript:TGUIScript = eachin GuiManager.listDragged
+			guiScript.remove()
+			guiScript = null
+		Next
+
+		hoveredGuiScript = null
+		draggedGuiScript = null
+
+		'to recreate everything during next update...
+		haveToRefreshGuiElements = TRUE
+	End Function
+
+
+	Method RefreshGuiElements:int()
+		'===== REMOVE UNUSED =====
+		'remove gui elements with contracts the player does not have any longer
+
+		'suitcase
+		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(GetPlayer().playerID)
+		For local guiScript:TGUIScript = eachin GuiListSuitcase._slots
+			'if the player has this script in suitcase or list, skip deletion
+			if programmeCollection.HasScript(guiScript.script) then continue
+			if programmeCollection.HasScriptInSuitcase(guiScript.script) then continue
+
+			guiScript.remove()
+			guiScript = null
+		Next
+		'agency lists
+		For local i:int = 0 to GuiListNormal.length-1
+			For local guiScript:TGUIScript = eachin GuiListNormal[i]._slots
+				if not HasScript(guiScript.script)
+					guiScript.remove()
+					guiScript = null
+				endif
+			Next
+		Next
+		For local guiScript:TGUIScript = eachin GuiListNormal2._slots
+			if not HasScript(guiScript.script)
+				guiScript.remove()
+				guiScript = null
+			endif
+		Next
+
+
+		'===== CREATE NEW =====
+		'create missing gui elements for all contract-lists
+
+		'normal list
+		For local script:TScript = eachin listNormal
+			if not script then continue
+			local scriptAdded:int = FALSE
+
+			'search the script in all of our lists...
+			local scriptFound:int = FALSE
+			For local i:int = 0 to GuiListNormal.length-1
+				if scriptFound then continue
+				if GuiListNormal[i].ContainsScript(script) then scriptFound = True
+			Next
+
+			'try to fill in one of the normalList-Parts
+			if not scriptFound
+				For local i:int = 0 to GuiListNormal.length-1
+					if scriptAdded then continue
+					if GuiListNormal[i].ContainsScript(script) then scriptAdded = True; Continue
+					if GuiListNormal[i].getFreeSlot() < 0 then continue
+					local block:TGUIScript = new TGUIScript.CreateWithScript(script)
+					'change look
+					block.InitAssets(block.getAssetName(-1, FALSE), block.getAssetName(-1, TRUE))
+
+					'print "ADD guiListNormal"+i+" missed new script: "+block.script.id
+
+					GuiListNormal[i].addItem(block, "-1")
+					scriptAdded = true
+				Next
+				if not scriptAdded
+					TLogger.log("ScriptAgency.RefreshGuiElements", "script exists but does not fit in GuiListNormal - script removed.", LOG_ERROR)
+					RemoveScript(script)
+				endif
+			endif
+		Next
+
+		'normal2 list
+		For local script:TScript = eachin listNormal2
+			if not script then continue
+			if GuiListNormal2.ContainsScript(script) then continue
+			local block:TGUIScript = new TGUIScript.CreateWithScript(script)
+			'change look
+			block.InitAssets(block.getAssetName(-1, FALSE), block.getAssetName(-1, TRUE))
+
+			'print "ADD guiListNormal2 missed new script: "+block.script.id
+
+			GuiListNormal2.addItem(block, "-1")
+		Next
+
+		'create missing gui elements for the players suitcase scripts
+		For local script:TScript = eachin programmeCollection.suitcaseScripts
+			if guiListSuitcase.ContainsScript(script) then continue
+			local block:TGUIScript = new TGUIScript.CreateWithScript(script)
+			'change look
+			block.InitAssets(block.getAssetName(-1, TRUE), block.getAssetName(-1, TRUE))
+
+			'print "ADD guiListSuitcase missed new script: "+block.script.id
+
+			guiListSuitcase.addItem(block, "-1")
+		Next
+
+		haveToRefreshGuiElements = FALSE
+	End Method
+
+
+	'refills slots in the script agency
+	'replaceOffer: remove (some) old scripts and place new there?
+	Method ReFillBlocks:Int(replaceOffer:int=FALSE, replaceChance:float=1.0)
+		local lists:TScript[][] = [listNormal,listNormal2]
+		local script:TScript = null
+
+		haveToRefreshGuiElements = TRUE
+
+		'delete some random scripts
+		if replaceOffer
+			for local j:int = 0 to lists.length-1
+				for local i:int = 0 to lists[j].length-1
+					if not lists[j][i] then continue
+
+					if RandRange(0,100) < replaceChance*100
+						'reset owner
+						lists[j][i].owner = 0
+						'unlink from this list
+						lists[j][i] = null
+					endif
+				Next
+			Next
+		endif
+
+
+		'=== ACTUALLY CREATE CONTRACTS ===
+		for local j:int = 0 to lists.length-1
+			for local i:int = 0 to lists[j].length-1
+				'if exists and is valid...skip it
+				if lists[j][i] then continue
+
+				script = GetScriptCollection().GetRandom()
+
+				'add new script to slot
+				if script
+					script.owner = -1
+					lists[j][i] = script
+				endif
+			Next
+		Next
+	End Method
+
+
+
+	'===================================
+	'Script Agency: Room screen
+	'===================================
+
+	'if players are in the agency during changes
+	'to their programme collection, react to...
+	Function onChangeProgrammeCollection:int( triggerEvent:TEventBase )
+		if not CheckPlayerInRoom("scriptagency") then return FALSE
+
+		GetInstance().RefreshGuiElements()
+	End Function
+
+
+	'in case of right mouse button click a dragged script is
+	'placed at its original spot again
+	Function onClickScript:int(triggerEvent:TEventBase)
+		'only react if the click came from the right mouse button
+		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE
+
+		local guiScript:TGUIScript= TGUIScript(triggerEvent._sender)
+		'ignore wrong types and NON-dragged items
+		if not guiScript or not guiScript.isDragged() then return FALSE
+
+		'remove gui object
+		guiScript.remove()
+		guiScript = null
+
+		'rebuild at correct spot
+		GetInstance().RefreshGuiElements()
+
+		'remove right click - to avoid leaving the room
+		MouseManager.ResetKey(2)
+	End Function
+
+
+	Function onMouseOverScript:int( triggerEvent:TEventBase )
+		if not CheckPlayerInRoom("scriptagency") then return FALSE
+
+		local item:TGUIScript = TGUIScript(triggerEvent.GetSender())
+		if item = Null then return FALSE
+
+		hoveredGuiScript = item
+		if item.isDragged() then draggedGuiScript = item
+
+		return TRUE
+	End Function
+
+
+	'handle cover block drops on the vendor ... only sell if from the player
+	Function onDropScriptOnVendor:int( triggerEvent:TEventBase )
+		if not CheckPlayerInRoom("scriptagency") then return FALSE
+
+		local guiBlock:TGUIScript = TGUIScript( triggerEvent._sender )
+		local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
+		if not guiBlock or not receiver or receiver <> VendorArea then return FALSE
+
+		local parent:TGUIobject = guiBlock._parent
+		if TGUIPanel(parent) then parent = TGUIPanel(parent)._parent
+		local senderList:TGUIScriptSlotList = TGUIScriptSlotList(parent)
+		if not senderList then return FALSE
+
+		'if coming from suitcase, try to remove it from the player
+		if senderList = GuiListSuitcase
+			if not GetInstance().BuyScriptFromPlayer(guiBlock.script)
+				triggerEvent.setVeto()
+				return FALSE
+			endif
+		else
+			'remove and add again (so we drop automatically to the correct list)
+			GetInstance().RemoveScript(guiBlock.script)
+			GetInstance().AddScript(guiBlock.script)
+		endif
+		'remove the block, will get recreated if needed
+		guiBlock.remove()
+		guiBlock = null
+
+		'something changed...refresh missing/obsolete...
+		GetInstance().RefreshGuiElements()
+
+		return TRUE
+	End function
+
+
+	'in this stage, the item is already added to the new gui list
+	'we now just add or remove it to the player or vendor's list
+	Function onDropScript:int( triggerEvent:TEventBase )
+		if not CheckPlayerInRoom("scriptagency") then return FALSE
+
+		local guiScript:TGUIScript = TGUIScript(triggerEvent._sender)
+		local receiverList:TGUIScriptSlotList = TGUIScriptSlotList(triggerEvent._receiver)
+		if not guiScript or not receiverList then return FALSE
+
+		'get current owner of the script, as the field "owner" is set
+		'during buy we cannot rely on it. So we check if the player has
+		'the script in the suitcaseScriptList
+		local owner:int = guiScript.script.owner
+		if owner <= 0 and GetPlayerProgrammeCollection(GetPlayerCollection().playerID).HasScriptInSuitcase(guiScript.script)
+			owner = GetPlayerCollection().playerID
+		endif
+
+		'find out if we sell it to the vendor or drop it to our suitcase
+		if receiverList <> GuiListSuitcase
+			guiScript.InitAssets( guiScript.getAssetName(-1, FALSE ), guiScript.getAssetName(-1, TRUE ) )
+
+			'no problem when dropping vendor programme to vendor..
+			if owner <= 0 then return TRUE
+
+			if not GetInstance().BuyScriptFromPlayer(guiScript.script)
+				triggerEvent.setVeto()
+				return FALSE
+			endif
+
+			'remove and add again (so we drop automatically to the correct list)
+			GetInstance().RemoveScript(guiScript.script)
+			GetInstance().AddScript(guiScript.script)
+		else
+			guiScript.InitAssets(guiScript.getAssetName(-1, TRUE ), guiScript.getAssetName(-1, TRUE ))
+			'no problem when dropping own scripts to suitcase..
+			if owner = GetPlayerCollection().playerID then return TRUE
+			if not GetInstance().SellScriptToPlayer(guiScript.script, GetPlayerCollection().playerID)
+				triggerEvent.setVeto()
+				return FALSE
+			endif
+		endIf
+
+		return TRUE
+	End Function
+
+
+	Method onDrawRoom:int( triggerEvent:TEventBase )
+		'make suitcase/vendor glow if needed
+		local glowSuitcase:string = ""
+		if draggedGuiScript
+			if not GetPlayerProgrammeCollection(GetPlayerCollection().playerID).HasScriptInSuitcase(draggedGuiScript.script)
+				glowSuitcase = "_glow"
+			endif
+			GetSpriteFromRegistry("gfx_screen_scriptagency_drophint").Draw(VendorArea.getScreenX(), VendorArea.getScreenY())
+		endif
+
+		'draw suitcase
+		GetSpriteFromRegistry("gfx_suitcase_big"+glowSuitcase).Draw(suitcasePos.GetX(), suitcasePos.GetY())
+
+		GUIManager.Draw("scriptagency")
+
+		if hoveredGuiScript
+			'draw the current sheet
+			hoveredGuiScript.DrawSheet()
+		endif
+	End Method
+
+
+	Method onUpdateRoom:int( triggerEvent:TEventBase )
+		'if we have a licence dragged ... we should take care of "ESC"-Key
+		if KeyManager.IsHit(KEY_ESCAPE) then GetInstance().AbortScreenActions()
+
+		Game.cursorstate = 0
+
+		'delete unused and create new gui elements
+		if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()
+
+		'reset hovered block - will get set automatically on gui-update
+		hoveredGuiScript = null
+		'reset dragged block too
+		draggedGuiScript = null
+
+		GUIManager.Update("scriptagency")
+	End Method
+
+End Type
+
 'Dies hier ist die Raumauswahl im Fahrstuhl.
 Type RoomHandler_ElevatorPlan extends TRoomHandler
 	Global _instance:RoomHandler_ElevatorPlan
@@ -3438,16 +4121,6 @@ Type RoomHandler_Roomboard extends TRoomHandler
 		return TRUE
 	End Method
 
-
-	'called as soon as a players figure is forced to leave the room
-	Method onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
-		'only handle the players figure
-		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
-
-		AbortScreenActions()
-	End Method
-
-	
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		GetRoomBoard().DrawSigns()
@@ -3760,6 +4433,7 @@ Function Init_ConnectRoomHandlers()
 	RoomHandler_Archive.GetInstance()
 
 	RoomHandler_AdAgency.GetInstance()
+	RoomHandler_ScriptAgency.GetInstance()
 	RoomHandler_MovieAgency.GetInstance()
 	RoomHandler_RoomAgency.GetInstance()
 

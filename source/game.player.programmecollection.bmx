@@ -10,6 +10,7 @@ Import "game.broadcastmaterial.base.bmx"
 Import "game.broadcastmaterial.news.bmx"
 Import "game.broadcastmaterial.programme.bmx"
 Import "game.broadcastmaterial.advertisement.bmx"
+Import "game.production.script.bmx"
 
 
 
@@ -59,16 +60,22 @@ End Function
 
 'holds all Programmes a player possesses
 Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected"}
-	Field programmeLicences:TList			= CreateList()
-	Field movieLicences:TList				= CreateList()
-	Field seriesLicences:TList				= CreateList()
-	Field collectionLicences:TList			= CreateList()
-	Field news:TList						= CreateList()
-	Field adContracts:TList					= CreateList()
-	Field suitcaseProgrammeLicences:TList	= CreateList()	'objects not available directly but still owned
-	Field suitcaseAdContracts:TList			= CreateList()	'objects in the suitcase but not signed
-	Field justAddedProgrammeLicences:TList	= CreateList() {nosave}
-	Global fireEvents:int					= TRUE			'FALSE to avoid recursive handling (network)
+	Field programmeLicences:TList = CreateList()
+	Field movieLicences:TList = CreateList()
+	Field seriesLicences:TList = CreateList()
+	Field collectionLicences:TList = CreateList()
+	Field news:TList = CreateList()
+	Field scripts:TList = CreateList()
+	Field adContracts:TList = CreateList()
+	'scripts put  available directly but still owned
+	Field suitcaseScripts:TList = CreateList()
+	'objects not available directly but still owned
+	Field suitcaseProgrammeLicences:TList = CreateList()
+	'objects in the suitcase but not signed
+	Field suitcaseAdContracts:TList	= CreateList()
+	Field justAddedProgrammeLicences:TList = CreateList() {nosave}
+	'FALSE to avoid recursive handling (network)
+	Global fireEvents:int = TRUE
 
 
 	Method Create:TPlayerProgrammeCollection(owner:int)
@@ -83,6 +90,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		movieLicences.Clear()
 		seriesLicences.Clear()
 		adContracts.Clear()
+		scripts.Clear()
+		suitcaseScripts.Clear()
 		suitcaseProgrammeLicences.Clear()
 		suitcaseAdContracts.Clear()
 		justAddedProgrammeLicences.Clear()
@@ -106,6 +115,11 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	Method GetAdContractCount:Int() {_exposeToLua}
 		Return adContracts.count()
+	End Method
+
+
+	Method GetScriptCount:Int() {_exposeToLua}
+		Return scripts.count()
 	End Method
 
 
@@ -134,6 +148,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		return broadcastMaterial
 	End Method
 
+
+	'=== ADCONTRACTS ===
 
 	'removes AdContract from Collection (Advertising-Menu in Programmeplanner)
 	Method RemoveAdContract:int(contract:TAdContract)
@@ -205,6 +221,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		return TRUE
 	End Method
 
+
+	'=== PROGRAMMELICENCES ===
 
 	'readd programmes from suitcase to player's list of available programmes
 	Method ReaddProgrammeLicencesFromSuitcase:int()
@@ -316,6 +334,82 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		return TRUE
 	End Method
 
+	
+	'=== SCRIPTS  ===
+
+	Method HasScriptInSuitcase:int(script:TScript)
+		If not script then return FALSE
+		return suitcaseScripts.contains(script)
+	End Method
+
+
+	Method AddScriptToSuitcase:int(script:TScript)
+		'do not add if already "full"
+		if GameRules.maxScripts > 0 and suitcaseScripts.count() >= GameRules.maxScripts then return FALSE
+
+		'if owner differs, check if we have to buy
+		if owner <> script.owner
+			if not script.buy(owner) then return FALSE
+		endif
+
+		scripts.remove(script)
+		suitcaseScripts.AddLast(script)
+
+		'emit an event so eg. network can recognize the change
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addScriptToSuitcase", new TData.add("script", script), self))
+
+		return TRUE
+	End Method
+
+
+	Method RemoveScriptFromSuitcase:int(script:TScript)
+		if not suitcaseScripts.Contains(script) then return FALSE
+
+		scripts.AddLast(script)
+		suitcaseScripts.Remove(script)
+
+		'emit an event so eg. network can recognize the change
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.removeScriptFromSuitcase", new TData.add("script", script), self))
+		return TRUE
+	End Method
+
+
+	Method RemoveScript:Int(script:TScript, sell:int=FALSE)
+		If script = Null Then Return False
+
+		if sell and not script.sell() then return FALSE
+
+		scripts.remove(script)
+		'remove from suitcase too!
+		suitcaseScripts.remove(script)
+
+		'emit an event so eg. network can recognize the change
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.removeScript", new TData.add("script", script).addNumber("sell", sell), self))
+	End Method
+
+
+	Method AddScript:Int(script:TScript, buy:int=FALSE)
+		If not script then return FALSE
+
+		'if owner differs, check if we have to buy or got that gifted
+		'at program start or through special event...
+		if owner <> script.owner
+			if buy
+				if not script.buy(owner) then return FALSE
+			else
+				script.SetOwner(owner)
+			endif
+		endif
+
+		scripts.AddLast(script)
+
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addScript", new TData.add("script", script).addNumber("buy", buy), self))
+		return TRUE
+	End Method
+
+
+
+	'=== GETTERS ===
 
 	Method GetRandomProgrammeLicence:TProgrammeLicence(serie:Int = 0) {_exposeToLua}
 		If serie Then Return Self.GetRandomSerieLicence()
@@ -338,6 +432,12 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Method GetRandomAdContract:TAdContract() {_exposeToLua}
 		if adContracts.count() = 0 then return NULL
 		Return TAdContract(adContracts.ValueAtIndex(rand(0, adContracts.count() - 1)))
+	End Method
+
+
+	Method GetRandomScript:TScript() {_exposeToLua}
+		if scripts.count() = 0 then return Null
+		Return TScript(scripts.ValueAtIndex(rand(0, scripts.count() - 1)))
 	End Method
 
 
@@ -366,6 +466,13 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Method GetAdContractAtIndex:TAdContract(arrayIndex:Int=0) {_exposeToLua}
 		if arrayIndex < 0 or arrayIndex >= adContracts.Count() then return Null
 		Return TAdContract(adContracts.ValueAtIndex(arrayIndex))
+	End Method
+
+
+	'get script by index number in list - useful for lua-scripts
+	Method GetScriptAtIndex:TScript(arrayIndex:Int=0) {_exposeToLua}
+		if arrayIndex < 0 or arrayIndex >= scripts.Count() then return Null
+		Return TScript(scripts.ValueAtIndex(arrayIndex))
 	End Method
 
 
@@ -427,8 +534,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	
 	Method HasProgrammeLicence:int(licence:TProgrammeLicence) {_exposeToLua}
-		if licence.isEpisode()
-			return programmeLicences.contains(licence.parentLicence)
+		if licence.isEpisode() and licence.parentLicenceGUID
+			return programmeLicences.contains(licence.GetParentLicence())
 		else
 			return programmeLicences.contains(licence)
 		endif
@@ -437,6 +544,11 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	Method HasAdContract:int(Contract:TAdContract) {_exposeToLua}
 		return adContracts.contains(contract)
+	End Method
+
+
+	Method HasScript:int(script:TScript) {_exposeToLua}
+		return scripts.contains(script)
 	End Method
 
 
@@ -477,6 +589,14 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
+	Method GetScript:TScript(id:Int) {_exposeToLua}
+		For Local script:TScript = EachIn scripts
+			If script.id = id Then Return script
+		Next
+		Return Null
+	End Method
+
+
 	Method GetMovieLicences:TList() {_exposeToLua}
 		Return movieLicences
 		'Return movieLicences.toArray()
@@ -495,8 +615,23 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
-	Method GetAdContracts:Object[]() {_exposeToLua}
+	Method GetAdContractsArray:Object[]() {_exposeToLua}
 		Return adContracts.toArray()
+	End Method
+	
+
+	Method GetAdContracts:TList() {_exposeToLua}
+		Return adContracts
+	End Method
+
+
+	Method GetScripts:TList() {_exposeToLua}
+		Return scripts
+	End Method
+
+
+	Method GetScriptsCount:Int() {_exposeToLua}
+		Return scripts.count()
 	End Method
 
 

@@ -72,8 +72,9 @@ Type TPlayerFinanceHistoryEntry
 	Const TYPE_PAY_PENALTY:int = 55
 
 	Const TYPE_PAY_SCRIPT:int = 61
-	Const TYPE_PAY_PRODUCTIONSTUFF:int = 62
+	Const TYPE_SELL_SCRIPT:int = 62
 	Const TYPE_PAY_RENT:int = 63
+	Const TYPE_PAY_PRODUCTIONSTUFF:int = 64
 
 	Const TYPE_PAY_NEWS:int = 71
 	Const TYPE_PAY_NEWSAGENCIES:int = 72
@@ -159,9 +160,9 @@ Type TPlayerFinanceHistoryEntry
 				return GetLocale("FINANCES_HISTORY_OF_SPONSORSHIPREVENUE")
 			Case TYPE_PAY_PENALTY
 				return GetLocale("FINANCES_HISTORY_OF_PENALTY")
-			Case TYPE_PAY_SCRIPT
+			Case TYPE_PAY_SCRIPT, TYPE_SELL_SCRIPT
 				local title:string = "unknown script"
-'				if TNamedGameObject(obj) then title = TNamedGameObject(obj).GetTitle()
+				if TNamedGameObject(obj) then title = TNamedGameObject(obj).GetTitle()
 				return GetLocale("FINANCES_HISTORY_FOR_SCRIPT").Replace("%TITLE%", title)
 			Case TYPE_PAY_PRODUCTIONSTUFF
 				return GetLocale("FINANCES_HISTORY_FOR_PRODUCTIONSTUFF")
@@ -204,7 +205,7 @@ Type TPlayerFinanceHistoryEntry
 			     TYPE_PAYBACK_AUCTIONBID, ..
 				 TYPE_PAY_PENALTY
 				Return GROUP_PROGRAMME
-			Case TYPE_PAY_SCRIPT, TYPE_PAY_PRODUCTIONSTUFF, TYPE_PAY_RENT
+			Case TYPE_PAY_SCRIPT, TYPE_SELL_SCRIPT, TYPE_PAY_PRODUCTIONSTUFF, TYPE_PAY_RENT
 				return GROUP_PRODUCTION
 			Case TYPE_PAY_NEWS, TYPE_PAY_NEWSAGENCIES
 				return GROUP_NEWS

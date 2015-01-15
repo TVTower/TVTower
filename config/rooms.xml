@@ -10,6 +10,7 @@
 
 		<image name="screen_bg_archive" url="res/gfx/archive/screen_archive.png" />
 		<image name="screen_bg_boss" url="res/gfx/boss/screen_boss.png" />
+		<image name="screen_bg_scriptagency" url="res/gfx/scriptagency/screen_scriptagency.png" />
 		<image name="screen_bg_movieagency" url="res/gfx/movieagency/screen_movieagency.png" />
 		<image name="screen_bg_roomboard" url="res/gfx/roomboard/screen_roomboard.png" />
 		<image name="screen_bg_roomagency" url="res/gfx/roomagency/screen_roomagency.png" />
@@ -33,6 +34,8 @@
 		<screen name="screen_credits" image="screen_bg_credits" />
 		<screen name="screen_roomboard" image="screen_bg_roomboard" />
 		<screen name="screen_roomagency" image="screen_bg_roomagency" />
+
+		<screen name="screen_scriptagency" image="screen_bg_scriptagency" />
 
 		<screen name="screen_movieagency" image="screen_bg_movieagency" />
 		<screen name="screen_movieauction" image="screen_bg_movieagency" parent="screen_movieagency" />
@@ -158,7 +161,7 @@
 			<tooltip text="ROOM_PEACEBROTHERS" description="ROOM_PEACEBROTHERS_SUB" />
 			<door doorslot="3" floor="10" doortype="3" />
 		</room>
-		<room name="scriptagency" owner="0" screen="screen_supermarket">
+		<room name="scriptagency" owner="0" screen="screen_scriptagency">
 			<tooltip text="ROOM_SCRIPT_OFFICE" description="ROOM_SCRIPT_OFFICE_OWNER" />
 			<door doorslot="3" floor="4" doortype="3" />
 		</room>

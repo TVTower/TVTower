@@ -133,8 +133,8 @@ Type TInGameInterface
 					If TProgramme(obj)
 						Local programme:TProgramme = TProgramme(obj)
 						CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_genre_" + TVTProgrammeGenre.GetGenreStringID(programme.data.GetGenre()), "gfx_interface_tv_programme_none")
-						If programme.isSeries()
-							CurrentProgrammeText = programme.licence.parentLicence.GetTitle() + " ("+ (programme.GetEpisodeNumber()+1) + "/" + programme.GetEpisodeCount()+"): " + programme.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
+						If programme.isSeries() and programme.licence.parentLicenceGUID
+							CurrentProgrammeText = programme.licence.GetParentLicence().GetTitle() + " ("+ (programme.GetEpisodeNumber()+1) + "/" + programme.GetEpisodeCount()+"): " + programme.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
 						Else
 							CurrentProgrammeText = programme.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
 						EndIf
@@ -226,8 +226,8 @@ Type TInGameInterface
 						Local obj:TBroadcastMaterial = programmePlan.GetProgramme()
 						If TProgramme(obj)
 							content :+ "~n ~n|b|"+getLocale("NEXT_PROGRAMME")+":|/b|~n"
-							If TProgramme(obj) And TProgramme(obj).isSeries()
-								content :+ TProgramme(obj).licence.parentLicence.data.GetTitle() + ": " + obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
+							If TProgramme(obj) And TProgramme(obj).isSeries() and TProgramme(obj).licence.parentLicenceGUID
+								content :+ TProgramme(obj).licence.GetParentLicence().data.GetTitle() + ": " + obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 							Else
 								content :+ obj.GetTitle() + " (" + getLocale("BLOCK")+" " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 							EndIf

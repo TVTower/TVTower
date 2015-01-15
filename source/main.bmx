@@ -99,6 +99,7 @@ Include "gamefunctions_ki.bmx"					'LUA connection
 Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
 Include "gamefunctions_debug.bmx"
 Include "gamefunctions_network.bmx"
+Include "game.production.script.gui.bmx"
 
 Include "game.figure.bmx"
 Include "game.building.bmx"
@@ -456,6 +457,7 @@ Type TApp
 						If KEYMANAGER.IsHit(KEY_F) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("movieagency"))
 						If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", GetPlayerCollection().playerID))
 						If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("boss", GetPlayerCollection().playerID))
+						If KEYMANAGER.IsHit(KEY_D) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("scriptagency"))
 
 						'e wie "employees" :D
 						If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("credits"))
@@ -480,7 +482,7 @@ Type TApp
 
 				If KEYMANAGER.IsHit(KEY_L) Then TSaveGame.Load("savegame.xml")
 
-				If KEYMANAGER.IsHit(KEY_D) Then TVTDebugInfos = 1 - TVTDebugInfos
+				If KEYMANAGER.IsHit(KEY_TAB) Then TVTDebugInfos = 1 - TVTDebugInfos
 
 				If KEYMANAGER.Ishit(KEY_K)
 					TLogger.log("KickAllFromRooms", "Player kicks all figures out of the rooms.", LOG_DEBUG)

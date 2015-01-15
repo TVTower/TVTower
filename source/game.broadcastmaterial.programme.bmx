@@ -43,7 +43,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 			if revenue > 0
 				'earn revenue for callin-shows
-				If data.HasFlag(TProgrammeData.FLAG_PAID)
+				If data.HasFlag(TVTProgrammeFlag.PAID)
 					GetPlayerFinanceCollection().Get(owner).EarnCallerRevenue(revenue, self)
 				'all others programmes get "sponsored"
 				Else
@@ -415,14 +415,14 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	Method GetEpisodeNumber:int() {_exposeToLua}
-		if not licence.parentLicence then return 1
-		return licence.parentLicence.GetSubLicencePosition(licence)
+		if not licence.parentLicenceGUID then return 1
+		return licence.GetParentLicence().GetSubLicencePosition(licence)
 	End Method
 
 
 	Method GetEpisodeCount:int() {_exposeToLua}
-		if not licence.parentLicence then return 1
-		return licence.parentLicence.GetSubLicenceCount()
+		if not licence.parentLicenceGUID then return 1
+		return licence.GetParentLicence().GetSubLicenceCount()
 	End Method
 
 
