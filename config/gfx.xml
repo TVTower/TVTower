@@ -13,6 +13,7 @@
 				<child name="gfx_datasheet_content2"				x="0"	y="134"	w="310"	h="46" />
 				<child name="gfx_datasheet_subTop"					x="0"	y="180"	w="310"	h="4" />
 				<child name="gfx_datasheet_subMovieRatings"			x="0"	y="184"	w="310"	h="65" />
+				<child name="gfx_datasheet_subScriptRatings"		x="0"	y="184"	w="310"	h="48" />
 				<child name="gfx_datasheet_subTopicalityRating"		x="0"	y="184"	w="310"	h="16" />
 				<child name="gfx_datasheet_subMessageEarn"			x="0"	y="249"	w="310"	h="27" />
 				<child name="gfx_datasheet_subMessageWarning"		x="0"	y="276"	w="310"	h="27" />
@@ -21,8 +22,9 @@
 				<child name="gfx_datasheet_subAdContractAttributes"  	x="0"	y="379"	w="310"	h="54" />
 				<child name="gfx_datasheet_subAdContractAttributes1"	x="0"	y="379"	w="310"	h="27" />
 				<child name="gfx_datasheet_subAdContractAttributes2"	x="0"	y="406"	w="310"	h="27" />
-				<child name="gfx_datasheet_bottom"						x="0"	y="433"	w="310"	h="15" />
-				<child name="gfx_datasheet_bar"							x="8"	y="460"	w="200"	h="10" />
+				<child name="gfx_datasheet_subScriptAttributes"			x="0"	y="433"	w="310"	h="27" />
+				<child name="gfx_datasheet_bottom"						x="0"	y="460"	w="310"	h="15" />
+				<child name="gfx_datasheet_bar"							x="8"	y="487"	w="200"	h="10" />
 				<child name="gfx_datasheet_xrated"						x="315"	y="2"	w="26"	h="26" offsetLeft="14" offsetTop="-2" />
 
 				<!-- narrow data- and actionsheet (stationmap) -->

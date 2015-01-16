@@ -3350,8 +3350,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	Global suitcasePos:TVec2D = new TVec2D.Init(370,270)
 	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(19,32)
 	Global scriptsPerLine:int = 1
-	Global scriptsNormalAmount:int = 5
-	Global scriptsNormal2Amount:int	= 2
+	Global scriptsNormalAmount:int = 4
+	Global scriptsNormal2Amount:int	= 1
 
 	Global _instance:RoomHandler_ScriptAgency
 	Global _initDone:int = FALSE
@@ -3375,10 +3375,10 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 
 		'===== CREATE GUI LISTS =====
-		GuiListNormal	= GuiListNormal[..3]
+		GuiListNormal	= GuiListNormal[..scriptsNormalAmount]
 		local sprite:TSprite = GetSpriteFromRegistry("gfx_scripts_0")
 		for local i:int = 0 to GuiListNormal.length-1
-			GuiListNormal[i] = new TGUIScriptSlotList.Create(new TVec2D.Init(130 + (GuiListNormal.length-1 - i)*18, 170 + i*12), new TVec2D.Init(17, 52), "adagency")
+			GuiListNormal[i] = new TGUIScriptSlotList.Create(new TVec2D.Init(233 + (GuiListNormal.length-1 - i)*22, 143 + i*2), new TVec2D.Init(17, 52), "scriptagency")
 			GuiListNormal[i].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			GuiListNormal[i].SetItemLimit( scriptsNormalAmount / GuiListNormal.length  )
 			GuiListNormal[i].Resize(sprite.area.GetW() * (scriptsNormalAmount / GuiListNormal.length), sprite.area.GetH() )
@@ -3390,8 +3390,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		GuiListSuitcase	= new TGUIScriptSlotlist.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200,80), "scriptagency")
 		GuiListSuitcase.SetAutofillSlots(true)
 
-		GuiListNormal2 = new TGUIScriptSlotlist.Create(new TVec2D.Init(34, 52), new TVec2D.Init(10 + sprite.area.GetW()*scriptsNormal2Amount, sprite.area.GetH()), "scriptagency")
-		GuiListNormal2.setEntriesBlockDisplacement(18, 12)
+		GuiListNormal2 = new TGUIScriptSlotlist.Create(new TVec2D.Init(188, 240), new TVec2D.Init(10 + sprite.area.GetW()*scriptsNormal2Amount, sprite.area.GetH()), "scriptagency")
+		GuiListNormal2.setEntriesBlockDisplacement(18, 11)
 
 		GuiListNormal2.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 		GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
@@ -3994,7 +3994,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		endif
 
 		'draw suitcase
-		GetSpriteFromRegistry("gfx_suitcase_big"+glowSuitcase).Draw(suitcasePos.GetX(), suitcasePos.GetY())
+		GetSpriteFromRegistry("gfx_suitcase"+glowSuitcase).Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 		GUIManager.Draw("scriptagency")
 

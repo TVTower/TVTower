@@ -287,6 +287,15 @@ Type TLocalizedString
 	Global currentLanguage:string = "de"
 
 
+	Method Copy:TLocalizedString()
+		local c:TLocalizedString = New TLocalizedString
+		For local k:string = EachIn values.Keys()
+			c.values.insert(k, values.ValueForKey(k))
+		Next
+		return c
+	End Method
+	
+
 	Function SetCurrentLanguage(language:String)
 		currentLanguage = language
 	End Function

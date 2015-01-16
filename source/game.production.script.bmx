@@ -7,7 +7,7 @@ Import "game.player.finance.bmx"
 Import "game.player.base.bmx"
 Import "game.gameconstants.bmx" 'to access type-constants
 Import "basefunctions.bmx" 'dottedValue
-
+Import "game.production.scripttemplate.bmx"
 
 Type TScriptCollection Extends TGameObjectCollection
 	Global _instance:TScriptCollection
@@ -31,6 +31,22 @@ Type TScriptCollection Extends TGameObjectCollection
 
 
 	Method GetRandom:TScript()
+		if GetCount() < 5
+			'random dummy
+			local dummy:TScriptTemplate = new TScriptTemplate
+			dummy.title = new TLocalizedString
+			dummy.title.Set("Test"+Rand(1000))
+			dummy.description = new TLocalizedString
+			dummy.description.Set("text"+Rand(1000))
+			dummy.SetPriceRange(5000, 10000, 0.4)
+			dummy.SetReviewRange(0.3, 0.6, 0.6)
+			dummy.SetSpeedRange(0.3, 0.6, 0.5)
+			dummy.SetOutcomeRange(0.3, 0.6, 0.5)
+			dummy.SetPotentialRange(0.1, 0.9, 0.65)
+			dummy.SetBlocksRange(1, 2)
+
+			return TScript.CreateFromTemplate(dummy)
+		endif
 		Return TScript( Super.GetRandom() )
 	End Method
 End Type
@@ -56,7 +72,7 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 	Field outcome:Float	= 0.0
 	Field review:Float = 0.0
 	Field speed:Float = 0.0
-	Field potential:Int	= 0.0
+	Field potential:Float = 0.0
 
 	Field requiredDirectors:Int = 0
 	Field requiredHosts:Int = 0
@@ -84,9 +100,43 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 	'flags contains bitwise encoded things like xRated, paid, trash ...
 	Field flags:Int = 0
 
+	'if the script is a clone of something, basedOnScriptGUID contains
+	'the guid of the original script.
+	'This is used for "shows" to be able to use different values of
+	'outcome/speed/price/... while still having a connecting link
+	Field basedOnScriptGUID:String = ""
 	'scripts of series are parent of episode scripts
 	Field parentScriptGUID:string = ""
+	'all associated child scripts (episodes)
 	Field subScripts:TScript[]
+
+
+	Function CreateFromTemplate:TScript(template:TScriptTemplate)
+		local script:TScript = new TScript
+		script.title = template.GenerateFinalTitle()
+		script.description = template.GenerateFinalDescription()
+
+		script.outcome = template.GetOutcome()
+		script.review = template.GetReview()
+		script.speed = template.GetSpeed()
+		script.potential = template.GetPotential()
+		script.blocks = template.GetBlocks()
+		script.price = template.GetPrice()
+
+		'create scripts for children too?
+
+		'add to collection
+		GetScriptCollection().Add(script)
+		
+		return script
+	End Function
+
+
+	'override to add another generic naming
+	Method SetGUID:Int(GUID:String)
+		if GUID="" then GUID = "script-"+id
+		self.GUID = GUID
+	End Method
 
 
 	Method hasFlag:Int(flag:Int) {_exposeToLua}
@@ -125,6 +175,11 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 			script.SetOwner(owner)
 		Next
 		return TRUE
+	End Method
+
+
+	Method SetBasedOnScriptGUID(basedOnScriptGUID:string)
+		self.basedOnScriptGUID = basedOnScriptGUID
 	End Method
 
 
@@ -217,21 +272,87 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 	Method IsPaid:int()
 		return HasFlag(TVTProgrammeFlag.PAID)
 	End Method
-	
 
-	Method GetPrice:Int() {_exposeToLua}
+
+	Method GetOutcome:Float() {_exposeToLua}
 		'single-script
-		if GetSubScriptCount() = 0 then return price
+		If GetSubScriptCount() = 0 then return outcome
+		
+		'script for a package or scripts
+		Local value:Float
+		For local s:TScript = eachin subScripts
+			value :+ s.GetOutcome()
+		Next
+		return value / subScripts.length
+	End Method
+
+
+	Method GetReview:Float() {_exposeToLua}
+		'single-script
+		If GetSubScriptCount() = 0 then return review
+		
+		'script for a package or scripts
+		Local value:Float
+		For local s:TScript = eachin subScripts
+			value :+ s.GetReview()
+		Next
+		return value / subScripts.length
+	End Method
+
+
+	Method GetSpeed:Float() {_exposeToLua}
+		'single-script
+		If GetSubScriptCount() = 0 then return speed
 
 		'script for a package or scripts
 		Local value:Float
-		For local script:TScript = eachin subScripts
-			value :+ script.GetPrice()
+		For local s:TScript = eachin subScripts
+			value :+ s.GetSpeed()
 		Next
-		value :* 0.75
+		return value / subScripts.length
+	End Method
 
-		'round to next "1000" block
-		value = Int(Floor(value / 1000) * 1000)
+
+	Method GetPotential:Float() {_exposeToLua}
+		'single-script
+		If GetSubScriptCount() = 0 then return potential
+
+		'script for a package or scripts
+		Local value:Float
+		For local s:TScript = eachin subScripts
+			value :+ s.GetPotential()
+		Next
+		return value / subScripts.length
+	End Method
+
+
+	Method GetBlocks:Int() {_exposeToLua}
+		return blocks
+	End Method
+
+	
+	Method GetEpisodes:Int() {_exposeToLua}
+		If isSeries() then return GetSubScriptCount()
+		
+		return 0
+	End Method
+	
+
+	Method GetPrice:Int() {_exposeToLua}
+		local value:int
+		'single-script
+		if GetSubScriptCount() = 0
+			value = price
+		'script for a package or scripts
+		else
+			For local script:TScript = eachin subScripts
+				value :+ script.GetPrice()
+			Next
+			value :* 0.75
+		endif
+
+		'round to next "100" block
+		value = Int(Floor(value / 100) * 100)
 
 		Return value
 	End Method
@@ -300,11 +421,6 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetBlocks:int()
-		return self.blocks
-	End Method
-
-
 
 
 	Method ShowSheet:Int(x:Int,y:Int, align:int=0)
@@ -339,11 +455,12 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 		currY :+ sprite.GetHeight()
 		sprite = GetSpriteFromRegistry("gfx_datasheet_subTop"); sprite.Draw(currX, currY)
 		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_subMovieRatings"); sprite.Draw(currX, currY)
+		sprite = GetSpriteFromRegistry("gfx_datasheet_subScriptRatings"); sprite.Draw(currX, currY)
 		currY :+ sprite.GetHeight()
 
-		sprite = GetSpriteFromRegistry("gfx_datasheet_subMovieAttributes"); sprite.Draw(currX, currY)
+		sprite = GetSpriteFromRegistry("gfx_datasheet_subScriptAttributes"); sprite.Draw(currX, currY)
 		currY :+ sprite.GetHeight()
+
 		sprite = GetSpriteFromRegistry("gfx_datasheet_bottom"); sprite.Draw(currX, currY)
 
 
@@ -421,22 +538,14 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 		currY :+ 4 'offset of ratings
 		fontSemiBold.drawBlock(GetLocale("MOVIE_SPEED"),      currX + 215, currY,      75, 15, null, textLightColor)
 		fontSemiBold.drawBlock(GetLocale("MOVIE_CRITIC"),     currX + 215, currY + 16, 75, 15, null, textLightColor)
-		fontSemiBold.drawBlock(GetLocale("MOVIE_BOXOFFICE"),  currX + 215, currY + 32, 75, 15, null, textLightColor)
-		fontSemiBold.drawBlock(GetLocale("MOVIE_POTENTIAL"),  currX + 215, currY + 48, 75, 15, null, textLightColor)
+		fontSemiBold.drawBlock(GetLocale("SCRIPT_POTENTIAL"),  currX + 215, currY + 32, 75, 15, null, textLightColor)
 
 		'===== DRAW BARS =====
-rem
-		If data.GetSpeed() > 0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1, data.GetSpeed()*200  , 10))
-		If data.GetReview() > 0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1 + 16, data.GetReview()*200 , 10))
-		If data.GetOutcome() > 0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1 + 32, data.GetOutcome()*200, 10))
-		If data.GetMaxTopicality() > 0.01
-			SetAlpha GetAlpha()*0.25
-			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1 + 48, data.GetMaxTopicality()*200, 10))
-			SetAlpha GetAlpha()*4.0
-			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1 + 48, data.GetTopicality()*200, 10))
-		EndIf
-endrem
-		currY :+ 65
+
+		If GetSpeed() > 0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1, GetSpeed()*200  , 10))
+		If GetReview() > 0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1 + 16, GetReview()*200 , 10))
+		If GetPotential() > 0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1 + 32, GetPotential()*200, 10))
+		currY :+ 48
 
 		currY :+ 4 'align to content portion of that line
 		'blocks
