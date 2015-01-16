@@ -5,6 +5,11 @@ CHAT = Chat
 SAVE_AND_APPLY = Speichern und anwenden
 CANCEL = Abbrechen
 
+MALE = männlich
+FEMALE = weiblich
+UNDEFINED = unbestimmt
+
+
 PLAYERNAME = Spielername
 CHANNELNAME = Sendername
 STATIONMAP = Senderkarte
@@ -206,6 +211,11 @@ MOVIE_TOPICALITY= Aktualität
 MOVIE_BLOCKS    = Blöcke
 MOVIE_XRATED    = FSK18
 MOVIE_EPISODES  = Folgen
+MOVIE_CAST      = Besetzung
+MOVIE_LEADINGACTOR = Hauptdarsteller
+MOVIE_SUPPORTINGACTOR = Nebendarsteller
+
+
 SERIES_WITH_X_EPISODES = Serie mit %EPISODESCOUNT% Folgen
 SCRIPT_POTENTIAL= Potenzial
 

@@ -267,7 +267,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		For local doneJob:TProgrammePersonJob = EachIn cast
 			if job.person <> doneJob.person then continue 
 			if job.job <> doneJob.job then continue 
-			if job.characterName <> doneJob.characterName then continue
+			if job.role <> doneJob.role then continue
 
 			return True
 		Next
@@ -289,7 +289,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Method GetActors:TProgrammePersonBase[]()
 		if cachedActors.length = 0
 			For local job:TProgrammePersonJob = EachIn cast
-				if job.job = TProgrammePersonJob.JOB_ACTOR then cachedActors :+ [job.person]
+				if job.job = TVTProgrammePersonJob.ACTOR then cachedActors :+ [job.person]
 			Next
 		endif
 		
@@ -300,7 +300,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Method GetDirectors:TProgrammePersonBase[]()
 		if cachedDirectors.length = 0
 			For local job:TProgrammePersonJob = EachIn cast
-				if job.job = TProgrammePersonJob.JOB_DIRECTOR then cachedDirectors :+ [job.person]
+				if job.job = TVTProgrammePersonJob.DIRECTOR then cachedDirectors :+ [job.person]
 			Next
 		endif
 		

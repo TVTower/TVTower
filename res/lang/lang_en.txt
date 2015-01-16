@@ -1,10 +1,13 @@
 ﻿LANGUAGE_NAME_INTERNATIONAL = English
 LANGUAGE_NAME_LOCALE = English
 
-
 CHAT = Chat
 SAVE_AND_APPLY = Save and apply
 CANCEL = Cancel
+
+MALE = male
+FEMALE = female
+UNDEFINED = undefined
 
 PLAYERNAME = Playername
 CHANNELNAME = Channelname
@@ -216,6 +219,10 @@ MOVIE_TOPICALITY		= Topicality
 MOVIE_BLOCKS			= blocks
 MOVIE_XRATED			= X-rated
 MOVIE_EPISODES			= episodes
+MOVIE_CAST              = Cast
+MOVIE_LEADINGACTOR      = leading actor
+MOVIE_SUPPORTINGACTOR   = supporting actor
+
 SERIES_WITH_X_EPISODES = Series with %EPISODESCOUNT% episodes
 SCRIPT_POTENTIAL = Potential
 

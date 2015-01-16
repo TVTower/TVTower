@@ -44,6 +44,11 @@ Type TScriptCollection Extends TGameObjectCollection
 			dummy.SetOutcomeRange(0.3, 0.6, 0.5)
 			dummy.SetPotentialRange(0.1, 0.9, 0.65)
 			dummy.SetBlocksRange(1, 2)
+			dummy.AddCast(new TProgrammePersonJob.Init(null, TVTProgrammePersonJob.DIRECTOR))
+			dummy.AddCast(new TProgrammePersonJob.Init(null, TVTProgrammePersonJob.ACTOR, new TProgrammeRole.Init("Susi", "Meier", "", TVTPersonGender.FEMALE, true)))
+			'dieser cast koennte per Zufall im erstellten Script auftauchen
+			dummy.AddRandomCast(new TProgrammePersonJob.Init(null, TVTProgrammePersonJob.ACTOR, new TProgrammeRole.Init("Thomas", "Eventuell", "Dr.", TVTPersonGender.MALE, true)))
+			dummy.AddRandomCast(new TProgrammePersonJob.Init(null, TVTProgrammePersonJob.ACTOR, new TProgrammeRole.Init("Tanja", "Eventuell", "", TVTPersonGender.FEMALE, true)))
 
 			return TScript.CreateFromTemplate(dummy)
 		endif
@@ -74,15 +79,9 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 	Field speed:Float = 0.0
 	Field potential:Float = 0.0
 
-	Field requiredDirectors:Int = 0
-	Field requiredHosts:Int = 0
-	Field requiredGuests:Int = 0
-	Field requiredReporters:Int = 0
-	Field requiredStarRoleActorMale:Int	= 0
-	Field requiredStarRoleActorFemale:Int = 0
-	Field requiredActorMale:Int	= 0
-	Field requiredActorFemale:Int = 0
-	Field requiredMusicians:Int	= 0
+	'cast contains various jobs but with no "person" assigned in it, so
+	'it is more a "job" definition (+role in the case of actors)
+	Field cast:TProgrammePersonJob[]
 
 	'0=director, 1=host, 2=actor, 4=musician, 8=intellectual, 16=reporter(, 32=candidate)
 	Field allowedGuestTypes:int	= 0
@@ -122,6 +121,11 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 		script.potential = template.GetPotential()
 		script.blocks = template.GetBlocks()
 		script.price = template.GetPrice()
+		script.cast = template.GetCast()
+
+		for local j:int = 0 until script.cast.length
+			print "job: "+j+"/"+script.cast.length+": "+TVTProgrammePersonJob.GetJobString(script.cast[j].job)
+		Next
 
 		'create scripts for children too?
 
@@ -271,6 +275,30 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 
 	Method IsPaid:int()
 		return HasFlag(TVTProgrammeFlag.PAID)
+	End Method
+
+
+	Method GetSpecificCastCount:int(job:int, limitGender:int=-1)
+		local result:int = 0
+		For local j:TProgrammePersonJob = EachIn cast
+			'skip roles with wrong gender
+			if limitGender >= 0 and j.role and j.role.gender <> limitGender then continue
+			'current job is one of the given job(s)
+			if job & j.job then result :+ 1
+		Next
+		return result
+	End Method
+
+
+	Method GetSpecificCast:TProgrammePersonJob[](job:int, limitGender:int=-1)
+		local result:TProgrammePersonJob[]
+		For local j:TProgrammePersonJob = EachIn cast
+			'skip roles with wrong gender
+			if limitGender >= 0 and j.role and j.role.gender <> limitGender then continue
+			'current job is one of the given job(s)
+			if job & j.job then result :+ [j]
+		Next
+		return result
 	End Method
 
 
@@ -503,33 +531,47 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 		'splitter
 		currY :+ 6
 
-		'max width of director/actors - to align their content properly
-		currTextWidth = Int(fontSemiBold.getWidth(GetLocale("MOVIE_DIRECTOR")+":"))
-		'if data.GetActorsString() <> ""
-		'	currTextWidth = Max(currTextWidth, Int(fontSemiBold.getWidth(GetLocale("MOVIE_ACTORS")+":")))
-		'endif
-
-
 		currY :+ 3	'subcontent (actors/director) start with offset
-		'director
-		if requiredDirectors > 0
-			fontSemiBold.drawBlock(GetLocale("MOVIE_DIRECTOR")+":", currX + 6, currY, 280, 13, null, textColor)
-			fontNormal.drawBlock(requiredDirectors, currX + 6 + 5 + currTextWidth, currY , 280 - 15 - currTextWidth, 15, null, textColor)
-			currY :+ 13
+
+		'max width of cast word - to align their content properly
+		currTextWidth = Int(fontSemiBold.getWidth(GetLocale("MOVIE_CAST")+":"))
+
+		'cast
+		local cast:string = ""
+
+		local requiredDirectors:int = GetSpecificCastCount(TVTProgrammePersonJob.DIRECTOR)
+		local requiredStarRoleActorFemale:int = GetSpecificCastCount(TVTProgrammePersonJob.ACTOR, TVTPersonGender.FEMALE)
+		local requiredStarRoleActorMale:int = GetSpecificCastCount(TVTProgrammePersonJob.ACTOR, TVTPersonGender.MALE)
+		local requiredStarRoleActors:int = GetSpecificCastCount(TVTProgrammePersonJob.ACTOR)
+
+		if requiredDirectors > 0 then cast :+ "|b|"+requiredDirectors+"x|/b| "+GetLocale("MOVIE_DIRECTOR")
+		if cast <> "" then cast :+ ", "
+
+		if requiredStarRoleActors > 0
+			local requiredStars:int = requiredStarRoleActorMale + requiredStarRoleActorFemale
+			cast :+ "|b|"+requiredStars+"x|/b| "+GetLocale("MOVIE_LEADINGACTOR")
+
+			local actorDetails:string = ""
+			if requiredStarRoleActorMale > 0
+				actorDetails :+ requiredStarRoleActorMale+"x "+GetLocale("MALE")
+			endif
+			if requiredStarRoleActorFemale > 0
+				if actorDetails <> "" then actorDetails :+ ", "
+				actorDetails :+ requiredStarRoleActorFemale+"x "+GetLocale("FEMALE")
+			endif
+			if requiredStarRoleActors - (requiredStarRoleActorMale + requiredStarRoleActorFemale)  > 0
+				if actorDetails <> "" then actorDetails :+ ", "
+				actorDetails :+ requiredStarRoleActors+"x "+GetLocale("UNDEFINED")
+			endif
+
+			cast :+ " (" + actorDetails + ")"
 		endif
 
-		'actors
-		if requiredActorMale > 0 or requiredActorFemale > 0
-			fontSemiBold.drawBlock(GetLocale("MOVIE_ACTORS")+":", currX + 6 , currY, 280, 26, null, textColor)
-			local str:string = ""
-			if requiredActorMale > 0 then str :+ requiredActorMale+"x männlich "
-			if requiredActorFemale > 0 then str :+ requiredActorFemale+"x weiblich "
-			fontNormal.drawBlock(str, currX + 6 + 5 + currTextWidth, currY, 280 - 15 - currTextWidth, 30, null, textColor)
+		if cast <> ""
+			fontSemiBold.drawBlock(GetLocale("MOVIE_CAST")+":", currX + 6, currY, 280, 13, null, textColor)
+			fontNormal.drawBlock(cast, currX + 6 + 5 + currTextWidth, currY , 280 - 15 - currTextWidth, 45, null, textColor)
 		endif
-		if requiredDirectors = 0
-			currY :+ 13
-		endif
-		currY :+ 26
+		currY :+ 39
 		currY :+ 3 'subcontent end with offset
 		currY :+ 1 'end of subcontent area
 

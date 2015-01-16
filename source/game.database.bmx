@@ -142,11 +142,11 @@ Type TDatabaseLoader
 
 
 			local cast:TProgrammePersonJob[]
-			For local p:TProgrammePerson = EachIn GetPersonsFromString(directorsRaw, TProgrammePersonJob.JOB_DIRECTOR)
-				cast :+ [new TProgrammePersonJob.Init(p, TProgrammePersonJob.JOB_DIRECTOR)]
+			For local p:TProgrammePerson = EachIn GetPersonsFromString(directorsRaw, TVTProgrammePersonJob.DIRECTOR)
+				cast :+ [new TProgrammePersonJob.Init(p, TVTProgrammePersonJob.DIRECTOR)]
 			Next
-			For local p:TProgrammePerson = EachIn GetPersonsFromString(actorsRaw, TProgrammePersonJob.JOB_ACTOR)
-				cast :+ [new TProgrammePersonJob.Init(p, TProgrammePersonJob.JOB_ACTOR)]
+			For local p:TProgrammePerson = EachIn GetPersonsFromString(actorsRaw, TVTProgrammePersonJob.ACTOR)
+				cast :+ [new TProgrammePersonJob.Init(p, TVTProgrammePersonJob.ACTOR)]
 			Next
 
 			local localizeTitle:TLocalizedString = new TLocalizedString
@@ -201,11 +201,11 @@ Type TDatabaseLoader
 
 
 			local cast:TProgrammePersonJob[]
-			For local p:TProgrammePerson = EachIn GetPersonsFromString(directorsRaw, TProgrammePersonJob.JOB_DIRECTOR)
-				cast :+ [new TProgrammePersonJob.Init(p, TProgrammePersonJob.JOB_DIRECTOR)]
+			For local p:TProgrammePerson = EachIn GetPersonsFromString(directorsRaw, TVTProgrammePersonJob.DIRECTOR)
+				cast :+ [new TProgrammePersonJob.Init(p, TVTProgrammePersonJob.DIRECTOR)]
 			Next
-			For local p:TProgrammePerson = EachIn GetPersonsFromString(actorsRaw, TProgrammePersonJob.JOB_ACTOR)
-				cast :+ [new TProgrammePersonJob.Init(p, TProgrammePersonJob.JOB_ACTOR)]
+			For local p:TProgrammePerson = EachIn GetPersonsFromString(actorsRaw, TVTProgrammePersonJob.ACTOR)
+				cast :+ [new TProgrammePersonJob.Init(p, TVTProgrammePersonJob.ACTOR)]
 			Next
 
 			local localizeTitle:TLocalizedString = new TLocalizedString
@@ -252,11 +252,11 @@ Type TDatabaseLoader
 
 
 					local cast:TProgrammePersonJob[]
-					For local p:TProgrammePerson = EachIn GetPersonsFromString(directorsRaw, TProgrammePersonJob.JOB_DIRECTOR)
-						cast :+ [new TProgrammePersonJob.Init(p, TProgrammePersonJob.JOB_DIRECTOR)]
+					For local p:TProgrammePerson = EachIn GetPersonsFromString(directorsRaw, TVTProgrammePersonJob.DIRECTOR)
+						cast :+ [new TProgrammePersonJob.Init(p, TVTProgrammePersonJob.DIRECTOR)]
 					Next
-					For local p:TProgrammePerson = EachIn GetPersonsFromString(actorsRaw, TProgrammePersonJob.JOB_ACTOR)
-						cast :+ [new TProgrammePersonJob.Init(p, TProgrammePersonJob.JOB_ACTOR)]
+					For local p:TProgrammePerson = EachIn GetPersonsFromString(actorsRaw, TVTProgrammePersonJob.ACTOR)
+						cast :+ [new TProgrammePersonJob.Init(p, TVTProgrammePersonJob.ACTOR)]
 					Next
 
 					local localizeTitle:TLocalizedString = new TLocalizedString
@@ -800,10 +800,10 @@ Type TDatabaseLoader
 			'if person was defined
 			if member
 				Select memberFunction
-					case TProgrammePersonJob.JOB_ACTOR
-						programmeData.AddCast(new TProgrammePersonJob.Init(member, TProgrammePersonJob.JOB_ACTOR))
-					case TProgrammePersonJob.JOB_DIRECTOR
-						programmeData.AddCast(new TProgrammePersonJob.Init(member, TProgrammePersonJob.JOB_DIRECTOR))
+					case TVTProgrammePersonJob.ACTOR
+						programmeData.AddCast(new TProgrammePersonJob.Init(member, TVTProgrammePersonJob.ACTOR))
+					case TVTProgrammePersonJob.DIRECTOR
+						programmeData.AddCast(new TProgrammePersonJob.Init(member, TVTProgrammePersonJob.DIRECTOR))
 				End Select
 			endif
 		Next

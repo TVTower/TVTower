@@ -223,3 +223,44 @@ Type TVTPressureGroup
 	const Capitalists:int = 16
 	const Communists:int = 32
 End Type
+
+
+Type TVTPersonGender
+	Const UNDEFINED:int = 0
+	Const MALE:int = 1
+	Const FEMALE:int = 2
+End Type
+
+
+Type TVTProgrammePersonJob
+	Const UNKNOWN:int = 0
+	Const DIRECTOR:int = 1
+	Const ACTOR:int = 2
+	Const WRITER:int = 4
+	Const MODERATOR:int = 8 'hosts
+	Const MUSICIAN:int = 16
+	Const SUPPORTINGACTOR:int = 32
+	Const GUEST:int = 64 'show guest or prominent show candidate
+	Const REPORTER:int = 128
+
+	Function GetJobID:int(position:int = 0)
+		if position <= 0 then return 0
+		return 2^(position-1)
+	End Function
+
+	
+	Function GetJobString:string(jobKey:int)
+		Select jobKey
+			case 0		return "unknown"
+			case 1		return "director"
+			case 2		return "actor"
+			case 4		return "writer"
+			case 8		return "moderator"
+			case 16		return "musician"
+			case 32		return "supportingactor"
+			case 64		return "guest"
+			case 128	return "reporter"
+			default		return "invalidjob"
+		End Select
+	End Function
+End Type
