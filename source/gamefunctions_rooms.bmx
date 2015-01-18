@@ -3377,6 +3377,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		'===== CREATE GUI LISTS =====
 		GuiListNormal	= GuiListNormal[..scriptsNormalAmount]
 		local sprite:TSprite = GetSpriteFromRegistry("gfx_scripts_0")
+		local spriteSuitcase:TSprite = GetSpriteFromRegistry("gfx_scripts_0_dragged")
 		for local i:int = 0 to GuiListNormal.length-1
 			GuiListNormal[i] = new TGUIScriptSlotList.Create(new TVec2D.Init(233 + (GuiListNormal.length-1 - i)*22, 143 + i*2), new TVec2D.Init(17, 52), "scriptagency")
 			GuiListNormal[i].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
@@ -3400,7 +3401,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		GuiListSuitcase.SetItemLimit(GameRules.maxScriptsInSuitcase)
 
 		GuiListNormal2.SetSlotMinDimension(sprite.area.GetW(), sprite.area.GetH())
-		GuiListSuitcase.SetSlotMinDimension(sprite.area.GetW(), sprite.area.GetH())
+		GuiListSuitcase.SetSlotMinDimension(spriteSuitcase.area.GetW(), spriteSuitcase.area.GetH())
 
 		GuiListNormal2.SetEntryDisplacement( -scriptsNormal2Amount * GuiListNormal[0]._slotMinDimension.x, 5)
 		GuiListSuitcase.SetEntryDisplacement( 0, 0 )

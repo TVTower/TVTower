@@ -102,6 +102,64 @@ Import "base.util.math.bmx"
 
 
 Type StringHelper
+	'extracts and returns all placeholders in a text
+	'ex.: Hi my name is %NAME%
+	Function ExtractPlaceholders:string[](text:string, placeHolderChar:string="%")
+		local result:string[]
+		local readingPlaceHolder:int = False
+		local currentPlaceHolder:string = ""
+		local char:string
+		For local i:int = 0 until text.length
+			char = chr(text[i])
+			'found a potential placeholder start 
+			If char = placeHolderChar and not readingPlaceHolder
+				readingPlaceHolder = True
+			EndIf
+
+			If readingPlaceHolder
+				'found end of the placeholder?
+				If char = placeHolderChar and currentPlaceHolder.find(placeHolderChar) >= 0
+					readingPlaceHolder = False
+					result :+ [currentPlaceHolder+char]
+					currentPlaceHolder = ""
+					'go on with next char
+					continue
+				EndIf
+
+				'add the placeHolderChar and alphanumeric characters to
+				'the placeholder value
+				If IsAlphaNum(Asc(char)) or char = placeHolderChar
+					currentPlaceHolder :+ char
+				'found something different
+				'ex.: a single placeholderChar ("The % of %ALL% is %X%")
+				Else
+					currentPlaceHolder = ""
+					'go on with next char
+					continue
+				EndIf
+
+			EndIf
+		Next
+
+		return result
+	End Function
+
+
+	Function IsAlpha:Int( ch:Int )
+		Return (ch>=Asc("A") And ch<=Asc("Z")) Or (ch>=Asc("a") And ch<=Asc("z"))
+	End Function
+
+
+	Function IsDigit:Int( ch:Int )
+		Return ch>=Asc("0") And ch<=Asc("9")
+	End Function
+
+
+	Function IsAlphaNum:Int( ch:Int )
+		Return (ch>=Asc("0") And ch<=Asc("9")) Or ((ch>=Asc("A") And ch<=Asc("Z")) Or (ch>=Asc("a") And ch<=Asc("z")))
+	End Function
+
+	
 
 	Function UTF8toISO8859:String(s:string)
 		Local b:Short[] = New Short[s.length]

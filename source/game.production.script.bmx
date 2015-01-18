@@ -35,9 +35,9 @@ Type TScriptCollection Extends TGameObjectCollection
 			'random dummy
 			local dummy:TScriptTemplate = new TScriptTemplate
 			dummy.title = new TLocalizedString
-			dummy.title.Set("Test"+Rand(1000))
+			dummy.title.Set("%ATTRIBUTE%%OBJECT%")
 			dummy.description = new TLocalizedString
-			dummy.description.Set("text"+Rand(1000))
+			dummy.description.Set("Serie ueber %OBJECT% und ihren Alltag. %JOKES%")
 			dummy.SetPriceRange(5000, 10000, 0.4)
 			dummy.SetReviewRange(0.3, 0.6, 0.6)
 			dummy.SetSpeedRange(0.3, 0.6, 0.5)
@@ -49,6 +49,10 @@ Type TScriptCollection Extends TGameObjectCollection
 			'dieser cast koennte per Zufall im erstellten Script auftauchen
 			dummy.AddRandomCast(new TProgrammePersonJob.Init(null, TVTProgrammePersonJob.ACTOR, new TProgrammeRole.Init("Thomas", "Eventuell", "Dr.", TVTPersonGender.MALE, true)))
 			dummy.AddRandomCast(new TProgrammePersonJob.Init(null, TVTProgrammePersonJob.ACTOR, new TProgrammeRole.Init("Tanja", "Eventuell", "", TVTPersonGender.FEMALE, true)))
+			dummy.AddVariable("%ATTRIBUTE%", new TLocalizedString.Set("Ein Haufen |Die Hillbillie-|Verrueckte |Die Wahnsinns-|Bayrische |Tugendhafte "))
+			dummy.AddVariable("%OBJECT%", new TLocalizedString.Set("Waschweiber|Drag-Queens|Schwerenoeter|Polizisten"))
+			dummy.AddVariable("%JOKES%", new TLocalizedString.Set("Gags am laufenden Band.|Treffsichere Pointen.|Unterhaltung pur.||"))
+
 
 			return TScript.CreateFromTemplate(dummy)
 		endif
