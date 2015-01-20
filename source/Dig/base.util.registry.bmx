@@ -271,20 +271,24 @@ Type TRegistryLoader
 					'merge in the extras (eg. overwrite "names")
 					if extras then conf.Append(extras)
 
+					local lazyLoad:int = not (loader.directLoading or forceDirectLoad)
+
 					'directly load the objects or defer to a helper
-					if loader.directLoading or forceDirectLoad
-						loader.LoadFromConfig(conf, resourceName)
-					else
+					if not lazyLoad
+						'if direct loading failed ... load it later 
+						if not loader.LoadFromConfig(conf, resourceName)
+							lazyLoad = true
+						endif
+					endif
+
+					if lazyLoad
 						'try to get a name for the resource:
 						'a) from TData "extras"
 						'b) from the config read from xml
 						local name:String = conf.GetString("name")
 						if name = "" then name = loader.GetNameFromConfig(conf)
 
-						'add to "ToLoad"-list
-						TRegistryUnloadedResourceCollection.GetInstance().Add(..
-							new TRegistryUnloadedResource.Init(name, resourceName, conf)..
-						)
+						AddLazyLoadedResource(name, resourceName, conf)
 					endif
 				endif
 			endif
@@ -296,6 +300,14 @@ Type TRegistryLoader
 		'print "RegistryLoader.onLoadResourceFromXML: self + "+ resourceName.ToUpper()
 		EventManager.triggerEvent( TEventSimple.Create("RegistryLoader.onLoadResourceFromXML", new TData.AddString("resourceName", resourceName).Add("xmlNode", node), self, resourceName.ToUpper()))
 	End Method
+
+
+	Function AddLazyLoadedResource(name:string, resourceName:string, data:TData)
+		'add to "ToLoad"-list
+		TRegistryUnloadedResourceCollection.GetInstance().Add(..
+			new TRegistryUnloadedResource.Init(name, resourceName, data)..
+		)
+	End Function
 End Type
 
 
@@ -457,7 +469,7 @@ Type TRegistryUnloadedResourceCollection
 		'loading failed
 		toLoad.loadAttempts :+1
 'RONNY
-print "loading failed : "+ toLoad.name + " | "+ toLoad.loadAttempts
+'print "  loading failed : "+ toLoad.name + " | "+ toLoad.loadAttempts
 		'add to the list of failed resources
 		AddFailed(toLoad)
 		return FALSE
@@ -557,7 +569,7 @@ Type TRegistryBaseLoader
 
 
 	'loading the objects contained in the data
-	Method LoadFromConfig:int(data:TData, resourceName:string) abstract
+	Method LoadFromConfig:object(data:TData, resourceName:string) abstract
 
 
 	Method CreateDefaultResource:Int()
@@ -627,14 +639,14 @@ Type TRegistryFileLoader extends TRegistryBaseLoader
 
 
 	'load the xml file (content of file)
-	Method LoadFromConfig:int(data:TData, resourceName:string)
+	Method LoadFromConfig:object(data:TData, resourceName:string)
 		local newLoader:TRegistryLoader = new TRegistryLoader
 		'take over baseURI
 		newLoader.baseURI = data.GetString("baseURI")
 		newLoader.LoadFromXML(data.GetString("url"))
 
-		'indicate that the loading was successful
-		return True
+		'indicate that the loading was successful (else return null)
+		return self
 	End Method
 End Type
 
@@ -683,7 +695,7 @@ Type TRegistryDataLoader extends TRegistryBaseLoader
 
 
 	'load the xml file (content of file)
-	Method LoadFromConfig:int(data:TData, resourceName:string)
+	Method LoadFromConfig:object(data:TData, resourceName:string)
 		local merge:int = data.GetInt("merge", FALSE)
 		local name:string = GetNameFromConfig(data)
 		local values:TData = new TData
@@ -697,6 +709,6 @@ Type TRegistryDataLoader extends TRegistryBaseLoader
 		GetRegistry().Set(name, values)
 
 		'indicate that the loading was successful
-		return True
+		return values
 	End Method
 End Type

@@ -110,11 +110,11 @@ Type TFigure extends TFigureBase
 		'adjust sprite animations
 
 		SetSprite(sprite)
-		GetFrameAnimations().Set("default", TSpriteFrameAnimation.Create([ [8,1000] ], -1, 0 ) )
-		GetFrameAnimations().Set("walkRight", TSpriteFrameAnimation.Create([ [0,130], [1,130], [2,130], [3,130] ], -1, 0) )
-		GetFrameAnimations().Set("walkLeft", TSpriteFrameAnimation.Create([ [4,130], [5,130], [6,130], [7,130] ], -1, 0) )
-		GetFrameAnimations().Set("standFront", TSpriteFrameAnimation.Create([ [8,2500], [9,250] ], -1, 0, 500) )
-		GetFrameAnimations().Set("standBack", TSpriteFrameAnimation.Create([ [10,1000] ], -1, 0 ) )
+		GetFrameAnimations().Set(TSpriteFrameAnimation.Create("default", [ [8,1000] ], -1, 0 ) )
+		GetFrameAnimations().Set(TSpriteFrameAnimation.Create("walkRight", [ [0,130], [1,130], [2,130], [3,130] ], -1, 0) )
+		GetFrameAnimations().Set(TSpriteFrameAnimation.Create("walkLeft", [ [4,130], [5,130], [6,130], [7,130] ], -1, 0) )
+		GetFrameAnimations().Set(TSpriteFrameAnimation.Create("standFront", [ [8,2500], [9,250] ], -1, 0, 500) )
+		GetFrameAnimations().Set(TSpriteFrameAnimation.Create("standBack", [ [10,1000] ], -1, 0 ) )
 
 		name = Figurename
 		area = new TRectangle.Init(x, TBuildingBase.GetFloorY2(onFloor), sprite.framew, sprite.frameh )

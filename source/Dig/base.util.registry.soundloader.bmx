@@ -85,7 +85,7 @@ Type TRegistrySoundLoader extends TRegistryBaseLoader
 	End Method
 
 
-	Method LoadFromConfig:int(data:TData, resourceName:string)
+	Method LoadFromConfig:object(data:TData, resourceName:string)
 		Local name:String = GetNameFromConfig(data).ToLower()
 		Local url:String = data.GetString("url", "")
 		Local loop:Int = data.GetBool("loop", False)
@@ -108,6 +108,8 @@ Type TRegistrySoundLoader extends TRegistryBaseLoader
 
 					if playonload then TSoundManager.GetInstance().PlayMusic(name)
 				EndIf
+				'indicate that the loading was successful (or not)
+				return stream
 
 			case "sfx"
 				Local flags:Int = SOUND_HARDWARE
@@ -119,9 +121,9 @@ Type TRegistrySoundLoader extends TRegistryBaseLoader
 				Else
 					GetSoundManager().AddSound(name, sound, playlists)
 				EndIf
+				'indicate that the loading was successful (or not)
+				return sound
 		End Select
-
-		'indicate that the loading was successful
-		return True
+		return null
 	End Method
 End Type

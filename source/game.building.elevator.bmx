@@ -128,11 +128,11 @@ Type TElevator extends TEntity
 		'create door
 		door = new TSpriteEntity
 		door.SetSprite(GetSpriteFromRegistry("gfx_building_Fahrstuhl_oeffnend"))
-		door.GetFrameAnimations().Set("default", TSpriteFrameAnimation.Create([ [0,70] ], 0, 0) )
-		door.GetFrameAnimations().Set("closed", TSpriteFrameAnimation.Create([ [0,70] ], 0, 0) )
-		door.GetFrameAnimations().Set("open", TSpriteFrameAnimation.Create([ [7,70] ], 0, 0) )
-		door.GetFrameAnimations().Set("opendoor", TSpriteFrameAnimation.Create([ [0,animSpeed],[1,animSpeed],[2,animSpeed],[3,animSpeed],[4,animSpeed],[5,animSpeed],[6,animSpeed],[7,animSpeed] ], 0, 1) )
-		door.GetFrameAnimations().Set("closedoor", TSpriteFrameAnimation.Create([ [7,animSpeed],[6,animSpeed],[5,animSpeed],[4,animSpeed],[3,animSpeed],[2,animSpeed],[1,animSpeed],[0,animSpeed] ], 0, 1) )
+		door.GetFrameAnimations().Set(TSpriteFrameAnimation.Create("default", [ [0,70] ], 0, 0) )
+		door.GetFrameAnimations().Set(TSpriteFrameAnimation.Create("closed", [ [0,70] ], 0, 0) )
+		door.GetFrameAnimations().Set(TSpriteFrameAnimation.Create("open", [ [7,70] ], 0, 0) )
+		door.GetFrameAnimations().Set(TSpriteFrameAnimation.Create("opendoor", [ [0,animSpeed],[1,animSpeed],[2,animSpeed],[3,animSpeed],[4,animSpeed],[5,animSpeed],[6,animSpeed],[7,animSpeed] ], 0, 1) )
+		door.GetFrameAnimations().Set(TSpriteFrameAnimation.Create("closedoor", [ [7,animSpeed],[6,animSpeed],[5,animSpeed],[4,animSpeed],[3,animSpeed],[2,animSpeed],[1,animSpeed],[0,animSpeed] ], 0, 1) )
 
 		InitSprites()
 

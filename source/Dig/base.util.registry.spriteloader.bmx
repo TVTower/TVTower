@@ -55,6 +55,8 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 
 	'creates - modifies default resource
 	Method CreateDefaultResource:Int()
+		if _createdDefaults then return FALSE
+
 		local img:TImage = TImage(GetRegistry().GetDefault("image"))
 		if not img then return FALSE
 
@@ -111,7 +113,7 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 	End Method
 
 
-	Method LoadFromConfig:int(data:TData, resourceName:string)
+	Method LoadFromConfig:object(data:TData, resourceName:string)
 		resourceName = resourceName.ToLower()
 
 		if resourceName = "sprite" then return LoadSpriteFromConfig(data)
@@ -124,10 +126,10 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 
 
 
-	Method LoadSpriteFromConfig:Int(data:TData)
+	Method LoadSpriteFromConfig:TSprite(data:TData)
 		'create spritepack (name+"_pack") and sprite (name)
 		local sprite:TSprite = new TSprite.InitFromConfig(data)
-		if not sprite then return FALSE
+		if not sprite then return Null
 
 		'colorize if needed
 		If data.GetInt("r",-1) >= 0 And data.GetInt("g",-1) >= 0 And data.GetInt("r",-1) >= 0
@@ -142,20 +144,26 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 
 
 		'indicate that the loading was successful
-		return True
+		return sprite
 	End Method
 
 
 
-	Method LoadSpritePackFromConfig:Int(data:TData)
+	Method LoadSpritePackFromConfig:TSpritePack(data:TData)
 		local url:string = data.GetString("url")
-		if url = "" then return FALSE
+		if url = ""
+			TLogger.Log("TRegistrySpriteLoader.LoadSpritePackFromConfig()", "Url is missing.", LOG_ERROR)
+			return Null
+		endif
 
 		'Print "LoadSpritePackResource: "+data.GetString("name") + " ["+url+"]"
 		Local img:TImage = LoadImage(url, data.GetInt("flags", 0))
 		'just return - so requests to the sprite should be using the
 		'registries "default sprite" (if registry is used)
-		if not img then print "ERROR: image "+string(url)+" not found.";return False
+		if not img
+			TLogger.Log("TRegistrySpriteLoader.LoadSpritePackFromConfig()", "File ~q"+url+"~q is missing or corrupt.", LOG_ERROR)
+			return Null
+		endif
 		
 		Local spritePack:TSpritePack = new TSpritePack.Init(img, data.GetString("name"))
 		'add spritepack to asset
@@ -214,7 +222,7 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 		LoadScriptResults(data, spritePack)
 
 		'indicate that the loading was successful
-		return True
+		return spritePack
 	End Method
 
 
@@ -255,7 +263,11 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 				'check prerequisites
 				If dest = "" Or src = "" then return FALSE
 				if not TSpritepack(parent) then return FALSE
-				TSpritepack(parent).CopySprite(src, dest, color)
+				Local srcSprite:TSprite = TSpritepack(parent).GetSprite(src)
+				Local destSprite:TSprite = TSpritepack(parent).GetSprite(dest)
+				if srcSprite and destSprite
+					destSprite.SetImageContent(srcSprite.GetImage(), color)
+				endif
 
 
 			'Create a new sprite copied from another one
@@ -277,16 +289,17 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 				Local offsetRight:Int = data.GetInt("offsetRight", srcSprite.offset.GetRight())
 				Local frames:Int = data.GetInt("frames", srcSprite.frames)
 
-				'add to registry
-				local sprite:TSprite
-				sprite = TSpritepack(parent).AddSpritecopy(..
-							src,..
-							dest,..
-							new TRectangle.Init(x,y,w,h),..
-							new TRectangle.Init(offsetTop, offsetLeft, offsetBottom, offsetRight),..
-							frames,..
-							color..
-						  )
+				'create a copy of the sprite, copy the src image to it
+				'and add to registry
+				local sprite:TSprite = new TSprite.Init(..
+											TSpritepack(parent), ..
+											dest, ..
+											new TRectangle.Init(x,y,w,h), ..
+											new TRectangle.Init(offsetTop, offsetLeft, offsetBottom, offsetRight), ..
+											frames ..
+										)
+				sprite.SetImageContent(srcSprite.GetImage(), color)
+
 				GetRegistry().Set(dest, sprite)
 
 

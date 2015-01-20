@@ -139,32 +139,6 @@ Type TSpritePack
 	Method Render:int(offsetX:Int, offsetY:Int)
 		DrawImage(image, 0 + offsetX, 0 + offsetY)
 	End Method
-
-
-	Method CopySprite(spriteNameSrc:String, spriteNameDest:String, color:TColor)
-		Local tmpSpriteDest:TSprite = GetSprite(spriteNameDest)
-		Local tmppix:TPixmap = LockImage(image, 0)
-			tmppix.Window(tmpSpriteDest.area.GetX(), tmpSpriteDest.area.GetY(), tmpSpriteDest.area.GetW(), tmpSpriteDest.area.GetH()).ClearPixels(0)
-			DrawImageOnImage(ColorizeImageCopy(GetSprite(spriteNameSrc).GetImage(), color), tmppix, tmpSpriteDest.area.GetX(), tmpSpriteDest.area.GetY())
-		UnlockImage(image, 0)
-		GCCollect() '<- FIX!
-	End Method
-
-
-	Method AddSpriteCopy:TSprite(spriteNameSrc:String, spriteNameDest:String, area:TRectangle, offset:TRectangle=null, frames:int = 0, color:TColor)
-		local spriteCopy:TSprite = new TSprite.Init(self, spriteNameDest, area, offset, frames)
-		Local tmppix:TPixmap = LockImage(image, 0)
-			'area the image is copied on, is cleared before!
-			tmppix.Window(spriteCopy.area.GetX(), spriteCopy.area.GetY(), spriteCopy.area.GetW(), spriteCopy.area.GetH()).ClearPixels(0)
-			DrawImageOnImage(ColorizeImageCopy(GetSprite(spriteNameSrc).GetImage(), color), tmppix, spriteCopy.area.GetX(), spriteCopy.area.GetY())
-		UnlockImage(image, 0)
-		GCCollect() '<- FIX!
-
-		'add the copy
-		AddSprite(spriteCopy)
-
-		return spriteCopy
-	End Method
 End Type
 
 
@@ -291,6 +265,16 @@ Type TSprite
 		return sprite
 	End Function
 
+
+	'copies a given sprites image to the own area
+	Method SetImageContent(img:TImage, color:TColor)
+		Local tmppix:TPixmap = LockImage(parent.image, 0)
+			tmppix.Window(area.GetX(), area.GetY(), area.GetW(), area.GetH()).ClearPixels(0)
+			DrawImageOnImage(ColorizeImageCopy(img, color), tmppix, area.GetX(), area.GetY())
+		UnlockImage(parent.image, 0)
+		GCCollect() '<- FIX!
+	End Method
+	
 
 	Method GetName:String()
 		return name

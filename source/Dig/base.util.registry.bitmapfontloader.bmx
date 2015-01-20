@@ -101,7 +101,7 @@ Type TRegistryBitmapFontLoader extends TRegistryBaseLoader
 	End Method
 
 
-	Method LoadFromConfig:int(data:TData, resourceName:string)
+	Method LoadFromConfig:TBitmapFont(data:TData, resourceName:string)
 		Local name:String = GetNameFromConfig(data).ToLower()
 		Local url:String = data.GetString("url", "")
 		Local flagsString:String = data.GetString("flags", "")
@@ -119,7 +119,15 @@ Type TRegistryBitmapFontLoader extends TRegistryBaseLoader
 			Next
 		EndIf
 
-		If name="" Or url="" Then Return False
+		If name="" Or url=""
+			if url = ""
+				TLogger.Log("TRegistryBitmapFontLoader.LoadFromConfig()", "Url is missing.", LOG_ERROR)
+			else
+				TLogger.Log("TRegistryBitmapFontLoader.LoadFromConfig()", "Name is missing.", LOG_ERROR)
+			endif
+			'indicate fail
+			Return Null
+		EndIf
 
 		'=== ADD / CREATE THE FONT ===
 		Local font:TBitmapFont = GetBitmapFontManager().Add(name, url, size, SMOOTHFONT + flags)
@@ -144,6 +152,6 @@ Type TRegistryBitmapFontLoader extends TRegistryBaseLoader
 		font.spaceWidthModifier = data.GetFloat("spaceWidthModifier", font.spaceWidthModifier)
 
 		'indicate that the loading was successful
-		return True
+		return font
 	End Method
 End Type

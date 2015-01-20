@@ -260,4 +260,9 @@ Type TData
 		if result then return Int( String( result ) )
 		return defaultValue
 	End Method
+
+
+	Method GetData:TData(key:string, defaultValue:TData = null)
+		return TData(Get(key, defaultValue))
+	End Method
 End Type

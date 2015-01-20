@@ -104,11 +104,14 @@ Type TRegistryImageLoader extends TRegistryBaseLoader
 	End Method
 
 
-	Method LoadFromConfig:int(data:TData, resourceName:string)
+	Method LoadFromConfig:object(data:TData, resourceName:string)
 		resourceName = resourceName.ToLower()
 
 		local pixmap:TPixmap = LoadPixmap(data.GetString("url"))
-		if not pixmap then return FALSE
+		if not pixmap
+			TLogger.Log("TRegistryImageLoader.LoadFromConfig()", "File ~q"+data.GetString("url")+"~q is missing or corrupt.", LOG_ERROR)
+			return Null
+		endif
 
 		'colorize if needed
 		If data.GetInt("r",-1) >= 0 And data.GetInt("g",-1) >= 0 And data.GetInt("r",-1) >= 0
@@ -123,12 +126,13 @@ Type TRegistryImageLoader extends TRegistryBaseLoader
 
 			'load potential new sprites from scripts
 			LoadScriptResults(data, img)
+			'indicate that the loading was successful
+			return img
 		else
 			GetRegistry().Set(name, pixmap)
+			'indicate that the loading was successful
+			return pixmap
 		endif
-
-		'indicate that the loading was successful
-		return True
 	End Method
 
 

@@ -274,6 +274,13 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 
+	Method SetXY:TRectangle(valueX:float, valueY:float)
+		SetX(valueX)
+		SetY(valueY)
+		return self
+	End Method
+
+
 	Method SetW:TRectangle(value:float)
 		dimension.SetX(value)
 		return self

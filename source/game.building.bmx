@@ -196,12 +196,12 @@ Type TBuilding Extends TBuildingBase
 		ufo_normal	= New TSpriteEntity
 		ufo_normal.SetSprite(GetSpriteFromRegistry("gfx_building_BG_ufo"))
 		ufo_normal.area.position.SetXY(0,100)
-		ufo_normal.GetFrameAnimations().Set("default", TSpriteFrameAnimation.CreateSimple(9, 100))
+		ufo_normal.GetFrameAnimations().Set(TSpriteFrameAnimation.CreateSimple("default", 9, 100))
 
 		ufo_beaming	= New TSpriteEntity
 		ufo_beaming.SetSprite(GetSpriteFromRegistry("gfx_building_BG_ufo2"))
 		ufo_beaming.area.position.SetXY(0,100)
-		ufo_beaming.GetFrameAnimations().Set("default", TSpriteFrameAnimation.CreateSimple(9, 100))
+		ufo_beaming.GetFrameAnimations().Set(TSpriteFrameAnimation.CreateSimple("default", 9, 100))
 
 		'movement
 		Local displaceY:Int = 280, displaceX:Int = 5
@@ -237,8 +237,8 @@ Type TBuilding Extends TBuildingBase
 		'=== SETUP SOFTDRINK MACHINE ===
 		softDrinkMachine = new TSpriteEntity
 		softDrinkMachine.SetSprite(GetSpriteFromRegistry("gfx_building_softdrinkmachine"))
-		softDrinkMachine.GetFrameAnimations().Set("default", TSpriteFrameAnimation.Create([ [0,70] ], 0, 0) )
-		softDrinkMachine.GetFrameAnimations().Set("use", TSpriteFrameAnimation.CreateSimple(15, 50))
+		softDrinkMachine.GetFrameAnimations().Set(TSpriteFrameAnimation.Create("default", [ [0,70] ], 0, 0) )
+		softDrinkMachine.GetFrameAnimations().Set(TSpriteFrameAnimation.CreateSimple("use", 15, 50))
 		softDrinkMachineActive = False
 	End Method
 

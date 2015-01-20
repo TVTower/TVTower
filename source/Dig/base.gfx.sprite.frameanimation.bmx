@@ -2,6 +2,7 @@ SuperStrict
 Import BRL.Map
 Import BRL.Retro
 Import "base.util.deltatimer.bmx"
+Import "base.util.data.bmx"
 
 
 Type TSpriteFrameAnimationCollection
@@ -9,8 +10,30 @@ Type TSpriteFrameAnimationCollection
 	Field currentAnimationName:string = ""
 
 
+	Method Copy:TSpriteFrameAnimationCollection()
+		local c:TSpriteFrameAnimationCollection = new TSpriteFrameAnimationCollection
+		c.animations = animations.Copy()
+		c.currentAnimationName = currentAnimationName
+		return c
+	End Method
+
+
+	Method InitFromData:TSpriteFrameAnimationCollection(data:TData)
+		currentAnimationName = data.GetString("currentAnimationName")
+print "RONNY: initfromdata "+currentAnimationName
+
+		For local animationData:TData = EachIn TData[](data.Get("animations"))
+print "adding "+animationData.GetString("name")
+			Set(new TSpriteFrameAnimation.InitFromData(animationData))
+		Next
+print "-------"
+		return self
+	End Method
+	
+
 	'insert a TSpriteFrameAnimation with a certain Name
-	Method Set(name:string, animation:TSpriteFrameAnimation)
+	Method Set(animation:TSpriteFrameAnimation, name:string="")
+		if name = "" then name = animation.name
 		animations.insert(lower(name), animation)
 		if not animations.contains("default") then setCurrent(name, 0)
 	End Method
@@ -56,6 +79,7 @@ End Type
 
 
 Type TSpriteFrameAnimation
+	Field name:string
 	'how many times animation should repeat until finished
 	Field repeatTimes:int = 0
 	'frame of sprite/image
@@ -71,12 +95,13 @@ Type TSpriteFrameAnimation
 	Field randomness:int = 0
 
 
-	Function Create:TSpriteFrameAnimation(framesArray:int[][], repeatTimes:int=0, paused:int=0, randomness:int = 0)
+	Function Create:TSpriteFrameAnimation(name:string, framesArray:int[][], repeatTimes:int=0, paused:int=0, randomness:int = 0)
 		local obj:TSpriteFrameAnimation = new TSpriteFrameAnimation
 		local framecount:int = len( framesArray )
 
-		obj.frames		= obj.frames[..framecount] 'extend
-		obj.framesTime	= obj.framesTime[..framecount] 'extend
+		obj.name = name
+		obj.frames = obj.frames[..framecount] 'extend
+		obj.framesTime = obj.framesTime[..framecount] 'extend
 
 		For local i:int = 0 until framecount
 			obj.frames[i]		= framesArray[i][0]
@@ -88,13 +113,55 @@ Type TSpriteFrameAnimation
 	End Function
 
 
-	Function CreateSimple:TSpriteFrameAnimation(frameAmount:int, frameTime:int, repeatTimes:int=0, paused:int=0, randomness:int = 0)
+	Function CreateSimple:TSpriteFrameAnimation(name:string, frameAmount:int, frameTime:int, repeatTimes:int=0, paused:int=0, randomness:int = 0)
 		local f:int[][]
 		For local i:int = 0 until frameAmount
 			f :+ [[i,frameTime]]
 		Next
-		return Create(f, repeatTimes, paused, randomness)
+		return Create(name, f, repeatTimes, paused, randomness)
 	End Function
+
+
+	Method InitFromData:TSpriteFrameAnimation(data:TData)
+		name = data.GetString("name")
+		repeatTimes = data.GetInt("repeatTimes", -1) 'default to "loop"
+		currentImageFrame = data.GetInt("currentImageFrame")
+		currentFrame = data.GetInt("currentFrame")
+		paused = data.GetInt("paused")
+		frameTimer = data.GetFloat("frameTimer")
+		randomness = data.GetInt("randomness")
+
+		For local s:string = EachIn data.GetString("frames").Split("::")
+			frames :+ [int(s)]
+		Next
+		For local s:string = EachIn data.GetString("framesTime").Split("::")
+			framesTime :+ [float(s)]
+		Next
+		'if not enough framesTime were defined, just reuse the last
+		'time for the missing ones
+		if frames.length > 0
+			For local i:int = framesTime.length until frames.length
+				framesTime :+ [ framesTime[framesTime.length-1] ]
+			Next
+		endif
+
+		return self
+	End Method
+
+
+	Method Copy:TSpriteFrameAnimation()
+		local c:TSpriteFrameAnimation = new TSpriteFrameAnimation
+		c.name = name
+		c.repeatTimes = repeatTimes
+		c.currentImageFrame = currentImageFrame
+		c.currentFrame = currentFrame
+		c.frames = frames[..]
+		c.framesTime = framesTime[..]
+		c.paused = paused
+		c.frameTimer = frameTimer
+		c.randomness = randomness
+		return c
+	End Method
 
 
 	Method Update:int(deltaTime:Float = -1)

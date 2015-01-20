@@ -78,7 +78,7 @@ Type TRegistryColorLoader extends TRegistryBaseLoader
 	End Method
 
 
-	Method LoadFromConfig:int(data:TData, resourceName:string)
+	Method LoadFromConfig:TColor(data:TData, resourceName:string)
 		Local listName:string = data.getString("list")
 		Local name:String = data.GetString("name")
 		Local r:Int	= data.GetInt("r", 0)
@@ -103,7 +103,7 @@ Type TRegistryColorLoader extends TRegistryBaseLoader
 		If name <> "" Then GetRegistry().Set(name, color)
 
 		'indicate that the loading was successful
-		return True
+		return color
 	End Method
 End Type
 
@@ -218,7 +218,7 @@ Type TRegistryRoomLoader extends TRegistryBaseLoader
 	End Method
 
 
-	Method LoadFromConfig:int(data:TData, resourceName:string)
+	Method LoadFromConfig:TData(data:TData, resourceName:string)
 		Local roomData:TData = new TData
 		Local owner:Int	= data.GetInt("owner", -1)
 		Local name:String = data.GetString("name", "unknown")
@@ -260,7 +260,7 @@ Type TRegistryRoomLoader extends TRegistryBaseLoader
 		'TLogger.log("XmlLoader.LoadRooms()", "inserted room: " + Name, LOG_LOADING | LOG_DEBUG, TRUE)
 
 		'indicate that the loading was successful
-		return True
+		return roomData
 	End Method
 End Type
 
@@ -331,7 +331,7 @@ Type TRegistryNewsGenresLoader extends TRegistryBaseLoader
 	End Method
 
 
-	Method LoadFromConfig:int(data:TData, resourceName:string)
+	Method LoadFromConfig:TMap(data:TData, resourceName:string)
 		local newsGenre:TMap = CreateMap()
 		local id:int = data.GetInt("id", -1)
 		newsGenre.Insert("id", string(id))
@@ -355,7 +355,7 @@ Type TRegistryNewsGenresLoader extends TRegistryBaseLoader
 		newsGenresMap.Insert(string(id), newsGenre)
 
 		'indicate that the loading was successful
-		return True
+		return newsGenre
 	End Method
 End Type
 
@@ -446,7 +446,7 @@ Type TRegistryGenresLoader extends TRegistryBaseLoader
 	End Method
 
 
-	Method LoadFromConfig:int(data:TData, resourceName:string)
+	Method LoadFromConfig:TMap(data:TData, resourceName:string)
 		local genre:TMap = CreateMap()
 		local id:int = data.GetInt("id", -1)
 		genre.Insert("id", string(id))
@@ -487,6 +487,6 @@ Type TRegistryGenresLoader extends TRegistryBaseLoader
 		genresMap.Insert(string(id), genre)
 
 		'indicate that the loading was successful
-		return True
+		return genre
 	End Method
 End Type
