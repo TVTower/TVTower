@@ -162,7 +162,7 @@ Type TWeatherEffectRain extends TWeatherEffectBase
 	End Method
 
 
-	Method Render:int(xOffset:Float = 0, yOffset:Float = 0)
+	Method Render:int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
 		If not IsActive() then return False
 		
 		local decreaseAmount:int = layerPositions.length-1
@@ -333,7 +333,7 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 	End Method
 
 
-	Method Render:int(xOffset:Float = 0, yOffset:Float = 0)
+	Method Render:int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
 		If not IsActive() then return False
 		
 		local oldColor:TColor = new TColor.Get()
@@ -494,7 +494,7 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 	End Method
 
 
-	Method Render:int(xOffset:Float = 0, yOffset:Float = 0)
+	Method Render:int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
 		If not IsActive() then return False
 		
 		local oldColor:TColor = new TColor.Get()
@@ -664,7 +664,7 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 	End Method
 
 
-	Method Render:int(xOffset:Float = 0, yOffset:Float = 0)
+	Method Render:int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
 		If not IsActive() then return False
 		
 		local oldColor:TColor = new TColor.Get()

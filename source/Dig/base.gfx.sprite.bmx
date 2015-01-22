@@ -244,8 +244,12 @@ Type TSprite
 				Return Null
 			endif
 			'load img to find out celldimensions
-			if frames > 0 AND (frameW = 0 OR frameW = 0)
-				frameW = ImageWidth(img) / frames
+			if (frameW = 0 OR frameW = 0)
+				if frames > 0
+					frameW = ImageWidth(img) / frames
+				else
+					frameW = ImageWidth(img)
+				endif
 				frameH = ImageHeight(img)
 			endif
 			parent = new TSpritePack.Init(img, name + "_pack")
@@ -398,6 +402,8 @@ Type TSprite
 
 
 	Method GetFrameImage:TImage(frame:Int=0)
+		'give back whole image if no frames are configured
+		if frames <= 0 then frame = 0
 		Local DestPixmap:TPixmap = LockImage(parent.image, 0, False, True).Window(area.GetX() + frame * framew, area.GetY(), framew, area.GetH())
 		GCCollect() '<- FIX!
 		Return TImage.Load(DestPixmap, 0, 255, 0, 255)
@@ -406,6 +412,9 @@ Type TSprite
 
 	'return the pixmap of the sprite' image (reference, no copy)
 	Method GetPixmap:TPixmap(frame:Int=-1)
+		'give back whole image if no frames are configured
+		if frames <= 0 then frame = -1
+
 		Local DestPixmap:TPixmap
 		if frame >= 0
 			DestPixmap = LockImage(parent.image, 0, False, True).Window(area.GetX() + frame * framew, area.GetY(), framew, area.GetH())
@@ -524,6 +533,8 @@ Type TSprite
 
 	'draw the sprite onto a given image or pixmap
 	Method DrawOnImage(imageOrPixmap:object, x:int, y:int, frame:int = -1, alignment:TVec2D=null, modifyColor:TColor=null)
+		if frames <= 0 then frame = -1
+
 		if not alignment then alignment = ALIGN_LEFT_TOP
 		if frame >= 0
 			x :- alignment.GetX() * framew
@@ -542,6 +553,7 @@ Type TSprite
 	Method DrawArea:int(x:float, y:float, width:float=-1, height:float=-1, frame:int=-1)
 		if width=-1 then width = area.GetW()
 		if height=-1 then height = area.GetH()
+		if frames <= 0 then frame = -1
 
 		'normal sprites draw their image stretched to area
 		if not ninePatchEnabled
@@ -585,6 +597,7 @@ Type TSprite
 			sourceCopy = new TRectangle
 		endif
 
+		if frames <= 0 then frame = -1
 		if drawCompleteImage then frame = -1
 
 		'we got a frame request - try to find it
@@ -656,6 +669,7 @@ Type TSprite
 
 
 	Method TileDrawHorizontal(x:float, y:float, w:float, scale:float=1.0, theframe:int=-1)
+		if frames <= 0 then theframe = -1
 		local widthLeft:float = w
 		local currentX:float = x
 		local framePos:TVec2D = getFramePos(theframe)
@@ -701,6 +715,7 @@ Type TSprite
 
 
 	Method Draw(x:Float, y:Float, frame:Int=-1, alignment:TVec2D=null, scale:float=1.0, drawCompleteImage:Int=FALSE)
+		if frames <= 0 then frame = -1
 		if drawCompleteImage then frame = -1
 
 		rem

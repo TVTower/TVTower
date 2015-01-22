@@ -390,7 +390,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 	End Function
 
 
-	Method Render:Int(xOffset:Float=0, yOffset:Float=0)
+	Method Render:int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
 		local doorSprite:TSprite = GetSprite()
 
 		'==== DRAW DOOR ====
@@ -743,7 +743,7 @@ Type RoomHandler_Office extends TRoomHandler
 		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
-		if room.GetBackground() then room.GetBackground().draw(0, 0)
+		'if room.GetBackground() then room.GetBackground().draw(0, 0)
 
 		'allowed for owner only - or with key
 		If GetPlayer().HasMasterKey() OR (room.owner = GetPlayerCollection().playerID)
@@ -1182,10 +1182,12 @@ End Type
 
 'Movie agency
 Type RoomHandler_MovieAgency extends TRoomHandler
-	Global twinkerTimer:TIntervalTimer = TIntervalTimer.Create(6000,250)
 	Global AuctionToolTip:TTooltip
 
+	Global VendorEntity:TSpriteEntity
 	Global VendorArea:TGUISimpleRect	'allows registration of drop-event
+
+	Global AuctionEntity:TSpriteEntity
 
 	Global hoveredGuiProgrammeLicence:TGUIProgrammeLicence = null
 	Global draggedGuiProgrammeLicence:TGUIProgrammeLicence = null
@@ -1265,9 +1267,18 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		GuiListSeries.SetAcceptDrop("TGUIProgrammeLicence")
 		GuiListSuitcase.SetAcceptDrop("TGUIProgrammeLicence")
 
-		VendorArea = new TGUISimpleRect.Create(new TVec2D.Init(20,60), new TVec2D.Init(GetSpriteFromRegistry("gfx_hint_rooms_movieagency").area.GetW(), GetSpriteFromRegistry("gfx_hint_rooms_movieagency").area.GetH()), "movieagency" )
+		VendorEntity = GetSpriteEntityFromRegistry("entity_movieagency_vendor")
+		AuctionEntity = GetSpriteEntityFromRegistry("entity_movieagency_auction")
+
+		'default vendor dimension
+		local vendorAreaDimension:TVec2D = new TVec2D.Init(200,200)
+		if VendorEntity then vendorAreaDimension = VendorEntity.area.dimension.copy()
+
+		VendorArea = new TGUISimpleRect.Create(new TVec2D.Init(20,60), vendorAreaDimension, "movieagency" )
 		'vendor should accept drop - else no recognition
 		VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
+
+
 
 		'drop ... so sell/buy the thing
 		EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropProgrammeLicence, "TGUIProgrammeLicence" )
@@ -1619,6 +1630,20 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 
 	'===================================
+	'Movie Agency: All screens
+	'===================================
+
+	'can be done for all, as the order of handling that event
+	'does not care ... just update animations is important
+	Method onUpdateRoom:int( triggerEvent:TEventBase )
+		Super.onUpdateRoom(triggerEvent)
+
+		if AuctionEntity Then AuctionEntity.Update()
+		if VendorEntity Then VendorEntity.Update()
+	End Method
+
+	
+	'===================================
 	'Movie Agency: Room screen
 	'===================================
 
@@ -1769,32 +1794,44 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 
 	Function onDrawMovieAgency:int( triggerEvent:TEventBase )
-		'make suitcase/vendor glow if needed
-		local glowSuitcase:string = ""
-		local glowVendor:string = ""
-		if draggedGuiProgrammeLicence
-			if draggedGuiProgrammeLicence.licence.owner <= 0
-				glowSuitcase = "_glow"
-			else
-				glowVendor = "_glow"
-			endif
-		endif
+		if AuctionEntity Then AuctionEntity.Render()
+		if VendorEntity Then VendorEntity.Render()
+		GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
-		'let the vendor glow if over auction hammer
-		'or if a player's block is dragged
-		if not draggedGuiProgrammeLicence
-			If THelper.IsIn(MouseManager.x, MouseManager.y, 210,220,140,60)
-				GetSpriteFromRegistry("gfx_hint_rooms_movieagency").Draw(0,0)
+		'make auction/suitcase/vendor highlighted if needed
+		local highlightSuitcase:int = False
+		local highlightVendor:int = False
+		local highlightAuction:int = False
+
+		'sometimes a draggedGuiProgrammeLicence is defined in an update
+		'but isnt dragged anymore (will get removed in the next tick)
+		'the dragged check avoids that the vendor is highlighted for
+		'1-2 render frames
+		if draggedGuiProgrammeLicence and draggedGuiProgrammeLicence.isDragged()
+			if draggedGuiProgrammeLicence.licence.owner <= 0
+				highlightSuitcase = True
+			else
+				highlightVendor = True
 			endif
 		else
-			if glowVendor="_glow"
-				GetSpriteFromRegistry("gfx_hint_rooms_movieagency").Draw(0,0)
-			endif
+			If AuctionEntity and AuctionEntity.GetScreenArea().ContainsXY(MouseManager.x, MouseManager.y)
+				highlightAuction = True
+			EndIf
 		endif
-		'let the vendor twinker sometimes...
-		If twinkerTimer.doAction() then GetSpriteFromRegistry("gfx_gimmick_rooms_movieagency").Draw(0,0)
-		'draw suitcase
-		GetSpriteFromRegistry("gfx_suitcase"+glowSuitcase).Draw(suitcasePos.GetX(), suitcasePos.GetY())
+
+		if highlightAuction or highlightVendor or highlightSuitcase
+			local oldCol:TColor = new TColor.Get()
+			SetBlend LightBlend
+			SetAlpha oldCol.a * 0.4
+
+			if AuctionEntity and highlightAuction then AuctionEntity.Render()
+			if VendorEntity and highlightVendor then VendorEntity.Render()
+			if highlightSuitcase then GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+
+			SetAlpha oldCol.a
+			SetBlend AlphaBlend
+		endif
+
 
 		SetAlpha 0.5
 		local fontColor:TColor = TColor.CreateGrey(50)
@@ -1841,8 +1878,6 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			EndIf
 		endif
 
-		If twinkerTimer.isExpired() then twinkerTimer.Reset()
-
 		'delete unused and create new gui elements
 		if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()
 
@@ -1863,6 +1898,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	'===================================
 
 	Function onDrawMovieAuction:int( triggerEvent:TEventBase )
+		if AuctionEntity Then AuctionEntity.Render()
+		if VendorEntity Then VendorEntity.Render()
 		GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 		SetAlpha 0.5

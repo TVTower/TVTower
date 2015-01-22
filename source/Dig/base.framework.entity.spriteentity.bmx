@@ -36,13 +36,10 @@ SuperStrict
 Import "base.framework.entity.bmx"
 Import "base.gfx.sprite.bmx"
 Import "base.gfx.sprite.frameanimation.bmx"
-Import "base.util.registry.spriteloader.bmx"
 
 
 Type TSpriteEntity extends TEntity
 	Field sprite:TSprite
-	Field childSpriteEntities:TSpriteEntity[]
-	Field childOffsets:TVec2D[]
 	Field frameAnimations:TSpriteFrameAnimationCollection
 
 
@@ -61,21 +58,17 @@ Type TSpriteEntity extends TEntity
 	Function InitFromConfig:TSpriteEntity(data:TData)
 		if not data then return Null
 
-		'if sprite is defined but invalid, return Null (this eg. allows
-		'trying to load it again after other resources)
-		local spriteName:string = data.GetString("spriteName", "")
-		local sprite:TSprite
-		if spriteName
-			sprite = GetSpriteFromRegistry(spriteName)
-			if not sprite or sprite = GetRegistry().GetDefault("sprite") then return Null
-		endif
-		
 		local spriteEntity:TSpriteEntity = new TSpriteEntity
+
 		'assign name
 		spriteEntity.name = data.GetString("name", "unknownSpriteEntity")
-		'assign sprite
-		if sprite then spriteEntity.SetSprite(sprite)
 
+		'set base values
+		spriteEntity.setPosition(data.GetInt("x"), data.GetInt("y"))
+		spriteEntity.setSize(data.GetInt("w"), data.GetInt("h"))
+
+		'assign sprite (might set "size" too)
+		if TSprite(data.Get("sprite")) then spriteEntity.SetSprite(TSprite(data.Get("sprite")))
 
 		'Animations configuration
 		'load this before children, so children could refer to this
@@ -87,7 +80,7 @@ Type TSpriteEntity extends TEntity
 
 		'assign children - if one of them fails, the whole entity
 		'                  has to fail!
-		For local childData:TData = EachIn TData[](data.Get("childrenData"))
+		For local childData:TData = EachIn TData[](data.Get("childrenData", new TData[0]))
 			local child:TSpriteEntity = InitFromConfig(childData)
 			if not child
 				local childName:string = childData.GetString("name", "unknownSpriteEntity")
@@ -118,107 +111,55 @@ Type TSpriteEntity extends TEntity
 	End Method
 
 
-	Method AddChild(child:TSpriteEntity, childOffset:TVec2D = null, index:int = -1)
-		if not child then return
-		if not childSpriteEntities then childSpriteEntities = new TSpriteEntity[0]
-		if not childOffsets then childOffsets = new TVec2D[0]
+	'override
+	Method Render:Int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
+		'=== DRAW SPRITE ===
+		if sprite
+			if frameAnimations
+				local frame:int = -1
+				frame = frameAnimations.GetCurrent().GetCurrentImageFrame()
 
-		if not childOffset then childOffset = new TVec2D.Init()
+				'only draw something with a valid frame
+				'-> this allows to setup "-1" as frame which means
+				'   "do not draw me now"
+				if frame >= 0
+					sprite.Draw(GetScreenX() + xOffset, GetScreenY() + yOffset, frame)
+				endif
+			else
+				'draw the whole sprite
+				sprite.Draw(GetScreenX() + xOffset, GetScreenY() + yOffset)
+			endif
 
-		if index < 0 then index = childSpriteEntities.length
-		if index >= childSpriteEntities.length
-			childSpriteEntities :+ [child]
-			childOffsets :+ [childOffset]
-		else
-			childSpriteEntities = childSpriteEntities[.. index] + [child] + childSpriteEntities[index ..]
-			childOffsets = childOffsets[.. index] + [childOffset] + childOffsets[index ..]
 		endif
 
-		childSpriteEntities[index].SetParent(self)
-	End Method
-
-
-	Method RemoveChild(child:TSpriteEntity)
-		if not child then return
-		if not childSpriteEntities or childSpriteEntities.length = 0 then return
-		
-		local index:int = 0
-		while index < childSpriteEntities.length
-			if childSpriteEntities[index] = child
-				RemoveChildAtIndex(index)
-				'skip increasing index, the next child might be
-				'also the searched one
-			else
-				index :+ 1
-			endif
-		Wend
-	End Method
-
-
-	Method RemoveChildAtIndex(index:int = -1)
-		if not childSpriteEntities or childSpriteEntities.length = 0 then return
-
-		if index < 0 then index = childSpriteEntities.length - 1
-		childSpriteEntities[index].SetParent(null)
-		childSpriteEntities = childSpriteEntities[.. index-1] + childSpriteEntities[index ..]
-		childOffsets = childOffsets[.. index-1] + childOffsets[index ..]
+		'=== DRAW CHILDREN ===
+		RenderChildren(xOffset, yOffset, alignment)
 	End Method
 	
 
-	Method Render:Int(xOffset:Float = 0, yOffset:Float = 0)
-		'=== DRAW SPRITE ===
-		if sprite
-			local frame:int = -1
-			if frameAnimations
-				frame = frameAnimations.GetCurrent().GetCurrentImageFrame()
-			endif
-
-			sprite.Draw(GetScreenX() + xOffset, GetScreenY() + yOffset, frame)
+	Method RenderAnimationAt:Int(x:Float, y:Float, animationName:String, alignment:TVec2D = Null)
+		if animationName = "" or not frameAnimations
+			return RenderAt(x, y, alignment)
 		endif
-
-		'=== DRAW CHILDREN ===
-		For local childIndex:int = 0 until childSpriteEntities.length
-			if not childSpriteEntities[childIndex] then continue
-			childSpriteEntities[childIndex].Render(xOffset + childOffsets[childIndex].GetX(), yOffset + childOffsets[childIndex].GetY())
-		Next
-	End Method
-
-
-	Method RenderAt:Int(x:Float = 0, y:Float = 0, animationName:string="", alignment:TVec2D = null)
-		'=== DRAW SPRITE ===
-		if sprite
-			local frame:int = -1
-			if frameAnimations
-				if animationName = ""
-					frame = frameAnimations.GetCurrent().GetCurrentImageFrame()
-				else
-					frame = frameAnimations.Get(animationName).GetCurrentImageFrame()
-				endif
-			endif
-			sprite.Draw(x, y, frame, alignment)
-		endif
-		
-		'=== DRAW CHILDREN ===
-		For local childIndex:int = 0 until childSpriteEntities.length
-			if not childSpriteEntities[childIndex] then continue
-			childSpriteEntities[childIndex].RenderAt(x + childOffsets[childIndex].GetX(), y + childOffsets[childIndex].GetY(), animationName, alignment)
-		Next
+		'backup current animation
+		local oldAnimationName:string = frameAnimations.currentAnimationName
+		'set new animation
+		frameAnimations.currentAnimationName = animationName
+		'render with new animation
+		RenderAt(x, y, alignment)
+		'set back to backup
+		frameAnimations.currentAnimationName = oldAnimationName
 	End Method
 
 
 	Method Update:Int()
-		'=== UPDATE MOVEMENT ===
-		Super.Update()
-
 		'=== UPDATE ANIMATION ===
 		'instead of deltatime, we use the modified value including the
 		'world speed factor
 		if frameAnimations then frameAnimations.Update()
 
-		'=== UPDATE CHILDREN ===
-		For local s:TSpriteEntity = EachIn childSpriteEntities
-			s.Update()
-		Next
+		'=== UPDATE MOVEMENT / CHILDREN ===
+		Super.Update()
 	End Method
 
 

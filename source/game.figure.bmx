@@ -930,7 +930,9 @@ Type TFigure extends TFigureBase
 		tweenPos.AddXY(- ceil(area.GetW()/2) + PosOffset.getX(), - sprite.area.GetH() + PosOffset.getY())
 
 		'with parent: set local to parent (add parents screen coord)
-		if parent then tweenPos.AddXY(parent.GetScreenX(), parent.GetScreenY())
+		'RONNY: 2015/01/22 - no longer needed with new RenderAt-function
+		'                    for entities
+		'if parent then tweenPos.AddXY(parent.GetScreenX(), parent.GetScreenY())
 
 		return tweenPos
 	End Method 

@@ -205,6 +205,13 @@ Type TData
 	End Method
 
 
+	Method Remove:object(key:string)
+		local removed:object = Get(key)
+		data.Remove(key)
+		return removed
+	End Method
+
+
 	Method Get:object(key:string, defaultValue:object=null)
 		'only react if the "::" is in the middle of something
 		if key.Find("::") > 0

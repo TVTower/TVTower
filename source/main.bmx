@@ -11,6 +11,7 @@ Import "Dig/base.util.registry.spriteloader.bmx"
 Import "Dig/base.util.registry.imageloader.bmx"
 Import "Dig/base.util.registry.bitmapfontloader.bmx"
 Import "Dig/base.util.registry.soundloader.bmx"
+Import "Dig/base.util.registry.spriteentityloader.bmx"
 Import "Dig/base.util.luaengine.bmx"
 
 Import "Dig/base.util.deltatimer.bmx"

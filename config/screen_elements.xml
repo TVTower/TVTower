@@ -118,9 +118,10 @@
 	reportage_undefined
 	reportage_yellowpress
 -->
-				<child name="gfx_auctionmovie" 						x="0"	y="450"	w="256"	h="55"	/>
-				<child name="gfx_gimmick_rooms_movieagency" 		x="166"	y="1"	w="56"	h="19" offsetLeft="-36" offsetTop="-122"	/>
-				<child name="gfx_hint_rooms_movieagency"	 		x="0" 	y="0"	w="160"	h="220" offsetTop="-75"	/>
+				<child name="gfx_auctionmovie" 						x="0"	y="450"	w="256"	h="55" />
+				<child name="gfx_movieagency_vendor"	 			x="0"	y="0"	w="190"	h="220" />
+				<child name="gfx_movieagency_vendor_eyes"	 		x="191"	y="0"	w="56"	h="19" />
+				<child name="gfx_movieagency_hammer"		 		x="191"	y="20"	w="134"	h="60" />
 				<child name="gfx_movie_adventure"	 		x="0"	y="240"	w="15"	h="70"	r="120"	g="70"	b="130" />
 				<child name="gfx_series_adventure"	 		x="135"	y="240"	w="15"	h="70"	r="120"	g="70"	b="130" />
 				<child name="gfx_movie_action"		 		x="15"	y="240"	w="15"	h="70"	r="40"	g="100"	b="150" />
@@ -169,16 +170,33 @@
 				<child name="gfx_series_crime"		 		x="180"	y="380"	w="15"	h="70" />
 				<child name="gfx_movie_fantasy"		 		x="60"	y="380"	w="15"	h="70" />
 				<child name="gfx_series_fantasy"	 		x="195"	y="380"	w="15"	h="70" />
-					<child name="gfx_movie_reportage_undefined"		x="75"	y="380"	w="15"	h="70" />
-					<child name="gfx_series_reportage_undefined"	x="210"	y="380"	w="15"	h="70" />
-					<child name="gfx_movie_reportage_yellowpress"	x="75"	y="380"	w="15"	h="70"	r="140"	g="70"	b="70" />
-					<child name="gfx_series_reportage_yellowpress"	x="210"	y="380"	w="15"	h="70"	r="140"	g="70"	b="70" />
+				<child name="gfx_movie_reportage_undefined"		x="75"	y="380"	w="15"	h="70" />
+				<child name="gfx_series_reportage_undefined"	x="210"	y="380"	w="15"	h="70" />
+				<child name="gfx_movie_reportage_yellowpress"	x="75"	y="380"	w="15"	h="70"	r="140"	g="70"	b="70" />
+				<child name="gfx_series_reportage_yellowpress"	x="210"	y="380"	w="15"	h="70"	r="140"	g="70"	b="70" />
 				<child name="gfx_movie_22"			 		x="90"	y="380"	w="15"	h="70" />
 				<child name="gfx_series_22"			 		x="225"	y="380"	w="15"	h="70" />
 				<child name="gfx_movie_undefined"	 		x="105"	y="380"	w="15"	h="70" />
 				<child name="gfx_series_undefined"	 		x="240"	y="380"	w="15"	h="70" />
 			</children>
 		</spritepack>
+
+
+		<!-- MOVIE AGENCY: Vendor entity - including blinking eyes -->
+		<spriteentity name="entity_movieagency_vendor" sprite="gfx_movieagency_vendor" x="0" y="75">
+			<children>
+				<!-- add some blinking eyes to the vendor -->
+				<spriteentity name="entity_movieagency_vendor_eyes" sprite="gfx_movieagency_vendor_eyes" offsetLeft="36" offsetTop="47">
+					<spriteframeanimations currentAnimationName="blink">
+						<!-- -1 = "no display", 0 = "frame 0" -->
+						<spriteframeanimation name="blink" frames="-1::0" framesTime="6.0::0.25" />
+					</spriteframeanimations>
+				</spriteentity>
+			</children>
+		</spriteentity>
+
+		<!-- MOVIE AGENCY: Auction entity - to go to auction screen -->
+		<spriteentity name="entity_movieagency_auction" sprite="gfx_movieagency_hammer" x="214" y="223" />
 
 		
 		<!-- OFFICE: STATIONMAP -->

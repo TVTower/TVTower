@@ -179,6 +179,9 @@ Type TRenderableEntity extends TEntityBase
 	Field name:string
 	Field visible:int = True
 	Field parent:TRenderableEntity = null
+	Field childEntities:TRenderableEntity[]
+	Field childOffsets:TVec2D[]
+
 	Field _options:int = 0
 	Const OPTION_IGNORE_PARENT_SCREENLIMIT:int = 1
 
@@ -202,15 +205,91 @@ Type TRenderableEntity extends TEntityBase
 	End Method
 
 
-'	Method Render:Int(xOffset:Float=0, yOffset:Float=0) abstract
-	Method Render:Int(xOffset:Float=0, yOffset:Float=0)
-		'implement in extension
+
+	Method AddChild(child:TRenderableEntity, childOffset:TVec2D = null, index:int = -1)
+		if not child then return
+		if not childEntities then childEntities = new TRenderableEntity[0]
+		if not childOffsets then childOffsets = new TVec2D[0]
+
+		if not childOffset then childOffset = new TVec2D.Init()
+
+		if index < 0 then index = childEntities.length
+		if index >= childEntities.length
+			childEntities :+ [child]
+			childOffsets :+ [childOffset]
+		else
+			childEntities = childEntities[.. index] + [child] + childEntities[index ..]
+			childOffsets = childOffsets[.. index] + [childOffset] + childOffsets[index ..]
+		endif
+
+		'set self as parent
+		childEntities[index].SetParent(self)
 	End Method
 
 
-'	Method Update:Int()
-	'do nothing
-'	End Method
+	Method RemoveChild(child:TRenderableEntity)
+		if not child then return
+		if not childEntities or childEntities.length = 0 then return
+
+		local index:int = 0
+		while index < childEntities.length
+			if childEntities[index] = child
+				RemoveChildAtIndex(index)
+				'skip increasing index, the next child might be
+				'also the searched one
+			else
+				index :+ 1
+			endif
+		Wend
+	End Method
+
+
+	Method RemoveChildAtIndex(index:int = -1)
+		if not childEntities or childEntities.length = 0 then return
+
+		if index < 0 then index = childEntities.length - 1
+		'remove parent association (strong reference)
+		'this makes it garbage-collectable
+		childEntities[index].SetParent(null)
+		childEntities = childEntities[.. index-1] + childEntities[index ..]
+		childOffsets = childOffsets[.. index-1] + childOffsets[index ..]
+	End Method
+	
+
+	Method Render:Int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
+		RenderChildren(xOffset, yOffset, alignment)
+	End Method
+
+
+	Method RenderAt:Int(x:Float = 0, y:Float = 0, alignment:TVec2D = Null)
+		local oldPos:TVec2D = area.position.copy()
+		area.position.SetXY(x,y)
+
+		Render(0, 0, alignment)
+
+		area.position = oldPos
+	End Method
+
+
+	Method Update:Int()
+		UpdateChildren()
+	End Method
+
+
+	Method RenderChildren:Int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
+		For local i:int = 0 until childEntities.length
+			if not childEntities[i] then continue
+			childEntities[i].Render(xOffset + childOffsets[i].GetX(), yOffset + childOffsets[i].GetY(), alignment)
+		Next
+	End Method
+
+
+	Method UpdateChildren:Int()
+		For local child:TRenderableEntity = EachIn childEntities
+			child.Update()
+		Next
+	End Method
+
 
 	'returns whether two (Render)Entities overlap eachother visually
 	Method Overlaps:int(other:TRenderableEntity)
@@ -404,6 +483,7 @@ Type TEntity extends TRenderableEntity
 
 
 	Method Update:Int()
+		Super.Update()
 		Move()
 	End Method
 End Type

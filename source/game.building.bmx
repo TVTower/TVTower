@@ -380,7 +380,7 @@ Type TBuilding Extends TBuildingBase
 	End Method
 
 
-	Method Render:int(xOffset:Float = 0, yOffset:Float = 0)
+	Method Render:int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
 		TProfiler.Enter("Draw-Building-Background")
 		DrawBackground()
 		TProfiler.Leave("Draw-Building-Background")
@@ -415,7 +415,7 @@ Type TBuilding Extends TBuildingBase
 		'draw elevator parts
 		Elevator.Render()
 		'draw softdrinkmachine
-		softDrinkMachine.RenderAt(buildingInner.GetScreenX() + innerX2 - 90, buildingInner.GetScreenY() + GetFloorY2(6), "", ALIGN_LEFT_BOTTOM)
+		softDrinkMachine.Render(buildingInner.GetScreenX() + innerX2 - 90, buildingInner.GetScreenY() + GetFloorY2(6), ALIGN_LEFT_BOTTOM)
 
 		if not softDrinkMachineActive
 			softDrinkMachine.GetFrameAnimations().SetCurrent("use")

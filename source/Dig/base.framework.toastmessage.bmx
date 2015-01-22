@@ -165,10 +165,13 @@ Type TToastMessageCollection extends TRenderableEntity
 	End Method
 
 
-	Method Render:Int(xOffset:Float=0, yOffset:Float=0)
+	Method Render:Int(xOffset:Float = 0, yOffset:Float=0, alignment:TVec2D = Null)
 		For local spawnPoint:TToastMessageSpawnPoint = EachIn spawnPoints.Values()
 			spawnPoint.Render(xOffset, yOffset)
 		Next
+
+		'=== DRAW CHILDREN ===
+		RenderChildren(xOffset, yOffset, alignment)
 	End Method
 	
 
@@ -176,6 +179,9 @@ Type TToastMessageCollection extends TRenderableEntity
 		For local spawnPoint:TToastMessageSpawnPoint = EachIn spawnPoints.Values()
 			spawnPoint.Update()
 		Next
+
+		'=== UPDATE CHILDREN ===
+		UpdateChildren()
 	End Method
 End Type
 
@@ -291,7 +297,7 @@ Type TToastMessageSpawnPoint extends TEntity
 	End Method
 
 
-	Method Render:Int(xOffset:Float=0, yOffset:Float=0)
+	Method Render:Int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
 		'store old render config and adjust to our needs
 		local renderConfig:TRenderconfig = TRenderConfig.Push()
 		if HasSize() then SetViewPort(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())
@@ -300,8 +306,11 @@ Type TToastMessageSpawnPoint extends TEntity
 		if showBackground then RenderBackground(xOffset, yOffset)
 		
 		For local message:TToastMessage = EachIn messages
-			message.Render(xOffset, yOffset)
+			message.Render(xOffset, yOffset, alignment)
 		Next
+
+		'=== DRAW CHILDREN ===
+		RenderChildren(xOffset, yOffset)
 
 		'restore old render config
 		TRenderConfig.Pop()
@@ -312,6 +321,9 @@ Type TToastMessageSpawnPoint extends TEntity
 		For local message:TToastMessage = EachIn messages
 			message.Update()
 		Next
+
+		'=== UPDATE CHILDREN ===
+		UpdateChildren()
 	End Method	
 End Type
 
@@ -512,7 +524,7 @@ Type TToastMessage extends TEntity
 	End Method
 
 
-	Method Render:Int(xOffset:Float=0, yOffset:Float=0)
+	Method Render:Int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
 		'do not draw closed and unanimated elements
 		if HasStatus(TOASTMESSAGE_CLOSED) and not HasStatus(TOASTMESSAGE_OPENING_OR_CLOSING) then return False
 
@@ -523,11 +535,12 @@ Type TToastMessage extends TEntity
 		local oldAlpha:Float = GetAlpha()
 		if HasStatus(TOASTMESSAGE_OPENING_OR_CLOSING) then SetAlpha(oldAlpha * progress)
 
-
 		'draw the message container itself
 		Rendercontent(xOffset, yOffset)
 
-
 		SetAlpha(oldAlpha)
+
+		'=== DRAW CHILDREN ===
+		RenderChildren(xOffset, yOffset)
 	End Method
 End Type

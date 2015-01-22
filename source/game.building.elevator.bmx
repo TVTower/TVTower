@@ -659,7 +659,7 @@ Type TElevator extends TEntity
 	End Method
 
 
-	Method Render:Int(xOffset:Float=0, yOffset:Float=0)
+	Method Render:int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
 		SetBlend ALPHABLEND
 
 		local parentY:int = GetScreenY()
@@ -730,7 +730,7 @@ Type TElevator extends TEntity
 		For Local i:Int = 0 To 13
 			Local locy:Int = parentY + TBuildingBase.GetFloorY2(i) - door.sprite.area.GetH()
 			If locy < 410 And locy > - 50 And i <> CurrentFloor
-				door.RenderAt(GetScreenX(), locy, "closed")
+				door.RenderAnimationAt(GetScreenX(), locy, "closed")
 			Endif
 		Next
 	End Method

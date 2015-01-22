@@ -898,7 +898,7 @@ Type THotspot extends TRenderableEntity
 
 	'update tooltip
 	'handle clicks -> send events so eg can send figure to it
-	Method Update:Int(offsetX:Int=0,offsetY:Int=0)
+	Method Update:Int()
 		hovered = False
 	
 		If GetScreenArea().containsXY(MouseManager.x, MouseManager.y)
@@ -931,9 +931,11 @@ Type THotspot extends TRenderableEntity
 	End Method
 
 
-	Method Render:Int(xOffset:Float=0, yOffset:Float=0)
+	Method Render:int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
 		'DrawRect(GetScreenArea().GetX(), GetScreenArea().GetY(), GetScreenArea().GetW(), GetScreenArea().GetH())
 		If tooltip Then tooltip.Render()
+
+'Throw "RONNY: implementiere tooltips als children"
 	End Method
 End Type
 

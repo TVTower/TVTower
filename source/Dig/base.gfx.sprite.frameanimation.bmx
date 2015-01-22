@@ -19,14 +19,13 @@ Type TSpriteFrameAnimationCollection
 
 
 	Method InitFromData:TSpriteFrameAnimationCollection(data:TData)
-		currentAnimationName = data.GetString("currentAnimationName")
-print "RONNY: initfromdata "+currentAnimationName
-
 		For local animationData:TData = EachIn TData[](data.Get("animations"))
-print "adding "+animationData.GetString("name")
 			Set(new TSpriteFrameAnimation.InitFromData(animationData))
 		Next
-print "-------"
+
+		local newCurrentAnimationName:string = data.GetString("currentAnimationName")
+		if newCurrentAnimationName then SetCurrent(newCurrentAnimationName)
+
 		return self
 	End Method
 	
@@ -41,9 +40,10 @@ print "-------"
 
 	'Set a new Animation
 	'If it is a different animation name, the Animation will get reset (start from begin)
-	Method SetCurrent(name:string, start:int = TRUE)
+	Method SetCurrent(name:string, start:int = TRUE, reset:int = True)
 		name = lower(name)
-		local reset:int = 1 - (currentAnimationName = name)
+		'if reset is allowed, reset on a different name
+		if reset then reset = 1 - (currentAnimationName = name)
 		currentAnimationName = name
 		if reset then getCurrent().Reset()
 		if start then getCurrent().Playback()
@@ -92,16 +92,17 @@ Type TSpriteFrameAnimation
 	'stay with currentFrame or cycle through frames?
 	Field paused:Int = FALSE
 	Field frameTimer:float = null
-	Field randomness:int = 0
+	Field randomness:float = 0
 
 
-	Function Create:TSpriteFrameAnimation(name:string, framesArray:int[][], repeatTimes:int=0, paused:int=0, randomness:int = 0)
+	Function Create:TSpriteFrameAnimation(name:string, framesArray:int[][], repeatTimes:int=0, paused:int=0, randomness:Int = 0)
 		local obj:TSpriteFrameAnimation = new TSpriteFrameAnimation
 		local framecount:int = len( framesArray )
 
 		obj.name = name
 		obj.frames = obj.frames[..framecount] 'extend
 		obj.framesTime = obj.framesTime[..framecount] 'extend
+		obj.randomness = 0.001 * randomness 'ms to second
 
 		For local i:int = 0 until framecount
 			obj.frames[i]		= framesArray[i][0]
@@ -113,7 +114,7 @@ Type TSpriteFrameAnimation
 	End Function
 
 
-	Function CreateSimple:TSpriteFrameAnimation(name:string, frameAmount:int, frameTime:int, repeatTimes:int=0, paused:int=0, randomness:int = 0)
+	Function CreateSimple:TSpriteFrameAnimation(name:string, frameAmount:int, frameTime:int, repeatTimes:int=0, paused:int=0, randomness:Int = 0)
 		local f:int[][]
 		For local i:int = 0 until frameAmount
 			f :+ [[i,frameTime]]
@@ -129,7 +130,7 @@ Type TSpriteFrameAnimation
 		currentFrame = data.GetInt("currentFrame")
 		paused = data.GetInt("paused")
 		frameTimer = data.GetFloat("frameTimer")
-		randomness = data.GetInt("randomness")
+		randomness = data.GetFloat("randomness")
 
 		For local s:string = EachIn data.GetString("frames").Split("::")
 			frames :+ [int(s)]
@@ -201,7 +202,7 @@ Type TSpriteFrameAnimation
 
 
 	Method ResetFrameTimer()
-		frameTimer = framesTime[currentFrame] + Rand(-randomness, randomness)
+		frameTimer = framesTime[currentFrame] + 0.001*Rand(-1000*randomness, 1000*randomness)
 	End Method
 
 

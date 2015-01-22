@@ -300,7 +300,7 @@ Type TTooltip Extends TEntity
 	End Method
 
 
-	Method Render:Int(xOffset:Float=0, yOffset:Float=0)
+	Method Render:Int(xOffset:Float = 0, yOffset:Float=0, alignment:TVec2D = Null)
 		If Not enabled Then Return 0
 
 		local col:TColor = TColor.Create().Get()
@@ -355,5 +355,8 @@ endrem
 		EndIf
 
 		col.SetRGBA()
+
+		'=== DRAW CHILDREN ===
+		RenderChildren(xOffset, yOffset, alignment)
 	End Method
 End Type
