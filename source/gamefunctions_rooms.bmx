@@ -1822,7 +1822,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		if highlightAuction or highlightVendor or highlightSuitcase
 			local oldCol:TColor = new TColor.Get()
 			SetBlend LightBlend
-			SetAlpha oldCol.a * 0.4
+			SetAlpha oldCol.a * 0.5
 
 			if AuctionEntity and highlightAuction then AuctionEntity.Render()
 			if VendorEntity and highlightVendor then VendorEntity.Render()
@@ -2582,7 +2582,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		GuiListCheap.SetAcceptDrop("TGuiAdContract")
 		GuiListSuitcase.SetAcceptDrop("TGuiAdContract")
 
-		VendorArea = new TGUISimpleRect.Create(new TVec2D.Init(286, 110), new TVec2D.Init(GetSpriteFromRegistry("gfx_screen_adagency_drophint").area.GetW(), GetSpriteFromRegistry("gfx_screen_adagency_drophint").area.GetH()), "adagency" )
+		VendorArea = new TGUISimpleRect.Create(new TVec2D.Init(241, 110), new TVec2D.Init(GetSpriteFromRegistry("gfx_screen_adagency_vendor").area.GetW(), GetSpriteFromRegistry("gfx_screen_adagency_vendor").area.GetH()), "adagency" )
 		'vendor should accept drop - else no recognition
 		VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 
@@ -3324,17 +3324,33 @@ endrem
 
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
-		'make suitcase/vendor glow if needed
-		local glowSuitcase:string = ""
+		GetSpriteFromRegistry("gfx_screen_adagency_vendor").Draw(VendorArea.getScreenX(), VendorArea.getScreenY())
+		GetSpriteFromRegistry("gfx_suitcase_big").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+
+		'make suitcase/vendor highlighted if needed
+		local highlightSuitcase:int = False
+		local highlightVendor:int = False
+
 		if draggedGuiAdContract
-			if not GetPlayerProgrammeCollectionCollection().Get(GetPlayerCollection().playerID).HasUnsignedAdContractInSuitcase(draggedGuiAdContract.contract)
-				glowSuitcase = "_glow"
+			if not GetPlayerProgrammeCollection(GetPlayerCollection().playerID).HasUnsignedAdContractInSuitcase(draggedGuiAdContract.contract)
+				highlightSuitcase = True
 			endif
-			GetSpriteFromRegistry("gfx_screen_adagency_drophint").Draw(VendorArea.getScreenX(), VendorArea.getScreenY())
+			highlightVendor = True
 		endif
 
-		'draw suitcase
-		GetSpriteFromRegistry("gfx_suitcase_big"+glowSuitcase).Draw(suitcasePos.GetX(), suitcasePos.GetY())
+		if highlightVendor or highlightSuitcase
+			local oldCol:TColor = new TColor.Get()
+			SetBlend LightBlend
+			SetAlpha oldCol.a * 0.5
+
+			if highlightVendor then	GetSpriteFromRegistry("gfx_screen_adagency_vendor").Draw(VendorArea.getScreenX(), VendorArea.getScreenY())
+			if highlightSuitcase then GetSpriteFromRegistry("gfx_suitcase_big").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+
+			SetAlpha oldCol.a
+			SetBlend AlphaBlend
+		endif
+
+
 
 		GUIManager.Draw("adagency")
 

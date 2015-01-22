@@ -234,9 +234,9 @@ Type TRenderableEntity extends TEntityBase
 		local index:int = 0
 		while index < childEntities.length
 			if childEntities[index] = child
+				'skip increasing index, the next child might be also the
+				'searched one
 				RemoveChildAtIndex(index)
-				'skip increasing index, the next child might be
-				'also the searched one
 			else
 				index :+ 1
 			endif
@@ -244,15 +244,26 @@ Type TRenderableEntity extends TEntityBase
 	End Method
 
 
-	Method RemoveChildAtIndex(index:int = -1)
-		if not childEntities or childEntities.length = 0 then return
+	Method RemoveChildAtIndex:Int(index:int = -1)
+		if not childEntities or childEntities.length = 0 then return False
 
 		if index < 0 then index = childEntities.length - 1
 		'remove parent association (strong reference)
 		'this makes it garbage-collectable
 		childEntities[index].SetParent(null)
-		childEntities = childEntities[.. index-1] + childEntities[index ..]
-		childOffsets = childOffsets[.. index-1] + childOffsets[index ..]
+
+		if index <= 0
+			childEntities = childEntities[1 ..]
+			childOffsets = childOffsets[1 ..]
+		elseif index >= childEntities.length - 1
+			childEntities = childEntities[.. childEntities.length-1]
+			childOffsets = childOffsets[.. childOffsets.length-1]
+		else
+			childEntities = childEntities[.. index] + childEntities[index+1 ..]
+			childOffsets = childOffsets[.. index] + childOffsets[index+1 ..]
+		endif
+
+		return True
 	End Method
 	
 

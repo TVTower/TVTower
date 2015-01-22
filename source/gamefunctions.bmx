@@ -853,8 +853,8 @@ End Type
 
 Type THotspot extends TRenderableEntity
 	Field name:String = ""
+	Field tooltip:TTooltip
 	Field tooltipEnabled:int = True
-	Field tooltip:TTooltip = Null
 	Field tooltipText:String = ""
 	Field tooltipDescription:String	= ""
 	Field hovered:Int = False
@@ -886,6 +886,15 @@ Type THotspot extends TRenderableEntity
 	End Method
 
 
+	Method GetTooltip:TTooltip()
+		'return the first tooltip found in children
+		For local t:TTooltip = EachIn childEntities
+			return t
+		Next
+		return null
+	End Method
+
+
 	Method SetEnterable(bool:int = True)
 		enterable = bool
 	End Method
@@ -912,30 +921,20 @@ Type THotspot extends TRenderableEntity
 			If tooltip
 				tooltip.Hover()
 			ElseIf tooltipText<>""
+				'create it
 				tooltip = TTooltip.Create(tooltipText, tooltipDescription, 100, 140, 0, 0)
-				'so it aligns properly to the hotspot
-				tooltip.SetParent(self)
 				'layout the tooltip centered above the hotspot
 				tooltip.area.position.SetXY(area.GetW()/2 - tooltip.GetWidth()/2, -tooltip.GetHeight())
-
 				tooltip.enabled = True
+
+				AddChild(tooltip)
 			EndIf
 		EndIf
 
-		If tooltip And tooltip.enabled
-			'tooltip.area.position.SetXY( adjustedArea.getX() + adjustedArea.getW()/2 - tooltip.GetWidth()/2, adjustedArea.getY() - tooltip.GetHeight())
-			tooltip.Update()
-			'delete old tooltips
-			If tooltip.lifetime < 0 Then tooltip = Null
-		EndIf
-	End Method
+		UpdateChildren()
 
-
-	Method Render:int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
-		'DrawRect(GetScreenArea().GetX(), GetScreenArea().GetY(), GetScreenArea().GetW(), GetScreenArea().GetH())
-		If tooltip Then tooltip.Render()
-
-'Throw "RONNY: implementiere tooltips als children"
+		'delete old tooltips
+		If tooltip and tooltip.lifetime < 0 Then RemoveChild(tooltip)
 	End Method
 End Type
 
