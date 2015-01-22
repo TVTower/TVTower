@@ -81,8 +81,10 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 		fieldNames :+ ["x", "y", "w", "h"]
 		fieldNames :+ ["offsetLeft", "offsetTop", "offsetRight", "offsetBottom"]
 		fieldNames :+ ["paddingLeft", "paddingTop", "paddingRight", "paddingBottom"]
+		fieldNames :+ ["r", "g", "b"]
 		fieldNames :+ ["frames|f"]
 		fieldNames :+ ["ninepatch"]
+		fieldNames :+ ["rotated"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
 
 
@@ -94,15 +96,7 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 		For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(childrenNode)
 			'load child config into a new data
 			local childData:TData = new TData
-			local childFieldNames:String[]
-			childFieldNames :+ ["name", "id"]
-			childFieldNames :+ ["x", "y", "w", "h"]
-			childFieldNames :+ ["offsetLeft", "offsetTop", "offsetRight", "offsetBottom"]
-			childFieldNames :+ ["paddingLeft", "paddingTop", "paddingRight", "paddingBottom"]
-			childFieldNames :+ ["frames|f"]
-			childFieldNames :+ ["ninepatch"]
-			childFieldNames :+ ["rotated"]
-			TXmlHelper.LoadValuesToData(childNode, childData, childFieldNames)
+			TXmlHelper.LoadValuesToData(childNode, childData, fieldNames)
 
 			'add child data
 			childrenData :+ [childData]
@@ -127,21 +121,17 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 
 
 	Method LoadSpriteFromConfig:TSprite(data:TData)
-		'create spritepack (name+"_pack") and sprite (name)
+		'create the sprite (name)
+		'+ create a spritepack (name+"_pack") if no "parent"-spritepack
+		'  is contained in the dataset
 		local sprite:TSprite = new TSprite.InitFromConfig(data)
 		if not sprite then return Null
-
-		'colorize if needed
-		If data.GetInt("r",-1) >= 0 And data.GetInt("g",-1) >= 0 And data.GetInt("r",-1) >= 0
-			sprite.colorize( TColor.Create(data.GetInt("r"), data.GetInt("g"), data.GetInt("b")) )
-		Endif
 
 		'add to registry
 		GetRegistry().Set(GetNameFromConfig(data), sprite)
 
 		'load potential new sprites from scripts
 		LoadScriptResults(data, sprite)
-
 
 		'indicate that the loading was successful
 		return sprite
@@ -173,48 +163,11 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 		local childrenData:TData[] = TData[](data.Get("childrenData"))
 
 		For local childData:TData = eachin childrenData
-			Local sprite:TSprite = new TSprite
+			'add spritepack as parent
+			childData.Add("parent", spritePack)
 
-		sprite.Init( ..
-				spritePack, ..
-				childData.GetString("name"), ..
-				new TRectangle.Init( ..
-					childData.GetInt("x"), ..
-					childData.GetInt("y"), ..
-					childData.GetInt("w"), ..
-					childData.GetInt("h") ..
-				), ..
-				new TRectangle.Init( ..
-					childData.GetInt("offsetTop"), ..
-					childData.GetInt("offsetLeft"), ..
-					childData.GetInt("offsetBottom"), ..
-					childData.GetInt("offsetRight") ..
-				), ..
-				childData.GetInt("frames"), ..
-				null, ..
-				childData.GetInt("id", 0) ..
-			)
-			'rotation
-			sprite.rotated = childData.GetInt("rotated", 0)
-			'padding
-			sprite.SetPadding(new TRectangle.Init(..
-				childData.GetInt("paddingTop"), ..
-				childData.GetInt("paddingLeft"), ..
-				childData.GetInt("paddingBottom"), ..
-				childData.GetInt("paddingRight") ..
-			))
+			Local sprite:TSprite = TSprite.InitFromConfig(childData)
 
-			'search for ninepatch
-			if childData.GetBool("ninepatch")
-				sprite.EnableNinePatch()
-			endif
-
-			'recolor/colorize?
-			If childData.GetInt("r",-1) >= 0 And childData.GetInt("g",-1) >= 0 And childData.GetInt("b",-1) >= 0
-				sprite.colorize( TColor.Create(childData.GetInt("r",-1),childData.GetInt("g",-1),childData.GetInt("b",-1)) )
-			endif
-
-			spritePack.addSprite(sprite)
 			GetRegistry().Set(childData.GetString("name"), sprite)
 		Next
 

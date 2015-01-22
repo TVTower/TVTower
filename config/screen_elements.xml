@@ -128,56 +128,66 @@
 				<child name="gfx_series_action"		 		x="150"	y="240"	w="15"	h="70"	r="40"	g="100"	b="150" />
 				<child name="gfx_movie_animation"	 		x="30"	y="240"	w="15"	h="70"	r="150"	g="170"	b="80" />
 				<child name="gfx_series_animation"	 		x="165"	y="240"	w="15"	h="70"	r="150"	g="170"	b="80" />
-				<child name="gfx_movie_drama"		 		x="45"	y="240"	w="15"	h="70"	r="120"	g="120"	b="40" />
-				<child name="gfx_series_drama"		 		x="180"	y="240"	w="15"	h="70"	r="120"	g="120"	b="40" />
+				<!-- unused cover -->
+				<child name="gfx_movie_UNUSED"		 		x="45"	y="240"	w="15"	h="70"	r="120"	g="120"	b="40" />
+				<child name="gfx_series_UNUSED"		 		x="180"	y="240"	w="15"	h="70"	r="120"	g="120"	b="40" />
 				<child name="gfx_movie_drama"		 		x="60"	y="240"	w="15"	h="70"	r="100"	g="70"	b="70" />
 				<child name="gfx_series_drama"		 		x="195"	y="240"	w="15"	h="70"	r="100"	g="70"	b="70" />
 				<child name="gfx_movie_romance"		 		x="75"	y="240"	w="15"	h="70"	r="200"	g="130"	b="130" />
 				<child name="gfx_series_romance"	 		x="210"	y="240"	w="15"	h="70"	r="200"	g="130"	b="130" />
-				<child name="gfx_movie_erotic"		 		x="90"	y="240"	w="15"	h="70"	r="200"	g="70"	b="150" />
-				<child name="gfx_series_erotic"		 		x="225"	y="240"	w="15"	h="70"	r="200"	g="70"	b="150" />
+				<child name="gfx_movie_erotic"		 		x="90"	y="240"	w="15"	h="70"	r="220"	g="90"	b="180" />
+				<child name="gfx_series_erotic"		 		x="225"	y="240"	w="15"	h="70"	r="220"	g="90"	b="180" />
 				<child name="gfx_movie_western"		 		x="105"	y="240"	w="15"	h="70"	r="140"	g="50"	b="140" />
 				<child name="gfx_series_western"	 		x="240"	y="240"	w="15"	h="70"	r="140"	g="50"	b="140" />
-				<child name="gfx_movie_family"			 	x="0"	y="310"	w="15"	h="70" />
-				<child name="gfx_series_family"			 	x="135"	y="310"	w="15"	h="70" />
-				<child name="gfx_movie_history"			 	x="15"	y="310"	w="15"	h="70" />
-				<child name="gfx_series_history"			x="150"	y="310"	w="15"	h="70" />
-				<child name="gfx_movie_monumental"			x="30"	y="310"	w="15"	h="70" />
-				<child name="gfx_series_monumental"			x="165"	y="310"	w="15"	h="70" />
-				<child name="gfx_movie_showevent_music"		x="45"	y="310"	w="15"	h="70" />
-				<child name="gfx_series_showevent_music"	x="180"	y="310"	w="15"	h="70" />
-				<child name="gfx_movie_mystery"		 		x="60"	y="310"	w="15"	h="70" />
-				<child name="gfx_series_mystery"	 		x="195"	y="310"	w="15"	h="70" />
-				<child name="gfx_movie_thriller"	 		x="75"	y="310"	w="15"	h="70" />
-				<child name="gfx_series_thriller"	 		x="210"	y="310"	w="15"	h="70" />
-				<child name="gfx_movie_showevent_undefined"		x="90"	y="310"	w="15"	h="70"	r="150"	g="30"	b="130" />
-				<child name="gfx_series_showevent_undefined"	x="225"	y="310"	w="15"	h="70"	r="150"	g="30"	b="130" />
-				<child name="gfx_movie_showevent_politics"		x="90"	y="310"	w="15"	h="70"	r="20"	g="30"	b="130" />
-				<child name="gfx_series_showevent_politics"		x="225"	y="310"	w="15"	h="70"	r="20"	g="30"	b="130" />
-				<child name="gfx_movie_showevent_sport"			x="90"	y="310"	w="15"	h="70"	r="100"	g="130"	b="130" />
-				<child name="gfx_series_showevent_sport"		x="225"	y="310"	w="15"	h="70"	r="100"	g="130"	b="130" />
-				<child name="gfx_movie_showevent_showbiz"		x="90"	y="310"	w="15"	h="70"	r="100"	g="130"	b="30" />
-				<child name="gfx_series_showevent_showbiz"		x="225"	y="310"	w="15"	h="70"	r="100"	g="130"	b="30" />
-				<child name="gfx_movie_scifi"		 		x="105"	y="310"	w="15"	h="70" />
-				<child name="gfx_series_scifi"		 		x="240"	y="310"	w="15"	h="70" />
-				<child name="gfx_movie_comedy"		 		x="0"	y="380"	w="15"	h="70" />
-				<child name="gfx_series_comedy"		 		x="135"	y="380"	w="15"	h="70" />
-				<child name="gfx_movie_documentary"	 		x="15"	y="380"	w="15"	h="70" />
-				<child name="gfx_series_documentary" 		x="150"	y="380"	w="15"	h="70" />
-				<child name="gfx_movie_horror"		 		x="30"	y="380"	w="15"	h="70" />
-				<child name="gfx_series_horror"	 			x="165"	y="380"	w="15"	h="70" />
-				<child name="gfx_movie_crime"		 		x="45"	y="380"	w="15"	h="70" />
-				<child name="gfx_series_crime"		 		x="180"	y="380"	w="15"	h="70" />
-				<child name="gfx_movie_fantasy"		 		x="60"	y="380"	w="15"	h="70" />
-				<child name="gfx_series_fantasy"	 		x="195"	y="380"	w="15"	h="70" />
-				<child name="gfx_movie_reportage_undefined"		x="75"	y="380"	w="15"	h="70" />
-				<child name="gfx_series_reportage_undefined"	x="210"	y="380"	w="15"	h="70" />
-				<child name="gfx_movie_reportage_yellowpress"	x="75"	y="380"	w="15"	h="70"	r="140"	g="70"	b="70" />
-				<child name="gfx_series_reportage_yellowpress"	x="210"	y="380"	w="15"	h="70"	r="140"	g="70"	b="70" />
-				<child name="gfx_movie_22"			 		x="90"	y="380"	w="15"	h="70" />
-				<child name="gfx_series_22"			 		x="225"	y="380"	w="15"	h="70" />
-				<child name="gfx_movie_undefined"	 		x="105"	y="380"	w="15"	h="70" />
-				<child name="gfx_series_undefined"	 		x="240"	y="380"	w="15"	h="70" />
+				<child name="gfx_movie_family"			 	x="0"	y="310"	w="15"	h="70"  r="120"	g="120"	b="40" />
+				<child name="gfx_series_family"			 	x="135"	y="310"	w="15"	h="70"  r="120"	g="120"	b="40" />
+				<child name="gfx_movie_history"			 	x="15"	y="310"	w="15"	h="70"  r="140"	g="90"	b="60" />
+				<child name="gfx_series_history"			x="150"	y="310"	w="15"	h="70"  r="140"	g="90"	b="60" />
+				<child name="gfx_movie_monumental"			x="30"	y="310"	w="15"	h="70"  r="90"	g="140"	b="60" />
+				<child name="gfx_series_monumental"			x="165"	y="310"	w="15"	h="70"  r="90"	g="140"	b="60" />
+
+				<!-- share the same cover -->
+				<child name="gfx_movie_show_music"			x="45"	y="310"	w="15"	h="70"  r="160"	g="90"	b="110" />
+				<child name="gfx_series_show_music"			x="180"	y="310"	w="15"	h="70"  r="160"	g="90"	b="110" />
+				<child name="gfx_movie_event_music"			x="45"	y="310"	w="15"	h="70"  r="100"	g="190"	b="60" />
+				<child name="gfx_series_event_music"		x="180"	y="310"	w="15"	h="70"  r="100"	g="190"	b="60" />
+
+				<child name="gfx_movie_mystery"		 		x="60"	y="310"	w="15"	h="70"  r="40"	g="40"	b="110" />
+				<child name="gfx_series_mystery"	 		x="195"	y="310"	w="15"	h="70"  r="40"	g="40"	b="110" />
+				<child name="gfx_movie_thriller"	 		x="75"	y="310"	w="15"	h="70"  r="80"	g="110"	b="140"  />
+				<child name="gfx_series_thriller"	 		x="210"	y="310"	w="15"	h="70"  r="80"	g="110"	b="140"  />
+				<child name="gfx_movie_show"				x="90"	y="310"	w="15"	h="70"	r="150"	g="30"	b="130" />
+				<child name="gfx_series_show"				x="225"	y="310"	w="15"	h="70"	r="150"	g="30"	b="130" />
+
+				<!-- share the same cover -->
+				<child name="gfx_movie_show_politics"		x="90"	y="310"	w="15"	h="70"	r="20"	g="30"	b="130" />
+				<child name="gfx_movie_event_politics"		x="90"	y="310"	w="15"	h="70"	r="20"	g="30"	b="130" />
+				<child name="gfx_series_show_politics"		x="225"	y="310"	w="15"	h="70"	r="20"	g="30"	b="130" />
+				<child name="gfx_series_event_politics"		x="225"	y="310"	w="15"	h="70"	r="20"	g="30"	b="130" />
+
+				<child name="gfx_movie_event_sport"			x="90"	y="310"	w="15"	h="70"	r="100"	g="130"	b="130" />
+				<child name="gfx_series_event_sport"		x="225"	y="310"	w="15"	h="70"	r="100"	g="130"	b="130" />
+				<child name="gfx_movie_event_showbiz"		x="90"	y="310"	w="15"	h="70"	r="100"	g="130"	b="30" />
+				<child name="gfx_series_event_showbiz"		x="225"	y="310"	w="15"	h="70"	r="100"	g="130"	b="30" />
+				<child name="gfx_movie_scifi"		 		x="105"	y="310"	w="15"	h="70"  r="90"	g="90"	b="220" />
+				<child name="gfx_series_scifi"		 		x="240"	y="310"	w="15"	h="70"  r="90"	g="90"	b="220" />
+				<child name="gfx_movie_comedy"		 		x="0"	y="380"	w="15"	h="70"  r="100"	g="100"	b="40" />
+				<child name="gfx_series_comedy"		 		x="135"	y="380"	w="15"	h="70"  r="100"	g="100"	b="40" />
+				<child name="gfx_movie_documentary"	 		x="15"	y="380"	w="15"	h="70"  r="100"	g="120"	b="110" />
+				<child name="gfx_series_documentary" 		x="150"	y="380"	w="15"	h="70"  r="100"	g="120"	b="110" />
+				<child name="gfx_movie_horror"		 		x="30"	y="380"	w="15"	h="70"  r="190"	g="40"	b="60" />
+				<child name="gfx_series_horror"	 			x="165"	y="380"	w="15"	h="70"  r="190"	g="40"	b="60" />
+				<child name="gfx_movie_crime"		 		x="45"	y="380"	w="15"	h="70"  r="170"	g="90"	b="20" />
+				<child name="gfx_series_crime"		 		x="180"	y="380"	w="15"	h="70"  r="170"	g="90"	b="20" />
+				<child name="gfx_movie_fantasy"		 		x="60"	y="380"	w="15"	h="70"  r="90"	g="180"	b="40" />
+				<child name="gfx_series_fantasy"	 		x="195"	y="380"	w="15"	h="70"  r="90"	g="180"	b="40" />
+				<child name="gfx_movie_feature"				x="75"	y="380"	w="15"	h="70"  r="130"	g="90"	b="60" />
+				<child name="gfx_series_feature"			x="210"	y="380"	w="15"	h="70"  r="130"	g="90"	b="60" />
+				<child name="gfx_movie_feature_yellowpress"		x="75"	y="380"	w="15"	h="70"	r="140"	g="70"	b="70" />
+				<child name="gfx_series_feature_yellowpress"	x="210"	y="380"	w="15"	h="70"	r="140"	g="70"	b="70" />
+				<!-- used? -->
+				<child name="gfx_movie_undefined"	 		x="90"	y="380"	w="15"	h="70" />
+				<child name="gfx_series_undefined"	 		x="225"	y="380"	w="15"	h="70" />
 			</children>
 		</spritepack>
 

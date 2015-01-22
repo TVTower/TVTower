@@ -803,7 +803,7 @@
 		</genre>
 
 
-		<genre id="200" name="showevent_undefined" outcome-mod="0" review-mod="0.5" speed-mod="0.5">
+		<genre id="100" name="show" outcome-mod="0" review-mod="0.5" speed-mod="0.5">
 			<goodFollower>5,9,11</goodFollower>
 			<badFollower>8,12</badFollower>
 			<timeMods>
@@ -844,7 +844,7 @@
 				<audienceAttraction id="Men" value="0" />
 			</audienceAttractions>			
 		</genre>
-		<genre id="201" name="showevent_politics" outcome-mod="0.2" review-mod="0.7" speed-mod="0.3">
+		<genre id="101" name="show_politics" outcome-mod="0.2" review-mod="0.7" speed-mod="0.3">
 			<goodFollower>4,6,17</goodFollower>
 			<badFollower>15</badFollower>
 			<timeMods>
@@ -885,7 +885,7 @@
 				<audienceAttraction id="Men" value="0.6" />
 			</audienceAttractions>			
 		</genre>
-		<genre id="202" name="showevent_music" outcome-mod="0.2" review-mod="0.5" speed-mod="0.6">
+		<genre id="102" name="show_music" outcome-mod="0.2" review-mod="0.5" speed-mod="0.6">
 			<goodFollower>5,9</goodFollower>
 			<badFollower>12,13</badFollower>
 			<timeMods>
@@ -926,7 +926,132 @@
 				<audienceAttraction id="Men" value="0" />
 			</audienceAttractions>			
 		</genre>
-		<genre id="203" name="showevent_sport" outcome-mod="0.2" review-mod="0.3" speed-mod="0.6">
+		
+
+		<genre id="200" name="event" outcome-mod="0" review-mod="0.5" speed-mod="0.5">
+			<goodFollower>5,9,11</goodFollower>
+			<badFollower>8,12</badFollower>
+			<timeMods>
+				<timeMod time="0" value="0.9"/>
+				<timeMod time="1" value="0.7"/>
+				<timeMod time="2" value="0.6"/>
+				<timeMod time="3" value="0.6"/>
+				<timeMod time="4" value="0.6"/>
+				<timeMod time="5" value="0.6"/>
+				<timeMod time="6" value="0.6"/>
+				<timeMod time="7" value="0.6"/>
+				<timeMod time="8" value="0.6"/>
+				<timeMod time="9" value="0.7"/>
+				<timeMod time="10" value="0.8"/>
+				<timeMod time="11" value="0.9"/>
+				<timeMod time="12" value="0.9"/>
+				<timeMod time="13" value="0.8"/>
+				<timeMod time="14" value="0.6"/>
+				<timeMod time="15" value="0.6"/>
+				<timeMod time="16" value="0.6"/>
+				<timeMod time="17" value="0.8"/>
+				<timeMod time="18" value="1.1"/>
+				<timeMod time="19" value="1.2"/>
+				<timeMod time="20" value="1.3"/>
+				<timeMod time="21" value="1.3"/>
+				<timeMod time="22" value="1.2"/>
+				<timeMod time="23" value="1.1"/>
+			</timeMods>
+			<audienceAttractions>
+				<audienceAttraction id="Children" value="0" />
+				<audienceAttraction id="Teenagers" value="0" />
+				<audienceAttraction id="HouseWives" value="0" />
+				<audienceAttraction id="Employees" value="0" />
+				<audienceAttraction id="Unemployed" value="0" />
+				<audienceAttraction id="Manager" value="0" />
+				<audienceAttraction id="Pensioners" value="0" />
+				<audienceAttraction id="Women" value="0" />
+				<audienceAttraction id="Men" value="0" />
+			</audienceAttractions>			
+		</genre>
+		<genre id="201" name="event_politics" outcome-mod="0.2" review-mod="0.7" speed-mod="0.3">
+			<goodFollower>4,6,17</goodFollower>
+			<badFollower>15</badFollower>
+			<timeMods>
+				<timeMod time="0" value="1.1"/>
+				<timeMod time="1" value="1.1"/>
+				<timeMod time="2" value="1.0"/>
+				<timeMod time="3" value="0.9"/>
+				<timeMod time="4" value="0.8"/>
+				<timeMod time="5" value="0.7"/>
+				<timeMod time="6" value="0.6"/>
+				<timeMod time="7" value="0.6"/>
+				<timeMod time="8" value="0.6"/>
+				<timeMod time="9" value="0.6"/>
+				<timeMod time="10" value="0.6"/>
+				<timeMod time="11" value="0.8"/>
+				<timeMod time="12" value="0.8"/>
+				<timeMod time="13" value="0.8"/>
+				<timeMod time="14" value="0.8"/>
+				<timeMod time="15" value="0.9"/>
+				<timeMod time="16" value="1.0"/>
+				<timeMod time="17" value="1.0"/>
+				<timeMod time="18" value="1.0"/>
+				<timeMod time="19" value="1.0"/>
+				<timeMod time="20" value="1.1"/>
+				<timeMod time="21" value="1.2"/>
+				<timeMod time="22" value="1.1"/>
+				<timeMod time="23" value="1.1"/>
+			</timeMods>
+			<audienceAttractions>
+				<audienceAttraction id="Children" value="-2" />
+				<audienceAttraction id="Teenagers" value="-1.2" />
+				<audienceAttraction id="HouseWives" value="0.5" />
+				<audienceAttraction id="Employees" value="0.5" />
+				<audienceAttraction id="Unemployed" value="-0.5" />
+				<audienceAttraction id="Manager" value="1" />
+				<audienceAttraction id="Pensioners" value="1" />
+				<audienceAttraction id="Women" value="0" />
+				<audienceAttraction id="Men" value="0.6" />
+			</audienceAttractions>			
+		</genre>
+		<genre id="202" name="event_music" outcome-mod="0.2" review-mod="0.5" speed-mod="0.6">
+			<goodFollower>5,9</goodFollower>
+			<badFollower>12,13</badFollower>
+			<timeMods>
+				<timeMod time="0" value="1.1"/>
+				<timeMod time="1" value="1.1"/>
+				<timeMod time="2" value="1.0"/>
+				<timeMod time="3" value="0.9"/>
+				<timeMod time="4" value="0.8"/>
+				<timeMod time="5" value="0.7"/>
+				<timeMod time="6" value="0.6"/>
+				<timeMod time="7" value="0.6"/>
+				<timeMod time="8" value="0.6"/>
+				<timeMod time="9" value="0.6"/>
+				<timeMod time="10" value="0.6"/>
+				<timeMod time="11" value="0.8"/>
+				<timeMod time="12" value="0.8"/>
+				<timeMod time="13" value="0.8"/>
+				<timeMod time="14" value="0.8"/>
+				<timeMod time="15" value="0.9"/>
+				<timeMod time="16" value="1.0"/>
+				<timeMod time="17" value="1.0"/>
+				<timeMod time="18" value="1.1"/>
+				<timeMod time="19" value="1.1"/>
+				<timeMod time="20" value="1.1"/>
+				<timeMod time="21" value="1.3"/>
+				<timeMod time="22" value="1.1"/>
+				<timeMod time="23" value="1.1"/>
+			</timeMods>
+			<audienceAttractions>
+				<audienceAttraction id="Children" value="0" />
+				<audienceAttraction id="Teenagers" value="0.7" />
+				<audienceAttraction id="HouseWives" value="0" />
+				<audienceAttraction id="Employees" value="0" />
+				<audienceAttraction id="Unemployed" value="-0.5" />
+				<audienceAttraction id="Manager" value="-1" />
+				<audienceAttraction id="Pensioners" value="0" />
+				<audienceAttraction id="Women" value="0" />
+				<audienceAttraction id="Men" value="0" />
+			</audienceAttractions>			
+		</genre>
+		<genre id="203" name="event_sport" outcome-mod="0.2" review-mod="0.3" speed-mod="0.6">
 			<goodFollower>0,1,2</goodFollower>
 			<timeMods>
 				<timeMod time="0" value="1.0"/>
@@ -966,7 +1091,7 @@
 				<audienceAttraction id="Men" value="1" />
 			</audienceAttractions>			
 		</genre>
-		<genre id="204" name="showevent_showbiz" outcome-mod="0.3" review-mod="0.3" speed-mod="0.7">
+		<genre id="204" name="event_showbiz" outcome-mod="0.3" review-mod="0.3" speed-mod="0.7">
 			<goodFollower>5,6,9</goodFollower>
 			<badFollower>8,12</badFollower>
 			<timeMods>

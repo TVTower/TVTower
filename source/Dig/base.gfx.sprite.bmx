@@ -223,17 +223,6 @@ Type TSprite
 		local ninePatch:int = data.GetBool("ninePatch", FALSE)
 		local parent:TSpritePack = TSpritePack(data.Get("parent", null))
 
-		'assign an offset rect if defined so
-		local offsetLeft:int = data.GetInt("offsetLeft", 0)
-		local offsetRight:int = data.GetInt("offsetRight", 0)
-		local offsetTop:int = data.GetInt("offsetTop", 0)
-		local offsetBottom:int = data.GetInt("offsetBottom", 0)
-		local offset:TRectangle = null
-		if offsetLeft <> 0 or offsetRight <> 0 or offsetTop <> 0 or offsetBottom <> 0
-			offset = new TRectangle.Init(offsetTop, offsetLeft, offsetBottom, offsetRight)
-		EndIf
-
-
 		'create a new spritepack if none is assigned yet
 		if parent = null
 			if flags & MASKEDIMAGE then SetMaskColor(255,0,255)
@@ -257,8 +246,41 @@ Type TSprite
 			if flags & MASKEDIMAGE then SetMaskColor(0,0,0)
 		endif
 
+
+		'assign an offset rect if defined so
+		local offsetLeft:int = data.GetInt("offsetLeft", 0)
+		local offsetRight:int = data.GetInt("offsetRight", 0)
+		local offsetTop:int = data.GetInt("offsetTop", 0)
+		local offsetBottom:int = data.GetInt("offsetBottom", 0)
+		local offset:TRectangle = null
+		if offsetLeft <> 0 or offsetRight <> 0 or offsetTop <> 0 or offsetBottom <> 0
+			offset = new TRectangle.Init(offsetTop, offsetLeft, offsetBottom, offsetRight)
+		EndIf
+
+		'define the area in the parental spritepack, if no dimension
+		'is defined, use the whole parental image
+		local area:TRectangle = new TRectangle
+		area.position.SetXY(data.GetInt("x", 0), data.GetInt("y", 0))
+		area.dimension.SetXY(data.GetInt("w", parent.image.width), data.GetInt("h", parent.image.height))
+
 		'create sprite
-		local sprite:TSprite = new TSprite.Init(parent, name, new TRectangle.Init(0,0, ImageWidth(parent.image), ImageHeight(parent.image)), offset, frames, new TVec2D.Init(frameW, frameH), id)
+		local sprite:TSprite = new TSprite.Init(parent, name, area, offset, frames, new TVec2D.Init(frameW, frameH), id)
+
+		'rotation
+		sprite.rotated = data.GetInt("rotated", 0)
+		'padding
+		sprite.SetPadding(new TRectangle.Init(..
+			data.GetInt("paddingTop"), ..
+			data.GetInt("paddingLeft"), ..
+			data.GetInt("paddingBottom"), ..
+			data.GetInt("paddingRight") ..
+		))
+
+		'recolor/colorize?
+		If data.GetInt("r",-1) >= 0 And data.GetInt("g",-1) >= 0 And data.GetInt("b",-1) >= 0
+			sprite.colorize( TColor.Create(data.GetInt("r"), data.GetInt("g"), data.GetInt("b")) )
+		endif
+
 
 		'enable nine patch if wanted
 		if ninePatch then sprite.EnableNinePatch()
