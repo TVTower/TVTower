@@ -39,7 +39,7 @@ function BudgetManager:Initialize()
 end
 
 function BudgetManager:CalculateBudget() -- Diese Methode wird immer zu Beginn des Tages aufgerufen
-	TVT.addToLog("=== Budget Tag " .. WorldTime.GetDaysRun() .. " ===")
+	TVT.addToLog("=== Budget Tag " .. WorldTime.GetDaysRun() .. " ===")	
 
 	--Die Erfahrungswerte werden wieder um einen Tag nach hinten verschoben, da ein neuer Erfahrungswert dazukommt
 	self.BudgetHistory[OLD_BUDGET_3] = self.BudgetHistory[OLD_BUDGET_2]
@@ -52,6 +52,7 @@ function BudgetManager:CalculateBudget() -- Diese Methode wird immer zu Beginn d
 
 	-- Werte nachjustieren
 	self.TodayStartAccountBalance = MY.GetMoney() -- Kontostand aktualisieren
+	TVT.addToLog(string.left("Kontostand:", 20, true) .. string.right(self.TodayStartAccountBalance, 10, true))
 	self.BudgetMinimum = self.BudgetMinimum * 1.01
 	self.BudgetMaximum = self.TodayStartAccountBalance * 0.95
 
@@ -76,7 +77,7 @@ function BudgetManager:CalculateBudget() -- Diese Methode wird immer zu Beginn d
 	-- Neuer History-Eintrag
 	self.BudgetHistory[TODAY_BUDGET] = myBudget
 
-	
+	TVT.addToLog(string.left("Geplantes Budget:", 20, true) .. string.right(myBudget, 10, true))
 	self:CutInvestmentSavingIfNeeded(myBudget)
 	
 	-- Das Budget auf die Tasks verteilen
@@ -138,34 +139,41 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 	local tempBudget = pBudget - self.InvestmentSavings
 	self.InvestmentSavings = self.InvestmentSavings + math.round(tempBudget * self.SavingParts) -- Einen Teil ansparen
 	local realBudget = pBudget - self.InvestmentSavings -- Schließlich echtes Budget bestimmen
-	TVT.addToLog("# Budget: " .. realBudget .. "            (+ Ersparnisse (" .. self.InvestmentSavings .. ") = " .. pBudget .. ")")
+	TVT.addToLog(string.left("Sparanteil:", 20, true) .. string.right(self.InvestmentSavings, 10, true))
+	TVT.addToLog(string.left("Tagesbudget:", 20, true) .. string.right(realBudget, 10, true))
+	TVT.addToLog(string.right("=======", 30, true))
 	
 	-- Wert einer Budgeteinheit bestimmen
 	local budgetUnitValue = realBudget / budgetUnits	
 		
-	-- Prios der Aufgaben nochmal aktualisieren und sortieren
+	-- Prios der Aufgaben nochmal aktualisieren und sortieren: Nach Investment-Prio
 	player:SortTasksByInvestmentPrio()	
 
-	local investmentDone = false		
+	local investmentDone = false
+	local minmalInvestPrio = 10
 		
 	-- Die Budgets den Tasks zuweisen
 	for k,v in pairs(player.TaskList) do
 		--debugMsg(v:typename() .. "- Altes Budget: " .. v.CurrentBudget .. " / " .. v.BudgetWholeDay)		
 		v.CurrentBudget = math.round(v.BudgetWeigth * budgetUnitValue) 			
+				
+		-- Eventuell die Ersparnisse investieren			
+		v.UseInvestment = false
+		if (v.CurrentInvestmentPriority >= minmalInvestPrio) then
+			if (not investmentDone) and v.NeededInvestmentBudget > 0 then
+				if (v.CurrentBudget + self.InvestmentSavings) >= v.NeededInvestmentBudget then
+					debugMsg(v:typename() .. "- Use Investment: " .. self.InvestmentSavings)
+					v.CurrentBudget = v.CurrentBudget + self.InvestmentSavings
+					v.UseInvestment = true
+					v.CurrentInvestmentPriority = 0
+					investmentDone = true				
+				end
+			end		
+		end
 		
-		-- Eventuell die Ersparnisse investieren
-		if (not investmentDone) and v.NeededInvestmentBudget > 0 then
-			if (v.CurrentBudget + self.InvestmentSavings) >= v.NeededInvestmentBudget then
-				debugMsg(v:typename() .. "- Use Investment: " .. self.InvestmentSavings)
-				v.CurrentBudget = v.CurrentBudget + self.InvestmentSavings
-				v.UseInvestment = true
-				investmentDone = true				
-			else
-				v.UseInvestment = false				
-			end
-		else
-			v.UseInvestment = false
-		end		
+		if (not investmentDone) then
+			minmalInvestPrio = minmalInvestPrio + v.CurrentInvestmentPriority / 2			
+		end
 		
 		v.BudgetWholeDay = v.CurrentBudget		
 		v:BudgetSetup()

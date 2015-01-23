@@ -6,7 +6,7 @@ _G["TaskStationMap"] = class(AITask, function(c)
 	c.BudgetWeigth = 0
 	c.BasePriority = 1
 	c.NeededInvestmentBudget = 250000
-	c.InvestmentPriority = 3
+	c.BaseInvestmentPriority = 7
 end)
 
 function TaskStationMap:typename()

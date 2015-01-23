@@ -1,10 +1,10 @@
--- File: AIEngine
+-- File: AIEngine.lua
 -- ============================
 -- === AI Engine ===
 -- ============================
--- Autor: Manuel Vögele (STARS_crazy@gmx.de)
--- Version: 22.02.2014
--- Erstellt: 12.12.2007
+-- Author: Manuel Vögele (STARS_crazy@gmx.de)
+-- Last modified: 22.01.2015
+-- Created at: 12.12.2007
 
 -- ##### INCLUDES #####
 dofile("res/ai/SLF.lua")
@@ -117,7 +117,7 @@ end
 function AIPlayer:SortTasksByInvestmentPrio()
 	self:RecalculateTaskPrio()	
 	local sortMethod = function(a, b)
-		return a.InvestmentPriority > b.InvestmentPriority
+		return a.CurrentInvestmentPriority > b.CurrentInvestmentPriority
 	end
 	table.sort(self.TaskList, sortMethod)	
 end
@@ -167,13 +167,13 @@ _G["AITask"] = class(KIDataObjekt, function(c)
 	c.TickCounter = 0 -- Gibt die Anzahl der Ticks an seit dem der Task läuft
 	c.MaxTicks = 30 --Wie viele Ticks darf der Task maximal laufen?
 	c.TargetRoom = -1 -- Wie lautet die ID des Standard-Zielraumes? !!! Muss überschrieben werden !!!
-	c.CurrentBudget = 0 -- Wie viel Geld steht der KI noch zur Verfügung um diese Aufgabe zu erledigen.
 	
+	c.CurrentBudget = 0 -- Wie viel Geld steht der KI noch zur Verfügung um diese Aufgabe zu erledigen.	
 	c.BudgetWholeDay = 0 -- Wie hoch war das Budget das die KI für diese Aufgabe an diesem Tag einkalkuliert hat.
 	c.BudgetWeigth = 0 -- Wie viele Budgetanteile verlangt diese Aufgabe vom Gesamtbudget?
 	
-	c.InvestmentPriority = 0 -- Wie wichtig sind die Investitionen in diesen Bereich?
-	--c.InvestmentSavings = 0 -- Wie viel wurde bereits gespart?
+	c.BaseInvestmentPriority = 0 -- Wie wichtig sind die Investitionen in diesen Bereich?
+	c.CurrentInvestmentPriority = 0 -- Wie ist die Prio aktuell? BaseInvestmentPriority wird jede Runde aufaddiert.
 	c.NeededInvestmentBudget = -1 -- Wie viel Geld benötigt die KI für eine Großinvestition
 	c.UseInvestment = false
 end)
@@ -211,7 +211,8 @@ function AITask:Activate()
 	debugMsg("Implementiere mich... " .. type(self))
 end
 
-function AITask:OnDayBegins()
+function AITask:OnDayBegins()	
+	self.CurrentInvestmentPriority = self.CurrentInvestmentPriority + self.BaseInvestmentPriority
 	--kann überschrieben werden
 end
 

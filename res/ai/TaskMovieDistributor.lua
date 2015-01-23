@@ -15,7 +15,7 @@ _G["TaskMovieDistributor"] = class(AITask, function(c)
 	c.AppraiseMovies = nil
 	c.CurrentBargainBudget = 0
 	c.NeededInvestmentBudget = 150000
-	c.InvestmentPriority = 2	
+	c.BaseInvestmentPriority = 5	
 end)
 
 function TaskMovieDistributor:typename()

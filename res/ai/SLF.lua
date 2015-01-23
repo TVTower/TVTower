@@ -1,10 +1,10 @@
--- File: SLF
+-- File: SLF.lua
 -- ============================
 -- === Simple Lua Framework ===
 -- ============================
--- Autor: Manuel Vögele (STARS_crazy@gmx.de)
--- Version: 22.02.2014
--- Erstellt: 12.12.2007
+-- Author: Manuel Vögele (STARS_crazy@gmx.de)
+-- Last modified: 22.01.2015
+-- Created at: 12.12.2007
 
 -- ##### KONSTANTEN #####
 NL = "\n"
@@ -267,6 +267,24 @@ table.removeCollection = function(t, c)
         local index = table.getIndex(t, value)
 		table.remove(t, index)
     end
+end
+
+string.left = function(t, count, fixWidth)
+	if (string.len(t) > count) then
+		return string.sub(t, 0, count)
+	elseif (fixWidth) then
+		return t .. string.rep(" ", count - string.len(t))
+	end
+	return t
+end
+
+string.right = function(t, count, fixWidth)
+	if (string.len(t) > count) then
+		return string.sub(t, -count)
+	elseif (fixWidth) then
+		return string.rep(" ", count - string.len(t)) .. t
+	end	
+	return string.sub(t, -count)
 end
 
 -- ##### TEST #####
