@@ -127,10 +127,6 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 		script.price = template.GetPrice()
 		script.cast = template.GetCast()
 
-		for local j:int = 0 until script.cast.length
-			print "job: "+j+"/"+script.cast.length+": "+TVTProgrammePersonJob.GetJobString(script.cast[j].job)
-		Next
-
 		'create scripts for children too?
 
 		'add to collection

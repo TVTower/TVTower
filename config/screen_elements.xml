@@ -90,10 +90,27 @@
 				<child name="gfx_scripts_2_dragged"	x="30"	y="0"	w="15"	h="52" />
 
 				<child name="gfx_scripts_0"	x="0"	y="52"	w="34"	h="59" />
-				<child name="gfx_scripts_1"	x="15"	y="52"	w="34"	h="59" />
-				<child name="gfx_scripts_2"	x="30"	y="52"	w="34"	h="59" />
+				<child name="gfx_scripts_1"	x="34"	y="52"	w="34"	h="59" />
+				<child name="gfx_scripts_2"	x="64"	y="52"	w="34"	h="59" />
+
+				<child name="gfx_scriptagency_vendor"		x="106"	y="0"	w="190"	h="245" />
+				<child name="gfx_scriptagency_vendor_hand"	x="301"	y="0"	w="112"	h="41"	f="2" />
 			</children>
 		</spritepack>
+
+
+		<!-- SCRIPT AGENCY: Vendor entity - including writing hand -->
+		<spriteentity name="entity_scriptagency_vendor" sprite="gfx_scriptagency_vendor" x="458" y="127">
+			<children>
+				<!-- add some writing hands eyes to the vendor -->
+				<spriteentity name="entity_scriptagency_vendor_hand" sprite="gfx_scriptagency_vendor_hand" offsetLeft="147" offsetTop="44">
+					<spriteframeanimations currentAnimationName="writing">
+						<spriteframeanimation name="writing" frames="0::1::0::1::0::1" framesTime="0.5::0.2::0.3::0.9::0.2::0.6" randomness="0.1" />
+					</spriteframeanimations>
+				</spriteentity>
+			</children>
+		</spriteentity>
+
 
 
 		<!-- MOVIEAGENCY -->

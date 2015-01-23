@@ -1270,11 +1270,13 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		VendorEntity = GetSpriteEntityFromRegistry("entity_movieagency_vendor")
 		AuctionEntity = GetSpriteEntityFromRegistry("entity_movieagency_auction")
 
-		'default vendor dimension
+		'default vendor position/dimension
 		local vendorAreaDimension:TVec2D = new TVec2D.Init(200,200)
+		local vendorAreaPosition:TVec2D = new TVec2D.Init(20,60)
 		if VendorEntity then vendorAreaDimension = VendorEntity.area.dimension.copy()
+		if VendorEntity then vendorAreaPosition = VendorEntity.area.position.copy()
 
-		VendorArea = new TGUISimpleRect.Create(new TVec2D.Init(20,60), vendorAreaDimension, "movieagency" )
+		VendorArea = new TGUISimpleRect.Create(vendorAreaPosition, vendorAreaDimension, "movieagency" )
 		'vendor should accept drop - else no recognition
 		VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 
@@ -3386,8 +3388,10 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	Global hoveredGuiScript:TGuiScript = null
 	Global draggedGuiScript:TGuiScript = null
 
+	Global VendorEntity:TSpriteEntity
 	'allows registration of drop-event
 	Global VendorArea:TGUISimpleRect
+
 	'arrays holding the different blocks
 	'we use arrays to find "free slots" and set to a specific slot
 	Field listNormal:TScript[]
@@ -3400,7 +3404,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	Global GuiListSuitcase:TGUIScriptSlotList = null
 
 	'configuration
-	Global suitcasePos:TVec2D = new TVec2D.Init(370,270)
+	Global suitcasePos:TVec2D = new TVec2D.Init(320,270)
 	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(19,32)
 	Global scriptsPerLine:int = 1
 	Global scriptsNormalAmount:int = 4
@@ -3462,7 +3466,15 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		GuiListNormal2.SetAcceptDrop("TGuiScript")
 		GuiListSuitcase.SetAcceptDrop("TGuiScript")
 
-		VendorArea = new TGUISimpleRect.Create(new TVec2D.Init(386, 110), new TVec2D.Init(GetSpriteFromRegistry("gfx_screen_adagency_drophint").area.GetW(), GetSpriteFromRegistry("gfx_screen_adagency_drophint").area.GetH()), "scriptagency" )
+
+		VendorEntity = GetSpriteEntityFromRegistry("entity_scriptagency_vendor")
+		'default vendor dimension
+		local vendorAreaDimension:TVec2D = new TVec2D.Init(200,300)
+		local vendorAreaPosition:TVec2D = new TVec2D.Init(350,100)
+		if VendorEntity then vendorAreaDimension = VendorEntity.area.dimension.copy()
+		if VendorEntity then vendorAreaPosition = VendorEntity.area.position.copy()
+
+		VendorArea = new TGUISimpleRect.Create(vendorAreaPosition, vendorAreaDimension, "scriptagency" )
 		'vendor should accept drop - else no recognition
 		VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 
@@ -4038,17 +4050,34 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
-		'make suitcase/vendor glow if needed
-		local glowSuitcase:string = ""
-		if draggedGuiScript
-			if not GetPlayerProgrammeCollection(GetPlayerCollection().playerID).HasScriptInSuitcase(draggedGuiScript.script)
-				glowSuitcase = "_glow"
+		if VendorEntity Then VendorEntity.Render()
+		GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+
+		'make suitcase/vendor highlighted if needed
+		local highlightSuitcase:int = False
+		local highlightVendor:int = False
+
+		if draggedGuiScript and draggedGuiScript.isDragged()
+			'if not GetPlayerProgrammeCollection(GetPlayerCollection().playerID).HasScriptInSuitcase(draggedGuiScript.script)
+			if draggedGuiScript.script.owner <= 0
+				highlightSuitcase = True
+			else
+				highlightVendor = True
 			endif
-			GetSpriteFromRegistry("gfx_screen_scriptagency_drophint").Draw(VendorArea.getScreenX(), VendorArea.getScreenY())
 		endif
 
-		'draw suitcase
-		GetSpriteFromRegistry("gfx_suitcase"+glowSuitcase).Draw(suitcasePos.GetX(), suitcasePos.GetY())
+		if highlightVendor or highlightSuitcase
+			local oldCol:TColor = new TColor.Get()
+			SetBlend LightBlend
+			SetAlpha oldCol.a * 0.5
+
+			if VendorEntity and highlightVendor then VendorEntity.Render()
+			if highlightSuitcase then GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+
+			SetAlpha oldCol.a
+			SetBlend AlphaBlend
+		endif
+
 
 		GUIManager.Draw("scriptagency")
 
@@ -4060,6 +4089,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
+		if VendorEntity Then VendorEntity.Update()
+	
 		'if we have a licence dragged ... we should take care of "ESC"-Key
 		if KeyManager.IsHit(KEY_ESCAPE) then GetInstance().AbortScreenActions()
 
