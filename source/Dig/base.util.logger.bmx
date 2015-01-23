@@ -174,29 +174,43 @@ End Type
 
 
 Type TLogFile
-	Field Strings:TList		= CreateList()
-	Field title:string		= ""
-	Field filename:string	= ""
-	Global logs:TList		= CreateList()
+	Field Strings:TList = CreateList()
+	Field title:string = ""
+	Field filename:string = ""
+	Field headerWritten:int = False
+	Field immediateWrite:int = True
+
+	Global logs:TList = CreateList()
 
 
-	Function Create:TLogFile(title:string, filename:string)
+	'immediateWrite decides whether a added log is immediately written
+	'to the log file or not
+	Function Create:TLogFile(title:string, filename:string, immediateWrite:int = True)
 		local obj:TLogFile = new TLogFile
 		obj.title = title
 		obj.filename = filename
+		obj.immediateWrite = immediateWrite
+
 		TLogfile.logs.addLast(obj)
+
 		return obj
 	End Function
 
 
 	Function DumpLogs()
 		For local logfile:TLogFile = eachin TLogFile.logs
-			Local fi:TStream = WriteFile( logfile.filename )
-			WriteLine fi, logfile.title
+			'in all cases, just dump down the file again regardless
+			'of the mode (you might have manipulated logs meanwhile)
+			'try to create the file
+			CreateFile(logfile.filename)
+			Local file:TStream = WriteFile( logfile.filename )
+
+			WriteLine(file, logfile.title)
 			For Local line:String = EachIn logfile.Strings
-				WriteLine fi, line
+				WriteLine(file, line)
 			Next
-			CloseFile fi
+
+			CloseFile(file)
 		Next
 	End Function
 
@@ -204,6 +218,29 @@ Type TLogFile
 	Method AddLog:int(text:String, addDateTime:int=FALSE)
 		if addDateTime then text = "[" + CurrentTime() + "] " + text
 		Strings.AddLast(text)
+
+		if immediateWrite
+			local size:int = filesize(filename)
+			if size = -1
+				if not CreateFile(filename)
+					Throw "Cannot create logfile: "+filename
+				endif 
+			endif
+			local file:TStream = WriteFile(filename)
+
+
+			if not headerWritten
+				WriteLine(file, title)
+				headerWritten = True
+			'if we already have written the header, move to the end of
+			'the file
+			else
+				file.Seek(size)
+			endif
+			WriteLine(file, text)
+
+			CloseFile(file)
+		endif
 		return TRUE
 	End Method
 End Type
