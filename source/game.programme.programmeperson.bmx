@@ -3,7 +3,7 @@ Import Brl.Map
 Import Brl.Math
 Import "Dig/base.util.mersenne.bmx"
 Import "game.gameobject.bmx"
-
+Import "game.programme.programmerole.bmx"
 
 Type TProgrammePersonCollection
 	Field insignificant:TMap = CreateMap()
@@ -17,6 +17,17 @@ Type TProgrammePersonCollection
 		if not _instance then _instance = new TProgrammePersonCollection
 		return _instance
 	End Function
+
+
+	Method Initialize:TProgrammePersonCollection()
+		insignificant.Clear()
+		insignificantCount = -1
+
+		celebrities.Clear()
+		celebritiesCount = -1
+
+		return self
+	End Method
 
 
 	Method GetByGUID:TProgrammePersonBase(GUID:String)
@@ -289,38 +300,15 @@ Type TProgrammePersonJob
 	'job is a bitmask for values defined in TVTProgrammePersonJob
 	Field job:int = 0
 	'only valid for actors
-	Field role:TProgrammeRole = null
+	Field roleGUID:string = ""
 
 
-	Method Init:TProgrammePersonJob(person:TProgrammePersonBase, job:int, role:TProgrammeRole=null)
+	Method Init:TProgrammePersonJob(person:TProgrammePersonBase, job:int, roleGUID:string="")
 		self.person = person
 		self.job = job
-		self.role = role
+		self.roleGUID = roleGUID
 		
 		return self
 	End Method
 End Type
 
-
-'describes a character in a programme/series (the "role")
-Type TProgrammeRole
-	'name of the character 
-	Field name:string
-	'familyname
-	Field familyName:string
-	'title - like "Dr." or "Prof."
-	Field title:string 
-	Field gender:int
-	'is this a custom role not used in a real world movie
-	Field fictional:int = False
-
-
-	Method Init:TProgrammeRole(name:string, familyName:string, title:string="", gender:int=0, fictional:int = False)
-		self.name = name
-		self.familyName = familyName
-		self.title = title
-		self.gender = gender
-		self.fictional = fictional
-		return self
-	End Method
-End Type

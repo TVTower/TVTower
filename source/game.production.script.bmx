@@ -10,6 +10,14 @@ Import "basefunctions.bmx" 'dottedValue
 Import "game.production.scripttemplate.bmx"
 
 Type TScriptCollection Extends TGameObjectCollection
+	'=== CACHE ===
+	'cache for faster access
+
+	'holding used scripts
+	Field _usedScripts:TList = CreateList() {nosave}
+	Field _availableScripts:TList = CreateList() {nosave}
+	Field _parentScripts:TList = CreateList() {nosave}
+
 	Global _instance:TScriptCollection
 
 
@@ -25,38 +33,117 @@ Type TScriptCollection Extends TGameObjectCollection
 	End Method
 
 
+	Method _InvalidateCaches()
+		_usedScripts = Null
+		_availableScripts = Null
+		_parentScripts = Null
+	End Method
+
+
+	Method Add:int(obj:TGameObject)
+		local script:TScript = TScript(obj)
+		if not script then return False
+
+		_InvalidateCaches()
+		'add child scripts too
+		For local subScript:TScript = EachIn script.subScripts
+			Add(subScript)
+		Next
+		return Super.Add(script)
+	End Method
+
+
+	Method Remove:int(obj:TGameObject)
+		local script:TScript = TScript(obj)
+		if not script then return False
+
+		_InvalidateCaches()
+		'remove child scripts too
+		For local subScript:TScript = EachIn script.subScripts
+			Remove(subScript)
+		Next
+		return Super.Remove(script)
+	End Method
+
+
 	Method GetByGUID:TScript(GUID:String)
 		Return TScript( Super.GetByGUID(GUID) )
 	End Method
 
 
-	Method GetRandom:TScript()
-		if GetCount() < 5
-			'random dummy
-			local dummy:TScriptTemplate = new TScriptTemplate
-			dummy.title = new TLocalizedString
-			dummy.title.Set("%ATTRIBUTE%%OBJECT%")
-			dummy.description = new TLocalizedString
-			dummy.description.Set("Serie ueber %OBJECT% und ihren Alltag. %JOKES%")
-			dummy.SetPriceRange(5000, 10000, 0.4)
-			dummy.SetReviewRange(0.3, 0.6, 0.6)
-			dummy.SetSpeedRange(0.3, 0.6, 0.5)
-			dummy.SetOutcomeRange(0.3, 0.6, 0.5)
-			dummy.SetPotentialRange(0.1, 0.9, 0.65)
-			dummy.SetBlocksRange(1, 2)
-			dummy.AddCast(new TProgrammePersonJob.Init(null, TVTProgrammePersonJob.DIRECTOR))
-			dummy.AddCast(new TProgrammePersonJob.Init(null, TVTProgrammePersonJob.ACTOR, new TProgrammeRole.Init("Susi", "Meier", "", TVTPersonGender.FEMALE, true)))
-			'dieser cast koennte per Zufall im erstellten Script auftauchen
-			dummy.AddRandomCast(new TProgrammePersonJob.Init(null, TVTProgrammePersonJob.ACTOR, new TProgrammeRole.Init("Thomas", "Eventuell", "Dr.", TVTPersonGender.MALE, true)))
-			dummy.AddRandomCast(new TProgrammePersonJob.Init(null, TVTProgrammePersonJob.ACTOR, new TProgrammeRole.Init("Tanja", "Eventuell", "", TVTPersonGender.FEMALE, true)))
-			dummy.AddVariable("%ATTRIBUTE%", new TLocalizedString.Set("Ein Haufen |Die Hillbillie-|Verrueckte |Die Wahnsinns-|Bayrische |Tugendhafte "))
-			dummy.AddVariable("%OBJECT%", new TLocalizedString.Set("Waschweiber|Drag-Queens|Schwerenoeter|Polizisten"))
-			dummy.AddVariable("%JOKES%", new TLocalizedString.Set("Gags am laufenden Band.|Treffsichere Pointen.|Unterhaltung pur.||"))
+	Method GenerateRandom:TScript()
+		local template:TScriptTemplate = GetScriptTemplateCollection().GetRandom()
+		local script:TScript = TScript.CreateFromTemplate(template)
+		Add(script)
+		return script
+	End Method
 
 
-			return TScript.CreateFromTemplate(dummy)
+	Method GetRandomAvailable:TScript()
+		'if no script is available, create some a new one
+		if GetAvailableScriptList().Count() = 0 then GenerateRandom()
+		
+		'fetch a random script
+		return TScript(GetAvailableScriptList().ValueAtIndex(randRange(0, GetAvailableScriptList().Count() - 1)))
+	End Method
+
+
+	'returns (and creates if needed) a list containing only available
+	'and unused scripts.
+	'Scripts of episodes and other children are ignored 
+	Method GetAvailableScriptList:TList()
+		if not _availableScripts
+			_availableScripts = CreateList()
+			For local script:TScript = EachIn GetParentScriptList()
+				'skip used scripts (or scripts already at the vendor)
+				if script.owner <> 0 then continue
+
+				_availableScripts.AddLast(script)
+			Next
 		endif
-		Return TScript( Super.GetRandom() )
+		return _availableScripts
+	End Method
+	
+
+	'returns (and creates if needed) a list containing only used scripts.
+	Method GetUsedScriptList:TList()
+		if not _usedScripts
+			_usedScripts = CreateList()
+			For local script:TScript = EachIn entries.Values()
+				'skip unused scripts
+				if script.owner = 0 then continue
+
+				_usedScripts.AddLast(script)
+			Next
+		endif
+		return _usedScripts
+	End Method
+	
+
+	'returns (and creates if needed) a list containing only parental scripts
+	Method GetParentScriptList:TList()
+		if not _parentScripts
+			_parentScripts = CreateList()
+			For local script:TScript = EachIn entries.Values()
+				'skip scripts containing parent information or episodes
+				if script.scriptType = TVTProgrammeType.Episode then continue
+				if script.parentScriptGUID <> "" then continue
+
+				_parentScripts.AddLast(script)
+			Next
+		endif
+		return _parentScripts
+	End Method
+
+
+	Method SetScriptOwner:int(script:TScript, owner:int)
+		if script.owner = owner then return False
+
+		script.owner = owner
+
+		'reset only specific caches, so script gets in the correct list
+		_usedScripts = Null
+		_availableScripts = Null
 	End Method
 End Type
 
@@ -125,12 +212,22 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 		script.potential = template.GetPotential()
 		script.blocks = template.GetBlocks()
 		script.price = template.GetPrice()
-		script.cast = template.GetCast()
+		script.cast = template.GetJobs()
 
-		'create scripts for children too?
+		'replace placeholders as we know the cast / roles now
+		script.title = script._ReplacePlaceholders(script.title)
+		script.description = script._ReplacePlaceholders(script.description)
 
-		'add to collection
-		GetScriptCollection().Add(script)
+		'add children
+		For local subTemplate:TScriptTemplate = EachIn template.subScriptTemplates
+			local subScript:TScript = TScript.CreateFromTemplate(subTemplate)
+			if subScript then script.AddSubScript(subScript)
+		Next
+
+		'reset the state of the template
+		'without that, the following scripts created with this template
+		'as base will get the same title/description
+		template.Reset()
 		
 		return script
 	End Function
@@ -170,9 +267,67 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method _ReplacePlaceholders:TLocalizedString(text:TLocalizedString)
+		local result:TLocalizedString = text.copy()
+
+		'for each defined language we check for existent placeholders
+		'which then get replaced by a random string stored in the
+		'variable with the same name
+		For local lang:string = EachIn text.GetLanguageKeys()
+			local value:string = text.Get(lang)
+			local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%")
+			if placeHolders.length = 0 then continue
+
+			local actors:TProgrammePersonJob[] = GetSpecificCast(TVTProgrammePersonJob.ACTOR | TVTProgrammePersonJob.SUPPORTINGACTOR)
+			local replacement:string = ""
+			for local placeHolder:string = EachIn placeHolders
+				replacement = ""
+				Select placeHolder.toUpper()
+					case "%ROLENAME1%"
+						if actors.length > 0 and actors[0].roleGUID <> ""
+							local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(actors[0].roleGUID)
+							if role then replacement = role.GetFirstName()
+						endif
+						'gender neutral default
+						if replacement = "" then replacement = "Robin"
+					case "%ROLENAME2%"
+						if actors.length > 1 and actors[1].roleGUID <> ""
+							local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(actors[1].roleGUID)
+							if role then replacement = role.GetFirstName()
+						endif
+						'gender neutral default
+						if replacement = "" then replacement = "Alex"
+					case "%ROLE1%"
+						if actors.length > 0 and actors[0].roleGUID <> ""
+							local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(actors[0].roleGUID)
+							if role then replacement = role.GetFullName()
+						endif
+						'gender neutral default
+						if replacement = "" then replacement = "Robin Mayer"
+					case "%ROLE2%"
+						if actors.length > 1 and actors[1].roleGUID <> ""
+							local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(actors[1].roleGUID)
+							if role then replacement = role.GetFullName()
+						endif
+						'gender neutral default
+						if replacement = "" then replacement = "Alex Hulley"
+				End Select
+
+				'replace if some content was filled in
+				if replacement <> "" then value = value.replace(placeHolder, replacement)
+			Next
+			
+			result.Set(value, lang)
+		Next
+	
+		return result
+	End Method	
+
+
+
 	'override default method to add sublicences
 	Method SetOwner:int(owner:int=0)
-		self.owner = owner
+		GetScriptCollection().SetScriptOwner(self, owner)
 
 		'do the same for all children
 		For local script:TScript = eachin subScripts
@@ -282,7 +437,10 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 		local result:int = 0
 		For local j:TProgrammePersonJob = EachIn cast
 			'skip roles with wrong gender
-			if limitGender >= 0 and j.role and j.role.gender <> limitGender then continue
+			if limitGender >= 0 and j.roleGUID
+				local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(j.roleGUID)
+				if role and role.gender <> limitGender then continue
+			endif
 			'current job is one of the given job(s)
 			if job & j.job then result :+ 1
 		Next
@@ -294,7 +452,10 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 		local result:TProgrammePersonJob[]
 		For local j:TProgrammePersonJob = EachIn cast
 			'skip roles with wrong gender
-			if limitGender >= 0 and j.role and j.role.gender <> limitGender then continue
+			if limitGender >= 0 and j.roleGUID
+				local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(j.roleGUID)
+				if role and role.gender <> limitGender then continue
+			endif
 			'current job is one of the given job(s)
 			if job & j.job then result :+ [j]
 		Next

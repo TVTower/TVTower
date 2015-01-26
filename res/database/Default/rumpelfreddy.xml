@@ -37,9 +37,6 @@
 		<person id="Per_custom_Freddy_35" first_name="Daniel" last_name="Nicolson" nick_name="" />
 		<person id="Per_custom_Freddy_36" first_name="Logan" last_name="O'Brain" nick_name="" />
 		<person id="Per_custom_Freddy_37" first_name="Alexander" last_name="Ramsay" nick_name="" />
-		<person id="Per_custom_Freddy_38" first_name="Lucas" last_name="Scott" nick_name="" />
-		<person id="Per_custom_Freddy_39" first_name="Harry" last_name="Wallace" nick_name="" />
-		<person id="Per_custom_Freddy_40" first_name="Charlie" last_name="McCallum" nick_name="" />
 		<!-- Schwedisch -->
 		<person id="Per_custom_Freddy_41" first_name="Alice" last_name="Anderson" nick_name="" />
 		<person id="Per_custom_Freddy_42" first_name="Lucas" last_name="Johansson" nick_name="" />
@@ -54,9 +51,6 @@
 		<person id="Per_custom_Freddy_51" first_name="Ebba" last_name="Pettersson" nick_name="" />
 		<person id="Per_custom_Freddy_52" first_name="Charlie" last_name="Jonsson" nick_name="" />
 		<person id="Per_custom_Freddy_53" first_name="Alicia" last_name="Hansson" nick_name="" />
-		<person id="Per_custom_Freddy_54" first_name="Liam" last_name="Bengtsson" nick_name="" />
-		<person id="Per_custom_Freddy_55" first_name="Alva" last_name="Lindberg" nick_name="" />
-		<person id="Per_custom_Freddy_56" first_name="Filip" last_name="Jönsson" nick_name="" />
 		<!-- Polnisch -->
 		<person id="Per_custom_Freddy_57" first_name="Lena" last_name="Nowak" nick_name="" />
 		<person id="Per_custom_Freddy_58" first_name="Jakub" last_name="Wójcik" nick_name="" />
@@ -239,9 +233,6 @@
 		<person id="Per_custom_Freddy_231" first_name="Adam" last_name="Whitman" nick_name="" />
 		<person id="Per_custom_Freddy_232" first_name="Emma" last_name="Willoughby" nick_name="" />
 		<person id="Per_custom_Freddy_233" first_name="Alfie" last_name="Wiltshire" nick_name="" />
-		<person id="Per_custom_Freddy_234" first_name="Molly" last_name="Winfield" nick_name="" />
-		<person id="Per_custom_Freddy_235" first_name="Callum" last_name="Winston" nick_name="" />
-		<person id="Per_custom_Freddy_236" first_name="Abigail" last_name="Wyler" nick_name="" />
 		<!-- Irisch -->
 		<person id="Per_custom_Freddy_237" first_name="Emily" last_name="O`Sullivan" nick_name="" />
 		<person id="Per_custom_Freddy_238" first_name="Jack" last_name="McClary" nick_name="" />
@@ -400,7 +391,7 @@
 		<person id="Per_custom_Freddy_386" first_name="Lily" last_name="Clement" nick_name="" />
 		<person id="Per_custom_Freddy_387" first_name="Clément" last_name="Dumont" nick_name="" />
 		<person id="Per_custom_Freddy_388" first_name="Louanne" last_name="Fortaine" nick_name="" />
-		<!-- Norddeusch / Friesisch -->
+		<!-- Norddeutsch / Friesisch -->
 		<person id="Per_custom_Freddy_389" first_name="Arfst" last_name="Bargen" nick_name="" />
 		<person id="Per_custom_Freddy_390" first_name="Roerd" last_name="Buttfanger" nick_name="" />
 		<person id="Per_custom_Freddy_391" first_name="Roluf" last_name="Foßenbarger" nick_name="" />

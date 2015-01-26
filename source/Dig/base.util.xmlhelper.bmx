@@ -131,8 +131,8 @@ Type TXmlHelper
 
 
 	'loads values of a node into a tdata object
-	Function LoadValuesToData:Int(node:TXmlNode, data:TData, fieldNames:String[])
-		if not node then return False
+	Function LoadValuesToData:TData(node:TXmlNode, data:TData, fieldNames:String[])
+		if not node then return data
 
 		For Local fieldName:String = EachIn fieldNames
 			If Not TXmlHelper.HasValue(node, fieldName) Then Continue
@@ -141,6 +141,7 @@ Type TXmlHelper
 
 			data.Add(names[0], FindValue(node, fieldName, ""))
 		Next
+		return data
 	End Function
 
 

@@ -46,6 +46,19 @@ Type MathHelper
 	End Function
 
 
+	Function SortValues(valueA:Float var, valueB:Float var)
+		local newValueA:Float = min(valueA, valueB)
+		valueB = max(valueA, valueB)
+		valueA = newValueA
+	End Function
+
+	'for "var" params we need the correct types
+	Function SortIntValues(valueA:Int var, valueB:Int var)
+		local newValueA:Int = min(valueA, valueB)
+		valueB = max(valueA, valueB)
+		valueA = newValueA
+	End Function
+
 	'returns a linear interpolated value between startValue and endValue
 	'the percentage is clamped between 0 and 1 !
 	Function Tween:Float(startValue:Float, endValue:Float, percentage:Float = 1.0)

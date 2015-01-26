@@ -123,11 +123,11 @@ Type TSpriteEntity extends TEntity
 				'-> this allows to setup "-1" as frame which means
 				'   "do not draw me now"
 				if frame >= 0
-					sprite.Draw(GetScreenX() + xOffset, GetScreenY() + yOffset, frame)
+					sprite.Draw(GetScreenX() + xOffset, GetScreenY() + yOffset, frame, alignment)
 				endif
 			else
 				'draw the whole sprite
-				sprite.Draw(GetScreenX() + xOffset, GetScreenY() + yOffset)
+				sprite.Draw(GetScreenX() + xOffset, GetScreenY() + yOffset, -1, alignment)
 			endif
 
 		endif

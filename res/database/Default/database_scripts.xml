@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<tvgdb>
+	<version value="3" comment="script data" />
+	<!--
+		title, description, variables, roles and quality are FIXED parts
+
+		Scripts for series are defined similar to movies except they
+		also contain a "episodes" part which then defines data of the
+		individual episodes.
+
+		programmetype:
+			which kind of programme is scripted here?
+			0 = undefined        1 = movie
+			2 = series           3 = show
+			4 = reportage        5 = commercial
+			6 = event            7 = misc
+
+		title:
+			contains the title to use
+
+		description:
+			description of the script / story
+
+		variables:
+			keys which can get used within "title" and "description"
+			Each key contains a group of values to select from.
+			These values are grouped by "|".
+
+			There are some fixed variables:
+			%GENRE%       the localized genre of the script
+			%ROLEx%       the complete name ("Dr. Samantha Jones") of role X
+			%ROLENAMEx%   the name ("Samantha") of role X
+
+		jobs:
+			defines what cast (director, actors ...) and other
+			jobs are needed and if they need to fulfill certain
+			criteria
+
+			function     which function (job) has the role
+			               0 = unknown            1 = director
+			               2 = actor              4 = writer
+			               8 = moderator         16 = musician
+			              32 = supporting actor  64 = guest
+			             128 = reporter
+			required     is the role required (1) or random (0)?
+			gender       is the role of a specific gender (1 or 2)
+			             or free to choose (0) ?
+
+		quality:
+			min          the minimum value in percents
+			max          the maximum value in percents
+			slope        percents defining the weighting of "max"
+			               0 = 100% chance of "min"
+		                  50 = 50% chance for each
+		                 100 = 100% chance of "max"
+	-->
+	<scripttemplates>
+		<scripttemplate programmetype="1" guid="scripttemplate-random-ron-foodformealtime01">
+			<title>
+				<de>%FOOD% zum %MEALTIME%</de>
+				<en>%FOOD% for %MEALTIME%</en>
+			</title>
+			<description>
+				<de>%ROLE1% %ACTION% %ROLENAME2%, %JOB%. Turbulente Komödie.</de>
+				<en>%ROLE1% %ACTION% %ROLENAME2%, %JOB%. Turbulent comedy.</en>
+			</description>
+
+			<variables>
+				<food>
+					<de>Erdbeermarmelade|Cornflakes|Honig</de>
+					<en>Strawberry marmelade|Cornflakes|Honey</en>
+				</food>
+				<mealtime>
+					<de>Frühstück|Mittagessen|Abendessen|Brunch</de>
+					<en>breakfast|lunch|dinner|brunch</en>
+				</mealtime>
+				<action>
+					<de>trifft|hat einen Unfall mit|wird geschwängert von|betrinkt sich mit</de>
+					<en>meets|has an accident with|gets pregnant with|gets drunk with</en>
+				</action>
+				<job>
+					<de>einem Landschaftsmaler|einem anonymen Alkoholiker|einem Damenfriseur</de>
+					<en>a landscapist|an AA|a hairdresser for women</en>
+				</job>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" role_guid="script-roles-ron-jones1" />
+				<job index="2" function="2" required="1" gender="2" />
+				<!-- there might be up to 2 additional roles without
+				     further specifications -->
+				<job index="3" function="32" required="0" />
+				<job index="4" function="32" required="0" />
+			</jobs>
+
+			<genres maingenre="1" subgenres="2,3" />
+			<blocks min="2" max="3" slope="30" />
+			<price min="8000" max="10000" slope="60" />
+			<potential min="50" max="70" slope="45" />
+			<outcome min="25" max="35" slope="40" />
+			<review min="45" max="65" slope="40" />
+			<speed min="35" max="65" slope="50" />
+		</scripttemplate>
+
+
+		<scripttemplate programmetype="1" guid="scripttemplate-random-ron-fightagainst01">
+			<title>
+				<!-- international title for all incarnations - so "de" is enough -->
+				<de>%ADJECTIVE% %OBJECT%</de>
+			</title>
+			<description>
+				<de>%JOB% %ROLENAME1% %ACTION% %ENEMY%. Sie wollen %VICTIM% %ACTION2%.</de>
+				<en>%JOB% %ROLENAME1% %ACTION% %ENEMY%. They want to %ACTION2% %VICTIM%.</en>
+			</description>
+
+			<variables>
+				<object>
+					<de>Cannons|Guns|Ropes|Knifes|Jaws|Dynamite</de>
+				</object>
+				<adjective>
+					<de>Flying|Burning|Bloody|Rusty|Explosive|Violent|Cruel|Cool|Gangster|Red|Guilty</de>
+				</adjective>
+				<job>
+					<de>Ex-Cop|Feuerwehrmann|Chefarzt|Bestatter|Grundschullehrer</de>
+					<en>a landscapist|an AA|a hairdresser for women</en>
+				</job>
+				<action>
+					<de>kämpft gegen|bekämpft|rebelliert gegen|unterstützt widerwillig</de>
+					<en>fights|battles|assists|reluctantly supports</en>
+				</action>
+				<action2>
+					<de>entführen|essen|zum Mond schießen|als Geisel nehmen</de>
+					<en>kidnap|eat|sky rocket|hostage</en>
+				</action2>
+				<enemy>
+					<de>ein mexikanisches Drogenkartell|eine geheime CIA-Gruppierung|Außerirdische|eine verwirrte Sekte|die eigene Familie|Piraten</de>
+					<en>a Mexican drug cartel|a secret CIA group|Aliens|a confused sect|the own family|pirates</en>
+				</enemy>
+				<victim>
+					<de>den Präsidenten der USA|den Familienhund|den Sohn von %ROLENAME1%|den Nachbar von %ROLENAME1%</de>
+					<en>the president of the USA|the family dog|the son of %ROLENAME1%|the neighbor of %ROLENAME1%</en>
+				</victim>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" />
+				<!-- there might be up to 2 additional roles without
+				     further specifications -->
+				<job index="2" function="2" required="0" />
+				<job index="3" function="32" required="0" />
+			</jobs>
+
+			<genres main_genre="1" />
+			<blocks min="2" max="3" slope="50" />
+			<price min="8000" max="12000" slope="40" />
+			<potential min="30" max="70" slope="45" />
+			<outcome min="40" max="45" slope="40" />
+			<review min="25" max="55" slope="45" />
+			<speed min="45" max="65" slope="25" />
+		</scripttemplate>
+
+		<scripttemplate programmetype="1" guid="scripttemplate-random-ron-subtilehumor01">
+			<title>
+				<!-- international title for all incarnations - so "de" is enough -->
+				<de>%NUMBER% %OBJECT%</de>
+			</title>
+			<description>
+				<de>Subtiles Drama trifft Holzhammerhumor. Alleiniger Star ist Nummer 1 der %NUMBER% %OBJECT%.</de>
+				<en>Subtile drama meets Sledge hammer humor. Only star is number 1 of the %NUMBER% %OBJECT%.</en>
+			</description>
+
+			<variables>
+				<number>
+					<de>2|3|4|5</de>
+				</number>
+				<object>
+					<de>Idioten|Trottel|Deppen|Gangster|Schwerenöter|Polizisten</de>
+					<en>Idiots|Fools|Dorks|Gangster|Charmer|Policemen</en>
+				</object>
+				<action>
+					<de>auf Tour|brechen aus|tanken voll|und die Liebe...|suchen Krawall</de>
+					<de>on tour|breaking out|topping off|and the love...|looking for affray</de>
+				</action>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" />
+				<!-- there might be up to 3 additional roles without
+				     further specifications -->
+				<job index="2" function="32" required="0" />
+				<job index="3" function="32" required="0" />
+				<job index="4" function="32" required="0" />
+			</jobs>
+
+			<genres maingenre="0" />
+			<blocks min="2" max="3" slope="40" />
+			<price min="8000" max="12000" slope="40" />
+			<potential min="50" max="70" slope="45" />
+			<outcome min="25" max="35" slope="40" />
+			<review min="45" max="65" slope="40" />
+			<speed min="35" max="65" slope="50" />
+		</scripttemplate>
+
+		<!-- === SERIES === -->
+		<scripttemplate programmetype="2" guid="scripttemplate-random-ron-averagedayseries01">
+			<title>
+				<!-- international title for all incarnations - so "de" is enough -->
+				<de>%ATTRIBUTE% %OBJECT%</de>
+			</title>
+			<description>
+				<de>Serie über %OBJECT% und ihren Alltag. %JOKES%</de>
+				<en>Series about %OBJECT% and their day. %JOKES%</en>
+			</description>
+			
+			<children>
+				<scripttemplate index="0" programmetype="3" guid="scripttemplate-random-ron-averagedayseries01_01">
+					<title>
+						<de>Pilotfilm</de>
+						<en>Pilot</en>
+					</title>
+					<!-- pilot could be one or two blocks -->
+					<blocks min="1" max="2" />
+				</scripttemplate>
+				<scripttemplate index="1" programmetype="3" guid="scripttemplate-random-ron-averagedayseries01_02">
+					<title>
+						<de>%SUBJECT1A% im %SUBJECT1B%</de>
+						<en>%SUBJECT1A% in the %SUBJECT1B%</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="2" programmetype="3" guid="scripttemplate-random-ron-averagedayseries01_03">
+					<title>
+						<de>%SUBJECT2A% im %SUBJECT1B%</de>
+						<en>%SUBJECT2A% in the %SUBJECT1B%</en>
+					</title>
+				</scripttemplate>
+			</children>
+
+			<variables>
+				<attribute>
+					<de>Ein Haufen|Die Hillbillie-|Verrückte|Die Wahnsinns-|Bayrische|Tugendhafte</de>
+					<en>A bunch of|The hillbillie-|Crazy|The frenzy|Bavarian|Virtuous</en>
+				</attribute>
+				<object>
+					<de>Waschweiber|Drag-Queens|Schwerenöter|Polizisten</de>
+					<en>fishwives|drag-queens|charmer|policemen</en>
+				</object>
+				<jokes>
+					<de>Gags am laufenden Band.|Treffsichere Pointen.|Unterhaltung pur.||</de>
+					<en>Gags every minute.|Not one failing punch line|Pure entertainment.||</en>
+				</jokes>
+				<subject1a>
+					<de>Ärger|Panik|Pechsträhne|Fette Beute</de>
+					<en>Trouble|Panic|Streak of bad luck|Big booty</en>
+				</subject1a>
+				<subject1b>
+					<de>Paradies|Gasthaus|Hinterhof|Polizeirevier|Supermarkt</de>
+					<en>paradise|inn|backyard|police station|supermarket</en>
+				</subject1b>
+				<subject2a>
+					<de>Treffen|Krawall|Klamauk|Überraschungsfeier</de>
+					<en>Meeting|Riot|Fuss|Surprise party</en>
+				</subject2a>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" />
+				<!-- there might be up to 2 additional roles without
+				     further specifications -->
+				<job index="2" function="32" required="0" />
+				<job index="3" function="32" required="0" />
+			</jobs>
+
+			<genres maingenre="0" />
+			<episodes min="4" max="6" />
+			<blocks value="1" />
+			<price min="15000" max="26000" />
+			<potential min="50" max="70" slope="45" />
+			<outcome min="25" max="35" slope="40" />
+			<review min="45" max="65" slope="40" />
+			<speed min="35" max="65" slope="50" />
+		</scripttemplate>
+	</scripttemplates>
+
+	<programmeroles>
+		<programmerole guid="script-roles-ron-jones1" firstname="Miranda" lastname="Jones" title="Dr." gender="2" />
+		<programmerole guid="script-roles-ron-spykes1" firstname="Jonathan" lastname="Spykes" gender="1" />
+		<programmerole guid="script-roles-ron-smith1" firstname="James" lastname="Smith" gender="1" />
+		<programmerole guid="script-roles-ron-smith2" firstname="Gerry" lastname="Smith" gender="1" />
+		<programmerole guid="script-roles-ron-smith3" firstname="Violetta" lastname="Smith" gender="2" />
+		<programmerole guid="script-roles-ron-mayer1" firstname="Johann" lastname="Mayer" gender="1" />
+		<programmerole guid="script-roles-ron-mayer2" firstname="Maria" lastname="Mayer" gender="2" />
+		<programmerole guid="script-roles-ron-stude1" firstname="Gordon" lastname="Stude" title="Prof." gender="1" />
+		<programmerole guid="script-roles-ron-pike1" firstname="Gordon" lastname="Pike" title="Dr." gender="1" />
+
+		<programmerole guid="script-roles-sco-scott1" firstname="Lucas" lastname="Scott" title="" gender="1" country="SCO" />
+		<programmerole guid="script-roles-sco-wallace1" firstname="Harry" lastname="Wallace" title="Dr." gender="1" country="SCO" />
+		<programmerole guid="script-roles-sco-mccallum1" firstname="Charlie" lastname="McCallum" title="" gender="1" country="SCO" />
+
+		<programmerole guid="script-roles-swe-bengtsson1" firstname="Liam" lastname="Bengtsson" title="" gender="1" country="SWE" />
+		<programmerole guid="script-roles-swe-lindberg1" firstname="Alva" lastname="Lindberg" title="Prof." gender="1" country="SWE" />
+		<programmerole guid="script-roles-swe-joensson1" firstname="Filip" lastname="Jönsson" title="" gender="1" country="SWE" />
+
+		<programmerole guid="script-roles-eng-winfield1" firstname="Molly" lastname="Winfield" title="" gender="2" country="ENG" />
+		<programmerole guid="script-roles-eng-winston1" firstname="Callum" lastname="Winston" title="" gender="1" country="ENG" />
+		<programmerole guid="script-roles-eng-wyler1" firstname="Abigail" lastname="Wyler" title="" gender="2" country="ENG" />
+
+	</programmeroles>
+</tvgdb>

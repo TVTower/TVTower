@@ -3,6 +3,7 @@ Import "Dig/base.util.time.bmx"
 Import "Dig/base.util.directorytree.bmx"
 Import "Dig/base.util.xmlhelper.bmx"
 
+Import "game.production.scripttemplate.bmx"
 Import "game.programme.programmelicence.bmx"
 Import "game.programme.adcontract.bmx"
 Import "game.programme.newsevent.bmx"
@@ -10,6 +11,8 @@ Import "game.gameconstants.bmx"
 
 
 Type TDatabaseLoader
+	Field programmeRolesCount:Int, totalProgrammeRolesCount:Int
+	Field scriptTemplatesCount:Int, totalscriptTemplatesCount:Int
 	Field moviesCount:Int, totalMoviesCount:Int
 	Field seriesCount:Int, totalSeriesCount:Int
 	Field newsCount:Int, totalNewsCount:Int
@@ -44,7 +47,7 @@ Type TDatabaseLoader
 			Load(fileURI)
 		Next
 
-		TLogger.log("TDatabase.Load()", "Loaded from "+fileURIs.length + " DBs. Found " + totalSeriesCount + " series, " + totalMoviesCount + " movies, " + totalContractsCount + " advertisements, " + totalNewsCount + " news. loading time: " + stopWatchAll.GetTime() + "ms", LOG_LOADING)
+		TLogger.log("TDatabase.Load()", "Loaded from "+fileURIs.length + " DBs. Found " + totalSeriesCount + " series, " + totalMoviesCount + " movies, " + totalContractsCount + " advertisements, " + totalNewsCount + " news, " + totalProgrammeRolesCount + " roles in scripts, " + totalScriptTemplatesCount + " script templates. Loading time: " + stopWatchAll.GetTime() + "ms", LOG_LOADING)
 
 		if totalSeriesCount = 0 or totalMoviesCount = 0 or totalNewsCount = 0 or totalContractsCount = 0
 			Notify "Important data is missing:  series:"+totalSeriesCount+"  movies:"+totalMoviesCount+"  news:"+totalNewsCount+"  adcontracts:"+totalContractsCount
@@ -463,6 +466,29 @@ Type TDatabaseLoader
 			Next
 		endif
 
+
+		'===== IMPORT ALL PROGRAMME ROLES =====
+		local nodeAllRoles:TxmlNode = xml.FindRootChild("programmeroles")
+		if nodeAllRoles
+			For local nodeRole:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllRoles)
+				If nodeRole.getName() <> "programmerole" then continue
+
+				LoadV3ProgrammeRoleFromNode(nodeRole, xml)
+			Next
+		endif
+
+
+		'===== IMPORT ALL SCRIPT (TEMPLATES) =====
+		local nodeAllScriptTemplates:TxmlNode = xml.FindRootChild("scripttemplates")
+		if nodeAllScriptTemplates
+			For local nodeScriptTemplate:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllScriptTemplates)
+				If nodeScriptTemplate.getName() <> "scripttemplate" then continue
+
+				LoadV3ScriptTemplateFromNode(nodeScriptTemplate, xml)
+			Next
+		endif
+
+
 		TLogger.log("TDatabase.Load()", "Loaded DB ~q" + xml.filename + "~q (version 3). Found " + seriesCount + " series, " + moviesCount + " movies, " + contractsCount + " advertisements, " + newsCount + " news. loading time: " + stopWatch.GetTime() + "ms", LOG_LOADING)
 	End Method
 
@@ -599,9 +625,8 @@ Type TDatabaseLoader
 		local nodeConditions:TxmlNode = xml.FindElementNode(node, "conditions")
 		data = new TData
 		xml.LoadValuesToData(nodeConditions, data, [..
-			"fix_year", "year_range_from", "year_range_to" ..
+			"year_range_from", "year_range_to" ..
 		])
-		'newsEvent.availableYear = data.GetInt("fix_year", newsEvent.availableYear)
 		newsEvent.availableYearRangeFrom = data.GetInt("year_range_from", newsEvent.availableYearRangeFrom)
 		newsEvent.availableYearRangeTo = data.GetInt("year_range_to", newsEvent.availableYearRangeTo)
 
@@ -899,6 +924,270 @@ Type TDatabaseLoader
 		GetProgrammeDataCollection().Add(programmeData)
 
 		return programmeLicence
+	End Method
+
+
+	Method LoadV3ScriptTemplateFromNode:TScriptTemplate(node:TxmlNode, xml:TXmlHelper, parentScriptTemplate:TScriptTemplate = Null)
+		local GUID:String = TXmlHelper.FindValue(node,"guid", "")
+		local scriptType:int = TXmlHelper.FindValueInt(node,"programmetype", 0)
+		local index:int = TXmlHelper.FindValueInt(node,"index", 0)
+		local scriptTemplate:TScriptTemplate
+
+		'=== SCRIPTTEMPLATE DATA ===
+		'try to fetch an existing template with the entries GUID
+		scriptTemplate = GetScriptTemplateCollection().GetByGUID(GUID)
+		if not scriptTemplate
+			'try to clone the parent, if that fails, create a new instance
+			if parentScriptTemplate then scriptTemplate = TScriptTemplate(THelper.CloneObject(parentScriptTemplate))
+			if not scriptTemplate then scriptTemplate = new TScriptTemplate
+
+			scriptTemplate.GUID = GUID
+			scriptTemplate.title = new TLocalizedString
+			scriptTemplate.description = new TLocalizedString
+			'DO NOT reuse certain parts of the parent (getters take
+			'care of this already)
+			scriptTemplate.variables = null
+			scriptTemplate.placeHolderVariables = null
+			scriptTemplate.subScriptTemplates = new TScriptTemplate[0]
+			scriptTemplate.parentScriptTemplateGUID = ""
+		endif
+
+
+		'=== LOCALIZATION DATA ===
+		scriptTemplate.title.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "title")) )
+		scriptTemplate.description.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "description")) )
+
+
+
+		'=== DATA ELEMENTS ===
+		local nodeData:TxmlNode
+		local data:TData
+
+
+		'=== DATA: GENRES ===
+		nodeData = xml.FindElementNode(node, "genres")
+		data = new TData
+		xml.LoadValuesToData(nodeData, data, ["mainGenre", "subGenres"])
+		scriptTemplate.mainGenre = data.GetInt("mainGenre", 0)
+		For local sg:string = EachIn data.GetString("subGenres", "").split(",")
+			'skip doublettes
+			local foundDoublette:int = False
+			For local i:int = EachIn scriptTemplate.subGenres
+				if i = int(sg) then foundDoublette = True; exit
+			Next
+			if not foundDoublette then scriptTemplate.subGenres :+ [int(sg)]
+		Next
+
+
+
+		'=== DATA: RATINGS - OUTCOME ===
+		nodeData = xml.FindElementNode(node, "outcome")
+		data = xml.LoadValuesToData(nodeData, new TData, ["min", "max", "slope", "value"])
+		if data.GetInt("value", -1) >= 0
+			local value:Float = 0.01 * data.GetInt("value", 100 * scriptTemplate.outcomeMin)
+			scriptTemplate.SetOutcomeRange(value, value, 0.5)
+		else
+			scriptTemplate.SetOutcomeRange( ..
+				0.01 * data.GetInt("min", 100 * scriptTemplate.outcomeMin), ..
+				0.01 * data.GetInt("max", 100 * scriptTemplate.outcomeMax), ..
+				0.01 * data.GetInt("slope", 100 * scriptTemplate.outcomeSlope) ..
+			)
+		endif
+
+		'=== DATA: RATINGS - REVIEW ===
+		nodeData = xml.FindElementNode(node, "review")
+		data = xml.LoadValuesToData(nodeData, new TData, ["min", "max", "slope", "value"])
+		if data.GetInt("value", -1) >= 0
+			local value:Float = 0.01 * data.GetInt("value", 100 * scriptTemplate.reviewMin)
+			scriptTemplate.SetReviewRange(value, value, 0.5)
+		else
+			scriptTemplate.SetReviewRange( ..
+				0.01 * data.GetInt("min", 100 * scriptTemplate.reviewMin), ..
+				0.01 * data.GetInt("max", 100 * scriptTemplate.reviewMax), ..
+				0.01 * data.GetInt("slope", 100 * scriptTemplate.reviewSlope) ..
+			)
+		endif
+
+		'=== DATA: RATINGS - SPEED ===
+		nodeData = xml.FindElementNode(node, "speed")
+		data = xml.LoadValuesToData(nodeData, new TData, ["min", "max", "slope", "value"])
+		if data.GetInt("value", -1) >= 0
+			local value:Float = 0.01 * data.GetInt("value", 100 * scriptTemplate.speedMin)
+			scriptTemplate.SetSpeedRange(value, value, 0.5)
+		else
+			scriptTemplate.SetSpeedRange( ..
+				0.01 * data.GetInt("min", 100 * scriptTemplate.speedMin), ..
+				0.01 * data.GetInt("max", 100 * scriptTemplate.speedMax), ..
+				0.01 * data.GetInt("slope", 100 * scriptTemplate.speedSlope) ..
+			)
+		endif
+
+		'=== DATA: RATINGS - POTENTIAL ===
+		nodeData = xml.FindElementNode(node, "potential")
+		data = xml.LoadValuesToData(nodeData, new TData, ["min", "max", "slope", "value"])
+		if data.GetInt("value", -1) >= 0
+			local value:Float = 0.01 * data.GetInt("value", 100 * scriptTemplate.potentialMin)
+			scriptTemplate.SetPotentialRange(value, value, 0.5)
+		else
+			scriptTemplate.SetPotentialRange( ..
+				0.01 * data.GetInt("min", 100 * scriptTemplate.potentialMin), ..
+				0.01 * data.GetInt("max", 100 * scriptTemplate.potentialMax), ..
+				0.01 * data.GetInt("slope", 100 * scriptTemplate.potentialSlope) ..
+			)
+		endif
+
+
+		'=== DATA: BLOCKS ===
+		nodeData = xml.FindElementNode(node, "blocks")
+		data = xml.LoadValuesToData(nodeData, new TData, ["min", "max", "slope", "value"])
+		if data.GetInt("value", -1) >= 0
+			local value:Int = data.GetInt("value", scriptTemplate.blocksMin)
+			scriptTemplate.SetBlocksRange(value, value, 0.5)
+		else
+			scriptTemplate.SetBlocksRange( ..
+				data.GetInt("min", scriptTemplate.blocksMin), ..
+				data.GetInt("max", scriptTemplate.blocksMax), ..
+				0.01 * data.GetInt("slope", 100 * scriptTemplate.blocksSlope) ..
+			)
+		endif
+
+		'=== DATA: PRICE ===
+		nodeData = xml.FindElementNode(node, "price")
+		data = xml.LoadValuesToData(nodeData, new TData, ["min", "max", "slope", "value"])
+		if data.GetInt("value", -1) >= 0
+			local value:Int = data.GetInt("value", scriptTemplate.priceMin)
+			scriptTemplate.SetPriceRange(value, value, 0.5)
+		else
+			scriptTemplate.SetPriceRange( ..
+				data.GetInt("min", scriptTemplate.priceMin), ..
+				data.GetInt("max", scriptTemplate.priceMax), ..
+				0.01 * data.GetInt("slope", 100 * scriptTemplate.priceSlope) ..
+			)
+		endif
+
+
+		'=== DATA: JOBS ===
+		nodeData = xml.FindElementNode(node, "jobs")
+		For local nodeJob:TxmlNode = EachIn xml.GetNodeChildElements(nodeData)
+			If nodeJob.getName() <> "job" then continue
+
+			'the job index is only relevant to children/episodes in the
+			'case of a partially overridden cast
+
+			local jobIndex:int = xml.FindValueInt(nodeJob, "index", -1)
+			local jobFunction:int = xml.FindValueInt(nodeJob, "function", 0)
+			local jobRequired:int = xml.FindValueInt(nodeJob, "required", 0)
+			'for actor jobs this defines if a specific role is defined
+			local jobRoleGUID:string = xml.FindValue(nodeJob, "role_guid", "")
+
+			'create a job without an assigned person
+			local job:TProgrammePersonJob = new TProgrammePersonJob.Init(null, jobFunction, jobRoleGUID)
+			if jobRequired = 0
+				'check if the job has to override an existing one
+				if jobIndex >= 0 and scriptTemplate.GetRandomJobAtIndex(jobIndex)
+					scriptTemplate.SetRandomJobAtIndex(jobIndex, job)
+				else
+					scriptTemplate.AddRandomJob(job)
+				endif
+			else
+				'check if the job has to override an existing one
+				if jobIndex >= 0 and scriptTemplate.GetJobAtIndex(jobIndex)
+					scriptTemplate.SetJobAtIndex(jobIndex, job)
+				else
+					scriptTemplate.AddJob(job)
+				endif
+			endif
+		Next
+
+
+		'=== VARIABLES ===
+		local nodeVariables:TxmlNode = xml.FindElementNode(node, "variables")
+		For local nodeVariable:TxmlNode = EachIn xml.GetNodeChildElements(nodeVariables)
+			'each variable is stored as a localizedstring
+			local varName:string = nodeVariable.getName()
+			local varString:TLocalizedString = GetLocalizedStringFromNode(nodeVariable)
+
+			'skip invalid
+			if not varName or not varString then continue
+
+			scriptTemplate.AddVariable("%"+varName+"%", varString)
+		Next
+		
+		
+		'=== EPISODES ===
+		local nodeChildren:TxmlNode = xml.FindElementNode(node, "children")
+		For local nodeChild:TxmlNode = EachIn xml.GetNodeChildElements(nodeChildren)
+			'skip other elements than scripttemplate
+			If nodeChild.getName() <> "scripttemplate" then continue
+
+			'recursively load the child script - parent is the new scriptTemplate
+			local childScriptTemplate:TScriptTemplate = LoadV3ScriptTemplateFromNode(nodeChild, xml, scriptTemplate)
+
+			'the childIndex is currently not needed, as we autocalculate
+			'it by the position in the xml-episodes-list
+			'local childIndex:int = xml.FindValueInt(nodechild, "index", 1)
+
+			'add the child
+			scriptTemplate.AddSubScriptTemplate(childScriptTemplate)
+		Next
+
+
+
+		'=== SCRIPT - PRODUCT TYPE ===
+		scriptTemplate.scriptType = scriptType
+		rem
+			auto correction cannot be done this way, as a show could
+			be also defined having multiple episodes or a reportage
+		'correct if contains episodes or is episode
+		if scriptTemplate.GetSubScriptTemplateCount() > 0
+			scriptTemplate.scriptType = TVTProgrammeType.SERIES
+		else
+			'defined a parent - must be a episode
+			if scriptTemplate.parentScriptTemplateGUID <> ""
+				scriptTemplate.scriptType = TVTProgrammeType.EPISODE
+			elseif
+			if scriptTemplate.parentScriptTemplateGUID <> ""
+			endif
+		endif
+		endrem
+
+		'=== ADD TO COLLECTION ===
+		GetScriptTemplateCollection().Add(scriptTemplate)
+
+		scriptTemplatesCount :+ 1
+		totalScriptTemplatesCount :+ 1
+
+		return scriptTemplate
+	End Method
+
+
+
+	Method LoadV3ProgrammeRoleFromNode:TProgrammeRole(node:TxmlNode, xml:TXmlHelper)
+		local GUID:String = TXmlHelper.FindValue(node,"guid", "")
+		local role:TProgrammeRole
+
+		'try to fetch an existing template with the entries GUID
+		role = GetProgrammeRoleCollection().GetByGUID(GUID)
+		if not role
+			role = new TProgrammeRole
+			role.SetGUID(GUID)
+		endif
+
+		role.Init(..
+			TXmlHelper.FindValue(node, "firstname", role.firstname), ..
+			TXmlHelper.FindValue(node, "lastname", role.lastname), ..
+			TXmlHelper.FindValue(node, "title", role.title), ..
+			TXmlHelper.FindValueInt(node, "gender", role.gender), ..
+			TXmlHelper.FindValueInt(node, "fictional", role.fictional) ..
+		)
+
+		'=== ADD TO COLLECTION ===
+		GetProgrammeRoleCollection().Add(role)
+
+		programmeRolesCount :+ 1
+		totalProgrammeRolesCount :+ 1
+
+		return role
 	End Method
 
 

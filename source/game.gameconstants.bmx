@@ -47,12 +47,27 @@ Type TVTProgrammeType
 	const Undefined:int = 0
 	const Movie:int = 1
 	const Series:int = 2
-	const Show:int = 3
-	const Reportage:int = 4
-	const Commercial:int = 5
-	const CallIn:int = 6
+	const Episode:int = 3
+	const Show:int = 4
+	const Reportage:int = 5
+	const Commercial:int = 6
 	const Event:int = 7
 	const Misc:int = 8
+
+	Function GetTypeString:String(typeKey:int = 0)
+		Select typeKey
+			case 1  return "movie"
+			case 2  return "series"
+			case 3  return "episode"
+			case 4  return "show"
+			case 5  return "reportage"
+			case 6  return "commercial"
+			case 7  return "event"
+			case 8  return "misc"
+			case 0  return "undefined"
+			default return "undefined"
+		End Select
+	End Function
 End Type
 
 

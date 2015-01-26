@@ -5,6 +5,7 @@
 SuperStrict
 Import "Dig/base.util.localization.bmx"
 Import "Dig/base.util.string.bmx"
+Import "Dig/base.util.math.bmx"
 Import "game.gameobject.bmx"
 Import "game.gameconstants.bmx" 'to access type-constants
 Import "game.programme.programmeperson.bmx" 'to access TProgrammePersonJob
@@ -32,7 +33,20 @@ Type TScriptTemplateCollection Extends TGameObjectCollection
 
 
 	Method GetRandom:TScriptTemplate()
-		Return TScriptTemplate( Super.GetRandom() )
+		'instead of using "super.GetRandom" we use a custom variant
+		'to NOT return episodes...
+		local array:TScriptTemplate[]
+		'create a full array containing all elements
+		For local obj:TScriptTemplate = EachIn entries.Values()
+			'skip episode scripts
+			if obj.scriptType = TVTProgrammeType.EPISODE then continue
+
+			array :+ [obj]
+		Next
+		if array.length = 0 then return Null
+		if array.length = 1 then return array[0]
+
+		Return array[(randRange(0, array.length-1))]
 	End Method
 End Type
 
@@ -49,9 +63,10 @@ Type TScriptTemplate Extends TNamedGameObject
 	Field title:TLocalizedString
 	Field description:TLocalizedString
 	Field scriptType:Int = 0
-	Field genre:Int
-	'for random generation we split into "min, max" and weighting/slope
+	Field mainGenre:Int
+	Field subGenres:Int[]
 
+	'for random generation we split into "min, max" and weighting/slope
 	'ratings
 	Field outcomeMin:Float, outcomeMax:Float, outcomeSlope:Float
 	Field reviewMin:Float, reviewMax:Float, reviewSlope:Float
@@ -64,6 +79,10 @@ Type TScriptTemplate Extends TNamedGameObject
 	'get generated for a resulting TScript
 	Field episodesMin:int, episodesMax:int, episodesSlope:Float
 
+	'defines if the script is only available from/to/in a specific date
+	Field availableYearRangeFrom:int = -1
+	Field availableYearRangeTo:int = -1
+
 	'Variables are used to replace certain %KEYWORDS% in title or
 	'description. They are stored as "%KEYWORD%"=>TLocalizedString
 	Field variables:TMap
@@ -74,15 +93,19 @@ Type TScriptTemplate Extends TNamedGameObject
 	Field placeHolderVariables:TMap
 
 	'contains all to fill jobs
-	Field cast:TProgrammePersonJob[]
+	Field jobs:TProgrammePersonJob[]
 	'contains jobs which could get randomly added during generation
 	'of the real script
-	Field randomCast:TProgrammePersonJob[]
+	Field randomJobs:TProgrammePersonJob[]
+	'contains jobs with randomly assigned jobs
+	'so the script knows what to reset in jobs/randomJobs after usage
+	Field randomAssignedRoles:TProgrammePersonJob[]
 
 	'limit the guests to specific job types
 	Field allowedGuestTypes:int	= 0
 
-	Field requiredStudioSize:Int = 1
+	Field studioSizeMin:Int, studioSizeMax:int, studioSizeSlope:Float
+
 	Field requireAudience:Int = 0
 	Field coulisseType1:Int	= -1
 	Field coulisseType2:Int	= -1
@@ -97,6 +120,21 @@ Type TScriptTemplate Extends TNamedGameObject
 	'all associated child scripts (episodes)
 	Field subScriptTemplates:TScriptTemplate[]
 
+
+	'reset things used for random data
+	'like placeholders (which are stored there so that children could
+	'reuse it)
+	Method Reset:int()
+		placeHolderVariables = null
+		'reset previously stored randomly assigned roles
+		if randomAssignedRoles
+			for local job:TProgrammePersonJob = EachIn randomAssignedRoles
+				job.roleGUID = ""
+			Next
+			randomAssignedRoles = new TProgrammePersonJob[0]
+		endif
+	End Method
+	
 
 	'override to add another generic naming
 	Method SetGUID:Int(GUID:String)
@@ -140,15 +178,24 @@ Type TScriptTemplate Extends TNamedGameObject
 
 
 	Method AddPlaceHolderVariable(key:string, obj:object)
+		key = key.toLower()
+
 		if not placeHolderVariables then placeHolderVariables = CreateMap()
 		placeHolderVariables.insert(key, obj)
 	End Method
 
 
 	Method GetPlaceHolderVariableString:TLocalizedString(key:string, defaultValue:string="", createDefault:int = True)
+		key = key.toLower()
+
 		local result:TLocalizedString
 		if placeHolderVariables then result = TLocalizedString(placeHolderVariables.ValueForKey(key))
 
+		if not result and parentScriptTemplateGUID <> ""
+			local parent:TScriptTemplate = GetParentScriptTemplate()
+			if parent <> self then result = parent.GetPlaceholderVariableString(key, defaultValue, createDefault)
+		endif
+		
 		if not result and createDefault
 			result = new TLocalizedString
 			result.Set(defaultValue)
@@ -158,14 +205,22 @@ Type TScriptTemplate Extends TNamedGameObject
 
 
 	Method AddVariable(key:string, obj:object)
+		key = key.toLower()
 		if not variables then variables = CreateMap()
 		variables.insert(key, obj)
 	End Method
 
 
 	Method GetVariableString:TLocalizedString(key:string, defaultValue:string="", createDefault:int = True)
+		key = key.toLower()
+
 		local result:TLocalizedString
 		if variables then result = TLocalizedString(variables.ValueForKey(key))
+
+		if not result and parentScriptTemplateGUID <> ""
+			local parent:TScriptTemplate = GetParentScriptTemplate()
+			if parent <> self then result = parent.GetVariableString(key, defaultValue, createDefault)
+		endif
 
 		if not result and createDefault
 			result = new TLocalizedString
@@ -210,9 +265,9 @@ Type TScriptTemplate Extends TNamedGameObject
 
 
 	Method _ReplacePlaceholders:TLocalizedString(text:TLocalizedString)
-		local result:TLocalizedString = new TLocalizedString
+		local result:TLocalizedString = text.copy()
 
-		'for each defined language we check for existant placeholders
+		'for each defined language we check for existent placeholders
 		'which then get replaced by a random string stored in the
 		'variable with the same name
 		For local lang:string = EachIn text.GetLanguageKeys()
@@ -230,9 +285,15 @@ Type TScriptTemplate Extends TNamedGameObject
 				'only use ONE option out of the group ("option1|option2|option3")
 				if replacement
 					replacement = _GetRandomFromLocalizedString( replacement )
-					'store the reduced variant
-					AddPlaceHolderVariable(placeHolder, replacement)
-
+					'if the parent stores this variable (too) then save
+					'the placeholder there instead of the children
+					'so other children could use the same placeholders
+					'(if there is no parent then "self" is returned)
+					if GetParentScriptTemplate().GetVariableString(placeHolder, "", False)
+						GetParentScriptTemplate().AddPlaceHolderVariable(placeHolder, replacement)
+					else
+						AddPlaceHolderVariable(placeHolder, replacement)
+					endif
 					'store the replacement in the value
 					value = value.replace(placeHolder, replacement.Get(lang))
 				endif
@@ -243,6 +304,7 @@ Type TScriptTemplate Extends TNamedGameObject
 	
 		return result
 	End Method	
+
 
 	'override default method to add subscripttemplates
 	Method SetOwner:int(owner:int=0)
@@ -268,20 +330,38 @@ Type TScriptTemplate Extends TNamedGameObject
 	End Method
 
 
-	Method AddCast:int(job:TProgrammePersonJob)
-		if HasCast(job) then return False
-		cast :+ [job]
+	'set a job to the specific index
+	'the index must be existing already
+	Method SetJobAtIndex:int(index:int=0, job:TProgrammePersonJob)
+		if index < 0 or index > jobs.length -1 then return false
+		jobs[index] = job 
+		return True
+	End Method
+
+
+	'set a job to the specific index
+	'the index must be existing already
+	Method SetRandomJobAtIndex:int(index:int=0, job:TProgrammePersonJob)
+		if index < 0 or index > randomJobs.length -1 then return false
+		randomJobs[index] = job 
+		return True
+	End Method
+
+
+	Method AddJob:int(job:TProgrammePersonJob)
+		if HasJob(job) then return False
+		jobs :+ [job]
 		return True 
 	End Method
 
 
-	Method HasCast:int(job:TProgrammePersonJob)
+	Method HasJob:int(job:TProgrammePersonJob)
 		'do not check job against jobs in the list, as only the
 		'content might be the same but the job a duplicate
-		For local doneJob:TProgrammePersonJob = EachIn cast
+		For local doneJob:TProgrammePersonJob = EachIn jobs
 			if job.person <> doneJob.person then continue 
 			if job.job <> doneJob.job then continue 
-			if job.role <> doneJob.role then continue
+			if job.roleGUID <> doneJob.roleGUID then continue
 
 			return True
 		Next
@@ -289,18 +369,18 @@ Type TScriptTemplate Extends TNamedGameObject
 	End Method
 
 
-	Method AddRandomCast:int(job:TProgrammePersonJob)
-		if HasRandomCast(job) then return False
-		randomCast :+ [job]
+	Method AddRandomJob:int(job:TProgrammePersonJob)
+		if HasRandomJob(job) then return False
+		randomJobs :+ [job]
 		return True 
 	End Method
 
 
-	Method HasRandomCast:int(job:TProgrammePersonJob)
-		For local doneJob:TProgrammePersonJob = EachIn randomCast
+	Method HasRandomJob:int(job:TProgrammePersonJob)
+		For local doneJob:TProgrammePersonJob = EachIn randomJobs
 			if job.person <> doneJob.person then continue 
 			if job.job <> doneJob.job then continue 
-			if job.role <> doneJob.role then continue
+			if job.roleGUID <> doneJob.roleGUID then continue
 
 			return True
 		Next
@@ -309,10 +389,10 @@ Type TScriptTemplate Extends TNamedGameObject
 
 
 	'returns the "final" cast ... required + some random
-	Method GetCast:TProgrammePersonJob[]()
+	Method GetJobs:TProgrammePersonJob[]()
 		local result:TProgrammePersonJob[]
 
-		For local job:TProgrammePersonJob = EachIn cast
+		For local job:TProgrammePersonJob = EachIn jobs
 			result :+ [job]
 		next
 		'instead of "adding random" ones (and having to care for
@@ -321,42 +401,76 @@ Type TScriptTemplate Extends TNamedGameObject
 
 		'try to avoid as much randoms as possible (weight to min)
 		'but this still allows for "up to all"
-		local randomCastAmount:int = WeightedRandRange(0, randomCast.length, 0.1)
-		local allRandomCast:TProgrammePersonJob[]
-		For local job:TProgrammePersonJob = EachIn randomCast
-			allRandomCast :+ [job]
+		local randomJobsAmount:int = WeightedRandRange(0, randomJobs.length, 0.1)
+		local allRandomJobs:TProgrammePersonJob[]
+		For local job:TProgrammePersonJob = EachIn randomJobs
+			allRandomJobs :+ [job]
 		next
-		For local i:int = 0 until randomCastAmount
-			local castIndex:int = RandRange(0, allRandomCast.length-1)
-			'add cast
-			result :+ [allRandomCast[castIndex]]
+		For local i:int = 0 until randomJobsAmount
+			local jobIndex:int = RandRange(0, allRandomJobs.length-1)
+			'add job
+			result :+ [allRandomJobs[jobIndex]]
 			'remove selected cast from random ones
-			allRandomCast = allRandomCast[..castIndex] + allRandomCast[castIndex+1..]
+			allRandomJobs = allRandomJobs[..jobIndex] + allRandomJobs[jobIndex+1..]
 		Next
+
+		'assign missing roles to actors
+		local actorFlag:int = TVTProgrammePersonJob.ACTOR | TVTProgrammePersonJob.SUPPORTINGACTOR
+		local usedRoleGUIDs:string[]
+		'collect already used role guids
+		For local job:TProgrammePersonJob = Eachin result
+			if not(job.job & actorFlag) then continue
+			if job.roleGUID <> "" then usedRoleGUIDs :+ [job.roleGUID]
+		Next
+
+		'fill in a free guid (if possible)
+		For local job:TProgrammePersonJob = Eachin result
+			if job.job & actorFlag = 0 then continue
+
+			if job.roleGUID = ""
+				local validRoleGUID:string = ""
+				local tries:int = 0
+				repeat
+					validRoleGUID = GetProgrammeRoleCollection().GetRandom().GetGUID()
+					'reset guid again if in array
+					if tries < 50 and StringHelper.InArray(validRoleGUID, usedRoleGUIDs)
+						validRoleGUID = ""
+					endif
+					tries :+ 1
+				until validRoleGUID
+				'assign the role
+				job.roleGUID = validRoleGUID
+				usedRoleGUIDs :+ [validRoleGUID]
+
+				'mark the job for having a randomly assigned role
+				randomAssignedRoles :+ [job]
+			endif
+		Next
+		
 
 		return result
 	End Method
 
 
-	Method GetRawCast:TProgrammePersonJob[]()
-		return cast
+	Method GetRawJobs:TProgrammePersonJob[]()
+		return jobs
 	End Method
 
 
-	Method GetRawRandomCast:TProgrammePersonJob[]()
-		return randomCast
+	Method GetRawRandomJobs:TProgrammePersonJob[]()
+		return randomJobs
 	End Method
 
 
-	Method GetCastAtIndex:TProgrammePersonJob(index:int=0)
-		if index < 0 or index >= cast.length then return null
-		return cast[index]
+	Method GetJobAtIndex:TProgrammePersonJob(index:int=0)
+		if index < 0 or index >= jobs.length then return null
+		return jobs[index]
 	End Method
 	
 
-	Method GetRandomCastAtIndex:TProgrammePersonJob(index:int=0)
-		if index < 0 or index >= randomCast.length then return null
-		return randomCast[index]
+	Method GetRandomJobAtIndex:TProgrammePersonJob(index:int=0)
+		if index < 0 or index >= randomJobs.length then return null
+		return randomJobs[index]
 	End Method
 
 
@@ -450,8 +564,18 @@ Type TScriptTemplate Extends TNamedGameObject
 	End Method
 
 
+	'limit values to the given clamps + sort them
+	Function _LimitValues(minValue:Float var, maxValue:Float var, clampMin:Float = 0.0, clampMax:Float = 1.0)
+		minValue = MathHelper.Clamp(minValue, 0.0, 1.0)
+		maxValue = MathHelper.Clamp(maxValue, 0.0, 1.0)
+	End Function
+	
+
 	Method SetOutcomeRange(minValue:Float, maxValue:Float=-1.0, slope:Float=0.5)
 		if maxValue = -1.0 then maxValue = minValue
+		MathHelper.SortValues(minValue, maxValue)
+		_LimitValues(minValue, maxValue, 0.0, 1.0)
+
 		outcomeMin = minValue
 		outcomeMax = maxValue
 		outcomeSlope = slope
@@ -460,6 +584,9 @@ Type TScriptTemplate Extends TNamedGameObject
 
 	Method SetReviewRange(minValue:Float, maxValue:Float=-1.0, slope:Float=0.5)
 		if maxValue = -1.0 then maxValue = minValue
+		MathHelper.SortValues(minValue, maxValue)
+		_LimitValues(minValue, maxValue, 0.0, 1.0)
+
 		reviewMin = minValue
 		reviewMax = maxValue
 		reviewSlope = slope
@@ -468,6 +595,9 @@ Type TScriptTemplate Extends TNamedGameObject
 
 	Method SetSpeedRange(minValue:Float, maxValue:Float=-1.0, slope:Float=0.5)
 		if maxValue = -1.0 then maxValue = minValue
+		MathHelper.SortValues(minValue, maxValue)
+		_LimitValues(minValue, maxValue, 0.0, 1.0)
+
 		speedMin = minValue
 		speedMax = maxValue
 		speedSlope = slope
@@ -476,22 +606,33 @@ Type TScriptTemplate Extends TNamedGameObject
 
 	Method SetPotentialRange(minValue:Float, maxValue:Float=-1.0, slope:Float=0.5)
 		if maxValue = -1.0 then maxValue = minValue
+		MathHelper.SortValues(minValue, maxValue)
+		_LimitValues(minValue, maxValue, 0.0, 1.0)
+
 		potentialMin = minValue
 		potentialMax = maxValue
 		potentialSlope = slope
 	End Method
 
 
-	Method SetBlocksRange(minValue:Int, maxValue:Int=-1.0, slope:Float=0.5)
-		if maxValue = -1.0 then maxValue = minValue
+	Method SetBlocksRange(minValue:Int, maxValue:Int=-1, slope:Float=0.5)
+		if maxValue = -1 then maxValue = minValue
+		MathHelper.SortIntValues(minValue, maxValue)
+		minValue = max(1, minValue)
+		maxValue = max(1, maxValue)
+
 		blocksMin = minValue
 		blocksMax = maxValue
 		blocksSlope = slope
 	End Method
 
 
-	Method SetPriceRange(minValue:Int, maxValue:Int=-1.0, slope:Float=0.5)
-		if maxValue = -1.0 then maxValue = minValue
+	Method SetPriceRange(minValue:Int, maxValue:Int=-1, slope:Float=0.5)
+		if maxValue = -1 then maxValue = minValue
+		MathHelper.SortIntValues(minValue, maxValue)
+		minValue = max(1, minValue)
+		maxValue = max(1, maxValue)
+
 		priceMin = minValue
 		priceMax = maxValue
 		priceSlope = slope
@@ -499,10 +640,27 @@ Type TScriptTemplate Extends TNamedGameObject
 
 
 	Method SetEpisodesRange(minValue:Int, maxValue:Int=-1.0, slope:Float=0.5)
-		if maxValue = -1.0 then maxValue = minValue
+		if maxValue = -1 then maxValue = minValue
+		MathHelper.SortIntValues(minValue, maxValue)
+		minValue = max(1, minValue)
+		maxValue = max(1, maxValue)
+
 		episodesMin = minValue
 		episodesMax = maxValue
 		episodesSlope = slope
+	End Method
+
+
+	Method SetStudioSizeRange(minValue:int=1, maxValue:int=-1, slope:Float=0.5)
+		if maxValue = -1 then maxValue = minValue
+		MathHelper.SortIntValues(minValue, maxValue)
+		minValue = max(1, minValue)
+		maxValue = max(1, maxValue)
+
+		if maxValue = -1 then maxValue = minValue
+		studioSizeMin = minValue
+		studioSizeMax = maxValue
+		studioSizeSlope = slope
 	End Method
 
 
@@ -534,7 +692,10 @@ Type TScriptTemplate Extends TNamedGameObject
 	Method GetEpisodes:Int()
 		return WeightedRandRange(episodesMin, episodesMax, episodesSlope)
 	End Method
-	
+
+	Method GetStudioSize:Int()
+		return WeightedRandRange(studioSizeMin, studioSizeMax, studioSizeSlope)
+	End Method	
 
 	Method GetPrice:Int()
 		local value:int = WeightedRandRange(priceMin, priceMax, priceSlope)
@@ -557,13 +718,13 @@ Type TScriptTemplate Extends TNamedGameObject
 
 	'returns the genre of a script - if a group, the one used the most
 	'often is returned
-	Method GetGenre:int()
-		if GetSubScriptTemplateCount() = 0 then return genre
+	Method GetMainGenre:int()
+		if GetSubScriptTemplateCount() = 0 then return mainGenre
 
 		local genres:int[]
 		local bestGenre:int=0
 		For local scriptTemplate:TScriptTemplate = eachin subScriptTemplates
-			local genre:int = scriptTemplate.GetGenre()
+			local genre:int = scriptTemplate.GetMainGenre()
 			if genre > genres.length-1 then genres = genres[..genre+1]
 			genres[genre]:+1
 		Next
@@ -575,9 +736,13 @@ Type TScriptTemplate Extends TNamedGameObject
 	End Method
 
 
-	Method GetGenreString:String(_genre:Int=-1)
-		If _genre < 0 Then _genre = self.genre
-		'eg. PROGRAMME_GENRE_ACTION
-		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetGenreStringID(_genre))
+	Method GetMainGenreString:String(_genre:Int=-1)
+		If _genre < 0 Then _genre = self.mainGenre
+		Return _GetGenreString(_genre)
 	End Method
+
+
+	Function _GetGenreString:string(_genre:Int)
+		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetGenreStringID(_genre))
+	End Function
 End Type

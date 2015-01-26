@@ -145,6 +145,21 @@ Type StringHelper
 	End Function
 
 
+	Function InArray:int(str:string, arr:string[], caseSensitive:int = True)
+		if caseSensitive
+			For local s:string = EachIn arr
+				if s = str then return True
+			Next
+		else
+			str = str.toLower()
+			For local s:string = EachIn arr
+				if s.toLower() = str then return True
+			Next
+		endif
+		return false
+	End Function
+
+
 	Function IsAlpha:Int( ch:Int )
 		Return (ch>=Asc("A") And ch<=Asc("Z")) Or (ch>=Asc("a") And ch<=Asc("z"))
 	End Function

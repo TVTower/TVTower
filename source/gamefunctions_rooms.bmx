@@ -1088,6 +1088,12 @@ Type RoomHandler_Archive extends TRoomHandler
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or GetPlayerBase().GetFigure() <> figure then return FALSE
 
+		'when entering the archive, all scripts are moved from the
+		'suitcase to the collection
+		'TODO: mark these scripts as "new" 
+		GetPlayerProgrammeCollection(figure.playerID).RemoveScriptsFromSuitcase()
+
+
 		'empty the guilist / delete gui elements
 		'- the real list still may contain elements with gui-references
 		guiListSuitcase.EmptyList()
@@ -1365,7 +1371,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or not figure.playerID then return FALSE
 
-		GetPlayerProgrammeCollectionCollection().Get(figure.playerID).ReaddProgrammeLicencesFromSuitcase()
+		GetPlayerProgrammeCollection(figure.playerID).ReaddProgrammeLicencesFromSuitcase()
 
 		return TRUE
 	End Method
@@ -1929,6 +1935,9 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Function onUpdateMovieAuction:int( triggerEvent:TEventBase )
 		Game.cursorstate = 0
 		TAuctionProgrammeBlocks.UpdateAll()
+
+		'remove old tooltips from previous screens
+		If AuctionToolTip Then AuctionToolTip = null
 	End Function
 End Type
 
@@ -3583,19 +3592,15 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	End Method
 
 
-	'add back the scripts from the suitcase
 	'also fill empty blocks, remove gui elements
 	Method onLeaveRoom:int( triggerEvent:TEventBase )
 		'non players can always leave
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or not figure.playerID then return FALSE
 
-		'sign all new contracts
-		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(figure.playerID)
-		For Local script:TScript = EachIn programmeCollection.suitcaseScripts
-			'if successful, this also removes the script from the suitcase
-			programmeCollection.AddScript(script)
-		Next
+		'add back the scripts from the suitcase?
+		'currently this is done when entering the archive room
+
 
 		return TRUE
 	End Method
@@ -3891,8 +3896,15 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 					if not lists[j][i] then continue
 
 					if RandRange(0,100) < replaceChance*100
-						'reset owner
-						lists[j][i].owner = 0
+						'with 30% chance the script gets trashed
+						'and a completely new one will get created
+						if RandRange(0,100) < 30
+							GetScriptCollection().Remove(lists[j][i])
+						'else just give it back to the collection
+						'(reset owner)
+						else
+							GetScriptCollection().SetScriptOwner(lists[j][i], 0)
+						endif
 						'unlink from this list
 						lists[j][i] = null
 					endif
@@ -3901,17 +3913,18 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		endif
 
 
-		'=== ACTUALLY CREATE CONTRACTS ===
+		'=== ACTUALLY CREATE SCRIPTS ===
 		for local j:int = 0 to lists.length-1
 			for local i:int = 0 to lists[j].length-1
 				'if exists and is valid...skip it
 				if lists[j][i] then continue
 
-				script = GetScriptCollection().GetRandom()
+				'get a new script
+				script = GetScriptCollection().GetRandomAvailable()
 
 				'add new script to slot
 				if script
-					script.owner = -1
+					GetScriptCollection().SetScriptOwner(script, -1)
 					lists[j][i] = script
 				endif
 			Next

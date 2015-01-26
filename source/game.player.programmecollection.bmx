@@ -337,6 +337,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	
 	'=== SCRIPTS  ===
 
+
 	Method HasScriptInSuitcase:int(script:TScript)
 		If not script then return FALSE
 		return suitcaseScripts.contains(script)
@@ -362,8 +363,18 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
+	'move all scripts from suitcase to player's list of archived scripts
+	Method RemoveScriptsFromSuitcase:int()
+		For Local obj:TScript = EachIn suitcaseScripts
+			RemoveScriptFromSuitcase(obj)
+		Next
+		return TRUE
+	End Method
+	
+
 	Method RemoveScriptFromSuitcase:int(script:TScript)
-		if not suitcaseScripts.Contains(script) then return FALSE
+		if not suitcaseScripts.Contains(script) then return False
+		if scripts.contains(script) then return False
 
 		scripts.AddLast(script)
 		suitcaseScripts.Remove(script)
@@ -374,6 +385,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
+	'totally remove a script from the collection
 	Method RemoveScript:Int(script:TScript, sell:int=FALSE)
 		If script = Null Then Return False
 

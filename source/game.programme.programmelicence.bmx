@@ -46,10 +46,26 @@ Type TProgrammeLicenceCollection
 	End Method
 
 
-	Method PrintMovies:int()
+	Method PrintLicences:int()
 		print "--------- movies: "+movies.Count()
 		For local movie:TProgrammeLicence = Eachin movies
-			print movie.GetTitle() + "   | owner="+movie.owner
+			print movie.GetTitle() + "   [owner: "+movie.owner+"]"
+		Next
+		print "---------"
+		print "--------- series: "+series.Count()
+		For local serie:TProgrammeLicence = Eachin series
+			print serie.GetTitle() + "   [owner: "+serie.owner+"]"
+			For local episode:TProgrammeLicence = Eachin serie.subLicences
+				print "'-- "+episode.GetTitle() + "   [owner: "+episode.owner+"]"
+			Next
+		Next
+		print "---------"
+		print "--------- collections: "+collections.Count()
+		For local collection:TProgrammeLicence = Eachin collections
+			print collection.GetTitle() + "   [owner: "+collection.owner+"]"
+			For local episode:TProgrammeLicence = Eachin collection.subLicences
+				print "'-- "+episode.GetTitle() + "   [owner: "+episode.owner+"]"
+			Next
 		Next
 		print "---------"
 	End Method

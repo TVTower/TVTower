@@ -267,7 +267,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		For local doneJob:TProgrammePersonJob = EachIn cast
 			if job.person <> doneJob.person then continue 
 			if job.job <> doneJob.job then continue 
-			if job.role <> doneJob.role then continue
+			if job.roleGUID <> doneJob.roleGUID then continue
 
 			return True
 		Next
