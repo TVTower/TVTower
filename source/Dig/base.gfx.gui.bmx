@@ -1526,11 +1526,14 @@ Type TGUIobject
 		'if nothing of the obj is visible or the mouse is not in
 		'the visible part - reset the mouse states
 		If Not containsXY(mousePos.x, mousePos.y)
-			'reset clicked position as soon as leaving the widget
-			mouseIsClicked = Null
-			mouseover = 0
-			setState("")
-
+			'avoid fast mouse movement to get interpreted incorrect
+			'-> only "unhover" undragged elements
+			if not isDragged()
+				'reset clicked position as soon as leaving the widget
+				mouseIsClicked = Null
+				mouseover = 0
+				setState("")
+			endif
 			'mouseclick somewhere - should deactivate active object
 			'no need to use the cached mouseButtonDown[] as we want the
 			'general information about a click
@@ -1553,9 +1556,9 @@ Type TGUIobject
 
 		'skip non-clickable objects
 		if not IsClickable() then return FALSE
-		'skip objects the mouse is not over.
+		'skip objects the mouse is not over (except it is already dragged).
 		'ATTENTION: this differs to self.mouseOver (which is set later on)
-		if not containsXY(mousePos.x, mousePos.y) then return FALSE
+		if not containsXY(mousePos.x, mousePos.y) and not isDragged() then return FALSE
 
 
 		'handle mouse clicks / button releases

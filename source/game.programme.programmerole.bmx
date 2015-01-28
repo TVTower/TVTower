@@ -1,4 +1,5 @@
 SuperStrict
+Import Brl.LinkedList
 Import "game.gameobject.bmx"
 
 Type TProgrammeRoleCollection Extends TGameObjectCollection
@@ -25,6 +26,28 @@ Type TProgrammeRoleCollection Extends TGameObjectCollection
 	Method GetRandom:TProgrammeRole()
 		Return TProgrammeRole(Super.GetRandom())
 	End Method
+
+
+	Method GetRandomOfArray:TProgrammeRole(array:TProgrammeRole[] = null)
+		if array = Null or array.length = 0 then return Null
+		Return array[(randRange(0, array.length-1))]
+	End Method
+
+
+	Method GetRandomByFilter:TProgrammeRole(filter:TProgrammeRoleFilter)
+		if not filter then return GetRandom()
+
+		Local roles:TProgrammeRole[]
+
+		For local role:TProgrammeRole = EachIn entries.Values()
+			if not filter.DoesFilter(role) then continue
+
+			'add it to candidates list
+			roles :+ [role]
+		Next
+		Return GetRandomOfArray(roles)
+	End Method	
+	
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -44,15 +67,17 @@ Type TProgrammeRole extends TGameObject {_exposeToLua}
 	'title - like "Dr." or "Prof."
 	Field title:string 
 	Field gender:int
+	Field country:string = ""
 	'is this a custom role not used in a real world movie
 	Field fictional:int = False
 
 
-	Method Init:TProgrammeRole(firstName:string, lastName:string, title:string="", gender:int=0, fictional:int = False)
+	Method Init:TProgrammeRole(firstName:string, lastName:string, title:string="", country:string="", gender:int=0, fictional:int = False)
 		self.firstName = firstName
 		self.lastName = lastName
 		self.title = title
 		self.gender = gender
+		self.country = country
 		self.fictional = fictional
 		return self
 	End Method
@@ -88,5 +113,63 @@ Type TProgrammeRole extends TGameObject {_exposeToLua}
 				return firstName
 			endif
 		endif
+	End Method
+End Type
+
+
+
+
+'a filter for programme roles
+Type TProgrammeRoleFilter
+	Field gender:int = -1
+	Field allowedCountries:string[]
+
+	Global filters:TList = CreateList()
+
+
+	Function Add:TProgrammeRoleFilter(filter:TProgrammeRoleFilter)
+		filters.AddLast(filter)
+
+		return filter
+	End Function
+
+
+	Method SetGender:TProgrammeRoleFilter(gender:int = 0)
+		self.gender = gender
+		Return self
+	End Method
+
+
+	Method SetAllowedCountries:TProgrammeRoleFilter(countries:string[])
+		self.allowedCountries = countries
+		Return self
+	End Method
+
+
+	Function GetCount:Int()
+		return filters.Count()
+	End Function
+
+
+	Function GetAtIndex:TProgrammeRoleFilter(index:int)
+		return TProgrammeRoleFilter(filters.ValueAtIndex(index))
+	End Function
+
+
+	'checks if the given programme role fits into the filter criteria
+	Method DoesFilter:Int(role:TProgrammeRole)
+		if not role then return False
+
+		if gender > 0 and role.gender <> gender then return False
+
+		'limited to one of the defined countries?
+		if allowedCountries and allowedCountries.length > 0
+			For local country:string = EachIn allowedCountries
+				if role.country = country then return True
+			Next
+			return False
+		endif
+
+		return True
 	End Method
 End Type

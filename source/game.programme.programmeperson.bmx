@@ -299,13 +299,21 @@ Type TProgrammePersonJob
 	Field person:TProgrammePersonBase
 	'job is a bitmask for values defined in TVTProgrammePersonJob
 	Field job:int = 0
+	'maybe only female directors are allowed?
+	Field gender:int = 0
+	'allows limiting the job to specific heritages
+	Field country:string = ""
+
 	'only valid for actors
 	Field roleGUID:string = ""
 
 
-	Method Init:TProgrammePersonJob(person:TProgrammePersonBase, job:int, roleGUID:string="")
+	Method Init:TProgrammePersonJob(person:TProgrammePersonBase, job:int, gender:int=0, country:string="", roleGUID:string="")
 		self.person = person
 		self.job = job
+		self.gender = gender
+		self.country = country
+
 		self.roleGUID = roleGUID
 		
 		return self

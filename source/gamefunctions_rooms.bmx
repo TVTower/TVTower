@@ -3514,6 +3514,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	Method AbortScreenActions:Int()
 		if draggedGuiScript
 			if KeyManager.IsHit(KEY_ESCAPE)
+print "Ronny: ABORT dragged guiscript"
 				'try to drop the licence back
 				draggedGuiScript.dropBackToOrigin()
 				draggedGuiScript = null

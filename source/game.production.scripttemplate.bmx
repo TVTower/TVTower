@@ -428,10 +428,22 @@ Type TScriptTemplate Extends TNamedGameObject
 			if job.job & actorFlag = 0 then continue
 
 			if job.roleGUID = ""
+				local filter:TProgrammeRoleFilter
+				if job.country <> "" or job.gender > 0
+					filter = new TProgrammeRoleFilter
+					if job.country <> "" then filter.SetAllowedCountries( [job.country] )
+					if job.gender > 0 then filter.SetGender(job.gender)
+				endif
+
 				local validRoleGUID:string = ""
 				local tries:int = 0
+				local role:TProgrammeRole
 				repeat
-					validRoleGUID = GetProgrammeRoleCollection().GetRandom().GetGUID()
+					role = GetProgrammeRoleCollection().GetRandomByFilter(filter)
+					'nothing found for filter -> next try without a filter
+					if not role and filter then filter = null; continue
+
+					if role then validRoleGUID = role.GetGUID()
 					'reset guid again if in array
 					if tries < 50 and StringHelper.InArray(validRoleGUID, usedRoleGUIDs)
 						validRoleGUID = ""

@@ -1077,11 +1077,13 @@ Type TDatabaseLoader
 			local jobIndex:int = xml.FindValueInt(nodeJob, "index", -1)
 			local jobFunction:int = xml.FindValueInt(nodeJob, "function", 0)
 			local jobRequired:int = xml.FindValueInt(nodeJob, "required", 0)
+			local jobGender:int = xml.FindValueInt(nodeJob, "gender", 0)
+			local jobCountry:string = xml.FindValue(nodeJob, "country", "")
 			'for actor jobs this defines if a specific role is defined
 			local jobRoleGUID:string = xml.FindValue(nodeJob, "role_guid", "")
 
 			'create a job without an assigned person
-			local job:TProgrammePersonJob = new TProgrammePersonJob.Init(null, jobFunction, jobRoleGUID)
+			local job:TProgrammePersonJob = new TProgrammePersonJob.Init(null, jobFunction, jobGender, jobCountry, jobRoleGUID)
 			if jobRequired = 0
 				'check if the job has to override an existing one
 				if jobIndex >= 0 and scriptTemplate.GetRandomJobAtIndex(jobIndex)
@@ -1174,9 +1176,10 @@ Type TDatabaseLoader
 		endif
 
 		role.Init(..
-			TXmlHelper.FindValue(node, "firstname", role.firstname), ..
-			TXmlHelper.FindValue(node, "lastname", role.lastname), ..
+			TXmlHelper.FindValue(node, "first_name", role.firstname), ..
+			TXmlHelper.FindValue(node, "last_name", role.lastname), ..
 			TXmlHelper.FindValue(node, "title", role.title), ..
+			TXmlHelper.FindValue(node, "country", role.country), ..
 			TXmlHelper.FindValueInt(node, "gender", role.gender), ..
 			TXmlHelper.FindValueInt(node, "fictional", role.fictional) ..
 		)
