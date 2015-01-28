@@ -356,14 +356,8 @@ Type TScriptTemplate Extends TNamedGameObject
 
 
 	Method HasJob:int(job:TProgrammePersonJob)
-		'do not check job against jobs in the list, as only the
-		'content might be the same but the job a duplicate
 		For local doneJob:TProgrammePersonJob = EachIn jobs
-			if job.person <> doneJob.person then continue 
-			if job.job <> doneJob.job then continue 
-			if job.roleGUID <> doneJob.roleGUID then continue
-
-			return True
+			if job = doneJob then return True
 		Next
 		return False
 	End Method
@@ -440,6 +434,7 @@ Type TScriptTemplate Extends TNamedGameObject
 				local role:TProgrammeRole
 				repeat
 					role = GetProgrammeRoleCollection().GetRandomByFilter(filter)
+
 					'nothing found for filter -> next try without a filter
 					if not role and filter then filter = null; continue
 

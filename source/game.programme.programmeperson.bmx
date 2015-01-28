@@ -318,5 +318,15 @@ Type TProgrammePersonJob
 		
 		return self
 	End Method
+
+
+	Method IsSimilar:int(otherJob:TProgrammePersonJob)
+		if job <> otherJob.job then return False
+		if person <> otherJob.person then return False 
+		if roleGUID <> otherJob.roleGUID then return False
+		if gender <> otherJob.gender then return False
+		if country <> otherJob.country then return False
+		return True
+	End Method
 End Type
 

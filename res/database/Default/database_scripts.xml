@@ -61,8 +61,8 @@
 				<en>%FOOD% for %MEALTIME%</en>
 			</title>
 			<description>
-				<de>%ROLE1% %ACTION% %ROLENAME2%, %JOB%. Turbulente Komödie.</de>
-				<en>%ROLE1% %ACTION% %ROLENAME2%, %JOB%. Turbulent comedy.</en>
+				<de>%ROLE1% ist %JOB1% und %ACTION% %ROLENAME2%, %JOB2%. %FUNNY% Komödie.</de>
+				<en>%ROLE1% is %JOB1% and %ACTION% %ROLENAME2%, %JOB2%. %FUNNY% comedy.</en>
 			</description>
 
 			<variables>
@@ -78,10 +78,18 @@
 					<de>trifft|hat einen Unfall mit|wird geschwängert von|betrinkt sich mit</de>
 					<en>meets|has an accident with|gets pregnant with|gets drunk with</en>
 				</action>
-				<job>
+				<job1>
+					<de>angehende Jurastudentin|Romanautorin|Autorin vieler Groschenromane||</de>
+					<en>budding law student|novelist|author of many dime novels||</en>
+				</job1>
+				<job2>
 					<de>von Beruf Landschaftsmaler|anonymer Alkoholiker|Damenfriseur aus Leidenschaft</de>
 					<en>a landscapist|an AA|a hairdresser for women</en>
-				</job>
+				</job2>
+				<funny>
+					<de>Urwitzige|Liebevolle|Turbulente|Romantische|Traurige|Überraschende</de>
+					<en>Hilarious|Loving|Turbulent|Romantic|Melancholy|Surprising</en>
+				</funny>
 			</variables>
 
 			<jobs>
