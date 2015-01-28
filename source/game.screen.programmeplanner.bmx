@@ -728,10 +728,6 @@ Type TScreenHandler_ProgrammePlanner
 		'if not initialized, do so
 		if planningDay = -1 then planningDay = GetWorldTime().getDay()
 
-
-		'if we have a licence dragged ... we should take care of "ESC"-Key
-		if KeyManager.IsHit(KEY_ESCAPE) then AbortScreenActions()
-
 		Game.cursorstate = 0
 
 		'set all slots occupied or not

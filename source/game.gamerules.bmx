@@ -19,7 +19,7 @@ Type TGameRules {_exposeToLua}
 	'how many contracts can a player collection store
 	Field maxContracts:int = 10
 	'how many scripts can be carried in suitcase
-	Field maxScriptsInSuitcase:int = 5
+	Field maxScriptsInSuitcase:int = 10
 	'is the amount of user owned scripts limited?
 	Field maxScripts:int = -1
 	'speed of the world (1.0 means "normal", 2.0 = double as fast)

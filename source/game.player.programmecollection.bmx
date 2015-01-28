@@ -346,7 +346,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	Method AddScriptToSuitcase:int(script:TScript)
 		'do not add if already "full"
-		if GameRules.maxScripts > 0 and suitcaseScripts.count() >= GameRules.maxScripts then return FALSE
+		if GameRules.maxScriptsInSuitcase > 0 and suitcaseScripts.count() >= GameRules.maxScriptsInSuitcase then return FALSE
 
 		'if owner differs, check if we have to buy
 		if owner <> script.owner

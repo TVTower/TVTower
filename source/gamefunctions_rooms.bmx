@@ -615,8 +615,7 @@ Type TRoomHandlerCollection
 		
 		Select triggerEvent._trigger.toLower()
 			case "room.onupdate"
-				'no handling needed when exit dialogue is open
-				If TApp.ExitAppDialogue then return 0
+				if KeyManager.IsHit(KEY_ESCAPE) then currentHandler.AbortScreenActions()
 				currentHandler.onUpdateRoom( triggerEvent )
 			case "room.ondraw"
 				currentHandler.onDrawRoom( triggerEvent )
@@ -1311,12 +1310,10 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 	Method AbortScreenActions:Int()
 		if draggedGuiProgrammeLicence
-			if KeyManager.IsHit(KEY_ESCAPE)
-				'try to drop the licence back
-				draggedGuiProgrammeLicence.dropBackToOrigin()
-				draggedGuiProgrammeLicence = null
-				hoveredGuiProgrammeLicence = null
-			endif
+			'try to drop the licence back
+			draggedGuiProgrammeLicence.dropBackToOrigin()
+			draggedGuiProgrammeLicence = null
+			hoveredGuiProgrammeLicence = null
 		endif
 	End Method
 
@@ -1867,10 +1864,6 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		Game.cursorstate = 0
 
-		'if we have a licence dragged ... we should take care of "ESC"-Key
-		if KeyManager.IsHit(KEY_ESCAPE) then GetInstance().AbortScreenActions()
-
-
 		'show a auction-tooltip (but not if we dragged a block)
 		if not hoveredGuiProgrammeLicence
 			If THelper.IsIn(MouseManager.x, MouseManager.y, 210,220,140,60)
@@ -2331,9 +2324,6 @@ Type RoomHandler_News extends TRoomHandler
 		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
-		'if we have a licence dragged ... we should take care of "ESC"-Key
-		if KeyManager.IsHit(KEY_ESCAPE) then GetInstance().AbortScreenActions()
-
 		Game.cursorstate = 0
 
 		'delete unused and create new gui elements
@@ -2625,12 +2615,10 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 	Method AbortScreenActions:Int()
 		if draggedGuiAdContract
-			if KeyManager.IsHit(KEY_ESCAPE)
-				'try to drop the licence back
-				draggedGuiAdContract.dropBackToOrigin()
-				draggedGuiAdContract = null
-				hoveredGuiAdContract = null
-			endif
+			'try to drop the licence back
+			draggedGuiAdContract.dropBackToOrigin()
+			draggedGuiAdContract = null
+			hoveredGuiAdContract = null
 		endif
 
 		'remove and recreate all (so they get the correct visual style)
@@ -3373,9 +3361,6 @@ endrem
 
 
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
-		'if we have a licence dragged ... we should take care of "ESC"-Key
-		if KeyManager.IsHit(KEY_ESCAPE) then GetInstance().AbortScreenActions()
-
 		Game.cursorstate = 0
 
 		'delete unused and create new gui elements
@@ -3513,13 +3498,10 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 	Method AbortScreenActions:Int()
 		if draggedGuiScript
-			if KeyManager.IsHit(KEY_ESCAPE)
-print "Ronny: ABORT dragged guiscript"
-				'try to drop the licence back
-				draggedGuiScript.dropBackToOrigin()
-				draggedGuiScript = null
-				hoveredGuiScript = null
-			endif
+			'try to drop the licence back
+			draggedGuiScript.dropBackToOrigin()
+			draggedGuiScript = null
+			hoveredGuiScript = null
 		endif
 
 		'change look to "stand on furniture look"
@@ -3750,7 +3732,7 @@ print "Ronny: ABORT dragged guiscript"
 		for local j:int = 0 to lists.length-1
 			for local i:int = 0 to lists[j].length-1
 				if lists[j][i] then continue
-				script.owner = -1
+				GetScriptCollection().SetScriptOwner(script, -1)
 				lists[j][i] = script
 				return TRUE
 			Next
@@ -3758,7 +3740,7 @@ print "Ronny: ABORT dragged guiscript"
 
 		'there was no empty slot to place that script
 		'so just give it back to the pool
-		script.owner = 0
+		GetScriptCollection().SetScriptOwner(script, 0)
 
 		return FALSE
 	End Method
@@ -3841,7 +3823,7 @@ print "Ronny: ABORT dragged guiscript"
 					'change look
 					block.InitAssets(block.getAssetName(-1, FALSE), block.getAssetName(-1, TRUE))
 
-					'print "ADD guiListNormal"+i+" missed new script: "+block.script.id
+					'print "ADD guiListNormal #"+i+" missed new script: "+block.script.id + " -> "+ block.script.GetTitle()
 
 					GuiListNormal[i].addItem(block, "-1")
 					scriptAdded = true
@@ -3861,7 +3843,7 @@ print "Ronny: ABORT dragged guiscript"
 			'change look
 			block.InitAssets(block.getAssetName(-1, FALSE), block.getAssetName(-1, TRUE))
 
-			'print "ADD guiListNormal2 missed new script: "+block.script.id
+			'print "ADD guiListNormal2 missed new script: "+block.script.id + " -> "+ block.script.GetTitle()
 
 			GuiListNormal2.addItem(block, "-1")
 		Next
@@ -4104,9 +4086,6 @@ print "Ronny: ABORT dragged guiscript"
 
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
 		if VendorEntity Then VendorEntity.Update()
-	
-		'if we have a licence dragged ... we should take care of "ESC"-Key
-		if KeyManager.IsHit(KEY_ESCAPE) then GetInstance().AbortScreenActions()
 
 		Game.cursorstate = 0
 
@@ -4228,8 +4207,6 @@ Type RoomHandler_Roomboard extends TRoomHandler
 
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
 		Game.cursorstate = 0
-
-		if KeyManager.IsHit(KEY_ESCAPE) then AbortScreenActions()
 
 		'only allow dragging of roomsigns when no exitapp-dialoge exists
 'RONNY
