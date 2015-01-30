@@ -72,6 +72,9 @@ function DefaultAIPlayer:initializeTasks()
 	self.TaskList[TASK_SCHEDULE]		= TaskSchedule()
 	self.TaskList[TASK_STATIONMAP]		= TaskStationMap()
 	
+	--self.TaskList[TASK_STATIONMAP].InvestmentPriority = 12
+	--self.TaskList[TASK_STATIONMAP].NeededInvestmentBudget = 10000
+	
 	--self.TaskList[TASK_BETTY]			= TVTBettyTask()
 	--self.TaskList[TASK_BOSS]			= TVTBossTask()
 	--self.TaskList[TASK_ARCHIVE]			= TVTArchive()
@@ -85,6 +88,12 @@ end
 
 function DefaultAIPlayer:OnDayBegins()
 	self.Stats:OnDayBegins()
+
+	--Strategie vorher anpassen / Aufgabenparameter anpassen
+	for k,v in pairs(self.TaskList) do
+		v:AdjustmentsForNextDay()
+	end	
+	
 	self.Budget:CalculateBudget()
 
 	for k,v in pairs(self.TaskList) do

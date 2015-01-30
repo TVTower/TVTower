@@ -100,28 +100,6 @@ function AIPlayer:BeginNewTask()
 	end
 end
 
-function AIPlayer:RecalculateTaskPrio()
-	for k,v in pairs(self.TaskList) do
-		v:RecalcPriority()
-	end
-end
-
-function AIPlayer:SortTasksByPrio()
-	self:RecalculateTaskPrio()	
-	local sortMethod = function(a, b)
-		return a.CurrentPriority > b.CurrentPriority
-	end
-	table.sort(self.TaskList, sortMethod)	
-end
-
-function AIPlayer:SortTasksByInvestmentPrio()
-	self:RecalculateTaskPrio()	
-	local sortMethod = function(a, b)
-		return a.CurrentInvestmentPriority > b.CurrentInvestmentPriority
-	end
-	table.sort(self.TaskList, sortMethod)	
-end
-
 function AIPlayer:SelectTask()
 	local BestPrio = -1
 	local BestTask = nil
@@ -172,8 +150,8 @@ _G["AITask"] = class(KIDataObjekt, function(c)
 	c.BudgetWholeDay = 0 -- Wie hoch war das Budget das die KI für diese Aufgabe an diesem Tag einkalkuliert hat.
 	c.BudgetWeigth = 0 -- Wie viele Budgetanteile verlangt diese Aufgabe vom Gesamtbudget?
 	
-	c.BaseInvestmentPriority = 0 -- Wie wichtig sind die Investitionen in diesen Bereich?
-	c.CurrentInvestmentPriority = 0 -- Wie ist die Prio aktuell? BaseInvestmentPriority wird jede Runde aufaddiert.
+	c.InvestmentPriority = 0 -- Wie wichtig sind die Investitionen in diesen Bereich?
+	c.CurrentInvestmentPriority = 0 -- Wie ist die Prio aktuell? InvestmentPriority wird jede Runde aufaddiert.
 	c.NeededInvestmentBudget = -1 -- Wie viel Geld benötigt die KI für eine Großinvestition
 	c.UseInvestment = false
 end)
@@ -211,8 +189,14 @@ function AITask:Activate()
 	debugMsg("Implementiere mich... " .. type(self))
 end
 
+function AITask:AdjustmentsForNextDay()	
+	TVT.addToLog(self:typename() .. " AdjustmentsForNextDay")
+	self.CurrentInvestmentPriority = self.CurrentInvestmentPriority + self.InvestmentPriority
+	TVT.addToLog(self.CurrentInvestmentPriority)
+	--kann überschrieben werden
+end
+
 function AITask:OnDayBegins()	
-	self.CurrentInvestmentPriority = self.CurrentInvestmentPriority + self.BaseInvestmentPriority
 	--kann überschrieben werden
 end
 
@@ -574,6 +558,42 @@ function Requisition:Complete()
 	self.Done = true
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+function RecalculateTasksPrio(tasks)
+	for k,v in pairs(tasks) do
+		v:RecalcPriority()
+	end
+end
+
+function SortTasksByPrio(tasks)
+	RecalculateTasksPrio(tasks)	
+
+	local sortTable = {}
+	for k,v in pairs(tasks) do
+		table.insert(sortTable, v) 
+	end	
+	local sortMethod = function(a, b)
+		return a.CurrentPriority > b.CurrentPriority
+	end
+	table.sort(sortTable, sortMethod)
+	return sortTable	
+end
+
+function SortTasksByInvestmentPrio(tasks)
+	RecalculateTasksPrio(tasks)	
+
+	local sortTable = {}
+	for k,v in pairs(tasks) do
+		table.insert(sortTable, v) 
+	end	
+	local sortMethod = function(a, b)
+		return a.CurrentInvestmentPriority > b.CurrentInvestmentPriority
+	end
+	table.sort(sortTable, sortMethod)
+	return sortTable
+end
+
 
 
 function debugMsg(pMessage)

@@ -145,41 +145,75 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 	
 	-- Wert einer Budgeteinheit bestimmen
 	local budgetUnitValue = realBudget / budgetUnits	
-		
-	-- Prios der Aufgaben nochmal aktualisieren und sortieren: Nach Investment-Prio
-	player:SortTasksByInvestmentPrio()	
-
-	local investmentDone = false
-	local minmalInvestPrio = 10
-		
+				
 	-- Die Budgets den Tasks zuweisen
 	for k,v in pairs(player.TaskList) do
-		--debugMsg(v:typename() .. "- Altes Budget: " .. v.CurrentBudget .. " / " .. v.BudgetWholeDay)		
 		v.CurrentBudget = math.round(v.BudgetWeigth * budgetUnitValue) 			
-				
-		-- Eventuell die Ersparnisse investieren			
-		v.UseInvestment = false
-		if (v.CurrentInvestmentPriority >= minmalInvestPrio) then
-			if (not investmentDone) and v.NeededInvestmentBudget > 0 then
-				if (v.CurrentBudget + self.InvestmentSavings) >= v.NeededInvestmentBudget then
-					debugMsg(v:typename() .. "- Use Investment: " .. self.InvestmentSavings)
-					v.CurrentBudget = v.CurrentBudget + self.InvestmentSavings
-					v.UseInvestment = true
-					v.CurrentInvestmentPriority = 0
-					investmentDone = true				
-				end
-			end		
-		end
-		
-		if (not investmentDone) then
-			minmalInvestPrio = minmalInvestPrio + v.CurrentInvestmentPriority / 2			
-		end
-		
-		v.BudgetWholeDay = v.CurrentBudget		
-		v:BudgetSetup()
-		debugMsg(v:typename() .. "- BudgetWholeDay: " .. v.BudgetWholeDay)
-		TVT.addToLog(v:typename() .. ": " .. v.BudgetWholeDay)								
+		v.BudgetWholeDay = v.CurrentBudget							
 	end	
+	
+	-- Auf Invesitionen prüfen
+	local investTask = self:GetTaskForInvestment(player.TaskList)
+	if (investTask ~= nil) then
+		TVT.addToLog(investTask:typename() .. "- Use Investment: " .. self.InvestmentSavings)
+		investTask.CurrentBudget = investTask.CurrentBudget + self.InvestmentSavings
+		investTask.UseInvestment = true
+		investTask.CurrentInvestmentPriority = 0
+	end
+	
+	for k,v in pairs(player.TaskList) do
+		v.BudgetWholeDay = v.CurrentBudget
+		v:BudgetSetup()
+		TVT.addToLog(v:typename() .. ": " .. v.BudgetWholeDay)		
+	end
 end
 
+function BudgetManager:GetTaskForInvestment(tasks)
+	local taskSorted = SortTasksByInvestmentPrio(tasks)	
+	local rank = 1
+	local highestPrio = nil
+	
+	for k,v in pairs(taskSorted) do
+		if highestPrio == nil then
+			highestPrio = v
+			if self:IsTaskReadyForInvestment(v, rank) then
+				return v
+			end
+		else
+			if self:IsTaskReadyForInvestment(v, rank, highestPrio) then
+				return v
+			end
+		end		
+		rank = rank + 1
+		if rank > 3 then return nil end
+	end	
+	return nil
+end
+
+function BudgetManager:IsTaskReadyForInvestment(task, rank, highestPrioTask)
+	--1. Bedingung: Es wurde genug Geld gespart für diesen Task
+	if (self.InvestmentSavings + task.BudgetWholeDay) >= task.NeededInvestmentBudget then
+		--2. Bedingung: Die Prio muss hoch genug sein.
+		if not rank then rank = 1 end
+		if task.CurrentInvestmentPriority >= rank * 10 then
+			--3. Bedingung: Der Abstand zu Prio des Ersten darf nicht zu groß sein
+			local prioOfHighest = task.CurrentInvestmentPriority	
+			if highestPrioTask ~= nil then
+				prioOfHighest = highestPrioTask.CurrentInvestmentPriority
+			end
+			
+			if prioOfHighest - task.CurrentInvestmentPriority <= 30 then
+				--4. Bedingung: Ersparnis / Benötigte Investsumme des Ersten <= 0.8
+				if highestPrioTask ~= nil then
+					if (self.InvestmentSavings / highestPrioTask.NeededInvestmentBudget <= 0.8) then
+						return true
+					end
+				else
+					return true
+				end						
+			end			
+		end
+	end
+	return false
+end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
