@@ -414,18 +414,44 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 
 	Method _LocalizeContent:string(content:string)
 		local result:string = content
+
+		'placeholders are: "%object|guid|whatinformation%"
+		local placeHolders:string[] = StringHelper.ExtractPlaceholders(content, "%")
+		For local placeHolder:string = EachIn placeHolders
+			local elements:string[] = placeHolder.split("|")
+			if elements.length < 3 then continue
+
+			if elements[0] = "person"
+				local person:TProgrammePersonBase = GetProgrammePersonCollection().GetByGUID(elements[1])
+				if not person
+					result = result.replace("%person|"+elements[1]+"|Full%", "John Doe")
+					result = result.replace("%person|"+elements[1]+"|First%", "John")
+					result = result.replace("%person|"+elements[1]+"|Nick%", "John")
+					result = result.replace("%person|"+elements[1]+"|Last%", "Doe")
+				else
+					result = result.replace("%person|"+elements[1]+"|Full%", person.GetFullName())
+					result = result.replace("%person|"+elements[1]+"|First%", person.GetFirstName())
+					result = result.replace("%person|"+elements[1]+"|Nick%", person.GetNickName())
+					result = result.replace("%person|"+elements[1]+"|Last%", person.GetLastName())
+				endif
+			endif
+		Next
+
 		if result.find("|") >= 0
 			if result.find("[") >= 0
 				local job:TProgrammePersonJob
+				'check for cast
 				for local i:int = 0 to 5
 					job = GetCastAtIndex(i)
 					if not job
 						result = result.replace("["+i+"|Full]", "John Doe")
 						result = result.replace("["+i+"|First]", "John")
+						result = result.replace("["+i+"|Nick]", "John")
 						result = result.replace("["+i+"|Last]", "Doe")
 					else
 						result = result.replace("["+i+"|Full]", job.person.GetFullName())
 						result = result.replace("["+i+"|First]", job.person.GetFirstName())
+						result = result.replace("["+i+"|Nick]", job.person.GetNickName())
 						result = result.replace("["+i+"|Last]", job.person.GetLastName())
 					endif
 				Next
@@ -434,6 +460,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 			'TODO: remove when fixed in DB
 			result = result.replace("|", chr(13))
 		endif
+		
 		return result
 	End Method
 
