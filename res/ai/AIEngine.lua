@@ -326,6 +326,8 @@ function AITask:OnBeginEnterRoom(roomId, result)
 	end
 end
 
+function AITask:BeforeBudgetSetup()
+end
 
 function AITask:BudgetSetup()
 end

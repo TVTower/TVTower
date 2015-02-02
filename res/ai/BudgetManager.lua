@@ -73,6 +73,15 @@ function BudgetManager:CalculateBudget() -- Diese Methode wird immer zu Beginn d
 	end
 
 	-- TODO: Kredit ja/nein --- Zurückzahlen ja/nein
+	-- TODO: Aktuell einfach mal ne maximalen Kredit ausreizen. Es sollte hier auf eine Bewertung "Geldnot", "Investitionsfreude" bzw. auf eine Strategie zurückgegriffen werden.
+	local player = _G["globalPlayer"] --Zugriff die globale Variable
+	if player.TaskList[TASK_BOSS] ~= nil then
+		local bossTask = player.TaskList[TASK_BOSS]
+		if bossTask.GuessCreditAvailable > 0 then
+			bossTask.TryToGetCredit = 200000
+			bossTask.SituationPriority = 2
+		end
+	end
 
 	-- Neuer History-Eintrag
 	self.BudgetHistory[TODAY_BUDGET] = myBudget
@@ -84,17 +93,6 @@ function BudgetManager:CalculateBudget() -- Diese Methode wird immer zu Beginn d
 	self:AllocateBudgetToTasks(myBudget)
 	
 	TVT.addToLog("======")
-end
-
-function BudgetManager:CheckInvestments()
-	--local player = _G["globalPlayer"] --Zugriff die globale Variable
-
-	-- Zählen wie viele Budgetanteile es insgesamt gibt
-	--for k,v in pairs(player.TaskList) do
-	--	v.InvestmentPriority = v.InvestmentPriority + v.BudgetWeigth
-	--end
-	
-	--TODO: hier weiter machen
 end
 
 function BudgetManager:CutInvestmentSavingIfNeeded(pBudget)
@@ -128,10 +126,15 @@ end
 function BudgetManager:AllocateBudgetToTasks(pBudget)
 	local player = _G["globalPlayer"] --Zugriff die globale Variable
 
+	--Aufgaben hinweisen das Budget berechnet wird
+	for k,v in pairs(player.TaskList) do
+		v:BeforeBudgetSetup()
+	end
+	
 	-- Zählen wie viele Budgetanteile es insgesamt gibt
 	local budgetUnits = 0
 	for k,v in pairs(player.TaskList) do
-		budgetUnits = budgetUnits + v:getBudgetUnits()
+		budgetUnits = budgetUnits + v:getBudgetUnits()		
 	end
 	if budgetUnits == 0 then budgetUnits = 1 end	
 		

@@ -16,6 +16,7 @@ dofile("res/ai/TaskNewsAgency.lua")
 dofile("res/ai/TaskAdAgency.lua")
 dofile("res/ai/TaskSchedule.lua")
 dofile("res/ai/TaskStationMap.lua")
+dofile("res/ai/TaskBoss.lua")
 if (unitTestMode) then
 	dofile("res/ai/UnitTests.lua")
 end
@@ -71,12 +72,13 @@ function DefaultAIPlayer:initializeTasks()
 	self.TaskList[TASK_ADAGENCY]		= TaskAdAgency()
 	self.TaskList[TASK_SCHEDULE]		= TaskSchedule()
 	self.TaskList[TASK_STATIONMAP]		= TaskStationMap()
+	self.TaskList[TASK_BOSS]			= TaskBoss()	
+	
 	
 	--self.TaskList[TASK_STATIONMAP].InvestmentPriority = 12
 	--self.TaskList[TASK_STATIONMAP].NeededInvestmentBudget = 10000
 	
 	--self.TaskList[TASK_BETTY]			= TVTBettyTask()
-	--self.TaskList[TASK_BOSS]			= TVTBossTask()
 	--self.TaskList[TASK_ARCHIVE]			= TVTArchive()
 
 	--TODO: WarteTask erstellen. Gehört aber in AIEngine
