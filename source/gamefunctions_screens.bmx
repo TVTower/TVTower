@@ -331,7 +331,7 @@ Type TInGameScreen_Room extends TInGameScreen
 
 		'the room of this screen MUST be the room the active player
 		'figure is in ...
-		local room:TRoomBase = GetPlayerCollection().Get().GetFigure().inRoom
+		local room:TRoomBase = GetPlayer().GetFigure().inRoom
 		if room
 			currentRoomID = room.id
 		else

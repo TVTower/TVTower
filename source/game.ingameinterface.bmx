@@ -247,7 +247,7 @@ Type TInGameInterface
 			CurrentProgrammeToolTip.Hover()
 	    EndIf
 		If THelper.MouseIn(355,468,130,30)
-			local playerProgrammePlan:TPlayerProgrammePlan = GetPlayerCollection().Get().GetProgrammePlan()
+			local playerProgrammePlan:TPlayerProgrammePlan = GetPlayer().GetProgrammePlan()
 			if playerProgrammePlan
 				CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_NUMBER")+": "+playerProgrammePlan.getFormattedAudience()+ " ("+MathHelper.NumberToString(playerProgrammePlan.GetAudiencePercentage() * 100,2)+"%)")
 				CurrentAudienceToolTip.SetAudienceResult(GetBroadcastManager().GetAudienceResult(playerProgrammePlan.owner))
@@ -266,9 +266,9 @@ Type TInGameInterface
 		If THelper.MouseIn(355,415,130,30)
 			MoneyToolTip.title = getLocale("MONEY")
 			local content:String = ""
-			content	= "|b|"+getLocale("MONEY")+":|/b| "+TFunctions.DottedValue(GetPlayerCollection().Get().GetMoney()) + getLocale("CURRENCY")
+			content	= "|b|"+getLocale("MONEY")+":|/b| "+TFunctions.DottedValue(GetPlayer().GetMoney()) + getLocale("CURRENCY")
 			content	:+ "~n"
-			content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ TFunctions.DottedValue(GetPlayerCollection().Get().GetCredit()) + getLocale("CURRENCY")+"|/color|"
+			content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ TFunctions.DottedValue(GetPlayer().GetCredit()) + getLocale("CURRENCY")+"|/color|"
 			MoneyTooltip.SetContent(content)
 			MoneyToolTip.enabled 	= 1
 			MoneyToolTip.Hover()
@@ -432,16 +432,16 @@ Type TInGameInterface
 				EndIf
 		    Next
 
-			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayerCollection().Get().getMoneyFormatted(), 366, 421, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(200,230,200), 2, 1, 0.5)
+			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayer().getMoneyFormatted(), 366, 421, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(200,230,200), 2, 1, 0.5)
 
-			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayerCollection().Get().GetProgrammePlan().getFormattedAudience(), 366, 463, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(200,200,230), 2, 1, 0.5)
+			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayer().GetProgrammePlan().getFormattedAudience(), 366, 463, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(200,200,230), 2, 1, 0.5)
 
 			'=== DRAW SECONDARY INFO ===
 			local oldAlpha:Float = GetAlpha()
 			SetAlpha oldAlpha*0.75
 
 			'current days financial win/loss
-			local profit:int = GetPlayerCollection().Get().GetFinance().GetCurrentProfit()
+			local profit:int = GetPlayer().GetFinance().GetCurrentProfit()
 			if profit > 0
 				GetBitmapFont("Default", 12, BOLDFONT).drawBlock("+"+TFunctions.DottedValue(profit), 366, 421+15, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(170,200,170), 2, 1, 0.5)
 			elseif profit = 0
@@ -451,7 +451,7 @@ Type TInGameInterface
 			endif
 
 			'market share
-			GetBitmapFont("Default", 12, BOLDFONT).drawBlock(MathHelper.NumberToString(GetPlayerCollection().Get().GetProgrammePlan().GetAudiencePercentage()*100,2)+"%", 366, 463+15, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(170,170,200), 2, 1, 0.5)
+			GetBitmapFont("Default", 12, BOLDFONT).drawBlock(MathHelper.NumberToString(GetPlayer().GetProgrammePlan().GetAudiencePercentage()*100,2)+"%", 366, 463+15, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(170,170,200), 2, 1, 0.5)
 
 			'current day
 		 	GetBitmapFont("Default", 12, BOLDFONT).drawBlock((GetWorldTime().GetDaysRun()+1) + ". "+GetLocale("DAY"), 366, 555, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(180,180,180), 2, 1, 0.5)

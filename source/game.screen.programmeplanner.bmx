@@ -193,7 +193,7 @@ Type TScreenHandler_ProgrammePlanner
 	'called as soon as a players figure is forced to leave a room
 	Function onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
 		'only handle the players figure
-		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
+		if TFigure(triggerEvent.GetSender()) <> GetPlayer().figure then return False
 		'only handle offices
 		if not IsMyRoom(TRoomBase(triggerEvent.GetReceiver())) then return False
 
@@ -301,7 +301,7 @@ Type TScreenHandler_ProgrammePlanner
 
 
 		if openedProgrammeListThisVisit
-			GetPlayerCollection().Get().GetProgrammeCollection().ClearJustAddedProgrammeLicences()
+			GetPlayer().GetProgrammeCollection().ClearJustAddedProgrammeLicences()
 		endif
 
 		return TRUE
@@ -439,11 +439,11 @@ Type TScreenHandler_ProgrammePlanner
 		if not talkToProgrammePlanner then return TRUE
 
 		if list = GuiListProgrammes
-			if not GetPlayerCollection().Get().GetProgrammePlan().RemoveProgramme(item.broadcastMaterial)
+			if not GetPlayer().GetProgrammePlan().RemoveProgramme(item.broadcastMaterial)
 				print "[WARNING] dragged item from programmelist - removing from programmeplan at "+slot+":00 - FAILED"
 			endif
 		elseif list = GuiListAdvertisements
-			if not GetPlayerCollection().Get().GetProgrammePlan().RemoveAdvertisement(item.broadcastMaterial)
+			if not GetPlayer().GetProgrammePlan().RemoveAdvertisement(item.broadcastMaterial)
 				print "[WARNING] dragged item from adlist - removing from programmeplan at "+slot+":00 - FAILED"
 			endif
 		else
@@ -466,12 +466,12 @@ Type TScreenHandler_ProgrammePlanner
 		if List = GuiListProgrammes or list = GuiListAdvertisements
 			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
 				if item.lastList = GuiListAdvertisements
-					if not GetPlayerCollection().Get().GetProgrammePlan().RemoveAdvertisement(item.broadcastMaterial)
+					if not GetPlayer().GetProgrammePlan().RemoveAdvertisement(item.broadcastMaterial)
 						print "[ERROR] dropped item from another day on active day - removal in other days adlist FAILED"
 						return False
 					Endif
 				ElseIf item.lastList = GuiListProgrammes
-					if not GetPlayerCollection().Get().GetProgrammePlan().RemoveProgramme(item.broadcastMaterial)
+					if not GetPlayer().GetProgrammePlan().RemoveProgramme(item.broadcastMaterial)
 						print "[ERROR] dropped item from another day on active day - removal in other days programmelist FAILED"
 						return False
 					Endif
@@ -500,12 +500,12 @@ Type TScreenHandler_ProgrammePlanner
 		if List = GuiListProgrammes or list = GuiListAdvertisements
 			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
 				if item.lastList = GuiListAdvertisements
-					if not GetPlayerCollection().Get().GetProgrammePlan().RemoveAdvertisement(item.broadcastMaterial)
+					if not GetPlayer().GetProgrammePlan().RemoveAdvertisement(item.broadcastMaterial)
 						print "[ERROR] dropped item from another day on active day - removal in other days adlist FAILED"
 						return False
 					Endif
 				ElseIf item.lastList = GuiListProgrammes
-					if not GetPlayerCollection().Get().GetProgrammePlan().RemoveProgramme(item.broadcastMaterial)
+					if not GetPlayer().GetProgrammePlan().RemoveProgramme(item.broadcastMaterial)
 						print "[ERROR] dropped item from another day on active day - removal in other days programmelist FAILED"
 						return False
 					Endif
@@ -518,13 +518,13 @@ Type TScreenHandler_ProgrammePlanner
 			'is the gui item coming from another day?
 			'remove it from there (was "silenced" during automatic mode)
 			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
-				if not GetPlayerCollection().Get().GetProgrammePlan().RemoveProgramme(item.broadcastMaterial)
+				if not GetPlayer().GetProgrammePlan().RemoveProgramme(item.broadcastMaterial)
 					print "[ERROR] dropped item on programmelist - removal from other day FAILED"
 					return False
 				endif
 			Endif
 
-			if not GetPlayerCollection().Get().GetProgrammePlan().SetProgrammeSlot(item.broadcastMaterial, planningDay, slot)
+			if not GetPlayer().GetProgrammePlan().SetProgrammeSlot(item.broadcastMaterial, planningDay, slot)
 				print "[WARNING] dropped item on programmelist - adding to programmeplan at "+slot+":00 - FAILED"
 				return FALSE
 			endif
@@ -533,7 +533,7 @@ Type TScreenHandler_ProgrammePlanner
 			'   the day from the players ProgrammePlan)
 			item.plannedOnDay = list.planDay
 		elseif list = GuiListAdvertisements
-			if not GetPlayerCollection().Get().GetProgrammePlan().SetAdvertisementSlot(item.broadcastMaterial, planningDay, slot)
+			if not GetPlayer().GetProgrammePlan().SetAdvertisementSlot(item.broadcastMaterial, planningDay, slot)
 				print "[WARNING] dropped item on adlist - adding to programmeplan at "+slot+":00 - FAILED"
 				return FALSE
 			endif
@@ -576,7 +576,6 @@ Type TScreenHandler_ProgrammePlanner
 	'left mouse button click: check shortcuts and create a copy/nextepisode-block
 	Function onClickProgrammePlanElement:int(triggerEvent:TEventBase)
 		local item:TGUIProgrammePlanElement= TGUIProgrammePlanElement(triggerEvent._sender)
-		if not item then print "onClickProgrammePlanElement got wrong sender";return false
 
 		'left mouse button
 		if triggerEvent.GetData().getInt("button",0) = 1
@@ -584,11 +583,11 @@ Type TScreenHandler_ProgrammePlanner
 			'-> remove dayChangeObjects from plan if dragging (and allowed)
 			if not item.isDragged() and item.isDragable() and talkToProgrammePlanner
 				if item = GuiListAdvertisements.dayChangeGuiProgrammePlanElement
-					if GetPlayerCollection().Get().GetProgrammePlan().RemoveAdvertisement(item.broadcastMaterial)
+					if GetPlayer().GetProgrammePlan().RemoveAdvertisement(item.broadcastMaterial)
 						GuiListAdvertisements.dayChangeGuiProgrammePlanElement = null
 					endif
 				elseif item = GuiListProgrammes.dayChangeGuiProgrammePlanElement
-					if GetPlayerCollection().Get().GetProgrammePlan().RemoveProgramme(item.broadcastMaterial)
+					if GetPlayer().GetProgrammePlan().RemoveProgramme(item.broadcastMaterial)
 						GuiLisTProgrammes.dayChangeGuiProgrammePlanElement = null
 					endif
 				endif
@@ -1053,7 +1052,7 @@ Type TScreenHandler_ProgrammePlanner
 
 		'===== CREATE NEW =====
 		'create missing gui elements for all programmes/ads
-		local daysProgramme:TBroadcastMaterial[] = GetPlayerCollection().Get().GetProgrammePlan().GetProgrammesInTimeSpan(planningDay, 0, planningDay, 23)
+		local daysProgramme:TBroadcastMaterial[] = GetPlayer().GetProgrammePlan().GetProgrammesInTimeSpan(planningDay, 0, planningDay, 23)
 		For local obj:TBroadcastMaterial = eachin daysProgramme
 			if not obj then continue
 			'if already included - skip it
@@ -1097,7 +1096,7 @@ Type TScreenHandler_ProgrammePlanner
 
 
 		'ad list (can contain ads, programmes, ...)
-		local daysAdvertisements:TBroadcastMaterial[] = GetPlayerCollection().Get().GetProgrammePlan().GetAdvertisementsInTimeSpan(planningDay, 0, planningDay, 23)
+		local daysAdvertisements:TBroadcastMaterial[] = GetPlayer().GetProgrammePlan().GetAdvertisementsInTimeSpan(planningDay, 0, planningDay, 23)
 		For local obj:TBroadcastMaterial = eachin daysAdvertisements
 			if not obj then continue
 

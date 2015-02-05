@@ -354,7 +354,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 		if not room then return False
 
 		'only show tooltip if not "empty" and mouse in door-rect
-		If room.GetDescription(1) <> "" and GetPlayerCollection().Get().GetFigure().IsInBuilding() And THelper.MouseIn(GetScreenX(), GetScreenY() - area.GetH(), area.GetW(), area.GetH())
+		If room.GetDescription(1) <> "" and GetPlayer().GetFigure().IsInBuilding() And THelper.MouseIn(GetScreenX(), GetScreenY() - area.GetH(), area.GetW(), area.GetH())
 			If not tooltip
 				tooltip = TRoomDoorTooltip.Create("", "", 100, 140, 0, 0)
 				tooltip.AssignRoom(room.id)
@@ -650,7 +650,7 @@ Type TRoomHandler
 
 	Method onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
 		'only handle the players figure
-		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
+		if TFigure(triggerEvent.GetSender()) <> GetPlayer().figure then return False
 		AbortScreenActions()
 		return True;
 	End Method
@@ -674,7 +674,7 @@ Type TRoomHandler
 
 	Function CheckPlayerInRoom:int(roomName:string)
 		'check if we are in the correct room
-		local figure:TFigure = GetPlayerCollection().Get().GetFigure()
+		local figure:TFigure = GetPlayer().GetFigure()
 		If figure.isChangingRoom() Then Return False
 		If not figure.inRoom Then Return False
 		if figure.inRoom.name <> roomName then return FALSE
@@ -968,7 +968,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		'suitcase
 		For local guiLicence:TGUIProgrammeLicence = eachin GuiListSuitcase._slots
 			'if the player has this licence in suitcase, skip deletion
-			if GetPlayerCollection().Get().GetProgrammeCollection().HasProgrammeLicenceInSuitcase(guiLicence.licence) then continue
+			if GetPlayer().GetProgrammeCollection().HasProgrammeLicenceInSuitcase(guiLicence.licence) then continue
 
 			'print "guiListSuitcase has obsolete licence: "+guiLicence.licence.getTitle()
 			guiLicence.remove()
@@ -977,7 +977,7 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		'===== CREATE NEW =====
 		'create missing gui elements for the current suitcase
-		For local licence:TProgrammeLicence = eachin GetPlayerCollection().Get().GetProgrammeCollection().suitcaseProgrammeLicences
+		For local licence:TProgrammeLicence = eachin GetPlayer().GetProgrammeCollection().suitcaseProgrammeLicences
 			if guiListSuitcase.ContainsLicence(licence) then continue
 			guiListSuitcase.addItem(new TGUIProgrammeLicence.CreateWithLicence(licence),"-1" )
 			'print "ADD suitcase had missing licence: "+licence.getTitle()
@@ -1000,8 +1000,8 @@ Type RoomHandler_Archive extends TRoomHandler
 		if not guiBlock or not guiBlock.isDragged() then return FALSE
 
 		'add back to collection if already dropped it to suitcase before
-		if not GetPlayerCollection().Get().GetProgrammeCollection().HasProgrammeLicence(guiBlock.licence)
-			GetPlayerCollection().Get().GetProgrammeCollection().RemoveProgrammeLicenceFromSuitcase(guiBlock.licence)
+		if not GetPlayer().GetProgrammeCollection().HasProgrammeLicence(guiBlock.licence)
+			GetPlayer().GetProgrammeCollection().RemoveProgrammeLicenceFromSuitcase(guiBlock.licence)
 		endif
 		'remove the gui element
 		guiBlock.remove()
@@ -1025,14 +1025,14 @@ Type RoomHandler_Archive extends TRoomHandler
 			case GetInstance().GuiListSuitcase
 				'check if still in collection - if so, remove
 				'from collection and add to suitcase
-				if GetPlayerCollection().Get().GetProgrammeCollection().HasProgrammeLicence(guiBlock.licence)
+				if GetPlayer().GetProgrammeCollection().HasProgrammeLicence(guiBlock.licence)
 					'remove gui - a new one will be generated automatically
 					'as soon as added to the suitcase and the room's update
 					guiBlock.remove()
 
 					'if not able to add to suitcase (eg. full), cancel
 					'the drop-event
-					if not GetPlayerCollection().Get().GetProgrammeCollection().AddProgrammeLicenceToSuitcase(guiBlock.licence)
+					if not GetPlayer().GetProgrammeCollection().AddProgrammeLicenceToSuitcase(guiBlock.licence)
 						triggerEvent.setVeto()
 					endif
 					
@@ -1057,7 +1057,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		if receiver <> GetInstance().DudeArea then return FALSE
 
 		'add back to collection
-		GetPlayerCollection().Get().GetProgrammeCollection().RemoveProgrammeLicenceFromSuitcase(guiBlock.licence)
+		GetPlayer().GetProgrammeCollection().RemoveProgrammeLicenceFromSuitcase(guiBlock.licence)
 		'remove the gui element
 		guiBlock.remove()
 		guiBlock = null
@@ -1166,7 +1166,7 @@ Type RoomHandler_Archive extends TRoomHandler
 
 
 		'create missing gui elements for the current suitcase
-		For local licence:TProgrammeLicence = eachin GetPlayerCollection().Get().GetProgrammeCollection().suitcaseProgrammeLicences
+		For local licence:TProgrammeLicence = eachin GetPlayer().GetProgrammeCollection().suitcaseProgrammeLicences
 			if guiListSuitcase.ContainsLicence(licence) then continue
 			guiListSuitcase.addItem( new TGuiProgrammeLicence.CreateWithLicence(licence),"-1" )
 		Next
@@ -1684,7 +1684,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'check whether a player could afford the licence
 		'if not - just veto the event so it does not get dragged
 		if owner <= 0
-			if not GetPlayerCollection().Get().getFinance().canAfford(item.licence.getPrice())
+			if not GetPlayer().getFinance().canAfford(item.licence.getPrice())
 				triggerEvent.setVeto()
 				return FALSE
 			endif
@@ -1716,7 +1716,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 				'allow drop on own place
 				if underlayingItem = guiLicence then return TRUE
 
-				if underlayingItem and not GetPlayerCollection().Get().getFinance().canAfford(underlayingItem.licence.getPrice())
+				if underlayingItem and not GetPlayer().getFinance().canAfford(underlayingItem.licence.getPrice())
 					triggerEvent.SetVeto()
 					return FALSE
 				endif
@@ -1724,7 +1724,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 				'no problem when dropping own programme to suitcase..
 				if guiLicence.licence.owner = GetPlayerCollection().playerID then return TRUE
 
-				if not GetPlayerCollection().Get().getFinance().canAfford(guiLicence.licence.getPrice())
+				if not GetPlayer().getFinance().canAfford(guiLicence.licence.getPrice())
 					triggerEvent.setVeto()
 				endif
 		End select
@@ -2150,11 +2150,11 @@ Type RoomHandler_News extends TRoomHandler
 				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+": "+ TNewsAgency.GetNewsAbonnementPrice(level+1)+getLocale("CURRENCY")
 			EndIf
 		EndIf
-		if GetPlayerCollection().Get().GetNewsAbonnementDaysMax(genre) > level
+		if GetPlayer().GetNewsAbonnementDaysMax(genre) > level
 			NewsGenreTooltip.content :+ "~n~n"
 			local tip:String = getLocale("NEWSSTUDIO_YOU_ALREADY_USED_LEVEL_AND_THEREFOR_PAY")
-			tip = tip.Replace("%MAXLEVEL%", GetPlayerCollection().Get().GetNewsAbonnementDaysMax(genre))
-			tip = tip.Replace("%TOPAY%", TNewsAgency.GetNewsAbonnementPrice(GetPlayerCollection().Get().GetNewsAbonnementDaysMax(genre)) + getLocale("CURRENCY"))
+			tip = tip.Replace("%MAXLEVEL%", GetPlayer().GetNewsAbonnementDaysMax(genre))
+			tip = tip.Replace("%TOPAY%", TNewsAgency.GetNewsAbonnementPrice(GetPlayer().GetNewsAbonnementDaysMax(genre)) + getLocale("CURRENCY"))
 			NewsGenreTooltip.content :+ getLocale("HINT")+": " + tip
 		endif
 	End Function
@@ -2171,7 +2171,7 @@ Type RoomHandler_News extends TRoomHandler
 		'increase the abonnement
 		For local i:int = 0 until len( NewsGenreButtons )
 			if button = NewsGenreButtons[i]
-				GetPlayerCollection().Get().IncreaseNewsAbonnement( button.data.GetInt("newsGenre", i) )
+				GetPlayer().IncreaseNewsAbonnement( button.data.GetInt("newsGenre", i) )
 				exit
 			endif
 		Next
@@ -2296,14 +2296,14 @@ Type RoomHandler_News extends TRoomHandler
 
 			if not guiNewsListAvailable.ContainsNews(news)
 				'only add for news NOT planned in the news show
-				if not GetPlayerCollection().Get().GetProgrammePlan().HasNews(news)
+				if not GetPlayer().GetProgrammePlan().HasNews(news)
 					local guiNews:TGUINews = new TGUINews.Create(null,null, news.GetTitle())
 					guiNews.SetNews(news)
 					guiNewsListAvailable.AddItem(guiNews)
 				endif
 			endif
 		Next
-		For Local i:int = 0 to GetPlayerCollection().Get().GetProgrammePlan().news.length - 1
+		For Local i:int = 0 to GetPlayer().GetProgrammePlan().news.length - 1
 			local news:TNews = TNews(GetPlayerProgrammePlanCollection().Get(owner).GetNews(i))
 			'skip if news is dragged
 			if news and draggedNewsList.contains(news) then continue
@@ -2478,7 +2478,7 @@ Type RoomHandler_Boss extends TRoomHandler
 
 
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
-		GetPlayerCollection().Get().GetFigure().fromroom = Null
+		GetPlayer().GetFigure().fromroom = Null
 
 
 		smokeEmitter.Update()
@@ -2723,7 +2723,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	'called as soon as a players figure is forced to leave the room
 	Method onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
 		'only handle the players figure
-		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
+		if TFigure(triggerEvent.GetSender()) <> GetPlayer().figure then return False
 
 		'instead of leaving the room and accidentially adding contracts
 		'we delete all unsigned contracts from the list
@@ -3251,7 +3251,7 @@ endrem
 
 		'if coming from suitcase, try to remove it from the player
 		if senderList = GuiListSuitcase
-			if not GetInstance().TakeContractFromPlayer(guiBlock.contract, GetPlayerCollection().Get().playerID )
+			if not GetInstance().TakeContractFromPlayer(guiBlock.contract, GetPlayer().playerID )
 				triggerEvent.setVeto()
 				return FALSE
 			endif
@@ -4445,7 +4445,7 @@ Type RoomHandler_Credits extends TRoomHandler
 	'reset to start role when entering
 	Method onEnterRoom:int( triggerEvent:TEventBase )
 		'only handle the players figure
-		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
+		if TFigure(triggerEvent.GetSender()) <> GetPlayer().figure then return False
 
 		fadeTimer.Reset()
 		changeRoleTimer.Reset()

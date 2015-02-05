@@ -682,9 +682,9 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		Local showPlannedWarning:Int = False
 		Local showEarnInfo:Int = False
 		
-		if owner > 0 'and GetPlayerCollection().Get().figure.inRoom
+		if owner > 0 'and GetPlayer().figure.inRoom
 			'only if planned and in archive
-			if self.IsPlanned() ' and GetPlayerCollection().Get().figure.inRoom.name = "archive"
+			if self.IsPlanned() ' and GetPlayer().figure.inRoom.name = "archive"
 				showPlannedWarning = True
 			endif
 		endif

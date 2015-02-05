@@ -309,11 +309,11 @@ Type TBuilding Extends TBuildingBase
 		If not GetInstance().room.hotspots.contains(hotspot) then return False
 
 		'hotspot position is LOCAL to building, so no transition needed
-		GetPlayerCollection().Get().figure.changeTarget( hotspot.area.getX() + hotspot.area.getW()/2, hotspot.area.getY() )
+		GetPlayer().figure.changeTarget( hotspot.area.getX() + hotspot.area.getW()/2, hotspot.area.getY() )
 		'ignore clicks to elevator plans on OTHER floors
 		'in this case just move to the target, but do not "enter" the room
-		If hotspot.name <> "elevatorplan" OR GetInstance().GetFloor(hotspot.area.GetY()) = GetInstance().GetFloor(GetPlayerCollection().Get().figure.area.GetY())
-			GetPlayerCollection().Get().figure.SetTarget(hotspot)
+		If hotspot.name <> "elevatorplan" OR GetInstance().GetFloor(hotspot.area.GetY()) = GetInstance().GetFloor(GetPlayer().figure.area.GetY())
+			GetPlayer().figure.SetTarget(hotspot)
 		EndIf
 		
 		MOUSEMANAGER.ResetKey(1)
@@ -371,7 +371,7 @@ Type TBuilding Extends TBuildingBase
 						'convert mouse position to building-coordinates
 						local x:int = MouseManager.x - buildingInner.GetScreenX()
 						local y:int = MouseManager.y - buildingInner.GetScreenY()
-						GetPlayerCollection().Get().Figure.ChangeTarget(x, y)
+						GetPlayer().Figure.ChangeTarget(x, y)
 						MOUSEMANAGER.resetKey(1)
 					EndIf
 				EndIf
@@ -457,7 +457,7 @@ Type TBuilding Extends TBuildingBase
 		GetSpriteFromRegistry("gfx_building_Pflanze3b").Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
 
 		'draw entrance on top of figures
-		If GetFloor(GetPlayerCollection().Get().Figure.area.GetY()) <= 4
+		If GetFloor(GetPlayer().Figure.area.GetY()) <= 4
 			'mix entrance color so it is a mixture of current sky colors
 			'brightness and full brightness (white)
 			TColor.CreateGrey(GetWorld().lighting.GetSkyBrightness() * 255).Mix(TColor.clWhite, 0.7).SetRGB()

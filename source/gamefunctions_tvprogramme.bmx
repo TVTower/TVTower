@@ -1010,7 +1010,7 @@ Type TgfxProgrammelist extends TPlannerList
 			local visibleFilters:TProgrammeLicenceFilter[] = TProgrammeLicenceFilter.GetVisible()
 			local containsNew:int[visibleFilters.length]
 
-			For local licence:TProgrammeLicence = EachIn GetPlayerCollection().Get().GetProgrammeCollection().justAddedProgrammeLicences
+			For local licence:TProgrammeLicence = EachIn GetPlayer().GetProgrammeCollection().justAddedProgrammeLicences
 				'check all filters if they take care of this licence
 				for local i:int = 0 until visibleFilters.length
 					'no check needed if already done
@@ -1033,7 +1033,7 @@ Type TgfxProgrammelist extends TPlannerList
 			local textRect:TRectangle = new TRectangle.Init(currX + 13, currY, genreSize.x - 12 - 5, genreSize.y)
 			 
 			local oldAlpha:float = GetAlpha()
-			local programmeCollection:TPlayerProgrammeCollection = GetPlayerCollection().Get().GetProgrammeCollection()
+			local programmeCollection:TPlayerProgrammeCollection = GetPlayer().GetProgrammeCollection()
 
 			'draw each visible filter
 			local filter:TProgrammeLicenceFilter
@@ -1125,7 +1125,7 @@ endrem
 		local currX:int = entriesRect.GetX()
 		local font:TBitmapFont = GetBitmapFont("Default", 10)
 			 
-		local programmeCollection:TPlayerProgrammeCollection = GetPlayerCollection().Get().GetProgrammeCollection()
+		local programmeCollection:TPlayerProgrammeCollection = GetPlayer().GetProgrammeCollection()
 		local filter:TProgrammeLicenceFilter = TProgrammeLicenceFilter.GetAtIndex(filterIndex)
 		local licences:TProgrammeLicence[] = programmeCollection.GetLicencesByFilter(filter)
 		'draw slots, even if empty
@@ -1145,7 +1145,7 @@ endrem
 					tapeDrawType = "planned"
 				else
 					'switch background to "new" if the licence is a just-added-one
-					For local licence:TProgrammeLicence = EachIn GetPlayerCollection().Get().GetProgrammeCollection().justAddedProgrammeLicences
+					For local licence:TProgrammeLicence = EachIn GetPlayer().GetProgrammeCollection().justAddedProgrammeLicences
 						if licences[i] = licence
 							entryDrawType = "new"
 							tapeDrawType = "new"
@@ -1211,7 +1211,7 @@ endrem
 
 		local currY:int = entriesRect.GetY() + GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 
-		local programmeCollection:TPlayerProgrammeCollection = GetPlayerCollection().Get().GetProgrammeCollection()
+		local programmeCollection:TPlayerProgrammeCollection = GetPlayer().GetProgrammeCollection()
 		local filter:TProgrammeLicenceFilter = TProgrammeLicenceFilter.GetAtIndex(filterIndex)
 		local licences:TProgrammeLicence[] = programmeCollection.GetLicencesByFilter(filter)
 
@@ -1459,7 +1459,7 @@ Type TgfxContractlist extends TPlannerList
 		local currY:int = entriesRect.GetY()
 		local font:TBitmapFont = GetBitmapFont("Default", 10)
 
-		local programmeCollection:TPlayerProgrammeCollection = GetPlayerCollection().Get().GetProgrammeCollection()
+		local programmeCollection:TPlayerProgrammeCollection = GetPlayer().GetProgrammeCollection()
 		'draw slots, even if empty
 		For local i:int = 0 until 10 'GameRules.maxContracts
 			local contract:TAdContract = programmeCollection.GetAdContractAtIndex(i)
@@ -1517,7 +1517,7 @@ Type TgfxContractlist extends TPlannerList
 		if self.openState >= 1
 			local currY:int = entriesRect.GetY() + GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 
-			local programmeCollection:TPlayerProgrammeCollection = GetPlayerCollection().Get().GetProgrammeCollection()
+			local programmeCollection:TPlayerProgrammeCollection = GetPlayer().GetProgrammeCollection()
 			For local i:int = 0 until GameRules.maxContracts
 				local contract:TAdContract = programmeCollection.GetAdContractAtIndex(i)
 
@@ -2181,7 +2181,7 @@ Type TGUIProgrammeLicence extends TGUIGameListItem
 
 
 	Method IsAffordable:Int()
-		return GetPlayerCollection().Get().getFinance().canAfford(licence.getPrice())
+		return GetPlayer().getFinance().canAfford(licence.getPrice())
 	End Method
 
 

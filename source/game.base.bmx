@@ -898,7 +898,7 @@ endrem
 			Case TGame.STATE_RUNNING
 				'when a game is loaded we should try set the right screen
 				'not just the default building screen
-				if GetPlayerCollection().Get().GetFigure().inRoom
+				if GetPlayer().GetFigure().inRoom
 					ScreenCollection.GoToScreen(ScreenCollection.GetCurrentScreen())
 				else
 					ScreenCollection.GoToScreen(GameScreen_world)

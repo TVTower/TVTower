@@ -473,7 +473,7 @@ Type TApp
 				If KEYMANAGER.IsHit(KEY_9) Then GetWorldTime().SetTimeFactor(1*60.0)   '1 minute per second
 				If KEYMANAGER.IsHit(KEY_Q) Then TVTDebugQuoteInfos = 1 - TVTDebugQuoteInfos
 
-				If KEYMANAGER.IsHit(KEY_P) Then GetPlayerCollection().Get().GetProgrammePlan().printOverview()
+				If KEYMANAGER.IsHit(KEY_P) Then GetPlayer().GetProgrammePlan().printOverview()
 				'If KEYMANAGER.IsHit(KEY_P) Then GetProgrammeLicenceCollection().PrintMovies()
 
 				'Save game only when in a game
@@ -2202,7 +2202,7 @@ Type TScreen_GameSettings Extends TGameScreen
 
 			'disable/enable announcement on lan/online
 			If guiAnnounce.isChecked()
-				Network.client.playerName = GetPlayerCollection().Get().name
+				Network.client.playerName = GetPlayer().name
 				If Not Network.announceEnabled Then Network.StartAnnouncing(Game.title)
 			Else
 				Network.StopAnnouncing()
@@ -2669,7 +2669,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 				print "game not started..."
 				If Game.startNetworkGame
 					ScreenGameSettings.guiAnnounce.SetChecked(False)
-					GetPlayerCollection().Get().networkstate = 1
+					GetPlayer().networkstate = 1
 					canStartGame = True
 					'reset flag, no longer needed
 					Game.startNetworkGame = False
