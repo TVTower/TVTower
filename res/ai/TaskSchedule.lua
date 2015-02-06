@@ -337,7 +337,7 @@ function JobEmergencySchedule:FillIntervals(howManyHours)
 		--Film: Prüfen ob ne Lücke existiert, wenn ja => füllen
 		local programme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
 		if (programme == nil) then
-			self:SetMovieToEmptyBlock(fixedDay, fixedHour)
+			self:SetMovieOrInfomercialToEmptyBlock(fixedDay, fixedHour)
 		end
 	end
 end
@@ -375,36 +375,30 @@ function JobEmergencySchedule:SetContractToEmptyBlock(day, hour)
 	end
 end
 
-function JobEmergencySchedule:GetFilteredProgrammeLicenceList(maxLevel, level, maxRerunsToday, day)
-	for i=maxLevel,level,-1 do
-		programmeList = self:GetProgrammeLicenceList(i, maxRerunsToday, day)
-		if (table.count(programmeList) > 0) then
-			debugMsg("GetFilteredProgrammeLicenceList: maxLevel: " .. maxLevel .. "   level: " .. level .. "   maxRerunsToday: " .. maxRerunsToday .. " currLevel: " .. i)
-			break
-		end
-	end
-	return programmeList
-end
-
-function JobEmergencySchedule:SetMovieToEmptyBlock(day, hour)
+function JobEmergencySchedule:SetMovieOrInfomercialToEmptyBlock(day, hour)
 	local fixedDay, fixedHour = self:FixDayAndHour(day, hour)
 
 	local level = self.ScheduleTask:GetQualityLevel(fixedHour)
 	--debugMsg("Quality-Level: " .. level .. " (" .. fixedHour .. ")")
 	local licenceList = nil
 	local choosenLicence = nil
-
-	licenceList = self:GetFilteredProgrammeLicenceList(level, level, 0, fixedDay)
+	
+	licenceList = self:GetFilteredProgrammeLicenceList(level, level, 0, fixedDay)		
 	--Bedarf erhöhen
-	if (table.count(licenceList) == 0) then licenceList = self:GetFilteredProgrammeLicenceList(level, 1, 0, fixedDay) end
-
-	if (table.count(licenceList) == 0) then licenceList = self:GetFilteredProgrammeLicenceList(level, 1, 2, fixedDay) end
+	
+	if (table.count(licenceList) == 0) then licenceList = self:GetFilteredProgrammeLicenceList(level, 1, 0, fixedDay) end	
+	if level <= 2 and (table.count(licenceList) == 0) then licenceList = self:GetInfomercialLicenceList(0, fixedDay) end
+	if (table.count(licenceList) == 0) then licenceList = self:GetFilteredProgrammeLicenceList(level, 1, 1, fixedDay) end
+	if level <= 3 and (table.count(licenceList) == 0) then licenceList = self:GetInfomercialLicenceList(0, fixedDay) end	
 	if (table.count(licenceList) == 0) then licenceList = self:GetFilteredProgrammeLicenceList(level+1, 1, 1, fixedDay) end
-	--if (table.count(licenceList) == 0) then licenceList = self:GetFilteredProgrammeLicenceList(level+2, 1, 1) end
-
+	if level <= 3 and (table.count(licenceList) == 0) then licenceList = self:GetInfomercialLicenceList(1, fixedDay) end
+	if level <= 4 and (table.count(licenceList) == 0) then licenceList = self:GetInfomercialLicenceList(0, fixedDay) end
+	if level <= 4 and (table.count(licenceList) == 0) then licenceList = self:GetInfomercialLicenceList(1, fixedDay) end
+	
 	if (table.count(licenceList) == 0) then licenceList = self:GetFilteredProgrammeLicenceList(level, 1, 3, fixedDay) end
 	if (table.count(licenceList) == 0) then licenceList = self:GetFilteredProgrammeLicenceList(level+1, 1, 3, fixedDay) end
 	if (table.count(licenceList) == 0) then licenceList = self:GetFilteredProgrammeLicenceList(level+2, 1, 1, fixedDay) end
+	if (table.count(licenceList) == 0) then licenceList = self:GetInfomercialLicenceList(3, fixedDay) end
 
 	if (table.count(licenceList) == 1) then
 		choosenLicence = table.first(licenceList)
@@ -424,6 +418,17 @@ function JobEmergencySchedule:SetMovieToEmptyBlock(day, hour)
 	end
 end
 
+function JobEmergencySchedule:GetFilteredProgrammeLicenceList(maxLevel, level, maxRerunsToday, day)
+	for i = maxLevel,level,-1 do
+		programmeList = self:GetProgrammeLicenceList(i, maxRerunsToday, day)
+		if (table.count(programmeList) > 0) then
+			debugMsg("GetFilteredProgrammeLicenceList: maxLevel: " .. maxLevel .. "   level: " .. level .. "   maxRerunsToday: " .. maxRerunsToday .. " currLevel: " .. i)
+			break
+		end
+	end
+	return programmeList
+end
+
 function JobEmergencySchedule:GetProgrammeLicenceList(level, maxRerunsToday, day)
 	local currentLicenceList = {}
 
@@ -437,6 +442,24 @@ function JobEmergencySchedule:GetProgrammeLicenceList(level, maxRerunsToday, day
 					--debugMsg("Lizenz: " .. licence.GetTitle() .. " - A:" .. licence.GetAttractiveness() .. " Qa:" .. licence.GetQualityLevel() .. " Qo:" .. licence.GetQuality() .. " T:" .. licence.GetTopicality())
 					table.insert(currentLicenceList, licence)
 				end
+			end
+		end
+	end
+
+	return currentLicenceList
+end
+
+function JobEmergencySchedule:GetInfomercialLicenceList(maxRerunsToday, day)
+	local currentLicenceList = {}
+
+	for i = 0,MY.GetProgrammeCollection().GetAdContractCount()-1 do
+		local licence = MY.GetProgrammeCollection().GetAdContractAtIndex(i)
+		if ( licence ~= nil) then
+			local sentAndPlannedToday = MY.GetProgrammePlan().HowOftenProgrammeLicenceInPlan(licence.GetID(), day, 1)
+			--debugMsg("GetProgrammeLicenceList: " .. i .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday)
+			if (sentAndPlannedToday <= maxRerunsToday) then
+				--debugMsg("Lizenz: " .. licence.GetTitle() .. " - A:" .. licence.GetAttractiveness() .. " Qa:" .. licence.GetQualityLevel() .. " Qo:" .. licence.GetQuality() .. " T:" .. licence.GetTopicality())
+				table.insert(currentLicenceList, licence)
 			end
 		end
 	end

@@ -765,7 +765,7 @@ endrem
 		Local count:Int = 0
 		Local minHour:Int = 0
 		Local maxHour:Int = 23
-		Local programme:TProgramme = Null
+		Local material:TBroadcastMaterial = null
 
 		'include programmes which may not be run yet?
 		'else we stop at the current time of the day...
@@ -778,20 +778,20 @@ endrem
 		'and still run the next day - so we have to check that too
 		If includeStartedYesterday
 			'we just compare the programme started 23:00 or earlier the day before
-			programme = TProgramme(GetProgramme(day - 1, 23))
-			If programme And programme.GetReferenceID() = licenceID And programme.data.GetBlocks() > 1
+			material = TProgramme(GetProgramme(day - 1, 23))
+			If material And material.GetReferenceID() = licenceID And material.GetBlocks() > 1
 				count:+1
 				'add the hours the programme "takes over" to the next day
-				minHour = (GetProgrammeStartHour(day - 1, 23) + programme.data.GetBlocks()) Mod 24
+				minHour = (GetProgrammeStartHour(day - 1, 23) + material.GetBlocks()) Mod 24
 			EndIf
 		EndIf
 
 		Local midnightIndex:Int = GetArrayIndex(day * 24)
 		For Local i:Int = minHour To maxHour
-			programme = TProgramme(GetObjectAtIndex(TBroadcastMaterial.TYPE_PROGRAMME, midnightIndex + i))
+			material = TBroadcastMaterial(GetObjectAtIndex(TBroadcastMaterial.TYPE_PROGRAMME, midnightIndex + i))
 			'no need to skip blocks as only the first block of a programme
 			'is stored in the array
-			If programme And programme.GetReferenceID() = licenceID Then count:+1
+			If material And material.GetReferenceID() = licenceID Then count:+1
 		Next
 
 		Return count
