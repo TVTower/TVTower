@@ -148,13 +148,16 @@ Function _Assign( p:Byte Ptr,typeId:TTypeId,value:Object )
 	End Select
 End Function
 
-Function _Call:Object( p:Byte Ptr,typeId:TTypeId,obj:Object,args:Object[],argTypes:TTypeId[] )
+Function _Call:Object( p:Byte Ptr,typeId:TTypeId,obj:Object,args:Object[],argTypes:TTypeId[], functionCall:int=False )
 	Local q:int[10]
 	Local sp:Byte Ptr = q
 
 	bbRefPushObject sp,obj
-	sp:+4
+	'only advance by 4 if you have a method-call instead of a function call
+	if not functionCall then sp:+4
+
 	If typeId=LongTypeId then sp:+8
+
 	For Local i:int = 0 Until args.length
 		If Int Ptr(sp)>=Int Ptr(q)+8 Throw "ERROR"
 		sp=_Push( sp,argTypes[i],args[i] )
@@ -481,16 +484,48 @@ Type TField Extends TMember
 	Method SetString( obj:Object,value$ )
 		Set obj,value
 	End Method
-
-
 End Type
+
+
+
+
+Type TFunctionOrMethod Extends TMember
+	Field _argTypes:TTypeId[]
+	Field _selfTypeId:TTypeId
+	Field _fptr:Byte Ptr
+	Field _index:Int
+
+	Method Init:TFunctionOrMethod(name:String, typeId:TTypeId, meta:String, selfTypeId:TTypeId, index:Int, argTypes:TTypeId[]) abstract
+	Method Invoke:Object( obj:Object, args:Object[] = Null) abstract
+
+
+	Rem
+	bbdoc: Get function or method arg types
+	End Rem
+	Method ArgTypes:TTypeId[]()
+		Return _argTypes
+	End Method
+
+
+	Rem
+	bbdoc: Get function pointer.
+	endrem
+	Method FunctionPtr:Byte Ptr( obj:Object)
+		If _fptr Then Return _fptr
+		If _index < 65536 Then
+			_fptr = bbRefMethodPtr( obj ,_index)
+		EndIf
+		Return _fptr
+	End Method
+End Type
+
 
 
 
 Rem
 bbdoc: Type function
 endrem
-Type TFunction Extends TMember
+Type TFunction Extends TFunctionOrMethod
 	Method Init:TFunction(name:String, typeId:TTypeId, meta:String, selfTypeId:TTypeId, index:Int, argTypes:TTypeId[])
 		_name=name
 		_typeId=typeId
@@ -508,41 +543,19 @@ Type TFunction Extends TMember
 		Return Self
 	End Method
 
-	Rem
-	bbdoc: Get function arg types
-	End Rem
-	Method ArgTypes:TTypeId[]()
-		Return _argTypes
-	End Method
 
-	Rem
-	bbdoc: Invoke type function
-	endrem
 	Method Invoke:Object( obj:Object, args:Object[] = Null)
-		Return _Call( FunctionPtr(obj), _typeId, obj, args, _argTypes)
+		Return _Call( FunctionPtr(obj), _typeId, obj, args, _argTypes, TRUE)
 	End Method
-
-	Rem
-	bbdoc: Get function pointer.
-	endrem
-	Method FunctionPtr:Byte Ptr( obj:Object)
-		If _fptr Then Return _fptr
-		If _index < 65536 Then
-			_fptr = bbRefMethodPtr( obj ,_index)
-		EndIf
-		Return _fptr
-	End Method
-
-	Field _selfTypeId:TTypeId, _fptr:Byte Ptr, _index:Int
-	Field _argTypes:TTypeId[]
 EndType
+
+
 
 Rem
 bbdoc: Type method
 End Rem
-Type TMethod Extends TMember
-
-	Method Init:TMethod( name$,typeId:TTypeId,meta$,selfTypeId:TTypeId,index:int ,argTypes:TTypeId[] )
+Type TMethod Extends TFunctionOrMethod
+	Method Init:TMethod(name:String, typeId:TTypeId, meta:String, selfTypeId:TTypeId, index:Int, argTypes:TTypeId[])
 		_name=name
 		_typeId=typeId
 		_meta=meta
@@ -552,35 +565,14 @@ Type TMethod Extends TMember
 		Return Self
 	End Method
 
-	Rem
-	bbdoc: Get method arg types
-	End Rem
-	Method ArgTypes:TTypeId[]()
-		Return _argTypes
-	End Method
 
-	Rem
-	bbdoc: Invoke type function
-	endrem
 	Method Invoke:Object( obj:Object, args:Object[] = Null)
-		Return _Call( FunctionPtr(obj), _typeId, obj, args, _argTypes)
+		Return _Call( FunctionPtr(obj), _typeId, obj, args, _argTypes, FALSE)
 	End Method
-
-	Rem
-	bbdoc: Get function pointer.
-	endrem
-	Method FunctionPtr:Byte Ptr( obj:Object)
-		If _fptr Then Return _fptr
-		If _index < 65536 Then
-			_fptr = bbRefMethodPtr( obj ,_index)
-		EndIf
-		Return _fptr
-	End Method
-
-
-	Field _selfTypeId:TTypeId,_index:int,_argTypes:TTypeId[], _fptr:Byte Ptr
-
 End Type
+
+
+
 
 Rem
 bbdoc: Type id

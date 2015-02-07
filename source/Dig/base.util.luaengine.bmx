@@ -343,48 +343,37 @@ Type TLuaEngine
 		'but lua needs access to global: _G
 		if Chr( ident[0] ) =  "_" and ident <> "_G" then return False
 
-		'===== CHECK PUSHED OBJECT IS A METHOD =====
-		Local mth:TMethod = typeId.FindMethod(ident)
-		'thing we have to push is a method
-		If mth
+		'===== CHECK PUSHED OBJECT IS A METHOD or FUNCTION =====
+		Local callable:TFunctionOrMethod = typeId.FindMethod(ident)
+		if not callable then callable = typeId.FindFunction(ident)
+
+		'thing we have to push is a method/function
+		If callable
 			'PRIVATE...do not add private functions/methods
-			if mth.MetaData("_private")
-				TLogger.log("TLuaEngine", "Object "+typeId.name()+" does not expose method ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+			if callable.MetaData("_private")
+				if TMethod(callable)
+					TLogger.log("TLuaEngine", "Object "+typeId.name()+" does not expose method ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+				else
+					TLogger.log("TLuaEngine", "Object "+typeId.name()+" does not expose function ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+				endif
 				return False
 			endif
 			'only expose the children with explicit mention
-			if exposeType = "selected" AND not mth.MetaData("_exposeToLua")
-				TLogger.log("TLuaEngine", "Object "+typeId.name()+" does not expose method ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+			if exposeType = "selected" AND not callable.MetaData("_exposeToLua")
+				if TMethod(callable)
+					TLogger.log("TLuaEngine", "Object "+typeId.name()+" does not expose method ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+				else
+					TLogger.log("TLuaEngine", "Object "+typeId.name()+" does not expose function ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+				endif
 				return False
 			endif
 
 			lua_pushvalue(getLuaState(), 1)
-			lua_pushlightobject(getLuaState(), mth)
+			lua_pushlightobject(getLuaState(), callable)
 			lua_pushcclosure(getLuaState(), Invoke, 2)
 			Return True
 		EndIf
 
-rem
-		'===== CHECK PUSHED OBJECT IS A FUNCTION =====
-		Local _function:TFunction = typeId.FindFunction( ident )
-		If _function
-			'PRIVATE...do not add private functions/methods
-			if _function.MetaData("_private")
-				TLogger.log("TLuaEngine", "Object "+typeId.name()+" does not expose function ~q" + ident+"~q. Access Failed.", LOG_ERROR )
-				return false
-			endif
-			'only expose the children with explicit mention
-			if exposeType = "selected" AND not _function.MetaData("_exposeToLua")
-				TLogger.log("TLuaEngine", "Object "+typeId.name()+" does not expose function ~q" + ident+"~q. Access Failed.", LOG_ERROR)
-				return false
-			endif
-
-			lua_pushvalue( getLuaState(),1 )
-			lua_pushlightobject( getLuaState(), _function )
-			lua_pushcclosure( getLuaState(),Invoke,2 )
-			Return True
-		EndIf
-endrem
 
 		'===== CHECK PUSHED OBJECT IS A CONSTANT =====
 		Local _constant:TConstant = typeId.FindConstant(ident)
@@ -562,8 +551,9 @@ endrem
 
 	Method _Invoke:Int()
 		Local obj:Object = lua_unboxobject(getLuaState(), LUA_GLOBALSINDEX - 1)
-		Local meth:TMethod = TMethod(lua_tolightobject(getLuaState(), LUA_GLOBALSINDEX - 2))
-		Local tys:TTypeId[]	= meth.ArgTypes()
+		Local funcOrMeth:TFunctionOrMethod = TFunctionOrMethod(lua_tolightobject(getLuaState(), LUA_GLOBALSINDEX - 2))
+		if not funcOrMeth then Throw "LuaEngine._Invoke() failed."
+		Local tys:TTypeId[] = funcOrMeth.ArgTypes()
 		Local args:Object[tys.length]
 
 		For Local i:Int = 0 Until args.length
@@ -580,8 +570,9 @@ endrem
 					args[i] = lua_unboxobject(getLuaState(), i + 1)
 			End Select
 		Next
-		Local t:Object = meth.Invoke(obj, args)
-		local typeId:TTypeID = meth.TypeId()
+
+		Local t:Object = funcOrMeth.Invoke(obj, args)
+		local typeId:TTypeID = funcOrMeth.TypeId()
 		if object[](t).length > 0 then typeId = ArrayTypeId
 
 		Select typeId
