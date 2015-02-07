@@ -436,7 +436,7 @@ function JobEmergencySchedule:GetProgrammeLicenceList(level, maxRerunsToday, day
 		local licence = MY.GetProgrammeCollection().GetProgrammeLicenceAtIndex(i)
 		if ( licence ~= nil) then
 			if licence.GetQualityLevel() == level then
-				local sentAndPlannedToday = MY.GetProgrammePlan().HowOftenProgrammeLicenceInPlan(licence.GetID(), day, 1)
+				local sentAndPlannedToday = MY.GetProgrammePlan().BroadcastMaterialAsProgrammeInPlanCount(licence.GetID(), day, 1)
 				--debugMsg("GetProgrammeLicenceList: " .. i .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday)
 				if (sentAndPlannedToday <= maxRerunsToday) then
 					--debugMsg("Lizenz: " .. licence.GetTitle() .. " - A:" .. licence.GetAttractiveness() .. " Qa:" .. licence.GetQualityLevel() .. " Qo:" .. licence.GetQuality() .. " T:" .. licence.GetTopicality())
@@ -455,7 +455,7 @@ function JobEmergencySchedule:GetInfomercialLicenceList(maxRerunsToday, day)
 	for i = 0,MY.GetProgrammeCollection().GetAdContractCount()-1 do
 		local licence = MY.GetProgrammeCollection().GetAdContractAtIndex(i)
 		if ( licence ~= nil) then
-			local sentAndPlannedToday = MY.GetProgrammePlan().HowOftenProgrammeLicenceInPlan(licence.GetID(), day, 1)
+			local sentAndPlannedToday = MY.GetProgrammePlan().BroadcastMaterialAsProgrammeInPlanCount(licence.GetID(), day, 1)
 			--debugMsg("GetProgrammeLicenceList: " .. i .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday)
 			if (sentAndPlannedToday <= maxRerunsToday) then
 				--debugMsg("Lizenz: " .. licence.GetTitle() .. " - A:" .. licence.GetAttractiveness() .. " Qa:" .. licence.GetQualityLevel() .. " Qo:" .. licence.GetQuality() .. " T:" .. licence.GetTopicality())

@@ -578,8 +578,6 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 		if not item then return FALSE
 
 		item.lastListType = isType
-		'resizes item according to usage type
-		item.broadcastMaterial.setUsedAsType(isType)
 
 		item.SetBroadcastMaterial()
 

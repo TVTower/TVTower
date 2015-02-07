@@ -1167,16 +1167,7 @@ Type TScreenHandler_ProgrammePlanner
 		local fontColor:TColor = TColor.CreateGrey(240)
 
 		SetAlpha 0.75
-rem
-		For Local i:Int = 0 To 11
-			'right side
-			GetBitmapFontManager().baseFontBold.DrawBlock( (i + 12) + ":00", 341, 5 + i * 30, 39, 30, ALIGN_CENTER_CENTER, fontColor, 2,1,0.25)
-			'left side
-			local text:string = i + ":00"
-			If i < 10 then text = "0" + text
-			GetBitmapFontManager().baseFontBold.DrawBlock( text, 6, 5 + i * 30, 39, 30, ALIGN_CENTER_CENTER, fontColor, 2,1,0.25)
-		Next
-endrem
+
 		'only hour, not hour:00
 		For Local i:Int = 0 To 11
 			'right side

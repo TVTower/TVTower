@@ -467,12 +467,17 @@ endrem
 		SetObjectArrayEntry(obj, slotType, arrayIndex)
 		obj.programmedDay = day
 		obj.programmedHour = hour
+		'assign "used as type"
+		obj.setUsedAsType(slotType)
+
 
 		'special for programmelicences: set a maximum planned time
 		'setting does not require special calculations
 		If TProgramme(obj) Then TProgramme(obj).licence.SetPlanned(day*24+hour+obj.GetBlocks(slotType))
-		'Advertisements: adjust planned
-		If TAdvertisement(obj) Then TAdvertisement(obj).contract.SetSpotsPlanned( GetAdvertisementsPlanned(TAdvertisement(obj).contract) )
+		'Advertisements: adjust planned (when placing in contract-slot
+		If slotType = TBroadcastMaterial.TYPE_ADVERTISEMENT and TAdvertisement(obj)
+			TAdvertisement(obj).contract.SetSpotsPlanned( GetAdvertisementsPlanned(TAdvertisement(obj).contract) )
+		Endif
 
 		'local time:int = GetWorldTime().MakeTime(0, day, hour, 0)
 		'if obj.owner = 1 then print "..addObject day="+day+" hour="+hour+" array[" +arrayIndex + "] " + GetWorldTime().GetYear(time) + " " + GetWorldTime().GetDayOfYear(time) + ".Tag " + GetWorldTime().GetDayHour(time) + ":00 : " + obj.getTitle()+" ("+obj.getReferenceID()+")"
@@ -757,8 +762,9 @@ endrem
 
 
 	'AI helper .. should be made available through "TVT."
-	'counts how many times a programme is Planned
-	Method HowOftenProgrammeLicenceInPlan:Int(licenceID:Int, day:Int=-1, includePlanned:Int=False, includeStartedYesterday:Int=True) {_exposeToLua}
+	'counts how many times a licence is planned as programme (this
+	'includes infomercials and movies/series/programmes)
+	Method BroadcastMaterialAsProgrammeInPlanCount:Int(referenceID:Int, day:Int=-1, includePlanned:Int=False, includeStartedYesterday:Int=True) {_exposeToLua}
 		If day = -1 Then day = GetWorldTime().GetDay()
 		'no filter for other days than today ... would be senseless
 		If day <> GetWorldTime().GetDay() Then includePlanned = True
@@ -778,8 +784,8 @@ endrem
 		'and still run the next day - so we have to check that too
 		If includeStartedYesterday
 			'we just compare the programme started 23:00 or earlier the day before
-			material = TProgramme(GetProgramme(day - 1, 23))
-			If material And material.GetReferenceID() = licenceID And material.GetBlocks() > 1
+			material = GetProgramme(day - 1, 23)
+			If material And material.GetReferenceID() = referenceID And material.GetBlocks() > 1
 				count:+1
 				'add the hours the programme "takes over" to the next day
 				minHour = (GetProgrammeStartHour(day - 1, 23) + material.GetBlocks()) Mod 24
@@ -788,10 +794,10 @@ endrem
 
 		Local midnightIndex:Int = GetArrayIndex(day * 24)
 		For Local i:Int = minHour To maxHour
-			material = TBroadcastMaterial(GetObjectAtIndex(TBroadcastMaterial.TYPE_PROGRAMME, midnightIndex + i))
+			material = GetObjectAtIndex(TBroadcastMaterial.TYPE_PROGRAMME, midnightIndex + i)
 			'no need to skip blocks as only the first block of a programme
 			'is stored in the array
-			If material And material.GetReferenceID() = licenceID Then count:+1
+			If material And material.GetReferenceID() = referenceID Then count:+1
 		Next
 
 		Return count
