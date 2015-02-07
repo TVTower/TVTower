@@ -314,34 +314,16 @@ Type TLuaFunctions {_exposeToLua}
 	Const RESULT_NOTFOUND:int		=  -8
 	Const RESULT_NOTALLOWED:int		= -16
 	Const RESULT_INUSE:int			= -32
-rem
-	unused
-	Const MOVIE_GENRE_ACTION:Int		= 0
-	Const MOVIE_GENRE_THRILLER:Int		= 1
-	Const MOVIE_GENRE_SCIFI:Int			= 2
-	Const MOVIE_GENRE_COMEDY:Int		= 3
-	Const MOVIE_GENRE_HORROR:Int		= 4
-	Const MOVIE_GENRE_LOVE:Int			= 5
-	Const MOVIE_GENRE_EROTIC:Int		= 6
-	Const MOVIE_GENRE_WESTERN:Int		= 7
-	Const MOVIE_GENRE_LIVE:Int			= 8
-	Const MOVIE_GENRE_KIDS:Int			= 9
-	Const MOVIE_GENRE_CARTOON:Int		= 10
-	Const MOVIE_GENRE_MUSIC:Int			= 11
-	Const MOVIE_GENRE_SPORT:Int			= 12
-	Const MOVIE_GENRE_CULTURE:Int		= 13
-	Const MOVIE_GENRE_FANTASY:Int		= 14
-	Const MOVIE_GENRE_YELLOWPRESS:Int	= 15
-	Const MOVIE_GENRE_NEWS:Int			= 16
-	Const MOVIE_GENRE_SHOW:Int			= 17
-	Const MOVIE_GENRE_MONUMENTAL:Int	= 18
-endrem
-	Const NEWS_GENRE_POLITICS:Int		= 0
-	Const NEWS_GENRE_SHOWBIZ:Int		= 1
-	Const NEWS_GENRE_SPORT:Int			= 2
-	Const NEWS_GENRE_TECHNICS:Int		= 3
-	Const NEWS_GENRE_CURRENTS:Int		= 4
 
+	'const + helpers
+	'allows various access options for the AI regarding game specific
+	'constants (genres, types, flags...)
+	Field ProgrammeTypes:TVTProgrammeType = new TVTProgrammeType
+	Field ProgrammeGenres:TVTProgrammeGenre = new TVTProgrammeGenre
+	Field NewsGenres:TVTNewsGenre = new TVTNewsGenre
+	Field ProgrammeFlags:TVTProgrammeFlag = new TVTProgrammeFlag
+	Field PressureGroups:TVTPressureGroup = new TVTPressureGroup
+	Field TargetGroups:TVTTargetGroup = new TVTTargetGroup
 
 	Field ME:Int 'Wird initialisiert
 
@@ -369,7 +351,7 @@ endrem
 	Field ROOM_ARCHIVE_PLAYER_ME:Int
 
 	Rem
-		DO NOT use this constants (even "_ME" should be deprecated)
+		DO NOT use ROOM constants (even "_ME" should be deprecated)
 		a) avoids modability
 		b) AI can request room using
 			GetRoomCollection().GetFirstByDetails(...)  - get the first found room
@@ -379,28 +361,7 @@ endrem
 		d) rooms could change "content" and no longer exist
 
 		Field ROOM_START_STUDIO_PLAYER_ME:Int
-		Field ROOM_ARCHIVE_PLAYER1:Int
-		Field ROOM_NEWSAGENCY_PLAYER1:Int
-		Field ROOM_BOSS_PLAYER1:Int
-		Field ROOM_OFFICE_PLAYER1:Int
-		Field ROOM_STUDIOSIZE_PLAYER1:Int
-
-		Field ROOM_ARCHIVE_PLAYER2:Int
-		Field ROOM_NEWSAGENCY_PLAYER2:Int
-		Field ROOM_BOSS_PLAYER2:Int
-		Field ROOM_OFFICE_PLAYER2:Int
-		Field ROOM_STUDIOSIZE_PLAYER2:Int
-
-		Field ROOM_ARCHIVE_PLAYER3:Int
-		Field ROOM_NEWSAGENCY_PLAYER3:Int
-		Field ROOM_BOSS_PLAYER3:Int
-		Field ROOM_OFFICE_PLAYER3:Int
-		Field ROOM_STUDIOSIZE_PLAYER3:Int
-
-		Field ROOM_ARCHIVE_PLAYER4:Int
-		Field ROOM_NEWSAGENCY_PLAYER4:Int
-		Field ROOM_BOSS_PLAYER4:Int
-		Field ROOM_OFFICE_PLAYER4:Int
+		...
 		Field ROOM_START_STUDIO_PLAYER4:Int
 	EndRem
 

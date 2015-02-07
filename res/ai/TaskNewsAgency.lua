@@ -56,14 +56,13 @@ function JobNewsAgencyAbonnements:Prepare(pParams)
 end
 
 function JobNewsAgencyAbonnements:Tick()
+	-- how many different abonnements could we sign?
 	local abonnementCount = self.Task.AbonnementBudget / 10000
 
-	MY.SetNewsAbonnement(TVT.NEWS_GENRE_POLITICS, self:GetAbonnementLevel(abonnementCount, TVT.NEWS_GENRE_POLITICS))
-	MY.SetNewsAbonnement(TVT.NEWS_GENRE_SHOWBIZ, self:GetAbonnementLevel(abonnementCount, TVT.NEWS_GENRE_SHOWBIZ))
-	MY.SetNewsAbonnement(TVT.NEWS_GENRE_SPORT, self:GetAbonnementLevel(abonnementCount, TVT.NEWS_GENRE_SPORT))
-	MY.SetNewsAbonnement(TVT.NEWS_GENRE_TECHNICS, self:GetAbonnementLevel(abonnementCount, TVT.NEWS_GENRE_TECHNICS))
-	MY.SetNewsAbonnement(TVT.NEWS_GENRE_CURRENTS, self:GetAbonnementLevel(abonnementCount, TVT.NEWS_GENRE_CURRENTS))
-
+	--set abonnements for all available news genres
+	for i = 0, TVT.NewsGenres.count - 1 do
+		MY.SetNewsAbonnement(TVT.NewsGenres.GetAtIndex(i), self:GetAbonnementLevel(abonnementCount, i))
+	end
 	--self.Task.CurrentBudget = self.Task.CurrentBudget - (abonnementCount * 10000)
 
 	self.Status = JOB_STATUS_DONE

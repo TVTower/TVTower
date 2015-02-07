@@ -19,7 +19,7 @@ Type TSequenceCalculation
 		If shrinkMod <> null Then shrinkModCopy = shrinkMod.Copy().CutBordersFloat(0.25, 1.25)
 
 		For Local i:Int = 1 To TVTTargetGroup.count
-			Local targetGroupID:int = TVTTargetGroup.GetGroupID(i)
+			Local targetGroupID:int = TVTTargetGroup.GetAtIndex(i)
 			If Predecessor
 				predecessorValue = Predecessor.FinalAttraction.GetValue(targetGroupID)
 			Else

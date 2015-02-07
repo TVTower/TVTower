@@ -1,20 +1,39 @@
 Rem
-bbdoc: BASIC/Reflection
-End Rem
-rem
-Module BRL.Reflection
+	====================================================================
+	class some extended reflection (compared to vanilla)
+	====================================================================
 
-ModuleInfo "Version: 1.02"
-ModuleInfo "Author: Mark Sibly"
-ModuleInfo "License: zlib/libpng"
-ModuleInfo "Copyright: Blitz Research Ltd"
-ModuleInfo "Modserver: BRL"
+	The code in this file was adjusted to be superstrict.
+	It is based on the extended version from "grable":
+	http://www.blitzmax.com/Community/posts.php?topic=84918
 
-ModuleInfo "History: 1.02 Release"
-ModuleInfo "History: Added Brucey's size fix to GetArrayElement()/SetArrayElement()."
-ModuleInfo "History: 1.01 Release"
-ModuleInfo "History: Fixed NewArray using temp type name"
-endrem
+	The licence contains the original author of the reflection code.
+
+	====================================================================
+	LICENCE
+
+	Copyright (C) Blitz Research Ltd
+
+	This software is provided 'as-is', without any express or
+	implied warranty. In no event will the authors be held liable
+	for any	damages arising from the use of this software.
+
+	Permission is granted to anyone to use this software for any
+	purpose, including commercial applications, and to alter it
+	and redistribute it freely, subject to the following restrictions:
+
+	1. The origin of this software must not be misrepresented; you
+	   must not claim that you wrote the original software. If you use
+	   this software in a product, an acknowledgment in the product
+	   documentation would be appreciated but is not required.
+
+	2. Altered source versions must be plainly marked as such, and
+	   must not be misrepresented as being the original software.
+
+	3. This notice may not be removed or altered from any source
+	   distribution.
+	====================================================================
+EndRem
 SuperStrict
 Import BRL.LinkedList
 Import BRL.Map
@@ -152,9 +171,12 @@ Function _Call:Object( p:Byte Ptr,typeId:TTypeId,obj:Object,args:Object[],argTyp
 	Local q:int[10]
 	Local sp:Byte Ptr = q
 
-	bbRefPushObject sp,obj
-	'only advance by 4 if you have a method-call instead of a function call
-	if not functionCall then sp:+4
+	'only push context and advance by 4 if you have a method-call
+	'instead of a function call
+	if not functionCall
+		bbRefPushObject sp,obj
+		sp:+4
+	endif
 
 	If typeId=LongTypeId then sp:+8
 

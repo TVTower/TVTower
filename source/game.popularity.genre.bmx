@@ -54,6 +54,6 @@ Type TGenrePopularity Extends TPopularity
 		changeVal = Min(Max(changeVal, 0.25), 1.5)
 
 		ChangeTrend(changeVal)
-		'Print "BroadcastedProgramme: Change Trend '" + GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetGenreStringID(audienceResult.AudienceAttraction.Genre)) + "': " + changeVal
+		'Print "BroadcastedProgramme: Change Trend '" + GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(audienceResult.AudienceAttraction.Genre)) + "': " + changeVal
 	End Method
 End Type

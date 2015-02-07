@@ -996,7 +996,7 @@ Type TAudienceMarketCalculation
 				attrRange = attraction.Copy()
 			Else
 				For local i:int = 1 to TVTTargetGroup.count
-					local groupKey:int = TVTTargetGroup.GetGroupID(i)
+					local groupKey:int = TVTTargetGroup.GetAtIndex(i)
 					local rangeValue:Float = attrRange.GetValue(groupKey)
 					attrRange.SetValue(groupKey, rangeValue + (1 - rangeValue) * attraction.GetValue(groupKey))
 				Next
@@ -1014,7 +1014,7 @@ Type TAudienceMarketCalculation
 				'-> check all values for 0 and handle them!
 
 				For local i:int = 1 to TVTTargetGroup.count
-					local groupKey:int = TVTTargetGroup.GetGroupID(i)
+					local groupKey:int = TVTTargetGroup.GetAtIndex(i)
 					'one of the targetgroups is not attracted at all
 					'-> reduce to 0 (just set the same value so
 					'   result/attr = 1.0 )

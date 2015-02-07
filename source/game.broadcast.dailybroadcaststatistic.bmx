@@ -242,7 +242,7 @@ Type TDailyBroadcastStatistic
 
 		'sort and store
 		For local i:int = 0 to TVTTargetGroup.count
-			local groupID:int = TVTTargetGroup.GetGroupID(i)
+			local groupID:int = TVTTargetGroup.GetAtIndex(i)
 			'sort the list descending (biggest value at the top)
 			Select groupID
 				Case TVTTargetGroup.All

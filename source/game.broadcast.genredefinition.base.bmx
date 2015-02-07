@@ -21,7 +21,7 @@ Type TGenreDefinitionBase
 		Local rise:Int = false
 
 		For Local i:Int = 1 To TVTTargetGroup.count
-			Local targetGroupID:int = TVTTargetGroup.GetGroupID(i)
+			Local targetGroupID:int = TVTTargetGroup.GetAtIndex(i)
 			If predecessor
 				predecessorValue = predecessor.BlockAttraction.GetValue(targetGroupID)
 			Else

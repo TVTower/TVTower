@@ -750,6 +750,6 @@ Type TScriptTemplate Extends TNamedGameObject
 
 
 	Function _GetGenreString:string(_genre:Int)
-		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetGenreStringID(_genre))
+		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(_genre))
 	End Function
 End Type

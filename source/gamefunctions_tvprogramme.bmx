@@ -2123,8 +2123,8 @@ Type TGUIProgrammeLicence extends TGUIGameListItem
 
 		'override defaults - with the default genre identifier
 		'(eg. "undefined" -> "gfx_movie_undefined")
-		self.assetNameDefault = "gfx_movie_"+TVTProgrammeGenre.GetGenreStringID(-1)
-		self.assetNameDragged = "gfx_movie_"+TVTProgrammeGenre.GetGenreStringID(-1)
+		self.assetNameDefault = "gfx_movie_"+TVTProgrammeGenre.GetAsString(-1)
+		self.assetNameDragged = "gfx_movie_"+TVTProgrammeGenre.GetAsString(-1)
 
 		return self
 	End Method
@@ -2141,7 +2141,7 @@ Type TGUIProgrammeLicence extends TGUIGameListItem
 		self.licence = licence
 
 		'get the string identifier of the genre (eg. "adventure" or "action")
-		local genreString:string = TVTProgrammeGenre.GetGenreStringID(licence.GetGenre())
+		local genreString:string = TVTProgrammeGenre.GetAsString(licence.GetGenre())
 		local assetName:string = ""
 
 		'if it is a collection or series

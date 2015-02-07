@@ -570,7 +570,7 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 	Method GetGenreString:String(_genre:Int=-1)
 		If _genre < 0 Then _genre = self.genre
 		'eg. PROGRAMME_GENRE_ACTION
-		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetGenreStringID(_genre))
+		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(_genre))
 	End Method
 
 

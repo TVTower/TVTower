@@ -728,8 +728,8 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'if no group given, use the one of the object
 		if group < 0 then group = base.limitedToTargetGroup
 
-		If group > 0 And group <= TVTTargetGroup.GetGroupID(TVTTargetGroup.count)
-			Return GetLocale("AD_TARGETGROUP_"+TVTTargetGroup.GetGroupString(group))
+		If group > 0 And group <= TVTTargetGroup.GetAtIndex(TVTTargetGroup.count)
+			Return GetLocale("AD_TARGETGROUP_"+TVTTargetGroup.GetAsString(group))
 		else
 			Return GetLocale("AD_TARGETGROUP_NONE")
 		EndIf
@@ -746,7 +746,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		if genre < 0 then genre = base.limitedToProgrammeGenre
 		if genre < 0 then return ""
 
-		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetGenreStringID(genre))
+		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(genre))
 	End Method
 
 

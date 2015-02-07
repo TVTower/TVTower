@@ -324,7 +324,7 @@ Type TDatabaseLoader
 			localizeDescription.Set(description, "de")
 
 			'convert targetgroup to v3
-			targetGroup = TVTTargetGroup.GetGroupID(targetGroup)
+			targetGroup = TVTTargetGroup.GetAtIndex(targetGroup)
 			
 			local ad:TAdContractBase = new TAdContractBase.Create("", localizeTitle, localizeDescription, daystofinish, spotcount, targetgroup, minaudience, minimage, fixedPrice, profit, penalty)
 

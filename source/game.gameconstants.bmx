@@ -12,48 +12,64 @@ SuperStrict
 Global TVTDebugInfos:int = False
 Global TVTDebugQuoteInfos:int = False	
 
-Type TVTNewsType
-	const InitialNews:int = 0
-	const InitialNewsByInGameEvent:int = 1
-	const FollowingNews:int = 2
+Type TVTNewsType {_exposeToLua}
+	Const InitialNews:int = 0
+	Const InitialNewsByInGameEvent:int = 1
+	Const FollowingNews:int = 2
 End Type
 
 
-Type TVTNewsHandling
-	const FixMessage:Int = 1
-	const DynamicMessage:Int = 2
+Type TVTNewsHandling {_exposeToLua}
+	Const FixMessage:Int = 1
+	Const DynamicMessage:Int = 2
 End Type
 
 
-Type TVTNewsGenre
-	const Politics_Economy:int = 0
-	const ShowBiz:int = 1
-	const Sport:int = 2
-	const Technics_Media:int = 3
-	const CurrentAffairs:int = 4
+Type TVTNewsGenre {_exposeToLua}
+	Const POLITICS_ECONOMY:int = 0
+	Const SHOWBIZ:int = 1
+	Const SPORT:int = 2
+	Const TECHNICS_MEDIA:int = 3
+	Const CURRENTAFFAIRS:int = 4
+	Const count:int = 5
+
+
+	Function GetAtIndex:int(index:int)
+		'each index has a const, so just return index
+		return index
+	End Function
 End Type
 
 
-Type TVTNewsEffect
-	const None:int = 0
-	const ChangeMaxAudience:int = 1
-	const ChangeTrend:int = 2
-	const TerroristAttack:int = 4
+Type TVTNewsEffect {_exposeToLua}
+	Const NONE:int = 0
+	Const CHANGEMAXAUDIENCE:int = 1
+	Const CHANGETREND:int = 2
+	Const TERRORISTATTACK:int = 4
 End Type
 
 
 '"product" in the DB
-Type TVTProgrammeType
-	const Undefined:int = 0
-	const Movie:int = 1
-	const Series:int = 2
-	const Episode:int = 3
-	const Show:int = 4
-	const Reportage:int = 5
-	const Commercial:int = 6
-	const Event:int = 7
-	const Misc:int = 8
+Type TVTProgrammeType {_exposeToLua}
+	Const UNDEFINED:int = 0
+	Const MOVIE:int = 1
+	Const SERIES:int = 2
+	Const EPISODE:int = 3
+	Const SHOW:int = 4
+	Const REPORTAGE:int = 5
+	Const COMMERCIAL:int = 6
+	Const EVENT:int = 7
+	Const MISC:int = 8
 
+	Const count:int = 9
+
+
+	Function GetAtIndex:int(index:int)
+		'each index has a const, so just return index
+		return index
+	End Function
+	
+	
 	Function GetTypeString:String(typeKey:int = 0)
 		Select typeKey
 			case 1  return "movie"
@@ -71,48 +87,58 @@ Type TVTProgrammeType
 End Type
 
 
-Type TVTProgrammeGenre
-	const Undefined:int = 0
+Type TVTProgrammeGenre {_exposeToLua}
+	Const Undefined:int = 0
  
 	'Movie-Genre 1+
-	const Adventure:int = 1
-	const Action:int = 2
-	const Animation:int = 3
-	const Crime:int = 4
-	const Comedy:int = 5
-	const Documentary:int = 6
-	const Drama:int = 7
-	const Erotic:int = 8
-	const Family:int = 9
-	const Fantasy:int = 10
-	const History:int = 11
-	const Horror:int = 12
-	const Monumental:int = 13
-	const Mystery:int = 14
-	const Romance:int = 15
-	const SciFi:int = 16
-	const Thriller:int = 17
-	const Western:int = 18
+	Const Adventure:int = 1
+	Const Action:int = 2
+	Const Animation:int = 3
+	Const Crime:int = 4
+	Const Comedy:int = 5
+	Const Documentary:int = 6
+	Const Drama:int = 7
+	Const Erotic:int = 8
+	Const Family:int = 9
+	Const Fantasy:int = 10
+	Const History:int = 11
+	Const Horror:int = 12
+	Const Monumental:int = 13
+	Const Mystery:int = 14
+	Const Romance:int = 15
+	Const SciFi:int = 16
+	Const Thriller:int = 17
+	Const Western:int = 18
 
 	'Show-Genre 100+
-	const Show:int = 100			'Shows Allgemein
-	const ShowPolitics:int = 101	'Polit-Talks
-	const ShowMusic:int = 102		'Musik-Sendungen
+	Const Show:int = 100			'Shows Allgemein
+	Const ShowPolitics:int = 101	'Polit-Talks
+	Const ShowMusic:int = 102		'Musik-Sendungen
 
 	'Event-Genre 200+
-	const Event:int	= 200			'allgemeine "Ereignisse"
-	const EventPolitics:int = 201	'Wahlen, Große Reden, Bundestagsdebatte
-	const EventMusic:int = 202		'AC/DC-Konzert
-	const EventSport:int = 203		'Fussball WM, Olymische Spiele
-	const EventShowbiz:int = 204	'Oscarverleihung, Golden Globes, Gala-Abend
+	Const Event:int	= 200			'allgemeine "Ereignisse"
+	Const EventPolitics:int = 201	'Wahlen, Große Reden, Bundestagsdebatte
+	Const EventMusic:int = 202		'AC/DC-Konzert
+	Const EventSport:int = 203		'Fussball WM, Olymische Spiele
+	Const EventShowbiz:int = 204	'Oscarverleihung, Golden Globes, Gala-Abend
  
 	'Reportage-Genre 300+
-	const Feature:int = 300
-	const FeatureYellowPress:int = 301
+	Const Feature:int = 300
+	Const FeatureYellowPress:int = 301
+
+
+	Function GetAtIndex:int(index:int)
+		if index >= 1 and index <= 18 then return index
+		if index >= 100 and index <= 102 then return index
+		if index >= 200 and index <= 204 then return index
+		if index >= 300 and index <= 301 then return index
+		return 0
+	End Function
+	
 
 	'returns a textual version of the id
-	Function GetGenreStringID:string(id:int)
-		Select id
+	Function GetAsString:string(key:int)
+		Select key
 			case Adventure				return "adventure"
 			case Action					return "action"
 			case Animation				return "animation"
@@ -152,7 +178,7 @@ Type TVTProgrammeGenre
 End Type
 
 
-Type TVTProgrammeFlag
+Type TVTProgrammeFlag {_exposeToLua}
 	'Genereller Quotenbonus!
 	Const LIVE:Int = 1
 	'Bonus bei Kindern / Jugendlichen. Malues bei Rentnern / Managern.
@@ -177,77 +203,91 @@ Type TVTProgrammeFlag
 	'Ist ne Serie! Vielleicht besser als den ProgrammeType... so kann
 	'auch ne Reportage ne Serie sein.
 	Const SERIES:Int = 256
+
+	Const count:int = 9
+
+
+	Function GetAtIndex:int(index:int = 0)
+		if index <= 0 then return 0
+		return 2^(index-1)
+	End Function	
 End Type
 
 
-Type TVTProgrammeLicenceType
+Type TVTProgrammeLicenceType {_exposeToLua}
 	Const UNKNOWN:int    = 1
 	Const EPISODE:int    = 2
 	Const SERIES:int     = 4
 	Const MOVIE:int      = 8
 	Const COLLECTION:int = 16
+
+
+	Function GetAtIndex:int(index:int = 0)
+		if index <= 0 then return 0
+		return 2^(index-1)
+	End Function	
 End Type
 
 
-Type TVTTargetGroup
-	const All:int = 0				'0
-	const Children:int = 1			'1
-	const Teenagers:int = 2			'2
-	const HouseWives:int = 4		'3
-	const Employees:int = 8			'4
-	const Unemployed:int = 16		'5
-	const Manager:int = 32			'6
-	const Pensioners:int = 64		'7
-	const Women:int = 128			'8
-	const Men:int = 256				'9
+Type TVTTargetGroup {_exposeToLua}
+	Const ALL:int = 0				'0
+	Const CHILDREN:int = 1			'1
+	Const TEENAGERS:int = 2			'2
+	Const HOUSEWIVES:int = 4		'3
+	Const EMPLOYEES:int = 8			'4
+	Const UNEMPLOYED:int = 16		'5
+	Const MANAGER:int = 32			'6
+	Const PENSIONERS:int = 64		'7
+	Const WOMEN:int = 128			'8
+	Const MEN:int = 256				'9
 	'amount of target groups
-	const count:int = 9
+	Const count:int = 9
 	'without women/men
-	const baseGroupCount:int = 7
+	Const baseGroupCount:int = 7
 
-	Function GetGroupID:int(position:int = 0)
-		if position <= 0 then return 0
-		return 2^(position-1)
+	Function GetAtIndex:int(index:int = 0)
+		if index <= 0 then return 0
+		return 2^(index-1)
 	End Function
 
 
-	Function GetGroupString:String(groupKey:int = 0)
-		Select groupKey
-			case 1    return "children"
-			case 2    return "teenagers"
-			case 4    return "housewives"
-			case 8    return "employees"
-			case 16   return "unemployed"
-			case 32   return "manager"
-			case 64   return "pensioners"
-			case 128  return "women"
-			case 256  return "men"
-			case 0    return "all"
-			default   return "all"
+	Function GetAsString:String(key:int = 0)
+		Select key
+			case CHILDREN    return "children"
+			case TEENAGERS   return "teenagers"
+			case HOUSEWIVES  return "housewives"
+			case EMPLOYEES   return "employees"
+			case UNEMPLOYED  return "unemployed"
+			case MANAGER     return "manager"
+			case PENSIONERS  return "pensioners"
+			case WOMEN       return "women"
+			case MEN         return "men"
+			case ALL         return "all"
+			default          return "all"
 		End Select
 	End Function
 End Type
 
 
-Type TVTPressureGroup
-	const None:int = 0
-	const SmokerLobby:int = 1
-	const AntiSmoker:int = 2
-	const ArmsLobby:int = 4
-	const Pacifists:int = 8
-	const Capitalists:int = 16
-	const Communists:int = 32
+Type TVTPressureGroup {_exposeToLua}
+	Const None:int = 0
+	Const SmokerLobby:int = 1
+	Const AntiSmoker:int = 2
+	Const ArmsLobby:int = 4
+	Const Pacifists:int = 8
+	Const Capitalists:int = 16
+	Const Communists:int = 32
 End Type
 
 
-Type TVTPersonGender
+Type TVTPersonGender {_exposeToLua}
 	Const UNDEFINED:int = 0
 	Const MALE:int = 1
 	Const FEMALE:int = 2
 End Type
 
 
-Type TVTProgrammePersonJob
+Type TVTProgrammePersonJob {_exposeToLua}
 	Const UNKNOWN:int = 0
 	Const DIRECTOR:int = 1
 	Const ACTOR:int = 2
@@ -258,14 +298,15 @@ Type TVTProgrammePersonJob
 	Const GUEST:int = 64 'show guest or prominent show candidate
 	Const REPORTER:int = 128
 
-	Function GetJobID:int(position:int = 0)
-		if position <= 0 then return 0
-		return 2^(position-1)
+
+	Function GetAtIndex:int(index:int = 0)
+		if index <= 0 then return 0
+		return 2^(index-1)
 	End Function
 
 	
-	Function GetJobString:string(jobKey:int)
-		Select jobKey
+	Function GetAsString:string(key:int)
+		Select key
 			case 0		return "unknown"
 			case 1		return "director"
 			case 2		return "actor"

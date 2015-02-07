@@ -1179,8 +1179,8 @@ Type TTooltipAudience Extends TTooltip
 			local audienceQuote:TAudience = audienceResult.GetAudienceQuote()
 			local targetGroupID:int = 0
 			for local i:int = 1 to TVTTargetGroup.count
-				targetGroupID = TVTTargetGroup.GetGroupID(i)
-				lines[i-1] = getLocale("AD_TARGETGROUP_"+TVTTargetGroup.GetGroupString(targetGroupID)) + ": "
+				targetGroupID = TVTTargetGroup.GetAtIndex(i)
+				lines[i-1] = getLocale("AD_TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)) + ": "
 				numbers[i-1] = TFunctions.convertValue(audienceResult.Audience.GetValue(targetGroupID), 0)
 				percents[i-1] = MathHelper.NumberToString(audienceQuote.GetValue(targetGroupID) * 100,2)
 			Next

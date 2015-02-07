@@ -1186,7 +1186,7 @@ Type TProgrammeLicenceFilter
 
 		For local entry:int = EachIn GetGenres()
 			if result <> "" then result :+ " & "
-			result :+ GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetGenreStringID(entry))
+			result :+ GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(entry))
 		Next
 		return result
 	End Method

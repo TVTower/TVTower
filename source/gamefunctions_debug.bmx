@@ -70,7 +70,7 @@
 
 		If attraction.BroadcastType = TBroadcastMaterial.TYPE_PROGRAMME Then
 			If (attraction.BaseAttraction <> Null) Then
-				genre = GetLocale("PROGRAMME_GENRE_"+TVTProgrammeGenre.GetGenreStringID(attraction.Genre))
+				genre = GetLocale("PROGRAMME_GENRE_"+TVTProgrammeGenre.GetAsString(attraction.Genre))
 			Endif
 		ElseIf attraction.BroadcastType = TBroadcastMaterial.TYPE_NEWSSHOW Then
 			If (attraction.BaseAttraction <> Null) Then
@@ -259,7 +259,7 @@ endrem
 		End If
 
 		for local i:int = 1 to TVTTargetGroup.baseGroupCount
-			val = TFunctions.convertValue(audience.GetValue(TVTTargetGroup.GetGroupID(i)), 2)
+			val = TFunctions.convertValue(audience.GetValue(TVTTargetGroup.GetAtIndex(i)), 2)
 			font.drawBlock(val, x2 + 70*(i-1), y, 65, 25, ALIGN_RIGHT_TOP, color)
 		next
 	End Function
@@ -283,7 +283,7 @@ endrem
 		End if
 
 		for local i:int = 1 to TVTTargetGroup.baseGroupCount
-			val = MathHelper.NumberToString(audience.GetValue(TVTTargetGroup.GetGroupID(i)),2)
+			val = MathHelper.NumberToString(audience.GetValue(TVTTargetGroup.GetAtIndex(i)),2)
 			font.drawBlock(val, x2 + 70*(i-1), y, 65, 25, ALIGN_RIGHT_TOP, color)
 		Next
 	End Function
