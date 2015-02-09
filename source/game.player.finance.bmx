@@ -103,7 +103,6 @@ Type TPlayerFinance
 	Global drawingCreditRate:float		= 0.03 '3% a day  - rate for having a negative balance
 	Global List:TList					= CreateList()
 
-
 	Method Create:TPlayerFinance(playerID:int, startmoney:Long=500000, startcredit:Int = 500000)
 		money = startmoney
 		revenue_before = startmoney
@@ -146,33 +145,38 @@ Type TPlayerFinance
 	Method GetCredit:Long()
 		return credit
 	End Method
+	
+	Method GetCreditInterest:Long() 'Tägliche Zinsen
+		return GetCredit() * TPlayerFinance.creditInterestRate
+	End Method	
 
 
-	Method ChangeMoney(value:int)
+	Method ChangeMoney(value:int, reason:int, reference:TNamedGameObject=null)
 		'TLogger.log("TFinancial.ChangeMoney()", "Player "+player.playerID+" changed money by "+value, LOG_DEBUG)
 		money			:+ value
 		revenue_after	:+ value
+		
 		'emit event to inform others
-		EventManager.triggerEvent( TEventSimple.Create("PlayerFinance.onChangeMoney", new TData.AddNumber("value", value).AddNumber("playerID", playerID)) )
+		EventManager.triggerEvent( TEventSimple.Create("PlayerFinance.onChangeMoney", new TData.AddNumber("value", value).AddNumber("playerID", playerID).AddNumber("reason", reason).Add("reference", reference)) )
 	End Method
 
 
-	Method TransactionFailed:int(value:int)
+	Method TransactionFailed:int(value:int, reason:int, reference:TNamedGameObject=null)
 		'emit event to inform others
 		EventManager.triggerEvent( TEventSimple.Create("PlayerFinance.onTransactionFailed", new TData.AddNumber("value", value).AddNumber("playerID", playerID)) )
 		return False
 	End Method
 
 
-	Method AddIncome(value:Int)
+	Method AddIncome(value:Int, reason:int, reference:TNamedGameObject=null)
 		income_total :+ value
-		ChangeMoney(value)
+		ChangeMoney(value, reason, reference)
 	End Method
 
 
-	Method AddExpense(value:Int)
+	Method AddExpense(value:Int, reason:int, reference:TNamedGameObject=null)
 		expense_total :+ value
-		ChangeMoney(-value)
+		ChangeMoney(-value, reason, reference)
 	End Method
 
 
@@ -184,7 +188,7 @@ Type TPlayerFinance
 		credit :- value
 		expense_creditRepayed :+ value
 		expense_total :+ value
-		ChangeMoney(-value)
+		ChangeMoney(-value, TPlayerFinanceHistoryEntry.TYPE_CREDIT_REPAY)
 	End Method
 
 
@@ -196,7 +200,7 @@ Type TPlayerFinance
 		credit :+ value
 		income_creditTaken :+ value
 		income_total :+ value
-		ChangeMoney(+value)
+		ChangeMoney(+value, TPlayerFinanceHistoryEntry.TYPE_CREDIT_TAKE)
 	End Method
 
 
@@ -207,7 +211,7 @@ Type TPlayerFinance
 		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_SELL_MISC, +price).AddTo(playerID)
 
 		income_misc :+ price
-		AddIncome(price)
+		AddIncome(price, TPlayerFinanceHistoryEntry.TYPE_SELL_MISC)
 		Return True
 	End Method
 
@@ -218,7 +222,7 @@ Type TPlayerFinance
 		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_SELL_STATION, +price).AddTo(playerID)
 
 		income_stations :+ price
-		AddIncome(price)
+		AddIncome(price, TPlayerFinanceHistoryEntry.TYPE_SELL_STATION)
 		Return True
 	End Method
 	
@@ -229,7 +233,7 @@ Type TPlayerFinance
 		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_SELL_SCRIPT, +price).AddTo(playerID)
 
 		income_scripts :+ price
-		AddIncome(price)
+		AddIncome(price, TPlayerFinanceHistoryEntry.TYPE_SELL_SCRIPT)
 		Return True
 	End Method
 
@@ -241,7 +245,7 @@ Type TPlayerFinance
 		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_EARN_ADPROFIT, +value, contract).AddTo(playerID)
 
 		income_ads :+ value
-		AddIncome(value)
+		AddIncome(value, TPlayerFinanceHistoryEntry.TYPE_EARN_ADPROFIT, TNamedGameObject(contract))
 		Return True
 	End Method
 
@@ -253,7 +257,7 @@ Type TPlayerFinance
 		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_EARN_INFOMERCIALREVENUE, +value, contract).AddTo(playerID)
 
 		income_ads :+ value
-		AddIncome(value)
+		AddIncome(value, TPlayerFinanceHistoryEntry.TYPE_EARN_INFOMERCIALREVENUE, TNamedGameObject(contract))
 		Return True
 	End Method
 
@@ -265,7 +269,7 @@ Type TPlayerFinance
 		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_EARN_CALLERREVENUE, +value, licence).AddTo(playerID)
 
 		income_callerRevenue :+ value
-		AddIncome(value)
+		AddIncome(value, TPlayerFinanceHistoryEntry.TYPE_EARN_CALLERREVENUE, TNamedGameObject(licence))
 		Return True
 	End Method
 
@@ -277,7 +281,7 @@ Type TPlayerFinance
 		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_EARN_SPONSORSHIPREVENUE, +value, licence).AddTo(playerID)
 
 		income_sponsorshipRevenue :+ value
-		AddIncome(value)
+		AddIncome(value, TPlayerFinanceHistoryEntry.TYPE_EARN_SPONSORSHIPREVENUE, TNamedGameObject(licence))
 		Return True
 	End Method
 
@@ -289,7 +293,7 @@ Type TPlayerFinance
 		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_SELL_PROGRAMMELICENCE, +price, licence).AddTo(playerID)
 
 		income_programmeLicences :+ price
-		AddIncome(price)
+		AddIncome(price, TPlayerFinanceHistoryEntry.TYPE_SELL_PROGRAMMELICENCE, TNamedGameObject(licence))
 	End Method
 
 
@@ -300,7 +304,7 @@ Type TPlayerFinance
 		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_EARN_BALANCEINTEREST, +value).AddTo(playerID)
 
 		income_balanceInterest :+ value
-		AddIncome(value)
+		AddIncome(value, TPlayerFinanceHistoryEntry.TYPE_EARN_BALANCEINTEREST)
 		Return True
 	End Method
 
@@ -312,7 +316,7 @@ Type TPlayerFinance
 		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_DRAWINGCREDITINTEREST, -value).AddTo(playerID)
 
 		expense_drawingCreditInterest :+ value
-		AddExpense(value)
+		AddExpense(value, TPlayerFinanceHistoryEntry.TYPE_PAY_DRAWINGCREDITINTEREST)
 		Return True
 	End Method
 
@@ -325,10 +329,10 @@ Type TPlayerFinance
 			new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_AUCTIONBID, -price, licence).AddTo(playerID)
 
 			expense_programmeLicences :+ price
-			AddExpense(price)
+			AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_AUCTIONBID, TNamedGameObject(licence))
 			Return True
 		Else
-			TransactionFailed(price)
+			TransactionFailed(price, TPlayerFinanceHistoryEntry.TYPE_PAY_AUCTIONBID, TNamedGameObject(licence))
 			Return False
 		EndIf
 	End Method
@@ -345,7 +349,7 @@ Type TPlayerFinance
 
 		expense_programmeLicences	:- price
 		expense_total				:- price
-		ChangeMoney(+price)
+		ChangeMoney(+price, TPlayerFinanceHistoryEntry.TYPE_PAYBACK_AUCTIONBID, TNamedGameObject(licence))
 		Return True
 	End Method
 
@@ -358,10 +362,10 @@ Type TPlayerFinance
 			new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_PROGRAMMELICENCE, -price, licence).AddTo(playerID)
 
 			expense_programmeLicences :+ price
-			AddExpense(price)
+			AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_PROGRAMMELICENCE, TNamedGameObject(licence))
 			Return True
 		Else
-			TransactionFailed(price)
+			TransactionFailed(price, TPlayerFinanceHistoryEntry.TYPE_PAY_PROGRAMMELICENCE, TNamedGameObject(licence))
 			Return False
 		EndIf
 	End Method
@@ -375,10 +379,10 @@ Type TPlayerFinance
 			new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_STATION, -price).AddTo(playerID)
 
 			expense_stations :+ price
-			AddExpense(price)
+			AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_STATION)
 			Return True
 		Else
-			TransactionFailed(price)
+			TransactionFailed(price, TPlayerFinanceHistoryEntry.TYPE_PAY_STATION)
 			Return False
 		EndIf
 	End Method
@@ -392,10 +396,10 @@ Type TPlayerFinance
 			new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_SCRIPT, -price, script).AddTo(playerID)
 
 			expense_scripts :+ price
-			AddExpense(price)
+			AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_SCRIPT, TNamedGameObject(script))
 			Return True
 		Else
-			TransactionFailed(price)
+			TransactionFailed(price, TPlayerFinanceHistoryEntry.TYPE_PAY_SCRIPT, TNamedGameObject(script))
 			Return False
 		EndIf
 	End Method
@@ -409,10 +413,10 @@ Type TPlayerFinance
 			new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_PRODUCTIONSTUFF, -price).AddTo(playerID)
 
 			expense_productionstuff :+ price
-			AddExpense(price)
+			AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_PRODUCTIONSTUFF)
 			Return True
 		Else
-			TransactionFailed(price)
+			TransactionFailed(price, TPlayerFinanceHistoryEntry.TYPE_PAY_PRODUCTIONSTUFF)
 			Return False
 		EndIf
 	End Method
@@ -425,7 +429,7 @@ Type TPlayerFinance
 		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_PENALTY, -value, contract).AddTo(playerID)
 
 		expense_penalty :+ value
-		AddExpense(value)
+		AddExpense(value, TPlayerFinanceHistoryEntry.TYPE_PAY_PENALTY, TNamedGameObject(contract))
 		Return True
 	End Method
 
@@ -437,7 +441,7 @@ Type TPlayerFinance
 		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_RENT, -price, room).AddTo(playerID)
 
 		expense_rent :+ price
-		AddExpense(price)
+		AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_RENT, TNamedGameObject(room))
 		Return True
 	End Method
 
@@ -450,10 +454,10 @@ Type TPlayerFinance
 			new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_NEWS, -price, news).AddTo(playerID)
 
 			expense_news :+ price
-			AddExpense(price)
+			AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_NEWS, TNamedGameObject(news))
 			Return True
 		Else
-			TransactionFailed(price)
+			TransactionFailed(price, TPlayerFinanceHistoryEntry.TYPE_PAY_NEWS, TNamedGameObject(news))
 			Return False
 		EndIf
 	End Method
@@ -466,7 +470,7 @@ Type TPlayerFinance
 		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_NEWSAGENCIES, -price).AddTo(playerID)
 
 		expense_newsagencies :+ price
-		AddExpense(price)
+		AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_NEWSAGENCIES)
 		Return True
 	End Method
 
@@ -478,7 +482,7 @@ Type TPlayerFinance
 		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_STATIONFEES, -price).AddTo(playerID)
 
 		expense_stationfees :+ price
-		AddExpense(price)
+		AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_STATIONFEES)
 		Return True
 	End Method
 
@@ -490,7 +494,7 @@ Type TPlayerFinance
 		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_CREDITINTEREST, -price).AddTo(playerID)
 
 		expense_creditInterest :+ price
-		AddExpense(price)
+		AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_CREDITINTEREST)
 		Return True
 	End Method
 
@@ -502,7 +506,7 @@ Type TPlayerFinance
 		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_MISC, -price).AddTo(playerID)
 
 		expense_misc :+ price
-		AddExpense(price)
+		AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_MISC)
 		Return True
 	End Method
 End Type

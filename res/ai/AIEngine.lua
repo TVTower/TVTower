@@ -127,6 +127,9 @@ function AIPlayer:OnEnterRoom(roomId)
 	self.CurrentTask:OnEnterRoom(roomId)
 end
 
+function AIPlayer:OnMoneyChanged(value, reason, reference)
+	--Zum überschreiben
+end
 
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -154,6 +157,8 @@ _G["AITask"] = class(KIDataObjekt, function(c)
 	c.CurrentInvestmentPriority = 0 -- Wie ist die Prio aktuell? InvestmentPriority wird jede Runde aufaddiert.
 	c.NeededInvestmentBudget = -1 -- Wie viel Geld benötigt die KI für eine Großinvestition
 	c.UseInvestment = false
+	
+	c.FixedCosts = 0
 end)
 
 function AITask:typename()
@@ -190,9 +195,7 @@ function AITask:Activate()
 end
 
 function AITask:AdjustmentsForNextDay()	
-	TVT.addToLog(self:typename() .. " AdjustmentsForNextDay")
 	self.CurrentInvestmentPriority = self.CurrentInvestmentPriority + self.InvestmentPriority
-	TVT.addToLog(self.CurrentInvestmentPriority)
 	--kann überschrieben werden
 end
 
@@ -330,6 +333,10 @@ function AITask:BeforeBudgetSetup()
 end
 
 function AITask:BudgetSetup()
+end
+
+function AITask:OnMoneyChanged(value, reason, reference)
+	--Zum überschreiben
 end
 
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

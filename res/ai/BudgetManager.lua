@@ -23,7 +23,7 @@ function BudgetManager:Initialize()
 	-- Da am Anfang auf keine Erfahrungswerte bezüglich der Budgethöhe zurückgegriffen werden kann,
 	-- wird für alle vergangenen Tage angenommen, dass es gleich war. Das Budget entspricht erstmal 80% des Startkapitals.
 	local playerMoney = MY.GetMoney() --aktueller Geldstand
-	local startBudget = math.round(playerMoney * 0.8) --Gesamtbudget das investiert werden soll. Später von der Risikobereitschafts abhängig machen.
+	local startBudget = math.round(playerMoney * 0.95) --Gesamtbudget das investiert werden soll. Später von der Risikobereitschafts abhängig machen.
 
 	-- Erfahrungswerte für den Anfang mit dem Standardwert initialisieren
 	self.BudgetHistory = {}
@@ -131,17 +131,25 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 		v:BeforeBudgetSetup()
 	end
 	
-	-- Zählen wie viele Budgetanteile es insgesamt gibt
+	local allFixedCostsSavings = 0
+	
+	-- Zählen wie viele Budgetanteile es insgesamt gibt & Alle Fixkosten zusammen zählen
 	local budgetUnits = 0
 	for k,v in pairs(player.TaskList) do
-		budgetUnits = budgetUnits + v:getBudgetUnits()		
+		budgetUnits = budgetUnits + v:getBudgetUnits()
+		allFixedCostsSavings = allFixedCostsSavings + v.FixedCosts
 	end
+	
+	TVT.addToLog(string.left("Echte Fixkosten:", 20, true) .. string.right(allFixedCostsSavings, 10, true))
+	allFixedCostsSavings = allFixedCostsSavings * 0.7 --Später einstellbar, je nach Charakter: Im Moment 70% der Fixkosten auf jeden Fall bereit halten.
+	TVT.addToLog(string.left("Fixkosten-Reserve:", 20, true) .. string.right(allFixedCostsSavings, 10, true))
+	
 	if budgetUnits == 0 then budgetUnits = 1 end	
 		
 	-- Ersparnisse erhöhen und das nun reale Budget bestimmen, dass verteilt werden soll.
-	local tempBudget = pBudget - self.InvestmentSavings
+	local tempBudget = pBudget - self.InvestmentSavings - allFixedCostsSavings
 	self.InvestmentSavings = self.InvestmentSavings + math.round(tempBudget * self.SavingParts) -- Einen Teil ansparen
-	local realBudget = pBudget - self.InvestmentSavings -- Schließlich echtes Budget bestimmen
+	local realBudget = pBudget - self.InvestmentSavings - allFixedCostsSavings -- Schließlich echtes Budget bestimmen
 	TVT.addToLog(string.left("Sparanteil:", 20, true) .. string.right(self.InvestmentSavings, 10, true))
 	TVT.addToLog(string.left("Tagesbudget:", 20, true) .. string.right(realBudget, 10, true))
 	TVT.addToLog(string.right("=======", 30, true))
@@ -218,5 +226,13 @@ function BudgetManager:IsTaskReadyForInvestment(task, rank, highestPrioTask)
 		end
 	end
 	return false
+end
+
+function BudgetManager:OnMoneyChanged(value, reason, reference)
+	if (reference ~= nil) then
+		TVT.addToLog("$$ Überweisung: " .. value .. " für " .. reason .. ": " .. reference:GetTitle())	
+	else
+		TVT.addToLog("$$ Überweisung: " .. value .. " für " .. reason)	
+	end
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

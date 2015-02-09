@@ -33,11 +33,29 @@ function TaskNewsAgency:GetNextJobInTargetRoom()
 	self:SetWait()
 end
 
+function TaskNewsAgency:BeforeBudgetSetup()
+	self:SetFixedCosts()
+end
+
 function TaskNewsAgency:BudgetSetup()
 	local tempAbonnementBudget = self.BudgetWholeDay * 0.55
 	self.AbonnementBudget = (tempAbonnementBudget - (tempAbonnementBudget % 10000))
 	self.CurrentBudget = self.CurrentBudget - self.AbonnementBudget
 	--debugMsg("BudgetSetup: AbonnementBudget: " .. self.AbonnementBudget .. "   - CurrentBudget: " .. self.CurrentBudget)
+end
+
+function TaskNewsAgency:OnMoneyChanged(value, reason, reference)
+	if (tostring(reason) == tostring(TVT.TYPE_PAY_NEWS)) then
+		self:PayFromBudget(value)
+		self:SetFixedCosts()
+	elseif (tostring(reason) == tostring(TVT.TYPE_PAY_NEWSAGENCIES)) then
+		self:PayFromBudget(value)
+		self:SetFixedCosts()
+	end
+end
+
+function TaskNewsAgency:SetFixedCosts()
+	self.FixedCosts = MY.GetNewsAbonnementFees()
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -109,7 +127,7 @@ function JobNewsAgency:Tick()
 			TVT.addToLog("Kaufe Nachricht: " .. self.Newslist[1].GetTitle() .. " (" .. self.Newslist[1].GetID() .. ") - Slot: 1 - Preis: " .. price)
 			TVT.ne_doNewsInPlan(0)
 			TVT.ne_doNewsInPlan(0, self.Newslist[1].GetID())
-			self.Task:PayFromBudget(price)
+			--self.Task:PayFromBudget(price)
 		end
 	end
 	if (table.count(self.Newslist) > 1) then
@@ -119,7 +137,7 @@ function JobNewsAgency:Tick()
 			TVT.addToLog("Kaufe Nachricht: " .. self.Newslist[2].GetTitle() .. " (" .. self.Newslist[2].GetID() .. ") - Slot: 2 - Preis: " .. price)
 			TVT.ne_doNewsInPlan(1)
 			TVT.ne_doNewsInPlan(1, self.Newslist[2].GetID())
-			self.Task:PayFromBudget(price)
+			--self.Task:PayFromBudget(price)
 		end
 	end
 	if (table.count(self.Newslist) > 2) then
@@ -129,7 +147,7 @@ function JobNewsAgency:Tick()
 			TVT.addToLog("Kaufe Nachricht: " .. self.Newslist[3].GetTitle() .. " (" .. self.Newslist[3].GetID() .. ") - Slot: 3 - Preis: " .. price)
 			TVT.ne_doNewsInPlan(2)
 			TVT.ne_doNewsInPlan(2, self.Newslist[3].GetID())
-			self.Task:PayFromBudget(price)
+			--self.Task:PayFromBudget(price)
 		end
 	end
 	self.Status = JOB_STATUS_DONE

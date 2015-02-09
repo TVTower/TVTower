@@ -1,4 +1,4 @@
-ï»¿'**************************************************************************************************
+'**************************************************************************************************
 ' This program was written with BLIde
 ' Application:
 ' Author:
@@ -273,9 +273,13 @@ Type KI
 	End Method
 	
 
-	Method CallOnMoneyChanged()
+	Method CallOnMoneyChanged(value:int, reason:int, reference:TNamedGameObject)
 	    Try
-			if (KIRunning) then LuaEngine.CallLuaFunction("OnMoneyChanged", Null)
+			Local args:Object[3]
+			args[0] = String(value)
+			args[1] = String(reason)
+			args[2] = TNamedGameObject(reference)
+			if (KIRunning) then LuaEngine.CallLuaFunction("OnMoneyChanged", args)
 		Catch ex:Object
 			TLogger.log("KI.CallOnMoneyChanged", "Script "+scriptFileName+" does not contain function ~qOnMoneyChanged~q.", LOG_ERROR)
 		End Try
@@ -328,7 +332,7 @@ Type TLuaFunctions {_exposeToLua}
 	Field ME:Int 'Wird initialisiert
 
 
-	'Die RÃ¤ume werden alle initialisiert
+	'Die Räume werden alle initialisiert
 	Field ROOM_TOWER:Int = 0
 	Field ROOM_MOVIEAGENCY:Int
 	Field ROOM_ADAGENCY:Int
@@ -349,6 +353,50 @@ Type TLuaFunctions {_exposeToLua}
 	Field ROOM_BOSS_PLAYER_ME:Int
 	Field ROOM_NEWSAGENCY_PLAYER_ME:Int
 	Field ROOM_ARCHIVE_PLAYER_ME:Int
+
+
+	'09.02.2015 MV - Fage an RON: Wie kann ich in Lua auf die Konstanten von TPlayerFinanceHistoryEntry zugreifen? Zwischenlösung...
+	Const TYPE_CREDIT_REPAY:int = 11
+	Const TYPE_CREDIT_TAKE:int = 12
+
+	Const TYPE_PAY_STATION:int = 21
+	Const TYPE_SELL_STATION:int = 22
+	Const TYPE_PAY_STATIONFEES:int = 23
+
+	Const TYPE_SELL_MISC:int = 31
+	Const TYPE_PAY_MISC:int = 32
+
+	Const TYPE_SELL_PROGRAMMELICENCE:int = 41
+	Const TYPE_PAY_PROGRAMMELICENCE:int = 42
+	Const TYPE_PAYBACK_AUCTIONBID:int = 43
+	Const TYPE_PAY_AUCTIONBID:int = 44
+
+	Const TYPE_EARN_CALLERREVENUE:int = 51
+	Const TYPE_EARN_INFOMERCIALREVENUE:int = 52
+	Const TYPE_EARN_ADPROFIT:int = 53
+	Const TYPE_EARN_SPONSORSHIPREVENUE:int = 54
+	Const TYPE_PAY_PENALTY:int = 55
+
+	Const TYPE_PAY_SCRIPT:int = 61
+	Const TYPE_SELL_SCRIPT:int = 62
+	Const TYPE_PAY_RENT:int = 63
+	Const TYPE_PAY_PRODUCTIONSTUFF:int = 64
+
+	Const TYPE_PAY_NEWS:int = 71
+	Const TYPE_PAY_NEWSAGENCIES:int = 72
+
+	Const TYPE_PAY_CREDITINTEREST:int = 81
+	Const TYPE_PAY_DRAWINGCREDITINTEREST:int = 82
+	Const TYPE_EARN_BALANCEINTEREST:int = 83
+	
+	Const TYPE_CHEAT:int = 1000
+
+	Const GROUP_NEWS:int = 1
+	Const GROUP_PROGRAMME:int = 2
+	Const GROUP_DEFAULT:int = 3
+	Const GROUP_PRODUCTION:int = 4
+	Const GROUP_STATION:int = 5
+
 
 	Rem
 		DO NOT use ROOM constants (even "_ME" should be deprecated)
@@ -652,10 +700,10 @@ endrem
 
 
 	Method getEvaluatedAudienceQuote:Int(hour:Int = -1, licenceID:Int = -1, lastQuotePercentage:Float = 0.1, audiencePercentageBasedOnHour:Float=-1)
-		'TODO: Statt dem audiencePercentageBasedOnHour-Parameter kÃ¶nnte auch das noch unbenutzte "hour" den generellen Quotenwert in der
-		'angegebenen Stunde mit einem etwas umgebauten "calculateMaxAudiencePercentage" (ohne Zufallswerte und ohne die globale Variable zu verÃ¤ndern) errechnen.
+		'TODO: Statt dem audiencePercentageBasedOnHour-Parameter könnte auch das noch unbenutzte "hour" den generellen Quotenwert in der
+		'angegebenen Stunde mit einem etwas umgebauten "calculateMaxAudiencePercentage" (ohne Zufallswerte und ohne die globale Variable zu verändern) errechnen.
 
-		Print "MANUEL: FÃ¼r KI wieder rein machen!"
+		Print "MANUEL: Für KI wieder rein machen!"
 		'Local licence:TProgrammeLicence = TProgrammeLicence.Get(licenceID)
 		'If licence and licence.getData()
 		'	Local Quote:Int = Floor(licence.getData().getAudienceQuote(lastQuotePercentage, audiencePercentageBasedOnHour) * 100)

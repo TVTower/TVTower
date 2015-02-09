@@ -89,7 +89,7 @@ Type TPlayerBase {_exposeToLua="selected"}
 	Field newsabonnementsDayMax:Int[] = [-1,-1,-1,-1,-1,-1]
 	'when was the level set
 	Field newsabonnementsSetTime:Int[6]
-
+		
 
 	Method GetPlayerID:Int() {_exposeToLua}
 		Return playerID
@@ -123,7 +123,6 @@ Type TPlayerBase {_exposeToLua="selected"}
 	Method GetMoney:Int(day:Int=-1) {_exposeToLua}
 		Return 0
 	End Method
-
 
 	'returns the financial of the given day
 	'if the day is in the future, a new finance object is created

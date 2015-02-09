@@ -85,7 +85,6 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		Return (IsPlayer(number) And Get(number).IsLocalAI())
 	End Method
 
-
 	'=== EVENTS ===
 	Function OnFigureReachTarget:int(triggerEvent:TEventBase)
 		local figure:TFigure = TFigure(triggerEvent.GetSender())
@@ -269,6 +268,19 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 			Return (GetFigure().inRoom And GetFigure().inRoom.Name.toLower() = roomname.toLower())
 		EndIf
 	End Method
+	
+	'Damit man GetFinance nicht in Lua verfügbar machen muss
+	Method GetCreditInterest:int() {_exposeToLua}
+		return GetFinance().GetCreditInterest()
+	end Method
+	
+	Method GetNewsAbonnementFees:int() {_exposeToLua}
+		Local newsagencyfees:Int =0
+		For Local i:Int = 0 To 5
+			newsagencyfees:+ TNewsAgency.GetNewsAbonnementPrice( newsabonnements[i] )
+		Next
+		return newsagencyfees
+	end Method 	
 
 
 	'creates and returns a player

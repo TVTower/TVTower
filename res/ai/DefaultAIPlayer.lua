@@ -68,11 +68,11 @@ end
 function DefaultAIPlayer:initializeTasks()
 	self.TaskList = {}
 	self.TaskList[TASK_MOVIEDISTRIBUTOR]	= TaskMovieDistributor()
-	self.TaskList[TASK_NEWSAGENCY]		= TaskNewsAgency()
-	self.TaskList[TASK_ADAGENCY]		= TaskAdAgency()
-	self.TaskList[TASK_SCHEDULE]		= TaskSchedule()
-	self.TaskList[TASK_STATIONMAP]		= TaskStationMap()
-	self.TaskList[TASK_BOSS]			= TaskBoss()	
+	--self.TaskList[TASK_NEWSAGENCY]		= TaskNewsAgency()
+	--self.TaskList[TASK_ADAGENCY]		= TaskAdAgency()
+	--self.TaskList[TASK_SCHEDULE]		= TaskSchedule()
+	--self.TaskList[TASK_STATIONMAP]		= TaskStationMap()
+	--self.TaskList[TASK_BOSS]			= TaskBoss()	
 	
 	
 	--self.TaskList[TASK_STATIONMAP].InvestmentPriority = 12
@@ -101,6 +101,13 @@ function DefaultAIPlayer:OnDayBegins()
 	for k,v in pairs(self.TaskList) do
 		v:OnDayBegins()
 	end
+end
+
+function DefaultAIPlayer:OnMoneyChanged(value, reason, reference)
+	self.Budget:OnMoneyChanged(value, reason, reference)
+	for k,v in pairs(self.TaskList) do
+		v:OnMoneyChanged(value, reason, reference)
+	end	
 end
 
 function DefaultAIPlayer:AddRequisition(requisition)
@@ -263,7 +270,7 @@ function getAIPlayer()
 	if globalPlayer == nil then
 		globalPlayer = DefaultAIPlayer()
 		globalPlayer:initialize()
-		_G["globalPlayer"] = globalPlayer --Macht "GlobalPlayer" als globale Variable verfügbar auch in eingebundenen Dateien
+		_G["globalPlayer"] = globalPlayer --Macht "GlobalPlayer" als globale Variable verfügbar auch in eingebundenen Dateien				
 	end
 	return globalPlayer
 end
@@ -278,7 +285,10 @@ function OnBossCallsForced()
 end
 
 
-function OnMoneyChanged()
+function OnMoneyChanged(value, reason, reference)	
+	if (aiIsActive) then
+		getAIPlayer():OnMoneyChanged(value, reason, reference)
+	end
 end
 
 function OnChat(message)

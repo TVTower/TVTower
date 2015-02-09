@@ -37,6 +37,8 @@ function TaskBoss:GetNextJobInTargetRoom()
 end
 
 function TaskBoss:BeforeBudgetSetup()
+	self:SetFixedCosts()
+
 	local money = MY.GetCredit()
 	local credit = MY.GetCredit()
 	if (money - credit) > 500000 then	
@@ -56,6 +58,20 @@ function TaskBoss:BeforeBudgetSetup()
 		self.NeededInvestmentBudget = 0
 		self.InvestmentPriority = 0
 	end
+end
+
+function TaskBoss:OnMoneyChanged(value, reason, reference)
+	if (tostring(reason) == tostring(TVT.TYPE_CREDIT_TAKE)) then
+		self:SetFixedCosts()
+	elseif (tostring(reason) == tostring(TVT.TYPE_CREDIT_REPAY)) then
+		self:SetFixedCosts()
+	elseif (tostring(reason) == tostring(TVT.TYPE_PAY_CREDITINTEREST)) then
+		self.FixedCosts = value	
+	end
+end
+
+function TaskBoss:SetFixedCosts()
+	self.FixedCosts = MY.GetCreditInterest()
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 

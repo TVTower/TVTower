@@ -37,11 +37,32 @@ function TaskStationMap:GetNextJobInTargetRoom()
 	self:SetWait()
 end
 
+function TaskStationMap:BeforeBudgetSetup()
+	self:SetFixedCosts()
+end
+
 function TaskStationMap:BudgetSetup()
 	if self.UseInvestment then
 		debugMsg("+++ Investition in TaskStationMap!")
 		self.SituationPriority = 15
 	end
+end
+
+function TaskStationMap:OnMoneyChanged(value, reason, reference)
+	if (tostring(reason) == tostring(TVT.TYPE_PAY_STATION)) then
+		self:PayFromBudget(value)
+		self:SetFixedCosts()
+	elseif (tostring(reason) == tostring(TVT.TYPE_SELL_STATION)) then
+		self:PayFromBudget(value)
+		self:SetFixedCosts()
+	elseif (tostring(reason) == tostring(TVT.TYPE_PAY_STATIONFEES)) then
+		self.FixedCosts = value
+		--self.FixedCostsBudget = self.FixedCostsBudget - value
+	end
+end
+
+function TaskStationMap:SetFixedCosts()
+	self.FixedCosts = MY.GetStationMap().CalculateStationCosts()
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 

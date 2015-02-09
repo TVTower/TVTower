@@ -1,5 +1,5 @@
-ï»¿'Application: TVGigant/TVTower
-'Author: Ronny Otto & Manuel VÃ¶gele
+'Application: TVGigant/TVTower
+'Author: Ronny Otto & Manuel Vögele
 
 SuperStrict
 
@@ -111,7 +111,7 @@ Include "game.base.bmx"
 '===== Globals =====
 Global VersionDate:String = LoadText("incbin::source/version.txt")
 Global VersionString:String = "v0.2 Build ~q" + VersionDate+"~q"
-Global CopyrightString:String = "by Ronny Otto & Manuel VÃ¶gele"
+Global CopyrightString:String = "by Ronny Otto & Manuel Vögele"
 Global App:TApp = Null
 Global Game:TGame
 Global InGame_Chat:TGUIChat
@@ -3012,9 +3012,11 @@ Type GameEvents
 		Local playerID:Int = triggerEvent.GetData().GetInt("playerID", 0)
 		Local player:TPlayer = GetPlayerCollection().Get(playerID)
 		Local value:Int = triggerEvent.GetData().GetInt("value", 0)
+		Local reason:Int = triggerEvent.GetData().GetInt("reason", 0)
+		Local reference:TNamedGameObject = TNamedGameObject(triggerEvent.GetData().Get("reference", null))
 		If playerID = -1 Or Not player Then Return False
 
-		If player.isLocalAI() Then player.playerAI.CallOnMoneyChanged()
+		If player.isLocalAI() Then player.playerAI.CallOnMoneyChanged(value, reason, reference)
 		If player.isActivePlayer() Then GetInGameInterface().BottomImgDirty = True
 	End Function
 

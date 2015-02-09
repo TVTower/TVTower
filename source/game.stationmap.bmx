@@ -1,4 +1,4 @@
-﻿REM
+REM
 	===========================================================
 	code for stationmap and broadcasting stations
 	===========================================================
@@ -725,7 +725,7 @@ Type TStationMap {_exposeToLua="selected"}
     End Method
 
 
-	Method CalculateStationCosts:Int()
+	Method CalculateStationCosts:Int() {_exposeToLua}
 		Local costs:Int = 0
 		For Local Station:TStation = EachIn stations
 			costs:+1000 * Ceil(station.price / 50000) ' price / 50 = cost

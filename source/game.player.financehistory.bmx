@@ -82,6 +82,8 @@ Type TPlayerFinanceHistoryEntry
 	Const TYPE_PAY_CREDITINTEREST:int = 81
 	Const TYPE_PAY_DRAWINGCREDITINTEREST:int = 82
 	Const TYPE_EARN_BALANCEINTEREST:int = 83
+	
+	Const TYPE_CHEAT:int = 1000
 
 	Const GROUP_NEWS:int = 1
 	Const GROUP_PROGRAMME:int = 2

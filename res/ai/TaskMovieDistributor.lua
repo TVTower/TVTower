@@ -47,8 +47,8 @@ function TaskMovieDistributor:GetNextJobInTargetRoom()
 		return self.CheckMoviesJob
 	elseif (self.AppraiseMovies.Status ~= JOB_STATUS_DONE) then
 		return self.AppraiseMovies
-	--elseif (self.BuyMovies.Status ~= JOB_STATUS_DONE) then
-		--return self.BuyMovies
+	elseif (self.BuyMovies.Status ~= JOB_STATUS_DONE) then
+		return self.BuyMovies
 	elseif (self.BidAuctions.Status ~= JOB_STATUS_DONE) then
 		return self.BidAuctions		
 	end
@@ -58,6 +58,19 @@ end
 
 function TaskMovieDistributor:BudgetSetup()
 	self.CurrentBargainBudget = self.BudgetWholeDay / 2 -- Tagesbudget für gute Angebote ohne konkreten Bedarf
+end
+
+function TaskMovieDistributor:OnMoneyChanged(value, reason, reference)
+	if (tostring(reason) == tostring(TVT.TYPE_PAY_PROGRAMMELICENCE)) then
+		--self:PayFromBudget(value)
+		--self.CurrentBargainBudget = self.CurrentBargainBudget - value
+	elseif (tostring(reason) == tostring(TVT.TYPE_SELL_PROGRAMMELICENCE)) then
+		--Wird im Budgetmanager neu verteilt
+	elseif (tostring(reason) == tostring(TVT.TYPE_PAY_AUCTIONBID)) then
+		--self:PayFromBudget(value)	Wird unten gemacht, damit der Kontostand gleich aktuell ist. Muss man mal Debuggen
+	elseif (tostring(reason) == tostring(TVT.TYPE_PAYBACK_AUCTIONBID)) then
+		self.CurrentBudget = self.CurrentBudget + value -- Zurück zahlen
+	end
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -270,7 +283,7 @@ function JobBuyMovies:Tick()
 
 	--TODO: Prüfen wie viele Filme überhaupt gebraucht werden
 
-	for k,v in pairs(movies) do
+	for k,v in pairs(movies) do		
 		if (v:GetPrice() <= self.MovieDistributorTask.CurrentBudget) then
 			if (v:GetPrice() <= self.MovieDistributorTask.CurrentBargainBudget) then -- Tagesbudget für gute Angebote ohne konkreten Bedarf
 				if (v.GetAttractiveness() > 1) then
@@ -280,8 +293,8 @@ function JobBuyMovies:Tick()
 					TVT.md_doBuyProgrammeLicence(v.GetId())
 					
 					self.MovieDistributorTask:PayFromBudget(v:GetPrice())
-					self.MovieDistributorTask.CurrentBargainBudget = self.MovieDistributorTask.CurrentBargainBudget - v:GetPrice()
-				end
+					self.MovieDistributorTask.CurrentBargainBudget = self.MovieDistributorTask.CurrentBargainBudget - v:GetPrice()							
+				end			
 			end
 		end
 	end

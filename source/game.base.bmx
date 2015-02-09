@@ -675,7 +675,7 @@ endrem
 
 				local changed:string = ""
 				if paramS <> ""
-					player.GetFinance().ChangeMoney(int(paramS))
+					player.GetFinance().ChangeMoney(int(paramS), TPlayerFinanceHistoryEntry.TYPE_CHEAT)
 
 					if int(paramS) > 0 then paramS = "+"+int(paramS)
 					changed = " ("+paramS+")"
@@ -783,14 +783,9 @@ endrem
 			'stationfees
 			Player.GetFinance().PayStationFees( Player.GetStationMap().CalculateStationCosts())
 			'interest rate for your current credit
-			Player.GetFinance().PayCreditInterest( Player.GetFinance().GetCredit() * TPlayerFinance.creditInterestRate )
-
-			'newsagencyfees
-			Local newsagencyfees:Int =0
-			For Local i:Int = 0 To 5
-				newsagencyfees:+ TNewsAgency.GetNewsAbonnementPrice( Player.newsabonnements[i] )
-			Next
-			Player.GetFinance(day).PayNewsAgencies((newsagencyfees))
+			Player.GetFinance().PayCreditInterest( Player.GetFinance().GetCreditInterest() )
+			'newsagencyfees			
+			Player.GetFinance(day).PayNewsAgencies(Player.GetNewsAbonnementFees())
 		Next
 	End Method
 
