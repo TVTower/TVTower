@@ -1389,6 +1389,11 @@ Type TFigureDeliveryBoy Extends TFigure
 	End Method
 
 
+	Method HasToDeliver:int() {_exposeToLua}
+		return deliveryDone
+	End Method
+
+
 	Method UpdateCustom:Int()
 		'nothing to do - move to offscreen (leave building)
 		If not deliverToRoom and not GetTarget()

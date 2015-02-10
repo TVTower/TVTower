@@ -346,6 +346,11 @@ endrem
 	End Method
 
 
+	Method GetNewsEvent:TNewsEvent() {_exposeToLua}
+		return newsEvent
+	End Method
+
+
 	'===== AI-LUA HELPER FUNCTIONS =====
 
 	'Wird bisher nur in der LUA-KI verwendet

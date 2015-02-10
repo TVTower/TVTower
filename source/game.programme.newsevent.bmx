@@ -332,12 +332,7 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 
 
 	Function GetGenreString:String(Genre:Int)
-		If Genre = 0 Then Return GetLocale("NEWS_POLITICS_ECONOMY")
-		If Genre = 1 Then Return GetLocale("NEWS_SHOWBIZ")
-		If Genre = 2 Then Return GetLocale("NEWS_SPORT")
-		If Genre = 3 Then Return GetLocale("NEWS_TECHNICS_MEDIA")
-		If Genre = 4 Then Return GetLocale("NEWS_CURRENTAFFAIRS")
-		Return Genre+ " unbekannt"
+		return GetLocale("NEWS_"+ TVTNewsGenre.GetasString(Genre).toUpper())
 	End Function
 
 
@@ -387,6 +382,15 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 		return False
 	End Method
 
+	
+	'checks if an certain effect type is existent
+	Method HasBroadcastEffectType:int(effectType:int) {_exposeToLua}
+		For local effect:TNewsEffect = eachin happenEffects
+			if effect.HasEffectType(effectType) then return True
+		Next
+		return False
+	End Method
+	
 
 	'checks if an effect was already added before
 	Method HasBroadcastEffect:int(effect:TNewsEffect)
@@ -421,6 +425,15 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 		'set new array
 		broadcastEffects = newEffects
 		return True
+	End Method
+
+
+	'checks if an certain effect type is existent
+	Method HasHappenEffectType:int(effectType:int) {_exposeToLua}
+		For local effect:TNewsEffect = eachin happenEffects
+			if effect.HasEffectType(effectType) then return True
+		Next
+		return False
 	End Method
 
 
@@ -541,12 +554,29 @@ End Type
 
 Type TNewsEffect
 	Field data:TData
+	'constant value of TVTNewsEffect (CHANGETREND, TERRORISTATTACK, ...)
+	Field effectTypes:int = 0
 	Field _customEffectFunc:int(data:TData, params:TData)
 
 
 	Method ToString:string()
 		local name:string = data.GetString("name", "default")
 		return "TNewsEffect ("+name+")"
+	End Method
+
+
+	Method SetEffectType:TNewsEffect(effectType :Int, enable:Int=True)
+		If enable
+			effectTypes :| effectType
+		Else
+			effectTypes :& ~effectType
+		EndIf
+		return self
+	End Method
+
+
+	Method HasEffectType:Int(effectType:Int)
+		Return effectTypes & effectType
 	End Method
 
 

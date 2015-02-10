@@ -669,6 +669,22 @@ endrem
 
 	'=== NEWS ROOM ===
 
+	'returns the aggression level of the given terrorist group.
+	'Invalid groups return the maximum of all.
+	'Currently valid are "0" and "1"
+	Method ne_getTerroristAggressionLevel:Int(terroristGroup:int=-1)
+		If Not (_PlayerInRoom("newsroom", True) or _PlayerInRoom("news", True)) Then Return self.RESULT_WRONGROOM
+
+		return GetNewsAgency().GetTerroristAggressionLevel(terroristGroup)
+	End Method
+
+	
+	'returns the maximum level the aggression of terrorists could have
+	Method ne_getTerroristAggressionLevelMax:Int()
+		return GetNewsAgency().terroristAggressionLevelMax
+	End Method
+
+
 	Method ne_doNewsInPlan:Int(slot:int=1, ObjectID:Int = -1)
 		If Not (_PlayerInRoom("newsroom", True) or _PlayerInRoom("news", True)) Then Return self.RESULT_WRONGROOM
 
@@ -931,10 +947,10 @@ endrem
 	End Method
 
 
-	Method rb_GetSignAtIndex:TLuaFunctionResult(ArrayID:Int = -1)
+	Method rb_GetSignAtIndex:TLuaFunctionResult(arrayIndex:Int = -1)
 		If Not _PlayerInRoom("roomboard") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
-		Local sign:TRoomBoardSign = GetRoomBoard().GetSignAtIndex(ArrayID)
+		Local sign:TRoomBoardSign = GetRoomBoard().GetSignAtIndex(arrayIndex)
 		If sign
 			Return TLuaFunctionResult.Create(self.RESULT_OK, sign)
 		else
@@ -1008,6 +1024,15 @@ endrem
 		Endif		
 	End Method
 
+
+	Method rb_GetSignSlotCount:int()
+		return GetRoomBoard().slotMax
+	End Method
+
+
+	Method rb_GetSignFloorCount:int()
+		return GetRoomBoard().floorMax
+	End Method
 
 
 	'

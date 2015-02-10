@@ -10,6 +10,8 @@ Type TRoomBoard
 	Field DragAndDropList:TList = CreateList()
 	Field List:TList = CreateList()
 	Field AdditionallyDragged:Int = 0
+	Field slotMax:int = 4
+	Field floorMax:int = 13
 	Global _eventsRegistered:Int = FALSE
 	Global _instance:TRoomBoard
 

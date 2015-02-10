@@ -63,6 +63,18 @@ Type TVTNewsGenre {_exposeToLua}
 		'each index has a const, so just return index
 		return index
 	End Function
+
+
+	Function GetAsString:String(key:Int)
+		select key
+			case POLITICS_ECONOMY	return "politics_economy"
+			case SHOWBIZ            return "showbiz"
+			case SPORT              return "sport"
+			case TECHNICS_MEDIA     return "technics_media"
+			case CURRENTAFFAIRS     return "currentaffairs"
+			default                 return "unknown"
+		end select
+	End Function
 End Type
 
 

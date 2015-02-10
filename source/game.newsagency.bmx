@@ -24,6 +24,7 @@ Type TNewsAgency
 	'level of terrorists aggression (each level = new news)
 	'party 2 starts later
 	Field terroristAggressionLevel:Int[] = [0, -1]
+	Field terroristAggressionLevelMax:Int = 5
 	'progress in the given aggression level (0 - 1.0)
 	Field terroristAggressionLevelProgress:Float[] = [0.0, 0.0]
 	'rate the aggression level progresses each game hour
@@ -93,18 +94,33 @@ Type TNewsAgency
 			terroristAggressionLevelProgress[i] :- 1.0
 
 			'announce news for levels 1-4
-			if terroristAggressionLevel[i] < 5
+			if terroristAggressionLevel[i] < terroristAggressionLevelMax
 				local newsEvent:TNewsEvent = GetTerroristNewsEvent(i)
 				If newsEvent then announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone() + 0)
 			endif
 
 			'reset level if limit reached, also delay by 2 levels so
 			'things do not happen one after another
-			if terroristAggressionLevel[i] >= 5 + 1
+			if terroristAggressionLevel[i] >= terroristAggressionLevelMax + 1
 				'reset to level 0
 				terroristAggressionLevel[i] = 0
 			endif
 		Next
+	End Method
+
+
+	Method GetTerroristAggressionLevel:int(terroristGroup:int = -1)
+		if terroristGroup >= 0 and terroristGroup <= 1
+			'the level might be 0 already after the terrorist got his
+			'command to go to a room ... so we check the figure too
+			local level:int = terroristAggressionLevel[terroristGroup]
+			local fig:TFigureTerrorist = Game.terrorists[terroristGroup]
+			'figure is just delivering a bomb?
+			if fig.HasToDeliver() then return terroristAggressionLevelMax
+			return level
+		else
+			return Max( GetTerroristAggressionLevel(0), GetTerroristAggressionLevel(1) )
+		endif
 	End Method
 
 
@@ -163,6 +179,7 @@ Type TNewsAgency
 			local effect:TNewsEffect = new TNewsEffect
 
 			effect.GetData().Add("figure", Game.terrorists[terroristGroup])
+			effect.GetData().AddNumber("group", terroristGroup)
 			'effect.GetData().Add("room", GetRoomCollection().GetRandom())
 			if terroristGroup = 0
 				effect.GetData().Add("room", GetRoomCollection().GetFirstByDetails("frduban"))
@@ -170,6 +187,8 @@ Type TNewsAgency
 				effect.GetData().Add("room", GetRoomCollection().GetFirstByDetails("vrduban"))
 			endif
 			effect._customEffectFunc = TFigureTerrorist.SendFigureToRoom
+			'mark as a special effect so AI can categorize it accordingly
+			effect.setEffectType(TVTNewsEffect.TERRORISTATTACK)
 
 			NewsEvent.AddHappenEffect(effect)
 		endif
