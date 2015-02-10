@@ -12,11 +12,11 @@ Type TScreenHandler_Financials
 	Global balanceValueBG2:TSprite
 
 	Function Init:int()
-		clTypes[TPlayerFinanceHistoryEntry.GROUP_NEWS] = new TColor.Create(0, 31, 83)
-		clTypes[TPlayerFinanceHistoryEntry.GROUP_PROGRAMME] = new TColor.Create(89, 40, 0)
-		clTypes[TPlayerFinanceHistoryEntry.GROUP_DEFAULT] = new TColor.Create(30, 30, 30)
-		clTypes[TPlayerFinanceHistoryEntry.GROUP_PRODUCTION] = new TColor.Create(44, 0, 78)
-		clTypes[TPlayerFinanceHistoryEntry.GROUP_STATION] = new TColor.Create(0, 75, 69)
+		clTypes[TVTPlayerFinanceEntryType.GROUP_NEWS] = new TColor.Create(0, 31, 83)
+		clTypes[TVTPlayerFinanceEntryType.GROUP_PROGRAMME] = new TColor.Create(89, 40, 0)
+		clTypes[TVTPlayerFinanceEntryType.GROUP_DEFAULT] = new TColor.Create(30, 30, 30)
+		clTypes[TVTPlayerFinanceEntryType.GROUP_PRODUCTION] = new TColor.Create(44, 0, 78)
+		clTypes[TVTPlayerFinanceEntryType.GROUP_STATION] = new TColor.Create(0, 75, 69)
 
 		financeHistoryUpButton = new TGUIArrowButton.Create(new TVec2D.Init(500 + 20, 180), new TVec2D.Init(130, 22), "DOWN", "officeFinancialScreen")
 		financeHistoryDownButton = new TGUIArrowButton.Create(new TVec2D.Init(500 + 130 + 20, 180), new TVec2D.Init(130, 22), "UP", "officeFinancialScreen")
@@ -158,21 +158,21 @@ Type TScreenHandler_Financials
 			if not labelBGs[i] then labelBGs[i] = GetSpriteFromRegistry("screen_financial_balanceLabel"+i)
 		Next
 
-		labelBGs[TPlayerFinanceHistoryEntry.GROUP_PROGRAMME].DrawArea(labelBGX, labelStartY + 0*valueH, labelBGW, labelH)
-		labelBGs[TPlayerFinanceHistoryEntry.GROUP_PROGRAMME].DrawArea(labelBGX, labelStartY + 1*valueH, labelBGW, labelH)
-		labelBGs[TPlayerFinanceHistoryEntry.GROUP_PROGRAMME].DrawArea(labelBGX, labelStartY + 2*valueH, labelBGW, labelH)
-		labelBGs[TPlayerFinanceHistoryEntry.GROUP_PROGRAMME].DrawArea(labelBGX, labelStartY + 3*valueH, labelBGW, labelH)
-		labelBGs[TPlayerFinanceHistoryEntry.GROUP_NEWS].DrawArea(labelBGX, labelStartY + 4*valueH, labelBGW, labelH)
-		labelBGs[TPlayerFinanceHistoryEntry.GROUP_NEWS].DrawArea(labelBGX, labelStartY + 5*valueH, labelBGW, labelH)
-		labelBGs[TPlayerFinanceHistoryEntry.GROUP_STATION].DrawArea(labelBGX, labelStartY + 6*valueH, labelBGW, labelH)
-		labelBGs[TPlayerFinanceHistoryEntry.GROUP_PRODUCTION].DrawArea(labelBGX, labelStartY + 7*valueH, labelBGW, labelH)
-		labelBGs[TPlayerFinanceHistoryEntry.GROUP_PRODUCTION].DrawArea(labelBGX, labelStartY + 8*valueH, labelBGW, labelH)
-		labelBGs[TPlayerFinanceHistoryEntry.GROUP_PRODUCTION].DrawArea(labelBGX, labelStartY + 9*valueH, labelBGW, labelH)
-		labelBGs[TPlayerFinanceHistoryEntry.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 10*valueH, labelBGW, labelH)
-		labelBGs[TPlayerFinanceHistoryEntry.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 11*valueH, labelBGW, labelH)
-		labelBGs[TPlayerFinanceHistoryEntry.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 12*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_PROGRAMME].DrawArea(labelBGX, labelStartY + 0*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_PROGRAMME].DrawArea(labelBGX, labelStartY + 1*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_PROGRAMME].DrawArea(labelBGX, labelStartY + 2*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_PROGRAMME].DrawArea(labelBGX, labelStartY + 3*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_NEWS].DrawArea(labelBGX, labelStartY + 4*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_NEWS].DrawArea(labelBGX, labelStartY + 5*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_STATION].DrawArea(labelBGX, labelStartY + 6*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_PRODUCTION].DrawArea(labelBGX, labelStartY + 7*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_PRODUCTION].DrawArea(labelBGX, labelStartY + 8*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_PRODUCTION].DrawArea(labelBGX, labelStartY + 9*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 10*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 11*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 12*valueH, labelBGW, labelH)
 
-		labelBGs[TPlayerFinanceHistoryEntry.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 14*valueH +4, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 14*valueH +4, labelBGW, labelH)
 
 		'draw value backgrounds
 		if not balanceValueBG then balanceValueBG = GetSpriteFromRegistry("screen_financial_balanceValue")
@@ -187,21 +187,21 @@ Type TScreenHandler_Financials
 		balanceValueBG.DrawArea(valueBGX, labelStartY + 14*valueH + 4, balanceValueBG.GetWidth(), labelH)
 
 		'draw balance labels
-		textFont.DrawBlock(GetLocale("FINANCES_TRADING_PROGRAMMELICENCES"), labelX, labelStartY + 0*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_PROGRAMME])
-		textFont.DrawBlock(GetLocale("FINANCES_AD_INCOME__CONTRACT_PENALTY"), labelX, labelStartY + 1*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_PROGRAMME])
-		textFont.DrawBlock(GetLocale("FINANCES_CALL_IN_SHOW_INCOME"), labelX, labelStartY + 2*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_PROGRAMME])
-		textFont.DrawBlock(GetLocale("FINANCES_SPONSORSHIP_INCOME__PENALTY"), labelX, labelStartY + 3*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_PROGRAMME])
-		textFont.DrawBlock(GetLocale("FINANCES_NEWS"), labelX, labelStartY + 4*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_NEWS])
-		textFont.DrawBlock(GetLocale("FINANCES_NEWSAGENCIES"), labelX, labelStartY + 5*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_NEWS])
-		textFont.DrawBlock(GetLocale("FINANCES_STATIONS"), labelX, labelStartY + 6*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_STATION])
-		textFont.DrawBlock(GetLocale("FINANCES_SCRIPTS"), labelX, labelStartY + 7*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_PRODUCTION])
-		textFont.DrawBlock(GetLocale("FINANCES_ACTORS_AND_PRODUCTIONSTUFF"), labelX, labelStartY + 8*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_PRODUCTION])
-		textFont.DrawBlock(GetLocale("FINANCES_STUDIO_RENT"), labelX, labelStartY + 9*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_PRODUCTION])
-		textFont.DrawBlock(GetLocale("FINANCES_INTEREST_BALANCE__CREDIT"), labelX, labelStartY + 10*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_DEFAULT])
-		textFont.DrawBlock(GetLocale("FINANCES_CREDIT_TAKEN__REPAYED"), labelX, labelStartY + 11*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_DEFAULT])
-		textFont.DrawBlock(GetLocale("FINANCES_MISC"), labelX, labelStartY + 12*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_DEFAULT])
+		textFont.DrawBlock(GetLocale("FINANCES_TRADING_PROGRAMMELICENCES"), labelX, labelStartY + 0*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PROGRAMME])
+		textFont.DrawBlock(GetLocale("FINANCES_AD_INCOME__CONTRACT_PENALTY"), labelX, labelStartY + 1*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PROGRAMME])
+		textFont.DrawBlock(GetLocale("FINANCES_CALL_IN_SHOW_INCOME"), labelX, labelStartY + 2*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PROGRAMME])
+		textFont.DrawBlock(GetLocale("FINANCES_SPONSORSHIP_INCOME__PENALTY"), labelX, labelStartY + 3*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PROGRAMME])
+		textFont.DrawBlock(GetLocale("FINANCES_NEWS"), labelX, labelStartY + 4*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_NEWS])
+		textFont.DrawBlock(GetLocale("FINANCES_NEWSAGENCIES"), labelX, labelStartY + 5*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_NEWS])
+		textFont.DrawBlock(GetLocale("FINANCES_STATIONS"), labelX, labelStartY + 6*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_STATION])
+		textFont.DrawBlock(GetLocale("FINANCES_SCRIPTS"), labelX, labelStartY + 7*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PRODUCTION])
+		textFont.DrawBlock(GetLocale("FINANCES_ACTORS_AND_PRODUCTIONSTUFF"), labelX, labelStartY + 8*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PRODUCTION])
+		textFont.DrawBlock(GetLocale("FINANCES_STUDIO_RENT"), labelX, labelStartY + 9*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PRODUCTION])
+		textFont.DrawBlock(GetLocale("FINANCES_INTEREST_BALANCE__CREDIT"), labelX, labelStartY + 10*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_DEFAULT])
+		textFont.DrawBlock(GetLocale("FINANCES_CREDIT_TAKEN__REPAYED"), labelX, labelStartY + 11*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_DEFAULT])
+		textFont.DrawBlock(GetLocale("FINANCES_MISC"), labelX, labelStartY + 12*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_DEFAULT])
 		'spacer for total
-		textBoldFont.DrawBlock(GetLocale("FINANCES_TOTAL"), labelX, labelStartY + 14*valueH+4, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_DEFAULT])
+		textBoldFont.DrawBlock(GetLocale("FINANCES_TOTAL"), labelX, labelStartY + 14*valueH+4, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_DEFAULT])
 
 
 		'draw "grouped"-info-sign
@@ -257,14 +257,14 @@ Type TScreenHandler_Financials
 			SetColor 100,100,100
 			TFunctions.DrawOutlineRect(labelX-1, labelStartY + 6*valueH -1, balanceEntryW + 1, 2*labelH +1)
 			bgcol.SetRGBA()
-			labelBGs[TPlayerFinanceHistoryEntry.GROUP_STATION].DrawArea(labelBGX, labelStartY + 6*valueH, labelBGW, labelH)
-			labelBGs[TPlayerFinanceHistoryEntry.GROUP_STATION].DrawArea(labelBGX, labelStartY + 7*valueH, labelBGW, labelH)
+			labelBGs[TVTPlayerFinanceEntryType.GROUP_STATION].DrawArea(labelBGX, labelStartY + 6*valueH, labelBGW, labelH)
+			labelBGs[TVTPlayerFinanceEntryType.GROUP_STATION].DrawArea(labelBGX, labelStartY + 7*valueH, labelBGW, labelH)
 
 			balanceValueBG.DrawArea(valueBGX, labelStartY + 6*valueH, balanceValueBG.GetWidth(), labelH)
 			balanceValueBG2.DrawArea(valueBGX, labelStartY + 7*valueH, balanceValueBG.GetWidth(), labelH)
 
-			textFont.DrawBlock(GetLocale("FINANCES_STATIONS_FEES"), labelX, labelStartY + 6*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_STATION])
-			textFont.DrawBlock(GetLocale("FINANCES_STATIONS_BUY_SELL"), labelX, labelStartY + 7*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_STATION])
+			textFont.DrawBlock(GetLocale("FINANCES_STATIONS_FEES"), labelX, labelStartY + 6*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_STATION])
+			textFont.DrawBlock(GetLocale("FINANCES_STATIONS_BUY_SELL"), labelX, labelStartY + 7*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_STATION])
 
 			textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_stationFees), valueExpenseX, valueStartY + 6*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
 

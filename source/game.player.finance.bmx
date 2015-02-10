@@ -146,7 +146,7 @@ Type TPlayerFinance
 		return credit
 	End Method
 	
-	Method GetCreditInterest:Long() 'Tägliche Zinsen
+	Method GetCreditInterest:Long() 'Tï¿½gliche Zinsen
 		return GetCredit() * TPlayerFinance.creditInterestRate
 	End Method	
 
@@ -183,24 +183,24 @@ Type TPlayerFinance
 	Method RepayCredit:Int(value:Int)
 		TLogger.Log("TFinancial.RepayCredit()", "Player "+playerID+" repays (a part of his) credit of "+value, LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_CREDIT_REPAY, -value, null).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.CREDIT_REPAY, -value, null).AddTo(playerID)
 
 		credit :- value
 		expense_creditRepayed :+ value
 		expense_total :+ value
-		ChangeMoney(-value, TPlayerFinanceHistoryEntry.TYPE_CREDIT_REPAY)
+		ChangeMoney(-value, TVTPlayerFinanceEntryType.CREDIT_REPAY)
 	End Method
 
 
 	Method TakeCredit:Int(value:Int)
 		TLogger.Log("TFinancial.TakeCredit()", "Player "+playerID+" took a credit of "+value, LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_CREDIT_TAKE, +value).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.CREDIT_TAKE, +value).AddTo(playerID)
 
 		credit :+ value
 		income_creditTaken :+ value
 		income_total :+ value
-		ChangeMoney(+value, TPlayerFinanceHistoryEntry.TYPE_CREDIT_TAKE)
+		ChangeMoney(+value, TVTPlayerFinanceEntryType.CREDIT_TAKE)
 	End Method
 
 
@@ -208,10 +208,10 @@ Type TPlayerFinance
 	Method SellMisc:Int(price:Int)
 		TLogger.Log("TFinancial.SellMisc()", "Player "+playerID+" sold mics for "+price, LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_SELL_MISC, +price).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.SELL_MISC, +price).AddTo(playerID)
 
 		income_misc :+ price
-		AddIncome(price, TPlayerFinanceHistoryEntry.TYPE_SELL_MISC)
+		AddIncome(price, TVTPlayerFinanceEntryType.SELL_MISC)
 		Return True
 	End Method
 
@@ -219,10 +219,10 @@ Type TPlayerFinance
 	Method SellStation:Int(price:Int)
 		TLogger.Log("TFinancial.SellStation()", "Player "+playerID+" sold a station for "+price, LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_SELL_STATION, +price).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.SELL_STATION, +price).AddTo(playerID)
 
 		income_stations :+ price
-		AddIncome(price, TPlayerFinanceHistoryEntry.TYPE_SELL_STATION)
+		AddIncome(price, TVTPlayerFinanceEntryType.SELL_STATION)
 		Return True
 	End Method
 	
@@ -230,10 +230,10 @@ Type TPlayerFinance
 	Method SellScript:Int(price:Int)
 		TLogger.Log("TFinancial.SellScript()", "Player "+playerID+" sold a script for "+price, LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_SELL_SCRIPT, +price).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.SELL_SCRIPT, +price).AddTo(playerID)
 
 		income_scripts :+ price
-		AddIncome(price, TPlayerFinanceHistoryEntry.TYPE_SELL_SCRIPT)
+		AddIncome(price, TVTPlayerFinanceEntryType.SELL_SCRIPT)
 		Return True
 	End Method
 
@@ -242,10 +242,10 @@ Type TPlayerFinance
 	Method EarnAdProfit:Int(value:Int, contract:object)
 		TLogger.Log("TFinancial.EarnAdProfit()", "Player "+playerID+" earned "+value+" with ads", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_EARN_ADPROFIT, +value, contract).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.EARN_ADPROFIT, +value, contract).AddTo(playerID)
 
 		income_ads :+ value
-		AddIncome(value, TPlayerFinanceHistoryEntry.TYPE_EARN_ADPROFIT, TNamedGameObject(contract))
+		AddIncome(value, TVTPlayerFinanceEntryType.EARN_ADPROFIT, TNamedGameObject(contract))
 		Return True
 	End Method
 
@@ -254,10 +254,10 @@ Type TPlayerFinance
 	Method EarnInfomercialRevenue:Int(value:Int, contract:object)
 		TLogger.Log("TFinancial.EarnInfomercialRevenue()", "Player "+playerID+" earned "+value+" with ads", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_EARN_INFOMERCIALREVENUE, +value, contract).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.EARN_INFOMERCIALREVENUE, +value, contract).AddTo(playerID)
 
 		income_ads :+ value
-		AddIncome(value, TPlayerFinanceHistoryEntry.TYPE_EARN_INFOMERCIALREVENUE, TNamedGameObject(contract))
+		AddIncome(value, TVTPlayerFinanceEntryType.EARN_INFOMERCIALREVENUE, TNamedGameObject(contract))
 		Return True
 	End Method
 
@@ -266,10 +266,10 @@ Type TPlayerFinance
 	Method EarnCallerRevenue:Int(value:Int, licence:object)
 		TLogger.Log("TFinancial.EarnCallerRevenue()", "Player "+playerID+" earned "+value+" with a call-in-show", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_EARN_CALLERREVENUE, +value, licence).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.EARN_CALLERREVENUE, +value, licence).AddTo(playerID)
 
 		income_callerRevenue :+ value
-		AddIncome(value, TPlayerFinanceHistoryEntry.TYPE_EARN_CALLERREVENUE, TNamedGameObject(licence))
+		AddIncome(value, TVTPlayerFinanceEntryType.EARN_CALLERREVENUE, TNamedGameObject(licence))
 		Return True
 	End Method
 
@@ -278,10 +278,10 @@ Type TPlayerFinance
 	Method EarnSponsorshipRevenue:Int(value:Int, licence:object)
 		TLogger.Log("TFinancial.EarnSponsorshipRevenue()", "Player "+playerID+" earned "+value+" broadcasting a sponsored programme", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_EARN_SPONSORSHIPREVENUE, +value, licence).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.EARN_SPONSORSHIPREVENUE, +value, licence).AddTo(playerID)
 
 		income_sponsorshipRevenue :+ value
-		AddIncome(value, TPlayerFinanceHistoryEntry.TYPE_EARN_SPONSORSHIPREVENUE, TNamedGameObject(licence))
+		AddIncome(value, TVTPlayerFinanceEntryType.EARN_SPONSORSHIPREVENUE, TNamedGameObject(licence))
 		Return True
 	End Method
 
@@ -290,10 +290,10 @@ Type TPlayerFinance
 	Method SellProgrammeLicence:Int(price:Int, licence:object)
 		TLogger.Log("TFinancial.SellLicence()", "Player "+playerID+" earned "+price+" selling a programme licence", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_SELL_PROGRAMMELICENCE, +price, licence).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.SELL_PROGRAMMELICENCE, +price, licence).AddTo(playerID)
 
 		income_programmeLicences :+ price
-		AddIncome(price, TPlayerFinanceHistoryEntry.TYPE_SELL_PROGRAMMELICENCE, TNamedGameObject(licence))
+		AddIncome(price, TVTPlayerFinanceEntryType.SELL_PROGRAMMELICENCE, TNamedGameObject(licence))
 	End Method
 
 
@@ -301,10 +301,10 @@ Type TPlayerFinance
 	Method EarnBalanceInterest:Int(value:Int)
 		TLogger.Log("TFinancial.EarnBalanceInterest()", "Player "+playerID+" earned "+value+" on interest of their current balance", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_EARN_BALANCEINTEREST, +value).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.EARN_BALANCEINTEREST, +value).AddTo(playerID)
 
 		income_balanceInterest :+ value
-		AddIncome(value, TPlayerFinanceHistoryEntry.TYPE_EARN_BALANCEINTEREST)
+		AddIncome(value, TVTPlayerFinanceEntryType.EARN_BALANCEINTEREST)
 		Return True
 	End Method
 
@@ -313,10 +313,10 @@ Type TPlayerFinance
 	Method PayDrawingCreditInterest:Int(value:Int)
 		TLogger.Log("TFinancial.PayDrawingCreditInterest()", "Player "+playerID+" paid "+value+" on interest of having a negative current balance", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_DRAWINGCREDITINTEREST, -value).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAY_DRAWINGCREDITINTEREST, -value).AddTo(playerID)
 
 		expense_drawingCreditInterest :+ value
-		AddExpense(value, TPlayerFinanceHistoryEntry.TYPE_PAY_DRAWINGCREDITINTEREST)
+		AddExpense(value, TVTPlayerFinanceEntryType.PAY_DRAWINGCREDITINTEREST)
 		Return True
 	End Method
 
@@ -326,13 +326,13 @@ Type TPlayerFinance
 		If canAfford(price)
 			TLogger.Log("TFinancial.PayAuctionBid()", "Player "+playerID+" paid a bid of "+price, LOG_DEBUG)
 			'add this to our history
-			new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_AUCTIONBID, -price, licence).AddTo(playerID)
+			new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAY_AUCTIONBID, -price, licence).AddTo(playerID)
 
 			expense_programmeLicences :+ price
-			AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_AUCTIONBID, TNamedGameObject(licence))
+			AddExpense(price, TVTPlayerFinanceEntryType.PAY_AUCTIONBID, TNamedGameObject(licence))
 			Return True
 		Else
-			TransactionFailed(price, TPlayerFinanceHistoryEntry.TYPE_PAY_AUCTIONBID, TNamedGameObject(licence))
+			TransactionFailed(price, TVTPlayerFinanceEntryType.PAY_AUCTIONBID, TNamedGameObject(licence))
 			Return False
 		EndIf
 	End Method
@@ -345,11 +345,11 @@ Type TPlayerFinance
 	Method PayBackAuctionBid:Int(price:Int, licence:object)
 		TLogger.Log("TFinancial.PayBackAuctionBid()", "Player "+playerID+" received back "+price+" from an auction", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAYBACK_AUCTIONBID, +price, licence).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAYBACK_AUCTIONBID, +price, licence).AddTo(playerID)
 
 		expense_programmeLicences	:- price
 		expense_total				:- price
-		ChangeMoney(+price, TPlayerFinanceHistoryEntry.TYPE_PAYBACK_AUCTIONBID, TNamedGameObject(licence))
+		ChangeMoney(+price, TVTPlayerFinanceEntryType.PAYBACK_AUCTIONBID, TNamedGameObject(licence))
 		Return True
 	End Method
 
@@ -359,13 +359,13 @@ Type TPlayerFinance
 		If canAfford(price)
 			TLogger.Log("TFinancial.PayProgrammeLicence()", "Player "+playerID+" paid "+price+" for a programmeLicence", LOG_DEBUG)
 			'add this to our history
-			new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_PROGRAMMELICENCE, -price, licence).AddTo(playerID)
+			new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAY_PROGRAMMELICENCE, -price, licence).AddTo(playerID)
 
 			expense_programmeLicences :+ price
-			AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_PROGRAMMELICENCE, TNamedGameObject(licence))
+			AddExpense(price, TVTPlayerFinanceEntryType.PAY_PROGRAMMELICENCE, TNamedGameObject(licence))
 			Return True
 		Else
-			TransactionFailed(price, TPlayerFinanceHistoryEntry.TYPE_PAY_PROGRAMMELICENCE, TNamedGameObject(licence))
+			TransactionFailed(price, TVTPlayerFinanceEntryType.PAY_PROGRAMMELICENCE, TNamedGameObject(licence))
 			Return False
 		EndIf
 	End Method
@@ -376,13 +376,13 @@ Type TPlayerFinance
 		If canAfford(price)
 			TLogger.Log("TFinancial.PayStation()", "Player "+playerID+" paid "+price+" for a broadcasting station", LOG_DEBUG)
 			'add this to our history
-			new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_STATION, -price).AddTo(playerID)
+			new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAY_STATION, -price).AddTo(playerID)
 
 			expense_stations :+ price
-			AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_STATION)
+			AddExpense(price, TVTPlayerFinanceEntryType.PAY_STATION)
 			Return True
 		Else
-			TransactionFailed(price, TPlayerFinanceHistoryEntry.TYPE_PAY_STATION)
+			TransactionFailed(price, TVTPlayerFinanceEntryType.PAY_STATION)
 			Return False
 		EndIf
 	End Method
@@ -393,13 +393,13 @@ Type TPlayerFinance
 		If canAfford(price)
 			TLogger.Log("TFinancial.PayScript()", "Player "+playerID+" paid "+price+" for a script", LOG_DEBUG)
 			'add this to our history
-			new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_SCRIPT, -price, script).AddTo(playerID)
+			new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAY_SCRIPT, -price, script).AddTo(playerID)
 
 			expense_scripts :+ price
-			AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_SCRIPT, TNamedGameObject(script))
+			AddExpense(price, TVTPlayerFinanceEntryType.PAY_SCRIPT, TNamedGameObject(script))
 			Return True
 		Else
-			TransactionFailed(price, TPlayerFinanceHistoryEntry.TYPE_PAY_SCRIPT, TNamedGameObject(script))
+			TransactionFailed(price, TVTPlayerFinanceEntryType.PAY_SCRIPT, TNamedGameObject(script))
 			Return False
 		EndIf
 	End Method
@@ -410,13 +410,13 @@ Type TPlayerFinance
 		If canAfford(price)
 			TLogger.Log("TFinancial.PayProductionStuff()", "Player "+playerID+" paid "+price+" for product stuff", LOG_DEBUG)
 			'add this to our history
-			new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_PRODUCTIONSTUFF, -price).AddTo(playerID)
+			new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAY_PRODUCTIONSTUFF, -price).AddTo(playerID)
 
 			expense_productionstuff :+ price
-			AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_PRODUCTIONSTUFF)
+			AddExpense(price, TVTPlayerFinanceEntryType.PAY_PRODUCTIONSTUFF)
 			Return True
 		Else
-			TransactionFailed(price, TPlayerFinanceHistoryEntry.TYPE_PAY_PRODUCTIONSTUFF)
+			TransactionFailed(price, TVTPlayerFinanceEntryType.PAY_PRODUCTIONSTUFF)
 			Return False
 		EndIf
 	End Method
@@ -426,10 +426,10 @@ Type TPlayerFinance
 	Method PayPenalty:Int(value:Int, contract:object)
 		TLogger.Log("TFinancial.PayPenalty()", "Player "+playerID+" paid a failed contract penalty of "+value, LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_PENALTY, -value, contract).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAY_PENALTY, -value, contract).AddTo(playerID)
 
 		expense_penalty :+ value
-		AddExpense(value, TPlayerFinanceHistoryEntry.TYPE_PAY_PENALTY, TNamedGameObject(contract))
+		AddExpense(value, TVTPlayerFinanceEntryType.PAY_PENALTY, TNamedGameObject(contract))
 		Return True
 	End Method
 
@@ -438,10 +438,10 @@ Type TPlayerFinance
 	Method PayRent:Int(price:Int, room:object)
 		TLogger.Log("TFinancial.PayRent()", "Player "+playerID+" paid a room rent of "+price, LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_RENT, -price, room).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAY_RENT, -price, room).AddTo(playerID)
 
 		expense_rent :+ price
-		AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_RENT, TNamedGameObject(room))
+		AddExpense(price, TVTPlayerFinanceEntryType.PAY_RENT, TNamedGameObject(room))
 		Return True
 	End Method
 
@@ -451,13 +451,13 @@ Type TPlayerFinance
 		If canAfford(price)
 			TLogger.Log("TFinancial.PayNews()", "Player "+playerID+" paid "+price+" for a news", LOG_DEBUG)
 			'add this to our history
-			new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_NEWS, -price, news).AddTo(playerID)
+			new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAY_NEWS, -price, news).AddTo(playerID)
 
 			expense_news :+ price
-			AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_NEWS, TNamedGameObject(news))
+			AddExpense(price, TVTPlayerFinanceEntryType.PAY_NEWS, TNamedGameObject(news))
 			Return True
 		Else
-			TransactionFailed(price, TPlayerFinanceHistoryEntry.TYPE_PAY_NEWS, TNamedGameObject(news))
+			TransactionFailed(price, TVTPlayerFinanceEntryType.PAY_NEWS, TNamedGameObject(news))
 			Return False
 		EndIf
 	End Method
@@ -467,10 +467,10 @@ Type TPlayerFinance
 	Method PayNewsAgencies:Int(price:Int)
 		TLogger.Log("TFinancial.PayNewsAgencies()", "Player "+playerID+" paid "+price+" for news abonnements", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_NEWSAGENCIES, -price).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAY_NEWSAGENCIES, -price).AddTo(playerID)
 
 		expense_newsagencies :+ price
-		AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_NEWSAGENCIES)
+		AddExpense(price, TVTPlayerFinanceEntryType.PAY_NEWSAGENCIES)
 		Return True
 	End Method
 
@@ -479,10 +479,10 @@ Type TPlayerFinance
 	Method PayStationFees:Int(price:Int)
 		TLogger.Log("TFinancial.PayStationFees()", "Player "+playerID+" paid "+price+" for station fees", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_STATIONFEES, -price).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAY_STATIONFEES, -price).AddTo(playerID)
 
 		expense_stationfees :+ price
-		AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_STATIONFEES)
+		AddExpense(price, TVTPlayerFinanceEntryType.PAY_STATIONFEES)
 		Return True
 	End Method
 
@@ -491,10 +491,10 @@ Type TPlayerFinance
 	Method PayCreditInterest:Int(price:Int)
 		TLogger.Log("TFinancial.PayCreditInterest()", "Player "+playerID+" paid "+price+" on interest of their credit", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_CREDITINTEREST, -price).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAY_CREDITINTEREST, -price).AddTo(playerID)
 
 		expense_creditInterest :+ price
-		AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_CREDITINTEREST)
+		AddExpense(price, TVTPlayerFinanceEntryType.PAY_CREDITINTEREST)
 		Return True
 	End Method
 
@@ -503,10 +503,10 @@ Type TPlayerFinance
 	Method PayMisc:Int(price:Int)
 		TLogger.Log("TFinancial.PayStationFees()", "Player "+playerID+" paid "+price+" for misc", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_MISC, -price).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAY_MISC, -price).AddTo(playerID)
 
 		expense_misc :+ price
-		AddExpense(price, TPlayerFinanceHistoryEntry.TYPE_PAY_MISC)
+		AddExpense(price, TVTPlayerFinanceEntryType.PAY_MISC)
 		Return True
 	End Method
 End Type

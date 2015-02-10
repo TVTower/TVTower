@@ -45,10 +45,10 @@ function TaskNewsAgency:BudgetSetup()
 end
 
 function TaskNewsAgency:OnMoneyChanged(value, reason, reference)
-	if (tostring(reason) == tostring(TVT.TYPE_PAY_NEWS)) then
+	if (tostring(reason) == tostring(TVT.PlayerFinanceEntryTypes.PAY_NEWS)) then
 		self:PayFromBudget(value)
 		self:SetFixedCosts()
-	elseif (tostring(reason) == tostring(TVT.TYPE_PAY_NEWSAGENCIES)) then
+	elseif (tostring(reason) == tostring(TVT.PlayerFinanceEntryTypes.PAY_NEWSAGENCIES)) then
 		self:PayFromBudget(value)
 		self:SetFixedCosts()
 	end

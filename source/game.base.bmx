@@ -675,7 +675,7 @@ endrem
 
 				local changed:string = ""
 				if paramS <> ""
-					player.GetFinance().ChangeMoney(int(paramS), TPlayerFinanceHistoryEntry.TYPE_CHEAT)
+					player.GetFinance().ChangeMoney(int(paramS), TVTPlayerFinanceEntryType.CHEAT)
 
 					if int(paramS) > 0 then paramS = "+"+int(paramS)
 					changed = " ("+paramS+")"

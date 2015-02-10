@@ -3,6 +3,7 @@ Import Brl.LinkedList
 Import "Dig/base.util.localization.bmx"
 Import "game.gameobject.bmx"
 Import "game.world.worldtime.bmx"
+Import "game.gameconstants.bmx"
 
 'collection holds a list of entries for each player
 Type TPlayerFinanceHistoryListCollection
@@ -50,48 +51,6 @@ Type TPlayerFinanceHistoryEntry
 	Field money:Long = 0
 	Field worldTime:Double = 0
 
-	Const TYPE_CREDIT_REPAY:int = 11
-	Const TYPE_CREDIT_TAKE:int = 12
-
-	Const TYPE_PAY_STATION:int = 21
-	Const TYPE_SELL_STATION:int = 22
-	Const TYPE_PAY_STATIONFEES:int = 23
-
-	Const TYPE_SELL_MISC:int = 31
-	Const TYPE_PAY_MISC:int = 32
-
-	Const TYPE_SELL_PROGRAMMELICENCE:int = 41
-	Const TYPE_PAY_PROGRAMMELICENCE:int = 42
-	Const TYPE_PAYBACK_AUCTIONBID:int = 43
-	Const TYPE_PAY_AUCTIONBID:int = 44
-
-	Const TYPE_EARN_CALLERREVENUE:int = 51
-	Const TYPE_EARN_INFOMERCIALREVENUE:int = 52
-	Const TYPE_EARN_ADPROFIT:int = 53
-	Const TYPE_EARN_SPONSORSHIPREVENUE:int = 54
-	Const TYPE_PAY_PENALTY:int = 55
-
-	Const TYPE_PAY_SCRIPT:int = 61
-	Const TYPE_SELL_SCRIPT:int = 62
-	Const TYPE_PAY_RENT:int = 63
-	Const TYPE_PAY_PRODUCTIONSTUFF:int = 64
-
-	Const TYPE_PAY_NEWS:int = 71
-	Const TYPE_PAY_NEWSAGENCIES:int = 72
-
-	Const TYPE_PAY_CREDITINTEREST:int = 81
-	Const TYPE_PAY_DRAWINGCREDITINTEREST:int = 82
-	Const TYPE_EARN_BALANCEINTEREST:int = 83
-	
-	Const TYPE_CHEAT:int = 1000
-
-	Const GROUP_NEWS:int = 1
-	Const GROUP_PROGRAMME:int = 2
-	Const GROUP_DEFAULT:int = 3
-	Const GROUP_PRODUCTION:int = 4
-	Const GROUP_STATION:int = 5
-
-
 
 	Method Init:TPlayerFinanceHistoryEntry(typeID:int, money:int, obj:object=null, worldTime:int = -1)
 		if worldTime = -1 then worldTime = GetWorldTime().GetTimeGone()
@@ -126,61 +85,63 @@ Type TPlayerFinanceHistoryEntry
 	'returns a text describing the history
 	Method GetDescription:String()
 		Select typeID
-			Case TYPE_CREDIT_REPAY
+			Case TVTPlayerFinanceEntryType.CREDIT_REPAY
 				return GetLocale("FINANCES_HISTORY_FOR_CREDITREPAID")
-			Case TYPE_CREDIT_TAKE
+			Case TVTPlayerFinanceEntryType.CREDIT_TAKE
 				return GetLocale("FINANCES_HISTORY_FOR_CREDITTAKEN")
-			Case TYPE_PAY_STATION
+			Case TVTPlayerFinanceEntryType.PAY_STATION
 				return GetLocale("FINANCES_HISTORY_FOR_STATIONBOUGHT")
-			Case TYPE_SELL_STATION
+			Case TVTPlayerFinanceEntryType.SELL_STATION
 				return GetLocale("FINANCES_HISTORY_FOR_STATIONSOLD")
-			Case TYPE_PAY_STATIONFEES
+			Case TVTPlayerFinanceEntryType.PAY_STATIONFEES
 				return GetLocale("FINANCES_HISTORY_OF_STATIONFEES")
-			Case TYPE_SELL_MISC, TYPE_PAY_MISC
+			Case TVTPlayerFinanceEntryType.SELL_MISC, ..
+			     TVTPlayerFinanceEntryType.PAY_MISC
 				return GetLocale("FINANCES_HISTORY_FOR_MISC")
-			Case TYPE_SELL_PROGRAMMELICENCE, TYPE_PAY_PROGRAMMELICENCE
+			Case TVTPlayerFinanceEntryType.SELL_PROGRAMMELICENCE, ..
+			     TVTPlayerFinanceEntryType.PAY_PROGRAMMELICENCE
 				local title:string = "unknown licence"
 				if TNamedGameObject(obj) then title = TNamedGameObject(obj).GetTitle()
 				return GetLocale("FINANCES_HISTORY_FOR_PROGRAMMELICENCE").Replace("%TITLE%", title)
-			Case TYPE_PAY_AUCTIONBID
+			Case TVTPlayerFinanceEntryType.PAY_AUCTIONBID
 				local title:string = "unknown licence"
 				if TNamedGameObject(obj) then title = TNamedGameObject(obj).GetTitle()
 				return GetLocale("FINANCES_HISTORY_FOR_AUCTIONBID").Replace("%TITLE%", title)
-			Case TYPE_PAYBACK_AUCTIONBID
+			Case TVTPlayerFinanceEntryType.PAYBACK_AUCTIONBID
 				local title:string = "unknown licence"
 				if TNamedGameObject(obj) then title = TNamedGameObject(obj).GetTitle()
 				return GetLocale("FINANCES_HISTORY_FOR_AUCTIONBIDREPAYED").Replace("%TITLE%", title)
-			Case TYPE_EARN_CALLERREVENUE
+			Case TVTPlayerFinanceEntryType.EARN_CALLERREVENUE
 				return GetLocale("FINANCES_HISTORY_OF_CALLERREVENUE")
-			Case TYPE_EARN_INFOMERCIALREVENUE
+			Case TVTPlayerFinanceEntryType.EARN_INFOMERCIALREVENUE
 				return GetLocale("FINANCES_HISTORY_OF_INFOMERCIALREVENUE")
-			Case TYPE_EARN_ADPROFIT
+			Case TVTPlayerFinanceEntryType.EARN_ADPROFIT
 				local title:string = "unknown contract"
 				if TNamedGameObject(obj) then title = TNamedGameObject(obj).GetTitle()
 				return GetLocale("FINANCES_HISTORY_OF_ADPROFIT").Replace("%TITLE%", title)
-			Case TYPE_EARN_SPONSORSHIPREVENUE
+			Case TVTPlayerFinanceEntryType.EARN_SPONSORSHIPREVENUE
 				return GetLocale("FINANCES_HISTORY_OF_SPONSORSHIPREVENUE")
-			Case TYPE_PAY_PENALTY
+			Case TVTPlayerFinanceEntryType.PAY_PENALTY
 				return GetLocale("FINANCES_HISTORY_OF_PENALTY")
-			Case TYPE_PAY_SCRIPT, TYPE_SELL_SCRIPT
+			Case TVTPlayerFinanceEntryType.PAY_SCRIPT, TVTPlayerFinanceEntryType.SELL_SCRIPT
 				local title:string = "unknown script"
 				if TNamedGameObject(obj) then title = TNamedGameObject(obj).GetTitle()
 				return GetLocale("FINANCES_HISTORY_FOR_SCRIPT").Replace("%TITLE%", title)
-			Case TYPE_PAY_PRODUCTIONSTUFF
+			Case TVTPlayerFinanceEntryType.PAY_PRODUCTIONSTUFF
 				return GetLocale("FINANCES_HISTORY_FOR_PRODUCTIONSTUFF")
-			Case TYPE_PAY_RENT
+			Case TVTPlayerFinanceEntryType.PAY_RENT
 				return GetLocale("FINANCES_HISTORY_FOR_RENT")
-			Case TYPE_PAY_NEWS
+			Case TVTPlayerFinanceEntryType.PAY_NEWS
 				local title:string = "unknown news"
 				if TNamedGameObject(obj) then title = TNamedGameObject(obj).GetTitle()
 				return GetLocale("FINANCES_HISTORY_FOR_NEWS").Replace("%TITLE%", title)
-			Case TYPE_PAY_NEWSAGENCIES
+			Case TVTPlayerFinanceEntryType.PAY_NEWSAGENCIES
 				return GetLocale("FINANCES_HISTORY_FOR_NEWSAGENCY")
-			Case TYPE_PAY_CREDITINTEREST
+			Case TVTPlayerFinanceEntryType.PAY_CREDITINTEREST
 				return GetLocale("FINANCES_HISTORY_OF_CREDITINTEREST")
-			Case TYPE_PAY_DRAWINGCREDITINTEREST
+			Case TVTPlayerFinanceEntryType.PAY_DRAWINGCREDITINTEREST
 				return GetLocale("FINANCES_HISTORY_OF_DRAWINGCREDITINTEREST")
-			Case TYPE_EARN_BALANCEINTEREST
+			Case TVTPlayerFinanceEntryType.EARN_BALANCEINTEREST
 				return GetLocale("FINANCES_HISTORY_OF_BALANCEINTEREST")
 			Default
 				return GetLocale("FINANCES_HISTORY_FOR_SOMETHING")
@@ -190,34 +151,7 @@ Type TPlayerFinanceHistoryEntry
 
 	'returns the group a type belongs to
 	Method GetTypeGroup:int()
-		Select typeID
-			Case TYPE_CREDIT_REPAY, TYPE_CREDIT_TAKE
-				Return GROUP_DEFAULT
-			Case TYPE_PAY_STATION, TYPE_SELL_STATION, TYPE_PAY_STATIONFEES
-				Return GROUP_STATION
-			Case TYPE_SELL_MISC, TYPE_PAY_MISC
-				Return GROUP_DEFAULT
-			Case TYPE_SELL_PROGRAMMELICENCE, ..
-			     TYPE_PAY_PROGRAMMELICENCE, ..
-			     TYPE_EARN_CALLERREVENUE, ..
-			     TYPE_EARN_INFOMERCIALREVENUE, ..
-			     TYPE_EARN_SPONSORSHIPREVENUE, ..
-			     TYPE_EARN_ADPROFIT, ..
-			     TYPE_PAY_AUCTIONBID, ..
-			     TYPE_PAYBACK_AUCTIONBID, ..
-				 TYPE_PAY_PENALTY
-				Return GROUP_PROGRAMME
-			Case TYPE_PAY_SCRIPT, TYPE_SELL_SCRIPT, TYPE_PAY_PRODUCTIONSTUFF, TYPE_PAY_RENT
-				return GROUP_PRODUCTION
-			Case TYPE_PAY_NEWS, TYPE_PAY_NEWSAGENCIES
-				return GROUP_NEWS
-			Case TYPE_PAY_CREDITINTEREST,..
-			     TYPE_PAY_DRAWINGCREDITINTEREST, ..
-			     TYPE_EARN_BALANCEINTEREST
-				return GROUP_DEFAULT
-			Default
-				return GROUP_DEFAULT
-		End Select
+		return TVTPlayerFinanceEntryType.GetGroup(typeID)
 	End Method
 
 

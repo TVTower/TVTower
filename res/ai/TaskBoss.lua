@@ -61,11 +61,11 @@ function TaskBoss:BeforeBudgetSetup()
 end
 
 function TaskBoss:OnMoneyChanged(value, reason, reference)
-	if (tostring(reason) == tostring(TVT.TYPE_CREDIT_TAKE)) then
+	if (tostring(reason) == tostring(TVT.PlayerFinanceEntryTypes.CREDIT_TAKE)) then
 		self:SetFixedCosts()
-	elseif (tostring(reason) == tostring(TVT.TYPE_CREDIT_REPAY)) then
+	elseif (tostring(reason) == tostring(TVT.PlayerFinanceEntryTypes.CREDIT_REPAY)) then
 		self:SetFixedCosts()
-	elseif (tostring(reason) == tostring(TVT.TYPE_PAY_CREDITINTEREST)) then
+	elseif (tostring(reason) == tostring(TVT.PlayerFinanceEntryTypes.PAY_CREDITINTEREST)) then
 		self.FixedCosts = value	
 	end
 end
