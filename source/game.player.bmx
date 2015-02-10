@@ -139,12 +139,12 @@ Type TPlayerCollection extends TPlayerBaseCollection
 
 		if reason = "inuse"
 			'inform player AI
-			If player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, LuaFunctions.RESULT_INUSE)
+			If player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctions.RESULT_INUSE)
 			'tooltip only for active user
 			If player.isLocalHuman() then GetBuilding().CreateRoomUsedTooltip(door, room)
 		elseif reason = "blocked"
 			'inform player AI
-			If player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, LuaFunctions.RESULT_NOTALLOWED)
+			If player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctions.RESULT_NOTALLOWED)
 			'tooltip only for active user
 			If player.isLocalHuman() then GetBuilding().CreateRoomBlockedTooltip(door, room)
 		endif
@@ -162,7 +162,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		EventManager.triggerEvent( TEventSimple.Create("player.onBeginEnterRoom", null, player, room) )
 
 		'inform player AI
-		If room and player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, LuaFunctions.RESULT_OK)
+		If room and player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctions.RESULT_OK)
 	End Function
 	
 

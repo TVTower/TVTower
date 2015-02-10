@@ -546,6 +546,10 @@ Function GetStationMapCollection:TStationMapCollection()
 	Return TStationMapCollection.GetInstance()
 End Function
 
+Function GetStationMap:TStationMap(playerID:int, createIfMissing:int = False)
+	Return TStationMapCollection.GetInstance().GetMap(playerID, createIfMissing)
+End Function
+
 
 
 
@@ -613,24 +617,17 @@ Type TStationMap {_exposeToLua="selected"}
 
 
 	'returns a station of a player at a given position in the list
-	Function getStationFromList:TStation(playerID:Int=-1, position:Int=0) {_exposeToLua}
-		Local stationMap:TStationMap = GetStationMapCollection().GetMap(playerID)
-		If Not stationMap Then Return Null
+	Method getStationAtIndex:TStation(arrayIndex:Int=-1) {_exposeToLua}
 		'out of bounds?
-		If position < 0 Or position >= stationMap.stations.count() Then Return Null
+		If arrayIndex < 0 Or arrayIndex >= stations.count() Then Return Null
 
-		Return TStation( stationMap.stations.ValueAtIndex(position) )
-	End Function
+		Return TStation( stations.ValueAtIndex(arrayIndex) )
+	End Method
 
 
 	'returns the amount of stations a player has
-	Method getStationCount:Int(playerID:Int=-1) {_exposeToLua}
-		If playerID = owner Then Return stations.count()
-
-		Local stationMap:TStationMap = GetStationMapCollection().GetMap(playerID)
-		If Not stationMap Then Return Null
-
-		Return stationMap.getStationCount(playerID)
+	Method getStationCount:Int() {_exposeToLua}
+		Return stations.count()
 	End Method
 
 
@@ -655,7 +652,7 @@ Type TStationMap {_exposeToLua="selected"}
 
 	'sell a station at the given position in the list
 	Method SellStation:Int(position:Int)
-		Local station:TStation = getStationFromList(position)
+		Local station:TStation = getStationAtIndex(position)
 		If station Then Return RemoveStation(station, True)
 		return False
 	End Method

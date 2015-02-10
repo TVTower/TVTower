@@ -308,23 +308,21 @@ End Type
 
 
 Type TLuaFunctions {_exposeToLua}
-	'have to do this as "field" because Lua cannot access const/globals
-	Const RESULT_OK:int				=   1
-	Const RESULT_FAILED:int			=   0
-	Const RESULT_WRONGROOM:int		=  -2
-	Const RESULT_NOKEY:int			=  -4
-	Const RESULT_NOTFOUND:int		=  -8
-	Const RESULT_NOTALLOWED:int		= -16
-	Const RESULT_INUSE:int			= -32
+	Const RESULT_OK:int        =   1
+	Const RESULT_FAILED:int    =   0
+	Const RESULT_WRONGROOM:int =  -2
+	Const RESULT_NOKEY:int     =  -4
+	Const RESULT_NOTFOUND:int  =  -8
+	Const RESULT_NOTALLOWED:int= -16
+	Const RESULT_INUSE:int     = -32
 
 	'const + helpers
 	Field Rules:TGameRules
 	Field Constants:TVTGameConstants
 
-	Field ME:Int 'Wird initialisiert
-
-
-	'Die Räume werden alle initialisiert
+	'get instantiated during "new"
+	Field ME:Int
+	
 	Field ROOM_TOWER:Int = 0
 	Field ROOM_MOVIEAGENCY:Int
 	Field ROOM_ADAGENCY:Int
@@ -346,20 +344,16 @@ Type TLuaFunctions {_exposeToLua}
 	Field ROOM_NEWSAGENCY_PLAYER_ME:Int
 	Field ROOM_ARCHIVE_PLAYER_ME:Int
 
-
 	Rem
-		DO NOT use ROOM constants (even "_ME" should be deprecated)
+		DO NOT use ROOM constants (even "room_ME" should be deprecated)
 		a) avoids modability
 		b) AI can request room using
-			GetRoomCollection().GetFirstByDetails(...)  - get the first found room
-			TRoom.GetByDetails(...) - get array of found rooms
+			GetFirstRoomByDetails("office", playerNumber)  - get the first found room
+			GetRoomsByDetails("office") - get array of found rooms
+			GetRoom(roomID) 
 		    ID is room.GetID()
 		c) a player can have multiple studios - how to handle this with const?
 		d) rooms could change "content" and no longer exist
-
-		Field ROOM_START_STUDIO_PLAYER_ME:Int
-		...
-		Field ROOM_START_STUDIO_PLAYER4:Int
 	EndRem
 
 	Method _PlayerInRoom:Int(roomname:String, checkFromRoom:Int = False)
@@ -421,21 +415,16 @@ Type TLuaFunctions {_exposeToLua}
 		Return self.RESULT_OK
 	End Method
 
-rem
-	'do not give raw access to ALL programmes in the database
-	'AI has to use the normal "go into room, get data there" approach
-	Method GetProgramme:TProgramme( id:int ) {_exposeToLua}
-		return TProgramme.getProgramme( id )
-	End Method
-
-	Method GetContract:TAdContract( id:int ) {_exposeToLua}
-		return TAdContract.Get( id )
-	End Method
-endrem
 
 	Method GetFirstRoomByDetails:TRoom(roomName:String, owner:Int=-1000)
 		return GetRoomCollection().GetFirstByDetails(roomName, owner)
 	End Method
+
+
+	Method GetRoomsByDetails:TRoom[](roomName:String, owner:Int=-1000)
+		return GetRoomCollection().GetAllByDetails(roomName, owner)
+	End Method
+
 
 	Method GetRoom:TRoom(id:int)
 		return GetRoomCollection().Get(id)
@@ -453,14 +442,14 @@ endrem
 
 	Method getPlayerRoom:Int()
 		Local room:TRoomBase = GetPlayer(self.ME).GetFigure().inRoom
-		If room <> Null Then Return room.id Else Return self.RESULT_NOTFOUND
+		If room Then Return room.id
+
+		Return self.RESULT_NOTFOUND
 	End Method
 
 
 	Method getPlayerTargetRoom:Int()
-		local player:TPlayer = GetPlayer(self.ME)
-		local roomDoor:TRoomDoor = TRoomDoor(player.figure.GetTarget())
-		
+		local roomDoor:TRoomDoor = TRoomDoor(GetPlayer(self.ME).GetFigure().GetTarget())
 		If roomDoor and roomDoor.GetRoom() then Return roomDoor.GetRoom().id
 
 		Return self.RESULT_NOTFOUND
@@ -475,6 +464,7 @@ endrem
 			Local door:TRoomDoorBase = TRoomDoor.GetMainDoorToRoom(room)
 			If door Then Return door.GetOnFloor()
 		endif
+
 		Return self.RESULT_NOTFOUND
 	End Method
 
@@ -483,11 +473,12 @@ endrem
 	'attention: the first found door is used
 	Method doGoToRoom:Int(roomId:Int = 0)
 		Local room:TRoom = GetRoomCollection().Get(roomId)
-
-		Local door:TRoomDoorBase = TRoomDoor.GetMainDoorToRoom(room)
-		If door
-			GetPlayer(self.ME).GetFigure().SendToDoor(door)
-			Return self.RESULT_OK
+		If room
+			Local door:TRoomDoorBase = TRoomDoor.GetMainDoorToRoom(room)
+			If door
+				GetPlayer(self.ME).GetFigure().SendToDoor(door)
+				Return self.RESULT_OK
+			EndIf
 		endif
 
 		Return self.RESULT_NOTFOUND
@@ -526,6 +517,22 @@ endrem
 	End Method
 
 
+	Method getEvaluatedAudienceQuote:Int(hour:Int = -1, licenceID:Int = -1, lastQuotePercentage:Float = 0.1, audiencePercentageBasedOnHour:Float=-1)
+		'TODO: Statt dem audiencePercentageBasedOnHour-Parameter könnte auch das noch unbenutzte "hour" den generellen Quotenwert in der
+		'angegebenen Stunde mit einem etwas umgebauten "calculateMaxAudiencePercentage" (ohne Zufallswerte und ohne die globale Variable zu verändern) errechnen.
+
+		Print "MANUEL: Für KI wieder rein machen!"
+		'Local licence:TProgrammeLicence = TProgrammeLicence.Get(licenceID)
+		'If licence and licence.getData()
+		'	Local Quote:Int = Floor(licence.getData().getAudienceQuote(lastQuotePercentage, audiencePercentageBasedOnHour) * 100)
+		'	Print "quote:" + Quote + "%"
+		'	Return Quote
+		'EndIf
+		'0 percent - no programme
+		return 0
+	End Method
+
+
 	Method convertToAdContract:TAdContract(obj:object)
 		return TAdContract(obj)
 	End Method
@@ -539,6 +546,7 @@ endrem
 	'=== OFFICE ===
 	'players bureau
 
+	'== STATIONMAP ==
 	Method of_buyStation:int(x:int, y:int)
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 
@@ -553,13 +561,34 @@ endrem
 	Method of_sellStation:int(listPosition:int)
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 
-		if GetStationMapCollection().GetMap(ME).SellStation(listPosition)
+		if GetStationMap(self.ME).SellStation(listPosition)
 			Return self.RESULT_OK
 		else
 			Return self.RESULT_FAILED
 		endif
 	End Method
 
+
+	Method of_getStationCount:Int(playerID:int = -1)
+		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
+
+		if playerID = -1 then playerID = self.ME
+
+		Return GetStationMap(playerID).GetStationCount()
+	End Method
+
+
+	Method of_getStationAtIndex:TStation(playerID:int = -1, arrayIndex:Int = -1)
+		If Not _PlayerInRoom("office", True) Then Return Null
+
+		if playerID = -1 then playerID = self.ME
+
+		Return GetStationMap(playerID).GetStationAtIndex(arrayIndex)
+	End Method
+
+
+
+	'== PROGRAMME PLAN ==
 
 	'returns the broadcast material (in result.data) at the given slot
 	Method of_getAdvertisementSlot:TLuaFunctionResult(day:Int = -1, hour:Int = -1)
@@ -651,21 +680,6 @@ endrem
 	End Method
 
 
-	Method getEvaluatedAudienceQuote:Int(hour:Int = -1, licenceID:Int = -1, lastQuotePercentage:Float = 0.1, audiencePercentageBasedOnHour:Float=-1)
-		'TODO: Statt dem audiencePercentageBasedOnHour-Parameter könnte auch das noch unbenutzte "hour" den generellen Quotenwert in der
-		'angegebenen Stunde mit einem etwas umgebauten "calculateMaxAudiencePercentage" (ohne Zufallswerte und ohne die globale Variable zu verändern) errechnen.
-
-		Print "MANUEL: Für KI wieder rein machen!"
-		'Local licence:TProgrammeLicence = TProgrammeLicence.Get(licenceID)
-		'If licence and licence.getData()
-		'	Local Quote:Int = Floor(licence.getData().getAudienceQuote(lastQuotePercentage, audiencePercentageBasedOnHour) * 100)
-		'	Print "quote:" + Quote + "%"
-		'	Return Quote
-		'EndIf
-		'0 percent - no programme
-		return 0
-	End Method
-
 
 	'=== NEWS ROOM ===
 
@@ -708,6 +722,7 @@ endrem
 			Return self.RESULT_OK
 		EndIf
 	End Method
+
 
 
 	'=== SPOT AGENCY ===
@@ -771,6 +786,7 @@ endrem
 	End Method
 
 
+
 	'=== MOVIE AGENCY ===
 	'main screen
 	
@@ -814,6 +830,7 @@ endrem
 		Next
 		Return self.RESULT_NOTFOUND
 	End Method
+
 
 
 	'=== MOVIE DEALER ===
@@ -883,6 +900,7 @@ endrem
 		local Block:TAuctionProgrammeBlocks = self.md_getAuctionMovieBlock(ArrayID)
 		If Block then Return Block.bestBidder else Return self.RESULT_NOTFOUND
 	End Method
+
 
 
 	'=== BOSS ROOM ===
@@ -1047,5 +1065,3 @@ endrem
 	'LUA_ar_doMovieOutBag
 	'
 End Type
-
-Global LuaFunctions:TLuaFunctions = new TLuaFunctions
