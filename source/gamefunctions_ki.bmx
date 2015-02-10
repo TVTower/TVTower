@@ -52,8 +52,6 @@ Type KI
 		'the game object
 		LuaEngine.RegisterBlitzmaxObject("Game", Game)
 		'the game object
-		LuaEngine.RegisterBlitzmaxObject("GameRules", GameRules)
-		'the game object
 		LuaEngine.RegisterBlitzmaxObject("WorldTime", GetWorldTime())
 
 		'register source and available objects
@@ -320,15 +318,8 @@ Type TLuaFunctions {_exposeToLua}
 	Const RESULT_INUSE:int			= -32
 
 	'const + helpers
-	'allows various access options for the AI regarding game specific
-	'constants (genres, types, flags...)
-	Field ProgrammeTypes:TVTProgrammeType = new TVTProgrammeType
-	Field ProgrammeGenres:TVTProgrammeGenre = new TVTProgrammeGenre
-	Field NewsGenres:TVTNewsGenre = new TVTNewsGenre
-	Field ProgrammeFlags:TVTProgrammeFlag = new TVTProgrammeFlag
-	Field PressureGroups:TVTPressureGroup = new TVTPressureGroup
-	Field TargetGroups:TVTTargetGroup = new TVTTargetGroup
-	Field PlayerFinanceEntryTypes:TVTPlayerFinanceEntryType = new TVTPlayerFinanceEntryType
+	Field Rules:TGameRules
+	Field Constants:TVTGameConstants
 
 	Field ME:Int 'Wird initialisiert
 
@@ -383,6 +374,9 @@ Type TLuaFunctions {_exposeToLua}
 
 	Function Create:TLuaFunctions(pPlayerId:Int)
 		Local ret:TLuaFunctions = New TLuaFunctions
+
+		ret.Rules = GameRules
+		ret.Constants = GameConstants
 
 		ret.ME = pPlayerId
 

@@ -61,14 +61,14 @@ function TaskMovieDistributor:BudgetSetup()
 end
 
 function TaskMovieDistributor:OnMoneyChanged(value, reason, reference)
-	if (tostring(reason) == tostring(TVT.PlayerFinanceEntryTypes.PAY_PROGRAMMELICENCE)) then
+	if (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.PAY_PROGRAMMELICENCE)) then
 		--self:PayFromBudget(value)
 		--self.CurrentBargainBudget = self.CurrentBargainBudget - value
-	elseif (tostring(reason) == tostring(TVT.PlayerFinanceEntryTypes.SELL_PROGRAMMELICENCE)) then
+	elseif (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.SELL_PROGRAMMELICENCE)) then
 		--Wird im Budgetmanager neu verteilt
-	elseif (tostring(reason) == tostring(TVT.PlayerFinanceEntryTypes.PAY_AUCTIONBID)) then
+	elseif (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.PAY_AUCTIONBID)) then
 		--self:PayFromBudget(value)	Wird unten gemacht, damit der Kontostand gleich aktuell ist. Muss man mal Debuggen
-	elseif (tostring(reason) == tostring(TVT.PlayerFinanceEntryTypes.PAYBACK_AUCTIONBID)) then
+	elseif (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.PAYBACK_AUCTIONBID)) then
 		self.CurrentBudget = self.CurrentBudget + value -- Zurück zahlen
 	end
 end

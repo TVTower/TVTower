@@ -49,13 +49,13 @@ function TaskStationMap:BudgetSetup()
 end
 
 function TaskStationMap:OnMoneyChanged(value, reason, reference)
-	if (tostring(reason) == tostring(TVT.PlayerFinanceEntryTypes.PAY_STATION)) then
+	if (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.PAY_STATION)) then
 		self:PayFromBudget(value)
 		self:SetFixedCosts()
-	elseif (tostring(reason) == tostring(TVT.PlayerFinanceEntryTypes.SELL_STATION)) then
+	elseif (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.SELL_STATION)) then
 		self:PayFromBudget(value)
 		self:SetFixedCosts()
-	elseif (tostring(reason) == tostring(TVT.PlayerFinanceEntryTypes.PAY_STATIONFEES)) then
+	elseif (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.PAY_STATIONFEES)) then
 		self.FixedCosts = value
 		--self.FixedCostsBudget = self.FixedCostsBudget - value
 	end

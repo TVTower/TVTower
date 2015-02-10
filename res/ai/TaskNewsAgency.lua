@@ -45,10 +45,10 @@ function TaskNewsAgency:BudgetSetup()
 end
 
 function TaskNewsAgency:OnMoneyChanged(value, reason, reference)
-	if (tostring(reason) == tostring(TVT.PlayerFinanceEntryTypes.PAY_NEWS)) then
+	if (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.PAY_NEWS)) then
 		self:PayFromBudget(value)
 		self:SetFixedCosts()
-	elseif (tostring(reason) == tostring(TVT.PlayerFinanceEntryTypes.PAY_NEWSAGENCIES)) then
+	elseif (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.PAY_NEWSAGENCIES)) then
 		self:PayFromBudget(value)
 		self:SetFixedCosts()
 	end
@@ -78,8 +78,8 @@ function JobNewsAgencyAbonnements:Tick()
 	local abonnementCount = self.Task.AbonnementBudget / 10000
 
 	--set abonnements for all available news genres
-	for i = 0, TVT.NewsGenres.count - 1 do
-		MY.SetNewsAbonnement(TVT.NewsGenres.GetAtIndex(i), self:GetAbonnementLevel(abonnementCount, i))
+	for i = 0, TVT.Constants.NewsGenre.count - 1 do
+		MY.SetNewsAbonnement(TVT.Constants.NewsGenre.GetAtIndex(i), self:GetAbonnementLevel(abonnementCount, i))
 	end
 	--self.Task.CurrentBudget = self.Task.CurrentBudget - (abonnementCount * 10000)
 

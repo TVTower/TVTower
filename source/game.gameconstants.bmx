@@ -12,6 +12,31 @@ SuperStrict
 Global TVTDebugInfos:int = False
 Global TVTDebugQuoteInfos:int = False	
 
+'collection of all constants types (so it could be exposed
+'to LUA in one step)
+Type TVTGameConstants {_exposeToLua}
+	Field NewsType:TVTNewsType = new TVTNewsType
+	Field NewsHandling:TVTNewsHandling = new TVTNewsHandling
+	Field NewsGenre:TVTNewsGenre = new TVTNewsGenre
+	Field NewsEffect:TVTNewsEffect = new TVTNewsEffect
+
+	Field PlayerFinanceEntryType:TVTPlayerFinanceEntryType = new TVTPlayerFinanceEntryType
+
+	Field ProgrammeType:TVTProgrammeType = new TVTProgrammeType
+	Field ProgrammeGenre:TVTProgrammeGenre = new TVTProgrammeGenre 
+	Field ProgrammeFlag:TVTProgrammeFlag = new TVTProgrammeFlag 
+	Field ProgrammeLicenceType:TVTProgrammeLicenceType = new TVTProgrammeLicenceType 
+
+	Field TargetGroup:TVTTargetGroup = new TVTTargetGroup 
+	Field PressureGroup:TVTPressureGroup = new TVTPressureGroup 
+
+	Field PersonGender:TVTPersonGender = new TVTPersonGender 
+	Field ProgrammePersonJob:TVTProgrammePersonJob = new TVTProgrammePersonJob
+End Type
+Global GameConstants:TVTGameConstants = New TVTGameConstants
+
+
+
 Type TVTNewsType {_exposeToLua}
 	Const InitialNews:int = 0
 	Const InitialNewsByInGameEvent:int = 1
