@@ -100,6 +100,8 @@ End Type
 'a simple stop watch to measure a time interval
 Type TStopWatch
 	Field startTime:int = -1
+	Field stopTime:int = -1
+	Field pausedTime:int = 0
 
 
 	Method Init:TStopWatch()
@@ -109,14 +111,31 @@ Type TStopWatch
 	End Method
 
 
-	Method Reset:int()
+	Method Reset()
 		startTime = Time.GetTimeGone()
+		stopTime = -1
+		pausedTime = 0
+	End Method
+
+
+	Method Stop()
+		stopTime = Time.GetTimeGone()
+	End Method
+
+
+	Method Start()
+		if startTime = -1 then Reset()
+		if stopTime >= 0
+			pausedTime :+ Time.GetTimeGone() - stopTime
+			stopTime = -1
+		endif
 	End Method
 
 
 	Method GetTime:int()
 		if startTime = -1 then return 0
-		return (Time.GetTimeGone() - startTime)
+		if stopTime >= 0 then return (stopTime - startTime) - pausedTime
+		return (Time.GetTimeGone() - startTime) - pausedTime
 	End Method
 End Type
 

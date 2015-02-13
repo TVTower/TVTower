@@ -42,11 +42,11 @@ ModuleInfo "Copyright: 2008-2011 Bruce A Henderson"
 ModuleInfo "History: 1.00"
 ModuleInfo "History: Initial Release"
 endrem
-Import "../../Dig/external/libxml/libxml.bmx" 'BaH.libxml
+Import "../libxml/libxml.bmx" 'BaH.libxml
 'Import "../libxml/libxml.bmx" 'BaH.libxml
 'using custom to have support for const/function reflection
 'Import BRL.Reflection
-Import "../../Dig/external/reflectionExtended/reflection.bmx"
+Import "../reflectionExtended/reflection.bmx"
 Import BRL.Map
 Import BRL.Stream
 
