@@ -3744,7 +3744,11 @@ Function DEV_switchRoom:Int(room:TRoom)
 
 	'leave first
 	if GetPlayer().GetFigure().inRoom
-		GetPlayer().GetFigure().LeaveRoom(True)
+		'force leave?
+		'GetPlayer().GetFigure().LeaveRoom(True)
+		'not forcing a leave is similar to "right-click"-leaving
+		'which means it signs contracts, buys programme etc
+		GetPlayer().GetFigure().LeaveRoom(False)
 	endif
 
 	'remove potential elevator passenger 
