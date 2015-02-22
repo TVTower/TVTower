@@ -227,13 +227,13 @@ Type TPlayerFinance
 	End Method
 	
 
-	Method SellScript:Int(price:Int)
+	Method SellScript:Int(price:Int, script:object)
 		TLogger.Log("TFinancial.SellScript()", "Player "+playerID+" sold a script for "+price, LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.SELL_SCRIPT, +price).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.SELL_SCRIPT, +price, script).AddTo(playerID)
 
 		income_scripts :+ price
-		AddIncome(price, TVTPlayerFinanceEntryType.SELL_SCRIPT)
+		AddIncome(price, TVTPlayerFinanceEntryType.SELL_SCRIPT, TNamedGameObject(script))
 		Return True
 	End Method
 

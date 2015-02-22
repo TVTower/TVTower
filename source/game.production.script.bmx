@@ -578,7 +578,7 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 		local finance:TPlayerFinance = GetPlayerFinance(owner,-1)
 		if not finance then return False
 
-		finance.SellProgrammeLicence(GetPrice(), self)
+		finance.SellScript(GetPrice(), self)
 
 		'set unused again
 		SetOwner(0)
@@ -592,7 +592,7 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 		local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(playerID, -1)
 		if not finance then return False
 
-		If finance.PayProgrammeLicence(getPrice(), self)
+		If finance.PayScript(getPrice(), self)
 			SetOwner(playerID)
 			Return TRUE
 		EndIf
