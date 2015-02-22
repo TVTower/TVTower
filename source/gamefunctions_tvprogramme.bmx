@@ -1572,7 +1572,8 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 	Field bestBidder:int = 0			'what was bidden for that licence
 	Field slot:int = 0					'for ordering (and displaying sheets without overlapping)
 	Field bidSavings:float = 0.75		'how much to shape of the original price
-	Field _imageWithText:TImage = Null	'cached image
+	'cached image
+	Field _imageWithText:TImage = Null {nosave}
 
 	Global bidSavingsMaximum:float		= 0.85			'base value
 	Global bidSavingsMinimum:float		= 0.50			'base value

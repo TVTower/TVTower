@@ -1,5 +1,5 @@
 'Application: TVGigant/TVTower
-'Author: Ronny Otto & Manuel Vögele
+'Author: Ronny Otto & Manuel Vï¿½gele
 
 SuperStrict
 
@@ -111,7 +111,7 @@ Include "game.base.bmx"
 '===== Globals =====
 Global VersionDate:String = LoadText("incbin::source/version.txt")
 Global VersionString:String = "v0.2 Build ~q" + VersionDate+"~q"
-Global CopyrightString:String = "by Ronny Otto & Manuel Vögele"
+Global CopyrightString:String = "by Ronny Otto & Manuel Vï¿½gele"
 Global App:TApp = Null
 Global Game:TGame
 Global InGame_Chat:TGUIChat
@@ -849,6 +849,7 @@ Type TGameState
 	Field _StationMapCollection:TStationMapCollection = Null
 	Field _Building:TBuilding 'includes, sky, moon, ufo, elevator
 	Field _NewsAgency:TNewsAgency
+	Field _AuctionProgrammeBlocksList:TList
 	Field _RoomHandler_MovieAgency:RoomHandler_MovieAgency
 	Field _RoomHandler_AdAgency:RoomHandler_AdAgency
 	Field _RoomDoorBaseCollection:TRoomDoorBaseCollection
@@ -933,6 +934,7 @@ Type TGameState
 		_Assign(_World, TWorld._instance, "World", MODE_LOAD)
 		_Assign(_WorldTime, TWorldTime._instance, "WorldTime", MODE_LOAD)
 		_Assign(_GameRules, GameRules, "GameRules", MODE_LOAD)
+		_Assign(_AuctionProgrammeBlocksList, TAuctionProgrammeBlocks.list, "AuctionProgrammeBlocks", MODE_LOAD)
 		_Assign(_RoomHandler_MovieAgency, RoomHandler_MovieAgency._instance, "MovieAgency", MODE_LOAD)
 		_Assign(_RoomHandler_AdAgency, RoomHandler_AdAgency._instance, "AdAgency", MODE_LOAD)
 		_Assign(_Game, Game, "Game")
@@ -978,6 +980,7 @@ Type TGameState
 		_Assign(TWorld._instance, _World, "World", MODE_SAVE)
 		_Assign(TWorldTime._instance, _WorldTime, "WorldTime", MODE_SAVE)
 		_Assign(GameRules, _GameRules, "GameRules", MODE_SAVE)
+		_Assign(TAuctionProgrammeBlocks.list, _AuctionProgrammeBlocksList, "AuctionProgrammeBlocks", MODE_Save)
 		'special room data
 		_Assign(RoomHandler_MovieAgency._instance, _RoomHandler_MovieAgency, "MovieAgency", MODE_Save)
 		_Assign(RoomHandler_AdAgency._instance, _RoomHandler_AdAgency, "AdAgency", MODE_Save)
