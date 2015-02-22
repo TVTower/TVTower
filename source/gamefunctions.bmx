@@ -1066,7 +1066,7 @@ Type TTooltipAudience Extends TTooltip
 		Super.Initialize(title, content, x, y, w, h, lifetime)
 		Self.lineHeight = Self.useFont.getMaxCharHeight()+1
 		'text line with icon
-		Self.lineIconHeight = 1 + Max(lineHeight, GetSpriteFromRegistry("gfx_targetGroup1").area.GetH())
+		Self.lineIconHeight = 1 + Max(lineHeight, GetSpriteFromRegistry("gfx_targetGroup_men").area.GetH())
 	End Method
 
 
@@ -1148,8 +1148,8 @@ Type TTooltipAudience Extends TTooltip
 		Local lineY:Int = y
 		Local lineX:Int = x
 		Local lineText:String = ""
-		Local lineIconX:Int = lineX + GetSpriteFromRegistry("gfx_targetGroup1").area.GetW() + 2
-		Local lineIconWidth:Int = w - GetSpriteFromRegistry("gfx_targetGroup1").area.GetW()
+		Local lineIconX:Int = lineX + GetSpriteFromRegistry("gfx_targetGroup_men").area.GetW() + 2
+		Local lineIconWidth:Int = w - GetSpriteFromRegistry("gfx_targetGroup_men").area.GetW()
 		Local lineIconDY:Int = floor(0.5 * (lineIconHeight - lineHeight))
 		Local lineTextDY:Int = lineIconDY + 2
 
@@ -1190,14 +1190,15 @@ Type TTooltipAudience Extends TTooltip
 			Local colorTextLight:TColor = colorLight.copy().AdjustFactor(-110)
 			Local colorTextDark:TColor = colorDark.copy().AdjustFactor(-140)
 
-			For Local i:Int = 1 To lines.length
+			For Local i:Int = 1 To TVTTargetGroup.count
 				'shade the rows
 				If i Mod 2 = 0 Then colorLight.SetRGB() Else colorDark.SetRGB()
 				DrawRect(lineX, lineY, w, lineIconHeight)
 
 				'draw icon
 				SetColor 255,255,255
-				GetSpriteFromRegistry("gfx_targetGroup"+i).draw(lineX, lineY + lineIconDY)
+				targetGroupID = TVTTargetGroup.GetAtIndex(i)
+				GetSpriteFromRegistry("gfx_targetGroup_"+TVTTargetGroup.GetAsString(targetGroupID).toLower()).draw(lineX, lineY + lineIconDY)
 				'draw text
 				If i Mod 2 = 0
 					Usefont.drawBlock(lines[i-1], lineIconX, lineY + lineTextDY,  w, lineHeight, Null, ColorTextLight)
