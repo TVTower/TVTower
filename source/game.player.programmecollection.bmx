@@ -67,8 +67,10 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Field news:TList = CreateList()
 	Field scripts:TList = CreateList()
 	Field adContracts:TList = CreateList()
-	'scripts put  available directly but still owned
+	'scripts in the suitcase
 	Field suitcaseScripts:TList = CreateList()
+	'scripts in our studios
+	Field studioScripts:TList = CreateList()
 	'objects not available directly but still owned
 	Field suitcaseProgrammeLicences:TList = CreateList()
 	'objects in the suitcase but not signed
@@ -91,6 +93,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		seriesLicences.Clear()
 		adContracts.Clear()
 		scripts.Clear()
+		studioScripts.Clear()
 		suitcaseScripts.Clear()
 		suitcaseProgrammeLicences.Clear()
 		suitcaseAdContracts.Clear()
@@ -337,6 +340,11 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	
 	'=== SCRIPTS  ===
 
+	Method HasScriptInStudio:int(script:TScript)
+		If not script then return FALSE
+		return studioScripts.contains(script)
+	End Method
+
 
 	Method HasScriptInSuitcase:int(script:TScript)
 		If not script then return FALSE
@@ -354,6 +362,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		endif
 
 		scripts.remove(script)
+		studioScripts.remove(script)
 		suitcaseScripts.AddLast(script)
 
 		'emit an event so eg. network can recognize the change
@@ -364,15 +373,15 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 
 	'move all scripts from suitcase to player's list of archived scripts
-	Method RemoveScriptsFromSuitcase:int()
+	Method MoveScriptsFromSuitcaseToArchive:int()
 		For Local obj:TScript = EachIn suitcaseScripts
-			RemoveScriptFromSuitcase(obj)
+			MoveScriptFromSuitcaseToArchive(obj)
 		Next
 		return TRUE
 	End Method
 	
 
-	Method RemoveScriptFromSuitcase:int(script:TScript)
+	Method MoveScriptFromSuitcaseToArchive:int(script:TScript)
 		if not suitcaseScripts.Contains(script) then return False
 		if scripts.contains(script) then return False
 
@@ -380,10 +389,35 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		suitcaseScripts.Remove(script)
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.removeScriptFromSuitcase", new TData.add("script", script), self))
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.MoveScriptFromSuitcaseToArchive", new TData.add("script", script), self))
 		return TRUE
 	End Method
 
+
+	Method MoveScriptFromStudioToSuitcase:int(script:TScript)
+		if not studioScripts.Contains(script) then return False
+		if suitcaseScripts.contains(script) then return False
+
+		suitcaseScripts.AddLast(script)
+		studioScripts.Remove(script)
+
+		'emit an event so eg. network can recognize the change
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.MoveScriptFromStudioToSuitcase", new TData.add("script", script), self))
+		return TRUE
+	End Method
+
+
+	Method MoveScriptFromSuitcaseToStudio:int(script:TScript)
+		if not suitcaseScripts.Contains(script) then return False
+		if studioScripts.contains(script) then return False
+
+		studioScripts.AddLast(script)
+		suitcaseScripts.Remove(script)
+
+		'emit an event so eg. network can recognize the change
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.MoveScriptFromSuitcaseToStudio", new TData.add("script", script), self))
+		return TRUE
+	End Method
 
 	'totally remove a script from the collection
 	Method RemoveScript:Int(script:TScript, sell:int=FALSE)
@@ -392,6 +426,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		if sell and not script.sell() then return FALSE
 
 		scripts.remove(script)
+		studioScripts.remove(script)
 		'remove from suitcase too!
 		suitcaseScripts.remove(script)
 

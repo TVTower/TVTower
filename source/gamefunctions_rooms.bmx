@@ -1090,7 +1090,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		'when entering the archive, all scripts are moved from the
 		'suitcase to the collection
 		'TODO: mark these scripts as "new" 
-		GetPlayerProgrammeCollection(figure.playerID).RemoveScriptsFromSuitcase()
+		GetPlayerProgrammeCollection(figure.playerID).MoveScriptsFromSuitcaseToArchive()
 
 
 		'empty the guilist / delete gui elements
@@ -2499,6 +2499,417 @@ Type RoomHandler_Boss extends TRoomHandler
 End Type
 
 
+'Studio: emitting and receiving the shopping lists for specific
+'        scripts
+Type RoomHandler_Studio extends TRoomHandler
+	'a map containing "roomGUID"=>"script" pairs
+	Field studioScriptsByRoom:TMap = CreateMap()
+
+	Global studioManagerDialogue:TDialogue
+	Global studioScriptLimit:int = 1
+
+	Global suitcasePos:TVec2D = new TVec2D.Init(520,70)
+	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(19,32)
+
+	Global studioManagerEntity:TSpriteEntity
+	Global studioManagerArea:TGUISimpleRect
+
+	Global studioManagerTooltip:TTooltip
+	Global placeScriptTooltip:TTooltip
+
+	'graphical lists for interaction with blocks
+	Global haveToRefreshGuiElements:int = TRUE
+	Global guiListStudio:TGUIScriptSlotList
+	Global guiListSuitcase:TGUIScriptSlotList
+
+	Global hoveredGuiScript:TGUIScript
+	Global draggedGuiScript:TGUIScript
+
+	Global _instance:RoomHandler_Studio
+	Global _initDone:int = False
+
+
+	Function GetInstance:RoomHandler_Studio()
+		if not _instance then _instance = new RoomHandler_Studio
+		if not _initDone then _instance.Initialize()
+		return _instance
+	End Function
+
+
+	Method Initialize:int()
+		if _initDone then return False
+		_initDone = True
+
+		'===== CREATE GUI LISTS =====
+		local sprite:TSprite = GetSpriteFromRegistry("gfx_scripts_0")
+		local spriteSuitcase:TSprite = GetSpriteFromRegistry("gfx_scripts_0_dragged")
+		guiListStudio = new TGUIScriptSlotList.Create(new TVec2D.Init(720, 300), new TVec2D.Init(17, 52), "studio")
+		guiListStudio.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+		guiListStudio.SetItemLimit( studioScriptLimit )
+		'increase list size by 2 times - makes it easier to drop
+		guiListStudio.Resize(2 * sprite.area.GetW(), sprite.area.GetH() )
+		guiListStudio.SetSlotMinDimension(2 * sprite.area.GetW(), sprite.area.GetH())
+		guiListStudio.SetAcceptDrop("TGuiScript")
+
+		guiListSuitcase	= new TGUIScriptSlotlist.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200,80), "studio")
+		guiListSuitcase.SetAutofillSlots(true)
+		guiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+		guiListSuitcase.SetItemLimit(GameRules.maxScriptsInSuitcase)
+		guiListSuitcase.SetEntryDisplacement( 0, 0 )
+		guiListSuitcase.SetAcceptDrop("TGuiScript")
+
+
+		studioManagerEntity = GetSpriteEntityFromRegistry("entity_studio_studiomanager")
+		'default studioManager dimension
+		local studioManagerAreaDimension:TVec2D = new TVec2D.Init(200,300)
+		local studioManagerAreaPosition:TVec2D = new TVec2D.Init(0,100)
+		if studioManagerEntity then studioManagerAreaDimension = studioManagerEntity.area.dimension.copy()
+		if studioManagerEntity then studioManagerAreaPosition = studioManagerEntity.area.position.copy()
+
+		studioManagerArea = new TGUISimpleRect.Create(studioManagerAreaPosition, studioManagerAreaDimension, "studio" )
+		'studioManager should accept drop - else no recognition
+		studioManagerArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
+
+
+		'===== REGISTER EVENTS =====
+
+		'to react on changes in the programmeCollection (eg. custom script finished)
+		EventManager.registerListenerFunction( "programmecollection.addScript", onChangeProgrammeCollection )
+		EventManager.registerListenerFunction( "programmecollection.removeScript", onChangeProgrammeCollection )
+
+		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
+		'is only emitted if the drop is successful (so it "visually" happened)
+		'drop ... to studio manager or suitcase
+		EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropScript, "TGuiScript" )
+		'we want to know if we hover a specific block - to show a datasheet
+		EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverScript, "TGuiScript" )
+
+		
+		'register self for all studio rooms
+		GetRoomHandlerCollection().SetHandler("studio", self)
+	End Method
+
+
+	'clear the guilist for the suitcase if a player enters
+	Method onEnterRoom:int( triggerEvent:TEventBase )
+		'we are not interested in other figures than our player's
+		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
+		if not figure or GetPlayerBase().GetFigure() <> figure then return FALSE
+
+		'empty the guilist / delete gui elements so they can get rebuild
+		guiListSuitcase.EmptyList()
+		guiListStudio.EmptyList()
+	End Method
+
+
+	'if players are in a studio during changes in their programme
+	'collection, react to it...
+	Function onChangeProgrammeCollection:int( triggerEvent:TEventBase )
+		if not CheckPlayerInRoom("studio") then return FALSE
+
+		GetInstance().RefreshGuiElements()
+	End Function
+
+
+	Function onMouseOverScript:int( triggerEvent:TEventBase )
+		if not CheckPlayerInRoom("studio") then return FALSE
+
+		local item:TGUIScript = TGUIScript(triggerEvent.GetSender())
+		if item = Null then return FALSE
+
+		hoveredGuiScript = item
+		if item.isDragged() then draggedGuiScript = item
+
+		return TRUE
+	End Function
+
+
+	Function onDropScript:int( triggerEvent:TEventBase )
+		if not CheckPlayerInRoom("studio") then return FALSE
+
+		local guiBlock:TGUIScript = TGUIScript( triggerEvent._sender )
+		local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
+		if not guiBlock or not receiver then return FALSE
+
+		'try to get a list out of the drag-source-guiobject 
+		local source:TGuiObject = TGuiObject(triggerEvent.GetData().Get("source"))
+		local sourceList:TGUIScriptSlotList
+		if source
+			local sourceParent:TGUIobject = source._parent
+			if TGUIPanel(sourceParent) then sourceParent = TGUIPanel(source)._parent
+			sourceList = TGUIScriptSlotList(sourceParent)
+		endif
+		'only interested in drops FROM a list
+		if not sourceList then return FALSE
+
+		'alternatively TGUIGameListItems contain "lastListID" which
+		'is the id of the last list they there attached too
+		'if guiBlock.lastListID = guiListSuitcase._id ... and so on
+		
+		'ATTENTION: senderList (parent of the parent of guiBlock) is
+		'           only correct when NOT dropping on another list
+		'           -> so we use sourceList
+		if sourceList = guiListSuitcase
+			'assign the dropped script as the current one
+			local roomGUID:string = GetPlayer().GetFigure().inRoom.GetGUID()
+
+			GetInstance().SetCurrentStudioScript(guiBlock.script, roomGUID)
+		endif
+
+		'dropping to suitcase
+		if receiver = guiListSuitcase
+			'remove the script as the current one
+			local roomGUID:string = GetPlayer().GetFigure().inRoom.GetGUID()
+			if GetInstance().GetCurrentStudioScript(roomGUID) = guiBlock.script
+				GetInstance().RemoveCurrentStudioScript(roomGUID)
+			endif
+		endif
+
+		'remove gui block, it will get recreated if needed
+		'(and it then will have the correct assets assigned)
+		guiBlock.remove()
+		guiBlock = null
+		GetInstance().RefreshGuiElements()
+		
+		return TRUE
+	End Function
+
+
+	Method SetCurrentStudioScript:int(script:TScript, roomGUID:string)
+		if not script or not roomGUID then return False
+
+		studioScriptsByRoom.Insert(roomGUID, script)
+
+		'remove from suitcase list
+		local player:TPlayer = GetPlayer(script.owner)
+		if player
+			player.GetProgrammeCollection().MoveScriptFromSuitcaseToStudio(script)
+		endif
+		
+		return True
+	End Method
+
+
+	Method RemoveCurrentStudioScript:int(roomGUID:string)
+		if not roomGUID then return False
+
+		local script:TScript = GetCurrentStudioScript(roomGUID)
+		if script
+			local player:TPlayer = GetPlayer(script.owner)
+			if player
+				player.GetProgrammeCollection().MoveScriptFromStudioToSuitcase(script)
+			endif
+		endif
+
+		return studioScriptsByRoom.Remove(roomGUID)
+	End Method
+
+
+	Method GetCurrentStudioScript:TScript(roomGUID:string)
+		if not roomGUID then return Null
+
+		return TScript(studioScriptsByRoom.ValueForKey(roomGUID))
+	End Method
+
+
+	'deletes all gui elements (eg. for rebuilding)
+	Function RemoveAllGuiElements:int()
+		guiListStudio.EmptyList()
+		guiListSuitcase.EmptyList()
+
+		For local guiScript:TGUIScript = eachin GuiManager.listDragged
+			guiScript.remove()
+			guiScript = null
+		Next
+
+		hoveredGuiScript = null
+		draggedGuiScript = null
+
+		'to recreate everything during next update...
+		haveToRefreshGuiElements = TRUE
+	End Function
+
+
+	Method RefreshGuiElements:int()
+		'===== REMOVE UNUSED =====
+		'remove gui elements with scripts the player does no longer have
+
+		'suitcase
+		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(GetPlayer().playerID)
+		For local guiScript:TGUIScript = eachin GuiListSuitcase._slots
+			'if the player has this script in suitcase or list, skip deletion
+			if programmeCollection.HasScript(guiScript.script) then continue
+			if programmeCollection.HasScriptInSuitcase(guiScript.script) then continue
+
+			guiScript.remove()
+			guiScript = null
+		Next
+
+		'player should be ALWAYS inRoom when "RefreshGuiElements()" is
+		'called...
+		if GetPlayer().GetFigure().inRoom
+			local roomGUID:string = GetPlayer().GetFigure().inRoom.GetGUID()
+			'studio list
+			For local guiScript:TGUIScript = eachin guiListStudio._slots
+				if GetCurrentStudioScript(roomGUID) <> guiScript.script
+					guiScript.remove()
+					guiScript = null
+				endif
+			Next
+		endif
+
+		'===== CREATE NEW =====
+		'create missing gui elements for all script-lists
+
+		'studio list
+		local studioGUID:string = GetPlayer().GetFigure().inRoom.GetGUID()
+		local studioScript:TScript = GetCurrentStudioScript(studioGUID)
+		if studioScript and not guiListStudio.ContainsScript(studioScript)
+			'try to fill in our list
+			if guiListStudio.getFreeSlot() >= 0
+				local block:TGUIScript = new TGUIScript.CreateWithScript(studioScript)
+				'change look
+				block.InitAssets(block.getAssetName(-1, FALSE), block.getAssetName(-1, TRUE))
+
+				guiListStudio.addItem(block, "-1")
+			else
+				TLogger.log("Studio.RefreshGuiElements", "script exists but does not fit in GuiListNormal - script removed.", LOG_ERROR)
+				RemoveCurrentStudioScript(studioGUID)
+			endif
+		endif
+
+		'create missing gui elements for the players suitcase scripts
+		For local script:TScript = eachin programmeCollection.suitcaseScripts
+			if guiListSuitcase.ContainsScript(script) then continue
+			local block:TGUIScript = new TGUIScript.CreateWithScript(script)
+			'change look
+			block.InitAssets(block.getAssetName(-1, TRUE), block.getAssetName(-1, TRUE))
+
+			guiListSuitcase.addItem(block, "-1")
+		Next
+
+		haveToRefreshGuiElements = FALSE
+	End Method
+
+
+	Method GenerateStudioManagerDialogue()
+		local readyToProduce:int = 0
+
+		local text:string = "Hi"
+		if readyToProduce
+			text = "Informationen ueber derzeitige Produktion anbieten"
+		else
+			text = "Einkaufsliste anbieten"
+		endif
+
+		text = text.replace("%PLAYERNAME%", GetPlayerBase().name)
+		
+
+		local texts:TDialogueTexts[1]
+		texts[0] = TDialogueTexts.Create(text)
+		texts[0].AddAnswer(TDialogueAnswer.Create( "Ich brauche eine Einkaufsliste", -1, Null))
+		texts[0].AddAnswer(TDialogueAnswer.Create( "Tschüss", -2, Null))
+
+		studioManagerDialogue = new TDialogue
+		studioManagerDialogue.SetArea(new TRectangle.Init(150, 40, 460, 230))
+		studioManagerDialogue.AddTexts(texts)
+	End Method
+
+
+	Method onDrawRoom:int( triggerEvent:TEventBase )
+		GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+
+		'make suitcase/vendor highlighted if needed
+		local highlightSuitcase:int = False
+		local highlightStudioManager:int = False
+
+		if draggedGuiScript and draggedGuiScript.isDragged()
+			if draggedGuiScript.script.owner <= 0
+				highlightSuitcase = True
+			else
+				highlightStudioManager = True
+			endif
+		endif
+
+		if highlightStudioManager or highlightSuitcase
+			local oldCol:TColor = new TColor.Get()
+			SetBlend LightBlend
+			SetAlpha oldCol.a * 0.5
+
+			'if VendorEntity and highlightVendor then VendorEntity.Render()
+			if highlightSuitcase then GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+
+			SetAlpha oldCol.a
+			SetBlend AlphaBlend
+		endif
+
+		GUIManager.Draw("studio")
+
+		if hoveredGuiScript
+			'draw the current sheet
+			hoveredGuiScript.DrawSheet()
+		endif
+
+		if studioManagerTooltip then studioManagerTooltip.Render()
+
+		'draw after potential tooltips
+		if studioManagerDialogue then studioManagerDialogue.Draw()
+
+		local s:TScript
+		if GetPlayer().GetFigure().inRoom
+			s = GetCurrentStudioScript(GetPlayer().GetFigure().inRoom.GetGUID())
+		endif
+		if s
+			DrawText(s.GetTitle(), 20,20)
+		else
+			DrawText("kein script", 20,20)
+		endif
+	End Method
+
+
+
+	Method onUpdateRoom:int( triggerEvent:TEventBase )
+		GetPlayer().GetFigure().fromroom = Null
+
+		'mouse over studio manager
+		if THelper.MouseIn(0,100,150,300)
+			if not studioManagerDialogue
+				'generate the dialogue if not done yet
+				if MouseManager.IsHit(1) and not draggedGuiScript
+					GenerateStudioManagerDialogue()
+				endif
+
+				'show tooltip of studio manager
+				'only show when no dialogue is (or just got) opened 
+				if not studioManagerDialogue
+					If not studioManagerTooltip Then studioManagerTooltip = TTooltip.Create(GetLocale("STUDIO_MANAGER"), GetLocale("GIVES_INFORMATION_ABOUT_PRODUCTION_OR_HANDS_OUT_SHOPPING_LIST"), 150, 160,-1,-1)
+					studioManagerTooltip.enabled = 1
+					studioManagerTooltip.minContentWidth = 150
+					studioManagerTooltip.Hover()
+				endif
+			endif
+		endif
+
+		If studioManagerTooltip Then studioManagerTooltip.Update()
+
+		if studioManagerDialogue and studioManagerDialogue.Update() = 0
+			studioManagerDialogue = null
+		endif
+
+		Game.cursorstate = 0
+
+		'delete unused and create new gui elements
+		if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()
+
+		'reset hovered block - will get set automatically on gui-update
+		hoveredGuiScript = null
+		'reset dragged block too
+		draggedGuiScript = null
+
+		GUIManager.Update("studio")
+	End Method
+End Type
+
 
 
 'Ad agency
@@ -3475,7 +3886,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 		'===== REGISTER EVENTS =====
 
-		'to react on changes in the programmeCollection (eg. contract finished)
+		'to react on changes in the programmeCollection (eg. custom script finished)
 		EventManager.registerListenerFunction( "programmecollection.addScript", onChangeProgrammeCollection )
 		EventManager.registerListenerFunction( "programmecollection.removeScript", onChangeProgrammeCollection )
 
@@ -4507,6 +4918,8 @@ Function Init_ConnectRoomHandlers()
 	RoomHandler_News.GetInstance()
 	RoomHandler_Boss.GetInstance()
 	RoomHandler_Archive.GetInstance()
+
+	RoomHandler_Studio.GetInstance()
 
 	RoomHandler_AdAgency.GetInstance()
 	RoomHandler_ScriptAgency.GetInstance()

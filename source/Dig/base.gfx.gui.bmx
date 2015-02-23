@@ -173,6 +173,7 @@ Type TGUIManager
 		If Not coord Then Return False
 		Local potentialDropTargets:TGuiObject[] = GUIManager.GetObjectsByPos(coord, GUIManager.currentState, True, GUI_OBJECT_ACCEPTS_DROP)
 		Local dropTarget:TGuiObject = TGUIObject(triggerEvent.GetReceiver())
+		Local source:TGuiObject = guiobject._parent
 
 
 		if not triggerEvent.isAccepted()
@@ -203,11 +204,11 @@ Type TGUIManager
 		'we found an object accepting the drop
 
 		'ask if something does not want that drop to happen
-		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDropOnTarget", new TData.Add("coord", coord) , guiobject, dropTarget)
+		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDropOnTarget", new TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget)
 		EventManager.triggerEvent( event )
 		'if there is no problem ...just start dropping
 		If Not event.isVeto()
-			event = TEventSimple.Create("guiobject.onDropOnTarget", new TData.Add("coord", coord) , guiobject, dropTarget)
+			event = TEventSimple.Create("guiobject.onDropOnTarget", new TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget)
 			EventManager.triggerEvent( event )
 		EndIf
 
@@ -215,11 +216,11 @@ Type TGUIManager
 		'also veto the onDropOnTarget-event
 		If event.isVeto()
 			triggerEvent.setVeto()
-			EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropOnTargetDeclined", new TData.Add("coord", coord) , guiobject, dropTarget ))
+			EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropOnTargetDeclined", new TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget ))
 			Return False
 		Else
 			'inform others: we successfully dropped the object to a target#
-			EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropOnTargetAccepted", new TData.Add("coord", coord) , guiobject, dropTarget ))
+			EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropOnTargetAccepted", new TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget ))
 
 			'also add this drop target as receiver of the original-drop-event
 			triggerEvent._receiver = dropTarget

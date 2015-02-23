@@ -24,6 +24,13 @@ Type TGUIGameSlotList Extends TGUISlotList
 	'override to add sort
 	Method AddItem:int(item:TGUIobject, extra:object=null)
 		if super.AddItem(item, extra)
+			'store list ids
+			if TGUIGameListItem(item)
+				local i:TGUIGameListItem = TGUIGameListItem(item)
+				i.lastListID = i.inListID
+				i.inListID = self._id
+			endif
+				
 			GUIManager.sortLists()
 			return TRUE
 		endif
@@ -73,6 +80,8 @@ End Type
 Type TGUIGameListItem Extends TGUIListItem
 	Field assetNameDefault:String = "gfx_movie_undefined"
 	Field assetNameDragged:String = "gfx_movie_undefined"
+	Field lastListID:int
+	Field inListID:int
 	Field asset:TSprite = Null
 	Field assetDefault:TSprite = Null
 	Field assetDragged:TSprite = Null

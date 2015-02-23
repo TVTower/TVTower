@@ -458,8 +458,15 @@ Type TApp
 						If KEYMANAGER.IsHit(KEY_F) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("movieagency"))
 						If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", GetPlayerCollection().playerID))
 						If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("boss", GetPlayerCollection().playerID))
-						If KEYMANAGER.IsHit(KEY_D) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("scriptagency"))
-
+						If KEYMANAGER.IsHit(KEY_D)
+							If not KEYMANAGER.IsDown(KEY_LSHIFT)
+								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("scriptagency"))
+							else
+								'go to first script of the player
+								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", GetPlayerCollection().playerID))
+							endif
+						endif
+						
 						'e wie "employees" :D
 						If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("credits"))
 						If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("news", GetPlayerCollection().playerID))
