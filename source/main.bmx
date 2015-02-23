@@ -857,6 +857,7 @@ Type TGameState
 	Field _Building:TBuilding 'includes, sky, moon, ufo, elevator
 	Field _NewsAgency:TNewsAgency
 	Field _AuctionProgrammeBlocksList:TList
+	Field _RoomHandler_Studio:RoomHandler_Studio
 	Field _RoomHandler_MovieAgency:RoomHandler_MovieAgency
 	Field _RoomHandler_AdAgency:RoomHandler_AdAgency
 	Field _RoomDoorBaseCollection:TRoomDoorBaseCollection
@@ -942,6 +943,8 @@ Type TGameState
 		_Assign(_WorldTime, TWorldTime._instance, "WorldTime", MODE_LOAD)
 		_Assign(_GameRules, GameRules, "GameRules", MODE_LOAD)
 		_Assign(_AuctionProgrammeBlocksList, TAuctionProgrammeBlocks.list, "AuctionProgrammeBlocks", MODE_LOAD)
+
+		_Assign(_RoomHandler_Studio, RoomHandler_Studio._instance, "Studios", MODE_LOAD)
 		_Assign(_RoomHandler_MovieAgency, RoomHandler_MovieAgency._instance, "MovieAgency", MODE_LOAD)
 		_Assign(_RoomHandler_AdAgency, RoomHandler_AdAgency._instance, "AdAgency", MODE_LOAD)
 		_Assign(_Game, Game, "Game")
@@ -989,6 +992,7 @@ Type TGameState
 		_Assign(GameRules, _GameRules, "GameRules", MODE_SAVE)
 		_Assign(TAuctionProgrammeBlocks.list, _AuctionProgrammeBlocksList, "AuctionProgrammeBlocks", MODE_Save)
 		'special room data
+		_Assign(RoomHandler_Studio._instance, _RoomHandler_Studio, "Studios", MODE_Save)
 		_Assign(RoomHandler_MovieAgency._instance, _RoomHandler_MovieAgency, "MovieAgency", MODE_Save)
 		_Assign(RoomHandler_AdAgency._instance, _RoomHandler_AdAgency, "AdAgency", MODE_Save)
 	End Method

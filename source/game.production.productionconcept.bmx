@@ -2,6 +2,36 @@ SuperStrict
 Import "game.production.script.bmx"
 Import "game.programme.programmeperson.bmx"
 
+
+Type TProductionConceptCollection Extends TGameObjectCollection
+	Global _instance:TProductionConceptCollection
+	
+	'override
+	Function GetInstance:TProductionConceptCollection()
+		if not _instance then _instance = new TProductionConceptCollection
+		return _instance
+	End Function
+
+
+	Method GetProductionConceptsByScript:TProductionConcept[](script:TScript)
+		local result:TProductionConcept[]
+		For local pc:TProductionConcept = EachIn self
+			if pc.script = script then result :+ [pc]
+		Next
+		return result
+	End Method
+End Type
+
+
+'===== CONVENIENCE ACCESSOR =====
+'return collection instance
+Function GetProductionConceptCollection:TProductionConceptCollection()
+	Return TProductionConceptCollection.GetInstance()
+End Function
+
+
+
+
 Type TProductionConcept
 	Field script:TScript
 

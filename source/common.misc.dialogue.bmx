@@ -106,14 +106,18 @@ Type TDialogueAnswer
 	Field _text:String = ""
 	Field _leadsTo:Int = 0
 	Field _onUseEvent:TEventBase
+	Field _triggerFunction(data:TData)
+	Field _triggerFunctionData:TData
 	Field _highlighted:Int = 0
 
 
-	Function Create:TDialogueAnswer (text:String, leadsTo:Int = 0, onUseEvent:TEventBase= Null)
+	Function Create:TDialogueAnswer (text:String, leadsTo:Int = 0, onUseEvent:TEventBase= Null, triggerFunction(data:TData) = Null, triggerFunctionData:TData = null)
 		Local obj:TDialogueAnswer = New TDialogueAnswer
 		obj._text		= Text
 		obj._leadsTo	= leadsTo
 		obj._onUseEvent	= onUseEvent
+		obj._triggerFunction = triggerFunction
+		obj._triggerFunctionData = triggerFunctionData
 		Return obj
 	End Function
 
@@ -125,6 +129,8 @@ Type TDialogueAnswer
 			If clicked
 				'emit the event if there is one
 				If _onUseEvent Then EventManager.triggerEvent(_onUseEvent)
+				'run callback if there is one
+				If _triggerFunction Then _triggerFunction(_triggerFunctionData)
 				Return _leadsTo
 			EndIf
 		EndIf
