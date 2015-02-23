@@ -8,7 +8,7 @@
 'a graphical representation of scripts at the script-agency ...
 Type TGuiScript extends TGUIGameListItem
 	Field script:TScript
-
+	Field studioMode:int = 0
 
     Method Create:TGUIScript(pos:TVec2D=null, dimension:TVec2D=null, value:String="")
 		Super.Create(pos, dimension, value)
@@ -39,6 +39,9 @@ Type TGuiScript extends TGUIGameListItem
 		if genre < 0 and script then genre = script.GetGenre()
 		local result:string = "gfx_scripts_" + genre mod 3 'only 3 sprites possible
 		if dragged then result = result + "_dragged"
+
+		if studioMode and not dragged then result = "gfx_scripts_0_studiodesk"
+
 		return result
 	End Method
 

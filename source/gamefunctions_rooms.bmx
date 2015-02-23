@@ -1827,7 +1827,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		if highlightAuction or highlightVendor or highlightSuitcase
 			local oldCol:TColor = new TColor.Get()
 			SetBlend LightBlend
-			SetAlpha oldCol.a * 0.5
+			SetAlpha oldCol.a * (0.4 + 0.2 * sin(Time.GetTimeGone() / 5))
 
 			if AuctionEntity and highlightAuction then AuctionEntity.Render()
 			if VendorEntity and highlightVendor then VendorEntity.Render()
@@ -2559,10 +2559,10 @@ Type RoomHandler_Studio extends TRoomHandler
 		guiListSuitcase.SetAcceptDrop("TGuiScript")
 
 
-		studioManagerEntity = GetSpriteEntityFromRegistry("entity_studio_studiomanager")
+		studioManagerEntity = GetSpriteEntityFromRegistry("entity_studio_manager")
 		'default studioManager dimension
-		local studioManagerAreaDimension:TVec2D = new TVec2D.Init(200,300)
-		local studioManagerAreaPosition:TVec2D = new TVec2D.Init(0,100)
+		local studioManagerAreaDimension:TVec2D = new TVec2D.Init(150,270)
+		local studioManagerAreaPosition:TVec2D = new TVec2D.Init(0,115)
 		if studioManagerEntity then studioManagerAreaDimension = studioManagerEntity.area.dimension.copy()
 		if studioManagerEntity then studioManagerAreaPosition = studioManagerEntity.area.position.copy()
 
@@ -2768,6 +2768,7 @@ Type RoomHandler_Studio extends TRoomHandler
 			'try to fill in our list
 			if guiListStudio.getFreeSlot() >= 0
 				local block:TGUIScript = new TGUIScript.CreateWithScript(studioScript)
+				block.studioMode = True
 				'change look
 				block.InitAssets(block.getAssetName(-1, FALSE), block.getAssetName(-1, TRUE))
 
@@ -2782,6 +2783,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		For local script:TScript = eachin programmeCollection.suitcaseScripts
 			if guiListSuitcase.ContainsScript(script) then continue
 			local block:TGUIScript = new TGUIScript.CreateWithScript(script)
+			block.studioMode = True
 			'change look
 			block.InitAssets(block.getAssetName(-1, TRUE), block.getAssetName(-1, TRUE))
 
@@ -2817,6 +2819,9 @@ Type RoomHandler_Studio extends TRoomHandler
 
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
+		local roomGUID:string = TRoom(triggerEvent.GetSender()).GetGUID()
+
+		if studioManagerEntity Then studioManagerEntity.Render()
 		GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 		'make suitcase/vendor highlighted if needed
@@ -2824,7 +2829,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		local highlightStudioManager:int = False
 
 		if draggedGuiScript and draggedGuiScript.isDragged()
-			if draggedGuiScript.script.owner <= 0
+			if draggedGuiScript.script = GetCurrentStudioScript(roomGUID)
 				highlightSuitcase = True
 			else
 				highlightStudioManager = True
@@ -2834,36 +2839,30 @@ Type RoomHandler_Studio extends TRoomHandler
 		if highlightStudioManager or highlightSuitcase
 			local oldCol:TColor = new TColor.Get()
 			SetBlend LightBlend
-			SetAlpha oldCol.a * 0.5
+			SetAlpha oldCol.a * (0.4 + 0.2 * sin(Time.GetTimeGone() / 5))
 
-			'if VendorEntity and highlightVendor then VendorEntity.Render()
+			if highlightStudioManager
+				if studioManagerEntity then studioManagerEntity.Render()
+				GetSpriteFromRegistry("gfx_studio_deskhint").Draw(710, 325)
+			endif
 			if highlightSuitcase then GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 			SetAlpha oldCol.a
 			SetBlend AlphaBlend
 		endif
 
+		if studioManagerTooltip then studioManagerTooltip.Render()
+
 		GUIManager.Draw("studio")
 
-		if hoveredGuiScript
+		if hoveredGuiScript and not studioManagerDialogue
 			'draw the current sheet
 			hoveredGuiScript.DrawSheet()
 		endif
 
-		if studioManagerTooltip then studioManagerTooltip.Render()
-
 		'draw after potential tooltips
 		if studioManagerDialogue then studioManagerDialogue.Draw()
 
-		local s:TScript
-		if GetPlayer().GetFigure().inRoom
-			s = GetCurrentStudioScript(GetPlayer().GetFigure().inRoom.GetGUID())
-		endif
-		if s
-			DrawText(s.GetTitle(), 20,20)
-		else
-			DrawText("kein script", 20,20)
-		endif
 	End Method
 
 
@@ -3751,7 +3750,7 @@ endrem
 		if highlightVendor or highlightSuitcase
 			local oldCol:TColor = new TColor.Get()
 			SetBlend LightBlend
-			SetAlpha oldCol.a * 0.5
+			SetAlpha oldCol.a * (0.4 + 0.2 * sin(Time.GetTimeGone() / 5))
 
 			if highlightVendor then	GetSpriteFromRegistry("gfx_screen_adagency_vendor").Draw(VendorArea.getScreenX(), VendorArea.getScreenY())
 			if highlightSuitcase then GetSpriteFromRegistry("gfx_suitcase_big").Draw(suitcasePos.GetX(), suitcasePos.GetY())
@@ -4476,7 +4475,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		if highlightVendor or highlightSuitcase
 			local oldCol:TColor = new TColor.Get()
 			SetBlend LightBlend
-			SetAlpha oldCol.a * 0.5
+			SetAlpha oldCol.a * (0.4 + 0.2 * sin(Time.GetTimeGone() / 5))
 
 			if VendorEntity and highlightVendor then VendorEntity.Render()
 			if highlightSuitcase then GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
