@@ -361,26 +361,6 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
-	Method AddScriptToSuitcase:int(script:TScript)
-		'do not add if already "full"
-		if GameRules.maxScriptsInSuitcase > 0 and suitcaseScripts.count() >= GameRules.maxScriptsInSuitcase then return FALSE
-
-		'if owner differs, check if we have to buy
-		if owner <> script.owner
-			if not script.buy(owner) then return FALSE
-		endif
-
-		scripts.remove(script)
-		studioScripts.remove(script)
-		suitcaseScripts.AddLast(script)
-
-		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addScriptToSuitcase", new TData.add("script", script), self))
-
-		return TRUE
-	End Method
-
-
 	'move all scripts from suitcase to player's list of archived scripts
 	Method MoveScriptsFromSuitcaseToArchive:int()
 		For Local obj:TScript = EachIn suitcaseScripts
@@ -388,7 +368,24 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		Next
 		return TRUE
 	End Method
-	
+
+
+	Method MoveScriptFromArchiveToSuitcase:int(script:TScript)
+		if not scripts.Contains(script) then return False
+		if suitcaseScripts.contains(script) then return False
+
+		suitcaseScripts.AddLast(script)
+		scripts.Remove(script)
+
+		'emit an event so eg. network can recognize the change
+		if fireEvents
+			EventManager.registerEvent(TEventSimple.Create("programmecollection.MoveScriptFromArchiveToSuitcase", new TData.add("script", script), self))
+			EventManager.registerEvent(TEventSimple.Create("programmecollection.moveScript", new TData.add("script", script), self))
+		endif
+
+		return TRUE
+	End Method	
+
 
 	Method MoveScriptFromSuitcaseToArchive:int(script:TScript)
 		if not suitcaseScripts.Contains(script) then return False
@@ -398,7 +395,11 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		suitcaseScripts.Remove(script)
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.MoveScriptFromSuitcaseToArchive", new TData.add("script", script), self))
+		if fireEvents
+			EventManager.registerEvent(TEventSimple.Create("programmecollection.MoveScriptFromSuitcaseToArchive", new TData.add("script", script), self))
+			EventManager.registerEvent(TEventSimple.Create("programmecollection.moveScript", new TData.add("script", script), self))
+		endif
+
 		return TRUE
 	End Method
 
@@ -407,11 +408,17 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		if not studioScripts.Contains(script) then return False
 		if suitcaseScripts.contains(script) then return False
 
+		'do not add if already "full"
+		if not CanMoveScriptToSuitcase() then return False
+
 		suitcaseScripts.AddLast(script)
 		studioScripts.Remove(script)
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.MoveScriptFromStudioToSuitcase", new TData.add("script", script), self))
+		if fireEvents
+			EventManager.registerEvent(TEventSimple.Create("programmecollection.MoveScriptFromStudioToSuitcase", new TData.add("script", script), self))
+			EventManager.registerEvent(TEventSimple.Create("programmecollection.moveScript", new TData.add("script", script), self))
+		endif
 		return TRUE
 	End Method
 
@@ -424,10 +431,34 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		suitcaseScripts.Remove(script)
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.MoveScriptFromSuitcaseToStudio", new TData.add("script", script), self))
+		if fireEvents
+			EventManager.registerEvent(TEventSimple.Create("programmecollection.MoveScriptFromSuitcaseToStudio", new TData.add("script", script), self))
+			EventManager.registerEvent(TEventSimple.Create("programmecollection.moveScript", new TData.add("script", script), self))
+		endif
 		return TRUE
 	End Method
 
+
+	Method MoveScriptFromStudioToArchive:int(script:TScript)
+		if not studioScripts.Contains(script) then return False
+		if scripts.contains(script) then return False
+
+		scripts.AddLast(script)
+		studioScripts.Remove(script)
+
+		'emit an event so eg. network can recognize the change
+		if fireEvents
+			EventManager.registerEvent(TEventSimple.Create("programmecollection.MoveScriptFromStudioToArchive", new TData.add("script", script), self))
+			EventManager.registerEvent(TEventSimple.Create("programmecollection.moveScript", new TData.add("script", script), self))
+		endif
+		return TRUE
+	End Method
+
+
+	Method CanMoveScriptToSuitcase:int() {_exposeToLua}
+		return GameRules.maxScriptsInSuitcase <= 0 or suitcaseScripts.count() < GameRules.maxScriptsInSuitcase
+	End Method
+	
 
 	'totally remove a script from the collection
 	Method RemoveScript:Int(script:TScript, sell:int=FALSE)

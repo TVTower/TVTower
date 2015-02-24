@@ -2574,8 +2574,9 @@ Type RoomHandler_Studio extends TRoomHandler
 		'===== REGISTER EVENTS =====
 
 		'to react on changes in the programmeCollection (eg. custom script finished)
-		EventManager.registerListenerFunction( "programmecollection.addScript", onChangeProgrammeCollection )
 		EventManager.registerListenerFunction( "programmecollection.removeScript", onChangeProgrammeCollection )
+		EventManager.registerListenerFunction( "programmecollection.moveScript", onChangeProgrammeCollection )
+
 
 		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
 		'is only emitted if the drop is successful (so it "visually" happened)
@@ -2583,6 +2584,8 @@ Type RoomHandler_Studio extends TRoomHandler
 		EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropScript, "TGuiScript" )
 		'we want to know if we hover a specific block - to show a datasheet
 		EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverScript, "TGuiScript" )
+		'this lists want to delete the item if a right mouse click happens...
+		EventManager.registerListenerFunction("guiobject.onClick", onClickScript, "TGuiScript")
 
 		
 		'register self for all studio rooms
@@ -2619,9 +2622,37 @@ Type RoomHandler_Studio extends TRoomHandler
 	Function onChangeProgrammeCollection:int( triggerEvent:TEventBase )
 		if not CheckPlayerInRoom("studio") then return FALSE
 
-		GetInstance().RefreshGuiElements( )
+		'instead of directly refreshing, we just set the dirty-indicator
+		'to true (so it only refreshes once per tick, even with
+		'multiple events coming in (add + move)
+		haveToRefreshGuiElements = True
+		'GetInstance().RefreshGuiElements( )
 	End Function
+	
 
+	'in case of right mouse button click a dragged script is
+	'placed at its original spot again
+	Function onClickScript:int(triggerEvent:TEventBase)
+		if not CheckPlayerInRoom("studio") then return FALSE
+
+		'only react if the click came from the right mouse button
+		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE
+
+		local guiScript:TGUIScript= TGUIScript(triggerEvent._sender)
+		'ignore wrong types and NON-dragged items
+		if not guiScript or not guiScript.isDragged() then return FALSE
+
+		'remove gui object
+		guiScript.remove()
+		guiScript = null
+
+		'rebuild at correct spot
+		GetInstance().RefreshGuiElements()
+
+		'remove right click - to avoid leaving the room
+		MouseManager.ResetKey(2)
+	End Function
+	
 
 	Function onMouseOverScript:int( triggerEvent:TEventBase )
 		if not CheckPlayerInRoom("studio") then return FALSE
@@ -2654,6 +2685,10 @@ Type RoomHandler_Studio extends TRoomHandler
 		'only interested in drops FROM a list
 		if not sourceList then return FALSE
 
+		'assign the dropped script as the current one
+		local roomGUID:string = GetPlayer().GetFigure().inRoom.GetGUID()
+
+
 		'alternatively TGUIGameListItems contain "lastListID" which
 		'is the id of the last list they there attached too
 		'if guiBlock.lastListID = guiListSuitcase._id ... and so on
@@ -2661,17 +2696,16 @@ Type RoomHandler_Studio extends TRoomHandler
 		'ATTENTION: senderList (parent of the parent of guiBlock) is
 		'           only correct when NOT dropping on another list
 		'           -> so we use sourceList
-		if sourceList = guiListSuitcase
-			'assign the dropped script as the current one
-			local roomGUID:string = GetPlayer().GetFigure().inRoom.GetGUID()
 
+		'dropping to studio/studiomanager
+		'(this includes "switching" guiblocks on the studio list)
+		if receiver = guiListStudio or receiver = studioManagerArea
 			GetInstance().SetCurrentStudioScript(guiBlock.script, roomGUID)
 		endif
 
-		'dropping to suitcase
-		if receiver = guiListSuitcase
+		'dropping to suitcase from studio list (important!)
+		if receiver = guiListSuitcase and sourceList = guiListStudio
 			'remove the script as the current one
-			local roomGUID:string = GetPlayer().GetFigure().inRoom.GetGUID()
 			if GetInstance().GetCurrentStudioScript(roomGUID) = guiBlock.script
 				GetInstance().RemoveCurrentStudioScript(roomGUID)
 			endif
@@ -2712,6 +2746,10 @@ Type RoomHandler_Studio extends TRoomHandler
 	Method SetCurrentStudioScript:int(script:TScript, roomGUID:string)
 		if not script or not roomGUID then return False
 
+		'remove old script if there is one
+		'-> this makes them available again
+		RemoveCurrentStudioScript(roomGUID)
+
 		studioScriptsByRoom.Insert(roomGUID, script)
 
 		'remove from suitcase list
@@ -2734,15 +2772,23 @@ Type RoomHandler_Studio extends TRoomHandler
 
 
 		local player:TPlayer = GetPlayer(script.owner)
-		if player
-			player.GetProgrammeCollection().MoveScriptFromStudioToSuitcase(script)
-		endif
+		if player  
+			local pc:TPlayerProgrammeCollection = player.GetProgrammeCollection()
 
-		'remove ALL shopping lists for this script
-		'ATTENTION: this removes the shopping lists, as soon
-		'           as a script is dropped back to the suitcase
-		'           -> Maybe keep it until you leave the room?
-		player.GetProgrammeCollection().RemoveShoppingListsByScript(script)
+			'if players suitcase has enough space for the script, add
+			'it to there, else add to archive
+			if pc.CanMoveScriptToSuitcase()
+				pc.MoveScriptFromStudioToSuitcase(script)
+			else
+				pc.MoveScriptFromStudioToArchive(script)
+			endif
+
+			'remove ALL shopping lists for this script
+			'ATTENTION: this removes the shopping lists, as soon
+			'           as a script is dropped back to the suitcase
+			'           -> Maybe keep it until you leave the room?
+			pc.RemoveShoppingListsByScript(script)
+		endif
 
 		return studioScriptsByRoom.Remove(roomGUID)
 	End Method
@@ -2793,12 +2839,20 @@ Type RoomHandler_Studio extends TRoomHandler
 		local programmeCollection:TPlayerProgrammeCollection = roomOwner.GetProgrammeCollection()
 
 
+		'dragged scripts
+		local draggedScripts:TList = CreateList()
+		For local guiScript:TGUIScript = EachIn GuiManager.listDragged
+			draggedScripts.AddLast(guiScript.script)
+			'remove the dragged guiscript, gets replaced by a new
+			'instance
+			guiScript.Remove()
+		Next
+
 		'suitcase
 		For local guiScript:TGUIScript = eachin GuiListSuitcase._slots
 			'if the player has this script in suitcase or list, skip deletion
 			if programmeCollection.HasScript(guiScript.script) then continue
 			if programmeCollection.HasScriptInSuitcase(guiScript.script) then continue
-
 			guiScript.remove()
 			guiScript = null
 		Next
@@ -2826,6 +2880,10 @@ Type RoomHandler_Studio extends TRoomHandler
 				block.InitAssets(block.getAssetName(-1, FALSE), block.getAssetName(-1, TRUE))
 
 				guiListStudio.addItem(block, "-1")
+
+				'we deleted the dragged scripts before - now drag the new
+				'instances again -> so they keep their "ghost information"
+				if draggedScripts.contains(studioScript) then block.Drag()
 			else
 				TLogger.log("Studio.RefreshGuiElements", "script exists but does not fit in GuiListNormal - script removed.", LOG_ERROR)
 				RemoveCurrentStudioScript(roomGUID)
@@ -2835,12 +2893,17 @@ Type RoomHandler_Studio extends TRoomHandler
 		'create missing gui elements for the players suitcase scripts
 		For local script:TScript = eachin programmeCollection.suitcaseScripts
 			if guiListSuitcase.ContainsScript(script) then continue
+
 			local block:TGUIScript = new TGUIScript.CreateWithScript(script)
 			block.studioMode = True
 			'change look
 			block.InitAssets(block.getAssetName(-1, TRUE), block.getAssetName(-1, TRUE))
 
 			guiListSuitcase.addItem(block, "-1")
+
+			'we deleted the dragged scripts before - now drag the new
+			'instances again -> so they keep their "ghost information"
+			if draggedScripts.contains(script) then block.Drag()
 		Next
 
 		haveToRefreshGuiElements = FALSE
@@ -2912,6 +2975,40 @@ Type RoomHandler_Studio extends TRoomHandler
 	End Method
 
 
+	Method DrawDebug(room:TRoom)
+		if not room then return
+		
+		local p:TPlayer = GetPlayer(room.owner)
+		if p
+			local sY:int = 50
+			DrawText("Scripts:", 10, sY);sY:+20
+			For local s:TScript = EachIn p.GetProgrammeCollection().scripts
+				DrawText(s.GetTitle(), 30, sY)
+				sY :+ 13
+			Next
+			sY:+5
+			DrawText("Studio:", 10, sY);sY:+20
+			For local s:TScript = EachIn p.GetProgrammeCollection().studioScripts
+				DrawText(s.GetTitle(), 30, sY)
+				sY :+ 13
+			Next
+			sY:+5
+			DrawText("Suitcase:", 10, sY);sY:+20
+			For local s:TScript = EachIn p.GetProgrammeCollection().suitcaseScripts
+				DrawText(s.GetTitle(), 30, sY)
+				sY :+ 13
+			Next
+			sY:+5
+			DrawText("currentStudioScript:", 10, sY);sY:+20
+			if GetCurrentStudioScript(room.GetGUID())
+				DrawText(GetCurrentStudioScript(room.GetGUID()).GetTitle(), 30, sY)
+			else
+				DrawText("NONE", 30, sY)
+			endif
+		endif
+	End Method
+
+
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		local roomGUID:string = TRoom(triggerEvent.GetSender()).GetGUID()
 
@@ -2969,6 +3066,8 @@ Type RoomHandler_Studio extends TRoomHandler
 			'draw the current sheet
 			hoveredGuiScript.DrawSheet()
 		endif
+
+		'DrawDebug(TRoom(triggerEvent.GetSender()))
 
 		'draw after potential tooltips
 		if roomOwner and studioManagerDialogue then studioManagerDialogue.Draw()
@@ -4001,6 +4100,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		'to react on changes in the programmeCollection (eg. custom script finished)
 		EventManager.registerListenerFunction( "programmecollection.addScript", onChangeProgrammeCollection )
 		EventManager.registerListenerFunction( "programmecollection.removeScript", onChangeProgrammeCollection )
+		EventManager.registerListenerFunction( "programmecollection.moveScript", onChangeProgrammeCollection )
 
 		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
 		'is only emitted if the drop is successful (so it "visually" happened)
@@ -4172,9 +4272,12 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 		if not GetPlayerCollection().IsPlayer(playerID) then return FALSE
 
-		'try to add to suitcase of player
-		if not GetPlayerProgrammeCollection(playerID).AddScriptToSuitcase(script)
-			return FALSE
+		local pc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerID)
+		if pc.CanMoveScriptToSuitcase()
+			'try to add to player (buying)
+			if not pc.AddScript(script) then return False
+			'try to move it to the suitcase
+			pc.MoveScriptFromArchiveToSuitcase(script)
 		endif
 
 		'remove from agency's lists
@@ -4455,6 +4558,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	'in case of right mouse button click a dragged script is
 	'placed at its original spot again
 	Function onClickScript:int(triggerEvent:TEventBase)
+		if not CheckPlayerInRoom("scriptagency") then return FALSE
+
 		'only react if the click came from the right mouse button
 		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE
 

@@ -255,13 +255,13 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	'override
-	Method GetTitle:string()
+	Method GetTitle:string() {_exposeToLua}
 		if title then return title.Get()
 		return ""
 	End Method
 
 
-	Method GetDescription:string()
+	Method GetDescription:string() {_exposeToLua}
 		if description then return description.Get()
 		return ""
 	End Method

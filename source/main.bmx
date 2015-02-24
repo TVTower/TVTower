@@ -136,7 +136,7 @@ TLogger.setLogMode(LOG_ALL)
 TLogger.setPrintMode(LOG_ALL )
 
 'print "ALLE MELDUNGEN AUS"
-'TLogger.SetPrintMode(0)
+TLogger.SetPrintMode(0)
 
 'TLogger.setPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
@@ -440,10 +440,23 @@ Type TApp
 						'GetWorld().Weather.SetPressure(-14)
 						'GetWorld().Weather.SetTemperature(-10)
 
-						'select a random licence
-						local licence:TProgrammeLicence = GetPlayer().GetProgrammeCollection().GetRandomMovieLicence()
 						'send marshal to confiscate the licence
-						Game.marshals[rand(0,1)].AddConfiscationJob( licence.GetGUID() )
+						'local licence:TProgrammeLicence = GetPlayer().GetProgrammeCollection().GetRandomMovieLicence()
+						'Game.marshals[rand(0,1)].AddConfiscationJob( licence.GetGUID() )
+
+
+						'buy script
+						local s:TScript = RoomHandler_ScriptAgency.GetInstance().GetScriptByPosition(0)
+						if not s
+							RoomHandler_ScriptAgency.GetInstance().ReFillBlocks()
+							s = RoomHandler_ScriptAgency.GetInstance().GetScriptByPosition(0)
+						endif
+						
+						if s
+							RoomHandler_ScriptAgency.GetInstance().SellScriptToPlayer(s, GetPlayer().playerID)
+							RoomHandler_ScriptAgency.GetInstance().ReFillBlocks()
+							print "added script: "+s.GetTitle()
+						endif
 					endif
 
 				
