@@ -2504,7 +2504,6 @@ End Type
 Type RoomHandler_Studio extends TRoomHandler
 	'a map containing "roomGUID"=>"script" pairs
 	Field studioScriptsByRoom:TMap = CreateMap()
-	Field currentShoppingLists:TList = CreateList()
 
 	Global studioManagerDialogue:TDialogue
 	Global studioScriptLimit:int = 1
@@ -2602,6 +2601,16 @@ Type RoomHandler_Studio extends TRoomHandler
 
 		'remove potential old dialogues
 		studioManagerDialogue = null
+
+		'enable/disable gui elements according to room owner
+		local roomOwner:TPlayer = GetPlayer(TRoom(triggerEvent.GetSender()).owner)
+		if roomOwner <> GetPlayer()
+			guiListSuitcase.Disable()
+			guiListStudio.Disable()
+		else
+			guiListSuitcase.Enable()
+			guiListStudio.Enable()
+		endif
 	End Method
 
 
@@ -2610,7 +2619,7 @@ Type RoomHandler_Studio extends TRoomHandler
 	Function onChangeProgrammeCollection:int( triggerEvent:TEventBase )
 		if not CheckPlayerInRoom("studio") then return FALSE
 
-		GetInstance().RefreshGuiElements()
+		GetInstance().RefreshGuiElements( )
 	End Function
 
 
@@ -2711,9 +2720,8 @@ Type RoomHandler_Studio extends TRoomHandler
 			player.GetProgrammeCollection().MoveScriptFromSuitcaseToStudio(script)
 		endif
 
-		'Rebuild the list of current shopping lists
-		RebuildCurrentShoppingLists(script)
-		
+		'recreate shopping list?
+
 		return True
 	End Method
 
@@ -2722,15 +2730,19 @@ Type RoomHandler_Studio extends TRoomHandler
 		if not roomGUID then return False
 
 		local script:TScript = GetCurrentStudioScript(roomGUID)
-		if script
-			local player:TPlayer = GetPlayer(script.owner)
-			if player
-				player.GetProgrammeCollection().MoveScriptFromStudioToSuitcase(script)
-			endif
+		if not script then return False
+
+
+		local player:TPlayer = GetPlayer(script.owner)
+		if player
+			player.GetProgrammeCollection().MoveScriptFromStudioToSuitcase(script)
 		endif
 
-		'remove previous shopping lists
-		currentShoppingLists.Clear()
+		'remove ALL shopping lists for this script
+		'ATTENTION: this removes the shopping lists, as soon
+		'           as a script is dropped back to the suitcase
+		'           -> Maybe keep it until you leave the room?
+		player.GetProgrammeCollection().RemoveShoppingListsByScript(script)
 
 		return studioScriptsByRoom.Remove(roomGUID)
 	End Method
@@ -2742,14 +2754,6 @@ Type RoomHandler_Studio extends TRoomHandler
 		return TScript(studioScriptsByRoom.ValueForKey(roomGUID))
 	End Method
 
-
-	Method RebuildCurrentShoppingLists(script:TScript)
-		currentShoppingLists.Clear()
-		For local sl:TShoppingList = EachIn GetShoppingListCollection().GetShoppingListsByScript(script)
-			currentShoppingLists.AddLast(sl)
-		Next
-	End Method
-	
 
 	'deletes all gui elements (eg. for rebuilding)
 	Function RemoveAllGuiElements:int()
@@ -2773,8 +2777,23 @@ Type RoomHandler_Studio extends TRoomHandler
 		'===== REMOVE UNUSED =====
 		'remove gui elements with scripts the player does no longer have
 
+		'1) refresh gui elements for the player who owns the room, not
+		'   the active player!
+		'2) player should be ALWAYS inRoom when "RefreshGuiElements()"
+		'   is called
+		local roomOwner:TPlayer
+		local roomGUID:string
+		If GetPlayer().GetFigure().inRoom
+			roomOwner = GetPlayer( GetPlayer().GetFigure().inRoom.owner )
+			roomGUID = GetPlayer().GetFigure().inRoom.GetGUID()
+		EndIf
+		if not roomOwner or not roomGUID then return False
+
+		'helper vars
+		local programmeCollection:TPlayerProgrammeCollection = roomOwner.GetProgrammeCollection()
+
+
 		'suitcase
-		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(GetPlayer().playerID)
 		For local guiScript:TGUIScript = eachin GuiListSuitcase._slots
 			'if the player has this script in suitcase or list, skip deletion
 			if programmeCollection.HasScript(guiScript.script) then continue
@@ -2784,25 +2803,20 @@ Type RoomHandler_Studio extends TRoomHandler
 			guiScript = null
 		Next
 
-		'player should be ALWAYS inRoom when "RefreshGuiElements()" is
-		'called...
-		if GetPlayer().GetFigure().inRoom
-			local roomGUID:string = GetPlayer().GetFigure().inRoom.GetGUID()
-			'studio list
-			For local guiScript:TGUIScript = eachin guiListStudio._slots
-				if GetCurrentStudioScript(roomGUID) <> guiScript.script
-					guiScript.remove()
-					guiScript = null
-				endif
-			Next
-		endif
+		'studio list
+		For local guiScript:TGUIScript = eachin guiListStudio._slots
+			if GetCurrentStudioScript(roomGUID) <> guiScript.script
+				guiScript.remove()
+				guiScript = null
+			endif
+		Next
+
 
 		'===== CREATE NEW =====
 		'create missing gui elements for all script-lists
 
 		'studio list
-		local studioGUID:string = GetPlayer().GetFigure().inRoom.GetGUID()
-		local studioScript:TScript = GetCurrentStudioScript(studioGUID)
+		local studioScript:TScript = GetCurrentStudioScript(roomGUID)
 		if studioScript and not guiListStudio.ContainsScript(studioScript)
 			'try to fill in our list
 			if guiListStudio.getFreeSlot() >= 0
@@ -2814,7 +2828,7 @@ Type RoomHandler_Studio extends TRoomHandler
 				guiListStudio.addItem(block, "-1")
 			else
 				TLogger.log("Studio.RefreshGuiElements", "script exists but does not fit in GuiListNormal - script removed.", LOG_ERROR)
-				RemoveCurrentStudioScript(studioGUID)
+				RemoveCurrentStudioScript(roomGUID)
 			endif
 		endif
 
@@ -2836,11 +2850,10 @@ Type RoomHandler_Studio extends TRoomHandler
 	Function onClickCreateShoppingList(data:TData)
 		local script:TScript = TScript(data.Get("script"))
 		if not script then return
-		
-		GetShoppingListCollection().Add(new TShoppingList.Init(script))
 
-		GetInstance().RebuildCurrentShoppingLists(script)
-		'also recreate the dialogue (changed list amounts)
+		GetPlayer().GetProgrammeCollection().CreateShoppingList(script)
+
+		'recreate the dialogue (changed list amounts)
 		GetInstance().GenerateStudioManagerDialogue()
 	End Function
 
@@ -2857,10 +2870,17 @@ Type RoomHandler_Studio extends TRoomHandler
 		if readyToProduce
 			text = "Informationen ueber derzeitige Produktion anbieten"
 		elseif script
+			'to display the amount of shopping lists per script we
+			'call the shoppinglistcollection instead of the player's
+			'programmecollection
 			conceptCount = GetShoppingListCollection().GetShoppingListsByScript(script).length
 			text = "Du willst also |b|"+script.GetTitle()+"|/b| produzieren?"
 			text :+"~n~n"
 			text :+"Bisher sind |b|"+conceptCount+" Produktionen|/b| mit diesem Drehbuch geplant."
+			if not GetPlayer().GetProgrammeCollection().CanCreateShoppingList()
+				text :+"~n~n"
+				text :+"Im übrigen ist Dein Platz für Einkaufslisten erschöpft. Bitte entferne erst eine Einkaufsliste bevor Ich eine neue ausgeben kann."
+			endif
 		else
 			text = "Hi"
 			text :+"~n~n"
@@ -2874,13 +2894,15 @@ Type RoomHandler_Studio extends TRoomHandler
 		texts[0] = TDialogueTexts.Create(text)
 
 		if script
-			local answerText:string
-			if conceptCount > 0
-				answerText = "Ich brauche noch eine Einkaufsliste für dieses Drehbuch."
-			else
-				answerText = "Ich brauche eine Einkaufsliste für dieses Drehbuch."
+			if GetPlayer().GetProgrammeCollection().CanCreateShoppingList()
+				local answerText:string
+				if conceptCount > 0
+					answerText = "Ich brauche noch eine Einkaufsliste für dieses Drehbuch."
+				else
+					answerText = "Ich brauche eine Einkaufsliste für dieses Drehbuch."
+				endif
+				texts[0].AddAnswer(TDialogueAnswer.Create( answerText, -1, null, onClickCreateShoppingList, new TData.Add("script", script)))
 			endif
-			texts[0].AddAnswer(TDialogueAnswer.Create( answerText, -1, null, onClickCreateShoppingList, new TData.Add("script", script)))
 		endif
 		texts[0].AddAnswer(TDialogueAnswer.Create( "Tschüss", -2, Null))
 
@@ -2924,18 +2946,22 @@ Type RoomHandler_Studio extends TRoomHandler
 		endif
 
 
-		if currentShoppingLists.count() > 0
-			local slSprite:TSprite = GetSpriteFromRegistry("gfx_studio_shoppinglist_0")
-			local slStart:int = 640 'right aligned
-			slStart :- currentShoppingLists.count() * (slSprite.GetWidth() + 5)
-			For local sl:TShoppingList = EachIn currentShoppingLists
-				slSprite.Draw(slStart, 335)
-				slStart :+ (slSprite.GetWidth() + 5)
-			Next
+
+		local roomOwner:TPlayer = GetPlayer(TRoom(triggerEvent.GetSender()).owner)
+		if roomOwner
+			local slCount:int = roomOwner.GetProgrammeCollection().GetShoppingListsCount()
+			if slCount > 0
+				local slSprite:TSprite = GetSpriteFromRegistry("gfx_studio_shoppinglist_0")
+				local slStart:int = 640 'right aligned
+				slStart :- slCount * (slSprite.GetWidth() + 5)
+				For local sl:TShoppingList = EachIn roomOwner.GetProgrammeCollection().GetShoppingLists()
+					slSprite.Draw(slStart, 335)
+					slStart :+ (slSprite.GetWidth() + 5)
+				Next
+			endif
 		endif
 
-
-		if studioManagerTooltip then studioManagerTooltip.Render()
+		if roomOwner and studioManagerTooltip then studioManagerTooltip.Render()
 
 		GUIManager.Draw("studio")
 
@@ -2945,7 +2971,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		endif
 
 		'draw after potential tooltips
-		if studioManagerDialogue then studioManagerDialogue.Draw()
+		if roomOwner and studioManagerDialogue then studioManagerDialogue.Draw()
 
 	End Method
 
@@ -2953,30 +2979,33 @@ Type RoomHandler_Studio extends TRoomHandler
 
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
 		GetPlayer().GetFigure().fromroom = Null
+		local isPlayerRoom:int = GetPlayer() = GetPlayer(TRoom(triggerEvent.GetSender()).owner)
 
 		'mouse over studio manager
-		if THelper.MouseIn(0,100,150,300)
-			if not studioManagerDialogue
-				'generate the dialogue if not done yet
-				if MouseManager.IsHit(1) and not draggedGuiScript
-					GenerateStudioManagerDialogue()
-				endif
-
-				'show tooltip of studio manager
-				'only show when no dialogue is (or just got) opened 
+		if isPlayerRoom
+			if THelper.MouseIn(0,100,150,300)
 				if not studioManagerDialogue
-					If not studioManagerTooltip Then studioManagerTooltip = TTooltip.Create(GetLocale("STUDIO_MANAGER"), GetLocale("GIVES_INFORMATION_ABOUT_PRODUCTION_OR_HANDS_OUT_SHOPPING_LIST"), 150, 160,-1,-1)
-					studioManagerTooltip.enabled = 1
-					studioManagerTooltip.minContentWidth = 150
-					studioManagerTooltip.Hover()
+					'generate the dialogue if not done yet
+					if MouseManager.IsHit(1) and not draggedGuiScript
+						GenerateStudioManagerDialogue()
+					endif
+
+					'show tooltip of studio manager
+					'only show when no dialogue is (or just got) opened 
+					if not studioManagerDialogue
+						If not studioManagerTooltip Then studioManagerTooltip = TTooltip.Create(GetLocale("STUDIO_MANAGER"), GetLocale("GIVES_INFORMATION_ABOUT_PRODUCTION_OR_HANDS_OUT_SHOPPING_LIST"), 150, 160,-1,-1)
+						studioManagerTooltip.enabled = 1
+						studioManagerTooltip.minContentWidth = 150
+						studioManagerTooltip.Hover()
+					endif
 				endif
 			endif
-		endif
 
-		If studioManagerTooltip Then studioManagerTooltip.Update()
+			If studioManagerTooltip Then studioManagerTooltip.Update()
 
-		if studioManagerDialogue and studioManagerDialogue.Update() = 0
-			studioManagerDialogue = null
+			if studioManagerDialogue and studioManagerDialogue.Update() = 0
+				studioManagerDialogue = null
+			endif
 		endif
 
 		Game.cursorstate = 0

@@ -101,6 +101,7 @@ Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
 Include "gamefunctions_debug.bmx"
 Include "gamefunctions_network.bmx"
 Include "game.production.script.gui.bmx"
+Include "game.production.shoppinglist.gui.bmx"
 
 Include "game.figure.bmx"
 Include "game.building.bmx"
@@ -459,11 +460,13 @@ Type TApp
 						If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", GetPlayerCollection().playerID))
 						If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("boss", GetPlayerCollection().playerID))
 						If KEYMANAGER.IsHit(KEY_D)
-							If not KEYMANAGER.IsDown(KEY_LSHIFT)
-								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("scriptagency"))
-							else
-								'go to first script of the player
+							if KEYMANAGER.IsDown(KEY_RSHIFT)
+								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", 2))
+							else if KEYMANAGER.IsDown(KEY_LSHIFT)
+								'go to first studio of the player
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", GetPlayerCollection().playerID))
+							else
+								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("scriptagency"))
 							endif
 						endif
 						

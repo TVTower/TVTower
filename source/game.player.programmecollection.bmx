@@ -11,6 +11,7 @@ Import "game.broadcastmaterial.news.bmx"
 Import "game.broadcastmaterial.programme.bmx"
 Import "game.broadcastmaterial.advertisement.bmx"
 Import "game.production.script.bmx"
+Import "game.production.shoppinglist.bmx"
 
 
 
@@ -67,6 +68,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Field news:TList = CreateList()
 	Field scripts:TList = CreateList()
 	Field adContracts:TList = CreateList()
+	'shopping lists for productions
+	Field shoppingLists:TList = CreateList()
 	'scripts in the suitcase
 	Field suitcaseScripts:TList = CreateList()
 	'scripts in our studios
@@ -93,6 +96,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		seriesLicences.Clear()
 		adContracts.Clear()
 		scripts.Clear()
+		shoppingLists.Clear()
 		studioScripts.Clear()
 		suitcaseScripts.Clear()
 		suitcaseProgrammeLicences.Clear()
@@ -123,6 +127,11 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	Method GetScriptCount:Int() {_exposeToLua}
 		Return scripts.count()
+	End Method
+
+
+	Method GetShoppingListsCount:Int() {_exposeToLua}
+		Return shoppingLists.count()
 	End Method
 
 
@@ -419,6 +428,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		return TRUE
 	End Method
 
+
 	'totally remove a script from the collection
 	Method RemoveScript:Int(script:TScript, sell:int=FALSE)
 		If script = Null Then Return False
@@ -454,6 +464,62 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		return TRUE
 	End Method
 
+	
+	'=== SHOPPINGLISTS  ===
+	Method CanCreateShoppingList:Int() {_exposeToLua}
+		'do not allow more shopping lists than the rules say!
+		return shoppingLists.count() < GameRules.maxShoppingLists
+	End Method
+
+	
+	Method CreateShoppingList:Int(script:TScript)
+		if not script then return False
+		if not CanCreateShoppingList()
+			'emit event to inform others (eg. for ingame warning)
+			EventManager.triggerEvent( TEventSimple.Create("programmecollection.onCreateShoppingListFailed", new TData.AddNumber("shoppingListsCount", shoppingLists.count()).AddNumber("playerID", owner)) )
+
+			return False
+		endif
+		
+		local shoppingList:TShoppingList = new TShoppingList.Init(owner, script)
+		GetShoppingListCollection().Add(shoppingList)
+		AddShoppingList(shoppingList)
+		return True
+	End Method
+
+
+	Method AddShoppingList:Int(shoppingList:TShoppingList)
+		if not shoppingList then return False
+		if shoppingLists.contains(shoppingList) then return False
+
+		if owner <> shoppingList.owner
+			shoppingList.SetOwner(owner)
+		endif
+
+		shoppingLists.AddLast(shoppingList)
+
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addShoppingList", new TData.add("shoppingList", shoppingList), self))
+		return TRUE
+	End Method
+
+	
+	'totally remove a shopping list from the collection
+	Method RemoveShoppingList:Int(shoppingList:TShoppingList)
+		if shoppingList = Null then return False
+
+		if not shoppingLists.remove(shoppingList) then Return False
+
+		'emit an event so eg. network can recognize the change
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.removeShoppingList", new TData.add("shoppingList", shoppingList), self))
+	End Method
+
+
+	'totally remove all shopping list of a given script
+	Method RemoveShoppingListsByScript:Int(script:TScript)
+		For local sl:TShoppingList = EachIn shoppingLists
+			if sl.script = script then RemoveShoppingList(sl)
+		Next
+	End Method
 
 
 	'=== GETTERS ===
@@ -520,6 +586,13 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Method GetScriptAtIndex:TScript(arrayIndex:Int=0) {_exposeToLua}
 		if arrayIndex < 0 or arrayIndex >= scripts.Count() then return Null
 		Return TScript(scripts.ValueAtIndex(arrayIndex))
+	End Method
+
+
+	'get script by index number in list - useful for lua-scripts
+	Method GetShoppingListAtIndex:TShoppingList(arrayIndex:Int=0) {_exposeToLua}
+		if arrayIndex < 0 or arrayIndex >= scripts.Count() then return Null
+		Return TShoppingList(shoppingLists.ValueAtIndex(arrayIndex))
 	End Method
 
 
@@ -641,6 +714,19 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			If script.id = id Then Return script
 		Next
 		Return Null
+	End Method
+
+
+	Method GetShoppingList:TShoppingList(guid:string) {_exposeToLua}
+		For Local sl:TShoppingList = EachIn shoppingLists
+			If sl.GetGUID() = guid Then Return sl
+		Next
+		Return Null
+	End Method
+
+
+	Method GetShoppingLists:TList() {_exposeToLua}
+		Return shoppingLists
 	End Method
 
 

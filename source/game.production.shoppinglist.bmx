@@ -32,7 +32,7 @@ End Function
 
 
 
-Type TShoppingList extends TGameObject
+Type TShoppingList extends TOwnedGameObject
 	Field script:TScript
 
 	Field directors:TProgrammePersonBase[]
@@ -47,8 +47,9 @@ Type TShoppingList extends TGameObject
 	Field coulisseType3Id:string
 
 
-	Method Init:TShoppingList(script:TScript)
+	Method Init:TShoppingList(owner:int, script:TScript)
 		self.script = script
+		SetOwner(owner)
 		return self
 	End Method
 End Type
