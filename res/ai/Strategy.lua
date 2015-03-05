@@ -8,17 +8,51 @@ end)
 function AIStrategy:typename()
 	return "AIStrategy"
 end
+
+function AIStrategy:Start(playerAI)
+	--überschreiben
+end
+
+function AIStrategy:Finalize(playerAI)
+	--überschreiben
+end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-_G["AIStrategyElement"] = class(KIDataObjekt, function(c)
-	KIDataObjekt.init(c)	-- must init base!
+_G["DefaultStrategy"] = class(AIStrategy, function(c)
+	AIStrategy.init(c)	-- must init base!
 end)
 
-function AIStrategyElement:typename()
-	return "AIStrategyElement"
+function DefaultStrategy:typename()
+	return "DefaultStrategy"
 end
 
-function AIStrategyElement:execute(playerAI)
+function DefaultStrategy:Start(playerAI)
+end
+
+function DefaultStrategy:Finalize(playerAI)
+end
+-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+_G["BeginExpandStrategy"] = class(AIStrategy, function(c)
+	AIStrategy.init(c)	-- must init base!
+end)
+
+function BeginExpandStrategy:typename()
+	return "BeginExpandStrategy"
+end
+
+function BeginExpandStrategy:Start(playerAI)
+	playerAI.TaskList[TASK_MOVIEDISTRIBUTOR].InvestmentPriority = 0
+	playerAI.TaskList[TASK_STATIONMAP].BasePriority = 3
+	playerAI.TaskList[TASK_STATIONMAP].InvestmentPriority = 15
+	playerAI.Budget.SavingParts = 0.6
+end
+
+function BeginExpandStrategy:Finalize(playerAI)
+	playerAI.TaskList[TASK_MOVIEDISTRIBUTOR]:ResetDefaults()
+	playerAI.TaskList[TASK_STATIONMAP]:ResetDefaults()
+	playerAI.Budget:ResetDefaults()
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

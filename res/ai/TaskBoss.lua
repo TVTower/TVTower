@@ -18,7 +18,6 @@ function TaskBoss:typename()
 end
 
 function TaskBoss:Activate()
-	debugMsg(">>> Starte Task 'TaskBoss'")
 	-- Was getan werden soll:
 	self.CheckCreditJob = JobCheckCredit()
 	self.CheckCreditJob.Task = self

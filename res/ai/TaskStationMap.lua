@@ -3,18 +3,21 @@
 _G["TaskStationMap"] = class(AITask, function(c)
 	AITask.init(c)	-- must init base!
 	c.TargetRoom = TVT.ROOM_OFFICE_PLAYER_ME
-	c.BudgetWeigth = 0
-	c.BasePriority = 1
-	c.NeededInvestmentBudget = 250000
-	c.InvestmentPriority = 7
+	c:ResetDefaults()
 end)
 
 function TaskStationMap:typename()
 	return "TaskStationMap"
 end
 
+function TaskStationMap:ResetDefaults()
+	self.BudgetWeigth = 0
+	self.BasePriority = 1
+	self.NeededInvestmentBudget = 250000
+	self.InvestmentPriority = 7
+end
+
 function TaskStationMap:Activate()
-	debugMsg(">>> Starte Task 'TaskStationMap'")
 	-- Was getan werden soll:
 	self.AdjustStationInvestmentJob = JobAdjustStationInvestment()
 	self.AdjustStationInvestmentJob.Task = self

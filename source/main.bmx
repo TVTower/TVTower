@@ -1,5 +1,5 @@
-ï»¿'Application: TVGigant/TVTower
-'Author: Ronny Otto & Manuel VÃ¶gele
+'Application: TVGigant/TVTower
+'Author: Ronny Otto & Manuel Vögele
 
 SuperStrict
 
@@ -112,7 +112,7 @@ Include "game.base.bmx"
 '===== Globals =====
 Global VersionDate:String = LoadText("incbin::source/version.txt")
 Global VersionString:String = "v0.2 Build ~q" + VersionDate+"~q"
-Global CopyrightString:String = "by Ronny Otto & Manuel VÃ¶gele"
+Global CopyrightString:String = "by Ronny Otto & Manuel Vögele"
 Global App:TApp = Null
 Global Game:TGame
 Global InGame_Chat:TGUIChat
@@ -142,7 +142,7 @@ TLogger.SetPrintMode(0)
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
 '@MANUEL: comment out when doing DEV to see LOG_DEV-messages
 'TLogger.changePrintMode(LOG_DEV, FALSE)
-'TLogger.changePrintMode(LOG_ERROR | LOG_DEV | LOG_AI, true)
+TLogger.changePrintMode(LOG_ERROR | LOG_DEV | LOG_AI, true)
 
 
 

@@ -11,6 +11,7 @@ APP_VERSION = "1.3"
 dofile("res/ai/AIEngine.lua")
 dofile("res/ai/CommonObjects.lua")
 dofile("res/ai/BudgetManager.lua")
+dofile("res/ai/Strategy.lua")
 dofile("res/ai/TaskMovieDistributor.lua")
 dofile("res/ai/TaskNewsAgency.lua")
 dofile("res/ai/TaskAdAgency.lua")
@@ -46,9 +47,12 @@ _G["TASK_BOSS"] = TASK_BOSS
 _G["DefaultAIPlayer"] = class(AIPlayer, function(c)
 	AIPlayer.init(c)	-- must init base!
 	c.CurrentTask = nil
+	c.Strategy = nil
 	--c.Budget = nil  --darf nicht überschrieben werden
 	--c.Stats = nil  --darf nicht überschrieben werden
 	--c.Requisitions = nil  --darf nicht überschrieben werden
+	
+	c.Ventruesome = 5 --Risikofreude = 1 - 10
 end)
 
 function DefaultAIPlayer:typename()
@@ -62,7 +66,11 @@ function DefaultAIPlayer:initializePlayer()
 	self.Budget = BudgetManager()
 	self.Budget:Initialize()
 	self.Requisitions = {}
-	self.NameX = "zzz"
+	--self.NameX = "zzz"
+
+	--TODO: Strategie und Charakter festlegen
+	self.Ventruesome = 5
+	self.Strategy = DefaultStrategy()
 end
 
 function DefaultAIPlayer:initializeTasks()
@@ -89,6 +97,8 @@ function DefaultAIPlayer:TickAnalyse()
 end
 
 function DefaultAIPlayer:OnDayBegins()
+	self.Strategy:Start()
+
 	self.Stats:OnDayBegins()
 
 	--Strategie vorher anpassen / Aufgabenparameter anpassen
@@ -303,7 +313,7 @@ end
 
 function OnDayBegins()
 	if (aiIsActive) then
-		debugMsg("OnDayBegins!")
+		debugMsg("KI-Event: OnDayBegins")
 		getAIPlayer():OnDayBegins()
 	end
 end

@@ -22,7 +22,6 @@ function TaskSchedule:typename()
 end
 
 function TaskSchedule:Activate()
-	debugMsg(">>> Starte Task 'TaskSchedule'")
 	-- Was getan werden soll:
 	self.AnalyzeScheduleJob = JobAnalyzeSchedule()
 	self.AnalyzeScheduleJob.ScheduleTask = self
@@ -194,7 +193,7 @@ function JobAnalyzeSchedule:typename()
 end
 
 function JobAnalyzeSchedule:Prepare(pParams)
-	debugMsg("Analysiere Programmplan")
+	--debugMsg("Analysiere Programmplan")
 	self.Step = 1
 end
 
@@ -228,7 +227,7 @@ function JobFulfillRequisition:typename()
 end
 
 function JobFulfillRequisition:Prepare(pParams)
-	debugMsg("Erfülle Änderungs-Anforderungen an den Programmplan!")
+	--debugMsg("Erfülle Änderungs-Anforderungen an den Programmplan!")
 
 	self.Player = _G["globalPlayer"]
 	self.SpotSlotRequisitions = self.Player:GetRequisitionsByTaskId(_G["TASK_SCHEDULE"])
@@ -269,7 +268,7 @@ function JobEmergencySchedule:typename()
 end
 
 function JobEmergencySchedule:Prepare(pParams)
-	debugMsg("Prüfe ob dringende Programm- und Werbeplanungen notwendig sind")
+	--debugMsg("Prüfe ob dringende Programm- und Werbeplanungen notwendig sind")
 	if (unitTestMode) then
 		self:UnitTest()
 	end
@@ -361,7 +360,7 @@ function JobEmergencySchedule:SetContractToEmptyBlock(day, hour)
 	local filteredCurrentSpotList = self:FilterSpotList(currentSpotList)
 	local choosenSpot = self:GetBestMatchingSpot(filteredCurrentSpotList)
 	if (choosenSpot ~= nil) then
-		debugMsg("Setze Spot: " .. fixedDay .. " / " .. fixedHour .. "  Name: " .. choosenSpot.GetTitle() .. "  MinAud: " .. choosenSpot.GetMinAudience())
+		debugMsg("Setze Spot: " .. choosenSpot.GetTitle() .. " (" ..fixedDay .. " / " .. fixedHour .. " MinAud: " .. choosenSpot.GetMinAudience() .. ")")
 		local result = TVT.of_setAdvertisementSlot(TVT.of_getAdContractByID(choosenSpot.GetID()), fixedDay, fixedHour)
 	else
 		--nochmal ohne Filter!
@@ -560,7 +559,7 @@ function JobSchedule:typename()
 end
 
 function JobSchedule:Prepare(pParams)
-	debugMsg("Schaue Programmplan an")
+	--debugMsg("Schaue Programmplan an")
 end
 
 function JobSchedule:Tick()

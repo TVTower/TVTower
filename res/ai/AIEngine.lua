@@ -165,6 +165,10 @@ function AITask:typename()
 	return "AITask"
 end
 
+function AITask:ResetDefaults()
+	--kann überschrieben werden
+end
+
 function AITask:getBudgetUnits()
 	return self.BudgetWeigth
 end
@@ -187,6 +191,7 @@ end
 function AITask:CallActivate()
 	self.MaxTicks = math.random(9, 17)
 	self.TickCounter = 0
+	debugMsg("### Starte Task '" .. self:typename() .. "'! (Prio: " .. self.CurrentPriority ..")")
 	self:Activate()
 end
 
@@ -289,21 +294,21 @@ function AITask:RecalcPriority()
 
 	self.CurrentPriority = calcPriority * timeFactor
 
-	debugMsg("Task: " .. self:typename() .. " - Prio: " .. self.CurrentPriority .. " - TimeDiff:" .. TimeDiff .. " (c: " .. calcPriority .. ")")
+	--debugMsg("Task: " .. self:typename() .. " - Prio: " .. self.CurrentPriority .. " - TimeDiff:" .. TimeDiff .. " (c: " .. calcPriority .. ")")
 end
 
 function AITask:TooMuchTicks()
-	debugMsg("<<< TooMuchTicks / Warten zuende!")
+	debugMsg("... lange genug gewartet.")
 	self:SetDone()
 end
 
 function AITask:SetWait()
-	debugMsg("<<< Task wait!")
+	debugMsg("Warten...")
 	self.Status = TASK_STATUS_WAIT
 end
 
 function AITask:SetDone()
-	debugMsg("<<< Task abgeschlossen!")
+	debugMsg("### Task abgeschlossen!")
 	self.Status = TASK_STATUS_DONE
 	self.SituationPriority = 0
 	self.LastDone = WorldTime.GetTimeGoneAsMinute()
@@ -434,7 +439,7 @@ function AIJobGoToRoom:OnBeginEnterRoom(roomId, result)
 		if (self.IsWaiting) then
 			debugMsg("Okay... aber nur noch 'n kleines bisschen...")
 		elseif (self:ShouldIWait()) then
-			debugMsg("Dann wart ich eben...")
+			--debugMsg("Raum besetzt! Dann wart ich eben...")
 			self.IsWaiting = true
 			self.WaitSince = WorldTime.GetTimeGoneAsMinute()
 			self.WaitTill = self.WaitSince + 3 + (self.Task.CurrentPriority / 6)
@@ -442,25 +447,25 @@ function AIJobGoToRoom:OnBeginEnterRoom(roomId, result)
 				self.WaitTill = self.WaitSince + 20
 			end
 			local rand = math.random(50, 75)
-			debugMsg("Gehe etwas zur Seite (" .. rand .. ") und warte bis " .. self.WaitTill)
+			debugMsg("Raum besetzt! Dann wart ich eben... ( Pixel: " .. rand .. " Warten bis " .. self.WaitTill .. ")")
 			TVT.doGoToRelative(rand)
 		else
-			debugMsg("Ne ich warte nicht!")
+			debugMsg("Raum besetzt! Ich warte nicht...")
 			self.Status = JOB_STATUS_CANCEL
 		end
 	elseif(resultId == TVT.RESULT_OK) then
-		debugMsg("Darf Raum betreten " .. roomId)
+		--debugMsg("Darf Raum betreten " .. roomId)
 	end
 end
 
 function AIJobGoToRoom:OnEnterRoom(roomId)
-	debugMsg("Raum betreten " .. roomId)
+	debugMsg("Betrete Raum " .. roomId)
 	--debugMsg("AIJobGoToRoom DONE!")
 	self.Status = JOB_STATUS_DONE
 end
 
 function AIJobGoToRoom:ShouldIWait()
-	debugMsg("ShouldIWait Prio: " .. self.Task.CurrentPriority)
+	--debugMsg("Warte vor dem Raum... (Prio: " .. self.Task.CurrentPriority .. ")")
 	if (self.Task.CurrentPriority >= 60) then
 		return true
 	elseif (self.Task.CurrentPriority >= 30) then
@@ -493,7 +498,7 @@ function AIJobGoToRoom:Tick()
 			debugMsg("Ach... ich geh...")
 			self.Status = JOB_STATUS_CANCEL
 		else
-			debugMsg("Warten... " .. self.WaitTill .. "/" .. WorldTime.GetTimeGoneAsMinute())
+			--debugMsg("Warten... " .. self.WaitTill .. "/" .. WorldTime.GetTimeGoneAsMinute())
 		end
 	elseif (self.Status ~= JOB_STATUS_DONE) then
 		self:ReDoCheck(10)

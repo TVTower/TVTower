@@ -17,7 +17,6 @@ function TaskAdAgency:typename()
 end
 
 function TaskAdAgency:Activate()
-	debugMsg(">>> Starte Task 'TaskAdAgency'")
 	-- Was getan werden soll:
 	self.CheckSpots = JobCheckSpots()
 	self.CheckSpots.AdAgencyTask = self
@@ -65,7 +64,7 @@ function JobCheckSpots:typename()
 end
 
 function JobCheckSpots:Prepare(pParams)
-	debugMsg("Schaue Werbeangebote an")
+	--debugMsg("Schaue Werbeangebote an")
 	self.CurrentSpotIndex = 0
 end
 
@@ -107,7 +106,7 @@ function AppraiseSpots:typename()
 end
 
 function AppraiseSpots:Prepare(pParams)
-	debugMsg("Bewerte/Vergleiche Werbeverträge")
+	--debugMsg("Bewerte/Vergleiche Werbeverträge")
 	self.CurrentSpotIndex = 0
 end
 
@@ -195,7 +194,7 @@ function SignRequisitedContracts:typename()
 end
 
 function SignRequisitedContracts:Prepare(pParams)
-	debugMsg("Unterschreibe benötigte Werbeverträge")
+	--debugMsg("Unterschreibe benötigte Werbeverträge")
 	self.CurrentSpotIndex = 0
 
 	self.Player = _G["globalPlayer"]
@@ -282,7 +281,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 	end
 
 	if (table.count(buyedContracts) > 0) then
-		debugMsg("Entferne " .. table.count(buyedContracts) .. " abgeschlossene Werbeverträge aus der Shop-Liste.")
+		--debugMsg("Entferne " .. table.count(buyedContracts) .. " abgeschlossene Werbeverträge aus der Shop-Liste.")
 		table.removeCollection(self.AdAgencyTask.SpotsInAgency, buyedContracts)
 	end
 
@@ -305,7 +304,7 @@ end
 
 --self.SpotRequisition = self.Player:GetRequisitionsByOwner(_G["TASK_SCHEDULE"])
 function SignContracts:Prepare(pParams)
-	debugMsg("Unterschreibe lukrative Werbeverträge")
+	--debugMsg("Unterschreibe lukrative Werbeverträge")
 	self.CurrentSpotIndex = 0
 end
 

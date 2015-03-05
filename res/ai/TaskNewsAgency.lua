@@ -13,7 +13,6 @@ function TaskNewsAgency:typename()
 end
 
 function TaskNewsAgency:Activate()
-	debugMsg(">>> Starte Task 'TaskNewsAgency'")
 	-- Was getan werden soll:
 	self.NewsAgencyAbonnementsJob = JobNewsAgencyAbonnements()
 	self.NewsAgencyAbonnementsJob.Task = self
@@ -70,7 +69,7 @@ function JobNewsAgencyAbonnements:typename()
 end
 
 function JobNewsAgencyAbonnements:Prepare(pParams)
-	debugMsg("Prüfe/Schließe Nachrichtenabonnements")
+	--debugMsg("Prüfe/Schließe Nachrichtenabonnements")
 end
 
 function JobNewsAgencyAbonnements:Tick()
@@ -79,7 +78,9 @@ function JobNewsAgencyAbonnements:Tick()
 
 	--set abonnements for all available news genres
 	for i = 0, TVT.Constants.NewsGenre.count - 1 do
-		MY.SetNewsAbonnement(TVT.Constants.NewsGenre.GetAtIndex(i), self:GetAbonnementLevel(abonnementCount, i))
+		local level = self:GetAbonnementLevel(abonnementCount, i)
+		MY.SetNewsAbonnement(TVT.Constants.NewsGenre.GetAtIndex(i), level)
+		debugMsg("Bestelle Nachrichtenabonnement: " .. TVT.Constants.NewsGenre.GetAtIndex(i) .. " Level: " .. level)
 	end
 	--self.Task.CurrentBudget = self.Task.CurrentBudget - (abonnementCount * 10000)
 
@@ -112,7 +113,7 @@ function JobNewsAgency:typename()
 end
 
 function JobNewsAgency:Prepare(pParams)
-	debugMsg("Bewerte/Kaufe Nachrichten")
+	--debugMsg("Bewerte/Kaufe Nachrichten")
 	self.Newslist = self.GetNewsList()
 end
 

@@ -7,24 +7,26 @@ _G["TaskMovieDistributor"] = class(AITask, function(c)
 	c.NiveauChecked = false
 	c.MovieCount = 0
 	c.CheckMode = 0
-	c.BudgetWeigth = 7
-	c.BasePriority = 8
 	c.MovieList = nil
 	c.TargetRoom = TVT.ROOM_MOVIEAGENCY
 	c.CheckMoviesJob = nil
 	c.AppraiseMovies = nil
 	c.CurrentBargainBudget = 0
-	c.NeededInvestmentBudget = 150000
-	c.InvestmentPriority = 5	
+	c:ResetDefaults()
 end)
 
 function TaskMovieDistributor:typename()
 	return "TaskMovieDistributor"
 end
 
-function TaskMovieDistributor:Activate()
-	debugMsg(">>> Starte Task 'TaskMovieDistributor'")
+function TaskMovieDistributor:ResetDefaults()
+	self.BudgetWeigth = 7
+	self.BasePriority = 8	
+	self.NeededInvestmentBudget = 150000
+	self.InvestmentPriority = 5
+end
 
+function TaskMovieDistributor:Activate()
 	-- Was getan werden soll:
 	self.CheckMoviesJob = JobCheckMovies()
 	self.CheckMoviesJob.MovieDistributorTask = self
@@ -89,7 +91,7 @@ function JobCheckMovies:typename()
 end
 
 function JobCheckMovies:Prepare(pParams)
-	debugMsg("Schaue Filmangebot an")
+	--debugMsg("Schaue Filmangebot an")
 	self.CurrentMovieIndex = 0
 end
 
@@ -159,7 +161,7 @@ function JobAppraiseMovies:typename()
 end
 
 function JobAppraiseMovies:Prepare(pParams)
-	debugMsg("Bewerte/Vergleiche Filme")
+	--debugMsg("Bewerte/Vergleiche Filme")
 	self.CurrentMovieIndex = 0
 	self.CurrentAuctionIndex = 0
 	self:AdjustMovieNiveau()
@@ -270,7 +272,7 @@ function JobBuyMovies:typename()
 end
 
 function JobBuyMovies:Prepare(pParams)
-	debugMsg("Kaufe Filme")
+	--debugMsg("Kaufe Filme")
 
 	local sortMethod = function(a, b)
 		return a.GetAttractiveness() > b.GetAttractiveness()
@@ -315,7 +317,7 @@ function JobBidAuctions:typename()
 end
 
 function JobBidAuctions:Prepare(pParams)
-	debugMsg("Biete auf Auktionen")
+	--debugMsg("Biete auf Auktionen")
 
 	local sortMethod = function(a, b)
 		return a.GetAttractiveness() > b.GetAttractiveness()

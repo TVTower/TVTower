@@ -7,16 +7,20 @@ OLD_BUDGET_3		= "3"
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["BudgetManager"] = class(KIDataObjekt, function(c)
 	KIDataObjekt.init(c)	-- must init base!
-	c.TodayStartAccountBalance = 0 -- Kontostand zu Beginn des Tages
-	c.BudgetMinimum = 0  -- Minimalbetrag des Budgets
-	c.BudgetMaximum = 0  -- Maximalbetrag des Budgets
 	c.BudgetHistory = {} -- Die Budgets der letzten Tage
+	c.TodayStartAccountBalance = 0 -- Kontostand zu Beginn des Tages	
 	c.InvestmentSavings = 0 -- Geld das für Investitionen angespart wird.
-	c.SavingParts = 0.2 -- Wie viel Prozent des Budgets werden für Investitionen aufgespart?
+	c:ResetDefaults()
 end)
 
 function BudgetManager:typename()
 	return "BudgetManager"
+end
+
+function BudgetManager:ResetDefaults()
+	self.BudgetMinimum = 0  -- Minimalbetrag des Budgets
+	self.BudgetMaximum = 0  -- Maximalbetrag des Budgets
+	self.SavingParts = 0.2 -- Wie viel Prozent des Budgets werden für Investitionen aufgespart?
 end
 
 function BudgetManager:Initialize()
