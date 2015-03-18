@@ -650,7 +650,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 			genreDefinitionCache = GetMovieGenreDefinitionCollection().Get(Genre)
 
 			If Not genreDefinitionCache
-				TLogger.Log("GetGenreDefinition()", "Genre: "+Genre+" misses a genreDefinition. Creating BASIC definition-", LOG_ERROR)
+				TLogger.Log("GetGenreDefinition()", "Programme ~q"+GetTitle()+"~q: Genre #"+Genre+" misses a genreDefinition. Creating BASIC definition-", LOG_ERROR)
 				genreDefinitionCache = new TMovieGenreDefinition.InitBasic(Genre)
 			EndIf
 		EndIf

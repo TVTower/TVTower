@@ -894,7 +894,7 @@ Type RoomHandler_Archive extends TRoomHandler
 
 
 	'override
-	Method onSaveGameBeginLoad( triggerEvent:TEventBase )
+	Method onSaveGameBeginLoad:int( triggerEvent:TEventBase )
 		'for further explanation of this, check
 		'RoomHandler_Office.onSaveGameBeginLoad()
 
@@ -1318,7 +1318,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	End Method
 
 
-	Method onSaveGameBeginLoad( triggerEvent:TEventBase )
+	Method onSaveGameBeginLoad:int( triggerEvent:TEventBase )
 		'as soon as a savegame gets loaded, we remove every
 		'guiElement this room manages
 		'Afterwards we force the room to update the gui elements
@@ -2058,7 +2058,7 @@ Type RoomHandler_News extends TRoomHandler
 	End Method
 
 
-	Method onSaveGameBeginLoad( triggerEvent:TEventBase )
+	Method onSaveGameBeginLoad:int( triggerEvent:TEventBase )
 		'for further explanation of this, check
 		'RoomHandler_Office.onSaveGameBeginLoad()
 

@@ -1,36 +1,36 @@
-﻿Type TGUINewsList extends TGUIListBase
+Type TGUINewsList Extends TGUIListBase
 
-    Method Create:TGUINewsList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
+    Method Create:TGUINewsList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
-		return self
+		Return Self
 	End Method
 
 
-	Method ContainsNews:int(news:TNews)
-		for local guiNews:TGUINews = eachin entries
-			if guiNews.news = news then return TRUE
+	Method ContainsNews:Int(news:TNews)
+		For Local guiNews:TGUINews = EachIn entries
+			If guiNews.news = news Then Return True
 		Next
-		return FALSE
+		Return False
 	End Method
 End Type
 
 
 
 
-Type TGUINewsSlotList extends TGUISlotList
+Type TGUINewsSlotList Extends TGUISlotList
 
-    Method Create:TGUINewsSlotList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
+    Method Create:TGUINewsSlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
-		return self
+		Return Self
 	End Method
 
 
-	Method ContainsNews:int(news:TNews)
-		for local i:int = 0 to self.GetSlotAmount()-1
-			local guiNews:TGUINews = TGUINews( self.GetItemBySlot(i) )
-			if guiNews and guiNews.news = news then return TRUE
+	Method ContainsNews:Int(news:TNews)
+		For Local i:Int = 0 To Self.GetSlotAmount()-1
+			Local guiNews:TGUINews = TGUINews( Self.GetItemBySlot(i) )
+			If guiNews And guiNews.news = news Then Return True
 		Next
-		return FALSE
+		Return False
 	End Method
 End Type
 
@@ -38,301 +38,301 @@ End Type
 
 
 'base element for list items in the programme planner
-Type TGUIProgrammePlanElement extends TGUIGameListItem
+Type TGUIProgrammePlanElement Extends TGUIGameListItem
 	Field broadcastMaterial:TBroadcastMaterial
 	Field inList:TGUISlotList
 	Field lastList:TGUISlotList
-	Field lastListType:int = 0
-	Field lastSlot:int = 0
-	Field plannedOnDay:int = -1
-	Field imageBaseName:string = "pp_programmeblock1"
+	Field lastListType:Int = 0
+	Field lastSlot:Int = 0
+	Field plannedOnDay:Int = -1
+	Field imageBaseName:String = "pp_programmeblock1"
 
-	Global ghostAlpha:float = 0.8
+	Global ghostAlpha:Float = 0.8
 
 	'for hover effects
-	Global hoveredElement:TGUIProgrammePlanElement = null
+	Global hoveredElement:TGUIProgrammePlanElement = Null
 
 
-    Method Create:TGUIProgrammePlanElement(pos:TVec2D=null, dimension:TVec2D=null, value:String="")
-		if not dimension then dimension = new TVec2D.Init(120,20)
+    Method Create:TGUIProgrammePlanElement(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+		If Not dimension Then dimension = New TVec2D.Init(120,20)
 		Super.Create(pos, dimension, value)
-		return self
+		Return Self
 	End Method
 
 
-	Method CreateWithBroadcastMaterial:TGUIProgrammePlanElement(material:TBroadcastMaterial, limitToState:string="")
+	Method CreateWithBroadcastMaterial:TGUIProgrammePlanElement(material:TBroadcastMaterial, limitToState:String="")
 		Create()
 		SetLimitToState(limitToState)
 		SetBroadcastMaterial(material)
-		return self
+		Return Self
 	End Method
 
 
-	Method SetBroadcastMaterial:int(material:TBroadcastMaterial = null)
+	Method SetBroadcastMaterial:Int(material:TBroadcastMaterial = Null)
 		'alow simple setter without param
-		if not material and broadcastMaterial then material = broadcastMaterial
+		If Not material And broadcastMaterial Then material = broadcastMaterial
 
 		broadcastMaterial = material
-		if material
+		If material
 			'now we can calculate the item dimensions
 			Resize(GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW(), GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH() * material.getBlocks())
 
 			'set handle (center for dragged objects) to half of a 1-Block
-			self.setHandle(new TVec2D.Init(GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW()/2, GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH()/2))
-		endif
+			Self.SetHandle(New TVec2D.Init(GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW()/2, GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH()/2))
+		EndIf
 	End Method
 
 
-	Method GetBlocks:int()
-		If isDragged() and not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
-			return broadcastMaterial.GetBlocks(broadcastMaterial.materialType)
-		endif
-		if lastListType > 0 then return broadcastMaterial.GetBlocks(lastListType)
-		return broadcastMaterial.GetBlocks()
+	Method GetBlocks:Int()
+		If isDragged() And Not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
+			Return broadcastMaterial.GetBlocks(broadcastMaterial.materialType)
+		EndIf
+		If lastListType > 0 Then Return broadcastMaterial.GetBlocks(lastListType)
+		Return broadcastMaterial.GetBlocks()
 	End Method
 
 
-	Method GetAssetBaseName:string()
-		local viewType:int = 0
+	Method GetAssetBaseName:String()
+		Local viewType:Int = 0
 
 		'dragged and not asked during ghost mode drawing
-		If isDragged() and not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
+		If isDragged() And Not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
 			viewType = broadcastMaterial.materialType
 		'ghost mode
-		elseIf isDragged() and hasOption(GUI_OBJECT_DRAWMODE_GHOST) and lastListType > 0
+		ElseIf isDragged() And hasOption(GUI_OBJECT_DRAWMODE_GHOST) And lastListType > 0
 			viewType = lastListType
-		else
+		Else
 			viewType = broadcastMaterial.usedAsType
-		endif
+		EndIf
 
-		if viewType = broadcastMaterial.TYPE_PROGRAMME
+		If viewType = broadcastMaterial.TYPE_PROGRAMME
 			imageBaseName = "pp_programmeblock"
-		elseif viewType = broadcastMaterial.TYPE_ADVERTISEMENT
+		ElseIf viewType = broadcastMaterial.TYPE_ADVERTISEMENT
 			imageBaseName = "pp_adblock"
-		else 'default
+		Else 'default
 			imageBaseName = "pp_programmeblock"
-		endif
+		EndIf
 
-		return imageBaseName
+		Return imageBaseName
 	End Method
 
 
 	'override default to enable splitted blocks (one left, two right etc.)
-	Method containsXY:int(x:float,y:float)
-		if isDragged() or broadcastMaterial.GetBlocks() = 1
-			return GetScreenRect().containsXY(x,y)
-		endif
+	Method containsXY:Int(x:Float,y:Float)
+		If isDragged() Or broadcastMaterial.GetBlocks() = 1
+			Return GetScreenRect().containsXY(x,y)
+		EndIf
 
 		For Local i:Int = 1 To GetBlocks()
-			local resultRect:TRectangle = null
-			if self._parent
-				resultRect = self._parent.GetScreenRect()
+			Local resultRect:TRectangle = Null
+			If Self._parent
+				resultRect = Self._parent.GetScreenRect()
 				'get the intersecting rectangle between parentRect and blockRect
 				'the x,y-values are screen coordinates!
 				resultRect = resultRect.intersectRect(GetBlockRect(i))
-			else
+			Else
 				resultRect = GetBlockRect(i)
-			endif
-			if resultRect and resultRect.containsXY(x,y) then return TRUE
+			EndIf
+			If resultRect And resultRect.containsXY(x,y) Then Return True
 		Next
-		return FALSE
+		Return False
 	End Method
 
 
-	Method GetBlockRect:TRectangle(block:int=1)
-		local pos:TVec2D = null
+	Method GetBlockRect:TRectangle(block:Int=1)
+		Local pos:TVec2D = Null
 		'dragged and not in DrawGhostMode
-		If isDragged() and not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
-			pos = new TVec2D.Init(GetScreenX(), GetScreenY())
-			if block > 1
+		If isDragged() And Not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
+			pos = New TVec2D.Init(GetScreenX(), GetScreenY())
+			If block > 1
 				pos.addXY(0, GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH() * (block - 1))
-			endif
-		else
-			local startSlot:int = lastSlot
-			local list:TGUISlotList = lastList
-			if inList
-				list = self.inList
-				startSlot = self.inList.GetSlot(self)
-			endif
+			EndIf
+		Else
+			Local startSlot:Int = lastSlot
+			Local list:TGUISlotList = lastList
+			If inList
+				list = Self.inList
+				startSlot = Self.inList.GetSlot(Self)
+			EndIf
 
-			if list
+			If list
 				pos = list.GetSlotCoord(startSlot + block-1).ToVec2D()
 				pos.addXY(list.getScreenX(), list.getScreenY())
-			else
-				pos = new TVec2D.Init(self.GetScreenX(),self.GetScreenY())
+			Else
+				pos = New TVec2D.Init(Self.GetScreenX(),Self.GetScreenY())
 				pos.addXY(0, GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH() * (block - 1))
 				'print "block: "+block+"  "+pos.GetIntX()+","+pos.GetIntY()
-			endif
-		endif
+			EndIf
+		EndIf
 
-		return new TRectangle.Init(pos.x,pos.y, self.rect.getW(), GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH())
+		Return New TRectangle.Init(pos.x,pos.y, Self.rect.getW(), GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH())
 	End Method
 
 
 
 	'override default update-method
-	Method Update:int()
-		super.Update()
+	Method Update:Int()
+		Super.Update()
 
 		Select broadcastMaterial.state
-			case broadcastMaterial.STATE_NORMAL
-					setOption(GUI_OBJECT_DRAGABLE, TRUE)
-			case broadcastMaterial.STATE_RUNNING
-					setOption(GUI_OBJECT_DRAGABLE, FALSE)
-			case broadcastMaterial.STATE_OK
-					setOption(GUI_OBJECT_DRAGABLE, FALSE)
-			case broadcastMaterial.STATE_FAILED
-					setOption(GUI_OBJECT_DRAGABLE, FALSE)
+			Case broadcastMaterial.STATE_NORMAL
+					setOption(GUI_OBJECT_DRAGABLE, True)
+			Case broadcastMaterial.STATE_RUNNING
+					setOption(GUI_OBJECT_DRAGABLE, False)
+			Case broadcastMaterial.STATE_OK
+					setOption(GUI_OBJECT_DRAGABLE, False)
+			Case broadcastMaterial.STATE_FAILED
+					setOption(GUI_OBJECT_DRAGABLE, False)
 		End Select
 
 		'no longer allowed to have this item dragged
-		if isDragged() and not hasOption(GUI_OBJECT_DRAGABLE)
-			print "RONNY: FORCE DROP"
+		If isDragged() And Not hasOption(GUI_OBJECT_DRAGABLE)
+			Print "RONNY: FORCE DROP"
 			dropBackToOrigin()
-		endif
+		EndIf
 
-		if not broadcastMaterial
+		If Not broadcastMaterial
 			'print "[ERROR] TGUIProgrammePlanElement.Update: broadcastMaterial not set."
-			return FALSE
-		endif
+			Return False
+		EndIf
 
 
 		'set mouse to "hover"
-		if broadcastMaterial.GetOwner() = GetPlayerCollection().playerID and mouseover then Game.cursorstate = 1
+		If broadcastMaterial.GetOwner() = GetPlayerCollection().playerID And mouseover Then Game.cursorstate = 1
 		'set mouse to "dragged"
-		if isDragged() then Game.cursorstate = 2
+		If isDragged() Then Game.cursorstate = 2
 	End Method
 
 
 	'draws the background
-	Method DrawBlockBackground:int(variant:string="")
+	Method DrawBlockBackground:Int(variant:String="")
 
-		Local titleIsVisible:Int = FALSE
-		local drawPos:TVec2D = new TVec2D.Init(GetScreenX(), GetScreenY())
+		Local titleIsVisible:Int = False
+		Local drawPos:TVec2D = New TVec2D.Init(GetScreenX(), GetScreenY())
 		'if dragged and not in ghost mode
-		If isDragged() and not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
-			if broadcastMaterial.state = broadcastMaterial.STATE_NORMAL Then variant = "_dragged"
-		endif
+		If isDragged() And Not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
+			If broadcastMaterial.state = broadcastMaterial.STATE_NORMAL Then variant = "_dragged"
+		EndIf
 
-		local blocks:int = GetBlocks()
+		Local blocks:Int = GetBlocks()
 		For Local i:Int = 1 To blocks
 			Local _blockPosition:Int = 1
 			If i > 1
-				if i < blocks Then _blockPosition = 2
-				if i = blocks Then _blockPosition = 3
-			endif
+				If i < blocks Then _blockPosition = 2
+				If i = blocks Then _blockPosition = 3
+			EndIf
 
 			'draw non-dragged OR ghost
-			If not isDragged() OR hasOption(GUI_OBJECT_DRAWMODE_GHOST)
+			If Not isDragged() Or hasOption(GUI_OBJECT_DRAWMODE_GHOST)
 				'skip invisible parts
-				local startSlot:int = 0
-				if self.inList
-					startSlot = self.inList.GetSlot(self)
-				elseif self.lastList and isDragged()
-					startSlot = self.lastSlot
-				else
-					startSlot = self.lastSlot
-				endif
-				If startSlot+i-1 < 0 then continue
-				if startSlot+i-1 >= 24 then continue
-			endif
+				Local startSlot:Int = 0
+				If Self.inList
+					startSlot = Self.inList.GetSlot(Self)
+				ElseIf Self.lastList And isDragged()
+					startSlot = Self.lastSlot
+				Else
+					startSlot = Self.lastSlot
+				EndIf
+				If startSlot+i-1 < 0 Then Continue
+				If startSlot+i-1 >= 24 Then Continue
+			EndIf
 			drawPos = GetBlockRect(i).position
 
 			Select _blockPosition
-				case 1	'top
+				Case 1	'top
 						'if only 1 block, use special graphics
 						If blocks = 1
 							GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).Draw(GetScreenX(), GetScreenY())
 						Else
-							GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(new TRectangle.Init(drawPos.x, drawPos.y, -1, 30))
+							GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(New TRectangle.Init(drawPos.x, drawPos.y, -1, 30))
 						EndIf
 						'xrated
-						if TProgramme(broadcastMaterial) and TProgramme(broadcastMaterial).data.IsXRated()
-							GetSpriteFromRegistry("pp_xrated").Draw(GetScreenX() + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth(), GetScreenY(),  -1, new TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP))
-						endif
+						If TProgramme(broadcastMaterial) And TProgramme(broadcastMaterial).data.IsXRated()
+							GetSpriteFromRegistry("pp_xrated").Draw(GetScreenX() + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth(), GetScreenY(),  -1, New TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP))
+						EndIf
 						'paid
-						if TProgramme(broadcastMaterial) and TProgramme(broadcastMaterial).data.IsPaid()
-							GetSpriteFromRegistry("pp_paid").Draw(GetScreenX() + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth(), GetScreenY(),  -1, new TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP))
-						endif
+						If TProgramme(broadcastMaterial) And TProgramme(broadcastMaterial).data.IsPaid()
+							GetSpriteFromRegistry("pp_paid").Draw(GetScreenX() + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth(), GetScreenY(),  -1, New TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP))
+						EndIf
 
-						titleIsVisible = TRUE
-				case 2	'middle
-						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(new TRectangle.Init(drawPos.x, drawPos.y, -1, 15), new TVec2D.Init(0, 30))
+						titleIsVisible = True
+				Case 2	'middle
+						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(New TRectangle.Init(drawPos.x, drawPos.y, -1, 15), New TVec2D.Init(0, 30))
 						drawPos.addXY(0,15)
-						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(new TRectangle.Init(drawPos.x, drawPos.y, -1, 15), new TVec2D.Init(0, 30))
-				case 3	'bottom
-						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(new TRectangle.Init(drawPos.x, drawpos.y, -1, 30), new TVec2D.Init(0, 30))
+						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(New TRectangle.Init(drawPos.x, drawPos.y, -1, 15), New TVec2D.Init(0, 30))
+				Case 3	'bottom
+						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(New TRectangle.Init(drawPos.x, drawpos.y, -1, 30), New TVec2D.Init(0, 30))
 			End Select
 		Next
-		return titleIsVisible
+		Return titleIsVisible
 	End Method
 
 
 	'returns whether a ghost can be drawn or false, if there is a
 	'reason not to do so
-	Method CanDrawGhost:int()
-		if IsDragged() and TGUIProgrammePlanSlotList(lastList)
+	Method CanDrawGhost:Int()
+		If IsDragged() And TGUIProgrammePlanSlotList(lastList)
 			'if guiblock is planned on another day then what the list
 			'of the ghost has set, we wont display the ghost
-			if plannedOnDay <> TGUIProgrammePlanSlotList(lastList).planDay
-				return False
-			else
-				return True
-			endif
-		endif
-		return TRUE
+			If plannedOnDay <> TGUIProgrammePlanSlotList(lastList).planDay
+				Return False
+			Else
+				Return True
+			EndIf
+		EndIf
+		Return True
 	End Method
 
 
 	'draw the programmeblock inclusive text
     'zeichnet den Programmblock inklusive Text
-	Method DrawContent:int()
+	Method DrawContent()
 		'check if we have to skip ghost drawing
-		if hasOption(GUI_OBJECT_DRAWMODE_GHOST) and not CanDrawGhost() then return False
+		If hasOption(GUI_OBJECT_DRAWMODE_GHOST) And Not CanDrawGhost() Then Return
 
 
-		if not broadcastMaterial
+		If Not broadcastMaterial
 			SetColor 255,0,0
 			DrawRect(GetScreenX(), GetScreenY(), 150,20)
 			SetColor 255,255,255
 			GetBitmapFontManager().basefontBold.Draw("no broadcastMaterial", GetScreenX()+5, GetScreenY()+3)
-			return FALSE
-		endif
+			Return
+		EndIf
 
 		'If isDragged() Then state = 0
 		Select broadcastMaterial.state
-			case broadcastMaterial.STATE_NORMAL
+			Case broadcastMaterial.STATE_NORMAL
 					SetColor 255,255,255
-			case broadcastMaterial.STATE_RUNNING
+			Case broadcastMaterial.STATE_RUNNING
 					SetColor 255,230,120
-			case broadcastMaterial.STATE_OK
+			Case broadcastMaterial.STATE_OK
 					SetColor 200,255,200
-			case broadcastMaterial.STATE_FAILED
+			Case broadcastMaterial.STATE_FAILED
 					SetColor 250,150,120
 		End Select
 
 		'draw the default background
 
-		local titleIsVisible:int = DrawBlockBackground()
+		Local titleIsVisible:Int = DrawBlockBackground()
 		SetColor 255,255,255
 
 		'there is an hovered item
-		if hoveredElement
-			local oldAlpha:float = GetAlpha()
+		If hoveredElement
+			Local oldAlpha:Float = GetAlpha()
 			'i am the hovered one (but not in ghost mode)
 			'we could also check "self.mouseover", this way we could
 			'override it without changing the objects "behaviour" (if there is one)
-			if self = hoveredElement
-				if not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
+			If Self = hoveredElement
+				If Not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
 					SetBlend LightBlend
 					SetAlpha 0.30*oldAlpha
 					SetColor 120,170,255
 					DrawBlockBackground()
 					SetAlpha oldAlpha
 					SetBlend AlphaBlend
-				endif
+				EndIf
 			'i have the same licence/programme...
-			elseif self.broadcastMaterial.GetReferenceID() = hoveredElement.broadcastMaterial.GetReferenceID()
+			ElseIf Self.broadcastMaterial.GetReferenceID() = hoveredElement.broadcastMaterial.GetReferenceID()
 				SetBlend LightBlend
 				SetAlpha 0.15*oldAlpha
 				'SetColor 150,150,250
@@ -341,39 +341,39 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 				SetColor 250,255,255
 				SetAlpha oldAlpha
 				SetBlend AlphaBlend
-			endif
+			EndIf
 			SetColor 255,255,255
-		endif
+		EndIf
 
 		If titleIsVisible
-			local useType:int = broadcastMaterial.usedAsType
-			if hasOption(GUI_OBJECT_DRAWMODE_GHOST) and lastListType > 0
+			Local useType:Int = broadcastMaterial.usedAsType
+			If hasOption(GUI_OBJECT_DRAWMODE_GHOST) And lastListType > 0
 				useType = lastListType
-			endif
+			EndIf
 
 			Select useType
-				case broadcastMaterial.TYPE_PROGRAMME
-					DrawProgrammeBlockText(new TRectangle.Init(GetScreenX(), GetScreenY(), GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW()-1,-1))
-				case broadcastMaterial.TYPE_ADVERTISEMENT
-					DrawAdvertisementBlockText(new TRectangle.Init(GetScreenX(), GetScreenY(), GetSpriteFromRegistry(GetAssetBaseName()+"2").area.GetW()-4,-1))
-			end Select
-		endif
+				Case broadcastMaterial.TYPE_PROGRAMME
+					DrawProgrammeBlockText(New TRectangle.Init(GetScreenX(), GetScreenY(), GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW()-1,-1))
+				Case broadcastMaterial.TYPE_ADVERTISEMENT
+					DrawAdvertisementBlockText(New TRectangle.Init(GetScreenX(), GetScreenY(), GetSpriteFromRegistry(GetAssetBaseName()+"2").area.GetW()-4,-1))
+			End Select
+		EndIf
 	End Method
 
 
-	Method DrawProgrammeBlockText:int(textArea:TRectangle, titleColor:TColor=null, textColor:TColor=null)
+	Method DrawProgrammeBlockText:Int(textArea:TRectangle, titleColor:TColor=Null, textColor:TColor=Null)
 		Local title:String			= broadcastMaterial.GetTitle()
-		Local titleAppend:string	= ""
-		Local text:string			= ""
-		Local text2:string			= ""
+		Local titleAppend:String	= ""
+		Local text:String			= ""
+		Local text2:String			= ""
 
 		Select broadcastMaterial.materialType
 			'we got a programme used as programme
-			case broadcastMaterial.TYPE_PROGRAMME
-				if TProgramme(broadcastMaterial)
+			Case broadcastMaterial.TYPE_PROGRAMME
+				If TProgramme(broadcastMaterial)
 					Local programme:TProgramme	= TProgramme(broadcastMaterial)
 					text = programme.data.getGenreString()
-					if programme.isSeries() and programme.licence.parentLicenceGUID
+					If programme.isSeries() And programme.licence.parentLicenceGUID
 						'use the genre of the parent
 						text = programme.licence.GetParentLicence().data.getGenreString()
 						title = programme.licence.GetParentLicence().GetTitle()
@@ -381,22 +381,22 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 						'titleAppend = " (" + programme.GetEpisodeNumber() + "/" + programme.GetEpisodeCount() + ")"
 						text:+"-"+GetLocale("SERIES_SINGULAR")
 						text2 = "Ep.: " + (programme.GetEpisodeNumber()+1) + "/" + programme.GetEpisodeCount()
-					endif
-				endif
+					EndIf
+				EndIf
 			'we got an advertisement used as programme (aka Tele-Shopping)
-			case broadcastMaterial.TYPE_ADVERTISEMENT
-				if TAdvertisement(broadcastMaterial)
+			Case broadcastMaterial.TYPE_ADVERTISEMENT
+				If TAdvertisement(broadcastMaterial)
 					Local advertisement:TAdvertisement = TAdvertisement(broadcastMaterial)
 					text = GetLocale("INFOMERCIAL")
-				endif
+				EndIf
 		End Select
 
 
 		Local maxWidth:Int			= textArea.GetW()
 		Local titleFont:TBitmapFont = GetBitmapFont("DefaultThin", 12, BOLDFONT)
 		Local useFont:TBitmapFont	= GetBitmapFont("Default", 12, ITALICFONT)
-		If not titleColor Then titleColor = TColor.Create(0,0,0)
-		If not textColor Then textColor = TColor.Create(50,50,50)
+		If Not titleColor Then titleColor = TColor.Create(0,0,0)
+		If Not textColor Then textColor = TColor.Create(50,50,50)
 
 		'shorten the title to fit into the block
 		While titleFont.getWidth(title + titleAppend) > maxWidth And title.length > 4
@@ -406,7 +406,7 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 		title = title + titleAppend
 
 		'draw
-		titleFont.drawBlock(title, textArea.position.GetIntX() + 5, textArea.position.GetIntY() +2, textArea.GetW() - 5, 18, null, titleColor, 0, True, 1.0, FALSE)
+		titleFont.drawBlock(title, textArea.position.GetIntX() + 5, textArea.position.GetIntY() +2, textArea.GetW() - 5, 18, Null, titleColor, 0, True, 1.0, False)
 		useFont.draw(text, textArea.position.GetIntX() + 5, textArea.position.GetIntY() + 17, textColor)
 		useFont.draw(text2, textArea.position.GetIntX() + 138, textArea.position.GetIntY() + 17, textColor)
 
@@ -414,65 +414,65 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 	End Method
 
 
-	Method DrawAdvertisementBlockText(textArea:TRectangle, titleColor:TColor=null, textColor:TColor=null)
+	Method DrawAdvertisementBlockText(textArea:TRectangle, titleColor:TColor=Null, textColor:TColor=Null)
 		Local title:String			= broadcastMaterial.GetTitle()
-		Local titleAppend:string	= ""
-		Local text:string			= "123"
-		Local text2:string			= "" 'right aligned on same spot as text
+		Local titleAppend:String	= ""
+		Local text:String			= "123"
+		Local text2:String			= "" 'right aligned on same spot as text
 
 		Select broadcastMaterial.materialType
 			'we got an advertisement used as advertisement
-			case broadcastMaterial.TYPE_ADVERTISEMENT
+			Case broadcastMaterial.TYPE_ADVERTISEMENT
 				If TAdvertisement(broadcastMaterial)
 					Local advertisement:TAdvertisement = TAdvertisement(broadcastMaterial)
 					If advertisement.isState(advertisement.STATE_FAILED)
 						text = "------"
-					else
-						if advertisement.contract.isSuccessful()
+					Else
+						If advertisement.contract.isSuccessful()
 							text = "- OK -"
-						else
+						Else
 							text = GetPlayerProgrammePlanCollection().Get(advertisement.owner).GetAdvertisementSpotNumber(advertisement) + "/" + advertisement.contract.GetSpotCount()
-						endif
+						EndIf
 					EndIf
 				EndIf
 			'we got an programme used as advertisement (aka programmetrailer)
-			case broadcastMaterial.TYPE_PROGRAMME
-				if TProgramme(broadcastMaterial)
+			Case broadcastMaterial.TYPE_PROGRAMME
+				If TProgramme(broadcastMaterial)
 					Local programme:TProgramme	= TProgramme(broadcastMaterial)
 					text = GetLocale("TRAILER")
 					'red corner mark should be enough to recognized X-rated
 					'removing "FSK18" from text removes the bug that this text
 					'does not fit into the rectangle on Windows systems
 					'if programme.data.xrated then text = GetLocale("X_RATED")+"-"+text
-				endif
+				EndIf
 		End Select
 
 		'draw
-		If not titleColor Then titleColor = TColor.Create(0,0,0)
-		If not textColor Then textColor = TColor.Create(50,50,50)
+		If Not titleColor Then titleColor = TColor.Create(0,0,0)
+		If Not textColor Then textColor = TColor.Create(50,50,50)
 
-		GetBitmapFont("DefaultThin", 10, BOLDFONT).drawBlock(title, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 2, textArea.GetW(), 18, null, TColor.CreateGrey(0), 0,1,1.0, FALSE)
+		GetBitmapFont("DefaultThin", 10, BOLDFONT).drawBlock(title, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 2, textArea.GetW(), 18, Null, TColor.CreateGrey(0), 0,1,1.0, False)
 		textColor.setRGB()
 		GetBitmapFont("Default", 10).drawBlock(text, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 30)
-		GetBitmapFont("Default", 10).drawBlock(text2,textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 20, new TVec2D.Init(ALIGN_RIGHT))
+		GetBitmapFont("Default", 10).drawBlock(text2,textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 20, New TVec2D.Init(ALIGN_RIGHT))
 		SetColor 255,255,255 'eigentlich alte Farbe wiederherstellen
 	End Method
 
 
-	Method DrawSheet(leftX:int=30, rightX:int=30, width:int=0)
-		local sheetY:float 	= 20
-		local sheetX:float 	= leftX
-		local sheetAlign:int= 0
-		if width = 0 then width = GetGraphicsManager().GetWidth()
+	Method DrawSheet(leftX:Int=30, rightX:Int=30, width:Int=0)
+		Local sheetY:Float 	= 20
+		Local sheetX:Float 	= leftX
+		Local sheetAlign:Int= 0
+		If width = 0 Then width = GetGraphicsManager().GetWidth()
 		'if mouse on left side of area - align sheet on right side
-		if MouseManager.x < width/2
+		If MouseManager.x < width/2
 			sheetX = width - rightX
 			sheetAlign = 1
-		endif
+		EndIf
 
 		'by default nothing is shown
 		'because we already have hover effects
-		rem
+		Rem
 			SetColor 0,0,0
 			SetAlpha 0.2
 			Local x:Float = self.GetScreenX()
@@ -486,7 +486,7 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 			SetColor 255,255,255
 			SetAlpha 1.0
 		endrem
-		self.broadcastMaterial.ShowSheet(sheetX,sheetY, sheetAlign)
+		Self.broadcastMaterial.ShowSheet(sheetX,sheetY, sheetAlign)
 	End Method
 End Type
 
@@ -495,150 +495,150 @@ End Type
 
 
 'list to handle elements in the programmeplan (ads and programmes)
-Type TGUIProgrammePlanSlotList extends TGUISlotList
+Type TGUIProgrammePlanSlotList Extends TGUISlotList
 	'sollten nicht gebraucht werden - die "slotpositionen" muessten auch herhalten
 	'koennen
-	Field zoneLeft:TRectangle		= new TRectangle.Init(0, 0, 200, 350)
-	Field zoneRight:TRectangle		= new TRectangle.Init(300, 0, 200, 350)
+	Field zoneLeft:TRectangle		= New TRectangle.Init(0, 0, 200, 350)
+	Field zoneRight:TRectangle		= New TRectangle.Init(300, 0, 200, 350)
 
 	'what day this slotlist is planning currently
-	Field planDay:int = -1
+	Field planDay:Int = -1
 
 	'holding the object representing a programme started a day earlier (eg. 23:00-01:00)
 	'this should not get handled by panels but the list itself (only interaction is
 	'drag-n-drop handling)
 	Field daychangeGuiProgrammePlanElement:TGUIProgrammePlanElement
 
-	Field slotBackground:TSprite= null
-	Field blockDimension:TVec2D		= null
-	Field acceptTypes:int			= 0
-	Field isType:int				= 0
-	Global registeredGlobalListeners:int = FALSE
+	Field slotBackground:TSprite= Null
+	Field blockDimension:TVec2D		= Null
+	Field acceptTypes:Int			= 0
+	Field isType:Int				= 0
+	Global registeredGlobalListeners:Int = False
 
-    Method Create:TGUIProgrammePlanSlotList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
+    Method Create:TGUIProgrammePlanSlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 
 		SetOrientation(GUI_OBJECT_ORIENTATION_VERTICAL)
-		self.resize( dimension.x, dimension.y)
-		self.Init("pp_programmeblock1")
-		self.SetItemLimit(24)
-		self._fixedSlotDimension = TRUE
+		Self.resize( dimension.x, dimension.y)
+		Self.Init("pp_programmeblock1")
+		Self.SetItemLimit(24)
+		Self._fixedSlotDimension = True
 
-		self.acceptTypes :| TBroadcastMaterial.TYPE_PROGRAMME
-		self.acceptTypes :| TBroadcastMaterial.TYPE_ADVERTISEMENT
-		self.isType = TBroadcastMaterial.TYPE_PROGRAMME
+		Self.acceptTypes :| TBroadcastMaterial.TYPE_PROGRAMME
+		Self.acceptTypes :| TBroadcastMaterial.TYPE_ADVERTISEMENT
+		Self.isType = TBroadcastMaterial.TYPE_PROGRAMME
 
 
 
 		SetAcceptDrop("TGUIProgrammePlanElement")
-		SetAutofillSlots(FALSE)
+		SetAutofillSlots(False)
 
 		'===== REGISTER EVENTS =====
 		'nobody was against dropping the item - so transform according to the lists type
-		EventManager.registerListenerMethod("guiobject.onFinishDrop", self, "onFinishDropProgrammePlanElement", "TGUIProgrammePlanElement", self)
+		EventManager.registerListenerMethod("guiobject.onFinishDrop", Self, "onFinishDropProgrammePlanElement", "TGUIProgrammePlanElement", Self)
 		'nobody was against dragging the item - so transform according to the items base type
 		'attention: "drag" does not have a "receiver"-list like a drop has..
 		'so we would have to check vs slot-elements here
 		'that is why we just use a global listener... for all programmeslotlists (prog and ad)
-		if not registeredGlobalListeners
+		If Not registeredGlobalListeners
 			EventManager.registerListenerFunction("guiobject.onFinishDrag", onFinishDragProgrammePlanElement, "TGUIProgrammePlanElement")
-			registeredGlobalListeners = TRUE
-		endif
-		return self
+			registeredGlobalListeners = True
+		EndIf
+		Return Self
 	End Method
 
 
-	Method Init:int(spriteName:string="", displaceX:int = 0)
-		self.zoneLeft.dimension.SetXY(GetSpriteFromRegistry(spriteName).area.GetW(), 12 * GetSpriteFromRegistry(spriteName).area.GetH())
-		self.zoneRight.dimension.SetXY(GetSpriteFromRegistry(spriteName).area.GetW(), 12 * GetSpriteFromRegistry(spriteName).area.GetH())
+	Method Init:Int(spriteName:String="", displaceX:Int = 0)
+		Self.zoneLeft.dimension.SetXY(GetSpriteFromRegistry(spriteName).area.GetW(), 12 * GetSpriteFromRegistry(spriteName).area.GetH())
+		Self.zoneRight.dimension.SetXY(GetSpriteFromRegistry(spriteName).area.GetW(), 12 * GetSpriteFromRegistry(spriteName).area.GetH())
 
-		self.slotBackground = GetSpriteFromRegistry(spriteName)
+		Self.slotBackground = GetSpriteFromRegistry(spriteName)
 
-		self.blockDimension = new TVec2D.Init(slotBackground.area.GetW(), slotBackground.area.GetH())
+		Self.blockDimension = New TVec2D.Init(slotBackground.area.GetW(), slotBackground.area.GetH())
 		SetSlotMinDimension(blockDimension.GetIntX(), blockDimension.GetIntY())
 
-		self.SetEntryDisplacement(slotBackground.area.GetW() + displaceX , -12 * slotBackground.area.GetH(), 12) '12 is stepping
+		Self.SetEntryDisplacement(slotBackground.area.GetW() + displaceX , -12 * slotBackground.area.GetH(), 12) '12 is stepping
 	End Method
 
 
 	'override to remove daychange-object too
-	Method EmptyList:int()
+	Method EmptyList:Int()
 		Super.EmptyList()
-		if dayChangeGuiProgrammePlanElement
+		If dayChangeGuiProgrammePlanElement
 			dayChangeGuiProgrammePlanElement.remove()
-			dayChangeGuiProgrammePlanElement = null
-		endif
+			dayChangeGuiProgrammePlanElement = Null
+		EndIf
 	End Method
 
 
 	'handle successful drops of broadcastmaterial on the list
-	Method onFinishDropProgrammePlanElement:int(triggerEvent:TEventBase)
+	Method onFinishDropProgrammePlanElement:Int(triggerEvent:TEventBase)
 		'resize that item to conform to the list
-		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
-		if not item then return FALSE
+		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
+		If Not item Then Return False
 
 		item.lastListType = isType
 
 		item.SetBroadcastMaterial()
 
-		return TRUE
+		Return True
 	End Method
 
 
 	'handle successful drags of broadcastmaterial
-	Function onFinishDragProgrammePlanElement:int(triggerEvent:TEventBase)
+	Function onFinishDragProgrammePlanElement:Int(triggerEvent:TEventBase)
 		'resize that item to conform to the list
-		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
-		if not item then return FALSE
+		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
+		If Not item Then Return False
 
 		'resizes item according to usage type
 		item.broadcastMaterial.setUsedAsType(item.broadcastMaterial.materialType)
 		item.SetBroadcastMaterial()
 
-		return TRUE
+		Return True
 	End Function
 
 
 	'override default behaviour for zones
-	Method SetEntryDisplacement(x:float=0.0, y:float=0.0, stepping:int=1)
-		super.SetEntryDisplacement(x,y,stepping)
+	Method SetEntryDisplacement(x:Float=0.0, y:Float=0.0, stepping:Int=1)
+		Super.SetEntryDisplacement(x,y,stepping)
 
 		'move right zone according to setup
 		zoneRight.position.SetX(x)
 	End Method
 
 
-	Method SetDayChangeBroadcastMaterial:int(material:TBroadcastMaterial, day:int=-1)
-		local guiElement:TGUIProgrammePlanElement = dayChangeGuiProgrammePlanElement
-		if guiElement
+	Method SetDayChangeBroadcastMaterial:Int(material:TBroadcastMaterial, day:Int=-1)
+		Local guiElement:TGUIProgrammePlanElement = dayChangeGuiProgrammePlanElement
+		If guiElement
 			'clear out old gui element
 			guiElement.remove()
-		else
-			guiElement = new TGUIProgrammePlanElement.Create()
-		endif
+		Else
+			guiElement = New TGUIProgrammePlanElement.Create()
+		EndIf
 		'assign programme
 		guiElement.SetBroadcastMaterial(material)
 
 		'move the element to the correct position
 		'1. find out when it was send:
 		'   just ask the plan when the programme at "0:00" really started
-		local startHour:int = 0
-		local player:TPlayer = GetPlayerCollection().Get(material.owner)
-		if player
-			if day < 0 then day = GetWorldTime().GetDay()
+		Local startHour:Int = 0
+		Local player:TPlayer = GetPlayerCollection().Get(material.owner)
+		If player
+			If day < 0 Then day = GetWorldTime().GetDay()
 			startHour = player.GetProgrammePlan().GetObjectStartHour(material.materialType,day,0)
 			'get a 0-23 value
-			startHour = startHour mod 24
-		else
-			print "[ERROR] No player found for ~qprogramme~q in SetDayChangeBroadcastMaterial"
+			startHour = startHour Mod 24
+		Else
+			Print "[ERROR] No player found for ~qprogramme~q in SetDayChangeBroadcastMaterial"
 			startHour = 23 'nur als beispiel, spaeter entfernen
 '			return FALSE
-		endif
+		EndIf
 
 		'2. set the position of that element so that the "todays blocks" are starting at
 		'   0:00
-		local firstSlotCoord:TVec2D = GetSlotOrCoord(0).ToVec2D()
-		local blocksRunYesterday:int = 24 - startHour
+		Local firstSlotCoord:TVec2D = GetSlotOrCoord(0).ToVec2D()
+		Local blocksRunYesterday:Int = 24 - startHour
 		guiElement.lastSlot = - blocksRunYesterday
 		guiElement.rect.position.CopyFrom(firstSlotCoord)
 		'move above 0:00 (gets hidden automatically)
@@ -650,128 +650,128 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 		'assign parent
 		guiEntriesPanel.addChild(dayChangeGuiProgrammePlanElement)
 
-		return TRUE
+		Return True
 	End Method
 
 
 	'override default "default accept behaviour" of onDrop
-	Method onDrop:int(triggerEvent:TEventBase)
-		local dropCoord:TVec2D = TVec2D(triggerEvent.GetData().get("coord"))
-		if not dropCoord then return FALSE
+	Method onDrop:Int(triggerEvent:TEventBase)
+		Local dropCoord:TVec2D = TVec2D(triggerEvent.GetData().get("coord"))
+		If Not dropCoord Then Return False
 
-		if self.containsXY(dropCoord.x, dropCoord.y)
-			triggerEvent.setAccepted(true)
+		If Self.containsXY(dropCoord.x, dropCoord.y)
+			triggerEvent.setAccepted(True)
 			'print "TGUIProgrammePlanSlotList.onDrop: coord="+dropCoord.getIntX()+","+dropCoord.getIntY()
-			return TRUE
-		else
-			return FALSE
-		endif
+			Return True
+		Else
+			Return False
+		EndIf
 	End Method
 
 
-	Method ContainsBroadcastMaterial:int(material:TBroadcastMaterial)
+	Method ContainsBroadcastMaterial:Int(material:TBroadcastMaterial)
 		'check special programme from yesterday
-		if self.dayChangeGuiProgrammePlanElement
-			if self.daychangeGuiProgrammePlanElement.broadcastMaterial = material then return TRUE
-		endif
+		If Self.dayChangeGuiProgrammePlanElement
+			If Self.daychangeGuiProgrammePlanElement.broadcastMaterial = material Then Return True
+		EndIf
 
-		for local i:int = 0 to self.GetSlotAmount()-1
-			local block:TGUIProgrammePlanElement = TGUIProgrammePlanElement(self.GetItemBySlot(i))
-			if not block then continue
-			if block.broadcastMaterial = material then return TRUE
+		For Local i:Int = 0 To Self.GetSlotAmount()-1
+			Local block:TGUIProgrammePlanElement = TGUIProgrammePlanElement(Self.GetItemBySlot(i))
+			If Not block Then Continue
+			If block.broadcastMaterial = material Then Return True
 		Next
-		return FALSE
+		Return False
 	End Method
 
 
 	'override default to also recognize slots occupied by prior ones
-	Method GetItemBySlot:TGUIobject(slot:int)
-		if slot < 0 or slot > _slots.length-1 then return Null
+	Method GetItemBySlot:TGUIobject(slot:Int)
+		If slot < 0 Or slot > _slots.length-1 Then Return Null
 
 		'if no item is at the given slot, check prior ones
-		if _slots[slot] = null
+		If _slots[slot] = Null
 			'check regular slots
-			local parentSlot:int = slot-1
-			while parentSlot > 0
-				if _slots[parentSlot]
+			Local parentSlot:Int = slot-1
+			While parentSlot > 0
+				If _slots[parentSlot]
 					'only return if the prior one is running long enough
 					' - else it also returns programmes with empty slots between
-					local blocks:int = TGUIProgrammePlanElement(_slots[parentSlot]).broadcastMaterial.getBlocks(isType)
-					if blocks > (slot - parentSlot) then return _slots[parentslot]
-				endif
+					Local blocks:Int = TGUIProgrammePlanElement(_slots[parentSlot]).broadcastMaterial.getBlocks(isType)
+					If blocks > (slot - parentSlot) Then Return _slots[parentslot]
+				EndIf
 				parentSlot:-1
-			wend
+			Wend
 			'no item found in regular slots but already are at start
 			'-> check special programme from yesterday (if existing it is the searched one)
-			if daychangeGuiProgrammePlanElement
-				local blocks:int = daychangeGuiProgrammePlanElement.broadcastMaterial.getBlocks(isType)
+			If daychangeGuiProgrammePlanElement
+				Local blocks:Int = daychangeGuiProgrammePlanElement.broadcastMaterial.getBlocks(isType)
 				'lastSlot is a negative value from 0
 				'-> -3 means 3 blocks already run yesterday
-				local blocksToday:int = blocks + dayChangeGuiProgrammePlanElement.lastSlot
-				if blocksToday > slot then return daychangeGuiProgrammePlanElement
-			endif
+				Local blocksToday:Int = blocks + dayChangeGuiProgrammePlanElement.lastSlot
+				If blocksToday > slot Then Return daychangeGuiProgrammePlanElement
+			EndIf
 
-			return null
-		endif
+			Return Null
+		EndIf
 
-		return _slots[slot]
+		Return _slots[slot]
 	End Method
 
 
 	'overridden method to check slots after the block-slot for occupation too
-	Method SetItemToSlot:int(item:TGUIobject,slot:int)
-		local itemSlot:int = self.GetSlot(item)
+	Method SetItemToSlot:Int(item:TGUIobject,slot:Int)
+		Local itemSlot:Int = Self.GetSlot(item)
 		'somehow we try to place an item at the place where the item
 		'already resides
-		if itemSlot = slot then return TRUE
+		If itemSlot = slot Then Return True
 
-		local guiElement:TGUIProgrammePlanElement = TGUIProgrammePlanElement(item)
-		if not guiElement then return FALSE
+		Local guiElement:TGUIProgrammePlanElement = TGUIProgrammePlanElement(item)
+		If Not guiElement Then Return False
 
 		'is there another item?
-		local slotStart:int = slot
-		local slotEnd:int = slot + guiElement.broadcastMaterial.getBlocks(isType)-1
+		Local slotStart:Int = slot
+		Local slotEnd:Int = slot + guiElement.broadcastMaterial.getBlocks(isType)-1
 
 		'to check previous ones we try to find a previous one
 		'then we check if it reaches "our" slot or ends earlier
-		local previousItemSlot:int = GetPreviousUsedSlot(slot)
-		if previousItemSlot > -1
-			local previousGuiElement:TGUIProgrammePlanElement = TGUIProgrammePlanElement(getItemBySlot(previousItemSlot))
-			if previousGuiElement and previousItemSlot + previousGuiElement.GetBlocks()-1 >= slotStart
+		Local previousItemSlot:Int = GetPreviousUsedSlot(slot)
+		If previousItemSlot > -1
+			Local previousGuiElement:TGUIProgrammePlanElement = TGUIProgrammePlanElement(getItemBySlot(previousItemSlot))
+			If previousGuiElement And previousItemSlot + previousGuiElement.GetBlocks()-1 >= slotStart
 				slotStart = previousItemSlot
-			endif
-		endif
+			EndIf
+		EndIf
 
-		for local i:int = slotStart to slotEnd
-			local dragItem:TGUIProgrammePlanElement = TGUIProgrammePlanElement(getItemBySlot(i))
+		For Local i:Int = slotStart To slotEnd
+			Local dragItem:TGUIProgrammePlanElement = TGUIProgrammePlanElement(getItemBySlot(i))
 
 			'only drag an item once
-			if dragItem 'and not dragItem.isDragged()
+			If dragItem 'and not dragItem.isDragged()
 				'do not allow if the underlying item cannot get dragged
-				if not dragItem.isDragable() then return FALSE
+				If Not dragItem.isDragable() Then Return False
 
 				'ask others if they want to intercept that exchange
-				local event:TEventSimple = TEventSimple.Create( "guiSlotList.onBeginReplaceSlotItem", new TData.Add("source", item).Add("target", dragItem).AddNumber("slot",slot), self)
+				Local event:TEventSimple = TEventSimple.Create( "guiSlotList.onBeginReplaceSlotItem", New TData.Add("source", item).Add("target", dragItem).AddNumber("slot",slot), Self)
 				EventManager.triggerEvent(event)
 
-				if not event.isVeto()
+				If Not event.isVeto()
 					'remove the other one from the panel
-					if dragItem._parent then dragItem._parent.RemoveChild(dragItem)
+					If dragItem._parent Then dragItem._parent.RemoveChild(dragItem)
 
 					'drag the other one
 					dragItem.drag()
 					'unset the occupied slot
-					_SetSlot(i, null)
+					_SetSlot(i, Null)
 
-					EventManager.triggerEvent(TEventSimple.Create( "guiSlotList.onReplaceSlotItem", new TData.Add("source", item).Add("target", dragItem).AddNumber("slot",slot) , self))
-				endif
+					EventManager.triggerEvent(TEventSimple.Create( "guiSlotList.onReplaceSlotItem", New TData.Add("source", item).Add("target", dragItem).AddNumber("slot",slot) , Self))
+				EndIf
 				'skip slots occupied by this item
 				i:+ (dragItem.broadcastMaterial.GetBlocks(isType)-1)
-			endif
+			EndIf
 		Next
 
 		'if the item is already on the list, remove it from the former slot
-		_SetSlot(itemSlot, null)
+		_SetSlot(itemSlot, Null)
 
 		'set the item to the new slot
 		_SetSlot(slot, item)
@@ -781,143 +781,143 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 
 		RecalculateElements()
 
-		return TRUE
+		Return True
 	End Method
 
 
 	'overriden Method: so it does not accept a certain
 	'kind of programme (movies - series)
 	'plus it drags items in other occupied slots
-	Method AddItem:int(item:TGUIobject, extra:object=null)
-		local guiElement:TGUIProgrammePlanElement = TGUIProgrammePlanElement(item)
-		if not guiElement then return FALSE
+	Method AddItem:Int(item:TGUIobject, extra:Object=Null)
+		Local guiElement:TGUIProgrammePlanElement = TGUIProgrammePlanElement(item)
+		If Not guiElement Then Return False
 
 		'something odd happened - no material
-		if not guiElement.broadcastMaterial then return FALSE
+		If Not guiElement.broadcastMaterial Then Return False
 		'list does not accept type? stop adding the item.
-		if not(acceptTypes & guiElement.broadcastMaterial.usedAsType) then return FALSE
+		If Not(acceptTypes & guiElement.broadcastMaterial.usedAsType) Then Return False
 		'item is not allowed to drop there ? stop adding the item.
-		if not(acceptTypes & guiElement.broadcastMaterial.useableAsType) then return FALSE
+		If Not(acceptTypes & guiElement.broadcastMaterial.useableAsType) Then Return False
 
-		local addToSlot:int = -1
-		local extraIsRawSlot:int = FALSE
-		if string(extra)<>"" then addToSlot= int( string(extra) );extraIsRawSlot=TRUE
+		Local addToSlot:Int = -1
+		Local extraIsRawSlot:Int = False
+		If String(extra)<>"" Then addToSlot= Int( String(extra) );extraIsRawSlot=True
 
 		'search for first free slot
-		if _autofillSlots then addToSlot = self.getFreeSlot()
+		If _autofillSlots Then addToSlot = Self.getFreeSlot()
 		'auto slot requested
-		if extraIsRawSlot and addToSlot = -1 then addToSlot = getFreeSlot()
+		If extraIsRawSlot And addToSlot = -1 Then addToSlot = getFreeSlot()
 
 		'no free slot or none given? find out on which slot we are dropping
 		'if possible, drag the other one and drop the new
-		if addToSlot < 0
-			local data:TData = TData(extra)
-			if not data then return FALSE
+		If addToSlot < 0
+			Local data:TData = TData(extra)
+			If Not data Then Return False
 
-			local dropCoord:TVec2D = TVec2D(data.get("coord"))
-			if not dropCoord then return FALSE
+			Local dropCoord:TVec2D = TVec2D(data.get("coord"))
+			If Not dropCoord Then Return False
 
 			'set slot to land
 			addToSlot = GetSlotByCoord(dropCoord)
 			'no slot was hit
-			if addToSlot < 0 then return FALSE
-		endif
+			If addToSlot < 0 Then Return False
+		EndIf
 
 		'ask if an add to this slot is ok
-		local event:TEventSimple =  TEventSimple.Create("guiList.TryAddItem", new TData.Add("item", item).AddNumber("slot",addToSlot) , self)
+		Local event:TEventSimple =  TEventSimple.Create("guiList.TryAddItem", New TData.Add("item", item).AddNumber("slot",addToSlot) , Self)
 		EventManager.triggerEvent(event)
-		if event.isVeto() then return FALSE
+		If event.isVeto() Then Return False
 
 		'check underlying slots
-		for local i:int = 0 to guiElement.broadcastMaterial.getBlocks(isType)-1
+		For Local i:Int = 0 To guiElement.broadcastMaterial.getBlocks(isType)-1
 			'return if there is an underlying item which cannot get dragged
-			local dragItem:TGUIProgrammePlanElement = TGUIProgrammePlanElement(getItemBySlot(addToSlot + i))
-			if not dragItem then continue
+			Local dragItem:TGUIProgrammePlanElement = TGUIProgrammePlanElement(getItemBySlot(addToSlot + i))
+			If Not dragItem Then Continue
 
 			'check if the programme can be dragged
 			'this should not be the case if the programme already run
-			if not dragItem.isDragable() then print "NOT DRAGABLE UNDERLAYING";return FALSE
+			If Not dragItem.isDragable() Then Print "NOT DRAGABLE UNDERLAYING";Return False
 		Next
 
 
 		'set self as the list the items is belonging to
 		'this also drags underlying items if possible
-		if SetItemToSlot(guiElement, addToSlot)
+		If SetItemToSlot(guiElement, addToSlot)
 			guiElement.lastList = guiElement.inList
-			guiElement.inList = self
-			if not guiElement.lastList
-				guiElement.lastList = self
+			guiElement.inList = Self
+			If Not guiElement.lastList
+				guiElement.lastList = Self
 				guiElement.lastListType = isType
-			endif
+			EndIf
 
-			return TRUE
-		endif
+			Return True
+		EndIf
 	End Method
 
 
 	'override RemoveItem-Handler to include inList-property (and type check)
-	Method RemoveItem:int(item:TGUIobject)
-		local guiElement:TGUIProgrammePlanElement = TGUIProgrammePlanElement(item)
-		if not guiElement then return FALSE
+	Method RemoveItem:Int(item:TGUIobject)
+		Local guiElement:TGUIProgrammePlanElement = TGUIProgrammePlanElement(item)
+		If Not guiElement Then Return False
 
-		if super.RemoveItem(guiElement)
+		If Super.RemoveItem(guiElement)
 			guiElement.lastList = guiElement.inList
 			'inList is only set for manual drags
 			'while a replacement-drag has no inList (and no last Slot)
-			if guiElement.inList
-				guiElement.lastSlot = guiElement.inList.GetSlot(self)
-			else
+			If guiElement.inList
+				guiElement.lastSlot = guiElement.inList.GetSlot(Self)
+			Else
 				guiElement.lastSlot = -1
-			endif
+			EndIf
 
-			guiElement.inList = null
-			return TRUE
-		else
-			return FALSE
-		endif
+			guiElement.inList = Null
+			Return True
+		Else
+			Return False
+		EndIf
 	End Method
 
 
 	'override default "rectangle"-check to include splitted panels
-	Method containsXY:int(x:float,y:float)
+	Method containsXY:Int(x:Float,y:Float)
 		'convert to local coord
 		x :-GetScreenX()
 		y :-GetScreenY()
 
-		if zoneLeft.containsXY(x,y) or zoneRight.containsXY(x,y)
-			return TRUE
-		else
-			return FALSE
-		endif
+		If zoneLeft.containsXY(x,y) Or zoneRight.containsXY(x,y)
+			Return True
+		Else
+			Return False
+		EndIf
 	End Method
 
 
-	Method Update:int()
-		if dayChangeGuiProgrammePlanElement then dayChangeGuiProgrammePlanElement.Update()
+	Method Update:Int()
+		If dayChangeGuiProgrammePlanElement Then dayChangeGuiProgrammePlanElement.Update()
 
-		super.Update()
+		Super.Update()
 	End Method
 
 
-	Method DrawContent:int()
-		local atPoint:TVec2D = GetScreenPos()
-		local pos:TVec2D = null
-		For local i:int = 0 to _slotsState.length-1
+	Method DrawContent()
+		Local atPoint:TVec2D = GetScreenPos()
+		Local pos:TVec2D = Null
+		For Local i:Int = 0 To _slotsState.length-1
 			'skip occupied slots
-			if _slots[i]
-				if TGUIProgrammePlanElement(_slots[i])
+			If _slots[i]
+				If TGUIProgrammePlanElement(_slots[i])
 					i :+ TGUIProgrammePlanElement(_slots[i]).GetBlocks()-1
-					continue
-				endif
-			endif
+					Continue
+				EndIf
+			EndIf
 
-			if _slotsState[i] = 0 then continue
+			If _slotsState[i] = 0 Then Continue
 
 			pos = GetSlotOrCoord(i).ToVec2D()
 			'disabled
-			if _slotsState[i] = 1 then SetColor 100,100,100
+			If _slotsState[i] = 1 Then SetColor 100,100,100
 			'occupied
-			if _slotsState[i] = 2 then SetColor 250,150,120
+			If _slotsState[i] = 2 Then SetColor 250,150,120
 
 			SetAlpha 0.35
 			SlotBackground.Draw(atPoint.GetX()+pos.getX(), atPoint.GetY()+pos.getY())
@@ -925,7 +925,7 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 			SetColor 255,255,255
 		Next
 
-		if dayChangeGuiProgrammePlanElement then dayChangeGuiProgrammePlanElement.draw()
+		If dayChangeGuiProgrammePlanElement Then dayChangeGuiProgrammePlanElement.draw()
 	End Method
 End Type
 
@@ -933,15 +933,15 @@ End Type
 
 
 Type TPlannerList
-	Field openState:int		= 0		'0=enabled 1=openedgenres 2=openedmovies 3=openedepisodes = 1
+	Field openState:Int		= 0		'0=enabled 1=openedgenres 2=openedmovies 3=openedepisodes = 1
 	Field currentGenre:Int	=-1
 	Field enabled:Int		= 0
-	Field Pos:TVec2D 		= new TVec2D.Init()
+	Field Pos:TVec2D 		= New TVec2D.Init()
 	Field entriesRect:TRectangle
-	Field entrySize:TVec2D = new TVec2D
+	Field entrySize:TVec2D = New TVec2D
 
 	Method getOpen:Int()
-		return self.openState and enabled
+		Return Self.openState And enabled
 	End Method
 End Type
 
@@ -949,14 +949,14 @@ End Type
 
 
 'the programmelist shown in the programmeplaner
-Type TgfxProgrammelist extends TPlannerList
-	Field displaceEpisodeTapes:TVec2D = new TVec2D.Init(6,5)
+Type TgfxProgrammelist Extends TPlannerList
+	Field displaceEpisodeTapes:TVec2D = New TVec2D.Init(6,5)
 	'area of all genres/filters including top/bottom-area
 	Field genresRect:TRectangle
-	Field genresCount:int = -1
-	Field genreSize:TVec2D = new TVec2D
-	Field currentEntry:int = -1
-	Field currentSubEntry:int = -1
+	Field genresCount:Int = -1
+	Field genreSize:TVec2D = New TVec2D
+	Field currentEntry:Int = -1
+	Field currentSubEntry:Int = -1
 	Field subEntriesRect:TRectangle
 
 	'licence with children
@@ -964,8 +964,8 @@ Type TgfxProgrammelist extends TPlannerList
 	'licence 
 	Field hoveredLicence:TProgrammeLicence = Null
 
-	const MODE_PROGRAMMEPLANNER:int=0	'creates a GuiProgrammePlanElement
-	const MODE_ARCHIVE:int=1			'creates a GuiProgrammeLicence
+	Const MODE_PROGRAMMEPLANNER:Int=0	'creates a GuiProgrammePlanElement
+	Const MODE_ARCHIVE:Int=1			'creates a GuiProgrammeLicence
 
 	
 
@@ -977,86 +977,86 @@ Type TgfxProgrammelist extends TPlannerList
 		Pos.SetXY(x - genreSize.GetX(), y)
 
 		'recalculate dimension of the area of all genres
-		genresRect = new TRectangle.Init(Pos.GetX(), Pos.GetY(), genreSize.GetX(), 0)
+		genresRect = New TRectangle.Init(Pos.GetX(), Pos.GetY(), genreSize.GetX(), 0)
 		genresRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmegenres_top.default").area.GetH()
 		genresRect.dimension.y :+ TProgrammeLicenceFilter.GetVisibleCount() * genreSize.GetY()
 		genresRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmegenres_bottom.default").area.GetH()
 
 		'recalculate dimension of the area of all entries (also if not all slots occupied)
-		entriesRect = new TRectangle.Init(genresRect.GetX() - 175, genresRect.GetY(), entrySize.GetX(), 0)
+		entriesRect = New TRectangle.Init(genresRect.GetX() - 175, genresRect.GetY(), entrySize.GetX(), 0)
 		entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 		entriesRect.dimension.y :+ GameRules.maxProgrammeLicencesPerFilter * entrySize.GetY()
 		entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
 
 		'recalculate dimension of the area of all entries (also if not all slots occupied)
-		subEntriesRect = new TRectangle.Init(entriesRect.GetX() + 175, entriesRect.GetY(), entrySize.GetX(), 0)
+		subEntriesRect = New TRectangle.Init(entriesRect.GetX() + 175, entriesRect.GetY(), entrySize.GetX(), 0)
 		subEntriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 		subEntriesRect.dimension.y :+ 10 * entrySize.GetY()
 		subEntriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
 
-		Return self
+		Return Self
 	End Method
 
 
-	Method Draw:Int()
-		if not enabled then return FALSE
+	Method Draw()
+		If Not enabled Then Return
 
 		'draw genre selector
-		If self.openState >=1
+		If Self.openState >=1
 			'mark new genres
 			'TODO: do this part in programmecollection (only on add/remove)
-			local visibleFilters:TProgrammeLicenceFilter[] = TProgrammeLicenceFilter.GetVisible()
-			local containsNew:int[visibleFilters.length]
+			Local visibleFilters:TProgrammeLicenceFilter[] = TProgrammeLicenceFilter.GetVisible()
+			Local containsNew:Int[visibleFilters.length]
 
-			For local licence:TProgrammeLicence = EachIn GetPlayer().GetProgrammeCollection().justAddedProgrammeLicences
+			For Local licence:TProgrammeLicence = EachIn GetPlayer().GetProgrammeCollection().justAddedProgrammeLicences
 				'check all filters if they take care of this licence
-				for local i:int = 0 until visibleFilters.length
+				For Local i:Int = 0 Until visibleFilters.length
 					'no check needed if already done
-					if containsNew[i] then continue
+					If containsNew[i] Then Continue
 
-					if visibleFilters[i].DoesFilter(licence)
+					If visibleFilters[i].DoesFilter(licence)
 						containsNew[i] = 1
 						'do not check other filters
-						exit
-					endif
+						Exit
+					EndIf
 				Next
 			Next
 
 			'=== DRAW ===
-			local currSprite:TSprite
+			Local currSprite:TSprite
 			'maybe it has changed since initialization
 			genreSize = GetSpriteFromRegistry("gfx_programmegenres_entry.default").area.dimension.copy()
-			local currY:int = genresRect.GetY()
-			local currX:int = genresRect.GetX()
-			local textRect:TRectangle = new TRectangle.Init(currX + 13, currY, genreSize.x - 12 - 5, genreSize.y)
+			Local currY:Int = genresRect.GetY()
+			Local currX:Int = genresRect.GetX()
+			Local textRect:TRectangle = New TRectangle.Init(currX + 13, currY, genreSize.x - 12 - 5, genreSize.y)
 			 
-			local oldAlpha:float = GetAlpha()
-			local programmeCollection:TPlayerProgrammeCollection = GetPlayer().GetProgrammeCollection()
+			Local oldAlpha:Float = GetAlpha()
+			Local programmeCollection:TPlayerProgrammeCollection = GetPlayer().GetProgrammeCollection()
 
 			'draw each visible filter
-			local filter:TProgrammeLicenceFilter
-			For local i:int = 0 until visibleFilters.length
-				local entryPositionType:string = "entry"
-				if i = 0 then entryPositionType = "first"
-				if i = visibleFilters.length-1 then entryPositionType = "last"
+			Local filter:TProgrammeLicenceFilter
+			For Local i:Int = 0 Until visibleFilters.length
+				Local entryPositionType:String = "entry"
+				If i = 0 Then entryPositionType = "first"
+				If i = visibleFilters.length-1 Then entryPositionType = "last"
 
-				local entryDrawType:string = "default"
+				Local entryDrawType:String = "default"
 				'highlighted - if genre contains new entries
-				if containsNew[i] = 1 then entryDrawType = "highlighted"
+				If containsNew[i] = 1 Then entryDrawType = "highlighted"
 				'active - if genre is the currently used (selected to see tapes)
-				if i = currentGenre then entryDrawType = "active"
+				If i = currentGenre Then entryDrawType = "active"
 				'hovered - draw hover effect if hovering
 				'can only haver if no episode list is open
-				if self.openState <3 and THelper.MouseIn(currX, currY, genreSize.GetX(), genreSize.GetY()-1) then entryDrawType="hovered"
+				If Self.openState <3 And THelper.MouseIn(currX, currY, genreSize.GetX(), genreSize.GetY()-1) Then entryDrawType="hovered"
 
 				'add "top" portion when drawing first item
 				'do this in the for loop, so the entrydrawType is known
 				'(top-portion could contain color code of the drawType)
-				if i = 0
+				If i = 0
 					currSprite = GetSpriteFromRegistry("gfx_programmegenres_top."+entryDrawType)
 					currSprite.draw(currX, currY)
 					currY :+ currSprite.area.GetH()
-				endif
+				EndIf
 
 				'draw background
 				GetSpriteFromRegistry("gfx_programmegenres_"+entryPositionType+"."+entryDrawType).draw(currX,currY)
@@ -1067,19 +1067,19 @@ Type TgfxProgrammelist extends TPlannerList
 
 
 				Local licenceCount:Int = programmeCollection.GetFilteredLicenceCount(visibleFilters[i])
-				Local filterName:string = visibleFilters[i].GetCaption()
+				Local filterName:String = visibleFilters[i].GetCaption()
 
 				
 				If licenceCount > 0
 					GetBitmapFontManager().baseFont.drawBlock(filterName + " (" +licenceCount+ ")", textRect.GetX(), textRect.GetY(), textRect.GetW(), textRect.GetH(), ALIGN_LEFT_CENTER, TColor.clBlack)
-rem
+Rem
 					SetAlpha 0.6; SetColor 0, 255, 0
 					'takes 20% of fps...
 					For Local i:Int = 0 To genrecount -1
 						DrawLine(currX + 121 + i * 2, currY + 4 + lineHeight*genres - 1, currX + 121 + i * 2, currY + 17 + lineHeight*genres - 1)
 					Next
 endrem
-				else
+				Else
 					SetAlpha 0.25 * GetAlpha()
 					GetBitmapFontManager().baseFont.drawBlock(filterName, textRect.GetX(), textRect.GetY(), textRect.GetW(), textRect.GetH(), ALIGN_LEFT_CENTER, TColor.clBlack)
 					SetAlpha 4 * GetAlpha()
@@ -1090,102 +1090,102 @@ endrem
 				'add "bottom" portion when drawing last item
 				'do this in the for loop, so the entrydrawType is known
 				'(top-portion could contain color code of the drawType)
-				if i = visibleFilters.length-1
+				If i = visibleFilters.length-1
 					currSprite = GetSpriteFromRegistry("gfx_programmegenres_bottom."+entryDrawType)
 					currSprite.draw(currX, currY)
 					currY :+ currSprite.area.GetH()
-				endif
+				EndIf
 			Next
 		EndIf
 
 		'draw tapes of current genre + episodes of a selected series
-		If self.openState >=2 and currentGenre >= 0
+		If Self.openState >=2 And currentGenre >= 0
 			DrawTapes(currentgenre)
 		EndIf
 
 		'draw episodes background
-		If self.openState >=3
-			if currentGenre >= 0 then DrawSubTapes(hoveredParentalLicence)
-		endif
+		If Self.openState >=3
+			If currentGenre >= 0 Then DrawSubTapes(hoveredParentalLicence)
+		EndIf
 
 	End Method
 
 
 	Method DrawTapes:Int(filterIndex:Int=-1)
 		'skip drawing tapes if no genreGroup is selected
-		if filterIndex < 0 then return FALSE
+		If filterIndex < 0 Then Return False
 
 
-		local currSprite:TSprite
+		Local currSprite:TSprite
 		'maybe it has changed since initialization
 		entrySize = GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.dimension.copy()
-		local currY:int = entriesRect.GetY()
-		local currX:int = entriesRect.GetX()
-		local font:TBitmapFont = GetBitmapFont("Default", 10)
+		Local currY:Int = entriesRect.GetY()
+		Local currX:Int = entriesRect.GetX()
+		Local font:TBitmapFont = GetBitmapFont("Default", 10)
 			 
-		local programmeCollection:TPlayerProgrammeCollection = GetPlayer().GetProgrammeCollection()
-		local filter:TProgrammeLicenceFilter = TProgrammeLicenceFilter.GetAtIndex(filterIndex)
-		local licences:TProgrammeLicence[] = programmeCollection.GetLicencesByFilter(filter)
+		Local programmeCollection:TPlayerProgrammeCollection = GetPlayer().GetProgrammeCollection()
+		Local filter:TProgrammeLicenceFilter = TProgrammeLicenceFilter.GetAtIndex(filterIndex)
+		Local licences:TProgrammeLicence[] = programmeCollection.GetLicencesByFilter(filter)
 		'draw slots, even if empty
-		For local i:int = 0 until GameRules.maxProgrammeLicencesPerFilter
-			local entryPositionType:string = "entry"
-			if i = 0 then entryPositionType = "first"
-			if i = GameRules.maxProgrammeLicencesPerFilter-1 then entryPositionType = "last"
+		For Local i:Int = 0 Until GameRules.maxProgrammeLicencesPerFilter
+			Local entryPositionType:String = "entry"
+			If i = 0 Then entryPositionType = "first"
+			If i = GameRules.maxProgrammeLicencesPerFilter-1 Then entryPositionType = "last"
 
-			local entryDrawType:string = "default"
-			local tapeDrawType:string = "default"
-			if i < licences.length 
+			Local entryDrawType:String = "default"
+			Local tapeDrawType:String = "default"
+			If i < licences.length 
 				'== BACKGROUND ==
 				'planned is more important than new - both only happen
 				'on startprogrammes
-				if licences[i].IsPlanned()
+				If licences[i].IsPlanned()
 					entryDrawType = "planned"
 					tapeDrawType = "planned"
-				else
+				Else
 					'switch background to "new" if the licence is a just-added-one
-					For local licence:TProgrammeLicence = EachIn GetPlayer().GetProgrammeCollection().justAddedProgrammeLicences
-						if licences[i] = licence
+					For Local licence:TProgrammeLicence = EachIn GetPlayer().GetProgrammeCollection().justAddedProgrammeLicences
+						If licences[i] = licence
 							entryDrawType = "new"
 							tapeDrawType = "new"
-							exit
-						endif
+							Exit
+						EndIf
 					Next
-				endif
-			endif
+				EndIf
+			EndIf
 
 			
 			'=== BACKGROUND ===
 			'add "top" portion when drawing first item
 			'do this in the for loop, so the entrydrawType is known
 			'(top-portion could contain color code of the drawType)
-			if i = 0
+			If i = 0
 				currSprite = GetSpriteFromRegistry("gfx_programmeentries_top."+entryDrawType)
 				currSprite.draw(currX, currY)
 				currY :+ currSprite.area.GetH()
-			endif
+			EndIf
 			GetSpriteFromRegistry("gfx_programmeentries_"+entryPositionType+"."+entryDrawType).draw(currX,currY)
 
 
 			'=== DRAW TAPE===
-			if i < licences.length
+			If i < licences.length
 				'== ADJUST TAPE TYPE ==
 				'do that afterwards because now "new" and "planned" are
 				'already handled
 
 				'active - if tape is the currently used
-				if i = currentEntry then tapeDrawType = "hovered"
+				If i = currentEntry Then tapeDrawType = "hovered"
 				'hovered - draw hover effect if hovering
-				if THelper.MouseIn(currX, currY, entrySize.GetX(), entrySize.GetY()-1) then tapeDrawType="hovered"
+				If THelper.MouseIn(currX, currY, entrySize.GetX(), entrySize.GetY()-1) Then tapeDrawType="hovered"
 
 
-				if licences[i].isMovie()
+				If licences[i].isMovie()
 					GetSpriteFromRegistry("gfx_programmetape_movie."+tapeDrawType).draw(currX + 8, currY+1)
-				else
+				Else
 					GetSpriteFromRegistry("gfx_programmetape_series."+tapeDrawType).draw(currX + 8, currY+1)
-				endif
+				EndIf
 				font.drawBlock(licences[i].GetTitle(), currX + 22, currY + 3, 150,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
 
-			endif
+			EndIf
 
 
 			'advance to next line
@@ -1194,126 +1194,126 @@ endrem
 			'add "bottom" portion when drawing last item
 			'do this in the for loop, so the entrydrawType is known
 			'(top-portion could contain color code of the drawType)
-			if i = GameRules.maxProgrammeLicencesPerFilter-1
+			If i = GameRules.maxProgrammeLicencesPerFilter-1
 				currSprite = GetSpriteFromRegistry("gfx_programmeentries_bottom."+entryDrawType)
 				currSprite.draw(currX, currY)
 				currY :+ currSprite.area.GetH()
-			endif
+			EndIf
 		Next
 	End Method
 
 
-	Method UpdateTapes:Int(filterIndex:Int=-1, mode:int=0)
+	Method UpdateTapes:Int(filterIndex:Int=-1, mode:Int=0)
 		'skip doing something without a selected filter
-		If filterIndex < 0 then return FALSE
+		If filterIndex < 0 Then Return False
 
-		local currY:int = entriesRect.GetY() + GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
+		Local currY:Int = entriesRect.GetY() + GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 
-		local programmeCollection:TPlayerProgrammeCollection = GetPlayer().GetProgrammeCollection()
-		local filter:TProgrammeLicenceFilter = TProgrammeLicenceFilter.GetAtIndex(filterIndex)
-		local licences:TProgrammeLicence[] = programmeCollection.GetLicencesByFilter(filter)
+		Local programmeCollection:TPlayerProgrammeCollection = GetPlayer().GetProgrammeCollection()
+		Local filter:TProgrammeLicenceFilter = TProgrammeLicenceFilter.GetAtIndex(filterIndex)
+		Local licences:TProgrammeLicence[] = programmeCollection.GetLicencesByFilter(filter)
 
-		For local i:int = 0 until licences.length
+		For Local i:Int = 0 Until licences.length
 
-			if THelper.MouseIn(entriesRect.GetX(), currY, entrySize.GetX(), entrySize.GetY()-1)
+			If THelper.MouseIn(entriesRect.GetX(), currY, entrySize.GetX(), entrySize.GetY()-1)
 				Game.cursorstate = 1
-				local doneSomething:int = FALSE
+				Local doneSomething:Int = False
 				'store for sheet-display
 				hoveredLicence = licences[i]
 				If MOUSEMANAGER.IsHit(1)
-					if mode = MODE_PROGRAMMEPLANNER
+					If mode = MODE_PROGRAMMEPLANNER
 						If licences[i].isMovie()
 							'create and drag new block
-							new TGUIProgrammePlanElement.CreateWithBroadcastMaterial( new TProgramme.Create(licences[i]), "programmePlanner" ).drag()
+							New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( New TProgramme.Create(licences[i]), "programmePlanner" ).drag()
 							SetOpen(0)
-							doneSomething = true
+							doneSomething = True
 						Else
 							'set the hoveredParentalLicence so the episodes-list is drawn
 							hoveredParentalLicence = licences[i]
 							SetOpen(3)
-							doneSomething = true
+							doneSomething = True
 						EndIf
-					elseif mode = MODE_ARCHIVE
+					ElseIf mode = MODE_ARCHIVE
 						'create a dragged block
-						local obj:TGUIProgrammeLicence = new TGUIProgrammeLicence.CreateWithLicence(licences[i])
+						Local obj:TGUIProgrammeLicence = New TGUIProgrammeLicence.CreateWithLicence(licences[i])
 						obj.SetLimitToState("archive")
 						obj.drag()
 
 						SetOpen(0)
-						doneSomething = true
-					endif
+						doneSomething = True
+					EndIf
 
 					'something changed, so stop looping through rest
-					if doneSomething
+					If doneSomething
 						MOUSEMANAGER.resetKey(1)
 						MOUSEMANAGER.resetClicked(1)
-						return TRUE
-					endif
-				endif
-			endif
+						Return True
+					EndIf
+				EndIf
+			EndIf
 
 			'next tape
 			currY :+ entrySize.y
 		Next
-		return FALSE
+		Return False
 	End Method
 
 
 	Method DrawSubTapes:Int(parentLicence:TProgrammeLicence)
-		if not parentLicence then return FALSE
+		If Not parentLicence Then Return False
 
-		local hoveredLicence:TProgrammeLicence = null
-		local currSprite:TSprite
-		local currY:int = subEntriesRect.GetY()
-		local currX:int = subEntriesRect.GetX()
-		local font:TBitmapFont = GetBitmapFont("Default", 10)
+		Local hoveredLicence:TProgrammeLicence = Null
+		Local currSprite:TSprite
+		Local currY:Int = subEntriesRect.GetY()
+		Local currX:Int = subEntriesRect.GetX()
+		Local font:TBitmapFont = GetBitmapFont("Default", 10)
 
 		
 		For Local i:Int = 0 To parentLicence.GetSubLicenceCount()-1
 			Local licence:TProgrammeLicence = parentLicence.GetsubLicenceAtIndex(i)
 
-			local entryPositionType:string = "entry"
-			if i = 0 then entryPositionType = "first"
-			if i = parentLicence.GetSubLicenceCount()-1 then entryPositionType = "last"
+			Local entryPositionType:String = "entry"
+			If i = 0 Then entryPositionType = "first"
+			If i = parentLicence.GetSubLicenceCount()-1 Then entryPositionType = "last"
 
-			local entryDrawType:string = "default"
-			local tapeDrawType:string = "default"
-			if licence
+			Local entryDrawType:String = "default"
+			Local tapeDrawType:String = "default"
+			If licence
 				'== BACKGROUND ==
-				if licence.IsPlanned()
+				If licence.IsPlanned()
 					entryDrawType = "planned"
 					tapeDrawType = "planned"
-				endif
-			endif
+				EndIf
+			EndIf
 
 			
 			'=== BACKGROUND ===
 			'add "top" portion when drawing first item
 			'do this in the for loop, so the entrydrawType is known
 			'(top-portion could contain color code of the drawType)
-			if i = 0
+			If i = 0
 				currSprite = GetSpriteFromRegistry("gfx_programmeentries_top."+entryDrawType)
 				currSprite.draw(currX, currY)
 				currY :+ currSprite.area.GetH()
-			endif
+			EndIf
 			GetSpriteFromRegistry("gfx_programmeentries_"+entryPositionType+"."+entryDrawType).draw(currX,currY)
 
 
 			'=== DRAW TAPE===
-			if licence
+			If licence
 				'== ADJUST TAPE TYPE ==
 				'active - if tape is the currently used
-				if i = currentSubEntry then tapeDrawType = "hovered"
+				If i = currentSubEntry Then tapeDrawType = "hovered"
 				'hovered - draw hover effect if hovering
-				if THelper.MouseIn(currX, currY, entrySize.GetX(), entrySize.GetY()-3) then tapeDrawType="hovered"
+				If THelper.MouseIn(currX, currY, entrySize.GetX(), entrySize.GetY()-3) Then tapeDrawType="hovered"
 
-				if licence.isMovie()
+				If licence.isMovie()
 					GetSpriteFromRegistry("gfx_programmetape_movie."+tapeDrawType).draw(currX + 8, currY+1)
-				else
+				Else
 					GetSpriteFromRegistry("gfx_programmetape_series."+tapeDrawType).draw(currX + 8, currY+1)
-				endif
+				EndIf
 				font.drawBlock("(" + (i+1) + "/" + parentLicence.GetSubLicenceCount() + ") " + licence.GetTitle(), currX + 22, currY + 3, 150,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
-			endif
+			EndIf
 
 
 			'advance to next line
@@ -1322,105 +1322,105 @@ endrem
 			'add "bottom" portion when drawing last item
 			'do this in the for loop, so the entrydrawType is known
 			'(top-portion could contain color code of the drawType)
-			if i = parentLicence.GetSubLicenceCount()-1
+			If i = parentLicence.GetSubLicenceCount()-1
 				currSprite = GetSpriteFromRegistry("gfx_programmeentries_bottom."+entryDrawType)
 				currSprite.draw(currX, currY)
 				currY :+ currSprite.area.GetH()
-			endif
+			EndIf
 		Next
 	End Method
 
 
 	Method UpdateSubTapes:Int(parentLicence:TProgrammeLicence)
-		if not parentLicence then return False
+		If Not parentLicence Then Return False
 		
-		local currY:int = subEntriesRect.GetY() + GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
+		Local currY:Int = subEntriesRect.GetY() + GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 
 
 		For Local i:Int = 0 To parentLicence.GetSubLicenceCount()-1
 			Local licence:TProgrammeLicence = parentLicence.GetsubLicenceAtIndex(i)
 
-			if licence
-				if THelper.MouseIn(subEntriesRect.GetX(), currY, entrySize.GetX(), entrySize.GetY()-1)
+			If licence
+				If THelper.MouseIn(subEntriesRect.GetX(), currY, entrySize.GetX(), entrySize.GetY()-1)
 					Game.cursorstate = 1
 
 					'store for sheet-display
 					hoveredLicence = licence
 					If MOUSEMANAGER.IsHit(1)
 						'create and drag new block
-						new TGUIProgrammePlanElement.CreateWithBroadcastMaterial( new TProgramme.Create(licence), "programmePlanner" ).drag()
+						New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( New TProgramme.Create(licence), "programmePlanner" ).drag()
 						SetOpen(0)
 						MOUSEMANAGER.resetKey(1)
-						return TRUE
-					endif
-				endif
-			endif
+						Return True
+					EndIf
+				EndIf
+			EndIf
 
 			'next tape
 			currY :+ entrySize.y
 		Next
-		return FALSE
+		Return False
 	End Method
 
 
-	Method Update:int(mode:int=0)
+	Method Update:Int(mode:Int=0)
 		'gets repopulated automagically if hovered
-		hoveredLicence = null
+		hoveredLicence = Null
 
 		'if not "open", do nothing (including checking right clicks)
-		If not GetOpen() then Return False
+		If Not GetOpen() Then Return False
 
 		'clicking on the genre selector -> select Genre
 		'instead of isClicked (butten must be "normal" then)
 		'we use "hit" (as soon as mouse button down)
-		local genresStartY:int = GetSpriteFromRegistry("gfx_programmegenres_top.default").area.GetH()
+		Local genresStartY:Int = GetSpriteFromRegistry("gfx_programmegenres_top.default").area.GetH()
 
 		'only react to genre area if episode area is not open
-		if openState <3
-			If MOUSEMANAGER.IsHit(1) AND THelper.MouseIn(genresRect.GetX(), genresRect.GetY() + genresStartY, genresRect.GetW(), genreSize.GetY()*TProgrammeLicenceFilter.GetVisibleCount())
+		If openState <3
+			If MOUSEMANAGER.IsHit(1) And THelper.MouseIn(genresRect.GetX(), genresRect.GetY() + genresStartY, genresRect.GetW(), genreSize.GetY()*TProgrammeLicenceFilter.GetVisibleCount())
 				SetOpen(2)
-				local visibleFilters:TProgrammeLicenceFilter[] = TProgrammeLicenceFilter.GetVisible()
+				Local visibleFilters:TProgrammeLicenceFilter[] = TProgrammeLicenceFilter.GetVisible()
 				currentGenre = Max(0, Min(visibleFilters.length-1, Floor((MouseManager.y - (genresRect.GetY() + genresStartY)) / genreSize.GetY())))
 				MOUSEMANAGER.ResetKey(1)
 			EndIf
-		endif
+		EndIf
 
 		'if the genre is selected, also take care of its programmes
-		If self.openState >=2
+		If Self.openState >=2
 			If currentgenre >= 0 Then UpdateTapes(currentgenre, mode)
 			'series episodes are only available in mode 0, so no mode-param to give
 			If hoveredParentalLicence Then UpdateSubTapes(hoveredParentalLicence)
 		EndIf
 
 		'close if clicked outside - simple mode: so big rect
-		if MouseManager.isHit(1) ' and mode=MODE_ARCHIVE
-			local closeMe:int = TRUE
+		If MouseManager.isHit(1) ' and mode=MODE_ARCHIVE
+			Local closeMe:Int = True
 			'in all cases the genre selector is opened
-			if genresRect.containsXY(MouseManager.x, MouseManager.y) then closeMe = FALSE
+			If genresRect.containsXY(MouseManager.x, MouseManager.y) Then closeMe = False
 			'check tape rect
-			if openState >=2 and entriesRect.containsXY(MouseManager.x, MouseManager.y)  then closeMe = FALSE
+			If openState >=2 And entriesRect.containsXY(MouseManager.x, MouseManager.y)  Then closeMe = False
 			'check episodetape rect
-			if openState >=3 and subEntriesRect.containsXY(MouseManager.x, MouseManager.y)  then closeMe = FALSE
+			If openState >=3 And subEntriesRect.containsXY(MouseManager.x, MouseManager.y)  Then closeMe = False
 
-			if closeMe
+			If closeMe
 				SetOpen(0)
 				'MouseManager.ResetKey(1)
-			endif
-		endif
+			EndIf
+		EndIf
 	End Method
 
 
 	Method SetOpen:Int(newState:Int)
 		newState = Max(0, newState)
-		if newState <= 1 then currentgenre=-1
-		if newState <= 2 then hoveredParentalLicence=Null
+		If newState <= 1 Then currentgenre=-1
+		If newState <= 2 Then hoveredParentalLicence=Null
 		If newState = 0
 			enabled = 0
-		else
+		Else
 			enabled = 1
-		endif
+		EndIf
 
-		self.openState = newState
+		Self.openState = newState
 	End Method
 End Type
 
@@ -1428,8 +1428,8 @@ End Type
 
 
 'the adspot/contractlist shown in the programmeplaner
-Type TgfxContractlist extends TPlannerList
-	Field hoveredAdContract:TAdContract = null
+Type TgfxContractlist Extends TPlannerList
+	Field hoveredAdContract:TAdContract = Null
 
 	Method Create:TgfxContractlist(x:Int, y:Int)
 		entrySize = GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.dimension.copy()
@@ -1438,57 +1438,57 @@ Type TgfxContractlist extends TPlannerList
 		Pos.SetXY(x - entrySize.GetX(), y)
 
 		'recalculate dimension of the area of all entries (also if not all slots occupied)
-		entriesRect = new TRectangle.Init(Pos.GetX(), Pos.GetY(), entrySize.GetX(), 0)
+		entriesRect = New TRectangle.Init(Pos.GetX(), Pos.GetY(), entrySize.GetX(), 0)
 		entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 		entriesRect.dimension.y :+ GameRules.maxContracts * entrySize.GetY()
 		entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
 
-		Return self
+		Return Self
 	End Method
 
 
 	Method Draw:Int()
-		If not enabled or self.openState < 1 then return False
+		If Not enabled Or Self.openState < 1 Then Return False
 
-		local currSprite:TSprite
+		Local currSprite:TSprite
 		'maybe it has changed since initialization
 		entrySize = GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.dimension.copy()
-		local currX:int = entriesRect.GetX()
-		local currY:int = entriesRect.GetY()
-		local font:TBitmapFont = GetBitmapFont("Default", 10)
+		Local currX:Int = entriesRect.GetX()
+		Local currY:Int = entriesRect.GetY()
+		Local font:TBitmapFont = GetBitmapFont("Default", 10)
 
-		local programmeCollection:TPlayerProgrammeCollection = GetPlayer().GetProgrammeCollection()
+		Local programmeCollection:TPlayerProgrammeCollection = GetPlayer().GetProgrammeCollection()
 		'draw slots, even if empty
-		For local i:int = 0 until 10 'GameRules.maxContracts
-			local contract:TAdContract = programmeCollection.GetAdContractAtIndex(i)
+		For Local i:Int = 0 Until 10 'GameRules.maxContracts
+			Local contract:TAdContract = programmeCollection.GetAdContractAtIndex(i)
 
-			local entryPositionType:string = "entry"
-			if i = 0 then entryPositionType = "first"
-			if i = GameRules.maxContracts-1 then entryPositionType = "last"
+			Local entryPositionType:String = "entry"
+			If i = 0 Then entryPositionType = "first"
+			If i = GameRules.maxContracts-1 Then entryPositionType = "last"
 
 		
 			'=== BACKGROUND ===
 			'add "top" portion when drawing first item
 			'do this in the for loop, so the entrydrawType is known
 			'(top-portion could contain color code of the drawType)
-			if i = 0
+			If i = 0
 				currSprite = GetSpriteFromRegistry("gfx_programmeentries_top.default")
 				currSprite.draw(currX, currY)
 				currY :+ currSprite.area.GetH()
-			endif
+			EndIf
 			GetSpriteFromRegistry("gfx_programmeentries_"+entryPositionType+".default").draw(currX,currY)
 
 
 			'=== DRAW TAPE===
-			if contract
+			If contract
 				'hovered - draw hover effect if hovering
-				if THelper.MouseIn(currX, currY, entrySize.GetX(), entrySize.GetY()-1)
+				If THelper.MouseIn(currX, currY, entrySize.GetX(), entrySize.GetY()-1)
 					GetSpriteFromRegistry("gfx_programmetape_movie.hovered").draw(currX + 8, currY+1)
-				else
+				Else
 					GetSpriteFromRegistry("gfx_programmetape_movie.default").draw(currX + 8, currY+1)
-				endif
+				EndIf
 				font.drawBlock(contract.GetTitle(), currX + 22, currY + 3, 150,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
-			endif
+			EndIf
 
 
 			'advance to next line
@@ -1497,64 +1497,64 @@ Type TgfxContractlist extends TPlannerList
 			'add "bottom" portion when drawing last item
 			'do this in the for loop, so the entrydrawType is known
 			'(top-portion could contain color code of the drawType)
-			if i = GameRules.maxContracts-1
+			If i = GameRules.maxContracts-1
 				currSprite = GetSpriteFromRegistry("gfx_programmeentries_bottom.default")
 				currSprite.draw(currX, currY)
 				currY :+ currSprite.area.GetH()
-			endif
+			EndIf
 		Next
 	End Method
 
 
-	Method Update:int()
+	Method Update:Int()
 		'gets repopulated if an contract is hovered
-		hoveredAdContract = null
+		hoveredAdContract = Null
 
-		If not enabled then return FALSE
+		If Not enabled Then Return False
 
-		if self.openState >= 1
-			local currY:int = entriesRect.GetY() + GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
+		If Self.openState >= 1
+			Local currY:Int = entriesRect.GetY() + GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 
-			local programmeCollection:TPlayerProgrammeCollection = GetPlayer().GetProgrammeCollection()
-			For local i:int = 0 until GameRules.maxContracts
-				local contract:TAdContract = programmeCollection.GetAdContractAtIndex(i)
+			Local programmeCollection:TPlayerProgrammeCollection = GetPlayer().GetProgrammeCollection()
+			For Local i:Int = 0 Until GameRules.maxContracts
+				Local contract:TAdContract = programmeCollection.GetAdContractAtIndex(i)
 
-				if contract and THelper.MouseIn(entriesRect.GetX(), currY, entrySize.GetX(), entrySize.GetY()-1)
+				If contract And THelper.MouseIn(entriesRect.GetX(), currY, entrySize.GetX(), entrySize.GetY()-1)
 					'store for outside use (eg. displaying a sheet)
 					hoveredAdContract = contract
 
 					Game.cursorstate = 1
 					If MOUSEMANAGER.IsHit(1)
-						new TGUIProgrammePlanElement.CreateWithBroadcastMaterial( new TAdvertisement.Create(contract), "programmePlanner" ).drag()
+						New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( New TAdvertisement.Create(contract), "programmePlanner" ).drag()
 						MOUSEMANAGER.resetKey(1)
 						SetOpen(0)
 					EndIf
-				endif
+				EndIf
 
 				'next tape
 				currY :+ entrySize.y
 			Next
-		endif
+		EndIf
 
 		If MOUSEMANAGER.IsHit(2)
 			SetOpen(0)
 			MOUSEMANAGER.resetKey(2)
-		endif
+		EndIf
 
 		'close if mouse hit outside - simple mode: so big rect
-		if MouseManager.IsHit(1)
-			if not entriesRect.containsXY(MouseManager.x, MouseManager.y)
+		If MouseManager.IsHit(1)
+			If Not entriesRect.containsXY(MouseManager.x, MouseManager.y)
 				SetOpen(0)
 				'MouseManager.ResetKey(1)
-			endif
-		endif
+			EndIf
+		EndIf
 	End Method
 
 
 	Method SetOpen:Int(newState:Int)
 		newState = Max(0, newState)
-		If newState <= 0 Then enabled = 0 else enabled = 1
-		self.openState = newState
+		If newState <= 0 Then enabled = 0 Else enabled = 1
+		Self.openState = newState
 	End Method
 End Type
 
@@ -1565,19 +1565,19 @@ End Type
 'Programmeblocks used in Auction-Screen
 'they do not need to have gui/non-gui objects as no special
 'handling is done (just clicking)
-Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
-	Field area:TRectangle = new TRectangle.Init(0,0,0,0)
+Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
+	Field area:TRectangle = New TRectangle.Init(0,0,0,0)
 	Field licence:TProgrammeLicence		'the licence getting auctionated (a series, movie or collection)
-	Field bestBid:int = 0				'what was bidden for that licence
-	Field bestBidder:int = 0			'what was bidden for that licence
-	Field slot:int = 0					'for ordering (and displaying sheets without overlapping)
-	Field bidSavings:float = 0.75		'how much to shape of the original price
+	Field bestBid:Int = 0				'what was bidden for that licence
+	Field bestBidder:Int = 0			'what was bidden for that licence
+	Field slot:Int = 0					'for ordering (and displaying sheets without overlapping)
+	Field bidSavings:Float = 0.75		'how much to shape of the original price
 	'cached image
 	Field _imageWithText:TImage = Null {nosave}
 
-	Global bidSavingsMaximum:float		= 0.85			'base value
-	Global bidSavingsMinimum:float		= 0.50			'base value
-	Global bidSavingsDecreaseBy:float	= 0.05			'reduce the bidSavings-value per day
+	Global bidSavingsMaximum:Float		= 0.85			'base value
+	Global bidSavingsMinimum:Float		= 0.50			'base value
+	Global bidSavingsDecreaseBy:Float	= 0.05			'reduce the bidSavings-value per day
 	Global List:TList = CreateList()	'list of all blocks
 
 	'todo/idea: we could add a "started" and a "endTime"-field so
@@ -1585,24 +1585,24 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 
 
 	Method Create:TAuctionProgrammeBlocks(slot:Int=0, licence:TProgrammeLicence)
-		self.area.position.SetXY(140 + (slot Mod 2) * 260, 80 + Ceil(slot / 2) * 60)
-		self.area.dimension.CopyFrom(GetSpriteFromRegistry("gfx_auctionmovie").area.dimension)
-		self.slot = slot
-		self.Refill(licence)
-		List.AddLast(self)
+		Self.area.position.SetXY(140 + (slot Mod 2) * 260, 80 + Ceil(slot / 2) * 60)
+		Self.area.dimension.CopyFrom(GetSpriteFromRegistry("gfx_auctionmovie").area.dimension)
+		Self.slot = slot
+		Self.Refill(licence)
+		List.AddLast(Self)
 
 		'sort so that slot1 comes before slot2 without having to matter about creation order
 		TAuctionProgrammeBlocks.list.sort(True, TAuctionProgrammeBlocks.sort)
-		Return self
+		Return Self
 	End Method
 
 
-	Function GetByLicence:TAuctionProgrammeBlocks(licence:TProgrammeLicence, licenceID:int=-1)
-		For local obj:TAuctionProgrammeBlocks = eachin List
-			if licence and obj.licence = licence then return obj
-			if obj.licence.id = licenceID then return obj
+	Function GetByLicence:TAuctionProgrammeBlocks(licence:TProgrammeLicence, licenceID:Int=-1)
+		For Local obj:TAuctionProgrammeBlocks = EachIn List
+			If licence And obj.licence = licence Then Return obj
+			If obj.licence.id = licenceID Then Return obj
 		Next
-		return null
+		Return Null
 	End Function
 
 
@@ -1623,16 +1623,16 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 
 
 	'sets another licence into the slot
-	Method Refill:int(programmeLicence:TProgrammeLicence=null)
+	Method Refill:Int(programmeLicence:TProgrammeLicence=Null)
 		licence = programmeLicence
-		local minPrice:int = 200000
+		Local minPrice:Int = 200000
 
-		while not licence and minPrice >= 0
+		While Not licence And minPrice >= 0
 			licence = GetProgrammeLicenceCollection().GetRandomWithPrice(minPrice)
 			'lower the requirements
-			if not licence then minPrice :- 10000
+			If Not licence Then minPrice :- 10000
 		Wend
-		if not licence then THROW "[ERROR] TAuctionProgrammeBlocks.Refill - no licence"
+		If Not licence Then Throw "[ERROR] TAuctionProgrammeBlocks.Refill - no licence"
 
 		'set licence owner to "-1" so it gets not returned again from Random-Getter
 		licence.SetOwner(-1)
@@ -1645,84 +1645,84 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 		bidSavings = bidSavingsMaximum
 
 		'emit event
-		EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.Refill", new TData.Add("licence", licence).AddNumber("slot", slot), self))
+		EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.Refill", New TData.Add("licence", licence).AddNumber("slot", slot), Self))
 	End Method
 
 
-	Method EndAuction:int()
-		If not licence then return FALSE
+	Method EndAuction:Int()
+		If Not licence Then Return False
 
-		if bestBidder
-			local player:TPlayer = GetPlayerCollection().Get(bestBidder)
+		If bestBidder
+			Local player:TPlayer = GetPlayerCollection().Get(bestBidder)
 			player.GetProgrammeCollection().AddProgrammeLicence(licence)
 
-			if player.isLocalAI()
+			If player.isLocalAI()
 				player.PlayerAI.CallOnProgrammeLicenceAuctionWin(licence, bestBid)
-			endif
+			EndIf
 
 			'emit event so eg. toastmessages could attach
-			local evData:TData = new TData
+			Local evData:TData = New TData
 			evData.Add("licence", licence)
 			evData.AddNumber("bestBidder", player.playerID)
 			evData.AddNumber("bestBid", bestBid)
-			EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.onWin", evData, self))
+			EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.onWin", evData, Self))
 		End If
 
 		'emit event
-		local evData:TData = new TData
+		Local evData:TData = New TData
 		evData.Add("licence", licence)
 		evData.AddNumber("bestBidder", bestBidder)
 		evData.AddNumber("bestBid", bestBid)
 		evData.AddNumber("bidSavings", bidSavings)
-		EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.onEndAuction", evData, self))
+		EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.onEndAuction", evData, Self))
 
 		'found nobody to buy this licence
 		'so we decrease price a bit
-		if not bestBidder
-			self.bidSavings :- self.bidSavingsDecreaseBy
-		Endif
+		If Not bestBidder
+			Self.bidSavings :- Self.bidSavingsDecreaseBy
+		EndIf
 
 		'if we had a bidder or found nobody with the allowed price minimum
 		'we add another licence to this block and reset everything
-		if bestBidder or self.bidSavings < self.bidSavingsMinimum
+		If bestBidder Or Self.bidSavings < Self.bidSavingsMinimum
 			Refill()
-		endif
+		EndIf
 	End Method
 
 
 	Method GetLicence:TProgrammeLicence()  {_exposeToLua}
-		return licence
+		Return licence
 	End Method
 
 
-	Method SetBid:int(playerID:Int)
-		local player:TPlayer = GetPlayer(playerID)
-		If not player then return -1
+	Method SetBid:Int(playerID:Int)
+		Local player:TPlayer = GetPlayer(playerID)
+		If Not player Then Return -1
 		'if the playerID was -1 ("auto") we should assure we have a correct id now
 		playerID = player.playerID
 		'already highest bidder, no need to add another bid
-		if playerID = bestBidder then return 0
+		If playerID = bestBidder Then Return 0
 
-		local price:int = GetNextBid()
-		If player.getFinance().PayAuctionBid(price, self.GetLicence())
+		Local price:Int = GetNextBid()
+		If player.getFinance().PayAuctionBid(price, Self.GetLicence())
 			'another player was highest bidder, we pay him back the
 			'bid he gave (which is the currently highest bid...)
-			If bestBidder and GetPlayer(bestBidder)
-				GetPlayerFinance(bestBidder).PayBackAuctionBid(bestBid, self)
+			If bestBidder And GetPlayer(bestBidder)
+				GetPlayerFinance(bestBidder).PayBackAuctionBid(bestBid, Self)
 
 				'inform player AI that their bid was overbid
-				if GetPlayer(bestBidder).isLocalAI()
+				If GetPlayer(bestBidder).isLocalAI()
 					GetPlayer(bestBidder).PlayerAI.CallOnProgrammeLicenceAuctionGetOutbid(GetLicence(), price, playerID)
-				endif
+				EndIf
 				
 				'emit event so eg. toastmessages could attach
-				local evData:TData = new TData
+				Local evData:TData = New TData
 				evData.Add("licence", GetLicence())
 				evData.AddNumber("previousBestBidder", bestBidder)
 				evData.AddNumber("previousBestBid", bestBid)
 				evData.AddNumber("bestBidder", playerID)
 				evData.AddNumber("bestBid", price)
-				EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.onGetOutbid", evData, self))
+				EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.onGetOutbid", evData, Self))
 			EndIf
 			'set new bid values
 			bestBidder = playerID
@@ -1730,25 +1730,25 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 
 
 			'reset so cache gets renewed
-			_imageWithText = null
+			_imageWithText = Null
 
 			'emit event
-			local evData:TData = new TData
+			Local evData:TData = New TData
 			evData.Add("licence", GetLicence())
 			evData.AddNumber("bestBidder", bestBidder)
 			evData.AddNumber("bestBid", bestBid)
-			EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.setBid", evData, self))
+			EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.setBid", evData, Self))
 		EndIf
-		return price
+		Return price
 	End Method
 
 
-	Method GetNextBid:int() {_exposeToLua}
+	Method GetNextBid:Int() {_exposeToLua}
 		Local nextBid:Int = 0
 		'no bid done yet, next bid is the licences price cut by 25%
-		if bestBid = 0
+		If bestBid = 0
 			nextBid = licence.getPrice() * 0.75
-		else
+		Else
 			nextBid = bestBid
 
 			If nextBid < 100000
@@ -1760,9 +1760,9 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 			Else If nextBid >= 750000
 				nextBid :+ 75000
 			EndIf
-		endif
+		EndIf
 
-		return nextBid
+		Return nextBid
 	End Method
 
 
@@ -1776,30 +1776,30 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
     Method Draw()
 		SetColor 255,255,255  'normal
 		'not yet cached?
-	    If not _imageWithText
+	    If Not _imageWithText
 			'print "renew cache for "+self.licence.GetTitle()
 			_imageWithText = GetSpriteFromRegistry("gfx_auctionmovie").GetImageCopy()
-			if not _imageWithText then THROW "GetImage Error for gfx_auctionmovie"
+			If Not _imageWithText Then Throw "GetImage Error for gfx_auctionmovie"
 
-			local pix:TPixmap = LockImage(_imageWithText)
-			local font:TBitmapFont		= GetBitmapFont("Default", 12)
-			local titleFont:TBitmapFont	= GetBitmapFont("Default", 12, BOLDFONT)
+			Local pix:TPixmap = LockImage(_imageWithText)
+			Local font:TBitmapFont		= GetBitmapFont("Default", 12)
+			Local titleFont:TBitmapFont	= GetBitmapFont("Default", 12, BOLDFONT)
 
 			'set target for fonts
 			TBitmapFont.setRenderTarget(_imageWithText)
 
 			If bestBidder
-				local player:TPlayer = GetPlayerCollection().Get(bestBidder)
+				Local player:TPlayer = GetPlayerCollection().Get(bestBidder)
 				titleFont.drawStyled(player.name, 31,33, player.color, 2, 1, 0.25)
-			else
+			Else
 				font.drawStyled(GetLocale("AUCTION_WITHOUT_BID"), 31,33, TColor.CreateGrey(150), 0, 1, 0.25)
 			EndIf
-			titleFont.drawBlock(licence.GetTitle(), 31,5, 215,30, null, TColor.clBlack, 1, 1, 0.50)
+			titleFont.drawBlock(licence.GetTitle(), 31,5, 215,30, Null, TColor.clBlack, 1, 1, 0.50)
 
-			font.drawBlock(GetLocale("AUCTION_MAKE_BID")+": "+TFunctions.DottedValue(GetNextBid())+CURRENCYSIGN, 31,33, 212,20, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack, 1)
+			font.drawBlock(GetLocale("AUCTION_MAKE_BID")+": "+TFunctions.DottedValue(GetNextBid())+CURRENCYSIGN, 31,33, 212,20, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack, 1)
 
 			'reset target for fonts
-			TBitmapFont.setRenderTarget(null)
+			TBitmapFont.setRenderTarget(Null)
 	    EndIf
 		SetColor 255,255,255
 		SetAlpha 1
@@ -1814,16 +1814,16 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 
 		'draw sheets (must be afterwards to avoid overlapping (itemA Sheet itemB itemC) )
 		For Local obj:TAuctionProgrammeBlocks = EachIn List
-			if obj.area.containsXY(MouseManager.x, MouseManager.y)
-				local leftX:int = 30, rightX:int = 30
-				local sheetY:float 	= 20
-				local sheetX:float 	= leftX
-				local sheetAlign:int= 0
+			If obj.area.containsXY(MouseManager.x, MouseManager.y)
+				Local leftX:Int = 30, rightX:Int = 30
+				Local sheetY:Float 	= 20
+				Local sheetX:Float 	= leftX
+				Local sheetAlign:Int= 0
 				'if mouse on left side of screen - align sheet on right side
-				if MouseManager.x < GetGraphicsManager().GetWidth()/2
+				If MouseManager.x < GetGraphicsManager().GetWidth()/2
 					sheetX = GetGraphicsManager().GetWidth() - rightX
 					sheetAlign = 1
-				endif
+				EndIf
 
 				SetBlend LightBlend
 				SetAlpha 0.20
@@ -1834,21 +1834,21 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 
 				obj.licence.ShowSheet(sheetX, sheetY, sheetAlign, TBroadcastMaterial.TYPE_PROGRAMME)
 				Exit
-			endif
+			EndIf
 		Next
 	End Function
 
 
 
-	Function UpdateAll:int()
+	Function UpdateAll:Int()
 		'without clicks we do not need to handle things
-		if not MOUSEMANAGER.IsClicked(1) then return FALSE
+		If Not MOUSEMANAGER.IsClicked(1) Then Return False
 
 		For Local obj:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
-			if obj.bestBidder <> GetPlayerCollection().playerID And obj.area.containsXY(MouseManager.x, MouseManager.y)
+			If obj.bestBidder <> GetPlayerCollection().playerID And obj.area.containsXY(MouseManager.x, MouseManager.y)
 				obj.SetBid( GetPlayerCollection().playerID )  'set the bid
 				MOUSEMANAGER.ResetKey(1)
-				return TRUE
+				Return True
 			EndIf
 		Next
 	End Function
@@ -1861,23 +1861,23 @@ End Type
 
 
 'a graphical representation of programmes/news/ads...
-Type TGUINews extends TGUIGameListItem
+Type TGUINews Extends TGUIGameListItem
 	Field news:TNews = Null
-	Field imageBaseName:string = "gfx_news_sheet"
+	Field imageBaseName:String = "gfx_news_sheet"
 	Field cacheTextOverlay:TImage
 
-    Method Create:TGUINews(pos:TVec2D=null, dimension:TVec2D=null, value:String="")
+    Method Create:TGUINews(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
 		Super.Create(pos, dimension, value)
 
-		return self
+		Return Self
 	End Method
 
-	Method SetNews:int(news:TNews)
-		self.news = news
-		if news
+	Method SetNews:Int(news:TNews)
+		Self.news = news
+		If news
 			'now we can calculate the item width
-			self.Resize( GetSpriteFromRegistry(Self.imageBaseName+news.newsEvent.genre).area.GetW(), GetSpriteFromRegistry(Self.imageBaseName+news.newsEvent.genre).area.GetH() )
-		endif
+			Self.Resize( GetSpriteFromRegistry(Self.imageBaseName+news.newsEvent.genre).area.GetW(), GetSpriteFromRegistry(Self.imageBaseName+news.newsEvent.genre).area.GetH() )
+		EndIf
 		'self.SetLimitToState("Newsplanner")
 
 		'as the news inflicts the sorting algorithm - resort
@@ -1885,50 +1885,50 @@ Type TGUINews extends TGUIGameListItem
 	End Method
 
 
-	Method Compare:int(Other:Object)
-		local otherBlock:TGUINews = TGUINews(Other)
-		If otherBlock<>null
+	Method Compare:Int(Other:Object)
+		Local otherBlock:TGUINews = TGUINews(Other)
+		If otherBlock<>Null
 			'both items are dragged - check time
-			if self._flags & GUI_OBJECT_DRAGGED AND otherBlock._flags & GUI_OBJECT_DRAGGED
+			If Self._flags & GUI_OBJECT_DRAGGED And otherBlock._flags & GUI_OBJECT_DRAGGED
 				'if a drag was earlier -> move to top
-				if self._timeDragged < otherBlock._timeDragged then Return 1
-				if self._timeDragged > otherBlock._timeDragged then Return -1
-				return 0
-			endif
+				If Self._timeDragged < otherBlock._timeDragged Then Return 1
+				If Self._timeDragged > otherBlock._timeDragged Then Return -1
+				Return 0
+			EndIf
 
-			if self.news and otherBlock.news
-				local publishDifference:int = self.news.GetPublishTime() - otherBlock.news.GetPublishTime()
+			If Self.news And otherBlock.news
+				Local publishDifference:Int = Self.news.GetPublishTime() - otherBlock.news.GetPublishTime()
 
 				'self is newer ("later") than other
-				if publishDifference>0 then return -1
+				If publishDifference>0 Then Return -1
 				'self is older than other
-				if publishDifference<0 then return 1
+				If publishDifference<0 Then Return 1
 				'self is same age than other
-				if publishDifference=0 then return Super.Compare(Other)
-			endif
-		endif
+				If publishDifference=0 Then Return Super.Compare(Other)
+			EndIf
+		EndIf
 
-		return Super.Compare(Other)
+		Return Super.Compare(Other)
 	End Method
 
 
 	'override default update-method
-	Method Update:int()
-		super.Update()
+	Method Update:Int()
+		Super.Update()
 
 		'set mouse to "hover"
-		if news.owner = GetPlayerCollection().playerID or news.owner <= 0 and mouseover then Game.cursorstate = 1
+		If news.owner = GetPlayerCollection().playerID Or news.owner <= 0 And mouseover Then Game.cursorstate = 1
 		'set mouse to "dragged"
-		if isDragged() then Game.cursorstate = 2
+		If isDragged() Then Game.cursorstate = 2
 	End Method
 
 
 	Method DrawTextOverlay()
-		local screenX:float = int(GetScreenX())
-		local screenY:float = int(GetScreenY())
+		Local screenX:Float = Int(GetScreenX())
+		Local screenY:Float = Int(GetScreenY())
 
 		'===== CREATE CACHE IF MISSING =====
-		if not cacheTextOverlay
+		If Not cacheTextOverlay
 			cacheTextOverlay = TFunctions.CreateEmptyImage(rect.GetW(), rect.GetH())
 '			cacheTextOverlay = CreateImage(rect.GetW(), rect.GetH(), DYNAMICIMAGE | FILTEREDIMAGE)
 
@@ -1936,17 +1936,17 @@ Type TGUINews extends TGUIGameListItem
 			TBitmapFont.SetRenderTarget(cacheTextOverlay)
 
 			'default texts (title, text,...)
-			GetBitmapFontManager().basefontBold.drawBlock(news.GetTitle(), 15, 2, 330, 15, null, TColor.CreateGrey(20))
-			GetBitmapFontManager().baseFont.drawBlock(news.GetDescription(), 15, 17, 340, 50 + 8, null, TColor.CreateGrey(100))
+			GetBitmapFontManager().basefontBold.drawBlock(news.GetTitle(), 15, 2, 330, 15, Null, TColor.CreateGrey(20))
+			GetBitmapFontManager().baseFont.drawBlock(news.GetDescription(), 15, 17, 340, 50 + 8, Null, TColor.CreateGrey(100))
 
-			local oldAlpha:float = GetAlpha()
+			Local oldAlpha:Float = GetAlpha()
 			SetAlpha 0.3*oldAlpha
-			GetBitmapFont("Default", 9).drawBlock(news.GetGenreString(), 15, 73, 120, 15, null, TColor.clBlack)
+			GetBitmapFont("Default", 9).drawBlock(news.GetGenreString(), 15, 73, 120, 15, Null, TColor.clBlack)
 			SetAlpha 1.0*oldAlpha
 
 			'set back to screen Rendering
-			TBitmapFont.SetRenderTarget(null)
-		endif
+			TBitmapFont.SetRenderTarget(Null)
+		EndIf
 
 		'===== DRAW CACHE =====
 		DrawImage(cacheTextOverlay, screenX, screenY)
@@ -1957,70 +1957,70 @@ Type TGUINews extends TGUIGameListItem
 		State = 0
 		SetColor 255,255,255
 
-		if self.RestrictViewPort()
-			local screenX:float = int(GetScreenX())
-			local screenY:float = int(GetScreenY())
+		If Self.RestrictViewPort()
+			Local screenX:Float = Int(GetScreenX())
+			Local screenY:Float = Int(GetScreenY())
 
-			local oldAlpha:float = GetAlpha()
-			local itemAlpha:float = 1.0
+			Local oldAlpha:Float = GetAlpha()
+			Local itemAlpha:Float = 1.0
 			'fade out dragged
-			if isDragged() then itemAlpha = 0.25 + 0.5^GuiManager.GetDraggedNumber(self)
+			If isDragged() Then itemAlpha = 0.25 + 0.5^GuiManager.GetDraggedNumber(Self)
 
 			SetAlpha oldAlpha*itemAlpha
 			'background - no "_dragged" to add to name
 			GetSpriteFromRegistry(Self.imageBaseName+news.GetGenre()).Draw(screenX, screenY)
 
 			'highlight hovered news (except already dragged)
-			if not isDragged() and self = RoomHandler_News.hoveredGuiNews
-				local oldAlpha:float = GetAlpha()
+			If Not isDragged() And Self = RoomHandler_News.hoveredGuiNews
+				Local oldAlpha:Float = GetAlpha()
 				SetBlend LightBlend
 				SetAlpha 0.30*oldAlpha
 				SetColor 150,150,150
 				GetSpriteFromRegistry(Self.imageBaseName+news.GetGenre()).Draw(screenX, screenY)
 				SetAlpha oldAlpha
 				SetBlend AlphaBlend
-			endif
+			EndIf
 
 			'===== DRAW CACHED TEXTS =====
 			'creates cache if needed
 			DrawTextOverlay()
 
 			'===== DRAW NON-CACHED TEXTS =====
-			if not news.paid
-				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice() + ",-", screenX + 262, screenY + 70, 90, -1, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
-			else
-				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice() + ",-", screenX + 262, screenY + 70, 90, -1, new TVec2D.Init(ALIGN_RIGHT), TColor.CreateGrey(50))
-			endif
+			If Not news.paid
+				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice() + ",-", screenX + 262, screenY + 70, 90, -1, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
+			Else
+				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice() + ",-", screenX + 262, screenY + 70, 90, -1, New TVec2D.Init(ALIGN_RIGHT), TColor.CreateGrey(50))
+			EndIf
 
 			Select GetWorldTime().GetDay() - GetWorldTime().GetDay(news.GetHappenedtime())
-				case 0	GetBitmapFontManager().baseFont.drawBlock(GetLocale("TODAY")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack )
-				case 1	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("YESTERDAY")+" "+ GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
-				case 2	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("TWO_DAYS_AGO")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
+				Case 0	GetBitmapFontManager().baseFont.drawBlock(GetLocale("TODAY")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack )
+				Case 1	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("YESTERDAY")+" "+ GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
+				Case 2	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("TWO_DAYS_AGO")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
 			End Select
 
 			SetColor 255, 255, 255
 			SetAlpha oldAlpha
 	
-			self.resetViewport()
-		endif
+			Self.resetViewport()
+		EndIf
 
-		if TVTDebugInfos
-			local oldAlpha:Float = GetAlpha()
+		If TVTDebugInfos
+			Local oldAlpha:Float = GetAlpha()
 			SetAlpha oldAlpha * 0.75
 			SetColor 0,0,0
 
-			local w:int = rect.GetW()
-			local h:int = rect.GetH()
-			local screenX:float = int(GetScreenX())
-			local screenY:float = int(GetScreenY())
+			Local w:Int = rect.GetW()
+			Local h:Int = rect.GetH()
+			Local screenX:Float = Int(GetScreenX())
+			Local screenY:Float = Int(GetScreenY())
 			DrawRect(screenX, screenY, w,h)
 		
 			SetColor 255,255,255
 			SetAlpha 1.0
 
-			local textY:int = screenY + 2
-			local fontBold:TBitmapFont = GetBitmapFontManager().basefontBold
-			local fontNormal:TBitmapFont = GetBitmapFontManager().basefont
+			Local textY:Int = screenY + 2
+			Local fontBold:TBitmapFont = GetBitmapFontManager().basefontBold
+			Local fontNormal:TBitmapFont = GetBitmapFontManager().basefont
 			
 			fontBold.draw("News: " + news.newsEvent.GetTitle(), screenX + 5, textY)
 			textY :+ 14	
@@ -2032,7 +2032,7 @@ Type TGUINews extends TGUIGameListItem
 			textY :+ 12	
 			fontNormal.draw("Alter: " + Long(GetWorldTime().GetTimeGone() - news.GetHappenedtime()) + " Sekunden  (" + (GetWorldTime().GetDay() - GetWorldTime().GetDay(news.GetHappenedtime())) + " Tage)", screenX + 5, textY)
 			textY :+ 12	
-			rem
+			Rem
 			local eventCan:string = ""
 			if news.newsEvent.skippable
 				eventCan :+ "ueberspringbar)"
@@ -2053,20 +2053,20 @@ Type TGUINews extends TGUIGameListItem
 			textY :+ 12	
 
 			SetAlpha oldAlpha
-		Endif
+		EndIf
 	End Method
 End Type
 
 
 
 
-Type TGUIProgrammeLicenceSlotList extends TGUISlotList
-	field  acceptType:int		= 0	'accept all
-	Global acceptAll:int		= 0
-	Global acceptMovies:int		= 1
-	Global acceptSeries:int		= 2
+Type TGUIProgrammeLicenceSlotList Extends TGUISlotList
+	Field  acceptType:Int		= 0	'accept all
+	Global acceptAll:Int		= 0
+	Global acceptMovies:Int		= 1
+	Global acceptSeries:Int		= 2
 
-    Method Create:TGUIProgrammeLicenceSlotList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
+    Method Create:TGUIProgrammeLicenceSlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 
 		'albeit the list base already handles drop on itself
@@ -2075,143 +2075,143 @@ Type TGUIProgrammeLicenceSlotList extends TGUISlotList
 		'---alternatively we could intercept programmeblocks-drag-event
 		'EventManager.registerListenerFunction( "guiobject.onDropOnTarget", self.onDropOnTarget, accept, self)
 
-		return self
+		Return Self
 	End Method
 
 
-	Method ContainsLicence:int(licence:TProgrammeLicence)
-		for local i:int = 0 to self.GetSlotAmount()-1
-			local block:TGUIProgrammeLicence = TGUIProgrammeLicence(self.GetItemBySlot(i))
-			if block and block.licence = licence then return TRUE
+	Method ContainsLicence:Int(licence:TProgrammeLicence)
+		For Local i:Int = 0 To Self.GetSlotAmount()-1
+			Local block:TGUIProgrammeLicence = TGUIProgrammeLicence(Self.GetItemBySlot(i))
+			If block And block.licence = licence Then Return True
 		Next
-		return FALSE
+		Return False
 	End Method
 
 
 	'overriden Method: so it does not accept a certain
 	'kind of programme (movies - series)
-	Method AddItem:int(item:TGUIobject, extra:object=null)
-		local coverBlock:TGUIProgrammeLicence = TGUIProgrammeLicence(item)
-		if not coverBlock then return FALSE
+	Method AddItem:Int(item:TGUIobject, extra:Object=Null)
+		Local coverBlock:TGUIProgrammeLicence = TGUIProgrammeLicence(item)
+		If Not coverBlock Then Return False
 
 		'something odd happened - no licence
-		if not coverBlock.licence then return FALSE
+		If Not coverBlock.licence Then Return False
 
-		if acceptType > 0
+		If acceptType > 0
 			'movies and series do not accept collections or episodes
-			if acceptType = acceptMovies and coverBlock.licence.isSeries() then return FALSE
-			if acceptType = acceptSeries and coverBlock.licence.isMovie() then return FALSE
-		endif
+			If acceptType = acceptMovies And coverBlock.licence.isSeries() Then Return False
+			If acceptType = acceptSeries And coverBlock.licence.isMovie() Then Return False
+		EndIf
 
-		if super.AddItem(item,extra)
+		If Super.AddItem(item,extra)
 			'print "added an item ... slot state:" + self.GetUnusedSlotAmount()+"/"+self.GetSlotAmount()
-			return true
-		endif
+			Return True
+		EndIf
 
-		return FALSE
+		Return False
 	End Method
 End Type
 
 
 
 'a graphical representation of programmes to buy/sell/archive...
-Type TGUIProgrammeLicence extends TGUIGameListItem
+Type TGUIProgrammeLicence Extends TGUIGameListItem
 	Field licence:TProgrammeLicence
 
 
-    Method Create:TGUIProgrammeLicence(pos:TVec2D=null, dimension:TVec2D=null, value:String="")
+    Method Create:TGUIProgrammeLicence(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
 		Super.Create(pos, dimension, value)
 
 		'override defaults - with the default genre identifier
 		'(eg. "undefined" -> "gfx_movie_undefined")
-		self.assetNameDefault = "gfx_movie_"+TVTProgrammeGenre.GetAsString(-1)
-		self.assetNameDragged = "gfx_movie_"+TVTProgrammeGenre.GetAsString(-1)
+		Self.assetNameDefault = "gfx_movie_"+TVTProgrammeGenre.GetAsString(-1)
+		Self.assetNameDragged = "gfx_movie_"+TVTProgrammeGenre.GetAsString(-1)
 
-		return self
+		Return Self
 	End Method
 
 
 	Method CreateWithLicence:TGUIProgrammeLicence(licence:TProgrammeLicence)
-		self.Create()
-		self.setProgrammeLicence(licence)
-		return self
+		Self.Create()
+		Self.setProgrammeLicence(licence)
+		Return Self
 	End Method
 
 
 	Method SetProgrammeLicence:TGUIProgrammeLicence(licence:TProgrammeLicence)
-		self.licence = licence
+		Self.licence = licence
 
 		'get the string identifier of the genre (eg. "adventure" or "action")
-		local genreString:string = TVTProgrammeGenre.GetAsString(licence.GetGenre())
-		local assetName:string = ""
+		Local genreString:String = TVTProgrammeGenre.GetAsString(licence.GetGenre())
+		Local assetName:String = ""
 
 		'if it is a collection or series
-		if licence.isCollection()
+		If licence.isCollection()
 			assetName = "gfx_movie_" + genreString
-		elseif licence.isSeries()
+		ElseIf licence.isSeries()
 			assetName = "gfx_series_" + genreString
-		else
+		Else
 			assetName = "gfx_movie_" + genreString
-		endif
+		EndIf
 
 		'use the name of the returned sprite - default or specific one
 		assetName = GetSpriteFromRegistry(assetName, assetNameDefault).GetName()
 
 		'check if "dragged" exists
-		local assetNameDragged:string = assetName+".dragged"
-		if GetSpriteFromRegistry(assetNameDragged).GetName() <> assetNameDragged
+		Local assetNameDragged:String = assetName+".dragged"
+		If GetSpriteFromRegistry(assetNameDragged).GetName() <> assetNameDragged
 			assetNameDragged = assetName
-		endif
+		EndIf
 		
-		self.InitAssets(assetName, assetNameDragged)
+		Self.InitAssets(assetName, assetNameDragged)
 
-		return self
+		Return Self
 	End Method
 
 
 	'override to only allow dragging for affordable or own licences
 	Method IsDragable:Int() 
 		If Super.IsDragable()
-			return (licence.owner = GetPlayerCollection().playerID or (licence.owner <= 0 and IsAffordable()))
+			Return (licence.owner = GetPlayerCollection().playerID Or (licence.owner <= 0 And IsAffordable()))
 		Else
-			return False
+			Return False
 		EndIf
 	End Method
 
 
 	Method IsAffordable:Int()
-		return GetPlayer().getFinance().canAfford(licence.getPrice())
+		Return GetPlayer().getFinance().canAfford(licence.getPrice())
 	End Method
 
 
-	Method DrawSheet(leftX:int=30, rightX:int=30)
+	Method DrawSheet(leftX:Int=30, rightX:Int=30)
 '		self.parentBlock.DrawSheet()
-		local sheetY:float 	= 20
-		local sheetX:float 	= leftX
-		local sheetAlign:int= 0
+		Local sheetY:Float 	= 20
+		Local sheetX:Float 	= leftX
+		Local sheetAlign:Int= 0
 		'if mouse on left side of screen - align sheet on right side
-		if MouseManager.x < GetGraphicsManager().GetWidth()/2
+		If MouseManager.x < GetGraphicsManager().GetWidth()/2
 			sheetX = GetGraphicsManager().GetWidth() - rightX
 			sheetAlign = 1
-		endif
+		EndIf
 
 		SetColor 0,0,0
 		SetAlpha 0.2
-		Local x:Float = self.GetScreenX()
-		Local tri:Float[]=[sheetX+20,sheetY+25,sheetX+20,sheetY+90,self.GetScreenX()+self.GetScreenWidth()/2.0+3,self.GetScreenY()+self.GetScreenHeight()/2.0]
+		Local x:Float = Self.GetScreenX()
+		Local tri:Float[]=[sheetX+20,sheetY+25,sheetX+20,sheetY+90,Self.GetScreenX()+Self.GetScreenWidth()/2.0+3,Self.GetScreenY()+Self.GetScreenHeight()/2.0]
 		DrawPoly(tri)
 		SetColor 255,255,255
 		SetAlpha 1.0
 
-		self.licence.ShowSheet(sheetX,sheetY, sheetAlign, TBroadcastMaterial.TYPE_PROGRAMME)
+		Self.licence.ShowSheet(sheetX,sheetY, sheetAlign, TBroadcastMaterial.TYPE_PROGRAMME)
 	End Method
 
 
-	Method Draw:Int()
+	Method Draw()
 		SetColor 255,255,255
 
 		'make faded as soon as not "dragable" for us
-		if licence.owner <> GetPlayerCollection().playerID and (licence.owner<=0 and not IsAffordable()) then SetAlpha 0.75
+		If licence.owner <> GetPlayerCollection().playerID And (licence.owner<=0 And Not IsAffordable()) Then SetAlpha 0.75
 		Super.Draw()
 		SetAlpha 1.0
 	End Method
@@ -2223,71 +2223,71 @@ End Type
 
 
 'a graphical representation of contracts at the ad-agency ...
-Type TGuiAdContract extends TGUIGameListItem
+Type TGuiAdContract Extends TGUIGameListItem
 	Field contract:TAdContract
 
 
-    Method Create:TGuiAdContract(pos:TVec2D=null, dimension:TVec2D=null, value:String="")
+    Method Create:TGuiAdContract(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
 		Super.Create(pos, dimension, value)
 
-		self.assetNameDefault = "gfx_contracts_0"
-		self.assetNameDragged = "gfx_contracts_0_dragged"
+		Self.assetNameDefault = "gfx_contracts_0"
+		Self.assetNameDragged = "gfx_contracts_0_dragged"
 
-		return self
+		Return Self
 	End Method
 
 
 	Method CreateWithContract:TGuiAdContract(contract:TAdContract)
-		self.Create()
-		self.setContract(contract)
-		return self
+		Self.Create()
+		Self.setContract(contract)
+		Return Self
 	End Method
 
 
 	Method SetContract:TGuiAdContract(contract:TAdContract)
-		self.contract		= contract
+		Self.contract		= contract
 		'targetgroup is between 0-9
-		self.InitAssets(GetAssetName(contract.GetLimitedToTargetGroup(), FALSE), GetAssetName(contract.GetLimitedToTargetGroup(), TRUE))
+		Self.InitAssets(GetAssetName(contract.GetLimitedToTargetGroup(), False), GetAssetName(contract.GetLimitedToTargetGroup(), True))
 
-		return self
+		Return Self
 	End Method
 
 
-	Method GetAssetName:string(targetGroup:int=-1, dragged:int=FALSE)
-		if targetGroup < 0 and contract then targetGroup = contract.GetLimitedToTargetGroup()
-		local result:string = "gfx_contracts_" + Min(9,Max(0, targetGroup))
-		if dragged then result = result + "_dragged"
-		return result
+	Method GetAssetName:String(targetGroup:Int=-1, dragged:Int=False)
+		If targetGroup < 0 And contract Then targetGroup = contract.GetLimitedToTargetGroup()
+		Local result:String = "gfx_contracts_" + Min(9,Max(0, targetGroup))
+		If dragged Then result = result + "_dragged"
+		Return result
 	End Method
 
 
 	'override default update-method
-	Method Update:int()
-		super.Update()
+	Method Update:Int()
+		Super.Update()
 
 		'disable dragging if not signable
-		if contract.owner <= 0
-			if not contract.IsAvailableToSign(GetPlayer().playerID)
+		If contract.owner <= 0
+			If Not contract.IsAvailableToSign(GetPlayer().playerID)
 				SetOption(GUI_OBJECT_DRAGABLE, False)
-			else
+			Else
 				SetOption(GUI_OBJECT_DRAGABLE, True)
-			endif
-		endif
+			EndIf
+		EndIf
 			
 
 		'set mouse to "hover"
-		if contract.owner = GetPlayer().playerID or contract.owner <= 0 and mouseover then Game.cursorstate = 1
+		If contract.owner = GetPlayer().playerID Or contract.owner <= 0 And mouseover Then Game.cursorstate = 1
 				
 		
 		'set mouse to "dragged"
-		if isDragged() then Game.cursorstate = 2
+		If isDragged() Then Game.cursorstate = 2
 	End Method
 
 
-	Method DrawSheet(leftX:int=30, rightX:int=30)
-		local sheetY:float 	= 20
-		local sheetX:float 	= leftX
-		local sheetAlign:int= 0
+	Method DrawSheet(leftX:Int=30, rightX:Int=30)
+		Local sheetY:Float 	= 20
+		Local sheetX:Float 	= leftX
+		Local sheetAlign:Int= 0
 		'if mouse on left side of screen - align sheet on right side
 		'METHOD 1
 		'instead of using the half screen width, we use another
@@ -2296,38 +2296,38 @@ Type TGuiAdContract extends TGUIGameListItem
 		'METHOD 2
 		'just use the half of a screen - ensures the data sheet does not overlap
 		'the object
-		if MouseManager.x < GetGraphicsManager().GetWidth()/2
+		If MouseManager.x < GetGraphicsManager().GetWidth()/2
 			sheetX = GetGraphicsManager().GetWidth() - rightX
 			sheetAlign = 1
-		endif
+		EndIf
 
 		SetColor 0,0,0
 		SetAlpha 0.2
-		Local x:Float = self.GetScreenX()
-		Local tri:Float[]=[sheetX+20,sheetY+25,sheetX+20,sheetY+90,self.GetScreenX()+self.GetScreenWidth()/2.0+3,self.GetScreenY()+self.GetScreenHeight()/2.0]
+		Local x:Float = Self.GetScreenX()
+		Local tri:Float[]=[sheetX+20,sheetY+25,sheetX+20,sheetY+90,Self.GetScreenX()+Self.GetScreenWidth()/2.0+3,Self.GetScreenY()+Self.GetScreenHeight()/2.0]
 		DrawPoly(tri)
 		SetColor 255,255,255
 		SetAlpha 1.0
 
-		self.contract.ShowSheet(sheetX,sheetY, sheetAlign, TBroadcastMaterial.TYPE_ADVERTISEMENT)
+		Self.contract.ShowSheet(sheetX,sheetY, sheetAlign, TBroadcastMaterial.TYPE_ADVERTISEMENT)
 	End Method
 
 
-	Method Draw:Int()
+	Method Draw()
 		SetColor 255,255,255
-		local oldCol:TColor = new TColor.Get()
+		Local oldCol:TColor = New TColor.Get()
 
 		'make faded as soon as not "dragable" for us
-		if not isDragable()
+		If Not isDragable()
 			'in our collection
-			if contract.owner = GetPlayerCollection().playerID
+			If contract.owner = GetPlayerCollection().playerID
 				SetAlpha 0.80*oldCol.a
 				SetColor 200,200,200
-			else
+			Else
 				SetAlpha 0.70*oldCol.a
 				SetColor 250,200,150
-			endif
-		endif
+			EndIf
+		EndIf
 
 		Super.Draw()
 
@@ -2338,20 +2338,20 @@ End Type
 
 
 
-Type TGUIAdContractSlotList extends TGUIGameSlotList
+Type TGUIAdContractSlotList Extends TGUIGameSlotList
 
-    Method Create:TGUIAdContractSlotList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
+    Method Create:TGUIAdContractSlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
-		return self
+		Return Self
 	End Method
 
 
-	Method ContainsContract:int(contract:TAdContract)
-		for local i:int = 0 to self.GetSlotAmount()-1
-			local block:TGuiAdContract = TGuiAdContract( self.GetItemBySlot(i) )
-			if block and block.contract = contract then return TRUE
+	Method ContainsContract:Int(contract:TAdContract)
+		For Local i:Int = 0 To Self.GetSlotAmount()-1
+			Local block:TGuiAdContract = TGuiAdContract( Self.GetItemBySlot(i) )
+			If block And block.contract = contract Then Return True
 		Next
-		return FALSE
+		Return False
 	End Method
 End Type
 

@@ -1,4 +1,4 @@
-﻿SuperStrict
+SuperStrict
 Import brl.pngloader
 Import "Dig/base.util.rectangle.bmx"
 Import "Dig/base.util.input.bmx"
@@ -21,7 +21,7 @@ Import Brl.threads
 Import "Dig/external/persistence.mod/persistence.bmx"
 Import "Dig/base.util.mersenne.bmx"
 
-Const CURRENCYSIGN:string = Chr(8364) 'eurosign
+Const CURRENCYSIGN:String = Chr(8364) 'eurosign
 
 
 
@@ -122,11 +122,11 @@ End Type
 
 
 Function MergeLists:TList(a:TList,b:TList)
-	local list:TList = a.copy()
-	for local obj:object = eachin b
+	Local list:TList = a.copy()
+	For Local obj:Object = EachIn b
 		list.addLast(obj)
-	next
-	return list
+	Next
+	Return list
 End Function
 
 
@@ -154,7 +154,7 @@ Type TStringHelper
 	Function gparam:String(txt:String, Count:Int, trenn:Byte = 32)
 		Local x:Int = 0
 		Local lastpos:Int = 0
-		For local i:int = 0 To txt.length-1
+		For Local i:Int = 0 To txt.length-1
 			If txt[i]=trenn
 				x:+1
 				If x=count Then Return txt[lastpos..i]
@@ -208,9 +208,9 @@ End Function
 
 'collection of useful functions
 Type TFunctions
-	Global roundToBeautifulEnabled:int = TRUE
+	Global roundToBeautifulEnabled:Int = True
 
-	Function DrawOutlineRect:int(x:int, y:int, w:int, h:int)
+	Function DrawOutlineRect:Int(x:Int, y:Int, w:Int, h:Int)
 		DrawLine(x, y, x + w, y, 0)
 		DrawLine(x + w , y, x + w, y + h, 0)
 		DrawLine(x + w, y + h, x, y + h, 0)
@@ -218,17 +218,21 @@ Type TFunctions
 	End Function
 
 
-	Function CreateEmptyImage:TImage(width:int, height:int, flags:int=DYNAMICIMAGE | FILTEREDIMAGE)
-		local image:TImage = CreateImage(width, height, flags)
-		local pixmap:TPixmap = LockImage(image)
-		pixmap.clearPixels(0)
-		return image
+	Function CreateEmptyImage:TImage(width:Int, height:Int, flags:Int=DYNAMICIMAGE | FILTEREDIMAGE)
+		Local image:TImage = CreateImage(width, height, flags)
+		Local pixmap:TPixmap = LockImage(image)
+		pixmap.ClearPixels(0)
+		Return image
 	End Function
 
 
 	Function ListDir:String(dir:String, onlyExtension:String = "", out:String = "")
 		Local separator:String = "/"
+		?Not bmxng
 		Local csd:Int = ReadDir(dir:String)
+		?bmxng
+		Local csd:Byte Ptr = ReadDir(dir:String)
+		?
 		If Not csd Then Return ""
 
 		Repeat
@@ -248,60 +252,60 @@ Type TFunctions
 	End Function
 
 
-	Function RoundToBeautifulValue:int(value:int)
+	Function RoundToBeautifulValue:Int(value:Int)
 		'dev
-		if not roundToBeautifulEnabled then return value
+		If Not roundToBeautifulEnabled Then Return value
 
-		if value = 0 then return 0
-		if value <= 25 then return 25
-		if value <= 50 then return 50
-		if value <= 75 then return 75
-		if value <= 100 then return 100
+		If value = 0 Then Return 0
+		If value <= 25 Then Return 25
+		If value <= 50 Then Return 50
+		If value <= 75 Then Return 75
+		If value <= 100 Then Return 100
 		'102 /50 = 2 mod 2 = 0 -> un/gerade
-		If value <= 1000 then return ceil(value / 100.0)*100 'bisher 250
-		If value <= 5000 then return ceil(value / 250.0)*250 'bisher 500
-		If value <= 10000 then return ceil(value / 500.0)*500 'bisher 1.000
-		If value <= 50000 then return ceil(value / 1000.0)*1000 'bisher 2.500
-		If value <= 100000 then return ceil(value / 5000.0)*5000 'bisher 10.000
-		If value <= 500000 then return ceil(value / 10000.0)*10000 'bisher 25.000
-		If value <= 1000000 then return ceil(value / 25000.0)*25000 'bisher 250.000
-		If value <= 2500000 then return ceil(value / 100000.0)*100000 'bisher --
-		If value <= 5000000 then return ceil(value / 250000.0)*250000 'bisher --
+		If value <= 1000 Then Return Ceil(value / 100.0)*100 'bisher 250
+		If value <= 5000 Then Return Ceil(value / 250.0)*250 'bisher 500
+		If value <= 10000 Then Return Ceil(value / 500.0)*500 'bisher 1.000
+		If value <= 50000 Then Return Ceil(value / 1000.0)*1000 'bisher 2.500
+		If value <= 100000 Then Return Ceil(value / 5000.0)*5000 'bisher 10.000
+		If value <= 500000 Then Return Ceil(value / 10000.0)*10000 'bisher 25.000
+		If value <= 1000000 Then Return Ceil(value / 25000.0)*25000 'bisher 250.000
+		If value <= 2500000 Then Return Ceil(value / 100000.0)*100000 'bisher --
+		If value <= 5000000 Then Return Ceil(value / 250000.0)*250000 'bisher --
 		'>5.000.0000 in steps of 1 million
-		return ceil(value / 1000000.0)*1000000
+		Return Ceil(value / 1000000.0)*1000000
 	End Function
 
 
-	Function dottedValue:String(value:Double, thousandsDelimiter:string=".", decimalDelimiter:string=",")
+	Function dottedValue:String(value:Double, thousandsDelimiter:String=".", decimalDelimiter:String=",")
 		'is there a "minus" in front ?
-		local addSign:string = ""
-		if value < 0 then addSign="-"
+		Local addSign:String = ""
+		If value < 0 Then addSign="-"
 
-		local stringValue:String = String(Abs(value))
+		Local stringValue:String = String(Abs(value))
 		'find out amount of digits before decimal point
-		local length:int = String(Abs(Long(value))).length
+		Local length:Int = String(Abs(Long(value))).length
 		'add 2 to length, as this contains the "." delimiter
-		local fractionalValue:String = Mid(stringValue, length+2, -1)
-		local decimalValue:String = Left(stringValue, length)
-		local result:String = ""
+		Local fractionalValue:String = Mid(stringValue, length+2, -1)
+		Local decimalValue:String = Left(stringValue, length)
+		Local result:String = ""
 
 		'do we have a fractionalValue <> ".000" ?
-		if Long(fractionalValue) > 0 then result :+ decimalDelimiter + fractionalValue
+		If Long(fractionalValue) > 0 Then result :+ decimalDelimiter + fractionalValue
 	
-		for local i:int = decimalValue.length-1 to 0 step -1
+		For Local i:Int = decimalValue.length-1 To 0 Step -1
 			result = Chr(decimalValue[i]) + result
 
 			'every 3rd char, but not if the last one (avoid 100 -> .100)
-			if (decimalValue.length-i) mod 3 = 0 and i > 0 
+			If (decimalValue.length-i) Mod 3 = 0 And i > 0 
 				result = thousandsDelimiter + result 
-			endif
+			EndIf
 		Next
-		return addSign+result
+		Return addSign+result
 	End Function
 
 
 	'formats a value: 1000400 = 1,0 Mio
-	Function convertValue:String(value:float, digitsAfterDecimalPoint:int=2, typ:Int=0, delimeter:string=",")
+	Function convertValue:String(value:Float, digitsAfterDecimalPoint:Int=2, typ:Int=0, delimeter:String=",")
 		typ = MathHelper.Clamp(typ, 0,3)
       ' typ 1: 250000 = 250Tsd
       ' typ 2: 250000 = 0,25Mio
@@ -309,32 +313,32 @@ Type TFunctions
       ' typ 0: 250000 = 0,25Mio (automatically)
 
 		'find out amount of digits before decimal point
-		local intValue:int = int(value)
-		local length:int = string(intValue).length
+		Local intValue:Int = Int(value)
+		Local length:Int = String(intValue).length
 		'avoid problems with "0.000" being shown as "-21213234923"
-		if value = 0 then intValue = 0;length = 1
+		If value = 0 Then intValue = 0;length = 1
 		'do not count negative signs.
-		if intValue < 0 then length:-1
+		If intValue < 0 Then length:-1
 
 		'automatically
-		if typ=0
-			If length < 10 and length >= 7 Then typ=2
+		If typ=0
+			If length < 10 And length >= 7 Then typ=2
 			If length >= 10 Then typ=3
-		endif
+		EndIf
 		'250000 = 250Tsd -> divide by 1000
-		if typ=1 then return MathHelper.NumberToString(value/1000.0, 0)+" "+GetLocale("ABBREVIATION_THOUSAND")
+		If typ=1 Then Return MathHelper.NumberToString(value/1000.0, 0)+" "+GetLocale("ABBREVIATION_THOUSAND")
 		'250000 = 0,25Mio -> divide by 1000000
-		if typ=2 then return MathHelper.NumberToString(value/1000000.0, 2)+" "+GetLocale("ABBREVIATION_MILLION")
+		If typ=2 Then Return MathHelper.NumberToString(value/1000000.0, 2)+" "+GetLocale("ABBREVIATION_MILLION")
 		'250000 = 0,0Mrd -> divide by 1000000000
-		if typ=3 then return MathHelper.NumberToString(value/1000000000.0, 2)+" "+GetLocale("ABBREVIATION_BILLION")
+		If typ=3 Then Return MathHelper.NumberToString(value/1000000000.0, 2)+" "+GetLocale("ABBREVIATION_BILLION")
 		'add thousands-delimiter: 10000 = 10.000
-		if length <= 10 and length > 6
-			return int(floor(int(value) / 1000000))+"."+int(floor(int(value) / 1000))+"."+Left( abs(int((int(value) - int(floor(int(value) / 1000000)*1000000)))) +"000",3)
-		elseif length <= 7 and length > 3
-			return int(floor(int(value) / 1000))+"."+Left( abs(int((int(value) - int(floor(int(value) / 1000)*1000)))) +"000",3)
-		else
-			return intValue
-		endif
+		If length <= 10 And length > 6
+			Return Int(Floor(Int(value) / 1000000))+"."+Int(Floor(Int(value) / 1000))+"."+Left( Abs(Int((Int(value) - Int(Floor(Int(value) / 1000000)*1000000)))) +"000",3)
+		ElseIf length <= 7 And length > 3
+			Return Int(Floor(Int(value) / 1000))+"."+Left( Abs(Int((Int(value) - Int(Floor(Int(value) / 1000)*1000)))) +"000",3)
+		Else
+			Return intValue
+		EndIf
 		'Return convertValue
     End Function
 
@@ -346,42 +350,42 @@ End Type
 Type TCatmullRomSpline
 	Field points:TList			= CreateList()	'list of the control points (TVec3D)
 	Field cache:TVec3D[]						'array of cached points
-	Field cacheGenerated:int	= FALSE
-	Field totalDistance:float	= 0				'how long is the spline?
-	const resolution:float		= 100.0
+	Field cacheGenerated:Int	= False
+	Field totalDistance:Float	= 0				'how long is the spline?
+	Const resolution:Float		= 100.0
 
 	Method New()
 		'
 	End Method
 
-	Method addXY:TCatmullRomSpline(x:float,y:float)
-		points.addLast( new TVec3D.Init(x, y) )
-		cacheGenerated = FALSE
-		return self
-	End MEthod
+	Method addXY:TCatmullRomSpline(x:Float,y:Float)
+		points.addLast( New TVec3D.Init(x, y) )
+		cacheGenerated = False
+		Return Self
+	End Method
 
 
 	'Call this to add a point to the end of the list
 	Method addPoint:TCatmullRomSpline(p:TVec3D)
 		points.addlast(p)
-		cacheGenerated = FALSE
-		return self
+		cacheGenerated = False
+		Return Self
 	End Method
 
 
 	Method addPoints:TCatmullRomSpline(p:TVec3D[])
-		For local i:int = 0 to p.length-1
-			self.points.addLast(p[i])
+		For Local i:Int = 0 To p.length-1
+			Self.points.addLast(p[i])
 		Next
-		self.cacheGenerated = FALSE
-		return self
+		Self.cacheGenerated = False
+		Return Self
 	End Method
 
 	'draw the spline!
-	Method draw:int()
+	Method draw:Int()
 		'Draw a rectangle at each control point so we can see
 		'them (not relevant to the algorithm)
-		For local p:TVec3D = EachIn self.points
+		For Local p:TVec3D = EachIn Self.points
 			DrawRect(p.x-3 , p.y-3 , 7 , 7)
 		Next
 
@@ -395,11 +399,11 @@ Type TCatmullRomSpline
 		'and the TLink is moved to the next one so we can see if it's
 		'null, and then get the next p3 from it if not.
 
-		local pl:TLink	= Null
-		local p0:TVec3D = Null
-		local p1:TVec3D = Null
-		local p2:TVec3D = Null
-		local p3:TVec3D = Null
+		Local pl:TLink	= Null
+		Local p0:TVec3D = Null
+		Local p1:TVec3D = Null
+		Local p2:TVec3D = Null
+		Local p3:TVec3D = Null
 
 		'assign first 2 points
 		'point 3 is assigned in the while loop
@@ -416,12 +420,12 @@ Type TCatmullRomSpline
 			'get the point objects from the TLinks
 			p3 = TVec3D( pl.value() )
 
-			local oldX:float = p1.x
-			local oldY:float = p1.y
-			local x:float = 0.0
-			local y:float = 0.0
+			Local oldX:Float = p1.x
+			Local oldY:Float = p1.y
+			Local x:Float = 0.0
+			Local y:Float = 0.0
 			'THE MEAT And BONES! Oddly, there isn't much to explain here, just copy the code.
-			For local t:float = 0 To 1 Step .01
+			For Local t:Float = 0 To 1 Step .01
 				x = .5 * ( (2 * p1.x) + (p2.x - p0.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t * t + (3 * p1.x - p0.x - 3 * p2.x + p3.x) * t * t * t)
 				y = .5 * ( (2 * p1.y) + (p2.y - p0.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t * t + (3 * p1.y - p0.y - 3 * p2.y + p3.y) * t * t * t)
 				DrawLine oldX , oldY , x , y
@@ -438,17 +442,17 @@ Type TCatmullRomSpline
 		Wend
 	End Method
 
-	Method GetTotalDistance:float()
-		if not self.cacheGenerated then self.GenerateCache()
+	Method GetTotalDistance:Float()
+		If Not Self.cacheGenerated Then Self.GenerateCache()
 
-		return self.totalDistance
+		Return Self.totalDistance
 	End Method
 
-	Method GenerateCache:float()
-		If self.points.count()<4 Then Return 0
+	Method GenerateCache:Float()
+		If Self.points.count()<4 Then Return 0
 
-		local pl:TLink	= Null
-		local p0:TVec3D, p1:TVec3D, p2:TVec3D, p3:TVec3D = Null
+		Local pl:TLink	= Null
+		Local p0:TVec3D, p1:TVec3D, p2:TVec3D, p3:TVec3D = Null
 
 		'assign first 2 points
 		'point 3 is assigned in the while loop
@@ -460,8 +464,8 @@ Type TCatmullRomSpline
 		p2 = TVec3D( pl.value() )
 		pl = pl.nextlink()
 
-		local oldPoint:TVec3D = new TVec3D
-		local cachedPoints:int = 0
+		Local oldPoint:TVec3D = New TVec3D
+		Local cachedPoints:Int = 0
 
 		'pl3 will be null when we've reached the end of the list
 		While pl <> Null
@@ -471,20 +475,20 @@ Type TCatmullRomSpline
 			oldPoint.CopyFrom(p1)
 
 			'THE MEAT And BONES! Oddly, there isn't much to explain here, just copy the code.
-			For local t:float = 0 To 1 Step 1.0/self.resolution
-				local point:TVec3D = new TVec3D
+			For Local t:Float = 0 To 1 Step 1.0/Self.resolution
+				Local point:TVec3D = New TVec3D
 				point.x = .5 * ( (2 * p1.x) + (p2.x - p0.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t * t + (3 * p1.x - p0.x - 3 * p2.x + p3.x) * t * t * t)
 				point.y = .5 * ( (2 * p1.y) + (p2.y - p0.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t * t + (3 * p1.y - p0.y - 3 * p2.y + p3.y) * t * t * t)
 
 				'set distance
-				self.totalDistance :+ point.DistanceTo(oldPoint, false)
+				Self.totalDistance :+ point.DistanceTo(oldPoint, False)
 				'distance is stored in the current points Z coordinate
-				point.z = self.totalDistance
+				point.z = Self.totalDistance
 				oldPoint.CopyFrom(point)
 
 				'add to cache
-				self.cache = self.cache[.. cachedPoints+1]
-				self.cache[cachedPoints] = point
+				Self.cache = Self.cache[.. cachedPoints+1]
+				Self.cache[cachedPoints] = point
 				cachedPoints:+1
 			Next
 
@@ -496,67 +500,67 @@ Type TCatmullRomSpline
 
 		Wend
 
-		self.cacheGenerated = TRUE
+		Self.cacheGenerated = True
 
-		return self.totalDistance
+		Return Self.totalDistance
 	End Method
 
 	'returns the coordinate of a given distance
 	'the spot is ranging from 0.0 (0%) to 1.0 (100%) of the distance
-	Method GetPoint:TVec2D(distance:float, relativeValue:int=FALSE)
-		if not self.cacheGenerated then self.generateCache()
-		if relativeValue then distance = distance*self.totalDistance
+	Method GetPoint:TVec2D(distance:Float, relativeValue:Int=False)
+		If Not Self.cacheGenerated Then Self.generateCache()
+		If relativeValue Then distance = distance*Self.totalDistance
 
-		For local t:float = 0 To self.cache.length-1
+		For Local t:Float = 0 To Self.cache.length-1
 			'if the searched distance is reached - return it
-			if self.cache[t].z > distance
-				return self.cache[Max(t-1, 0)].ToVec2D()
-			endif
+			If Self.cache[t].z > distance
+				Return Self.cache[Max(t-1, 0)].ToVec2D()
+			EndIf
 		Next
-		return Null
+		Return Null
 	End Method
 
 	'returns the coordinate of a given distance
 	'the spot is ranging from 0.0 (0%) to 1.0 (100%) of the distance
-	Method GetTweenPoint:TVec2D(distance:float, relativeValue:int=FALSE)
-		if not cacheGenerated then generateCache()
-		if relativeValue then distance = distance * totalDistance
+	Method GetTweenPoint:TVec2D(distance:Float, relativeValue:Int=False)
+		If Not cacheGenerated Then generateCache()
+		If relativeValue Then distance = distance * totalDistance
 
-		local pointA:TVec3D = Null
-		local pointB:TVec3D = Null
+		Local pointA:TVec3D = Null
+		Local pointB:TVec3D = Null
 
-		For local t:float = 0 To cache.length-1
+		For Local t:Float = 0 To cache.length-1
 			'if the searched distance is reached
-			if cache[t].z > distance
-				if not pointA
+			If cache[t].z > distance
+				If Not pointA
 					pointA = cache[Max(t-1, 0)]
-				elseif not pointB
+				ElseIf Not pointB
 					pointB = cache[Max(t-1, 0)]
-					exit
-				endif
-			endif
+					Exit
+				EndIf
+			EndIf
 		Next
 
 		'if no point was good enough - use the last possible one
-		if not pointA then pointA = cache[cache.length-1]
+		If Not pointA Then pointA = cache[cache.length-1]
 		'if pointA is already the last one we have, the second point
 		'could be the same
-		if not pointB then pointB = pointA.Copy()
+		If Not pointB Then pointB = pointA.Copy()
 
-		if pointA and pointB
+		If pointA And pointB
 			'local distanceAB:float = abs(pointB.z - pointA.z)
 			'local distanceAX:float = abs(distance - pointA.z)
 			'local distanceBX:float = abs(distance - pointB.z)
 			'local weightAX:float   = 1- distanceAX/distanceAB
-			local weightAX:float   = 1- abs(distance - pointA.z)/abs(pointB.z - pointA.z)
+			Local weightAX:Float   = 1- Abs(distance - pointA.z)/Abs(pointB.z - pointA.z)
 
-			return new TVec2D.Init(..
+			Return New TVec2D.Init(..
 				pointA.x*weightAX + pointB.x*(1-weightAX), ..
 				pointA.y*weightAX + pointB.y*(1-weightAX) ..
 			)
-		else
-			return Null
-		endif
+		Else
+			Return Null
+		EndIf
 	End Method
 
 End Type

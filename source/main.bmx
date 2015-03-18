@@ -1,7 +1,10 @@
-'Application: TVGigant/TVTower
-'Author: Ronny Otto & Manuel Vögele
+ï»¿'Application: TVGigant/TVTower
+'Author: Ronny Otto & Manuel VÃ¶gele
 
 SuperStrict
+
+Import Brl.Stream
+Import Brl.Retro
 
 Import brl.timer
 Import brl.Graphics
@@ -112,7 +115,7 @@ Include "game.base.bmx"
 '===== Globals =====
 Global VersionDate:String = LoadText("incbin::source/version.txt")
 Global VersionString:String = "v0.2 Build ~q" + VersionDate+"~q"
-Global CopyrightString:String = "by Ronny Otto & Manuel Vögele"
+Global CopyrightString:String = "by Ronny Otto & Manuel VÃ¶gele"
 Global App:TApp = Null
 Global Game:TGame
 Global InGame_Chat:TGUIChat
@@ -142,7 +145,7 @@ TLogger.SetPrintMode(0)
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
 '@MANUEL: comment out when doing DEV to see LOG_DEV-messages
 'TLogger.changePrintMode(LOG_DEV, FALSE)
-TLogger.changePrintMode(LOG_ERROR | LOG_DEV | LOG_AI, true)
+TLogger.changePrintMode(LOG_ERROR | LOG_DEV | LOG_AI, True)
 
 
 
@@ -203,25 +206,25 @@ Type TApp
 
 
 	'check for various arguments to the binary (eg. "TVTower -opengl")
-	Method ApplyAppArguments:int()
-		local argNumber:int = 0
-		For local arg:string = EachIn AppArgs
+	Method ApplyAppArguments:Int()
+		Local argNumber:Int = 0
+		For Local arg:String = EachIn AppArgs
 			'only interested in args starting with "-"
-			if arg.Find("-") <> 0 then continue
+			If arg.Find("-") <> 0 Then Continue
 
 			Select arg.ToLower()
 				?Win32
-				case "-directx7", "-directx"
+				Case "-directx7", "-directx"
 					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: DirectX 7", LOG_LOADING)
 					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_DIRECTX7)
-				case "-directx9"
+				Case "-directx9"
 					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: DirectX 9", LOG_LOADING)
 					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_DIRECTX9)
 				?
-				case "-opengl"
+				Case "-opengl"
 					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: OpenGL", LOG_LOADING)
 					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_OPENGL)
-				case "-bufferedopengl"
+				Case "-bufferedopengl"
 					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: Buffered OpenGL", LOG_LOADING)
 					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_BUFFEREDOPENGL)
 			End Select
@@ -296,13 +299,13 @@ Type TApp
 
 
 	Method SetLanguage:Int(languageCode:String="de")
-		local oldLang:String = TLocalization.GetCurrentLanguageCode()
+		Local oldLang:String = TLocalization.GetCurrentLanguageCode()
 		'select language
 		TLocalization.SetCurrentLanguage(languageCode)
 		TLocalizedString.SetCurrentLanguage(languageCode)
 
 		'skip further actions if the same language is already set
-		if oldLang = languageCode Then Return False
+		If oldLang = languageCode Then Return False
 
 		'store in config - for auto save of user settings
 		config.Add("language", languageCode)
@@ -349,7 +352,7 @@ Type TApp
 		Local img:TPixmap = VirtualGrabPixmap(0, 0, GraphicsWidth(), GraphicsHeight())
 
 		'add overlay
-		If overlay Then overlay.DrawOnImage(img, GetGraphicsManager().GetWidth() - overlay.GetWidth() - 10, 10, -1, null, TColor.Create(255,255,255,0.5))
+		If overlay Then overlay.DrawOnImage(img, GetGraphicsManager().GetWidth() - overlay.GetWidth() - 10, 10, -1, Null, TColor.Create(255,255,255,0.5))
 
 		'remove alpha
 		SavePixmapPNG(ConvertPixmap(img, PF_RGB888), filename)
@@ -433,7 +436,7 @@ Type TApp
 						GetWorldTime().AdjustTimeFactor(-5)
 					EndIf
 
-					if KEYMANAGER.IsHit(KEY_Y)
+					If KEYMANAGER.IsHit(KEY_Y)
 						'print "send to chef:"
 						'GetPlayer().SendToBoss()
 
@@ -446,21 +449,21 @@ Type TApp
 
 
 						'buy script
-						local s:TScript = RoomHandler_ScriptAgency.GetInstance().GetScriptByPosition(0)
-						if not s
+						Local s:TScript = RoomHandler_ScriptAgency.GetInstance().GetScriptByPosition(0)
+						If Not s
 							RoomHandler_ScriptAgency.GetInstance().ReFillBlocks()
 							s = RoomHandler_ScriptAgency.GetInstance().GetScriptByPosition(0)
-						endif
+						EndIf
 						
-						if s
+						If s
 							RoomHandler_ScriptAgency.GetInstance().SellScriptToPlayer(s, GetPlayer().playerID)
 							RoomHandler_ScriptAgency.GetInstance().ReFillBlocks()
-							print "added script: "+s.GetTitle()
-						endif
-					endif
+							Print "added script: "+s.GetTitle()
+						EndIf
+					EndIf
 
 				
-					if not GetPlayer().GetFigure().isChangingRoom()
+					If Not GetPlayer().GetFigure().isChangingRoom()
 						If KEYMANAGER.IsHit(KEY_1) Then Game.SetActivePlayer(1)
 						If KEYMANAGER.IsHit(KEY_2) Then Game.SetActivePlayer(2)
 						If KEYMANAGER.IsHit(KEY_3) Then Game.SetActivePlayer(3)
@@ -473,21 +476,21 @@ Type TApp
 						If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", GetPlayerCollection().playerID))
 						If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("boss", GetPlayerCollection().playerID))
 						If KEYMANAGER.IsHit(KEY_D)
-							if KEYMANAGER.IsDown(KEY_RSHIFT)
+							If KEYMANAGER.IsDown(KEY_RSHIFT)
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", 2))
-							else if KEYMANAGER.IsDown(KEY_LSHIFT)
+							Else If KEYMANAGER.IsDown(KEY_LSHIFT)
 								'go to first studio of the player
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", GetPlayerCollection().playerID))
-							else
+							Else
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("scriptagency"))
-							endif
-						endif
+							EndIf
+						EndIf
 						
 						'e wie "employees" :D
 						If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("credits"))
 						If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("news", GetPlayerCollection().playerID))
 						If KEYMANAGER.IsHit(KEY_R) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("roomboard"))
-					endif
+					EndIf
 				EndIf
 				If KEYMANAGER.IsHit(KEY_5) Then GetWorldTime().SetTimeFactor(60*60.0)  '60 virtual minutes per realtime second
 				If KEYMANAGER.IsHit(KEY_6) Then GetWorldTime().SetTimeFactor(120*60.0) '120 minutes per second
@@ -509,21 +512,21 @@ Type TApp
 				If KEYMANAGER.IsHit(KEY_TAB) Then TVTDebugInfos = 1 - TVTDebugInfos
 
 				If KEYMANAGER.Ishit(KEY_K)
-					TLogger.log("KickAllFromRooms", "Player kicks all figures out of the rooms.", LOG_DEBUG)
-					For local fig:TFigure = EachIn GetFigureCollection().entries.Values()
-						if fig.inRoom then GetPlayer().GetFigure().KickFigureFromRoom(fig, fig.inroom)
+					TLogger.Log("KickAllFromRooms", "Player kicks all figures out of the rooms.", LOG_DEBUG)
+					For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
+						If fig.inRoom Then GetPlayer().GetFigure().KickFigureFromRoom(fig, fig.inroom)
 					Next
-				endif
+				EndIf
 
 				'send terrorist to a random room
-				If KEYMANAGER.IsHit(KEY_T) and not Game.networkGame
-					Global whichTerrorist:int = 1
+				If KEYMANAGER.IsHit(KEY_T) And Not Game.networkGame
+					Global whichTerrorist:Int = 1
 					whichTerrorist = 1 - whichTerrorist
 
-					local targetRoom:TRoom
+					Local targetRoom:TRoom
 					Repeat
 						targetRoom = GetRoomCollection().GetRandom()
-					until targetRoom.name <> "building"
+					Until targetRoom.name <> "building"
 					
 					Game.terrorists[whichTerrorist].SetDeliverToRoom( targetRoom )
 				EndIf
@@ -537,7 +540,7 @@ Type TApp
 
 				'only announce news in single player mode - as announces
 				'are done on all clients on their own.
-				If KEYMANAGER.Ishit(Key_F5) and not Game.networkGame Then GetNewsAgency().AnnounceNewNewsEvent()
+				If KEYMANAGER.Ishit(Key_F5) And Not Game.networkGame Then GetNewsAgency().AnnounceNewNewsEvent()
 
 				If KEYMANAGER.Ishit(Key_F6) Then GetSoundManager().PlayMusicPlaylist("default")
 
@@ -553,13 +556,13 @@ Type TApp
 				If KEYMANAGER.Ishit(Key_F10)
 					If (KIRunning)
 						For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
-							if GetPlayerBase().GetFigure() <> fig Then fig.moveable = False
+							If GetPlayerBase().GetFigure() <> fig Then fig.moveable = False
 						Next
 						TLogger.Log("CORE", "AI Figures deactivated", LOG_INFO | LOG_DEV )
 						KIRunning = False
 					Else
 						For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
-							if GetPlayerBase().GetFigure() <> fig Then fig.moveable = True
+							If GetPlayerBase().GetFigure() <> fig Then fig.moveable = True
 						Next
 						TLogger.Log("CORE", "AI activated", LOG_INFO | LOG_DEV )
 						KIRunning = True
@@ -603,14 +606,14 @@ Type TApp
 
 '		SetBlend AlphaBlend
 		Local textX:Int = 5
-		local oldCol:TColor = new TColor.Get()
+		Local oldCol:TColor = New TColor.Get()
 		SetAlpha oldCol.a * 0.25
 		SetColor 0,0,0
 		If GameRules.devConfig.GetBool("DEV_OSD", False)
 			DrawRect(0,0, 800,13)
-		else
+		Else
 			DrawRect(0,0, 175,13)
-		endif
+		EndIf
 		oldCol.SetRGBA()
 
 		GetBitmapFontManager().baseFont.drawStyled("Speed:" + Int(GetWorldTime().GetVirtualMinutesPerSecond() * 100), textX , 0)
@@ -646,7 +649,7 @@ Type TApp
 			EndIf
 		EndIf
 
-		If TVTDebugInfos and not GetPlayer().GetFigure().inRoom
+		If TVTDebugInfos And Not GetPlayer().GetFigure().inRoom
 			SetAlpha GetAlpha() * 0.5
 			SetColor 0,0,0
 			DrawRect(0,0,160,385)
@@ -719,7 +722,7 @@ Type TApp
 			'GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
 		EndIf
 		'show quotes even without "DEV_OSD = true"
-		If TVTDebugQuoteInfos then Game.DebugAudienceInfo.Draw()
+		If TVTDebugQuoteInfos Then Game.DebugAudienceInfo.Draw()
 
 
 		'draw loading resource information
@@ -780,7 +783,7 @@ Type TApp
 
 		'approve exit
 		If buttonNumber = 0
-rem
+Rem
 	disable until "new game" works properly
 			'if within a game - just return to mainmenu
 			if Game.gamestate = TGame.STATE_RUNNING
@@ -818,7 +821,7 @@ endrem
 		ExitAppDialogue.SetDialogueType(2)
 		ExitAppDialogue.SetZIndex(100000)
 
-rem
+Rem
 	disable until "new game" works properly
 		'limit to "screen" area
 		If game.gamestate = TGame.STATE_RUNNING
@@ -851,7 +854,7 @@ Type TGameState
 	Field _AdContractCollection:TAdContractCollection = Null
 
 	Field _ScriptTemplateCollection:TScriptTemplateCollection = Null
-	Field _ScriptCollection:TScriptCollection = null
+	Field _ScriptCollection:TScriptCollection = Null
 	Field _ProgrammeRoleCollection:TProgrammeRoleCollection = Null
 	Field _ProgrammePersonCollection:TProgrammePersonCollection = Null
 	Field _ProgrammeDataCollection:TProgrammeDataCollection = Null
@@ -878,7 +881,7 @@ Type TGameState
 	Field _RoomHandler_AdAgency:RoomHandler_AdAgency
 	Field _RoomDoorBaseCollection:TRoomDoorBaseCollection
 	Field _RoomBaseCollection:TRoomBaseCollection
-	Field _CurrentScreenName:string
+	Field _CurrentScreenName:String
 	Const MODE_LOAD:Int = 0
 	Const MODE_SAVE:Int = 1
 
@@ -903,7 +906,7 @@ Type TGameState
 		GetNewsEventCollection().Initialize()
 		GetDailyBroadcastStatisticCollection().Initialize()
 
-		rem
+		Rem
 			GetWorldTime().Initialize()
 			GetWorld().Initialize()
 			GetBetty().Initialize()
@@ -1029,7 +1032,7 @@ Type TGameState
 End Type
 
 
-Type TSaveGame extends TGameState
+Type TSaveGame Extends TGameState
 	'store the time gone since when the app started - timers rely on this
 	'and without, times will differ after "loading" (so elevator stops
 	'closing doors etc.)
@@ -1138,14 +1141,14 @@ Type TSaveGame extends TGameState
 
 		'only set the screen if the figure is in this room ... this
 		'allows modifying the player in the savegame
-		if GetPlayer().GetFigure().inRoom
-			local playerScreen:TScreen = ScreenCollection.GetScreen(saveGame._CurrentScreenName)
-			if playerScreen.HasParentScreen(GetPlayer().GetFigure().inRoom.screenName)
+		If GetPlayer().GetFigure().inRoom
+			Local playerScreen:TScreen = ScreenCollection.GetScreen(saveGame._CurrentScreenName)
+			If playerScreen.HasParentScreen(GetPlayer().GetFigure().inRoom.screenName)
 				ScreenCollection.GoToScreen(playerScreen)
 				'just set the current screen... no animation
 				ScreenCollection._SetCurrentScreen(playerScreen)
-			endif
-		endif
+			EndIf
+		EndIf
 
 		'call game that game continues/starts now
 		Game.StartLoadedSaveGame()
@@ -1305,7 +1308,7 @@ Type TFigureJanitor Extends TFigure
 		EndIf
 
 		'reached target - and time to do something
-		If IsIdling() and nextActionTimer.isExpired()
+		If IsIdling() And nextActionTimer.isExpired()
 			If Not hasToChangeFloor()
 
 				'reset is done later - we want to catch isExpired there too
@@ -1343,7 +1346,7 @@ Type TFigureJanitor Extends TFigure
 
 			'chose actions
 			'- only if not outside the building
-			if area.position.GetX() > GetBuilding().leftWallX
+			If area.position.GetX() > GetBuilding().leftWallX
 				'only clean with a chance of 30% when on the way to something
 				'and do not clean if target is a room near figure
 				Local targetDoor:TRoomDoor = TRoomDoor(GetTarget())
@@ -1352,7 +1355,7 @@ Type TFigureJanitor Extends TFigure
 				EndIf
 				'if just standing around give a chance to clean
 				If Not GetTarget() And Rand(0,100) < BoredCleanChance Then currentAction = 1
-			endif
+			EndIf
 		EndIf
 
 		If GetTarget()
@@ -1369,10 +1372,10 @@ End Type
 'for a room at the roomboard etc.
 Type TFigureDeliveryBoy Extends TFigure
 	'did the figure check the roomboard where to go to?
-	Field checkedRoomboard:int = False
+	Field checkedRoomboard:Int = False
 	Field deliverToRoom:TRoomBase
 	'was the "package" delivered already?
-	Field deliveryDone:int = True
+	Field deliveryDone:Int = True
 	'time to wait between doing something
 	Field nextActionTimer:TIntervalTimer = TIntervalTimer.Create(1500, 0, 0, 5000)
 
@@ -1386,9 +1389,9 @@ Type TFigureDeliveryBoy Extends TFigure
 
 	'used in news effect function
 	Function SendFigureToRoom(data:TData, params:TData)
-		local figure:TFigureDeliveryBoy = TFigureDeliveryBoy(data.Get("figure"))
-		local room:TRoomBase = TRoomBase(data.Get("room"))
-		if not figure or not room then return
+		Local figure:TFigureDeliveryBoy = TFigureDeliveryBoy(data.Get("figure"))
+		Local room:TRoomBase = TRoomBase(data.Get("room"))
+		If Not figure Or Not room Then Return
 
 		figure.SetDeliverToRoom(room)
 	End Function
@@ -1399,9 +1402,9 @@ Type TFigureDeliveryBoy Extends TFigure
 		Super.FinishEnterRoom(room, door)
 
 		'terrorist now knows where to "deliver"
-		if not checkedRoomboard then checkedRoomboard = True
+		If Not checkedRoomboard Then checkedRoomboard = True
 		'if the room is the deliver target, delivery is finished
-		if room = deliverToRoom then deliveryDone = True
+		If room = deliverToRoom Then deliveryDone = True
 			
 		'reset timer so figure stays in room for some time
 		nextActionTimer.Reset()
@@ -1411,7 +1414,7 @@ Type TFigureDeliveryBoy Extends TFigure
 	'set the room the figure should go to.
 	'DeliveryBoys do not know where the room will be, so they
 	'go to the roomboard first
-	Method SetDeliverToRoom:int(room:TRoomBase)
+	Method SetDeliverToRoom:Int(room:TRoomBase)
 		'to go to this room, we have to first visit the roomboard
 		checkedRoomboard = False
 		deliveryDone = False
@@ -1419,46 +1422,46 @@ Type TFigureDeliveryBoy Extends TFigure
 	End Method
 
 
-	Method HasToDeliver:int() {_exposeToLua}
-		return deliveryDone
+	Method HasToDeliver:Int() {_exposeToLua}
+		Return deliveryDone
 	End Method
 
 
 	Method UpdateCustom:Int()
 		'nothing to do - move to offscreen (leave building)
-		If not deliverToRoom and not GetTarget()
-			if not IsOffScreen() then SendToOffscreen()
+		If Not deliverToRoom And Not GetTarget()
+			If Not IsOffScreen() Then SendToOffscreen()
 		EndIf
 
 		'figure is in building and without target waiting for orders
-		If not deliveryDone and IsIdling()
+		If Not deliveryDone And IsIdling()
 			'before directly going to a room, ask the roomboard where
 			'to go
 			If Not checkedRoomboard
-				TLogger.Log("TFigureDeliveryBoy", self.name+" is sent to roomboard", LOG_DEBUG | LOG_AI, True)
+				TLogger.Log("TFigureDeliveryBoy", Self.name+" is sent to roomboard", LOG_DEBUG | LOG_AI, True)
 				SendToDoor(TRoomDoor.GetByDetails("roomboard", 0))
 			Else
 				'instead of sending the figure to the correct door, we
 				'ask the roomsigns where to go to
 				'1) get sign of the door
-				local roomDoor:TRoomDoorBase = TRoomDoor.GetMainDoorToRoom(deliverToRoom)
+				Local roomDoor:TRoomDoorBase = TRoomDoor.GetMainDoorToRoom(deliverToRoom)
 				'2) get sign which is now at the slot/floor of the room
-				local sign:TRoomBoardSign
-				if roomDoor then sign = GetRoomBoard().GetSignByCurrentPosition(roomDoor.doorSlot, roomDoor.onFloor)
+				Local sign:TRoomBoardSign
+				If roomDoor Then sign = GetRoomBoard().GetSignByCurrentPosition(roomDoor.doorSlot, roomDoor.onFloor)
 
-				if sign and sign.door
-					TLogger.Log("TFigureDeliveryBoy", self.name+" is sent to room "+TRoomDoor(sign.door).GetRoom().name+" (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
+				If sign And sign.door
+					TLogger.Log("TFigureDeliveryBoy", Self.name+" is sent to room "+TRoomDoor(sign.door).GetRoom().name+" (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
 					SendToDoor(sign.door)
-				else
-					TLogger.Log("TFigureDeliveryBoy", self.name+" cannot send to a room, sign of target over empty room slot (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
+				Else
+					TLogger.Log("TFigureDeliveryBoy", Self.name+" cannot send to a room, sign of target over empty room slot (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
 					'send home again
 					deliveryDone = True
 					SendToOffscreen()
-				endif
+				EndIf
 			EndIf
 		EndIf
 
-		If inRoom and nextActionTimer.isExpired()
+		If inRoom And nextActionTimer.isExpired()
 			nextActionTimer.Reset()
 
 			'delivery finished - send home again
@@ -1492,13 +1495,13 @@ Type TFigureTerrorist Extends TFigureDeliveryBoy
 
 
 	'override: terrorist do like nobody
-	Method GetGreetingTypeForFigure:int(figure:TFigure)
+	Method GetGreetingTypeForFigure:Int(figure:TFigure)
 		'0 = grrLeft
 		'1 = hiLeft
 		'2 = ?!left
 
 		'depending on floor use "grr" or "?!"
-		return 0 + 2*((1 + GetBuilding().GetFloor(area.GetY()) mod 2)-1)
+		Return 0 + 2*((1 + GetBuilding().GetFloor(area.GetY()) Mod 2)-1)
 	End Method	
 End Type
 
@@ -1510,42 +1513,42 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 	'arrays containing information of GUID->owner (so it stores the
 	'owner of the licence in the moment of the task creation)
 	Field confiscateProgammeLicenceGUID:String[]
-	Field confiscateProgammeLicenceFromOwner:int[]
+	Field confiscateProgammeLicenceFromOwner:Int[]
 
 	'used in news effect function
 	Function CreateConfiscationJob(data:TData, params:TData)
-		local figure:TFigureMarshal = TFigureMarshal(data.Get("figure"))
-		local licenceGUID:string = data.GetString("confiscateProgrammeLicenceGUID")
-		if not figure or not licenceGUID then return
+		Local figure:TFigureMarshal = TFigureMarshal(data.Get("figure"))
+		Local licenceGUID:String = data.GetString("confiscateProgrammeLicenceGUID")
+		If Not figure Or Not licenceGUID Then Return
 
 		figure.AddConfiscationJob(licenceGUID)
 	End Function
 
 
-	Method AddConfiscationJob:Int(confiscateGUID:string, owner:int=-1)
-		local licence:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID(confiscateGUID)
+	Method AddConfiscationJob:Int(confiscateGUID:String, owner:Int=-1)
+		Local licence:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID(confiscateGUID)
 		'no valid licence found
-		if not licence then return False
+		If Not licence Then Return False
 
-		if owner = -1 then owner = licence.owner
+		If owner = -1 Then owner = licence.owner
 		'only confiscate from players ?
-		if not GetPlayerCollection().isPlayer(owner) then return False
+		If Not GetPlayerCollection().isPlayer(owner) Then Return False
 
 		confiscateProgammeLicenceGUID :+ [licence.GetGUID()]
 		confiscateProgammeLicenceFromOwner :+ [owner]
 
-		return True
+		Return True
 	End Method
 
 
-	Method StartNextConfiscationJob:int()
-		if not HasNextConfiscationJob() then return False
+	Method StartNextConfiscationJob:Int()
+		If Not HasNextConfiscationJob() Then Return False
 
 		'remove invalid jobs (eg after loading a savegame)
-		if GetConfiscateProgrammeLicenceGUID() = ""
+		If GetConfiscateProgrammeLicenceGUID() = ""
 			RemoveCurrentConfiscationJob()
-			return False
-		endif
+			Return False
+		EndIf
 		
 		'when confiscating programmes: start with your authorization
 		'letter
@@ -1556,8 +1559,8 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 	End Method
 
 
-	Method HasNextConfiscationJob:int()
-		return confiscateProgammeLicenceFromOwner.length > 0
+	Method HasNextConfiscationJob:Int()
+		Return confiscateProgammeLicenceFromOwner.length > 0
 	End Method
 
 
@@ -1567,57 +1570,57 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 	End Method
 	
 
-	Method GetConfiscateProgrammeLicenceGUID:string()
-		if confiscateProgammeLicenceGUID.length = 0 then return ""
-		return confiscateProgammeLicenceGUID[0]
+	Method GetConfiscateProgrammeLicenceGUID:String()
+		If confiscateProgammeLicenceGUID.length = 0 Then Return ""
+		Return confiscateProgammeLicenceGUID[0]
 	End Method
 
 
-	Method GetConfiscateProgrammeLicenceFromOwner:int()
-		if confiscateProgammeLicenceFromOwner.length = 0 then return -1
-		return confiscateProgammeLicenceFromOwner[0]
+	Method GetConfiscateProgrammeLicenceFromOwner:Int()
+		If confiscateProgammeLicenceFromOwner.length = 0 Then Return -1
+		Return confiscateProgammeLicenceFromOwner[0]
 	End Method
 	
 
-	Method GetBaseSpriteName:string()
-		local dotPosition:int = sprite.GetName().Find(".")
-		if dotPosition > 0
-			return Left(sprite.GetName(), dotPosition)
-		else
-			return sprite.GetName()
-		endif
+	Method GetBaseSpriteName:String()
+		Local dotPosition:Int = sprite.GetName().Find(".")
+		If dotPosition > 0
+			Return Left(sprite.GetName(), dotPosition)
+		Else
+			Return sprite.GetName()
+		EndIf
 	End Method
 	
 
 	'override to try to fetch the programme they should confiscate
 	Method FinishDelivery:Int()
 		'try to get the licence from the owner of the room we are now in
-		local roomOwner:int = -1
-		if inRoom then roomOwner = inRoom.owner
+		Local roomOwner:Int = -1
+		If inRoom Then roomOwner = inRoom.owner
 
-		if not GetPlayerCollection().isPlayer(roomOwner)
+		If Not GetPlayerCollection().isPlayer(roomOwner)
 			'block room for x hours - like terror attack ?
-		else
+		Else
 			'try to get the licence from the player - if that player does
 			'not own the licence (eg. someone switched roomSigns), take
 			'a random one ... :p
-			local licence:TProgrammeLicence = GetPlayer(roomOwner).GetProgrammeCollection().GetProgrammeLicenceByGUID( GetConfiscateProgrammeLicenceGUID() )
-			if not licence then licence = GetPlayer(roomOwner).GetProgrammeCollection().GetRandomProgrammeLicence()
+			Local licence:TProgrammeLicence = GetPlayer(roomOwner).GetProgrammeCollection().GetProgrammeLicenceByGUID( GetConfiscateProgrammeLicenceGUID() )
+			If Not licence Then licence = GetPlayer(roomOwner).GetProgrammeCollection().GetRandomProgrammeLicence()
 
 			'hmm player does not have programme licences at all...skip
 			'removal in that case
-			if not licence then return False
+			If Not licence Then Return False
 				
 			GetPlayer(roomOwner).GetProgrammeCollection().RemoveProgrammeLicence(licence)
 
 			'inform others - including taken and originally intended
 			'licence (so we see if the right one was took ... to inform
 			'players correctly)
-			EventManager.triggerEvent( TEventSimple.Create("publicAuthorities.onConfiscateProgrammeLicence", new TData.AddString("targetProgrammeGUID", GetConfiscateProgrammeLicenceGUID() ).AddString("confiscatedProgrammeGUID", licence.GetGUID()), null, GetPlayer(roomOwner)) )
+			EventManager.triggerEvent( TEventSimple.Create("publicAuthorities.onConfiscateProgrammeLicence", New TData.AddString("targetProgrammeGUID", GetConfiscateProgrammeLicenceGUID() ).AddString("confiscatedProgrammeGUID", licence.GetGUID()), Null, GetPlayer(roomOwner)) )
 
 			'switch used sprite - we confiscated something
 			sprite = GetSpriteFromRegistry(GetBaseSpriteName()+".box")
-		endif
+		EndIf
 
 		'remove the current job, we are done with it
 		RemoveCurrentConfiscationJob()
@@ -1629,7 +1632,7 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 
 	Method UpdateCustom:Int()
 		'try to start another job when doing nothing
-		If isOffscreen() and IsIdling() then StartNextConfiscationJob()
+		If isOffscreen() And IsIdling() Then StartNextConfiscationJob()
 
 		Super.UpdateCustom()
 	End Method
@@ -2063,12 +2066,12 @@ Type TScreen_GameSettings Extends TGameScreen
 			Case guiButtonBack
 					If Game.networkgame
 						If Game.networkgame
-							if Network.isServer
+							If Network.isServer
 								Network.DisconnectFromServer()
-							else
+							Else
 								Network.client.Disconnect()
-							endif
-						endif
+							EndIf
+						EndIf
 						GetPlayerCollection().playerID = 1
 						GetPlayerBossCollection().playerID = 1
 						Game.SetGamestate(TGame.STATE_NETWORKLOBBY)
@@ -2175,21 +2178,21 @@ Type TScreen_GameSettings Extends TGameScreen
 			SetColor 255,255,255
 			GetPlayer(i).Figure.Sprite.Draw(Int(slotPos.GetX() + playerBoxDimension.GetX()/2 - GetPlayerCollection().Get(1).Figure.Sprite.framew / 2), Int(colorRect.GetY() - GetPlayerCollection().Get(1).Figure.Sprite.area.GetH()), 8)
 
-			if Game.networkgame
-				local hintX:int = Int(slotPos.GetX()) + 12
-				local hintY:int = int(guiPlayersPanel.GetContentScreeny())+40
-				local hint:string = "undefined playerType"
-				if GetPlayer(i).IsRemoteHuman()
+			If Game.networkgame
+				Local hintX:Int = Int(slotPos.GetX()) + 12
+				Local hintY:Int = Int(guiPlayersPanel.GetContentScreeny())+40
+				Local hint:String = "undefined playerType"
+				If GetPlayer(i).IsRemoteHuman()
 					hint = "remote player"
-				elseif GetPlayer(i).IsRemoteAI()
+				ElseIf GetPlayer(i).IsRemoteAI()
 					hint = "remote AI"
-				elseif GetPlayer(i).IsLocalAI()
+				ElseIf GetPlayer(i).IsLocalAI()
 					hint = "local AI"
-				elseif GetPlayer(i).IsLocalHuman()
+				ElseIf GetPlayer(i).IsLocalHuman()
 					hint = "local player"
-				endif
+				EndIf
 				GetBitMapFontManager().Get("default", 10).Draw(hint, hintX, hintY, TColor.CreateGrey(100))
-			endif
+			EndIf
 			
 			'move to next slot position
 			slotPos.AddXY(playerSlotGap + playerBoxDimension.GetX(), 0)
@@ -2481,7 +2484,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 	End Method
 
 
-	Method GetOnlineIP:int()
+	Method GetOnlineIP:Int()
 		Local Onlinestream:TStream	= ReadStream("http::www.tvgigant.de/lobby/lobby.php?action=MyIP")
 		Local timeouttimer:Int		= MilliSecs()+5000 '5 seconds okay?
 		Local timeout:Byte			= False
@@ -2505,14 +2508,14 @@ Type TScreen_NetworkLobby Extends TGameScreen
 		'register for events if not done yet
 		NetworkHelper.RegisterEventListeners()
 
-		if guiGameList.GetSelectedEntry()
+		If guiGameList.GetSelectedEntry()
 			guiButtonJoin.enable()
-		else
+		Else
 			guiButtonJoin.disable()
-		endif
+		EndIf
 
 		If Game.onlinegame
-			If Network.OnlineIP = "" then GetOnlineIP()
+			If Network.OnlineIP = "" Then GetOnlineIP()
 
 			If Network.OnlineIP
 				If Network.LastOnlineRequestTimer + Network.LastOnlineRequestTime < MilliSecs()
@@ -2520,7 +2523,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 					Network.LastOnlineRequestTimer = MilliSecs()
 					Local Onlinestream:TStream   = ReadStream("http::www.tvgigant.de/lobby/lobby.php?action=ListGames")
 					Local timeOutTimer:Int = MilliSecs()+2500 '2.5 seconds okay?
-					Local timeOut:int = False
+					Local timeOut:Int = False
 					
 					If Not Onlinestream Then Throw ("Not Online?")
 
@@ -2529,7 +2532,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 						
 						Local responsestring:String = ReadLine(Onlinestream)
 						Local responseArray:String[] = responsestring.split("|")
-						If responseArray and responseArray.length > 3
+						If responseArray And responseArray.length > 3
 							Local gameTitle:String	= "[ONLINE] "+Network.URLDecode(responseArray[0])
 							Local slotsUsed:Int		= Int(responseArray[1])
 							Local slotsMax:Int		= 4
@@ -2604,13 +2607,13 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		If Game.networkgame
 			GetBitmapFontManager().baseFont.draw(GetLocale("SYNCHRONIZING_START_CONDITIONS")+"...", messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
 			messageDY :+ 20
-			local allReady:int = True
+			Local allReady:Int = True
 			For Local i:Int = 1 To 4
-				if not GetPlayerCollection().Get(i).networkstate then allReady = False
+				If Not GetPlayerCollection().Get(i).networkstate Then allReady = False
 				GetBitmapFontManager().baseFont.draw(GetLocale("PLAYER")+" "+i+"..."+GetPlayerCollection().Get(i).networkstate, messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
 				messageDY :+ 20
 			Next
-			If Not allReady then GetBitmapFontManager().baseFont.draw("not ready!!", messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
+			If Not allReady Then GetBitmapFontManager().baseFont.draw("not ready!!", messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
 		Else
 			GetBitmapFontManager().baseFont.draw(GetLocale("PREPARING_START_DATA")+"...", messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
 		EndIf
@@ -2664,19 +2667,19 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 
 		'=== STEP 1 ===
-		If game.networkGame and not spreadConfigurationCalled
+		If game.networkGame And Not spreadConfigurationCalled
 			SpreadConfiguration()
 			spreadConfigurationCalled = True
 			StartMultiplayerSyncStarted = Time.GetTimeGone()
 		EndIf
 
 
-		If not prepareGameCalled
+		If Not prepareGameCalled
 			'prepare game data so game could just start (switch
 			'to building)
 			Game.PrepareStart(True)
 			prepareGameCalled = True
-		endif
+		EndIf
 
 
 		'=== STEP 2 ===
@@ -2701,7 +2704,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 				canStartGame = True
 			'multiplayer games can start if all players are ready
 			Else
-				print "game not started..."
+				Print "game not started..."
 				If Game.startNetworkGame
 					ScreenGameSettings.guiAnnounce.SetChecked(False)
 					GetPlayer().networkstate = 1
@@ -2715,7 +2718,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 		'=== STEP 3 ===
 		If canStartGame And Not startGameCalled
-			if Game.networkGame then print "[NET] StartNewGame"
+			If Game.networkGame Then Print "[NET] StartNewGame"
 			'just switch to the game, preparation is done
 			Game.StartNewGame()
 			'reset randomizer
@@ -2784,21 +2787,21 @@ Type TSettingsWindow
 
 
 		'check available renderer entries
-		local selectedDropDownItem:TGUIDropDownItem
-		For local item:TGUIDropDownItem = EachIn dropdownRenderer.GetEntries()
-			local renderer:int = item.data.GetInt("value")
+		Local selectedDropDownItem:TGUIDropDownItem
+		For Local item:TGUIDropDownItem = EachIn dropdownRenderer.GetEntries()
+			Local renderer:Int = item.data.GetInt("value")
 			'if the same renderer - select this
-			if renderer = data.GetInt("renderer", 0)
+			If renderer = data.GetInt("renderer", 0)
 				selectedDropDownItem = item
-				exit
-			endif
+				Exit
+			EndIf
 		Next
 		'select the first if nothing was preselected
-		if not selectedDropDownItem
+		If Not selectedDropDownItem
 			dropdownRenderer.SetSelectedEntryByPos(0)
-		else
+		Else
 			dropdownRenderer.SetSelectedEntry(selectedDropDownItem)
-		endif
+		EndIf
 		
 
 		inputGameName.SetValue(data.GetString("gamename", "New Game"))
@@ -2954,7 +2957,7 @@ End Type
 
 
 Type GameEvents
-	Function RegisterEventListeners:int()
+	Function RegisterEventListeners:Int()
 		'react on right clicks during a rooms update (leave room)
 		EventManager.registerListenerFunction("room.onUpdate", RoomOnUpdate)
 
@@ -2994,7 +2997,7 @@ Type GameEvents
 
 	Function Time_OnSecond:Int(triggerEvent:TEventBase)
 		'only AI handling: only gameleader interested
-		If not Game.isGameLeader() then return False
+		If Not Game.isGameLeader() Then Return False
 
 		'milliseconds passed since last event
 		Local timeGone:Int = triggerEvent.GetData().getInt("timeGone", 0)
@@ -3008,7 +3011,7 @@ Type GameEvents
 
 
 	Function PlayersOnMinute:Int(triggerEvent:TEventBase)
-		If not Game.isGameLeader() then return False
+		If Not Game.isGameLeader() Then Return False
 
 		Local minute:Int = triggerEvent.GetData().getInt("minute",-1)
 		If minute < 0 Then Return False
@@ -3022,7 +3025,7 @@ Type GameEvents
 
 
 	Function PlayersOnDay:Int(triggerEvent:TEventBase)
-		If not Game.isGameLeader() then return False
+		If Not Game.isGameLeader() Then Return False
 
 		Local minute:Int = triggerEvent.GetData().getInt("minute",-1)
 		If minute < 0 Then Return False
@@ -3048,7 +3051,7 @@ Type GameEvents
 		Local player:TPlayer = GetPlayerCollection().Get(playerID)
 		Local value:Int = triggerEvent.GetData().GetInt("value", 0)
 		Local reason:Int = triggerEvent.GetData().GetInt("reason", 0)
-		Local reference:TNamedGameObject = TNamedGameObject(triggerEvent.GetData().Get("reference", null))
+		Local reference:TNamedGameObject = TNamedGameObject(triggerEvent.GetData().Get("reference", Null))
 		If playerID = -1 Or Not player Then Return False
 
 		If player.isLocalAI() Then player.playerAI.CallOnMoneyChanged(value, reason, reference)
@@ -3069,44 +3072,44 @@ Type GameEvents
 
 
 	Function PlayerBoss_OnCallPlayerForced:Int(triggerEvent:TEventBase)
-		local latestTime:Long = triggerEvent.GetData().GetLong("latestTime", GetWorldTime().GetTimeGone() + 2*3600)
-		local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
-		local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
+		Local latestTime:Long = triggerEvent.GetData().GetLong("latestTime", GetWorldTime().GetTimeGone() + 2*3600)
+		Local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
+		Local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
 
 		'inform ai before
-		if player.isLocalAI() then player.playerAI.CallOnBossCallsForced()
+		If player.isLocalAI() Then player.playerAI.CallOnBossCallsForced()
 		'send player to boss now
 		player.SendToBoss()
 	End Function
 	
 
 	Function PlayerBoss_OnPlayerEnterBossRoom:Int(triggerEvent:TEventBase)
-		local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
-		local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
+		Local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
+		Local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
 		'only interested in the real player
-		if not player or not player.isActivePlayer() then return False
+		If Not player Or Not player.isActivePlayer() Then Return False
 
 		'remove potentially existing toastmessages
-		local toastGUID:string = "toastmessage-playerboss-callplayer"+player.playerID
-		local toast:TToastMessage = GetToastMessageCollection().GetMessageByGUID(toastGUID)
+		Local toastGUID:String = "toastmessage-playerboss-callplayer"+player.playerID
+		Local toast:TToastMessage = GetToastMessageCollection().GetMessageByGUID(toastGUID)
 		GetToastMessageCollection().RemoveMessage( toast )
 	End Function
 
 	
 	Function PlayerBoss_OnCallPlayer:Int(triggerEvent:TEventBase)
-		local latestTime:Long = triggerEvent.GetData().GetLong("latestTime", GetWorldTime().GetTimeGone() + 2*3600)
-		local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
-		local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
+		Local latestTime:Long = triggerEvent.GetData().GetLong("latestTime", GetWorldTime().GetTimeGone() + 2*3600)
+		Local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
+		Local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
 
 		'inform ai about the request
-		if player.isLocalAI()
+		If player.isLocalAI()
 			player.playerAI.CallOnBossCalls(latestTime)
-		else
+		Else
 			'send out a toast message
-			local toastGUID:string = "toastmessage-playerboss-callplayer"+player.playerID
+			Local toastGUID:String = "toastmessage-playerboss-callplayer"+player.playerID
 			'try to fetch an existing one
-			local toast:TGameToastMessage = TGameToastMessage(GetToastMessageCollection().GetMessageByGUID(toastGUID))
-			if not toast then toast = new TGameToastMessage
+			Local toast:TGameToastMessage = TGameToastMessage(GetToastMessageCollection().GetMessageByGUID(toastGUID))
+			If Not toast Then toast = New TGameToastMessage
 		
 			'until 2 hours
 			toast.SetCloseAtWorldTime(latestTime)
@@ -3116,7 +3119,7 @@ Type GameEvents
 
 			toast.SetCaption(GetLocale("YOUR_BOSS_WANTS_TO_SEE_YOU"))
 			toast.SetText(..
-				GetLocale("YOU_HAVE_GOT_X_HOURS TO_VISIT_HIM").replace("%HOURS%", 2) + " " +..
+				GetLocale("YOU_HAVE_GOT_X_HOURS TO_VISIT_HIM").Replace("%HOURS%", 2) + " " +..
 				"|i|"+GetLocale("CLICK_HERE_TO_START_YOUR_VISIT_AHEAD_OF_TIME") + "|/i|" ..
 			)
 			toast.SetOnCloseFunction(PlayerBoss_onClosePlayerCallMessage)
@@ -3124,37 +3127,37 @@ Type GameEvents
 			toast.GetData().Add("player", player)
 
 			'if this was a new message, the guid will differ
-			if toast.GetGUID() <> toastGUID
+			If toast.GetGUID() <> toastGUID
 				toast.SetGUID(toastGUID)
 				'new messages get added to a list
 				GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
-			endif
-		endif
+			EndIf
+		EndIf
 	End Function
 
 
 	'if a player clicks on the toastmessage calling him, he will get
 	'sent to the boss in that moment
-	Function PlayerBoss_onClosePlayerCallMessage:int(sender:TToastMessage)
-		local boss:TPlayerBoss = TPlayerBoss(sender.GetData().get("boss"))
-		local player:TPlayer = TPlayer(sender.GetData().get("player"))
-		if not boss or not player then return False
+	Function PlayerBoss_onClosePlayerCallMessage:Int(sender:TToastMessage)
+		Local boss:TPlayerBoss = TPlayerBoss(sender.GetData().get("boss"))
+		Local player:TPlayer = TPlayer(sender.GetData().get("player"))
+		If Not boss Or Not player Then Return False
 
 		player.SendToBoss()
 	End Function
 
 
 	Function PublicAuthorities_onStopXRatedBroadcast:Int(triggerEvent:TEventBase)
-		local programme:TProgramme = TProgramme(triggerEvent.GetSender())
-		local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
+		Local programme:TProgramme = TProgramme(triggerEvent.GetSender())
+		Local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
 
 		'inform ai before
-		if player.isLocalAI() then player.playerAI.CallOnPublicAuthoritiesStopXRatedBroadcast()
+		If player.isLocalAI() Then player.playerAI.CallOnPublicAuthoritiesStopXRatedBroadcast()
 
 		'only interest in active players contracts
-		if programme.owner <> GetPlayerCollection().playerID then return False
+		If programme.owner <> GetPlayerCollection().playerID Then Return False
 
-		local toast:TGameToastMessage = new TGameToastMessage
+		Local toast:TGameToastMessage = New TGameToastMessage
 		'show it for some seconds
 		toast.SetLifeTime(15)
 		toast.SetMessageType(1) 'attention
@@ -3168,27 +3171,27 @@ Type GameEvents
 
 
 	Function PublicAuthorities_onConfiscateProgrammeLicence:Int(triggerEvent:TEventBase)
-		local targetProgrammeLicence:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID( triggerEvent.GetData().GetString("targetProgrammeGUID") )
-		local confiscatedProgrammeLicence:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID( triggerEvent.GetData().GetString("confiscatedProgrammeGUID") )
-		local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
+		Local targetProgrammeLicence:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID( triggerEvent.GetData().GetString("targetProgrammeGUID") )
+		Local confiscatedProgrammeLicence:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID( triggerEvent.GetData().GetString("confiscatedProgrammeGUID") )
+		Local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
 
 		'inform ai before
-		if player.isLocalAI() then player.playerAI.CallOnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedProgrammeLicence, targetProgrammeLicence)
+		If player.isLocalAI() Then player.playerAI.CallOnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedProgrammeLicence, targetProgrammeLicence)
 
 		'only interest in active players contracts
-		if confiscatedProgrammeLicence.owner <> GetPlayerCollection().playerID then return False
+		If confiscatedProgrammeLicence.owner <> GetPlayerCollection().playerID Then Return False
 
-		local toast:TGameToastMessage = new TGameToastMessage
+		Local toast:TGameToastMessage = New TGameToastMessage
 		'show it for some seconds
 		toast.SetLifeTime(15)
 		toast.SetMessageType(1) 'attention
 		toast.SetCaption(GetLocale("AUTHORITIES_CONFISCATED_LICENCE"))
-		local text:string = GetLocale("PROGRAMMELICENCE_X_GOT_CONFISCATED").Replace("%TITLE%", "|b|"+confiscatedProgrammeLicence.GetTitle()+"|/b|") + " "
-		if confiscatedProgrammeLicence <> targetProgrammeLicence
+		Local text:String = GetLocale("PROGRAMMELICENCE_X_GOT_CONFISCATED").Replace("%TITLE%", "|b|"+confiscatedProgrammeLicence.GetTitle()+"|/b|") + " "
+		If confiscatedProgrammeLicence <> targetProgrammeLicence
 			text :+ GetLocale("SEEMS_AUTHORITIES_VISITED_THE_WRONG_ROOM")
-		else
+		Else
 			text :+ GetLocale("BETTER_WATCH_OUT_NEXT_TIME")
-		endif
+		EndIf
 		
 		toast.SetText(text)
 		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
@@ -3197,18 +3200,18 @@ Type GameEvents
 
 	Function ProgrammeLicenceAuction_OnGetOutbid:Int(triggerEvent:TEventBase)
 		'only interested in auctions in which the player got overbid
-		local previousBestBidder:int = triggerEvent.GetData().GetInt("previousBestBidder")
-		if GetPlayer().playerID <> previousBestBidder then return False
+		Local previousBestBidder:Int = triggerEvent.GetData().GetInt("previousBestBidder")
+		If GetPlayer().playerID <> previousBestBidder Then Return False
 
-		local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().Get("licence"))
-		local bestBidder:int = triggerEvent.GetData().GetInt("bestBidder")
-		local bestBid:int = triggerEvent.GetData().GetInt("bestBidder")
-		local previousBestBid:int = triggerEvent.GetData().GetInt("previousBestBid")
-		if not licence or not GetPlayer(bestBidder) then return False
+		Local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().Get("licence"))
+		Local bestBidder:Int = triggerEvent.GetData().GetInt("bestBidder")
+		Local bestBid:Int = triggerEvent.GetData().GetInt("bestBidder")
+		Local previousBestBid:Int = triggerEvent.GetData().GetInt("previousBestBid")
+		If Not licence Or Not GetPlayer(bestBidder) Then Return False
 
 
 		'send out a toast message
-		local toast:TGameToastMessage = new TGameToastMessage
+		Local toast:TGameToastMessage = New TGameToastMessage
 	
 		'show it for some seconds
 		toast.SetLifeTime(6)
@@ -3228,16 +3231,16 @@ Type GameEvents
 
 	Function ProgrammeLicenceAuction_OnWin:Int(triggerEvent:TEventBase)
 		'only interested in auctions the player won
-		local bestBidder:int = triggerEvent.GetData().GetInt("bestBidder")
-		if GetPlayer().playerID <> bestBidder then return False
+		Local bestBidder:Int = triggerEvent.GetData().GetInt("bestBidder")
+		If GetPlayer().playerID <> bestBidder Then Return False
 
-		local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().Get("licence"))
-		local bestBid:int = triggerEvent.GetData().GetInt("bestBidder")
-		if not licence or not GetPlayer(bestBidder) then return False
+		Local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().Get("licence"))
+		Local bestBid:Int = triggerEvent.GetData().GetInt("bestBidder")
+		If Not licence Or Not GetPlayer(bestBidder) Then Return False
 
 
 		'send out a toast message
-		local toast:TGameToastMessage = new TGameToastMessage
+		Local toast:TGameToastMessage = New TGameToastMessage
 	
 		'show it for some seconds
 		toast.SetLifeTime(8)
@@ -3249,14 +3252,14 @@ Type GameEvents
 
 	
 	Function AdContract_OnFinish:Int(triggerEvent:TEventBase)
-		local contract:TAdContract = TAdContract(triggerEvent.GetSender())
-		if not contract then return False
+		Local contract:TAdContract = TAdContract(triggerEvent.GetSender())
+		If Not contract Then Return False
 
 		'only interest in active players contracts
-		if contract.owner <> GetPlayer().playerID then return False
+		If contract.owner <> GetPlayer().playerID Then Return False
 
 		'send out a toast message
-		local toast:TGameToastMessage = new TGameToastMessage
+		Local toast:TGameToastMessage = New TGameToastMessage
 	
 		'show it for some seconds
 		toast.SetLifeTime(8)
@@ -3274,14 +3277,14 @@ Type GameEvents
 
 	
 	Function AdContract_OnFail:Int(triggerEvent:TEventBase)
-		local contract:TAdContract = TAdContract(triggerEvent.GetSender())
-		if not contract then return False
+		Local contract:TAdContract = TAdContract(triggerEvent.GetSender())
+		If Not contract Then Return False
 
 		'only interest in active players contracts
-		 if contract.owner <> GetPlayerCollection().playerID then return False
+		 If contract.owner <> GetPlayerCollection().playerID Then Return False
 
 		'send out a toast message
-		local toast:TGameToastMessage = new TGameToastMessage
+		Local toast:TGameToastMessage = New TGameToastMessage
 	
 		'show it for some more seconds
 		toast.SetLifeTime(12)
@@ -3383,12 +3386,12 @@ Type GameEvents
 				Game.refillAdAgencyTime = Game.refillAdAgencyTimer + randrange(0,20)-10
 
 				TLogger.Log("GameEvents.OnMinute", "partly refilling adagency", LOG_DEBUG)
-				if Game.refillAdAgencyOverridePercentage <> Game.refillAdAgencyPercentage
+				If Game.refillAdAgencyOverridePercentage <> Game.refillAdAgencyPercentage
 					RoomHandler_adagency.GetInstance().ReFillBlocks(True, Game.refillAdAgencyOverridePercentage)
 					Game.refillAdAgencyOverridePercentage = Game.refillAdAgencyPercentage
-				else
+				Else
 					RoomHandler_adagency.GetInstance().ReFillBlocks(True, Game.refillAdAgencyPercentage)
-				endif
+				EndIf
 			EndIf
 		EndIf
 
@@ -3408,16 +3411,16 @@ Type GameEvents
 		'=== ADJUST CURRENT BROADCASTS ===
 		'broadcasts change at xx:00, xx:05, xx:55
 		If minute = 5 Or minute = 55 Or minute = 0
-			local broadcastMaterial:TBroadcastMaterial
+			Local broadcastMaterial:TBroadcastMaterial
 
 			'step 1/2
 			'log in current broadcasted media
 			For Local player:TPlayer = EachIn GetPlayerCollection().players
 				broadcastMaterial = player.GetProgrammePlan().LogInCurrentBroadcast(day, hour, minute)
 				'adjust currently broadcasted block
-				if broadcastMaterial
+				If broadcastMaterial
 					broadcastMaterial.currentBlockBroadcasting = player.GetProgrammePlan().GetObjectBlock(broadcastMaterial.usedAsType, day, hour)
-				endif
+				EndIf
 			Next
 			
 			'step 2/2
@@ -3430,19 +3433,19 @@ Type GameEvents
 		'calculate each hour if not or when the current broadcasts are
 		'checked for XRated.
 		'do this to create some tension :p
-		if minute = 0 then Game.ComputeNextXRatedCheckMinute()
+		If minute = 0 Then Game.ComputeNextXRatedCheckMinute()
 
 		'time to check for Xrated programme?
-		if minute = Game.GetNextXRatedCheckMinute()
+		If minute = Game.GetNextXRatedCheckMinute()
 			'only check between 6:00-21:59 o'clock (there it is NOT allowed)
-			if hour <= 21 and hour >= 6
-				local currentProgramme:TProgramme
+			If hour <= 21 And hour >= 6
+				Local currentProgramme:TProgramme
 				For Local player:TPlayer = EachIn GetPlayerCollection().players
 					currentProgramme = TProgramme(player.GetProgrammePlan().GetProgramme(day, hour))
 					'skip non-programme broadcasts or malfunction
-					if not currentProgramme then continue
+					If Not currentProgramme Then Continue
 					'skip "normal" programme
-					if not currentProgramme.data.IsXRated() then continue
+					If Not currentProgramme.data.IsXRated() Then Continue
 
 					'pay penalty
 					player.GetFinance().PayMisc(GameRules.sentXRatedPenalty)
@@ -3454,32 +3457,32 @@ Type GameEvents
 					player.GetPublicImage().ChangeImage(New TAudience.AddFloat(-0.5))
 
 					'chance of 25% the programme will get (tried) to get confiscated
-					local confiscateProgramme:int = RandRange(0,100) < 25
+					Local confiscateProgramme:Int = RandRange(0,100) < 25
 
-					if confiscateProgramme
-						EventManager.triggerEvent(TEventSimple.Create("publicAuthorities.onStartConfiscateProgramme", new TData.AddString("broadcastMaterialGUID", currentProgramme.GetGUID()).AddNumber("owner", player.playerID), currentProgramme, player))
+					If confiscateProgramme
+						EventManager.triggerEvent(TEventSimple.Create("publicAuthorities.onStartConfiscateProgramme", New TData.AddString("broadcastMaterialGUID", currentProgramme.GetGUID()).AddNumber("owner", player.playerID), currentProgramme, player))
 
 						'Send out first marshal - Mr. Czwink or Mr. Czwank
 						Game.marshals[randRange(0,1)].AddConfiscationJob(currentProgramme.GetGUID())
-					endif
+					EndIf
 
 					'emit event (eg.for ingame toastmessages)
 					EventManager.triggerEvent(TEventSimple.Create("publicAuthorities.onStopXRatedBroadcast",Null , currentProgramme, player))
 				Next
-			endif
-		endif
+			EndIf
+		EndIf
 
 
 		'=== INFORM BROADCASTS ===
 		'inform about broadcasts starting / ending
 		'-> earn call-in profit
 		'-> cut topicality
-		If (minute = 5 Or minute = 55 Or minute = 0) or ..
-		   (minute = 4 Or minute = 54 or minute = 59)
+		If (minute = 5 Or minute = 55 Or minute = 0) Or ..
+		   (minute = 4 Or minute = 54 Or minute = 59)
 			For Local player:TPlayer = EachIn GetPlayerCollection().players
 				player.GetProgrammePlan().InformCurrentBroadcast(day, hour, minute)
 			Next
-		endIf
+		EndIf
 	
 		Return True
 	End Function
@@ -3529,32 +3532,32 @@ Type GameEvents
 
 			'TODO: give image points or something like it for best programme
 			'of day?!
-			local stat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic( day - 1 )
-			if stat and stat.bestBroadcast
-				local audience:string = ""
-				if stat.bestAudienceResult then audience = Long(stat.bestAudienceResult.audience.GetSum())+", player: "+stat.bestBroadcast.owner
+			Local stat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic( day - 1 )
+			If stat And stat.bestBroadcast
+				Local audience:String = ""
+				If stat.bestAudienceResult Then audience = Long(stat.bestAudienceResult.audience.GetSum())+", player: "+stat.bestBroadcast.owner
 				TLogger.Log("OnDay", "BestBroadcast: "+stat.bestBroadcast.GetTitle() + " (audience: "+audience+")", LOG_INFO)
-			else
-				if stat
+			Else
+				If stat
 					TLogger.Log("OnDay", "BestBroadcast: No best broadcast found for today", LOG_INFO)
-				else
+				Else
 					TLogger.Log("OnDay", "GetDailyBroadcastStatistic() failed - nothing available for that day", LOG_DEBUG)
-				endif
-			endif
+				EndIf
+			EndIf
 
 
 			'=== REMOVE OLD NEWS AND NEWSEVENTS ===
 			'news and newsevents both have a "happenedTime" but they must
 			'not be the same (multiple news with the same event but happened
 			'to different times)
-			local daysToKeep:int = 2
+			Local daysToKeep:Int = 2
 	
 			'remove old news from the all player plans and collections
 			For Local i:Int = 1 To 4
 				'COLLECTION
 				'news could stay there for 2 days (including today)
 				daysToKeep = 2
-				For local news:TNews = EachIn GetPlayerCollection().Get(i).GetProgrammeCollection().news
+				For Local news:TNews = EachIn GetPlayerCollection().Get(i).GetProgrammeCollection().news
 					If day - GetWorldTime().getDay(news.GetHappenedTime()) >= daysToKeep
 						GetPlayer(i).GetProgrammeCollection().RemoveNews(news)
 					EndIf
@@ -3563,7 +3566,7 @@ Type GameEvents
 				'PLAN
 				'news could get send a day longer (3 days incl. today)
 				daysToKeep = 3
-				For local news:TNews = EachIn GetPlayerCollection().Get(i).GetProgrammePlan().news
+				For Local news:TNews = EachIn GetPlayerCollection().Get(i).GetProgrammePlan().news
 					If day - GetWorldTime().getDay(news.GetHappenedTime()) >= daysToKeep
 						GetPlayer(i).GetProgrammePlan().RemoveNews(news)
 					EndIf
@@ -3599,13 +3602,13 @@ Type AppEvents
 	End Function
 
 	Function onMouseOverGUIObject:Int(triggerEvent:TEventBase)
-		local obj:TGUIObject = TGUIObject(triggerEvent.GetSender())
-		if not obj then return false
+		Local obj:TGUIObject = TGUIObject(triggerEvent.GetSender())
+		If Not obj Then Return False
 		
-		if obj.isDragable() and Game.cursorstate = 0
+		If obj.isDragable() And Game.cursorstate = 0
 			Game.cursorstate = 1
-		endif
-		if obj.isDragged() then Game.cursorstate = 2
+		EndIf
+		If obj.isDragged() Then Game.cursorstate = 2
 	End Function
 
 
@@ -3622,11 +3625,11 @@ Type AppEvents
 
 
 	Function onToastMessageCollectionAddMessage:Int(triggerEvent:TEventBase)
-		local toastMessage:TToastMessage = TToastMessage(triggerEvent.GetReceiver())
-		if not toastMessage then return False
+		Local toastMessage:TToastMessage = TToastMessage(triggerEvent.GetReceiver())
+		If Not toastMessage Then Return False
 
-		local sfx:string = toastMessage.getData().getString("onAddMessageSFX")
-		if sfx = "" then sfx = "gui_open_window"
+		Local sfx:String = toastMessage.getData().getString("onAddMessageSFX")
+		If sfx = "" Then sfx = "gui_open_window"
 
 		'play a random sound of the given playlist with the default sfxchannel
 		SimpleSoundSource.PlayRandomSfx(sfx)
@@ -3767,19 +3770,19 @@ Function DEV_switchRoom:Int(room:TRoom)
 	If Not room Then Return False
 
 	'skip if already there
-	if GetPlayer().GetFigure().inRoom = room then return False
+	If GetPlayer().GetFigure().inRoom = room Then Return False
 
 	'to avoid seeing too much animation
 	TInGameScreen_Room.temporaryDisableScreenChangeEffects = True
 
 	'leave first
-	if GetPlayer().GetFigure().inRoom
+	If GetPlayer().GetFigure().inRoom
 		'force leave?
 		'GetPlayer().GetFigure().LeaveRoom(True)
 		'not forcing a leave is similar to "right-click"-leaving
 		'which means it signs contracts, buys programme etc
 		GetPlayer().GetFigure().LeaveRoom(False)
-	endif
+	EndIf
 
 	'remove potential elevator passenger 
 	GetElevator().LeaveTheElevator(GetPlayer().GetFigure())
@@ -3803,7 +3806,7 @@ Function StartApp:Int()
 	GameRules.devConfig = TData(GetRegistry().Get("DEV_CONFIG", New TData))
 
 	'disable log from now on (if dev wished so)
-	If not GameRules.devConfig.GetBool("DEV_LOG", True)
+	If Not GameRules.devConfig.GetBool("DEV_LOG", True)
 		TLogger.SetPrintMode(0)
 	EndIf
 

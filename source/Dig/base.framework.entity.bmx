@@ -167,7 +167,8 @@ Type TEntityBase {_exposeToLua="selected"}
 
 
 	'overrideable method for cleanup actions
-	Method Remove()
+	Method Remove:Int()
+		Return True
 	End Method
 End Type
 

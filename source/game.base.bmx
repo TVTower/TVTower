@@ -1,7 +1,7 @@
 
 'Game - holds time, audience, money and other variables (typelike structure makes it easier to save the actual state)
 Type TGame {_exposeToLua="selected"}
-	Field debugAudienceInfo:TDebugAudienceInfos = new TDebugAudienceInfos
+	Field debugAudienceInfo:TDebugAudienceInfos = New TDebugAudienceInfos
 
 	'===== GAME STATES =====
 	Const STATE_RUNNING:Int			= 0
@@ -25,7 +25,7 @@ Type TGame {_exposeToLua="selected"}
 	Global userChannelName:String = ""
 	'language the player uses ->set in config
 	Global userLanguage:String = "de"
-	Global userStartYear:int = 1985
+	Global userStartYear:Int = 1985
 	Global userFallbackIP:String = ""
 
 	'title of the game
@@ -73,14 +73,14 @@ Type TGame {_exposeToLua="selected"}
 	Field marshals:TFigureMarshal[2]  
 
 	Global _instance:TGame
-	Global _initDone:int = FALSE
+	Global _initDone:Int = False
 	'was "PrepareFirstGameStart" run already?
-	Global _firstGamePreparationDone:int = FALSE
+	Global _firstGamePreparationDone:Int = False
 	Global StartTipWindow:TGUIModalWindow
 
 
 	Method New()
-		if not _initDone
+		If Not _initDone
 			'handle begin of savegameloading (prepare first game if needed)
 			EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
 			'handle savegame loading (assign sprites)
@@ -90,19 +90,19 @@ Type TGame {_exposeToLua="selected"}
 			'we want to handle "/dev bla"-commands via chat
 			EventManager.registerListenerFunction("chat.onAddEntry", onChatAddEntry )
 
-			_initDone = TRUE
-		Endif
+			_initDone = True
+		EndIf
 	End Method
 
 
 	Function GetInstance:TGame()
-		if not _instance then _instance = new TGame
-		return _instance
+		If Not _instance Then _instance = New TGame
+		Return _instance
 	End Function
 
 
 	'Summary: create a game, every variable is set to Zero
-	Method Create:TGame(initializePlayer:Int = true, initializeRoom:Int = true)
+	Method Create:TGame(initializePlayer:Int = True, initializeRoom:Int = True)
 		LoadConfig(App.config)
 
 		'load all localizations
@@ -132,14 +132,14 @@ Type TGame {_exposeToLua="selected"}
 		'creates all Rooms - with the names assigned at this moment
 '		If initializeRoom Then Init_CreateAllRooms()
 
-		Return self
+		Return Self
 	End Method
 
 
 
 	Method InitWorld()
-		local appConfig:TData = GetDataFromRegistry("appConfig", new TData)
-		local worldConfig:TData = TData(appConfig.Get("worldConfig", New TData))
+		Local appConfig:TData = GetDataFromRegistry("appConfig", New TData)
+		Local worldConfig:TData = TData(appConfig.Get("worldConfig", New TData))
 
 		GetWorld().Init(1*3600)
 		GetWorld().SetConfiguration(worldConfig)
@@ -147,7 +147,7 @@ Type TGame {_exposeToLua="selected"}
 
 
 	Method InitWorldWeatherEffects()
-		local world:TWorld = GetWorld()
+		Local world:TWorld = GetWorld()
 
 		'we draw them in front of the background buildings
 		world.autoRenderSnow = False
@@ -174,10 +174,10 @@ Type TGame {_exposeToLua="selected"}
 	
 
 	'run this before EACH started game
-	Method PrepareStart(startNewGame:int)
+	Method PrepareStart(startNewGame:Int)
 		'=== FIRST GAME ===
 		'if no game run before : prepare something more
-		if not _firstGamePreparationDone then PrepareFirstGameStart(startNewGame)
+		If Not _firstGamePreparationDone Then PrepareFirstGameStart(startNewGame)
 
 		'=== ALL GAMES ===
 		TLogger.Log("Game.PrepareStart()", "colorizing images corresponding to playercolors", LOG_DEBUG)
@@ -197,17 +197,17 @@ Type TGame {_exposeToLua="selected"}
 
 		'=== NEW GAMES ===
 		'new games need some initializations (database etc.)
-		if startNewGame then PrepareNewGame()
+		If startNewGame Then PrepareNewGame()
 	End Method
 
 
 	'run this BEFORE the first game is started
-	Function PrepareFirstGameStart:int(startNewGame:int)
-		if _firstGamePreparationDone then return False
+	Function PrepareFirstGameStart:Int(startNewGame:Int)
+		If _firstGamePreparationDone Then Return False
 
 		Game.InitWorld()
 
-		if startNewGame then Init_CreateAllRooms()
+		If startNewGame Then Init_CreateAllRooms()
 
 		GetRoomHandlerCollection().Initialize()
 		Init_ConnectRoomHandlers()
@@ -218,13 +218,13 @@ Type TGame {_exposeToLua="selected"}
 
 		'=== START TIPS ===
 		'maybe show this window each game? or only on game start or ... ?
-		local showStartTips:int = FALSE
-		if showStartTips then CreateStartTips()
+		Local showStartTips:Int = False
+		If showStartTips Then CreateStartTips()
 
 
 		'=== GUI SETUP ===
 		'TLogger.Log("TGame", "Creating ingame GUIelements", LOG_DEBUG)
-		InGame_Chat = New TGUIChat.Create(new TVec2D.Init(518, 404), new TVec2D.Init(275,180), "InGame")
+		InGame_Chat = New TGUIChat.Create(New TVec2D.Init(518, 404), New TVec2D.Init(275,180), "InGame")
 		InGame_Chat.setDefaultHideEntryTime(10000)
 '		InGame_Chat.guiList.backgroundColor = TColor.Create(0,0,0,0.8)
 '		InGame_Chat.guiList.backgroundColorHovered = TColor.Create(0,0,0,0.7)
@@ -233,7 +233,7 @@ Type TGame {_exposeToLua="selected"}
 		'bugged:
 		'InGame_Chat.guiList.autoHideScroller = True
 		'remove unneeded elements
-		InGame_Chat.SetBackground(null)
+		InGame_Chat.SetBackground(Null)
 
 		'reposition input
 		InGame_Chat.guiInput.rect.position.setXY( 515, 354 )
@@ -274,31 +274,31 @@ Type TGame {_exposeToLua="selected"}
 	End Function
 
 
-	Function CreateStartTips:int()
+	Function CreateStartTips:Int()
 		TLogger.Log("TGame", "Creating start tip GUIelement", LOG_DEBUG)
 		Local StartTips:TList = CreateList()
-		Local tipNumber:int = 1
+		Local tipNumber:Int = 1
 		'repeat as long there is a localization available
 		While GetLocale("STARTHINT_TITLE"+tipNumber) <> "STARTHINT_TITLE"+tipNumber
 			StartTips.addLast( [GetLocale("HINT")+ ": "+GetLocale("STARTHINT_TITLE"+tipNumber), GetLocale("STARTHINT_TEXT"+tipNumber)] )
 			tipNumber :+ 1
 		Wend
 
-		if StartTips.count() > 0
-			local tipNumber:int = rand(0, StartTips.count()-1)
-			local tip:string[] = string[](StartTips.valueAtIndex(tipNumber))
+		If StartTips.count() > 0
+			Local tipNumber:Int = Rand(0, StartTips.count()-1)
+			Local tip:String[] = String[](StartTips.valueAtIndex(tipNumber))
 
-			StartTipWindow = new TGUIGameModalWindow.Create(new TVec2D, new TVec2D.Init(400,350), "InGame")
-			StartTipWindow.screenArea = new TRectangle.Init(0,0,800,385)
-			StartTipWindow.DarkenedArea = new TRectangle.Init(0,0,800,385)
+			StartTipWindow = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D.Init(400,350), "InGame")
+			StartTipWindow.screenArea = New TRectangle.Init(0,0,800,385)
+			StartTipWindow.DarkenedArea = New TRectangle.Init(0,0,800,385)
 			StartTipWindow.SetCaptionAndValue( tip[0], tip[1] )
-		endif
+		EndIf
 	End Function
 
 
-	Method PrepareNewGame:int()
+	Method PrepareNewGame:Int()
 		'=== RESET VALUES ===
-		new TGameState.Initialize()
+		New TGameState.Initialize()
 
 
 		'=== LOAD DATABASES ===
@@ -321,9 +321,9 @@ Type TGame {_exposeToLua="selected"}
 
 		'move all figures to offscreen, and set their target to their
 		'offices (for now just to the "floor", later maybe to the boss)
-		For local i:int = 1 to 4
+		For Local i:Int = 1 To 4
 			GetPlayer(i).GetFigure().MoveToOffscreen()
-			GetPlayer(i).GetFigure().area.position.x :+ i*3 + (i mod 2)*15
+			GetPlayer(i).GetFigure().area.position.x :+ i*3 + (i Mod 2)*15
 			'forcefully send (no controlling possible until reaching the target)
 			'GetPlayer(i).GetFigure().SendToDoor( TRoomDoor.GetByDetails("office", i), True)
 			GetPlayer(i).GetFigure().ForceChangeTarget(TRoomDoor.GetByDetails("news", i).area.GetX() + 60, TRoomDoor.GetByDetails("news", i).area.GetY())
@@ -333,44 +333,44 @@ Type TGame {_exposeToLua="selected"}
 
 		'also create/move other figures of the building
 		'all of them are created at "offscreen position"
-		local fig:TFigure = GetFigureCollection().GetByName("Hausmeister")
-		if not fig then fig = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("janitor"), GameRules.offscreenX, 0, 65)
+		Local fig:TFigure = GetFigureCollection().GetByName("Hausmeister")
+		If Not fig Then fig = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("janitor"), GameRules.offscreenX, 0, 65)
 		fig.MoveToOffscreen()
 		fig.SetParent(GetBuilding().buildingInner)
 		fig.SendToDoor(TRoomDoor.GetByDetails("supermarket",-1), True)
 
 		fig = GetFigureCollection().GetByName("Bote1")
-		if not fig then fig = New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), GameRules.offscreenX - 90, 0, 65)
+		If Not fig Then fig = New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), GameRules.offscreenX - 90, 0, 65)
 		fig.MoveToOffscreen()
 		fig.SetParent(GetBuilding().buildingInner)
 		fig.SendToDoor(TRoomDoor.GetByDetails("boss", 1), True)
 
 		fig = GetFigureCollection().GetByName("Bote2")
-		if not fig then fig = New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), GameRules.offscreenX -60, 0, -65)
+		If Not fig Then fig = New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), GameRules.offscreenX -60, 0, -65)
 		fig.MoveToOffscreen()
 		fig.SetParent(GetBuilding().buildingInner)
 		fig.SendToDoor(TRoomDoor.GetByDetails("boss", 3), True)
 
 
 		'create 2 terrorists
-		For local i:int = 0 to 1
+		For Local i:Int = 0 To 1
 			terrorists[i] = TFigureTerrorist(GetFigureCollection().GetByName("Terrorist"+(i+1)))
-			if not terrorists[i]
+			If Not terrorists[i]
 				terrorists[i] = New TFigureTerrorist
 				terrorists[i].Create("Terrorist"+(i+1), GetSpriteFromRegistry("Terrorist"+(i+1)), GameRules.offscreenX, 0, 65)
-			endif
+			EndIf
 			terrorists[i].MoveToOffscreen()
 			terrorists[i].SetParent(GetBuilding().buildingInner)
 		Next
 
 		'create 2 marshals (to confiscate different things we use
 		'multiple marshals)
-		For local i:int = 0 to 1
+		For Local i:Int = 0 To 1
 			marshals[i] = TFigureMarshal(GetFigureCollection().GetByName("Marshal"+(i+1)))
-			if not marshals[i]
+			If Not marshals[i]
 				marshals[i] = New TFigureMarshal
 				marshals[i].Create("Marshal"+(i+1), GetSpriteFromRegistry("Marshal"+(i+1)), GameRules.offscreenX, 0, 65)
-			endif
+			EndIf
 			marshals[i].MoveToOffscreen()
 			marshals[i].SetParent(GetBuilding().buildingInner)
 		Next
@@ -384,7 +384,7 @@ Type TGame {_exposeToLua="selected"}
 
 
 		'=== ADJUST GAME RULES ===
-		GameRules.dailyBossVisit = GameRules.devConfig.GetInt("DEV_DAILY_BOSS_VISIT", TRUE)
+		GameRules.dailyBossVisit = GameRules.devConfig.GetInt("DEV_DAILY_BOSS_VISIT", True)
 
 
 		'=== STATION MAP ===
@@ -394,7 +394,7 @@ Type TGame {_exposeToLua="selected"}
 		'create base stations
 		For Local i:Int = 1 To 4
 			'add new station
-			GetPlayerCollection().Get(i).GetStationMap().AddStation( TStation.Create( new TVec2D.Init(310, 260),-1, GetStationMapCollection().stationRadius, i ), False )
+			GetPlayerCollection().Get(i).GetStationMap().AddStation( TStation.Create( New TVec2D.Init(310, 260),-1, GetStationMapCollection().stationRadius, i ), False )
 		Next
 
 		'update the collection so it contains the audience reach of each player
@@ -440,19 +440,19 @@ Type TGame {_exposeToLua="selected"}
 		GetNewsAgency().ResetNextEventTime()
 
 		'place them into the players news shows
-		local newsToPlace:TNews
-		For Local playerID:int = 1 to 4
-			For local i:int = 0 to 2
+		Local newsToPlace:TNews
+		For Local playerID:Int = 1 To 4
+			For Local i:Int = 0 To 2
 				'attention: instead of using "GetNewsAtIndex(i)" we always
 				'use (0) - as each "placed" news is removed from the collection
 				'leaving the next on listIndex 0
 				newsToPlace = GetPlayerProgrammeCollectionCollection().Get(playerID).GetNewsAtIndex(0)
-				if not newsToPlace
+				If Not newsToPlace
 					'throw "Game.PrepareNewGame: initial news " + i + " missing."
-					continue
-				endif
+					Continue
+				EndIf
 				'set it paid - so money does not change
-				newsToPlace.paid = true
+				newsToPlace.paid = True
 				'calculate paid Price of the news
 				newsToPlace.Pay()
 				'set planned
@@ -465,7 +465,7 @@ Type TGame {_exposeToLua="selected"}
 		'=== SETUP START PROGRAMME PLAN ===
 
 		Local lastblocks:Int=0
-		local playerCollection:TPlayerProgrammeCollection
+		Local playerCollection:TPlayerProgrammeCollection
 		Local playerPlan:TPlayerProgrammePlan
 
 		'creation of blocks for players rooms
@@ -480,14 +480,14 @@ Type TGame {_exposeToLua="selected"}
 			Local addHeight:Int = GetSpriteFromRegistry("pp_adblock1").area.GetH()
 
 			'is there a random contract available?
-			if playerCollection.GetRandomAdContract()
+			If playerCollection.GetRandomAdContract()
 				playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 0 )
 				playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 1 )
 				playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 2 )
 				playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 3 )
 				playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 4 )
 				playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 5 )
-			endif
+			EndIf
 			Local currentLicence:TProgrammeLicence = Null
 			Local currentHour:Int = 0
 			For Local i:Int = 0 To 3
@@ -506,14 +506,14 @@ Type TGame {_exposeToLua="selected"}
 	End Method
 
 
-	Method SpreadStartProgramme:int()
-		local filterCallIn:TProgrammeLicenceFilter = new TProgrammeLicenceFilter
+	Method SpreadStartProgramme:Int()
+		Local filterCallIn:TProgrammeLicenceFilter = New TProgrammeLicenceFilter
 		filterCallIn.AddFlag(TVTProgrammeFlag.PAID)
 
 		'all players get the same adContractBase (but of course another
 		'contract for each of them)
-		local adContractBases:TAdContractBase[]
-		local cheapFilter:TAdContractBaseFilter = new TAdContractbaseFilter
+		Local adContractBases:TAdContractBase[]
+		Local cheapFilter:TAdContractBaseFilter = New TAdContractbaseFilter
 		'some easy ones
 		cheapFilter.SetAudience(0.0, 0.01)
 		'only without image requirements? not needed for start programme
@@ -522,32 +522,32 @@ Type TGame {_exposeToLua="selected"}
 		'do not allow limited ones
 		cheapFilter.SetSkipLimitedToProgrammeGenre()
 		cheapFilter.SetSkipLimitedToTargetGroup()
-		For Local i:int = 0 to 1
+		For Local i:Int = 0 To 1
 			adContractBases :+ [GetAdContractBaseCollection().GetRandomByFilter(cheapFilter)]
 		Next
 		'and one with 0 audience requirement
 		cheapFilter.SetAudience(0.0, 0.0)
 		adContractBases :+ [GetAdContractBaseCollection().GetRandomByFilter(cheapFilter)]
 
-		if adContractBases.length = 0
+		If adContractBases.length = 0
 			TLogger.Log("SpreadStartProgramme", "adContractBases is empty.", LOG_ERROR)
-		endif
+		EndIf
 
 		
 		For Local playerids:Int = 1 To 4
 			Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(playerids)
-			For Local i:Int = 0 until GameRules.startMovieAmount
+			For Local i:Int = 0 Until GameRules.startMovieAmount
 				ProgrammeCollection.AddProgrammeLicence(GetProgrammeLicenceCollection().GetRandom(TVTProgrammeLicenceType.MOVIE))
 			Next
 			'give series to each player
-			For Local i:Int = GameRules.startMovieAmount until GameRules.startMovieAmount + GameRules.startSeriesAmount
+			For Local i:Int = GameRules.startMovieAmount Until GameRules.startMovieAmount + GameRules.startSeriesAmount
 				ProgrammeCollection.AddProgrammeLicence(GetProgrammeLicenceCollection().GetRandom(TVTProgrammeLicenceType.SERIES))
 			Next
 			'give 1 call in
 			ProgrammeCollection.AddProgrammeLicence(GetProgrammeLicenceCollection().GetRandomByFilter(filterCallIn))
 
 			'create contracts out of the preselected adcontractbases
-			For local adContractBase:TAdContractBase = EachIn adContractBases
+			For Local adContractBase:TAdContractBase = EachIn adContractBases
 				'forcefully add to the collection (skips requirements checks)
 				ProgrammeCollection.AddAdContract(New TAdContract.Create(adContractBase), True)
 			Next
@@ -555,20 +555,20 @@ Type TGame {_exposeToLua="selected"}
 	End Method
 
 
-	Method StartNewGame:int()
+	Method StartNewGame:Int()
 		_Start(True)
 	End Method
 
 
-	Method StartLoadedSaveGame:int()
+	Method StartLoadedSaveGame:Int()
 		PrepareStart(False)
 		_Start(False)
 	End Method
 
 
 	'run when a specific game starts
-	Method _Start:int(startNewGame:int = TRUE)
-rem
+	Method _Start:Int(startNewGame:Int = True)
+Rem
 	no longer needed, done by savegame itself
 		'when a game is loaded we should try set the right screen
 		'not just the default building screen
@@ -588,16 +588,16 @@ endrem
 
 		'set force=true so the gamestate is set even if already in this
 		'state (eg. when loaded)
-		Game.SetGamestate(TGame.STATE_RUNNING, TRUE)
+		Game.SetGamestate(TGame.STATE_RUNNING, True)
 
 
 
-		if startNewGame
+		If startNewGame
 			'Begin Game - fire Events
-			EventManager.registerEvent(TEventSimple.Create("Game.OnMinute", new TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().getDay()) ))
-			EventManager.registerEvent(TEventSimple.Create("Game.OnHour", new TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().getDay()) ))
+			EventManager.registerEvent(TEventSimple.Create("Game.OnMinute", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().getDay()) ))
+			EventManager.registerEvent(TEventSimple.Create("Game.OnHour", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().getDay()) ))
 			'so we start at day "1"
-			EventManager.registerEvent(TEventSimple.Create("Game.OnDay", new TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().getDay()) ))
+			EventManager.registerEvent(TEventSimple.Create("Game.OnDay", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().getDay()) ))
 		EndIf
 	End Method
 
@@ -618,8 +618,8 @@ endrem
 
 		TLogger.Log("TGame", "Savegame loaded - colorize players.", LOG_DEBUG | LOG_SAVELOAD)
 		'reconnect AI and other things
-		For local player:TPlayer = eachin GetPlayerCollection().players
-			player.onLoad(null)
+		For Local player:TPlayer = EachIn GetPlayerCollection().players
+			player.onLoad(Null)
 		Next
 
 		'set active player again (sets correct game screen)
@@ -631,80 +631,80 @@ endrem
 	Function onSaveGameBeginSave(triggerEvent:TEventBase)
 		TLogger.Log("TGame", "Start saving - inform AI.", LOG_DEBUG | LOG_SAVELOAD)
 		'inform player AI that we are saving now
-		For local player:TPlayer = eachin GetPlayerCollection().players
-			If player.isLocalAI() then player.PlayerAI.CallOnSave()
+		For Local player:TPlayer = EachIn GetPlayerCollection().players
+			If player.isLocalAI() Then player.PlayerAI.CallOnSave()
 		Next
 	End Function
 
 
-	Function onChatAddEntry:int(triggerEvent:TEventBase)
-		local text:string = triggerEvent.GetData().GetString("text")
+	Function onChatAddEntry:Int(triggerEvent:TEventBase)
+		Local text:String = triggerEvent.GetData().GetString("text")
 		'only interested in system/dev-commands
-		if TGUIChat.GetCommandFromText(text) <> CHAT_COMMAND_SYSTEM then return False
+		If TGUIChat.GetCommandFromText(text) <> CHAT_COMMAND_SYSTEM Then Return False
 
 		'skip "/sys " and only return the payload
 		'-> "/sys addmoney 1000" gets "addmoney 1000"
 		text = TGUIChat.GetPayloadFromText(text)
 		text = text.Trim()
 
-		local command:string, payload:string
+		Local command:String, payload:String
 		FillCommandPayload(text, command, payload)
 
 		'try to fetch a player (saves to repeat those lines over and over)
-		local playerS:String, paramS:string
+		Local playerS:String, paramS:String
 		FillCommandPayload(payload, playerS, paramS)
-		local player:TPlayer = GetPlayer(int(playerS))
+		Local player:TPlayer = GetPlayer(Int(playerS))
 
-		local PLAYER_NOT_FOUND:String = "[DEV] player not found."
+		Local PLAYER_NOT_FOUND:String = "[DEV] player not found."
 
 		Select command.Trim().toLower()
-			case "bossmood"
-				if not player then Return SendSystemMessage(PLAYER_NOT_FOUND)
+			Case "bossmood"
+				If Not player Then Return SendSystemMessage(PLAYER_NOT_FOUND)
 
-				local changed:string = ""
-				if paramS <> ""
-					GetPlayerBoss(player.playerID).ChangeMood(int(paramS))
+				Local changed:String = ""
+				If paramS <> ""
+					GetPlayerBoss(player.playerID).ChangeMood(Int(paramS))
 
-					if int(paramS) > 0 then paramS = "+"+int(paramS)
+					If Int(paramS) > 0 Then paramS = "+"+Int(paramS)
 					changed = " ("+paramS+"%)"
-				endif
+				EndIf
 				SendSystemMessage("[DEV] Mood of boss "+playerS+": "+GetPlayerBoss(player.playerID).GetMood()+"%." + changed)
 
-			case "money"
-				if not player then Return SendSystemMessage(PLAYER_NOT_FOUND)
+			Case "money"
+				If Not player Then Return SendSystemMessage(PLAYER_NOT_FOUND)
 
-				local changed:string = ""
-				if paramS <> ""
-					player.GetFinance().ChangeMoney(int(paramS), TVTPlayerFinanceEntryType.CHEAT)
+				Local changed:String = ""
+				If paramS <> ""
+					player.GetFinance().ChangeMoney(Int(paramS), TVTPlayerFinanceEntryType.CHEAT)
 
-					if int(paramS) > 0 then paramS = "+"+int(paramS)
+					If Int(paramS) > 0 Then paramS = "+"+Int(paramS)
 					changed = " ("+paramS+")"
-				endif
+				EndIf
 				SendSystemMessage("[DEV] Money of player "+playerS+": "+player.GetFinance().money+"." + changed)
 
-			case "image"
-				if not player then Return SendSystemMessage(PLAYER_NOT_FOUND)
+			Case "image"
+				If Not player Then Return SendSystemMessage(PLAYER_NOT_FOUND)
 
-				local changed:string = ""
-				if paramS <> ""
-					player.GetPublicImage().ChangeImage( new TAudience.AddFloat(int(paramS)))
+				Local changed:String = ""
+				If paramS <> ""
+					player.GetPublicImage().ChangeImage( New TAudience.AddFloat(Int(paramS)))
 					
-					if int(paramS) > 0 then paramS = "+"+int(paramS)
+					If Int(paramS) > 0 Then paramS = "+"+Int(paramS)
 					changed = " ("+paramS+"%)"
-				endif
+				EndIf
 				SendSystemMessage("[DEV] Image of player "+playerS+": "+player.GetPublicImage().GetAverageImage()+"%." + changed)
 
-			case "help"
+			Case "help"
 				SendHelp()
 
-			default
+			Default
 				SendHelp()
 				'SendSystemMessage("[DEV] unknown command: ~q"+command+"~q")
 		End Select
 
 
 		Function SendHelp()
-				local commands:string = ""
+				Local commands:String = ""
 				commands :+ "money [player#] [+- money]~n"
 				commands :+ "bossmood [player#] [+- mood %]~n"
 				commands :+ "image [player#] [+- image %]"
@@ -712,15 +712,15 @@ endrem
 		End Function
 		
 		'internal helper function
-		Function FillCommandPayload(text:string, command:string var, payload:string var)
-			local spacePos:int = text.Find(" ")
-			if spacePos <= 0
+		Function FillCommandPayload(text:String, command:String Var, payload:String Var)
+			Local spacePos:Int = text.Find(" ")
+			If spacePos <= 0
 				command = text
 				payload = ""
-			else
+			Else
 				command = Left(text, spacePos)
 				payload = Right(text, text.length - (spacePos+1))
-			endif
+			EndIf
 		End Function
 	End Function
 
@@ -757,10 +757,10 @@ endrem
 	End Method
 
 
-	Method PlayingAGame:int()
-		if gamestate <> TGame.STATE_RUNNING then return False
+	Method PlayingAGame:Int()
+		If gamestate <> TGame.STATE_RUNNING Then Return False
 
-		return True
+		Return True
 	End Method
 	
 
@@ -768,12 +768,12 @@ endrem
 		'do not use the timeslots 50-54 ... maybe thats too late?
 		'-9 till 0 are "no check"
 		nextXRatedCheckMinute = RandRange(-9, 49)
-		if nextXRatedCheckMinute <= 0 then nextXRatedCheckMinute = -1
+		If nextXRatedCheckMinute <= 0 Then nextXRatedCheckMinute = -1
 	End Method
 
 
-	Method GetNextXRatedCheckMinute:int()
-		return nextXRatedCheckMinute
+	Method GetNextXRatedCheckMinute:Int()
+		Return nextXRatedCheckMinute
 	End Method
 
 
@@ -793,7 +793,7 @@ endrem
 	'computes daily income like account interest income
 	Method ComputeDailyIncome(day:Int=-1)
 		For Local Player:TPlayer = EachIn GetPlayerCollection().players
-			if Player.GetFinance().money > 0
+			If Player.GetFinance().money > 0
 				Player.GetFinance().EarnBalanceInterest( Player.GetFinance().money * TPlayerFinance.balanceInterestRate )
 			Else
 				'attention: multiply current money * -1 to make the
@@ -861,24 +861,24 @@ endrem
 	End Method
 
 
-	Method IsControllingPlayer:Int(playerID:int)
-		if not GetPlayer(playerID) then return False
+	Method IsControllingPlayer:Int(playerID:Int)
+		If Not GetPlayer(playerID) Then Return False
 		
-		if not networkgame
-			return TRUE
-		else
+		If Not networkgame
+			Return True
+		Else
 			'it's me
-			if GetPlayerCollection().isLocalPlayer(playerID) then return True
+			If GetPlayerCollection().isLocalPlayer(playerID) Then Return True
 			'it's an AI player and I am the master
-			if GetPlayer(playerID).IsLocalAI() and IsGameLeader() then return True
-			return False
-		endif 
+			If GetPlayer(playerID).IsLocalAI() And IsGameLeader() Then Return True
+			Return False
+		EndIf 
 	End Method
 
 
 
-	Method SetGameState:Int(gamestate:Int, force:int=False )
-		If Self.gamestate = gamestate and not force Then Return True
+	Method SetGameState:Int(gamestate:Int, force:Int=False )
+		If Self.gamestate = gamestate And Not force Then Return True
 
 		'switch to screen
 		Select gamestate
@@ -893,11 +893,11 @@ endrem
 			Case TGame.STATE_RUNNING
 				'when a game is loaded we should try set the right screen
 				'not just the default building screen
-				if GetPlayer().GetFigure().inRoom
+				If GetPlayer().GetFigure().inRoom
 					ScreenCollection.GoToScreen(ScreenCollection.GetCurrentScreen())
-				else
+				Else
 					ScreenCollection.GoToScreen(GameScreen_world)
-				endif
+				EndIf
 		EndSelect
 
 
@@ -924,8 +924,8 @@ endrem
 
 
 	'sets the player controlled by this client
-	Method SetActivePlayer(ID:int=-1)
-		if ID = -1 then ID = GetPlayerCollection().playerID
+	Method SetActivePlayer(ID:Int=-1)
+		If ID = -1 Then ID = GetPlayerCollection().playerID
 		'for debug purposes we need to adjust more than just
 		'the playerID.
 		GetPlayerCollection().playerID = ID
@@ -934,12 +934,12 @@ endrem
 		GetPlayerBossCollection().playerID = ID
 
 		'get currently shown screen of that player
-		if GetPlayer().GetFigure().inRoom
+		If GetPlayer().GetFigure().inRoom
 			ScreenCollection.GoToScreen(ScreenCollection.GetScreen(GetPlayer().GetFigure().inRoom.screenName))
 		'go to building
-		else
+		Else
 			ScreenCollection.GoToScreen(GameScreen_World)
-		endif
+		EndIf
 	End Method
 
 
@@ -949,7 +949,7 @@ endrem
 
 
 	Method GetPlayer:TPlayer(playerID:Int=-1)
-		return GetPlayerCollection().Get(playerID)
+		Return GetPlayerCollection().Get(playerID)
 	End Method
 
 
@@ -968,15 +968,16 @@ endrem
 	End Method
 
 
-	Function SendSystemMessage(message:String)
+	Function SendSystemMessage:Int(message:String)
 		'send out to chats
-		EventManager.triggerEvent(TEventSimple.Create("chat.onAddEntry", new TData.AddNumber("senderID", -1).AddNumber("channels", CHAT_CHANNEL_SYSTEM).AddString("text", message) ) )
+		EventManager.triggerEvent(TEventSimple.Create("chat.onAddEntry", New TData.AddNumber("senderID", -1).AddNumber("channels", CHAT_CHANNEL_SYSTEM).AddString("text", message) ) )
+		Return True
 	End Function
 
 
 	'Summary: load config from the app config data and set variables
 	'depending on it
-	Method LoadConfig:int(config:TData)
+	Method LoadConfig:Int(config:TData)
 		username = config.GetString("playername", "Player")
 		userchannelname = config.GetString("channelname", "My Channel")
 		userlanguage = config.GetString("language", "de")
@@ -990,7 +991,7 @@ endrem
 
 	'Summary: Updates Time, Costs, States ...
 	Method Update(deltaTime:Float=1.0)
-		local worldTime:TWorldTime = GetWorldTime()
+		Local worldTime:TWorldTime = GetWorldTime()
 		'==== ADJUST TIME ====
 		worldTime.Update()
 
@@ -1004,9 +1005,9 @@ endrem
 
 		'==== CHECK BOMBS ====
 		'this triggers potential bombs
-		for local room:TRoom = eachin GetRoomCollection().list
+		For Local room:TRoom = EachIn GetRoomCollection().list
 			room.CheckForBomb()
-		next
+		Next
 
 		'send state to clients
 		If IsGameLeader() And networkgame And stateSyncTime < Time.GetTimeGone()
@@ -1017,19 +1018,19 @@ endrem
 
 		'=== REALTIME GONE CHECK ===
 		'checks if at least 1 second is gone since the last call
-		if lastTimeRealTimeSecondGone = 0 then lastTimeRealTimeSecondGone = Time.GetTimeGone()
-		if Time.GetTimeGone() - lastTimeRealTimeSecondGone > 1000
+		If lastTimeRealTimeSecondGone = 0 Then lastTimeRealTimeSecondGone = Time.GetTimeGone()
+		If Time.GetTimeGone() - lastTimeRealTimeSecondGone > 1000
 			'event passes milliseconds gone since last call
 			'so if hickups made the game stop for 4.3 seconds, this value
 			'will be about 4300. Maybe AI wants this information.
-			EventManager.triggerEvent(TEventSimple.Create("Time.OnSecond", new TData.addNumber("timeGone", Time.GetTimeGone()-lastTimeRealTimeSecondGone)))
+			EventManager.triggerEvent(TEventSimple.Create("Time.OnSecond", New TData.addNumber("timeGone", Time.GetTimeGone()-lastTimeRealTimeSecondGone)))
 			lastTimeRealTimeSecondGone = Time.GetTimeGone()
-		endif
+		EndIf
 
 
 		
 		'init if not done yet
-		if lastTimeMinuteGone = 0 then lastTimeMinuteGone = worldTime.GetTimeGone()
+		If lastTimeMinuteGone = 0 Then lastTimeMinuteGone = worldTime.GetTimeGone()
 
 		'==== HANDLE IN GAME TIME ====
 		'less than a ingame minute gone? nothing to do YET
@@ -1039,8 +1040,8 @@ endrem
 		'if speed is to high - minutes might get skipped,
 		'handle this case so nothing gets lost.
 		'missedMinutes is >1 in all cases (else this part isn't run)
-		Local missedSeconds:float = (worldTime.GetTimeGone() - lastTimeMinuteGone)
-		Local missedMinutes:float = missedSeconds/60.0
+		Local missedSeconds:Float = (worldTime.GetTimeGone() - lastTimeMinuteGone)
+		Local missedMinutes:Float = missedSeconds/60.0
 		Local daysMissed:Int = Floor(missedMinutes / (24*60))
 
 		'adjust the game time so GetWorldTime().GetDayHour()/Minute/...
@@ -1050,7 +1051,7 @@ endrem
 		'adjustments have to take place
 		worldTime._timeGone:- missedSeconds
 
-		For Local i:Int = 1 to missedMinutes
+		For Local i:Int = 1 To missedMinutes
 			'add back another gone minute each loop
 			worldTime._timeGone :+ 60
 			 
@@ -1058,7 +1059,7 @@ endrem
 			If worldTime.GetDayHour() = 0 And worldTime.GetDayMinute() = 0
 				'year
 				If worldTime.GetDayOfYear() = 0
-					EventManager.triggerEvent(TEventSimple.Create("Game.OnYear", new TData.addNumber("minute", worldTime.GetDayMinute()).addNumber("hour", worldTime.GetDayHour()).addNumber("day", worldTime.GetDay()) ))
+					EventManager.triggerEvent(TEventSimple.Create("Game.OnYear", New TData.addNumber("minute", worldTime.GetDayMinute()).addNumber("hour", worldTime.GetDayHour()).addNumber("day", worldTime.GetDay()) ))
 
 					'reset availableNewsEventList - maybe this is a year
 					'with some more news
@@ -1068,16 +1069,16 @@ endrem
 			 	'automatically change current-plan-day on day change
 			 	TScreenHandler_ProgrammePlanner.ChangePlanningDay(worldTime.GetDay())
 
-				EventManager.triggerEvent(TEventSimple.Create("Game.OnDay", new TData.addNumber("minute", worldTime.GetDayMinute()).addNumber("hour", worldTime.GetDayHour()).addNumber("day", worldTime.GetDay()) ))
+				EventManager.triggerEvent(TEventSimple.Create("Game.OnDay", New TData.addNumber("minute", worldTime.GetDayMinute()).addNumber("hour", worldTime.GetDayHour()).addNumber("day", worldTime.GetDay()) ))
 			EndIf
 
 			'hour
 			If worldTime.GetDayMinute() = 0
-				EventManager.triggerEvent(TEventSimple.Create("Game.OnHour", new TData.addNumber("minute", worldTime.GetDayMinute()).addNumber("hour", worldTime.GetDayHour()).addNumber("day", worldTime.GetDay()) ))
-			endif
+				EventManager.triggerEvent(TEventSimple.Create("Game.OnHour", New TData.addNumber("minute", worldTime.GetDayMinute()).addNumber("hour", worldTime.GetDayHour()).addNumber("day", worldTime.GetDay()) ))
+			EndIf
 
 			'minute
-			EventManager.triggerEvent(TEventSimple.Create("Game.OnMinute", new TData.addNumber("minute", worldTime.GetDayMinute()).addNumber("hour", worldTime.GetDayHour()).addNumber("day", worldTime.GetDay()) ))
+			EventManager.triggerEvent(TEventSimple.Create("Game.OnMinute", New TData.addNumber("minute", worldTime.GetDayMinute()).addNumber("hour", worldTime.GetDayHour()).addNumber("day", worldTime.GetDay()) ))
 		Next
 
 		'reset time of lst minute so next update can calculate missed minutes

@@ -1,4 +1,4 @@
-REM
+Rem
 	===========================================================
 	specific implementations of game screens
 	===========================================================
@@ -14,29 +14,29 @@ ENDREM
 'Import "basefunctions_resourcemanager.bmx"
 
 'register to the onLoad-Event for "Screens"
-EventManager.registerListenerFunction("RegistryLoader.onLoadResourceFromXML", onLoadScreens,null, "SCREENS")
-Function onLoadScreens:int( triggerEvent:TEventBase )
+EventManager.registerListenerFunction("RegistryLoader.onLoadResourceFromXML", onLoadScreens,Null, "SCREENS")
+Function onLoadScreens:Int( triggerEvent:TEventBase )
 	Local screensNode:TxmlNode = TxmlNode(triggerEvent.GetData().Get("xmlNode"))
 	Local registryLoader:TRegistryLoader = TRegistryLoader(triggerEvent.GetSender())
-	if not screensNode or not registryLoader then return FALSE
+	If Not screensNode Or Not registryLoader Then Return False
 
 
-	local ScreenCollection:TScreenCollection = TScreenCollection.GetInstance()
+	Local ScreenCollection:TScreenCollection = TScreenCollection.GetInstance()
 	For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(screensNode)
 		Local name:String	= Lower( TXmlHelper.FindValue(child, "name", "") )
-		local image:string	= Lower( TXmlHelper.FindValue(child, "image", "screen_bg_archive") )
-		local parent:string = Lower( TXmlHelper.FindValue(child, "parent", "") )
-		if name <> ""
-			local screen:TInGameScreen_Room= new TInGameScreen_Room.Create(name)
+		Local image:String	= Lower( TXmlHelper.FindValue(child, "image", "screen_bg_archive") )
+		Local parent:String = Lower( TXmlHelper.FindValue(child, "parent", "") )
+		If name <> ""
+			Local screen:TInGameScreen_Room= New TInGameScreen_Room.Create(name)
 			screen.backgroundSpriteName = image
 			'add to collection list
 			ScreenCollection.Add(screen)
 
 			'if screen has a parent -> set it
-			if parent <> "" and ScreenCollection.GetScreen(parent)
+			If parent <> "" And ScreenCollection.GetScreen(parent)
 				ScreenCollection.GetScreen(parent).AddSubScreen(screen)
-			endif
-		endif
+			EndIf
+		EndIf
 	Next
 End Function
 
@@ -45,17 +45,17 @@ End Function
 
 'a default game screen
 'eg. for menu or loading screens
-Type TGameScreen extends TScreen
-    Field backgroundSpriteName:string
+Type TGameScreen Extends TScreen
+    Field backgroundSpriteName:String
 
 
-	Method Create:TGameScreen(name:string)
+	Method Create:TGameScreen(name:String)
 		Super.Create(name)
-		_enterScreenEffect = new TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_OPEN)
-		_leaveScreenEffect = new TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_CLOSE)
+		_enterScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_OPEN)
+		_leaveScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_CLOSE)
 
 		EventManager.registerListenerMethod("Language.onSetLanguage", Self, "onSetLanguage")
-		return self
+		Return Self
 	End Method
 
 	'handle re-localization requests
@@ -64,36 +64,36 @@ Type TGameScreen extends TScreen
 	End Method
 
 
-	Method SetLanguage:int(languageCode:String = "")
+	Method SetLanguage:Int(languageCode:String = "")
 		'by default do nothing
 	End Method
 
 	
-	Method ToString:string()
-		return "TGameScreen"
+	Method ToString:String()
+		Return "TGameScreen"
 	End Method
 
 
 	Method GetBackground:TSprite()
-		if backgroundSpriteName = "" then return Null
-		return GetSpriteFromRegistry(backgroundSpriteName)
+		If backgroundSpriteName = "" Then Return Null
+		Return GetSpriteFromRegistry(backgroundSpriteName)
 	End Method
 
 
-	Method DrawBackground:int()
+	Method DrawBackground:Int()
 '		if not background then return FALSE
-		if not GetBackground()
+		If Not GetBackground()
 			TColor.Create(100,0,0).SetRGBA()
 			DrawRect(0,0,800,600)
-		else
+		Else
 			SetBlend SOLIDBLEND
 			GetBackground().Draw(0, 0)
 			SetBlend ALPHABLEND
-		endif
+		EndIf
 	End Method
 
 
-	Method Draw:int(tweenValue:float)
+	Method Draw:Int(tweenValue:Float)
 		DrawBackground()
 	End Method
 End Type
@@ -101,96 +101,96 @@ End Type
 
 
 'screens used ingame (with visible interface)
-Type TInGameScreen extends TScreen
-    Field backgroundSpriteName:string
+Type TInGameScreen Extends TScreen
+    Field backgroundSpriteName:String
     'Field hotspots:THotspots     'clickable areas on the screen
 	Field _contentArea:TRectangle
 
 
-	Method Create:TInGameScreen(name:string)
+	Method Create:TInGameScreen(name:String)
 		Super.Create(name)
 		'limit content area
-		_contentArea = new TRectangle.Init(0, 0, 800, 385)
-		return self
+		_contentArea = New TRectangle.Init(0, 0, 800, 385)
+		Return Self
 	End Method
 
 
-	Method ToString:string()
-		return "TInGameScreen: name="+name
+	Method ToString:String()
+		Return "TInGameScreen: name="+name
 	End Method
 
 
 	Method GetBackground:TSprite()
-		if backgroundSpriteName = "" then return Null
-		return GetSpriteFromRegistry(backgroundSpriteName)
+		If backgroundSpriteName = "" Then Return Null
+		Return GetSpriteFromRegistry(backgroundSpriteName)
 	End Method
 
 
-	Method HasScreenChangeEffect:int(otherScreen:TScreen)
+	Method HasScreenChangeEffect:Int(otherScreen:TScreen)
 		'the game rooms have change effects as long as not to or from subscreens
 
 		'is current screen the parent or is toScreen the parent of the current?
-		if otherScreen and (otherScreen.GetSubScreen(name) or GetSubScreen(otherScreen.name))
-			return FALSE
-		else
-			return TRUE
-		endif
+		If otherScreen And (otherScreen.GetSubScreen(name) Or GetSubScreen(otherScreen.name))
+			Return False
+		Else
+			Return True
+		EndIf
 	End Method
 
 
 
 	'override to react to different screentypes
-	Method Enter:int(fromScreen:TScreen=null)
-		local screenName:string = ""
-		if fromScreen then screenName = fromScreen.ToString().toUpper()
+	Method Enter:Int(fromScreen:TScreen=Null)
+		Local screenName:String = ""
+		If fromScreen Then screenName = fromScreen.ToString().toUpper()
 
 		'no change effect when going to a subscreen or parent (aka screen has parent)
-		If not HasScreenChangeEffect(fromScreen)
-			_enterScreenEffect = null
-			return TRUE
-		endif
+		If Not HasScreenChangeEffect(fromScreen)
+			_enterScreenEffect = Null
+			Return True
+		EndIf
 
 		Select screenName
-			case "TInGameScreen".toUpper()
-				_enterScreenEffect = new TScreenChangeEffect_ClosingRects.Create(TScreenChangeEffect.DIRECTION_OPEN, _contentArea)
-			default
-				_enterScreenEffect = new TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_OPEN)
+			Case "TInGameScreen".toUpper()
+				_enterScreenEffect = New TScreenChangeEffect_ClosingRects.Create(TScreenChangeEffect.DIRECTION_OPEN, _contentArea)
+			Default
+				_enterScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_OPEN)
 		End Select
 	End Method
 
 
-	Method Leave:int(toScreen:TScreen=null)
-		local screenName:string = ""
-		if toScreen then screenName = toScreen.ToString().toUpper()
+	Method Leave:Int(toScreen:TScreen=Null)
+		Local screenName:String = ""
+		If toScreen Then screenName = toScreen.ToString().toUpper()
 
 		'no change effect when leaving a subscreen
-		If not HasScreenChangeEffect(toScreen)
-			_leaveScreenEffect = null
-			return TRUE
-		endif
+		If Not HasScreenChangeEffect(toScreen)
+			_leaveScreenEffect = Null
+			Return True
+		EndIf
 
 		Select screenName
-			case "TInGameScreen".toUpper()
-				_leaveScreenEffect = new TScreenChangeEffect_ClosingRects.Create(TScreenChangeEffect.DIRECTION_CLOSE, _contentArea)
-			default
-				_leaveScreenEffect = new TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_CLOSE)
+			Case "TInGameScreen".toUpper()
+				_leaveScreenEffect = New TScreenChangeEffect_ClosingRects.Create(TScreenChangeEffect.DIRECTION_CLOSE, _contentArea)
+			Default
+				_leaveScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_CLOSE)
 		End Select
 	End Method
 
 
-	Method Draw:int(tweenValue:float)
+	Method Draw:Int(tweenValue:Float)
 		DrawContent(tweenValue)
 	End Method
 
 
-	Method DrawOverlay:int(tweenValue:float)
+	Method DrawOverlay:Int(tweenValue:Float)
 		'TProfiler.Enter("Draw-Interface")
 		GetInGameInterface().Draw()
 		'TProfiler.Leave("Draw-Interface")
 	End Method
 
 
-	Method Update:int(deltaTime:float)
+	Method Update:Int(deltaTime:Float)
 		'check for clicks on items BEFORE others check and use it
 		GUIManager.Update("InGame")
 
@@ -208,15 +208,15 @@ Type TInGameScreen extends TScreen
 	End Method
 
 
-	Method DrawContent:int(tweenValue:Float)
+	Method DrawContent:Int(tweenValue:Float)
 '		SetColor(255,255,255)
-		if GetBackground()
-			if _contentArea
+		If GetBackground()
+			If _contentArea
 				GetBackground().draw(_contentArea.GetX(), _contentArea.GetY())
-			else
+			Else
 				GetBackground().draw(0, 0)
-			endif
-		endif
+			EndIf
+		EndIf
 '		SetColor(255,255,255)
 	End Method
 
@@ -229,28 +229,28 @@ End Type
 
 
 'of this type only one instance can exist
-Type TInGameScreen_World extends TInGameScreen
-	global instance:TInGameScreen_World
+Type TInGameScreen_World Extends TInGameScreen
+	Global instance:TInGameScreen_World
 
 
-	Method Create:TInGameScreen_World(name:string)
+	Method Create:TInGameScreen_World(name:String)
 		Super.Create(name)
-		instance = self
+		instance = Self
 
 		EventManager.registerListenerFunction("figure.onLeaveRoom", onLeaveRoom, "TFigure" )
 
-		return self
+		Return Self
 	End Method
 
 
-	Method ToString:string()
-		return "TInGameScreen_World: name="+name
+	Method ToString:String()
+		Return "TInGameScreen_World: name="+name
 	End Method
 
 
-	Function onLeaveRoom:int( triggerEvent:TEventBase )
-		local figure:TFigure = TFigure( triggerEvent._sender )
-		if not figure or GetPlayerBase().GetFigure() <> figure then return FALSE
+	Function onLeaveRoom:Int( triggerEvent:TEventBase )
+		Local figure:TFigure = TFigure( triggerEvent._sender )
+		If Not figure Or GetPlayerBase().GetFigure() <> figure Then Return False
 
 		'Set the players current screen when leaving a room
 		ScreenCollection.GoToScreen(instance)
@@ -258,11 +258,11 @@ Type TInGameScreen_World extends TInGameScreen
 		'try to change played music when leaving a room
 		'only do this if the playlist is differing from the default one
 		'(means: there was another music active)
-		if TSoundManager.GetInstance().GetCurrentPlaylist() <> "default"
+		If TSoundManager.GetInstance().GetCurrentPlaylist() <> "default"
 			TSoundManager.GetInstance().PlayMusicPlaylist("default")
-		endif
+		EndIf
 
-		return TRUE
+		Return True
 	End Function
 
 
@@ -274,7 +274,7 @@ Type TInGameScreen_World extends TInGameScreen
 
 
 	'override default
-	Method DrawContent(tweenValue:float)
+	Method DrawContent:Int(tweenValue:Float)
 		GetWorld().Render()
 		'player is not in a room so draw building
 		GetBuilding().Render()
@@ -284,43 +284,43 @@ End Type
 
 
 
-Type TInGameScreen_Room extends TInGameScreen
+Type TInGameScreen_Room Extends TInGameScreen
 	'the rooms connected to this screen
 '	Field roomIDs:int[]
-	Field currentRoomID:int = -1
-	global temporaryDisableScreenChangeEffects:int = False
-	global _registeredEvents:int = False
+	Field currentRoomID:Int = -1
+	Global temporaryDisableScreenChangeEffects:Int = False
+	Global _registeredEvents:Int = False
 
 
-	Method Create:TInGameScreen_Room(name:string)
+	Method Create:TInGameScreen_Room(name:String)
 		Super.Create(name)
 
-		if not _registeredEvents
+		If Not _registeredEvents
 			EventManager.registerListenerFunction("room.onBeginEnter", OnRoomBeginEnter)
 			EventManager.registerListenerFunction("room.onEnter", OnRoomEnter)
 			_registeredEvents = True
-		endif
+		EndIf
 		
-		return self
+		Return Self
 	End Method
 
 
-	Method ToString:string()
-		local rooms:string = ""
-		for local room:TRoomBase = EachIn GetRoomBaseCollection().list
-			if not IsConnectedToRoom(room) then continue
+	Method ToString:String()
+		Local rooms:String = ""
+		For Local room:TRoomBase = EachIn GetRoomBaseCollection().list
+			If Not IsConnectedToRoom(room) Then Continue
 
-			if rooms <> "" then rooms :+ ","
+			If rooms <> "" Then rooms :+ ","
 			rooms :+ room.name
 		Next
 
-		return "TInGameScreen_Room: name="+ name +" rooms="+rooms
+		Return "TInGameScreen_Room: name="+ name +" rooms="+rooms
 	End Method
 
 
 
-	Method IsConnectedToRoom:int(room:TRoomBase)
-		return (room.screenName = name)
+	Method IsConnectedToRoom:Int(room:TRoomBase)
+		Return (room.screenName = name)
 	End Method
 
 
@@ -331,73 +331,73 @@ Type TInGameScreen_Room extends TInGameScreen
 
 		'the room of this screen MUST be the room the active player
 		'figure is in ...
-		local room:TRoomBase = GetPlayer().GetFigure().inRoom
-		if room
+		Local room:TRoomBase = GetPlayer().GetFigure().inRoom
+		If room
 			currentRoomID = room.id
-		else
+		Else
 			room = GetRoomBaseCollection().Get(currentRoomID)
-		endif 
-		return room
+		EndIf 
+		Return room
 	End Method
 
 
 	'override parental function
-	Method HasScreenChangeEffect:int(otherScreen:TScreen)
+	Method HasScreenChangeEffect:Int(otherScreen:TScreen)
 		'the game rooms have no change effect when changing to another
 		'room screen -> dev keys
 
 		'skip animation if a shortcutTargets exists
-		if TInGameScreen_Room(otherScreen) or temporaryDisableScreenChangeEffects
-			return FALSE
-		else
-			return TRUE
-		endif
+		If TInGameScreen_Room(otherScreen) Or temporaryDisableScreenChangeEffects
+			Return False
+		Else
+			Return True
+		EndIf
 	End Method
 
 
-	Function OnRoomEnter:int(triggerEvent:TEventBase)
-		local room:TRoomBase = TRoomBase(triggerEvent.GetSender())
-		if not room then return FALSE
+	Function OnRoomEnter:Int(triggerEvent:TEventBase)
+		Local room:TRoomBase = TRoomBase(triggerEvent.GetSender())
+		If Not room Then Return False
 
 		'only interested in figures entering the room
-		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
-		if not figure or GetPlayerBase().GetFigure() <> figure then return FALSE
+		Local figure:TFigure = TFigure(triggerEvent.GetReceiver())
+		If Not figure Or GetPlayerBase().GetFigure() <> figure Then Return False
 
 		'try to change played music when entering a room
 		TSoundManager.GetInstance().PlayMusicPlaylist(room.name)
 	End Function
 
 
-	Function OnRoomBeginEnter:int(triggerEvent:TEventBase)
-		local room:TRoomBase = TRoomBase(triggerEvent.GetSender())
-		if not room then return FALSE
+	Function OnRoomBeginEnter:Int(triggerEvent:TEventBase)
+		Local room:TRoomBase = TRoomBase(triggerEvent.GetSender())
+		If Not room Then Return False
 
 		'only interested in figures entering the room
-		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
-		if not figure or GetPlayerBase().GetFigure() <> figure then return FALSE
+		Local figure:TFigure = TFigure(triggerEvent.GetReceiver())
+		If Not figure Or GetPlayerBase().GetFigure() <> figure Then Return False
 
 		'Set the players current screen when changing rooms
 		ScreenCollection.GoToScreen( ScreenCollection.GetScreen(room.screenName) )
 		'reset potentially disabled screenChangeEffectsEnabled
 		temporaryDisableScreenChangeEffects = False
 
-		return TRUE
+		Return True
 	End Function
 
 
 	'override default
-	Method UpdateContent:int(deltaTime:Float)
-		local room:TRoomBase = GetCurrentRoom()
-		if room then room.update()
+	Method UpdateContent(deltaTime:Float)
+		Local room:TRoomBase = GetCurrentRoom()
+		If room Then room.update()
 	End Method
 
 
 	'override default
-	Method DrawContent:int(tweenValue:Float)
-		local room:TRoomBase = GetCurrentRoom()
-		if not room then return False
+	Method DrawContent:Int(tweenValue:Float)
+		Local room:TRoomBase = GetCurrentRoom()
+		If Not room Then Return False
 
-		if GetBackground() and not room.GetBackground() then GetBackground().Draw(0, 0)
+		If GetBackground() And Not room.GetBackground() Then GetBackground().Draw(0, 0)
 		room.Draw()
 		'TProfiler.Leave("Draw-Room")
 	End Method

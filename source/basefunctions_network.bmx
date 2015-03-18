@@ -47,7 +47,8 @@ CONST NET_PLAYERLEFT:int        = 10
 CONST NET_PLAYERJOINED:int      = 11
 Const NET_ANNOUNCEGAME:Int      = 12     ' SERVER: Announce a game
 
-
+rem
+'done in bnetex.bmx already
 Extern "OS"
 	?Win32
 		Const FIONREAD      : Int   = $4004667F
@@ -74,13 +75,13 @@ Extern "OS"
 		Function getsockname_:Int(Socket:Int, Name:Byte Ptr, NameLen:Int Ptr) = "getsockname@12"
 		Function GetCurrentProcessId:Int() = "GetCurrentProcessId@0"
 	?MacOS
-		Function ioctl_(Socket:Int, Command:Int, Arguments:Byte Ptr) = "ioctl"
+		Function ioctl_:Int(Socket:Int, Command:Int, Arguments:Byte Ptr) = "ioctl"
 		Function inet_addr_:Int(Address$z) = "inet_addr"
 		Function inet_ntoa_:Byte Ptr(Adress:Int) = "inet_ntoa"
 		Function getsockname_:Int(Socket:Int, Name:Byte Ptr, NameLen:Int Ptr) = "getsockname"
 		Function GetCurrentProcessId:Int() = "getpid"
 	?Linux
-		Function ioctl_(Socket:Int, Command:Int, Arguments:Byte Ptr) = "ioctl"
+		Function ioctl_:Int(Socket:Int, Command:Int, Arguments:Byte Ptr) = "ioctl"
 		Function inet_addr_:Int(Address$z) = "inet_addr"
 		Function inet_ntoa_:Byte Ptr(Adress:Int) = "inet_ntoa"
 		Function getsockname_:Int(Socket:Int, Name:Byte Ptr, NameLen:Int Ptr) = "getsockname"
@@ -88,6 +89,7 @@ Extern "OS"
 	?
 End Extern
 
+EndRem
 
 
 

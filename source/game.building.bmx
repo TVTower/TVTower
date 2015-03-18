@@ -33,16 +33,16 @@ Type TBuilding Extends TBuildingBase
 	'the building (for proper alignment)
 	Field buildingInner:TRenderableEntity
 
-	Global softDrinkMachineActive:int = False
+	Global softDrinkMachineActive:Int = False
 	Global softDrinkMachine:TSpriteEntity
 
 	Global _instance:TBuilding
-	Global _backgroundModified:int = FALSE
-	Global _eventsRegistered:int = FALSE
+	Global _backgroundModified:Int = False
+	Global _eventsRegistered:Int = False
 
 
 	Method New()
-		if not _eventsRegistered
+		If Not _eventsRegistered
 			'handle savegame loading (assign sprites)
 			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
 
@@ -52,8 +52,8 @@ Type TBuilding Extends TBuildingBase
 			'(this can be "room", "hotspot" ... )
 			EventManager.registerListenerFunction( "figure.onEnterTarget", onEnterTarget)
 
-			_eventsRegistered = TRUE
-		Endif
+			_eventsRegistered = True
+		EndIf
 
 		Initialize()
 	End Method
@@ -63,11 +63,11 @@ Type TBuilding Extends TBuildingBase
 	Function GetInstance:TBuilding()
 		'we skip reusing field data because we "initialize" it anyways
 		'if not done already
-		if not TBuilding(_instance)
-			_instance = new TBuilding
+		If Not TBuilding(_instance)
+			_instance = New TBuilding
 
-		endif
-		return TBuilding(_instance)
+		EndIf
+		Return TBuilding(_instance)
 	End Function
 
 
@@ -78,14 +78,14 @@ Type TBuilding Extends TBuildingBase
 		'create an entity spawning the complete inner area of the building
 		'this entity can be used as parent for other entities - which
 		'want to layout to the "inner area" of the building (eg. doors)
-		if not buildingInner
-			buildingInner = new TRenderableEntity
+		If Not buildingInner
+			buildingInner = New TRenderableEntity
 			buildingInner.area.position.SetXY(leftWallX + innerX, 0)
 			'subtract missing "splitter wall" of last floor
 			buildingInner.area.dimension.SetXY(floorWidth, floorCount * floorHeight - 7)
 			'set building as parent for proper alignment
-			buildingInner.SetParent(self)
-		endif
+			buildingInner.SetParent(Self)
+		EndIf
 
 		'call to set graphics, paths for objects and other stuff
 		InitGraphics()
@@ -95,12 +95,12 @@ Type TBuilding Extends TBuildingBase
 
 		'=== SETUP ELEVATOR ===
 		Elevator = GetElevator().Initialize()
-		Elevator.SetParent(self.buildingInner)
+		Elevator.SetParent(Self.buildingInner)
 		Elevator.area.position.SetX(floorWidth/2 - Elevator.GetDoorWidth()/2)
 		Elevator.area.position.SetY(GetFloorY2(Elevator.CurrentFloor) - Elevator.spriteInner.area.GetH())
-		Elevator.RouteLogic = TElevatorSmartLogic.Create(Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 heißt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich Spaß
+		Elevator.RouteLogic = TElevatorSmartLogic.Create(Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 heiÃt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich SpaÃ
 
-		Return self
+		Return Self
 	End Method
 
 
@@ -114,7 +114,7 @@ Type TBuilding Extends TBuildingBase
 
 		'reassign self as parent to all doors
 		'-> just re-add them
-		For local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
+		For Local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
 			GetInstance().AddDoor(door)
 		Next
 
@@ -129,7 +129,7 @@ Type TBuilding Extends TBuildingBase
 	
 		'=== BACKGROUND DECORATION ===
 		'draw sprites directly on the building sprite if not done yet
-		if not _backgroundModified
+		If Not _backgroundModified
 			Local Pix:TPixmap = LockImage(gfx_building.parent.image)
 
 			'=== DRAW NECESSARY ITEMS ===
@@ -148,10 +148,10 @@ Type TBuilding Extends TBuildingBase
 			'=== DRAW DOORS ===
 			For Local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
 				'skip invisible doors (without door-sprite)
-				If not door.IsVisible() then continue
+				If Not door.IsVisible() Then Continue
 
-				local sprite:TSprite = door.GetSprite()
-				if not sprite then continue
+				Local sprite:TSprite = door.GetSprite()
+				If Not sprite Then Continue
 
 				sprite.DrawOnImage(pix, innerX + door.area.GetX(), door.area.GetY(), MathHelper.Clamp(door.doorType, 0,5), ALIGN_LEFT_BOTTOM)
 			Next
@@ -185,8 +185,8 @@ Type TBuilding Extends TBuildingBase
 			UnlockImage(gfx_building.parent.image)
 			Pix = Null
 
-			_backgroundModified = TRUE
-		endif
+			_backgroundModified = True
+		EndIf
 	End Method
 
 
@@ -235,7 +235,7 @@ Type TBuilding Extends TBuildingBase
 
 
 		'=== SETUP SOFTDRINK MACHINE ===
-		softDrinkMachine = new TSpriteEntity
+		softDrinkMachine = New TSpriteEntity
 		softDrinkMachine.SetSprite(GetSpriteFromRegistry("gfx_building_softdrinkmachine"))
 		softDrinkMachine.GetFrameAnimations().Set(TSpriteFrameAnimation.Create("default", [ [0,70] ], 0, 0) )
 		softDrinkMachine.GetFrameAnimations().Set(TSpriteFrameAnimation.CreateSimple("use", 15, 50))
@@ -250,19 +250,19 @@ Type TBuilding Extends TBuildingBase
 		For Local hotspot:THotspot = EachIn room.hotspots
 			'set building inner as parent, so "getScreenX/Y()" can
 			'layout properly)
-			hotspot.setParent(self.buildingInner)
+			hotspot.setParent(Self.buildingInner)
 
 			'move elevatorplan hotspots to the elevator
 			'also make them enterable
 			If hotspot.name = "elevatorplan"
-				hotspot.SetEnterable(true)
+				hotspot.SetEnterable(True)
 				hotspot.area.position.setX( Elevator.area.getX() )
 				hotspot.area.dimension.setXY( Elevator.GetDoorWidth(), 58 )
 			EndIf
 		Next
 
-		For local figure:TFigureBase = EachIn GetFigureBaseCollection()
-			figure.setParent(self.buildingInner)
+		For Local figure:TFigureBase = EachIn GetFigureBaseCollection()
+			figure.setParent(Self.buildingInner)
 		Next
 
 		PrepareBuildingSprite()
@@ -270,10 +270,10 @@ Type TBuilding Extends TBuildingBase
 
 	
 	Method AddDoor:Int(door:TRoomDoorBase)
-		if not door then return False
+		If Not door Then Return False
 		'add to innerBuilding, so doors can properly layout in the
 		'inner area
-		door.SetParent(self.buildingInner)
+		door.SetParent(Self.buildingInner)
 		'move door accordingly
 		door.area.position.SetX(GetDoorXFromDoorSlot(door.doorSlot))
 		door.area.position.SetY(GetFloorY2(door.onFloor))
@@ -294,7 +294,7 @@ Type TBuilding Extends TBuildingBase
 			Local room:TRoom = GetRoomCollection().GetFirstByDetails("elevatorplan")
 			If Not room Then Print "[ERROR] room: elevatorplan not not defined. Cannot enter that room.";Return False
 
-			figure.EnterRoom(null, room)
+			figure.EnterRoom(Null, room)
 			Return True
 		EndIf
 
@@ -306,13 +306,13 @@ Type TBuilding Extends TBuildingBase
 		Local hotspot:THotspot = THotspot( triggerEvent._sender )
 		If Not hotspot Then Return False 'or hotspot.name <> "elevatorplan" then return FALSE
 		'not interested in others
-		If not GetInstance().room.hotspots.contains(hotspot) then return False
+		If Not GetInstance().room.hotspots.contains(hotspot) Then Return False
 
 		'hotspot position is LOCAL to building, so no transition needed
 		GetPlayer().figure.changeTarget( hotspot.area.getX() + hotspot.area.getW()/2, hotspot.area.getY() )
 		'ignore clicks to elevator plans on OTHER floors
 		'in this case just move to the target, but do not "enter" the room
-		If hotspot.name <> "elevatorplan" OR GetInstance().GetFloor(hotspot.area.GetY()) = GetInstance().GetFloor(GetPlayer().figure.area.GetY())
+		If hotspot.name <> "elevatorplan" Or GetInstance().GetFloor(hotspot.area.GetY()) = GetInstance().GetFloor(GetPlayer().figure.area.GetY())
 			GetPlayer().figure.SetTarget(hotspot)
 		EndIf
 		
@@ -320,12 +320,12 @@ Type TBuilding Extends TBuildingBase
 	End Function
 
 
-	Method ActivateSoftdrinkMachine:int()
+	Method ActivateSoftdrinkMachine:Int()
 		softDrinkMachineActive = True
 	End Method
 	
 
-	Method Update()
+	Method Update:Int()
 		'update softdrinkmachine
 		softDrinkMachine.Update()
 	
@@ -334,10 +334,10 @@ Type TBuilding Extends TBuildingBase
 			'subtract 7 because of missing "wall" in last floor
 			'add 50 for roof
 			area.position.y =  2 * floorHeight - 7 + 50 - GetPlayer().figure.area.GetY()
-		Endif
+		EndIf
 
 
-		local deltaTime:float = GetDeltaTimer().GetDelta()
+		Local deltaTime:Float = GetDeltaTimer().GetDelta()
 		area.position.y = MathHelper.Clamp(area.position.y, - 637, 88)
 		UpdateBackground(deltaTime)
 
@@ -346,13 +346,13 @@ Type TBuilding Extends TBuildingBase
 		If room
 			For Local hotspot:THotspot = EachIn room.hotspots
 				'disable elevatorplan hotspot tooltips in other floors
-				if hotspot.name = "elevatorplan"
-					if GetFloor(hotspot.area.GetY()) <> GetFloor(GetPlayer().figure.area.GetY())
+				If hotspot.name = "elevatorplan"
+					If GetFloor(hotspot.area.GetY()) <> GetFloor(GetPlayer().figure.area.GetY())
 						hotspot.tooltipEnabled = False
-					else
+					Else
 						hotspot.tooltipEnabled = True
-					endif
-				endif
+					EndIf
+				EndIf
 				hotspot.update()
 			Next
 		EndIf
@@ -369,8 +369,8 @@ Type TBuilding Extends TBuildingBase
 				If Not GetPlayer().GetFigure().isChangingRoom()
 					If THelper.IsIn(MouseManager.x, MouseManager.y, 0, 0, 800, 385)
 						'convert mouse position to building-coordinates
-						local x:int = MouseManager.x - buildingInner.GetScreenX()
-						local y:int = MouseManager.y - buildingInner.GetScreenY()
+						Local x:Int = MouseManager.x - buildingInner.GetScreenX()
+						Local y:Int = MouseManager.y - buildingInner.GetScreenY()
 						GetPlayer().Figure.ChangeTarget(x, y)
 						MOUSEMANAGER.resetKey(1)
 					EndIf
@@ -380,14 +380,14 @@ Type TBuilding Extends TBuildingBase
 	End Method
 
 
-	Method Render:int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
+	Method Render:Int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
 		TProfiler.Enter("Draw-Building-Background")
 		DrawBackground()
 		TProfiler.Leave("Draw-Building-Background")
 
 		SetBlend AlphaBlend
-		if not GetWorld().autoRenderSnow then GetWorld().RenderSnow()
-		if not GetWorld().autoRenderRain then GetWorld().RenderRain()
+		If Not GetWorld().autoRenderSnow Then GetWorld().RenderSnow()
+		If Not GetWorld().autoRenderRain Then GetWorld().RenderRain()
 
 
 
@@ -417,10 +417,10 @@ Type TBuilding Extends TBuildingBase
 		'draw softdrinkmachine
 		softDrinkMachine.Render(buildingInner.GetScreenX() + innerX2 - 90, buildingInner.GetScreenY() + GetFloorY2(6), ALIGN_LEFT_BOTTOM)
 
-		if not softDrinkMachineActive
+		If Not softDrinkMachineActive
 			softDrinkMachine.GetFrameAnimations().SetCurrent("use")
 			softDrinkMachineActive = True
-		Endif
+		EndIf
 
 
 		For Local Figure:TFigureBase = EachIn GetFigureBaseCollection()
@@ -526,7 +526,7 @@ Type TBuilding Extends TBuildingBase
 	Method DrawBackground(tweenValue:Float=1.0)
 		Local BuildingHeight:Int = gfx_building.area.GetH() + 56
 
-		local skyInfluence:float = 0
+		Local skyInfluence:Float = 0
 
 		skyInfluence = 0.7
 		TColor.CreateGrey(GetWorld().lighting.GetSkyBrightness() * 255).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
@@ -569,34 +569,34 @@ Type TBuilding Extends TBuildingBase
 	End Method
 
 
-	Method CreateRoomUsedTooltip:Int(door:TRoomDoorBase, room:TRoomBase = null)
+	Method CreateRoomUsedTooltip:Int(door:TRoomDoorBase, room:TRoomBase = Null)
 		'if no door was given, use main door of room
-		if not door and room then door = TRoomDoor.GetMainDoorToRoom(room)
-		if not door then return FALSE
+		If Not door And room Then door = TRoomDoor.GetMainDoorToRoom(room)
+		If Not door Then Return False
 		roomUsedTooltip	= TTooltip.Create(GetLocale("ROOM_IS_OCCUPIED"), GetLocale("ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM"), 0,0,-1,-1, 2000)
 		roomUsedTooltip.area.position.SetY(door.GetScreenY() - door.area.GetH() - roomUsedTooltip.GetHeight())
 		roomUsedTooltip.area.position.SetX(door.GetScreenX() + door.area.GetW()/2 - roomUsedTooltip.GetWidth()/2)
 		roomUsedTooltip.enabled = 1
 
-		return TRUE
+		Return True
 	End Method
 
 
-	Method CreateRoomBlockedTooltip:Int(door:TRoomDoorBase, room:TRoomBase = null)
+	Method CreateRoomBlockedTooltip:Int(door:TRoomDoorBase, room:TRoomBase = Null)
 		'if no door was given, use main door of room
-		if not door and room then door = TRoomDoor.GetMainDoorToRoom(room)
-		if not door then return FALSE
+		If Not door And room Then door = TRoomDoor.GetMainDoorToRoom(room)
+		If Not door Then Return False
 		roomUsedTooltip = TTooltip.Create(GetLocale("BLOCKED"), GetLocale("ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE"), 0,0,-1,-1,2000)
 		roomUsedTooltip.area.position.SetY(door.GetScreenY() - door.area.GetH() - roomUsedTooltip.GetHeight())
 		roomUsedTooltip.area.position.SetX(door.GetScreenX() + door.area.GetW()/2 - roomUsedTooltip.GetWidth()/2)
 		roomUsedTooltip.enabled = 1
 
-		return TRUE
+		Return True
 	End Method
 End Type
 
 
 '===== CONVENIENCE ACCESSORS =====
 Function GetBuilding:TBuilding()
-	return TBuilding.GetInstance()
+	Return TBuilding.GetInstance()
 End Function

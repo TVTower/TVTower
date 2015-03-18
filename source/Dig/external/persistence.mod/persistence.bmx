@@ -1,4 +1,4 @@
-REM
+Rem
 	Modified by Ronny Otto for TVTower.
 
 	Includes "skip loading" for {nosave}-declared fields
@@ -31,7 +31,7 @@ Rem
 bbdoc: Persistence
 about: An object-persistence framework.
 End Rem
-rem
+Rem
 Module BaH.Persistence
 
 ModuleInfo "Version: 1.00"
@@ -43,10 +43,13 @@ ModuleInfo "History: 1.00"
 ModuleInfo "History: Initial Release"
 endrem
 Import "../libxml/libxml.bmx" 'BaH.libxml
-'Import "../libxml/libxml.bmx" 'BaH.libxml
+?Not bmxng
 'using custom to have support for const/function reflection
-'Import BRL.Reflection
 Import "../reflectionExtended/reflection.bmx"
+?bmxng
+'ng has it built-in!
+Import BRL.Reflection
+?
 Import BRL.Map
 Import BRL.Stream
 
@@ -316,14 +319,14 @@ Type TPersist
 
 				' special case for String object
 				If tid = StringTypeId Then
-					Local s:String = string(obj)
+					Local s:String = String(obj)
 
 					' only if not empty
-					if s
+					If s
 						' escape special chars
 						s = doc.encodeEntities(s)
-						if s then node.SetContent(s)
-					endif
+						If s Then node.SetContent(s)
+					EndIf
 				End If
 
 
@@ -331,15 +334,15 @@ Type TPersist
 				'defined for the object
 				'only do serialization, if the way back is defined too
 				Local mth:TMethod = tid.FindMethod("SerializeToString")
-				local mth2:TMethod = tid.FindMethod("DeSerializeFromString")
-				If mth and mth2
+				Local mth2:TMethod = tid.FindMethod("DeSerializeFromString")
+				If mth And mth2
 '					local serializedString:string = mth.Invoke(obj, [data])
-					local serializedString:string = string( mth.Invoke(obj) )
-					if serializedString
+					Local serializedString:String = String( mth.Invoke(obj) )
+					If serializedString
 						serializedString = doc.encodeEntities(serializedString)
 
 						node.addChild("serialized").setContent(serializedString)
-					endif
+					EndIf
 
 				'if the method is not existing - parse each field
 				Else
@@ -373,12 +376,12 @@ Type TPersist
 								t = "float"
 								'if the float is xx.0000, write it without
 								'the ".0000" part (-> as int)
-								local v:Float = f.GetFloat(obj)
-								if float(int(v)) = v
-									fieldNode.setContent(int(v))
-								else
+								Local v:Float = f.GetFloat(obj)
+								If Float(Int(v)) = v
+									fieldNode.setContent(Int(v))
+								Else
 									fieldNode.setContent(v)
-								endif
+								EndIf
 							Case DoubleTypeId
 								t = "double"
 								fieldNode.setContent(f.GetDouble(obj))
@@ -407,9 +410,9 @@ Type TPersist
 									dims = fieldType.ArrayDimensions(f.Get(obj))
 
 									'skip handling 0 sized arrays
-									local arrSize:int = fieldType.ArrayLength(f.Get(obj))
+									Local arrSize:Int = fieldType.ArrayLength(f.Get(obj))
 									'on mac os x "0 sized"-arrays sometimes return dims to be veeeery big 
-									if arrSize = 0 then dims = 1
+									If arrSize = 0 Then dims = 1
 									'if f.name() ="cast" then print "cast arraySize="+arrSize+" dimensions="+dims
 
 									If dims > 1 Then
@@ -627,7 +630,7 @@ Type TPersist
 												If objRef Then
 													objType.SetArrayElement(obj, i, objRef)
 												Else
-													Throw New "Reference not mapped yet : " + ref
+													Throw "Reference not mapped yet : " + ref
 												End If
 											Else
 												objType.SetArrayElement(obj, i, DeSerializeObject("", arrayNode))
@@ -677,8 +680,8 @@ Type TPersist
 							'"DeSerializeFromString" method defined
 							'for the object
 							Local mth:TMethod = objType.FindMethod("DeSerializeFromString")
-							If mth then mth.Invoke(obj, [fieldNode.GetContent()])
-						endif
+							If mth Then mth.Invoke(obj, [fieldNode.GetContent()])
+						EndIf
 
 
 						' this should be a field
@@ -761,7 +764,7 @@ Type TPersist
 																		If objRef Then
 																			arrayType.SetArrayElement(arrayObj, i, objRef)
 																		Else
-																			Throw New "Reference not mapped yet : " + ref
+																			Throw "Reference not mapped yet : " + ref
 																		End If
 																	Else
 																		arrayType.SetArrayElement(arrayObj, i, DeSerializeObject("", arrayNode))
@@ -802,7 +805,7 @@ Type TPersist
 											If objRef Then
 												fieldObj.Set(obj, objRef)
 											Else
-												Throw New "Reference not mapped yet : " + ref
+												Throw "Reference not mapped yet : " + ref
 											End If
 										Else
 											fieldObj.Set(obj, DeSerializeObject("", fieldNode))

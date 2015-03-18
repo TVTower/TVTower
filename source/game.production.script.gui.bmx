@@ -6,62 +6,62 @@
 
 
 'a graphical representation of scripts at the script-agency ...
-Type TGuiScript extends TGUIGameListItem
+Type TGuiScript Extends TGUIGameListItem
 	Field script:TScript
-	Field studioMode:int = 0
+	Field studioMode:Int = 0
 
-    Method Create:TGUIScript(pos:TVec2D=null, dimension:TVec2D=null, value:String="")
+    Method Create:TGUIScript(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
 		Super.Create(pos, dimension, value)
 
-		self.assetNameDefault = "gfx_scripts_0"
-		self.assetNameDragged = "gfx_scripts_0_dragged"
+		Self.assetNameDefault = "gfx_scripts_0"
+		Self.assetNameDragged = "gfx_scripts_0_dragged"
 
-		return self
+		Return Self
 	End Method
 
 
 	Method CreateWithScript:TGuiScript(script:TScript)
-		self.Create()
-		self.setScript(script)
-		return self
+		Self.Create()
+		Self.setScript(script)
+		Return Self
 	End Method
 
 
 	Method SetScript:TGuiScript(script:TScript)
-		self.script = script
-		self.InitAssets(GetAssetName(script.GetGenre(), FALSE), GetAssetName(script.GetGenre(), TRUE))
+		Self.script = script
+		Self.InitAssets(GetAssetName(script.GetGenre(), False), GetAssetName(script.GetGenre(), True))
 
-		return self
+		Return Self
 	End Method
 
 
-	Method GetAssetName:string(genre:int=-1, dragged:int=FALSE)
-		if genre < 0 and script then genre = script.GetGenre()
-		local result:string = "gfx_scripts_" + genre mod 3 'only 3 sprites possible
-		if dragged then result = result + "_dragged"
+	Method GetAssetName:String(genre:Int=-1, dragged:Int=False)
+		If genre < 0 And script Then genre = script.GetGenre()
+		Local result:String = "gfx_scripts_" + genre Mod 3 'only 3 sprites possible
+		If dragged Then result = result + "_dragged"
 
-		if studioMode and not dragged then result = "gfx_scripts_0_studiodesk"
+		If studioMode And Not dragged Then result = "gfx_scripts_0_studiodesk"
 
-		return result
+		Return result
 	End Method
 
 
 	'override default update-method
-	Method Update:int()
-		super.Update()
+	Method Update:Int()
+		Super.Update()
 
 		'set mouse to "hover"
-		if script.owner = GetPlayerBaseCollection().playerID or script.owner <= 0 and mouseover then Game.cursorstate = 1
+		If script.owner = GetPlayerBaseCollection().playerID Or script.owner <= 0 And mouseover Then Game.cursorstate = 1
 				
 		'set mouse to "dragged"
-		if isDragged() then Game.cursorstate = 2
+		If isDragged() Then Game.cursorstate = 2
 	End Method
 
 
-	Method DrawSheet(leftX:int=30, rightX:int=30)
-		local sheetY:float 	= 20
-		local sheetX:float 	= leftX
-		local sheetAlign:int= 0
+	Method DrawSheet(leftX:Int=30, rightX:Int=30)
+		Local sheetY:Float 	= 20
+		Local sheetX:Float 	= leftX
+		Local sheetAlign:Int= 0
 		'if mouse on left side of screen - align sheet on right side
 		'METHOD 1
 		'instead of using the half screen width, we use another
@@ -70,39 +70,39 @@ Type TGuiScript extends TGUIGameListItem
 		'METHOD 2
 		'just use the half of a screen - ensures the data sheet does not overlap
 		'the object
-		if MouseManager.x < GetGraphicsManager().GetWidth()/2
+		If MouseManager.x < GetGraphicsManager().GetWidth()/2
 			sheetX = GetGraphicsManager().GetWidth() - rightX
 			sheetAlign = 1
-		endif
+		EndIf
 
 		SetColor 0,0,0
 		SetAlpha 0.2
-		Local x:Float = self.GetScreenX()
-		Local tri:Float[]=[sheetX+20,sheetY+25,sheetX+20,sheetY+90,self.GetScreenX()+self.GetScreenWidth()/2.0+3,self.GetScreenY()+self.GetScreenHeight()/2.0]
+		Local x:Float = Self.GetScreenX()
+		Local tri:Float[]=[sheetX+20,sheetY+25,sheetX+20,sheetY+90,Self.GetScreenX()+Self.GetScreenWidth()/2.0+3,Self.GetScreenY()+Self.GetScreenHeight()/2.0]
 		DrawPoly(tri)
 		SetColor 255,255,255
 		SetAlpha 1.0
 
-		self.script.ShowSheet(sheetX, sheetY, sheetAlign)
+		Self.script.ShowSheet(sheetX, sheetY, sheetAlign)
 	End Method
 
 
 
-	Method Draw:Int()
+	Method Draw()
 		SetColor 255,255,255
-		local oldCol:TColor = new TColor.Get()
+		Local oldCol:TColor = New TColor.Get()
 
 		'make faded as soon as not "dragable" for us
-		if not isDragable()
+		If Not isDragable()
 			'in our collection
-			if script.owner = GetPlayerCollection().playerID
+			If script.owner = GetPlayerCollection().playerID
 				SetAlpha 0.80*oldCol.a
 				SetColor 200,200,200
-			else
+			Else
 				SetAlpha 0.70*oldCol.a
 				SetColor 250,200,150
-			endif
-		endif
+			EndIf
+		EndIf
 
 		Super.Draw()
 
@@ -113,18 +113,18 @@ End Type
 
 
 
-Type TGUIScriptSlotList extends TGUIGameSlotList
-    Method Create:TGUIScriptSlotList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
+Type TGUIScriptSlotList Extends TGUIGameSlotList
+    Method Create:TGUIScriptSlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
-		return self
+		Return Self
 	End Method
 
 
-	Method ContainsScript:int(script:TScript)
-		for local i:int = 0 to self.GetSlotAmount()-1
-			local block:TGuiScript = TGuiScript( self.GetItemBySlot(i) )
-			if block and block.script = script then return TRUE
+	Method ContainsScript:Int(script:TScript)
+		For Local i:Int = 0 To Self.GetSlotAmount()-1
+			Local block:TGuiScript = TGuiScript( Self.GetItemBySlot(i) )
+			If block And block.script = script Then Return True
 		Next
-		return FALSE
+		Return False
 	End Method
 End Type

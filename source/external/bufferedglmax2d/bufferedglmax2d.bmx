@@ -72,7 +72,7 @@ Type TGLBufferedImageFrame Extends TImageFrame
 	End Method
 
 	Field uv:Float[8]
-	Method Draw(x0#, y0#, x1#, y1#, tx#, ty#, sx#, sy#, sw#, sh#)
+	Method Draw:Int(x0#, y0#, x1#, y1#, tx#, ty#, sx#, sy#, sw#, sh#)
 		Assert _gseq = GraphicsSeq Else "Image no longer exists"
 
 		_activeDriver._buffer.SetTexture(_texture.Name())
@@ -142,7 +142,7 @@ Type TBufferedGLMax2DDriver Extends TMax2DDriver
 		TRenderState.RestoreState(Null)
 		SetResolution(_r_width, _r_height)
 		For Local i:Int = 0 Until _texPackages.Length
-			_texPackages[i] = null
+			_texPackages[i] = Null
 		Next
 	End Method
 
@@ -176,7 +176,11 @@ Type TBufferedGLMax2DDriver Extends TMax2DDriver
 		Return GLGraphicsDriver().GraphicsModes()
 	End Method
 
+	?Not bmxng
 	Method AttachGraphics:TGraphics(widget%, flags%)
+	?bmxng
+	Method AttachGraphics:TGraphics(widget:Byte Ptr, flags%)
+	?
 		Local gfx:TGLGraphics = GLGraphicsDriver().AttachGraphics(widget, flags)
 		If gfx Then
 			Return TMax2DGraphics.Create(gfx, Self)
@@ -192,11 +196,11 @@ Type TBufferedGLMax2DDriver Extends TMax2DDriver
 		Return Null
 	End Method
 
-	Method SetGraphics(g:TGraphics)
+	Method SetGraphics:Int(g:TGraphics)
 		If Not g Then
 			TMax2DGraphics.ClearCurrent()
 			GLGraphicsDriver().SetGraphics(Null)
-			Return
+			Return True
 		EndIf
 
 		Local m2d:TMax2DGraphics = TMax2DGraphics(g)
@@ -207,7 +211,7 @@ Type TBufferedGLMax2DDriver Extends TMax2DDriver
 		m2d.MakeCurrent()
 	End Method
 
-	Method Flip(sync%)
+	Method Flip:Int(sync%)
 		_buffer.Render()
 		GLGraphicsDriver().Flip(sync)
 		_buffer.Reset()
@@ -277,10 +281,10 @@ Type TBufferedGLMax2DDriver Extends TMax2DDriver
 		GL_SRC_ALPHA, GL_ONE, GL_ALWAYS, 0, ..
 		GL_DST_COLOR, GL_ZERO, GL_ALWAYS, 0]
 	Field _blend:Int=-1
-	Method SetBlend(blend%)
+	Method SetBlend:Int(blend%)
 		Assert 0 < blend And blend <= SHADEBLEND Else "Invalid blendmode specified"
 		If blend=_blend Then
-			Return
+			Return True
 		EndIf
 		_blend = blend
 		blend = (blend-1)*4
@@ -309,14 +313,14 @@ Type TBufferedGLMax2DDriver Extends TMax2DDriver
 		EndRem
 	End Method
 
-	Method SetAlpha(alpha#) NoDebug
+	Method SetAlpha:Int(alpha#) NoDebug
 		'haaaaaack (to make sure that if you specify a value greater than 1, unlike if you passed
 		' 2 and you would end up with some odd value between 0 and 1)
 		Local lascolor:Int = Int Ptr(Varptr _cr)[0]
 		_ca=Min(Max(alpha, 0), 1)*255
 		Local curcolor:Int = Int Ptr(Varptr _cr)[0]
 		If lascolor=curcolor Then
-			Return
+			Return True
 		EndIf
 		Local colorptr:Int Ptr = Int Ptr(Varptr _poly_colors[0])
 		For Local i:Int = 0 Until _poly_colors.Length/4
@@ -324,14 +328,14 @@ Type TBufferedGLMax2DDriver Extends TMax2DDriver
 		Next
 	End Method
 
-	Method SetColor(r%, g%, b%) NoDebug
+	Method SetColor:Int(r%, g%, b%) NoDebug
 		Local lascolor:Int = Int Ptr(Varptr _cr)[0]
 		_cr=Min(Max(r, 0), 255) 'haaaaaaaaaaaaaaaaaaaaaaaaack, same as above
 		_cg=Min(Max(g, 0), 255)
 		_cb=Min(Max(b, 0), 255)
 		Local curcolor:Int = Int Ptr(Varptr _cr)[0]
 		If lascolor=curcolor Then
-			Return
+			Return True
 		EndIf
 		Local colorptr:Int Ptr = Int Ptr(Varptr _poly_colors[0])
 		For Local i:Int = 0 Until _poly_colors.Length/4
@@ -340,9 +344,9 @@ Type TBufferedGLMax2DDriver Extends TMax2DDriver
 	End Method
 
 	Field _clr_r%, _clr_g%, _clr_b%
-	Method SetClsColor(r%, g%, b%) NoDebug
+	Method SetClsColor:Int(r%, g%, b%) NoDebug
 		If _clr_r=r And _clr_g=g And _clr_b=b Then
-			Return
+			Return True
 		EndIf
 		_clr_r=r
 		_clr_g=g
@@ -350,27 +354,27 @@ Type TBufferedGLMax2DDriver Extends TMax2DDriver
 		glClearColor(r/255#, g/255#, b/255#, 1.0)
 	End Method
 
-	Method SetViewport(x%, y%, w%, h%)
+	Method SetViewport:Int(x%, y%, w%, h%)
 		_buffer.SetScissorTest(Not (x=0 And y=0 And w=_r_width And h=_r_height), x, _r_height-(y+h), w, h)
 	End Method
 
-	Method SetTransform(xx#, xy#, yx#, yy#) NoDebug
+	Method SetTransform:Int(xx#, xy#, yx#, yy#) NoDebug
 		_txx = xx
 		_txy = xy
 		_tyx = yx
 		_tyy = yy
 	End Method
 
-	Method SetLineWidth(width#) NoDebug
+	Method SetLineWidth:Int(width#) NoDebug
 		_buffer.SetLineWidth(width)
 	End Method
 
-	Method Cls() NoDebug
+	Method Cls:Int() NoDebug
 		_buffer.Reset()
 		glClear(GL_COLOR_BUFFER_BIT)'|GL_DEPTH_BUFFER_BIT)
 	End Method
 
-	Method Plot(x#, y#)
+	Method Plot:Int(x#, y#)
 		_buffer.SetTexture(0)
 		_buffer.SetMode(GL_POINTS)
 		_poly_xy[0] = x
@@ -378,7 +382,7 @@ Type TBufferedGLMax2DDriver Extends TMax2DDriver
 		_buffer.AddVerticesEx(1, _poly_xy, Null, _poly_colors)
 	End Method
 
-	Method DrawLine(x0#, y0#, x1#, y1#, tx#, ty#)
+	Method DrawLine:Int(x0#, y0#, x1#, y1#, tx#, ty#)
 		_buffer.SetTexture(0)
 		_buffer.SetMode(GL_LINES)
 		_poly_xy[0] = x0*_txx+y0*_txy+tx+.5
@@ -388,7 +392,7 @@ Type TBufferedGLMax2DDriver Extends TMax2DDriver
 		_buffer.AddVerticesEx(2, _poly_xy, Null, _poly_colors)
 	End Method
 
-	Method DrawRect(x0#, y0#, x1#, y1#, tx#, ty#)
+	Method DrawRect:Int(x0#, y0#, x1#, y1#, tx#, ty#)
 		_buffer.SetTexture(0)
 		_buffer.SetMode(GL_TRIANGLE_STRIP)
 		_buffer.AddVerticesEx( 4, ..
@@ -397,7 +401,7 @@ Type TBufferedGLMax2DDriver Extends TMax2DDriver
 			_poly_colors )
 	End Method
 
-	Method DrawOval(x0#, y0#, x1#, y1#, tx#, ty#)
+	Method DrawOval:Int(x0#, y0#, x1#, y1#, tx#, ty#)
 		Local dx# = (x1-x0)*.5
 		Local dy# = (y1-y0)*.5
 
@@ -427,7 +431,7 @@ Type TBufferedGLMax2DDriver Extends TMax2DDriver
 
 	Field _poly_xy#[36]
 	Field _poly_colors:Byte[36]
-	Method DrawPoly(xy#[], handlex#, handley#, originx#, originy#)
+	Method DrawPoly:Int(xy#[], handlex#, handley#, originx#, originy#)
 		_buffer.SetTexture(0)
 		_buffer.SetMode(GL_POLYGON)
 
@@ -452,7 +456,7 @@ Type TBufferedGLMax2DDriver Extends TMax2DDriver
 		_buffer.AddVerticesEx(xy.Length/2, xy, Null, _poly_colors)
 	End Method
 
-	Method DrawPixmap(pixmap:TPixmap, x%, y%)
+	Method DrawPixmap:Int(pixmap:TPixmap, x%, y%)
 		_buffer.Render()
 		_buffer.Reset()
 		glRasterPos2i(x, y)
@@ -465,7 +469,7 @@ Type TBufferedGLMax2DDriver Extends TMax2DDriver
 		_buffer.Render()
 		_buffer.Reset()
 
-		local pix:TPixmap = CreatePixmap(width, height, PF_RGBA8888)
+		Local pix:TPixmap = CreatePixmap(width, height, PF_RGBA8888)
 		'coord gl = 'bottom left' while Blitzmax is 'top left'
 		' - need to subtract y and height
 		glReadPixels(x, _r_height - y - height, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pix.pixels)
@@ -475,7 +479,7 @@ Type TBufferedGLMax2DDriver Extends TMax2DDriver
 	End Method
 
 	Field _r_width#=640, _r_height#=480 ' dummy values
-	Method SetResolution(width#, height#)
+	Method SetResolution:Int(width#, height#)
 		_r_width = width
 		_r_height = height
 

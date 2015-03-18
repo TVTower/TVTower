@@ -6,12 +6,15 @@ Import "base.util.logger.bmx"
 Import "base.util.vector.bmx"
 
 'the needed module files are located in "external/maxmod2_lite.mod.zip"
-
+?Not bmxng
 Import MaxMod2.ogg
 
 Import MaxMod2.rtaudio
 'Import MaxMod2.rtaudionopulse
 Import MaxMod2.WAV
+?bmxng
+Import brl.audio
+?
 
 'type to store music files (ogg) in it
 'data is stored in bank
@@ -32,12 +35,12 @@ Type TDigAudioStream
 	End Function
 
 
-	Method Clone:TDigAudioStream(deepClone:int = False)
-		local c:TDigAudioStream = new TDigAudioStream
-		c.bank = self.bank
-		c.loop = self.loop
-		c.url = self.url
-		return c
+	Method Clone:TDigAudioStream(deepClone:Int = False)
+		Local c:TDigAudioStream = New TDigAudioStream
+		c.bank = Self.bank
+		c.loop = Self.loop
+		c.url = Self.url
+		Return c
 	End Method
 
 
@@ -48,29 +51,33 @@ Type TDigAudioStream
 
 
 	Method GetChannel:TChannel(volume:Float)
+?bmxng
+		Local channel:TChannel = New TChannel()
+?Not bmxng
 		Local channel:TChannel = CueMusic(Self.bank, loop)
 		channel.SetVolume(volume)
+?
 		Return channel
 	End Method
 End Type
 
 
-Type TDigAudioStreamOgg extends TDigAudioStream
-	Method CreateWithFile:TDigAudioStreamOgg(url:object, loop:int = False, useMemoryStream:int = False)
-		self.bank = LoadBank(url)
-		self.loop = loop
-		self.url = "unknown"
-		If String(url) Then self.url=String(url)
-		return self
+Type TDigAudioStreamOgg Extends TDigAudioStream
+	Method CreateWithFile:TDigAudioStreamOgg(url:Object, loop:Int = False, useMemoryStream:Int = False)
+		Self.bank = LoadBank(url)
+		Self.loop = loop
+		Self.url = "unknown"
+		If String(url) Then Self.url=String(url)
+		Return Self
 	End Method
 
 
-	Method Clone:TDigAudioStreamOgg(deepClone:int = False)
-		local c:TDigAudioStreamOgg = new TDigAudioStreamOgg
-		c.bank = self.bank
-		c.loop = self.loop
-		c.url = self.url
-		return c
+	Method Clone:TDigAudioStreamOgg(deepClone:Int = False)
+		Local c:TDigAudioStreamOgg = New TDigAudioStreamOgg
+		c.bank = Self.bank
+		c.loop = Self.loop
+		c.url = Self.url
+		Return c
 	End Method
 End Type
 
@@ -116,7 +123,7 @@ Type TSoundManager
 	Global PREFIX_MUSIC:String = "MUSIC_"
 	Global PREFIX_SFX:String = "SFX_"
 
-	Global audioEngineEnabled:int = True
+	Global audioEngineEnabled:Int = True
 	Global audioEngine:String = "AUTOMATIC"
 
 
@@ -137,64 +144,67 @@ Type TSoundManager
 	End Function
 
 
-	Function SetAudioEngine(engine:string)
+	Function SetAudioEngine(engine:String)
 		'limit to allowed engines
 		Select engine.ToUpper()
-			case "NONE"
+			Case "NONE"
 				audioEngine = "NONE"
 
-			case "LINUX_ALSA"
+			Case "LINUX_ALSA"
 				audioEngine = "LINUX_ALSA"
-			case "LINUX_PULSE"
+			Case "LINUX_PULSE"
 				audioEngine = "LINUX_PULSE"
-			case "LINUX_OSS"
+			Case "LINUX_OSS"
 				audioEngine = "LINUX_OSS"
 			'following are currently not compiled in the rtAudio module
 			'case "UNIX_JACK"
 			'	audioEngine = "UNIX_JACK"
 
-			case "MACOSX_CORE"
+			Case "MACOSX_CORE"
 				audioEngine = "MACOSX_CORE"
 
-			case "WINDOWS_ASIO"
+			Case "WINDOWS_ASIO"
 				audioEngine = "WINDOWS_ASIO"
-			case "WINDOWS_DS"
+			Case "WINDOWS_DS"
 				audioEngine = "WINDOWS_DS"
 
-			default
+			Default
 				audioEngine = "AUTOMATIC"
 		End Select
 	End Function
 
 
-	Function InitSpecificAudioEngine:int(engine:string)
+	Function InitSpecificAudioEngine:Int(engine:String)
+?Not bmxng
 		TMaxModRtAudioDriver.Init(engine)
+?
 		'
 		If Not SetAudioDriver("MaxMod RtAudio")
-			if engine = audioEngine
+			If engine = audioEngine
 				TLogger.Log("SoundManager.SetAudioEngine()", "audio engine ~q"+engine+"~q (configured) failed.", LOG_ERROR)
-			else
+			Else
 				TLogger.Log("SoundManager.SetAudioEngine()", "audio engine ~q"+engine+"~q failed.", LOG_ERROR)
-			endif
+			EndIf
 			Return False
 		Else
 			Return True
-		endif
+		EndIf
 	End Function
 
 
-	Function InitAudioEngine:int()
+	Function InitAudioEngine:Int()
 		'reenable rtAudio-messages
+?Not bmxng
 		TMaxModRtAudioDriver.showWarnings(False)
-
-		local engines:String[] = [audioEngine]
+?
+		Local engines:String[] = [audioEngine]
 		'add automatic-engine if manual setup is not already set to it
-		if audioEngine <> "AUTOMATIC" then engines :+ ["AUTOMATIC"]
+		If audioEngine <> "AUTOMATIC" Then engines :+ ["AUTOMATIC"]
 
 		?Linux
-			if audioEngine <> "LINUX_PULSE" then engines :+ ["LINUX_PULSE"]
-			if audioEngine <> "LINUX_ALSA" then engines :+ ["LINUX_ALSA"]
-			if audioEngine <> "LINUX_OSS" then engines :+ ["LINUX_OSS"]
+			If audioEngine <> "LINUX_PULSE" Then engines :+ ["LINUX_PULSE"]
+			If audioEngine <> "LINUX_ALSA" Then engines :+ ["LINUX_ALSA"]
+			If audioEngine <> "LINUX_OSS" Then engines :+ ["LINUX_OSS"]
 			'if audioEngine <> "UNIX_JACK" then engines :+ ["UNIX_JACK"]
 		?MacOS
 			'ATTENTION: WITHOUT ENABLED SOUNDCARD THIS CRASHES!
@@ -206,27 +216,28 @@ Type TSoundManager
 
 		'try to init one of the engines, starting with the manually set
 		'audioEngine
-		local foundWorkingEngine:string = ""
-		if audioEngine <> "NONE"
-			For local engine:string = eachin engines
-				if InitSpecificAudioEngine(engine)
+		Local foundWorkingEngine:String = ""
+		If audioEngine <> "NONE"
+			For Local engine:String = EachIn engines
+				If InitSpecificAudioEngine(engine)
 					foundWorkingEngine = engine
-					exit
-				endif
+					Exit
+				EndIf
 			Next
-		endif
+		EndIf
 
 		'if no sound engine initialized successfully, use the dummy
 		'output (no sound)
-		if foundWorkingEngine = ""
+		If foundWorkingEngine = ""
 			TLogger.Log("SoundManager.SetAudioEngine()", "No working audio engine found. Disabling sound.", LOG_ERROR)
 			DisableAudioEngine()
 			Return False
-		endif
+		EndIf
 
 		'reenable rtAudio-messages
+?Not bmxng
 		TMaxModRtAudioDriver.showWarnings(True)
-
+?
 		TLogger.Log("SoundManager.SetAudioEngine()", "initialized with engine ~q"+foundWorkingEngine+"~q.", LOG_DEBUG)
 		Return True
 	End Function
@@ -238,7 +249,7 @@ Type TSoundManager
 	End Function
 
 
-	Function DisableAudioEngine:int()
+	Function DisableAudioEngine:Int()
 		audioEngineEnabled = False
 	End Function
 
@@ -336,16 +347,16 @@ Type TSoundManager
 	End Method
 
 
-	Method RegisterSoundSource:int(soundSource:TSoundSourceElement)
-		if not soundSource then return False
+	Method RegisterSoundSource:Int(soundSource:TSoundSourceElement)
+		If Not soundSource Then Return False
 		If Not soundSources.ValueForKey(soundSource.GetGUID())
 			soundSources.Insert(soundSource.GetGUID(), soundSource)
-		endif
+		EndIf
 	End Method
 
 
-	Method GetSoundSource:TSoundSourceElement(GUID:string)
-		return TSoundSourceElement(soundSources.ValueForKey(GUID))
+	Method GetSoundSource:TSoundSourceElement(GUID:String)
+		Return TSoundSourceElement(soundSources.ValueForKey(GUID))
 	End Method
 
 
@@ -381,7 +392,7 @@ Type TSoundManager
 
 
 	Method MuteMusic:Int(bool:Int=True)
-		if not audioEngineEnabled then return False
+		If Not audioEngineEnabled Then Return False
 
 		If bool
 			TLogger.Log("TSoundManager.MuteMusic()", "Muting music", LOG_DEBUG)
@@ -426,7 +437,7 @@ Type TSoundManager
 		EndIf
 
 		If Not HasMutedMusic()
-			'Wenn der Musik-Channel nicht läuft, dann muss nichts gemacht werden
+			'Wenn der Musik-Channel nicht lÃ¤uft, dann muss nichts gemacht werden
 			If Not activeMusicChannel Then Return True
 
 			'if the music didn't stop yet
@@ -444,8 +455,8 @@ Type TSoundManager
 	End Method
 
 
-	Method FadeOverToNextTitle:int()
-		if not audioEngineEnabled then return False
+	Method FadeOverToNextTitle:Int()
+		If Not audioEngineEnabled Then Return False
 
 		If (fadeProcess = 0) Then
 			fadeProcess = 1
@@ -482,8 +493,8 @@ Type TSoundManager
 	End Method
 
 
-	Method PlaySfx:int(sfx:TSound, channel:TChannel)
-		if not audioEngineEnabled then return False
+	Method PlaySfx:Int(sfx:TSound, channel:TChannel)
+		If Not audioEngineEnabled Then Return False
 
 		If Not HasMutedSfx() And sfx Then PlaySound(sfx, Channel)
 	End Method
@@ -500,7 +511,7 @@ Type TSoundManager
 
 
 	Method PlayMusicOrPlaylist:Int(name:String, fromPlaylist:Int=False)
-		if not audioEngineEnabled then return False
+		If Not audioEngineEnabled Then Return False
 
 		If HasMutedMusic() Then Return True
 
@@ -516,11 +527,11 @@ Type TSoundManager
 		Else
 			nextMusicTitleStream = GetDigAudioStream(name, "")
 			nextMusicTitleVolume = GetMusicVolume(name)
-			if nextMusicTitleStream
+			If nextMusicTitleStream
 				TLogger.Log("PlayMusicOrPlaylist", "GetDigAudioStream by name ~q"+name+"~q", LOG_DEBUG)
-			else
+			Else
 				TLogger.Log("PlayMusicOrPlaylist", "GetDigAudioStream by name ~q"+name+"~q not possible. Not found.", LOG_DEBUG)
-			endif
+			EndIf
 		EndIf
 
 		forceNextMusicTitle = True
@@ -602,13 +613,13 @@ End Type
 '===== CONVENIENCE ACCESSORS =====
 'convenience instance getter
 Function GetSoundManager:TSoundManager()
-	return TSoundManager.GetInstance()
+	Return TSoundManager.GetInstance()
 End Function
 
 
 
 
-'Diese Basisklasse ist ein Wrapper für einen normalen Channel mit erweiterten Funktionen
+'Diese Basisklasse ist ein Wrapper fï¿½r einen normalen Channel mit erweiterten Funktionen
 Type TSfxChannel
 	Field Channel:TChannel = AllocChannel()
 	Field CurrentSfx:String
@@ -669,7 +680,7 @@ Type TSfxChannel
 
 	Method AdjustSettings(isUpdate:Int)
 		If Not isUpdate
-			channel.SetVolume(TSoundManager.GetInstance().sfxVolume * 0.75 * CurrentSettings.GetVolume()) '0.75 ist ein fixer Wert die Lautstärke der Sfx reduzieren soll
+			channel.SetVolume(TSoundManager.GetInstance().sfxVolume * 0.75 * CurrentSettings.GetVolume()) '0.75 ist ein fixer Wert die LautstÃ¤rke der Sfx reduzieren soll
 		EndIf
 	End Method
 End Type
@@ -677,7 +688,7 @@ End Type
 
 
 
-'Der dynamische SfxChannel hat die Möglichkeit abhängig von der Position von Sound-Quelle und Empfänger dynamische Modifikationen an den Einstellungen vorzunehmen. Er wird bei jedem Update aktualisiert.
+'Der dynamische SfxChannel hat die MÃ¶glichkeit abhÃ¤ngig von der Position von Sound-Quelle und EmpfÃ¤nger dynamische Modifikationen an den Einstellungen vorzunehmen. Er wird bei jedem Update aktualisiert.
 Type TDynamicSfxChannel Extends TSfxChannel
 	Field Source:TSoundSourceElement
 	Field Receiver:TSoundSourcePosition
@@ -703,15 +714,15 @@ Type TDynamicSfxChannel Extends TSfxChannel
 			channel.SetVolume(CurrentSettings.defaultVolume)
 			'print "Volume:" + CurrentSettings.defaultVolume
 		Else
-			'Lautstärke ist Abhängig von der Entfernung zur Geräuschquelle
+			'LautstÃ¤rke ist AbhÃ¤ngig von der Entfernung zur GerÃ¤uschquelle
 			Local distanceVolume:Float = CurrentSettings.GetVolumeByDistance(Source, Receiver)
-			channel.SetVolume(TSoundManager.GetInstance().sfxVolume * distanceVolume) ''0.75 ist ein fixer Wert die Lautstärke der Sfx reduzieren soll
+			channel.SetVolume(TSoundManager.GetInstance().sfxVolume * distanceVolume) ''0.75 ist ein fixer Wert die LautstÃ¤rke der Sfx reduzieren soll
 			'print "Volume: " + (SoundManager.sfxVolume * distanceVolume)
 		EndIf
 
 		If (sourcePoint.z = 0) Then
-			'170 Grenzwert = Erst aber dem Abstand von 170 (gefühlt/geschätzt) hört man nur noch von einer Seite.
-			'Ergebnis sollte ungefähr zwischen -1 (links) und +1 (rechts) liegen.
+			'170 Grenzwert = Erst aber dem Abstand von 170 (gefÃ¼hlt/geschÃ¤tzt) hÃ¶rt man nur noch von einer Seite.
+			'Ergebnis sollte ungefÃ¤hr zwischen -1 (links) und +1 (rechts) liegen.
 			If CurrentSettings.forcePan
 				channel.SetPan(CurrentSettings.defaultPan)
 			Else
@@ -728,13 +739,13 @@ Type TDynamicSfxChannel Extends TSfxChannel
 				Local xDistance:Float = Abs(sourcePoint.x - receiverPoint.x)
 				Local yDistance:Float = Abs(sourcePoint.y - receiverPoint.y)
 
-				Local angleZX:Float = ATan(zDistance / xDistance) 'Winkelfunktion: Welchen Winkel hat der Hörer zur Soundquelle. 90° = davor/dahiner    0° = gleiche Ebene	tan(alpha) = Gegenkathete / Ankathete
+				Local angleZX:Float = ATan(zDistance / xDistance) 'Winkelfunktion: Welchen Winkel hat der HÃ¶rer zur Soundquelle. 90Â° = davor/dahiner    0Â° = gleiche Ebene	tan(alpha) = Gegenkathete / Ankathete
 
 				Local rawPan:Float = ((90 - angleZX) / 90)
-				Local panCorrection:Float = Max(0, Min(1, xDistance / 170)) 'Den r/l Effekt sollte noch etwas abgeschwächt werden, wenn die Quelle nah ist
+				Local panCorrection:Float = Max(0, Min(1, xDistance / 170)) 'Den r/l Effekt sollte noch etwas abgeschwÃ¤cht werden, wenn die Quelle nah ist
 				Local correctPan:Float = rawPan * panCorrection
 
-				'0° => Aus einer Richtung  /  90° => aus beiden Richtungen
+				'0Â° => Aus einer Richtung  /  90Â° => aus beiden Richtungen
 				If (sourcePoint.x < receiverPoint.x) Then 'von links
 					channel.SetPan(-correctPan)
 					'print "Pan:" + (-correctPan) + " - angleZX: " + angleZX + " (" + xDistance + "/" + zDistance + ")    # " + rawPan + " / " + panCorrection
@@ -750,7 +761,7 @@ Type TDynamicSfxChannel Extends TSfxChannel
 				channel.SetDepth(CurrentSettings.defaultDepth)
 				'print "Depth:" + CurrentSettings.defaultDepth
 			Else
-				Local angleOfDepth:Float = ATan(receiverPoint.DistanceTo(sourcePoint, False) / zDistance) '0 = direkt hinter mir/vor mir, 90° = über/unter/neben mir
+				Local angleOfDepth:Float = ATan(receiverPoint.DistanceTo(sourcePoint, False) / zDistance) '0 = direkt hinter mir/vor mir, 90Â° = Ã¼ber/unter/neben mir
 
 				If sourcePoint.z < 0 Then 'Hintergrund
 					channel.SetDepth(-((90 - angleOfDepth) / 90)) 'Minuswert = Hintergrund / Pluswert = Vordergrund
@@ -817,13 +828,13 @@ End Type
 
 
 
-Type TSoundSourcePosition 'Basisklasse für verschiedene Wrapper
-	Field ID:int = 0
-	Global _lastID:int = 0
+Type TSoundSourcePosition 'Basisklasse fÃ¼r verschiedene Wrapper
+	Field ID:Int = 0
+	Global _lastID:Int = 0
 
 	Method GetCenter:TVec3D() Abstract
 	Method IsMovable:Int() Abstract
-	Method GetClassIdentifier:string() Abstract
+	Method GetClassIdentifier:String() Abstract
 
 
 	Method New()
@@ -832,8 +843,8 @@ Type TSoundSourcePosition 'Basisklasse für verschiedene Wrapper
 	End Method
 
 
-	Method GetGUID:string()
-		return GetClassIdentifier()+"-"+ID
+	Method GetGUID:String()
+		Return GetClassIdentifier()+"-"+ID
 	End Method
 End Type
 
@@ -851,13 +862,13 @@ Type TSoundSourceElement Extends TSoundSourcePosition
 	Method OnPlaySfx:Int(sfx:String) Abstract
 
 
-	Method GetGUID:string()
-		if GUID = "" then return GetClassIdentifier()+"-"+ID
-		return GUID
+	Method GetGUID:String()
+		If GUID = "" Then Return GetClassIdentifier()+"-"+ID
+		Return GUID
 	End Method
 
 
-	Method SetGUID(newGUID:string)
+	Method SetGUID(newGUID:String)
 		GUID = newGUID
 	End Method
 	

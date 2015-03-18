@@ -99,7 +99,7 @@ Extern "OS"
 		Const SO_SNDBUF_    : Short = $1001
 		Const SO_RCVBUF_    : Short = $1002
 
-		Function ioctl_(Socket:Int, Command:Int, Arguments:Byte Ptr) = "ioctl"
+		Function ioctl_:Int(Socket:Int, Command:Int, Arguments:Byte Ptr) = "ioctl"
 		Function inet_addr_:Int(Address$z) = "inet_addr"
 		Function inet_ntoa_:Byte Ptr(Adress:Int) = "inet_ntoa"
 		Function getsockname_:Int(Socket:Int, Name:Byte Ptr, NameLen:Int Ptr) = "getsockname"
@@ -112,7 +112,7 @@ Extern "OS"
 		Const SO_SNDBUF_    : Short = 7
 		Const SO_RCVBUF_    : Short = 8
 
-		Function ioctl_(Socket:Int, Command:Int, Arguments:Byte Ptr) = "ioctl"
+		Function ioctl_:Int(Socket:Int, Command:Int, Arguments:Byte Ptr) = "ioctl"
 		Function inet_addr_:Int(Address$z) = "inet_addr"
 		Function inet_ntoa_:Byte Ptr(Adress:Int) = "inet_ntoa"
 		Function getsockname_:Int(Socket:Int, Name:Byte Ptr, NameLen:Int Ptr) = "getsockname"
@@ -128,7 +128,7 @@ Extern "C"
 		                       Milliseconds:Int) = "pselect_"
 	?
 
-	Function GetNetworkAdapter(Device:Byte Ptr, MAC:Byte Ptr, ..
+	Function GetNetworkAdapter:Int(Device:Byte Ptr, MAC:Byte Ptr, ..
 	                           Address:Int Ptr, Netmask:Int Ptr, ..
 	                           Broadcast:Int Ptr) = "GetNetworkAdapter"
 End Extern
@@ -410,12 +410,12 @@ Type TNetwork
 		         werden.
 		         Siehe auch: #TAdapterInfo
 	End Rem
+
 	Function GetAdapterInfo:Int(Info:TAdapterInfo Var)
-		Local Device:Byte Ptr
 
 		If Not Info Then Info = New TAdapterInfo
 
-		Device = MemAlloc(256)
+		Local Device:Byte Ptr = MemAlloc(256)
 		If Not GetNetworkAdapter(Device, Info.MAC, Varptr(Info.Address), ..
 			Varptr(Info.Netmask), Varptr(Info.Broadcast)) Then Return False
 		Info.Device = String.FromCString(Device)
@@ -452,7 +452,12 @@ Type TNetStream Extends TStream Abstract
 
 	Method RecvMsg:Int() Abstract
 
+
+?Not bmxng
 	Method Read:Int(Buffer:Byte Ptr, Size:Int)
+?bmxng
+	Method Read:Long(Buffer:Byte Ptr, Size:Long)
+?
 		Local Temp:Byte Ptr
 
 		If Size > Self.RecvSize Then Size = Self.RecvSize
@@ -475,7 +480,11 @@ Type TNetStream Extends TStream Abstract
 
 	Method SendMsg:Int() Abstract
 
+?Not bmxng
 	Method Write:Int(Buffer:Byte Ptr, Size:Int)
+?bmxng
+	Method Write:Long(Buffer:Byte Ptr, Size:Long)
+?
 		Local Temp:Byte Ptr
 
 		If Size <= 0 Then Return 0
@@ -515,7 +524,11 @@ Type TNetStream Extends TStream Abstract
 		         befehlen, wie z. B. #ReadLine , aus diesen ausgelesen werden k&ouml;nnen.<br>
 		         Siehe auch: #RecvAvail
 	End Rem
+?Not bmxng
 	Method Size:Int()
+?bmxng
+	Method Size:Long()
+?
 		Return Self.RecvSize
 	End Method
 
@@ -529,7 +542,7 @@ Type TNetStream Extends TStream Abstract
 		         #WriteLine , der Sendepuffer beschrieben werden kann.<br />
 		         Siehe auch: #Close , #Size , #Eof
 	End Rem
-	Method Flush()
+	Method Flush:Int()
 		If Self.RecvSize > 0 Then MemFree(Self.RecvBuffer)
 		If Self.SendSize > 0 Then MemFree(Self.SendBuffer)
 		Self.RecvSize = 0
@@ -542,7 +555,7 @@ Type TNetStream Extends TStream Abstract
 		about:   Der mit dem Netzstream verbundene Socket wird geschlossen. &Uuml;ber ihn<br />
 		         kann nichtmehr gesendet und/oder empfangen werden.
 	End Rem
-	Method Close()
+	Method Close:Int()
 		If Self.Socket <> INVALID_SOCKET_ Then
 			' No receiving and sending
 			shutdown_(Self.Socket, SD_BOTH)

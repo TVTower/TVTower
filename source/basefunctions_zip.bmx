@@ -136,7 +136,11 @@ Type TBufferedStream Extends TStream
 		Return innerStream.Size()
 	End Method
 
+?Not bmxng
 	Method Seek:Int(pos:Int)
+?bmxng
+	Method Seek:Long( pos:Long, whence:Int = SEEK_SET_ )
+?
 		pos_ = pos
 		If pos_ < start_ Then
 			start_ = Max(pos_ - bias1, 0)
@@ -150,7 +154,11 @@ Type TBufferedStream Extends TStream
 		Return pos_
 	End Method
 
+?Not bmxng
 	Method Read:Int(dst:Byte Ptr, count:Int)
+?bmxng
+	Method Read:Long(dst:Byte Ptr, count:Long)
+?
 		' NOTE: no doubt it could be optimized further, but hey, if it works
 ?Debug
 		Local countBackup% = count
@@ -210,7 +218,11 @@ Type TBufferedStream Extends TStream
 		Forever
 	End Method
 
+?Not bmxng
 	Method Write:Int(buf:Byte Ptr, count:Int)
+?bmxng
+	Method Write:Long(buf:Byte Ptr, count:Long)
+?
 		RuntimeError "Stream is not writeable"
 		Return 0	
 	End Method
@@ -441,12 +453,20 @@ Type TZipStream Extends TStream
 		Return pos_
 	End Method
 
+?Not bmxng
 	Method Size:Int()
+?bmxng
+	Method Size:Long()
+?
 		'DebugLog "Size " + size_
 		Return size_
 	End Method
 
+?Not bmxng
 	Method Seek:Int(newPos:Int)
+?bmxng
+	Method Seek:Long( newPos:Long, whence:Int = SEEK_SET_ )
+?
 		If newPos <> pos_ Then
 			' WARN: this implementation of Seek is extremely inefficient 
 			' (we reopen the file - if needed - and then read and discard the needed amount of bytes)
@@ -481,7 +501,11 @@ Type TZipStream Extends TStream
 		Forever
 	End Method
 
+?Not bmxng
 	Method Read:Int(buf:Byte Ptr, count:Int)
+?bmxng
+	Method Read:Long(buf:Byte Ptr, count:Long)
+?
 		'DebugLog "Read"
 		'DebugStop
 		Assert unzfile Else "Attempt to read from closed stream"
@@ -492,17 +516,21 @@ Type TZipStream Extends TStream
 		Return ret
 	End Method
 
-	Method Write%(buf:Byte Ptr, count:Int)
+?Not bmxng
+	Method Write:Int(buf:Byte Ptr, count:Int)
+?bmxng
+	Method Write:Long(buf:Byte Ptr, count:Long)
+?
 		'DebugLog "Write"
 		RuntimeError "Stream is not writeable"
 		Return 0	
 	End Method
 
-	Method Flush()
+	Method Flush:Int()
 		'DebugLog "Flush"
 	End Method
 
-	Method Close()
+	Method Close:Int()
 		'DebugLog "Close"
 		If unzfile <> Null Then
 			unzCloseCurrentFile(unzfile)
@@ -685,7 +713,7 @@ Type ZipFile Abstract
 		If m_name.length>0 And FileSize(m_name)>0 ' check to make sure the file isnt empty
 			Local read:TStream=ReadFile(m_name)
 			If read<>Null
-				m_zipFileList=TZipFileList.create(read,False,False)
+				m_zipFileList=TZipFileList.Create(read,False,False)
 				CloseStream(read)
 			EndIf	
 		EndIf
@@ -806,7 +834,7 @@ Type ZipWriter Extends ZipFile
 				zipWriteInFileInZip( m_zipFile, LoadByteArray(inFile), inSize )
 				
 				' add this file to the file list
-				Local entry:SZipFileEntry=SZipFileEntry.create()
+				Local entry:SZipFileEntry=SZipFileEntry.Create()
 				entry.zipFileName=fileName
 				entry.simpleFileName=StripDir(fileName)
 				entry.path=ExtractDir(fileName)
@@ -859,7 +887,7 @@ Type ZipWriter Extends ZipFile
 				zipWriteInFileInZip( m_zipFile, LoadByteArray(inFile), inSize )
 				
 				' add this file to the file list
-				Local entry:SZipFileEntry=SZipFileEntry.create()
+				Local entry:SZipFileEntry=SZipFileEntry.Create()
 				entry.zipFileName=fileName
 				entry.simpleFileName=StripDir(fileName)
 				entry.path=ExtractDir(fileName)
@@ -996,7 +1024,7 @@ Type TZipFileList
 	Rem
 		bbdoc: Creates a new TZipFileList object
 	End Rem
-	Function create:TZipFileList(file:TStream,bIgnoreCase:Int,bIgnorePaths:Int)
+	Function Create:TZipFileList(file:TStream,bIgnoreCase:Int,bIgnorePaths:Int)
 		If Not file Then Return Null
 		
 		Local retval:TZipFileList=New TZipFileList
@@ -1033,7 +1061,7 @@ Type TZipFileList
 	Method findFile:SZipFileEntry(simpleFilename:String)
 		Local retval:SZipFileEntry=Null
 		
-		Local entry:SZipFileEntry=SZipFileEntry.create()
+		Local entry:SZipFileEntry=SZipFileEntry.Create()
 		entry.simpleFileName = simpleFilename
 	
 		If (IgnoreCase) Then entry.simpleFileName=entry.simpleFileName.ToLower()
@@ -1065,7 +1093,7 @@ Type TZipFileList
 
 	'	Local tempbank:TBank
 	
-		Local entry:SZipFileEntry=SZipFileEntry.create()
+		Local entry:SZipFileEntry=SZipFileEntry.Create()
 		entry.fileDataPosition = 0
 		
 		' populate the header with what was read		
@@ -1238,7 +1266,7 @@ Type SZipFileEntry
 	Field fileDataPosition:Int  ' position of compressed data in file
 	Field header:SZIPFileHeader
 
-	Function create:SZipFileEntry()
+	Function Create:SZipFileEntry()
 		Return New SZipFileEntry
 	EndFunction
 
