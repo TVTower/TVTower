@@ -761,11 +761,12 @@ Type TDatabaseLoader
 			if parentLicence then programmeData = TProgrammeData(THelper.CloneObject(parentLicence.data))
 			if not programmeData then programmeData = new TProgrammeData
 
-			programmeData.GUID = GUID
+			programmeData.GUID = "data-"+GUID
 			programmeData.title = new TLocalizedString
 			programmeData.description = new TLocalizedString
 
 			programmeLicence = new TProgrammeLicence
+			programmeLicence.GUID = GUID
 		else
 			programmeData = programmeLicence.GetData()
 			if not programmeData then Throw "Loading V3 Programme from XML: Existing programmeLicence without data found."
