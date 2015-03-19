@@ -270,17 +270,20 @@ Type TScreenHandler_ProgrammePlanner
 	'clear the guilist if a player enters
 	'screens are only handled by real players
 	Function onEnterProgrammePlannerScreen:int(triggerEvent:TEventBase)
+
 		'==== EMPTY/DELETE GUI-ELEMENTS =====
 		hoveredGuiProgrammePlanElement = null
 		draggedGuiProgrammePlanElement = null
-
-		'remove all entries
+		'remove all entries, also the dragged ones
 		RemoveAllGuiElements(true)
-		RefreshGUIElements()
+
 
 		'=== INITIALIZE VIEW ===
-		'set the planning day to the current one
+		'set the planning day to the current one and recreate all gui
+		'elements
 		ChangePlanningDay(GetWorldTime().GetDay())
+		'ChangePlanningDay already refreshes all gui elements
+		'RefreshGUIElements()
 	End Function
 
 
@@ -1017,7 +1020,6 @@ Type TScreenHandler_ProgrammePlanner
 		talkToProgrammePlanner = False
 
 		'===== REMOVE UNUSED =====
-		 
 		'remove overnight
 		if GuiListProgrammes.daychangeGuiProgrammePlanElement
 			GuiListProgrammes.daychangeGuiProgrammePlanElement.remove()
@@ -1052,7 +1054,7 @@ Type TScreenHandler_ProgrammePlanner
 
 		'===== CREATE NEW =====
 		'create missing gui elements for all programmes/ads
-		local daysProgramme:TBroadcastMaterial[] = GetPlayer().GetProgrammePlan().GetProgrammesInTimeSpan(planningDay, 0, planningDay, 23)
+		local daysProgramme:TBroadcastMaterial[] = GetPlayer().GetProgrammePlan().GetProgrammesInTimeSpan(currDay, 0, currDay, 23)
 		For local obj:TBroadcastMaterial = eachin daysProgramme
 			if not obj then continue
 			'if already included - skip it
@@ -1060,9 +1062,9 @@ Type TScreenHandler_ProgrammePlanner
 			
 			'DAYCHANGE
 			'skip programmes started yesterday (they are stored individually)
-			if obj.programmedDay < planningDay and planningDay > 0
-				'set to the obj still running at the begin of the planning day
-				GuiListProgrammes.SetDayChangeBroadcastMaterial(obj, planningDay)
+			if obj.programmedDay < currDay and currDay  > 0
+				'set to the obj still running at the begin of the current day
+				GuiListProgrammes.SetDayChangeBroadcastMaterial(obj, currDay)
 				continue
 			endif
 
@@ -1084,7 +1086,7 @@ Type TScreenHandler_ProgrammePlanner
 			endif
 
 			local block:TGUIProgrammePlanElement = new TGUIProgrammePlanElement.CreateWithBroadcastMaterial(obj)
-			'print "ADD GuiListProgramme - missed new programme: "+obj.GetTitle() +" -> created block:"+block._id
+			'print "ADD GuiListProgramme - missed new programme: "+obj.GetTitle() +" (programmedDay="+obj.programmedDay+", currDay="+currDay+") -> created block:"+block._id
 
 			if not GuiListProgrammes.addItem(block, string(obj.programmedHour))
 				print "ADD ERROR - could not add programme"
@@ -1096,7 +1098,7 @@ Type TScreenHandler_ProgrammePlanner
 
 
 		'ad list (can contain ads, programmes, ...)
-		local daysAdvertisements:TBroadcastMaterial[] = GetPlayer().GetProgrammePlan().GetAdvertisementsInTimeSpan(planningDay, 0, planningDay, 23)
+		local daysAdvertisements:TBroadcastMaterial[] = GetPlayer().GetProgrammePlan().GetAdvertisementsInTimeSpan(currDay, 0, currDay, 23)
 		For local obj:TBroadcastMaterial = eachin daysAdvertisements
 			if not obj then continue
 
@@ -1105,9 +1107,9 @@ Type TScreenHandler_ProgrammePlanner
 
 			'DAYCHANGE
 			'skip programmes started yesterday (they are stored individually)
-			if obj.programmedDay < planningDay and planningDay > 0
+			if obj.programmedDay < currDay and currDay > 0
 				'set to the obj still running at the begin of the planning day
-				GuiListProgrammes.SetDayChangeBroadcastMaterial(obj, planningDay)
+				GuiListProgrammes.SetDayChangeBroadcastMaterial(obj, currDay)
 				continue
 			endif
 
