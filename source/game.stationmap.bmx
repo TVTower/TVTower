@@ -166,6 +166,9 @@ Type TStationMapCollection
 				population:+ populationmap[i, j]
 			Next
 		Next
+		For local i:int = 0 to 255
+			print "i="+i+" result="+getPopulationForBrightness(i)
+		Next
 		TLogger.Log("TGetStationMapCollection().CreatePopulationMap", "calculated a population of:" + population + " in "+stopWatch.GetTime()+"ms", LOG_DEBUG | LOG_LOADING)
 	End Method
 
@@ -522,6 +525,7 @@ endrem
 
 
 	Function getPopulationForBrightness:Int(value:Int)
+		'attention: we use Ints, so values < 16 (sqrt 255) will be 0!
 		value = Max(5, 255-value)
 		value = (value*value)/255 '2 times so low values are getting much lower
 		value:* 0.649

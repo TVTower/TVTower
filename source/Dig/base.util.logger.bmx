@@ -226,7 +226,7 @@ Type TLogFile
 					Throw "Cannot create logfile: "+filename
 				endif 
 			endif
-			local file:TStream = WriteFile(filename)
+			local file:TStream = OpenFile(filename)
 
 
 			if not headerWritten
