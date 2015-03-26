@@ -118,6 +118,12 @@ Type TPlayerBase {_exposeToLua="selected"}
 	End Method
 
 
+	'returns formatted value of actual money
+	Method GetMoneyFormatted:String(day:Int=-1)
+		Return "0"
+	End Method
+	
+
 	'attention: when used through LUA without param, the param gets "0"
 	'instead of "-1"
 	Method GetMoney:Int(day:Int=-1) {_exposeToLua}

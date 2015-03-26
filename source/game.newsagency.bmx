@@ -114,9 +114,9 @@ Type TNewsAgency
 			'the level might be 0 already after the terrorist got his
 			'command to go to a room ... so we check the figure too
 			local level:int = terroristAggressionLevel[terroristGroup]
-			local fig:TFigureTerrorist = Game.terrorists[terroristGroup]
+			local fig:TFigureTerrorist = TFigureTerrorist(Game.terrorists[terroristGroup])
 			'figure is just delivering a bomb?
-			if fig.HasToDeliver() then return terroristAggressionLevelMax
+			if fig and fig.HasToDeliver() then return terroristAggressionLevelMax
 			return level
 		else
 			return Max( GetTerroristAggressionLevel(0), GetTerroristAggressionLevel(1) )

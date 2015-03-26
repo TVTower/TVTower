@@ -261,5 +261,36 @@ Type THelper
 		If mth then mth.Invoke(clone, [obj])
 
 		Return clone
-	End Function	
-End Type
+	End Function
+
+
+	'assigns field properties of one object to another
+	'no deep cloning is done but "references" are copied
+	Function TakeOverObjectValues:object(source:object, target:object var)
+		If source = Null
+			target = null
+			return null
+		EndIf
+
+		'to access properties we need a TTypeID of the object
+		Local srcTypeID:TTypeId=TTypeId.ForObject(source)
+		Local tarTypeID:TTypeId=TTypeId.ForObject(target)
+		if not srcTypeID or not tarTypeID then return target
+
+		'loop over all fields of the object
+		'if the target has the same or compatible field, assign it
+		'(reference, no deep clone!)
+		Local fldId:TTypeId, tarFldId:TTypeID
+		Local tarFld:TField
+		For Local fld:TField = EachIn srcTypeID.EnumFields()
+			fldId = fld.TypeId()
+			tarFld = tarTypeID.FindField( fld.name() )
+			if tarFld
+				tarFldId = tarfld.TypeId()
+				if tarFldID = fldId or tarFldId.ExtendsType(fldId)
+					tarFld.Set(target, fld.Get(source))
+				endif
+			endif
+		Next
+		Return target
+	End Function	End Type

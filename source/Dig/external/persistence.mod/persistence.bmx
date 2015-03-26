@@ -413,6 +413,8 @@ Type TPersist
 									Local arrSize:Int = fieldType.ArrayLength(f.Get(obj))
 									'on mac os x "0 sized"-arrays sometimes return dims to be veeeery big 
 									If arrSize = 0 Then dims = 1
+									'it also happens to others (Bruceys Linux box)
+									if dims < 0 or dims > 1000000 then dims = 1
 									'if f.name() ="cast" then print "cast arraySize="+arrSize+" dimensions="+dims
 
 									If dims > 1 Then

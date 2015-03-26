@@ -1,4 +1,6 @@
-﻿Type TDebugAudienceInfos
+﻿
+Global debugAudienceInfos:TDebugAudienceInfos = New TDebugAudienceInfos
+Type TDebugAudienceInfos
 	Field currentStatement:TBroadcastFeedbackStatement
 	Field lastCheckedMinute:Int
 

@@ -186,6 +186,7 @@ Type TInGameScreen Extends TScreen
 	Method DrawOverlay:Int(tweenValue:Float)
 		'TProfiler.Enter("Draw-Interface")
 		GetInGameInterface().Draw()
+		TError.DrawErrors()
 		'TProfiler.Leave("Draw-Interface")
 	End Method
 
@@ -197,7 +198,18 @@ Type TInGameScreen Extends TScreen
 		UpdateContent(deltaTime)
 
 
-		Game.UpdateInGameChat()
+		'ingamechat
+		If KEYMANAGER.IsHit(KEY_ENTER)
+			If Not GetIngameInterface().chat.guiInput.hasFocus()
+				If GetIngameInterface().chat.antiSpamTimer < Time.GetTimeGone()
+					GUIManager.setFocus( GetIngameInterface().chat.guiInput )
+				Else
+					Print "no spam pls (input stays deactivated)"
+				EndIf
+			EndIf
+		EndIf
+
+
 
 		If Not GetWorldTime().IsPaused()
 			Game.Update(deltaTime)

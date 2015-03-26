@@ -1,3 +1,14 @@
+SuperStrict
+Import "Dig/base.framework.tooltip.bmx"
+Import "Dig/base.framework.toastmessage.bmx"
+Import "Dig/base.gfx.sprite.bmx"
+Import "Dig/base.util.graphicsmanager.bmx"
+
+Import "game.gui.chat.bmx"
+
+Import "game.player.base.bmx"
+Import "game.player.programmeplan.bmx"
+Import "game.game.base.bmx"
 
 'Interface, border, TV-antenna, audience-picture and number, watch...
 'updates tv-images shown and so on
@@ -23,6 +34,8 @@ Type TInGameInterface
 	Field ChatShowHideLocked:int = False
 	Field BottomImgDirty:Int = 1
 
+	Field chat:TGUIGameChat
+
 	Global _instance:TInGameInterface
 
 
@@ -34,6 +47,28 @@ Type TInGameInterface
 
 	'initializes an interface
 	Method Init:TInGameInterface()
+		if not chat
+			'TLogger.Log("TGame", "Creating ingame GUIelements", LOG_DEBUG)
+			chat = New TGUIGameChat.Create(New TVec2D.Init(518, 404), New TVec2D.Init(275,180), "InGame")
+			chat.setDefaultHideEntryTime(10000)
+			chat.setOption(GUI_OBJECT_CLICKABLE, False)
+			chat.SetDefaultTextColor( TColor.Create(255,255,255) )
+			'bugged:
+			'chat.guiList.autoHideScroller = True
+			'remove unneeded elements
+			chat.SetBackground(Null)
+
+			'reposition input
+			chat.guiInput.rect.position.setXY( 515, 354 )
+			chat.guiInput.Resize( 280, 30 )
+			chat.guiInput.setMaxLength(200)
+			chat.guiInput.setOption(GUI_OBJECT_POSITIONABSOLUTE, True)
+			chat.guiInput.SetMaxTextWidth(255)
+			chat.guiInput.spriteName = "gfx_interface_ingamechat_input"
+			chat.guiInput.color.AdjustRGB(30,30,30,True)
+			chat.guiInput.SetValueDisplacement(3,5)
+		EndIf
+
 		CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
 
 		CurrentProgrammeToolTip = TTooltip.Create("", "", 40, 395)
@@ -78,7 +113,7 @@ Type TInGameInterface
 
 	Function onIngameChatAddEntry:Int( triggerEvent:TEventBase )
 		'ignore if not in a game
-		If not Game.PlayingAGame() then return False
+		If not GetGameBase().PlayingAGame() then return False
 
 		'mark that there is something to read
 		GetInstance().ChatContainsUnread = True
@@ -91,7 +126,7 @@ Type TInGameInterface
 	
 
 	Method Update(deltaTime:Float=1.0)
-		local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(ShowChannel)
+		local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan(ShowChannel)
 
 		'reset current programme sprites
 		CurrentProgrammeOverlay = Null
@@ -191,7 +226,7 @@ Type TInGameInterface
 				content	= GetLocale("AUDIENCE_NUMBER")+": "+programmePlan.getFormattedAudience()+ " ("+MathHelper.NumberToString(programmePlan.GetAudiencePercentage()*100,2)+"%)"
 
 				'show additional information if channel is player's channel
-				If ShowChannel = GetPlayerCollection().playerID
+				If ShowChannel = GetPlayerBaseCollection().playerID
 					If GetWorldTime().GetDayMinute() >= 5 And GetWorldTime().GetDayMinute() < 55
 						Local obj:TBroadcastMaterial = programmePlan.GetAdvertisement()
 						If TAdvertisement(obj)
@@ -247,7 +282,7 @@ Type TInGameInterface
 			CurrentProgrammeToolTip.Hover()
 	    EndIf
 		If THelper.MouseIn(355,468,130,30)
-			local playerProgrammePlan:TPlayerProgrammePlan = GetPlayer().GetProgrammePlan()
+			local playerProgrammePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan( GetPlayerBaseCollection().playerID )
 			if playerProgrammePlan
 				CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_NUMBER")+": "+playerProgrammePlan.getFormattedAudience()+ " ("+MathHelper.NumberToString(playerProgrammePlan.GetAudiencePercentage() * 100,2)+"%)")
 				CurrentAudienceToolTip.SetAudienceResult(GetBroadcastManager().GetAudienceResult(playerProgrammePlan.owner))
@@ -266,9 +301,9 @@ Type TInGameInterface
 		If THelper.MouseIn(355,415,130,30)
 			MoneyToolTip.title = getLocale("MONEY")
 			local content:String = ""
-			content	= "|b|"+getLocale("MONEY")+":|/b| "+TFunctions.DottedValue(GetPlayer().GetMoney()) + getLocale("CURRENCY")
+			content	= "|b|"+getLocale("MONEY")+":|/b| "+TFunctions.DottedValue(GetPlayerBase().GetMoney()) + getLocale("CURRENCY")
 			content	:+ "~n"
-			content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ TFunctions.DottedValue(GetPlayer().GetCredit()) + getLocale("CURRENCY")+"|/color|"
+			content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ TFunctions.DottedValue(GetPlayerBase().GetCredit()) + getLocale("CURRENCY")+"|/color|"
 			MoneyTooltip.SetContent(content)
 			MoneyToolTip.enabled 	= 1
 			MoneyToolTip.Hover()
@@ -289,7 +324,7 @@ Type TInGameInterface
 				ChatContainsUnread = False
 
 				ChatShow = True
-				InGame_Chat.ShowChat()
+				if chat then chat.ShowChat()
 
 				MouseManager.ResetKey(1)
 			endif
@@ -304,7 +339,7 @@ Type TInGameInterface
 				ChatContainsUnread = False
 
 				ChatShow = False
-				InGame_Chat.HideChat()
+				if chat then chat.HideChat()
 
 				MouseManager.ResetKey(1)
 			endif
@@ -314,11 +349,11 @@ Type TInGameInterface
 			endif
 		endif
 
-		if not ChatShowHideLocked
+		if chat and not ChatShowHideLocked
 			if not ChatShow
-				InGame_Chat.HideChat()
+				chat.HideChat()
 			else
-				InGame_Chat.ShowChat()
+				chat.ShowChat()
 			endif
 		endif
 		'====
@@ -329,7 +364,7 @@ Type TInGameInterface
 	'returns a string list of abbreviations for the watching family
 	Function GetWatchingFamily:string[]()
 		'fetch feedback to see which test-family member might watch
-		Local feedback:TBroadcastFeedback = GetBroadcastManager().GetCurrentBroadcast().GetFeedback(GetPlayerCollection().playerID)
+		Local feedback:TBroadcastFeedback = GetBroadcastManager().GetCurrentBroadcast().GetFeedback(GetPlayerBase().playerID)
 
 		local result:String[]
 
@@ -343,7 +378,7 @@ Type TInGameInterface
 
 		if (feedback.AudienceInterest.Teenagers > 0)
 			'in school monday-friday - in school from till 7 to 13 - needs no sleep :D
-			'If Game.GetWeekday()>6 or (GetWorldTime().GetDayHour() < 7 or GetWorldTime().GetDayHour() >= 13) then result :+ ["teen"] 'manuel: muss im Feedback-Code geprüft werden.
+			'If GetworldTime().GetWeekday()>6 or (GetWorldTime().GetDayHour() < 7 or GetWorldTime().GetDayHour() >= 13) then result :+ ["teen"] 'manuel: muss im Feedback-Code geprüft werden.
 			result :+ ["teen"]
 		endif
 
@@ -351,7 +386,7 @@ Type TInGameInterface
 			result :+ ["unemployed"]
 		else
 			'if there is some audience, show the sleeping unemployed
-			if GetPlayer().GetProgrammePlan().GetAudiencePercentage() > 0.05
+			if GetPlayerProgrammePlan( GetPlayerBase().playerID ).GetAudiencePercentage() > 0.05
 				result :+ ["unemployed.bored"]
 			endif
 		endif
@@ -363,11 +398,13 @@ Type TInGameInterface
 	'draws the interface
 	Method Draw(tweenValue:Float=1.0)
 		If BottomImgDirty
+			local playerID:int = GetPlayerBase().playerID
+
 			'draw bottom, aligned "bottom"
 			GetSpriteFromRegistry("gfx_interface_bottom").Draw(0, GetGraphicsManager().GetHeight(), 0, ALIGN_LEFT_BOTTOM)
 		
 		    'channel choosen and something aired?
-		    local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(ShowChannel)
+			local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan( ShowChannel )
 
 			'CurrentProgramme can contain "outage"-image, so draw
 			'even without audience
@@ -432,16 +469,16 @@ Type TInGameInterface
 				EndIf
 		    Next
 
-			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayer().getMoneyFormatted(), 366, 421, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(200,230,200), 2, 1, 0.5)
+			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayerBase().getMoneyFormatted(), 366, 421, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(200,230,200), 2, 1, 0.5)
 
-			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayer().GetProgrammePlan().getFormattedAudience(), 366, 463, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(200,200,230), 2, 1, 0.5)
+			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayerProgrammePlanCollection().Get(playerID).getFormattedAudience(), 366, 463, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(200,200,230), 2, 1, 0.5)
 
 			'=== DRAW SECONDARY INFO ===
 			local oldAlpha:Float = GetAlpha()
 			SetAlpha oldAlpha*0.75
 
 			'current days financial win/loss
-			local profit:int = GetPlayer().GetFinance().GetCurrentProfit()
+			local profit:int = GetPlayerFinance(playerID).GetCurrentProfit()
 			if profit > 0
 				GetBitmapFont("Default", 12, BOLDFONT).drawBlock("+"+TFunctions.DottedValue(profit), 366, 421+15, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(170,200,170), 2, 1, 0.5)
 			elseif profit = 0
@@ -451,7 +488,7 @@ Type TInGameInterface
 			endif
 
 			'market share
-			GetBitmapFont("Default", 12, BOLDFONT).drawBlock(MathHelper.NumberToString(GetPlayer().GetProgrammePlan().GetAudiencePercentage()*100,2)+"%", 366, 463+15, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(170,170,200), 2, 1, 0.5)
+			GetBitmapFont("Default", 12, BOLDFONT).drawBlock(MathHelper.NumberToString(GetPlayerProgrammePlan(playerID).GetAudiencePercentage()*100,2)+"%", 366, 463+15, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(170,170,200), 2, 1, 0.5)
 
 			'current day
 		 	GetBitmapFont("Default", 12, BOLDFONT).drawBlock((GetWorldTime().GetDaysRun()+1) + ". "+GetLocale("DAY"), 366, 555, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(180,180,180), 2, 1, 0.5)
@@ -502,9 +539,6 @@ Type TInGameInterface
 		For local tip:TTooltip = eachin tooltips
 			If tip.enabled Then tip.Render()
 		Next
-
-
-		TError.DrawErrors()
 	End Method
 End Type
 
@@ -513,3 +547,177 @@ End Type
 Function GetInGameInterface:TInGameInterface()
 	return TInGameInterface.GetInstance()
 End Function
+
+
+
+
+'extend tooltip to overwrite draw method
+Type TTooltipAudience Extends TTooltip
+	Field audienceResult:TAudienceResult
+	Field showDetails:Int = False
+	Field lineHeight:Int = 0
+	Field lineIconHeight:Int = 0
+	Field originalPos:TVec2D
+
+	Function Create:TTooltipAudience(title:String = "", text:String = "unknown", x:Int=0, y:Int=0, w:Int=-1, h:Int=-1, lifetime:Int=300)
+		Local obj:TTooltipAudience = New TTooltipAudience
+		obj.Initialize(title, text, x, y, w, h, lifetime)
+
+		Return obj
+	End Function
+
+
+	'override to add lineheight
+	Method Initialize:Int(title:String="", content:String="unknown", x:Int=0, y:Int=0, w:Int=-1, h:Int=-1, lifetime:Int=300)
+		Super.Initialize(title, content, x, y, w, h, lifetime)
+		Self.lineHeight = Self.useFont.getMaxCharHeight()+1
+		'text line with icon
+		Self.lineIconHeight = 1 + Max(lineHeight, GetSpriteFromRegistry("gfx_targetGroup_men").area.GetH())
+	End Method
+
+
+	Method SetAudienceResult:Int(audienceResult:TAudienceResult)
+		If Self.audienceResult = audienceResult Then Return False
+
+		Self.audienceResult = audienceResult
+		Self.dirtyImage = True
+	End Method
+
+
+	Method GetContentWidth:Int()
+		If audienceResult
+			Return Self.useFont.GetWidth( GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuote().GetAverage(), 2) + "%)" )
+		Else
+			Return Self.Usefont.GetWidth( GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": 100 (100%)")
+		EndIf
+	End Method
+
+
+	'override default to add "ALT-Key"-Switcher
+	Method Update:Int()
+		If KeyManager.isDown(KEY_LALT) Or KeyManager.isDown(KEY_RALT)
+			If Not showDetails Then Self.dirtyImage = True
+			showDetails = True
+			'backup position
+			If Not originalPos Then originalPos = area.position.Copy()
+
+			
+		Else
+			If showDetails Then Self.dirtyImage = True
+			showDetails = False
+			'restore position
+			If originalPos
+				area.position.CopyFrom(originalPos)
+				originalPos = Null
+			EndIf
+		EndIf
+
+		Super.Update()
+	End Method
+
+
+	Method GetContentHeight:Int(width:Int)
+		Local result:Int = 0
+
+		Local reach:Int = GetStationMap( GetPlayerBase().playerID ).reach
+		Local totalReach:Int = GetStationMapCollection().population
+		result:+ Usefont.GetHeight(GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuote().GetAverage(), 2) + "%)")
+		result:+ Usefont.GetHeight(GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 0) + " (" + MathHelper.NumberToString(100.0 * Float(reach)/totalReach, 2) + "%)")
+		result:+ 1*lineHeight
+
+		If showDetails
+			result:+ 9*lineIconHeight
+		Else
+			result:+ 1*lineHeight
+		EndIf
+
+		result:+ padding.GetTop() + padding.GetBottom()
+
+		Return result
+	End Method
+
+
+	'override default
+	Method DrawContent:Int(x:Int, y:Int, w:Int, h:Int)
+		'give text padding
+		x :+ padding.GetLeft()
+		y :+ padding.GetTop()
+		w :- (padding.GetLeft() + padding.GetRight())
+		h :- (padding.GetTop() + padding.GetBottom())
+
+		If Not Self.audienceResult
+			Usefont.draw("Audience data missing", x, y)
+			Return False
+		EndIf
+
+
+		Local lineY:Int = y
+		Local lineX:Int = x
+		Local lineText:String = ""
+		Local lineIconX:Int = lineX + GetSpriteFromRegistry("gfx_targetGroup_men").area.GetW() + 2
+		Local lineIconWidth:Int = w - GetSpriteFromRegistry("gfx_targetGroup_men").area.GetW()
+		Local lineIconDY:Int = Floor(0.5 * (lineIconHeight - lineHeight))
+		Local lineTextDY:Int = lineIconDY + 2
+
+		'draw overview text
+		lineText = GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuote().GetAverage(), 2) + "%)"
+		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
+		lineY :+ 1 * Self.Usefont.GetHeight(lineText)
+
+		Local reach:Int = GetStationMap( GetPlayerBase().playerID ).reach
+		Local totalReach:Int = GetStationMapCollection().population
+
+		lineText = GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 0) + " (" + MathHelper.NumberToString(100.0 * Float(reach)/totalReach, 2) + "%)"
+		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
+		lineY :+ Self.Usefont.GetHeight(lineText)
+
+		'add 1 line more - as spacing to details
+		lineY :+ lineHeight
+
+		
+		If Not showDetails
+			Self.Usefont.draw(GetLocale("HINT_PRESSING_ALT_WILL_SHOW_DETAILS") , lineX, lineY, TColor.CreateGrey(150))
+		Else
+			'add lines so we can have an easier "for loop"
+			Local lines:String[TVTTargetGroup.count]
+			Local percents:String[TVTTargetGroup.count]
+			Local numbers:String[TVTTargetGroup.count]
+			Local audienceQuote:TAudience = audienceResult.GetAudienceQuote()
+			Local targetGroupID:Int = 0
+			For Local i:Int = 1 To TVTTargetGroup.count
+				targetGroupID = TVTTargetGroup.GetAtIndex(i)
+				lines[i-1] = getLocale("AD_TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)) + ": "
+				numbers[i-1] = TFunctions.convertValue(audienceResult.Audience.GetValue(targetGroupID), 0)
+				percents[i-1] = MathHelper.NumberToString(audienceQuote.GetValue(targetGroupID) * 100,2)
+			Next
+			
+			Local colorLight:TColor = TColor.CreateGrey(240)
+			Local colorDark:TColor = TColor.CreateGrey(230)
+			Local colorTextLight:TColor = colorLight.copy().AdjustFactor(-110)
+			Local colorTextDark:TColor = colorDark.copy().AdjustFactor(-140)
+
+			For Local i:Int = 1 To TVTTargetGroup.count
+				'shade the rows
+				If i Mod 2 = 0 Then colorLight.SetRGB() Else colorDark.SetRGB()
+				DrawRect(lineX, lineY, w, lineIconHeight)
+
+				'draw icon
+				SetColor 255,255,255
+				targetGroupID = TVTTargetGroup.GetAtIndex(i)
+				GetSpriteFromRegistry("gfx_targetGroup_"+TVTTargetGroup.GetAsString(targetGroupID).toLower()).draw(lineX, lineY + lineIconDY)
+				'draw text
+				If i Mod 2 = 0
+					Usefont.drawBlock(lines[i-1], lineIconX, lineY + lineTextDY,  w, lineHeight, Null, ColorTextLight)
+					Usefont.drawBlock(numbers[i-1], lineIconX, lineY + lineTextDY, lineIconWidth - 5 - 50, lineIconHeight, New TVec2D.Init(ALIGN_RIGHT), ColorTextLight)
+					Usefont.drawBlock(percents[i-1]+"%", lineIconX, lineY + lineTextDY, lineIconWidth - 5, lineIconHeight, New TVec2D.Init(ALIGN_RIGHT), ColorTextLight)
+				Else
+					Usefont.drawBlock(lines[i-1], lineIconX, lineY + lineTextDY,  w, lineHeight, Null, ColorTextDark)
+					Usefont.drawBlock(numbers[i-1], lineIconX, lineY + lineTextDY, lineIconWidth - 5 - 50, lineIconHeight, New TVec2D.Init(ALIGN_RIGHT), ColorTextDark)
+					Usefont.drawBlock(percents[i-1]+"%", lineIconX, lineY + lineTextDY, lineIconWidth - 5, lineIconHeight, New TVec2D.Init(ALIGN_RIGHT), ColorTextDark)
+				EndIf
+
+				lineY :+ lineIconHeight
+			Next
+		EndIf
+	End Method
+End Type

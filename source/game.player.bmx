@@ -481,6 +481,7 @@ endrem
 	End Method
 
 
+	'overridden
 	'returns formatted value of actual money
 	Method GetMoneyFormatted:String(day:Int=-1)
 		Return TFunctions.convertValue(GetFinance(day).money, 2)

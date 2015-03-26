@@ -84,8 +84,10 @@ Import "game.production.bmx"
 Import "game.room.base.bmx"
 Import "game.misc.roomboardsign.bmx"
 Import "game.betty.bmx"
+Import "game.ingameinterface.bmx"
 
 Import "game.database.bmx"
+Import "game.game.base.bmx"
 
 '===== Includes =====
 Include "game.player.bmx"
@@ -93,8 +95,6 @@ Include "game.player.bmx"
 'Types: - TError - Errorwindows with handling
 '		- base class For buttons And extension newsbutton
 Include "gamefunctions.bmx"
-
-Include "game.ingameinterface.bmx"
 
 Include "gamefunctions_screens.bmx"
 Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme-data/Blocks and dnd-objects
@@ -110,7 +110,7 @@ Include "game.figure.bmx"
 Include "game.building.bmx"
 Include "game.newsagency.bmx"
 
-Include "game.base.bmx"
+Include "game.game.bmx"
 
 '===== Globals =====
 Global VersionDate:String = LoadText("incbin::source/version.txt")
@@ -118,7 +118,6 @@ Global VersionString:String = "v0.2 Build ~q" + VersionDate+"~q"
 Global CopyrightString:String = "by Ronny Otto & Manuel Vögele"
 Global App:TApp = Null
 Global Game:TGame
-Global InGame_Chat:TGUIChat
 Global PlayerDetailsTimer:Int = 0
 Global MainMenuJanitor:TFigureJanitor
 Global ScreenGameSettings:TScreen_GameSettings = Null
@@ -528,7 +527,7 @@ Type TApp
 						targetRoom = GetRoomCollection().GetRandom()
 					Until targetRoom.name <> "building"
 					
-					Game.terrorists[whichTerrorist].SetDeliverToRoom( targetRoom )
+					TFigureTerrorist(Game.terrorists[whichTerrorist]).SetDeliverToRoom( targetRoom )
 				EndIf
 
 				If Game.isGameLeader()
@@ -722,7 +721,7 @@ Type TApp
 			'GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
 		EndIf
 		'show quotes even without "DEV_OSD = true"
-		If TVTDebugQuoteInfos Then Game.DebugAudienceInfo.Draw()
+		If TVTDebugQuoteInfos Then debugAudienceInfos.Draw()
 
 
 		'draw loading resource information
@@ -2992,6 +2991,97 @@ Type GameEvents
 		EventManager.registerListenerFunction("ProgrammeLicenceAuction.onGetOutbid", ProgrammeLicenceAuction_OnGetOutbid)
 		EventManager.registerListenerFunction("ProgrammeLicenceAuction.onWin", ProgrammeLicenceAuction_OnWin)
 
+		'we want to handle "/dev bla"-commands via chat
+		EventManager.registerListenerFunction("chat.onAddEntry", onChatAddEntry )
+
+	End Function
+
+
+	Function onChatAddEntry:Int(triggerEvent:TEventBase)
+		Local text:String = triggerEvent.GetData().GetString("text")
+		'only interested in system/dev-commands
+		If TGUIChat.GetCommandFromText(text) <> CHAT_COMMAND_SYSTEM Then Return False
+
+		'skip "/sys " and only return the payload
+		'-> "/sys addmoney 1000" gets "addmoney 1000"
+		text = TGUIChat.GetPayloadFromText(text)
+		text = text.Trim()
+
+		Local command:String, payload:String
+		FillCommandPayload(text, command, payload)
+
+		'try to fetch a player (saves to repeat those lines over and over)
+		Local playerS:String, paramS:String
+		FillCommandPayload(payload, playerS, paramS)
+		Local player:TPlayer = GetPlayer(Int(playerS))
+
+		Local PLAYER_NOT_FOUND:String = "[DEV] player not found."
+
+		Select command.Trim().toLower()
+			Case "bossmood"
+				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
+
+				Local changed:String = ""
+				If paramS <> ""
+					GetPlayerBoss(player.playerID).ChangeMood(Int(paramS))
+
+					If Int(paramS) > 0 Then paramS = "+"+Int(paramS)
+					changed = " ("+paramS+"%)"
+				EndIf
+				GetGame().SendSystemMessage("[DEV] Mood of boss "+playerS+": "+GetPlayerBoss(player.playerID).GetMood()+"%." + changed)
+
+			Case "money"
+				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
+
+				Local changed:String = ""
+				If paramS <> ""
+					player.GetFinance().ChangeMoney(Int(paramS), TVTPlayerFinanceEntryType.CHEAT)
+
+					If Int(paramS) > 0 Then paramS = "+"+Int(paramS)
+					changed = " ("+paramS+")"
+				EndIf
+				GetGame().SendSystemMessage("[DEV] Money of player "+playerS+": "+player.GetFinance().money+"." + changed)
+
+			Case "image"
+				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
+
+				Local changed:String = ""
+				If paramS <> ""
+					player.GetPublicImage().ChangeImage( New TAudience.AddFloat(Int(paramS)))
+					
+					If Int(paramS) > 0 Then paramS = "+"+Int(paramS)
+					changed = " ("+paramS+"%)"
+				EndIf
+				GetGame().SendSystemMessage("[DEV] Image of player "+playerS+": "+player.GetPublicImage().GetAverageImage()+"%." + changed)
+
+			Case "help"
+				SendHelp()
+
+			Default
+				SendHelp()
+				'SendSystemMessage("[DEV] unknown command: ~q"+command+"~q")
+		End Select
+
+
+		Function SendHelp()
+				Local commands:String = ""
+				commands :+ "money [player#] [+- money]~n"
+				commands :+ "bossmood [player#] [+- mood %]~n"
+				commands :+ "image [player#] [+- image %]"
+				GetGame().SendSystemMessage("[DEV] available commands:~n"+commands)
+		End Function
+		
+		'internal helper function
+		Function FillCommandPayload(text:String, command:String Var, payload:String Var)
+			Local spacePos:Int = text.Find(" ")
+			If spacePos <= 0
+				command = text
+				payload = ""
+			Else
+				command = Left(text, spacePos)
+				payload = Right(text, text.length - (spacePos+1))
+			EndIf
+		End Function
 	End Function
 	
 
@@ -3463,7 +3553,7 @@ Type GameEvents
 						EventManager.triggerEvent(TEventSimple.Create("publicAuthorities.onStartConfiscateProgramme", New TData.AddString("broadcastMaterialGUID", currentProgramme.GetGUID()).AddNumber("owner", player.playerID), currentProgramme, player))
 
 						'Send out first marshal - Mr. Czwink or Mr. Czwank
-						Game.marshals[randRange(0,1)].AddConfiscationJob(currentProgramme.GetGUID())
+						TFigureMarshal(Game.marshals[randRange(0,1)]).AddConfiscationJob(currentProgramme.GetGUID())
 					EndIf
 
 					'emit event (eg.for ingame toastmessages)
@@ -3853,7 +3943,7 @@ End Function
 Function ShowApp:Int()
 	TProfiler.Enter("ShowApp")
 	'without creating players, rooms
-	Game = TGame.GetInstance().Create(False, False)
+	Game = TGame.GetInstance().Create(False)
 
 	'Menu
 	ScreenMainMenu = New TScreen_MainMenu.Create("MainMenu")
