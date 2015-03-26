@@ -293,4 +293,5 @@ Type THelper
 			endif
 		Next
 		Return target
-	End Function	End Type
+	End Function
+End Type
