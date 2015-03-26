@@ -263,11 +263,23 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	Method isInRoom:Int(roomName:String="", checkFromRoom:Int=False) {_exposeToLua}
 		If checkFromRoom
 			'from room has to be set AND inroom <> null (no building!)
-			Return (GetFigure().inRoom And GetFigure().inRoom.Name.toLower() = roomname.toLower()) Or (GetFigure().inRoom And GetFigure().fromRoom And GetFigure().fromRoom.Name.toLower() = roomname.toLower())
+
+			'check for specified room
+			If roomName <> ""
+				Return (GetFigure().inRoom And GetFigure().inRoom.Name.toLower() = roomname.toLower()) Or (GetFigure().inRoom And GetFigure().fromRoom And GetFigure().fromRoom.Name.toLower() = roomname.toLower())
+			'just check if we are in a unspecified room
+			Else
+				Return GetFigure().inRoom Or (GetFigure().inRoom And GetFigure().fromRoom)
+			Endif
 		Else
-			Return (GetFigure().inRoom And GetFigure().inRoom.Name.toLower() = roomname.toLower())
+			If roomName <> ""
+				Return (GetFigure().inRoom And GetFigure().inRoom.Name.toLower() = roomname.toLower())
+			Else
+				Return GetFigure().inRoom <> null
+			EndIf
 		EndIf
 	End Method
+
 	
 	'Damit man GetFinance nicht in Lua verfügbar machen muss
 	Method GetCreditInterest:int() {_exposeToLua}

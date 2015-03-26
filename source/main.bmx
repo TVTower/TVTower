@@ -43,7 +43,7 @@ Import "Dig/base.framework.tooltip.bmx"
 
 Import "basefunctions_network.bmx"
 Import "basefunctions.bmx"
-Import "basefunctions_screens.bmx"
+Import "common.misc.screen.bmx"
 Import "common.misc.dialogue.bmx"
 Import "common.misc.gamelist.bmx"
 Import "game.world.bmx"
@@ -70,8 +70,9 @@ Import "game.player.finance.bmx"
 Import "game.player.boss.bmx"
 'Import "game.player.bmx"
 Import "game.stationmap.bmx"
-Import "game.building.base.bmx"
-Import "game.building.elevator.bmx"
+Import "game.building.bmx"
+'Import "game.building.base.bmx"
+'Import "game.building.elevator.bmx"
 'needed by gamefunctions
 Import "game.broadcastmaterial.programme.bmx"
 'needed by game.player.bmx
@@ -88,6 +89,9 @@ Import "game.ingameinterface.bmx"
 
 Import "game.database.bmx"
 Import "game.game.base.bmx"
+Import "game.production.script.gui.bmx"
+Import "game.production.shoppinglist.gui.bmx"
+
 
 '===== Includes =====
 Include "game.player.bmx"
@@ -103,11 +107,8 @@ Include "gamefunctions_ki.bmx"					'LUA connection
 Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
 Include "gamefunctions_debug.bmx"
 Include "gamefunctions_network.bmx"
-Include "game.production.script.gui.bmx"
-Include "game.production.shoppinglist.gui.bmx"
 
 Include "game.figure.bmx"
-Include "game.building.bmx"
 Include "game.newsagency.bmx"
 
 Include "game.game.bmx"
@@ -1443,7 +1444,7 @@ Type TFigureDeliveryBoy Extends TFigure
 				'instead of sending the figure to the correct door, we
 				'ask the roomsigns where to go to
 				'1) get sign of the door
-				Local roomDoor:TRoomDoorBase = TRoomDoor.GetMainDoorToRoom(deliverToRoom)
+				Local roomDoor:TRoomDoorBase = GetRoomDoorCollection().GetMainDoorToRoom(deliverToRoom.id)
 				'2) get sign which is now at the slot/floor of the room
 				Local sign:TRoomBoardSign
 				If roomDoor Then sign = GetRoomBoard().GetSignByCurrentPosition(roomDoor.doorSlot, roomDoor.onFloor)
@@ -3880,7 +3881,7 @@ Function DEV_switchRoom:Int(room:TRoom)
 	'a) add the room as new target before all others
 	'GetPlayer().GetFigure().PrependTarget(TRoomDoor.GetMainDoorToRoom(room))
 	'b) set it as the only route
-	GetPlayer().GetFigure().SetTarget(TRoomDoor.GetMainDoorToRoom(room))
+	GetPlayer().GetFigure().SetTarget( GetRoomDoorCollection().GetMainDoorToRoom(room.id) )
 	GetPlayer().GetFigure().MoveToCurrentTarget()
 
 

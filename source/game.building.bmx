@@ -1,3 +1,15 @@
+SuperStrict
+Import "basefunctions.bmx" 'catmullromspline
+Import "Dig/base.framework.entity.spriteentity.bmx"
+Import "Dig/base.framework.tooltip.bmx"
+Import "Dig/base.util.profiler.bmx"
+Import "common.misc.hotspot.bmx"
+Import "game.building.base.bmx"
+Import "game.building.elevator.bmx"
+Import "game.player.base.bmx"
+Import "game.room.bmx"
+Import "game.room.roomdoor.bmx"
+Import "game.world.bmx"
 
 'TODO: split TBuilding into TBuilding + TBuildingArea
 '      TBuildingArea then contains background buildings, ufo ...
@@ -26,7 +38,7 @@ Type TBuilding Extends TBuildingBase
 	Field gfx_buildingRoof:TSprite				{nosave}
 
 	'the room used for the building
-	Field room:TRoom = Null
+	Field room:TRoomBase = Null
 	Field roomUsedTooltip:TTooltip = Null
 
 	'an entity with the area spawning the whole inner part of
@@ -245,7 +257,7 @@ Type TBuilding Extends TBuildingBase
 
 	Method Init:Int()
 		'assign room
-		room = GetRoomCollection().GetFirstByDetails("building")
+		room = GetRoomBaseCollection().GetFirstByDetails("building")
 
 		For Local hotspot:THotspot = EachIn room.hotspots
 			'set building inner as parent, so "getScreenX/Y()" can
@@ -281,7 +293,7 @@ Type TBuilding Extends TBuildingBase
 
 
 	Function onEnterTarget:Int( triggerEvent:TEventBase )
-		Local figure:TFigure = TFigure( triggerEvent._sender )
+		Local figure:TFigureBase = TFigureBase( triggerEvent._sender )
 		If Not figure Then Return False
 
 		'we are only interested in hotspots
@@ -291,10 +303,10 @@ Type TBuilding Extends TBuildingBase
 		If hotspot.name = "elevatorplan"
 			'Print "figure "+figure.name+" reached elevatorplan"
 
-			Local room:TRoom = GetRoomCollection().GetFirstByDetails("elevatorplan")
+			Local room:TRoomBase = GetRoomBaseCollection().GetFirstByDetails("elevatorplan")
 			If Not room Then Print "[ERROR] room: elevatorplan not not defined. Cannot enter that room.";Return False
 
-			figure.EnterRoom(Null, room)
+			figure.EnterLocation(room)
 			Return True
 		EndIf
 
@@ -309,11 +321,11 @@ Type TBuilding Extends TBuildingBase
 		If Not GetInstance().room.hotspots.contains(hotspot) Then Return False
 
 		'hotspot position is LOCAL to building, so no transition needed
-		GetPlayer().figure.changeTarget( hotspot.area.getX() + hotspot.area.getW()/2, hotspot.area.getY() )
+		GetPlayerBase().GetFigure().changeTarget( hotspot.area.getX() + hotspot.area.getW()/2, hotspot.area.getY() )
 		'ignore clicks to elevator plans on OTHER floors
 		'in this case just move to the target, but do not "enter" the room
-		If hotspot.name <> "elevatorplan" Or GetInstance().GetFloor(hotspot.area.GetY()) = GetInstance().GetFloor(GetPlayer().figure.area.GetY())
-			GetPlayer().figure.SetTarget(hotspot)
+		If hotspot.name <> "elevatorplan" Or GetInstance().GetFloor(hotspot.area.GetY()) = GetInstance().GetFloor(GetPlayerBase().GetFigure().area.GetY())
+			GetPlayerBase().GetFigure().SetTarget(hotspot)
 		EndIf
 		
 		MOUSEMANAGER.ResetKey(1)
@@ -330,10 +342,10 @@ Type TBuilding Extends TBuildingBase
 		softDrinkMachine.Update()
 	
 		'center player
-		If GetPlayer().GetFigure().inRoom = Null
+		If GetPlayerBase().IsInRoom()
 			'subtract 7 because of missing "wall" in last floor
 			'add 50 for roof
-			area.position.y =  2 * floorHeight - 7 + 50 - GetPlayer().figure.area.GetY()
+			area.position.y =  2 * floorHeight - 7 + 50 - GetPlayerBase().GetFigure().area.GetY()
 		EndIf
 
 
@@ -347,7 +359,7 @@ Type TBuilding Extends TBuildingBase
 			For Local hotspot:THotspot = EachIn room.hotspots
 				'disable elevatorplan hotspot tooltips in other floors
 				If hotspot.name = "elevatorplan"
-					If GetFloor(hotspot.area.GetY()) <> GetFloor(GetPlayer().figure.area.GetY())
+					If GetFloor(hotspot.area.GetY()) <> GetFloor(GetPlayerBase().GetFigure().area.GetY())
 						hotspot.tooltipEnabled = False
 					Else
 						hotspot.tooltipEnabled = True
@@ -360,23 +372,7 @@ Type TBuilding Extends TBuildingBase
 
 		If roomUsedTooltip Then roomUsedTooltip.Update()
 		'Tooltips aktualisieren
-		TRoomDoor.UpdateToolTips()
-
-
-		'handle player target changes
-		If Not GetPlayer().GetFigure().inRoom
-			If MOUSEMANAGER.isClicked(1) And Not GUIManager._ignoreMouse
-				If Not GetPlayer().GetFigure().isChangingRoom()
-					If THelper.IsIn(MouseManager.x, MouseManager.y, 0, 0, 800, 385)
-						'convert mouse position to building-coordinates
-						Local x:Int = MouseManager.x - buildingInner.GetScreenX()
-						Local y:Int = MouseManager.y - buildingInner.GetScreenY()
-						GetPlayer().Figure.ChangeTarget(x, y)
-						MOUSEMANAGER.resetKey(1)
-					EndIf
-				EndIf
-			EndIf
-		EndIf
+		GetRoomDoorCollection().UpdateToolTips()
 	End Method
 
 
@@ -399,7 +395,7 @@ Type TBuilding Extends TBuildingBase
 
 		'only draw the building roof if the player figure is in a specific
 		'area
-		If GetFloor(GetPlayer().figure.area.GetY()) >= 8
+		If GetFloor(GetPlayerBase().GetFigure().area.GetY()) >= 8
 			SetColor 255, 255, 255
 			gfx_buildingRoof.Draw(GetScreenX() + leftWallX, GetScreenY(), -1, ALIGN_LEFT_BOTTOM)
 		EndIf
@@ -423,7 +419,7 @@ Type TBuilding Extends TBuildingBase
 		EndIf
 
 
-		For Local Figure:TFigureBase = EachIn GetFigureBaseCollection()
+		For Local figure:TFigureBase = EachIn GetFigureBaseCollection()
 			'draw figure later if outside of building
 '			If figure.GetScreenX() < GetScreenX() + 127 Then Continue
 			If figure.GetScreenX() + figure.GetScreenWidth() < buildingInner.GetScreenX() Then Continue
@@ -457,12 +453,12 @@ Type TBuilding Extends TBuildingBase
 		GetSpriteFromRegistry("gfx_building_Pflanze3b").Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
 
 		'draw entrance on top of figures
-		If GetFloor(GetPlayer().Figure.area.GetY()) <= 4
+		If GetFloor(GetPlayerBase().GetFigure().area.GetY()) <= 4
 			'mix entrance color so it is a mixture of current sky colors
 			'brightness and full brightness (white)
 			TColor.CreateGrey(GetWorld().lighting.GetSkyBrightness() * 255).Mix(TColor.clWhite, 0.7).SetRGB()
 			'draw figures outside the wall
-			For Local Figure:TFigure = EachIn GetFigureCollection().entries.Values()
+			For Local Figure:TFigureBase = EachIn GetFigureBaseCollection().entries.Values()
 				If Not Figure.alreadydrawn Then Figure.Draw()
 			Next
 
@@ -478,7 +474,7 @@ Type TBuilding Extends TBuildingBase
 			gfx_buildingFence.Draw(GetScreenX(), GetScreenY())
 		EndIf
 		SetColor(255,255,255)
-		TRoomDoor.DrawAllTooltips()
+		GetRoomDoorCollection().DrawTooltips()
 
 		'draw hotspot tooltips
 		For Local hotspot:THotspot = EachIn room.hotspots
@@ -571,7 +567,7 @@ Type TBuilding Extends TBuildingBase
 
 	Method CreateRoomUsedTooltip:Int(door:TRoomDoorBase, room:TRoomBase = Null)
 		'if no door was given, use main door of room
-		If Not door And room Then door = TRoomDoor.GetMainDoorToRoom(room)
+		If Not door And room Then door = GetRoomDoorCollection().GetMainDoorToRoom(room.id)
 		If Not door Then Return False
 		roomUsedTooltip	= TTooltip.Create(GetLocale("ROOM_IS_OCCUPIED"), GetLocale("ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM"), 0,0,-1,-1, 2000)
 		roomUsedTooltip.area.position.SetY(door.GetScreenY() - door.area.GetH() - roomUsedTooltip.GetHeight())
@@ -584,7 +580,7 @@ Type TBuilding Extends TBuildingBase
 
 	Method CreateRoomBlockedTooltip:Int(door:TRoomDoorBase, room:TRoomBase = Null)
 		'if no door was given, use main door of room
-		If Not door And room Then door = TRoomDoor.GetMainDoorToRoom(room)
+		If Not door And room Then door = GetRoomDoorCollection().GetMainDoorToRoom(room.id)
 		If Not door Then Return False
 		roomUsedTooltip = TTooltip.Create(GetLocale("BLOCKED"), GetLocale("ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE"), 0,0,-1,-1,2000)
 		roomUsedTooltip.area.position.SetY(door.GetScreenY() - door.area.GetH() - roomUsedTooltip.GetHeight())

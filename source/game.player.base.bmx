@@ -199,10 +199,14 @@ Type TPlayerBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method isActivePlayer:Int()
+	Method IsActivePlayer:Int()
 		Return (playerID = GetPlayerBaseCollection().playerID)
 	End Method
 
+
+	Method IsInRoom:Int(roomName:String="", checkFromRoom:Int=False) {_exposeToLua}
+		return GetFigure().IsInRoom(roomName, checkFromRoom)
+	End Method
 
 	'remove this helper as soon as "player" class gets a single importable
 	'file

@@ -5,6 +5,7 @@ Import "Dig/base.util.color.bmx"
 
 
 
+
 'Manager of all screens and corresponding effects
 Type TScreenCollection
 	Field baseScreen:TScreen

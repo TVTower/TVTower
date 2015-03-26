@@ -10,7 +10,7 @@ ENDREM
 'SuperStrict
 'Import "basefunctions_sprites.bmx"
 'Import "basefunctions_events.bmx"
-'Import "basefunctions_screens.bmx"
+'Import "common.misc.screen.bmx"
 'Import "basefunctions_resourcemanager.bmx"
 
 'register to the onLoad-Event for "Screens"
@@ -282,6 +282,22 @@ Type TInGameScreen_World Extends TInGameScreen
 	Method UpdateContent(deltaTime:Float)
 		GetWorld().Update()
 		GetBuilding().Update()
+
+		'handle player target changes
+		local fig:TFigure = GetPlayer().GetFigure()
+		If Not fig.IsInRoom()
+			If MOUSEMANAGER.isClicked(1) And Not GUIManager._ignoreMouse
+				If Not fig.isChangingRoom()
+					If THelper.IsIn(MouseManager.x, MouseManager.y, 0, 0, 800, 385)
+						'convert mouse position to building-coordinates
+						Local x:Int = MouseManager.x - GetBuilding().buildingInner.GetScreenX()
+						Local y:Int = MouseManager.y - GetBuilding().buildingInner.GetScreenY()
+						fig.ChangeTarget(x, y)
+						MOUSEMANAGER.resetKey(1)
+					EndIf
+				EndIf
+			EndIf
+		EndIf
 	End Method
 
 

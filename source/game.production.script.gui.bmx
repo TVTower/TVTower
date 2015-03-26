@@ -1,8 +1,9 @@
-'SuperStrict
-'Import "common.misc.gamelist.bmx"
-'Import "game.production.script.bmx"
-'Import "game.player.base.bmx"
-
+SuperStrict
+Import "Dig/base.util.graphicsmanager.bmx"
+Import "common.misc.gamelist.bmx"
+Import "game.production.script.bmx"
+Import "game.player.base.bmx"
+Import "game.game.base.bmx" 'to change game cursor
 
 
 'a graphical representation of scripts at the script-agency ...
@@ -51,10 +52,14 @@ Type TGuiScript Extends TGUIGameListItem
 		Super.Update()
 
 		'set mouse to "hover"
-		If script.owner = GetPlayerBaseCollection().playerID Or script.owner <= 0 And mouseover Then Game.cursorstate = 1
+		If script.owner = GetPlayerBaseCollection().playerID Or script.owner <= 0 And mouseover
+			GetGameBase().cursorstate = 1
+		EndIf
 				
 		'set mouse to "dragged"
-		If isDragged() Then Game.cursorstate = 2
+		If isDragged()
+			GetGameBase().cursorstate = 2
+		EndIf
 	End Method
 
 
@@ -95,7 +100,7 @@ Type TGuiScript Extends TGUIGameListItem
 		'make faded as soon as not "dragable" for us
 		If Not isDragable()
 			'in our collection
-			If script.owner = GetPlayerCollection().playerID
+			If script.owner = GetPlayerBaseCollection().playerID
 				SetAlpha 0.80*oldCol.a
 				SetColor 200,200,200
 			Else

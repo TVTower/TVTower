@@ -429,6 +429,29 @@ Type TFigure extends TFigureBase
 	End Method
 
 
+	'override to add support for rooms
+	Method IsInRoom:Int(roomName:String="", checkFromRoom:Int=False)
+		If checkFromRoom
+			'when checking "fromRoom", fromRoom has to be set AND
+			'inroom <> null (then figure is NOT in the building!)
+
+			'check for specified room
+			If roomName <> ""
+				Return (inRoom And inRoom.Name.toLower() = roomname.toLower()) Or (inRoom And fromRoom And Name.toLower() = roomname.toLower())
+			'just check if we are in a unspecified room
+			Else
+				Return inRoom Or (inRoom And fromRoom)
+			Endif
+		Else
+			If roomName <> ""
+				Return (inRoom And inRoom.Name.toLower() = roomname.toLower())
+			Else
+				Return inRoom <> null
+			EndIf
+		EndIf
+	End Method
+
+
 	'override to add buildingsupport
 	Method CanMove:int()
 		If not IsInBuilding() then return False
@@ -462,7 +485,7 @@ Type TFigure extends TFigureBase
 
 		'fetch at least the main door if none is provided
 		local door:TRoomDoorBase = kickFigure.fromDoor
-		if not door then door = TRoomDoor.GetMainDoorToRoom(room)
+		if not door and room then door = GetRoomDoorCollection().GetMainDoorToRoom(room.id)
 
 		TLogger.log("TFigure.KickFigureFromRoom()", name+" kicks "+ kickFigure.name + " out of room: "+room.name, LOG_DEBUG)
 		'instead of SimpleSoundSource we use the rooms sound source
@@ -479,17 +502,29 @@ Type TFigure extends TFigureBase
 	End Method
 
 
+
+	'overridden to add support for roombase and roomdoorbase
+	Method EnterLocation:Int(obj:object, forceEnter:int=False)
+		if TRoomDoor(obj) then EnterRoom( TRoomDoor(obj),null, forceEnter )
+		if TRoomBase(obj) then EnterRoom( null, TRoomBase(obj), forceEnter )
+	End Method
+
+
 	'figure wants to enter a room
 	'"onEnterRoom" is called when successful
 	'@param door         door to use
 	'@param room         room to enter (in case no door exists)
 	'@param forceEnter   kick without being the room owner
-	Method EnterRoom:Int(door:TRoomDoor, room:TRoomBase, forceEnter:int=FALSE)
+	Method EnterRoom:Int(door:TRoomDoorBase, room:TRoomBase, forceEnter:int=FALSE)
 		'skip command if we already are entering/leaving
 		if isChangingRoom() then return TRUE
 
 		'assign room if not done yet
-		if not room and door then room = door.GetRoom()
+		if not room and door then room = GetRoomBaseCollection().Get(door.roomID)
+		if room and not door then door = GetRoomDoorBaseCollection().GetFirstByRoomID(room.id)
+		'need a room and a door
+		if not room or not door then return False
+
 
 		'if already in another room, leave that first
 		if inRoom then LeaveRoom(True)
@@ -530,7 +565,7 @@ Type TFigure extends TFigureBase
 		changingRoomStart = Time.GetTimeGone()
 
 		'actually enter the room
-		room.BeginEnter(door, self, TRoom.ChangeRoomSpeed/2)
+		room.BeginEnter(door, self, TRoomBase.ChangeRoomSpeed/2)
 
 		'inform what the figure does now
 		currentAction = ACTION_ENTERING
@@ -842,7 +877,7 @@ Type TFigure extends TFigureBase
 			'do not remove the target room as it is done during
 			'"entering the room" (which can be animated and so we
 			'just trust the method to do it)
-			EnterRoom(targetDoor, null)
+			EnterLocation(targetDoor)
 		EndIf
 	End Method
 

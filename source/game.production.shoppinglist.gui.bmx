@@ -1,3 +1,11 @@
+SuperStrict
+Import "Dig/base.util.graphicsmanager.bmx"
+Import "common.misc.gamelist.bmx"
+Import "game.production.shoppinglist.bmx"
+Import "game.player.base.bmx"
+Import "game.game.base.bmx" 'to change game cursor
+
+
 'a graphical representation of shopping lists in studios/supermarket
 Type TGuiShoppingList Extends TGUIGameListItem
 	Field shoppingList:TShoppingList
@@ -33,10 +41,14 @@ Type TGuiShoppingList Extends TGUIGameListItem
 		Super.Update()
 
 		'set mouse to "hover"
-		If shoppingList.owner = GetPlayerCollection().playerID Or shoppingList.owner <= 0 And mouseover Then Game.cursorstate = 1
+		If shoppingList.owner = GetPlayerBaseCollection().playerID Or shoppingList.owner <= 0 And mouseover
+			GetGameBase().cursorstate = 1
+		EndIf
 				
 		'set mouse to "dragged"
-		If isDragged() Then Game.cursorstate = 2
+		If isDragged()
+			GetGameBase().cursorstate = 2
+		EndIf
 	End Method
 
 
@@ -73,7 +85,7 @@ Type TGuiShoppingList Extends TGUIGameListItem
 		'make faded as soon as not "dragable" for us
 		If Not isDragable()
 			'in our collection
-			If shoppingList.owner = GetPlayerCollection().playerID
+			If shoppingList.owner = GetPlayerBaseCollection().playerID
 				SetAlpha 0.80*oldCol.a
 				SetColor 200,200,200
 			Else

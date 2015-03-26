@@ -164,6 +164,12 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Method IsInBuilding:int()
 		return True
 	End Method
+
+
+	Method IsInRoom:Int(roomName:String="", checkFromRoom:Int=False)
+		'a figureBase cannot be in a room (is always in building)
+		return False
+	End Method
 	
 
 	Method CanMove:int()
@@ -360,6 +366,12 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 	Method IsWaitingToLeave:Int()
 		Return WaitLeavingTimer > Time.GetTimeGone()
+	End Method
+
+
+	'use this to enter either a roomdoor, a room or something else...
+	Method EnterLocation:Int(obj:object, forceEnter:int=False)
+		'stub
 	End Method
 
 

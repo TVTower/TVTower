@@ -43,6 +43,35 @@ Type TRoomDoorBaseCollection
 		Next
 		return Null
 	End Method
+
+
+	Method GetFirstByRoomID:TRoomDoorBase(roomID:int)
+		For local door:TRoomDoorBase = eachin List
+			if door.roomID = roomID then return door 
+		Next
+		return Null
+	End Method
+
+
+	Method GetDoorsToRoom:TRoomDoorBase[]( roomID:int )
+		local res:TRoomDoorBase[]
+
+		For Local door:TRoomDoorBase = EachIn list
+			if door.roomID = roomID then res :+ [door]
+		Next
+		return res
+	End Method
+
+
+	'returns the first door connected to a room
+	Method GetMainDoorToRoom:TRoomDoorBase( roomID:Int )
+		'Ronny TODO: add configuration "mainDoor"
+		'            or remove whole function and replace with
+		'            "nearestDoorToRoom" ?
+		local doors:TRoomDoorBase[] = GetDoorsToRoom(roomID)
+		If doors.length = 0 then return Null
+		return doors[0]
+	End Method
 	
 
 	Method Add:int(door:TRoomDoorBase)

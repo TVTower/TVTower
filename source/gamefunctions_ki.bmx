@@ -461,7 +461,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method getRoomFloor:Int(roomId:Int = 0)
 		Local room:TRoom = GetRoomCollection().Get(roomId)
 		if room
-			Local door:TRoomDoorBase = TRoomDoor.GetMainDoorToRoom(room)
+			Local door:TRoomDoorBase = GetRoomDoorCollection().GetMainDoorToRoom(room.id)
 			If door Then Return door.GetOnFloor()
 		endif
 
@@ -474,7 +474,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method doGoToRoom:Int(roomId:Int = 0)
 		Local room:TRoom = GetRoomCollection().Get(roomId)
 		If room
-			Local door:TRoomDoorBase = TRoomDoor.GetMainDoorToRoom(room)
+			Local door:TRoomDoorBase = GetRoomDoorCollection().GetMainDoorToRoom(room.id)
 			If door
 				GetPlayer(self.ME).GetFigure().SendToDoor(door)
 				Return self.RESULT_OK

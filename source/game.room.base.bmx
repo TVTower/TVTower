@@ -5,6 +5,7 @@ Import "Dig/base.util.mersenne.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
 Import "game.world.worldtime.bmx"
 Import "game.room.roomdoor.base.bmx"
+Import "common.misc.hotspot.bmx"
 
 
 Type TRoomBaseCollection
@@ -98,6 +99,9 @@ Function GetRoomBaseCollection:TRoomBaseCollection()
 	Return TRoomBaseCollection.GetInstance()
 End Function
 
+Function GetRoomBase:TRoomBase(roomID:Int)
+	Return TRoomBaseCollection.GetInstance().Get(roomID)
+End Function
 
 
 
@@ -133,6 +137,8 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 	Field fakeRoom:int = FALSE
 	'size of this room (eg. for studios)
 	Field size:int = 1
+	'list of special areas in the room
+	Field hotspots:TList = CreateList()
 
 	Global _initDone:int = FALSE
 
@@ -172,6 +178,12 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 
 	Method PlaceBomb:int()
 		bombPlacedTime = GetWorldTime().GetTimeGone()
+	End Method
+
+
+	Method addHotspot:int( hotspot:THotspot )
+		if hotspot then hotspots.addLast(hotspot);return TRUE
+		return FALSE
 	End Method
 
 
