@@ -166,9 +166,6 @@ Type TStationMapCollection
 				population:+ populationmap[i, j]
 			Next
 		Next
-		For local i:int = 0 to 255
-			print "i="+i+" result="+getPopulationForBrightness(i)
-		Next
 		TLogger.Log("TGetStationMapCollection().CreatePopulationMap", "calculated a population of:" + population + " in "+stopWatch.GetTime()+"ms", LOG_DEBUG | LOG_LOADING)
 	End Method
 

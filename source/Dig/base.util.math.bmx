@@ -113,6 +113,11 @@ Type MathHelper
 	End Function
 
 
+	Function IsEqual:Double(a:Double, b:Double, epsilon:Float = 0.00001)
+		return Abs(a - b) < epsilon
+	End Function
+	
+
 	'convert a double to a string
 	'double is rounded to the requested amount of digits after comma
 	Function NumberToString:String(value:Double, digitsAfterDecimalPoint:int = 2)
