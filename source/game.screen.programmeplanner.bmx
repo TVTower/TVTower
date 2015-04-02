@@ -903,12 +903,20 @@ Type TScreenHandler_ProgrammePlanner
 		'              for movies and series: rely on a licence-function
 		'              which returns the next licence of a series/collection
 		'              OR the first one if already on the latest spot
+		local pCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(item.broadcastMaterial.owner)
+		if not pCollection then Return False
 
 		select item.broadcastMaterial.materialType
 			case TBroadcastMaterial.TYPE_ADVERTISEMENT
+				'skip if you do no longer own the licence
+				if not pCollection.HasAdContract(TAdvertisement(item.broadcastMaterial).contract) then return false
+
 				newMaterial = new TAdvertisement.Create(TAdvertisement(item.broadcastMaterial).contract)
 
 			case TBroadcastMaterial.TYPE_PROGRAMME
+				'skip if you do no longer own the licence
+				if not pCollection.HasProgrammeLicence(TProgramme(item.broadcastMaterial).licence) then return false
+
 				if CreateCopy
 					newMaterial = new TProgramme.Create(TProgramme(item.broadcastMaterial).licence)
 				else
