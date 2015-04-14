@@ -971,10 +971,32 @@ Type TGameState
 
 
 	Method BackupGameData:Int()
+		'start with the most basic data, so we avoid that these basic
+		'objects get serialized in the depths of more complex objects
+		'instead of getting an "reference" there.
+		
+	
 		'name of the current screen (or base screen)
 		_CurrentScreenName = ScreenCollection.GetCurrentScreen().name
+
+		_Assign(GameRules, _GameRules, "GameRules", MODE_SAVE)
+		_Assign(TWorldTime._instance, _WorldTime, "WorldTime", MODE_SAVE)
+
+		'database data for contracts
+		_Assign(TAdContractBaseCollection._instance, _AdContractBaseCollection, "AdContractBaseCollection", MODE_SAVE)
+		_Assign(TAdContractCollection._instance, _AdContractCollection, "AdContractCollection", MODE_SAVE)
+		'database data for scripts
+		_Assign(TScriptTemplateCollection._instance, _ScriptTemplateCollection, "ScriptTemplateCollection", MODE_SAVE)
+		_Assign(TScriptCollection._instance, _ScriptCollection, "ScriptCollection", MODE_SAVE)
+		'database data for persons and their roles
+		_Assign(TProgrammePersonCollection._instance, _ProgrammePersonCollection, "ProgrammePersonCollection", MODE_SAVE)
+		_Assign(TProgrammeRoleCollection._instance, _ProgrammeRoleCollection, "ProgrammeRoleCollection", MODE_SAVE)
+
+		'database data for programmes
+		_Assign(TProgrammeDataCollection._instance, _ProgrammeDataCollection, "ProgrammeDataCollection", MODE_SAVE)
+		_Assign(TProgrammeLicenceCollection._instance, _ProgrammeLicenceCollection, "ProgrammeLicenceCollection", MODE_SAVE)
+
 		
-		_Assign(Game, _Game, "Game", MODE_SAVE)
 		_Assign(TBuilding._instance, _Building, "Building", MODE_SAVE)
 		_Assign(TRoomBaseCollection._instance, _RoomBaseCollection, "RoomBaseCollection", MODE_SAVE)
 		_Assign(TRoomDoorBaseCollection._instance, _RoomDoorBaseCollection, "RoomDoorBaseCollection", MODE_SAVE)
@@ -986,17 +1008,8 @@ Type TGameState
 		_Assign(TPlayerProgrammePlanCollection._instance, _PlayerProgrammePlanCollection, "PlayerProgrammePlanCollection", MODE_SAVE)
 		_Assign(TPublicImageCollection._instance, _PublicImageCollection, "PublicImageCollection", MODE_SAVE)
 
-		'database data for contracts
-		_Assign(TAdContractBaseCollection._instance, _AdContractBaseCollection, "AdContractBaseCollection", MODE_SAVE)
-		_Assign(TAdContractCollection._instance, _AdContractCollection, "AdContractCollection", MODE_SAVE)
+		_Assign(Game, _Game, "Game", MODE_SAVE)
 
-		'database data for programmes
-		_Assign(TScriptTemplateCollection._instance, _ScriptTemplateCollection, "ScriptTemplateCollection", MODE_SAVE)
-		_Assign(TScriptCollection._instance, _ScriptCollection, "ScriptCollection", MODE_SAVE)
-		_Assign(TProgrammePersonCollection._instance, _ProgrammePersonCollection, "ProgrammePersonCollection", MODE_SAVE)
-		_Assign(TProgrammeRoleCollection._instance, _ProgrammeRoleCollection, "ProgrammeRoleCollection", MODE_SAVE)
-		_Assign(TProgrammeDataCollection._instance, _ProgrammeDataCollection, "ProgrammeDataCollection", MODE_SAVE)
-		_Assign(TProgrammeLicenceCollection._instance, _ProgrammeLicenceCollection, "ProgrammeLicenceCollection", MODE_SAVE)
 
 		_Assign(TNewsEventCollection._instance, _NewsEventCollection, "NewsEventCollection", MODE_SAVE)
 		_Assign(TNewsAgency._instance, _NewsAgency, "NewsAgency", MODE_SAVE)
@@ -1007,8 +1020,6 @@ Type TGameState
 		_Assign(TStationMapCollection._instance, _StationMapCollection, "StationMapCollection", MODE_SAVE)
 		_Assign(TBetty._instance, _Betty, "Betty", MODE_SAVE)
 		_Assign(TWorld._instance, _World, "World", MODE_SAVE)
-		_Assign(TWorldTime._instance, _WorldTime, "WorldTime", MODE_SAVE)
-		_Assign(GameRules, _GameRules, "GameRules", MODE_SAVE)
 		_Assign(TAuctionProgrammeBlocks.list, _AuctionProgrammeBlocksList, "AuctionProgrammeBlocks", MODE_Save)
 		'special room data
 		_Assign(RoomHandler_Studio._instance, _RoomHandler_Studio, "Studios", MODE_Save)
@@ -1115,7 +1126,7 @@ Type TSaveGame Extends TGameState
 	Function Load:Int(saveName:String="savegame.xml")
 		ShowMessage(True)
 
-		TPersist.maxDepth = 4096
+		TPersist.maxDepth = 4096*4
 		Local persist:TPersist = New TPersist
 		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(savename))
 		If Not saveGame

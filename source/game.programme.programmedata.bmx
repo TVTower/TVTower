@@ -120,6 +120,7 @@ End Function
 'raw data for movies, epidodes (series)
 'but also series-headers, collection-headers,...
 Type TProgrammeData extends TGameObject {_exposeToLua}
+	Field originalTitle:TLocalizedString
 	Field title:TLocalizedString
 	Field description:TLocalizedString
 	'array holding actor(s) and director(s) and ...
@@ -137,6 +138,10 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Field genre:Int	= 0
 	Field subGenre:Int = 0
 	Field blocks:Int = 1
+	'id of the creating user
+	Field creator:Int = 0
+	'name of the creating user
+	Field created_by:String = ""
 	Rem
 	extra data block containing various information (if set)
 	"maxTopicality::ageInfluence" - influence of the age on the max topicality
@@ -470,6 +475,16 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 			'cache the now processed result
 			title.Set( _LocalizeContent(title.Get()) )
 			return title.Get()
+		endif
+		return ""
+	End Method
+
+
+	Method GetOriginalTitle:string()
+		if originalTitle
+			'cache the now processed result
+			originalTitle.Set( _LocalizeContent(originalTitle.Get()) )
+			return originalTitle.Get()
 		endif
 		return ""
 	End Method

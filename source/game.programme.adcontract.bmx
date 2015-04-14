@@ -243,7 +243,12 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 	'share this topicality !)
 	Field infomercialTopicality:float = 1.0
 	Field infomercialMaxTopicality:float = 1.0
-
+	
+	'id of the creating user
+	Field creator:Int = 0
+	'name of the creating user
+	Field created_by:String = ""
+	
 	'by which factor do we cut the profit when send as infomercial
 	'compared to the profit a single ad would generate
 	'- for all

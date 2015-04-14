@@ -276,7 +276,12 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	'can the event happen again - or only once?
 	'eg. dynamically created weather news should set this to FALSE
 	Field reuseable:int = True
-
+	
+	'id of the creating user
+	Field creator:Int = 0
+	'name of the creating user
+	Field created_by:String = ""
+	
 	Const GENRE_POLITICS:Int = 0	{_exposeToLua}
 	Const GENRE_SHOWBIZ:Int  = 1	{_exposeToLua}
 	Const GENRE_SPORT:Int    = 2	{_exposeToLua}

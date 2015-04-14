@@ -156,6 +156,10 @@ Type TProgrammePersonBase extends TGameObject
 	field nickName:String = ""
 	field job:int = 0
 	field realPerson:int = False
+	'id of the creating user
+	Field creator:Int = 0
+	'name of the creating user
+	Field created_by:String = ""
 
 
 	'override to add another generic naming

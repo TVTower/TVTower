@@ -70,6 +70,10 @@ Type TProgrammeRole extends TGameObject {_exposeToLua}
 	Field country:string = ""
 	'is this a custom role not used in a real world movie
 	Field fictional:int = False
+	'id of the creating user
+	Field creator:Int = 0
+	'name of the creating user
+	Field created_by:String = ""
 
 
 	Method Init:TProgrammeRole(firstName:string, lastName:string, title:string="", country:string="", gender:int=0, fictional:int = False)

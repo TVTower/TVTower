@@ -201,6 +201,7 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 	Field subScripts:TScript[]
 
 
+
 	Function CreateFromTemplate:TScript(template:TScriptTemplate)
 		local script:TScript = new TScript
 		script.title = template.GenerateFinalTitle()
