@@ -78,12 +78,12 @@ end
 
 function DefaultAIPlayer:initializeTasks()
 	self.TaskList = {}
-	--self.TaskList[TASK_MOVIEDISTRIBUTOR]	= TaskMovieDistributor()
+	self.TaskList[TASK_MOVIEDISTRIBUTOR]	= TaskMovieDistributor()
 	self.TaskList[TASK_NEWSAGENCY]			= TaskNewsAgency()
-	--self.TaskList[TASK_ADAGENCY]			= TaskAdAgency()
-	--self.TaskList[TASK_SCHEDULE]			= TaskSchedule()
-	--self.TaskList[TASK_STATIONMAP]			= TaskStationMap()
-	--self.TaskList[TASK_BOSS]				= TaskBoss()
+	self.TaskList[TASK_ADAGENCY]			= TaskAdAgency()
+	self.TaskList[TASK_SCHEDULE]			= TaskSchedule()
+	self.TaskList[TASK_STATIONMAP]			= TaskStationMap()
+	self.TaskList[TASK_BOSS]				= TaskBoss()
 	self.TaskList[TASK_ROOMBOARD]			= TaskRoomBoard()
 	
 	
