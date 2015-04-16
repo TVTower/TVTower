@@ -107,7 +107,12 @@ Type TNewsAgency
 			endif
 		Next
 	End Method
-
+	
+	Method SetTerroristAggressionLevel:int(terroristGroup:int, level:int)
+		if terroristGroup >= 0 and terroristGroup <= 1
+			terroristAggressionLevel[terroristGroup] = level
+		endif
+	End Method
 
 	Method GetTerroristAggressionLevel:int(terroristGroup:int = -1)
 		if terroristGroup >= 0 and terroristGroup <= 1
@@ -182,9 +187,9 @@ Type TNewsAgency
 			effect.GetData().AddNumber("group", terroristGroup)
 			'effect.GetData().Add("room", GetRoomCollection().GetRandom())
 			if terroristGroup = 0
-				effect.GetData().Add("room", GetRoomCollection().GetFirstByDetails("frduban"))
+				effect.GetData().Add("room", GetRoomCollection().GetFirstByDetails("frduban")) 'TODO: Hier müsste doch eigentlich das RoomBoard und die Position des Schildes abgefragt werden
 			else
-				effect.GetData().Add("room", GetRoomCollection().GetFirstByDetails("vrduban"))
+				effect.GetData().Add("room", GetRoomCollection().GetFirstByDetails("vrduban")) 'TODO: Hier müsste doch eigentlich das RoomBoard und die Position des Schildes abgefragt werden
 			endif
 			effect._customEffectFunc = TFigureTerrorist.SendFigureToRoom
 			'mark as a special effect so AI can categorize it accordingly

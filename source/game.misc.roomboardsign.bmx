@@ -127,6 +127,15 @@ Type TRoomBoard
 
 		return TRoomBoardSign(List.ValueAtIndex(arrayIndex))
 	End Method
+	
+	Method GetSignById:TRoomBoardSign(id:int)
+		For local sign:TRoomBoardSign = eachin list
+			if sign.id = id
+				return sign
+			endif
+		Next
+		return Null
+	End Method	
 
 
 	'return the sign which originally was at the given position
@@ -364,6 +373,7 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 
 
 	Method IsAtOriginalPosition:int() {_exposeToLua}
+		'BUG: Funktioniert nicht: Liefert immer true!
 		if door.doorSlot <> GetRoomBoard().GetSlot(StartPos.GetX()) then return False
 		if door.onFloor <> GetRoomBoard().GetFloor(StartPos.GetY()) then return False
 
@@ -394,6 +404,14 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 	Method GetOriginalFloor:int() {_exposeToLua}
 		return door.onFloor
 	End Method
+	
+	Method GetCurrentRoomId:int() {_exposeToLua}
+		'TODO: Auf welchen Raum zeigt das Schild womöglich fälschlicherweise? Das müsste dann der Terrorist nutzen (ggf. lässt sich später so auch ein "dummer" KI-Spieler verwirren)
+	End Method
+	
+	Method GetOriginalRoomId:int() {_exposeToLua}
+		return door.roomID
+	End Method	
 
 
 	Method SetDragable(_dragable:Int = 1)

@@ -608,7 +608,12 @@ function SortTasksByInvestmentPrio(tasks)
 	return sortTable
 end
 
-
+function kiMsg(pMessage)
+	if TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
+		TVT.PrintOut(pMessage)
+		TVT.addToLog(pMessage)
+	end
+end
 
 function debugMsg(pMessage)
 	if TVT.ME == 2 then --Nur Debugausgaben von Spieler 2

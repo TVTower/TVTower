@@ -1,7 +1,7 @@
 -- File: DefaultAIPlayer
 -- ============================
 -- Autor: Manuel Vögele (STARS_crazy@gmx.de)
--- Version: 22.02.2014
+-- Version: 16.04.2015
 
 APP_VERSION = "1.3"
 
@@ -18,6 +18,7 @@ dofile("res/ai/TaskAdAgency.lua")
 dofile("res/ai/TaskSchedule.lua")
 dofile("res/ai/TaskStationMap.lua")
 dofile("res/ai/TaskBoss.lua")
+dofile("res/ai/TaskRoomBoard.lua")
 if (unitTestMode) then
 	dofile("res/ai/UnitTests.lua")
 end
@@ -33,6 +34,7 @@ TASK_SCHEDULE			= "Schedule"
 TASK_STATIONMAP			= "StationMap"
 TASK_BETTY				= "Betty"
 TASK_BOSS				= "Boss"
+TASK_ROOMBOARD			= "RoomBoard"
 
 _G["TASK_MOVIEDISTRIBUTOR"] = TASK_MOVIEDISTRIBUTOR
 _G["TASK_NEWSAGENCY"] = TASK_NEWSAGENCY
@@ -42,6 +44,7 @@ _G["TASK_SCHEDULE"] = TASK_SCHEDULE
 _G["TASK_STATIONMAP"] = TASK_STATIONMAP
 _G["TASK_BETTY"] = TASK_BETTY
 _G["TASK_BOSS"] = TASK_BOSS
+_G["TASK_ROOMBOARD"] = TASK_ROOMBOARD
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["DefaultAIPlayer"] = class(AIPlayer, function(c)
@@ -75,12 +78,13 @@ end
 
 function DefaultAIPlayer:initializeTasks()
 	self.TaskList = {}
-	self.TaskList[TASK_MOVIEDISTRIBUTOR]	= TaskMovieDistributor()
-	self.TaskList[TASK_NEWSAGENCY]		= TaskNewsAgency()
-	self.TaskList[TASK_ADAGENCY]		= TaskAdAgency()
-	self.TaskList[TASK_SCHEDULE]		= TaskSchedule()
-	self.TaskList[TASK_STATIONMAP]		= TaskStationMap()
-	self.TaskList[TASK_BOSS]			= TaskBoss()	
+	--self.TaskList[TASK_MOVIEDISTRIBUTOR]	= TaskMovieDistributor()
+	self.TaskList[TASK_NEWSAGENCY]			= TaskNewsAgency()
+	--self.TaskList[TASK_ADAGENCY]			= TaskAdAgency()
+	--self.TaskList[TASK_SCHEDULE]			= TaskSchedule()
+	--self.TaskList[TASK_STATIONMAP]			= TaskStationMap()
+	--self.TaskList[TASK_BOSS]				= TaskBoss()
+	self.TaskList[TASK_ROOMBOARD]			= TaskRoomBoard()
 	
 	
 	--self.TaskList[TASK_STATIONMAP].InvestmentPriority = 12
@@ -164,6 +168,15 @@ function DefaultAIPlayer:GetRequisitionsByOwner(taskId)
 		end
 	end
 
+	return result
+end
+
+function DefaultAIPlayer:GetNextEnemyId()
+	--TODO: Erzfeind ermitteln und als Hauptziel zurückliefern	
+	local result = -1	
+	repeat
+		result = math.random(1, 4)
+	until result ~= TVT.ME	
 	return result
 end
 

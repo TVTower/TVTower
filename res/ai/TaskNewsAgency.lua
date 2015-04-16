@@ -14,14 +14,20 @@ end
 
 function TaskNewsAgency:Activate()
 	-- Was getan werden soll:
+	self.CheckEventNewsJob = JobCheckEventNews()
+	self.CheckEventNewsJob.Task = self	
+	
 	self.NewsAgencyAbonnementsJob = JobNewsAgencyAbonnements()
 	self.NewsAgencyAbonnementsJob.Task = self
 
 	self.NewsAgencyJob = JobNewsAgency()
-	self.NewsAgencyJob.Task = self
+	self.NewsAgencyJob.Task = self	
 end
 
 function TaskNewsAgency:GetNextJobInTargetRoom()
+	if (self.CheckEventNewsJob.Status ~= JOB_STATUS_DONE) then
+		return self.CheckEventNewsJob
+	end
 	if (self.NewsAgencyAbonnementsJob.Status ~= JOB_STATUS_DONE) then
 		return self.NewsAgencyAbonnementsJob
 	end
@@ -55,6 +61,43 @@ end
 
 function TaskNewsAgency:SetFixedCosts()
 	self.FixedCosts = MY.GetNewsAbonnementFees()
+end
+-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+_G["JobCheckEventNews"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.Task = nil
+end)
+
+function JobCheckEventNews:typename()
+	return "JobCheckEventNews"
+end
+
+function JobCheckEventNews:Prepare(pParams)
+	debugMsg("Schau nach Terror-News")
+end
+
+function JobCheckEventNews:Tick()
+	local terrorLevel = TVT.ne_getTerroristAggressionLevel()
+	local maxTerrorLevel = TVT.ne_getTerroristAggressionLevelMax()
+
+	if terrorLevel >= 4 then
+		kiMsg("Terroranschlag geplant! Terror-Level: " .. terrorLevel)
+	end	
+	
+	local player = _G["globalPlayer"] --Zugriff die globale Variable
+	if player.TaskList[TASK_ROOMBOARD] ~= nil then
+		local roomBoardTask = player.TaskList[TASK_ROOMBOARD]	
+		if terrorLevel >= 2 then	
+			roomBoardTask.SituationPriority = terrorLevel * terrorLevel						
+		end
+	
+		roomBoardTask.FRDubanTerrorLevel = TVT.ne_getTerroristAggressionLevel(0) --FR Duban Terroristen
+		roomBoardTask.VRDubanTerrorLevel = TVT.ne_getTerroristAggressionLevel(1) --VR Duban Terroristen			
+	end
+	
+	self.Status = JOB_STATUS_DONE
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 

@@ -1434,7 +1434,7 @@ Type TFigureDeliveryBoy Extends TFigure
 
 
 	Method HasToDeliver:Int() {_exposeToLua}
-		Return deliveryDone
+		Return Not deliveryDone
 	End Method
 
 
@@ -3066,6 +3066,17 @@ Type GameEvents
 				EndIf
 				GetGame().SendSystemMessage("[DEV] Image of player "+playerS+": "+player.GetPublicImage().GetAverageImage()+"%." + changed)
 
+			Case "terrorlvl"			
+				local paramArray:String[]								
+				If paramS <> "" then paramArray = paramS.Split(" ")
+				
+				if Len(paramArray) = 1	
+					GetNewsAgency().SetTerroristAggressionLevel(Int(playerS), Int(paramArray[0]))										
+					GetGame().SendSystemMessage("[DEV] Changed terror level of terror group '" + playerS + "' to '" + paramArray[0] + "'!")
+				Else
+					GetGame().SendSystemMessage("Wrong syntax (/sys help)!")
+				EndIf				
+				
 			Case "help"
 				SendHelp()
 
@@ -3079,7 +3090,8 @@ Type GameEvents
 				Local commands:String = ""
 				commands :+ "money [player#] [+- money]~n"
 				commands :+ "bossmood [player#] [+- mood %]~n"
-				commands :+ "image [player#] [+- image %]"
+				commands :+ "image [player#] [+- image %]~n"
+				commands :+ "terrorlvl [terrorgroup# 0 or 1] [level#]"
 				GetGame().SendSystemMessage("[DEV] available commands:~n"+commands)
 		End Function
 		

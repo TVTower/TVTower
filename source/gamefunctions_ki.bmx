@@ -397,6 +397,22 @@ Type TLuaFunctions {_exposeToLua}
 		Return ret
 	End Function
 
+	Method GetArchiveIdOfPlayer:Int(id:Int)
+		Return GetRoomCollection().GetFirstByDetails("archive", id).id
+	End Method
+
+	Method GetNewsAgencyIdOfPlayer:Int(id:Int)
+		Return GetRoomCollection().GetFirstByDetails("news", id).id
+	End Method
+
+	Method GetBossOfficeIdOfPlayer:Int(id:Int)
+		Return GetRoomCollection().GetFirstByDetails("boss", id).id
+	End Method
+
+	Method GetOfficeIdOfPlayer:Int(id:Int)
+		Return GetRoomCollection().GetFirstByDetails("office", id).id
+	End Method
+
 
 	Method PrintOut:Int(text:String)
 		text = StringHelper.RemoveUmlauts(text)
@@ -404,7 +420,7 @@ Type TLuaFunctions {_exposeToLua}
 
 		TLogger.log("AI "+self.ME, text, LOG_AI)
 		Return self.RESULT_OK
-	EndMethod
+	End Method
 
 
 	'only printed if TLogger.setPrintMode(LOG_AI | LOG_DEBUG) is set
@@ -1018,8 +1034,11 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	'switch two existing signs on the board
-	Method rb_SwitchSigns:int(signA:TRoomBoardSign, signB:TRoomBoardSign)
+	Method rb_SwitchSigns:int(signAId:Int, signBId:Int)
 		If Not _PlayerInRoom("roomboard") Then Return self.RESULT_WRONGROOM
+
+		Local signA:TRoomBoardSign = GetRoomBoard().GetSignById(signAId)
+		Local signB:TRoomBoardSign = GetRoomBoard().GetSignById(signBId)		
 
 		If GetRoomBoard().SwitchSigns(signA, signB)
 			Return self.RESULT_OK
