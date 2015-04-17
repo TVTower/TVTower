@@ -68,7 +68,8 @@ function JobChangeRoomSigns:Tick()
 		local enemyId = player.GetNextEnemyId()
 		local roomId = self:GetEnemyRoomId(enemyId)
 		local roomSign = TVT.rb_GetFirstSignOfRoom(roomId).data
-		TVT.rb_SwitchSigns(sign:GetID(), roomSign:GetID())
+		TVT.rb_SwitchSigns(sign, roomSign)
+		--TVT.rb_SwitchSignsByID(sign:GetID(), roomSign:GetID())
 		kiMsg("Verschiebe FRDuban-Schild auf Raum " .. roomId .. " des Spielers " .. enemyId )
 	end
 	

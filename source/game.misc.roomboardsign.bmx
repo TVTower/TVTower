@@ -184,41 +184,42 @@ Type TRoomBoard
 	End Method
 
 
-	Method SwitchSigns:int(signA:TRoomBoardSign, signB:TRoomBoardSign)
+	'switches the _current_ position of two signs
+	'permanentSwitch: if true, also switches original position
+	'                 (wont reset on roomboard/plan-reset)
+	Method SwitchSigns:int(signA:TRoomBoardSign, signB:TRoomBoardSign, permanentSwitch:int = False)
 		if not signA or not signB then return False
 
-		local tmpStartPos:TVec2D
-		local tmpPos:TVec2D
+		signA.SwitchCoords(signB)
 
-		tmpStartPos = signA.StartPos.Copy()
-		tmpPos = signA.rect.position.Copy()
-
-		signA.StartPos = signB.StartPos
-		signA.rect.position = signB.rect.position
-
-		signB.StartPos = tmpStartPos
-		signB.rect.position = tmpPos
+		if permanentSwitch Then TVec2D.SwitchVecs(signA.OrigPos, signB.OrigPos)
 
 		return True
 	End Method
 
 
-	Method SwitchSignPositions:int(slotA:int, floorA:int, slotB:int, floorB:int)
+	Method SwitchSignPositions:int(slotA:int, floorA:int, slotB:int, floorB:int, permanentSwitch:Int = False)
 		Local signA:TRoomBoardSign = GetSignByCurrentPosition(slotA, floorA)
 		Local signB:TRoomBoardSign = GetSignByCurrentPosition(slotB, floorB)
 
 		if signA
 			local x:Int = GetSlotX(slotB)
 			Local y:Int = GetFloorY(floorB)
-			signA.StartPos.SetXY(x,y)
 			signA.rect.position.SetXY(x,y)
+			signA.StartPos.SetXY(x,y)
+			signA.StartPosBackup.SetXY(x,y)
+
+			if permanentSwitch then signA.OrigPos.SetXY(x,y)
 		endif
 
 		if signB
 			local x:Int = GetSlotX(slotA)
 			Local y:Int = GetFloorY(floorA)
-			signB.StartPos.SetXY(x,y)
 			signB.rect.position.SetXY(x,y)
+			signB.StartPos.SetXY(x,y)
+			signB.StartPosBackup.SetXY(x,y)
+
+			if permanentSwitch then signB.OrigPos.SetXY(x,y)
 		endif
 
 		'at least one existed
@@ -373,7 +374,8 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 
 
 	Method IsAtOriginalPosition:int() {_exposeToLua}
-		'BUG: Funktioniert nicht: Liefert immer true!
+		'startPos is the position of the undragged sign,
+		'"originalPos" contains the position before potential switches
 		if door.doorSlot <> GetRoomBoard().GetSlot(StartPos.GetX()) then return False
 		if door.onFloor <> GetRoomBoard().GetFloor(StartPos.GetY()) then return False
 
@@ -404,12 +406,9 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 	Method GetOriginalFloor:int() {_exposeToLua}
 		return door.onFloor
 	End Method
+
 	
-	Method GetCurrentRoomId:int() {_exposeToLua}
-		'TODO: Auf welchen Raum zeigt das Schild womöglich fälschlicherweise? Das müsste dann der Terrorist nutzen (ggf. lässt sich später so auch ein "dummer" KI-Spieler verwirren)
-	End Method
-	
-	Method GetOriginalRoomId:int() {_exposeToLua}
+	Method GetRoomId:int() {_exposeToLua}
 		return door.roomID
 	End Method	
 
@@ -443,7 +442,14 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 			If not imageCache
 				imageCache = GenerateCacheImage( GetSpriteFromRegistry(imageBaseName + Max(0, door.GetOwner())) )
 			Endif
-			imageCache.Draw(rect.GetX(),rect.GetY())
+			'slightly tint switched signs
+			if not IsAtOriginalPosition()
+				SetColor 255,245,230
+				imageCache.Draw(rect.GetX(),rect.GetY())
+				SetColor 255,255,255
+			Else
+				imageCache.Draw(rect.GetX(),rect.GetY())
+			EndIf
 		EndIf
 		SetAlpha 1
 	End Method

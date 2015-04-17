@@ -1034,7 +1034,19 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	'switch two existing signs on the board
-	Method rb_SwitchSigns:int(signAId:Int, signBId:Int)
+	Method rb_SwitchSigns:int(signA:TRoomBoardSign, signB:TRoomBoardSign)
+		If Not _PlayerInRoom("roomboard") Then Return self.RESULT_WRONGROOM
+
+		If GetRoomBoard().SwitchSigns(signA, signB)
+			Return self.RESULT_OK
+		Else
+			Return self.RESULT_FAILED
+		Endif
+	End Method
+
+
+	'switch two existing signs on the board
+	Method rb_SwitchSignsByID:int(signAId:Int, signBId:Int)
 		If Not _PlayerInRoom("roomboard") Then Return self.RESULT_WRONGROOM
 
 		Local signA:TRoomBoardSign = GetRoomBoard().GetSignById(signAId)
