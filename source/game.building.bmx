@@ -342,7 +342,7 @@ Type TBuilding Extends TBuildingBase
 		softDrinkMachine.Update()
 	
 		'center player
-		If GetPlayerBase().IsInRoom()
+		If not GetPlayerBase().IsInRoom()
 			'subtract 7 because of missing "wall" in last floor
 			'add 50 for roof
 			area.position.y =  2 * floorHeight - 7 + 50 - GetPlayerBase().GetFigure().area.GetY()
