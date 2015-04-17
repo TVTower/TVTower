@@ -612,6 +612,8 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		price :* Max(1, getRawMinAudience(playerID)/1000)
 		'value cannot be higher than "maxAdContractPricePerSpot"
 		price = Min(GameRules.maxAdContractPricePerSpot, price )
+		'adjust by a base/internal balancing factor
+		price :* 1.75 '75% more
 		'adjust by a balancing factor
 		price :* balancingFactor
 
