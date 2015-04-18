@@ -39,8 +39,7 @@ EndRem
 SuperStrict
 Import BRL.PNGLoader
 Import "base.util.registry.bmx"
-'Import "base.sfx.soundmanager.bmx"
-Import "base.sfx.soundmanager.rtaudio.bmx"
+Import "base.sfx.soundmanager.bmx"
 'register this loader
 new TRegistrySoundLoader.Init()
 
