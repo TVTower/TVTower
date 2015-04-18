@@ -1175,7 +1175,8 @@ endrem
 				'active - if tape is the currently used
 				If i = currentEntry Then tapeDrawType = "hovered"
 				'hovered - draw hover effect if hovering
-				If THelper.MouseIn(currX, currY, entrySize.GetX(), entrySize.GetY()-1) Then tapeDrawType="hovered"
+				'we add 2 pixel to height - to hover between tapes too
+				If THelper.MouseIn(currX, currY + i*2, entrySize.GetX(), entrySize.GetY()+1) Then tapeDrawType="hovered"
 
 
 				If licences[i].isMovie()
@@ -1200,6 +1201,44 @@ endrem
 				currY :+ currSprite.area.GetH()
 			EndIf
 		Next
+		
+		rem
+		'debug
+		currY = entriesRect.GetY()
+		For Local i:Int = 0 To GameRules.maxProgrammeLicencesPerFilter
+			if i = 0
+				Local currSprite:TSprite
+				If licences[0].IsPlanned()
+					currSprite = GetSpriteFromRegistry("gfx_programmeentries_top.planned")
+				Else
+					'switch background to "new" if the licence is a just-added-one
+					For Local licence:TProgrammeLicence = EachIn GetPlayer().GetProgrammeCollection().justAddedProgrammeLicences
+						If licences[i] = licence
+							currSprite = GetSpriteFromRegistry("gfx_programmeentries_top.new")
+							Exit
+						EndIf
+					Next
+					currSprite = GetSpriteFromRegistry("gfx_programmeentries_top.default")
+				EndIf
+
+				currY :+ currSprite.area.GetH()
+			EndIf
+			
+			SetColor 0,255,0
+			If i mod 2 = 0 then SetColor 255,0,0
+			SetAlpha 1.0
+			DrawRect(entriesRect.GetX(), currY+1, entrySize.GetX(), 1)
+			DrawRect(entriesRect.GetX(), currY+1 + entrySize.GetY()-1, entrySize.GetX(), 1)
+			SetAlpha 0.4
+			'complete size
+			DrawRect(entriesRect.GetX(), currY+1, entrySize.GetX(), entrySize.GetY()-1)
+
+			currY:+ genreSize.y
+			currY:+ 2
+
+			SetColor 255,255,255
+		Next
+		endrem
 	End Method
 
 
@@ -1207,15 +1246,33 @@ endrem
 		'skip doing something without a selected filter
 		If filterIndex < 0 Then Return False
 
-		Local currY:Int = entriesRect.GetY() + GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
-
+		Local currY:Int = entriesRect.GetY()
 		Local programmeCollection:TPlayerProgrammeCollection = GetPlayer().GetProgrammeCollection()
 		Local filter:TProgrammeLicenceFilter = TProgrammeLicenceFilter.GetAtIndex(filterIndex)
 		Local licences:TProgrammeLicence[] = programmeCollection.GetLicencesByFilter(filter)
 
 		For Local i:Int = 0 Until licences.length
 
-			If THelper.MouseIn(entriesRect.GetX(), currY, entrySize.GetX(), entrySize.GetY()-1)
+			if i = 0
+				Local currSprite:TSprite
+				If licences[0].IsPlanned()
+					currSprite = GetSpriteFromRegistry("gfx_programmeentries_top.planned")
+				Else
+					'switch background to "new" if the licence is a just-added-one
+					For Local licence:TProgrammeLicence = EachIn GetPlayer().GetProgrammeCollection().justAddedProgrammeLicences
+						If licences[i] = licence
+							currSprite = GetSpriteFromRegistry("gfx_programmeentries_top.new")
+							Exit
+						EndIf
+					Next
+					currSprite = GetSpriteFromRegistry("gfx_programmeentries_top.default")
+				EndIf
+
+				currY :+ currSprite.area.GetH()
+			EndIf
+
+				'we add 2 pixel to height - to hover between tapes too
+			If THelper.MouseIn(entriesRect.GetX(), currY, entrySize.GetX(), entrySize.GetY()+1)
 				Game.cursorstate = 1
 				Local doneSomething:Int = False
 				'store for sheet-display
@@ -1254,6 +1311,7 @@ endrem
 
 			'next tape
 			currY :+ entrySize.y
+			currY :+ 2
 		Next
 		Return False
 	End Method
@@ -1305,7 +1363,7 @@ endrem
 				'active - if tape is the currently used
 				If i = currentSubEntry Then tapeDrawType = "hovered"
 				'hovered - draw hover effect if hovering
-				If THelper.MouseIn(currX, currY, entrySize.GetX(), entrySize.GetY()-3) Then tapeDrawType="hovered"
+				If THelper.MouseIn(currX, currY, entrySize.GetX(), entrySize.GetY()-2) Then tapeDrawType="hovered"
 
 				If licence.isMovie()
 					GetSpriteFromRegistry("gfx_programmetape_movie."+tapeDrawType).draw(currX + 8, currY+1)
@@ -1328,6 +1386,26 @@ endrem
 				currY :+ currSprite.area.GetH()
 			EndIf
 		Next
+
+		rem
+		'debug - hitbox
+		currY = subEntriesRect.GetY() + GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
+		For Local i:Int = 0 To parentLicence.GetSubLicenceCount()-1
+			SetColor 0,255,0
+			If i mod 2 = 0 then SetColor 255,0,0
+			SetAlpha 1.0
+			DrawRect(subEntriesRect.GetX(), currY+1, entrySize.GetX(), 1)
+			DrawRect(subEntriesRect.GetX(), currY+1 + entrySize.GetY()-3, entrySize.GetX(), 1)
+			SetAlpha 0.4
+			'complete size
+			DrawRect(subEntriesRect.GetX(), currY+1, entrySize.GetX(), entrySize.GetY()-3)
+
+			currY:+ genreSize.y
+
+			SetColor 255,255,255
+		Next
+		EndRem
+		SetAlpha 1.0
 	End Method
 
 
@@ -1341,7 +1419,7 @@ endrem
 			Local licence:TProgrammeLicence = parentLicence.GetsubLicenceAtIndex(i)
 
 			If licence
-				If THelper.MouseIn(subEntriesRect.GetX(), currY, entrySize.GetX(), entrySize.GetY()-1)
+				If THelper.MouseIn(subEntriesRect.GetX(), currY+1, entrySize.GetX(), entrySize.GetY()-3)
 					Game.cursorstate = 1
 
 					'store for sheet-display
