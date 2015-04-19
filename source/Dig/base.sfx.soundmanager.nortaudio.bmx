@@ -222,9 +222,17 @@ Type TSoundManager
 	'use this method if multiple sfx for a certain event are possible
 	'(so eg. multiple "door open/close"-sounds to make variations
 	Method GetRandomSfxFromPlaylist:TSound(playlist:String)
+		playlist = playlist.ToLower()
 		Local playlistContainer:TList = TList(playlists.ValueForKey(PREFIX_SFX + playlist))
-		If Not playlistContainer Then Print "playlist: "+playlist+" not found."; Return Null
-		If playlistContainer.count() = 0 Then Print "empty list:"+PREFIX_SFX + playlist; Return Null
+
+		If Not playlistContainer
+			TLogger.Log("SoundManager.GetRandomSfxFromPlaylist()", "Playlist ~q"+playlist+"~q not found.", LOG_WARNING)
+			Return Null
+		EndIf
+		If playlistContainer.count() = 0
+			TLogger.Log("SoundManager.GetRandomSfxFromPlaylist()", "Playlist ~q"+playlist+"~q is empty.", LOG_WARNING)
+			Return Null
+		EndIf
 
 		Return TSound(playlistContainer.ValueAtIndex(Rand(0, playlistContainer.count()-1)))
 	End Method
@@ -232,13 +240,14 @@ Type TSoundManager
 
 	'if avoidMusic is set, the function tries to return another music (if possible)
 	Method GetRandomMusicFromPlaylist:TDigAudioStream(playlist:String, avoidMusic:TDigAudioStream = Null)
+		playlist = playlist.ToLower()
 		Local playlistContainer:TList = TList(playlists.ValueForKey(PREFIX_MUSIC + playlist))
 		If Not playlistContainer
-			'TLogger.Log("GetRandomMusicFromPlaylist", "No playlist: "+playlist+" found.", LOG_WARNING)
+			'TLogger.Log("SoundManager.GetRandomMusicFromPlaylist()", "Playlist ~q"+playlist+"~q not found.", LOG_WARNING)
 			Return Null
 		EndIf
 		If playlistContainer.count() = 0
-			'TLogger.Log("GetRandomMusicFromPlaylist", "playlist: "+playlist+" is empty.", LOG_WARNING)
+			'TLogger.Log("SoundManager.GetRandomMusicFromPlaylist()", "Playlist ~q"+playlist+"~q is empty.", LOG_WARNING)
 			Return Null
 		EndIf
 
