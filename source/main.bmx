@@ -1384,7 +1384,10 @@ End Type
 Type TFigureDeliveryBoy Extends TFigure
 	'did the figure check the roomboard where to go to?
 	Field checkedRoomboard:Int = False
+	'the room the figure delivers to (after checking the roomboard)
 	Field deliverToRoom:TRoomBase
+	'the room the figure intends to deliver to
+	Field intentedDeliverToRoom:TRoomBase
 	'was the "package" delivered already?
 	Field deliveryDone:Int = True
 	'time to wait between doing something
@@ -1412,9 +1415,9 @@ Type TFigureDeliveryBoy Extends TFigure
 	Method FinishEnterRoom:Int(room:TRoomBase, door:TRoomDoorBase)
 		Super.FinishEnterRoom(room, door)
 
-		'terrorist now knows where to "deliver"
+		'figure now knows where to "deliver"
 		If Not checkedRoomboard Then checkedRoomboard = True
-		'if the room is the deliver target, delivery is finished
+		'figure entered the intended room -> delivery is finished
 		If room = deliverToRoom Then deliveryDone = True
 			
 		'reset timer so figure stays in room for some time
@@ -1430,6 +1433,7 @@ Type TFigureDeliveryBoy Extends TFigure
 		checkedRoomboard = False
 		deliveryDone = False
 		deliverToRoom = room
+		intentedDeliverToRoom = room
 	End Method
 
 
@@ -1461,7 +1465,9 @@ Type TFigureDeliveryBoy Extends TFigure
 				If roomDoor Then sign = GetRoomBoard().GetSignByCurrentPosition(roomDoor.doorSlot, roomDoor.onFloor)
 
 				If sign And sign.door
-					TLogger.Log("TFigureDeliveryBoy", Self.name+" is sent to room "+TRoomDoor(sign.door).GetRoom().name+" (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
+					intentedDeliverToRoom = deliverToRoom
+					deliverToRoom = TRoomDoor(sign.door).GetRoom()
+					TLogger.Log("TFigureDeliveryBoy", Self.name+" is sent to room "+deliverToRoom.name+" (intended room: "+intentedDeliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
 					SendToDoor(sign.door)
 				Else
 					TLogger.Log("TFigureDeliveryBoy", Self.name+" cannot send to a room, sign of target over empty room slot (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
@@ -1480,6 +1486,7 @@ Type TFigureDeliveryBoy Extends TFigure
 				FinishDelivery()
 
 				deliverToRoom = Null
+				intentedDeliverToRoom = Null
 			EndIf
 
 			'leave that room so we can find a new target
