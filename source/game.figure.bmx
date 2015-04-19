@@ -582,6 +582,8 @@ Type TFigure extends TFigureBase
 		'only player-figures need such handling (events etc.)
 		If playerID and playerID = room.owner
 			for local occupant:TFigure = eachin room.occupants
+				'only kick other players ?!
+				if not occupant.playerID then continue
 				if occupant <> self then KickFigureFromRoom(occupant, room)
 			next
 		EndIf

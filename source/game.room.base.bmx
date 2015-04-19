@@ -483,8 +483,12 @@ End Rem
 
  		'set the room used in that moment to avoid that two entities
  		'opening the door at the same time will both get into the room
- 		'(occupied check is done in "onFigureTryEnterRoom")
-		if not hasOccupant() then addOccupant(entity)
+ 		'(occupied check is done in "TFigureBase.EnterRoom()")
+		'if not hasOccupant() then addOccupant(entity)
+		if hasOccupant()
+			TLogger.Log("TRoomBase.BeginEnter()", "Figure enters room=~q"+GetName()+"~q while other figures are already in the room.", LOG_DEBUG | LOG_ERROR)
+		Endif
+		addOccupant(entity)
 
 		'inform others that we start going into the room (eg. for animations)
 		EventManager.triggerEvent( TEventSimple.Create("room.onBeginEnter", null, self, entity ) )
