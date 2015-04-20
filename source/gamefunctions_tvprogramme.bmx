@@ -206,7 +206,6 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 	'draws the background
 	Method DrawBlockBackground:Int(variant:String="")
-
 		Local titleIsVisible:Int = False
 		Local drawPos:TVec2D = New TVec2D.Init(GetScreenX(), GetScreenY())
 		'if dragged and not in ghost mode
@@ -242,17 +241,17 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 				Case 1	'top
 						'if only 1 block, use special graphics
 						If blocks = 1
-							GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).Draw(GetScreenX(), GetScreenY())
+							GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).Draw(drawPos.x, drawPos.y)
 						Else
 							GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(New TRectangle.Init(drawPos.x, drawPos.y, -1, 30))
 						EndIf
 						'xrated
 						If TProgramme(broadcastMaterial) And TProgramme(broadcastMaterial).data.IsXRated()
-							GetSpriteFromRegistry("pp_xrated").Draw(GetScreenX() + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth(), GetScreenY(),  -1, New TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP))
+							GetSpriteFromRegistry("pp_xrated").Draw(drawPos.x + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth(), drawPos.y,  -1, New TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP))
 						EndIf
 						'paid
 						If TProgramme(broadcastMaterial) And TProgramme(broadcastMaterial).data.IsPaid()
-							GetSpriteFromRegistry("pp_paid").Draw(GetScreenX() + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth(), GetScreenY(),  -1, New TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP))
+							GetSpriteFromRegistry("pp_paid").Draw(drawPos.x + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth(), drawPos.y,  -1, New TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP))
 						EndIf
 
 						titleIsVisible = True

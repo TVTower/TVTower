@@ -494,6 +494,14 @@ Type TScreenHandler_ProgrammePlanner
 		local slot:int = triggerEvent.GetData().getInt("slot", -1)
 		if not list or not item or slot = -1 then return FALSE
 
+
+		'set indicator on which day the item is planned
+		'  (this saves some processing time - else we could request
+		'   the day from the players ProgrammePlan)
+		if List = GuiListProgrammes or list = GuiListAdvertisements
+			item.plannedOnDay = list.planDay
+		endif
+
 		'we removed the item but do not want the planner to know
 		if not talkToProgrammePlanner then return TRUE
 
@@ -531,26 +539,15 @@ Type TScreenHandler_ProgrammePlanner
 				print "[WARNING] dropped item on programmelist - adding to programmeplan at "+slot+":00 - FAILED"
 				return FALSE
 			endif
-			'set indicator on which day the item is planned
-			'  (this saves some processing time - else we could request
-			'   the day from the players ProgrammePlan)
-			item.plannedOnDay = list.planDay
 		elseif list = GuiListAdvertisements
 			if not GetPlayer().GetProgrammePlan().SetAdvertisementSlot(item.broadcastMaterial, planningDay, slot)
 				print "[WARNING] dropped item on adlist - adding to programmeplan at "+slot+":00 - FAILED"
 				return FALSE
 			endif
-			'set indicator on which day the item is planned
-			'  (this saves some processing time - else we could request
-			'   the day from the players ProgrammePlan)
-			item.plannedOnDay = list.planDay
 		else
 			print "[ERROR] dropped item on unknown list - adding to programmeplan at "+slot+":00 - FAILED"
 			return FALSE
 		endif
-
-		'if a shortcut is pressed - create copy/next episode
-		'CreateNextEpisodeOrCopyByShortcut(item)
 
 		return TRUE
 	End Function

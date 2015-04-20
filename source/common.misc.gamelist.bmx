@@ -137,17 +137,20 @@ Type TGUIGameListItem Extends TGUIListItem
 
 
 	Method DrawGhost()
+		Local oldAlpha:Float = GetAlpha()
 		'by default a shaded version of the gui element is drawn at the original position
 		self.SetOption(GUI_OBJECT_IGNORE_POSITIONMODIFIERS, TRUE)
-		SetAlpha 0.5
+		SetOption(GUI_OBJECT_DRAWMODE_GHOST, True)
+		SetAlpha oldAlpha * 0.5
 
 		local backupAssetName:string = self.asset.getName()
 		self.asset = GetSpriteFromRegistry(assetNameDefault)
 		self.Draw()
 		self.asset = GetSpriteFromRegistry(backupAssetName)
 
-		SetAlpha 1.0
+		SetAlpha oldAlpha
 		self.SetOption(GUI_OBJECT_IGNORE_POSITIONMODIFIERS, FALSE)
+		SetOption(GUI_OBJECT_DRAWMODE_GHOST, False)
 	End Method
 
 
