@@ -492,11 +492,12 @@ Type TVTProgrammePersonJob {_exposeToLua}
 	Const DIRECTOR:int = 1
 	Const ACTOR:int = 2
 	Const WRITER:int = 4
-	Const MODERATOR:int = 8 'hosts
+	Const HOST:int = 8 '"moderators"
 	Const MUSICIAN:int = 16
 	Const SUPPORTINGACTOR:int = 32
 	Const GUEST:int = 64 'show guest or prominent show candidate
 	Const REPORTER:int = 128
+	Const count:int = 9 '9 groups
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -504,14 +505,14 @@ Type TVTProgrammePersonJob {_exposeToLua}
 		return 2^(index-1)
 	End Function
 
-	
+
 	Function GetAsString:string(key:int)
 		Select key
 			case 0		return "unknown"
 			case 1		return "director"
 			case 2		return "actor"
 			case 4		return "writer"
-			case 8		return "moderator"
+			case 8		return "host"
 			case 16		return "musician"
 			case 32		return "supportingactor"
 			case 64		return "guest"

@@ -849,15 +849,8 @@ Type TDatabaseLoader
 			local memberGUID:string = nodeMember.GetContent()
 
 			local member:TProgrammePersonBase = GetProgrammePersonCollection().GetByGUID(memberGUID)
-			'if person was defined
-			if member
-				Select memberFunction
-					case TVTProgrammePersonJob.ACTOR
-						programmeData.AddCast(new TProgrammePersonJob.Init(member, TVTProgrammePersonJob.ACTOR))
-					case TVTProgrammePersonJob.DIRECTOR
-						programmeData.AddCast(new TProgrammePersonJob.Init(member, TVTProgrammePersonJob.DIRECTOR))
-				End Select
-			endif
+			'if person was defined add the given job
+			if member Then programmeData.AddCast(new TProgrammePersonJob.Init(member, memberFunction))
 		Next
 
 

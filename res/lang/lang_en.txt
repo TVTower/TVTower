@@ -212,6 +212,13 @@ AD_INFOMERCIAL_PROFIT	= Income: %PROFIT% per 1000 people watching
 
 MOVIE_DIRECTOR			= Director
 MOVIE_ACTORS			= Actors
+MOVIE_SUPPORTINGACTORS  = Supporting Actors
+MOVIE_REPORTER          = Reporter
+MOVIE_GUEST             = Guest
+MOVIE_HOST              = Host
+MOVIE_SCRIPT            = Script
+MOVIE_MUSIC             = Music
+
 MOVIE_SPEED				= Speed
 MOVIE_CRITIC			= Critics
 MOVIE_BOXOFFICE			= Box-office

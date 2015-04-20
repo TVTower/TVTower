@@ -202,8 +202,15 @@ AD_INFOMERCIAL_NOT_AVAILABLE = Für diese Werbung steht keine Dauerwerbesendung 
 AD_INFOMERCIAL_PROFIT= Einnahmen: %PROFIT% pro 1000 Zuschauer
 
 
-MOVIE_DIRECTOR  = Regisseur
-MOVIE_ACTORS    = Darsteller
+MOVIE_DIRECTOR         = Regisseur
+MOVIE_ACTORS           = Darsteller
+MOVIE_SUPPORTINGACTORS = Nebendarsteller
+MOVIE_REPORTER         = Reporter
+MOVIE_GUEST            = Gast
+MOVIE_HOST             = Moderator
+MOVIE_SCRIPT           = Drehbuch
+MOVIE_MUSIC            = Musik
+
 MOVIE_SPEED     = Tempo
 MOVIE_CRITIC    = Kritik
 MOVIE_BOXOFFICE = Kinokasse

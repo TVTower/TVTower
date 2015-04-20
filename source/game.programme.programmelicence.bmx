@@ -789,10 +789,42 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		'splitter
 		currY :+ 6
 
+		local addCastTitle:string  = ""
+		local addCast:string = ""
+		if data.GetActorsString() <> ""
+			addCastTitle = GetLocale("MOVIE_ACTORS")
+			addCast = data.GetActorsString()
+
+		elseif data.GetCastGroupString(TVTProgrammePersonJob.SUPPORTINGACTOR) <> ""
+			addCastTitle = GetLocale("MOVIE_SUPPORTINGACTORS")
+			addCast = data.GetCastGroupString(TVTProgrammePersonJob.SUPPORTINGACTOR)
+
+		elseif data.GetCastGroupString(TVTProgrammePersonJob.REPORTER) <> ""
+			addCastTitle = GetLocale("MOVIE_REPORTER")
+			addCast = data.GetCastGroupString(TVTProgrammePersonJob.REPORTER)
+
+		elseif data.GetCastGroupString(TVTProgrammePersonJob.GUEST) <> ""
+			addCastTitle = GetLocale("MOVIE_GUEST")
+			addCast = data.GetCastGroupString(TVTProgrammePersonJob.GUEST)
+
+		elseif data.GetCastGroupString(TVTProgrammePersonJob.HOST) <> ""
+			addCastTitle = GetLocale("MOVIE_HOST")
+			addCast = data.GetCastGroupString(TVTProgrammePersonJob.HOST)
+
+		elseif data.GetCastGroupString(TVTProgrammePersonJob.WRITER) <> ""
+			addCastTitle = GetLocale("MOVIE_SCRIPT")
+			addCast = data.GetCastGroupString(TVTProgrammePersonJob.WRITER)
+
+		elseif data.GetCastGroupString(TVTProgrammePersonJob.MUSICIAN) <> ""
+			addCastTitle = GetLocale("MOVIE_MUSIC")
+			addCast = data.GetCastGroupString(TVTProgrammePersonJob.MUSICIAN)
+		endif
+
+
 		'max width of director/actors - to align their content properly
 		currTextWidth = Int(fontSemiBold.getWidth(GetLocale("MOVIE_DIRECTOR")+":"))
-		if data.GetActorsString() <> ""
-			currTextWidth = Max(currTextWidth, Int(fontSemiBold.getWidth(GetLocale("MOVIE_ACTORS")+":")))
+		if addCastTitle
+			currTextWidth = Max(currTextWidth, Int(fontSemiBold.getWidth(addCastTitle+":")))
 		endif
 
 
@@ -804,10 +836,10 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 			currY :+ 13
 		endif
 
-		'actors
-		if data.GetActorsString() <> ""
-			fontSemiBold.drawBlock(GetLocale("MOVIE_ACTORS")+":", currX + 6 , currY, 280, 26, null, textColor)
-			fontNormal.drawBlock(data.GetActorsString(), currX + 6 + 5 + currTextWidth, currY, 280 - 15 - currTextWidth, 30, null, textColor)
+		'actors or other additional cast members
+		if addCast <> ""
+			fontSemiBold.drawBlock(addCastTitle+":", currX + 6 , currY, 280, 26, null, textColor)
+			fontNormal.drawBlock(addCast, currX + 6 + 5 + currTextWidth, currY, 280 - 15 - currTextWidth, 30, null, textColor)
 		endif
 		if data.GetDirectorsString() = ""
 			currY :+ 13

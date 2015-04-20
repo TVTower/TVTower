@@ -291,6 +291,26 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	End Method
 
 
+	Method GetCastGroup:TProgrammePersonBase[](jobFlag:int)
+		local res:TProgrammePersonBase[0]
+		For local job:TProgrammePersonJob = EachIn cast
+			if job.job = jobFlag then res :+ [job.person]
+		Next
+		return res
+	End Method
+	
+
+	Method GetCastGroupString:string(jobFlag:int)
+		local result:string = ""
+		local group:TProgrammePersonBase[] = GetCastGroup(jobFlag)
+		for local i:int = 0 to group.length-1
+			if result <> "" then result:+ ", "
+			result:+ group[i].GetFullName()
+		Next
+		return result
+	End Method
+
+
 	Method GetActors:TProgrammePersonBase[]()
 		if cachedActors.length = 0
 			For local job:TProgrammePersonJob = EachIn cast
