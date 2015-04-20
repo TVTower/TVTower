@@ -1202,7 +1202,7 @@ endrem
 			EndIf
 		Next
 		
-		rem
+		Rem
 		'debug
 		currY = entriesRect.GetY()
 		For Local i:Int = 0 To GameRules.maxProgrammeLicencesPerFilter
@@ -1253,7 +1253,7 @@ endrem
 
 		For Local i:Int = 0 Until licences.length
 
-			if i = 0
+			If i = 0
 				Local currSprite:TSprite
 				If licences[0].IsPlanned()
 					currSprite = GetSpriteFromRegistry("gfx_programmeentries_top.planned")
@@ -1271,7 +1271,7 @@ endrem
 				currY :+ currSprite.area.GetH()
 			EndIf
 
-				'we add 2 pixel to height - to hover between tapes too
+			'we add 2 pixel to height - to hover between tapes too
 			If THelper.MouseIn(entriesRect.GetX(), currY, entrySize.GetX(), entrySize.GetY()+1)
 				Game.cursorstate = 1
 				Local doneSomething:Int = False
@@ -1363,7 +1363,7 @@ endrem
 				'active - if tape is the currently used
 				If i = currentSubEntry Then tapeDrawType = "hovered"
 				'hovered - draw hover effect if hovering
-				If THelper.MouseIn(currX, currY, entrySize.GetX(), entrySize.GetY()-2) Then tapeDrawType="hovered"
+				If THelper.MouseIn(currX, currY, entrySize.GetX(), entrySize.GetY()-1) Then tapeDrawType="hovered"
 
 				If licence.isMovie()
 					GetSpriteFromRegistry("gfx_programmetape_movie."+tapeDrawType).draw(currX + 8, currY+1)
@@ -1387,7 +1387,7 @@ endrem
 			EndIf
 		Next
 
-		rem
+		Rem
 		'debug - hitbox
 		currY = subEntriesRect.GetY() + GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 		For Local i:Int = 0 To parentLicence.GetSubLicenceCount()-1
@@ -1412,14 +1412,24 @@ endrem
 	Method UpdateSubTapes:Int(parentLicence:TProgrammeLicence)
 		If Not parentLicence Then Return False
 		
-		Local currY:Int = subEntriesRect.GetY() + GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
+		Local currY:Int = subEntriesRect.GetY() '+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 
 
 		For Local i:Int = 0 To parentLicence.GetSubLicenceCount()-1
 			Local licence:TProgrammeLicence = parentLicence.GetsubLicenceAtIndex(i)
 
+			If i = 0
+				Local currSprite:TSprite
+				Local entryDrawType:String = "default"
+				If licence And licence.IsPlanned() Then entryDrawType = "planned"
+
+				currSprite = GetSpriteFromRegistry("gfx_programmeentries_top."+entryDrawType)
+				currY :+ currSprite.area.GetH()
+			EndIf
+
+			
 			If licence
-				If THelper.MouseIn(subEntriesRect.GetX(), currY+1, entrySize.GetX(), entrySize.GetY()-3)
+				If THelper.MouseIn(subEntriesRect.GetX(), currY, entrySize.GetX(), entrySize.GetY()-1)
 					Game.cursorstate = 1
 
 					'store for sheet-display
@@ -1678,7 +1688,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	Function GetByLicence:TAuctionProgrammeBlocks(licence:TProgrammeLicence, licenceID:Int=-1)
 		For Local obj:TAuctionProgrammeBlocks = EachIn List
 			If licence And obj.licence = licence Then Return obj
-			If obj.licence.id = licenceID Then Return obj
+			If obj.licence and obj.licence.id = licenceID Then Return obj
 		Next
 		Return Null
 	End Function
@@ -1710,10 +1720,15 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			'lower the requirements
 			If Not licence Then minPrice :- 10000
 		Wend
-		If Not licence Then Throw "[ERROR] TAuctionProgrammeBlocks.Refill - no licence"
+		If not licence
+			TLogger.log("AuctionProgrammeBlocks.Refill()", "No licences for new auction found. Database needs more entries!", LOG_ERROR)
+			'If Not licence Then Throw "[ERROR] TAuctionProgrammeBlocks.Refill - no licence"
+		EndIf
 
-		'set licence owner to "-1" so it gets not returned again from Random-Getter
-		licence.SetOwner(-1)
+		if licence
+			'set licence owner to "-1" so it gets not returned again from Random-Getter
+			licence.SetOwner(-1)
+		endif
 
 		'reset cache
 		_imageWithText = Null
@@ -1721,15 +1736,19 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		bestBid = 0
 		bestBidder = 0
 		bidSavings = bidSavingsMaximum
-
 		'emit event
 		EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.Refill", New TData.Add("licence", licence).AddNumber("slot", slot), Self))
 	End Method
 
 
 	Method EndAuction:Int()
-		If Not licence Then Return False
+		'if there was no licence stored, try again to refill the block
+		If not licence
+			Refill()
+			Return False
+		EndIf
 
+		
 		If bestBidder
 			Local player:TPlayer = GetPlayerCollection().Get(bestBidder)
 			player.GetProgrammeCollection().AddProgrammeLicence(licence)
@@ -1774,6 +1793,8 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 
 	Method SetBid:Int(playerID:Int)
+		If not licence Then Return -1
+		
 		Local player:TPlayer = GetPlayer(playerID)
 		If Not player Then Return -1
 		'if the playerID was -1 ("auto") we should assure we have a correct id now
@@ -1822,6 +1843,8 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 
 	Method GetNextBid:Int() {_exposeToLua}
+		If not licence Then Return -1
+
 		Local nextBid:Int = 0
 		'no bid done yet, next bid is the licences price cut by 25%
 		If bestBid = 0
@@ -1845,6 +1868,8 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 
 	Method ShowSheet:Int(x:Int,y:Int)
+		If not licence Then Return -1
+		
 		licence.ShowSheet(x,y)
 	End Method
 
@@ -1852,6 +1877,8 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
     'draw the Block inclusive text
     'zeichnet den Block inklusive Text
     Method Draw()
+		If not licence Then Return
+
 		SetColor 255,255,255  'normal
 		'not yet cached?
 	    If Not _imageWithText
@@ -1887,11 +1914,15 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 	Function DrawAll()
 		For Local obj:TAuctionProgrammeBlocks = EachIn List
+			If not obj.GetLicence() Then continue
+
 			obj.Draw()
 		Next
 
 		'draw sheets (must be afterwards to avoid overlapping (itemA Sheet itemB itemC) )
 		For Local obj:TAuctionProgrammeBlocks = EachIn List
+			If not obj.GetLicence() Then continue
+			
 			If obj.area.containsXY(MouseManager.x, MouseManager.y)
 				Local leftX:Int = 30, rightX:Int = 30
 				Local sheetY:Float 	= 20
@@ -1923,6 +1954,8 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		If Not MOUSEMANAGER.IsClicked(1) Then Return False
 
 		For Local obj:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
+			If not obj.GetLicence() Then continue
+
 			If obj.bestBidder <> GetPlayerCollection().playerID And obj.area.containsXY(MouseManager.x, MouseManager.y)
 				obj.SetBid( GetPlayerCollection().playerID )  'set the bid
 				MOUSEMANAGER.ResetKey(1)

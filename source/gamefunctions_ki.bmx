@@ -857,7 +857,7 @@ Type TLuaFunctions {_exposeToLua}
 		If ArrayID >= TAuctionProgrammeBlocks.List.Count() Or arrayID < 0 Then Return null
 
 		Local Block:TAuctionProgrammeBlocks = TAuctionProgrammeBlocks(TAuctionProgrammeBlocks.List.ValueAtIndex(ArrayID))
-		If Block Then Return Block Else Return null
+		If Block and Block.GetLicence() Then Return Block Else Return null
 	End Method
 
 
@@ -887,7 +887,7 @@ Type TLuaFunctions {_exposeToLua}
 
 
 		For local Block:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
-			If Block.licence.GetReferenceID() = licenceID Then Return Block.SetBid( self.ME )
+			If Block.GetLicence() and Block.licence.GetReferenceID() = licenceID Then Return Block.SetBid( self.ME )
 		Next
 
 		Return self.RESULT_NOTFOUND
@@ -898,7 +898,7 @@ Type TLuaFunctions {_exposeToLua}
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
 		local Block:TAuctionProgrammeBlocks = self.md_getAuctionMovieBlock(ArrayID)
-		If Block then Return Block.SetBid( self.ME ) else Return self.RESULT_NOTFOUND
+		If Block and Block.GetLicence() then Return Block.SetBid( self.ME ) else Return self.RESULT_NOTFOUND
 	End Method
 
 'untested
@@ -906,7 +906,7 @@ Type TLuaFunctions {_exposeToLua}
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
 		local Block:TAuctionProgrammeBlocks = self.md_getAuctionMovieBlock(ArrayID)
-		If Block then Return Block.GetNextBid() else Return self.RESULT_NOTFOUND
+		If Block and Block.GetLicence() then Return Block.GetNextBid() else Return self.RESULT_NOTFOUND
 	End Method
 
 'untested
@@ -914,7 +914,7 @@ Type TLuaFunctions {_exposeToLua}
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
 		local Block:TAuctionProgrammeBlocks = self.md_getAuctionMovieBlock(ArrayID)
-		If Block then Return Block.bestBidder else Return self.RESULT_NOTFOUND
+		If Block and Block.GetLicence() then Return Block.bestBidder else Return self.RESULT_NOTFOUND
 	End Method
 
 
