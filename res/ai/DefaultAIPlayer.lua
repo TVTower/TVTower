@@ -76,6 +76,19 @@ function DefaultAIPlayer:initializePlayer()
 	self.Strategy = DefaultStrategy()
 end
 
+function DefaultAIPlayer:resume()
+	if (self.Strategy == nil) then
+		infoMsg(self:typename() .. ": Resume Strategy")
+		self.Strategy = DefaultStrategy()
+	end
+	
+	if (self.Ventruesome == 0) then
+		self.Ventruesome = 5
+	end
+	
+	self:CleanUp()
+end
+
 function DefaultAIPlayer:initializeTasks()
 	self.TaskList = {}
 	self.TaskList[TASK_MOVIEDISTRIBUTOR]	= TaskMovieDistributor()
@@ -115,6 +128,8 @@ function DefaultAIPlayer:OnDayBegins()
 	for k,v in pairs(self.TaskList) do
 		v:OnDayBegins()
 	end
+	
+	self:CleanUp()
 end
 
 function DefaultAIPlayer:OnMoneyChanged(value, reason, reference)
@@ -178,6 +193,23 @@ function DefaultAIPlayer:GetNextEnemyId()
 		result = math.random(1, 4)
 	until result ~= TVT.ME	
 	return result
+end
+
+function DefaultAIPlayer:CleanUp()
+	infoMsg(self:typename() .. ": CleanUp")
+	
+	infoMsg("Requisitions (before): " .. table.count(self.Requisitions))	
+	
+	local tempList = table.copy(self.Requisitions)
+	
+	for k,v in pairs(tempList) do
+		if (not v:CheckActuality()) then
+			table.remove(self.Requisitions, index)
+			infoMsg("Requisition removed")
+		end
+	end
+	
+	infoMsg("Requisitions (after): " .. table.count(self.Requisitions))	
 end
 
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
