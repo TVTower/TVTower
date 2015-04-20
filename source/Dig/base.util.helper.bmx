@@ -93,14 +93,14 @@ Type THelper
 
 
 	'returns whether the mouse is within the given rectangle coords
-	Function MouseIn:int(x:float,y:float,w:float,h:float)
+	Function MouseIn:int(x:Int,y:Int, w:Int,h:Int)
 		return IsIn(MouseManager.x, MouseManager.y, x,y,w,h)
 	End Function
 
 
 	'returns whether the mouse is within the given rectangle
 	Function MouseInRect:int(rect:TRectangle)
-		return IsIn(MouseManager.x, MouseManager.y, rect.position.x,rect.position.y,rect.dimension.x, rect.dimension.y)
+		return IsIn(MouseManager.x, MouseManager.y, rect.position.x, rect.position.y, rect.dimension.x, rect.dimension.y)
 	End Function
 
 
@@ -113,9 +113,10 @@ Type THelper
 
 
 	'returns whether the given x,y coordinate is within the given rectangle coords
-	Function IsIn:Int(x:Float, y:Float, rectx:Float, recty:Float, rectw:Float, recth:Float)
-		If x >= rectx And x<=rectx+rectw And..
-		   y >= recty And y<=recty+recth
+	'checks are done on _int_-base (to avoid floating point inaccuracies)
+	Function IsIn:Int(x:Int, y:Int, rectx:Int, recty:Int, rectw:Int, recth:Int)
+		If x >= rectx And x<rectx+rectw And..
+		   y >= recty And y<recty+recth
 			Return 1
 		Else
 			Return 0
