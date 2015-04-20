@@ -124,8 +124,10 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 	Field bombPlacedTime:Double = -1
 	'if > 0 : a bomb explosion will be drawn
 	Field bombExplosionTime:Double = -1
-	field screenName:string = ""
-	
+	Field screenName:string = ""
+	'who/what did use the door the last time (opening/closing)
+	'only this entity closes/opens the door then!
+	Field lastDoorUser:TEntity
 	'the image used in the room (store individual backgrounds depending on "money")
 	Field _background:TSprite {nosave}
 	Field backgroundSpriteName:string
@@ -479,15 +481,26 @@ Rem
 End Rem
 
 	Method BeginEnter:int(door:TRoomDoorBase, entity:TEntity, speed:int)
-		if door and entity then door.Open(entity)
+		if door and entity
+			door.Open(entity)
+			lastDoorUser = entity
+		Endif
 
  		'set the room used in that moment to avoid that two entities
  		'opening the door at the same time will both get into the room
  		'(occupied check is done in "TFigureBase.EnterRoom()")
 		'if not hasOccupant() then addOccupant(entity)
+rem
 		if hasOccupant()
 			TLogger.Log("TRoomBase.BeginEnter()", "Figure enters room=~q"+GetName()+"~q while other figures are already in the room.", LOG_DEBUG | LOG_ERROR)
+			print "Entering: "+entity.GetGUID()
+			print "In Room:"
+			For local e:TEntity = Eachin occupants
+				print "  - "+e.GetGUID()
+			Next
+			print "-------"
 		Endif
+endrem
 		addOccupant(entity)
 
 		'inform others that we start going into the room (eg. for animations)
@@ -507,7 +520,14 @@ End Rem
 
 	Method FinishEnter:int(door:TRoomDoorBase, entity:TEntity)
 		'=== CLOSE DOORS ===
-		if door and door.GetDoorType() >= 0 then door.Close(entity)
+		if door and door.GetDoorType() >= 0
+			'only close the door if it was the entity (or nobody) who
+			'opened it...
+			if lastDoorUser = entity or lastDoorUser = null
+				door.Close(entity)
+				lastDoorUser = null
+			endif
+		endif
 	End Method
 
 
@@ -536,7 +556,10 @@ End Rem
 
 	Method FinishLeave:int(door:TRoomDoorBase, entity:TEntity)
 		'open the door
-		if door and door.GetDoorType() >= 0 then door.Open(entity)
+		if door and door.GetDoorType() >= 0
+			door.Open(entity)
+			lastDoorUser = entity 
+		EndIf
 
 		'remove the occupant from the rooms list after animation finished
 		'and entity really left that room
