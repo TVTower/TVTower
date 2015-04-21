@@ -223,7 +223,7 @@ Type TProgrammeLicenceCollection
 
 		For Licence = EachIn sourceList
 			'ignore if filtered out
-			If Licence.owner <> 0 or not Licence.isReleased() Then continue
+			If Licence.IsOwned() or not Licence.isReleased() Then continue
 			'ignoring episodes
 			If not includeEpisodes and Licence.isEpisode() Then continue
 
@@ -243,7 +243,7 @@ Type TProgrammeLicenceCollection
 
 		For Licence = EachIn sourceList
 			'ignore if filtered out
-			If Licence.owner <> 0 or not Licence.isReleased() Then continue
+			If Licence.IsOwned() or not Licence.isReleased() Then continue
 			'ignoring episodes
 			If not includeEpisodes and Licence.isEpisode() Then continue
 
@@ -264,7 +264,7 @@ Type TProgrammeLicenceCollection
 
 		For Licence = EachIn sourceList
 			'ignore if filtered out
-			If Licence.owner <> 0 or not Licence.isReleased() Then continue
+			If Licence.IsOwned() or not Licence.isReleased() Then continue
 			'ignoring episodes
 			If not includeEpisodes and Licence.isEpisode() Then continue
 
@@ -292,7 +292,7 @@ Type TProgrammeLicenceCollection
 
 		For Licence = EachIn licences
 			'ignore already used or unreleased
-			If Licence.owner <> 0 or not Licence.isReleased() Then continue
+			If Licence.IsOwned() or not Licence.isReleased() Then continue
 			'ignore episodes
 			If Licence.isEpisode() Then continue
 
@@ -909,7 +909,7 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		if GetPlayerBaseCollection().playerID = owner
 			canAfford = True
 		'if it is another player... just display "can afford"
-		elseif owner >= 0
+		elseif owner > 0
 			canAfford = True
 		'not our licence but enough money to buy
 		elseif finance and finance.canAfford(GetPrice())

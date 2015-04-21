@@ -746,7 +746,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method sa_getSpotCount:Int()
 		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
 
-		Return RoomHandler_AdAgency.GetInstance().GetContractsInStock()
+		Return RoomHandler_AdAgency.GetInstance().GetContractsInStockCount()
 	End Method
 
 
@@ -754,7 +754,7 @@ Type TLuaFunctions {_exposeToLua}
 		If Not _PlayerInRoom("adagency") then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
 		'out of bounds?
-		If position >= RoomHandler_AdAgency.GetInstance().GetContractsInStock() Or position < 0 then Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+		If position >= RoomHandler_AdAgency.GetInstance().GetContractsInStockCount() Or position < 0 then Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
 
 		local contract:TAdContract = RoomHandler_AdAgency.GetInstance().GetContractByPosition(position)
 		If contract

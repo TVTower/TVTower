@@ -956,7 +956,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		'do not add episodes
 		if licence.isEpisode()
-			licence.owner = 0
+			'licence.SetOwner(licence.OWNER_VENDOR)
 			return FALSE
 		endif
 
@@ -975,7 +975,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		for local j:int = 0 to lists.length-1
 			for local i:int = 0 to lists[j].length-1
 				if lists[j][i] then continue
-				licence.owner = -1
+				licence.SetOwner(licence.OWNER_VENDOR)
 				lists[j][i] = licence
 				'print "added licence "+licence.title+" to list "+j+" at spot:"+i
 				return TRUE
@@ -984,7 +984,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		'there was no empty slot to place that licence
 		'so just give it back to the pool
-		licence.owner = 0
+		licence.SetOwner(licence.OWNER_NOBODY)
 
 		return FALSE
 	End Method
@@ -1084,7 +1084,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 					'delete an old movie by a chance of 50%
 					if RandRange(0,100) < replaceChance*100
 						'reset owner
-						lists[j][i].owner = 0
+						lists[j][i].SetOwner(TOwnedGameObject.OWNER_NOBODY)
 						'unlink from this list
 						lists[j][i] = null
 					endif
@@ -1105,7 +1105,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 				'add new licence at slot
 				if licence
-					licence.owner = -1
+					licence.SetOwner(licence.OWNER_VENDOR)
 					lists[j][i] = licence
 				else
 					if not warnedOfMissingLicence
@@ -2843,7 +2843,19 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	'AD Agency: common TFunctions
 	'===================================
 
-	Method GetContractsInStock:int()
+	Method GetContractsInStock:TList()
+		Local ret:TList = CreateList()
+		local lists:TAdContract[][] = [listNormal,listCheap]
+		For local j:int = 0 to lists.length-1
+			For Local contract:TAdContract = EachIn lists[j]
+				if contract Then ret.AddLast(contract)
+			Next
+		Next
+		return ret
+	End Method
+
+
+	Method GetContractsInStockCount:int()
 		Local ret:Int = 0
 		local lists:TAdContract[][] = [listNormal,listCheap]
 		For local j:int = 0 to lists.length-1
@@ -2856,7 +2868,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 	Method GetContractByPosition:TAdContract(position:int)
-		if position > GetContractsInStock() then return null
+		if position > GetContractsInStockCount() then return null
 		local currentPosition:int = 0
 		local lists:TAdContract[][] = [listNormal,listCheap]
 		For local j:int = 0 to lists.length-1
@@ -2919,8 +2931,13 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 		if programmeCollection.RemoveUnsignedAdContractFromSuitcase(contract)
 			'add to agency's lists - if not existing yet
-			if not HasContract(contract) then AddContract(contract)
-
+			if not HasContract(contract)
+				if not AddContract(contract)
+					'if adding failed, remove the contract from the game
+					'at all!
+					GetAdContractCollection().Remove(contract)
+				endif
+			endif
 			return TRUE
 		else
 			return FALSE
@@ -2987,7 +3004,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		for local j:int = 0 to lists.length-1
 			for local i:int = 0 to lists[j].length-1
 				if lists[j][i] then continue
-				contract.owner = -1
+				contract.SetOwner(contract.OWNER_VENDOR)
 				lists[j][i] = contract
 				return TRUE
 			Next
@@ -2995,7 +3012,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 		'there was no empty slot to place that programme
 		'so just give it back to the pool
-		contract.owner = 0
+		contract.SetOwner(contract.OWNER_NOBODY)
 
 		return FALSE
 	End Method
@@ -3149,8 +3166,9 @@ Type RoomHandler_AdAgency extends TRoomHandler
 					if not lists[j][i] then continue
 					'delete an old contract by a chance of 50%
 					if RandRange(0,100) < replaceChance*100
-						'reset owner
-						lists[j][i].owner = 0
+						'remove from game! - else the contracts stay
+						'there forever!
+						GetAdContractCollection().Remove(lists[j][i])
 						'unlink from this list
 						lists[j][i] = null
 					endif
@@ -3285,7 +3303,7 @@ endrem
 					'set classification so contract knows its "origin"
 					contract.adAgencyClassification = classification
 
-					contract.owner = -1
+					contract.SetOwner(contract.OWNER_VENDOR)
 					lists[j][i] = contract
 				endif
 			Next
@@ -3701,7 +3719,19 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	'Script Agency: common Functions
 	'===================================
 
-	Method GetScriptsInStock:int()
+	Method GetScriptsInStock:TList()
+		Local ret:TList = CreateList()
+		local lists:TScript[][] = [listNormal,listNormal2]
+		For local j:int = 0 to lists.length-1
+			For Local script:TScript = EachIn lists[j]
+				If script Then ret.addLast(script)
+			Next
+		Next
+		return ret
+	End Method
+
+
+	Method GetScriptsInStockCount:int()
 		Local ret:Int = 0
 		local lists:TScript[][] = [listNormal,listNormal2]
 		For local j:int = 0 to lists.length-1
@@ -3714,7 +3744,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 
 	Method GetScriptByPosition:TScript(position:int)
-		if position > GetScriptsInStock() then return null
+		'no need do check that twice...
+		'if position > GetScriptsInStockCount() then return null
 		local currentPosition:int = 0
 		local lists:TScript[][] = [listNormal,listNormal2]
 		For local j:int = 0 to lists.length-1
@@ -3838,11 +3869,11 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		lists = [listNormal,listNormal2]
 
 		'loop through all lists - as soon as we find a spot
-		'to place the programme - do so and return
+		'to place the script - do so and return
 		for local j:int = 0 to lists.length-1
 			for local i:int = 0 to lists[j].length-1
 				if lists[j][i] then continue
-				GetScriptCollection().SetScriptOwner(script, -1)
+				GetScriptCollection().SetScriptOwner(script, TOwnedGameObject.OWNER_VENDOR)
 				lists[j][i] = script
 				return TRUE
 			Next
@@ -3850,7 +3881,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 		'there was no empty slot to place that script
 		'so just give it back to the pool
-		GetScriptCollection().SetScriptOwner(script, 0)
+		GetScriptCollection().SetScriptOwner(script, TOwnedGameObject.OWNER_NOBODY)
 
 		return FALSE
 	End Method
@@ -3996,7 +4027,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 						'else just give it back to the collection
 						'(reset owner)
 						else
-							GetScriptCollection().SetScriptOwner(lists[j][i], 0)
+							GetScriptCollection().SetScriptOwner(lists[j][i], TOwnedGameObject.OWNER_NOBODY)
 						endif
 						'unlink from this list
 						lists[j][i] = null
@@ -4017,7 +4048,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 				'add new script to slot
 				if script
-					GetScriptCollection().SetScriptOwner(script, -1)
+					GetScriptCollection().SetScriptOwner(script, TOwnedGameObject.OWNER_VENDOR)
 					lists[j][i] = script
 				endif
 			Next

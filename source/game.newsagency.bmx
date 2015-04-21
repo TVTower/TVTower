@@ -409,7 +409,7 @@ Type TNewsAgency
 			If Not licence.getData() Then Continue
 
 			'ignore if filtered out
-			If licence.owner <> 0 Then Continue
+			If licence.IsOwned() Then Continue
 			'ignore already announced movies
 			If licence.getData().releaseAnnounced Then Continue
 			'ignore unreleased

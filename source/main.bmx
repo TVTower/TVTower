@@ -447,7 +447,6 @@ Type TApp
 						'local licence:TProgrammeLicence = GetPlayer().GetProgrammeCollection().GetRandomMovieLicence()
 						'Game.marshals[rand(0,1)].AddConfiscationJob( licence.GetGUID() )
 
-
 						'buy script
 						Local s:TScript = RoomHandler_ScriptAgency.GetInstance().GetScriptByPosition(0)
 						If Not s
@@ -1160,6 +1159,36 @@ Type TSaveGame Extends TGameState
 				ScreenCollection._SetCurrentScreen(playerScreen)
 			EndIf
 		EndIf
+
+		'=== CLEANUP ===
+		'only needed until all "old savegames" run the current one
+		'or our savegames once get incompatible to older versions...
+		'(which happens a lot during dev)
+		local unused:int
+		local used:int = GetAdContractCollection().list.count()
+		local adagencyContracts:TList = RoomHandler_AdAgency.GetInstance().GetContractsInStock()
+		if not adagencyContracts then adagencyContracts = CreateList()
+		local availableContracts:TAdContract[] = TAdContract[](GetAdContractCollection().list.ToArray())
+		For local a:TAdContract = EachIn availableContracts
+			if a.owner = a.OWNER_NOBODY OR (a.daySigned = -1 and a.profit = -1 and not adagencyContracts.Contains(a))
+				unused :+1
+				GetAdContractCollection().Remove(a)
+			endif
+		Next
+		print "Cleanup: removed "+unused+" unused AdContracts."
+
+
+		unused = 0
+		used = GetScriptCollection().GetAvailableScriptList().Count()
+		local scriptList:TList = RoomHandler_ScriptAgency.GetInstance().GetScriptsInStock()
+		if not scriptList then scriptList = CreateList()
+		local availableScripts:TScript[] = TScript[](GetScriptCollection().GetAvailableScriptList().ToArray())
+		For local s:TScript = EachIn availableScripts
+			unused :+1
+			GetScriptCollection().Remove(s)
+		Next
+		print "Cleanup: removed "+unused+" unused scripts."
+		
 
 		'call game that game continues/starts now
 		Game.StartLoadedSaveGame()

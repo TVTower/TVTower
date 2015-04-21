@@ -74,15 +74,16 @@ Type TScriptCollection Extends TGameObjectCollection
 	Method GenerateRandom:TScript()
 		local template:TScriptTemplate = GetScriptTemplateCollection().GetRandom()
 		local script:TScript = TScript.CreateFromTemplate(template)
+		script.SetOwner(TOwnedGameObject.OWNER_NOBODY)
 		Add(script)
 		return script
 	End Method
 
 
 	Method GetRandomAvailable:TScript()
-		'if no script is available, create some a new one
-		if GetAvailableScriptList().Count() = 0 then GenerateRandom()
-		
+		'if no script is available, create (and return) some a new one
+		if GetAvailableScriptList().Count() = 0 then return GenerateRandom()
+
 		'fetch a random script
 		return TScript(GetAvailableScriptList().ValueAtIndex(randRange(0, GetAvailableScriptList().Count() - 1)))
 	End Method
@@ -96,7 +97,7 @@ Type TScriptCollection Extends TGameObjectCollection
 			_availableScripts = CreateList()
 			For local script:TScript = EachIn GetParentScriptList()
 				'skip used scripts (or scripts already at the vendor)
-				if script.owner <> 0 then continue
+				if script.IsOwned() then continue
 
 				_availableScripts.AddLast(script)
 			Next
@@ -111,7 +112,7 @@ Type TScriptCollection Extends TGameObjectCollection
 			_usedScripts = CreateList()
 			For local script:TScript = EachIn entries.Values()
 				'skip unused scripts
-				if script.owner = 0 then continue
+				if not script.IsOwned() then continue
 
 				_usedScripts.AddLast(script)
 			Next
@@ -768,7 +769,7 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 		if GetPlayerBaseCollection().playerID = owner
 			canAfford = True
 		'if it is another player... just display "can afford"
-		elseif owner >= 0
+		elseif owner > 0
 			canAfford = True
 		'not our licence but enough money to buy
 		elseif finance and finance.canAfford(GetPrice())

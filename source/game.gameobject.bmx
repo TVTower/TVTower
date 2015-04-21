@@ -140,7 +140,8 @@ End Type
 
 Type TOwnedGameObject Extends TGameObject {_exposeToLua="selected"}
 	Field owner:Int = 0
-
+	Const OWNER_NOBODY:int = -1
+	Const OWNER_VENDOR:int = 0
 
 	Method SetOwner:Int(owner:Int=0) {_exposeToLua}
 		Self.owner = owner
@@ -149,6 +150,27 @@ Type TOwnedGameObject Extends TGameObject {_exposeToLua="selected"}
 
 	Method GetOwner:Int() {_exposeToLua}
 		Return owner
+	End Method
+
+
+	Method IsOwned:int()
+		return owner <> OWNER_NOBODY
+	End Method
+
+
+	Method IsOwnedByNobody:int()
+		return owner = OWNER_NOBODY
+	End Method
+
+
+	Method IsOwnedByVendor:int()
+		return owner = OWNER_VENDOR
+	End Method
+
+
+	Method IsOwnedByPlayer:int(player:int=-1)
+		if player = -1 then return owner > 0
+		return owner = player
 	End Method
 End Type
 

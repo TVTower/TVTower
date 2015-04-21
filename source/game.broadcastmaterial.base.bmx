@@ -275,7 +275,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 			result.GenreDefinition = genreDefinition
 		EndIf
 
-		if owner = 0 Then Throw TNullObjectExceptionExt.Create("The programme '" + GetTitle() + "' has no owner.")
+		if owner <= 0 Then Throw TNullObjectExceptionExt.Create("The programme '" + GetTitle() + "' has no owner.")
 		
 		If block = 1 Or Not lastMovieBlockAttraction Then
 			'1 - Qualität des Programms

@@ -170,6 +170,7 @@ Type TDatabaseLoader
 			
 			'add to collection (it is sorted automatically)
 			GetProgrammeLicenceCollection().AddAutomatic(movieLicence)
+			movieLicence.SetOwner(TOwnedGameObject.OWNER_NOBODY)
 
 			releaseDaycounter:+1
 			moviesCount :+1
@@ -287,6 +288,7 @@ Type TDatabaseLoader
 
 			'add to collection (it is sorted automatically)
 			GetProgrammeLicenceCollection().AddAutomatic(seriesLicence)
+			seriesLicence.SetOwner(TOwnedGameObject.OWNER_NOBODY)
 
 			seriesCount :+ 1
 			totalSeriesCount :+ 1
@@ -942,6 +944,8 @@ Type TDatabaseLoader
 		'licence ... so add this specific programmeData to the global
 		'data collection
 		GetProgrammeDataCollection().Add(programmeData)
+
+		programmeLicence.SetOwner(TOwnedGameObject.OWNER_NOBODY)
 
 		return programmeLicence
 	End Method
