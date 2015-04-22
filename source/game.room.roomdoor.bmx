@@ -275,7 +275,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 		For Local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().list
 			'also allow invisible rooms... so just check if hit the area
 			'If room.doortype >= 0 and THelper.IsIn(x, y, room.Pos.x, Building.area.position.y + TBuilding.GetFloorY2(room.pos.y) - room.doorDimension.Y, room.doorDimension.x, room.doorDimension.y)
-			If THelper.IsIn(x, y, door.area.GetX(), door.area.GetY() - door.area.GetH(), door.area.GetW(), door.area.GetH())
+			If THelper.IsIn(x, y, door.area.GetX(), door.area.GetY() - (door.area.GetH() -1), door.area.GetW(), door.area.GetH())
 				Return door
 			EndIf
 		Next
