@@ -73,7 +73,16 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		If Not material And broadcastMaterial Then material = broadcastMaterial
 
 		broadcastMaterial = material
+
 		If material
+			'set ads to commercials, movies to trailers
+			'this is needed because "drag and drop" on the same area
+			'does not get handled by "AddObject"
+			'alternatively do this in "onFinishDrop"...
+			if not IsDragged() and TGUIProgrammePlanSlotList(lastList)
+				broadcastMaterial.setUsedAsType(TGUIProgrammePlanSlotList(lastList).isType)
+			EndIf
+
 			'now we can calculate the item dimensions
 			Resize(GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW(), GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH() * material.getBlocks())
 
@@ -596,7 +605,6 @@ Type TGUIProgrammePlanSlotList Extends TGUISlotList
 
 		Return True
 	End Function
-
 
 	'override default behaviour for zones
 	Method SetEntryDisplacement(x:Float=0.0, y:Float=0.0, stepping:Int=1)
