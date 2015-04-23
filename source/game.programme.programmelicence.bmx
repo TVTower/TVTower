@@ -451,7 +451,7 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		finance.SellProgrammeLicence(getPrice(), self)
 
 		'set unused again
-		SetOwner(0)
+		SetOwner( TOwnedGameObject.OWNER_NOBODY )
 
 		return TRUE
 	End Method

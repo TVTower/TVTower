@@ -583,7 +583,7 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 		finance.SellScript(GetPrice(), self)
 
 		'set unused again
-		SetOwner(0)
+		SetOwner( TOwnedGameObject.OWNER_NOBODY )
 
 		return TRUE
 	End Method

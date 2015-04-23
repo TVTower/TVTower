@@ -1728,6 +1728,11 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 	'sets another licence into the slot
 	Method Refill:Int(programmeLicence:TProgrammeLicence=Null)
+		'turn back licence if nobody bought the old one
+		if licence and licence.owner = TOwnedGameObject.OWNER_VENDOR
+			licence.SetOwner( TOwnedGameObject.OWNER_NOBODY )
+		endif
+	
 		licence = programmeLicence
 		Local minPrice:Int = 200000
 
@@ -1743,7 +1748,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 		if licence
 			'set licence owner to "-1" so it gets not returned again from Random-Getter
-			licence.SetOwner(-1)
+			licence.SetOwner( TOwnedGameObject.OWNER_VENDOR )
 		endif
 
 		'reset cache
