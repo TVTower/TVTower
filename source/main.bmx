@@ -115,7 +115,7 @@ Include "game.game.bmx"
 
 '===== Globals =====
 Global VersionDate:String = LoadText("incbin::source/version.txt")
-Global VersionString:String = "v0.2.2.1 Build ~q" + VersionDate+"~q"
+Global VersionString:String = "v0.2.2.2 Build ~q" + VersionDate+"~q"
 Global CopyrightString:String = "by Ronny Otto & Manuel Vögele"
 Global App:TApp = Null
 Global Game:TGame
