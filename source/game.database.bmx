@@ -501,7 +501,7 @@ Type TDatabaseLoader
 	Method LoadV3ProgrammePersonBaseFromNode:TProgrammePersonBase(node:TxmlNode, xml:TXmlHelper, isCelebrity:int=True)
 		local GUID:String = xml.FindValue(node,"id", "")
 		local creator:Int = TXmlHelper.FindValueInt(node,"creator", 0)
-		local created_by:String = TXmlHelper.FindValue(node,"created_by", "unknown")
+		local createdBy:String = TXmlHelper.FindValue(node,"created_by", "unknown")
 		'try to fetch an existing one
 		local person:TProgrammePersonBase = GetProgrammePersonCollection().GetByGUID(GUID)
 		'if the person existed, remove it from all lists and later add
@@ -522,7 +522,7 @@ Type TDatabaseLoader
 
 			'only set creator if it is the "non overridden" one
 			person.creator = creator
-			person.created_by = created_by
+			person.createdBy = createdBy
 		endif
 
 
@@ -596,7 +596,7 @@ Type TDatabaseLoader
 	Method LoadV3NewsFromNode:TNewsEvent(node:TxmlNode, xml:TXmlHelper)
 		local GUID:String = xml.FindValue(node,"id", "")
 		local creator:Int = TXmlHelper.FindValueInt(node,"creator", 0)
-		local created_by:String = TXmlHelper.FindValue(node,"created_by", "unknown")
+		local createdBy:String = TXmlHelper.FindValue(node,"created_by", "unknown")
 		local doAdd:int = True
 		'try to fetch an existing one
 		local newsEvent:TNewsEvent = GetNewsEventCollection().GetByGUID(GUID)
@@ -608,7 +608,7 @@ Type TDatabaseLoader
 
 			'only set creator if it is the "non overridden" one
 			newsEvent.creator = creator
-			newsEvent.created_by = created_by
+			newsEvent.createdBy = createdBy
 		else
 			doAdd = False
 		endif
@@ -677,7 +677,7 @@ Type TDatabaseLoader
 	Method LoadV3AdContractBaseFromNode:TAdContractBase(node:TxmlNode, xml:TXmlHelper)
 		local GUID:String = xml.FindValue(node,"id", "")
 		local creator:Int = TXmlHelper.FindValueInt(node,"creator", 0)
-		local created_by:String = TXmlHelper.FindValue(node,"created_by", "unknown")
+		local createdBy:String = TXmlHelper.FindValue(node,"created_by", "unknown")
 		local doAdd:int = True
 		'try to fetch an existing one
 		local adContract:TAdContractBase = GetAdContractBaseCollection().GetByGUID(GUID)
@@ -688,7 +688,7 @@ Type TDatabaseLoader
 			adContract.GUID = GUID
 			'only set creator if it is the "non overridden" one
 			adContract.creator = creator
-			adContract.created_by = created_by
+			adContract.createdBy = createdBy
 		else
 			doAdd = False
 		endif
@@ -767,7 +767,7 @@ Type TDatabaseLoader
 	Method LoadV3ProgrammeLicenceFromNode:TProgrammeLicence(node:TxmlNode, xml:TXmlHelper, parentLicence:TProgrammeLicence = Null)
 		local GUID:String = TXmlHelper.FindValue(node,"id", "")
 		local creator:Int = TXmlHelper.FindValueInt(node,"creator", 0)
-		local created_by:String = TXmlHelper.FindValue(node,"created_by", "unknown")
+		local createdBy:String = TXmlHelper.FindValue(node,"created_by", "unknown")
 		local programmeType:int = TXmlHelper.FindValueInt(node,"product", 0)
 		local programmeData:TProgrammeData
 		local programmeLicence:TProgrammeLicence
@@ -784,7 +784,7 @@ Type TDatabaseLoader
 				programmeData = new TProgrammeData
 				'only set creator if it is the "non overridden" one
 				programmeData.creator = creator
-				programmeData.created_by = created_by
+				programmeData.createdBy = createdBy
 			endif
 
 			programmeData.GUID = "data-"+GUID
@@ -954,7 +954,7 @@ Type TDatabaseLoader
 	Method LoadV3ScriptTemplateFromNode:TScriptTemplate(node:TxmlNode, xml:TXmlHelper, parentScriptTemplate:TScriptTemplate = Null)
 		local GUID:String = TXmlHelper.FindValue(node,"guid", "")
 		local creator:Int = TXmlHelper.FindValueInt(node,"creator", 0)
-		local created_by:String = TXmlHelper.FindValue(node,"created_by", "unknown")
+		local createdBy:String = TXmlHelper.FindValue(node,"created_by", "unknown")
 		local scriptType:int = TXmlHelper.FindValueInt(node,"programmetype", 0)
 		local index:int = TXmlHelper.FindValueInt(node,"index", 0)
 		local scriptTemplate:TScriptTemplate
@@ -969,7 +969,7 @@ Type TDatabaseLoader
 				scriptTemplate = new TScriptTemplate
 				'only set creator if it is the "non overridden" one
 				scriptTemplate.creator = creator
-				scriptTemplate.created_by = created_by
+				scriptTemplate.createdBy = createdBy
 			endif
 
 			scriptTemplate.GUID = GUID
@@ -1198,7 +1198,7 @@ Type TDatabaseLoader
 	Method LoadV3ProgrammeRoleFromNode:TProgrammeRole(node:TxmlNode, xml:TXmlHelper)
 		local GUID:String = TXmlHelper.FindValue(node,"guid", "")
 		local creator:Int = TXmlHelper.FindValueInt(node,"creator", 0)
-		local created_by:String = TXmlHelper.FindValue(node,"created_by", "unknown")
+		local createdBy:String = TXmlHelper.FindValue(node,"created_by", "unknown")
 		local role:TProgrammeRole
 
 		'try to fetch an existing template with the entries GUID
@@ -1208,7 +1208,7 @@ Type TDatabaseLoader
 			role.SetGUID(GUID)
 			'only set creator if it is the "non overridden" one
 			role.creator = creator
-			role.created_by = created_by
+			role.createdBy = createdBy
 		endif
 
 		role.Init(..

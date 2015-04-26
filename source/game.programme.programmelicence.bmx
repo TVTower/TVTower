@@ -1206,12 +1206,12 @@ Type TProgrammeLicenceFilter
 		local result:string
 '		if result = ""
 			local flag:int = 0
-			For local flagNumber:int = 0 to 7
+			For local flagNumber:int = 0 to 7 'manual limitation to "7" to exclude series/paid?
 				flag = 2^flagNumber
 				'contains that flag?
 				if flags & flag > 0
 					if result <> "" then result :+ " & "
-					result :+ GetLocale("PROGRAMME_FLAG_" + int(2^flagNumber))
+					result :+ GetLocale("PROGRAMME_FLAG_" + TVTProgrammeFlag.GetAsString(flag))
 				endif
 			Next
 '		endif

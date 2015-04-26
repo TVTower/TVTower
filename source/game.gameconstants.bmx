@@ -326,6 +326,8 @@ Type TVTProgrammeGenre {_exposeToLua}
 	Const Feature:int = 300
 	Const FeatureYellowPress:int = 301
 
+	Const genreMaximum:Int = 301
+
 
 	Function GetAtIndex:int(index:int)
 		if index >= 1 and index <= 18 then return index
@@ -411,6 +413,22 @@ Type TVTProgrammeFlag {_exposeToLua}
 		if index <= 0 then return 0
 		return 2^(index-1)
 	End Function	
+
+
+	Function GetAsString:String(key:int = 0)
+		Select key
+			case LIVE      return "live"
+			case ANIMATION return "animation"
+			case CULTURE   return "culture"
+			case CULT      return "cult"
+			case TRASH     return "trash"
+			case BMOVIE    return "bmovie"
+			case XRATED    return "xrated"
+			case PAID      return "paid"
+			case SERIES    return "series"
+			default        return "none"
+		End Select
+	End Function
 End Type
 
 
@@ -425,7 +443,7 @@ Type TVTProgrammeLicenceType {_exposeToLua}
 	Function GetAtIndex:int(index:int = 0)
 		if index <= 0 then return 0
 		return 2^(index-1)
-	End Function	
+	End Function
 End Type
 
 

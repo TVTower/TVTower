@@ -159,7 +159,7 @@ Type TProgrammePersonBase extends TGameObject
 	'id of the creating user
 	Field creator:Int = 0
 	'name of the creating user
-	Field created_by:String = ""
+	Field createdBy:String = ""
 
 
 	'override to add another generic naming

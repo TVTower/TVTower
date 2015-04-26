@@ -55,6 +55,44 @@ Type TAudience
 
 	'=== PUBLIC ===
 
+	'only possible when also serializing "TAudienceAttraction"
+	'!!!!!!
+	rem
+	Method SerializeToString:string()
+		'convert FloatToInt
+		return iD + "," +..
+		       f2i(Children) + "," +..
+		       f2i(Teenagers) + "," +..
+		       f2i(HouseWives) + "," +..
+		       f2i(Employees) + "," +..
+		       f2i(Unemployed) + "," +..
+		       f2i(Manager) + "," +..
+		       f2i(Pensioners) + "," +..
+		       f2i(Women) + "," +..
+		       f2i(Men)
+
+		Function f2i:String(f:float)
+			if float(int(f)) = f then return int(f)
+			return f
+		End Function
+	End Method
+
+
+	Method DeSerializeFromString(text:String)
+		local vars:string[] = text.split(",")
+		if vars.length > 0 then iD = int(vars[0])
+		if vars.length > 1 then Children = float(vars[1])
+		if vars.length > 2 then Teenagers = float(vars[2])
+		if vars.length > 3 then HouseWives = float(vars[3])
+		if vars.length > 4 then Employees = float(vars[4])
+		if vars.length > 5 then Unemployed = float(vars[5])
+		if vars.length > 6 then Manager = float(vars[6])
+		if vars.length > 7 then Pensioners = float(vars[7])
+		if vars.length > 8 then Women = float(vars[8])
+		if vars.length > 9 then Men = float(vars[9])
+	End Method
+	endrem
+
 	Method Copy:TAudience()
 		Local result:TAudience = New TAudience
 		result.Id = Id

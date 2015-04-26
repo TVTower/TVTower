@@ -141,7 +141,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	'id of the creating user
 	Field creator:Int = 0
 	'name of the creating user
-	Field created_by:String = ""
+	Field createdBy:String = ""
 	Rem
 	extra data block containing various information (if set)
 	"maxTopicality::ageInfluence" - influence of the age on the max topicality
@@ -429,7 +429,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		for local i:int = eachin checkFlags
 			if flags & i > 0
 				if result <> "" then result :+ delimiter
-				result :+ GetLocale("PROGRAMME_FLAG_" + i)
+				result :+ GetLocale("PROGRAMME_FLAG_" + TVTProgrammeFlag.GetAsString(i))
 			endif
 		Next
 

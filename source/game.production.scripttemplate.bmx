@@ -123,7 +123,7 @@ Type TScriptTemplate Extends TNamedGameObject
 	'id of the creating user
 	Field creator:Int = 0
 	'name of the creating user
-	Field created_by:String = ""
+	Field createdBy:String = ""
 
 	'reset things used for random data
 	'like placeholders (which are stored there so that children could
