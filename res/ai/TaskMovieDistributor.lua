@@ -230,7 +230,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 --RON
 --TVT.PrintOut("RON: AppraiseMovie")
 	--Allgemeine Minimalvorraussetzungen erfüllt?
-	if (licence.IsMovie()) then
+	if (licence.IsSingle()) then
 		if (CheckMovieBuyConditions(licence, self.MovieMaxPrice, self.DayMovieMinQuality)) then
 			pricePerBlockStats = stats.MoviePricePerBlockAcceptable
 			qualityStats = stats.MovieQualityAcceptable

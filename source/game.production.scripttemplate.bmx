@@ -39,7 +39,7 @@ Type TScriptTemplateCollection Extends TGameObjectCollection
 		'create a full array containing all elements
 		For local obj:TScriptTemplate = EachIn entries.Values()
 			'skip episode scripts
-			if obj.scriptType = TVTProgrammeType.EPISODE then continue
+			if obj.scriptLicenceType = TVTProgrammeLicenceType.EPISODE then continue
 
 			array :+ [obj]
 		Next
@@ -62,7 +62,8 @@ End Function
 Type TScriptTemplate Extends TNamedGameObject
 	Field title:TLocalizedString
 	Field description:TLocalizedString
-	Field scriptType:Int = 0
+	Field scriptLicenceType:Int = 0
+	Field scriptProductType:Int = 0
 	Field mainGenre:Int
 	Field subGenres:Int[]
 
@@ -718,12 +719,12 @@ Type TScriptTemplate Extends TNamedGameObject
 
 
 	Method isSeries:int()
-		return (scriptType & TVTProgrammeLicenceType.SERIES)
+		return (scriptLicenceType & TVTProgrammeLicenceType.SERIES)
 	End Method
 
 
 	Method isEpisode:int()
-		return (scriptType & TVTProgrammeLicenceType.EPISODE)
+		return (scriptLicenceType & TVTProgrammeLicenceType.EPISODE)
 	End Method
 
 

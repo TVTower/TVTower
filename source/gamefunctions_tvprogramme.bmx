@@ -1186,7 +1186,7 @@ endrem
 				If THelper.MouseIn(currX, currY + 1, entrySize.GetX(), entrySize.GetY()) Then tapeDrawType="hovered"
 
 
-				If licences[i].isMovie()
+				If licences[i].isSingle()
 					GetSpriteFromRegistry("gfx_programmetape_movie."+tapeDrawType).draw(currX + 8, currY+1)
 				Else
 					GetSpriteFromRegistry("gfx_programmetape_series."+tapeDrawType).draw(currX + 8, currY+1)
@@ -1287,7 +1287,7 @@ endrem
 				hoveredLicence = licences[i]
 				If MOUSEMANAGER.IsHit(1)
 					If mode = MODE_PROGRAMMEPLANNER
-						If licences[i].isMovie()
+						If licences[i].isSingle()
 							'create and drag new block
 							New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( New TProgramme.Create(licences[i]), "programmePlanner" ).drag()
 							SetOpen(0)
@@ -1371,7 +1371,7 @@ endrem
 				'hovered - draw hover effect if hovering
 				If THelper.MouseIn(currX, currY + 1, entrySize.GetX(), entrySize.GetY()) Then tapeDrawType="hovered"
 
-				If licence.isMovie()
+				If licence.isSingle()
 					GetSpriteFromRegistry("gfx_programmetape_movie."+tapeDrawType).draw(currX + 8, currY+1)
 				Else
 					GetSpriteFromRegistry("gfx_programmetape_series."+tapeDrawType).draw(currX + 8, currY+1)
@@ -2240,7 +2240,7 @@ Type TGUIProgrammeLicenceSlotList Extends TGUISlotList
 		If acceptType > 0
 			'movies and series do not accept collections or episodes
 			If acceptType = acceptMovies And coverBlock.licence.isSeries() Then Return False
-			If acceptType = acceptSeries And coverBlock.licence.isMovie() Then Return False
+			If acceptType = acceptSeries And coverBlock.licence.isSingle() Then Return False
 		EndIf
 
 		If Super.AddItem(item,extra)

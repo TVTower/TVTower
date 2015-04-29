@@ -155,7 +155,8 @@ Type TProgrammePersonBase extends TGameObject
 	field firstName:String = ""
 	field nickName:String = ""
 	field job:int = 0
-	field realPerson:int = False
+	'is this an real existing person or someone we imaginated for the game?
+	field fictional:int = False
 	'id of the creating user
 	Field creator:Int = 0
 	'name of the creating user

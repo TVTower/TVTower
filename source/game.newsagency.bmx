@@ -404,9 +404,11 @@ Type TNewsAgency
 	Method _GetAnnouncableProgrammeLicence:TProgrammeLicence()
 		'filter to entries we need
 		Local resultList:TList = CreateList()
-		For local licence:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().movies
+		For local licence:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().singles
 			'ignore collection and episodes (which should not be in that list)
 			If Not licence.getData() Then Continue
+			'only announce movies...
+			If not licence.IsSingle() Then Continue
 
 			'ignore if filtered out
 			If licence.IsOwned() Then Continue

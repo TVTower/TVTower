@@ -22,8 +22,8 @@ Type TProgrammeLicenceCollection
 	'holding only licences of special packages containing multiple
 	'movies/series
 	Field collections:TList	= CreateList()
-	'holding only movie licences
-	Field movies:TList = CreateList()
+	'holding only single licences (movies, one-time-events)
+	Field singles:TList = CreateList()
 	'holding only series licences
 	Field series:TList = CreateList()
 
@@ -39,7 +39,7 @@ Type TProgrammeLicenceCollection
 	Method Initialize:TProgrammeLicenceCollection()
 		licences.Clear()
 		collections.Clear()
-		movies.Clear()
+		singles.Clear()
 		series.Clear()
 		
 		return self
@@ -47,9 +47,9 @@ Type TProgrammeLicenceCollection
 
 
 	Method PrintLicences:int()
-		print "--------- movies: "+movies.Count()
-		For local movie:TProgrammeLicence = Eachin movies
-			print movie.GetTitle() + "   [owner: "+movie.owner+"]"
+		print "--------- singles: "+singles.Count()
+		For local single:TProgrammeLicence = Eachin singles
+			print single.GetTitle() + "   [owner: "+single.owner+"]"
 		Next
 		print "---------"
 		print "--------- series: "+series.Count()
@@ -86,18 +86,18 @@ Type TProgrammeLicenceCollection
 	End Method
 
 
-	'add a licence as movie
-	Method AddMovie:Int(licence:TProgrammeLicence, skipDuplicates:Int = True)
-		if skipDuplicates and movies.contains(licence) then return False
+	'add a licence as single (movie, one-time-event)
+	Method AddSingle:Int(licence:TProgrammeLicence, skipDuplicates:Int = True)
+		if skipDuplicates and singles.contains(licence) then return False
 
-		movies.AddLast(licence)
+		singles.AddLast(licence)
 		return True
 	End Method
 
 
-	'checks if the movie list contains the given licence
-	Method ContainsMovie:Int(licence:TProgrammeLicence)
-		return movies.contains(licence)
+	'checks if the singles list contains the given licence
+	Method ContainsSingle:Int(licence:TProgrammeLicence)
+		return singles.contains(licence)
 	End Method	
 
 
@@ -144,8 +144,8 @@ Type TProgrammeLicenceCollection
 		'this also includes episodes!
 		Add(licence, skipDuplicates)
 
-		'=== MOVIES ===
-		if licence.isMovie() then AddMovie(licence, skipDuplicates)
+		'=== SINGLES ===
+		if licence.isSingle() then AddSingle(licence, skipDuplicates)
 
 		'=== EPISODES ===
 		'episodes do not need special handling ...
@@ -163,10 +163,10 @@ Type TProgrammeLicenceCollection
 	'returns the list to use for the given type
 	'this is just important for "random" access as we could
 	'also just access "progList" in all cases...
-	Method _GetList:TList(programmeType:int=0)
-		Select programmeType
-			case TVTProgrammeLicenceType.MOVIE
-				return movies
+	Method _GetList:TList(programmeLicenceType:int=0)
+		Select programmeLicenceType
+			case TVTProgrammeLicenceType.SINGLE
+				return singles
 			case TVTProgrammeLicenceType.SERIES
 				return series
 			case TVTProgrammeLicenceType.COLLECTION
@@ -193,8 +193,8 @@ Type TProgrammeLicenceCollection
 	End Method
 
 
-	Method Get:TProgrammeLicence(id:Int, programmeType:int=0)
-		local list:TList = _GetList(programmeType)
+	Method Get:TProgrammeLicence(id:Int, programmeLicenceType:int=0)
+		local list:TList = _GetList(programmeLicenceType)
 		local licence:TProgrammeLicence = null
 
 		For Local i:Int = 0 To list.Count() - 1
@@ -215,10 +215,10 @@ Type TProgrammeLicenceCollection
 
 
 
-	Method GetRandom:TProgrammeLicence(programmeType:int=0, includeEpisodes:int=FALSE)
+	Method GetRandom:TProgrammeLicence(programmeLicenceType:int=0, includeEpisodes:int=FALSE)
 		'filter to entries we need
 		Local Licence:TProgrammeLicence
-		Local sourceList:TList = _GetList(programmeType)
+		Local sourceList:TList = _GetList(programmeLicenceType)
 		Local resultList:TList = CreateList()
 
 		For Licence = EachIn sourceList
@@ -235,10 +235,10 @@ Type TProgrammeLicenceCollection
 	End Method
 
 
-	Method GetRandomWithPrice:TProgrammeLicence(MinPrice:int=0, MaxPrice:Int=-1, programmeType:int=0, includeEpisodes:int=FALSE)
+	Method GetRandomWithPrice:TProgrammeLicence(MinPrice:int=0, MaxPrice:Int=-1, programmeLicenceType:int=0, includeEpisodes:int=FALSE)
 		'filter to entries we need
 		Local Licence:TProgrammeLicence
-		Local sourceList:TList = _GetList(programmeType)
+		Local sourceList:TList = _GetList(programmeLicenceType)
 		Local resultList:TList = CreateList()
 
 		For Licence = EachIn sourceList
@@ -257,9 +257,9 @@ Type TProgrammeLicenceCollection
 	End Method
 
 
-	Method GetRandomWithGenre:TProgrammeLicence(genre:Int=0, programmeType:int=0, includeEpisodes:int=FALSE)
+	Method GetRandomWithGenre:TProgrammeLicence(genre:Int=0, programmeLicenceType:int=0, includeEpisodes:int=FALSE)
 		Local Licence:TProgrammeLicence
-		Local sourceList:TList = _GetList(programmeType)
+		Local sourceList:TList = _GetList(programmeLicenceType)
 		Local resultList:TList = CreateList()
 
 		For Licence = EachIn sourceList
@@ -269,7 +269,7 @@ Type TProgrammeLicenceCollection
 			If not includeEpisodes and Licence.isEpisode() Then continue
 
 			'if available (unbought, released..), add it to candidates list
-			If Licence.isMovie() or Licence.isEpisode()
+			If Licence.isSingle() or Licence.isEpisode()
 				if Licence.GetData().getGenre() = genre Then resultList.addLast(Licence)
 			else
 				local foundGenreInSubLicence:int = FALSE
@@ -416,8 +416,13 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method isMovie:int() {_exposeToLua}
-		return GetData() and GetData().isMovie()
+	'Method isMovie:int() {_exposeToLua}
+	'	return GetData() and GetData().isMovie()
+	'End Method
+
+
+	Method isSingle:int() {_exposeToLua}
+		return GetData() and GetData().isSingle()
 	End Method
 	
 
@@ -800,20 +805,20 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 			addCast = data.GetCastGroupString(TVTProgrammePersonJob.SUPPORTINGACTOR)
 
 		elseif data.GetCastGroupString(TVTProgrammePersonJob.REPORTER) <> ""
-			addCastTitle = GetLocale("MOVIE_REPORTER")
+			addCastTitle = GetLocale("MOVIE_REPORTERS")
 			addCast = data.GetCastGroupString(TVTProgrammePersonJob.REPORTER)
 
 		elseif data.GetCastGroupString(TVTProgrammePersonJob.GUEST) <> ""
-			addCastTitle = GetLocale("MOVIE_GUEST")
+			addCastTitle = GetLocale("MOVIE_GUESTS")
 			addCast = data.GetCastGroupString(TVTProgrammePersonJob.GUEST)
 
 		elseif data.GetCastGroupString(TVTProgrammePersonJob.HOST) <> ""
 			addCastTitle = GetLocale("MOVIE_HOST")
 			addCast = data.GetCastGroupString(TVTProgrammePersonJob.HOST)
 
-		elseif data.GetCastGroupString(TVTProgrammePersonJob.WRITER) <> ""
+		elseif data.GetCastGroupString(TVTProgrammePersonJob.SCRIPTWRITER) <> ""
 			addCastTitle = GetLocale("MOVIE_SCRIPT")
-			addCast = data.GetCastGroupString(TVTProgrammePersonJob.WRITER)
+			addCast = data.GetCastGroupString(TVTProgrammePersonJob.SCRIPTWRITER)
 
 		elseif data.GetCastGroupString(TVTProgrammePersonJob.MUSICIAN) <> ""
 			addCastTitle = GetLocale("MOVIE_MUSIC")

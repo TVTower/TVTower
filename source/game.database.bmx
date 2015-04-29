@@ -163,7 +163,7 @@ Type TDatabaseLoader
 			modifiers.AddNumber("wearoff", wearoffModifier)
 			
 			local movieLicence:TProgrammeLicence = new TProgrammeLicence
-			movieLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, modifiers, Genre, duration, xrated, TVTProgrammeLicenceType.MOVIE))
+			movieLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, modifiers, Genre, duration, xrated, TVTProgrammeLicenceType.SINGLE))
 
 			'convert old genre definition to new one
 			convertV2genreToV3(movieLicence.data)
@@ -455,7 +455,7 @@ Type TDatabaseLoader
 				licence = LoadV3ProgrammeLicenceFromNode(nodeProgramme, xml)
 
 				if licence
-					if licence.isMovie()
+					if licence.isSingle()
 						moviesCount :+ 1
 						totalMoviesCount :+ 1
 					elseif licence.isSeries()
@@ -529,12 +529,13 @@ Type TDatabaseLoader
 		'=== COMMON DETAILS ===
 		local data:TData = new TData
 		xml.LoadValuesToData(node, data, [..
-			"first_name", "last_name", "nick_name" ..
+			"first_name", "last_name", "nick_name", "fictional" ..
 		])
 
 		person.firstName = data.GetString("first_name", person.firstName)
 		person.lastName = data.GetString("last_name", person.lastName)
 		person.nickName = data.GetString("nick_name", person.nickName)
+		person.fictional = data.GetInt("fictional", person.fictional)
 
 
 		'=== CELEBRITY SPECIFIC DATA ===
@@ -547,13 +548,15 @@ Type TDatabaseLoader
 			'=== DETAILS ===
 			local nodeDetails:TxmlNode = xml.FindElementNode(node, "details")
 			data = new TData
+			'contains custom fictional overriding the base one
 			xml.LoadValuesToData(nodeDetails, data, [..
-				"gender", "birthday", "deathday", "country" ..
+				"gender", "birthday", "deathday", "country", "fictional" ..
 			])
 			celebrity.gender = data.GetInt("gender", celebrity.gender)
 			celebrity.SetDayOfBirth( data.GetString("birthday", celebrity.dayOfBirth) )
 			celebrity.SetDayOfDeath( data.GetString("deathday", celebrity.dayOfDeath) )
 			celebrity.country = data.GetString("country", celebrity.country)
+			celebrity.fictional = data.GetInt("fictional", celebrity.fictional)
 			
 
 			'=== DATA ===
@@ -768,7 +771,8 @@ Type TDatabaseLoader
 		local GUID:String = TXmlHelper.FindValue(node,"id", "")
 		local creator:Int = TXmlHelper.FindValueInt(node,"creator", 0)
 		local createdBy:String = TXmlHelper.FindValue(node,"created_by", "unknown")
-		local programmeType:int = TXmlHelper.FindValueInt(node,"product", 0)
+		local programmeProductType:int = TXmlHelper.FindValueInt(node,"product", 0)
+		local programmeLicenceType:int = TXmlHelper.FindValueInt(node,"type", 1) 'default to "single"
 		local programmeData:TProgrammeData
 		local programmeLicence:TProgrammeLicence
 
@@ -785,6 +789,9 @@ Type TDatabaseLoader
 				'only set creator if it is the "non overridden" one
 				programmeData.creator = creator
 				programmeData.createdBy = createdBy
+			else
+				'reuse old one
+				programmeProductType = programmeData.programmeProductType
 			endif
 
 			programmeData.GUID = "data-"+GUID
@@ -831,7 +838,12 @@ Type TDatabaseLoader
 		programmeData.flags = data.GetInt("flags", programmeData.flags)
 
 		programmeData.genre = data.GetInt("maingenre", programmeData.genre)
-		programmeData.subGenre = data.GetInt("subgenre", programmeData.subGenre)
+		For local sg:string = EachIn data.GetString("subgenre", "").split(",")
+			if sg = "" then continue
+			if not THelper.IntArrayContainsNumber(programmeData.subGenres, int(sg))
+				programmeData.subGenres :+ [int(sg)]
+			endif
+		Next
 
 		'for movies/series set a releaseDay until we have that
 		'in the db.
@@ -891,17 +903,25 @@ Type TDatabaseLoader
 
 			programmeData.SetModifier(modKey, modValue)
 		Next
-		
+
+
+		'=== PRODUCT TYPE ===
+		programmeData.programmeProductType = programmeProductType
 
 		'=== LICENCE TYPE ===
 		'the licenceType is adjusted as soon as "AddData" was used
 		'so correct it if needed
-		Select programmeType
-			case 1	 programmeData.programmeType = TVTProgrammeLicenceType.MOVIE
-			case 2	 programmeData.programmeType = TVTProgrammeLicenceType.SERIES
-			case 4	 programmeData.programmeType = TVTProgrammeLicenceType.EPISODE
+		Select programmeLicenceType
+			case TVTProgrammeLicenceType.SERIES
+					programmeData.programmeLicenceType = TVTProgrammeLicenceType.SERIES
+			case TVTProgrammeLicenceType.EPISODE
+					programmeData.programmeLicenceType = TVTProgrammeLicenceType.EPISODE
+			case TVTProgrammeLicenceType.COLLECTION
+					programmeData.programmeLicenceType = TVTProgrammeLicenceType.COLLECTION
+			'case TVTProgrammeLicenceType.SINGLE
+			default
+					programmeData.programmeLicenceType = TVTProgrammeLicenceType.SINGLE
 		End Select
-
 
 		
 		'=== EPISODES ===
@@ -924,8 +944,8 @@ Type TDatabaseLoader
 		Next
 
 		if programmeLicence.isSeries() and programmeLicence.GetSubLicenceCount() = 0
-			programmeData.programmeType = TVTProgrammeLicenceType.MOVIE
-			print "Series with 0 episodes found. Converted to movie: "+programmeLicence.GetTitle()
+			programmeData.programmeLicenceType = TVTProgrammeLicenceType.SINGLE
+			print "Series with 0 episodes found. Converted to single: "+programmeLicence.GetTitle()
 		endif
 
 		
@@ -955,7 +975,8 @@ Type TDatabaseLoader
 		local GUID:String = TXmlHelper.FindValue(node,"guid", "")
 		local creator:Int = TXmlHelper.FindValueInt(node,"creator", 0)
 		local createdBy:String = TXmlHelper.FindValue(node,"created_by", "unknown")
-		local scriptType:int = TXmlHelper.FindValueInt(node,"programmetype", 0)
+		local scriptProductType:int = TXmlHelper.FindValueInt(node,"product", 1)
+		local scriptLicenceType:int = TXmlHelper.FindValueInt(node,"type", 1) 'default to movie/single
 		local index:int = TXmlHelper.FindValueInt(node,"index", 0)
 		local scriptTemplate:TScriptTemplate
 
@@ -1001,12 +1022,10 @@ Type TDatabaseLoader
 		xml.LoadValuesToData(nodeData, data, ["mainGenre", "subGenres"])
 		scriptTemplate.mainGenre = data.GetInt("mainGenre", 0)
 		For local sg:string = EachIn data.GetString("subGenres", "").split(",")
-			'skip doublettes
-			local foundDoublette:int = False
-			For local i:int = EachIn scriptTemplate.subGenres
-				if i = int(sg) then foundDoublette = True; exit
-			Next
-			if not foundDoublette then scriptTemplate.subGenres :+ [int(sg)]
+			if sg = "" then continue
+			if not THelper.IntArrayContainsNumber(scriptTemplate.subGenres, int(sg))
+				scriptTemplate.subGenres :+ [int(sg)]
+			endif
 		Next
 
 
@@ -1167,17 +1186,18 @@ Type TDatabaseLoader
 
 
 		'=== SCRIPT - PRODUCT TYPE ===
-		scriptTemplate.scriptType = scriptType
+		scriptTemplate.scriptLicenceType = scriptLicenceType
+		scriptTemplate.scriptProductType = scriptProductType
 		rem
 			auto correction cannot be done this way, as a show could
 			be also defined having multiple episodes or a reportage
 		'correct if contains episodes or is episode
 		if scriptTemplate.GetSubScriptTemplateCount() > 0
-			scriptTemplate.scriptType = TVTProgrammeType.SERIES
+			scriptTemplate.scriptLicenceType = TVTProgrammeLicenceType.SERIES
 		else
 			'defined a parent - must be a episode
 			if scriptTemplate.parentScriptTemplateGUID <> ""
-				scriptTemplate.scriptType = TVTProgrammeType.EPISODE
+				scriptTemplate.scriptLicenceType = TVTProgrammeLicenceType.EPISODE
 			elseif
 			if scriptTemplate.parentScriptTemplateGUID <> ""
 			endif

@@ -17,7 +17,7 @@
 	
 	Method ProgrammeLicence() { test }
 		Local licence:TProgrammeLicence = TTestKit.CrProgrammeLicence(Null, 1, TProgrammeLicence.TYPE_MOVIE, 0.5)			
-		assertTrue(licence.isMovie())
+		assertTrue(licence.isSingle())
 	End Method
 	
 	Method ProgrammeTopicality() { test }

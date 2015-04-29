@@ -984,7 +984,7 @@ Horror vom Feinsten</de>
 			<data country="USA" year="1998" distribution="0" maingenre="5" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.7" />
 			<ratings critics="0" speed="14" outcome="56" />
 		</programme>
-		<programme id="53406dc9-1e66-4f79-aa24-67a2ed4c7441" product="1" type="4" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="53406dc9-1e66-4f79-aa24-67a2ed4c7441" product="8" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Der Hammer fällt LIVE</de>
 				<en></en>
@@ -1465,7 +1465,7 @@ Bunte Action mit [1|Full]</de>
 			<data country="GB" year="1966" distribution="0" maingenre="16" subgenre="0" flags="0" blocks="2" time="0" price_mod="1" />
 			<ratings critics="80" speed="37" outcome="32" />
 		</programme>
-		<programme id="2fcf1b3e-701c-434d-acf3-c34c94227e7d" product="1" type="4" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="2fcf1b3e-701c-434d-acf3-c34c94227e7d" product="8" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Die große Verarsche-Show</de>
 				<en></en>
@@ -4774,7 +4774,7 @@ Aufwendiges Actionspektakel von Regisseur [0|Full]</de>
 			<data country="D" year="1991" distribution="0" maingenre="6" subgenre="0" flags="4" blocks="1" time="0" price_mod="0.67" />
 			<ratings critics="70" speed="4" outcome="18" />
 		</programme>
-		<programme id="6cab2c62-39d7-4e0a-b957-191d54fc78f9" product="1" type="4" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="6cab2c62-39d7-4e0a-b957-191d54fc78f9" product="8" type="1" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>TED am Morgen</de>
 				<en></en>
@@ -5317,7 +5317,7 @@ Neo-Western mit [1|Full]</de>
 			<data country="USA" year="1996" distribution="0" maingenre="18" subgenre="0" flags="0" blocks="2" time="0" price_mod="1" />
 			<ratings critics="37" speed="42" outcome="51" />
 		</programme>
-		<programme id="e0da07de-d9fc-4426-bcf2-119d344598c8" product="1" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="e0da07de-d9fc-4426-bcf2-119d344598c8" product="8" type="1" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Wer wird Pleitegeier?</de>
 				<en></en>
@@ -5721,7 +5721,7 @@ Tragische Liebesgeschichte</de>
 			<data country="F" year="1990" distribution="0" maingenre="15" subgenre="0" flags="0" blocks="3" time="0" price_mod="1" />
 			<ratings critics="56" speed="28" outcome="42" />
 		</programme>
-		<programme id="4544c5b6-59e8-4869-a0e5-7c184c1c0d98" product="2" type="5" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="4544c5b6-59e8-4869-a0e5-7c184c1c0d98" product="8" type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>BBWr - Best-Of Bolivian Wrestling</de>
 				<en></en>
@@ -5743,7 +5743,7 @@ Tragische Liebesgeschichte</de>
 			<data country="BOL" year="2005" distribution="0" maingenre="203" subgenre="0" flags="0" blocks="2" time="0" price_mod="0.17" />
 			<ratings critics="7" speed="19" outcome="0" />
 			<children>
-				<programme id="3ca74c27-5958-4603-bf65-7ccc0be8b83f" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="3ca74c27-5958-4603-bf65-7ccc0be8b83f" product="8" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Hart - Hoden</de>
 						<en></en>
@@ -5754,7 +5754,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="27" speed="27" />
 				</programme>
-				<programme id="d24b258f-654a-4d2c-8c13-39c4191613bc" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="d24b258f-654a-4d2c-8c13-39c4191613bc" product="8" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Der neue wird eingewiesen</de>
 						<en></en>
@@ -5768,7 +5768,7 @@ Tragische Liebesgeschichte</de>
 					</staff>
 					<ratings critics="15" speed="16" />
 				</programme>
-				<programme id="0c080897-ff79-4244-b551-d7929afd42a8" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="0c080897-ff79-4244-b551-d7929afd42a8" product="8" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Snake - Gravedigger</de>
 						<en></en>
@@ -5779,7 +5779,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="15" speed="39" />
 				</programme>
-				<programme id="2125c95f-d6c2-4472-b2d5-38e203a6e266" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="2125c95f-d6c2-4472-b2d5-38e203a6e266" product="8" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Stahlhammer - Perez</de>
 						<en></en>
@@ -5793,7 +5793,7 @@ Tragische Liebesgeschichte</de>
 					</staff>
 					<ratings critics="7" speed="35" />
 				</programme>
-				<programme id="effdf7ed-0738-4711-a3e7-ca5003cef73a" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="effdf7ed-0738-4711-a3e7-ca5003cef73a" product="8" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Tag-Team-Match</de>
 						<en></en>
@@ -5806,7 +5806,7 @@ Tragische Liebesgeschichte</de>
 				</programme>
 			</children>
 		</programme>
-		<programme id="04439fd1-e89f-4922-a48e-6f8ddf96f7ab" product="2" type="6" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="04439fd1-e89f-4922-a48e-6f8ddf96f7ab" product="128" type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Ronny hilft...</de>
 				<en></en>
@@ -5822,7 +5822,7 @@ Tragische Liebesgeschichte</de>
 			<data country="D" year="2011" distribution="0" maingenre="0" subgenre="0" flags="16" blocks="4" time="0" price_mod="0.21" />
 			<ratings critics="6" speed="3" outcome="0" />
 			<children>
-				<programme id="39803483-0800-46e3-a153-5534c3d212da" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="39803483-0800-46e3-a153-5534c3d212da" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Marios Wohnzimmer</de>
 						<en></en>
@@ -5833,7 +5833,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="6" speed="3" />
 				</programme>
-				<programme id="4c062f49-f1e8-400a-9c11-852e95327873" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="4c062f49-f1e8-400a-9c11-852e95327873" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Sandros Handyvertrag</de>
 						<en></en>
@@ -5844,7 +5844,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="5" speed="4" />
 				</programme>
-				<programme id="dc0b1ca6-c1c1-496f-9882-06f51fe0ab97" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="dc0b1ca6-c1c1-496f-9882-06f51fe0ab97" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Ok, OP...</de>
 						<en></en>
@@ -5855,7 +5855,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="6" speed="3" />
 				</programme>
-				<programme id="fc7b481e-33b5-4113-89b3-9998ef8c66a6" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="fc7b481e-33b5-4113-89b3-9998ef8c66a6" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>...sich selbst</de>
 						<en></en>
@@ -5868,7 +5868,7 @@ Tragische Liebesgeschichte</de>
 				</programme>
 			</children>
 		</programme>
-		<programme id="e3065f58-7e56-49f4-8978-89f6dfe18b57" product="2" type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="e3065f58-7e56-49f4-8978-89f6dfe18b57" product="128" type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Aus dem Leben gegriffen</de>
 				<en></en>
@@ -5885,7 +5885,7 @@ Tragische Liebesgeschichte</de>
 			<data country="D" year="2009" distribution="0" maingenre="301" subgenre="0" flags="0" blocks="1" time="0" price_mod="0.2" />
 			<ratings critics="3" speed="7" outcome="0" />
 			<children>
-				<programme id="3daec432-9b89-493d-806a-74b39ef9d7c4" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="3daec432-9b89-493d-806a-74b39ef9d7c4" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Der Malocher</de>
 						<en></en>
@@ -5896,7 +5896,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="3" speed="7" />
 				</programme>
-				<programme id="62fdaea6-a012-4430-a442-cedb78a10e82" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="62fdaea6-a012-4430-a442-cedb78a10e82" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Frivole Liebschaften</de>
 						<en></en>
@@ -5907,7 +5907,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="5" speed="10" />
 				</programme>
-				<programme id="2d98454f-f768-447b-bbd1-070ac621927f" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="2d98454f-f768-447b-bbd1-070ac621927f" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Nachbars Nebenberuf</de>
 						<en></en>
@@ -5918,7 +5918,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="3" speed="9" />
 				</programme>
-				<programme id="5f96e1bc-5c96-4289-b020-972d657e0d39" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="5f96e1bc-5c96-4289-b020-972d657e0d39" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Ohne Schulabschluss</de>
 						<en></en>
@@ -5929,7 +5929,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="5" speed="10" />
 				</programme>
-				<programme id="7448b9f0-f470-409a-afb6-e2763a4b536c" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="7448b9f0-f470-409a-afb6-e2763a4b536c" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Der fiese Chef</de>
 						<en></en>
@@ -5940,7 +5940,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="11" speed="16" />
 				</programme>
-				<programme id="0d33b686-a7d7-4649-859c-5033e1c64686" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="0d33b686-a7d7-4649-859c-5033e1c64686" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Der Drogenkurier</de>
 						<en></en>
@@ -5956,7 +5956,7 @@ Tragische Liebesgeschichte</de>
 				</programme>
 			</children>
 		</programme>
-		<programme id="e3d2d499-8a03-4149-9e1e-2f52f2621f9a" product="2" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="e3d2d499-8a03-4149-9e1e-2f52f2621f9a" product="2" type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Robota Cup: Erstdirektive</de>
 				<en></en>
@@ -5977,7 +5977,7 @@ Tragische Liebesgeschichte</de>
 			<data country="CAN" year="1994" distribution="0" maingenre="16" subgenre="0" flags="0" blocks="1" time="0" price_mod="0.67" />
 			<ratings critics="4" speed="70" outcome="28" />
 			<children>
-				<programme id="10700e05-245c-49fe-a317-ba9ff97c83f3" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="10700e05-245c-49fe-a317-ba9ff97c83f3" product="2" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Fiese Gerechtigkeit</de>
 						<en></en>
@@ -5987,7 +5987,7 @@ Tragische Liebesgeschichte</de>
 						<en></en>
 					</description>
 				</programme>
-				<programme id="df149799-d107-4226-a0aa-790896efc1b0" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="df149799-d107-4226-a0aa-790896efc1b0" product="2" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Schmelztiegel</de>
 						<en></en>
@@ -6000,7 +6000,7 @@ Tragische Liebesgeschichte</de>
 						<member index="0" function="1">3e82947f-9094-4ee5-b1d7-a22557d07062</member>
 					</staff>
 				</programme>
-				<programme id="71b957a1-f0b7-440a-8b60-d301d97a1c82" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="71b957a1-f0b7-440a-8b60-d301d97a1c82" product="2" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Die Wiedergeburt</de>
 						<en></en>
@@ -6013,7 +6013,7 @@ Tragische Liebesgeschichte</de>
 						<member index="0" function="1">3e82947f-9094-4ee5-b1d7-a22557d07062</member>
 					</staff>
 				</programme>
-				<programme id="23cace5d-9d0c-457a-a399-399a12237d5b" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="23cace5d-9d0c-457a-a399-399a12237d5b" product="2" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Chaos</de>
 						<en></en>
@@ -6025,7 +6025,7 @@ Tragische Liebesgeschichte</de>
 				</programme>
 			</children>
 		</programme>
-		<programme id="b528cab3-ec3d-43fc-b76a-2cb1724a7055" product="2" type="4" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="b528cab3-ec3d-43fc-b76a-2cb1724a7055" product="8" type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Ein Päuschen zum Gewinn</de>
 				<en></en>
@@ -6042,7 +6042,7 @@ Tragische Liebesgeschichte</de>
 			<data country="D" year="2009" distribution="0" maingenre="0" subgenre="0" flags="128" blocks="1" time="0" price_mod="0.1" />
 			<ratings critics="2" speed="25" outcome="0" />
 			<children>
-				<programme id="8aedcc43-c63d-4ab3-aec9-dfd858ba3f1e" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="8aedcc43-c63d-4ab3-aec9-dfd858ba3f1e" product="8" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Leichte Gewinne</de>
 						<en></en>
@@ -6053,7 +6053,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="3" speed="28" />
 				</programme>
-				<programme id="a2ac67b0-6689-4c50-9489-d516bb15b771" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="a2ac67b0-6689-4c50-9489-d516bb15b771" product="8" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Harte Brocken</de>
 						<en></en>
@@ -6064,7 +6064,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="3" speed="20" />
 				</programme>
-				<programme id="82a377c0-4950-40cb-9813-9bb5c8ad9ad8" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="82a377c0-4950-40cb-9813-9bb5c8ad9ad8" product="8" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Genie gesucht</de>
 						<en></en>
@@ -6075,7 +6075,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="3" speed="25" />
 				</programme>
-				<programme id="81800e30-c387-4a29-9c21-c306a542cd7a" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="81800e30-c387-4a29-9c21-c306a542cd7a" product="8" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Dürft ich Fragen?</de>
 						<en></en>
@@ -6088,7 +6088,7 @@ Tragische Liebesgeschichte</de>
 				</programme>
 			</children>
 		</programme>
-		<programme id="7ff3171c-9064-4bbd-bfbb-f0b13e5f5a8a" product="2" type="5" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="7ff3171c-9064-4bbd-bfbb-f0b13e5f5a8a" product="64" type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Fußball-Weltmeisterschaft Italien 1990</de>
 				<en></en>
@@ -6105,7 +6105,7 @@ Tragische Liebesgeschichte</de>
 			<data country="I" year="1990" distribution="0" maingenre="203" subgenre="0" flags="0" blocks="2" time="0" price_mod="0.67" />
 			<ratings critics="32" speed="75" outcome="80" />
 			<children>
-				<programme id="98a65c7a-10d6-45d6-96e4-653ef6decf62" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="98a65c7a-10d6-45d6-96e4-653ef6decf62" product="64" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Kamerun - Kolumbien 2:1</de>
 						<en></en>
@@ -6120,7 +6120,7 @@ Tragische Liebesgeschichte</de>
 						<member index="2" function="2">b360f7b8-3d87-4f6a-96c5-cc7a8ab8c488</member>
 					</staff>
 				</programme>
-				<programme id="3ed6d2bf-ad36-430a-965f-68ea8f00c36f" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="3ed6d2bf-ad36-430a-965f-68ea8f00c36f" product="64" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>CSFR - Costa Rica 4:1</de>
 						<en></en>
@@ -6135,7 +6135,7 @@ Tragische Liebesgeschichte</de>
 						<member index="2" function="2">b11fed5e-9636-4a9d-b13a-f5d490fef1b9</member>
 					</staff>
 				</programme>
-				<programme id="67f527f4-5d82-442f-9eaa-418710c35bbb" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="67f527f4-5d82-442f-9eaa-418710c35bbb" product="64" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Brasilien - Argentinien 0:1</de>
 						<en></en>
@@ -6152,7 +6152,7 @@ Tragische Liebesgeschichte</de>
 				</programme>
 			</children>
 		</programme>
-		<programme id="d0b61022-2ec0-4a6c-a496-92c102e41cde" product="2" type="4" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="d0b61022-2ec0-4a6c-a496-92c102e41cde" product="128" type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Nur wer anruft kann gewinnen</de>
 				<en></en>
@@ -6168,7 +6168,7 @@ Tragische Liebesgeschichte</de>
 			<data country="D" year="2009" distribution="0" maingenre="8" subgenre="0" flags="128" blocks="2" time="0" price_mod="0.13" />
 			<ratings critics="2" speed="35" outcome="0" />
 			<children>
-				<programme id="03f5cdc1-b20f-4db2-b23b-c8bede5b99ca" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="03f5cdc1-b20f-4db2-b23b-c8bede5b99ca" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Anrufer Tommy wird abgezockt</de>
 						<en></en>
@@ -6179,7 +6179,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="5" speed="30" />
 				</programme>
-				<programme id="f9278cc4-8468-4158-995f-59cc4ffa2230" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="f9278cc4-8468-4158-995f-59cc4ffa2230" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Haarige Erkenntnis</de>
 						<en></en>
@@ -6190,7 +6190,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="8" speed="25" />
 				</programme>
-				<programme id="28b4c473-e977-44c0-a593-4ac951f7d277" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="28b4c473-e977-44c0-a593-4ac951f7d277" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Mella Melone</de>
 						<en></en>
@@ -6203,7 +6203,7 @@ Tragische Liebesgeschichte</de>
 				</programme>
 			</children>
 		</programme>
-		<programme id="13cf3270-5458-460e-8360-75e0adc73a49" product="2" type="4" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="13cf3270-5458-460e-8360-75e0adc73a49" product="128" type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Die Hellseher</de>
 				<en></en>
@@ -6220,7 +6220,7 @@ Tragische Liebesgeschichte</de>
 			<data country="D" year="1999" distribution="0" maingenre="0" subgenre="0" flags="128" blocks="2" time="0" price_mod="0.13" />
 			<ratings critics="2" speed="15" outcome="0" />
 			<children>
-				<programme id="36bdc248-0924-4c43-9fd2-2aab51a804b1" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="36bdc248-0924-4c43-9fd2-2aab51a804b1" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Vaters Geist</de>
 						<en></en>
@@ -6231,7 +6231,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="1" speed="18" />
 				</programme>
-				<programme id="358da90b-2c5c-4796-acb3-6ae69490d7cf" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="358da90b-2c5c-4796-acb3-6ae69490d7cf" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Rudi der Pudel</de>
 						<en></en>
@@ -6242,7 +6242,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="5" speed="12" />
 				</programme>
-				<programme id="eeaf10fd-4105-4e53-b70d-c1a32316176e" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="eeaf10fd-4105-4e53-b70d-c1a32316176e" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Transmediale Olympiade</de>
 						<en></en>
@@ -6255,7 +6255,7 @@ Tragische Liebesgeschichte</de>
 				</programme>
 			</children>
 		</programme>
-		<programme id="5aa779f8-8140-4bef-912a-4aa7a760e1a6" product="2" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="5aa779f8-8140-4bef-912a-4aa7a760e1a6" product="16" type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Maler vergangener Zeiten</de>
 				<en></en>
@@ -6272,7 +6272,7 @@ Tragische Liebesgeschichte</de>
 			<data country="D" year="1981" distribution="0" maingenre="6" subgenre="0" flags="4" blocks="1" time="0" price_mod="0.37" />
 			<ratings critics="49" speed="7" outcome="0" />
 			<children>
-				<programme id="b1c87d59-cffe-4696-ac75-8f4e7fbbed76" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="b1c87d59-cffe-4696-ac75-8f4e7fbbed76" product="16" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Michelangelo</de>
 						<en></en>
@@ -6283,7 +6283,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="49" speed="7" />
 				</programme>
-				<programme id="02613833-d54e-4b6b-8de8-2370f4d5bb57" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="02613833-d54e-4b6b-8de8-2370f4d5bb57" product="16" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Monet</de>
 						<en></en>
@@ -6294,7 +6294,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="47" speed="12" />
 				</programme>
-				<programme id="9ada2a37-6ff5-4ff0-9766-7d0b2d98cff4" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="9ada2a37-6ff5-4ff0-9766-7d0b2d98cff4" product="16" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Picasso</de>
 						<en></en>
@@ -6305,7 +6305,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="49" speed="11" />
 				</programme>
-				<programme id="494fa370-4744-4616-aa14-910aa692af25" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="494fa370-4744-4616-aa14-910aa692af25" product="16" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Rembrandt</de>
 						<en></en>
@@ -6316,7 +6316,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="22" speed="15" />
 				</programme>
-				<programme id="6eccf754-bb87-40e5-bb5c-931fd2124a1b" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="6eccf754-bb87-40e5-bb5c-931fd2124a1b" product="16" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Kandinsky</de>
 						<en></en>
@@ -6329,7 +6329,7 @@ Tragische Liebesgeschichte</de>
 				</programme>
 			</children>
 		</programme>
-		<programme id="7ad20bf5-c4c6-4237-b52a-b7b189ede0bf" product="2" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="7ad20bf5-c4c6-4237-b52a-b7b189ede0bf" product="128" type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Rolf Krall besucht...</de>
 				<en></en>
@@ -6346,7 +6346,7 @@ Tragische Liebesgeschichte</de>
 			<data country="D" year="1992" distribution="0" maingenre="6" subgenre="0" flags="4" blocks="1" time="0" price_mod="0.67" />
 			<ratings critics="0" speed="32" outcome="0" />
 			<children>
-				<programme id="8258fb18-d138-49b4-b07c-0519eec12d2c" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="8258fb18-d138-49b4-b07c-0519eec12d2c" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Rolf Krall besucht... Madame Krussaud</de>
 						<en></en>
@@ -6361,7 +6361,7 @@ Tragische Liebesgeschichte</de>
 					</staff>
 					<ratings critics="28" speed="32" />
 				</programme>
-				<programme id="b7f87935-b1ec-44a8-b544-398b010af809" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="b7f87935-b1ec-44a8-b544-398b010af809" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Rolf Krall besucht... Jens Flumme</de>
 						<en></en>
@@ -6376,7 +6376,7 @@ Tragische Liebesgeschichte</de>
 					</staff>
 					<ratings critics="37" speed="42" />
 				</programme>
-				<programme id="ff1cff05-d8a8-43dc-9765-a975bcc49e7b" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="ff1cff05-d8a8-43dc-9765-a975bcc49e7b" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Rolf Krall besucht... Martin Zeck</de>
 						<en></en>
@@ -6391,7 +6391,7 @@ Tragische Liebesgeschichte</de>
 					</staff>
 					<ratings critics="37" speed="45" />
 				</programme>
-				<programme id="44db9d84-e8d5-46b4-bed5-70b228a74bcb" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="44db9d84-e8d5-46b4-bed5-70b228a74bcb" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Rolf Krall besucht... Peter Kruste</de>
 						<en></en>
@@ -6406,7 +6406,7 @@ Tragische Liebesgeschichte</de>
 					</staff>
 					<ratings critics="28" speed="56" />
 				</programme>
-				<programme id="ec7fe439-49ad-40d4-b1b3-fb89504184c7" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="ec7fe439-49ad-40d4-b1b3-fb89504184c7" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Rolf Krall besucht... seine Mutter</de>
 						<en></en>
@@ -6423,7 +6423,7 @@ Tragische Liebesgeschichte</de>
 				</programme>
 			</children>
 		</programme>
-		<programme id="c4ce4cc9-1c7e-4d25-ad83-8077e7a710b8" product="2" type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="c4ce4cc9-1c7e-4d25-ad83-8077e7a710b8" product="128" type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Seniorensause</de>
 				<en></en>
@@ -6440,7 +6440,7 @@ Tragische Liebesgeschichte</de>
 			<data country="D" year="2001" distribution="0" maingenre="301" subgenre="0" flags="0" blocks="2" time="0" price_mod="0.17" />
 			<ratings critics="7" speed="1" outcome="0" />
 			<children>
-				<programme id="062287d0-1de3-47e9-b365-5ab5d163aef5" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="062287d0-1de3-47e9-b365-5ab5d163aef5" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Svetlana aus Hamburg</de>
 						<en></en>
@@ -6451,7 +6451,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="11" speed="4" />
 				</programme>
-				<programme id="afcac328-c1ec-4018-8fbb-f01e724463a3" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="afcac328-c1ec-4018-8fbb-f01e724463a3" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Renate aus Chemnitz</de>
 						<en></en>
@@ -6465,7 +6465,7 @@ Tragische Liebesgeschichte</de>
 					</staff>
 					<ratings critics="7" speed="1" />
 				</programme>
-				<programme id="37c8b5a1-f289-4061-96d9-51207ee850bc" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="37c8b5a1-f289-4061-96d9-51207ee850bc" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Erich aus Köln</de>
 						<en></en>
@@ -6476,7 +6476,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="5" speed="7" />
 				</programme>
-				<programme id="fe6f1e06-6c20-42a2-8164-bf357ac3c0d6" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="fe6f1e06-6c20-42a2-8164-bf357ac3c0d6" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Bolle aus Berlin</de>
 						<en></en>
@@ -6487,7 +6487,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="11" speed="7" />
 				</programme>
-				<programme id="f2cc0b2e-43a0-4e39-8861-43e5c95d172f" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="f2cc0b2e-43a0-4e39-8861-43e5c95d172f" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Sepp aus München</de>
 						<en></en>
@@ -6500,7 +6500,7 @@ Tragische Liebesgeschichte</de>
 				</programme>
 			</children>
 		</programme>
-		<programme id="50b89ce5-a59b-4108-b4e0-0f82b2c6b15f" product="2" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="50b89ce5-a59b-4108-b4e0-0f82b2c6b15f" product="8" type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Die Patty Glansen Show</de>
 				<en></en>
@@ -6517,7 +6517,7 @@ Tragische Liebesgeschichte</de>
 			<data country="D" year="1997" distribution="0" maingenre="100" subgenre="0" flags="0" blocks="2" time="0" price_mod="0.67" />
 			<ratings critics="51" speed="28" outcome="18" />
 			<children>
-				<programme id="ba5e8d69-ef29-4a26-8db0-1865c0b53e80" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="ba5e8d69-ef29-4a26-8db0-1865c0b53e80" product="8" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Lothar Molch</de>
 						<en></en>
@@ -6534,7 +6534,7 @@ Bieten die beiden genügend Stoff für eine spannende Runde?</de>
 					</staff>
 					<ratings critics="61" speed="42" />
 				</programme>
-				<programme id="9570f151-042a-4913-8873-759f791ffbdd" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="9570f151-042a-4913-8873-759f791ffbdd" product="8" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>James Glatzkowski und Lara Luftig</de>
 						<en></en>
@@ -6549,9 +6549,9 @@ Bieten die beiden genügend Stoff für eine spannende Runde?</de>
 					</staff>
 					<ratings critics="23" speed="56" />
 				</programme>
-				<programme id="7e610bb4-9327-4bc6-bccd-c7b996946e84" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="7e610bb4-9327-4bc6-bccd-c7b996946e84" product="8" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
-						<de>Patty Glansen selbst</de>
+						<de>[1|Full] selbst</de>
 						<en></en>
 					</title>
 					<description>
@@ -6564,9 +6564,9 @@ Bieten die beiden genügend Stoff für eine spannende Runde?</de>
 					</staff>
 					<ratings critics="47" speed="42" />
 				</programme>
-				<programme id="8ffd3e59-e711-45ca-9810-b22c221bad9b" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="8ffd3e59-e711-45ca-9810-b22c221bad9b" product="8" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
-						<de>Mario Groteski</de>
+						<de>[2|Full]</de>
 						<en></en>
 					</title>
 					<description>
@@ -6582,7 +6582,7 @@ Bieten die beiden genügend Stoff für eine spannende Runde?</de>
 				</programme>
 			</children>
 		</programme>
-		<programme id="9ad21f32-6e2d-45c9-b3c2-7d758fa30d25" product="2" type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="9ad21f32-6e2d-45c9-b3c2-7d758fa30d25" product="128" type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Dynamit - Das Magazin</de>
 				<en></en>
@@ -6601,7 +6601,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<data country="D" year="1991" distribution="0" maingenre="301" subgenre="0" flags="0" blocks="1" time="0" price_mod="1" />
 			<ratings critics="28" speed="61" outcome="0" />
 			<children>
-				<programme id="178fcb7d-b54d-4064-b3c3-4e577f56d2bf" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="178fcb7d-b54d-4064-b3c3-4e577f56d2bf" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Dynamit - Das Magazin - Startfolge</de>
 						<en></en>
@@ -6616,7 +6616,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</staff>
 					<ratings critics="42" speed="56" />
 				</programme>
-				<programme id="39bdbcf8-7865-4d95-b874-18031947c36e" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="39bdbcf8-7865-4d95-b874-18031947c36e" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Dynamit - Das Magazin Folge 1</de>
 						<en></en>
@@ -6631,7 +6631,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</staff>
 					<ratings critics="42" speed="56" />
 				</programme>
-				<programme id="558991e0-7971-4489-912b-c7ab299c5062" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="558991e0-7971-4489-912b-c7ab299c5062" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Dynamit - Das Magazin Folge 2</de>
 						<en></en>
@@ -6646,7 +6646,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</staff>
 					<ratings critics="28" speed="51" />
 				</programme>
-				<programme id="a45a7dd5-af5b-4365-80c5-4cf6d7c441c3" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="a45a7dd5-af5b-4365-80c5-4cf6d7c441c3" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Dynamit - Das Magazin Folge 3</de>
 						<en></en>
@@ -6661,7 +6661,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</staff>
 					<ratings critics="70" speed="42" />
 				</programme>
-				<programme id="d8f1c57b-feac-483e-9689-80252d487126" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="d8f1c57b-feac-483e-9689-80252d487126" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Dynamit - Das Magazin Folge 4</de>
 						<en></en>
@@ -6678,7 +6678,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				</programme>
 			</children>
 		</programme>
-		<programme id="0cefc3bc-f628-4b50-a466-682e7d117a2e" product="2" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="0cefc3bc-f628-4b50-a466-682e7d117a2e" product="128" type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Entstehung des Kosmos</de>
 				<en></en>
@@ -6695,7 +6695,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<data country="AUT" year="2005" distribution="0" maingenre="6" subgenre="0" flags="4" blocks="2" time="0" price_mod="0.13" />
 			<ratings critics="35" speed="7" outcome="0" />
 			<children>
-				<programme id="c68b6bc1-f0c0-4b36-85e7-d7f32dd86063" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="c68b6bc1-f0c0-4b36-85e7-d7f32dd86063" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Der Urknall</de>
 						<en></en>
@@ -6706,7 +6706,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</description>
 					<ratings critics="24" speed="7" />
 				</programme>
-				<programme id="5aed6755-d022-46fd-9ca8-04e8b150bd74" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="5aed6755-d022-46fd-9ca8-04e8b150bd74" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Ferne Galaxien</de>
 						<en></en>
@@ -6717,7 +6717,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</description>
 					<ratings critics="29" speed="9" />
 				</programme>
-				<programme id="79687626-d749-4b16-923c-0644fd9c3298" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="79687626-d749-4b16-923c-0644fd9c3298" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Lecker Milch...straße</de>
 						<en></en>
@@ -6728,7 +6728,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</description>
 					<ratings critics="35" speed="17" />
 				</programme>
-				<programme id="03f36865-c8d4-46ea-a6bb-edc11ee39fa3" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="03f36865-c8d4-46ea-a6bb-edc11ee39fa3" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Unser Sonnensystem</de>
 						<en></en>
@@ -6739,7 +6739,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</description>
 					<ratings critics="28" speed="9" />
 				</programme>
-				<programme id="974003d6-44f3-47a5-b945-450a68d81d64" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="974003d6-44f3-47a5-b945-450a68d81d64" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Der noch blaue Planet</de>
 						<en></en>
@@ -6752,7 +6752,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				</programme>
 			</children>
 		</programme>
-		<programme id="cf19bea6-f3ae-4ea1-92fb-3bccc8d5c9e3" product="2" type="4" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="cf19bea6-f3ae-4ea1-92fb-3bccc8d5c9e3" product="128" type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Hot Quiz</de>
 				<en></en>
@@ -6765,7 +6765,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<data country="D" year="2005" distribution="0" maingenre="8" subgenre="0" flags="128" blocks="2" time="0" price_mod="0.2" />
 			<ratings critics="5" speed="30" outcome="0" />
 			<children>
-				<programme id="a710207e-6dff-4583-a015-94292f152ba9" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="a710207e-6dff-4583-a015-94292f152ba9" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Daniela</de>
 						<en></en>
@@ -6776,7 +6776,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</description>
 					<ratings critics="4" speed="32" />
 				</programme>
-				<programme id="f9579b28-072d-4027-8807-1c45326928d5" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="f9579b28-072d-4027-8807-1c45326928d5" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Sabine</de>
 						<en></en>
@@ -6787,7 +6787,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</description>
 					<ratings critics="8" speed="28" />
 				</programme>
-				<programme id="ee67bae0-ba95-4cef-8e0a-4aa03c130264" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="ee67bae0-ba95-4cef-8e0a-4aa03c130264" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Mandy</de>
 						<en></en>
@@ -6798,7 +6798,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</description>
 					<ratings critics="5" speed="23" />
 				</programme>
-				<programme id="4c067d5a-18a9-4646-ab7e-ef240fe18ab0" product="4" type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="4c067d5a-18a9-4646-ab7e-ef240fe18ab0" product="128" type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Peggy</de>
 						<en></en>
@@ -6843,7 +6843,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<functions>
 				<function>2</function>
 			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details gender="0" birthday="" deathday="" country="" fictional="1" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="1cac5a80-97dc-46f6-8c34-761c4fe43db5" tmdb_id="0" imdb_id="" creator="">

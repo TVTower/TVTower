@@ -301,7 +301,7 @@ function BusinessStats:AddMovie(licence)
 	local maxPrice = globalPlayer.TaskList[TASK_MOVIEDISTRIBUTOR].BudgetWholeDay / 2
 	if (CheckMovieBuyConditions(licence, maxPrice)) then -- Preisgrenze
 		local quality = licence.GetQuality(0)
-		if licence.getData() ~= nil and licence.IsMovie() then
+		if licence.getData() ~= nil and licence.IsSingle() then
 			self.MovieQualityAcceptable:AddValue(quality)
 			self.MoviePricePerBlockAcceptable:AddValue(licence:GetPricePerBlock())
 		else

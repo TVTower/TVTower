@@ -482,7 +482,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		For Local playerids:Int = 1 To 4
 			Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(playerids)
 			For Local i:Int = 0 Until GameRules.startMovieAmount
-				ProgrammeCollection.AddProgrammeLicence(GetProgrammeLicenceCollection().GetRandom(TVTProgrammeLicenceType.MOVIE))
+				ProgrammeCollection.AddProgrammeLicence(GetProgrammeLicenceCollection().GetRandom(TVTProgrammeLicenceType.SINGLE))
 			Next
 			'give series to each player
 			For Local i:Int = GameRules.startMovieAmount Until GameRules.startMovieAmount + GameRules.startSeriesAmount

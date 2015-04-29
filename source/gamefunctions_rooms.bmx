@@ -960,7 +960,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			return FALSE
 		endif
 
-		if licence.isMovie() or licence.isCollection()
+		if licence.isSingle() or licence.isCollection()
 			if licence.getPrice() < movieCheapMaximum
 				lists = [listMoviesCheap,listMoviesGood]
 			else
@@ -1099,8 +1099,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 				'if exists...skip it
 				if lists[j][i] then continue
 
-				if lists[j] = listMoviesGood then licence = GetProgrammeLicenceCollection().GetRandomWithPrice(75000,-1, TVTProgrammeLicenceType.MOVIE)
-				if lists[j] = listMoviesCheap then licence = GetProgrammeLicenceCollection().GetRandomWithPrice(0,75000, TVTProgrammeLicenceType.MOVIE)
+				if lists[j] = listMoviesGood then licence = GetProgrammeLicenceCollection().GetRandomWithPrice(75000,-1, TVTProgrammeLicenceType.SINGLE)
+				if lists[j] = listMoviesCheap then licence = GetProgrammeLicenceCollection().GetRandomWithPrice(0,75000, TVTProgrammeLicenceType.SINGLE)
 				if lists[j] = listSeries then licence = GetProgrammeLicenceCollection().GetRandom(TVTProgrammeLicenceType.SERIES)
 
 				'add new licence at slot

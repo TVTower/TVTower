@@ -127,7 +127,7 @@ Type TScriptCollection Extends TGameObjectCollection
 			_parentScripts = CreateList()
 			For local script:TScript = EachIn entries.Values()
 				'skip scripts containing parent information or episodes
-				if script.scriptType = TVTProgrammeType.Episode then continue
+				if script.scriptLicenceType = TVTProgrammeLicenceType.EPISODE then continue
 				if script.parentScriptGUID <> "" then continue
 
 				_parentScripts.AddLast(script)
@@ -161,7 +161,8 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 	Field title:TLocalizedString
 	Field description:TLocalizedString
 	Field ownProduction:Int	= false
-	Field scriptType:Int = 0
+	Field scriptLicenceType:Int = 0
+	Field scriptProductType:Int = 0
 	Field genre:Int = 0
 	'News-Genre: Medien/Technik, Politik/Wirtschaft, Showbiz, Sport, Tagesgeschehen ODER flexibel = spezielle News (10)
 	Field topic:Int	= 0
@@ -603,15 +604,13 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	Method isSeries:int() {_exposeToLua}
-		return (scriptType & TVTProgrammeLicenceType.SERIES)
+		return (scriptLicenceType & TVTProgrammeLicenceType.SERIES)
 	End Method
 
 
 	Method isEpisode:int() {_exposeToLua}
-		return (scriptType & TVTProgrammeLicenceType.EPISODE)
+		return (scriptLicenceType & TVTProgrammeLicenceType.EPISODE)
 	End Method
-
-
 
 
 	Method ShowSheet:Int(x:Int,y:Int, align:int=0)

@@ -136,7 +136,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Field review:Float = 0
 	Field speed:Float = 0
 	Field genre:Int	= 0
-	Field subGenre:Int = 0
+	Field subGenres:Int[]
 	Field blocks:Int = 1
 	'id of the creating user
 	Field creator:Int = 0
@@ -158,8 +158,10 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Field flags:Int = 0
 	'which kind of distribution was used? Cinema, Custom production ...
 	Field distributionChannel:int = 0
-	'0 = serie, 1 = movie, ...?
-	Field programmeType:Int	= 1
+	'ID according to TVTProgrammeLicenceType
+	Field programmeLicenceType:Int = 1
+	'ID according to TVTProgrammeProductType
+	Field programmeProductType:Int = 1
 	'at which day was the programme released?
 	Field releaseDay:Int = 1
 	'announced in news etc?
@@ -184,12 +186,12 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 
 
 
-	Function Create:TProgrammeData(GUID:String, title:TLocalizedString, description:TLocalizedString, cast:TProgrammePersonJob[], country:String, year:Int, day:int=0, livehour:Int, Outcome:Float, review:Float, speed:Float, modifiers:TData, Genre:Int, blocks:Int, xrated:Int, programmeType:Int=1) {_private}
+	Function Create:TProgrammeData(GUID:String, title:TLocalizedString, description:TLocalizedString, cast:TProgrammePersonJob[], country:String, year:Int, day:int=0, livehour:Int, Outcome:Float, review:Float, speed:Float, modifiers:TData, Genre:Int, blocks:Int, xrated:Int, programmeLicenceType:Int=1) {_private}
 		Local obj:TProgrammeData = New TProgrammeData
 		obj.SetGUID(GUID)
 		obj.title = title
 		obj.description = description
-		obj.programmeType	= programmeType
+		obj.programmeLicenceType = programmeLicenceType
 		obj.review			= Max(0,Min(1.0, review))
 		obj.speed			= Max(0,Min(1.0, speed))
 		obj.outcome			= Max(0,Min(1.0, Outcome))
@@ -258,11 +260,27 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		if HasCast(job) then return False
 
 		cast :+ [job]
-
+		
 		'invalidate caches
 		cachedActors = cachedActors[..0]
 		cachedDirectors = cachedDirectors[..0]
 		return True 
+	End Method
+
+
+	Method RemoveCast:int(job:TProgrammePersonJob)
+		if not HasCast(job) then return False
+		if cast.Length = 0 then return False
+
+		local newCast:TProgrammePersonJob[]
+		for local j:TProgrammePersonJob = EachIn cast
+			'skip our job
+			if job.person = j.person and job.job = j.job then continue
+			'add rest
+			newCast :+ [j]
+		Next
+		cast = newCast
+		return True
 	End Method
 
 
@@ -868,25 +886,29 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		return (year <= GetWorldTime().getYear() and releaseDay <= GetWorldTime().getDay())
 	End Method
 
-
 	Method isMovie:int()
-		return programmeType & TVTProgrammeLicenceType.MOVIE
+		'product type is a bitmask!
+		return programmeProductType & TVTProgrammeProductType.MOVIE
+	End Method
+
+	Method isSingle:int()
+		return programmeLicenceType = TVTProgrammeLicenceType.SINGLE
 	End Method
 
 	Method isSeries:int()
-		return (programmeType & TVTProgrammeLicenceType.SERIES)
+		return (programmeLicenceType = TVTProgrammeLicenceType.SERIES)
 	End Method
 
 	Method isEpisode:int()
-		return (programmeType & TVTProgrammeLicenceType.EPISODE)
+		return (programmeLicenceType = TVTProgrammeLicenceType.EPISODE)
 	End Method
 
 	Method isCollection:int()
-		return (programmeType & TVTProgrammeLicenceType.COLLECTION)
+		return (programmeLicenceType = TVTProgrammeLicenceType.COLLECTION)
 	End Method
 
 	Method isType:int(typeID:int)
-		return (programmeType & typeID)
+		return (programmeLicenceType = typeID)
 	End Method	
 End Type
 

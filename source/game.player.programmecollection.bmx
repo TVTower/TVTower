@@ -281,7 +281,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Method RemoveProgrammeLicenceFromSuitcase:int(licence:TProgrammeLicence)
 		if not suitcaseProgrammeLicences.Contains(licence) then return FALSE
 
-		If licence.isMovie() Then movieLicences.AddLast(licence)
+		If licence.isSingle() Then movieLicences.AddLast(licence)
 		if licence.isSeries() then seriesLicences.AddLast(licence)
 		if licence.isCollection() then collectionLicences.AddLast(licence)
 		programmeLicences.AddLast(licence)
@@ -335,7 +335,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 		'Print "RON: PlayerCollection.AddProgrammeLicence: buy="+buy+" title="+Licence.GetTitle()
 
-		If licence.isMovie() Then movieLicences.AddLast(licence)
+		If licence.isSingle() Then movieLicences.AddLast(licence)
 		if licence.isSeries() then seriesLicences.AddLast(licence)
 		if licence.isCollection() then collectionLicences.AddLast(licence)
 		programmeLicences.AddLast(licence)

@@ -12,6 +12,7 @@ SuperStrict
 Global TVTDebugInfos:int = False
 Global TVTDebugQuoteInfos:int = False	
 
+
 'collection of all constants types (so it could be exposed
 'to LUA in one step)
 Type TVTGameConstants {_exposeToLua}
@@ -22,7 +23,7 @@ Type TVTGameConstants {_exposeToLua}
 
 	Field PlayerFinanceEntryType:TVTPlayerFinanceEntryType = new TVTPlayerFinanceEntryType
 
-	Field ProgrammeType:TVTProgrammeType = new TVTProgrammeType
+	Field ProgrammeProductType:TVTProgrammeProductType = new TVTProgrammeProductType
 	Field ProgrammeGenre:TVTProgrammeGenre = new TVTProgrammeGenre 
 	Field ProgrammeFlag:TVTProgrammeFlag = new TVTProgrammeFlag 
 	Field ProgrammeLicenceType:TVTProgrammeLicenceType = new TVTProgrammeLicenceType 
@@ -37,6 +38,7 @@ Global GameConstants:TVTGameConstants = New TVTGameConstants
 
 
 
+
 Type TVTNewsType {_exposeToLua}
 	Const InitialNews:int = 0
 	Const InitialNewsByInGameEvent:int = 1
@@ -44,10 +46,14 @@ Type TVTNewsType {_exposeToLua}
 End Type
 
 
+
+
 Type TVTNewsHandling {_exposeToLua}
 	Const FixMessage:Int = 1
 	Const DynamicMessage:Int = 2
 End Type
+
+
 
 
 Type TVTNewsGenre {_exposeToLua}
@@ -78,6 +84,8 @@ Type TVTNewsGenre {_exposeToLua}
 End Type
 
 
+
+
 Type TVTNewsEffect {_exposeToLua}
 	Const NONE:int = 0
 	Const CHANGEMAXAUDIENCE:int = 1
@@ -86,19 +94,50 @@ Type TVTNewsEffect {_exposeToLua}
 End Type
 
 
-'"product" in the DB
-Type TVTProgrammeType {_exposeToLua}
-	Const UNDEFINED:int = 0
-	Const MOVIE:int = 1
-	Const SERIES:int = 2
-	Const EPISODE:int = 3
-	Const SHOW:int = 4
-	Const REPORTAGE:int = 5
-	Const COMMERCIAL:int = 6
-	Const EVENT:int = 7
-	Const MISC:int = 8
 
-	Const count:int = 9
+
+
+'"type" in the db
+Type TVTProgrammeLicenceType {_exposeToLua}
+	Const UNKNOWN:int    = 0
+	Const SINGLE:int     = 1 'eg. movies, one-time-events...
+	Const EPISODE:int    = 2 'episodes of a series
+	Const SERIES:int     = 3 'header of series
+	Const COLLECTION:int = 4 'header of collections
+
+
+	Function GetAtIndex:int(index:int = 0)
+		return index
+	End Function
+
+
+	Function GetAsString:String(key:int = 0)
+		Select key
+			case EPISODE     return "episode"
+			case SERIES      return "series"
+			case SINGLE      return "single"
+			case COLLECTION  return "collection"
+			default          return "unknown"
+		End Select
+	End Function
+End Type
+
+
+
+
+'"product" in the DB
+Type TVTProgrammeProductType {_exposeToLua}
+	Const UNDEFINED:int = 0		'0
+	Const MOVIE:int = 1			'1
+	Const SERIES:int = 2		'2
+	Const DOKUSOAP:int = 4		'3
+	Const SHOW:int = 8			'4
+	Const REPORTAGE:int = 16	'5
+	Const COMMERCIAL:int = 32	'6
+	Const EVENT:int = 64		'7
+	Const MISC:int = 128		'8
+
+	Const count:int = 8
 
 
 	Function GetAtIndex:int(index:int)
@@ -107,21 +146,22 @@ Type TVTProgrammeType {_exposeToLua}
 	End Function
 	
 	
-	Function GetTypeString:String(typeKey:int = 0)
+	Function GetAsString:String(typeKey:int = 0)
 		Select typeKey
-			case 1  return "movie"
-			case 2  return "series"
-			case 3  return "episode"
-			case 4  return "show"
-			case 5  return "reportage"
-			case 6  return "commercial"
-			case 7  return "event"
-			case 8  return "misc"
-			case 0  return "undefined"
-			default return "undefined"
+			case MOVIE      return "movie"
+			case SERIES     return "series"
+			case DOKUSOAP   return "dokusoap"
+			case SHOW       return "show"
+			case REPORTAGE  return "reportage"
+			case COMMERCIAL return "commercial"
+			case EVENT      return "event"
+			case MISC       return "misc"
+			default         return "undefined"
 		End Select
 	End Function
 End Type
+
+
 
 
 Type TVTPlayerFinanceEntryType {_exposeToLua}
@@ -172,9 +212,6 @@ Type TVTPlayerFinanceEntryType {_exposeToLua}
 	Const GROUP_STATION:int = 5
 
 	Const groupCount:int = 5
-
-
-
 
 
 	Function GetAtIndex:int(index:int)
@@ -287,6 +324,8 @@ Type TVTPlayerFinanceEntryType {_exposeToLua}
 End Type
 
 
+
+
 Type TVTProgrammeGenre {_exposeToLua}
 	Const Undefined:int = 0
  
@@ -380,6 +419,8 @@ Type TVTProgrammeGenre {_exposeToLua}
 End Type
 
 
+
+
 Type TVTProgrammeFlag {_exposeToLua}
 	'Genereller Quotenbonus!
 	Const LIVE:Int = 1
@@ -432,19 +473,6 @@ Type TVTProgrammeFlag {_exposeToLua}
 End Type
 
 
-Type TVTProgrammeLicenceType {_exposeToLua}
-	Const UNKNOWN:int    = 1
-	Const EPISODE:int    = 2
-	Const SERIES:int     = 4
-	Const MOVIE:int      = 8
-	Const COLLECTION:int = 16
-
-
-	Function GetAtIndex:int(index:int = 0)
-		if index <= 0 then return 0
-		return 2^(index-1)
-	End Function
-End Type
 
 
 Type TVTTargetGroup {_exposeToLua}
@@ -480,42 +508,81 @@ Type TVTTargetGroup {_exposeToLua}
 			case PENSIONERS  return "pensioners"
 			case WOMEN       return "women"
 			case MEN         return "men"
-			case ALL         return "all"
 			default          return "all"
 		End Select
 	End Function
 End Type
 
 
+
+
 Type TVTPressureGroup {_exposeToLua}
-	Const None:int = 0
-	Const SmokerLobby:int = 1
-	Const AntiSmoker:int = 2
-	Const ArmsLobby:int = 4
-	Const Pacifists:int = 8
-	Const Capitalists:int = 16
-	Const Communists:int = 32
+	Const NONE:int = 0				'0
+	Const SMOKERLOBBY:int = 1		'1
+	Const ANTISMOKER:int = 2		'2
+	Const ARMSLOBBY:int = 4			'3
+	Const PACIFISTS:int = 8			'4
+	Const CAPITALISTS:int = 16		'5
+	Const COMMUNISTS:int = 32		'6
+	Const count:int = 6
+
+
+	Function GetAtIndex:int(index:int = 0)
+		if index <= 0 then return 0
+		return 2^(index-1)
+	End Function
+
+	
+	Function GetAsString:String(key:int = 0)
+		Select key
+			case SMOKERLOBBY  return "smokerlobby"
+			case ANTISMOKER   return "antismoker"
+			case ARMSLOBBY    return "armslobby"
+			case PACIFISTS    return "pacifists"
+			case CAPITALISTS  return "capitalists"
+			case COMMUNISTS   return "communists"
+			default           return "none"
+		End Select
+	End Function
 End Type
+
+
 
 
 Type TVTPersonGender {_exposeToLua}
 	Const UNDEFINED:int = 0
 	Const MALE:int = 1
 	Const FEMALE:int = 2
+
+
+	Function GetAtIndex:int(index:int = 0)
+		return index
+	End Function
+
+	
+	Function GetAsString:String(key:int = 0)
+		Select key
+			case MALE    return "male"
+			case FEMALE  return "female"
+			default      return "undefined"
+		End Select
+	End Function
 End Type
 
 
+
+
 Type TVTProgrammePersonJob {_exposeToLua}
-	Const UNKNOWN:int = 0
-	Const DIRECTOR:int = 1
-	Const ACTOR:int = 2
-	Const WRITER:int = 4
-	Const HOST:int = 8 '"moderators"
-	Const MUSICIAN:int = 16
-	Const SUPPORTINGACTOR:int = 32
-	Const GUEST:int = 64 'show guest or prominent show candidate
-	Const REPORTER:int = 128
-	Const count:int = 9 '9 groups
+	Const UNKNOWN:int = 0			'not counted...
+	Const DIRECTOR:int = 1			'1
+	Const ACTOR:int = 2				'2
+	Const SCRIPTWRITER:int = 4		'3
+	Const HOST:int = 8				'4	"moderators"
+	Const MUSICIAN:int = 16			'5
+	Const SUPPORTINGACTOR:int = 32	'6
+	Const GUEST:int = 64			'7	show guest or prominent show candidate
+	Const REPORTER:int = 128		'8
+	Const count:int = 8				'-> 8 jobs
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -524,18 +591,33 @@ Type TVTProgrammePersonJob {_exposeToLua}
 	End Function
 
 
-	Function GetAsString:string(key:int)
-		Select key
-			case 0		return "unknown"
-			case 1		return "director"
-			case 2		return "actor"
-			case 4		return "writer"
-			case 8		return "host"
-			case 16		return "musician"
-			case 32		return "supportingactor"
-			case 64		return "guest"
-			case 128	return "reporter"
-			default		return "invalidjob"
-		End Select
+	Function GetAsString:string(key:int, singularForm:int = True)
+		if singularForm
+			Select key
+				case 0		return "unknown"
+				case 1		return "director"
+				case 2		return "actor"
+				case 4		return "scriptwriter"
+				case 8		return "host"
+				case 16		return "musician"
+				case 32		return "supportingactor"
+				case 64		return "guest"
+				case 128	return "reporter"
+				default		return "invalidjob"
+			End Select
+		else
+			Select key
+				case 0		return "unknown"
+				case 1		return "directors"
+				case 2		return "actors"
+				case 4		return "scriptwriters"
+				case 8		return "hosts"
+				case 16		return "musicians"
+				case 32		return "supportingactors"
+				case 64		return "guests"
+				case 128	return "reporters"
+				default		return "invalidjob"
+			End Select
+		endif
 	End Function
 End Type
