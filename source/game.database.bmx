@@ -463,6 +463,11 @@ Type TDatabaseLoader
 						totalSeriesCount :+ 1
 					endif
 
+					'add children
+					For local sub:TProgrammeLicence = EachIn licence.subLicences
+						GetProgrammeLicenceCollection().AddAutomatic(sub)
+					Next
+					
 					GetProgrammeLicenceCollection().AddAutomatic(licence)
 				endif
 			Next
