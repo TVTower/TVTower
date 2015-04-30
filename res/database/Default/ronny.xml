@@ -41,7 +41,7 @@
 			<ratings critics="32" speed="28" outcome="42" />
 		</programme>
 		<!-- Series -->
-		<programme id="ronny-programme-kochenmitpatty-01" product="128" type="3" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="ronny-programme-kochenmitpatty-01" product="128" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Kochen mit [1|Full]</de>
 				<en>Cooking with [1|Full]</en>
@@ -67,7 +67,7 @@
 			<ratings critics="70" speed="25" />
 			<!-- Episodes -->
 			<children>
-				<programme id="ronny-programme-kochenmitpatty-01-ep-01" product="128" type="2" creator="5578" created_by="Ronny">
+				<programme id="ronny-programme-kochenmitpatty-01-ep-01" product="128" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Toast Hawaii</de>
 						<en></en>
@@ -78,7 +78,7 @@
 					</description>
 					<ratings critics="75" speed="35" />
 				</programme>
-				<programme id="ronny-programme-kochenmitpatty-01-ep-02" product="128" type="2" creator="5578" created_by="Ronny">
+				<programme id="ronny-programme-kochenmitpatty-01-ep-02" product="128" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Gefüllte Eier</de>
 						<en>Filled eggs</en>
@@ -89,7 +89,7 @@
 					</description>
 					<ratings critics="50" speed="40" />
 				</programme>
-				<programme id="ronny-programme-kochenmitpatty-01-ep-03" product="128" type="2" creator="5578" created_by="Ronny">
+				<programme id="ronny-programme-kochenmitpatty-01-ep-03" product="128" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Pumpernickel mal anders</de>
 						<en></en>
@@ -100,7 +100,7 @@
 					</description>
 					<ratings critics="73" speed="19" />
 				</programme>
-				<programme id="ronny-programme-kochenmitpatty-01-ep-04" product="128" type="2" creator="5578" created_by="Ronny">
+				<programme id="ronny-programme-kochenmitpatty-01-ep-04" product="128" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Shrimps-Cocktail</de>
 						<en></en>
@@ -113,7 +113,7 @@
 				</programme>
 			</children>
 		</programme>
-		<programme id="ronny-programme-brisanteufer-01" product="16" type="3" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="ronny-programme-brisanteufer-01" product="16" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Brisante Ufer</de>
 				<en></en>
@@ -133,7 +133,7 @@
 			<ratings critics="44" speed="20" />
 			<!-- Episodes -->
 			<children>
-				<programme id="ronny-programme-brisanteufer-01-ep-01" product="16" type="2" creator="5578" created_by="Ronny">
+				<programme id="ronny-programme-brisanteufer-01-ep-01" product="16" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Die Wasserwacht</de>
 						<en></en>
@@ -145,7 +145,7 @@
 					<data price_mod="0.95" />
 					<ratings critics="48"  />
 				</programme>
-				<programme id="ronny-programme-brisanteufer-01-ep-02" product="16" type="2" creator="5578" created_by="Ronny">
+				<programme id="ronny-programme-brisanteufer-01-ep-02" product="16" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Das Elb-Wehr</de>
 						<en></en>
@@ -157,7 +157,7 @@
 					<data price_mod="1.0" />
 					<ratings critics="34" speed="12"  />
 				</programme>
-				<programme id="ronny-programme-brisanteufer-01-ep-03" product="16" type="2" creator="5578" created_by="Ronny">
+				<programme id="ronny-programme-brisanteufer-01-ep-03" product="16" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>SOS im Freibad Gammelau</de>
 						<en></en>

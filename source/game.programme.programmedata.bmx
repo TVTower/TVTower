@@ -158,10 +158,8 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Field flags:Int = 0
 	'which kind of distribution was used? Cinema, Custom production ...
 	Field distributionChannel:int = 0
-	'ID according to TVTProgrammeLicenceType
-	Field programmeLicenceType:Int = 1
 	'ID according to TVTProgrammeProductType
-	Field programmeProductType:Int = 1
+	Field productType:Int = 1
 	'at which day was the programme released?
 	Field releaseDay:Int = 1
 	'announced in news etc?
@@ -186,26 +184,26 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 
 
 
-	Function Create:TProgrammeData(GUID:String, title:TLocalizedString, description:TLocalizedString, cast:TProgrammePersonJob[], country:String, year:Int, day:int=0, livehour:Int, Outcome:Float, review:Float, speed:Float, modifiers:TData, Genre:Int, blocks:Int, xrated:Int, programmeLicenceType:Int=1) {_private}
+	Function Create:TProgrammeData(GUID:String, title:TLocalizedString, description:TLocalizedString, cast:TProgrammePersonJob[], country:String, year:Int, day:int=0, livehour:Int, Outcome:Float, review:Float, speed:Float, modifiers:TData, Genre:Int, blocks:Int, xrated:Int, productType:Int=1) {_private}
 		Local obj:TProgrammeData = New TProgrammeData
 		obj.SetGUID(GUID)
-		obj.title = title
+		obj.title       = title
 		obj.description = description
-		obj.programmeLicenceType = programmeLicenceType
-		obj.review			= Max(0,Min(1.0, review))
-		obj.speed			= Max(0,Min(1.0, speed))
-		obj.outcome			= Max(0,Min(1.0, Outcome))
+		obj.productType = productType
+		obj.review      = Max(0,Min(1.0, review))
+		obj.speed       = Max(0,Min(1.0, speed))
+		obj.outcome     = Max(0,Min(1.0, Outcome))
 		'modificators: > 1.0 increases price (1.0 = 100%)
-		obj.modifiers		= modifiers.Copy()
-		obj.genre			= Max(0,Genre)
-		obj.blocks			= blocks
+		obj.modifiers   = modifiers.Copy()
+		obj.genre       = Max(0,Genre)
+		obj.blocks      = blocks
 		obj.SetFlag(TVTProgrammeFlag.XRATED, xrated)
-		obj.country			= country
-		obj.cast			= cast
-		obj.year			= year
-		obj.releaseDay		= day
-		obj.liveHour		= Max(-1,livehour)
-		obj.topicality		= obj.GetTopicality()
+		obj.country     = country
+		obj.cast        = cast
+		obj.year        = year
+		obj.releaseDay  = day
+		obj.liveHour    = Max(-1,livehour)
+		obj.topicality  = obj.GetTopicality()
 		GetProgrammeDataCollection().Add(obj)
 
 		Return obj
@@ -624,7 +622,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		'basefactor * topicalityModifier * GetModifier("price")
 
 		'movies run in cinema (outcome >0)
-		If isMovie() and GetOutcome() > 0
+		If isType(TVTProgrammeProductType.MOVIE) and GetOutcome() > 0
 			'basefactor * priceFactor
 			value = 120000 * (0.55 * GetOutcome() + 0.25 * GetReview() + 0.2 * GetSpeed())
 		 'shows, productions, series...
@@ -886,29 +884,9 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		return (year <= GetWorldTime().getYear() and releaseDay <= GetWorldTime().getDay())
 	End Method
 
-	Method isMovie:int()
-		'product type is a bitmask!
-		return programmeProductType & TVTProgrammeProductType.MOVIE
-	End Method
-
-	Method isSingle:int()
-		return programmeLicenceType = TVTProgrammeLicenceType.SINGLE
-	End Method
-
-	Method isSeries:int()
-		return (programmeLicenceType = TVTProgrammeLicenceType.SERIES)
-	End Method
-
-	Method isEpisode:int()
-		return (programmeLicenceType = TVTProgrammeLicenceType.EPISODE)
-	End Method
-
-	Method isCollection:int()
-		return (programmeLicenceType = TVTProgrammeLicenceType.COLLECTION)
-	End Method
 
 	Method isType:int(typeID:int)
-		return (programmeLicenceType = typeID)
+		return (productType & typeID)
 	End Method	
 End Type
 

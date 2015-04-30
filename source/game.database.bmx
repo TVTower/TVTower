@@ -163,7 +163,7 @@ Type TDatabaseLoader
 			modifiers.AddNumber("wearoff", wearoffModifier)
 			
 			local movieLicence:TProgrammeLicence = new TProgrammeLicence
-			movieLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, modifiers, Genre, duration, xrated, TVTProgrammeLicenceType.SINGLE))
+			movieLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, modifiers, Genre, duration, xrated, TVTProgrammeProductType.MOVIE))
 
 			'convert old genre definition to new one
 			convertV2genreToV3(movieLicence.data)
@@ -225,7 +225,7 @@ Type TDatabaseLoader
 			'create a licence for that series - with title and series description
 			local seriesLicence:TProgrammeLicence = new TProgrammeLicence
 			'sets the "overview"-data of the series as series header
-			seriesLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, modifiers, Genre, duration, xrated, TVTProgrammeLicenceType.SERIES))
+			seriesLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, modifiers, Genre, duration, xrated, TVTProgrammeProductType.SERIES))
 
 			'convert old genre definition to new one
 			convertV2genreToV3(seriesLicence.data)
@@ -274,7 +274,7 @@ Type TDatabaseLoader
 					modifiers.AddNumber("wearoff", wearoffModifier)
 
 					local episodeLicence:TProgrammeLicence = new TProgrammeLicence
-					episodeLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, modifiers, Genre, duration, xrated, TVTProgrammeLicenceType.EPISODE))
+					episodeLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, modifiers, Genre, duration, xrated, TVTProgrammeProductType.SERIES))
 					'add that episode to the series licence
 					seriesLicence.AddSubLicence(episodeLicence)
 
@@ -771,8 +771,10 @@ Type TDatabaseLoader
 		local GUID:String = TXmlHelper.FindValue(node,"id", "")
 		local creator:Int = TXmlHelper.FindValueInt(node,"creator", 0)
 		local createdBy:String = TXmlHelper.FindValue(node,"created_by", "unknown")
-		local programmeProductType:int = TXmlHelper.FindValueInt(node,"product", 0)
-		local programmeLicenceType:int = TXmlHelper.FindValueInt(node,"type", 1) 'default to "single"
+		local productType:int = TXmlHelper.FindValueInt(node,"product", TVTProgrammeProductType.MOVIE)
+		'old type - stay compatible with old v3-db
+		local oldType:int = TXmlHelper.FindValueInt(node,"type", TVTProgrammeLicenceType.SINGLE)
+		local licenceType:int = TXmlHelper.FindValueInt(node,"licence_type", oldType)
 		local programmeData:TProgrammeData
 		local programmeLicence:TProgrammeLicence
 
@@ -791,7 +793,7 @@ Type TDatabaseLoader
 				programmeData.createdBy = createdBy
 			else
 				'reuse old one
-				programmeProductType = programmeData.programmeProductType
+				productType = programmeData.productType
 			endif
 
 			programmeData.GUID = "data-"+GUID
@@ -906,22 +908,16 @@ Type TDatabaseLoader
 
 
 		'=== PRODUCT TYPE ===
-		programmeData.programmeProductType = programmeProductType
+		programmeData.productType = productType
 
 		'=== LICENCE TYPE ===
 		'the licenceType is adjusted as soon as "AddData" was used
 		'so correct it if needed
-		Select programmeLicenceType
-			case TVTProgrammeLicenceType.SERIES
-					programmeData.programmeLicenceType = TVTProgrammeLicenceType.SERIES
-			case TVTProgrammeLicenceType.EPISODE
-					programmeData.programmeLicenceType = TVTProgrammeLicenceType.EPISODE
-			case TVTProgrammeLicenceType.COLLECTION
-					programmeData.programmeLicenceType = TVTProgrammeLicenceType.COLLECTION
-			'case TVTProgrammeLicenceType.SINGLE
-			default
-					programmeData.programmeLicenceType = TVTProgrammeLicenceType.SINGLE
-		End Select
+		if parentLicence and licenceType = TVTProgrammeLicenceType.UNKNOWN
+			licenceType = TVTProgrammeLicenceType.EPISODE
+		endif
+		programmeLicence.licenceType = licenceType
+
 
 		
 		'=== EPISODES ===
@@ -944,7 +940,7 @@ Type TDatabaseLoader
 		Next
 
 		if programmeLicence.isSeries() and programmeLicence.GetSubLicenceCount() = 0
-			programmeData.programmeLicenceType = TVTProgrammeLicenceType.SINGLE
+			programmeLicence.licenceType = TVTProgrammeLicenceType.SINGLE
 			print "Series with 0 episodes found. Converted to single: "+programmeLicence.GetTitle()
 		endif
 

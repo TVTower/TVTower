@@ -321,6 +321,10 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	Field data:TProgrammeData				{_exposeToLua}
 	'the latest hour-(from-start) one of the planned programmes ends
 	Field latestPlannedEndHour:int = -1
+	'is this licence a: collection, series, episode or single element?
+	'you cannot distinguish between "series" and "collections" without
+	'as both could contain "shows" or "episodes"
+	Field licenceType:int = 0
 	'series are parent of episodes
 	Field parentLicenceGUID:string = ""
 	'other licences this licence covers
@@ -407,27 +411,22 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	Method isSeries:int() {_exposeToLua}
-		return GetData() and GetData().isSeries()
+		return licenceType = TVTProgrammeLicenceType.SERIES
 	End Method
 
 
 	Method isEpisode:int() {_exposeToLua}
-		return GetData() and GetData().isEpisode()
+		return licenceType = TVTProgrammeLicenceType.EPISODE
 	End Method
 
 
-	'Method isMovie:int() {_exposeToLua}
-	'	return GetData() and GetData().isMovie()
-	'End Method
-
-
 	Method isSingle:int() {_exposeToLua}
-		return GetData() and GetData().isSingle()
+		return licenceType = TVTProgrammeLicenceType.SINGLE
 	End Method
 	
 
 	Method isCollection:int() {_exposeToLua}
-		return GetData() and GetData().isCollection()
+		return licenceType = TVTProgrammeLicenceType.COLLECTION
 	End Method
 	
 

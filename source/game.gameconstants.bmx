@@ -97,7 +97,8 @@ End Type
 
 
 
-'"type" in the db
+'to ease access to "comparisons" without knowing
+'the licence object itself
 Type TVTProgrammeLicenceType {_exposeToLua}
 	Const UNKNOWN:int    = 0
 	Const SINGLE:int     = 1 'eg. movies, one-time-events...
@@ -127,15 +128,15 @@ End Type
 
 '"product" in the DB
 Type TVTProgrammeProductType {_exposeToLua}
-	Const UNDEFINED:int = 0		'0
-	Const MOVIE:int = 1			'1
-	Const SERIES:int = 2		'2
-	Const DOKUSOAP:int = 4		'3
-	Const SHOW:int = 8			'4
-	Const REPORTAGE:int = 16	'5
-	Const COMMERCIAL:int = 32	'6
-	Const EVENT:int = 64		'7
-	Const MISC:int = 128		'8
+	Const UNDEFINED:int = 0         '0
+	Const MOVIE:int = 1             '1	'movies in series are "pilots"
+	Const SERIES:int = 2            '2
+	Const SCRIPTEDREALITY:int = 4   '3
+	Const SHOW:int = 8              '4
+	Const REPORTAGE:int = 16        '5
+	Const COMMERCIAL:int = 32       '6
+	Const EVENT:int = 64            '7
+	Const MISC:int = 128            '8
 
 	Const count:int = 8
 
@@ -148,15 +149,15 @@ Type TVTProgrammeProductType {_exposeToLua}
 	
 	Function GetAsString:String(typeKey:int = 0)
 		Select typeKey
-			case MOVIE      return "movie"
-			case SERIES     return "series"
-			case DOKUSOAP   return "dokusoap"
-			case SHOW       return "show"
-			case REPORTAGE  return "reportage"
-			case COMMERCIAL return "commercial"
-			case EVENT      return "event"
-			case MISC       return "misc"
-			default         return "undefined"
+			case MOVIE           return "movie"
+			case SERIES          return "series"
+			case SCRIPTEDREALITY return "scriptedreality"
+			case SHOW            return "show"
+			case REPORTAGE       return "reportage"
+			case COMMERCIAL      return "commercial"
+			case EVENT           return "event"
+			case MISC            return "misc"
+			default              return "undefined"
 		End Select
 	End Function
 End Type
@@ -445,6 +446,8 @@ Type TVTProgrammeFlag {_exposeToLua}
 	Const PAID:Int = 128
 	'Ist ne Serie! Vielleicht besser als den ProgrammeType... so kann
 	'auch ne Reportage ne Serie sein.
+	'-> SERIES bedeutet hier, dass es etwas zusammengehoeriges ist
+	'   also klassische Serien, oder so "Dokusoaps"
 	Const SERIES:Int = 256
 
 	Const count:int = 9

@@ -16,7 +16,7 @@
 			 32 = commercial       64 = event
 			128 = misc
 
-		type:
+		licence_type:
 			which kind of programme is scripted here?
 			  0 = unknown           1 = single (movie, single show)
 			  2 = episode           3 = series
@@ -61,7 +61,7 @@
 		                 100 = 100% chance of "max"
 	-->
 	<scripttemplates>
-		<scripttemplate product="1" type="1" guid="scripttemplate-random-ron-foodformealtime01">
+		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-foodformealtime01">
 			<title>
 				<de>%FOOD% zum %MEALTIME%</de>
 				<en>%FOOD% for %MEALTIME%</en>
@@ -118,7 +118,7 @@
 		</scripttemplate>
 
 
-		<scripttemplate product="1" type="1" guid="scripttemplate-random-ron-fightagainst01">
+		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-fightagainst01">
 			<title>
 				<!-- international title for all incarnations - so "de" is enough -->
 				<de>%ADJECTIVE% %OBJECT%</de>
@@ -175,7 +175,7 @@
 			<speed min="45" max="65" slope="25" />
 		</scripttemplate>
 
-		<scripttemplate product="1" type="1" guid="scripttemplate-random-ron-subtilehumor01">
+		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-subtilehumor01">
 			<title>
 				<!-- international title for all incarnations - so "de" is enough -->
 				<de>%NUMBER% %OBJECT%</de>
@@ -219,7 +219,7 @@
 		</scripttemplate>
 
 		<!-- === SERIES === -->
-		<scripttemplate product="2" type="3" guid="scripttemplate-random-ron-averagedayseries01">
+		<scripttemplate product="2" licence_type="3" guid="scripttemplate-random-ron-averagedayseries01">
 			<title>
 				<!-- international title for all incarnations - so "de" is enough -->
 				<de>%ATTRIBUTE% %OBJECT%</de>
@@ -230,7 +230,7 @@
 			</description>
 			
 			<children>
-				<scripttemplate index="0" product="2" type="2" guid="scripttemplate-random-ron-averagedayseries01_01">
+				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_01">
 					<title>
 						<de>Pilotfilm</de>
 						<en>Pilot</en>
@@ -238,13 +238,13 @@
 					<!-- pilot could be one or two blocks -->
 					<blocks min="1" max="2" />
 				</scripttemplate>
-				<scripttemplate index="1" product="2" type="2" guid="scripttemplate-random-ron-averagedayseries01_02">
+				<scripttemplate index="1" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_02">
 					<title>
 						<de>%SUBJECT1A% im %SUBJECT1B%</de>
 						<en>%SUBJECT1A% in the %SUBJECT1B%</en>
 					</title>
 				</scripttemplate>
-				<scripttemplate index="2" product="2" type="2" guid="scripttemplate-random-ron-averagedayseries01_03">
+				<scripttemplate index="2" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_03">
 					<title>
 						<de>%SUBJECT2A% im %SUBJECT1B%</de>
 						<en>%SUBJECT2A% in the %SUBJECT1B%</en>
