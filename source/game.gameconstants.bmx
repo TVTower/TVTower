@@ -154,7 +154,7 @@ Type TVTProgrammeProductType {_exposeToLua}
 			case SERIES          return "series"
 			case SHOW            return "show"
 			case FEATURE         return "feature"
-			case INFOMERCIAL     return "commercial"
+			case INFOMERCIAL     return "infomercial"
 			case EVENT           return "event"
 			case MISC            return "misc"
 			default              return "undefined"
