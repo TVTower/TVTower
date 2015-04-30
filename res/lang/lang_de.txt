@@ -187,16 +187,17 @@ AD_STILL_X_DAYS= noch %1 Tage
 AD_CHANNEL_IMAGE_TO_LOW = Senderimage zu gering. %CHANNELIMAGE%% < %IMAGE%%.
 AD_PLEASE_GENRE_X = Bitte Genre %GENRE%
 
-AD_TARGETGROUP_ALL = Alle
-AD_TARGETGROUP_CHILDREN	= Kinder
-AD_TARGETGROUP_TEENAGERS = Jugendliche
-AD_TARGETGROUP_HOUSEWIVES = Hausfrauen
-AD_TARGETGROUP_EMPLOYEES = Arbeitnehmer
-AD_TARGETGROUP_UNEMPLOYED = Arbeitslose
-AD_TARGETGROUP_MANAGER = Manager
-AD_TARGETGROUP_PENSIONERS = Rentner
-AD_TARGETGROUP_WOMEN = Frauen
-AD_TARGETGROUP_MEN = Männer
+TARGETGROUP_ALL = Alle
+TARGETGROUP_CHILDREN	= Kinder
+TARGETGROUP_TEENAGERS = Jugendliche
+TARGETGROUP_HOUSEWIVES = Hausfrauen
+TARGETGROUP_EMPLOYEES = Arbeitnehmer
+TARGETGROUP_UNEMPLOYED = Arbeitslose
+TARGETGROUP_MANAGER = Manager
+TARGETGROUP_PENSIONERS = Rentner
+TARGETGROUP_WOMEN = Frauen
+TARGETGROUP_MEN = Männer
+
 AD_INFOMERCIAL = Du wirst für die Ausstrahlung von Dauerwerbesendungen bezahlt. Einkommen ist abhängig von der Zuschauerzahl.
 AD_INFOMERCIAL_NOT_AVAILABLE = Für diese Werbung steht keine Dauerwerbesendung zur Verfügung.
 AD_INFOMERCIAL_PROFIT= Einnahmen: %PROFIT% pro 1000 Zuschauer
@@ -281,7 +282,7 @@ PROGRAMME_FLAG_TRASH = Trash
 PROGRAMME_FLAG_BMOVIE = BMovie
 PROGRAMME_FLAG_XRATED = FSK18
 PROGRAMME_FLAG_PAID = Dauerwerbesendung
-PROGRAMME_FLAG_SERIES = Serie
+PROGRAMME_FLAG_SERIES = Serienartig
 
 MOVIE_CALLINSHOW= Du verdienst %PROFIT% je 1.000 Zuschauer.
 MOVIE_TRAILER= Das Ausstrahlen einer Programmvorschau kann das Interesse an folgenden Ausstrahlungen des beworbenen Programmes erhöhen.

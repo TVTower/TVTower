@@ -736,9 +736,9 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		if group < 0 then group = base.limitedToTargetGroup
 
 		If group > 0 And group <= TVTTargetGroup.GetAtIndex(TVTTargetGroup.count)
-			Return GetLocale("AD_TARGETGROUP_"+TVTTargetGroup.GetAsString(group))
+			Return GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(group))
 		else
-			Return GetLocale("AD_TARGETGROUP_NONE")
+			Return GetLocale("TARGETGROUP_NONE")
 		EndIf
 	End Method
 

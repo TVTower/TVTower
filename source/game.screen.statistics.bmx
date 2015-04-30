@@ -192,11 +192,11 @@ Type TScreenHandler_Statistics
 					if i = 8 then drawOnLeft = 1
 
 					if drawOnLeft
-						smallTextFont.DrawBlock(GetLocale("AD_TARGETGROUP_"+TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )), labelArea.GetX(), labelArea.GetY() + row*labelArea.GetH(), halfWidth - splitter, labelArea.GetH(), ALIGN_LEFT_CENTER, fontColor)
+						smallTextFont.DrawBlock(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )), labelArea.GetX(), labelArea.GetY() + row*labelArea.GetH(), halfWidth - splitter, labelArea.GetH(), ALIGN_LEFT_CENTER, fontColor)
 						smallBoldTextFont.DrawBlock(TFunctions.convertValue( audienceResult.audience.GetValue(TVTTargetGroup.GetAtIndex(i)), 0 ), labelArea.GetX(), labelArea.GetY() + row*labelArea.GetH(), halfWidth - splitter - 20, labelArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
 						smallTextFont.DrawBlock("#"+audienceRanks[i], labelArea.GetX(), labelArea.GetY() + row*labelArea.GetH(), halfWidth - splitter, labelArea.GetH(), ALIGN_RIGHT_CENTER, rankFontColor)
 					else
-						smallTextFont.DrawBlock(GetLocale("AD_TARGETGROUP_"+TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )), labelArea.GetX() + halfWidth + splitter, labelArea.GetY() + row*labelArea.GetH(), halfWidth - splitter, labelArea.GetH(), ALIGN_LEFT_CENTER, fontColor)
+						smallTextFont.DrawBlock(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )), labelArea.GetX() + halfWidth + splitter, labelArea.GetY() + row*labelArea.GetH(), halfWidth - splitter, labelArea.GetH(), ALIGN_LEFT_CENTER, fontColor)
 						smallBoldTextFont.DrawBlock(TFunctions.convertValue( audienceResult.audience.GetValue(TVTTargetGroup.GetAtIndex(i)), 0 ), labelArea.GetX() +  halfWidth + splitter, labelArea.GetY() + row*labelArea.GetH(), halfWidth - splitter - 20, labelArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
 						smallTextFont.DrawBlock("#"+audienceRanks[i], labelArea.GetX() +  halfWidth + splitter, labelArea.GetY() + row*labelArea.GetH(), halfWidth - splitter, labelArea.GetH(), ALIGN_RIGHT_CENTER, rankFontColor)
 					endif
