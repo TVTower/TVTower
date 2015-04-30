@@ -972,7 +972,8 @@ Type TDatabaseLoader
 		local creator:Int = TXmlHelper.FindValueInt(node,"creator", 0)
 		local createdBy:String = TXmlHelper.FindValue(node,"created_by", "unknown")
 		local scriptProductType:int = TXmlHelper.FindValueInt(node,"product", 1)
-		local scriptLicenceType:int = TXmlHelper.FindValueInt(node,"type", 1) 'default to movie/single
+		local oldType:int = TXmlHelper.FindValueInt(node,"type", TVTProgrammeLicenceType.SINGLE)
+		local scriptLicenceType:int = TXmlHelper.FindValueInt(node,"licence_type", oldType)
 		local index:int = TXmlHelper.FindValueInt(node,"index", 0)
 		local scriptTemplate:TScriptTemplate
 
@@ -1182,8 +1183,14 @@ Type TDatabaseLoader
 
 
 		'=== SCRIPT - PRODUCT TYPE ===
-		scriptTemplate.scriptLicenceType = scriptLicenceType
 		scriptTemplate.scriptProductType = scriptProductType
+
+		'=== SCRIPT - LICENCE TYPE ===
+		if parentScriptTemplate and scriptLicenceType = TVTProgrammeLicenceType.UNKNOWN
+			scriptLicenceType = TVTProgrammeLicenceType.EPISODE
+		endif
+		scriptTemplate.scriptLicenceType = scriptLicenceType
+
 		rem
 			auto correction cannot be done this way, as a show could
 			be also defined having multiple episodes or a reportage

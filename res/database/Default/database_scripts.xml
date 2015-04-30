@@ -85,8 +85,8 @@
 					<en>meets|has an accident with|gets pregnant with|gets drunk with</en>
 				</action>
 				<job1>
-					<de>angehende Jurastudentin|Romanautorin|Autorin vieler Groschenromane||</de>
-					<en>budding law student|novelist|author of many dime novels||</en>
+					<de>angehende Jurastudentin|Romanautorin|Autorin vieler Groschenromane|</de>
+					<en>budding law student|novelist|author of many dime novels|</en>
 				</job1>
 				<job2>
 					<de>von Beruf Landschaftsmaler|anonymer Alkoholiker|Damenfriseur aus Leidenschaft</de>
@@ -178,7 +178,7 @@
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-subtilehumor01">
 			<title>
 				<!-- international title for all incarnations - so "de" is enough -->
-				<de>%NUMBER% %OBJECT%</de>
+				<de>%NUMBER% %OBJECT% %ACTION%</de>
 			</title>
 			<description>
 				<de>Subtiles Drama trifft Holzhammerhumor. Alleiniger Star ist Nummer 1 der %NUMBER% %OBJECT%.</de>
@@ -195,7 +195,7 @@
 				</object>
 				<action>
 					<de>auf Tour|brechen aus|tanken voll|und die Liebe...|suchen Krawall</de>
-					<de>on tour|breaking out|topping off|and the love...|looking for affray</de>
+					<en>on tour|breaking out|topping off|and the love...|looking for affray</en>
 				</action>
 			</variables>
 
