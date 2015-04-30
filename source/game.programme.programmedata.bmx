@@ -138,6 +138,8 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Field genre:Int	= 0
 	Field subGenres:Int[]
 	Field blocks:Int = 1
+	'guid of a potential franchise entry
+	Field franchiseGUID:string
 	'id of the creating user
 	Field creator:Int = 0
 	'name of the creating user
@@ -169,6 +171,9 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Field timesAired:int[] = [0]
 	'how "attractive" a programme is (the more shown, the less this value)
 	Field topicality:Float = -1
+	'programmes descending from this programme (eg. "Lord of the Rings"
+	'as "franchise" and the individual programmes as "franchisees"
+	Field franchisees:string[] {nosave}
 
 	'=== trailer data ===
 	Field trailerTopicality:float = 1.0
@@ -394,6 +399,59 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 			result:+ cachedDirectors[i].GetFullName()
 		Next
 		return result
+	End Method
+
+
+	Method HasFranchisee:int(programme:TProgrammeData)
+		if not programme then return False
+
+		For local g:string = EachIn franchisees
+			if g = programme.GetGUID() then return True
+		Next
+
+		return False
+	End Method
+
+	
+	Method AddFranchisee(programme:TProgrammeData)
+		if HasFranchisee(programme) then return
+		 
+		programme.franchiseGUID = self.GetGUID()
+		franchisees :+ [programme.GetGUID()]
+	End Method
+
+
+	Method RemoveFranchisee(programme:TProgrammeData)
+		if not HasFranchisee(programme) then return
+
+		programme.franchiseGUID = ""
+
+		local newFranchisees:string[]
+		For local g:String = EachIn franchisees
+			if g = programme.GetGUID() then continue
+
+			newFranchisees :+ [g]
+		Next
+		franchisees = newFranchisees
+	End Method
+
+
+	Method GetFranchisees:string[]()
+		return franchisees
+	End Method
+
+
+	Method SetFranchiseByGUID( newFranchiseGUID:String )
+		'remove old
+		if franchiseGUID
+			local oldF:TProgrammeData = GetProgrammeDataCollection().GetByGUID(franchiseGUID)
+			if oldF then oldF.RemoveFranchisee(self)
+		endif
+
+		if newFranchiseGUID
+			local newF:TProgrammeData = GetProgrammeDataCollection().GetByGUID(newFranchiseGUID)
+			if newF then newF.AddFranchisee(self)
+		endif
 	End Method
 
 

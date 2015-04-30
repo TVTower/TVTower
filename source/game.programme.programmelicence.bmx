@@ -139,6 +139,9 @@ Type TProgrammeLicenceCollection
 
 	'add a licence to all needed lists
 	Method AddAutomatic:Int(licence:TProgrammeLicence, skipDuplicates:Int = True)
+		'do not add franchise-licences
+		if licence.licenceType = TVTProgrammeLicenceType.FRANCHISE then return False
+
 		'=== ALL ===
 		'all licences should be listed in the "all-licences-list"
 		'this also includes episodes!
@@ -405,7 +408,7 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method isType:int(programmeDataType:int) {_exposeToLua}
+	Method isProgrammeType:int(programmeDataType:int) {_exposeToLua}
 		return GetData() and GetData().isType(programmeDataType)
 	End Method
 

@@ -302,7 +302,7 @@ Type FrameMain Extends FrameMainBase
 		For Local l:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().singles
 			list.InsertStringItem(entryNum, l.GetTitle())
 			list.SetStringItem(entryNum, 1, l.GetData().year )
-			list.SetStringItem(entryNum, 2, TVTProgrammeLicenceType.GetAsString(l.GetData().programmeLicenceType) )
+			list.SetStringItem(entryNum, 2, TVTProgrammeLicenceType.GetAsString(l.licenceType) )
 			list.SetStringItem(entryNum, 3, l.GetData().createdBy )
 			'maybe we could just store the GUID here?
 			'or something which does NOT change at all? 

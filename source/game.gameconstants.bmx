@@ -105,6 +105,7 @@ Type TVTProgrammeLicenceType {_exposeToLua}
 	Const EPISODE:int    = 2 'episodes of a series
 	Const SERIES:int     = 3 'header of series
 	Const COLLECTION:int = 4 'header of collections
+	Const FRANCHISE:int  = 5 'header of franchises ("SAW", "Indiana Jones", ...)
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -118,6 +119,7 @@ Type TVTProgrammeLicenceType {_exposeToLua}
 			case SERIES      return "series"
 			case SINGLE      return "single"
 			case COLLECTION  return "collection"
+			case FRANCHISE   return "franchise"
 			default          return "unknown"
 		End Select
 	End Function
