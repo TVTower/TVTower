@@ -395,7 +395,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			Case broadcastMaterial.TYPE_ADVERTISEMENT
 				If TAdvertisement(broadcastMaterial)
 					Local advertisement:TAdvertisement = TAdvertisement(broadcastMaterial)
-					text = GetLocale("INFOMERCIAL")
+					text = GetLocale("PROGRAMME_PRODUCT_INFOMERCIAL")
 				EndIf
 		End Select
 

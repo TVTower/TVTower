@@ -817,7 +817,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), currX + 6, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
 		currY :+ 18
-		fontNormal.drawBlock(GetLocale("INFOMERCIAL"), currX + 6, currY, 280, 15, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+		fontNormal.drawBlock(GetLocale("PROGRAMME_PRODUCT_INFOMERCIAL"), currX + 6, currY, 280, 15, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
 		currY :+ 16
 
 		'content description

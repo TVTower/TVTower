@@ -131,16 +131,15 @@ End Type
 '"product" in the DB
 Type TVTProgrammeProductType {_exposeToLua}
 	Const UNDEFINED:int = 0         '0
-	Const MOVIE:int = 1             '1	'movies in series are "pilots"
-	Const SERIES:int = 2            '2
-	Const SCRIPTEDREALITY:int = 4   '3
-	Const SHOW:int = 8              '4
-	Const REPORTAGE:int = 16        '5
-	Const COMMERCIAL:int = 32       '6
-	Const EVENT:int = 64            '7
-	Const MISC:int = 128            '8
+	Const MOVIE:int = 1             '1	'movies
+	Const SERIES:int = 2            '2  'series with a "story"
+	Const SHOW:int = 3              '3
+	Const FEATURE:int = 4           '4  'reportages
+	Const INFOMERCIAL:int = 5       '5
+	Const EVENT:int = 6             '6
+	Const MISC:int = 7              '7
 
-	Const count:int = 8
+	Const count:int = 7
 
 
 	Function GetAtIndex:int(index:int)
@@ -153,10 +152,9 @@ Type TVTProgrammeProductType {_exposeToLua}
 		Select typeKey
 			case MOVIE           return "movie"
 			case SERIES          return "series"
-			case SCRIPTEDREALITY return "scriptedreality"
 			case SHOW            return "show"
-			case REPORTAGE       return "reportage"
-			case COMMERCIAL      return "commercial"
+			case FEATURE         return "feature"
+			case INFOMERCIAL     return "commercial"
 			case EVENT           return "event"
 			case MISC            return "misc"
 			default              return "undefined"
@@ -451,8 +449,10 @@ Type TVTProgrammeFlag {_exposeToLua}
 	'-> SERIES bedeutet hier, dass es etwas zusammengehoeriges ist
 	'   also klassische Serien, oder so "Dokusoaps"
 	Const SERIES:Int = 256
+	'Scripted-Shows/Series/Reportages ... Trash-TV!
+	Const SCRIPTED:Int = 512
 
-	Const count:int = 9
+	Const count:int = 10
 
 
 	Function GetAtIndex:int(index:int = 0)
