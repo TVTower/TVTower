@@ -352,19 +352,19 @@ Type TVTProgrammeGenre {_exposeToLua}
 
 	'Show-Genre 100+
 	Const Show:int = 100			'Shows Allgemein
-	Const ShowPolitics:int = 101	'Polit-Talks
-	Const ShowMusic:int = 102		'Musik-Sendungen
+	Const Show_Politics:int = 101	'Polit-Talks
+	Const Show_Music:int = 102		'Musik-Sendungen
 
 	'Event-Genre 200+
 	Const Event:int	= 200			'allgemeine "Ereignisse"
-	Const EventPolitics:int = 201	'Wahlen, Große Reden, Bundestagsdebatte
-	Const EventMusic:int = 202		'AC/DC-Konzert
-	Const EventSport:int = 203		'Fussball WM, Olymische Spiele
-	Const EventShowbiz:int = 204	'Oscarverleihung, Golden Globes, Gala-Abend
+	Const Event_Politics:int = 201	'Wahlen, Große Reden, Bundestagsdebatte
+	Const Event_Music:int = 202		'AC/DC-Konzert
+	Const Event_Sport:int = 203		'Fussball WM, Olymische Spiele
+	Const Event_Showbiz:int = 204	'Oscarverleihung, Golden Globes, Gala-Abend
  
 	'Reportage-Genre 300+
 	Const Feature:int = 300
-	Const FeatureYellowPress:int = 301
+	Const Feature_YellowPress:int = 301
 
 	Const genreMaximum:Int = 301
 
@@ -376,8 +376,47 @@ Type TVTProgrammeGenre {_exposeToLua}
 		if index >= 300 and index <= 301 then return index
 		return 0
 	End Function
-	
 
+	Function GetByString:int(keyString:string = "")
+		Select keyString.toLower()	
+			case "adventure"		return ADVENTURE
+			case "action"			return ACTION
+			case "animation"		return ANIMATION
+			case "crime"			return CRIME
+			case "comedy"			return COMEDY
+			case "documentary"		return DOCUMENTARY
+			case "drama"			return DRAMA
+			case "erotic"			return EROTIC
+			case "family"			return FAMILY
+			case "fantasy"			return FANTASY
+			case "history"			return HISTORY
+			case "horror"			return HORROR
+			case "monumental"		return MONUMENTAL
+			case "mystery"			return MYSTERY
+			case "romance"			return ROMANCE
+			case "scifi"			return SCIFI
+			case "thriller"			return THRILLER
+			case "western"			return WESTERN
+			'show-genre 100+
+			case show				return SHOW
+			case show_music			return SHOW_MUSIC
+			case show_politics		return SHOW_POLITICS
+			'event-genre 200+
+			case event					return EVENT
+			case event_politics			return EVENT_POLITICS
+			case event_music			return EVENT_MUSIC
+			case event_sport			return EVENT_SPORT
+			case event_showbiz			return EVENT_SHOWBIZ
+			'reportage-genre 300+
+			case feature				return FEATURE
+			case feature_yellowpress	return FEATURE_YELLOWPRESS
+
+			case undefined			return UNDEFINED
+			default					return UNDEFINED
+		End Select
+	End Function
+
+	
 	'returns a textual version of the id
 	Function GetAsString:string(key:int)
 		Select key
@@ -401,17 +440,17 @@ Type TVTProgrammeGenre {_exposeToLua}
 			case Western				return "western"
 			'Show-Genre 100+
 			case Show					return "show"
-			case ShowMusic				return "show_music"
-			case ShowPolitics			return "show_politics"
+			case Show_Music				return "show_music"
+			case Show_Politics			return "show_politics"
 			'Event-Genre 200+
 			case Event					return "event"
-			case EventPolitics			return "event_politics"
-			case EventMusic				return "event_music"
-			case EventSport				return "event_sport"
-			case EventShowbiz			return "event_showbiz"
+			case Event_Politics			return "event_politics"
+			case Event_Music			return "event_music"
+			case Event_Sport			return "event_sport"
+			case Event_Showbiz			return "event_showbiz"
 			'Reportage-Genre 300+
 			case Feature				return "feature"
-			case FeatureYellowPress		return "feature_yellowpress"
+			case Feature_YellowPress	return "feature_yellowpress"
 
 			case Undefined				return "undefined"
 			default						return "undefined"
@@ -472,6 +511,7 @@ Type TVTProgrammeFlag {_exposeToLua}
 			case XRATED    return "xrated"
 			case PAID      return "paid"
 			case SERIES    return "series"
+			case SCRIPTED  return "scripted"
 			default        return "none"
 		End Select
 	End Function
@@ -501,6 +541,22 @@ Type TVTTargetGroup {_exposeToLua}
 		return 2^(index-1)
 	End Function
 
+
+	Function GetByString:int(keyString:string = "")
+		Select keyString.toLower()
+			case "children"    return CHILDREN
+			case "teenagers"   return TEENAGERS
+			case "housewives"  return HOUSEWIVES
+			case "employees"   return EMPLOYEES
+			case "unemployed"  return UNEMPLOYED
+			case "manager"     return MANAGER
+			case "pensioners"  return PENSIONERS
+			case "women"       return WOMEN
+			case "men"         return MEN
+			default            return ALL
+		End Select
+	End Function
+	
 
 	Function GetAsString:String(key:int = 0)
 		Select key

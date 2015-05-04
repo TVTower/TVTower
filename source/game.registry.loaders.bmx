@@ -12,6 +12,7 @@ End Rem
 SuperStrict
 Import "Dig/base.util.registry.bmx"
 Import "Dig/base.util.color.bmx"
+Import "game.gameconstants.bmx"
 
 'register the loaders
 new TRegistryColorLoader.Init()
@@ -457,11 +458,30 @@ Type TRegistryGenresLoader extends TRegistryBaseLoader
 		genre.Insert("speedMod", data.GetString("speedMod", -1))
 
 		If data.GetString("goodFollower") <> ""
-			genre.Insert("goodFollower", ListFromArray(data.GetString("goodFollower").split(",")))
+			local followers:string[] = data.GetString("goodFollower").split(",")
+			For local i:int = 0 until followers.length
+				if int(followers[i]) = followers[i].trim() then continue
+				print "check: ~q"+followers[i]+"~q   ~q"+int(followers[i])+"~q <> ~q"+followers[i]+"~q"
+				local follower:int = TVTProgrammeGenre.GetByString(followers[i])
+				if follower = TVTProgrammeGenre.UNDEFINED
+					print "INVALID GOODFOLLOWER GENRE: "+followers[i]
+				endif
+				followers[i] = follower
+			Next
+			genre.Insert("goodFollower", ListFromArray(followers))
 		EndIf
 
 		If data.GetString("badFollower") <> ""
-			genre.Insert("badFollower", ListFromArray(data.GetString("badFollower").split(",")))
+			local followers:string[] = data.GetString("badFollower").split(",")
+			For local i:int = 0 until followers.length
+				if int(followers[i]) = followers[i].trim() then continue
+				local follower:int = TVTProgrammeGenre.GetByString(followers[i])
+				if follower = TVTProgrammeGenre.UNDEFINED
+					print "INVALID BADFOLLOWER GENRE: "+followers[i]
+				endif
+				followers[i] = follower
+			Next
+			genre.Insert("badFollower", ListFromArray(followers))
 		EndIf
 
 		local timeMods:TMap = TMap(data.Get("timeMods", CreateMap()))

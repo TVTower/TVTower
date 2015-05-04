@@ -505,6 +505,12 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetEpisodeNumber:int()
+		if not self.parentLicenceGUID then return 1
+		return GetParentLicence().GetSubLicencePosition(self)+1
+	End Method
+
+
 	Method isReleased:int() {_exposeToLua}
 		if not self.ignoreUnreleasedProgrammes then return TRUE
 
@@ -769,7 +775,7 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 			GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetParentLicence().GetTitle(), currX + 6, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
 			currY :+ 18
 			'episode num/max + episode title
-			fontNormal.drawBlock((GetParentLicence().GetSubLicencePosition(self)+1) + "/" + GetParentLicence().GetSubLicenceCount() + ": " + data.GetTitle(), currX + 6, currY, 280, 15, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+			fontNormal.drawBlock((GetEpisodeNumber()) + "/" + GetParentLicence().GetSubLicenceCount() + ": " + data.GetTitle(), currX + 6, currY, 280, 15, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
 			currY :+ 16
 		else ' = if isMovie()
 			'default is size "12" so resize to 13

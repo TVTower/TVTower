@@ -24,7 +24,7 @@
 		-->
 		<genre id="0" name="various" outcome-mod="0" review-mod="0.3" speed-mod="0.7">
 			<goodFollower></goodFollower>
-			<badFollower>13</badFollower>
+			<badFollower>monumental</badFollower>
 			<timeMods>
 				<timeMod time="0" value="1.0"/>
 				<timeMod time="1" value="1.0"/>
