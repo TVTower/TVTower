@@ -233,7 +233,7 @@ Type TAudience
 			Case TVTTargetGroup.Men
 				Return Men
 			Default
-				print "unknown"
+				'print "unknown targetID"
 				Throw TArgumentException.Create("targetID", String.FromInt(targetID))
 		End Select
 	End Method

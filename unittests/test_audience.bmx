@@ -34,7 +34,8 @@ Type TAudienceTest Extends TTest
 
 	Method CreateAndInitValue() { test }
 		Local audience:TAudience = TAudience.CreateAndInitValue(10.5)
-		assertEqualsAud(TAudience.CreateAndInit(10.5, 10.5, 10.5, 10.5, 10.5, 10.5, 10.5, 10.5, 10.5 ), audience)
+		local expectedAudience:TAudience = TAudience.CreateAndInit(10.5, 10.5, 10.5, 10.5, 10.5, 10.5, 10.5, 10.5, 10.5 ) 
+		assertEqualsAud(expectedAudience, audience)
 	End Method
 	
 	Method Copy() { test }
@@ -115,10 +116,11 @@ Type TAudienceTest Extends TTest
 		
 		'Falsch-Angaben
 		Try
-			audience.GetValue(0)	
+			'targetGroup "0" is possible now - returns sum
+			audience.GetValue(-1)	
 			fail("No Exception")
 		Catch ex:TArgumentException 'Alles gut			
-			assertEqualsExceptions(TArgumentException.Create("targetID", "0"), ex)
+			assertEqualsExceptions(TArgumentException.Create("targetID", "-1"), ex)
 		Catch ex:Object 'falsche excpetion			
 			fail("Wrong Exception: " + ex.ToString())
 		End Try		
@@ -134,7 +136,7 @@ Type TAudienceTest Extends TTest
 		End Try			
 
 		for local i:int = 1 to 9
-			assertEqualsI(i*100, audience.GetValue(TVTTargetGroup.GetGroupID(i)))
+			assertEqualsI(i*100, audience.GetValue(TVTTargetGroup.GetAtIndex(i)))
 		Next
 	End Method
 	
@@ -162,7 +164,7 @@ Type TAudienceTest Extends TTest
 		End Try			
 		
 		for local i:int = 1 to 9
-			audience.SetValue(TVTTargetGroup.GetGroupID(i), i*100)
+			audience.SetValue(TVTTargetGroup.GetAtIndex(i), i*100)
 		Next
 		assertEqualsAud(TAudience.CreateAndInit(100, 200, 300, 400, 500, 600, 700, 800, 900 ), audience)
 	End Method	
@@ -197,9 +199,11 @@ Type TAudienceTest Extends TTest
 	End Method
 	
 	Method Round() { test }
-		Local audience:TAudience = TAudience.CreateAndInit(1.34, 2.4999, 2.50000000, 0, 0.444, 0.494949494, 1, 1.1, 1.5 )
+		Local audience:TAudience = TAudience.CreateAndInit(1.34, 2.4999, 2.50000000, 0, 0.444, 0.494949494, 1 )
 		audience.Round()
-		assertEqualsAud(TAudience.CreateAndInit(1, 2, 3, 0, 0, 0, 1, 1, 2 ), audience)
+		Local expectedAudience:TAudience = TAudience.CreateAndInit(1, 2, 3, 0, 0, 0, 1, 5, 2) 
+
+		assertEqualsAud(expectedAudience, audience)
 	End Method
 	
 	Method ToNumberSortMap() { test }
@@ -211,7 +215,7 @@ Type TAudienceTest Extends TTest
 			aList.NumberAtIndex(-1)
 			fail("No Exception")
 		Catch ex:TBlitzException 'Alles gut			
-			assertEquals("Object index must be positive", ex.ToString())
+			assertEquals("List index out of range", ex.ToString())
 		Catch ex:Object 'falsche excpetion			
 			fail("Wrong Exception: " + ex.ToString())
 		End Try			

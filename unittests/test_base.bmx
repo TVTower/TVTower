@@ -3,7 +3,7 @@
 		assertEqualsI(expected.Id, actual.Id, message + " [-> Id]")
 		assertEqualsF(expected.Children, actual.Children, 0.000005, message + " [-> Children]")
 		assertEqualsF(expected.Teenagers, actual.Teenagers, 0.000005, message + " [-> Teenagers]")
-		assertEqualsF(expected.HouseWifes, actual.HouseWifes, 0.000005, message + " [-> HouseWifes]")
+		assertEqualsF(expected.HouseWives, actual.HouseWives, 0.000005, message + " [-> HouseWives]")
 		assertEqualsF(expected.Employees, actual.Employees, 0.000005, message + " [-> Employees]")
 		assertEqualsF(expected.Unemployed, actual.Unemployed, 0.000005, message + " [-> Unemployed]")
 		assertEqualsF(expected.Manager, actual.Manager, 0.000005, message + " [-> Manager]")
@@ -31,7 +31,7 @@ Type TTestKit
 		App = TApp.Create(30, -1, True, False) 'create with screen refreshrate and vsync
 		'App.LoadResources("config/resources.xml")		
 		
-		Game = new TGame.Create(False, False)
+		Game = new TGame.Create(False)
 	End Function
 	
 	Function RemoveGame()
@@ -45,20 +45,23 @@ Type TTestKit
 		player.playerID = 1
 		player.Name = "Test"
 		TPublicImage.Create(player.GetPlayerID())
-		Game.SetPlayer(1, player)
+		GetPlayerCollection().Set(1, player)
 		Return player
 	End Function
 	
 	Function CrProgrammeData:TProgrammeData(title:String = null, genre:Int = 0, fixQuality:Float = 1, year:Int = 1985)
-		Local data:TProgrammeData = TProgrammeData.CreateMinimal(title, genre, fixQuality, year)
+		Local localizedTitle:TLocalizedString = new TLocalizedString.Set(title)
+		'Local data:TProgrammeData = TProgrammeData.CreateMinimal(localizedTitle, genre, fixQuality, year)
+		Local data:TProgrammeData = TProgrammeData.Create("", localizedTitle, localizedTitle, null, "DE", year, 0, -1, fixQuality, fixQuality, fixQuality, null, genre, 1, False, TVTProgrammeProductType.MOVIE)
+	
 		Return data
 	End Function
 	
 	Function CrProgrammeLicence:TProgrammeLicence(title:String = null, genre:Int = 0, licenceType:Int, fixQuality:Float = 1, year:Int = 1985)
 		Local data:TProgrammeData = CrProgrammeData(title, genre, fixQuality, year)		
-		data.programmeType = licenceType
-		Local licence:TProgrammeLicence = TProgrammeLicence.Create(title, "", licenceType)
-		licence.AddData(data)
+		Local licence:TProgrammeLicence = new TProgrammeLicence
+		licence.SetData(data)
+		licence.licenceType = licenceType
 		Return licence
 	End Function
 	

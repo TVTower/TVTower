@@ -199,7 +199,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		obj.speed       = Max(0,Min(1.0, speed))
 		obj.outcome     = Max(0,Min(1.0, Outcome))
 		'modificators: > 1.0 increases price (1.0 = 100%)
-		obj.modifiers   = modifiers.Copy()
+		if modifiers then obj.modifiers = modifiers.Copy()
 		obj.genre       = Max(0,Genre)
 		obj.blocks      = blocks
 		obj.SetFlag(TVTProgrammeFlag.XRATED, xrated)
@@ -212,14 +212,6 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		GetProgrammeDataCollection().Add(obj)
 
 		Return obj
-	End Function
-
-
-	Function CreateMinimal:TProgrammeData(title:TLocalizedString = null, genre:Int = 0, fixQuality:Float, year:Int = 1985)
-		Local quality:Int = fixQuality
-		if not title then title = new TLocalizedString
-		local modifiers:TData = new TData
-		Return TProgrammeData.Create("", title, new TLocalizedString, Null, Null, year, 0, 0, quality, quality, quality, modifiers, genre, 0, 0, 1)
 	End Function
 
 

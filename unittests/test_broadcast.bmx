@@ -16,7 +16,7 @@
 		Local programme1:TProgramme = TTestKit.CrProgrammeSmall("abc", 1)
 		programme1.owner = 1
 
-    	BroadcastManager.SetCurrentBroadcastMaterial(1, programme1)
+    	BroadcastManager.SetCurrentBroadcastMaterial(1, programme1, TBroadcastMaterial.TYPE_PROGRAMME)
 		Local bc:TBroadcast = new TBroadcast	
 		bc.AudienceMarkets.AddLast(TTestKit.CrAudienceMarketCalculation(1000000, True))		
 		BroadcastManager.BroadcastProgramme(1, 1, 0, bc)
@@ -29,7 +29,7 @@
 		Local programme1:TProgramme = TTestKit.CrProgrammeSmall("abc", 1)
 		programme1.owner = 1
 
-    	BroadcastManager.SetCurrentBroadcastMaterial(1, programme1)
+    	BroadcastManager.SetCurrentBroadcastMaterial(1, programme1, TBroadcastMaterial.TYPE_PROGRAMME)
 		Local bc:TBroadcast = new TBroadcast	
 		bc.AudienceMarkets.AddLast(TTestKit.CrAudienceMarketCalculation(1000000, True))		
 		BroadcastManager.BroadcastProgramme(1, 1, 0, bc)

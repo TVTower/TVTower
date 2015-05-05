@@ -1,6 +1,8 @@
 SuperStrict
 
-Framework BaH.MaxUnit
+'Framework BaH.MaxUnit
+Framework Brl.StandardIO
+Import "source/external/maxunit.bmx"
 
 Import pub.freeaudio 'fuer rtaudio
 
