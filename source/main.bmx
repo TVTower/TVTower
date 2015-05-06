@@ -117,6 +117,9 @@ Include "game.game.bmx"
 Global VersionDate:String = LoadText("incbin::source/version.txt")
 Global VersionString:String = "v0.2.2.2 Build ~q" + VersionDate+"~q"
 Global CopyrightString:String = "by Ronny Otto & Manuel Vögele"
+Global APP_NAME:string = "TVTower"
+Global LOG_NAME:string = "log.profiler.txt"
+
 Global App:TApp = Null
 Global Game:TGame
 Global PlayerDetailsTimer:Int = 0
@@ -132,7 +135,7 @@ Global RURC:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceColle
 
 '==== Initialize ====
 AppTitle = "TVTower: " + VersionString
-TLogger.Log("CORE", "Starting TVTower, "+VersionString+".", LOG_INFO )
+TLogger.Log("CORE", "Starting "+APP_NAME+", "+VersionString+".", LOG_INFO )
 
 '===== SETUP LOGGER FILTER =====
 TLogger.setLogMode(LOG_ALL)
@@ -3829,7 +3832,7 @@ End Type
 
 OnEnd( EndHook )
 Function EndHook()
-	TProfiler.DumpLog("log.profiler.txt")
+	TProfiler.DumpLog(LOG_NAME)
 	TLogFile.DumpLogs()
 End Function
 
