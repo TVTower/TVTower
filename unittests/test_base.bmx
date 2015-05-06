@@ -94,10 +94,13 @@ Type TTestKit
 		Return definition
 	End Function
 	
-	Function CrAudienceMarketCalculation:TAudienceMarketCalculation(audience:Int, player1:Int = True)
+	Function CrAudienceMarketCalculation:TAudienceMarketCalculation(audience:Int, players:Int[])
+		if not players or players.length = 0 then players = [1]
 		Local market:TAudienceMarketCalculation = New TAudienceMarketCalculation
 		market.maxAudience = TAudience.CreateWithBreakdown(audience)
-		market.AddPlayer(player1)		
+		for local p:int = eachin players
+			market.AddPlayer(p)
+		next		
 		Return market
 	End Function
 EndType

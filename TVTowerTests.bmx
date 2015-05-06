@@ -4,7 +4,7 @@ SuperStrict
 Framework Brl.StandardIO
 Import "source/external/maxunit.bmx"
 
-Import pub.freeaudio 'fuer rtaudio
+'Import pub.freeaudio 'fuer rtaudio
 
 Import "source/main.bmx"
 Incbin "source/version.txt"

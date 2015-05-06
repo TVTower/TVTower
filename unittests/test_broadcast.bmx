@@ -15,10 +15,16 @@
     Method TestBroadcastProgramme() { test }
 		Local programme1:TProgramme = TTestKit.CrProgrammeSmall("abc", 1)
 		programme1.owner = 1
+		programme1.currentBlockBroadcasting = 1 'the block to broadcast
 
     	BroadcastManager.SetCurrentBroadcastMaterial(1, programme1, TBroadcastMaterial.TYPE_PROGRAMME)
 		Local bc:TBroadcast = new TBroadcast	
-		bc.AudienceMarkets.AddLast(TTestKit.CrAudienceMarketCalculation(1000000, True))		
+		'this did NOT in prior versions, because "BroadcastProgramme"
+		'calls "BroadcastCommon" which called "bc.AscertainMarkets"
+		'-> which effectively cleared all previous markets
+		'I (Ron) adjusted it to only clear when recomputing or if there
+		'are no markets...
+		bc.AudienceMarkets.AddLast(TTestKit.CrAudienceMarketCalculation(1000000, [1]))		
 		BroadcastManager.BroadcastProgramme(1, 1, 0, bc)
     	Local audienceResult:TAudienceResult = BroadcastManager.GetAudienceResult(1)
 		
@@ -28,10 +34,16 @@
     Method TestSetBroadcastMalfunction() { test }
 		Local programme1:TProgramme = TTestKit.CrProgrammeSmall("abc", 1)
 		programme1.owner = 1
+		programme1.currentBlockBroadcasting = 1 'the block to broadcast
 
     	BroadcastManager.SetCurrentBroadcastMaterial(1, programme1, TBroadcastMaterial.TYPE_PROGRAMME)
-		Local bc:TBroadcast = new TBroadcast	
-		bc.AudienceMarkets.AddLast(TTestKit.CrAudienceMarketCalculation(1000000, True))		
+		Local bc:TBroadcast = new TBroadcast
+		'this did NOT in prior versions, because "BroadcastProgramme"
+		'calls "BroadcastCommon" which called "bc.AscertainMarkets"
+		'-> which effectively cleared all previous markets
+		'I (Ron) adjusted it to only clear when recomputing or if there
+		'are no markets...
+		bc.AudienceMarkets.AddLast(TTestKit.CrAudienceMarketCalculation(1000000, [1]))
 		BroadcastManager.BroadcastProgramme(1, 1, 0, bc)
     	Local audienceResult:TAudienceResult = BroadcastManager.GetAudienceResult(1)
 		
