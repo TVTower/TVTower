@@ -276,7 +276,8 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		EndIf
 
 		if owner <= 0 Then Throw TNullObjectExceptionExt.Create("The programme '" + GetTitle() + "' has no owner.")
-		
+		if block <= 0 Then Throw TNullObjectExceptionExt.Create("GetAudienceAttractionInternal: Invalid block param: '" + block + ".")
+
 		If block = 1 Or Not lastMovieBlockAttraction Then
 			'1 - Qualität des Programms
 			result.Quality = GetQuality()
@@ -324,9 +325,8 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		'11 - Sequence
 		If withSequenceEffect Then
 			result.SequenceEffect = GetSequenceEffect(block, genreDefinition, lastNewsBlockAttraction, result, lastMovieBlockAttraction)
+			result.Recalculate()
 		EndIf
-
-		result.Recalculate()
 
 		Return result
 	End Method	

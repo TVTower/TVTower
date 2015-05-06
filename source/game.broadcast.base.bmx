@@ -248,8 +248,13 @@ Type TBroadcastManager
 		bc.Hour = hour
 		Sequence.SetCurrentBroadcast(bc)
 
-		bc.AscertainPlayerMarkets()							'Aktuelle Märkte (um die konkuriert wird) festlegen
-
+		'setup markets to compete for
+		'only do this, if not done already or if enforced to do so
+		'(this allows unittesting without StationMap)
+		if recompute or bc.AudienceMarkets.Count() = 0
+			bc.AscertainPlayerMarkets()
+		endif
+		
 		'Die Programmwahl der Spieler "einloggen"
 		if broadcastType = TBroadcastMaterial.TYPE_NEWSSHOW
 			bc.PlayersBroadcasts = currentNewsShowBroadcastMaterial
@@ -958,7 +963,7 @@ Type TAudienceMarketCalculation
 				AudienceResults[currKeyInt-1].EffectiveAudienceAttraction	= effectiveAttraction
 
 				'Print "Effektive Quote für " + currKey + ": " + effectiveAttraction.ToString()
-				'Print "Zuschauer fuer " + currKey + ": " + AudienceResults[currKeyInt].ToString()
+				'Print "Zuschauer fuer " + currKey + ": " + AudienceResults[currKeyInt-1].ToString()
 			Next
 		End If
 	End Method
