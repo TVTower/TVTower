@@ -777,7 +777,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		Local quality:Float = GetQualityRaw()
 
 		'the older the less ppl want to watch - 1 year = 0.99%, 2 years = 0.98%...
-		Local age:Int = 0.01 * Max(0, 100 - Max(0, GetWorldTime().GetYear() - year))
+		Local age:Float = 0.01 * Max(0, 100 - Max(0, GetWorldTime().GetYear() - year))
 		quality :* Max(0.20, age)
 
 		'repetitions wont be watched that much
