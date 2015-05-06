@@ -276,7 +276,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		EndIf
 
 		if owner <= 0 Then Throw TNullObjectExceptionExt.Create("The programme '" + GetTitle() + "' has no owner.")
-		if block <= 0 Then Throw TNullObjectExceptionExt.Create("GetAudienceAttractionInternal: Invalid block param: '" + block + ".")
+		if block <= 0 and usedAsType = TYPE_PROGRAMME Then Throw TNullObjectExceptionExt.Create("GetAudienceAttractionInternal: Invalid block param: '" + block + ".")
 
 		If block = 1 Or Not lastMovieBlockAttraction Then
 			'1 - Qualität des Programms
