@@ -5,11 +5,22 @@ SuperStrict
 
 Framework wx.wxApp
 
-Import "editor_base.bmx"
+Import "tools/editor/editor_base.bmx"
 Import brl.retro
-Import "../../source/Dig/base.util.data.bmx"
-Import "../../source/game.database.bmx"
-Import "../../source/game.database.bmx"
+Import "source/Dig/base.util.data.bmx"
+Import "source/game.database.bmx"
+
+'audienceSim
+Import "source/game.player.base.bmx"
+Import "source/game.player.programmeplan.bmx"
+
+Import brl.reflection
+
+TLogger.Log("CORE", "Starting TVTEditor.", LOG_INFO )
+TLogger.SetPrintMode(0)
+
+
+
 
 Global app:MyApp = New MyApp
 app.run()
@@ -18,8 +29,9 @@ Type MyApp Extends wxApp
 	Field dbLoader:TDatabaseLoader
 	Field _frameMain:FrameMain
 
+
 	Method OnInit:Int()
-		TLocalization.LoadLanguageFiles("../../res/lang/lang_*.txt")
+		TLocalization.LoadLanguageFiles("res/lang/lang_*.txt")
 		'set default language
 '		TLocalization.SetCurrentLanguage("en")
 		TLocalization.SetCurrentLanguage("de")
@@ -30,11 +42,41 @@ Type MyApp Extends wxApp
 		_frameMain = FrameMain(New FrameMain.Create(Null, -1, "Editor"))
 		_frameMain.show()
 
+		'audienceSim
+		'load genre definitions
+		local registryLoader:TRegistryLoader = new TRegistryLoader
+		registryLoader.LoadFromXML("config/genres.xml", true)
+
+
 		'load db
 		dbLoader = New TDatabaseLoader
-		dbLoader.LoadDir("../../res/database/Default")
+		dbLoader.LoadDir("res/database/Default")
 
-		_frameMain.RecreateProgrammeLicenceList()
+		_frameMain.RecreateProgrammeLicenceList(_frameMain.m_listCtrl_AudienceSim_ProgrammeLicences)
+		_frameMain.RecreateProgrammeLicenceList(_frameMain.m_listCtrl_ProgrammeLicences_ProgrammeLicences)
+		_frameMain.AudienceSim_RecreateAudiencesList()
+
+
+		'hide block parts
+		_frameMain.m_staticText_blockCount.Hide()
+		_frameMain.m_staticText_block.Hide()
+		_frameMain.m_spinCtrl_block.Hide()
+		
+
+		'create some players to work with (public image and so on)
+		for local i:int = 1 to 4
+			local p:TPlayerBase = new TPlayerBase
+			p.name = "Spieler "+i
+			p.channelname = "Sender "+i
+			p.playerID = i
+
+			TPublicImage.Create(p.playerID)
+'			new TPlayerProgrammeCollection.Create(p.playerID)
+'			new TPlayerProgrammePlan.Create(p.playerID)
+
+			GetPlayerBaseCollection().Set(1, p)
+		Next
+
 	
 		Return True
 	End Method
@@ -46,7 +88,14 @@ End Type
 Type FrameMain Extends FrameMainBase
 	Field mainGenreChoices:wxPGChoices
 	Field _dialogSelectCast:DialogSelectCast
-	Field activeProgrammeLicence:TProgrammeLicence
+
+	Field programmeLicenceListColNames:string[] = ["Title", "Year", "Type", "Author"]
+	Field programmeLicenceListSortBy:string
+	Field programmeLicenceListSortDirection:int = 0
+
+	Field ProgrammeLicences_activeProgrammeLicence:TProgrammeLicence
+	Field AudienceSim_activeProgrammeLicence:TProgrammeLicence
+
 
 	Method OnInit()
 		Super.OnInit()
@@ -60,7 +109,6 @@ Type FrameMain Extends FrameMainBase
 			genreID = TVTProgrammeGenre.GetAtIndex(i)
 			if genreID > 0
 				genres :+ [ GetLocale("PROGRAMME_GENRE_"+TVTProgrammeGenre.GetAsString(i)) ]
-				'TODO: Locale
 			endif
 		Next
 
@@ -91,7 +139,7 @@ Type FrameMain Extends FrameMainBase
 		local targetGroupLabels:string[]
 		local targetGroupValues:int[]
 		For local i:int = 1 to TVTTargetGroup.count
-			targetGroupLabels :+ [TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )]
+			targetGroupLabels :+ [GetLocale("TARGETGROUP_" + TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) ))]
 			targetGroupValues :+ [TVTTargetGroup.GetAtIndex(i)]
 		Next
 
@@ -120,6 +168,23 @@ Type FrameMain Extends FrameMainBase
 		pg.ReplaceProperty( oldProp, m_pgItem_programmeLicenceContraPressureGroups )
 
 
+		'=== PRODUCT TYPE ===
+		local productTypes:string[] = [""]
+		local productTypeID:int
+		For local i:int = 0 to TVTProgrammeProductType.count
+			productTypeID = TVTProgrammeProductType.GetAtIndex(i)
+			if productTypeID > 0
+				productTypes :+ [ GetLocale("PROGRAMME_PRODUCTTYPE_"+TVTProgrammeProductType.GetAsString(i)) ]
+			endif
+		Next
+
+		oldProp = m_pgItem_programmeLicenceProduct
+		m_pgItem_programmeLicenceProduct = new wxEnumProperty.CreateWithArrays(..
+											oldProp.GetLabel(), oldProp.GetName(), ..
+											productTypes ..
+										)
+		pg.ReplaceProperty( oldProp, m_pgItem_programmeLicenceProduct)
+
 
 		'remove and refill flags-checkboxlist
 		m_checkList_programmeLicenceFlags.Clear()
@@ -131,11 +196,17 @@ Type FrameMain Extends FrameMainBase
 
 		'=== CAST LIST CTRL ===
 		RecreateProgrammeLicenceCastList()
+
+
+		ConnectAny(wxEVT_PG_SELECTED, OnProgrammeLicencePropGridSelect, Null, Self)
 	End Method
 
 
-	Method OnProgrammeLicenceLicencesSize(event:wxSizeEvent)
-		ResizeProgrammeLicenceList()
+
+	'==== PROGRAMME LICENCES ====
+
+	Method OnProgrammeLicences_ProgrammeLicencesSize(event:wxSizeEvent)
+		ResizeProgrammeLicenceList(m_listCtrl_ProgrammeLicences_ProgrammeLicences)
 		ResizeProgrammeLicenceCastList()
 
 		event.Skip()
@@ -143,13 +214,13 @@ Type FrameMain Extends FrameMainBase
 
 	
 	'override
-	Method OnProgrammeLicenceLicencesItemSelected(event:wxListEvent)
-		local licence:TProgrammeLicence = TProgrammeLicence(m_listCtrl_programmeLicenceLicences.GetItemData( event.GetIndex() ))
+	Method OnProgrammeLicences_ProgrammeLicencesItemSelected(event:wxListEvent)
+		local licence:TProgrammeLicence = TProgrammeLicence(m_listCtrl_ProgrammeLicences_ProgrammeLicences.GetItemData( event.GetIndex() ))
 		if not licence
 			print "OnProgrammeLicenceLicencesItemSelected: no licence found"
 		else
 			'set active licence
-			activeProgrammeLicence = licence
+			ProgrammeLicences_activeProgrammeLicence = licence
 			'separately fill the data (maybe we have a "new" licence, or
 			'copy base data from a series...
 			FillProgrammeLicenceForm(licence)
@@ -183,7 +254,7 @@ Type FrameMain Extends FrameMainBase
 
 		list.DeleteItem(item)
 
-		activeProgrammeLicence.GetData().RemoveCast(job)
+		ProgrammeLicences_activeProgrammeLicence.GetData().RemoveCast(job)
 	End Method
 	
 
@@ -250,6 +321,290 @@ Type FrameMain Extends FrameMainBase
 	End Method
 
 
+	Method OnProgrammeLicences_ProgrammeLicencesListColClick(event:wxListEvent)
+		Local col:Int = wxListEvent(event).GetColumn()
+		Local item:wxListItem = wxListEvent(event).GetItem()
+		local list:wxListCtrl = m_listCtrl_ProgrammeLicences_ProgrammeLicences
+		local oldListSortBy:string = programmeLicenceListSortBy
+		'only support cols 1 and 2
+		if col < 0 and col > 1 then return 
+
+		if col = 0
+			programmeLicenceListSortBy = "title"
+		elseif col = 1
+			programmeLicenceListSortBy = "year"
+		endif
+
+		if programmeLicenceListSortBy = oldListsortBy
+			programmeLicenceListSortDirection = not programmeLicenceListSortDirection
+		else
+			programmeLicenceListSortDirection = 0
+		endif
+		'print "sort by: "+listSortBy+"  direction: "+listSortDirection
+
+
+		local i:wxListItem = wxListItem.CreateListItem()
+		for local myCol:int = 0 to 2
+			'store current column-header in "i"
+			list.GetColumn(myCol, i)
+
+			if myCol = col
+				if programmeLicenceListSortDirection = 0
+					'item.SetMask(wxLIST_MASK_IMAGE)
+					'item.SetImage(image)
+					if col = 1
+						i.SetText(programmeLicenceListColNames[col] + " [1..9]")
+					else
+						i.SetText(programmeLicenceListColNames[col] + " [A..Z]")
+					endif
+				else
+					if col = 1
+						i.SetText(programmeLicenceListColNames[col] + " [9..1]")
+					else
+						i.SetText(programmeLicenceListColNames[col] + " [Z..A]")
+					endif
+				endif
+			else
+				'reset all other columns
+				i.SetText(programmeLicenceListColNames[myCol])
+			endif
+
+			list.SetColumn(myCol, i)
+		Next
+
+		list.SortItems(SortProgrammeLicences, New TData.AddString("sort", programmeLicenceListSortBy).AddNumber("direction", programmeLicenceListSortDirection))
+	End Method
+
+
+	Function OnProgrammeLicencePropGridSelect(event:wxEvent)
+		Local frame:FrameMain = FrameMain(event.parent)
+		Local evt:wxPropertyGridEvent = wxPropertyGridEvent(event)
+		Local property:wxPGProperty = evt.GetProperty()
+		if not frame or not property then return
+
+		Select property
+			case frame.m_pgItem_programmeLicenceBlocks
+				frame.SetStatusBarText( GetLocale("Blocks: length in hours") )
+			case frame.m_pgItem_programmeLicenceYear
+				frame.SetStatusBarText( GetLocale("Year: year of initial release") )
+			default
+				frame.SetStatusBarText("TVTower Editor")
+		EndSelect
+
+		event.Skip()
+	End Function
+
+
+
+	'==== AUDIENCE SIM ====
+	Method OnAudienceSim_ProgrammeLicencesSize(event:wxSizeEvent)
+		ResizeProgrammeLicenceList(m_listCtrl_AudienceSim_ProgrammeLicences)
+		AudienceSim_ResizeAudiencesList()
+
+		event.Skip()
+	End Method
+
+
+	Method OnAudienceSim_ProgrammeLicencesItemSelected(event:wxListEvent)
+		local licence:TProgrammeLicence = TProgrammeLicence(m_listCtrl_ProgrammeLicences_ProgrammeLicences.GetItemData( event.GetIndex() ))
+		if not licence
+			print "OnAudienceSim_ProgrammeLicencesItemSelected: no licence found"
+		'skip collection and series headers
+		elseif not licence.IsSeries() and not licence.IsCollection()
+			'set active licence
+			AudienceSim_activeProgrammeLicence = licence
+
+			m_spinCtrl_block.SetRange(1, licence.GetData().GetBlocks())
+			m_staticText_blockCount.SetLabel( "/ " + licence.GetData().GetBlocks() )
+			
+			AudienceSim_RunAudienceSimulation(licence)
+		endif
+	End Method
+
+
+	Method OnAudienceSimChangeSettings(event:wxCommandEvent)
+		if AudienceSim_activeProgrammeLicence
+			AudienceSim_RunAudienceSimulation(AudienceSim_activeProgrammeLicence)
+		endif
+	End Method
+
+
+
+	Method AudienceSim_ResizeAudiencesList()
+		if m_listCtrl_audiences.GetColumnCount() >= TVTTargetGroup.count + 1 + 1
+			local w:int, h:int
+			m_listCtrl_audiences.GetClientSize(w, h)
+			local wLeft:int = w - 35
+			local wGroup:Int = Floor(wLeft/(TVTTargetGroup.count+1))
+			m_listCtrl_audiences.SetColumnWidth(0, 35)
+			For local i:int = 0 to TVTTargetGroup.count
+				m_listCtrl_audiences.SetColumnWidth(i+1, wGroup)
+			Next
+		endif
+	End Method
+
+
+	Method AudienceSim_RecreateAudiencesList()
+		local list:wxListCtrl = m_listCtrl_audiences
+		list.DeleteAllItems()
+		list.InsertColumn(0, "Uhr")
+		For local i:int = 0 to TVTTargetGroup.count '0-9
+			list.InsertColumn(i+1, GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(TVTTargetGroup.GetAtIndex(i))) )
+		Next
+		' To speed up inserting we hide the control temporarily
+		list.Hide()
+
+		For local clock:int = 0 to 23
+			list.InsertStringItem(clock, clock)
+			For local i:int = 0 to TVTTargetGroup.count '0-9
+				list.SetStringItem(clock, i+1, 0)
+			Next
+			'store empty audience...
+			list.SetItemData(clock, null)
+		Next
+
+		list.Show()
+	End Method
+
+
+	Method AudienceSim_RunAudienceSimulation:Int(licence:TProgrammeLicence)
+		local player:int = 1
+		local audience:int = Max(0, m_spinCtrl_audience.GetValue())
+		local block:int = Min(licence.GetData().GetBlocks(), Max(1, m_spinCtrl_block.GetValue()))
+		local day:int = 1
+		local hour:int = 1
+		local year:int = m_spinCtrl_gameYear.GetValue()
+
+		'adjust game time
+'		print GetWorldTime().GetFormattedDay()
+		GetWorldTime().SetStartYear(year)
+'		GetWorldTime().SetTimeGone( GetWorldTime().MakeTime(year, day, hour. 0, 0) )
+'		print GetWorldTime().GetFormattedDay() + "  " + GetWorldTime().GetYear()
+
+		'create market ("buy a generic station")
+		Local market:TAudienceMarketCalculation = New TAudienceMarketCalculation
+		market.maxAudience = TAudience.CreateWithBreakdown(audience)
+		'no competitors, only our player
+		market.AddPlayer(player)
+
+
+		'create programme
+		local p:TProgramme = TProgramme.Create(licence)
+		p.owner = player
+		
+		'broadcast any previous programme "before"
+		Local bc:TBroadcast = new TBroadcast
+		bc.AudienceMarkets.AddLast(market)
+		bc.broadcastType = TBroadcastMaterial.TYPE_PROGRAMME
+
+rem
+		Local bcNews:TBroadcast = new TBroadcast
+		bcNews.AudienceMarkets.AddLast(market)
+		bcNews.broadcastType = TBroadcastMaterial.TYPE_NEWSSHOW
+
+		For local i:int = 1 to block
+			'set the block we send
+			p.currentBlockBroadcasting = i
+
+			local newsShow:TNewsShow = TNewsShow.Create("News", player, null, null, null)
+			GetBroadcastManager().SetCurrentBroadcastMaterial(player, p, TBroadcastMaterial.TYPE_NEWSSHOW)
+			GetBroadcastManager().BroadcastNewsShow(day, hour-i+1, 0)
+
+			'broadcast it
+			GetBroadcastManager().SetCurrentBroadcastMaterial(player, p, TBroadcastMaterial.TYPE_PROGRAMME)
+			GetBroadcastManager().BroadcastProgramme(day, hour-i+1, 0, bc)
+		Next
+endrem
+		'set the block we send
+		p.currentBlockBroadcasting = block
+
+		'broadcast it
+		GetBroadcastManager().SetCurrentBroadcastMaterial(player, p, TBroadcastMaterial.TYPE_PROGRAMME)
+		GetBroadcastManager().BroadcastProgramme(day, hour, 0, bc)
+
+		'fetch audience for our player
+		For local hour:int = 0 to 23
+			GetBroadcastManager().BroadcastProgramme(day, hour, 0, bc)
+			Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(player)
+			'local potentialQuote:TAudience = audienceResult.GetAudienceQuote()
+
+			'we assume all rows are created already
+
+			For local i:int = 0 to TVTTargetGroup.count
+				local s:string = int(audienceResult.audience.GetValue( TVTTargetGroup.GetAtIndex(i) ))
+				's :+ " ("+ int(100*potentialQuote.GetValue( TVTTargetGroup.GetAtIndex(i) ))+"%)"
+				m_listCtrl_audiences.SetStringItem(hour, i+1, s )
+			Next
+		Next
+	End Method
+
+
+	Method SetStatusBarText(text:string)
+		m_statusBar1.SetStatusText(text)
+	End Method
+	
+
+	'ther "item" is the "GetData()"-data stored in the wxListItem! 
+	Function SortProgrammeLicences:Int(item1:Object, item2:Object, data:Object)
+		local l1:TProgrammeLicence = TProgrammeLicence(item1)
+		local l2:TProgrammeLicence = TProgrammeLicence(item2)
+		if not l1 then return 1
+		if not l2 then return -1
+
+		local d:TData = TData(data)
+		local sort:string = "name"
+		local direction:int = 0
+		if d
+			sort = d.GetString("sort", sort)
+			direction = d.GetInt("direction", direction)
+		endif
+
+		local before:int = -1, after:int = 1
+		'switch direction?
+		if direction = 1 then before=1;after=-1
+
+
+		'for same year numbers, use title-sort
+		if sort.ToLower() = "year"
+			if l1.GetData().year = l2.GetData().year then sort="name"
+		endif
+
+		
+		Select sort.ToLower()
+			case "title"
+				'one is parent of the other?
+				if l2 = l1.GetParentLicence()
+					return before
+				elseif l1 = l2.GetParentLicence()
+					return after
+				endif
+				'episodes of the same series?
+				if l1.parentLicenceGUID <> "" and l1.parentLicenceGUID = l2.parentLicenceGUID
+					if l1.GetEpisodeNumber() > l2.GetEpisodeNumber()				
+						return before
+					else
+						return after
+					endif
+				else
+					'if the "own name" (single) or "series name" (episodes)
+					'differ - order by them
+					if l1.GetParentLicence().GetTitle() > l2.GetParentLicence().GetTitle()
+						return before
+					else
+						return after
+					endif
+				endif
+			'case "year"
+			default 'by year
+				'no need to check "=" (is done already above)
+				if l1.GetData().year < l2.GetData().year
+					return before
+				else
+					return after
+				endif
+		End Select
+		return 0
+	End Function
 
 
 	Method ResizeProgrammeLicenceCastList()
@@ -272,15 +627,15 @@ Type FrameMain Extends FrameMainBase
 	End Method
 
 
-	Method ResizeProgrammeLicenceList()
-		if m_listCtrl_programmeLicenceLicences.GetColumnCount() >= 4
+	Method ResizeProgrammeLicenceList(list:wxListCtrl)
+		if list.GetColumnCount() >= 4
 			local w:int, h:int
-			m_listCtrl_programmeLicenceLicences.GetClientSize(w, h)
+			list.GetClientSize(w, h)
 			local wLeft:int = w - 80 - 80 - 100 - 20 '-20 is margin etc
-			m_listCtrl_programmeLicenceLicences.SetColumnWidth(0, wLeft)
-			m_listCtrl_programmeLicenceLicences.SetColumnWidth(1, 80)
-			m_listCtrl_programmeLicenceLicences.SetColumnWidth(2, 80)
-			m_listCtrl_programmeLicenceLicences.SetColumnWidth(3, 100)
+			list.SetColumnWidth(0, wLeft)
+			list.SetColumnWidth(1, 80)
+			list.SetColumnWidth(2, 80)
+			list.SetColumnWidth(3, 100)
 '			print w
 			'TODO: On Maximize followed by Minimize the "onSize" is not
 			'      called
@@ -288,19 +643,22 @@ Type FrameMain Extends FrameMainBase
 	End Method
 	
 
-	Method RecreateProgrammeLicenceList()
-		local list:wxListCtrl = m_listCtrl_programmeLicenceLicences
+	Method RecreateProgrammeLicenceList(list:wxListCtrl)
 		list.DeleteAllItems()
-		list.InsertColumn(0, "Title")
-		list.InsertColumn(1, "Year", wxLIST_FORMAT_RIGHT)
-		list.InsertColumn(2, "Type", wxLIST_FORMAT_RIGHT)
-		list.InsertColumn(3, "Author", wxLIST_FORMAT_RIGHT)
+		list.InsertColumn(0, programmeLicenceListColNames[0])
+		list.InsertColumn(1, programmeLicenceListColNames[1], wxLIST_FORMAT_RIGHT)
+		list.InsertColumn(2, programmeLicenceListColNames[2], wxLIST_FORMAT_RIGHT)
+		list.InsertColumn(3, programmeLicenceListColNames[3], wxLIST_FORMAT_RIGHT)
 		' To speed up inserting we hide the control temporarily
 		list.Hide()
 
 		local entryNum:int = 0
-		For Local l:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().singles
-			list.InsertStringItem(entryNum, l.GetTitle())
+		For Local l:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().licences
+			if l.isEpisode()
+				list.InsertStringItem(entryNum, "- "+l.GetTitle())
+			else
+				list.InsertStringItem(entryNum, l.GetTitle())
+			endif
 			list.SetStringItem(entryNum, 1, l.GetData().year )
 			list.SetStringItem(entryNum, 2, TVTProgrammeLicenceType.GetAsString(l.licenceType) )
 			list.SetStringItem(entryNum, 3, l.GetData().createdBy )
@@ -376,9 +734,9 @@ Type FrameMain Extends FrameMainBase
 		local jobNum:int = list.GetItemCount()
 		For local j:TProgrammePersonJob = EachIn jobs
 			'skip existing ones?
-'			if activeProgrammeLicence.GetData().HasCast(j) then continue
+'			if ProgrammeLicences_activeProgrammeLicence.GetData().HasCast(j) then continue
 
-			activeProgrammeLicence.GetData().AddCast(j)
+			ProgrammeLicences_activeProgrammeLicence.GetData().AddCast(j)
 
 			list.InsertStringItem(jobNum, j.person.GetFullName())
 			list.SetStringItem(jobNum, 1, GetLocale("MOVIE_" + TVTProgrammePersonJob.GetAsString(j.job) ) )
@@ -404,8 +762,8 @@ Type FrameMain Extends FrameMainBase
 		list.SetItemData(jobLineA, jobB)
 
 		'switch in licence too
-		activeProgrammeLicence.GetData().cast[jobLineB] = jobA
-		activeProgrammeLicence.GetData().cast[jobLineA] = jobB
+		ProgrammeLicences_activeProgrammeLicence.GetData().cast[jobLineB] = jobA
+		ProgrammeLicences_activeProgrammeLicence.GetData().cast[jobLineA] = jobB
 	End Method
 
 
