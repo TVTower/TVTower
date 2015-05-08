@@ -103,12 +103,18 @@ Type TPlayerFinance
 	Global drawingCreditRate:float		= 0.03 '3% a day  - rate for having a negative balance
 	Global List:TList					= CreateList()
 
-	Method Create:TPlayerFinance(playerID:int, startmoney:Long=500000, startcredit:Int = 500000)
-		money = startmoney
-		revenue_before = startmoney
-		revenue_after = startmoney
+	Method Create:TPlayerFinance(playerID:int) ', startmoney:Long=500000, startcredit:Int = 500000)
+'		money = startmoney
+'		revenue_before = startmoney
+'		revenue_after = startmoney
 
-		credit = startcredit
+'		credit = startcredit
+
+		money = 0
+		revenue_before = 0
+		revenue_after = 0
+		credit = 0
+
 		Self.playerID = playerID
 		ListLink = List.AddLast(Self)
 		Return Self
@@ -126,7 +132,11 @@ Type TPlayerFinance
 			toFinance.ListLink.remove()
 			toFinance = Null
 			'create the new financial but give the yesterdays money/credit
-			toFinance = New TPlayerFinance.Create(fromFinance.playerID, fromFinance.money, fromFinance.credit)
+			toFinance = New TPlayerFinance.Create(fromFinance.playerID)
+			toFinance.money = fromFinance.money
+			toFinance.revenue_before = fromFinance.money
+			toFinance.revenue_after = fromFinance.money
+			toFinance.credit = fromFinance.credit
 		EndIf
 	End Function
 

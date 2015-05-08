@@ -254,17 +254,16 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'create base stations
 		For Local i:Int = 1 To 4
 			'add new station
-			GetPlayerCollection().Get(i).GetStationMap().AddStation( TStation.Create( New TVec2D.Init(310, 260),-1, GetStationMapCollection().stationRadius, i ), False )
+			GetPlayer(i).GetStationMap().AddStation( TStation.Create( New TVec2D.Init(310, 260),-1, GetStationMapCollection().stationRadius, i ), False )
 		Next
 
 		'update the collection so it contains the audience reach of each player
 		GetStationMapCollection().Update()
 
-
 		'get names from settings
 		For Local i:Int = 1 To 4
-			GetPlayerCollection().Get(i).Name = ScreenGameSettings.guiPlayerNames[i-1].Value
-			GetPlayerCollection().Get(i).channelname = ScreenGameSettings.guiChannelNames[i-1].Value
+			GetPlayer(i).Name = ScreenGameSettings.guiPlayerNames[i-1].Value
+			GetPlayer(i).channelname = ScreenGameSettings.guiChannelNames[i-1].Value
 		Next
 
 
@@ -280,6 +279,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'give each player some programme
 		SpreadStartProgramme()
 
+		'give the players some money
+		For Local i:Int = 1 To 4
+			GetPlayer(i).GetFinance().TakeCredit(500000)
+		Next
+
 
 		'=== SETUP NEWS + ABONNEMENTS ===
 		'adjust abonnement for each newsgroup to 1
@@ -289,7 +293,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'Next
 
 			'only have abonnement for currents
-			GetPlayerCollection().Get(playerids).SetNewsAbonnement(4, 1)
+			GetPlayer(playerids).SetNewsAbonnement(4, 1)
 		Next
 
 		'create 3 starting news, True = add even without news abonnement
