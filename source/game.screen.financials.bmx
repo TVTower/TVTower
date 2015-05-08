@@ -236,9 +236,9 @@ Type TScreenHandler_Financials
 		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_scripts), valueExpenseX, valueStartY + 7*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
 		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_productionStuff), valueExpenseX, valueStartY + 8*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
 		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_rent), valueExpenseX, valueStartY + 9*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
-		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_drawingCreditInterest), valueExpenseX, valueStartY + 10*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_drawingCreditInterest + finance.expense_creditInterest), valueExpenseX, valueStartY + 10*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
 		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_creditRepayed), valueExpenseX, valueStartY + 11*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
-		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_creditInterest), valueExpenseX, valueStartY + 12*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_misc), valueExpenseX, valueStartY + 12*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
 		'spacer for total
 		textBoldFont.drawBlock(TFunctions.dottedValue(finance.expense_total), valueExpenseX, valueStartY + 14*valueH +4, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
 
