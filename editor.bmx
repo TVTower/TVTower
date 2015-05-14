@@ -94,7 +94,8 @@ Type FrameMain Extends FrameMainBase
 	Field programmeLicenceListSortDirection:int = 0
 
 	Field ProgrammeLicences_activeProgrammeLicence:TProgrammeLicence
-	Field AudienceSim_activeProgrammeLicence:TProgrammeLicence
+	Field AudienceSim_activeProgrammeLicence:TProgrammeLicence[4]
+	Field AudienceSim_activeAudienceHour:int
 
 
 	Method OnInit()
@@ -412,22 +413,82 @@ Type FrameMain Extends FrameMainBase
 		'skip collection and series headers
 		elseif not licence.IsSeries() and not licence.IsCollection()
 			'set active licence
-			AudienceSim_activeProgrammeLicence = licence
+			AudienceSim_activeProgrammeLicence[0] = licence
 
 			m_spinCtrl_block.SetRange(1, licence.GetData().GetBlocks())
 			m_staticText_blockCount.SetLabel( "/ " + licence.GetData().GetBlocks() )
 			
-			AudienceSim_RunAudienceSimulation(licence)
+			AudienceSim_RunAudienceSimulation()
 		endif
 	End Method
 
 
 	Method OnAudienceSimChangeSettings(event:wxCommandEvent)
-		if AudienceSim_activeProgrammeLicence
-			AudienceSim_RunAudienceSimulation(AudienceSim_activeProgrammeLicence)
+		AudienceSim_RunAudienceSimulation()
+	End Method
+
+
+	Method onAudienceSim_ChannelProgrammeClick(event:wxCommandEvent)
+		local sender:wxButton = wxButton(event.parent)
+		if not sender then return
+		
+		local receiver:wxButton
+		Select sender
+			case m_button_AudienceSim_channel2Programme
+				AudienceSim_activeProgrammeLicence[2 -1] = AudienceSim_activeProgrammeLicence[0]
+				receiver = m_button_AudienceSim_channel2Programme
+			case m_button_AudienceSim_channel3Programme
+				AudienceSim_activeProgrammeLicence[3 -1] = AudienceSim_activeProgrammeLicence[0]
+				receiver = m_button_AudienceSim_channel3Programme
+			case m_button_AudienceSim_channel4Programme
+				AudienceSim_activeProgrammeLicence[4 -1] = AudienceSim_activeProgrammeLicence[0]
+				receiver = m_button_AudienceSim_channel4Programme
+		End Select
+
+		if receiver
+			if AudienceSim_activeProgrammeLicence[1 -1]
+				receiver.SetLabel( AudienceSim_activeProgrammeLicence[1 -1].GetTitle() )
+			endif
+			AudienceSim_RunAudienceSimulation()
 		endif
 	End Method
 
+
+	Method onAudienceSim_RemoveChannelProgrammeClick(event:wxCommandEvent)
+		local sender:wxButton = wxButton(event.parent)
+		if not sender then return
+
+		local receiver:wxButton
+		Select sender
+			case m_button_AudienceSim_removeChannel2Programme
+				AudienceSim_activeProgrammeLicence[2 -1] = null
+				receiver = m_button_AudienceSim_channel2Programme
+			case m_button_AudienceSim_removeChannel3Programme
+				AudienceSim_activeProgrammeLicence[3 -1] = null
+				receiver = m_button_AudienceSim_channel3Programme
+			case m_button_AudienceSim_removeChannel4Programme
+				AudienceSim_activeProgrammeLicence[4 -1] = null
+				receiver = m_button_AudienceSim_channel4Programme
+		End Select
+
+		if receiver
+			if AudienceSim_activeProgrammeLicence[1 -1]
+				receiver.SetLabel( "" )
+			endif
+			AudienceSim_RunAudienceSimulation()
+		endif
+	End Method
+
+
+	Method OnAudienceSim_AudiencesItemSelected(event:wxListEvent)
+		local hour:int = event.GetIndex()
+		if hour < 0 or hour > 23 then return
+		AudienceSim_activeAudienceHour = hour
+
+		AudienceSim_RefreshSummary()
+	End Method
+
+	
 
 
 	Method AudienceSim_ResizeAudiencesList()
@@ -467,10 +528,8 @@ Type FrameMain Extends FrameMainBase
 	End Method
 
 
-	Method AudienceSim_RunAudienceSimulation:Int(licence:TProgrammeLicence)
-		local player:int = 1
+	Method AudienceSim_RunAudienceSimulation:Int()
 		local audience:int = Max(0, m_spinCtrl_audience.GetValue())
-		local block:int = Min(licence.GetData().GetBlocks(), Max(1, m_spinCtrl_block.GetValue()))
 		local day:int = 1
 		local hour:int = 1
 		local year:int = m_spinCtrl_gameYear.GetValue()
@@ -484,14 +543,10 @@ Type FrameMain Extends FrameMainBase
 		'create market ("buy a generic station")
 		Local market:TAudienceMarketCalculation = New TAudienceMarketCalculation
 		market.maxAudience = TAudience.CreateWithBreakdown(audience)
-		'no competitors, only our player
-		market.AddPlayer(player)
+		for local player:int = 1 to 4
+			market.AddPlayer(player)
+		Next
 
-
-		'create programme
-		local p:TProgramme = TProgramme.Create(licence)
-		p.owner = player
-		
 		'broadcast any previous programme "before"
 		Local bc:TBroadcast = new TBroadcast
 		bc.AudienceMarkets.AddLast(market)
@@ -515,17 +570,32 @@ rem
 			GetBroadcastManager().BroadcastProgramme(day, hour-i+1, 0, bc)
 		Next
 endrem
-		'set the block we send
-		p.currentBlockBroadcasting = block
+		'create programme for all players
+		For local player:int = 1 to 4
+			local licence:TProgrammeLicence = AudienceSim_activeProgrammeLicence[player -1]
+			if licence
+				local p:TProgramme = TProgramme.Create(licence)
+				p.owner = player
+				'set the block we send
+				if player = 1
+					p.currentBlockBroadcasting = Min(licence.GetData().GetBlocks(), Max(1, m_spinCtrl_block.GetValue()))
+				else
+					p.currentBlockBroadcasting = 1
+				endif
+				'set broadcast of this player
+				GetBroadcastManager().SetCurrentBroadcastMaterial(player, p, TBroadcastMaterial.TYPE_PROGRAMME)
+			else
+				GetBroadcastManager().SetCurrentBroadcastMaterial(player, null, TBroadcastMaterial.TYPE_PROGRAMME)
+			endif
+		Next
 
-		'broadcast it
-		GetBroadcastManager().SetCurrentBroadcastMaterial(player, p, TBroadcastMaterial.TYPE_PROGRAMME)
+		'broadcast all
 		GetBroadcastManager().BroadcastProgramme(day, hour, 0, bc)
 
-		'fetch audience for our player
+		'fetch audience for our player 1
 		For local hour:int = 0 to 23
 			GetBroadcastManager().BroadcastProgramme(day, hour, 0, bc)
-			Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(player)
+			Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(1)
 			'local potentialQuote:TAudience = audienceResult.GetAudienceQuote()
 
 			'we assume all rows are created already
@@ -535,8 +605,39 @@ endrem
 				's :+ " ("+ int(100*potentialQuote.GetValue( TVTTargetGroup.GetAtIndex(i) ))+"%)"
 				m_listCtrl_audiences.SetStringItem(hour, i+1, s )
 			Next
+
+			'store audience result audience...
+			local audienceResults:TAudienceResult[4]
+			For local i:int = 1 to 4
+				audienceResults[i-1] = GetBroadcastManager().GetAudienceResult(i)
+			Next
+			
+			m_listCtrl_audiences.SetItemData(hour, audienceResults)
 		Next
+
+		AudienceSim_RefreshSummary()
 	End Method
+
+
+
+	Method AudienceSim_RefreshSummary()
+		local hour:int = AudienceSim_activeAudienceHour
+		if hour < 0 or hour > 23 then return
+
+		'fetch audience result audience...
+		local audienceResults:TAudienceResult[] = TAudienceResult[](m_listCtrl_audiences.GetItemData(hour))
+		if not audienceResults or audienceResults.length < 4 then return
+
+		local summary:string = "Quoten "+hour+" Uhr: "
+		For local player:int = 1 to 4
+			summary :+ "Sender #"+player+": "+int(audienceResults[player - 1].audience.GetSum())
+
+			if player < 4 then summary :+ "  |  "
+		Next
+
+		m_staticText_AudienceSim_audienceSummary.SetLabel(summary)
+	End Method
+	
 
 
 	Method SetStatusBarText(text:string)
