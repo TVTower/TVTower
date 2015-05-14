@@ -415,7 +415,8 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 		'calculate
 		result = GetProfit() / GetSpotCount()
-		'cut down to the price of 1 spot
+		'cut down to the price of 1 viewer (assume a CPM price)
+		'TODO: reorganize to come along with "fixPrice" contracts
 		result :* 0.001
 	
 		'now cut this to the given infomercialCutFactor

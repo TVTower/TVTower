@@ -72,7 +72,7 @@ Am Schluss zeigt Fischer Matjes noch wie man richtig Granat pult.</de>
 
 	<!-- Alle Werbevertraege -->
 	<allads>
-		<ad id="ronny-ad-bundi-01" creator="5578" created_by="Ronny">
+		<ad id="nichtdiebetty-ad-tieminister-01" creator="8659" created_by="Nicht_die_Betty">
 			<title>
 				<de>Krawatten-Minister</de>
 				<en>Tie-Minister</en>
@@ -84,7 +84,7 @@ Am Schluss zeigt Fischer Matjes noch wie man richtig Granat pult.</de>
 			<conditions min_audience="0.5" min_image="3" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="3" duration="2" fix_price="1" profit="3750" penalty="7000" />
 		</ad>
-		<ad>
+		<ad id="nichtdiebetty-ad-baroque-01" creator="8659" created_by="Nicht_die_Betty">
             <title>
                <de>Baroque</de>
                <en></en>
@@ -96,7 +96,7 @@ Am Schluss zeigt Fischer Matjes noch wie man richtig Granat pult.</de>
             <conditions min_audience="0.5" min_image="3" target_group="0" />
             <data infomercial="1" quality="15" repetitions="2" duration="2" fix_price="1" profit="4500" penalty="7500" />
         </ad>
-		<ad>
+		<ad id="nichtdiebetty-ad-angryglasses-01" creator="8659" created_by="Nicht_die_Betty">
 			<title>
 				<de>Brillen Zorn</de>
 				<en>Angry Glasses</en>

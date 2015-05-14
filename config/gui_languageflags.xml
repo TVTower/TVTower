@@ -3,6 +3,7 @@
 	<resources>
 		<sprite name="flag_de"	url="res/gfx/gui/flags/de.png" />
 		<sprite name="flag_en"	url="res/gfx/gui/flags/en.png" />
+		<sprite name="flag_es"	url="res/gfx/gui/flags/es.png" />
 <!--
 		<sprite name="flag_it"	url="res/gfx/gui/flags/it.png" />
 		<sprite name="flag_ru"	url="res/gfx/gui/flags/ru.png" />
