@@ -1,3 +1,18 @@
+Diese Spielanleitung umfasst die derzeitig in der Entwicklerversion
+aktiven Features und Hilfsfunktionen. Sie wird mit dem jeweiligen
+Entwicklungsstand aktualisiert.
+Sollte etwas fehlen, unklar sein oder gar zuviel, merkt's bitte hier
+im Strang an.
+
+bis dahin
+Själe
+
+Stand: 29.04.2015, 11:56
+
+
+sjsjsjsjsjsjsjsj
+
+
 Spielanleitung der Entwicklerversion
 ========================================================================
 
@@ -10,7 +25,7 @@ Autor: Själe
 
 Bitte habt immer im Hinterkopf, daß dies eine Entwicklerversion
 ist. Es ist also noch nicht alles perfekt, manches fehlt
-noch. Nichtdestotrotz sind wir bemüht, daß ihr immer eine spielbare
+noch. Nichtdestotrotz sind wir bemüht, daß Ihr immer eine spielbare
 Software runterladet.
 Dafür sind wir auf Eure Hilfe angewiesen. Meldet uns Fehler, bringt
 Ideen ein, diskutiert mit uns über Sinn und Unsinn des Spiels oder
@@ -134,7 +149,7 @@ alles beschrieben.
 Um in die Programmplanung zu gelangen, müßt Ihr zuvor das
 Spielerbüro betreten. Linksklick auf die Tür oder im Fahrstuhlplaner
 auswählen und Eure Spielfigur wird sich dorthin bewegen.
-Im Büro steht ein Computer. Diesen mit links angeklickt, wird Euch
+Im Büro steht ein Computer. Dieser mit links angeklickt, wird Euch
 den Programmplaner präsentieren.
 
 Ihr seht als erstes den aktuellen Tag. Da sind bei Spielbeginn schon
@@ -492,10 +507,12 @@ Das meint hier den unteren Teil des Spielbildschirms, der Euch durch
 das gesamte Spiel begleiten wird.
 Links ist der Fernseher, der das laufende Programm der einzelnen
 Sender anzeigt.
-Den könnt Ihr ausschalten. Was im Moment aber nur das Flimmern
-entfernt.
+Den könnt Ihr ausschalten.
 Desweiteren könnt Ihr über die farbigen Tasten auswählen, welchem
 Sender Ihr ins laufende Programm schauen wollt. 
+Bewegt Ihr den Mauszeiger über den Bildschirm, erscheint ein Tooltip
+mit Informationen zum laufenden Programm. Unter anderem wird angezeigt,
+ob die Einschaltquoten der eingestellten Werbung genüge tut.
 Geplant ist, für jedes Filmgenre ein eigenes Bild zu zeigen. Wenn
 Ihr die Maushand auf dem Bildschirm platziert, wird angezeigt, welcher
 Film mit welcher Einschaltquote läuft. Zusätzlich bei Eurem eigenen
@@ -583,7 +600,7 @@ C: Chef
 N: Newsraum
 R: Roomboard / Raumtafel"zimmer"
 
-Laden/Speichern: [NEU]
+Laden/Speichern:
 Hinweis: Zum Laden vorher ein Spiel starten!
 ----------------
 L: Spielstand laden
@@ -591,7 +608,7 @@ S: Spielstand speichern
 
 Sonstiges:
 ----------
-T: Terroristen losschicken [neu]
+T: Terroristen losschicken
 Q: Quoten-Debugbildschirm an/aus
 D: Debug-Infos ein/ausblenden
 P: Programmplanübersicht in Konsole ausgeben
