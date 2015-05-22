@@ -608,9 +608,12 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		Local price:Float
 
 		'calculate a price/CPM using the "getCPM"-function
-		price = GetCPM(baseValue, maxCPM, getRawMinAudience(playerID) / GetStationMapCollection().GetPopulation())
+		'use the already rounded minAudience to avoid a raw audience of
+		'"15100" which rounds later to 16000 but calculating the cpm-blocks
+		'leads to 15 instead of 16...
+		price = GetCPM(baseValue, maxCPM, getMinAudience(playerID) / GetStationMapCollection().GetPopulation())
 		'multiply by amount of "1000 viewers"-blocks
-		price :* Max(1, getRawMinAudience(playerID)/1000)
+		price :* Max(1, getMinAudience(playerID)/1000)
 		'value cannot be higher than "maxAdContractPricePerSpot"
 		price = Min(GameRules.maxAdContractPricePerSpot, price )
 		'adjust by a base/internal balancing factor
@@ -644,7 +647,6 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		else
 			useAudience = GetStationMapCollection().GetMap(playerID).GetReach()
 		endif
-
 		Return useAudience * GetMinAudiencePercentage()
 
 		'no more than 50 percent of whole germany will watch TV at the
