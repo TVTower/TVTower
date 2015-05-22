@@ -378,7 +378,6 @@ Raeume:
 W: Werbemakler
 A: Archiv
 B: Betty
-D: Drehbuchagentur
 F: Filmagentur
 O: Buero/Office
 C: Chef
@@ -395,7 +394,7 @@ Sonstiges:
 ----------
 T: Terroristen losschicken
 Q: Quoten-Debugbildschirm an/aus
-TAB: Debug-Infos ein/ausblenden
+D: Debug-Infos ein/ausblenden
 P: Programmplanübersicht in Konsole ausgeben
 K: ALLE Figuren werden aus den Raeumen gekickt
 1-4 : Spieler wechseln
