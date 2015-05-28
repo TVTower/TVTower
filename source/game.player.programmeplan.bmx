@@ -1139,17 +1139,16 @@ endrem
 			obj = GetNewsShow(day, hour)
 			local eventKey:String = "broadcasting.begin"
 
+			Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
 			If obj
-				Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
 				'inform news show that broadcasting started
 				'(which itself informs the broadcasted news)
 				obj.BeginBroadcasting(day, hour, minute, audienceResult)
-				'store audience/broadcast for daily stats
-				GetDailyBroadcastStatistic( day, true ).SetNewsBroadcastResult(obj, owner, hour, audienceResult)
-			Else
-				'store audience/broadcast for daily stats - outage
-				GetDailyBroadcastStatistic( day, true).SetNewsBroadcastResult(null, owner, hour, null)
 			EndIf
+
+			'store audience/broadcast for daily stats (if obj=null then outage)
+			GetDailyBroadcastStatistic( day, true ).SetNewsBroadcastResult(obj, owner, hour, audienceResult)
+
 			'inform others (eg. boss), "broadcastMaterial" could be null!
 			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TBroadcastMaterial.TYPE_NEWSSHOW).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 			
@@ -1172,8 +1171,8 @@ endrem
 			obj = GetProgramme(day, hour)
 			local eventKey:String = "broadcasting.begin"
 
+			Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
 			If obj
-				Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
 				'inform the object what happens (start or continuation)
 				If 1 = GetProgrammeBlock(day, hour)
 					obj.BeginBroadcasting(day, hour, minute, audienceResult)
@@ -1182,12 +1181,9 @@ endrem
 					obj.ContinueBroadcasting(day, hour, minute, audienceResult)
 					eventKey = "broadcasting.continue"
 				EndIf
-				'store audience/broadcast for daily stats
-				GetDailyBroadcastStatistic( day, true ).SetBroadcastResult(obj, owner, hour, audienceResult)
-			else
-				'store audience/broadcast for daily stats
-				GetDailyBroadcastStatistic( day, true).SetBroadcastResult(null, owner, hour, null)
 			EndIf
+			'store audience/broadcast for daily stats (also for outage!)
+			GetDailyBroadcastStatistic( day, true ).SetBroadcastResult(obj, owner, hour, audienceResult)
 			
 			'inform others (eg. boss), "broadcastMaterial" could be null!
 			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TBroadcastMaterial.TYPE_PROGRAMME).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))

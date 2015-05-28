@@ -96,6 +96,13 @@ Type TDailyBroadcastStatistic
 	Method _SetBroadcastResult:Int(broadcast:TBroadcastMaterial, owner:int, hour:int, audienceResult:TAudienceResultBase, broadcastedAsType:int = 0)
 		if hour < 0 then return False
 		if owner <= 0 then return False
+
+		'if no audience result was given (outage or something)
+		if not audienceResult
+			print "DailyBroadcastStaticic: _SetBroadcastResult without valid audienceResult."
+			audienceResult = New TAudienceResultBase
+		endif
+
 		'do not rely on "broadcast.usedAsType" - broadcast could be "null"
 		'in the case of an outage
 		local useAllAudiences:TAudienceResultBase[][] = GetAudienceArrayToUse(broadcastedAsType)
@@ -108,8 +115,9 @@ Type TDailyBroadcastStatistic
 		useAllAudiences[owner-1][hour] = audienceResult
 
 		'store this hours audience as "best audience" if it is higher
-		'than previous best-audience
-		if broadcast and audienceResult
+		'than previous best-audience. Ignore "no broadcast"-audiences
+		'(eg. some sleeping people...)
+		if broadcast
 			if broadcastedAsType = TBroadcastMaterial.TYPE_NEWSSHOW
 				if not bestNewsAudienceResult then bestNewsAudienceResult = new TAudienceResultBase
 				if bestNewsAudienceResult.audience.GetSum() < audienceResult.audience.GetSum()
