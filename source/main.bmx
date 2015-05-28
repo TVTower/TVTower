@@ -1847,8 +1847,7 @@ Type TScreen_MainMenu Extends TGameScreen
 		App.ApplySettings()
 
 		'=== GAME SETTINGS ===
-		local startYear:int = Max(1980, App.config.GetInt("startyear", 0))
-		GetWorldTime().setStartYear( startYear )
+		GetGame().SetStartYear( App.config.GetInt("startyear", 0) )
 	End Method
 	
 
