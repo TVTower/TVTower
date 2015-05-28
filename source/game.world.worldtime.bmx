@@ -122,7 +122,12 @@ Type TWorldTime {_exposeToLua="selected"}
 		SetTimeGone(MakeTime(year,1,0,0))
 		SetTimeStart(MakeTime(year,1,0,0))
 	End Method
-	
+
+
+	Method GetStartYear:Int()
+		return GetYear(_timeStart)
+	End Method
+		
 
 	Method SetTimeGone(timeGone:Double)
 		_timeGone = timeGone

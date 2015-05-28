@@ -1845,6 +1845,10 @@ Type TScreen_MainMenu Extends TGameScreen
 		App.config = newConfig
 		'and "reinit" settings
 		App.ApplySettings()
+
+		'=== GAME SETTINGS ===
+		local startYear:int = Max(1980, App.config.GetInt("startyear", 0))
+		GetWorldTime().setStartYear( startYear )
 	End Method
 	
 
@@ -1939,7 +1943,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiGameTitleLabel	= New TGUILabel.Create(New TVec2D.Init(0, 0), "", TColor.CreateGrey(90), name)
 		guiGameTitle		= New TGUIinput.Create(New TVec2D.Init(0, 12), New TVec2D.Init(300, -1), "", 32, name)
 		guiStartYearLabel	= New TGUILabel.Create(New TVec2D.Init(310, 0), "", TColor.CreateGrey(90), name)
-		guiStartYear		= New TGUIinput.Create(New TVec2D.Init(310, 12), New TVec2D.Init(65, -1), "", 4, name)
+		guiStartYear		= New TGUIinput.Create(New TVec2D.Init(310, 12), New TVec2D.Init(80, -1), "", 4, name)
 
 		guiGameTitleLabel.SetFont( GetBitmapFontManager().Get("DefaultThin", 14, BOLDFONT) )
 		guiStartYearLabel.SetFont( GetBitmapFontManager().Get("DefaultThin", 14, BOLDFONT) )
@@ -2167,8 +2171,9 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		'start year changed
 		If sender = guiStartYear
-			GetWorldTime().setStartYear( Max(1980, Int(value)) )
-			TGUIInput(sender).value = Max(1980, Int(value))
+			Game.SetStartYear( int(sender.GetValue()) )
+			'use the (maybe corrected value)
+			TGUIInput(sender).value = Game.GetStartYear()
 		EndIf
 	End Method
 

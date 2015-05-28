@@ -60,8 +60,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'set basic game speed to 30 gameseconds per second
 		GetWorldTime().SetTimeFactor(30.0)
-		'set start year
-		GetWorldTime().SetStartYear(userStartYear)
+
+		SetStartYear(userStartYear)
+
 		title = "unknown"
 
 		SetRandomizerBase( Time.MillisecsLong() )
@@ -72,6 +73,17 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		Return Self
 	End Method
 
+
+	Method SetStartYear(year:int)
+		year = Max(1980, year)
+		'set start year
+		GetWorldTime().SetStartYear(year)
+	End Method
+
+
+	Method GetStartYear:Int()
+		return GetWorldTime().GetStartYear()
+	End Method
 
 
 	'run this before EACH started game
