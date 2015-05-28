@@ -3204,9 +3204,9 @@ Type RoomHandler_AdAgency extends TRoomHandler
 				local quote:Float = audience / averageChannelReach
 				if lowestChannelQuote < 0 then lowestChannelQuote = quote
 				if lowestChannelQuote > quote then lowestChannelQuote = quote
+				if highestChannelQuote < quote then highestChannelQuote = quote
 			endif
 		Next
-
 
 		'=== SETUP FILTERS ===
 		'the cheap list contains really low contracts
@@ -3222,7 +3222,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 		'the 12 contracts are divided into 3 groups
 		'4x fitting the lowest requirements
-		'8x fitting the average requirements
+		'4x fitting the average requirements -> 8x planned but slots limited
 		'4x fitting the highest requirements
 		
 		local levelFilters:TAdContractBaseFilter[3]
@@ -3238,14 +3238,14 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 		'=== AVERAGE ===
 		levelFilters[1] = new TAdContractbaseFilter
-		'from 50% of avg to 150% of avg
+		'from 50% of avg to 150% of avg, may cross with lowest!
 		levelFilters[1].SetAudience(0.5 * averageChannelQuote, Max(0.01, 1.5 * averageChannelQuote))
 		'0-100% of average Image
 		levelFilters[1].SetImage(0, 0.01 * averageChannelImage)
 
 		'=== HIGH ===
 		levelFilters[2] = new TAdContractbaseFilter
-		'from 50% of avg to 150% of avg, at least 1-3%
+		'from 50% of avg to 150% of highest, at least 1-3%
 		levelFilters[2].SetAudience(Max(0.01, 0.5 * highestChannelQuote), Max(0.02, 1.5 * highestChannelQuote))
 		'0-100% of highest Image
 		levelFilters[2].SetImage(0, 0.01 * highestChannelImage)
