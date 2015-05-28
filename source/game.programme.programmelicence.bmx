@@ -980,6 +980,9 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 			fontNormal.draw("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(owner, -1).audience.GetSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetSum())+" (alle)", currX + 5, textY)
 			textY :+ 12	
 			fontNormal.draw("Preis: "+GetPrice(), currX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("TrailerMod: "+data.GetTrailerMod().GetAverage(), currX + 5, textY)
+
 		Endif
 	End Method
 

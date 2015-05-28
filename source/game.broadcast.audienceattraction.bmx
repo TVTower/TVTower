@@ -189,10 +189,37 @@ endrem
 	Method CopyBaseAttractionFrom(otherAudienceAttraction:TAudienceAttraction)
 		Quality = otherAudienceAttraction.Quality
 		GenrePopularityMod = otherAudienceAttraction.GenrePopularityMod
-		GenreTargetGroupMod = otherAudienceAttraction.GenreTargetGroupMod
-		TrailerMod = otherAudienceAttraction.TrailerMod
-		MiscMod = otherAudienceAttraction.MiscMod
-		PublicImageMod = otherAudienceAttraction.PublicImageMod
-		AudienceFlowBonus = otherAudienceAttraction.AudienceFlowBonus
+
+		'ATTENTION: we _copy_ the objects instead of referencing it
+		'Why?:
+		'broadcastmaterial "TNewsShow" is modifying the attraction by
+		'multiplying them for each slot (1-3) with a factor. When using
+		'references, we also lower the effects of the "surrounding"
+		'programme (eg movieBlock1 news movieBlock2)
+		if otherAudienceAttraction.GenreTargetGroupMod
+			GenreTargetGroupMod = otherAudienceAttraction.GenreTargetGroupMod.Copy()
+		else
+			GenreTargetGroupMod = null
+		endif
+		if otherAudienceAttraction.TrailerMod
+			TrailerMod = otherAudienceAttraction.TrailerMod.Copy()
+		else
+			TrailerMod = null
+		endif
+		if otherAudienceAttraction.MiscMod
+			MiscMod = otherAudienceAttraction.MiscMod.Copy()
+		else
+			MiscMod = null
+		endif
+		if otherAudienceAttraction.PublicImageMod
+			PublicImageMod = otherAudienceAttraction.PublicImageMod.Copy()
+		else
+			PublicImageMod = null
+		endif
+		if otherAudienceAttraction.AudienceFlowBonus
+			AudienceFlowBonus = otherAudienceAttraction.AudienceFlowBonus.Copy()
+		else
+			AudienceFlowBonus = null
+		endif
 	End Method
 End Type

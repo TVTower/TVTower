@@ -898,7 +898,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 			Default	trailerMod = 1.6
 		EndSelect
 
-		Return TAudience.CreateAndInit(trailerMod, trailerMod, trailerMod, trailerMod, trailerMod, trailerMod, trailerMod, trailerMod, trailerMod)
+		Return TAudience.CreateAndInitValue(trailerMod)
 	End Method
 
 

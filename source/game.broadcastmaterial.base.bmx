@@ -301,6 +301,9 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 			'6 - Image
 			result.PublicImageMod = GetPublicImageMod()
 		Else
+			'COPY, not reference the childelements to avoid news manipulating
+			'movie-attraction-data ... if done on "reference base" keep
+			'paying attention to this when modifying the attraction
 			result.CopyBaseAttractionFrom(lastMovieBlockAttraction)
 		Endif
 
