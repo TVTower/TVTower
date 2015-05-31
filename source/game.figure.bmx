@@ -570,6 +570,9 @@ Type TFigure extends TFigureBase
 		'inform what the figure does now
 		currentAction = ACTION_ENTERING
 
+		'Debug
+		'print self.name+" START ENTERING " + room.GetName() +" ["+room.id+"]"
+
 		'inform ALL about this
 		EventManager.triggerEvent(TEventSimple.Create("figure.onBeginEnterRoom", null, self, room))
 
@@ -584,7 +587,11 @@ Type TFigure extends TFigureBase
 			for local occupant:TFigure = eachin room.occupants
 				'only kick other players ?!
 				if not occupant.playerID then continue
-				if occupant <> self then KickFigureFromRoom(occupant, room)
+				if occupant <> self
+					KickFigureFromRoom(occupant, room)
+					'Debug
+					'print self.name+" KICKING " + occupant.name +" FROM "+ room.GetName() +" ["+room.id+"]"
+				endif
 			next
 		EndIf
 	End Method
@@ -596,6 +603,9 @@ Type TFigure extends TFigureBase
 		'inform that figure now enters the room
 		'(eg. for players informing the ai)
 		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterRoom", new TData.Add("room", room).Add("door", door) , self, room) )
+
+		'Debug
+		'print self.name+" FINISH ENTERING " + room.GetName() +" ["+room.id+"]"
 
 		'reset action
 		currentAction = ACTION_IDLE
@@ -655,6 +665,12 @@ Type TFigure extends TFigureBase
 		'inform what the figure does now
 		currentAction = ACTION_LEAVING
 
+		'Debug
+		'print self.name+" START LEAVING " + inRoom.GetName() +" ["+inRoom.id+"]"
+
+		'inform ALL about this
+		EventManager.triggerEvent(TEventSimple.Create("figure.onBeginLeaveRoom", null, self, inroom))
+
 		'do not fade when it is a fake room
 		fadeOnChangingRoom = True
 		if inRoom.ShowsOccupants() then fadeOnChangingRoom = False
@@ -668,6 +684,9 @@ Type TFigure extends TFigureBase
 		'inform others that a figure left the room
 		'-> triggers Player-AI etc.
 		EventManager.triggerEvent( TEventSimple.Create("figure.onLeaveRoom", null, self, room ) )
+
+		'Debug
+		'print self.name+" FINISHED LEAVING " + inRoom.GetName() +" ["+inRoom.id+"]"
 
 		'enter target -> null = building
 		SetInRoom( null )

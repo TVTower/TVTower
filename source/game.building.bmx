@@ -343,9 +343,17 @@ Type TBuilding Extends TBuildingBase
 	
 		'center player
 		If not GetPlayerBase().IsInRoom()
-			'subtract 7 because of missing "wall" in last floor
-			'add 50 for roof
-			area.position.y =  2 * floorHeight - 7 + 50 - GetPlayerBase().GetFigure().area.GetY()
+			if not TVTGhostBuildingScrollMode
+				'subtract 7 because of missing "wall" in last floor
+				'add 50 for roof
+				area.position.y =  2 * floorHeight - 7 + 50 - GetPlayerBase().GetFigure().area.GetY()
+			else
+				if MouseY() <= 20 then area.position.y :+ ((20 - MouseY()) * 0.75)
+				if MouseY() >= GraphicsHeight() - 20 then area.position.y :- ((20 - (GraphicsHeight() - MouseY())) * 0.75)
+'				ghostScrollingPosition = MathHelper.Clamp(ghostScrollingPosition, - 637, 88)
+
+'				area.position.y = ghostScrollingPosition
+			endif
 		EndIf
 
 

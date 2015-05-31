@@ -477,6 +477,7 @@ Type TApp
 						If KEYMANAGER.IsHit(KEY_F) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("movieagency"))
 						If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", GetPlayerCollection().playerID))
 						If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("boss", GetPlayerCollection().playerID))
+						If KEYMANAGER.IsHit(KEY_G) Then TVTGhostBuildingScrollMode = 1 - TVTGhostBuildingScrollMode
 						If KEYMANAGER.IsHit(KEY_D)
 							If KEYMANAGER.IsDown(KEY_RSHIFT)
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", 2))
