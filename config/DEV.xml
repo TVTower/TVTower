@@ -42,6 +42,22 @@
 
 			<!-- TRUE/1   FALSE/0 -->
 			<DEV_ROUND_TO_BEAUTIFUL_VALUES value="TRUE" />
+
+			<!-- example:
+				"LOAD"-values:
+				"*" -> load all
+				"internalTest, myTest" -> load only "internalTest" and "myTest" creations
+
+				"SKIP"-values:
+				"*" -> skip all
+				"internalTest" -> skip data by "internalTest"
+			 -->
+
+			<DEV_DATABASE_SKIP_ADS_CREATED_BY value="" />
+			<DEV_DATABASE_LOAD_ADS_CREATED_BY value="*" />
+			<DEV_DATABASE_SKIP_PROGRAMMES_CREATED_BY value="" />
+			<DEV_DATABASE_LOAD_PROGRAMMES_CREATED_BY value="*" />
+			
 		</data>
 	</resources>
 </tvt>

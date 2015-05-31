@@ -24,6 +24,71 @@ Type TDatabaseLoader
 	Field stopWatchAll:TStopWatch = new TStopWatch.Init()
 	Field stopWatch:TStopWatch = new TStopWatch.Init()
 
+	Field allowedAdCreators:string
+	Field skipAdCreators:string
+	Field allowedProgrammeCreators:string
+	Field skipProgrammeCreators:string
+
+	Method New()
+		allowedAdCreators = ""
+		For local s:string = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_ADS_CREATED_BY", "*").Split(",")
+			allowedAdCreators :+ " "+trim(s).ToLower()+" " 
+		Next
+
+		skipAdCreators = ""
+		For local s:string = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_ADS_CREATED_BY", "").Split(",")
+			skipAdCreators :+ " "+trim(s).ToLower()+" " 
+		Next
+
+		allowedProgrammeCreators = ""
+		For local s:string = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_PROGRAMMES_CREATED_BY", "*").Split(",")
+			allowedProgrammeCreators :+ " "+trim(s).ToLower()+" " 
+		Next
+
+		skipProgrammeCreators = ""
+		For local s:string = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_PROGRAMMES_CREATED_BY", "").Split(",")
+			skipProgrammeCreators :+ " "+trim(s).ToLower()+" "
+		Next
+	End Method
+
+
+	Method IsAllowedUser:Int(username:string, dataType:string)
+		local allowed:string
+		local skip:string
+
+		username = username.ToLower().replace("unknown", "*")
+		
+		Select dataType.ToLower()
+			case "adcontract"
+				allowed = allowedAdCreators
+				skip = skipAdCreators
+			case "programmelicence"
+				allowed = allowedProgrammeCreators
+				skip = skipProgrammeCreators
+		EndSelect
+
+		'all allowed? -> check "skip"
+		if allowed.Find(" * ") >= 0
+			'cannot skip all when loading all
+			if skip.Find(" * ") >= 0
+				print "ALLOWED * and SKIPPED * ... not possible. Type: "+dataType+". Allowing ALL creators for this type."
+				Return True
+			endif
+			
+			if skip.Find(" "+username+" ") >= 0
+				print "all allowed but skipping: " +username + "   " + skip.Find(" "+username+" ")
+				Return False
+			endif
+			return True
+		'only selected allowed
+		else
+			if allowed.Find(" "+username+" ") >= 0 then Return True
+			return False
+			print "not all allowed    username="+username+"    allowed="+allowed +"   skipped="+skip
+		endif
+		return False
+	End Method
+
 
 	Method LoadDir(dbDirectory:string)
 		'build file list of xml files in the given directory
@@ -122,6 +187,9 @@ Type TDatabaseLoader
 		for nodeChild = EachIn TXmlHelper.GetNodeChildElements(nodeParent)
 			If nodeChild.getName() <> "movie" then continue
 
+			'skip if not "all" are allowed (no creator data available)
+			if not IsAllowedUser("*", "programmelicence") then continue
+
 			title       = xml.FindValue(nodeChild,"title", "unknown title")
 			description = xml.FindValue(nodeChild,"description", "23")
 			actorsRaw   = xml.FindValue(nodeChild,"actors", "")
@@ -183,6 +251,9 @@ Type TDatabaseLoader
 		nodeParent = xml.FindRootChild("allseries")
 		For nodeChild = EachIn TXmlHelper.GetNodeChildElements(nodeParent)
 			If nodeChild.getName() <> "serie" then continue
+
+			'skip if not "all" are allowed (no creator data available)
+			if not IsAllowedUser("*", "programmelicence") then continue
 
 			'load series main data - in case episodes miss data
 			title       = xml.FindValue(nodeChild,"title", "unknown title")
@@ -300,6 +371,9 @@ Type TDatabaseLoader
 		nodeParent = xml.FindRootChild("allads")
 		For nodeChild = EachIn TXmlHelper.GetNodeChildElements(nodeParent)
 			If nodeChild.getName() <> "ad" then continue
+
+			'skip if not "all" are allowed (no creator data available)
+			if not IsAllowedUser("*", "adcontract") then continue
 
 			title       = xml.FindValue(nodeChild,"title", "unknown title")
 			description = xml.FindValue(nodeChild,"description", "")
@@ -687,6 +761,10 @@ Type TDatabaseLoader
 		local creator:Int = TXmlHelper.FindValueInt(node,"creator", 0)
 		local createdBy:String = TXmlHelper.FindValue(node,"created_by", "unknown")
 		local doAdd:int = True
+
+		'skip forbidden users (DEV)
+		if not IsAllowedUser(createdBy, "adcontract") then return Null
+
 		'try to fetch an existing one
 		local adContract:TAdContractBase = GetAdContractBaseCollection().GetByGUID(GUID)
 		if not adContract
@@ -782,6 +860,10 @@ Type TDatabaseLoader
 		local licenceType:int = TXmlHelper.FindValueInt(node,"licence_type", oldType)
 		local programmeData:TProgrammeData
 		local programmeLicence:TProgrammeLicence
+
+		'skip if not "all" are allowed (no creator data available)
+		if not IsAllowedUser(createdBy, "programmelicence") then return null
+
 
 		'=== PROGRAMME DATA ===
 		'try to fetch an existing licence with the entries GUID
