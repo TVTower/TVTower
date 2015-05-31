@@ -513,6 +513,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				ProgrammeCollection.AddAdContract(New TAdContract.Create(adContractBase), True)
 			Next
 		Next
+
+		'add "der kahn"
+		'GetPlayerProgrammeCollection(1).AddProgrammeLicence(GetProgrammeLicenceCollection().GetByGUID("b8b36ceb-b26e-4ecd-92be-e77376c1ce1b"))
 	End Method
 
 

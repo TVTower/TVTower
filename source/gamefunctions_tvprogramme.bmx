@@ -79,8 +79,8 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			'this is needed because "drag and drop" on the same area
 			'does not get handled by "AddObject"
 			'alternatively do this in "onFinishDrop"...
-			if not IsDragged() and TGUIProgrammePlanSlotList(lastList)
-				broadcastMaterial.setUsedAsType(TGUIProgrammePlanSlotList(lastList).isType)
+			if not IsDragged() and TGUIProgrammePlanSlotList(inList)
+				broadcastMaterial.setUsedAsType(TGUIProgrammePlanSlotList(inList).isType)
 			EndIf
 
 			'now we can calculate the item dimensions
@@ -544,14 +544,25 @@ Type TGUIProgrammePlanSlotList Extends TGUISlotList
 		'===== REGISTER EVENTS =====
 		'nobody was against dropping the item - so transform according to the lists type
 		EventManager.registerListenerMethod("guiobject.onFinishDrop", Self, "onFinishDropProgrammePlanElement", "TGUIProgrammePlanElement", Self)
+
 		'nobody was against dragging the item - so transform according to the items base type
 		'attention: "drag" does not have a "receiver"-list like a drop has..
 		'so we would have to check vs slot-elements here
 		'that is why we just use a global listener... for all programmeslotlists (prog and ad)
 		If Not registeredGlobalListeners
 			EventManager.registerListenerFunction("guiobject.onFinishDrag", onFinishDragProgrammePlanElement, "TGUIProgrammePlanElement")
+
+			rem
+			'refresh visual style
+			EventManager.registerListenerFunction("guiobject.onFinishDrop", onFinishProgrammePlanMovement, "TGUIProgrammePlanElement")
+			EventManager.registerListenerFunction("guiobject.onFinishDrag", onFinishProgrammePlanMovement, "TGUIProgrammePlanElement")
+			EventManager.registerListenerFunction("guiobject.onDropBack", onFinishProgrammePlanMovement, "TGUIProgrammePlanElement")
+			endrem
+
 			registeredGlobalListeners = True
 		EndIf
+
+
 		Return Self
 	End Method
 
@@ -578,7 +589,20 @@ Type TGUIProgrammePlanSlotList Extends TGUISlotList
 		EndIf
 	End Method
 
+rem
+	'refresh visual state on dropback
+	Function onFinishProgrammePlanMovement:Int(triggerEvent:TEventBase)
+		'resize that item to conform to the list
+		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
+		If Not item Then Return False
 
+		'resizes item according to usage type of the current list
+		item.SetBroadcastMaterial()
+
+		Return True
+	End Function
+endrem
+	
 	'handle successful drops of broadcastmaterial on the list
 	Method onFinishDropProgrammePlanElement:Int(triggerEvent:TEventBase)
 		'resize that item to conform to the list
@@ -1599,7 +1623,12 @@ Type TgfxContractlist Extends TPlannerList
 				Else
 					GetSpriteFromRegistry("gfx_programmetape_movie.default").draw(currX + 8, currY+1)
 				EndIf
-				font.drawBlock(contract.GetTitle(), currX + 22, currY + 3, 150,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
+
+				if TVTDebugInfos
+					font.drawBlock(contract.GetProfit() +CURRENCYSIGN+" @ "+ contract.GetMinAudience(), currX + 22, currY + 3, 150,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
+				else
+					font.drawBlock(contract.GetTitle(), currX + 22, currY + 3, 150,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
+				endif
 			EndIf
 
 
