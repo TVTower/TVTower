@@ -614,7 +614,12 @@ endrem
 
 
 		'by default scroll by 2 pixels
-		Local scrollAmount:Int = data.GetInt("scrollAmount", 2)
+		Local baseScrollSpeed:int = 2
+		'the longer you pressed the mouse button, the "speedier" we get
+		'1px per 100ms. Start speeding up after 500ms, limit to 20px per scroll
+		baseScrollSpeed :+ Min(20, Max(0, MOUSEMANAGER.GetDownTime(1) - 500)/100.0)
+		
+		Local scrollAmount:Int = data.GetInt("scrollAmount", baseScrollSpeed)
 		'this should be "calculate height and change amount"
 		If data.GetString("direction") = "up" Then guiList.ScrollEntries(0, +scrollAmount)
 		If data.GetString("direction") = "down" Then guiList.ScrollEntries(0, -scrollAmount)
@@ -625,7 +630,6 @@ endrem
 		'"scrollTo"-value
 		If data.getString("changeType") = "percentage"
 			local percentage:Float = data.GetFloat("percentage", 0)
-			print percentage
 			if guiSender = guiList.guiScrollerH
 				guiList.SetScrollPercentageX(percentage)
 			elseif guiSender = guiList.guiScrollerV
@@ -640,6 +644,10 @@ endrem
 	'positive values scroll to top or left
 	Method ScrollEntries(dx:float, dy:float)
 		guiEntriesPanel.scroll(dx,dy)
+
+		'refresh scroller values (for "progress bar" on the scroller)
+		guiScrollerH.SetRelativeValue( GetScrollPercentageX() )
+		guiScrollerV.SetRelativeValue( GetScrollPercentageY() )
 	End Method
 
 

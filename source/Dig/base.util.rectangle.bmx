@@ -77,12 +77,12 @@ Type TRectangle {_exposeToLua="selected"}
 
 
 	'copies all values from the given rectangle
-	Method CopyFrom:Int(rect:TRectangle)
-		if not rect then return False
+	Method CopyFrom:TRectangle(rect:TRectangle)
+		if not rect then return self
 
 		position.copyFrom(rect.position)
 		dimension.copyFrom(rect.dimension)
-		return True
+		return self
 	End Method
 
 
