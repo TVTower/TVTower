@@ -742,6 +742,12 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 
 	Method GetTopicality:Float()
 		if topicality < 0 then topicality = GetMaxTopicality()
+
+		'refresh topicality on each request
+		'-> avoids a "topicality > MaxTopicality" when MaxTopicality
+		'   shrinks because of aging/airing
+		topicality = Min(topicality, GetMaxTopicality())
+		
 		return topicality
 	End Method
 
