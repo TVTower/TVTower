@@ -483,12 +483,39 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'do not allow limited ones
 		cheapFilter.SetSkipLimitedToProgrammeGenre()
 		cheapFilter.SetSkipLimitedToTargetGroup()
+
+rem
+		local contracts:TAdContractBase[] = GetAdContractBaseCollection().GetAllAsArray()
+		For local contract:TAdContractBase = EachIn contracts
+			if not cheapFilter.DoesFilter(contract) then continue
+
+			print contract.GetTitle() + "  " + contract.minAudienceBase
+		Next
+endrem
+
+		local addContract:TAdContractBase
 		For Local i:Int = 0 To 1
-			adContractBases :+ [GetAdContractBaseCollection().GetRandomByFilter(cheapFilter)]
+			addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, False)
+			if not addContract
+				print "SpreadStartProgramme: GetAdContractBaseCollection().GetRandomByFilter failed! Skipping contract ..."
+				continue
+			endif
+			adContractBases :+ [addContract]
 		Next
 		'and one with 0 audience requirement
 		cheapFilter.SetAudience(0.0, 0.0)
-		adContractBases :+ [GetAdContractBaseCollection().GetRandomByFilter(cheapFilter)]
+		addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, False)
+		if not addContract  
+			print "SpreadStartProgramme: No ~qno audience~q contract in DB? Trying a 0-1% one..."
+			cheapFilter.SetAudience(0.0, 0.01)
+			addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, False)
+			if not addContract
+				print "SpreadStartProgramme: 0-1% failed too... using random contract now."
+				addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, True)
+			endif
+		endif
+		if addContract then adContractBases :+ [addContract]
+		
 
 		If adContractBases.length = 0
 			TLogger.Log("SpreadStartProgramme", "adContractBases is empty.", LOG_ERROR)

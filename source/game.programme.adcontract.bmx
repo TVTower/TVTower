@@ -81,7 +81,7 @@ Type TAdContractBaseCollection
 	End Method
 
 
-	Method GetRandomByFilter:TAdContractBase(filter:TAdContractBaseFilter)
+	Method GetRandomByFilter:TAdContractBase(filter:TAdContractBaseFilter, returnUnfilteredOnError:int = True)
 		Local contracts:TAdContractBase[]
 
 		For local contract:TAdContractBase = EachIn entries.Values()
@@ -90,6 +90,16 @@ Type TAdContractBaseCollection
 			'add it to candidates list
 			contracts :+ [contract]
 		Next
+		
+		if contracts.length = 0
+			if returnUnfilteredOnError
+				print "AdContractBaseCollection: GetRandomByFilter without results! Returning Random without filter."
+			else
+				print "AdContractBaseCollection: GetRandomByFilter without results! Returning NULL."
+				Return null
+			endif
+		endif
+	
 		Return GetRandom(contracts)
 	End Method	
 
