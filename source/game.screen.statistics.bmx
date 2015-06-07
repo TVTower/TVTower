@@ -178,7 +178,7 @@ Type TScreenHandler_Statistics
 				boldTextFont.drawBlock(MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuote().GetAverage(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 1*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), ALIGN_RIGHT_CENTER, lightFontColor)
 
 				boldTextFont.drawBlock(TFunctions.convertValue(audienceResult.WholeMarket.GetSum(),0), valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
-				boldTextFont.drawBlock(MathHelper.NumberToString(audienceResult.WholeMarket.GetSum() / GetStationMapCollection().GetPopulation(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), ALIGN_RIGHT_CENTER, lightFontColor)
+				boldTextFont.drawBlock(MathHelper.NumberToString(100.0 * audienceResult.WholeMarket.GetSum() / GetStationMapCollection().GetPopulation(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), ALIGN_RIGHT_CENTER, lightFontColor)
 
 				'target groups
 				local halfWidth:int = 0.5 * (valueArea.GetX2() - labelArea.GetX())
