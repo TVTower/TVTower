@@ -273,12 +273,12 @@ Type TProgrammeLicenceCollection
 
 			'if available (unbought, released..), add it to candidates list
 			If Licence.isSingle() or Licence.isEpisode()
-				if Licence.GetData().getGenre() = genre Then resultList.addLast(Licence)
+				if Licence.GetGenre() = genre Then resultList.addLast(Licence)
 			else
 				local foundGenreInSubLicence:int = FALSE
 				for local subLicence:TProgrammeLicence = eachin Licence.subLicences
 					if foundGenreInSubLicence then continue
-					if subLicence.GetData() and subLicence.GetData().getGenre() = genre
+					if subLicence.GetGenre() = genre
 						resultList.addLast(Licence)
 						foundGenreInSubLicence = TRUE
 					endif
@@ -579,6 +579,13 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetGenreString:String(_genre:Int=-1)
+		'return the string of the best genre of the licence (packet)
+		if GetData() then return GetData().GetGenreString( GetGenre() )
+		return ""
+	End Method
+
+
 	'returns the flags as a mix of all licences
 	'ATTENTION: if ONE has xrated, all are xrated, if one has trash, all ..
 	'so this kind of "taints"
@@ -599,7 +606,7 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		if GetSubLicenceCount() = 0 and GetData() then return GetData().GetQuality()
 
 		'if licence is a collection: ask subs
-		local quality:int = 0
+		local quality:Float = 0
 		For local licence:TProgrammeLicence = eachin subLicences
 			quality :+ licence.GetQuality()
 		Next
@@ -608,6 +615,21 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		return 0.0
 	End Method
 
+
+	Method GetQualityRaw:Float() {_exposeToLua}
+		'single-licence
+		if GetSubLicenceCount() = 0 and GetData() then return GetData().GetQualityRaw()
+
+		'if licence is a collection: ask subs
+		local qualityRaw:Float = 0
+		For local licence:TProgrammeLicence = eachin subLicences
+			qualityRaw :+ licence.GetQualityRaw()
+		Next
+
+		if subLicences.length > 0 then return qualityRaw / subLicences.length
+		return 0.0
+	End Method
+	
 
 	Method GetTitle:string() {_exposeToLua}
 		if GetData() then return GetData().GetTitle()
@@ -622,18 +644,18 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	'returns the avg topicality of a licence (package)
-	Method GetTopicality:Int() {_exposeToLua}
+	Method GetTopicality:Float() {_exposeToLua}
 		'single-licence
 		if GetSubLicenceCount() = 0 and GetData() then return GetData().GetTopicality()
 
 		'licence for a package or series
-		Local value:int
+		Local value:Float
 		For local licence:TProgrammeLicence = eachin subLicences
 			value :+ licence.GetTopicality()
 		Next
 
-		if subLicences.length > 0 then return floor(value / subLicences.length)
-		return 0
+		if subLicences.length > 0 then return value / subLicences.length
+		return 0.0
 	End Method
 
 
@@ -790,12 +812,12 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 			countryYear :+ " " + data.year
 		endif
 		fontNormal.drawBlock(countryYear, currX + 6, currY, 65, 16, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
-		fontNormal.drawBlock(data.GetGenreString(), currX + 6 + 67, currY, 215, 16, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+		fontNormal.drawBlock(GetGenreString(), currX + 6 + 67, currY, 215, 16, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
 		currY :+ 16
 
 		'content description
+		fontNormal.drawBlock(GetDescription(), currX + 6, currY, 280, 64, null ,textColor)
 		currY :+ 3	'description starts with offset
-		fontNormal.drawBlock(data.GetDescription(), currX + 6, currY, 280, 64, null ,textColor)
 		currY :+ 64 'content
 		currY :+ 3	'description ends with offset
 
@@ -878,7 +900,7 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 			SetAlpha GetAlpha()*0.25
 			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1 + 48, data.GetMaxTopicality()*200, 10))
 			SetAlpha GetAlpha()*4.0
-			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1 + 48, data.GetTopicality()*200, 10))
+			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1 + 48, GetTopicality()*200, 10))
 		EndIf
 		currY :+ 65
 
@@ -967,11 +989,11 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 			textY :+ 12	
 			fontNormal.draw("Preismodifikator: "+data.GetModifier("price"), currX + 5, textY)
 			textY :+ 12	
-			fontNormal.draw("Qualitaet roh: "+data.GetQualityRaw()+"  (ohne Alter, Wdh.)", currX + 5, textY)
+			fontNormal.draw("Qualitaet roh: "+GetQualityRaw()+"  (ohne Alter, Wdh.)", currX + 5, textY)
 			textY :+ 12	
-			fontNormal.draw("Qualitaet: "+data.GetQuality(), currX + 5, textY)
+			fontNormal.draw("Qualitaet: "+GetQuality(), currX + 5, textY)
 			textY :+ 12	
-			fontNormal.draw("Aktualitaet: "+data.GetTopicality()+" von " + data.GetMaxTopicality(), currX + 5, textY)
+			fontNormal.draw("Aktualitaet: "+GetTopicality()+" von " + data.GetMaxTopicality(), currX + 5, textY)
 			textY :+ 12	
 			fontNormal.draw("Bloecke: "+data.GetBlocks(), currX + 5, textY)
 			textY :+ 12	
