@@ -3207,6 +3207,11 @@ Type RoomHandler_AdAgency extends TRoomHandler
 				if highestChannelQuote < quote then highestChannelQuote = quote
 			endif
 		Next
+		'convert to percentage
+		highestChannelImage :* 0.01
+		averageChannelImage :* 0.01
+		lowestChannelImage :* 0.01
+
 
 		'=== SETUP FILTERS ===
 		'the cheap list contains really low contracts
@@ -3231,33 +3236,37 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'from 1% of avg to 100% of avg
 		levelFilters[0].SetAudience(0.0, lowestChannelQuote)
 		'1% - avgImage %
-		levelFilters[0].SetImage(0.0, 0.01 * lowestChannelImage)
+		levelFilters[0].SetImage(0.0, lowestChannelImage)
 		'lowest should be without "limits"
 		levelFilters[0].SetSkipLimitedToProgrammeGenre()
 		levelFilters[0].SetSkipLimitedToTargetGroup()
-
 		'=== AVERAGE ===
 		levelFilters[1] = new TAdContractbaseFilter
 		'from 50% of avg to 150% of avg, may cross with lowest!
-		levelFilters[1].SetAudience(0.5 * averageChannelQuote, Max(0.01, 1.5 * averageChannelQuote))
+		'levelFilters[1].SetAudience(0.5 * averageChannelQuote, Max(0.01, 1.5 * averageChannelQuote))
+		'weighted Minimum/Maximum (the more away from border, the
+		'stronger the influence)
+		local minAvg:Float = (0.3 * lowestChannelQuote + 0.7 * averageChannelQuote)
+		local maxAvg:Float = (0.7 * averageChannelQuote + 0.3 * highestChannelQuote)
+		levelFilters[1].SetAudience(minAvg, Max(0.01, maxAvg))
 		'0-100% of average Image
-		levelFilters[1].SetImage(0, 0.01 * averageChannelImage)
+		levelFilters[1].SetImage(0, averageChannelImage)
 
 		'=== HIGH ===
 		levelFilters[2] = new TAdContractbaseFilter
 		'from 50% of avg to 150% of highest, at least 1-3%
 		levelFilters[2].SetAudience(Max(0.01, 0.5 * highestChannelQuote), Max(0.02, 1.5 * highestChannelQuote))
 		'0-100% of highest Image
-		levelFilters[2].SetImage(0, 0.01 * highestChannelImage)
+		levelFilters[2].SetImage(0, highestChannelImage)
 
 rem
 print "REFILL:"
 print "level0:  audience "+"0.0"+" - "+lowestChannelQuote
-print "level0:  image    "+"0.0"+" - "+(0.01 * lowestChannelImage)
+print "level0:  image    "+"0.0"+" - "+lowestChannelImage
 print "level1:  audience "+(0.5 * averageChannelQuote)+" - "+Max(0.01, 1.5 * averageChannelQuote)
-print "level1:  image     0.00 - "+(0.01 * averageChannelImage)
+print "level1:  image     0.00 - "+averageChannelImage
 print "level2:  audience "+(Max(0.01, 0.5 * highestChannelQuote))+" - "+Max(0.03, 1.5 * highestChannelQuote)
-print "level2:  image     0.00 - "+(0.01 * highestChannelImage)
+print "level2:  image     0.00 - "+highestChannelImage
 print "------------------"
 endrem
 		'=== ACTUALLY CREATE CONTRACTS ===
