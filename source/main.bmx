@@ -713,11 +713,11 @@ Type TApp
 
 
 			For Local i:Int = 0 To 3
-				GetBitmapFontManager().baseFont.Draw("Image #"+i+": "+GetPublicImageCollection().Get(i+1).GetAverageImage(), 10, 320 + i*13)
+				GetBitmapFontManager().baseFont.Draw("Image #"+i+": "+MathHelper.NumberToString(GetPublicImageCollection().Get(i+1).GetAverageImage(), 4)+" %", 10, 320 + i*13)
 			Next
 
 			For Local i:Int = 0 To 3
-				GetBitmapFontManager().baseFont.Draw("Boss #"+i+": "+GetPlayerBoss(i+1).mood, 10, 270 + i*13)
+				GetBitmapFontManager().baseFont.Draw("Boss #"+i+": "+MathHelper.NumberToString(GetPlayerBoss(i+1).mood,4), 10, 270 + i*13)
 			Next
 
 
