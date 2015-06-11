@@ -434,6 +434,43 @@ endrem
 	End Method
 
 
+	Method CalculateAudienceDecrease:Int(stations:TList, removeStation:TStation)
+		if not removeStation then return 0
+
+		Local Points:TMap = New TMap
+		Local returnValue:Int = 0
+
+		'mark the station to removed as "blue"
+		'mark all others (except the given one) as "white"
+		'-> then count pop on all spots "just blue" and not "white"
+		
+		Self._FillPoints(Points, removeStation.pos.x, removeStation.pos.y, ARGB_Color(255, 0, 255, 255))
+
+		'overwrite with stations owner already has - red pixels get overwritten with white,
+		'count red at the end for increase amount
+		For Local _Station:TStation = EachIn stations
+			'DO NOT SKIP INACTIVE STATIONS !!
+			'decreases are for estimations - so they should include
+			'non-finished stations too
+
+			'exclude the station to remove...
+			if _Station = removeStation then continue
+		
+			If THelper.IsIn(removeStation.pos.x, removeStation.pos.y, _station.pos.x - 2*stationRadius, _station.pos.y - 2 * stationRadius, 4*stationRadius, 4*stationRadius)
+				Self._FillPoints(Points, _Station.pos.x, _Station.pos.y, ARGB_Color(255, 255, 255, 255))
+			EndIf
+		Next
+
+		'count all "exclusively blue" spots
+		For Local point:TVec3D = EachIn points.Values()
+			If ARGB_Red(point.z) = 0 'And ARGB_Blue(point.z) = 255
+				returnvalue:+ populationmap[point.x, point.y]
+			EndIf
+		Next
+		Return returnvalue
+	End Method
+	
+
 	Method CalculateAudienceIncrease:Int(stations:TList, _x:Int, _y:Int)
 		Local Points:TMap = New TMap
 		Local returnValue:Int = 0
@@ -644,6 +681,13 @@ Type TStationMap {_exposeToLua="selected"}
 		return GetStationMapCollection().CalculateAudienceIncrease(stations, x, y)
 	End Method
 
+	'returns audience loss when selling a station at the given coord
+	'param is station (not coords) to avoid ambiguity of multiple
+	'stations at the same spot
+	Method CalculateAudienceDecrease:Int(station:TStation) {_exposeToLua}
+		return GetStationMapCollection().CalculateAudienceDecrease(stations, station)
+	End Method
+
 
 	'buy a new station at the given coordinates
 	Method BuyStation:Int(x:Int,y:Int)
@@ -775,6 +819,8 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	Field reach:Int	= -1
 	'increase of reach at when bought
 	Field reachIncrease:Int = -1
+	'decrease of reach when bought (= increase in that state)
+	Field reachDecrease:Int = -1
 	Field price:Int	= -1
 	'fixed prices are kept during refresh
 	Field fixedPrice:Int = False
@@ -798,6 +844,8 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 		obj.fixedPrice	= (price <> -1)
 		obj.refreshData()
+		'save on compution for "initial states"
+		obj.reachDecrease = obj.reachIncrease
 		Return obj
 	End Function
 
@@ -806,6 +854,8 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	Method refreshData() {_exposeToLua}
 		getReach(True)
 		getReachIncrease(True)
+		'save on compution for "initial states" - do it on "create"
+		'getReachDecrease(True)
 		getPrice( Not fixedPrice )
 	End Method
 
@@ -842,6 +892,20 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		reachIncrease = GetStationMapCollection().GetMap(owner).CalculateAudienceIncrease(pos.x, pos.y)
 
 		Return reachIncrease
+	End Method
+
+
+	Method getReachDecrease:Int(refresh:Int=False) {_exposeToLua}
+		If reachDecrease >= 0 And Not refresh Then Return reachDecrease
+
+		if owner <= 0
+			Print "getReachDecrease: owner is not a player."
+			Return 0
+		EndIf
+
+		reachDecrease = GetStationMapCollection().GetMap(owner).CalculateAudienceDecrease(self)
+
+		Return reachDecrease
 	End Method
 
 
