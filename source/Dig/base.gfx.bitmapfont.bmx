@@ -378,6 +378,11 @@ Type TBitmapFont
 	End Method
 
 
+	Method IsBold:Int()
+		return (FStyle & BOLDFONT)
+	End Method
+
+
 	'Returns whether this font has a visible ellipsis char ("…")
 	Method HasEllipsis:int()
 		if _hasEllipsis = -1 then _hasEllipsis = GetWidth(chr(8230))
