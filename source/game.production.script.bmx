@@ -1,13 +1,15 @@
 SuperStrict
 Import "Dig/base.gfx.bitmapfont.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
-Import "Dig/base.util.localization.bmx"
 Import "game.gameobject.bmx"
 Import "game.player.finance.bmx"
 Import "game.player.base.bmx"
-Import "game.gameconstants.bmx" 'to access type-constants
 Import "basefunctions.bmx" 'dottedValue
 Import "game.production.scripttemplate.bmx"
+'to access datasheet-functions
+Import "common.misc.datasheet.bmx"
+
+
 
 Type TScriptCollection Extends TGameObjectCollection
 	'=== CACHE ===
@@ -75,6 +77,9 @@ Type TScriptCollection Extends TGameObjectCollection
 		local template:TScriptTemplate = GetScriptTemplateCollection().GetRandom()
 		local script:TScript = TScript.CreateFromTemplate(template)
 		script.SetOwner(TOwnedGameObject.OWNER_NOBODY)
+		print "series: "+script.GetTitle()
+		print "-> template series: "+template.IsSeries() +"  flag:"+template.scriptLicenceType
+		print "-> script series: "+script.IsSeries()+ "  flag:"+script.scriptLicenceType
 		Add(script)
 		return script
 	End Method
@@ -157,13 +162,8 @@ End Function
 
 
 
-Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
-	Field title:TLocalizedString
-	Field description:TLocalizedString
+Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Field ownProduction:Int	= false
-	Field scriptLicenceType:Int = 0
-	Field scriptProductType:Int = 0
-	Field genre:Int = 0
 	'News-Genre: Medien/Technik, Politik/Wirtschaft, Showbiz, Sport, Tagesgeschehen ODER flexibel = spezielle News (10)
 	Field topic:Int	= 0
 
@@ -189,18 +189,12 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 
 	Field price:Int	= 0
 	Field blocks:Int = 0
-	'flags contains bitwise encoded things like xRated, paid, trash ...
-	Field flags:Int = 0
 
 	'if the script is a clone of something, basedOnScriptGUID contains
 	'the guid of the original script.
 	'This is used for "shows" to be able to use different values of
 	'outcome/speed/price/... while still having a connecting link
 	Field basedOnScriptGUID:String = ""
-	'scripts of series are parent of episode scripts
-	Field parentScriptGUID:string = ""
-	'all associated child scripts (episodes)
-	Field subScripts:TScript[]
 
 
 
@@ -217,12 +211,21 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 		script.price = template.GetPrice()
 		script.cast = template.GetJobs()
 
+		script.scriptLicenceType = template.scriptLicenceType
+		script.scriptProductType = template.scriptProductType
+
+		script.mainGenre = template.mainGenre
+		'add genres
+		For local subGenre:int = EachIn template.subGenres
+			script.subGenres :+ [subGenre]
+		Next
+		
 		'replace placeholders as we know the cast / roles now
 		script.title = script._ReplacePlaceholders(script.title)
 		script.description = script._ReplacePlaceholders(script.description)
 
 		'add children
-		For local subTemplate:TScriptTemplate = EachIn template.subScriptTemplates
+		For local subTemplate:TScriptTemplate = EachIn template.subScripts
 			local subScript:TScript = TScript.CreateFromTemplate(subTemplate)
 			if subScript then script.AddSubScript(subScript)
 		Next
@@ -243,30 +246,10 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method hasFlag:Int(flag:Int) {_exposeToLua}
-		Return flags & flag
-	End Method
-
-
-	Method setFlag(flag:Int, enable:Int=True)
-		If enable
-			flags :| flag
-		Else
-			flags :& ~flag
-		EndIf
-	End Method
-
-
 	'override
-	Method GetTitle:string() {_exposeToLua}
-		if title then return title.Get()
-		return ""
-	End Method
-
-
-	Method GetDescription:string() {_exposeToLua}
-		if description then return description.Get()
-		return ""
+	Method GetParentScript:TScript()
+		if not parentScriptGUID then return self
+		return GetScriptCollection().GetByGUID(parentScriptGUID)
 	End Method
 
 
@@ -332,107 +315,14 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 	Method SetOwner:int(owner:int=0)
 		GetScriptCollection().SetScriptOwner(self, owner)
 
-		'do the same for all children
-		For local script:TScript = eachin subScripts
-			script.SetOwner(owner)
-		Next
+		Super.SetOwner(owner)
+
 		return TRUE
 	End Method
 
 
 	Method SetBasedOnScriptGUID(basedOnScriptGUID:string)
 		self.basedOnScriptGUID = basedOnScriptGUID
-	End Method
-
-
-	Method GetSubScriptCount:int() {_exposeToLua}
-		return subScripts.length
-	End Method
-
-
-	Method GetSubScriptAtIndex:TScript(arrayIndex:int=1) {_exposeToLua}
-		if arrayIndex > subScripts.length or arrayIndex < 0 then return null
-		return subScripts[arrayIndex]
-	End Method
-
-
-	Method GetParentScript:TScript() {_exposeToLua}
-		if not parentScriptGUID then return self
-		return GetScriptCollection().GetByGUID(parentScriptGUID)
-	End Method
-
-
-	Method GetSubScriptPosition:int(script:TScript) {_exposeToLua}
-		'find my position and add 1
-		For local i:int = 0 to GetSubScriptCount() - 1
-			if GetSubScriptAtIndex(i) = script then return i
-		Next
-		return 0
-	End Method
-
-
-	'returns the next script of a scripts parent subscripts
-	Method GetNextSubScript:TScript() {_exposeToLua}
-		if not parentScriptGUID then return Null
-
-		'find my position and add 1
-		local nextArrayIndex:int = GetParentScript().GetSubScriptPosition(self) + 1
-		'if we are at the last position, return the first one
-		if nextArrayIndex >= GetParentScript().GetSubScriptCount() then nextArrayIndex = 0
-
-		return GetParentScript().GetSubScriptAtIndex(nextArrayIndex)
-	End Method
-
-
-	Method AddSubScript:int(script:TScript)
-		'=== ADJUST SCRIPT TYPES ===
-
-		'as each script is individual we easily can set the main script
-		'as parent (so subscripts can ask for sibling scripts).
-		script.parentScriptGUID = self.GetGUID()
-
-		'add to array of subscripts
-		subScripts :+ [script]
-		Return TRUE
-	End Method
-
-
-	Method IsLive:int()
-		return HasFlag(TVTProgrammeFlag.LIVE)
-	End Method
-	
-	
-	Method IsAnimation:Int()
-		return HasFlag(TVTProgrammeFlag.ANIMATION)
-	End Method
-	
-	
-	Method IsCulture:Int()
-		return HasFlag(TVTProgrammeFlag.CULTURE)
-	End Method	
-		
-	
-	Method IsCult:Int()
-		return HasFlag(TVTProgrammeFlag.CULT)
-	End Method
-	
-	
-	Method IsTrash:Int()
-		return HasFlag(TVTProgrammeFlag.TRASH)
-	End Method
-	
-	Method IsBMovie:Int()
-		return HasFlag(TVTProgrammeFlag.BMOVIE)
-	End Method
-	
-	
-	Method IsXRated:int()
-		return HasFlag(TVTProgrammeFlag.XRATED)
-	End Method
-
-
-	Method IsPaid:int()
-		return HasFlag(TVTProgrammeFlag.PAID)
 	End Method
 
 
@@ -550,33 +440,6 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	'returns the genre of a script - if a group, the one used the most
-	'often is returned
-	Method GetGenre:int() {_exposeToLua}
-		if GetSubScriptCount() = 0 then return genre
-
-		local genres:int[]
-		local bestGenre:int=0
-		For local script:TScript = eachin subScripts
-			local genre:int = script.GetGenre()
-			if genre > genres.length-1 then genres = genres[..genre+1]
-			genres[genre]:+1
-		Next
-		For local i:int = 0 to genres.length-1
-			if genres[i] > bestGenre then bestGenre = i
-		Next
-
-		return bestGenre
-	End Method
-
-
-	Method GetGenreString:String(_genre:Int=-1)
-		If _genre < 0 Then _genre = self.genre
-		'eg. PROGRAMME_GENRE_ACTION
-		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(_genre))
-	End Method
-
-
 	Method Sell:int()
 		local finance:TPlayerFinance = GetPlayerFinance(owner,-1)
 		if not finance then return False
@@ -603,104 +466,115 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method isSeries:int() {_exposeToLua}
-		return (scriptLicenceType & TVTProgrammeLicenceType.SERIES)
-	End Method
-
-
-	Method isEpisode:int() {_exposeToLua}
-		return (scriptLicenceType & TVTProgrammeLicenceType.EPISODE)
-	End Method
-
-
 	Method ShowSheet:Int(x:Int,y:Int, align:int=0)
-		Local fontNormal:TBitmapFont   = GetBitmapFontManager().baseFont
-		Local fontBold:TBitmapFont     = GetBitmapFontManager().baseFontBold
-		Local fontSemiBold:TBitmapFont = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
-
-		'=== DRAW BACKGROUND ===
-		local sprite:TSprite
-		local currX:Int = x
-		local currY:int = y
-		local currTextWidth:int
-
+		'=== PREPARE VARIABLES ===
+		local sheetWidth:int = 310
+		local sheetHeight:int = 0 'calculated later
 		'move sheet to left when right-aligned
-		if align = 1 then currX = x - GetSpriteFromRegistry("gfx_datasheet_title").area.GetW()
+		if align = 1 then x = x - sheetWidth
 
+		local skin:TDatasheetSkin = GetDatasheetSkin("script")
+		local contentW:int = skin.GetContentW(sheetWidth)
+		local contentX:int = x + skin.GetContentY()
+		local contentY:int = y + skin.GetContentY()
 
-		sprite = GetSpriteFromRegistry("gfx_datasheet_title"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		if isEpisode() or isSeries()
-			sprite = GetSpriteFromRegistry("gfx_datasheet_series"); sprite.Draw(currX, currY)
-			currY :+ sprite.GetHeight()
+		local title:string
+		if not isEpisode()
+			title = GetTitle()
+		else
+			title = GetParentScript().GetTitle()
 		endif
-		'country + year + genre
-		sprite = GetSpriteFromRegistry("gfx_datasheet_country"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_content"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_splitter"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_content2"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_subTop"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_subScriptRatings"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
 
-		sprite = GetSpriteFromRegistry("gfx_datasheet_subScriptAttributes"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-
-		sprite = GetSpriteFromRegistry("gfx_datasheet_bottom"); sprite.Draw(currX, currY)
-
-
-
-		'=== DRAW TEXTS / OVERLAYS ====
-		currY = y + 8 'so position is within "border"
-		currX :+ 7 'inside
-		local textColor:TColor = TColor.CreateGrey(25)
-		local textLightColor:TColor = TColor.CreateGrey(75)
+		'can player afford this licence?
+		local canAfford:int = False
+		'possessing player always can
+		if GetPlayerBaseCollection().playerID = owner
+			canAfford = True
+		'if it is another player... just display "can afford"
+		elseif owner > 0
+			canAfford = True
+		'not our licence but enough money to buy ?
+		else
+			local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(GetPlayerBaseCollection().playerID, -1)
+			if finance and finance.canAfford(GetPrice())
+				canAfford = True
+			endif		
+		endif
 		
+		
+		'=== CALCULATE SPECIAL AREA HEIGHTS ===
+		local titleH:int = 18, subtitleH:int = 16, genreH:int = 16, descriptionH:int = 70, castH:int=50
+		local splitterHorizontalH:int = 6
+		local boxH:int = 0, barH:int = 0
+		local boxAreaH:int = 0, barAreaH:int = 0
+		local boxAreaPaddingY:int = 4, barAreaPaddingY:int = 4
+
+		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
+		barH = skin.GetBarSize(100, -1).GetY()
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).getBlockHeight(title, contentW - 10, 100))
+
+		'bar area starts with padding, ends with padding and contains
+		'also contains 3 bars
+		barAreaH = 2 * barAreaPaddingY + 3 * (barH + 2)
+
+		'box area
+		'contains 1 line of boxes + padding at the top
+		boxAreaH = 1 * boxH + 1 * boxAreaPaddingY
+
+		'total height
+		sheetHeight = titleH + genreH + descriptionH + castH + barAreaH + boxAreaH + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
+		if isSeries() or isEpisode() then sheetHeight :+ subtitleH
+		'there is a splitter between description and cast...
+		sheetHeight :+ splitterHorizontalH
+
+
+		'=== RENDER ===
+	
+		'=== TITLE AREA ===
+		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
+			if titleH <= 18
+				GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY -1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			else
+				GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY +1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			endif
+		contentY :+ titleH
+
+		
+		'=== SUBTITLE AREA ===
 		if isSeries()
-			'default is size "12" so resize to 13
-			GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), currX + 6, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
-			currY :+ 18
-			fontNormal.drawBlock(GetLocale("SERIES_WITH_X_EPISODES").Replace("%EPISODESCOUNT%", GetSubScriptCount()), currX + 6, currY, 280, 15, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
-			currY :+ 16
+			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")
+			skin.fontNormal.drawBlock(GetLocale("SERIES_WITH_X_EPISODES").Replace("%EPISODESCOUNT%", GetSubScriptCount()), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			contentY :+ subtitleH
 		elseif isEpisode()
-			'title of "series"
-			'default is size "12" so resize to 13
-			GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetParentScript().GetTitle(), currX + 6, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
-			currY :+ 18
+			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")
 			'episode num/max + episode title
-			fontNormal.drawBlock((GetParentScript().GetSubScriptPosition(self)+1) + "/" + GetParentScript().GetSubScriptCount() + ": " + GetTitle(), currX + 6, currY, 280, 15, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
-			currY :+ 16
-		else ' = if isMovie()
-			'default is size "12" so resize to 13
-			GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), currX + 6, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
-			currY :+ 18
+			skin.fontNormal.drawBlock((GetParentScript().GetSubScriptPosition(self)+1) + "/" + GetParentScript().GetSubScriptCount() + ": " + GetTitle(), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			contentY :+ subtitleH
 		endif
 
-		fontNormal.drawBlock(GetGenreString(), currX + 6 + 67, currY, 215, 16, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
-		currY :+ 16
 
-		'content description
-		currY :+ 3	'description starts with offset
-		fontNormal.drawBlock(GetDescription(), currX + 6, currY, 280, 64, null ,textColor)
-		currY :+ 64 'content
-		currY :+ 3	'description ends with offset
+		'=== COUNTRY / YEAR / GENRE AREA ===
+		skin.RenderContent(contentX, contentY, contentW, genreH, "1")
+		skin.fontNormal.drawBlock(GetMainGenreString(), contentX + 5, contentY, contentW - 10, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		contentY :+ genreH
+
+	
+		'=== DESCRIPTION AREA ===
+		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
+		skin.fontNormal.drawBlock(GetDescription(), contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, null, skin.textColorNeutral)
+		contentY :+ descriptionH
+
 
 		'splitter
-		currY :+ 6
+		skin.RenderContent(contentX, contentY, contentW, splitterHorizontalH, "1")
+		contentY :+ splitterHorizontalH
+		
 
-		currY :+ 3	'subcontent (actors/director) start with offset
-
-		'max width of cast word - to align their content properly
-		currTextWidth = Int(fontSemiBold.getWidth(GetLocale("MOVIE_CAST")+":"))
+		'=== CAST AREA ===
+		skin.RenderContent(contentX, contentY, contentW, castH, "2")
 
 		'cast
 		local cast:string = ""
-
 		local requiredDirectors:int = GetSpecificCastCount(TVTProgrammePersonJob.DIRECTOR)
 		local requiredStarRoleActorFemale:int = GetSpecificCastCount(TVTProgrammePersonJob.ACTOR, TVTPersonGender.FEMALE)
 		local requiredStarRoleActorMale:int = GetSpecificCastCount(TVTProgrammePersonJob.ACTOR, TVTPersonGender.MALE)
@@ -730,103 +604,86 @@ Type TScript Extends TNamedGameObject {_exposeToLua="selected"}
 		endif
 
 		if cast <> ""
-			fontSemiBold.drawBlock(GetLocale("MOVIE_CAST")+":", currX + 6, currY, 280, 13, null, textColor)
-			fontNormal.drawBlock(cast, currX + 6 + 5 + currTextWidth, currY , 280 - 15 - currTextWidth, 45, null, textColor)
+			'render director + cast (offset by 3 px)
+			contentY :+ 3
+
+			'max width of cast word - to align their content properly
+			local captionWidth:int = skin.fontSemiBold.getWidth(GetLocale("MOVIE_CAST")+":")
+			skin.fontSemiBold.drawBlock(GetLocale("MOVIE_CAST")+":", contentX + 5, contentY, contentW, castH, null, skin.textColorNeutral)
+			skin.fontNormal.drawBlock(cast, contentX + 5 + captionWidth + 5, contentY , contentW  - 10 - captionWidth - 5, castH, null, skin.textColorNeutral)
+
+			contentY:+ castH - 3
+		else
+			contentY:+ castH
 		endif
-		currY :+ 39
-		currY :+ 3 'subcontent end with offset
-		currY :+ 1 'end of subcontent area
+
+
+		'=== BARS / BOXES AREA ===
+		'background for bars + boxes
+		skin.RenderContent(contentX, contentY, contentW, barAreaH + boxAreaH, "1_bottom")
+
 
 		'===== DRAW RATINGS / BARS =====
-		'captions
-		currY :+ 4 'offset of ratings
-		fontSemiBold.drawBlock(GetLocale("MOVIE_SPEED"),      currX + 215, currY,      75, 15, null, textLightColor)
-		fontSemiBold.drawBlock(GetLocale("MOVIE_CRITIC"),     currX + 215, currY + 16, 75, 15, null, textLightColor)
-		fontSemiBold.drawBlock(GetLocale("SCRIPT_POTENTIAL"),  currX + 215, currY + 32, 75, 15, null, textLightColor)
 
-		'===== DRAW BARS =====
+		'bars have a top-padding
+		contentY :+ barAreaPaddingY
+		'speed
+		skin.RenderBar(contentX + 5, contentY, 200, 12, GetSpeed())
+		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_SPEED"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+		contentY :+ barH + 2
+		'critic/review
+		skin.RenderBar(contentX + 5, contentY, 200, 12, GetReview())
+		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_CRITIC"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+		contentY :+ barH + 2
+		'potential
+		skin.RenderBar(contentX + 5, contentY, 200, 12, GetPotential())
+		skin.fontSemiBold.drawBlock(GetLocale("SCRIPT_POTENTIAL"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+		contentY :+ barH + 2
 
-		If GetSpeed() > 0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1, GetSpeed()*200  , 10))
-		If GetReview() > 0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1 + 16, GetReview()*200 , 10))
-		If GetPotential() > 0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1 + 32, GetPotential()*200, 10))
-		currY :+ 48
-
-		currY :+ 4 'align to content portion of that line
+		'=== BOXES ===
+		'boxes have a top-padding (except with messages)
+		'if msgAreaH = 0 then contentY :+ boxAreaPaddingY
+		contentY :+ boxAreaPaddingY
 		'blocks
-		fontBold.drawBlock(GetBlocks(), currX + 33, currY, 17, 15, ALIGN_CENTER_CENTER, textColor, 0,1,1.0,True, True)
-
-		
+		skin.RenderBox(contentX + 5, contentY, 47, -1, GetBlocks(), "duration", "neutral", skin.fontBold)
 		'price
-		local finance:TPlayerFinance
-		'only check finances if it is no other player (avoids exposing
-		'that information to us)
-		if owner <= 0 or GetPlayerBaseCollection().playerID = owner
-			finance = GetPlayerFinance(GetPlayerBaseCollection().playerID, -1)
-		endif
-		local canAfford:int = False
-		'possessing player always can
-		if GetPlayerBaseCollection().playerID = owner
-			canAfford = True
-		'if it is another player... just display "can afford"
-		elseif owner > 0
-			canAfford = True
-		'not our licence but enough money to buy
-		elseif finance and finance.canAfford(GetPrice())
-			canAfford = True
-		endif
-		
 		if canAfford
-			fontBold.drawBlock(TFunctions.DottedValue(GetPrice()), currX + 227, currY, 55, 15, ALIGN_RIGHT_CENTER, textColor, 0,1,1.0,True, True)
+			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(GetPrice()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 		else
-			fontBold.drawBlock(TFunctions.DottedValue(GetPrice()), currX + 227, currY, 55, 15, ALIGN_RIGHT_CENTER, TColor.Create(200,0,0), 0,1,1.0,True, True)
+			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(GetPrice()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
 		endif
-		currY :+ 15 + 8 'lineheight + bottom content padding
+		contentY :+ boxH
 
-		'=== X-Rated Overlay ===
-		If IsXRated()
-			GetSpriteFromRegistry("gfx_datasheet_xrated").Draw(currX + GetSpriteFromRegistry("gfx_datasheet_title").GetWidth(), y, -1, ALIGN_RIGHT_TOP)
-		Endif
 
-rem
+		'=== DEBUG ===
 		If TVTDebugInfos
+			'begin at the top ...again
+			contentY = y + skin.GetContentY()
 			local oldAlpha:Float = GetAlpha()
+
 			SetAlpha oldAlpha * 0.75
 			SetColor 0,0,0
-
-			local w:int = GetSpriteFromRegistry("gfx_datasheet_title").area.GetW() - 20
-			local h:int = Max(120, currY-y)
-			DrawRect(currX, y, w,h)
-		
+			DrawRect(contentX, contentY, contentW, sheetHeight - skin.GetContentPadding().GetTop() - skin.GetContentPadding().GetBottom())
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
-			local textY:int = y + 5
-			fontBold.draw("Programm: "+GetTitle(), currX + 5, textY)
-			textY :+ 14	
-			fontNormal.draw("Letzte Stunde im Plan: "+latestPlannedEndHour, currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Tempo: "+data.GetSpeed(), currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Kritik: "+data.GetReview(), currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Kinokasse: "+data.GetOutcome(), currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Preismodifikator: "+data.GetModifier("price"), currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Qualitaet roh: "+data.GetQualityRaw()+"  (ohne Alter, Wdh.)", currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Qualitaet: "+data.GetQuality(), currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Aktualitaet: "+data.GetTopicality()+" von " + data.GetMaxTopicality(), currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Bloecke: "+data.GetBlocks(), currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Ausgestrahlt: "+data.GetTimesAired(owner)+"x Spieler, "+data.GetTimesAired()+"x alle", currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(owner, -1).audience.GetSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetSum())+" (alle)", currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Preis: "+GetPrice(), currX + 5, textY)
-		Endif
-endrem
+			skin.fontBold.drawBlock("Drehbuch: "+GetTitle(), contentX + 5, contentY, contentW - 10, 28)
+			contentY :+ 28
+			skin.fontNormal.draw("Tempo: "+MathHelper.NumberToString(GetSpeed(), 4), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Kritik: "+MathHelper.NumberToString(GetReview(), 4), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Potential: "+MathHelper.NumberToString(GetPotential(), 4), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Preis: "+GetPrice(), contentX + 5, contentY)
+		endif
+
+		'=== OVERLAY / BORDER ===
+		skin.RenderBorder(x, y, sheetWidth, sheetHeight)
+
+		'=== X-Rated Overlay ===
+		If IsXRated()
+			GetSpriteFromRegistry("ggfx_datasheet_overlay_xrated").Draw(contentX + sheetWidth, y, -1, ALIGN_RIGHT_TOP)
+		Endif				
 	End Method
 End Type

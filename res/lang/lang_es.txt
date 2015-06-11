@@ -173,6 +173,7 @@ NEXT_ADBLOCK			= Siguiente anuncio-bloque
 NEXT_PROGRAMME			= Siguiente programa
 NEXT_NOTHINGSET			= no se establece!
 
+PROGRAMME_IN_PROGRAMME_PLAN = Programa en el plan del programa!
 
 
 AD_PROFIT				= Beneficio

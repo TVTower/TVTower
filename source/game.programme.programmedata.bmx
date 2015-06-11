@@ -752,6 +752,23 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	End Method
 
 
+	Method GetMaxTrailerTopicality:Float()
+		return trailerMaxTopicality
+	End Method
+
+
+	Method GetTrailerTopicality:Float()
+		if trailerTopicality < 0 then trailerTopicality = GetMaxTrailerTopicality()
+
+		'refresh topicality on each request
+		'-> avoids a "topicality > MaxTopicality" when MaxTopicality
+		'   shrinks because of aging/airing
+		trailerTopicality = Min(trailerTopicality, GetMaxTrailerTopicality())
+		
+		return trailerTopicality
+	End Method
+
+
 	Method GetGenreDefinition:TMovieGenreDefinition()
 		If Not genreDefinitionCache Then
 			genreDefinitionCache = GetMovieGenreDefinitionCollection().Get(Genre)

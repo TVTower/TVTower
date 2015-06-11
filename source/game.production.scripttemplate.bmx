@@ -3,10 +3,8 @@
 'of it etc.
 
 SuperStrict
-Import "Dig/base.util.localization.bmx"
-Import "Dig/base.util.string.bmx"
 Import "Dig/base.util.math.bmx"
-Import "game.gameobject.bmx"
+Import "game.production.script.base.bmx"
 Import "game.gameconstants.bmx" 'to access type-constants
 Import "game.programme.programmeperson.bmx" 'to access TProgrammePersonJob
 
@@ -59,14 +57,7 @@ End Function
 
 
 
-Type TScriptTemplate Extends TNamedGameObject
-	Field title:TLocalizedString
-	Field description:TLocalizedString
-	Field scriptLicenceType:Int = 0
-	Field scriptProductType:Int = 0
-	Field mainGenre:Int
-	Field subGenres:Int[]
-
+Type TScriptTemplate Extends TScriptBase
 	'for random generation we split into "min, max" and weighting/slope
 	'ratings
 	Field outcomeMin:Float, outcomeMax:Float, outcomeSlope:Float
@@ -113,14 +104,7 @@ Type TScriptTemplate Extends TNamedGameObject
 	Field coulisseType3:Int = -1
 
 	Field targetGroup:Int = -1
-	'flags contains bitwise encoded things like xRated, paid, trash ...
-	Field flags:Int = 0
 
-	'scripts of series are parent of episode scripts
-	Field parentScriptTemplateGUID:string = ""
-	'all associated child scripts (episodes)
-	Field subScriptTemplates:TScriptTemplate[]
-	
 	'id of the creating user
 	Field creator:Int = 0
 	'name of the creating user
@@ -148,24 +132,9 @@ Type TScriptTemplate Extends TNamedGameObject
 	End Method
 
 
-	Method hasFlag:Int(flag:Int)
-		Return flags & flag
-	End Method
-
-
-	Method setFlag(flag:Int, enable:Int=True)
-		If enable
-			flags :| flag
-		Else
-			flags :& ~flag
-		EndIf
-	End Method
-
-
-	'override
-	Method GetTitle:string()
-		if title then return title.Get()
-		return ""
+	Method GetParentScript:TScriptTemplate()
+		if not parentScriptGUID then return self
+		return GetScriptTemplateCollection().GetByGUID(parentScriptGUID)
 	End Method
 
 
@@ -196,8 +165,8 @@ Type TScriptTemplate Extends TNamedGameObject
 		local result:TLocalizedString
 		if placeHolderVariables then result = TLocalizedString(placeHolderVariables.ValueForKey(key))
 
-		if not result and parentScriptTemplateGUID <> ""
-			local parent:TScriptTemplate = GetParentScriptTemplate()
+		if not result and parentScriptGUID <> ""
+			local parent:TScriptTemplate = GetParentScript()
 			if parent <> self then result = parent.GetPlaceholderVariableString(key, defaultValue, createDefault)
 		endif
 		
@@ -222,8 +191,8 @@ Type TScriptTemplate Extends TNamedGameObject
 		local result:TLocalizedString
 		if variables then result = TLocalizedString(variables.ValueForKey(key))
 
-		if not result and parentScriptTemplateGUID <> ""
-			local parent:TScriptTemplate = GetParentScriptTemplate()
+		if not result and parentScriptGUID <> ""
+			local parent:TScriptTemplate = GetParentScript()
 			if parent <> self then result = parent.GetVariableString(key, defaultValue, createDefault)
 		endif
 
@@ -294,8 +263,8 @@ Type TScriptTemplate Extends TNamedGameObject
 					'the placeholder there instead of the children
 					'so other children could use the same placeholders
 					'(if there is no parent then "self" is returned)
-					if GetParentScriptTemplate().GetVariableString(placeHolder, "", False)
-						GetParentScriptTemplate().AddPlaceHolderVariable(placeHolder, replacement)
+					if GetParentScript().GetVariableString(placeHolder, "", False)
+						GetParentScript().AddPlaceHolderVariable(placeHolder, replacement)
 					else
 						AddPlaceHolderVariable(placeHolder, replacement)
 					endif
@@ -309,18 +278,6 @@ Type TScriptTemplate Extends TNamedGameObject
 	
 		return result
 	End Method	
-
-
-	'override default method to add subscripttemplates
-	Method SetOwner:int(owner:int=0)
-		self.owner = owner
-
-		'do the same for all children
-		For local scriptTemplate:TScriptTemplate = eachin subScriptTemplates
-			scriptTemplate.SetOwner(owner)
-		Next
-		return TRUE
-	End Method
 
 
 	'returns a title with all placeholders replaced
@@ -486,96 +443,6 @@ Type TScriptTemplate Extends TNamedGameObject
 	End Method
 
 
-	Method GetSubScriptTemplateCount:int()
-		return subScriptTemplates.length
-	End Method
-
-
-	Method GetSubScriptTemplateAtIndex:TScriptTemplate(arrayIndex:int=1)
-		if arrayIndex > subScriptTemplates.length or arrayIndex < 0 then return null
-		return subScriptTemplates[arrayIndex]
-	End Method
-
-
-	Method GetParentScriptTemplate:TScriptTemplate()
-		if not parentScriptTemplateGUID then return self
-		return GetScriptTemplateCollection().GetByGUID(parentScriptTemplateGUID)
-	End Method
-
-
-	Method GetSubScriptTemplatePosition:int(scriptTemplate:TScriptTemplate)
-		'find my position and add 1
-		For local i:int = 0 to GetSubScriptTemplateCount() - 1
-			if GetSubScriptTemplateAtIndex(i) = scriptTemplate then return i
-		Next
-		return 0
-	End Method
-
-
-	'returns the next scriptTemplate of a scriptTemplates parent subScriptTemplates
-	Method GetNextSubScriptTemplate:TScriptTemplate()
-		if not parentScriptTemplateGUID then return Null
-
-		'find my position and add 1
-		local nextArrayIndex:int = GetParentScriptTemplate().GetSubScriptTemplatePosition(self) + 1
-		'if we are at the last position, return the first one
-		if nextArrayIndex >= GetParentScriptTemplate().GetSubScriptTemplateCount() then nextArrayIndex = 0
-
-		return GetParentScriptTemplate().GetSubScriptTemplateAtIndex(nextArrayIndex)
-	End Method
-
-
-	Method AddSubScriptTemplate:int(scriptTemplate:TScriptTemplate)
-		'=== ADJUST SCRIPT TYPES ===
-
-		'so subScriptTemplates can ask for sibling scripts
-		scriptTemplate.parentScriptTemplateGUID = self.GetGUID()
-
-		'add to array of subScriptTemplates
-		subScriptTemplates :+ [scriptTemplate]
-		Return TRUE
-	End Method
-
-
-	Method IsLive:int()
-		return HasFlag(TVTProgrammeFlag.LIVE)
-	End Method
-
-
-	Method IsAnimation:Int()
-		return HasFlag(TVTProgrammeFlag.ANIMATION)
-	End Method
-	
-	
-	Method IsCulture:Int()
-		return HasFlag(TVTProgrammeFlag.CULTURE)
-	End Method	
-		
-	
-	Method IsCult:Int()
-		return HasFlag(TVTProgrammeFlag.CULT)
-	End Method
-	
-	
-	Method IsTrash:Int()
-		return HasFlag(TVTProgrammeFlag.TRASH)
-	End Method
-	
-	Method IsBMovie:Int()
-		return HasFlag(TVTProgrammeFlag.BMOVIE)
-	End Method
-	
-	
-	Method IsXRated:int()
-		return HasFlag(TVTProgrammeFlag.XRATED)
-	End Method
-
-
-	Method IsPaid:int()
-		return HasFlag(TVTProgrammeFlag.PAID)
-	End Method
-
-
 	'limit values to the given clamps + sort them
 	Function _LimitValues(minValue:Float var, maxValue:Float var, clampMin:Float = 0.0, clampMax:Float = 1.0)
 		minValue = MathHelper.Clamp(minValue, 0.0, 1.0)
@@ -705,9 +572,11 @@ Type TScriptTemplate Extends TNamedGameObject
 		return WeightedRandRange(episodesMin, episodesMax, episodesSlope)
 	End Method
 
+
 	Method GetStudioSize:Int()
 		return WeightedRandRange(studioSizeMin, studioSizeMax, studioSizeSlope)
 	End Method	
+
 
 	Method GetPrice:Int()
 		local value:int = WeightedRandRange(priceMin, priceMax, priceSlope)
@@ -716,45 +585,4 @@ Type TScriptTemplate Extends TNamedGameObject
 
 		Return value
 	End Method
-
-
-	Method isSeries:int()
-		return (scriptLicenceType & TVTProgrammeLicenceType.SERIES)
-	End Method
-
-
-	Method isEpisode:int()
-		return (scriptLicenceType & TVTProgrammeLicenceType.EPISODE)
-	End Method
-
-
-	'returns the genre of a script - if a group, the one used the most
-	'often is returned
-	Method GetMainGenre:int()
-		if GetSubScriptTemplateCount() = 0 then return mainGenre
-
-		local genres:int[]
-		local bestGenre:int=0
-		For local scriptTemplate:TScriptTemplate = eachin subScriptTemplates
-			local genre:int = scriptTemplate.GetMainGenre()
-			if genre > genres.length-1 then genres = genres[..genre+1]
-			genres[genre]:+1
-		Next
-		For local i:int = 0 to genres.length-1
-			if genres[i] > bestGenre then bestGenre = i
-		Next
-
-		return bestGenre
-	End Method
-
-
-	Method GetMainGenreString:String(_genre:Int=-1)
-		If _genre < 0 Then _genre = self.mainGenre
-		Return _GetGenreString(_genre)
-	End Method
-
-
-	Function _GetGenreString:string(_genre:Int)
-		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(_genre))
-	End Function
 End Type

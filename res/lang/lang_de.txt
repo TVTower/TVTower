@@ -173,6 +173,8 @@ NEXT_ADBLOCK		= folgender Werbeblock
 NEXT_PROGRAMME		= folgendes Programm
 NEXT_NOTHINGSET		= nicht gesetzt!
 
+PROGRAMME_IN_PROGRAMME_PLAN = Programm im Sendeplan!
+
 AD_PROFIT		= Prämie
 AD_PLANNED		= eingeplant
 AD_TOSEND		= zu senden

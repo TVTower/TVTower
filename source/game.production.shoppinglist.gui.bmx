@@ -30,7 +30,7 @@ Type TGuiShoppingList Extends TGUIGameListItem
 
 	Method SetShoppingList:TGuiShoppingList(shoppingList:TShoppingList)
 		Self.shoppingList = shoppingList
-		Self.InitAssets(GetAssetName(shoppingList.script.GetGenre(), False), GetAssetName(shoppingList.script.GetGenre(), True))
+		Self.InitAssets(GetAssetName(shoppingList.script.GetMainGenre(), False), GetAssetName(shoppingList.script.GetMainGenre(), True))
 
 		Return Self
 	End Method

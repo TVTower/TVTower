@@ -41,7 +41,7 @@ Type TScreenHandler_StationMap
 		EventManager.registerListenerFunction( "stationmap.removeStation",	OnChangeStationMapStation )
 		EventManager.registerListenerFunction( "stationmap.addStation",	OnChangeStationMapStation )
 
-		stationList = new TGUISelectList.Create(new TVec2D.Init(610,233), new TVec2D.Init(174, 120), "STATIONMAP")
+		stationList = new TGUISelectList.Create(new TVec2D.Init(610,233), new TVec2D.Init(174, 105), "STATIONMAP")
 		EventManager.registerListenerFunction( "GUISelectList.onSelectEntry", OnSelectEntry_StationMapStationList, stationList )
 
 		'player enters station map screen - set checkboxes according to station map config
@@ -82,166 +82,194 @@ Type TScreenHandler_StationMap
 
 
 	Function _DrawStationMapBuyPanel:Int(x:Int,y:Int, room:TRoom)
-		Local fontNormal:TBitmapFont = GetBitmapFontManager().baseFont
-		Local fontBold:TBitmapFont = GetBitmapFontManager().baseFontBold
-		Local fontSemiBold:TBitmapFont = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
+		'=== PREPARE VARIABLES ===
+		local sheetWidth:int = 205
+		local sheetHeight:int = 0 'calculated later
 
-		'=== DRAW BACKGROUND ===
-		local sprite:TSprite
-		local currX:Int = x
-		local currY:int = y
-		local currTextWidth:int
-		local buttonY:int = 0
+		local skin:TDatasheetSkin = GetDatasheetSkin("stationmapPanel")
 
-		sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_title"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-	
-		'selected a map
-		If stationMapMode = 1 ' and stationMapSelectedStation
-			sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_buystationdata"); sprite.Draw(currX, currY)
-			currY :+ sprite.GetHeight()
+		local contentW:int = skin.GetContentW(sheetWidth)
+		local contentX:int = x + skin.GetContentY()
+		local contentY:int = y + skin.GetContentY()
 
-			buttonY = currY
 
-			sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_empty"); sprite.DrawArea(currX, currY, -1, stationMapBuyButton.rect.GetH())
-			currY :+ stationMapBuyButton.rect.GetH()
-		else
-			sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_splitter"); sprite.DrawArea(currX, currY, -1, 5)
-			currY :+ 5
-			buttonY = currY
+		'=== CALCULATE SPECIAL AREA HEIGHTS ===
+		local titleH:int = 18, boxH:int = 0, buttonH:int = 0
+		local boxAreaH:int = 0, buttonAreaH:int = 0, bottomAreaH:int = 0
+		local boxAreaPaddingY:int = 4, buttonAreaPaddingY:int = 4
 
-			sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_empty"); sprite.DrawArea(currX, currY, -1, stationMapBuyButton.rect.GetH())
-			currY :+ stationMapBuyButton.rect.GetH()
+		'show boxes? - show them regardless of a selected station
+		if stationMapMode = 1
+			boxH = skin.GetBoxSize(100, -1, "").GetY()
+			boxAreaH = 2 * boxAreaPaddingY + 2* boxH
 		endif
+		if boxAreaH > 0 then bottomAreaH :+ boxAreaH
+		if boxAreaH > 0
+			'boxarea contains padding already..
+			buttonAreaH = stationMapBuyButton.rect.GetH() + 0*buttonAreaPaddingY
+		else
+			buttonAreaH = stationMapBuyButton.rect.GetH() + 2*buttonAreaPaddingY
+		endif
+		bottomAreaH :+ buttonAreaH
+		
+		'total height
+		sheetHeight = titleH + bottomAreaH + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
 
-		sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_bottom"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
 
-		'move buy button accordingly
-		stationMapBuyButton.rect.position.SetXY(x + 16, buttonY)
+		'=== RENDER ===
+	
+		'=== TITLE AREA ===
+		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
+		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetLocale("PURCHASE_STATION"), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		contentY :+ titleH
 
-		'=== TEXTS ===
 
-		'adjust currX/currY so position is within "border"
-		currY = y + 8
-		currX = x + 7 
+		'=== BOXES / BUTTON AREA ===
+		skin.RenderContent(contentX, contentY, contentW, bottomAreaH, "1_bottom")
 
-		local textColor:TColor = TColor.CreateGrey(25)
-		'default is size "12" so resize to 13
-		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetLocale("PURCHASE_STATION"), currX + 8, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
-		currY :+ 17
 
-		If stationMapMode = 1 and stationMapSelectedStation
-			'align to content portion (icon higher than text area)
-			currY :+ 5 'top content padding
-			currY :+ 4
+		'=== BOXES ===
+		If stationMapMode = 1
+			local canAfford:int = True
+			local price:string = "", reach:string = "", reachIncrease:string = ""
+			if stationMapSelectedStation
+				reach = TFunctions.convertValue(stationMapSelectedStation.getReach(), 2)
+				reachIncrease = TFunctions.DottedValue(stationMapSelectedStation.getReachIncrease())
+				price = TFunctions.convertValue(stationMapSelectedStation.getPrice(), 2, 0)
 
-			fontNormal.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getReach(), 2), currX + 34, currY, 48, 17, ALIGN_RIGHT_CENTER, textColor, 0,1,1.0,True, True)
-			fontNormal.drawBlock(TFunctions.DottedValue(stationMapSelectedStation.getReachIncrease()), currX + 115, currY, 60, 17, ALIGN_RIGHT_CENTER, textColor, 0,1,1.0,True, True)
-			currY :+ 27	'next icon row
+				local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(room.owner, -1)
+				canAfford = (not finance or finance.canAfford(stationMapSelectedStation.GetPrice()))
+			endif
+
+			local halfW:int = (contentW - 10)/2 - 2
+			'=== BOX LINE 1 ===
+			contentY :+ boxAreaPaddingY
+			skin.RenderBox(contentX + 5, contentY, halfW-5, -1, reach, "audience", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5 + halfW-5 + 4, contentY, halfW+5, -1, reachIncrease, "audienceIncrease", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+
+
+			'=== BOX LINE 2 ===
+			contentY :+ boxH
+			'TODO: Build time for stations?
+			'skin.RenderBox(contentX + 5, contentY, 80, -1, "1h", "runingTime", "neutral", skin.font)
 
 			'fetch financial state of room owner (not player - so take care
 			'if the player is allowed to do this)
-			local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(room.owner, -1)
-			if not finance or finance.canAfford(stationMapSelectedStation.GetPrice())
-				'TFunctions.DottedValue(GetPrice())
-				fontBold.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getPrice(), 2, 0), currX + 115, currY, 60, 17, ALIGN_RIGHT_CENTER, textColor, 0,1,1.0,True, True)
+			if canAfford
+				skin.RenderBox(contentX + 5 + halfW-5 + 4, contentY, halfW+5, -1, "", "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 			else
-				'TFunctions.DottedValue(GetPrice())
-				fontBold.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getPrice(), 2, 0), currX + 115, currY, 60, 17, ALIGN_RIGHT_CENTER, TColor.Create(200,0,0), 0,1,1.0,True, True)
+				skin.RenderBox(contentX + 5 + halfW-5 + 4, contentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER,"bad")
 			endif
-			currY :+ 27	'next icon row
-		EndIf
+			contentY :+ boxH
+		endif
+
+
+		'=== BUTTON ===
+		'move buy button accordingly
+		if boxAreaH = 0 then contentY :+ buttonAreaPaddingY
+		stationMapBuyButton.rect.dimension.SetX(contentW - 10)
+		stationMapBuyButton.rect.position.SetXY(contentX + 5, contentY)
+		contentY :+ buttonAreaPaddingY
+
+
+		'=== OVERLAY / BORDER ===
+		skin.RenderBorder(x, y, sheetWidth, sheetHeight)
 	End Function
 
 
 	Function _DrawStationMapSellPanel:Int(x:Int,y:Int, room:TRoom)
-		Local fontNormal:TBitmapFont = GetBitmapFontManager().baseFont
-		Local fontBold:TBitmapFont = GetBitmapFontManager().baseFontBold
-		Local fontSemiBold:TBitmapFont = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
+		'=== PREPARE VARIABLES ===
+		local sheetWidth:int = 205
+		local sheetHeight:int = 0 'calculated later
 
-		'=== DRAW BACKGROUND ===
-		local sprite:TSprite
-		local currX:Int = x
-		local currY:int = y
-		local currTextWidth:int
-		local buttonY:int = 0
-		local listY:int = 0
+		local skin:TDatasheetSkin = GetDatasheetSkin("stationmapPanel")
 
-		sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_title"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
+		local contentW:int = skin.GetContentW(sheetWidth)
+		local contentX:int = x + skin.GetContentY()
+		local contentY:int = y + skin.GetContentY()
 
-		'area of the list
-		sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_content_top"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
 
-		listY = currY
+		'=== CALCULATE SPECIAL AREA HEIGHTS ===
+		local titleH:int = 18, boxH:int = 0, buttonH:int = 0
+		local boxAreaH:int = 0, buttonAreaH:int = 0, listAreaH:int = 0, bottomAreaH:int = 0
+		local boxAreaPaddingY:int = 4, buttonAreaPaddingY:int = 4
 
-		sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_content_middle"); sprite.DrawArea(currX, currY, -1, stationList.rect.GetH())
-		currY :+ stationList.rect.GetH()
+		listAreaH = stationList.rect.GetH() + 6
 
-		sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_content_bottom"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
+		'show boxes in all states (grayed out without selling state)
+		boxH = skin.GetBoxSize(100, -1, "").GetY()
+		boxAreaH = 2 * boxAreaPaddingY + 2* boxH
+		bottomAreaH :+ boxAreaH
 
-		local stationDataY:int = currY
+		'boxarea contains padding already..
+		buttonAreaH = stationMapSellButton.rect.GetH() + 0*buttonAreaPaddingY
+		bottomAreaH :+ buttonAreaH
 		
-		'show data when a station is selected, else show a hint
-		'do this to avoid "jumping" panels as it is visually "Bottom aligned"
-		If stationMapMode = 2 ' and stationMapSelectedStation
-			sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_sellstationdata"); sprite.Draw(currX, currY)
-			currY :+ sprite.GetHeight()
+		'total height
+		sheetHeight = titleH + listAreaH + bottomAreaH + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
 
-			buttonY = currY
 
-			sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_empty"); sprite.DrawArea(currX, currY, -1, stationMapBuyButton.rect.GetH())
-			currY :+ stationMapBuyButton.rect.GetH()
-		else
-			sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_splitter"); sprite.DrawArea(currX, currY, -1, 5)
-			currY :+ 5
+		'=== RENDER ===
+	
+		'=== TITLE AREA ===
+		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
+		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetLocale("ACQUIRED_PROPERTY"), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		contentY :+ titleH
 
-			'height of the stationdata minus the splitter
-			local keepItConstantHeight:int = GetSpriteFromRegistry("gfx_narrowdatasheet_sellstationdata").GetHeight() - sprite.GetHeight()
-			buttonY = currY + keepItConstantHeight
-
-			sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_empty")
-			sprite.DrawArea(currX, currY, -1, stationMapBuyButton.rect.GetH() + keepItConstantHeight)
-			currY :+ stationMapBuyButton.rect.GetH() + keepItConstantHeight
+		'=== LIST AREA ===
+		skin.RenderContent(contentX, contentY, contentW, listAreaH, "2")
+		'move list to here...
+		if stationList.rect.position.GetX() <> contentX + 5 
+			stationList.rect.position.SetXY(contentX + 5, contentY + 3)
+			stationList.rect.dimension.SetX(contentW - 10)
 		endif
-
-		sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_bottom"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-
-
-
-		'=== MOVE GUI ELEMENTS ===
-		stationMapSellButton.rect.position.SetXY(x + 16, buttonY)
-		stationList.rect.position.SetXY(x + 13, listY)
+		contentY :+ listAreaH
+		
+		'=== BOXES / BUTTON AREA ===
+		skin.RenderContent(contentX, contentY, contentW, bottomAreaH, "1")
 
 
-		'=== TEXTS ===
+		'=== BOXES ===
+'		If stationMapMode = 2
+			if not stationMapSelectedStation
+				SetAlpha GetAlpha() * 0.5
+			endif
+			local price:string = "", reach:string = "", reachDecrease:string = ""
+			if stationMapSelectedStation
+				reach = TFunctions.convertValue(stationMapSelectedStation.getReach(), 2)
+				reachDecrease = TFunctions.DottedValue(stationMapSelectedStation.getReachDecrease())
+				price = TFunctions.convertValue(stationMapSelectedStation.getSellPrice(), 2, 0)
+			endif
 
-		'adjust currX/currY so position is within "border"
-		currY = y + 8
-		currX = x + 7 
+			local halfW:int = (contentW - 10)/2 - 2
+			'=== BOX LINE 1 ===
+			contentY :+ boxAreaPaddingY
+			skin.RenderBox(contentX + 5, contentY, halfW-5, -1, reach, "audience", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5 + halfW-5 + 4, contentY, halfW+5, -1, "-"+reachDecrease, "audienceIncrease", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER, "bad")
 
-		local textColor:TColor = TColor.CreateGrey(25)
-		'default is size "12" so resize to 13
-		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetLocale("ACQUIRED_PROPERTY"), currX + 8, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
-		currY :+ 17
 
-		If stationMapMode = 2 and stationMapSelectedStation
-			'directly move to the station data area
-			currY = stationDataY
+			'=== BOX LINE 2 ===
+			contentY :+ boxH
+			skin.RenderBox(contentX + 5 + halfW-5 + 4, contentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+			contentY :+ boxH
 
-			'align to content portion (icon higher than text area)
-			currY :+ 5 'top content padding
-			currY :+ 4
 
-			fontNormal.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getReach(), 2), currX + 34, currY, 48, 17, ALIGN_RIGHT_CENTER, textColor, 0,1,1.0,True, True)
-			'attention: SELL price
-			fontBold.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getSellPrice(), 2, 0), currX + 115, currY, 60, 17, ALIGN_RIGHT_CENTER, textColor, 0,1,1.0,True, True)
-			currY :+ 27	'next icon row
-		EndIf
+			if not stationMapSelectedStation
+				SetAlpha GetAlpha() * 2.0
+			endif
+'		endif
+
+
+		'=== BUTTON ===
+		if boxAreaH = 0 then contentY :+ buttonAreaPaddingY
+		'move buy button accordingly
+		stationMapSellButton.rect.dimension.SetX(contentW - 10)
+		stationMapSellButton.rect.position.SetXY(contentX + 5, contentY)
+		contentY :+ buttonAreaPaddingY
+
+
+		'=== OVERLAY / BORDER ===
+		skin.RenderBorder(x, y, sheetWidth, sheetHeight)
 	End Function
 
 
@@ -259,6 +287,15 @@ Type TScreenHandler_StationMap
 		_DrawStationMapSellPanel(590, 150, room)
 
 
+		'draw stations and tooltips
+		GetPlayerCollection().Get(room.owner).GetStationMap().Draw()
+
+		'also draw the station used for buying/searching
+		If stationMapMouseoverStation then stationMapMouseoverStation.Draw()
+		'also draw the station used for buying/searching
+		If stationMapSelectedStation then stationMapSelectedStation.Draw(true)
+
+
 		GUIManager.Draw("STATIONMAP")
 
 		For Local i:Int = 0 To 3
@@ -269,14 +306,6 @@ Type TScreenHandler_StationMap
 		Next
 		SetColor 255, 255, 255
 		GetBitmapFontManager().baseFont.drawBlock(GetLocale("SHOW_PLAYERS")+":", 460, 15, 100, 20, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
-
-		'draw stations and tooltips
-		GetPlayerCollection().Get(room.owner).GetStationMap().Draw()
-
-		'also draw the station used for buying/searching
-		If stationMapMouseoverStation then stationMapMouseoverStation.Draw()
-		'also draw the station used for buying/searching
-		If stationMapSelectedStation then stationMapSelectedStation.Draw(true)
 
 		'draw a kind of tooltip over a mouseoverStation
 		if stationMapMouseoverStation then stationMapMouseoverStation.DrawInfoTooltip()
@@ -491,9 +520,9 @@ Type TScreenHandler_StationMap
 
 		local sprite:TSprite
 		if station.IsActive()
-			sprite = GetSpriteFromRegistry("gfx_list_icon_antenna.on")
+			sprite = GetSpriteFromRegistry("gfx_datasheet_icon_antenna.on")
 		else
-			sprite = GetSpriteFromRegistry("gfx_list_icon_antenna.off")
+			sprite = GetSpriteFromRegistry("gfx_datasheet_icon_antenna.off")
 		endif
 
 
@@ -525,6 +554,10 @@ Type TScreenHandler_StationMap
 		local item:TGUISelectListItem = TGUISelectListItem(senderList.getSelectedEntry())
 		if item
 			stationMapSelectedStation = TStation(item.data.get("station"))
+			if stationMapSelectedStation
+				'force stat refresh (so we can display decrease properly)!
+				stationMapSelectedStation.GetReachDecrease(True)
+			endif
 			stationMapMode = 2 'sell
 		endif
 	End Function

@@ -30,14 +30,14 @@ Type TGuiScript Extends TGUIGameListItem
 
 	Method SetScript:TGuiScript(script:TScript)
 		Self.script = script
-		Self.InitAssets(GetAssetName(script.GetGenre(), False), GetAssetName(script.GetGenre(), True))
+		Self.InitAssets(GetAssetName(script.GetMainGenre(), False), GetAssetName(script.GetMainGenre(), True))
 
 		Return Self
 	End Method
 
 
 	Method GetAssetName:String(genre:Int=-1, dragged:Int=False)
-		If genre < 0 And script Then genre = script.GetGenre()
+		If genre < 0 And script Then genre = script.GetMainGenre()
 		Local result:String = "gfx_scripts_" + genre Mod 3 'only 3 sprites possible
 		If dragged Then result = result + "_dragged"
 

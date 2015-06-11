@@ -14,6 +14,10 @@ Import "game.player.finance.bmx"
 Import "game.broadcast.audience.bmx"
 Import "game.broadcast.broadcaststatistic.bmx"
 Import "basefunctions.bmx" 'CreateEmptyImage()
+'to access datasheet-functions
+Import "common.misc.datasheet.bmx"
+
+
 
 
 Type TProgrammeLicenceCollection
@@ -659,6 +663,22 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	'returns the avg maxTopicality of a licence (package)
+	Method GetMaxTopicality:Float() {_exposeToLua}
+		'single-licence
+		if GetSubLicenceCount() = 0 and GetData() then return GetData().GetMaxTopicality()
+
+		'licence for a package or series
+		Local value:Float
+		For local licence:TProgrammeLicence = eachin subLicences
+			value :+ licence.GetMaxTopicality()
+		Next
+
+		if subLicences.length > 0 then return value / subLicences.length
+		return 0.0
+	End Method
+
+
 	Method GetPrice:Int() {_exposeToLua}
 		'single-licence
 		if GetSubLicenceCount() = 0 and GetData() then return GetData().GetPrice()
@@ -709,123 +729,152 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	Method ShowProgrammeSheet:Int(x:Int,y:Int, align:int=0)
-		local data:TProgrammeData        = GetData()
-		Local fontNormal:TBitmapFont     = GetBitmapFontManager().baseFont
-		Local fontBold:TBitmapFont       = GetBitmapFontManager().baseFontBold
-		Local fontSemiBold:TBitmapFont   = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
-
-		Local showPlannedWarning:Int = False
-		Local showEarnInfo:Int = False
-		
-		if owner > 0 'and GetPlayer().figure.inRoom
-			'only if planned and in archive
-			if self.IsPlanned() ' and GetPlayer().figure.inRoom.name = "archive"
-				showPlannedWarning = True
-			endif
-		endif
-
-		If data.HasFlag(TVTProgrammeFlag.PAID) then showEarnInfo = True
-
-'debug
-'showPlannedWarning = True
-'showEarnInfo = True
-
-		'=== DRAW BACKGROUND ===
-		local sprite:TSprite
-		local currX:Int = x
-		local currY:int = y
-		local currTextWidth:int
-
+		'=== PREPARE VARIABLES ===
+		local sheetWidth:int = 310
+		local sheetHeight:int = 0 'calculated later
 		'move sheet to left when right-aligned
-		if align = 1 then currX = x - GetSpriteFromRegistry("gfx_datasheet_title").area.GetW()
+		if align = 1 then x = x - sheetWidth
 
+		local skin:TDatasheetSkin = GetDatasheetSkin("programme")
+		local contentW:int = skin.GetContentW(sheetWidth)
+		local contentX:int = x + skin.GetContentY()
+		local contentY:int = y + skin.GetContentY()
 
-		sprite = GetSpriteFromRegistry("gfx_datasheet_title"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		if isEpisode() or isSeries()
-			sprite = GetSpriteFromRegistry("gfx_datasheet_series"); sprite.Draw(currX, currY)
-			currY :+ sprite.GetHeight()
-		endif
-		sprite = GetSpriteFromRegistry("gfx_datasheet_country"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_content"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_splitter"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_content2"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_subTop"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_subMovieRatings"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-
-
-		If showEarnInfo
-			sprite = GetSpriteFromRegistry("gfx_datasheet_subMessageEarn"); sprite.Draw(currX, currY)
-			currY :+ sprite.GetHeight()
-		EndIf
-
-		If showPlannedWarning
-			sprite = GetSpriteFromRegistry("gfx_datasheet_subMessageWarning"); sprite.Draw(currX, currY)
-			currY :+ sprite.GetHeight()
+		'save checks on data availability...
+		local data:TProgrammeData = GetData()
+		'save on requests to the player finance
+		local finance:TPlayerFinance
+		'only check finances if it is no other player (avoids exposing
+		'that information to us)
+		if owner <= 0 or GetPlayerBaseCollection().playerID = owner
+			finance = GetPlayerFinanceCollection().Get(GetPlayerBaseCollection().playerID, -1)
 		endif
 
+		local title:string
+		if not isEpisode()
+			title = GetTitle()
+		else
+			title = GetParentLicence().GetTitle()
+		endif
 
-		sprite = GetSpriteFromRegistry("gfx_datasheet_subMovieAttributes"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_bottom"); sprite.Draw(currX, currY)
-
-
-
-		'=== DRAW TEXTS / OVERLAYS ====
-		currY = y + 8 'so position is within "border"
-		currX :+ 7 'inside
-		local textColor:TColor = TColor.CreateGrey(25)
-		local textLightColor:TColor = TColor.CreateGrey(75)
-		local textEarnColor:TColor = TColor.Create(45,80,10)
-		local textWarningColor:TColor = TColor.Create(80,45,10)
+		'can player afford this licence?
+		local canAfford:int = False
+		'possessing player always can
+		if GetPlayerBaseCollection().playerID = owner
+			canAfford = True
+		'if it is another player... just display "can afford"
+		elseif owner > 0
+			canAfford = True
+		'not our licence but enough money to buy
+		elseif finance and finance.canAfford(GetPrice())
+			canAfford = True
+		endif
 		
+		Local showMsgPlannedWarning:Int = False
+		Local showMsgEarnInfo:Int = False
+		
+		'only if planned and in archive
+		'if owner > 0 and GetPlayer().figure.inRoom
+		'	if self.IsPlanned() and GetPlayer().figure.inRoom.name = "archive"
+		if owner > 0 and self.IsPlanned() then showMsgPlannedWarning = True
+		'if licence is for a specific programme it might contain a flag...
+		'TODO: do this for "all" via licence.HasFlag() doing recursive checks?
+		If data.HasFlag(TVTProgrammeFlag.PAID) then showMsgEarnInfo = True
+
+
+		'=== CALCULATE SPECIAL AREA HEIGHTS ===
+		local titleH:int = 18, subtitleH:int = 16, genreH:int = 16, descriptionH:int = 70, castH:int=50
+		local splitterHorizontalH:int = 6
+		local boxH:int = 0, msgH:int = 0, barH:int = 0
+		local msgAreaH:int = 0, boxAreaH:int = 0, barAreaH:int = 0
+		local boxAreaPaddingY:int = 4, msgAreaPaddingY:int = 4, barAreaPaddingY:int = 4
+		 
+		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).GetY()
+		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
+		barH = skin.GetBarSize(100, -1).GetY()
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).getBlockHeight(title, contentW - 10, 100))
+		'increase for multiline
+'		if titleH > 18 then titleH :+ 3
+
+		'message area
+		If showMsgEarnInfo then msgAreaH :+ msgH
+		If showMsgPlannedWarning then msgAreaH :+ msgH
+		'if there are messages, add padding of messages
+		if msgAreaH > 0 then msgAreaH :+ 2* msgAreaPaddingY
+
+
+		'box area
+		'contains 1 line of boxes
+		'box area might start with padding and end with padding
+		boxAreaH = 1 * boxH
+		if msgAreaH = 0 then boxAreaH :+ boxAreaPaddingY
+		'no ending if nothing comes after "boxes"
+
+		'bar area starts with padding, ends with padding and contains
+		'also contains 4 bars
+		barAreaH = 2 * barAreaPaddingY + 4 * (barH + 2)
+
+		'total height
+		sheetHeight = titleH + genreH + descriptionH + castH + barAreaH + msgAreaH + boxAreaH + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
+		if isSeries() or isEpisode() then sheetHeight :+ subtitleH
+		'there is a splitter between description and cast...
+		sheetHeight :+ splitterHorizontalH
+
+		
+		'=== RENDER ===
+	
+		'=== TITLE AREA ===
+		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
+			if titleH <= 18
+				GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY -1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			else
+				GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY +1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			endif
+		contentY :+ titleH
+
+		
+		'=== SUBTITLE AREA ===
 		if isSeries()
-			'default is size "12" so resize to 13
-			GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), currX + 6, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
-			currY :+ 18
-			fontNormal.drawBlock(GetLocale("SERIES_WITH_X_EPISODES").Replace("%EPISODESCOUNT%", GetSubLicenceCount()), currX + 6, currY, 280, 15, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
-			currY :+ 16
+			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")
+			skin.fontNormal.drawBlock(GetLocale("SERIES_WITH_X_EPISODES").Replace("%EPISODESCOUNT%", GetSubLicenceCount()), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			contentY :+ subtitleH
 		elseif isEpisode()
-			'title of "series"
-			'default is size "12" so resize to 13
-			GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetParentLicence().GetTitle(), currX + 6, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
-			currY :+ 18
+			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")
 			'episode num/max + episode title
-			fontNormal.drawBlock((GetEpisodeNumber()) + "/" + GetParentLicence().GetSubLicenceCount() + ": " + data.GetTitle(), currX + 6, currY, 280, 15, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
-			currY :+ 16
-		else ' = if isMovie()
-			'default is size "12" so resize to 13
-			GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), currX + 6, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
-			currY :+ 18
+			skin.fontNormal.drawBlock(GetEpisodeNumber() + "/" + GetParentLicence().GetSubLicenceCount() + ": " + data.GetTitle(), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			contentY :+ subtitleH
 		endif
+		
 
-		'country + genre
-		'country/year + genre   - for non-callin-shows
-		local countryYear:String = data.country
-		If not data.HasFlag(TVTProgrammeFlag.PAID)
-			countryYear :+ " " + data.year
+		'=== COUNTRY / YEAR / GENRE AREA ===
+		skin.RenderContent(contentX, contentY, contentW, genreH, "1")
+		'splitter
+		GetSpriteFromRegistry("gfx_datasheet_content_splitterV").DrawArea(contentX + 5 + 65, contentY, 2, 16)
+		'country [+year] + genre, year for non-callin-shows
+		If data.HasFlag(TVTProgrammeFlag.PAID)
+			skin.fontNormal.drawBlock(data.country, contentX + 5, contentY, 65, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		else
+			skin.fontNormal.drawBlock(data.country + " " + data.year, contentX + 5, contentY, 65, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		endif
-		fontNormal.drawBlock(countryYear, currX + 6, currY, 65, 16, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
-		fontNormal.drawBlock(GetGenreString(), currX + 6 + 67, currY, 215, 16, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
-		currY :+ 16
+		skin.fontNormal.drawBlock(GetGenreString(), contentX + 5 + 65 + 2, contentY, contentW - 10 - 65 - 2, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		contentY :+ genreH
 
-		'content description
-		fontNormal.drawBlock(GetDescription(), currX + 6, currY, 280, 64, null ,textColor)
-		currY :+ 3	'description starts with offset
-		currY :+ 64 'content
-		currY :+ 3	'description ends with offset
+	
+		'=== DESCRIPTION AREA ===
+		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
+		skin.fontNormal.drawBlock(GetDescription(), contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, null, skin.textColorNeutral)
+		contentY :+ descriptionH
+
 
 		'splitter
-		currY :+ 6
+		skin.RenderContent(contentX, contentY, contentW, splitterHorizontalH, "1")
+		contentY :+ splitterHorizontalH
+		
 
-		local addCastTitle:string  = ""
-		local addCast:string = ""
+		'=== CAST AREA ===
+		skin.RenderContent(contentX, contentY, contentW, castH, "2")
+
+		local addCastTitle:string  = "", addCast:string = ""
 		if data.GetActorsString() <> ""
 			addCastTitle = GetLocale("MOVIE_ACTORS")
 			addCast = data.GetActorsString()
@@ -855,239 +904,257 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 			addCast = data.GetCastGroupString(TVTProgrammePersonJob.MUSICIAN)
 		endif
 
-
 		'max width of director/actors - to align their content properly
-		currTextWidth = Int(fontSemiBold.getWidth(GetLocale("MOVIE_DIRECTOR")+":"))
+		local currTextWidth:int = Int(skin.fontSemiBold.getWidth(GetLocale("MOVIE_DIRECTOR")+":"))
 		if addCastTitle
-			currTextWidth = Max(currTextWidth, Int(fontSemiBold.getWidth(addCastTitle+":")))
+			currTextWidth = Max(currTextWidth, Int(skin.fontSemiBold.getWidth(addCastTitle+":")))
 		endif
 
-
-		currY :+ 3	'subcontent (actors/director) start with offset
+		'render director + cast (offset by 3 px)
+		contentY :+ 3
 		'director
+		local directorH:int = 0
 		if data.GetDirectorsString() <> ""
-			fontSemiBold.drawBlock(GetLocale("MOVIE_DIRECTOR")+":", currX + 6, currY, 280, 13, null, textColor)
-			fontNormal.drawBlock(data.GetDirectorsString(), currX + 6 + 5 + currTextWidth, currY , 280 - 15 - currTextWidth, 15, null, textColor)
-			currY :+ 13
+			directorH = 15
+			skin.fontSemiBold.drawBlock(GetLocale("MOVIE_DIRECTOR")+":", contentX + 5, contentY, contentW - 10, directorH, null, skin.textColorNeutral)
+			skin.fontNormal.drawBlock(data.GetDirectorsString(), contentX + 5 + currTextWidth + 5, contentY , contentW  - 10 - currTextWidth - 5, directorH, null, skin.textColorNeutral)
+			contentY :+ directorH
 		endif
 
 		'actors or other additional cast members
 		if addCast <> ""
-			fontSemiBold.drawBlock(addCastTitle+":", currX + 6 , currY, 280, 26, null, textColor)
-			fontNormal.drawBlock(addCast, currX + 6 + 5 + currTextWidth, currY, 280 - 15 - currTextWidth, 30, null, textColor)
+			skin.fontSemiBold.drawBlock(addCastTitle+":", contentX + 5, contentY, contentW - 10, (castH- directorH), null, skin.textColorNeutral)
+			'add 2 px to height to allow a slight oversized cast block
+			skin.fontNormal.drawBlock(addCast, contentX + 5 + currTextWidth + 5, contentY, contentW - 10 - currTextWidth - 5, (castH - directorH), null, skin.textColorNeutral)
 		endif
-		if data.GetDirectorsString() = ""
-			currY :+ 13
-		endif
-		currY :+ 26
-		currY :+ 3 'subcontent end with offset
-		currY :+ 1 'end of subcontent area
+		'move to next content (pay attention to 3px offset)
+		contentY :+ (castH - directorH - 3)
+
+
+		'=== BARS / MESSAGES / BOXES AREA ===
+		'background for bars + messages + boxes
+		skin.RenderContent(contentX, contentY, contentW, barAreaH + msgAreaH + boxAreaH, "1_bottom")
+
 
 		'===== DRAW RATINGS / BARS =====
-		'captions
-		currY :+ 4 'offset of ratings
-		fontSemiBold.drawBlock(GetLocale("MOVIE_SPEED"),      currX + 215, currY,      75, 15, null, textLightColor)
-		fontSemiBold.drawBlock(GetLocale("MOVIE_CRITIC"),     currX + 215, currY + 16, 75, 15, null, textLightColor)
-		fontSemiBold.drawBlock(GetLocale("MOVIE_BOXOFFICE"),  currX + 215, currY + 32, 75, 15, null, textLightColor)
-		fontSemiBold.drawBlock(GetLocale("MOVIE_TOPICALITY"), currX + 215, currY + 48, 75, 15, null, textLightColor)
 
-		'===== DRAW BARS =====
+		'bars have a top-padding
+		contentY :+ barAreaPaddingY
+		'speed
+		skin.RenderBar(contentX + 5, contentY, 200, 12, data.GetSpeed())
+		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_SPEED"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+		contentY :+ barH + 2
+		'critic/review
+		skin.RenderBar(contentX + 5, contentY, 200, 12, data.GetReview())
+		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_CRITIC"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+		contentY :+ barH + 2
+		'boxoffice/outcome
+		skin.RenderBar(contentX + 5, contentY, 200, 12, data.GetOutcome())
+		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_BOXOFFICE"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+		contentY :+ barH + 2
+		'topicality/maxtopicality
+		skin.RenderBar(contentX + 5, contentY, 200, 12, GetTopicality(), GetMaxTopicality())
+		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+		contentY :+ barH + 2
+	
 
-		If data.GetSpeed() > 0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1, data.GetSpeed()*200  , 10))
-		If data.GetReview() > 0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1 + 16, data.GetReview()*200 , 10))
-		If data.GetOutcome() > 0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1 + 32, data.GetOutcome()*200, 10))
-		If data.GetMaxTopicality() > 0.01
-			SetAlpha GetAlpha()*0.25
-			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1 + 48, data.GetMaxTopicality()*200, 10))
-			SetAlpha GetAlpha()*4.0
-			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1 + 48, GetTopicality()*200, 10))
-		EndIf
-		currY :+ 65
+		'=== MESSAGES ===
+		'if there is a message then add padding to the begin
+		if msgAreaH > 0 then contentY :+ msgAreaPaddingY
 
-		
-		'=== DRAW SPECIAL MESSAGES ===
-		If showEarnInfo
+		If showMsgEarnInfo
 			'convert back cents to euros and round it
 			'value is "per 1000" - so multiply with that too
 			local revenue:string = TFunctions.DottedValue(int(1000 * data.GetPerViewerRevenue()))+CURRENCYSIGN
-			currY :+ 4 'top content padding of that line
-			fontSemiBold.drawBlock(getLocale("MOVIE_CALLINSHOW").replace("%PROFIT%", revenue), currX + 35,  currY, 245, 15, ALIGN_CENTER_CENTER, textEarnColor, 0,1,1.0,True, True)
-			currY :+ 15 + 8 'lineheight + bottom content padding
+
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_CALLINSHOW").replace("%PROFIT%", revenue), "money", "good", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			contentY :+ msgH
 		EndIf
 
-		if showPlannedWarning
-			currY :+ 4 'top content padding of that line
-			fontSemiBold.drawBlock("Programm im Sendeplan!", currX + 35, currY, 245, 15, ALIGN_CENTER_CENTER, textWarningColor, 0,1,1.0,True, True)
-			currY :+ 15 + 8 'lineheight + bottom content padding
+		if showMsgPlannedWarning
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PROGRAMME_IN_PROGRAMME_PLAN"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			contentY :+ msgH
 		endif
 
-		currY :+ 4 'align to content portion of that line
+		'if there is a message then add padding to the bottom
+		if msgAreaH > 0 then contentY :+ msgAreaPaddingY
+
+
+		'=== BOXES ===
+		'boxes have a top-padding (except with messages)
+		if msgAreaH = 0 then contentY :+ boxAreaPaddingY
+
+
+		'=== BOX LINE 1 ===
 		'blocks
-		fontBold.drawBlock(data.GetBlocks(), currX + 33, currY, 17, 15, ALIGN_CENTER_CENTER, textColor, 0,1,1.0,True, True)
-
+		skin.RenderBox(contentX + 5, contentY, 47, -1, data.GetBlocks(), "duration", "neutral", skin.fontBold)
 		'repetitions
-		fontBold.drawBlock(data.GetTimesAired(owner), currX + 84, currY, 22, 15, ALIGN_CENTER_CENTER, textColor, 0,1,1.0,True, True)
-
+		skin.RenderBox(contentX + 5 + 51, contentY, 52, -1, data.GetTimesAired(owner), "repetitions", "neutral", skin.fontBold)
 		'record
-		fontBold.drawBlock(TFunctions.convertValue(GetBroadcastStatistic().GetBestAudienceResult(owner, -1).audience.GetSum(),2), currX + 140, currY, 52, 15, ALIGN_CENTER_CENTER, textColor, 0,1,1.0,True, True)
-
-		
+		skin.RenderBox(contentX + 5 + 107, contentY, 83, -1, TFunctions.convertValue(GetBroadcastStatistic().GetBestAudienceResult(owner, -1).audience.GetSum(),2), "maxAudience", "neutral", skin.fontBold)
 		'price
-		local finance:TPlayerFinance
-		'only check finances if it is no other player (avoids exposing
-		'that information to us)
-		if owner <= 0 or GetPlayerBaseCollection().playerID = owner
-			finance = GetPlayerFinanceCollection().Get(GetPlayerBaseCollection().playerID, -1)
-		endif
-		local canAfford:int = False
-		'possessing player always can
-		if GetPlayerBaseCollection().playerID = owner
-			canAfford = True
-		'if it is another player... just display "can afford"
-		elseif owner > 0
-			canAfford = True
-		'not our licence but enough money to buy
-		elseif finance and finance.canAfford(GetPrice())
-			canAfford = True
-		endif
-		
 		if canAfford
-			fontBold.drawBlock(TFunctions.DottedValue(GetPrice()), currX + 227, currY, 55, 15, ALIGN_RIGHT_CENTER, textColor, 0,1,1.0,True, True)
+			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(GetPrice()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 		else
-			fontBold.drawBlock(TFunctions.DottedValue(GetPrice()), currX + 227, currY, 55, 15, ALIGN_RIGHT_CENTER, TColor.Create(200,0,0), 0,1,1.0,True, True)
+			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(GetPrice()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
 		endif
-		currY :+ 15 + 8 'lineheight + bottom content padding
-
-		'=== X-Rated Overlay ===
-		If data.IsXRated()
-			GetSpriteFromRegistry("gfx_datasheet_xrated").Draw(currX + GetSpriteFromRegistry("gfx_datasheet_title").GetWidth(), y, -1, ALIGN_RIGHT_TOP)
-		Endif
+		'=== BOX LINE 2 ===
+		contentY :+ boxH
 
 
+
+		'=== DEBUG ===
 		If TVTDebugInfos
+			'begin at the top ...again
+			contentY = y + skin.GetContentY()
 			local oldAlpha:Float = GetAlpha()
+
 			SetAlpha oldAlpha * 0.75
 			SetColor 0,0,0
-
-			local w:int = GetSpriteFromRegistry("gfx_datasheet_title").area.GetW() - 20
-			local h:int = Max(120, currY-y)
-			DrawRect(currX, y, w,h)
-		
+			DrawRect(contentX, contentY, contentW, sheetHeight - skin.GetContentPadding().GetTop() - skin.GetContentPadding().GetBottom())
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
-			local textY:int = y + 5
-			fontBold.draw("Programm: "+GetTitle(), currX + 5, textY)
-			textY :+ 14	
-			fontNormal.draw("Letzte Stunde im Plan: "+latestPlannedEndHour, currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Tempo: "+data.GetSpeed(), currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Kritik: "+data.GetReview(), currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Kinokasse: "+data.GetOutcome(), currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Preismodifikator: "+data.GetModifier("price"), currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Qualitaet roh: "+GetQualityRaw()+"  (ohne Alter, Wdh.)", currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Qualitaet: "+GetQuality(), currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Aktualitaet: "+GetTopicality()+" von " + data.GetMaxTopicality(), currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Bloecke: "+data.GetBlocks(), currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Ausgestrahlt: "+data.GetTimesAired(owner)+"x Spieler, "+data.GetTimesAired()+"x alle", currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(owner, -1).audience.GetSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetSum())+" (alle)", currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Preis: "+GetPrice(), currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("TrailerMod: "+data.GetTrailerMod().GetAverage(), currX + 5, textY)
+			skin.fontBold.drawBlock("Programm: "+GetTitle(), contentX + 5, contentY, contentW - 10, 28)
+			contentY :+ 28
+			skin.fontNormal.draw("Letzte Stunde im Plan: "+latestPlannedEndHour, contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Tempo: "+MathHelper.NumberToString(data.GetSpeed(), 4), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Kritik: "+MathHelper.NumberToString(data.GetReview(), 4), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Kinokasse: "+MathHelper.NumberToString(data.GetOutcome(), 4), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Preismodifikator: "+MathHelper.NumberToString(data.GetModifier("price"), 4), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Qualitaet roh: "+MathHelper.NumberToString(GetQualityRaw(), 4)+"  (ohne Alter, Wdh.)", contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Qualitaet: "+MathHelper.NumberToString(GetQuality(), 4), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Aktualitaet: "+MathHelper.NumberToString(GetTopicality(), 4)+" von " + MathHelper.NumberToString(data.GetMaxTopicality(), 4), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Bloecke: "+data.GetBlocks(), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Ausgestrahlt: "+data.GetTimesAired(owner)+"x Spieler, "+data.GetTimesAired()+"x alle", contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(owner, -1).audience.GetSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetSum())+" (alle)", contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Preis: "+GetPrice(), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Trailerakt.-modifikator: "+MathHelper.NumberToString(data.GetTrailerMod().GetAverage(), 4), contentX + 5, contentY)
+		endif
 
+		'=== OVERLAY / BORDER ===
+		skin.RenderBorder(x, y, sheetWidth, sheetHeight)
+
+		'=== X-Rated Overlay ===
+		If data.IsXRated()
+			GetSpriteFromRegistry("gfx_datasheet_overlay_xrated").Draw(contentX + sheetWidth, y, -1, ALIGN_RIGHT_TOP)
 		Endif
 	End Method
 
 
 	Method ShowTrailerSheet:Int(x:Int,y:Int, align:int=0)
-		'=== DRAW BACKGROUND ===
-		local sprite:TSprite
-		local currX:Int = x
-		local currY:int = y
-
+		'=== PREPARE VARIABLES ===
+		local sheetWidth:int = 310
+		local sheetHeight:int = 0 'calculated later
 		'move sheet to left when right-aligned
-		if align = 1 then currX = x - GetSpriteFromRegistry("gfx_datasheet_title").area.GetW()
+		if align = 1 then x = x - sheetWidth
+
+		local skin:TDatasheetSkin = GetDatasheetSkin("trailer")
+		local contentW:int = skin.GetContentW(sheetWidth)
+		local contentX:int = x + skin.GetContentY()
+		local contentY:int = y + skin.GetContentY()
+
+
+		'=== CALCULATE SPECIAL AREA HEIGHTS ===
+		local titleH:int = 18, genreH:int = 16, descriptionH:int = 70
+		local barH:int = 0, msgH:int = 0
+		local msgAreaH:int = 0, barAreaH:int = 0
+		local barAreaPaddingY:int = 4, msgAreaPaddingY:int = 4
+
+		'reactivate when adding messages
+		'msgH = skin.GetMessageSize(contentW - 10, -1, "", "targetGroupLimited", "warning", null, ALIGN_CENTER_CENTER).GetY()
+		barH = skin.GetBarSize(100, -1).GetY()
+
+		'bar area
+		'bar area starts with padding, ends with padding and contains
+		barAreaH = 2 * barAreaPaddingY + barH
+
+		'message area
+		'show earn message
+		rem
+		'TODO: add messages? ("shown max already - no efficiency increase")
+		'if blaCondition > 0 then msgAreaH :+ msgH
+		'if there are messages, add padding of messages
+		if msgAreaH > 0 then msgAreaH :+ msgAreaPaddingY
+		'if nothing comes after the messages, add bottom padding
+		if msgAreaH > 0 and barAreaH=0 then msgAreaH :+ msgAreaPaddingY
+		endrem
 		
-		sprite = GetSpriteFromRegistry("gfx_datasheet_title"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_series"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_content"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_subTop"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_subTopicalityRating"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_bottom"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
+		'total height
+		sheetHeight = titleH + genreH + descriptionH + msgAreaH + barAreaH + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
 
 
+		
+		'=== RENDER ===
+	
+		'=== TITLE AREA ===
+		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
+		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		contentY :+ titleH
 
-		'=== DRAW TEXTS / OVERLAYS ====
-		currY = y + 8 'so position is within "border"
-		currX :+ 7 'inside
-		local textColor:TColor = TColor.CreateGrey(25)
-		local textLightColor:TColor = TColor.CreateGrey(75)
-		Local fontNormal:TBitmapFont = GetBitmapFontManager().baseFont
-		Local fontBold:TBitmapFont = GetBitmapFontManager().baseFontBold
-		Local fontSemiBold:TBitmapFont = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
 
-		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), currX + 6, y + 8, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
-		currY :+ 18
-		fontNormal.drawBlock(GetLocale("TRAILER"), currX + 6, currY, 280, 15, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
-		currY :+ 16
+		'=== GENRE AREA ===
+		skin.RenderContent(contentX, contentY, contentW, genreH, "1")
+		skin.fontNormal.drawBlock(GetLocale("TRAILER"), contentX + 5, contentY -1, contentW - 10, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		contentY :+ genreH
 
-		'content description
-		currY :+ 3	'description starts with offset
-		fontNormal.drawBlock(getLocale("MOVIE_TRAILER"), currX + 6, currY, 280, 64, null ,textColor)
-		currY :+ 64 'content
-		currY :+ 3	'description ends with offset
 
-		currY :+ 4 'offset of subContent
+		'=== CONTENT AREA ===
+		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
+		skin.fontNormal.drawBlock(getLocale("MOVIE_TRAILER"), contentX + 5, contentY + 3, contentW - 10, descriptionH, null, skin.textColorNeutral)
+		contentY :+ descriptionH
+		
+
+		'=== MESSAGES ===
+		'background for messages + boxes
+		skin.RenderContent(contentX, contentY, contentW, msgAreaH + barAreaH , "1_bottom")
+		'if there is a message then add padding to the begin
+		if msgAreaH > 0 then contentY :+ msgAreaPaddingY
+
+
+		'=== BARS ===
+		'bars have a top-padding
+		contentY :+ barAreaPaddingY
 
 		'topicality
-		fontSemiBold.drawBlock(GetLocale("MOVIE_TOPICALITY"), currX + 215, currY, 75, 15, null, textLightColor)
-
-		if data.trailerTopicality > 0.1
-			SetAlpha GetAlpha()*0.25
-			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1, 200, 10))
-			SetAlpha GetAlpha()*4.0
-			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1, data.trailerTopicality*200, 10))
-		endif
+		skin.RenderBar(contentX + 5, contentY, 200, 12, data.GetTrailerTopicality())
+		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
 
 
 		If TVTDebugInfos
+			'begin at the top ...again
+			contentY = y + skin.GetContentY()
+
 			local oldAlpha:Float = GetAlpha()
 			SetAlpha oldAlpha * 0.75
 			SetColor 0,0,0
-
-			local w:int = GetSpriteFromRegistry("gfx_datasheet_title").area.GetW() - 20
-			local h:int = currY-y
-			DrawRect(currX, y, w,h)
-		
+			DrawRect(contentX, contentY, contentW, sheetHeight - skin.GetContentPadding().GetTop() - skin.GetContentPadding().GetBottom())
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
-			local textY:int = y + 5
-			fontBold.draw("Trailer: "+GetTitle(), currX + 5, textY)
-			textY :+ 14	
-			fontNormal.draw("Traileraktualitaet: "+data.trailerTopicality+" von " + data.trailerMaxTopicality, currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Ausstrahlungen: "+data.trailerAired, currX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Ausstrahlungen seit letzter Sendung: "+data.trailerAiredSinceShown, currX + 5, textY)
-
+			skin.fontBold.draw("Trailer: "+GetTitle(), contentX + 5, contentY)
+			contentY :+ 14	
+			skin.fontNormal.draw("Traileraktualitaet: "+MathHelper.NumberToString(data.GetTrailerTopicality(), 4)+" von " + MathHelper.NumberToString(data.GetMaxTrailerTopicality(), 4), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Ausstrahlungen: "+data.trailerAired, contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Ausstrahlungen seit letzter Sendung: "+data.trailerAiredSinceShown, contentX + 5, contentY)
 		Endif
+
+		'=== OVERLAY / BORDER ===
+		skin.RenderBorder(x, y, sheetWidth, sheetHeight)
 	End Method
 
 

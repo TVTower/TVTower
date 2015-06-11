@@ -1084,8 +1084,8 @@ Type TDatabaseLoader
 			'care of this already)
 			scriptTemplate.variables = null
 			scriptTemplate.placeHolderVariables = null
-			scriptTemplate.subScriptTemplates = new TScriptTemplate[0]
-			scriptTemplate.parentScriptTemplateGUID = ""
+			scriptTemplate.subScripts = new TScriptTemplate[0]
+			scriptTemplate.parentScriptGUID = ""
 		endif
 
 
@@ -1264,7 +1264,7 @@ Type TDatabaseLoader
 			'local childIndex:int = xml.FindValueInt(nodechild, "index", 1)
 
 			'add the child
-			scriptTemplate.AddSubScriptTemplate(childScriptTemplate)
+			scriptTemplate.AddSubScript(childScriptTemplate)
 		Next
 
 

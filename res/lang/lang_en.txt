@@ -173,7 +173,7 @@ NEXT_ADBLOCK			= Next ad-block
 NEXT_PROGRAMME			= Next programme
 NEXT_NOTHINGSET			= not set!
 
-
+PROGRAMME_IN_PROGRAMME_PLAN = Programme in programme plan!
 
 AD_PROFIT				= Profit
 AD_PLANNED				= planned
