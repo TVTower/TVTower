@@ -55,6 +55,12 @@ function TaskSchedule:GetNextJobInTargetRoom()
 end
 
 function TaskSchedule:GetMaxAudiencePercentageByHour(hour)
+-- neue Fassung...
+-- Eventuell mit ein wenig "Unsicherheit" versehen (schon in Blitzmax)
+	return TVT.getPotentialAudiencePercentageForHour(hour)
+
+-- alte Fassung...
+--[[
 	if hour == 0 then
 		return 11.40 / 100
 	elseif hour == 1 then
@@ -104,6 +110,7 @@ function TaskSchedule:GetMaxAudiencePercentageByHour(hour)
 	elseif hour == 23 then
 		return 18.80 / 100
 	end
+]]--
 end
 
 -- Berechnet die Vermutung wie viel Zuschauer wohl zu dieser Stunde wohl erreicht werden können

@@ -533,9 +533,26 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 
+	Method getPotentialAudiencePercentageForHour:Float(hour:int = -1)
+		'percentage of each population group watching now
+		'local percentage:TAudience = TBroadcast.GetPotentialAudiencePercentageForHour(hour).GetAvg()
+
+		'percentage of each group in the population
+		local population:TAudience = TAudience.CreateWithBreakdown(1.0)
+		'GetPotentialAudienceForHour multiplies percentage watching now
+		'with the given population percentage
+		'-> GetSum() contains the total percentage of the population
+		'   watching TV now
+		return TBroadcast.GetPotentialAudienceForHour(population, hour).GetSum()
+	End Method
+
+
 	Method getEvaluatedAudienceQuote:Int(hour:Int = -1, licenceID:Int = -1, lastQuotePercentage:Float = 0.1, audiencePercentageBasedOnHour:Float=-1)
-		'TODO: Statt dem audiencePercentageBasedOnHour-Parameter könnte auch das noch unbenutzte "hour" den generellen Quotenwert in der
-		'angegebenen Stunde mit einem etwas umgebauten "calculateMaxAudiencePercentage" (ohne Zufallswerte und ohne die globale Variable zu verändern) errechnen.
+		'TODO: Statt dem audiencePercentageBasedOnHour-Parameter könnte
+		'      auch das noch unbenutzte "hour" den generellen Quotenwert
+		'      in der angegebenen Stunde mit einem etwas umgebauten
+		'      "calculateMaxAudiencePercentage" (ohne Zufallswerte und
+		'      ohne die globale Variable zu verändern) errechnen.
 
 		Print "MANUEL: Für KI wieder rein machen!"
 		'Local licence:TProgrammeLicence = TProgrammeLicence.Get(licenceID)

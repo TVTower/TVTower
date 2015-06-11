@@ -603,44 +603,48 @@ Type TBroadcast
 	End Method
 
 
-
-
-	Function GetPotentialAudienceForHour:TAudience(maxAudience:TAudience, forHour:Int = -1)
+	'returns how many percent of the target group are possibly watching
+	'TV at the given hour 
+	Function GetPotentialAudiencePercentageForHour:TAudience(forHour:Int = -1)
 		If forHour < 0 Then forHour = GetWorldTime().GetDayHour()
 
-		Local maxAudienceReturn:TAudience = maxAudience.Copy()
-		Local modi:TAudience = Null
+		local result:TAudience
 
 		'TODO: Eventuell auch in ein config-File auslagern
 		Select forHour
-			Case 0 modi = TAudience.CreateAndInit(2, 6, 16, 11, 21, 19, 23, 100, 100)
-			Case 1 modi = TAudience.CreateAndInit(0.5, 4, 7, 7, 15, 9, 13, 100, 100)
-			Case 2 modi = TAudience.CreateAndInit(0.2, 1, 4, 4, 10, 3, 8, 100, 100)
-			Case 3 modi = TAudience.CreateAndInit(0.1, 1, 3, 3, 7, 2, 5, 100, 100)
-			Case 4 modi = TAudience.CreateAndInit(0.1, 0.5, 2, 3, 4, 1, 3, 100, 100)
-			Case 5 modi = TAudience.CreateAndInit(0.2, 1, 2, 4, 3, 3, 3, 100, 100)
-			Case 6 modi = TAudience.CreateAndInit(1, 2, 3, 6, 3, 5, 4, 100, 100)
-			Case 7 modi = TAudience.CreateAndInit(4, 7, 6, 8, 4, 8, 5, 100, 100)
-			Case 8 modi = TAudience.CreateAndInit(5, 2, 8, 5, 7, 11, 8, 100, 100)
-			Case 9 modi = TAudience.CreateAndInit(6, 2, 9, 3, 12, 7, 10, 100, 100)
-			Case 10 modi = TAudience.CreateAndInit(5, 2, 9, 3, 14, 3, 11, 100, 100)
-			Case 11 modi = TAudience.CreateAndInit(5, 3, 9, 4, 15, 4, 12, 100, 100)
-			Case 12 modi = TAudience.CreateAndInit(7, 9, 11, 8, 15, 8, 13, 100, 100)
-			Case 13 modi = TAudience.CreateAndInit(8, 12, 14, 7, 24, 6, 19, 100, 100)
-			Case 14 modi = TAudience.CreateAndInit(10, 13, 15, 6, 31, 2, 21, 100, 100)
-			Case 15 modi = TAudience.CreateAndInit(11, 14, 16, 6, 29, 2, 22, 100, 100)
-			Case 16 modi = TAudience.CreateAndInit(11, 15, 21, 6, 35, 2, 24, 100, 100)
-			Case 17 modi = TAudience.CreateAndInit(12, 16, 22, 11, 36, 3, 25, 100, 100)
-			Case 18 modi = TAudience.CreateAndInit(16, 21, 24, 18, 39, 5, 34, 100, 100)
-			Case 19 modi = TAudience.CreateAndInit(24, 33, 28, 28, 46, 12, 49, 100, 100)
-			Case 20 modi = TAudience.CreateAndInit(16, 36, 33, 37, 56, 23, 60, 100, 100)
-			Case 21 modi = TAudience.CreateAndInit(11, 32, 31, 36, 53, 25, 62, 100, 100)
-			Case 22 modi = TAudience.CreateAndInit(5, 23, 30, 30, 46, 35, 49, 100, 100)
-			Case 23 modi = TAudience.CreateAndInit(3, 14, 24, 20, 34, 33, 35, 100, 100)
+			Case 0  result = TAudience.CreateAndInit(2, 6, 16, 11, 21, 19, 23, 100, 100)
+			Case 1  result = TAudience.CreateAndInit(0.5, 4, 7, 7, 15, 9, 13, 100, 100)
+			Case 2  result = TAudience.CreateAndInit(0.2, 1, 4, 4, 10, 3, 8, 100, 100)
+			Case 3  result = TAudience.CreateAndInit(0.1, 1, 3, 3, 7, 2, 5, 100, 100)
+			Case 4  result = TAudience.CreateAndInit(0.1, 0.5, 2, 3, 4, 1, 3, 100, 100)
+			Case 5  result = TAudience.CreateAndInit(0.2, 1, 2, 4, 3, 3, 3, 100, 100)
+			Case 6  result = TAudience.CreateAndInit(1, 2, 3, 6, 3, 5, 4, 100, 100)
+			Case 7  result = TAudience.CreateAndInit(4, 7, 6, 8, 4, 8, 5, 100, 100)
+			Case 8  result = TAudience.CreateAndInit(5, 2, 8, 5, 7, 11, 8, 100, 100)
+			Case 9  result = TAudience.CreateAndInit(6, 2, 9, 3, 12, 7, 10, 100, 100)
+			Case 10 result = TAudience.CreateAndInit(5, 2, 9, 3, 14, 3, 11, 100, 100)
+			Case 11 result = TAudience.CreateAndInit(5, 3, 9, 4, 15, 4, 12, 100, 100)
+			Case 12 result = TAudience.CreateAndInit(7, 9, 11, 8, 15, 8, 13, 100, 100)
+			Case 13 result = TAudience.CreateAndInit(8, 12, 14, 7, 24, 6, 19, 100, 100)
+			Case 14 result = TAudience.CreateAndInit(10, 13, 15, 6, 31, 2, 21, 100, 100)
+			Case 15 result = TAudience.CreateAndInit(11, 14, 16, 6, 29, 2, 22, 100, 100)
+			Case 16 result = TAudience.CreateAndInit(11, 15, 21, 6, 35, 2, 24, 100, 100)
+			Case 17 result = TAudience.CreateAndInit(12, 16, 22, 11, 36, 3, 25, 100, 100)
+			Case 18 result = TAudience.CreateAndInit(16, 21, 24, 18, 39, 5, 34, 100, 100)
+			Case 19 result = TAudience.CreateAndInit(24, 33, 28, 28, 46, 12, 49, 100, 100)
+			Case 20 result = TAudience.CreateAndInit(16, 36, 33, 37, 56, 23, 60, 100, 100)
+			Case 21 result = TAudience.CreateAndInit(11, 32, 31, 36, 53, 25, 62, 100, 100)
+			Case 22 result = TAudience.CreateAndInit(5, 23, 30, 30, 46, 35, 49, 100, 100)
+			Case 23 result = TAudience.CreateAndInit(3, 14, 24, 20, 34, 33, 35, 100, 100)
 		EndSelect
 
-		maxAudienceReturn.Multiply(modi).MultiplyFloat(1.0/100.0)
-		Return maxAudienceReturn
+		'convert to 0-1.0 percentage
+		return result.multiplyFloat(0.01)
+	End Function
+	
+
+	Function GetPotentialAudienceForHour:TAudience(maxAudience:TAudience, forHour:Int = -1)
+		return maxAudience.Copy().Multiply( GetPotentialAudiencePercentageForHour(forHour) )
 	End Function
 End Type
 
