@@ -75,7 +75,7 @@ Type TDatasheetSkin
 			font.drawBlock( ..
 				value, ..
 				x + border.GetLeft(), ..
-				y + border.GetTop() + (font.IsBold()*0 * -1), .. '-1 to align it more properly
+				y + border.GetTop(), .. '-1 to align it more properly
 				w - (border.GetRight() + border.GetLeft()),  ..
 				h - (border.GetTop() + border.GetBottom()), ..
 				valueAlign, GetTextColor(fontColorType), 0,1,1.0,True, True)
@@ -99,6 +99,7 @@ Type TDatasheetSkin
 		if iconName then GetSpriteFromRegistry(spriteBaseKey+"_icon_"+iconName).Draw(x, y)
 
 		if value
+			if h < 0 then h = GetBoxSize(w,h, value, iconName).GetY()
 			if not font then font = GetDefaultFont()
 			if not valueAlign then valueAlign = ALIGN_LEFT_CENTER
 			local border:TRectangle = GetSpriteFromRegistry(spriteBaseKey+"_msg_"+msgType).GetNinePatchContentBorder()

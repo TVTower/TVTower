@@ -3246,8 +3246,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'levelFilters[1].SetAudience(0.5 * averageChannelQuote, Max(0.01, 1.5 * averageChannelQuote))
 		'weighted Minimum/Maximum (the more away from border, the
 		'stronger the influence)
-		local minAvg:Float = (0.3 * lowestChannelQuote + 0.7 * averageChannelQuote)
-		local maxAvg:Float = (0.7 * averageChannelQuote + 0.3 * highestChannelQuote)
+		local minAvg:Float = (0.7 * lowestChannelQuote + 0.3 * averageChannelQuote)
+		local maxAvg:Float = (0.3 * averageChannelQuote + 0.7 * highestChannelQuote)
 		levelFilters[1].SetAudience(minAvg, Max(0.01, maxAvg))
 		'0-100% of average Image
 		levelFilters[1].SetImage(0, averageChannelImage)
