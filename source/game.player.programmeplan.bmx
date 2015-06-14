@@ -375,13 +375,13 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			For Local i:Int = minIndex To maxIndex
 				Local obj:TBroadcastMaterial = TBroadcastMaterial(GetObjectAtIndex(slotType, i))
 				If Not obj Then Continue
-				If material.GetReferenceID() = obj.GetReferenceID() Then Return material
+				If material.GetReferenceID() = obj.GetReferenceID() Then Return obj
 			Next
 		Else
 			For Local i:Int = maxIndex To minIndex Step -1
 				Local obj:TBroadcastMaterial = TBroadcastMaterial(GetObjectAtIndex(slotType, i))
 				If Not obj Then Continue
-				If material.GetReferenceID() = obj.GetReferenceID() Then Return material
+				If material.GetReferenceID() = obj.GetReferenceID() Then Return obj
 			Next
 		EndIf
 Rem
@@ -695,15 +695,17 @@ endrem
 			'find "longest running" in all available type slots
 			'if none is found, the planned value contains "-1"
 			Local instance:TBroadcastMaterial
-			Local blockEnd:Int = -1
-			'check ad usage
+			Local latestHour:Int = -1
+
+			'check ad usage - but only for ads!
 			instance = ObjectPlannedInTimeSpan(programme, TBroadcastMaterial.TYPE_ADVERTISEMENT, dayStart, hourStart, -1, 23, True)
-			If instance Then blockEnd = Max(blockEnd, instance.programmedDay*24+instance.programmedHour + instance.GetBlocks(TBroadcastMaterial.TYPE_ADVERTISEMENT))
+			If instance Then latestHour = Max(latestHour, instance.programmedDay*24+instance.programmedHour + instance.GetBlocks(TBroadcastMaterial.TYPE_ADVERTISEMENT))
+
 			'check prog usage
 			instance = ObjectPlannedInTimeSpan(programme, TBroadcastMaterial.TYPE_PROGRAMME, dayStart, hourStart, -1, 23, True)
-			If instance Then blockEnd = Max(blockEnd, instance.programmedDay*24+instance.programmedHour + instance.GetBlocks(TBroadcastMaterial.TYPE_PROGRAMME))
+			If instance Then latestHour = Max(latestHour, instance.programmedDay*24+instance.programmedHour + instance.GetBlocks(TBroadcastMaterial.TYPE_PROGRAMME))
 
-			programme.licence.SetPlanned(blockEnd)
+			programme.licence.SetPlanned(latestHour)
 		EndIf
 		Return True
 	End Method
