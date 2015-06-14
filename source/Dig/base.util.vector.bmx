@@ -111,6 +111,12 @@ Type TVec2D {_exposeToLua="selected"}
 	End Method
 
 
+	Method CopyFromVec3D:Int(otherVec:TVec3D)
+		if not otherVec then return FALSE
+		SetXY(otherVec.x, otherVec.y)
+	End Method
+
+
 	Method AddX:TVec2D(x:Float)
 		self.x :+ x
 		return Self
@@ -366,6 +372,12 @@ Type TVec3D {_exposeToLua="selected"}
 	Method CopyFrom:Int(otherVec:TVec3D)
 		if not otherVec then return FALSE
 		SetXYZ(otherVec.x, otherVec.y, otherVec.z)
+	End Method
+
+
+	Method CopyFromVec2D:Int(otherVec:TVec2D)
+		if not otherVec then return FALSE
+		SetXYZ(otherVec.x, otherVec.y, 0)
 	End Method
 
 

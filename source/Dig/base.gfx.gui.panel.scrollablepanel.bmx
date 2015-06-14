@@ -137,13 +137,14 @@ Type TGUIScrollablePanel Extends TGUIPanel
 
 	
 	Method DrawDebug()
-		SetAlpha 0.7
+		SetAlpha 0.3
 		SetColor 255,0,0
 		DrawRect(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())
+		SetAlpha 0.9
 		SetColor 0,255,0
-		DrawRect(GetScreenX() + scrollPosition.x, GetScreenY() + scrollPosition.y, 100, 2)
+		DrawRect(GetScreenX() + scrollPosition.x + 10, GetScreenY() + scrollPosition.y, GetScreenWidth()/2, 2)
 		SetColor 0,0,255
-		DrawRect(GetScreenX() + scrollLimit.x, GetScreenY() + scrollLimit.y, 50, 2)
+		DrawRect(GetScreenX() + scrollLimit.x, GetScreenY() + scrollLimit.y, GetScreenWidth()/2, 2)
 		SetColor 255,255,255
 		SetAlpha 1.0
 	End Method

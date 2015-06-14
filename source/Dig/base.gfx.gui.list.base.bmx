@@ -23,6 +23,7 @@ Type TGUIListBase Extends TGUIobject
 	Field guiEntriesPanel:TGUIScrollablePanel = Null
 	Field guiScrollerH:TGUIScroller = Null
 	Field guiScrollerV:TGUIScroller	= Null
+	Field entriesDimension:TVec2D = new TVec2D.Init(0,0)
 
 	Field autoScroll:Int = False
 	'hide scroller if mouse not over parent
@@ -39,7 +40,7 @@ Type TGUIListBase Extends TGUIobject
 	'displace each entry by (z-value is stepping)...
 	Field _entryDisplacement:TVec3D	= new TVec3D.Init(0, 0, 1)
 	'displace the entriesblock by x,y...
-	Field _entriesBlockDisplacement:TVec3D = new TVec3D.Init(0, 0, 0)
+	Field _entriesBlockDisplacement:TVec2D = new TVec2D.Init(0, 0)
 	'orientation of the list: 0 means vertical, 1 is horizontal
 	Field _orientation:Int = 0
 	Field _scrollingEnabled:Int	= False
@@ -72,7 +73,6 @@ Type TGUIListBase Extends TGUIobject
 
 
 		autoSortItems = True
-
 
 		'register events
 		'someone uses the mouse wheel to scroll over the panel
@@ -151,7 +151,6 @@ Type TGUIListBase Extends TGUIobject
 		local showScrollerH:int = 0<(guiScrollerH and guiScrollerH.hasOption(GUI_OBJECT_ENABLED))
 		local showScrollerV:int = 0<(guiScrollerV and guiScrollerV.hasOption(GUI_OBJECT_ENABLED))
 
-
 		'resize panel - but use resulting dimensions, not given (maybe restrictions happening!)
 		If guiEntriesPanel
 			'also set minsize so scroll works
@@ -192,6 +191,9 @@ Type TGUIListBase Extends TGUIobject
 			'background covers whole area, so resize it
 			guiBackground.resize(rect.getW(), rect.getH())
 		EndIf
+
+		'recalculate scroll limits etc.
+		if guiEntriesPanel then RefreshListLimits()
 	End Method
 
 
@@ -319,12 +321,14 @@ Type TGUIListBase Extends TGUIobject
 
 	'recalculate scroll maximas, item positions...
 	Method RecalculateElements:Int()
-		local startPos:TVec3D = _entriesBlockDisplacement.copy()
-		Local dimension:TVec3D = _entriesBlockDisplacement.copy()
+		local startPos:TVec2D = _entriesBlockDisplacement.copy()
 		Local entryNumber:Int = 1
-		Local nextPos:TVec3D = startPos.copy()
-		Local currentPos:TVec3D
+		Local nextPos:TVec2D = startPos.copy()
+		Local currentPos:TVec2D
 		local columnPadding:int = 5
+
+		'reset current entriesDimension ...
+		entriesDimension.CopyFrom(_entriesBlockDisplacement)
 
 		For Local entry:TGUIobject = EachIn entries
 			currentPos = nextPos.copy()
@@ -342,16 +346,16 @@ Type TGUIListBase Extends TGUIobject
 						if currentPos.GetX() + entry.rect.GetW() > GetContentScreenWidth()
 							currentPos.SetXY(startPos.GetX(), currentPos.GetY() + entry.rect.GetH())
 							'new lines increase dimension of container
-							dimension.AddXY(0, entry.rect.GetH())
+							entriesDimension.AddXY(0, entry.rect.GetH())
 						endif
 
-						nextPos = currentPos.copy()
+						nextPos.CopyFrom(currentPos)
 						nextPos.AddXY(entry.rect.GetW() + columnPadding, 0)
 					else
-						nextPos = currentPos.copy()
+						nextPos.CopyFrom(currentPos)
 						nextPos.AddXY(0, entry.rect.GetH())
 						'new lines increase dimension of container
-						dimension.AddXY(0, entry.rect.GetH())
+						entriesDimension.AddXY(0, entry.rect.GetH())
 					endif
 
 				Case GUI_OBJECT_ORIENTATION_HORIZONTAL
@@ -364,16 +368,16 @@ Type TGUIListBase Extends TGUIobject
 						if currentPos.GetY() + entry.rect.GetH() > GetContentScreenHeight()
 							currentPos.SetXY(currentPos.GetX() + entry.rect.GetW(), startPos.GetY())
 							'new lines increase dimension of container
-							dimension.AddXY(entry.rect.GetW(), 0 )
+							entriesDimension.AddXY(entry.rect.GetW(), 0 )
 						endif
 
-						nextPos = currentPos.copy()
+						nextPos.CopyFrom(currentPos)
 						nextPos.AddXY(0, entry.rect.GetH() + columnPadding)
 					else
-						nextPos = currentPos.copy()
+						nextPos.CopyFrom(currentPos)
 						nextPos.AddXY(entry.rect.GetW(),0)
 						'new lines increase dimension of container
-						dimension.AddXY(entry.rect.GetW(), 0 )
+						entriesDimension.AddXY(entry.rect.GetW(), 0 )
 					endif
 			End Select
 
@@ -382,18 +386,33 @@ Type TGUIListBase Extends TGUIobject
 			If entryNumber Mod _entryDisplacement.z = 0 And entry <> entries.last()
 				currentPos.AddXY(_entryDisplacement.x, _entryDisplacement.y)
 				'increase dimension if positive displacement
-				dimension.AddXY( Max(0,_entryDisplacement.x), Max(0, _entryDisplacement.y))
+				entriesDimension.AddXY( Max(0,_entryDisplacement.x), Max(0, _entryDisplacement.y))
 			EndIf
 
 			'==== SET POSITION ====
-			entry.rect.position.CopyFrom(currentPos.ToVec2D())
+			entry.rect.position.CopyFrom(currentPos)
 
 			entryNumber:+1
 		Next
 
 		'resize container panel
-		guiEntriesPanel.resize(dimension.getX(), dimension.getY())
+		guiEntriesPanel.resize(entriesDimension.getX(), entriesDimension.getY())
 
+		'refresh scrolling limits
+		RefreshListLimits()
+
+		'if not all entries fit on the panel, enable scroller
+		SetScrollerState(..
+			entriesDimension.getX() > guiEntriesPanel.GetScreenWidth(), ..
+			entriesDimension.getY() > guiEntriesPanel.GetScreenHeight() ..
+		)
+	End Method
+
+
+	Method RefreshListLimits:int()
+		if not guiEntriesPanel then return False
+		'if entriesDimension.GetX() = 0 then return false
+		
 		Select _orientation
 			'===== VERTICAL ALIGNMENT =====
 			case GUI_OBJECT_ORIENTATION_VERTICAL
@@ -403,11 +422,11 @@ Type TGUIListBase Extends TGUIobject
 				Local atListBottom:Int = IsAtListBottom()
 
 				'set scroll limits:
-				if dimension.getY() < guiEntriesPanel.getScreenheight()
+				if entriesDimension.getY() < guiEntriesPanel.getScreenheight()
 					'if there are only some elements, they might be
 					'"less high" than the available area - no need to
 					'align them at the bottom
-					guiEntriesPanel.SetLimits(0, -dimension.getY())
+					guiEntriesPanel.SetLimits(0, -entriesDimension.getY())
 				Else
 					'maximum is at the bottom of the area, not top - so
 					'subtract height
@@ -419,7 +438,7 @@ Type TGUIListBase Extends TGUIobject
 '						if not autoScroll
 '							guiEntriesPanel.SetLimits(0, - (dimension.getY() - guiEntriesPanel.getScreenheight() - lastItem.GetScreenHeight()))
 '						else
-							guiEntriesPanel.SetLimits(0, - (dimension.getY() - guiEntriesPanel.getScreenheight()))
+							guiEntriesPanel.SetLimits(0, - (entriesDimension.getY() - guiEntriesPanel.getScreenheight()))
 '						endif
 					endif
 					'in case of auto scrolling we should consider
@@ -434,11 +453,11 @@ Type TGUIListBase Extends TGUIobject
 				Local atListBottom:Int = 1 > Floor( Abs(guiEntriesPanel.scrollLimit.GetX() - guiEntriesPanel.scrollPosition.getX() ) )
 
 				'set scroll limits:
-				If dimension.getX() < guiEntriesPanel.getScreenWidth()
+				If entriesDimension.getX() < guiEntriesPanel.getScreenWidth()
 					'if there are only some elements, they might be
 					'"less high" than the available area - no need to
 					'align them at the right
-					guiEntriesPanel.SetLimits(-dimension.getX(), 0 )
+					guiEntriesPanel.SetLimits(-entriesDimension.getX(), 0 )
 				Else
 					'maximum is at the bottom of the area, not top - so
 					'subtract height
@@ -447,7 +466,7 @@ Type TGUIListBase Extends TGUIobject
 					if not lastItem
 						guiEntriesPanel.SetLimits(0, 0)
 					else
-						guiEntriesPanel.SetLimits(- (dimension.getX() - guiEntriesPanel.getScreenWidth() - lastItem.GetScreenWidth()), 0)
+						guiEntriesPanel.SetLimits(- (entriesDimension.getX() - guiEntriesPanel.getScreenWidth() - lastItem.GetScreenWidth()), 0)
 					endif
 
 					'in case of auto scrolling we should consider
@@ -457,15 +476,8 @@ Type TGUIListBase Extends TGUIobject
 
 		End Select
 
-		guiScrollerH.SetValueRange(0, dimension.getX())
-		guiScrollerV.SetValueRange(0, dimension.getY())
-
-
-		'if not all entries fit on the panel, enable scroller
-		SetScrollerState(..
-			dimension.getX() > guiEntriesPanel.GetScreenWidth(), ..
-			dimension.getY() > guiEntriesPanel.GetScreenHeight() ..
-		)
+		guiScrollerH.SetValueRange(0, entriesDimension.getX())
+		guiScrollerV.SetValueRange(0, entriesDimension.getY())
 	End Method
 
 

@@ -436,9 +436,9 @@ Type TGUISlider extends TGUIObject
 					local offsetX:int
 					if steps > 0
 						'         (        steps gone           ) * (    px-width per step   )
-						offsetX = int(steps * GetRelativeValue()) * (GetGaugeW()/float(steps+1))
+						offsetX = int(steps * GetRelativeValue()) * floor(GetGaugeW()/float(steps+1))
 						'center the handle on the step:  0.5 (stepW - handleW)
-						offsetX :+ 0.5 * ((GetGaugeW() / float(steps+1)) - _handleDim.x)
+						offsetX :+ ceil( 0.5*(floor(GetGaugeW() / float(steps+1)) - _handleDim.x))
 					else
 						'subtract half of the handle to center the handle   
 						offsetX = GetRelativeValue() * GetGaugeW() - 0.5*_handleDim.x
@@ -456,10 +456,10 @@ Type TGUISlider extends TGUIObject
 					if steps > 0
 '						offsetY = int(steps * GetRelativeValue()) * (GetGaugeH()/float(steps+1))
 						'         ( steps gone   ) * (    px- per step          )
-						offsetY = GetCurrentStep() * (GetGaugeH()/float(steps+1))
+						offsetY = GetCurrentStep() * floor(GetGaugeH()/float(steps+1))
 
 						'center the handle on the step:  0.5 (stepW - handleW)
-						offsetY :+ 0.5 * ((GetGaugeH() / float(steps+1)) - _handleDim.y)
+						offsetY :+ ceil( 0.5 *(floor(GetGaugeH() / float(steps+1)) - _handleDim.y))
 					else
 						offsetY = GetRelativeValue() * (GetGaugeH() - _handleDim.y)
 

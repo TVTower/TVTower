@@ -163,7 +163,7 @@ Type TGUISlotList Extends TGUIListBase
 		EndIf
 
 		'set startpos at point of block displacement
-		Local currentPos:TVec3D = _entriesBlockDisplacement.copy()
+		Local currentPos:TVec3D = _entriesBlockDisplacement.ToVec3D()
 		Local currentRect:TRectangle 'used to check if a given coord is within
 		Local slotW:Int
 		Local slotH:Int
@@ -447,7 +447,7 @@ Type TGUISlotList Extends TGUIListBase
 
 	Method RecalculateElements:Int()
 		'set startpos at point of block displacement
-		Local currentPos:TVec3D = _entriesBlockDisplacement.copy()
+		Local currentPos:TVec2D = _entriesBlockDisplacement.copy()
 		Local coveredArea:TRectangle = new TRectangle.Init(0,0,_entriesBlockDisplacement.x,_entriesBlockDisplacement.y)
 		For Local i:Int = 0 To Self._slots.length-1
 			Local slotW:Int = _slotMinDimension.getX()
@@ -459,7 +459,7 @@ Type TGUISlotList Extends TGUIListBase
 			EndIf
 
 			'move entry's position to current one
-			If _slots[i] Then _slots[i].rect.position.CopyFrom(currentPos.ToVec2D())
+			If _slots[i] Then _slots[i].rect.position.CopyFrom(currentPos)
 
 			'resize covered area
 			coveredArea.position.setXY( Min(coveredArea.position.x, currentPos.x), Min(coveredArea.position.y, currentPos.y) )
