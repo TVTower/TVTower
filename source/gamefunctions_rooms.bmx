@@ -3183,28 +3183,44 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'will lower the quote)
 		local averageChannelImage:Float = GetPublicImageCollection().GetAverage().GetAverageImage()
 		local averageChannelReach:Int = GetStationMapCollection().GetAverageReach()
-		local averageChannelQuote:Float = 0.0
+		local averageChannelQuoteDayTime:Float = 0.0
+		local averageChannelQuotePrimeTime:Float = 0.0
+		local dayWithoutPrimeTime:int[] = [0,1,2,3,4,5, 18,19,20,21,22]
+		local dayOnlyPrimeTime:int[] = [0,1,2,3,4,5,  6,7,8,9,10,11,12,13,14,15,16,17,  23]
 		if averageChannelReach > 0
-			averageChannelQuote = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudience().GetSum() / averageChannelReach
+			averageChannelQuoteDayTime = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(-1, dayWithoutPrimeTime).GetSum() / averageChannelReach
+			averageChannelQuotePrimeTime = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(-1, dayOnlyPrimeTime).GetSum() / averageChannelReach
 		endif
 		
 		local highestChannelImage:Float = averageChannelImage
-		local highestChannelQuote:Float = 0.0
+		local highestChannelQuoteDayTime:Float = 0.0
+		local highestChannelQuotePrimeTime:Float = 0.0
 
 		local lowestChannelImage:Float = averageChannelImage
-		local lowestChannelQuote:Float = -1
+		local lowestChannelQuoteDayTime:Float = -1
+		local lowestChannelQuotePrimeTime:Float = -1
 
 		For local i:int = 1 to 4
 			local image:Float = GetPublicImageCollection().Get(i).GetAverageImage()
 			if image > highestChannelImage then highestChannelImage = image
 			if image < lowestChannelImage then lowestChannelImage = image
 
+			'daytime (without night)
 			if averageChannelReach > 0
-				local audience:Float = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudience(i).GetSum()
+				local audience:Float = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(i, dayWithoutPrimeTime).GetSum()
 				local quote:Float = audience / averageChannelReach
-				if lowestChannelQuote < 0 then lowestChannelQuote = quote
-				if lowestChannelQuote > quote then lowestChannelQuote = quote
-				if highestChannelQuote < quote then highestChannelQuote = quote
+				if lowestChannelQuoteDayTime < 0 then lowestChannelQuoteDayTime = quote
+				if lowestChannelQuoteDayTime > quote then lowestChannelQuoteDayTime = quote
+				if highestChannelQuoteDayTime < quote then highestChannelQuoteDayTime = quote
+			endif
+
+			'primetime (without day and night)
+			if averageChannelReach > 0
+				local audience:Float = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(i, dayOnlyPrimeTime).GetSum()
+				local quote:Float = audience / averageChannelReach
+				if lowestChannelQuotePrimeTime < 0 then lowestChannelQuotePrimeTime = quote
+				if lowestChannelQuotePrimeTime > quote then lowestChannelQuotePrimeTime = quote
+				if highestChannelQuotePrimeTime < quote then highestChannelQuotePrimeTime = quote
 			endif
 		Next
 		'convert to percentage
@@ -3225,47 +3241,90 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		cheapListFilter.SetSkipLimitedToProgrammeGenre()
 		cheapListFilter.SetSkipLimitedToTargetGroup()
 
-		'the 12 contracts are divided into 3 groups
-		'4x fitting the lowest requirements
-		'4x fitting the average requirements -> 8x planned but slots limited
-		'4x fitting the highest requirements
-		
-		local levelFilters:TAdContractBaseFilter[3]
+		'the 12 contracts are divided into 6 groups
+		'4x fitting the lowest requirements (2x day, 2x prime)
+		'4x fitting the average requirements -> 8x planned but slots limited (2x day, 2x prime)
+		'4x fitting the highest requirements (2x day, 2x prime)
+		local levelFilters:TAdContractBaseFilter[6]
 		'=== LOWEST ===
 		levelFilters[0] = new TAdContractbaseFilter
 		'from 1% of avg to 100% of avg
-		levelFilters[0].SetAudience(0.0, lowestChannelQuote)
+		levelFilters[0].SetAudience(0.0, lowestChannelQuoteDayTime)
 		'1% - avgImage %
 		levelFilters[0].SetImage(0.0, lowestChannelImage)
 		'lowest should be without "limits"
 		levelFilters[0].SetSkipLimitedToProgrammeGenre()
 		levelFilters[0].SetSkipLimitedToTargetGroup()
-		'=== AVERAGE ===
+
 		levelFilters[1] = new TAdContractbaseFilter
+		levelFilters[1].SetAudience(0.0, lowestChannelQuotePrimeTime)
+		levelFilters[1].SetImage(0.0, lowestChannelImage)
+		levelFilters[1].SetSkipLimitedToProgrammeGenre()
+		levelFilters[1].SetSkipLimitedToTargetGroup()
+
+		'=== AVERAGE ===
+		levelFilters[2] = new TAdContractbaseFilter
 		'from 50% of avg to 150% of avg, may cross with lowest!
 		'levelFilters[1].SetAudience(0.5 * averageChannelQuote, Max(0.01, 1.5 * averageChannelQuote))
 		'weighted Minimum/Maximum (the more away from border, the
 		'stronger the influence)
-		local minAvg:Float = (0.7 * lowestChannelQuote + 0.3 * averageChannelQuote)
-		local maxAvg:Float = (0.3 * averageChannelQuote + 0.7 * highestChannelQuote)
-		levelFilters[1].SetAudience(minAvg, Max(0.01, maxAvg))
+		local minAvg:Float = (0.7 * lowestChannelQuoteDayTime + 0.3 * averageChannelQuoteDayTime)
+		local maxAvg:Float = (0.3 * averageChannelQuoteDayTime + 0.7 * highestChannelQuoteDayTime)
+		levelFilters[2].SetAudience(minAvg, Max(0.01, maxAvg))
 		'0-100% of average Image
-		levelFilters[1].SetImage(0, averageChannelImage)
+		levelFilters[2].SetImage(0, averageChannelImage)
+
+		levelFilters[3] = new TAdContractbaseFilter
+		minAvg = (0.7 * lowestChannelQuotePrimeTime + 0.3 * averageChannelQuotePrimeTime)
+		maxAvg = (0.3 * averageChannelQuotePrimeTime + 0.7 * highestChannelQuotePrimeTime)
+		levelFilters[3].SetAudience(minAvg, Max(0.01, maxAvg))
+		levelFilters[3].SetImage(0, averageChannelImage)
 
 		'=== HIGH ===
-		levelFilters[2] = new TAdContractbaseFilter
+		levelFilters[4] = new TAdContractbaseFilter
 		'from 50% of avg to 150% of highest, at least 1-3%
-		levelFilters[2].SetAudience(Max(0.01, 0.5 * highestChannelQuote), Max(0.02, 1.5 * highestChannelQuote))
+		levelFilters[4].SetAudience(Max(0.01, 0.5 * highestChannelQuoteDayTime), Max(0.03, 1.5 * highestChannelQuoteDayTime))
 		'0-100% of highest Image
-		levelFilters[2].SetImage(0, highestChannelImage)
+		levelFilters[4].SetImage(0, highestChannelImage)
 
+		levelFilters[5] = new TAdContractbaseFilter
+		levelFilters[5].SetAudience(Max(0.01, 0.5 * highestChannelQuotePrimeTime), Max(0.04, 1.5 * highestChannelQuotePrimeTime))
+		levelFilters[5].SetImage(0, highestChannelImage)
+
+
+		print "Cheap filter: " + cheapListFilter.ToString()
+		For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
+			if cheapListFilter.DoesFilter(a)
+				print "OK:   "+ a.GetTitle()
+			else
+'				print "FAIL: "+ a.GetTitle()
+			endif
+		Next
+		print "--------------"
+
+		for local i:int = 0 until 6
+			if i mod 2 = 0
+				print "Level "+i+" filter: " + levelFilters[i].ToString() + " [DAYTIME]"
+			else
+				print "Level "+i+" filter: " + levelFilters[i].ToString() + " [PRIMETIME]"
+			endif
+			For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
+				if levelFilters[i].DoesFilter(a)
+					print "OK:   "+ a.GetTitle() + "  (MinAudience="+MathHelper.NumberToString(100 * a.minAudienceBase,3)+"%  MinImage="+MathHelper.NumberToString(100 * a.minImage,3)+")"
+				else
+	'				print "FAIL: "+ a.GetTitle()
+				endif
+			Next
+			print "--------------"
+		next
+		
 rem
 print "REFILL:"
-print "level0:  audience "+"0.0"+" - "+lowestChannelQuote
+print "level0:  audience "+"0.0%"+" - "+MathHelper.NumberToString(100*lowestChannelQuote, 4)+"%"
 print "level0:  image    "+"0.0"+" - "+lowestChannelImage
-print "level1:  audience "+(0.5 * averageChannelQuote)+" - "+Max(0.01, 1.5 * averageChannelQuote)
+print "level1:  audience "+MathHelper.NumberToString(100 * (0.5 * averageChannelQuote),4)+"% - "+MathHelper.NumberToString(100 * Max(0.01, 1.5 * averageChannelQuote),4)+"%"
 print "level1:  image     0.00 - "+averageChannelImage
-print "level2:  audience "+(Max(0.01, 0.5 * highestChannelQuote))+" - "+Max(0.03, 1.5 * highestChannelQuote)
+print "level2:  audience "+MathHelper.NumberToString(100*(Max(0.01, 0.5 * highestChannelQuote)),4)+"% - "+MathHelper.NumberToString(100 * Max(0.03, 1.5 * highestChannelQuote),4)+"%"
 print "level2:  image     0.00 - "+highestChannelImage
 print "------------------"
 endrem
@@ -3276,12 +3335,45 @@ endrem
 				'if exists and is valid...skip it
 				if lists[j][i] and lists[j][i].base then continue
 
+				if lists[j] = listNormal
+					Select floor(i / 4)
+						case 2
+							'levelFilters[0 + 1]
+							if i mod 4 <= 1
+								contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[0]) )
+							else
+								contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[1]) )
+							endif
+							classification = 2
+						case 1
+							'levelFilters[2 + 3]
+							if i mod 4 <= 1
+								contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[2]) )
+							else
+								contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[3]) )
+							endif
+							classification = 3
+						case 0
+							'levelFilters[4 + 5]
+							if i mod 4 <= 1
+								contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[4]) )
+							else
+								contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[5]) )
+							endif
+							classification = 4
+					End Select
+				EndIf
+rem
 				'=== PLAYER ORIENTED LIST ===
 				if lists[j] = listNormal
 					Select (i mod 4)
 						case 0
-							'levelFilters[0]
-							contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[0]) )
+							'levelFilters[0 + 1]
+							if i mod 2 = 0
+								contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[0]) )
+							else
+								contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[1]) )
+							endif
 							classification = 2
 						case 1,2
 							'levelFilters[1]
@@ -3293,7 +3385,7 @@ endrem
 							classification = 4
 					End Select
 				endif
-
+endrem
 				'=== CHEAP LIST ===
 				if lists[j] = listCheap
 					contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(cheapListFilter) )

@@ -168,7 +168,7 @@ Type TDailyBroadcastStatistic
 
 	'returns the average of that days broadcasts audienceresults for the
 	'given player - or all
-	Method _GetAverageAudience:TAudience(owner:int = -1, broadcastedAsType:int = 0)
+	Method _GetAverageAudience:TAudience(owner:int = -1, broadcastedAsType:int = 0, skipHours:int[])
 		local checkPlayers:int[]
 		if owner <= 0
 			checkPlayers = [0,1,2,3]
@@ -180,21 +180,38 @@ Type TDailyBroadcastStatistic
 		local count:int = 0
 		local useAllAudiences:TAudienceResultBase[][] = GetAudienceArrayToUse(broadcastedAsType)
 		For local i:int = EachIn checkPlayers
+			local hour:int = 0
 			For local audienceResult:TAudienceResultBase = EachIn useAllAudiences[i]
+				if InIntArray(hour, skipHours)
+					hour :+ 1
+					continue
+				endif
+				
 				result.Add(audienceResult.audience)
 				count :+1
+				hour :+1
 			Next
 		Next
 		if count > 0 then result.DivideFloat(count)
 		return result
 	End Method
-	
+
+
+	Function InIntArray:int(number:int, arr:int[])
+		if not arr or arr.length = 0 then return False
+		
+		For local i:int = EachIn arr
+			if i = number then return True
+		Next
+		return False
+	End Function
+
 
 	'returns the best audience result of a specific owner/player
-	Method _GetBestAudience:TAudience(owner:Int, broadcastedAsType:int = 0)
+	Method _GetBestAudience:TAudience(owner:Int, broadcastedAsType:int = 0, skipHours:int[])
 		if owner <= 0 then return New TAudience
 	
-		local result:TAudienceResultBase = _GetBestAudienceResult(owner, broadcastedAsType)
+		local result:TAudienceResultBase = _GetBestAudienceResult(owner, broadcastedAsType, skipHours)
 		if result then return result.audience
 
 		return new TAudience
@@ -202,17 +219,25 @@ Type TDailyBroadcastStatistic
 
 
 	'returns the best audience result of a specific owner/player
-	Method _GetBestAudienceResult:TAudienceResultBase(owner:Int, broadcastedAsType:int = 0)
+	Method _GetBestAudienceResult:TAudienceResultBase(owner:Int, broadcastedAsType:int = 0, skipHours:int[])
 		if owner <= 0 then return New TAudienceResultBase
 		
 		local result:TAudienceResultBase
 		local useAllAudiences:TAudienceResultBase[][] = GetAudienceArrayToUse(broadcastedAsType)
+		local hour:int = 0
 		For local bestAudienceResult:TAudienceResultBase = EachIn useAllAudiences[owner-1]
+			if InIntArray(hour, skipHours)
+				hour :+ 1
+				continue
+			endif
+
 			if not result
 				result = bestAudienceResult
 			elseif bestAudienceResult.audience.GetSum() > result.audience.GetSum()
 				result = bestAudienceResult
 			endif
+
+			hour :+ 1
 		Next
 		return result
 	End Method
@@ -332,33 +357,53 @@ Type TDailyBroadcastStatistic
 
 
 	Method GetBestAudience:TAudience(owner:Int)
-		return _GetBestAudience(owner, TBroadcastMaterial.TYPE_PROGRAMME)
+		return _GetBestAudience(owner, TBroadcastMaterial.TYPE_PROGRAMME, null)
+	End Method
+
+
+	Method GetBestAudienceForHours:TAudience(owner:Int, skipHours:int[])
+		return _GetBestAudience(owner, TBroadcastMaterial.TYPE_PROGRAMME, skipHours)
 	End Method
 
 
 	Method GetBestAudienceResult:TAudienceResultBase(owner:Int)
-		return _GetBestAudienceResult(owner, TBroadcastMaterial.TYPE_PROGRAMME)
+		return _GetBestAudienceResult(owner, TBroadcastMaterial.TYPE_PROGRAMME, null)
 	End Method
 
 
 	Method GetBestNewsAudience:TAudience(owner:Int)
-		return _GetBestAudience(owner, TBroadcastMaterial.TYPE_NEWSSHOW)
+		return _GetBestAudience(owner, TBroadcastMaterial.TYPE_NEWSSHOW, null)
+	End Method
+
+
+	Method GetBestNewsAudienceForHours:TAudience(owner:Int, skipHours:int[])
+		return _GetBestAudience(owner, TBroadcastMaterial.TYPE_NEWSSHOW, skipHours)
 	End Method
 
 
 	Method GetBestNewsAudienceResult:TAudienceResultBase(owner:Int)
-		return _GetBestAudienceResult(owner, TBroadcastMaterial.TYPE_NEWSSHOW)
+		return _GetBestAudienceResult(owner, TBroadcastMaterial.TYPE_NEWSSHOW, null)
 	End Method
 
 
 
 	Method GetAverageAudience:TAudience(owner:int = -1)
-		return _GetAverageAudience(owner, TBroadcastMaterial.TYPE_PROGRAMME)
+		return _GetAverageAudience(owner, TBroadcastMaterial.TYPE_PROGRAMME, null)
+	End Method
+
+
+	Method GetAverageAudienceForHours:TAudience(owner:int = -1, skipHours:int[])
+		return _GetAverageAudience(owner, TBroadcastMaterial.TYPE_PROGRAMME, skipHours)
 	End Method
 
 
 	Method GetAverageNewsAudience:TAudience(owner:int = -1)
-		return _GetAverageAudience(owner, TBroadcastMaterial.TYPE_NEWSSHOW)
+		return _GetAverageAudience(owner, TBroadcastMaterial.TYPE_NEWSSHOW, null)
+	End Method
+
+
+	Method GetAverageNewsAudienceForHours:TAudience(owner:int = -1, skipHours:int[])
+		return _GetAverageAudience(owner, TBroadcastMaterial.TYPE_NEWSSHOW, skipHours)
 	End Method
 
 
