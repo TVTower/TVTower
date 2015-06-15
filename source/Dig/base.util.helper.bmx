@@ -253,7 +253,7 @@ Type THelper
 				Local fldId:TTypeId=fld.TypeId()
 
 				'ignore this field (eg. an auto-populated ID-field)
-				if skipFields.find(" "+fldId.name().toLower()+" ") then continue
+				if skipFields.find(" "+fld.name().toLower()+" ") >= 0 then continue
 
 				'only clone non-null-fields and if not explicitely forbidden
 				If fld.Get(obj) And fld.MetaData("NoClone") = Null
@@ -301,7 +301,7 @@ Type THelper
 			fldId = fld.TypeId()
 
 			'ignore this field (eg. an auto-populated ID-field)
-			if skipFields.find(" "+fldId.name().toLower()+" ") then continue
+			if skipFields.find(" "+fld.name().toLower()+" ") >= 0 then continue
 
 			tarFld = tarTypeID.FindField( fld.name() )
 			if tarFld
