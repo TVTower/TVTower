@@ -20,8 +20,13 @@ void lua_boxobject( lua_State *L,BBObject *obj ){
 BBObject *lua_unboxobject( lua_State *L,int index ){
 	void *p;
 	p=lua_touserdata( L,index );
+	if(!p) {
+		printf("LUA: unbox object invalid\n");
+		return &bbNullObject;
+	}
 	return *(BBObject**)p;
 }
+
 
 void lua_pushlightobject( lua_State *L,BBObject *obj ){
 	lua_pushlightuserdata( L,obj );

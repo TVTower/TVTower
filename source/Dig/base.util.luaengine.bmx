@@ -557,10 +557,12 @@ Type TLuaEngine
 	Method _Invoke:Int()
 		Local obj:Object = lua_unboxobject(getLuaState(), LUA_GLOBALSINDEX - 1)
 		Local funcOrMeth:TMember = TMember(lua_tolightobject(getLuaState(), LUA_GLOBALSINDEX - 2))
-		If Not TFunction(funcOrMeth) And Not TMethod(funcOrMeth) Then Throw "LuaEngine._Invoke() failed."
+		If Not TFunction(funcOrMeth) And Not TMethod(funcOrMeth) Then Throw "LuaEngine._Invoke() failed. No function/method given."
+		if Not obj then print "LuaEngine._Invoke() failed to run ~q"+funcOrMeth.name()+"~q. Invalid parent given."
 		Local func:TFunction = TFunction(funcOrMeth)
 		Local mth:TMethod = TMethod(funcOrMeth)
 		Local tys:TTypeId[]
+		
 		If func Then tys = func.ArgTypes()
 		If mth Then tys = mth.ArgTypes()
 		Local args:Object[tys.length]
@@ -577,6 +579,24 @@ Type TLuaEngine
 					args[i] = lua_tostring(getLuaState(), i + 1)
 				Default
 					args[i] = lua_unboxobject(getLuaState(), i + 1)
+rem
+					if lua_isnil(getLuaState(), i + 1)
+						'print "LUA: "+funcOrMeth.name()+"() got null param #"+i+"."
+						args[i] = null
+					elseif lua_isuserdata(getLuaState(), i + 1)
+						local obj:object = lua_unboxobject(getLuaState(), i + 1)
+						'given param derives from requested param type
+						if TTypeID.ForObject(obj).ExtendsType(tys[i])
+							args[i] = obj
+						else
+							print "LuaEngine._Invoke(): "+funcOrMeth.name()+"() got broken param #"+i+" (expected ~q"+tys[i].name()+"~q, got ~q"+TTypeID.ForObject(obj).name()+"~q). Falling back to ~qNull~q."
+							args[i] = null
+						endif
+					else
+						print "LuaEngine._Invoke(): "+funcOrMeth.name()+"() got broken param #"+i+" (expected ~q"+tys[i].name()+"~q). Falling back to ~qNull~q."
+						args[i] = null
+					endif
+endrem
 			End Select
 		Next
 
