@@ -153,9 +153,11 @@ Type THelper
 	'clones the given object
 	'function is calling itself recursively for each property
 	'returns the cloned object
-	Function CloneObject:object(obj:object)
+	Function CloneObject:object(obj:object, skipFields:string = "")
 		'clone code is based on the work of "Azathoth"
 		'http://www.blitzbasic.com/codearcs/codearcs.php?code=2132
+
+		skipFields = " " + skipFields.toLower() + " "
 
 		'skip cloning nothing
 		If obj = Null Then Return Null
@@ -250,6 +252,9 @@ Type THelper
 			For Local fld:TField=EachIn objTypeID.EnumFields()
 				Local fldId:TTypeId=fld.TypeId()
 
+				'ignore this field (eg. an auto-populated ID-field)
+				if skipFields.find(" "+fldId.name().toLower()+" ") then continue
+
 				'only clone non-null-fields and if not explicitely forbidden
 				If fld.Get(obj) And fld.MetaData("NoClone") = Null
 					'if explizitely stated, clone referenceable objects by
@@ -274,11 +279,13 @@ Type THelper
 
 	'assigns field properties of one object to another
 	'no deep cloning is done but "references" are copied
-	Function TakeOverObjectValues:object(source:object, target:object var)
+	Function TakeOverObjectValues:object(source:object, target:object var, skipFields:string="")
 		If source = Null
 			target = null
 			return null
 		EndIf
+
+		skipFields = " " + skipFields.toLower() + " "
 
 		'to access properties we need a TTypeID of the object
 		Local srcTypeID:TTypeId=TTypeId.ForObject(source)
@@ -292,6 +299,10 @@ Type THelper
 		Local tarFld:TField
 		For Local fld:TField = EachIn srcTypeID.EnumFields()
 			fldId = fld.TypeId()
+
+			'ignore this field (eg. an auto-populated ID-field)
+			if skipFields.find(" "+fldId.name().toLower()+" ") then continue
+
 			tarFld = tarTypeID.FindField( fld.name() )
 			if tarFld
 				tarFldId = tarfld.TypeId()

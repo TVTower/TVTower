@@ -872,7 +872,7 @@ Type TDatabaseLoader
 		if not programmeLicence
 			'try to clone the parent's data - if that fails, create
 			'a new instance
-			if parentLicence then programmeData = TProgrammeData(THelper.CloneObject(parentLicence.data))
+			if parentLicence then programmeData = TProgrammeData(THelper.CloneObject(parentLicence.data, "id"))
 			if not programmeData
 				programmeData = new TProgrammeData
 				'only set creator if it is the "non overridden" one
@@ -1069,7 +1069,7 @@ Type TDatabaseLoader
 		scriptTemplate = GetScriptTemplateCollection().GetByGUID(GUID)
 		if not scriptTemplate
 			'try to clone the parent, if that fails, create a new instance
-			if parentScriptTemplate then scriptTemplate = TScriptTemplate(THelper.CloneObject(parentScriptTemplate))
+			if parentScriptTemplate then scriptTemplate = TScriptTemplate(THelper.CloneObject(parentScriptTemplate, "id"))
 			if not scriptTemplate
 				scriptTemplate = new TScriptTemplate
 				'only set creator if it is the "non overridden" one
