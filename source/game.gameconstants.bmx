@@ -379,40 +379,39 @@ Type TVTProgrammeGenre {_exposeToLua}
 
 	Function GetByString:int(keyString:string = "")
 		Select keyString.toLower()	
-			case "adventure"		return ADVENTURE
-			case "action"			return ACTION
-			case "animation"		return ANIMATION
-			case "crime"			return CRIME
-			case "comedy"			return COMEDY
-			case "documentary"		return DOCUMENTARY
-			case "drama"			return DRAMA
-			case "erotic"			return EROTIC
-			case "family"			return FAMILY
-			case "fantasy"			return FANTASY
-			case "history"			return HISTORY
-			case "horror"			return HORROR
-			case "monumental"		return MONUMENTAL
-			case "mystery"			return MYSTERY
-			case "romance"			return ROMANCE
-			case "scifi"			return SCIFI
-			case "thriller"			return THRILLER
-			case "western"			return WESTERN
+			case "adventure"            return ADVENTURE
+			case "action"               return ACTION
+			case "animation"            return ANIMATION
+			case "crime"                return CRIME
+			case "comedy"               return COMEDY
+			case "documentary"          return DOCUMENTARY
+			case "drama"                return DRAMA
+			case "erotic"               return EROTIC
+			case "family"               return FAMILY
+			case "fantasy"              return FANTASY
+			case "history"              return HISTORY
+			case "horror"               return HORROR
+			case "monumental"           return MONUMENTAL
+			case "mystery"              return MYSTERY
+			case "romance"              return ROMANCE
+			case "scifi"                return SCIFI
+			case "thriller"             return THRILLER
+			case "western"              return WESTERN
 			'show-genre 100+
-			case show				return SHOW
-			case show_music			return SHOW_MUSIC
-			case show_politics		return SHOW_POLITICS
+			case "show"                 return SHOW
+			case "show_music"		    return SHOW_MUSIC
+			case "show_politics"	    return SHOW_POLITICS
 			'event-genre 200+
-			case event					return EVENT
-			case event_politics			return EVENT_POLITICS
-			case event_music			return EVENT_MUSIC
-			case event_sport			return EVENT_SPORT
-			case event_showbiz			return EVENT_SHOWBIZ
+			case "event"                return EVENT
+			case "event_politics"       return EVENT_POLITICS
+			case "event_music"          return EVENT_MUSIC
+			case "event_sport"          return EVENT_SPORT
+			case "event_showbiz"        return EVENT_SHOWBIZ
 			'reportage-genre 300+
-			case feature				return FEATURE
-			case feature_yellowpress	return FEATURE_YELLOWPRESS
+			case "feature"              return FEATURE
+			case "feature_yellowpress"  return FEATURE_YELLOWPRESS
 
-			case undefined			return UNDEFINED
-			default					return UNDEFINED
+			default                     return UNDEFINED
 		End Select
 	End Function
 

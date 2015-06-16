@@ -461,7 +461,6 @@ Type TRegistryGenresLoader extends TRegistryBaseLoader
 			local followers:string[] = data.GetString("goodFollower").split(",")
 			For local i:int = 0 until followers.length
 				if int(followers[i]) = followers[i].trim() then continue
-				print "check: ~q"+followers[i]+"~q   ~q"+int(followers[i])+"~q <> ~q"+followers[i]+"~q"
 				local follower:int = TVTProgrammeGenre.GetByString(followers[i])
 				if follower = TVTProgrammeGenre.UNDEFINED
 					print "INVALID GOODFOLLOWER GENRE: "+followers[i]
