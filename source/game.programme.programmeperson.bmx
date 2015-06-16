@@ -94,6 +94,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 	'array containing GUIDs of all programmes 
 	Field producedProgrammes:string[]
 
+	Field channelSympathy:Float[4]
+
 	Field xp:int = 0
 	Const MAX_XP:int = 10000
 	
@@ -120,32 +122,82 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 
 	'the base fee when engaged as actor
-	Method GetActorBaseFee:Int()
+	'base might differ depending on sympathy for channel
+	Method GetActorBaseFee:Int(channel:int=-1)
 		'TODO: überarbeiten
 		'(50 - 650)
 		local sum:float = 50 + 100*(power + humor + charisma + appearance + 2*skill)
 		Local factor:Float = (fame*0.8 + scandalizing*0.2)
+
+		local sympathyMod:Float = 1.0
+		'modify by up to 50% ...
+		if channel >= 0 then sympathyMod :- 0.5 * GetChannelSympathy(channel)
 		
-		Return 3000 + Floor(Int(800 * sum * factor * priceModifier)/100)*100
+		Return sympathyMod * (3000 + Floor(Int(800 * sum * factor * priceModifier)/100)*100)
 	End Method
 
 	
 	'the base fee when engaged as a guest in a show
-	Method GetGuestFee:Int()
+	'base might differ depending on sympathy for channel
+	Method GetGuestFee:Int(channel:int=-1)
 		'TODO: überarbeiten
 		local sum:float = 100 + 200*(fame*2 + scandalizing*0.5 + humor*0.3 + charisma*0.3 + appearance*0.3 + skill)
-		Return 100 + Floor(Int(sum * priceModifier)/100)*100
+
+		local sympathyMod:Float = 1.0
+		'modify by up to 50% ...
+		if channel >= 0 then sympathyMod :- 0.5 * GetChannelSympathy(channel)
+
+		Return sympathyMod * (100 + Floor(Int(sum * priceModifier)/100)*100)
 	End Method
 
 
-	Method FinishProduction:int(programme:TProgrammeData)
+	Method FinishProduction:int(programmeData:TProgrammeData)
 		'already added
-		if StringHelper.InArray(programme.GetGUID(), producedProgrammes, False) then return False
+		if StringHelper.InArray(programmeData.GetGUID(), producedProgrammes, False) then return False
 
 		'gain experience
+		xp :+ GetNextExperienceGain(programmeData)
+		
 
 		'add programme
-		producedProgrammes :+ [programme.GetGUID()]
+		producedProgrammes :+ [programmeData.GetGUID()]
+	End Method
+
+
+	Method SetChannelSympathy:int(channel:int, newSympathy:float)
+		if channel < 0 or channel >= channelSympathy.length then return False
+
+		channelSympathy[channel -1] = newSympathy
+	End Method
+
+
+	Method GetChannelSympathy:float(channel:int)
+		if channel < 0 or channel >= channelSympathy.length then return 0.0
+
+		return channelSympathy[channel -1]
+	End Method
+	
+
+	Method GetExperience:Float()
+		return xp
+	End Method
+
+
+	Method GetExperiencePercentage:Float()
+		return xp / float(MAX_XP)
+	End Method
+
+
+	Method GetNextExperienceGain:int(programmeData:TProgrammeData)
+		'10 perfect movies would lead to a 100% experienced person
+		local baseGain:float = 1000 * programmeData.GetQualityRaw()
+
+		'the more XP we have, the harder it gets
+		if xp <  500 then return 1.0 * baseGain
+		if xp < 1000 then return 0.8 * baseGain
+		if xp < 2500 then return 0.6 * baseGain
+		if xp < 5000 then return 0.4 * baseGain
+		return 0.2 * baseGain
 	End Method
 
 End Type

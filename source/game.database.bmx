@@ -1049,6 +1049,14 @@ endrem
 		'licence ... so add this specific programmeData to the global
 		'data collection
 		GetProgrammeDataCollection().Add(programmeData)
+		'also set the programme as "finished" and inform cast (for level ups)
+		For local job:TProgrammePersonJob = eachIn programmeData.GetCast()
+			'only "celebrities" might level up...
+			if TProgrammePerson(job.person)
+				TProgrammePerson(job.person).FinishProduction(programmeData)
+			endif
+		Next
+
 
 		programmeLicence.SetOwner(TOwnedGameObject.OWNER_NOBODY)
 
