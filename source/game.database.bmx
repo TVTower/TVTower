@@ -137,14 +137,15 @@ Type TDatabaseLoader
 		
 		'load according to version
 		Select version
-			case 2	LoadV2(xml)
+'			case 2	LoadV2(xml)
+			case 2	TLogger.log("TDatabase.Load()", "CANNOT LOAD DB ~q" + fileURI + "~q (version "+version+") - version 2 is deprecated. Upgrade to V3 please." , LOG_LOADING)
 			case 3	LoadV3(xml)
 			Default	TLogger.log("TDatabase.Load()", "CANNOT LOAD DB ~q" + fileURI + "~q (version "+version+") - UNKNOWN VERSION." , LOG_LOADING)
 		End Select
 	End Method
 
 
-
+rem
 	Method LoadV2:Int(xml:TXmlHelper)
 		stopWatch.Init()
 
@@ -466,7 +467,7 @@ Type TDatabaseLoader
 		Next
 		TLogger.log("TDatabase.Load()", "Loaded DB ~q" + xml.filename + "~q (version 2). Found " + seriesCount + " series, " + moviesCount + " movies, " + contractsCount + " advertisements, " + newsCount + " news. loading time: " + stopWatch.GetTime() + "ms", LOG_LOADING)
 	End Method
-
+endrem
 
 	Method LoadV3:Int(xml:TXmlHelper)
 		stopWatch.Init()
