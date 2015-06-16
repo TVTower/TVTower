@@ -758,7 +758,7 @@
             <functions>
                 <function>2</function>
             </functions>
-            <details gender="0"  birthday="1946" deathday="" country="D" />
+            <details gender="2"  birthday="1946" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_2" tmdb_id="0" imdb_id="" creator="">
@@ -768,7 +768,7 @@
             <functions>
                 <function>1</function>
             </functions>
-            <details gender="0"  birthday="1984" deathday="" country="UK" />
+            <details gender="2"  birthday="1984" deathday="" country="UK" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_3" tmdb_id="0" imdb_id="" creator="">
@@ -778,7 +778,7 @@
             <functions>
                 <function>2</function>
             </functions>
-            <details gender="0"  birthday="1979" deathday="" country="D" />
+            <details gender="2"  birthday="1979" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_4" tmdb_id="0" imdb_id="" creator="">
@@ -788,7 +788,7 @@
             <functions>
                 <function>1</function>
             </functions>
-            <details gender="0"  birthday="1987" deathday="" country="D" />
+            <details gender="2"  birthday="1987" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_5" tmdb_id="0" imdb_id="" creator="">
@@ -798,7 +798,7 @@
             <functions>
                 <function>1</function>
             </functions>
-            <details gender="0"  birthday="1976" deathday="" country="AUT" />
+            <details gender="2"  birthday="1976" deathday="" country="AUT" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_6" tmdb_id="0" imdb_id="" creator="">
@@ -808,7 +808,7 @@
             <functions>
                 <function>2</function>
             </functions>
-            <details gender="0"  birthday="1981" deathday="" country="D" />
+            <details gender="2"  birthday="1981" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_7" tmdb_id="0" imdb_id="" creator="">
@@ -818,7 +818,7 @@
             <functions>
                 <function>1</function>
             </functions>
-            <details gender="0"  birthday="1971" deathday="" country="D" />
+            <details gender="2"  birthday="1971" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_8" tmdb_id="0" imdb_id="" creator="">
@@ -828,7 +828,7 @@
             <functions>
                 <function>2</function>
             </functions>
-            <details gender="0"  birthday="1978" deathday="" country="D" />
+            <details gender="2"  birthday="1978" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_9" tmdb_id="0" imdb_id="" creator="">
@@ -838,7 +838,7 @@
             <functions>
                 <function>1</function>
             </functions>
-            <details gender="0"  birthday="1983" deathday="" country="D" />
+            <details gender="2"  birthday="1983" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_10" tmdb_id="0" imdb_id="" creator="">
@@ -848,7 +848,7 @@
             <functions>
                 <function>1</function>
             </functions>
-            <details gender="0"  birthday="1960" deathday="" country="D" />
+            <details gender="2"  birthday="1960" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_11" tmdb_id="0" imdb_id="" creator="">
@@ -858,7 +858,7 @@
             <functions>
                 <function>1</function>
             </functions>
-            <details gender="1"  birthday="1980" deathday="" country="D" />
+            <details gender="1"  birthday="1980" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_12" tmdb_id="0" imdb_id="" creator="">
@@ -868,7 +868,7 @@
             <functions>
                 <function>1</function>
             </functions>
-            <details gender="1"  birthday="1962" deathday="" country="D" />
+            <details gender="1"  birthday="1962" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_13" tmdb_id="0" imdb_id="" creator="">
@@ -878,7 +878,7 @@
             <functions>
                 <function>1</function>
             </functions>
-            <details gender="1"  birthday="1940" deathday="" country="D" />
+            <details gender="1"  birthday="1940" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_14" tmdb_id="0" imdb_id="" creator="">
@@ -888,7 +888,7 @@
             <functions>
                 <function>1</function>
             </functions>
-            <details gender="1"  birthday="1976" deathday="" country="D" />
+            <details gender="1"  birthday="1976" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_15" tmdb_id="0" imdb_id="" creator="">
@@ -898,7 +898,7 @@
             <functions>
                 <function>2</function>
             </functions>
-            <details gender="1"  birthday="1953" deathday="" country="DK" />
+            <details gender="1"  birthday="1953" deathday="" country="DK" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_16" tmdb_id="0" imdb_id="" creator="">
@@ -908,7 +908,7 @@
             <functions>
                 <function>1</function>
             </functions>
-            <details gender="1"  birthday="1982" deathday="" country="D" />
+            <details gender="1"  birthday="1982" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_17" tmdb_id="0" imdb_id="" creator="">
@@ -918,7 +918,7 @@
             <functions>
                 <function>2</function>
             </functions>
-            <details gender="1"  birthday="1974" deathday="" country="D" />
+            <details gender="1"  birthday="1974" deathday="" country="D"  fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_18" tmdb_id="0" imdb_id="" creator="">
@@ -928,7 +928,7 @@
             <functions>
                 <function>1</function>
             </functions>
-            <details gender="1"  birthday="1985" deathday="" country="D" />
+            <details gender="1"  birthday="1985" deathday="" country="D" fictional="1"  />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_19" tmdb_id="0" imdb_id="" creator="">
@@ -938,7 +938,7 @@
             <functions>
                 <function>1</function>
             </functions>
-            <details gender="1"  birthday="1970" deathday="" country="D" />
+            <details gender="1"  birthday="1970" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_20" tmdb_id="0" imdb_id="" creator="">
@@ -948,7 +948,7 @@
             <functions>
                 <function>1</function>
             </functions>
-            <details gender="1"  birthday="1968" deathday="" country="D" />
+            <details gender="1"  birthday="1968" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
     </celebritypeople>

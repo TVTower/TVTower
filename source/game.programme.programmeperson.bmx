@@ -151,16 +151,20 @@ Type TProgrammePerson extends TProgrammePersonBase
 	End Method
 
 
-	Method FinishProduction:int(programmeData:TProgrammeData)
+	'override to extend with xp gain
+	Method FinishProduction:int(programmeDataGUID:string)
+		Super.FinishProduction(programmeDataGUID)
+		
+		local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(programmeDataGUID)
 		'already added
-		if StringHelper.InArray(programmeData.GetGUID(), producedProgrammes, False) then return False
+		if StringHelper.InArray(programmeDataGUID, producedProgrammes, False) then return False
 
 		'gain experience
 		xp :+ GetNextExperienceGain(programmeData)
 		
 
 		'add programme
-		producedProgrammes :+ [programmeData.GetGUID()]
+		producedProgrammes :+ [programmeDataGUID]
 	End Method
 
 

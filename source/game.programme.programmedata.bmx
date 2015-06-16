@@ -270,7 +270,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		local newCast:TProgrammePersonJob[]
 		for local j:TProgrammePersonJob = EachIn cast
 			'skip our job
-			if job.person = j.person and job.job = j.job then continue
+			if job.personGUID = j.personGUID and job.job = j.job then continue
 			'add rest
 			newCast :+ [j]
 		Next
@@ -283,7 +283,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		'do not check job against jobs in the list, as only the
 		'content might be the same but the job a duplicate
 		For local doneJob:TProgrammePersonJob = EachIn cast
-			if job.person <> doneJob.person then continue 
+			if job.personGUID <> doneJob.personGUID then continue 
 			if job.job <> doneJob.job then continue 
 			if job.roleGUID <> doneJob.roleGUID then continue
 
@@ -307,7 +307,9 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Method GetCastGroup:TProgrammePersonBase[](jobFlag:int)
 		local res:TProgrammePersonBase[0]
 		For local job:TProgrammePersonJob = EachIn cast
-			if job.job = jobFlag then res :+ [job.person]
+			if job.job = jobFlag
+				res :+ [ GetProgrammePersonBaseCollection().GetByGUID(job.personGUID) ]
+			endif
 		Next
 		return res
 	End Method
@@ -327,7 +329,9 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Method GetActors:TProgrammePersonBase[]()
 		if cachedActors.length = 0
 			For local job:TProgrammePersonJob = EachIn cast
-				if job.job = TVTProgrammePersonJob.ACTOR then cachedActors :+ [job.person]
+				if job.job = TVTProgrammePersonJob.ACTOR
+					cachedActors :+ [ GetProgrammePersonBaseCollection().GetByGUID(job.personGUID) ]
+				endif
 			Next
 		endif
 		
@@ -338,7 +342,9 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Method GetDirectors:TProgrammePersonBase[]()
 		if cachedDirectors.length = 0
 			For local job:TProgrammePersonJob = EachIn cast
-				if job.job = TVTProgrammePersonJob.DIRECTOR then cachedDirectors :+ [job.person]
+				if job.job = TVTProgrammePersonJob.DIRECTOR
+					cachedDirectors :+ [ GetProgrammePersonBaseCollection().GetByGUID(job.personGUID) ]
+				endif
 			Next
 		endif
 		
@@ -540,10 +546,11 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 						result = result.replace("["+i+"|Nick]", "John")
 						result = result.replace("["+i+"|Last]", "Doe")
 					else
-						result = result.replace("["+i+"|Full]", job.person.GetFullName())
-						result = result.replace("["+i+"|First]", job.person.GetFirstName())
-						result = result.replace("["+i+"|Nick]", job.person.GetNickName())
-						result = result.replace("["+i+"|Last]", job.person.GetLastName())
+						local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID( job.personGUID )
+						result = result.replace("["+i+"|Full]", person.GetFullName())
+						result = result.replace("["+i+"|First]", person.GetFirstName())
+						result = result.replace("["+i+"|Nick]", person.GetNickName())
+						result = result.replace("["+i+"|Last]", person.GetLastName())
 					endif
 				Next
 			endif

@@ -610,13 +610,14 @@ endrem
 		'=== COMMON DETAILS ===
 		local data:TData = new TData
 		xml.LoadValuesToData(node, data, [..
-			"first_name", "last_name", "nick_name", "fictional" ..
+			"first_name", "last_name", "nick_name", "fictional", "levelup" ..
 		])
 
 		person.firstName = data.GetString("first_name", person.firstName)
 		person.lastName = data.GetString("last_name", person.lastName)
 		person.nickName = data.GetString("nick_name", person.nickName)
 		person.fictional = data.GetInt("fictional", person.fictional)
+		person.canLevelUp = data.GetInt("levelup", person.canLevelUp)
 
 
 		'=== CELEBRITY SPECIFIC DATA ===
@@ -955,7 +956,7 @@ endrem
 
 			local member:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID(memberGUID)
 			'if person was defined add the given job
-			if member Then programmeData.AddCast(new TProgrammePersonJob.Init(member, memberFunction))
+			if member Then programmeData.AddCast(new TProgrammePersonJob.Init(memberGUID, memberFunction))
 		Next
 
 
@@ -1051,10 +1052,8 @@ endrem
 		GetProgrammeDataCollection().Add(programmeData)
 		'also set the programme as "finished" and inform cast (for level ups)
 		For local job:TProgrammePersonJob = eachIn programmeData.GetCast()
-			'only "celebrities" might level up...
-			if TProgrammePerson(job.person)
-				TProgrammePerson(job.person).FinishProduction(programmeData)
-			endif
+			local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID( job.personGUID )
+			if person then person.FinishProduction(programmeData.GetGUID())
 		Next
 
 
@@ -1227,7 +1226,7 @@ endrem
 			local jobRoleGUID:string = xml.FindValue(nodeJob, "role_guid", "")
 
 			'create a job without an assigned person
-			local job:TProgrammePersonJob = new TProgrammePersonJob.Init(null, jobFunction, jobGender, jobCountry, jobRoleGUID)
+			local job:TProgrammePersonJob = new TProgrammePersonJob.Init("", jobFunction, jobGender, jobCountry, jobRoleGUID)
 			if jobRequired = 0
 				'check if the job has to override an existing one
 				if jobIndex >= 0 and scriptTemplate.GetRandomJobAtIndex(jobIndex)

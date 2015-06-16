@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
 	<version value="3" comment="Ronnys Programme" />
-	<insignificantpeople>
-		<person id="ronny-person-amateurs-01" first_name="" last_name="Laiendarsteller" nick_name="Laiendarsteller" />
-	</insignificantpeople>
 	
 	<allprogrammes>
 		<programme id="ronny-programme-pantoffeln-01" product="1" fictional="1" creator="5578" created_by="Ronny">
@@ -126,7 +123,7 @@
 				<!-- klaus grobe -->
 				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
 				<!-- Laiendarsteller -->
-				<member index="0" function="2">ronny-person-amateurs-01</member>
+				<member index="0" function="2">common-amateur-actors</member>
 			</staff>
 			<groups target_groups="0" />
 			<data country="D" year="1982" distribution="0" maingenre="0" blocks="1" />

@@ -67,8 +67,8 @@ Type TProgrammePersonBaseCollection
 	End Method
 
 
-	Method GetRandomCelebrity:TProgrammePersonBase(array:TProgrammePersonBase[] = null)
-		if array = Null or array.length = 0 then array = GetAllCelebritiesAsArray()
+	Method GetRandomCelebrity:TProgrammePersonBase(array:TProgrammePersonBase[] = null, onlyFictional:int = False)
+		if array = Null or array.length = 0 then array = GetAllCelebritiesAsArray(onlyFictional)
 		If array.length = 0 Then Return Null
 
 		'randRange - so it is the same over network
@@ -76,10 +76,11 @@ Type TProgrammePersonBaseCollection
 	End Method
 
 
-	Method GetAllCelebritiesAsArray:TProgrammePersonBase[]()
+	Method GetAllCelebritiesAsArray:TProgrammePersonBase[](onlyFictional:int = False)
 		local array:TProgrammePersonBase[]
 		'create a full array containing all elements
 		For local obj:TProgrammePersonBase = EachIn celebrities.Values()
+			if onlyFictional and not obj.fictional then continue
 			array :+ [obj]
 		Next
 		return array
@@ -95,6 +96,7 @@ Type TProgrammePersonBaseCollection
 		Next
 		return insignificantCount
 	End Method
+
 
 	Method GetCelebrityCount:Int()
 		if celebritiesCount >= 0 then return celebritiesCount
@@ -160,6 +162,9 @@ Type TProgrammePersonBase extends TGameObject
 	field firstName:String = ""
 	field nickName:String = ""
 	field job:int = 0
+	'indicator for potential "upgrades" to become a celebrity
+	field jobsDone:int = 0
+	field canLevelUp:int = True
 	'is this an real existing person or someone we imaginated for the game?
 	field fictional:int = False
 	'id of the creating user
@@ -224,6 +229,11 @@ Type TProgrammePersonBase extends TGameObject
 		if self.lastName<>"" then return self.firstName + " " + self.lastName
 		return self.firstName
 	End Method
+
+
+	Method FinishProduction:int(programmeDataGUID:string)
+		jobsDone :+ 1
+	End Method
 End Type
 
 
@@ -231,7 +241,11 @@ End Type
 
 'role/function a person had in a movie/series
 Type TProgrammePersonJob
-	Field person:TProgrammePersonBase
+	'the person having done this job
+	'using the GUID instead of "TProgrammePersonBase" allows to upgrade
+	'a "normal" person to a "celebrity"
+	Field personGUID:string
+
 	'job is a bitmask for values defined in TVTProgrammePersonJob
 	Field job:int = 0
 	'maybe only female directors are allowed?
@@ -243,8 +257,8 @@ Type TProgrammePersonJob
 	Field roleGUID:string = ""
 
 
-	Method Init:TProgrammePersonJob(person:TProgrammePersonBase, job:int, gender:int=0, country:string="", roleGUID:string="")
-		self.person = person
+	Method Init:TProgrammePersonJob(personGUID:string, job:int, gender:int=0, country:string="", roleGUID:string="")
+		self.personGUID = personGUID
 		self.job = job
 		self.gender = gender
 		self.country = country
@@ -257,7 +271,7 @@ Type TProgrammePersonJob
 
 	Method IsSimilar:int(otherJob:TProgrammePersonJob)
 		if job <> otherJob.job then return False
-		if person <> otherJob.person then return False 
+		if personGUID <> otherJob.personGUID then return False 
 		if roleGUID <> otherJob.roleGUID then return False
 		if gender <> otherJob.gender then return False
 		if country <> otherJob.country then return False

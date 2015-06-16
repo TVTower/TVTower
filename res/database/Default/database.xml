@@ -5879,7 +5879,7 @@ Tragische Liebesgeschichte</de>
 			</description>
 			<staff>
 				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
-				<member index="1" function="2">35e638ec-dca1-43cf-8934-bfab2aaf7695</member>
+				<member index="1" function="2">common-amateur-actors</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="2009" distribution="0" maingenre="301" subgenre="0" flags="0" blocks="1" time="0" price_mod="0.2" />
@@ -6843,7 +6843,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<functions>
 				<function>2</function>
 			</functions>
-			<details gender="0" birthday="" deathday="" country="" fictional="1" />
+			<details gender="2" birthday="1961" deathday="" country="D" fictional="1" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="1cac5a80-97dc-46f6-8c34-761c4fe43db5" tmdb_id="0" imdb_id="" creator="">
@@ -8916,6 +8916,9 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		</person>
 	</celebritypeople>
 	<insignificantpeople>
+		<person id="common-amateur-actors" first_name="" last_name="Laiendarsteller" nick_name="Laiendarsteller" fictional="1" levelup="0" />
+		<person id="common-amateur-director" first_name="" last_name="Regiepraktikant" nick_name="Regiepraktikant" fictional="1" levelup="0" />
+
 		<person id="1994aa3a-23c3-48ce-b20a-d1f021df8c63" first_name="Königin Svetlana von Schweden und ein Arbeitsloser namens" last_name="&quot;Groggy&quot;" nick_name="" />
 		<person id="62dcc893-538b-4fe7-8ac6-daf063185d73" first_name="Ötzi" last_name="Altmann." nick_name="" />
 		<person id="f14d6ba0-0db5-4a76-a4d3-daba1603e4f6" first_name="Archie" last_name="Arbeitslos" nick_name="" />
@@ -8939,9 +8942,8 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<person id="bc0c3538-0186-48de-a074-9851c00d4cdd" first_name="Klaus-Jürgen" last_name="Klüppisch" nick_name="" />
 		<person id="24967622-b169-4413-90df-6dc574464b65" first_name="Kalle" last_name="Knall" nick_name="" />
 		<person id="13ce58ce-216d-4f5c-a9ca-bed86eef67e3" first_name="Kalle" last_name="Knausrig" nick_name="" />
-		<person id="35e638ec-dca1-43cf-8934-bfab2aaf7695" first_name="" last_name="Laiendarsteller" nick_name="" />
 		<person id="4bd36da9-4f07-4067-af4a-01ff5175ad73" first_name="Ulfs" last_name="Maul" nick_name="" />
-		<person id="9104f9c1-7a0f-4bc0-a34c-389ce282eebf" first_name="Ronny" last_name="Otto" nick_name="" />
+		<person id="9104f9c1-7a0f-4bc0-a34c-389ce282eebf" first_name="Ronny" last_name="Otto" nick_name="" fictional="1" />
 		<person id="c1543aab-18a4-44ad-be31-34bc1c972553" first_name="Santiago `de Chile´" last_name="Perez" nick_name="" />
 		<person id="22274e45-da7e-4fb2-8698-3a2364973e1a" first_name="Matthias" last_name="Pfeife" nick_name="" />
 		<person id="afa8d190-c907-4fcf-9c34-d55136ab3c99" first_name="Mariusz" last_name="Plauz" nick_name="" />

@@ -334,7 +334,7 @@ Type TScriptTemplate Extends TScriptBase
 
 	Method HasRandomJob:int(job:TProgrammePersonJob)
 		For local doneJob:TProgrammePersonJob = EachIn randomJobs
-			if job.person <> doneJob.person then continue 
+			if job.personGUID <> doneJob.personGUID then continue 
 			if job.job <> doneJob.job then continue 
 			if job.roleGUID <> doneJob.roleGUID then continue
 
