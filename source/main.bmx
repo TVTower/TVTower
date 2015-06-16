@@ -859,7 +859,7 @@ Type TGameState
 	Field _ScriptTemplateCollection:TScriptTemplateCollection = Null
 	Field _ScriptCollection:TScriptCollection = Null
 	Field _ProgrammeRoleCollection:TProgrammeRoleCollection = Null
-	Field _ProgrammePersonCollection:TProgrammePersonCollection = Null
+	Field _ProgrammePersonBaseCollection:TProgrammePersonBaseCollection = Null
 	Field _ProgrammeDataCollection:TProgrammeDataCollection = Null
 	Field _ProgrammeLicenceCollection:TProgrammeLicenceCollection = Null
 
@@ -903,7 +903,7 @@ Type TGameState
 		GetScriptTemplateCollection().Initialize()
 		GetScriptCollection().Initialize()
 		GetProgrammeRoleCollection().Initialize()
-		GetProgrammePersonCollection().Initialize()
+		GetProgrammePersonBaseCollection().Initialize()
 		GetProgrammeDataCollection().Initialize()
 		GetProgrammeLicenceCollection().Initialize()
 		GetNewsEventCollection().Initialize()
@@ -941,7 +941,7 @@ Type TGameState
 		_Assign(_ScriptTemplateCollection, TScriptTemplateCollection._instance, "ScriptTemplateCollection", MODE_LOAD)
 		_Assign(_ScriptCollection, TScriptCollection._instance, "ScriptCollection", MODE_LOAD)
 		_Assign(_ProgrammeRoleCollection, TProgrammeRoleCollection._instance, "ProgrammeRoleCollection", MODE_LOAD)
-		_Assign(_ProgrammePersonCollection, TProgrammePersonCollection._instance, "ProgrammePersonCollection", MODE_LOAD)
+		_Assign(_ProgrammePersonBaseCollection, TProgrammePersonBaseCollection._instance, "ProgrammePersonBaseCollection", MODE_LOAD)
 		_Assign(_ProgrammeDataCollection, TProgrammeDataCollection._instance, "ProgrammeDataCollection", MODE_LOAD)
 		_Assign(_ProgrammeLicenceCollection, TProgrammeLicenceCollection._instance, "ProgrammeLicenceCollection", MODE_LOAD)
 
@@ -992,7 +992,7 @@ Type TGameState
 		_Assign(TScriptTemplateCollection._instance, _ScriptTemplateCollection, "ScriptTemplateCollection", MODE_SAVE)
 		_Assign(TScriptCollection._instance, _ScriptCollection, "ScriptCollection", MODE_SAVE)
 		'database data for persons and their roles
-		_Assign(TProgrammePersonCollection._instance, _ProgrammePersonCollection, "ProgrammePersonCollection", MODE_SAVE)
+		_Assign(TProgrammePersonBaseCollection._instance, _ProgrammePersonBaseCollection, "ProgrammePersonBaseCollection", MODE_SAVE)
 		_Assign(TProgrammeRoleCollection._instance, _ProgrammeRoleCollection, "ProgrammeRoleCollection", MODE_SAVE)
 
 		'database data for programmes

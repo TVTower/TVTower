@@ -1,15 +1,9 @@
 SuperStrict
-Import Brl.Map
-Import Brl.Math
-Import "Dig/base.util.mersenne.bmx"
-Import "game.gameobject.bmx"
-Import "game.programme.programmerole.bmx"
+Import "game.programme.programmeperson.base.bmx"
+Import "game.programme.programmedata.bmx"
 
-Type TProgrammePersonCollection
-	Field insignificant:TMap = CreateMap()
-	Field celebrities:TMap = CreateMap()
-	Field insignificantCount:int = -1 {nosave}
-	Field celebritiesCount:int = -1 {nosave}
+rem
+Type TProgrammePersonCollection extends TProgrammePersonBaseCollection
 	Global _instance:TProgrammePersonCollection
 
 
@@ -17,17 +11,6 @@ Type TProgrammePersonCollection
 		if not _instance then _instance = new TProgrammePersonCollection
 		return _instance
 	End Function
-
-
-	Method Initialize:TProgrammePersonCollection()
-		insignificant.Clear()
-		insignificantCount = -1
-
-		celebrities.Clear()
-		celebritiesCount = -1
-
-		return self
-	End Method
 
 
 	Method GetByGUID:TProgrammePersonBase(GUID:String)
@@ -48,20 +31,6 @@ Type TProgrammePersonCollection
 	End Method
 
 
-	'deprecated - used for v2-database
-	Method GetCelebrityByName:TProgrammePerson(firstName:string, lastName:string)
-		firstName = firstName.toLower()
-		lastName = lastName.toLower()
-
-		For local person:TProgrammePerson = eachin celebrities.Values()
-			if person.firstName.toLower() <> firstName then continue
-			if person.lastName.toLower() <> lastName then continue
-			return person
-		Next
-		return Null
-	End Method
-
-
 	Method GetRandomCelebrity:TProgrammePerson(array:TProgrammePerson[] = null)
 		if array = Null or array.length = 0 then array = GetAllCelebritiesAsArray()
 		If array.length = 0 Then Return Null
@@ -79,147 +48,13 @@ Type TProgrammePersonCollection
 		Next
 		return array
 	End Method
-
-
-	Method GetInsignificantCount:Int()
-		if insignificantCount >= 0 then return insignificantCount
-
-		insignificantCount = 0
-		For Local person:TProgrammePersonBase = EachIn insignificant.Values()
-			insignificantCount :+1
-		Next
-		return insignificantCount
-	End Method
-
-	Method GetCelebrityCount:Int()
-		if celebritiesCount >= 0 then return celebritiesCount
-
-		celebritiesCount = 0
-		For Local person:TProgrammePersonBase = EachIn celebrities.Values()
-			celebritiesCount :+1
-		Next
-		return celebritiesCount
-	End Method
-
-
-	Method RemoveInsignificant:int(person:TProgrammePersonBase)
-		if person.GetGuid() and insignificant.Remove(person.GetGUID())
-			'invalidate count
-			insignificantCount = -1
-
-			return True
-		endif
-
-		return False
-	End Method
-	
-	Method RemoveCelebrity:int(person:TProgrammePersonBase)
-		if person.GetGuid() and celebrities.Remove(person.GetGUID())
-			'invalidate count
-			celebritiesCount = -1
-
-			return True
-		endif
-
-		return False
-	End Method
-	
-
-	Method AddInsignificant:int(person:TProgrammePersonBase)
-		insignificant.Insert(person.GetGUID(), person)
-		'invalidate count
-		insignificantCount = -1
-
-		return TRUE
-	End Method
-
-	Method AddCelebrity:int(person:TProgrammePersonBase)
-		celebrities.Insert(person.GetGUID(), person)
-		'invalidate count
-		celebritiesCount = -1
-
-		return TRUE
-	End Method
 End Type
 '===== CONVENIENCE ACCESSOR =====
 'return collection instance
 Function GetProgrammePersonCollection:TProgrammePersonCollection()
 	Return TProgrammePersonCollection.GetInstance()
 End Function
-
-
-
-
-Type TProgrammePersonBase extends TGameObject
-	field lastName:String = ""
-	field firstName:String = ""
-	field nickName:String = ""
-	field job:int = 0
-	'is this an real existing person or someone we imaginated for the game?
-	field fictional:int = False
-	'id of the creating user
-	Field creator:Int = 0
-	'name of the creating user
-	Field createdBy:String = ""
-
-
-	'override to add another generic naming
-	Method SetGUID:Int(GUID:String)
-		if GUID="" then GUID = "programmeperson-"+id
-		self.GUID = GUID
-	End Method
-
-
-	Method AddJob:int(job:int)
-		'already done?
-		if self.job & job then return FALSE
-
-		'add job
-		self.job :| job
-	End Method
-
-
-	Method HasJob:int(job:int)
-		return self.job & job
-	End Method
-
-
-	Method SetFirstName:Int(firstName:string)
-		self.firstName = firstName
-	End Method
-
-
-	Method SetLastName:Int(lastName:string)
-		self.lastName = lastName
-	End Method
-
-
-	Method SetNickName:Int(nickName:string)
-		self.nickName = nickName
-	End Method
-
-
-	Method GetNickName:String()
-		if nickName = "" then return firstName
-		return nickName
-	End Method
-
-
-	Method GetFirstName:String()
-		return firstName
-	End Method
-
-
-	Method GetLastName:String()
-		return lastName
-	End Method
-
-
-	Method GetFullName:string()
-		if self.lastName<>"" then return self.firstName + " " + self.lastName
-		return self.firstName
-	End Method
-End Type
+endrem
 
 
 
@@ -255,6 +90,12 @@ Type TProgrammePerson extends TProgrammePersonBase
 	'which increases over time
 	field topGenre1:Int = -1
 	field topGenre2:Int = -1
+
+	'array containing GUIDs of all programmes 
+	Field producedProgrammes:string[]
+
+	Field xp:int = 0
+	Const MAX_XP:int = 10000
 	
 
 	'don't feel attacked by this naming! "UNKNOWN" includes
@@ -287,51 +128,24 @@ Type TProgrammePerson extends TProgrammePersonBase
 		
 		Return 3000 + Floor(Int(800 * sum * factor * priceModifier)/100)*100
 	End Method
+
 	
 	'the base fee when engaged as a guest in a show
 	Method GetGuestFee:Int()
 		'TODO: überarbeiten
 		local sum:float = 100 + 200*(fame*2 + scandalizing*0.5 + humor*0.3 + charisma*0.3 + appearance*0.3 + skill)
 		Return 100 + Floor(Int(sum * priceModifier)/100)*100
-	End Method	
-End Type
-
-
-
-
-'role/function a person had in a movie/series
-Type TProgrammePersonJob
-	Field person:TProgrammePersonBase
-	'job is a bitmask for values defined in TVTProgrammePersonJob
-	Field job:int = 0
-	'maybe only female directors are allowed?
-	Field gender:int = 0
-	'allows limiting the job to specific heritages
-	Field country:string = ""
-
-	'only valid for actors
-	Field roleGUID:string = ""
-
-
-	Method Init:TProgrammePersonJob(person:TProgrammePersonBase, job:int, gender:int=0, country:string="", roleGUID:string="")
-		self.person = person
-		self.job = job
-		self.gender = gender
-		self.country = country
-
-		self.roleGUID = roleGUID
-		
-		return self
 	End Method
 
 
-	Method IsSimilar:int(otherJob:TProgrammePersonJob)
-		if job <> otherJob.job then return False
-		if person <> otherJob.person then return False 
-		if roleGUID <> otherJob.roleGUID then return False
-		if gender <> otherJob.gender then return False
-		if country <> otherJob.country then return False
-		return True
-	End Method
-End Type
+	Method FinishProduction:int(programme:TProgrammeData)
+		'already added
+		if StringHelper.InArray(programme.GetGUID(), producedProgrammes, False) then return False
 
+		'gain experience
+
+		'add programme
+		producedProgrammes :+ [programme.GetGUID()]
+	End Method
+
+End Type

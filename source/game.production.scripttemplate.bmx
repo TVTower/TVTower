@@ -6,7 +6,7 @@ SuperStrict
 Import "Dig/base.util.math.bmx"
 Import "game.production.script.base.bmx"
 Import "game.gameconstants.bmx" 'to access type-constants
-Import "game.programme.programmeperson.bmx" 'to access TProgrammePersonJob
+Import "game.programme.programmeperson.base.bmx" 'to access TProgrammePersonJob
 
 
 Type TScriptTemplateCollection Extends TGameObjectCollection

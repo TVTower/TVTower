@@ -1,6 +1,6 @@
 SuperStrict
 Import "game.production.script.bmx"
-Import "game.programme.programmeperson.bmx"
+Import "game.programme.programmeperson.base.bmx"
 
 
 Type TShoppingListCollection Extends TGameObjectCollection

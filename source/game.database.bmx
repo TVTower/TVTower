@@ -7,6 +7,7 @@ Import "game.production.scripttemplate.bmx"
 Import "game.programme.programmelicence.bmx"
 Import "game.programme.adcontract.bmx"
 Import "game.programme.newsevent.bmx"
+Import "game.programme.programmeperson.bmx"
 Import "game.gameconstants.bmx"
 
 
@@ -149,8 +150,8 @@ Type TDatabaseLoader
 
 		Local title:String
 		Local description:String
-		Local directors:TProgrammePerson[], directorsRaw:String
-		Local actors:TProgrammePerson[], actorsRaw:String
+		Local directors:TProgrammePersonBase[], directorsRaw:String
+		Local actors:TProgrammePersonBase[], actorsRaw:String
 		Local land:String
 		Local year:Int
 		Local Genre:Int
@@ -276,10 +277,10 @@ Type TDatabaseLoader
 
 
 			local cast:TProgrammePersonJob[]
-			For local p:TProgrammePerson = EachIn GetPersonsFromString(directorsRaw, TVTProgrammePersonJob.DIRECTOR)
+			For local p:TProgrammePersonBase = EachIn GetPersonsFromString(directorsRaw, TVTProgrammePersonJob.DIRECTOR)
 				cast :+ [new TProgrammePersonJob.Init(p, TVTProgrammePersonJob.DIRECTOR)]
 			Next
-			For local p:TProgrammePerson = EachIn GetPersonsFromString(actorsRaw, TVTProgrammePersonJob.ACTOR)
+			For local p:TProgrammePersonBase = EachIn GetPersonsFromString(actorsRaw, TVTProgrammePersonJob.ACTOR)
 				cast :+ [new TProgrammePersonJob.Init(p, TVTProgrammePersonJob.ACTOR)]
 			Next
 
@@ -327,10 +328,10 @@ Type TDatabaseLoader
 
 
 					local cast:TProgrammePersonJob[]
-					For local p:TProgrammePerson = EachIn GetPersonsFromString(directorsRaw, TVTProgrammePersonJob.DIRECTOR)
+					For local p:TProgrammePersonBase = EachIn GetPersonsFromString(directorsRaw, TVTProgrammePersonJob.DIRECTOR)
 						cast :+ [new TProgrammePersonJob.Init(p, TVTProgrammePersonJob.DIRECTOR)]
 					Next
-					For local p:TProgrammePerson = EachIn GetPersonsFromString(actorsRaw, TVTProgrammePersonJob.ACTOR)
+					For local p:TProgrammePersonBase = EachIn GetPersonsFromString(actorsRaw, TVTProgrammePersonJob.ACTOR)
 						cast :+ [new TProgrammePersonJob.Init(p, TVTProgrammePersonJob.ACTOR)]
 					Next
 
@@ -582,14 +583,14 @@ Type TDatabaseLoader
 		local creator:Int = TXmlHelper.FindValueInt(node,"creator", 0)
 		local createdBy:String = TXmlHelper.FindValue(node,"created_by", "unknown")
 		'try to fetch an existing one
-		local person:TProgrammePersonBase = GetProgrammePersonCollection().GetByGUID(GUID)
+		local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID(GUID)
 		'if the person existed, remove it from all lists and later add
 		'it back to the one defined by "isCelebrity"
 		'this allows other database.xml's to morph a insignificant
 		'person into a celebrity
 		if person
-			GetProgrammePersonCollection().RemoveInsignificant(person)
-			GetProgrammePersonCollection().RemoveCelebrity(person)
+			GetProgrammePersonBaseCollection().RemoveInsignificant(person)
+			GetProgrammePersonBaseCollection().RemoveCelebrity(person)
 		else
 			if isCelebrity
 				person = new TProgrammePerson
@@ -666,9 +667,9 @@ Type TDatabaseLoader
 		'we removed the person from all lists already, now add it back
 		'to the one we wanted 
 		if isCelebrity
-			GetProgrammePersonCollection().AddCelebrity(person)
+			GetProgrammePersonBaseCollection().AddCelebrity(person)
 		else
-			GetProgrammePersonCollection().AddInsignificant(person)
+			GetProgrammePersonBaseCollection().AddInsignificant(person)
 		endif
 
 		return person
@@ -951,7 +952,7 @@ Type TDatabaseLoader
 			local memberFunction:int = xml.FindValueInt(nodeMember, "function", 0)
 			local memberGUID:string = nodeMember.GetContent()
 
-			local member:TProgrammePersonBase = GetProgrammePersonCollection().GetByGUID(memberGUID)
+			local member:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID(memberGUID)
 			'if person was defined add the given job
 			if member Then programmeData.AddCast(new TProgrammePersonJob.Init(member, memberFunction))
 		Next
@@ -1392,9 +1393,9 @@ Type TDatabaseLoader
 	End Function
 
 
-	Function GetPersonsFromString:TProgrammePerson[](personsString:string="", job:int=0)
+	Function GetPersonsFromString:TProgrammePersonBase[](personsString:string="", job:int=0)
 		local personsStringArray:string[] = personsString.split(",")
-		local personArray:TProgrammePerson[]
+		local personArray:TProgrammePersonBase[]
 
 		For local personString:string = eachin personsStringArray
 			'split first and lastName
@@ -1420,8 +1421,9 @@ Type TDatabaseLoader
 			lastName = lastName[..lastName.length-1]
 
 			'check if the person already exists
-			local person:TProgrammePerson = GetProgrammePersonCollection().GetCelebrityByName(firstName, lastName)
+			local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetCelebrityByName(firstName, lastName)
 			if not person
+				'create as celebrity
 				person = new TProgrammePerson
 				person.SetFirstName(firstName)
 				person.SetLastName(lastName)

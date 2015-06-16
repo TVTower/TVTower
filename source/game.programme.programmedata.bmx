@@ -6,7 +6,7 @@ ENDREM
 SuperStrict
 Import "Dig/base.util.localization.bmx"
 Import "game.world.worldtime.bmx"
-Import "game.programme.programmeperson.bmx"
+Import "game.programme.programmeperson.base.bmx"
 Import "game.broadcast.genredefinition.movie.bmx"
 Import "game.gameconstants.bmx"
 
@@ -513,7 +513,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 			if elements.length < 3 then continue
 
 			if elements[0] = "person"
-				local person:TProgrammePersonBase = GetProgrammePersonCollection().GetByGUID(elements[1])
+				local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID(elements[1])
 				if not person
 					result = result.replace("%person|"+elements[1]+"|Full%", "John Doe")
 					result = result.replace("%person|"+elements[1]+"|First%", "John")
