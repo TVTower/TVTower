@@ -21,6 +21,43 @@ Type TPlayerFinanceCollection
 	End Function
 
 
+	Method GetTotal:TPlayerFinance(playerID:int)
+		local totalFinance:TPlayerFinance = New TPlayerFinance
+		local finance:TPlayerFinance
+		For local day:int = GetWorldTime().GetStartDay() to GetWorldTime().GetDay()
+			finance = Get(playerID, day)
+
+			totalFinance.expense_programmeLicences :+ finance.expense_programmeLicences
+			totalFinance.expense_stations :+ finance.expense_stations
+			totalFinance.expense_scripts :+ finance.expense_scripts
+			totalFinance.expense_productionstuff :+ finance.expense_productionstuff
+			totalFinance.expense_penalty :+ finance.expense_penalty
+			totalFinance.expense_rent :+ finance.expense_rent
+			totalFinance.expense_news :+ finance.expense_news
+			totalFinance.expense_newsagencies :+ finance.expense_newsagencies
+			totalFinance.expense_stationfees :+ finance.expense_stationfees
+			totalFinance.expense_misc :+ finance.expense_misc
+			totalFinance.expense_creditRepayed :+ finance.expense_creditRepayed
+			totalFinance.expense_creditInterest :+ finance.expense_creditInterest
+			totalFinance.expense_drawingCreditInterest :+ finance.expense_drawingCreditInterest
+			totalFinance.expense_total :+ finance.expense_total
+
+			totalFinance.income_programmeLicences :+ finance.income_programmeLicences
+			totalFinance.income_ads :+ finance.income_ads
+			totalFinance.income_callerRevenue :+ finance.income_callerRevenue
+			totalFinance.income_scripts :+ finance.income_scripts
+			totalFinance.income_sponsorshipRevenue :+ finance.income_sponsorshipRevenue
+			totalFinance.income_misc :+ finance.income_misc
+			totalFinance.income_stations :+ finance.income_stations
+			totalFinance.income_creditTaken :+ finance.income_creditTaken
+			totalFinance.income_balanceInterest :+ finance.income_balanceInterest
+			totalFinance.income_total :+ finance.income_total
+		Next
+		return totalFinance
+	End Method
+
+
+
 	Method Get:TPlayerFinance(playerID:int, day:int=-1)
 		if playerID <= 0 then return Null
 

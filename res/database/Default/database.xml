@@ -9703,7 +9703,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 				<de>Hier gibt's Schnäppchen en masse. Der sympathische Krempelmarkt um die Ecke.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="0" min_image="0" target_group="0" />
+			<conditions min_audience="0.65" min_image="0" target_group="0" />
 			<data infomercial="0" quality="0" repetitions="2" duration="2" fix_price="1" profit="1500" penalty="600" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="872a0f04-852d-4b49-b813-6f051e663fbc" creator="">

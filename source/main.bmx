@@ -439,6 +439,14 @@ Type TApp
 						GetWorldTime().AdjustTimeFactor(-5)
 					EndIf
 
+					If KEYMANAGER.ISDown(KEY_LSHIFT) and KEYMANAGER.IsHit(KEY_F)
+						local text:string[] = GetPlayerFinanceOverviewText( GetWorldTime().GetDay() )
+						For local s:string = EachIn text
+							print s
+						Next
+					endif
+					
+
 					If KEYMANAGER.IsHit(KEY_Y)
 						'print "send to chef:"
 						'GetPlayer().SendToBoss()
@@ -474,7 +482,7 @@ Type TApp
 						If KEYMANAGER.IsHit(KEY_W) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("adagency") )
 						If KEYMANAGER.IsHit(KEY_A) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("archive", GetPlayerCollection().playerID) )
 						If KEYMANAGER.IsHit(KEY_B) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("betty") )
-						If KEYMANAGER.IsHit(KEY_F) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("movieagency"))
+						If KEYMANAGER.IsHit(KEY_F) and not KEYMANAGER.Isdown(KEY_LSHIFT) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("movieagency"))
 						If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", GetPlayerCollection().playerID))
 						If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("boss", GetPlayerCollection().playerID))
 						If KEYMANAGER.IsHit(KEY_G) Then TVTGhostBuildingScrollMode = 1 - TVTGhostBuildingScrollMode
@@ -3704,6 +3712,13 @@ Type GameEvents
 			EndIf
 
 
+			'=== PRINT OUT FINANCIAL STATS ===
+
+			local text:string[] = GetPlayerFinanceOverviewText(day)
+			For local s:string = EachIn text
+				TLogger.Log("OnDay Financials", s, LOG_DEBUG)
+			Next
+
 			'=== REMOVE OLD NEWS AND NEWSEVENTS ===
 			'news and newsevents both have a "happenedTime" but they must
 			'not be the same (multiple news with the same event but happened
@@ -3843,6 +3858,35 @@ End Function
 
 
 '===== COMMON FUNCTIONS =====
+
+Function GetPlayerFinanceOverviewText:string[](day:int)
+	local finance:TPlayerFinance = GetPlayer().GetFinance(day - 1)
+	local financeTotal:TPlayerFinance = GetPlayerFinanceCollection().GetTotal(GetPlayer().playerID)
+	local text:string[]
+	text :+ ["Finance Stats for day "+(day-1) +". Player #"+GetPlayer().playerID]
+	text :+ [".----------------------------------------------------------------------------."]
+	text :+ ["|Money:           "+Rset(GetPlayer().GetMoney(), 9)+"  |                       |         TOTAL         |"]
+	text :+ ["|----------------------------.-----------.-----------.-----------.-----------|"]
+	text :+ ["|                            |   INCOME  |  EXPENSE  |   INCOME  |  EXPENSE  |"]
+	text :+ ["|"+LSet(GetLocale("FINANCES_TRADING_PROGRAMMELICENCES"), 27) + " | " + RSet(TFunctions.dottedValue(finance.income_programmeLicences), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_programmeLicences),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_programmeLicences), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_programmeLicences),9)+ " |"]
+	text :+ ["|"+LSet(GetLocale("FINANCES_AD_INCOME__CONTRACT_PENALTY"), 27) + " | " + RSet(TFunctions.dottedValue(finance.income_ads), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_penalty),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_ads), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_penalty),9)+ " |"]
+	text :+ ["|"+LSet(GetLocale("FINANCES_CALL_IN_SHOW_INCOME"), 27) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_callerRevenue), 9) + " | " + Rset("-",9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_callerRevenue), 9) + " | " + Rset("-",9)+ " |"]
+	text :+ ["|"+LSet(GetLocale("FINANCES_SPONSORSHIP_INCOME__PENALTY"), 27) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_sponsorshipRevenue), 9) + " | " + Rset("-",9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_sponsorshipRevenue), 9) + " | " + Rset("-",9)+ " |"]
+	text :+ ["|"+LSet(GetLocale("FINANCES_NEWS"), 27) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_news),9) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_news),9)+ " |"]
+	text :+ ["|"+LSet(GetLocale("FINANCES_NEWSAGENCIES"), 27) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_newsAgencies),9)+ " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_newsAgencies),9)+ " |"]
+	text :+ ["|"+LSet(GetLocale("FINANCES_STATIONS"), 27) + " | " + RSet(TFunctions.dottedValue(finance.income_stations), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_stationFees),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_stations), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_stationFees),9)+ " |"]
+	text :+ ["|"+LSet(GetLocale("FINANCES_SCRIPTS"), 27) + " | " + RSet(TFunctions.dottedValue(finance.income_scripts), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_scripts),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_scripts), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_scripts),9)+ " |"]
+	text :+ ["|"+LSet(GetLocale("FINANCES_ACTORS_AND_PRODUCTIONSTUFF"), 27) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_productionStuff),9) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_productionStuff),9)+ " |"]
+	text :+ ["|"+LSet(GetLocale("FINANCES_STUDIO_RENT"), 27) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_rent),9) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_rent),9)+ " |"]
+	text :+ ["|"+LSet(GetLocale("FINANCES_INTEREST_BALANCE__CREDIT"), 27) + " | " + RSet(TFunctions.dottedValue(finance.income_balanceInterest), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_drawingCreditInterest),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_balanceInterest), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_drawingCreditInterest),9)+ " |"]
+	text :+ ["|"+LSet(GetLocale("FINANCES_CREDIT_TAKEN__REPAYED"), 27) + " | " + RSet(TFunctions.dottedValue(finance.income_creditTaken), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_creditRepayed),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_creditTaken), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_creditRepayed),9)+ " |"]
+	text :+ ["|"+LSet(GetLocale("FINANCES_MISC"), 27) + " | " + RSet(TFunctions.dottedValue(finance.income_misc), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_misc),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_misc), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_misc),9)+ " |"]
+	text :+ ["|----------------------------|-----------|-----------|-----------|-----------|"]
+	text :+ ["|"+LSet(GetLocale("FINANCES_TOTAL"), 27) + " | " + RSet(TFunctions.dottedValue(finance.income_total), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_total),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_total), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_total),9)+ " |"]
+	text :+ ["'----------------------------'-----------'-----------'-----------'-----------'"]
+	return text
+End Function
+
 
 Function DrawMenuBackground(darkened:Int=False)
 	'no cls needed - we render a background

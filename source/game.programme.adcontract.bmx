@@ -99,7 +99,9 @@ Type TAdContractBaseCollection
 			if returnUnfilteredOnError
 				print "AdContractBaseCollection: GetRandomByFilter without results! Returning Random without filter."
 			else
-				print "AdContractBaseCollection: GetRandomByFilter without results! Returning NULL."
+				'no need to debug print something - as the param is
+				'manually set to false...
+				'print "AdContractBaseCollection: GetRandomByFilter without results! Returning NULL."
 				Return null
 			endif
 		endif

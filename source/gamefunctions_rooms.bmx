@@ -3358,7 +3358,7 @@ endrem
 					'check if there is an adcontract base available for this filter
 					local contractBase:TAdContractBase = null
 					while not contractBase
-						contractBase = GetAdContractBaseCollection().GetRandomByFilter(levelFilters[filterNum])
+						contractBase = GetAdContractBaseCollection().GetRandomByFilter(levelFilters[filterNum], False)
 						'if not, then lower minimum and increase maximum audience
 						if not contractBase
 							TLogger.log("AdAgency.RefillBlocks", "Adjusting LevelFilter #"+filterNum+"  Min: " +MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMin,3)+"% - 0.5%   Max: "+ MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMax,3)+"% + 0.5%"  , LOG_DEBUG)
@@ -3373,7 +3373,7 @@ endrem
 					'check if there is an adcontract base available for this filter
 					local contractBase:TAdContractBase = null
 					while not contractBase
-						contractBase = GetAdContractBaseCollection().GetRandomByFilter(cheapListFilter)
+						contractBase = GetAdContractBaseCollection().GetRandomByFilter(cheapListFilter, False)
 						'if not, then lower minimum and increase maximum audience
 						if not contractBase
 							TLogger.log("AdAgency.RefillBlocks", "Adjusting CheapListFilter  Min: " +MathHelper.NumberToString(100 * cheapListFilter.minAudienceMin,3)+"% - 0.5%   Max: "+ MathHelper.NumberToString(100 * cheapListFilter.minAudienceMax,3)+"% + 0.5%"  , LOG_DEBUG)
