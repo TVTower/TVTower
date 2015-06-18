@@ -3200,29 +3200,42 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		local lowestChannelQuoteDayTime:Float = -1
 		local lowestChannelQuotePrimeTime:Float = -1
 
-		For local i:int = 1 to 4
-			local image:Float = GetPublicImageCollection().Get(i).GetAverageImage()
-			if image > highestChannelImage then highestChannelImage = image
-			if image < lowestChannelImage then lowestChannelImage = image
+		local onDayOne:int = (Getworldtime().GetDay() = GetWorldtime().GetStartDay())
 
-			'daytime (without night)
-			if averageChannelReach > 0
-				local audience:Float = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(i, dayWithoutPrimeTime).GetSum()
-				local quote:Float = audience / averageChannelReach
-				if lowestChannelQuoteDayTime < 0 then lowestChannelQuoteDayTime = quote
-				if lowestChannelQuoteDayTime > quote then lowestChannelQuoteDayTime = quote
-				if highestChannelQuoteDayTime < quote then highestChannelQuoteDayTime = quote
-			endif
+		if onDayOne
+			lowestChannelQuoteDayTime = 0.005
+			lowestChannelQuotePrimeTime = 0.008
 
-			'primetime (without day and night)
-			if averageChannelReach > 0
-				local audience:Float = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(i, dayOnlyPrimeTime).GetSum()
-				local quote:Float = audience / averageChannelReach
-				if lowestChannelQuotePrimeTime < 0 then lowestChannelQuotePrimeTime = quote
-				if lowestChannelQuotePrimeTime > quote then lowestChannelQuotePrimeTime = quote
-				if highestChannelQuotePrimeTime < quote then highestChannelQuotePrimeTime = quote
-			endif
-		Next
+			averageChannelQuoteDayTime:Float = 0.025
+			averageChannelQuotePrimeTime:Float = 0.06
+
+			highestChannelQuoteDayTime = 0.11
+			highestChannelQuotePrimeTime = 0.20
+		else
+			For local i:int = 1 to 4
+				local image:Float = GetPublicImageCollection().Get(i).GetAverageImage()
+				if image > highestChannelImage then highestChannelImage = image
+				if image < lowestChannelImage then lowestChannelImage = image
+
+				'daytime (without night)
+				if averageChannelReach > 0
+					local audience:Float = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(i, dayWithoutPrimeTime).GetSum()
+					local quote:Float = audience / averageChannelReach
+					if lowestChannelQuoteDayTime < 0 then lowestChannelQuoteDayTime = quote
+					if lowestChannelQuoteDayTime > quote then lowestChannelQuoteDayTime = quote
+					if highestChannelQuoteDayTime < quote then highestChannelQuoteDayTime = quote
+				endif
+
+				'primetime (without day and night)
+				if averageChannelReach > 0
+					local audience:Float = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(i, dayOnlyPrimeTime).GetSum()
+					local quote:Float = audience / averageChannelReach
+					if lowestChannelQuotePrimeTime < 0 then lowestChannelQuotePrimeTime = quote
+					if lowestChannelQuotePrimeTime > quote then lowestChannelQuotePrimeTime = quote
+					if highestChannelQuotePrimeTime < quote then highestChannelQuotePrimeTime = quote
+				endif
+			Next
+		endif
 		'convert to percentage
 		highestChannelImage :* 0.01
 		averageChannelImage :* 0.01
@@ -3230,13 +3243,16 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 		'=== SETUP FILTERS ===
+		local spotMin:Float = 0.0001 '0.01% to avoid 0.0-spots
+		local rangeStep:Float = 0.005 '0.5%
+
 		'the cheap list contains really low contracts
 		local cheapListFilter:TAdContractBaseFilter = new TAdContractbaseFilter
 		'0.5% market share -> 1mio reach means 5.000 people!
-		cheapListFilter.SetAudience(0.0, 0.005)
+		cheapListFilter.SetAudience(spotMin, Max(spotMin, 0.005))
 		'no image requirements - or not more than the lowest image
 		'(so all could sign this)
-		cheapListFilter.SetImage(0.0, 0.01 * lowestChannelImage)
+		cheapListFilter.SetImage(0, 0.01 * lowestChannelImage)
 		'cheap contracts should in now case limit genre/groups
 		cheapListFilter.SetSkipLimitedToProgrammeGenre()
 		cheapListFilter.SetSkipLimitedToTargetGroup()
@@ -3248,8 +3264,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		local levelFilters:TAdContractBaseFilter[6]
 		'=== LOWEST ===
 		levelFilters[0] = new TAdContractbaseFilter
-		'from 1% of avg to 100% of avg
-		levelFilters[0].SetAudience(0.0, lowestChannelQuoteDayTime)
+		'from 50-150% of lowest (Minimum of 0.01%)
+		levelFilters[0].SetAudience(Max(spotMin, 0.5 * lowestChannelQuoteDaytime), Max(spotMin , 1.5 * lowestChannelQuoteDayTime))
 		'1% - avgImage %
 		levelFilters[0].SetImage(0.0, lowestChannelImage)
 		'lowest should be without "limits"
@@ -3257,7 +3273,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		levelFilters[0].SetSkipLimitedToTargetGroup()
 
 		levelFilters[1] = new TAdContractbaseFilter
-		levelFilters[1].SetAudience(0.0, lowestChannelQuotePrimeTime)
+		levelFilters[1].SetAudience(Max(spotMin, 0.5 * lowestChannelQuotePrimeTime), Max(spotMin , 1.5 * lowestChannelQuotePrimeTime))
 		levelFilters[1].SetImage(0.0, lowestChannelImage)
 		levelFilters[1].SetSkipLimitedToProgrammeGenre()
 		levelFilters[1].SetSkipLimitedToTargetGroup()
@@ -3270,49 +3286,28 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'stronger the influence)
 		local minAvg:Float = (0.7 * lowestChannelQuoteDayTime + 0.3 * averageChannelQuoteDayTime)
 		local maxAvg:Float = (0.3 * averageChannelQuoteDayTime + 0.7 * highestChannelQuoteDayTime)
-		levelFilters[2].SetAudience(minAvg, Max(0.01, maxAvg))
+		levelFilters[2].SetAudience(Max(spotMin, minAvg), Max(spotMin, maxAvg))
 		'0-100% of average Image
 		levelFilters[2].SetImage(0, averageChannelImage)
 
 		levelFilters[3] = new TAdContractbaseFilter
 		minAvg = (0.7 * lowestChannelQuotePrimeTime + 0.3 * averageChannelQuotePrimeTime)
 		maxAvg = (0.3 * averageChannelQuotePrimeTime + 0.7 * highestChannelQuotePrimeTime)
-		levelFilters[3].SetAudience(minAvg, Max(0.01, maxAvg))
+		levelFilters[3].SetAudience(Max(spotMin, minAvg), Max(spotMin, maxAvg))
 		levelFilters[3].SetImage(0, averageChannelImage)
 
 		'=== HIGH ===
 		levelFilters[4] = new TAdContractbaseFilter
-		'from 50% of avg to 150% of highest, at least 1-3%
-		levelFilters[4].SetAudience(Max(0.01, 0.5 * highestChannelQuoteDayTime), Max(0.03, 1.5 * highestChannelQuoteDayTime))
+		'from 50% of avg to 150% of highest
+		levelFilters[4].SetAudience(Max(spotMin, 0.5 * highestChannelQuoteDayTime), Max(spotMin, 1.5 * highestChannelQuoteDayTime))
 		'0-100% of highest Image
 		levelFilters[4].SetImage(0, highestChannelImage)
 
 		levelFilters[5] = new TAdContractbaseFilter
-		levelFilters[5].SetAudience(Max(0.01, 0.5 * highestChannelQuotePrimeTime), Max(0.04, 1.5 * highestChannelQuotePrimeTime))
+		levelFilters[5].SetAudience(Max(spotMin, 0.5 * highestChannelQuotePrimeTime), Max(spotMin, 1.5 * highestChannelQuotePrimeTime))
 		levelFilters[5].SetImage(0, highestChannelImage)
 
 		TLogger.log("AdAgency.RefillBlocks", "Refilling "+ GetWorldTime().GetFormattedTime() +". Filter details", LOG_DEBUG)
-		TLogger.log("AdAgency.RefillBlocks", "  Cheap filter: "+cheapListFilter.ToString(), LOG_DEBUG)
-		For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
-			if cheapListFilter.DoesFilter(a)
-				TLogger.log("AdAgency.RefillBlocks", "    possible contract: "+a.GetTitle(), LOG_DEBUG)
-			else
-'				print "FAIL: "+ a.GetTitle()
-			endif
-		Next
-
-		for local i:int = 0 until 6
-			if i mod 2 = 0
-				TLogger.log("AdAgency.RefillBlocks", "  Level "+i+" filter: "+levelFilters[i].ToString() + " [DAYTIME]", LOG_DEBUG)
-			else
-				TLogger.log("AdAgency.RefillBlocks", "  Level "+i+" filter: "+levelFilters[i].ToString() + " [PRIMETIME]", LOG_DEBUG)
-			endif
-			For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
-				if levelFilters[i].DoesFilter(a)
-					TLogger.log("AdAgency.RefillBlocks", "    possible contract: "+a.GetTitle() + "  (MinAudience="+MathHelper.NumberToString(100 * a.minAudienceBase,3)+"%  MinImage="+MathHelper.NumberToString(100 * a.minImage,3)+")", LOG_DEBUG)
-				endif
-			Next
-		next
 		
 rem
 print "REFILL:"
@@ -3332,59 +3327,61 @@ endrem
 				if lists[j][i] and lists[j][i].base then continue
 
 				if lists[j] = listNormal
+					local filterNum:int = 0
 					Select floor(i / 4)
 						case 2
 							'levelFilters[0 + 1]
 							if i mod 4 <= 1
-								contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[0]) )
+								filterNum = 0
 							else
-								contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[1]) )
+								filterNum = 1
 							endif
 							classification = 2
 						case 1
 							'levelFilters[2 + 3]
 							if i mod 4 <= 1
-								contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[2]) )
+								filterNum = 2
 							else
-								contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[3]) )
+								filterNum = 3
 							endif
 							classification = 3
 						case 0
 							'levelFilters[4 + 5]
 							if i mod 4 <= 1
-								contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[4]) )
+								filterNum = 4
 							else
-								contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[5]) )
+								filterNum = 5
 							endif
 							classification = 4
 					End Select
+
+					'check if there is an adcontract base available for this filter
+					local contractBase:TAdContractBase = null
+					while not contractBase
+						contractBase = GetAdContractBaseCollection().GetRandomByFilter(levelFilters[filterNum])
+						'if not, then lower minimum and increase maximum audience
+						if not contractBase
+							TLogger.log("AdAgency.RefillBlocks", "Adjusting LevelFilter #"+filterNum+"  Min: " +MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMin,3)+"% - 0.5%   Max: "+ MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMax,3)+"% + 0.5%"  , LOG_DEBUG)
+							levelFilters[filterNum].SetAudience( levelFilters[filterNum].minAudienceMin - rangeStep, levelFilters[filterNum].minAudienceMax + rangeStep)
+						endif
+					Wend
+					contract = new TAdContract.Create( contractBase )
 				EndIf
-rem
-				'=== PLAYER ORIENTED LIST ===
-				if lists[j] = listNormal
-					Select (i mod 4)
-						case 0
-							'levelFilters[0 + 1]
-							if i mod 2 = 0
-								contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[0]) )
-							else
-								contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[1]) )
-							endif
-							classification = 2
-						case 1,2
-							'levelFilters[1]
-							contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[1]) )
-							classification = 3
-						case 3
-							'levelFilters[2]
-							contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(levelFilters[2]) )
-							classification = 4
-					End Select
-				endif
-endrem
+
 				'=== CHEAP LIST ===
 				if lists[j] = listCheap
-					contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomByFilter(cheapListFilter) )
+					'check if there is an adcontract base available for this filter
+					local contractBase:TAdContractBase = null
+					while not contractBase
+						contractBase = GetAdContractBaseCollection().GetRandomByFilter(cheapListFilter)
+						'if not, then lower minimum and increase maximum audience
+						if not contractBase
+							TLogger.log("AdAgency.RefillBlocks", "Adjusting CheapListFilter  Min: " +MathHelper.NumberToString(100 * cheapListFilter.minAudienceMin,3)+"% - 0.5%   Max: "+ MathHelper.NumberToString(100 * cheapListFilter.minAudienceMax,3)+"% + 0.5%"  , LOG_DEBUG)
+							cheapListFilter.SetAudience( cheapListFilter.minAudienceMin - rangeStep, cheapListFilter.minAudienceMax + rangeStep)
+						endif
+					Wend
+					contract = new TAdContract.Create( contractBase )
+
 					classification = 1
 				endif
 
@@ -3405,6 +3402,29 @@ endrem
 				endif
 			Next
 		Next
+
+		'now all filters contain "valid ranges"
+		TLogger.log("AdAgency.RefillBlocks", "  Cheap filter: "+cheapListFilter.ToString(), LOG_DEBUG)
+		For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
+			if cheapListFilter.DoesFilter(a)
+				TLogger.log("AdAgency.RefillBlocks", "    possible contract: "+a.GetTitle() + "  (MinAudience="+MathHelper.NumberToString(100 * a.minAudienceBase,3)+"%  MinImage="+MathHelper.NumberToString(100 * a.minImage,3)+")", LOG_DEBUG)
+			else
+'				print "FAIL: "+ a.GetTitle()
+			endif
+		Next
+
+		for local i:int = 0 until 6
+			if i mod 2 = 0
+				TLogger.log("AdAgency.RefillBlocks", "  Level "+i+" filter: "+levelFilters[i].ToString() + " [DAYTIME]", LOG_DEBUG)
+			else
+				TLogger.log("AdAgency.RefillBlocks", "  Level "+i+" filter: "+levelFilters[i].ToString() + " [PRIMETIME]", LOG_DEBUG)
+			endif
+			For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
+				if levelFilters[i].DoesFilter(a)
+					TLogger.log("AdAgency.RefillBlocks", "    possible contract: "+a.GetTitle() + "  (MinAudience="+MathHelper.NumberToString(100 * a.minAudienceBase,3)+"%  MinImage="+MathHelper.NumberToString(100 * a.minImage,3)+")", LOG_DEBUG)
+				endif
+			Next
+		next
 	End Method
 
 
