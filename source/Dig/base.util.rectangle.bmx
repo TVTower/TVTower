@@ -52,6 +52,11 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 
+	Method ToString:String()
+		return "xy="+position.ToString()+"  wh="+dimension.ToString()
+	End Method
+
+
 	Method SerializeToString:string()
 		local xS:string = position.x; if float(int(position.x)) = position.x then xS = int(position.x)
 		local yS:string = position.y; if float(int(position.y)) = position.y then yS = int(position.y)

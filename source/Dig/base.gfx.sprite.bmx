@@ -952,7 +952,21 @@ endrem
 			'cast handle-offsets to "int" to avoid subpixel offsets
 			'which lead to visual garbage on thin pixel lines in images
 			'(they are a little off and therefore have other alpha values)
-			DrawSubImageRect(parent.image,..
+			if ninePatchEnabled
+				DrawSubImageRect(parent.image,..
+							 x,..
+							 y,..
+							 area.GetW() - 2 * NINEPATCH_MARKER_WIDTH,..
+							 area.GetH() - 2 * NINEPATCH_MARKER_WIDTH,..
+							 area.GetX() + NINEPATCH_MARKER_WIDTH,..
+							 area.GetY() + NINEPATCH_MARKER_WIDTH,..
+							 area.GetW() - 2 * NINEPATCH_MARKER_WIDTH,..
+							 area.GetH() - 2 * NINEPATCH_MARKER_WIDTH,..
+							 int(alignX * (area.GetW() - 2 * NINEPATCH_MARKER_WIDTH)), ..
+							 int(alignY * (area.GetH() - 2 * NINEPATCH_MARKER_WIDTH)), ..
+							 0)
+			else
+				DrawSubImageRect(parent.image,..
 							 x,..
 							 y,..
 							 area.GetW(),..
@@ -964,6 +978,7 @@ endrem
 							 int(alignX * area.GetW()), ..
 							 int(alignY * area.GetH()), ..
 							 0)
+			endif
 		Else
 			Local MaxFramesInCol:Int	= Ceil(area.GetW() / framew)
 			Local framerow:Int			= Ceil(frame / MaxFramesInCol)

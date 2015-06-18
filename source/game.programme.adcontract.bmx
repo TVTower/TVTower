@@ -1269,6 +1269,15 @@ Type TAdContractBaseFilter
 	End Function
 
 
+	Method ToString:String()
+		local result:string = ""
+		result :+ "Audience: " + MathHelper.NumberToString(100*minAudienceMin,4)+" - "+MathHelper.NumberToString(100 * minAudienceMax, 4)+"%"
+		result :+ "  "
+		result :+ "Image: " + MathHelper.NumberToString(minImageMin,4)+" - "+MathHelper.NumberToString(minImageMax, 4)
+		return result
+	End Method
+
+
 	'checks if the given adcontract fits into the filter criteria
 	Method DoesFilter:Int(contract:TAdContractBase)
 		if not contract then return False

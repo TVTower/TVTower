@@ -15,6 +15,7 @@ Type TDatasheetSkin
 	Field fontNormal:TBitmapFont
 	Field fontBold:TBitmapFont
 	Field fontSemiBold:TBitmapFont
+	Field fontCaption:TBitmapFont
 
 	Field defaultFont:TBitmapFont
 	Field contentPadding:TRectangle = New TRectangle
@@ -33,7 +34,8 @@ Type TDatasheetSkin
 		skin.fontNormal = GetBitmapFontManager().baseFont
 		skin.fontBold = GetBitmapFontManager().baseFontBold
 		skin.fontSemiBold = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
-
+		skin.fontCaption = GetBitmapFontManager().Get("default", 13, BOLDFONT)
+		
 		'use content-params from sprite
 		skin.contentPadding.CopyFrom( GetSpriteFromRegistry(skin.spriteBaseKey+"_border").GetNinePatchContentBorder() )
 
@@ -127,30 +129,30 @@ Type TDatasheetSkin
 
 
 
-	Method RenderBar(x:int, y:int, w:int, h:int=-1, progress:Float=0.5, secondProgress:Float=-1.0)
+	Method RenderBar(x:int, y:int, w:int, h:int=-1, progress:Float=0.5, secondProgress:Float=-1.0, barSkin:string="bar")
 		'drawing the filled bar "clipped" so potential gradients
 		'(like normal->danger: green->red) are working as intended
 		'-> instead of truncating the width/height of the area, we
 		'   restrict the viewport
 
 		'viewports need to know the height...
-		if h = -1 then h = GetSpriteFromRegistry(spriteBaseKey+"_bar_unfilled").GetHeight()
+		if h = -1 then h = GetSpriteFromRegistry(spriteBaseKey+"_"+barSkin+"_unfilled").GetHeight()
 
-		local unfilled:TSprite = GetSpriteFromRegistry(spriteBaseKey+"_bar_unfilled")
+		local unfilled:TSprite = GetSpriteFromRegistry(spriteBaseKey+"_"+barSkin+"_unfilled")
 
 		unfilled.DrawArea(x, y, w, h)
 		local barW:int = w - unfilled.GetNinePatchContentBorder().GetLeft() - unfilled.GetNinePatchContentBorder().GetRight()
 		if secondProgress > progress
 			SetAlpha GetAlpha()*0.25
-			GetSpriteFromRegistry(spriteBaseKey+"_bar_filled").DrawArea(x + unfilled.GetNinePatchContentBorder().GetLeft(), y, barW, h, -1, 0, new TRectangle.Init(x + unfilled.GetNinePatchContentBorder().GetLeft() + progress*barW, y, barW*(secondProgress-progress), h))
+			GetSpriteFromRegistry(spriteBaseKey+"_"+barSkin+"_filled").DrawArea(x + unfilled.GetNinePatchContentBorder().GetLeft(), y, barW, h, -1, 0, new TRectangle.Init(x + unfilled.GetNinePatchContentBorder().GetLeft() + progress*barW, y, barW*(secondProgress-progress), h))
 			SetAlpha GetAlpha()*4.0
 		endif
-		GetSpriteFromRegistry(spriteBaseKey+"_bar_filled").DrawArea(x + unfilled.GetNinePatchContentBorder().GetLeft(), y, barW, h, -1, 0, new TRectangle.Init(x+unfilled.GetNinePatchContentBorder().GetLeft(), y, barW*progress, h))
+		GetSpriteFromRegistry(spriteBaseKey+"_"+barSkin+"_filled").DrawArea(x + unfilled.GetNinePatchContentBorder().GetLeft(), y, barW, h, -1, 0, new TRectangle.Init(x+unfilled.GetNinePatchContentBorder().GetLeft(), y, barW*progress, h))
 	End Method
 
 
-	Method GetBarSize:TVec2D(w:int, h:int=-1)
-		if h = -1 then h = GetSpriteFromRegistry(spriteBaseKey+"_bar_filled").GetHeight()
+	Method GetBarSize:TVec2D(w:int, h:int=-1, barSkin:string="bar")
+		if h = -1 then h = GetSpriteFromRegistry(spriteBaseKey+"_"+barSkin+"_filled").GetHeight()
 		return new TVec2D.Init(w, h)
 	End Method
 

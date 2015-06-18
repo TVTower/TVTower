@@ -40,6 +40,15 @@
 
 				<child name="gfx_datasheet_overlay_xrated"			x="0"	y="100" w="26"  h="26" offsetLeft="15" offsetTop="-2" />
 
+				<!-- cast/actor-item elements --> 
+				<child name="gfx_datasheet_cast_icon"                   x="90"  y="130" w="41"  h="39" ninepatch="true" />
+				<child name="gfx_datasheet_cast_name"                   x="131" y="130" w="28"  h="20" ninepatch="true" />
+				<child name="gfx_datasheet_cast_bar_xp_filled"          x="131" y="150" w="28"  h="8"  ninepatch="true" />
+				<child name="gfx_datasheet_cast_bar_xp_unfilled"        x="131" y="166" w="28"  h="8"  ninepatch="true" />
+				<!-- same unfilled graphic than for xp -->
+				<child name="gfx_datasheet_cast_bar_sympathy_filled"    x="131" y="158" w="28"  h="8"  ninepatch="true" offsetLeft="2" />
+				<child name="gfx_datasheet_cast_bar_sympathy_unfilled"  x="131" y="166" w="28"  h="8"  ninepatch="true" />
+
 				<!-- button sprites -->
 				<child name="gfx_gui_button.datasheet"						x="0"	y="130"	w="30"	h="30" ninepatch="true" />
 				<child name="gfx_gui_button.datasheet.hover"				x="30"	y="130"	w="30"	h="30" ninepatch="true" />
