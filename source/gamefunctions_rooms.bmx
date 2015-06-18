@@ -3291,31 +3291,27 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		levelFilters[5].SetAudience(Max(0.01, 0.5 * highestChannelQuotePrimeTime), Max(0.04, 1.5 * highestChannelQuotePrimeTime))
 		levelFilters[5].SetImage(0, highestChannelImage)
 
-
-		print "Cheap filter: " + cheapListFilter.ToString()
+		TLogger.log("AdAgency.RefillBlocks", "Refilling "+ GetWorldTime().GetFormattedTime() +". Filter details", LOG_DEBUG)
+		TLogger.log("AdAgency.RefillBlocks", "  Cheap filter: "+cheapListFilter.ToString(), LOG_DEBUG)
 		For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
 			if cheapListFilter.DoesFilter(a)
-				print "OK:   "+ a.GetTitle()
+				TLogger.log("AdAgency.RefillBlocks", "    possible contract: "+a.GetTitle(), LOG_DEBUG)
 			else
 '				print "FAIL: "+ a.GetTitle()
 			endif
 		Next
-		print "--------------"
 
 		for local i:int = 0 until 6
 			if i mod 2 = 0
-				print "Level "+i+" filter: " + levelFilters[i].ToString() + " [DAYTIME]"
+				TLogger.log("AdAgency.RefillBlocks", "  Level "+i+" filter: "+levelFilters[i].ToString() + " [DAYTIME]", LOG_DEBUG)
 			else
-				print "Level "+i+" filter: " + levelFilters[i].ToString() + " [PRIMETIME]"
+				TLogger.log("AdAgency.RefillBlocks", "  Level "+i+" filter: "+levelFilters[i].ToString() + " [PRIMETIME]", LOG_DEBUG)
 			endif
 			For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
 				if levelFilters[i].DoesFilter(a)
-					print "OK:   "+ a.GetTitle() + "  (MinAudience="+MathHelper.NumberToString(100 * a.minAudienceBase,3)+"%  MinImage="+MathHelper.NumberToString(100 * a.minImage,3)+")"
-				else
-	'				print "FAIL: "+ a.GetTitle()
+					TLogger.log("AdAgency.RefillBlocks", "    possible contract: "+a.GetTitle() + "  (MinAudience="+MathHelper.NumberToString(100 * a.minAudienceBase,3)+"%  MinImage="+MathHelper.NumberToString(100 * a.minImage,3)+")", LOG_DEBUG)
 				endif
 			Next
-			print "--------------"
 		next
 		
 rem
