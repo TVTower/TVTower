@@ -182,7 +182,7 @@
 			<description>
 				<de>Unsere Kakteen stechen härter, länger und ausdauernder, als die der Konkurrenz. Wir haben Kakteen für Garten, Wintergarten, Treibhaus und fürs Bett.</de>
 			</description>
-			<conditions min_audience="0.0" min_image="0" target_group="0" />
+			<conditions min_audience="0.75" min_image="0" target_group="0" />
 			<data infomercial="1" quality="10" repetitions="4" duration="3" fix_price="0" profit="210" penalty="240" />
 		</ad>
 		<ad id="speedminister-ad-kaiserskleider-01" creator="8605" created_by="SpeedMinister">

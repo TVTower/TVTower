@@ -631,7 +631,7 @@ We offer fully automatic charging. Insert battery, fill coin slot. Press the but
 				<en>Barbecue, bread and beer! We have everything for single men and families with housewives having cooking-phobia.</en>
 			</description>
 			<!-- targetgroup: all -->
-			<conditions min_audience="0" min_image="0" target_group="" />
+			<conditions min_audience="0.45" min_image="0" target_group="" />
 			<data infomercial="1" quality="21" repetitions="4" duration="2" fix_price="1" profit="950" penalty="1200" />
 		</ad>
 		<ad id="ronny-ad-speckfett-01" creator="5578" created_by="Ronny">
