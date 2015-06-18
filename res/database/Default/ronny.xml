@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
 	<version value="3" comment="Ronnys Programme" />
+    <celebritypeople>
+        <person id="ronny-programmeperson-gertkalischke" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+            <first_name>Gert</first_name>
+            <last_name>Kalischke</last_name>
+            <functions>
+                <function>1</function>
+                <function>2</function>
+            </functions>
+            <details gender="1"  birthday="1943" deathday="2014" country="NL" />
+            <data prominence="1" skill="2" fame="1" scandalizing="0" price_mod="1" power="3" humor="5" charisma="1" appearance="7" topgenre1="15" topgenre2="5" />
+        </person>
+	</celebritypeople>
 	
 	<allprogrammes>
 		<programme id="ronny-programme-pantoffeln-01" product="1" fictional="1" creator="5578" created_by="Ronny">
@@ -14,7 +26,7 @@
 			</description>
 			<staff>
 				<member index="0" function="1">72d0cfa6-bb40-4766-9b86-9a3ffd257f73</member>
-				<member index="0" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
 			</staff>
 			<groups target_groups="0" />
 			<data country="D" year="1983" distribution="0" maingenre="9" subgenre="15" flags="16" blocks="2" time="0" price_mod="0.9" />
@@ -31,7 +43,7 @@
 			</description>
 			<staff>
 				<member index="0" function="1">72d0cfa6-bb40-4766-9b86-9a3ffd257f73</member>
-				<member index="0" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
 			</staff>
 			<groups target_groups="0" />
 			<data country="D" year="1985" distribution="0" maingenre="15" subgenre="0" flags="16" blocks="2" time="0" price_mod="0.95" />
@@ -51,7 +63,7 @@
 				<!-- klaus grobe -->
 				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
 				<!-- Patty Glansen -->
-				<member index="0" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
 			</staff>
 			<groups target_groups="0" />
 			<data country="D" year="1984" distribution="0" maingenre="0" blocks="1" tags="cooking,80s" />
@@ -123,7 +135,7 @@
 				<!-- klaus grobe -->
 				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
 				<!-- Laiendarsteller -->
-				<member index="0" function="2">common-amateur-actors</member>
+				<member index="1" function="2">common-amateur-actors</member>
 			</staff>
 			<groups target_groups="0" />
 			<data country="D" year="1982" distribution="0" maingenre="0" blocks="1" />
@@ -164,6 +176,198 @@
 						<en></en>
 					</description>
 					<ratings critics="26" speed="56"  />
+				</programme>
+			</children>
+		</programme>
+		<programme id="ronny-programme-familiefuchs-01" product="4" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Familie Fuchs</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Kindgerechte Abenteuer mit Felix Fuchs und seiner Familie.
+Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- und Jugendpsychologen.</de>
+				<en></en>
+			</description>
+			<staff>
+				<!-- klaus grobe -->
+				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
+				<!-- Laiendarsteller -->
+				<member index="1" function="2">common-amateur-actors</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="1979" distribution="0" maingenre="3" blocks="1" flags="8" />
+			<ratings critics="51" speed="25" />
+			<!-- Episodes -->
+			<children>
+				<programme id="ronny-programme-familiefuchs-01-ep-01" product="4" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Neue Nachbarn</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Familie Igel zieht in den benachbarten Laubhaufen. Beim Spielen mit Ingo verletzt sich Felix an den Stacheln. Das Ende einer aufkeimenden Freundschaft?</de>
+						<en></en>
+					</description>
+					<data price_mod="0.68" />
+					<ratings critics="55"  />
+				</programme>
+				<programme id="ronny-programme-familiefuchs-01-ep-02" product="4" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Maus in der Falle</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Markus Mäuserich fällt in den Weiher des Waldes. Felix Fuchs muss sich entscheiden zwischen Mittagessen und Rettung.</de>
+						<en></en>
+					</description>
+					<data price_mod="0.75" />
+					<ratings critics="50" speed="30" />
+				</programme>
+				<programme id="ronny-programme-familiefuchs-01-ep-03" product="4" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Frieda Fuchs</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Ranzzeit. Ein süßer Duft zieht durch den Wald. Als Felix ihm folgt, trifft er Frieda. Wie umgehen mit den neuen und aufregenden Gefühlen?</de>
+						<en></en>
+					</description>
+					<data price_mod="0.58" />
+					<ratings critics="62" speed="22"  />
+				</programme>
+				<programme id="ronny-programme-familiefuchs-01-ep-03" product="4" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Guten Morgen meine Kinder</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Weniger als zwei Monate sind vergangen und die Fähe Frieda wirft drei Kinder - Felix' Kinder. Aufregende Zeiten für die neue Familie.</de>
+						<en></en>
+					</description>
+					<data price_mod="0.65" />
+					<ratings critics="69" speed="20"  />
+				</programme>
+				<programme id="ronny-programme-familiefuchs-01-ep-04" product="4" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Besuch bei Ingo</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Felix nimmt seine Kinder mit auf einen Besuch zu Ingo Igel. Schmetterlingsschmaus für alle.</de>
+						<en></en>
+					</description>
+					<data price_mod="0.61" />
+					<ratings critics="59" speed="23"  />
+				</programme>
+				<programme id="ronny-programme-familiefuchs-01-ep-05" product="4" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Randale im Fuchsbau</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Als Die Kinder von Familie Fuchs es eines Nachts zu bunt treiben, kommt es zum Streit im Fuchsbau. Die jungen Füchse ziehen aus.</de>
+						<en></en>
+					</description>
+					<data price_mod="0.53" />
+					<ratings critics="58" speed="27"  />
+				</programme>
+				<programme id="ronny-programme-familiefuchs-01-ep-06" product="4" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Der Grünrock</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Felix streift alleine durch den Wald als er den Jäger Joachim kennenlernt....
+						Trauriges Finale der beliebten Kinderserie, ließ Millionen Kinderherzen erbeben.</de>
+						<en></en>
+					</description>
+					<data price_mod="0.70" />
+					<ratings critics="77" speed="20"  />
+				</programme>
+			</children>
+		</programme>
+		<programme id="ronny-programme-komtess-01" product="4" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Die Komtess</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Amouröse Verwicklungen, Intrigen unter &quot;Freundinnen&quot; ... Taschenbuchromantik in der Bretagne. Mini-TV-Serie.</de>
+				<en></en>
+			</description>
+			<staff>
+				<!-- klaus grobe -->
+				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
+				<!-- Patty -->
+				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+				<member index="2" function="2">ronny-programmeperson-gertkalischke</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D/F" year="1984" distribution="0" maingenre="15" blocks="2" />
+			<ratings critics="31" speed="30" />
+			<!-- Episodes -->
+			<children>
+				<programme id="ronny-programme-komtess-01-ep-01" product="4" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Jaqueline Montegrieux</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Jaqueline, Tochter des Grafen Montegrieux erblüht und entdeckt bisher unerkannte Gefühle für den Stallburschen Henri.</de>
+						<en></en>
+					</description>
+					<data price_mod="0.98" />
+					<ratings critics="32" speed="28"  />
+				</programme>
+				<programme id="ronny-programme-komtess-01-ep-02" product="4" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Francine du Pomeranc</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Der umtriebige Graf Pomeranc besucht den Landsitz Montegrieux. Er versucht Jaqueline nachzustellen während seine Tochter Francine Henri schöne Augen macht...</de>
+						<en></en>
+					</description>
+					<data price_mod="0.98" />
+					<ratings critics="30" speed="29"  />
+				</programme>
+				<programme id="ronny-programme-komtess-01-ep-03" product="4" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Eine Leiche im Keller?</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Große Aufregung, Graf Pomeranc ist verschwunden. Was hat Jaqueline und ihr zerissenes Nachthemd damit zu tun?</de>
+						<en></en>
+					</description>
+					<data price_mod="0.98" />
+					<ratings critics="34" speed="25"  />
+				</programme>
+				<programme id="ronny-programme-komtess-01-ep-04" product="4" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Die Waldhütte</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Alle suchen Graf Pomeranc. Jaqueline und Henri suchen im nahen Wald und landen in einer einsamen Hütte. Als ein Unwetter aufzieht, verbringen beide eine sinnliche Nacht bei knackendem Kaminfeuer.</de>
+						<en></en>
+					</description>
+					<data price_mod="0.93" />
+					<ratings critics="30" speed="30"  />
+				</programme>
+				<programme id="ronny-programme-komtess-01-ep-05" product="4" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Sie war es...</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Jaqueline erfährt, dass Francine Ihren Vater umbrachte und Jaquelines Nachthemd zeriss. Das warum erschüttert: sie wollte Jaqueline aus dem Weg haben.
+Grandioses Finale.</de>
+						<en></en>
+					</description>
+					<data price_mod="0.95" />
+					<ratings critics="25" speed="35"  />
 				</programme>
 			</children>
 		</programme>
