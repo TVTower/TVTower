@@ -19,6 +19,7 @@ Type TAudience
 	Field Pensioners:Float	= 0	'Rentner
 	Field Women:Float		= 0	'Frauen
 	Field Men:Float			= 0	'Männer
+	Global audienceBreakdown:TAudience = null
 
 	'=== Constructors ===
 
@@ -37,7 +38,27 @@ Type TAudience
 	End Function
 
 
+	Function GetAudienceBreakdown:TAudience()
+		if not audienceBreakdown
+			audienceBreakDown = New TAudience
+			audienceBreakDown.Children   = 0.09  'Kinder (9%)
+			audienceBreakDown.Teenagers	 = 0.1   'Teenager (10%)
+			'adults 60%
+			audienceBreakDown.HouseWives = 0.12  'Hausfrauen (20% von 60% Erwachsenen = 12%)
+			audienceBreakDown.Employees  = 0.405 'Arbeitnehmer (67,5% von 60% Erwachsenen = 40,5%)
+			audienceBreakDown.Unemployed = 0.045 'Arbeitslose (7,5% von 60% Erwachsenen = 4,5%)
+			audienceBreakDown.Manager    = 0.03  'Manager (5% von 60% Erwachsenen = 3%)
+			audienceBreakDown.Pensioners = 0.21  'Rentner (21%)
+			'gender
+			audienceBreakDown.CalcGenderBreakdown()
+		endif
+		return audienceBreakDown
+	End Function
+
+
 	Function CreateWithBreakdown:TAudience(audience:Int)
+		return GetAudienceBreakDown().Copy().MultiplyFloat(audience)
+rem
 		Local obj:TAudience = New TAudience
 		obj.Children	= audience * 0.09	'Kinder (9%)
 		obj.Teenagers	= audience * 0.1	'Teenager (10%)
@@ -50,6 +71,7 @@ Type TAudience
 		'gender
 		obj.CalcGenderBreakdown()
 		Return obj
+endrem
 	End Function
 
 

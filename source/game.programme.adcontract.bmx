@@ -520,6 +520,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	Method GetQuality:Float(luckFactor:Int = 1) {_exposeToLua}
 		Local quality:Float = 0.05
 
+		'TODO: switch to Percentages + modifiers for TargetGroup-Limits
 		if GetMinAudience() >   1000 then quality :+ 0.01		'+0.06
 		if GetMinAudience() >   5000 then quality :+ 0.025		'+0.085
 		if GetMinAudience() >  10000 then quality :+ 0.05		'+0.135
@@ -616,7 +617,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		Local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG", new TData.Init()))
 		Local balancingFactor:float = devConfig.GetFloat("DEV_AD_BALANCING_FACTOR", 1.0)
 		Local limitedToGenreMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_GENRE_MULTIPLIER", 2.0)
-		Local limitedToTargetGroupMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_TARGETGROUP_MULTIPLIER", 3.0)
+		Local limitedToTargetGroupMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_TARGETGROUP_MULTIPLIER", 2.0)
 
 		local maxCPM:float = GameRules.maxAdContractPricePerSpot / (GetStationMapCollection().GetPopulation()/1000)
 		Local price:Float
@@ -661,7 +662,13 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		else
 			useAudience = GetStationMapCollection().GetMap(playerID).GetReach()
 		endif
-		Return useAudience * GetMinAudiencePercentage()
+		'if limited to specific target group ... break audience down
+		'to this specific group
+		if GetLimitedToTargetGroup() > 0
+			useAudience :* TAudience.GetAudienceBreakdown().GetValue(GetLimitedToTargetGroup())
+		endif
+
+		Return GetMinAudiencePercentage() * useAudience
 
 		'no more than 50 percent of whole germany will watch TV at the
 		'same time, so convert "whole germany watches"-based audience
@@ -742,7 +749,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'with no required audience, we cannot limit to target groups
 		'except hmm ... we want that at least 1 of the target group
 		'is watching 
-		if GetMinAudience() = 0 then return 0
+		if GetMinAudiencePercentage() = 0 then return 0
 
 		Return base.limitedToTargetGroup
 	End Method
