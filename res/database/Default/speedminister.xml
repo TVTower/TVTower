@@ -73,7 +73,7 @@
 				<de>Leitfaden zur aufrichtigen inneren Reinigung, Tipps und Tricks, Best Practices und vieles mehr. Infos bei uns! LAM - VAM - RAM - YAM - HAM - KSHAM - OM.</de>
 			</description>
 			<conditions min_audience="0.75" min_image="0" target_group="0" />
-			<data infomercial="1" quality="23" repetitions="7" duration="7" fix_price="0" profit="360" penalty="180" />
+			<data infomercial="1" quality="23" repetitions="7" duration="7" fix_price="0" profit="110" penalty="140" />
 		</ad>
 		<ad id="speedminister-ad-chemicalair-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -143,7 +143,7 @@
 				<de>Bummbarts Bäume wissen Väter zu schätzen, wenn sie mit Ihrem Sohne einen setzen.</de>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="256" />
-			<data infomercial="1" quality="21" repetitions="5" duration="4" fix_price="0" profit="180" penalty="270" />
+			<data infomercial="1" quality="21" repetitions="5" duration="4" fix_price="0" profit="180" penalty="270" fix_infomercial_profit="1" infomercial_profit="800" />
 		</ad>
 		<ad id="speedminister-ad-baumschule-02" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -153,7 +153,7 @@
 				<de>In Parks und Gärten genießt man die Räume, die Highlights aber sind Bummbarts Bäume.</de>
 			</description>
 			<conditions min_audience="23.0" min_image="0" target_group="256" />
-			<data infomercial="1" quality="39" repetitions="6" duration="4" fix_price="0" profit="180" penalty="270" />
+			<data infomercial="1" quality="39" repetitions="6" duration="4" fix_price="0" profit="180" penalty="270" fix_infomercial_profit="1" infomercial_profit="800" />
 		</ad>
 		<ad id="speedminister-ad-koizucht-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -163,7 +163,7 @@
 				<de>Satte Fische zu satten Preisen. Ein weiterer Beleg, was einmal ein Schwabe sagte: "Wenn's nix koscht'! Sonscht kommt koiner nai!"</de>
 			</description>
 			<conditions min_audience="30.0" min_image="0" target_group="0" />
-			<data infomercial="1" quality="45" repetitions="3" duration="3" fix_price="0" profit="450" penalty="570" />
+			<data infomercial="1" quality="45" repetitions="3" duration="3" fix_price="0" profit="450" penalty="570" fix_infomercial_profit="1" infomercial_profit="450" />
 		</ad>
 		<ad id="speedminister-ad-happo-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -192,8 +192,8 @@
 			<description>
 				<de>Neue Kollektion bei Kaisers: Extrem guter Tragekomfort, hauchdünner Stoff, fantasievolle Schnitte. Ein echter Hingucker! Kaisers neue Kleider!</de>
 			</description>
-			<conditions min_audience="40.0" min_image="39.0" target_group="0" />
-			<data infomercial="1" quality="48" repetitions="6" duration="4" fix_price="0" profit="600" penalty="900" />
+			<conditions min_audience="32.5" min_image="39.0" target_group="0" />
+			<data infomercial="1" quality="48" repetitions="6" duration="4" fix_price="0" profit="400" penalty="600" />
 		</ad>
 		<ad id="speedminister-ad-greekhaircut-01" creator="8605" created_by="SpeedMinister">
 			<title>

@@ -793,7 +793,8 @@ endrem
 		xml.LoadValuesToData(nodeData, data, [..
 			"infomercial", "quality", "repetitions", ..
 			"fix_price", "duration", "profit", "penalty", ..
-			"pro_pressure_groups", "contra_pressure_groups" ..
+			"pro_pressure_groups", "contra_pressure_groups", ..
+			"infomercial_profit", "fix_infomercial_profit" ..
 		])
 			
 
@@ -809,7 +810,11 @@ endrem
 		adContract.contraPressureGroups = data.GetInt("contra_pressure_groups", adContract.contraPressureGroups)
 		adContract.profitBase = data.GetFloat("profit", adContract.profitBase)
 		adContract.penaltyBase = data.GetFloat("penalty", adContract.penaltyBase)
-	
+		adContract.infomercialProfitBase = data.GetFloat("infomercial_profit", adContract.infomercialProfitBase)
+		adContract.fixedInfomercialProfit = data.GetFloat("fix_infomercial_profit", adContract.fixedInfomercialProfit)
+		'without data, fall back to profitBase
+		if adContract.infomercialProfitBase = 0 then adContract.infomercialProfitBase = adContract.profitBase
+		
 
 		'=== CONDITIONS ===
 		local nodeConditions:TxmlNode = xml.FindElementNode(node, "conditions")

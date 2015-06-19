@@ -420,7 +420,7 @@ Grandioses Finale.</de>
 				<en></en>
 			</description>
 			<conditions min_audience="1.5" min_image="1" target_group="0" />
-			<data infomercial="1" quality="5" repetitions="3" duration="3" fix_price="0" profit="15" penalty="18" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data infomercial="1" quality="5" repetitions="3" duration="3" fix_price="0" profit="35" penalty="40" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="ronny-ad-brucey-01" creator="5578" created_by="Ronny">
 			<title>
@@ -433,7 +433,7 @@ Brucey - herber Duft für Männer vom Fach.</de>
 				<en>Women absolutely love the nerd in you. Let them take your scent!
 Brucey - harsh fragrance for male experts.</en>
 			</description>
-			<conditions min_audience="0" min_image="3" target_group="0" />
+			<conditions min_audience="2.0" min_image="3" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="4" duration="4" fix_price="1" profit="3500" penalty="7050" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="ronny-ad-laola-01" creator="5578" created_by="Ronny">
@@ -446,8 +446,8 @@ Brucey - harsh fragrance for male experts.</en>
 				<en>The naughty youth magazine. We answer your intimate questions without a grin :-).</en>
 			</description>
 			<!-- targetgroup: teenagers -->
-			<conditions min_audience="0.25" min_image="2" target_group="2" />
-			<data infomercial="1" quality="30" repetitions="5" duration="3" fix_price="0" profit="35" penalty="50" />
+			<conditions min_audience="1.25" min_image="2" target_group="2" />
+			<data infomercial="1" quality="30" repetitions="5" duration="3" fix_price="0" profit="135" penalty="75" />
 		</ad>		
 		<ad id="ronny-ad-kalua-01" creator="5578" created_by="Ronny">
 			<title>
@@ -459,8 +459,8 @@ Brucey - harsh fragrance for male experts.</en>
 				<en>The hit chewy candy from Hawaii. Never before sugar tasted that tro-tro-tropical.</en>
 			</description>
 			<!-- targetgroup: children -->
-			<conditions min_audience="0.25" min_image="5" target_group="1" />
-			<data infomercial="0" quality="20" repetitions="5" duration="2" fix_price="0" profit="50" penalty="50" />
+			<conditions min_audience="2.5" min_image="5" target_group="1" />
+			<data infomercial="0" quality="20" repetitions="5" duration="2" fix_price="1" profit="3500" penalty="3750" />
 		</ad>		
 		<ad id="ronny-ad-kalua-02" creator="5578" created_by="Ronny">
 			<title>
@@ -472,8 +472,8 @@ Brucey - harsh fragrance for male experts.</en>
 				<en>The Hawaiian chewy candy now with a brand new and trendy taste. Candied chicken claws create this fascinating seasoning.</en>
 			</description>
 			<!-- targetgroup: children -->
-			<conditions min_audience="0.25" min_image="7" target_group="1" />
-			<data infomercial="0" quality="25" repetitions="6" duration="3" fix_price="0" profit="55" penalty="65" />
+			<conditions min_audience="3.0" min_image="7" target_group="1" />
+			<data infomercial="0" quality="25" repetitions="6" duration="3" fix_price="0" profit="125" penalty="165" />
 		</ad>		
 		<ad id="ronny-ad-allhits-01" creator="5578" created_by="Ronny">
 			<title>
@@ -485,8 +485,8 @@ Brucey - harsh fragrance for male experts.</en>
 				<en>Your music sampler! All hits of the last 3 days on one brimful filled 90 minutes audio cassette. In stereo!</en>
 			</description>
 			<!-- targetgroup: teenager -->
-			<conditions min_audience="0.5" min_image="5" target_group="2" />
-			<data infomercial="1" quality="35" repetitions="4" duration="3" fix_price="0" profit="60" penalty="90" year_range_from="1985" year_range_to="1986" />
+			<conditions min_audience="2.5" min_image="5" target_group="2" />
+			<data infomercial="1" quality="35" repetitions="4" duration="3" fix_price="0" profit="115" penalty="125" year_range_from="1985" year_range_to="1986" />
 		</ad>		
 		<ad id="ronny-ad-allhits-02" creator="5578" created_by="Ronny">
 			<title>
@@ -498,8 +498,8 @@ Brucey - harsh fragrance for male experts.</en>
 				<en>"All Hits 2" is back again!! 40 mega hits on one double MC. Only now with poster ready to get painted!</en>
 			</description>
 			<!-- targetgroup: teenager -->
-			<conditions min_audience="1.0" min_image="7" target_group="2" />
-			<data infomercial="1" quality="45" repetitions="7" duration="4" fix_price="0" profit="60" penalty="85" year_range_from="1987" year_range_to="1988" />
+			<conditions min_audience="5.0" min_image="7" target_group="2" />
+			<data infomercial="1" quality="45" repetitions="7" duration="4" fix_price="0" profit="110" penalty="120" year_range_from="1987" year_range_to="1988" />
 		</ad>		
 		<ad id="ronny-ad-allhits-03" creator="5578" created_by="Ronny">
 			<title>
@@ -511,8 +511,8 @@ Brucey - harsh fragrance for male experts.</en>
 				<en>Not one cassette, not two or three! Unbelieveable 4 music cassettes got filled with hits of the last 5 years. Your walkman never will play other music!</en>
 			</description>
 			<!-- targetgroup: all -->
-			<conditions min_audience="1.5" min_image="9" target_group="0" />
-			<data infomercial="1" quality="40" repetitions="5" duration="3" fix_price="0" profit="65" penalty="80" year_range_from="1988" year_range_to="1990" />
+			<conditions min_audience="8.0" min_image="9" target_group="0" />
+			<data infomercial="1" quality="40" repetitions="5" duration="3" fix_price="0" profit="135" penalty="130" year_range_from="1988" year_range_to="1990" />
 		</ad>		
 		<ad id="ronny-ad-reunionbeer-01" creator="5578" created_by="Ronny">
 			<title>
@@ -578,7 +578,7 @@ Brucey - harsh fragrance for male experts.</en>
 				<en>We bring you or your family on a canvas. If you do not have time, we also trace from photos. For other ... art projects ... please make an appointment.</en>
 			</description>
 			<!-- targetgroup: pensioners -->
-			<conditions min_audience="0.2" min_image="0" target_group="64" />
+			<conditions min_audience="5" min_image="0" target_group="64" />
 			<data infomercial="1" quality="18" repetitions="2" duration="1" fix_price="0" profit="74" penalty="62" />
 		</ad>		
 		<ad id="ronny-ad-batterietanke-01" creator="5578" created_by="Ronny">
@@ -592,7 +592,7 @@ Wir bieten Lade-Vollautomaten. Batterie einlegen, Münzschacht befüllen. Knopf 
 				<en>No time to recharge batteries yourself?
 We offer fully automatic charging. Insert battery, fill coin slot. Press the button - and after 72 hours, you can take your fully charged batteries. Charging has never been as simple as that.</en>
 			</description>
-			<conditions min_audience="0" min_image="0" />
+			<conditions min_audience="2.0" min_image="0" />
 			<data infomercial="1" quality="15" repetitions="3" duration="2" fix_price="1" profit="1250" penalty="3100" />
 		</ad>		
 		<ad id="ronny-ad-rentnerreisen-01" creator="5578" created_by="Ronny">
@@ -605,7 +605,7 @@ We offer fully automatic charging. Insert battery, fill coin slot. Press the but
 				<en>You do not want to spend the evening of life alone? You enjoy to do things with of other retirees? We offer day trips to the most beautiful villages - and the best rheumatism blankets.</en>
 			</description>
 			<!-- targetgroup: pensioners -->
-			<conditions min_audience="0.1" min_image="0" target_group="64" />
+			<conditions min_audience="7" min_image="0" target_group="64" />
 			<data infomercial="1" quality="12" repetitions="5" duration="2" fix_price="0" profit="74" penalty="90" />
 		</ad>
 		<ad id="ronny-ad-sanitaxi-01" creator="5578" created_by="Ronny">
@@ -618,7 +618,7 @@ We offer fully automatic charging. Insert battery, fill coin slot. Press the but
 				<en>The walker is rusted? Your relatives shine with absence since years? Sanitaxi provides you with all the necessary hygiene products. Now with trendy designs on every second liner.</en>
 			</description>
 			<!-- targetgroup: pensioners -->
-			<conditions min_audience="0.15" min_image="0" target_group="64" />
+			<conditions min_audience="7.5" min_image="0" target_group="64" />
 			<data infomercial="1" quality="18" repetitions="3" duration="1" fix_price="0" profit="74" penalty="109" />
 		</ad>
 		<ad id="ronny-ad-einkaufseck-01" creator="5578" created_by="Ronny">

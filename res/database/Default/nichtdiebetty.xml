@@ -105,7 +105,7 @@ Am Schluss zeigt Fischer Matjes noch wie man richtig Granat pult.</de>
 				<de>Wie die Faust aufs Auge - unsere Brillen sitzen immer!</de>
 				<en>Clashes horrible - our absolutely perfect fitting glasses. Break-proof through years of experience!</en>
 			</description>
-			<conditions min_audience="0" min_image="3" target_group="0" />
+			<conditions min_audience="2.5" min_image="3" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="2" duration="4" fix_price="1" profit="3500" penalty="4000" />
 		</ad>
 	</allads>

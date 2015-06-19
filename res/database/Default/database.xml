@@ -9631,8 +9631,8 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 				<de>Kirsch-Sirup aus Bio-Anbau. Von Tante Lizzy selbst abgefüllt.</de>
 				<en></en>
 			</description>
-			<conditions min_audience="0.1" min_image="0" target_group="4" />
-			<data infomercial="0" quality="0" repetitions="5" duration="2" fix_price="1" profit="150" penalty="150" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="1.5" min_image="0" target_group="4" />
+			<data infomercial="0" quality="0" repetitions="5" duration="2" fix_price="1" profit="1350" penalty="1650" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="a401f20f-8832-45df-a274-2599fd8d0afb" creator="">
 			<title>
@@ -9910,7 +9910,7 @@ Die GS2 ist der Nachfolger der GS aus dem Hause Sunny.</de>
 				<en></en>
 			</description>
 			<conditions min_audience="1.25" min_image="5" target_group="16" />
-			<data infomercial="0" quality="0" repetitions="2" duration="5" fix_price="0" profit="30" penalty="30" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data infomercial="0" quality="0" repetitions="3" duration="5" fix_price="0" profit="110" penalty="190" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="e77d26ae-895d-448f-b6ac-7171b785d21f" creator="">
 			<title>
@@ -10517,7 +10517,7 @@ Daran hat man zu kauen.</de>
 				<en></en>
 			</description>
 			<conditions min_audience="2.3" min_image="10" target_group="16" />
-			<data infomercial="0" quality="0" repetitions="4" duration="3" fix_price="0" profit="19" penalty="31" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data infomercial="0" quality="0" repetitions="4" duration="3" fix_price="0" profit="100" penalty="130" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="b61b71f4-255f-48a3-99e4-c25c10c59a58" creator="">
 			<title>
@@ -10555,7 +10555,7 @@ Aber nur mit Ulbricht Umzüge!</de>
 				<en></en>
 			</description>
 			<conditions min_audience="3.5" min_image="0" target_group="8" />
-			<data infomercial="0" quality="0" repetitions="2" duration="2" fix_price="0" profit="15" penalty="15" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data infomercial="0" quality="0" repetitions="2" duration="2" fix_price="0" profit="60" penalty="35" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 		<ad id="8384acef-9c23-4efa-9ffa-0d0e370693d4" creator="">
 			<title>
@@ -10627,7 +10627,7 @@ Aber nur mit Ulbricht Umzüge!</de>
 				<en></en>
 			</description>
 			<conditions min_audience="2.5" min_image="10" target_group="1" />
-			<data infomercial="0" quality="0" repetitions="4" duration="5" fix_price="0" profit="27" penalty="30" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data infomercial="0" quality="0" repetitions="4" duration="5" fix_price="0" profit="140" penalty="95" pro_pressure_groups="0" contra_pressure_groups="0" />
 		</ad>
 	</allads>
 	<allnews>

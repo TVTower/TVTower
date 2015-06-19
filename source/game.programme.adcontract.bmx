@@ -259,6 +259,8 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 	'share this topicality !)
 	Field infomercialTopicality:float = 1.0
 	Field infomercialMaxTopicality:float = 1.0
+	Field infomercialProfitBase:int = 0
+	Field fixedInfomercialProfit:int = False
 	
 	'id of the creating user
 	Field creator:Int = 0
@@ -395,6 +397,8 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	Field profit:Int = -1
 	'calculated penalty value (on sign)
 	Field penalty:Int = -1
+	'calculated infomercial profit value (on sign)
+	Field infomercialProfit:Int = -1
 	'calculated minimum audience value (on sign)
 	Field minAudience:Int = -1
 	' KI: Wird nur in der Lua-KI verwendet du die Filme zu bewerten
@@ -425,11 +429,10 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		local result:float = 0.0
 
 		'calculate
-		result = GetProfit() / GetSpotCount()
+		result = GetInfomercialProfit()
 		'cut down to the price of 1 viewer (assume a CPM price)
 		'TODO: reorganize to come along with "fixPrice" contracts
 		result :* 0.001
-	
 		'now cut this to the given infomercialCutFactor
 		result :* TAdContractBase.infomercialCutFactor
 		result :* TAdContractBase.infomercialCutFactorDevModifier
@@ -476,6 +479,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'           the "average" of all players -> set owner afterwards
 		self.profit	= GetProfit()
 		self.penalty = GetPenalty()
+		self.infomercialProfit = GetInfomercialProfit()
 		self.minAudience = GetMinAudience()
 
 		self.owner = owner
@@ -570,7 +574,20 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		If playerID=-1 and profit >= 0 Then Return profit
 
 		'calculate
-		Return CalculatePrices(base.profitBase, playerID)
+		Return CalculatePrices(base.profitBase, playerID) * GetSpotCount()
+	End Method
+
+
+	Method GetInfomercialProfit:Int(playerID:Int= -1) {_exposeToLua}
+		'already calculated and data for owner requested
+		If playerID=-1 and infomercialProfit >= 0 Then Return infomercialProfit
+
+		'return fixed or calculated profit
+		if base.fixedInfomercialProfit
+			Return base.infomercialProfitBase * 10
+		else
+			Return CalculatePrices(base.infomercialProfitBase, playerID)
+		endif
 	End Method
 
 
@@ -580,7 +597,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		If playerID=-1 and penalty >= 0 Then Return penalty
 
 		'calculate
-		Return CalculatePrices(base.penaltyBase, playerID)
+		Return CalculatePrices(base.penaltyBase, playerID) * GetSpotCount()
 	End Method
 
 
@@ -637,9 +654,6 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		If GetLimitedToTargetGroup() > 0 Then price :* limitedToTargetGroupMultiplier
 		'limiting to specific genres change the price too
 		If GetLimitedToGenre() > 0 Then price :* limitedToGenreMultiplier
-
-		'multiply price by spotcount to get a "total price"
-		price :* GetSpotCount()
 
 		'print GetTitle()+": "+GetMinAudiencePercentage() +" -- price " +price +" ---raw audience "+getRawMinAudience(playerID)
 
