@@ -5,7 +5,11 @@ Import Brl.Map
 Import Brl.Stream
 Import Brl.Retro
 'for direct udp messages
+?bmxng
+Import "external/bnetex/bnetex_ng.bmx"
+?not bmxng
 Import "external/bnetex/bnetex.bmx"
+?
 Import "Dig/base.util.event.bmx"
 Import "Dig/base.util.logger.bmx"
 

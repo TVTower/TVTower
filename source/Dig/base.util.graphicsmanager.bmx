@@ -37,8 +37,7 @@ EndRem
 SuperStrict
 Import BRL.GLMax2D
 ?Win32
-Import BRL.D3D9Max2D
-Import BRL.D3D7Max2D
+Import "base.util.graphicsmanager.win32.bmx"
 ?Linux
 'Import "../source/external/bufferedglmax2d/bufferedglmax2d.bmx"
 ?
@@ -174,45 +173,14 @@ Type TGraphicsManager
 		'for the first time
 		if not _g then InitVirtualGraphics()
 
-'		Try
-			Select renderer
-				?Win32
-				Case RENDERER_DIRECTX7
-						SetGraphicsDriver D3D7Max2DDriver()
-				Case RENDERER_DIRECTX9
-						SetGraphicsDriver D3D9Max2DDriver()
-				?
-				?Linux
-'				Case RENDERER_BUFFEREDOPENGL
-'						SetGraphicsDriver BufferedGLMax2DDriver()
-				?
-				Default SetGraphicsDriver GLMax2DDriver()
-			EndSelect
+		'needed to allow ?win32 + ?bmxng
+		?win32
+		_InitGraphicsWin32()
+		?not win32
+		_InitGraphicsDefault()
+		?
 
-			_g = Graphics(realWidth, realHeight, colorDepth*fullScreen, hertz, flags)
 
-			?Win32
-			'on win32 we could try to fallback to DX7
-			If not _g and renderer <> RENDERER_DIRECTX9
-				Notify "Graphics initiation error! The game will try to open in DirectX 9 mode."
-				SetGraphicsDriver D3D7Max2DDriver()
-				_g = Graphics(realWidth, realHeight, colorDepth*fullScreen, hertz, flags)
-			endif
-			'on win32 we could try to fallback to DX7
-			If not _g and renderer <> RENDERER_DIRECTX7
-				Notify "Graphics initiation error! The game will try to open in DirectX 7 mode."
-				SetGraphicsDriver D3D7Max2DDriver()
-				_g = Graphics(realWidth, realHeight, colorDepth*fullScreen, hertz, flags)
-			endif
-			'or to OpenGL
-			If not _g and renderer <> RENDERER_OPENGL
-				Notify "Graphics initiation error! The game will try to open in OpenGL mode."
-				SetGraphicsDriver GLMax2DDriver()
-				_g = Graphics(realWidth, realHeight, colorDepth*fullScreen, hertz, flags)
-			endif
-			?
-			if not _g then Throw "Graphics initiation error! no render engine available."
-'		End Try
 		SetBlend ALPHABLEND
 		SetMaskColor 0, 0, 0
 		HideMouse()
@@ -222,6 +190,28 @@ Type TGraphicsManager
 	End Method
 
 
+	Method _InitGraphicsDefault:Int()
+		Select renderer
+			'buffered gl?
+			
+			Default SetGraphicsDriver GLMax2DDriver()
+		EndSelect
+
+		_g = Graphics(realWidth, realHeight, colorDepth*fullScreen, hertz, flags)
+
+		if not _g then Throw "Graphics initiation error! no render engine available."
+	End Method
+
+
+	'cannot "?win32" this method as this disables "?not bmxng" in this method
+	Method _InitGraphicsWin32:Int()
+		?win32
+		'done in base.util.graphicsmanager.win32.bmx
+		SetRendererWin32(_g, renderer, realWidth, realHeight, colorDepth, fullScreen, hertz, flags)
+		?
+	End Method
+
+	
 	Method Flip(restrictFPS:int=FALSE)
 		'we call "."flip so we call the "original flip function"
 		If Not restrictFPS
