@@ -87,11 +87,11 @@ Extern "OS"
 		Const SO_RCVBUF_    : Short = $1002
 
 	?win32
-			Function ioctl_:Int(Socket:Int, Command:Int, Arguments:Byte Ptr) = "ioctlsocket"
-			Function inet_addr_:Int(Address$z) = "inet_addr"
-			Function inet_ntoa_:Byte Ptr(Adress:Int) = "inet_ntoa"
-			Function getsockname_:Int(Socket:Int, Name:Byte Ptr, NameLen:Int Ptr) = "getsockname"
-			Function GetCurrentProcessId:Int() = "GetCurrentProcessI"
+		Function ioctl_:Int(Socket:Int, Command:Int, Arguments:Byte Ptr) = "ioctlsocket@12"
+		Function inet_addr_:Int(Address$z) = "inet_addr@4"
+		Function inet_ntoa_:Byte Ptr(Adress:Int) = "inet_ntoa@4"
+		Function getsockname_:Int(Socket:Int, Name:Byte Ptr, NameLen:Int Ptr) = "getsockname@12"
+		Function GetCurrentProcessId:Int() = "GetCurrentProcessId@0"
 	?
 
 	?MacOS
