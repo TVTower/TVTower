@@ -408,11 +408,6 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	Field adAgencyClassification:int = 0 {nosave}
 
 
-	Method New()
-		GetAdContractCollection().Add(self)
-	End Method
-	
-
 	'create UNSIGNED (adagency)
 	Method Create:TAdContract(baseContract:TAdContractBase)
 		self.base = baseContract
