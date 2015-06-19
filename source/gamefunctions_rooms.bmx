@@ -2946,7 +2946,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 	Function isCheapContract:int(contract:TAdContract)
-		return contract.adAgencyClassification = 1
+		return contract.adAgencyClassification < 0
 	End Function
 
 
@@ -2963,7 +2963,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		listNormal = new TAdContract[listNormal.length]
 		listCheap = new TAdContract[listCheap.length]
 
-		contracts.sort()
+		contracts.sort(false, TAdContract.SortByClassification)
 
 		'add again - so it gets sorted
 		for local contract:TAdContract = eachin contracts
@@ -3320,7 +3320,7 @@ print "level2:  image     0.00 - "+highestChannelImage
 print "------------------"
 endrem
 		'=== ACTUALLY CREATE CONTRACTS ===
-		local classification:int = 0
+		local classification:int = -1
 		for local j:int = 0 to lists.length-1
 			for local i:int = 0 to lists[j].length-1
 				'if exists and is valid...skip it
@@ -3333,26 +3333,29 @@ endrem
 							'levelFilters[0 + 1]
 							if i mod 4 <= 1
 								filterNum = 0
+								classification = 1
 							else
 								filterNum = 1
+								classification = 0
 							endif
-							classification = 2
 						case 1
 							'levelFilters[2 + 3]
 							if i mod 4 <= 1
 								filterNum = 2
+								classification = 3
 							else
 								filterNum = 3
+								classification = 2
 							endif
-							classification = 3
 						case 0
 							'levelFilters[4 + 5]
 							if i mod 4 <= 1
 								filterNum = 4
+								classification = 5
 							else
 								filterNum = 5
+								classification = 4
 							endif
-							classification = 4
 					End Select
 
 					'check if there is an adcontract base available for this filter
@@ -3382,7 +3385,7 @@ endrem
 					Wend
 					contract = new TAdContract.Create( contractBase )
 
-					classification = 1
+					classification = -1
 				endif
 
 
@@ -3410,7 +3413,7 @@ endrem
 				local ad:TAdContract = new TAdContract
 				'do NOT call ad.Create() as it adds to the adcollection
 				ad.base = a
-				TLogger.log("AdAgency.RefillBlocks", "    possible contract: "+a.GetTitle() + "  (MinAudience="+MathHelper.NumberToString(100 * a.minAudienceBase,3)+"%  MinImage="+MathHelper.NumberToString(100 * a.minImage,3)+")" + "   Profit:"+ad.GetProfit()+"  Penalty:"+ad.GetPenalty(), LOG_DEBUG)
+'				TLogger.log("AdAgency.RefillBlocks", "    possible contract: "+a.GetTitle() + "  (MinAudience="+MathHelper.NumberToString(100 * a.minAudienceBase,3)+"%  MinImage="+MathHelper.NumberToString(100 * a.minImage,3)+")" + "   Profit:"+ad.GetProfit()+"  Penalty:"+ad.GetPenalty(), LOG_DEBUG)
 			else
 '				print "FAIL: "+ a.GetTitle()
 			endif
@@ -3427,7 +3430,7 @@ endrem
 					local ad:TAdContract = new TAdContract
 					'do NOT call ad.Create() as it adds to the adcollection
 					ad.base = a
-					TLogger.log("AdAgency.RefillBlocks", "    possible contract: "+a.GetTitle() + "  (MinAudience="+MathHelper.NumberToString(100 * a.minAudienceBase,3)+"%  MinImage="+MathHelper.NumberToString(100 * a.minImage,3)+")" + "   Profit:"+ad.GetProfit()+"  Penalty:"+ad.GetPenalty(), LOG_DEBUG)
+'					TLogger.log("AdAgency.RefillBlocks", "    possible contract: "+a.GetTitle() + "  (MinAudience="+MathHelper.NumberToString(100 * a.minAudienceBase,3)+"%  MinImage="+MathHelper.NumberToString(100 * a.minImage,3)+")" + "   Profit:"+ad.GetProfit()+"  Penalty:"+ad.GetPenalty(), LOG_DEBUG)
 				endif
 			Next
 		next

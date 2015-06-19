@@ -404,13 +404,12 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	' KI: Wird nur in der Lua-KI verwendet du die Filme zu bewerten
 	Field attractiveness:Float = -1
 	'the classification of this contract
-	' 0 = none
-	' 1 = cheap
-	' 2 = lower end
-	' 3 = average
-	' 4 = top
-	Field adAgencyClassification:int = 0 {nosave}
-
+	' -1 = cheap filter list
+	' 0,1 - lowest daytime + primetime
+	' 2,3 - avg daytime + primetime
+	' 4,5 - best daytime + primetime
+	Field adAgencyClassification:int = 0
+	
 
 	'create UNSIGNED (adagency)
 	Method Create:TAdContract(baseContract:TAdContractBase)
@@ -419,6 +418,14 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		GetAdContractCollection().Add(self)
 		Return self
 	End Method
+
+
+	Function SortByClassification:Int(o1:Object, o2:Object)
+		Local a1:TAdContract = TAdContract(o1)
+		Local a2:TAdContract = TAdContract(o2)
+		If Not a2 Then Return 1
+        Return a1.adAgencyClassification - a2.adAgencyClassification
+	End Function
 
 
 	'what to earn each hour for each viewer
