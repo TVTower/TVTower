@@ -439,11 +439,44 @@ Type TApp
 						GetWorldTime().AdjustTimeFactor(-5)
 					EndIf
 
-					If KEYMANAGER.ISDown(KEY_LSHIFT) and KEYMANAGER.IsHit(KEY_F)
-						local text:string[] = GetPlayerFinanceOverviewText( GetWorldTime().GetDay() )
-						For local s:string = EachIn text
-							print s
-						Next
+					If KEYMANAGER.IsHit(KEY_F)
+						If KEYMANAGER.IsDown(KEY_LSHIFT) or KEYMANAGER.IsDown(KEY_RSHIFT)
+							local text:string[] = GetPlayerFinanceOverviewText( GetWorldTime().GetDay() )
+							For local s:string = EachIn text
+								print s
+							Next
+						endif
+					endif
+
+
+					If KEYMANAGER.IsHit(KEY_W)
+						If KEYMANAGER.IsDown(KEY_LSHIFT) or KEYMANAGER.IsDown(KEY_RSHIFT)
+							print "==== AD CONTRACT OVERVIEW ===="
+							print ".---------------------------------.------------------.---------.----------.----------.-------."
+							print "| Name                            | Audience       % |  Image  |  Profit  |  Penalty | Spots |"
+							print "|---------------------------------+------------------+---------+----------+----------|-------|"
+							For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
+								local ad:TAdContract = new TAdContract
+								'do NOT call ad.Create() as it adds to the adcollection
+								ad.base = a
+								local title:String = LSet(a.GetTitle(), 30)
+								local audience:string = LSet( RSet(ad.GetMinAudience(), 7), 8)+"  "+RSet( MathHelper.NumberToString(100 * a.minAudienceBase,2)+"%", 6)
+								local image:string =  Rset(MathHelper.NumberToString(ad.GetMinImage()*100, 2)+"%", 7)
+								local profit:string =  Rset(ad.GetProfit(), 8)
+								local penalty:string =  Rset(ad.GetPenalty(), 8)
+								local spots:string = RSet(ad.GetSpotCount(), 5)
+								local targetGroup:String = ""
+								if ad.GetLimitedToTargetGroup() > 0
+									targetGroup = "* "+ getLocale("AD_TARGETGROUP")+": "+ad.GetLimitedToTargetGroupString()
+									title :+ "*"
+								else
+									title :+ " "
+								endif
+								print "| "+title + " | " + audience + " | " + image + " | " + profit + " | " + penalty + " | " + spots+" |" + targetgroup
+								
+							Next
+							print "'---------------------------------'------------------'---------'----------'----------'-------'"
+						endif
 					endif
 					
 
@@ -479,10 +512,18 @@ Type TApp
 						If KEYMANAGER.IsHit(KEY_3) Then Game.SetActivePlayer(3)
 						If KEYMANAGER.IsHit(KEY_4) Then Game.SetActivePlayer(4)
 
-						If KEYMANAGER.IsHit(KEY_W) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("adagency") )
+						If KEYMANAGER.IsHit(KEY_W)
+							if not KEYMANAGER.IsDown(KEY_LSHIFT) and not KEYMANAGER.IsDown(KEY_RSHIFT)
+								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("adagency") )
+							endif
+						endif
 						If KEYMANAGER.IsHit(KEY_A) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("archive", GetPlayerCollection().playerID) )
 						If KEYMANAGER.IsHit(KEY_B) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("betty") )
-						If KEYMANAGER.IsHit(KEY_F) and not KEYMANAGER.Isdown(KEY_LSHIFT) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("movieagency"))
+						If KEYMANAGER.IsHit(KEY_F)
+							if not KEYMANAGER.IsDown(KEY_LSHIFT) and not KEYMANAGER.IsDown(KEY_RSHIFT)
+								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("movieagency"))
+							endif
+						endif
 						If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", GetPlayerCollection().playerID))
 						If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("boss", GetPlayerCollection().playerID))
 						If KEYMANAGER.IsHit(KEY_G) Then TVTGhostBuildingScrollMode = 1 - TVTGhostBuildingScrollMode
