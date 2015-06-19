@@ -633,6 +633,12 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 			Return baseValue * GetSpotCount()
 		endif
 
+		local population:int = GetStationMapCollection().GetPopulation()
+		if population <= 1000
+			print "StationMap Population to low: "+population
+			population = 1000
+		endif
+
 
 		'=== DYNAMIC PRICE ===
 		Local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG", new TData.Init()))
@@ -640,14 +646,14 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		Local limitedToGenreMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_GENRE_MULTIPLIER", 2.0)
 		Local limitedToTargetGroupMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_TARGETGROUP_MULTIPLIER", 2.0)
 
-		local maxCPM:float = GameRules.maxAdContractPricePerSpot / (GetStationMapCollection().GetPopulation()/1000)
+		local maxCPM:float = GameRules.maxAdContractPricePerSpot / Max(1, (population/1000))
 		Local price:Float
 
 		'calculate a price/CPM using the "getCPM"-function
 		'use the already rounded minAudience to avoid a raw audience of
 		'"15100" which rounds later to 16000 but calculating the cpm-blocks
 		'leads to 15 instead of 16...
-		price = GetCPM(baseValue, maxCPM, getMinAudience(playerID) / GetStationMapCollection().GetPopulation())
+		price = GetCPM(baseValue, maxCPM, getMinAudience(playerID) / population)
 		'multiply by amount of "1000 viewers"-blocks
 		price :* Max(1, getMinAudience(playerID)/1000)
 		'value cannot be higher than "maxAdContractPricePerSpot"

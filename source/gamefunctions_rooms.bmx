@@ -3413,7 +3413,7 @@ endrem
 				local ad:TAdContract = new TAdContract
 				'do NOT call ad.Create() as it adds to the adcollection
 				ad.base = a
-'				TLogger.log("AdAgency.RefillBlocks", "    possible contract: "+a.GetTitle() + "  (MinAudience="+MathHelper.NumberToString(100 * a.minAudienceBase,3)+"%  MinImage="+MathHelper.NumberToString(100 * a.minImage,3)+")" + "   Profit:"+ad.GetProfit()+"  Penalty:"+ad.GetPenalty(), LOG_DEBUG)
+				TLogger.log("AdAgency.RefillBlocks", "    possible contract: "+a.GetTitle() + "  (MinAudience="+MathHelper.NumberToString(100 * a.minAudienceBase,3)+"%  MinImage="+MathHelper.NumberToString(100 * a.minImage,3)+")" + "   Profit:"+ad.GetProfit()+"  Penalty:"+ad.GetPenalty(), LOG_DEBUG)
 			else
 '				print "FAIL: "+ a.GetTitle()
 			endif
@@ -3430,7 +3430,7 @@ endrem
 					local ad:TAdContract = new TAdContract
 					'do NOT call ad.Create() as it adds to the adcollection
 					ad.base = a
-'					TLogger.log("AdAgency.RefillBlocks", "    possible contract: "+a.GetTitle() + "  (MinAudience="+MathHelper.NumberToString(100 * a.minAudienceBase,3)+"%  MinImage="+MathHelper.NumberToString(100 * a.minImage,3)+")" + "   Profit:"+ad.GetProfit()+"  Penalty:"+ad.GetPenalty(), LOG_DEBUG)
+					TLogger.log("AdAgency.RefillBlocks", "    possible contract: "+a.GetTitle() + "  (MinAudience="+MathHelper.NumberToString(100 * a.minAudienceBase,3)+"%  MinImage="+MathHelper.NumberToString(100 * a.minImage,3)+")" + "   Profit:"+ad.GetProfit()+"  Penalty:"+ad.GetPenalty(), LOG_DEBUG)
 				endif
 			Next
 		next
