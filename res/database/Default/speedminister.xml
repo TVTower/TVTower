@@ -143,7 +143,7 @@
 				<de>Bummbarts Bäume wissen Väter zu schätzen, wenn sie mit Ihrem Sohne einen setzen.</de>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="256" />
-			<data infomercial="1" quality="21" repetitions="5" duration="4" fix_price="0" profit="180" penalty="270" fix_infomercial_profit="1" infomercial_profit="800" />
+			<data infomercial="1" quality="21" repetitions="5" duration="4" fix_price="0" profit="180" penalty="270" infomercial_profit="200" />
 		</ad>
 		<ad id="speedminister-ad-baumschule-02" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -153,7 +153,7 @@
 				<de>In Parks und Gärten genießt man die Räume, die Highlights aber sind Bummbarts Bäume.</de>
 			</description>
 			<conditions min_audience="23.0" min_image="0" target_group="256" />
-			<data infomercial="1" quality="39" repetitions="6" duration="4" fix_price="0" profit="180" penalty="270" fix_infomercial_profit="1" infomercial_profit="800" />
+			<data infomercial="1" quality="39" repetitions="6" duration="4" fix_price="0" profit="180" penalty="270" infomercial_profit="200" />
 		</ad>
 		<ad id="speedminister-ad-koizucht-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -163,7 +163,7 @@
 				<de>Satte Fische zu satten Preisen. Ein weiterer Beleg, was einmal ein Schwabe sagte: "Wenn's nix koscht'! Sonscht kommt koiner nai!"</de>
 			</description>
 			<conditions min_audience="30.0" min_image="0" target_group="0" />
-			<data infomercial="1" quality="45" repetitions="3" duration="3" fix_price="0" profit="450" penalty="570" fix_infomercial_profit="1" infomercial_profit="450" />
+			<data infomercial="1" quality="45" repetitions="3" duration="3" fix_price="0" profit="450" penalty="570" infomercial_profit="150" />
 		</ad>
 		<ad id="speedminister-ad-happo-01" creator="8605" created_by="SpeedMinister">
 			<title>

@@ -4059,10 +4059,6 @@ Function StartApp:Int()
 		TLogger.SetPrintMode(0)
 	EndIf
 
-	'override infomercialCutFactor if given
-	TAdContractBase.infomercialCutFactorDevModifier = GameRules.devConfig.GetFloat("DEV_INFOMERCIALCUTFACTOR", 1.0)
-
-
 	TFunctions.roundToBeautifulEnabled = GameRules.devConfig.GetBool("DEV_ROUND_TO_BEAUTIFUL_VALUES", True)
 	If TFunctions.roundToBeautifulEnabled
 		TLogger.Log("StartTVTower()", "DEV RoundToBeautiful is enabled", LOG_DEBUG | LOG_LOADING)

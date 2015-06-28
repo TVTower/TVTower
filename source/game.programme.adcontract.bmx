@@ -260,20 +260,14 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 	Field infomercialTopicality:float = 1.0
 	Field infomercialMaxTopicality:float = 1.0
 	Field infomercialProfitBase:int = 0
-	Field fixedInfomercialProfit:int = False
+	'keep the profit the same for all audience requirements
+	Field fixedInfomercialProfit:int = True
 	
 	'id of the creating user
 	Field creator:Int = 0
 	'name of the creating user
 	Field createdBy:String = ""
 	
-	'by which factor do we cut the profit when send as infomercial
-	'compared to the profit a single ad would generate
-	'- for all
-	Global infomercialCutFactor:Float = 0.1
-	Global infomercialCutFactorDevModifier:Float = 1.0
-	'- for the individual base
-	'Field infomercialCutFactorModifier:Float = 1.0
 
 	Method Create:TAdContractBase(GUID:String, title:TLocalizedString, description:TLocalizedString, daysToFinish:Int, spotCount:Int, targetgroup:Int, minAudience:Float, minImage:Float, fixedPrice:Int, profit:Float, penalty:Float)
 		self.SetGUID(GUID)
@@ -438,13 +432,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'calculate
 		result = GetInfomercialProfit()
 		'cut down to the price of 1 viewer (assume a CPM price)
-		'TODO: reorganize to come along with "fixPrice" contracts
 		result :* 0.001
-		'now cut this to the given infomercialCutFactor
-		result :* TAdContractBase.infomercialCutFactor
-		result :* TAdContractBase.infomercialCutFactorDevModifier
-		'cut again with the individual cut factor
-		'result :* base.infomercialCutFactorModifier
 
 		'less revenue with less topicality
 		if base.GetMaxInfomercialTopicality() > 0
@@ -589,12 +577,20 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'already calculated and data for owner requested
 		If playerID=-1 and infomercialProfit >= 0 Then Return infomercialProfit
 
+		local result:float
 		'return fixed or calculated profit
 		if base.fixedInfomercialProfit
-			Return base.infomercialProfitBase * 10
+			result = base.infomercialProfitBase
 		else
-			Return CalculatePrices(base.infomercialProfitBase, playerID)
+			result = CalculatePrices(base.infomercialProfitBase, playerID)
 		endif
+
+		'DEV:
+		'by which factor do we cut the profit when send as infomercial
+		'compared to the profit a single ad would generate
+		result :* GameRules.devConfig.GetFloat("DEV_INFOMERCIALCUTFACTOR", 1.0)
+
+		return result
 	End Method
 
 

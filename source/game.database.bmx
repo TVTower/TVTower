@@ -812,8 +812,8 @@ endrem
 		adContract.penaltyBase = data.GetFloat("penalty", adContract.penaltyBase)
 		adContract.infomercialProfitBase = data.GetFloat("infomercial_profit", adContract.infomercialProfitBase)
 		adContract.fixedInfomercialProfit = data.GetFloat("fix_infomercial_profit", adContract.fixedInfomercialProfit)
-		'without data, fall back to profitBase
-		if adContract.infomercialProfitBase = 0 then adContract.infomercialProfitBase = adContract.profitBase
+		'without data, fall back to 10% of profitBase 
+		if adContract.infomercialProfitBase = 0 then adContract.infomercialProfitBase = adContract.profitBase * 0.1
 		
 
 		'=== CONDITIONS ===
