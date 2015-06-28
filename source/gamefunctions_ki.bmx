@@ -356,8 +356,13 @@ Type TLuaFunctions {_exposeToLua}
 		d) rooms could change "content" and no longer exist
 	EndRem
 
-	Method _PlayerInRoom:Int(roomname:String, checkFromRoom:Int = False)
-		Return GetPlayer(Self.ME).isInRoom(roomname, checkFromRoom)
+	Method _PlayerInRoom:Int(roomname:String)
+		'If checkFromRoom
+			'from room has to be set AND inroom <> null (no building!)
+		'	GetPlayer(Self.ME).isComingFromRoom(roomname) and GetPlayer(Self.ME).isInRoom()
+		'Else
+			Return GetPlayer(Self.ME).isInRoom(roomname)
+		'EndIf
 	End Method
 
 
@@ -603,7 +608,7 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	Method of_getStationCount:Int(playerID:int = -1)
-		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
+		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 
 		if playerID = -1 then playerID = self.ME
 
@@ -612,7 +617,7 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	Method of_getStationAtIndex:TStation(playerID:int = -1, arrayIndex:Int = -1)
-		If Not _PlayerInRoom("office", True) Then Return Null
+		If Not _PlayerInRoom("office") Then Return Null
 
 		if playerID = -1 then playerID = self.ME
 
@@ -637,14 +642,14 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	Method of_getAdContractCount:Int()
-		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
+		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 
 		Return GetPlayerProgrammeCollectionCollection().Get(Self.ME).GetAdContractCount()
 	End Method
 
 
 	Method of_getAdContractAtIndex:TAdContract(arrayIndex:Int=-1)
-		If Not _PlayerInRoom("office", True) Then Return Null
+		If Not _PlayerInRoom("office") Then Return Null
 
 		Local obj:TAdContract = GetPlayer(self.ME).GetProgrammeCollection().GetAdContractAtIndex(arrayIndex)
 		If obj Then Return obj Else Return Null
@@ -652,7 +657,7 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	Method of_getAdContractByID:TAdContract(id:Int=-1)
-		If Not _PlayerInRoom("office", True) Then Return Null
+		If Not _PlayerInRoom("office") Then Return Null
 
 		Local obj:TAdContract = GetPlayer(self.ME).GetProgrammeCollection().GetAdContract(id)
 		If obj Then Return obj Else Return Null
@@ -664,7 +669,7 @@ Type TLuaFunctions {_exposeToLua}
 	'or of types: "TProgrammeLicence" or "TAdContract"
 	'returns: (TVT.)RESULT_OK, RESULT_WRONGROOM, RESULT_NOTFOUND
 	Method of_setAdvertisementSlot:Int(materialSource:object, day:Int=-1, hour:Int=-1)
-		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
+		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 		'even if player has access to room, only owner can manage things here
 		If Not _PlayerOwnsRoom() Then Return self.RESULT_WRONGROOM
 
@@ -698,7 +703,7 @@ Type TLuaFunctions {_exposeToLua}
 	'or of types: "TProgrammeLicence" or "TAdContract"
 	'returns: (TVT.)RESULT_OK, RESULT_WRONGROOM, RESULT_NOTFOUND
 	Method of_SetProgrammeSlot:Int(materialSource:object, day:Int=-1, hour:Int=-1)
-		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
+		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 		'even if player has access to room, only owner can manage things here
 		If Not _PlayerOwnsRoom() Then Return self.RESULT_WRONGROOM
 
@@ -720,7 +725,7 @@ Type TLuaFunctions {_exposeToLua}
 	'Invalid groups return the maximum of all.
 	'Currently valid are "0" and "1"
 	Method ne_getTerroristAggressionLevel:Int(terroristGroup:int=-1)
-		If Not (_PlayerInRoom("newsroom", True) or _PlayerInRoom("news", True)) Then Return self.RESULT_WRONGROOM
+		If Not (_PlayerInRoom("newsroom") or _PlayerInRoom("news")) Then Return self.RESULT_WRONGROOM
 
 		return GetNewsAgency().GetTerroristAggressionLevel(terroristGroup)
 	End Method
@@ -733,7 +738,7 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	Method ne_doNewsInPlan:Int(slot:int=1, ObjectID:Int = -1)
-		If Not (_PlayerInRoom("newsroom", True) or _PlayerInRoom("news", True)) Then Return self.RESULT_WRONGROOM
+		If Not (_PlayerInRoom("newsroom") or _PlayerInRoom("news")) Then Return self.RESULT_WRONGROOM
 
 		local player:TPlayer = GetPlayer(self.ME)
 

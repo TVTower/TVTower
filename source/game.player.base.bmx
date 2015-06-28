@@ -204,8 +204,8 @@ Type TPlayerBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method IsInRoom:Int(roomName:String="", checkFromRoom:Int=False) {_exposeToLua}
-		return GetFigure().IsInRoom(roomName, checkFromRoom)
+	Method IsInRoom:Int(roomName:String="") {_exposeToLua}
+		return GetFigure().IsInRoom(roomName)
 	End Method
 
 	'remove this helper as soon as "player" class gets a single importable
