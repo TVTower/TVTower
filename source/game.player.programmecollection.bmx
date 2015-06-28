@@ -135,6 +135,11 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
+	Method GetSuitcaseProgrammeLicenceCount:int() {_exposeToLua}
+		return suitcaseProgrammeLicences.count()
+	End Method
+	
+
 	'returns a freshly created broadcast material
 	'=====
 	'recognized materialSources: TProgrammeLicende, TAdContract
@@ -255,8 +260,10 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		'do not add if already "full"
 		if suitcaseProgrammeLicences.count() >= GameRules.maxContracts then return FALSE
 
-		'if owner differs, check if we have to buy
-		if owner <> programmeLicence.owner
+		if not programmeLicence.IsOwnedByPlayer(owner)
+			if not programmeLicence.IsOwnedByVendor()
+				print "TODO: buying licence from other owner: "+ programmeLicence.owner+" =/= " + owner
+			endif
 			if not programmeLicence.buy(owner) then return FALSE
 		endif
 
@@ -582,6 +589,13 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Method GetRandomScript:TScript() {_exposeToLua}
 		if scripts.count() = 0 then return Null
 		Return TScript(scripts.ValueAtIndex(rand(0, scripts.count() - 1)))
+	End Method
+
+
+	'get programmeLicence by index number in list - useful for lua-scripts
+	Method GetSuitcaseProgrammeLicenceAtIndex:TProgrammeLicence(arrayIndex:Int=0) {_exposeToLua}
+		if arrayIndex < 0 or arrayIndex >= suitcaseProgrammeLicences.Count() then return Null
+		Return TProgrammeLicence(suitcaseProgrammeLicences.ValueAtIndex(arrayIndex))
 	End Method
 
 

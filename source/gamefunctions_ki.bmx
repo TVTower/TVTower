@@ -356,7 +356,7 @@ Type TLuaFunctions {_exposeToLua}
 		d) rooms could change "content" and no longer exist
 	EndRem
 
-	Method _PlayerInRoom:Int(roomname:String)
+	Method _PlayerInRoom:Int(roomname:String) {_private}
 		'If checkFromRoom
 			'from room has to be set AND inroom <> null (no building!)
 		'	GetPlayer(Self.ME).isComingFromRoom(roomname) and GetPlayer(Self.ME).isInRoom()
@@ -366,12 +366,12 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 
-	Method _PlayerOwnsRoom:Int()
+	Method _PlayerOwnsRoom:Int() {_private}
 		Return Self.ME = GetPlayer(Self.ME).GetFigure().inRoom.owner
 	End Method
 
 
-	Function Create:TLuaFunctions(pPlayerId:Int)
+	Function Create:TLuaFunctions(pPlayerId:Int) {_private}
 		Local ret:TLuaFunctions = New TLuaFunctions
 
 		ret.Rules = GameRules
@@ -401,6 +401,7 @@ Type TLuaFunctions {_exposeToLua}
 
 		Return ret
 	End Function
+
 
 	Method GetArchiveIdOfPlayer:Int(id:Int)
 		Return GetRoomCollection().GetFirstByDetails("archive", id).id
@@ -1112,9 +1113,67 @@ Type TLuaFunctions {_exposeToLua}
 	'LUA_be_getSammyGenre
 	'
 
-	'LUA_ar_getMovieInBagCount
-	'LUA_ar_getMovieInBag
-	'LUA_ar_doMovieInBag
-	'LUA_ar_doMovieOutBag
-	'
+
+	'move licence from archive to suitcase
+	Method ar_AddProgrammeLicenceToSuitcase:Int(position:Int = -1)
+		If Not _PlayerInRoom("archive") Then Return self.RESULT_WRONGROOM
+
+		local licence:TProgrammeLicence = GetPlayerProgrammeCollection(self.ME).GetProgrammeLicence(position)
+		if not licence then return self.RESULT_NOTFOUND
+
+		Return GetPlayerProgrammeCollection(self.ME).AddProgrammeLicenceToSuitcase(licence)
+	End Method
+	
+
+	'move licence from suitcase to archive
+	Method ar_RemoveProgrammeLicenceFromSuitcase:Int(position:Int = -1)
+		If Not _PlayerInRoom("archive") Then Return self.RESULT_WRONGROOM
+
+		local licence:TProgrammeLicence = GetPlayerProgrammeCollection(self.ME).GetSuitcaseProgrammeLicenceAtIndex(position)
+		if not licence then return self.RESULT_NOTFOUND
+
+		Return GetPlayerProgrammeCollection(self.ME).RemoveProgrammeLicenceFromSuitcase(licence)
+	End Method
+
+
+	'returns count of available programme licences in the archive
+	Method ar_GetProgrammeLicenceCount:Int()
+		If Not _PlayerInRoom("archive") Then Return self.RESULT_WRONGROOM
+
+		Return GetPlayerProgrammeCollection(self.ME).GetProgrammeLicenceCount()
+	End Method
+
+
+	'returns the specified licence (if possible)
+	Method ar_GetProgrammeLicence:TLuaFunctionResult(position:Int = -1)
+		If Not _PlayerInRoom("archive") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
+
+		local licence:TProgrammeLicence = GetPlayerProgrammeCollection(self.ME).GetProgrammeLicenceAtIndex(position)
+		If licence
+			Return TLuaFunctionResult.Create(self.RESULT_OK, licence)
+		else
+			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+		endif
+	End Method
+
+
+	'returns amount of licences in suitcase
+	Method ar_GetSuitcaseProgrammeLicenceCount:Int()
+		If Not _PlayerInRoom("archive") Then Return self.RESULT_WRONGROOM
+
+		Return GetPlayerProgrammeCollection(self.ME).GetSuitcaseProgrammeLicenceCount()
+	End Method
+
+
+	'returns the specified licence (if possible)
+	Method ar_GetSuitcaseProgrammeLicence:TLuaFunctionResult(position:Int = -1)
+		If Not _PlayerInRoom("archive") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
+
+		local licence:TProgrammeLicence = GetPlayerProgrammeCollection(self.ME).GetSuitcaseProgrammeLicenceAtIndex(position)
+		If licence
+			Return TLuaFunctionResult.Create(self.RESULT_OK, licence)
+		else
+			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+		endif
+	End Method
 End Type
