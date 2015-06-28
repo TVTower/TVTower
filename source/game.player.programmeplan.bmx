@@ -627,9 +627,8 @@ endrem
 	'plan's list.
 	'If removeCurrentRunning is true, also the current block can be affected
 	Method RemoveProgrammeInstancesByLicence:Int(licence:TProgrammeLicence, removeCurrentRunning:Int=False)
-		'no programme connected to that licence?
 		'Maybe we got a collection/series - so revoke all sublicences
-		If Not licence.getData()
+		If licence.GetSubLicenceCount() > 0
 			For Local subLicence:TProgrammeLicence = EachIn licence.subLicences
 				RemoveProgrammeInstancesByLicence(subLicence, removeCurrentRunning)
 			Next
