@@ -18,7 +18,7 @@ Type TNewsAgency
 	'=== TERRORIST HANDLING ===
 	'both parties (VR and FR) have their own array entry
 	'when to update aggression the next time
-	Field terroristUpdateTime:Double = 0
+	Field terroristUpdateTime:Double[] = [Double(0),Double(0)]
 	'update terrorists aggression every x-y minutes
 	Field terroristUpdateTimeInterval:int[] = [30, 45]
 	'level of terrorists aggression (each level = new news)
@@ -47,72 +47,85 @@ Type TNewsAgency
 		ProcessUpcomingNewsEvents()
 
 		If NextEventTime < GetWorldTime().GetTimeGone() Then AnnounceNewNewsEvent()
-		If terroristUpdateTime < GetWorldTime().GetTimeGone() Then UpdateTerrorists()
 		If weatherUpdateTime < GetWorldTime().GetTimeGone() Then UpdateWeather()
+
+		UpdateTerrorists()
 	End Method
 
 
 	Method UpdateTerrorists:int()
-		'set next update time (between min-max interval)
-		terroristUpdateTime = GetWorldTime().GetTimeGone() + 60*randRange(terroristUpdateTimeInterval[0], terroristUpdateTimeInterval[1])
-
 		'who is the mainaggressor? - this parties levelProgress grows faster
 		local mainAggressor:int = (terroristAggressionLevel[1] + terroristAggressionLevelProgress[1] > terroristAggressionLevel[0] + terroristAggressionLevelProgress[0])
 
-
-		'adjust level progress
 		For local i:int = 0 to 1
-			'randRange uses "ints", so convert 1.0 to 100
-			local increase:Float = 0.01 * randRange(terroristAggressionLevelProgressRate[i][0]*100, terroristAggressionLevelProgressRate[i][1]*100)
-			'if not the mainaggressor, grow slower
-			if i <> mainAggressor then increase :* 0.5
-
-			'each level has its custom increasement
-			'so responses come faster and faster
-			Select terroristAggressionLevel[i]
-				case 1
-					terroristAggressionLevelProgress[i] :+ 1.1 * increase
-				case 2
-					terroristAggressionLevelProgress[i] :+ 1.2 * increase
-				case 3
-					terroristAggressionLevelProgress[i] :+ 1.3 * increase
-				case 4
-					terroristAggressionLevelProgress[i] :+ 1.5 * increase
-				default
-					terroristAggressionLevelProgress[i] :+ increase
-			End Select
-		Next
-
-		'handle "level ups"
-		For local i:int = 0 to 1
-			'skip if no level up happens
-			if terroristAggressionLevelProgress[i] < 1.0 then continue
-
-			'set to next level
-			terroristAggressionLevel[i] :+ 1
-			'if progress was 1.05, keep the 0.05 for the new level
-			terroristAggressionLevelProgress[i] :- 1.0
-
-			'announce news for levels 1-4
-			if terroristAggressionLevel[i] < terroristAggressionLevelMax
-				local newsEvent:TNewsEvent = GetTerroristNewsEvent(i)
-				If newsEvent then announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone() + 0)
-			endif
-
-			'reset level if limit reached, also delay by 2 levels so
-			'things do not happen one after another
-			if terroristAggressionLevel[i] >= terroristAggressionLevelMax + 1
-				'reset to level 0
-				terroristAggressionLevel[i] = 0
-			endif
+			If terroristUpdateTime[i] >= GetWorldTime().GetTimeGone() then continue
+			UpdateTerrorist(i, mainAggressor)
 		Next
 	End Method
+	
+
+	Method UpdateTerrorist:int(terroristNumber:int, mainAggressor:int)
+		'set next update time (between min-max interval)
+		terroristUpdateTime[terroristNumber] = GetWorldTime().GetTimeGone() + 60*randRange(terroristUpdateTimeInterval[0], terroristUpdateTimeInterval[1])
+
+
+		'adjust level progress
+
+		'randRange uses "ints", so convert 1.0 to 100
+		local increase:Float = 0.01 * randRange(terroristAggressionLevelProgressRate[terroristNumber][0]*100, terroristAggressionLevelProgressRate[terroristNumber][1]*100)
+		'if not the mainaggressor, grow slower
+		if terroristNumber <> mainAggressor then increase :* 0.5
+
+		'each level has its custom increasement
+		'so responses come faster and faster
+		Select terroristAggressionLevel[terroristNumber]
+			case 1
+				terroristAggressionLevelProgress[terroristNumber] :+ 1.1 * increase
+			case 2
+				terroristAggressionLevelProgress[terroristNumber] :+ 1.2 * increase
+			case 3
+				terroristAggressionLevelProgress[terroristNumber] :+ 1.3 * increase
+			case 4
+				terroristAggressionLevelProgress[terroristNumber] :+ 1.5 * increase
+			default
+				terroristAggressionLevelProgress[terroristNumber] :+ increase
+		End Select
+
+
+		'handle "level ups"
+
+		'nothing to do if no level up happens
+		if terroristAggressionLevelProgress[terroristNumber] < 1.0 then return False
+
+
+		'set to next level
+		terroristAggressionLevel[terroristNumber] :+ 1
+		'if progress was 1.05, keep the 0.05 for the new level
+		terroristAggressionLevelProgress[terroristNumber] :- 1.0
+
+		'announce news for levels 1-4
+		if terroristAggressionLevel[terroristNumber] < terroristAggressionLevelMax
+			local newsEvent:TNewsEvent = GetTerroristNewsEvent(terroristNumber)
+			If newsEvent then announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone() + 0)
+		endif
+
+		'reset level if limit reached, also delay next Update so things
+		'do not happen one after another
+		if terroristAggressionLevel[terroristNumber] >= terroristAggressionLevelMax -1
+			'reset to level 0
+			terroristAggressionLevel[terroristNumber] = 0
+			'5 * normal random "interval"
+			terroristUpdateTime[terroristNumber] :+ + 5 * 60*randRange(terroristUpdateTimeInterval[0], terroristUpdateTimeInterval[1])
+		endif
+	End Method
+
 	
 	Method SetTerroristAggressionLevel:int(terroristGroup:int, level:int)
 		if terroristGroup >= 0 and terroristGroup <= 1
 			terroristAggressionLevel[terroristGroup] = level
 		endif
 	End Method
+	
 
 	Method GetTerroristAggressionLevel:int(terroristGroup:int = -1)
 		if terroristGroup >= 0 and terroristGroup <= 1
