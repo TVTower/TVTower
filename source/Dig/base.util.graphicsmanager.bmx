@@ -169,11 +169,9 @@ Type TGraphicsManager
 
 
 	Method InitGraphics:Int()
-print "InitGraphics()"
 		'initialize virtual graphics only when "InitGraphics()" is run
 		'for the first time
 		if not _g then InitVirtualGraphics()
-print "InitGraphics() ... done"
 
 		'needed to allow ?win32 + ?bmxng
 		?win32
