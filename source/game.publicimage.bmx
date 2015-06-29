@@ -70,11 +70,11 @@ Type TPublicImage {_exposeToLua="selected"}
 
 	Method GetAttractionMods:TAudience()
 		'a mod is a modifier - so "1.0" does modify nothing, "2.0" doubles
-		'and "0.5" halves
-		'our image ranges between 0 and 100 so adding 100 results in
-		'a value a bit bigger than 1.0
-		'ex: teenager-image of "2": (2+100)/100 = 1.02 
-		Return ImageValues.Copy().AddFloat(100).DivideFloat(100)
+		'and "0.5" cuts into halves
+		'our image ranges between 0 and 100 so dividing by 100 results
+		'in a value of 0-1.0, adding 1.0 makes it a modifier
+		'ex: teenager-image of "2": 2/100 + 1.0 = 1.02 
+		Return ImageValues.Copy().DivideFloat(100).AddFloat(1)
 	End Method
 
 
