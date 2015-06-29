@@ -3,11 +3,10 @@ Import BRL.GLMax2D
 ?Not bmxng
 Import BRL.D3D9Max2D
 Import BRL.D3D7Max2D
-Print "import"
 ?
 
 
-Function SetRendererWin32:Int(_g:TGraphics, renderer:Int, realWidth:Int, realHeight:Int, colorDepth:Int, fullScreen:Int, hertz:Int, flags:Int)
+Function SetRendererWin32:TGraphics(_g:TGraphics, renderer:Int, realWidth:Int, realHeight:Int, colorDepth:Int, fullScreen:Int, hertz:Int, flags:Int)
 	Local RENDERER_OPENGL:Int   		= 0
 	Local RENDERER_DIRECTX7:Int 		= 1
 	Local RENDERER_DIRECTX9:Int 		= 2
@@ -46,4 +45,6 @@ Function SetRendererWin32:Int(_g:TGraphics, renderer:Int, realWidth:Int, realHei
 	EndIf
 	?
 	If Not _g Then Throw "Graphics initiation error! no render engine available."
+
+	return _g
 End Function

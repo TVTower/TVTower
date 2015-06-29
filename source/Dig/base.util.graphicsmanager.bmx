@@ -169,9 +169,11 @@ Type TGraphicsManager
 
 
 	Method InitGraphics:Int()
+print "InitGraphics()"
 		'initialize virtual graphics only when "InitGraphics()" is run
 		'for the first time
 		if not _g then InitVirtualGraphics()
+print "InitGraphics() ... done"
 
 		'needed to allow ?win32 + ?bmxng
 		?win32
@@ -207,7 +209,9 @@ Type TGraphicsManager
 	Method _InitGraphicsWin32:Int()
 		?win32
 		'done in base.util.graphicsmanager.win32.bmx
-		SetRendererWin32(_g, renderer, realWidth, realHeight, colorDepth, fullScreen, hertz, flags)
+		'alternatively to "_g = Func(_g,...)"
+		'SetRenderWin32 could also use "_g:TGraphics var"
+		_g = SetRendererWin32(_g, renderer, realWidth, realHeight, colorDepth, fullScreen, hertz, flags)
 		?
 	End Method
 
