@@ -839,7 +839,7 @@ endrem
 
 			ProgrammeLicences_activeProgrammeLicence.GetData().AddCast(j)
 
-			list.InsertStringItem(jobNum, j.person.GetFullName())
+			list.InsertStringItem(jobNum, GetProgrammePersonBase(j.personGUID).GetFullName())
 			list.SetStringItem(jobNum, 1, GetLocale("MOVIE_" + TVTProgrammePersonJob.GetAsString(j.job) ) )
 			list.SetItemData(jobNum, j)
 
@@ -854,11 +854,11 @@ endrem
 		local jobA:TProgrammePersonJob = TProgrammePersonJob(list.GetItemData(jobLineA))
 		local jobB:TProgrammePersonJob = TProgrammePersonJob(list.GetItemData(jobLineB))
 
-		list.SetStringItem(jobLineB, 0, jobA.person.GetFullName())
+		list.SetStringItem(jobLineB, 0, GetProgrammePersonBase(jobA.personGUID).GetFullName())
 		list.SetStringItem(jobLineB, 1, GetLocale("MOVIE_" + TVTProgrammePersonJob.GetAsString(jobA.job) ) )
 		list.SetItemData(jobLineB, jobA)
 
-		list.SetStringItem(jobLineA, 0, jobB.person.GetFullName())
+		list.SetStringItem(jobLineA, 0, GetProgrammePersonBase(jobB.personGUID).GetFullName())
 		list.SetStringItem(jobLineA, 1, GetLocale("MOVIE_" + TVTProgrammePersonJob.GetAsString(jobB.job) ) )
 		list.SetItemData(jobLineA, jobB)
 
@@ -920,7 +920,7 @@ Type DialogSelectCast Extends DialogSelectCastBase
 		list.Hide()
 
 		local entryNum:int = 0
-		For Local p:TProgrammePersonBase = EachIn GetProgrammePersonCollection().celebrities.Values()
+		For Local p:TProgrammePersonBase = EachIn GetProgrammePersonBaseCollection().celebrities.Values()
 			list.InsertStringItem(entryNum, p.GetLastName()+", "+p.GetFirstName())
 			list.SetStringItem(entryNum, 1, "" )
 			if p.fictional
@@ -1029,7 +1029,7 @@ Type DialogSelectCast Extends DialogSelectCastBase
 
 		local jobKey:int = jobData.GetInt("jobKey", TVTProgrammePersonJob.UNKNOWN)
 
-		local job:TProgrammePersonJob = New TProgrammePersonJob.Init(person, jobKey)
+		local job:TProgrammePersonJob = New TProgrammePersonJob.Init(person.GetGUID(), jobKey)
 		app._frameMain.ProgrammeLicence_AddCast([job])
 		
 		'close dialogue
