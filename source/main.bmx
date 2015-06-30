@@ -3729,8 +3729,8 @@ Type GameEvents
 			'DISABLED
 			'remove no longer needed DailyBroadcastStatistics
 			'by default we store maximally 1 year + current day
-			local daysToKeep:int = 4 * GetWorldTime()._daysPerSeason
-			GetDailyBroadcastStatisticCollection().RemoveBeforeDay( day - daysToKeep )
+			local statisticDaysToKeep:int = 4 * GetWorldTime()._daysPerSeason
+			GetDailyBroadcastStatisticCollection().RemoveBeforeDay( day - statisticDaysToKeep )
 
 
 			'force adagency to refill their sortiment a bit more intensive

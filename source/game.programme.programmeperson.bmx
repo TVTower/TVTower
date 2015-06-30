@@ -56,6 +56,9 @@ Function GetProgrammePersonCollection:TProgrammePersonCollection()
 End Function
 endrem
 
+Function GetProgrammePerson:TProgrammePerson(guid:string)
+	Return TProgrammePerson(TProgrammePersonBaseCollection.GetInstance().GetByGUID(guid))
+End Function
 
 
 'a person connected to a programme - directors, writers, actors...

@@ -154,6 +154,10 @@ Function GetProgrammePersonBaseCollection:TProgrammePersonBaseCollection()
 	Return TProgrammePersonBaseCollection.GetInstance()
 End Function
 
+Function GetProgrammePersonBase:TProgrammePersonBase(guid:string)
+	Return TProgrammePersonBaseCollection.GetInstance().GetByGUID(guid)
+End Function
+
 
 
 
