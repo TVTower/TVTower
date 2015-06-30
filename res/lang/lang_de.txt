@@ -458,6 +458,8 @@ BUY_AND_SELL = Kaufen und Verkaufen
 AND_STATISTICS = und Statistiken
 FOR_PRIVATE_AFFAIRS = Für schmutzige Angelegenheiten
 
+STATISTICS_NOT_AVAILABLE = Statistiken nicht verfügbar
+
 MOVIES = Filme
 SERIES = Serien
 SERIES_SINGULAR = Serie

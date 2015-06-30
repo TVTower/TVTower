@@ -6,7 +6,7 @@ Import "game.broadcast.audienceresult.bmx"
 
 Type TDailyBroadcastStatisticCollection
 	Field statistics:TMap = CreateMap()
-	Field time:int = 0
+	Field minShowDay:int = 0
 	Global _instance:TDailyBroadcastStatisticCollection
 
 	Function GetInstance:TDailyBroadcastStatisticCollection()
@@ -20,7 +20,6 @@ Type TDailyBroadcastStatisticCollection
 
 	Method Initialize:TDailyBroadcastStatisticCollection()
 		statistics.Clear()
-		time = MillisecS()
 
 		return self
 	End Method
@@ -32,6 +31,9 @@ Type TDailyBroadcastStatisticCollection
 
 
 	Method RemoveBeforeDay:int(day:int)
+		'adjust the earliest day to show
+		minShowDay = day
+
 		local removed:int = 0
 		For local key:string = Eachin statistics.Keys()
 			if int(key) < day

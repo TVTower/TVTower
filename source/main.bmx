@@ -3726,9 +3726,11 @@ Type GameEvents
 			GetRoomBoard().ResetPositions()
 
 
+			'DISABLED
 			'remove no longer needed DailyBroadcastStatistics
-			'by default we store maximally 3 days
-			GetDailyBroadcastStatisticCollection().RemoveBeforeDay( day - 3 )
+			'by default we store maximally 1 year + current day
+			local daysToKeep:int = 4 * GetWorldTime()._daysPerSeason
+			GetDailyBroadcastStatisticCollection().RemoveBeforeDay( day - daysToKeep )
 
 
 			'force adagency to refill their sortiment a bit more intensive

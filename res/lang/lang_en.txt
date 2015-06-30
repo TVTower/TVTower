@@ -456,6 +456,8 @@ BUY_AND_SELL = Buy and sell
 AND_STATISTICS = and statistics
 FOR_PRIVATE_AFFAIRS = for your most private affairs
 
+STATISTICS_NOT_AVAILABLE = Statistics not available
+
 MOVIES = Movies
 SERIES = Series
 SERIES_SINGULAR = Series
