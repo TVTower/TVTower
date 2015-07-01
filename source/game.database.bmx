@@ -58,6 +58,8 @@ Type TDatabaseLoader
 		local skip:string
 
 		username = username.ToLower().replace("unknown", "*")
+		username = username.Trim()
+		if username = "" then username = "unknown"
 		
 		Select dataType.ToLower()
 			case "adcontract"
@@ -511,7 +513,7 @@ endrem
 			For local nodeNews:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllNews)
 				If nodeNews.getName() <> "news" then continue
 
-				LoadV3NewsFromNode(nodeNews, xml)
+				LoadV3NewsEventFromNode(nodeNews, xml)
 			Next
 		endif
 
@@ -581,8 +583,10 @@ endrem
 
 	Method LoadV3ProgrammePersonBaseFromNode:TProgrammePersonBase(node:TxmlNode, xml:TXmlHelper, isCelebrity:int=True)
 		local GUID:String = xml.FindValue(node,"id", "")
-		local creator:Int = TXmlHelper.FindValueInt(node,"creator", 0)
-		local createdBy:String = TXmlHelper.FindValue(node,"created_by", "unknown")
+
+		'fetch potential meta data
+		LoadV3ProgrammePersonBaseMetaDataFromNode(GUID, node, xml, isCelebrity)
+
 		'try to fetch an existing one
 		local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID(GUID)
 		'if the person existed, remove it from all lists and later add
@@ -600,10 +604,6 @@ endrem
 			endif
 			
 			person.GUID = GUID
-
-			'only set creator if it is the "non overridden" one
-			person.creator = creator
-			person.createdBy = createdBy
 		endif
 
 
@@ -678,11 +678,13 @@ endrem
 	End Method
 
 
-	Method LoadV3NewsFromNode:TNewsEvent(node:TxmlNode, xml:TXmlHelper)
+	Method LoadV3NewsEventFromNode:TNewsEvent(node:TxmlNode, xml:TXmlHelper)
 		local GUID:String = xml.FindValue(node,"id", "")
-		local creator:Int = TXmlHelper.FindValueInt(node,"creator", 0)
-		local createdBy:String = TXmlHelper.FindValue(node,"created_by", "unknown")
 		local doAdd:int = True
+
+		'fetch potential meta data
+		LoadV3NewsEventMetaDataFromNode(GUID, node, xml)
+
 		'try to fetch an existing one
 		local newsEvent:TNewsEvent = GetNewsEventCollection().GetByGUID(GUID)
 		if not newsEvent
@@ -690,10 +692,6 @@ endrem
 			newsEvent.title = new TLocalizedString
 			newsEvent.description = new TLocalizedString
 			newsEvent.GUID = GUID
-
-			'only set creator if it is the "non overridden" one
-			newsEvent.creator = creator
-			newsEvent.createdBy = createdBy
 		else
 			doAdd = False
 		endif
@@ -761,12 +759,13 @@ endrem
 
 	Method LoadV3AdContractBaseFromNode:TAdContractBase(node:TxmlNode, xml:TXmlHelper)
 		local GUID:String = xml.FindValue(node,"id", "")
-		local creator:Int = TXmlHelper.FindValueInt(node,"creator", 0)
-		local createdBy:String = TXmlHelper.FindValue(node,"created_by", "unknown")
 		local doAdd:int = True
 
+		'fetch potential meta data
+		local metaData:TData = LoadV3AdContractBaseMetaDataFromNode(GUID, node, xml)
+
 		'skip forbidden users (DEV)
-		if not IsAllowedUser(createdBy, "adcontract") then return Null
+		if not IsAllowedUser(metaData.GetString("createdBy"), "adcontract") then return Null
 
 		'try to fetch an existing one
 		local adContract:TAdContractBase = GetAdContractBaseCollection().GetByGUID(GUID)
@@ -775,9 +774,6 @@ endrem
 			adContract.title = new TLocalizedString
 			adContract.description = new TLocalizedString
 			adContract.GUID = GUID
-			'only set creator if it is the "non overridden" one
-			adContract.creator = creator
-			adContract.createdBy = createdBy
 		else
 			doAdd = False
 		endif
@@ -856,12 +852,14 @@ endrem
 
 		return adContract
 	End Method
-	
+
 
 	Method LoadV3ProgrammeLicenceFromNode:TProgrammeLicence(node:TxmlNode, xml:TXmlHelper, parentLicence:TProgrammeLicence = Null)
 		local GUID:String = TXmlHelper.FindValue(node,"id", "")
-		local creator:Int = TXmlHelper.FindValueInt(node,"creator", 0)
-		local createdBy:String = TXmlHelper.FindValue(node,"created_by", "unknown")
+
+		'fetch potential meta data
+		local metaData:TData = LoadV3ProgrammeLicenceMetaDataFromNode(GUID, node, xml, parentLicence)
+	
 		local productType:int = TXmlHelper.FindValueInt(node,"product", TVTProgrammeProductType.MOVIE)
 		'old type - stay compatible with old v3-db
 		local oldType:int = TXmlHelper.FindValueInt(node,"type", TVTProgrammeLicenceType.SINGLE)
@@ -870,7 +868,7 @@ endrem
 		local programmeLicence:TProgrammeLicence
 
 		'skip if not "all" are allowed (no creator data available)
-		if not IsAllowedUser(createdBy, "programmelicence") then return null
+		if not IsAllowedUser(metaData.GetString("createdBy"), "programmelicence") then return Null
 
 
 		'=== PROGRAMME DATA ===
@@ -883,9 +881,6 @@ endrem
 			if parentLicence then programmeData = TProgrammeData(THelper.CloneObject(parentLicence.data, "id"))
 			if not programmeData
 				programmeData = new TProgrammeData
-				'only set creator if it is the "non overridden" one
-				programmeData.creator = creator
-				programmeData.createdBy = createdBy
 			else
 				'reuse old one
 				productType = programmeData.productType
@@ -1070,13 +1065,14 @@ endrem
 
 	Method LoadV3ScriptTemplateFromNode:TScriptTemplate(node:TxmlNode, xml:TXmlHelper, parentScriptTemplate:TScriptTemplate = Null)
 		local GUID:String = TXmlHelper.FindValue(node,"guid", "")
-		local creator:Int = TXmlHelper.FindValueInt(node,"creator", 0)
-		local createdBy:String = TXmlHelper.FindValue(node,"created_by", "unknown")
 		local scriptProductType:int = TXmlHelper.FindValueInt(node,"product", 1)
 		local oldType:int = TXmlHelper.FindValueInt(node,"type", TVTProgrammeLicenceType.SINGLE)
 		local scriptLicenceType:int = TXmlHelper.FindValueInt(node,"licence_type", oldType)
 		local index:int = TXmlHelper.FindValueInt(node,"index", 0)
 		local scriptTemplate:TScriptTemplate
+
+		'fetch potential meta data
+		LoadV3ScriptTemplateMetaDataFromNode(GUID, node, xml, parentScriptTemplate)
 
 		'=== SCRIPTTEMPLATE DATA ===
 		'try to fetch an existing template with the entries GUID
@@ -1086,9 +1082,6 @@ endrem
 			if parentScriptTemplate then scriptTemplate = TScriptTemplate(THelper.CloneObject(parentScriptTemplate, "id"))
 			if not scriptTemplate
 				scriptTemplate = new TScriptTemplate
-				'only set creator if it is the "non overridden" one
-				scriptTemplate.creator = creator
-				scriptTemplate.createdBy = createdBy
 			endif
 
 			scriptTemplate.GUID = GUID
@@ -1321,18 +1314,16 @@ endrem
 
 	Method LoadV3ProgrammeRoleFromNode:TProgrammeRole(node:TxmlNode, xml:TXmlHelper)
 		local GUID:String = TXmlHelper.FindValue(node,"guid", "")
-		local creator:Int = TXmlHelper.FindValueInt(node,"creator", 0)
-		local createdBy:String = TXmlHelper.FindValue(node,"created_by", "unknown")
 		local role:TProgrammeRole
+
+		'fetch potential meta data
+		LoadV3ProgrammeRoleMetaDataFromNode(GUID, node, xml)
 
 		'try to fetch an existing template with the entries GUID
 		role = GetProgrammeRoleCollection().GetByGUID(GUID)
 		if not role
 			role = new TProgrammeRole
 			role.SetGUID(GUID)
-			'only set creator if it is the "non overridden" one
-			role.creator = creator
-			role.createdBy = createdBy
 		endif
 
 		role.Init(..
@@ -1353,6 +1344,75 @@ endrem
 		return role
 	End Method
 
+
+
+	'=== META DATA FUNCTIONS ===
+	Method LoadV3CreatorMetaDataFromNode:TData(data:TData, node:TxmlNode, xml:TXmlHelper)
+		data.AddNumber("creator", TXmlHelper.FindValueInt(node,"creator", 0))
+		data.AddString("createdBy", TXmlHelper.FindValue(node,"created_by", "unknown"))
+		return data
+	End Method
+	
+	
+	Method LoadV3ProgrammeRoleMetaDataFromNode:TData(GUID:string, node:TxmlNode, xml:TXmlHelper)
+		local data:TData = new TData
+		'only set creator if it is the "non overridden" one
+		if not GetProgrammeRoleCollection().GetByGUID(GUID)
+			data = LoadV3CreatorMetaDataFromNode(data, node, xml)
+		endif
+		return data
+	End Method
+
+
+	Method LoadV3ScriptTemplateMetaDataFromNode:TData(GUID:string, node:TxmlNode, xml:TXmlHelper, parentScriptTemplate:TScriptTemplate = Null)
+		local data:TData = new TData
+		'only set creator if it is the "non overridden" one
+		if not GetScriptTemplateCollection().GetByGUID(GUID)
+			data = LoadV3CreatorMetaDataFromNode(data, node, xml)
+		endif
+		return data
+	End Method
+
+
+	Method LoadV3ProgrammeLicenceMetaDataFromNode:TData(GUID:string, node:TxmlNode, xml:TXmlHelper, parentLicence:TProgrammeLicence = Null)
+		local data:TData = new TData
+		'only set creator if it is the "non overridden" one
+		if not GetProgrammeLicenceCollection().GetByGUID(GUID)
+			data = LoadV3CreatorMetaDataFromNode(data, node, xml)
+		endif
+		return data
+	End Method
+
+
+	Method LoadV3ProgrammePersonBaseMetaDataFromNode:TData(GUID:string, node:TxmlNode, xml:TXmlHelper, isCelebrity:int=True)
+		local data:TData = new TData
+		'only set creator if it is the "non overridden" one
+		if not GetProgrammePersonBaseCollection().GetByGUID(GUID)
+			data = LoadV3CreatorMetaDataFromNode(data, node, xml)
+		endif
+		return data
+	End Method
+
+
+	Method LoadV3NewsEventMetaDataFromNode:TData(GUID:string, node:TxmlNode, xml:TXmlHelper)
+		local data:TData = new TData
+		'only set creator if it is the "non overridden" one
+		if not GetNewsEventCollection().GetByGUID(GUID)
+			data = LoadV3CreatorMetaDataFromNode(data, node, xml)
+		endif
+		return data
+	End Method
+
+
+	Method LoadV3AdContractBaseMetaDataFromNode:TData(GUID:string, node:TxmlNode, xml:TXmlHelper)
+		local data:TData = new TData
+		'only set creator if it is the "non overridden" one
+		if not GetAdContractBaseCollection().GetByGUID(GUID)
+			data = LoadV3CreatorMetaDataFromNode(data, node, xml)
+		endif
+		return data
+	End Method
+	
 
 	Function convertV2genreToV3:int(data:TProgrammeData)
 		Select data.genre

@@ -171,10 +171,6 @@ Type TProgrammePersonBase extends TGameObject
 	field canLevelUp:int = True
 	'is this an real existing person or someone we imaginated for the game?
 	field fictional:int = False
-	'id of the creating user
-	Field creator:Int = 0
-	'name of the creating user
-	Field createdBy:String = ""
 
 
 	'override to add another generic naming

@@ -140,10 +140,6 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Field blocks:Int = 1
 	'guid of a potential franchise entry
 	Field franchiseGUID:string
-	'id of the creating user
-	Field creator:Int = 0
-	'name of the creating user
-	Field createdBy:String = ""
 	Rem
 	extra data block containing various information (if set)
 	"maxTopicality::ageInfluence" - influence of the age on the max topicality

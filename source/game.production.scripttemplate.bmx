@@ -105,10 +105,6 @@ Type TScriptTemplate Extends TScriptBase
 
 	Field targetGroup:Int = -1
 
-	'id of the creating user
-	Field creator:Int = 0
-	'name of the creating user
-	Field createdBy:String = ""
 
 	'reset things used for random data
 	'like placeholders (which are stored there so that children could

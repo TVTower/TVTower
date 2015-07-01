@@ -263,11 +263,6 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 	'keep the profit the same for all audience requirements
 	Field fixedInfomercialProfit:int = True
 	
-	'id of the creating user
-	Field creator:Int = 0
-	'name of the creating user
-	Field createdBy:String = ""
-	
 
 	Method Create:TAdContractBase(GUID:String, title:TLocalizedString, description:TLocalizedString, daysToFinish:Int, spotCount:Int, targetgroup:Int, minAudience:Float, minImage:Float, fixedPrice:Int, profit:Float, penalty:Float)
 		self.SetGUID(GUID)

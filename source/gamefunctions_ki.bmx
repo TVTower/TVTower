@@ -1113,6 +1113,7 @@ Type TLuaFunctions {_exposeToLua}
 	'LUA_be_getSammyGenre
 	'
 
+	'=== CHANNEL PROGRAMME ARCHIVE ===
 
 	'move licence from archive to suitcase
 	Method ar_AddProgrammeLicenceToSuitcase:Int(position:Int = -1)
