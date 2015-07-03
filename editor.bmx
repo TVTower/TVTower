@@ -3,8 +3,8 @@
 '
 SuperStrict
 
-Framework wx.wxApp
-
+Framework brl.StandardIO
+Import wx.wxApp
 Import "tools/editor/editor_base.bmx"
 Import brl.retro
 Import "source/Dig/base.util.data.bmx"
@@ -26,7 +26,7 @@ Global app:MyApp = New MyApp
 app.run()
 
 Type MyApp Extends wxApp
-	Field dbLoader:TDatabaseLoader
+	Field dbLoader:TEditorDatabaseLoader
 	Field _frameMain:FrameMain
 
 
@@ -49,14 +49,16 @@ Type MyApp Extends wxApp
 
 
 		'load db
-		dbLoader = New TDatabaseLoader
+		dbLoader = New TEditorDatabaseLoader
 		dbLoader.LoadDir("res/database/Default")
 
 		_frameMain.RecreateProgrammeLicenceList(_frameMain.m_listCtrl_AudienceSim_ProgrammeLicences)
 		_frameMain.RecreateProgrammeLicenceList(_frameMain.m_listCtrl_ProgrammeLicences_ProgrammeLicences)
 		_frameMain.AudienceSim_RecreateAudiencesList()
 
-
+		'RONNY: save db
+		dbLoader.Save("test.xml")
+		
 		'hide block parts
 		_frameMain.m_staticText_blockCount.Hide()
 		_frameMain.m_staticText_block.Hide()
@@ -762,7 +764,9 @@ endrem
 			endif
 			list.SetStringItem(entryNum, 1, l.GetData().year )
 			list.SetStringItem(entryNum, 2, TVTProgrammeLicenceType.GetAsString(l.licenceType) )
-			list.SetStringItem(entryNum, 3, l.GetData().createdBy )
+'RONNY
+'			list.SetStringItem(entryNum, 3, l.GetData().createdBy )
+			list.SetStringItem(entryNum, 3, "ronny" )
 			'maybe we could just store the GUID here?
 			'or something which does NOT change at all? 
 			list.SetItemData(entryNum, l)
@@ -825,8 +829,11 @@ endrem
 		ProgrammeLicence_AddCast( licence.GetData().GetCast() )
 		
 		'author data
-		m_pgItem_programmeLicenceCreator.SetValueInt( licence.GetData().creator )
-		m_pgItem_programmeLicenceCreatedBy.SetValueString( licence.GetData().createdBy )
+'RONNY
+'		m_pgItem_programmeLicenceCreator.SetValueInt( licence.GetData().creator )
+'		m_pgItem_programmeLicenceCreatedBy.SetValueString( licence.GetData().createdBy )
+		m_pgItem_programmeLicenceCreator.SetValueInt( 0 )
+		m_pgItem_programmeLicenceCreatedBy.SetValueString( "ronny" )
 	End Method
 
 
@@ -1001,6 +1008,7 @@ Type DialogSelectCast Extends DialogSelectCastBase
 
 
 	Method OnSelectCast(event:wxCommandEvent)
+rem
 		local list:wxListCtrl = m_listCtrl_SelectCastPersonList
 
 		'nothing selected
@@ -1034,6 +1042,7 @@ Type DialogSelectCast Extends DialogSelectCastBase
 		
 		'close dialogue
 		EndModal(1)
+endrem
 	End Method
 
 
@@ -1099,3 +1108,276 @@ Type DialogSelectCast Extends DialogSelectCastBase
 		return 0
 	End Function
 End Type
+
+
+
+
+
+Type TEditorDatabaseLoader Extends TDatabaseLoader
+	'override to append origin
+	Method LoadV3CreatorMetaDataFromNode:TData(GUID:string, data:TData, node:TxmlNode, xml:TXmlHelper)
+		data = Super.LoadV3CreatorMetaDataFromNode(GUID, data, node, xml)
+
+		data.AddString("currentFileURI", config.GetString("currentFileURI"))
+		'not needed
+		'check if there is meta data for this entry, if yes, this is an
+		'overridden entry
+		'local meta:TData = GetMetaDataCollection().GetByGUID(GUID)
+		'data.AddNumber("original", meta = null)
+
+		return data
+	End Method
+
+
+	'=== EXTEND META DATA FUNCTIONS ===
+	Method LoadV3ProgrammeLicenceMetaDataFromNode:TData(GUID:string, node:TxmlNode, xml:TXmlHelper, parentLicence:TProgrammeLicence = Null)
+		local data:TData = Super.LoadV3ProgrammeLicenceMetaDataFromNode(GUID, node, xml, parentLicence)
+
+		'load IDs for various online DBs and fall back to "original" ID
+		'for extended/overridden licences 
+		local metaStrings:string[] = ["tmdb_id", "imdb_id", "rt_id"]
+		For local m:string = EachIn metaStrings
+			local id:string = TXmlHelper.FindValue(node, m, data.GetString(m, "").Trim())
+			if id and id <> "0" then data.AddString(m, id)
+		Next
+
+		'add meta data to be globally available
+		GetMetaDataCollection().Add(GUID, data)
+		
+		return data
+	End Method
+
+
+
+	'=== SAVE FUNCTIONS ===
+
+	Method Save(fileURI:string)
+		SaveV3(fileURI)
+	End Method
+
+
+
+	Method SaveV3(fileURI:string)
+		Local doc:TxmlDoc = TxmlDoc.NewDoc("1.0")
+		Local root:TxmlNode = TxmlNode.Newnode("tvgdb")
+		doc.SetEncoding("utf-8")
+		doc.SetRootElement(root)
+
+		local nodeList:TList = CreateList()
+		local nodeGroup:TxmlNode
+		local node:TXmlNode
+
+
+
+		'=== COMMENT + OPTIONS ===
+		'alternative option to add a new node
+		'local versionNode:TxmlNode = root.AddChild("version")
+		node = TxmlNode.Newnode("version")
+		node.setAttribute("value", "3")
+		node.setAttribute("comment", "editor export")
+		node.setAttribute("exportDate", "2015-01-01 23:00:00")
+		nodeList.AddLast(node)
+
+		node = TxmlNode.Newnode("exportOptions")
+		node.setAttribute("onlyFakes", "true")
+		node.setAttribute("onlyCustom", "false")
+		node.setAttribute("dataStructure", "FakeData")
+		nodeList.AddLast(node)
+
+
+
+		'=== PROGRAMME LICENCES ===
+		nodeGroup = TxmlNode.Newnode("allprogrammes")
+		SaveV3ProgrammeLicences(nodeGroup)
+		nodeList.AddLast(nodeGroup)
+
+
+		
+
+		'=== CELEBRITY PEOPLE ===
+		nodeGroup = TxmlNode.Newnode("celebritypeople")
+		nodeList.AddLast(nodeGroup)
+
+
+
+		'=== CELEBRITY PEOPLE ===
+		nodeGroup = TxmlNode.Newnode("insignificantpeople")
+		nodeList.AddLast(nodeGroup)
+
+
+
+		'=== AD CONTRACTS ===
+		nodeGroup = TxmlNode.Newnode("allads")
+		nodeList.AddLast(nodeGroup)
+
+
+
+		'=== NEWS EVENTS ===
+		nodeGroup = TxmlNode.Newnode("allnews")
+		nodeList.AddLast(nodeGroup)
+
+
+
+		'=== SCRIPTS: SCRIPT TEMPLATES ===
+		nodeGroup = TxmlNode.Newnode("scripttemplates")
+		nodeList.AddLast(nodeGroup)
+
+
+
+		'=== SCRIPTS: PROGRAMME ROLES ===
+		nodeGroup = TxmlNode.Newnode("programmeroles")
+		nodeList.AddLast(nodeGroup)
+
+
+		'add all children to "tvgdb"
+		root.addChildList(nodeList)
+
+		print doc.ToStringFormat(True)
+		'doc.SaveFormatFile(fileURI,True,"utf-8")
+
+
+	End Method
+
+
+	Function SaveV3ProgrammeLicences:int(groupNode:TXmlNode)
+		local licenceTypes:int[] = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.SERIES, TVTProgrammeLicenceType.COLLECTION]
+		For local licenceType:int = EachIn licenceTypes
+			local list:TList = GetProgrammeLicenceCollection()._GetList(licenceType)
+
+			For local licence:TProgrammeLicence = EachIn list
+				local node:TxmlNode = groupNode.AddChild("programme")
+				'licence has the GUID given in the original database,
+				'_not_ TProgrammeData
+				node.setAttribute("id", licence.GetGUID())
+				node.setAttribute("product", licence.GetData().productType)
+				node.setAttribute("licence_type", licence.licenceType)
+
+				local metaData:TData = GetMetaDataCollection().GetByGUID(licence.GetGUID())
+				local metaStrings:string[] = ["tmdb_id", "imdb_id", "rt_id", "creator", "createdBy"]
+				if metaData.GetString("tmdb_id", "") <> ""
+					node.setAttribute("tmdb_id", metaData.GetString("tmdb_id", ""))
+				endif
+				if metaData.GetString("imdb_id", "") <> ""
+					node.setAttribute("imdb_id", metaData.GetString("imdb_id", ""))
+				endif
+				if metaData.GetString("rt_id", "") <> ""
+					node.setAttribute("rt_id", metaData.GetString("rt_id", ""))
+				endif
+				if metaData.GetInt("creator")
+					node.setAttribute("creator", metaData.GetInt("creator", 0))
+				endif
+				if metaData.GetString("createdBy", "") <> ""
+					node.setAttribute("created_by", metaData.GetString("createdBy", ""))
+				endif
+
+				'nodes:
+				'title : group
+				'	<de>
+				'description : group
+				'	<de>
+				'staff : group
+				'	<member index="0" function="1">2b6fb1b7-57b7-44bf-b930-a032d9193475</member>
+				'groups
+				'	<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+				'data
+				'	<data country="USA" year="1955" distribution="0" maingenre="15" subgenre="0" flags="0" blocks="2" time="0" price_mod="0.33" />
+				'ratings
+				'	<ratings critics="56" speed="32" outcome="75" />
+			Next
+		Next
+	End Function
+End Type
+
+
+
+
+
+Type TMetaDataCollection
+	Field entries:TMap = CreateMap()
+	Field entriesCount:int = -1
+	Field _entriesMapEnumerator:TNodeEnumerator {nosave}
+	Global _instance:TMetaDataCollection
+
+
+	'override
+	Function GetInstance:TMetaDataCollection()
+		if not _instance then _instance = new TMetaDataCollection
+		return _instance
+	End Function
+
+
+	Method Initialize:TMetaDataCollection()
+		entries.Clear()
+		entriesCount = -1
+
+		return self
+	End Method
+
+
+	Method GetByGUID:TData(GUID:String)
+		Return TData(entries.ValueForKey(GUID))
+	End Method
+
+
+	Method GetCount:Int()
+		if entriesCount >= 0 then return entriesCount
+
+		entriesCount = 0
+		For Local base:TGameObject = EachIn entries.Values()
+			entriesCount :+1
+		Next
+		return entriesCount
+	End Method
+
+
+	Method Add:int(GUID:string, obj:TData)
+		if entries.Insert(guid, obj)
+			'invalidate count
+			entriesCount = -1
+
+			return TRUE
+		endif
+
+		return False
+	End Method
+
+
+	Method Remove:int(GUID:string)
+		if GUID and entries.Remove(GUID)
+			'invalidate count
+			entriesCount = -1
+
+			return True
+		endif
+
+		return False
+	End Method
+
+
+	'=== ITERATOR ===
+	'for "EachIn"-support
+
+	'Set iterator to begin of array
+	Method ObjectEnumerator:TMetaDataCollection()
+		_entriesMapEnumerator = entries.Values()._enumerator
+		Return Self
+	End Method
+	
+
+	'checks if there is another element
+	Method HasNext:Int()
+		Return _entriesMapEnumerator.HasNext()
+	End Method
+
+
+	'return next element, and increase position
+	Method NextObject:Object()
+		Return _entriesMapEnumerator.NextObject()
+	End Method
+End Type
+
+'===== CONVENIENCE ACCESSOR =====
+'return collection instance
+Function GetMetaDataCollection:TMetaDataCollection()
+	Return TMetaDataCollection.GetInstance()
+End Function

@@ -29,6 +29,7 @@ Type TDatabaseLoader
 	Field skipAdCreators:string
 	Field allowedProgrammeCreators:string
 	Field skipProgrammeCreators:string
+	Field config:TData = New TData
 
 	Method New()
 		allowedAdCreators = ""
@@ -59,7 +60,7 @@ Type TDatabaseLoader
 
 		username = username.ToLower().replace("unknown", "*")
 		username = username.Trim()
-		if username = "" then username = "unknown"
+		if username = "" then username = "*"
 		
 		Select dataType.ToLower()
 			case "adcontract"
@@ -124,6 +125,8 @@ Type TDatabaseLoader
 
 
 	Method Load(fileURI:string)
+		config.AddString("currentFileURI", fileURI)
+	
 		local xml:TXmlHelper = TXmlHelper.Create(fileURI)
 		'reset "per database" variables
 		moviesCount = 0
@@ -1347,9 +1350,9 @@ endrem
 
 
 	'=== META DATA FUNCTIONS ===
-	Method LoadV3CreatorMetaDataFromNode:TData(data:TData, node:TxmlNode, xml:TXmlHelper)
+	Method LoadV3CreatorMetaDataFromNode:TData(GUID:string, data:TData, node:TxmlNode, xml:TXmlHelper)
 		data.AddNumber("creator", TXmlHelper.FindValueInt(node,"creator", 0))
-		data.AddString("createdBy", TXmlHelper.FindValue(node,"created_by", "unknown"))
+		data.AddString("createdBy", TXmlHelper.FindValue(node,"created_by", ""))
 		return data
 	End Method
 	
@@ -1358,7 +1361,7 @@ endrem
 		local data:TData = new TData
 		'only set creator if it is the "non overridden" one
 		if not GetProgrammeRoleCollection().GetByGUID(GUID)
-			data = LoadV3CreatorMetaDataFromNode(data, node, xml)
+			data = LoadV3CreatorMetaDataFromNode(GUID, data, node, xml)
 		endif
 		return data
 	End Method
@@ -1368,7 +1371,7 @@ endrem
 		local data:TData = new TData
 		'only set creator if it is the "non overridden" one
 		if not GetScriptTemplateCollection().GetByGUID(GUID)
-			data = LoadV3CreatorMetaDataFromNode(data, node, xml)
+			data = LoadV3CreatorMetaDataFromNode(GUID, data, node, xml)
 		endif
 		return data
 	End Method
@@ -1378,7 +1381,7 @@ endrem
 		local data:TData = new TData
 		'only set creator if it is the "non overridden" one
 		if not GetProgrammeLicenceCollection().GetByGUID(GUID)
-			data = LoadV3CreatorMetaDataFromNode(data, node, xml)
+			data = LoadV3CreatorMetaDataFromNode(GUID, data, node, xml)
 		endif
 		return data
 	End Method
@@ -1388,7 +1391,7 @@ endrem
 		local data:TData = new TData
 		'only set creator if it is the "non overridden" one
 		if not GetProgrammePersonBaseCollection().GetByGUID(GUID)
-			data = LoadV3CreatorMetaDataFromNode(data, node, xml)
+			data = LoadV3CreatorMetaDataFromNode(GUID, data, node, xml)
 		endif
 		return data
 	End Method
@@ -1398,7 +1401,7 @@ endrem
 		local data:TData = new TData
 		'only set creator if it is the "non overridden" one
 		if not GetNewsEventCollection().GetByGUID(GUID)
-			data = LoadV3CreatorMetaDataFromNode(data, node, xml)
+			data = LoadV3CreatorMetaDataFromNode(GUID, data, node, xml)
 		endif
 		return data
 	End Method
@@ -1408,7 +1411,7 @@ endrem
 		local data:TData = new TData
 		'only set creator if it is the "non overridden" one
 		if not GetAdContractBaseCollection().GetByGUID(GUID)
-			data = LoadV3CreatorMetaDataFromNode(data, node, xml)
+			data = LoadV3CreatorMetaDataFromNode(GUID, data, node, xml)
 		endif
 		return data
 	End Method
