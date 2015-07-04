@@ -609,6 +609,9 @@ End Type
 
 
 
+'don't feel attacked by this naming! "UNDEFINED" includes
+'transgenders, maybe transsexuals, unknown lifeforms ... just
+'everything which is not called by a male or female pronoun
 Type TVTPersonGender {_exposeToLua}
 	Const UNDEFINED:int = 0
 	Const MALE:int = 1

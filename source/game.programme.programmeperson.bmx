@@ -103,14 +103,6 @@ Type TProgrammePerson extends TProgrammePersonBase
 	Const MAX_XP:int = 10000
 	
 
-	'don't feel attacked by this naming! "UNKNOWN" includes
-	'transgenders, maybe transsexuals, unknown lifeforms ... just
-	'everything which is not called by a male or female pronoun
-	Const GENDER_UNKNOWN:int = 0
-	Const GENDER_MALE:int = 1
-	Const GENDER_FEMALE:int = 2
-	
-
 
 	Method SetDayOfBirth:Int(date:String="")
 		if date = ""
