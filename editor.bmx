@@ -784,7 +784,9 @@ endrem
 		'TODO: set current language as selected one
 		'TODO: fill "language specific data" (of selected lang)
 		m_textCtrl_programmeLicenceTitle.SetValue(licence.GetTitle())
-		m_textCtrl_programmeLicenceOriginalTitle.SetValue(licence.GetData().GetOriginalTitle())
+		'meta data... or unneeded
+		'm_textCtrl_programmeLicenceOriginalTitle.SetValue(licence.GetData().GetOriginalTitle())
+		m_textCtrl_programmeLicenceOriginalTitle.SetValue("")
 		m_textCtrl_programmeLicenceDescription.SetValue(licence.GetDescription())
 
 		'ratings
@@ -1243,48 +1245,179 @@ Type TEditorDatabaseLoader Extends TDatabaseLoader
 		local licenceTypes:int[] = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.SERIES, TVTProgrammeLicenceType.COLLECTION]
 		For local licenceType:int = EachIn licenceTypes
 			local list:TList = GetProgrammeLicenceCollection()._GetList(licenceType)
+			local subNode:TXmlNode
 
 			For local licence:TProgrammeLicence = EachIn list
-				local node:TxmlNode = groupNode.AddChild("programme")
-				'licence has the GUID given in the original database,
-				'_not_ TProgrammeData
-				node.setAttribute("id", licence.GetGUID())
-				node.setAttribute("product", licence.GetData().productType)
-				node.setAttribute("licence_type", licence.licenceType)
-
-				local metaData:TData = GetMetaDataCollection().GetByGUID(licence.GetGUID())
-				local metaStrings:string[] = ["tmdb_id", "imdb_id", "rt_id", "creator", "createdBy"]
-				if metaData.GetString("tmdb_id", "") <> ""
-					node.setAttribute("tmdb_id", metaData.GetString("tmdb_id", ""))
-				endif
-				if metaData.GetString("imdb_id", "") <> ""
-					node.setAttribute("imdb_id", metaData.GetString("imdb_id", ""))
-				endif
-				if metaData.GetString("rt_id", "") <> ""
-					node.setAttribute("rt_id", metaData.GetString("rt_id", ""))
-				endif
-				if metaData.GetInt("creator")
-					node.setAttribute("creator", metaData.GetInt("creator", 0))
-				endif
-				if metaData.GetString("createdBy", "") <> ""
-					node.setAttribute("created_by", metaData.GetString("createdBy", ""))
-				endif
-
-				'nodes:
-				'title : group
-				'	<de>
-				'description : group
-				'	<de>
-				'staff : group
-				'	<member index="0" function="1">2b6fb1b7-57b7-44bf-b930-a032d9193475</member>
-				'groups
-				'	<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-				'data
-				'	<data country="USA" year="1955" distribution="0" maingenre="15" subgenre="0" flags="0" blocks="2" time="0" price_mod="0.33" />
-				'ratings
-				'	<ratings critics="56" speed="32" outcome="75" />
+				SaveV3ProgrammeLicence(groupNode, licence)
 			Next
 		Next
+	End Function
+
+
+	Function SaveV3ProgrammeLicence:int(groupNode:TXmlNode, licence:TProgrammeLicence)
+		local parentLicence:TProgrammeLicence
+		if licence.parentLicenceGUID then parentLicence = GetProgrammeLicenceCollection().GetByGUID(licence.parentLicenceGUID)
+
+		local node:TxmlNode = groupNode.AddChild("programme")
+		'licence has the GUID given in the original database,
+		'_not_ TProgrammeData
+		node.setAttribute("id", licence.GetGUID())
+		if not parentLicence or (licence.GetData().productType <> parentLicence.GetData().productType)
+			node.setAttribute("product", licence.GetData().productType)
+		endif
+		if not parentLicence or (licence.licenceType <> parentLicence.licenceType)
+			node.setAttribute("licence_type", licence.licenceType)
+		endif
+
+
+		local parentMetaData:TData
+		if parentLicence then parentMetaData = GetMetaDataCollection().GetByGUID(parentLicence.GetGUID())
+		if not parentMetaData then parentMetaData = new TData
+		
+		local metaData:TData = GetMetaDataCollection().GetByGUID(licence.GetGUID())
+		local metaStrings:string[] = ["tmdb_id", "imdb_id", "rt_id", "creator", "createdBy"]
+
+		if metaData.GetString("tmdb_id") <> ""  and metaData.GetString("tmdb_id") <> parentMetaData.GetString("tmdb_id")
+			node.setAttribute("tmdb_id", metaData.GetString("tmdb_id", ""))
+		endif
+		if metaData.GetString("imdb_id") <> ""  and metaData.GetString("imdb_id") <> parentMetaData.GetString("imdb_id")
+			node.setAttribute("imdb_id", metaData.GetString("imdb_id", ""))
+		endif
+		if metaData.GetString("rt_id") <> ""  and metaData.GetString("rt_id") <> parentMetaData.GetString("rt_id")
+			node.setAttribute("rt_id", metaData.GetString("rt_id", ""))
+		endif
+		if metaData.GetInt("creator") and metaData.GetInt("creator") <> parentMetaData.GetInt("creator")
+			node.setAttribute("creator", metaData.GetInt("creator", 0))
+		endif
+		if metaData.GetString("createdBy") <> ""  and metaData.GetString("createdBy") <> parentMetaData.GetString("createdBy")
+			node.setAttribute("created_by", metaData.GetString("createdBy", ""))
+		endif
+
+		SaveLocalizedString(node, "title", licence.GetData().title)
+		SaveLocalizedString(node, "description", licence.GetData().description)
+
+
+
+		'<groups>
+		if licence.GetData().targetGroups or licence.GetData().proPressureGroups or licence.GetData().contraPressureGroups
+			local groupsNode:TXmlNode = node.AddChild("groups")
+			if licence.GetData().targetGroups then groupsNode.setAttribute("target_groups", licence.GetData().targetGroups)
+			if licence.GetData().proPressureGroups then groupsNode.setAttribute("pro_pressure_groups", licence.GetData().proPressureGroups)
+			if licence.GetData().contraPressureGroups then groupsNode.setAttribute("contra_pressure_groups", licence.GetData().contraPressureGroups)
+		endif
+
+
+
+		'<data>
+		local dataNode:TXmlNode = node.AddChild("data")
+		local subGenres:string = IntArrayToString(licence.GetData().subGenres, ",")
+		local priceMod:string = MathHelper.NumberToString(Float(licence.GetData().GetModifier("price")), 4, True)
+
+		local parentSubGenres:string = ""
+		local parentPriceMod:string = ""
+		if parentLicence
+			parentSubGenres = IntArrayToString(parentLicence.GetData().subGenres, ",")
+			parentPriceMod = MathHelper.NumberToString(Float(parentLicence.GetData().GetModifier("price")), 4, True)
+		endif
+
+		if not parentLicence or (licence.GetData().country <> parentLicence.GetData().country)
+			dataNode.setAttribute("country", licence.GetData().country)
+		endif
+		if not parentLicence or (licence.GetData().year <> parentLicence.GetData().year)
+			dataNode.setAttribute("year", licence.GetData().year)
+		endif
+		if not parentLicence or (licence.GetData().distributionChannel <> parentLicence.GetData().distributionChannel)
+			dataNode.setAttribute("distribution", licence.GetData().distributionChannel)
+		endif
+		if not parentLicence or (licence.GetData().genre <> parentLicence.GetData().genre)
+			dataNode.setAttribute("maingenre", licence.GetData().genre)
+		endif
+		if not parentLicence or (licence.GetData().flags <> parentLicence.GetData().flags)
+			if licence.GetData().flags then dataNode.setAttribute("flags", licence.GetData().flags)
+		endif
+		if not parentLicence or (licence.GetData().blocks <> parentLicence.GetData().blocks)
+			dataNode.setAttribute("blocks", licence.GetData().blocks)
+		endif
+		if not parentLicence or (licence.GetData().liveHour <> parentLicence.GetData().liveHour)
+			if licence.GetData().liveHour > 0 then dataNode.setAttribute("time", licence.GetData().liveHour)
+		endif
+
+		if not parentLicence or (subGenres <> parentSubGenres)
+			if subGenres then dataNode.setAttribute("subgenre", subGenres)
+		endif
+		if not parentLicence or (priceMod <> parentPriceMod)
+			if float(priceMod) <> 1.0 then dataNode.setAttribute("price_mod", priceMod)
+		endif
+
+
+
+		'<staff>
+		local addStaff:int = (not parentLicence) or (parentLicence.GetData().GetCastGroupString(0) <> licence.GetData().GetCastGroupString(0))
+		if addStaff
+			local staffNode:TXmlNode = node.AddChild("staff")
+			local index:int = 0
+			for local job:TProgrammePersonJob = Eachin licence.GetData().GetCast()
+				local jobNode:TXmlNode = staffNode.AddChild("member")
+				jobNode.setAttribute("index", index)
+				jobNode.setAttribute("function", job.job)
+				jobNode.setContent(job.personGUID)
+
+				index :+1
+			Next
+		endif
+			
+
+			
+		'<ratings>
+		'convert percentages from 0-1.0 to 0-100.00
+		local ratingsNode:TXmlNode = node.AddChild("ratings")
+		if not parentLicence or (licence.GetData().review <> parentLicence.GetData().review)
+			ratingsNode.setAttribute("critics", MathHelper.NumberToString(licence.GetData().review * 100, 2, True))
+		endif
+		if not parentLicence or (licence.GetData().speed <> parentLicence.GetData().speed)
+			ratingsNode.setAttribute("speed", MathHelper.NumberToString(licence.GetData().speed * 100, 2, True))
+		endif
+		if not parentLicence or (licence.GetData().outcome <> parentLicence.GetData().outcome)
+			ratingsNode.setAttribute("outcome", MathHelper.NumberToString(licence.GetData().outcome * 100, 2, True))
+		endif
+		
+
+
+		'sublicences
+		if licence.GetSubLicenceCount() > 0
+			local subLicencesNode:TxmlNode = node.AddChild("children")
+			For local subLicence:TProgrammeLicence = EachIn licence.subLicences
+				SaveV3ProgrammeLicence(subLicencesNode, subLicence)
+			Next
+		endif
+
+
+		Function IntArrayToString:string(intArray:Int[], glue:string=",")
+			local result:String
+			For local i:int = EachIn intArray
+				result :+ i + glue
+			Next
+			if glue <> "" then result = result[.. -glue.length]
+			return result
+		End Function
+	End Function
+
+
+	Function SaveLocalizedString:int(node:TXmlNode, groupName:string, locale:TLocalizedString)
+		local found:int  = 0
+		For local language:string = EachIn locale.values.Keys()
+			if string(locale.values.ValueForKey(language)) <> "" then found :+ 1
+		Next
+		if found = 0 then return False
+
+
+		local groupNode:TXmlNode = node.AddChild(groupName)
+		For local language:string = EachIn locale.values.Keys()
+			local value:string = string(locale.values.ValueForKey(language))
+			if value <> "" then groupNode.addTextChild(language, null, value)
+		Next
+
+		return True
 	End Function
 End Type
 

@@ -113,37 +113,57 @@ Type MathHelper
 	End Function
 
 
-	Function IsEqual:Double(a:Double, b:Double, epsilon:Float = 0.00001)
-		return Abs(a - b) < epsilon
-	End Function
-	
-
 	'convert a double to a string
 	'double is rounded to the requested amount of digits after comma
-	Function NumberToString:String(value:Double, digitsAfterDecimalPoint:int = 2)
-		Local s:String = RoundNumber(value, digitsAfterDecimalPoint + 1)
-		
-		'calculate amount of digits before "."
-		'instead of just string(int(s))).length we use the "Abs"-value
-		'and compare the original value if it is negative
-		'- this is needed because "-0.1" would be "0" as int (one char less)
-		local lengthBeforeDecimalPoint:int = string(abs(int(s))).length
+	Function NumberToString:String(value:Double, digitsAfterDecimalPoint:int = 2, truncateZeros:int = False)
+		'RoundNumber() rounds, but does not handle "floating point", so
+		'1.5999 gets rounded to 1.6, but then it is stored again as
+		'floating point, which recreates "1.5999", that is why we do
+		'a similar approach, but do not divide already, instead we move
+		'the dot accordingly
+		'Local s:String = RoundNumber(value, digitsAfterDecimalPoint + 1)
+
+		if digitsAfterDecimalPoint <= 0 then return RoundLong(value)
+
+		Local t:Long = 10 ^ digitsAfterDecimalPoint
+		local s:string = RoundLong(Abs(value) * t)
 		'instead of comparing "value" we use the rounded one - a value
 		'of "0.000" is sometimes represented using "-2xxxxxxx.xxxx"
-		if Float(s) < 0 then lengthBeforeDecimalPoint:+1 'minus sign
-		'remove unneeded digits (length = BEFORE + . + AFTER)
-		s = Left(s, lengthBeforeDecimalPoint + 1 + digitsAfterDecimalPoint)
+		local minus:int = (Double(RoundLong(value) * t) < 0)
 
-		'add at as much zeros as requested by digitsAfterDecimalPoint
-		If s.EndsWith(".")
-			for local i:int = 0 until digitsAfterDecimalPoint
-				s :+ "0"
-			Next
+		
+		'calculate amount of digits before "."
+		'instead of just string(int(value))).length we use the "Abs"-value
+		'and compare the original value if it is negative
+		'- this is needed because "-0.1" would be "0" as int (one char less)
+		local lengthBeforeDecimalPoint:int = string(abs(int(value))).length
+		'remove unneeded digits (length = BEFORE + . + AFTER)
+		if s = "0"
+			s = "00"
+		else
+			s = Left(s, lengthBeforeDecimalPoint + 1 + digitsAfterDecimalPoint)
 		endif
+		'for numbers below 1.0 we add a zero... 
+		if int(s) < t then s = "0"+s
+
+		'move the dot accordingly
+		s = s[.. lengthBeforeDecimalPoint] + "." + s[lengthBeforeDecimalPoint .. lengthBeforeDecimalPoint + digitsAfterDecimalPoint]
+
+		'append minus if needed
+		if minus then s = "-"+s
+
+		'remove 0s? 1.23000 => 1.23, 1.00 = 1
+		if truncateZeros
+			while s<>"" and Right(s, 1) = "0"
+				s = s[.. s.length-1]
+			Wend
+			'only "xx." left?
+			if Right(s, 1) = "." then s = s[.. s.length-1]
+		endif
+		
 
 		Return s
 	End Function
-
 
 	'round to an integer value
 	Function RoundInt:Int(f:Float)

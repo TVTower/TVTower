@@ -123,6 +123,11 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Field originalTitle:TLocalizedString
 	Field title:TLocalizedString
 	Field description:TLocalizedString
+	'contains the title with placeholders replaced
+	Field titleProcessed:TLocalizedString {nosave}
+	Field descriptionProcessed:TLocalizedString {nosave}
+
+
 	'array holding actor(s) and director(s) and ...
 	Field cast:TProgrammePersonJob[]
 	Field country:String = "UNK"
@@ -561,19 +566,12 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 
 	Method GetTitle:string()
 		if title
-			'cache the now processed result
-			title.Set( _LocalizeContent(title.Get()) )
-			return title.Get()
-		endif
-		return ""
-	End Method
-
-
-	Method GetOriginalTitle:string()
-		if originalTitle
-			'cache the now processed result
-			originalTitle.Set( _LocalizeContent(originalTitle.Get()) )
-			return originalTitle.Get()
+			'replace placeholders and and cache the result
+			if not titleProcessed
+				titleProcessed = new TLocalizedString
+				titleProcessed.Set( _LocalizeContent(title.Get()) )
+			endif
+			return titleProcessed.Get()
 		endif
 		return ""
 	End Method
@@ -581,9 +579,12 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 
 	Method GetDescription:string()
 		if description
-			'cache the now processed result
-			description.Set( _LocalizeContent(description.Get()) )
-			return description.Get()
+			'replace placeholders and and cache the result
+			if not descriptionProcessed
+				descriptionProcessed = new TLocalizedString
+				descriptionProcessed.Set( _LocalizeContent(description.Get()) )
+			endif
+			return descriptionProcessed.Get()
 		endif
 		return ""
 	End Method
