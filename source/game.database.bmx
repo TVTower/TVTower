@@ -599,6 +599,12 @@ endrem
 		if person
 			GetProgrammePersonBaseCollection().RemoveInsignificant(person)
 			GetProgrammePersonBaseCollection().RemoveCelebrity(person)
+
+			'convert to celebrity if required
+			if isCelebrity and not TProgrammePerson(person)
+				local newPerson:TProgrammePerson
+				person = TProgrammePerson(THelper.TakeOverObjectValues(person, newPerson))
+			endif
 		else
 			if isCelebrity
 				person = new TProgrammePerson

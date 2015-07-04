@@ -113,13 +113,29 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 
 	Method SetDayOfBirth:Int(date:String="")
-		if date = "" then date = "0000-00-00"
+		if date = ""
+			date = "0000-00-00"
+		else
+			local parts:string[] = date.split("-")
+			if parts.length < 2 then parts :+ ["01"]
+			if parts.length < 3 then parts :+ ["01"]
+			date = "-".Join(parts)
+		endif
+		
 		self.dayOfBirth = date
 	End Method
 
 
 	Method SetDayOfDeath:Int(date:String="")
-		if date = "" then date = "0000-00-00"
+		if date = ""
+			date = "0000-00-00"
+		else
+			local parts:string[] = date.split("-")
+			if parts.length < 2 then parts :+ ["01"]
+			if parts.length < 3 then parts :+ ["01"]
+			date = "-".Join(parts)
+		endif
+
 		self.dayOfDeath = date
 	End Method
 
