@@ -306,7 +306,7 @@ Type TElevator Extends TEntity
 	
 
 	Method GetElevatorCenterPos:TVec3D()
-		'-25 = z-Achse fÃ¼r Audio. Der Fahrstuhl liegt etwas im Hintergrund
+		'-25 = z-Achse fuer Audio. Der Fahrstuhl liegt etwas im Hintergrund
 		If parent
 			Return New TVec3D.Init(parent.area.GetX() + area.GetX() + door.sprite.framew/2, area.GetY() + door.sprite.frameh/2 + 56, -25)
 		Else
@@ -551,7 +551,7 @@ Type TElevator Extends TEntity
 
 		'1 = close doors
 		If ElevatorStatus = 1
-			'Wenn die Wartezeit vorbei ist, dann TÃ¼ren schlieÃen
+			'Wenn die Wartezeit vorbei ist, dann Tueren schliessen
 			If doorStatus <> 0 And doorStatus <> 3 And waitAtFloorTimer.isExpired() Then CloseDoor()
 
 			'wait until door animation finished
@@ -562,7 +562,7 @@ Type TElevator Extends TEntity
 					doorStatus = 0
 					'2 = move
 					ElevatorStatus = 2
-					GetSoundSource().PlayRandomSfx("elevator_engine")
+					GetSoundSource().PlayOrContinueRandomSFX("elevator_engine")
 				EndIf
 			EndIf
 		EndIf

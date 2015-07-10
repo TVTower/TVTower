@@ -583,7 +583,10 @@ End Function
 
 'Diese Basisklasse ist ein Wrapper für einen normalen Channel mit erweiterten Funktionen
 Type TSfxChannel
-	Field Channel:TChannel = AllocChannel()
+	'preallocating channels returns invalid channels if done before the
+	'soundengine (eg. FreeAudio) is initialized
+	'-> channel.fa_channel is 0 then
+	Field _Channel:TChannel '= AllocChannel()
 	Field CurrentSfx:String
 	Field CurrentSettings:TSfxSettings
 	Field MuteAfterCurrentSfx:Int
@@ -594,6 +597,21 @@ Type TSfxChannel
 	End Function
 
 
+	Method GetChannel:TChannel()
+		'unset invalid channels
+		'and try to refresh previous settings
+		if _channel and TFreeAudioChannel(_channel).fa_channel = 0
+			_channel = null
+			_channel = AllocChannel()
+			if CurrentSettings then AdjustSettings(false)
+		endif
+		
+		if not _channel then _channel = AllocChannel()
+
+		return _channel
+	End Method
+
+
 	Method PlaySfx(sfx:String, settings:TSfxSettings=Null)
 		CurrentSfx = sfx
 		CurrentSettings = settings
@@ -601,7 +619,7 @@ Type TSfxChannel
 		AdjustSettings(False)
 
 		Local sound:TSound = TSoundManager.GetInstance().GetSfx(sfx)
-		TSoundManager.GetInstance().PlaySfx(sound, Channel)
+		TSoundManager.GetInstance().PlaySfx(sound, GetChannel())
 	End Method
 
 
@@ -612,18 +630,18 @@ Type TSfxChannel
 		AdjustSettings(False)
 
 		Local sound:TSound = TSoundManager.GetInstance().GetSfx("", playlist)
-		TSoundManager.GetInstance().PlaySfx(sound, Channel)
+		TSoundManager.GetInstance().PlaySfx(sound, GetChannel())
 		'if sound then PlaySound(sound, channel)
 	End Method
 
 
 	Method IsActive:Int()
-		Return Channel.Playing()
+		Return (_channel and _channel.Playing())
 	End Method
 
 
 	Method Stop()
-		Channel.Stop()
+		GetChannel().Stop()
 	End Method
 
 
@@ -632,17 +650,17 @@ Type TSfxChannel
 			If MuteAfterCurrentSfx And IsActive()
 				AdjustSettings(True)
 			Else
-				Channel.SetVolume(0)
+				GetChannel().SetVolume(0)
 			EndIf
 		Else
-			Channel.SetVolume(TSoundManager.GetInstance().sfxVolume)
+			GetChannel().SetVolume(TSoundManager.GetInstance().sfxVolume)
 		EndIf
 	End Method
 
 
 	Method AdjustSettings(isUpdate:Int)
 		If Not isUpdate
-			channel.SetVolume(TSoundManager.GetInstance().sfxVolume * 0.75 * CurrentSettings.GetVolume()) '0.75 ist ein fixer Wert die Lautstärke der Sfx reduzieren soll
+			GetChannel().SetVolume(TSoundManager.GetInstance().sfxVolume * 0.75 * CurrentSettings.GetVolume()) '0.75 ist ein fixer Wert die Lautstärke der Sfx reduzieren soll
 		EndIf
 	End Method
 End Type
@@ -669,33 +687,36 @@ Type TDynamicSfxChannel Extends TSfxChannel
 
 
 	Method AdjustSettings(isUpdate:Int)
+		'create one, so we could adjust volume etc before starting to play
+		if not _channel then GetChannel()
+		
 		Local sourcePoint:TVec3D = Source.GetCenter()
 		Local receiverPoint:TVec3D = Receiver.GetCenter() 'Meistens die Position der Spielfigur
 
 		If CurrentSettings.forceVolume
-			channel.SetVolume(CurrentSettings.defaultVolume)
+			_channel.SetVolume(CurrentSettings.defaultVolume)
 			'print "Volume:" + CurrentSettings.defaultVolume
 		Else
 			'Lautstärke ist Abhängig von der Entfernung zur Geräuschquelle
 			Local distanceVolume:Float = CurrentSettings.GetVolumeByDistance(Source, Receiver)
-			channel.SetVolume(TSoundManager.GetInstance().sfxVolume * distanceVolume) ''0.75 ist ein fixer Wert die Lautstärke der Sfx reduzieren soll
-			'print "Volume: " + (SoundManager.sfxVolume * distanceVolume)
+			_channel.SetVolume(TSoundManager.GetInstance().sfxVolume * distanceVolume) ''0.75 ist ein fixer Wert die Lautstärke der Sfx reduzieren soll
+			'print "Volume: " + (TSoundManager.GetInstance().sfxVolume * distanceVolume)
 		EndIf
 
 		If (sourcePoint.z = 0) Then
 			'170 Grenzwert = Erst aber dem Abstand von 170 (gefühlt/geschätzt) hört man nur noch von einer Seite.
 			'Ergebnis sollte ungefähr zwischen -1 (links) und +1 (rechts) liegen.
 			If CurrentSettings.forcePan
-				channel.SetPan(CurrentSettings.defaultPan)
+				_channel.SetPan(CurrentSettings.defaultPan)
 			Else
-				channel.SetPan(Float(sourcePoint.x - receiverPoint.x) / 170)
+				_channel.SetPan(Float(sourcePoint.x - receiverPoint.x) / 170)
 			EndIf
-			channel.SetDepth(0) 'Die Tiefe spielt keine Rolle, da elementPoint.z = 0
+			_channel.SetDepth(0) 'Die Tiefe spielt keine Rolle, da elementPoint.z = 0
 		Else
 			Local zDistance:Float = Abs(sourcePoint.z - receiverPoint.z)
 
 			If CurrentSettings.forcePan
-				channel.SetPan(CurrentSettings.defaultPan)
+				_channel.SetPan(CurrentSettings.defaultPan)
 				'print "Pan:" + CurrentSettings.defaultPan
 			Else
 				Local xDistance:Float = Abs(sourcePoint.x - receiverPoint.x)
@@ -709,27 +730,27 @@ Type TDynamicSfxChannel Extends TSfxChannel
 
 				'0° => Aus einer Richtung  /  90° => aus beiden Richtungen
 				If (sourcePoint.x < receiverPoint.x) Then 'von links
-					channel.SetPan(-correctPan)
+					_channel.SetPan(-correctPan)
 					'print "Pan:" + (-correctPan) + " - angleZX: " + angleZX + " (" + xDistance + "/" + zDistance + ")    # " + rawPan + " / " + panCorrection
 				ElseIf (sourcePoint.x > receiverPoint.x) Then 'von rechts
-					channel.SetPan(correctPan)
+					_channel.SetPan(correctPan)
 					'print "Pan:" + correctPan + " - angleZX: " + angleZX + " (" + xDistance + "/" + zDistance + ")    # " + rawPan + " / " + panCorrection
 				Else
-					channel.SetPan(0)
+					_channel.SetPan(0)
 				EndIf
 			EndIf
 
 			If CurrentSettings.forceDepth
-				channel.SetDepth(CurrentSettings.defaultDepth)
+				_channel.SetDepth(CurrentSettings.defaultDepth)
 				'print "Depth:" + CurrentSettings.defaultDepth
 			Else
 				Local angleOfDepth:Float = ATan(receiverPoint.DistanceTo(sourcePoint, False) / zDistance) '0 = direkt hinter mir/vor mir, 90° = über/unter/neben mir
 
 				If sourcePoint.z < 0 Then 'Hintergrund
-					channel.SetDepth(-((90 - angleOfDepth) / 90)) 'Minuswert = Hintergrund / Pluswert = Vordergrund
+					_channel.SetDepth(-((90 - angleOfDepth) / 90)) 'Minuswert = Hintergrund / Pluswert = Vordergrund
 					'print "Depth:" + (-((90 - angleOfDepth) / 90)) + " - angle: " + angleOfDepth + " (" + receiverPoint.DistanceTo(sourcePoint, false) + "/" + zDistance + ")"
 				ElseIf sourcePoint.z > 0 Then 'Vordergrund
-					channel.SetDepth((90 - angleOfDepth) / 90) 'Minuswert = Hintergrund / Pluswert = Vordergrund
+					_channel.SetDepth((90 - angleOfDepth) / 90) 'Minuswert = Hintergrund / Pluswert = Vordergrund
 					'print "Depth:" + ((90 - angleOfDepth) / 90) + " - angle: " + angleOfDepth + " (" + receiverPoint.DistanceTo(sourcePoint, false) + "/" + zDistance + ")"
 				EndIf
 			EndIf
@@ -779,7 +800,9 @@ Type TSfxSettings
 			ElseIf currentDistance < Self.nearbyDistanceRange Then 'sehr nah dran
 				result = Self.nearbyRangeVolume
 			Else 'irgendwo dazwischen
-				result = midRangeVolume * (Float(Self.maxDistanceRange) - Float(currentDistance)) / Float(Self.maxDistanceRange)
+				'exponential decrease - the more far away, the less volume
+				result = midRangeVolume  - midRangeVolume * (Float(currentDistance) / Float(Self.maxDistanceRange))^2
+				'result = midRangeVolume * (Float(Self.maxDistanceRange) - Float(currentDistance)) / Float(Self.maxDistanceRange)
 			EndIf
 		EndIf
 
@@ -885,12 +908,7 @@ Type TSoundSourceElement Extends TSoundSourcePosition
 
 	Method PlayOrContinueSfxOrPlaylist(name:String, sfxSettings:TSfxSettings=Null, playlistMode:Int=False)
 		Local channel:TSfxChannel = GetChannelForSfx(name)
-		If Not channel.IsActive()
-			'Print "PlayOrContinueSfx: start"
-			PlaySfxOrPlaylist(name, sfxSettings, playlistMode)
-		Else
-			'Print "PlayOrContinueSfx: Continue"
-		EndIf
+		If Not channel.IsActive() then PlaySfxOrPlaylist(name, sfxSettings, playlistMode)
 	End Method
 
 

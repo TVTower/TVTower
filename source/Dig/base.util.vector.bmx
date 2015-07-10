@@ -296,6 +296,15 @@ Type TVec3D {_exposeToLua="selected"}
 	End Method
 
 
+	Method ToString:String()
+		if string(int(x)) = string(x) and string(int(y)) = string(y) and string(int(z)) = string(z)
+			return int(x)+", "+int(y)+", "+int(z)
+		else
+			return x+", "+y+", "+z
+		endif
+	End Method
+
+
 	Method ToVec2D:TVec2D()
 		return new TVec2D.Init(x,y)
 	End Method
