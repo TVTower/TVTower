@@ -670,7 +670,6 @@ endrem
 			celebrity.appearance = 0.01 * data.GetFloat("appearance", 100*celebrity.appearance)
 			celebrity.topGenre1 = data.GetInt("topgenre1", celebrity.topGenre1)
 			celebrity.topGenre2 = data.GetInt("topgenre2", celebrity.topGenre2)
-			celebrity.prominence = 0.01 * data.GetFloat("prominence", 100*celebrity.prominence)
 		endif
 
 

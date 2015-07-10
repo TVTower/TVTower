@@ -13,6 +13,8 @@ Type TScriptBase Extends TNamedGameObject
 	Field subGenres:Int[]
 	'flags contains bitwise encoded things like xRated, paid, trash ...
 	Field flags:Int = 0
+	'is the script title/description editable?
+	Field textsEditable:int = False
 	'scripts of series are parent of episode scripts
 	Field parentScriptGUID:string = ""
 	'all associated child scripts (episodes)
