@@ -68,8 +68,6 @@ Type TProgrammePerson extends TProgrammePersonBase
 	field gender:int = 0
 	field debut:Int	= 0	
 	field country:string = ""
-	'how prominent is a person 0-1.0 = 0-100%
-	field prominence:float = 0.0
 	'income +, reviews +++, bonus in some genres (drama!)
 	'directors, musicians: how good is he doing his "craftmanships"
 	field skill:float = 0.0
@@ -91,8 +89,9 @@ Type TProgrammePerson extends TProgrammePersonBase
 	'at which genres this person is doing his best job
 	'TODO: maybe change this later to a general genreExperience-Container
 	'which increases over time
-	field topGenre1:Int = -1
-	field topGenre2:Int = -1
+	field topGenre1:Int = 0
+	field topGenre2:Int = 0
+	field calculatedTopGenreCache:int = 0 {nosave}
 
 	'array containing GUIDs of all programmes 
 	Field producedProgrammes:string[]
@@ -101,7 +100,35 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 	Field xp:int = 0
 	Const MAX_XP:int = 10000
-	
+
+
+	Method GetTopGenre:Int()
+		'if there was no topGenre defined...
+		if topGenre1 <= 0
+			if calculatedTopGenreCache > 0 then return calculatedTopGenreCache
+
+
+			local genres:int[]
+			local bestGenre:int=0
+			For local guid:string = EachIn producedProgrammes
+				local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(guid)
+				if not programmeData then continue
+				
+				local genre:int = programmeData.GetGenre()
+				if genre > genres.length-1 then genres = genres[..genre+1]
+				genres[genre]:+1
+				For local i:int = 0 to genres.length-1
+					if genres[i] > bestGenre then bestGenre = i
+				Next
+			Next
+
+			if bestGenre >= 0 then calculatedTopGenreCache = bestGenre
+
+			return calculatedTopGenreCache
+		endif
+			
+		return topGenre1
+	End Method	
 
 
 	Method SetDayOfBirth:Int(date:String="")
@@ -138,13 +165,17 @@ Type TProgrammePerson extends TProgrammePersonBase
 		'TODO: überarbeiten
 		'(50 - 650)
 		local sum:float = 50 + 100*(power + humor + charisma + appearance + 2*skill)
-		Local factor:Float = (fame*0.8 + scandalizing*0.2)
+		Local factor:Float = 1.0 + (fame*0.8 + scandalizing*0.2)
 
 		local sympathyMod:Float = 1.0
 		'modify by up to 50% ...
 		if channel >= 0 then sympathyMod :- 0.5 * GetChannelSympathy(channel)
-		
-		Return sympathyMod * (3000 + Floor(Int(800 * sum * factor * priceModifier)/100)*100)
+
+		local xpMod:Float = 1.0
+		'up to "* 100" -> 100% xp means 2000*100 = 200000
+		xpMod :+ 100 * GetExperiencePercentage()
+
+		Return sympathyMod * (3000 + Floor(Int(2000 * sum * factor * xpMod * priceModifier)/100)*100)
 	End Method
 
 	
@@ -176,6 +207,10 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 		'add programme
 		producedProgrammes :+ [programmeDataGUID]
+
+
+		'reset cached calculations
+		calculatedTopGenreCache = -1
 	End Method
 
 
@@ -191,9 +226,67 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 		return channelSympathy[channel -1]
 	End Method
+
+
+	Method GetCountryCode:string()
+		return country
+	End Method
+
+
+	Method GetCountry:string()
+		if country <> ""
+			return GetLocale("COUNTRY_CODE_"+country)
+		else
+			return ""
+		endif
+	End Method
 	
 
-	Method GetExperience:Float()
+	Method GetCountryLong:string()
+		if country <> ""
+			return GetLocale("COUNTRY_NAME_"+country)
+		else
+			return ""
+		endif
+	End Method
+
+
+	Method GetSkill:Float()
+		return skill
+	End Method
+
+
+	Method GetPower:Float()
+		return power
+	End Method
+
+
+	Method GetHumor:Float()
+		return humor
+	End Method
+
+
+	Method GetCharisma:Float()
+		return charisma
+	End Method
+
+
+	Method GetAppearance:Float()
+		return appearance
+	End Method
+
+
+	Method GetFame:Float()
+		return fame
+	End Method
+
+
+	Method GetScandalizing:Float()
+		return scandalizing
+	End Method
+
+	
+	Method GetExperience:int()
 		return xp
 	End Method
 

@@ -3,6 +3,7 @@ Import Brl.Map
 Import Brl.Math
 Import "Dig/base.util.mersenne.bmx"
 Import "game.gameobject.bmx"
+Import "game.gameconstants.bmx"
 Import "game.programme.programmerole.bmx"
 
 
@@ -177,6 +178,12 @@ Type TProgrammePersonBase extends TGameObject
 	Method SetGUID:Int(GUID:String)
 		if GUID="" then GUID = "programmeperson-"+id
 		self.GUID = GUID
+	End Method
+
+
+	Method GetTopGenre:Int()
+		'base persons does not have top genres (-> unspecified)
+		return TVTProgrammeGenre.undefined
 	End Method
 
 
