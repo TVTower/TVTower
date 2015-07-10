@@ -1131,17 +1131,41 @@ Type TEditorDatabaseLoader Extends TDatabaseLoader
 	End Method
 
 
-	'=== EXTEND META DATA FUNCTIONS ===
-	Method LoadV3ProgrammeLicenceMetaDataFromNode:TData(GUID:string, node:TxmlNode, xml:TXmlHelper, parentLicence:TProgrammeLicence = Null)
-		local data:TData = Super.LoadV3ProgrammeLicenceMetaDataFromNode(GUID, node, xml, parentLicence)
-
+	'shared functionality for objects having movie-DB-relationships
+	'(Licences, Celebrities, insignificant people)
+	Function _LoadV3MovieDBMetaData:TData(node:TXmlNode, data:TData)
 		'load IDs for various online DBs and fall back to "original" ID
-		'for extended/overridden licences 
+		'for extended/overridden objects
 		local metaStrings:string[] = ["tmdb_id", "imdb_id", "rt_id"]
 		For local m:string = EachIn metaStrings
 			local id:string = TXmlHelper.FindValue(node, m, data.GetString(m, "").Trim())
 			if id and id <> "0" then data.AddString(m, id)
 		Next
+		return data
+	End Function
+
+
+
+
+	'=== EXTEND META DATA FUNCTIONS ===
+	Method LoadV3ProgrammeLicenceMetaDataFromNode:TData(GUID:string, node:TxmlNode, xml:TXmlHelper, parentLicence:TProgrammeLicence = Null)
+		local data:TData = Super.LoadV3ProgrammeLicenceMetaDataFromNode(GUID, node, xml, parentLicence)
+
+		'load movie db IDs
+		_LoadV3MovieDBMetaData(node, data)
+
+		'add meta data to be globally available
+		GetMetaDataCollection().Add(GUID, data)
+		
+		return data
+	End Method
+
+
+	Method LoadV3ProgrammePersonBaseMetaDataFromNode:TData(GUID:string, node:TxmlNode, xml:TXmlHelper, isCelebrity:int=True)
+		local data:TData = Super.LoadV3ProgrammePersonBaseMetaDataFromNode(GUID, node, xml, isCelebrity)
+
+		'load movie db IDs
+		_LoadV3MovieDBMetaData(node, data)
 
 		'add meta data to be globally available
 		GetMetaDataCollection().Add(GUID, data)
@@ -1152,7 +1176,6 @@ Type TEditorDatabaseLoader Extends TDatabaseLoader
 
 
 	'=== SAVE FUNCTIONS ===
-
 	Method Save(fileURI:string)
 		SaveV3(fileURI)
 	End Method
@@ -1198,12 +1221,18 @@ Type TEditorDatabaseLoader Extends TDatabaseLoader
 
 		'=== CELEBRITY PEOPLE ===
 		nodeGroup = TxmlNode.Newnode("celebritypeople")
+		For local p:TProgrammePerson = EachIn GetProgrammePersonBaseCollection().celebrities.Values()
+			SaveV3ProgrammePerson(nodeGroup, p)
+		Next
 		nodeList.AddLast(nodeGroup)
 
 
 
-		'=== CELEBRITY PEOPLE ===
+		'=== INSIGNIFICANT PEOPLE ===
 		nodeGroup = TxmlNode.Newnode("insignificantpeople")
+		For local p:TProgrammePerson = EachIn GetProgrammePersonBaseCollection().insignificant.Values()
+			SaveV3ProgrammePersonBase(nodeGroup, p)
+		Next
 		nodeList.AddLast(nodeGroup)
 
 
@@ -1241,6 +1270,86 @@ Type TEditorDatabaseLoader Extends TDatabaseLoader
 	End Method
 
 
+	Function SaveBasicMovieDBMetaData:int(node:TXmlNode, GUID:string, parentGUID:string="")
+		local metaData:TData = GetMetaDataCollection().GetByGUID(GUID)
+		if not metaData then return false
+
+		local parentMetaData:TData
+		if parentGUID then parentMetaData = GetMetaDataCollection().GetByGUID(parentGUID)
+		if not parentMetaData then parentMetaData = new TData
+
+
+		if metaData.GetString("tmdb_id") <> "" and metaData.GetString("tmdb_id") <> parentMetaData.GetString("tmdb_id")
+			node.setAttribute("tmdb_id", metaData.GetString("tmdb_id", ""))
+		endif
+		if metaData.GetString("imdb_id") <> "" and metaData.GetString("imdb_id") <> parentMetaData.GetString("imdb_id")
+			node.setAttribute("imdb_id", metaData.GetString("imdb_id", ""))
+		endif
+		if metaData.GetString("rt_id") <> "" and metaData.GetString("rt_id") <> parentMetaData.GetString("rt_id")
+			node.setAttribute("rt_id", metaData.GetString("rt_id", ""))
+		endif
+
+		if metaData.GetInt("creator") and metaData.GetInt("creator") <> parentMetaData.GetInt("creator")
+			node.setAttribute("creator", metaData.GetInt("creator", 0))
+		endif
+		if metaData.GetString("createdBy") <> "" and metaData.GetString("createdBy") <> parentMetaData.GetString("createdBy")
+			node.setAttribute("created_by", metaData.GetString("createdBy", ""))
+		endif
+
+		return True
+	End Function
+
+
+	Function SaveV3ProgrammePersonBase:TXmlNode(groupNode:TXmlNode, person:TProgrammePerson)
+		local node:TxmlNode = groupNode.AddChild("person")
+		node.setAttribute("id", person.GetGUID())
+		if person.firstName <> "" then node.setAttribute("first_name", person.firstName)
+		if person.lastName <> "" then node.setAttribute("last_name", person.lastName)
+		if person.nickName <> "" then node.setAttribute("nick_name", person.nickName)
+		if person.fictional then node.setAttribute("fictional", person.fictional)
+		if person.canLevelUp then node.setAttribute("levelup", person.canLevelUp)
+		if person.job then node.setAttribute("job", person.job)
+
+		SaveBasicMovieDBMetaData(node, person.GetGUID())
+
+		return node
+	End Function
+
+
+	Function SaveV3ProgrammePerson:int(groupNode:TXmlNode, person:TProgrammePerson)
+		'save basic values (similar to TProgrammePersonBase)
+		local node:TXmlNode = SaveV3ProgrammePersonBase(groupNode, person)
+
+		'empty for now
+		'node.AddChild("images")
+
+		'"biography data"
+		local detailsNode:TXmlNode = node.AddChild("details")
+
+		if person.gender > 0 then detailsNode.setAttribute("gender", person.gender)
+		if person.dayOfBirth <> "0000-00-00" then detailsNode.setAttribute("birthday", person.dayOfBirth)
+		if person.dayOfDeath <> "0000-00-00" then detailsNode.setAttribute("deathday", person.dayOfDeath)
+		if person.country <> "" then detailsNode.setAttribute("country", person.country)
+
+		local dataNode:TXmlNode = node.AddChild("data")
+		if person.prominence > 0 then dataNode.setAttribute("prominence", MathHelper.NumberToString(person.prominence*100,2, TRUE))
+		if person.skill > 0 then dataNode.setAttribute("skill", MathHelper.NumberToString(person.skill*100,2, TRUE))
+		if person.fame > 0 then dataNode.setAttribute("fame", MathHelper.NumberToString(person.fame*100,2, TRUE))
+		if person.scandalizing > 0 then dataNode.setAttribute("scandalizing", MathHelper.NumberToString(person.scandalizing*100,2, TRUE))
+		if MathHelper.NumberToString(person.priceModifier*100, 2, True) <> "1"
+			dataNode.setAttribute("price_mod", MathHelper.NumberToString(person.priceModifier*100, 2, True))
+		endif
+		if person.power > 0 then dataNode.setAttribute("power", MathHelper.NumberToString(person.power*100,2, TRUE))
+		if person.humor > 0 then dataNode.setAttribute("humor", MathHelper.NumberToString(person.humor*100,2, TRUE))
+		if person.charisma > 0 then dataNode.setAttribute("charisma", MathHelper.NumberToString(person.charisma*100,2, TRUE))
+		if person.appearance > 0 then dataNode.setAttribute("appearance", MathHelper.NumberToString(person.appearance*100,2, TRUE))
+
+		if person.topGenre1 then dataNode.setAttribute("topgenre1", person.topGenre1)
+		if person.topGenre2 then dataNode.setAttribute("topgenre2", person.topGenre2)
+	End Function
+	
+
+
 	Function SaveV3ProgrammeLicences:int(groupNode:TXmlNode)
 		local licenceTypes:int[] = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.SERIES, TVTProgrammeLicenceType.COLLECTION]
 		For local licenceType:int = EachIn licenceTypes
@@ -1269,29 +1378,9 @@ Type TEditorDatabaseLoader Extends TDatabaseLoader
 			node.setAttribute("licence_type", licence.licenceType)
 		endif
 
-
-		local parentMetaData:TData
-		if parentLicence then parentMetaData = GetMetaDataCollection().GetByGUID(parentLicence.GetGUID())
-		if not parentMetaData then parentMetaData = new TData
-		
-		local metaData:TData = GetMetaDataCollection().GetByGUID(licence.GetGUID())
-		local metaStrings:string[] = ["tmdb_id", "imdb_id", "rt_id", "creator", "createdBy"]
-
-		if metaData.GetString("tmdb_id") <> ""  and metaData.GetString("tmdb_id") <> parentMetaData.GetString("tmdb_id")
-			node.setAttribute("tmdb_id", metaData.GetString("tmdb_id", ""))
-		endif
-		if metaData.GetString("imdb_id") <> ""  and metaData.GetString("imdb_id") <> parentMetaData.GetString("imdb_id")
-			node.setAttribute("imdb_id", metaData.GetString("imdb_id", ""))
-		endif
-		if metaData.GetString("rt_id") <> ""  and metaData.GetString("rt_id") <> parentMetaData.GetString("rt_id")
-			node.setAttribute("rt_id", metaData.GetString("rt_id", ""))
-		endif
-		if metaData.GetInt("creator") and metaData.GetInt("creator") <> parentMetaData.GetInt("creator")
-			node.setAttribute("creator", metaData.GetInt("creator", 0))
-		endif
-		if metaData.GetString("createdBy") <> ""  and metaData.GetString("createdBy") <> parentMetaData.GetString("createdBy")
-			node.setAttribute("created_by", metaData.GetString("createdBy", ""))
-		endif
+		local parentLicenceGUID:string = ""
+		if parentLicence then parentLicenceGUID = parentLicence.GetGUID()
+		SaveBasicMovieDBMetaData(node, licence.GetGUID(), parentLicenceGUID)
 
 		SaveLocalizedString(node, "title", licence.GetData().title)
 		SaveLocalizedString(node, "description", licence.GetData().description)
