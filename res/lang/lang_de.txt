@@ -22,6 +22,7 @@ FULLSCREEN = Vollbild
 MULTIPLAYER = Mehrspieler
 DEFAULTS_FOR_NEW_GAME= Vorgaben "Neues Spiel"
 RENDERER = Renderer
+SOUND_ENGINE = Soundengine
 PORT_ONLINEGAME = Port für Onlinespiele
 
 STARTHINT_TITLE1 = Programmplaner

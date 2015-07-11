@@ -2853,6 +2853,7 @@ Type TSettingsWindow
 	Field inputDatabase:TGUIDropDown
 	Field checkMusic:TGUICheckbox
 	Field checkSfx:TGUICheckbox
+	Field dropdownSoundEngine:TGUIDropDown
 	Field dropdownRenderer:TGUIDropDown
 	Field checkFullscreen:TGUICheckbox
 	Field inputGameName:TGUIInput
@@ -2867,8 +2868,11 @@ Type TSettingsWindow
 		data.Add("startyear", inputStartYear.GetValue())
 		'data.Add("stationmap", inputStationmap.GetValue())
 		data.Add("databaseDir", inputDatabase.GetValue())
+
 		data.AddBoolString("sound_music", checkMusic.IsChecked())
 		data.AddBoolString("sound_effects", checkSfx.IsChecked())
+		data.Add("sound_engine", dropdownSoundEngine.GetSelectedEntry().data.GetString("value", "0"))
+
 
 		data.Add("renderer", dropdownRenderer.GetSelectedEntry().data.GetString("value", "0"))
 		data.AddBoolString("fullscreen", checkFullscreen.IsChecked())
@@ -2889,9 +2893,25 @@ Type TSettingsWindow
 		checkSfx.SetChecked(data.GetBool("sound_effects", True))
 		checkFullscreen.SetChecked(data.GetBool("fullscreen", False))
 
+		'check available sound engine entries
+		Local selectedDropDownItem:TGUIDropDownItem
+		For Local item:TGUIDropDownItem = EachIn dropdownSoundEngine.GetEntries()
+			Local soundEngine:string = item.data.GetString("value")
+			'if the same renderer - select this
+			If soundEngine = data.GetString("sound_engine", "")
+				selectedDropDownItem = item
+				Exit
+			EndIf
+		Next
+		'select the first if nothing was preselected
+		If Not selectedDropDownItem
+			dropdownSoundEngine.SetSelectedEntryByPos(0)
+		Else
+			dropdownSoundEngine.SetSelectedEntry(selectedDropDownItem)
+		EndIf
 
 		'check available renderer entries
-		Local selectedDropDownItem:TGUIDropDownItem
+		selectedDropDownItem = null
 		For Local item:TGUIDropDownItem = EachIn dropdownRenderer.GetEntries()
 			Local renderer:Int = item.data.GetInt("value")
 			'if the same renderer - select this
@@ -2991,8 +3011,40 @@ Type TSettingsWindow
 		checkSfx.SetCaption(GetLocale("SFX"))
 		canvas.AddChild(checkSfx)
 		nextY :+ Max(inputH, checkSfx.GetScreenHeight())
-		nextY :+ 15
 
+		Local labelSoundEngine:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("SOUND_ENGINE") + ":")
+		dropdownSoundEngine = New TGUIDropDown.Create(New TVec2D.Init(nextX, nextY + 12), New TVec2D.Init(inputWidth,-1), "", 128)
+		Local soundEngineValues:String[] = ["AUTOMATIC", "NONE"]
+		Local soundEngineTexts:String[] = ["Auto", "---"]
+		?Win32
+			soundEngineValues :+ ["WINDOWS_ASIO","WINDOWS_DS"]
+			soundEngineTexts :+ ["ASIO", "Direct Sound"]
+		?
+		?Linux
+			soundEngineValues :+ ["LINUX_ALSA","LINUX_PULSE","LINUX_OSS"]
+			soundEngineTexts :+ ["ALSA", "PulseAudio", "OSS"]
+		?
+		?MacOS
+			soundEngineValues :+ ["MACOSX_CORE"]
+			soundEngineTexts :+ ["CoreAudio"]
+		?
+
+		Local itemHeight:Int = 0
+		For Local i:Int = 0 Until soundEngineValues.Length
+			Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(Null, Null, soundEngineTexts[i])
+			item.SetValueColor(TColor.CreateGrey(50))
+			item.data.Add("value", soundEngineValues[i])
+			dropdownSoundEngine.AddItem(item)
+			If itemHeight = 0 Then itemHeight = item.GetScreenHeight()
+		Next
+		dropdownSoundEngine.SetListContentHeight(itemHeight * Len(soundEngineValues))
+
+		canvas.AddChild(labelSoundEngine)
+		canvas.AddChild(dropdownSoundEngine)
+'		GuiManager.SortLists()
+		nextY :+ inputH + labelH * 1.5
+		nextY :+ 15
+		
 
 		'GRAPHICS
 		Local labelTitleGraphics:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("GRAPHICS"))
@@ -3008,7 +3060,7 @@ Type TSettingsWindow
 			rendererValues :+ ["1","2"]
 			rendererTexts :+ ["DirectX 7", "DirectX 9"]
 		?
-		Local itemHeight:Int = 0
+		itemHeight = 0
 		For Local i:Int = 0 Until rendererValues.Length
 			Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(Null, Null, rendererTexts[i])
 			item.SetValueColor(TColor.CreateGrey(50))

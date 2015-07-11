@@ -20,6 +20,7 @@ SFX = Efectos de sonido
 FULLSCREEN = Pantalla completa
 MULTIPLAYER = Multiplayer
 RENDERER = Procesador
+SOUND_ENGINE = Base de audio
 DEFAULTS_FOR_NEW_GAME= Defaults for "Nueva Partida"
 PORT_ONLINEGAME = Puerto para jugar en linea
 

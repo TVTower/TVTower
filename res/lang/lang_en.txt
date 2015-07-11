@@ -20,6 +20,7 @@ SFX = Sound effects
 FULLSCREEN = Fullscreen
 MULTIPLAYER = Multiplayer
 RENDERER = Renderer
+SOUND_ENGINE = Soundengine
 DEFAULTS_FOR_NEW_GAME= Defaults for "New Game"
 PORT_ONLINEGAME = Port for online games
 
