@@ -258,26 +258,36 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 	local buyedContracts = {}
 
 	for key, value in pairs(self.AdAgencyTask.SpotsInAgency) do
-		if MY.GetProgrammeCollection().GetAdContractCount() >= 8 then break end
+		-- do not try to get more contracts than allowed
+		if MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.maxContracts then break end
 
-		local minAudience = value.GetMinAudience()
-
-		if ((minAudience < guessedAudience) and (minAudience > minguessedAudience)) then
-			--Passender Spot... also kaufen
-			debugMsg("Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil benötigt. Level: " .. requisition.Level)
-			TVT.addToLog("Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil benötigt. Level: " .. requisition.Level)
-			TVT.sa_doBuySpot(value.GetID())
-			requisition:UseThisContract(value)
-			table.insert(buyedContracts, value)
-			signed = signed + 1
-			--neededSpotCount = neededSpotCount - value.GetSpotCount()
+		local contractDoable = true
+		-- skip limited target groups / programme genres
+		-- TODO: get breakdown of audience and compare this then
+		if (value.GetLimitedToTargetGroup() > 0 or value.GetLimitedToGenre() > 0) then
+			contractDoable = false
 		end
 
-		--if (neededSpotCount <= 0) then
-		--	self.Player:RemoveRequisition(requisition)
-		--else
-		--	requisition.Count = neededSpotCount
-		--end
+		if (contractDoable) then
+			local minAudience = value.GetMinAudience()
+
+			if ((minAudience < guessedAudience) and (minAudience > minguessedAudience)) then
+				--Passender Spot... also kaufen
+				debugMsg("Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil benötigt. Level: " .. requisition.Level .. "  MinAudience: " .. minAudience .. "  GuessedAudience: " .. minguessedAudience .. " - " .. guessedAudience)
+				TVT.addToLog("Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil benötigt. Level: " .. requisition.Level .. "  MinAudience: " .. minAudience .. "  GuessedAudience: " .. minguessedAudience .. " - " .. guessedAudience)
+				TVT.sa_doBuySpot(value.GetID())
+				requisition:UseThisContract(value)
+				table.insert(buyedContracts, value)
+				signed = signed + 1
+				--neededSpotCount = neededSpotCount - value.GetSpotCount()
+			end
+
+			--if (neededSpotCount <= 0) then
+			--	self.Player:RemoveRequisition(requisition)
+			--else
+			--	requisition.Count = neededSpotCount
+			--end
+		end
 	end
 
 	if (table.count(buyedContracts) > 0) then
