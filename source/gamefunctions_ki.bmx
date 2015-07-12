@@ -649,7 +649,6 @@ Type TLuaFunctions {_exposeToLua}
 		If Not _PlayerInRoom("office") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
 		local bm:TBroadcastMaterial[] = GetPlayerProgrammePlan(self.ME).GetObjectsInTimeSpan(objectType, dayStart, hourStart, dayEnd, hourEnd, includeStartingEarlierObject, requireSameType)
-		print "of_GetBroadcastMaterialInTimeSpan: "+bm.length
 		Return TLuaFunctionResult.Create(self.RESULT_OK, bm)
 	End Method
 
