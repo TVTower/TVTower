@@ -1030,9 +1030,9 @@ endrem
 		'add to given datetime
 		local broadcastMaterial:TBroadcastMaterial
 		Select objectType
-			case TBroadcastmaterial.TYPE_PROGRAMME
+			case TVTBroadcastMaterialType.PROGRAMME
 				broadcastMaterial = TProgramme.Create(GetPlayerProgrammeCollectionCollection().Get(playerID).GetProgrammeLicence(referenceID))
-			case TBroadcastmaterial.TYPE_ADVERTISEMENT
+			case TVTBroadcastMaterialType.ADVERTISEMENT
 				broadcastMaterial = new TAdvertisement.Create(GetPlayerProgrammeCollectionCollection().Get(playerID).GetAdContract(referenceID))
 		End Select
 		If not broadcastMaterial

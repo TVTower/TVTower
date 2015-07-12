@@ -304,6 +304,14 @@ Type TLuaFunctionResult {_exposeToLua}
 		obj.data = data
 		return obj
 	End Function
+
+	Method DataArray:object[]()
+		if object[](data).length = 0
+			return new object[0]
+		else
+			return object[](data)
+		endif
+	End Method
 End Type
 
 
@@ -629,6 +637,23 @@ Type TLuaFunctions {_exposeToLua}
 
 	'== PROGRAMME PLAN ==
 
+	'counts how many times a licence is planned as programme (this
+	'includes infomercials and movies/series/programmes)
+	Method of_GetBroadcastMaterialInProgrammePlanCount:Int(referenceID:Int, day:Int=-1, includePlanned:Int=False, includeStartedYesterday:Int=True)
+		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
+
+		return GetPlayerProgrammePlan(self.ME).GetBroadcastMaterialInProgrammePlanCount(referenceID, day, includePlanned, includeStartedYesterday)
+	End Method
+
+	Method of_GetBroadcastMaterialInTimeSpan:TLuaFunctionResult(objectType:Int=0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1, includeStartingEarlierObject:Int=True, requireSameType:Int=False) {_exposeToLua}
+		If Not _PlayerInRoom("office") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
+
+		local bm:TBroadcastMaterial[] = GetPlayerProgrammePlan(self.ME).GetObjectsInTimeSpan(objectType, dayStart, hourStart, dayEnd, hourEnd, includeStartingEarlierObject, requireSameType)
+		print "of_GetBroadcastMaterialInTimeSpan: "+bm.length
+		Return TLuaFunctionResult.Create(self.RESULT_OK, bm)
+	End Method
+
+
 	'returns the broadcast material (in result.data) at the given slot
 	Method of_getAdvertisementSlot:TLuaFunctionResult(day:Int = -1, hour:Int = -1)
 		If Not _PlayerInRoom("office") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
@@ -716,6 +741,14 @@ Type TLuaFunctions {_exposeToLua}
 		else
 			return self.RESULT_NOTALLOWED
 		endif
+	End Method
+
+	
+	Method of_getProgrammeLicenceByID:TProgrammeLicence(id:Int=-1)
+		If Not _PlayerInRoom("office") Then Return Null
+
+		Local obj:TProgrammeLicence = GetPlayer(self.ME).GetProgrammeCollection().GetProgrammeLicence(id)
+		If obj Then Return obj Else Return Null
 	End Method
 
 

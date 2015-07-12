@@ -70,11 +70,11 @@ Type TDebugAudienceInfos
 		Local attraction:TAudienceAttraction = audienceResult.AudienceAttraction
 		Local genre:String = "kein Genre"
 
-		If attraction.BroadcastType = TBroadcastMaterial.TYPE_PROGRAMME Then
+		If attraction.BroadcastType = TVTBroadcastMaterialType.PROGRAMME Then
 			If (attraction.BaseAttraction <> Null) Then
 				genre = GetLocale("PROGRAMME_GENRE_"+TVTProgrammeGenre.GetAsString(attraction.Genre))
 			Endif
-		ElseIf attraction.BroadcastType = TBroadcastMaterial.TYPE_NEWSSHOW Then
+		ElseIf attraction.BroadcastType = TVTBroadcastMaterialType.NEWSSHOW Then
 			If (attraction.BaseAttraction <> Null) Then
 				genre = "News-Genre-Mix"
 			Endif

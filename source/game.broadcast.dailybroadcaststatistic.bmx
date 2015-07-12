@@ -86,7 +86,7 @@ Type TDailyBroadcastStatistic
 
 
 	Method GetAudienceArrayToUse:TAudienceResultBase[][](broadcastedAsType:int)
-		if broadcastedAsType = TBroadcastMaterial.TYPE_NEWSSHOW
+		if broadcastedAsType = TVTBroadcastMaterialType.NEWSSHOW
 			return allNewsAudienceResults
 		else
 			return allAudienceResults
@@ -120,7 +120,7 @@ Type TDailyBroadcastStatistic
 		'than previous best-audience. Ignore "no broadcast"-audiences
 		'(eg. some sleeping people...)
 		if broadcast
-			if broadcastedAsType = TBroadcastMaterial.TYPE_NEWSSHOW
+			if broadcastedAsType = TVTBroadcastMaterialType.NEWSSHOW
 				if not bestNewsAudienceResult then bestNewsAudienceResult = new TAudienceResultBase
 				if bestNewsAudienceResult.audience.GetSum() < audienceResult.audience.GetSum()
 					bestNewsAudienceResult = audienceResult
@@ -249,7 +249,7 @@ Type TDailyBroadcastStatistic
 	'group in the given hour for the given type
 	Method _GetAudienceRanking:int[](owner:int, hour:int, broadcastedAsType:int = 0)
 		'return cached values if possible
-		if broadcastedAsType = TBroadcastMaterial.TYPE_PROGRAMME
+		if broadcastedAsType = TVTBroadcastMaterialType.PROGRAMME
 			if _cachedRanksHour = hour and _cachedRanksOwner = owner
 				return _cachedRanks
 			endif
@@ -314,7 +314,7 @@ Type TDailyBroadcastStatistic
 		Next
 
 		'cache values
-		if broadcastedAsType = TBroadcastMaterial.TYPE_PROGRAMME
+		if broadcastedAsType = TVTBroadcastMaterialType.PROGRAMME
 			_cachedRanksHour = hour
 			_cachedRanksOwner = owner
 			_cachedRanks = result
@@ -329,92 +329,92 @@ Type TDailyBroadcastStatistic
 
 
 	Method SetBroadcastResult:Int(broadcast:TBroadcastMaterial, owner:int, hour:int, audienceResult:TAudienceResultBase)
-		_SetBroadcastResult(broadcast, owner, hour, audienceResult, TBroadcastMaterial.TYPE_PROGRAMME)
+		_SetBroadcastResult(broadcast, owner, hour, audienceResult, TVTBroadcastMaterialType.PROGRAMME)
 	End Method
 
 
 	Method SetNewsBroadcastResult:Int(broadcast:TBroadcastMaterial, owner:int, hour:int, audienceResult:TAudienceResultBase)
-		_SetBroadcastResult(broadcast, owner, hour, audienceResult, TBroadcastMaterial.TYPE_NEWSSHOW)
+		_SetBroadcastResult(broadcast, owner, hour, audienceResult, TVTBroadcastMaterialType.NEWSSHOW)
 	End Method
 
 
 	Method GetAudience:TAudience(owner:int, hour:int, createIfMissing:int = False)
-		return _GetAudience(owner, hour, createIfMissing, TBroadcastMaterial.TYPE_PROGRAMME)
+		return _GetAudience(owner, hour, createIfMissing, TVTBroadcastMaterialType.PROGRAMME)
 	End Method
 
 
 	Method GetAudienceResult:TAudienceResultBase(owner:int, hour:int, createIfMissing:int = False)
-		return _GetAudienceResult(owner, hour, createIfMissing, TBroadcastMaterial.TYPE_PROGRAMME)
+		return _GetAudienceResult(owner, hour, createIfMissing, TVTBroadcastMaterialType.PROGRAMME)
 	End Method
 
 
 	Method GetNewsAudience:TAudience(owner:int, hour:int, createIfMissing:int = False)
-		return _GetAudience(owner, hour, createIfMissing, TBroadcastMaterial.TYPE_NEWSSHOW)
+		return _GetAudience(owner, hour, createIfMissing, TVTBroadcastMaterialType.NEWSSHOW)
 	End Method
 
 
 	Method GetNewsAudienceResult:TAudienceResultBase(owner:int, hour:int, createIfMissing:int = False)
-		return _GetAudienceResult(owner, hour, createIfMissing, TBroadcastMaterial.TYPE_NEWSSHOW)
+		return _GetAudienceResult(owner, hour, createIfMissing, TVTBroadcastMaterialType.NEWSSHOW)
 	End Method
 
 
 	Method GetBestAudience:TAudience(owner:Int)
-		return _GetBestAudience(owner, TBroadcastMaterial.TYPE_PROGRAMME, null)
+		return _GetBestAudience(owner, TVTBroadcastMaterialType.PROGRAMME, null)
 	End Method
 
 
 	Method GetBestAudienceForHours:TAudience(owner:Int, skipHours:int[])
-		return _GetBestAudience(owner, TBroadcastMaterial.TYPE_PROGRAMME, skipHours)
+		return _GetBestAudience(owner, TVTBroadcastMaterialType.PROGRAMME, skipHours)
 	End Method
 
 
 	Method GetBestAudienceResult:TAudienceResultBase(owner:Int)
-		return _GetBestAudienceResult(owner, TBroadcastMaterial.TYPE_PROGRAMME, null)
+		return _GetBestAudienceResult(owner, TVTBroadcastMaterialType.PROGRAMME, null)
 	End Method
 
 
 	Method GetBestNewsAudience:TAudience(owner:Int)
-		return _GetBestAudience(owner, TBroadcastMaterial.TYPE_NEWSSHOW, null)
+		return _GetBestAudience(owner, TVTBroadcastMaterialType.NEWSSHOW, null)
 	End Method
 
 
 	Method GetBestNewsAudienceForHours:TAudience(owner:Int, skipHours:int[])
-		return _GetBestAudience(owner, TBroadcastMaterial.TYPE_NEWSSHOW, skipHours)
+		return _GetBestAudience(owner, TVTBroadcastMaterialType.NEWSSHOW, skipHours)
 	End Method
 
 
 	Method GetBestNewsAudienceResult:TAudienceResultBase(owner:Int)
-		return _GetBestAudienceResult(owner, TBroadcastMaterial.TYPE_NEWSSHOW, null)
+		return _GetBestAudienceResult(owner, TVTBroadcastMaterialType.NEWSSHOW, null)
 	End Method
 
 
 
 	Method GetAverageAudience:TAudience(owner:int = -1)
-		return _GetAverageAudience(owner, TBroadcastMaterial.TYPE_PROGRAMME, null)
+		return _GetAverageAudience(owner, TVTBroadcastMaterialType.PROGRAMME, null)
 	End Method
 
 
 	Method GetAverageAudienceForHours:TAudience(owner:int = -1, skipHours:int[])
-		return _GetAverageAudience(owner, TBroadcastMaterial.TYPE_PROGRAMME, skipHours)
+		return _GetAverageAudience(owner, TVTBroadcastMaterialType.PROGRAMME, skipHours)
 	End Method
 
 
 	Method GetAverageNewsAudience:TAudience(owner:int = -1)
-		return _GetAverageAudience(owner, TBroadcastMaterial.TYPE_NEWSSHOW, null)
+		return _GetAverageAudience(owner, TVTBroadcastMaterialType.NEWSSHOW, null)
 	End Method
 
 
 	Method GetAverageNewsAudienceForHours:TAudience(owner:int = -1, skipHours:int[])
-		return _GetAverageAudience(owner, TBroadcastMaterial.TYPE_NEWSSHOW, skipHours)
+		return _GetAverageAudience(owner, TVTBroadcastMaterialType.NEWSSHOW, skipHours)
 	End Method
 
 
 	Method GetAudienceRanking:int[](owner:Int, hour:int)
-		return _GetAudienceRanking(owner, hour, TBroadcastMaterial.TYPE_PROGRAMME)
+		return _GetAudienceRanking(owner, hour, TVTBroadcastMaterialType.PROGRAMME)
 	End Method	
 
 
 	Method GetNewsAudienceRanking:int[](owner:Int, hour:int)
-		return _GetAudienceRanking(owner, hour, TBroadcastMaterial.TYPE_NEWSSHOW)
+		return _GetAudienceRanking(owner, hour, TVTBroadcastMaterialType.NEWSSHOW)
 	End Method	
 End Type

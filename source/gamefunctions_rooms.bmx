@@ -3408,6 +3408,7 @@ endrem
 
 		'now all filters contain "valid ranges"
 		TLogger.log("AdAgency.RefillBlocks", "  Cheap filter: "+cheapListFilter.ToString(), LOG_DEBUG)
+rem
 		For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
 			if cheapListFilter.DoesFilter(a)
 				local ad:TAdContract = new TAdContract
@@ -3418,6 +3419,7 @@ endrem
 '				print "FAIL: "+ a.GetTitle()
 			endif
 		Next
+endrem
 
 		for local i:int = 0 until 6
 			if i mod 2 = 0
@@ -3425,6 +3427,7 @@ endrem
 			else
 				TLogger.log("AdAgency.RefillBlocks", "  Level "+i+" filter: "+levelFilters[i].ToString() + " [PRIMETIME]", LOG_DEBUG)
 			endif
+rem
 			For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
 				if levelFilters[i].DoesFilter(a)
 					local ad:TAdContract = new TAdContract
@@ -3433,6 +3436,7 @@ endrem
 					TLogger.log("AdAgency.RefillBlocks", "    possible contract: "+a.GetTitle() + "  (MinAudience="+MathHelper.NumberToString(100 * a.minAudienceBase,3)+"%  MinImage="+MathHelper.NumberToString(100 * a.minImage,3)+")" + "   Profit:"+ad.GetProfit()+"  Penalty:"+ad.GetPenalty(), LOG_DEBUG)
 				endif
 			Next
+endrem
 		next
 	End Method
 

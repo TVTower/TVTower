@@ -196,9 +196,9 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'sets the given array to the one requested through slotType
 	Method GetObjectArray:TBroadcastMaterial[](slotType:Int=0)
-		If slotType = TBroadcastMaterial.TYPE_PROGRAMME Then Return programmes
-		If slotType = TBroadcastMaterial.TYPE_ADVERTISEMENT Then Return advertisements
-		If slotType = TBroadcastMaterial.TYPE_NEWSSHOW Then Return newsShow
+		If slotType = TVTBroadcastMaterialType.PROGRAMME Then Return programmes
+		If slotType = TVTBroadcastMaterialType.ADVERTISEMENT Then Return advertisements
+		If slotType = TVTBroadcastMaterialType.NEWSSHOW Then Return newsShow
 
 		Return New TBroadcastMaterial[0]
 	End Method
@@ -218,9 +218,9 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		EndIf
 		If arrayIndex < 0 Then Throw "[ERROR] SetObjectArrayEntry: arrayIndex is negative"
 
-		If slotType = TBroadcastMaterial.TYPE_PROGRAMME Then programmes[arrayIndex] = obj
-		If slotType = TBroadcastMaterial.TYPE_ADVERTISEMENT Then advertisements[arrayIndex] = obj
-		If slotType = TBroadcastMaterial.TYPE_NEWSSHOW Then newsShow[arrayIndex] = obj
+		If slotType = TVTBroadcastMaterialType.PROGRAMME Then programmes[arrayIndex] = obj
+		If slotType = TVTBroadcastMaterialType.ADVERTISEMENT Then advertisements[arrayIndex] = obj
+		If slotType = TVTBroadcastMaterialType.NEWSSHOW Then newsShow[arrayIndex] = obj
 
 		Return True
 	End Method
@@ -230,13 +230,13 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'underlying array
 	Method ResizeObjectArray:Int(objectType:Int=0, newSize:Int=0)
 		Select objectType
-			Case TBroadcastMaterial.TYPE_PROGRAMME
+			Case TVTBroadcastMaterialType.PROGRAMME
 					programmes = programmes[..newSize]
 					Return True
-			Case TBroadcastMaterial.TYPE_ADVERTISEMENT
+			Case TVTBroadcastMaterialType.ADVERTISEMENT
 					advertisements = advertisements[..newSize]
 					Return True
-			Case TBroadcastMaterial.TYPE_NEWSSHOW
+			Case TVTBroadcastMaterialType.NEWSSHOW
 					newsShow = newsShow[..newSize]
 					Return True
 		End Select
@@ -264,13 +264,13 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		Select slotType
 			'check newsShow
-			Case TBroadcastMaterial.TYPE_NEWSSHOW
+			Case TVTBroadcastMaterialType.NEWSSHOW
 				If currentMinute >= 1 Then Return False
 			'check programmes
-			Case TBroadcastMaterial.TYPE_PROGRAMME
+			Case TVTBroadcastMaterialType.PROGRAMME
 				If currentMinute >= 5 Then Return False
 			'check ads
-			Case TBroadcastMaterial.TYPE_ADVERTISEMENT
+			Case TVTBroadcastMaterialType.ADVERTISEMENT
 				If currentMinute >= 55 Then Return False
 		End Select
 		Return True
@@ -475,7 +475,7 @@ endrem
 		'setting does not require special calculations
 		If TProgramme(obj) Then TProgramme(obj).licence.SetPlanned(day*24+hour+obj.GetBlocks(slotType))
 		'Advertisements: adjust planned (when placing in contract-slot
-		If slotType = TBroadcastMaterial.TYPE_ADVERTISEMENT and TAdvertisement(obj)
+		If slotType = TVTBroadcastMaterialType.ADVERTISEMENT and TAdvertisement(obj)
 			TAdvertisement(obj).contract.SetSpotsPlanned( GetAdvertisementsPlanned(TAdvertisement(obj).contract) )
 		Endif
 
@@ -593,19 +593,19 @@ endrem
 	'attention: that is not a gamedayHour from 0-24 but in hours since day0
 	'returns -1 if no programme was found
 	Method GetProgrammeStartHour:Int(day:Int=-1, hour:Int=-1) {_exposeToLua}
-		Return GetObjectStartHour(TBroadcastMaterial.TYPE_PROGRAMME, day, hour)
+		Return GetObjectStartHour(TVTBroadcastMaterialType.PROGRAMME, day, hour)
 	End Method
 
 
 	'returns the current block a programme is in (eg. 2 [of 3])
 	Method GetProgrammeBlock:Int(day:Int=-1, hour:Int=-1) {_exposeToLua}
-		Return GetObjectBlock(TBroadcastMaterial.TYPE_PROGRAMME, day, hour)
+		Return GetObjectBlock(TVTBroadcastMaterialType.PROGRAMME, day, hour)
 	End Method
 
 
 	'clear a slot so others can get placed without trouble
 	Method RemoveProgramme:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1) {_exposeToLua}
-		If Not obj Then obj = GetObject(TBroadcastMaterial.TYPE_PROGRAMME, day, hour)
+		If Not obj Then obj = GetObject(TVTBroadcastMaterialType.PROGRAMME, day, hour)
 		'if alread not set for that time, just return success
 		If Not obj.isProgrammed() Then Return True
 
@@ -617,7 +617,7 @@ endrem
 			Local programmedHour:Int = obj.programmedHour
 
 			'try to remove the object from the array
-			Return (Null <> RemoveObject(obj, TBroadcastMaterial.TYPE_PROGRAMME, day, hour))
+			Return (Null <> RemoveObject(obj, TVTBroadcastMaterialType.PROGRAMME, day, hour))
 		EndIf
 		Return False
 	End Method
@@ -636,7 +636,7 @@ endrem
 		EndIf
 
 		'first of all we need to find a user of our licence
-		Local array:TBroadcastMaterial[] = GetObjectArray(TBroadcastMaterial.TYPE_PROGRAMME)
+		Local array:TBroadcastMaterial[] = GetObjectArray(TVTBroadcastMaterialType.PROGRAMME)
 		Local currentHour:Int = GetWorldTime().GetDay() * 24 + GetWorldTime().GetDayHour()
 		Local earliestIndex:Int = Max(0, GetArrayIndex(currentHour - licence.GetData().GetBlocks()))
 		Local currentIndex:Int = Max(0, GetArrayIndex(currentHour))
@@ -671,14 +671,14 @@ endrem
 			programme = GetProgramme()
 		EndIf
 
-		If RemoveObjectInstances(obj, TBroadcastMaterial.TYPE_PROGRAMME, -1, removeCurrentRunning)
+		If RemoveObjectInstances(obj, TVTBroadcastMaterialType.PROGRAMME, -1, removeCurrentRunning)
 			'if the object is the current broadcasted thing, reset audience
 			If programme And obj = programme
-				GetBroadcastManager().SetBroadcastMalfunction(owner, TBroadcastMaterial.TYPE_PROGRAMME)
+				GetBroadcastManager().SetBroadcastMalfunction(owner, TVTBroadcastMaterialType.PROGRAMME)
 			EndIf
 			doneSomething = True
 		EndIf
-		If RemoveObjectInstances(obj, TBroadcastMaterial.TYPE_ADVERTISEMENT, -1, removeCurrentRunning) Then doneSomething = True
+		If RemoveObjectInstances(obj, TVTBroadcastMaterialType.ADVERTISEMENT, -1, removeCurrentRunning) Then doneSomething = True
 		Return doneSomething
 	End Method
 
@@ -697,12 +697,12 @@ endrem
 			Local latestHour:Int = -1
 
 			'check ad usage - but only for ads!
-			instance = ObjectPlannedInTimeSpan(programme, TBroadcastMaterial.TYPE_ADVERTISEMENT, dayStart, hourStart, -1, 23, True)
-			If instance Then latestHour = Max(latestHour, instance.programmedDay*24+instance.programmedHour + instance.GetBlocks(TBroadcastMaterial.TYPE_ADVERTISEMENT))
+			instance = ObjectPlannedInTimeSpan(programme, TVTBroadcastMaterialType.ADVERTISEMENT, dayStart, hourStart, -1, 23, True)
+			If instance Then latestHour = Max(latestHour, instance.programmedDay*24+instance.programmedHour + instance.GetBlocks(TVTBroadcastMaterialType.ADVERTISEMENT))
 
 			'check prog usage
-			instance = ObjectPlannedInTimeSpan(programme, TBroadcastMaterial.TYPE_PROGRAMME, dayStart, hourStart, -1, 23, True)
-			If instance Then latestHour = Max(latestHour, instance.programmedDay*24+instance.programmedHour + instance.GetBlocks(TBroadcastMaterial.TYPE_PROGRAMME))
+			instance = ObjectPlannedInTimeSpan(programme, TVTBroadcastMaterialType.PROGRAMME, dayStart, hourStart, -1, 23, True)
+			If instance Then latestHour = Max(latestHour, instance.programmedDay*24+instance.programmedHour + instance.GetBlocks(TVTBroadcastMaterialType.PROGRAMME))
 
 			programme.licence.SetPlanned(latestHour)
 		EndIf
@@ -713,30 +713,30 @@ endrem
 
 	'Returns the programme for the given day/time
 	Method GetProgramme:TBroadcastMaterial(day:Int=-1, hour:Int=-1) {_exposeToLua}
-		Return GetObject(TBroadcastMaterial.TYPE_PROGRAMME, day, hour)
+		Return GetObject(TVTBroadcastMaterialType.PROGRAMME, day, hour)
 	End Method
 
 
 	'returns an array of real programmes within the given time frame
 	Method GetRealProgrammesInTimeSpan:TProgramme[](dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1, includeStartingEarlierObject:Int=True) {_exposeToLua}
-		Return TProgramme[](GetObjectsInTimeSpan(TBroadcastMaterial.TYPE_PROGRAMME, dayStart, hourStart, dayEnd, hourEnd, includeStartingEarlierObject, True))
+		Return TProgramme[](GetObjectsInTimeSpan(TVTBroadcastMaterialType.PROGRAMME, dayStart, hourStart, dayEnd, hourEnd, includeStartingEarlierObject, True))
 	End Method
 
 
 	'returns an array of used-as programme within the given time frame
 	'in the programme list
 	Method GetProgrammesInTimeSpan:TBroadcastMaterial[](dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1, includeStartingEarlierObject:Int=True) {_exposeToLua}
-		Return GetObjectsInTimeSpan(TBroadcastMaterial.TYPE_PROGRAMME, dayStart, hourStart, dayEnd, hourEnd, includeStartingEarlierObject)
+		Return GetObjectsInTimeSpan(TVTBroadcastMaterialType.PROGRAMME, dayStart, hourStart, dayEnd, hourEnd, includeStartingEarlierObject)
 	End Method
 
 
 	Method ProgrammePlannedInTimeSpan:Int(material:TBroadcastMaterial, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1) {_exposeToLua}
 		'check if planned as programme
-		If ObjectPlannedInTimeSpan(material, TBroadcastMaterial.TYPE_PROGRAMME, dayStart, hourStart, dayEnd, hourEnd)
+		If ObjectPlannedInTimeSpan(material, TVTBroadcastMaterialType.PROGRAMME, dayStart, hourStart, dayEnd, hourEnd)
 			Return True
 		Else
 			'check if planned as trailer
-			If ObjectPlannedInTimeSpan(material, TBroadcastMaterial.TYPE_ADVERTISEMENT, dayStart, hourStart, dayEnd, hourEnd)
+			If ObjectPlannedInTimeSpan(material, TVTBroadcastMaterialType.ADVERTISEMENT, dayStart, hourStart, dayEnd, hourEnd)
 				Return True
 			Else
 				Return False
@@ -748,24 +748,23 @@ endrem
 	'Add a used-as-programme to the player's programme plan
 	Method SetProgrammeSlot:Int(obj:TBroadcastMaterial, day:Int=-1, hour:Int=-1)
 		'if nothing is given, we have to reset that slot
-		If Not obj Then Return (Null<>RemoveObject(Null, TBroadcastMaterial.TYPE_PROGRAMME, day, hour))
+		If Not obj Then Return (Null<>RemoveObject(Null, TVTBroadcastMaterialType.PROGRAMME, day, hour))
 '		if not obj then return FALSE
 
-		Return AddObject(obj, TBroadcastMaterial.TYPE_PROGRAMME, day, hour)
+		Return AddObject(obj, TVTBroadcastMaterialType.PROGRAMME, day, hour)
 	End Method
 
 
 	'Returns whether a used-as-programme can be placed at the given day/time
 	'without intercepting other programmes
 	Method ProgrammePlaceable:Int(obj:TBroadcastMaterial, time:Int=-1, day:Int=-1)
-		Return ObjectPlaceable(obj, TBroadcastMaterial.TYPE_PROGRAMME, time, day)
+		Return ObjectPlaceable(obj, TVTBroadcastMaterialType.PROGRAMME, time, day)
 	End Method
 
 
-	'AI helper .. should be made available through "TVT."
 	'counts how many times a licence is planned as programme (this
 	'includes infomercials and movies/series/programmes)
-	Method BroadcastMaterialAsProgrammeInPlanCount:Int(referenceID:Int, day:Int=-1, includePlanned:Int=False, includeStartedYesterday:Int=True) {_exposeToLua}
+	Method GetBroadcastMaterialInProgrammePlanCount:Int(referenceID:Int, day:Int=-1, includePlanned:Int=False, includeStartedYesterday:Int=True) {_exposeToLua}
 		If day = -1 Then day = GetWorldTime().GetDay()
 		'no filter for other days than today ... would be senseless
 		If day <> GetWorldTime().GetDay() Then includePlanned = True
@@ -795,7 +794,7 @@ endrem
 
 		Local midnightIndex:Int = GetArrayIndex(day * 24)
 		For Local i:Int = minHour To maxHour
-			material = GetObjectAtIndex(TBroadcastMaterial.TYPE_PROGRAMME, midnightIndex + i)
+			material = GetObjectAtIndex(TVTBroadcastMaterialType.PROGRAMME, midnightIndex + i)
 			'no need to skip blocks as only the first block of a programme
 			'is stored in the array
 			If material And material.GetReferenceID() = referenceID Then count:+1
@@ -812,12 +811,12 @@ endrem
 	'returns the hour a advertisement at the given time slot really starts
 	'returns -1 if no ad was found
 	Method GetAdvertisementStartHour:Int(day:Int=-1, hour:Int=-1) {_exposeToLua}
-		Return GetObjectStartHour(TBroadcastMaterial.TYPE_ADVERTISEMENT, day, hour)
+		Return GetObjectStartHour(TVTBroadcastMaterialType.ADVERTISEMENT, day, hour)
 	End Method
 
 
 	Method GetAdvertisementBlock:Int(day:Int=-1, hour:Int=-1) {_exposeToLua}
-		Return GetObjectBlock(TBroadcastMaterial.TYPE_ADVERTISEMENT, day, hour)
+		Return GetObjectBlock(TVTBroadcastMaterialType.ADVERTISEMENT, day, hour)
 	End Method
 
 
@@ -886,14 +885,14 @@ endrem
 
 	'clear a slot so others can get placed without trouble
 	Method RemoveAdvertisement:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1) {_exposeToLua}
-		If Not obj Then obj = GetObject(TBroadcastMaterial.TYPE_ADVERTISEMENT, day, hour)
+		If Not obj Then obj = GetObject(TVTBroadcastMaterialType.ADVERTISEMENT, day, hour)
 		If obj
 			'backup programmed date
 			Local programmedDay:Int = obj.programmedDay
 			Local programmedHour:Int = obj.programmedHour
 
 			'try to remove the object from the array
-			Return (Null <> RemoveObject(obj, TBroadcastMaterial.TYPE_ADVERTISEMENT, day, hour))
+			Return (Null <> RemoveObject(obj, TVTBroadcastMaterialType.ADVERTISEMENT, day, hour))
 		EndIf
 		Return False
 	End Method
@@ -904,39 +903,39 @@ endrem
 	'If removeCurrentRunning is true, also the current block can be affected
 	Method RemoveAdvertisementInstances:Int(obj:TBroadcastMaterial, removeCurrentRunning:Int=False)
 		Local doneSomething:Int=False
-		If RemoveObjectInstances(obj, TBroadcastMaterial.TYPE_PROGRAMME, -1, removeCurrentRunning) Then doneSomething = True
-		If RemoveObjectInstances(obj, TBroadcastMaterial.TYPE_ADVERTISEMENT, -1, removeCurrentRunning) Then doneSomething = True
+		If RemoveObjectInstances(obj, TVTBroadcastMaterialType.PROGRAMME, -1, removeCurrentRunning) Then doneSomething = True
+		If RemoveObjectInstances(obj, TVTBroadcastMaterialType.ADVERTISEMENT, -1, removeCurrentRunning) Then doneSomething = True
 		Return doneSomething
 	End Method
 
 
 	'Returns the ad for the given day/time
 	Method GetAdvertisement:TBroadcastMaterial(day:Int=-1, hour:Int=-1) {_exposeToLua}
-		Return GetObject(TBroadcastMaterial.TYPE_ADVERTISEMENT, day, hour)
+		Return GetObject(TVTBroadcastMaterialType.ADVERTISEMENT, day, hour)
 	End Method
 
 
 	'returns an array of real advertisements within the given time frame
 	'in the advertisement list
 	Method GetRealAdvertisementsInTimeSpan:TAdvertisement[](dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1, includeStartingEarlierObject:Int=True) {_exposeToLua}
-		Return TAdvertisement[](GetObjectsInTimeSpan(TBroadcastMaterial.TYPE_ADVERTISEMENT, dayStart, hourStart, dayEnd, hourEnd, includeStartingEarlierObject, True))
+		Return TAdvertisement[](GetObjectsInTimeSpan(TVTBroadcastMaterialType.ADVERTISEMENT, dayStart, hourStart, dayEnd, hourEnd, includeStartingEarlierObject, True))
 	End Method
 
 
 	'returns an array of used-as advertisements within the given time
 	'frame in the advertisement list
 	Method GetAdvertisementsInTimeSpan:TBroadcastMaterial[](dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1, includeStartingEarlierObject:Int=True) {_exposeToLua}
-		Return GetObjectsInTimeSpan(TBroadcastMaterial.TYPE_ADVERTISEMENT, dayStart, hourStart, dayEnd, hourEnd, includeStartingEarlierObject)
+		Return GetObjectsInTimeSpan(TVTBroadcastMaterialType.ADVERTISEMENT, dayStart, hourStart, dayEnd, hourEnd, includeStartingEarlierObject)
 	End Method
 
 
 	Method AdvertisementPlannedInTimeSpan:Int(material:TBroadcastMaterial, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1) {_exposeToLua}
 		'check if planned as ad
-		If ObjectPlannedInTimeSpan(material, TBroadcastMaterial.TYPE_ADVERTISEMENT, dayStart, hourStart, dayEnd, hourEnd)
+		If ObjectPlannedInTimeSpan(material, TVTBroadcastMaterialType.ADVERTISEMENT, dayStart, hourStart, dayEnd, hourEnd)
 			Return True
 		Else
 			'check if planned as infomercial
-			If ObjectPlannedInTimeSpan(material, TBroadcastMaterial.TYPE_PROGRAMME, dayStart, hourStart, dayEnd, hourEnd)
+			If ObjectPlannedInTimeSpan(material, TVTBroadcastMaterialType.PROGRAMME, dayStart, hourStart, dayEnd, hourEnd)
 				Return True
 			Else
 				Return False
@@ -948,16 +947,16 @@ endrem
 	'Fill/Clear the given advertisement slot with the given broadcast material
 	Method SetAdvertisementSlot:Int(obj:TBroadcastMaterial, day:Int=-1, hour:Int=-1)
 		'if nothing is given, we have to reset that slot
-		If Not obj Then Return (Null<>RemoveObject(Null, TBroadcastMaterial.TYPE_ADVERTISEMENT, day, hour))
+		If Not obj Then Return (Null<>RemoveObject(Null, TVTBroadcastMaterialType.ADVERTISEMENT, day, hour))
 
 		'add it
-		Return AddObject(obj, TBroadcastMaterial.TYPE_ADVERTISEMENT, day, hour)
+		Return AddObject(obj, TVTBroadcastMaterialType.ADVERTISEMENT, day, hour)
 	End Method
 
 
 	'Returns whether a programme can be placed at the given day/time
 	Method AdvertisementPlaceable:Int(obj:TBroadcastMaterial, time:Int=-1, day:Int=-1)
-		Return ObjectPlaceable(obj, TBroadcastMaterial.TYPE_ADVERTISEMENT, time, day)
+		Return ObjectPlaceable(obj, TVTBroadcastMaterialType.ADVERTISEMENT, time, day)
 	End Method
 
 
@@ -1054,7 +1053,7 @@ endrem
 	Method ProduceNewsShow:TBroadcastMaterial(allowAddToPast:Int=False)
 		Local show:TNewsShow = TNewsShow.Create("Nachrichten", owner, GetNews(0),GetNews(1),GetNews(2))
 		'if
-		AddObject(show, TBroadcastMaterial.TYPE_NEWSSHOW,-1,-1, False)
+		AddObject(show, TVTBroadcastMaterialType.NEWSSHOW,-1,-1, False)
 			'print "Production of news show for player "+owner + " OK."
 		'endif
 		Return show
@@ -1063,7 +1062,7 @@ endrem
 
 	Method GetNewsShow:TBroadcastMaterial(day:Int=-1, hour:Int=-1) {_exposeToLua}
 		'if no news placed there already, just produce one live
-		Local show:TBroadcastMaterial = GetObject(TBroadcastMaterial.TYPE_NEWSSHOW, day, hour)
+		Local show:TBroadcastMaterial = GetObject(TVTBroadcastMaterialType.NEWSSHOW, day, hour)
 		If Not show Then show = ProduceNewsShow()
 		Return show
 	End Method
@@ -1092,19 +1091,19 @@ endrem
 		If minute = 0
 			obj = GetNewsShow()
 			'log in current broadcast
-			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj, TBroadcastMaterial.TYPE_NEWSSHOW)
+			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj, TVTBroadcastMaterialType.NEWSSHOW)
 
 		'=== BEGIN OF PROGRAMME ===
 		ElseIf minute = 5
 			obj = GetProgramme(day, hour)
 			'log in current broadcast
-			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj, TBroadcastMaterial.TYPE_PROGRAMME)
+			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj, TVTBroadcastMaterialType.PROGRAMME)
 			return obj
 		'=== BEGIN OF ADVERTISEMENT ===
 		ElseIf minute = 5
 			obj = GetAdvertisement(day, hour)
 			'log in current broadcast
-			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj, TBroadcastMaterial.TYPE_ADVERTISEMENT)
+			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj, TVTBroadcastMaterialType.ADVERTISEMENT)
 			return obj
 		EndIf
 		return null
@@ -1151,7 +1150,7 @@ endrem
 			GetDailyBroadcastStatistic( day, true ).SetNewsBroadcastResult(obj, owner, hour, audienceResult)
 
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TBroadcastMaterial.TYPE_NEWSSHOW).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
+			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.NEWSSHOW).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 			
 		'=== END OF NEWSSHOW ===
 		ElseIf minute = 4
@@ -1165,7 +1164,7 @@ endrem
 				obj.FinishBroadcasting(day, hour, minute, audienceResult)
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TBroadcastMaterial.TYPE_NEWSSHOW).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
+			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.NEWSSHOW).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 
 		'=== BEGIN OF PROGRAMME ===
 		ElseIf minute = 5
@@ -1187,7 +1186,7 @@ endrem
 			GetDailyBroadcastStatistic( day, true ).SetBroadcastResult(obj, owner, hour, audienceResult)
 			
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TBroadcastMaterial.TYPE_PROGRAMME).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
+			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.PROGRAMME).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 
 		'=== END/BREAK OF PROGRAMME ===
 		'call-in shows/quiz - generate income
@@ -1214,7 +1213,7 @@ endrem
 				EndIf
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TBroadcastMaterial.TYPE_PROGRAMME).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
+			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.PROGRAMME).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 			
 		'=== BEGIN OF COMMERCIAL BREAK ===
 		ElseIf minute = 55
@@ -1248,7 +1247,7 @@ endrem
 				EndIf
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TBroadcastMaterial.TYPE_ADVERTISEMENT).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
+			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.ADVERTISEMENT).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 
 		'=== END OF COMMERCIAL BREAK ===
 		'ads end - so trailers can set their "ok"
@@ -1268,7 +1267,7 @@ endrem
 				EndIf
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TBroadcastMaterial.TYPE_ADVERTISEMENT).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
+			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.ADVERTISEMENT).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 		EndIf
 	End Method
 

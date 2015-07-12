@@ -3711,7 +3711,7 @@ Type GameEvents
 					'remove programme from plan
 					player.GetProgrammePlan().RemoveProgramme(currentProgramme, day, hour)
 					'set current broadcast to malfunction
-					GetBroadcastManager().SetBroadcastMalfunction(player.playerID, TBroadcastMaterial.TYPE_PROGRAMME)
+					GetBroadcastManager().SetBroadcastMalfunction(player.playerID, TVTBroadcastMaterialType.PROGRAMME)
 					'decrease image by 0.5%
 					player.GetPublicImage().ChangeImage(New TAudience.AddFloat(-0.5))
 

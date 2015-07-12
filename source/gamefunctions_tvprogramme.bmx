@@ -114,9 +114,9 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			viewType = broadcastMaterial.usedAsType
 		EndIf
 
-		If viewType = broadcastMaterial.TYPE_PROGRAMME
+		If viewType = TVTBroadcastMaterialType.PROGRAMME
 			imageBaseName = "pp_programmeblock"
-		ElseIf viewType = broadcastMaterial.TYPE_ADVERTISEMENT
+		ElseIf viewType = TVTBroadcastMaterialType.ADVERTISEMENT
 			imageBaseName = "pp_adblock"
 		Else 'default
 			imageBaseName = "pp_programmeblock"
@@ -360,9 +360,9 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			EndIf
 
 			Select useType
-				Case broadcastMaterial.TYPE_PROGRAMME
+				Case TVTBroadcastMaterialType.PROGRAMME
 					DrawProgrammeBlockText(New TRectangle.Init(GetScreenX(), GetScreenY(), GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW()-1,-1))
-				Case broadcastMaterial.TYPE_ADVERTISEMENT
+				Case TVTBroadcastMaterialType.ADVERTISEMENT
 					DrawAdvertisementBlockText(New TRectangle.Init(GetScreenX(), GetScreenY(), GetSpriteFromRegistry(GetAssetBaseName()+"2").area.GetW()-4,-1))
 			End Select
 		EndIf
@@ -377,7 +377,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 		Select broadcastMaterial.materialType
 			'we got a programme used as programme
-			Case broadcastMaterial.TYPE_PROGRAMME
+			Case TVTBroadcastMaterialType.PROGRAMME
 				If TProgramme(broadcastMaterial)
 					Local programme:TProgramme	= TProgramme(broadcastMaterial)
 					text = programme.data.getGenreString()
@@ -392,7 +392,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 					EndIf
 				EndIf
 			'we got an advertisement used as programme (aka Tele-Shopping)
-			Case broadcastMaterial.TYPE_ADVERTISEMENT
+			Case TVTBroadcastMaterialType.ADVERTISEMENT
 				If TAdvertisement(broadcastMaterial)
 					Local advertisement:TAdvertisement = TAdvertisement(broadcastMaterial)
 					text = GetLocale("PROGRAMME_PRODUCT_INFOMERCIAL")
@@ -430,7 +430,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 		Select broadcastMaterial.materialType
 			'we got an advertisement used as advertisement
-			Case broadcastMaterial.TYPE_ADVERTISEMENT
+			Case TVTBroadcastMaterialType.ADVERTISEMENT
 				If TAdvertisement(broadcastMaterial)
 					Local advertisement:TAdvertisement = TAdvertisement(broadcastMaterial)
 					If advertisement.isState(advertisement.STATE_FAILED)
@@ -444,7 +444,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 					EndIf
 				EndIf
 			'we got an programme used as advertisement (aka programmetrailer)
-			Case broadcastMaterial.TYPE_PROGRAMME
+			Case TVTBroadcastMaterialType.PROGRAMME
 				If TProgramme(broadcastMaterial)
 					Local programme:TProgramme	= TProgramme(broadcastMaterial)
 					text = GetLocale("TRAILER")
@@ -532,9 +532,9 @@ Type TGUIProgrammePlanSlotList Extends TGUISlotList
 		Self.SetItemLimit(24)
 		Self._fixedSlotDimension = True
 
-		Self.acceptTypes :| TBroadcastMaterial.TYPE_PROGRAMME
-		Self.acceptTypes :| TBroadcastMaterial.TYPE_ADVERTISEMENT
-		Self.isType = TBroadcastMaterial.TYPE_PROGRAMME
+		Self.acceptTypes :| TVTBroadcastMaterialType.PROGRAMME
+		Self.acceptTypes :| TVTBroadcastMaterialType.ADVERTISEMENT
+		Self.isType = TVTBroadcastMaterialType.PROGRAMME
 
 
 
@@ -1999,7 +1999,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 				SetBlend AlphaBlend
 
 
-				obj.licence.ShowSheet(sheetX, sheetY, sheetAlign, TBroadcastMaterial.TYPE_PROGRAMME)
+				obj.licence.ShowSheet(sheetX, sheetY, sheetAlign, TVTBroadcastMaterialType.PROGRAMME)
 				Exit
 			EndIf
 		Next
@@ -2372,7 +2372,7 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 		SetColor 255,255,255
 		SetAlpha 1.0
 
-		Self.licence.ShowSheet(sheetX,sheetY, sheetAlign, TBroadcastMaterial.TYPE_PROGRAMME)
+		Self.licence.ShowSheet(sheetX,sheetY, sheetAlign, TVTBroadcastMaterialType.PROGRAMME)
 	End Method
 
 
@@ -2478,7 +2478,7 @@ Type TGuiAdContract Extends TGUIGameListItem
 		SetColor 255,255,255
 		SetAlpha 1.0
 
-		Self.contract.ShowSheet(sheetX,sheetY, sheetAlign, TBroadcastMaterial.TYPE_ADVERTISEMENT)
+		Self.contract.ShowSheet(sheetX,sheetY, sheetAlign, TVTBroadcastMaterialType.ADVERTISEMENT)
 	End Method
 
 

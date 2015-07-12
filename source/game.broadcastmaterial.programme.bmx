@@ -21,9 +21,9 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		obj.owner = licence.owner
 		obj.data = licence.getData()
 		
-		obj.setMaterialType(TYPE_PROGRAMME)
+		obj.setMaterialType(TVTBroadcastMaterialType.PROGRAMME)
 		'by default a freshly created programme is of its own type
-		obj.setUsedAsType(TYPE_PROGRAMME)
+		obj.setUsedAsType(TVTBroadcastMaterialType.PROGRAMME)
 
 		'someone just gave collection or series header
 		if not obj.data then return Null
@@ -37,7 +37,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 		'callin-shows earn for each sent block... so BREAKs and FINISHs
 		'same for "sponsored" programmes
-		if self.usedAsType = TBroadcastMaterial.TYPE_PROGRAMME
+		if self.usedAsType = TVTBroadcastMaterialType.PROGRAMME
 			'fetch the rounded revenue for broadcasting this programme
 			Local revenue:Int = audience.GetSum() * Max(0, data.GetPerViewerRevenue())
 
@@ -59,9 +59,9 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		Super.FinishBroadcasting(day, hour, minute, audienceData)
 		if owner <= 0 then return False
 
-		if usedAsType = TBroadcastMaterial.TYPE_PROGRAMME
+		if usedAsType = TVTBroadcastMaterialType.PROGRAMME
 			FinishBroadcastingAsProgramme(day, hour, minute, audienceData)
-		elseif usedAsType = TBroadcastMaterial.TYPE_ADVERTISEMENT
+		elseif usedAsType = TVTBroadcastMaterialType.ADVERTISEMENT
 			FinishBroadcastingAsTrailer(day, hour, minute, audienceData)
 		endif
 
@@ -76,7 +76,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 
 		'only fetch new audience stats when send as programme (ignore trailer)
-		if self.usedAsType = TBroadcastMaterial.TYPE_PROGRAMME
+		if self.usedAsType = TVTBroadcastMaterialType.PROGRAMME
 			'remove old "last audience" data to avoid wrong "average values"
 			licence.GetBroadcastStatistic().RemoveLastAudienceResult(licence.owner)
 			'store audience for this block
@@ -385,10 +385,10 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Method GetBlocks:int(broadcastType:int=0) {_exposeToLua}
 		'nothing special requested? use the currently used type
 		if broadcastType = 0 then broadcastType = usedAsType
-		if broadcastType & TBroadcastMaterial.TYPE_PROGRAMME
+		if broadcastType & TVTBroadcastMaterialType.PROGRAMME
 			Return data.GetBlocks()
 		'trailers are 1 block long
-		elseif broadcastType & TBroadcastMaterial.TYPE_ADVERTISEMENT
+		elseif broadcastType & TVTBroadcastMaterialType.ADVERTISEMENT
 			return 1
 		endif
 

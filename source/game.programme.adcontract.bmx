@@ -798,19 +798,19 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 	Method ShowSheet:Int(x:Int,y:Int, align:int=0, showMode:int=0)
 		'set default mode
-		if showMode = 0 then showMode = TBroadcastMaterial.TYPE_ADVERTISEMENT
+		if showMode = 0 then showMode = TVTBroadcastMaterialType.ADVERTISEMENT
 
 		if KeyManager.IsDown(KEY_LALT) or KeyManager.IsDown(KEY_RALT)
-			if showMode = TBroadcastMaterial.TYPE_PROGRAMME
-				showMode = TBroadcastMaterial.TYPE_ADVERTISEMENT
+			if showMode = TVTBroadcastMaterialType.PROGRAMME
+				showMode = TVTBroadcastMaterialType.ADVERTISEMENT
 			else
-				showMode = TBroadcastMaterial.TYPE_PROGRAMME
+				showMode = TVTBroadcastMaterialType.PROGRAMME
 			endif
 		Endif
 
-		if showMode = TBroadcastMaterial.TYPE_PROGRAMME
+		if showMode = TVTBroadcastMaterialType.PROGRAMME
 			ShowInfomercialSheet(x, y, align)
-		elseif showMode = TBroadcastMaterial.TYPE_ADVERTISEMENT
+		elseif showMode = TVTBroadcastMaterialType.ADVERTISEMENT
 			ShowAdvertisementSheet(x, y, align)
 		endif
 	End Method

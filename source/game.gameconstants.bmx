@@ -21,6 +21,8 @@ Type TVTGameConstants {_exposeToLua}
 	Field NewsGenre:TVTNewsGenre = new TVTNewsGenre
 	Field NewsEffect:TVTNewsEffect = new TVTNewsEffect
 
+	Field BroadcastMaterialType:TVTBroadcastMaterialType = new TVTBroadcastMaterialType
+
 	Field PlayerFinanceEntryType:TVTPlayerFinanceEntryType = new TVTPlayerFinanceEntryType
 
 	Field ProgrammeProductType:TVTProgrammeProductType = new TVTProgrammeProductType
@@ -95,6 +97,14 @@ End Type
 
 
 
+
+Type TVTBroadcastMaterialType {_exposeToLua}
+	Const UNKNOWN:int      = 1
+	Const PROGRAMME:int    = 2
+	Const ADVERTISEMENT:int= 4
+	Const NEWS:int         = 8
+	Const NEWSSHOW:int     = 16
+End Type
 
 
 'to ease access to "comparisons" without knowing

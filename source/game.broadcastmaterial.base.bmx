@@ -23,12 +23,6 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 	Const STATE_OK:int			= 1
 	Const STATE_FAILED:int		= 2
 	Const STATE_RUNNING:int		= 3
-	'types of broadcastmaterial
-	Const TYPE_UNKNOWN:int		= 1
-	Const TYPE_PROGRAMME:int	= 2
-	Const TYPE_ADVERTISEMENT:int= 4
-	Const TYPE_NEWS:int			= 8
-	Const TYPE_NEWSSHOW:int		= 16
 
 
 	'needed for all extending objects
@@ -276,7 +270,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		EndIf
 
 		if owner <= 0 Then Throw TNullObjectExceptionExt.Create("The programme '" + GetTitle() + "' has no owner.")
-		if block <= 0 and usedAsType = TYPE_PROGRAMME Then Throw TNullObjectExceptionExt.Create("GetAudienceAttractionInternal: Invalid block param: '" + block + ".")
+		if block <= 0 and usedAsType = TVTBroadcastMaterialType.PROGRAMME Then Throw TNullObjectExceptionExt.Create("GetAudienceAttractionInternal: Invalid block param: '" + block + ".")
 
 		If block = 1 Or Not lastMovieBlockAttraction Then
 			'1 - Qualität des Programms

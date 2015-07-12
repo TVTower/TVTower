@@ -427,7 +427,7 @@ Type TPlayerBoss
 
 		'register malfunctions
 		If not broadcastMaterial
-			if broadcastedAsType = TBroadcastMaterial.TYPE_NEWSSHOW
+			if broadcastedAsType = TVTBroadcastMaterialType.NEWSSHOW
 				boss.talkSubjects :+ [new TPlayerBossTalkSubjects.InitNewsMalfunctionSubject(broadcastMaterial)]
 				boss.registeredNewsMalfunctions :+1
 				
@@ -436,7 +436,7 @@ Type TPlayerBoss
 				else
 					boss.ChangeMood(MOODADJUSTMENT_MALFUNCTION_NEWS_EACH)
 				endif
-			elseif broadcastedAsType = TBroadcastMaterial.TYPE_PROGRAMME
+			elseif broadcastedAsType = TVTBroadcastMaterialType.PROGRAMME
 				boss.talkSubjects :+ [new TPlayerBossTalkSubjects.InitProgrammeMalfunctionSubject(broadcastMaterial)]
 				boss.registeredProgrammeMalfunctions :+1
 
@@ -454,7 +454,7 @@ Type TPlayerBoss
 		'we check on "finish" - because now the blocks of all players
 		'are running
 		if broadcastMaterial
-			if broadcastedAsType = TBroadcastMaterial.TYPE_PROGRAMME
+			if broadcastedAsType = TVTBroadcastMaterialType.PROGRAMME
 			endif
 		endif
 		endrem

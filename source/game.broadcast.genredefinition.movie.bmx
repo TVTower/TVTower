@@ -164,7 +164,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 rem
 	Method CalculateAudienceAttraction:TAudienceAttraction(material:TBroadcastMaterial, hour:Int)
 		'RONNY @Manuel: Todo fuer Werbesendungen
-		If material.isType(TBroadcastMaterial.TYPE_ADVERTISEMENT)
+		If material.isType(TVTBroadcastMaterialType.ADVERTISEMENT)
 			Local result:TAudienceAttraction = Null
 			Local quality:Float =  0.01 * randrange(1,10)
 			result = TAudienceAttraction.CreateAndInitAttraction(quality, quality, quality, quality, quality, quality, quality, quality, quality)
@@ -175,7 +175,7 @@ rem
 			result.GenreTimeQuality = 0
 			Return result
 		EndIf
-		If Not material.isType(TBroadcastMaterial.TYPE_PROGRAMME)
+		If Not material.isType(TVTBroadcastMaterialType.PROGRAMME)
 			Throw "TMovieGenreDefinition.CalculateAudienceAttraction - given material is of wrong type."
 			Return Null
 		EndIf

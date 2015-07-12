@@ -33,11 +33,11 @@ Type TScreenHandler_ProgrammePlanner
 
 		GuiListProgrammes = new TGUIProgrammePlanSlotList.Create(area.position, area.dimension, "programmeplanner")
 		GuiListProgrammes.Init("pp_programmeblock1", GetSpriteFromRegistry("pp_adblock1").area.GetW() + gapBetweenHours)
-		GuiListProgrammes.isType = TBroadcastMaterial.TYPE_PROGRAMME
+		GuiListProgrammes.isType = TVTBroadcastMaterialType.PROGRAMME
 
 		GuiListAdvertisements = new TGUIProgrammePlanSlotList.Create(new TVec2D.Init(area.GetX() + GetSpriteFromRegistry("pp_programmeblock1").area.GetW(), area.GetY()), area.dimension, "programmeplanner")
 		GuiListAdvertisements.Init("pp_adblock1", GetSpriteFromRegistry("pp_programmeblock1").area.GetW() + gapBetweenHours)
-		GuiListAdvertisements.isType = TBroadcastMaterial.TYPE_ADVERTISEMENT
+		GuiListAdvertisements.isType = TVTBroadcastMaterialType.ADVERTISEMENT
 
 		'init lists
 		PPprogrammeList	= new TgfxProgrammelist.Create(669, 8)
@@ -734,12 +734,12 @@ Type TScreenHandler_ProgrammePlanner
 		local hour:int = GetWorldTime().GetDayHour()
 		local minute:int = GetWorldTime().GetDayMinute()
 		for local i:int = 0 to 23
-			if not TPlayerProgrammePlan.IsUseableTimeSlot(TBroadcastMaterial.TYPE_PROGRAMME, planningDay, i, day, hour, minute)
+			if not TPlayerProgrammePlan.IsUseableTimeSlot(TVTBroadcastMaterialType.PROGRAMME, planningDay, i, day, hour, minute)
 				GuiListProgrammes.SetSlotState(i, 2)
 			else
 				GuiListProgrammes.SetSlotState(i, 0)
 			endif
-			if not TPlayerProgrammePlan.IsUseableTimeSlot(TBroadcastMaterial.TYPE_ADVERTISEMENT, planningDay, i, day, hour, minute)
+			if not TPlayerProgrammePlan.IsUseableTimeSlot(TVTBroadcastMaterialType.ADVERTISEMENT, planningDay, i, day, hour, minute)
 				GuiListAdvertisements.SetSlotState(i, 2)
 			else
 				GuiListAdvertisements.SetSlotState(i, 0)
@@ -904,13 +904,13 @@ Type TScreenHandler_ProgrammePlanner
 		if not pCollection then Return False
 
 		select item.broadcastMaterial.materialType
-			case TBroadcastMaterial.TYPE_ADVERTISEMENT
+			case TVTBroadcastMaterialType.ADVERTISEMENT
 				'skip if you do no longer own the licence
 				if not pCollection.HasAdContract(TAdvertisement(item.broadcastMaterial).contract) then return false
 
 				newMaterial = new TAdvertisement.Create(TAdvertisement(item.broadcastMaterial).contract)
 
-			case TBroadcastMaterial.TYPE_PROGRAMME
+			case TVTBroadcastMaterialType.PROGRAMME
 				'skip if you do no longer own the licence
 				if not pCollection.HasProgrammeLicence(TProgramme(item.broadcastMaterial).licence) then return false
 

@@ -145,9 +145,9 @@ endrem
 	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		Super.FinishBroadcasting(day,hour,minute, audienceData)
 
-		if usedAsType = TBroadcastMaterial.TYPE_PROGRAMME
+		if usedAsType = TVTBroadcastMaterialType.PROGRAMME
 			FinishBroadcastingAsProgramme(day, hour, minute, audienceData)
-		elseif usedAsType = TBroadcastMaterial.TYPE_ADVERTISEMENT
+		elseif usedAsType = TVTBroadcastMaterialType.ADVERTISEMENT
 			'nothing happening - ads get paid on "beginBroadcasting"
 		endif
 
@@ -176,7 +176,7 @@ endrem
 	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		Super.BeginBroadcasting(day,hour,minute, audienceData)
 		'run as infomercial
-		if self.usedAsType = TBroadcastMaterial.TYPE_PROGRAMME
+		if self.usedAsType = TVTBroadcastMaterialType.PROGRAMME
 			'no need to do further checks
 			return TRUE
 		endif

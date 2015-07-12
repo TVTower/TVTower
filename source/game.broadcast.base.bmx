@@ -76,7 +76,7 @@ Type TBroadcastManager
 
 	'Führt die Berechnung für die Einschaltquoten der Sendeblöcke durch
 	Method BroadcastProgramme(day:Int=-1, hour:Int, recompute:Int = 0, bc:TBroadcast = null)
-		BroadcastCommon(hour, TBroadcastMaterial.TYPE_PROGRAMME, recompute, bc)
+		BroadcastCommon(hour, TVTBroadcastMaterialType.PROGRAMME, recompute, bc)
 
 		'assign current programme broadcastmaterial
 		currentProgrammeBroadcastMaterial = GetCurrentBroadcast().PlayersBroadcasts
@@ -85,7 +85,7 @@ Type TBroadcastManager
 
 	'Führt die Berechnung für die Nachrichten(-Show)-Ausstrahlungen durch
 	Method BroadcastNewsShow(day:Int=-1, hour:Int, recompute:Int = 0)
-		BroadcastCommon(hour, TBroadcastMaterial.TYPE_NEWSSHOW, recompute)
+		BroadcastCommon(hour, TVTBroadcastMaterialType.NEWSSHOW, recompute)
 	End Method
 
 
@@ -144,9 +144,9 @@ Type TBroadcastManager
 
 	Method GetCurrentBroadcastMaterial:TBroadcastMaterial[](broadcastedAsType:int)
 		Select broadcastedAsType
-			case TBroadcastMaterial.TYPE_NEWSSHOW
+			case TVTBroadcastMaterialType.NEWSSHOW
 				return currentNewsShowBroadcastMaterial
-			case TBroadcastMaterial.TYPE_ADVERTISEMENT
+			case TVTBroadcastMaterialType.ADVERTISEMENT
 				return currentAdvertisementBroadcastMaterial
 			default
 				return currentProgrammeBroadcastMaterial
@@ -158,9 +158,9 @@ Type TBroadcastManager
 		if playerID <= 0 then return False
 
 		Select broadcastedAsType
-			case TBroadcastMaterial.TYPE_NEWSSHOW
+			case TVTBroadcastMaterialType.NEWSSHOW
 				return SetCurrentNewsShowBroadcastMaterial(playerID, material)
-			case TBroadcastMaterial.TYPE_ADVERTISEMENT
+			case TVTBroadcastMaterialType.ADVERTISEMENT
 				return SetCurrentAdvertisementBroadcastMaterial(playerID, material)
 			default
 				return SetCurrentProgrammeBroadcastMaterial(playerID, material)
@@ -175,7 +175,7 @@ Type TBroadcastManager
 	Method SetBroadcastMalfunction:int(playerID:int, broadcastType:int = -1)
 		'adjust what is broadcasted now
 		'to do this we need to know what kind of broadcast this was
-		if broadcastType = -1 then broadcastType = TBroadcastMaterial.TYPE_PROGRAMME
+		if broadcastType = -1 then broadcastType = TVTBroadcastMaterialType.PROGRAMME
 		SetCurrentBroadcastMaterial(playerID, null, broadcastType)
 
 		GetCurrentBroadcast().PlayersBroadcasts = GetCurrentBroadcastMaterial(broadcastType)
@@ -256,7 +256,7 @@ Type TBroadcastManager
 		endif
 		
 		'Die Programmwahl der Spieler "einloggen"
-		if broadcastType = TBroadcastMaterial.TYPE_NEWSSHOW
+		if broadcastType = TVTBroadcastMaterialType.NEWSSHOW
 			bc.PlayersBroadcasts = currentNewsShowBroadcastMaterial
 		else
 			bc.PlayersBroadcasts = currentProgrammeBroadcastMaterial
@@ -1069,7 +1069,7 @@ Type TBroadcastSequence
 		local foundProgramme:int = 0
 		local foundNewsShow:int = 0
 		For local curr:TBroadcast = eachin sequence
-			if curr.BroadcastType = TBroadcastMaterial.TYPE_PROGRAMME
+			if curr.BroadcastType = TVTBroadcastMaterialType.PROGRAMME
 				if foundProgramme < amountOfEntriesToKeep
 					foundProgramme :+ 1
 				else
@@ -1086,7 +1086,7 @@ Type TBroadcastSequence
 					Next
 				endif
 			endif
-			if curr.BroadcastType = TBroadcastMaterial.TYPE_NEWSSHOW
+			if curr.BroadcastType = TVTBroadcastMaterialType.NEWSSHOW
 				if foundNewsShow < amountOfEntriesToKeep
 					foundNewsShow :+ 1
 				else
@@ -1115,11 +1115,11 @@ Type TBroadcastSequence
 	End Method
 
 	Method GetBeforeProgrammeBroadcast:TBroadcast()
-		Return GetFirst(TBroadcastMaterial.TYPE_PROGRAMME, false)
+		Return GetFirst(TVTBroadcastMaterialType.PROGRAMME, false)
 	End Method
 
 	Method GetBeforeNewsShowBroadcast:TBroadcast()
-		Return GetFirst(TBroadcastMaterial.TYPE_NEWSSHOW, false)
+		Return GetFirst(TVTBroadcastMaterialType.NEWSSHOW, false)
 	End Method
 
 	Method GetFirst:TBroadcast(broadcastType:int, withoutCurrent:Int = false)

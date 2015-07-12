@@ -21,7 +21,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		obj.owner = owner 'cannot use newsA.owner as newsA may be empty...
 		obj.title = title
 
-		obj.setMaterialType(TYPE_NEWSSHOW)
+		obj.setMaterialType(TVTBroadcastMaterialType.NEWSSHOW)
 		
 		Return obj
 	End Function
@@ -40,7 +40,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 	'returns the audienceAttraction for a newsShow (3 news)
 	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
 		Local resultAudienceAttr:TAudienceAttraction = New TAudienceAttraction
-		resultAudienceAttr.BroadcastType = TYPE_NEWSSHOW
+		resultAudienceAttr.BroadcastType = TVTBroadcastMaterialType.NEWSSHOW
 		resultAudienceAttr.Genre = -1
 		resultAudienceAttr.GenrePopularityMod = 0
 		resultAudienceAttr.GenreTargetGroupMod = New TAudience
@@ -237,7 +237,7 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		obj.publishDelay = publishdelay
 		obj.newsEvent = useNewsEvent
 
-		obj.setMaterialType(TYPE_NEWS)
+		obj.setMaterialType(TVTBroadcastMaterialType.NEWS)
 		
 		Return obj
 	End Function

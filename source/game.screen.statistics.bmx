@@ -304,13 +304,13 @@ Type TScreenHandler_Statistics
 			next
 			
 			'NEWS and PROGRAMME
-			for local broadcastType:int = Eachin [TBroadcastMaterial.TYPE_NEWSSHOW, TBroadcastMaterial.TYPE_PROGRAMME]
+			for local broadcastType:int = Eachin [TVTBroadcastMaterialType.NEWSSHOW, TVTBroadcastMaterialType.PROGRAMME]
 				local color:TColor
 				local dx:int = 0
 				slot = 0
 				'move programmes a bit to the right (they are broadcasted
 				'after the newsshow)
-				if broadcastType = TBroadcastMaterial.TYPE_PROGRAMME
+				if broadcastType = TVTBroadcastMaterialType.PROGRAMME
 					color = programmeColor
 					dx = 3
 				else
@@ -322,13 +322,13 @@ Type TScreenHandler_Statistics
 
 				
 				For local i:Int = 0 To maxHour
-					if broadcastType = TBroadcastMaterial.TYPE_PROGRAMME
+					if broadcastType = TVTBroadcastMaterialType.PROGRAMME
 						audienceResult = dailyBroadcastStatistic.GetAudienceResult(room.owner, i)
 					else
 						audienceResult = dailyBroadcastStatistic.GetNewsAudienceResult(room.owner, i)
 					endif
 					'skip not yet broadcasted programme
-					if broadcastType = TBroadcastMaterial.TYPE_PROGRAMME
+					if broadcastType = TVTBroadcastMaterialType.PROGRAMME
 						if showDay = GetWorldTime().GetDay() and i = GetWorldTime().GetDayHour() and GetWorldTime().GetDayMinute() < 5 then continue
 					endif
 
