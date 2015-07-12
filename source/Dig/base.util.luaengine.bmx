@@ -258,20 +258,28 @@ Type TLuaEngine
 	' create a table and load with array contents
 	Method lua_pushArray(obj:Object)
 		Local typeId:TTypeId = TTypeId.ForObject(obj)
+		'for "Null[]" the function ArrayLength(obj) fails with
+		'"TypeID is not an array type"
+		if typeId.Name() = "Null[]"
+			lua_newtable(getLuaState())
+			return
+		endif
+		
 		Local size:Int = typeId.ArrayLength(obj)
 
 		lua_createtable(getLuaState(), size + 1, 0)
 
 		'lua is not zero based as BlitzMax is... so we have to add one
 		'entry at the first pos
-		lua_pushinteger(getLuaState(), 0)
-		lua_pushinteger(getLuaState(), -1)
-		lua_settable(getLuaState(), -3)
+'		lua_pushinteger(getLuaState(), 0)
+'		lua_pushinteger(getLuaState(), -1)
+'		lua_settable(getLuaState(), -3)
 
 
 		For Local i:Int = 0 Until size
 			' the index +1 as not zerobased
 			lua_pushinteger(getLuaState(), i+1)
+'			lua_pushinteger(getLuaState(), i)
 
 			Select typeId.ElementType()
 				Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId
@@ -287,7 +295,11 @@ Type TLuaEngine
 					Self.lua_pushArray(typeId.GetArrayElement(obj, i))
 				'for everything else, we just push the object...
 				Default
-					Self.lua_pushObject(typeId.GetArrayElement(obj, i))
+					if typeId.ElementType().ExtendsType(ArrayTypeId)
+						Self.lua_pushArray(typeId.GetArrayElement(obj, i))
+					else
+						Self.lua_pushObject(typeId.GetArrayElement(obj, i))
+					endif
 			End Select
 
 			lua_settable(getLuaState(), -3)
@@ -436,7 +448,11 @@ Type TLuaEngine
 				Case ArrayTypeId
 					lua_pushArray(fld.Get(obj))
 				Default
-					lua_pushobject(fld.Get(obj))
+					if fld.TypeID().ExtendsType(ArrayTypeId)
+						lua_pushArray(fld.Get(obj))
+					else
+						lua_pushobject(fld.Get(obj))
+					endif
 			End Select
 			Return True
 		EndIf
@@ -623,7 +639,11 @@ endrem
 			Case ArrayTypeId
 				lua_pushArray(t)
 			Default
-				lua_pushobject(t)
+				if typeId.ExtendsType(ArrayTypeId)
+					lua_pushArray(t)
+				else
+					lua_pushobject(t)
+				endif
 		End Select
 		Return True
 	End Method
