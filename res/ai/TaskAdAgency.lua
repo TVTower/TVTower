@@ -225,10 +225,14 @@ function SignRequisitedContracts:Tick()
 	for k,requisition in pairs(self.SpotRequisitions) do
 		local neededSpotCount = requisition.Count
 
-		local guessedAudience = AITools:GuessedAudienceForLevel(requisition.Level)
-		local minGuessedAudience = (guessedAudience * 0.8)
+		--old: use a level-based-approach
+		--local guessedAudience = AITools:GuessedAudienceForLevel(requisition.Level)
+		--new: use the estimated audience from the game and a bit of the
+		--    old approach
+		local guessedAudience = 0.75 * requisition.GuessedAudience + 0.25 * AITools:GuessedAudienceForLevel(requisition.Level)
 
 		local signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.8))
+TVT.printOut( signedContracts .." Vertraege gefunden: " .. guessedAudience .. " / " .. self:GetMinGuessedAudience(guessedAudience, 0.8))
 		if (signedContracts == 0) then
 			signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.6))
 			if (signedContracts == 0) then
@@ -256,7 +260,13 @@ end
 function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudience, minguessedAudience)
 	local signed = 0
 	local buyedContracts = {}
+	local neededSpotCount = requisition.Count
 
+	if (neededSpotCount <= 0) then
+		TVT.printOut("AI ERROR: SignMatchingContracts() with requisition.Count=0.")
+		return 0
+	end
+	
 	for key, value in pairs(self.AdAgencyTask.SpotsInAgency) do
 		-- do not try to get more contracts than allowed
 		if MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.maxContracts then break end
@@ -273,20 +283,25 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 
 			if ((minAudience < guessedAudience) and (minAudience > minguessedAudience)) then
 				--Passender Spot... also kaufen
-				debugMsg("Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil benötigt. Level: " .. requisition.Level .. "  MinAudience: " .. minAudience .. "  GuessedAudience: " .. minguessedAudience .. " - " .. guessedAudience)
-				TVT.addToLog("Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil benötigt. Level: " .. requisition.Level .. "  MinAudience: " .. minAudience .. "  GuessedAudience: " .. minguessedAudience .. " - " .. guessedAudience)
+				debugMsg("SignRequisitedContracts: Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil benötigt. Level: " .. requisition.Level .. "  MinAudience: " .. minAudience .. "  GuessedAudience: " .. minguessedAudience .. " - " .. guessedAudience)
+				TVT.addToLog("SignRequisitedContracts: Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil benötigt. Level: " .. requisition.Level .. "  MinAudience: " .. minAudience .. "  GuessedAudience: " .. minguessedAudience .. " - " .. guessedAudience)
 				TVT.sa_doBuySpot(value.GetID())
 				requisition:UseThisContract(value)
 				table.insert(buyedContracts, value)
 				signed = signed + 1
-				--neededSpotCount = neededSpotCount - value.GetSpotCount()
+
+				-- remove available spots from the total amount of
+				-- spots needed for this requirements
+				neededSpotCount = neededSpotCount - value.GetSpotCount()
 			end
 
-			--if (neededSpotCount <= 0) then
-			--	self.Player:RemoveRequisition(requisition)
-			--else
-			--	requisition.Count = neededSpotCount
-			--end
+			if (neededSpotCount <= 0) then
+				self.Player:RemoveRequisition(requisition)
+				-- do not sign any other contract for this requisition
+				break
+			else
+				requisition.Count = neededSpotCount
+			end
 		end
 	end
 
@@ -318,6 +333,7 @@ function SignContracts:Prepare(pParams)
 	self.CurrentSpotIndex = 0
 end
 
+-- sign "good contracts" (not an emergency-sign!)
 function SignContracts:Tick()
 	--debugMsg("SignContracts")
 
@@ -327,19 +343,20 @@ function SignContracts:Tick()
 	end
 	table.sort(self.AdAgencyTask.SpotsInAgency, sortMethod)
 
-	local openSpots = self:GetCommonRequisition()
+	local openSpots = self:GetUnsentSpotCount()
 	--debugMsg("openSpots: " .. openSpots)
 
 	-- only sign contracts if we haven't enough unsent ad-spots
 
-	--Ronny: umgestellt und "Notwendigkeitsfilter" von GetCommonRequisition hier eingebunden
+	--Ronny: umgestellt und "Notwendigkeitsfilter" von GetUnsentSpotCount hier eingebunden
 	--if (openSpots > 0) then
 	if (openSpots < 8) then
 		for key, value in pairs(self.AdAgencyTask.SpotsInAgency) do
 			if MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.maxContracts then break end
 			if (openSpots > 0) then
 				openSpots = openSpots - value.GetSpotCount()
-				debugMsg("Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ")")
+				TVT.addToLog("SignContracts: Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. "). MinAudience: " .. value.GetMinAudience())
+				debugMsg("SignContracts: Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. "). MinAudience: " .. value.GetMinAudience())
 				TVT.sa_doBuySpot(value.GetID())
 			end
 		end
@@ -349,7 +366,7 @@ function SignContracts:Tick()
 end
 
 --returns amount of unsent adcontract-spots
-function SignContracts:GetCommonRequisition()
+function SignContracts:GetUnsentSpotCount()
 	local unsentSpots = 0
 
 	for i = 0, MY.GetProgrammeCollection().GetAdContractCount() - 1 do
@@ -358,18 +375,7 @@ function SignContracts:GetCommonRequisition()
 			unsentSpots = unsentSpots + contract.GetSpotsToSend()
 		end
 	end
-	--debugMsg("unsentSpots: " .. unsentSpots)
---RONNY:	Das ergibt wenig Sinn fuer mich, bei "weniger als 8" offenen
---			Werbeaustrahlungen limitiert man die notwendigen Spots?
---			Falls es so gemeint ist: Wenn ich mehr als 8 Spots habe, brauche
---			ich keine neuen holen - dann sollte dies bei der entsprechenden
---			Funktion gefiltert werden, nicht bei einem "counter"
---	if (unsentSpots > 8) then
---		return 0
---	else
---		return 8 - unsentSpots
---	end
---DESWEGEN:
+
 	return unsentSpots
 end
 
