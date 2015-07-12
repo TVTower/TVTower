@@ -12,6 +12,7 @@
 	to make them placeable as "programme" - which creates shoppingprogramme
 	or other things. (while programme as advertisement could generate Trailers)
 End Rem
+SuperStrict
 Import "game.broadcastmaterial.base.bmx"
 Import "game.programme.adcontract.bmx"
 Import "game.publicimage.bmx"
@@ -35,9 +36,9 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 	Method Create:TAdvertisement(contract:TAdContract)
 		self.contract = contract
 
-		self.setMaterialType(TYPE_ADVERTISEMENT)
+		self.setMaterialType(TVTBroadcastMaterialType.ADVERTISEMENT)
 		'by default a freshly created programme is of its own type
-		self.setUsedAsType(TYPE_ADVERTISEMENT)
+		self.setUsedAsType(TVTBroadcastMaterialType.ADVERTISEMENT)
 
 		self.owner = self.contract.owner
 
