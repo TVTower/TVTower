@@ -139,7 +139,8 @@ TLogger.Log("CORE", "Starting "+APP_NAME+", "+VersionString+".", LOG_INFO )
 
 '===== SETUP LOGGER FILTER =====
 TLogger.setLogMode(LOG_ALL)
-TLogger.setPrintMode(LOG_ALL )
+'TLogger.setPrintMode(LOG_ALL )
+TLogger.setPrintMode(LOG_AI | LOG_ERROR )
 
 'print "ALLE MELDUNGEN AUS"
 'TLogger.SetPrintMode(0)
@@ -551,8 +552,13 @@ Type TApp
 				If KEYMANAGER.IsHit(KEY_9) Then GetWorldTime().SetTimeFactor(1*60.0)   '1 minute per second
 				If KEYMANAGER.IsHit(KEY_Q) Then TVTDebugQuoteInfos = 1 - TVTDebugQuoteInfos
 
-				If KEYMANAGER.IsHit(KEY_P) Then GetPlayer().GetProgrammePlan().printOverview()
-				'If KEYMANAGER.IsHit(KEY_P) Then GetProgrammeLicenceCollection().PrintMovies()
+				If KEYMANAGER.IsHit(KEY_P)
+					if KEYMANAGER.IsDown(KEY_LSHIFT)
+						PrintBroadcastOverview()
+					else
+						GetPlayer().GetProgrammePlan().printOverview()
+					endif
+				endif
 
 				'Save game only when in a game
 				If game.gamestate = TGame.STATE_RUNNING
@@ -4065,6 +4071,58 @@ Function ColorizePlayerExtras()
 		GetRegistry().Set("gfx_interface_channelbuttons_off_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_off").GetColorizedImage(color, i), "gfx_interface_channelbuttons_off_"+i))
 		GetRegistry().Set("gfx_interface_channelbuttons_on_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_on").GetColorizedImage(color, i), "gfx_interface_channelbuttons_on_"+i))
 	Next
+End Function
+
+
+
+
+Function PrintBroadcastOverview(day:int = -1, lastHour:int = -1)
+	if day = -1 then day = GetWorldTime().GetDay()
+	if lastHour = -1 then lastHour = GetWorldTime().GetDayHour()
+	
+
+	local stat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(day)
+	if not stat
+		print "no dailybroadcaststatistic for day "+day+" found."
+		return
+	endif
+
+	For local player:int = 1 to 4
+		print "====== PLAYER " + player + " ======"
+		For local hour:int = 0 Until lastHour
+			local audience:TAudience = stat.GetAudience(player, hour, false)
+			local progSlot:TBroadcastMaterial = GetPlayerProgrammePlan(player).GetProgramme(day, hour)
+			local adSlot:TBroadcastMaterial = GetPlayerProgrammePlan(player).GetAdvertisement(day, hour)
+
+			local progText:string, adText:string
+
+			if progSlot
+				progText = LSet(progSlot.GetTitle(), 20)
+			else
+				progText = LSet("Keine Ausstrahlung", 20)
+			endif
+
+			if audience
+				progText :+ " Q: " + RSet(int(audience.GetSum()), 6)
+			else
+				progText :+ " Q: " + RSet(" -/- ", 6)
+			endif
+
+			if adSlot
+				adText = LSet(adSlot.GetTitle(), 15)
+				if adSlot.isType(TVTBroadcastMaterialType.PROGRAMME)
+					adText = "Trailer: " + adText
+				elseif adSlot.isType(TVTBroadcastMaterialType.ADVERTISEMENT)
+					adText = "Werbung: " + adText + "  minAud:" + int(TAdvertisement(adSlot).contract.GetMinAudience())
+				endif 
+			else
+				adText = LSet("-/-", 15)
+			endif
+
+			print RSet(hour, 2)+":00  " + progText + " | " + adText
+		Next
+	Next
+	print "======================"
 End Function
 
 

@@ -561,25 +561,6 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 
-	Method getEvaluatedAudienceQuote:Int(hour:Int = -1, licenceID:Int = -1, lastQuotePercentage:Float = 0.1, audiencePercentageBasedOnHour:Float=-1)
-		'TODO: Statt dem audiencePercentageBasedOnHour-Parameter könnte
-		'      auch das noch unbenutzte "hour" den generellen Quotenwert
-		'      in der angegebenen Stunde mit einem etwas umgebauten
-		'      "calculateMaxAudiencePercentage" (ohne Zufallswerte und
-		'      ohne die globale Variable zu verändern) errechnen.
-
-		Print "MANUEL: Für KI wieder rein machen!"
-		'Local licence:TProgrammeLicence = TProgrammeLicence.Get(licenceID)
-		'If licence and licence.getData()
-		'	Local Quote:Int = Floor(licence.getData().getAudienceQuote(lastQuotePercentage, audiencePercentageBasedOnHour) * 100)
-		'	Print "quote:" + Quote + "%"
-		'	Return Quote
-		'EndIf
-		'0 percent - no programme
-		return 0
-	End Method
-
-
 	Method convertToAdContract:TAdContract(obj:object)
 		return TAdContract(obj)
 	End Method
