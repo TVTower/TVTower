@@ -156,7 +156,7 @@ Type TScreenHandler_StationMap
 			'fetch financial state of room owner (not player - so take care
 			'if the player is allowed to do this)
 			if canAfford
-				skin.RenderBox(contentX + 5 + halfW-5 + 4, contentY, halfW+5, -1, "", "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+				skin.RenderBox(contentX + 5 + halfW-5 + 4, contentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 			else
 				skin.RenderBox(contentX + 5 + halfW-5 + 4, contentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER,"bad")
 			endif
@@ -230,7 +230,7 @@ Type TScreenHandler_StationMap
 
 
 		'=== BOXES ===
-'		If stationMapMode = 2
+		If stationMapMode = 2
 			if not stationMapSelectedStation
 				SetAlpha GetAlpha() * 0.5
 			endif
@@ -257,7 +257,7 @@ Type TScreenHandler_StationMap
 			if not stationMapSelectedStation
 				SetAlpha GetAlpha() * 2.0
 			endif
-'		endif
+		endif
 
 
 		'=== BUTTON ===
