@@ -309,6 +309,14 @@ Type TScreenHandler_StationMap
 
 		'draw a kind of tooltip over a mouseoverStation
 		if stationMapMouseoverStation then stationMapMouseoverStation.DrawInfoTooltip()
+
+		'draw activation tooltip for all other stations
+		For Local station:TStation = EachIn GetPlayer(room.owner).GetStationMap().Stations
+			if stationMapMouseoverStation = station then continue
+			if station.IsActive() then continue
+
+			station.DrawActivationTooltip()
+		Next
 	End Function
 
 

@@ -828,8 +828,9 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	Field paid:Int = False
 	'time at which the station was bought
 	Field built:Double = 0
+	'time at which the station gets active (again)
+	Field activationTime:Double = -1
 	'is the station already working?
-	Field active:Int = 0
 	Field radius:Int = 0
 	Field federalState:String = ""
 
@@ -841,7 +842,8 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		obj.price = price
 		obj.radius = radius
 		obj.built = GetWorldTime().getTimeGone()
-
+		obj.activationTime = -1
+			
 		obj.fixedPrice	= (price <> -1)
 		obj.refreshData()
 		'save on compution for "initial states"
@@ -870,7 +872,12 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	Method getAgeInMinutes:Int()
 		Return (GetWorldTime().GetTimeGone() - Self.built) / 60
 	End Method
-	
+
+
+	Method GetActivationTime:Double()
+		return activationTime
+	End Method
+
 
 	'get the reach of that station
 	Method getReach:Int(refresh:Int=False) {_exposeToLua}
@@ -943,16 +950,28 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 
 	Method IsActive:int()
-		return active
+		return GetWorldTime().GetTimeGone() >= GetActivationTime()
 	End Method
 
 
-	'a station begins to work (broadcast)
-	Method SetActive:int()
-		active = True
+	'set time a station begins to work (broadcast)
+	Method SetActivationTime:int(activationTime:Double = -1)
+		if activationTime < 0 then activationTime = GetWorldTime().GetTimeGone()
+		self.activationTime = activationTime
 
-		'inform others (eg. to recalculate audience)
-		EventManager.triggerEvent(TEventSimple.Create("station.onSetActive", null, Self))
+		if IsActive() then SetActive()
+	End Method
+
+
+	'set time a station begins to work (broadcast)
+	Method SetActive:int()
+		local wasActive:int = IsActive()
+		self.activationTime = GetWorldTime().GetTimeGone()
+
+		if not wasActive
+			'inform others (eg. to recalculate audience)
+			EventManager.triggerEvent(TEventSimple.Create("station.onSetActive", null, Self))
+		endif
 	End Method
 
 
@@ -968,6 +987,21 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 
 	Method Buy:Int(playerID:Int)
+		'set activation time (and refresh built time)
+		built = GetWorldTime().GetTimeGone()
+		local cYear:int = GetWorldTime().GetYear(built + 3600)
+		local cDay:int = GetWorldTime().GetDayOfYear(built + 3600)
+		local cHour:int = GetWorldTime().GetDayHour(built + 3600)
+		'next hour at xx:00
+		if GetWorldTime().GetDayMinute() >= 5
+			SetActivationTime( GetWorldTime().MakeTime(cYear, cDay, cHour, 0))
+		'this hour at xx:05
+		else
+			SetActivationTime( GetWorldTime().MakeTime(GetWorldTime().GetYear(), GetWorldTime().GetDayOfYear(), GetWorldTime().GetDayHour(), 5, 0))
+		endif
+
+
+
 		If paid Then Return True
 		If Not GetPlayerFinanceCollection().Get(playerID) Then Return False
 
@@ -1019,6 +1053,39 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method DrawActivationTooltip()
+		local textCaption:string = getLocale("STATION_UNDER_CONSTRUCTION")
+		local textContent:string = GetLocale("STATION_READY_AT_ACTIVATIONTIME").REPLACE("%ACTIVATIONTIME%", GetWorldTime().GetFormattedTime(GetActivationTime()))
+		Local textH:Int = GetBitmapFontManager().baseFontBold.getHeight( "Tg" )
+		local textW:Int = GetBitmapFontManager().baseFontBold.getWidth(textCaption)
+		textW = Max(textW, GetBitmapFontManager().baseFont.getWidth(textContent))
+		Local tooltipW:Int = textW + 10
+		Local tooltipH:Int = textH * 2 + 10 + 5
+		Local tooltipX:Int = pos.x - tooltipW/2
+		Local tooltipY:Int = pos.y - radius - tooltipH
+
+		'move below station if at screen top
+		If tooltipY < 20 Then tooltipY = pos.y+radius + 10 +10
+		tooltipX = Max(20,tooltipX)
+		tooltipX = Min(585-tooltipW,tooltipX)
+
+		SetAlpha 0.5
+		SetColor 0,0,0
+		DrawRect(tooltipX,tooltipY,tooltipW,tooltipH)
+		SetColor 255,255,255
+		SetAlpha 1.0
+
+		Local textY:Int = tooltipY+5
+		Local textX:Int = tooltipX+5
+		Local colorWhite:TColor = TColor.Create(255,255,255)
+		GetBitmapFontManager().baseFontBold.drawStyled(textCaption, textX, textY, TColor.Create(255,255,0), 2)
+		textY:+ textH + 5
+
+		GetBitmapFontManager().baseFont.draw(textContent, textX, textY)
+		textY:+ textH
+	End Method
+
+
 	Method Draw(selected:Int=False)
 		Local sprite:TSprite = Null
 		Local oldAlpha:Float = GetAlpha()
@@ -1055,17 +1122,11 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	Method Update:int()
 		'check if it becomes ready
 		If not IsActive()
-			local activate:int = False
 			'TODO: if wanted, check for RepairStates or such things
 
-			'older than 60 minutes
-			if getAgeInMinutes() > 60 then activate = True
-			'at xx:00 or xx:05 programmes start (and new audience
-			'calculations happen), so stations get ready too 
-			if GetWorldTime().GetDayMinute() = 5 then activate = True
-			if GetWorldTime().GetDayMinute() = 0 then activate = True
-
-			if activate then SetActive()
+			if GetActivationTime() < GetWorldTime().GetTimeGone()
+				SetActive()
+			endif
 		EndIf
 	End Method
 End Type

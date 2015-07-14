@@ -454,6 +454,9 @@ BUY_STATION = Compra Estación
 TOO_EXPENSIVE = Muy Caro
 SELL_STATION = Vender estación
 
+STATION_UNDER_CONSTRUCTION = En construcción
+STATION_READY_AT_ACTIVATIONTIME = presto a %ACTIVATIONTIME%
+
 BUY_AND_SELL = Compra y venta
 AND_STATISTICS = y estadísticas
 FOR_PRIVATE_AFFAIRS = para la mayoría de sus asuntos privados

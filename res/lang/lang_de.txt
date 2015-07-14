@@ -455,6 +455,9 @@ BUY_STATION = Sendemast kaufen
 TOO_EXPENSIVE = Zu teuer
 SELL_STATION = Sendemast verkaufen
 
+STATION_UNDER_CONSTRUCTION = Im Bau
+STATION_READY_AT_ACTIVATIONTIME = Bereit ab %ACTIVATIONTIME% Uhr
+
 BUY_AND_SELL = Kaufen und Verkaufen
 AND_STATISTICS = und Statistiken
 FOR_PRIVATE_AFFAIRS = Für schmutzige Angelegenheiten
