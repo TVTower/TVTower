@@ -166,6 +166,20 @@ Type TRoomHandler
 	End Function
 
 
+	Function IsRoomOwner:Int(figure:TFigure, room:TRoom)
+		if not room then print "IsRoomOwner: room-object is null.";return False
+		if not figure then print "IsRoomOwner: figure-object is null.";return False
+
+		if not figure.playerID then return False
+
+		return figure.playerID = room.owner
+	End Function
+
+
+	Function IsPlayersRoom:int(room:TRoom)
+		return GetPlayer().playerID = room.owner
+	End Function
+
 End Type
 
 
@@ -396,18 +410,21 @@ Type RoomHandler_Archive extends TRoomHandler
 		local figure:TFigure = TFigure(triggerEvent.GetSender())
 		if not figure or not figure.playerID then return FALSE
 
-		'if the list is open - just close the list and veto against
-		'leaving the room
-		if programmeList.openState <> 0
-			programmeList.SetOpen(0)
-			triggerEvent.SetVeto()
-			return FALSE
-		endif
+		'handle interactivity for room owners
+		if IsRoomOwner(figure, TRoom(triggerEvent.GetSender()))
+			'if the list is open - just close the list and veto against
+			'leaving the room
+			if programmeList.openState <> 0
+				programmeList.SetOpen(0)
+				triggerEvent.SetVeto()
+				return FALSE
+			endif
 
-		'do not allow leaving as long as we have a dragged block
-		if draggedGuiProgrammeLicence
-			triggerEvent.setVeto()
-			return FALSE
+			'do not allow leaving as long as we have a dragged block
+			if draggedGuiProgrammeLicence
+				triggerEvent.setVeto()
+				return FALSE
+			endif
 		endif
 
 		return TRUE
@@ -420,14 +437,17 @@ Type RoomHandler_Archive extends TRoomHandler
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or not figure.playerID then return FALSE
 
-		'remove all licences in the suitcase from the programmeplan
-		local plan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(figure.playerID)
-		For local licence:TProgrammeLicence = EachIn GetPlayerProgrammeCollectionCollection().Get(figure.playerID).suitcaseProgrammeLicences
-			plan.RemoveProgrammeInstancesByLicence(licence, true)
-		Next
+		'handle interactivity for room owners
+		if IsRoomOwner(figure, TRoom(triggerEvent.GetSender()))
+			'remove all licences in the suitcase from the programmeplan
+			local plan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(figure.playerID)
+			For local licence:TProgrammeLicence = EachIn GetPlayerProgrammeCollectionCollection().Get(figure.playerID).suitcaseProgrammeLicences
+				plan.RemoveProgrammeInstancesByLicence(licence, true)
+			Next
 
-		'close the list if open
-		'programmeList.SetOpen(0)
+			'close the list if open
+			'programmeList.SetOpen(0)
+		endif
 		
 		return TRUE
 	End Method
@@ -437,10 +457,13 @@ Type RoomHandler_Archive extends TRoomHandler
 	Method onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
 		if not super.onForcefullyLeaveRoom(triggerEvent) then return False
 
-		'instead of leaving the room and accidentially removing programmes
-		'from the plan we readd all licences from the suitcase back to
-		'the players collection
-		GetPlayer().GetProgrammeCollection().ReaddProgrammeLicencesFromSuitcase()
+		'handle interactivity for room owners
+		if IsRoomOwner(TFigure(triggerEvent.GetReceiver()), TRoom(triggerEvent.GetSender()))
+			'instead of leaving the room and accidentially removing programmes
+			'from the plan we readd all licences from the suitcase back to
+			'the players collection
+			GetPlayer().GetProgrammeCollection().ReaddProgrammeLicencesFromSuitcase()
+		endif
 	End Method
 
 
@@ -571,11 +594,13 @@ Type RoomHandler_Archive extends TRoomHandler
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or GetPlayerBase().GetFigure() <> figure then return FALSE
 
-		'when entering the archive, all scripts are moved from the
-		'suitcase to the collection
-		'TODO: mark these scripts as "new" 
-		GetPlayerProgrammeCollection(figure.playerID).MoveScriptsFromSuitcaseToArchive()
-
+		'handle interactivity only for own room
+		if IsRoomOwner(figure, TRoom(triggerEvent.GetSender()))
+			'when entering the archive, all scripts are moved from the
+			'suitcase to the collection
+			'TODO: mark these scripts as "new" 
+			GetPlayerProgrammeCollection(figure.playerID).MoveScriptsFromSuitcaseToArchive()
+		endif
 
 		'empty the guilist / delete gui elements
 		'- the real list still may contain elements with gui-references
@@ -1560,14 +1585,16 @@ Type RoomHandler_News extends TRoomHandler
 
 	Function onDrawNews:int( triggerEvent:TEventBase )
 		GUIManager.Draw("newsroom")
+
+		'no interaction for other players newsrooms
+		if not IsPlayersRoom(TRoom(triggerEvent.GetSender())) then return False
+
 		If PlannerToolTip Then PlannerToolTip.Render()
 		If NewsGenreTooltip then NewsGenreTooltip.Render()
-
 	End Function
 
 
 	Function onUpdateNews:int( triggerEvent:TEventBase )
-		'local screen:TScreen	= TScreen(triggerEvent._sender)
 		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
@@ -1579,6 +1606,10 @@ Type RoomHandler_News extends TRoomHandler
 		Game.cursorstate = 0
 		If PlannerToolTip Then PlannerToolTip.Update()
 		If NewsGenreTooltip Then NewsGenreTooltip.Update()
+
+
+		'no further interaction for other players newsrooms
+		if not IsPlayersRoom(TRoom(triggerEvent.GetSender())) then return False
 
 		'pinwall
 		If THelper.IsIn(MouseManager.x, MouseManager.y, 167,60,240,160)
@@ -1817,6 +1848,10 @@ Type RoomHandler_News extends TRoomHandler
 		hoveredGuiNews = null
 		draggedGuiNews = null
 
+
+		'no GUI-interaction for other players rooms
+		if not IsPlayersRoom(TRoom(triggerEvent._sender)) then return False
+
 		'general newsplanner elements
 		GUIManager.Update("Newsplanner")
 	End Function
@@ -1953,6 +1988,11 @@ Type RoomHandler_Boss extends TRoomHandler
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		smokeEmitter.Draw()
 
+		'only handle custom elements for players room
+		local room:TRoom = TRoom(triggerEvent._sender)
+		if room.owner <> GetPlayerCollection().playerID then return FALSE
+
+
 		local boss:TPlayerBoss = GetPlayerBoss(GetPlayer().playerID)
 		if not boss then return False
 		For Local dialog:TDialogue = EachIn boss.Dialogues
@@ -1964,10 +2004,13 @@ Type RoomHandler_Boss extends TRoomHandler
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
 		GetPlayer().GetFigure().fromroom = Null
 
-
 		smokeEmitter.Update()
-		
 
+		'only handle custom elements for players room
+		local room:TRoom = TRoom(triggerEvent._sender)
+		if room.owner <> GetPlayerCollection().playerID then return FALSE
+
+		
 		local boss:TPlayerBoss = GetPlayerBoss(GetPlayer().playerID)
 		if not boss then return False
 
@@ -2090,13 +2133,13 @@ Type RoomHandler_Studio extends TRoomHandler
 		studioManagerDialogue = null
 
 		'enable/disable gui elements according to room owner
-		local roomOwner:TPlayer = GetPlayer(TRoom(triggerEvent.GetSender()).owner)
-		if roomOwner <> GetPlayer()
-			guiListSuitcase.Disable()
-			guiListStudio.Disable()
-		else
+		'"only our player" filter already done before
+		if IsRoomOwner(figure, TRoom(triggerEvent.GetSender()))
 			guiListSuitcase.Enable()
 			guiListStudio.Enable()
+		else
+			guiListSuitcase.Disable()
+			guiListStudio.Disable()
 		endif
 	End Method
 
@@ -2214,15 +2257,18 @@ Type RoomHandler_Studio extends TRoomHandler
 		local figure:TFigure = TFigure(triggerEvent.GetSender())
 		if not figure or not figure.playerID then return FALSE
 
-		'if the manager dialogue is open - just close the dialogue and
-		'veto against leaving the room
-		if studioManagerDialogue
-			studioManagerDialogue = null
+		'handle interactivity for room owners
+		if IsRoomOwner(figure, TRoom(triggerEvent.GetSender()))
+			'if the manager dialogue is open - just close the dialogue and
+			'veto against leaving the room
+			if studioManagerDialogue
+				studioManagerDialogue = null
 
-			triggerEvent.SetVeto()
-			return FALSE
+				triggerEvent.SetVeto()
+				return FALSE
+			endif
 		endif
-
+		
 		return TRUE
 	End Method
 
@@ -2562,34 +2608,35 @@ Type RoomHandler_Studio extends TRoomHandler
 
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
 		GetPlayer().GetFigure().fromroom = Null
-		local isPlayerRoom:int = GetPlayer() = GetPlayer(TRoom(triggerEvent.GetSender()).owner)
+
+		'no interaction for other players rooms
+		if not IsPlayersRoom(TRoom(triggerEvent.GetSender())) then return False
 
 		'mouse over studio manager
-		if isPlayerRoom
-			if THelper.MouseIn(0,100,150,300)
-				if not studioManagerDialogue
-					'generate the dialogue if not done yet
-					if MouseManager.IsHit(1) and not draggedGuiScript
-						GenerateStudioManagerDialogue()
-					endif
+		if THelper.MouseIn(0,100,150,300)
+			if not studioManagerDialogue
+				'generate the dialogue if not done yet
+				if MouseManager.IsHit(1) and not draggedGuiScript
+					GenerateStudioManagerDialogue()
+				endif
 
-					'show tooltip of studio manager
-					'only show when no dialogue is (or just got) opened 
-					if not studioManagerDialogue
-						If not studioManagerTooltip Then studioManagerTooltip = TTooltip.Create(GetLocale("STUDIO_MANAGER"), GetLocale("GIVES_INFORMATION_ABOUT_PRODUCTION_OR_HANDS_OUT_SHOPPING_LIST"), 150, 160,-1,-1)
-						studioManagerTooltip.enabled = 1
-						studioManagerTooltip.minContentWidth = 150
-						studioManagerTooltip.Hover()
-					endif
+				'show tooltip of studio manager
+				'only show when no dialogue is (or just got) opened 
+				if not studioManagerDialogue
+					If not studioManagerTooltip Then studioManagerTooltip = TTooltip.Create(GetLocale("STUDIO_MANAGER"), GetLocale("GIVES_INFORMATION_ABOUT_PRODUCTION_OR_HANDS_OUT_SHOPPING_LIST"), 150, 160,-1,-1)
+					studioManagerTooltip.enabled = 1
+					studioManagerTooltip.minContentWidth = 150
+					studioManagerTooltip.Hover()
 				endif
 			endif
-
-			If studioManagerTooltip Then studioManagerTooltip.Update()
-
-			if studioManagerDialogue and studioManagerDialogue.Update() = 0
-				studioManagerDialogue = null
-			endif
 		endif
+
+		If studioManagerTooltip Then studioManagerTooltip.Update()
+
+		if studioManagerDialogue and studioManagerDialogue.Update() = 0
+			studioManagerDialogue = null
+		endif
+
 
 		Game.cursorstate = 0
 
