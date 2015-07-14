@@ -232,7 +232,6 @@ function SignRequisitedContracts:Tick()
 		local guessedAudience = 0.75 * requisition.GuessedAudience + 0.25 * AITools:GuessedAudienceForLevel(requisition.Level)
 
 		local signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.8))
-TVT.printOut( signedContracts .." Vertraege gefunden: " .. guessedAudience .. " / " .. self:GetMinGuessedAudience(guessedAudience, 0.8))
 		if (signedContracts == 0) then
 			signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.6))
 			if (signedContracts == 0) then
@@ -283,8 +282,8 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 
 			if ((minAudience < guessedAudience) and (minAudience > minguessedAudience)) then
 				--Passender Spot... also kaufen
-				debugMsg("SignRequisitedContracts: Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil benötigt. Level: " .. requisition.Level .. "  MinAudience: " .. minAudience .. "  GuessedAudience: " .. minguessedAudience .. " - " .. guessedAudience)
-				TVT.addToLog("SignRequisitedContracts: Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil benötigt. Level: " .. requisition.Level .. "  MinAudience: " .. minAudience .. "  GuessedAudience: " .. minguessedAudience .. " - " .. guessedAudience)
+				debugMsg("SignRequisitedContracts: Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil benötigt. Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  MinAudience: " .. minAudience .. "  GuessedAudience: " .. minguessedAudience .. " - " .. guessedAudience)
+				TVT.addToLog("SignRequisitedContracts: Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil benötigt. Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  MinAudience: " .. minAudience .. "  GuessedAudience: " .. minguessedAudience .. " - " .. guessedAudience)
 				TVT.sa_doBuySpot(value.GetID())
 				requisition:UseThisContract(value)
 				table.insert(buyedContracts, value)

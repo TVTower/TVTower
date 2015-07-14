@@ -323,6 +323,7 @@ Type TLuaFunctions {_exposeToLua}
 	Const RESULT_NOTFOUND:int  =  -8
 	Const RESULT_NOTALLOWED:int= -16
 	Const RESULT_INUSE:int     = -32
+	Const RESULT_SKIPPED:int   = -64
 
 	'const + helpers
 	Field Rules:TGameRules
@@ -669,6 +670,7 @@ Type TLuaFunctions {_exposeToLua}
 		If obj Then Return obj Else Return Null
 	End Method
 
+
 	'Set content of a programme slot
 	'=====
 	'materialSource might be "null" to clear a time slot
@@ -681,6 +683,16 @@ Type TLuaFunctions {_exposeToLua}
 
 		'create a broadcast material out of the given source
 		local broadcastMaterial:TBroadcastMaterial = GetPlayer(self.ME).GetProgrammeCollection().GetBroadcastMaterial(materialSource)
+
+
+		'skip setting the slot if already done
+		Local existingMaterial:TBroadcastMaterial = GetPlayer(self.ME).GetProgrammePlan().GetAdvertisement(day, hour)
+		if existingMaterial
+			if broadcastMaterial.GetReferenceID() = existingMaterial.GetReferenceID() and broadcastMaterial.materialType = existingMaterial.materialType
+				return self.RESULT_SKIPPED
+			endif
+		endif
+
 
 		if GetPlayer(self.ME).GetProgrammePlan().SetAdvertisementSlot(broadcastMaterial, day, hour)
 			return self.RESULT_OK
@@ -716,6 +728,16 @@ Type TLuaFunctions {_exposeToLua}
 		'create a broadcast material out of the given source
 		local broadcastMaterial:TBroadcastMaterial = GetPlayer(self.ME).GetProgrammeCollection().GetBroadcastMaterial(materialSource)
 
+
+		'skip setting the slot if already done
+		Local existingMaterial:TBroadcastMaterial = GetPlayer(self.ME).GetProgrammePlan().GetProgramme(day, hour)
+		if existingMaterial
+			if broadcastMaterial.GetReferenceID() = existingMaterial.GetReferenceID() and broadcastMaterial.materialType = existingMaterial.materialType
+				return self.RESULT_SKIPPED
+			endif
+		endif
+
+
 		if GetPlayer(self.ME).GetProgrammePlan().SetProgrammeSlot(broadcastMaterial, day, hour)
 			return self.RESULT_OK
 		else
@@ -731,6 +753,20 @@ Type TLuaFunctions {_exposeToLua}
 		If obj Then Return obj Else Return Null
 	End Method
 
+
+	Method of_getProgrammeLicenceCount:Int()
+		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
+
+		Return GetPlayerProgrammeCollectionCollection().Get(Self.ME).GetProgrammeLicenceCount()
+	End Method
+
+
+	Method of_getProgrammeLicenceAtindex:TProgrammeLicence(arrayIndex:Int=-1)
+		If Not _PlayerInRoom("office") Then Return Null
+
+		Local obj:TProgrammeLicence = GetPlayer(self.ME).GetProgrammeCollection().GetProgrammeLicenceAtIndex(arrayIndex)
+		If obj Then Return obj Else Return Null
+	End Method
 
 
 	'=== NEWS ROOM ===
