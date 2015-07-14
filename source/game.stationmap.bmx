@@ -46,7 +46,8 @@ Type TStationMapCollection
 			'handle <stationmapdata>-area in loaded xml files
 			EventManager.registerListenerFunction("RegistryLoader.onLoadResourceFromXML", onLoadStationMapData, null, "STATIONMAPDATA" )
 			'handle activation of stations
-			EventManager.registerListenerFunction("station.onSetActive", onSetStationActive)
+			EventManager.registerListenerFunction("station.onSetActive", onSetStationActiveState)
+			EventManager.registerListenerFunction("station.onSetInactive", onSetStationActiveState)
 
 			_initdone = TRUE
 		Endif
@@ -68,7 +69,7 @@ Type TStationMapCollection
 
 	'as soon as a station gets active (again), the sharemap has to get
 	'regenerated (for a correct audience calculation)
-	Function onSetStationActive(triggerEvent:TEventBase)
+	Function onSetStationActiveState(triggerEvent:TEventBase)
 		GetInstance()._regenerateMap = True
 		'also set the owning stationmap to "changed" so only this single
 		'audience sum only gets recalculated (saves cpu time)
@@ -711,6 +712,7 @@ Type TStationMap {_exposeToLua="selected"}
 		'set to paid in all cases
 		station.paid = True
 
+
 		stations.AddLast(station)
 
 		'DO NOT refresh the share map as ths would increase potential
@@ -830,6 +832,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	Field built:Double = 0
 	'time at which the station gets active (again)
 	Field activationTime:Double = -1
+	Field active:int = 0
 	'is the station already working?
 	Field radius:Int = 0
 	Field federalState:String = ""
@@ -950,7 +953,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 
 	Method IsActive:int()
-		return GetWorldTime().GetTimeGone() >= GetActivationTime()
+		return active
 	End Method
 
 
@@ -959,19 +962,27 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		if activationTime < 0 then activationTime = GetWorldTime().GetTimeGone()
 		self.activationTime = activationTime
 
-		if IsActive() then SetActive()
+		if activationTime < GetWorldTime().GetTimeGone() then SetActive()
 	End Method
 
 
 	'set time a station begins to work (broadcast)
 	Method SetActive:int()
-		local wasActive:int = IsActive()
-		self.activationTime = GetWorldTime().GetTimeGone()
+		if active then return False
 
-		if not wasActive
-			'inform others (eg. to recalculate audience)
-			EventManager.triggerEvent(TEventSimple.Create("station.onSetActive", null, Self))
-		endif
+		self.activationTime = GetWorldTime().GetTimeGone()
+		active = True
+		'inform others (eg. to recalculate audience)
+		EventManager.triggerEvent(TEventSimple.Create("station.onSetActive", null, Self))
+	End Method
+
+
+	Method SetInactive:int()
+		if not active then return false
+
+		active = False
+		'inform others (eg. to recalculate audience)
+		EventManager.triggerEvent(TEventSimple.Create("station.onSetInactive", null, Self))
 	End Method
 
 
