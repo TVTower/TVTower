@@ -804,7 +804,7 @@ endrem
 
 'aktivieren, wenn Datenbank Eintraege enthaelt, die infomercials erlauben
 '				adContract.infomercialAllowed = data.GetBool("infomercial", adContract.infomercialAllowed)
-'				adContract.quality = data.GetInt("quality", adContract.quality)
+'				adContract.quality = 0.01 * data.GetFloat("quality", adContract.quality * 100.0)
 		adContract.quality = 0.5
 
 		adContract.spotCount = data.GetInt("repetitions", adContract.spotcount)

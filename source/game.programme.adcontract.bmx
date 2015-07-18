@@ -390,6 +390,8 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	Field infomercialProfit:Int = -1
 	'calculated minimum audience value (on sign)
 	Field minAudience:Int = -1
+	'calculated minimum total audience value (on sign)
+	Field totalMinAudience:Int = -1
 	' KI: Wird nur in der Lua-KI verwendet du die Filme zu bewerten
 	Field attractiveness:Float = -1
 	'the classification of this contract
@@ -471,6 +473,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		self.penalty = GetPenalty()
 		self.infomercialProfit = GetInfomercialProfit()
 		self.minAudience = GetMinAudience()
+		self.totalMinAudience = GetTotalMinAudience()
 
 		self.owner = owner
 		If day < 0 Then day = GetWorldTime().GetDay()
@@ -644,7 +647,10 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'use the already rounded minAudience to avoid a raw audience of
 		'"15100" which rounds later to 16000 but calculating the cpm-blocks
 		'leads to 15 instead of 16...
-		price = GetCPM(baseValue, maxCPM, getMinAudience(playerID) / population)
+		'ATTENTION: use getTotalMinAudience() to base CPM on the rounded
+		'           value IGNORING potential targetgroup limits. This
+		'           leads to some kind of "beautified" percentage value.
+		price = GetCPM(baseValue, maxCPM, getTotalMinAudience(playerID) / population)
 		'multiply by amount of "1000 viewers"-blocks
 		price :* Max(1, getMinAudience(playerID)/1000)
 		'value cannot be higher than "maxAdContractPricePerSpot"
@@ -667,7 +673,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	'returns the non rounded minimum audience
-	Method GetRawMinAudience:Int(playerID:int=-1) {_exposeToLua}
+	Method GetRawMinAudience:Int(playerID:int=-1, getTotalAudience:int = False) {_exposeToLua}
 		'if no special player is requested -
 		if playerID <= 0 and IsSigned() then playerID = owner
 		'if contract has no owner the avg audience maximum is returned
@@ -677,10 +683,13 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		else
 			useAudience = GetStationMapCollection().GetMap(playerID).GetReach()
 		endif
-		'if limited to specific target group ... break audience down
-		'to this specific group
-		if GetLimitedToTargetGroup() > 0
-			useAudience :* TAudience.GetAudienceBreakdown().GetValue(GetLimitedToTargetGroup())
+
+		if not getTotalAudience 
+			'if limited to specific target group ... break audience down
+			'to this specific group
+			if GetLimitedToTargetGroup() > 0
+				useAudience :* TAudience.GetAudienceBreakdown().GetValue(GetLimitedToTargetGroup())
+			endif
 		endif
 
 		Return GetMinAudiencePercentage() * useAudience
@@ -699,6 +708,22 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		If playerID=-1 and minAudience >=0 Then Return minAudience
 
 		Return TFunctions.RoundToBeautifulValue( GetRawMinAudience(playerID) )
+	End Method
+
+
+	'returns the non rounded minimum audience
+	Method GetTotalRawMinAudience:Int(playerID:int=-1) {_exposeToLua}
+		return GetRawMinAudience(playerID, True)
+	End Method
+
+
+	'Gets minimum needed audience in absolute numbers (ignoring
+	'targetgroup limits)
+	Method GetTotalMinAudience:Int(playerID:int=-1) {_exposeToLua}
+		'already calculated and data for owner requested
+		If playerID=-1 and totalMinAudience >=0 Then Return totalMinAudience
+
+		Return TFunctions.RoundToBeautifulValue( GetTotalRawMinAudience(playerID) )
 	End Method
 
 
@@ -774,8 +799,13 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'if no group given, use the one of the object
 		if group < 0 then group = base.limitedToTargetGroup
 
-		If group > 0 And group <= TVTTargetGroup.GetAtIndex(TVTTargetGroup.count)
-			Return GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(group))
+		If group > 0 ' And group <= TVTTargetGroup.GetAtIndex(TVTTargetGroup.count)
+			local targetGroups:string[] = TVTTargetGroup.GetAsString(group).split(",")
+			local targetGroupStrings:string[]
+			For local t:string = EachIn targetGroups
+				targetGroupStrings :+ [GetLocale("TARGETGROUP_"+t)]
+			Next
+			return ", ".join(targetGroupStrings)
 		else
 			Return GetLocale("TARGETGROUP_NONE")
 		EndIf

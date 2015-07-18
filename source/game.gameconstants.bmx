@@ -578,7 +578,18 @@ Type TVTTargetGroup {_exposeToLua}
 			case PENSIONERS  return "pensioners"
 			case WOMEN       return "women"
 			case MEN         return "men"
-			default          return "all"
+			default
+				'loop through all targetGroup-entries and add them if contained
+				local result:string
+				local index:int = 0
+				'do NOT start with 0 ("all")
+				For local i:int = 1 to count
+					index = GetAtIndex(i)
+					if key & index then result :+ GetAsString(index) + ","
+				Next
+				if result = "" then return "all"
+				'remove last comma
+				return result[.. result.length-1]
 		End Select
 	End Function
 End Type

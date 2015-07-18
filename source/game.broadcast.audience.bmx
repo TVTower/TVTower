@@ -255,9 +255,29 @@ endrem
 			Case TVTTargetGroup.Men
 				Return Men
 			Default
-				'print "unknown targetID"
-				Throw TArgumentException.Create("targetID", String.FromInt(targetID))
+				'check if we got a combination of multiple
+				Return GetGroupValue(targetID)
 		End Select
+	End Method
+
+
+	'returns the sum value of a group of targetIDS
+	Method GetGroupValue:Float(targetIDs:int)
+		'loop through all targetGroup-entries and add them if contained
+		local result:Float
+		local oneFound:int = false
+		'do NOT start with 0 ("all")
+		For local i:int = 1 to TVTTargetGroup.count
+			if targetIDs & TVTTargetGroup.GetAtIndex(i)
+				result :+ GetValue(i)
+				oneFound = True
+			endif
+		Next
+
+		if not oneFound
+			'print "unknown targetID"
+			Throw TArgumentException.Create("targetID", String.FromInt(targetIDs))
+		endif
 	End Method
 
 
