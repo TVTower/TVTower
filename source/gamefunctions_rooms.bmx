@@ -177,6 +177,7 @@ Type TRoomHandler
 
 
 	Function IsPlayersRoom:int(room:TRoom)
+		if not room then return False
 		return GetPlayer().playerID = room.owner
 	End Function
 
@@ -243,7 +244,7 @@ Type RoomHandler_Office extends TRoomHandler
 		'if room.GetBackground() then room.GetBackground().draw(0, 0)
 
 		'allowed for owner only - or with key
-		If GetPlayer().HasMasterKey() OR (room.owner = GetPlayerCollection().playerID)
+		If GetPlayer().HasMasterKey() OR IsPlayersRoom(room)
 			If StationsToolTip Then StationsToolTip.Render()
 			'allowed for all - if having keys
 			If PlannerToolTip Then PlannerToolTip.Render()
@@ -268,7 +269,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		'allowed for owner only - or with key
-		If GetPlayer().HasMasterKey() OR (room.owner = GetPlayerCollection().playerID)
+		If GetPlayer().HasMasterKey() OR IsPlayersRoom(room)
 			Game.cursorstate = 0
 			'safe - reachable for all
 			If THelper.MouseIn(165,85,70,100)
@@ -1587,7 +1588,8 @@ Type RoomHandler_News extends TRoomHandler
 		GUIManager.Draw("newsroom")
 
 		'no interaction for other players newsrooms
-		if not IsPlayersRoom(TRoom(triggerEvent.GetSender())) then return False
+		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
+		if not IsPlayersRoom(room) then return False
 
 		If PlannerToolTip Then PlannerToolTip.Render()
 		If NewsGenreTooltip then NewsGenreTooltip.Render()
@@ -1609,7 +1611,7 @@ Type RoomHandler_News extends TRoomHandler
 
 
 		'no further interaction for other players newsrooms
-		if not IsPlayersRoom(TRoom(triggerEvent.GetSender())) then return False
+		if not IsPlayersRoom(room) then return False
 
 		'pinwall
 		If THelper.IsIn(MouseManager.x, MouseManager.y, 167,60,240,160)
@@ -1850,7 +1852,7 @@ Type RoomHandler_News extends TRoomHandler
 
 
 		'no GUI-interaction for other players rooms
-		if not IsPlayersRoom(TRoom(triggerEvent._sender)) then return False
+		if not IsPlayersRoom(room) then return False
 
 		'general newsplanner elements
 		GUIManager.Update("Newsplanner")
