@@ -70,8 +70,6 @@ Type TPlayerBase {_exposeToLua="selected"}
 	Field channelname:String
 	'global used ID of the player
 	Field playerID:Int = 0
-	'has key for all rooms?
-	Field masterKey:int = False
 	'the color used to colorize symbols and figures
 	Field color:TColor
 	'actual number of an array of figure-images
@@ -102,7 +100,7 @@ Type TPlayerBase {_exposeToLua="selected"}
 
 
 	Method HasMasterKey:int()
-		return masterKey
+		return figure.hasMasterKey
 	End Method
 
 

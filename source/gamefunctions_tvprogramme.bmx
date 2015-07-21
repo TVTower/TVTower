@@ -178,6 +178,14 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 	End Method
 
 
+	'override to disable clicks for items of other players
+	Method IsClickable:int()
+		'only owner can click on it 
+		if broadcastMaterial and broadcastMaterial.GetOwner() <> GetPlayerCollection().playerID Then return False
+
+		return Super.IsClickable()
+	End Method
+
 
 	'override default update-method
 	Method Update:Int()
@@ -964,12 +972,17 @@ End Type
 
 
 Type TPlannerList
-	Field openState:Int		= 0		'0=enabled 1=openedgenres 2=openedmovies 3=openedepisodes = 1
-	Field currentGenre:Int	=-1
-	Field enabled:Int		= 0
-	Field Pos:TVec2D 		= New TVec2D.Init()
+	'0=enabled 1=openedgenres 2=openedmovies 3=openedepisodes = 1
+	Field openState:Int = 0
+	Field currentGenre:Int =-1
+	Field enabled:Int = 0
+	Field Pos:TVec2D = New TVec2D.Init()
 	Field entriesRect:TRectangle
 	Field entrySize:TVec2D = New TVec2D
+	'current owner of the planner list
+	Field owner:TPlayer
+	'whether the player can click / create elements? 
+	Field clicksAllowed:int = True
 
 	Method getOpen:Int()
 		Return Self.openState And enabled
@@ -1031,15 +1044,18 @@ Type TgfxProgrammelist Extends TPlannerList
 
 	Method Draw()
 		If Not enabled Then Return
+		if Not owner Then Return
 
 		'draw genre selector
 		If Self.openState >=1
+			Local programmeCollection:TPlayerProgrammeCollection = owner.GetProgrammeCollection()
+
 			'mark new genres
 			'TODO: do this part in programmecollection (only on add/remove)
 			Local visibleFilters:TProgrammeLicenceFilter[] = TProgrammeLicenceFilter.GetVisible()
 			Local containsNew:Int[visibleFilters.length]
 
-			For Local licence:TProgrammeLicence = EachIn GetPlayer().GetProgrammeCollection().justAddedProgrammeLicences
+			For Local licence:TProgrammeLicence = EachIn programmeCollection.justAddedProgrammeLicences
 				'check all filters if they take care of this licence
 				For Local i:Int = 0 Until visibleFilters.length
 					'no check needed if already done
@@ -1062,7 +1078,6 @@ Type TgfxProgrammelist Extends TPlannerList
 			Local textRect:TRectangle = New TRectangle.Init(currX + 13, currY, genreSize.x - 12 - 5, genreSize.y)
 			 
 			Local oldAlpha:Float = GetAlpha()
-			Local programmeCollection:TPlayerProgrammeCollection = GetPlayer().GetProgrammeCollection()
 
 			'draw each visible filter
 			Local filter:TProgrammeLicenceFilter
@@ -1146,6 +1161,7 @@ endrem
 		'skip drawing tapes if no genreGroup is selected
 		If filterIndex < 0 Then Return False
 
+		If not owner then Return False 
 
 		Local currSprite:TSprite
 		'maybe it has changed since initialization
@@ -1154,7 +1170,7 @@ endrem
 		Local currX:Int = entriesRect.GetX()
 		Local font:TBitmapFont = GetBitmapFont("Default", 10)
 			 
-		Local programmeCollection:TPlayerProgrammeCollection = GetPlayer().GetProgrammeCollection()
+		Local programmeCollection:TPlayerProgrammeCollection = owner.GetProgrammeCollection()
 		Local filter:TProgrammeLicenceFilter = TProgrammeLicenceFilter.GetAtIndex(filterIndex)
 		Local licences:TProgrammeLicence[] = programmeCollection.GetLicencesByFilter(filter)
 		'draw slots, even if empty
@@ -1174,7 +1190,7 @@ endrem
 					tapeDrawType = "planned"
 				Else
 					'switch background to "new" if the licence is a just-added-one
-					For Local licence:TProgrammeLicence = EachIn GetPlayer().GetProgrammeCollection().justAddedProgrammeLicences
+					For Local licence:TProgrammeLicence = EachIn programmeCollection.justAddedProgrammeLicences
 						If licences[i] = licence
 							entryDrawType = "new"
 							tapeDrawType = "new"
@@ -1278,8 +1294,10 @@ endrem
 		'skip doing something without a selected filter
 		If filterIndex < 0 Then Return False
 
+		If not owner Then Return False  
+
 		Local currY:Int = entriesRect.GetY()
-		Local programmeCollection:TPlayerProgrammeCollection = GetPlayer().GetProgrammeCollection()
+		Local programmeCollection:TPlayerProgrammeCollection = owner.GetProgrammeCollection()
 		Local filter:TProgrammeLicenceFilter = TProgrammeLicenceFilter.GetAtIndex(filterIndex)
 		Local licences:TProgrammeLicence[] = programmeCollection.GetLicencesByFilter(filter)
 
@@ -1309,36 +1327,40 @@ endrem
 				Local doneSomething:Int = False
 				'store for sheet-display
 				hoveredLicence = licences[i]
-				If MOUSEMANAGER.IsHit(1)
-					If mode = MODE_PROGRAMMEPLANNER
-						If licences[i].isSingle()
-							'create and drag new block
-							New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( New TProgramme.Create(licences[i]), "programmePlanner" ).drag()
+
+				'only interact if allowed
+				If clicksAllowed
+					If MOUSEMANAGER.IsHit(1)
+						If mode = MODE_PROGRAMMEPLANNER
+							If licences[i].isSingle()
+								'create and drag new block
+								New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( New TProgramme.Create(licences[i]), "programmePlanner" ).drag()
+								SetOpen(0)
+								doneSomething = True
+							Else
+								'set the hoveredParentalLicence so the episodes-list is drawn
+								hoveredParentalLicence = licences[i]
+								SetOpen(3)
+								doneSomething = True
+							EndIf
+						ElseIf mode = MODE_ARCHIVE
+							'create a dragged block
+							Local obj:TGUIProgrammeLicence = New TGUIProgrammeLicence.CreateWithLicence(licences[i])
+							obj.SetLimitToState("archive")
+							obj.drag()
+
 							SetOpen(0)
 							doneSomething = True
-						Else
-							'set the hoveredParentalLicence so the episodes-list is drawn
-							hoveredParentalLicence = licences[i]
-							SetOpen(3)
-							doneSomething = True
 						EndIf
-					ElseIf mode = MODE_ARCHIVE
-						'create a dragged block
-						Local obj:TGUIProgrammeLicence = New TGUIProgrammeLicence.CreateWithLicence(licences[i])
-						obj.SetLimitToState("archive")
-						obj.drag()
 
-						SetOpen(0)
-						doneSomething = True
+						'something changed, so stop looping through rest
+						If doneSomething
+							MOUSEMANAGER.resetKey(1)
+							MOUSEMANAGER.resetClicked(1)
+							Return True
+						EndIf
 					EndIf
-
-					'something changed, so stop looping through rest
-					If doneSomething
-						MOUSEMANAGER.resetKey(1)
-						MOUSEMANAGER.resetClicked(1)
-						Return True
-					EndIf
-				EndIf
+				endif
 			EndIf
 
 			'next tape
@@ -1482,13 +1504,17 @@ endrem
 
 					'store for sheet-display
 					hoveredLicence = licence
-					If MOUSEMANAGER.IsHit(1)
-						'create and drag new block
-						New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( New TProgramme.Create(licence), "programmePlanner" ).drag()
-						SetOpen(0)
-						MOUSEMANAGER.resetKey(1)
-						Return True
-					EndIf
+					
+					'only interact if allowed
+					If clicksAllowed
+						If MOUSEMANAGER.IsHit(1)
+							'create and drag new block
+							New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( New TProgramme.Create(licence), "programmePlanner" ).drag()
+							SetOpen(0)
+							MOUSEMANAGER.resetKey(1)
+							Return True
+						EndIf
+					endif
 				EndIf
 			EndIf
 
@@ -1586,6 +1612,8 @@ Type TgfxContractlist Extends TPlannerList
 	Method Draw:Int()
 		If Not enabled Or Self.openState < 1 Then Return False
 
+		If Not owner Then Return False
+
 		Local currSprite:TSprite
 		'maybe it has changed since initialization
 		entrySize = GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.dimension.copy()
@@ -1593,7 +1621,7 @@ Type TgfxContractlist Extends TPlannerList
 		Local currY:Int = entriesRect.GetY()
 		Local font:TBitmapFont = GetBitmapFont("Default", 10)
 
-		Local programmeCollection:TPlayerProgrammeCollection = GetPlayer().GetProgrammeCollection()
+		Local programmeCollection:TPlayerProgrammeCollection = owner.GetProgrammeCollection()
 		'draw slots, even if empty
 		For Local i:Int = 0 Until 10 'GameRules.maxContracts
 			Local contract:TAdContract = programmeCollection.GetAdContractAtIndex(i)
@@ -1653,6 +1681,8 @@ Type TgfxContractlist Extends TPlannerList
 
 		If Not enabled Then Return False
 
+		If Not owner Then Return False
+
 		If Self.openState >= 1
 			Local currY:Int = entriesRect.GetY() + GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 
@@ -1665,10 +1695,13 @@ Type TgfxContractlist Extends TPlannerList
 					hoveredAdContract = contract
 
 					Game.cursorstate = 1
-					If MOUSEMANAGER.IsHit(1)
-						New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( New TAdvertisement.Create(contract), "programmePlanner" ).drag()
-						MOUSEMANAGER.resetKey(1)
-						SetOpen(0)
+					'only interact if allowed
+					If clicksAllowed
+						If MOUSEMANAGER.IsHit(1)
+							New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( New TAdvertisement.Create(contract), "programmePlanner" ).drag()
+							MOUSEMANAGER.resetKey(1)
+							SetOpen(0)
+						EndIf
 					EndIf
 				EndIf
 

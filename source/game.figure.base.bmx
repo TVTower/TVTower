@@ -119,6 +119,8 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Field lastGreetFigureID:int = -1
 	'is there a player controlling that figure?
 	Field playerID:int = 0
+	'can this figure enter every room?
+	Field hasMasterKey:int = False
 
 	'how long should the greet-sprite be shown
 	Global greetTime:int = 1000

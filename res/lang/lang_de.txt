@@ -415,7 +415,10 @@ DIALOGUE_BOSS_MAIN_TEXT_NEWSMALFUNCTION1      = Statt |b|%NEWSMALFUNCTION%x|/b| 
 DIALOGUE_BOSS_MAIN_ENDING_DEFAULT1            = Ab an die Arbeit oder jemand anderes erledigt Ihren Job...!
 DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY1         = Der Goldhamster meines Sohnes könnte Ihren Job wohl besser erledigen!
 DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY2         = Noch so ein Schnitzer und Ihr Job geht an den Nächstbesten der an der Tür klopft.
+DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER1          = Raus hier - und bestellen Sie ihrem Boss schlechteste Grüße. Harr harr harr...
+DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER2          = Raus! Ich kann Sie und ihren vermaledeiten Sender nicht mehr sehen!
 
+DIALOGUE_BOSS_WILLNOTDISTURB_OTHERPLAYER =	Ja, ähm, ich störe nicht weiter!
 DIALOGUE_BOSS_WILLNOTDISTURB			=	Ja, ist ja schon gut Chef ich störe nicht weiter!
 DIALOGUE_BOSS_ASKFORCREDIT				=	Ich wollte wegen *ähm* einem Kredit nachfragen.
 DIALOGUE_BOSS_REPAYCREDIT				=	Ich will etwas von meinem Kredit abbezahlen...
@@ -538,5 +541,7 @@ SNOW_IS_FALLING = Vorsicht auf den Straßen. Schnee bringt Glätte mit sich.
 TEMPERATURES_ARE_BETWEEN_X_AND_Y = Die Temperaturen bewegen sich zwischen %MINTEMPERATURE% und %MAXTEMPERATURE%°C
 TEMPERATURE_IS_CONSTANT_AT_X = Die Temperatur beläuft sich auf konstante %TEMPERATURE%°C
 
+LOCKED = Abgeschlossen
+ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY = Der Zugang zu diesem Raum ist nur mit dem richtigen Schlüssel möglich.
 BLOCKED = Blockiert
 ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE = Der Zugang zu diesem Raum ist derzeit nicht möglich.

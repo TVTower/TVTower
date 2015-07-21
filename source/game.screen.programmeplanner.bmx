@@ -13,6 +13,7 @@ Type TScreenHandler_ProgrammePlanner
 	Global plannerNextDayButton:TGUIButton
 	Global plannerPreviousDayButton:TGUIButton
 	Global openedProgrammeListThisVisit:int = False
+	Global currentRoom:TRoomBase
 
 	Global hoveredGuiProgrammePlanElement:TGuiProgrammePlanElement = null
 	Global draggedGuiProgrammePlanElement:TGuiProgrammePlanElement = null
@@ -270,7 +271,8 @@ Type TScreenHandler_ProgrammePlanner
 	'clear the guilist if a player enters
 	'screens are only handled by real players
 	Function onEnterProgrammePlannerScreen:int(triggerEvent:TEventBase)
-
+		currentRoom = GetPlayer().GetFigure().inRoom
+	
 		'==== EMPTY/DELETE GUI-ELEMENTS =====
 		hoveredGuiProgrammePlanElement = null
 		draggedGuiProgrammePlanElement = null
@@ -303,8 +305,8 @@ Type TScreenHandler_ProgrammePlanner
 		endif
 
 
-		if openedProgrammeListThisVisit
-			GetPlayer().GetProgrammeCollection().ClearJustAddedProgrammeLicences()
+		if openedProgrammeListThisVisit and TRoomHandler.IsPlayersRoom(currentRoom)
+			GetPlayerProgrammeCollection(currentRoom.owner).ClearJustAddedProgrammeLicences()
 		endif
 
 		return TRUE
@@ -334,6 +336,9 @@ Type TScreenHandler_ProgrammePlanner
 	'this way the newly dragged item is kind of a "newly" created
 	'item without history of a former slot etc.
 	Function onDragProgrammePlanElement:int(triggerEvent:TEventBase)
+		'do not react if in other players rooms
+		if not TRoomHandler.IsPlayersRoom(currentRoom) return False
+
 		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
 		if not item then return FALSE
 
@@ -354,6 +359,9 @@ Type TScreenHandler_ProgrammePlanner
 
 
 	Function onTryDragProgrammePlanElement:int(triggerEvent:TEventBase)
+		'do not react if in other players rooms
+		if not TRoomHandler.IsPlayersRoom(currentRoom) return False
+
 		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
 		if not item then return FALSE
 
@@ -391,6 +399,9 @@ Type TScreenHandler_ProgrammePlanner
 	'intercept if item does not allow dropping on specific lists
 	'eg. certain ads as programme if they do not allow no commercial shows
 	Function onTryDropProgrammePlanElement:int(triggerEvent:TEventBase)
+		'do not react if in other players rooms
+		if not TRoomHandler.IsPlayersRoom(currentRoom) return False
+
 		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
 		if not item then return FALSE
 		
@@ -405,6 +416,9 @@ Type TScreenHandler_ProgrammePlanner
 
 
 	Function onTryDropProgrammePlanElementOnDayButton:int(triggerEvent:TEventBase)
+		'do not react if in other players rooms
+		if not TRoomHandler.IsPlayersRoom(currentRoom) return False
+
 		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
 		if not item then return FALSE
 
@@ -442,11 +456,11 @@ Type TScreenHandler_ProgrammePlanner
 		if not talkToProgrammePlanner then return TRUE
 
 		if list = GuiListProgrammes
-			if not GetPlayer().GetProgrammePlan().RemoveProgramme(item.broadcastMaterial)
+			if not GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
 				print "[WARNING] dragged item from programmelist - removing from programmeplan at "+slot+":00 - FAILED"
 			endif
 		elseif list = GuiListAdvertisements
-			if not GetPlayer().GetProgrammePlan().RemoveAdvertisement(item.broadcastMaterial)
+			if not GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(item.broadcastMaterial)
 				print "[WARNING] dragged item from adlist - removing from programmeplan at "+slot+":00 - FAILED"
 			endif
 		else
@@ -469,12 +483,12 @@ Type TScreenHandler_ProgrammePlanner
 		if List = GuiListProgrammes or list = GuiListAdvertisements
 			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
 				if item.lastList = GuiListAdvertisements
-					if not GetPlayer().GetProgrammePlan().RemoveAdvertisement(item.broadcastMaterial)
+					if not GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(item.broadcastMaterial)
 						print "[ERROR] dropped item from another day on active day - removal in other days adlist FAILED"
 						return False
 					Endif
 				ElseIf item.lastList = GuiListProgrammes
-					if not GetPlayer().GetProgrammePlan().RemoveProgramme(item.broadcastMaterial)
+					if not GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
 						print "[ERROR] dropped item from another day on active day - removal in other days programmelist FAILED"
 						return False
 					Endif
@@ -511,12 +525,12 @@ Type TScreenHandler_ProgrammePlanner
 		if List = GuiListProgrammes or list = GuiListAdvertisements
 			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
 				if item.lastList = GuiListAdvertisements
-					if not GetPlayer().GetProgrammePlan().RemoveAdvertisement(item.broadcastMaterial)
+					if not GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(item.broadcastMaterial)
 						print "[ERROR] dropped item from another day on active day - removal in other days adlist FAILED"
 						return False
 					Endif
 				ElseIf item.lastList = GuiListProgrammes
-					if not GetPlayer().GetProgrammePlan().RemoveProgramme(item.broadcastMaterial)
+					if not GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
 						print "[ERROR] dropped item from another day on active day - removal in other days programmelist FAILED"
 						return False
 					Endif
@@ -529,18 +543,18 @@ Type TScreenHandler_ProgrammePlanner
 			'is the gui item coming from another day?
 			'remove it from there (was "silenced" during automatic mode)
 			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
-				if not GetPlayer().GetProgrammePlan().RemoveProgramme(item.broadcastMaterial)
+				if not GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
 					print "[ERROR] dropped item on programmelist - removal from other day FAILED"
 					return False
 				endif
 			Endif
 
-			if not GetPlayer().GetProgrammePlan().SetProgrammeSlot(item.broadcastMaterial, planningDay, slot)
+			if not GetPlayerProgrammePlan(currentRoom.owner).SetProgrammeSlot(item.broadcastMaterial, planningDay, slot)
 				print "[WARNING] dropped item on programmelist - adding to programmeplan at "+slot+":00 - FAILED"
 				return FALSE
 			endif
 		elseif list = GuiListAdvertisements
-			if not GetPlayer().GetProgrammePlan().SetAdvertisementSlot(item.broadcastMaterial, planningDay, slot)
+			if not GetPlayerProgrammePlan(currentRoom.owner).SetAdvertisementSlot(item.broadcastMaterial, planningDay, slot)
 				print "[WARNING] dropped item on adlist - adding to programmeplan at "+slot+":00 - FAILED"
 				return FALSE
 			endif
@@ -575,6 +589,9 @@ Type TScreenHandler_ProgrammePlanner
 	'right mouse button click: remove the block from the player's programmePlan
 	'left mouse button click: check shortcuts and create a copy/nextepisode-block
 	Function onClickProgrammePlanElement:int(triggerEvent:TEventBase)
+		'do not react if in other players rooms
+		if not TRoomHandler.IsPlayersRoom(currentRoom) return False
+
 		local item:TGUIProgrammePlanElement= TGUIProgrammePlanElement(triggerEvent._sender)
 
 		'left mouse button
@@ -583,11 +600,11 @@ Type TScreenHandler_ProgrammePlanner
 			'-> remove dayChangeObjects from plan if dragging (and allowed)
 			if not item.isDragged() and item.isDragable() and talkToProgrammePlanner
 				if item = GuiListAdvertisements.dayChangeGuiProgrammePlanElement
-					if GetPlayer().GetProgrammePlan().RemoveAdvertisement(item.broadcastMaterial)
+					if GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(item.broadcastMaterial)
 						GuiListAdvertisements.dayChangeGuiProgrammePlanElement = null
 					endif
 				elseif item = GuiListProgrammes.dayChangeGuiProgrammePlanElement
-					if GetPlayer().GetProgrammePlan().RemoveProgramme(item.broadcastMaterial)
+					if GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
 						GuiLisTProgrammes.dayChangeGuiProgrammePlanElement = null
 					endif
 				endif
@@ -649,10 +666,11 @@ Type TScreenHandler_ProgrammePlanner
 
 
 	Function onDrawProgrammePlanner:int( triggerEvent:TEventBase )
-		'local screen:TScreen	= TScreen(triggerEvent._sender)
-		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
+		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
+		currentRoom = room
+		
 		GUIManager.Draw("programmeplanner",,, GUIMANAGER_TYPES_NONDRAGGED)
 
 		'overlay old days
@@ -682,21 +700,29 @@ Type TScreenHandler_ProgrammePlanner
 
 
 		SetColor 255,255,255
-		If room.owner = GetPlayerCollection().playerID
-			If PPprogrammeList.GetOpen() > 0
-				PPprogrammeList.Draw()
+		If PPprogrammeList.GetOpen() > 0
+			PPprogrammeList.owner = GetPlayer(currentRoom.owner)
+			PPprogrammeList.Draw()
+			If TRoomHandler.IsPlayersRoom(currentRoom)
 				openedProgrammeListThisVisit = True
 			endif
-			If PPcontractList.GetOpen() > 0 Then PPcontractList.Draw()
-			'draw lists sheet
-			If PPprogrammeList.GetOpen() and PPprogrammeList.hoveredLicence
-				PPprogrammeList.hoveredLicence.ShowSheet(30,20)
-			endif
-			'If PPcontractList.GetOpen() and
-			if PPcontractList.hoveredAdContract
-				PPcontractList.hoveredAdContract.ShowSheet(30,20)
-			endif
-		EndIf
+		endif
+
+		If PPcontractList.GetOpen() > 0
+			PPcontractList.owner = GetPlayer(currentRoom.owner)
+			PPcontractList.Draw()
+		endif
+
+		'draw lists sheet
+		If PPprogrammeList.GetOpen() and PPprogrammeList.hoveredLicence
+			PPprogrammeList.hoveredLicence.ShowSheet(30,20)
+		endif
+
+		'If PPcontractList.GetOpen() and
+		if PPcontractList.hoveredAdContract
+			PPcontractList.hoveredAdContract.ShowSheet(30,20)
+		endif
+
 
 		'if not hoveredGuiProgrammePlanElement then RefreshHoveredProgrammePlanElement()
 		if hoveredGuiProgrammePlanElement
@@ -720,10 +746,11 @@ Type TScreenHandler_ProgrammePlanner
 
 
 	Function onUpdateProgrammePlanner:int( triggerEvent:TEventBase )
-		'local screen:TScreen	= TScreen(triggerEvent._sender)
-		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
+		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
+		currentRoom = room
+		
 		'if not initialized, do so
 		if planningDay = -1 then planningDay = GetWorldTime().getDay()
 
@@ -748,9 +775,9 @@ Type TScreenHandler_ProgrammePlanner
 
 		'delete unused and create new gui elements
 		if haveToRefreshGuiElements
-				RefreshGuiElements()
-				'reassign a potential hovered/dragged element
-				FindHoveredPlanElement()
+			RefreshGuiElements()
+			'reassign a potential hovered/dragged element
+			FindHoveredPlanElement()
 		endif
 
 		if planningDay-1 < GetWorldTime().getDay(GetWorldTime().GetTimeStart())
@@ -807,10 +834,26 @@ Type TScreenHandler_ProgrammePlanner
 		endif
 
 
-		If room.owner = GetPlayerCollection().playerID
-			PPprogrammeList.Update()
-			PPcontractList.Update()
+		'do not allow interaction for other players (even with master key)
+		'If GetPlayer().HasMasterKey() OR IsPlayersRoom(room)
+		If TRoomHandler.IsPlayersRoom(room)
+			'enable List interaction
+			PPprogrammeList.clicksAllowed = True
+			PPcontractList.clicksAllowed = True
+			GuiListProgrammes.setOption(GUI_OBJECT_CLICKABLE, True)
+		else
+			'disable List interaction
+			PPprogrammeList.clicksAllowed = False
+			PPcontractList.clicksAllowed = False
+			GuiListProgrammes.setOption(GUI_OBJECT_CLICKABLE, False)
 		EndIf
+
+		PPprogrammeList.owner = GetPlayer(currentRoom.owner)
+		PPprogrammeList.Update()
+
+		PPcontractList.owner = GetPlayer(currentRoom.owner)
+		PPcontractList.Update()
+
 
 		'hide or show help
 		If THelper.IsIn(MouseManager.x, MouseManager.y, 0,365,20,20)
@@ -1059,7 +1102,7 @@ Type TScreenHandler_ProgrammePlanner
 
 		'===== CREATE NEW =====
 		'create missing gui elements for all programmes/ads
-		local daysProgramme:TBroadcastMaterial[] = GetPlayer().GetProgrammePlan().GetProgrammesInTimeSpan(currDay, 0, currDay, 23)
+		local daysProgramme:TBroadcastMaterial[] = GetPlayerProgrammePlan(currentRoom.owner).GetProgrammesInTimeSpan(currDay, 0, currDay, 23)
 		For local obj:TBroadcastMaterial = eachin daysProgramme
 			if not obj then continue
 			'if already included - skip it
@@ -1103,7 +1146,7 @@ Type TScreenHandler_ProgrammePlanner
 
 
 		'ad list (can contain ads, programmes, ...)
-		local daysAdvertisements:TBroadcastMaterial[] = GetPlayer().GetProgrammePlan().GetAdvertisementsInTimeSpan(currDay, 0, currDay, 23)
+		local daysAdvertisements:TBroadcastMaterial[] = GetPlayerProgrammePlan(currentRoom.owner).GetAdvertisementsInTimeSpan(currDay, 0, currDay, 23)
 		For local obj:TBroadcastMaterial = eachin daysAdvertisements
 			if not obj then continue
 

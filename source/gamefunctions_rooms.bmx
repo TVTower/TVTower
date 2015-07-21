@@ -176,7 +176,7 @@ Type TRoomHandler
 	End Function
 
 
-	Function IsPlayersRoom:int(room:TRoom)
+	Function IsPlayersRoom:int(room:TRoomBase)
 		if not room then return False
 		return GetPlayer().playerID = room.owner
 	End Function
@@ -412,7 +412,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		if not figure or not figure.playerID then return FALSE
 
 		'handle interactivity for room owners
-		if IsRoomOwner(figure, TRoom(triggerEvent.GetSender()))
+		if IsRoomOwner(figure, TRoom(triggerEvent.GetReceiver()))
 			'if the list is open - just close the list and veto against
 			'leaving the room
 			if programmeList.openState <> 0
@@ -1990,12 +1990,12 @@ Type RoomHandler_Boss extends TRoomHandler
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		smokeEmitter.Draw()
 
+		local room:TRoom = TRoom(triggerEvent.GetSender())
 		'only handle custom elements for players room
-		local room:TRoom = TRoom(triggerEvent._sender)
-		if room.owner <> GetPlayerCollection().playerID then return FALSE
+		'if room.owner <> GetPlayerCollection().playerID then return FALSE
 
 
-		local boss:TPlayerBoss = GetPlayerBoss(GetPlayer().playerID)
+		local boss:TPlayerBoss = GetPlayerBoss(room.owner)
 		if not boss then return False
 		For Local dialog:TDialogue = EachIn boss.Dialogues
 			dialog.Draw()
@@ -2008,16 +2008,16 @@ Type RoomHandler_Boss extends TRoomHandler
 
 		smokeEmitter.Update()
 
-		'only handle custom elements for players room
 		local room:TRoom = TRoom(triggerEvent._sender)
-		if room.owner <> GetPlayerCollection().playerID then return FALSE
+		'only handle custom elements for players room
+		'if room.owner <> GetPlayerCollection().playerID then return FALSE
 
 		
-		local boss:TPlayerBoss = GetPlayerBoss(GetPlayer().playerID)
+		local boss:TPlayerBoss = GetPlayerBoss(room.owner)
 		if not boss then return False
 
 		'generate the dialogue if not done yet
-		If boss.Dialogues.Count() <= 0 then boss.GenerateDialogues()
+		If boss.Dialogues.Count() <= 0 then boss.GenerateDialogues(GetPlayer().playerID)
 		For Local dialog:TDialogue = EachIn boss.Dialogues
 			If dialog.Update() = 0
 				GetPlayer().GetFigure().LeaveRoom()
@@ -2260,7 +2260,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		if not figure or not figure.playerID then return FALSE
 
 		'handle interactivity for room owners
-		if IsRoomOwner(figure, TRoom(triggerEvent.GetSender()))
+		if IsRoomOwner(figure, TRoom(triggerEvent.GetReceiver()))
 			'if the manager dialogue is open - just close the dialogue and
 			'veto against leaving the room
 			if studioManagerDialogue

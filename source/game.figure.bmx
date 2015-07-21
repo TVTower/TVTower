@@ -406,6 +406,19 @@ Type TFigure extends TFigureBase
 		Next
 	End Method
 
+	'a room is locked for all figures except they have the masterKey
+	'(or are non-player figures)
+	Method HasKeyForRoom:int(room:TRoomBase)
+		if hasMasterKey then return True
+		if not playerID then return True
+
+		'players can visit bosses of other channels
+		if room.name = "boss" then return True
+
+		'else they can only visit if they are owner
+		return playerID = room.owner
+	End Method
+
 
 	'override to take rooms into consideration
 	Method IsVisible:int()
@@ -535,21 +548,27 @@ Type TFigure extends TFigureBase
 		'something (bomb, renovation, ...) does not allow access to this
 		'room for now
 		if room.IsBlocked()
-			'inform ALL about this (eg. inform AI or Player )
-			EventManager.triggerEvent(TEventSimple.Create("figure.onFailEnterRoom", new TData.AddString("reason", "blocked").Add("door", door), self, room))
-
+			FailEnterRoom(room, door, "blocked")
 			return FALSE
 		endif
 
+
 		'check if enter not possible
 		if not CanEnterRoom(room) and not forceEnter
+			'rooms of other players are locked, you need the master key or
+			'you must be a non-player-figure ...
+			if not HasKeyForRoom(room)
+				FailEnterRoom(room, door, "locked")
+				return FALSE
+			endif
+
+			'no key needed or having one... check if there is someone
+			'in already (who is not kick-able)
 			If room.hasOccupant() and not room.isOccupant(self)
 				'only player-figures need such handling (events etc.)
 				'all others just enter
 				If playerID and not playerID = room.owner
-					'inform ALL about this (eg. inform AI or Player )
-					EventManager.triggerEvent(TEventSimple.Create("figure.onFailEnterRoom", new TData.AddString("reason", "inuse").Add("door", door), self, room))
-
+					FailEnterRoom(room, door, "inuse")
 					return FALSE
 				EndIf
 			EndIf
@@ -618,6 +637,26 @@ Type TFigure extends TFigureBase
 	End Method
 
 
+	Method FailEnterRoom:Int(room:TRoomBase, door:TRoomDoorBase, reason:String)
+		'=== INFORM OTHERS ===
+		'inform that figure failed to enter the room
+		'(eg. for players informing the ai)
+		EventManager.triggerEvent( TEventSimple.Create("figure.onFailEnterRoom", new TData.AddString("reason", reason).Add("door", door), self, room))
+
+		'Debug
+		'print self.name+" FAILED ENTERING " + room.GetName() +" ["+room.id+"]"
+
+		'reset action
+		currentAction = ACTION_IDLE
+
+		'stay in building
+		SetInRoom(null)
+
+		'finish reaching-target-steps (and remove current target)
+		ReachTargetStep2()
+	End Method
+
+
 	Method CanEnterRoom:Int(room:TRoomBase)
 		'cannot enter if room forbids
 		'(exception are non-players)
@@ -629,10 +668,8 @@ Type TFigure extends TFigureBase
 			return False
 		endif
 
-		'players must be owner of the room
-		If playerID = room.owner then return True
-
-		return False
+		'players must be owner of the room or needs a masterKey
+		Return HasKeyForRoom(room)
 	End Method 
 
 

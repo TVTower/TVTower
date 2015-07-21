@@ -416,7 +416,10 @@ DIALOGUE_BOSS_MAIN_TEXT_NEWSMALFUNCTION1      = En lugar de enviar no hay progra
 DIALOGUE_BOSS_MAIN_ENDING_DEFAULT1            = Vuelve al trabajo o buscare a otro que lo haga por ti...!
 DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY1         = El hámster de mi hijo podria hacer tu trabajo mejor que tú!
 DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY2         = Otro bloque sin emitir and next best knocking on this door will get your job.
+DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER1          = Fuera de mi camino - y transmitir peores saludos a su jefe. Harr harr harr...
+DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER2          = Vete! Yo no usted y su canal soporto más!
 
+DIALOGUE_BOSS_WILLNOTDISTURB_OTHERPLAYER =	Muy bien, uhmmm, ya no voy a molestar!
 DIALOGUE_BOSS_WILLNOTDISTURB			=	Ah bien, jefe ya no voy a molestar!
 DIALOGUE_BOSS_ASKFORCREDIT				=	Acabo.... uhm... quería pedir mas dinero.
 DIALOGUE_BOSS_REPAYCREDIT				=	Quiero pagar mi crédito ...
@@ -537,5 +540,7 @@ SNOW_IS_FALLING = Attention on the streets. Snow is falling and black ice is pos
 TEMPERATURES_ARE_BETWEEN_X_AND_Y = Temperatures will be between %MINTEMPERATURE% and %MAXTEMPERATURE%°C
 TEMPERATURE_IS_CONSTANT_AT_X = Temperature is at constant  %TEMPERATURE%°C
 
+LOCKED = Cerrada
+ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY = El acceso a esta sala sólo es posible con la tecla derecha.
 BLOCKED = Bloqueado
 ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE = El acceso a esta sala en este momento no es posible.

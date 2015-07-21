@@ -252,7 +252,6 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 	End Method
 
 
-
 	Method IsBlocked:Int()
 		if blockedState <> BLOCKEDSTATE_NONE and blockedUntil < GetWorldTime().GetTimeGone()
 			SetUnBlocked()

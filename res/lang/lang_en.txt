@@ -415,7 +415,10 @@ DIALOGUE_BOSS_MAIN_TEXT_NEWSMALFUNCTION1      = Instead of sending no news shows
 DIALOGUE_BOSS_MAIN_ENDING_DEFAULT1            = Back to work or someone else will get your Job...!
 DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY1         = The hamster of my son could do your job better than you!
 DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY2         = Drop another brick and next best knocking on this door will get your job.
+DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER1          = Out of my way - and pass on worst greetings to your boss. Harr harr harr...
+DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER2          = Go away! I can't stand you and your channel any longer!
 
+DIALOGUE_BOSS_WILLNOTDISTURB_OTHERPLAYER =	Alright, uhmmm, I will no longer disturb!
 DIALOGUE_BOSS_WILLNOTDISTURB			=	Ah alright, Boss I will no longer disturb!
 DIALOGUE_BOSS_ASKFORCREDIT				=	I just *uhm* wanted to ask for credit.
 DIALOGUE_BOSS_REPAYCREDIT				=	I want to repay my credit...
@@ -535,5 +538,7 @@ SNOW_IS_FALLING = Attention on the streets. Snow is falling and black ice is pos
 TEMPERATURES_ARE_BETWEEN_X_AND_Y = Temperatures will be between %MINTEMPERATURE% and %MAXTEMPERATURE%°C
 TEMPERATURE_IS_CONSTANT_AT_X = Temperature is at constant  %TEMPERATURE%°C
 
+LOCKED = Locked
+ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY = Access to this room is only possible with the right key.
 BLOCKED = Blocked
 ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE = Access to this room is currently not possible.

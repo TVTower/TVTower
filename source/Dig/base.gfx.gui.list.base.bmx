@@ -846,10 +846,24 @@ Type TGUIListItem Extends TGUIobject
 		Return True
 	End Method
 
+rem
+	'override to ask list first
+	Method IsClickable:int()
+		Local parent:TGUIobject = Self._parent
+		If TGUIPanel(parent) Then parent = TGUIPanel(parent)._parent
+		If TGUIScrollablePanel(parent) Then parent = TGUIScrollablePanel(parent)._parent
+		If TGUIListBase(_parent) and not _parent.IsClickable() then return False
+
+		return Super.IsClickable()
+	End Method
+endrem
+
 	'override default
 	Method onHit:Int(triggerEvent:TEventBase)
+print "onnhit item"
 		Local data:TData = triggerEvent.GetData()
 		If Not data Then Return False
+
 
 		'only react on clicks with left mouse button
 		If data.getInt("button") <> 1 Then Return False

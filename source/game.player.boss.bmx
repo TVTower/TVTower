@@ -209,94 +209,103 @@ Type TPlayerBoss
 	End Method
 
 
-	Method GenerateDialogues()
+	Method GenerateDialogues(visitingPlayerID:int)
 		'each array entry is a "topic" the chef could talk about
 		Local ChefDialoge:TDialogueTexts[5]
 		local text:string
 
+		if visitingPlayerID = playerID
+			local isUnfriendly:int = isInMoodOrWorse(MOOD_UNFRIENDLY) or registeredNewsMalfunctions > 0 or registeredProgrammeMalfunctions > 0
+			if isUnfriendly
+				text = GetRandomLocale("DIALOGUE_BOSS_MAIN_TITLE_UNFRIENDLY")
+			else
+				text = GetRandomLocale("DIALOGUE_BOSS_MAIN_TITLE_DEFAULT")
+			endif
 
-		local isUnfriendly:int = isInMoodOrWorse(MOOD_UNFRIENDLY) or registeredNewsMalfunctions > 0 or registeredProgrammeMalfunctions > 0
+			if registeredNewsMalfunctions > 0 or registeredProgrammeMalfunctions > 0
+				if registeredProgrammeMalfunctions > 0
+					text :+ "~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_PROGRAMMEMALFUNCTION")
+				endif
+				if registeredNewsMalfunctions > 0
+					text :+ "~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_NEWSMALFUNCTION")
+				endif
+			else
+				text :+ "~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_DEFAULT")
+			endif
+			if isUnfriendly
+				text :+ "~n~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY")
+			else
+				text :+ "~n~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_ENDING_DEFAULT")
+			endif
 
-		if isUnfriendly
+			text = text.replace("%PROGRAMMEMALFUNCTION%", registeredProgrammeMalfunctions)
+			text = text.replace("%NEWSMALFUNCTION%", registeredNewsMalfunctions)
+			text = text.replace("%PLAYERNAME%", GetPlayerBase().name)
+
+			ChefDialoge[0] = TDialogueTexts.Create(text)
+			ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_WILLNOTDISTURB"), - 2, Null))
+			ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_ASKFORCREDIT"), 1, Null))
+
+
+			'add repay option if having a credit
+			If GetPlayerBase().GetCredit() > 0
+				ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_REPAYCREDIT"), 3, Null))
+			endif
+			'creditMax - credit taken
+			If GetPlayerBase().GetCreditAvailable() > 0
+				local acceptEvent:TEventSimple = TEventSimple.Create("dialogue.onTakeBossCredit", new TData.AddNumber("value", GetPlayerBase().GetCreditAvailable()))
+				local acceptHalfEvent:TEventSimple = TEventSimple.Create("dialogue.onTakeBossCredit", new TData.AddNumber("value", 0.5 * GetPlayerBase().GetCreditAvailable()))
+				ChefDialoge[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK").replace("%CREDIT%", TFunctions.DottedValue(GetPlayerBase().GetCreditAvailable())))
+				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT").replace("%CREDIT%",TFunctions.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())), 2, acceptEvent))
+				'avoid micro credits
+				if GetPlayerBase().GetCreditAvailable() > 50000
+					ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF").replace("%CREDITHALF%", TFunctions.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())),2, acceptHalfEvent))
+				endif
+				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), - 2))
+			Else
+				ChefDialoge[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY").replace("%CREDIT%", GetPlayerBase().GetCredit()))
+				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT"), 3))
+				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), - 2))
+			EndIf
+			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))
+
+			ChefDialoge[2] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_BACKTOWORK").replace("%PLAYERNAME%", GetPlayerBase().name) )
+			ChefDialoge[2].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_BACKTOWORK_OK"), - 2))
+
+			'repay credit + options
+			ChefDialoge[3] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE") )
+			If GetPlayerBase().GetCredit() >= 100000 And GetPlayerBase().GetMoney() >= 100000
+				local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", 100000))
+				ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_100K"), - 2, payBackEvent))
+			EndIf
+			If GetPlayerBase().GetCredit() >= 500000 And GetPlayerBase().GetMoney() >= 500000
+				local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", 500000))
+				ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_500K"), - 2, payBackEvent))
+			EndIf
+			If GetPlayerBase().GetCredit() < GetPlayerBase().GetMoney()
+				local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", GetPlayerBase().GetCredit()))
+				ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_ALL").replace("%CREDIT%", GetPlayerBase().GetCredit()), - 2, payBackEvent))
+			EndIf
+			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), - 2))
+			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))
+
+			'clear the talk subjects - boss talked about them
+			talkSubjects = new TPlayerBossTalkSubjects[0]
+
+		'other players
+		else
 			text = GetRandomLocale("DIALOGUE_BOSS_MAIN_TITLE_UNFRIENDLY")
-		else
-			text = GetRandomLocale("DIALOGUE_BOSS_MAIN_TITLE_DEFAULT")
-		endif
-		if registeredNewsMalfunctions > 0 or registeredProgrammeMalfunctions > 0
-			if registeredProgrammeMalfunctions > 0
-				text :+ "~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_PROGRAMMEMALFUNCTION")
-			endif
-			if registeredNewsMalfunctions > 0
-				text :+ "~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_NEWSMALFUNCTION")
-			endif
-		else
-			text :+ "~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_DEFAULT")
-		endif
-		if isUnfriendly
-			text :+ "~n~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY")
-		else
-			text :+ "~n~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_ENDING_DEFAULT")
-		endif
+			text :+ "~n~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER")
 
-		text = text.replace("%PROGRAMMEMALFUNCTION%", registeredProgrammeMalfunctions)
-		text = text.replace("%NEWSMALFUNCTION%", registeredNewsMalfunctions)
-		text = text.replace("%PLAYERNAME%", GetPlayerBase().name)
+			ChefDialoge[0] = TDialogueTexts.Create(text)
+			ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_WILLNOTDISTURB_OTHERPLAYER"), - 2, Null))
+		endif
 		
-		ChefDialoge[0] = TDialogueTexts.Create(text)
-		ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_WILLNOTDISTURB"), - 2, Null))
-		ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_ASKFORCREDIT"), 1, Null))
-
-		'add repay option if having a credit
-		If GetPlayerBase().GetCredit() > 0
-			ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_REPAYCREDIT"), 3, Null))
-		endif
-		'creditMax - credit taken
-		If GetPlayerBase().GetCreditAvailable() > 0
-			local acceptEvent:TEventSimple = TEventSimple.Create("dialogue.onTakeBossCredit", new TData.AddNumber("value", GetPlayerBase().GetCreditAvailable()))
-			local acceptHalfEvent:TEventSimple = TEventSimple.Create("dialogue.onTakeBossCredit", new TData.AddNumber("value", 0.5 * GetPlayerBase().GetCreditAvailable()))
-			ChefDialoge[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK").replace("%CREDIT%", TFunctions.DottedValue(GetPlayerBase().GetCreditAvailable())))
-			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT").replace("%CREDIT%",TFunctions.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())), 2, acceptEvent))
-			'avoid micro credits
-			if GetPlayerBase().GetCreditAvailable() > 50000
-				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF").replace("%CREDITHALF%", TFunctions.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())),2, acceptHalfEvent))
-			endif
-			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), - 2))
-		Else
-			ChefDialoge[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY").replace("%CREDIT%", GetPlayerBase().GetCredit()))
-			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT"), 3))
-			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), - 2))
-		EndIf
-		ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))
-
-		ChefDialoge[2] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_BACKTOWORK").replace("%PLAYERNAME%", GetPlayerBase().name) )
-		ChefDialoge[2].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_BACKTOWORK_OK"), - 2))
-
-		'repay credit + options
-		ChefDialoge[3] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE") )
-		If GetPlayerBase().GetCredit() >= 100000 And GetPlayerBase().GetMoney() >= 100000
-			local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", 100000))
-			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_100K"), - 2, payBackEvent))
-		EndIf
-		If GetPlayerBase().GetCredit() >= 500000 And GetPlayerBase().GetMoney() >= 500000
-			local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", 500000))
-			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_500K"), - 2, payBackEvent))
-		EndIf
-		If GetPlayerBase().GetCredit() < GetPlayerBase().GetMoney()
-			local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", GetPlayerBase().GetCredit()))
-			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_ALL").replace("%CREDIT%", GetPlayerBase().GetCredit()), - 2, payBackEvent))
-		EndIf
-		ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), - 2))
-		ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))
-
-
 		Local ChefDialog:TDialogue = new TDialogue
 		ChefDialog.SetArea(new TRectangle.Init(350, 60, 460, 230))
 		ChefDialog.AddTexts(Chefdialoge)
 
 		Dialogues.AddLast(ChefDialog)
-
-		'clear the talk subjects - boss talked about them
-		talkSubjects = new TPlayerBossTalkSubjects[0]
 	End Method
 
 
@@ -501,7 +510,7 @@ Type TPlayerBoss
 
 		'remove an old (maybe obsolete) dialogue
 		boss.ResetDialogues()
-		boss.GenerateDialogues()
+		boss.GenerateDialogues(GetPlayerBase().playerID)
 
 		'send out event that the player enters the bosses room
 		EventManager.triggerEvent(TEventSimple.Create("playerboss.onPlayerEnterBossRoom", null, boss, player))

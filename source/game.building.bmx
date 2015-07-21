@@ -597,6 +597,19 @@ Type TBuilding Extends TBuildingBase
 
 		Return True
 	End Method
+
+
+	Method CreateRoomLockedTooltip:Int(door:TRoomDoorBase, room:TRoomBase = Null)
+		'if no door was given, use main door of room
+		If Not door And room Then door = GetRoomDoorCollection().GetMainDoorToRoom(room.id)
+		If Not door Then Return False
+		roomUsedTooltip = TTooltip.Create(GetLocale("LOCKED"), GetLocale("ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY"), 0,0,-1,-1,2000)
+		roomUsedTooltip.area.position.SetY(door.GetScreenY() - door.area.GetH() - roomUsedTooltip.GetHeight())
+		roomUsedTooltip.area.position.SetX(door.GetScreenX() + door.area.GetW()/2 - roomUsedTooltip.GetWidth()/2)
+		roomUsedTooltip.enabled = 1
+
+		Return True
+	End Method
 End Type
 
 
