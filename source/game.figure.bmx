@@ -415,6 +415,9 @@ Type TFigure extends TFigureBase
 		'players can visit bosses of other channels
 		if room.name = "boss" then return True
 
+		'players can visit non-player-rooms
+		if not room.owner then return True
+
 		'else they can only visit if they are owner
 		return playerID = room.owner
 	End Method
