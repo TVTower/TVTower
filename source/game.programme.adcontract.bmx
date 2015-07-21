@@ -262,6 +262,9 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 	Field infomercialProfitBase:int = 0
 	'keep the profit the same for all audience requirements
 	Field fixedInfomercialProfit:int = True
+	'if set, this defines a range in which the advertisement can come up
+	Field availableYearRangeFrom:int = -1
+	Field availableYearRangeTo:int = -1
 	
 
 	Method Create:TAdContractBase(GUID:String, title:TLocalizedString, description:TLocalizedString, daysToFinish:Int, spotCount:Int, targetgroup:Int, minAudience:Float, minImage:Float, fixedPrice:Int, profit:Float, penalty:Float)
@@ -1333,6 +1336,12 @@ Type TAdContractBaseFilter
 	'checks if the given adcontract fits into the filter criteria
 	Method DoesFilter:Int(contract:TAdContractBase)
 		if not contract then return False
+
+		'skip contracts not available in this game year
+		if contract.availableYearRangeFrom >= 0 and contract.availableYearRangeTo >= 0
+			if GetWorldTime().GetYear() < contract.availableYearRangeFrom or GetWorldTime().GetYear() > contract.availableYearRangeTo then return False
+		endif
+
 
 		if minAudienceMin >= 0 and contract.minAudienceBase < minAudienceMin then return False
 		if minAudienceMax >= 0 and contract.minAudienceBase > minAudienceMax then return False

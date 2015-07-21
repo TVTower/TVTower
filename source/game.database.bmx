@@ -798,14 +798,17 @@ endrem
 			"infomercial", "quality", "repetitions", ..
 			"fix_price", "duration", "profit", "penalty", ..
 			"pro_pressure_groups", "contra_pressure_groups", ..
-			"infomercial_profit", "fix_infomercial_profit" ..
+			"infomercial_profit", "fix_infomercial_profit", ..
+			"year_range_from", "year_range_to" ..
 		])
-			
 
 'aktivieren, wenn Datenbank Eintraege enthaelt, die infomercials erlauben
 '				adContract.infomercialAllowed = data.GetBool("infomercial", adContract.infomercialAllowed)
 '				adContract.quality = 0.01 * data.GetFloat("quality", adContract.quality * 100.0)
 		adContract.quality = 0.5
+
+		adContract.availableYearRangeFrom = data.GetInt("year_range_from", adContract.availableYearRangeFrom)
+		adContract.availableYearRangeTo = data.GetInt("year_range_to", adContract.availableYearRangeTo)
 
 		adContract.spotCount = data.GetInt("repetitions", adContract.spotcount)
 		adContract.fixedPrice = data.GetInt("fix_price", adContract.fixedPrice)
