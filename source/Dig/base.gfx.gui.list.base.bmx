@@ -860,7 +860,6 @@ endrem
 
 	'override default
 	Method onHit:Int(triggerEvent:TEventBase)
-print "onnhit item"
 		Local data:TData = triggerEvent.GetData()
 		If Not data Then Return False
 

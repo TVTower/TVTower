@@ -195,9 +195,18 @@ Type TEventManager
 				'stop triggering the event if ONE of them vetos
 				If triggeredByEvent.isVeto() Then Exit
 			Next
-			Return listeners.count()
+		endif
+
+		'run individual event method
+		If Not triggeredByEvent.IsVeto()
+			triggeredByEvent.onEvent()
 		EndIf
-		Return 0
+
+		If listeners
+			Return listeners.count()
+		Else
+			Return 0
+		EndIf
 	End Method
 
 
@@ -226,7 +235,6 @@ Type TEventManager
 
 '				Assert startTime >= self._ticks, "TEventManager: an future event didn't get triggered in time"
 				If event.getStartTime() <= _ticks			' is it time for this event?
-					event.onEvent()							' start event
 					If event._trigger <> ""					' only trigger event if _trigger is set
 						triggerEvent( event )
 					EndIf

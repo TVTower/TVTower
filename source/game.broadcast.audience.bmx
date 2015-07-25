@@ -58,20 +58,6 @@ Type TAudience
 
 	Function CreateWithBreakdown:TAudience(audience:Int)
 		return GetAudienceBreakDown().Copy().MultiplyFloat(audience)
-rem
-		Local obj:TAudience = New TAudience
-		obj.Children	= audience * 0.09	'Kinder (9%)
-		obj.Teenagers	= audience * 0.1	'Teenager (10%)
-		'adults 60%
-		obj.HouseWives	= audience * 0.12	'Hausfrauen (20% von 60% Erwachsenen = 12%)
-		obj.Employees	= audience * 0.405	'Arbeitnehmer (67,5% von 60% Erwachsenen = 40,5%)
-		obj.Unemployed	= audience * 0.045	'Arbeitslose (7,5% von 60% Erwachsenen = 4,5%)
-		obj.Manager		= audience * 0.03	'Manager (5% von 60% Erwachsenen = 3%)
-		obj.Pensioners	= audience * 0.21	'Rentner (21%)
-		'gender
-		obj.CalcGenderBreakdown()
-		Return obj
-endrem
 	End Function
 
 

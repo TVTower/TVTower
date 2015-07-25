@@ -1137,7 +1137,7 @@ endrem
 		'=== BEGIN OF NEWSSHOW ===
 		If minute = 0
 			obj = GetNewsShow(day, hour)
-			local eventKey:String = "broadcasting.begin"
+			local eventKey:String = "broadcasting.common.BeginBroadcasting"
 
 			Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
 			If obj
@@ -1155,7 +1155,7 @@ endrem
 		'=== END OF NEWSSHOW ===
 		ElseIf minute = 4
 			obj = GetNewsShow(day, hour)
-			local eventKey:String = "broadcasting.finish"
+			local eventKey:String = "broadcasting.common.FinishBroadcasting"
 
 			If obj
 				Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
@@ -1169,7 +1169,7 @@ endrem
 		'=== BEGIN OF PROGRAMME ===
 		ElseIf minute = 5
 			obj = GetProgramme(day, hour)
-			local eventKey:String = "broadcasting.begin"
+			local eventKey:String = "broadcasting.common.BeginBroadcasting"
 
 			Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
 			If obj
@@ -1179,7 +1179,7 @@ endrem
 					'eventKey = "broadcasting.begin"
 				Else
 					obj.ContinueBroadcasting(day, hour, minute, audienceResult)
-					eventKey = "broadcasting.continue"
+					eventKey = "broadcasting.common.ContinueBroadcasting"
 				EndIf
 			EndIf
 			'store audience/broadcast for daily stats (also for outage!)
@@ -1192,7 +1192,7 @@ endrem
 		'call-in shows/quiz - generate income
 		ElseIf minute = 54
 			obj = GetProgramme(day, hour)
-			local eventKey:String = "broadcasting.finish"
+			local eventKey:String = "broadcast.common.FinishBroadcasting"
 
 			'inform  object that it gets broadcasted
 			If obj
@@ -1204,12 +1204,10 @@ endrem
 							'refresh planned state (for next hour)
 							RecalculatePlannedProgramme(TProgramme(obj), -1, hour+1)
 						EndIf
-						
-						'eventKey = "broadcasting.finish"
 					EndIf
 				Else
 					obj.BreakBroadcasting(day, hour, minute, audienceResult)
-					eventKey = "broadcasting.break"
+					eventKey = "broadcast.common.BreakBroadcasting"
 				EndIf
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
@@ -1218,7 +1216,7 @@ endrem
 		'=== BEGIN OF COMMERCIAL BREAK ===
 		ElseIf minute = 55
 			obj = GetAdvertisement(day, hour)
-			local eventKey:String = "broadcasting.begin"
+			local eventKey:String = "broadcasting.common.BeginBroadcasting"
 
 			'inform  object that it gets broadcasted
 			If obj
@@ -1243,7 +1241,7 @@ endrem
 					'eventKey = "broadcasting.begin"
 				Else
 					obj.ContinueBroadcasting(day, hour, minute, audienceResult)
-					eventKey = "broadcasting.continue"
+					eventKey = "broadcasting.common.ContinueBroadcasting"
 				EndIf
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
@@ -1253,7 +1251,7 @@ endrem
 		'ads end - so trailers can set their "ok"
 		ElseIf minute = 59
 			obj = GetAdvertisement(day, hour)
-			local eventKey:String = "broadcasting.finish"
+			local eventKey:String = "broadcast.common.FinishBroadcasting"
 
 			'inform  object that it gets broadcasted
 			If obj
@@ -1263,7 +1261,7 @@ endrem
 					'eventKey = "broadcasting.finish"
 				Else
 					obj.BreakBroadcasting(day, hour, minute, audienceResult)
-					eventKey = "broadcasting.break"
+					eventKey = "broadcast.common.BreakBroadcasting"
 				EndIf
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
@@ -1297,3 +1295,108 @@ endrem
 		'Return audienceResult.MaxAudienceThisHour.GetSumFloat() / audienceResult.WholeMarket.GetSumFloat()
 	End Method
 End Type
+
+
+
+
+
+'contains general information of all broadcasts in the programmeplans
+'could contain broadcastmaterial-depending data
+Type TProgrammePlanInformationProvider extends TProgrammePlanInformationProviderBase
+	global _registeredEvents:int = False
+
+	Function GetInstance:TProgrammePlanInformationProvider()
+		if not _instance
+			_instance = new TProgrammePlanInformationProvider
+
+		'if the instance was created, but was a "base" one, create
+		'a new and take over the values
+		elseif not TProgrammePlanInformationProvider(_instance)
+			local provider:TProgrammePlanInformationProvider = new TProgrammePlanInformationProvider
+			provider.DeserializeFromString( _instance.SerializeToString() )
+
+			'now the new provider is the instance
+			_instance = provider
+		endif
+		return TProgrammePlanInformationProvider(_instance)
+	End Function
+
+
+	Method New()
+		if not _registeredEvents
+			EventManager.registerListenerFunction("broadcast.programme.FinishBroadcastingAsAdvertisement", onFinishBroadcasting)
+			EventManager.registerListenerFunction("broadcast.programme.FinishBroadcasting", onFinishBroadcasting)
+			EventManager.registerListenerFunction("broadcast.advertisement.FinishBroadcastingAsProgramme", onFinishBroadcasting)
+			'EventManager.registerListenerFunction("broadcast.advertisement.FinishBroadcasting", onFinishBroadcasting)
+			_registeredEvents = True
+		endif
+	End Method
+
+
+	Method RefreshProgrammeData(player:int, time:Long)
+		local plan:TPlayerProgrammePlan = GetPlayerProgrammePlan(player)
+		local programme:TProgramme = TProgramme(plan.GetProgramme(GetWorldTime().getDay(time), GetWorldTime().GetDayHour(time)))
+		'only interested in programmes
+		if not programme then return
+
+		'increase times a specific genre was broadcasted
+		local genreKey:string = string(programme.data.GetGenre())
+		programmeGenreAired[player].Insert(genreKey, string( int(string(programmeGenreAired[player].ValueForKey(genreKey))) + 1))
+		if player <> 0
+			programmeGenreAired[0].Insert(genreKey, string( int(string(programmeGenreAired[0].ValueForKey(genreKey))) + 1))
+		endif
+	End Method
+
+
+	Method RefreshAudienceData(player:int, time:Long, audienceData:object)
+		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
+		if not audienceResult then return
+		
+		local genreKey:string = ""
+		if GetWorldTime().GetDayMinute(time) = 4 then genreKey = "newsshow"
+
+		local programme:TProgramme = TProgramme(GetPlayerProgrammePlan(player).GetProgramme(GetWorldTime().getDay(time), GetWorldTime().GetDayHour(time)))
+		if programme then genreKey = string(programme.data.GetGenre())
+
+		local audience:int = audienceResult.audience.GetSum()
+		if audience > int(string(audienceRecord[player].ValueForKey(genreKey)))
+			audienceRecord[player].Insert(genreKey, string(audience))
+			'save global record too
+			if player <> 0
+				audienceRecord[0].Insert(genreKey, string(audience))
+			endif
+		endif
+	End Method
+
+
+	'=== EVENT LISTENERS ===
+
+	Function onFinishBroadcasting:Int(triggerEvent:TEventBase)
+		local broadcast:TBroadcastMaterial = TBroadcastMaterial(triggerEvent.GetSender())
+		local data:TData = triggerEvent.GetData()
+		local time:long = GetWorldTime().Maketime(0, data.GetInt("day"), data.GetInt("hour"), data.GetInt("minute"), 0)
+
+		Select triggerEvent._trigger
+			Case "broadcast.programme.FinishBroadcastingAsAdvertisement".ToLower()
+				GetInstance().SetTrailerAired(broadcast.owner, GetInstance().GetTrailerAired(broadcast.owner) + 1, time)
+			Case "broadcast.advertisement.FinishBroadcastingAsProgramme".ToLower()
+				GetInstance().SetInfomercialAired(broadcast.owner, GetInstance().GetInfomercialAired(broadcast.owner) + 1, time)
+				GetInstance().RefreshAudienceData(broadcast.owner, time, data.Get("audienceData"))
+			Case "broadcast.programme.FinishBroadcasting".ToLower()
+				GetInstance().RefreshProgrammeData(broadcast.owner, time)
+				GetInstance().RefreshAudienceData(broadcast.owner, time, data.Get("audienceData"))
+			Default
+				print "onFinishBroadcasting: unhandled trigger - "+ triggerEvent._trigger
+		End Select
+	End Function
+
+End Type
+
+'register this provider so it listens to events
+GetGameInformationCollection().AddProvider("programmeplan", TProgrammePlanInformationProvider.GetInstance())
+
+'===== CONVENIENCE ACCESSOR =====
+'return collection instance
+Function GetProgrammePlanInformationProvider:TProgrammePlanInformationProvider()
+	Return TProgrammePlanInformationProvider.GetInstance()
+End Function

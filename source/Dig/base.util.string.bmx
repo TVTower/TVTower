@@ -388,4 +388,24 @@ Type StringHelper
 			Return char = "d" Or char = "f" Or char = "s" Or char = "S" Or char = "c" Or char = "x" Or char = "X"
 		End Function
 	End Function
+
+
+	Function IntArrayToString:string(intArray:Int[], glue:string=",")
+		local result:String
+		For local i:int = EachIn intArray
+			result :+ i + glue
+		Next
+		if glue <> "" then result = result[.. result.length - glue.length]
+		return result
+	End Function
+
+
+	Function StringToIntArray:int[](s:string, delim:string=",")
+		local sArray:string[] = s.split(delim)
+		local a:int[ sArray.length ]
+		For local i:int = 0 until a.length
+			a[i] = int(sArray[i])
+		Next
+		return a
+	End Function
 End Type

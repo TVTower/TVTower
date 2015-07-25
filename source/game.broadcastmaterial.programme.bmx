@@ -5,7 +5,7 @@ Import "game.broadcast.audienceresult.bmx"
 Import "game.programme.programmelicence.bmx"
 Import "game.player.finance.bmx"
 Import "game.publicimage.bmx"
-
+'Import "game.gameevents.bmx"
 
 
 'parent of movies, series and so on
@@ -61,8 +61,18 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 		if usedAsType = TVTBroadcastMaterialType.PROGRAMME
 			FinishBroadcastingAsProgramme(day, hour, minute, audienceData)
+			'aired count is stored in programmedata for now
+			'GetBroadcastInformationProvider().SetProgrammeAired(licence.owner, GetBroadcastInformationProvider().GetTrailerAired(licence.owner) + 1, GetWorldTime.MakeTime(0,day,hour,minute) )
+
+			'inform others
+			EventManager.triggerEvent(TEventSimple.Create("broadcast.programme.FinishBroadcasting", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
+		'sent a trailer
 		elseif usedAsType = TVTBroadcastMaterialType.ADVERTISEMENT
-			FinishBroadcastingAsTrailer(day, hour, minute, audienceData)
+			FinishBroadcastingAsAdvertisement(day, hour, minute, audienceData)
+
+			'inform others
+			EventManager.triggerEvent(TEventSimple.Create("broadcast.programme.FinishBroadcastingAsAdvertisement", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
+'			GetBroadcastInformationProvider().SetTrailerAired(licence.owner, GetBroadcastInformationProvider().GetTrailerAired(licence.owner) + 1, GetWorldTime.MakeTime(0,day,hour,minute) )
 		endif
 
 		return TRUE
@@ -107,7 +117,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	End Method
 
 
-	Method FinishBroadcastingAsTrailer:int(day:int, hour:int, minute:int, audienceData:object)
+	Method FinishBroadcastingAsAdvertisement:int(day:int, hour:int, minute:int, audienceData:object)
 		self.SetState(self.STATE_OK)
 		data.CutTrailerTopicality(GetTrailerTopicalityCutToFactor())
 		data.trailerAired:+1

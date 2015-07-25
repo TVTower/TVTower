@@ -148,8 +148,15 @@ endrem
 
 		if usedAsType = TVTBroadcastMaterialType.PROGRAMME
 			FinishBroadcastingAsProgramme(day, hour, minute, audienceData)
+'			GetBroadcastInformationProvider().SetInfomercialAired(licence.owner, GetBroadcastInformationProvider().GetInfomercialAired(licence.owner) + 1, GetWorldTime.MakeTime(0,day,hour,minute) )
+
+			'inform others
+			EventManager.triggerEvent(TEventSimple.Create("broadcast.advertisement.FinishBroadcastingAsProgramme", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
 		elseif usedAsType = TVTBroadcastMaterialType.ADVERTISEMENT
 			'nothing happening - ads get paid on "beginBroadcasting"
+
+			'inform others
+			EventManager.triggerEvent(TEventSimple.Create("broadcast.advertisement.FinishBroadcasting", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
 		endif
 
 		return TRUE

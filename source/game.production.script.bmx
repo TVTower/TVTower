@@ -77,9 +77,6 @@ Type TScriptCollection Extends TGameObjectCollection
 		local template:TScriptTemplate = GetScriptTemplateCollection().GetRandom()
 		local script:TScript = TScript.CreateFromTemplate(template)
 		script.SetOwner(TOwnedGameObject.OWNER_NOBODY)
-		print "series: "+script.GetTitle()
-		print "-> template series: "+template.IsSeries() +"  flag:"+template.scriptLicenceType
-		print "-> script series: "+script.IsSeries()+ "  flag:"+script.scriptLicenceType
 		Add(script)
 		return script
 	End Method

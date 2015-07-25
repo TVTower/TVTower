@@ -24,6 +24,9 @@ Import "game.player.base.bmx"
 'to access datasheet-functions
 Import "common.misc.datasheet.bmx"
 
+'to access programmeplanner information
+Import "game.gameinformation.bmx"
+
 
 
 
@@ -1374,4 +1377,3 @@ Type TAdContractBaseFilter
 		return True
 	End Method
 End Type
-	

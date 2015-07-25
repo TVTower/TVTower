@@ -138,7 +138,7 @@ Type TPlayerBoss
 	Method RegisterEvents:Int()
 		'register events for all bosses
 		if not registeredEvents
-			EventManager.registerListenerFunction("broadcasting.finish", onFinishBroadcasting)
+			EventManager.registerListenerFunction("broadcast.common.FinishBroadcasting", onFinishBroadcasting)
 			'instead of updating the boss way to often, we update bosses
 			'once a ingame minute
 			EventManager.registerListenerFunction("Game.OnMinute", onGameMinute)

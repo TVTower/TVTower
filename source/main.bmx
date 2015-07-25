@@ -50,6 +50,8 @@ Import "game.world.bmx"
 Import "game.toastmessage.bmx"
 Import "game.figure.base.bmx"
 
+Import "game.gameinformation.bmx"
+
 ?Linux
 Import "external/bufferedglmax2d/bufferedglmax2d.bmx"
 ?Win32
@@ -908,6 +910,9 @@ Type TGameState
 	Field _World:TWorld = Null
 	Field _GameRules:TGamerules = Null
 	Field _Betty:TBetty = Null
+
+	Field _GameInformationCollection:TGameInformationCollection = Null
+
 	Field _AdContractBaseCollection:TAdContractBaseCollection = Null
 	Field _AdContractCollection:TAdContractCollection = Null
 
@@ -989,6 +994,8 @@ Type TGameState
 		_Assign(_RoomDoorBaseCollection, TRoomDoorBaseCollection._instance, "RoomDoorBaseCollection", MODE_LOAD)
 		_Assign(_RoomBaseCollection, TRoomBaseCollection._instance, "RoomBaseCollection", MODE_LOAD)
 
+		_Assign(_GameInformationCollection, TGameInformationCollection._instance, "GameInformationCollection", MODE_LOAD)
+
 		_Assign(_AdContractCollection, TAdContractCollection._instance, "AdContractCollection", MODE_LOAD)
 		_Assign(_AdContractBaseCollection, TAdContractBaseCollection._instance, "AdContractBaseCollection", MODE_LOAD)
 
@@ -1054,7 +1061,8 @@ Type TGameState
 		_Assign(TProgrammeDataCollection._instance, _ProgrammeDataCollection, "ProgrammeDataCollection", MODE_SAVE)
 		_Assign(TProgrammeLicenceCollection._instance, _ProgrammeLicenceCollection, "ProgrammeLicenceCollection", MODE_SAVE)
 
-		
+		_Assign(TGameInformationCollection._instance, _GameInformationCollection, "GameInformationCollection", MODE_SAVE)
+
 		_Assign(TBuilding._instance, _Building, "Building", MODE_SAVE)
 		_Assign(TRoomBaseCollection._instance, _RoomBaseCollection, "RoomBaseCollection", MODE_SAVE)
 		_Assign(TRoomDoorBaseCollection._instance, _RoomDoorBaseCollection, "RoomDoorBaseCollection", MODE_SAVE)
