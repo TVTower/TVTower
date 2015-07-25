@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvt>
 	<resources>
+		<image name="screen_bg_emptyroom" url="res/gfx/room_empty.png" />
+
 		<image name="screen_bg_office" url="res/gfx/office/screen_office.png" />
 		<image name="screen_bg_programmeplanner" url="res/gfx/office/screen_programmeplanner.png" />
 		<image name="screen_bg_financials" url="res/gfx/office/screen_financials.png" />
@@ -24,6 +26,8 @@
 	</resources>
 
 	<screens>
+		<screen name="screen_emptyroom" image="screen_bg_emptyroom" />
+
 		<screen name="screen_archive" image="screen_bg_archive" />
 		<screen name="screen_boss" image="screen_bg_boss" />
 		<screen name="screen_studio" image="screen_bg_studio" />
@@ -137,27 +141,27 @@
 			<door doorslot="2" floor="10" doortype="1" />
 		</room>
 
-		<room name="frduban" owner="0" screen="screen_supermarket" size="2">
+		<room name="frduban" owner="0" screen="screen_emptyroom" size="2">
 			<tooltip text="ROOM_FRDUBAN" />
 			<door doorslot="3" floor="12" doortype="4" />
 		</room>
-		<room name="vrduban" owner="0" screen="screen_supermarket" size="2">
+		<room name="vrduban" owner="0" screen="screen_emptyroom" size="2">
 			<tooltip text="ROOM_VRDUBAN" />
 			<door doorslot="3" floor="7" doortype="3" />
 		</room>
-		<room name="gunsagency" owner="0" screen="screen_supermarket" size="3">
+		<room name="gunsagency" owner="0" screen="screen_emptyroom" size="3">
 			<tooltip text="ROOM_GUNSAGENCY" />
 			<door doorslot="4" floor="9" doortype="3" />
 		</room>
-		<room name="tobaccolobby" owner="0" screen="screen_supermarket" size="3">
+		<room name="tobaccolobby" owner="0" screen="screen_emptyroom" size="3">
 			<tooltip text="ROOM_TOBACCOLOBBY" description="ROOM_TOBACCOLOBBY_OWNER" />
 			<door doorslot="2" floor="6" doortype="4" />
 		</room>
-		<room name="notobacco" owner="0" screen="screen_supermarket" size="3">
+		<room name="notobacco" owner="0" screen="screen_emptyroom" size="3">
 			<tooltip text="ROOM_NOTOBACCO" description="ROOM_NOTOBACCO_OWNER" />
 			<door doorslot="3" floor="6" doortype="3" />
 		</room>
-		<room name="peacebrothers" owner="0" screen="screen_supermarket" size="3">
+		<room name="peacebrothers" owner="0" screen="screen_emptyroom" size="3">
 			<tooltip text="ROOM_PEACEBROTHERS" description="ROOM_PEACEBROTHERS_SUB" />
 			<door doorslot="3" floor="10" doortype="3" />
 		</room>
@@ -173,19 +177,19 @@
 			<tooltip text="ROOM_BETTY" />
 			<door doorslot="1" floor="13" doortype="1" />
 		</room>
-		<room name="laundry" owner="0" screen="screen_supermarket" size="2">
+		<room name="laundry" owner="0" screen="screen_emptyroom" size="2">
 			<tooltip text="ROOM_LAUNDRY" />
 			<door doorslot="1" floor="1" doortype="2" />
 		</room>
-		<room name="biocontrol" owner="0" screen="screen_supermarket" size="1">
+		<room name="biocontrol" owner="0" screen="screen_emptyroom" size="1">
 			<tooltip text="ROOM_BIOCONTROL" />
 			<door doorslot="2" floor="12" doortype="3" />
 		</room>
-		<room name="computershop" owner="0" screen="screen_supermarket" size="2">
+		<room name="computershop" owner="0" screen="screen_emptyroom" size="2">
 			<tooltip text="ROOM_COMPUTERSHOP" />
 			<door doorslot="4" floor="7" doortype="4" />
 		</room>
-		<room name="pychiatrist" owner="0" screen="screen_supermarket" size="1">
+		<room name="pychiatrist" owner="0" screen="screen_emptyroom" size="1">
 			<tooltip text="ROOM_PSYCHIATRIST" />
 			<door doorslot="2" floor="3" doortype="4" />
 		</room>
