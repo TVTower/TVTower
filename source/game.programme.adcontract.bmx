@@ -214,7 +214,7 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 	Field title:TLocalizedString
 	Field description:TLocalizedString
 	'days to fullfill a (signed) contract
-	Field daysToFinish:Int
+	Field daysToFinish:Int = 0
 	'spots to send
 	Field spotCount:Int = 1
 	'block length
@@ -1006,7 +1006,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 		'message area
 		If GetLimitedToTargetGroup() > 0 then msgAreaH :+ msgH
-		If GetLimitedToGenre() > 0 then msgAreaH :+ msgH
+		If GetLimitedToGenre() >= 0 then msgAreaH :+ msgH
 		'warn if short of time
 		If daysLeft <= 1 then msgAreaH :+ msgH
 		'only show image hint when NOT signed (after signing the image
