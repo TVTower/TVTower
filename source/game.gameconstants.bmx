@@ -462,7 +462,19 @@ Type TVTProgrammeGenre {_exposeToLua}
 			case Feature_YellowPress	return "feature_yellowpress"
 
 			case Undefined				return "undefined"
-			default						return "undefined"
+			default
+				'loop through all flag-entries and add them if contained
+				local result:string
+				local index:int = 0
+				'do NOT start with 0 ("all")
+				For local i:int = 1 to genreMaximum
+					index = GetAtIndex(i)
+					if index = 0 then continue
+					if key & index then result :+ GetAsString(index) + ","
+				Next
+				if result = "" then return "undefined"
+				'remove last comma
+				return result[.. result.length-1]
 		End Select
 	End Function
 End Type
@@ -521,7 +533,18 @@ Type TVTProgrammeFlag {_exposeToLua}
 			case PAID      return "paid"
 			case SERIES    return "series"
 			case SCRIPTED  return "scripted"
-			default        return "none"
+			default
+				'loop through all flag-entries and add them if contained
+				local result:string
+				local index:int = 0
+				'do NOT start with 0 ("all")
+				For local i:int = 1 to count
+					index = GetAtIndex(i)
+					if key & index then result :+ GetAsString(index) + ","
+				Next
+				if result = "" then return "none"
+				'remove last comma
+				return result[.. result.length-1]
 		End Select
 	End Function
 End Type

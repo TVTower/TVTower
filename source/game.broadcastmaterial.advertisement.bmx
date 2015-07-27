@@ -229,12 +229,11 @@ endrem
 		EndIf
 
 		'limited to a specific genre - and not fulfilled
-		If contract.GetLimitedToGenre() >= 0
+		If contract.GetLimitedToGenre() >= 0 or contract.GetLimitedToProgrammeFlag() > 0
 			'check current programme of the owner
 			'TODO: check if that has flaws playing with high speed
 			'      (check if current broadcast is correctly set at this
 			'      time)
-
 			'if no previous material was given, use the currently running one
 			if not previouslyRunningBroadcastMaterial then previouslyRunningBroadcastMaterial = GetBroadcastManager().GetCurrentProgrammeBroadcastMaterial(owner)
 
@@ -243,8 +242,15 @@ endrem
 				Return "OUTAGE"
 			else
 				local genreDefinition:TGenreDefinitionBase = previouslyRunningBroadcastMaterial.GetGenreDefinition()
-				if genreDefinition and genreDefinition.GenreId <> contract.GetLimitedToGenre()
-					Return "GENRE"
+				if contract.GetLimitedToGenre() >= 0
+					if genreDefinition and genreDefinition.GenreId <> contract.GetLimitedToGenre()
+						Return "GENRE"
+					endif
+				endif
+				if contract.GetLimitedToProgrammeFlag() > 0
+					if not (contract.GetLimitedToProgrammeFlag() & previouslyRunningBroadcastMaterial.GetProgrammeFlags())
+						Return "FLAGS"
+					endif
 				endif
 			endif
 		EndIf

@@ -802,10 +802,8 @@ endrem
 			"year_range_from", "year_range_to" ..
 		])
 
-'aktivieren, wenn Datenbank Eintraege enthaelt, die infomercials erlauben
-'				adContract.infomercialAllowed = data.GetBool("infomercial", adContract.infomercialAllowed)
-'				adContract.quality = 0.01 * data.GetFloat("quality", adContract.quality * 100.0)
-		adContract.quality = 0.5
+		adContract.infomercialAllowed = data.GetBool("infomercial", adContract.infomercialAllowed)
+		adContract.quality = 0.01 * data.GetFloat("quality", adContract.quality * 100.0)
 
 		adContract.availableYearRangeFrom = data.GetInt("year_range_from", adContract.availableYearRangeFrom)
 		adContract.availableYearRangeTo = data.GetInt("year_range_to", adContract.availableYearRangeTo)
@@ -837,8 +835,10 @@ endrem
 		adContract.limitedToTargetGroup = data.GetInt("target_group", adContract.limitedToTargetGroup)
 		adContract.limitedToProgrammeGenre = data.GetInt("allowed_genre", adContract.limitedToProgrammeGenre)
 		adContract.limitedToProgrammeType = data.GetInt("allowed_programme_type", adContract.limitedToProgrammeType)
+		adContract.limitedToProgrammeFlag = data.GetInt("allowed_programme_flag", adContract.limitedToProgrammeFlag)
 		adContract.forbiddenProgrammeGenre = data.GetInt("prohibited_genre", adContract.forbiddenProgrammeGenre)
 		adContract.forbiddenProgrammeType = data.GetInt("prohibited_programme_type", adContract.forbiddenProgrammeType)
+		adContract.forbiddenProgrammeFlag = data.GetInt("prohibited_programme_flag", adContract.forbiddenProgrammeFlag)
 		'if only one group
 		adContract.proPressureGroups = data.GetInt("pro_pressure_groups", adContract.proPressureGroups)
 		adContract.contraPressureGroups = data.GetInt("contra_pressure_groups", adContract.contraPressureGroups)

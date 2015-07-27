@@ -172,15 +172,22 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetProgrammeFlags:int() {_exposeToLua}
+		Return data.flags
+	End Method
+	
+
 	Method GetQuality:Float() {_exposeToLua}
 		Return data.GetQuality()
 	End Method
+
 
 	'override
 	Method GetTrailerMod:TAudience()
 		Return data.GetTrailerMod().SubtractFloat(1)
 	End Method
 	
+
 	Method GetMiscMod:TAudience(hour:Int)
 		Local result:TAudience = TAudience.CreateAndInitValue(0)
 	
@@ -314,6 +321,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			Return Null
 		EndIf		
 	End Method
+	
 
 	Function GetAudienceFlowBonusIntern:TAudience(lastMovieBlockAttraction:TAudienceAttraction, currentAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction )
 		Local flowModBase:TAudience = new TAudience

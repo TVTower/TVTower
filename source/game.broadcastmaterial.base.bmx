@@ -55,6 +55,11 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetProgrammeFlags:int() {_exposeToLua}
+		Return 0
+	End Method
+	
+
 	Method GetBlocks:int(broadcastType:int=0) {_exposeToLua}
 		Return 1
 	End Method

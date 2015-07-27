@@ -227,12 +227,18 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 	'is the ad broadcasting limit to a specific programme genre?
 	'eg. only "lovestory"
 	Field limitedToProgrammeGenre:Int = -1
+	'is the ad broadcasting limit to a specific programme flag?
+	'eg. "xrated", "live"
+	Field limitedToProgrammeFlag:Int = -1
 	'is the ad broadcasting not allowed for a specific programme genre?
 	'eg. no "lovestory"
 	Field forbiddenProgrammeGenre:Int = -1
 	'is the ad broadcasting not allowed for a specific programme type?
 	'eg. no "series"
 	Field forbiddenProgrammeType:Int = -1
+	'is the ad broadcasting not allowed for a specific programme flag?
+	'eg. no "paid"
+	Field forbiddenProgrammeFlag:Int = -1
 
 	'is the ad broadcasting limit to a specific broadcast type?
 	'Field limitedToBroadcastType:Int = -1
@@ -644,6 +650,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		Local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG", new TData.Init()))
 		Local balancingFactor:float = devConfig.GetFloat("DEV_AD_BALANCING_FACTOR", 1.0)
 		Local limitedToGenreMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_GENRE_MULTIPLIER", 2.0)
+		Local limitedToProgrammeFlagMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_PROGRAMME_FLAG_MULTIPLIER", 1.5)
 		Local limitedToTargetGroupMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_TARGETGROUP_MULTIPLIER", 2.0)
 
 		local maxCPM:float = GameRules.maxAdContractPricePerSpot / Max(1, (population/1000))
@@ -661,8 +668,8 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		price :* Max(1, getMinAudience(playerID)/1000)
 		'value cannot be higher than "maxAdContractPricePerSpot"
 		price = Min(GameRules.maxAdContractPricePerSpot, price )
-		'adjust by a base/internal balancing factor
-		price :* 1.75 '75% more
+'adjust by a base/internal balancing factor
+'		price :* 1.75 '75% more
 		'adjust by a balancing factor
 		price :* balancingFactor
 
@@ -670,6 +677,8 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		If GetLimitedToTargetGroup() > 0 Then price :* limitedToTargetGroupMultiplier
 		'limiting to specific genres change the price too
 		If GetLimitedToGenre() > 0 Then price :* limitedToGenreMultiplier
+		'limiting to specific flags change the price too
+		If GetLimitedToProgrammeFlag() > 0 Then price :* limitedToProgrammeFlagMultiplier
 
 		'print GetTitle()+": "+GetMinAudiencePercentage() +" -- price " +price +" ---raw audience "+getRawMinAudience(playerID)
 
@@ -830,6 +839,27 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(genre))
 	End Method
+
+
+	Method GetLimitedToProgrammeFlag:Int() {_exposeToLua}
+		Return base.limitedToProgrammeFlag
+	End Method
+
+
+	Method GetLimitedToProgrammeFlagString:String(flag:Int=-1) {_exposeToLua}
+		'if no flag was given, use the one of the object
+		if flag < 0 then flag = base.limitedToProgrammeFlag
+		if flag < 0 then return ""
+
+
+		local flags:string[] = TVTProgrammeFlag.GetAsString(flag).split(",")
+		local flagStrings:string[]
+		For local f:string = EachIn flags
+			flagStrings :+ [GetLocale("PROGRAMME_FLAG_"+f)]
+		Next
+		return ", ".join(flagStrings)
+	End Method
+
 
 
 	Method ShowSheet:Int(x:Int,y:Int, align:int=0, showMode:int=0)
@@ -1007,6 +1037,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'message area
 		If GetLimitedToTargetGroup() > 0 then msgAreaH :+ msgH
 		If GetLimitedToGenre() >= 0 then msgAreaH :+ msgH
+		If GetLimitedToProgrammeFlag() > 0 then msgAreaH :+ msgH
 		'warn if short of time
 		If daysLeft <= 1 then msgAreaH :+ msgH
 		'only show image hint when NOT signed (after signing the image
@@ -1053,6 +1084,10 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		EndIf
 		If GetLimitedToGenre() >= 0
 			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_PLEASE_GENRE_X").Replace("%GENRE%", GetLimitedToGenreString()), "warning", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			contentY :+ msgH
+		EndIf
+		If GetLimitedToProgrammeFlag() > 0 
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_PLEASE_FLAG").Replace("%FLAG%", GetLimitedToProgrammeFlagString()), "warning", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 		'only show image hint when NOT signed (after signing the image is not required anymore)
