@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvgdb>
+	<version value="3" comment="Programme von TheRob" />
+	<allprogrammes>
+		<programme id="54084557-4497-48d5-8e3a-TheRobRiesenstadt" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+			<title>
+				<de>Riesenstadt</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Arbeiter gegen Reich. Ein stummer epischer Kampf. Remastert und extralong. Inklusive verschwundener Szenen.</de>
+				<en></en>
+			</description>
+			<staff>
+				<member index="0" function="1">85341df9-bd8f-4fd0-9f80-c9ab44ca0829</member>
+				<member index="1" function="2">2b6af8c4-7775-44da-820e-1ce9c55d8cd9</member>
+				<member index="2" function="2">1312b7b5-3215-40fd-92c8-fb0a16a2aebe</member>
+				<member index="3" function="2">6773978f-3667-4c03-813b-0fbc01b8135c</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1927" distribution="0" maingenre="13" subgenre="0" flags="0" blocks="5" time="0" price_mod="0.67" />
+			<ratings critics="82" speed="17" outcome="59" />
+		</programme>
+		<programme id="04439fd1-e89f-TheRobTestSerie01" product="5" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+			<title>
+				<de>Gestern gab es Western</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Westernraritäten auf Serienformat gekürzt. Die Story geht flöten, aber die Landschaft bleibt.</de>
+				<en></en>
+			</description>
+			<staff>
+				<member index="0" function="2">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1939" distribution="0" maingenre="18" subgenre="0" flags="0" blocks="1" time="0" price_mod="0.21" />
+			<ratings critics="40" speed="29" outcome="29" />
+			<children>
+				<programme id="39803483-0800-46e3-a153-TheRobEpisode1" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+					<title>
+						<de>Jerry das Pferd</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Dys Pferd Jerry zieht einen Fremden aus dem Sumpf. Dieser weicht ihm nicht mehr von der Seite. Eine wilde Verfolgungsjagd beginnt.</de>
+						<en></en>
+					</description>
+					<ratings critics="42" speed="42" />
+				</programme>
+				<programme id="4c062f49-f1e8-400a-9c11-TheRobEpisode2" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+					<title>
+						<de>Lozzo lernt peitschen</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Lozzo findet eine Peitsche und übt sein Zeichen. Warum er sich für Z statt L entscheidet? Ganz Mexiko hat nun eine Z Narbe auf der Brust...</de>
+						<en></en>
+					</description>
+					<ratings critics="53" speed="39" />
+				</programme>
+				<programme id="dc0b1ca6-c1c1-496f-9882-TheRobEpisode3" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+					<title>
+						<de>Niklas sucht James</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Niklas will den Bandit J.James ausschalten um selber zum Helden zu werden. Der Showdown naht...</de>
+						<en></en>
+					</description>
+					<ratings critics="19" speed="25" />
+				</programme>
+				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode4" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+					<title>
+						<de>Njamba der Fotograf</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Njamba, der Zulu, verlässt seinen Stamm. Sein Ziel: Landschaftsaufnaumahmen im wilden Westen. Diese werden ausgiebig gezeigt. Finanziert durch den Gesunder Schlaf e.V.</de>
+						<en></en>
+					</description>
+					<ratings critics="29" speed="5" />
+				</programme>
+				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode5" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+					<title>
+						<de>Farmer gen Osten</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Gescheiterte Farmer wollen zurück nach Europa. Doch die indianischen Skalphändler wollen ihre Beute nicht ziehen lassen. Schaffen sie die Flucht?</de>
+						<en></en>
+					</description>
+					<ratings critics="32" speed="79" />
+				</programme>
+				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode6" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+					<title>
+						<de>Mensch Jimmy</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Jimmy Baine in seinem ersten Auftritt vor seiner großen Karriere. Der Revolver sitzt schon perfekt. A Star ist born. Wer braucht da Handlung?</de>
+						<en></en>
+					</description>
+					<ratings critics="17" speed="55" />
+				</programme>
+				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode7" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+					<title>
+						<de>IIIk, wird das Wononza?</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Farmleben eines Vaters mit drei Söhnen. Das Publikum hat böse Vorahnungen. Doch als sie wegschalten, war Ihre Einschaltquote schon gezählt.</de>
+						<en></en>
+					</description>
+					<ratings critics="2" speed="1" />
+				</programme>
+			</children>
+		</programme>
+		<programme id="e61018ba-b0db-439c-a852-TheRob04" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+			<title>
+				<de>Wesensreiter</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Bulbu erkennt, dass er Fantasiewesen dressieren und reiten kann. Ein fliegendes Epos beginnt.</de>
+				<en></en>
+			</description>
+			<staff>
+				<member index="0" function="1">cdd0e7aa-11eb-48d7-82cc-d693e2130d05</member>
+				<member index="1" function="2">18cb930c-1e71-4ab5-9996-43689ac01098</member>
+				<member index="2" function="2">4eff33a4-952c-4217-adfb-0b8496f2c01d</member>
+				<member index="3" function="2">e1ed748b-647d-47b6-98b7-fe9c88579b12</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1964" distribution="0" maingenre="10" subgenre="0" flags="0" blocks="2" time="0" price_mod="0.33" />
+			<ratings critics="33" speed="27" outcome="56" />
+		</programme>
+		<programme id="5c4c567b-dda6-4d7e-b90a-RobTheTest01" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+			<title>
+				<de>Iris entdeckt die Alm</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Iris besucht mit Ihren Freundinnen die Alm, die Bauern und ihre Betten oder Heuböden. Wurde beim Revival der Seventies leider nicht vergessen.</de>
+				<en></en>
+			</description>
+			<staff>
+				<member index="0" function="1">c45e52c2-32a3-4d3b-87d2-c56a8e4f5279</member>
+				<member index="1" function="2">c39a70f6-b8fd-40fe-96cd-9dcb0e460e53</member>
+				<member index="2" function="2">779ecf3d-7ca7-4253-aac6-cb5e1aee8e2c</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1972" distribution="0" maingenre="8" subgenre="0" flags="0" blocks="2" time="0" price_mod="0.37" />
+			<ratings critics="9" speed="19" outcome="29" />
+		</programme>
+		<programme id="8ef29506-1756-400d-8f9c-TheRobTest03" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+			<title>
+				<de>Weib, Wein und Gesang</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Wikinger plündern fröhlich singend ganz Europa. Vor lauter brüderlichem Gesang sieht man das Blut kaum.</de>
+				<en></en>
+			</description>
+			<staff>
+				<member index="0" function="1">ef4e2db6-6ab9-4386-b2d5-c2d2b9990c97</member>
+				<member index="1" function="2">65538445-9da2-457c-b207-be0544514afa</member>
+				<member index="2" function="2">90820783-1753-463f-9094-7c71a10fec80</member>
+				<member index="3" function="2">b77aafa2-3d67-4fb0-be59-f990090fad93</member>
+				<member index="4" function="2">a84c23cc-8e0a-4849-aca7-5193c2482af9</member>
+				<member index="5" function="2">6979be0a-469b-46f3-8dd9-5f97318e60fe</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1977" distribution="0" maingenre="202" subgenre="0" flags="0" blocks="3" time="0" price_mod="0.33" />
+			<ratings critics="32" speed="49" outcome="47" />
+		</programme>
+		<programme id="c4be7d64-35e9-4e56-8e6e-TheRobTest06" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+			<title>
+				<de>Jag den Meringo</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Meringo metzelt mit seiner Bande ein Dorf nieder. Jimmy Baine jagt ihn erbarmungslos.</de>
+				<en></en>
+			</description>
+			<staff>
+				<member index="0" function="1">0b680977-89b4-4022-b474-091cbcc15a12</member>
+				<member index="1" function="2">9f342b49-1089-47bc-8d92-722fe71d96e3</member>
+				<member index="2" function="2">2f9f512b-ce9e-4e7e-894b-9946651612e3</member>
+				<member index="3" function="2">888ecdf4-4e26-4ce2-9c49-e86637aefb9d</member>
+				<member index="4" function="2">12208886-43f2-4b3c-b421-6c19e3f8a2cf</member>
+				<member index="5" function="2">8a850479-ce72-4f8f-88dd-e3b0a196399f</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="I" year="1961" distribution="0" maingenre="18" subgenre="0" flags="64" blocks="2" time="0" price_mod="1" />
+			<ratings critics="67" speed="66" outcome="65" />
+		</programme>
+		<programme id="5aa779f8-8140-4bef-912a-KinderSerieTheRob01" product="5" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+			<title>
+				<de>Elefantengedächtnis</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Sendung für Schulkinder. Am Anfang werden Themen kindgerecht erklärt. Dann müssen die Kinder Fragen dazu beantworten. Die Gewinner bekommen eine Klassenfahrt geschenkt. </de>
+				<en></en>
+			</description>
+			<staff>
+				<member index="0" function="1">86bacead-ea9d-4878-9b2d-f23b0f7e0fe3</member>
+				<member index="1" function="2">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
+			</staff>
+			<groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1975" distribution="0" maingenre="9" subgenre="0" flags="0" blocks="1" time="0" price_mod="0.37" />
+			<ratings critics="67" speed="25" outcome="0" />
+			<children>
+				<programme id="b1c87d59-cffe-4696-KinderSerieTheRobEp101" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+					<title>
+						<de>Zahnpasta</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Wie kommen die Streifen in die Tube und andere Fragen. Schön erklärt und pädagogisch wertvoll abgefragt.</de>
+						<en></en>
+					</description>
+					<ratings critics="73" speed="24" />
+				</programme>
+				<programme id="02613833-d54e-4b6b-8de8-KinderSerieTheRobEp102" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+					<title>
+						<de>Limonade</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Von der Abfüllung über die Kohlensäure bis zum Zucker. Alles kindgerecht serviert. Empfohlen wird dem Kind beim Zuschauen zuckerfreien Tee zu servieren.</de>
+						<en></en>
+					</description>
+					<ratings critics="65" speed="26" />
+				</programme>
+				<programme id="9ada2a37-6ff5-4ff0-9766-KinderSerieTheRobEp103" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+					<title>
+						<de>Bleistifte</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Blei und Farbe werden beleuchtet. Selbst die Folgen von dauerhaften Bleistift nuckeln kommen zur Sprache.</de>
+						<en></en>
+					</description>
+					<ratings critics="66" speed="25" />
+				</programme>
+				<programme id="494fa370-4744-4616-aa14-KinderSerieTheRobEp104" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+					<title>
+						<de>Moderator ohne Kontrolle</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Thema sollte Seife werden. Doch die Kinder starteten einen Wettbewerb im Namentanzen. Der Moderator bekam die Sendung nicht in Griff und wurde auch noch Letzter beim Namentanzen </de>
+						<en></en>
+					</description>
+					<ratings critics="74" speed="49" />
+				</programme>
+				<programme id="6eccf754-bb87-40e5-bb5c-KinderSerieTheRobEP105" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+					<title>
+						<de>Namentanzen</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Auf Grund der grandiosen Resonanz auf die letzte Sendung, wurde das Thema Namenstanzen ausführlich durchleuchtet. Inklusive Wettbewerb. Durch die geordnete Durchführung ging der Spaß flöten.</de>
+						<en></en>
+					</description>
+					<ratings critics="59" speed="21" />
+				</programme>
+			</children>
+		</programme>
+		<programme id="5c4c567b-dda6-4d7e-b90a-RobTheTest11" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+			<title>
+				<de>Zorniges Obst</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Die Verfilmung eines Meisterwerks. Verarmte Obstpflücker finden keinen Job. Die Rettung verspricht das Orangenpflückparadies im Osten. Die Reise beginnt. Ein viel gerühmtes Drama.</de>
+				<en></en>
+			</description>
+			<staff>
+				<member index="0" function="1">c45e52c2-32a3-4d3b-87d2-c56a8e4f5279</member>
+				<member index="1" function="2">c39a70f6-b8fd-40fe-96cd-9dcb0e460e53</member>
+				<member index="2" function="2">779ecf3d-7ca7-4253-aac6-cb5e1aee8e2c</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1940" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="3" time="0" price_mod="0.37" />
+			<ratings critics="98" speed="19" outcome="69" />
+		</programme>
+		<programme id="b9c6190d-a9f6-4a94-8092-TheRobTest12" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+			<title>
+				<de>Ein Dorf jagt L.</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Ein Klassiker der Filmkunst und einer der ersten Tonfilme. Ein Kinderschänder versetzt ein Dorf in Angst und Schrecken. Am Schluss wird nahezu jeder verdächtigt.</de>
+				<en></en>
+			</description>
+			<staff>
+				<member index="0" function="1">8f489dd7-a5f3-431b-ae48-9fefcdeac40e</member>
+				<member index="1" function="2">35742715-2273-41fd-9e2a-1ac9bf0203f0</member>
+				<member index="2" function="2">08bbc458-64af-4a27-8158-b5dbfb6bb885</member>
+				<member index="3" function="2">95c458be-728f-4501-8769-b77d59291a96</member>
+				<member index="4" function="2">94ca78fd-399e-42b4-ada9-b869db926529</member>
+				<member index="5" function="2">62c14387-1f6e-4c45-8201-318f1e0e7cb4</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1931" distribution="0" maingenre="17" subgenre="0" flags="0" blocks="2" time="0" price_mod="0.33" />
+			<ratings critics="74" speed="26" outcome="83" />
+		</programme>
+		<programme id="5aa779f8-8140-4bef-912a-KinderSerieTheRob02" product="5" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+			<title>
+				<de>Speiübel und Dubrovnik</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Vater und Sohn erleben Alltagsthemen. Humorvoll für Kinder aufbereitet und der Augsburger Puppenkiste ebenbürtig.</de>
+				<en></en>
+			</description>
+			<staff>
+				<member index="0" function="1">86bacead-ea9d-4878-9b2d-f23b0f7e0fe3</member>
+				<member index="1" function="2">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
+			</staff>
+			<groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="CSSR" year="1973" distribution="0" maingenre="9" subgenre="5" flags="2" blocks="1" time="0" price_mod="0.37" />
+			<ratings critics="47" speed="29" outcome="0" />
+			<children>
+				<programme id="b1c87d59-cffe-4696-KinderSerieTheRobEp201" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+					<title>
+						<de>Speiübel kommt in die Schule</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Dubrovnik bringt Speiübel in die Schule. Dort freundet er sich mit Ilonka an. Spaßiger erster Schultag.</de>
+						<en></en>
+					</description>
+					<ratings critics="43" speed="26" />
+				</programme>
+				<programme id="02613833-d54e-4b6b-8de8-KinderSerieTheRobEp202" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+					<title>
+						<de>Hausaufgaben</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Speiübel soll Hausaufgaben machen. Er will aber lieber mit Ilonka Verstecken spielen. Dubrovnik sucht die Beiden. Ein munteres Versteckspiel beginnt.</de>
+						<en></en>
+					</description>
+					<ratings critics="49" speed="31" />
+				</programme>
+				<programme id="9ada2a37-6ff5-4ff0-9766-KinderSerieTheRobEp103" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+					<title>
+						<de>Musikunterricht</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Speiübel spielt Schlagzeug, Ilonka Flöte. Dubrovnik versucht das mit seiner Migräne zu überleben. Das klappt aber nur bedingt. Beste Darstellung, warum Eltern keine Musikinstrumente für ihre Kleinen mögen.</de>
+						<en></en>
+					</description>
+					<ratings critics="56" speed="28" />
+				</programme>
+				<programme id="494fa370-4744-4616-aa14-KinderSerieTheRobEp104" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+					<title>
+						<de>Speiübel lernt schwimmen</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Dubrovnik will Speiübel schwimmen beibringen. Der demonstriert aber ausgiebig, wie gut er im Wasser schlucken ist. Zum Schluss werden die Vorteile von Schwimmflügeln ausgiebig gewürdigt.</de>
+						<en></en>
+					</description>
+					<ratings critics="44" speed="32" />
+				</programme>
+				<programme id="6eccf754-bb87-40e5-bb5c-KinderSerieTheRobEP105" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+					<title>
+						<de>Plätzchen backen</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Speiübel und Ilonka wollen Plätzchen backen. Dubrovnik freut sich auf das Ergebnis. Doch dann merkt er, dass es sich eher auf die Küche auswirkt als auf den Geschmack.</de>
+						<en></en>
+					</description>
+					<ratings critics="57" speed="34" />
+				</programme>
+			</children>
+		</programme>
+		<programme id="631f722f-b5dc-4663-bd81-TheRobHist01" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+			<title>
+				<de>Die Tempelritter</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Von der Entstehung bis zu ihrem Untergang. Die Fakten werden mit Darstellungen durch Laiendarsteller untermauert. Der Erzähler versucht sich an den Spannungsbögen.</de>
+				<en></en>
+			</description>
+			<staff>
+				<member index="0" function="1">577f032c-d851-4e5b-bab1-69d489031456</member>
+				<member index="1" function="2">d8c84544-ff75-4023-9a10-4bb2e5478593</member>
+				<member index="2" function="2">63d730f3-c0a5-4ab0-97f7-250177c5f3bd</member>
+				<member index="3" function="2">61334348-7cb7-4601-ad29-87f724ec3cb3</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1967" distribution="0" maingenre="11" subgenre="0" flags="0" blocks="4" time="0" price_mod="0.67" />
+			<ratings critics="75" speed="31" outcome="0" />
+		</programme>
+		<programme id="e61018ba-b0db-439c-a852-TheRobTest13" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+			<title>
+				<de>Baba der Trabbi</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Baba der lebende Trabbi leistet seinem Besitzer wundervolle Dienste. Er kann schwimmen, fliegen und Autoknacker verprügeln. Herbeigerufen durch einen Pfiff, eilt er immer brav herbei, wenn Hilfe gebraucht wird.</de>
+				<en></en>
+			</description>
+			<staff>
+				<member index="0" function="1">cdd0e7aa-11eb-48d7-82cc-d693e2130d05</member>
+				<member index="1" function="2">18cb930c-1e71-4ab5-9996-43689ac01098</member>
+				<member index="2" function="2">4eff33a4-952c-4217-adfb-0b8496f2c01d</member>
+				<member index="3" function="2">e1ed748b-647d-47b6-98b7-fe9c88579b12</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="DDR" year="1972" distribution="0" maingenre="10" subgenre="0" flags="0" blocks="2" time="0" price_mod="0.33" />
+			<ratings critics="27" speed="34" outcome="46" />
+		</programme>
+		<programme id="c4ce4cc9-1c7e-TheRobSerieTrash01" product="7" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+			<title>
+				<de>Skandale</de>
+				<en></en>
+			</title>
+			<description>
+				<de>[1|Full] präsentiert die Skandale von [0|Full]. Präsentiert wird alles, von Ausrastern an Drehorten über Interviews bis zu Talkshow Auftritten. Erheiternd bis zum geht nicht mehr. Aber für Jugendliche völlig ungeeignet.</de>
+				<en></en>
+			</description>
+			<staff>
+				<member index="0" function="1">9f342b49-1089-47bc-8d92-722fe71d96e3</member>
+				<member index="1" function="2">aee96d95-682e-4587-8192-3f4e689e045c</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1979" distribution="0" maingenre="11" subgenre="6" flags="92" blocks="2" time="0" price_mod="0.77" />
+			<ratings critics="65" speed="35" outcome="60" />
+			<children>
+				<programme id="062287d0-1de3-TrashSerieTheRobEP101" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+					<title>
+						<de>[0|Full] qualmt die Bude zu</de>
+						<en></en>
+					</title>
+					<description>
+						<de>[0|Full] als Kettenraucher beleidigt den Moderator bis zum geht nicht mehr.</de>
+						<en></en>
+					</description>
+					<ratings critics="60" speed="30" />
+				</programme>
+				<programme id="afcac328-c1ec-4018-TrashSerieTheRobEP102" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+					<title>
+						<de>[0|Full] beleidigt die Interviewerin</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Dem Mitleid für die Dame kann man sich nicht verwehren. [1|Full] rastet völlig aus und geht sie unflätig an.</de>
+						<en></en>
+					</description>
+					<ratings critics="65" speed="35" />
+				</programme>
+				<programme id="37c8b5a1-f289-4061-96d9-TrashSerieTheRobEP103" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+					<title>
+						<de>[0|Full] im Dschungel</de>
+						<en></en>
+					</title>
+					<description>
+						<de>[1|Full] legendärer Ausraster im Dschungel. Wen geht er als nächstes an? Die Augenzeugen sind heute noch traumatisiert.</de>
+						<en></en>
+					</description>
+					<ratings critics="70" speed="40" />
+				</programme>
+			</children>
+		</programme>
+	</allprogrammes>
+</tvgdb>
