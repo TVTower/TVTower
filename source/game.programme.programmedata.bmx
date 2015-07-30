@@ -14,57 +14,19 @@ Import "game.gameconstants.bmx"
 Type TProgrammeDataCollection Extends TGameObjectCollection
 
 	'factor by what a programmes topicality DECREASES by sending it
-	Field wearoffFactor:float = 0.65
+	'(with whole audience, so 100%, watching)
+	'ex.: 0.9 = 10% cut, 0.85 = 15% cut
+	Field wearoffFactor:float = 0.85
 	'factor by what a programmes topicality INCREASES by a day switch
+	'ex.: 1.0 = 0%, 1.5 = add 50%y
 	Field refreshFactor:float = 1.5
-	'values get multiplied with the refresh factor
-	'so this means: higher values increase the resulting topicality win
-	Field genreRefreshModifier:float[] =  [	1.0, .. 	'action
-											1.0, .. 	'thriller
-											1.0, .. 	'scifi
-											1.5, .. 	'comedy
-											1.0, ..		'horror
-											1.0, ..		'love
-											1.5, ..		'erotic
-											1.0, ..		'western
-											0.75, ..	'live
-											1.5, .. 	'children
-											1.25, .. 	'animated / cartoon
-											1.25, .. 	'music
-											1.0, .. 	'sport
-											1.0, .. 	'culture
-											1.0, .. 	'fantasy
-											1.25, .. 	'yellow press
-											1.0, .. 	'news
-											1.0, .. 	'show
-											1.0, .. 	'monumental
-											2.0, .. 	'fillers
-											2.0 .. 		'paid programming
-										  ]
-	'values get multiplied with the wearOff factor
-	'so this means: higher (>1.0) values decrease the resulting topicality loss
-	Field genreWearoffModifier:float[] =  [	1.0, .. 	'action
-											1.0, .. 	'thriller
-											1.0, .. 	'scifi
-											1.0, .. 	'comedy
-											1.0, ..		'horror
-											1.0, ..		'love
-											1.2, ..		'erotic
-											1.0, ..		'western
-											0.75, ..		'live
-											1.25, .. 	'children
-											1.15, .. 	'animated / cartoon
-											1.2, .. 	'music
-											0.95, .. 	'sport
-											1.1, .. 	'culture
-											1.0, .. 	'fantasy
-											1.2, .. 	'yellow press
-											0.9, .. 	'news
-											0.9, .. 	'show
-											1.1, .. 	'monumental
-											1.4, .. 	'fillers
-											1.4 .. 		'paid programming
-										  ]
+
+	'factor by what a trailer topicality DECREASES by sending it
+	Field trailerWearoffFactor:float = 0.85
+	'factor by what a trailer topicality INCREASES by broadcasting
+	'the programme
+	Field trailerRefreshFactor:float = 1.5
+
 	Global _instance:TProgrammeDataCollection
 
 
@@ -86,16 +48,122 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 
 
 	Method GetGenreRefreshModifier:float(genre:int=-1)
-		if genre < self.genreRefreshModifier.length then return self.genreRefreshModifier[genre]
-		'default is 1.0
-		return 1.0
+		'values get multiplied with the refresh factor
+		'so this means: higher (>1.0) values increase the resulting
+		'topicality win
+		Select genre
+			case TVTProgrammeGenre.Adventure
+				return 1.0
+			case TVTProgrammeGenre.Action
+				return 1.0
+			case TVTProgrammeGenre.Animation
+				return 1.1
+			case TVTProgrammeGenre.Crime
+				return 1.0
+			case TVTProgrammeGenre.Comedy
+				return 1.25
+			case TVTProgrammeGenre.Documentary
+				return 1.1
+			case TVTProgrammeGenre.Drama
+				return 1.05
+			case TVTProgrammeGenre.Erotic
+				return 1.1
+			case TVTProgrammeGenre.Family
+				return 1.15
+			case TVTProgrammeGenre.Fantasy
+				return 1.1
+			case TVTProgrammeGenre.History
+				return 1.0
+			case TVTProgrammeGenre.Horror
+				return 1.0
+			case TVTProgrammeGenre.Monumental
+				return 0.95
+			case TVTProgrammeGenre.Mystery
+				return 0.95
+			case TVTProgrammeGenre.Romance
+				return 1.1
+			case TVTProgrammeGenre.Scifi
+				return 0.95
+			case TVTProgrammeGenre.Thriller
+				return 1.0
+			case TVTProgrammeGenre.Western
+				return 0.95
+			case TVTProgrammeGenre.Show, ..
+			     TVTProgrammeGenre.Show_Politics, ..
+			     TVTProgrammeGenre.Show_Music
+				return 0.90
+			case TVTProgrammeGenre.Event, ..
+			     TVTProgrammeGenre.Event_Politics, ..
+			     TVTProgrammeGenre.Event_Music, ..
+			     TVTProgrammeGenre.Event_Sport, ..
+			     TVTProgrammeGenre.Event_Showbiz
+				return 0.90
+			case TVTProgrammeGenre.Feature, ..
+			     TVTProgrammeGenre.Feature_YellowPress
+				return 0.95
+			default
+				return 1.0
+		End Select
 	End Method
 
 
 	Method GetGenreWearoffModifier:float(genre:int=-1)
-		if genre < self.genreWearoffModifier.length then return self.genreWearoffModifier[genre]
-		'default is 1.0
-		return 1.0
+		'values get multiplied with the wearOff factor
+		'so this means: higher (>1.0) values decrease the resulting
+		'topicality loss
+		Select genre
+			case TVTProgrammeGenre.Adventure
+				return 1.0
+			case TVTProgrammeGenre.Action
+				return 0.95
+			case TVTProgrammeGenre.Animation
+				return 1.0
+			case TVTProgrammeGenre.Crime
+				return 0.95
+			case TVTProgrammeGenre.Comedy
+				return 1.1
+			case TVTProgrammeGenre.Documentary
+				return 1.1
+			case TVTProgrammeGenre.Drama
+				return 1.1
+			case TVTProgrammeGenre.Erotic
+				return 1.2
+			case TVTProgrammeGenre.Family
+				return 1.25
+			case TVTProgrammeGenre.Fantasy
+				return 0.95
+			case TVTProgrammeGenre.History
+				return 1.0
+			case TVTProgrammeGenre.Horror
+				return 1.0
+			case TVTProgrammeGenre.Monumental
+				return 0.9
+			case TVTProgrammeGenre.Mystery
+				return 0.95
+			case TVTProgrammeGenre.Romance
+				return 1.0
+			case TVTProgrammeGenre.Scifi
+				return 0.9
+			case TVTProgrammeGenre.Thriller
+				return 0.95
+			case TVTProgrammeGenre.Western
+				return 0.90
+			case TVTProgrammeGenre.Show, ..
+			     TVTProgrammeGenre.Show_Politics, ..
+			     TVTProgrammeGenre.Show_Music
+				return 0.95
+			case TVTProgrammeGenre.Event, ..
+			     TVTProgrammeGenre.Event_Politics, ..
+			     TVTProgrammeGenre.Event_Music, ..
+			     TVTProgrammeGenre.Event_Sport, ..
+			     TVTProgrammeGenre.Event_Showbiz
+				return 0.85
+			case TVTProgrammeGenre.Feature, ..
+			     TVTProgrammeGenre.Feature_YellowPress
+				return 0.95
+			default
+				return 1.0
+		End Select
 	End Method
 
 
@@ -464,6 +532,16 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	End Method
 
 
+	Method GetTrailerRefreshModifier:float()
+		return GetModifier("topicality::trailerRefresh")
+	End Method
+
+
+	Method GetTrailerWearoffModifier:float()
+		return GetModifier("topicality::trailerWearoff")
+	End Method
+
+
 	Method GetGenreWearoffModifier:float(genre:int=-1)
 		if genre = -1 then genre = self.genre
 		return GetProgrammeDataCollection().GetGenreWearoffModifier(genre)
@@ -817,30 +895,32 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	End Method
 
 
-	Method CutTopicality:Int(cutFactor:float=1.0) {_private}
-		'cutFactor can be used to manipulate the resulting cut
-		'eg for night times
+	Method CutTopicality:Int(cutModifier:float=1.0) {_private}
+		'cutModifier can be used to manipulate the resulting cut
+		'ex. for night times, for low audience...
 
-		'cut of by an individual cutoff factor - do not allow values > 1.0 (refresh instead of cut)
+		'cut by an individual cutoff factor - do not allow values > 1.0
+		'(refresh instead of cut)
 		'the value : default * invidual * individualGenre
-		topicality:* Min(1.0,  cutFactor * GetProgrammeDataCollection().wearoffFactor * GetGenreWearoffModifier() * GetWearoffModifier() )
+		topicality:* Min(1.0, cutModifier * GetProgrammeDataCollection().wearoffFactor * GetGenreWearoffModifier() * GetWearoffModifier())
 	End Method
 
 
-	'by default each airing cuts to 90% of the current topicality
-	Method CutTrailerTopicality:Int(cutToFactor:float=0.9) {_private}
-		trailerTopicality:* Min(1.0,  cutToFactor * trailerTopicality)
+	Method CutTrailerTopicality:Int(cutModifier:float=0.9) {_private}
+		'by default each broadcast of a trailer cuts to 95% of the
+		'current trailer topicality
+		trailerTopicality:* Min(1.0, cutModifier * GetProgrammeDataCollection().trailerWearoffFactor * GetWearoffModifier())
 	End Method
 
 
 	Method RefreshTopicality:Int() {_private}
-		topicality = Min(GetMaxTopicality(), topicality*GetProgrammeDataCollection().refreshFactor*self.GetGenreRefreshModifier()*self.GetRefreshModifier())
+		topicality = Min(GetMaxTopicality(), topicality * GetProgrammeDataCollection().refreshFactor * self.GetGenreRefreshModifier() * self.GetRefreshModifier())
 		Return topicality
 	End Method
 
 
 	Method RefreshTrailerTopicality:Int() {_private}
-		trailerTopicality = Min(1.0, trailerTopicality*1.25)
+		trailerTopicality = Min(1.0, trailerTopicality * GetProgrammeDataCollection().trailerRefreshFactor * self.GetTrailerRefreshModifier())
 		Return trailerTopicality
 	End Method
 

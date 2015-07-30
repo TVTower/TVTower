@@ -177,7 +177,9 @@ endrem
 			Notify "FinishBroadcastingAsProgramme: earn value is negative: "+earn 
 		endif
 		'reduce topicality for infomercials
-		contract.base.CutInfomercialTopicality(GetInfomercialTopicalityCutModifier())
+		'modify cut by relative amount of (potential) watchers
+		local relativeCut:Float = GetInfomercialTopicalityCutModifier( audienceResult.GetAudienceQuote().GetAverage() )
+		contract.base.CutInfomercialTopicality(relativeCut)
 	End Method
 
 
@@ -259,17 +261,15 @@ endrem
 	End Method
 
 
-	Method GetInfomercialTopicalityCutModifier:float(hour:int=-1) {_exposeToLua}
-		if hour = -1 then hour = GetWorldTime().GetNextHour()
-		'during nighttimes 0-5, the cut should be lower
-		'so we increase the cutFactor to 1.35
-		if hour-1 <= 5
-			return 0.99
-		elseif hour-1 <= 12
-			return 0.95
-		else
-			return 0.90
-		endif
+	Method GetInfomercialTopicalityCutModifier:float( audienceQuote:float = 0.5 ) {_exposeToLua}
+		'by default, all infomercials would cut their topicality by
+		'100% when broadcasted on 100% audience watching
+		'but instead of a linear growth, we use the logistical influence
+		'to grow fast at the beginning (near 0%), and
+		'to grow slower at the end (near 100%)
+		local logisticInfluence:Float =	THelper.LogisticalInfluence_Euler(audienceQuote, 3)
+		print "audiencequote: "+audienceQuote + "  result: "+ (1.0-logisticInfluence)
+		return (1.0-logisticInfluence)
 	End Method
 
 

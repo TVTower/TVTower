@@ -119,7 +119,8 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 	Method FinishBroadcastingAsAdvertisement:int(day:int, hour:int, minute:int, audienceData:object)
 		self.SetState(self.STATE_OK)
-		data.CutTrailerTopicality(GetTrailerTopicalityCutToFactor())
+		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
+		data.CutTrailerTopicality(GetTrailerTopicalityCutModifier(audienceResult.GetWholeMarketAudienceQuote().GetAverage()))
 		data.trailerAired:+1
 		data.trailerAiredSinceShown:+1
 	End Method
@@ -128,8 +129,9 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Method FinishBroadcastingAsProgramme:int(day:int, hour:int, minute:int, audienceData:object)
 		self.SetState(self.STATE_OK)
 
-		If self.owner > 0 Then 'Möglichkeit für Unit-Tests. Unschön....
-			local audienceResult:TAudienceResult = TAudienceResult(audienceData)
+		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
+
+		If self.owner > 0 'Möglichkeit für Unit-Tests. Unschön....
 
 			'check if revenues have to get paid (call-in-shows, sponsorships)
 			CheckHourlyBroadcastingRevenue(audienceResult.audience)
@@ -154,18 +156,18 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 				GetPublicImageCollection().Get(self.owner).ChangeImage(penalty)						
 			End If
 		Endif
-		'for debug prints:
-		'local oldTop:float = data.topicality
-		
-		'adjust topicality
-		data.CutTopicality(GetTopicalityCutModifier())
+		'adjust topicality relative to possible audience 
+		data.CutTopicality(GetTopicalityCutModifier( audienceResult.GetWholeMarketAudienceQuote().GetAverage()))
 
 		'if someone can watch that movie, increase the aired amount
 		data.SetTimesAired(data.GetTimesAired(owner)+1, owner)
 		'reset trailer count
 		data.trailerAiredSinceShown = 0
 		'now the trailer is for the next broadcast...
-		data.trailerTopicality = 1.0
+		'instead of just setting back topicality, just refresh it "once"
+		'data.trailerTopicality = 1.0
+		data.RefreshTrailerTopicality()
+		
 		'print "aired programme "+GetTitle()+" "+data.GetTimesAired(owner)+"x."
 
 		'print self.GetTitle() + "  finished at day="+day+" hour="+hour+" minute="+minute + " aired="+data.timesAired + " topicality="+data.topicality+" oldTop="+oldTop
@@ -371,31 +373,41 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	End Function
 
 
-	Method GetTopicalityCutModifier:float(hour:int=-1) {_exposeToLua}
-		if hour = -1 then hour = GetWorldTime().GetNextHour()
-		'during nighttimes 0-5, the cut should be lower
-		'so we increase the cutFactor to 1.35
-		if hour-1 <= 5
-			return 1.35
-		elseif hour-1 <= 12
-			return 1.2
-		else
-			return 1.0
-		endif
+	Method GetTopicalityCutModifier:float( audienceQuote:float = 0.5 ) {_exposeToLua}
+		'by default, all broadcasted programmes would cut their topicality by
+		'100% when broadcasted on 100% audience watching
+		'but instead of a linear growth, we use the logistical influence
+		'to grow fast at the beginning (near 0%), and
+		'to grow slower at the end (near 100%)
+
+		rem
+		"keepRate" for given quote
+		Quote  Strength 3  Strength 2  Strength 1 
+		0      1.0000      1.0000      1.0000
+		0.01                           0.9903
+		0.02                           0.9807
+		0.04                           0.9619
+		0.06                           0.9434
+		0.08                           0.9253
+		0.1    0.7435      0.8214      0.9075
+		0.2    0.5540      0.6755      0.8239
+		0.3    0.4138      0.5561      0.7481
+		0.4    0.3100      0.4582      0.6791
+		0.5    0.2329      0.3776      0.6163
+		0.6    0.1753      0.3112      0.5588
+		0.7    0.1319      0.2561      0.5061
+		0.8    0.0990      0.2102      0.4576
+		0.9    0.0737      0.1718      0.4131
+		endrem
+
+		'we do want to know what to keep, not what to cut (-> 1.0-x)
+		'strength is 1
+		return 1.0 - THelper.LogisticalInfluence_Euler(audienceQuote, 1)
 	End Method
 
 
-	Method GetTrailerTopicalityCutToFactor:float(hour:int=-1) {_exposeToLua}
-		if hour = -1 then hour = GetWorldTime().GetNextHour()
-		'during nighttimes 0-5, the cut should be lower
-		'so we increase the cutFactor to 1.5
-		if hour-1 <= 5
-			return 0.99
-		elseif hour-1 <= 12
-			return 0.95
-		else
-			return 0.90
-		endif
+	Method GetTrailerTopicalityCutModifier:float(audienceQuote:Float = 1.0) {_exposeToLua}
+		return 1.0 - THelper.LogisticalInfluence_Euler(audienceQuote, 1)
 	End Method
 
 

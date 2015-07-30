@@ -99,6 +99,18 @@ Type TAudienceResultBase
 	End Method
 
 
+	'returns the quote of reached audience to WholeMarket.
+	'What percentage of all people having a TV watched the programme
+	Method GetWholeMarketAudienceQuote:TAudience()
+		'no need to calculate a quote if the audience itself is 0 already
+		'-> avoids "nan"-values when dividing with "0.0f" values
+		If not Audience or Audience.GetSum() = 0 then return new TAudience
+
+		'total quote = audience / whole market
+		return Audience.Copy().Divide(WholeMarket)
+	End Method
+
+
 	Method ToString:String()
 		local result:string = ""
 		if Audience then result :+ int(Audience.GetSum()) else result :+ "--"

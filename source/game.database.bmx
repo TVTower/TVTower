@@ -805,6 +805,7 @@ endrem
 		adContract.infomercialAllowed = data.GetBool("infomercial", adContract.infomercialAllowed)
 		adContract.quality = 0.01 * data.GetFloat("quality", adContract.quality * 100.0)
 
+		'old -> now stored in "availability
 		adContract.availableYearRangeFrom = data.GetInt("year_range_from", adContract.availableYearRangeFrom)
 		adContract.availableYearRangeTo = data.GetInt("year_range_to", adContract.availableYearRangeTo)
 
@@ -819,7 +820,16 @@ endrem
 		adContract.fixedInfomercialProfit = data.GetFloat("fix_infomercial_profit", adContract.fixedInfomercialProfit)
 		'without data, fall back to 10% of profitBase 
 		if adContract.infomercialProfitBase = 0 then adContract.infomercialProfitBase = adContract.profitBase * 0.1
-		
+
+
+		'=== AVAILABILITY ===
+		'do not reset "data" before - it contains the pressure groups
+		xml.LoadValuesToData(xml.FindElementNode(node, "availability"), data, [..
+			"script", "year_range_from", "year_range_to" ..
+		])
+		adContract.availableScript = data.GetString("script", adContract.availableScript)
+		adContract.availableYearRangeFrom = data.GetInt("year_range_from", adContract.availableYearRangeFrom)
+		adContract.availableYearRangeTo = data.GetInt("year_range_to", adContract.availableYearRangeTo)
 
 		'=== CONDITIONS ===
 		local nodeConditions:TxmlNode = xml.FindElementNode(node, "conditions")

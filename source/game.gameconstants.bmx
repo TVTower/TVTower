@@ -463,6 +463,9 @@ Type TVTProgrammeGenre {_exposeToLua}
 
 			case Undefined				return "undefined"
 			default
+rem
+'needs "bitmask"-id-numbers (genre 1, 2, 4, ...)
+'until not changed the following is not useable
 				'loop through all flag-entries and add them if contained
 				local result:string
 				local index:int = 0
@@ -475,6 +478,8 @@ Type TVTProgrammeGenre {_exposeToLua}
 				if result = "" then return "undefined"
 				'remove last comma
 				return result[.. result.length-1]
+endrem
+				return "undefined"
 		End Select
 	End Function
 End Type

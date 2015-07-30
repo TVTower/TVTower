@@ -140,6 +140,26 @@ Type TAudience
 	End Method
 
 
+	Method GetWeightedAverage:Float()
+		rem
+		local result:Float = 0
+		result :+ Children * GetAudienceBreakdown().Children
+		result :+ Teenagers * GetAudienceBreakdown().Teenagers
+		result :+ HouseWives * GetAudienceBreakdown().HouseWives
+		result :+ Employees * GetAudienceBreakdown().Employees
+		result :+ Unemployed * GetAudienceBreakdown().Unemployed
+		result :+ Manager * GetAudienceBreakdown().Manager
+		result :+ Pensioners * GetAudienceBreakdown().Pensioners
+		endrem
+
+		'results in nearly the same
+		local result:Float = 0
+		result :+ Women * GetAudienceBreakdown().Women
+		result :+ Men * GetAudienceBreakdown().Men
+		return result
+	End Method
+	
+
 	Method CalcGenderBreakdown()
 		Women = Children * 0.5 + Teenagers * 0.5 + HouseWives * 0.9 + Employees * 0.4 + Unemployed * 0.4 + Manager * 0.25 + Pensioners * 0.55
 		Men   = Children * 0.5 + Teenagers * 0.5 + HouseWives * 0.1 + Employees * 0.6 + Unemployed * 0.6 + Manager * 0.75 + Pensioners * 0.45

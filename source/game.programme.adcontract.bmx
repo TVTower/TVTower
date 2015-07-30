@@ -10,6 +10,8 @@ Rem
 	of a contract are possible.
 EndRem
 SuperStrict
+'to be able to evaluate scripts
+Import "Dig/base.util.scriptexpression.bmx"
 Import "game.gameobject.bmx"
 Import "game.world.worldtime.bmx"
 'to fetch maximum audience
@@ -274,6 +276,10 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 	'if set, this defines a range in which the advertisement can come up
 	Field availableYearRangeFrom:int = -1
 	Field availableYearRangeTo:int = -1
+
+	'special expression defining whether a contract is available for
+	'ad vendor or not (eg. "YEAR > 2000" or "YEARSPLAYED > 2")
+	Field availableScript:string = ""
 	
 
 	Method Create:TAdContractBase(GUID:String, title:TLocalizedString, description:TLocalizedString, daysToFinish:Int, spotCount:Int, targetgroup:Int, minAudience:Float, minImage:Float, fixedPrice:Int, profit:Float, penalty:Float)
@@ -1371,6 +1377,9 @@ Type TAdContractBaseFilter
 	End Method
 
 
+	Function HandleScriptVariables:int(variable:string)
+	End Function
+
 	'checks if the given adcontract fits into the filter criteria
 	Method DoesFilter:Int(contract:TAdContractBase)
 		if not contract then return False
@@ -1405,6 +1414,14 @@ Type TAdContractBaseFilter
 			For local genre:int = EachIn limitedToProgrammeGenres
 				if contract.limitedToProgrammeGenre = genre then return True
 			Next
+			return False
+		endif
+
+
+		'a special script expression defines custom rules for adcontracts
+		'to be available or not
+		'Run this after the more simple checks to avoid cpu load
+		if contract.availableScript and not ScriptExpression.Eval(contract.availableScript, HandleScriptVariables)
 			return False
 		endif
 
