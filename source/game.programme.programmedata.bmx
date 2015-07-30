@@ -47,7 +47,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GetGenreRefreshModifier:float(genre:int=-1)
+	Method GetGenreRefreshModifier:float(genre:int)
 		'values get multiplied with the refresh factor
 		'so this means: higher (>1.0) values increase the resulting
 		'topicality win
@@ -107,7 +107,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GetGenreWearoffModifier:float(genre:int=-1)
+	Method GetGenreWearoffModifier:float(genre:int)
 		'values get multiplied with the wearOff factor
 		'so this means: higher (>1.0) values decrease the resulting
 		'topicality loss
@@ -166,6 +166,24 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		End Select
 	End Method
 
+
+	'amount the wearoff effect gets reduced/increased by programme flags
+	Method GetFlagsWearoffModifier:float(flags:int)
+		local flagMod:float = 1.0
+		if flags & TVTProgrammeFlag.LIVE then flagMod :* 0.75
+		'if flags & TVTProgrammeFlag.ANIMATION then flagMod :* 1.0
+		if flags & TVTProgrammeFlag.CULTURE then flagMod :* 1.05
+		if flags & TVTProgrammeFlag.CULT then flagMod :* 1.2
+		if flags & TVTProgrammeFlag.TRASH then flagMod :* 0.95
+		if flags & TVTProgrammeFlag.BMOVIE then flagMod :* 0.90
+		'if flags & TVTProgrammeFlag.XRATED then flagMod :* 1.0
+		if flags & TVTProgrammeFlag.PAID then flagMod :* 0.75
+		'if flags & TVTProgrammeFlag.SERIES then flagMod :* 1.0
+		if flags & TVTProgrammeFlag.SCRIPTED then flagMod :* 0.90
+
+		return flagMod
+	End Method
+	
 
 	Method RefreshTopicalities:int()
 		For Local data:TProgrammeData = eachin entries.Values()
@@ -548,6 +566,12 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	End Method
 
 
+	Method GetFlagsWearoffModifier:float(flags:int=-1)
+		if flags = -1 then flags = self.flags
+		return GetProgrammeDataCollection().GetFlagsWearoffModifier(flags)
+	End Method
+
+
 	Method GetGenre:int()
 		return self.genre
 	End Method
@@ -903,13 +927,23 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		'(refresh instead of cut)
 		'the value : default * invidual * individualGenre
 		topicality:* Min(1.0, cutModifier * GetProgrammeDataCollection().wearoffFactor * GetGenreWearoffModifier() * GetWearoffModifier())
+		topicality:* cutModifier
+		topicality:* GetProgrammeDataCollection().wearoffFactor
+		topicality:* GetGenreWearoffModifier()
+		topicality:* GetFlagsWearoffModifier()
+		topicality:* GetWearoffModifier()
+		topicality = Min(1.0, topicality)
 	End Method
 
 
 	Method CutTrailerTopicality:Int(cutModifier:float=0.9) {_private}
-		'by default each broadcast of a trailer cuts to 95% of the
-		'current trailer topicality
-		trailerTopicality:* Min(1.0, cutModifier * GetProgrammeDataCollection().trailerWearoffFactor * GetWearoffModifier())
+		trailerTopicality:* cutModifier
+		trailerTopicality:* GetProgrammeDataCollection().trailerWearoffFactor
+		topicality:* GetWearoffModifier()
+		'trailers also get influenced by flags and genre
+		topicality:* GetGenreWearoffModifier()
+		topicality:* GetFlagsWearoffModifier()
+		trailerTopicality = Min(1.0, trailerTopicality)
 	End Method
 
 
