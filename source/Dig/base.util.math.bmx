@@ -126,7 +126,9 @@ Type MathHelper
 		if digitsAfterDecimalPoint <= 0 then return RoundLong(value)
 
 		Local t:Long = 10 ^ digitsAfterDecimalPoint
-		local s:string = RoundLong(Abs(value) * t)
+		'after rounding, fill the front of the number with zeros,
+		'this avoids "0.001 * 1000" to get "1" (wrong length) but "0001"
+		local s:string = Rset(RoundLong(Abs(value) * t), digitsAfterDecimalPoint).Replace(" ", "0")
 		'instead of comparing "value" we use the rounded one - a value
 		'of "0.000" is sometimes represented using "-2xxxxxxx.xxxx"
 		local minus:int = (Double(RoundLong(value) * t) < 0)
@@ -137,6 +139,7 @@ Type MathHelper
 		'and compare the original value if it is negative
 		'- this is needed because "-0.1" would be "0" as int (one char less)
 		local lengthBeforeDecimalPoint:int = string(abs(int(value))).length
+
 		'remove unneeded digits (length = BEFORE + . + AFTER)
 		if s = "0"
 			s = "00"
