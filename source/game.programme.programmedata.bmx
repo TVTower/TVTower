@@ -183,7 +183,24 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 
 		return flagMod
 	End Method
-	
+
+
+	'amount the refresh effect gets reduced/increased by programme flags
+	Method GetFlagsRefreshModifier:float(flags:int)
+		local flagMod:float = 1.0
+		if flags & TVTProgrammeFlag.LIVE then flagMod :* 0.75
+		'if flags & TVTProgrammeFlag.ANIMATION then flagMod :* 1.0
+		if flags & TVTProgrammeFlag.CULTURE then flagMod :* 1.1
+		if flags & TVTProgrammeFlag.CULT then flagMod :* 1.2
+		if flags & TVTProgrammeFlag.TRASH then flagMod :* 1.05
+		if flags & TVTProgrammeFlag.BMOVIE then flagMod :* 1.05
+		'if flags & TVTProgrammeFlag.XRATED then flagMod :* 1.0
+		if flags & TVTProgrammeFlag.PAID then flagMod :* 0.85
+		'if flags & TVTProgrammeFlag.SERIES then flagMod :* 1.0
+		if flags & TVTProgrammeFlag.SCRIPTED then flagMod :* 0.90
+
+		return flagMod
+	End Method	
 
 	Method RefreshTopicalities:int()
 		For Local data:TProgrammeData = eachin entries.Values()
@@ -572,6 +589,12 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	End Method
 
 
+	Method GetFlagsRefreshModifier:float(flags:int=-1)
+		if flags = -1 then flags = self.flags
+		return GetProgrammeDataCollection().GetFlagsRefreshModifier(flags)
+	End Method
+
+
 	Method GetGenre:int()
 		return self.genre
 	End Method
@@ -926,35 +949,53 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		'cut by an individual cutoff factor - do not allow values > 1.0
 		'(refresh instead of cut)
 		'the value : default * invidual * individualGenre
-		topicality:* Min(1.0, cutModifier * GetProgrammeDataCollection().wearoffFactor * GetGenreWearoffModifier() * GetWearoffModifier())
 		topicality:* cutModifier
 		topicality:* GetProgrammeDataCollection().wearoffFactor
 		topicality:* GetGenreWearoffModifier()
 		topicality:* GetFlagsWearoffModifier()
 		topicality:* GetWearoffModifier()
-		topicality = Min(1.0, topicality)
+
+		'limit to 0-Max
+		topicality = MathHelper.Clamp(topicality, 0.0, GetMaxTopicality())
 	End Method
 
 
-	Method CutTrailerTopicality:Int(cutModifier:float=0.9) {_private}
+	Method CutTrailerTopicality:Int(cutModifier:float=1.0) {_private}
 		trailerTopicality:* cutModifier
 		trailerTopicality:* GetProgrammeDataCollection().trailerWearoffFactor
-		topicality:* GetWearoffModifier()
+		trailerTopicality:* GetWearoffModifier()
 		'trailers also get influenced by flags and genre
-		topicality:* GetGenreWearoffModifier()
-		topicality:* GetFlagsWearoffModifier()
-		trailerTopicality = Min(1.0, trailerTopicality)
+		trailerTopicality:* GetGenreWearoffModifier()
+		trailerTopicality:* GetFlagsWearoffModifier()
+
+		'limit to 0-1
+		'(trailers do not inherit "aged" topicality, so 1 is max)
+		trailerTopicality = MathHelper.Clamp(trailerTopicality, 0.0, 1.0)
 	End Method
 
 
 	Method RefreshTopicality:Int() {_private}
-		topicality = Min(GetMaxTopicality(), topicality * GetProgrammeDataCollection().refreshFactor * self.GetGenreRefreshModifier() * self.GetRefreshModifier())
+		topicality :* GetProgrammeDataCollection().refreshFactor
+		topicality :* GetRefreshModifier()
+		topicality :* GetGenreRefreshModifier()
+
+		'limit to 0-Max
+		topicality = MathHelper.Clamp(topicality, 0.0, GetMaxTopicality())
+
 		Return topicality
 	End Method
 
 
 	Method RefreshTrailerTopicality:Int() {_private}
-		trailerTopicality = Min(1.0, trailerTopicality * GetProgrammeDataCollection().trailerRefreshFactor * self.GetTrailerRefreshModifier())
+		trailerTopicality :* GetProgrammeDataCollection().trailerRefreshFactor
+		trailerTopicality :* GetTrailerRefreshModifier()
+		'trailers also get influenced by flags and genre
+		trailerTopicality :* GetGenreRefreshModifier()
+		trailerTopicality :* GetFlagsRefreshModifier()
+
+		'limit to 0-1
+		trailerTopicality = MathHelper.Clamp(trailerTopicality, 0.0, 1.0)
+
 		Return trailerTopicality
 	End Method
 

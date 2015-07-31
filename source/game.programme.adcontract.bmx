@@ -35,6 +35,12 @@ Import "game.gameinformation.bmx"
 Type TAdContractBaseCollection
 	Field entries:TMap = CreateMap()
 	Field entriesCount:int = -1
+
+	'factor by what an infomercial topicality DECREASES by sending it
+	Field infomercialWearoffFactor:float = 0.85
+	'factor by what an infomercial topicality INCREASES on a new day
+	Field infomercialRefreshFactor:float = 1.35
+	
 	Global _instance:TAdContractBaseCollection
 
 
@@ -280,6 +286,14 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 	'special expression defining whether a contract is available for
 	'ad vendor or not (eg. "YEAR > 2000" or "YEARSPLAYED > 2")
 	Field availableScript:string = ""
+
+	rem
+	"topicality:infomercialWearoff"
+	  changes how much an infomercial loses topicality during sending it
+	"topicality:infomercialRefresh"
+	  changes how much an infomercial "regenerates" on topicality per day
+	endrem
+	Field modifiers:TData = new TData
 	
 
 	Method Create:TAdContractBase(GUID:String, title:TLocalizedString, description:TLocalizedString, daysToFinish:Int, spotCount:Int, targetgroup:Int, minAudience:Float, minImage:Float, fixedPrice:Int, profit:Float, penalty:Float)
@@ -332,12 +346,52 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 	End Method
 
 
-	Method CutInfomercialTopicality:Int(cutFactor:float=1.0) {_private}
-		infomercialTopicality :* cutFactor
-		'limit to 0-max
-		infomercialTopicality = Max(0, Min(infomercialTopicality, GetMaxInfomercialTopicality()))
+	Method GetInfomercialRefreshModifier:float()
+		return GetModifier("topicality::infomercialRefresh")
 	End Method
 
+
+	Method GetInfomercialWearoffModifier:float()
+		return GetModifier("topicality::infomercialWearoff")
+	End Method
+
+
+	'returns the stored value for a modifier - defaults to "100%"
+	Method GetModifier:Float(modifierKey:string, defaultValue:Float = 1.0)
+		return modifiers.GetFloat(modifierKey, defaultValue)
+	End Method
+
+
+	'stores a modifier value
+	Method SetModifier:int(modifierKey:string, value:Float)
+		'skip adding the modifier if it is the same - or a default value
+		'-> keeps datasets smaller
+		if GetModifier(modifierKey) = value then return False
+		
+		modifiers.AddNumber(modifierKey, value)
+		return True
+	End Method
+
+
+	Method CutInfomercialTopicality:Int(cutModifier:float=1.0) {_private}
+		infomercialTopicality :* cutModifier
+		infomercialTopicality :* GetAdContractBaseCollection().infomercialWearoffFactor
+		infomercialTopicality :* GetInfomercialWearoffModifier()
+
+		'limit to 0-max
+		infomercialTopicality = MathHelper.Clamp(infomercialTopicality, 0.0, GetMaxInfomercialTopicality())
+	End Method
+
+
+	Method RefreshInfomercialTopicality:Int(refreshModifier:float=1.0) {_private}
+		infomercialTopicality :* refreshModifier
+		infomercialTopicality :* GetAdContractBaseCollection().infomercialRefreshFactor
+		infomercialTopicality :* GetInfomercialRefreshModifier()
+
+		'limit to 0-max
+		infomercialTopicality = MathHelper.Clamp(infomercialTopicality, 0.0, GetMaxInfomercialTopicality())
+	End Method
+	
 
 	Method GetProPressureGroups:int()
 		return proPressureGroups
@@ -374,16 +428,6 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 		Else
 			contraPressureGroups :& ~group
 		EndIf
-	End Method
-
-
-
-	Method RefreshInfomercialTopicality:Int() {_private}
-		'each day topicality refreshes by 15%
-		infomercialTopicality :* 1.15
-		'limit to 0-max
-		infomercialTopicality = Max(0, Min(infomercialTopicality, GetMaxInfomercialTopicality()))
-		Return infomercialTopicality
 	End Method
 End Type
 
@@ -529,7 +573,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 	'the quality is higher for "better paid" advertisements with
 	'higher audience requirements... no cheap "car seller" ad :D
-	Method GetQuality:Float(luckFactor:Int = 1) {_exposeToLua}
+	Method GetQuality:Float() {_exposeToLua}
 		Local quality:Float = 0.05
 
 		'TODO: switch to Percentages + modifiers for TargetGroup-Limits
@@ -542,15 +586,10 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		if GetMinAudience() >1500000 then quality :+ 0.25		'+0.75
 		if GetMinAudience() >5000000 then quality :+ 0.25		'+1.00
 
-		If luckFactor = 1 Then
-			quality = quality * 0.98 + Float(RandRange(10, 20)) / 1000.0 '1%-Punkte bis 2%-Punkte Basis-Qualität
-		Else
-			quality = quality * 0.99 + 0.01 'Mindestens 1% Qualität
-		EndIf
-
-		'no minus quote
-		quality = Max(0, quality)
-		Return quality
+		'a portion of the resulting quality is based on the "better"
+		'advertisements (minAudience and minImage)
+		'at least 1% quality
+		Return MathHelper.Clamp(0.70 * base.GetQuality() + 0.15 * quality + 0.15 * GetMinImage(), 0.01, 1.0)
 	End Method
 
 

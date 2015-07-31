@@ -176,10 +176,8 @@ endrem
 		else
 			Notify "FinishBroadcastingAsProgramme: earn value is negative: "+earn 
 		endif
-		'reduce topicality for infomercials
-		'modify cut by relative amount of (potential) watchers
-		local relativeCut:Float = GetInfomercialTopicalityCutModifier( audienceResult.GetAudienceQuote().GetAverage() )
-		contract.base.CutInfomercialTopicality(relativeCut)
+		'adjust topicality relative to possible audience 
+		contract.base.CutInfomercialTopicality(GetInfomercialTopicalityCutModifier( audienceResult.GetWholeMarketAudienceQuote().GetAverage()))
 	End Method
 
 
@@ -267,11 +265,8 @@ endrem
 		'but instead of a linear growth, we use the logistical influence
 		'to grow fast at the beginning (near 0%), and
 		'to grow slower at the end (near 100%)
-		local logisticInfluence:Float =	THelper.LogisticalInfluence_Euler(audienceQuote, 3)
-		print "audiencequote: "+audienceQuote + "  result: "+ (1.0-logisticInfluence)
-		return (1.0-logisticInfluence)
+		return 1.0 - THelper.LogisticalInfluence_Euler(audienceQuote, 1)
 	End Method
-
 
 
 	Method GetQuality:Float() {_exposeToLua}
