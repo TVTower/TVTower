@@ -100,10 +100,11 @@ Type TDatabaseLoader
 		'exclude "database.xml" as we add it by default to load it
 		'as the first file
 		dirTree.AddIncludeFileNames(["*"])
-		dirTree.AddExcludeFileNames(["database", "database_v2"])
+		'dirTree.AddExcludeFileNames(["database", "database_v2"])
 		'add that database.xml - old v2 first
 		'dirTree.AddFile(dbDirectory+"/database_v2.xml")
-		dirTree.AddFile(dbDirectory+"/database.xml")
+		'dirTree.AddFile(dbDirectory+"/database.xml")
+
 		'add the rest of available files in the given dir
 		dirTree.ScanDir()
 

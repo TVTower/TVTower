@@ -116,7 +116,7 @@ Type TDirectoryTree
 	'directory.
 	'if no file ending is added until scanning, all files
 	'will get added
-	Method ScanDir:Int( directory:String="" )
+	Method ScanDir:Int( directory:String="", sortResults:int = True )
 		If directory = "" Then directory = baseDirectory
 
 		?bmxng
@@ -163,6 +163,11 @@ Type TDirectoryTree
 		
 		CloseDir(dirHandle)
 
+		if sortResults
+			directories.Sort(True)
+			filePaths.Sort(True)
+		endif
+		
 		Return True
 	End Method
 

@@ -141,8 +141,8 @@ TLogger.Log("CORE", "Starting "+APP_NAME+", "+VersionString+".", LOG_INFO )
 
 '===== SETUP LOGGER FILTER =====
 TLogger.setLogMode(LOG_ALL)
-'TLogger.setPrintMode(LOG_ALL )
-TLogger.setPrintMode(LOG_AI | LOG_ERROR )
+TLogger.setPrintMode(LOG_ALL )
+'TLogger.setPrintMode(LOG_AI | LOG_ERROR )
 
 'print "ALLE MELDUNGEN AUS"
 'TLogger.SetPrintMode(0)
