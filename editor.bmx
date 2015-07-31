@@ -1423,6 +1423,18 @@ Type TEditorDatabaseLoader Extends TDatabaseLoader
 		SaveLocalizedString(node, "description", adContract.description)
 
 
+		'<availability>-block
+		if adContract.availableYearRangeFrom <> -1 or ..
+		   adContract.availableYearRangeTo <> -1 or ..
+		   adContract.availableScript
+		   
+			local availabilityNode:TXmlNode = node.AddChild("availability")
+			if adContract.availableScript then availabilityNode.setAttribute("script", adContract.availableScript)
+			if adContract.availableYearRangeFrom <> -1 then availabilityNode.setAttribute("year_range_from", adContract.availableYearRangeFrom)
+			if adContract.availableYearRangeTo <> -1 then availabilityNode.setAttribute("year_range_to", adContract.availableYearRangeTo)
+		endif
+		
+
 		'<conditions>-block
 		local conditionsNode:TXmlNode = node.AddChild("conditions")
 		'if adContract.minAudienceBase > 0 then
@@ -1452,9 +1464,6 @@ Type TEditorDatabaseLoader Extends TDatabaseLoader
 
 		if adContract.profitBase > 0 then dataNode.setAttribute("profit", MathHelper.NumberToString(adContract.profitBase,4, TRUE))
 		if adContract.penaltyBase > 0 then dataNode.setAttribute("penalty", MathHelper.NumberToString(adContract.penaltyBase,4, TRUE))
-
-		if adContract.availableYearRangeFrom <> -1 then dataNode.setAttribute("year_range_from", adContract.availableYearRangeFrom)
-		if adContract.availableYearRangeTo <> -1 then dataNode.setAttribute("year_range_to", adContract.availableYearRangeTo)
 
 		'if value differs to 10% of profitBase (default value)
 		if MathHelper.NumberToString(adContract.infomercialProfitBase,2,True) <> MathHelper.NumberToString(0.1*adContract.profitBase,2,True)
