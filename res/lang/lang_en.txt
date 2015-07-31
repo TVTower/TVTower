@@ -242,6 +242,8 @@ MOVIE_CAST              = Cast
 MOVIE_LEADINGACTOR      = leading actor
 MOVIE_SUPPORTINGACTOR   = supporting actor
 
+AD_QUALITY = Quality
+
 LICENCETYPE_SINGLE = Single
 LICENCETYPE_EPISODE = Episode
 LICENCETYPE_COLLECTION = Collection

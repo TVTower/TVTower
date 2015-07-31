@@ -243,6 +243,8 @@ MOVIE_CAST              = Lanzar
 MOVIE_LEADINGACTOR      = Primer actor
 MOVIE_SUPPORTINGACTOR   = Actor secundario
 
+AD_QUALITY = Calidat
+
 LICENCETYPE_SINGLE = Single
 LICENCETYPE_EPISODE = Episode
 LICENCETYPE_COLLECTION = Collection

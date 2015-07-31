@@ -331,7 +331,7 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 	End Method
 
 
-	Method GetQuality:int() {_exposeToLua}
+	Method GetQuality:Float() {_exposeToLua}
 		return quality
 	End Method
 
@@ -950,8 +950,9 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		barH = skin.GetBarSize(100, -1).GetY()
 
 		'bar area
-		'bar area starts with padding, ends with padding and contains
-		barAreaH = 2 * barAreaPaddingY + barH
+		'bar area starts with padding, ends with padding and contains 2
+		'bars
+		barAreaH = 2 * barAreaPaddingY + 2 * barH
 
 		'message area
 		'show earn message
@@ -1007,6 +1008,11 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'=== BARS ===
 		'bars have a top-padding
 		contentY :+ barAreaPaddingY
+
+		'quality
+		skin.RenderBar(contentX + 5, contentY, 200, 12, GetQuality())
+		skin.fontSemiBold.drawBlock(GetLocale("AD_QUALITY"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+		contentY :+ barH
 
 		'topicality
 		skin.RenderBar(contentX + 5, contentY, 200, 12, base.GetInfomercialTopicality())

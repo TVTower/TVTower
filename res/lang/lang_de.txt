@@ -238,6 +238,8 @@ MOVIE_CAST      = Besetzung
 MOVIE_LEADINGACTOR = Hauptdarsteller
 MOVIE_SUPPORTINGACTOR = Nebendarsteller
 
+AD_QUALITY = Qualität
+
 LICENCETYPE_SINGLE = Einzeln
 LICENCETYPE_EPISODE = Episode
 LICENCETYPE_COLLECTION = Lizenzbündel
