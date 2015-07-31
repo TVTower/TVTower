@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
 	<version value="3" comment="Daten von Nicht_die_Betty" />
 	<!--
@@ -70,43 +70,4 @@ Am Schluss zeigt Fischer Matjes noch wie man richtig Granat pult.</de>
 	</allprogrammes>
 
 
-	<!-- Alle Werbevertraege -->
-	<allads>
-		<ad id="nichtdiebetty-ad-tieminister-01" creator="8659" created_by="Nicht_die_Betty">
-			<title>
-				<de>Krawatten-Minister</de>
-				<en>Tie-Minister</en>
-			</title>
-			<description>
-				<de>Der Mode Discount nicht nur für Fliegenträger. Dicker Katalog, schmaler Preis.</de>
-				<en>The fashion discount not just for bow tie users. Extensive catalogue but lowest prices.</en>
-			</description>
-			<conditions min_audience="0.5" min_image="3" target_group="0" />
-			<data infomercial="1" quality="15" repetitions="3" duration="2" fix_price="1" profit="3750" penalty="7000" />
-		</ad>
-		<ad id="nichtdiebetty-ad-baroque-01" creator="8659" created_by="Nicht_die_Betty">
-            <title>
-               <de>Baroque</de>
-               <en></en>
-            </title>
-            <description>
-               <de>DAS Fantasy-Rollenspiel von Goldfisch Bytes. Lasst uns Wildschweine jagen!</de>
-               <en>THE fantasy-RPG by Goldfish Bytes. Lets hunt boars!</en>
-            </description>
-            <conditions min_audience="0.5" min_image="3" target_group="0" />
-            <data infomercial="1" quality="15" repetitions="2" duration="2" fix_price="1" profit="4500" penalty="7500" />
-        </ad>
-		<ad id="nichtdiebetty-ad-angryglasses-01" creator="8659" created_by="Nicht_die_Betty">
-			<title>
-				<de>Brillen Zorn</de>
-				<en>Angry Glasses</en>
-			</title>
-			<description>
-				<de>Wie die Faust aufs Auge - unsere Brillen sitzen immer!</de>
-				<en>Clashes horrible - our absolutely perfect fitting glasses. Break-proof through years of experience!</en>
-			</description>
-			<conditions min_audience="2.5" min_image="3" target_group="0" />
-			<data infomercial="1" quality="15" repetitions="2" duration="4" fix_price="1" profit="3500" penalty="4000" />
-		</ad>
-	</allads>
-</tvgdb>
+	</tvgdb>
