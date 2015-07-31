@@ -41,7 +41,7 @@ Rem
 End Rem
 SuperStrict
 
-Framework Brl.StandardIO
+Import Brl.StandardIO
 Import Brl.Retro
 
 'based on the approach described at
