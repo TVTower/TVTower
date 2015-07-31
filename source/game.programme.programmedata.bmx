@@ -797,53 +797,64 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Method GetPrice:int()
 		Local value:int = 0
 
-		'maximum price is
-		'basefactor * topicalityModifier * GetModifier("price")
-
 		'movies run in cinema (outcome >0)
 		If isType(TVTProgrammeProductType.MOVIE) and GetOutcome() > 0
-			'basefactor * priceFactor
-			value = 120000 * (0.55 * GetOutcome() + 0.25 * GetReview() + 0.2 * GetSpeed())
+			local priceMod:float = 0.0
+			priceMod :+ 0.55 * GetOutcome()
+			priceMod :+ 0.25 * GetReview()
+			priceMod :+ 0.2 * GetSpeed()
+			priceMod = THelper.LogisticalInfluence_Euler(priceMod, 0.5)
+
+			value = 20000 + 750000 * priceMod
 		 'shows, productions, series...
 		Else
+			local priceMod:float = 0.0
+			priceMod :+ 0.45 * GetReview()
+			priceMod :+ 0.55 * GetSpeed()
+			if GetReview() > 0.5 then priceMod :* 1.1
+			if GetSpeed() > 0.6 then priceMod :* 1.1
+			priceMod = THelper.LogisticalInfluence_Euler(priceMod, 0.5)
+
 			'basefactor * priceFactor
-			value = 75000 * ( 0.45 * GetReview() + 0.55 * GetSpeed() )
-			if GetReview() > 0.5 then value :* 1.1
-			if GetSpeed() > 0.6 then value :* 1.1
+			value = 6000 + 95000 * priceMod
 		EndIf
 
+		'=== MODIFIERS ===
+		'price modifier just influences price by 25% (to avoid "0" prices)
+		value :* (0.75 + 0.25 * GetModifier("price"))
+
+
+		'=== TOPICALITY ===
 		'the more current the more expensive
 		'multipliers stack"
 		local topicalityModifier:Float = 1.0
 		If (GetMaxTopicality() >= 0.80) Then topicalityModifier = 1.1
 		If (GetMaxTopicality() >= 0.85) Then topicalityModifier = 1.3
-		If (GetMaxTopicality() >= 0.90) Then topicalityModifier = 1.8
-		If (GetMaxTopicality() >= 0.94) Then topicalityModifier = 2.5
-		If (GetMaxTopicality() >= 0.98) Then topicalityModifier = 3.5
+		If (GetMaxTopicality() >= 0.90) Then topicalityModifier = 1.7
+		If (GetMaxTopicality() >= 0.94) Then topicalityModifier = 2.25
+		If (GetMaxTopicality() >= 0.98) Then topicalityModifier = 3.0
 		'make just released programmes even more expensive
-		If (GetMaxTopicality() > 0.99)  Then topicalityModifier = 5.0
+		If (GetMaxTopicality() > 0.99)  Then topicalityModifier = 4.5
 
 		value :* topicalityModifier
 
 		'topicality has a certain value influence
 		value :* GetTopicality()
 
-		Rem
-		'individual price modifier - default is 1.0
-		'until we revisited the database, it only has a 20% influence
-		'value :* (0.8 + 0.2 * GetModifier("price"))
-		End Rem
-		value :* GetModifier("price")
 
-		
-		If Self.IsBMovie()
-			value :* 0.3
-		End If
+		'=== FLAGS ===
+		'BMovies lower the price
+		If Self.IsBMovie() then value :* 0.85
+
+		'Income generating programmes (infomercials) increase the price
+		If Self.IsPaid() then value :* 1.2
+
+
 			
 		'round to next "1000" block
 		value = Int(Floor(value / 1000) * 1000)
 
-'print GetTitle()+"  value1: "+value + "  outcome:"+GetOutcome()+"  review:"+GetReview() + " maxTop:"+GetMaxTopicality()+" year:"+year
+		'print GetTitle()+"  value1: "+value + "  outcome:"+GetOutcome()+"  review:"+GetReview() + " maxTop:"+GetMaxTopicality()+" year:"+year
 
 		return value
 	End Method
@@ -1118,7 +1129,10 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 
 
 	Method isType:int(typeID:int)
-		return (productType & typeID)
+		'if productType is a bitmask flag
+		'return (productType & typeID)
+
+		return productType = typeID
 	End Method	
 End Type
 

@@ -179,7 +179,7 @@
 				</programme>
 			</children>
 		</programme>
-		<programme id="ronny-programme-familiefuchs-01" product="4" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="ronny-programme-familiefuchs-01" product="2" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Familie Fuchs</de>
 				<en></en>
@@ -200,7 +200,7 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 			<ratings critics="51" speed="25" />
 			<!-- Episodes -->
 			<children>
-				<programme id="ronny-programme-familiefuchs-01-ep-01" product="4" licence_type="2" creator="5578" created_by="Ronny">
+				<programme id="ronny-programme-familiefuchs-01-ep-01" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Neue Nachbarn</de>
 						<en></en>
@@ -212,7 +212,7 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 					<data price_mod="0.68" />
 					<ratings critics="55"  />
 				</programme>
-				<programme id="ronny-programme-familiefuchs-01-ep-02" product="4" licence_type="2" creator="5578" created_by="Ronny">
+				<programme id="ronny-programme-familiefuchs-01-ep-02" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Maus in der Falle</de>
 						<en></en>
@@ -224,7 +224,7 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 					<data price_mod="0.75" />
 					<ratings critics="50" speed="30" />
 				</programme>
-				<programme id="ronny-programme-familiefuchs-01-ep-03" product="4" licence_type="2" creator="5578" created_by="Ronny">
+				<programme id="ronny-programme-familiefuchs-01-ep-03" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Frieda Fuchs</de>
 						<en></en>
@@ -236,7 +236,7 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 					<data price_mod="0.58" />
 					<ratings critics="62" speed="22"  />
 				</programme>
-				<programme id="ronny-programme-familiefuchs-01-ep-03" product="4" licence_type="2" creator="5578" created_by="Ronny">
+				<programme id="ronny-programme-familiefuchs-01-ep-03" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Guten Morgen meine Kinder</de>
 						<en></en>
@@ -248,7 +248,7 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 					<data price_mod="0.65" />
 					<ratings critics="69" speed="20"  />
 				</programme>
-				<programme id="ronny-programme-familiefuchs-01-ep-04" product="4" licence_type="2" creator="5578" created_by="Ronny">
+				<programme id="ronny-programme-familiefuchs-01-ep-04" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Besuch bei Ingo</de>
 						<en></en>
@@ -260,7 +260,7 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 					<data price_mod="0.61" />
 					<ratings critics="59" speed="23"  />
 				</programme>
-				<programme id="ronny-programme-familiefuchs-01-ep-05" product="4" licence_type="2" creator="5578" created_by="Ronny">
+				<programme id="ronny-programme-familiefuchs-01-ep-05" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Randale im Fuchsbau</de>
 						<en></en>
@@ -272,7 +272,7 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 					<data price_mod="0.53" />
 					<ratings critics="58" speed="27"  />
 				</programme>
-				<programme id="ronny-programme-familiefuchs-01-ep-06" product="4" licence_type="2" creator="5578" created_by="Ronny">
+				<programme id="ronny-programme-familiefuchs-01-ep-06" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Der Grünrock</de>
 						<en></en>
@@ -287,7 +287,7 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 				</programme>
 			</children>
 		</programme>
-		<programme id="ronny-programme-komtess-01" product="4" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="ronny-programme-komtess-01" product="2" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Die Komtess</de>
 				<en></en>
@@ -308,7 +308,7 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 			<ratings critics="31" speed="30" />
 			<!-- Episodes -->
 			<children>
-				<programme id="ronny-programme-komtess-01-ep-01" product="4" licence_type="2" creator="5578" created_by="Ronny">
+				<programme id="ronny-programme-komtess-01-ep-01" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Jaqueline Montegrieux</de>
 						<en></en>
@@ -320,7 +320,7 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 					<data price_mod="0.98" />
 					<ratings critics="32" speed="28"  />
 				</programme>
-				<programme id="ronny-programme-komtess-01-ep-02" product="4" licence_type="2" creator="5578" created_by="Ronny">
+				<programme id="ronny-programme-komtess-01-ep-02" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Francine du Pomeranc</de>
 						<en></en>
@@ -332,7 +332,7 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 					<data price_mod="0.98" />
 					<ratings critics="30" speed="29"  />
 				</programme>
-				<programme id="ronny-programme-komtess-01-ep-03" product="4" licence_type="2" creator="5578" created_by="Ronny">
+				<programme id="ronny-programme-komtess-01-ep-03" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Eine Leiche im Keller?</de>
 						<en></en>
@@ -344,7 +344,7 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 					<data price_mod="0.98" />
 					<ratings critics="34" speed="25"  />
 				</programme>
-				<programme id="ronny-programme-komtess-01-ep-04" product="4" licence_type="2" creator="5578" created_by="Ronny">
+				<programme id="ronny-programme-komtess-01-ep-04" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Die Waldhütte</de>
 						<en></en>
@@ -356,7 +356,7 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 					<data price_mod="0.93" />
 					<ratings critics="30" speed="30"  />
 				</programme>
-				<programme id="ronny-programme-komtess-01-ep-05" product="4" licence_type="2" creator="5578" created_by="Ronny">
+				<programme id="ronny-programme-komtess-01-ep-05" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Sie war es...</de>
 						<en></en>

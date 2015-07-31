@@ -6165,7 +6165,7 @@ Tragische Liebesgeschichte</de>
 				<member index="0" function="1">13ce58ce-216d-4f5c-a9ca-bed86eef67e3</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2009" distribution="0" maingenre="8" subgenre="0" flags="128" blocks="2" time="0" price_mod="0.13" />
+			<data country="D" year="2009" distribution="0" maingenre="8" subgenre="0" flags="192" blocks="2" time="0" price_mod="0.13" />
 			<ratings critics="2" speed="35" outcome="0" />
 			<children>
 				<programme id="03f5cdc1-b20f-4db2-b23b-c8bede5b99ca" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
@@ -6762,7 +6762,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en></en>
 			</description>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2005" distribution="0" maingenre="8" subgenre="0" flags="128" blocks="2" time="0" price_mod="0.2" />
+			<data country="D" year="2005" distribution="0" maingenre="8" subgenre="0" flags="192" blocks="2" time="0" price_mod="0.2" />
 			<ratings critics="5" speed="30" outcome="0" />
 			<children>
 				<programme id="a710207e-6dff-4583-a015-94292f152ba9" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">

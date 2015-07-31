@@ -420,7 +420,7 @@
 			<data country="DDR" year="1972" distribution="0" maingenre="10" subgenre="0" flags="0" blocks="2" time="0" price_mod="0.33" />
 			<ratings critics="27" speed="34" outcome="46" />
 		</programme>
-		<programme id="c4ce4cc9-1c7e-TheRobSerieTrash01" product="7" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="c4ce4cc9-1c7e-TheRobSerieTrash01" product="7" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
 			<title>
 				<de>Skandale</de>
 				<en></en>
