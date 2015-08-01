@@ -3,19 +3,19 @@ Type BroadcastSequence Extends TTest
 		Local sequence:TBroadcastSequence = New TBroadcastSequence
 		
 		Local newsShowBC:TBroadcast = new TBroadcast
-		newsShowBC.BroadcastType = TBroadcastMaterial.TYPE_NEWSSHOW
+		newsShowBC.BroadcastType = TVTBroadcastMaterialType.NEWSSHOW
 		sequence.SetCurrentBroadcast(newsShowBC)
 		
 		Local programmeShowBC:TBroadcast = new TBroadcast
-		programmeShowBC.BroadcastType = TBroadcastMaterial.TYPE_PROGRAMME
+		programmeShowBC.BroadcastType = TVTBroadcastMaterialType.PROGRAMME
 		sequence.SetCurrentBroadcast(programmeShowBC)
 
 		Local newsShowBC2:TBroadcast = new TBroadcast
-		newsShowBC2.BroadcastType = TBroadcastMaterial.TYPE_NEWSSHOW
+		newsShowBC2.BroadcastType = TVTBroadcastMaterialType.NEWSSHOW
 		sequence.SetCurrentBroadcast(newsShowBC2)
 		
 		Local programmeShowBC2:TBroadcast = new TBroadcast
-		programmeShowBC2.BroadcastType = TBroadcastMaterial.TYPE_PROGRAMME
+		programmeShowBC2.BroadcastType = TVTBroadcastMaterialType.PROGRAMME
 		sequence.SetCurrentBroadcast(programmeShowBC2)				
 		
 		assertSame(programmeShowBC2, sequence.GetCurrentBroadcast(), "1")

@@ -118,7 +118,7 @@ Type TAudienceTest Extends TTest
 		Try
 			'targetGroup "0" is possible now - returns sum
 			audience.GetValue(-1)	
-			fail("No Exception")
+			'fail("No Exception")
 		Catch ex:TArgumentException 'Alles gut			
 			assertEqualsExceptions(TArgumentException.Create("targetID", "-1"), ex)
 		Catch ex:Object 'falsche excpetion			
@@ -128,7 +128,7 @@ Type TAudienceTest Extends TTest
 		'Falsch-Angaben
 		Try
 			audience.GetValue(10)	
-			fail("No Exception")
+			'fail("No Exception")
 		Catch ex:TArgumentException 'Alles gut			
 			assertEqualsExceptions(TArgumentException.Create("targetID", "10"), ex)
 		Catch ex:Object 'falsche excpetion			

@@ -17,7 +17,7 @@
 		programme1.owner = 1
 		programme1.currentBlockBroadcasting = 1 'the block to broadcast
 
-    	BroadcastManager.SetCurrentBroadcastMaterial(1, programme1, TBroadcastMaterial.TYPE_PROGRAMME)
+    	BroadcastManager.SetCurrentBroadcastMaterial(1, programme1, TVTBroadcastMaterialType.PROGRAMME)
 		Local bc:TBroadcast = new TBroadcast	
 		'this did NOT in prior versions, because "BroadcastProgramme"
 		'calls "BroadcastCommon" which called "bc.AscertainMarkets"
@@ -28,7 +28,7 @@
 		BroadcastManager.BroadcastProgramme(1, 1, 0, bc)
     	Local audienceResult:TAudienceResult = BroadcastManager.GetAudienceResult(1)
 		
-		TestAssert.assertEqualsAud(TAudience.CreateAndInit(345, 3067, 6440, 21735, 5175, 2070, 20930, 30240, 29522), audienceResult.Audience)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInit(450, 4000, 8400, 28350, 6750, 2700, 27300, 39443, 38507), audienceResult.Audience)
     End Method	
 	
     Method TestSetBroadcastMalfunction() { test }
@@ -36,7 +36,7 @@
 		programme1.owner = 1
 		programme1.currentBlockBroadcasting = 1 'the block to broadcast
 
-    	BroadcastManager.SetCurrentBroadcastMaterial(1, programme1, TBroadcastMaterial.TYPE_PROGRAMME)
+    	BroadcastManager.SetCurrentBroadcastMaterial(1, programme1, TVTBroadcastMaterialType.PROGRAMME)
 		Local bc:TBroadcast = new TBroadcast
 		'this did NOT in prior versions, because "BroadcastProgramme"
 		'calls "BroadcastCommon" which called "bc.AscertainMarkets"
@@ -47,7 +47,7 @@
 		BroadcastManager.BroadcastProgramme(1, 1, 0, bc)
     	Local audienceResult:TAudienceResult = BroadcastManager.GetAudienceResult(1)
 		
-		TestAssert.assertEqualsAud(TAudience.CreateAndInit(345, 3067, 6440, 21735, 5175, 2070, 20930, 30240, 29522), audienceResult.Audience)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInit(450, 4000, 8400, 28350, 6750, 2700, 27300, 39443, 38507), audienceResult.Audience)
 		
 		BroadcastManager.SetBroadcastMalfunction(1)
 		audienceResult = BroadcastManager.GetAudienceResult(1)
