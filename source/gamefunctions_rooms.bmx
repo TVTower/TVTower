@@ -748,6 +748,8 @@ Type RoomHandler_Archive extends TRoomHandler
 						MOUSEMANAGER.resetKey(1)
 						GetGame().cursorstate = 0
 						programmeList.SetOpen(1)
+						'remove tooltip
+						openCollectionTooltip = null
 					endif
 				EndIf
 			endif
