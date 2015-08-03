@@ -700,6 +700,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		local room:TRoom = TRoom(triggerEvent._sender)
 		if room.owner <> GetPlayerCollection().playerID then return FALSE
 
+		programmeList.owner = GetPlayer(room.owner)
 		programmeList.Draw()
 
 		'make suitcase/vendor glow if needed
@@ -755,6 +756,7 @@ Type RoomHandler_Archive extends TRoomHandler
 			'disable list if we have a dragged guiobject
 			programmeList.enabled = FALSE
 		endif
+		programmeList.owner = GetPlayer(room.owner)
 		programmeList.Update(TgfxProgrammelist.MODE_ARCHIVE)
 
 		'handle tooltip
