@@ -708,81 +708,82 @@ Type TApp
 			EndIf
 		EndIf
 
-		If TVTDebugInfos And Not GetPlayer().GetFigure().inRoom
-			SetAlpha GetAlpha() * 0.5
-			SetColor 0,0,0
-			DrawRect(0,0,160,385)
-			SetColor 255, 255, 255
-			SetAlpha GetAlpha() * 2.0
-			GetBitmapFontManager().baseFontBold.draw("Debug information:", 5,10)
-			GetBitmapFontManager().baseFont.draw("Renderer: "+GetGraphicsManager().GetRendererName(), 5,30)
+		If GetGame().gamestate = TGame.STATE_RUNNING
+			if TVTDebugInfos And Not GetPlayer().GetFigure().inRoom
+				SetAlpha GetAlpha() * 0.5
+				SetColor 0,0,0
+				DrawRect(0,0,160,385)
+				SetColor 255, 255, 255
+				SetAlpha GetAlpha() * 2.0
+				GetBitmapFontManager().baseFontBold.draw("Debug information:", 5,10)
+				GetBitmapFontManager().baseFont.draw("Renderer: "+GetGraphicsManager().GetRendererName(), 5,30)
 
-			'GetBitmapFontManager().baseFont.draw(Network.stream.UDPSpeedString(), 662,490)
-			GetBitmapFontManager().baseFont.draw("Player positions:", 5,55)
-			Local roomName:String = ""
-			Local fig:TFigure
-			For Local i:Int = 0 To 3
-				fig = GetPlayerCollection().Get(i+1).GetFigure()
-				roomName = "Building"
-				If fig.inRoom
-					roomName = fig.inRoom.Name
-				ElseIf fig.IsInElevator()
-					roomName = "InElevator"
-				ElseIf fig.IsAtElevator()
-					roomName = "AtElevator"
-				EndIf
-				GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName, 5, 70 + i * 11)
-			Next
-
-			If ScreenCollection.GetCurrentScreen()
-				GetBitmapFontManager().baseFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 5, 120)
-			Else
-				GetBitmapFontManager().baseFont.draw("onScreen: Main", 5, 120)
-			EndIf
-
-
-			GetBitmapFontManager().baseFont.draw("Elevator routes:", 5,140)
-			Local routepos:Int = 0
-			Local startY:Int = 155
-			If GetGame().networkgame Then startY :+ 4*11
-
-			Local callType:String = ""
-
-			Local directionString:String = "up"
-			If GetElevator().Direction = 1 Then directionString = "down"
-			Local debugString:String =	"floor:" + GetElevator().currentFloor +..
-										"->" + GetElevator().targetFloor +..
-										" status:"+GetElevator().ElevatorStatus
-
-			GetBitmapFontManager().baseFont.draw(debugString, 5, startY)
-
-
-			If GetElevator().RouteLogic.GetSortedRouteList() <> Null
-				For Local FloorRoute:TFloorRoute = EachIn GetElevator().RouteLogic.GetSortedRouteList()
-					If floorroute.call = 0 Then callType = " 'send' " Else callType= " 'call' "
-					GetBitmapFontManager().baseFont.draw(FloorRoute.floornumber + callType + FloorRoute.who.Name, 5, startY + 15 + routepos * 11)
-					routepos:+1
+				'GetBitmapFontManager().baseFont.draw(Network.stream.UDPSpeedString(), 662,490)
+				GetBitmapFontManager().baseFont.draw("Player positions:", 5,55)
+				Local roomName:String = ""
+				Local fig:TFigure
+				For Local i:Int = 0 To 3
+					fig = GetPlayerCollection().Get(i+1).GetFigure()
+					roomName = "Building"
+					If fig.inRoom
+						roomName = fig.inRoom.Name
+					ElseIf fig.IsInElevator()
+						roomName = "InElevator"
+					ElseIf fig.IsAtElevator()
+						roomName = "AtElevator"
+					EndIf
+					GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName, 5, 70 + i * 11)
 				Next
-			Else
-				GetBitmapFontManager().baseFont.draw("recalculate", 5, startY + 15)
+
+				If ScreenCollection.GetCurrentScreen()
+					GetBitmapFontManager().baseFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 5, 120)
+				Else
+					GetBitmapFontManager().baseFont.draw("onScreen: Main", 5, 120)
+				EndIf
+
+
+				GetBitmapFontManager().baseFont.draw("Elevator routes:", 5,140)
+				Local routepos:Int = 0
+				Local startY:Int = 155
+				If GetGame().networkgame Then startY :+ 4*11
+
+				Local callType:String = ""
+
+				Local directionString:String = "up"
+				If GetElevator().Direction = 1 Then directionString = "down"
+				Local debugString:String =	"floor:" + GetElevator().currentFloor +..
+											"->" + GetElevator().targetFloor +..
+											" status:"+GetElevator().ElevatorStatus
+
+				GetBitmapFontManager().baseFont.draw(debugString, 5, startY)
+
+
+				If GetElevator().RouteLogic.GetSortedRouteList() <> Null
+					For Local FloorRoute:TFloorRoute = EachIn GetElevator().RouteLogic.GetSortedRouteList()
+						If floorroute.call = 0 Then callType = " 'send' " Else callType= " 'call' "
+						GetBitmapFontManager().baseFont.draw(FloorRoute.floornumber + callType + FloorRoute.who.Name, 5, startY + 15 + routepos * 11)
+						routepos:+1
+					Next
+				Else
+					GetBitmapFontManager().baseFont.draw("recalculate", 5, startY + 15)
+				EndIf
+
+
+				For Local i:Int = 0 To 3
+					GetBitmapFontManager().baseFont.Draw("Image #"+i+": "+MathHelper.NumberToString(GetPublicImageCollection().Get(i+1).GetAverageImage(), 4)+" %", 10, 320 + i*13)
+				Next
+
+				For Local i:Int = 0 To 3
+					GetBitmapFontManager().baseFont.Draw("Boss #"+i+": "+MathHelper.NumberToString(GetPlayerBoss(i+1).mood,4), 10, 270 + i*13)
+				Next
+
+
+				GetWorld().RenderDebug(660,0, 140, 130)
+				'GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
 			EndIf
-
-
-			For Local i:Int = 0 To 3
-				GetBitmapFontManager().baseFont.Draw("Image #"+i+": "+MathHelper.NumberToString(GetPublicImageCollection().Get(i+1).GetAverageImage(), 4)+" %", 10, 320 + i*13)
-			Next
-
-			For Local i:Int = 0 To 3
-				GetBitmapFontManager().baseFont.Draw("Boss #"+i+": "+MathHelper.NumberToString(GetPlayerBoss(i+1).mood,4), 10, 270 + i*13)
-			Next
-
-
-			GetWorld().RenderDebug(660,0, 140, 130)
-			'GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
-		EndIf
-		'show quotes even without "DEV_OSD = true"
-		If TVTDebugQuoteInfos Then debugAudienceInfos.Draw()
-
+			'show quotes even without "DEV_OSD = true"
+			If TVTDebugQuoteInfos Then debugAudienceInfos.Draw()
+		endif
 
 		'draw loading resource information
 		RenderLoadingResourcesInformation()
@@ -1297,11 +1298,11 @@ Type TSaveGame Extends TGameState
 '		TPersist.compressed = True
 
 		TPersist.maxDepth = 4096
-
+local begin:int = Millisecs()
 		'save the savegame data as xml
 		Local persist:TPersist = New TPersist
 		persist.SerializeToFile(saveGame, saveName)
-
+print "save: "+ (Millisecs() - begin) +"ms" 
 		'tell everybody we finished saving
 		'payload is saveName and saveGame-object
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnSave", New TData.addString("saveName", saveName).add("saveGame", saveGame)))
