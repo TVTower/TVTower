@@ -12,6 +12,7 @@ Import "Dig/base.util.color.bmx"
 Import "Dig/base.util.time.bmx"
 Import "Dig/base.gfx.sprite.bmx"
 Import "Dig/base.gfx.bitmapfont.bmx"
+Import "game.player.color.bmx"
 Import "game.player.finance.bmx"
 Import "basefunctions.bmx"
 
@@ -1113,7 +1114,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 		local color:TColor
 		Select owner
-			Case 1,2,3,4	color = TColor.GetByOwner(owner)
+			Case 1,2,3,4	color = TPlayerColor.GetByOwner(owner)
 							sprite = GetSpriteFromRegistry("stationmap_antenna"+owner)
 			Default			color = TColor.clWhite
 							sprite = GetSpriteFromRegistry("stationmap_antenna0")

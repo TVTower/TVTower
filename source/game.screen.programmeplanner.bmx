@@ -22,135 +22,146 @@ Type TScreenHandler_ProgrammePlanner
 	Global GuiListProgrammes:TGUIProgrammePlanSlotList
 	Global GuiListAdvertisements:TGUIProgrammePlanSlotList
 
-
-	Function Init:int()
-		'add gfx to background image
-		If Not DrawnOnProgrammePlannerBG then InitProgrammePlannerBackground()
-
-		'===== CREATE GUI LISTS =====
-		'the visual gap between 0-11 and 12-23 hour
-		local gapBetweenHours:int = 45
-		local area:TRectangle = new TRectangle.Init(45,5,625,12 * GetSpriteFromRegistry("pp_programmeblock1").area.GetH())
-
-		GuiListProgrammes = new TGUIProgrammePlanSlotList.Create(area.position, area.dimension, "programmeplanner")
-		GuiListProgrammes.Init("pp_programmeblock1", GetSpriteFromRegistry("pp_adblock1").area.GetW() + gapBetweenHours)
-		GuiListProgrammes.isType = TVTBroadcastMaterialType.PROGRAMME
-
-		GuiListAdvertisements = new TGUIProgrammePlanSlotList.Create(new TVec2D.Init(area.GetX() + GetSpriteFromRegistry("pp_programmeblock1").area.GetW(), area.GetY()), area.dimension, "programmeplanner")
-		GuiListAdvertisements.Init("pp_adblock1", GetSpriteFromRegistry("pp_programmeblock1").area.GetW() + gapBetweenHours)
-		GuiListAdvertisements.isType = TVTBroadcastMaterialType.ADVERTISEMENT
-
-		'init lists
-		PPprogrammeList	= new TgfxProgrammelist.Create(669, 8)
-		PPcontractList = new TgfxContractlist.Create(669, 8)
-
-		'buttons
-		plannerNextDayButton = new TGUIButton.Create(new TVec2D.Init(768, 6), new TVec2D.Init(28, 28), ">", "programmeplanner_buttons")
-		plannerNextDayButton.spriteName = "gfx_gui_button.datasheet"
-
-		plannerPreviousDayButton = new TGUIButton.Create(new TVec2D.Init(684, 6), new TVec2D.Init(28, 28), "<", "programmeplanner_buttons")
-		plannerPreviousDayButton.spriteName = "gfx_gui_button.datasheet"
-
-		'so we can handle clicks to the daychange-buttons while some
-		'programmeplan elements are dragged
-		'ATTENTION: this makes the button drop-targets, so take care of
-		'vetoing try-drop-events
-		plannerNextDayButton.SetOption(GUI_OBJECT_ACCEPTS_DROP)
-		plannerPreviousDayButton.SetOption(GUI_OBJECT_ACCEPTS_DROP)
-		EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropProgrammePlanElementOnDayButton, "TGUIProgrammePlanElement")
+	Global _eventListeners:TLink[]
 
 
-		ProgrammePlannerButtons[0] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 0*54), null, GetLocale("PLANNER_ADS"), "programmeplanner_buttons")
-		ProgrammePlannerButtons[0].spriteName = "gfx_programmeplanner_btn_ads"
-
-		ProgrammePlannerButtons[1] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 1*54), null, GetLocale("PLANNER_PROGRAMME"), "programmeplanner_buttons")
-		ProgrammePlannerButtons[1].spriteName = "gfx_programmeplanner_btn_programme"
-
-		ProgrammePlannerButtons[2] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 2*54), null, GetLocale("PLANNER_FINANCES"), "programmeplanner_buttons")
-		ProgrammePlannerButtons[2].spriteName = "gfx_programmeplanner_btn_financials"
-
-		ProgrammePlannerButtons[3] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 3*54), null, GetLocale("PLANNER_STATISTICS"), "programmeplanner_buttons")
-		ProgrammePlannerButtons[3].spriteName = "gfx_programmeplanner_btn_statistics"
-
-		ProgrammePlannerButtons[4] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 4*54), null, GetLocale("PLANNER_MESSAGES"), "programmeplanner_buttons")
-		ProgrammePlannerButtons[4].spriteName = "gfx_programmeplanner_btn_messages"
-
-		ProgrammePlannerButtons[5] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 5*54), null, GetLocale("PLANNER_UNKNOWN"), "programmeplanner_buttons")
-		ProgrammePlannerButtons[5].spriteName = "gfx_programmeplanner_btn_unknown"
-
-		for local i:int = 0 to 5
-			ProgrammePlannerButtons[i].SetAutoSizeMode(TGUIButton.AUTO_SIZE_MODE_SPRITE, TGUIButton.AUTO_SIZE_MODE_SPRITE)
-			ProgrammePlannerButtons[i].caption.SetContentPosition(ALIGN_CENTER, ALIGN_TOP)
-			ProgrammePlannerButtons[i].caption.SetFont( GetBitmapFont("Default", 10, BOLDFONT) )
-
-			ProgrammePlannerButtons[i].SetCaptionOffset(0,42)
-		Next
-	'	TGUILabel.SetTypeFont( null )
-
-
-		'===== REGISTER EVENTS =====
-
-		'for all office rooms - register if someone goes into the programmeplanner
+	Function Initialize:int()
 		local screen:TScreen = ScreenCollection.GetScreen("screen_office_programmeplanner")
+		if not screen then return False
+		
+		'add gfx to background image
+		If Not DrawnOnProgrammePlannerBG
+			InitProgrammePlannerBackground()
+			DrawnOnProgrammePlannerBG = true
+		endif
+		
+
+		'=== create gui elements if not done yet
+		if GuiListProgrammes
+			'clear gui lists etc
+			RemoveAllGuiElements(True)
+			hoveredGuiProgrammePlanElement = null
+			draggedGuiProgrammePlanElement = null
+		else
+			'=== create programme/ad-slot lists
+			'the visual gap between 0-11 and 12-23 hour
+			local gapBetweenHours:int = 45
+			local area:TRectangle = new TRectangle.Init(45,5,625,12 * GetSpriteFromRegistry("pp_programmeblock1").area.GetH())
+
+			GuiListProgrammes = new TGUIProgrammePlanSlotList.Create(area.position, area.dimension, "programmeplanner")
+			GuiListProgrammes.Init("pp_programmeblock1", GetSpriteFromRegistry("pp_adblock1").area.GetW() + gapBetweenHours)
+			GuiListProgrammes.isType = TVTBroadcastMaterialType.PROGRAMME
+
+			GuiListAdvertisements = new TGUIProgrammePlanSlotList.Create(new TVec2D.Init(area.GetX() + GetSpriteFromRegistry("pp_programmeblock1").area.GetW(), area.GetY()), area.dimension, "programmeplanner")
+			GuiListAdvertisements.Init("pp_adblock1", GetSpriteFromRegistry("pp_programmeblock1").area.GetW() + gapBetweenHours)
+			GuiListAdvertisements.isType = TVTBroadcastMaterialType.ADVERTISEMENT
+
+
+			'=== create programme/contract lists
+			PPprogrammeList	= new TgfxProgrammelist.Create(669, 8)
+			PPcontractList = new TgfxContractlist.Create(669, 8)
+
+
+			'=== create buttons
+			plannerNextDayButton = new TGUIButton.Create(new TVec2D.Init(768, 6), new TVec2D.Init(28, 28), ">", "programmeplanner_buttons")
+			plannerNextDayButton.spriteName = "gfx_gui_button.datasheet"
+
+			plannerPreviousDayButton = new TGUIButton.Create(new TVec2D.Init(684, 6), new TVec2D.Init(28, 28), "<", "programmeplanner_buttons")
+			plannerPreviousDayButton.spriteName = "gfx_gui_button.datasheet"
+
+			'so we can handle clicks to the daychange-buttons while some
+			'programmeplan elements are dragged
+			'ATTENTION: this makes the button drop-targets, so take care of
+			'vetoing try-drop-events
+			plannerNextDayButton.SetOption(GUI_OBJECT_ACCEPTS_DROP)
+			plannerPreviousDayButton.SetOption(GUI_OBJECT_ACCEPTS_DROP)
+
+
+			ProgrammePlannerButtons[0] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 0*54), null, GetLocale("PLANNER_ADS"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[0].spriteName = "gfx_programmeplanner_btn_ads"
+
+			ProgrammePlannerButtons[1] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 1*54), null, GetLocale("PLANNER_PROGRAMME"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[1].spriteName = "gfx_programmeplanner_btn_programme"
+
+			ProgrammePlannerButtons[2] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 2*54), null, GetLocale("PLANNER_FINANCES"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[2].spriteName = "gfx_programmeplanner_btn_financials"
+
+			ProgrammePlannerButtons[3] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 3*54), null, GetLocale("PLANNER_STATISTICS"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[3].spriteName = "gfx_programmeplanner_btn_statistics"
+
+			ProgrammePlannerButtons[4] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 4*54), null, GetLocale("PLANNER_MESSAGES"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[4].spriteName = "gfx_programmeplanner_btn_messages"
+
+			ProgrammePlannerButtons[5] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 5*54), null, GetLocale("PLANNER_UNKNOWN"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[5].spriteName = "gfx_programmeplanner_btn_unknown"
+
+			for local i:int = 0 to 5
+				ProgrammePlannerButtons[i].SetAutoSizeMode(TGUIButton.AUTO_SIZE_MODE_SPRITE, TGUIButton.AUTO_SIZE_MODE_SPRITE)
+				ProgrammePlannerButtons[i].caption.SetContentPosition(ALIGN_CENTER, ALIGN_TOP)
+				ProgrammePlannerButtons[i].caption.SetFont( GetBitmapFont("Default", 10, BOLDFONT) )
+
+				ProgrammePlannerButtons[i].SetCaptionOffset(0,42)
+			Next
+		endif
+
+
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
+
+		'=== register event listeners
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropProgrammePlanElementOnDayButton, "TGUIProgrammePlanElement") ]
 
 		'player enters screen - reset the guilists
-		if screen then EventManager.registerListenerFunction("screen.onEnter", onEnterProgrammePlannerScreen, screen)
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onEnter", onEnterProgrammePlannerScreen, screen) ]
 		'player leaves screen - only without dragged blocks
-		EventManager.registerListenerFunction("screen.OnLeave", onLeaveProgrammePlannerScreen, screen)
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnLeave", onLeaveProgrammePlannerScreen, screen) ]
 		'player leaves office forcefully - clean up
-		EventManager.registerListenerFunction("figure.onForcefullyLeaveRoom", onForcefullyLeaveRoom)
+		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onForcefullyLeaveRoom", onForcefullyLeaveRoom) ]
 
 		'to react on changes in the programmePlan (eg. contract finished)
-		EventManager.registerListenerFunction("programmeplan.addObject", onChangeProgrammePlan)
-		EventManager.registerListenerFunction("programmeplan.removeObject", onChangeProgrammePlan)
+		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.addObject", onChangeProgrammePlan) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.removeObject", onChangeProgrammePlan) ]
 		'also react on "group changes" like removing unneeded adspots
-		EventManager.registerListenerFunction("programmeplan.removeObjectInstances", onChangeProgrammePlan)
+		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.removeObjectInstances", onChangeProgrammePlan) ]
 
 
 		'begin drop - to intercept if dropping ad to programme which does not allow Ad-Show
-		EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropProgrammePlanElement, "TGUIProgrammePlanElement")
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropProgrammePlanElement, "TGUIProgrammePlanElement") ]
 		'drag/drop ... from or to one of the two lists
-		EventManager.registerListenerFunction("guiList.removeItem", onRemoveItemFromSlotList, GuiListProgrammes)
-		EventManager.registerListenerFunction("guiList.removeItem", onRemoveItemFromSlotList, GuiListAdvertisements)
-		EventManager.registerListenerFunction("guiList.addItem", onAddItemToSlotList, GuiListProgrammes)
-		EventManager.registerListenerFunction("guiList.addItem", onAddItemToSlotList, GuiListAdvertisements)
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.removeItem", onRemoveItemFromSlotList, GuiListProgrammes) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.removeItem", onRemoveItemFromSlotList, GuiListAdvertisements) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.addItem", onAddItemToSlotList, GuiListProgrammes) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.addItem", onAddItemToSlotList, GuiListAdvertisements) ]
 		'so we can forbid adding to a "past"-slot
-		EventManager.registerListenerFunction("guiList.TryAddItem", onTryAddItemToSlotList, GuiListProgrammes)
-		EventManager.registerListenerFunction("guiList.TryAddItem", onTryAddItemToSlotList, GuiListAdvertisements)
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.TryAddItem", onTryAddItemToSlotList, GuiListProgrammes) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.TryAddItem", onTryAddItemToSlotList, GuiListAdvertisements) ]
 		'we want to know if we hover a specific block - to show a datasheet
-		EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverProgrammePlanElement, "TGUIProgrammePlanElement" )
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverProgrammePlanElement, "TGUIProgrammePlanElement" ) ]
 		'these lists want to delete the item if a right mouse click happens...
-		EventManager.registerListenerFunction("guiobject.onClick", onClickProgrammePlanElement, "TGUIProgrammePlanElement")
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickProgrammePlanElement, "TGUIProgrammePlanElement") ]
 		'handle dragging of dayChangeProgrammePlanElements (eg. when dropping an item on them)
 		'in this case - send them to GuiManager (like freshly created to avoid a history)
-		EventManager.registerListenerFunction("guiobject.onDrag", onDragProgrammePlanElement, "TGUIProgrammePlanElement")
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onDrag", onDragProgrammePlanElement, "TGUIProgrammePlanElement") ]
 		'we want to handle drops on the same guilist slot (might be other planning day)
-		EventManager.registerListenerFunction("guiobject.onDropBack", onDropProgrammePlanElementBack, "TGUIProgrammePlanElement")
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onDropBack", onDropProgrammePlanElementBack, "TGUIProgrammePlanElement") ]
 
 		'intercept dragging items if we want a SHIFT/CTRL-copy/nextepisode
-		EventManager.registerListenerFunction("guiobject.onTryDrag", onTryDragProgrammePlanElement, "TGUIProgrammePlanElement")
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onTryDrag", onTryDragProgrammePlanElement, "TGUIProgrammePlanElement") ]
 		'handle dropping at the end of the list (for dragging overlapped items)
-		EventManager.registerListenerFunction("programmeplan.addObject", onProgrammePlanAddObject)
+		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.addObject", onProgrammePlanAddObject) ]
 
 		'we want to colorize the list background depending on minute
-		'EventManager.registerListenerFunction("Game.OnMinute",	onGameMinute)
+		'_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnMinute", onGameMinute) ]
 
 		'we are interested in the programmeplanner buttons
-		EventManager.registerListenerFunction("guiobject.onClick", onProgrammePlannerButtonClick, "TGUIButton" )
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onProgrammePlannerButtonClick, "TGUIButton" ) ]
 
+		'to update/draw the screen
+		_eventListeners :+ TRoomHandler._RegisterScreenHandler( onUpdateProgrammePlanner, onDrawProgrammePlanner, screen )
 
-		TRoomHandler._RegisterScreenHandler( onUpdateProgrammePlanner, onDrawProgrammePlanner, ScreenCollection.GetScreen("screen_office_programmeplanner") )
-
-		'===== REGISTER EVENTS =====
-		'handle savegame loading (remove old gui elements)
-		EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
-
-		'inform if language changes
-		EventManager.registerListenerFunction("Language.onSetLanguage", onSetLanguage)
-	End Function
-
-
-	Function onSetLanguage:int(triggerEvent:TEventBase)
+		'(re-)localize content
 		SetLanguage()
 	End Function
 
@@ -161,26 +172,12 @@ Type TScreenHandler_ProgrammePlanner
 			ProgrammePlannerButtons[0].SetCaption(GetLocale("PLANNER_ADS"))
 			ProgrammePlannerButtons[1].SetCaption(GetLocale("PLANNER_PROGRAMME"))
 			ProgrammePlannerButtons[2].SetCaption(GetLocale("PLANNER_FINANCES"))
-			ProgrammePlannerButtons[3].SetCaption(GetLocale("PLANNER_IMAGE"))
+			ProgrammePlannerButtons[3].SetCaption(GetLocale("PLANNER_STATISTICS"))
 			ProgrammePlannerButtons[4].SetCaption(GetLocale("PLANNER_MESSAGES"))
 			ProgrammePlannerButtons[5].SetCaption(GetLocale("PLANNER_UNKNOWN"))
 		endif
 	End Function
 
-
-	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
-		'as soon as a savegame gets loaded, we remove every
-		'guiElement this room manages
-		'Afterwards we force the room to update the gui elements
-		'during next update.
-		'Not RefreshGUIElements() in this function as the
-		'new programmes are not loaded yet
-		hoveredGuiProgrammePlanElement = null
-		draggedGuiProgrammePlanElement = null
-
-		RemoveAllGuiElements(TRUE)
-	End Function
-	
 
 	Function IsMyRoom:int(room:TRoomBase)
 		For local i:int = 1 to 4
@@ -754,7 +751,7 @@ Type TScreenHandler_ProgrammePlanner
 		'if not initialized, do so
 		if planningDay = -1 then planningDay = GetWorldTime().getDay()
 
-		Game.cursorstate = 0
+		GetGame().cursorstate = 0
 
 		'set all slots occupied or not
 		local day:int = GetWorldTime().getDay()
@@ -1228,7 +1225,6 @@ Type TScreenHandler_ProgrammePlanner
 			GetBitmapFontManager().baseFontBold.DrawBlock( text, 6, 5 + i * 30, 39, 30, ALIGN_CENTER_CENTER, fontColor, 2,1,0.25)
 		Next
 		SetAlpha 1.0
-		DrawnOnProgrammePlannerBG = True
 
 		'reset target for font
 		TBitmapFont.setRenderTarget(null)

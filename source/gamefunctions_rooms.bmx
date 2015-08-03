@@ -5,31 +5,55 @@ Type TRoomHandlerCollection
 	Global currentHandler:TRoomHandler
 
 	Global _instance:TRoomHandlerCollection
-	Global _initDone:int = False
+	Global _eventListeners:TLink[]
 
 
 	Function GetInstance:TRoomHandlerCollection()
 		if not _instance then _instance = new TRoomHandlerCollection
-		if not _initDone then _instance.Initialize()
 		return _instance
 	End Function
 
 
 	Method Initialize:int()
-		if _initDone then return False
-		_initDone = True
+print "TRoomHandlerCollection.Initialize(): (re-)initializing rooms"
+		'=== (re-)initialize all known room handlers
+		RoomHandler_Office.GetInstance().Initialize()
+		RoomHandler_News.GetInstance().Initialize()
+		RoomHandler_Boss.GetInstance().Initialize()
+		RoomHandler_Archive.GetInstance().Initialize()
+		RoomHandler_Studio.GetInstance().Initialize()
 
-		EventManager.registerListenerFunction( "room.onUpdate", onHandleRoom )
-		EventManager.registerListenerFunction( "room.onDraw", onHandleRoom )
-		EventManager.registerListenerFunction( "room.onEnter", onHandleRoom )
-		EventManager.registerListenerFunction( "room.onLeave", onHandleRoom )
-		EventManager.registerListenerFunction( "figure.onTryLeaveRoom", onHandleFigureInRoom )
-		EventManager.registerListenerFunction( "figure.onForcefullyLeaveRoom", onHandleFigureInRoom )
+		RoomHandler_AdAgency.GetInstance().Initialize()
+		RoomHandler_ScriptAgency.GetInstance().Initialize()
+		RoomHandler_MovieAgency.GetInstance().Initialize()
+		RoomHandler_RoomAgency.GetInstance().Initialize()
 
-		EventManager.registerListenerFunction( "Language.onSetLanguage", onSetLanguage )
+		RoomHandler_Betty.GetInstance().Initialize()
+
+		RoomHandler_ElevatorPlan.GetInstance().Initialize()
+		RoomHandler_Roomboard.GetInstance().Initialize()
+
+		RoomHandler_Credits.GetInstance().Initialize()
+
+
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
+
+		'=== register event listeners
+		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onUpdate", onHandleRoom ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onDraw", onHandleRoom ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onEnter", onHandleRoom ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onLeave", onHandleRoom ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "figure.onTryLeaveRoom", onHandleFigureInRoom ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "figure.onForcefullyLeaveRoom", onHandleFigureInRoom ) ]
+
+		_eventListeners :+ [ EventManager.registerListenerFunction( "Language.onSetLanguage", onSetLanguage ) ]
 		'handle savegame loading
-		EventManager.registerListenerFunction( "SaveGame.OnBeginLoad", onSaveGameBeginLoad )
-		EventManager.registerListenerFunction( "SaveGame.OnLoad", onSaveGameLoad )
+		_eventListeners :+ [ EventManager.registerListenerFunction( "Game.PrepareNewGame", onSaveGameBeginLoad ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "SaveGame.OnBeginLoad", onSaveGameBeginLoad ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "SaveGame.OnLoad", onSaveGameLoad ) ]
 	End Method
 
 
@@ -148,11 +172,14 @@ Type TRoomHandler
 
 	'special events for screens used in rooms - only this event has the room as sender
 	'screen.onScreenUpdate/Draw is more general purpose
-	Function _RegisterScreenHandler(updateFunc(triggerEvent:TEventBase), drawFunc(triggerEvent:TEventBase), screen:TScreen)
+	'returns the event listener links
+	Function _RegisterScreenHandler:TLink[](updateFunc(triggerEvent:TEventBase), drawFunc(triggerEvent:TEventBase), screen:TScreen)
+		local links:TLink[]
 		if screen
-			EventManager.registerListenerFunction( "room.onScreenUpdate", updateFunc, screen )
-			EventManager.registerListenerFunction( "room.onScreenDraw", drawFunc, screen )
+			links :+ [ EventManager.registerListenerFunction( "room.onScreenUpdate", updateFunc, screen ) ]
+			links :+ [ EventManager.registerListenerFunction( "room.onScreenDraw", drawFunc, screen ) ]
 		endif
+		return links
 	End Function
 
 
@@ -198,31 +225,56 @@ Type RoomHandler_Office extends TRoomHandler
 
 	Global _instance:RoomHandler_Office
 	Global _initDone:int = False
+	Global _eventListeners:TLink[]
+
 
 	Function GetInstance:RoomHandler_Office()
 		if not _instance then _instance = new RoomHandler_Office
-		if not _initDone then _instance.Initialize()
 		return _instance
 	End Function
 
 	
 	Method Initialize:Int()
-		if _initDone then return False
-		_initDone = True
-		'===== RUN SCREEN SPECIFIC INIT =====
-		'(event connection etc.)
-		TScreenHandler_StationMap.Init()
-		TScreenHandler_ProgrammePlanner.Init()
-		TScreenHandler_Financials.Init()
-		TScreenHandler_Statistics.Init()
+		'=== RESET TO INITIAL STATE ===
+		StationsToolTip = null
+		PlannerToolTip = null
+		SafeToolTip = null
+
+		'reset/initialize screens (event connection etc.)
+		TScreenHandler_Financials.Initialize()
+		TScreenHandler_ProgrammePlanner.Initialize()
+		TScreenHandler_StationMap.Initialize()
+		TScreenHandler_Statistics.Initialize()		
 
 
+		'=== REGISTER HANDLER ===
 		GetRoomHandlerCollection().SetHandler("office", self)
 
-		'===== REGISTER SCREEN HANDLERS =====
+
+		'=== EVENTS ===
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
+		
+		'=== register event listeners
 		'handle the "office" itself (not computer etc)
 		'using this approach avoids "tooltips" to be visible in subscreens
-		_RegisterScreenHandler( onUpdateOffice, onDrawOffice, ScreenCollection.GetScreen("screen_office") )
+		_eventListeners :+ _RegisterScreenHandler( onUpdateOffice, onDrawOffice, ScreenCollection.GetScreen("screen_office") )
+
+		'(re-)localize content
+		'disabled as the screens are setting their language during "initialize()"
+		'too.
+		'reenable if doing more localization there
+		'SetLanguage()
+	End Method
+
+
+	Method SetLanguage()
+		TScreenHandler_Financials.SetLanguage()
+		TScreenHandler_ProgrammePlanner.SetLanguage()
+		TScreenHandler_StationMap.SetLanguage()
+		TScreenHandler_Statistics.SetLanguage()
 	End Method
 
 
@@ -270,17 +322,17 @@ Type RoomHandler_Office extends TRoomHandler
 
 		'allowed for owner only - or with key
 		If GetPlayer().HasMasterKey() OR IsPlayersRoom(room)
-			Game.cursorstate = 0
+			GetGame().cursorstate = 0
 			'safe - reachable for all
 			If THelper.MouseIn(165,85,70,100)
 				If not SafeToolTip Then SafeToolTip = TTooltip.Create(GetLocale("ROOM_SAFE"), GetLocale("FOR_PRIVATE_AFFAIRS"), 140, 100,-1,-1)
 				SafeToolTip.enabled = 1
 				SafeToolTip.minContentWidth = 150
 				SafeToolTip.Hover()
-				Game.cursorstate = 1
+				GetGame().cursorstate = 1
 				If MOUSEMANAGER.IsClicked(1)
 					MOUSEMANAGER.resetKey(1)
-					Game.cursorstate = 0
+					GetGame().cursorstate = 0
 
 					ScreenCollection.GoToSubScreen("screen_office_safe")
 				endif
@@ -291,10 +343,10 @@ Type RoomHandler_Office extends TRoomHandler
 				If not PlannerToolTip Then PlannerToolTip = TTooltip.Create(GetLocale("ROOM_PROGRAMMEPLANNER"), GetLocale("AND_STATISTICS"), 580, 140)
 				PlannerToolTip.enabled = 1
 				PlannerToolTip.Hover()
-				Game.cursorstate = 1
+				GetGame().cursorstate = 1
 				If MOUSEMANAGER.IsClicked(1)
 					MOUSEMANAGER.resetKey(1)
-					Game.cursorstate = 0
+					GetGame().cursorstate = 0
 					ScreenCollection.GoToSubScreen("screen_office_programmeplanner")
 				endif
 			EndIf
@@ -303,10 +355,10 @@ Type RoomHandler_Office extends TRoomHandler
 				If not StationsToolTip Then StationsToolTip = TTooltip.Create(GetLocale("ROOM_STATIONMAP"), GetLocale("BUY_AND_SELL"), 650, 80, 0, 0)
 				StationsToolTip.enabled = 1
 				StationsToolTip.Hover()
-				Game.cursorstate = 1
+				GetGame().cursorstate = 1
 				If MOUSEMANAGER.IsClicked(1)
 					MOUSEMANAGER.resetKey(1)
-					Game.cursorstate = 0
+					GetGame().cursorstate = 0
 					ScreenCollection.GoToSubScreen("screen_office_stationmap")
 				endif
 			EndIf
@@ -336,47 +388,64 @@ Type RoomHandler_Archive extends TRoomHandler
 	Field suitcaseGuiListDisplace:TVec2D	= new TVec2D.Init(14,25)
 
 	Global _instance:RoomHandler_Archive
+	Global _eventListeners:TLink[]
 
 
 	Function GetInstance:RoomHandler_Archive()
-		if not _instance
-			_instance = new RoomHandler_Archive
-			_instance.Initialize()
-		endif
+		if not _instance then _instance = new RoomHandler_Archive
 		return _instance
 	End Function
 
 
 	Method Initialize:int()
-		'===== CREATE GUI LISTS =====
-		GuiListSuitcase	= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200, 80), "archive")
-		GuiListSuitcase.guiEntriesPanel.minSize.SetXY(200,80)
-		GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
-		GuiListSuitcase.acceptType		= TGUIProgrammeLicenceSlotList.acceptAll
-		GuiListSuitcase.SetItemLimit(GameRules.maxProgrammeLicencesInSuitcase)
-		GuiListSuitcase.SetSlotMinDimension(GetSpriteFromRegistry("gfx_movie_undefined").area.GetW(), GetSpriteFromRegistry("gfx_movie_undefined").area.GetH())
-		GuiListSuitcase.SetAcceptDrop("TGUIProgrammeLicence")
-
-		DudeArea = new TGUISimpleRect.Create(new TVec2D.Init(600,100), new TVec2D.Init(200, 350), "archive" )
-		'dude should accept drop - else no recognition
-		DudeArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
-
-		programmeList = New TgfxProgrammelist.Create(720, 10)
+		'=== RESET TO INITIAL STATE ===
+		'nothing up to now
 
 
-		'===== REGISTER EVENTS =====
-		'we want to know if we hover a specific block - to show a datasheet
-		EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverProgrammeLicence, "TGUIProgrammeLicence" )
-		'drop programme ... so sell/buy the thing
-		EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropProgrammeLicence, "TGUIProgrammeLicence" )
-		'drop programme on dude - add back to player's collection
-		EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropProgrammeLicenceOnDude, "TGUIProgrammeLicence" )
-		'check right clicks on a gui block
-		EventManager.registerListenerFunction( "guiobject.onClick", onClickProgrammeLicence, "TGUIProgrammeLicence" )
-
-
-		'register self for all archives-rooms
+		'=== REGISTER HANDLER ===
 		GetRoomHandlerCollection().SetHandler("archive", self)
+
+
+		'=== CREATE ELEMENTS ===
+		'=== create gui elements if not done yet
+		if GuiListSuitCase
+			'clear gui lists etc
+			RemoveAllGuiElements()
+		else
+			GuiListSuitcase	= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200, 80), "archive")
+			GuiListSuitcase.guiEntriesPanel.minSize.SetXY(200,80)
+			GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+			GuiListSuitcase.acceptType = TGUIProgrammeLicenceSlotList.acceptAll
+			GuiListSuitcase.SetItemLimit(GameRules.maxProgrammeLicencesInSuitcase)
+			GuiListSuitcase.SetSlotMinDimension(GetSpriteFromRegistry("gfx_movie_undefined").area.GetW(), GetSpriteFromRegistry("gfx_movie_undefined").area.GetH())
+			GuiListSuitcase.SetAcceptDrop("TGUIProgrammeLicence")
+
+			DudeArea = new TGUISimpleRect.Create(new TVec2D.Init(600,100), new TVec2D.Init(200, 350), "archive" )
+			'dude should accept drop - else no recognition
+			DudeArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
+
+			programmeList = New TgfxProgrammelist.Create(720, 10)
+		endif
+
+		
+		'=== EVENTS ===
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
+		
+		'=== register event listeners
+		'we want to know if we hover a specific block - to show a datasheet
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverProgrammeLicence, "TGUIProgrammeLicence" ) ]
+		'drop programme ... so sell/buy the thing
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropProgrammeLicence, "TGUIProgrammeLicence" ) ]
+		'drop programme on dude - add back to player's collection
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropProgrammeLicenceOnDude, "TGUIProgrammeLicence" ) ]
+		'check right clicks on a gui block
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onClick", onClickProgrammeLicence, "TGUIProgrammeLicence" ) ]
+
+		'(re-)localize content
+		SetLanguage()
 	End Method
 
 
@@ -465,6 +534,23 @@ Type RoomHandler_Archive extends TRoomHandler
 			'the players collection
 			GetPlayer().GetProgrammeCollection().ReaddProgrammeLicencesFromSuitcase()
 		endif
+	End Method
+
+
+	'deletes all gui elements (eg. for rebuilding)
+	Method RemoveAllGuiElements:int()
+		GuiListSuitcase.EmptyList()
+
+		For local guiLicence:TGUIProgrammeLicence = eachin GuiManager.listDragged
+			guiLicence.remove()
+			guiLicence = null
+		Next
+
+		hoveredGuiProgrammeLicence = null
+		draggedGuiProgrammeLicence = null
+
+		'to recreate everything during next update...
+		haveToRefreshGuiElements = TRUE
 	End Method
 
 
@@ -645,7 +731,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		local room:TRoom = TRoom(triggerEvent._sender)
 		if room.owner <> GetPlayerCollection().playerID then return FALSE
 
-		Game.cursorstate = 0
+		GetGame().cursorstate = 0
 
 		'open list when clicking dude
 		if not draggedGuiProgrammeLicence
@@ -656,10 +742,10 @@ Type RoomHandler_Archive extends TRoomHandler
 					openCollectionTooltip.enabled = 1
 					openCollectionTooltip.Hover()
 
-					Game.cursorstate = 1
+					GetGame().cursorstate = 1
 					If MOUSEMANAGER.IsHit(1)
 						MOUSEMANAGER.resetKey(1)
-						Game.cursorstate = 0
+						GetGame().cursorstate = 0
 						programmeList.SetOpen(1)
 					endif
 				EndIf
@@ -727,94 +813,108 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Field movieCheapMaximum:int	= 50000
 
 	Global _instance:RoomHandler_MovieAgency
-	Global _initDone:int = FALSE
+	Global _eventListeners:TLink[]
 
 
 	Function GetInstance:RoomHandler_MovieAgency()
 		if not _instance then _instance = new RoomHandler_MovieAgency
-		if not _initDone then _instance.Initialize()
 		return _instance
 	End Function
 
 
 	Method Initialize:int()
-		if _initDone then return FALSE
-
+		'=== RESET TO INITIAL STATE ===
 		'resize arrays
-		listMoviesGood	= listMoviesGood[..programmesPerLine]
-		listMoviesCheap	= listMoviesCheap[..programmesPerLine]
-		listSeries		= listSeries[..programmesPerLine]
+		listMoviesGood = listMoviesGood[..programmesPerLine]
+		listMoviesCheap = listMoviesCheap[..programmesPerLine]
+		listSeries = listSeries[..programmesPerLine]
 
-		GuiListMoviesGood	= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,50), new TVec2D.Init(220,80), "movieagency")
-		GuiListMoviesCheap	= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,148), new TVec2D.Init(220,80), "movieagency")
-		GuiListSeries		= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,246), new TVec2D.Init(220,80), "movieagency")
-		GuiListSuitcase		= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200,80), "movieagency")
 
-		GuiListMoviesGood.guiEntriesPanel.minSize.SetXY(200,80)
-		GuiListMoviesCheap.guiEntriesPanel.minSize.SetXY(200,80)
-		GuiListSeries.guiEntriesPanel.minSize.SetXY(200,80)
-		GuiListSuitcase.guiEntriesPanel.minSize.SetXY(200,80)
+		'=== REGISTER HANDLER ===
+		GetRoomHandlerCollection().SetHandler("movieagency", self)
 
-		GuiListMoviesGood.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
-		GuiListMoviesCheap.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
-		GuiListSeries.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
-		GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 
-		GuiListMoviesGood.acceptType	= TGUIProgrammeLicenceSlotList.acceptMovies
-		GuiListMoviesCheap.acceptType	= TGUIProgrammeLicenceSlotList.acceptMovies
-		GuiListSeries.acceptType		= TGUIProgrammeLicenceSlotList.acceptSeries
-		GuiListSuitcase.acceptType		= TGUIProgrammeLicenceSlotList.acceptAll
-
-		GuiListMoviesGood.SetItemLimit(listMoviesGood.length)
-		GuiListMoviesCheap.SetItemLimit(listMoviesCheap.length)
-		GuiListSeries.SetItemLimit(listSeries.length)
-		GuiListSuitcase.SetItemLimit(GameRules.maxProgrammeLicencesInSuitcase)
-
-		local videoCase:TSprite = GetSpriteFromRegistry("gfx_movie_undefined")
-
-		GuiListMoviesGood.SetSlotMinDimension(videoCase.area.GetW(), videoCase.area.GetH())
-		GuiListMoviesCheap.SetSlotMinDimension(videoCase.area.GetW(), videoCase.area.GetH())
-		GuiListSeries.SetSlotMinDimension(videoCase.area.GetW(), videoCase.area.GetH())
-		GuiListSuitcase.SetSlotMinDimension(videoCase.area.GetW(), videoCase.area.GetH())
-
-		GuiListMoviesGood.SetAcceptDrop("TGUIProgrammeLicence")
-		GuiListMoviesCheap.SetAcceptDrop("TGUIProgrammeLicence")
-		GuiListSeries.SetAcceptDrop("TGUIProgrammeLicence")
-		GuiListSuitcase.SetAcceptDrop("TGUIProgrammeLicence")
-
+		'=== CREATE ELEMENTS ===
+		'=== create room elements
 		VendorEntity = GetSpriteEntityFromRegistry("entity_movieagency_vendor")
 		AuctionEntity = GetSpriteEntityFromRegistry("entity_movieagency_auction")
 
-		'default vendor position/dimension
-		local vendorAreaDimension:TVec2D = new TVec2D.Init(200,200)
-		local vendorAreaPosition:TVec2D = new TVec2D.Init(20,60)
-		if VendorEntity then vendorAreaDimension = VendorEntity.area.dimension.copy()
-		if VendorEntity then vendorAreaPosition = VendorEntity.area.position.copy()
+		'=== create gui elements if not done yet
+		if GuiListMoviesGood
+			'clear gui lists etc
+			RemoveAllGuiElements()
+		else
+			GuiListMoviesGood = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,50), new TVec2D.Init(220,80), "movieagency")
+			GuiListMoviesCheap = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,148), new TVec2D.Init(220,80), "movieagency")
+			GuiListSeries = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,246), new TVec2D.Init(220,80), "movieagency")
+			GuiListSuitcase = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200,80), "movieagency")
 
-		VendorArea = new TGUISimpleRect.Create(vendorAreaPosition, vendorAreaDimension, "movieagency" )
-		'vendor should accept drop - else no recognition
-		VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
+			GuiListMoviesGood.guiEntriesPanel.minSize.SetXY(200,80)
+			GuiListMoviesCheap.guiEntriesPanel.minSize.SetXY(200,80)
+			GuiListSeries.guiEntriesPanel.minSize.SetXY(200,80)
+			GuiListSuitcase.guiEntriesPanel.minSize.SetXY(200,80)
+
+			GuiListMoviesGood.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+			GuiListMoviesCheap.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+			GuiListSeries.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+			GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+
+			GuiListMoviesGood.acceptType = TGUIProgrammeLicenceSlotList.acceptMovies
+			GuiListMoviesCheap.acceptType = TGUIProgrammeLicenceSlotList.acceptMovies
+			GuiListSeries.acceptType = TGUIProgrammeLicenceSlotList.acceptSeries
+			GuiListSuitcase.acceptType = TGUIProgrammeLicenceSlotList.acceptAll
+
+			GuiListMoviesGood.SetItemLimit(listMoviesGood.length)
+			GuiListMoviesCheap.SetItemLimit(listMoviesCheap.length)
+			GuiListSeries.SetItemLimit(listSeries.length)
+			GuiListSuitcase.SetItemLimit(GameRules.maxProgrammeLicencesInSuitcase)
+
+			local videoCase:TSprite = GetSpriteFromRegistry("gfx_movie_undefined")
+
+			GuiListMoviesGood.SetSlotMinDimension(videoCase.area.GetW(), videoCase.area.GetH())
+			GuiListMoviesCheap.SetSlotMinDimension(videoCase.area.GetW(), videoCase.area.GetH())
+			GuiListSeries.SetSlotMinDimension(videoCase.area.GetW(), videoCase.area.GetH())
+			GuiListSuitcase.SetSlotMinDimension(videoCase.area.GetW(), videoCase.area.GetH())
+
+			GuiListMoviesGood.SetAcceptDrop("TGUIProgrammeLicence")
+			GuiListMoviesCheap.SetAcceptDrop("TGUIProgrammeLicence")
+			GuiListSeries.SetAcceptDrop("TGUIProgrammeLicence")
+			GuiListSuitcase.SetAcceptDrop("TGUIProgrammeLicence")
+
+			'default vendor position/dimension
+			local vendorAreaDimension:TVec2D = new TVec2D.Init(200,200)
+			local vendorAreaPosition:TVec2D = new TVec2D.Init(20,60)
+			if VendorEntity then vendorAreaDimension = VendorEntity.area.dimension.copy()
+			if VendorEntity then vendorAreaPosition = VendorEntity.area.position.copy()
+
+			VendorArea = new TGUISimpleRect.Create(vendorAreaPosition, vendorAreaDimension, "movieagency" )
+			'vendor should accept drop - else no recognition
+			VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
+		endif
+		
+
+		'=== EVENTS ===
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
 
 
-
+		'=== register event listeners
 		'drop ... so sell/buy the thing
-		EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropProgrammeLicence, "TGUIProgrammeLicence" )
-		EventManager.registerListenerFunction("guiobject.onDropOnTarget", onDropProgrammeLicence, "TGUIProgrammeLicence")
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropProgrammeLicence, "TGUIProgrammeLicence" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onDropOnTarget", onDropProgrammeLicence, "TGUIProgrammeLicence") ]
 		'is dragging even allowed? - eg. intercept if not enough money
-		EventManager.registerListenerFunction("guiobject.onDrag", onDragProgrammeLicence, "TGUIProgrammeLicence")
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onDrag", onDragProgrammeLicence, "TGUIProgrammeLicence") ]
 		'we want to know if we hover a specific block - to show a datasheet
-		EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverProgrammeLicence, "TGUIProgrammeLicence")
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverProgrammeLicence, "TGUIProgrammeLicence") ]
 		'drop on vendor - sell things
-		EventManager.registerListenerFunction("guiobject.onDropOnTarget", onDropProgrammeLicenceOnVendor, "TGUIProgrammeLicence")
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onDropOnTarget", onDropProgrammeLicenceOnVendor, "TGUIProgrammeLicence") ]
 
-		super._RegisterScreenHandler( onUpdateMovieAgency, onDrawMovieAgency, ScreenCollection.GetScreen("screen_movieagency"))
-		super._RegisterScreenHandler( onUpdateMovieAuction, onDrawMovieAuction, ScreenCollection.GetScreen("screen_movieauction"))
+		_eventListeners :+ _RegisterScreenHandler( onUpdateMovieAgency, onDrawMovieAgency, ScreenCollection.GetScreen("screen_movieagency"))
+		_eventListeners :+ _RegisterScreenHandler( onUpdateMovieAuction, onDrawMovieAuction, ScreenCollection.GetScreen("screen_movieauction"))
 
-
-		'register self for movieagency
-		GetRoomHandlerCollection().SetHandler("movieagency", self)
-
-		_initDone = true
+		'(re-)localize content
+		SetLanguage()
 	End Method
 
 
@@ -1372,7 +1472,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
-		Game.cursorstate = 0
+		GetGame().cursorstate = 0
 
 		'show a auction-tooltip (but not if we dragged a block)
 		if not hoveredGuiProgrammeLicence
@@ -1380,10 +1480,10 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 				If not AuctionToolTip Then AuctionToolTip = TTooltip.Create(GetLocale("AUCTION"), GetLocale("MOVIES_AND_SERIES_AUCTION"), 200, 180, 0, 0)
 				AuctionToolTip.enabled = 1
 				AuctionToolTip.Hover()
-				Game.cursorstate = 1
+				GetGame().cursorstate = 1
 				If MOUSEMANAGER.IsClicked(1)
 					MOUSEMANAGER.resetKey(1)
-					Game.cursorstate = 0
+					GetGame().cursorstate = 0
 					ScreenCollection.GoToSubScreen("screen_movieauction")
 				endif
 			EndIf
@@ -1436,7 +1536,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	End Function
 
 	Function onUpdateMovieAuction:int( triggerEvent:TEventBase )
-		Game.cursorstate = 0
+		GetGame().cursorstate = 0
 		TAuctionProgrammeBlocks.UpdateAll()
 
 		'remove old tooltips from previous screens
@@ -1462,37 +1562,71 @@ Type RoomHandler_News extends TRoomHandler
 	Global hoveredGuiNews:TGuiNews = null
 
 	Global _instance:RoomHandler_News
-	Global _initDone:int = False
+	Global _eventListeners:TLink[]
 
 
 	Function GetInstance:RoomHandler_News()
 		if not _instance then _instance = new RoomHandler_News
-		if not _initDone then _instance.Initialize()
 		return _instance
 	End Function
 
 
 	Method Initialize:int()
-		if _initDone then return False
-		_initDone = True
-		
-		'create genre buttons
-		'ATTENTION: We could do this in order of The NewsGenre-Values
-		'           But better add it to the buttons.data-property
-		'           for better checking
-		NewsGenreButtons[0]	= new TGUIButton.Create( new TVec2D.Init(15, 194), null, GetLocale("NEWS_TECHNICS_MEDIA"), "newsroom")
-		NewsGenreButtons[1]	= new TGUIButton.Create( new TVec2D.Init(64, 194), null, GetLocale("NEWS_POLITICS_ECONOMY"), "newsroom")
-		NewsGenreButtons[2]	= new TGUIButton.Create( new TVec2D.Init(15, 247), null, GetLocale("NEWS_SHOWBIZ"), "newsroom")
-		NewsGenreButtons[3]	= new TGUIButton.Create( new TVec2D.Init(64, 247), null, GetLocale("NEWS_SPORT"), "newsroom")
-		NewsGenreButtons[4]	= new TGUIButton.Create( new TVec2D.Init(113, 247), null, GetLocale("NEWS_CURRENTAFFAIRS"), "newsroom")
-		for local i:int = 0 to 4
-			NewsGenreButtons[i].SetAutoSizeMode( TGUIButton.AUTO_SIZE_MODE_SPRITE, TGUIButton.AUTO_SIZE_MODE_SPRITE )
-			'adjust width according sprite dimensions
-			NewsGenreButtons[i].spriteName = "gfx_news_btn"+i
-			'disable drawing of caption
-			NewsGenreButtons[i].caption.Hide()
-		Next
+		local plannerScreen:TScreen = ScreenCollection.GetScreen("screen_newsstudio_newsplanner")
+		local studioScreen:TScreen = ScreenCollection.GetScreen("screen_newsstudio")
+		if not plannerScreen or not studioScreen then return False
 
+		'=== RESET TO INITIAL STATE ===
+		PlannerToolTip = null
+		NewsGenreTooltip = null
+		currentRoom = null
+		newsPlannerTextImage = null
+
+
+		'=== REGISTER HANDLER ===
+		GetRoomHandlerCollection().SetHandler("news", self)
+
+
+		'=== CREATE ELEMENTS ===
+		'=== create gui elements if not done yet
+		if NewsGenreButtons[0]
+			'clear gui lists etc
+			RemoveAllGuiElements()
+		else
+			'create genre buttons
+			'ATTENTION: We could do this in order of The NewsGenre-Values
+			'           But better add it to the buttons.data-property
+			'           for better checking
+			NewsGenreButtons[0]	= new TGUIButton.Create( new TVec2D.Init(15, 194), null, GetLocale("NEWS_TECHNICS_MEDIA"), "newsroom")
+			NewsGenreButtons[1]	= new TGUIButton.Create( new TVec2D.Init(64, 194), null, GetLocale("NEWS_POLITICS_ECONOMY"), "newsroom")
+			NewsGenreButtons[2]	= new TGUIButton.Create( new TVec2D.Init(15, 247), null, GetLocale("NEWS_SHOWBIZ"), "newsroom")
+			NewsGenreButtons[3]	= new TGUIButton.Create( new TVec2D.Init(64, 247), null, GetLocale("NEWS_SPORT"), "newsroom")
+			NewsGenreButtons[4]	= new TGUIButton.Create( new TVec2D.Init(113, 247), null, GetLocale("NEWS_CURRENTAFFAIRS"), "newsroom")
+			For local i:int = 0 to 4
+				NewsGenreButtons[i].SetAutoSizeMode( TGUIButton.AUTO_SIZE_MODE_SPRITE, TGUIButton.AUTO_SIZE_MODE_SPRITE )
+				'adjust width according sprite dimensions
+				NewsGenreButtons[i].spriteName = "gfx_news_btn"+i
+				'disable drawing of caption
+				NewsGenreButtons[i].caption.Hide()
+			Next
+
+			'create the lists in the news planner
+			'we add 2 pixel to the height to make "auto scrollbar" work better
+			guiNewsListAvailable = new TGUINewsList.Create(new TVec2D.Init(15,16), new TVec2D.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 4*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH()), "Newsplanner")
+			guiNewsListAvailable.SetAcceptDrop("TGUINews")
+			guiNewsListAvailable.Resize(guiNewsListAvailable.rect.GetW() + guiNewsListAvailable.guiScrollerV.rect.GetW() + 8,guiNewsListAvailable.rect.GetH())
+			guiNewsListAvailable.guiEntriesPanel.minSize.SetXY(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(),356)
+
+			guiNewsListUsed = new TGUINewsSlotList.Create(new TVec2D.Init(420,106), new TVec2D.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 3*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH()), "Newsplanner")
+			guiNewsListUsed.SetItemLimit(3)
+			guiNewsListUsed.SetAcceptDrop("TGUINews")
+			guiNewsListUsed.SetSlotMinDimension(0,GetSpriteFromRegistry("gfx_news_sheet0").area.GetH())
+			guiNewsListUsed.SetAutofillSlots(false)
+			guiNewsListUsed.guiEntriesPanel.minSize.SetXY(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(),3*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH())
+		endif
+
+
+		'=== reset gui element options to their defaults
 		'add news genre to button data
 		NewsGenreButtons[0].data.AddNumber("newsGenre", TNewsEvent.GENRE_TECHNICS)
 		NewsGenreButtons[1].data.AddNumber("newsGenre", TNewsEvent.GENRE_POLITICS)
@@ -1501,53 +1635,42 @@ Type RoomHandler_News extends TRoomHandler
 		NewsGenreButtons[4].data.AddNumber("newsGenre", TNewsEvent.GENRE_CURRENTS)
 
 
+		'=== EVENTS ===
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
+		
+		'=== register event listeners
 		'we are interested in the genre buttons
-		for local i:int = 0 until len( NewsGenreButtons )
-			EventManager.registerListenerFunction( "guiobject.onMouseOver", onHoverNewsGenreButtons, NewsGenreButtons[i] )
-			EventManager.registerListenerFunction( "guiobject.onDraw", onDrawNewsGenreButtons, NewsGenreButtons[i] )
-			EventManager.registerListenerFunction( "guiobject.onClick", onClickNewsGenreButtons, NewsGenreButtons[i] )
+		for local i:int = 0 until NewsGenreButtons.length
+			_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onMouseOver", onHoverNewsGenreButtons, NewsGenreButtons[i] ) ]
+			_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDraw", onDrawNewsGenreButtons, NewsGenreButtons[i] ) ]
+			_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onClick", onClickNewsGenreButtons, NewsGenreButtons[i] ) ]
 		Next
 
-		'create the lists in the news planner
-		'we add 2 pixel to the height to make "auto scrollbar" work better
-		guiNewsListAvailable = new TGUINewsList.Create(new TVec2D.Init(15,16), new TVec2D.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 4*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH()), "Newsplanner")
-		guiNewsListAvailable.SetAcceptDrop("TGUINews")
-		guiNewsListAvailable.Resize(guiNewsListAvailable.rect.GetW() + guiNewsListAvailable.guiScrollerV.rect.GetW() + 8,guiNewsListAvailable.rect.GetH())
-		guiNewsListAvailable.guiEntriesPanel.minSize.SetXY(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(),356)
-
-		guiNewsListUsed = new TGUINewsSlotList.Create(new TVec2D.Init(420,106), new TVec2D.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 3*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH()), "Newsplanner")
-		guiNewsListUsed.SetItemLimit(3)
-		guiNewsListUsed.SetAcceptDrop("TGUINews")
-		guiNewsListUsed.SetSlotMinDimension(0,GetSpriteFromRegistry("gfx_news_sheet0").area.GetH())
-		guiNewsListUsed.SetAutofillSlots(false)
-		guiNewsListUsed.guiEntriesPanel.minSize.SetXY(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(),3*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH())
 
 		'if the player visually manages the blocks, we need to handle the events
 		'so we can inform the programmeplan about changes...
-		EventManager.registerListenerFunction("guiobject.onDropOnTargetAccepted", onDropNews, "TGUINews" )
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onDropOnTargetAccepted", onDropNews, "TGUINews" ) ]
 		'this lists want to delete the item if a right mouse click happens...
-		EventManager.registerListenerFunction("guiobject.onClick", onClickNews, "TGUINews")
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickNews, "TGUINews") ]
 
 		'we want to get informed if the news situation changes for a user
-		EventManager.registerListenerFunction("programmeplan.SetNews", onChangeNews )
-		EventManager.registerListenerFunction("programmeplan.RemoveNews", onChangeNews )
-		EventManager.registerListenerFunction("programmecollection.addNews", onChangeNews )
-		EventManager.registerListenerFunction("programmecollection.removeNews", onChangeNews )
+		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.SetNews", onChangeNews ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.RemoveNews", onChangeNews ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.addNews", onChangeNews ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeNews", onChangeNews ) ]
 		'we want to know if we hover a specific block
-		EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverNews, "TGUINews" )
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverNews, "TGUINews" ) ]
 
-		'for all news rooms - register if someone goes into the planner
-		local screen:TScreen = ScreenCollection.GetScreen("screen_newsstudio_newsplanner")
 		'figure enters screen - reset the guilists, limit listening to the 4 rooms
-		if screen then EventManager.registerListenerFunction("screen.onEnter", onEnterNewsPlannerScreen, screen)
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onEnter", onEnterNewsPlannerScreen, plannerScreen) ]
 		'also we want to interrupt leaving a room with dragged items
-		EventManager.registerListenerFunction("screen.OnLeave", onLeaveNewsPlannerScreen, screen)
-
-		super._RegisterScreenHandler( onUpdateNews, onDrawNews, ScreenCollection.GetScreen("screen_newsstudio") )
-		super._RegisterScreenHandler( onUpdateNewsPlanner, onDrawNewsPlanner, ScreenCollection.GetScreen("screen_newsstudio_newsplanner") )
-
-		'register self for all news rooms
-		GetRoomHandlerCollection().SetHandler("news", self)
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnLeave", onLeaveNewsPlannerScreen, plannerScreen) ]
+		
+		_eventListeners :+ _RegisterScreenHandler( onUpdateNews, onDrawNews, studioScreen )
+		_eventListeners :+ _RegisterScreenHandler( onUpdateNewsPlanner, onDrawNewsPlanner, plannerScreen )
 	End Method
 
 
@@ -1605,7 +1728,7 @@ Type RoomHandler_News extends TRoomHandler
 
 		GUIManager.Update("newsroom")
 
-		Game.cursorstate = 0
+		GetGame().cursorstate = 0
 		If PlannerToolTip Then PlannerToolTip.Update()
 		If NewsGenreTooltip Then NewsGenreTooltip.Update()
 
@@ -1618,10 +1741,10 @@ Type RoomHandler_News extends TRoomHandler
 			If not PlannerToolTip Then PlannerToolTip = TTooltip.Create("Newsplaner", "Hinzufügen und entfernen", 180, 100, 0, 0)
 			PlannerToolTip.enabled = 1
 			PlannerToolTip.Hover()
-			Game.cursorstate = 1
+			GetGame().cursorstate = 1
 			If MOUSEMANAGER.IsClicked(1)
 				MOUSEMANAGER.resetKey(1)
-				Game.cursorstate = 0
+				GetGame().cursorstate = 0
 				ScreenCollection.GoToSubScreen("screen_newsstudio_newsplanner")
 			endif
 		endif
@@ -1774,6 +1897,7 @@ Type RoomHandler_News extends TRoomHandler
 			guiNews = null
 		Next
 		endrem
+		haveToRefreshGuiElements = True
 	End Function
 
 
@@ -1841,7 +1965,7 @@ Type RoomHandler_News extends TRoomHandler
 		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
-		Game.cursorstate = 0
+		GetGame().cursorstate = 0
 
 		'delete unused and create new gui elements
 		if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()
@@ -1952,38 +2076,42 @@ Type RoomHandler_Boss extends TRoomHandler
 
 	Function GetInstance:RoomHandler_Boss()
 		if not _instance then _instance = new RoomHandler_Boss
-		if not _initDone then _instance.Initialize()
 		return _instance
 	End Function
 
 
 	Method Initialize:int()
-		if _initDone then return False
-		_initDone = True
-		
-		local smokeConfig:TData = new TData
-		smokeConfig.Add("sprite", GetSpriteFromRegistry("gfx_misc_smoketexture"))
-		smokeConfig.AddNumber("velocityMin", 5.0)
-		smokeConfig.AddNumber("velocityMax", 35.0)
-		smokeConfig.AddNumber("lifeMin", 0.30)
-		smokeConfig.AddNumber("lifeMax", 2.75)
-		smokeConfig.AddNumber("scaleMin", 0.1)
-		smokeConfig.AddNumber("scaleMax", 0.15)
-		smokeConfig.AddNumber("angleMin", 176)
-		smokeConfig.AddNumber("angleMax", 184)
-		smokeConfig.AddNumber("xRange", 2)
-		smokeConfig.AddNumber("yRange", 2)
+		'=== RESET TO INITIAL STATE ===
+		'nothing up to now
 
-		local emitterConfig:TData = new TData
-		emitterConfig.Add("area", new TRectangle.Init(49, 335, 0, 0))
-		emitterConfig.AddNumber("particleLimit", 100)
-		emitterConfig.AddNumber("spawnEveryMin", 0.30)
-		emitterConfig.AddNumber("spawnEveryMax", 0.60)
 
-		smokeEmitter = new TSpriteParticleEmitter.Init(emitterConfig, smokeConfig)
-
-		'register self for all boss rooms
+		'=== REGISTER HANDLER ===
 		GetRoomHandlerCollection().SetHandler("boss", self)
+
+
+		'=== CREATE ELEMENTS ===
+		if not smokeEmitter
+			local smokeConfig:TData = new TData
+			smokeConfig.Add("sprite", GetSpriteFromRegistry("gfx_misc_smoketexture"))
+			smokeConfig.AddNumber("velocityMin", 5.0)
+			smokeConfig.AddNumber("velocityMax", 35.0)
+			smokeConfig.AddNumber("lifeMin", 0.30)
+			smokeConfig.AddNumber("lifeMax", 2.75)
+			smokeConfig.AddNumber("scaleMin", 0.1)
+			smokeConfig.AddNumber("scaleMax", 0.15)
+			smokeConfig.AddNumber("angleMin", 176)
+			smokeConfig.AddNumber("angleMax", 184)
+			smokeConfig.AddNumber("xRange", 2)
+			smokeConfig.AddNumber("yRange", 2)
+
+			local emitterConfig:TData = new TData
+			emitterConfig.Add("area", new TRectangle.Init(49, 335, 0, 0))
+			emitterConfig.AddNumber("particleLimit", 100)
+			emitterConfig.AddNumber("spawnEveryMin", 0.30)
+			emitterConfig.AddNumber("spawnEveryMax", 0.60)
+
+			smokeEmitter = new TSpriteParticleEmitter.Init(emitterConfig, smokeConfig)
+		endif
 	End Method
 
 
@@ -2055,70 +2183,88 @@ Type RoomHandler_Studio extends TRoomHandler
 	Global draggedGuiScript:TGUIScript
 
 	Global _instance:RoomHandler_Studio
-	Global _initDone:int = False
+	Global _eventListeners:TLink[]
 
 
 	Function GetInstance:RoomHandler_Studio()
 		if not _instance then _instance = new RoomHandler_Studio
-		if not _initDone then _instance.Initialize()
 		return _instance
 	End Function
 
 
 	Method Initialize:int()
-		if _initDone then return False
-		_initDone = True
-
-		'===== CREATE GUI LISTS =====
-		local sprite:TSprite = GetSpriteFromRegistry("gfx_scripts_0")
-		local spriteSuitcase:TSprite = GetSpriteFromRegistry("gfx_scripts_0_dragged")
-		guiListStudio = new TGUIScriptSlotList.Create(new TVec2D.Init(730, 300), new TVec2D.Init(17, 52), "studio")
-		guiListStudio.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
-		guiListStudio.SetItemLimit( studioScriptLimit )
-		'increase list size by 2 times - makes it easier to drop
-		guiListStudio.Resize(2 * sprite.area.GetW(), sprite.area.GetH() )
-		guiListStudio.SetSlotMinDimension(2 * sprite.area.GetW(), sprite.area.GetH())
-		guiListStudio.SetAcceptDrop("TGuiScript")
-
-		guiListSuitcase	= new TGUIScriptSlotlist.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200,80), "studio")
-		guiListSuitcase.SetAutofillSlots(true)
-		guiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
-		guiListSuitcase.SetItemLimit(GameRules.maxScriptsInSuitcase)
-		guiListSuitcase.SetEntryDisplacement( 0, 0 )
-		guiListSuitcase.SetAcceptDrop("TGuiScript")
+		'=== RESET TO INITIAL STATE ===
+		studioScriptsByRoom.Clear()
+		studioManagerDialogue = null
+		studioScriptLimit = 1
+		studioManagerEntity = null
+		studioManagerTooltip = null
+		placeScriptTooltip = null
 
 
+		'=== REGISTER HANDLER ===
+		GetRoomHandlerCollection().SetHandler("studio", self)
+
+
+		'=== CREATE ELEMENTS ===
+		'=== create room elements
 		studioManagerEntity = GetSpriteEntityFromRegistry("entity_studio_manager")
-		'default studioManager dimension
-		local studioManagerAreaDimension:TVec2D = new TVec2D.Init(150,270)
-		local studioManagerAreaPosition:TVec2D = new TVec2D.Init(0,115)
-		if studioManagerEntity then studioManagerAreaDimension = studioManagerEntity.area.dimension.copy()
-		if studioManagerEntity then studioManagerAreaPosition = studioManagerEntity.area.position.copy()
 
-		studioManagerArea = new TGUISimpleRect.Create(studioManagerAreaPosition, studioManagerAreaDimension, "studio" )
-		'studioManager should accept drop - else no recognition
-		studioManagerArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
+		'=== create gui elements if not done yet
+		if guiListStudio
+			RemoveAllGuiElements()
+		else
+			local sprite:TSprite = GetSpriteFromRegistry("gfx_scripts_0")
+			local spriteSuitcase:TSprite = GetSpriteFromRegistry("gfx_scripts_0_dragged")
+			guiListStudio = new TGUIScriptSlotList.Create(new TVec2D.Init(730, 300), new TVec2D.Init(17, 52), "studio")
+			guiListStudio.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+			guiListStudio.SetItemLimit( studioScriptLimit )
+			'increase list size by 2 times - makes it easier to drop
+			guiListStudio.Resize(2 * sprite.area.GetW(), sprite.area.GetH() )
+			guiListStudio.SetSlotMinDimension(2 * sprite.area.GetW(), sprite.area.GetH())
+			guiListStudio.SetAcceptDrop("TGuiScript")
+
+			guiListSuitcase	= new TGUIScriptSlotlist.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200,80), "studio")
+			guiListSuitcase.SetAutofillSlots(true)
+			guiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+			guiListSuitcase.SetItemLimit(GameRules.maxScriptsInSuitcase)
+			guiListSuitcase.SetEntryDisplacement( 0, 0 )
+			guiListSuitcase.SetAcceptDrop("TGuiScript")
 
 
-		'===== REGISTER EVENTS =====
+			'default studioManager dimension
+			local studioManagerAreaDimension:TVec2D = new TVec2D.Init(150,270)
+			local studioManagerAreaPosition:TVec2D = new TVec2D.Init(0,115)
+			if studioManagerEntity then studioManagerAreaDimension = studioManagerEntity.area.dimension.copy()
+			if studioManagerEntity then studioManagerAreaPosition = studioManagerEntity.area.position.copy()
 
+			studioManagerArea = new TGUISimpleRect.Create(studioManagerAreaPosition, studioManagerAreaDimension, "studio" )
+			'studioManager should accept drop - else no recognition
+			studioManagerArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
+		endif
+
+		
+		'=== EVENTS ===
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
+		
+		'=== register event listeners
 		'to react on changes in the programmeCollection (eg. custom script finished)
-		EventManager.registerListenerFunction( "programmecollection.removeScript", onChangeProgrammeCollection )
-		EventManager.registerListenerFunction( "programmecollection.moveScript", onChangeProgrammeCollection )
-
-
+		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.removeScript", onChangeProgrammeCollection ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.moveScript", onChangeProgrammeCollection ) ]
 		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
 		'is only emitted if the drop is successful (so it "visually" happened)
 		'drop ... to studio manager or suitcase
-		EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropScript, "TGuiScript" )
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropScript, "TGuiScript" ) ]
 		'we want to know if we hover a specific block - to show a datasheet
-		EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverScript, "TGuiScript" )
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverScript, "TGuiScript" ) ]
 		'this lists want to delete the item if a right mouse click happens...
-		EventManager.registerListenerFunction("guiobject.onClick", onClickScript, "TGuiScript")
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickScript, "TGuiScript") ]
 
-		
-		'register self for all studio rooms
-		GetRoomHandlerCollection().SetHandler("studio", self)
+		'(re-)localize content
+		SetLanguage()
 	End Method
 
 
@@ -2640,7 +2786,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		endif
 
 
-		Game.cursorstate = 0
+		GetGame().cursorstate = 0
 
 		'delete unused and create new gui elements
 		if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()
@@ -2682,89 +2828,95 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Global contractsCheapAmount:int	= 4
 
 	Global _instance:RoomHandler_AdAgency
-	Global _initDone:int = FALSE
+	Global _eventListeners:TLink[]
 
 
 	Function GetInstance:RoomHandler_AdAgency()
 		if not _instance then _instance = new RoomHandler_AdAgency
-		if not _initDone then _instance.Initialize()
 		return _instance
 	End Function
 
 
 	Method Initialize:int()
-		if _initDone then return FALSE
-		_initDone = true
-
-		'===== CREATE/RESIZE LISTS =====
-
+		'=== RESET TO INITIAL STATE ===
+		contractsPerLine:int = 4
+		contractsNormalAmount = 12
+		contractsCheapAmount = 4
 		listNormal = listNormal[..contractsNormalAmount]
 		listCheap = listCheap[..contractsCheapAmount]
 
 
-		'===== CREATE GUI LISTS =====
-
-		GuiListNormal	= GuiListNormal[..3]
-		for local i:int = 0 to GuiListNormal.length-1
-			GuiListNormal[i] = new TGUIAdContractSlotList.Create(new TVec2D.Init(430 - i*70, 170 + i*32), new TVec2D.Init(200, 140), "adagency")
-			GuiListNormal[i].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
-			GuiListNormal[i].SetItemLimit( contractsNormalAmount / GuiListNormal.length  )
-			GuiListNormal[i].Resize(GetSpriteFromRegistry("gfx_contracts_0").area.GetW() * (contractsNormalAmount / GuiListNormal.length), GetSpriteFromRegistry("gfx_contracts_0").area.GetH() )
-			GuiListNormal[i].SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW(), GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
-			GuiListNormal[i].SetAcceptDrop("TGuiAdContract")
-			GuiListNormal[i].setZindex(i)
-		Next
-
-		GuiListSuitcase	= new TGUIAdContractSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200,80), "adagency")
-		GuiListSuitcase.SetAutofillSlots(true)
-
-		GuiListCheap = new TGUIAdContractSlotList.Create(new TVec2D.Init(70, 200), new TVec2D.Init(10 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
-		GuiListCheap.setEntriesBlockDisplacement(70,0)
+		'=== REGISTER HANDLER ===
+		GetRoomHandlerCollection().SetHandler("adagency", self)
 
 
+		'=== CREATE ELEMENTS ===
+		'=== create gui elements if not done yet
+		if GuiListSuitcase
+			'clear gui lists etc
+			RemoveAllGuiElements()
+		else
+			GuiListNormal = GuiListNormal[..3]
+			for local i:int = 0 to GuiListNormal.length-1
+				GuiListNormal[i] = new TGUIAdContractSlotList.Create(new TVec2D.Init(430 - i*70, 170 + i*32), new TVec2D.Init(200, 140), "adagency")
+				GuiListNormal[i].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+				GuiListNormal[i].SetItemLimit( contractsNormalAmount / GuiListNormal.length  )
+				GuiListNormal[i].Resize(GetSpriteFromRegistry("gfx_contracts_0").area.GetW() * (contractsNormalAmount / GuiListNormal.length), GetSpriteFromRegistry("gfx_contracts_0").area.GetH() )
+				GuiListNormal[i].SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW(), GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
+				GuiListNormal[i].SetAcceptDrop("TGuiAdContract")
+				GuiListNormal[i].setZindex(i)
+			Next
 
-		GuiListCheap.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
-		GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+			GuiListSuitcase	= new TGUIAdContractSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200,80), "adagency")
+			GuiListSuitcase.SetAutofillSlots(true)
 
-		GuiListCheap.SetItemLimit(listCheap.length)
-		GuiListSuitcase.SetItemLimit(GameRules.maxContracts)
+			GuiListCheap = new TGUIAdContractSlotList.Create(new TVec2D.Init(70, 200), new TVec2D.Init(10 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
+			GuiListCheap.setEntriesBlockDisplacement(70,0)
 
-		GuiListCheap.SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW(), GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
-		GuiListSuitcase.SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW(), GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
+			GuiListCheap.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+			GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 
-		GuiListCheap.SetEntryDisplacement( -2*GuiListNormal[0]._slotMinDimension.x, 5)
-		GuiListSuitcase.SetEntryDisplacement( 0, 0)
+			GuiListCheap.SetItemLimit(listCheap.length)
+			GuiListSuitcase.SetItemLimit(GameRules.maxContracts)
 
-		GuiListCheap.SetAcceptDrop("TGuiAdContract")
-		GuiListSuitcase.SetAcceptDrop("TGuiAdContract")
+			GuiListCheap.SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW(), GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
+			GuiListSuitcase.SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW(), GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
 
-		VendorArea = new TGUISimpleRect.Create(new TVec2D.Init(241, 110), new TVec2D.Init(GetSpriteFromRegistry("gfx_screen_adagency_vendor").area.GetW(), GetSpriteFromRegistry("gfx_screen_adagency_vendor").area.GetH()), "adagency" )
-		'vendor should accept drop - else no recognition
-		VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
+			GuiListCheap.SetEntryDisplacement( -2*GuiListNormal[0]._slotMinDimension.x, 5)
+			GuiListSuitcase.SetEntryDisplacement( 0, 0)
 
+			GuiListCheap.SetAcceptDrop("TGuiAdContract")
+			GuiListSuitcase.SetAcceptDrop("TGuiAdContract")
 
-		'===== REGISTER EVENTS =====
+			VendorArea = new TGUISimpleRect.Create(new TVec2D.Init(241, 110), new TVec2D.Init(GetSpriteFromRegistry("gfx_screen_adagency_vendor").area.GetW(), GetSpriteFromRegistry("gfx_screen_adagency_vendor").area.GetH()), "adagency" )
+			'vendor should accept drop - else no recognition
+			VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
+		endif
 
+		
+		'=== EVENTS ===
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
+		
+		'=== register event listeners
 		'to react on changes in the programmeCollection (eg. contract finished)
-		EventManager.registerListenerFunction( "programmecollection.addAdContract", onChangeProgrammeCollection )
-		EventManager.registerListenerFunction( "programmecollection.removeAdContract", onChangeProgrammeCollection )
-
+		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.addAdContract", onChangeProgrammeCollection ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.removeAdContract", onChangeProgrammeCollection ) ]
 		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
 		'is only emitted if the drop is successful (so it "visually" happened)
 		'drop ... to vendor or suitcase
-		EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropContract, "TGuiAdContract" )
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropContract, "TGuiAdContract" ) ]
 		'drop on vendor - sell things
-		EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropContractOnVendor, "TGuiAdContract" )
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropContractOnVendor, "TGuiAdContract" ) ]
 		'we want to know if we hover a specific block - to show a datasheet
-		EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverContract, "TGuiAdContract" )
-		'figure leaves room - only without dragged blocks
-
-
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverContract, "TGuiAdContract" ) ]
 		'this lists want to delete the item if a right mouse click happens...
-		EventManager.registerListenerFunction("guiobject.onClick", onClickContract, "TGuiAdContract")
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickContract, "TGuiAdContract") ]
 
-
-		GetRoomHandlerCollection().SetHandler("adagency", self)
+		'(re-)localize content
+		SetLanguage()
 	End Method
 
 
@@ -3664,7 +3816,7 @@ endrem
 
 
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
-		Game.cursorstate = 0
+		GetGame().cursorstate = 0
 
 		'delete unused and create new gui elements
 		if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()
@@ -3708,95 +3860,105 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	Global scriptsNormal2Amount:int	= 1
 
 	Global _instance:RoomHandler_ScriptAgency
-	Global _initDone:int = FALSE
+	Global _eventListeners:TLink[]
 
 
 	Function GetInstance:RoomHandler_ScriptAgency()
 		if not _instance then _instance = new RoomHandler_ScriptAgency
-		if not _initDone then _instance.Initialize()
 		return _instance
 	End Function
 
 
 	Method Initialize:int()
-		if _initDone then return FALSE
-		_initDone = true
-
-		'===== CREATE/RESIZE LISTS =====
-
+		'=== RESET TO INITIAL STATE ===
+		scriptsPerLine = 1
+		scriptsNormalAmount = 4
+		scriptsNormal2Amount = 1
 		listNormal = listNormal[..scriptsNormalAmount]
 		listNormal2 = listNormal2[..scriptsNormal2Amount]
-
-
-		'===== CREATE GUI LISTS =====
-		GuiListNormal	= GuiListNormal[..scriptsNormalAmount]
-		local sprite:TSprite = GetSpriteFromRegistry("gfx_scripts_0")
-		local spriteSuitcase:TSprite = GetSpriteFromRegistry("gfx_scripts_0_dragged")
-		for local i:int = 0 to GuiListNormal.length-1
-			GuiListNormal[i] = new TGUIScriptSlotList.Create(new TVec2D.Init(233 + (GuiListNormal.length-1 - i)*22, 143 + i*2), new TVec2D.Init(17, 52), "scriptagency")
-			GuiListNormal[i].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
-			GuiListNormal[i].SetItemLimit( scriptsNormalAmount / GuiListNormal.length  )
-			GuiListNormal[i].Resize(sprite.area.GetW() * (scriptsNormalAmount / GuiListNormal.length), sprite.area.GetH() )
-			GuiListNormal[i].SetSlotMinDimension(sprite.area.GetW(), sprite.area.GetH())
-			GuiListNormal[i].SetAcceptDrop("TGuiScript")
-			GuiListNormal[i].setZindex(i)
-		Next
-
-		GuiListSuitcase	= new TGUIScriptSlotlist.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200,80), "scriptagency")
-		GuiListSuitcase.SetAutofillSlots(true)
-
-		GuiListNormal2 = new TGUIScriptSlotlist.Create(new TVec2D.Init(188, 240), new TVec2D.Init(10 + sprite.area.GetW()*scriptsNormal2Amount, sprite.area.GetH()), "scriptagency")
-		GuiListNormal2.setEntriesBlockDisplacement(18, 11)
-
-		GuiListNormal2.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
-		GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
-
-		GuiListNormal2.SetItemLimit(listNormal2.length)
-		GuiListSuitcase.SetItemLimit(GameRules.maxScriptsInSuitcase)
-
-		GuiListNormal2.SetSlotMinDimension(sprite.area.GetW(), sprite.area.GetH())
-		GuiListSuitcase.SetSlotMinDimension(spriteSuitcase.area.GetW(), spriteSuitcase.area.GetH())
-
-		GuiListNormal2.SetEntryDisplacement( -scriptsNormal2Amount * GuiListNormal[0]._slotMinDimension.x, 5)
-		GuiListSuitcase.SetEntryDisplacement( 0, 0 )
-
-		GuiListNormal2.SetAcceptDrop("TGuiScript")
-		GuiListSuitcase.SetAcceptDrop("TGuiScript")
-
-
 		VendorEntity = GetSpriteEntityFromRegistry("entity_scriptagency_vendor")
-		'default vendor dimension
-		local vendorAreaDimension:TVec2D = new TVec2D.Init(200,300)
-		local vendorAreaPosition:TVec2D = new TVec2D.Init(350,100)
-		if VendorEntity then vendorAreaDimension = VendorEntity.area.dimension.copy()
-		if VendorEntity then vendorAreaPosition = VendorEntity.area.position.copy()
-
-		VendorArea = new TGUISimpleRect.Create(vendorAreaPosition, vendorAreaDimension, "scriptagency" )
-		'vendor should accept drop - else no recognition
-		VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 
 
-		'===== REGISTER EVENTS =====
+		'=== REGISTER HANDLER ===
+		GetRoomHandlerCollection().SetHandler("scriptagency", self)
 
+
+		'=== CREATE ELEMENTS ===
+		'=== create gui elements if not done yet
+		if GuiListSuitCase
+			'clear gui lists etc
+			RemoveAllGuiElements()
+		else
+			GuiListNormal = GuiListNormal[..scriptsNormalAmount]
+			local sprite:TSprite = GetSpriteFromRegistry("gfx_scripts_0")
+			local spriteSuitcase:TSprite = GetSpriteFromRegistry("gfx_scripts_0_dragged")
+			for local i:int = 0 to GuiListNormal.length-1
+				GuiListNormal[i] = new TGUIScriptSlotList.Create(new TVec2D.Init(233 + (GuiListNormal.length-1 - i)*22, 143 + i*2), new TVec2D.Init(17, 52), "scriptagency")
+				GuiListNormal[i].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+				GuiListNormal[i].SetItemLimit( scriptsNormalAmount / GuiListNormal.length  )
+				GuiListNormal[i].Resize(sprite.area.GetW() * (scriptsNormalAmount / GuiListNormal.length), sprite.area.GetH() )
+				GuiListNormal[i].SetSlotMinDimension(sprite.area.GetW(), sprite.area.GetH())
+				GuiListNormal[i].SetAcceptDrop("TGuiScript")
+				GuiListNormal[i].setZindex(i)
+			Next
+
+			GuiListSuitcase	= new TGUIScriptSlotlist.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200,80), "scriptagency")
+			GuiListSuitcase.SetAutofillSlots(true)
+
+			GuiListNormal2 = new TGUIScriptSlotlist.Create(new TVec2D.Init(188, 240), new TVec2D.Init(10 + sprite.area.GetW()*scriptsNormal2Amount, sprite.area.GetH()), "scriptagency")
+			GuiListNormal2.setEntriesBlockDisplacement(18, 11)
+
+			GuiListNormal2.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+			GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+
+			GuiListNormal2.SetItemLimit(listNormal2.length)
+			GuiListSuitcase.SetItemLimit(GameRules.maxScriptsInSuitcase)
+
+			GuiListNormal2.SetSlotMinDimension(sprite.area.GetW(), sprite.area.GetH())
+			GuiListSuitcase.SetSlotMinDimension(spriteSuitcase.area.GetW(), spriteSuitcase.area.GetH())
+
+			GuiListNormal2.SetEntryDisplacement( -scriptsNormal2Amount * GuiListNormal[0]._slotMinDimension.x, 5)
+			GuiListSuitcase.SetEntryDisplacement( 0, 0 )
+
+			GuiListNormal2.SetAcceptDrop("TGuiScript")
+			GuiListSuitcase.SetAcceptDrop("TGuiScript")
+
+			'default vendor dimension
+			local vendorAreaDimension:TVec2D = new TVec2D.Init(200,300)
+			local vendorAreaPosition:TVec2D = new TVec2D.Init(350,100)
+			if VendorEntity then vendorAreaDimension = VendorEntity.area.dimension.copy()
+			if VendorEntity then vendorAreaPosition = VendorEntity.area.position.copy()
+
+			VendorArea = new TGUISimpleRect.Create(vendorAreaPosition, vendorAreaDimension, "scriptagency" )
+			'vendor should accept drop - else no recognition
+			VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
+		endif
+
+		
+		'=== EVENTS ===
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
+		
+		'=== register event listeners
 		'to react on changes in the programmeCollection (eg. custom script finished)
-		EventManager.registerListenerFunction( "programmecollection.addScript", onChangeProgrammeCollection )
-		EventManager.registerListenerFunction( "programmecollection.removeScript", onChangeProgrammeCollection )
-		EventManager.registerListenerFunction( "programmecollection.moveScript", onChangeProgrammeCollection )
-
+		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.addScript", onChangeProgrammeCollection ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.removeScript", onChangeProgrammeCollection ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.moveScript", onChangeProgrammeCollection ) ]
 		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
 		'is only emitted if the drop is successful (so it "visually" happened)
 		'drop ... to vendor or suitcase
-		EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropScript, "TGuiScript" )
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropScript, "TGuiScript" ) ]
 		'drop on vendor - sell things
-		EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropScriptOnVendor, "TGuiScript" )
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropScriptOnVendor, "TGuiScript" ) ]
 		'we want to know if we hover a specific block - to show a datasheet
-		EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverScript, "TGuiScript" )
-
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverScript, "TGuiScript" ) ]
 		'this lists want to delete the item if a right mouse click happens...
-		EventManager.registerListenerFunction("guiobject.onClick", onClickScript, "TGuiScript")
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickScript, "TGuiScript") ]
 
-
-		GetRoomHandlerCollection().SetHandler("scriptagency", self)
+		'(re-)localize content
+		SetLanguage()
 	End Method
 
 
@@ -4409,7 +4571,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
 		if VendorEntity Then VendorEntity.Update()
 
-		Game.cursorstate = 0
+		GetGame().cursorstate = 0
 
 		'delete unused and create new gui elements
 		if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()
@@ -4424,27 +4586,34 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 End Type
 
+
 'Dies hier ist die Raumauswahl im Fahrstuhl.
 Type RoomHandler_ElevatorPlan extends TRoomHandler
 	Global _instance:RoomHandler_ElevatorPlan
-	Global _initDone:int = False
+
 
 	Function GetInstance:RoomHandler_ElevatorPlan()
 		if not _instance then _instance = new RoomHandler_ElevatorPlan
-		if not _initDone then _instance.Initialize()
 		return _instance
 	End Function
 
 	
 	Method Initialize:Int()
-		if _initDone then return False
-		_initDone = True
+		'=== RESET TO INITIAL STATE ===
+		'nothing up to now
 
+
+		'=== REGISTER HANDLER ===
 		GetRoomHandlerCollection().SetHandler("elevatorplan", self)
 
+
+		'=== CREATE ELEMENTS ===
 		'create an intial plan (might be empty if no doors are loaded yet)
 		'so pay attention to run it once AFTER room creation/loading
 		ReCreatePlan()
+
+		'(re-)localize content
+		SetLanguage()
 	End Method
 
 
@@ -4465,7 +4634,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
 		local mouseClicked:int = MouseManager.IsClicked(1)
 
-		Game.cursorstate = 0
+		GetGame().cursorstate = 0
 
 		'if possible, change the target to the clicked door
 		if mouseClicked
@@ -4480,22 +4649,34 @@ End Type
 
 
 Type RoomHandler_Roomboard extends TRoomHandler
-
 	Global _instance:RoomHandler_Roomboard
-	Global _initDone:int = False
+
 
 	Function GetInstance:RoomHandler_Roomboard()
 		if not _instance then _instance = new RoomHandler_Roomboard
-		if not _initDone then _instance.Initialize()
 		return _instance
 	End Function
 
 	
 	Method Initialize:Int()
-		if _initDone then return False
-		_initDone = True
+		'=== RESET TO INITIAL STATE ===
+		'nothing up to now
 
+
+		'=== REGISTER HANDLER ===
 		GetRoomHandlerCollection().SetHandler("roomboard", self)
+
+
+		'=== CREATE ELEMENTS =====
+		'nothing up to now
+
+
+		'=== EVENTS ===
+		'nothing up to now
+
+
+		'(re-)localize content
+		SetLanguage()
 	End Method
 
 
@@ -4528,7 +4709,7 @@ Type RoomHandler_Roomboard extends TRoomHandler
 
 
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
-		Game.cursorstate = 0
+		GetGame().cursorstate = 0
 
 		'only allow dragging of roomsigns when no exitapp-dialoge exists
 'RONNY
@@ -4547,21 +4728,35 @@ End Type
 'Betty
 Type RoomHandler_Betty extends TRoomHandler
 	Global _instance:RoomHandler_Betty
-	Global _initDone:int = False
+
 
 	Function GetInstance:RoomHandler_Betty()
 		if not _instance then _instance = new RoomHandler_Betty
-		if not _initDone then _instance.Initialize()
 		return _instance
 	End Function
 
 	
 	Method Initialize:Int()
-		if _initDone then return False
-		_initDone = True
+		'=== RESET TO INITIAL STATE ===
+		'nothing up to now
 
+
+		'=== REGISTER HANDLER ===
 		GetRoomHandlerCollection().SetHandler("betty", self)
+
+
+		'=== CREATE ELEMENTS =====
+		'nothing up to now
+
+
+		'=== EVENTS ===
+		'nothing up to now
+
+
+		'(re-)localize content
+		SetLanguage()
 	End Method
+	
 
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
@@ -4594,20 +4789,33 @@ End Type
 'RoomAgency
 Type RoomHandler_RoomAgency extends TRoomHandler
 	Global _instance:RoomHandler_RoomAgency
-	Global _initDone:int = False
+
 
 	Function GetInstance:RoomHandler_RoomAgency()
 		if not _instance then _instance = new RoomHandler_RoomAgency
-		if not _initDone then _instance.Initialize()
 		return _instance
 	End Function
 
 	
 	Method Initialize:Int()
-		if _initDone then return False
-		_initDone = True	
+		'=== RESET TO INITIAL STATE ===
+		'nothing up to now
 
+
+		'=== REGISTER HANDLER ===
 		GetRoomHandlerCollection().SetHandler("roomagency", self)
+
+
+		'=== CREATE ELEMENTS =====
+		'nothing up to now
+
+
+		'=== EVENTS ===
+		'nothing up to now
+
+
+		'(re-)localize content
+		SetLanguage()
 	End Method
 
 
@@ -4820,107 +5028,3 @@ Type RoomHandler_Credits extends TRoomHandler
 		if fadeMode = 2 then fadeValue = 1.0 - fadeValue
 	End Method
 End Type
-
-
-
-Function Init_ConnectRoomHandlers()
-	'connect Update/Draw-Events
-	RoomHandler_Office.GetInstance()
-	RoomHandler_News.GetInstance()
-	RoomHandler_Boss.GetInstance()
-	RoomHandler_Archive.GetInstance()
-
-	RoomHandler_Studio.GetInstance()
-
-	RoomHandler_AdAgency.GetInstance()
-	RoomHandler_ScriptAgency.GetInstance()
-	RoomHandler_MovieAgency.GetInstance()
-	RoomHandler_RoomAgency.GetInstance()
-
-	RoomHandler_Betty.GetInstance()
-
-	RoomHandler_ElevatorPlan.GetInstance()
-	RoomHandler_Roomboard.GetInstance()
-
-	RoomHandler_Credits.GetInstance()
-End Function
-
-
-
-Function Init_CreateAllRooms()
-	local room:TRoom = null
-	Local roomMap:TMap = TMap(GetRegistry().Get("rooms"))
-	if not roomMap then Throw("ERROR: no room definition loaded!")
-
-	'remove all previous rooms
-	GetRoomCollection().Reset()
-
-	For Local vars:TData = EachIn roomMap.Values()
-		'==== ROOM ====
-		local room:TRoom = new TRoom
-		room.Init(..
-			vars.GetString("roomname"),  ..
-			[ ..
-				vars.GetString("tooltip"), ..
-				vars.GetString("tooltip2") ..
-			], ..
-			vars.GetInt("owner",-1),  ..
-			vars.GetInt("size", 1)  ..
-		)
-		room.fakeRoom = vars.GetBool("fake", FALSE)
-		room.screenName = vars.GetString("screen")
-
-
-		'only add if not already there
-		if not GetRoomCollection().Get(room.id)
-			GetRoomCollection().Add(room)
-		else
-			room = GetRoomCollection().Get(room.id)
-		endif
-
-		'==== DOOR ====
-		local door:TRoomDoor = new TRoomDoor
-		door.Init(..
-			room.id,..
-			vars.GetInt("doorslot"), ..
-			vars.GetInt("floor"), ..
-			vars.GetInt("doortype") ..
-		)
-		GetRoomDoorBaseCollection().Add( door )
-		'add the door to the building (sets parent etc)
-		GetBuilding().AddDoor(door)
-
-		'override defaults
-		if not vars.GetBool("doortooltip") then door.showTooltip = False
-		if vars.GetInt("doorwidth") > 0 then door.area.dimension.setX( vars.GetInt("doorwidth") )
-		if vars.GetInt("x",-1000) <> -1000 then door.area.position.SetX(vars.GetInt("x"))
-
-
-
-		'==== HOTSPOTS ====
-		local hotSpots:TList = TList( vars.Get("hotspots") )
-		if hotSpots
-			for local conf:TData = eachin hotSpots
-				local name:string 	= conf.GetString("name")
-				local x:int			= conf.GetInt("x", -1)
-				local y:int			= conf.GetInt("y", -1)
-				local bottomy:int	= conf.GetInt("bottomy", 0)
-				local floor:int 	= conf.GetInt("floor", -1)
-				local width:int 	= conf.GetInt("width", 0)
-				local height:int 	= conf.GetInt("height", 0)
-				local tooltipText:string	 	= conf.GetString("tooltiptext")
-				local tooltipDescription:string	= conf.GetString("tooltipdescription")
-
-				'align at bottom of floor
-				if floor >= 0 then y = TBuilding.GetFloorY2(floor) - height
-
-				local hotspot:THotspot = new THotspot.Create( name, x, y - bottomy, width, height)
-				hotspot.setTooltipText( GetLocale(tooltipText), GetLocale(tooltipDescription) )
-
-				room.addHotspot( hotspot )
-			next
-		endif
-
-	Next
-End Function
-

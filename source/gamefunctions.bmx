@@ -544,7 +544,7 @@ Type TError
 		SetColor 0,0,0
 		DrawRect(0,0,800, 385)
 		SetAlpha 1.0
-		Game.cursorstate = 0
+		GetGame().cursorstate = 0
 		SetColor 255,255,255
 		sprite.Draw(pos.x,pos.y)
 		GetBitmapFont("Default", 15, BOLDFONT).drawBlock(title, pos.x + 12 + 6, pos.y + 15, sprite.area.GetW() - 60, 40, Null, TColor.Create(150, 50, 50))

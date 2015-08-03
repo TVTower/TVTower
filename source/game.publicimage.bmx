@@ -13,6 +13,11 @@ Type TPublicImageCollection
 	End Function
 
 
+	Method Initialize:int()
+		entries = new TPublicImage[0]
+	End Method
+
+
 	Method Set:int(playerID:int, image:TPublicImage)
 		if playerID <= 0 then return False
 		if playerID > entries.length then entries = entries[.. playerID]

@@ -29,7 +29,7 @@ Type TRoomBaseCollection
 	End Function
 
 
-	Method Reset:int()
+	Method Initialize:int()
 		list.Clear()
 		'also set back the ids
 		TRoomBase.LastID = 0

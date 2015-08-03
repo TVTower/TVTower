@@ -11,33 +11,50 @@ Type TScreenHandler_Financials
 	Global balanceValueBG:TSprite
 	Global balanceValueBG2:TSprite
 
-	Function Init:int()
+	Global _eventListeners:TLink[]
+
+
+	Function Initialize:int()
+		local screen:TInGameScreen = TInGameScreen(ScreenCollection.GetScreen("screen_office_financials"))
+		if not screen then return False
+
+		'create finance entry colors
 		clTypes[TVTPlayerFinanceEntryType.GROUP_NEWS] = new TColor.Create(0, 31, 83)
 		clTypes[TVTPlayerFinanceEntryType.GROUP_PROGRAMME] = new TColor.Create(89, 40, 0)
 		clTypes[TVTPlayerFinanceEntryType.GROUP_DEFAULT] = new TColor.Create(30, 30, 30)
 		clTypes[TVTPlayerFinanceEntryType.GROUP_PRODUCTION] = new TColor.Create(44, 0, 78)
 		clTypes[TVTPlayerFinanceEntryType.GROUP_STATION] = new TColor.Create(0, 75, 69)
 
-		financeHistoryUpButton = new TGUIArrowButton.Create(new TVec2D.Init(500 + 20, 180), new TVec2D.Init(130, 22), "DOWN", "officeFinancialScreen")
-		financeHistoryDownButton = new TGUIArrowButton.Create(new TVec2D.Init(500 + 130 + 20, 180), new TVec2D.Init(130, 22), "UP", "officeFinancialScreen")
 
-		financeHistoryUpButton.spriteButtonBaseName = "gfx_gui_button.roundedMore"
-		financeHistoryDownButton.spriteButtonBaseName = "gfx_gui_button.roundedMore"
+		'=== create gui elements if not done yet
+		if not financeHistoryUpButton
+			financeHistoryUpButton = new TGUIArrowButton.Create(new TVec2D.Init(500 + 20, 180), new TVec2D.Init(130, 22), "DOWN", "officeFinancialScreen")
+			financeHistoryDownButton = new TGUIArrowButton.Create(new TVec2D.Init(500 + 130 + 20, 180), new TVec2D.Init(130, 22), "UP", "officeFinancialScreen")
 
-		financePreviousDayButton = new TGUIArrowButton.Create(new TVec2D.Init(20, 10 + 11), new TVec2D.Init(24, 24), "LEFT", "officeFinancialScreen")
-		financeNextDayButton = new TGUIArrowButton.Create(new TVec2D.Init(20 + 175 + 20, 10 + 11), new TVec2D.Init(24, 24), "RIGHT", "officeFinancialScreen")
+			financeHistoryUpButton.spriteButtonBaseName = "gfx_gui_button.roundedMore"
+			financeHistoryDownButton.spriteButtonBaseName = "gfx_gui_button.roundedMore"
 
-		'listen to clicks on the four buttons
-		EventManager.registerListenerFunction("guiobject.onClick", onClickFinanceButtons, "TGUIArrowButton")
+			financePreviousDayButton = new TGUIArrowButton.Create(new TVec2D.Init(20, 10 + 11), new TVec2D.Init(24, 24), "LEFT", "officeFinancialScreen")
+			financeNextDayButton = new TGUIArrowButton.Create(new TVec2D.Init(20 + 175 + 20, 10 + 11), new TVec2D.Init(24, 24), "RIGHT", "officeFinancialScreen")
+		endif
 
-		'reset finance history scroll position when entering a screen
-		local screen:TScreen = ScreenCollection.GetScreen("screen_office_financials")
-		if screen then EventManager.registerListenerFunction("screen.onEnter", onEnterFinancialScreen, screen)
 
-		'inform if language changes
-		EventManager.registerListenerFunction("Language.onSetLanguage", onSetLanguage)
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
 
-		TRoomHandler._RegisterScreenHandler( onUpdateFinancials, onDrawFinancials, ScreenCollection.GetScreen("screen_office_financials") )
+		
+		'=== register event listeners
+		'to listen to clicks on the four buttons
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickFinanceButtons, "TGUIArrowButton") ]
+		'to reset finance history scroll position when entering a screen
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onEnter", onEnterFinancialScreen, screen) ]
+
+		'to update/draw the screens
+		_eventListeners :+ TRoomHandler._RegisterScreenHandler( onUpdateFinancials, onDrawFinancials, screen)
+
+		'(re-)localize content
+		SetLanguage()
 	End Function
 
 
@@ -47,11 +64,6 @@ Type TScreenHandler_Financials
 
 
 	'=== EVENTS ===
-
-	Function onSetLanguage:int(triggerEvent:TEventBase)
-		SetLanguage()
-	End Function
-
 
 	'reset finance history scrolling position when entering the screen
 	'reset finance show day to current when entering the screen
@@ -411,7 +423,7 @@ Type TScreenHandler_Financials
 
 
 
-		Game.cursorstate = 0
+		GetGame().cursorstate = 0
 		GuiManager.Update("officeFinancialScreen")
 	End Function
 

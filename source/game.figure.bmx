@@ -453,10 +453,10 @@ Type TFigure extends TFigureBase
 
 			'check for specified room
 			If roomName <> ""
-				Return (inRoom And inRoom.Name.toLower() = roomname.toLower()) Or (inRoom And fromRoom And Name.toLower() = roomname.toLower())
+				Return (inRoom And inRoom.Name.toLower() = roomname.toLower()) Or (inRoom And fromRoom And fromRoom.Name.toLower() = roomname.toLower())
 			'just check if we are in a unspecified room
 			Else
-				Return inRoom Or (inRoom And fromRoom)
+				Return inRoom <> null
 			Endif
 		Else
 			If roomName <> ""

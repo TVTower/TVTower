@@ -10,7 +10,6 @@ Type TColor
 	Field g:int			= 0
 	Field b:int			= 0
 	Field a:float		= 1.0
-	Field ownerID:int	= 0				'store if a player/object... uses that color
 
 	global list:TList	= CreateList()	'storage for colors (allows handle referencing)
 	'some const
@@ -19,6 +18,7 @@ Type TColor
 	global clRed:TColor = TColor.Create(255,0,0)
 	global clGreen:TColor = TColor.Create(0,255,0)
 	global clBlue:TColor = TColor.Create(0,0,255)
+
 
 	Function Create:TColor(r:int=0,g:int=0,b:int=0,a:float=1.0)
 		local obj:TColor = new TColor
@@ -67,39 +67,25 @@ Type TColor
 	end Method
 
 
-	Method SetOwner:TColor(ownerID:int)
-		self.ownerID = ownerID
+	Method AddToList:TColor()
+		'remove first and append as last color
+		list.remove(self)
+		list.AddLast(self)
+
 		return self
 	End Method
 
 
-	Method AddToList:TColor(remove:int=0)
-		'if in list - remove first as wished
-		if remove then self.list.remove(self)
-
-		self.list.AddLast(self)
-		return self
-	End Method
-
-
-	Function getFromListObj:TColor(col:TColor)
-		return TColor.getFromList(col.r,col.g,col.b,col.a)
+	Function getFromList:TColor(col:TColor)
+		return TColor.getFromListByRGBA(col.r,col.g,col.b,col.a)
 	End Function
 
 
-	Function getFromList:TColor(r:Int, g:Int, b:Int, a:float=1.0)
+	Function getFromListByRGBA:TColor(r:Int, g:Int, b:Int, a:float=1.0)
 		For local obj:TColor = EachIn TColor.List
 			If obj.r = r And obj.g = g And obj.b = b And obj.a = a Then Return obj
 		Next
 		Return Null
-	End Function
-
-
-	Function getByOwner:TColor(ownerID:int=0)
-		For local obj:TColor = EachIn TColor.List
-			if obj.ownerID = ownerID then return obj
-		Next
-		return Null
 	End Function
 
 

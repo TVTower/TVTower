@@ -24,7 +24,7 @@ Type TRoomDoorBaseCollection
 	End Function
 
 
-	Method Clear:Int()
+	Method Initialize:Int()
 		list.Clear()
 	End Method
 

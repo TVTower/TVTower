@@ -120,6 +120,11 @@ Type TInGameScreen Extends TScreen
 	End Method
 
 
+	Method Initialize:int()
+		'stub
+	End Method
+
+
 	Method GetBackground:TSprite()
 		If backgroundSpriteName = "" Then Return Null
 		Return GetSpriteFromRegistry(backgroundSpriteName)
@@ -212,9 +217,9 @@ Type TInGameScreen Extends TScreen
 
 
 		If Not GetWorldTime().IsPaused()
-			Game.Update(deltaTime)
+			GetGame().Update(deltaTime)
 			GetInGameInterface().Update(deltaTime)
-			GetBuilding().Elevator.Update()
+			GetElevator().Update()
 			GetFigureCollection().UpdateAll()
 		EndIf
 	End Method
@@ -243,15 +248,28 @@ End Type
 'of this type only one instance can exist
 Type TInGameScreen_World Extends TInGameScreen
 	Global instance:TInGameScreen_World
+	Global _eventListeners:TLink[]
 
 
 	Method Create:TInGameScreen_World(name:String)
 		Super.Create(name)
 		instance = Self
 
-		EventManager.registerListenerFunction("figure.onLeaveRoom", onLeaveRoom, "TFigure" )
+		Initialize()
 
 		Return Self
+	End Method
+
+
+	Method Initialize:int()
+		Super.Initialize()
+
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
+		'=== add new event listeners
+		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onLeaveRoom", onLeaveRoom, "TFigure" ) ]
 	End Method
 
 
@@ -317,21 +335,31 @@ Type TInGameScreen_Room Extends TInGameScreen
 '	Field roomIDs:int[]
 	Field currentRoomID:Int = -1
 	Global temporaryDisableScreenChangeEffects:Int = False
-	Global _registeredEvents:Int = False
+	Global _eventListeners:TLink[]
 
 
 	Method Create:TInGameScreen_Room(name:String)
 		Super.Create(name)
 
-		If Not _registeredEvents
-			EventManager.registerListenerFunction("room.onBeginEnter", OnRoomBeginEnter)
-			EventManager.registerListenerFunction("room.onEnter", OnRoomEnter)
-			_registeredEvents = True
-		EndIf
+		'register events
+		Initialize()
 		
 		Return Self
 	End Method
 
+
+	Method Initialize:int()
+		Super.Initialize()
+
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
+		'=== add new event listeners
+		_eventListeners :+ [ EventManager.registerListenerFunction("room.onBeginEnter", OnRoomBeginEnter) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("room.onEnter", OnRoomEnter) ]
+	End Method
+	
 
 	Method ToString:String()
 		Local rooms:String = ""

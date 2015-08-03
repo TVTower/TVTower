@@ -19,23 +19,38 @@ Type TScreenHandler_Statistics
 
 	Global valueBG:TSprite
 	Global valueBG2:TSprite
-	
 
-	Function Init:int()
+	Global _eventListeners:TLink[]
+
+
+	Function Initialize:int()
 		local screen:TScreen = ScreenCollection.GetScreen("screen_office_statistics")
 		if not screen then return False
 
-		previousDayButton = new TGUIArrowButton.Create(new TVec2D.Init(20, 10 + 11), new TVec2D.Init(24, 24), "LEFT", "officeStatisticsScreen")
-		nextDayButton = new TGUIArrowButton.Create(new TVec2D.Init(20 + 175 + 20, 10 + 11), new TVec2D.Init(24, 24), "RIGHT", "officeStatisticsScreen")
 
+		'=== create gui elements if not done yet
+		if not previousDayButton
+			previousDayButton = new TGUIArrowButton.Create(new TVec2D.Init(20, 10 + 11), new TVec2D.Init(24, 24), "LEFT", "officeStatisticsScreen")
+			nextDayButton = new TGUIArrowButton.Create(new TVec2D.Init(20 + 175 + 20, 10 + 11), new TVec2D.Init(24, 24), "RIGHT", "officeStatisticsScreen")
+		endif
+
+
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
+		
+		'=== register event listeners
 		'listen to clicks on the four buttons
-		EventManager.registerListenerFunction("guiobject.onClick", onClickButtons, "TGUIArrowButton")
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickButtons, "TGUIArrowButton") ]
 		'reset show day when entering a screen
-		EventManager.registerListenerFunction("screen.onEnter", onEnterScreen, screen)
-		'inform if language changes
-		EventManager.registerListenerFunction("Language.onSetLanguage", onSetLanguage)
-		'draw and update
-		TRoomHandler._RegisterScreenHandler( onUpdate, onDraw, screen )
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onEnter", onEnterScreen, screen) ]
+
+		'to update/draw the screen
+		_eventListeners :+ TRoomHandler._RegisterScreenHandler( onUpdate, onDraw, screen )
+
+		'(re-)localize content
+		SetLanguage()
 	End Function
 
 
@@ -45,11 +60,6 @@ Type TScreenHandler_Statistics
 
 
 	'=== EVENTS ===
-
-	Function onSetLanguage:int(triggerEvent:TEventBase)
-		SetLanguage()
-	End Function
-	
 
 	'reset statistics show day to current when entering the screen
 	Function onEnterScreen:int( triggerEvent:TEventBase )
@@ -384,7 +394,7 @@ Type TScreenHandler_Statistics
 			nextDayButton.Enable()
 		endif
 
-		Game.cursorstate = 0
+		GetGame().cursorstate = 0
 		GuiManager.Update("officeStatisticsScreen")
 	End Function
 End Type

@@ -72,20 +72,21 @@ Type TWorld
 
 
 	Function GetInstance:TWorld()
-		if not _instance then _instance = new TWorld.Init(0)
+		if not _instance then _instance = new TWorld
 		return _instance
 	End Function
 
 
-	Method Init:TWorld(startTime:Double = 5*3600)
-		'=== INITIALIZE ===
+	Method Initialize:int()
 		area = new TRectangle.Init(0,0,800,385)
 		centerPoint = new TVec2D.Init(400, 570 + area.GetY())
 		sunPoint = new TVec2D.Init(400, 1100 + area.GetY())
 		moonPoint =  new TVec2D.Init(400, 100 + area.GetY())
-		
-		weather = new TWorldWeather.Init(0, 18, 0, 3600)
-		lighting = new TWorldLighting.Init()
+
+		if not weather then weather = new TWorldWeather
+		if not lighting then lighting = new TWorldLighting
+		weather.Init(0, 18, 0, 3600)
+		lighting.Init()
 
 		'adjust effect display
 		RenewConfiguration()
@@ -93,8 +94,6 @@ Type TWorld
 		'we do not save stars in savegames, so we externalized
 		'initialization to make it more convenient to call
 		InitStars(GetConfiguration().GetInt("starsAmount", 60))
-
-		return Self
 	End Method
 
 

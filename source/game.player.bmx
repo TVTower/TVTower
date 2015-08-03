@@ -303,12 +303,12 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	'creates and returns a player
 	'-creates the given playercolor and a figure with the given
 	' figureimage, a programmecollection and a programmeplan
-	Function Create:TPlayer(playerID:int, Name:String, channelname:String = "", sprite:TSprite, x:Int, onFloor:Int = 13, dx:Int, color:TColor, FigureName:String = "")
+	Function Create:TPlayer(playerID:int, Name:String, channelname:String = "", sprite:TSprite, x:Int, onFloor:Int = 13, dx:Int, color:TPlayerColor, FigureName:String = "")
 		Local Player:TPlayer = New TPlayer
 
 		Player.Name	= Name
 		Player.playerID	= playerID
-		Player.color = color.AddToList(True).SetOwner(playerID)
+		Player.color = color.SetOwner(playerID).AddToList()
 		Player.channelname = channelname
 		Player.Figure = New TFigure.Create(FigureName, sprite, x, onFloor, dx)
 		Player.Figure.playerID = playerID
@@ -479,7 +479,7 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 			'set at which time we did this
 			newsabonnementsSetTime[genre] = GetWorldTime().GetTimeGone()
 
-			If Game.networkgame And Network.IsConnected And sendToNetwork Then NetworkHelper.SendNewsSubscriptionChange(Self.playerID, genre, level)
+			If GetGame().networkgame And Network.IsConnected And sendToNetwork Then NetworkHelper.SendNewsSubscriptionChange(Self.playerID, genre, level)
 		EndIf
 	End Method
 

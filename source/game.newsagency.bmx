@@ -39,6 +39,24 @@ Type TNewsAgency
 		return _instance
 	End Function
 
+
+	Method Initialize:int()
+		'=== RESET TO INITIAL STATE ===
+		NextEventTime = -1
+		NextEventTimeInterval = [180, 330]
+		weatherUpdateTime = 0
+		weatherUpdateTimeInterval = [360, 720]
+		weatherType = 0
+
+		terroristUpdateTime = [Double(0),Double(0)]
+		terroristUpdateTimeInterval = [30, 45]
+		terroristAggressionLevel = [0, -1]
+		terroristAggressionLevelMax = 5
+		terroristAggressionLevelProgress = [0.0, 0.0]
+		terroristAggressionLevelProgressRate = [ [0.05,0.09], [0.05,0.09] ]	
+	End Method
+	
+
 	Method Update:int()
 		'All players update their newsagency on their own.
 		'As we use "randRange" this will produce the same random values
@@ -132,7 +150,7 @@ Type TNewsAgency
 			'the level might be 0 already after the terrorist got his
 			'command to go to a room ... so we check the figure too
 			local level:int = terroristAggressionLevel[terroristGroup]
-			local fig:TFigureTerrorist = TFigureTerrorist(Game.terrorists[terroristGroup])
+			local fig:TFigureTerrorist = TFigureTerrorist(GetGame().terrorists[terroristGroup])
 			'figure is just delivering a bomb?
 			if fig and fig.HasToDeliver() then return terroristAggressionLevelMax
 			return level
@@ -196,7 +214,7 @@ Type TNewsAgency
 		if aggressionLevel = 4
 			local effect:TNewsEffect = new TNewsEffect
 
-			effect.GetData().Add("figure", Game.terrorists[terroristGroup])
+			effect.GetData().Add("figure", GetGame().terrorists[terroristGroup])
 			effect.GetData().AddNumber("group", terroristGroup)
 			'effect.GetData().Add("room", GetRoomCollection().GetRandom())
 			if terroristGroup = 0
@@ -483,7 +501,7 @@ Type TNewsAgency
 	Method AddNewsEventToPlayer:Int(newsEvent:TNewsEvent, forPlayer:Int=-1, forceAdd:Int=False, fromNetwork:Int=0)
 		local player:TPlayer = GetPlayerCollection().Get(forPlayer)
 		'only add news/newsblock if player is Host/Player OR AI
-		'If Not Game.isLocalPlayer(forPlayer) And Not Game.isAIPlayer(forPlayer) Then Return 'TODO: Wenn man gerade Spieler 2 ist/verfolgt (Taste 2) dann bekommt Spieler 1 keine News
+		'If Not GetGame().isLocalPlayer(forPlayer) And Not GetGame().isAIPlayer(forPlayer) Then Return 'TODO: Wenn man gerade Spieler 2 ist/verfolgt (Taste 2) dann bekommt Spieler 1 keine News
 		If Player.newsabonnements[newsEvent.genre] > 0 or forceAdd
 			local news:TNews = TNews.Create("", 0, newsEvent)
 			'Print "[LOCAL] AddNewsEventToPlayer "+forPlayer+": added news title="+news.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)

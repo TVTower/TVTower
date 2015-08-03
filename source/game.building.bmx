@@ -20,7 +20,6 @@ Type TBuilding Extends TBuildingBase
 	
 	Field ufo_normal:TSpriteEntity 				{nosave}
 	Field ufo_beaming:TSpriteEntity				{nosave}
-	Field Elevator:TElevator
 
 	Field UFO_Path:TCatmullRomSpline = New TCatmullRomSpline {nosave}
 	Field UFO_PathCurrentDistanceOld:Float = 0.0
@@ -50,40 +49,19 @@ Type TBuilding Extends TBuildingBase
 
 	Global _instance:TBuilding
 	Global _backgroundModified:Int = False
-	Global _eventsRegistered:Int = False
-
-
-	Method New()
-		If Not _eventsRegistered
-			'handle savegame loading (assign sprites)
-			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
-
-			EventManager.registerListenerFunction( "hotspot.onClick", onClickHotspot)
-
-			'we want to get information about figures entering their desired target
-			'(this can be "room", "hotspot" ... )
-			EventManager.registerListenerFunction( "figure.onEnterTarget", onEnterTarget)
-
-			_eventsRegistered = True
-		EndIf
-
-		Initialize()
-	End Method
+	Global _eventListeners:TLink[]
 
 
 	'override - create a Building instead of BuildingBase
 	Function GetInstance:TBuilding()
 		'we skip reusing field data because we "initialize" it anyways
 		'if not done already
-		If Not TBuilding(_instance)
-			_instance = New TBuilding
-
-		EndIf
+		If Not TBuilding(_instance) then _instance = New TBuilding
 		Return TBuilding(_instance)
 	End Function
 
 
-	Method Initialize:TBuilding()
+	Method Initialize:Int()
 		area.position.SetX(0)
 		area.dimension.SetXY(800, floorCount * floorHeight + 50) 'occupy full area
 
@@ -106,13 +84,37 @@ Type TBuilding Extends TBuildingBase
 		area.position.SetY(0 - gfx_building.area.GetH() + 5 * floorHeight)
 
 		'=== SETUP ELEVATOR ===
-		Elevator = GetElevator().Initialize()
-		Elevator.SetParent(Self.buildingInner)
-		Elevator.area.position.SetX(floorWidth/2 - Elevator.GetDoorWidth()/2)
-		Elevator.area.position.SetY(GetFloorY2(Elevator.CurrentFloor) - Elevator.spriteInner.area.GetH())
-		Elevator.RouteLogic = TElevatorSmartLogic.Create(Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 heiÃt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich SpaÃ
+		GetElevator().Initialize()
+		'we want all players to alreay wait in front of the elevator
+		'and not only 1 player sending it while all others wait
+		'so we move the elevator to a higher floor, so it just
+		'reaches floor 0 when all are already waiting
+		'floor 9 is just enough for the players
+		GetElevator().currentFloor = 9
 
-		Return Self
+		GetElevator().SetParent(Self.buildingInner)
+		GetElevator().area.position.SetX(floorWidth/2 - GetElevator().GetDoorWidth()/2)
+		GetElevator().area.position.SetY(GetFloorY2(GetElevator().CurrentFloor) - GetElevator().spriteInner.area.GetH())
+		'the logic to use for the elevator
+		'param = 1: PrivilegePlayerMode active
+		'param = 0: do not lift players on the same route
+		GetElevator().RouteLogic = TElevatorSmartLogic.Create(GetElevator(), 0)
+
+
+		'=== EVENTS ===
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
+
+		'=== register event listeners
+		'handle savegame loading (assign sprites)
+		_eventListeners :+ [ EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad) ]
+		'react on clicks to hotspots (elevator, softdrink machine)
+		_eventListeners :+ [ EventManager.registerListenerFunction("hotspot.onClick", onClickHotspot) ]
+		'we want to get information about figures entering their desired target
+		'(this can be "room", "hotspot" ... )
+		_eventListeners :+ [ EventManager.registerListenerFunction( "figure.onEnterTarget", onEnterTarget) ]
 	End Method
 
 
@@ -120,9 +122,6 @@ Type TBuilding Extends TBuildingBase
 	Function onSaveGameLoad(triggerEvent:TEventBase)
 		TLogger.Log("TBuilding", "Savegame loaded - reassign sprites, recreate movement paths for gfx.", LOG_DEBUG | LOG_SAVELOAD)
 		GetInstance().InitGraphics()
-
-		'reassign elevator from freshly loaded building to elevator instance
-		TElevator._instance = GetInstance().Elevator
 
 		'reassign self as parent to all doors
 		'-> just re-add them
@@ -268,8 +267,8 @@ Type TBuilding Extends TBuildingBase
 			'also make them enterable
 			If hotspot.name = "elevatorplan"
 				hotspot.SetEnterable(True)
-				hotspot.area.position.setX( Elevator.area.getX() )
-				hotspot.area.dimension.setXY( Elevator.GetDoorWidth(), 58 )
+				hotspot.area.position.setX( GetElevator().area.getX() )
+				hotspot.area.dimension.setXY( GetElevator().GetDoorWidth(), 58 )
 			EndIf
 		Next
 
@@ -408,7 +407,7 @@ Type TBuilding Extends TBuildingBase
 			gfx_buildingRoof.Draw(GetScreenX() + leftWallX, GetScreenY(), -1, ALIGN_LEFT_BOTTOM)
 		EndIf
 
-		elevator.DrawFloorDoors()
+		GetElevator().DrawFloorDoors()
 		gfx_building.draw(GetScreenX() + leftWallX, area.GetY())
 
 		'draw owner signs next to doors,
@@ -417,7 +416,7 @@ Type TBuilding Extends TBuildingBase
 		GetRoomDoorBaseCollection().DrawAllDoors()
 
 		'draw elevator parts
-		Elevator.Render()
+		GetElevator().Render()
 		'draw softdrinkmachine
 		softDrinkMachine.Render(buildingInner.GetScreenX() + innerX2 - 90, buildingInner.GetScreenY() + GetFloorY2(6), ALIGN_LEFT_BOTTOM)
 

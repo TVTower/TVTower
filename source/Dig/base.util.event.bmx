@@ -171,6 +171,22 @@ Type TEventManager
 	End Method
 
 
+	'removes a listener using a list of links
+	Method unregisterListenersByLinkList(linkList:TList)
+		For local l:TLink = EachIn linkList
+			l.remove()
+		Next
+	End Method
+
+
+	'removes a listener using an array of links
+	Method unregisterListenersByLinks(links:TLink[])
+		For local l:TLink = EachIn links
+			l.remove()
+		Next
+	End Method
+
+
 	'add a new event to the list
 	Method registerEvent(event:TEventBase)
 		_events.AddLast(event)

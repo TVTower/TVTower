@@ -123,7 +123,6 @@ Global APP_NAME:string = "TVTower"
 Global LOG_NAME:string = "log.profiler.txt"
 
 Global App:TApp = Null
-Global Game:TGame
 Global PlayerDetailsTimer:Int = 0
 Global MainMenuJanitor:TFigureJanitor
 Global ScreenGameSettings:TScreen_GameSettings = Null
@@ -141,8 +140,8 @@ TLogger.Log("CORE", "Starting "+APP_NAME+", "+VersionString+".", LOG_INFO )
 
 '===== SETUP LOGGER FILTER =====
 TLogger.setLogMode(LOG_ALL)
-TLogger.setPrintMode(LOG_ALL )
-'TLogger.setPrintMode(LOG_AI | LOG_ERROR )
+'TLogger.setPrintMode(LOG_ALL )
+TLogger.setPrintMode(LOG_AI | LOG_ERROR )
 
 'print "ALLE MELDUNGEN AUS"
 'TLogger.SetPrintMode(0)
@@ -294,7 +293,7 @@ Type TApp
 		TSoundManager.GetInstance().MuteMusic(Not config.GetBool("sound_music", True))
 		TSoundManager.GetInstance().MuteSfx(Not config.GetBool("sound_effects", True))
 
-		If Game Then Game.LoadConfig(config)
+		if TGame._instance Then GetGame().LoadConfig(config)
 	End Method
 
 
@@ -429,7 +428,7 @@ Type TApp
 					EndIf
 				EndIf
 
-				If Game.gamestate = TGame.STATE_RUNNING
+				If GetGame().gamestate = TGame.STATE_RUNNING
 					If KEYMANAGER.IsDown(KEY_UP) Then GetWorldTime().AdjustTimeFactor(+5)
 					If KEYMANAGER.IsDown(KEY_DOWN) Then GetWorldTime().AdjustTimeFactor(-5)
 
@@ -492,7 +491,7 @@ Type TApp
 
 						'send marshal to confiscate the licence
 						'local licence:TProgrammeLicence = GetPlayer().GetProgrammeCollection().GetRandomMovieLicence()
-						'Game.marshals[rand(0,1)].AddConfiscationJob( licence.GetGUID() )
+						'GetGame().marshals[rand(0,1)].AddConfiscationJob( licence.GetGUID() )
 
 						'buy script
 						Local s:TScript = RoomHandler_ScriptAgency.GetInstance().GetScriptByPosition(0)
@@ -510,10 +509,10 @@ Type TApp
 
 				
 					If Not GetPlayer().GetFigure().isChangingRoom()
-						If KEYMANAGER.IsHit(KEY_1) Then Game.SetActivePlayer(1)
-						If KEYMANAGER.IsHit(KEY_2) Then Game.SetActivePlayer(2)
-						If KEYMANAGER.IsHit(KEY_3) Then Game.SetActivePlayer(3)
-						If KEYMANAGER.IsHit(KEY_4) Then Game.SetActivePlayer(4)
+						If KEYMANAGER.IsHit(KEY_1) Then GetGame().SetActivePlayer(1)
+						If KEYMANAGER.IsHit(KEY_2) Then GetGame().SetActivePlayer(2)
+						If KEYMANAGER.IsHit(KEY_3) Then GetGame().SetActivePlayer(3)
+						If KEYMANAGER.IsHit(KEY_4) Then GetGame().SetActivePlayer(4)
 
 						If KEYMANAGER.IsHit(KEY_W)
 							if not KEYMANAGER.IsDown(KEY_LSHIFT) and not KEYMANAGER.IsDown(KEY_RSHIFT)
@@ -563,7 +562,7 @@ Type TApp
 				endif
 
 				'Save game only when in a game
-				If game.gamestate = TGame.STATE_RUNNING
+				If GetGame().gamestate = TGame.STATE_RUNNING
 					If KEYMANAGER.IsHit(KEY_S) Then TSaveGame.Save("savegame.xml")
 				EndIf
 
@@ -579,7 +578,7 @@ Type TApp
 				EndIf
 
 				'send terrorist to a random room
-				If KEYMANAGER.IsHit(KEY_T) And Not Game.networkGame
+				If KEYMANAGER.IsHit(KEY_T) And Not GetGame().networkGame
 					Global whichTerrorist:Int = 1
 					whichTerrorist = 1 - whichTerrorist
 
@@ -588,10 +587,10 @@ Type TApp
 						targetRoom = GetRoomCollection().GetRandom()
 					Until targetRoom.name <> "building"
 					
-					TFigureTerrorist(Game.terrorists[whichTerrorist]).SetDeliverToRoom( targetRoom )
+					TFigureTerrorist(GetGame().terrorists[whichTerrorist]).SetDeliverToRoom( targetRoom )
 				EndIf
 
-				If Game.isGameLeader()
+				If GetGame().isGameLeader()
 					If KEYMANAGER.Ishit(Key_F1) And GetPlayer(1).isLocalAI() Then GetPlayer(1).PlayerAI.reloadScript()
 					If KEYMANAGER.Ishit(Key_F2) And GetPlayer(2).isLocalAI() Then GetPlayer(2).PlayerAI.reloadScript()
 					If KEYMANAGER.Ishit(Key_F3) And GetPlayer(3).isLocalAI() Then GetPlayer(3).PlayerAI.reloadScript()
@@ -600,7 +599,7 @@ Type TApp
 
 				'only announce news in single player mode - as announces
 				'are done on all clients on their own.
-				If KEYMANAGER.Ishit(Key_F5) And Not Game.networkGame Then GetNewsAgency().AnnounceNewNewsEvent()
+				If KEYMANAGER.Ishit(Key_F5) And Not GetGame().networkGame Then GetNewsAgency().AnnounceNewNewsEvent()
 
 				If KEYMANAGER.Ishit(Key_F6) Then GetSoundManager().PlayMusicPlaylist("default")
 
@@ -633,7 +632,7 @@ Type TApp
 
 
 		TError.UpdateErrors()
-		Game.cursorstate = 0
+		GetGame().cursorstate = 0
 
 		ScreenCollection.UpdateCurrent(GetDeltaTimer().GetDelta())
 	
@@ -645,7 +644,7 @@ Type TApp
 		'check if we need to make a screenshot
 		If KEYMANAGER.IsHit(KEY_F12) Then App.prepareScreenshot = 1
 
-		If Game.networkGame Then Network.Update()
+		If GetGame().networkGame Then Network.Update()
 
 		GUIManager.EndUpdates() 'reset modal window states
 
@@ -703,7 +702,7 @@ Type TApp
 				textX:+130
 			EndIf
 
-			If game.networkgame And Network.client
+			If GetGame().networkgame And Network.client
 				GetBitmapFontManager().baseFont.draw("Ping: "+Int(Network.client.latency)+"ms", textX,0)
 				textX:+50
 			EndIf
@@ -745,21 +744,21 @@ Type TApp
 			GetBitmapFontManager().baseFont.draw("Elevator routes:", 5,140)
 			Local routepos:Int = 0
 			Local startY:Int = 155
-			If Game.networkgame Then startY :+ 4*11
+			If GetGame().networkgame Then startY :+ 4*11
 
 			Local callType:String = ""
 
 			Local directionString:String = "up"
-			If GetBuilding().elevator.Direction = 1 Then directionString = "down"
-			Local debugString:String =	"floor:" + GetBuilding().elevator.currentFloor +..
-										"->" + GetBuilding().elevator.targetFloor +..
-										" status:"+GetBuilding().elevator.ElevatorStatus
+			If GetElevator().Direction = 1 Then directionString = "down"
+			Local debugString:String =	"floor:" + GetElevator().currentFloor +..
+										"->" + GetElevator().targetFloor +..
+										" status:"+GetElevator().ElevatorStatus
 
 			GetBitmapFontManager().baseFont.draw(debugString, 5, startY)
 
 
-			If GetBuilding().elevator.RouteLogic.GetSortedRouteList() <> Null
-				For Local FloorRoute:TFloorRoute = EachIn GetBuilding().elevator.RouteLogic.GetSortedRouteList()
+			If GetElevator().RouteLogic.GetSortedRouteList() <> Null
+				For Local FloorRoute:TFloorRoute = EachIn GetElevator().RouteLogic.GetSortedRouteList()
 					If floorroute.call = 0 Then callType = " 'send' " Else callType= " 'call' "
 					GetBitmapFontManager().baseFont.draw(FloorRoute.floornumber + callType + FloorRoute.who.Name, 5, startY + 15 + routepos * 11)
 					routepos:+1
@@ -793,11 +792,11 @@ Type TApp
 		GUIManager.Draw("SYSTEM")
 
 		'default pointer
-		If Game.cursorstate = 0 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-9, 	MouseManager.y-2	,0)
+		If GetGame().cursorstate = 0 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-9, 	MouseManager.y-2	,0)
 		'open hand
-		If Game.cursorstate = 1 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11, 	MouseManager.y-8	,1)
+		If GetGame().cursorstate = 1 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11, 	MouseManager.y-8	,1)
 		'grabbing hand
-		If Game.cursorstate = 2 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11,	MouseManager.y-16	,2)
+		If GetGame().cursorstate = 2 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11,	MouseManager.y-16	,2)
 
 		'if a screenshot is generated, draw a logo in
 		If App.prepareScreenshot = 1
@@ -836,34 +835,34 @@ Type TApp
 		ExitAppDialogueTime = MilliSecs()
 
 		'not interested in other dialogues
-		If dialogue <> TApp.ExitAppDialogue Then Return False
+		If dialogue <> ExitAppDialogue Then Return False
 
 		Local buttonNumber:Int = triggerEvent.GetData().getInt("closeButton",-1)
 
 
 		'approve exit
 		If buttonNumber = 0
-Rem
-	disable until "new game" works properly
+'Rem
+'	disable until "new game" works properly
 			'if within a game - just return to mainmenu
-			if Game.gamestate = TGame.STATE_RUNNING
+			if GetGame().gamestate = TGame.STATE_RUNNING
 				'adjust darkened Area to fullscreen!
 				'but do not set new screenArea to avoid "jumping"
-				ExitAppDialogue.darkenedArea.Init(0,0,800,600)
-				'ExitAppDialogue.screenArea.Init(0,0,800,600)
+				ExitAppDialogue.darkenedArea = New TRectangle.Init(0,0,800,600)
+				'ExitAppDialogue.screenArea = New TRectangle.Init(0,0,800,600)
 
-				Game.SetGameState(TGame.STATE_MAINMENU)
+				GetGame().EndGame()
 			else
 				TApp.ExitApp = True
 			endif
-endrem
-			TApp.ExitApp = True
+'endrem
+'			TApp.ExitApp = True
 		EndIf
 		'remove connection to global value (guimanager takes care of fading)
 		TApp.ExitAppDialogue = Null
 
 		'in single player: resume game
-		If Game And Not Game.networkgame Then Game.SetPaused(False)
+		If TGame._instance And Not GetGame().networkgame Then GetGame().SetPaused(False)
 
 		Return True
 	End Function
@@ -875,7 +874,7 @@ endrem
 
 		ExitAppDialogueTime = MilliSecs()
 		'in single player: pause game
-		If Game And Not Game.networkgame Then Game.SetPaused(True)
+		If TGame._instance And Not GetGame().networkgame Then GetGame().SetPaused(True)
 
 		ExitAppDialogue = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D.Init(400,150), "SYSTEM")
 		ExitAppDialogue.SetDialogueType(2)
@@ -884,13 +883,13 @@ endrem
 Rem
 	disable until "new game" works properly
 		'limit to "screen" area
-		If game.gamestate = TGame.STATE_RUNNING
+		If GetGame().gamestate = TGame.STATE_RUNNING
 			ExitAppDialogue.darkenedArea = New TRectangle.Init(0,0,800,385)
 			'center to this area
 			ExitAppDialogue.screenArea = New TRectangle.Init(0,0,800,385)
 		EndIf
 
-		if game.gamestate = TGame.STATE_RUNNING
+		if GetGame().gamestate = TGame.STATE_RUNNING
 			ExitAppDialogue.SetCaptionAndValue( GetLocale("ALREADY_OVER"), GetLocale("DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN") )
 		else
 			ExitAppDialogue.SetCaptionAndValue( GetLocale("ALREADY_OVER"), GetLocale("DO_YOU_REALLY_WANT_TO_QUIT") )
@@ -936,7 +935,8 @@ Type TGameState
 	Field _BroadcastManager:TBroadcastManager = Null
 	Field _DailyBroadcastStatisticCollection:TDailyBroadcastStatisticCollection = Null
 	Field _StationMapCollection:TStationMapCollection = Null
-	Field _Building:TBuilding 'includes, sky, moon, ufo, elevator
+	Field _Elevator:TElevator
+	Field _Building:TBuilding 'includes, sky, moon, ufo
 	Field _NewsAgency:TNewsAgency
 	Field _AuctionProgrammeBlocksList:TList
 	Field _RoomHandler_Studio:RoomHandler_Studio
@@ -950,16 +950,18 @@ Type TGameState
 
 
 	Method Initialize:Int()
+print "TGameState.Initialize(): Reinitialize all game objects"
+		TLogger.Log("TGameState.Initialize()", "Reinitialize all game objects", LOG_DEBUG)
+
+		'reset player colors
+		TPlayerColor.Initialize()
+		GetRoomDoorBaseCollection().Initialize()
+		GetRoomBaseCollection().Initialize()
 		GetStationMapCollection().InitializeAll()
-		GetPlayerProgrammeCollectionCollection().InitializeAll()
-		GetPlayerProgrammePlanCollection().InitializeAll()
-		GetAdContractCollection().Initialize()
 		GetPopularityManager().Initialize()
-		GetBuilding().Initialize()
-		'building already initializes elevator
-		'GetElevator().Initialize()
 
 		GetAdContractBaseCollection().Initialize()
+		GetAdContractCollection().Initialize()
 		GetScriptTemplateCollection().Initialize()
 		GetScriptCollection().Initialize()
 		GetProgrammeRoleCollection().Initialize()
@@ -967,29 +969,36 @@ Type TGameState
 		GetProgrammeDataCollection().Initialize()
 		GetProgrammeLicenceCollection().Initialize()
 		GetNewsEventCollection().Initialize()
-		GetDailyBroadcastStatisticCollection().Initialize()
 
-		Rem
-			GetWorldTime().Initialize()
-			GetWorld().Initialize()
-			GetBetty().Initialize()
-			GetFigureCollection().Initialize()
-			GetPlayerCollection().Initialize()
-			GetPlayerFinanceCollection().Initialize()
-			GetPlayerFinanceHistoryListCollection().Initialize()
-			GetPublicImageCollection().Initialize()
-			GetBroadcastManager().Initialize()
-			GetBuilding().Initialize()
-			GetNewsAgency().Initialize()
-			_RoomHandler_MovieAgency.Initialize()
-			_RoomHandler_AdAgency.Initialize()
-			GetRoomDoorBaseCollection().Initialize()
-			GetRoomBaseCollection().Initialize()
-		endrem
+		GetDailyBroadcastStatisticCollection().Initialize()
+		GetFigureCollection().Initialize()
+		GetNewsAgency().Initialize()
+		GetPublicImageCollection().Initialize()
+		GetBroadcastManager().Initialize()
+
+		GetElevator().Initialize()
+		GetBuilding().Initialize()
+		GetWorldTime().Initialize()
+		GetWorld().Initialize()
+		GetGame().Initialize()
+
+		GetPlayerProgrammeCollectionCollection().InitializeAll()
+		GetPlayerProgrammePlanCollection().InitializeAll()
+		GetPlayerCollection().Initialize()
+		GetPlayerFinanceCollection().Initialize()
+		GetPlayerFinanceHistoryListCollection().Initialize()
+
+		GetBetty().Initialize()
+
+		'not needed, called via "TGame.PrepareStart()"
+		'_RoomHandler_AdAgency.Initialize()
+		'...
+		'_RoomHandler_ScriptAgency.Initialize()
 	End Method
 
 
 	Method RestoreGameData:Int()
+print "TGameState.RestoreGameData(): Restore game objects"
 		_Assign(_FigureCollection, TFigureCollection._instance, "FigureCollection", MODE_LOAD)
 		_Assign(_RoomDoorBaseCollection, TRoomDoorBaseCollection._instance, "RoomDoorBaseCollection", MODE_LOAD)
 		_Assign(_RoomBaseCollection, TRoomBaseCollection._instance, "RoomBaseCollection", MODE_LOAD)
@@ -1017,6 +1026,7 @@ Type TGameState
 		_Assign(_NewsEventCollection, TNewsEventCollection._instance, "NewsEventCollection", MODE_LOAD)
 		_Assign(_NewsAgency, TNewsAgency._instance, "NewsAgency", MODE_LOAD)
 		_Assign(_Building, TBuilding._instance, "Building", MODE_LOAD)
+		_Assign(_Elevator, TElevator._instance, "Elevator", MODE_LOAD)
 		_Assign(_EventManagerEvents, EventManager._events, "Events", MODE_LOAD)
 		_Assign(_PopularityManager, TPopularityManager._instance, "PopularityManager", MODE_LOAD)
 		_Assign(_BroadcastManager, TBroadcastManager._instance, "BroadcastManager", MODE_LOAD)
@@ -1031,7 +1041,7 @@ Type TGameState
 		_Assign(_RoomHandler_Studio, RoomHandler_Studio._instance, "Studios", MODE_LOAD)
 		_Assign(_RoomHandler_MovieAgency, RoomHandler_MovieAgency._instance, "MovieAgency", MODE_LOAD)
 		_Assign(_RoomHandler_AdAgency, RoomHandler_AdAgency._instance, "AdAgency", MODE_LOAD)
-		_Assign(_Game, Game, "Game")
+		_Assign(_Game, TGame._instance, "Game")
 	End Method
 
 
@@ -1064,6 +1074,7 @@ Type TGameState
 		_Assign(TGameInformationCollection._instance, _GameInformationCollection, "GameInformationCollection", MODE_SAVE)
 
 		_Assign(TBuilding._instance, _Building, "Building", MODE_SAVE)
+		_Assign(TElevator._instance, _Elevator, "Elevator", MODE_SAVE)
 		_Assign(TRoomBaseCollection._instance, _RoomBaseCollection, "RoomBaseCollection", MODE_SAVE)
 		_Assign(TRoomDoorBaseCollection._instance, _RoomDoorBaseCollection, "RoomDoorBaseCollection", MODE_SAVE)
 		_Assign(TFigureCollection._instance, _FigureCollection, "FigureCollection", MODE_SAVE)
@@ -1074,7 +1085,7 @@ Type TGameState
 		_Assign(TPlayerProgrammePlanCollection._instance, _PlayerProgrammePlanCollection, "PlayerProgrammePlanCollection", MODE_SAVE)
 		_Assign(TPublicImageCollection._instance, _PublicImageCollection, "PublicImageCollection", MODE_SAVE)
 
-		_Assign(Game, _Game, "Game", MODE_SAVE)
+		_Assign(TGame._instance, _Game, "Game", MODE_SAVE)
 
 
 		_Assign(TNewsEventCollection._instance, _NewsEventCollection, "NewsEventCollection", MODE_SAVE)
@@ -1192,6 +1203,7 @@ Type TSaveGame Extends TGameState
 	Function Load:Int(saveName:String="savegame.xml")
 		ShowMessage(True)
 
+		'=== CHECK SAVEGAME ===
 		TPersist.maxDepth = 4096*4
 		Local persist:TPersist = New TPersist
 		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(savename))
@@ -1205,7 +1217,12 @@ Type TSaveGame Extends TGameState
 			Return False
 		EndIf
 
+		'=== RESET CURRENT GAME ===
+		'reset game data before loading savegame data
+		new TGameState.Initialize()
 
+
+		'=== LOAD SAVED GAME ===
 		'tell everybody we start loading (eg. for unregistering objects before)
 		'payload is saveName
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnBeginLoad", New TData.addString("saveName", saveName)))
@@ -1258,7 +1275,7 @@ Type TSaveGame Extends TGameState
 		
 
 		'call game that game continues/starts now
-		Game.StartLoadedSaveGame()
+		GetGame().StartLoadedSaveGame()
 		Return True
 	End Function
 
@@ -1874,17 +1891,17 @@ Type TScreen_MainMenu Extends TGameScreen
 					CreateSettingsWindow()
 					
 			Case guiButtonStart
-					Game.SetGamestate(TGame.STATE_SETTINGSMENU)
+					GetGame().SetGamestate(TGame.STATE_SETTINGSMENU)
 
 			Case guiButtonNetwork
-					Game.onlinegame = False
-					Game.SetGamestate(TGame.STATE_NETWORKLOBBY)
-					Game.networkgame = True
+					GetGame().onlinegame = False
+					GetGame().SetGamestate(TGame.STATE_NETWORKLOBBY)
+					GetGame().networkgame = True
 
 			Case guiButtonOnline
-					Game.onlinegame = True
-					Game.SetGamestate(TGame.STATE_NETWORKLOBBY)
-					Game.networkgame = True
+					GetGame().onlinegame = True
+					GetGame().SetGamestate(TGame.STATE_NETWORKLOBBY)
+					GetGame().networkgame = True
 
 			Case guiButtonQuit
 					App.ExitApp = True
@@ -2072,17 +2089,16 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		Local player:TPlayer
 		For Local i:Int = 0 To 3
-			player = GetPlayerCollection().Get(i+1)
 			Local slotX:Int = i * (playerSlotGap + playerBoxDimension.GetIntX())
 			Local playerPanel:TGUIBackgroundBox = New TGUIBackgroundBox.Create(New TVec2D.Init(slotX, 0), New TVec2D.Init(playerBoxDimension.GetIntX(), playerBoxDimension.GetIntY()), name)
 			playerPanel.spriteBaseName = "gfx_gui_panel.subContent.bright"
 			playerPanel.SetPadding(playerSlotInnerGap,playerSlotInnerGap,playerSlotInnerGap,playerSlotInnerGap)
 			guiPlayersPanel.AddChild(playerPanel)
 
-			guiPlayerNames[i] = New TGUIinput.Create(New TVec2D.Init(0, 0), New TVec2D.Init(playerPanel.GetContentScreenWidth(), -1), player.Name, 16, name)
+			guiPlayerNames[i] = New TGUIinput.Create(New TVec2D.Init(0, 0), New TVec2D.Init(playerPanel.GetContentScreenWidth(), -1), "player", 16, name)
 			guiPlayerNames[i].SetOverlay(GetSpriteFromRegistry("gfx_gui_overlay_player"))
 
-			guiChannelNames[i] = New TGUIinput.Create(New TVec2D.Init(0, 0), New TVec2D.Init(playerPanel.GetContentScreenWidth(), -1), player.channelname, 16, name)
+			guiChannelNames[i] = New TGUIinput.Create(New TVec2D.Init(0, 0), New TVec2D.Init(playerPanel.GetContentScreenWidth(), -1), "channel", 16, name)
 			guiChannelNames[i].rect.position.SetY(playerPanel.GetContentScreenHeight() - guiChannelNames[i].rect.GetH())
 			guiChannelNames[i].SetOverlay(GetSpriteFromRegistry("gfx_gui_overlay_tvchannel"))
 
@@ -2127,15 +2143,32 @@ Type TScreen_GameSettings Extends TGameScreen
 
 	'override to set guielements values (instead of only on screen creation)
 	Method Start:Int()
-		guiGameTitle.SetValue(Game.title)
-		guiStartYear.SetValue(Game.userStartYear)
-		guiPlayerNames[0].SetValue(game.username)
-		guiChannelNames[0].SetValue(game.userchannelname)
+		print "====== PREPARE NEW GAME ======"
+	
+		'reset game data collections
+		new TGameState.Initialize()
+		'load custom configuration (usernames, ports, ...)
+		GetGame().LoadConfig(App.config)
+		'create player figures so they can get shown in the settings screen
+		'does nothing if already done
+		GetGame().CreateInitialPlayers()
 
-		GetPlayerCollection().Get(1).Name = game.username
-		GetPlayerCollection().Get(1).Channelname = game.userchannelname
+		'assign player/channel names
+		For Local i:Int = 0 To 3
+			GetPlayer(i+1)
+			guiPlayerNames[i].SetValue( GetPlayer(i+1).name )
+			guiChannelNames[i].SetValue( GetPlayer(i+1).channelName )
+		Next
 
-		guiGameTitle.SetValue(game.title)
+		guiGameTitle.SetValue(GetGame().title)
+		guiStartYear.SetValue(GetGame().userStartYear)
+		guiPlayerNames[0].SetValue(GetGame().username)
+		guiChannelNames[0].SetValue(GetGame().userchannelname)
+
+		GetPlayer(1).Name = GetGame().username
+		GetPlayer(1).Channelname = GetGame().userchannelname
+
+		guiGameTitle.SetValue(GetGame().title)
 	End Method
 
 
@@ -2164,11 +2197,11 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		Select sender
 			Case guiButtonStart
-					If Not Game.networkgame And Not Game.onlinegame
+					If Not GetGame().networkgame And Not GetGame().onlinegame
 						TLogger.Log("Game", "Start a new singleplayer game", LOG_DEBUG)
 
 						'set self into preparation state
-						Game.SetGamestate(TGame.STATE_PREPAREGAMESTART)
+						GetGame().SetGamestate(TGame.STATE_PREPAREGAMESTART)
 					Else
 						TLogger.Log("Game", "Start a new multiplayer game", LOG_DEBUG)
 						guiAnnounce.SetChecked(False)
@@ -2177,25 +2210,23 @@ Type TScreen_GameSettings Extends TGameScreen
 						'demand others to do the same
 						NetworkHelper.SendPrepareGame()
 						'set self into preparation state
-						Game.SetGamestate(TGame.STATE_PREPAREGAMESTART)
+						GetGame().SetGamestate(TGame.STATE_PREPAREGAMESTART)
 					EndIf
 
 			Case guiButtonBack
-					If Game.networkgame
-						If Game.networkgame
-							If Network.isServer
-								Network.DisconnectFromServer()
-							Else
-								Network.client.Disconnect()
-							EndIf
+					If GetGame().networkgame
+						If Network.isServer
+							Network.DisconnectFromServer()
+						Else
+							Network.client.Disconnect()
 						EndIf
 						GetPlayerCollection().playerID = 1
 						GetPlayerBossCollection().playerID = 1
-						Game.SetGamestate(TGame.STATE_NETWORKLOBBY)
+						GetGame().SetGamestate(TGame.STATE_NETWORKLOBBY)
 						guiAnnounce.SetChecked(False)
 						Network.StopAnnouncing()
 					Else
-						Game.SetGamestate(TGame.STATE_MAINMENU)
+						GetGame().SetGamestate(TGame.STATE_MAINMENU)
 					EndIf
 		End Select
 	End Method
@@ -2212,7 +2243,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		End Select
 
 		'only inform when in settings menu
-		If Game.gamestate = TGame.STATE_SETTINGSMENU
+		If GetGame().gamestate = TGame.STATE_SETTINGSMENU
 			If sender.isChecked()
 				TGame.SendSystemMessage(GetLocale("OPTION_ON")+": "+sender.GetValue())
 			Else
@@ -2234,9 +2265,9 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		'start year changed
 		If sender = guiStartYear
-			Game.SetStartYear( int(sender.GetValue()) )
+			GetGame().SetStartYear( int(sender.GetValue()) )
 			'use the (maybe corrected value)
-			TGUIInput(sender).value = Game.GetStartYear()
+			TGUIInput(sender).value = GetGame().GetStartYear()
 		EndIf
 	End Method
 
@@ -2284,10 +2315,10 @@ Type TScreen_GameSettings Extends TGameScreen
 		For Local i:Int = 1 To 4
 			'draw colors
 			Local colorRect:TRectangle = New TRectangle.Init(slotPos.GetIntX()+2, Int(guiChannelNames[i-1].GetContentScreenY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
-			For Local obj:TColor = EachIn TColor.List
-				If obj.ownerID = 0
+			For Local pc:TPlayerColor = EachIn TPlayerColor.List
+				If pc.ownerID = 0
 					colorRect.position.AddXY(colorRect.GetW(), 0)
-					obj.SetRGB()
+					pc.SetRGB()
 					DrawRect(colorRect.GetX(), colorRect.GetY(), colorRect.GetW(), colorRect.GetH())
 				EndIf
 			Next
@@ -2296,7 +2327,7 @@ Type TScreen_GameSettings Extends TGameScreen
 			SetColor 255,255,255
 			GetPlayer(i).Figure.Sprite.Draw(Int(slotPos.GetX() + playerBoxDimension.GetX()/2 - GetPlayerCollection().Get(1).Figure.Sprite.framew / 2), Int(colorRect.GetY() - GetPlayerCollection().Get(1).Figure.Sprite.area.GetH()), 8)
 
-			If Game.networkgame
+			If GetGame().networkgame
 				Local hintX:Int = Int(slotPos.GetX()) + 12
 				Local hintY:Int = Int(guiPlayersPanel.GetContentScreeny())+40
 				Local hint:String = "undefined playerType"
@@ -2325,14 +2356,14 @@ Type TScreen_GameSettings Extends TGameScreen
 	Method Update:Int(deltaTime:Float)
 
 
-		If Game.networkgame
-			If Not Game.isGameLeader()
+		If GetGame().networkgame
+			If Not GetGame().isGameLeader()
 				guiButtonStart.disable()
 			Else
 				guiButtonStart.enable()
 			EndIf
 			'guiChat.setOption(GUI_OBJECT_VISIBLE,True)
-			If Not Game.onlinegame
+			If Not GetGame().onlinegame
 				guiSettingsWindow.SetCaption(GetLocale("MENU_NETWORKGAME"))
 			Else
 				guiSettingsWindow.SetCaption(GetLocale("MENU_ONLINEGAME"))
@@ -2342,16 +2373,16 @@ Type TScreen_GameSettings Extends TGameScreen
 			guiGameTitle.show()
 			guiGameTitleLabel.show()
 
-			If guiAnnounce.isChecked() And Game.isGameLeader()
-			'If Game.isGameLeader()
+			If guiAnnounce.isChecked() And GetGame().isGameLeader()
+			'If GetGame().isGameLeader()
 				'guiAnnounce.enable()
 				guiGameTitle.disable()
 				If guiGameTitle.Value = "" Then guiGameTitle.Value = "no title"
-				Game.title = guiGameTitle.Value
+				GetGame().title = guiGameTitle.Value
 			Else
 				guiGameTitle.enable()
 			EndIf
-			If Not Game.isGameLeader()
+			If Not GetGame().isGameLeader()
 				guiGameTitle.disable()
 				guiAnnounce.disable()
 			EndIf
@@ -2359,7 +2390,7 @@ Type TScreen_GameSettings Extends TGameScreen
 			'disable/enable announcement on lan/online
 			If guiAnnounce.isChecked()
 				Network.client.playerName = GetPlayer().name
-				If Not Network.announceEnabled Then Network.StartAnnouncing(Game.title)
+				If Not Network.announceEnabled Then Network.StartAnnouncing(GetGame().title)
 			Else
 				Network.StopAnnouncing()
 			EndIf
@@ -2373,8 +2404,8 @@ Type TScreen_GameSettings Extends TGameScreen
 		EndIf
 
 		For Local i:Int = 0 To 3
-			If Game.networkgame Or Game.isGameLeader()
-				If Game.gamestate <> TGame.STATE_PREPAREGAMESTART And Game.IsControllingPlayer(i+1)
+			If GetGame().networkgame Or GetGame().isGameLeader()
+				If GetGame().gamestate <> TGame.STATE_PREPAREGAMESTART And GetGame().IsControllingPlayer(i+1)
 					guiPlayerNames[i].enable()
 					guiChannelNames[i].enable()
 					guiFigureArrows[i*2].enable()
@@ -2411,9 +2442,9 @@ Type TScreen_GameSettings Extends TGameScreen
 			For Local i:Int = 0 To 3
 				Local colorRect:TRectangle = New TRectangle.Init(slotPos.GetIntX() + 2, Int(guiChannelNames[i].GetContentScreenY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
 
-				For Local obj:TColor = EachIn TColor.List
+				For Local pc:TPlayerColor = EachIn TPlayerColor.List
 					'only for unused colors
-					If obj.ownerID <> 0 Then Continue
+					If pc.ownerID <> 0 Then Continue
 
 					colorRect.position.AddXY(colorRect.GetW(), 0)
 
@@ -2421,9 +2452,9 @@ Type TScreen_GameSettings Extends TGameScreen
 					If Not THelper.MouseInRect(colorRect) Then Continue
 					'only allow mod if you control the player or if the
 					'player is AI and you are the master player
-					If Game.IsControllingPlayer(i+1)
+					If GetGame().IsControllingPlayer(i+1)
 						modifiedPlayers=True
-						GetPlayer(i+1).RecolorFigure(obj)
+						GetPlayer(i+1).RecolorFigure(pc)
 					EndIf
 				Next
 				'move to next slot position
@@ -2432,7 +2463,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		EndIf
 
 
-		If Game.networkgame = 1
+		If GetGame().networkgame = 1
 			'sync if the player got modified
 			If modifiedPlayers
 				NetworkHelper.SendPlayerDetails()
@@ -2543,8 +2574,8 @@ Type TScreen_NetworkLobby Extends TGameScreen
 		Select sender
 			Case guiButtonCreate
 					'guiButtonStart.enable()
-					Game.SetGamestate(TGame.STATE_SETTINGSMENU)
-					Network.localFallbackIP = HostIp(game.userFallbackIP)
+					GetGame().SetGamestate(TGame.STATE_SETTINGSMENU)
+					Network.localFallbackIP = HostIp(GetGame().userFallbackIP)
 					Network.StartServer()
 					Network.ConnectToLocalServer()
 					Network.client.playerID	= 1
@@ -2553,10 +2584,10 @@ Type TScreen_NetworkLobby Extends TGameScreen
 					JoinSelectedGameEntry()
 
 			Case guiButtonBack
-					Game.SetGamestate(TGame.STATE_MAINMENU)
-					Game.onlinegame = False
+					GetGame().SetGamestate(TGame.STATE_MAINMENU)
+					GetGame().onlinegame = False
 					If Network.infoStream Then Network.infoStream.close()
-					Game.networkgame = False
+					GetGame().networkgame = False
 		End Select
 	End Method
 
@@ -2583,7 +2614,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 
 		If Network.ConnectToServer( HostIp(_hostIP), _hostPort )
 			Network.isServer = False
-			Game.SetGameState(TGame.STATE_SETTINGSMENU)
+			GetGame().SetGameState(TGame.STATE_SETTINGSMENU)
 			ScreenGameSettings.guiGameTitle.Value = gameTitle
 		EndIf
 	End Method
@@ -2592,7 +2623,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 	Method Draw:Int(tweenValue:Float)
 		DrawMenuBackground(True)
 
-		If Not Game.onlinegame
+		If Not GetGame().onlinegame
 			guiGameListWindow.SetCaption(GetLocale("MENU_NETWORKGAME")+" : "+GetLocale("MENU_AVAILABLE_GAMES"))
 		Else
 			guiGamelistWindow.SetCaption(GetLocale("MENU_ONLINEGAME")+" : "+GetLocale("MENU_AVAILABLE_GAMES"))
@@ -2632,7 +2663,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 			guiButtonJoin.disable()
 		EndIf
 
-		If Game.onlinegame
+		If GetGame().onlinegame
 			If Network.OnlineIP = "" Then GetOnlineIP()
 
 			If Network.OnlineIP
@@ -2722,7 +2753,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		Local oldAlpha:Float = GetAlpha()
 		SetAlpha messageWindow.GetScreenAlpha()
 		Local messageDY:Int = 0
-		If Game.networkgame
+		If GetGame().networkgame
 			GetBitmapFontManager().baseFont.draw(GetLocale("SYNCHRONIZING_START_CONDITIONS")+"...", messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
 			messageDY :+ 20
 			Local allReady:Int = True
@@ -2750,9 +2781,10 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 	'override to reset values
 	Method Start:Int()
+		print "====== START NEW GAME ======"
 		Reset()
 		
-		If Game.networkGame
+		If GetGame().networkGame
 			messageWindow.SetCaption(GetLocale("STARTING_NETWORKGAME"))
 		Else
 			messageWindow.SetCaption(GetLocale("STARTING_SINGLEPLAYERGAME"))
@@ -2785,7 +2817,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 
 		'=== STEP 1 ===
-		If game.networkGame And Not spreadConfigurationCalled
+		If GetGame().networkGame And Not spreadConfigurationCalled
 			SpreadConfiguration()
 			spreadConfigurationCalled = True
 			StartMultiplayerSyncStarted = Time.GetTimeGone()
@@ -2795,15 +2827,15 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		If Not prepareGameCalled
 			'prepare game data so game could just start (switch
 			'to building)
-			Game.PrepareStart(True)
+			GetGame().PrepareStart(True)
 			prepareGameCalled = True
 		EndIf
 
 
 		'=== STEP 2 ===
-		If game.networkGame
+		If GetGame().networkGame
 			'ask other players if they are ready (ask every 500ms)
-			If Game.isGameLeader() And SendGameReadyTimer < Time.GetTimeGone()
+			If GetGame().isGameLeader() And SendGameReadyTimer < Time.GetTimeGone()
 				NetworkHelper.SendGameReady(GetPlayerCollection().playerID)
 				SendGameReadyTimer = Time.GetTimeGone() + 500
 			EndIf
@@ -2811,24 +2843,24 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 			If Time.GetTimeGone() - StartMultiplayerSyncStarted > 10000
 				Print "[NET] sync timeout"
 				StartMultiplayerSyncStarted = 0
-				game.SetGamestate(TGame.STATE_SETTINGSMENU)
+				GetGame().SetGamestate(TGame.STATE_SETTINGSMENU)
 				Return False
 			EndIf
 		EndIf
 
 		If Not startGameCalled
 			'singleplayer games can always start
-			If Not Game.networkGame
+			If Not GetGame().networkGame
 				canStartGame = True
 			'multiplayer games can start if all players are ready
 			Else
 				Print "game not started..."
-				If Game.startNetworkGame
+				If GetGame().startNetworkGame
 					ScreenGameSettings.guiAnnounce.SetChecked(False)
 					GetPlayer().networkstate = 1
 					canStartGame = True
 					'reset flag, no longer needed
-					Game.startNetworkGame = False
+					GetGame().startNetworkGame = False
 				EndIf
 			EndIf
 		EndIf
@@ -2836,11 +2868,11 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 		'=== STEP 3 ===
 		If canStartGame And Not startGameCalled
-			If Game.networkGame Then Print "[NET] StartNewGame"
+			If GetGame().networkGame Then Print "[NET] StartNewGame"
 			'just switch to the game, preparation is done
-			Game.StartNewGame()
+			GetGame().StartNewGame()
 			'reset randomizer
-			Game.SetRandomizerBase( Game.GetRandomizerBase() )
+			GetGame().SetRandomizerBase( GetGame().GetRandomizerBase() )
 			startGameCalled = True
 		EndIf
 	End Method
@@ -2848,7 +2880,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 	'spread configuration to other players
 	Method SpreadConfiguration:Int()
-		If Not Game.networkGame Then Return False
+		If Not GetGame().networkGame Then Return False
 
 		'send which database to use (or send database itself?)
 	End Method
@@ -3127,44 +3159,56 @@ End Type
 
 
 Type GameEvents
+	Global _eventListeners:TLink[]
+	
+	Function UnRegisterEventListeners:Int()
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+	End Function
+
+
 	Function RegisterEventListeners:Int()
 		'react on right clicks during a rooms update (leave room)
-		EventManager.registerListenerFunction("room.onUpdate", RoomOnUpdate)
+		_eventListeners :+ [ EventManager.registerListenerFunction("room.onUpdate", RoomOnUpdate) ]
+
+		'=== REGISTER TIME EVENTS ===
+		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnDay", OnDay) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnHour", OnHour) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnMinute", OnMinute) ]
 
 		'=== REGISTER PLAYER EVENTS ===
 		'events get ignored by non-gameleaders
-		EventManager.registerListenerFunction("Game.OnMinute", PlayersOnMinute)
-		EventManager.registerListenerFunction("Game.OnDay", PlayersOnDay)
-		EventManager.registerListenerFunction("Time.OnSecond", Time_OnSecond)
+		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnMinute", PlayersOnMinute) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnDay", PlayersOnDay) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("Time.OnSecond", Time_OnSecond) ]
 
-		EventManager.registerListenerFunction("PlayerFinance.onChangeMoney", PlayerFinanceOnChangeMoney)
-		EventManager.registerListenerFunction("PlayerFinance.onTransactionFailed", PlayerFinanceOnTransactionFailed)
-		EventManager.registerListenerFunction("PlayerBoss.onCallPlayer", PlayerBoss_OnCallPlayer)
-		EventManager.registerListenerFunction("PlayerBoss.onCallPlayerForced", PlayerBoss_OnCallPlayerForced)
-		EventManager.registerListenerFunction("PlayerBoss.onPlayerEnterBossRoom", PlayerBoss_OnPlayerEnterBossRoom)
+		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerFinance.onChangeMoney", PlayerFinanceOnChangeMoney) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerFinance.onTransactionFailed", PlayerFinanceOnTransactionFailed) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerBoss.onCallPlayer", PlayerBoss_OnCallPlayer) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerBoss.onCallPlayerForced", PlayerBoss_OnCallPlayerForced) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerBoss.onPlayerEnterBossRoom", PlayerBoss_OnPlayerEnterBossRoom) ]
 
 		'=== PUBLIC AUTHORITIES ===
 		'-> create ingame notifications
-		EventManager.registerListenerFunction("publicAuthorities.onStopXRatedBroadcast", publicAuthorities_onStopXRatedBroadcast)
-		EventManager.registerListenerFunction("publicAuthorities.onConfiscateProgrammeLicence", publicAuthorities_onConfiscateProgrammeLicence)
+		_eventListeners :+ [ EventManager.registerListenerFunction("publicAuthorities.onStopXRatedBroadcast", publicAuthorities_onStopXRatedBroadcast) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("publicAuthorities.onConfiscateProgrammeLicence", publicAuthorities_onConfiscateProgrammeLicence) ]
 
 		'visually inform that selling the last station is impossible
-		EventManager.registerListenerFunction("StationMap.onTrySellLastStation", StationMapOnTrySellLastStation)
+		_eventListeners :+ [ EventManager.registerListenerFunction("StationMap.onTrySellLastStation", StationMapOnTrySellLastStation) ]
 		'trigger audience recomputation when a station is trashed/sold
-		EventManager.registerListenerFunction("StationMap.removeStation", StationMapOnSellStation)
+		_eventListeners :+ [ EventManager.registerListenerFunction("StationMap.removeStation", StationMapOnSellStation) ]
 
-		EventManager.registerListenerFunction("BroadcastManager.BroadcastMalfunction", PlayerBroadcastMalfunction)
+		_eventListeners :+ [ EventManager.registerListenerFunction("BroadcastManager.BroadcastMalfunction", PlayerBroadcastMalfunction) ]
 
 		'listen to failed or successful ending adcontracts to send out
 		'ingame toastmessages
-		EventManager.registerListenerFunction("AdContract.onFinish", AdContract_OnFinish)
-		EventManager.registerListenerFunction("AdContract.onFail", AdContract_OnFail)
-		EventManager.registerListenerFunction("ProgrammeLicenceAuction.onGetOutbid", ProgrammeLicenceAuction_OnGetOutbid)
-		EventManager.registerListenerFunction("ProgrammeLicenceAuction.onWin", ProgrammeLicenceAuction_OnWin)
+		_eventListeners :+ [ EventManager.registerListenerFunction("AdContract.onFinish", AdContract_OnFinish) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("AdContract.onFail", AdContract_OnFail) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("ProgrammeLicenceAuction.onGetOutbid", ProgrammeLicenceAuction_OnGetOutbid) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("ProgrammeLicenceAuction.onWin", ProgrammeLicenceAuction_OnWin) ]
 
 		'we want to handle "/dev bla"-commands via chat
-		EventManager.registerListenerFunction("chat.onAddEntry", onChatAddEntry )
-
+		_eventListeners :+ [ EventManager.registerListenerFunction("chat.onAddEntry", onChatAddEntry ) ]
 	End Function
 
 
@@ -3270,7 +3314,7 @@ Type GameEvents
 
 	Function Time_OnSecond:Int(triggerEvent:TEventBase)
 		'only AI handling: only gameleader interested
-		If Not Game.isGameLeader() Then Return False
+		If Not GetGame().isGameLeader() Then Return False
 
 		'milliseconds passed since last event
 		Local timeGone:Int = triggerEvent.GetData().getInt("timeGone", 0)
@@ -3284,7 +3328,7 @@ Type GameEvents
 
 
 	Function PlayersOnMinute:Int(triggerEvent:TEventBase)
-		If Not Game.isGameLeader() Then Return False
+		If Not GetGame().isGameLeader() Then Return False
 
 		Local minute:Int = triggerEvent.GetData().getInt("minute",-1)
 		If minute < 0 Then Return False
@@ -3298,7 +3342,7 @@ Type GameEvents
 
 
 	Function PlayersOnDay:Int(triggerEvent:TEventBase)
-		If Not Game.isGameLeader() Then Return False
+		If Not GetGame().isGameLeader() Then Return False
 
 		Local minute:Int = triggerEvent.GetData().getInt("minute",-1)
 		If minute < 0 Then Return False
@@ -3635,35 +3679,35 @@ Type GameEvents
 
 		'=== CHANGE OFFER OF MOVIEAGENCY AND ADAGENCY ===
 		'countdown for the refillers
-		Game.refillMovieAgencyTime :-1
-		Game.refillAdAgencyTime :-1
+		GetGame().refillMovieAgencyTime :-1
+		GetGame().refillAdAgencyTime :-1
 		'refill if needed
-		If Game.refillMovieAgencyTime <= 0
+		If GetGame().refillMovieAgencyTime <= 0
 			'delay if there is one in this room
 			If GetRoomCollection().GetFirstByDetails("movieagency").hasOccupant()
-				Game.refillMovieAgencyTime :+ 15
+				GetGame().refillMovieAgencyTime :+ 15
 			Else
 				'reset but with a bit randomness
-				Game.refillMovieAgencyTime = Game.refillMovieAgencyTimer + randrange(0,20)-10
+				GetGame().refillMovieAgencyTime = GetGame().refillMovieAgencyTimer + randrange(0,20)-10
 
 				TLogger.Log("GameEvents.OnMinute", "partly refilling movieagency", LOG_DEBUG)
 				RoomHandler_movieagency.GetInstance().ReFillBlocks(True, 0.5)
 			EndIf
 		EndIf
-		If Game.refillAdAgencyTime <= 0
+		If GetGame().refillAdAgencyTime <= 0
 			'delay if there is one in this room
 			If GetRoomCollection().GetFirstByDetails("adagency").hasOccupant()
-				Game.refillAdAgencyTime :+ 15
+				GetGame().refillAdAgencyTime :+ 15
 			Else
 				'reset but with a bit randomness
-				Game.refillAdAgencyTime = Game.refillAdAgencyTimer + randrange(0,20)-10
+				GetGame().refillAdAgencyTime = GetGame().refillAdAgencyTimer + randrange(0,20)-10
 
 				TLogger.Log("GameEvents.OnMinute", "partly refilling adagency", LOG_DEBUG)
-				If Game.refillAdAgencyOverridePercentage <> Game.refillAdAgencyPercentage
-					RoomHandler_adagency.GetInstance().ReFillBlocks(True, Game.refillAdAgencyOverridePercentage)
-					Game.refillAdAgencyOverridePercentage = Game.refillAdAgencyPercentage
+				If GetGame().refillAdAgencyOverridePercentage <> GetGame().refillAdAgencyPercentage
+					RoomHandler_adagency.GetInstance().ReFillBlocks(True, GetGame().refillAdAgencyOverridePercentage)
+					GetGame().refillAdAgencyOverridePercentage = GetGame().refillAdAgencyPercentage
 				Else
-					RoomHandler_adagency.GetInstance().ReFillBlocks(True, Game.refillAdAgencyPercentage)
+					RoomHandler_adagency.GetInstance().ReFillBlocks(True, GetGame().refillAdAgencyPercentage)
 				EndIf
 			EndIf
 		EndIf
@@ -3706,10 +3750,10 @@ Type GameEvents
 		'calculate each hour if not or when the current broadcasts are
 		'checked for XRated.
 		'do this to create some tension :p
-		If minute = 0 Then Game.ComputeNextXRatedCheckMinute()
+		If minute = 0 Then GetGame().ComputeNextXRatedCheckMinute()
 
 		'time to check for Xrated programme?
-		If minute = Game.GetNextXRatedCheckMinute()
+		If minute = GetGame().GetNextXRatedCheckMinute()
 			'only check between 6:00-21:59 o'clock (there it is NOT allowed)
 			If hour <= 21 And hour >= 6
 				Local currentProgramme:TProgramme
@@ -3736,7 +3780,7 @@ Type GameEvents
 						EventManager.triggerEvent(TEventSimple.Create("publicAuthorities.onStartConfiscateProgramme", New TData.AddString("broadcastMaterialGUID", currentProgramme.GetGUID()).AddNumber("owner", player.playerID), currentProgramme, player))
 
 						'Send out first marshal - Mr. Czwink or Mr. Czwank
-						TFigureMarshal(Game.marshals[randRange(0,1)]).AddConfiscationJob(currentProgramme.GetGUID())
+						TFigureMarshal(GetGame().marshals[randRange(0,1)]).AddConfiscationJob(currentProgramme.GetGUID())
 					EndIf
 
 					'emit event (eg.for ingame toastmessages)
@@ -3783,9 +3827,9 @@ Type GameEvents
 
 			GetProgrammeDataCollection().RefreshTopicalities()
 			GetAdContractBaseCollection().RefreshInfomercialTopicalities()
-			Game.ComputeContractPenalties()
-			Game.ComputeDailyCosts()	'first pay everything, then earn...
-			Game.ComputeDailyIncome()
+			GetGame().ComputeContractPenalties()
+			GetGame().ComputeDailyCosts()	'first pay everything, then earn...
+			GetGame().ComputeDailyIncome()
 			TAuctionProgrammeBlocks.EndAllAuctions() 'won auctions moved to programmecollection of player
 
 			'reset room signs each day to their normal position
@@ -3801,8 +3845,8 @@ Type GameEvents
 
 			'force adagency to refill their sortiment a bit more intensive
 			'the next time
-			'Game.refillAdAgencyTime = -1
-			Game.refillAdAgencyOverridePercentage = 0.75
+			'GetGame().refillAdAgencyTime = -1
+			GetGame().refillAdAgencyOverridePercentage = 0.75
 			
 
 			'TODO: give image points or something like it for best programme
@@ -3887,10 +3931,10 @@ Type AppEvents
 		Local obj:TGUIObject = TGUIObject(triggerEvent.GetSender())
 		If Not obj Then Return False
 		
-		If obj.isDragable() And Game.cursorstate = 0
-			Game.cursorstate = 1
+		If obj.isDragable() And GetGame().cursorstate = 0
+			GetGame().cursorstate = 1
 		EndIf
-		If obj.isDragged() Then Game.cursorstate = 2
+		If obj.isDragged() Then GetGame().cursorstate = 2
 	End Function
 
 
@@ -4005,7 +4049,7 @@ Function DrawMenuBackground(darkened:Int=False)
 
 
 	'draw an (animated) logo
-	Select game.gamestate
+	Select GetGame().gamestate
 		Case TGame.STATE_NETWORKLOBBY, TGame.STATE_MAINMENU
 
 			Global logoAnimStart:Int = 0
@@ -4026,7 +4070,7 @@ Function DrawMenuBackground(darkened:Int=False)
 			EndIf
 	EndSelect
 
-	If game.gamestate = TGame.STATE_MAINMENU
+	If GetGame().gamestate = TGame.STATE_MAINMENU
 		SetColor 255,255,255
 		GetBitmapFont("Default",13, BOLDFONT).DrawBlock("Wir brauchen Deine Hilfe!", 10,490, 300,20, Null,TColor.Create(75,75,140))
 		GetBitmapFont("Default",12).DrawBlock("Beteilige Dich an Diskussionen rund um alle Spielelemente in TVTower.", 10,510, 300,30, Null,TColor.Create(75,75,140))
@@ -4186,8 +4230,6 @@ Function StartApp:Int()
 		TLogger.Log("StartTVTower()", "DEV RoundToBeautiful is disabled", LOG_DEBUG | LOG_LOADING)
 	EndIf
 
-	Game.Create()
-
 
 	MainMenuJanitor = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("janitor"), 250, 2, 65)
 	MainMenuJanitor.useElevator = False
@@ -4217,15 +4259,20 @@ End Function
 
 Function ShowApp:Int()
 	TProfiler.Enter("ShowApp")
-	'without creating players, rooms
-	Game = TGame.GetInstance().Create(False)
+
+	'=== LOAD LOCALIZATION ===
+	'load all localizations
+	TLocalization.LoadLanguageFiles("res/lang/lang_*.txt")
+	'select user language (defaulting to "de")
+	TLocalization.SetCurrentLanguage(App.config.GetString("language", "de"))
+
 
 	'Menu
 	ScreenMainMenu = New TScreen_MainMenu.Create("MainMenu")
 	ScreenCollection.Add(ScreenMainMenu)
 
 	'go into the start menu
-	Game.SetGamestate(TGame.STATE_MAINMENU)
+	GetGame().SetGamestate(TGame.STATE_MAINMENU)
 
 	TProfiler.Leave("ShowApp")
 End Function
@@ -4284,7 +4331,7 @@ TProfiler.Leave("InitialLoading")
 
 
 	'b) set language
-	App.SetLanguage(App.config.GetString("language", "en"))
+	App.SetLanguage(App.config.GetString("language", "de"))
 
 	'c) everything loaded - normal game loop
 TProfiler.Enter("GameLoop")
@@ -4302,5 +4349,5 @@ TProfiler.Leave("EventManager")
 TProfiler.Leave("GameLoop")
 
 	'take care of network
-	If Game.networkgame Then Network.DisconnectFromServer()
+	If GetGame().networkgame Then Network.DisconnectFromServer()
 End Function

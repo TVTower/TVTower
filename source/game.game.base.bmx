@@ -83,9 +83,44 @@ Type TGameBase {_exposeToLua="selected"}
 	End Function
 
 
-	'Summary: create a game, every variable is set to Zero
-	Method Create:TGameBase(initializePlayer:Int = True)
-		'stub
+	'(re)set everything to default values
+	Method Initialize()
+		randomSeedValue = 0
+		title = "MyGame"
+		cursorstate = 0
+		gamestate = 1 'mainmenu
+
+		nextXRatedCheckMinute = -1
+		stateSyncTime = 0
+		stateSyncTimer = 2000
+		lastTimeRealTimeSecondGone = 0
+		lastTimeMinuteGone = 0
+
+		refillMovieAgencyTimer = 180
+		refillMovieAgencyTime = 180
+
+		refillAdAgencyTimer = 240
+		refillAdAgencyTime = 240
+
+		refillAdAgencyPercentage = 0.5
+		refillAdAgencyOverridePercentage = 0.5
+
+		networkgame = 0
+		startNetworkGame = 0
+		onlinegame = 0
+
+
+		'remove existing figures
+		'might be done by GetFigure[Base]Collection().Initialize() already
+		For local f:TFigureBase = EachIn terrorists
+			GetFigureBaseCollection().Remove(f)
+		Next
+		For local f:TFigureBase = EachIn marshals
+			GetFigureBaseCollection().Remove(f)
+		Next
+		'reset arrays
+		terrorists = new TFigureBase[2]
+		marshals = new TFigureBase[2]
 	End Method
 
 

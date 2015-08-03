@@ -48,7 +48,7 @@ Type TFigureSoundSource Extends TSoundSourceElement
 	End Method
 
 	Method GetIsHearable:Int()
-		Return (GetPlayer().GetFigure().inRoom = Null)
+		Return (GetPlayer() and GetPlayer().GetFigure().inRoom = Null)
 	End Method
 
 	Method GetChannelForSfx:TSfxChannel(sfx:String)

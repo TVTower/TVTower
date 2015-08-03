@@ -17,6 +17,11 @@ Type TPlayerFinanceHistoryListCollection
 	End Function
 
 
+	Method Initialize:int()
+		historyLists = new TList[0]
+	End Method
+
+
 	Method Set:int(playerID:int, historyList:TList)
 		if playerID <= 0 then return False
 		if playerID > historyLists.length then historyLists = historyLists[.. playerID]

@@ -50,7 +50,7 @@ Type KI
 		'the player
 		LuaEngine.RegisterBlitzmaxObject("MY", GetPlayer(PlayerID))
 		'the game object
-		LuaEngine.RegisterBlitzmaxObject("Game", Game)
+		LuaEngine.RegisterBlitzmaxObject("Game", GetGame())
 		'the game object
 		LuaEngine.RegisterBlitzmaxObject("WorldTime", GetWorldTime())
 

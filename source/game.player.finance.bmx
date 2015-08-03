@@ -21,6 +21,11 @@ Type TPlayerFinanceCollection
 	End Function
 
 
+	Method Initialize:int()
+		finances = finances[..0]
+	End Method
+
+
 	Method GetTotal:TPlayerFinance(playerID:int)
 		local totalFinance:TPlayerFinance = New TPlayerFinance
 		local finance:TPlayerFinance

@@ -2,24 +2,12 @@
 'Game - holds time, audience, money and other variables (typelike structure makes it easier to save the actual state)
 Type TGame Extends TGameBase {_exposeToLua="selected"}
 	Global _initDone:Int = False
-	'was "PrepareFirstGameStart" run already?
-	Global _firstGamePreparationDone:Int = False
+	Global _eventListeners:TLink[]
 	Global StartTipWindow:TGUIModalWindow
 
 
 	Method New()
-		If Not _initDone
-			'handle begin of savegameloading (prepare first game if needed)
-			EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
-			'handle savegame loading (assign sprites)
-			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
-			EventManager.registerListenerFunction("SaveGame.OnBeginSave", onSaveGameBeginSave)
-
-			_initDone = True
-		EndIf
 	End Method
-
-
 
 
 	Function GetInstance:TGame()
@@ -40,66 +28,124 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	End Function
 
 
-	'Summary: create a game, every variable is set to Zero
-	Method Create:TGame(initializePlayer:Int = True)
-		LoadConfig(App.config)
+	'(re)set everything to default values
+	Method Initialize()
+		Super.Initialize()
 
-		'load all localizations
-		TLocalization.LoadLanguageFiles("res/lang/lang_*.txt")
-		'set default language
-		TLocalization.SetCurrentLanguage("en")
-		'select user language
-		TLocalization.SetCurrentLanguage(userlanguage)
+		'do this every new game - or like now,just on a new "app start"?
+		SetRandomizerBase( Time.MillisecsLong() )
 
-		networkgame = 0
 
+		'=== GAME TIME / SPEED ===
 		'MAD TV speed:
 		'slow:   10 game minutes = 30 seconds  -> 1 sec = 20 ingameseconds
 		'middle: 10 game minutes = 20 seconds  -> 1 sec = 30 ingameseconds
 		'fast:   10 game minutes = 10 seconds  -> 1 sec = 60 ingameseconds
-
 		'set basic game speed to 30 gameseconds per second
 		GetWorldTime().SetTimeFactor(30.0)
 
-		SetStartYear(userStartYear)
 
-		title = "unknown"
+		'=== EVENTS ===
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
 
-		SetRandomizerBase( Time.MillisecsLong() )
+		GameEvents.UnRegisterEventListeners()
 
 
-		if initializePlayer then CreateInitialPlayers()
-
-		Return Self
+		'=== register event listeners
+		GameEvents.RegisterEventListeners()
+		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnStart", onStart) ]
+		'handle begin of savegameloading (prepare first game if needed)
+		_eventListeners :+ [ EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad) ]
+		'handle savegame loading (assign sprites)
+		_eventListeners :+ [ EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("SaveGame.OnBeginSave", onSaveGameBeginSave) ]
 	End Method
 
 
-	Method SetStartYear(year:int)
-		year = Max(1980, year)
-		'set start year
-		GetWorldTime().SetStartYear(year)
+
+	'=== START A GAME ===
+
+	Method StartNewGame:Int()
+		'print "====== START NEW GAME ======"
+		'Preparation is done before (to share data in network games)
+		_Start(True)
 	End Method
 
 
-	Method GetStartYear:Int()
-		return GetWorldTime().GetStartYear()
+	Method StartLoadedSaveGame:Int()
+		print "====== START SAVED GAME ======"
+		PrepareStart(False)
+		_Start(False)
 	End Method
 
+
+	Method EndGame:int()
+		SetGameState(TGame.STATE_MAINMENU)
+		print "====== END CURRENT GAME ======"
+	End Method
+
+
+	'run when a specific game starts
+	Method _Start:Int(startNewGame:Int = True)
+		'set force=true so the gamestate is set even if already in this
+		'state (eg. when loaded)
+		GetGame().SetGamestate(TGame.STATE_RUNNING, True)
+
+		If startNewGame
+			'Begin Game - fire Events
+			EventManager.registerEvent(TEventSimple.Create("Game.OnMinute", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().getDay()) ))
+			EventManager.registerEvent(TEventSimple.Create("Game.OnHour", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().getDay()) ))
+			'so we start at day "1"
+			EventManager.registerEvent(TEventSimple.Create("Game.OnDay", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().getDay()) ))
+		EndIf
+	End Method
+
+
+
+	'=== PREPARE A GAME ===
 
 	'run this before EACH started game
 	Method PrepareStart(startNewGame:Int)
-		'=== FIRST GAME ===
-		'if no game run before : prepare something more
-		If Not _firstGamePreparationDone Then PrepareFirstGameStart(startNewGame)
+		If startNewGame
+			GetGame().InitWorld()
+			GetGame().InitRoomsAndDoors()
+		endif
+
+		
+		'Game screens
+		if GameScreen_World
+			GameScreen_World.Initialize()
+		else
+			GameScreen_World = New TInGameScreen_World.Create("InGame_World")
+			ScreenCollection.Add(GameScreen_World)
+		endif
+		
+
+		'=== SETUP TOOLTIPS ===
+		TTooltip.UseFontBold = GetBitmapFontManager().baseFontBold
+		TTooltip.UseFont = GetBitmapFontManager().baseFont
+		TTooltip.ToolTipIcons = GetSpriteFromRegistry("gfx_building_tooltips")
+		TTooltip.TooltipHeader = GetSpriteFromRegistry("gfx_tooltip_header")
+
+
 
 		'=== ALL GAMES ===
+		TLogger.Log("Game.PrepareStart()", "(re-)initializing all room handlers and screens", LOG_DEBUG)
+		GetRoomHandlerCollection().Initialize()
+
+
 		TLogger.Log("Game.PrepareStart()", "colorizing images corresponding to playercolors", LOG_DEBUG)
 		ColorizePlayerExtras()
+
 
 		TLogger.Log("Game.PrepareStart()", "drawing doors, plants and lights on the building-sprite", LOG_DEBUG)
 		'also registers events...
 		GetBuilding().Init()
 
+
+		TLogger.Log("Game.PrepareStart()", "Creating the world around us (weather and weather effects :-))", LOG_DEBUG)
 		'(re-)inits weather effects (raindrops, snow flakes etc)
 		InitWorldWeatherEffects()
 
@@ -114,59 +160,15 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	End Method
 
 
-	'run this BEFORE the first game is started
-	Function PrepareFirstGameStart:Int(startNewGame:Int)
-		If _firstGamePreparationDone Then Return False
+	Method PrepareNewGame:Int()
+		SetStartYear(userStartYear)
 
-		Game.InitWorld()
-
-		If startNewGame Then Init_CreateAllRooms()
-
-		GetRoomHandlerCollection().Initialize()
-		Init_ConnectRoomHandlers()
-
-		GetPopularityManager().Initialize()
-		GetBroadcastManager().Initialize()
-
-
+		PlayerDetailsTimer = 0
+		
 		'=== START TIPS ===
 		'maybe show this window each game? or only on game start or ... ?
 		Local showStartTips:Int = False
 		If showStartTips Then CreateStartTips()
-
-
-		'===== EVENTS =====
-		EventManager.registerListenerFunction("Game.OnDay", 	GameEvents.OnDay )
-		EventManager.registerListenerFunction("Game.OnHour", 	GameEvents.OnHour )
-		EventManager.registerListenerFunction("Game.OnMinute",	GameEvents.OnMinute )
-		EventManager.registerListenerFunction("Game.OnStart",	TGame.onStart )
-
-
-		'Game screens
-		GameScreen_World = New TInGameScreen_World.Create("InGame_World")
-		ScreenCollection.Add(GameScreen_World)
-
-		PlayerDetailsTimer = 0
-
-		'=== SETUP TOOLTIPS ===
-		TTooltip.UseFontBold = GetBitmapFontManager().baseFontBold
-		TTooltip.UseFont = GetBitmapFontManager().baseFont
-		TTooltip.ToolTipIcons = GetSpriteFromRegistry("gfx_building_tooltips")
-		TTooltip.TooltipHeader = GetSpriteFromRegistry("gfx_tooltip_header")
-
-
-		'=== REGISTER GENERIC EVENTS ===
-		GameEvents.RegisterEventListeners()
-		
-		'init finished
-		_firstGamePreparationDone = True
-	End Function
-
-
-
-	Method PrepareNewGame:Int()
-		'=== RESET VALUES ===
-		New TGameState.Initialize()
 
 
 		'=== LOAD DATABASES ===
@@ -178,7 +180,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'=== FIGURES ===
 		'set all non human players to AI
-		If Game.isGameLeader()
+		If isGameLeader()
 			For Local id:Int = 1 To 4
 				If GetPlayer(id).IsLocalAI()
 					GetPlayer(id).InitAI("res/ai/DefaultAIPlayer.lua")
@@ -196,8 +198,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'GetPlayer(i).GetFigure().SendToDoor( TRoomDoor.GetByDetails("office", i), True)
 			GetPlayer(i).GetFigure().ForceChangeTarget(TRoomDoor.GetByDetails("news", i).area.GetX() + 60, TRoomDoor.GetByDetails("news", i).area.GetY())
 		Next
-'debug
-'		GetPlayer(1).GetFigure().area.position.SetXY(TRoomDoor.GetByDetails("news", 1).area.GetX() + 60, TRoomDoor.GetByDetails("news", 1).area.GetY())
 
 		'also create/move other figures of the building
 		'all of them are created at "offscreen position"
@@ -247,13 +247,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			marshals[i] = fig
 		Next
 
-		'we want all players to alreay wait in front of the elevator
-		'and not only 1 player sending it while all others wait
-		'so we move the elevator to a higher floor, so it just
-		'reaches floor 0 when all are already waiting
-		'floor 9 is just enough for the players
-		TElevator._instance.currentFloor = 9
-
 
 		'=== ADJUST GAME RULES ===
 		GameRules.dailyBossVisit = GameRules.devConfig.GetInt("DEV_DAILY_BOSS_VISIT", True)
@@ -272,12 +265,12 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'update the collection so it contains the audience reach of each player
 		GetStationMapCollection().Update()
 
+
 		'get names from settings
 		For Local i:Int = 1 To 4
 			GetPlayer(i).Name = ScreenGameSettings.guiPlayerNames[i-1].Value
 			GetPlayer(i).channelname = ScreenGameSettings.guiChannelNames[i-1].Value
 		Next
-
 
 		'create series/movies in movie agency
 		RoomHandler_MovieAgency.GetInstance().ReFillBlocks()
@@ -300,10 +293,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'=== SETUP NEWS + ABONNEMENTS ===
 		'adjust abonnement for each newsgroup to 1
 		For Local playerids:Int = 1 To 4
-			'For Local i:Int = 0 To 4 '5 groups
-			'	GetPlayerCollection().Get(playerids).SetNewsAbonnement(i, 1)
-			'Next
-
 			'only have abonnement for currents
 			GetPlayer(playerids).SetNewsAbonnement(4, 1)
 		Next
@@ -324,7 +313,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				'leaving the next on listIndex 0
 				newsToPlace = GetPlayerProgrammeCollectionCollection().Get(playerID).GetNewsAtIndex(0)
 				If Not newsToPlace
-					'throw "Game.PrepareNewGame: initial news " + i + " missing."
+					'throw "GetGame().PrepareNewGame: initial news " + i + " missing."
 					Continue
 				EndIf
 				'set it paid - so money does not change
@@ -382,38 +371,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method StartNewGame:Int()
-		_Start(True)
-	End Method
-
-
-	Method StartLoadedSaveGame:Int()
-		PrepareStart(False)
-		_Start(False)
-	End Method
-
-
-	'run when a specific game starts
-	Method _Start:Int(startNewGame:Int = True)
-		'set force=true so the gamestate is set even if already in this
-		'state (eg. when loaded)
-		Game.SetGamestate(TGame.STATE_RUNNING, True)
-
-		If startNewGame
-			'Begin Game - fire Events
-			EventManager.registerEvent(TEventSimple.Create("Game.OnMinute", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().getDay()) ))
-			EventManager.registerEvent(TEventSimple.Create("Game.OnHour", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().getDay()) ))
-			'so we start at day "1"
-			EventManager.registerEvent(TEventSimple.Create("Game.OnDay", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().getDay()) ))
-		EndIf
-	End Method
-
-
 	Method InitWorld()
 		Local appConfig:TData = GetDataFromRegistry("appConfig", New TData)
 		Local worldConfig:TData = TData(appConfig.Get("worldConfig", New TData))
 
-		GetWorld().Init(1*3600)
+		GetWorld().Initialize()
 		GetWorld().SetConfiguration(worldConfig)
 	End Method
 
@@ -443,7 +405,105 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		World.InitCloudEffect(50, GetSpriteGroupFromRegistry("gfx_world_sky_clouds"))
 		World.cloudEffect.Start() 'clouds from begin
 	End Method
-	
+
+
+
+	Function InitRoomsAndDoors()
+		local room:TRoom = null
+		Local roomMap:TMap = TMap(GetRegistry().Get("rooms"))
+		if not roomMap then Throw("ERROR: no room definition loaded!")
+
+		'remove all previous rooms
+		GetRoomCollection().Initialize()
+		'and their doors
+		GetRoomDoorBaseCollection().Initialize()
+
+
+		For Local vars:TData = EachIn roomMap.Values()
+			'==== ROOM ====
+			local room:TRoom = new TRoom
+			room.Init(..
+				vars.GetString("roomname"),  ..
+				[ ..
+					vars.GetString("tooltip"), ..
+					vars.GetString("tooltip2") ..
+				], ..
+				vars.GetInt("owner",-1),  ..
+				vars.GetInt("size", 1)  ..
+			)
+			room.fakeRoom = vars.GetBool("fake", FALSE)
+			room.screenName = vars.GetString("screen")
+
+
+			'only add if not already there
+			if not GetRoomCollection().Get(room.id)
+				GetRoomCollection().Add(room)
+			else
+				room = GetRoomCollection().Get(room.id)
+			endif
+
+			'==== DOOR ====
+			local door:TRoomDoor = new TRoomDoor
+			door.Init(..
+				room.id,..
+				vars.GetInt("doorslot"), ..
+				vars.GetInt("floor"), ..
+				vars.GetInt("doortype") ..
+			)
+			GetRoomDoorBaseCollection().Add( door )
+			'add the door to the building (sets parent etc)
+			GetBuilding().AddDoor(door)
+
+			'override defaults
+			if not vars.GetBool("doortooltip") then door.showTooltip = False
+			if vars.GetInt("doorwidth") > 0 then door.area.dimension.setX( vars.GetInt("doorwidth") )
+			if vars.GetInt("x",-1000) <> -1000 then door.area.position.SetX(vars.GetInt("x"))
+
+
+
+			'==== HOTSPOTS ====
+			local hotSpots:TList = TList( vars.Get("hotspots") )
+			if hotSpots
+				for local conf:TData = eachin hotSpots
+					local name:string 	= conf.GetString("name")
+					local x:int			= conf.GetInt("x", -1)
+					local y:int			= conf.GetInt("y", -1)
+					local bottomy:int	= conf.GetInt("bottomy", 0)
+					'the "building"-room uses floors 
+					local floor:int 	= conf.GetInt("floor", -1)
+					local width:int 	= conf.GetInt("width", 0)
+					local height:int 	= conf.GetInt("height", 0)
+					local tooltipText:string	 	= conf.GetString("tooltiptext")
+					local tooltipDescription:string	= conf.GetString("tooltipdescription")
+
+					'align at bottom of floor
+					if floor >= 0 then y = TBuilding.GetFloorY2(floor) - height
+
+					local hotspot:THotspot = new THotspot.Create( name, x, y - bottomy, width, height)
+					hotspot.setTooltipText( GetLocale(tooltipText), GetLocale(tooltipDescription) )
+
+					room.addHotspot( hotspot )
+				next
+			endif
+
+		Next
+	End Function
+
+
+
+
+	Method SetStartYear(year:int)
+		year = Max(1980, year)
+		'set start year
+		GetWorldTime().SetStartYear(year)
+	End Method
+
+
+	Method GetStartYear:Int()
+		return GetWorldTime().GetStartYear()
+	End Method
+
+
 
 	Function CreateStartTips:Int()
 		TLogger.Log("TGame", "Creating start tip GUIelement", LOG_DEBUG)
@@ -556,10 +616,6 @@ endrem
 
 	'run when loading finished
 	Function onSaveGameLoad(triggerEvent:TEventBase)
-		TLogger.Log("TGame", "Savegame loaded - reinit weather effects.", LOG_DEBUG | LOG_SAVELOAD)
-		GetInstance().InitWorldWeatherEffects()
-
-
 		TLogger.Log("TGame", "Savegame loaded - colorize players.", LOG_DEBUG | LOG_SAVELOAD)
 		'reconnect AI and other things
 		For Local player:TPlayer = EachIn GetPlayerCollection().players
@@ -634,20 +690,23 @@ endrem
 
 	'creates the default players (as shown in game-settings-screen)
 	Method CreateInitialPlayers()
+		'skip if already done
+		if GetPlayer(1) then return
+	
 		'Creating PlayerColors - could also be done "automagically"
 		Local playerColors:TList = TList(GetRegistry().Get("playerColors"))
 		If playerColors = Null Then Throw "no playerColors found in configuration"
 		For Local col:TColor = EachIn playerColors
-			col.AddToList(True) 'true = try to remove them at first
+			col.AddToList()
 		Next
 
 		'create players, draws playerfigures on figures-image
 		'TColor.GetByOwner -> get first unused color,
 		'TPlayer.Create sets owner of the color
-		GetPlayerCollection().Set(1, TPlayer.Create(1, userName, userChannelName, GetSpriteFromRegistry("Player1"),	150,  2, 90, TColor.getByOwner(0), "Player 1"))
-		GetPlayerCollection().Set(2, TPlayer.Create(2, "Sandra", "SunTV", GetSpriteFromRegistry("Player2"),	180,  5, 90, TColor.getByOwner(0), "Player 2"))
-		GetPlayerCollection().Set(3, TPlayer.Create(3, "Seidi", "FunTV", GetSpriteFromRegistry("Player3"),	140,  8, 90, TColor.getByOwner(0), "Player 3"))
-		GetPlayerCollection().Set(4, TPlayer.Create(4, "Alfi", "RatTV", GetSpriteFromRegistry("Player4"),	190, 13, 90, TColor.getByOwner(0), "Player 4"))
+		GetPlayerCollection().Set(1, TPlayer.Create(1, userName, userChannelName, GetSpriteFromRegistry("Player1"),	150,  2, 90, TPlayerColor.getByOwner(0), "Player 1"))
+		GetPlayerCollection().Set(2, TPlayer.Create(2, "Sandra", "SunTV", GetSpriteFromRegistry("Player2"),	180,  5, 90, TPlayerColor.getByOwner(0), "Player 2"))
+		GetPlayerCollection().Set(3, TPlayer.Create(3, "Seidi", "FunTV", GetSpriteFromRegistry("Player3"),	140,  8, 90, TPlayerColor.getByOwner(0), "Player 3"))
+		GetPlayerCollection().Set(4, TPlayer.Create(4, "Alfi", "RatTV", GetSpriteFromRegistry("Player4"),	190, 13, 90, TPlayerColor.getByOwner(0), "Player 4"))
 
 		'set different figures for other players
 		GetPlayer(2).UpdateFigureBase(9)

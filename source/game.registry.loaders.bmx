@@ -13,6 +13,7 @@ SuperStrict
 Import "Dig/base.util.registry.bmx"
 Import "Dig/base.util.color.bmx"
 Import "game.gameconstants.bmx"
+Import "game.player.color.bmx"
 
 'register the loaders
 new TRegistryColorLoader.Init()
@@ -87,7 +88,7 @@ Type TRegistryColorLoader extends TRegistryBaseLoader
 		Local b:Int	= data.GetInt("b", 0)
 		Local a:Int	= data.GetFloat("a", 1.0)
 
-		local color:TColor = TColor.Create(r,g,b,a)
+		local color:TPlayerColor = TPlayerColor.Create(r,g,b,a)
 		'if a listname was given - try to add to that group
 		If listName <> ""
 			local list:TList = TList(GetRegistry().Get(listName, null))

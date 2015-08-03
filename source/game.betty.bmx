@@ -24,6 +24,20 @@ Type TBetty
 	End Function
 
 
+	Method Initialize:int()
+		InLove = new Float[5]
+		LoveSum = 0
+		AwardWinner = new Float[5]
+		AwardSum = 0.0
+		CurrentAwardType = 0
+		AwardEndingAtDay = 0
+		MaxAwardTypes = 3
+		AwardDuration = 3
+		LastAwardWinner = 0
+		LastAwardType = 0
+	End Method
+	
+
 	Method AdjustLove(PlayerID:Int, Amount:Float)
 		For Local i:Int = 1 To 4
 			Self.InLove[i] :-Amount / 4

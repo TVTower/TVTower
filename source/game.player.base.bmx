@@ -1,6 +1,7 @@
 SuperStrict
 Import "Dig/base.util.color.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
+Import "game.player.color.bmx"
 Import "game.player.finance.bmx"
 Import "game.figure.base.bmx"
 
@@ -16,6 +17,12 @@ Type TPlayerBaseCollection
 		if not _instance then _instance = new TPlayerBaseCollection
 		return _instance
 	End Function
+
+
+	Method Initialize:int()
+		players = new TPlayerBase[4]
+		playerID = 1
+	End Method
 
 
 	Method Set:int(id:int=-1, player:TPlayerBase)
@@ -71,7 +78,7 @@ Type TPlayerBase {_exposeToLua="selected"}
 	'global used ID of the player
 	Field playerID:Int = 0
 	'the color used to colorize symbols and figures
-	Field color:TColor
+	Field color:TPlayerColor
 	'actual number of an array of figure-images
 	Field figurebase:Int = 0
 	'actual figure the player uses
@@ -175,7 +182,7 @@ Type TPlayerBase {_exposeToLua="selected"}
 
 
 	'colorizes a figure and the corresponding sign next to the players doors in the building
-	Method RecolorFigure(newColor:TColor = Null)
+	Method RecolorFigure(newColor:TPlayerColor = Null)
 		If newColor = Null Then newColor = color
 		color.ownerID = 0
 		color = newColor

@@ -215,9 +215,9 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 
 		'set mouse to "hover"
-		If broadcastMaterial.GetOwner() = GetPlayerCollection().playerID And mouseover Then Game.cursorstate = 1
+		If broadcastMaterial.GetOwner() = GetPlayerCollection().playerID And mouseover Then GetGame().cursorstate = 1
 		'set mouse to "dragged"
-		If isDragged() Then Game.cursorstate = 2
+		If isDragged() Then GetGame().cursorstate = 2
 	End Method
 
 
@@ -1323,7 +1323,7 @@ endrem
 
 			'we add 1 pixel to height - to hover between tapes too
 			If THelper.MouseIn(entriesRect.GetX(), currY+1, entrySize.GetX(), entrySize.GetY())
-				Game.cursorstate = 1
+				GetGame().cursorstate = 1
 				Local doneSomething:Int = False
 				'store for sheet-display
 				hoveredLicence = licences[i]
@@ -1500,7 +1500,7 @@ endrem
 			
 			If licence
 				If THelper.MouseIn(subEntriesRect.GetX(), currY + 1, entrySize.GetX(), entrySize.GetY())
-					Game.cursorstate = 1 'mouse-over-hand
+					GetGame().cursorstate = 1 'mouse-over-hand
 
 					'store for sheet-display
 					hoveredLicence = licence
@@ -1694,7 +1694,7 @@ Type TgfxContractlist Extends TPlannerList
 					'store for outside use (eg. displaying a sheet)
 					hoveredAdContract = contract
 
-					Game.cursorstate = 1
+					GetGame().cursorstate = 1
 					'only interact if allowed
 					If clicksAllowed
 						If MOUSEMANAGER.IsHit(1)
@@ -2119,9 +2119,9 @@ Type TGUINews Extends TGUIGameListItem
 		Super.Update()
 
 		'set mouse to "hover"
-		If news.owner = GetPlayerCollection().playerID Or news.owner <= 0 And mouseover Then Game.cursorstate = 1
+		If news.owner = GetPlayerCollection().playerID Or news.owner <= 0 And mouseover Then GetGame().cursorstate = 1
 		'set mouse to "dragged"
-		If isDragged() Then Game.cursorstate = 2
+		If isDragged() Then GetGame().cursorstate = 2
 	End Method
 
 
@@ -2478,11 +2478,11 @@ Type TGuiAdContract Extends TGUIGameListItem
 			
 
 		'set mouse to "hover"
-		If contract.owner = GetPlayer().playerID Or contract.owner <= 0 And mouseover Then Game.cursorstate = 1
+		If contract.owner = GetPlayer().playerID Or contract.owner <= 0 And mouseover Then GetGame().cursorstate = 1
 				
 		
 		'set mouse to "dragged"
-		If isDragged() Then Game.cursorstate = 2
+		If isDragged() Then GetGame().cursorstate = 2
 	End Method
 
 

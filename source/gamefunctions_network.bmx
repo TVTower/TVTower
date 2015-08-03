@@ -52,7 +52,7 @@ End Function
 
 '=== EVENTS FOR CLIENT ===
 Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetworkObject)
-	local inGame:int = (Game.gamestate = TGame.STATE_RUNNING)
+	local inGame:int = (GetGame().gamestate = TGame.STATE_RUNNING)
 
 	Select networkObject.evType
 		case NET_PLAYERJOINED
@@ -70,7 +70,7 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 			'send others all important extra game data
 			local gameData:TNetworkObject = TNetworkObject.Create( NET_GAMESETTINGS )
 			gameData.setInt(1, GetPlayerCollection().playerID)
-			gameData.setInt(2, Game.GetRandomizerBase() )
+			gameData.setInt(2, GetGame().GetRandomizerBase() )
 			'TODO: add game settings/rules
 			Network.BroadcastNetworkObject( gameData, NET_PACKET_RELIABLE )
 
@@ -101,16 +101,16 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 			
 			local hostPlayerID:int = NetworkObject.getInt(1)
 			local randomSeedValue:int = NetworkObject.getInt(2)
-			Game.SetRandomizerBase( randomSeedValue )
+			GetGame().SetRandomizerBase( randomSeedValue )
 
 
 		case NET_PREPAREGAME
 				print "NET: received preparegame"
-				Game.SetGameState(TGame.STATE_PREPAREGAMESTART)
+				GetGame().SetGameState(TGame.STATE_PREPAREGAMESTART)
 
 		case NET_STARTGAME
 				print "NET: received startgame"
-				Game.startNetworkGame = True
+				GetGame().startNetworkGame = True
 
 		case NET_GAMEREADY
 				NetworkHelper.ReceiveGameReady( networkObject )
@@ -234,7 +234,7 @@ Type TNetworkHelper
 		if not listenToEvents then return False
 
 		'only react if game leader / server
-		'if not Game.isGameLeader() then return False
+		'if not GetGame().isGameLeader() then return False
 		if not Network.isServer then return False
 
 		local room:TRoom = TRoom(triggerEvent.GetSender())
@@ -259,9 +259,9 @@ Type TNetworkHelper
 		if slot < 0 then return 0
 
 		'ignore ai player's events if no gameleader
-		if not Game.isGameLeader() and GetPlayer(news.owner).isLocalAi() then return false
+		if not GetGame().isGameLeader() and GetPlayer(news.owner).isLocalAi() then return false
 		'do not allow events from players for other players objects
-		if news.owner <> GetPlayerCollection().playerID and not Game.isGameLeader() then return FALSE
+		if news.owner <> GetPlayerCollection().playerID and not GetGame().isGameLeader() then return FALSE
 
 		NetworkHelper.SendPlanSetNews(GetPlayerCollection().playerID, news, slot)
 	End Function
@@ -276,9 +276,9 @@ Type TNetworkHelper
 		if not station then return FALSE
 
 		'ignore ai player's events if no gameleader
-		if not Game.isGameLeader() and GetPlayer(station.owner).isLocalAi() then return false
+		if not GetGame().isGameLeader() and GetPlayer(station.owner).isLocalAi() then return false
 		'do not allow events from players for other players objects
-		if station.owner <> GetPlayerCollection().playerID and not Game.isGameLeader() then return FALSE
+		if station.owner <> GetPlayerCollection().playerID and not GetGame().isGameLeader() then return FALSE
 
 		local action:int = -1
 		if triggerEvent.isTrigger("stationmap.addStation") then action = NET_ADD
@@ -306,7 +306,7 @@ Type TNetworkHelper
 		'other player ?
 		if figure.playerID > 0 and figure.playerID <> playerID then return False
 		'other figures are controlled by GameLeader
-		if figure.playerID = 0 and not Game.IsGameLeader() then return False
+		if figure.playerID = 0 and not GetGame().IsGameLeader() then return False
 	
 
 		local x:int = triggerEvent.GetData().GetInt("x", 0)
@@ -322,9 +322,9 @@ Type TNetworkHelper
 
 		local owner:int = programmeCollection.owner
 		'ignore ai player's events if no gameleader
-		if GetPlayer(owner).isLocalAi() and not Game.isGameLeader() then return false
+		if GetPlayer(owner).isLocalAi() and not GetGame().isGameLeader() then return false
 		'do not allow events from players for other players objects
-		if owner <> GetPlayerCollection().playerID and not Game.isGameLeader() then return FALSE
+		if owner <> GetPlayerCollection().playerID and not GetGame().isGameLeader() then return FALSE
 
 		select triggerEvent.getTrigger()
 			case "programmecollection.removeprogrammelicence"
@@ -392,8 +392,8 @@ Type TNetworkHelper
 
 		'60 upd per second = -> GetDeltaTimer().GetDeltaTime() => 16ms
 		'ping in ms -> latency/2 -> 0.5*latency/16ms = "1,3 updates bis ping ankommt"
-		'pro Update: zeiterhoehung von "game.speed/10.0"
-		'-> bereinigung: "0.5*latency/16" * "game.speed/10.0"
+		'pro Update: zeiterhoehung von "GetGame().speed/10.0"
+		'-> bereinigung: "0.5*latency/16" * "GetGame().speed/10.0"
 		local correction:Double = 0.5 * Network.client.latency / GetDeltaTimer().GetDelta() * GetWorldTime()._timeFactor/10.0
 		'we want it in s not in ms
 		correction :/ 1000.0
@@ -595,7 +595,7 @@ Type TNetworkHelper
 		Next
 		if allReady
 			'send game start - maybe wait for "receive" too
-			Game.startNetworkGame = 1
+			GetGame().startNetworkGame = 1
 			print "[NET] allReady so send game start to all others"
 			Network.BroadcastNetworkObject( TNetworkObject.Create( NET_STARTGAME ), NET_PACKET_RELIABLE )
 			return
@@ -628,7 +628,7 @@ Type TNetworkHelper
 		local remotePlayerID:int = obj.getInt(1)
 		GetPlayerCollection().Get(remotePlayerID).networkstate = 1
 
-		if Game.GAMESTATE <> TGame.STATE_RUNNING
+		if GetGame().GAMESTATE <> TGame.STATE_RUNNING
 			SendGameReady( GetPlayerCollection().playerID, 0 )
 		endif
 	End Method
@@ -907,7 +907,7 @@ endrem
 		if senderID < 0 then return FALSE
 		if sendToChannels = CHAT_CHANNEL_NONE then return FALSE
 		'limit to game host sending for others (AI)
-		if senderID <> GetPlayerCollection().playerID and not Game.IsGameLeader() then return FALSE
+		if senderID <> GetPlayerCollection().playerID and not GetGame().IsGameLeader() then return FALSE
 
 		local obj:TNetworkObject = TNetworkObject.Create( NET_CHATMESSAGE)
 		obj.setInt(1, GetPlayerCollection().playerID)	'so we know the origin of the packet

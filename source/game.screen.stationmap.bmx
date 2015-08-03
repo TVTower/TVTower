@@ -13,61 +13,75 @@ Type TScreenHandler_StationMap
 	global currentSubRoom:TRoom = null
 	global lastSubRoom:TRoom = null
 
+	Global _eventListeners:TLink[]
 
-	Function Init()
+
+	Function Initialize:int()
+		local screen:TInGameScreen = TInGameScreen(ScreenCollection.GetScreen("screen_office_stationmap"))
+		if not screen then return False
+
 		'remove background from stationmap screen
 		'(we draw the map and then the screen bg)
-		local stationMapScreen:TInGameScreen = TInGameScreen(ScreenCollection.GetScreen("screen_office_stationmap"))
-		if stationMapScreen
-			stationMapBackgroundSpriteName = stationMapScreen.backgroundSpriteName
-			stationMapScreen.backgroundSpriteName = ""
+		if screen.backgroundSpriteName <> ""
+			stationMapBackgroundSpriteName = screen.backgroundSpriteName
+			screen.backgroundSpriteName = ""
 		endif
-	
-		'StationMap-GUIcomponents
-		'position gets recalculated during drawing (so it can move with the panel)
-		'also add 2 pixels to width because of "inset effect"
-		stationMapBuyButton = new TGUIButton.Create(new TVec2D.Init(610, 110), new TVec2D.Init(170, 28), "", "STATIONMAP")
-		stationMapBuyButton.spriteName = "gfx_gui_button.datasheet"
-		EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapBuy, stationMapBuyButton )
-		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapBuy, stationMapBuyButton )
 
-		stationMapSellButton = new TGUIButton.Create(new TVec2D.Init(610, 345), new TVec2D.Init(170, 28), "", "STATIONMAP")
+		
+		'=== create gui elements if not done yet
+		if not stationMapBuyButton
+			'StationMap-GUIcomponents
+			'position gets recalculated during drawing (so it can move with the panel)
+			'also add 2 pixels to width because of "inset effect"
+			stationMapBuyButton = new TGUIButton.Create(new TVec2D.Init(610, 110), new TVec2D.Init(170, 28), "", "STATIONMAP")
+			stationMapBuyButton.spriteName = "gfx_gui_button.datasheet"
+
+			stationMapSellButton = new TGUIButton.Create(new TVec2D.Init(610, 345), new TVec2D.Init(170, 28), "", "STATIONMAP")
+			stationMapSellButton.spriteName = "gfx_gui_button.datasheet"
+
+			stationList = new TGUISelectList.Create(new TVec2D.Init(610,233), new TVec2D.Init(174, 105), "STATIONMAP")
+
+			For Local i:Int = 0 To 3
+				stationMapShowStations[i] = new TGUICheckBox.Create(new TVec2D.Init(520, 30 + i*25), new TVec2D.Init(20, 20), String(i + 1), "STATIONMAP")
+				stationMapShowStations[i].ShowCaption(False)
+				stationMapShowStations[i].data.AddNumber("playerNumber", i+1)
+			Next
+		endif
+
+
+		'=== reset gui element options to their defaults
 		stationMapSellButton.disable()
-		stationMapSellButton.spriteName = "gfx_gui_button.datasheet"
-		EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapSell, stationMapSellButton )
-		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapSell, stationMapSellButton )
-
-		'we have to refresh the gui station list as soon as we remove or add a station
-		EventManager.registerListenerFunction( "stationmap.removeStation",	OnChangeStationMapStation )
-		EventManager.registerListenerFunction( "stationmap.addStation",	OnChangeStationMapStation )
-
-		stationList = new TGUISelectList.Create(new TVec2D.Init(610,233), new TVec2D.Init(174, 105), "STATIONMAP")
-		EventManager.registerListenerFunction( "GUISelectList.onSelectEntry", OnSelectEntry_StationMapStationList, stationList )
-
-		'player enters station map screen - set checkboxes according to station map config
-		EventManager.registerListenerFunction("screen.onEnter", onEnterStationMapScreen, ScreenCollection.GetScreen("screen_office_stationmap"))
-
-
 		For Local i:Int = 0 To 3
-			stationMapShowStations[i] = new TGUICheckBox.Create(new TVec2D.Init(520, 30 + i*25), new TVec2D.Init(20, 20), String(i + 1), "STATIONMAP")
 			stationMapShowStations[i].SetChecked(True, False)
-			stationMapShowStations[i].ShowCaption(False)
-			stationMapShowStations[i].data.AddNumber("playerNumber", i+1)
-			'register checkbox changes
-			EventManager.registerListenerFunction("guiCheckBox.onSetChecked", OnSetChecked_StationMapFilters, stationMapShowStations[i])
 		Next
 
-		'inform if language changes
-		EventManager.registerListenerFunction("Language.onSetLanguage", onSetLanguage)
+
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
 
 
-		TRoomHandler._RegisterScreenHandler( onUpdateStationMap, onDrawStationMap, ScreenCollection.GetScreen("screen_office_stationmap") )
+		'=== register event listeners
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onClick", OnClick_StationMapBuy, stationMapBuyButton ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapBuy, stationMapBuyButton ) ] 
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onClick", OnClick_StationMapSell, stationMapSellButton ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapSell, stationMapSellButton ) ]
+		'we have to refresh the gui station list as soon as we remove or add a station
+		_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.removeStation", OnChangeStationMapStation ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.addStation", OnChangeStationMapStation ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "GUISelectList.onSelectEntry", OnSelectEntry_StationMapStationList, stationList ) ]
+		'player enters station map screen - set checkboxes according to station map config
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onEnter", onEnterStationMapScreen, screen ) ]
 
-		SetLanguage()
-	End Function
+		For Local i:Int = 0 To 3
+			'register checkbox changes
+			_eventListeners :+ [ EventManager.registerListenerFunction("guiCheckBox.onSetChecked", OnSetChecked_StationMapFilters, stationMapShowStations[i]) ]
+		Next
 
+		'to update/draw the screen
+		_eventListeners :+ TRoomHandler._RegisterScreenHandler( onUpdateStationMap, onDrawStationMap, screen )
 
-	Function onSetLanguage:int(triggerEvent:TEventBase)
+		'(re-)localize content
 		SetLanguage()
 	End Function
 
