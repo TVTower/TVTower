@@ -19,10 +19,10 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	Field buttons:TGUIButton[]
 	Field autoAdjustHeight:Int = True
 	'=== CLOSING VARIABLES ===
-	'indicator if 
-	Field closeActionStarted:int = 0
+	'indicator if currently closing
+	Field closeActionStarted:Long = 0
 	'the time a close action started
-	Field closeActionTime:int = 0
+	Field closeActionTime:Long = 0
 	'the time a close action runs
 	Field closeActionDuration:int = 1000
 	'the position of the widget when closing
@@ -39,6 +39,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 		SetDialogueType(1)
 
 		'set another panel background
+		GUIManager.Remove(guiBackground)
 		guiBackground.spriteBaseName = "gfx_gui_modalWindow"
 
 
@@ -48,6 +49,12 @@ Type TGUIModalWindow Extends TGUIWindowBase
 		'fire event so others know that the window is created
 		EventManager.triggerEvent(TEventSimple.Create("guiModalWindow.onCreate", Self))
 		Return Self
+	End Method
+
+
+	Method Initialize:int()
+		closeActionStarted = 0
+		closeActionTime = 0
 	End Method
 
 
@@ -150,6 +157,11 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	End Method
 
 
+	Method IsClosed:int()
+		return closeActionStarted and closeActionTime + closeActionDuration < Time.GetTimeGone()
+	End Method
+
+
 	'handle clicks on the various close buttons
 	Method onButtonClick:Int( triggerEvent:TEventBase )
 		Local sender:TGUIButton = TGUIButton(triggerEvent.GetSender())
@@ -157,9 +169,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 
 		For Local i:Int = 0 To Self.buttons.length - 1
 			If Self.buttons[i] <> sender Then Continue
-
-			'close window
-			Self.close(i)
+			Self.Close(i)
 		Next
 	End Method
 
@@ -171,20 +181,20 @@ Type TGUIModalWindow Extends TGUIWindowBase
 		Super.Update()
 
 		if Not GuiManager.GetKeystrokeReceiver() and KeyManager.IsHit(KEY_ESCAPE)
-			'do not allow another ESC-press for 250ms
+			'do not allow another ESC-press for X ms
 			KeyManager.blockKey(KEY_ESCAPE, 250)
-			self.close()
+			self.Close()
 		endif
 
 		'remove the window as soon as there is no animation active
 		'until then: play the animation
-		If closeActionStarted and canClose()
+		If IsClosed()
 			Self.remove()
 			Return False
 		EndIf
 
 		'we manage drawing and updating our background
-		If guiBackground then guiBackground.Update()
+		If guiBackground and guiBackground.IsEnabled() then guiBackground.Update()
 
 		'deactivate mousehandling for other underlying objects
 		GUIManager._ignoreMouse = True
@@ -219,6 +229,6 @@ Type TGUIModalWindow Extends TGUIWindowBase
 		oldCol.SetRGBA()
 
 		'we manage drawing and updating our background
-		If guiBackground then guiBackground.Draw()
+		If guiBackground and guiBackground.IsEnabled() then guiBackground.Draw()
 	End Method
 End Type

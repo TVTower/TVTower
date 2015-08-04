@@ -563,10 +563,10 @@ Type TApp
 
 				'Save game only when in a game
 				If GetGame().gamestate = TGame.STATE_RUNNING
-					If KEYMANAGER.IsHit(KEY_S) Then TSaveGame.Save("savegame.xml")
+					If KEYMANAGER.IsHit(KEY_S) Then TSaveGame.Save("savegames/quicksave.xml")
 				EndIf
 
-				If KEYMANAGER.IsHit(KEY_L) Then TSaveGame.Load("savegame.xml")
+				If KEYMANAGER.IsHit(KEY_L) Then TSaveGame.Load("savegames/quicksave.xml")
 
 				If KEYMANAGER.IsHit(KEY_TAB) Then TVTDebugInfos = 1 - TVTDebugInfos
 
@@ -881,8 +881,6 @@ Type TApp
 		ExitAppDialogue.SetDialogueType(2)
 		ExitAppDialogue.SetZIndex(100000)
 
-Rem
-	disable until "new game" works properly
 		'limit to "screen" area
 		If GetGame().gamestate = TGame.STATE_RUNNING
 			ExitAppDialogue.darkenedArea = New TRectangle.Init(0,0,800,385)
@@ -895,8 +893,6 @@ Rem
 		else
 			ExitAppDialogue.SetCaptionAndValue( GetLocale("ALREADY_OVER"), GetLocale("DO_YOU_REALLY_WANT_TO_QUIT") )
 		endif
-endrem
-		ExitAppDialogue.SetCaptionAndValue( GetLocale("ALREADY_OVER"), GetLocale("DO_YOU_REALLY_WANT_TO_QUIT") )
 	End Function
 
 End Type
@@ -905,6 +901,7 @@ End Type
 'just an object holding all data which has to get saved
 'it is kind of an "DataCollectionCollection" ;D
 Type TGameState
+	Field _gameSummary:TData = Null
 	Field _Game:TGame = Null
 	Field _WorldTime:TWorldTime = Null
 	Field _World:TWorld = Null
@@ -1047,6 +1044,15 @@ print "TGameState.RestoreGameData(): Restore game objects"
 
 
 	Method BackupGameData:Int()
+		'save a short summary of the game at the begin of the file
+		_gameSummary = new TData
+		_gameSummary.Add("game_mode", "singleplayer")
+		_gameSummary.AddNumber("game_timeGone", GetWorldTime().GetTimeGone())
+		_gameSummary.Add("player_name", GetPlayer().name)
+		_gameSummary.Add("player_channelName", GetPlayer().channelName)
+		_gameSummary.AddNumber("player_money", GetPlayer().GetMoney())
+
+
 		'start with the most basic data, so we avoid that these basic
 		'objects get serialized in the depths of more complex objects
 		'instead of getting an "reference" there.
@@ -1119,6 +1125,7 @@ print "TGameState.RestoreGameData(): Restore game objects"
 		EndIf
 	End Method
 End Type
+
 
 
 Type TSaveGame Extends TGameState
@@ -1294,15 +1301,13 @@ Type TSaveGame Extends TGameState
 
 		'setup tpersist config
 		TPersist.format=True
-'during development...
+'during development...(also savegame.XML should be savegame.ZIP then)
 '		TPersist.compressed = True
 
 		TPersist.maxDepth = 4096
-local begin:int = Millisecs()
 		'save the savegame data as xml
 		Local persist:TPersist = New TPersist
 		persist.SerializeToFile(saveGame, saveName)
-print "save: "+ (Millisecs() - begin) +"ms" 
 		'tell everybody we finished saving
 		'payload is saveName and saveGame-object
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnSave", New TData.addString("saveName", saveName).add("saveGame", saveGame)))
@@ -2889,7 +2894,7 @@ End Type
 
 
 
-'the modal window containing various gui elements to configur some
+'the modal window containing various gui elements to configure some
 'basics in the game
 Type TSettingsWindow
 	Field modalDialogue:TGUIGameModalWindow
@@ -3119,7 +3124,6 @@ Type TSettingsWindow
 
 		canvas.AddChild(labelRenderer)
 		canvas.AddChild(dropdownRenderer)
-'		GuiManager.SortLists()
 		nextY :+ inputH + labelH * 1.5
 
 		checkFullscreen = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth,-1), "")

@@ -724,9 +724,8 @@ Type TGUIobject
 		'unlink all potential event listeners concerning that object
 		EventManager.unregisterListenerByLimit(self,self)
 
-		For Local link:TLink = EachIn _registeredEventListener
-			link.Remove()
-		Next
+		EventManager.unregisterListenersByLinks(_registeredEventListener)
+		_registeredEventListener = new TLink[0]
 
 		'maybe our parent takes care of us...
 '		If _parent Then _parent.DeleteChild(Self)
@@ -1086,6 +1085,11 @@ Type TGUIobject
 		EndIf
 	End Method
 
+
+	Method IsEnabled:int()
+		return _flags & GUI_OBJECT_ENABLED
+	End Method
+	
 
 	Method Resize(w:Float = 0, h:Float = 0)
 		If w > 0 Then rect.dimension.setX(w)
@@ -1554,9 +1558,6 @@ Type TGUIobject
 
 
 		'=== HANDLE MOUSE CLICKS / POSITION ===
-
-		local clickable:int = IsClickable()
-
 		'skip objects the mouse is not over (except it is already dragged).
 		'ATTENTION: this differs to self.mouseOver (which is set later on)
 		if not containsXY(mousePos.x, mousePos.y) and not isDragged() then return FALSE
@@ -1569,7 +1570,7 @@ Type TGUIobject
 		'-> only react to dragged obj or all if none is dragged
 		If Not GUIManager.GetDraggedCount() Or isDragged()
 
-			If clickable
+			If IsClickable()
 				'activate objects - or skip if if one gets active
 				If GUIManager.UpdateState_mouseButtonDown[1] And _flags & GUI_OBJECT_ENABLED
 					'create a new "event"
@@ -1615,7 +1616,7 @@ Type TGUIobject
 				EndIf
 
 
-				If clickable
+				If IsClickable()
 					'inform others about a right guiobject click
 					'we do use a "cached hit state" so we can reset it if
 					'we found a one handling it
