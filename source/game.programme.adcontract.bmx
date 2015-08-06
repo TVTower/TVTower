@@ -477,7 +477,33 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		Local a1:TAdContract = TAdContract(o1)
 		Local a2:TAdContract = TAdContract(o2)
 		If Not a2 Then Return 1
+		if a1.adAgencyClassification = a2.adAgencyClassification 
+			return a1.GetTitle() > a2.GetTitle()
+		endif
         Return a1.adAgencyClassification - a2.adAgencyClassification
+	End Function
+
+
+	Function SortByProfit:Int(o1:Object, o2:Object)
+		Local a1:TAdContract = TAdContract(o1)
+		Local a2:TAdContract = TAdContract(o2)
+		If Not a2 Then Return 1
+		if a1.GetProfit() = a2.GetProfit() 
+			return a1.GetTitle() > a2.GetTitle()
+		endif
+        Return a1.GetProfit() - a2.GetProfit()
+	End Function
+
+
+	Function SortByMinAudience:Int(o1:Object, o2:Object)
+		Local a1:TAdContract = TAdContract(o1)
+		Local a2:TAdContract = TAdContract(o2)
+		If Not a2 Then Return 1
+
+		if a1.GetMinAudience() = a2.GetMinAudience() 
+			return a1.GetTitle() > a2.GetTitle()
+		endif
+        Return a1.GetMinAudience() - a2.GetMinAudience()
 	End Function
 
 

@@ -2862,20 +2862,23 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		else
 			GuiListNormal = GuiListNormal[..3]
 			for local i:int = 0 to GuiListNormal.length-1
-				GuiListNormal[i] = new TGUIAdContractSlotList.Create(new TVec2D.Init(430 - i*70, 170 + i*32), new TVec2D.Init(200, 140), "adagency")
-				GuiListNormal[i].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
-				GuiListNormal[i].SetItemLimit( contractsNormalAmount / GuiListNormal.length  )
-				GuiListNormal[i].Resize(GetSpriteFromRegistry("gfx_contracts_0").area.GetW() * (contractsNormalAmount / GuiListNormal.length), GetSpriteFromRegistry("gfx_contracts_0").area.GetH() )
-				GuiListNormal[i].SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW(), GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
-				GuiListNormal[i].SetAcceptDrop("TGuiAdContract")
-				GuiListNormal[i].setZindex(i)
+				local listIndex:int = GuiListNormal.length-1 - i
+				GuiListNormal[listIndex] = new TGUIAdContractSlotList.Create(new TVec2D.Init(430 - i*70, 170 + i*32), new TVec2D.Init(200, 140), "adagency")
+				GuiListNormal[listIndex].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+				GuiListNormal[listIndex].SetItemLimit( contractsNormalAmount / GuiListNormal.length  )
+				GuiListNormal[listIndex].Resize(GetSpriteFromRegistry("gfx_contracts_0").area.GetW() * (contractsNormalAmount / GuiListNormal.length), GetSpriteFromRegistry("gfx_contracts_0").area.GetH() )
+				GuiListNormal[listIndex].SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW(), GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
+				GuiListNormal[listIndex].SetAcceptDrop("TGuiAdContract")
+				GuiListNormal[listIndex].setZindex(i)
 			Next
 
 			GuiListSuitcase	= new TGUIAdContractSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200,80), "adagency")
 			GuiListSuitcase.SetAutofillSlots(true)
 
-			GuiListCheap = new TGUIAdContractSlotList.Create(new TVec2D.Init(70, 200), new TVec2D.Init(10 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
-			GuiListCheap.setEntriesBlockDisplacement(70,0)
+			GuiListCheap = new TGUIAdContractSlotList.Create(new TVec2D.Init(70, 220), new TVec2D.Init(10 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
+			'GuiListCheap = new TGUIAdContractSlotList.Create(new TVec2D.Init(70, 200), new TVec2D.Init(10 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
+			'GuiListCheap.setEntriesBlockDisplacement(70,0)
+			'GuiListCheap.SetEntryDisplacement( -2*GuiListNormal[0]._slotMinDimension.x, 5)
 
 			GuiListCheap.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
@@ -2886,7 +2889,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			GuiListCheap.SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW(), GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
 			GuiListSuitcase.SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW(), GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
 
-			GuiListCheap.SetEntryDisplacement( -2*GuiListNormal[0]._slotMinDimension.x, 5)
+			GuiListCheap.SetEntryDisplacement( 0, -5)
 			GuiListSuitcase.SetEntryDisplacement( 0, 0)
 
 			GuiListCheap.SetAcceptDrop("TGuiAdContract")
@@ -2987,13 +2990,14 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'are in)
 		if not figure.playerID then return False
 
-		if figure = GetPlayerBase().GetFigure()
-			GetInstance().ResetContractOrder()
-		endif
-
 		'refill the empty blocks, also sets haveToRefreshGuiElements=true
 		'so next call the gui elements will be redone
 		GetInstance().ReFillBlocks()
+
+		'reorder AFTER refilling
+		if figure = GetPlayerBase().GetFigure()
+			GetInstance().ResetContractOrder()
+		endif
 	End Method
 
 
@@ -3168,7 +3172,18 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		listNormal = new TAdContract[listNormal.length]
 		listCheap = new TAdContract[listCheap.length]
 
-		contracts.sort(false, TAdContract.SortByClassification)
+
+		Select GameRules.devConfig.GetString("DEV_ADAGENCY_SORT_CONTRACTS_BY", "minaudience").Trim().ToLower()
+			case "classification"
+				contracts.sort(True, TAdContract.SortByClassification)
+			case "profit"
+				contracts.sort(True, TAdContract.SortByProfit)
+			case "minaudience"
+				contracts.sort(True, TAdContract.SortByMinAudience)
+			default
+				contracts.sort(True, TAdContract.SortByMinAudience)
+		End select
+		
 
 		'add again - so it gets sorted
 		for local contract:TAdContract = eachin contracts

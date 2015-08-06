@@ -26,6 +26,16 @@
 
 			<DEV_DAILY_BOSS_VISIT value="1" />
 
+			<!-- Which kind of contract sort is used in the adagency
+			     Options:
+			       "minaudience" - by minimum audience required
+			       "classification" - by channel-groups (worst, avg, best) and daytime/primetime
+			       "profit" - by profit of the contract
+			     Default: "minaudience"
+				<DEV_ADAGENCY_SORT_CONTRACTS_BY value="minaudience" />
+			-->
+
+
 			<!-- profit/penalty get multiplied with this value if there
 			     is a limiting targetgroup.
 			     Default: 3.0
