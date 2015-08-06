@@ -317,18 +317,20 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		'9 - Zufall
 		If withLuckEffect Then result.LuckMod = GetLuckMod()
 
+		'calculate intermediary result for AudienceFlowBonus-calculation
 		result.Recalculate()
 
 		'10 - Audience Flow
 		result.AudienceFlowBonus = GetAudienceFlowBonus(block, result, lastMovieBlockAttraction, lastNewsBlockAttraction) 		
 
-		result.Recalculate()
-
 		'11 - Sequence
 		If withSequenceEffect Then
-			result.SequenceEffect = GetSequenceEffect(block, genreDefinition, lastNewsBlockAttraction, result, lastMovieBlockAttraction)
 			result.Recalculate()
+			result.SequenceEffect = GetSequenceEffect(block, genreDefinition, lastNewsBlockAttraction, result, lastMovieBlockAttraction)
 		EndIf
+
+		'calculate final result
+		result.Recalculate()
 
 		Return result
 	End Method	

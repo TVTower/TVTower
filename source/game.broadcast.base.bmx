@@ -947,9 +947,20 @@ Type TAudienceMarketCalculation
 				Local attraction:TAudience = TAudience(MapValueForKey(AudienceAttractions, currKey))
 				'Die effectiveAttraction (wegen Konkurrenz) entspricht der Quote!
 				Local effectiveAttraction:TAudience = attraction.Copy().Multiply(reduceFactor)
+				'repair broken men/women-values
+				'(the attraction might contain odd values for men/women
+				'so we recalculate their values based on audience group
+				'(children, ..., pensioners) and audience gender (m/w))
+				effectiveAttraction.CalcWeightedGenderModifier()
+
 				'Anteil an der "erbeuteten" Zapper berechnen
 				Local channelSurfer:TAudience = ChannelSurferToShare.Copy().Multiply(effectiveAttraction)
 				channelSurfer.Round()
+				'now the channelSurfer-"men/women" value might be zero
+				'because of men/women-attraction-values being "0"
+				'->recalculate men/women-value 
+				channelSurfer.CalcGenderBreakdown()
+				channelSurfer.FixGenderCount()
 
 				'Ergebnis in das AudienceResult schreiben
 				Local currKeyInt:Int = currKey.ToInt()

@@ -566,7 +566,13 @@ Type TApp
 					If KEYMANAGER.IsHit(KEY_S) Then TSaveGame.Save("savegames/quicksave.xml")
 				EndIf
 
-				If KEYMANAGER.IsHit(KEY_L) Then TSaveGame.Load("savegames/quicksave.xml")
+				If KEYMANAGER.IsHit(KEY_L)
+					if  KEYMANAGER.IsDown(KEY_LSHIFT)
+						TSaveGame.Load("savegames/savegame.xml")
+					else
+						TSaveGame.Load("savegames/quicksave.xml")
+					endif
+				endif
 
 				If KEYMANAGER.IsHit(KEY_TAB) Then TVTDebugInfos = 1 - TVTDebugInfos
 
