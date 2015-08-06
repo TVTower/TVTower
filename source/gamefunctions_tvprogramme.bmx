@@ -2486,7 +2486,7 @@ Type TGuiAdContract Extends TGUIGameListItem
 	End Method
 
 
-	Method DrawSheet(leftX:Int=30, rightX:Int=30)
+	Method DrawSheet(leftX:Int=30, rightX:Int=30, forceAlign:int = -1)
 		Local sheetY:Float 	= 20
 		Local sheetX:Float 	= leftX
 		Local sheetAlign:Int= 0
@@ -2498,15 +2498,24 @@ Type TGuiAdContract Extends TGUIGameListItem
 		'METHOD 2
 		'just use the half of a screen - ensures the data sheet does not overlap
 		'the object
-		If MouseManager.x < GetGraphicsManager().GetWidth()/2
-			sheetX = GetGraphicsManager().GetWidth() - rightX
+		If forceAlign <> -1
+			sheetAlign = forceAlign
+		elseIf MouseManager.x < GetGraphicsManager().GetWidth()/2
 			sheetAlign = 1
 		EndIf
 
+		if sheetAlign = 1
+			sheetX = GetGraphicsManager().GetWidth() - rightX
+		endif
+
 		SetColor 0,0,0
 		SetAlpha 0.2
-		Local x:Float = Self.GetScreenX()
-		Local tri:Float[]=[sheetX+20,sheetY+25,sheetX+20,sheetY+90,Self.GetScreenX()+Self.GetScreenWidth()/2.0+3,Self.GetScreenY()+Self.GetScreenHeight()/2.0]
+		local pointA:TVec2D = new TVec2D.Init(GetScreenX() + 0.5 * GetScreenWidth(), GetScreenY() + 0.25 * GetScreenHeight())
+		local pointB:TVec2D = new TVec2D.Init(sheetX + (sheetAlign=0)*100 - (sheetalign=1)*100, sheetY + 75)
+		local pointC:TVec2D = pointB.Copy().RotateAroundPoint(pointA, 5)
+		'this centers the middle of BC
+		pointB.RotateAroundPoint(pointA, -4)
+		Local tri:Float[]=[pointB.x,pointB.y, pointA.x,pointA.y, pointC.x,pointC.y]
 		DrawPoly(tri)
 		SetColor 255,255,255
 		SetAlpha 1.0

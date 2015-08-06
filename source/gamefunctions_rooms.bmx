@@ -3814,8 +3814,29 @@ endrem
 
 		if hoveredGuiAdContract
 			'draw the current sheet
-			hoveredGuiAdContract.DrawSheet()
+			if hoveredGuiAdContract.IsDragged()
+				hoveredGuiAdContract.DrawSheet()
+			else
+				'rem
+				'MODE 1: trash contracts have right aligned sheets
+				'        rest is left aligned
+				if GuiListCheap.ContainsContract(hoveredGuiAdContract.contract)
+					hoveredGuiAdContract.DrawSheet(,, 1)
+				else
+					hoveredGuiAdContract.DrawSheet(,, 0)
+				endif
+				'endrem
+
+				rem
+				'MODE 2: all contracts are left aligned
+				'        ->problems with big datasheets for trash ads
+				'          as they overlap the contracts then
+				hoveredGuiAdContract.DrawSheet(,, 0)
+				endrem
+			endif
 		endif
+
+
 	End Method
 
 
