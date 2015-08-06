@@ -87,6 +87,11 @@ Type TGUIinput Extends TGUIobject
 		if Super.SetFocus()
 			'backup old value
 			_valueBeforeEdit = value
+
+			'clear "getchar()"-queue and states
+			'(this avoids entering previously pressed keystrokes)
+			FlushKeys()
+
 			return True
 		else
 			return False

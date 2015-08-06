@@ -52,8 +52,8 @@ Global KEYWRAPPER:TKeyWrapper = New TKeyWrapper
 Const KEY_STATE_NORMAL:int			= 0	'nothing done
 Const KEY_STATE_HIT:int				= 1	'once dow, now up
 Const KEY_STATE_DOWN:int			= 2 'down
-Const KEY_STATE_UP:int				= 3 'up
-Const KEY_STATE_BLOCKED:int			= 6
+Const KEY_STATE_UP:int				= 4 'up
+Const KEY_STATE_BLOCKED:int			= 8
 
 For local i:int = 0 To 255
 	KEYWRAPPER.allowKey(i,KEYWRAP_ALLOW_BOTH,600,100)
@@ -398,7 +398,8 @@ Type TKeyManager
 
 	'returns whether the button is currently blocked
 	Method isBlocked:Int(key:Int)
-		return _keyStatus[key] = KEY_STATE_BLOCKED
+		'this time it is a bitmask flag (normal/hit/.. + blocked)
+		return _keyStatus[key] & KEY_STATE_BLOCKED
 	End Method
 
 
@@ -427,9 +428,13 @@ Type TKeyManager
 			'ignore key if it is blocked
 			'or set back to "normal" afterwards
 			if _blockKeyTime[i] > time
-				_keyStatus[i] = KEY_STATE_BLOCKED
-			elseif _keyStatus[i] = KEY_STATE_BLOCKED
-				_keyStatus[i] = KEY_STATE_NORMAL
+				_keyStatus[i] :| KEY_STATE_BLOCKED
+			elseif isBlocked(i)
+				_keyStatus[i] :& ~KEY_STATE_BLOCKED
+'				'meanwhile a hit can get renewed
+				if _keyStatus[i] = KEY_STATE_HIT
+					_keyStatus[i] = KEY_STATE_NORMAL
+				endif
 			endif
 
 			'normal check
@@ -458,8 +463,8 @@ Type TKeyManager
 		'time can be absolute as a key block is just for blocking a key
 		'which has not to be deterministic
 		_blockKeyTime[key] = Time.GetTimeGone() + milliseconds
-		'also set the current status to blocked
-		_keyStatus[key] = KEY_STATE_BLOCKED
+		'also add the block state to the  current status
+		_keyStatus[key] :| KEY_STATE_BLOCKED
 	End Method
 
 
@@ -501,13 +506,13 @@ Type TKeyWrapper
 		Local rule:Int = _keySet[key, 0]
 
 		If keyState = KEY_STATE_NORMAL or keyState = KEY_STATE_UP Then Return False
-		If keyState = KEY_STATE_BLOCKED Then Return False
+		If keyState & KEY_STATE_BLOCKED Then Return False
 
 		'Muss erlaubt und aktiv sein
 		If rule & KEYWRAP_ALLOW_HIT and keyState = KEY_STATE_HIT
 			Return hitKey(key, keyState)
 		ElseIf rule & KEYWRAP_ALLOW_HOLD
-			return holdKey(key, keyState)
+			Return holdKey(key, keyState)
 		EndIf
 		Return False
 	End Method
@@ -530,6 +535,7 @@ Type TKeyWrapper
 	Method holdKey:Int(key:Int, keyState:int=-1)
 		if keyState = -1 then keyState = KEYMANAGER.getStatus(key)
 		If keyState = KEY_STATE_NORMAL Or keyState = KEY_STATE_UP Then Return False
+		If keyState & KEY_STATE_BLOCKED Then Return False
 
 		If _keySet[key, 0] & KEYWRAP_ALLOW_HOLD
 			'time which has to be gone until hold is set

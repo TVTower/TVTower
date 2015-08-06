@@ -856,6 +856,9 @@ Type TGUIobject
 				GuiManager.SortLists()
 			endif
 		endif
+
+		'inform object
+		child.onAddAsChild(self)
 	End Method
 
 
@@ -863,6 +866,9 @@ Type TGUIobject
 	Method DeleteChild:Int(child:TGUIobject)
 		If Not children Then Return False
 		children.Remove(child)
+
+		'inform object
+		child.onRemoveAsChild(self)
 	End Method
 	
 
@@ -875,6 +881,9 @@ Type TGUIobject
 		'add back to guimanager
 		'RON: this should be needed but bugs out "news dnd handling"
 		'GuiManager.Add(child)
+
+		'inform object
+		child.onRemoveAsChild(self)
 	End Method
 
 
@@ -893,6 +902,16 @@ Type TGUIobject
 		Next
 	End Method
 
+
+	Method onAddAsChild:int(parent:TGUIObject)
+		'stub
+	End Method
+
+
+	Method onRemoveAsChild:int(parent:TGUIObject)
+		'stub
+	End Method
+		
 
 	Method RestrictContentViewport:Int()
 		GUIManager.RestrictViewport(..
@@ -1737,31 +1756,35 @@ Type TGUIobject
 		'charCode is "0" if no key is recognized
 		local charCode:int = int(GetChar())
 
-		'charCode is < 0 for me when umlauts are pressed
-		if charCode < 0
-			?Win32
-			If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
-			If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
-			If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
-			?Mac
-			If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
-			If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
-			If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
-			?Linux
-			If KEYWRAPPER.pressedKey(252) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
-			If KEYWRAPPER.pressedKey(246) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
-			If KEYWRAPPER.pressedKey(163) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
-			?
-		'handle normal "keys" (excluding umlauts)
-		elseif charCode > 0
-			local addChar:int = True
-			'skip "backspace"
-			if chr(KEY_BACKSPACE) = chr(charCode) then addChar = False
-			'skip enter if whished so
-			if skipEnterKey and chr(KEY_ENTER) = chr(charCode) then addChar = False
+		'loop through all chars of the getchar-queue
+		While charCode <>0
+			'charCode is < 0 for me when umlauts are pressed
+			if charCode < 0
+				?Win32
+				If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+				If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+				If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+				?Mac
+				If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+				If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+				If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+				?Linux
+				If KEYWRAPPER.pressedKey(252) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+				If KEYWRAPPER.pressedKey(246) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+				If KEYWRAPPER.pressedKey(163) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+				?
+			'handle normal "keys" (excluding umlauts)
+			elseif charCode > 0
+				local addChar:int = True
+				'skip "backspace"
+				if chr(KEY_BACKSPACE) = chr(charCode) then addChar = False
+				'skip enter if whished so
+				if skipEnterKey and chr(KEY_ENTER) = chr(charCode) then addChar = False
 
-			if addChar then value :+ chr(charCode)
-		endif
+				if addChar then value :+ chr(charCode)
+			endif
+			charCode = int(GetChar())
+		Wend
 
 		'special chars - recognized on Mac, but not Linux
 		'euro sign
