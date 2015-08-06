@@ -26,7 +26,7 @@ Type TAudience
 	Function CreateAndInit:TAudience(children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float, women:Float=-1, men:Float=-1)
 		Local obj:TAudience = New TAudience
 		obj.SetValues(children, teenagers, HouseWives, employees, unemployed, manager, pensioners, women, men)
-		If (women = -1 Or men = -1) Then obj.CalcGenderBreakdown()
+		If (women = -1 Or men = -1) Then obj.FixGenderCount()
 		Return obj
 	End Function
 
@@ -154,6 +154,7 @@ Type TAudience
 
 		'results in nearly the same
 		local result:Float = 0
+		If (Women = -1 Or Men = -1) Then FixGenderCount()
 		result :+ Women * GetAudienceBreakdown().Women
 		result :+ Men * GetAudienceBreakdown().Men
 		return result
@@ -177,10 +178,12 @@ Type TAudience
 		'gendersum = 0 allows "-1 and 1" or "0 and 0"
 		if GenderSum = 0 or women = 0 or men = 0 then return
 
-		Women = Ceil(AudienceSum / GenderSum * Women)
-		Men = Ceil(AudienceSum / GenderSum * Men)
+		Women = Min(AudienceSum, Ceil(AudienceSum / GenderSum * Women))
+		'Men = Ceil(AudienceSum / GenderSum * Men)
 		'add remainder (because of rounding) to men
-		Men :+ AudienceSum - Women - Men
+		'Men :+ AudienceSum - Women - Men
+		'shorter :-)
+		Men = AudienceSum - Women
 	End Method
 
 
