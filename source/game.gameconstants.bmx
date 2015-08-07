@@ -579,6 +579,32 @@ Type TVTTargetGroup {_exposeToLua}
 	End Function
 
 
+	'returns an array of all hit indexes
+	Function GetIndexes:int[](key:int = 0)
+		Select key
+			case CHILDREN    return [1]
+			case TEENAGERS   return [2]
+			case HOUSEWIVES  return [3]
+			case EMPLOYEES   return [4]
+			case UNEMPLOYED  return [5]
+			case MANAGER     return [6]
+			case PENSIONERS  return [7]
+			case WOMEN       return [8]
+			case MEN         return [9]
+			default
+				'loop through all targetGroup-entries and add them if contained
+				local result:int[]
+				local index:int = 0
+				'do NOT start with 0 ("all")
+				For local i:int = 1 to count
+					if key & index then result :+ [index]
+				Next
+				if result.length = 0 then result = [0]
+				return result
+		End Select
+	End Function
+	
+
 	Function GetByString:int(keyString:string = "")
 		Select keyString.toLower()
 			case "children"    return CHILDREN

@@ -2457,7 +2457,7 @@ Type TGuiAdContract Extends TGUIGameListItem
 
 	Method GetAssetName:String(targetGroup:Int=-1, dragged:Int=False)
 		If targetGroup < 0 And contract Then targetGroup = contract.GetLimitedToTargetGroup()
-		Local result:String = "gfx_contracts_" + Min(9,Max(0, targetGroup))
+		Local result:String = "gfx_contracts_" + Min(9,Max(0, TVTTargetGroup.GetIndexes(targetGroup)[0]))
 		If dragged Then result = result + "_dragged"
 		Return result
 	End Method

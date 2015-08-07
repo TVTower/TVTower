@@ -2824,6 +2824,10 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Global GuiListCheap:TGUIAdContractSlotList = null
 	Global GuiListSuitcase:TGUIAdContractSlotList = null
 
+	'sorting
+	Global ListSortMode:int = 0
+	Global ListSortVisible:int = False
+
 	'configuration
 	Global suitcasePos:TVec2D = new TVec2D.Init(520,100)
 	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(19,32)
@@ -2833,6 +2837,10 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 	Global _instance:RoomHandler_AdAgency
 	Global _eventListeners:TLink[]
+
+	Const SORT_BY_MINAUDIENCE:int = 0
+	Const SORT_BY_CLASSIFICATION:int = 1
+	Const SORT_BY_PROFIT:int = 2
 
 
 	Function GetInstance:RoomHandler_AdAgency()
@@ -2848,6 +2856,17 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		contractsCheapAmount = 4
 		listNormal = listNormal[..contractsNormalAmount]
 		listCheap = listCheap[..contractsCheapAmount]
+
+		Select GameRules.devConfig.GetString("DEV_ADAGENCY_SORT_CONTRACTS_BY", "minaudience").Trim().ToLower()
+			case "minaudience"
+				ListSortMode = SORT_BY_MINAUDIENCE 
+			case "classification"
+				ListSortMode = SORT_BY_CLASSIFICATION 
+			case "profit"
+				ListSortMode = SORT_BY_PROFIT
+			default
+				ListSortMode = SORT_BY_MINAUDIENCE
+		End Select 
 
 
 		'=== REGISTER HANDLER ===
@@ -3173,12 +3192,12 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		listCheap = new TAdContract[listCheap.length]
 
 
-		Select GameRules.devConfig.GetString("DEV_ADAGENCY_SORT_CONTRACTS_BY", "minaudience").Trim().ToLower()
-			case "classification"
+		Select ListSortMode
+			Case SORT_BY_CLASSIFICATION
 				contracts.sort(True, TAdContract.SortByClassification)
-			case "profit"
+			Case SORT_BY_PROFIT
 				contracts.sort(True, TAdContract.SortByProfit)
-			case "minaudience"
+			Case SORT_BY_MINAUDIENCE
 				contracts.sort(True, TAdContract.SortByMinAudience)
 			default
 				contracts.sort(True, TAdContract.SortByMinAudience)
@@ -3824,8 +3843,43 @@ endrem
 		endif
 
 
+		local skin:TDatasheetSkin = GetDatasheetSkin("default")
+		local boxWidth:int = 28
+		if not ListSortVisible
+			boxWidth :+ 1 * 38
+		else
+			boxWidth :+ 3 * 38
+		endif
+		local boxHeight:int = 35 + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
+		local contentX:int = 5 + skin.GetContentX()
+		skin.RenderContent(contentX, 325 +skin.GetContentY(), skin.GetContentW(boxWidth), 42, "1_top")
+
+		'draw sort symbols
+		local sortSymbols:string[] = ["gfx_datasheet_icon_minAudience", "gfx_datasheet_icon_money", "gfx_datasheet_icon_maxAudience"]
+		local sortKeys:int[] = [0, 1, 2]
+		local availableSortKeys:int[]
+		if not ListSortVisible
+			availableSortKeys :+ [ListSortMode]
+		else
+			availableSortKeys :+ sortKeys
+		endif
+		
+		For local i:int = 0 until availableSortKeys.length
+			local spriteName:string = "gfx_gui_button.datasheet"
+			if ListSortMode = availableSortKeys[i]
+				spriteName = "gfx_gui_button.datasheet.positive"
+			endif
+
+			if THelper.IsIn(MouseManager.x,MouseManager.y, contentX + 5 + i*38, 342, 35, 27)
+				spriteName :+ ".hover"
+			endif
+			GetSpriteFromRegistry(spriteName).DrawArea(contentX + 5 + i*38, 342, 35,27)
+			GetSpriteFromRegistry(sortSymbols[ availableSortKeys[i] ]).Draw(contentX + 10 + i*38, 344)
+		Next
 
 		GUIManager.Draw("adagency")
+
+		skin.RenderBorder(5, 330, boxWidth, boxHeight)
 
 		if hoveredGuiAdContract
 			'draw the current sheet
@@ -3857,6 +3911,35 @@ endrem
 
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
 		GetGame().cursorstate = 0
+
+		ListSortVisible = False
+		If not draggedGuiAdContract 
+			'show and react to mouse-over-sort-buttons
+			'HINT: does not work for touch displays
+			local skin:TDatasheetSkin = GetDatasheetSkin("default")
+			local boxWidth:int = 28 + 3 * 38
+			local boxHeight:int = 35 + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
+			if THelper.IsIn(MouseManager.x,MouseManager.y, 5, 335, boxWidth, boxHeight)
+				ListSortVisible = True
+
+				if MouseManager.IsHit(1)
+					local contentX:int = 5 + skin.GetContentX()
+					local sortKeys:int[] = [0, 1, 2]
+					For local i:int = 0 to 2
+						If THelper.IsIn(MouseManager.x,MouseManager.y, contentX + i*38, 342, 35, 27)
+							'sort now
+							if ListSortMode <> sortKeys[i]
+								ListSortMode = sortKeys[i]
+								'this sorts the contract list and recreates
+								'the gui
+								ResetContractOrder()
+							endif
+						endif
+					Next
+				endif
+			endif
+		endif
+
 
 		'delete unused and create new gui elements
 		if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()
