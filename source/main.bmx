@@ -643,9 +643,14 @@ Type TApp
 		ScreenCollection.UpdateCurrent(GetDeltaTimer().GetDelta())
 	
 		If Not GuiManager.GetKeystrokeReceiver() And KEYWRAPPER.hitKey(KEY_ESCAPE)
-			TApp.CreateConfirmExitAppDialogue()
+			'ask to exit to main menu
+			TApp.CreateConfirmExitAppDialogue(True)
 		EndIf
-		If AppTerminate() Then TApp.ExitApp = True
+		If AppTerminate()
+			'ask to exit the app
+			TApp.CreateConfirmExitAppDialogue(False)
+		endif
+'		If AppTerminate() Then TApp.ExitApp = True
 
 		'check if we need to make a screenshot
 		If KEYMANAGER.IsHit(KEY_F12) Then App.prepareScreenshot = 1
@@ -849,10 +854,9 @@ Type TApp
 
 		'approve exit
 		If buttonNumber = 0
-'Rem
-'	disable until "new game" works properly
+			local quitToMainMenu:int = ExitAppDialogue.data.GetInt("quitToMainMenu", True)
 			'if within a game - just return to mainmenu
-			if GetGame().gamestate = TGame.STATE_RUNNING
+			if GetGame().gamestate = TGame.STATE_RUNNING and quitToMainMenu
 				'adjust darkened Area to fullscreen!
 				'but do not set new screenArea to avoid "jumping"
 				ExitAppDialogue.darkenedArea = New TRectangle.Init(0,0,800,600)
@@ -862,8 +866,6 @@ Type TApp
 			else
 				TApp.ExitApp = True
 			endif
-'endrem
-'			TApp.ExitApp = True
 		EndIf
 		'remove connection to global value (guimanager takes care of fading)
 		TApp.ExitAppDialogue = Null
@@ -875,7 +877,7 @@ Type TApp
 	End Function
 
 
-	Function CreateConfirmExitAppDialogue:Int()
+	Function CreateConfirmExitAppDialogue:Int(quitToMainMenu:int=True)
 		'100ms since last dialogue
 		If MilliSecs() - ExitAppDialogueTime < 100 Then Return False
 
@@ -886,6 +888,7 @@ Type TApp
 		ExitAppDialogue = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D.Init(400,150), "SYSTEM")
 		ExitAppDialogue.SetDialogueType(2)
 		ExitAppDialogue.SetZIndex(100000)
+		ExitAppDialogue.data.AddNumber("quitToMainMenu", quitToMainMenu)
 
 		'limit to "screen" area
 		If GetGame().gamestate = TGame.STATE_RUNNING
@@ -894,7 +897,7 @@ Type TApp
 			ExitAppDialogue.screenArea = New TRectangle.Init(0,0,800,385)
 		EndIf
 
-		if GetGame().gamestate = TGame.STATE_RUNNING
+		if GetGame().gamestate = TGame.STATE_RUNNING and quitToMainMenu
 			ExitAppDialogue.SetCaptionAndValue( GetLocale("ALREADY_OVER"), GetLocale("DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN") )
 		else
 			ExitAppDialogue.SetCaptionAndValue( GetLocale("ALREADY_OVER"), GetLocale("DO_YOU_REALLY_WANT_TO_QUIT") )
@@ -4356,7 +4359,8 @@ TProfiler.Enter("EventManager")
 		EventManager.update()
 TProfiler.Leave("EventManager")
 		'If RandRange(0,20) = 20 Then GCCollect()
-	Until AppTerminate() Or TApp.ExitApp
+	Until TApp.ExitApp
+'	Until AppTerminate() Or TApp.ExitApp
 TProfiler.Leave("GameLoop")
 
 	'take care of network
