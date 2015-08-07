@@ -117,7 +117,7 @@ Include "game.game.bmx"
 
 '===== Globals =====
 Global VersionDate:String = LoadText("incbin::source/version.txt")
-Global VersionString:String = "v0.2.4.2 Build ~q" + VersionDate+"~q"
+Global VersionString:String = "v0.2.4.3-dev Build ~q" + VersionDate+"~q"
 Global CopyrightString:String = "by Ronny Otto & Manuel Vögele"
 Global APP_NAME:string = "TVTower"
 Global LOG_NAME:string = "log.profiler.txt"
@@ -141,7 +141,7 @@ TLogger.Log("CORE", "Starting "+APP_NAME+", "+VersionString+".", LOG_INFO )
 '===== SETUP LOGGER FILTER =====
 TLogger.setLogMode(LOG_ALL)
 'TLogger.setPrintMode(LOG_ALL )
-TLogger.setPrintMode(LOG_AI | LOG_ERROR )
+TLogger.setPrintMode(LOG_AI | LOG_ERROR | LOG_SAVELOAD )
 
 'print "ALLE MELDUNGEN AUS"
 'TLogger.SetPrintMode(0)
@@ -1225,12 +1225,12 @@ Type TSaveGame Extends TGameState
 		Local persist:TPersist = New TPersist
 		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(savename))
 		If Not saveGame
-			Print "savegame file is corrupt or missing."
+			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is corrupt or missing.", LOG_SAVELOAD | LOG_ERROR)
 			Return False
 		EndIf
 
 		If Not saveGame.CheckGameData()
-			Print "savegame file in bad state."
+			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is in bad state.", LOG_SAVELOAD | LOG_ERROR)
 			Return False
 		EndIf
 
@@ -1299,6 +1299,21 @@ Type TSaveGame Extends TGameState
 
 	Function Save:Int(saveName:String="savegame.xml")
 		ShowMessage(False)
+
+		'check directories and create them if needed
+		local dirs:string[] = ExtractDir(saveName.Replace("\", "/")).Split("/")
+		local currDir:string
+		for local dir:string = EachIn dirs
+			currDir :+ dir + "/"
+			'if directory does not exist, create it
+			if filetype(currDir) <> 2
+				TLogger.Log("Savegame.Save()", "Savegame path contains missing directories. Creating ~q"+currDir[.. currDir.length-1]+"~q.", LOG_SAVELOAD)
+				CreateDir(currDir)
+			endif
+		Next
+		if filetype(currDir) <> 2
+			TLogger.Log("Savegame.Save()", "Failed to create directories for ~q"+saveName+"~q.", LOG_SAVELOAD)
+		endif
 
 		Local saveGame:TSaveGame = New TSaveGame
 		'tell everybody we start saving
