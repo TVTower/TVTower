@@ -2536,9 +2536,16 @@ Type TGuiAdContract Extends TGUIGameListItem
 				SetColor 200,200,200
 			Else
 				SetAlpha 0.70*oldCol.a
-				SetColor 250,200,150
+'				SetColor 250,200,150
 			EndIf
 		EndIf
+
+		'mark special vendor-contracts
+		If contract.owner <> GetPlayerCollection().playerID
+			if contract.GetDaysToFinish() <= 1
+				SetColor 255,230,215
+			endif
+		Endif
 
 		Super.Draw()
 

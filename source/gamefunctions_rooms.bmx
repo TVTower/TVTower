@@ -2839,8 +2839,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Global _eventListeners:TLink[]
 
 	Const SORT_BY_MINAUDIENCE:int = 0
-	Const SORT_BY_CLASSIFICATION:int = 1
-	Const SORT_BY_PROFIT:int = 2
+	Const SORT_BY_PROFIT:int = 1
+	Const SORT_BY_CLASSIFICATION:int = 2
 
 
 	Function GetInstance:RoomHandler_AdAgency()
