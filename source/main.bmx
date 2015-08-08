@@ -951,6 +951,7 @@ Type TGameState
 	Field _RoomHandler_AdAgency:RoomHandler_AdAgency
 	Field _RoomDoorBaseCollection:TRoomDoorBaseCollection
 	Field _RoomBaseCollection:TRoomBaseCollection
+	Field _PlayerColorList:TList
 	Field _CurrentScreenName:String
 	Const MODE_LOAD:Int = 0
 	Const MODE_SAVE:Int = 1
@@ -1010,6 +1011,7 @@ print "TGameState.RestoreGameData(): Restore game objects"
 		_Assign(_RoomDoorBaseCollection, TRoomDoorBaseCollection._instance, "RoomDoorBaseCollection", MODE_LOAD)
 		_Assign(_RoomBaseCollection, TRoomBaseCollection._instance, "RoomBaseCollection", MODE_LOAD)
 
+		_Assign(_PlayerColorList, TPlayerColor.List, "PlayerColorList", MODE_LOAD)
 		_Assign(_GameInformationCollection, TGameInformationCollection._instance, "GameInformationCollection", MODE_LOAD)
 
 		_Assign(_AdContractCollection, TAdContractCollection._instance, "AdContractCollection", MODE_LOAD)
@@ -1087,6 +1089,7 @@ print "TGameState.RestoreGameData(): Restore game objects"
 		_Assign(TProgrammeDataCollection._instance, _ProgrammeDataCollection, "ProgrammeDataCollection", MODE_SAVE)
 		_Assign(TProgrammeLicenceCollection._instance, _ProgrammeLicenceCollection, "ProgrammeLicenceCollection", MODE_SAVE)
 
+		_Assign(TPlayerColor.List, _PlayerColorList, "PlayerColorList", MODE_SAVE)
 		_Assign(TGameInformationCollection._instance, _GameInformationCollection, "GameInformationCollection", MODE_SAVE)
 
 		_Assign(TBuilding._instance, _Building, "Building", MODE_SAVE)
