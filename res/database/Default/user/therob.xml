@@ -195,7 +195,7 @@
 			<data country="I" year="1961" distribution="0" maingenre="18" subgenre="0" flags="64" blocks="2" time="0" price_mod="1" />
 			<ratings critics="67" speed="66" outcome="65" />
 		</programme>
-		<programme id="5aa779f8-8140-4bef-912a-KinderSerieTheRob01" product="5" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="therob-programme-elefantengedaechtnis" product="5" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
 			<title>
 				<de>Elefantengedächtnis</de>
 				<en></en>
@@ -212,7 +212,7 @@
 			<data country="D" year="1975" distribution="0" maingenre="9" subgenre="0" flags="0" blocks="1" time="0" price_mod="0.37" />
 			<ratings critics="67" speed="25" outcome="0" />
 			<children>
-				<programme id="b1c87d59-cffe-4696-KinderSerieTheRobEp101" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-elefantengedaechtnis-ep101" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
 					<title>
 						<de>Zahnpasta</de>
 						<en></en>
@@ -223,7 +223,7 @@
 					</description>
 					<ratings critics="73" speed="24" />
 				</programme>
-				<programme id="02613833-d54e-4b6b-8de8-KinderSerieTheRobEp102" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-elefantengedaechtnis-ep102" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
 					<title>
 						<de>Limonade</de>
 						<en></en>
@@ -234,7 +234,7 @@
 					</description>
 					<ratings critics="65" speed="26" />
 				</programme>
-				<programme id="9ada2a37-6ff5-4ff0-9766-KinderSerieTheRobEp103" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-elefantengedaechtnis-ep103" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
 					<title>
 						<de>Bleistifte</de>
 						<en></en>
@@ -245,7 +245,7 @@
 					</description>
 					<ratings critics="66" speed="25" />
 				</programme>
-				<programme id="494fa370-4744-4616-aa14-KinderSerieTheRobEp104" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-elefantengedaechtnis-ep104" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Moderator ohne Kontrolle</de>
 						<en></en>
@@ -256,7 +256,7 @@
 					</description>
 					<ratings critics="74" speed="49" />
 				</programme>
-				<programme id="6eccf754-bb87-40e5-bb5c-KinderSerieTheRobEP105" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-elefantengedaechtnis-ep105" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Namentanzen</de>
 						<en></en>
@@ -308,7 +308,7 @@
 			<data country="D" year="1931" distribution="0" maingenre="17" subgenre="0" flags="0" blocks="2" time="0" price_mod="0.33" />
 			<ratings critics="74" speed="26" outcome="83" />
 		</programme>
-		<programme id="5aa779f8-8140-4bef-912a-KinderSerieTheRob02" product="5" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="therob-programme-speiuebelunddubrovnik" product="5" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
 			<title>
 				<de>Speiübel und Dubrovnik</de>
 				<en></en>
@@ -325,7 +325,7 @@
 			<data country="CSSR" year="1973" distribution="0" maingenre="9" subgenre="5" flags="2" blocks="1" time="0" price_mod="0.37" />
 			<ratings critics="47" speed="29" outcome="0" />
 			<children>
-				<programme id="b1c87d59-cffe-4696-KinderSerieTheRobEp201" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-speiuebelunddubrovnik-ep201" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
 					<title>
 						<de>Speiübel kommt in die Schule</de>
 						<en></en>
@@ -336,7 +336,7 @@
 					</description>
 					<ratings critics="43" speed="26" />
 				</programme>
-				<programme id="02613833-d54e-4b6b-8de8-KinderSerieTheRobEp202" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-speiuebelunddubrovnik-ep202" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
 					<title>
 						<de>Hausaufgaben</de>
 						<en></en>
@@ -347,7 +347,7 @@
 					</description>
 					<ratings critics="49" speed="31" />
 				</programme>
-				<programme id="9ada2a37-6ff5-4ff0-9766-KinderSerieTheRobEp103" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-speiuebelunddubrovnik-ep103" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
 					<title>
 						<de>Musikunterricht</de>
 						<en></en>
@@ -358,7 +358,7 @@
 					</description>
 					<ratings critics="56" speed="28" />
 				</programme>
-				<programme id="494fa370-4744-4616-aa14-KinderSerieTheRobEp104" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-speiuebelunddubrovnik-ep104" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Speiübel lernt schwimmen</de>
 						<en></en>
@@ -369,7 +369,7 @@
 					</description>
 					<ratings critics="44" speed="32" />
 				</programme>
-				<programme id="6eccf754-bb87-40e5-bb5c-KinderSerieTheRobEP105" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-speiuebelunddubrovnik-ep105" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Plätzchen backen</de>
 						<en></en>
@@ -420,7 +420,7 @@
 			<data country="DDR" year="1972" distribution="0" maingenre="10" subgenre="0" flags="0" blocks="2" time="0" price_mod="0.33" />
 			<ratings critics="27" speed="34" outcome="46" />
 		</programme>
-		<programme id="c4ce4cc9-1c7e-TheRobSerieTrash01" product="7" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="therob-programme-trash-skandale" product="7" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
 			<title>
 				<de>Skandale</de>
 				<en></en>
@@ -437,7 +437,7 @@
 			<data country="D" year="1979" distribution="0" maingenre="11" subgenre="6" flags="92" blocks="2" time="0" price_mod="0.77" />
 			<ratings critics="65" speed="35" outcome="60" />
 			<children>
-				<programme id="062287d0-1de3-TrashSerieTheRobEP101" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-trash-skandale-ep101" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
 					<title>
 						<de>[0|Full] qualmt die Bude zu</de>
 						<en></en>
@@ -448,7 +448,7 @@
 					</description>
 					<ratings critics="60" speed="30" />
 				</programme>
-				<programme id="afcac328-c1ec-4018-TrashSerieTheRobEP102" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-trash-skandale-ep102" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>[0|Full] beleidigt die Interviewerin</de>
 						<en></en>
@@ -459,7 +459,7 @@
 					</description>
 					<ratings critics="65" speed="35" />
 				</programme>
-				<programme id="37c8b5a1-f289-4061-96d9-TrashSerieTheRobEP103" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-trash-skandale-ep103" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>[0|Full] im Dschungel</de>
 						<en></en>
