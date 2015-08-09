@@ -1224,11 +1224,16 @@ Type TSaveGame Extends TGameState
 		ShowMessage(True)
 
 		'=== CHECK SAVEGAME ===
+		If filetype(saveName) <> 1
+			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is missing.", LOG_SAVELOAD | LOG_ERROR)
+			return False
+		EndIf
+		
 		TPersist.maxDepth = 4096*4
 		Local persist:TPersist = New TPersist
 		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(savename))
 		If Not saveGame
-			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is corrupt or missing.", LOG_SAVELOAD | LOG_ERROR)
+			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is corrupt.", LOG_SAVELOAD | LOG_ERROR)
 			Return False
 		EndIf
 
