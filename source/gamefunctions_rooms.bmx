@@ -814,7 +814,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Global suitcasePos:TVec2D = new TVec2D.Init(350,130)
 	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(14,25)
 	Field programmesPerLine:int	= 13
-	Field movieCheapMaximum:int	= 50000
+	Field movieCheapMaximum:int	= 75000
+	Field movieCheapQualityMaximum:Float = 0.2
 
 	Global _instance:RoomHandler_MovieAgency
 	Global _eventListeners:TLink[]
@@ -1091,7 +1092,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		endif
 
 		if licence.isSingle() or licence.isCollection()
-			if licence.getPrice() < movieCheapMaximum
+			if licence.getPrice() < movieCheapMaximum or licence.getQuality() < movieCheapQualityMaximum
 				lists = [listMoviesCheap,listMoviesGood]
 			else
 				lists = [listMoviesGood,listMoviesCheap]
