@@ -5,7 +5,7 @@
 *.app
 *.bmx/
 /log.*.txt
-/savegame.xml
+*savegames/
 source/version.txt
 TVTowerSolution.BLIdeUS.layout
 TVTower.blpo
