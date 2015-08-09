@@ -976,6 +976,7 @@ print "TGameState.Initialize(): Reinitialize all game objects"
 		GetProgrammePersonBaseCollection().Initialize()
 		GetProgrammeDataCollection().Initialize()
 		GetProgrammeLicenceCollection().Initialize()
+		TAuctionProgrammeBlocks.Initialize()
 		GetNewsEventCollection().Initialize()
 
 		GetDailyBroadcastStatisticCollection().Initialize()

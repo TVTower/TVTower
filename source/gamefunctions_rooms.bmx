@@ -829,10 +829,19 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 	Method Initialize:int()
 		'=== RESET TO INITIAL STATE ===
-		'resize arrays
-		listMoviesGood = listMoviesGood[..programmesPerLine]
-		listMoviesCheap = listMoviesCheap[..programmesPerLine]
-		listSeries = listSeries[..programmesPerLine]
+		'To keep potential references to these variables intact we should
+		'clear and resize the arrays instead of doing "= new TProgrammeLicence[x] 
+		'clear arrays
+		'listMoviesGood = listMoviesGood[..0]
+		'listMoviesCheap = listMoviesCheap[..0]
+		'listSeries = listSeries[..0]
+		'listMoviesGood = listMoviesGood[..programmesPerLine]
+		'listMoviesCheap = listMoviesCheap[..programmesPerLine]
+		'listSeries = listSeries[..programmesPerLine]
+
+		listMoviesGood = new TProgrammeLicence[programmesPerLine]
+		listMoviesCheap = new TProgrammeLicence[programmesPerLine]
+		listSeries = new TProgrammeLicence[programmesPerLine]
 
 
 		'=== REGISTER HANDLER ===
@@ -2855,8 +2864,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		contractsPerLine:int = 4
 		contractsNormalAmount = 12
 		contractsCheapAmount = 4
-		listNormal = listNormal[..contractsNormalAmount]
-		listCheap = listCheap[..contractsCheapAmount]
+		listNormal = new TAdContract[contractsNormalAmount]
+		listCheap = new TAdContract[contractsCheapAmount]
 
 		Select GameRules.devConfig.GetString("DEV_ADAGENCY_SORT_CONTRACTS_BY", "minaudience").Trim().ToLower()
 			case "minaudience"
@@ -3998,8 +4007,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		scriptsPerLine = 1
 		scriptsNormalAmount = 4
 		scriptsNormal2Amount = 1
-		listNormal = listNormal[..scriptsNormalAmount]
-		listNormal2 = listNormal2[..scriptsNormal2Amount]
+		listNormal = new TScript[scriptsNormalAmount]
+		listNormal2 = new TScript[scriptsNormal2Amount]
 		VendorEntity = GetSpriteEntityFromRegistry("entity_scriptagency_vendor")
 
 

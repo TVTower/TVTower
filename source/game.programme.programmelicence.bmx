@@ -84,6 +84,11 @@ Type TProgrammeLicenceCollection
 	End Method
 
 
+	Method Remove:Int(licence:TProgrammeLicence)
+		return licences.Remove(licence)
+	End Method
+
+
 	'checks if the licences list contains the given licence
 	Method Contains:Int(licence:TProgrammeLicence)
 		return licences.contains(licence)
@@ -92,10 +97,17 @@ Type TProgrammeLicenceCollection
 
 	'add a licence as single (movie, one-time-event)
 	Method AddSingle:Int(licence:TProgrammeLicence, skipDuplicates:Int = True)
-		if skipDuplicates and singles.contains(licence) then return False
+		'all licences should be listed in the "all-licences-list"
+		if not Add(licence, skipDuplicates) then return False
 
 		singles.AddLast(licence)
 		return True
+	End Method
+
+
+	Method RemoveSingle:Int(licence:TProgrammeLicence)
+		Remove(licence)
+		singles.Remove(licence)
 	End Method
 
 
@@ -107,15 +119,16 @@ Type TProgrammeLicenceCollection
 
 	'add a licence as series
 	Method AddSeries:Int(licence:TProgrammeLicence, skipDuplicates:Int = True)
-		if skipDuplicates and series.contains(licence) then return False
+		'all licences should be listed in the "all-licences-list"
+		if not Add(licence, skipDuplicates) then return False
 		
 		series.AddLast(licence)
 		return True
 	End Method
 
 
-	'add a licence as series
 	Method RemoveSeries:Int(licence:TProgrammeLicence)
+		Remove(licence)
 		series.Remove(licence)
 	End Method
 
@@ -126,9 +139,33 @@ Type TProgrammeLicenceCollection
 	End Method	
 
 
+	Method AddEpisode:Int(licence:TProgrammeLicence, skipDuplicates:Int = True)
+		'all licences should be listed in the "all-licences-list"
+		if not Add(licence, skipDuplicates) then return False
+
+		'nothing more to do
+		
+		return True
+	End Method
+
+
+	Method RemoveEpisode:Int(licence:TProgrammeLicence)
+		'TODO: remove from parents sublicence list?
+		
+		Remove(licence)
+	End Method
+
+
+	'checks if the licences list contains the given licence
+	Method ContainsEpisode:Int(licence:TProgrammeLicence)
+		return Contains(licence)
+	End Method	
+
+
 	'add a licence as collection
 	Method AddCollection:Int(licence:TProgrammeLicence, skipDuplicates:Int = True)
-		if skipDuplicates and collections.contains(licence) then return False
+		'all licences should be listed in the "all-licences-list"
+		if not Add(licence, skipDuplicates) then return False
 		
 		collections.AddLast(licence)
 		return True
@@ -141,27 +178,46 @@ Type TProgrammeLicenceCollection
 	End Method
 
 
+	Method RemoveCollection:Int(licence:TProgrammeLicence)
+		Remove(licence)
+		collections.Remove(licence)
+	End Method
+
+
 	'add a licence to all needed lists
 	Method AddAutomatic:Int(licence:TProgrammeLicence, skipDuplicates:Int = True)
 		'do not add franchise-licences
 		if licence.licenceType = TVTProgrammeLicenceType.FRANCHISE then return False
 
-		'=== ALL ===
-		'all licences should be listed in the "all-licences-list"
-		'this also includes episodes!
-		Add(licence, skipDuplicates)
-
 		'=== SINGLES ===
 		if licence.isSingle() then AddSingle(licence, skipDuplicates)
 
-		'=== EPISODES ===
-		'episodes do not need special handling ...
 
 		'=== SERIES ===
 		if licence.isSeries() then AddSeries(licence, skipDuplicates)
+		if licence.isEpisode() then AddEpisode(licence, skipDuplicates)
 
 		'=== COLLECTIONS ===
 		if licence.isCollection() then AddCollection(licence, skipDuplicates)
+
+		return True
+	End Method
+		
+
+	'remove a licence from all needed lists
+	Method RemoveAutomatic:Int(licence:TProgrammeLicence)
+		'skip franchise-licences
+		if licence.licenceType = TVTProgrammeLicenceType.FRANCHISE then return False
+
+		'=== SINGLES ===
+		if licence.isSingle() then RemoveSingle(licence)
+
+		'=== SERIES ===
+		if licence.isSeries() then RemoveSeries(licence)
+		if licence.isEpisode() then RemoveEpisode(licence)
+
+		'=== COLLECTIONS ===
+		if licence.isCollection() then RemoveCollection(licence)
 
 		return True
 	End Method

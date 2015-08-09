@@ -1771,6 +1771,11 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Function Initialize:int()
+		list.Clear()
+	End Function
+	
+
 	Function GetByLicence:TAuctionProgrammeBlocks(licence:TProgrammeLicence, licenceID:Int=-1)
 		For Local obj:TAuctionProgrammeBlocks = EachIn List
 			If licence And obj.licence = licence Then Return obj
@@ -1820,7 +1825,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			'set licence owner to "-1" so it gets not returned again from Random-Getter
 			licence.SetOwner( TOwnedGameObject.OWNER_VENDOR )
 		endif
-
+		
 		'reset cache
 		_imageWithText = Null
 		'reset bids
@@ -1840,8 +1845,8 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		EndIf
 
 		
-		If bestBidder
-			Local player:TPlayer = GetPlayerCollection().Get(bestBidder)
+		If bestBidder and GetPlayerCollection().IsPlayer(bestBidder)
+			Local player:TPlayer = GetPlayer(bestBidder)
 			player.GetProgrammeCollection().AddProgrammeLicence(licence)
 
 			If player.isLocalAI()
