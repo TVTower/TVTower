@@ -926,11 +926,13 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		Local genreDef:TMovieGenreDefinition = GetGenreDefinition()
 		If genreDef.OutcomeMod > 0.0 Then
 			Return GetOutcome() * genreDef.OutcomeMod ..
-				+ GetReview() * genreDef.ReviewMod ..
-				+ GetSpeed() * genreDef.SpeedMod
+			     + GetReview() * genreDef.ReviewMod ..
+			     + GetSpeed() * genreDef.SpeedMod
 		Else
-			Return GetReview() * genreDef.ReviewMod ..
-				+ GetSpeed() * genreDef.SpeedMod
+			'if no outcome was defined, increase weight of the other
+			'parts
+			Return GetReview() * (genreDef.ReviewMod + 0.5 * genreDef.OutcomeMod) ..
+			     + GetSpeed() * (genreDef.SpeedMod + 0.5 * genreDef.OutcomeMod)
 		EndIf
 	End Method
 
