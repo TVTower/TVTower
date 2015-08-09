@@ -465,7 +465,55 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Method CanMoveScriptToSuitcase:int() {_exposeToLua}
 		return GameRules.maxScriptsInSuitcase <= 0 or suitcaseScripts.count() < GameRules.maxScriptsInSuitcase
 	End Method
+
+
+	Method AddScriptToSuitcase:int(script:TScript)
+		if not CanMoveScriptToSuitcase() then return FALSE
+
+		if not script.IsOwnedByPlayer(owner)
+			if not script.IsOwnedByVendor()
+				print "TODO: buying script from other owner: "+ script.owner+" =/= " + owner
+			endif
+			if not script.buy(owner) then return FALSE
+		endif
+
+		'maybe we already owned it before - so it is stored already
+		'in the various scripts lists
+		scripts.remove(script)
+		studioScripts.remove(script)
+
+		suitcaseScripts.AddLast(script)
 	
+		'emit an event so eg. network can recognize the change
+		if fireEvents
+			EventManager.registerEvent(TEventSimple.Create("programmecollection.addScriptToSuitcase", new TData.add("script", script), self))
+			EventManager.registerEvent(TEventSimple.Create("programmecollection.moveScript", new TData.add("script", script), self))
+		endif
+
+		return TRUE
+	End Method	
+
+
+
+	Method RemoveScriptFromSuitcase:int(script:TScript)
+		if not suitcaseScripts.Contains(script) then return FALSE
+
+		if scripts.contains(script)
+			TLogger.Log("RemoveScriptFromSuitcase()", "Trying to remove script from suitcase while it is still in the list of scripts.", LOG_WARNING)
+		else
+			scripts.AddLast(script)
+		endif
+
+		suitcaseScripts.Remove(script)
+
+		'emit an event so eg. network can recognize the change
+		if fireEvents
+			EventManager.registerEvent(TEventSimple.Create("programmecollection.removeScriptFromSuitcase", new TData.add("script", script), self))
+			EventManager.registerEvent(TEventSimple.Create("programmecollection.moveScript", new TData.add("script", script), self))
+		endif
+		return TRUE
+	End Method
+
 
 	'totally remove a script from the collection
 	Method RemoveScript:Int(script:TScript, sell:int=FALSE)

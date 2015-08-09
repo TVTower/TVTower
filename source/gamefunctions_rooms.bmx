@@ -1048,7 +1048,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		if not GetPlayerCollection().IsPlayer(playerID) then return FALSE
 
 		'try to add to suitcase of player
-		if not GetPlayerProgrammeCollectionCollection().Get(playerID).AddProgrammeLicenceToSuitcase(licence)
+		if not GetPlayerProgrammeCollection(playerID).AddProgrammeLicenceToSuitcase(licence)
 			return FALSE
 		endif
 
@@ -4254,18 +4254,14 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		local pc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerID)
 		if pc.CanMoveScriptToSuitcase()
 			'try to add to player (buying)
-			if not pc.AddScript(script) then return False
-			'try to move it to the suitcase
-			pc.MoveScriptFromArchiveToSuitcase(script)
+			if pc.AddScript(script, TRUE)
+				'try to move it to the suitcase
+				pc.AddScriptToSuitcase(script)
+			endif
 		endif
 
 		'remove from agency's lists
-		local lists:TScript[][] = [listNormal2,listNormal]
-		For local j:int = 0 to lists.length-1
-			For local i:int = 0 to lists[j].length-1
-				if lists[j][i] = script then lists[j][i] = null
-			Next
-		Next
+		RemoveScript(script)
 
 		return TRUE
 	End Method
@@ -4276,7 +4272,12 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 		'remove from player (lists and suitcase) - and give him money
 		if GetPlayerCollection().IsPlayer(script.owner)
-			GetPlayerProgrammeCollection(script.owner).RemoveScript(script, TRUE)
+			local pc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(script.owner)
+			'try to remove it from the suitcase
+			if pc.RemoveScriptFromSuitcase(script)
+				'sell it
+				pc.RemoveScript(script, TRUE)
+			endif
 		endif
 
 		'add to agency's lists - if not existing yet
