@@ -171,8 +171,24 @@ Type TRoomBoard
 
 		Return Null
 	End Method
-	
 
+	
+	'return the sign originally at the given pixel coordinates
+	Method GetSignByOriginalXY:TRoomBoardSign(x:int, y:int)
+		For Local sign:TRoomBoardSign = EachIn List
+			'virtual rooms
+			If sign.StartPos.GetX() < 0 then continue
+
+			local currRect:TRectangle = sign.rect.Copy()
+			currRect.position.CopyFrom(sign.OrigPos)
+
+			If currRect.containsXY(x,y) then return sign
+		Next
+
+		Return Null
+	End Method
+
+	
 	'return the first sign leading to a specific room
 	Method GetFirstSignByRoom:TRoomBoardSign(roomID:int)
 		For local sign:TRoomBoardSign = eachin list
@@ -192,7 +208,7 @@ Type TRoomBoard
 
 		signA.SwitchCoords(signB)
 
-		if permanentSwitch Then TVec2D.SwitchVecs(signA.OrigPos, signB.OrigPos)
+		if permanentSwitch then TVec2D.SwitchVecs(signA.OrigPos, signB.OrigPos)
 
 		return True
 	End Method
