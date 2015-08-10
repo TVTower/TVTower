@@ -15,7 +15,6 @@ Type TRoomHandlerCollection
 
 
 	Method Initialize:int()
-print "TRoomHandlerCollection.Initialize(): (re-)initializing rooms"
 		'=== (re-)initialize all known room handlers
 		RoomHandler_Office.GetInstance().Initialize()
 		RoomHandler_News.GetInstance().Initialize()
@@ -1089,7 +1088,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	End Method
 
 
-	Method AddProgrammeLicence:int(licence:TProgrammeLicence)
+	Method AddProgrammeLicence:int(licence:TProgrammeLicence, tryOtherLists:int = False)
 		'try to fill the licence into the corresponding list
 		'we use multiple lists - if the first is full, try second
 		local lists:TProgrammeLicence[][]
@@ -1102,9 +1101,11 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		if licence.isSingle() or licence.isCollection()
 			if licence.getPrice() < movieCheapMaximum or licence.getQuality() < movieCheapQualityMaximum
-				lists = [listMoviesCheap,listMoviesGood]
+				lists = [listMoviesCheap]
+				if tryOtherLists then lists :+ [listMoviesGood]
 			else
-				lists = [listMoviesGood,listMoviesCheap]
+				lists = [listMoviesGood]
+				if tryOtherLists then lists :+ [listMoviesCheap]
 			endif
 		else
 			lists = [listSeries]
@@ -1403,11 +1404,12 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		if receiver <> VendorArea then return FALSE
 
 		'do not accept blocks from the vendor itself
-		if guiLicence.licence.owner <=0
+		if not guiLicence.licence.isOwnedByPlayer()
 			triggerEvent.setVeto()
 			return FALSE
 		endif
 
+		'buy licence back and place it somewhere in the right board shelf
 		if not GetInstance().BuyProgrammeLicenceFromPlayer(guiLicence.licence)
 			triggerEvent.setVeto()
 			return FALSE
@@ -1416,6 +1418,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			guiLicence.remove()
 			'remove the whole block too
 			guiLicence = null
+'RONNY
+			haveToRefreshGuiElements = True
 		endif
 
 		return TRUE
