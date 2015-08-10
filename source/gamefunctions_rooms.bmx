@@ -1078,7 +1078,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		'remove from player (lists and suitcase) - and give him money
 		if GetPlayerCollection().IsPlayer(licence.owner)
-			GetPlayerProgrammeCollectionCollection().Get(licence.owner).RemoveProgrammeLicence(licence, TRUE)
+			GetPlayerProgrammeCollection(licence.owner).RemoveProgrammeLicence(licence, TRUE)
 		endif
 
 		'add to agency's lists - if not existing yet
@@ -1320,7 +1320,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 
 	'- check if dropping on suitcase and affordable
-	'- check if dropping on an item which is not affordable
+	'- check if dropping own licence on the shelf (not possible for now)
+	'(OLD: - check if dropping on an item which is not affordable)
 	Function onTryDropProgrammeLicence:int( triggerEvent:TEventBase )
 		if not CheckPlayerInRoom("movieagency") then return FALSE
 
@@ -1332,8 +1333,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		select receiverList
 			case GuiListMoviesGood, GuiListMoviesCheap, GuiListSeries
-				'check if something is underlaying and whether the
-				'player could afford it
+				'check if something is underlaying and whether the licence
+				'differs to the dropped one
 				local underlayingItem:TGUIProgrammeLicence = null
 				local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", new TVec2D.Init(-1,-1)))
 				if coord then underlayingItem = TGUIProgrammeLicence(receiverList.GetItemByCoord(coord))
@@ -1341,7 +1342,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 				'allow drop on own place
 				if underlayingItem = guiLicence then return TRUE
 
-				if underlayingItem and not GetPlayer().getFinance().canAfford(underlayingItem.licence.getPrice())
+				if underlayingItem
 					triggerEvent.SetVeto()
 					return FALSE
 				endif
@@ -4083,10 +4084,14 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.addScript", onChangeProgrammeCollection ) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.removeScript", onChangeProgrammeCollection ) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.moveScript", onChangeProgrammeCollection ) ]
+
+		'check if dropping is possible (affordable price for a script dragged when dropping on a one)
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropScript, "TGuiScript" ) ]
 		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
 		'is only emitted if the drop is successful (so it "visually" happened)
 		'drop ... to vendor or suitcase
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropScript, "TGuiScript" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropScript, "TGuiScript" ) ]
+'		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropScript, "TGuiScript" ) ]
 		'drop on vendor - sell things
 		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropScriptOnVendor, "TGuiScript" ) ]
 		'we want to know if we hover a specific block - to show a datasheet
@@ -4586,6 +4591,47 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	End Function
 
 
+	'- check if dropping on suitcase and affordable
+	'- check if dropping on an item in the shelf (not allowed for now)
+	Function onTryDropScript:int( triggerEvent:TEventBase )
+		if not CheckPlayerInRoom("scriptagency") then return FALSE
+
+		local guiScript:TGUIScript = TGUIScript(triggerEvent._sender)
+		local receiverList:TGUIListBase = TGUIListBase(triggerEvent._receiver)
+		if not guiScript or not receiverList then return FALSE
+
+		local owner:int = guiScript.script.owner
+
+		select receiverList
+			case GuiListSuitcase
+				'no problem when dropping own programme to suitcase..
+				if guiScript.script.IsOwnedByPlayer(GetPlayerCollection().playerID) then return TRUE
+
+				if not GetPlayer().getFinance().canAfford(guiScript.script.getPrice())
+					triggerEvent.setVeto()
+				endif
+			'case GuiListNormal[0], ..., GuiListNormal2
+			default
+				'check if something is underlaying and whether it is
+				'a different script
+				local underlayingItem:TGUIScript = null
+				local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", new TVec2D.Init(-1,-1)))
+				if coord then underlayingItem = TGUIScript(receiverList.GetItemByCoord(coord))
+
+				'allow drop on own place
+				if underlayingItem = guiScript then return TRUE
+
+				'only allow drops on empty slots
+				if underlayingItem
+					triggerEvent.SetVeto()
+					return FALSE
+				endif
+		End Select
+
+		return TRUE
+	End Function
+	
+
 	'handle cover block drops on the vendor ... only sell if from the player
 	Function onDropScriptOnVendor:int( triggerEvent:TEventBase )
 		if not CheckPlayerInRoom("scriptagency") then return FALSE
@@ -4600,6 +4646,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		if not senderList then return FALSE
 
 		'if coming from suitcase, try to remove it from the player
+		'and try to add it back to the shelf
 		if senderList = GuiListSuitcase
 			if not GetInstance().BuyScriptFromPlayer(guiBlock.script)
 				triggerEvent.setVeto()
@@ -4627,9 +4674,9 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		if not CheckPlayerInRoom("scriptagency") then return FALSE
 
 		local guiScript:TGUIScript = TGUIScript(triggerEvent._sender)
-		local receiverList:TGUIScriptSlotList = TGUIScriptSlotList(triggerEvent._receiver)
+		local receiverList:TGUIListBase = TGUIListBase(triggerEvent._receiver)
 		if not guiScript or not receiverList then return FALSE
-
+		
 		'get current owner of the script, as the field "owner" is set
 		'during buy we cannot rely on it. So we check if the player has
 		'the script in the suitcaseScriptList
@@ -4638,30 +4685,44 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 			owner = GetPlayerCollection().playerID
 		endif
 
-		'find out if we sell it to the vendor or drop it to our suitcase
-		if receiverList <> GuiListSuitcase
-			guiScript.InitAssets( guiScript.getAssetName(-1, FALSE ), guiScript.getAssetName(-1, TRUE ) )
 
-			'no problem when dropping vendor programme to vendor..
-			if owner <= 0 then return TRUE
+		select receiverList
+			case GuiListSuitcase
+				local dropOK:int = False
+				'no problem when dropping own script to suitcase..
+				if guiScript.script.IsOwnedByPlayer(GetPlayer().playerID)
+					dropOK = True
+				'try to sell it to the player
+				elseif GetInstance().SellScriptToPlayer(guiScript.script, GetPlayer().playerID)
+					dropOK = true
+				endif
 
-			if not GetInstance().BuyScriptFromPlayer(guiScript.script)
-				triggerEvent.setVeto()
-				return FALSE
-			endif
 
-			'remove and add again (so we drop automatically to the correct list)
-			GetInstance().RemoveScript(guiScript.script)
-			GetInstance().AddScript(guiScript.script)
-		else
-			guiScript.InitAssets(guiScript.getAssetName(-1, TRUE ), guiScript.getAssetName(-1, TRUE ))
-			'no problem when dropping own scripts to suitcase..
-			if owner = GetPlayerCollection().playerID then return TRUE
-			if not GetInstance().SellScriptToPlayer(guiScript.script, GetPlayerCollection().playerID)
-				triggerEvent.setVeto()
-				return FALSE
-			endif
-		endIf
+				if dropOK
+					'set to suitcase view
+					guiScript.InitAssets( guiScript.getAssetName(-1, TRUE ), guiScript.getAssetName(-1, TRUE ) )
+					return TRUE
+				else
+					triggerEvent.setVeto()
+					'try to drop back to old list - which triggers
+					'this function again... but with a differing list..
+					guiScript.dropBackToOrigin()
+					haveToRefreshGuiElements = TRUE
+				endif
+
+			'case GuiListNormal[0], ... , GuiListNormal2
+			default
+				'set to "board-view"
+				guiScript.InitAssets( guiScript.getAssetName(-1, FALSE ), guiScript.getAssetName(-1, TRUE ) )
+
+				'when dropping vendor licence on vendor shelf .. no prob
+				if guiScript.script.owner <= 0 then return true
+
+				if not GetInstance().BuyScriptFromPlayer(guiScript.script)
+					triggerEvent.setVeto()
+					return FALSE
+				endif
+		end select
 
 		return TRUE
 	End Function
