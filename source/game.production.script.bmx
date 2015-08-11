@@ -452,13 +452,10 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 	'buy means pay and set owner, but in players collection only if left the room!!
 	Method Buy:Int(playerID:Int=-1)
-print "buy script"
 		local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(playerID, -1)
 		if not finance then return False
 
-print "..pay script"
 		If finance.PayScript(getPrice(), self)
-print "..pay script2"
 			SetOwner(playerID)
 			Return TRUE
 		EndIf

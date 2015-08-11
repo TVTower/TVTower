@@ -392,7 +392,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 					If programme.isSeries() And programme.licence.parentLicenceGUID
 						'use the genre of the parent
 						text = programme.licence.GetParentLicence().data.getGenreString()
-						title = programme.licence.GetParentLicence().GetTitle()
+						title = programme.licence.GetParentLicence().GetTitle() + ":  "+programme.GetTitle()
 						'uncomment if you wish episode number in title
 						'titleAppend = " (" + programme.GetEpisodeNumber() + "/" + programme.GetEpisodeCount() + ")"
 						text:+"-"+GetLocale("SERIES_SINGULAR")
