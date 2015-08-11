@@ -491,6 +491,11 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	Method isCollection:int() {_exposeToLua}
 		return licenceType = TVTProgrammeLicenceType.COLLECTION
 	End Method
+
+
+	Method GetLicenceType:int()
+		return licenceType
+	End Method
 	
 
 	Function setIgnoreUnreleasedProgrammes(ignore:int=TRUE, releaseStart:int=1900, releaseEnd:int=2100)
@@ -1286,6 +1291,11 @@ Type TProgrammeLicenceFilter
 	Field caption:string = ""
 	Field genres:Int[]
 	Field flags:int
+	Field qualityMin:Float = -1.0
+	Field qualityMax:Float = -1.0
+	Field licenceTypes:int[]
+	Field priceMin:int = -1
+	Field priceMax:int = -1
 	Field notFlags:int
 	Field displayInMenu:int = False
 	Field id:int = 0
@@ -1500,20 +1510,71 @@ Type TProgrammeLicenceFilter
 		'check flags filter does NOT care for
 		if notFlags > 0 and (licence.GetFlags() & notFlags) > 0 then return False
 
+		'check if it fits to the desired genres
 		if genres.length > 0
 			local licenceGenre:int = licence.GetGenre()
 			local hasGenre:int = False
 			for local genre:int = eachin genres
 				if licenceGenre = genre then hasGenre = True;exit
 			Next
-			if hasGenre then return True
+			if not hasGenre then return False
+		endif
+
+		'check quality (not qualityRaw which ignores age, airedtimes,...)
+		if qualityMin >= 0 and licence.GetQuality() < qualityMin then return False
+		if qualityMax >= 0 and licence.GetQuality() > qualityMax then return False
+
+		'check price
+		if priceMin >= 0 and licence.GetPrice() < priceMin then return False
+		if priceMax >= 0 and licence.GetPrice() > priceMax then return False
+
+		'check licenceType
+		if licenceTypes.length > 0
+			local hasType:int = False
+			for local licenceType:int = eachin licenceTypes
+				if licenceType = licence.licenceType then hasType = True;exit
+			Next
+			if not hasType then return False
 		endif
 
 		'check flags share something
-		if flags > 0 and (licence.GetFlags() & flags) > 0 then return True
+		if flags > 0 and (licence.GetFlags() & flags) <= 0 then return False
 
-		return False
+		return True
 	End Method
 End Type
 
 
+
+'filters checked via "OR" (a or b) or "AND" (a and b)
+Type TProgrammeLicenceFilterGroup extends TProgrammeLicenceFilter
+	Field filters:TProgrammeLicenceFilter[]
+	Field connectionType:int = 0
+	Const CONNECTION_TYPE_OR:int = 0
+	Const CONNECTION_TYPE_AND:int = 1
+
+	Method AddFilter(filter:TProgrammeLicenceFilter)
+		filters :+ [filter]
+	End Method
+
+	
+	Method DoesFilter:Int(licence:TProgrammeLicence)
+		if connectionType = CONNECTION_TYPE_OR
+			For local filter:TProgrammeLicenceFilter = Eachin filters
+				if filter.DoesFilter(licence) then return True
+			Next
+			return False
+		else
+			For local filter:TProgrammeLicenceFilter = Eachin filters
+				if filter <> filters[filters.length - 1]
+					if not filter.DoesFilter(licence) then return False
+				else
+					'last filter - if this is reached, all others filtered
+					'ok and this one might return desired result
+					if filter.DoesFilter(licence) then return True
+				endif
+			Next
+			return False
+		endif
+	End Method
+End Type
