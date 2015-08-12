@@ -1160,7 +1160,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		'call-in shows are kind of "live"
 		if HasFlag(TVTProgrammeFlag.PAID) then return True
 
-		return GetWorldTime().GetTimeGone() < releaseTime
+		return GetWorldTime().GetTimeGone() >= releaseTime
 		'return (year <= GetWorldTime().getYear() and releaseDay <= GetWorldTime().getDay())
 	End Method
 

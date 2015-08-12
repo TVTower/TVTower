@@ -37,9 +37,9 @@ Type TAdContractBaseCollection
 	Field entriesCount:int = -1
 
 	'factor by what an infomercial topicality DECREASES by sending it
-	Field infomercialWearoffFactor:float = 0.85
+	Field infomercialWearoffFactor:float = 0.75
 	'factor by what an infomercial topicality INCREASES on a new day
-	Field infomercialRefreshFactor:float = 1.35
+	Field infomercialRefreshFactor:float = 1.25
 	
 	Global _instance:TAdContractBaseCollection
 
@@ -268,7 +268,7 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 	Field penaltyBase:Float
 	'the quality of the advertisement (cheap one or hollywood style?)
 	'also might affect infomercial audience rating
-	Field quality:Float = 0.5 'default is 50%
+	Field quality:Float = 0.15 'default is 15%
 	'=== infomercials / shopping shows ===
 	'is the broadcast of an infomercial allowed?
 	Field infomercialAllowed:int = TRUE
@@ -1041,7 +1041,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		contentY :+ barH
 
 		'topicality
-		skin.RenderBar(contentX + 5, contentY, 200, 12, base.GetInfomercialTopicality())
+		skin.RenderBar(contentX + 5, contentY, 200, 12, base.GetInfomercialTopicality(), 1.0)
 		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
 
 
