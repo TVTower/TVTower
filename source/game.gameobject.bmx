@@ -1,6 +1,7 @@
 SuperStrict
 Import Brl.Map
 Import "Dig/base.util.mersenne.bmx"
+Import "Dig/base.util.data.bmx"
 
 Type TGameObjectCollection
 	Field entries:TMap = CreateMap()
@@ -180,4 +181,139 @@ End Type
 Type TNamedGameObject Extends TOwnedGameObject {_exposeToLua="selected"}
 
 	Method GetTitle:String() abstract
+End Type
+
+
+
+
+'base effect class (eg. for newsevents, programmedata, adcontractbases)
+Type TGameObjectEffect
+	Field data:TData
+	'constant value of TVTGameObjectEffect (CHANGETREND, TERRORISTATTACK, ...)
+	Field effectTypes:int = 0
+	Field _customEffectFunc:int(data:TData, params:TData)
+
+
+	Method ToString:string()
+		local name:string = data.GetString("name", "default")
+		return "TGameObjectEffect ("+name+")"
+	End Method
+
+
+	Method SetEffectType:TGameObjectEffect(effectType :Int, enable:Int=True)
+		If enable
+			effectTypes :| effectType
+		Else
+			effectTypes :& ~effectType
+		EndIf
+		return self
+	End Method
+
+
+	Method HasEffectType:Int(effectType:Int)
+		Return effectTypes & effectType
+	End Method
+
+
+	Method SetData(data:TData)
+		self.data = data
+	End Method
+
+
+	Method GetData:TData()
+		if not data then data = new TData
+		return data
+	End Method
+
+	
+	'call to handle/emit the effect
+	Method Trigger:int(params:TData)
+		if _customEffectFunc then return _customEffectFunc(GetData(), params)
+
+		return EffectFunc(params)
+	End Method
+
+
+	'override this function in custom types
+	Method EffectFunc:int(params:TData)
+		print ToString()
+		print "data: "+GetData().ToString()
+		print "params: "+params.ToString()
+	
+		return True
+	End Method
+End Type
+
+
+
+Type TGameObjectEffectCollection
+	Field effects:TData
+	
+	Method GetList:TList(trigger:string)
+		if not effects then return Null
+		return TList(effects.Get(trigger.ToLower()))
+	End Method
+
+	
+	'checks if an certain effect type is existent
+	Method HasEffectType:int(trigger:string, effectType:int) {_exposeToLua}
+		local list:TList = GetList(trigger)
+		if not list then return false
+		
+		For local effect:TGameObjectEffect = eachin list
+			if effect.HasEffectType(effectType) then return True
+		Next
+		return False
+	End Method
+	
+
+	'checks if an effect was already added before
+	Method HasEffect:int(trigger:string, effect:TGameObjectEffect)
+		if not effect then return False
+		local list:TList = GetList(trigger)
+		if not list then return False
+
+		return list.contains(effect)
+	End Method
+
+
+	Method AddEffect:int(trigger:string, effect:TGameObjectEffect)
+		'skip if already added
+		If HasEffect(trigger, effect) then return False
+
+		'add effect
+		local list:TList = GetList(trigger)
+		if not list
+			list = CreateList()
+			if not effects then effects = New TData
+			effects.Add(trigger.ToLower(), list)
+		else
+			'skip if already added
+			if list.Contains(effect) then return False
+		endif
+
+		list.AddLast(effect)
+		
+		return True
+	End Method
+
+
+	Method RemoveEffect:int(trigger:String, effect:TGameObjectEffect)
+		local l:TList = GetList(trigger)
+		if not l then return false
+
+		return l.Remove(effect)
+	End Method
+
+
+	Method RunEffects:int(trigger:string, effectParams:TData)
+		local l:TList = GetList(trigger)
+		if not l then return 0
+		
+		For local eff:TGameObjectEffect = eachin l
+			eff.Trigger(effectParams)
+		Next
+
+		return l.Count()
+	End Method
 End Type

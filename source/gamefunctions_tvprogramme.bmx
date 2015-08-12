@@ -2256,7 +2256,11 @@ Type TGUINews Extends TGUIGameListItem
 			fontNormal.draw("Ist: " + eventCan, screenX + 5, textY)
 			textY :+ 12	
 			endrem
-			fontNormal.draw("Effekte: " + news.newsEvent.happenEffects.Length + "x onHappen, "+news.newsEvent.broadcastEffects.Length + "x onBroadcast    Newstyp: " + news.newsEvent.newsType + "   Genre: "+news.newsEvent.genre, screenX + 5, textY)
+			local happenEffects:int = 0
+			local broadcastEffects:int = 0
+			if news.newsEvent.effects.GetList("happen") then happenEffects = news.newsEvent.effects.GetList("happen").Count()
+			if news.newsEvent.effects.GetList("broadcast") then broadcastEffects = news.newsEvent.effects.GetList("broadcast").Count()
+			fontNormal.draw("Effekte: " + happenEffects + "x onHappen, "+ broadcastEffects + "x onBroadcast    Newstyp: " + news.newsEvent.newsType + "   Genre: "+news.newsEvent.genre, screenX + 5, textY)
 			textY :+ 12	
 
 			SetAlpha oldAlpha

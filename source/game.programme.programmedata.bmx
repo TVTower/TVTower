@@ -259,6 +259,8 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	"refresh" - changes how much a programme "regenerates" (multiplied with genreModifier)
 	endrem
 	Field modifiers:TData = new TData
+	'contains lists of effects for various triggers
+	Field effects:TGameObjectEffectCollection = new TGameObjectEffectCollection
 	
 	'flags contains bitwise encoded things like xRated, paid, trash ...
 	Field flags:Int = 0
@@ -1172,6 +1174,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		return productType = typeID
 	End Method	
 End Type
+
 
 
 

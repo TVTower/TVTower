@@ -262,9 +262,7 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	Field priceModifier:Float = 1.0
 	'time when something happened or will happen. "-1" = not happened
 	Field happenedTime:Double = -1
-	Field happenEffects:TNewsEffect[]
-	'effects which get triggered on "doBroadcast"
-	Field broadcastEffects:TNewsEffect[]
+	Field effects:TGameObjectEffectCollection = New TGameObjectEffectCollection
 	'type of the news event according to TVTNewsType
 	Field newsType:int = 0 'initialNews
 	Field availableYearRangeFrom:int = -1
@@ -298,7 +296,7 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 
 
 	Method ToString:String()
-		return "newsEvent: title=" + GetTitle() + "  quality=" + quality + "  priceModifier=" + priceModifier + "  broadcastEffects=" + broadcastEffects.length + "  happenEffects="+happenEffects.length
+		return "newsEvent: title=" + GetTitle() + "  quality=" + quality + "  priceModifier=" + priceModifier
 	End Method
 
 
@@ -373,103 +371,13 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 					effectData.GetInt("parameter6", -1) ..
 				]
 				if triggerGUID = "" then return False
-				AddHappenEffect(..
+				effects.AddEffect("happen", ..
 					new TNewsEffect_TriggerNews.Init( ..
 						triggerGUID, happenTimeType, happenTimeData ..
 				))
 				return True
 		End Select
 		return False
-	End Method
-
-	
-	'checks if an certain effect type is existent
-	Method HasBroadcastEffectType:int(effectType:int) {_exposeToLua}
-		For local effect:TNewsEffect = eachin happenEffects
-			if effect.HasEffectType(effectType) then return True
-		Next
-		return False
-	End Method
-	
-
-	'checks if an effect was already added before
-	Method HasBroadcastEffect:int(effect:TNewsEffect)
-		if not effect then return True
-
-		For local existingEffect:TNewsEffect = eachin broadcastEffects
-			if effect = existingEffect then return True
-		Next
-		return False
-	End Method
-
-
-	Method AddBroadcastEffect:int(effect:TNewsEffect)
-		'skip if already added
-		If HasBroadcastEffect(effect) then return False
-
-		'add effect
-		broadcastEffects :+ [effect]
-		return True
-	End Method
-
-
-	Method RemoveBroadcastEffect:int(effect:TNewsEffect)
-		'to make the array "truncate", create a new one - and just
-		'skip adding the effect which should get removed.
-		local newEffects:TNewsEffect[]
-		For Local existingEffect:TNewsEffect = eachIn broadcastEffects
-			if existingEffect = effect then continue
-			newEffects :+ [existingEffect]
-		Next
-		
-		'set new array
-		broadcastEffects = newEffects
-		return True
-	End Method
-
-
-	'checks if an certain effect type is existent
-	Method HasHappenEffectType:int(effectType:int) {_exposeToLua}
-		For local effect:TNewsEffect = eachin happenEffects
-			if effect.HasEffectType(effectType) then return True
-		Next
-		return False
-	End Method
-
-
-	'checks if an effect was already added before
-	Method HasHappenEffect:int(effect:TNewsEffect)
-		if not effect then return True
-
-		For local existingEffect:TNewsEffect = eachin happenEffects
-			if effect = existingEffect then return True
-		Next
-		return False
-	End Method
-
-
-	Method AddHappenEffect:int(effect:TNewsEffect)
-		'skip if already added
-		If HasHappenEffect(effect) then return False
-
-		'add effect
-		happenEffects :+ [effect]
-		return True
-	End Method
-
-
-	Method RemoveHappenEffect:int(effect:TNewsEffect)
-		'to make the array "truncate", create a new one - and just
-		'skip adding the effect which should get removed.
-		local newEffects:TNewsEffect[]
-		For Local existingEffect:TNewsEffect = eachIn happenEffects
-			if existingEffect = effect then continue
-			newEffects :+ [existingEffect]
-		Next
-		
-		'set new array
-		happenEffects = newEffects
-		return True
 	End Method
 
 
@@ -479,9 +387,7 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 
 		'trigger happenEffects
 		local effectParams:TData = new TData.Add("newsEvent", self)
-		For local eff:TNewsEffect = eachin happenEffects
-			eff.Trigger(effectParams)
-		Next
+		effects.RunEffects("happen", effectParams)
 	End Method
 
 
@@ -491,15 +397,13 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	Method doBroadcast(playerID:int = -1)
 		'trigger broadcastEffects
 		local effectParams:TData = new TData.Add("newsEvent", self).AddNumber("playerID", playerID)
-		For local eff:TNewsEffect = eachin broadcastEffects
-			eff.Trigger(effectParams)
-		Next
+		effects.RunEffects("broadcast", effectParams)
 	End Method
 	
 
 	Method IsSkippable:int()
-		'cannot skip events with "happeneffects"
-		return skippable and happenEffects.length = 0
+		'cannot skip events with "happen"-effects
+		return skippable and (not effects.GetList("happen") or effects.GetList("happen").count() = 0)
 	End Method
 
 
@@ -552,66 +456,8 @@ End Type
 
 
 
-Type TNewsEffect
-	Field data:TData
-	'constant value of TVTNewsEffect (CHANGETREND, TERRORISTATTACK, ...)
-	Field effectTypes:int = 0
-	Field _customEffectFunc:int(data:TData, params:TData)
 
-
-	Method ToString:string()
-		local name:string = data.GetString("name", "default")
-		return "TNewsEffect ("+name+")"
-	End Method
-
-
-	Method SetEffectType:TNewsEffect(effectType :Int, enable:Int=True)
-		If enable
-			effectTypes :| effectType
-		Else
-			effectTypes :& ~effectType
-		EndIf
-		return self
-	End Method
-
-
-	Method HasEffectType:Int(effectType:Int)
-		Return effectTypes & effectType
-	End Method
-
-
-	Method SetData(data:TData)
-		self.data = data
-	End Method
-
-
-	Method GetData:TData()
-		if not data then data = new TData
-		return data
-	End Method
-
-	
-	'call to handle/emit the effect
-	Method Trigger:int(params:TData)
-		if _customEffectFunc then return _customEffectFunc(GetData(), params)
-
-		return EffectFunc(params)
-	End Method
-
-
-	'override this function in custom types
-	Method EffectFunc:int(params:TData)
-		print ToString()
-		print "data: "+GetData().ToString()
-		print "params: "+params.ToString()
-	
-		return True
-	End Method
-End Type
-
-
-
-Type TNewsEffect_TriggerNews extends TNewsEffect
+Type TNewsEffect_TriggerNews extends TGameObjectEffect
 	Field triggerNewsGUID:string
 	'params for time generation  [A,B,C,D]
 	Field happenTimeData:int[]	= [8,16,0,0]

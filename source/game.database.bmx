@@ -744,9 +744,11 @@ endrem
 
 			local effectData:TData = new TData
 			xml.LoadValuesToData(nodeEffect, effectData, [..
-				"type", "parameter1", "parameter2", "parameter3", ..
-				"parameter4", "parameter5" ..
+				"trigger", "type", ..
+				"parameter1", "parameter2", "parameter3", "parameter4", "parameter5" ..
 			])
+			'trigger = "broadcast", "firstbroadcast", ...
+			'type = "triggernews", ...
 			'parameter1 = GUID
 			'parameter2-5 = param 1-4 of effect
 			newsEvent.AddEffectByData(effectData)
@@ -992,6 +994,23 @@ endrem
 		programmeData.proPressureGroups = data.GetInt("pro_pressure_groups", programmeData.proPressureGroups)
 		programmeData.contraPressureGroups = data.GetInt("contra_pressure_groups", programmeData.contraPressureGroups)
 
+
+		'=== EFFECTS ===
+		local nodeEffects:TxmlNode = xml.FindElementNode(node, "effects")
+		For local nodeEffect:TxmlNode = EachIn xml.GetNodeChildElements(nodeEffects)
+			If nodeEffect.getName() <> "effect" then continue
+
+			local effectData:TData = new TData
+			xml.LoadValuesToData(nodeEffect, effectData, [..
+				"trigger", "type", ..
+				"parameter1", "parameter2", "parameter3", "parameter4", "parameter5" ..
+			])
+			'trigger = "broadcast", "firstbroadcast", ...
+			'type = "triggernews", ...
+			'parameter1 = GUID
+			'parameter2-5 = param 1-4 of effect
+'			programmeData.AddEffectByData(effectData)
+		Next
 
 
 		'=== RATINGS ===

@@ -212,7 +212,7 @@ Type TNewsAgency
 
 		'send out terrorist
 		if aggressionLevel = 4
-			local effect:TNewsEffect = new TNewsEffect
+			local effect:TGameObjectEffect = new TGameObjectEffect
 
 			effect.GetData().Add("figure", GetGame().terrorists[terroristGroup])
 			effect.GetData().AddNumber("group", terroristGroup)
@@ -226,7 +226,7 @@ Type TNewsAgency
 			'mark as a special effect so AI can categorize it accordingly
 			effect.setEffectType(TVTNewsEffect.TERRORISTATTACK)
 
-			NewsEvent.AddHappenEffect(effect)
+			NewsEvent.effects.AddEffect("happen", effect)
 		endif
 
 		NewsEvent.doHappen() 'happen now
