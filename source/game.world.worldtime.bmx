@@ -32,7 +32,6 @@ Type TWorldTime {_exposeToLua="selected"}
 	Global _instance:TWorldTime
 
 	Const DAYLENGTH:int      = 86400
-	Const DAYSPERWEEK:int    = 7
 	Const DAYPHASE_DAWN:int	 = 0
 	Const DAYPHASE_DAY:int	 = 1
 	Const DAYPHASE_DUSK:int	 = 2
@@ -68,7 +67,7 @@ Type TWorldTime {_exposeToLua="selected"}
 		_paused = False
 	End Method
 
-	
+
 	Method MakeTime:Double(year:Int, day:Int, hour:Int, minute:Int, second:int = 0) {_exposeToLua}
 		'year=1, day=1, hour=0, minute=1 should result in "1*yearInSeconds+1"
 		'as it is 1 minute after end of last year - new years eve ;D
@@ -313,6 +312,11 @@ Type TWorldTime {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetDaysPerWeek:int() {_exposeToLua}
+		return _daysPerWeek
+	End Method
+
+
 	'returns the current day in a month (30 days/month)
 	Method GetDayOfMonth:int(useTime:Double = -1.0) {_exposeToLua}
 		if Long(useTime) <= 0 then useTime = _timeGone
@@ -371,6 +375,15 @@ Type TWorldTime {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetFormattedDate:String(time:Double = -1, format:string="h:i d.m.y") {_exposeToLua}
+		Local strYear:String = GetYear(time)
+		Local strMonth:String = GetMonth(time)
+		Local strDay:String = GetDayOfMonth(time)
+		
+		If Int(strMonth) < 10 Then strMonth = "0"+strMonth
+		If Int(strDay) < 10 Then strDay = "0"+strDay
+		Return GetFormattedTime(time, format).replace("d", strMonth).replace("m", strMonth).replace("y", strYear)
+	End Method
 
 	'returns sunrise that day - in seconds
 	Method GetSunrise:int(useTime:Double = -1.0) {_exposeToLua}

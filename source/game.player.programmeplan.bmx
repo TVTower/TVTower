@@ -717,7 +717,8 @@ endrem
 	End Method
 
 
-	'returns an array of real programmes within the given time frame
+	'returns an array of real programmes (no infomercials or so) within
+	'the given time frame
 	Method GetRealProgrammesInTimeSpan:TProgramme[](dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1, includeStartingEarlierObject:Int=True) {_exposeToLua}
 		Return TProgramme[](GetObjectsInTimeSpan(TVTBroadcastMaterialType.PROGRAMME, dayStart, hourStart, dayEnd, hourEnd, includeStartingEarlierObject, True))
 	End Method

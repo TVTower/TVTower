@@ -963,7 +963,7 @@ endrem
 		'in the db.
 		if not parentLicence
 			releaseDayCounter :+ 1
-			programmeData.releaseDay = releaseDayCounter mod GetWorldTime().GetDaysPerYear()
+			programmeData.SetReleaseTime(releaseDayCounter mod GetWorldTime().GetDaysPerYear())
 		endif
 
 

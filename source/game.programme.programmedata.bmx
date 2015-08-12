@@ -267,7 +267,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	'ID according to TVTProgrammeProductType
 	Field productType:Int = 1
 	'at which day was the programme released?
-	Field releaseDay:Int = 1
+	Field releaseTime:Long = -1
 	'announced in news etc?
 	Field releaseAnnounced:int = FALSE
 	'how many times that programme was run
@@ -293,7 +293,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 
 
 
-	Function Create:TProgrammeData(GUID:String, title:TLocalizedString, description:TLocalizedString, cast:TProgrammePersonJob[], country:String, year:Int, day:int=0, livehour:Int, Outcome:Float, review:Float, speed:Float, modifiers:TData, Genre:Int, blocks:Int, xrated:Int, productType:Int=1) {_private}
+	Function Create:TProgrammeData(GUID:String, title:TLocalizedString, description:TLocalizedString, cast:TProgrammePersonJob[], country:String, year:Int, releaseTime:Long=-1, livehour:Int, Outcome:Float, review:Float, speed:Float, modifiers:TData, Genre:Int, blocks:Int, xrated:Int, productType:Int=1) {_private}
 		Local obj:TProgrammeData = New TProgrammeData
 		obj.SetGUID(GUID)
 		obj.title       = title
@@ -310,7 +310,9 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		obj.country     = country
 		obj.cast        = cast
 		obj.year        = year
-		obj.releaseDay  = day
+		if GetWorldTime().GetYear(releaseTime) < 1900
+			obj.releaseTime = GetWorldTime().Maketime(year, 1,1, 0,0)
+		endif
 		obj.liveHour    = Max(-1,livehour)
 		obj.topicality  = obj.GetTopicality()
 		GetProgrammeDataCollection().Add(obj)
@@ -794,6 +796,28 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	End Method
 
 
+	Method GetReleaseTime:Long()
+		return releaseTime
+	End Method
+
+
+	Method GetCinemaReleaseTime:Long()
+		return releaseTime - Max(1, floor(0.5 * GetWorldTime().GetDaysPerWeek())) * TWorldTime.DAYLENGTH
+	End Method
+
+
+	'only useful for cinematic movies
+	Method GetProductionStartTime:Long()
+		return releaseTime - GetWorldTime().GetDaysPerWeek() * TWorldTime.DAYLENGTH
+	End Method
+
+
+
+	Method SetReleaseTime(dayOfYear:int)
+		releaseTime = GetWorldTime().MakeTime(year, dayOfYear mod GetWorldTime().GetDaysPerYear(), 0, 0)
+	End Method
+
+
 	Method GetPrice:int()
 		Local value:int = 0
 
@@ -1126,7 +1150,8 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		'call-in shows are kind of "live"
 		if HasFlag(TVTProgrammeFlag.PAID) then return True
 
-		return (year <= GetWorldTime().getYear() and releaseDay <= GetWorldTime().getDay())
+		return GetWorldTime().GetTimeGone() < releaseTime
+		'return (year <= GetWorldTime().getYear() and releaseDay <= GetWorldTime().getDay())
 	End Method
 
 

@@ -447,9 +447,10 @@ Type TNewsAgency
 			If licence.getData().releaseAnnounced Then Continue
 			'ignore unreleased
 			If Not licence.ignoreUnreleasedProgrammes And licence.getData().year < licence._filterReleaseDateStart Or licence.getData().year > licence._filterReleaseDateEnd Then Continue
-			'only add movies of "next X days" - 14 = 1 year
-			Local licenceTime:Int = licence.GetData().year * GetWorldTime().GetDaysPerYear() + licence.getData().releaseDay
-			If licenceTime > GetWorldTime().getDay() And licenceTime - GetWorldTime().getDay() < 14 Then resultList.addLast(licence)
+			'add programme if production already started but not in cinema
+			If licence.GetData().GetProductionStartTime() <= GetWorldTime().GetTimeGone()
+				if licence.GetData().GetCinemaReleaseTime() > GetWorldTime().GetTimeGone() then resultList.addLast(licence)
+			endif
 		Next
 		If resultList.count() > 0 Then Return GetProgrammeLicenceCollection().GetRandomFromList(resultList)
 
