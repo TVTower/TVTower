@@ -984,12 +984,15 @@ Type TScreenHandler_ProgrammePlanner
 		GuiListProgrammes.planDay = planningDay
 		GuiListAdvertisements.planDay = planningDay
 
-		'FALSE: without removing dragged
-		'->ONLY keeps newly created, not ones dragged from a slot
-		RemoveAllGuiElements(FALSE)
+		'only do the gui stuff with the player being in the office
+		if TRoomHandler.CheckPlayerInRoom("office")
+			'FALSE: without removing dragged
+			'->ONLY keeps newly created, not ones dragged from a slot
+			RemoveAllGuiElements(FALSE)
 
-		RefreshGuiElements()
-		FindHoveredPlanElement()
+			RefreshGuiElements()
+			FindHoveredPlanElement()
+		endif
 	end Function
 
 
@@ -1063,6 +1066,10 @@ Type TScreenHandler_ProgrammePlanner
 		'do not inform programmeplanner!
 		local oldTalk:int =	talkToProgrammePlanner
 		talkToProgrammePlanner = False
+
+
+		'fix not-yet-set-currentroom and set to players office
+		if not currentRoom then currentRoom = GetRoomCollection().GetFirstByDetails("office", GetPlayer().playerID)
 
 		'===== REMOVE UNUSED =====
 		'remove overnight
