@@ -273,7 +273,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	'how many times that programme was run
 	'(per player, 0 = unknown - eg before "game start" to lower values)
 	Field timesAired:int[] = [0]
-	'how "attractive" a programme is (the more shown, the less this value)
+	'how "fresh" a programme is (the more shown, the less this value)
 	Field topicality:Float = -1
 	'programmes descending from this programme (eg. "Lord of the Rings"
 	'as "franchise" and the individual programmes as "franchisees"
@@ -969,8 +969,18 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		Local age:Float = 0.01 * Max(0, 100 - Max(0, GetWorldTime().GetYear() - year))
 		quality :* Max(0.20, age)
 
-		'repetitions wont be watched that much
-		quality :* GetTopicality() ^ 2
+		'the more the programme got repeated, the lower the quality in
+		'that moment (^2 increases loss per air)
+		'but a "good movie" should benefit from being good - so the
+		'influence of repetitions gets lower by higher raw quality
+		'-> a movie with 100% base quality will have at least 25% of
+		'   quality no matter how many times it got aired
+		'-> a movie with 0% base quality will cut to up to 75% of that
+		'   resulting in <= 25% quality
+		
+		quality :* (0.25*GetQualityRaw() + (1.0 - 0.75*GetQualityRaw()) * GetTopicality()^2)
+		'old variant
+		'quality :* GetTopicality() ^ 2
 
 		'no minus quote, min 0.01 quote
 		quality = Max(0.01, quality)

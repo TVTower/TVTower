@@ -2080,7 +2080,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		checkboxHeight :+ guiSpecialFormats.GetScreenHeight()
 
 		guiFilterUnreleased = New TGUICheckBox.Create(New TVec2D.Init(430, 0 + checkboxHeight), New TVec2D.Init(300), "", name)
-		guiFilterUnreleased.SetChecked(True, False)
+		guiFilterUnreleased.SetChecked(False, False)
 		checkboxHeight :+ guiFilterUnreleased.GetScreenHeight()
 
 		guiAnnounce = New TGUICheckBox.Create(New TVec2D.Init(430, 0 + checkboxHeight), New TVec2D.Init(300), "", name)
@@ -2278,7 +2278,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		Select sender
 			Case guiFilterUnreleased
 					'ATTENTION: use "not" as checked means "not ignore"
-					'TProgrammeLicence.setIgnoreUnreleasedProgrammes( not sender.isChecked())
+					TProgrammeLicence.setIgnoreUnreleasedProgrammes( not sender.isChecked())
 		End Select
 
 		'only inform when in settings menu
