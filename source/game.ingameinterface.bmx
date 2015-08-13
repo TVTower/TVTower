@@ -127,6 +127,28 @@ Type TInGameInterface
 
 	Method Update(deltaTime:Float=1.0)
 		local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan(ShowChannel)
+		'show the channels tooltip on hovering the button
+		For Local i:Int = 1 To 4
+			'already done
+			if ShowChannel = i then continue
+
+			'tooltip to show (regardless of currently shown channel)
+			If THelper.MouseIn( 75 + i * 33, 171 + 383, 33, 41)
+				programmePlan = GetPlayerProgrammePlan(i)
+			EndIf
+		Next
+
+			'channel selection (tvscreen on interface)
+		If MOUSEMANAGER.IsHit(1)
+			For Local i:Int = 1 To 4
+				If THelper.MouseIn( 75 + i * 33, 171 + 383, 33, 41)
+					ShowChannel = i
+					BottomImgDirty = True
+					exit
+				EndIf
+			Next
+		EndIf
+
 
 		'reset current programme sprites
 		CurrentProgrammeOverlay = Null
@@ -196,16 +218,6 @@ Type TInGameInterface
 		Next
 		tooltips.Sort() 'sort according lifetime
 
-		'channel selection (tvscreen on interface)
-		If MOUSEMANAGER.IsHit(1)
-			For Local i:Int = 0 To 4
-				If THelper.MouseIn( 75 + i * 33, 171 + 383, 33, 41)
-					ShowChannel = i
-					BottomImgDirty = True
-				EndIf
-			Next
-		EndIf
-
 
 		'skip adjusting the noise if the tv is off
 		If programmePlan
@@ -226,7 +238,7 @@ Type TInGameInterface
 				content	= GetLocale("AUDIENCE_NUMBER")+": "+programmePlan.getFormattedAudience()+ " ("+MathHelper.NumberToString(programmePlan.GetAudiencePercentage()*100,2)+"%)"
 
 				'show additional information if channel is player's channel
-				If ShowChannel = GetPlayerBaseCollection().playerID
+				If programmePlan.owner = GetPlayerBaseCollection().playerID
 					If GetWorldTime().GetDayMinute() >= 5 And GetWorldTime().GetDayMinute() < 55
 						Local obj:TBroadcastMaterial = programmePlan.GetAdvertisement()
 						If TAdvertisement(obj)
@@ -461,11 +473,30 @@ Type TInGameInterface
 			'draw overlay to hide corners of non-round images
 			GetSpriteFromRegistry("gfx_interface_tv_overlay").Draw(45,405)
 
+			local oldAlpha:float = GetAlpha()
 		    For Local i:Int = 0 To 4
 				If i = ShowChannel
 					GetSpriteFromRegistry("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 559)
+					'lighten up the channel button
+					SetBlend LightBlend
+					SetAlpha 0.25 * oldAlpha
+					GetSpriteFromRegistry("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 559)
+					SetAlpha oldAlpha
+					SetBlend AlphaBlend
 				Else
 					GetSpriteFromRegistry("gfx_interface_channelbuttons_off_"+i).Draw(75 + i * 33, 559)
+				EndIf
+				'hover effect
+				If THelper.MouseIn( 75 + i * 33, 171 + 383, 33, 41)
+					SetBlend LightBlend
+					SetAlpha 0.35 * oldAlpha
+					If i = ShowChannel
+						GetSpriteFromRegistry("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 559)
+					Else
+						GetSpriteFromRegistry("gfx_interface_channelbuttons_off_"+i).Draw(75 + i * 33, 559)
+					EndIf
+					SetAlpha oldAlpha
+					SetBlend AlphaBlend
 				EndIf
 		    Next
 
@@ -474,7 +505,7 @@ Type TInGameInterface
 			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayerProgrammePlanCollection().Get(playerID).getFormattedAudience(), 366, 463, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(200,200,230), 2, 1, 0.5)
 
 			'=== DRAW SECONDARY INFO ===
-			local oldAlpha:Float = GetAlpha()
+'			local oldAlpha:Float = GetAlpha()
 			SetAlpha oldAlpha*0.75
 
 			'current days financial win/loss
