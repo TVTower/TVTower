@@ -32,7 +32,36 @@
             <details gender="1"  birthday="1959" deathday="2041" country="IL" />
             <data prominence="0" skill="4" fame="0" scandalizing="0" price_mod="1" power="2" humor="2" charisma="3" appearance="3" topgenre1="6" topgenre2="300" />
         </person>
-    </celebritypeople>
+        <person id="ronny-programmeperson-thomasstone" fictional="1" creator="5578" created_by="Ronny">
+            <first_name>Thomas</first_name>
+            <last_name>Stone</last_name>
+            <functions>
+                <function>1</function>
+                <function>128</function>
+            </functions>
+            <details gender="1"  birthday="1929" deathday="1991" country="USA" />
+            <data prominence="1" skill="7" fame="0" scandalizing="0" price_mod="1" power="3" humor="1" charisma="4" appearance="1" topgenre1="6" topgenre2="300" />
+        </person>
+        <person id="ronny-programmeperson-bennyjameson" fictional="1" creator="5578" created_by="Ronny">
+            <first_name>Benny</first_name>
+            <last_name>Jameson</last_name>
+            <functions>
+                <function>4</function>
+                <function>8</function>
+            </functions>
+            <details gender="1"  birthday="1962" deathday="2040" country="CA" />
+            <data prominence="1" skill="4" fame="0" scandalizing="0" price_mod="1" power="2" humor="4" charisma="2" appearance="9" topgenre1="9" topgenre2="300" />
+        </person>
+        <person id="ronny-programmeperson-freddyjbush" fictional="1" creator="5578" created_by="Ronny">
+            <first_name>Freddy J.</first_name>
+            <last_name>Bush</last_name>
+            <functions>
+                <function>1</function>
+            </functions>
+            <details gender="1"  birthday="1942" deathday="2030" country="USA" />
+            <data prominence="1" skill="3" fame="0" scandalizing="0" price_mod="1" power="3" humor="2" charisma="2" appearance="1" topgenre1="9" topgenre2="0" />
+        </person>
+	</celebritypeople>
 	
 	<allprogrammes>
 		<programme id="ronny-programme-doku-kutler-wunderwaffen" product="4" fictional="1" creator="5578" created_by="Ronny">
@@ -121,6 +150,89 @@ Welcome to the future.</en>
 			<groups target_groups="256" />
 			<data country="D" year="1981" distribution="0" maingenre="6" flags="0" blocks="2" time="0" price_mod="1.05" />
 			<ratings critics="40" speed="12" outcome="22" />
+		</programme>
+		<programme id="ronny-programme-doku-mikroelektronik" product="4" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Fruit Inc. - Heimcomputer aus Cupertino</de>
+				<en>Fruit Inc. - Home computers made in Cupertino</en>
+			</title>
+			<description>
+				<de>Wilde Zeiten erfordern Wagemut. Die Dokumentation begleitete die Fruit Inc.-Gründer Hobbs und Whooznajak vier Jahre lang und kann so manche nennenswerte Anekdote liefern.
+Enthält exklusives Interview mit Investor Mark Mikikulla.</de>
+				<en>Wild times need daringness. The documentation observed Fruit Inc.-founders Hobbs and Whooznajak for 4 years and is now able to present many an anecdotes.
+Contains an exclusive interview with investor Mark Mikikulla.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">ronny-programmeperson-thomasstone</member>
+				<member index="1" function="128">ronny-programmeperson-thomasstone</member>
+			</staff>
+			<groups target_groups="256" />
+			<data country="USA" year="1981" distribution="0" maingenre="6" flags="0" blocks="2" time="0" price_mod="1.05" />
+			<ratings critics="25" speed="22" outcome="0" />
+		</programme>
+		<programme id="ronny-programme-family-papierflieger" product="7" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Papierflieger</de>
+				<en>Paper Planes</en>
+			</title>
+			<description>
+				<de>Bastelstunde mit [1|First]. In jeder Folge baut er einen neuen Flieger - aus chlorfrei gebleichtem Papier und Knochenleim.
+Pädagogisch wertvoll und absolut ökologisch.</de>
+				<en>Tinker time with [1|First]. In every episode he will build a new paper plane - made out of chlorine-free bleached paper and bone glue.
+Educational precious and absolutly ecological.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">ronny-programmeperson-freddyjbush</member>
+				<member index="1" function="128">ronny-programmeperson-bennyjameson</member>
+			</staff>
+			<groups target_groups="256" />
+			<data country="USA" year="1980" distribution="0" maingenre="0" subgenre="9" flags="0" blocks="1" time="0" price_mod="0.95" />
+			<ratings critics="20" speed="30" outcome="0" />
+			<!-- Episodes -->
+			<children>
+				<programme id="ronny-programme-family-papierflieger-ep1" product="7" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Tahiti Fly</de>
+					</title>
+					<description>
+						<de>Ganz schön tricky. Erst einmal in der Mitte falten, dann umknicken und dann nochmal falten, jetzt...</de>
+						<en>Really tricky, First fold in the middle, then bend it and there is another fold, now just...</en>
+					</description>
+					<ratings critics="25" speed="35" />
+				</programme>
+				<programme id="ronny-programme-family-papierflieger-ep2" product="7" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Bosporus Bomber</de>
+					</title>
+					<description>
+						<de>Diesmal im Bau: Der Bosporus Bomber, ein weitfliegender Papierflieger auch Scheich des Schwarzen Meeres genannt.</de>
+						<en>This time to construct: The Bosporus Bomber - a paper plane with a long range. Sometimes it is even called Sheik of the Black Sea.</en>
+					</description>
+					<ratings critics="28" speed="19" />
+				</programme>
+				<programme id="ronny-programme-family-papierflieger-ep3" product="7" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Schneegans</de>
+						<en>Snow goose</en>
+					</title>
+					<description>
+						<de>Ein weißer Flieger, perfekt um ihn im Winter zu verstecken. Aufpassen, Verletzungsgefahr.</de>
+						<en>A white paper plane, perfect to hide it in the winter. Attention risk of injury.</en>
+					</description>
+					<ratings critics="23" speed="32" />
+				</programme>
+				<programme id="ronny-programme-family-papierflieger-ep3" product="7" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Die eiserne Lady</de>
+						<en>The Iron Lady</en>
+					</title>
+					<description>
+						<de>Zügig zusammengebaut aber extrem kurze Reichweite - der 30-Sekunden Papierflieger „Die Eiserne Lady“. Lässt sich nicht pink anmalen.</de>
+						<en>Rapidly built but with extraordinary short range - the 30-second paper plane "The Iron Lady". Cannot be painted in pink.</en>
+					</description>
+					<ratings critics="20" speed="27" />
+				</programme>
+			</children>
 		</programme>
 		<programme id="ronny-programme-pantoffeln-01" product="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
@@ -514,7 +626,4 @@ Grandioses Finale.</de>
 			<data genre="0" price="15" quality="24" />
 		</news>
 	</allnews>
-
-
-	
 </tvgdb>
