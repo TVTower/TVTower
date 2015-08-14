@@ -1352,6 +1352,30 @@ Type TProgrammeLicenceFilter
 	End Function
 
 
+	Method InitFrom:TProgrammeLicenceFilter(otherFilter:TProgrammeLicenceFilter)
+		caption = otherFilter.caption
+		flags = otherFilter.flags
+		for local i:int = EachIn otherFilter.genres
+			genres :+ [i]
+		Next
+		qualityMin = otherFilter.qualityMin
+		qualityMax = otherFilter.qualityMin
+		for local i:int = EachIn otherFilter.licenceTypes
+			licenceTypes :+ [i]
+		Next
+		priceMin = otherFilter.priceMin
+		priceMax = otherFilter.priceMax
+		notFlags = otherFilter.notFlags
+		displayInMenu = otherFilter.displayInMenu
+		return self
+	End Method
+
+
+	Method Copy:TProgrammeLicenceFilter()
+		return New TProgrammeLicenceFilter.InitFrom(self)
+	End Method
+
+
 	'creates a new filter and sets it up to get displayed in the licence
 	'selection menu
 	Function CreateVisible:TProgrammeLicenceFilter()
@@ -1575,6 +1599,25 @@ Type TProgrammeLicenceFilterGroup extends TProgrammeLicenceFilter
 
 		return obj
 	End Function
+
+
+	Method InitFrom:TProgrammeLicenceFilterGroup(otherFilter:TProgrammeLicenceFilter)
+		if TProgrammeLicenceFilterGroup(otherFilter)
+			local otherFilterGroup:TProgrammeLicenceFilterGroup = TProgrammeLicenceFilterGroup(otherFilter)
+			connectionType = otherFilterGroup.connectionType
+			for local f:TProgrammeLicenceFilter = EachIn filters
+				filters :+ [f.Copy()]
+			Next
+		else
+			Super.InitFrom(otherFilter)
+		endif
+		return self
+	End Method
+
+
+	Method Copy:TProgrammeLicenceFilterGroup()
+		return New TProgrammeLicenceFilterGroup.InitFrom(self)
+	End Method
 	
 
 	Method AddFilter:TProgrammeLicenceFilterGroup(filter:TProgrammeLicenceFilter)

@@ -587,9 +587,10 @@ endrem
 
 
 		'start programmes should be similar to "cheap movie list" of the
-		'movieagency
-		local startProgrammeFilter:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesCheap
-
+		'movieagency - but they do not allow paid programmes
+		local startProgrammeFilter:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesCheap.Copy()
+		startProgrammeFilter.AddNotFlag(TVTProgrammeFlag.PAID)
+		
 		For Local playerids:Int = 1 To 4
 			Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(playerids)
 			For Local i:Int = 0 Until GameRules.startMovieAmount
