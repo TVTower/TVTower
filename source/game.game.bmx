@@ -581,18 +581,24 @@ endrem
 			TLogger.Log("SpreadStartProgramme", "adContractBases is empty.", LOG_ERROR)
 		EndIf
 
-		
+
+		'start programmes should be similar to "cheap movie list" of the
+		'movieagency
+		local startProgrammeFilter:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesCheap
+		local startCallInFilter:TProgrammeLicenceFilter = new TProgrammeLicenceFilter
+		startCallInFilter.licenceTypes = [TVTProgrammeLicenceType.SERIES]
+		startCallInFilter.priceMin = 0
+		startCallInFilter.priceMax = 80000
+		startCallInFilter.qualityMin = -1.0
+		startCallInFilter.qualityMax = 0.25
+
 		For Local playerids:Int = 1 To 4
 			Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(playerids)
 			For Local i:Int = 0 Until GameRules.startMovieAmount
-				ProgrammeCollection.AddProgrammeLicence(GetProgrammeLicenceCollection().GetRandom(TVTProgrammeLicenceType.SINGLE))
-			Next
-			'give series to each player
-			For Local i:Int = GameRules.startMovieAmount Until GameRules.startMovieAmount + GameRules.startSeriesAmount
-				ProgrammeCollection.AddProgrammeLicence(GetProgrammeLicenceCollection().GetRandom(TVTProgrammeLicenceType.SERIES))
+				ProgrammeCollection.AddProgrammeLicence(GetProgrammeLicenceCollection().GetRandomByFilter(startProgrammeFilter))
 			Next
 			'give 1 call in
-			ProgrammeCollection.AddProgrammeLicence(GetProgrammeLicenceCollection().GetRandomByFilter(filterCallIn))
+			ProgrammeCollection.AddProgrammeLicence(GetProgrammeLicenceCollection().GetRandomByFilter(startCallInFilter))
 
 			'create contracts out of the preselected adcontractbases
 			For Local adContractBase:TAdContractBase = EachIn adContractBases
