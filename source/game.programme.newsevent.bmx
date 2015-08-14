@@ -381,7 +381,7 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method doHappen(time:int = 0)
+	Method doHappen(time:Double = 0.0)
 		'set happened time, add to collection list...
 		GetNewsEventCollection().setNewsHappened(self, time)
 

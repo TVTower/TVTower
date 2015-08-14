@@ -26,6 +26,7 @@ Type TVTGameConstants {_exposeToLua}
 	Field PlayerFinanceEntryType:TVTPlayerFinanceEntryType = new TVTPlayerFinanceEntryType
 
 	Field ProgrammeProductType:TVTProgrammeProductType = new TVTProgrammeProductType
+	Field ProgrammeState:TVTProgrammeState = new TVTProgrammeState 
 	Field ProgrammeGenre:TVTProgrammeGenre = new TVTProgrammeGenre 
 	Field ProgrammeFlag:TVTProgrammeFlag = new TVTProgrammeFlag 
 	Field ProgrammeLicenceType:TVTProgrammeLicenceType = new TVTProgrammeLicenceType 
@@ -554,6 +555,45 @@ Type TVTProgrammeFlag {_exposeToLua}
 	End Function
 End Type
 
+
+
+Type TVTProgrammeState {_exposeToLua}
+	Const NONE:int = 0
+	Const IN_PRODUCTION:int = 1
+	Const IN_CINEMA:int = 2
+	Const RELEASED:int = 3
+
+	Const count:int = 4
+
+
+	Function GetAtIndex:int(index:int)
+		if index >= 0 and index < count then return index
+		return 0
+	End Function
+
+
+	Function GetByString:int(keyString:string = "")
+		Select keyString.toLower()	
+			case "none"            return NONE
+			case "in_production"   return IN_PRODUCTION
+			case "in_cinema"       return IN_CINEMA
+			case "released"        return RELEASED
+			default                return NONE
+		End Select
+	End Function
+
+	
+	'returns a textual version of the id
+	Function GetAsString:string(key:int)
+		Select key
+			case NONE           return "none"
+			case IN_PRODUCTION  return "in_production"
+			case IN_CINEMA      return "in_cinema"
+			case RELEASED       return "released"
+			default             return "none"
+		End Select
+	End Function
+End Type
 
 
 

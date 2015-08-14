@@ -447,10 +447,8 @@ Type TNewsAgency
 			If licence.getData().releaseAnnounced Then Continue
 			'ignore unreleased
 			If Not licence.ignoreUnreleasedProgrammes And licence.getData().year < licence._filterReleaseDateStart Or licence.getData().year > licence._filterReleaseDateEnd Then Continue
-			'add programme if production already started but not in cinema
-			If licence.GetData().GetProductionStartTime() <= GetWorldTime().GetTimeGone()
-				if licence.GetData().GetCinemaReleaseTime() > GetWorldTime().GetTimeGone() then resultList.addLast(licence)
-			endif
+
+			If licence.GetData().IsInProduction() then resultList.addLast(licence)
 		Next
 		If resultList.count() > 0 Then Return GetProgrammeLicenceCollection().GetRandomFromList(resultList)
 

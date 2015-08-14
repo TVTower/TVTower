@@ -936,6 +936,7 @@ Type TGameState
 	Field _PlayerFinanceHistoryListCollection:TPlayerFinanceHistoryListCollection = Null
 	Field _PlayerProgrammePlanCollection:TPlayerProgrammePlanCollection = Null
 	Field _PlayerProgrammeCollectionCollection:TPlayerProgrammeCollectionCollection = Null
+	Field _PlayerBossCollection:TPlayerBossCollection = Null
 	Field _PublicImageCollection:TPublicImageCollection = Null
 	Field _EventManagerEvents:TList = Null
 	Field _PopularityManager:TPopularityManager = Null
@@ -999,6 +1000,8 @@ print "TGameState.Initialize(): Reinitialize all game objects"
 
 		GetBetty().Initialize()
 
+		GetRoomHandlerCollection().Initialize()
+
 		'not needed, called via "TGame.PrepareStart()"
 		'_RoomHandler_AdAgency.Initialize()
 		'...
@@ -1031,6 +1034,7 @@ print "TGameState.RestoreGameData(): Restore game objects"
 		_Assign(_PlayerFinanceHistoryListCollection, TPlayerFinanceHistoryListCollection._instance, "PlayerFinanceHistoryListCollection", MODE_LOAD)
 		_Assign(_PlayerProgrammeCollectionCollection, TPlayerProgrammeCollectionCollection._instance, "PlayerProgrammeCollectionCollection", MODE_LOAD)
 		_Assign(_PlayerProgrammePlanCollection, TPlayerProgrammePlanCollection._instance, "PlayerProgrammePlanCollection", MODE_LOAD)
+		_Assign(_PlayerBossCollection, TPlayerBossCollection._instance, "PlayerBossCollection", MODE_LOAD)
 		_Assign(_PublicImageCollection, TPublicImageCollection._instance, "PublicImageCollection", MODE_LOAD)
 
 		_Assign(_NewsEventCollection, TNewsEventCollection._instance, "NewsEventCollection", MODE_LOAD)
@@ -1103,6 +1107,7 @@ print "TGameState.RestoreGameData(): Restore game objects"
 		_Assign(TPlayerFinanceHistoryListCollection._instance, _PlayerFinanceHistoryListCollection, "PlayerFinanceHistoryListCollection", MODE_SAVE)
 		_Assign(TPlayerProgrammeCollectionCollection._instance, _PlayerProgrammeCollectionCollection, "PlayerProgrammeCollectionCollection", MODE_SAVE)
 		_Assign(TPlayerProgrammePlanCollection._instance, _PlayerProgrammePlanCollection, "PlayerProgrammePlanCollection", MODE_SAVE)
+		_Assign(TPlayerBossCollection._instance, _PlayerBossCollection, "PlayerBossCollection", MODE_SAVE)
 		_Assign(TPublicImageCollection._instance, _PublicImageCollection, "PublicImageCollection", MODE_SAVE)
 
 		_Assign(TGame._instance, _Game, "Game", MODE_SAVE)
@@ -3853,6 +3858,10 @@ Type GameEvents
 		Local day:Int = triggerEvent.GetData().GetInt("day", -1)
 
 		TLogger.Log("GameEvents.OnDay", "begin of day "+(GetWorldTime().GetDaysRun()+1)+" (real day: "+day+")", LOG_DEBUG)
+
+
+		'finish upcoming programmes (set them to cinema, released...)
+		GetProgrammeDataCollection().UpdateUnreleased()
 
 		'if new day, not start day
 		If GetWorldTime().GetDaysRun() >= 1

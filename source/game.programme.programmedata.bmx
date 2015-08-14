@@ -26,6 +26,8 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	'factor by what a trailer topicality INCREASES by broadcasting
 	'the programme
 	Field trailerRefreshFactor:float = 1.5
+	'helper data
+	Field _unreleasedProgrammeData:TList = CreateList() {nosave}
 
 	Global _instance:TProgrammeDataCollection
 
@@ -38,13 +40,51 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 
 	Method Initialize:TProgrammeDataCollection()
 		Super.Initialize()
+
+		_InvalidateCaches()
+
 		return self
 	End Method
 
 
+	Method _InvalidateCaches()
+		_unreleasedProgrammeData = Null
+	End Method
+
+
+	Method Add:int(obj:TGameObject)
+		_InvalidateCaches()
+		return Super.Add(obj)
+	End Method
+
+
+	Method Remove:int(obj:TGameObject)
+		_InvalidateCaches()
+		return Super.Remove(obj)
+	End Method
+	
+
 	Method GetByGUID:TProgrammeData(GUID:String)
 		Return TProgrammeData( Super.GetByGUID(GUID) )
 	End Method
+
+
+	'returns (and creates if needed) a list containing only upcoming
+	'programmeData
+	Method GetUnreleasedProgrammeDataList:TList()
+		if not _unreleasedProgrammeData
+			_unreleasedProgrammeData = CreateList()
+			For local data:TProgrammeData = EachIn entries.Values()
+				if data.IsReleased() then continue
+
+				_unreleasedProgrammeData.AddLast(data)
+			Next
+		endif
+		'order by release
+		_unreleasedProgrammeData.Sort(True, _SortUnreleasedByRelease)
+
+		return _unreleasedProgrammeData
+	End Method	
 
 
 	Method GetGenreRefreshModifier:float(genre:int)
@@ -202,12 +242,62 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		return flagMod
 	End Method	
 
+
 	Method RefreshTopicalities:int()
 		For Local data:TProgrammeData = eachin entries.Values()
 			data.RefreshTopicality()
 			data.RefreshTrailerTopicality()
 		Next
 	End Method
+
+
+	'helper for external callers so they do not need to know
+	'the internal structure of the collection
+	Method RefreshUnreleased:int()
+		_unreleasedProgrammeData = Null
+		GetUnreleasedProgrammeDataList()
+	End Method
+
+
+	Method SetProgrammeDataState(data:TProgrammeData, state:int)
+		Select state
+			case TVTProgrammeState.IN_PRODUCTION
+				'
+
+			case TVTProgrammeState.IN_CINEMA
+				'invalidate previous cache
+				'_inProductionProgrammeData = Null
+
+			case TVTProgrammeState.RELEASED
+				'invalidate previous cache
+				'_inCinemaProgrammeData = Null
+
+				_unreleasedProgrammeData = Null
+		End Select
+	End Method
+
+
+	'updates just unreleased programmes (checks for new states)
+	'so: unreleased -> production (->cinema) -> released
+	Method UpdateUnreleased:int()
+		local unreleased:TList = GetUnreleasedProgrammeDataList()
+		local now:Double = GetWorldTime().GetTimeGone()
+		For local pd:TProgrammeData = EachIn unreleased
+			pd.Update()
+			'data is sorted by production start, so as soon as the
+			'production start of an entry is in the future, all entries
+			'coming after it will be even later and can get skipped
+			if pd.GetProductionStartTime() > now then exit
+		Next 
+	End Method
+
+
+	Function _SortUnreleasedByRelease:Int(o1:Object, o2:Object)
+		Local p1:TProgrammeData = TProgrammeData(o1)
+		Local p2:TProgrammeData = TProgrammeData(o2)
+		If Not p2 Then Return 1
+        Return p1.GetProductionStartTime() - p2.GetProductionStartTime()
+	End Function	
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -272,6 +362,8 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Field releaseTime:Long = -1
 	'announced in news etc?
 	Field releaseAnnounced:int = FALSE
+	'state of the programme (in production, cinema, released...)
+	Field state:int = 0
 	'how many times that programme was run
 	'(per player, 0 = unknown - eg before "game start" to lower values)
 	Field timesAired:int[] = [0]
@@ -1106,7 +1198,6 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	End Method
 
 
-
 	'returns amount of trailers aired since last normal programme broadcast
 	'or "in total"
 	Method GetTimesTrailerAired:Int(total:int=TRUE)
@@ -1167,12 +1258,86 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	End Method
 
 
+	Method isInCinema:int()
+		if isReleased() then return False
+		' without stored outcome, the movie wont run in the cinemas
+		if outcome <= 0 then return False
+		
+		return GetCinemaReleaseTime() <= GetWorldTime().GetTimeGone()
+	End Method
+
+
+	Method isInProduction:int()
+		if isReleased() then return False
+		
+		return GetProductionStartTime() <= GetWorldTime().GetTimeGone() and GetCinemaReleaseTime() > GetWorldTime().GetTimeGone()
+	End Method
+	
+
 	Method isType:int(typeID:int)
 		'if productType is a bitmask flag
 		'return (productType & typeID)
 
 		return productType = typeID
 	End Method	
+
+
+	Method SetState:int(state:int)
+		'skip if already done
+		if self.state = state then return False
+
+		Select state
+			case TVTProgrammeState.NONE
+				'
+			case TVTProgrammeState.IN_PRODUCTION
+				if not onProductionStart() then return False
+			case TVTProgrammeState.IN_CINEMA
+				if not onCinemaRelease() then return False
+			case TVTProgrammeState.RELEASED
+				if not onRelease() then return False
+		End Select
+
+		'inform collection that this programme(data) is in a new state
+		GetProgrammeDataCollection().SetProgrammeDataState(self, state)
+
+		self.state = state
+	End Method
+
+
+	Method onProductionStart:int(time:Long = 0)
+		'trigger effects
+		local effectParams:TData = new TData.Add("source", self)
+		effects.RunEffects("productionStart", effectParams)
+
+		return True
+	End Method
+
+
+	Method onCinemaRelease:int(time:Long = 0)
+		return True
+	End Method
+
+
+	Method onRelease:int(time:Long = 0)
+		return True
+	End Method
+
+
+	Method Update:int()
+		Select state
+			case TVTProgrammeState.NONE
+				if isInProduction() then SetState(TVTProgrammeState.IN_PRODUCTION)
+			case TVTProgrammeState.IN_PRODUCTION
+				if isInCinema()
+					SetState(TVTProgrammeState.IN_CINEMA)
+				'some programme do not run in cinema
+				elseif isReleased()
+					SetState(TVTProgrammeState.RELEASED)
+				endif
+			case TVTProgrammeState.IN_PRODUCTION
+				if isReleased() then SetState(TVTProgrammeState.RELEASED)
+		End Select
+	End Method
 End Type
 
 
