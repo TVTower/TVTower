@@ -132,8 +132,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 		'=== ALL GAMES ===
-'		TLogger.Log("Game.PrepareStart()", "(re-)initializing all room handlers and screens", LOG_DEBUG)
-'		GetRoomHandlerCollection().Initialize()
+		'TLogger.Log("Game.PrepareStart()", "preparing all room handlers and screens for new game", LOG_DEBUG)
+		'GetRoomHandlerCollection().PrepareGameStart()
 
 
 		TLogger.Log("Game.PrepareStart()", "colorizing images corresponding to playercolors", LOG_DEBUG)

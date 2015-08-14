@@ -4325,8 +4325,6 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 
 	Method BuyScriptFromPlayer:int(script:TScript)
-		local buy:int = (script.owner > 0)
-
 		'remove from player (lists and suitcase) - and give him money
 		if GetPlayerCollection().IsPlayer(script.owner)
 			local pc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(script.owner)
@@ -4754,12 +4752,21 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 				guiScript.InitAssets( guiScript.getAssetName(-1, FALSE ), guiScript.getAssetName(-1, TRUE ) )
 
 				'when dropping vendor licence on vendor shelf .. no prob
-				if guiScript.script.owner <= 0 then return true
+				if not guiScript.script.IsOwnedByPlayer()
+					return true
+				endif
 
 				if not GetInstance().BuyScriptFromPlayer(guiScript.script)
 					triggerEvent.setVeto()
 					return FALSE
 				endif
+
+				'remove the dropped item (it got recreated already)
+				guiScript.Remove()
+
+				'alternatively:
+				'RemoveAllGuiElements()
+				'GetInstance().RefreshGUIElements()
 		end select
 
 		return TRUE
