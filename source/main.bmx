@@ -2312,6 +2312,10 @@ Type TScreen_GameSettings Extends TGameScreen
 			GetGame().SetStartYear( int(sender.GetValue()) )
 			'use the (maybe corrected value)
 			TGUIInput(sender).value = GetGame().GetStartYear()
+
+			'store it as user setting so it gets used in
+			'GetGame().PreparewNewGame()
+			GetGame().userStartYear = int(TGUIInput(sender).value)
 		EndIf
 	End Method
 
