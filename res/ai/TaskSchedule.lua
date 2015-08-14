@@ -834,7 +834,7 @@ function JobSchedule:Tick()
 				-- look for upcoming programmes
 				if (table.count(upcomingProgrammesLicences) == 0) then
 					-- nothing found: use a random one
-					upcomingProgrammesLicences = { TVT.of_getProgrammeLicenceAtIndex( math.random(0, TVT.of_getAdContractCount()) ) }
+					upcomingProgrammesLicences = { TVT.of_getProgrammeLicenceAtIndex( math.random(0, TVT.of_getAdContractCount()-1) ) }
 				end
 
 				if (table.count(upcomingProgrammesLicences) > 0) then
@@ -860,7 +860,7 @@ function JobSchedule:Tick()
 		-- ============
 		-- send a random ad spot if nothing else is available
 		if (choosenBroadcastSource == nil and currentBroadcastMaterial == nil) then
-			choosenBroadcastSource = TVT.of_getAdContractAtIndex( math.random(0, TVT.of_getAdContractCount()) )
+			choosenBroadcastSource = TVT.of_getAdContractAtIndex( math.random(0, TVT.of_getAdContractCount()-1) )
 			choosenBroadcastLog = "Setze Werbespot (Alternativlosigkeit): " .. fixedDay .. "/" .. fixedHour .. ":55  " .. choosenBroadcastSource.GetTitle() .. " [" ..choosenBroadcastSource.GetID() .."]  MinAud: " .. choosenBroadcastSource.GetMinAudience()
 		end
 
