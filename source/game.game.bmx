@@ -344,15 +344,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			Local addWidth:Int = GetSpriteFromRegistry("pp_programmeblock1").area.GetW()
 			Local addHeight:Int = GetSpriteFromRegistry("pp_adblock1").area.GetH()
 
-			'is there a random contract available?
-			If playerCollection.GetRandomAdContract()
-				playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 0 )
-				playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 1 )
-				playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 2 )
-				playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 3 )
-				playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 4 )
-				playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 5 )
-			EndIf
 			Local currentLicence:TProgrammeLicence = Null
 			Local currentHour:Int = 0
 			For Local i:Int = 0 To 3
@@ -360,7 +351,23 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				If Not currentLicence Then Continue
 				playerPlan.SetProgrammeSlot(TProgramme.Create(currentLicence), GetWorldTime().GetStartDay(), currentHour )
 				currentHour:+ currentLicence.getData().getBlocks()
+
+				'add two infomercials after the second programme
+				if i = 1
+					playerPlan.SetProgrammeSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), currentHour )
+					currentHour :+ 1
+					playerPlan.SetProgrammeSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), currentHour )
+					currentHour :+ 1
+				endif
 			Next
+
+			'place ads for all broadcasted hours
+			If playerCollection.GetRandomAdContract()
+				For local i:int = 0 to currentHour-1
+					playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), i )
+				Next
+			EndIf
+
 		Next
 
 
@@ -528,9 +535,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 	Method SpreadStartProgramme:Int()
-		Local filterCallIn:TProgrammeLicenceFilter = New TProgrammeLicenceFilter
-		filterCallIn.AddFlag(TVTProgrammeFlag.PAID)
-
 		'all players get the same adContractBase (but of course another
 		'contract for each of them)
 		Local adContractBases:TAdContractBase[]
@@ -585,20 +589,12 @@ endrem
 		'start programmes should be similar to "cheap movie list" of the
 		'movieagency
 		local startProgrammeFilter:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesCheap
-		local startCallInFilter:TProgrammeLicenceFilter = new TProgrammeLicenceFilter
-		startCallInFilter.licenceTypes = [TVTProgrammeLicenceType.SERIES]
-		startCallInFilter.priceMin = 0
-		startCallInFilter.priceMax = 80000
-		startCallInFilter.qualityMin = -1.0
-		startCallInFilter.qualityMax = 0.25
 
 		For Local playerids:Int = 1 To 4
 			Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(playerids)
 			For Local i:Int = 0 Until GameRules.startMovieAmount
 				ProgrammeCollection.AddProgrammeLicence(GetProgrammeLicenceCollection().GetRandomByFilter(startProgrammeFilter))
 			Next
-			'give 1 call in
-			ProgrammeCollection.AddProgrammeLicence(GetProgrammeLicenceCollection().GetRandomByFilter(startCallInFilter))
 
 			'create contracts out of the preselected adcontractbases
 			For Local adContractBase:TAdContractBase = EachIn adContractBases

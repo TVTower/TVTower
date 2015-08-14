@@ -1555,6 +1555,7 @@ End Type
 
 
 
+
 'filters checked via "OR" (a or b) or "AND" (a and b)
 Type TProgrammeLicenceFilterGroup extends TProgrammeLicenceFilter
 	Field filters:TProgrammeLicenceFilter[]
