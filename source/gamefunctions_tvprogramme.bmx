@@ -1645,13 +1645,21 @@ Type TgfxContractlist Extends TPlannerList
 
 			'=== DRAW TAPE===
 			If contract
+				local drawType:string = "default"
+				'light emphasize
+				if contract.GetDaysLeft() <= 1 then drawType = "planned"
+				'strong emphasize
+				if contract.GetDaysLeft() <= 0 then SetColor 255,220,220
+				
 				'hovered - draw hover effect if hovering
 				If THelper.MouseIn(currX, currY, entrySize.GetX(), entrySize.GetY()-1)
 					GetSpriteFromRegistry("gfx_programmetape_movie.hovered").draw(currX + 8, currY+1)
 				Else
-					GetSpriteFromRegistry("gfx_programmetape_movie.default").draw(currX + 8, currY+1)
+					GetSpriteFromRegistry("gfx_programmetape_movie."+drawType).draw(currX + 8, currY+1)
 				EndIf
 
+				if contract.GetDaysLeft() <= 0 then SetColor 255,255,255
+			
 				if TVTDebugInfos
 					font.drawBlock(contract.GetProfit() +CURRENCYSIGN+" @ "+ contract.GetMinAudience(), currX + 22, currY + 3, 150,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
 				else
