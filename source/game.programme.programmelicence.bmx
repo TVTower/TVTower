@@ -1338,7 +1338,16 @@ Type TProgrammeLicenceFilter
 		'show/event -> all categories
 		CreateVisible().AddNotFlag(categoryFlags).AddGenres([100, 101, 102, 200, 201, 202, 203, 204]).SetCaption("PROGRAMME_GENRE_SHOW_AND_EVENTS")
 		CreateVisible().AddFlag(TVTProgrammeFlag.LIVE)						'live
-		CreateVisible().AddFlag(TVTProgrammeFlag.TRASH).AddGenres([301])	'Trash + Yellow Press
+'		CreateVisible().AddFlag(TVTProgrammeFlag.TRASH).AddGenres([301])	'Trash + Yellow Press
+
+		'either trash - or genre 301 (yellow press)
+		local trash:TProgrammeLicenceFilterGroup = TProgrammeLicenceFilterGroup.CreateVisible()
+		trash.SetConnectionType(TProgrammeLicenceFilterGroup.CONNECTION_TYPE_OR)
+		'store config in group for proper caption
+		trash.AddFlag(TVTProgrammeFlag.TRASH).AddGenres([301])
+		trash.AddFilter( new TProgrammeLicenceFilter.AddFlag(TVTProgrammeFlag.TRASH) )
+		trash.AddFilter( new TProgrammeLicenceFilter.AddGenres([301]) )
+
 		CreateVisible().AddFlag(TVTProgrammeFlag.PAID)						'Call-In
 	End Function
 
@@ -1553,10 +1562,31 @@ Type TProgrammeLicenceFilterGroup extends TProgrammeLicenceFilter
 	Const CONNECTION_TYPE_OR:int = 0
 	Const CONNECTION_TYPE_AND:int = 1
 
-	Method AddFilter(filter:TProgrammeLicenceFilter)
+
+	'creates a new filter and sets it up to get displayed in the licence
+	'selection menu
+	Function CreateVisible:TProgrammeLicenceFilterGroup()
+		local obj:TProgrammeLicenceFilterGroup = new TProgrammeLicenceFilterGroup
+		obj.displayInMenu = True
+
+		'add to list
+		Add(obj)
+
+		return obj
+	End Function
+	
+
+	Method AddFilter:TProgrammeLicenceFilterGroup(filter:TProgrammeLicenceFilter)
 		filters :+ [filter]
+		return self
 	End Method
 
+
+	Method SetConnectionType:TProgrammeLicenceFilterGroup(connectionType:int = 0)
+		self.connectionType = connectionType
+		return self
+	End Method
+	
 	
 	Method DoesFilter:Int(licence:TProgrammeLicence)
 		if connectionType = CONNECTION_TYPE_OR

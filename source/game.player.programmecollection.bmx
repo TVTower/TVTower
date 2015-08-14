@@ -291,6 +291,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		If licence.isSingle() Then movieLicences.AddLast(licence)
 		if licence.isSeries() then seriesLicences.AddLast(licence)
 		if licence.isCollection() then collectionLicences.AddLast(licence)
+
 		programmeLicences.AddLast(licence)
 
 		justAddedProgrammeLicences.AddLast(licence)
