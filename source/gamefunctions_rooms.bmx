@@ -4439,11 +4439,9 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	End Function
 
 
-	Method RefreshGuiElements:int()
+	Method RefreshGuiElements_Suitcase:int()
 		'===== REMOVE UNUSED =====
 		'remove gui elements with contracts the player does not have any longer
-
-		'suitcase
 		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(GetPlayer().playerID)
 		For local guiScript:TGUIScript = eachin GuiListSuitcase._slots
 			'if the player has this script in suitcase or list, skip deletion
@@ -4453,7 +4451,26 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 			guiScript.remove()
 			guiScript = null
 		Next
-		'agency lists
+
+
+		'===== CREATE NEW =====
+		'create missing gui elements for the players suitcase scripts
+		For local script:TScript = eachin programmeCollection.suitcaseScripts
+			if guiListSuitcase.ContainsScript(script) then continue
+			local block:TGUIScript = new TGUIScript.CreateWithScript(script)
+			'change look
+			block.InitAssets(block.getAssetName(-1, TRUE), block.getAssetName(-1, TRUE))
+
+			'print "ADD guiListSuitcase missed new script: "+block.script.id
+
+			guiListSuitcase.addItem(block, "-1")
+		Next
+	End Method
+
+
+	Method RefreshGuiElements_Vendor:int()
+		'===== REMOVE UNUSED =====
+		'remove gui elements with contracts the vendor does not have any longer
 		For local i:int = 0 to GuiListNormal.length-1
 			For local guiScript:TGUIScript = eachin GuiListNormal[i]._slots
 				if not HasScript(guiScript.script)
@@ -4519,18 +4536,13 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 			GuiListNormal2.addItem(block, "-1")
 		Next
+	End Method
+	
 
-		'create missing gui elements for the players suitcase scripts
-		For local script:TScript = eachin programmeCollection.suitcaseScripts
-			if guiListSuitcase.ContainsScript(script) then continue
-			local block:TGUIScript = new TGUIScript.CreateWithScript(script)
-			'change look
-			block.InitAssets(block.getAssetName(-1, TRUE), block.getAssetName(-1, TRUE))
+	Method RefreshGuiElements:int()
+		RefreshGuiElements_Suitcase()
+		RefreshGuiElements_Vendor()
 
-			'print "ADD guiListSuitcase missed new script: "+block.script.id
-
-			guiListSuitcase.addItem(block, "-1")
-		Next
 
 		haveToRefreshGuiElements = FALSE
 	End Method
@@ -4597,7 +4609,24 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	Function onChangeProgrammeCollection:int( triggerEvent:TEventBase )
 		if not CheckPlayerInRoom("scriptagency") then return FALSE
 
-		GetInstance().RefreshGuiElements()
+		'refresh the suitcase, not the board shelf!
+		GetInstance().RefreshGuiElements_Suitcase()
+		
+rem
+		'only refresh if the vendor did not get the script
+		if triggerEvent.IsTrigger("programmecollection.removeScript")
+			if not GetInstance().HasScript(TScript(triggerEvent.GetData().Get("script")))
+				GetInstance().RefreshGuiElements()
+			endif
+		'only refresh if the vendor did not get the script
+		elseif triggerEvent.IsTrigger("programmecollection.moveScript")
+			if not GetInstance().HasScript(TScript(triggerEvent.GetData().Get("script")))
+				GetInstance().RefreshGuiElements()
+			endif
+		else
+			GetInstance().RefreshGuiElements()
+		endif
+endrem
 	End Function
 
 
@@ -4763,21 +4792,12 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 				guiScript.InitAssets( guiScript.getAssetName(-1, FALSE ), guiScript.getAssetName(-1, TRUE ) )
 
 				'when dropping vendor licence on vendor shelf .. no prob
-				if not guiScript.script.IsOwnedByPlayer()
-					return true
-				endif
+				if not guiScript.script.IsOwnedByPlayer() Then return true
 
 				if not GetInstance().BuyScriptFromPlayer(guiScript.script)
 					triggerEvent.setVeto()
 					return FALSE
 				endif
-
-				'remove the dropped item (it got recreated already)
-				guiScript.Remove()
-
-				'alternatively:
-				'RemoveAllGuiElements()
-				'GetInstance().RefreshGUIElements()
 		end select
 
 		return TRUE
