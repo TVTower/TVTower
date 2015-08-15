@@ -959,7 +959,12 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		'topicality has a certain value influence
 		value :* GetTopicality()
 
+		'the older the less a licence costs
+		'the age factor is also used in "GetMaxTopicality())
+		Local age:Float = 0.01 * Max(0, 100 - Max(0, GetWorldTime().GetYear() - year))
+		value :* Max(0.30, age) * GetModifier("price::age")
 
+		
 		'=== FLAGS ===
 		'BMovies lower the price
 		If Self.IsBMovie() then value :* 0.85
