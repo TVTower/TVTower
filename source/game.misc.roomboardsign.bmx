@@ -251,12 +251,16 @@ Type TRoomBoard
 
 
 	Method DropBackDraggedSigns:Int()
+		local droppedSomethingBack:int = False
 		For Local sign:TRoomBoardSign = EachIn List
 			If not sign.dragged then continue
 
 			sign.SetCoords(sign.StartPos.x, sign.StartPos.y)
 			sign.dragged = False
+			droppedSomethingBack = True
 		Next
+
+		return droppedSomethingBack
 	End Method
 	
 

@@ -122,7 +122,12 @@ Type TRoomHandlerCollection
 		
 		Select triggerEvent._trigger.toLower()
 			case "room.onupdate"
-				if KeyManager.IsHit(KEY_ESCAPE) then currentHandler.AbortScreenActions()
+				if KeyManager.IsHit(KEY_ESCAPE)
+					if currentHandler.AbortScreenActions()
+						KeyManager.ResetKey(KEY_ESCAPE)
+						KeyManager.BlockKey(KEY_ESCAPE, 150)
+					endif
+				endif
 				currentHandler.onUpdateRoom( triggerEvent )
 			case "room.ondraw"
 				currentHandler.onDrawRoom( triggerEvent )
@@ -159,12 +164,15 @@ Type TRoomHandler
 		'only handle the players figure
 		if TFigure(triggerEvent.GetSender()) <> GetPlayer().figure then return False
 		AbortScreenActions()
-		return True;
+		return True
 	End Method
 
 
 	'call this function if the visual user actions need to get aborted
-	Method AbortScreenActions:Int(); End Method
+	Method AbortScreenActions:Int()
+		return False
+	End Method
+
 
 	Method SetLanguage(); End Method
 
@@ -456,7 +464,9 @@ Type RoomHandler_Archive extends TRoomHandler
 			'remove in all cases
 			draggedGuiProgrammeLicence = null
 			hoveredGuiProgrammeLicence = null
+			return True
 		EndIf
+		return False
 	End Method
 
 
@@ -982,7 +992,9 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			draggedGuiProgrammeLicence.dropBackToOrigin()
 			draggedGuiProgrammeLicence = null
 			hoveredGuiProgrammeLicence = null
+			return True
 		endif
+		return False
 	End Method
 
 
@@ -1743,11 +1755,14 @@ Type RoomHandler_News extends TRoomHandler
 
 
 	Method AbortScreenActions:Int()
+		local abortedAction:int = False
+
 		if draggedGuiNews
 			'try to drop the licence back
 			draggedGuiNews.dropBackToOrigin()
 			draggedGuiNews = null
 			hoveredGuiNews = null
+			abortedAction = True
 		endif
 
 		'Try to drop back dragged elements
@@ -1756,6 +1771,8 @@ Type RoomHandler_News extends TRoomHandler
 			'successful or not - get rid of the gui element
 			obj.Remove()
 		Next
+
+		return abortedAction
 	End Method
 
 
@@ -3011,11 +3028,14 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 	Method AbortScreenActions:Int()
+		local abortedAction:int = False
+
 		if draggedGuiAdContract
 			'try to drop the licence back
 			draggedGuiAdContract.dropBackToOrigin()
 			draggedGuiAdContract = null
 			hoveredGuiAdContract = null
+			abortedAction = True
 		endif
 
 		'remove and recreate all (so they get the correct visual style)
@@ -3035,6 +3055,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			obj.InitAssets(obj.getAssetName(-1, FALSE), obj.getAssetName(-1, TRUE))
 		Next
 
+		return abortedAction
 	End Method
 
 
@@ -4154,11 +4175,13 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 
 	Method AbortScreenActions:Int()
+		local abortedAction:int = False
 		if draggedGuiScript
 			'try to drop the licence back
 			draggedGuiScript.dropBackToOrigin()
 			draggedGuiScript = null
 			hoveredGuiScript = null
+			abortedAction = True
 		endif
 
 		'change look to "stand on furniture look"
@@ -4171,6 +4194,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 			obj.InitAssets(obj.getAssetName(-1, FALSE), obj.getAssetName(-1, TRUE))
 		Next
 
+		return abortedAction
 	End Method
 
 
@@ -4739,6 +4763,8 @@ endrem
 
 		'something changed...refresh missing/obsolete...
 		GetInstance().RefreshGuiElements()
+'neu
+'		GetInstance().RefreshGuiElements_Vendor()
 
 		return TRUE
 	End function
@@ -4796,6 +4822,10 @@ endrem
 
 				if not GetInstance().BuyScriptFromPlayer(guiScript.script)
 					triggerEvent.setVeto()
+					'try to drop back to old list - which triggers
+					'this function again... but with a differing list..
+					guiScript.dropBackToOrigin()
+					haveToRefreshGuiElements = TRUE
 					return FALSE
 				endif
 		end select
@@ -4956,8 +4986,12 @@ Type RoomHandler_Roomboard extends TRoomHandler
 
 
 	Method AbortScreenActions:Int()
-		GetRoomBoard().DropBackDraggedSigns()
+		local abortedAction:int = False
+
+		if GetRoomBoard().DropBackDraggedSigns() then abortedAction = True
 		GetRoomBoard().UpdateSigns(False)
+
+		return abortedAction
 	End Method
 	
 

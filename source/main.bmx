@@ -410,9 +410,6 @@ Type TApp
 		'ignore shortcuts if a gui object listens to keystrokes
 		'eg. the active chat input field
 		If Not GUIManager.GetKeystrokeReceiver()
-			'keywrapper has "key every milliseconds" functionality
-			If KEYWRAPPER.hitKey(KEY_ESCAPE) Then TApp.CreateConfirmExitAppDialogue()
-
 			If GameRules.devConfig.GetBool("DEV_KEYS", False)
 				'(un)mute sound
 				'M: (un)mute all sounds
