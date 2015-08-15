@@ -94,8 +94,8 @@ Type TGraphicsManager
 	Method SetFullscreen:Int(bool:int = TRUE)
 		if fullscreen <> bool
 			fullscreen = bool
-			'create a new graphics object
-			InitGraphics()
+			'create a new graphics object if already in graphics mode
+			if _g then InitGraphics()
 		endif
 	End Method
 	
