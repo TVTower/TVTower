@@ -737,6 +737,12 @@ Type TPersist
 												Case ByteTypeId, ShortTypeId, IntTypeId, LongTypeId, FloatTypeId, DoubleTypeId
 
 													Local arrayList:String[] = fieldNode.GetContent().Split(" ")
+													'create an empty array if nothing has to get inserted
+													'this is needed as "split()" creates at least 1 entry
+													if arrayList[0] = "" then arrayList = new String[0]
+													'alternatively:
+													'if fieldNode.GetContent().Trim() = "" then arrayList = String[0]
+
 													Local arrayObj:Object = arrayType.NewArray(arrayList.length, scalesi)
 													fieldObj.Set(obj, arrayObj)
 
