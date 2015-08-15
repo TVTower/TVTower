@@ -1633,6 +1633,8 @@ Type TProgrammeLicenceFilterGroup extends TProgrammeLicenceFilter
 	
 	
 	Method DoesFilter:Int(licence:TProgrammeLicence)
+		if filters.length = 0 then return Super.DoesFilter(licence)
+		
 		if connectionType = CONNECTION_TYPE_OR
 			For local filter:TProgrammeLicenceFilter = Eachin filters
 				if filter.DoesFilter(licence) then return True
