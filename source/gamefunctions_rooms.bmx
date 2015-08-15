@@ -1295,7 +1295,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			for local i:int = 0 to lists[j].length-1
 				'if exists...skip it
 				if lists[j][i] then continue
-'heute
+
 				if lists[j] = listMoviesGood then licence = GetProgrammeLicenceCollection().GetRandomByFilter(filterMoviesGood)
 				if lists[j] = listMoviesCheap then licence = GetProgrammeLicenceCollection().GetRandomByFilter(filterMoviesCheap)
 				if lists[j] = listSeries then licence = GetProgrammeLicenceCollection().GetRandomByFilter(filterSeries)
@@ -2439,7 +2439,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		local sourceList:TGUIScriptSlotList
 		if source
 			local sourceParent:TGUIobject = source._parent
-			if TGUIPanel(sourceParent) then sourceParent = TGUIPanel(source)._parent
+			if TGUIPanel(sourceParent) then sourceParent = TGUIPanel(sourceParent)._parent
 			sourceList = TGUIScriptSlotList(sourceParent)
 		endif
 		'only interested in drops FROM a list
@@ -4161,7 +4161,6 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		'is only emitted if the drop is successful (so it "visually" happened)
 		'drop ... to vendor or suitcase
 		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropScript, "TGuiScript" ) ]
-'		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropScript, "TGuiScript" ) ]
 		'drop on vendor - sell things
 		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropScriptOnVendor, "TGuiScript" ) ]
 		'we want to know if we hover a specific block - to show a datasheet
@@ -4525,33 +4524,47 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 				if scriptFound then continue
 				if GuiListNormal[i].ContainsScript(script) then scriptFound = True
 			Next
+			if GuiListNormal2.ContainsScript(script) then scriptFound = True
+
+			'go to next script if the script is already stored in the
+			'gui list
+			if scriptFound then continue
+
 
 			'try to fill in one of the normalList-Parts
-			if not scriptFound
-				For local i:int = 0 to GuiListNormal.length-1
-					if scriptAdded then continue
-					if GuiListNormal[i].ContainsScript(script) then scriptAdded = True; Continue
-					if GuiListNormal[i].getFreeSlot() < 0 then continue
-					local block:TGUIScript = new TGUIScript.CreateWithScript(script)
-					'change look
-					block.InitAssets(block.getAssetName(-1, FALSE), block.getAssetName(-1, TRUE))
+			For local i:int = 0 to GuiListNormal.length-1
+				if scriptAdded then continue
+				if GuiListNormal[i].ContainsScript(script) then scriptAdded = True; Continue
+				if GuiListNormal[i].getFreeSlot() < 0 then continue
+				local block:TGUIScript = new TGUIScript.CreateWithScript(script)
+				'change look
+				block.InitAssets(block.getAssetName(-1, FALSE), block.getAssetName(-1, TRUE))
 
-					'print "ADD guiListNormal #"+i+" missed new script: "+block.script.id + " -> "+ block.script.GetTitle()
+				'print "ADD guiListNormal #"+i+" missed new script: "+block.script.id + " -> "+ block.script.GetTitle()
 
-					GuiListNormal[i].addItem(block, "-1")
-					scriptAdded = true
-				Next
-				if not scriptAdded
-					TLogger.log("ScriptAgency.RefreshGuiElements", "script exists but does not fit in GuiListNormal - script removed.", LOG_ERROR)
-					RemoveScript(script)
-				endif
+				GuiListNormal[i].addItem(block, "-1")
+				scriptAdded = true
+			Next
+			if not scriptAdded
+				TLogger.log("ScriptAgency.RefreshGuiElements", "script exists but does not fit in GuiListNormal - script removed.", LOG_ERROR)
+				RemoveScript(script)
 			endif
 		Next
 
 		'normal2 list
 		For local script:TScript = eachin listNormal2
 			if not script then continue
-			if GuiListNormal2.ContainsScript(script) then continue
+
+			'search the script in all of our lists...
+			local scriptFound:int = FALSE
+			For local i:int = 0 to GuiListNormal.length-1
+				if scriptFound then continue
+				if GuiListNormal[i].ContainsScript(script) then scriptFound = True
+			Next
+			if GuiListNormal2.ContainsScript(script) then scriptFound = True
+			if scriptFound then continue
+			
+
 			local block:TGUIScript = new TGUIScript.CreateWithScript(script)
 			'change look
 			block.InitAssets(block.getAssetName(-1, FALSE), block.getAssetName(-1, TRUE))
@@ -4762,9 +4775,8 @@ endrem
 		guiBlock = null
 
 		'something changed...refresh missing/obsolete...
-		GetInstance().RefreshGuiElements()
-'neu
-'		GetInstance().RefreshGuiElements_Vendor()
+'		GetInstance().RefreshGuiElements()
+		GetInstance().RefreshGuiElements_Vendor()
 
 		return TRUE
 	End function
@@ -4778,7 +4790,7 @@ endrem
 		local guiScript:TGUIScript = TGUIScript(triggerEvent._sender)
 		local receiverList:TGUIListBase = TGUIListBase(triggerEvent._receiver)
 		if not guiScript or not receiverList then return FALSE
-		
+
 		'get current owner of the script, as the field "owner" is set
 		'during buy we cannot rely on it. So we check if the player has
 		'the script in the suitcaseScriptList
