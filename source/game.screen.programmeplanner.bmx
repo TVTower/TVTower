@@ -14,6 +14,9 @@ Type TScreenHandler_ProgrammePlanner
 	Global plannerPreviousDayButton:TGUIButton
 	Global openedProgrammeListThisVisit:int = False
 	Global currentRoom:TRoomBase
+	'indicator whether an item just got dropped and therefor the next
+	'check should ignore "shift/ctrl"-shortcuts
+	Global ignoreCopyOrEpisodeShortcut:int = False
 
 	Global hoveredGuiProgrammePlanElement:TGuiProgrammePlanElement = null
 	Global draggedGuiProgrammePlanElement:TGuiProgrammePlanElement = null
@@ -127,7 +130,11 @@ Type TScreenHandler_ProgrammePlanner
 		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.removeObjectInstances", onChangeProgrammePlan) ]
 
 
-		'begin drop - to intercept if dropping ad to programme which does not allow Ad-Show
+		'1) begin drop - to intercept if dropping ad to programme which does not allow Ad-Show
+		'2) drop on a list - mark to ignore shortcuts if "replacing" an
+		'   existing slot item. Must be done in "onTryDrop" so it is run
+		'   before the shortcut-check is done (which is in "onTryDrag")
+		'   -> so "onDrop" is not possible
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropProgrammePlanElement, "TGUIProgrammePlanElement") ]
 		'drag/drop ... from or to one of the two lists
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.removeItem", onRemoveItemFromSlotList, GuiListProgrammes) ]
@@ -362,7 +369,7 @@ Type TScreenHandler_ProgrammePlanner
 		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
 		if not item then return FALSE
 
-		if CreateNextEpisodeOrCopyByShortcut(item)
+		if not ignoreCopyOrEpisodeShortcut and CreateNextEpisodeOrCopyByShortcut(item)
 			triggerEvent.SetVeto()
 			return FALSE
 		endif
@@ -406,6 +413,11 @@ Type TScreenHandler_ProgrammePlanner
 		if not list then return FALSE
 
 		'check if that item is allowed to get dropped on such a list
+		'...
+
+		'mark that something was dropped this round and no shortcuts should
+		'get used
+		ignoreCopyOrEpisodeShortcut = true
 
 		'up to now: all are allowed
 		return TRUE
@@ -752,6 +764,8 @@ Type TScreenHandler_ProgrammePlanner
 		if planningDay = -1 then planningDay = GetWorldTime().getDay()
 
 		GetGame().cursorstate = 0
+
+		ignoreCopyOrEpisodeShortcut  = false
 
 		'set all slots occupied or not
 		local day:int = GetWorldTime().getDay()
