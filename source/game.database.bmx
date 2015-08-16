@@ -802,7 +802,8 @@ endrem
 			"fix_price", "duration", "profit", "penalty", ..
 			"pro_pressure_groups", "contra_pressure_groups", ..
 			"infomercial_profit", "fix_infomercial_profit", ..
-			"year_range_from", "year_range_to" ..
+			"year_range_from", "year_range_to", ..
+			"blocks" ..
 		])
 
 		adContract.infomercialAllowed = data.GetBool("infomercial", adContract.infomercialAllowed)
@@ -812,6 +813,7 @@ endrem
 		adContract.availableYearRangeFrom = data.GetInt("year_range_from", adContract.availableYearRangeFrom)
 		adContract.availableYearRangeTo = data.GetInt("year_range_to", adContract.availableYearRangeTo)
 
+		adContract.blocks = data.GetInt("blocks", adContract.blocks)
 		adContract.spotCount = data.GetInt("repetitions", adContract.spotcount)
 		adContract.fixedPrice = data.GetInt("fix_price", adContract.fixedPrice)
 		adContract.daysToFinish = data.GetInt("duration", adContract.daysToFinish)
