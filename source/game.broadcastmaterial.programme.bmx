@@ -462,7 +462,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	Method ShowSheet:int(x:int,y:int,align:int)
-		self.licence.ShowSheet(x,y,align, self.usedAsType)
+		self.licence.ShowSheet(x,y,align, self.usedAsType, self.owner)
 	End Method
 
 	Method GetGenreDefinition:TGenreDefinitionBase()

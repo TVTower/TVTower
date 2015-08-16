@@ -447,10 +447,9 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetBroadcastStatistic:TBroadcastStatistic()
-		local useOwner:int = owner
-		if owner < 0 then useOwner = 0
-
+	Method GetBroadcastStatistic:TBroadcastStatistic(useOwner:int=-1)
+		if useOwner < 0 then useOwner = Max(0, owner)
+		
 		if broadcastStatistics.length <= useOwner then broadcastStatistics = broadcastStatistics[.. useOwner + 1]
 		if not broadcastStatistics[useOwner] then broadcastStatistics[useOwner] = new TBroadcastStatistic
 
@@ -767,7 +766,8 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method ShowSheet:Int(x:Int,y:Int, align:int=0, showMode:int=0)
+	Method ShowSheet:Int(x:Int,y:Int, align:int=0, showMode:int=0, useOwner:int=-1)
+		if useOwner = -1 then useOwner = owner
 		'set default mode
 		if showMode = 0 then showMode = TVTBroadcastMaterialType.PROGRAMME
 
@@ -781,15 +781,17 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 
 		if showMode = TVTBroadcastMaterialType.PROGRAMME
-			ShowProgrammeSheet(x, y, align)
+			ShowProgrammeSheet(x, y, align, useOwner)
 		'trailermode
 		elseif showMode = TVTBroadcastMaterialType.ADVERTISEMENT
-			ShowTrailerSheet(x, y, align)
+			ShowTrailerSheet(x, y, align, useOwner)
 		endif
 	End Method
 
 
-	Method ShowProgrammeSheet:Int(x:Int,y:Int, align:int=0)
+	Method ShowProgrammeSheet:Int(x:Int,y:Int, align:int=0, useOwner:int=-1)
+		if useOwner = -1 then useOwner = owner
+		
 		'=== PREPARE VARIABLES ===
 		local sheetWidth:int = 310
 		local sheetHeight:int = 0 'calculated later
@@ -807,7 +809,7 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		local finance:TPlayerFinance
 		'only check finances if it is no other player (avoids exposing
 		'that information to us)
-		if owner <= 0 or GetPlayerBaseCollection().playerID = owner
+		if useOwner <= 0 or GetPlayerBaseCollection().playerID = useOwner
 			finance = GetPlayerFinanceCollection().Get(GetPlayerBaseCollection().playerID, -1)
 		endif
 
@@ -821,10 +823,10 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		'can player afford this licence?
 		local canAfford:int = False
 		'possessing player always can
-		if GetPlayerBaseCollection().playerID = owner
+		if GetPlayerBaseCollection().playerID = useOwner
 			canAfford = True
 		'if it is another player... just display "can afford"
-		elseif owner > 0
+		elseif useOwner > 0
 			canAfford = True
 		'not our licence but enough money to buy
 		elseif finance and finance.canAfford(GetPrice())
@@ -835,9 +837,9 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		Local showMsgEarnInfo:Int = False
 		
 		'only if planned and in archive
-		'if owner > 0 and GetPlayer().figure.inRoom
+		'if useOwner > 0 and GetPlayer().figure.inRoom
 		'	if self.IsPlanned() and GetPlayer().figure.inRoom.name = "archive"
-		if owner > 0 and self.IsPlanned() then showMsgPlannedWarning = True
+		if useOwner > 0 and self.IsPlanned() then showMsgPlannedWarning = True
 		'if licence is for a specific programme it might contain a flag...
 		'TODO: do this for "all" via licence.HasFlag() doing recursive checks?
 		If data.HasFlag(TVTProgrammeFlag.PAID) then showMsgEarnInfo = True
@@ -1050,9 +1052,9 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		'blocks
 		skin.RenderBox(contentX + 5, contentY, 47, -1, data.GetBlocks(), "duration", "neutral", skin.fontBold)
 		'repetitions
-		skin.RenderBox(contentX + 5 + 51, contentY, 52, -1, data.GetTimesAired(owner), "repetitions", "neutral", skin.fontBold)
+		skin.RenderBox(contentX + 5 + 51, contentY, 52, -1, data.GetTimesAired(useOwner), "repetitions", "neutral", skin.fontBold)
 		'record
-		skin.RenderBox(contentX + 5 + 107, contentY, 83, -1, TFunctions.convertValue(GetBroadcastStatistic().GetBestAudienceResult(owner, -1).audience.GetSum(),2), "maxAudience", "neutral", skin.fontBold)
+		skin.RenderBox(contentX + 5 + 107, contentY, 83, -1, TFunctions.convertValue(GetBroadcastStatistic(useOwner).GetBestAudienceResult(useOwner, -1).audience.GetSum(),2), "maxAudience", "neutral", skin.fontBold)
 		'price
 		if canAfford
 			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(GetPrice()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
@@ -1096,9 +1098,9 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 			contentY :+ 12	
 			skin.fontNormal.draw("Bloecke: "+data.GetBlocks(), contentX + 5, contentY)
 			contentY :+ 12	
-			skin.fontNormal.draw("Ausgestrahlt: "+data.GetTimesAired(owner)+"x Spieler, "+data.GetTimesAired()+"x alle", contentX + 5, contentY)
+			skin.fontNormal.draw("Ausgestrahlt: "+data.GetTimesAired(useOwner)+"x Spieler, "+data.GetTimesAired()+"x alle", contentX + 5, contentY)
 			contentY :+ 12	
-			skin.fontNormal.draw("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(owner, -1).audience.GetSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetSum())+" (alle)", contentX + 5, contentY)
+			skin.fontNormal.draw("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(useOwner, -1).audience.GetSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetSum())+" (alle)", contentX + 5, contentY)
 			contentY :+ 12	
 			skin.fontNormal.draw("Preis: "+GetPrice(), contentX + 5, contentY)
 			contentY :+ 12	
@@ -1115,7 +1117,9 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method ShowTrailerSheet:Int(x:Int,y:Int, align:int=0)
+	Method ShowTrailerSheet:Int(x:Int,y:Int, align:int=0, useOwner:int = -1)
+		if useOwner = -1 then useOwner = owner
+		
 		'=== PREPARE VARIABLES ===
 		local sheetWidth:int = 310
 		local sheetHeight:int = 0 'calculated later
