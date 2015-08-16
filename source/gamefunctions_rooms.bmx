@@ -4516,7 +4516,6 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		'normal list
 		For local script:TScript = eachin listNormal
 			if not script then continue
-			local scriptAdded:int = FALSE
 
 			'search the script in all of our lists...
 			local scriptFound:int = FALSE
@@ -4530,23 +4529,9 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 			'gui list
 			if scriptFound then continue
 
-
-			'try to fill in one of the normalList-Parts
-			For local i:int = 0 to GuiListNormal.length-1
-				if scriptAdded then continue
-				if GuiListNormal[i].ContainsScript(script) then scriptAdded = True; Continue
-				if GuiListNormal[i].getFreeSlot() < 0 then continue
-				local block:TGUIScript = new TGUIScript.CreateWithScript(script)
-				'change look
-				block.InitAssets(block.getAssetName(-1, FALSE), block.getAssetName(-1, TRUE))
-
-				'print "ADD guiListNormal #"+i+" missed new script: "+block.script.id + " -> "+ block.script.GetTitle()
-
-				GuiListNormal[i].addItem(block, "-1")
-				scriptAdded = true
-			Next
-			if not scriptAdded
-				TLogger.log("ScriptAgency.RefreshGuiElements", "script exists but does not fit in GuiListNormal - script removed.", LOG_ERROR)
+			'first try to add to the guiListNormal-array, then guiListNormal2 
+			if not AddScriptToVendorGuiLists(script, GuiListNormal + [GuiListNormal2])
+				TLogger.log("ScriptAgency.RefreshGuiElements_Vendor", "script exists in listNormal but does not fit in GuiListNormal or GuiListNormal2 - script removed.", LOG_ERROR)
 				RemoveScript(script)
 			endif
 		Next
@@ -4562,18 +4547,33 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 				if GuiListNormal[i].ContainsScript(script) then scriptFound = True
 			Next
 			if GuiListNormal2.ContainsScript(script) then scriptFound = True
-			if scriptFound then continue
-			
 
+			if scriptFound then continue
+
+			'try to add to guiListNormal2, then guiListNormal-array
+			if not AddScriptToVendorGuiLists(script, [GuiListNormal2] + GuiListNormal)
+				TLogger.log("ScriptAgency.RefreshGuiElements_Vendor", "script exists in listNormal2 but does not fit in GuiListNormal2 or GuiListNormal - script removed.", LOG_ERROR)
+				RemoveScript(script)
+			endif
+		Next
+	End Method
+
+
+	'helper function
+	Function AddScriptToVendorGuiLists:int(script:TScript, lists:TGUIScriptSlotlist[])
+		'try to fill in one of the normalList-Parts
+		For local i:int = 0 until lists.length
+			if lists[i].getFreeSlot() < 0 then continue
 			local block:TGUIScript = new TGUIScript.CreateWithScript(script)
 			'change look
 			block.InitAssets(block.getAssetName(-1, FALSE), block.getAssetName(-1, TRUE))
 
-			'print "ADD guiListNormal2 missed new script: "+block.script.id + " -> "+ block.script.GetTitle()
 
-			GuiListNormal2.addItem(block, "-1")
+			lists[i].addItem(block, "-1")
+			return True
 		Next
-	End Method
+		return False
+	End Function
 	
 
 	Method RefreshGuiElements:int()
