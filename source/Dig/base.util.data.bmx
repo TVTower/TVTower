@@ -248,7 +248,14 @@ Type TData
 	End Method
 
 
-	Method GetLong:float(key:string, defaultValue:Long = 0.0)
+	Method GetDouble:Double(key:string, defaultValue:Double = 0.0)
+		local result:object = Get(key)
+		if result then return Double( String( result ) )
+		return defaultValue
+	End Method
+
+
+	Method GetLong:Long(key:string, defaultValue:Long = 0)
 		local result:object = Get(key)
 		if result then return Long( String( result ) )
 		return defaultValue
