@@ -493,9 +493,11 @@ function AIJobGoToRoom:Tick()
 		--TODO: Einfach versuchen, wenn der Raum leer wurde
 		if (TVT.isRoomUnused(self.TargetRoom) == 1) then
 			debugMsg("Jetzt ist frei!")
+			self.IsWaiting = false
 			TVT.DoGoToRoom(self.TargetRoom)
 		elseif ((self.WaitTill - WorldTime.GetTimeGoneAsMinute()) <= 0) then
 			debugMsg("Ach... ich geh...")
+			self.IsWaiting = false
 			self.Status = JOB_STATUS_CANCEL
 		else
 			--debugMsg("Warten... " .. self.WaitTill .. "/" .. WorldTime.GetTimeGoneAsMinute())
