@@ -287,6 +287,9 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 	'ad vendor or not (eg. "YEAR > 2000" or "YEARSPLAYED > 2")
 	Field availableScript:string = ""
 
+	'array of contract guids using this base at the moment
+	Field currentlyUsedByContracts:string[]
+
 	rem
 	"topicality:infomercialWearoff"
 	  changes how much an infomercial loses topicality during sending it
@@ -429,6 +432,43 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 			contraPressureGroups :& ~group
 		EndIf
 	End Method
+
+
+	Method IsCurrentlyUsedByContract:int(contractGUID:string)
+		For local guid:string = EachIn currentlyUsedByContracts
+			if guid = contractGUID then return True
+		Next
+		return False
+	End Method
+
+
+	Method AddCurrentlyUsedByContract:int(contractGUID:string)
+		'skip if already used
+		if IsCurrentlyUsedByContract(contractGUID) then return False
+
+		currentlyUsedByContracts :+ [contractGUID]
+
+		return True
+	End Method
+
+
+	Method RemoveCurrentlyUsedByContract:int(contractGUID:string)
+		'skip if already not existent
+		if not IsCurrentlyUsedByContract(contractGUID) then return False
+		
+		local newArray:string[]
+		For local guid:String = EachIn currentlyUsedByContracts
+			if guid <> contractGUID then newArray :+ [contractGUID]
+		Next
+		currentlyUsedByContracts = newArray
+
+		return True
+	End Method
+
+
+	Method GetCurrentlyUsedByContractCount:int()
+		return currentlyUsedByContracts.length
+	End Method
 End Type
 
 
@@ -466,10 +506,20 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 	'create UNSIGNED (adagency)
 	Method Create:TAdContract(baseContract:TAdContractBase)
-		self.base = baseContract
+		SetBase(baseContract)
 
 		GetAdContractCollection().Add(self)
 		Return self
+	End Method
+
+
+	Method SetBase(baseContract:TAdContractBase)
+		'decrease used counter if needed
+		if self.base then self.base.RemoveCurrentlyUsedByContract( GetGUID() )
+		'increase used counter of new contract
+		if baseContract then baseContract.AddCurrentlyUsedByContract( GetGUID() )
+
+		self.base = baseContract
 	End Method
 
 
@@ -624,6 +674,12 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method Remove:int()
+		'set contract base unused
+		base.RemoveCurrentlyUsedByContract( GetGUID() )
+	End Method
+
+
 	'call this to set the contract failed (and pay a penalty)
 	Method Fail:int(time:Double=0)
 		'send out event for potential listeners (eg. ingame notification)
@@ -631,6 +687,9 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 		'pay penalty
 		GetPlayerFinanceCollection().Get(owner ,GetWorldTime().GetDay(time)).PayPenalty(GetPenalty(), self)
+
+		'clean up (eg. decrease usage counter)
+		Remove()
 	End Method
 	
 
@@ -641,6 +700,9 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 		'give money
 		GetPlayerFinanceCollection().Get(owner, GetWorldTime().GetDay(time)).EarnAdProfit(GetProfit(), self)
+
+		'clean up (eg. decrease usage counter)
+		Remove()
 	End Method
 	
 
@@ -1375,6 +1437,8 @@ Type TAdContractBaseFilter
 	Field minAudienceMax:Float = -1.0
 	Field minImageMin:Float = -1.0
 	Field minImageMax:Float = -1.0
+	Field currentlyUsedByContractsLimitMin:int = -1
+	Field currentlyUsedByContractsLimitMax:int = -1
 	Field limitedToProgrammeGenres:int[]
 	Field limitedToTargetGroups:int[]
 	Field skipLimitedProgrammeGenre:int = False
@@ -1401,6 +1465,13 @@ Type TAdContractBaseFilter
 	Method SetImage:TAdContractBaseFilter(minImage:float=-1.0, maxImage:Float=-1.0)
 		minImageMin = minImage
 		minImageMax = maxImage
+		Return self
+	End Method
+
+
+	Method SetCurrentlyUsedByContractsLimit:TAdContractBaseFilter(minLimit:int = -1, maxLimit:int = -1)
+		currentlyUsedByContractsLimitMin = minLimit
+		currentlyUsedByContractsLimitMax = maxLimit
 		Return self
 	End Method
 
@@ -1451,6 +1522,7 @@ Type TAdContractBaseFilter
 	Function HandleScriptVariables:int(variable:string)
 	End Function
 
+
 	'checks if the given adcontract fits into the filter criteria
 	Method DoesFilter:Int(contract:TAdContractBase)
 		if not contract then return False
@@ -1466,6 +1538,14 @@ Type TAdContractBaseFilter
 
 		if minImageMin >= 0 and contract.minImage < minImageMin then return False
 		if minImageMax >= 0 and contract.minImage > minImageMax then return False
+
+
+		'limited simultaneous usage ?
+		'-> 1 - 3 means contracts with 1,2 or 3 contracts using it 
+		'-> 0 - 0 means contracts with no contracts using it 
+		if currentlyUsedByContractsLimitMin >= 0 and contract.GetCurrentlyUsedByContractCount() < currentlyUsedByContractsLimitMin then return False
+		if currentlyUsedByContractsLimitMax >= 0 and contract.GetCurrentlyUsedByContractCount() > currentlyUsedByContractsLimitMax then return False
+
 
 		'first check if we have to check for limits
 		if skipLimitedProgrammeGenre and contract.limitedToProgrammeGenre >= 0 then return False

@@ -3493,6 +3493,10 @@ Type RoomHandler_AdAgency extends TRoomHandler
 						'remove from game! - else the contracts stay
 						'there forever!
 						GetAdContractCollection().Remove(lists[j][i])
+
+						'let the contract cleanup too
+						lists[j][i].Remove()
+
 						'unlink from this list
 						lists[j][i] = null
 					endif
@@ -3569,6 +3573,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'=== SETUP FILTERS ===
 		local spotMin:Float = 0.0001 '0.01% to avoid 0.0-spots
 		local rangeStep:Float = 0.005 '0.5%
+		local limitInstances:int = GameRules.devConfig.GetInt("DEV_ADAGENCY_LIMIT_CONTRACT_INSTANCES", GameRules.maxContractInstances)
 
 		'the cheap list contains really low contracts
 		local cheapListFilter:TAdContractBaseFilter = new TAdContractbaseFilter
@@ -3580,6 +3585,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'cheap contracts should in now case limit genre/groups
 		cheapListFilter.SetSkipLimitedToProgrammeGenre()
 		cheapListFilter.SetSkipLimitedToTargetGroup()
+		if limitInstances > 0 cheapListFilter.SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		'the 12 contracts are divided into 6 groups
 		'4x fitting the lowest requirements (2x day, 2x prime)
@@ -3595,12 +3601,14 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'lowest should be without "limits"
 		levelFilters[0].SetSkipLimitedToProgrammeGenre()
 		levelFilters[0].SetSkipLimitedToTargetGroup()
+		if limitInstances > 0 then levelFilters[0].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		levelFilters[1] = new TAdContractbaseFilter
 		levelFilters[1].SetAudience(Max(spotMin, 0.5 * lowestChannelQuotePrimeTime), Max(spotMin , 1.5 * lowestChannelQuotePrimeTime))
 		levelFilters[1].SetImage(0.0, lowestChannelImage)
 		levelFilters[1].SetSkipLimitedToProgrammeGenre()
 		levelFilters[1].SetSkipLimitedToTargetGroup()
+		if limitInstances > 0 then levelFilters[1].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		'=== AVERAGE ===
 		levelFilters[2] = new TAdContractbaseFilter
@@ -3613,12 +3621,14 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		levelFilters[2].SetAudience(Max(spotMin, minAvg), Max(spotMin, maxAvg))
 		'0-100% of average Image
 		levelFilters[2].SetImage(0, averageChannelImage)
+		if limitInstances > 0 then levelFilters[2].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		levelFilters[3] = new TAdContractbaseFilter
 		minAvg = (0.7 * lowestChannelQuotePrimeTime + 0.3 * averageChannelQuotePrimeTime)
 		maxAvg = (0.3 * averageChannelQuotePrimeTime + 0.7 * highestChannelQuotePrimeTime)
 		levelFilters[3].SetAudience(Max(spotMin, minAvg), Max(spotMin, maxAvg))
 		levelFilters[3].SetImage(0, averageChannelImage)
+		if limitInstances > 0 then levelFilters[3].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		'=== HIGH ===
 		levelFilters[4] = new TAdContractbaseFilter
@@ -3626,10 +3636,12 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		levelFilters[4].SetAudience(Max(spotMin, 0.5 * highestChannelQuoteDayTime), Max(spotMin, 1.5 * highestChannelQuoteDayTime))
 		'0-100% of highest Image
 		levelFilters[4].SetImage(0, highestChannelImage)
+		if limitInstances > 0 then levelFilters[4].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		levelFilters[5] = new TAdContractbaseFilter
 		levelFilters[5].SetAudience(Max(spotMin, 0.5 * highestChannelQuotePrimeTime), Max(spotMin, 1.5 * highestChannelQuotePrimeTime))
 		levelFilters[5].SetImage(0, highestChannelImage)
+		if limitInstances > 0 then levelFilters[5].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		TLogger.log("AdAgency.RefillBlocks", "Refilling "+ GetWorldTime().GetFormattedTime() +". Filter details", LOG_DEBUG)
 		

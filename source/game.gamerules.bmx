@@ -18,6 +18,9 @@ Type TGameRules {_exposeToLua}
 	Field maxProgrammeLicencesPerFilter:Int = 15
 	'how many contracts can a player collection store
 	Field maxContracts:int = 10
+	'how many contracts of the same contractBase can exist at the
+	'same time? (0 disables any limit)
+	Field maxContractInstances:int = 1
 	'how many scripts can be carried in suitcase
 	Field maxScriptsInSuitcase:int = 10
 	'is the amount of user owned scripts limited?

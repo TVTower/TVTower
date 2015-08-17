@@ -35,6 +35,15 @@
 				<DEV_ADAGENCY_SORT_CONTRACTS_BY value="minaudience" />
 			-->
 
+			<!-- How many contracts could use the same contract base
+			     (the same "original contract") at the same time
+			     Options:
+			       0 - disable any limit
+			       x - allow up to x contract instances 
+			     Default: 1
+				<DEV_ADAGENCY_LIMIT_CONTRACT_INSTANCES value="1" />
+			-->
+
 
 			<!-- profit/penalty get multiplied with this value if there
 			     is a limiting targetgroup.
