@@ -942,6 +942,7 @@ Type TGameState
 	Field _StationMapCollection:TStationMapCollection = Null
 	Field _Elevator:TElevator
 	Field _Building:TBuilding 'includes, sky, moon, ufo
+	Field _RoomBoard:TRoomBoard 'signs	
 	Field _NewsAgency:TNewsAgency
 	Field _AuctionProgrammeBlocksList:TList
 	Field _RoomHandler_Studio:RoomHandler_Studio
@@ -985,6 +986,7 @@ print "TGameState.Initialize(): Reinitialize all game objects"
 
 		GetElevator().Initialize()
 		GetBuilding().Initialize()
+		GetRoomBoard().Initialize()
 		GetWorldTime().Initialize()
 		GetWorld().Initialize()
 		GetGame().Initialize()
@@ -1038,6 +1040,7 @@ print "TGameState.RestoreGameData(): Restore game objects"
 		_Assign(_NewsAgency, TNewsAgency._instance, "NewsAgency", MODE_LOAD)
 		_Assign(_Building, TBuilding._instance, "Building", MODE_LOAD)
 		_Assign(_Elevator, TElevator._instance, "Elevator", MODE_LOAD)
+		_Assign(_RoomBoard, TRoomBoard._instance, "RoomBoard", MODE_LOAD)
 		_Assign(_EventManagerEvents, EventManager._events, "Events", MODE_LOAD)
 		_Assign(_PopularityManager, TPopularityManager._instance, "PopularityManager", MODE_LOAD)
 		_Assign(_BroadcastManager, TBroadcastManager._instance, "BroadcastManager", MODE_LOAD)
@@ -1096,6 +1099,7 @@ print "TGameState.RestoreGameData(): Restore game objects"
 
 		_Assign(TBuilding._instance, _Building, "Building", MODE_SAVE)
 		_Assign(TElevator._instance, _Elevator, "Elevator", MODE_SAVE)
+		_Assign(TRoomBoard._instance, _RoomBoard, "RoomBoard", MODE_SAVE)
 		_Assign(TRoomBaseCollection._instance, _RoomBaseCollection, "RoomBaseCollection", MODE_SAVE)
 		_Assign(TRoomDoorBaseCollection._instance, _RoomDoorBaseCollection, "RoomDoorBaseCollection", MODE_SAVE)
 		_Assign(TFigureCollection._instance, _FigureCollection, "FigureCollection", MODE_SAVE)

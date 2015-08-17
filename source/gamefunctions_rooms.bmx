@@ -4947,7 +4947,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 
 
 	Function ReCreatePlan()
-		GetRoomBoard().Reset()
+		GetRoomBoard().Initialize()
 		For local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
 			'create the sign in the roomplan (if not "invisible door")
 			If door.doorType >= 0 then new TRoomBoardSign.Init(door)

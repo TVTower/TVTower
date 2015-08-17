@@ -151,8 +151,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 		'refreshcreate the elevator roomboard
-		TLogger.Log("Game.PrepareStart()", "Creating elevator plan", LOG_DEBUG)
-		RoomHandler_ElevatorPlan.ReCreatePlan()
+		if startNewGame
+			TLogger.Log("Game.PrepareStart()", "Creating elevator plan", LOG_DEBUG)
+			RoomHandler_ElevatorPlan.ReCreatePlan()
+		endif
 
 		'=== NEW GAMES ===
 		'new games need some initializations (database etc.)

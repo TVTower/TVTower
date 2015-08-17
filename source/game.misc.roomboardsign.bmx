@@ -34,7 +34,7 @@ Type TRoomBoard
 	End Method
 
 
-	Method Reset:int()
+	Method Initialize:int()
 		List.Clear()
 		AdditionallyDragged = 0
 		DragAndDropList.Clear()
@@ -363,8 +363,8 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 	Field door:TRoomDoorBase
 	Field signSlot:int = 0
 	Field signFloor:int = 0
-	Field imageCache:TSprite = null
-	Field imageDraggedCache:TSprite	= null
+	Field imageCache:TSprite = null {nosave}
+	Field imageDraggedCache:TSprite	= null {nosave}
 
 
 	Global imageBaseName:string = "gfx_roomboard_sign_"
