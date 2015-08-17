@@ -566,15 +566,15 @@ endrem
 			endif
 			adContractBases :+ [addContract]
 		Next
-		'and one with 0 audience requirement
-		cheapFilter.SetAudience(0.0, 0.0)
+		'and one with 0-1% audience requirement
+		cheapFilter.SetAudience(0.0, 0.01)
 		addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, False)
 		if not addContract  
-			print "SpreadStartProgramme: No ~qno audience~q contract in DB? Trying a 0-1% one..."
-			cheapFilter.SetAudience(0.0, 0.01)
+			print "SpreadStartProgramme: No ~qno audience~q contract in DB? Trying a 0-3% one..."
+			cheapFilter.SetAudience(0.0, 0.03)
 			addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, False)
 			if not addContract
-				print "SpreadStartProgramme: 0-1% failed too... using random contract now."
+				print "SpreadStartProgramme: 0-2% failed too... using random contract now."
 				addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, True)
 			endif
 		endif
