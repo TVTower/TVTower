@@ -382,7 +382,7 @@ Type TWorldTime {_exposeToLua="selected"}
 		
 		If Int(strMonth) < 10 Then strMonth = "0"+strMonth
 		If Int(strDay) < 10 Then strDay = "0"+strDay
-		Return GetFormattedTime(time, format).replace("d", strMonth).replace("m", strMonth).replace("y", strYear)
+		Return GetFormattedTime(time, format).replace("d", strDay).replace("m", strMonth).replace("y", strYear)
 	End Method
 
 	'returns sunrise that day - in seconds
