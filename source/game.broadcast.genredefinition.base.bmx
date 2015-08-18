@@ -2,7 +2,7 @@
 Import "game.popularity.genre.bmx"
 
 Type TGenreDefinitionBase
-	Field GenreId:Int
+	Field referenceId:Int
 	Field AudienceAttraction:TAudience
 	Field Popularity:TGenrePopularity
 	Field TimeMods:Float[]

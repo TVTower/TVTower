@@ -24,7 +24,7 @@ Type TNewsGenreDefinitionCollection
 		For Local map:TMap = EachIn genreMap.Values()
 			Local definition:TNewsGenreDefinition = New TNewsGenreDefinition
 			definition.LoadFromMap(map)
-			Set(definition.GenreId, definition)
+			Set(definition.referenceId, definition)
 		Next
 	End Method
 
@@ -52,8 +52,8 @@ End Function
 
 Type TNewsGenreDefinition Extends TGenreDefinitionBase
 	Method LoadFromMap(data:TMap)
-		GenreId = String(data.ValueForKey("id")).ToInt()
-		'GenreId = String(data.ValueForKey("name"))
+		referenceId = String(data.ValueForKey("id")).ToInt()
+		'referenceId = String(data.ValueForKey("name"))
 
 		AudienceAttraction = New TAudience
 		AudienceAttraction.Children = String(data.ValueForKey("Children")).ToFloat()
@@ -66,10 +66,10 @@ Type TNewsGenreDefinition Extends TGenreDefinitionBase
 		AudienceAttraction.Women = String(data.ValueForKey("Women")).ToFloat()
 		AudienceAttraction.Men = String(data.ValueForKey("Men")).ToFloat()
 
-		Popularity = TGenrePopularity.Create(GenreId, RandRange(-10, 10), RandRange(-25, 25))
+		Popularity = TGenrePopularity.Create(referenceId, RandRange(-10, 10), RandRange(-25, 25))
 		GetPopularityManager().AddPopularity(Popularity) 'Zum Manager hinzufügen
 
-		'Print "Load newsgenre " + GenreId + ": " + AudienceAttraction.ToString()
+		'Print "Load newsgenre " + referenceId + ": " + AudienceAttraction.ToString()
 		'print "OutcomeMod: " + OutcomeMod + " | ReviewMod: " + ReviewMod + " | SpeedMod: " + SpeedMod
 	End Method
 

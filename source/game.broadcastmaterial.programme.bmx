@@ -147,7 +147,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			
 			'Image-Strafe
 			If data.IsPaid()
-				Local penalty:TAudience = TAudience.CreateAndInit(-0.2, -0.2, -0.1, -0.3, -0.1, -0.5, -0.1, -0.1, -0.1)
+				Local penalty:TAudience = TAudience.CreateAndInit(-0.25, -0.25, -0.15, -0.35, -0.15, -0.55, -0.15, -0.15, -0.15)
 				penalty.MultiplyFloat(data.blocks)			
 				GetPublicImageCollection().Get(self.owner).ChangeImage(penalty)			
 			ElseIf data.IsTrash()
@@ -192,36 +192,76 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 	Method GetMiscMod:TAudience(hour:Int)
 		Local result:TAudience = TAudience.CreateAndInitValue(0)
+
+		local flagDefinitions:TMovieFlagDefinition[]
 	
-		if data.IsLive() 'Genereller Quotenbonus!
-			If hour >= 18
-				result.Add(TAudience.CreateAndInit(2.5, 2, 2, 3, 2, 2, 2, 2, 2))
-			Else
-				result.Add(TAudience.CreateAndInit(1, 1, 2, 2, 1.5, 1, 1, 1.5, 1.5))
-			EndIf
+		'Genereller Quotenbonus!
+		if data.IsLive()
+			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeFlag.LIVE)
+			'complex implementation
+			if definition
+				flagDefinitions :+ [definition]
+			'simple implementation
+			else
+				If hour >= 18
+					result.Add(TAudience.CreateAndInit(2.5, 2, 2, 3, 2, 2, 2, 2, 2))
+				Else
+					result.Add(TAudience.CreateAndInit(1, 1, 2, 2, 1.5, 1, 1, 1.5, 1.5))
+				EndIf
+			endif
 		EndIf
 				
-		if data.IsAnimation() 'Bonus bei Kindern / Jugendlichen. Malus bei Rentnern / Managern.
+
+		'Bonus bei Kindern / Jugendlichen. Malus bei Rentnern / Managern.
+		if data.IsAnimation()
 			'Da es jetzt doch ein Genre gibt, brauchen wir Animation nicht mehr.
 			'Eventuell kann man daraus ein Kids-Genre machen... aber das kann man auch eventuell über Zielgruppen regeln.
-			'Dennoch ist Kinds wohl besser als Animation. Animation kann nähmlich sowohl Southpark als auch Biene Maja sein. Das hat definitiv andere Zielgruppen.
+			'Dennoch ist Kids wohl besser als Animation. Animation kann nämlich sowohl Southpark als auch Biene Maja sein. Das hat definitiv andere Zielgruppen.
 		EndIf		
+
 		
-		if data.IsCulture() 'Bonus bei Betty und bei Managern
-			result.Add(TAudience.CreateAndInit(-0.7, -0.5, -0.3, -0.3, -0.4, 2, 0, 0, 0))
+		'Bonus bei Betty und bei Managern
+		if data.IsCulture()
+			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeFlag.CULTURE)
+			'complex implementation
+			if definition
+				flagDefinitions :+ [definition]
+			'simple implementation
+			else
+				result.Add(TAudience.CreateAndInit(-0.7, -0.5, -0.3, -0.3, -0.4, 2, 0, 0, 0))
+			endif
 		EndIf					
 	
-		if data.IsCult() 'Verringert die Nachteile des Filmalters. Bonus bei Rentnern. 'Höhere Serientreue bei Serien.
-			result.Add(TAudience.CreateAndInit(-0.3, 0, 0.15, 0.15, 0.15, 0.15, 0.5, 0.15, 0.15))
+
+		'Verringert die Nachteile des Filmalters. Bonus bei Rentnern. 'Höhere Serientreue bei Serien.
+		if data.IsCult()
+			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeFlag.CULT)
+			'complex implementation
+			if definition
+				flagDefinitions :+ [definition]
+			'simple implementation
+			else
+				result.Add(TAudience.CreateAndInit(-0.3, 0, 0.15, 0.15, 0.15, 0.15, 0.5, 0.15, 0.15))
+			endif
 		EndIf
 		
-		if data.IsTrash() 'Bonus bei Arbeitslosen und Hausfrauen. Malus bei Arbeitnehmern und Managern. Trash läuft morgens und mittags gut => Bonus!
-			If hour >= 6 and hour <= 17
-				result.Add(TAudience.CreateAndInit(-0.2, 0, 0.5, 0.1, 0.4, -0.9, 0.3, 0, 0))
-			Else
-				result.Add(TAudience.CreateAndInit(-0.5, -0.5, 0, -0.5, -0.5, -0.7, -0.5, -0.5, -0.5))	
-			End If			
+
+		'Bonus bei Arbeitslosen und Hausfrauen. Malus bei Arbeitnehmern und Managern. Trash läuft morgens und mittags gut => Bonus!
+		if data.IsTrash()
+			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeFlag.TRASH)
+			'complex implementation
+			if definition
+				flagDefinitions :+ [definition]
+			'simple implementation
+			else
+				If hour >= 6 and hour <= 17
+					result.Add(TAudience.CreateAndInit(-0.2, 0, 0.5, 0.1, 0.4, -0.9, 0.3, 0, 0))
+				Else
+					result.Add(TAudience.CreateAndInit(-0.5, -0.5, 0, -0.5, -0.5, -0.7, -0.5, -0.5, -0.5))	
+				End If
+			endif		
 		EndIf	
+
 		
 		'Nochmal deutlich verringerter Preis. Verringert die Nachteile des Filmalters. Bonus bei Jugendlichen. Malus bei allen anderen Zielgruppen. Bonus in der Nacht!		
 		if data.IsBMovie()
@@ -231,20 +271,62 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 				result.Add(TAudience.CreateAndInit(0, 0.2, -0.7, -0.6, -0.5, -0.7, -0.7, -1, -0.5))
 			EndIf
 		EndIf		
+
 			
-		if data.IsXRated() 'Kleiner Bonus für Jugendliche, Arbeitnehmer, Arbeitslose, (Männer). Kleiner Malus für Kinder, Hausfrauen, Rentner, (Frauen).
-			result.Add(TAudience.CreateAndInit(-1, 0.5, -0.2, 0.2, 0.2, 0.1, -0.5, -0.2, 0.3))
-		EndIf		
+		'Kleiner Bonus für Jugendliche, Arbeitnehmer, Arbeitslose, (Männer). Kleiner Malus für Kinder, Hausfrauen, Rentner, (Frauen).
+		if data.IsXRated()
+			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeFlag.XRATED)
+			'complex implementation
+			if definition
+				flagDefinitions :+ [definition]
+			'simple implementation
+			else
+				result.Add(TAudience.CreateAndInit(-1, 0.5, -0.2, 0.2, 0.2, 0.1, -0.5, -0.2, 0.3))
+			endif
+		EndIf
+
+
+		if data.IsScripted()
+			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeFlag.SCRIPTED)
+			if definition
+				flagDefinitions :+ [definition]
+			else
+				'really less interest in paid programming
+				'use a really high value until audience flow is corrected
+				'for such programmes
+				result.Add(TAudience.CreateAndInit(-0.2, -0.1, -0.1, -0.4, -0.6, -0.2, -0.1, -0.1, -0.1))
+			endif
+		EndIf
+		
 
 		if data.IsPaid()
-			'really less interest in paid programming
-			'use a really high value until audience flow is corrected
-			'for such programmes
-			result.Add(TAudience.CreateAndInit(-0.5, -0.5, -0.3, -0.5, -0.3, -0.7, -0.3, -0.5, -0.5))
+			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeFlag.PAID)
+			if definition
+				flagDefinitions :+ [definition]
+			else
+				'really less interest in paid programming
+				'use a really high value until audience flow is corrected
+				'for such programmes
+				result.Add(TAudience.CreateAndInit(-0.5, -0.5, -0.3, -0.5, -0.3, -0.7, -0.3, -0.5, -0.5))
+			endif
 		EndIf
+
+
+		if flagDefinitions.length > 0
+			local flagAudienceMod:TAudience = new TAudience.CreateAndInitValue(0.0)
+			for local definition:TMovieFlagDefinition = Eachin flagDefinitions
+				flagAudienceMod.AddFloat( flagPopularityMod(definition) )
+				flagAudienceMod.Add( flagTargetGroupMod(definition).MultiplyFloat(1.0 + GetTimeMod(definition, hour)) )
+			Next
+			flagAudienceMod.DivideFloat(flagDefinitions.length)
+
+			result.Add(flagAudienceMod)
+		endif
+
 		
 		Return result
 	End Method
+
 	
 	Rem - Neue Variante
 	Method GetMiscMod:TAudience(hour:Int)
@@ -464,6 +546,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Method ShowSheet:int(x:int,y:int,align:int)
 		self.licence.ShowSheet(x,y,align, self.usedAsType, self.owner)
 	End Method
+
 
 	Method GetGenreDefinition:TGenreDefinitionBase()
 		Return data.GetGenreDefinition()

@@ -5,6 +5,7 @@ Import "game.popularity.bmx"
 
 Type TMovieGenreDefinitionCollection
 	Field definitions:TMovieGenreDefinition[]
+	Field flagDefinitions:TMovieFlagDefinition[]
 	Global _instance:TMovieGenreDefinitionCollection
 
 
@@ -17,13 +18,22 @@ Type TMovieGenreDefinitionCollection
 	Method Initialize()
 		'clear old definitions
 		definitions = new TMovieGenreDefinition[0]
+		flagDefinitions = new TMovieFlagDefinition[0]
 
 		Local genreMap:TMap = TMap(GetRegistry().Get("genres"))
 		if not genreMap then Throw "Registry misses ~qgenres~q."
 		For Local map:TMap = EachIn genreMap.Values()
 			Local definition:TMovieGenreDefinition = New TMovieGenreDefinition
 			definition.LoadFromMap(map)
-			Set(definition.GenreId, definition)
+			Set(definition.referenceId, definition)
+		Next
+
+		Local flagsMap:TMap = TMap(GetRegistry().Get("flags"))
+		if not flagsMap then Throw "Registry misses ~qflags~q."
+		For Local map:TMap = EachIn flagsMap.Values()
+			Local definition:TMovieFlagDefinition = New TMovieFlagDefinition
+			definition.LoadFromMap(map)
+			SetFlag(definition.referenceId, definition)
 		Next
 	End Method
 
@@ -38,6 +48,19 @@ Type TMovieGenreDefinitionCollection
 		If id < 0 or id >= definitions.length Then return Null
 
 		Return definitions[id]
+	End Method
+
+
+	Method SetFlag:int(id:int=-1, definition:TMovieFlagDefinition)
+		If flagDefinitions.length <= id Then flagDefinitions = flagDefinitions[..id+1]
+		flagDefinitions[id] = definition
+	End Method
+
+
+	Method GetFlag:TMovieFlagDefinition(id:Int)
+		If id < 0 or id >= flagDefinitions.length Then return Null
+
+		Return flagDefinitions[id]
 	End Method
 End Type
 
@@ -59,7 +82,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 
 
 	Method LoadFromMap(data:TMap)
-		GenreId = String(data.ValueForKey("id")).ToInt()
+		referenceId = String(data.ValueForKey("id")).ToInt()
 		OutcomeMod = String(data.ValueForKey("outcomeMod")).ToFloat()
 		ReviewMod = String(data.ValueForKey("reviewMod")).ToFloat()
 		SpeedMod = String(data.ValueForKey("speedMod")).ToFloat()
@@ -68,6 +91,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		If GoodFollower = Null Then GoodFollower = CreateList()
 		BadFollower = TList(data.ValueForKey("badFollower"))
 		If BadFollower = Null Then BadFollower = CreateList()
+
 
 		TimeMods = TimeMods[..24]
 		For Local i:Int = 0 To 23
@@ -88,16 +112,16 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		'if there was a popularity already, remove that first
 		if Popularity then GetPopularityManager().RemovePopularity(Popularity)
 
-		Popularity = TGenrePopularity.Create(GenreId, RandRange(-10, 10), RandRange(-25, 25))
+		Popularity = TGenrePopularity.Create(referenceId, RandRange(-10, 10), RandRange(-25, 25))
 		GetPopularityManager().AddPopularity(Popularity) 'Zum Manager hinzufügen
 
-		'print "Load moviegenre" + GenreId + ": " + AudienceAttraction.ToString()
+		'print "Load moviegenre" + referenceId + ": " + AudienceAttraction.ToString()
 		'print "OutcomeMod: " + OutcomeMod + " | ReviewMod: " + ReviewMod + " | SpeedMod: " + SpeedMod
 	End Method
 
 
-	Method InitBasic:TMovieGenreDefinition(genreID:int)
-		self.GenreId = genreID 
+	Method InitBasic:TMovieGenreDefinition(genreId:int)
+		self.referenceId = genreId
 
 		TimeMods = TimeMods[..24]
 		For Local i:Int = 0 To 23
@@ -118,7 +142,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		'if there was a popularity already, remove that first
 		if Popularity then GetPopularityManager().RemovePopularity(Popularity)
 
-		Popularity = TGenrePopularity.Create(GenreId, RandRange(-10, 10), RandRange(-25, 25))
+		Popularity = TGenrePopularity.Create(referenceId, RandRange(-10, 10), RandRange(-25, 25))
 		GetPopularityManager().AddPopularity(Popularity) 'Zum Manager hinzufügen
 
 		return self
@@ -126,16 +150,19 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 
 
 	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase)
-		Local followerGenreKey:String = String.FromInt(followerDefinition.GenreId)
-		If GenreId = followerDefinition.GenreId Then 'Perfekter match!
-			Return TAudience.CreateAndInitValue(1)
-		Else If (GoodFollower.Contains(followerGenreKey))
-			Return TAudience.CreateAndInitValue(0.7)
-		ElseIf (BadFollower.Contains(followerGenreKey))
-			Return TAudience.CreateAndInitValue(0.1)
-		Else
-			Return TAudience.CreateAndInitValue(0.35)
-		End If
+		'default audience flow mod
+		local modValue:Float = 0.35
+		
+		Local followerReferenceKey:String = String.FromInt(followerDefinition.referenceId)
+		If referenceId = followerDefinition.referenceId Then 'Perfekter match!
+			modValue = 1.0
+		Else If (GoodFollower.Contains(followerReferenceKey))
+			modValue = 0.7
+		ElseIf (BadFollower.Contains(followerReferenceKey))
+			modValue = 0.1
+		endif
+
+		Return TAudience.CreateAndInitValue(modValue)
 	End Method
 
 	'Override
@@ -238,4 +265,17 @@ rem
 		Return quality
 	End Method
 endrem
+End Type
+
+
+
+Type TMovieFlagDefinition Extends TMovieGenreDefinition
+
+	Method InitBasic:TMovieFlagDefinition(flagID:int)
+		'init with flagID so popularity (created there) gets this ID too 
+		Super.InitBasic(flagID)
+		
+		return self
+	End Method
+	
 End Type

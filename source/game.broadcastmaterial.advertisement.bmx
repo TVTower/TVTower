@@ -243,7 +243,7 @@ endrem
 			else
 				local genreDefinition:TGenreDefinitionBase = previouslyRunningBroadcastMaterial.GetGenreDefinition()
 				if contract.GetLimitedToGenre() >= 0
-					if genreDefinition and genreDefinition.GenreId <> contract.GetLimitedToGenre()
+					if genreDefinition and genreDefinition.referenceId <> contract.GetLimitedToGenre()
 						Return "GENRE"
 					endif
 				endif

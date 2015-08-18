@@ -19,7 +19,7 @@ Import "game.player.color.bmx"
 new TRegistryColorLoader.Init()
 new TRegistryRoomLoader.Init()
 new TRegistryNewsGenresLoader.Init()
-new TRegistryGenresLoader.Init()
+new TRegistryProgrammeDataModsLoader.Init()
 
 
 
@@ -364,13 +364,13 @@ End Type
 
 
 
-'===== (PROGRAMME) GENRE LOADER =====
-'loader caring about "<genre>"-types (and "<genres>"-groups)
-Type TRegistryGenresLoader extends TRegistryBaseLoader
+'===== (PROGRAMME) GENRE / FLAGS LOADER =====
+'loader caring about:
+'- <genres>, <genre>, <flags>, <flag>, <programmedatamods>
+Type TRegistryProgrammeDataModsLoader extends TRegistryBaseLoader
 	Method Init:Int()
-		name = "Genres"
-		'we also load each image as sprite
-		resourceNames = "genre|genres"
+		name = "ProgrammeDataMods"
+		resourceNames = "programmedatamods|genre|genres|flag|flags"
 		if not registered then Register()
 	End Method
 
@@ -384,11 +384,22 @@ Type TRegistryGenresLoader extends TRegistryBaseLoader
 	Method GetConfigFromXML:TData(loader:TRegistryLoader, node:TxmlNode)
 		local data:TData = new TData
 
-		'=== HANDLE "<GENRES>" ===
-		if node.GetName().toLower() = "genres"
+		'=== HANDLE "<PROGRAMMEDATAMODS>" ===
+		if node.GetName().toLower() = "programmedatamods"
 			For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
 				'skip other elements
-				if childNode.GetName().ToLower() <> "genre" then continue
+				if childNode.GetName().ToLower() <> "genres" and childNode.GetName().ToLower() <> "flags" then continue
+
+				GetConfigFromXML(loader, childNode)
+			Next
+		endif
+		
+
+		'=== HANDLE "<GENRES>" ===
+		if node.GetName().toLower() = "genres" or node.GetName().toLower() = "flags"
+			For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
+				'skip other elements
+				if childNode.GetName().ToLower() <> "genre" and childNode.GetName().ToLower() <> "flag" then continue
 
 				local childData:TData = GetConfigFromXML(loader, childNode)
 				'skip invalid configurations
@@ -397,7 +408,7 @@ Type TRegistryGenresLoader extends TRegistryBaseLoader
 				'add each entry to "ToLoad"-list
 				local resName:string = GetNameFromConfig(childData)
 				TRegistryUnloadedResourceCollection.GetInstance().Add(..
-					new TRegistryUnloadedResource.Init(GetNameFromConfig(childData), "genre", childData)..
+					new TRegistryUnloadedResource.Init(GetNameFromConfig(childData), childNode.GetName().ToLower(), childData)..
 				)
 			Next
 			return Null
@@ -409,6 +420,7 @@ Type TRegistryGenresLoader extends TRegistryBaseLoader
 		fieldNames :+ ["outcomeMod|outcome-mod", "reviewMod|review-mod", "speedMod|speed-mod"]
 		fieldNames :+ ["goodFollower", "badFollower"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
+		data.Add("nodeName", node.GetName().ToLower())
 
 		Local subNode:TxmlNode
 
@@ -444,19 +456,23 @@ Type TRegistryGenresLoader extends TRegistryBaseLoader
 
 
 	Method GetNameFromConfig:String(data:TData)
-		return data.GetString("name","unknown newsgenre")
+		if data.GetString("nodeName") = "genre"
+			return data.GetString("name","unknown programme genre mod")
+		else
+			return data.GetString("name","unknown programme flag mod")
+		endif
 	End Method
 
 
 	Method LoadFromConfig:TMap(data:TData, resourceName:string)
-		local genre:TMap = CreateMap()
+		local programmeDataMod:TMap = CreateMap()
 		local id:int = data.GetInt("id", -1)
-		genre.Insert("id", string(id))
-		genre.Insert("name", data.GetString("name", "unknown"))
+		programmeDataMod.Insert("id", string(id))
+		programmeDataMod.Insert("name", data.GetString("name", "unknown"))
 
-		genre.Insert("outcomeMod", data.GetString("outcomeMod", -1))
-		genre.Insert("reviewMod", data.GetString("reviewMod", -1))
-		genre.Insert("speedMod", data.GetString("speedMod", -1))
+		programmeDataMod.Insert("outcomeMod", data.GetString("outcomeMod", -1))
+		programmeDataMod.Insert("reviewMod", data.GetString("reviewMod", -1))
+		programmeDataMod.Insert("speedMod", data.GetString("speedMod", -1))
 
 		If data.GetString("goodFollower") <> ""
 			local followers:string[] = data.GetString("goodFollower").split(",")
@@ -468,7 +484,7 @@ Type TRegistryGenresLoader extends TRegistryBaseLoader
 				endif
 				followers[i] = follower
 			Next
-			genre.Insert("goodFollower", ListFromArray(followers))
+			programmeDataMod.Insert("goodFollower", ListFromArray(followers))
 		EndIf
 
 		If data.GetString("badFollower") <> ""
@@ -481,32 +497,43 @@ Type TRegistryGenresLoader extends TRegistryBaseLoader
 				endif
 				followers[i] = follower
 			Next
-			genre.Insert("badFollower", ListFromArray(followers))
+			programmeDataMod.Insert("badFollower", ListFromArray(followers))
 		EndIf
 
 		local timeMods:TMap = TMap(data.Get("timeMods", CreateMap()))
 		For local key:string = eachin timeMods.Keys()
-			genre.Insert("timeMod_" + key, 	timeMods.ValueForKey(key) )
+			programmeDataMod.Insert("timeMod_" + key, 	timeMods.ValueForKey(key) )
 		Next
 
 		local audienceAttractions:TMap = TMap(data.Get("audienceAttractions", CreateMap()))
 		For local key:string = eachin audienceAttractions.Keys()
-			genre.Insert(key, 	AudienceAttractions.ValueForKey(key) )
+			programmeDataMod.Insert(key, 	AudienceAttractions.ValueForKey(key) )
 		Next
 
 
 		'fetch/create the genres container
-		local genresMap:TMap = TMap(GetRegistry().Get("genres"))
-		if not genresMap
-			genresMap = CreateMap()
-			'add the genres container to the registry
-			GetRegistry().Set("genres", genresMap)
+		local modMap:TMap
+
+		if resourceName.ToLower() = "genre"
+			modMap = TMap(GetRegistry().Get("genres"))
+			if not modMap
+				modMap = CreateMap()
+				'add the genres container to the registry
+				GetRegistry().Set("genres", modMap)
+			endif
+		elseif resourceName.ToLower() = "flag"
+			modMap = TMap(GetRegistry().Get("flags"))
+			if not modMap
+				modMap = CreateMap()
+				'add the genres container to the registry
+				GetRegistry().Set("flags", modMap)
+			endif
 		endif
 
 		'add the genre to the container
-		genresMap.Insert(string(id), genre)
+		modMap.Insert(string(id), programmeDataMod)
 
 		'indicate that the loading was successful
-		return genre
+		return programmeDataMod
 	End Method
 End Type

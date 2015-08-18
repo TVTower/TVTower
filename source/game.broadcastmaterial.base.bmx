@@ -155,6 +155,10 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 	Method GetGenreDefinition:TGenreDefinitionBase()
 		Return Null
 	End Method
+
+	Method GetFlagDefinition:TGenreDefinitionBase()
+		Return Null
+	End Method
 End Type
 
 
@@ -166,10 +170,21 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	
 	'default implementation
 	Method GenreTargetGroupMod:TAudience(genreDefinition:TGenreDefinitionBase)
-		'Zwischenlösung bis alle sumgestellt
+		'Zwischenlösung bis alles umgestellt
 		Return genreDefinition.AudienceAttraction.Copy().DivideFloat(2).CutBordersFloat(-0.6, 0.6)
 		'Return genreDefinition.AudienceAttraction.Copy() - Später		
 		'Return genreDefinition.AudienceAttraction.Copy().MultiplyFloat(1.2).SubtractFloat(0.6).CutBordersFloat(-0.6, 0.6)
+	End Method
+
+	'default implementation	
+	Method FlagPopularityMod:Float(definition:TGenreDefinitionBase)
+		Return Max(-0.5, Min(0.5, definition.Popularity.Popularity / 100)) 'Popularity => Wert zwischen -50 und +50
+	End Method
+	
+	'default implementation
+	Method FlagTargetGroupMod:TAudience(definition:TGenreDefinitionBase)
+		'max 100% ?
+		Return definition.AudienceAttraction.Copy().CutBordersFloat(-1.0, 1.0)
 	End Method
 	
 	'default implementation
@@ -204,10 +219,12 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		EndIf	
 	End Method
 	
+
 	'default implementation
-	Method GetGenreTimeMod:Float(genreDefinition:TGenreDefinitionBase, hour:Int)
-		Return genreDefinition.TimeMods[hour] - 1 'Genre/Zeit-Mod
+	Method GetTimeMod:Float(definition:TGenreDefinitionBase, hour:Int)
+		Return definition.TimeMods[hour] - 1 'Genre/Zeit-Mod
 	End Method
+
 	
 	'default implementation
 	Method GetLuckMod:TAudience()
@@ -270,7 +287,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		result.BroadcastType = Self.materialType
 		Local genreDefinition:TGenreDefinitionBase = GetGenreDefinition()
 		If genreDefinition
-			result.Genre = genreDefinition.GenreId
+			result.Genre = genreDefinition.referenceId
 			result.GenreDefinition = genreDefinition
 		EndIf
 
@@ -311,7 +328,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 
 		'8 - Genres <> Sendezeit
 		If genreDefinition
-			result.GenreTimeMod = GetGenreTimeMod(genreDefinition, hour)
+			result.GenreTimeMod = GetTimeMod(genreDefinition, hour)
 		EndIf
 
 		'9 - Zufall

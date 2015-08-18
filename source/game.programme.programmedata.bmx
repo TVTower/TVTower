@@ -867,6 +867,11 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	End Method
 
 
+	Method IsScripted:int()
+		return HasFlag(TVTProgrammeFlag.SCRIPTED)
+	End Method
+
+
 	Method GetBlocks:int()
 		return self.blocks
 	End Method

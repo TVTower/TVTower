@@ -491,7 +491,7 @@ End Type
 Type TVTProgrammeFlag {_exposeToLua}
 	'Genereller Quotenbonus!
 	Const LIVE:Int = 1
-	'Bonus bei Kindern / Jugendlichen. Malues bei Rentnern / Managern.
+	'Bonus bei Kindern / Jugendlichen. Malus bei Rentnern / Managern.
 	Const ANIMATION:Int = 2
 	'Bonus bei Betty und bei Managern
 	Const CULTURE:Int = 4
