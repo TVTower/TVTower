@@ -329,7 +329,8 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Field targetGroups:int = 0
 	Field proPressureGroups:int = 0
 	Field contraPressureGroups:int = 0
-	Field liveHour:Int = -1
+	'time of a live event
+	Field liveTime:Long = -1
 	Field outcome:Float	= 0
 	Field review:Float = 0
 	Field speed:Float = 0
@@ -387,7 +388,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 
 
 
-	Function Create:TProgrammeData(GUID:String, title:TLocalizedString, description:TLocalizedString, cast:TProgrammePersonJob[], country:String, year:Int, releaseTime:Long=-1, livehour:Int, Outcome:Float, review:Float, speed:Float, modifiers:TData, Genre:Int, blocks:Int, xrated:Int, productType:Int=1) {_private}
+	Function Create:TProgrammeData(GUID:String, title:TLocalizedString, description:TLocalizedString, cast:TProgrammePersonJob[], country:String, year:Int, releaseTime:Long=-1, liveTime:Long, Outcome:Float, review:Float, speed:Float, modifiers:TData, Genre:Int, blocks:Int, xrated:Int, productType:Int=1) {_private}
 		Local obj:TProgrammeData = New TProgrammeData
 		obj.SetGUID(GUID)
 		obj.title       = title
@@ -407,7 +408,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		if GetWorldTime().GetYear(releaseTime) < 1900
 			obj.releaseTime = GetWorldTime().Maketime(year, 1,1, 0,0)
 		endif
-		obj.liveHour    = Max(-1,livehour)
+		obj.liveTime    = Max(-1,liveTime)
 		obj.topicality  = obj.GetTopicality()
 		GetProgrammeDataCollection().Add(obj)
 
@@ -1095,59 +1096,74 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	End Method
 
 
-	Method CutTopicality:Int(cutModifier:float=1.0) {_private}
+	Method CutTopicality:Float(cutModifier:float=1.0) {_private}
 		'cutModifier can be used to manipulate the resulting cut
 		'ex. for night times, for low audience...
+		local changeValue:float = topicality
 
 		'cut by an individual cutoff factor - do not allow values > 1.0
 		'(refresh instead of cut)
 		'the value : default * invidual * individualGenre
-		topicality:* cutModifier
-		topicality:* GetProgrammeDataCollection().wearoffFactor
-		topicality:* GetGenreWearoffModifier()
-		topicality:* GetFlagsWearoffModifier()
-		topicality:* GetWearoffModifier()
+		changeValue :* cutModifier
+		changeValue :* GetProgrammeDataCollection().wearoffFactor
+		changeValue :* GetGenreWearoffModifier()
+		changeValue :* GetFlagsWearoffModifier()
+		changeValue :* GetWearoffModifier()
+		changeValue = topicality - changeValue
 
-		'limit to 0-Max
-		topicality = MathHelper.Clamp(topicality, 0.0, GetMaxTopicality())
-	End Method
-
-
-	Method CutTrailerTopicality:Int(cutModifier:float=1.0) {_private}
-		trailerTopicality:* cutModifier
-		trailerTopicality:* GetProgrammeDataCollection().trailerWearoffFactor
-		trailerTopicality:* GetWearoffModifier()
-		'trailers also get influenced by flags and genre
-		trailerTopicality:* GetGenreWearoffModifier()
-		trailerTopicality:* GetFlagsWearoffModifier()
-
-		'limit to 0-1
-		'(trailers do not inherit "aged" topicality, so 1 is max)
-		trailerTopicality = MathHelper.Clamp(trailerTopicality, 0.0, 1.0)
-	End Method
-
-
-	Method RefreshTopicality:Int() {_private}
-		topicality :* GetProgrammeDataCollection().refreshFactor
-		topicality :* GetRefreshModifier()
-		topicality :* GetGenreRefreshModifier()
-
-		'limit to 0-Max
-		topicality = MathHelper.Clamp(topicality, 0.0, GetMaxTopicality())
+		'cut by at least 5%, limit to 0-Max
+		topicality = MathHelper.Clamp(topicality - Max(0.05, changeValue), 0.0, GetMaxTopicality())
 
 		Return topicality
 	End Method
 
 
-	Method RefreshTrailerTopicality:Int() {_private}
-		trailerTopicality :* GetProgrammeDataCollection().trailerRefreshFactor
-		trailerTopicality :* GetTrailerRefreshModifier()
-		'trailers also get influenced by flags and genre
-		trailerTopicality :* GetGenreRefreshModifier()
-		trailerTopicality :* GetFlagsRefreshModifier()
+	Method CutTrailerTopicality:Float(cutModifier:float=1.0) {_private}
+		local changeValue:float = trailerTopicality
 
-		'limit to 0-1
-		trailerTopicality = MathHelper.Clamp(trailerTopicality, 0.0, 1.0)
+		changeValue :* cutModifier
+		changeValue :* GetProgrammeDataCollection().trailerWearoffFactor
+		changeValue :* GetWearoffModifier()
+		'trailers also get influenced by flags and genre
+		changeValue :* GetGenreWearoffModifier()
+		changeValue :* GetFlagsWearoffModifier()
+		changeValue = trailerTopicality - changeValue
+
+		'cut by at least 5%, limit to 0-1
+		'(trailers do not inherit "aged" topicality, so 1 is max)
+		trailerTopicality = MathHelper.Clamp(trailerTopicality - Max(0.05, changeValue), 0.0, 1.0)
+
+		Return trailerTopicality
+	End Method
+
+
+	Method RefreshTopicality:Float() {_private}
+		local changeValue:float = topicality
+
+		changeValue :* GetProgrammeDataCollection().refreshFactor
+		changeValue :* GetRefreshModifier()
+		changeValue :* GetGenreRefreshModifier()
+		changeValue = topicality - changeValue
+
+		'refresh by at least 5%, limit to 0-Max
+		topicality = MathHelper.Clamp(topicality + Max(0.05, changeValue), 0.0, GetMaxTopicality())
+
+		Return topicality
+	End Method
+
+
+	Method RefreshTrailerTopicality:Float() {_private}
+		local changeValue:float = trailerTopicality
+
+		changeValue :* GetProgrammeDataCollection().trailerRefreshFactor
+		changeValue :* GetTrailerRefreshModifier()
+		'trailers also get influenced by flags and genre
+		changeValue :* GetGenreRefreshModifier()
+		changeValue :* GetFlagsRefreshModifier()
+		changeValue = trailerTopicality - changeValue
+
+		'refresh by at least 5%, limit to 0-1
+		trailerTopicality = MathHelper.Clamp(trailerTopicality + Max(0.05, changeValue), 0.0, 1.0)
 
 		Return trailerTopicality
 	End Method
@@ -1261,12 +1277,22 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	End Method
 
 
+	Method isAvailable:int()
+		'if a date for a live broadcast was defined, the programme
+		'isn't anymore from this time on
+		if liveTime >= 0 and GetWorldTime().GetTimeGone() >= liveTime
+			return False
+		endif
+
+		return isReleased()
+	End Method
+
+
 	Method isReleased:int()
 		'call-in shows are kind of "live"
 		if HasFlag(TVTProgrammeFlag.PAID) then return True
 
 		return GetWorldTime().GetTimeGone() >= releaseTime
-		'return (year <= GetWorldTime().getYear() and releaseDay <= GetWorldTime().getDay())
 	End Method
 
 

@@ -925,6 +925,21 @@ endrem
 		endif
 
 
+		'=== REPAIR INCORRECT DB ===
+		'when loading an episode the parentLicenceGUID gets assigned
+		'_after_ finished loading the episode data - so if is set
+		'already, this means it got loaded at least to a series before
+		'=======
+		'ATTENTION: does not work once the DB splits between data and licence!
+		'=======
+		if parentLicence and programmeLicence.parentLicenceGUID
+			programmeLicence = new TProgrammeLicence
+			programmeLicence.GUID = GUID + "-parent-" + parentLicence.GetGUID()
+			TLogger.log("DB", "Auto-corrected duplicate programmelicence: ~q"+programmeLicence.GUID+"~q.", LOG_LOADING)
+			print "Auto-corrected duplicate programmelicence: ~q"+programmeLicence.GUID+"~q."
+		endif
+
+
 		'=== ADD PROGRAMME DATA TO LICENCE ===
 		'this just overrides the existing data - even if identical
 		programmeLicence.SetData(programmeData)
@@ -948,7 +963,7 @@ endrem
 		programmeData.year = data.GetInt("year", programmeData.year)
 		programmeData.distributionChannel = data.GetInt("distribution", programmeData.distributionChannel)
 		programmeData.blocks = data.GetInt("blocks", programmeData.blocks)
-		programmeData.liveHour = data.GetInt("time", programmeData.liveHour)
+		programmeData.liveTime = data.GetLong("time", programmeData.liveTime)
 		'compatibility: load price mod from "price_mod" first... later
 		'override with "modifiers"-data
 		programmeData.SetModifier("price", data.GetFloat("price_mod", programmeData.GetModifier("price")))
@@ -1065,7 +1080,11 @@ endrem
 			'the episodeNumber is currently not needed, as we
 			'autocalculate it by the position in the xml-episodes-list
 			'local episodeNumber:int = xml.FindValueInt(nodeEpisode, "index", 1)
-
+if episodeLicence.GetParentLicence() and episodeLicence.parentLicenceGUID
+	print "Episode: ~q"+episodeLicence.GetTitle()+"~q already has parent: ~q"+episodeLicence.GetParentLicencE().GetTitle()+"~q."
+	TLogger.Log("DB: ","Episode: ~q"+episodeLicence.GetTitle()+"~q already has parent: ~q"+episodeLicence.GetParentLicencE().GetTitle()+"~q.", LOG_ERROR)
+endif
+	
 			'add the episode
 			programmeLicence.AddSubLicence(episodeLicence)
 

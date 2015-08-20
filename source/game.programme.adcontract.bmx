@@ -377,22 +377,26 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 
 
 	Method CutInfomercialTopicality:Int(cutModifier:float=1.0) {_private}
-		infomercialTopicality :* cutModifier
-		infomercialTopicality :* GetAdContractBaseCollection().infomercialWearoffFactor
-		infomercialTopicality :* GetInfomercialWearoffModifier()
+		local changeValue:float = infomercialTopicality
+		changeValue :* cutModifier
+		changeValue :* GetAdContractBaseCollection().infomercialWearoffFactor
+		changeValue :* GetInfomercialWearoffModifier()
+		changeValue = infomercialTopicality - changeValue
 
-		'limit to 0-max
-		infomercialTopicality = MathHelper.Clamp(infomercialTopicality, 0.0, GetMaxInfomercialTopicality())
+		'cut by at least 5%, limit to 0-max
+		infomercialTopicality = MathHelper.Clamp(infomercialTopicality - Max(0.05, changeValue), 0.0, GetMaxInfomercialTopicality())
 	End Method
 
 
 	Method RefreshInfomercialTopicality:Int(refreshModifier:float=1.0) {_private}
-		infomercialTopicality :* refreshModifier
-		infomercialTopicality :* GetAdContractBaseCollection().infomercialRefreshFactor
-		infomercialTopicality :* GetInfomercialRefreshModifier()
+		local changeValue:float = infomercialTopicality
+		changeValue :* refreshModifier
+		changeValue :* GetAdContractBaseCollection().infomercialRefreshFactor
+		changeValue :* GetInfomercialRefreshModifier()
+		changeValue = infomercialTopicality - changeValue
 
-		'limit to 0-max
-		infomercialTopicality = MathHelper.Clamp(infomercialTopicality, 0.0, GetMaxInfomercialTopicality())
+		'refresh by at least 5%, limit to 0-max
+		infomercialTopicality = MathHelper.Clamp(infomercialTopicality + Max(0.05, changeValue), 0.0, GetMaxInfomercialTopicality())
 	End Method
 	
 
