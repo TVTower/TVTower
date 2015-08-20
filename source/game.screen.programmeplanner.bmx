@@ -7,6 +7,8 @@ Type TScreenHandler_ProgrammePlanner
 	Global ProgrammePlannerButtons:TGUIButton[6]
 	Global PPprogrammeList:TgfxProgrammelist
 	Global PPcontractList:TgfxContractlist
+	Global disabledAdSlots:int[24]
+	Global disabledProgrammeSlots:int[24]
 	Global fastNavigateTimer:TIntervalTimer = TIntervalTimer.Create(250)
 	Global fastNavigateInitialTimer:int = 250
 	Global fastNavigationUsedContinuously:int = FALSE
@@ -27,6 +29,9 @@ Type TScreenHandler_ProgrammePlanner
 
 	Global _eventListeners:TLink[]
 
+	Const SLOTTYPE_ALL:int = -1
+	Const SLOTTYPE_PROGRAMME:int = 0
+	Const SLOTTYPE_ADVERTISEMENT:int = 1
 
 	Function Initialize:int()
 		local screen:TScreen = ScreenCollection.GetScreen("screen_office_programmeplanner")
@@ -194,6 +199,60 @@ Type TScreenHandler_ProgrammePlanner
 	End Function
 
 
+	Function ResetSlots:int(slotType:int = -1)
+		For local i:int = 0 to 23
+			if slotType = SLOTTYPE_PROGRAMME
+				disabledProgrammeSlots[i] = 0
+			elseif slotType = SLOTTYPE_ADVERTISEMENT
+				disabledAdSlots[i] = 0
+			else
+				disabledProgrammeSlots[i] = 0
+				disabledAdSlots[i] = 0
+			endif
+		Next
+	End Function
+
+
+	Function EnableSlots:int(hours:int[] = null, slotType:int = -1)
+		If hours and hours.length > 0
+			For local hour:int = EachIn hours
+				if slotType = SLOTTYPE_PROGRAMME
+					disabledProgrammeSlots[hour] = 0
+				elseif slotType = SLOTTYPE_ADVERTISEMENT
+					disabledAdSlots[hour] = 0
+				else
+					disabledProgrammeSlots[hour] = 0
+					disabledAdSlots[hour] = 0
+				endif
+			Next
+		Endif
+	End Function
+
+
+	Function DisableSlots:int(hours:int[] = null, slotType:int = 0)
+		If hours and hours.length > 0
+			For local hour:int = EachIn hours
+				if slotType = SLOTTYPE_PROGRAMME
+					disabledProgrammeSlots[hour] = 1
+				elseif slotType = SLOTTYPE_ADVERTISEMENT
+					disabledAdSlots[hour] = 1
+				else
+					disabledProgrammeSlots[hour] = 1
+					disabledAdSlots[hour] = 1
+				endif
+			Next
+		Endif
+	End Function
+
+
+	Function IsDisabledSlot:int(hour:int, slotType:int = 0)
+		if slotType = SLOTTYPE_PROGRAMME
+			return disabledProgrammeSlots[hour] = 1
+		else
+			return disabledAdSlots[hour] = 1
+		endif
+	End Function
+
 
 	'called as soon as a players figure is forced to leave a room
 	Function onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
@@ -269,6 +328,148 @@ Type TScreenHandler_ProgrammePlanner
 		return False
 	End Function
 
+rem
+	Function DrawDisabledSlots(invert:int = False)
+		local oldCol:TColor = new TColor.get()
+		SetBlend LightBlend
+		SetAlpha oldCol.a * 0.1
+		if not invert
+			SetColor 255,50,50
+		else
+			SetColor 0,255,50
+		endif
+
+		Local adBlock1:TSprite = GetSpriteFromRegistry("pp_adblock1")
+		Local programmeBlock1:TSprite = GetSpriteFromRegistry("pp_programmeblock1")
+		For local i:int = 0 to 23
+			if IsDisabledSlot(i, SLOTTYPE_PROGRAMME) = not invert
+				if i < 12
+					programmeBlock1.Draw(45, 5 + i*30)
+				else
+					programmeBlock1.Draw(380, 5 + (i-12)*30)
+				endif
+			endif
+			if IsDisabledSlot(i, SLOTTYPE_ADVERTISEMENT) = not invert
+				if i < 12
+					adBlock1.Draw(45 + programmeBlock1.GetWidth(), 5 + i*30)
+				else
+					adBlock1.Draw(380 + programmeBlock1.GetWidth(), 5 + (i-12)*30)
+				endif
+			endif
+		Next
+
+		SetBlend AlphaBlend
+		oldCol.SetRGBA()
+
+		'overlay clock background
+		Local clockMode:string = "mixed"
+		if invert then clockMode = "ok"
+		Local clockBG1:TSprite = GetSpriteFromRegistry("gfx_programmeplanner_clock1." + clockMode)
+		Local clockBG2:TSprite = GetSpriteFromRegistry("gfx_programmeplanner_clock2." + clockMode)
+		local fontColor:TColor = TColor.CreateGrey(240)
+		For local i:int = 0 to 23
+			if IsDisabledSlot(i, SLOTTYPE_PROGRAMME) = not invert or IsDisabledSlot(i, SLOTTYPE_ADVERTISEMENT) = not invert
+				if i < 12
+					if i mod 2 = 0
+						clockBG1.Draw(5, 5+1 + i*30)
+					else
+						clockBG2.Draw(5, 5+1 + i*30)
+					endif
+
+					local text:string = i
+					If i < 10 then text = "0" + text
+					SetAlpha oldCol.a * 0.75
+					GetBitmapFontManager().baseFontBold.DrawBlock(text, 6, 5 + i * 30, 39, 30, ALIGN_CENTER_CENTER, fontColor, 2,1,0.25)
+					SetAlpha oldCol.a
+				else
+					if i mod 2 = 0
+						clockBG1.Draw(340, 5+1 + (i-12)*30)
+					else
+						clockBG2.Draw(340, 5+1 + (i-12)*30)
+					endif
+					SetAlpha oldCol.a * 0.75
+					GetBitmapFontManager().baseFontBold.DrawBlock(i,  341, 5 + (i-12) * 30, 39, 30, ALIGN_CENTER_CENTER, fontColor, 2,1,0.25)
+					SetAlpha oldCol.a
+				endif
+			endif
+		Next
+	End Function
+endrem
+
+	Function DrawDisabledSlots(invert:int = False)
+		local oldCol:TColor = new TColor.get()
+		SetAlpha oldCol.a * 0.65 + Min(0.15, Max(-0.20, sin(Millisecs() / 6) * 0.20))
+
+		Local blockOverlay:TSprite = GetSpriteFromRegistry("gfx_programmeplanner_blockoverlay.highlighted")
+		Local clockOverlay1:TSprite = GetSpriteFromRegistry("gfx_programmeplanner_clockoverlay1.highlighted")
+		Local clockOverlay2:TSprite = GetSpriteFromRegistry("gfx_programmeplanner_clockoverlay2.highlighted")
+
+		For local i:int = 0 to 23
+			local disabledCount:int = (IsDisabledSlot(i, SLOTTYPE_PROGRAMME) = not invert) + (IsDisabledSlot(i, SLOTTYPE_ADVERTISEMENT) = not invert)
+			if disabledCount = 2
+				if not invert
+					SetColor 255,50,50
+				else
+					SetColor 0,255,50
+				endif
+			elseif disabledCount = 1
+				SetColor 255,150,0
+			endif
+
+			if i < 12
+				if disabledCount > 0
+					if i mod 2 = 0
+						clockOverlay1.Draw(5, 5 + i*30)
+					else
+						clockOverlay2.Draw(5, 5 + i*30)
+					endif
+				endif
+				if IsDisabledSlot(i, SLOTTYPE_PROGRAMME) = not invert
+					blockOverlay.DrawArea(45, 5 + i*30, 205, 30)
+				endif
+				if IsDisabledSlot(i, SLOTTYPE_ADVERTISEMENT) = not invert
+					blockOverlay.DrawArea(45 + 205, 5 + i*30, 85, 30)
+				endif
+			else
+				if disabledCount > 0
+					if i mod 2 = 0
+						clockOverlay1.Draw(340, 5 + (i - 12)*30)
+					else
+						clockOverlay2.Draw(340, 5 + (i - 12)*30)
+					endif
+				endif
+				if IsDisabledSlot(i, SLOTTYPE_PROGRAMME) = not invert
+					blockOverlay.DrawArea(380, 5 + (i - 12)*30, 205,30)
+				endif
+				if IsDisabledSlot(i, SLOTTYPE_ADVERTISEMENT) = not invert
+					blockOverlay.DrawArea(380 + 205, 5 + (i - 12)*30, 85,30)
+				endif
+			endif
+		Next
+
+
+
+		local plan:TPlayerProgrammePlan = GetPlayerProgrammePlan(currentRoom.owner)
+		SetAlpha oldCol.a * 0.30
+		SetColor 170,30,0
+		For local i:int = 0 to 23
+			if plan.IsLockedSlot(TVTBroadcastMaterialType.PROGRAMME, GetWorldTime().GetDay(), i)
+				if i < 12
+					blockOverlay.DrawArea(45, 5 + i*30, 205, 30)
+				else
+					blockOverlay.DrawArea(380, 5 + i*30, 205, 30)
+				endif
+			endif
+			if plan.IsLockedSlot(TVTBroadcastMaterialType.ADVERTISEMENT, GetWorldTime().GetDay(), i)
+				if i < 12
+					blockOverlay.DrawArea(45 + 205, 5 + i*30, 85, 30)
+				else
+					blockOverlay.DrawArea(380 + 205, 5 + i*30, 85, 30)
+				endif
+			endif
+		Next
+		oldCol.SetRGBA()
+	End Function
 
 	'=== EVENTS ===
 
@@ -682,6 +883,8 @@ Type TScreenHandler_ProgrammePlanner
 		
 		GUIManager.Draw("programmeplanner",,, GUIMANAGER_TYPES_NONDRAGGED)
 
+		DrawDisabledSlots( KeyManager.IsDown(KEY_LSHIFT) and KeyManager.IsDown(KEY_X))
+
 		'overlay old days
 		If GetWorldTime().getDay() > planningDay
 			SetColor 100,100,100
@@ -759,7 +962,20 @@ Type TScreenHandler_ProgrammePlanner
 		if not room then return 0
 
 		currentRoom = room
-		
+'rem
+ResetSlots(SLOTTYPE_ALL)
+if KeyManager.IsDown(KEY_X)
+	DisableSlots([0,5,6,7,20,21,22,23], SLOTTYPE_PROGRAMME)
+	DisableSlots([0,5,6,7,22,23], SLOTTYPE_ADVERTISEMENT)
+endif
+
+
+if KeyManager.IsDown(KEY_SPACE)
+	GetPlayer().GetProgrammePlan().LockSlot(TVTBroadcastMaterialType.PROGRAMME, GetWorldTime().GetDay(), 0)
+	GetPlayer().GetProgrammePlan().LockSlot(TVTBroadcastMaterialType.PROGRAMME, GetWorldTime().GetDay(), 1)
+	GetPlayer().GetProgrammePlan().LockSlot(TVTBroadcastMaterialType.PROGRAMME, GetWorldTime().GetDay(), 2)
+endif
+'endrem		
 		'if not initialized, do so
 		if planningDay = -1 then planningDay = GetWorldTime().getDay()
 
@@ -1214,10 +1430,10 @@ Type TScreenHandler_ProgrammePlanner
 
 	'add gfx to background
 	Function InitProgrammePlannerBackground:int()
-		Local roomImg:TImage				= GetSpriteFromRegistry("screen_bg_programmeplanner").parent.image
-		Local Pix:TPixmap					= LockImage(roomImg)
-		Local gfx_ProgrammeBlock1:TImage	= GetSpriteFromRegistry("pp_programmeblock1").GetImage()
-		Local gfx_AdBlock1:TImage			= GetSpriteFromRegistry("pp_adblock1").GetImage()
+		Local roomImg:TImage             = GetSpriteFromRegistry("screen_bg_programmeplanner").parent.image
+		Local Pix:TPixmap                = LockImage(roomImg)
+		Local gfx_ProgrammeBlock1:TImage = GetSpriteFromRegistry("pp_programmeblock1").GetImage()
+		Local gfx_AdBlock1:TImage        = GetSpriteFromRegistry("pp_adblock1").GetImage()
 
 		'block"shade" on bg
 		local shadeColor:TColor = TColor.CreateGrey(200, 0.3)

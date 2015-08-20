@@ -351,6 +351,12 @@
 				<child name="gfx_programmeplanner_btn_statistics"		x="403"	y="163"	w="108"	h="54" />
 				<child name="gfx_programmeplanner_btn_messages"			x="403"	y="217"	w="108"	h="54" />
 				<child name="gfx_programmeplanner_btn_unknown"			x="403"	y="271"	w="108"	h="54" />
+
+				<child name="gfx_programmeplanner_clock1.default"				x="196"	y="213"	w="40"	h="30" />
+				<child name="gfx_programmeplanner_clock2.default"				x="237"	y="213"	w="40"	h="30" />
+				<child name="gfx_programmeplanner_clockoverlay1.highlighted"	x="196"	y="244"	w="40"	h="30" />
+				<child name="gfx_programmeplanner_clockoverlay2.highlighted"	x="237"	y="244"	w="40"	h="30" />
+				<child name="gfx_programmeplanner_blockoverlay.highlighted"		x="196"	y="275"	w="31"	h="31" ninepatch="true" />
 			</children>
 		</spritepack>
 	</resources>

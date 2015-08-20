@@ -26,7 +26,7 @@ Type TPlayerProgrammePlanCollection
 
 	Method New()
 		If Not _eventsRegistered
-'			EventManager.registerListenerFunction("programmecollection.addProgrammeLicenceToSuitcase", onAddProgrammeLicenceToSuitcase)
+			EventManager.registerListenerFunction("Game.OnDay", onGameDay)
 			_eventsRegistered = True
 		EndIf
 	End Method
@@ -37,18 +37,15 @@ Type TPlayerProgrammePlanCollection
 		Return _instance
 	End Function
 
-Rem
-	Function onAddProgrammeLicenceToSuitcase:int(triggerEvent:TEventBase)
-		local gameobject:TOwnedGameObject = TOwnedGameObject(triggerEvent.GetSender())
-		local programmeLicence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().Get("programmeLicence"))
-		if not gameobject or programmeLicence then return False
 
-		'remove that programme from the players plan (if set)
-		' - second param = true: also remove currently run programmes
-		local plan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(gameobject.owner)
-		if plan then plan.RemoveProgrammeInstancesByLicence(programmeLicence, true)
+	'on each new game day, old slot locks of the plans should get removed
+	'to keep the map small (less memory, less cpu hunger when processed)
+	Function onGameDay:int(triggerEvent:TEventBase)
+		For local p:TPlayerProgrammePlan = EachIn GetInstance().plans
+			p.RemoveObsoleteSlotLocks()
+		Next
 	End Function
-endrem
+
 
 	Method Set:Int(playerID:Int, plan:TPlayerProgrammePlan)
 		If playerID <= 0 Then Return False
@@ -90,6 +87,9 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'news show
 	Field newsShow:TBroadcastMaterial[]	= New TBroadcastMaterial[0]
 	Field advertisements:TBroadcastMaterial[] = New TBroadcastMaterial[0]
+	'as it is less common to lock slots we could use a TMap
+	'instead of an array with "holes"
+	Field lockedSlots:TMap = CreateMap()
 	Field owner:Int
 
 	'FALSE to avoid recursive handling (network)
@@ -242,6 +242,55 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		End Select
 
 		Return False
+	End Method
+
+
+	'Set a time slot locked
+	'each lock is identifyable by "typeID_timeHours"
+	Method LockSlot:int(slotType:int=0, day:int=-1, hour:int=-1)
+		If day = -1 Then day = GetWorldTime().getDay()
+		If hour = -1 Then hour = GetWorldTime().getDayHour()
+
+		lockedSlots.Insert((day*24 + hour) + "_" +slotType, null)
+	End Method
+
+
+	Method UnlockSlot:int(slotType:int=0, day:int=-1, hour:int=-1)
+		If day = -1 Then day = GetWorldTime().getDay()
+		If hour = -1 Then hour = GetWorldTime().getDayHour()
+
+		lockedSlots.Remove((day*24 + hour) + "_" +slotType)
+	End Method
+	
+
+	Method IsLockedSlot:int(slotType:int=0, day:int=-1, hour:int=-1)
+		If day = -1 Then day = GetWorldTime().getDay()
+		If hour = -1 Then hour = GetWorldTime().getDayHour()
+
+		return lockedSlots.Contains((day*24 + hour) + "_" + slotType)
+	End Method
+	
+
+	'removes slot lock info from past days (to keep things small sized)
+	Method RemoveObsoleteSlotLocks:int()
+		local time:int = GetWorldTime().getDay()*24 ' + 0 hours, start at midnight)
+		
+		For local k:string = EachIn lockedSlots.Keys()
+			local parts:string[] = k.split("_")
+			if parts.length < 2
+				lockedSlots.Remove(k)
+				continue
+			endif
+
+			if int(parts[1] < time)
+				lockedSlots.Remove(k)
+			else
+				'as the keys are sorted by time (and then by type) we could
+				'skip all others once we reached a lock of the present/future 
+				return False
+			endif
+		Next
+		return True
 	End Method
 
 
@@ -452,15 +501,26 @@ endrem
 			Return False
 		EndIf
 
+
+		'do not allow adding to a locked slot
+		For Local i:Int = 0 To obj.GetBlocks(slotType) -1
+			If IsLockedSlot(slotType, day, hour + i)
+				if slotType = TVTBroadcastMaterialType.ADVERTISEMENT
+					TLogger.Log("TPlayerProgrammePlan.AddObject", "Failed: slot "+day+", "+(hour+i)+":55 is locked", LOG_INFO)
+				else
+					TLogger.Log("TPlayerProgrammePlan.AddObject", "Failed: slot "+day+", "+(hour+i)+":00 is locked", LOG_INFO)
+				endif
+				Return False
+			EndIf
+		Next
+		
+
 		'clear all potential overlapping objects
 		Local removedObjects:Object[]
 		Local removedObject:Object
 		For Local i:Int = 0 To obj.GetBlocks(slotType) -1
 			removedObject = RemoveObject(Null, slotType, day, hour+i)
-			If removedObject
-				removedObjects = removedObjects[..removedObjects.length+1]
-				removedObjects[removedObjects.length-1] = removedObject
-			EndIf
+			If removedObject then removedObjects :+ [removedObject]
 		Next
 
 		'add the object to the corresponding array
