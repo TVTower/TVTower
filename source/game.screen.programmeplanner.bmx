@@ -120,6 +120,7 @@ Type TScreenHandler_ProgrammePlanner
 
 		'=== register event listeners
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropProgrammePlanElementOnDayButton, "TGUIProgrammePlanElement") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropFreshProgrammePlanElementOnRunningSlot, "TGUIProgrammePlanElement") ]
 
 		'player enters screen - reset the guilists
 		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onEnter", onEnterProgrammePlannerScreen, screen) ]
@@ -622,6 +623,24 @@ endrem
 
 		'up to now: all are allowed
 		return TRUE
+	End Function
+
+
+	'intercept if a freshly created element is dropped on an slot in
+	'run state
+	Function onTryDropFreshProgrammePlanElementOnRunningSlot:int(triggerEvent:TEventBase)
+		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
+		if not item then return FALSE
+
+		local receiverList:TGUISlotList = TGUISlotList(triggerEvent._receiver)
+		if receiverList
+			local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", new TVec2D.Init(-1,-1)))
+			local slot:int = receiverList.GetSlotByCoord(coord)
+
+			if receiverList.GetSlotState(slot) = 2
+				triggerEvent.SetVeto()
+			endif
+		endif
 	End Function
 
 
