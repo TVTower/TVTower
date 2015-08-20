@@ -878,6 +878,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		filterMoviesGood.licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
 		filterMoviesGood.qualityMin = movieCheapQualityMaximum
 		filterMoviesGood.qualityMax = -1.0
+		filterMoviesGood.relativeTopicalityMin = 0.25
+		filterMoviesGood.relativeTopicalityMax = -1.0
 		'filterMoviesGood.connectionType = TProgrammeLicenceFilterGroup.CONNECTION_TYPE_AND
 		'filterMoviesGood.filters[0].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
 		'filterMoviesGood.filters[0].priceMin = movieCheapMoneyMaximum
@@ -891,12 +893,20 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		filterMoviesCheap.filters[0].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
 		filterMoviesCheap.filters[0].priceMin = 0
 		filterMoviesCheap.filters[0].priceMax = movieCheapMoneyMaximum
+		filterMoviesCheap.filters[0].relativeTopicalityMin = 0.25
+		filterMoviesCheap.filters[0].relativeTopicalityMax = -1.0
+
 		filterMoviesCheap.filters[1].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
 		filterMoviesCheap.filters[1].qualityMin = -1.0
 		filterMoviesCheap.filters[1].qualityMax = movieCheapQualityMaximum
+		filterMoviesCheap.filters[1].relativeTopicalityMin = 0.25
+		filterMoviesCheap.filters[1].relativeTopicalityMax = -1.0
 		
 		'filter them by price too - eg. for auction ?
 		filterSeries.licenceTypes = [TVTProgrammeLicenceType.SERIES]
+		'as long as there are not that much series, allow 10% instead of 25%
+		filterSeries.relativeTopicalityMin = 0.10
+		filterSeries.relativeTopicalityMax = -1.0
 
 		'=== REGISTER HANDLER ===
 		GetRoomHandlerCollection().SetHandler("movieagency", self)

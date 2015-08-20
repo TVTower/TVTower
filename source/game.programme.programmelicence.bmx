@@ -707,6 +707,12 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	'returns the (avg) relative topicality of a licence (package)
+	Method GetRelativeTopicality:Float() {_exposeToLua}
+		return GetTopicality() / GetMaxTopicality()
+	End Method
+
+
 	'returns the avg topicality of a licence (package)
 	Method GetTopicality:Float() {_exposeToLua}
 		'single-licence
@@ -1297,6 +1303,8 @@ Type TProgrammeLicenceFilter
 	Field flags:int
 	Field qualityMin:Float = -1.0
 	Field qualityMax:Float = -1.0
+	Field relativeTopicalityMin:Float = -1.0
+	Field relativeTopicalityMax:Float = -1.0
 	Field licenceTypes:int[]
 	Field priceMin:int = -1
 	Field priceMax:int = -1
@@ -1364,6 +1372,8 @@ Type TProgrammeLicenceFilter
 		Next
 		qualityMin = otherFilter.qualityMin
 		qualityMax = otherFilter.qualityMin
+		relativeTopicalityMin = otherFilter.relativeTopicalityMin
+		relativeTopicalityMax = otherFilter.relativeTopicalityMax
 		for local i:int = EachIn otherFilter.licenceTypes
 			licenceTypes :+ [i]
 		Next
@@ -1560,6 +1570,10 @@ Type TProgrammeLicenceFilter
 		'check quality (not qualityRaw which ignores age, airedtimes,...)
 		if qualityMin >= 0 and licence.GetQuality() < qualityMin then return False
 		if qualityMax >= 0 and licence.GetQuality() > qualityMax then return False
+
+		'check relative topicality (topicality/maxTopicality)
+		if relativeTopicalityMin >= 0 and licence.GetRelativeTopicality() < relativeTopicalityMin then return False
+		if relativeTopicalityMax >= 0 and licence.GetRelativeTopicality() > relativeTopicalityMax then return False
 
 		'check price
 		if priceMin >= 0 and licence.GetPrice() < priceMin then return False
