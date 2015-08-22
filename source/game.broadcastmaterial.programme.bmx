@@ -88,9 +88,9 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		'only fetch new audience stats when send as programme (ignore trailer)
 		if self.usedAsType = TVTBroadcastMaterialType.PROGRAMME
 			'remove old "last audience" data to avoid wrong "average values"
-			licence.GetBroadcastStatistic().RemoveLastAudienceResult(licence.owner)
+			licence.GetBroadcastStatistic().RemoveLastAudienceResult(owner)
 			'store audience for this block
-			licence.GetBroadcastStatistic().SetAudienceResult(licence.owner, currentBlockBroadcasting, audienceResult)
+			licence.GetBroadcastStatistic().SetAudienceResult(owner, currentBlockBroadcasting, audienceResult)
 		endif
 	End Method
 
@@ -102,7 +102,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 
 		'store audience for this block
-		licence.GetBroadcastStatistic().SetAudienceResult(licence.owner, currentBlockBroadcasting, audienceResult)
+		licence.GetBroadcastStatistic().SetAudienceResult(owner, currentBlockBroadcasting, audienceResult)
 	End Method
 
 

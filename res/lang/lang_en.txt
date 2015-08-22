@@ -458,6 +458,7 @@ SELECT_STATION = Select station
 BUY_STATION = Buy station
 TOO_EXPENSIVE = Too expensive
 SELL_STATION = Sell station
+UNSELLABLE = unsellable
 
 STATION_UNDER_CONSTRUCTION = Under Construction
 STATION_READY_AT_ACTIVATIONTIME = Ready at %ACTIVATIONTIME%

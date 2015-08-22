@@ -260,8 +260,14 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'create base stations
 		For Local i:Int = 1 To 4
+			'create station map if not done yet
+			local map:TStationMap = GetStationMap(i, True)
 			'add new station
-			GetPlayer(i).GetStationMap().AddStation( TStation.Create( New TVec2D.Init(310, 260),-1, GetStationMapCollection().stationRadius, i ), False )
+			local s:TStation = TStation.Create( New TVec2D.Init(310, 260),-1, GetStationMapCollection().stationRadius, i )
+			'first station is not sellable (this enforces competition)
+			s.SetFlag(TStation.FLAG_SELLABLE, False)
+
+			map.AddStation( s, False )
 		Next
 
 		'update the collection so it contains the audience reach of each player

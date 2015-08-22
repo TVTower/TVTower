@@ -493,19 +493,26 @@ Type TScreenHandler_StationMap
 		'ignore clicks if not in the own office
 		if GetPlayerCollection().Get().GetFigure().inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
 
-		'different owner or not paid
-		if stationMapSelectedStation
-			if stationMapSelectedStation.owner <> GetPlayerCollection().playerID or not stationMapSelectedStation.paid
-				button.disable()
-			else
-				button.enable()
-			endif
-		endif
-
-
 		if stationMapMode=2
-			button.SetValue(GetLocale("SELL_STATION"))
-			button.enable()
+			'different owner or not paid or not sellable
+			if stationMapSelectedStation
+				if stationMapSelectedStation.owner <> GetPlayerCollection().playerID
+					button.disable()
+					button.SetValue(GetLocale("WRONG_PLAYER"))
+				elseif not stationMapSelectedStation.HasFlag(TStation.FLAG_SELLABLE)
+					button.SetValue(GetLocale("UNSELLABLE"))
+					button.disable()
+				elseif not stationMapSelectedStation.HasFlag(TStation.FLAG_PAID)
+					button.SetValue(GetLocale("SELL_STATION"))
+					button.disable()
+				else
+					'save processing for default behaviour
+					if not button.IsEnabled()
+						button.SetValue(GetLocale("SELL_STATION"))
+						button.enable()
+					endif
+				endif
+			endif
 		else
 			button.SetValue(GetLocale("SELECT_STATION"))
 			button.disable()
@@ -550,9 +557,18 @@ Type TScreenHandler_StationMap
 
 		'draw with different color according status
 		if station.IsActive()
-			'draw antenna
-			sprite.Draw(Int(item.GetScreenX() + 5), item.GetScreenY() + 0.5*(item.rect.getH() - sprite.GetHeight()))
-			item.GetFont().draw(item.GetValue(), Int(item.GetScreenX() + 5 + sprite.GetWidth() + 5), Int(item.GetScreenY() + 2 + 0.5*(item.rect.getH()- item.GetFont().getHeight(item.value))), item.valueColor)
+			'colorize antenna for "not sellable ones
+			if not station.HasFlag(TStation.FLAG_SELLABLE)
+				SetColor 120,90,60
+				'draw antenna
+				sprite.Draw(Int(item.GetScreenX() + 5), item.GetScreenY() + 0.5*(item.rect.getH() - sprite.GetHeight()))
+				item.GetFont().draw(item.GetValue(), Int(item.GetScreenX() + 5 + sprite.GetWidth() + 5), Int(item.GetScreenY() + 2 + 0.5*(item.rect.getH()- item.GetFont().getHeight(item.value))))
+				SetColor 255,255,255
+			else
+				'draw antenna
+				sprite.Draw(Int(item.GetScreenX() + 5), item.GetScreenY() + 0.5*(item.rect.getH() - sprite.GetHeight()))
+				item.GetFont().draw(item.GetValue(), Int(item.GetScreenX() + 5 + sprite.GetWidth() + 5), Int(item.GetScreenY() + 2 + 0.5*(item.rect.getH()- item.GetFont().getHeight(item.value))), item.valueColor)
+			endif
 		else
 			local oldAlpha:float = GetAlpha()
 			SetAlpha oldAlpha*0.5

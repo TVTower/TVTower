@@ -711,7 +711,7 @@ Type TStationMap {_exposeToLua="selected"}
 		'try to buy it (does nothing if already done)
 		If buy And Not station.Buy(owner) Then Return False
 		'set to paid in all cases
-		station.paid = True
+		station.SetFlag(TStation.FLAG_PAID, True)
 
 
 		stations.AddLast(station)
@@ -735,6 +735,9 @@ Type TStationMap {_exposeToLua="selected"}
 
 	Method RemoveStation:Int(station:TStation, sell:Int=False)
 		If Not station Then Return False
+
+		'not allowed to sell this station
+		If not station.HasFlag(TStation.FLAG_SELLABLE) then Return False
 
 		'check if we try to sell our last station...
 		If stations.count() = 1
@@ -825,19 +828,24 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	'decrease of reach when bought (= increase in that state)
 	Field reachDecrease:Int = -1
 	Field price:Int	= -1
-	'fixed prices are kept during refresh
-	Field fixedPrice:Int = False
 	Field owner:Int = 0
-	Field paid:Int = False
 	'time at which the station was bought
 	Field built:Double = 0
 	'time at which the station gets active (again)
 	Field activationTime:Double = -1
-	Field active:int = 0
 	'is the station already working?
 	Field radius:Int = 0
 	Field federalState:String = ""
+	'various settings (paid, fixed price, sellable, active...)
+	Field _flags:int = 0
 
+	'=== FLAGS ===
+	Const FLAG_PAID:int         = 1
+	'fixed prices are kept during refresh
+	Const FLAG_FIXED_PRICE:int  = 2
+	Const FLAG_SELLABLE:int     = 4
+	Const FLAG_ACTIVE:int       = 8
+	
 
 	Function Create:TStation( pos:TVec2D, price:Int=-1, radius:Int, owner:Int)
 		Local obj:TStation = New TStation
@@ -847,8 +855,11 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		obj.radius = radius
 		obj.built = GetWorldTime().getTimeGone()
 		obj.activationTime = -1
-			
-		obj.fixedPrice	= (price <> -1)
+
+		obj.SetFlag(FLAG_FIXED_PRICE, (price <> -1))
+		'by default each station could get sold
+		obj.SetFlag(FLAG_SELLABLE, True)
+
 		obj.refreshData()
 		'save on compution for "initial states"
 		obj.reachDecrease = obj.reachIncrease
@@ -862,7 +873,21 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		getReachIncrease(True)
 		'save on compution for "initial states" - do it on "create"
 		'getReachDecrease(True)
-		getPrice( Not fixedPrice )
+		getPrice( Not HasFlag(FLAG_FIXED_PRICE) )
+	End Method
+
+
+	Method HasFlag:Int(flag:Int)
+		Return _flags & flag
+	End Method
+
+
+	Method SetFlag(flag:Int, enable:Int=True)
+		If enable
+			_flags :| flag
+		Else
+			_flags :& ~flag
+		EndIf
 	End Method
 
 
@@ -900,7 +925,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 			Return 0
 		EndIf
 
-		reachIncrease = GetStationMapCollection().GetMap(owner).CalculateAudienceIncrease(pos.x, pos.y)
+		reachIncrease = GetStationMap(owner).CalculateAudienceIncrease(pos.x, pos.y)
 
 		Return reachIncrease
 	End Method
@@ -954,7 +979,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 
 	Method IsActive:int()
-		return active
+		return HasFlag(FLAG_ACTIVE)
 	End Method
 
 
@@ -969,19 +994,21 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 	'set time a station begins to work (broadcast)
 	Method SetActive:int()
-		if active then return False
+		if IsActive() then return False
 
 		self.activationTime = GetWorldTime().GetTimeGone()
-		active = True
+		SetFlag(FLAG_ACTIVE, True)
+
 		'inform others (eg. to recalculate audience)
 		EventManager.triggerEvent(TEventSimple.Create("station.onSetActive", null, Self))
 	End Method
 
 
 	Method SetInactive:int()
-		if not active then return false
+		if not IsActive() then return False
 
-		active = False
+		SetFlag(FLAG_ACTIVE, False)
+
 		'inform others (eg. to recalculate audience)
 		EventManager.triggerEvent(TEventSimple.Create("station.onSetInactive", null, Self))
 	End Method
@@ -1014,14 +1041,16 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 
 
-		If paid Then Return True
+		If HasFlag(FLAG_PAID) Then Return True
 		If Not GetPlayerFinanceCollection().Get(playerID) Then Return False
 
 		If GetPlayerFinanceCollection().Get(playerID).PayStation( getPrice() )
 			owner = playerID
-			paid = True
+			SetFlag(FLAG_PAID, True)
+
 			Return True
 		EndIf
+
 		Return False
 	End Method
 

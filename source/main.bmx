@@ -491,6 +491,7 @@ Type TApp
 						'GetGame().marshals[rand(0,1)].AddConfiscationJob( licence.GetGUID() )
 
 						'buy script
+rem
 						Local s:TScript = RoomHandler_ScriptAgency.GetInstance().GetScriptByPosition(0)
 						If Not s
 							RoomHandler_ScriptAgency.GetInstance().ReFillBlocks()
@@ -502,6 +503,9 @@ Type TApp
 							RoomHandler_ScriptAgency.GetInstance().ReFillBlocks()
 							Print "added script: "+s.GetTitle()
 						EndIf
+endrem
+
+						RoomHandler_MovieAgency.GetInstance().RefillBlocks(true, 0.9)
 					EndIf
 
 				

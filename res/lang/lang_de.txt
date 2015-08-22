@@ -460,6 +460,7 @@ SELECT_STATION = Sendemast auswählen
 BUY_STATION = Sendemast kaufen
 TOO_EXPENSIVE = Zu teuer
 SELL_STATION = Sendemast verkaufen
+UNSELLABLE = unverkäuflich
 
 STATION_UNDER_CONSTRUCTION = Im Bau
 STATION_READY_AT_ACTIVATIONTIME = Bereit ab %ACTIVATIONTIME% Uhr
