@@ -1,0 +1,2063 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<tvgdb>
+  <version value="3" />
+  <allads>
+	<ad id="01b8c1c8-f3b3-4353-92fb-e24f5c7dc5b4">
+      <title>
+        <de>Fort</de>
+      </title>
+      <description>
+        <de>Der neue Fort ist da. Mehr Sicherheit und ein ansprechendes Design zu einem unschlagbaren Preis.</de>
+      </description>
+      <conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="5" duration="3" profit="392" penalty="392" infomercial_profit="39" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="044991ac-f4a6-4705-8e84-052d497d1b3a">
+      <title>
+        <de>ToughWhip</de>
+      </title>
+      <description>
+        <de>Ein Wischtuch für Küche UND WC. Jetzt mit lustigen Tiermotiven.</de>
+      </description>
+      <conditions min_audience="2.86" min_image="12" target_group="4" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="2" profit="684" penalty="520" infomercial_profit="68" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="1199be32-4985-4697-a5c8-c0da0ef09fc1">
+      <title>
+        <de>Möbler</de>
+      </title>
+      <description>
+        <de>Regale, Tische, Stühle, Schränke etc. - das haben wir zu bieten.
+Habt Ihr das zu bieten? Alter Schwede!</de>
+      </description>
+      <conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="5" duration="2" profit="270" penalty="245" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="14340286-55d9-408f-b0b5-9cd4208054dc">
+      <title>
+        <de>Tischlerei Nagler</de>
+      </title>
+      <description>
+        <de>Qualität die überzeugt. Nur wir ziehen Sie über den Echtholztisch.</de>
+      </description>
+      <conditions min_audience="0.1" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="3" profit="2100" penalty="2260" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="153bd5af-1163-4c22-a718-3ceb63da26c7">
+      <title>
+        <de>Pantzers</de>
+      </title>
+      <description>
+        <de>Unsere Windeln haben einen hohen Tragekomfort und sind geeignet für Jung und Alt.</de>
+      </description>
+      <conditions min_audience="6.77" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="4" duration="4" profit="417" penalty="305" infomercial_profit="41" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="17074737-4b08-457e-8536-b3ae0da3c02c">
+      <title>
+        <de>Trickers</de>
+      </title>
+      <description>
+        <de>Der leckere Riegel mit dem hohen Erdnußanteil.
+Daran hat man zu kauen.</de>
+      </description>
+      <conditions min_audience="2.34" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="3" profit="756" penalty="745" infomercial_profit="75" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="1edeb46a-caf8-4ce0-a66f-71706fc48b62">
+      <title>
+        <de>Dubantours</de>
+      </title>
+      <description>
+        <de>Reisen sie an die größten Strände der Welt, ob Gobi oder Sahara. Dubantours bringt sie hin.</de>
+      </description>
+      <conditions min_audience="6.77" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="5" duration="3" profit="414" penalty="425" infomercial_profit="41" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="1fa08a9f-5658-46a1-b634-43bbacd1a7bb">
+      <title>
+        <de>Wodka Jelzin</de>
+      </title>
+      <description>
+        <de>Für des Kunden reinste Kehle.</de>
+      </description>
+      <conditions min_audience="6.77" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="4" duration="2" profit="407" penalty="475" infomercial_profit="40" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="22f3968b-7603-408e-ad78-cfb0cc3b2030">
+      <title>
+        <de>Pipsi Cola</de>
+      </title>
+      <description>
+        <de>Populärster Konkurrent von Koka Cola - doch geschmacklich auch so rein?</de>
+      </description>
+      <conditions min_audience="15.63" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="2" profit="230" penalty="260" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="2e70e2e8-1b23-4aa5-90dc-40e2f5230f71">
+      <title>
+        <de>Eau de WC</de>
+      </title>
+      <description>
+        <de>Bestellen Sie jetzt und sichern sie sich den Duft der Frauen betört und ihre WC-Gäste bezaubert. Neu: Zitrone!</de>
+      </description>
+      <conditions min_audience="4.17" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="2" profit="537" penalty="4000" infomercial_profit="53" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="329eb726-34c8-49b3-a0af-be76dcbd296c">
+      <title>
+        <de>Ringtone Fuzzy</de>
+      </title>
+      <description>
+        <de>Räm Bäm Bäääm - Bestell Dir jetzt Deinen Klingelton im Sparabo.</de>
+      </description>
+      <conditions min_audience="0.39" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="6" duration="5" profit="2100" penalty="2110" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="360b9ee1-9e2e-469d-b61e-fa8a69cbf560">
+      <title>
+        <de>Mr. Ploper</de>
+      </title>
+      <description>
+        <de>Neun Jahre zuvor in den USA eingeführt, kommt Mr. Ploper 1967 nach Deutschland und etabliert sich als der beliebteste Haushaltsreiniger</de>
+      </description>
+      <conditions min_audience="11.46" min_image="12" target_group="4" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="5" duration="5" profit="296" penalty="345" infomercial_profit="29" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="3ae01a7d-98b9-4be2-99d7-0e23e2c151ad">
+      <title>
+        <de>GameStation 2</de>
+      </title>
+      <description>
+        <de>The fourth place. Die GS2 ist der Nachfolger der GS aus dem Hause Sunny.</de>
+      </description>
+      <conditions min_audience="9.38" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="6" duration="4" profit="338" penalty="360" infomercial_profit="33" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="3bf32cbc-3322-4f3b-851b-88b964cb990d">
+      <title>
+        <de>Mödie-Markt</de>
+      </title>
+      <description>
+        <de>Wir sind Blöd. Wir schmeissen unsere Ware zu Spottpreisen raus. Also ab in den nächsten Mödie-Markt</de>
+      </description>
+      <conditions min_audience="4.17" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="5" duration="3" profit="567" penalty="605" infomercial_profit="56" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="41f0778e-f2fd-4b34-be1a-1d67f2ff3ce4">
+      <title>
+        <de>Frau Müller</de>
+      </title>
+      <description>
+        <de>Höre reifen Frauen beim Stricken zu.</de>
+      </description>
+      <conditions min_audience="1.3" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="7" duration="7" profit="1060" penalty="800" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="42b4aa37-1274-4da2-9d72-4e203720eeb6">
+      <title>
+        <de>PoliPlay</de>
+      </title>
+      <description>
+        <de>Action-Spielfiguren Deiner Lieblingspolitiker. Für kurze Zeit Action-Märkel und Chaoz-Rözler zum Preis von einem.</de>
+      </description>
+      <conditions min_audience="14.07" min_image="12" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="5" duration="3" profit="258" penalty="122" infomercial_profit="25" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="44af9e71-7c61-4531-b125-181948cd791a">
+      <title>
+        <de>Aunt Lizzy´s</de>
+      </title>
+      <description>
+        <de>Kirsch-Sirup aus Bio-Anbau. Von Tante Lizzy selbst abgefüllt.</de>
+      </description>
+      <conditions min_audience="0.16" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="2" fix_price="0" profit="2400" penalty="1650" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="4621cea4-26c9-4c74-b796-a687651333f4">
+      <title>
+        <de>Big Kahuna Burger</de>
+      </title>
+      <description>
+        <de>Mmmmhmmm - das IST ein leckerer Burger. Wenn Du auf Burger stehst, mußt Du die probieren!</de>
+      </description>
+      <conditions min_audience="8.34" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="2" profit="373" penalty="270" infomercial_profit="37" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="4921816c-91a3-42c5-8ca8-56d67394f8dc">
+      <title>
+        <de>KittyFood</de>
+      </title>
+      <description>
+        <de>Von Katzen für Katzen. Nahrhaftes Dosenfutter für ihren Stubentiger.</de>
+      </description>
+      <conditions min_audience="4.69" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="1" profit="520" penalty="650" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="496e9783-2d9c-44aa-b71f-845533dc907e">
+      <title>
+        <de>Fahrschule Fürst</de>
+      </title>
+      <description>
+        <de>Sicher und souverän zum Führerschein.
+In Tempelhof und Steglitz</de>
+      </description>
+      <conditions min_audience="2.86" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="3" profit="672" penalty="336" infomercial_profit="67" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="4cc7ea59-a0dd-4dda-90b8-ec217635d631">
+      <title>
+        <de>Lutschfix</de>
+      </title>
+      <description>
+        <de>Der schnelle Bonbon gegen Husten. Jetzt auch als Nikotinersatz.</de>
+      </description>
+      <conditions min_audience="3.65" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="2" profit="585" penalty="460" infomercial_profit="58" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="5078e947-ea8f-47bc-9f20-0e611bf2ad28">
+      <title>
+        <de>wasch das</de>
+      </title>
+      <description>
+        <de>Deo, Duschmittel, Badezusatz: Körperpflege in vielen Variationen.</de>
+      </description>
+      <conditions min_audience="1.3" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="1" profit="1000" penalty="550" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="527e41eb-a641-49b9-a521-e921ec652e23">
+      <title>
+        <de>Plöpp-Bier</de>
+      </title>
+      <description>
+        <de>Prickelndes Hopfengold. Für die kritischen Tage im Monat sollte Mann immer Plöpp-Bier im Haus haben.</de>
+      </description>
+      <conditions min_audience="1.56" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="4" profit="950" penalty="930" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="589d51a5-52ab-463f-90f9-ddf48abef355">
+      <title>
+        <de>Ulbricht Umzüge</de>
+      </title>
+      <description>
+        <de>Ausziehen! Ausziehen! Ausziehen!!!
+Aber nur mit Ulbricht Umzüge!</de>
+      </description>
+      <conditions min_audience="0.16" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="2" profit="2333" penalty="2235" infomercial_profit="233" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="5eaab2a2-34aa-47b9-9387-0223a0eaad29">
+      <title>
+        <de>Gillettine</de>
+      </title>
+      <description>
+        <de>Mit Mach 4 oder NOCH schneller fliegt der Rasierer über die Geischtshaut eines echten Kerls - für das Beste im Mann.</de>
+      </description>
+      <conditions min_audience="6.25" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="4" duration="4" profit="425" penalty="30" infomercial_profit="42" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="5f243d7d-62fa-4cf9-a8f8-a87fe15d76a9">
+      <title>
+        <de>FasterCard</de>
+      </title>
+      <description>
+        <de>MacGreifer als Werbeträger für die FasterCard: R. D. Handerson noch einmal in seiner Paraderolle - unbezahlbar</de>
+      </description>
+      <conditions min_audience="12.5" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="1" duration="1" profit="275" penalty="358" infomercial_profit="27" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="66303d6e-e116-4dcb-8984-f216a70c21fd">
+      <title>
+        <de>Schwarzmalerei AG</de>
+      </title>
+      <description>
+        <de>Freundliche Frauen aus Osteuropa erstellen Ihr Horoskop „live“ am Telefon.</de>
+      </description>
+      <conditions min_audience="0.39" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="6" profit="2000" penalty="555" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="6c93f77e-8180-4811-a5e1-57b375eef68f">
+      <title>
+        <de>Spruzzi Plöpp</de>
+      </title>
+      <description>
+        <de>Unsere Limonade beinhaltet nur natürliche Aromastoffe. Hmm lecker Käferflügel...</de>
+      </description>
+      <conditions min_audience="2.08" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="5" duration="7" profit="775" penalty="512" infomercial_profit="77" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="6db2fb7a-fa30-4de3-9035-e02c37486d09">
+      <title>
+        <de>Tussishop</de>
+      </title>
+      <description>
+        <de>Nette Frauen aus aus dem Katalog. Dank Fernabsatz Rückgabe ohne Probleme möglich.</de>
+      </description>
+      <conditions min_audience="0.62" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="5" profit="1643" penalty="1175" infomercial_profit="164" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="7408e6f0-0505-42d9-96e0-bf6dc4869039">
+      <title>
+        <de>Raus Hier</de>
+      </title>
+      <description>
+        <de>Dein freundliches Reisebüro... Wohin Du willst - solang die Kohle stimmt.</de>
+      </description>
+      <conditions min_audience="0.05" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="4" fix_price="0" profit="3000" penalty="2500" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="774e0ca3-a31c-4afc-86be-304b02176fcd">
+      <title>
+        <de>Tu-doch-so</de>
+      </title>
+      <description>
+        <de>Kein Geld für den Urlaub oder die Yacht? Wir schicken Postkarten aus Uganda oder fälschen Fotos.</de>
+      </description>
+      <conditions min_audience="0.21" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="4" duration="3" profit="2340" penalty="3130" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="79e0a668-f929-4746-bcb2-b073f1f2bf65">
+      <title>
+        <de>Jesse Wasser- und Wärmedienst</de>
+      </title>
+      <description>
+        <de>Wir sorgen für ihre Sanitäranlagen. Schon ab 10 € - ohne Scheiß!</de>
+      </description>
+      <conditions min_audience="0.62" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="2" profit="1599" penalty="1599" infomercial_profit="159" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="7a86d4cd-7266-4247-ac6a-b63a62d12c93">
+      <title>
+        <de>Hobelmarkt</de>
+      </title>
+      <description>
+        <de>Hier fallen nicht nur Späne, nein auch die Preise. Ein Hobelmarkt ist sicher auch in Ihrer Nähe.</de>
+      </description>
+      <conditions min_audience="2.6" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="2" profit="721" penalty="645" infomercial_profit="72" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="7bf56c92-52f5-44aa-8cef-2788ece421ac">
+      <title>
+        <de>Weisser Friese</de>
+      </title>
+      <description>
+        <de>Waschen Sie ihre Wäsche mit „Weisser Friese“ porentief rein!</de>
+      </description>
+      <conditions min_audience="15.63" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="3" profit="236" penalty="236" infomercial_profit="23" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="81181726-b98e-42fd-8ffb-23ddb068d61d">
+      <title>
+        <de>La Côte</de>
+      </title>
+      <description>
+        <de>Die Markenkleidung mit dem Sonnenschirm. Modische Schnitte und trendige Farben inklusive.</de>
+      </description>
+      <conditions min_audience="9.38" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="5" duration="5" profit="327" penalty="260" infomercial_profit="32" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="8384acef-9c23-4efa-9ffa-0d0e370693d4">
+      <title>
+        <de>Vitalon Super Supau</de>
+      </title>
+      <description>
+        <de>Die „Vitalon Foods Company“ aus Taiwan läßt R. D. Handerson als MacGreifer für ihren Sports Drink werben: auf dem Fahrrad, im Jeep, beim Tai Chi und auf dem Motorboot.</de>
+      </description>
+      <conditions min_audience="6.25" min_image="12" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="4" duration="3" profit="435" penalty="445" infomercial_profit="43" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="848b76e8-f93f-4a6f-aa55-b62643c0793d">
+      <title>
+        <de>Saipien</de>
+      </title>
+      <description>
+        <de>Das neue Modell des renommierten Autoherstellers Saipien verzückt die Presse - auch Sie?</de>
+      </description>
+      <conditions min_audience="2.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="4" profit="672" penalty="580" infomercial_profit="67" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="860fd127-f921-4a06-9fd4-123f0638a94e">
+      <title>
+        <de>Nichts-wie-weg</de>
+      </title>
+      <description>
+        <de>Günstige Urlaubstrips. Jetzt mit Datingbörse für Pauschaltouristen und „Gepäck zurück”-Garantie.</de>
+      </description>
+      <conditions min_audience="0.47" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="3" profit="1888" penalty="2090" infomercial_profit="188" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="872a0f04-852d-4b49-b813-6f051e663fbc">
+      <title>
+        <de>Call-A-Beer</de>
+      </title>
+      <description>
+        <de>Kein Bier mehr? Schick nicht die Frau, ruf Call-A-Beer!</de>
+      </description>
+      <conditions min_audience="0.26" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="1" profit="2222" penalty="3260" infomercial_profit="222" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="8b3add88-51b3-4776-b144-da0fcdd665a6">
+      <title>
+        <de>Zimzi</de>
+      </title>
+      <description>
+        <de>Lecker Zimtstäbchen mit Reizhustengarantie. Noch nie war so trocken...so lecker.</de>
+      </description>
+      <conditions min_audience="3.65" min_image="12" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="4" duration="5" profit="585" penalty="595" infomercial_profit="58" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="914bf7d1-8338-4ace-87c8-a84dca3872f5">
+      <title>
+        <de>Chateau Migraine</de>
+      </title>
+      <description>
+        <de>Beim Kauf einer Flasche Rotwein gibts jetzt zwei Kopfschmerztabletten gratis dazu.</de>
+      </description>
+      <conditions min_audience="3.65" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="2" profit="600" penalty="545" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="95a1c5b7-c89a-4fe8-85c9-834c07daa2f9">
+      <title>
+        <de>Copyshop Raub</de>
+      </title>
+      <description>
+        <de>Raub-Kopien sehen fast so gut aus wie die Originale. Wir verkaufen auch Permanentmarker!</de>
+      </description>
+      <conditions min_audience="3.13" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="3" profit="650" penalty="520" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="9c19ac3c-c1d2-4a2b-9c09-7379ead5382a">
+      <title>
+        <de>Hanzis Tomatenketchup</de>
+      </title>
+      <description>
+        <de>Das Ketchup für diejenigen, die ihre Pommes nicht in Mayonnaise ersäufen. Auch geeignet für Buletten, Wurst und Hühnchen.</de>
+      </description>
+      <conditions min_audience="8.34" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="3" profit="356" penalty="217" infomercial_profit="35" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="Sjaele-spysoft2" creator="7430" created_by="Sjaele">
+      <title>
+        <de>Spysoft</de>
+      </title>
+      <description>
+        <de>Surfen im Garten! WLan-Kabel bis 200m.</de>
+      </description>
+      <conditions min_audience="6.77" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="3" profit="417" penalty="610" year_range_from="1998" year_range_to="0" infomercial_profit="41" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="a401f20f-8832-45df-a274-2599fd8d0afb">
+      <title>
+        <de>Berliner Pilsener</de>
+      </title>
+      <description>
+        <de>Berlin, du bist so wunderbar</de>
+      </description>
+      <conditions min_audience="6.25" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="5" duration="6" profit="425" penalty="250" infomercial_profit="42" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="a574c051-d283-441f-8337-7b159017c7dc">
+      <title>
+        <de>Stilvento</de>
+        <en>Stilvento</en>
+      </title>
+      <description>
+        <de>Ist ihre Party mal wieder total langweilig? Buchen Sie Stilvento.de und ihr Anlass ist gerettet.</de>
+      </description>
+      <conditions min_audience="0.78" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="1" profit="1400" penalty="850" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="a5c552c1-9205-4b71-831a-1acc0a1387a9">
+      <title>
+        <de>Mors</de>
+      </title>
+      <description>
+        <de>Der unvergleichliche Schokoriegel mit dem hinreißenden Geschmack</de>
+      </description>
+      <conditions min_audience="5.73" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="5" profit="455" penalty="450" infomercial_profit="45" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="a8087397-e57e-4bdc-b2a9-f44b7173de6d">
+      <title>
+        <de>Ravell</de>
+      </title>
+      <description>
+        <de>Die Nummer 1 im Modellbau. Ob Messerschmitt, Panther oder U.S.S. Enterprise - Ravell führt es.</de>
+      </description>
+      <conditions min_audience="4.69" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="3" profit="500" penalty="415" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="a81fea24-859f-463e-a69c-0124de937a47">
+      <title>
+        <de>Schorotti</de>
+      </title>
+      <description>
+        <de>Der Schorotti-Mohr bietet traumhafte Schokolade. Zugreifen und dahinschmelzen.</de>
+      </description>
+      <conditions min_audience="2.6" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="4" profit="700" penalty="645" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="a86fab74-1d8f-464c-8ec9-93dc1f894b86">
+      <title>
+        <de>Pustbank</de>
+      </title>
+      <description>
+        <de>Eröffnen Sie ein Konto bei der Pustbank.
+Der Vorteil: Kein Porto für Überweisungsträger</de>
+      </description>
+      <conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="1" profit="215" penalty="245" infomercial_profit="21" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="a8c56723-2603-4622-bf23-4645b8fa3bb5">
+      <title>
+        <de>Gib Pfote</de>
+      </title>
+      <description>
+        <de>Die natürlichen Bestandteile von Gib Pfote wird ihr Hund lieben. Lecker Pudel.</de>
+      </description>
+      <conditions min_audience="5.21" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="2" profit="470" penalty="460" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ac90b184-af1e-48e3-9f64-eb3ccff0c7aa">
+      <title>
+        <de>MinutePass</de>
+      </title>
+      <description>
+        <de>R. D. Handerson präsentiert für die Telecom USA in zwei Spots eine nützliche Telephonkarte.</de>
+      </description>
+      <conditions min_audience="11.46" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="1" profit="286" penalty="185" infomercial_profit="28" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ad62c53b-3d7d-404e-bb37-0babaed87df1">
+      <title>
+        <de>Althans</de>
+      </title>
+      <description>
+        <de>Qualität seit 1861.
+Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
+      </description>
+      <conditions min_audience="12.5" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="4" duration="2" profit="277" penalty="270" infomercial_profit="27" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="b422ad7a-ed8a-4c01-a4fa-0496c07e73d5">
+      <title>
+        <de>Buchstehude</de>
+      </title>
+      <description>
+        <de>Boxershorts vom Dorf. Garantiert nur einmal getragen - pro Seite.</de>
+      </description>
+      <conditions min_audience="0.1" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="2" profit="2800" penalty="4105" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="b5dbf200-bd84-4126-b80e-66a71661c8aa">
+      <title>
+        <de>Speck</de>
+      </title>
+      <description>
+        <de>Speck-Seife steht seit Jahrzenten für Qualität und saubere Hände.</de>
+      </description>
+      <conditions min_audience="1.82" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="3" profit="828" penalty="760" infomercial_profit="82" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="b61b71f4-255f-48a3-99e4-c25c10c59a58">
+      <title>
+        <de>Tubenkrone</de>
+      </title>
+      <description>
+        <de>Na und?
+Tubenkrone - Schokolade mit Charakter.</de>
+      </description>
+      <conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="1" profit="392" penalty="230" infomercial_profit="39" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="b8f3c8e6-2927-4975-9117-cfc8e3e1c33b">
+      <title>
+        <de>Sunny</de>
+      </title>
+      <description>
+        <de>Der Hersteller für High-Tech flächendeckend.
+It's a sunny</de>
+      </description>
+      <conditions min_audience="2.34" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="4" duration="5" profit="733" penalty="751" infomercial_profit="73" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="bacae753-442b-46c6-a16a-10b2cd5e3db9">
+      <title>
+        <de>Matratzendoktor</de>
+      </title>
+      <description>
+        <de>Quietscht Ihre Matratze? Rufen Sie den Matratzendoktor. Inklusive Probestunde.</de>
+      </description>
+      <conditions min_audience="1.82" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="3" profit="858" penalty="853" infomercial_profit="85" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="bd51bc63-e6f4-43cd-86ac-9f1d039aa188">
+      <title>
+        <de>Bikeshop</de>
+      </title>
+      <description>
+        <de>Aktionswoche bei Bikeshop. Beim Kauf eines Fahrrads gibt eines umsonst.</de>
+      </description>
+      <conditions min_audience="0.62" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="2" profit="1683" penalty="1325" infomercial_profit="168" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="beff6512-fd07-4e1d-aaf8-ce8da3ebd876">
+      <title>
+        <de>Kau-Tschuk</de>
+      </title>
+      <description>
+        <de>Der lecker Knabberspass für Jung und Alt. Aus recycelten Altreifen, in 5 bunten Geschmacksrichtungen.</de>
+      </description>
+      <conditions min_audience="4.69" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="7" duration="2" profit="500" penalty="340" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="c078ab28-32f5-439a-81bc-f90602f5fcbc">
+      <title>
+        <de>Rabensburger</de>
+      </title>
+      <description>
+        <de>Puzzeln, spielen, Spaß haben. Rabensburger empfiehlt Neuheiten und Klassiker aus seinem Sortiment.</de>
+      </description>
+      <conditions min_audience="8.34" min_image="12" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="5" profit="373" penalty="315" infomercial_profit="37" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="cb0392f3-cc95-4508-a776-22d0e8ca00fa">
+      <title>
+        <de>La Baguette</de>
+      </title>
+      <description>
+        <de>Ihre Baguettes in 1, 2 oder 3 Meter Länge!</de>
+      </description>
+      <conditions min_audience="5.73" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="1" duration="1" profit="480" penalty="3000" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="cd0362d7-5317-41d2-8287-64c0c7810f02">
+      <title>
+        <de>Dr. Papper</de>
+      </title>
+      <description>
+        <de>Nicht nur Furrest Gomp trinkt leidenschaftlich Dr. Papper.</de>
+      </description>
+      <conditions min_audience="11.46" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="4" duration="6" profit="289" penalty="300" infomercial_profit="28" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="cd6d32cd-d0b4-4b7c-8235-bbc08fef39d7">
+      <title>
+        <de>Zaturno</de>
+      </title>
+      <description>
+        <de>Reiz macht geil, so die Botschaft dieser Werbung.</de>
+      </description>
+      <conditions min_audience="1.04" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="4" duration="2" profit="1150" penalty="1160" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="cf26df7e-6721-4f09-9457-28c1e072e11e">
+      <title>
+        <de>Bundi</de>
+      </title>
+      <description>
+        <de>Hier gibt's Schnäppchen en masse. Der sympathische Krempelmarkt um die Ecke.</de>
+      </description>
+      <conditions min_audience="0.62" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="2" fix_price="0" profit="1583" penalty="900" infomercial_profit="158" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="d0ebcef4-284b-462e-917b-73ed27be5cec">
+      <title>
+        <de>Hartz Bier</de>
+      </title>
+      <description>
+        <de>Unser Bier ist nicht nur günstig, es ist auch billig.
+Aktionswoche: Pfandfrei.</de>
+      </description>
+      <conditions min_audience="2.34" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="4" duration="2" profit="745" penalty="745" infomercial_profit="74" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="d2de2875-249c-4b10-8ba2-0dda65ae5674">
+      <title>
+        <de>Polstermöbel Dobrawa</de>
+      </title>
+      <description>
+        <de>Polsterwerkstatt Dobrawa seit 1933</de>
+      </description>
+      <conditions min_audience="1.04" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="1" duration="1" profit="1250" penalty="1143" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="d319be4e-e9fe-42d9-9e43-351ddde2fbe5">
+      <title>
+        <de>Schlimm-Schnell</de>
+      </title>
+      <description>
+        <de>Verlieren Sie 50 Kilo innerhalb eines Monats!</de>
+      </description>
+      <conditions min_audience="0.31" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="4" duration="3" profit="2166" penalty="6120" infomercial_profit="216" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="d43943a8-67c3-47a5-bb96-e0f03b5194df">
+      <title>
+        <de>Laimi</de>
+      </title>
+      <description>
+        <de>Schon längst zum Schulkameraden geworden: Die Patronen, die den Füller füllen.</de>
+      </description>
+      <conditions min_audience="4.17" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="1" duration="1" profit="555" penalty="550" infomercial_profit="55" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="d4e84634-b122-4cca-90c6-c44707d8a79e">
+      <title>
+        <de>Capri-Mond</de>
+      </title>
+      <description>
+        <de>Der Schlummertrunk aus der Alutüte.</de>
+      </description>
+      <conditions min_audience="7.29" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="2" profit="396" penalty="250" infomercial_profit="39" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="d5c01cc4-e97c-46fd-999b-ed5becd1ab4c">
+      <title>
+        <de>Oranchina</de>
+      </title>
+      <description>
+        <de>Das Fruchtsaftgetränk in der weltberühmten bauchigen Flasche. Teuer, aber so gut wie immer richtig.</de>
+      </description>
+      <conditions min_audience="10.42" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="5" duration="4" profit="317" penalty="260" infomercial_profit="31" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="d66284c0-6440-4590-a620-f400d67c98b8">
+      <title>
+        <de>Je Ne Reviens Pas</de>
+      </title>
+      <description>
+        <de>Wurth Paris liefert den Duft ausgewählter Essenzen für ein edles Parfüm.</de>
+      </description>
+      <conditions min_audience="5.21" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="2" profit="480" penalty="860" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="d8ee3597-56e1-4117-909a-bde9da3f9f9e">
+      <title>
+        <de>ESCAL</de>
+      </title>
+      <description>
+        <de>Computerschrott ab 50 Eurocent das Kilo. Jetzt auch moderne S/W-Monitore im Angebot.</de>
+      </description>
+      <conditions min_audience="6.77" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="3" profit="407" penalty="510" year_range_from="0" year_range_to="1997" infomercial_profit="40" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="da699c1f-4117-4fc6-b365-a3a7608105ab">
+      <title>
+        <de>Aeroswift</de>
+      </title>
+      <description>
+        <de>Raumschiffe, Phaserwaffen, Marsschürfrechte. Bei Aeroswift diese Woche mit knallhart kalkulierten Preisen im Angebot.</de>
+      </description>
+      <conditions min_audience="15.63" min_image="12" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="3" profit="245" penalty="280" infomercial_profit="24" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="dd4e46bc-3dae-4738-af7a-f2665bf53435">
+      <title>
+        <de>Fleischerei Fettmit</de>
+      </title>
+      <description>
+        <de>Das Auge isst man mit!</de>
+      </description>
+      <conditions min_audience="0.78" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="2" profit="1400" penalty="1200" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ddfbfa22-5af8-4558-afc4-b34619bab1c9">
+      <title>
+        <de>Superfurni</de>
+      </title>
+      <description>
+        <de>Gestalten Sie ihre Möbel selber!</de>
+      </description>
+      <conditions min_audience="0.26" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="6" duration="3" profit="2220" penalty="1112" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="e0433c39-f332-4638-9c4b-112fff85179b">
+      <title>
+        <de>Leckerfett</de>
+        <en>Tasty Fat</en>
+      </title>
+      <description>
+        <de>Die perfekte Mischung aus Gänsefett und natürlichem Pflanzenfett macht Leckerfett soooo unglaublich lecker.</de>
+        <en>The perfect mix of goose fat and natural vegetable fat makes Tasty Fat that incredibly deeeelicious.</en>
+      </description>
+      <conditions min_audience="10.42" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="4" duration="3" fix_price="0" profit="305" penalty="1600" infomercial_profit="30" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="e096e5ef-34d6-41a4-a98e-cb690673f074">
+      <title>
+        <de>Novea</de>
+      </title>
+      <description>
+        <de>Pflegeprodukte rund um die Haut. Salben/Crèmes, Badezusatz, Deodorants uvm.</de>
+      </description>
+      <conditions min_audience="14.07" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="5" duration="7" profit="248" penalty="215" infomercial_profit="24" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="e1f2329c-2a43-453d-8711-11de240d1fbf">
+      <title>
+        <de>Sylters</de>
+      </title>
+      <description>
+        <de>Aus den Tiefen Sylts kommt dieses herrlich prickelnde Mineralwasser.</de>
+      </description>
+      <conditions min_audience="1.56" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="4" profit="900" penalty="840" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="e22453eb-7008-4af8-a3a5-7c2f4fd18667">
+      <title>
+        <de>Reisebüro TeurI</de>
+      </title>
+      <description>
+        <de>Schnäppchenpreise für exklusive Rucksack-Touren. Proviant und Pflaster nicht im Preis enthalten.</de>
+      </description>
+      <conditions min_audience="0.21" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="2" duration="2" profit="2250" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="e77d26ae-895d-448f-b6ac-7171b785d21f">
+      <title>
+        <de>Guld Körn</de>
+      </title>
+      <description>
+        <de>Das Honigmonster präsentiert sein Leibgericht</de>
+      </description>
+      <conditions min_audience="5.73" min_image="0" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="1" duration="1" profit="451" penalty="360" infomercial_profit="45" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="e9a3aed8-00b1-494f-998a-3f3f08a983cd">
+      <title>
+        <de>Gold per Post</de>
+      </title>
+      <description>
+        <de>Schwatz dem Opa die Zähne raus, ab heute gibt es Geld gegen Gold. Achtung: Gelb ist nicht gleich Gold!</de>
+      </description>
+      <conditions min_audience="2.08" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="5" profit="775" penalty="190" infomercial_profit="77" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ec7e37af-1a67-482b-8e65-348f81c22b79">
+      <title>
+        <de>Crunchmunch</de>
+      </title>
+      <description>
+        <de>Knusprig knackiger Knabberspass mit feurig scharfer Chilinote. Nur für kurze Zeit mit Tiermotiven.</de>
+      </description>
+      <conditions min_audience="10.42" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="3" profit="315" penalty="270" infomercial_profit="31" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="f006c0bb-89cc-4924-b17e-151658c15618">
+      <title>
+        <de>Lemor</de>
+      </title>
+      <description>
+        <de>Die eingängige Musik kündet von der kuschelweichen Wäsche und Frische.
+Ich fühl mich wohl mit Lemor</de>
+      </description>
+      <conditions min_audience="7.29" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="4" duration="5" profit="400" penalty="400" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="f86e045c-51ca-4725-aaff-2d5c158348f9">
+      <title>
+        <de>Maike</de>
+      </title>
+      <description>
+        <de>Hoher Tragekomfort und nahezu unsichtbar - die neuen Maike-Hygieneeinlagen.</de>
+      </description>
+      <conditions min_audience="9.38" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="3" duration="4" profit="347" penalty="235" infomercial_profit="34" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="fc24c505-d3cc-467c-a57c-a154f9d308cb">
+      <title>
+        <de>Bonze</de>
+      </title>
+      <description>
+        <de>Der neueste Luxus-Schlitten aus dem Hause Bonze: Ästethisch einwandfreies Design, robust, klassisch.</de>
+      </description>
+      <conditions min_audience="31.26" min_image="12" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data repetitions="6" duration="2" profit="143" penalty="167" infomercial_profit="14" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="nichtdiebetty-ad-angryglasses-01" creator="8659" created_by="Nicht_die_Betty">
+      <title>
+        <de>Brillen Zorn</de>
+        <en>Angry Glasses</en>
+      </title>
+      <description>
+        <de>Wie die Faust aufs Auge - unsere Brillen sitzen immer!</de>
+        <en>Clashes horrible - our absolutely perfect fitting glasses. Break-proof through years of experience!</en>
+      </description>
+      <conditions min_audience="0.05" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="15" repetitions="2" duration="4" profit="3500" penalty="4000" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="nichtdiebetty-ad-baroque-01" creator="8659" created_by="Nicht_die_Betty">
+      <title>
+        <de>Baroque</de>
+      </title>
+      <description>
+        <de>DAS Fantasy-Rollenspiel von Goldfisch Bytes. Lasst uns Wildschweine jagen!</de>
+        <en>THE fantasy-RPG by Goldfish Bytes. Lets hunt boars!</en>
+      </description>
+      <conditions min_audience="0.16" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="15" repetitions="2" duration="2" profit="2333" penalty="7500" infomercial_profit="233" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="nichtdiebetty-ad-tieminister-01" creator="8659" created_by="Nicht_die_Betty">
+      <title>
+        <de>Krawatten-Minister</de>
+        <en>Tie-Minister</en>
+      </title>
+      <description>
+        <de>Der Mode Discount nicht nur für Fliegenträger. Dicker Katalog, schmaler Preis.</de>
+        <en>The fashion discount not just for bow tie users. Extensive catalogue but lowest prices.</en>
+      </description>
+      <conditions min_audience="0.31" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="15" repetitions="3" duration="2" profit="2166" penalty="7000" infomercial_profit="216" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-Handy-Dandy" creator="5578" created_by="Ronny">
+      <title>
+        <de>Handy-Dandy</de>
+      </title>
+      <description>
+        <de>Hol Dir die knalligen Cover für Dein Handy. Vorbei mit drögem Graublau. Jetzt auch für alle Sumens-Modelle verfügbar.</de>
+      </description>
+      <conditions min_audience="1.04" min_image="12" target_group="2" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data infomercial="1" quality="50" repetitions="7" duration="3" profit="1253" penalty="2121" year_range_from="1998" year_range_to="2003" infomercial_profit="50" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-Kaschaemm" creator="5578" created_by="Ronny">
+      <title>
+        <de>Kaschämm</de>
+      </title>
+      <description>
+        <de>Deine Stammkneipe mit dem Hauch des Prätentiösen. Bierdeckel an den Wänden zeugen von weitreichender Bierkenntnis des Wirtes.</de>
+      </description>
+      <conditions min_audience="0.1" min_image="0" target_group="0" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data infomercial="1" quality="50" repetitions="3" duration="6" profit="2500" penalty="4060" infomercial_profit="50" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-Lammpion" creator="5578" created_by="Ronny">
+      <title>
+        <de>Lammpion</de>
+      </title>
+      <description>
+        <de>Lustige Laternen in zahlreichen Tierformen. Jetzt neu: Kuh und Marienkäfer. Der Knaller für jeden Kindergeburtstag.</de>
+      </description>
+      <conditions min_audience="0.05" min_image="12" target_group="1" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data infomercial="1" quality="50" repetitions="3" duration="4" profit="4000" penalty="3000" infomercial_profit="50" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-Meschmucke" creator="5578" created_by="Ronny">
+      <title>
+        <de>Meschmucke</de>
+      </title>
+      <description>
+        <de>Crazy Beats vom israelischen Star-DJ 4Locke. Jetzt alle 3 Hits auf einem Album.</de>
+      </description>
+      <conditions min_audience="0.5 " min_image="12" target_group="2" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data infomercial="1" quality="50" repetitions="1" duration="1" profit="4000" penalty="8000" year_range_from="1992" year_range_to="1995" infomercial_profit="50" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-Senner-Kaes" creator="5578" created_by="Ronny">
+      <title>
+        <de>Senner-Käs</de>
+      </title>
+      <description>
+        <de>Handgemachter Käse von hoch in den Alpen. Bärtige Senner, Sonne, saftige Wiesen und glückliche Kühe liefern den Gaumenschmaus für einen jeden Stadtmenschen.</de>
+      </description>
+      <conditions min_audience="0.47" min_image="0" target_group="0" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data infomercial="1" quality="50" repetitions="3" duration="6" profit="1888" penalty="2333" infomercial_profit="50" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-Veggismecki" creator="5578" created_by="Ronny">
+      <title>
+        <de>Veggismecki</de>
+      </title>
+      <description>
+        <de>Leckere Tofutörtchen für den Vegetarier von heute. Alle Tofutiere werden artgerecht gehalten und mit Biofutter aufgezogen.</de>
+      </description>
+      <conditions min_audience="1.04" min_image="0" target_group="0" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data infomercial="1" quality="50" repetitions="7" duration="7" profit="1150" penalty="1900" infomercial_profit="50" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-Wackeldackel">
+      <title>
+        <de>Wackeldackel</de>
+      </title>
+      <description>
+        <de>Wir verkaufen wieder nichts außer Wackeldackel. Dafür aber zu konkurrenzlos günstigen Preisen. Jetzt neu, der Zwergdackel im Format 1:1.</de>
+      </description>
+      <conditions min_audience="0.21" min_image="0" target_group="0" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data infomercial="1" quality="50" repetitions="5" duration="4" profit="2250" penalty="12000" year_range_from="1997" year_range_to="2008" infomercial_profit="50" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-allhits-01" creator="5578" created_by="Ronny">
+      <title>
+        <de>Alle Hits 1</de>
+        <en>All Hits 1</en>
+      </title>
+      <description>
+        <de>Dein Musiksampler! Alle Hits der vergangenen 3 Tage auf einer randvoll gefüllten 90 Minuten Kassette. In Stereo!</de>
+        <en>Your music sampler! All hits of the last 3 days on one brimful filled 90 minutes audio cassette. In stereo!</en>
+      </description>
+      <conditions min_audience="2.08" min_image="12" target_group="2"/>
+      <data infomercial="1" quality="35" repetitions="4" duration="3" profit="800" penalty="2125" year_range_from="1985" year_range_to="1986" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-allhits-02" creator="5578" created_by="Ronny">
+      <title>
+        <de>Alle Hits 2</de>
+        <en>All Hits 2</en>
+      </title>
+      <description>
+        <de>„Alle Hits“ ist wieder da! 40 Wahnsinnshits auf einer Doppel-MC. Nur jetzt mit Faltposter zum selbst bemalen.</de>
+        <en>"All Hits 2" is back again!! 40 mega hits on one double MC. Only now with poster ready to get painted!</en>
+      </description>
+      <conditions min_audience="2.6" min_image="17" target_group="2"/>
+      <data infomercial="1" quality="45" repetitions="7" duration="4" profit="730" penalty="2120" year_range_from="1987" year_range_to="1988" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-allhits-03" creator="5578" created_by="Ronny">
+      <title>
+        <de>Alle Hits Best Of</de>
+        <en>All Hits Best Of</en>
+      </title>
+      <description>
+        <de>Nicht eine Kassette, nicht zwei, nicht drei! Unglaubliche 4 Musikkassetten haben wir mit den Hits der letzten 5 Jahre bespielt. Euer Walkman wird nie wieder etwas anderes spielen wollen!</de>
+        <en>Not one cassette, not two or three! Unbelieveable 4 music cassettes got filled with hits of the last 5 years. Your walkman never will play other music!</en>
+      </description>
+      <conditions min_audience="2.86" min_image="29" target_group="2"/>
+      <data infomercial="1" quality="40" repetitions="5" duration="3" profit="690" penalty="1230" year_range_from="1988" year_range_to="1990" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-arthritis-01" creator="5578" created_by="Ronny">
+      <title>
+        <de>SOS Arthritis</de>
+      </title>
+      <description>
+        <de>Sie hassen es, keinen Finger krumm zu machen? SOS Arthritis lindert die Beschwerden innerhalb weniger Stunden. Jetzt bestellen und 1 Flasche Schlangenöl umsonst dazubekommen.</de>
+        <en>You hate to not lift a finger? SOS Arthritis relieves the discomfort within a few hours. Order now and get 1 bottle snake oil for free.</en>
+      </description>
+      <conditions min_audience="2.86" min_image="12" target_group="64" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data infomercial="1" quality="50" repetitions="7" duration="7" profit="690" penalty="690" infomercial_profit="50" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-bargeld-01" creator="5578" created_by="Ronny">
+      <title>
+        <de>Bargeld-Kalle</de>
+        <en>Cash-Dave</en>
+      </title>
+      <description>
+        <de>Antikes und Kram zu Spottpreisen. Egal was, egal woher - wir zahlen für Ihren alten Mist! Gern auch Hausbesuche. Einfach den Schlüssel unter den Abstreicher, wir kümmern uns um den Rest.</de>
+        <en>Antique and stuff at rock bottom prices. No matter what, no matter whenceever - we will pay for your old crap! House calls are no problem. Simply put the key under the plow, we take care of the rest.</en>
+      </description>
+      <conditions min_audience="0.26" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="20" repetitions="3" duration="2" profit="2200" penalty="2199" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-batterietanke-01" creator="5578" created_by="Ronny">
+      <title>
+        <de>Batterie-Tanke</de>
+        <en>Battery-Station</en>
+      </title>
+      <description>
+        <de>Keine Zeit Ihre Akkus selbst aufzuladen?
+Wir bieten Lade-Vollautomaten. Batterie einlegen, Münzschacht befüllen. Knopf drücken - und schon nach 72 Stunden können Sie ihre vollgeladenen Batterien entnehmen. Laden war noch nie so einfach.</de>
+        <en>No time to recharge batteries yourself?
+We offer fully automatic charging. Insert battery, fill coin slot. Press the button - and after 72 hours, you can take your fully charged batteries. Charging has never been as simple as that.</en>
+      </description>
+      <conditions min_audience="5.73" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="15" repetitions="3" duration="2" fix_price="0" profit="460" penalty="370" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-brucey-01" creator="5578" created_by="Ronny">
+      <title>
+        <de>Brucey</de>
+      </title>
+      <description>
+        <de>Frauen schwören auf den Nerd in Dir. Lass sie Ihn riechen!
+Brucey - herber Duft für Männer vom Fach.</de>
+        <en>Women absolutely love the nerd in you. Let them take your scent!
+Brucey - harsh fragrance for male experts.</en>
+      </description>
+      <conditions min_audience="5.21" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data infomercial="1" quality="15" repetitions="4" duration="4" profit="499" penalty="750" infomercial_profit="49" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-einkaufseck-01" creator="5578" created_by="Ronny">
+      <title>
+        <de>Einkaufseck</de>
+        <en>Corner Shop</en>
+      </title>
+      <description>
+        <de>Braten, Brot und Bier! Wir haben alles für alleinstehende Männer und Familien mit kochscheuen Hausfrauen.</de>
+        <en>Barbecue, bread and beer! We have everything for single men and families with housewives having cooking-phobia.</en>
+      </description>
+      <conditions min_audience="0.21" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="21" repetitions="4" duration="2" fix_price="0" profit="2250" penalty="1200" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-guten-01" creator="5578" created_by="Ronny">
+      <title>
+        <de>Gutendruck</de>
+        <en>Gutendruck</en>
+      </title>
+      <description>
+        <de>Bei uns wird Ihr Buch noch gewalzt! Egal ob Stammbuch oder Tagebuch, wir bringen Ihr Werk unters Volk.</de>
+        <en>We still mill your book! Whether register or diary, we propagate it to the hoi poloi.</en>
+      </description>
+      <conditions min_audience="0.1" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="30" repetitions="4" duration="2" profit="2700" penalty="2599" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-kalua-01" creator="5578" created_by="Ronny">
+      <title>
+        <de>Kalua</de>
+      </title>
+      <description>
+        <de>Der Knallerkaubonbon aus Hawaii. Noch nie schmeckte Zucker so tro-tro-tropisch.</de>
+        <en>The hit chewy candy from Hawaii. Never before sugar tasted that tro-tro-tropical.</en>
+      </description>
+      <conditions min_audience="2.6" min_image="12" target_group="1"/>
+      <data quality="20" repetitions="5" duration="2" profit="740" penalty="3750" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-kalua-02" creator="5578" created_by="Ronny">
+      <title>
+        <de>Kalua BBQ</de>
+      </title>
+      <description>
+        <de>Der hawaiianische Kaubonbon jetzt mit neuem Trendgeschmack. Kandierte Hühnerkrallen verleihen die faszinierende Würze.</de>
+        <en>The Hawaiian chewy candy now with a brand new and trendy taste. Candied chicken claws create this fascinating seasoning.</en>
+      </description>
+      <conditions min_audience="1.56" min_image="17" target_group="1"/>
+      <data quality="25" repetitions="6" duration="3" profit="980" penalty="1265" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-kambalott-01" creator="5578" created_by="Ronny">
+      <title>
+        <de>Kambalott</de>
+      </title>
+      <description>
+        <de>Lecker Kompott wie von Omi. Der einzig wahre Nachtisch - mit Kernbeiss-Garantie.</de>
+      </description>
+      <conditions min_audience="0.62" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data infomercial="1" quality="5" repetitions="3" duration="3" profit="1583" penalty="1540" infomercial_profit="158" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-laola-01" creator="5578" created_by="Ronny">
+      <title>
+        <de>Laola</de>
+      </title>
+      <description>
+        <de>Das freche Jugendmagazin. Wir beantworten Fragen zu Liebe und Sex nur im Winter.</de>
+        <en>The naughty youth magazine. We answer your intimate questions without a grin :-).</en>
+      </description>
+      <conditions min_audience="5.21" min_image="12" target_group="2"/>
+      <data infomercial="1" quality="30" repetitions="5" duration="3" profit="520" penalty="675" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-litfasssaeule-01" creator="5578" created_by="Ronny">
+      <title>
+        <de>Litfaßsäule</de>
+        <en>Morris Column</en>
+      </title>
+      <description>
+        <de>Sie finden sich hübsch? Zeigen Sie Ihren Nachbarn ihre beste Seite: Auf der Plakatwand um die Ecke.</de>
+        <en>You think you are pretty beautiful? Show your neighbors your best side: On the morris column around the corner.</en>
+      </description>
+      <conditions min_audience="0.1" min_image="0"/>
+      <data infomercial="1" quality="35" repetitions="4" duration="2" profit="2500" penalty="3125" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-portaet-01" creator="5578" created_by="Ronny">
+      <title>
+        <de>1-2-3-Porträt</de>
+        <en>1-2-3-Portrait</en>
+      </title>
+      <description>
+        <de>Wir bannen Sie oder Ihre Familie auf die Leinwand. Wenn Sie keine Zeit haben sollten, pausen wir auch von Fotos ab. Für andere ... Kunstprojekte ... bitte Termin vereinbaren.</de>
+        <en>We bring you or your family on a canvas. If you do not have time, we also trace from photos. For other ... art projects ... please make an appointment.</en>
+      </description>
+      <conditions min_audience="1.3" min_image="12" target_group="4"/>
+      <data infomercial="1" quality="18" repetitions="2" duration="1" profit="1000" penalty="962" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-rentnerreisen-01" creator="5578" created_by="Ronny">
+      <title>
+        <de>Rentner-Reisen</de>
+        <en>Retiree-Routes</en>
+      </title>
+      <description>
+        <de>Sie haben Keine Lust den Lebensabend allein zu verbringen? Sie genießen die Anwesenheit anderer Ruheständler? Wir bieten Tagesreisen in die schönsten Dörfer - und die besten Rheumadecken.</de>
+        <en>You do not want to spend the evening of life alone? You enjoy to do things with of other retirees? We offer day trips to the most beautiful villages - and the best rheumatism blankets.</en>
+      </description>
+      <conditions min_audience="0.39" min_image="12" target_group="64"/>
+      <data infomercial="1" quality="12" repetitions="5" duration="2" profit="2050" penalty="2190" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-reunionbeer-01" creator="5578" created_by="Ronny">
+      <title>
+        <de>Wendebier</de>
+        <en>Reunion Beer</en>
+      </title>
+      <description>
+        <de>Aus dem Osten der Hopfen, aus dem Westen die Luft ... und das Gold. Lecker Bierchen für Väter aller Länder.</de>
+        <en>Eastern Germanys hop, and the bottles from Western Germany created this fascinating beer. Tasty beer for fathers of all countries.</en>
+      </description>
+      <conditions min_audience="5.73" min_image="4" target_group="256"/>
+      <data infomercial="1" quality="40" repetitions="4" duration="2" profit="857" penalty="1430" year_range_from="1990" year_range_to="1993" infomercial_profit="85" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-sanitaxi-01" creator="5578" created_by="Ronny">
+      <title>
+        <de>Sanitaxi</de>
+      </title>
+      <description>
+        <de>Der Rollator verrostet? Die Verwandten glänzen seit Jahren mit Abwesenheit? Sanitaxi versorgt sie mit allen notwendigen Hygieneartikeln. Jetzt mit trendigen Motiven auf jeder zweiten Einlage.</de>
+        <en>The walker is rusted? Your relatives shine with absence since years? Sanitaxi provides you with all the necessary hygiene products. Now with trendy designs on every second liner.</en>
+      </description>
+      <conditions min_audience="1.04" min_image="12" target_group="64"/>
+      <data infomercial="1" quality="18" repetitions="3" duration="1" profit="1274" penalty="1209" infomercial_profit="127" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-schminkstift-01" creator="5578" created_by="Ronny">
+      <title>
+        <de>Schminkstift</de>
+        <en>Beauty Pen</en>
+      </title>
+      <description>
+        <de>Verschönert Lippen, Augenlider und auch Wände. Von Frauen und Kindern erprobt!.
+Erhältlich in jeder gut sortierten Drogerie.</de>
+        <en>Decorate lips, eyelids and even walls. Tested by women and children !.
+Available in any well-stocked drugstore.</en>
+      </description>
+      <conditions min_audience="1.82" min_image="12" target_group="4" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data infomercial="1" quality="50" repetitions="4" duration="3" profit="860" penalty="860" infomercial_profit="50" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-speckfett-01" creator="5578" created_by="Ronny">
+      <title>
+        <de>Speckfett</de>
+        <en>Fatty Bacon</en>
+      </title>
+      <description>
+        <de>Griebenschmalz aus dem Ergebirge! Von stark behaarten Männern empfohlen. "Ruff off de Bemme" seit 1951.</de>
+        <en>Crackling fat made in the Ironore Mountains! Recommended by heavily haired men. "Just this and bread" since 1951.</en>
+      </description>
+      <conditions min_audience="1.56" min_image="0" target_group="0" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data infomercial="1" quality="50" repetitions="3" duration="2" profit="950" penalty="80" infomercial_profit="50" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-zickschnack-01" creator="5578" created_by="Ronny">
+      <title>
+        <de>Zick-Schnack</de>
+      </title>
+      <description>
+        <de>Die Szenekneipe für Tussis und andere Tratschtanten. Dienstags Frei-Secco bei bunten Fingernägeln.</de>
+        <en>The trendy pub for birds and other chatterboxes. Tuesday free-secco if you come with multicolored finger nails.</en>
+      </description>
+      <conditions min_audience="0.78" min_image="12" target_group="2"/>
+      <data infomercial="1" quality="20" repetitions="3" duration="1" profit="1500" penalty="1520" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="ronny-ad-zockomo-01" creator="5578" created_by="Ronny">
+      <title>
+        <de>Zockomo</de>
+        <en>Screwmatic</en>
+      </title>
+      <description>
+        <de>Sie zuviel Geld auf hoher Kante? Wir helfen finden ferne Verwandte für Vererbung!</de>
+        <en>You having to many moneys? We helping you to find distant relatives for te bequeth!</en>
+      </description>
+      <conditions min_audience="18.76" min_image="0"/>
+      <data infomercial="1" quality="35" repetitions="3" duration="1" profit="202" penalty="270" infomercial_profit="20" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="sjaele-ad-Abschiedsgruss" creator="7430" created_by="Sjaele">
+      <title>
+        <de>Abschiedsgruß</de>
+      </title>
+      <description>
+        <de>Wir suchen uns eine neue Erde. Macht's gut und danke für den Fisch. Eure Delphine.</de>
+      </description>
+      <conditions min_audience="52.1" min_image="0" target_group="0" allowed_genre="0" allowed_programme_type="0" prohibited_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data infomercial="1" quality="50" repetitions="5" duration="8" profit="110" penalty="53" year_range_from="1999" year_range_to="0" infomercial_profit="50" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="sjaele-ad-Bio-Tube" creator="7430" created_by="Sjaele">
+      <title>
+        <de>Bio-Tube</de>
+      </title>
+      <description>
+        <de>Die vollwertige Bio-Mahlzeit aus der Tube. Schmeckt wie bei Muttern, krümelt nicht und sooo gesund! Ideal für lange Zockerpartien.</de>
+      </description>
+      <conditions min_audience="1.56" min_image="12" target_group="2" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data infomercial="1" quality="50" repetitions="4" duration="5" profit="950" penalty="953" year_range_from="0" year_range_to="0" infomercial_profit="50" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="sjaele-ad-Macht-nischt" creator="7430" created_by="Sjaele">
+      <title>
+        <de>Macht nischt</de>
+      </title>
+      <description>
+        <de>Das dicke Ausredenbuch. Ausreden für jeden Anlass vom Kindergarten bis zur eigenen Beerdigung. Nie wieder doof dastehn.</de>
+      </description>
+      <conditions min_audience="2.86" min_image="0" target_group="0" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data infomercial="1" quality="50" repetitions="3" duration="5" profit="672" penalty="700" year_range_from="0" year_range_to="1998" infomercial_profit="50" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="sjaele-ad-Macht-nischt2" creator="7430" created_by="Sjaele">
+      <title>
+        <de>Macht nischt</de>
+      </title>
+      <description>
+        <de>Der Online-Shop. Ausreden für jeden Anlass vom Kindergarten bis zur eigenen Beerdigung. Nie wieder doof dastehn.</de>
+      </description>
+      <conditions min_audience="2.86" min_image="0" target_group="0" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data infomercial="1" quality="50" repetitions="3" duration="5" profit="672" penalty="700" year_range_from="1999" year_range_to="0" infomercial_profit="50" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="sjaele-ad-Ratz-Fatz" creator="7430" created_by="Sjaele">
+      <title>
+        <de>Ratz-Fatz</de>
+      </title>
+      <description>
+        <de>Kein Bock mehr auf den Alten? Ratz-Fatz-Scheidungshotline. Wir liefern Gründe, Anlässe, Anwälte und Schuldfreigarantie!</de>
+      </description>
+      <conditions min_audience="2.08" min_image="4" target_group="128" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data infomercial="1" quality="50" repetitions="2" duration="4" profit="790" penalty="1000" year_range_from="0" year_range_to="0" infomercial_profit="50" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="sjaele-ad-Umrechner" creator="7430" created_by="Sjaele">
+      <title>
+        <de>Umrechner.de</de>
+      </title>
+      <description>
+        <de>Die Webseite zum Umrechnen von Euro in D-Mark! Für alle, die's genau wissen wollen. Weil früher alles besser war.</de>
+      </description>
+      <conditions min_audience="3.13" min_image="0" target_group="0" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <data infomercial="1" quality="50" repetitions="4" duration="5" profit="650" penalty="753" year_range_from="2003" year_range_to="0" infomercial_profit="50" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Beisele" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Unternehmensberatung Beisele</de>
+      </title>
+      <description>
+        <de>Mir schwätzed Iha'ne nai und kriagat ah'no was dafiar! Guat, is  net guat g'nuag! S'muss scho Beisele sai!</de>
+      </description>
+      <conditions min_audience="18.76" min_image="12" target_group="32"/>
+      <data infomercial="1" quality="31" repetitions="5" duration="4" profit="202" penalty="280" infomercial_profit="20" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Bobo" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Bobo Wattebällchen</de>
+      </title>
+      <description>
+        <de>Wattebällchen für jeden Anlass. Bobo Wattebällchen für die Frau, für das Kind und für den  Soldat.</de>
+      </description>
+      <conditions min_audience="3.65" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="4" duration="2" profit="600" penalty="750" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Bruch" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Spedition und Lagerei Bruch</de>
+      </title>
+      <description>
+        <de>Wir fahren Ihre Waren zu Bruch. Dann  verteilen wir sie über die ganze Welt.</de>
+      </description>
+      <conditions min_audience="1.82" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="3" duration="3" profit="828" penalty="1363" infomercial_profit="82" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Bullshit-Bingo-Brokers" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Bullshit Bingo Brokers</de>
+      </title>
+      <description>
+        <de>Traum-Renditen ohne den Finger krumm zu machen. Ganze Bevölkerungen in die Hungersnot schicken? - Egal? - Bullseye mit  Bullshit Bingo Brokers!</de>
+      </description>
+      <conditions min_audience="17.19" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="4" duration="2" profit="215" penalty="150" infomercial_profit="21" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Doublie-Kate" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Doublie-Kate</de>
+      </title>
+      <description>
+        <de>3D Scanner und 3D Drucker in einem. Denken Sie an die Möglichkeiten! Verwandeln Sie  eine Metallvorlage in ein Plastik-Original. Doublie-Kate von "Life is Groats"!</de>
+      </description>
+      <conditions min_audience="28.65" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="2" duration="4" profit="147" penalty="475" infomercial_profit="14" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Doerrobst" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Dörrobst Toni</de>
+      </title>
+      <description>
+        <de>Ganz neu Dörrgemüse  bei uns im Spezialitäten-Regal. In den Sorten Dörr-Kürbis, Dörr-Gurke und Dörr-Wassermelone!</de>
+      </description>
+      <conditions min_audience="0.5 " min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="3" duration="3" profit="3000" penalty="450" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Enemy24" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Enemy24</de>
+      </title>
+      <description>
+        <de>Suchen Sie jemanden zum Dissen oder Haten?  Fehlt Ihnen bisher ein Erzfeind? Nutzen Sie "Enemy24"! Wir finden Ihren persönlichen Gegenspieler!</de>
+      </description>
+      <conditions min_audience="11.46" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="1" duration="3" profit="286" penalty="490" infomercial_profit="28" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Enzyklopedie1" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Die halbe Enzyklopedie von Allem</de>
+      </title>
+      <description>
+        <de>Nehmen wir an, dass die Zeitrechnung unendlich in die Vergangenheit reicht und dass sie unendlich in die Zukunft reicht. So ist das Jetzt genau die Hälfte der Zeit, die Hälfte von Allem. Singularity Verlag.</de>
+      </description>
+      <conditions min_audience="20.84" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="2" duration="2" profit="187" penalty="365" infomercial_profit="18" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Enzyklopedie2" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Die ganze Enzyklopedie von Allem</de>
+      </title>
+      <description>
+        <de>Herausgegeben in 2 Bänden. Band 1 bereits heute erhältlich. Jedoch können wir vorraussagen, dass Band 2 nie erscheinen wird, da wir nicht in die Zukunft sehen können. Ein Paradox?  Singularity Verlag.</de>
+      </description>
+      <conditions min_audience="20.84" min_image="37" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="2" duration="2" profit="200" penalty="365" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Fluchomat" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Fluchomat von Karkasonic</de>
+      </title>
+      <description>
+        <de>Stört sie der zensierende Piepston anstelle eines saftigen Fluches? Karkasonic hat die Lösung: Der  Fluchomat. Mit Fluchneuheiten und Übertreibungsgarantie!!!</de>
+      </description>
+      <conditions min_audience="12.5" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="3" duration="4" profit="270" penalty="150" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Hopfengurgler1" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Brauerei Hopfengurgler</de>
+      </title>
+      <description>
+        <de>Echt genial: Unser Doppelbock  gibt's jetzt auch alkoholfrei! Oans, zwoa, droa, g'suffa!</de>
+      </description>
+      <conditions min_audience="4.17" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="5" duration="4" profit="567" penalty="450" infomercial_profit="56" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Hopfengurgler2" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Brauerei Hopfengurgler</de>
+      </title>
+      <description>
+        <de>Echt genial: Pilsner, Export und Weizen jetzt auch als Zäpfchen erhältlich! Praktisch im 40er Party-Pack! Das zieht! Oans, zwoa, droa, ziags!</de>
+      </description>
+      <conditions min_audience="4.17" min_image="40" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="5" duration="4" profit="580" penalty="450" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Hummeldoof" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Imkerei Hummeldoof</de>
+      </title>
+      <description>
+        <de>Premium Honigprodukte von Ihrer  Lieblings-Imkerei Hummeldoof. Wir gewähren unseren Bienen ein gutes, motivierendes Arbeitsumfeld. Feierabendbier inklusive!</de>
+      </description>
+      <conditions min_audience="0.5 " min_image="12" target_group="4"/>
+      <data infomercial="1" quality="31" repetitions="4" duration="2" profit="3500" penalty="4150" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Immobilien-Haino" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Immobilien-Haino</de>
+      </title>
+      <description>
+        <de>Von der Altbau-Baracke bis zur Luxusvilla. Wir haben alles im Programm! Zuerst: Selbstauskunft an uns schicken. Mit etwas Glück melden wir uns bei Ihnen.</de>
+      </description>
+      <conditions min_audience="1.56" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="6" duration="5" profit="900" penalty="650" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Kung-Pau-Airlines" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Kung Pau Airlines</de>
+      </title>
+      <description>
+        <de>Unsere doppelstöckigen Luftbusse sind großzügig eingerichtet. Für Kinder gibt es eine Wasserrutsche, ein Bällebad und Elefantenreiten im Heck.</de>
+      </description>
+      <conditions min_audience="2.86" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="3" duration="4" profit="672" penalty="870" infomercial_profit="67" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Landwirtschafts-Discount" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Siggis Landwirtschafts-Discount</de>
+      </title>
+      <description>
+        <de>Egal ob Strohhäcksel, Heusilage, Maissilage, Bioabfall, Getreideschlempe, Rinder- oder Schweinegülle, wir  haben alles! Kauf bei Siggi mit dem braunen Daumen!</de>
+      </description>
+      <conditions min_audience="0.78" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="4" duration="3" profit="1400" penalty="450" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Mietmaul1" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Mietmaul - das Magazin</de>
+      </title>
+      <description>
+        <de>Wir schleimen uns beim Pöbel ein, für die Auflage. Aber: wes Brot ich ess, des Lied ich sing. Mietmaul - Wir sind gleicher als Andere.</de>
+      </description>
+      <conditions min_audience="28.65" min_image="12" target_group="32"/>
+      <data infomercial="1" quality="31" repetitions="2" duration="4" profit="147" penalty="110" infomercial_profit="14" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Mietmaul2" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Mietmaul - das Magazin</de>
+      </title>
+      <description>
+        <de>Werbung als Dokumentation getarnt. Senden Sie uns Ihr Werbematerial. Copy- und Paste-Praktikanten, 24/7 verfügbar. Mietmaul - Wir sind gleicher als Andere.</de>
+      </description>
+      <conditions min_audience="28.65" min_image="32" target_group="32"/>
+      <data infomercial="1" quality="31" repetitions="5" duration="4" profit="150" penalty="180" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Mietmaul3" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Mietmaul - das Magazin</de>
+      </title>
+      <description>
+        <de>Diskriminierung oder Hetzschrift. Gerne. - Ehre? Menschenwürde oder  Mitgefühl? Das kennen wir nicht! - Mietmaul - Wir sind gleicher als Andere.</de>
+      </description>
+      <conditions min_audience="28.65" min_image="43" target_group="32"/>
+      <data infomercial="1" quality="31" repetitions="5" duration="4" profit="156" penalty="250" infomercial_profit="15" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Mietmaul4" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Mietmaul - das Magazin</de>
+      </title>
+      <description>
+        <de>Mietmaul - Dein bester Froooind. Wir sind ja so suuuper investigativ. Mietmaul - Wir sind besser als  Andere.</de>
+      </description>
+      <conditions min_audience="28.65" min_image="52" target_group="8"/>
+      <data infomercial="1" quality="31" repetitions="5" duration="4" profit="156" penalty="330" infomercial_profit="15" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Moporatret" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Moporatret</de>
+      </title>
+      <description>
+        <de>Ihr Zwei- und Dreiradhändler ganz in Ihrer Nähe. Für jung und alt, wir haben für jeden etwas. Wir machen auch Umbauten, solange es nicht 4 Räder hat.</de>
+      </description>
+      <conditions min_audience="6.77" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="6" duration="4" profit="407" penalty="557" infomercial_profit="40" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Musikscheune" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Musikscheune Konzelmann</de>
+      </title>
+      <description>
+        <de>Tonbänder, Schallplatten, Kasseten, Compact Discs. Wir haben alle physisch anwesend. Zum  tasten, fühlen, schnuppern, schmecken und hören!</de>
+      </description>
+      <conditions min_audience="1.3" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="3" duration="5" profit="1000" penalty="1450" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Ohrostopf" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Ohrostopf Lärmschutz</de>
+      </title>
+      <description>
+        <de>Nölt Ihr Chef? Die Alte sowieso? Die Kinder sind nicht auszuhalten? - RUHE !!! - Jetzt: Ohrostopf!</de>
+      </description>
+      <conditions min_audience="5.21" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="4" duration="3" profit="470" penalty="450" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Pemto1" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Pemto Taschentücher</de>
+      </title>
+      <description>
+        <de>Reißfest und kugelsicher. Pemto - wenn's mal pressiert.</de>
+      </description>
+      <conditions min_audience="14.07" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="5" duration="4" profit="70" penalty="80" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Pemto2" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Pemto Toilettenpapier</de>
+      </title>
+      <conditions min_audience="14.07" min_image="32" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="5" duration="4" profit="70" penalty="180" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Pillreis" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Antiquitäten Pillreis</de>
+      </title>
+      <description>
+        <de>Wir sind nicht  gegen Quitäten! Das Wort kommt nicht von Anti-, sondern von Antique. Ankauf und Verkauf von historischem Mobiliar also.</de>
+      </description>
+      <conditions min_audience="2.6" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="4" duration="2" profit="700" penalty="750" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Ploerre" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Plörre Bier</de>
+      </title>
+      <description>
+        <de>Schon ein Kanzler sang einst: "Plörre Bier - Plörre Bier - das hol' ich mir."</de>
+      </description>
+      <conditions min_audience="3.13" min_image="4" target_group="256"/>
+      <data infomercial="1" quality="31" repetitions="5" duration="4" profit="650" penalty="477" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Rapunzel" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Rapunzel Haarteile</de>
+      </title>
+      <description>
+        <de>Toupets und  Perrücken. Wenn man nicht darauf angewiesen ist - gut so. Sonst komm zu Rapunzel. Ab 5 Meter Länge, gibt es einen Meter gratis dazu!</de>
+      </description>
+      <conditions min_audience="18.76" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="1" duration="2" profit="202" penalty="402" infomercial_profit="20" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Rhinozerosfarm" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Rhinozerosfarm Aschenbühl</de>
+      </title>
+      <description>
+        <de>Urlaub auf dem Bauernhof. Ebenfalls sehenswert: Unsere  Babyrhinozerosse. Besuchen Sie unsere Kleinen und ihre schnaubenden Mütter. Kleiner Tipp: Testament ablegen.</de>
+      </description>
+      <conditions min_audience="7.29" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="5" duration="4" profit="392" penalty="498" infomercial_profit="39" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-RoZZona" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>RoZZona</de>
+      </title>
+      <description>
+        <de>Sniffmaster  2000, der unendlich nützliche Geruchstransmitter. Das ist wie telefonieren für die Nase. Komm schon und riech mit, egal wo Du bist! Sniffmaster 2000!</de>
+      </description>
+      <conditions min_audience="23.44" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="2" duration="1" profit="171" penalty="550" infomercial_profit="17" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Roll-Shop" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Der Roll-Shop</de>
+      </title>
+      <description>
+        <de>Wir haben alles mit einem "Roll" im Namen: Rollmops - Rollkragenpullover - Rollwagen. Tritt ein und roll raus. Der Roll-Shop.</de>
+      </description>
+      <conditions min_audience="9.38" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="3" duration="2" profit="327" penalty="567" infomercial_profit="32" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Schmierlapp" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Autohaus Schmierlapp</de>
+      </title>
+      <description>
+        <de>Von uns bekommt jeder einen Satz Bremsbeläge verordnet. Der SICHERHEIT wegen. Was dachten Sie? Ich, Franz Schmierlapp, stehe mit meinem Namen für  Authentizität!</de>
+      </description>
+      <conditions min_audience="0.26" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="1" duration="2" profit="2200" penalty="2450" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Schniggo1" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Schniggo Schoko Kubus</de>
+      </title>
+      <description>
+        <de>Schokolade hoch drei. Alle Kanten gleich lang! Die Beste Idee aller Zeiten! Wir haben  Kanten von 10cm, 20cm und 30cm!</de>
+      </description>
+      <conditions min_audience="39.07" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="3" duration="4" profit="118" penalty="250" infomercial_profit="11" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Schniggo2" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Schniggo Lakritz Kugel</de>
+      </title>
+      <description>
+        <de>Lakritz hoch drei. Alle Durchmesser gleich lang! Die Beste Idee aller Zeiten! Wir haben Durchmesser von 10cm, 20cm und 30cm!</de>
+      </description>
+      <conditions min_audience="39.07" min_image="30" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="3" duration="4" profit="121" penalty="350" infomercial_profit="12" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Schaedlingsbekaempfung" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Stefanek Schädlingsbekämpfung</de>
+      </title>
+      <description>
+        <de>Die Kakerlake, die uns entkommt  wurde noch nicht geboren. Vermutlich schlüpft sie gerade bei Ihnen unter dem Herd! Wir vernichten oder schlagen sie in die Flucht. Zurück bleibt jedenfalls keine.</de>
+      </description>
+      <conditions min_audience="0.62" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="2" duration="2" profit="1583" penalty="1350" infomercial_profit="158" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Steiss" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Steiß Teddybären</de>
+      </title>
+      <description>
+        <de>Stahlbeton und Messing sind die Materialien der Wahl. Kindersicher. Unkaputtbar. Steiß Teddybären.</de>
+      </description>
+      <conditions min_audience="4.69" min_image="12" target_group="1"/>
+      <data infomercial="1" quality="31" repetitions="4" duration="4" profit="500" penalty="550" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Stop-Hound" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Stop Hound</de>
+      </title>
+      <description>
+        <de>Fox Enterprises präsentiert "Stop Hound". Das Spray auf den Körper auftragen. 20h Wirkung! Stoppt  Hunde auch gegen den Wind. Das Anti-Biss-Spray "Stop Hound".</de>
+      </description>
+      <conditions min_audience="8.34" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="3" duration="2" profit="356" penalty="435" infomercial_profit="35" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-TVBunker" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>TVBunker PC-Spiel</de>
+      </title>
+      <description>
+        <de>TVBunker ein Spass für die ganze Familie. Ein Sad -TV Remake! Aus markenschutzrechtlichen Gründen dürfen keine Originalnamen verwendet werden.</de>
+      </description>
+      <conditions min_audience="52.1" min_image="25" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="5" duration="2" profit="160" penalty="220" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-TVBunker2" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>TVTower PC-Spiel</de>
+      </title>
+      <description>
+        <de>Brandneue Engine! Neue Filme! NEU: Trash TV und Call-In. TVTower, ein Mad-TV Remake! Ein Riesenspaß. Honigkuchenpferde, der Papst und die Queen empfehlen: TVTower.</de>
+      </description>
+      <conditions min_audience="52.1" min_image="50" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="1" duration="4" profit="110" penalty="550" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Tarnschiff1" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Tarnschiff Kreuzfahrten</de>
+      </title>
+      <description>
+        <de>Erleben Sie die original U96 Replika auf Ihrer Traumroute. Die Malediven in 200m Tiefe. Hören Sie Traumstrände. Vorgewärmte Kojen gehören hier zur Grundausstattung.</de>
+      </description>
+      <conditions min_audience="33.86" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="3" duration="2" profit="130" penalty="450" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Tarnschiff2" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Tarnschiff  Kreuzfahrten</de>
+      </title>
+      <description>
+        <de>Erleben Sie die original U96 Replika auf Ihrer Traumroute. Der Marianengraben - legendär! Aber doch etwas zu tief. Oder  etwa nicht? Finden Sie es heraus!</de>
+      </description>
+      <conditions min_audience="33.86" min_image="27" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="3" duration="2" profit="133" penalty="450" infomercial_profit="13" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Tarnschiff3" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Tarnschiff Kreuzfahrten</de>
+      </title>
+      <description>
+        <de>Erleben Sie die original U96 Replika  auf Ihrer Traumroute. Durchbrechen Sie Blockaden. Landgang von 3 bis 5. Pünklich sein. Parole: „Tauch tiefer!“ Sonst kein Einlass.</de>
+      </description>
+      <conditions min_audience="33.86" min_image="47" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="3" duration="2" profit="136" penalty="450" infomercial_profit="13" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Ticketschalter" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Ticketschalter</de>
+      </title>
+      <description>
+        <de>Wir verkaufen Eintrittskarten zu allen Großveranstaltungen, Messen und Live-Konzerten. Auch Sonderkarten wie Back-Stage oder On-Stage sind erhältlich!</de>
+      </description>
+      <conditions min_audience="15.63" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="6" duration="4" profit="230" penalty="350" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-Weinstein" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Winzerei Weinstein</de>
+      </title>
+      <description>
+        <de>Lutschen Sie sich durch erlesene Jahrgänge der Weingeschichte. Weinsteinsortimente der gleichnamigen Winzerei ab sofort erhältlich!</de>
+      </description>
+      <conditions min_audience="3.13" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="2" duration="2" profit="675" penalty="540" infomercial_profit="67" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-bafm-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Bundesdeutsche Anstalt fuer Meditation</de>
+      </title>
+      <description>
+        <de>Leitfaden zur aufrichtigen inneren Reinigung, Tipps und Tricks, Best Practices und vieles mehr. Infos bei uns! LAM - VAM - RAM - YAM - HAM - KSHAM - OM.</de>
+      </description>
+      <conditions min_audience="26.05" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="23" repetitions="7" duration="7" profit="158" penalty="135" infomercial_profit="15" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-baumschule-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Baumschule Bummbarts</de>
+      </title>
+      <description>
+        <de>Bummbarts Bäume wissen Väter zu schätzen, wenn sie mit Ihrem Sohne einen setzen.</de>
+      </description>
+      <conditions min_audience="1.82" min_image="4" target_group="256"/>
+      <data infomercial="1" quality="31" repetitions="5" duration="4" profit="828" penalty="849" infomercial_profit="200" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-baumschule-02" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Baumschule Bummbarts</de>
+      </title>
+      <description>
+        <de>In Parks und Gärten genießt man die Räume, die Highlights aber sind Bummbarts Bäume.</de>
+      </description>
+      <conditions min_audience="1.82" min_image="45" target_group="256"/>
+      <data infomercial="1" quality="45" repetitions="6" duration="4" profit="848" penalty="999" infomercial_profit="200" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-bildergalerie-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Bildergalerie Silberfisch</de>
+      </title>
+      <description>
+        <de>Wir sind bodenständig! Keine einfarbigen Flächen zu Fantasiepreisen. Bei uns z.B. „Röhrender Hirsch auf Zweimastschoner in stürmischer See“ nur 500 Ocken.</de>
+      </description>
+      <conditions min_audience="0.31" min_image="12" target_group="4"/>
+      <data infomercial="1" quality="50" repetitions="5" duration="4" profit="2180" penalty="2180" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-chemicalair-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Chemical Air</de>
+      </title>
+      <description>
+        <de>Pestizid, Fungizid, Herbizid. Unser Flieger steht bereit. Wir spritzen Ihr Feld, Ihre Obstplantage und Ihren Garten. Auch für privat! Einfach anrufen.</de>
+      </description>
+      <conditions min_audience="28.65" min_image="80" target_group="0"/>
+      <data infomercial="1" quality="53" repetitions="4" duration="4" profit="100" penalty="150" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-esel24-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Esel24.komm</de>
+      </title>
+      <description>
+        <de>Hochzeit? Firmenveranstaltung? Familienfeier? Autopanne! Umzug! Esel zum Mieten und zum Kaufen! Esel24.komm!</de>
+      </description>
+      <conditions min_audience="0.78" min_image="0"/>
+      <data infomercial="1" quality="35" repetitions="3" duration="2" profit="1400" penalty="2210" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-four4down-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>four4down</de>
+      </title>
+      <description>
+        <de>Prickelnde Kohlensäure, zischende Dose, Kühlung für Rachen und Kehle, super geschmackvoll? Nicht mehr träumen! four4down bringt Sie auf den Boden zurück!</de>
+      </description>
+      <conditions min_audience="23.44" min_image="0"/>
+      <data infomercial="1" quality="40" repetitions="3" duration="2" profit="171" penalty="159" infomercial_profit="17" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-greekhaircut-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Greek Haircut</de>
+      </title>
+      <description>
+        <de>Wir geben eine Ouzo für jede Zentimeter abgeschnittene Haare! Wer brauchte schon Haare, wenne kann tragen Helm?</de>
+      </description>
+      <conditions min_audience="46.89" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="25" repetitions="1" duration="2" profit="103" penalty="240" infomercial_profit="10" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-hammer-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Hammer</de>
+      </title>
+      <description>
+        <de>Das Auto ist der Hammer! Höher als ein LKW und breiter als lang. Man kann aufrecht stehen oder sich auf der Rückbank ausstrecken. Warum noch  Miete zahlen?</de>
+      </description>
+      <conditions min_audience="26.05" min_image="4" target_group="256"/>
+      <data infomercial="1" quality="26" repetitions="5" duration="4" profit="161" penalty="107" infomercial_profit="16" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-happo-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>HAPPO</de>
+      </title>
+      <description>
+        <de>Das Hundefutter mit Aspartam. Mästen Sie Ihren Liebling! Wie das Schwein, so auch der Hund, wird Ihr Tierchen kugelrund.</de>
+      </description>
+      <conditions min_audience="10.42" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="15" repetitions="3" duration="5" profit="305" penalty="224" infomercial_profit="30" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-haslan-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Haslan Autocars</de>
+      </title>
+      <description>
+        <de>Kommst Du. - Kuckst Du. - Kaufst Du.</de>
+      </description>
+      <conditions min_audience="0.5 " min_image="0" target_group="0"/>
+      <data infomercial="1" quality="20" repetitions="2" duration="2" profit="3000" penalty="3110" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-hexlerundschorsch-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Hexler und Schorsch</de>
+      </title>
+      <description>
+        <de>Für unsere Bohnen wird kein Regenwald  abgeholzt! Blaue Bohnen und mehr von Hexler und Schorsch!</de>
+      </description>
+      <conditions min_audience="17.19" min_image="4" target_group="256"/>
+      <data infomercial="1" quality="28" repetitions="4" duration="3" profit="225" penalty="244" infomercial_profit="22" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-interouter-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Inter Outer Under World Travel</de>
+      </title>
+      <description>
+        <de>Stehplätze, Verpflegung* aus der Dose und Betäubungsgas machen den Flug angenehm. Auch die Piloten sind extrem ausgeruht. Schönen Urlaub!
+    (*gegen Aufpreis)</de>
+      </description>
+      <conditions min_audience="23.44" min_image="12" target_group="8"/>
+      <data infomercial="1" quality="30" repetitions="1" duration="2" profit="171" penalty="239" infomercial_profit="17" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-kaiserskleider-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Kaisers neue Kleider</de>
+      </title>
+      <description>
+        <de>Neue Kollektion bei Kaisers: Extrem guter Tragekomfort, hauchdünner Stoff, fantasievolle Schnitte. Ein echter Hingucker! Kaisers neue Kleider!</de>
+      </description>
+      <conditions min_audience="36.47" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="48" repetitions="6" duration="4" profit="124" penalty="150" infomercial_profit="12" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-kakteenwunderland-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Kakteenwunderland</de>
+      </title>
+      <description>
+        <de>Unsere Kakteen stechen härter, länger und ausdauernder, als die der Konkurrenz. Wir haben Kakteen für Garten, Wintergarten, Treibhaus und fürs Bett.</de>
+      </description>
+      <conditions min_audience="6.25" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="17" repetitions="4" duration="3" profit="425" penalty="100" infomercial_profit="42" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-koizucht-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Koizucht Koiner</de>
+      </title>
+      <description>
+        <de>Satte Fische zu satten Preisen. Ein weiterer Beleg, was einmal ein Schwabe sagte: „Wenn's nix koscht'! Sonscht kommt koiner nai!“</de>
+      </description>
+      <conditions min_audience="33.86" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="42" repetitions="3" duration="3" profit="130" penalty="444" infomercial_profit="110" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-malereifarbecht-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Malerei Farbecht</de>
+      </title>
+      <description>
+        <de>Unschlagbar im Preis. Fenster und Türen abkleben war gestern. Wir sind kosteneffizient, das werden Sie sehen. Zum Termin erscheinen wir! - oft! - manchmal.</de>
+      </description>
+      <conditions min_audience="0.47" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="21" repetitions="4" duration="3" profit="1888" penalty="1172" infomercial_profit="188" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-overbrain-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Overbrain Bug-Generator</de>
+      </title>
+      <description>
+        <de>Ihre  Software ist immer fehlerfrei? Ihre Kollegen schütteln den Kopf darüber? Simulieren Sie Normalität! Der „Bug-Generator“ garantiert 5 Bugs auf 1000  Zeilen.</de>
+      </description>
+      <conditions min_audience="39.07" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="42" repetitions="3" duration="3" profit="118" penalty="150" infomercial_profit="11" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-overbrain-02" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Overbrain Virus-Simulator</de>
+      </title>
+      <description>
+        <de>Sie haben keinen Internetanschluss? Sie benutzen nie USB-Sticks? Beim Thema Viren können Sie nicht mitreden? Jetzt schon, mit dem gefahrvollen „Virus-Simulator“!</de>
+      </description>
+      <conditions min_audience="39.07" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="42" repetitions="3" duration="3" profit="120" penalty="100" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-pizzapaschulke-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Pizza Paschulke</de>
+      </title>
+      <description>
+        <de>Pizza aus dem Schwedenofen. Schön knackig und bissfest. Auch als Ersatzbrennstoff verwendbar. Jeden ungeraden Kalendertag liefern wir auch aus.</de>
+      </description>
+      <conditions min_audience="1" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="17" repetitions="5" duration="3" profit="147" penalty="120" infomercial_profit="14" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-placebotazementamol-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Placebotazementamol</de>
+      </title>
+      <description>
+        <de>Placebotazementamol seit 1276. Tradition seit dem Mittelalter. Scharlatane und Quacksalber schwören darauf! Jetzt neu als Pastille.</de>
+      </description>
+      <conditions min_audience="20.84" min_image="0"/>
+      <data infomercial="1" quality="35" repetitions="5" duration="4" profit="187" penalty="67" infomercial_profit="18" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-potzblitz-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Potz-Blitz Autohof</de>
+      </title>
+      <description>
+        <de>Kommen Sie zu unserem Autohof. LKW-Waschmöglichkeiten. Duschen und Toiletten vorhanden! Ab 1000l Dieselbetankung ein gratis Kaffee!!! Potz-Blitz! An der A7!</de>
+      </description>
+      <conditions min_audience="0.26" min_image="4" target_group="256"/>
+      <data infomercial="1" quality="30" repetitions="3" duration="2" profit="2200" penalty="2150" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-raffgier-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Raff und Gier, Banken und Versicherungen</de>
+      </title>
+      <description>
+        <de>Ihr Geld steht bei uns im Mittelpunkt. In unsren Banken bewachen wir es. Wir verteidigen es gegen JEDEN. Keine Ausnahmen.</de>
+      </description>
+      <conditions min_audience="31.26" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="34" repetitions="3" duration="4" profit="138" penalty="150" infomercial_profit="13" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-raffgier-02" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Raff und Gier, Banken und Versicherungen</de>
+      </title>
+      <description>
+        <de>Unsere Versicherungen nehmen Ihr Geld auch völlig ohne Gegenleistung! Bitte einschicken.</de>
+      </description>
+      <conditions min_audience="31.26" min_image="68" target_group="128"/>
+      <data infomercial="1" quality="41" repetitions="3" duration="4" profit="138" penalty="100" infomercial_profit="13" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-rauschebart-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Käpt'n  Rauschebart</de>
+      </title>
+      <description>
+        <de>Gefrorene Fischstangen zum Kisten aufstemmen, Wände einreissen, Möbel stabilisieren, Schienen ausbessern. Klasse  auf dem Bau, moderat in der Pfanne. Na dann Mahlzeit.</de>
+      </description>
+      <conditions min_audience="9.38" min_image="0"/>
+      <data infomercial="1" quality="42" repetitions="6" duration="4" profit="327" penalty="427" infomercial_profit="32" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-rechtschreibdudan-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Rechtschreibdudan</de>
+      </title>
+      <description>
+        <de>Sie glauben sie haben sich neulich in der Straßenbahn verhöhrt? Fäkalsprache, Deutsch, der neue Rechtschreibdudan. Greif den Scheiß ab.</de>
+      </description>
+      <conditions min_audience="4.69" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="18" repetitions="4" duration="5" profit="500" penalty="528" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-rennpferde-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Rennpferde Engel</de>
+      </title>
+      <description>
+        <de>Sommerschlussverkauf! Die alten Klepper müssen raus! Für 2 Araber gibt es eine Schindmähre gratis oben drauf! Kein Versand! Schnäppchenwetter bei Engel.</de>
+      </description>
+      <conditions min_audience="2.08" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="31" repetitions="4" duration="2" profit="775" penalty="650" infomercial_profit="77" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-spackeroog-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Nordseeinsel Spackeroog</de>
+      </title>
+      <description>
+        <de>Genießen Sie die See, auch wenn sie nie da ist. Fühlen Sie Schafsköttel zwischen den Zehen und den Geruch modernden Tangs in der Nase. Natürlich, Spackeroog!</de>
+      </description>
+      <conditions min_audience="0.39" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="20" repetitions="4" duration="7" profit="2000" penalty="2120" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-spargelsund-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Erlebnisbad Spargelsund</de>
+      </title>
+      <description>
+        <de>Besuchen mit der Familie unseren Wasserpark und erleben Sie unsere Attraktionen. Kettenanzüge fürs Haifischbecken in allen Größen ausleihbar.</de>
+      </description>
+      <conditions min_audience="2.34" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="21" repetitions="2" duration="2" profit="733" penalty="338" infomercial_profit="73" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-sportschule-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Sportschule Steilpass</de>
+      </title>
+      <description>
+        <de>Exzellente Prüfungsvorbereitung der zukünftigen Profisportler durch unsere Lehrkräfte nach der Philosophie: "Nimm Du ihn - ich hab' ihn sicher!"</de>
+      </description>
+      <conditions min_audience="0.31" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="54" repetitions="3" duration="4" profit="2166" penalty="2140" infomercial_profit="216" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-teppichoase-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Teppichoase Kamelfurt</de>
+      </title>
+      <description>
+        <de>Es ist AUS! Zum 50. Mal! Jubiläumsausverkauf! Live-Band und Kinderhüpfburg auf dem Parkplatz! Wir sind Pleite! Teppichverkäufer-Ehrenwort!</de>
+      </description>
+      <conditions min_audience="1.04" min_image="0" target_group="0"/>
+      <data infomercial="1" quality="50" repetitions="4" duration="3" profit="1150" penalty="1235" fix_infomercial_profit="1"/>
+    </ad>
+    <ad id="speedminister-ad-valvoa-01" creator="8605" created_by="SpeedMinister">
+      <title>
+        <de>Valvoa</de>
+      </title>
+      <description>
+        <de>Valvoa der Truck fuer die Frau. 460PS nur 350kEuro, auf Wunsch auch in rosa. Valvoa stinkt ab!</de>
+      </description>
+      <conditions min_audience="20.84" min_image="4" target_group="128"/>
+      <data infomercial="1" quality="30" repetitions="2" duration="4" profit="197" penalty="185" infomercial_profit="19" fix_infomercial_profit="1"/>
+    </ad>
+  </allads>
+</tvgdb>
