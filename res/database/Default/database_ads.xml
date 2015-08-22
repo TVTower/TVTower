@@ -50,7 +50,7 @@ Habt Ihr das zu bieten? Alter Schwede!</de>
       <description>
         <de>Unsere Windeln haben einen hohen Tragekomfort und sind geeignet für Jung und Alt.</de>
       </description>
-      <conditions min_audience="6.77" min_image="12" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <conditions min_audience="6.77" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
       <data repetitions="4" duration="4" profit="417" penalty="305" infomercial_profit="41" fix_infomercial_profit="1"/>
     </ad>
     <ad id="17074737-4b08-457e-8536-b3ae0da3c02c">
@@ -71,7 +71,7 @@ Daran hat man zu kauen.</de>
       <description>
         <de>Reisen sie an die größten Strände der Welt, ob Gobi oder Sahara. Dubantours bringt sie hin.</de>
       </description>
-      <conditions min_audience="6.77" min_image="12" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <conditions min_audience="6.77" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
       <data repetitions="5" duration="3" profit="414" penalty="425" infomercial_profit="41" fix_infomercial_profit="1"/>
     </ad>
     <ad id="1fa08a9f-5658-46a1-b634-43bbacd1a7bb">
@@ -141,7 +141,7 @@ Daran hat man zu kauen.</de>
       <description>
         <de>Wir sind Blöd. Wir schmeissen unsere Ware zu Spottpreisen raus. Also ab in den nächsten Mödie-Markt</de>
       </description>
-      <conditions min_audience="4.17" min_image="12" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <conditions min_audience="4.17" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
       <data repetitions="5" duration="3" profit="567" penalty="605" infomercial_profit="56" fix_infomercial_profit="1"/>
     </ad>
     <ad id="41f0778e-f2fd-4b34-be1a-1d67f2ff3ce4">
@@ -191,7 +191,7 @@ Daran hat man zu kauen.</de>
       <description>
         <de>Von Katzen für Katzen. Nahrhaftes Dosenfutter für ihren Stubentiger.</de>
       </description>
-      <conditions min_audience="4.69" min_image="12" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <conditions min_audience="4.69" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
       <data repetitions="2" duration="1" profit="520" penalty="650" fix_infomercial_profit="1"/>
     </ad>
     <ad id="496e9783-2d9c-44aa-b71f-845533dc907e">
@@ -232,7 +232,7 @@ In Tempelhof und Steglitz</de>
       <description>
         <de>Prickelndes Hopfengold. Für die kritischen Tage im Monat sollte Mann immer Plöpp-Bier im Haus haben.</de>
       </description>
-      <conditions min_audience="1.56" min_image="12" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <conditions min_audience="1.56" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
       <data repetitions="3" duration="4" profit="950" penalty="930" fix_infomercial_profit="1"/>
     </ad>
     <ad id="589d51a5-52ab-463f-90f9-ddf48abef355">
@@ -253,7 +253,7 @@ Aber nur mit Ulbricht Umzüge!</de>
       <description>
         <de>Mit Mach 4 oder NOCH schneller fliegt der Rasierer über die Geischtshaut eines echten Kerls - für das Beste im Mann.</de>
       </description>
-      <conditions min_audience="6.25" min_image="12" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <conditions min_audience="6.25" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
       <data repetitions="4" duration="4" profit="425" penalty="30" infomercial_profit="42" fix_infomercial_profit="1"/>
     </ad>
     <ad id="5f243d7d-62fa-4cf9-a8f8-a87fe15d76a9">
@@ -293,7 +293,7 @@ Aber nur mit Ulbricht Umzüge!</de>
       <description>
         <de>Nette Frauen aus aus dem Katalog. Dank Fernabsatz Rückgabe ohne Probleme möglich.</de>
       </description>
-      <conditions min_audience="0.62" min_image="12" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <conditions min_audience="0.62" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
       <data repetitions="3" duration="5" profit="1643" penalty="1175" infomercial_profit="164" fix_infomercial_profit="1"/>
     </ad>
     <ad id="7408e6f0-0505-42d9-96e0-bf6dc4869039">
@@ -303,7 +303,7 @@ Aber nur mit Ulbricht Umzüge!</de>
       <description>
         <de>Dein freundliches Reisebüro... Wohin Du willst - solang die Kohle stimmt.</de>
       </description>
-      <conditions min_audience="0.5 " min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <conditions min_audience="0.05" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
       <data repetitions="3" duration="4" fix_price="0" profit="3000" penalty="2500" fix_infomercial_profit="1"/>
     </ad>
     <ad id="774e0ca3-a31c-4afc-86be-304b02176fcd">
@@ -484,7 +484,7 @@ Aber nur mit Ulbricht Umzüge!</de>
       <description>
         <de>Die Nummer 1 im Modellbau. Ob Messerschmitt, Panther oder U.S.S. Enterprise - Ravell führt es.</de>
       </description>
-      <conditions min_audience="4.69" min_image="12" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <conditions min_audience="4.69" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
       <data repetitions="3" duration="3" profit="500" penalty="415" fix_infomercial_profit="1"/>
     </ad>
     <ad id="a81fea24-859f-463e-a69c-0124de937a47">
@@ -536,7 +536,7 @@ Der Vorteil: Kein Porto für Überweisungsträger</de>
         <de>Qualität seit 1861.
 Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
       </description>
-      <conditions min_audience="12.5" min_image="12" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <conditions min_audience="12.5" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
       <data repetitions="4" duration="2" profit="277" penalty="270" infomercial_profit="27" fix_infomercial_profit="1"/>
     </ad>
     <ad id="b422ad7a-ed8a-4c01-a4fa-0496c07e73d5">
@@ -546,7 +546,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
       <description>
         <de>Boxershorts vom Dorf. Garantiert nur einmal getragen - pro Seite.</de>
       </description>
-      <conditions min_audience="0.1" min_image="12" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <conditions min_audience="0.1" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
       <data repetitions="3" duration="2" profit="2800" penalty="4105" fix_infomercial_profit="1"/>
     </ad>
     <ad id="b5dbf200-bd84-4126-b80e-66a71661c8aa">
@@ -679,7 +679,7 @@ Aktionswoche: Pfandfrei.</de>
       <description>
         <de>Polsterwerkstatt Dobrawa seit 1933</de>
       </description>
-      <conditions min_audience="1.04" min_image="12" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <conditions min_audience="1.04" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
       <data repetitions="1" duration="1" profit="1250" penalty="1143" fix_infomercial_profit="1"/>
     </ad>
     <ad id="d319be4e-e9fe-42d9-9e43-351ddde2fbe5">
@@ -689,7 +689,7 @@ Aktionswoche: Pfandfrei.</de>
       <description>
         <de>Verlieren Sie 50 Kilo innerhalb eines Monats!</de>
       </description>
-      <conditions min_audience="0.31" min_image="12" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <conditions min_audience="0.31" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
       <data repetitions="4" duration="3" profit="2166" penalty="6120" infomercial_profit="216" fix_infomercial_profit="1"/>
     </ad>
     <ad id="d43943a8-67c3-47a5-bb96-e0f03b5194df">
@@ -729,7 +729,7 @@ Aktionswoche: Pfandfrei.</de>
       <description>
         <de>Wurth Paris liefert den Duft ausgewählter Essenzen für ein edles Parfüm.</de>
       </description>
-      <conditions min_audience="5.21" min_image="12" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <conditions min_audience="5.21" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
       <data repetitions="3" duration="2" profit="480" penalty="860" fix_infomercial_profit="1"/>
     </ad>
     <ad id="d8ee3597-56e1-4117-909a-bde9da3f9f9e">
@@ -862,7 +862,7 @@ Ich fühl mich wohl mit Lemor</de>
       <description>
         <de>Hoher Tragekomfort und nahezu unsichtbar - die neuen Maike-Hygieneeinlagen.</de>
       </description>
-      <conditions min_audience="9.38" min_image="12" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <conditions min_audience="9.38" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
       <data repetitions="3" duration="4" profit="347" penalty="235" infomercial_profit="34" fix_infomercial_profit="1"/>
     </ad>
     <ad id="fc24c505-d3cc-467c-a57c-a154f9d308cb">
@@ -884,7 +884,7 @@ Ich fühl mich wohl mit Lemor</de>
         <de>Wie die Faust aufs Auge - unsere Brillen sitzen immer!</de>
         <en>Clashes horrible - our absolutely perfect fitting glasses. Break-proof through years of experience!</en>
       </description>
-      <conditions min_audience="0.5 " min_image="0" target_group="0"/>
+      <conditions min_audience="0.05" min_image="0" target_group="0"/>
       <data infomercial="1" quality="15" repetitions="2" duration="4" profit="3500" penalty="4000" fix_infomercial_profit="1"/>
     </ad>
     <ad id="nichtdiebetty-ad-baroque-01" creator="8659" created_by="Nicht_die_Betty">
@@ -937,7 +937,7 @@ Ich fühl mich wohl mit Lemor</de>
       <description>
         <de>Lustige Laternen in zahlreichen Tierformen. Jetzt neu: Kuh und Marienkäfer. Der Knaller für jeden Kindergeburtstag.</de>
       </description>
-      <conditions min_audience="0.5 " min_image="12" target_group="1" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <conditions min_audience="0.05" min_image="12" target_group="1" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
       <data infomercial="1" quality="50" repetitions="3" duration="4" profit="4000" penalty="3000" infomercial_profit="50" fix_infomercial_profit="1"/>
     </ad>
     <ad id="ronny-ad-Meschmucke" creator="5578" created_by="Ronny">
@@ -1178,7 +1178,7 @@ Brucey - harsh fragrance for male experts.</en>
         <de>Aus dem Osten der Hopfen, aus dem Westen die Luft ... und das Gold. Lecker Bierchen für Väter aller Länder.</de>
         <en>Eastern Germanys hop, and the bottles from Western Germany created this fascinating beer. Tasty beer for fathers of all countries.</en>
       </description>
-      <conditions min_audience="5.73" min_image="12" target_group="256"/>
+      <conditions min_audience="5.73" min_image="4" target_group="256"/>
       <data infomercial="1" quality="40" repetitions="4" duration="2" profit="857" penalty="1430" year_range_from="1990" year_range_to="1993" infomercial_profit="85" fix_infomercial_profit="1"/>
     </ad>
     <ad id="ronny-ad-sanitaxi-01" creator="5578" created_by="Ronny">
@@ -1288,7 +1288,7 @@ Available in any well-stocked drugstore.</en>
       <description>
         <de>Kein Bock mehr auf den Alten? Ratz-Fatz-Scheidungshotline. Wir liefern Gründe, Anlässe, Anwälte und Schuldfreigarantie!</de>
       </description>
-      <conditions min_audience="2.08" min_image="12" target_group="128" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <conditions min_audience="2.08" min_image="4" target_group="128" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
       <data infomercial="1" quality="50" repetitions="2" duration="4" profit="790" penalty="1000" year_range_from="0" year_range_to="0" infomercial_profit="50" fix_infomercial_profit="1"/>
     </ad>
     <ad id="sjaele-ad-Umrechner" creator="7430" created_by="Sjaele">
@@ -1565,7 +1565,7 @@ Available in any well-stocked drugstore.</en>
       <description>
         <de>Schon ein Kanzler sang einst: "Plörre Bier - Plörre Bier - das hol' ich mir."</de>
       </description>
-      <conditions min_audience="3.13" min_image="12" target_group="256"/>
+      <conditions min_audience="3.13" min_image="4" target_group="256"/>
       <data infomercial="1" quality="31" repetitions="5" duration="4" profit="650" penalty="477" fix_infomercial_profit="1"/>
     </ad>
     <ad id="speedminister-ad-Rapunzel" creator="8605" created_by="SpeedMinister">
@@ -1755,7 +1755,7 @@ Available in any well-stocked drugstore.</en>
       <description>
         <de>Bummbarts Bäume wissen Väter zu schätzen, wenn sie mit Ihrem Sohne einen setzen.</de>
       </description>
-      <conditions min_audience="1.82" min_image="12" target_group="256"/>
+      <conditions min_audience="1.82" min_image="4" target_group="256"/>
       <data infomercial="1" quality="31" repetitions="5" duration="4" profit="828" penalty="849" infomercial_profit="200" fix_infomercial_profit="1"/>
     </ad>
     <ad id="speedminister-ad-baumschule-02" creator="8605" created_by="SpeedMinister">
@@ -1825,7 +1825,7 @@ Available in any well-stocked drugstore.</en>
       <description>
         <de>Das Auto ist der Hammer! Höher als ein LKW und breiter als lang. Man kann aufrecht stehen oder sich auf der Rückbank ausstrecken. Warum noch  Miete zahlen?</de>
       </description>
-      <conditions min_audience="26.05" min_image="12" target_group="256"/>
+      <conditions min_audience="26.05" min_image="4" target_group="256"/>
       <data infomercial="1" quality="26" repetitions="5" duration="4" profit="161" penalty="107" infomercial_profit="16" fix_infomercial_profit="1"/>
     </ad>
     <ad id="speedminister-ad-happo-01" creator="8605" created_by="SpeedMinister">
@@ -1855,7 +1855,7 @@ Available in any well-stocked drugstore.</en>
       <description>
         <de>Für unsere Bohnen wird kein Regenwald  abgeholzt! Blaue Bohnen und mehr von Hexler und Schorsch!</de>
       </description>
-      <conditions min_audience="17.19" min_image="12" target_group="256"/>
+      <conditions min_audience="17.19" min_image="4" target_group="256"/>
       <data infomercial="1" quality="28" repetitions="4" duration="3" profit="225" penalty="244" infomercial_profit="22" fix_infomercial_profit="1"/>
     </ad>
     <ad id="speedminister-ad-interouter-01" creator="8605" created_by="SpeedMinister">
@@ -1956,7 +1956,7 @@ Available in any well-stocked drugstore.</en>
       <description>
         <de>Kommen Sie zu unserem Autohof. LKW-Waschmöglichkeiten. Duschen und Toiletten vorhanden! Ab 1000l Dieselbetankung ein gratis Kaffee!!! Potz-Blitz! An der A7!</de>
       </description>
-      <conditions min_audience="0.26" min_image="12" target_group="256"/>
+      <conditions min_audience="0.26" min_image="4" target_group="256"/>
       <data infomercial="1" quality="30" repetitions="3" duration="2" profit="2200" penalty="2150" fix_infomercial_profit="1"/>
     </ad>
     <ad id="speedminister-ad-raffgier-01" creator="8605" created_by="SpeedMinister">
@@ -2056,7 +2056,7 @@ Available in any well-stocked drugstore.</en>
       <description>
         <de>Valvoa der Truck fuer die Frau. 460PS nur 350kEuro, auf Wunsch auch in rosa. Valvoa stinkt ab!</de>
       </description>
-      <conditions min_audience="20.84" min_image="12" target_group="128"/>
+      <conditions min_audience="20.84" min_image="4" target_group="128"/>
       <data infomercial="1" quality="30" repetitions="2" duration="4" profit="197" penalty="185" infomercial_profit="19" fix_infomercial_profit="1"/>
     </ad>
   </allads>
