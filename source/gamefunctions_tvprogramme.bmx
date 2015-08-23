@@ -2428,11 +2428,24 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 
 	Method Draw()
 		SetColor 255,255,255
+		local oldCol:TColor = new TColor.get()
 
 		'make faded as soon as not "dragable" for us
-		If licence.owner <> GetPlayerCollection().playerID And (licence.owner<=0 And Not IsAffordable()) Then SetAlpha 0.75
+		If licence.owner <> GetPlayerCollection().playerID And (licence.owner<=0 And Not IsAffordable())
+			SetAlpha oldCol.a * 0.75
+		endif
 		Super.Draw()
-		SetAlpha 1.0
+
+		If licence.owner <> GetPlayerCollection().playerID And (licence.owner<=0 And Not IsAffordable())
+			SetAlpha oldCol.a * 0.75 * 0.90
+		else
+			SetAlpha oldCol.a * 0.9
+		endif
+		if licence.HasFlag(TVTProgrammeFlag.PAID) then GetSpriteFromRegistry("gfx_movie_flag_paid").Draw(GetScreenX(), GetScreenY() + GetScreenHeight() - 4, ALIGN_BOTTOM)
+		if licence.HasFlag(TVTProgrammeFlag.XRATED) then GetSpriteFromRegistry("gfx_movie_flag_xrated").Draw(GetScreenX(), GetScreenY() + GetScreenHeight()  - 8, ALIGN_BOTTOM)
+		if licence.HasFlag(TVTProgrammeFlag.LIVE) then GetSpriteFromRegistry("gfx_movie_flag_live").Draw(GetScreenX(), GetScreenY() + GetScreenHeight()  - 12, ALIGN_BOTTOM)
+
+		SetAlpha oldCol.a
 	End Method
 End Type
 

@@ -220,6 +220,11 @@
 				<!-- used? -->
 				<child name="gfx_movie_undefined"	 		x="90"	y="380"	w="15"	h="70" />
 				<child name="gfx_series_undefined"	 		x="225"	y="380"	w="15"	h="70" />
+
+
+				<child name="gfx_movie_flag_paid"	 		x="0"	y="221"	w="15"	h="4" />
+				<child name="gfx_movie_flag_xrated"	 		x="0"	y="226"	w="15"	h="4" />
+				<child name="gfx_movie_flag_live"	 		x="0"	y="231"	w="15"	h="4" />
 			</children>
 		</spritepack>
 
