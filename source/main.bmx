@@ -1064,15 +1064,6 @@ print "TGameState.RestoreGameData(): Restore game objects"
 
 
 	Method BackupGameData:Int()
-		'save a short summary of the game at the begin of the file
-		_gameSummary = new TData
-		_gameSummary.Add("game_mode", "singleplayer")
-		_gameSummary.AddNumber("game_timeGone", GetWorldTime().GetTimeGone())
-		_gameSummary.Add("player_name", GetPlayer().name)
-		_gameSummary.Add("player_channelName", GetPlayer().channelName)
-		_gameSummary.AddNumber("player_money", GetPlayer().GetMoney())
-
-
 		'start with the most basic data, so we avoid that these basic
 		'objects get serialized in the depths of more complex objects
 		'instead of getting an "reference" there.
@@ -1158,6 +1149,7 @@ Type TSaveGame Extends TGameState
 	'this allows to have "realtime" (independend from "logic updates")
 	'effects - for visual effects (fading), sound ...
 	Field _Time_timeGone:Long = 0
+	Const SAVEGAME_VERSION:string = "1.0"
 
 	'override to do nothing
 	Method Initialize:Int()
@@ -1175,6 +1167,15 @@ Type TSaveGame Extends TGameState
 
 	'override to add time storage
 	Method BackupGameData:Int()
+		'save a short summary of the game at the begin of the file
+		_gameSummary = new TData
+		_gameSummary.Add("game_mode", "singleplayer")
+		_gameSummary.AddNumber("game_timeGone", GetWorldTime().GetTimeGone())
+		_gameSummary.Add("player_name", GetPlayer().name)
+		_gameSummary.Add("player_channelName", GetPlayer().channelName)
+		_gameSummary.AddNumber("player_money", GetPlayer().GetMoney())
+		_gameSummary.Add("savegame_version", SAVEGAME_VERSION)
+
 		Super.BackupGameData()
 
 		'store "time gone since start"
@@ -1295,7 +1296,7 @@ Type TSaveGame Extends TGameState
 				GetAdContractCollection().Remove(a)
 			endif
 		Next
-		print "Cleanup: removed "+unused+" unused AdContracts."
+		'print "Cleanup: removed "+unused+" unused AdContracts."
 
 
 		unused = 0
@@ -1307,7 +1308,7 @@ Type TSaveGame Extends TGameState
 			unused :+1
 			GetScriptCollection().Remove(s)
 		Next
-		print "Cleanup: removed "+unused+" unused scripts."
+		'print "Cleanup: removed "+unused+" unused scripts."
 		
 
 		'call game that game continues/starts now
@@ -4236,6 +4237,9 @@ End Function
 
 
 Function DEV_switchRoom:Int(room:TRoom)
+	'do not react if already switching
+	if GetPlayer().GetFigure().IsChangingRoom() then return False
+	
 	If Not room Then Return False
 
 	'skip if already there
@@ -4262,6 +4266,10 @@ Function DEV_switchRoom:Int(room:TRoom)
 	GetPlayer().GetFigure().SetTarget( GetRoomDoorCollection().GetMainDoorToRoom(room.id) )
 	GetPlayer().GetFigure().MoveToCurrentTarget()
 
+	'call reach step 1 - so it actually reaches the target in this turn
+	'already (instead of next turn - which might have another "dev_key"
+	'pressed)
+	GetPlayer().GetFigure().ReachTargetStep1()
 
 	Return True
 End Function
