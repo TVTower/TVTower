@@ -37,6 +37,16 @@ Type TGUIButton Extends TGUIobject
 	End Method
 
 
+	'override
+	Method onClick:Int(triggerEvent:TEventBase)
+		Super.onClick(triggerEvent)
+		'send a more specialized event
+		if not triggerEvent.isVeto()
+			EventManager.triggerEvent( TEventSimple.Create("guibutton.OnClick", triggerEvent._data, Self) )
+		endif
+	End Method
+	
+
 	Method RepositionCaption:Int()
 		if not caption then return FALSE
 

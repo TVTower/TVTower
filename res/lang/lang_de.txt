@@ -498,6 +498,16 @@ ALREADY_OVER = Schon vorbei...?
 DO_YOU_REALLY_WANT_TO_QUIT = Willst Du wirklich aufhören?
 DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN = Willst Du das Spiel wirklich beenden und zum Hauptmenü zurückkehren?
 
+CONTINUE_GAME = Spiel fortsetzen
+LOAD_GAME = Spiel laden
+SAVE_GAME = Spiel speichern
+EXIT_GAME = Spiel beenden
+EXIT_TO_MAINMENU = Zum Hauptmenü zurückkehren
+NAME_OF_SAVEGAME = Name des Speicherstands 
+OVERWRITE_SAVEGAME = Speicherstand überschreiben?
+DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X = Willst du wirklich %SAVEGAME% überschreiben?
+
+
 ADCONTRACT_FINISHED = Werbevertrag beendet
 ADCONTRACT_FAILED = Werbevertrag fehlgeschlagen
 ADCONTRACT_X_SUCCESSFULLY_FINISHED = Werbevertrag "%TITLE%" erfolgreich abgeschlossen.

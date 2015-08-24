@@ -38,6 +38,7 @@ Import "Dig/base.gfx.gui.dropdown.bmx"
 Import "Dig/base.gfx.gui.checkbox.bmx"
 Import "Dig/base.gfx.gui.input.bmx"
 Import "Dig/base.gfx.gui.window.modal.bmx"
+Import "Dig/base.gfx.gui.window.modalchain.bmx"
 Import "Dig/base.framework.tooltip.bmx"
 
 
@@ -115,6 +116,8 @@ Include "game.newsagency.bmx"
 
 Include "game.game.bmx"
 
+Include "game.escapemenu.bmx"
+
 '===== Globals =====
 Global VersionDate:String = LoadText("incbin::source/version.txt")
 Global VersionString:String = "v0.2.4.3-dev Build ~q" + VersionDate+"~q"
@@ -168,13 +171,21 @@ Type TApp
 	'store listener for music loaded in "startup"
 	Field OnLoadMusicListener:TLink
 
-	Global baseResourcesLoaded:Int		= 0						'able to draw loading screen?
-	Global baseResourceXmlUrl:String	= "config/startup.xml"	'holds bg for loading screen and more
+	'able to draw loading screen?
+	Global baseResourcesLoaded:Int = 0
+	'holds bg for loading screen and more
+	Global baseResourceXmlUrl:String = "config/startup.xml"
+	'boolean value: 1 and the game will exit
+	Global ExitApp:Int = 0
+	Global ExitAppDialogue:TGUIModalWindow = Null
+	'creation time for "double escape" to abort
+	Global ExitAppDialogueTime:Int = 0
+	'Global ExitAppDialogueEventListeners:TLink = TLink[]
+	Global EscapeMenuWindow:TGUIModalWindowChain = Null
+	'creation time for "double escape" to abort
+	Global EscapeMenuWindowTime:Int = 0
+	'Global EscapeMenuWindowEventListeners:TLink[]
 
-	Global ExitApp:Int 						= 0		 			'=1 and the game will exit
-	Global ExitAppDialogue:TGUIModalWindow	= Null
-	Global ExitAppDialogueTime:Int			= 0					'creation time for "double escape" to abort
-	Global ExitAppDialogueEventListeners:TList = CreateList()
 	Global settingsBasePath:String = "config/settings.xml"
 	Global settingsUserPath:String = "config/settings.user.xml"
 
@@ -188,7 +199,8 @@ Type TApp
 			GetDeltaTimer()._funcRender = render		
 
 			'register to quit confirmation dialogue
-			EventManager.registerListenerFunction( "guiModalWindow.onClose", 	TApp.onAppConfirmExit )
+			EventManager.registerListenerFunction( "guiModalWindow.onClose", onAppConfirmExit )
+			EventManager.registerListenerFunction( "guiModalWindowChain.onClose", onCloseEscapeMenu )
 			EventManager.registerListenerFunction( "RegistryLoader.onLoadXmlFromFinished",	TApp.onLoadXmlFromFinished )
 			obj.OnLoadMusicListener = EventManager.registerListenerFunction( "RegistryLoader.onLoadResource",	TApp.onLoadMusicResource )
 	
@@ -399,7 +411,7 @@ Type TApp
 
 		'as long as the exit dialogue is open, do not accept clicks to
 		'non gui elements (eg. to leave rooms)
-		If App.ExitAppDialogue
+		If App.ExitAppDialogue or App.EscapeMenuWindow
 			MouseManager.ResetKey(2)
 
 			'this sets all IsClicked(), IsHit() to False
@@ -505,7 +517,83 @@ rem
 						EndIf
 endrem
 
-						RoomHandler_MovieAgency.GetInstance().RefillBlocks(true, 0.9)
+'						RoomHandler_MovieAgency.GetInstance().RefillBlocks(true, 0.9)
+
+'dubletten
+local duplicateCount:int = 0
+local arr:TProgrammeLicence[] = TProgrammeLicence[] (GetProgrammeLicenceCollection().licences.ToArray())
+For local i:int = 0 to arr.length -1
+	
+	For local j:int = 0 to arr.length -1
+		if j = i then continue
+		if arr[i] = arr[j]
+			print "found duplicate: "+arr[i].GetTitle()
+			duplicateCount :+ 1
+			continue
+		endif
+
+		if arr[i].GetGUID() = arr[j].GetGUID()
+			print "found GUID duplicate: "+arr[i].GetTitle()
+			duplicateCount :+ 1
+			continue
+		endif
+
+
+		if arr[i].GetTitle() <> "Die Streichholzhammerbowle"
+			if arr[i].GetTitle() = arr[j].GetTitle()
+				print "found TITLE duplicate: "+arr[i].GetTitle()
+				duplicateCount :+ 1
+				continue
+			endif
+		endif
+	Next
+Next
+'print "COLLECTION DUPLICATE: "+duplicateCount+"      " + millisecs()
+
+'Programme bei mehreren Spielern
+'duplicateCount = 0
+for local playerA:int = 1 to 4
+	for local playerB:int = 1 to 4
+		if playerA = playerB then continue 'skip same
+
+
+		For local lA:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(playerA).programmeLicences
+			For local lB:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(playerB).programmeLicences
+
+				if lA = lB
+					print "found playercollection duplicate: "+lA.GetTitle()
+					duplicateCount :+ 1
+					continue
+				endif
+				
+				if lA.GetGUID() = lB.GetGUID()
+					print "found playercollection GUID duplicate: "+lA.GetTitle()
+					duplicateCount :+ 1
+					continue
+				endif
+
+				if lA.GetTitle() <> "Die Streichholzhammerbowle"
+					if lA.GetTitle() = lB.GetTitle()
+						print "found playercollection TITLE duplicate: "+lA.GetTitle()
+						duplicateCount :+ 1
+						continue
+					endif
+				endif
+			Next
+		Next
+	Next
+Next
+print "COLLECTION DUPLICATE: "+duplicateCount+"      " + millisecs()
+
+
+'check possession
+For local playerID:int = 1 to 4
+	For local l:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(playerID).programmeLicences
+		if l.owner <> playerID then print "found playerCollection OWNER bug: "+l.GetTitle()
+	Next
+Next
+
+
 					EndIf
 
 				
@@ -568,11 +656,7 @@ endrem
 				EndIf
 
 				If KEYMANAGER.IsHit(KEY_L)
-					if  KEYMANAGER.IsDown(KEY_LSHIFT)
-						TSaveGame.Load("savegames/savegame.xml")
-					else
-						TSaveGame.Load("savegames/quicksave.xml")
-					endif
+					TSaveGame.Load("savegames/quicksave.xml")
 				endif
 
 				If KEYMANAGER.IsHit(KEY_TAB) Then TVTDebugInfos = 1 - TVTDebugInfos
@@ -645,13 +729,20 @@ endrem
 	
 		If Not GuiManager.GetKeystrokeReceiver() And KEYWRAPPER.hitKey(KEY_ESCAPE)
 			'ask to exit to main menu
-			TApp.CreateConfirmExitAppDialogue(True)
+			'TApp.CreateConfirmExitAppDialogue(True)
+			If GetGame().gamestate = TGame.STATE_RUNNING
+				'TApp.CreateConfirmExitAppDialogue(True)
+				'create escape-menu
+				TApp.CreateEscapeMenuwindow()
+			else
+				'ask to exit the app - from main menu?
+				'TApp.CreateConfirmExitAppDialogue(False)
+			endif
 		EndIf
-		If AppTerminate()
+		If AppTerminate() and not TApp.ExitAppDialogue
 			'ask to exit the app
 			TApp.CreateConfirmExitAppDialogue(False)
 		endif
-'		If AppTerminate() Then TApp.ExitApp = True
 
 		'check if we need to make a screenshot
 		If KEYMANAGER.IsHit(KEY_F12) Then App.prepareScreenshot = 1
@@ -838,17 +929,69 @@ endrem
 	End Function
 
 
+	Function onCloseEscapeMenu:Int(triggerEvent:TEventBase)
+		Local window:TGUIModalWindowChain = TGUIModalWindowChain(triggerEvent.GetSender())
+		If Not window Then Return False
+
+		'store closing time of this modal window (does not matter which
+		'one) to skip creating another menu window  within a certain
+		'timeframe
+		EscapeMenuWindowTime = MilliSecs()
+
+		'not interested in other windows
+		If window <> EscapeMenuWindow Then Return False
+
+		'remove connection to global value (guimanager takes care of fading)
+		TApp.EscapeMenuWindow = Null
+
+		'in single player: resume game
+		If TGame._instance And Not GetGame().networkgame
+			'only unpause if there is no exit-dialogue open
+			if not TApp.ExitAppDialogue then GetGame().SetPaused(False)
+		Endif
+
+		Return True
+	End Function
+
+
+
+	Function CreateEscapeMenuwindow:Int()
+		'100ms since last window
+		If MilliSecs() - EscapeMenuWindowTime < 100 Then Return False
+
+		EscapeMenuWindowTime = MilliSecs()
+		'in single player: pause game
+		If TGame._instance And Not GetGame().networkgame Then GetGame().SetPaused(True)
+
+		TGUISavegameListItem.SetTypeFont(GetBitmapFont(""))
+
+		EscapeMenuWindow = New TGUIModalWindowChain.Create(New TVec2D, New TVec2D.Init(400,150), "SYSTEM")
+		EscapeMenuWindow.SetZIndex(99000)
+		EscapeMenuWindow.SetCenterLimit(new TRectangle.setTLBR(30,0,0,0))
+
+		'append menu after creation of screen ares, so it recenters properly
+		local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New TVec2D, New TVec2D.Init(300,305), "SYSTEM")
+		EscapeMenuWindow.SetContentElement(mainMenu)
+
+		'menu is always ingame...
+		EscapeMenuWindow.SetDarkenedArea(New TRectangle.Init(0,0,800,385))
+		'center to this area
+		EscapeMenuWindow.SetScreenArea(New TRectangle.Init(0,0,800,385))
+	End Function
+	
+
 	Function onAppConfirmExit:Int(triggerEvent:TEventBase)
 		Local dialogue:TGUIModalWindow = TGUIModalWindow(triggerEvent.GetSender())
 		If Not dialogue Then Return False
 
-		'store closeing time of this modal window (does not matter which
+		'store closing time of this modal window (does not matter which
 		'one) to skip creating another exit dialogue within a certain
 		'timeframe
 		ExitAppDialogueTime = MilliSecs()
 
 		'not interested in other dialogues
 		If dialogue <> ExitAppDialogue Then Return False
+
 
 		Local buttonNumber:Int = triggerEvent.GetData().getInt("closeButton",-1)
 
@@ -872,7 +1015,10 @@ endrem
 		TApp.ExitAppDialogue = Null
 
 		'in single player: resume game
-		If TGame._instance And Not GetGame().networkgame Then GetGame().SetPaused(False)
+		If TGame._instance And Not GetGame().networkgame
+			'only unpause if there is no escape-menu open
+			if not TApp.EscapeMenuWindow then GetGame().SetPaused(False)
+		Endif
 
 		Return True
 	End Function
@@ -1357,6 +1503,22 @@ Type TSaveGame Extends TGameState
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnSave", New TData.addString("saveName", saveName).add("saveGame", saveGame)))
 
 		Return True
+	End Function
+
+
+	Function GetSavegameName:string(fileURI:string)
+		return stripDir(StripExt(fileURI))
+	End Function
+
+
+	Function GetSavegameURI:string(fileName:string)
+		if GetSavegamePath() <> "" then return GetSavegamePath() + "/" + GetSavegameName(fileName) + ".xml"
+		return GetSavegameName(fileName) + ".xml"
+	End Function
+
+
+	Function GetSavegamePath:string()
+		return "savegames"
 	End Function
 End Type
 

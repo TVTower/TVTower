@@ -61,6 +61,11 @@ Type TGUISelectList Extends TGUIListBase
 		Local entry:TGUISelectListItem = TGUISelectListItem( triggerEvent.getSender() )
 		If Not entry Then Return False
 
+		SelectEntry(entry)
+	End Method
+
+
+	Method SelectEntry:Int(entry:TGUISelectListItem)
 		'only mark selected if we are owner of that entry
 		If Self.HasItem(entry)
 			'remove old entry
@@ -72,9 +77,9 @@ Type TGUISelectList Extends TGUIListBase
 			EventManager.triggerEvent( TEventSimple.Create( "GUISelectList.onSelectEntry", new TData.Add("entry", entry) , Self ) )
 		EndIf
 	End Method
+	
 
-
-	Method deselectEntry:Int()
+	Method DeselectEntry:Int()
 		If TGUISelectListItem(selectedEntry)
 			TGUISelectListItem(selectedEntry).selected = False
 			selectedEntry = Null

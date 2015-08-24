@@ -195,7 +195,6 @@ Type TGUIListBase Extends TGUIobject
 		'recalculate scroll limits etc.
 		if guiEntriesPanel then RefreshListLimits()
 
-
 		'let the children properly refresh their size
 		'(eg. because the scrollbars are visible now)
 		For Local entry:TGUIobject = EachIn entries

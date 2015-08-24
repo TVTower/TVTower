@@ -28,6 +28,7 @@ Type TGUIinput Extends TGUIobject
 	Field valueDisplacement:TVec2D
 	Field _valueChanged:Int	= False '1 if changed
 	Field _valueBeforeEdit:String = ""
+	Field _valueAtLastUpdate:String = ""
 	Field _editable:Int = True
 
 	Global minDimension:TVec2D = new TVec2D.Init(40,28)
@@ -130,6 +131,12 @@ Type TGUIinput Extends TGUIobject
 					Else
 						_valueChanged = (_valueBeforeEdit <> value)
 					EndIf
+
+					if _valueAtLastUpdate <> value
+						'explicitely inform about a change of the displayed value
+						EventManager.registerEvent( TEventSimple.Create( "guiinput.onChangeValue", new TData.AddNumber("type", 1).AddString("value", value), Self ) )
+						_valueAtLastUpdate = value
+					endif
 				EndIf
 			EndIf
 
@@ -141,6 +148,8 @@ Type TGUIinput Extends TGUIobject
 
 				'fire onChange-event (text changed)
 				EventManager.registerEvent( TEventSimple.Create( "guiobject.onChange", new TData.AddNumber("type", 1).AddString("value", value), Self ) )
+				'explicitely inform about a change of the displayed value
+				EventManager.registerEvent( TEventSimple.Create( "guiinput.onChangeValue", new TData.AddNumber("type", 1).AddString("value", value), Self ) )
 			EndIf
 		EndIf
 		'set to "active" look

@@ -378,20 +378,20 @@ NEWSSTUDIO_YOU_ALREADY_USED_LEVEL_AND_THEREFOR_PAY = hoy ha utilizado un máximo
 
 MAP_COUNTRY_BREMEN				=	Bremen
 MAP_COUNTRY_BERLIN				=	Berlin
-MAP_COUNTRY_HAMBURG				=	Hamburg
+MAP_COUNTRY_HAMBURG				=	Hamburgo
 MAP_COUNTRY_BAWUE				=	Baden-Wuerttemberg
-MAP_COUNTRY_BAYERN				=	Bavaria
+MAP_COUNTRY_BAYERN				=	Baviera
 MAP_COUNTRY_SAARLAND			=	Saarland
-MAP_COUNTRY_RHEINLANDPFALZ		=	Rhineland-Palatinate
+MAP_COUNTRY_RHEINLANDPFALZ		=	Renania-Palatinado
 MAP_COUNTRY_HESSEN				=	Hesse
-MAP_COUNTRY_THUERINGEN			=	Thuringia
-MAP_COUNTRY_SACHSEN				=	Saxony
-MAP_COUNTRY_SACHSENANHALT		=	Saxony-Anhalt
-MAP_COUNTRY_NIEDERSACHSEN		=	Lower Saxony
+MAP_COUNTRY_THUERINGEN			=	Turingia
+MAP_COUNTRY_SACHSEN				=	Sajonia
+MAP_COUNTRY_SACHSENANHALT		=	Sajonia-Anhalt
+MAP_COUNTRY_NIEDERSACHSEN		=	Baja Sajonia
 MAP_COUNTRY_SCHLESWIGHOLSTEIN	=	Schleswig-Holstein
-MAP_COUNTRY_BRANDENBURG			=	Brandenburg
-MAP_COUNTRY_NRW					=	North Rhine-Westphalia
-MAP_COUNTRY_MECKPOM				=	Mecklenburg-Hither Pomerania
+MAP_COUNTRY_BRANDENBURG			=	Brandenburgo
+MAP_COUNTRY_NRW					=	Renania del Norte Westfalia
+MAP_COUNTRY_MECKPOM				=	Mecklemburgo-Pomerania Occidental
 
 
 NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_TITLE	= Nueva película por y con %DIRECTORNAME1%
@@ -400,8 +400,8 @@ NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_DESCRIPTION	= Director y actor principal %
 NEWS_ANNOUNCE_MOVIE_NO_ACTOR_TITLE	= Pronto en el cine: «%MOVIETITLE%»
 NEWS_ANNOUNCE_MOVIE_NO_ACTOR_DESCRIPTION	= Director %DIRECTORNAME1% lands «%MOVIETITLE%» a un cine cerca de usted.
 
-NEWS_ANNOUNCE_MOVIE_TITLE1	= New movie with %ACTORNAME1%
-NEWS_ANNOUNCE_MOVIE_TITLE2	= %DIRECTORNAME1% directs new movie
+NEWS_ANNOUNCE_MOVIE_TITLE1	= Nueva película de %ACTORNAME1%
+NEWS_ANNOUNCE_MOVIE_TITLE2	= %DIRECTORNAME1% dirige la nueva película.
 
 NEWS_ANNOUNCE_MOVIE_DESCRIPTION1	= Director %DIRECTORNAME1% and actor %ACTORNAME1% deliver «%MOVIETITLE%» to the screen.
 NEWS_ANNOUNCE_MOVIE_DESCRIPTION2	= Soon in the movies: %ACTORNAME1% in «%MOVIETITLE%». Actor %ACTORNAME2% is full of praise for the movie.
@@ -474,10 +474,10 @@ MOVIES = Peliculas
 SERIES = Series
 SERIES_SINGULAR = Series
 SPECIAL_BIN = De oferta
-AUCTION = Auction
+AUCTION = Subasta
 TRAILER = Trailer
-X_RATED = X-rated
-MOVIES_AND_SERIES_AUCTION = Movie and series auction
+X_RATED = Clasificado X
+MOVIES_AND_SERIES_AUCTION = Subasta de películas y novela por entregas
 
 OLD = Viejo
 TODAY = Hoy
@@ -495,7 +495,16 @@ OPTION_OFF = Option deseleccionada
 AVAILABLE_GAMES = Juegos disponibles
 ALREADY_OVER = Already over...?
 DO_YOU_REALLY_WANT_TO_QUIT = ¿De verdad quiere dejar de fumar?
-DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN = Do you really want to quit the game and return to startscreen?
+DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN = ¿De verdad quieres salir del juego y volver a PantInicial?
+
+CONTINUE_GAME = Continuar juego
+LOAD_GAME = Cargar juego
+SAVE_GAME = Guardar la partida
+EXIT_GAME = Salir del juego
+EXIT_TO_MAINMENU = Salir al menú principal
+NAME_OF_SAVEGAME = Nombre de la partida guardada
+OVERWRITE_SAVEGAME = Sobrescribir partida guardada?
+DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X = ¿Realmente desea sobrescribir partida guardada %SAVEGAME?
 
 ADCONTRACT_FINISHED = Contrato publicitario terminó
 ADCONTRACT_FAILED = Advertisement contract failed
@@ -510,19 +519,19 @@ PROGRAMMELICENCE_X_GOT_CONFISCATED = Licencia del programa "%TITLE%" quedo confi
 SEEMS_AUTHORITIES_VISITED_THE_WRONG_ROOM = Parece autoridades visitaron la habitación equivocada.
 BETTER_WATCH_OUT_NEXT_TIME = Ten cuidado la próxima vez.
 
-YOU_HAVE_BEEN_OUTBID = You've been outbid
-SOMEONE_BID_MORE_THAN_YOU_FOR_X = Someone bid more than you for "%TITLE%"
-YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED = Your previous bid of %MONEY% was refunded. 
+YOU_HAVE_BEEN_OUTBID = Le han sobrepujado
+SOMEONE_BID_MORE_THAN_YOU_FOR_X = Alguien una oferta más de lo que para "%TITLE%"
+YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED = Su oferta previa de %MONEY% fue devuelto. 
 
-YOU_HAVE_WON_AN_AUCTION = You've won an auction
-THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL = The licence of "%TITLE%" is now at your disposal. 
+YOU_HAVE_WON_AN_AUCTION = Ha ganado una subasta
+THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL = La licencia de "%TITLE%" ya está a su disposición.
 
 YOUR_BOSS_WANTS_TO_SEE_YOU = Tu Jefe quiere verte.
 YOU_HAVE_GOT_X_HOURS TO_VISIT_HIM = Tienes %HOURS% pora para visitarlo.
 CLICK_HERE_TO_START_YOUR_VISIT_AHEAD_OF_TIME = Haga clic aquí para iniciar su visita antes de tiempo.
 
 HINT_PRESSING_ALT_WILL_SHOW_DETAILS = Pulsa la tecla "ALT" para mostrar detalles.
-HINT_PROGRAMMEPLANER_SHORTCUTS = ALT: switch data sheet | CTRL+Click: Copiar Programa | SHIFT+Click: Siguiente espisodio.
+HINT_PROGRAMMEPLANER_SHORTCUTS = ALT: interruptor ficha técnica | CTRL+Click: Copiar Programa | SHIFT+Click: Siguiente espisodio.
 HINT = Hint
 
 PREPARING_START_DATA = Preparación de datos de inicio
@@ -530,19 +539,19 @@ SYNCHRONIZING_START_CONDITIONS = Sincronización de las condiciones de arranque
 STARTING_MULTIPLAYERGAME = Starting multiplayer game
 STARTING_SINGLEPLAYERGAME = Starting singleplayer game
 
-WEATHER_FORECAST_FOR_X_TILL_Y = Weather forecast for %BEGINHOUR% till %ENDHOUR% o'clock
+WEATHER_FORECAST_FOR_X_TILL_Y = Previsión del tiempo para %BEGINHOUR% hasta %ENDHOUR% en punto
 SKY_IS_PARTIALLY_CLOUDY = Cielo parcialmente nublado.
 SKY_IS_OVERCAST = Cielo lleno de nubes.
 SKY_IS_WITHOUT_CLOUDS = Cielo libre de nubes.
 SUN_SHINES_WHOLE_TIME = El sol brilla todo el tiempo.
-SUN_WINS_AGAINST_CLOUDS = Sun wins against existing clouds.
-SUN_IS_SHINING_SOMETIMES = Sun will shine from time to time.
-SUN_IS_NOT_SHINING = Grey sky, sun won't shine.
-RAIN_AND_SNOW_ALTERNATE = Rain and snow alternate.
+SUN_WINS_AGAINST_CLOUDS = El sol gana contra las nubes existentes.
+SUN_IS_SHINING_SOMETIMES = El sol brilla de vez en cuando.
+SUN_IS_NOT_SHINING = Cielo gris, el sol no brilla.
+RAIN_AND_SNOW_ALTERNATE = Lluvia y nieve alternativo.
 RAIN_IS_POSSIBLE = Podría llover.
-SNOW_IS_FALLING = Attention on the streets. Snow is falling and black ice is possible.
-TEMPERATURES_ARE_BETWEEN_X_AND_Y = Temperatures will be between %MINTEMPERATURE% and %MAXTEMPERATURE%°C
-TEMPERATURE_IS_CONSTANT_AT_X = Temperature is at constant  %TEMPERATURE%°C
+SNOW_IS_FALLING = Atención en las calles. La nieve está cayendo y es posible hielo en el pavimento.
+TEMPERATURES_ARE_BETWEEN_X_AND_Y = Las temperaturas serán entre %MINTEMPERATURE% y %MAXTEMPERATURE% °C
+TEMPERATURE_IS_CONSTANT_AT_X = La temperatura es constante en %TEMPERATURE%°C
 
 LOCKED = Cerrada
 ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY = El acceso a esta sala sólo es posible con la tecla derecha.
