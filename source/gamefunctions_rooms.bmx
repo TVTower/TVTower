@@ -891,12 +891,15 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'cheap movies must be cheaper than X _or_ of lower quality than Y
 		filterMoviesCheap.connectionType = TProgrammeLicenceFilterGroup.CONNECTION_TYPE_OR
 		filterMoviesCheap.filters[0].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
+		'filterMoviesCheap.filters[0].SetRequiredOwners([TOwnedGameObject.OWNER_NOBODY])
+
 		filterMoviesCheap.filters[0].priceMin = 0
 		filterMoviesCheap.filters[0].priceMax = movieCheapMoneyMaximum
 		filterMoviesCheap.filters[0].relativeTopicalityMin = 0.25
 		filterMoviesCheap.filters[0].relativeTopicalityMax = -1.0
 
 		filterMoviesCheap.filters[1].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
+		'filterMoviesCheap.filters[1].SetRequiredOwners([TOwnedGameObject.OWNER_NOBODY])
 		filterMoviesCheap.filters[1].qualityMin = -1.0
 		filterMoviesCheap.filters[1].qualityMax = movieCheapQualityMaximum
 		filterMoviesCheap.filters[1].relativeTopicalityMin = 0.25
@@ -904,6 +907,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		
 		'filter them by price too - eg. for auction ?
 		filterSeries.licenceTypes = [TVTProgrammeLicenceType.SERIES]
+		'filterSeries.filters[0].SetRequiredOwners([TOwnedGameObject.OWNER_NOBODY])
 		'as long as there are not that much series, allow 10% instead of 25%
 		filterSeries.relativeTopicalityMin = 0.10
 		filterSeries.relativeTopicalityMax = -1.0
@@ -1309,11 +1313,6 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 				if lists[j] = listMoviesGood then licence = GetProgrammeLicenceCollection().GetRandomByFilter(filterMoviesGood)
 				if lists[j] = listMoviesCheap then licence = GetProgrammeLicenceCollection().GetRandomByFilter(filterMoviesCheap)
 				if lists[j] = listSeries then licence = GetProgrammeLicenceCollection().GetRandomByFilter(filterSeries)
-
-
-'				if lists[j] = listMoviesGood then licence = GetProgrammeLicenceCollection().GetRandomWithPrice(movieCheapMaximum,-1, TVTProgrammeLicenceType.SINGLE)
-'				if lists[j] = listMoviesCheap then licence = GetProgrammeLicenceCollection().GetRandomWithPrice(0,movieCheapMaximum, TVTProgrammeLicenceType.SINGLE)
-'				if lists[j] = listSeries then licence = GetProgrammeLicenceCollection().GetRandom(TVTProgrammeLicenceType.SERIES)
 
 				'add new licence at slot
 				if licence

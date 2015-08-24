@@ -650,6 +650,11 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method hasFlag:Int(flag:Int) {_exposeToLua}
+		return GetFlags() & flag
+	End Method
+	
+
 	'returns the flags as a mix of all licences
 	'ATTENTION: if ONE has xrated, all are xrated, if one has trash, all ..
 	'so this kind of "taints"
@@ -1306,6 +1311,8 @@ Type TProgrammeLicenceFilter
 	Field relativeTopicalityMin:Float = -1.0
 	Field relativeTopicalityMax:Float = -1.0
 	Field licenceTypes:int[]
+	Field requiredOwners:int[]
+	Field forbiddenOwners:int[]
 	Field priceMin:int = -1
 	Field priceMax:int = -1
 	Field notFlags:int
@@ -1370,6 +1377,8 @@ Type TProgrammeLicenceFilter
 		for local i:int = EachIn otherFilter.genres
 			genres :+ [i]
 		Next
+		requiredOwners = otherFilter.requiredOwners[.. otherFilter.requiredOwners.length]
+		forbiddenOwners = otherFilter.forbiddenOwners[.. otherFilter.forbiddenOwners.length]
 		qualityMin = otherFilter.qualityMin
 		qualityMax = otherFilter.qualityMin
 		relativeTopicalityMin = otherFilter.relativeTopicalityMin
@@ -1548,6 +1557,16 @@ Type TProgrammeLicenceFilter
 	End Method
 
 
+	Method SetForbiddenOwners:int(owners:int[])
+		forbiddenOwners = owners[ .. owners.length]
+	End Method
+
+
+	Method SetRequiredOwners:int(owners:int[])
+		requiredOwners = owners[ .. owners.length]
+	End Method
+
+
 	'checks if the given programmelicence contains at least ONE of the given
 	'filter criterias ("OR"-chain of criterias)
 	'Ex.: filter cares for genres 1,2 and flags "trash" and "bmovie"
@@ -1588,6 +1607,24 @@ Type TProgrammeLicenceFilter
 			if not hasType then return False
 		endif
 
+		'check if owner is one of the owners required for the filter
+		'if not, filter failed
+		if requiredOwners.length > 0
+			local hasOwner:int = False
+			for local owner:int = eachin requiredOwners
+				if owner = licence.owner then hasOwner = True;exit
+			Next
+			if not hasOwner then return False
+		endif
+
+		'check if owner is one of the forbidden owners
+		'if so, filter fails
+		if forbiddenOwners.length > 0
+			for local owner:int = eachin forbiddenOwners
+				if owner = licence.owner then return False
+			Next
+		endif
+				
 		'check flags share something
 		if flags > 0 and (licence.GetFlags() & flags) <= 0 then return False
 

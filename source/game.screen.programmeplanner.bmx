@@ -902,7 +902,7 @@ endrem
 		
 		GUIManager.Draw("programmeplanner",,, GUIMANAGER_TYPES_NONDRAGGED)
 
-		DrawDisabledSlots( KeyManager.IsDown(KEY_LSHIFT) and KeyManager.IsDown(KEY_X))
+		DrawDisabledSlots()
 
 		'overlay old days
 		If GetWorldTime().getDay() > planningDay
@@ -981,20 +981,12 @@ endrem
 		if not room then return 0
 
 		currentRoom = room
-'rem
-ResetSlots(SLOTTYPE_ALL)
-if KeyManager.IsDown(KEY_X)
-	DisableSlots([0,5,6,7,20,21,22,23], SLOTTYPE_PROGRAMME)
-	DisableSlots([0,5,6,7,22,23], SLOTTYPE_ADVERTISEMENT)
-endif
 
+		'reset potentially locked slots
+		ResetSlots(SLOTTYPE_ALL)
+		'TODO: lock slots depending on "dragged" item
+		
 
-if KeyManager.IsDown(KEY_SPACE)
-	GetPlayer().GetProgrammePlan().LockSlot(TVTBroadcastMaterialType.PROGRAMME, GetWorldTime().GetDay(), 0)
-	GetPlayer().GetProgrammePlan().LockSlot(TVTBroadcastMaterialType.PROGRAMME, GetWorldTime().GetDay(), 1)
-	GetPlayer().GetProgrammePlan().LockSlot(TVTBroadcastMaterialType.PROGRAMME, GetWorldTime().GetDay(), 2)
-endif
-'endrem		
 		'if not initialized, do so
 		if planningDay = -1 then planningDay = GetWorldTime().getDay()
 
@@ -1031,7 +1023,6 @@ endif
 		else
 			plannerPreviousDayButton.enable()
 		endif
-		
 
 		'reset hovered and dragged gui objects - gets repopulated automagically
 		hoveredGuiProgrammePlanElement = null
