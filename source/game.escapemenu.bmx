@@ -13,7 +13,8 @@ Type TGUIModalMainMenu extends TGUIModalWindowChainElement
 		local buttonsText:string[] = ["CONTINUE_GAME", "LOAD_GAME", "SAVE_GAME", "MENU_SETTINGS", "EXIT_TO_MAINMENU", "EXIT_GAME"]
 		buttons = buttons[ .. buttonsText.length]
 		for local i:int = 0 until buttons.length
-			if i > 4
+			'move exit-buttons a bit down
+			if i >= 4
 				buttons[i] = New TGUIButton.Create(New TVec2D.Init(0, 5 + 10 + i*40), New TVec2D.Init(canvas.GetContentScreenWidth(), -1), GetLocale(buttonsText[i]), "")
 			else
 				buttons[i] = New TGUIButton.Create(New TVec2D.Init(0, 5 + i*40), New TVec2D.Init(canvas.GetContentScreenWidth(), -1), GetLocale(buttonsText[i]), "")
@@ -21,8 +22,8 @@ Type TGUIModalMainMenu extends TGUIModalWindowChainElement
 			canvas.AddChild(buttons[i])
 			AddEventListener( EventManager.RegisterListenerMethod("guiobject.onClick", self, "onButtonClick", buttons[i]) )
 		next
-		'move exit-button a bit down
-		buttons[4].rect.position.AddY(10)
+		'disable settings button for now
+		buttons[3].disable()
 
 		If guiCaptionTextBox
 			guiCaptionTextBox.SetFont(.headerFont)
