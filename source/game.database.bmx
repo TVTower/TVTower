@@ -996,10 +996,20 @@ endrem
 			local memberGUID:string = nodeMember.GetContent()
 
 			local member:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID(memberGUID)
-			'if person was defined add the given job
-			if member Then programmeData.AddCast(new TProgrammePersonJob.Init(memberGUID, memberFunction))
-		Next
+			'create a simple person so jobs could get added to persons
+			'which are created after that programme
+			if not member
+				member = new TProgrammePerson
+				member.SetGUID(memberGUID)
+				member.firstName = memberGUID
+				GetProgrammePersonBaseCollection().AddInsignificant(member)
+			endif
 
+			'member now is capable of doing this job
+			member.AddJob(memberFunction)
+			'add cast
+			programmeData.AddCast(new TProgrammePersonJob.Init(memberGUID, memberFunction))
+		Next
 
 		'=== GROUPS ===
 		local nodeGroups:TxmlNode = xml.FindElementNode(node, "groups")
