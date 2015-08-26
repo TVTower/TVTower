@@ -318,6 +318,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		'remove from justAddedProgrammeLicences too!
 		justAddedProgrammeLicences.Remove(licence)
 
+		'set unused again (give back to pool)
+		licence.SetOwner( TOwnedGameObject.OWNER_NOBODY )
+
 		'emit an event so eg. network can recognize the change
 		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.removeProgrammeLicence", new TData.add("programmeLicence", licence).addNumber("sell", sell), self))
 	End Method

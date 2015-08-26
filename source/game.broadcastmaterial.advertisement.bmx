@@ -30,8 +30,6 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 	'gesendet worden ist ... dann koennen die "GUI"-Bloecke darauf reagieren
 	'und ihre Werte aktualisieren
 
-	Global List:TList			= CreateList()
-
 
 	Method Create:TAdvertisement(contract:TAdContract)
 		self.contract = contract
@@ -42,24 +40,8 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 
 		self.owner = self.contract.owner
 
-		List.AddLast(self)
 		Return self
 	End Method
-
-
-
-	Function GetRandomFromList:TAdvertisement(_list:TList, playerID:Int =-1)
-		If _list = Null Then Return Null
-		If _list.count() > 0
-			Local obj:TAdvertisement = TAdvertisement(_list.ValueAtIndex((randRange(0, _list.Count() - 1))))
-			If obj <> Null
-				obj.owner = playerID
-				Return obj
-			EndIf
-		EndIf
-		Print "TAdvertisement list empty - wrong filter ?"
-		Return Null
-	End Function
 
 
 	'override default getter to make contract id the reference id
@@ -172,7 +154,7 @@ endrem
 		Local earn:Int = audienceResult.Audience.GetSum() * contract.GetPerViewerRevenue()
 		if earn > 0
 			TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial sent, earned "+earn+CURRENCYSIGN+" with an audience of " + audienceResult.Audience.GetSum(), LOG_DEBUG)
-			GetPlayerFinanceCollection().Get(owner).EarnInfomercialRevenue(earn, contract)
+			GetPlayerFinance(owner).EarnInfomercialRevenue(earn, contract)
 		else
 			Notify "FinishBroadcastingAsProgramme: earn value is negative: "+earn 
 		endif

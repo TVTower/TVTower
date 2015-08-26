@@ -18,7 +18,15 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		Local obj:TProgramme = New TProgramme
 		obj.licence = licence
 
-		obj.owner = licence.owner
+		if not licence.isOwnedByPlayer()
+			TLogger.Log("TProgramme.Create", "===========", LOG_ERROR)
+			TLogger.Log("TProgramme.Create", "Creating programme ~q"+licence.GetTitle()+"~q of licence not owned by a player! Report to developers asap.", LOG_ERROR)
+			TLogger.Log("TProgramme.Create", "===========", LOG_ERROR)
+		endif
+
+		'store the owner in that moment (later on it might differ as
+		'the player sold a licence while the broadcast stays forever)
+		obj.SetOwner(licence.owner)
 		obj.data = licence.getData()
 		
 		obj.setMaterialType(TVTBroadcastMaterialType.PROGRAMME)
@@ -44,10 +52,10 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			if revenue > 0
 				'earn revenue for callin-shows
 				If data.HasFlag(TVTProgrammeFlag.PAID)
-					GetPlayerFinanceCollection().Get(owner).EarnCallerRevenue(revenue, self)
+					GetPlayerFinance(owner).EarnCallerRevenue(revenue, self)
 				'all others programmes get "sponsored"
 				Else
-					GetPlayerFinanceCollection().Get(owner).EarnSponsorshipRevenue(revenue, self)
+					GetPlayerFinance(owner).EarnSponsorshipRevenue(revenue, self)
 				EndIf
 			endif
 		endif
@@ -57,12 +65,18 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	'override
 	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		Super.FinishBroadcasting(day, hour, minute, audienceData)
-		if owner <= 0 then return False
+
+		if not isOwnedByPlayer()
+			TLogger.Log("FinishBroadcastingAsProgramme", "===========", LOG_ERROR)
+			TLogger.Log("FinishBroadcastingAsProgramme", "Finishing programme ~q"+GetTitle()+"~q which is not owned by a player! Report to developers asap.", LOG_ERROR)
+			TLogger.Log("FinishBroadcastingAsProgramme", "===========", LOG_ERROR)
+			return False
+		endif
 
 		if usedAsType = TVTBroadcastMaterialType.PROGRAMME
 			FinishBroadcastingAsProgramme(day, hour, minute, audienceData)
 			'aired count is stored in programmedata for now
-			'GetBroadcastInformationProvider().SetProgrammeAired(licence.owner, GetBroadcastInformationProvider().GetTrailerAired(licence.owner) + 1, GetWorldTime.MakeTime(0,day,hour,minute) )
+			'GetBroadcastInformationProvider().SetProgrammeAired(owner, GetBroadcastInformationProvider().GetTrailerAired(owner) + 1, GetWorldTime.MakeTime(0,day,hour,minute) )
 
 			'inform others
 			EventManager.triggerEvent(TEventSimple.Create("broadcast.programme.FinishBroadcasting", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
@@ -72,7 +86,10 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 			'inform others
 			EventManager.triggerEvent(TEventSimple.Create("broadcast.programme.FinishBroadcastingAsAdvertisement", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
-'			GetBroadcastInformationProvider().SetTrailerAired(licence.owner, GetBroadcastInformationProvider().GetTrailerAired(licence.owner) + 1, GetWorldTime.MakeTime(0,day,hour,minute) )
+'			GetBroadcastInformationProvider().SetTrailerAired(owner, GetBroadcastInformationProvider().GetTrailerAired(owner) + 1, GetWorldTime.MakeTime(0,day,hour,minute) )
+		else
+			self.SetState(self.STATE_OK)
+			TLogger.Log("FinishBroadcasting", "Finishing programme broadcast with unknown usedAsType="+usedAsType, LOG_ERROR)
 		endif
 
 		return TRUE
@@ -127,35 +144,39 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	Method FinishBroadcastingAsProgramme:int(day:int, hour:int, minute:int, audienceData:object)
+		if not isOwnedByPlayer()
+			TLogger.Log("FinishBroadcastingAsProgramme", "===========", LOG_ERROR)
+			TLogger.Log("FinishBroadcastingAsProgramme", "Finishing a programme not owned by a player! Report to developers asap.", LOG_ERROR)
+			TLogger.Log("FinishBroadcastingAsProgramme", "===========", LOG_ERROR)
+		endif
+
 		self.SetState(self.STATE_OK)
 
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 
-		If self.owner > 0 'Möglichkeit für Unit-Tests. Unschön....
+		'check if revenues have to get paid (call-in-shows, sponsorships)
+		CheckHourlyBroadcastingRevenue(audienceResult.audience)
 
-			'check if revenues have to get paid (call-in-shows, sponsorships)
-			CheckHourlyBroadcastingRevenue(audienceResult.audience)
+		'adjust trend/popularity
+		Local popularity:TGenrePopularity = data.GetGenreDefinition().Popularity
+		local popData:TData = new TData
+		popData.AddNumber("attractionQuality", audienceResult.AudienceAttraction.Quality)
+		popData.AddNumber("audienceSum", audienceResult.Audience.GetSum())
+		popData.AddNumber("broadcastTopAudience", GetBroadcastManager().GetCurrentBroadcast().TopAudience)
 
-			'adjust trend/popularity
-			Local popularity:TGenrePopularity = data.GetGenreDefinition().Popularity
-			local popData:TData = new TData
-			popData.AddNumber("attractionQuality", audienceResult.AudienceAttraction.Quality)
-			popData.AddNumber("audienceSum", audienceResult.Audience.GetSum())
-			popData.AddNumber("broadcastTopAudience", GetBroadcastManager().GetCurrentBroadcast().TopAudience)
+		popularity.FinishBroadcastingProgramme(popData, GetBlocks())
+		
+		'Image-Strafe
+		If data.IsPaid()
+			Local penalty:TAudience = TAudience.CreateAndInit(-0.25, -0.25, -0.15, -0.35, -0.15, -0.55, -0.15, -0.15, -0.15)
+			penalty.MultiplyFloat(data.blocks)
+			GetPublicImageCollection().Get(owner).ChangeImage(penalty)			
+		ElseIf data.IsTrash()
+			Local penalty:TAudience = TAudience.CreateAndInit(0, 0, +0.2, -0.2, +0.2, -0.5, -0.1, 0, 0)
+			penalty.MultiplyFloat(data.blocks)			
+			GetPublicImageCollection().Get(owner).ChangeImage(penalty)						
+		End If
 
-			popularity.FinishBroadcastingProgramme(popData, GetBlocks())
-			
-			'Image-Strafe
-			If data.IsPaid()
-				Local penalty:TAudience = TAudience.CreateAndInit(-0.25, -0.25, -0.15, -0.35, -0.15, -0.55, -0.15, -0.15, -0.15)
-				penalty.MultiplyFloat(data.blocks)			
-				GetPublicImageCollection().Get(self.owner).ChangeImage(penalty)			
-			ElseIf data.IsTrash()
-				Local penalty:TAudience = TAudience.CreateAndInit(0, 0, +0.2, -0.2, +0.2, -0.5, -0.1, 0, 0)
-				penalty.MultiplyFloat(data.blocks)			
-				GetPublicImageCollection().Get(self.owner).ChangeImage(penalty)						
-			End If
-		Endif
 		'adjust topicality relative to possible audience 
 		data.CutTopicality(GetTopicalityCutModifier( audienceResult.GetWholeMarketAudienceQuote().GetAverage()))
 
@@ -544,7 +565,9 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	Method ShowSheet:int(x:int,y:int,align:int)
-		self.licence.ShowSheet(x,y,align, self.usedAsType, self.owner)
+		'show sheet with stats of the broadcast owner, not the current
+		'licence owner
+		self.licence.ShowSheet(x,y,align, self.usedAsType, owner)
 	End Method
 
 

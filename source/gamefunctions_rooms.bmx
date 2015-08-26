@@ -1145,13 +1145,11 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 
 	Method BuyProgrammeLicenceFromPlayer:int(licence:TProgrammeLicence)
-		local buy:int = (licence.owner > 0)
+		'do not buy if unowned
+		if not licence.isOwnedByPlayer() then return False
 
 		'remove from player (lists and suitcase) - and give him money
-		if GetPlayerCollection().IsPlayer(licence.owner)
-			GetPlayerProgrammeCollection(licence.owner).RemoveProgrammeLicence(licence, TRUE)
-		endif
-
+		GetPlayerProgrammeCollection(licence.owner).RemoveProgrammeLicence(licence, TRUE)
 		'add to agency's lists - if not existing yet
 		if not HasProgrammeLicence(licence) then AddProgrammeLicence(licence)
 
@@ -1160,6 +1158,14 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 
 	Method AddProgrammeLicence:int(licence:TProgrammeLicence, tryOtherLists:int = False)
+		'do not add if still owned by a player or the vendor
+		if licence.isOwned()
+			TLogger.Log("MovieAgency", "===========", LOG_ERROR)
+			TLogger.Log("MovieAgency", "AddProgrammeLicence() failed: cannot add licence owned by someone else. Owner="+licence.owner+"! Report to developers asap.", LOG_ERROR)
+			TLogger.Log("MovieAgency", "===========", LOG_ERROR)
+			return False
+		endif
+		
 		'try to fill the licence into the corresponding list
 		'we use multiple lists - if the first is full, try second
 		local lists:TProgrammeLicence[][]
@@ -1192,10 +1198,6 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 				return TRUE
 			Next
 		Next
-
-		'there was no empty slot to place that licence
-		'so just give it back to the pool
-		licence.SetOwner(licence.OWNER_NOBODY)
 
 		return FALSE
 	End Method

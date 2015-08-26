@@ -2434,6 +2434,7 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 		If licence.owner <> GetPlayerCollection().playerID And (licence.owner<=0 And Not IsAffordable())
 			SetAlpha oldCol.a * 0.75
 		endif
+
 		Super.Draw()
 
 		If licence.owner <> GetPlayerCollection().playerID And (licence.owner<=0 And Not IsAffordable())
