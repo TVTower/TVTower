@@ -14,6 +14,9 @@ Type TRoomHandlerCollection
 	End Function
 
 
+	'initialize all handlers and register events
+	'called _before_ starting a game
+	'called _before_ loading a savegame (-> old instances!)
 	Method Initialize:int()
 		'=== (re-)initialize all known room handlers
 		RoomHandler_Office.GetInstance().Initialize()
@@ -49,9 +52,10 @@ Type TRoomHandlerCollection
 		_eventListeners :+ [ EventManager.registerListenerFunction( "figure.onForcefullyLeaveRoom", onHandleFigureInRoom ) ]
 
 		_eventListeners :+ [ EventManager.registerListenerFunction( "Language.onSetLanguage", onSetLanguage ) ]
-		'handle savegame loading
-		_eventListeners :+ [ EventManager.registerListenerFunction( "Game.PrepareNewGame", onSaveGameBeginLoad ) ]
+		'== handle savegame loading ==
+		'informing _old_ instances of the various roomhandlers
 		_eventListeners :+ [ EventManager.registerListenerFunction( "SaveGame.OnBeginLoad", onSaveGameBeginLoad ) ]
+		'informing _new_ instances of the various roomhandlers
 		_eventListeners :+ [ EventManager.registerListenerFunction( "SaveGame.OnLoad", onSaveGameLoad ) ]
 	End Method
 
@@ -78,6 +82,7 @@ Type TRoomHandlerCollection
 	End Function
 	
 
+	'called _before_ a game (and its data) gets loaded
 	Function onSaveGameBeginLoad:int( triggerEvent:TEventBase )
 		For local handler:TRoomHandler = EachIn GetInstance().handlers.Values()
 			handler.onSaveGameBeginLoad( triggerEvent )
@@ -85,7 +90,21 @@ Type TRoomHandlerCollection
 	End Function
 
 
+	'called _after_ a game (and its data) got loaded
 	Function onSaveGameLoad:int( triggerEvent:TEventBase )
+		local oldHandlers:TMap = GetInstance().handlers.Copy()
+		'request each handler to re-assign (the new instance of the handler)
+		'ATTENTION: this allows to handle this individually for each
+		'           handler. The alternative (storing a "handle:string"-
+		'           property in each handler) would lead to problems
+		'           as soon as some offices have varying handlers
+		'           or a handler wants to take care of multiply rooms 
+		GetInstance().handlers.Clear()
+		For local handler:TRoomHandler = EachIn oldHandlers.Values()
+			handler.RegisterHandler()
+		Next
+
+		'inform the (new) handlers
 		For local handler:TRoomHandler = EachIn GetInstance().handlers.Values()
 			handler.onSaveGameLoad( triggerEvent )
 		Next
@@ -155,6 +174,8 @@ Type TRoomHandler
 	Method onTryLeaveRoom:int( triggerEvent:TEventBase ); return True; End Method
 	Method onSaveGameBeginLoad:int( triggerEvent:TEventBase ); return True; End Method
 	Method onSaveGameLoad:int( triggerEvent:TEventBase ); return True; End Method
+	'called during initialization and after savegame loading
+	Method RegisterHandler:int() abstract
 	'called to create all needed things (GUI) AND Reset
 	Method Initialize:int() abstract
 	'called to return to default state
@@ -243,9 +264,8 @@ Type RoomHandler_Office extends TRoomHandler
 	
 	Method Initialize:Int()
 		'=== RESET TO INITIAL STATE ===
-		StationsToolTip = null
-		PlannerToolTip = null
-		SafeToolTip = null
+		CleanUp()
+
 
 		'reset/initialize screens (event connection etc.)
 		TScreenHandler_Financials.Initialize()
@@ -255,7 +275,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		'=== REGISTER HANDLER ===
-		GetRoomHandlerCollection().SetHandler("office", self)
+		RegisterHandler()
 
 
 		'=== EVENTS ===
@@ -263,7 +283,6 @@ Type RoomHandler_Office extends TRoomHandler
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
 
-		
 		'=== register event listeners
 		'handle the "office" itself (not computer etc)
 		'using this approach avoids "tooltips" to be visible in subscreens
@@ -274,6 +293,27 @@ Type RoomHandler_Office extends TRoomHandler
 		'too.
 		'reenable if doing more localization there
 		'SetLanguage()
+	End Method
+
+
+	Method CleanUp()
+		'=== unset cross referenced objects ===
+		StationsToolTip = null
+		PlannerToolTip = null
+		SafeToolTip = null
+
+		'=== remove obsolete gui elements ===
+		'
+		
+		'=== remove all registered instance specific event listeners
+		'EventManager.unregisterListenersByLinks(_localEventListeners)
+		'_localEventListeners = new TLink[0]
+	End Method
+
+
+	Method RegisterHandler:int()
+		if GetInstance() <> self then self.CleanUp()
+		GetRoomHandlerCollection().SetHandler("office", GetInstance())
 	End Method
 
 
@@ -406,19 +446,15 @@ Type RoomHandler_Archive extends TRoomHandler
 
 	Method Initialize:int()
 		'=== RESET TO INITIAL STATE ===
-		'nothing up to now
+		CleanUp()
 
 
 		'=== REGISTER HANDLER ===
-		GetRoomHandlerCollection().SetHandler("archive", self)
+		RegisterHandler()
 
 
 		'=== CREATE ELEMENTS ===
-		'=== create gui elements if not done yet
-		if GuiListSuitCase
-			'clear gui lists etc
-			RemoveAllGuiElements()
-		else
+		if not GuiListSuitCase
 			GuiListSuitcase	= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200, 80), "archive")
 			GuiListSuitcase.guiEntriesPanel.minSize.SetXY(200,80)
 			GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
@@ -440,7 +476,6 @@ Type RoomHandler_Archive extends TRoomHandler
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
 
-		
 		'=== register event listeners
 		'we want to know if we hover a specific block - to show a datasheet
 		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverProgrammeLicence, "TGUIProgrammeLicence" ) ]
@@ -453,6 +488,25 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		'(re-)localize content
 		SetLanguage()
+	End Method
+
+
+	Method CleanUp()
+		'=== unset cross referenced objects ===
+		'
+
+		'=== remove obsolete gui elements ===
+		if GuiListSuitCase then RemoveAllGuiElements()
+
+		'=== remove all registered instance specific event listeners
+		'EventManager.unregisterListenersByLinks(_localEventListeners)
+		'_localEventListeners = new TLink[0]
+	End Method
+
+
+	Method RegisterHandler:int()
+		if GetInstance() <> self then self.CleanUp()
+		GetRoomHandlerCollection().SetHandler("archive", GetInstance())
 	End Method
 
 
@@ -843,16 +897,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 	Method Initialize:int()
 		'=== RESET TO INITIAL STATE ===
-		'To keep potential references to these variables intact we should
-		'clear and resize the arrays instead of doing "= new TProgrammeLicence[x] 
-		'clear arrays
-		'listMoviesGood = listMoviesGood[..0]
-		'listMoviesCheap = listMoviesCheap[..0]
-		'listSeries = listSeries[..0]
-		'listMoviesGood = listMoviesGood[..programmesPerLine]
-		'listMoviesCheap = listMoviesCheap[..programmesPerLine]
-		'listSeries = listSeries[..programmesPerLine]
-
+		CleanUp()
+		
 		listMoviesGood = new TProgrammeLicence[programmesPerLine]
 		listMoviesCheap = new TProgrammeLicence[programmesPerLine]
 		listSeries = new TProgrammeLicence[programmesPerLine]
@@ -912,8 +958,9 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		filterSeries.relativeTopicalityMin = 0.10
 		filterSeries.relativeTopicalityMax = -1.0
 
+
 		'=== REGISTER HANDLER ===
-		GetRoomHandlerCollection().SetHandler("movieagency", self)
+		RegisterHandler()
 
 
 		'=== CREATE ELEMENTS ===
@@ -922,10 +969,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		AuctionEntity = GetSpriteEntityFromRegistry("entity_movieagency_auction")
 
 		'=== create gui elements if not done yet
-		if GuiListMoviesGood
-			'clear gui lists etc
-			RemoveAllGuiElements()
-		else
+		if not GuiListMoviesGood
 			GuiListMoviesGood = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,50), new TVec2D.Init(220,80), "movieagency")
 			GuiListMoviesCheap = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,148), new TVec2D.Init(220,80), "movieagency")
 			GuiListSeries = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,246), new TVec2D.Init(220,80), "movieagency")
@@ -980,7 +1024,6 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
 
-
 		'=== register event listeners
 		'drop ... so sell/buy the thing
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropProgrammeLicence, "TGUIProgrammeLicence" ) ]
@@ -997,6 +1040,25 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		'(re-)localize content
 		SetLanguage()
+	End Method
+
+
+	Method CleanUp()
+		'=== unset cross referenced objects ===
+		'
+		
+		'=== remove obsolete gui elements ===
+		if GuiListMoviesGood then RemoveAllGuiElements()
+
+		'=== remove all registered instance specific event listeners
+		'EventManager.unregisterListenersByLinks(_localEventListeners)
+		'_localEventListeners = new TLink[0]
+	End Method
+
+
+	Method RegisterHandler:int()
+		if GetInstance() <> self then self.CleanUp()
+		GetRoomHandlerCollection().SetHandler("movieagency", GetInstance())
 	End Method
 
 
@@ -1198,6 +1260,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 				return TRUE
 			Next
 		Next
+
 
 		return FALSE
 	End Method
@@ -1668,22 +1731,16 @@ Type RoomHandler_News extends TRoomHandler
 		if not plannerScreen or not studioScreen then return False
 
 		'=== RESET TO INITIAL STATE ===
-		PlannerToolTip = null
-		NewsGenreTooltip = null
-		currentRoom = null
-		newsPlannerTextImage = null
+		CleanUp()
 
 
 		'=== REGISTER HANDLER ===
-		GetRoomHandlerCollection().SetHandler("news", self)
+		RegisterHandler()
 
 
 		'=== CREATE ELEMENTS ===
 		'=== create gui elements if not done yet
-		if NewsGenreButtons[0]
-			'clear gui lists etc
-			RemoveAllGuiElements()
-		else
+		if not NewsGenreButtons[0]
 			'create genre buttons
 			'ATTENTION: We could do this in order of The NewsGenre-Values
 			'           But better add it to the buttons.data-property
@@ -1764,6 +1821,28 @@ Type RoomHandler_News extends TRoomHandler
 		_eventListeners :+ _RegisterScreenHandler( onUpdateNewsPlanner, onDrawNewsPlanner, plannerScreen )
 	End Method
 
+
+	Method CleanUp()
+		'=== unset cross referenced objects ===
+		PlannerToolTip = null
+		NewsGenreTooltip = null
+		currentRoom = null
+		newsPlannerTextImage = null
+
+		'=== remove obsolete gui elements ===
+		if NewsGenreButtons[0] then RemoveAllGuiElements()
+
+		'=== remove all registered instance specific event listeners
+		'EventManager.unregisterListenersByLinks(_localEventListeners)
+		'_localEventListeners = new TLink[0]
+	End Method
+
+
+	Method RegisterHandler:int()
+		if GetInstance() <> self then self.CleanUp()
+		GetRoomHandlerCollection().SetHandler("news", GetInstance())
+	End Method
+	
 
 	Method AbortScreenActions:Int()
 		local abortedAction:int = False
@@ -2178,11 +2257,11 @@ Type RoomHandler_Boss extends TRoomHandler
 
 	Method Initialize:int()
 		'=== RESET TO INITIAL STATE ===
-		'nothing up to now
+		CleanUp()
 
 
 		'=== REGISTER HANDLER ===
-		GetRoomHandlerCollection().SetHandler("boss", self)
+		RegisterHandler()
 
 
 		'=== CREATE ELEMENTS ===
@@ -2210,6 +2289,17 @@ Type RoomHandler_Boss extends TRoomHandler
 		endif
 	End Method
 
+
+	Method CleanUp()
+		'
+	End Method
+
+
+	Method RegisterHandler:int()
+		if GetInstance() <> self then self.CleanUp()
+		GetRoomHandlerCollection().SetHandler("boss", GetInstance())
+	End Method
+	
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		smokeEmitter.Draw()
@@ -2290,16 +2380,12 @@ Type RoomHandler_Studio extends TRoomHandler
 
 	Method Initialize:int()
 		'=== RESET TO INITIAL STATE ===
-		studioScriptsByRoom.Clear()
-		studioManagerDialogue = null
+		CleanUp()
 		studioScriptLimit = 1
-		studioManagerEntity = null
-		studioManagerTooltip = null
-		placeScriptTooltip = null
 
 
 		'=== REGISTER HANDLER ===
-		GetRoomHandlerCollection().SetHandler("studio", self)
+		RegisterHandler()
 
 
 		'=== CREATE ELEMENTS ===
@@ -2307,9 +2393,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		studioManagerEntity = GetSpriteEntityFromRegistry("entity_studio_manager")
 
 		'=== create gui elements if not done yet
-		if guiListStudio
-			RemoveAllGuiElements()
-		else
+		if not guiListStudio
 			local sprite:TSprite = GetSpriteFromRegistry("gfx_scripts_0")
 			local spriteSuitcase:TSprite = GetSpriteFromRegistry("gfx_scripts_0_dragged")
 			guiListStudio = new TGUIScriptSlotList.Create(new TVec2D.Init(730, 300), new TVec2D.Init(17, 52), "studio")
@@ -2341,11 +2425,10 @@ Type RoomHandler_Studio extends TRoomHandler
 
 		
 		'=== EVENTS ===
-		'=== remove all registered event listeners
+			'=== remove all registered event listeners
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
 
-		
 		'=== register event listeners
 		'to react on changes in the programmeCollection (eg. custom script finished)
 		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.removeScript", onChangeProgrammeCollection ) ]
@@ -2363,6 +2446,29 @@ Type RoomHandler_Studio extends TRoomHandler
 		SetLanguage()
 	End Method
 
+
+	Method CleanUp()
+		'=== unset cross referenced objects ===
+		studioScriptsByRoom.Clear()
+		studioManagerDialogue = null
+		studioManagerEntity = null
+		studioManagerTooltip = null
+		placeScriptTooltip = null
+
+		'=== remove obsolete gui elements ===
+		if guiListStudio then RemoveAllGuiElements()
+
+		'=== remove all registered instance specific event listeners
+		'EventManager.unregisterListenersByLinks(_localEventListeners)
+		'_localEventListeners = new TLink[0]
+	End Method
+
+
+	Method RegisterHandler:int()
+		if GetInstance() <> self then self.CleanUp()
+		GetRoomHandlerCollection().SetHandler("studio", GetInstance())
+	End Method
+	
 
 	'clear the guilist for the suitcase if a player enters
 	Method onEnterRoom:int( triggerEvent:TEventBase )
@@ -2943,6 +3049,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 	Method Initialize:int()
 		'=== RESET TO INITIAL STATE ===
+		CleanUp()
+		
 		contractsPerLine:int = 4
 		contractsNormalAmount = 12
 		contractsCheapAmount = 4
@@ -2962,15 +3070,11 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 		'=== REGISTER HANDLER ===
-		GetRoomHandlerCollection().SetHandler("adagency", self)
+		RegisterHandler()
 
 
 		'=== CREATE ELEMENTS ===
-		'=== create gui elements if not done yet
-		if GuiListSuitcase
-			'clear gui lists etc
-			RemoveAllGuiElements()
-		else
+		if not GuiListSuitcase
 			GuiListNormal = GuiListNormal[..3]
 			for local i:int = 0 to GuiListNormal.length-1
 				local listIndex:int = GuiListNormal.length-1 - i
@@ -3017,7 +3121,6 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
 
-		
 		'=== register event listeners
 		'to react on changes in the programmeCollection (eg. contract finished)
 		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.addAdContract", onChangeProgrammeCollection ) ]
@@ -3037,6 +3140,26 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		SetLanguage()
 	End Method
 
+
+	Method CleanUp()
+		'=== unset cross referenced objects ===
+		'
+		
+		'=== remove obsolete gui elements ===
+		if GuiListSuitcase then RemoveAllGuiElements()
+
+		'=== remove all registered instance specific event listeners
+		'EventManager.unregisterListenersByLinks(_localEventListeners)
+		'_localEventListeners = new TLink[0]
+	End Method
+
+
+	Method RegisterHandler:int()
+		if GetInstance() <> self then self.CleanUp()
+		GetRoomHandlerCollection().SetHandler("adagency", GetInstance())
+print "refreshed ad instance"
+	End Method
+	
 
 	Method AbortScreenActions:Int()
 		local abortedAction:int = False
@@ -3299,7 +3422,6 @@ Type RoomHandler_AdAgency extends TRoomHandler
 				contracts.sort(True, TAdContract.SortByMinAudience)
 		End select
 		
-
 		'add again - so it gets sorted
 		for local contract:TAdContract = eachin contracts
 			AddContract(contract)
@@ -3755,18 +3877,6 @@ endrem
 
 		'now all filters contain "valid ranges"
 		TLogger.log("AdAgency.RefillBlocks", "  Cheap filter: "+cheapListFilter.ToString(), LOG_DEBUG)
-rem
-		For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
-			if cheapListFilter.DoesFilter(a)
-				local ad:TAdContract = new TAdContract
-				'do NOT call ad.Create() as it adds to the adcollection
-				ad.base = a
-				TLogger.log("AdAgency.RefillBlocks", "    possible contract: "+a.GetTitle() + "  (MinAudience="+MathHelper.NumberToString(100 * a.minAudienceBase,3)+"%  MinImage="+MathHelper.NumberToString(100 * a.minImage,3)+")" + "   Profit:"+ad.GetProfit()+"  Penalty:"+ad.GetPenalty(), LOG_DEBUG)
-			else
-'				print "FAIL: "+ a.GetTitle()
-			endif
-		Next
-endrem
 
 		for local i:int = 0 until 6
 			if i mod 2 = 0
@@ -3774,16 +3884,6 @@ endrem
 			else
 				TLogger.log("AdAgency.RefillBlocks", "  Level "+i+" filter: "+levelFilters[i].ToString() + " [PRIMETIME]", LOG_DEBUG)
 			endif
-rem
-			For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
-				if levelFilters[i].DoesFilter(a)
-					local ad:TAdContract = new TAdContract
-					'do NOT call ad.Create() as it adds to the adcollection
-					ad.base = a
-					TLogger.log("AdAgency.RefillBlocks", "    possible contract: "+a.GetTitle() + "  (MinAudience="+MathHelper.NumberToString(100 * a.minAudienceBase,3)+"%  MinImage="+MathHelper.NumberToString(100 * a.minImage,3)+")" + "   Profit:"+ad.GetProfit()+"  Penalty:"+ad.GetPenalty(), LOG_DEBUG)
-				endif
-			Next
-endrem
 		next
 	End Method
 
@@ -4102,6 +4202,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 	Method Initialize:int()
 		'=== RESET TO INITIAL STATE ===
+		CleanUp()
 		scriptsPerLine = 1
 		scriptsNormalAmount = 4
 		scriptsNormal2Amount = 1
@@ -4111,15 +4212,11 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 
 		'=== REGISTER HANDLER ===
-		GetRoomHandlerCollection().SetHandler("scriptagency", self)
+		RegisterHandler()
 
 
 		'=== CREATE ELEMENTS ===
-		'=== create gui elements if not done yet
-		if GuiListSuitCase
-			'clear gui lists etc
-			RemoveAllGuiElements()
-		else
+		if not GuiListSuitCase
 			GuiListNormal = GuiListNormal[..scriptsNormalAmount]
 			local sprite:TSprite = GetSpriteFromRegistry("gfx_scripts_0")
 			local spriteSuitcase:TSprite = GetSpriteFromRegistry("gfx_scripts_0_dragged")
@@ -4171,7 +4268,6 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
 
-		
 		'=== register event listeners
 		'to react on changes in the programmeCollection (eg. custom script finished)
 		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.addScript", onChangeProgrammeCollection ) ]
@@ -4194,6 +4290,27 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		'(re-)localize content
 		SetLanguage()
 	End Method
+
+
+	Method CleanUp()
+		'=== unset cross referenced objects ===
+		'
+		
+		'=== remove obsolete gui elements ===
+		if GuiListSuitCase then RemoveAllGuiElements()
+
+		'=== remove all registered instance specific event listeners
+		'EventManager.unregisterListenersByLinks(_localEventListeners)
+		'_localEventListeners = new TLink[0]
+	End Method
+
+
+	Method RegisterHandler:int()
+		if GetInstance() <> self then self.CleanUp()
+		GetRoomHandlerCollection().SetHandler("scriptagency", GetInstance())
+	End Method
+	
+
 
 
 	Method AbortScreenActions:Int()
@@ -4940,11 +5057,11 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 	
 	Method Initialize:Int()
 		'=== RESET TO INITIAL STATE ===
-		'nothing up to now
+		CleanUp()
 
 
 		'=== REGISTER HANDLER ===
-		GetRoomHandlerCollection().SetHandler("elevatorplan", self)
+		RegisterHandler()
 
 
 		'=== CREATE ELEMENTS ===
@@ -4955,6 +5072,26 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 		'(re-)localize content
 		SetLanguage()
 	End Method
+
+	
+	Method CleanUp()
+		'=== unset cross referenced objects ===
+		'
+		
+		'=== remove obsolete gui elements ===
+		'
+
+		'=== remove all registered instance specific event listeners
+		'EventManager.unregisterListenersByLinks(_localEventListeners)
+		'_localEventListeners = new TLink[0]
+	End Method
+
+
+	Method RegisterHandler:int()
+		if GetInstance() <> self then self.CleanUp()
+		GetRoomHandlerCollection().SetHandler("elevatorplan", GetInstance())
+	End Method
+	
 
 
 	Function ReCreatePlan()
@@ -5000,11 +5137,11 @@ Type RoomHandler_Roomboard extends TRoomHandler
 	
 	Method Initialize:Int()
 		'=== RESET TO INITIAL STATE ===
-		'nothing up to now
+		CleanUp()
 
 
 		'=== REGISTER HANDLER ===
-		GetRoomHandlerCollection().SetHandler("roomboard", self)
+		RegisterHandler()
 
 
 		'=== CREATE ELEMENTS =====
@@ -5019,6 +5156,25 @@ Type RoomHandler_Roomboard extends TRoomHandler
 		SetLanguage()
 	End Method
 
+	
+	Method CleanUp()
+		'=== unset cross referenced objects ===
+		'
+		
+		'=== remove obsolete gui elements ===
+		'
+
+		'=== remove all registered instance specific event listeners
+		'EventManager.unregisterListenersByLinks(_localEventListeners)
+		'_localEventListeners = new TLink[0]
+	End Method
+
+
+	Method RegisterHandler:int()
+		if GetInstance() <> self then self.CleanUp()
+		GetRoomHandlerCollection().SetHandler("roomboard", GetInstance())
+	End Method
+	
 
 	Method AbortScreenActions:Int()
 		local abortedAction:int = False
@@ -5082,11 +5238,11 @@ Type RoomHandler_Betty extends TRoomHandler
 	
 	Method Initialize:Int()
 		'=== RESET TO INITIAL STATE ===
-		'nothing up to now
+		CleanUp()
 
 
 		'=== REGISTER HANDLER ===
-		GetRoomHandlerCollection().SetHandler("betty", self)
+		RegisterHandler()
 
 
 		'=== CREATE ELEMENTS =====
@@ -5102,6 +5258,24 @@ Type RoomHandler_Betty extends TRoomHandler
 	End Method
 	
 
+	Method CleanUp()
+		'=== unset cross referenced objects ===
+		'
+		
+		'=== remove obsolete gui elements ===
+		'
+
+		'=== remove all registered instance specific event listeners
+		'EventManager.unregisterListenersByLinks(_localEventListeners)
+		'_localEventListeners = new TLink[0]
+	End Method
+
+
+	Method RegisterHandler:int()
+		if GetInstance() <> self then self.CleanUp()
+		GetRoomHandlerCollection().SetHandler("betty", GetInstance())
+	End Method
+	
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		For Local i:Int = 1 To 4
@@ -5143,11 +5317,11 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 	
 	Method Initialize:Int()
 		'=== RESET TO INITIAL STATE ===
-		'nothing up to now
+		CleanUp()
 
 
 		'=== REGISTER HANDLER ===
-		GetRoomHandlerCollection().SetHandler("roomagency", self)
+		RegisterHandler()
 
 
 		'=== CREATE ELEMENTS =====
@@ -5162,6 +5336,25 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 		SetLanguage()
 	End Method
 
+
+	Method CleanUp()
+		'=== unset cross referenced objects ===
+		'
+		
+		'=== remove obsolete gui elements ===
+		'
+
+		'=== remove all registered instance specific event listeners
+		'EventManager.unregisterListenersByLinks(_localEventListeners)
+		'_localEventListeners = new TLink[0]
+	End Method
+
+
+	Method RegisterHandler:int()
+		if GetInstance() <> self then self.CleanUp()
+		GetRoomHandlerCollection().SetHandler("roomagency", GetInstance())
+	End Method
+	
 
 	Function RentRoom:int(room:TRoom, owner:int=0)
 		print "RoomHandler_RoomAgency.RentRoom()"
@@ -5208,25 +5401,25 @@ Type RoomHandler_Credits extends TRoomHandler
 	Global fadeValue:float = 0.0
 
 	Global _instance:RoomHandler_Credits
-	Global _initDone:int = False
+
 
 	Function GetInstance:RoomHandler_Credits()
 		if not _instance then _instance = new RoomHandler_Credits
-		if not _initDone then _instance.Initialize()
 		return _instance
 	End Function
 
-	
+
 	Method Initialize:Int()
-		if _initDone then return False
-		_initDone = True	
-
-		GetRoomHandlerCollection().SetHandler("credits", self)
+		'=== RESET TO INITIAL STATE ===
+		CleanUp()
 
 
+		'=== REGISTER HANDLER ===
+		RegisterHandler()
+
+
+		'=== CREATE ELEMENTS =====
 		local role:TCreditsRole
-		local cast:TList = null
-
 		role = CreateRole("Das TVTower-Team", TColor.Create(255,255,255))
 		role.addCast("und die fleissigen Helfer")
 
@@ -5277,7 +5470,34 @@ Type RoomHandler_Credits extends TRoomHandler
 		role = CreateRole("", TColor.clWhite)
 		role.addCast("")
 
+
+		'=== EVENTS ===
+		'nothing up to now
+
+
+		'(re-)localize content
+		SetLanguage()
 	End Method
+
+		
+	Method CleanUp()
+		'=== unset cross referenced objects ===
+		roles = new TCreditsRole[0]
+		
+		'=== remove obsolete gui elements ===
+		'
+		
+		'=== remove all registered instance specific event listeners
+		'EventManager.unregisterListenersByLinks(_localEventListeners)
+		'_localEventListeners = new TLink[0]
+	End Method
+
+
+	Method RegisterHandler:int()
+		if GetInstance() <> self then self.CleanUp()
+		GetRoomHandlerCollection().SetHandler("credits", GetInstance())
+	End Method
+	
 
 
 	'helper to create a role and store it in the array

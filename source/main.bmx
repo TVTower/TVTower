@@ -1149,12 +1149,8 @@ print "TGameState.Initialize(): Reinitialize all game objects"
 
 		GetBetty().Initialize()
 
+		'initialize known room handlers + event registration
 		GetRoomHandlerCollection().Initialize()
-
-		'not needed, called via "TGame.PrepareStart()"
-		'_RoomHandler_AdAgency.Initialize()
-		'...
-		'_RoomHandler_ScriptAgency.Initialize()
 	End Method
 
 
