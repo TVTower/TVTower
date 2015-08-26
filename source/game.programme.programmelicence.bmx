@@ -506,6 +506,9 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 	'override default method to add sublicences
 	Method SetOwner:int(owner:int=0)
+'DEVPATCH
+if self.owner > 0 then TLogger.Log("DEVPATCH: TProgrammeLicence.SetOwner()", "Set owner of playerowned licence ~q"+GetTitle()+"~q. Old owner: "+self.owner+", new owner: "+owner+".", LOG_DEV)
+'DEVPATCH
 		self.owner = owner
 		'do the same for all children
 		For local licence:TProgrammeLicence = eachin subLicences

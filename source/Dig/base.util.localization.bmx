@@ -336,7 +336,7 @@ Type TLocalizedString
 	End Method
 
 
-	Method SerializeToString:string()
+	Method SerializeTLocalizedStringToString:string()
 		local s:string = ""
 		'concencate all into one string
 		'de::TextGerman::en::TextEnglish::...
@@ -350,7 +350,7 @@ Type TLocalizedString
 	End Method
 
 
-	Method DeSerializeFromString(text:String)
+	Method DeSerializeTLocalizedStringFromString(text:String)
 		local vars:string[] = text.split("::")
 		local language:string, value:string
 		local mode:int = 0
@@ -366,40 +366,7 @@ Type TLocalizedString
 			endif
 		Next
 	End Method
-rem
-	Method SerializeToString:string()
-		local s:string = ""
-		'concencate all into one string
-		'de::TextGerman::en::TextEnglish::...
-		local q:string = "~~"
-		For local language:string = EachIn values.Keys()
-			if s <> "" then s :+ "::"
-			s :+ language.replace(q,q+q).replace(":", q+":")
-			s :+ "::"
-			s :+ string(values.ValueForKey(language)).replace(q,q+q).replace(":", q+":")
-		Next
-		return s
-	End Method
 
-
-	Method DeSerializeFromString(text:String)
-		local vars:string[] = text.split("::")
-		local language:string, value:string
-		local mode:int = 0
-		local q:string = "~~"
-		For local s:string = EachIn vars
-			s = s.replace(q+":", ":").replace(q+q, q)
-			if mode = 0
-				language = s
-				mode :+ 1
-			else
-				value = s
-				mode = 0
-				Set(value, language)
-			endif
-		Next
-	End Method
-endrem
 
 	Method Append:TLocalizedString(other:TLocalizedString)
 		if other

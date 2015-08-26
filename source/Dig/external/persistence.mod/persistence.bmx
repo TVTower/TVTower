@@ -330,11 +330,11 @@ Type TPersist
 				End If
 
 
-				'check if there is a special "SerializeToString" Method
+				'check if there is a special "Serialize[classname]ToString" Method
 				'defined for the object
 				'only do serialization, if the way back is defined too
-				Local mth:TMethod = tid.FindMethod("SerializeToString")
-				Local mth2:TMethod = tid.FindMethod("DeSerializeFromString")
+				Local mth:TMethod = tid.FindMethod("Serialize"+tid.name()+"ToString")
+				Local mth2:TMethod = tid.FindMethod("DeSerialize"+tid.name()+"FromString")
 				If mth And mth2
 '					local serializedString:string = mth.Invoke(obj, [data])
 					Local serializedString:String = String( mth.Invoke(obj) )
@@ -593,7 +593,6 @@ Type TPersist
 
 			' Is this an array "Object" ?
 			If nodeName = "_array_" Then
-
 				Local objType:TTypeId = TTypeId.ForName(node.getAttribute("type") + "[]")
 
 				Local size:Int = node.getAttribute("size").toInt()
@@ -679,9 +678,9 @@ Type TPersist
 						' serialized data?
 						If fieldNode.GetName() = "serialized" Then
 							'check if there is a special
-							'"DeSerializeFromString" method defined
+							'"DeSerialize[classname]FromString" method defined
 							'for the object
-							Local mth:TMethod = objType.FindMethod("DeSerializeFromString")
+							Local mth:TMethod = objType.FindMethod("DeSerialize"+objType.name()+"FromString")
 							If mth Then mth.Invoke(obj, [fieldNode.GetContent()])
 						EndIf
 

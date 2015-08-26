@@ -57,7 +57,7 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 
-	Method SerializeToString:string()
+	Method SerializeTRectangleToString:string()
 		local xS:string = position.x; if float(int(position.x)) = position.x then xS = int(position.x)
 		local yS:string = position.y; if float(int(position.y)) = position.y then yS = int(position.y)
 		local wS:string = dimension.x; if float(int(dimension.x)) = dimension.x then wS = int(dimension.x)
@@ -66,7 +66,7 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 
-	Method DeSerializeFromString(text:String)
+	Method DeSerializeTRectangleFromString(text:String)
 		local vars:string[] = text.split(",")
 		if vars.length > 0 then position.SetX(float(vars[0]))
 		if vars.length > 1 then position.SetY(float(vars[1]))

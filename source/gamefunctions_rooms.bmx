@@ -3157,7 +3157,6 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Method RegisterHandler:int()
 		if GetInstance() <> self then self.CleanUp()
 		GetRoomHandlerCollection().SetHandler("adagency", GetInstance())
-print "refreshed ad instance"
 	End Method
 	
 

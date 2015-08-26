@@ -1374,7 +1374,7 @@ Type TProgrammePlanInformationProvider extends TProgrammePlanInformationProvider
 		'a new and take over the values
 		elseif not TProgrammePlanInformationProvider(_instance)
 			local provider:TProgrammePlanInformationProvider = new TProgrammePlanInformationProvider
-			provider.DeserializeFromString( _instance.SerializeToString() )
+			provider.DeserializeTProgrammePlanInformationProviderFromString( _instance.SerializeTProgrammePlanInformationProviderBaseToString() )
 
 			'now the new provider is the instance
 			_instance = provider
@@ -1391,6 +1391,16 @@ Type TProgrammePlanInformationProvider extends TProgrammePlanInformationProvider
 			'EventManager.registerListenerFunction("broadcast.advertisement.FinishBroadcasting", onFinishBroadcasting)
 			_registeredEvents = True
 		endif
+	End Method
+
+
+	Method DeSerializeTProgrammePlanInformationProviderFromString(text:String)
+		Super.DeSerializeTProgrammePlanInformationProviderBaseFromString(text)
+	End Method
+
+
+	Method SerializeTProgrammePlanInformationProviderToString:string()
+		return Super.SerializeTProgrammePlanInformationProviderBaseToString()
 	End Method
 
 

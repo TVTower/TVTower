@@ -1024,6 +1024,17 @@ endrem
 			plannerPreviousDayButton.enable()
 		endif
 
+'DEVPATCH
+if draggedGuiProgrammePlanElement and not draggedGuiProgrammePlanElement.isClickable()		
+	if MouseManager.IsHit(2)
+		draggedGuiProgrammePlanElement.Remove()
+		draggedGuiProgrammePlanElement = null
+		'remove right click - to avoid leaving the room
+		MouseManager.ResetKey(2)
+		TLogger.log("DEVPATCH: ProgrammePlanner", "removed non-clickable element via right click: "+draggedGuiProgrammePlanElement.broadcastMaterial.GetTitle(), LOG_DEV)
+	endif
+endif
+'DEVPATCH
 		'reset hovered and dragged gui objects - gets repopulated automagically
 		hoveredGuiProgrammePlanElement = null
 		draggedGuiProgrammePlanElement = null

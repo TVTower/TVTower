@@ -54,9 +54,6 @@ End Function
 
 'base class for all information providers
 Type TGameInformationProvider
-	Method SerializeToString:string() abstract
-	Method DeSerializeFromString(text:String) abstract
-
 	Method Set(key:string, obj:object) abstract
 	
 	Method Get:object(key:string, params:object = null) abstract
@@ -148,7 +145,7 @@ Type TProgrammePlanInformationProviderBase extends TGameInformationProvider
 	End Method
 
 	
-	Method SerializeToString:string()
+	Method SerializeTProgrammePlanInformationProviderBaseToString:string()
 		local result:string = ""
 		result :+       firstTrailerAired
 		result :+ ":" + lastTrailerAired
@@ -185,7 +182,7 @@ Type TProgrammePlanInformationProviderBase extends TGameInformationProvider
 	End Method
 	
 
-	Method DeSerializeFromString(text:String)
+	Method DeSerializeTProgrammePlanInformationProviderBaseFromString(text:String)
 		local parts:string[] = text.split(":")
 		if parts.length >= 3
 			firstTrailerAired = Long(parts[0])
