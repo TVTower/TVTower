@@ -1550,8 +1550,8 @@ Type TEditorDatabaseLoader Extends TDatabaseLoader
 		if not parentLicence or (licence.GetData().blocks <> parentLicence.GetData().blocks)
 			dataNode.setAttribute("blocks", licence.GetData().blocks)
 		endif
-		if not parentLicence or (licence.GetData().liveHour <> parentLicence.GetData().liveHour)
-			if licence.GetData().liveHour > 0 then dataNode.setAttribute("time", licence.GetData().liveHour)
+		if not parentLicence or (licence.GetData().liveTime <> parentLicence.GetData().liveTime)
+			if licence.GetData().liveTime > 0 then dataNode.setAttribute("time", licence.GetData().liveTime)
 		endif
 
 		if not parentLicence or (subGenres <> parentSubGenres)
