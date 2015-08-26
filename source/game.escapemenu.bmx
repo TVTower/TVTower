@@ -100,7 +100,7 @@ End Type
 Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 	Field savegameList:TGUISelectList
 	Field _eventListeners:TLink[]
-
+	Field _onLoadSavegameFunc:int()
 
 	Method Create:TGUIModalLoadSavegameMenu(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
@@ -222,9 +222,13 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 		local fileURI:string = TSavegame.GetSavegameURI(fileName)
 
 		if FileType(fileURI) = 1
-			TSaveGame.Load(fileURI)
+			'close self
+			Back()
+			Close()
 			'close escape menu
-			App.EscapeMenuWindow.Close()
+			if App.EscapeMenuWindow then App.EscapeMenuWindow.Close()
+
+			TSaveGame.Load(fileURI)
 			
 			return True
 		endif
@@ -246,7 +250,6 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 		return True
 	End Method
 End Type
-
 
 
 Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
@@ -446,10 +449,14 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 			CreateConfirmOverwriteDialogue(fileURI)
 			return False
 		endif
+		'close self
+		Back()
+		Close()
+
+		'close escape menu
+		if App.EscapeMenuWindow then App.EscapeMenuWindow.Close()
 
 		TSaveGame.Save(fileURI)
-		'close escape menu
-		App.EscapeMenuWindow.Close()
 
 		return True
 	End Method

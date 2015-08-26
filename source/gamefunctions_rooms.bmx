@@ -5455,6 +5455,8 @@ Type RoomHandler_Credits extends TRoomHandler
 		role.addCast("red")
 		role.addCast("Själe")
 		role.addCast("SushiTV")
+		role.addCast("Teppic")
+		role.addCast("TheRob")
 		role.addCast("Ulf")
 
 		role.addCast("...und all die anderen Fehlermelder im Forum")

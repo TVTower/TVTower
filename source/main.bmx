@@ -1984,10 +1984,12 @@ Type TScreen_MainMenu Extends TGameScreen
 	Field guiButtonStart:TGUIButton
 	Field guiButtonNetwork:TGUIButton
 	Field guiButtonOnline:TGUIButton
+	Field guiButtonLoadGame:TGUIButton
 	Field guiButtonSettings:TGUIButton
 	Field guiButtonQuit:TGUIButton
 	Field guiLanguageDropDown:TGUISpriteDropDown
 	Field settingsWindow:TSettingsWindow
+	Field loadGameMenuWindow:TGUImodalWindowChain
 
 	Method Create:TScreen_MainMenu(name:String)
 		Super.Create(name)
@@ -1998,7 +2000,7 @@ Type TScreen_MainMenu Extends TGameScreen
 		Local guiButtonsPanel:TGUIBackgroundBox
 		Local panelGap:Int = GUIManager.config.GetInt("panelGap", 10)
 		guiButtonsWindow = New TGUIGameWindow.Create(New TVec2D.Init(300, 330), New TVec2D.Init(200, 400), name)
-		guiButtonsWindow.SetPadding(TScreen_GameSettings.headerSize, panelGap, panelGap, panelGap)
+		guiButtonsWindow.SetPadding(panelGap, panelGap, panelGap, panelGap)
 		guiButtonsWindow.guiBackground.spriteAlpha = 0.5
 		guiButtonsWindow.SetCaption("")
 
@@ -2007,15 +2009,17 @@ Type TScreen_MainMenu Extends TGameScreen
 		TGUIButton.SetTypeFont( GetBitmapFontManager().baseFontBold )
 		TGUIButton.SetTypeCaptionColor( TColor.CreateGrey(75) )
 
-		guiButtonStart		= New TGUIButton.Create(New TVec2D.Init(0,   0), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
-		guiButtonNetwork	= New TGUIButton.Create(New TVec2D.Init(0,  40), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
-		guiButtonOnline		= New TGUIButton.Create(New TVec2D.Init(0,  80), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
-		guiButtonSettings	= New TGUIButton.Create(New TVec2D.Init(0, 120), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
-		guiButtonQuit		= New TGUIButton.Create(New TVec2D.Init(0, 170), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonStart		= New TGUIButton.Create(New TVec2D.Init(0, 0*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonNetwork	= New TGUIButton.Create(New TVec2D.Init(0, 1*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonOnline		= New TGUIButton.Create(New TVec2D.Init(0, 2*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonLoadGame	= New TGUIButton.Create(New TVec2D.Init(0, 3*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonSettings	= New TGUIButton.Create(New TVec2D.Init(0, 4*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonQuit		= New TGUIButton.Create(New TVec2D.Init(0, 5*38 + 10), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
 
 		guiButtonsPanel.AddChild(guiButtonStart)
 		guiButtonsPanel.AddChild(guiButtonNetwork)
 		guiButtonsPanel.AddChild(guiButtonOnline)
+		guiButtonsPanel.AddChild(guiButtonLoadGame)
 		guiButtonsPanel.AddChild(guiButtonSettings)
 		guiButtonsPanel.AddChild(guiButtonQuit)
 
@@ -2111,6 +2115,9 @@ Type TScreen_MainMenu Extends TGameScreen
 					GetGame().SetGamestate(TGame.STATE_NETWORKLOBBY)
 					GetGame().networkgame = True
 
+			Case guiButtonLoadGame
+					CreateLoadGameWindow()
+
 			Case guiButtonQuit
 					App.ExitApp = True
 		End Select
@@ -2138,6 +2145,31 @@ Type TScreen_MainMenu Extends TGameScreen
 		'=== GAME SETTINGS ===
 		GetGame().SetStartYear( App.config.GetInt("startyear", 0) )
 	End Method
+
+
+	Method CreateLoadGameWindow()
+		'initialize font for the items
+		TGUISavegameListItem.SetTypeFont(GetBitmapFont(""))
+
+		'remove a previously created one
+		if loadGameMenuWindow then loadGameMenuWindow.Remove()
+		
+		loadGameMenuWindow = New TGUIModalWindowChain.Create(New TVec2D, New TVec2D.Init(400,150), "SYSTEM")
+		loadGameMenuWindow.SetZIndex(99000)
+		loadGameMenuWindow.SetCenterLimit(new TRectangle.setTLBR(30,0,0,0))
+
+		'append menu after creation of screen area, so it recenters properly
+		local loadMenu:TGUIModalLoadSavegameMenu = new TGUIModalLoadSavegameMenu.Create(New TVec2D, New TVec2D.Init(450,350), "SYSTEM")
+		loadMenu._defaultValueColor = TColor.clBlack.copy()
+		loadMenu.defaultCaptionColor = TColor.clWhite.copy()
+
+		loadGameMenuWindow.SetContentElement(loadMenu)
+
+		'menu is always ingame...
+		loadGameMenuWindow.SetDarkenedArea(New TRectangle.Init(0,0,800,600))
+		'center to this area
+		loadGameMenuWindow.SetScreenArea(New TRectangle.Init(0,0,800,600))
+	End Method
 	
 
 	'override default
@@ -2145,6 +2177,7 @@ Type TScreen_MainMenu Extends TGameScreen
 		guiButtonStart.SetCaption(GetLocale("MENU_SOLO_GAME"))
 		guiButtonNetwork.SetCaption(GetLocale("MENU_NETWORKGAME"))
 		guiButtonOnline.SetCaption(GetLocale("MENU_ONLINEGAME"))
+		guiButtonLoadGame.SetCaption(GetLocale("LOAD_GAME"))
 		guiButtonSettings.SetCaption(GetLocale("MENU_SETTINGS"))
 		guiButtonQuit.SetCaption(GetLocale("MENU_QUIT"))
 	End Method
