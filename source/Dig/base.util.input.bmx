@@ -222,7 +222,7 @@ Type TMouseManager
 	'returns how many milliseconds a button is down
 	Method GetDownTime:Int(key:Int)
 		If _keyDownTime[key] > 0
-			return Time.GetTimeGone() - _keyDownTime[key]
+			return Time.GetAppTimeGone() - _keyDownTime[key]
 		else
 			return 0
 		endif
@@ -334,14 +334,14 @@ Type TMouseManager
 
 			'refresh hit time - so we wait for more hits
 			'-> time gone -> "click" happened
-			_keyHitTime[i] = Time.GetTimeGone()
+			_keyHitTime[i] = Time.GetAppTimeGone()
 		endif
 
 		'mouse is normal and was hit at least once
 		'-> check if this are "clicks" or still "hits"
 		If _keyStatus[i] = KEY_STATE_NORMAL and _keyHitCount[i] > 0
 			'waited long enough for another hit?
-			if _keyHitTime[i] + _doubleClickTime < Time.GetTimeGone()
+			if _keyHitTime[i] + _doubleClickTime < Time.GetAppTimeGone()
 				'reset hit time - indicator that "waiting is over"
 				_keyHitTime[i] = 0
 			Endif
@@ -352,7 +352,7 @@ Type TMouseManager
 		'store mousedown time ... someone may need this measurement
 		If MouseDown(i)
 			'store time when first mousedown happened
-			If _keyDownTime[i] = 0 Then _keyDownTime[i] = Time.GetTimeGone()
+			If _keyDownTime[i] = 0 Then _keyDownTime[i] = Time.GetAppTimeGone()
 		Else
 			'reset time - mousedown no longer happening
 			_keyDownTime[i] = 0
@@ -423,7 +423,7 @@ Type TKeyManager
 
 	'refresh all key states
 	Method Update:Int()
-		local time:int = Time.GetTimeGone()
+		local time:int = Time.GetAppTimeGone()
 		For Local i:Int = 1 To 255
 			'ignore key if it is blocked
 			'or set back to "normal" afterwards
@@ -462,7 +462,7 @@ Type TKeyManager
 	Method blockKey:int(key:int, milliseconds:int=0)
 		'time can be absolute as a key block is just for blocking a key
 		'which has not to be deterministic
-		_blockKeyTime[key] = Time.GetTimeGone() + milliseconds
+		_blockKeyTime[key] = Time.GetAppTimeGone() + milliseconds
 		'also add the block state to the  current status
 		_keyStatus[key] :| KEY_STATE_BLOCKED
 	End Method
@@ -525,7 +525,7 @@ Type TKeyWrapper
 		'Muss erlaubt und aktiv sein
 		If _keySet[key, 0] & KEYWRAP_ALLOW_HIT
 			'Zeit bis man Taste halten darf
-			_keySet[key, 3] = Time.GetTimeGone() + _keySet[key, 1]
+			_keySet[key, 3] = Time.GetAppTimeGone() + _keySet[key, 1]
 			Return True
 		EndIf
 		Return False
@@ -540,9 +540,9 @@ Type TKeyWrapper
 		If _keySet[key, 0] & KEYWRAP_ALLOW_HOLD
 			'time which has to be gone until hold is set
 			Local holdTime:Int = _keySet[key, 3]
-			If Time.GetTimeGone() > holdTime
+			If Time.GetAppTimeGone() > holdTime
 				'refresh time until next "hold"
-				_keySet[key, 3] = Time.GetTimeGone() + _keySet[key, 2]
+				_keySet[key, 3] = Time.GetAppTimeGone() + _keySet[key, 2]
 				Return True
 			EndIf
 		EndIf

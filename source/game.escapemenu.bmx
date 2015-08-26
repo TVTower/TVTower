@@ -182,7 +182,7 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 	End Method
 
 
-	Method Update()
+	Method Update:int()
 		GuiManager.Update("MODALLOADMENU")
 
 		'disable/enable load-button
@@ -224,12 +224,18 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 		if FileType(fileURI) = 1
 			'close self
 			Back()
-			Close()
+
 			'close escape menu
-			if App.EscapeMenuWindow then App.EscapeMenuWindow.Close()
+			if App.EscapeMenuWindow
+				App.EscapeMenuWindow.Close()
+			elseif TGUIModalWindowChain(GetParent())
+				TGUIModalWindowChain(GetParent()).SetClosed()
+				TGUIModalWindowChain(GetParent()).Close()
+			endif
 
 			TSaveGame.Load(fileURI)
-			
+
+
 			return True
 		endif
 
@@ -449,14 +455,15 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 			CreateConfirmOverwriteDialogue(fileURI)
 			return False
 		endif
+
+		TSaveGame.Save(fileURI)
+
 		'close self
-		Back()
-		Close()
+'		Back()
+'		Close()
 
 		'close escape menu
 		if App.EscapeMenuWindow then App.EscapeMenuWindow.Close()
-
-		TSaveGame.Save(fileURI)
 
 		return True
 	End Method

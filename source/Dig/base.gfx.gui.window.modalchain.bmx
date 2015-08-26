@@ -190,7 +190,7 @@ Type TGUIModalWindowChain Extends TGUIObject
 		if closeActionStarted then return False
 		
 		closeActionStarted = True
-		closeActionTime = Time.GetTimeGone()
+		closeActionTime = Time.GetAppTimeGone()
 		closeActionStartPosition = rect.position.copy()
 
 		'fire event so others know that the window is closed
@@ -202,7 +202,7 @@ Type TGUIModalWindowChain Extends TGUIObject
 	Method canClose:Int()
 		'is there an animation active?
 		If closeActionStarted
-			If closeActionTime + closeActionDuration < Time.GetTimeGone()
+			If closeActionTime + closeActionDuration < Time.GetAppTimeGone()
 				Return True
 			Else
 				Return False
@@ -213,8 +213,14 @@ Type TGUIModalWindowChain Extends TGUIObject
 	End Method
 
 
+	Method SetClosed:int()
+		closeActionStarted = True
+		closeActionTime = Time.GetAppTimeGone() - closeActionDuration
+	End Method
+
+
 	Method IsClosed:int()
-		return closeActionStarted and closeActionTime + closeActionDuration < Time.GetTimeGone()
+		return closeActionStarted and closeActionTime + closeActionDuration < Time.GetAppTimeGone()
 	End Method
 
 
@@ -255,8 +261,8 @@ Type TGUIModalWindowChain Extends TGUIObject
 
 		if closeActionStarted
 			local yUntilScreenLeft:int = VirtualHeight() - (closeActionStartPosition.y + GetScreenHeight())
-			newAlpha = 1.0 - TInterpolation.Linear(0.0, 1.0, Min(closeActionDuration, Time.GetTimeGone() - closeActionTime), closeActionDuration)
-			recenter(new TVec2D.Init(0, - yUntilScreenLeft * TInterpolation.BackIn(0.0, 1.0, Min(closeActionDuration, Time.GetTimeGone() - closeActionTime), closeActionDuration)))
+			newAlpha = 1.0 - TInterpolation.Linear(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration)
+			recenter(new TVec2D.Init(0, - yUntilScreenLeft * TInterpolation.BackIn(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration)))
 		endif
 
 		self.alpha = newAlpha
@@ -341,7 +347,7 @@ Type TGUIModalWindowChainElement Extends TGUIWindowBase
 	End Method
 	
 
-	Method Update()
+	Method Update:int()
 		Super.Update()
 		guiBackground.Update()
 	End Method

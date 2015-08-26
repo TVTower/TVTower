@@ -2169,6 +2169,9 @@ Type TScreen_MainMenu Extends TGameScreen
 		loadGameMenuWindow.SetDarkenedArea(New TRectangle.Init(0,0,800,600))
 		'center to this area
 		loadGameMenuWindow.SetScreenArea(New TRectangle.Init(0,0,800,600))
+
+		App.EscapeMenuWindow = loadGameMenuWindow
+		loadGameMenuWindow = null
 	End Method
 	
 

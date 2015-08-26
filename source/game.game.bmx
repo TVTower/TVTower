@@ -632,7 +632,6 @@ endrem
 		For Local player:TPlayer = EachIn GetPlayerCollection().players
 			player.onLoad(Null)
 		Next
-
 		'set active player again (sets correct game screen)
 		GetInstance().SetActivePlayer()
 	End Function

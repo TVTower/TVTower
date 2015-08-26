@@ -968,7 +968,7 @@ endrem
 			GetBitmapFont("Default", 11, BOLDFONT).drawBlock(GetLocale("HINT_PROGRAMMEPLANER_SHORTCUTS"), 3, 368, 660, 15, new TVec2D.Init(ALIGN_CENTER), TColor.CreateGrey(75),2,1,0.20)
 		endif
 
-		local pulse:Float = Sin(Time.GetTimeGone() / 10)
+		local pulse:Float = Sin(Time.GetAppTimeGone() / 10)
 		SetAlpha Max(0.75, -pulse) * oldAlpha
 		DrawOval(5+pulse,367+pulse,15-2*pulse,15-2*pulse)
 		SetAlpha oldAlpha

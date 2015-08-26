@@ -162,7 +162,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 		if closeActionStarted then return False
 		
 		closeActionStarted = True
-		closeActionTime = Time.GetTimeGone()
+		closeActionTime = Time.GetAppTimeGone()
 		closeActionStartPosition = rect.position.copy()
 
 		'fire event so others know that the window is closed
@@ -174,7 +174,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	Method canClose:Int()
 		'is there an animation active?
 		If closeActionStarted
-			If closeActionTime + closeActionDuration < Time.GetTimeGone()
+			If closeActionTime + closeActionDuration < Time.GetAppTimeGone()
 				Return True
 			Else
 				Return False
@@ -186,7 +186,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 
 
 	Method IsClosed:int()
-		return closeActionStarted and closeActionTime + closeActionDuration < Time.GetTimeGone()
+		return closeActionStarted and closeActionTime + closeActionDuration < Time.GetAppTimeGone()
 	End Method
 
 
@@ -235,8 +235,8 @@ Type TGUIModalWindow Extends TGUIWindowBase
 
 		if closeActionStarted
 			local yUntilScreenLeft:int = VirtualHeight() - (closeActionStartPosition.y + GetScreenHeight())
-			newAlpha = 1.0 - TInterpolation.Linear(0.0, 1.0, Min(closeActionDuration, Time.GetTimeGone() - closeActionTime), closeActionDuration)
-			recenter(new TVec2D.Init(0, - yUntilScreenLeft * TInterpolation.BackIn(0.0, 1.0, Min(closeActionDuration, Time.GetTimeGone() - closeActionTime), closeActionDuration)))
+			newAlpha = 1.0 - TInterpolation.Linear(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration)
+			recenter(new TVec2D.Init(0, - yUntilScreenLeft * TInterpolation.BackIn(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration)))
 
 			'as text "wobbles" (drawn at INT position while sprites draw
 			'with floats - so they seem to change offsets) we fade them

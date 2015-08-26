@@ -434,7 +434,7 @@ Type TGUIGameEntry Extends TGUISelectListItem
 
 	Method DrawContent()
 		If Self.showtime <> Null
-			SetAlpha Float(Self.showtime - Time.GetTimeGone())/500.0
+			SetAlpha Float(Self.showtime - Time.GetAppTimeGone())/500.0
 		EndIf
 		
 		'draw highlight-background etc

@@ -51,6 +51,7 @@ Import Brl.retro
 Type Time
 	'=== GETTIMEGONE ===
 	Global startTime:Long = 0
+	Global appStartTime:Long = 0
 
 	'=== MILLISECSLONG
 	Global MilliSeconds:Long=0
@@ -84,6 +85,13 @@ Type Time
 
 		return (MilliSecsLong() - startTime)
 	End Function
+
+
+	'returns the time gone since the start of the app
+	Function GetAppTimeGone:Long()
+		return (MilliSecsLong() - appStartTime)
+	End Function
+	
 	
 
 	Function GetSystemTime:String(format:String="%d %B %Y")
@@ -94,7 +102,8 @@ Type Time
 		Return String.FromCString(buff)
 	End Function
 End Type
-
+'initialize on app start
+Time.appStartTime = Time.MilliSecsLong()
 
 
 'a simple stop watch to measure a time interval

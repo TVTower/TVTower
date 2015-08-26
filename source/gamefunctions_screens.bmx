@@ -206,7 +206,7 @@ Type TInGameScreen Extends TScreen
 		'ingamechat
 		If KEYMANAGER.IsHit(KEY_ENTER)
 			If Not GetIngameInterface().chat.guiInput.hasFocus()
-				If GetIngameInterface().chat.antiSpamTimer < Time.GetTimeGone()
+				If GetIngameInterface().chat.antiSpamTimer < Time.GetAppTimeGone()
 					GUIManager.setFocus( GetIngameInterface().chat.guiInput )
 				Else
 					Print "no spam pls (input stays deactivated)"

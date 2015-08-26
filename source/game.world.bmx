@@ -458,7 +458,7 @@ Type TWorld
 			'show a different frame each day
 			local phase:int = skyMoon.frames - ( GetWorldTime().getDay(GetWorldTime().GetTimeGone() + 6*3600)) Mod skyMoon.frames
 			
-			skyMoon.Draw(movedMoonPoint.x, movedMoonPoint.y, phase, ALIGN_CENTER_CENTER, , 0.95+0.05*Sin(Time.GetTimeGone()/10))
+			skyMoon.Draw(movedMoonPoint.x, movedMoonPoint.y, phase, ALIGN_CENTER_CENTER, , 0.95+0.05*Sin(Time.GetAppTimeGone()/10))
 		else
 			DrawOval(movedMoonPoint.x-15, movedMoonPoint.y-15, 30,30)
 		endif
@@ -476,10 +476,10 @@ Type TWorld
 			SetAlpha(oldAlpha * modifyAlpha)
 
 			SetRotation(rotation*3)
-			if skySunRays then skySunRays.Draw(movedSunPoint.x, movedSunPoint.y, -1, ALIGN_CENTER_CENTER, 1.0 + 0.10*Sin(Time.GetTimeGone()/10))
+			if skySunRays then skySunRays.Draw(movedSunPoint.x, movedSunPoint.y, -1, ALIGN_CENTER_CENTER, 1.0 + 0.10*Sin(Time.GetAppTimeGone()/10))
 
 			SetRotation(rotation*1)
-			skySun.Draw(movedSunPoint.x, movedSunPoint.y, -1, ALIGN_CENTER_CENTER, 0.95+0.05*Sin(Time.GetTimeGone()/10))
+			skySun.Draw(movedSunPoint.x, movedSunPoint.y, -1, ALIGN_CENTER_CENTER, 0.95+0.05*Sin(Time.GetAppTimeGone()/10))
 
 			SetRotation(0)
 		else

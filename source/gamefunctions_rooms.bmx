@@ -91,18 +91,36 @@ Type TRoomHandlerCollection
 
 
 	'called _after_ a game (and its data) got loaded
-	Function onSaveGameLoad:int( triggerEvent:TEventBase )
+	Function OLDonSaveGameLoad:int( triggerEvent:TEventBase )
+		TLogger.Log("TRoomHandlerCollection", "Savegame loaded - reassigning handlers", LOG_DEBUG | LOG_SAVELOAD)
+
 		local oldHandlers:TMap = GetInstance().handlers.Copy()
+		For local k:string = EachIn GetInstance().handlers.Keys()
+			oldHandlers.Insert(k, GetInstance().handlers.ValueForKey(k))
+		Next
+		GetInstance().handlers.Clear()
+
+
 		'request each handler to re-assign (the new instance of the handler)
 		'ATTENTION: this allows to handle this individually for each
 		'           handler. The alternative (storing a "handle:string"-
 		'           property in each handler) would lead to problems
 		'           as soon as some offices have varying handlers
 		'           or a handler wants to take care of multiply rooms 
-		GetInstance().handlers.Clear()
-		For local handler:TRoomHandler = EachIn oldHandlers.Values()
-			handler.RegisterHandler()
+'		GetInstance().handlers.Clear()
+
+		Local enum:TMapEnumerator = oldHandlers.Values()
+		For local handler:TRoomHandler = EachIn enum
+print "iterating"
+		'For local handler:TRoomHandler = EachIn oldHandlers.Values()
+			if handler
+				print "registering ..."
+				handler.RegisterHandler()
+				print TTypeID.ForObject(handler).name() + " registered"
+			endif
+print "end iterating"
 		Next
+print "reregistered"
 
 		'inform the (new) handlers
 		For local handler:TRoomHandler = EachIn GetInstance().handlers.Values()
@@ -111,6 +129,31 @@ Type TRoomHandlerCollection
 	End Function
 
 
+	'called _after_ a game (and its data) got loaded
+	Function onSaveGameLoad:int( triggerEvent:TEventBase )
+		TLogger.Log("TRoomHandlerCollection", "Savegame loaded - reassigning handlers", LOG_DEBUG | LOG_SAVELOAD)
+		local oldHandlers:TRoomHandler[]
+		For local o:object = EachIn GetInstance().handlers.Values()
+			if TRoomHandler(o) then oldHandlers :+ [TRoomHandler(o)]
+		Next
+		'request each handler to re-assign (the new instance of the handler)
+		'ATTENTION: this allows to handle this individually for each
+		'           handler. The alternative (storing a "handle:string"-
+		'           property in each handler) would lead to problems
+		'           as soon as some offices have varying handlers
+		'           or a handler wants to take care of multiply rooms 
+		GetInstance().handlers.Clear()
+
+		For local handler:TRoomHandler = EachIn oldHandlers
+			'this modifies "GetInstance().handlers"
+			if handler then handler.RegisterHandler()
+		Next
+
+		'inform the (new) handlers
+		For local handler:TRoomHandler = EachIn GetInstance().handlers.Values()
+			handler.onSaveGameLoad( triggerEvent )
+		Next
+	End Function
 
 
 	'=== EVENTS FOR INDIVIDUAL HANDLERS ===
@@ -1591,7 +1634,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		if highlightAuction or highlightVendor or highlightSuitcase
 			local oldCol:TColor = new TColor.Get()
 			SetBlend LightBlend
-			SetAlpha oldCol.a * (0.4 + 0.2 * sin(Time.GetTimeGone() / 5))
+			SetAlpha oldCol.a * (0.4 + 0.2 * sin(Time.GetAppTimeGone() / 5))
 
 			if AuctionEntity and highlightAuction then AuctionEntity.Render()
 			if VendorEntity and highlightVendor then VendorEntity.Render()
@@ -2910,7 +2953,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		if highlightStudioManager or highlightSuitcase
 			local oldCol:TColor = new TColor.Get()
 			SetBlend LightBlend
-			SetAlpha oldCol.a * (0.4 + 0.2 * sin(Time.GetTimeGone() / 5))
+			SetAlpha oldCol.a * (0.4 + 0.2 * sin(Time.GetAppTimeGone() / 5))
 
 			if highlightStudioManager
 				if studioManagerEntity then studioManagerEntity.Render()
@@ -4040,7 +4083,7 @@ endrem
 		if highlightVendor or highlightSuitcase
 			local oldCol:TColor = new TColor.Get()
 			SetBlend LightBlend
-			SetAlpha oldCol.a * (0.4 + 0.2 * sin(Time.GetTimeGone() / 5))
+			SetAlpha oldCol.a * (0.4 + 0.2 * sin(Time.GetAppTimeGone() / 5))
 
 			if highlightVendor then	GetSpriteFromRegistry("gfx_screen_adagency_vendor").Draw(VendorArea.getScreenX(), VendorArea.getScreenY())
 			if highlightSuitcase then GetSpriteFromRegistry("gfx_suitcase_big").Draw(suitcasePos.GetX(), suitcasePos.GetY())
@@ -5005,7 +5048,7 @@ endrem
 		if highlightVendor or highlightSuitcase
 			local oldCol:TColor = new TColor.Get()
 			SetBlend LightBlend
-			SetAlpha oldCol.a * (0.4 + 0.2 * sin(Time.GetTimeGone() / 5))
+			SetAlpha oldCol.a * (0.4 + 0.2 * sin(Time.GetAppTimeGone() / 5))
 
 			if VendorEntity and highlightVendor then VendorEntity.Render()
 			if highlightSuitcase then GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
