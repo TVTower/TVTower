@@ -138,7 +138,7 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 	Method Activate:int()
 		local dirTree:TDirectoryTree = new TDirectoryTree.Init(TSavegame.GetSavegamePath(), ["xml"], null, ["*"])
 		dirTree.AddIncludeFileNames(["*"])
-		dirTree.ScanDir()
+		dirTree.ScanDir("", True)
 		local fileURIs:String[] = dirTree.GetFiles()
 		'loop over all filenames
 		for local fileURI:String = EachIn fileURIs
@@ -319,7 +319,7 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 		'fill existing savegames
 		local dirTree:TDirectoryTree = new TDirectoryTree.Init(TSavegame.GetSavegamePath(), ["xml"], null, ["*"])
 		dirTree.AddIncludeFileNames(["*"])
-		dirTree.ScanDir()
+		dirTree.ScanDir("", True)
 		local fileURIs:String[] = dirTree.GetFiles()
 		'loop over all filenames
 		for local fileURI:String = EachIn fileURIs
