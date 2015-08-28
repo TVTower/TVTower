@@ -92,15 +92,14 @@ Type TGUIListBase Extends TGUIobject
 
 
 	Method EmptyList:Int()
-		For Local obj:TGUIobject = EachIn entries
+		'traverse a copy to avoid concurrent modification
+		For Local obj:TGUIobject = EachIn entries.Copy()
 			'call the objects cleanup-method and unsets the object
-'			GUIManager.DeleteObject(obj)
 			obj.remove()
 			GUIManager.Remove(obj)
 			obj = null
 		Next
-		'overwrite the list with a new one
-		entries = CreateList()
+		entries.Clear()
 	End Method
 
 

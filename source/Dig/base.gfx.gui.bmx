@@ -18,6 +18,8 @@ Import "base.util.time.bmx"
 Import "base.gfx.renderconfig.bmx"
 
 
+
+
 '===== GUI CONSTANTS =====
 Const GUI_OBJECT_DRAGGED:Int					= 2^0
 Const GUI_OBJECT_VISIBLE:Int					= 2^1
@@ -58,11 +60,8 @@ Type TGUIManager
 	'config about specific gui settings (eg. panelGap)
 	Field config:TData = new TData
 	Field List:TList = CreateList()
-	Field ListReversed:TList = CreateList()
 	'contains dragged objects (above normal)
 	Field ListDragged:TList = CreateList()
-	'contains dragged objects in reverse (for draw)
-	Field ListDraggedReversed:TList	= CreateList()
 
 	'=== UPDATE STATE PROPERTIES ===
 
@@ -147,7 +146,6 @@ Type TGUIManager
 
 		ListDragged.addLast(obj)
 		ListDragged.sort(False, SortObjects)
-		ListDraggedReversed = ListDragged.Reversed()
 
 		Return True
 	End Method
@@ -158,7 +156,6 @@ Type TGUIManager
 		obj._timeDragged = 0
 		ListDragged.Remove(obj)
 		ListDragged.sort(False, SortObjects)
-		ListDraggedReversed = ListDragged.Reversed()
 
 		Return True
 	End Method
@@ -248,7 +245,6 @@ Type TGUIManager
 		If Not skipCheck And list.contains(obj) Then Return True
 
 		List.AddLast(obj)
-		ListReversed.AddFirst(obj)
 		SortLists()
 	End Method
 
@@ -294,8 +290,6 @@ Type TGUIManager
 
 	Method SortLists()
 		List.sort(True, SortObjects)
-
-		ListReversed = List.Reversed()
 	End Method
 
 rem
@@ -314,7 +308,6 @@ endrem
 		obj.setOption(GUI_OBJECT_MANAGED, False)
 
 		List.remove(obj)
-		ListReversed.remove(obj)
 
 		RemoveDragged(obj)
 
@@ -364,7 +357,8 @@ endrem
 
 		Local guiObjects:TGuiObject[]
 		'from TOP to BOTTOM (user clicks to visible things - which are at the top)
-		For Local obj:TGUIobject = EachIn ListReversed
+		local listReversed:TList = list.Reversed()
+		For Local obj:TGUIobject = EachIn listReversed
 			'return array if we reached the limit
 			If limit > 0 And guiObjects.length >= limit Then Return guiObjects
 
@@ -487,11 +481,11 @@ endrem
 
 		'store a list of special elements - maybe the list gets changed
 		'during update... some elements will get added/destroyed...
-		Local ListDraggedBackup:TList = ListDragged
+		Local ListDraggedBackup:TList = ListDragged.Copy()
 
 		'first update all dragged objects...
 		if GUIMANAGER_TYPES_DRAGGED & updateTypes
-			For Local obj:TGUIobject = EachIn ListDragged
+			For Local obj:TGUIobject = EachIn ListDraggedBackup
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
 				'avoid getting updated multiple times
@@ -507,12 +501,14 @@ endrem
 
 		'then the rest
 		if GUIMANAGER_TYPES_NONDRAGGED & updateTypes
-			For Local obj:TGUIobject = EachIn ListReversed 'from top to bottom
+			'from top to bottom
+			'traverse through a backup to avoid concurrent modification
+			local listBackupReversed:TList = List.Reversed()
+			For Local obj:TGUIobject = EachIn listBackupReversed
 				'all dragged objects got already updated...
 				If ListDraggedBackup.contains(obj) Then Continue
 
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
-
 				'avoid getting updated multiple times
 				'this can be overcome with a manual "obj.Update()"-call
 				'if obj._lastUpdateTick = _lastUpdateTick then continue
@@ -559,7 +555,8 @@ endrem
 
 		if GUIMANAGER_TYPES_DRAGGED & drawTypes
 			'draw all dragged objects above normal objects...
-			For Local obj:TGUIobject = EachIn listDraggedReversed
+			local listReversed:TList = ListDragged.Reversed()
+			For Local obj:TGUIobject = EachIn listReversed
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
 				'avoid getting drawn multiple times
@@ -733,7 +730,8 @@ Type TGUIobject
 
 		'remove children (so they might inform their children and so on)
 		If children
-			For local child:TGUIObject = eachin children
+			'traverse along a copy to avoid concurrent modification
+			For local child:TGUIObject = eachin children.Copy()
 				child.Remove()
 			Next
 		EndIf
@@ -889,10 +887,10 @@ Type TGUIobject
 
 	Method UpdateChildren:Int()
 		If Not children Then Return False
-
+		'traverse through a backup to avoid concurrent modification
+		local childrenReversedBackup:TList = children.Reversed()
 		'update added elements
-		For Local obj:TGUIobject = EachIn children.Reversed()
-
+		For Local obj:TGUIobject = EachIn childrenReversedBackup
 			'avoid getting updated multiple times
 			'this can be overcome with a manual "obj.Update()"-call
 			'if obj._lastUpdateTick = GUIManager._lastUpdateTick then continue

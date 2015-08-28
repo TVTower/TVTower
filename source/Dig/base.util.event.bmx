@@ -203,9 +203,11 @@ Type TEventManager
 		EndIf
 		?
 
-
 		Local listeners:TList = TList(_listeners.ValueForKey( Lower(triggeredByEvent._trigger) ))
 		If listeners
+			'use a _copy_ of the original listeners to avoid concurrent
+			'modification within the loop
+			listeners = listeners.Copy()
 			For Local listener:TEventListenerBase = EachIn listeners
 				listener.onEvent(triggeredByEvent)
 				'stop triggering the event if ONE of them vetos

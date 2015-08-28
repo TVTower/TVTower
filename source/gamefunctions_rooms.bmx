@@ -2122,14 +2122,14 @@ Type RoomHandler_News extends TRoomHandler
 	Function RefreshGuiElements:int()
 		local owner:int = GetPlayerCollection().playerID
 		'remove gui elements with news the player does not have anylonger
-		For local guiNews:TGuiNews = eachin guiNewsListAvailable.entries
-			if not GetPlayerProgrammeCollectionCollection().Get(owner).hasNews(guiNews.news)
+		For local guiNews:TGuiNews = eachin guiNewsListAvailable.entries.Copy()
+			if not GetPlayerProgrammeCollection(owner).hasNews(guiNews.news)
 				guiNews.remove()
 				guiNews = null
 			endif
 		Next
 		For local guiNews:TGuiNews = eachin guiNewsListUsed._slots
-			if not GetPlayerProgrammePlanCollection().Get(owner).hasNews(guiNews.news)
+			if not GetPlayerProgrammePlan(owner).hasNews(guiNews.news)
 				guiNews.remove()
 				guiNews = null
 			endif
@@ -2149,7 +2149,7 @@ Type RoomHandler_News extends TRoomHandler
 		Next
 
 		'create gui element for news still missing them
-		For Local news:TNews = EachIn GetPlayerProgrammeCollectionCollection().Get(owner).news
+		For Local news:TNews = EachIn GetPlayerProgrammeCollection(owner).news
 			'skip if news is dragged
 			if draggedNewsList.contains(news) then continue
 
@@ -5468,6 +5468,7 @@ Type RoomHandler_Credits extends TRoomHandler
 		role = CreateRole("Programmierung", TColor.Create(200,200,0))
 		role.addCast("Ronny Otto~n(Engine, Spielmechanik)")
 		role.addCast("Manuel Vögele~n(Quotenberechnung, Sendermarkt)")
+		role.addCast("Bruce A. Henderson~n(BlitzMax-NG + Code-Module)")
 
 		role = CreateRole("Grafik", TColor.Create(240,160,150))
 		role.addCast("Ronny Otto")
@@ -5484,6 +5485,8 @@ Type RoomHandler_Credits extends TRoomHandler
 		role.addCast("Martin Rackow")
 		role.addCast("Själe")
 		role.addCast("SpeedMinister")
+		role.addCast("TheRob")
+		role.addCast("Rumpelfreddy")
 		role.addCast("u.a. Freiwillige")
 
 		role = CreateRole("Tester", TColor.Create(160,180,250))

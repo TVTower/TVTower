@@ -263,7 +263,8 @@ Type TElevator Extends TEntity
 
 	'Entfernt alle (Call-)Routen die nicht wahrgenommen wurden
 	Method RemoveIgnoredRoutes()
-		For Local route:TFloorRoute = EachIn FloorRouteList
+		'traverse along a list copy to avoid concurrent modification
+		For Local route:TFloorRoute = EachIn FloorRouteList.Copy()
 			If route.floornumber = CurrentFloor And route.call = 1
 				If HasPassenger(route.who)
 

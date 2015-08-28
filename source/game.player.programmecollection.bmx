@@ -243,9 +243,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	'readd programmes from suitcase to player's list of available programmes
 	Method ReaddProgrammeLicencesFromSuitcase:int()
-		For Local obj:TProgrammeLicence = EachIn suitcaseProgrammeLicences
-			RemoveProgrammeLicenceFromSuitcase(obj)
-		Next
+		While Not suitcaseProgrammeLicences.IsEmpty()
+			RemoveProgrammeLicenceFromSuitcase( TProgrammeLicence(suitcaseProgrammeLicences.First()) )
+		Wend
 		return TRUE
 	End Method
 

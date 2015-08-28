@@ -1136,7 +1136,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 			SetAlpha 0.25 * oldAlpha
 			DrawOval(pos.x - radius - 2, pos.y - radius -2, 2 * (radius + 2), 2 * (radius + 2))
 
-			SetAlpha Min(0.9, Max(0,Sin(Time.GetTimeGone()/3)) + 0.5 ) * oldAlpha
+			SetAlpha Min(0.9, Max(0,Sin(Time.GetAppTimeGone()/3)) + 0.5 ) * oldAlpha
 		Else
 			SetAlpha 0.4 * oldAlpha
 		EndIf
