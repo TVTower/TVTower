@@ -368,6 +368,15 @@ Type RoomHandler_Office extends TRoomHandler
 	End Method
 
 
+	'override: clear the screen (remove dragged elements)
+	Method AbortScreenActions:Int()
+		'abort handling dragged elements in the planner
+		TScreenHandler_ProgrammePlanner.AbortScreenActions()
+
+		return False
+	End Method
+
+
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		'
 	End Method
@@ -647,7 +656,7 @@ Type RoomHandler_Archive extends TRoomHandler
 	Method RemoveAllGuiElements:int()
 		GuiListSuitcase.EmptyList()
 
-		For local guiLicence:TGUIProgrammeLicence = eachin GuiManager.listDragged
+		For local guiLicence:TGUIProgrammeLicence = eachin GuiManager.listDragged.Copy()
 			guiLicence.remove()
 			guiLicence = null
 		Next
@@ -1316,7 +1325,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		GuiListSeries.EmptyList()
 		GuiListSuitcase.EmptyList()
 
-		For local guiLicence:TGUIProgrammeLicence = eachin GuiManager.listDragged
+		For local guiLicence:TGUIProgrammeLicence = eachin GuiManager.listDragged.Copy()
 			guiLicence.remove()
 			guiLicence = null
 		Next
@@ -1899,7 +1908,7 @@ Type RoomHandler_News extends TRoomHandler
 		endif
 
 		'Try to drop back dragged elements
-		For local obj:TGUINews = eachIn GuiManager.ListDragged
+		For local obj:TGUINews = eachIn GuiManager.ListDragged.Copy()
 			obj.dropBackToOrigin()
 			'successful or not - get rid of the gui element
 			obj.Remove()
@@ -2104,7 +2113,7 @@ Type RoomHandler_News extends TRoomHandler
 		guiNewsListAvailable.emptyList()
 		guiNewsListUsed.emptyList()
 
-		For local guiNews:TGuiNews = eachin GuiManager.listDragged
+		For local guiNews:TGuiNews = eachin GuiManager.listDragged.Copy()
 			guiNews.remove()
 			guiNews = null
 		Next
@@ -2138,7 +2147,7 @@ Type RoomHandler_News extends TRoomHandler
 		'if removing "dragged" we also bug out the "replace"-mechanism when
 		'dropping on occupied slots
 		'so therefor this items should check itself for being "outdated"
-		'For local guiNews:TGuiNews = eachin GuiManager.ListDragged
+		'For local guiNews:TGuiNews = eachin GuiManager.ListDragged.Copy()
 		'	if guiNews.news.isOutdated() then guiNews.remove()
 		'Next
 
@@ -2729,7 +2738,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		guiListStudio.EmptyList()
 		guiListSuitcase.EmptyList()
 
-		For local guiScript:TGUIScript = eachin GuiManager.listDragged
+		For local guiScript:TGUIScript = eachin GuiManager.listDragged.Copy()
 			guiScript.remove()
 			guiScript = null
 		Next
@@ -2764,7 +2773,7 @@ Type RoomHandler_Studio extends TRoomHandler
 
 		'dragged scripts
 		local draggedScripts:TList = CreateList()
-		For local guiScript:TGUIScript = EachIn GuiManager.listDragged
+		For local guiScript:TGUIScript = EachIn GuiManager.listDragged.Copy()
 			draggedScripts.AddLast(guiScript.script)
 			'remove the dragged guiscript, gets replaced by a new
 			'instance
@@ -3525,7 +3534,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		Next
 		GuiListCheap.EmptyList()
 		GuiListSuitcase.EmptyList()
-		For local guiAdContract:TGuiAdContract = eachin GuiManager.listDragged
+		For local guiAdContract:TGuiAdContract = eachin GuiManager.listDragged.Copy()
 			guiAdContract.remove()
 			guiAdContract = null
 		Next
@@ -3709,8 +3718,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			lowestChannelQuoteDayTime = 0.005
 			lowestChannelQuotePrimeTime = 0.008
 
-			averageChannelQuoteDayTime:Float = 0.025
-			averageChannelQuotePrimeTime:Float = 0.06
+			averageChannelQuoteDayTime = 0.025
+			averageChannelQuotePrimeTime = 0.06
 
 			highestChannelQuoteDayTime = 0.11
 			highestChannelQuotePrimeTime = 0.20
@@ -4631,7 +4640,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		Next
 		GuiListNormal2.EmptyList()
 		GuiListSuitcase.EmptyList()
-		For local guiScript:TGUIScript = eachin GuiManager.listDragged
+		For local guiScript:TGUIScript = eachin GuiManager.listDragged.Copy()
 			guiScript.remove()
 			guiScript = null
 		Next

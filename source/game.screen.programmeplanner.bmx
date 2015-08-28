@@ -291,7 +291,7 @@ Type TScreenHandler_ProgrammePlanner
 		endif
 
 		'Try to drop back dragged elements
-		For local obj:TGUIProgrammePlanElement = eachIn GuiManager.ListDragged
+		For local obj:TGUIProgrammePlanElement = eachIn GuiManager.ListDragged.Copy()
 			obj.dropBackToOrigin()
 			'successful or not - get rid of the gui element
 			obj.Remove()
@@ -1274,7 +1274,7 @@ endif
 
 		'remove dragged ones of gui manager
 		if removeDragged
-			For local guiObject:TGuiProgrammePlanElement = eachin GuiManager.listDragged
+			For local guiObject:TGuiProgrammePlanElement = eachin GuiManager.listDragged.Copy()
 				guiObject.remove()
 				guiObject = null
 			Next
