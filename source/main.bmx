@@ -4134,7 +4134,8 @@ Type GameEvents
 				'COLLECTION
 				'news could stay there for 2 days (including today)
 				daysToKeep = 2
-				For Local news:TNews = EachIn GetPlayerCollection().Get(i).GetProgrammeCollection().news
+				'loop through a copy to avoid concurrent modification
+				For Local news:TNews = EachIn GetPlayerCollection().Get(i).GetProgrammeCollection().news.Copy()
 					If day - GetWorldTime().getDay(news.GetHappenedTime()) >= daysToKeep
 						GetPlayer(i).GetProgrammeCollection().RemoveNews(news)
 					EndIf
@@ -4143,6 +4144,7 @@ Type GameEvents
 				'PLAN
 				'news could get send a day longer (3 days incl. today)
 				daysToKeep = 3
+				'no need to copy the array because it has a fixed length
 				For Local news:TNews = EachIn GetPlayerCollection().Get(i).GetProgrammePlan().news
 					If day - GetWorldTime().getDay(news.GetHappenedTime()) >= daysToKeep
 						GetPlayer(i).GetProgrammePlan().RemoveNews(news)

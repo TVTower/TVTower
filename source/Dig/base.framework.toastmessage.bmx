@@ -176,7 +176,7 @@ Type TToastMessageCollection extends TRenderableEntity
 	
 
 	Method Update:Int()
-		For local spawnPoint:TToastMessageSpawnPoint = EachIn spawnPoints.Values()
+		For local spawnPoint:TToastMessageSpawnPoint = EachIn spawnPoints.Copy().Values()
 			spawnPoint.Update()
 		Next
 
@@ -318,7 +318,7 @@ Type TToastMessageSpawnPoint extends TEntity
 	
 
 	Method Update:Int()
-		For local message:TToastMessage = EachIn messages
+		For local message:TToastMessage = EachIn messages.Copy()
 			message.Update()
 		Next
 

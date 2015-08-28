@@ -96,7 +96,8 @@ Type TNewsEventCollection
 
 
 	Method RemoveOutdatedNewsEvents(minAgeInDays:int=5)
-		For local newsEvent:TNewsEvent = eachin allNewsEvents.Values()
+		local somethingDeleted:int = False
+		For local newsEvent:TNewsEvent = eachin allNewsEvents.Copy().Values()
 			if abs(GetWorldTime().GetDay(newsEvent.happenedTime) - GetWorldTime().GetDay()) >= minAgeInDays
 				'not happened yet
 				if newsEvent.happenedTime = -1 then continue
@@ -108,15 +109,18 @@ Type TNewsEventCollection
 				'reset happenedTime so it is available again
 				newsEvent.happenedTime = -1
 
-				'reset caches, so lists get filled correctly
-				_InvalidateCaches()
+				somethingDeleted = true
 			endif
 		Next
+
+		'reset caches, so lists get filled correctly
+		if somethingDeleted then _InvalidateCaches()
 	End Method
 
 
 	'resets already used news events of the past so they can get used again
 	Method ResetReuseableNewsEvents(minAgeInDays:int=5)
+		local somethingReset:int = False
 		For local newsEvent:TNewsEvent = eachin allNewsEvents.Values()
 			if abs(GetWorldTime().GetDay(newsEvent.happenedTime) - GetWorldTime().GetDay()) >= minAgeInDays
 				'not happened yet
@@ -127,10 +131,12 @@ Type TNewsEventCollection
 				'reset happenedTime so it is available again
 				newsEvent.happenedTime = -1
 
-				'reset caches, so lists get filled correctly
-				_InvalidateCaches()
+				somethingReset = True
 			endif
 		Next
+
+		'reset caches, so lists get filled correctly
+		if somethingReset then _InvalidateCaches()
 	End Method
 
 
