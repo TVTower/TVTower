@@ -245,13 +245,17 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 
 	Method onClickLoadSavegame:int( triggerEvent:TEventBase )
 		local button:TGUIButton = TGUIButton(triggerEvent.GetSender())
-		if not button or button <> dialogueButtons[0] then return False
+		if not button then return False
 
 	
-		if not LoadSelectedSaveGame()
-			triggerEvent.SetVeto(True)
-			return false
-		endif
+		if button = dialogueButtons[0]
+			if not LoadSelectedSaveGame()
+				triggerEvent.SetVeto(True)
+				return false
+			endif
+		elseif button = dialogueButtons[1]
+			Close()
+		Endif
 
 		return True
 	End Method
