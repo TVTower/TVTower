@@ -355,7 +355,7 @@ Type TSoundManager
 		EndIf
 
 		If Not HasMutedMusic()
-			'Wenn der Musik-Channel nicht läuft, dann muss nichts gemacht werden
+			'Wenn der Musik-Channel nicht lï¿½uft, dann muss nichts gemacht werden
 			If Not activeMusicChannel Then Return True
 
 			'refill buffers
@@ -581,7 +581,7 @@ End Function
 
 
 
-'Diese Basisklasse ist ein Wrapper für einen normalen Channel mit erweiterten Funktionen
+'Diese Basisklasse ist ein Wrapper fï¿½r einen normalen Channel mit erweiterten Funktionen
 Type TSfxChannel
 	'preallocating channels returns invalid channels if done before the
 	'soundengine (eg. FreeAudio) is initialized
@@ -630,22 +630,29 @@ Type TSfxChannel
 		AdjustSettings(False)
 
 		Local sound:TSound = TSoundManager.GetInstance().GetSfx("", playlist)
+		if not sound or not GetChannel() then return
 		TSoundManager.GetInstance().PlaySfx(sound, GetChannel())
 		'if sound then PlaySound(sound, channel)
 	End Method
 
 
 	Method IsActive:Int()
-		Return (_channel and _channel.Playing())
+		If not _channel then return False
+		
+		Return _channel.Playing()
 	End Method
 
 
 	Method Stop()
-		GetChannel().Stop()
+		If not _channel then return
+
+		_channel.Stop()
 	End Method
 
 
 	Method Mute(bool:Int=True)
+		If not _channel then return
+
 		If bool
 			If MuteAfterCurrentSfx And IsActive()
 				AdjustSettings(True)
@@ -659,8 +666,10 @@ Type TSfxChannel
 
 
 	Method AdjustSettings(isUpdate:Int)
+		If not _channel then return
+
 		If Not isUpdate
-			GetChannel().SetVolume(TSoundManager.GetInstance().sfxVolume * 0.75 * CurrentSettings.GetVolume()) '0.75 ist ein fixer Wert die Lautstärke der Sfx reduzieren soll
+			GetChannel().SetVolume(TSoundManager.GetInstance().sfxVolume * 0.75 * CurrentSettings.GetVolume()) '0.75 ist ein fixer Wert die Lautstï¿½rke der Sfx reduzieren soll
 		EndIf
 	End Method
 End Type
@@ -668,7 +677,7 @@ End Type
 
 
 
-'Der dynamische SfxChannel hat die Möglichkeit abhängig von der Position von Sound-Quelle und Empfänger dynamische Modifikationen an den Einstellungen vorzunehmen. Er wird bei jedem Update aktualisiert.
+'Der dynamische SfxChannel hat die Mï¿½glichkeit abhï¿½ngig von der Position von Sound-Quelle und Empfï¿½nger dynamische Modifikationen an den Einstellungen vorzunehmen. Er wird bei jedem Update aktualisiert.
 Type TDynamicSfxChannel Extends TSfxChannel
 	Field Source:TSoundSourceElement
 	Field Receiver:TSoundSourcePosition
@@ -689,6 +698,7 @@ Type TDynamicSfxChannel Extends TSfxChannel
 	Method AdjustSettings(isUpdate:Int)
 		'create one, so we could adjust volume etc before starting to play
 		if not _channel then GetChannel()
+		if not _channel then return 
 		
 		Local sourcePoint:TVec3D = Source.GetCenter()
 		Local receiverPoint:TVec3D = Receiver.GetCenter() 'Meistens die Position der Spielfigur
@@ -697,15 +707,15 @@ Type TDynamicSfxChannel Extends TSfxChannel
 			_channel.SetVolume(CurrentSettings.defaultVolume)
 			'print "Volume:" + CurrentSettings.defaultVolume
 		Else
-			'Lautstärke ist Abhängig von der Entfernung zur Geräuschquelle
+			'Lautstï¿½rke ist Abhï¿½ngig von der Entfernung zur Gerï¿½uschquelle
 			Local distanceVolume:Float = CurrentSettings.GetVolumeByDistance(Source, Receiver)
-			_channel.SetVolume(TSoundManager.GetInstance().sfxVolume * distanceVolume) ''0.75 ist ein fixer Wert die Lautstärke der Sfx reduzieren soll
+			_channel.SetVolume(TSoundManager.GetInstance().sfxVolume * distanceVolume) ''0.75 ist ein fixer Wert die Lautstï¿½rke der Sfx reduzieren soll
 			'print "Volume: " + (TSoundManager.GetInstance().sfxVolume * distanceVolume)
 		EndIf
 
 		If (sourcePoint.z = 0) Then
-			'170 Grenzwert = Erst aber dem Abstand von 170 (gefühlt/geschätzt) hört man nur noch von einer Seite.
-			'Ergebnis sollte ungefähr zwischen -1 (links) und +1 (rechts) liegen.
+			'170 Grenzwert = Erst aber dem Abstand von 170 (gefï¿½hlt/geschï¿½tzt) hï¿½rt man nur noch von einer Seite.
+			'Ergebnis sollte ungefï¿½hr zwischen -1 (links) und +1 (rechts) liegen.
 			If CurrentSettings.forcePan
 				_channel.SetPan(CurrentSettings.defaultPan)
 			Else
@@ -722,13 +732,13 @@ Type TDynamicSfxChannel Extends TSfxChannel
 				Local xDistance:Float = Abs(sourcePoint.x - receiverPoint.x)
 				Local yDistance:Float = Abs(sourcePoint.y - receiverPoint.y)
 
-				Local angleZX:Float = ATan(zDistance / xDistance) 'Winkelfunktion: Welchen Winkel hat der Hörer zur Soundquelle. 90° = davor/dahiner    0° = gleiche Ebene	tan(alpha) = Gegenkathete / Ankathete
+				Local angleZX:Float = ATan(zDistance / xDistance) 'Winkelfunktion: Welchen Winkel hat der Hï¿½rer zur Soundquelle. 90ï¿½ = davor/dahiner    0ï¿½ = gleiche Ebene	tan(alpha) = Gegenkathete / Ankathete
 
 				Local rawPan:Float = ((90 - angleZX) / 90)
-				Local panCorrection:Float = Max(0, Min(1, xDistance / 170)) 'Den r/l Effekt sollte noch etwas abgeschwächt werden, wenn die Quelle nah ist
+				Local panCorrection:Float = Max(0, Min(1, xDistance / 170)) 'Den r/l Effekt sollte noch etwas abgeschwï¿½cht werden, wenn die Quelle nah ist
 				Local correctPan:Float = rawPan * panCorrection
 
-				'0° => Aus einer Richtung  /  90° => aus beiden Richtungen
+				'0ï¿½ => Aus einer Richtung  /  90ï¿½ => aus beiden Richtungen
 				If (sourcePoint.x < receiverPoint.x) Then 'von links
 					_channel.SetPan(-correctPan)
 					'print "Pan:" + (-correctPan) + " - angleZX: " + angleZX + " (" + xDistance + "/" + zDistance + ")    # " + rawPan + " / " + panCorrection
@@ -744,7 +754,7 @@ Type TDynamicSfxChannel Extends TSfxChannel
 				_channel.SetDepth(CurrentSettings.defaultDepth)
 				'print "Depth:" + CurrentSettings.defaultDepth
 			Else
-				Local angleOfDepth:Float = ATan(receiverPoint.DistanceTo(sourcePoint, False) / zDistance) '0 = direkt hinter mir/vor mir, 90° = über/unter/neben mir
+				Local angleOfDepth:Float = ATan(receiverPoint.DistanceTo(sourcePoint, False) / zDistance) '0 = direkt hinter mir/vor mir, 90ï¿½ = ï¿½ber/unter/neben mir
 
 				If sourcePoint.z < 0 Then 'Hintergrund
 					_channel.SetDepth(-((90 - angleOfDepth) / 90)) 'Minuswert = Hintergrund / Pluswert = Vordergrund
@@ -802,7 +812,7 @@ Type TSfxSettings
 			Else 'irgendwo dazwischen
 				'exponential decrease - the more far away, the less volume
 				result = midRangeVolume  - midRangeVolume * (Float(currentDistance) / Float(Self.maxDistanceRange))^2
-				'result = midRangeVolume * (Float(Self.maxDistanceRange) - Float(currentDistance)) / Float(Self.maxDistanceRange)
+'				result = midRangeVolume * (Float(Self.maxDistanceRange) - Float(currentDistance)) / Float(Self.maxDistanceRange)
 			EndIf
 		EndIf
 
@@ -813,13 +823,13 @@ End Type
 
 
 
-Type TSoundSourcePosition 'Basisklasse für verschiedene Wrapper
-	Field ID:int = 0
-	Global _lastID:int = 0
+Type TSoundSourcePosition 'Basisklasse fï¿½r verschiedene Wrapper
+	Field ID:Int = 0
+	Global _lastID:Int = 0
 
 	Method GetCenter:TVec3D() Abstract
 	Method IsMovable:Int() Abstract
-	Method GetClassIdentifier:string() Abstract
+	Method GetClassIdentifier:String() Abstract
 
 
 	Method New()
@@ -828,8 +838,8 @@ Type TSoundSourcePosition 'Basisklasse für verschiedene Wrapper
 	End Method
 
 
-	Method GetGUID:string()
-		return GetClassIdentifier()+"-"+ID
+	Method GetGUID:String()
+		Return GetClassIdentifier()+"-"+ID
 	End Method
 End Type
 
@@ -840,22 +850,23 @@ Type TSoundSourceElement Extends TSoundSourcePosition
 	Field GUID:String = ""
 	Field SfxChannels:TMap = CreateMap()
 
+
 	Method GetIsHearable:Int() Abstract
 	Method GetChannelForSfx:TSfxChannel(sfx:String) Abstract
 	Method GetSfxSettings:TSfxSettings(sfx:String) Abstract
 	Method OnPlaySfx:Int(sfx:String) Abstract
 
 
-	Method GetGUID:string()
-		if GUID = "" then return GetClassIdentifier()+"-"+ID
-		return GUID
+	Method GetGUID:String()
+		If GUID = "" Then Return GetClassIdentifier()+"-"+ID
+		Return GUID
 	End Method
 
 
-	Method SetGUID(newGUID:string)
+	Method SetGUID(newGUID:String)
 		GUID = newGUID
 	End Method
-
+	
 
 	Method GetReceiver:TSoundSourcePosition()
 		Return TSoundManager.GetInstance().GetDefaultReceiver()
@@ -875,11 +886,13 @@ Type TSoundSourceElement Extends TSoundSourcePosition
 	Method PlaySfxOrPlaylist(name:String, sfxSettings:TSfxSettings=Null, playlistMode:Int=False)
 		If Not GetIsHearable() Then Return
 		If Not OnPlaySfx(name) Then Return
-		'print GetGUID() + " # PlaySfx: " + sfx
+		'print GetID() + " # PlaySfx: " + sfx
 
 		TSoundManager.GetInstance().RegisterSoundSource(Self)
 
 		Local channel:TSfxChannel = GetChannelForSfx(name)
+		if not channel then return
+		
 		Local settings:TSfxSettings = sfxSettings
 		If settings = Null Then settings = GetSfxSettings(name)
 
@@ -892,7 +905,7 @@ Type TSoundSourceElement Extends TSoundSourcePosition
 		Else
 			channel.PlaySfx(name, settings)
 		EndIf
-		'print GetGUID() + " # End PlaySfx: " + sfx
+		'print GetID() + " # End PlaySfx: " + sfx
 	End Method
 
 
@@ -908,12 +921,16 @@ Type TSoundSourceElement Extends TSoundSourcePosition
 
 	Method PlayOrContinueSfxOrPlaylist(name:String, sfxSettings:TSfxSettings=Null, playlistMode:Int=False)
 		Local channel:TSfxChannel = GetChannelForSfx(name)
+		if not channel then return
+
 		If Not channel.IsActive() then PlaySfxOrPlaylist(name, sfxSettings, playlistMode)
 	End Method
 
 
 	Method Stop(sfx:String)
 		Local channel:TSfxChannel = GetChannelForSfx(sfx)
+		if not channel then return
+		
 		channel.Stop()
 	End Method
 

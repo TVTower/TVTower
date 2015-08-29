@@ -397,7 +397,7 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 	End Method
 
 
-	Method Update()
+	Method Update:int()
 		GuiManager.Update("MODALSAVEMENU")
 
 		'disable/enable load-button

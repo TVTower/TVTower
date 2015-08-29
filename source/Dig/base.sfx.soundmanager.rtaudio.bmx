@@ -629,7 +629,7 @@ End Function
 
 
 
-'Diese Basisklasse ist ein Wrapper f�r einen normalen Channel mit erweiterten Funktionen
+'Diese Basisklasse ist ein Wrapper fuer einen normalen Channel mit erweiterten Funktionen
 Type TSfxChannel
 	'preallocating channels returns invalid channels if done before the
 	'soundengine (eg. FreeAudio) is initialized
@@ -670,22 +670,29 @@ Type TSfxChannel
 		AdjustSettings(False)
 
 		Local sound:TSound = TSoundManager.GetInstance().GetSfx("", playlist)
+		if not sound or not GetChannel() then return
 		TSoundManager.GetInstance().PlaySfx(sound, GetChannel())
 		'if sound then PlaySound(sound, channel)
 	End Method
 
 
 	Method IsActive:Int()
-		Return _channel and _channel.Playing()
+		If not _channel then return False
+		
+		Return _channel.Playing()
 	End Method
 
 
 	Method Stop()
-		GetChannel().Stop()
+		If not _channel then return
+
+		_channel.Stop()
 	End Method
 
 
 	Method Mute(bool:Int=True)
+		If not _channel then return
+
 		If bool
 			If MuteAfterCurrentSfx And IsActive()
 				AdjustSettings(True)
@@ -699,6 +706,8 @@ Type TSfxChannel
 
 
 	Method AdjustSettings(isUpdate:Int)
+		If not _channel then return
+
 		If Not isUpdate
 			GetChannel().SetVolume(TSoundManager.GetInstance().sfxVolume * 0.75 * CurrentSettings.GetVolume()) '0.75 ist ein fixer Wert die Lautstärke der Sfx reduzieren soll
 		EndIf
@@ -729,6 +738,7 @@ Type TDynamicSfxChannel Extends TSfxChannel
 	Method AdjustSettings(isUpdate:Int)
 		'create one, so we could adjust volume etc before starting to play
 		if not _channel then GetChannel()
+		if not _channel then return 
 		
 		Local sourcePoint:TVec3D = Source.GetCenter()
 		Local receiverPoint:TVec3D = Receiver.GetCenter() 'Meistens die Position der Spielfigur
@@ -921,6 +931,8 @@ Type TSoundSourceElement Extends TSoundSourcePosition
 		TSoundManager.GetInstance().RegisterSoundSource(Self)
 
 		Local channel:TSfxChannel = GetChannelForSfx(name)
+		if not channel then return
+		
 		Local settings:TSfxSettings = sfxSettings
 		If settings = Null Then settings = GetSfxSettings(name)
 
@@ -949,12 +961,16 @@ Type TSoundSourceElement Extends TSoundSourcePosition
 
 	Method PlayOrContinueSfxOrPlaylist(name:String, sfxSettings:TSfxSettings=Null, playlistMode:Int=False)
 		Local channel:TSfxChannel = GetChannelForSfx(name)
+		if not channel then return
+
 		If Not channel.IsActive() then PlaySfxOrPlaylist(name, sfxSettings, playlistMode)
 	End Method
 
 
 	Method Stop(sfx:String)
 		Local channel:TSfxChannel = GetChannelForSfx(sfx)
+		if not channel then return
+		
 		channel.Stop()
 	End Method
 

@@ -112,6 +112,9 @@ Type TSimpleSoundSource Extends TSoundSourceElement
 		EndIf
 
 		Local channel:TSfxChannel = GetChannelForSfx(name)
+		'if channel getter fails, just return silently
+		if not channel then return
+
 		Local settings:TSfxSettings = sfxSettings
 		If settings = Null Then settings = GetSfxSettings(name)
 
