@@ -538,6 +538,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			StartTipWindow.screenArea = New TRectangle.Init(0,0,800,385)
 			StartTipWindow.DarkenedArea = New TRectangle.Init(0,0,800,385)
 			StartTipWindow.SetCaptionAndValue( tip[0], tip[1] )
+			StartTipWindow.Open()
 		EndIf
 	End Function
 
@@ -632,6 +633,7 @@ endrem
 		For Local player:TPlayer = EachIn GetPlayerCollection().players
 			player.onLoad(Null)
 		Next
+
 		'set active player again (sets correct game screen)
 		GetInstance().SetActivePlayer()
 	End Function

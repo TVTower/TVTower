@@ -968,6 +968,7 @@ Next
 		EscapeMenuWindow = New TGUIModalWindowChain.Create(New TVec2D, New TVec2D.Init(400,150), "SYSTEM")
 		EscapeMenuWindow.SetZIndex(99000)
 		EscapeMenuWindow.SetCenterLimit(new TRectangle.setTLBR(30,0,0,0))
+		EscapeMenuWindow.Open()
 
 		'append menu after creation of screen ares, so it recenters properly
 		local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New TVec2D, New TVec2D.Init(300,305), "SYSTEM")
@@ -1036,6 +1037,7 @@ Next
 		ExitAppDialogue.SetDialogueType(2)
 		ExitAppDialogue.SetZIndex(100000)
 		ExitAppDialogue.data.AddNumber("quitToMainMenu", quitToMainMenu)
+		ExitAppDialogue.Open()
 
 		'limit to "screen" area
 		If GetGame().gamestate = TGame.STATE_RUNNING
@@ -2983,7 +2985,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		'messageWindow.DarkenedArea = new TRectangle.Init(0,0,800,385)
 		messageWindow.SetCaptionAndValue("title", "")
 		messageWindow.SetDialogueType(0) 'no buttons
-		
+
 		Return Self
 	End Method
 
@@ -3037,6 +3039,9 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		Else
 			messageWindow.SetCaption(GetLocale("STARTING_SINGLEPLAYERGAME"))
 		EndIf
+
+		'do not play a sound...
+		'messageWindow.Open()
 	End Method
 
 
@@ -3397,6 +3402,8 @@ Type TSettingsWindow
 
 		'fill values
 		SetGuiValues(App.config)
+
+		modalDialogue.Open()
 
 		Return Self
 	End Method
@@ -4172,8 +4179,10 @@ Type AppEvents
 	Function Init:Int()
 		If InitDone Then Return True
 
-		EventManager.registerListenerFunction("guiModalWindow.onClose", onGuiModalWindowClose, "TGUIModalWindow")
-		EventManager.registerListenerFunction("guiModalWindow.onCreate", onGuiModalWindowCreate)
+		EventManager.registerListenerFunction("guiModalWindow.onClose", onGuiModalWindowClose)
+		EventManager.registerListenerFunction("guiModalWindowChain.onClose", onGuiModalWindowClose)
+		EventManager.registerListenerFunction("guiModalWindow.onOpen", onGuiModalWindowCreate)
+		EventManager.registerListenerFunction("guiModalWindowChain.onOpen", onGuiModalWindowCreate)
 		EventManager.registerListenerFunction("ToastMessageCollection.onAddMessage", onToastMessageCollectionAddMessage)
 		EventManager.registerListenerFunction("app.onStart", onAppStart)
 		EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverGUIObject)

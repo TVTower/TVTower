@@ -446,6 +446,8 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 		_confirmOverwriteDialogue.darkenedArea = New TRectangle.Init(0,0,800,385)
 		'center to this area
 		_confirmOverwriteDialogue.screenArea = New TRectangle.Init(0,0,800,385)
+
+		_confirmOverwriteDialogue.Open()
 	End Method
 
 

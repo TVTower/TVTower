@@ -75,7 +75,9 @@ Type TGUIModalWindow Extends TGUIWindowBase
 		AddEventListener(EventManager.registerListenerMethod("guiobject.onClick", Self, "onButtonClick"))
 
 		'fire event so others know that the window is created
-		EventManager.triggerEvent(TEventSimple.Create("guiModalWindow.onCreate", Self))
+print "TGUIModalWindow - triggerEvent 1"
+		EventManager.triggerEvent2(TEventSimple.Create("guiModalWindow.onCreate", Self))
+print "TGUIModalWindow - triggerEvent 2 .. OK"
 		Return Self
 	End Method
 
@@ -155,6 +157,11 @@ Type TGUIModalWindow Extends TGUIWindowBase
 		rect.position.setXY(centerX - rect.getW()/2 + moveBy.getX(),centerY - rect.getH()/2 + moveBy.getY() )
 	End Method
 
+
+	Method Open:Int()
+		EventManager.triggerEvent(TEventSimple.Create("guiModalWindow.onOpen", Self))
+	End Method
+	
 
 	'close the window (eg. with an animation)
 	Method Close:Int(closeButton:Int=-1)
