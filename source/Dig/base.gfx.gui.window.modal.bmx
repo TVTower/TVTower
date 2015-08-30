@@ -75,9 +75,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 		AddEventListener(EventManager.registerListenerMethod("guiobject.onClick", Self, "onButtonClick"))
 
 		'fire event so others know that the window is created
-print "TGUIModalWindow - triggerEvent 1"
-		EventManager.triggerEvent2(TEventSimple.Create("guiModalWindow.onCreate", Self))
-print "TGUIModalWindow - triggerEvent 2 .. OK"
+		EventManager.triggerEvent(TEventSimple.Create("guiModalWindow.onCreate", Self))
 		Return Self
 	End Method
 

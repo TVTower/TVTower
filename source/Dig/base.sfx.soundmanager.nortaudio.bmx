@@ -600,7 +600,7 @@ Type TSfxChannel
 	Method GetChannel:TChannel()
 		'unset invalid channels
 		'and try to refresh previous settings
-		if _channel and TFreeAudioChannel(_channel).fa_channel = 0
+		if TFreeAudioChannel(_channel) and TFreeAudioChannel(_channel).fa_channel = 0
 			_channel = null
 			_channel = AllocChannel()
 			if CurrentSettings then AdjustSettings(false)

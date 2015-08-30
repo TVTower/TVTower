@@ -195,6 +195,8 @@ Type TEventManager
 
 	'runs all listeners NOW ...returns amount of listeners
 	Method triggerEvent:Int(triggeredByEvent:TEventBase)
+		if not triggeredByEvent then return 0
+		
 		?Threaded
 		'if we have systemonly-event we cannot do it in a subthread
 		'instead we just add that event to the upcoming events list
