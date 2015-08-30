@@ -331,15 +331,9 @@ Type TFunctions
 		If typ=2 Then Return MathHelper.NumberToString(value/1000000.0, 2)+" "+GetLocale("ABBREVIATION_MILLION")
 		'250000 = 0,0Mrd -> divide by 1000000000
 		If typ=3 Then Return MathHelper.NumberToString(value/1000000000.0, 2)+" "+GetLocale("ABBREVIATION_BILLION")
+
 		'add thousands-delimiter: 10000 = 10.000
-		If length <= 10 And length > 6
-			Return Int(Floor(Int(value) / 1000000))+"."+Int(Floor(Int(value) / 1000))+"."+Left( Abs(Int((Int(value) - Int(Floor(Int(value) / 1000000)*1000000)))) +"000",3)
-		ElseIf length <= 7 And length > 3
-			Return Int(Floor(Int(value) / 1000))+"."+Left( Abs(Int((Int(value) - Int(Floor(Int(value) / 1000)*1000)))) +"000",3)
-		Else
-			Return intValue
-		EndIf
-		'Return convertValue
+		return dottedValue(value)
     End Function
 
 End Type
