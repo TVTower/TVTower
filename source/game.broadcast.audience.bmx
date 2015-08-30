@@ -174,7 +174,6 @@ Type TAudience
 
 
 	Method GetWeightedAverage:Float()
-		rem
 		local result:Float = 0
 		result :+ Children * GetAudienceBreakdown().Children
 		result :+ Teenagers * GetAudienceBreakdown().Teenagers
@@ -183,13 +182,16 @@ Type TAudience
 		result :+ Unemployed * GetAudienceBreakdown().Unemployed
 		result :+ Manager * GetAudienceBreakdown().Manager
 		result :+ Pensioners * GetAudienceBreakdown().Pensioners
-		endrem
 
+		rem
 		'results in nearly the same
+		'- but not for TAudience-instances relying on the single values
+		'  (eg a publicimage-audience)
 		local result:Float = 0
 		If (Women = -1 Or Men = -1) Then FixGenderCount()
 		result :+ Women * GetAudienceBreakdown().Women
 		result :+ Men * GetAudienceBreakdown().Men
+		endrem
 		return result
 	End Method
 	
@@ -568,17 +570,17 @@ Type TAudience
 
 	Method ToStringMinimal:String()
 		Local dec:Int = 0
-		Return "C:" + MathHelper.NumberToString(Children,dec) + " / T:" + MathHelper.NumberToString(Teenagers,dec) + " / H:" + MathHelper.NumberToString(HouseWives,dec) + " / E:" + MathHelper.NumberToString(Employees,dec) + " / U:" + MathHelper.NumberToString(Unemployed,dec) + " / M:" + MathHelper.NumberToString(Manager,dec) + " /P:" + MathHelper.NumberToString(Pensioners,dec)
+		Return "C:" + MathHelper.NumberToString(Children,dec, True) + " / T:" + MathHelper.NumberToString(Teenagers,dec, True) + " / H:" + MathHelper.NumberToString(HouseWives,dec, True) + " / E:" + MathHelper.NumberToString(Employees,dec, True) + " / U:" + MathHelper.NumberToString(Unemployed,dec, True) + " / M:" + MathHelper.NumberToString(Manager,dec, True) + " /P:" + MathHelper.NumberToString(Pensioners,dec, True)
 	End Method
 
 	Method ToString:String()
 		Local dec:Int = 4
-		Return "Sum: " + Int(Ceil(GetSum())) + "  ( 0: " + MathHelper.NumberToString(Children,dec) + "  - 1: " + MathHelper.NumberToString(Teenagers,dec) + "  - 2: " + MathHelper.NumberToString(HouseWives,dec) + "  - 3: " + MathHelper.NumberToString(Employees,dec) + "  - 4: " + MathHelper.NumberToString(Unemployed,dec) + "  - 5: " + MathHelper.NumberToString(Manager,dec) + "  - 6: " + MathHelper.NumberToString(Pensioners,dec) + ") - [[ W: " + MathHelper.NumberToString(Women,dec) + "  - M: " + MathHelper.NumberToString(Men ,dec) + " ]]"
+		Return "Sum: " + Int(Ceil(GetSum())) + "  ( 0: " + MathHelper.NumberToString(Children,dec, True) + "  - 1: " + MathHelper.NumberToString(Teenagers,dec, True) + "  - 2: " + MathHelper.NumberToString(HouseWives,dec, True) + "  - 3: " + MathHelper.NumberToString(Employees,dec, True) + "  - 4: " + MathHelper.NumberToString(Unemployed,dec, True) + "  - 5: " + MathHelper.NumberToString(Manager,dec, True) + "  - 6: " + MathHelper.NumberToString(Pensioners,dec, True) + ") - [[ W: " + MathHelper.NumberToString(Women,dec, True) + "  - M: " + MathHelper.NumberToString(Men ,dec, True) + " ]]"
 	End Method
 
 
 	Method ToStringAverage:String()
-		Return "Avg: " + MathHelper.NumberToString(GetAverage(),3) + "  ( 0: " + MathHelper.NumberToString(Children,3) + "  - 1: " + MathHelper.NumberToString(Teenagers,3) + "  - 2: " + MathHelper.NumberToString(HouseWives,3) + "  - 3: " + MathHelper.NumberToString(Employees,3) + "  - 4: " + MathHelper.NumberToString(Unemployed,3) + "  - 5: " + MathHelper.NumberToString(Manager,3) + "  - 6: " + MathHelper.NumberToString(Pensioners,3) + ")"
+		Return "Avg: " + MathHelper.NumberToString(GetAverage(),3, True) + "  ( 0: " + MathHelper.NumberToString(Children,3, True) + "  - 1: " + MathHelper.NumberToString(Teenagers,3, True) + "  - 2: " + MathHelper.NumberToString(HouseWives,3, True) + "  - 3: " + MathHelper.NumberToString(Employees,3, True) + "  - 4: " + MathHelper.NumberToString(Unemployed,3, True) + "  - 5: " + MathHelper.NumberToString(Manager,3, True) + "  - 6: " + MathHelper.NumberToString(Pensioners,3, True) + ")"
 	End Method
 
 

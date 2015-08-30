@@ -21,7 +21,7 @@ Type TAudienceResultBase
 	'Die Zahl der Zuschauer die erreicht wurden.
 	'Sozusagen das Ergenis das zählt und angezeigt wird.
 	Field Audience:TAudience
-	'Der Gesamtmarkt: Also wenn alle die einen TV haben.
+	'Der Gesamtmarkt: Also wenn alle die einen TV haben schauen wuerden
 	Field WholeMarket:TAudience
 	'Die Gesamtzuschauerzahl die in dieser Stunde den TV an hat!
 	'Also 100%-Quote! Summe aus allen Exklusiven, Flow-Leuten und Zappern
@@ -77,6 +77,9 @@ Type TAudienceResultBase
 	'instead of storing "audienceQuote" as field (bigger savegames)
 	'we can create it on the fly
 	'returns audience quote relative to MaxAudience of that time
+	'ATTENTION: to fetch the effective total audiencequote use
+	'           "GetWeightedAverage()" instead of "GetAverage()" as the
+	'           target groups are not equally weighted.
 	Method GetAudienceQuote:TAudience()
 		if not Audience then return new TAudience
 
@@ -85,10 +88,21 @@ Type TAudienceResultBase
 	End Method
 
 
+	'returns the percentage (0-1.0) of reached audience compared to
+	'potentially reachable audience (in front of TV at that moment)
+	Method GetAudienceQuotePercentage:Float()
+'		return Audience.GetSum() / GetPotentialMaxAudience().GetSum()
+		return GetAudienceQuote().GetSum()
+	End Method
+	
+
 	'instead of storing "potentialMaxAudienceQuote" as field we can
 	'create it on the fly
-	'returns the quote of PotentialMaxAudience. What percentage switch
-	'on the TV and check the programme. Base is WholeMarket
+	'returns the quote of PotentialMaxAudience. What percentage switched
+	'on the TV and checked the programme. Base is WholeMarket
+	'ATTENTION: to fetch the effective total audiencequote use
+	'           "GetWeightedAverage()" instead of "GetAverage()" as the
+	'           target groups are not equally weighted.
 	Method GetPotentialMaxAudienceQuote:TAudience()
 		'no need to calculate a quote if the audience itself is 0 already
 		'-> avoids "nan"-values when dividing with "0.0f" values
@@ -99,8 +113,19 @@ Type TAudienceResultBase
 	End Method
 
 
+	'returns the percentage (0-1.0) of practically reachable audience
+	'(switched on the TV) compared to technically reachable audience
+	'(within range of the broadcast area)
+	Method GetPotentialMaxAudienceQuotePercentage:Float()
+		return GetPotentialMaxAudienceQuote().GetAverage()
+	End Method
+
+
 	'returns the quote of reached audience to WholeMarket.
 	'What percentage of all people having a TV watched the programme
+	'ATTENTION: to fetch the effective total audience quote use
+	'           "GetWeightedAverage()" instead of "GetAverage()" as the
+	'           target groups are not equally weighted.
 	Method GetWholeMarketAudienceQuote:TAudience()
 		'no need to calculate a quote if the audience itself is 0 already
 		'-> avoids "nan"-values when dividing with "0.0f" values
@@ -109,6 +134,15 @@ Type TAudienceResultBase
 		'total quote = audience / whole market
 		return Audience.Copy().Divide(WholeMarket)
 	End Method
+
+
+	'returns the percentage (0-1.0) of reached audience (switched on TV
+	'and watching your channel) compared to technically reachable audience
+	'(within range of the broadcast area)
+	Method GetWholeMarketAudienceQuotePercentage:Float()
+		return GetWholeMarketAudienceQuote().GetAverage()
+	End Method
+
 
 
 	Method ToString:String()

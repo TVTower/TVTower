@@ -634,7 +634,6 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'not enough channel image?
 		if GetMinImage() > 0 and 0.01*GetPublicImageCollection().Get(playerID).GetAverageImage() < GetMinImage() then return False
 
-
 		Return (not IsSigned())
 	End Method
 

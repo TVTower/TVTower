@@ -559,11 +559,11 @@ Type TBroadcast
 				currAudience = audienceResult.Audience.GetSum()
 				If (currAudience > TopAudience) Then TopAudience = currAudience
 
-				currAudienceRate = audienceResult.GetAudienceQuote().GetAverage()
+				currAudienceRate = audienceResult.GetAudienceQuotePercentage()
 				If (currAudienceRate > TopAudienceRate) Then TopAudienceRate = currAudienceRate
 
 				If audienceResult.AudienceAttraction Then
-					currAttraction = audienceResult.AudienceAttraction.GetAverage()
+					currAttraction = audienceResult.AudienceAttraction.GetWeightedAverage()
 					If (currAttraction > TopAttraction) Then TopAttraction = currAttraction
 	
 					currQuality = audienceResult.AudienceAttraction.Quality

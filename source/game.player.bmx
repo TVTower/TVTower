@@ -484,14 +484,6 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	End Method
 
 
-Rem
-	'calculates and returns the percentage of the players audience depending on the maxaudience
-	Method GetRelativeAudiencePercentage:Float(playerID:Int) {_exposeToLua}
-		Return TAudienceResult.Curr(playerID).AudienceQuote.GetAverage()
-	End Method
-endrem
-
-
 	'overridden
 	Method GetCreditAvailable:Int() {_exposeToLua}
 		Return Max(0, GetPlayerBoss(playerID).GetCreditMaximum() - GetFinance().GetCredit())

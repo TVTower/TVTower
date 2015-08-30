@@ -137,7 +137,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Method FinishBroadcastingAsAdvertisement:int(day:int, hour:int, minute:int, audienceData:object)
 		self.SetState(self.STATE_OK)
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
-		data.CutTrailerTopicality(GetTrailerTopicalityCutModifier(audienceResult.GetWholeMarketAudienceQuote().GetAverage()))
+		data.CutTrailerTopicality(GetTrailerTopicalityCutModifier(audienceResult.GetWholeMarketAudienceQuotePercentage()))
 		data.trailerAired:+1
 		data.trailerAiredSinceShown:+1
 	End Method
@@ -178,7 +178,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		End If
 
 		'adjust topicality relative to possible audience 
-		data.CutTopicality(GetTopicalityCutModifier( audienceResult.GetWholeMarketAudienceQuote().GetAverage()))
+		data.CutTopicality(GetTopicalityCutModifier( audienceResult.GetWholeMarketAudienceQuotePercentage()))
 
 		'if someone can watch that movie, increase the aired amount
 		data.SetTimesAired(data.GetTimesAired(owner)+1, owner)

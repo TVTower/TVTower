@@ -84,8 +84,10 @@ Type TPublicImage {_exposeToLua="selected"}
 
 
 	'returns the average image of all target groups
+	'ATTENTION: return weighted average as some target groups consist
+	'           of less people than other groups)
 	Method GetAverageImage:Float()
-		return ImageValues.GetAverage()
+		return ImageValues.GetWeightedAverage()
 	End Method
 
 

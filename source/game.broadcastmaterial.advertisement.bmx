@@ -159,7 +159,7 @@ endrem
 			Notify "FinishBroadcastingAsProgramme: earn value is negative: "+earn 
 		endif
 		'adjust topicality relative to possible audience 
-		contract.base.CutInfomercialTopicality(GetInfomercialTopicalityCutModifier( audienceResult.GetWholeMarketAudienceQuote().GetAverage()))
+		contract.base.CutInfomercialTopicality(GetInfomercialTopicalityCutModifier( audienceResult.GetWholeMarketAudienceQuotePercentage()))
 	End Method
 
 

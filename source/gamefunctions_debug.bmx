@@ -30,7 +30,7 @@ Type TDebugAudienceInfos
 		font.Draw("Bevölkerung", 25, 50, TColor.clWhite);
 		DrawAudience(audienceResult.WholeMarket, 200, 50);
 
-		Local percent:String = MathHelper.NumberToString(audienceResult.GetPotentialMaxAudienceQuote().GetAverage()*100,2) + "%"
+		Local percent:String = MathHelper.NumberToString(audienceResult.GetPotentialMaxAudienceQuotePercentage()*100,2) + "%"
 		font.Draw("Potentielle Zuschauer", 25, 70, TColor.clWhite);
 		font.Draw(percent, 160, 70, TColor.clWhite);
 		DrawAudience(audienceResult.PotentialMaxAudience, 200, 70);
@@ -48,7 +48,7 @@ Type TDebugAudienceInfos
 
 
 		font.Draw("Aktuelle Zuschauerzahl", 25, 90, TColor.clWhite);
-		percent = MathHelper.NumberToString(audienceResult.GetAudienceQuote().GetAverage()*100,2) + "%"
+		percent = MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage()*100,2) + "%"
 		font.Draw(percent, 160, 90, TColor.clWhite);
 		DrawAudience(audienceResult.Audience, 200, 90);
 
@@ -275,8 +275,7 @@ endrem
 		If gray Then color = TColor.CreateGrey(150)
 
 		If Not hideAverage Then
-			'val = MathHelper.NumberToString(audience.GetAverage() * 100,2) + "%"
-			val = MathHelper.NumberToString(audience.GetAverage(),2)
+			val = MathHelper.NumberToString(audience.GetWeightedAverage(),2)
 			If gray Then
 				font.drawBlock(val, x, y, 65, 25, ALIGN_RIGHT_TOP, TColor.Create(150, 80, 80))
 			Else
