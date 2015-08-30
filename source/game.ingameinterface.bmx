@@ -617,7 +617,7 @@ Type TTooltipAudience Extends TTooltip
 
 	Method GetContentWidth:Int()
 		If audienceResult
-			Return Self.useFont.GetWidth( GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuote().GetAverage(), 2) + "%)" )
+			Return Self.useFont.GetWidth( GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)" )
 		Else
 			Return Self.Usefont.GetWidth( GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": 100 (100%)")
 		EndIf
@@ -652,7 +652,7 @@ Type TTooltipAudience Extends TTooltip
 
 		Local reach:Int = GetStationMap( GetPlayerBase().playerID ).reach
 		Local totalReach:Int = GetStationMapCollection().population
-		result:+ Usefont.GetHeight(GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuote().GetAverage(), 2) + "%)")
+		result:+ Usefont.GetHeight(GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)")
 		result:+ Usefont.GetHeight(GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 0) + " (" + MathHelper.NumberToString(100.0 * Float(reach)/totalReach, 2) + "%)")
 		result:+ 1*lineHeight
 
@@ -691,14 +691,15 @@ Type TTooltipAudience Extends TTooltip
 		Local lineTextDY:Int = lineIconDY + 2
 
 		'draw overview text
-		lineText = GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuote().GetAverage(), 2) + "%)"
+		lineText = GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)"
 		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
 		lineY :+ 1 * Self.Usefont.GetHeight(lineText)
 
+		'show how many people your stations cover (compared to country)
 		Local reach:Int = GetStationMap( GetPlayerBase().playerID ).reach
 		Local totalReach:Int = GetStationMapCollection().population
-
 		lineText = GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 0) + " (" + MathHelper.NumberToString(100.0 * Float(reach)/totalReach, 2) + "%)"
+
 		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
 		lineY :+ Self.Usefont.GetHeight(lineText)
 

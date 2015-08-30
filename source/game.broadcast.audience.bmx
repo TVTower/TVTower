@@ -10,7 +10,7 @@ Import "game.gameconstants.bmx"
 'TAudience-Klassen ermöglichen.
 Type TAudience
 	Field Id:Int				'Optional: Eine Id zur Identifikation (z.B. PlayerId). Nur bei Bedarf füllen!
-	Field Children:Float	= 0	'Kinder
+	Field Children:Float    = 0 'Kinder
 	Field Teenagers:Float	= 0	'Teenager
 	Field HouseWives:Float	= 0	'Hausfrauen
 	Field Employees:Float	= 0	'Employees
@@ -496,26 +496,61 @@ Type TAudience
 			'set all values to 0 (new Audience has 0 as default)
 			SetValuesFrom(new TAudience)
 		Else
-			'check for div/0 first 
-			if audience.Children = 0 then throw "TAudience.Divide: Div/0 - audience.Children is 0"
-			if audience.Teenagers = 0 then throw "TAudience.Divide: Div/0 - audience.Teenagers is 0"
-			if audience.HouseWives = 0 then throw "TAudience.Divide: Div/0 - audience.HouseWives is 0"
-			if audience.Employees = 0 then throw "TAudience.Divide: Div/0 - audience.Employees is 0"
-			if audience.Unemployed = 0 then throw "TAudience.Divide: Div/0 - audience.Unemployed is 0"
-			if audience.Manager = 0 then throw "TAudience.Divide: Div/0 - audience.Manager is 0"
-			if audience.Pensioners = 0 then throw "TAudience.Divide: Div/0 - audience.Pensioners is 0"
-			if audience.Women = 0 then throw "TAudience.Divide: Div/0 - audience.Women is 0"
-			if audience.Men = 0 then throw "TAudience.Divide: Div/0 - audience.Men is 0"
 
-			Children	:/ audience.Children
-			Teenagers	:/ audience.Teenagers
-			HouseWives	:/ audience.HouseWives
-			Employees	:/ audience.Employees
-			Unemployed	:/ audience.Unemployed
-			Manager		:/ audience.Manager
-			Pensioners	:/ audience.Pensioners
-			Women		:/ audience.Women
-			Men			:/ audience.Men
+			'check for div/0 first 
+			if audience.Children = 0
+				if self.Children <> 0 then throw "TAudience.Divide: Div/0 - audience.Children is 0"
+			else
+				Children :/ audience.Children
+			endif
+
+			if audience.Teenagers = 0
+				if self.Teenagers <> 0 then throw "TAudience.Divide: Div/0 - audience.Teenagers is 0"
+			else
+				Teenagers :/ audience.Teenagers
+			endif
+			
+			if audience.HouseWives = 0
+				if self.HouseWives <> 0 then throw "TAudience.Divide: Div/0 - audience.HouseWives is 0"
+			else
+				HouseWives :/ audience.HouseWives
+			endif
+
+			if audience.Employees = 0
+				if self.Employees <> 0 then throw "TAudience.Divide: Div/0 - audience.Employees is 0"
+			else
+				Employees :/ audience.Employees
+			endif
+
+			if audience.Unemployed = 0
+				if self.Unemployed <> 0 then throw "TAudience.Divide: Div/0 - audience.Unemployed is 0"
+			else
+				Unemployed :/ audience.Unemployed
+			endif
+
+			if audience.Manager = 0
+				if self.Manager <> 0 then throw "TAudience.Divide: Div/0 - audience.Manager is 0"
+			else
+				Manager :/ audience.Manager
+			endif
+
+			if audience.Pensioners = 0
+				if self.Pensioners <> 0 then throw "TAudience.Divide: Div/0 - audience.Pensioners is 0"
+			else
+				Pensioners :/ audience.Pensioners
+			endif
+
+			if audience.Women = 0
+				if self.Women <> 0 then throw "TAudience.Divide: Div/0 - audience.Women is 0"
+			else
+				Women :/ audience.Women
+			endif
+
+			if audience.Men = 0
+				if self.Men <> 0 then throw "TAudience.Divide: Div/0 - audience.Men is 0"
+			else
+				Men :/ audience.Men
+			endif
 		EndIf
 		Return Self
 	End Method

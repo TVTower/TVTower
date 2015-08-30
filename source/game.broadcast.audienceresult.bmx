@@ -91,8 +91,9 @@ Type TAudienceResultBase
 	'returns the percentage (0-1.0) of reached audience compared to
 	'potentially reachable audience (in front of TV at that moment)
 	Method GetAudienceQuotePercentage:Float()
-'		return Audience.GetSum() / GetPotentialMaxAudience().GetSum()
-		return GetAudienceQuote().GetSum()
+		'more exact until we use some "math library" for floats
+		return Audience.GetSum() / GetPotentialMaxAudience().GetSum()
+		'return GetAudienceQuote().GetWeightedAverage()
 	End Method
 	
 
@@ -117,7 +118,9 @@ Type TAudienceResultBase
 	'(switched on the TV) compared to technically reachable audience
 	'(within range of the broadcast area)
 	Method GetPotentialMaxAudienceQuotePercentage:Float()
-		return GetPotentialMaxAudienceQuote().GetAverage()
+		'more exact until we use some "math library" for floats
+		return GetPotentialMaxAudience().GetSum() / WholeMarket.GetSum()
+		'return GetPotentialMaxAudienceQuote().GetWeightedAverage()
 	End Method
 
 
@@ -140,7 +143,9 @@ Type TAudienceResultBase
 	'and watching your channel) compared to technically reachable audience
 	'(within range of the broadcast area)
 	Method GetWholeMarketAudienceQuotePercentage:Float()
-		return GetWholeMarketAudienceQuote().GetAverage()
+		'more exact until we use some "math library" for floats
+		return Audience.GetSum() / WholeMarket.GetSum()
+		'return GetWholeMarketAudienceQuote().GetWeightedAverage()
 	End Method
 
 
