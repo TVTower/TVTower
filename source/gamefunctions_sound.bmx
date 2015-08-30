@@ -130,8 +130,9 @@ Type TSimpleSoundSource Extends TSoundSourceElement
 
 	Method Stop(sfx:String)
 		Local channel:TSfxChannel = GetChannelForSfx(sfx)
-		channel.Stop()
+		if channel then channel.Stop()
 	End Method
+	
 
 	Method GetSfxSettings:TSfxSettings(sfx:String)
 		Local settings:TSfxSettings = TSfxSettings.Create()
