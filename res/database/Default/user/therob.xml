@@ -1,736 +1,1351 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
-	<version value="3" comment="Programme von TheRob" />
-	<allprogrammes>
-		<programme id="54084557-4497-48d5-8e3a-TheRobRiesenstadt" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-			<title>
-				<de>Riesenstadt - Long Cut</de>
-				<en>Big City - Long Cut</en>
-			</title>
-			<description>
-				<de>Arbeiter gegen Reich. Oberwelt gegen Unterwelt. Ein stummer epischer Kampf. Remastert und extralong. Inklusive wiedergefundener und restaurierter Szenen. Hier in der Fassung der Murnau-Stiftung von 2010.</de>
-				<en>Workers against the upperclass. People from the Surface against the poor living underneath. An epic and silent fight. Including the found and restored scenes. This is the Version of 2010 remasterd by the "Murnau-Stiftung".</en>
-			</description>
-			<staff>
-				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
-				<member index="1" function="2">TheRob-celebritypeople-WalfredWederSabel</member>
-				<member index="2" function="2">TheRob-celebritypeople-PipernetteSelm</member>
-				<member index="3" function="2">TheRob-celebritypeople-MustafLustig</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1927" distribution="0" maingenre="13" subgenre="0" flags="0" blocks="5" time="0" price_mod="1.00" />
-			<ratings critics="82" speed="17" outcome="59" />
-		</programme>
-		<programme id="04439fd1-e89f-TheRobTestSerie01" product="5" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-			<title>
-				<de>Gestern gab es Western</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Westernraritäten auf Serienformat gekürzt. Die Story geht flöten, aber die Landschaft bleibt.</de>
-				<en></en>
-			</description>
-			<staff>
-				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
-				<member index="0" function="2">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1939" distribution="0" maingenre="18" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
-			<ratings critics="40" speed="29" outcome="29" />
-			<children>
-				<programme id="39803483-0800-46e3-a153-TheRobEpisode1" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>Jerry das Pferd</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Dys Pferd Jerry zieht einen Fremden aus dem Sumpf. Dieser weicht ihm nicht mehr von der Seite. Eine wilde Verfolgungsjagd beginnt.</de>
-						<en></en>
-					</description>
-					<ratings critics="42" speed="42" />
-				</programme>
-				<programme id="4c062f49-f1e8-400a-9c11-TheRobEpisode2" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>Lozzo lernt peitschen</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Lozzo findet eine Peitsche und übt sein Zeichen. Warum er sich für Z statt L entscheidet? Ganz Mexiko hat nun eine Z Narbe auf der Brust...</de>
-						<en></en>
-					</description>
-					<ratings critics="53" speed="39" />
-				</programme>
-				<programme id="dc0b1ca6-c1c1-496f-9882-TheRobEpisode3" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>Niklas sucht James</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Niklas will den Bandit J.James ausschalten um selber zum Helden zu werden. Der Showdown naht...</de>
-						<en></en>
-					</description>
-					<ratings critics="19" speed="25" />
-				</programme>
-				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode4" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>Njamba der Fotograf</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Njamba, der Zulu, verlässt seinen Stamm. Sein Ziel: Landschaftsaufnaumahmen im wilden Westen. Diese werden ausgiebig gezeigt. Finanziert durch den Gesunder Schlaf e.V.</de>
-						<en></en>
-					</description>
-					<ratings critics="29" speed="5" />
-				</programme>
-				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode5" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>Farmer gen Osten</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Gescheiterte Farmer wollen zurück nach Europa. Doch die indianischen Skalphändler wollen ihre Beute nicht ziehen lassen. Schaffen sie die Flucht?</de>
-						<en></en>
-					</description>
-					<ratings critics="32" speed="79" />
-				</programme>
-				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode6" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>Mensch Jimmy</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Jimmy Baine in seinem ersten Auftritt vor seiner großen Karriere. Der Revolver sitzt schon perfekt. A Star ist born. Wer braucht da Handlung?</de>
-						<en></en>
-					</description>
-					<ratings critics="17" speed="55" />
-				</programme>
-				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode7" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>IIIk, wird das Wononza?</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Farmleben eines Vaters mit drei Söhnen. Das Publikum hat böse Vorahnungen. Doch als sie wegschalten, war Ihre Einschaltquote schon gezählt.</de>
-						<en></en>
-					</description>
-					<ratings critics="2" speed="1" />
-				</programme>
-			</children>
-		</programme>
-		<programme id="e61018ba-b0db-439c-a852-TheRob04" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-			<title>
-				<de>Wesensreiter</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Bulbu erkennt, dass er Fantasiewesen dressieren und reiten kann. Ein fliegendes Epos beginnt.</de>
-				<en></en>
-			</description>
-			<staff>
-				<member index="0" function="1">cdd0e7aa-11eb-48d7-82cc-d693e2130d05</member>
-				<member index="1" function="2">18cb930c-1e71-4ab5-9996-43689ac01098</member>
-				<member index="2" function="2">4eff33a4-952c-4217-adfb-0b8496f2c01d</member>
-				<member index="3" function="2">e1ed748b-647d-47b6-98b7-fe9c88579b12</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1964" distribution="0" maingenre="10" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="33" speed="27" outcome="56" />
-		</programme>
-		<programme id="TheRob-b0db-439c-a852-BullshitBingo" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-			<title>
-				<de>Bullshit Bingo</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Wenn Bullshit Bingo nicht Sonstiges ist, was dann. Zur Show hat es nicht gereicht. Zur Doku leider auch nicht. Wir sind für euch durch die Welt gelaufen und haben gefragt, was Bullshit Bingo ist. Die Antwort: Sonstiges!</de>
-				<en></en>
-			</description>
-			<staff>
-				<member index="0" function="1">Per_custom_Freddy_13</member>
-				<member index="1" function="2">Per_custom_Freddy_632</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1979" distribution="0" maingenre="0" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="29" speed="27" outcome="10" />
-		</programme>
-		<programme id="5c4c567b-dda6-4d7e-b90a-RobTheTest01" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-			<title>
-				<de>Iris entdeckt die Alm</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Iris besucht mit Ihren Freundinnen die Alm, die Bauern und ihre Betten oder Heuböden. Wurde beim Revival der Seventies leider nicht vergessen.</de>
-				<en></en>
-			</description>
-			<staff>
-				<member index="0" function="1">c45e52c2-32a3-4d3b-87d2-c56a8e4f5279</member>
-				<member index="1" function="2">c39a70f6-b8fd-40fe-96cd-9dcb0e460e53</member>
-				<member index="2" function="2">779ecf3d-7ca7-4253-aac6-cb5e1aee8e2c</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1972" distribution="0" maingenre="8" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="9" speed="19" outcome="29" />
-		</programme>
-		<programme id="8ef29506-1756-400d-8f9c-TheRobTest03" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-			<title>
-				<de>Weib, Wein und Gesang</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Wikinger plündern fröhlich singend ganz Europa. Vor lauter brüderlichem Gesang sieht man das Blut kaum.</de>
-				<en></en>
-			</description>
-			<staff>
-				<member index="0" function="1">ef4e2db6-6ab9-4386-b2d5-c2d2b9990c97</member>
-				<member index="1" function="2">65538445-9da2-457c-b207-be0544514afa</member>
-				<member index="2" function="2">90820783-1753-463f-9094-7c71a10fec80</member>
-				<member index="3" function="2">b77aafa2-3d67-4fb0-be59-f990090fad93</member>
-				<member index="4" function="2">a84c23cc-8e0a-4849-aca7-5193c2482af9</member>
-				<member index="5" function="2">6979be0a-469b-46f3-8dd9-5f97318e60fe</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1977" distribution="0" maingenre="202" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
-			<ratings critics="32" speed="49" outcome="47" />
-		</programme>
-		<programme id="TheRob-1756-400d-8f9c-BlauBembelsche" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-			<title>
-				<de>Blau Bembelsche - Best of</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Ei Bembel, ei Bembel. Bei Aeppelwoi und Handkäs wird musiziert, dass die Zwiebeln sich biegen. Die Granden der Musik geben sich die Hand. 30 Jahre Show und nur das Beste davon zusammen in einer Show. Das Herz lacht. Und beim jungen Publikum weint das Auge.</de>
-				<en></en>
-			</description>
-			<staff>
-				<member index="0" function="1">TheRob-celebritypeople-WeinWenk</member>
-				<member index="1" function="2">TheRob-celebritypeople-WeinWenk</member>
-				<member index="2" function="2">65538445-9da2-457c-b207-be0544514afa</member>
-				<member index="3" function="2">Per_custom_Freddy_298</member>
-				<member index="4" function="2">9f342b49-1089-47bc-8d92-722fe71d96e3</member>
-				<member index="5" function="2">Per_custom_Freddy_403</member>
-			</staff>
-			<groups target_groups="64" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1987" distribution="0" maingenre="202" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
-			<ratings critics="52" speed="69" outcome="0" />
-		</programme>
-		<programme id="TheRob-1756-400d-8f9c-JoMeieischeiJodeler" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-			<title>
-				<de>Jo Mei ei schei Jodeler</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Jodeln und Alpenhorn. Mit Aufnahmen der Alpenlandschaft garniert. Bei schöner Musik werden die Alpenpässe mit einem Käfer abgefahren..</de>
-				<en></en>
-			</description>
-			<staff>
-				<member index="0" function="1">TheRob-celebritypeople-WeinWenk</member>
-				<member index="2" function="2">65538445-9da2-457c-b207-be0544514afa</member>
-				<member index="3" function="2">Per_custom_Freddy_7</member>
-				<member index="4" function="2">Per_custom_Freddy_675</member>
-				<member index="5" function="2">Per_custom_Freddy_636</member>
-			</staff>
-			<groups target_groups="64" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1977" distribution="0" maingenre="202" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
-			<ratings critics="32" speed="9" outcome="0" />
-		</programme>
-		<programme id="c4be7d64-35e9-4e56-8e6e-TheRobTest06" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-			<title>
-				<de>Jag den Meringo</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Meringo metzelt mit seiner Bande ein Dorf nieder. Jimmy Baine jagt ihn erbarmungslos.</de>
-				<en></en>
-			</description>
-			<staff>
-				<member index="0" function="1">0b680977-89b4-4022-b474-091cbcc15a12</member>
-				<member index="1" function="2">9f342b49-1089-47bc-8d92-722fe71d96e3</member>
-				<member index="2" function="2">2f9f512b-ce9e-4e7e-894b-9946651612e3</member>
-				<member index="3" function="2">888ecdf4-4e26-4ce2-9c49-e86637aefb9d</member>
-				<member index="4" function="2">12208886-43f2-4b3c-b421-6c19e3f8a2cf</member>
-				<member index="5" function="2">8a850479-ce72-4f8f-88dd-e3b0a196399f</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="I" year="1961" distribution="0" maingenre="18" subgenre="0" flags="64" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="67" speed="66" outcome="65" />
-		</programme>
-		<programme id="therob-programme-elefantengedaechtnis" product="5" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
-			<title>
-				<de>Elefantengedächtnis</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Sendung für Schulkinder. Am Anfang werden Themen kindgerecht erklärt. Dann müssen die Kinder Fragen dazu beantworten. Die Gewinner bekommen eine Klassenfahrt geschenkt. </de>
-				<en></en>
-			</description>
-			<staff>
-				<member index="0" function="1">86bacead-ea9d-4878-9b2d-f23b0f7e0fe3</member>
-				<member index="1" function="2">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
-			</staff>
-			<groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1975" distribution="0" maingenre="9" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
-			<ratings critics="67" speed="25" outcome="0" />
-			<children>
-				<programme id="therob-programme-elefantengedaechtnis-ep101" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
-					<title>
-						<de>Zahnpasta</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Wie kommen die Streifen in die Tube und andere Fragen. Schön erklärt und pädagogisch wertvoll abgefragt.</de>
-						<en></en>
-					</description>
-					<ratings critics="73" speed="24" />
-				</programme>
-				<programme id="therob-programme-elefantengedaechtnis-ep102" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
-					<title>
-						<de>Limonade</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Von der Abfüllung über die Kohlensäure bis zum Zucker. Alles kindgerecht serviert. Empfohlen wird dem Kind beim Zuschauen zuckerfreien Tee zu servieren.</de>
-						<en></en>
-					</description>
-					<ratings critics="65" speed="26" />
-				</programme>
-				<programme id="therob-programme-elefantengedaechtnis-ep103" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
-					<title>
-						<de>Bleistifte</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Blei und Farbe werden beleuchtet. Selbst die Folgen von dauerhaften Bleistift nuckeln kommen zur Sprache.</de>
-						<en></en>
-					</description>
-					<ratings critics="66" speed="25" />
-				</programme>
-				<programme id="therob-programme-elefantengedaechtnis-ep104" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>Moderator ohne Kontrolle</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Thema sollte Seife werden. Doch die Kinder starteten einen Wettbewerb im Namentanzen. Der Moderator bekam die Sendung nicht in Griff und wurde auch noch Letzter beim Namentanzen </de>
-						<en></en>
-					</description>
-					<ratings critics="74" speed="49" />
-				</programme>
-				<programme id="therob-programme-elefantengedaechtnis-ep105" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>Namentanzen</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Auf Grund der grandiosen Resonanz auf die letzte Sendung, wurde das Thema Namenstanzen ausführlich durchleuchtet. Inklusive Wettbewerb. Durch die geordnete Durchführung ging der Spaß flöten.</de>
-						<en></en>
-					</description>
-					<ratings critics="59" speed="21" />
-				</programme>
-			</children>
-		</programme>
-		<programme id="5c4c567b-dda6-4d7e-b90a-RobTheTest11" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-			<title>
-				<de>Zorniges Obst</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Die Verfilmung eines Meisterwerks. Verarmte Obstpflücker finden keinen Job. Die Rettung verspricht das Orangenpflückparadies im Osten. Die Reise beginnt. Ein viel gerühmtes Drama.</de>
-				<en></en>
-			</description>
-			<staff>
-				<member index="0" function="1">c45e52c2-32a3-4d3b-87d2-c56a8e4f5279</member>
-				<member index="1" function="2">a80152d6-43dc-4f9c-a562-a5dbf821bc1f</member>
-				<member index="2" function="2">779ecf3d-7ca7-4253-aac6-cb5e1aee8e2c</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1940" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
-			<ratings critics="98" speed="19" outcome="69" />
-		</programme>
-		<programme id="b9c6190d-a9f6-4a94-8092-TheRobTest12" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
-			<title>
-				<de>Ein Dorf jagt L.</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Ein Klassiker der Filmkunst und einer der ersten Tonfilme. Ein Kinderschänder versetzt ein Dorf in Angst und Schrecken. Am Schluss wird nahezu jeder verdächtigt.</de>
-				<en></en>
-			</description>
-			<staff>
-				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
-				<member index="1" function="2">35742715-2273-41fd-9e2a-1ac9bf0203f0</member>
-				<member index="2" function="2">08bbc458-64af-4a27-8158-b5dbfb6bb885</member>
-				<member index="3" function="2">TheRob-celebritypeople-MustafWuendgens</member>
-				<member index="4" function="2">94ca78fd-399e-42b4-ada9-b869db926529</member>
-				<member index="5" function="2">62c14387-1f6e-4c45-8201-318f1e0e7cb4</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1931" distribution="0" maingenre="17" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="74" speed="26" outcome="83" />
-		</programme>
-		<programme id="therob-programme-speiuebelunddubrovnik" product="5" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
-			<title>
-				<de>Speiübel und Dubrovnik</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Vater und Sohn erleben Alltagsthemen. Humorvoll für Kinder aufbereitet und der Augsburger Puppenkiste ebenbürtig.</de>
-				<en></en>
-			</description>
-			<staff>
-				<member index="0" function="1">86bacead-ea9d-4878-9b2d-f23b0f7e0fe3</member>
-				<member index="1" function="2">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
-			</staff>
-			<groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="CSSR" year="1973" distribution="0" maingenre="9" subgenre="5" flags="2" blocks="1" time="0" price_mod="1.00" />
-			<ratings critics="47" speed="29" outcome="0" />
-			<children>
-				<programme id="therob-programme-speiuebelunddubrovnik-ep201" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
-					<title>
-						<de>Speiübel kommt in die Schule</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Dubrovnik bringt Speiübel in die Schule. Dort freundet er sich mit Ilonka an. Spaßiger erster Schultag.</de>
-						<en></en>
-					</description>
-					<ratings critics="43" speed="26" />
-				</programme>
-				<programme id="therob-programme-speiuebelunddubrovnik-ep202" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
-					<title>
-						<de>Hausaufgaben</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Speiübel soll Hausaufgaben machen. Er will aber lieber mit Ilonka Verstecken spielen. Dubrovnik sucht die Beiden. Ein munteres Versteckspiel beginnt.</de>
-						<en></en>
-					</description>
-					<ratings critics="49" speed="31" />
-				</programme>
-				<programme id="therob-programme-speiuebelunddubrovnik-ep203" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
-					<title>
-						<de>Musikunterricht</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Speiübel spielt Schlagzeug, Ilonka Flöte. Dubrovnik versucht das mit seiner Migräne zu überleben. Das klappt aber nur bedingt. Beste Darstellung, warum Eltern keine Musikinstrumente für ihre Kleinen mögen.</de>
-						<en></en>
-					</description>
-					<ratings critics="56" speed="28" />
-				</programme>
-				<programme id="therob-programme-speiuebelunddubrovnik-ep204" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>Speiübel lernt schwimmen</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Dubrovnik will Speiübel schwimmen beibringen. Der demonstriert aber ausgiebig, wie gut er im Wasser schlucken ist. Zum Schluss werden die Vorteile von Schwimmflügeln ausgiebig gewürdigt.</de>
-						<en></en>
-					</description>
-					<ratings critics="44" speed="32" />
-				</programme>
-				<programme id="therob-programme-speiuebelunddubrovnik-ep205" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>Plätzchen backen</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Speiübel und Ilonka wollen Plätzchen backen. Dubrovnik freut sich auf das Ergebnis. Doch dann merkt er, dass es sich eher auf die Küche auswirkt als auf den Geschmack.</de>
-						<en></en>
-					</description>
-					<ratings critics="57" speed="34" />
-				</programme>
-			</children>
-		</programme>
-		<programme id="631f722f-b5dc-4663-bd81-TheRobHist01" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
-			<title>
-				<de>Die Tempelritter</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Von der Entstehung bis zu ihrem Untergang. Die Fakten werden mit Darstellungen durch Laiendarsteller untermauert. Der Erzähler versucht sich an den Spannungsbögen.</de>
-				<en></en>
-			</description>
-			<staff>
-				<member index="0" function="1">577f032c-d851-4e5b-bab1-69d489031456</member>
-				<member index="1" function="2">d8c84544-ff75-4023-9a10-4bb2e5478593</member>
-				<member index="2" function="2">63d730f3-c0a5-4ab0-97f7-250177c5f3bd</member>
-				<member index="3" function="2">61334348-7cb7-4601-ad29-87f724ec3cb3</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1967" distribution="0" maingenre="11" subgenre="0" flags="0" blocks="4" time="0" price_mod="1.00" />
-			<ratings critics="75" speed="31" outcome="0" />
-		</programme>
-		<programme id="e61018ba-b0db-439c-a852-TheRobTest13" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
-			<title>
-				<de>Baba der Trabbi</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Baba der lebende Trabbi leistet seinem Besitzer wundervolle Dienste. Er kann schwimmen, fliegen und Autoknacker verprügeln. Herbeigerufen durch einen Pfiff, eilt er immer brav herbei, wenn Hilfe gebraucht wird.</de>
-				<en></en>
-			</description>
-			<staff>
-				<member index="0" function="1">cdd0e7aa-11eb-48d7-82cc-d693e2130d05</member>
-				<member index="1" function="2">18cb930c-1e71-4ab5-9996-43689ac01098</member>
-				<member index="2" function="2">4eff33a4-952c-4217-adfb-0b8496f2c01d</member>
-				<member index="3" function="2">e1ed748b-647d-47b6-98b7-fe9c88579b12</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="DDR" year="1972" distribution="0" maingenre="10" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="27" speed="34" outcome="46" />
-		</programme>
-		<programme id="therob-programme-trash-skandale" product="7" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
-			<title>
-				<de>Skandale</de>
-				<en></en>
-			</title>
-			<description>
-				<de>[1|Full] präsentiert die Skandale von [0|Full]. Präsentiert wird alles, von Ausrastern an Drehorten über Interviews bis zu Talkshow Auftritten. Erheiternd bis zum geht nicht mehr. Aber für Jugendliche völlig ungeeignet.</de>
-				<en></en>
-			</description>
-			<staff>
-				<member index="0" function="1">9f342b49-1089-47bc-8d92-722fe71d96e3</member>
-				<member index="1" function="2">aee96d95-682e-4587-8192-3f4e689e045c</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1979" distribution="0" maingenre="11" subgenre="6" flags="92" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="65" speed="35" outcome="60" />
-			<children>
-				<programme id="therob-programme-trash-skandale-ep101" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
-					<title>
-						<de>[0|Full] qualmt die Bude zu</de>
-						<en></en>
-					</title>
-					<description>
-						<de>[0|Full] als Kettenraucher beleidigt den Moderator bis zum geht nicht mehr.</de>
-						<en></en>
-					</description>
-					<ratings critics="60" speed="30" />
-				</programme>
-				<programme id="therob-programme-trash-skandale-ep102" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>[0|Full] beleidigt die Interviewerin</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Dem Mitleid für die Dame kann man sich nicht verwehren. [1|Full] rastet völlig aus und geht sie unflätig an.</de>
-						<en></en>
-					</description>
-					<ratings critics="65" speed="35" />
-				</programme>
-				<programme id="therob-programme-trash-skandale-ep103" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>[0|Full] im Dschungel</de>
-						<en></en>
-					</title>
-					<description>
-						<de>[1|Full] legendärer Ausraster im Dschungel. Wen geht er als nächstes an? Die Augenzeugen sind heute noch traumatisiert.</de>
-						<en></en>
-					</description>
-					<ratings critics="70" speed="40" />
-				</programme>
-			</children>
-		</programme>
-		<programme id="b528cab3-ec3d-43fc-TheRobCallInTest01" product="3" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
-			<title>
-				<de>Schach gegen den Meister</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Schnellschach gegen die Großmeister. Anrufen, durchkommen und den Großmeister Schachmatt setzen. Köpfchen einsetzen, lernen, in der Warteschleife Geld verlieren. Das garantierte Rundum Sorglos Paket</de>
-				<en></en>
-			</description>
-			<staff>
-				<member index="0" function="1">474ae0d7-8233-47bb-bba9-2d3d3df61919</member>
-				<member index="1" function="2">22274e45-da7e-4fb2-8698-3a2364973e1a</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1980" distribution="0" maingenre="0" subgenre="0" flags="128" blocks="1" time="0" price_mod="1.00" />
-			<ratings critics="29" speed="5" outcome="0" />
-			<children>
-				<programme id="8aedcc43-c63d-4ab3-TheRobCallInTestEp101" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>2 Türme, 3 Bauern</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Eine knifflige Situation. Wer findet den richtigen Zug</de>
-						<en></en>
-					</description>
-					<ratings critics="30" speed="4" />
-				</programme>
-				<programme id="a2ac67b0-6689-4c50-9489-TheRobCallInTestEp102" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>Springer und Pferde</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Steigerung der letzten Folge. Viel Zeit zum überlegen oder einschlafen. Einschlafen bitte nur beim Warten in der kostenpflichtigen Warteschleife.</de>
-						<en></en>
-					</description>
-					<ratings critics="32" speed="4" />
-				</programme>
-				<programme id="82a377c0-4950-40cb-9813-TheRobCallInTestEp103" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>Nur noch Bauern</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Gestellte Situation. Wer spielt schon eine Partie, bei der außer dem König nur noch Bauern auf dem Feld stehen.</de>
-						<en></en>
-					</description>
-					<ratings critics="24" speed="4" />
-				</programme>
-				<programme id="81800e30-c387-4a29-9c21-TheRobCallInTestEp104" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>Damen</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Die Damen herrschen. Unterstützt mit lebenden Modelen die auf einem großen Schachfeld herumlaufen. Ein Abschluß auch für das Auge.</de>
-						<en></en>
-					</description>
-					<ratings critics="28" speed="32" />
-				</programme>
-			</children>
-		</programme>
-<programme id="5c4c567b-dda6-4d7e-b90a-geballteHand" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-			<title>
-				<de>Geballte Hand</de>
-				<en></en>
-			</title>
-			<description>
-				<de>“Da steh ich nun, ich armer Tor! Und bin so klug als wie zuvor“ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|full] und [2|full]. Viel gerühmt und von Schulkindern gemieden</de>
-				<en></en>
-			</description>
-			<staff>
-				<member index="0" function="1">c45e52c2-32a3-4d3b-87d2-c56a8e4f5279</member>
-				<member index="1" function="2">TheRob-celebritypeople-MustafWuendgens</member>
-				<member index="2" function="2">779ecf3d-7ca7-4253-aac6-cb5e1aee8e2c</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1960" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
-			<ratings critics="99" speed="12" outcome="55" />
-		</programme>
-		<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt" product="7" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-			<title>
-				<de>Kurven der Welt - Erkenne sie alle</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Die schönsten Brüste der Welt. Dezent verpackt. Nichts und doch viel zu sehen. Die anspruchsvolle Erotikhow mit Einlagen über die Kultur des jeweiligen Landes. Selbst Kritiker konnten sich damit anfreunden. Präsentiert von einer schwedischen Schönheit</de>
-				<en></en>
-			</description>
-			<staff>
-				<member index="0" function="1">Per_custom_Freddy_42</member>
-				<member index="0" function="2">Per_custom_Freddy_45</member>
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="SWE" year="1985" distribution="0" maingenre="8" subgenre="0" flags="192" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="28" speed="55" outcome="0" />
-			<children>
-				<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt01" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>Jamaika</de>
-						<en></en>
-					</title>
-					<description>
-						<de>In der Folge eins ist Jamaika zu eraten. 40 Damen präsentieren ihr Land Es werden Landschaft und Städte gezeigt. Die Kultur wird gezeigt. Und alles garniert mit viel nackter Damenhaut. Erraten muss man den Nachnamen der Dame.</de>
-						<en></en>
-					</description>
-					<ratings critics="25" speed="50" />
-				</programme>
-				<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt02" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>Kambodscha</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Alte Tempel, Felder, Großstädte und Dschungel. Alles mit noch mehr Haut. Die Anrufer stehen Schlange. Ein Meisterwerk der "sabbernden" Bildung. So nah und doch so fern. Erraten muss man den Nachnamen der Dame.</de>
-						<en></en>
-					</description>
-					<ratings critics="35" speed="45" />
-				</programme>
-				<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt03" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>Bulgarien</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Die schwarze Balalaika. Die Vielfalt der Damenwelt wird mit historischen Bauten und schönen Stränden hinterlegt. Ferner wird unpassenderweise auf Transilvanien eingegangen. Erraten muss man den Nachnamen der Dame.</de>
-						<en></en>
-					</description>
-					<ratings critics="25" speed="55" />
-				</programme>
-				<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt04" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
-					<title>
-						<de>Tunesien</de>
-						<en></en>
-					</title>
-					<description>
-						<de>Gefeierte Abschlußfolge für die Damenwelt. Männliche Hüftschwünge. Diesmal werden die Vornamen der Pobackenträger benötigt. Alles in wunderbaren Landschaftsaufnahmen präsentiert. Der Moderatorin ist der Spaß anzusehen und somit auch für Männer.</de>
-						<en></en>
-					</description>
-					<ratings critics="28" speed="65" />
-			<groups target_groups="128" pro_pressure_groups="0" contra_pressure_groups="0" />
-				</programme>
-			</children>
-		</programme>
-	</allprogrammes>
-	<celebritypeople>
-		<person id="TheRob-celebritypeople-FizzieWang" tmdb_id="0" imdb_id="" creator="">
-			<first_name>Fizzie</first_name>
-			<last_name>Wang</last_name>
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="1"  birthday="1890-12-05" deathday="1976-08-02" country="D" />
-			<data prominence="5" skill="5" fame="4" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
-		</person>
-		<person id="TheRob-celebritypeople-WalfredWederSabel" tmdb_id="0" imdb_id="" creator="">
-			<first_name>Walfred Weder</first_name>
-			<last_name>Sabel</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="1"  birthday="1879-03-12" deathday="1937-12-12" country="D" />
-			<data prominence="2" skill="3" fame="3" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
-		</person>
-		<person id="TheRob-celebritypeople-PipernetteSelm" tmdb_id="0" imdb_id="" creator="">
-			<first_name>Pipernette</first_name>
-			<last_name>Selm</last_name>
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="1"  birthday="1908-03-17" deathday="1996-06-11" country="D" />
-			<data prominence="2" skill="3" fame="3" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
-		</person>
-		<person id="TheRob-celebritypeople-MustafLustig" tmdb_id="0" imdb_id="" creator="">
-			<first_name>Mustaf</first_name>
-			<last_name>Lustig</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="1"  birthday="1902-03-21" deathday="1987-12-22" country="CH" />
-			<data prominence="2" skill="3" fame="2" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
-		</person>
-		<person id="TheRob-celebritypeople-MustafWuendgens" tmdb_id="0" imdb_id="" creator="">
-			<first_name>Mustaf</first_name>
-			<last_name>Wuendgens</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="1"  birthday="1899-12-22" deathday="1963-10-07" country="D" />
-			<data prominence="4" skill="5" fame="2" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
-		</person>
-		<person id="TheRob-celebritypeople-WeinWenk" tmdb_id="0" imdb_id="" creator="">
-			<first_name>Wein</first_name>
-			<last_name>Wenk</last_name>
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="1"  birthday="1924-12-11" deathday="2014-05-01" country="D" />
-			<data prominence="5" skill="5" fame="3" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
-		</person>
-	</celebritypeople>
+    <version value="3" comment="Programme von TheRob" />
+    <allprogrammes>
+        <programme id="54084557-4497-48d5-8e3a-TheRobRiesenstadt" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0017136" rt_id="0" creator="TheRob">
+            <title>
+      				<!-- Metropolis -->
+                <de>Riesenstadt - Long Cut</de>
+                <en>Big City - Long Cut</en>
+            </title>
+      <title_original>
+                <de>Metropolis</de>
+        <en>Metropolis</en>
+            </title_original>
+            <description>
+                <de>Arbeiter gegen Reich. Oberwelt gegen Unterwelt. Ein stummer epischer Kampf. Remastert und extralong. Inklusive wiedergefundener und restaurierter Szenen. Hier in der Fassung der Murnau-Stiftung von 2010.</de>
+                <en>Workers against the upperclass. People from the surface against the poor living underneath. An epic and silent fight. Including the found and restored scenes. This is the Version of 2010 remasterd by the "Murnau-Stiftung".</en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
+                <member index="1" function="2">TheRob-celebritypeople-WalfredWederSabel</member>
+                <member index="2" function="2">TheRob-celebritypeople-PipernetteSelm</member>
+                <member index="3" function="2">TheRob-celebritypeople-MustafLustig</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1927" distribution="0" maingenre="13" subgenre="0" flags="0" blocks="5" time="0" price_mod="1.00" />
+            <ratings critics="82" speed="17" outcome="59" />
+        </programme>
+        <programme id="04439fd1-e89f-TheRobTestSerie01" product="5" licence_type="3" tmdb_id="0" imdb_id="tt2757036" rt_id="0" creator="TheRob">
+            <title>
+      				<!-- Western von gestern, Orginal Serie wird auf 1975 datiert -->
+                <de>Gestern gab es Western</de>
+                <en></en>
+            </title>
+      <title_original>
+                <de>Western von Gestern</de>
+            </title_original>
+            <description>
+                <de>Westernraritäten auf Serienformat gekürzt. Die Story geht flöten, aber die Landschaft bleibt.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
+                <member index="1" function="2">TheRob-celebritypeople-JimmyBaine</member>
+                <member index="2" function="2">788fa2a0-7908-4e96-b3c0-51ff9386a16e</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1949" distribution="0" maingenre="18" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
+            <ratings critics="40" speed="29" outcome="29" />
+            <children>
+                <programme id="39803483-0800-46e3-a153-TheRobEpisode1" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Jerry das Pferd</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Dys Pferd Jerry zieht einen Fremden aus dem Sumpf. Dieser weicht ihm nicht mehr von der Seite. Eine wilde Verfolgungsjagd beginnt.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="42" speed="42" />
+                </programme>
+                <programme id="4c062f49-f1e8-400a-9c11-TheRobEpisode2" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Lozzo lernt peitschen</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Lozzo findet eine Peitsche und übt sein Zeichen. Warum er sich für Z statt L entscheidet? Ganz Mexiko hat nun eine Z Narbe auf der Brust...</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="53" speed="39" />
+                </programme>
+                <programme id="dc0b1ca6-c1c1-496f-9882-TheRobEpisode3" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Niklas sucht James</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Niklas will den Bandit J.James ausschalten um selber zum Helden zu werden. Der Showdown naht...</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="19" speed="25" />
+                </programme>
+                <programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode4" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Njamba der Fotograf</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Njamba, der Zulu, verlässt seinen Stamm. Sein Ziel: Landschaftsaufnaumahmen im wilden Westen. Diese werden ausgiebig gezeigt. Finanziert durch den Gesunder Schlaf e.V.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="29" speed="5" />
+                </programme>
+                <programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode5" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Farmer gen Osten</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Gescheiterte Farmer wollen zurück nach Europa. Doch die indianischen Skalphändler wollen ihre Beute nicht ziehen lassen. Schaffen sie die Flucht?</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="32" speed="79" />
+                </programme>
+                <programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode6" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Mensch Jimmy</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Jimmy Baine in seinem ersten Auftritt vor seiner großen Karriere. Der Revolver sitzt schon perfekt. A Star ist born. Wer braucht da Handlung?</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="17" speed="55" />
+                </programme>
+                <programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode7" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>IIIk, wird das Wononza?</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Farmleben eines Vaters mit drei Söhnen. Das Publikum hat böse Vorahnungen. Doch als sie wegschalten, war Ihre Einschaltquote schon gezählt.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="2" speed="1" />
+                </programme>
+            </children>
+        </programme>
+        <programme id="TheRob-a4d6-4cf2-b022-ZyanidundSpitzenhoeschen" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0036613" rt_id="0" creator="TheRob">
+            <title>
+                <!-- Arsen und Spitzenhäubchen -->
+                <de>Zyanid und Spitzenhoeschen</de>
+                <en></en>
+            </title>
+      <title_original>
+                <de>Arsen und Spitzenhäubchen</de>
+        <en>Arsenic and Old Lace</en>
+            </title_original>
+            <description>
+                <de>Frisch verheiratet besuchen Mortey und seine Angetraute die beiden Tanten von Mortey. Konnte er ahnen, das sie echte Leichen im Keller haben. Und wie kommt er wieder da raus? Bis heute kann man über seine Mimik lachen. Ein „Evergreen des schwarzen Humors"</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-PrankWrapa</member>
+                <member index="1" function="2">TheRob-celebritypeople-GaryGrunt</member>
+                <member index="2" function="2">Per_custom_Freddy_35</member>
+                <member index="3" function="2">Per_custom_Freddy_120</member>
+                <member index="4" function="2">Per_custom_Freddy_126</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1944" distribution="0" maingenre="5" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="77" speed="68" outcome="71" />
+        </programme>
+        <programme id="e61018ba-b0db-439c-a852-TheRob04" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+            <title>
+                <de>Wesensreiter</de>
+                <en></en>
+            </title>
+            <description>
+                <de>Bulbu erkennt, dass er Fantasiewesen dressieren und reiten kann. Ein fliegendes Epos beginnt.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">cdd0e7aa-11eb-48d7-82cc-d693e2130d05</member>
+                <member index="1" function="2">18cb930c-1e71-4ab5-9996-43689ac01098</member>
+                <member index="2" function="2">4eff33a4-952c-4217-adfb-0b8496f2c01d</member>
+                <member index="3" function="2">e1ed748b-647d-47b6-98b7-fe9c88579b12</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1964" distribution="0" maingenre="10" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="33" speed="27" outcome="56" />
+        </programme>
+        <programme id="TheRob-b0db-439c-a852-Wosselnaht" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0059372" rt_id="0" creator="TheRob">
+                <!-- König Drosselbart, Zielgruppe Kinder -->
+            <title>
+                <de>Prinz Wosselnaht</de>
+                <en></en>
+            </title>
+      <title_original>
+                <de>König Drosselbart</de>
+            </title_original>
+            <description>
+                <de>Das Märchen Prinz Wosselnaht wird hier wunderbar in Szene gesetzt. Wunderbar für den Kindernachmittag geeignet.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-AlfredNeck</member>
+                <member index="1" function="2">TheRob-celebritypeople-WalterMuge</member>
+                <member index="2" function="2">TheRob-celebritypeople-MarenLosowski</member>
+            </staff>
+            <groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="DDR" year="1965" distribution="0" maingenre="10" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="63" speed="47" outcome="36" />
+        </programme>
+        <programme id="TheRob-b0db-439c-a852-BullshitBingo" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+            <title>
+                <de>Bullshit Bingo</de>
+                <en></en>
+            </title>
+            <description>
+                <de>Wenn Bullshit Bingo nicht Sonstiges ist, was dann. Zur Show hat es nicht gereicht. Zur Doku leider auch nicht. Wir sind für euch durch die Welt gelaufen und haben gefragt, was Bullshit Bingo ist. Die Antwort: Sonstiges!</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">Per_custom_Freddy_13</member>
+                <member index="1" function="2">Per_custom_Freddy_632</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1979" distribution="0" maingenre="0" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="29" speed="27" outcome="10" />
+        </programme>
+        <programme id="TheRob-b0db-439c-a852-Sonstiges" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+            <title>
+                <de>Sonstiges - das Thema</de>
+                <en></en>
+            </title>
+            <description>
+                <de>[0|Full] hat [1|Full], [2|Full], [3|Full] und [4|Full] eingeladen. Das Ziel ein intensive Gespräch über Sonstiges. Wie wird die Quote? Was gehört da rein. Wie wirkt es sich aus. Sehr spannende Expertenrunde. Vor allem, als der Streit ausbricht. </de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
+                <member index="1" function="2">TheRob-TowerTV-Gast</member>
+                <member index="2" function="2">TheRob-TowerTV-Sushi</member>
+                <member index="3" function="2">TheRob-TowerTV-rumpel</member>
+                <member index="4" function="2">TheRob-TowerTV-speed</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="2014" distribution="0" maingenre="0" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="99" speed="47" outcome="0" />
+        </programme>
+        <programme id="TheRob-b0db-439c-a852-EditorundKI" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+            <title>
+                <de>Editor und KI</de>
+                <en></en>
+            </title>
+            <description>
+                <de>[0|Full] und [1|Full] in reger Diskussion. Wie steht es um den Editor? Wie muss die KI aussehen. Und hat [1|Full] richtige gehandelt? Ist Reallife wichtiger? Und wer macht jetzt die KI? Spannend, aber etwas zu langatmig </de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
+                <member index="1" function="2">TheRob-TowerTV-STARS</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="2013" distribution="0" maingenre="0" subgenre="0" flags="0" blocks="6" time="0" price_mod="1.00" />
+            <ratings critics="92" speed="27" outcome="0" />
+        </programme>
+        <programme id="TheRob-b0db-439c-a852-TVGigantderAnfang" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+            <title>
+                <de>TVGigant - der Anfang</de>
+                <en></en>
+            </title>
+            <description>
+                <de>[0|Full] und [1|Full] sowie [2|Full] erklären ihre Motivation. Warum TVGigant. Und wie lange halten sie durch. Wird es jemals fertig. Geht das im Einklang mit dem restlichen Leben? Wir freuen uns auf das versprochene Interview 2025!</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
+                <member index="1" function="2">TheRob-TowerTV-Michael</member>
+                <member index="2" function="2">TheRob-TowerTV-Daniel</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="2003" distribution="0" maingenre="0" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="92" speed="27" outcome="0" />
+        </programme>
+        <programme id="TheRob-b0db-439c-a852-RatTV" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+            <title>
+                <!-- Geschichte über MadTV und Rainbow Arts -->
+                <de>RatTV - Quo Vadis</de>
+                <en></en>
+            </title>
+            <description>
+                <de>[1|Full] und [2|Full] von der Firma Regenbogen Wünsche sprechen über ihr Werk. [3|Full] berichtet was ihn an dem Spiel begeistert. OneHitWonder oder doch lange in Erinnerung bleibend?. Ein Klasse Sonstiges! [3|Full] wagt die Prognose: Es kommen Nachfolger! ;)</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">Per_custom_Freddy_368</member>
+                <member index="1" function="2">TheRob-TowerTV-Mark</member>
+                <member index="2" function="2">TheRob-TowerTV-Thomas</member>
+                <member index="3" function="2">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1991" distribution="0" maingenre="0" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
+            <ratings critics="88" speed="51" outcome="0" />
+        </programme>
+    		<programme id="TheRob-b0db-439c-a852-RaucherladenBrooklin" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0114478" rt_id="0" creator="TheRob">
+            <title>
+                <!-- Smoke. Laut IMDB Comedy, Drama. Ich habe den Film gesehen und würde ihn niccht als Komödie bezeichnen. Als Drama auch nicht. Die Kategorie Sonstiges passt hier -->
+                <de>Raucherladen Brooklin</de>
+                <en></en>
+            </title>
+      <title_original>
+                <de>Smoke - Raucher unter sich</de>
+        <en>Smoke</en>
+            </title_original>
+            <description>
+                <de>Vier Menschen lernen sich in einem Zigarettenladen kennen. Dadurch werden die vier Kurzgeschichten mit ein ander verwoben</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-RainZog</member>
+                <member index="1" function="2">8d2ae397-b5ad-466c-9a32-2105a76d5701</member>
+                <member index="2" function="2">Per_custom_Freddy_233</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1995" distribution="0" maingenre="0" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
+            <ratings critics="79" speed="57" outcome="18" />
+        </programme>
+    		<programme id="TheRob-b0db-439c-a852-RauchinBrooklin" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0112541" rt_id="0" creator="TheRob">
+            <title>
+                <!-- Blue in the Face. Laut IMDB Comedy. Ich habe den Film gesehen und würde ihn nicht als Komödie bezeichnen. Die Kategorie Sonstiges passt hier -->
+                <de>Rauch in Brooklin</de>
+                <en></en>
+            </title>
+      <title_original>
+                <de>Blue in the Face - Alles blauer Dunst</de>
+        <en>Blue in the face</en>
+            </title_original>
+            <description>
+                <de>Wieder ist ein Zigarettenladen der Ausgang für die Geschichten einzelner Menschen. Legendär: Angst? Vor Brooklin? Vor Schweden habe ich Angst!</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-RainZog</member>
+                <member index="1" function="2">8d2ae397-b5ad-466c-9a32-2105a76d5701</member>
+                <member index="2" function="2">52c52df5-a2a0-478c-8acd-9250aa0fb484</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1995" distribution="0" maingenre="0" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
+            <ratings critics="72" speed="59" outcome="12" />
+                <!-- Erscheinungsjahr in Deutschland war 1996. 95 ist in der USA gewesen. -->
+        </programme>
+        <programme id="TheRob-b0db-439c-a852-Goaaaaal" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+            <title>
+                <de>Goaaaaal</de>
+                <en>Goaaaaal</en>
+            </title>
+            <description>
+                <de>[1|Full] präsentiert die schönsten Tore des Jahres 1981. Ein Augenschmauß für jeden Fan!</de>
+                <en>[1|Full] presents the best goals of the year 1981. A must see for every fan!</en>
+            </description>
+            <staff>
+                <member index="0" function="1">Per_custom_Freddy_639</member>
+                <member index="1" function="2">TheRob-TowerTV-KalliBeckenklauer</member>
+                <member index="2" function="2">Per_custom_Freddy_534</member>
+                <member index="3" function="2">Per_custom_Freddy_355</member>
+            </staff>
+            <groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1981" distribution="0" maingenre="202" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
+            <ratings critics="22" speed="95" outcome="0" />
+        </programme>
+        <programme id="5c4c567b-dda6-4d7e-b90a-RobTheTest01" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+            <title>
+                <de>Iris entdeckt die Alm</de>
+                <en></en>
+            </title>
+            <description>
+                <de>Iris besucht mit Ihren Freundinnen die Alm, die Bauern und ihre Betten oder Heuböden. Wurde beim Revival der Seventies leider nicht vergessen.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">c45e52c2-32a3-4d3b-87d2-c56a8e4f5279</member>
+                <member index="1" function="2">Per_custom_Freddy_682</member>
+                <member index="2" function="2">779ecf3d-7ca7-4253-aac6-cb5e1aee8e2c</member>
+            </staff>
+            <groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1972" distribution="0" maingenre="8" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="9" speed="19" outcome="29" />
+        </programme>
+        <programme id="8ef29506-1756-400d-8f9c-TheRobTest03" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+            <title>
+                <de>Weib, Wein und Gesang</de>
+                <en></en>
+            </title>
+            <description>
+                <de>Wikinger plündern fröhlich singend ganz Europa. Vor lauter brüderlichem Gesang sieht man das Blut kaum.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">ef4e2db6-6ab9-4386-b2d5-c2d2b9990c97</member>
+                <member index="1" function="2">65538445-9da2-457c-b207-be0544514afa</member>
+                <member index="2" function="2">90820783-1753-463f-9094-7c71a10fec80</member>
+                <member index="3" function="2">Per_custom_Freddy_679</member>
+                <member index="4" function="2">a84c23cc-8e0a-4849-aca7-5193c2482af9</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1977" distribution="0" maingenre="202" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
+            <ratings critics="32" speed="49" outcome="47" />
+        </programme>
+        <programme id="TheRob-916a-47bf-FeindNachbar" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0089092" rt_id="0" creator="">
+            <title>
+                <!-- Enemy Mine - Geliebter Feind -->
+                <de>Feind - Mein böser Nachbar</de>
+                <en>Enemy - my bad neighbour</en>
+            </title>
+      <title_original>
+                <de>Enemy Mine - Geliebter Feind</de>
+        <en>Enemy Mine</en>
+            </title_original>
+            <description>
+                <de>Ein mennschlicher und ein ausserirdischer Kampfflieger stürzen auf einem unwirtlichen Planeten ab. Nach dem sie sich dort weiter bekämpfen, merken sie, dass sie nur gemeinsam überleben können. Wohin wird diese Erkenntnis führen?</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">cdd0e7aa-11eb-48d7-82cc-d693e2130d05</member>
+                <member index="1" function="2">TheRob-celebritypeople-RennIsNaid</member>
+                <member index="2" function="2">TheRob-TowerTV-RuisLosset</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1985" distribution="0" maingenre="16" subgenre="0" flags="0" blocks="2" time="0" price_mod="1" />
+            <ratings critics="76" speed="41" outcome="38" />
+        </programme>
+        <programme id="TheRob-1756-400d-8f9c-BlauBembelsche" product="1" licence_type="1" tmdb_id="0" imdb_id="tt1086209" rt_id="0" creator="">
+            <title>
+      				<!-- Blauer Bock, imdb ID ist die aus Idstein. Bei IMDB sind alle Folgen einzeln gelistet. -->
+                <de>Blau Bembelsche - Best of</de>
+                <en></en>
+            </title>
+      <title_original>
+                <de>Blauer Bock</de>
+            </title_original>
+            <description>
+                <de>Ei Bembel, ei Bembel. Bei Aeppelwoi und Handkäs wird musiziert, dass die Zwiebeln sich biegen. Die Granden der Musik geben sich die Hand. 30 Jahre Show und nur das Beste davon zusammen in einer Show. Das Herz lacht. Und beim jungen Publikum weint das Auge.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-WeinWenk</member>
+                <member index="1" function="2">TheRob-celebritypeople-WeinWenk</member>
+                <member index="2" function="2">65538445-9da2-457c-b207-be0544514afa</member>
+                <member index="3" function="2">Per_custom_Freddy_298</member>
+                <member index="4" function="2">9f342b49-1089-47bc-8d92-722fe71d96e3</member>
+                <member index="5" function="2">Per_custom_Freddy_403</member>
+            </staff>
+            <groups target_groups="64" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1987" distribution="0" maingenre="202" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
+            <ratings critics="52" speed="69" outcome="0" />
+        </programme>
+        <programme id="TheRob-1756-400d-8f9c-JoMeieischeiJodeler" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+            <title>
+                <de>Jo Mei, ei schei Jodeler</de>
+                <en></en>
+            </title>
+            <description>
+                <de>Jodeln und Alpenhorn. Mit Aufnahmen der Alpenlandschaft garniert. Bei schoener Musik werden die Alpenpaesse mit einem 57er Kaefer abgefahren.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-WeinWenk</member>
+                <member index="1" function="2">65538445-9da2-457c-b207-be0544514afa</member>
+                <member index="2" function="2">Per_custom_Freddy_7</member>
+                <member index="3" function="2">Per_custom_Freddy_675</member>
+                <member index="4" function="2">Per_custom_Freddy_636</member>
+            </staff>
+            <groups target_groups="64" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1977" distribution="0" maingenre="202" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
+            <ratings critics="32" speed="9" outcome="0" />
+        </programme>
+        <programme id="c4be7d64-35e9-4e56-8e6e-TheRobTest06" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+            <title>
+                <de>Jag den Meringo</de>
+                <en></en>
+            </title>
+            <description>
+                <de>Meringo metzelt mit seiner Bande ein Dorf nieder. Jimmy Baine, der dadurch sein Kind verlor, jagt ihn erbarmungslos.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-RonDort</member>
+                <member index="1" function="2">TheRob-celebritypeople-JimmyBaine</member>
+                <member index="2" function="2">2f9f512b-ce9e-4e7e-894b-9946651612e3</member>
+                <member index="3" function="2">888ecdf4-4e26-4ce2-9c49-e86637aefb9d</member>
+                <member index="4" function="2">12208886-43f2-4b3c-b421-6c19e3f8a2cf</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="I" year="1961" distribution="0" maingenre="18" subgenre="0" flags="64" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="67" speed="66" outcome="65" />
+        </programme>
+        <programme id="TheRob-35e9-4e56-8e6e-DerBraveOsten" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056085" rt_id="0" creator="">
+                <!-- Das war der wilde Westen -->
+            <title>
+                <de>Der brave Osten</de>
+                <en></en>
+            </title>
+      <title_original>
+                <de>Das war der wilde Westen</de>
+        <en>How the west was won</en>
+            </title_original>
+            <description>
+                <de>Ein Jahrhundert in der Western Zeit wird mit Bollywood Starbesetzung episch erzählt.</de>
+                <en>A century of the wild west time is shown. With Top Bollywood Stars</en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-RonDort</member>
+                <member index="1" function="2">TheRob-celebritypeople-JimmyBaine</member>
+                <member index="2" function="2">788fa2a0-7908-4e96-b3c0-51ff9386a16e</member>
+                <member index="3" function="2">a80152d6-43dc-4f9c-a562-a5dbf821bc1f</member>
+                <member index="4" function="2">TheRob-celebritypeople-WeckoryWeck</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1962" distribution="0" maingenre="18" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
+            <ratings critics="87" speed="66" outcome="75" />
+        </programme>
+        <programme id="therob-programme-elefantengedaechtnis" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+            <title>
+                <de>Elefantengedächtnis</de>
+                <en></en>
+            </title>
+            <description>
+                <de>Sendung für Schulkinder. Am Anfang werden Themen kindgerecht erklärt. Dann müssen die Kinder Fragen dazu beantworten. Die Gewinner bekommen eine Klassenfahrt geschenkt. </de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">86bacead-ea9d-4878-9b2d-f23b0f7e0fe3</member>
+                <member index="1" function="2">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
+            </staff>
+            <groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1975" distribution="0" maingenre="9" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
+            <ratings critics="67" speed="25" outcome="0" />
+            <children>
+                <programme id="therob-programme-elefantengedaechtnis-ep101" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Zahnpasta</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Wie kommen die Streifen in die Tube und andere Fragen. Schön erklärt und pädagogisch wertvoll abgefragt.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="73" speed="24" />
+                </programme>
+                <programme id="therob-programme-elefantengedaechtnis-ep102" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Limonade</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Von der Abfüllung über die Kohlensäure bis zum Zucker. Alles kindgerecht serviert. Empfohlen wird dem Kind beim Zuschauen zuckerfreien Tee zu servieren.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="65" speed="26" />
+                </programme>
+                <programme id="therob-programme-elefantengedaechtnis-ep103" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Bleistifte</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Blei und Farbe werden beleuchtet. Selbst die Folgen von dauerhaften Bleistift nuckeln kommen zur Sprache.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="66" speed="25" />
+                </programme>
+                <programme id="therob-programme-elefantengedaechtnis-ep104" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Moderator ohne Kontrolle</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Thema sollte Seife werden. Doch die Kinder starteten einen Wettbewerb im Namentanzen. Der Moderator bekam die Sendung nicht in Griff und wurde auch noch Letzter beim Namentanzen </de>
+                        <en></en>
+                    </description>
+                    <ratings critics="74" speed="49" />
+                </programme>
+                <programme id="therob-programme-elefantengedaechtnis-ep105" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Namentanzen</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Auf Grund der grandiosen Resonanz auf die letzte Sendung, wurde das Thema Namenstanzen ausführlich durchleuchtet. Inklusive Wettbewerb. Durch die geordnete Durchführung ging der Spaß flöten.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="59" speed="21" />
+                </programme>
+            </children>
+        </programme>
+        <programme id="5c4c567b-dda6-4d7e-b90a-RobTheTest11" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0032551" rt_id="0" creator="">
+            <title>
+      				<!-- Früchte des Zorns -->
+                <de>Zorniges Obst</de>
+                <en></en>
+            </title>
+      <title_original>
+                <de>Früchte des Zorns</de>
+        <en>The grapes of wrath</en>
+            </title_original>
+            <description>
+                <de>Die Verfilmung eines Meisterwerks. Verarmte Obstpflücker finden keinen Job. Die Rettung verspricht das Orangenpflückparadies im Osten. Die Reise beginnt. Ein viel gerühmtes Drama.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-RonDort</member>
+                <member index="1" function="2">a80152d6-43dc-4f9c-a562-a5dbf821bc1f</member>
+                <member index="2" function="2">779ecf3d-7ca7-4253-aac6-cb5e1aee8e2c</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1940" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
+            <ratings critics="98" speed="19" outcome="69" />
+        </programme>
+        <programme id="TheRob-dda6-4d7e-b90a-Nachtvogel" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056592" rt_id="0" creator="">
+            <title>
+                <!-- Wer die Nachtigall stoert -->
+                <de>Töte nicht den Nachtvogel</de>
+                <en></en>
+            </title>
+      <title_original>
+                <de>Wer die Nachtigall stört</de>
+        <en>To kill a mockingbird</en>
+            </title_original>
+            <description>
+                <de>Letikus ist Anwalt und verteidigt in einer kleinen Stadt einen Schwarzen. Das hat unangenehme Folgen für seine Familie</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-RobWoolikann</member>
+                <member index="1" function="2">TheRob-celebritypeople-WeckoryWeck</member>
+                <member index="2" function="2">Per_custom_Freddy_32</member>
+                <member index="3" function="2">Per_custom_Freddy_118</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1962" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
+            <ratings critics="96" speed="29" outcome="69" />
+        </programme>
+        <programme id="b9c6190d-a9f6-4a94-8092-TheRobTest12" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0022100" rt_id="0" creator="TheRob">
+            <title>
+      				<!-- M Eine Stadt sucht einen Mörder -->
+                <de>Ein Dorf jagt L.</de>
+                <en></en>
+            </title>
+      <title_original>
+                <de>M. Eine Stadt sucht einen Mörder</de>
+        <en>M</en>
+            </title_original>
+            <description>
+                <de>Ein Klassiker der Filmkunst und einer der ersten Tonfilme. Ein Kinderschänder versetzt ein Dorf in Angst und Schrecken. Am Schluss wird nahezu jeder verdächtigt.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
+                <member index="1" function="2">35742715-2273-41fd-9e2a-1ac9bf0203f0</member>
+                <member index="2" function="2">08bbc458-64af-4a27-8158-b5dbfb6bb885</member>
+                <member index="3" function="2">TheRob-celebritypeople-MustafWuendgens</member>
+                <member index="4" function="2">94ca78fd-399e-42b4-ada9-b869db926529</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1931" distribution="0" maingenre="17" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="74" speed="26" outcome="83" />
+        </programme>
+        <programme id="TheRob-a9f6-4a94-8092-unperfektesLand" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0107808" rt_id="0" creator="TheRob">
+            <title>
+                <!-- Perfect World -->
+                <de>Unperfektes Land</de>
+                <en></en>
+            </title>
+      <title_original>
+                <de>Perfect World</de>
+        <en>A perfect world</en>
+            </title_original>
+            <description>
+                <de>Ein Stockholm Syndrom. Ein entführter Junge freundet sich mit seinem Entführer an. Die dramatische Verfolgungsjagd beginnt.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">ec20fc5a-a552-4119-8d1e-d310650c2830</member>
+                <member index="1" function="2">8c71481d-d30b-4da8-a207-82f0bb5a5fea</member>
+                <member index="2" function="2">ec20fc5a-a552-4119-8d1e-d310650c2830</member>
+                <member index="3" function="2">Per_custom_Freddy_652</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1993" distribution="0" maingenre="17" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
+            <ratings critics="71" speed="46" outcome="63" />
+        </programme>
+        <programme id="therob-programme-speiuebelunddubrovnik" product="5" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+            <title>
+      				<!-- Spejbl und Hurvinek keine IMDB ID gefunden -->
+                <de>Speiübel und Dubrovnik</de>
+                <en></en>
+            </title>
+      <title_original>
+                <de>Spejbl und Hurvinek</de>
+            </title_original>
+            <description>
+                <de>Vater und Sohn erleben Alltagsthemen. Humorvoll für Kinder aufbereitet und der Augsburger Puppenkiste ebenbürtig.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">86bacead-ea9d-4878-9b2d-f23b0f7e0fe3</member>
+                <member index="1" function="2">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
+            </staff>
+            <groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="CSSR" year="1973" distribution="0" maingenre="9" subgenre="5" flags="2" blocks="1" time="0" price_mod="1.00" />
+            <ratings critics="47" speed="29" outcome="0" />
+            <children>
+                <programme id="therob-programme-speiuebelunddubrovnik-ep201" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Speiübel kommt in die Schule</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Dubrovnik bringt Speiübel in die Schule. Dort freundet er sich mit Ilonka an. Spaßiger erster Schultag.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="43" speed="26" />
+                </programme>
+                <programme id="therob-programme-speiuebelunddubrovnik-ep202" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Hausaufgaben</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Speiübel soll Hausaufgaben machen. Er will aber lieber mit Ilonka Verstecken spielen. Dubrovnik sucht die Beiden. Ein munteres Versteckspiel beginnt.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="49" speed="31" />
+                </programme>
+                <programme id="therob-programme-speiuebelunddubrovnik-ep203" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Musikunterricht</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Speiübel spielt Schlagzeug, Ilonka Flöte. Dubrovnik versucht das mit seiner Migräne zu überleben. Das klappt aber nur bedingt. Beste Darstellung, warum Eltern keine Musikinstrumente für ihre Kleinen mögen.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="56" speed="28" />
+                </programme>
+                <programme id="therob-programme-speiuebelunddubrovnik-ep204" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Speiübel lernt schwimmen</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Dubrovnik will Speiübel schwimmen beibringen. Der demonstriert aber ausgiebig, wie gut er im Wasser schlucken ist. Zum Schluss werden die Vorteile von Schwimmflügeln ausgiebig gewürdigt.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="44" speed="32" />
+                </programme>
+                <programme id="therob-programme-speiuebelunddubrovnik-ep205" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Plätzchen backen</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Speiübel und Ilonka wollen Plätzchen backen. Dubrovnik freut sich auf das Ergebnis. Doch dann merkt er, dass es sich eher auf die Küche auswirkt als auf den Geschmack.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="57" speed="34" />
+                </programme>
+            </children>
+        </programme>
+        <programme id="631f722f-b5dc-4663-bd81-TheRobHist01" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+            <title>
+                <de>Die Tempelritter</de>
+                <en></en>
+            </title>
+            <description>
+                <de>Von der Entstehung bis zu ihrem Untergang. Die Fakten werden mit Darstellungen durch Laiendarsteller untermauert. Der Erzähler versucht sich an den Spannungsbögen.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">577f032c-d851-4e5b-bab1-69d489031456</member>
+                <member index="1" function="2">d8c84544-ff75-4023-9a10-4bb2e5478593</member>
+                <member index="2" function="2">63d730f3-c0a5-4ab0-97f7-250177c5f3bd</member>
+                <member index="3" function="2">61334348-7cb7-4601-ad29-87f724ec3cb3</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1967" distribution="0" maingenre="11" subgenre="0" flags="0" blocks="4" time="0" price_mod="1.00" />
+            <ratings critics="75" speed="31" outcome="0" />
+        </programme>
+        <programme id="TheRob-b5dc-4663-bd81-JayEfKay" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0102138" rt_id="0" creator="TheRob">
+                <!-- JFK - Tatort Dallas -->
+            <title>
+                <de>Jay Ef Kay - Es geschah in Dallas</de>
+                <en>Jay Ef Kay - It happened in Dallas</en>
+            </title>
+      <title_original>
+                <de>JFK - Tatort Dallas</de>
+        <en>JFK</en>
+            </title_original>
+            <description>
+                <de>Ein Anwalt versucht das Attentat auf Jay Ef Kay zu rekonstruieren. Das will man ihm nicht erlauben. Nette Verschwörungstheorie</de>
+                <en>An attorney tries to reconstruct the assassination of Jay Ef Kay. Some people wont allow this. Nice conspiracy theory</en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-RolligerStein</member>
+                <member index="1" function="2">8c71481d-d30b-4da8-a207-82f0bb5a5fea</member>
+                <member index="2" function="2">TheRob-celebritypeople-LarryMoldman</member>
+                <member index="3" function="2">3cc8d242-ead8-483b-b5ef-c826057abc0f</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1991" distribution="0" maingenre="11" subgenre="0" flags="0" blocks="4" time="0" price_mod="1.00" />
+            <ratings critics="73" speed="51" outcome="51" />
+        </programme>
+        <programme id="e61018ba-b0db-439c-a852-TheRobTest13" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+            <title>
+      				<!-- Dudu ist die Grundidee, aber da das Setting in meinen Augen so verändert ist, dass man noch DuDu und Herbie anlegen kann, ohne das es stört, ist Baba auf fictional gesetzt. -->
+                <de>Baba der Trabbi</de>
+                <en></en>
+            </title>
+            <description>
+                <de>Baba der lebende Trabbi leistet seinem Besitzer wundervolle Dienste. Er kann schwimmen, fliegen und Autoknacker verprügeln. Herbeigerufen durch einen Pfiff, eilt er immer brav herbei, wenn Hilfe gebraucht wird.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-AlfredNeck</member>
+                <member index="1" function="2">18cb930c-1e71-4ab5-9996-43689ac01098</member>
+                <member index="2" function="2">4eff33a4-952c-4217-adfb-0b8496f2c01d</member>
+                <member index="3" function="2">e1ed748b-647d-47b6-98b7-fe9c88579b12</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="DDR" year="1972" distribution="0" maingenre="1" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="27" speed="34" outcome="46" />
+        </programme>
+        <programme id="TheRob-b0db-439c-a852-LodinRoot" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0102798" rt_id="0" creator="TheRob">
+            <title>
+                <!-- Robin Hood - König der Diebe -->
+                <de>Lodin Root</de>
+                <en>Lodin Root</en>
+            </title>
+      <title_original>
+                <de>Robin Hood - König der Diebe</de>
+        <en>Robin Hood: Prince of Thieves</en>
+            </title_original>
+            <description>
+                <de>Lodin Root kehrt von den Kreuzzügen zurück und findet sein Land in der Hand von Tyrannen wieder. Zeit dies zu ändern. Ein Abenteuer beginnt.</de>
+                <en>Lodin Root returns from the crusade and finds his country in the power of a tyrant. It is time to change the situation. An adventure begins. </en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-RavenRainold</member>
+                <member index="1" function="2">8c71481d-d30b-4da8-a207-82f0bb5a5fea</member>
+                <member index="2" function="2">c104b4c8-449c-4fb6-8cbe-5dbf3e074c96</member>
+                <member index="3" function="2">TheRob-celebritypeople-ElliSallyTastarino</member>       
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1991" distribution="0" maingenre="1" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
+            <ratings critics="53" speed="47" outcome="71" />
+        </programme>
+        <programme id="therob-programme-trash-skandale" product="7" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+            <title>
+                <de>Skandale</de>
+                <en></en>
+            </title>
+            <description>
+                <de>[0|Full] präsentiert die Skandale von [1|Full]. Präsentiert wird alles, von Ausrastern an Drehorten über Interviews bis zu Talkshow Auftritten. Erheiternd bis zum geht nicht mehr. Aber für Jugendliche völlig ungeeignet.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
+                <member index="1" function="2">9f342b49-1089-47bc-8d92-722fe71d96e3</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1979" distribution="0" maingenre="11" subgenre="6" flags="92" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="65" speed="35" outcome="60" />
+            <children>
+                <programme id="therob-programme-trash-skandale-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>[1|Full] qualmt die Bude zu</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>[1|Full] als Kettenraucher beleidigt den Moderator bis zum geht nicht mehr.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="60" speed="30" />
+                </programme>
+                <programme id="therob-programme-trash-skandale-ep102" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>[1|Full] beleidigt die Interviewerin</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Dem Mitleid für die Dame kann man sich nicht verwehren. [1|Full] rastet völlig aus und geht sie unflätig an.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="65" speed="35" />
+                </programme>
+                <programme id="therob-programme-trash-skandale-ep103" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>[1|Full] im Dschungel</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>[1|Full] legendärer Ausraster im Dschungel. Wen geht er als nächstes an? Die Augenzeugen sind heute noch traumatisiert.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="70" speed="40" />
+                </programme>
+            </children>
+        </programme>
+        <programme id="b528cab3-ec3d-43fc-TheRobCallInTest01" product="3" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+            <title>
+                <de>Schach gegen den Meister</de>
+                <en></en>
+            </title>
+            <description>
+                <de>Schnellschach gegen die Großmeister. Anrufen, durchkommen und den Großmeister Schachmatt setzen. Köpfchen einsetzen, lernen, in der Warteschleife Geld verlieren. Das garantierte Rundum Sorglos Paket</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">474ae0d7-8233-47bb-bba9-2d3d3df61919</member>
+                <member index="1" function="2">22274e45-da7e-4fb2-8698-3a2364973e1a</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1980" distribution="0" maingenre="0" subgenre="0" flags="128" blocks="1" time="0" price_mod="1.00" />
+            <ratings critics="29" speed="5" outcome="0" />
+      <modifiers>
+                <!-- the programme ages faster than average -->
+                <modifier name="price::age" value="2.9" />
+                <!-- the programme is cheaper than average -->
+                <modifier name="price" value="0.1" />
+            </modifiers>
+            <children>
+                <programme id="8aedcc43-c63d-4ab3-TheRobCallInTestEp101" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>2 Türme, 3 Bauern</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Eine knifflige Situation. Wer findet den richtigen Zug</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="30" speed="4" />
+                </programme>
+                <programme id="a2ac67b0-6689-4c50-9489-TheRobCallInTestEp102" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Springer und Pferde</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Steigerung der letzten Folge. Viel Zeit zum überlegen oder einschlafen. Einschlafen bitte nur beim Warten in der kostenpflichtigen Warteschleife.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="32" speed="4" />
+                </programme>
+                <programme id="82a377c0-4950-40cb-9813-TheRobCallInTestEp103" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Nur noch Bauern</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Gestellte Situation. Wer spielt schon eine Partie, bei der außer dem König nur noch Bauern auf dem Feld stehen.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="24" speed="4" />
+                </programme>
+                <programme id="81800e30-c387-4a29-9c21-TheRobCallInTestEp104" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Damen</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Die Damen herrschen. Unterstützt werden sie von lebenden Modellen, die auf einem großen Schachfeld herumlaufen. Ein Abschluß für das Auge.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="28" speed="32" />
+                </programme>
+            </children>
+        </programme>
+        <programme id="TheRob-dda6-4d7e-b90a-DasLebenistschoen" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0038650" rt_id="0" creator="">
+            <title>
+      				<!-- Ist das Leben nicht schön? -->
+                <de>Das Leben ist schön</de>
+                <en>Life is wonderfull</en>
+            </title>
+      <title_original>
+                <de>Ist das Leben nicht schön?</de>
+        <en>It's a wonderful life</en>
+            </title_original>
+            <description>
+                <de>Zu Weihnachten verfinstert sich das Leben von G.B. immer mehr. Als dann auch noch Geld aus der Firmenkasse verschwindet, möchte er sich das Leben nehmen. Da wird ihm ein Engel gesendet, der ihm die schönen Seiten des Lebens zeigen soll. </de>
+<en>At Christmas eve the life of G.B. gets darker and darker. As soon as money is lost out of the companys safe, he is desperated and wants to comit suicide. In this moment heaven sends him an angel to show him, how beautifull life is.</en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-PrankWrapa</member>
+                <member index="1" function="2">TheRob-celebritypeople-GaryGrunt</member>
+                <member index="2" function="2">TheRob-celebritypeople-LonnaWeed</member>
+            </staff>
+            <groups target_groups="128" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1946" distribution="0" maingenre="7" subgenre="5" flags="0" blocks="3" time="0" price_mod="1.00" />
+            <ratings critics="91" speed="49" outcome="39" />
+        </programme>
+                <!-- Zielgruppe Rentner -->
+        <programme id="TheRob-b5dc-4663-bd81-DerOsten" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+            <title>
+                <de>Der Osten - der wahre Horror</de>
+                <en></en>
+            </title>
+            <description>
+                <de>Der kommunistische Osten wird beleuchtet. Es wird bewiesen, dass alle dort Aliens sind, die die Weltherrschaft übernehmen möchten und es notwendig ist, alles mit Napalm zu verbrennen. Komplett plausibel und glaubwürdig.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">Per_custom_Freddy_119</member>
+                <member index="1" function="2">Per_custom_Freddy_111</member>
+            </staff>
+            <groups target_groups="64" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1964" distribution="0" maingenre="11" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="25" speed="40" outcome="0" />
+        </programme>
+                <!-- Zielgruppe Rentner -->
+        <programme id="TheRob-b5dc-4663-bd81-DerWesten" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+            <title>
+                <de>Der Westen - der wahre Horror</de>
+                <en></en>
+            </title>
+            <description>
+                <de>Der kapitalistische Westen wird beleuchtet. Es wird bewiesen, dass alle dort Aliens sind, die die Weltherrschaft übernehmen möchten und es notwendig ist, alles mit Napalm zu verbrennen. Komplett plausibel und glaubwürdig.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">Per_custom_Freddy_406</member>
+                <member index="1" function="2">Per_custom_Freddy_429</member>
+            </staff>
+            <groups target_groups="64" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="UDSSR" year="1964" distribution="0" maingenre="11" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="25" speed="40" outcome="0" />
+        </programme>
+<programme id="5c4c567b-dda6-4d7e-b90a-geballteHand" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0163624" rt_id="0" creator="">
+            <title>
+      				<!-- Faust -->
+                <de>Geballte Hand</de>
+                <en></en>
+            </title>
+      <title_original>
+                <de>Faust</de>
+            </title_original>
+            <description>
+                <de>„Da steh ich nun, ich armer Tor! Und bin so klug als wie zuvor“
+
+Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|Full]. Viel gerühmt und von Schulkindern gemieden</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">c45e52c2-32a3-4d3b-87d2-c56a8e4f5279</member>
+                <member index="1" function="2">TheRob-celebritypeople-MustafWuendgens</member>
+                <member index="2" function="2">779ecf3d-7ca7-4253-aac6-cb5e1aee8e2c</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1960" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
+            <ratings critics="99" speed="12" outcome="55" />
+        </programme>
+        <programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+            <title>
+                <de>Kurven der Welt - Erkenne sie alle</de>
+                <en></en>
+            </title>
+            <description>
+                <de>Die schönsten Brüste der Welt. Dezent verpackt. Nichts und doch viel zu sehen. Die anspruchsvolle Erotikhow mit Einlagen über die Kultur des jeweiligen Landes. Selbst Kritiker konnten sich damit anfreunden. Präsentiert von einer schwedischen Schönheit</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">Per_custom_Freddy_42</member>
+                <member index="0" function="2">Per_custom_Freddy_45</member>
+            </staff>
+            <groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="SWE" year="2006" distribution="0" maingenre="8" subgenre="0" flags="192" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="24" speed="45" outcome="0" />
+      <modifiers>
+                <!-- the programme ages faster than average -->
+                <modifier name="price::age" value="2.5" />
+                <!-- the programme is cheaper than average -->
+                <modifier name="price" value="0.1" />
+            </modifiers>
+            <children>
+                <programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt01" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Jamaika</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>In der Folge eins ist Jamaika zu eraten. 40 Damen präsentieren ihr Land Es werden Landschaft und Städte gezeigt. Die Kultur wird gezeigt. Und alles garniert mit viel nackter Damenhaut. Erraten muss man den Nachnamen der Dame.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="20" speed="40" />
+                </programme>
+                <programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt02" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Kambodscha</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Alte Tempel, Felder, Großstädte und Dschungel. Alles mit noch mehr Haut. Die Anrufer stehen Schlange. Ein Meisterwerk der "sabbernden" Bildung. So nah und doch so fern. Erraten muss man den Nachnamen der Dame.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="29" speed="35" />
+                </programme>
+                <programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt03" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Bulgarien</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Die schwarze Balalaika. Die Vielfalt der Damenwelt wird mit historischen Bauten und schönen Stränden hinterlegt. Ferner wird unpassenderweise auf Transilvanien eingegangen. Erraten muss man den Nachnamen der Dame.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="21" speed="45" />
+                </programme>
+                <programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt04" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                <!-- Zielgruppe Damen -->
+                        <de>Tunesien</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Gefeierte Abschlußfolge für die Damenwelt. Männliche Hüftschwünge. Diesmal werden die Vornamen der Pobackenträger benötigt. Alles in wunderbaren Landschaftsaufnahmen präsentiert. Der Moderatorin ist der Spaß anzusehen und somit auch für Männer.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="26" speed="55" />
+            <groups target_groups="128" pro_pressure_groups="0" contra_pressure_groups="0" />
+                </programme>
+            </children>
+        </programme>
+    </allprogrammes>
+  <insignificantpeople>
+        <person id="TheRob-TowerTV-Gast2" first_name="Gast" last_name="2" nick_name="Frechdachs" />
+        <person id="TheRob-TowerTV-Sushi" first_name="Sushi" last_name="TV" nick_name="" />
+        <person id="TheRob-TowerTV-rumpel" first_name="rumpel" last_name="freddy" nick_name="" />
+        <person id="TheRob-TowerTV-speed" first_name="speed" last_name="minister" nick_name="" />
+        <person id="TheRob-TowerTV-STARS" first_name="STARS" last_name="crazy" nick_name="" />
+        <person id="TheRob-TowerTV-Michael" first_name="Michael" last_name="B" nick_name="" />
+        <person id="TheRob-TowerTV-Daniel" first_name="Daniel" last_name="W" nick_name="" />
+        <person id="TheRob-TowerTV-Mark" first_name="Mark W." last_name="Wullbrich" nick_name="" />
+        <person id="TheRob-TowerTV-Thomas" first_name="Thomas" last_name="Weierunter" nick_name="" />
+        <person id="TheRob-TowerTV-RuisLosset" first_name="Ruis" last_name="Losset Jr" nick_name="" />
+        <person id="TheRob-TowerTV-KalliBeckenklauer" first_name="Kalli" last_name="Beckenklauer" nick_name="" />
+    </insignificantpeople>
+    <celebritypeople>
+        <person id="TheRob-celebritypeople-FizzieWang" tmdb_id="0" imdb_id="nm0000485" creator="TheRob">
+                <!-- Fritz Lang -->
+            <first_name>Fizzie</first_name>
+            <last_name>Wang</last_name>
+            <functions>
+                <function>1</function>
+            </functions>
+            <details gender="1"  birthday="1890-12-05" deathday="1976-08-02" country="D" />
+            <data prominence="5" skill="5" fame="4" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+        </person>
+        <person id="TheRob-celebritypeople-WalfredWederSabel" tmdb_id="0" imdb_id="nm0002154" creator="">
+                <!-- Alfred Abel -->
+            <first_name>Walfred Weder</first_name>
+            <last_name>Sabel</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="1"  birthday="1879-03-12" deathday="1937-12-12" country="D" />
+            <data prominence="2" skill="3" fame="3" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+        </person>
+        <person id="TheRob-celebritypeople-PipernetteSelm" tmdb_id="0" imdb_id="nm0375609" creator="TheRob">
+                <!-- Brigitte Helm -->    
+            <first_name>Pipernette</first_name>
+            <last_name>Selm</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="2"  birthday="1908-03-17" deathday="1996-06-11" country="D" />
+            <data prominence="2" skill="3" fame="3" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+        </person>
+        <person id="TheRob-celebritypeople-MustafLustig" tmdb_id="0" imdb_id="nm0297054" creator="TheRob">
+                <!-- Gustav Fröhlich -->   
+            <first_name>Mustaf</first_name>
+            <last_name>Lustig</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="1"  birthday="1902-03-21" deathday="1987-12-22" country="CH" />
+            <data prominence="2" skill="3" fame="2" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+        </person>
+        <person id="TheRob-celebritypeople-MustafWuendgens" tmdb_id="0" imdb_id="nm0345073" creator="TheRob">
+    				<!-- Gutstav Gründgens -->
+            <first_name>Mustaf</first_name>
+            <last_name>Wuendgens</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="1"  birthday="1899-12-22" deathday="1963-10-07" country="D" />
+            <data prominence="4" skill="5" fame="2" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+        </person>
+        <person id="TheRob-celebritypeople-WeinWenk" tmdb_id="0" imdb_id="nm0770888" creator="TheRob">
+    				<!-- Heinz Schenk -->
+            <first_name>Wein</first_name>
+            <last_name>Wenk</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="1"  birthday="1924-12-11" deathday="2014-05-01" country="D" />
+            <data prominence="5" skill="5" fame="3" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+        </person>
+        <person id="TheRob-celebritypeople-GaryGrunt" tmdb_id="0" imdb_id="nm0000026" creator="TheRob">
+    				<!-- Cary Grant, laut Liste schon existent, habe ihn aber in keiner DB gefunden -->
+            <first_name>Gary</first_name>
+            <last_name>Grunt</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="1"  birthday="1904-01-18" deathday="1986-11-29" country="USA" />
+            <data prominence="5" skill="5" fame="5" scandalizing="0" price_mod="1" power="0" humor="5" charisma="5" appearance="5" topgenre1="0" topgenre2="0" />
+        </person>
+                <!-- Frank Capra -->
+        <person id="TheRob-celebritypeople-PrankWrapa" tmdb_id="0" imdb_id="nm0001008" creator="TheRob">
+            <first_name>Prank</first_name>
+            <last_name>Wrapa</last_name>
+            <functions>
+                <function>1</function>
+            </functions>
+            <details gender="1"  birthday="1897-05-18" deathday="1991-09-03" country="USA" />
+            <data prominence="2" skill="5" fame="2" scandalizing="0" price_mod="1" power="0" humor="1" charisma="1" appearance="2" topgenre1="0" topgenre2="0" />
+        </person>
+        <person id="TheRob-celebritypeople-LonnaWeed" tmdb_id="0" imdb_id="nm0001656" creator="TheRob">
+                <!-- Donna Reed -->
+            <first_name>Lonna</first_name>
+            <last_name>Weed</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="2"  birthday="1904-01-18" deathday="1986-11-29" country="USA" />
+            <data prominence="5" skill="5" fame="2" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="4" topgenre1="0" topgenre2="0" />
+        </person>
+ 		<person id="TheRob-celebritypeople-RennIsNaid" tmdb_id="0" imdb_id="nm0000598" creator="TheRob">
+                <!-- Dennis Quaid -->
+            <first_name>Renn Is</first_name>
+            <last_name>Naid</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="1"  birthday="1954-04-09" deathday="" country="USA" />
+            <data prominence="3" skill="3" fame="3" scandalizing="0" price_mod="0" power="0" humor="1" charisma="2" appearance="3" topgenre1="0" topgenre2="0" />
+        </person>
+     		<person id="TheRob-celebritypeople-JimmyBaine" tmdb_id="0" imdb_id="nm0000078" creator="TheRob">
+                <!-- John Wayne -->
+            <first_name>Jimmy</first_name>
+            <last_name>Bayne</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="1"  birthday="1907-05-26" deathday="1979-06-11" country="USA" />
+            <data prominence="6" skill="3" fame="6" scandalizing="0" price_mod="0" power="4" humor="1" charisma="4" appearance="5" topgenre1="0" topgenre2="0" />
+        </person>
+        <person id="TheRob-celebritypeople-RonDort" tmdb_id="0" imdb_id="nm0000406" creator="TheRob">
+                <!-- John Ford -->
+            <first_name>Ron</first_name>
+            <last_name>Dort</last_name>
+            <functions>
+                <function>1</function>
+            </functions>
+            <details gender="1"  birthday="1894-02-01" deathday="2003-06-12" country="USA" />
+            <data prominence="3" skill="5" fame="3" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="3" topgenre1="0" topgenre2="0" />
+        </person>
+        <person id="TheRob-celebritypeople-RobWoolikann" tmdb_id="0" imdb_id="nm0612322" creator="TheRob">
+                <!-- Robert Mulligan -->
+            <first_name>Rob</first_name>
+            <last_name>Woolikann</last_name>
+            <functions>
+                <function>1</function>
+            </functions>
+            <details gender="1"  birthday="1925-08-23" deathday="2008-12-20" country="USA" />
+            <data prominence="2" skill="3" fame="2" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="3" topgenre1="0" topgenre2="0" />
+        </person>
+        <person id="TheRob-celebritypeople-WeckoryWeck" tmdb_id="0" imdb_id="nm0000060" creator="TheRob">
+                <!-- Gregory Peck -->
+            <first_name>Weckory</first_name>
+            <last_name>Weck</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="1"  birthday="1916-04-05" deathday="1973-08-31" country="USA" />
+            <data prominence="3" skill="5" fame="4" scandalizing="0" price_mod="0" power="0" humor="1" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
+        </person>
+    		<person id="TheRob-celebritypeople-WalterMuge" tmdb_id="0" imdb_id="nm0472545" creator="TheRob">
+                <!-- Mafred Krug -->
+            <first_name>Walter</first_name>
+            <last_name>Muge</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="1"  birthday="1937-02-08" deathday="" country="D" />
+            <data prominence="3" skill="4" fame="3" scandalizing="0" price_mod="0" power="0" humor="1" charisma="3" appearance="4" topgenre1="0" topgenre2="0" />
+        </person>
+        <person id="TheRob-celebritypeople-AlfredNeck" tmdb_id="0" imdb_id="nm0472545" creator="TheRob">
+                <!-- Walter Beck -->
+            <first_name>Alfred</first_name>
+            <last_name>Neck</last_name>
+            <functions>
+                <function>1</function>
+            </functions>
+            <details gender="1"  birthday="1929-09-11" deathday="" country="D" />
+            <data prominence="2" skill="4" fame="2" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="2" topgenre1="10" topgenre2="1" />
+        </person>
+    		<person id="TheRob-celebritypeople-MarenLosowski" tmdb_id="0" imdb_id="nm0880110" creator="TheRob">
+                <!-- Karin Ugowski -->
+            <first_name>Maren</first_name>
+            <last_name>Losowski</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="2"  birthday="1943-07-11" deathday="" country="D" />
+            <data prominence="0" skill="3" fame="0" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="1" topgenre1="0" topgenre2="0" />
+        </person>
+        		<person id="TheRob-celebritypeople-ElliSallyTastarino" tmdb_id="0" imdb_id="nm0001512" creator="TheRob">
+                <!-- Mary Elizabeth Mastrantonio -->
+            <first_name>Elli Sally</first_name>
+            <last_name>Tastarino</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="2"  birthday="1958-11-17" deathday="" country="USA" />
+            <data prominence="1" skill="3" fame="0" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="1" topgenre1="0" topgenre2="0" />
+        </person>
+        <person id="TheRob-celebritypeople-RavenRainold" tmdb_id="0" imdb_id="nm0721817" creator="TheRob">
+                <!-- Kevin Reynolds -->
+            <first_name>Raven</first_name>
+            <last_name>Rainold</last_name>
+            <functions>
+                <function>1</function>
+            </functions>
+            <details gender="1"  birthday="1952-01-17" deathday="" country="USA" />
+            <data prominence="2" skill="3" fame="2" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="1" topgenre1="0" topgenre2="0" />
+        </person>
+        <person id="TheRob-celebritypeople-RolligerStein" tmdb_id="0" imdb_id="nm0721817" creator="TheRob">
+                <!-- Oliver Stone -->
+            <first_name>Rolliger</first_name>
+            <last_name>Stein</last_name>
+            <functions>
+                <function>1</function>
+            </functions>
+            <details gender="1"  birthday="1946-09-15" deathday="" country="USA" />
+            <data prominence="3" skill="5" fame="3" scandalizing="1" price_mod="0" power="2" humor="1" charisma="3" appearance="3" topgenre1="0" topgenre2="0" />
+        </person>
+        <person id="TheRob-celebritypeople-RainZog" tmdb_id="0" imdb_id="nm0911061" creator="TheRob">
+                <!-- Wayne Wang -->
+            <first_name>Rain</first_name>
+            <last_name>Zong</last_name>
+            <functions>
+                <function>1</function>
+            </functions>
+            <details gender="1"  birthday="1949-01-12" deathday="" country="USA" />
+            <data prominence="1" skill="5" fame="2" scandalizing="1" price_mod="0" power="2" humor="1" charisma="2" appearance="1" topgenre1="0" topgenre2="0" />
+        </person>
+        <person id="TheRob-celebritypeople-LarryMoldman" tmdb_id="0" imdb_id="nm0000198" creator="TheRob">
+                <!-- Gary Oldman -->
+            <first_name>Gary</first_name>
+            <last_name>Moldman</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="1"  birthday="1958-03-21" deathday="" country="UK" />
+            <data prominence="3" skill="5" fame="4" scandalizing="1" price_mod="0" power="2" humor="1" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
+        </person>
+    </celebritypeople>
 </tvgdb>
