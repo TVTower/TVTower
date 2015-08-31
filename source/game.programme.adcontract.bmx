@@ -801,11 +801,13 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'           leads to some kind of "beautified" percentage value.
 		price = GetCPM(baseValue, maxCPM, getTotalMinAudience(playerID) / population)
 		'multiply by amount of "1000 viewers"-blocks
+'		price :* Max(1, getMinAudience(playerID)/1000)
+		'multiply by amount of "1000 viewers"-blocks (ignoring targetGroups)
+		'price :* Max(1, getTotalMinAudience(playerID)/1000)
+		'multiply by amount of "1000 viewers"-blocks (_not_ ignoring targetGroups)
 		price :* Max(1, getMinAudience(playerID)/1000)
 		'value cannot be higher than "maxAdContractPricePerSpot"
 		price = Min(GameRules.maxAdContractPricePerSpot, price )
-'adjust by a base/internal balancing factor
-'		price :* 1.75 '75% more
 		'adjust by a balancing factor
 		price :* balancingFactor
 
@@ -816,7 +818,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'limiting to specific flags change the price too
 		If GetLimitedToProgrammeFlag() > 0 Then price :* limitedToProgrammeFlagMultiplier
 
-		'print GetTitle()+": "+GetMinAudiencePercentage() +" -- price " +price +" ---raw audience "+getRawMinAudience(playerID)
+		'print GetTitle()+": minAud%="+GetMinAudiencePercentage() +"  price=" +price +"  rawAud="+getRawMinAudience(playerID) +"  targetGroup="+GetLimitedToTargetGroup()
 
 		'return "beautiful" prices
 		Return TFunctions.RoundToBeautifulValue(price)
