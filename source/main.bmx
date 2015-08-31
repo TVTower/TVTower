@@ -2105,17 +2105,20 @@ Type TScreen_MainMenu Extends TGameScreen
 					CreateSettingsWindow()
 					
 			Case guiButtonStart
+					PrepareGameObject()
 					GetGame().SetGamestate(TGame.STATE_SETTINGSMENU)
 
 			Case guiButtonNetwork
+					PrepareGameObject()
 					GetGame().onlinegame = False
-					GetGame().SetGamestate(TGame.STATE_NETWORKLOBBY)
 					GetGame().networkgame = True
+					GetGame().SetGamestate(TGame.STATE_NETWORKLOBBY)
 
 			Case guiButtonOnline
+					PrepareGameObject()
 					GetGame().onlinegame = True
-					GetGame().SetGamestate(TGame.STATE_NETWORKLOBBY)
 					GetGame().networkgame = True
+					GetGame().SetGamestate(TGame.STATE_NETWORKLOBBY)
 
 			Case guiButtonLoadGame
 					CreateLoadGameWindow()
@@ -2124,6 +2127,21 @@ Type TScreen_MainMenu Extends TGameScreen
 					App.ExitApp = True
 		End Select
 	End Method
+
+
+	Method PrepareGameObject()
+		print "====== PREPARE NEW GAME ======"
+
+		'reset game data collections
+		new TGameState.Initialize()
+		'load custom configuration (usernames, ports, ...)
+		GetGame().LoadConfig(App.config)
+		'create player figures so they can get shown in the settings screen
+		'does nothing if already done
+		GetGame().CreateInitialPlayers()
+
+	End Method
+	
 
 
 	Method CreateSettingsWindow()
@@ -2389,16 +2407,6 @@ Type TScreen_GameSettings Extends TGameScreen
 
 	'override to set guielements values (instead of only on screen creation)
 	Method Start:Int()
-		print "====== PREPARE NEW GAME ======"
-	
-		'reset game data collections
-		new TGameState.Initialize()
-		'load custom configuration (usernames, ports, ...)
-		GetGame().LoadConfig(App.config)
-		'create player figures so they can get shown in the settings screen
-		'does nothing if already done
-		GetGame().CreateInitialPlayers()
-
 		'assign player/channel names
 		For Local i:Int = 0 To 3
 			GetPlayer(i+1)
@@ -2461,6 +2469,8 @@ Type TScreen_GameSettings Extends TGameScreen
 
 			Case guiButtonBack
 					If GetGame().networkgame
+						Network.StopAnnouncing()
+
 						If Network.isServer
 							Network.DisconnectFromServer()
 						Else
@@ -2470,7 +2480,6 @@ Type TScreen_GameSettings Extends TGameScreen
 						GetPlayerBossCollection().playerID = 1
 						GetGame().SetGamestate(TGame.STATE_NETWORKLOBBY)
 						guiAnnounce.SetChecked(False)
-						Network.StopAnnouncing()
 					Else
 						GetGame().SetGamestate(TGame.STATE_MAINMENU)
 					EndIf
