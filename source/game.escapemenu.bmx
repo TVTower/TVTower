@@ -235,6 +235,11 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 
 			TSaveGame.Load(fileURI)
 
+			'only unpause if there is no exit-dialogue open
+			if not TApp.ExitAppDialogue and not TApp.EscapeMenuWindow
+				GetGame().SetPaused(False)
+			endif
+
 
 			return True
 		endif
