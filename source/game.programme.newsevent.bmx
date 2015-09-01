@@ -105,9 +105,33 @@ Type TNewsEventCollection
 				
 				'if the news event cannot get used again remove them
 				'from all lists
-				If not newsEvent.IsReuseable() then Remove(newsEvent)
+				if not newsEvent.IsReuseable()
+					Remove(newsEvent)
+				else
+					newsEvent.Reuse()
+				endif
 
-				newsEvent.Reuse()
+				somethingDeleted = true
+			endif
+		Next
+
+		'reset caches, so lists get filled correctly
+		if somethingDeleted then _InvalidateCaches()
+	End Method
+
+
+	'remove news events which no longer "happen" (eg. thunderstorm warnings) 
+	Method RemoveEndedNewsEvents()
+		local somethingDeleted:int = False
+		For local newsEvent:TNewsEvent = eachin allNewsEvents.Copy().Values()
+			if newsEvent.HasHappened() and newsEvent.HasEnded()
+				'if the news event cannot get used again remove them
+				'from all lists
+				if not newsEvent.IsReuseable()
+					Remove(newsEvent)
+				else
+					newsEvent.Reuse()
+				endif
 
 				somethingDeleted = true
 			endif
@@ -128,8 +152,7 @@ Type TNewsEventCollection
 				'not reuseable
 				If not newsEvent.IsReuseable() then continue
 
-				'reset happenedTime so it is available again
-				newsEvent.happenedTime = -1
+				newsEvent.Reuse()
 
 				somethingReset = True
 			endif
@@ -266,7 +289,9 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	Field genre:Int = 0
 	Field quality:Float = -1.0 'none
 	'time when something happened or will happen. "-1" = not happened
-	Field happenedTime:Double = -1
+	Field happenedTime:Long = -1
+	'time when a news gets invalid (eg. thunderstorm warning)
+	Field eventDuration:Int = -1
 	'type of the news event according to TVTNewsType
 	Field newsType:int = 0 'initialNews
 	Field availableYearRangeFrom:int = -1
@@ -390,6 +415,20 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		return result
 	End Method
 
+	
+	Method HasEnded:Int()
+		'can only end if already happened
+		if not HasHappened() then return False
+		
+		'avoid that "-1" (the default for "unset") is fetched in the
+		'next check ("time gone?")
+		If eventDuration < 0 Then Return False
+		'check if the time is gone already
+		If happenedTime + eventDuration > GetWorldTime().GetTimeGone() Then Return False
+
+		return True
+	End Method
+
 
 	Method AddEffectByData:int(effectData:TData)
 		if not effectData then return False
@@ -415,7 +454,7 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method doHappen(time:Double = 0.0)
+	Method doHappen(time:Long = 0)
 		if HasHappened() then return
 
 		'set happened time, add to collection list...

@@ -229,7 +229,6 @@ Type TNewsAgency
 			NewsEvent.effects.AddEffect("happen", effect)
 		endif
 
-		NewsEvent.doHappen() 'happen now
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
 		Return NewsEvent
 	End Method
@@ -365,8 +364,15 @@ Type TNewsAgency
 		'rain = more audience
 		'sun = less audience
 		'...
+		'-> instead of using "effects" for weather forecast, we just
+		'emit gameevents (world-time-depending!) to enable the effect
+		'at the forecast start and _NOT_ at the newsevent creation time
+		'
+		'maybe just connect weather and potential audience directly
+		'instead of using the newsevents
 
-		NewsEvent.doHappen() 'happen now
+		NewsEvent.eventDuration = 8*3600 'only for 8 hours
+
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
 
 		Return NewsEvent
@@ -412,7 +418,6 @@ Type TNewsAgency
 		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TNewsEvent.GENRE_SHOWBIZ, quality, null, TVTNewsType.InitialNewsByInGameEvent)
 		NewsEvent.SetModifier("price", priceModifier)
 
-		NewsEvent.doHappen() 'happen now
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
 		
 		Return NewsEvent
@@ -466,13 +471,16 @@ Type TNewsAgency
 	'announces planned news events (triggered by news some time before)
 	Method ProcessUpcomingNewsEvents:Int()
 		Local announced:Int = 0
+
 		For local newsEvent:TNewsEvent = EachIn GetNewsEventCollection().GetUpcomingNewsList()
 			'skip news events not happening yet
-			If newsEvent.happenedTime > GetWorldTime().GetTimeGone() then continue
-			newsEvent.doHappen()
+			If Not newsEvent.HasHappened() then continue
 			announceNewsEvent(newsEvent)
 			announced:+1
 		Next
+		'invalidate upcoming list 
+		if announced > 0 then GetNewsEventCollection()._upcomingNewsEvents.Clear()
+	
 		Return announced
 	End Method
 
@@ -527,8 +535,7 @@ Type TNewsAgency
 
 
 	Method announceNewsEvent:Int(newsEvent:TNewsEvent, happenedTime:Int=0, forceAdd:Int=False)
-		'do not "doHappen" here again - already done
-		'newsEvent.doHappen(happenedTime)
+		newsEvent.doHappen(happenedTime)
 
 		For Local i:Int = 1 To 4
 			AddNewsEventToPlayer(newsEvent, i, forceAdd)
@@ -575,11 +582,6 @@ Type TNewsAgency
 			EndIf
 
 			If not skipNews or forceAdd
-				'mark them as "happened", run triggers etc.
-				'doing it HERE does not mark news as happened when nobody
-				'listens and the news could get skipped
-				newsEvent.doHappen()
-
 				'Print "[LOCAL] AnnounceNewNews: added news title="+newsEvent.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
 				announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone() + delayAnnouncement, forceAdd)
 			EndIf

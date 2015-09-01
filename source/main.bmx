@@ -4070,7 +4070,38 @@ Type GameEvents
 
 	'things happening each hour
 	Function OnHour:Int(triggerEvent:TEventBase)
-		'
+		'=== REMOVE ENDED NEWSEVENTS  ===
+		'newsevents might have a "happenedEndTime" indicating that
+		'the event is only a temporary one (eg. storm warning)
+
+		'remove such events when they get invalid
+		'remove from players
+		For Local pBase:TPlayerBase = EachIn GetPlayerBaseCollection().players
+			local p:TPlayer = TPlayer(pBase)
+			if not p then continue
+				
+			'COLLECTION
+			'loop through a copy to avoid concurrent modification
+			For Local news:TNews = EachIn p.GetProgrammeCollection().news.Copy()
+				If news.newsEvent.HasHappened() and news.newsEvent.HasEnded()
+					p.GetProgrammeCollection().RemoveNews(news)
+				EndIf
+			Next
+
+			'PLAN
+			'do not remove from plan
+			rem
+			'no need to copy the array because it has a fixed length
+			For Local news:TNews = EachIn p.GetProgrammePlan().news
+				If news.newsEvent.HasHappened() and news.newsEvent.HasEnded()
+					p.GetProgrammePlan().RemoveNews(news,-1,False)
+				EndIf
+			Next
+			endrem
+		Next
+		'remove from collection (reuse if possible)
+		GetNewsEventCollection().RemoveEndedNewsEvents()
+
 	End Function
 
 
