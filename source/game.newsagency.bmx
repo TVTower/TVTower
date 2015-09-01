@@ -11,7 +11,7 @@ Type TNewsAgency
 	'time of last weather event/news
 	Field weatherUpdateTime:Double = 0
 	'announce new weather every x-y minutes
-	Field weatherUpdateTimeInterval:int[] = [360, 720]
+	Field weatherUpdateTimeInterval:int[] = [270, 300]
 	Field weatherType:int = 0
 
 	
@@ -45,7 +45,7 @@ Type TNewsAgency
 		NextEventTime = -1
 		NextEventTimeInterval = [180, 330]
 		weatherUpdateTime = 0
-		weatherUpdateTimeInterval = [360, 720]
+		weatherUpdateTimeInterval = [270, 300]
 		weatherType = 0
 
 		terroristUpdateTime = [Double(0),Double(0)]
@@ -249,16 +249,23 @@ Type TNewsAgency
 
 
 	Method GetWeatherNewsEvent:TNewsEvent()
+		'if we want to have a forecast for a fixed time
+		'(overlapping with other forecasts!)
+		'-> forecast for 6 hours
+		'   (after ~5 hours the next forecast gets created)
+		local forecastHours:int = 6
+		'if we want to have a forecast till next update
+		'local forecastHours:int = ceil((weatherUpdateTime - GetWorldTime().GetTimeGone()) / 3600.0)
+
 		'quality and price are nearly the same everytime
 		Local quality:Float = 0.01 * randRange(50,60)
 		Local price:Float = 1.0 + 0.01 * randRange(-5,10)
 		'append 1 hour to both: forecast is done eg. at 7:30 - so it
 		'cannot be a weatherforecast for 7-10 but for 8-11
-		local beginHour:int = GetWorldTime().GetDayHour()+1
-		local endHour:int = GetWorldTime().GetDayHour(weatherUpdateTime)+1
+		local beginHour:int = (GetWorldTime().GetDayHour()+1) mod 24
+		local endHour:int = (GetWorldTime().GetDayHour(GetWorldTime().GetTimeGone() + forecastHours * 3600)+1) mod 24
 		Local description:string = ""
 		local title:string = GetLocale("WEATHER_FORECAST_FOR_X_TILL_Y").replace("%BEGINHOUR%", beginHour).replace("%ENDHOUR%", endHour)
-		local forecastHours:int = ceil((weatherUpdateTime - GetWorldTime().GetTimeGone()) / 3600.0)
 		local weather:TWorldWeatherEntry
 		'states
 		local isRaining:int = 0
@@ -355,9 +362,9 @@ Type TNewsAgency
 		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TNewsEvent.GENRE_CURRENTS, quality, null, TVTNewsType.InitialNewsByInGameEvent)
 		NewsEvent.SetModifier("price", price)
 		'after 20 hours a news topicality is 0 - so accelerating it by
-		'2.5 means it reaches topicality of 0 at 8 hours after creation.
-		'This is the time of the next forecast 
-		NewsEvent.SetModifier("topicality::age", 2.5)
+		'4 means it reaches topicality of 0 at 5 hours after creation.
+		'This is 1 hour after the next forecast (a bit overlapping)
+		NewsEvent.SetModifier("topicality::age", 4)
 
 		'TODO
 		'add weather->audience effects
