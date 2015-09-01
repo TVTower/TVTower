@@ -355,6 +355,10 @@ Type TNewsAgency
 		
 		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TNewsEvent.GENRE_CURRENTS, quality, null, TVTNewsType.InitialNewsByInGameEvent)
 		NewsEvent.SetModifier("price", price)
+		'after 20 hours a news topicality is 0 - so accelerating it by
+		'2.5 means it reaches topicality of 0 at 8 hours after creation.
+		'This is the time of the next forecast 
+		NewsEvent.SetModifier("topicality::age", 2.5)
 
 		'TODO
 		'add weather->audience effects

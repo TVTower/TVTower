@@ -226,9 +226,9 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Field priceModRelativeNewsAgency:float = 0.0
 	Field priceModAbsoluteNewsAgency:int = 0
 
-    Field paidPrice:int			= 0					'the price which was paid for the news
-    Field paid:int	 			= 0
-	Field timesAired:int		= 0					'how many times that programme was run
+    'the price which was paid for the news
+    Field paidPrice:int = 0
+    Field paid:int = 0
 
 
 
@@ -299,8 +299,8 @@ endrem
 
 	Method GetQuality:Float() {_exposeToLua}
 		local quality:float = newsEvent.GetQuality()
-		'Zusaetzlicher Bonus bei Erstausstrahlung
-		If timesAired = 0 Then quality:*1.15		
+		'extra bonus for first broadcast 
+		If newsEvent.GetTimesBroadcasted() = 0 Then quality :* 1.15		
 		return Max(0.01, Min(0.99, quality))
 	End Method
 

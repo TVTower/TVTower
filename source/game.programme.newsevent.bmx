@@ -344,28 +344,6 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	End Function
 
 
-	Method GetTopicality:Float()
-		'refresh topicality (to avoid odd values through external modification)
-		topicality = MathHelper.Clamp(topicality, 0.0, 1.0)
-
-		local topicalityMod:Float = 1.0
-
-		'age influence
-
-		'the older the less ppl want to watch - 1hr = 0.95%, 2hr = 0.90%...
-		'means: after 20 hrs, the topicality is 0
-		local ageHours:int = floor( float(GetWorldTime().GetTimeGone() - self.happenedTime)/3600.0 )
-		'value 0-1.0
-		Local age:float = 0.01 * Max(0,100-5*Max(0, ageHours) )
-
-		topicalityMod :* age * GetModifier("age")
-
-		
-
-		return topicality * topicalityMod
-	End Method
-
-
 	'override
 	Method GetMaxTopicality:Float()
 		local maxTopicality:Float = 1.0
@@ -501,12 +479,14 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	End Method
 
 
+	'AI/LUA-helper
 	Method GetAttractiveness:Float() {_exposeToLua}
 		return 0.35*quality + 0.6*GetTopicality() + 0.05
 	End Method
 
 
 	Method GetQuality:Float(luckFactor:Int = 1) {_exposeToLua}
+		'already calculated?
 		if quality >= 0 then return quality
 		
 		Local qualityTemp:Float = 0.0

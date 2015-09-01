@@ -2243,7 +2243,7 @@ Type TGUINews Extends TGUIGameListItem
 			textY :+ 11	
 			fontNormal.draw("Qualitaet: "+news.GetQuality() +" (Event:"+ news.newsEvent.quality + ")", screenX + 5, textY)
 			textY :+ 11	
-			fontNormal.draw("Attraktivitaet: "+news.newsEvent.GetAttractiveness()+"    Aktualitaet: " + news.newsEvent.GetTopicality(), screenX + 5, textY)
+			fontNormal.draw("(KI-)Attraktivitaet: "+news.newsEvent.GetAttractiveness()+"    Aktualitaet: " + news.newsEvent.GetTopicality(), screenX + 5, textY)
 			textY :+ 11	
 			fontNormal.draw("Ausstrahlungen: " + news.newsEvent.GetTimesBroadcasted(news.owner)+"x  (" + news.newsEvent.GetTimesBroadcasted()+"x gesamt)", screenX + 5, textY)
 			textY :+ 11	

@@ -1082,7 +1082,7 @@ endrem
 
 			'add that news back to the collection ?
 			If addToCollection And TNews(deletedNews)
-				GetPlayerProgrammeCollectionCollection().Get(owner).AddNews(TNews(deletedNews))
+				GetPlayerProgrammeCollection(owner).AddNews(TNews(deletedNews))
 			EndIf
 
 			'empty the slot
