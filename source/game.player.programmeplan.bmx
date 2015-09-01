@@ -1220,7 +1220,7 @@ endrem
 
 			If obj
 				Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
-				'inform news show that broadcasting started
+				'inform news show that broadcasting ended
 				'(which itself informs the broadcasted news)
 				obj.FinishBroadcasting(day, hour, minute, audienceResult)
 			EndIf

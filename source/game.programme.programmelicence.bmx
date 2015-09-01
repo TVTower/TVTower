@@ -378,7 +378,7 @@ End Function
 
 
 'licence of for movies, series and so on
-Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
+Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	'wird nur in der Lua-KI verwendet um die Lizenzen zu bewerten
 	Field attractiveness:Float = -1
 	Field data:TProgrammeData				{_exposeToLua}
@@ -506,9 +506,6 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 	'override default method to add sublicences
 	Method SetOwner:int(owner:int=0)
-'DEVPATCH
-if self.owner > 0 then TLogger.Log("DEVPATCH: TProgrammeLicence.SetOwner()", "Set owner of playerowned licence ~q"+GetTitle()+"~q. Old owner: "+self.owner+", new owner: "+owner+".", LOG_DEV)
-'DEVPATCH
 		self.owner = owner
 		'do the same for all children
 		For local licence:TProgrammeLicence = eachin subLicences
@@ -764,19 +761,14 @@ if self.owner > 0 then TLogger.Log("DEVPATCH: TProgrammeLicence.SetOwner()", "Se
 		Next
 		value :* 0.75
 
+		'individual licence price mod (eg. "special collection discount")
+		value :* GetModifier("price")
+
 		'round to next "1000" block
 		value = Int(Floor(value / 1000) * 1000)
 
 
 		Return value
-	End Method
-
-
-	Method CutTrailerEfficiency:float()
-		'maximum is 100% efficiency (never shown before)
-		local efficiency:float = 1.0
-		'each air during the last 24 hrs decreases by 5%
-
 	End Method
 
 
@@ -1066,7 +1058,7 @@ if self.owner > 0 then TLogger.Log("DEVPATCH: TProgrammeLicence.SetOwner()", "Se
 		'blocks
 		skin.RenderBox(contentX + 5, contentY, 47, -1, data.GetBlocks(), "duration", "neutral", skin.fontBold)
 		'repetitions
-		skin.RenderBox(contentX + 5 + 51, contentY, 52, -1, data.GetTimesAired(useOwner), "repetitions", "neutral", skin.fontBold)
+		skin.RenderBox(contentX + 5 + 51, contentY, 52, -1, data.GetTimesBroadcasted(useOwner), "repetitions", "neutral", skin.fontBold)
 		'record
 		skin.RenderBox(contentX + 5 + 107, contentY, 83, -1, TFunctions.convertValue(GetBroadcastStatistic(useOwner).GetBestAudienceResult(useOwner, -1).audience.GetSum(),2), "maxAudience", "neutral", skin.fontBold)
 		'price
@@ -1112,7 +1104,7 @@ if self.owner > 0 then TLogger.Log("DEVPATCH: TProgrammeLicence.SetOwner()", "Se
 			contentY :+ 12	
 			skin.fontNormal.draw("Bloecke: "+data.GetBlocks(), contentX + 5, contentY)
 			contentY :+ 12	
-			skin.fontNormal.draw("Ausgestrahlt: "+data.GetTimesAired(useOwner)+"x Spieler, "+data.GetTimesAired()+"x alle", contentX + 5, contentY)
+			skin.fontNormal.draw("Ausgestrahlt: "+data.GetTimesBroadcasted(useOwner)+"x Spieler, "+data.GetTimesBroadcasted()+"x alle", contentX + 5, contentY)
 			contentY :+ 12	
 			skin.fontNormal.draw("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(useOwner, -1).audience.GetSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetSum())+" (alle)", contentX + 5, contentY)
 			contentY :+ 12	

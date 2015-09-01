@@ -8,6 +8,7 @@ Import "Dig/base.util.localization.bmx"
 Import "game.world.worldtime.bmx"
 Import "game.programme.programmeperson.base.bmx"
 Import "game.broadcast.genredefinition.movie.bmx"
+Import "game.broadcastmaterialsource.base.bmx"
 Import "game.gameconstants.bmx"
 
 
@@ -312,7 +313,7 @@ End Function
 
 'raw data for movies, epidodes (series)
 'but also series-headers, collection-headers,...
-Type TProgrammeData extends TGameObject {_exposeToLua}
+Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Field originalTitle:TLocalizedString
 	Field title:TLocalizedString
 	Field description:TLocalizedString
@@ -339,20 +340,6 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Field blocks:Int = 1
 	'guid of a potential franchise entry
 	Field franchiseGUID:string
-	Rem
-	extra data block containing various information (if set)
-	"maxTopicality::ageInfluence" - influence of the age on the max topicality
-	oder nur
-	"maxTopicality"
-
-	"price"
-	"wearoff" - changes how much a programme loses during sending it
-	"refresh" - changes how much a programme "regenerates" (multiplied with genreModifier)
-	endrem
-	Field modifiers:TData = new TData
-	'contains lists of effects for various triggers
-	Field effects:TGameObjectEffectCollection = new TGameObjectEffectCollection
-	
 	'flags contains bitwise encoded things like xRated, paid, trash ...
 	Field flags:Int = 0
 	'which kind of distribution was used? Cinema, Custom production ...
@@ -365,9 +352,6 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Field releaseAnnounced:int = FALSE
 	'state of the programme (in production, cinema, released...)
 	Field state:int = 0
-	'how many times that programme was run
-	'(per player, 0 = unknown - eg before "game start" to lower values)
-	Field timesAired:int[] = [0]
 	'how "fresh" a programme is (the more shown, the less this value)
 	Field topicality:Float = -1
 	'programmes descending from this programme (eg. "Lord of the Rings"
@@ -386,6 +370,16 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Field cachedDirectors:TProgrammePersonBase[] {nosave}
 	Field genreDefinitionCache:TMovieGenreDefinition = Null {nosave}
 
+
+	Rem
+	"modifiers" : extra data block containing various information (if set)
+	
+	"maxTopicality::ageInfluence" - influence of the age on the max topicality
+	"maxTopicality"
+	"price"
+	"wearoff" - changes how much a programme loses during sending it
+	"refresh" - changes how much a programme "regenerates" (multiplied with genreModifier)
+	endrem
 
 
 	Function Create:TProgrammeData(GUID:String, title:TLocalizedString, description:TLocalizedString, cast:TProgrammePersonJob[], country:String, year:Int, releaseTime:Long=-1, liveTime:Long, Outcome:Float, review:Float, speed:Float, modifiers:TData, Genre:Int, blocks:Int, xrated:Int, productType:Int=1) {_private}
@@ -811,23 +805,6 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		return ""
 	End Method
 
-
-	'returns the stored value for a modifier - defaults to "100%"
-	Method GetModifier:Float(modifierKey:string, defaultValue:Float = 1.0)
-		return modifiers.GetFloat(modifierKey, defaultValue)
-	End Method
-
-
-	'stores a modifier value
-	Method SetModifier:int(modifierKey:string, value:Float)
-		'skip adding the modifier if it is the same - or a default value
-		'-> keeps datasets smaller
-		if GetModifier(modifierKey) = value then return False
-		
-		modifiers.AddNumber(modifierKey, value)
-		return True
-	End Method
-
 	
 	Method IsLive:int()
 		return HasFlag(TVTProgrammeFlag.LIVE)
@@ -991,35 +968,24 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	End Method
 
 
+	'override
 	Method GetMaxTopicality:Float()
 		Local age:Int = Max(0, GetWorldTime().GetYear() - year)
-		Local timeAired:Int = Min(40, GetTimesAired() * 4)
+		Local timesBroadcasted:Int = Min(40, GetTimesBroadcasted() * 4)
 
 		'modifiers could increase or decrease influences of age/aired/...
 		local ageInfluence:Float = age * GetModifier("topicality::age")
-		local timeAiredInfluence:Float = timeAired * GetModifier("topicality::aired")
+		local timesBroadcastedInfluence:Float = timesBroadcasted * GetModifier("topicality::timesBroadcasted")
 		
 		If Self.IsCult() 'Bei Kult-Filmen ist der Nachteil des Filmalters und der Anzahl der Ausstrahlungen deutlich verringert.
 			If age >= 20
-				return 0.01 * Max(10, 80 - Max(40, (ageInfluence - 20) * 0.5) - timeAiredInfluence * 0.5)
+				return 0.01 * Max(10, 80 - Max(40, (ageInfluence - 20) * 0.5) - timesBroadcastedInfluence * 0.5)
 			Else
-				return 0.01 * Max(10, 100 - ageInfluence - timeAiredInfluence * 0.5)
+				return 0.01 * Max(10, 100 - ageInfluence - timesBroadcastedInfluence * 0.5)
 			Endif
 		Else
-			return 0.01 * Max(1, 100 - ageInfluence - timeAiredInfluence)
+			return 0.01 * Max(1, 100 - ageInfluence - timesBroadcastedInfluence)
 		EndIf
-	End Method
-
-
-	Method GetTopicality:Float()
-		if topicality < 0 then topicality = GetMaxTopicality()
-
-		'refresh topicality on each request
-		'-> avoids a "topicality > MaxTopicality" when MaxTopicality
-		'   shrinks because of aging/airing
-		topicality = Min(topicality, GetMaxTopicality())
-		
-		return topicality
 	End Method
 
 
@@ -1096,74 +1062,59 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	End Method
 
 
+	'override
 	Method CutTopicality:Float(cutModifier:float=1.0) {_private}
 		'cutModifier can be used to manipulate the resulting cut
 		'ex. for night times, for low audience...
-		local changeValue:float = topicality
 
 		'cut by an individual cutoff factor - do not allow values > 1.0
 		'(refresh instead of cut)
 		'the value : default * invidual * individualGenre
-		changeValue :* cutModifier
-		changeValue :* GetProgrammeDataCollection().wearoffFactor
-		changeValue :* GetGenreWearoffModifier()
-		changeValue :* GetFlagsWearoffModifier()
-		changeValue :* GetWearoffModifier()
-		changeValue = topicality - changeValue
+		cutModifier :* GetProgrammeDataCollection().wearoffFactor
+		cutModifier :* GetGenreWearoffModifier()
+		cutModifier :* GetFlagsWearoffModifier()
+		cutModifier :* GetWearoffModifier()
 
 		'cut by at least 5%, limit to 0-Max
-		topicality = MathHelper.Clamp(topicality - Max(0.05, changeValue), 0.0, GetMaxTopicality())
-
-		Return topicality
+		Return Super.CutTopicality( Min(0.95, cutModifier) )
 	End Method
 
 
-	Method CutTrailerTopicality:Float(cutModifier:float=1.0) {_private}
-		local changeValue:float = trailerTopicality
-
-		changeValue :* cutModifier
-		changeValue :* GetProgrammeDataCollection().trailerWearoffFactor
-		changeValue :* GetWearoffModifier()
+	Method CutTrailerTopicality:Float(cutModifier:Float = 1.0) {_private}
+		cutModifier :* GetProgrammeDataCollection().trailerWearoffFactor
+		cutModifier :* GetWearoffModifier()
 		'trailers also get influenced by flags and genre
-		changeValue :* GetGenreWearoffModifier()
-		changeValue :* GetFlagsWearoffModifier()
-		changeValue = trailerTopicality - changeValue
+		cutModifier :* GetGenreWearoffModifier()
+		cutModifier :* GetFlagsWearoffModifier()
 
 		'cut by at least 5%, limit to 0-1
 		'(trailers do not inherit "aged" topicality, so 1 is max)
-		trailerTopicality = MathHelper.Clamp(trailerTopicality - Max(0.05, changeValue), 0.0, 1.0)
+		trailerTopicality = MathHelper.Clamp(trailerTopicality * Min(0.95, cutModifier), 0.0, 1.0)
 
 		Return trailerTopicality
 	End Method
 
 
-	Method RefreshTopicality:Float() {_private}
-		local changeValue:float = topicality
-
-		changeValue :* GetProgrammeDataCollection().refreshFactor
-		changeValue :* GetRefreshModifier()
-		changeValue :* GetGenreRefreshModifier()
-		changeValue = topicality - changeValue
+	'override
+	Method RefreshTopicality:Float(refreshModifier:Float = 1.0) {_private}
+		refreshModifier :* GetProgrammeDataCollection().refreshFactor
+		refreshModifier :* GetRefreshModifier()
+		refreshModifier :* GetGenreRefreshModifier()
 
 		'refresh by at least 5%, limit to 0-Max
-		topicality = MathHelper.Clamp(topicality + Max(0.05, changeValue), 0.0, GetMaxTopicality())
-
-		Return topicality
+		Return Super.RefreshTopicality( Max(1.05, refreshModifier) )
 	End Method
 
 
-	Method RefreshTrailerTopicality:Float() {_private}
-		local changeValue:float = trailerTopicality
-
-		changeValue :* GetProgrammeDataCollection().trailerRefreshFactor
-		changeValue :* GetTrailerRefreshModifier()
+	Method RefreshTrailerTopicality:Float(refreshModifier:Float = 1.0) {_private}
+		refreshModifier :* GetProgrammeDataCollection().trailerRefreshFactor
+		refreshModifier :* GetTrailerRefreshModifier()
 		'trailers also get influenced by flags and genre
-		changeValue :* GetGenreRefreshModifier()
-		changeValue :* GetFlagsRefreshModifier()
-		changeValue = trailerTopicality - changeValue
+		refreshModifier :* GetGenreRefreshModifier()
+		refreshModifier :* GetFlagsRefreshModifier()
 
 		'refresh by at least 5%, limit to 0-1
-		trailerTopicality = MathHelper.Clamp(trailerTopicality + Max(0.05, changeValue), 0.0, 1.0)
+		trailerTopicality = MathHelper.Clamp(trailerTopicality * Max(1.05, refreshModifier), 0, 1.0)
 
 		Return trailerTopicality
 	End Method
@@ -1249,31 +1200,6 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		EndSelect
 
 		Return TAudience.CreateAndInitValue(trailerMod)
-	End Method
-
-
-	'playerID < 0 means "get all"
-	Method GetTimesAired:Int(playerID:int = -1)
-		if playerID >= timesAired.length then return 0
-		if playerID >= 0 then return timesAired[playerID]
-
-		local result:int = 0
-		For local i:int = 0 until timesAired.length
-			result :+ timesAired[i]
-		Next
-		return result
-	End Method
-
-
-	Method SetTimesAired:Int(times:int, playerID:int)
-		if playerID < 0 then playerID = 0
-
-		'resize array if player has no entry yet
-		if playerID >= timesAired.length
-			timesAired = timesAired[.. playerID + 1]
-		endif
-
-		timesAired[playerID] = times
 	End Method
 
 

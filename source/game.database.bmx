@@ -716,6 +716,7 @@ endrem
 		'=== DATA ===
 		local nodeData:TxmlNode = xml.FindElementNode(node, "data")
 		local data:TData = new TData
+		'price and topicality are outdated
 		xml.LoadValuesToData(nodeData, data, [..
 			"genre", "price", "topicality" ..
 		])
@@ -724,8 +725,25 @@ endrem
 		'topicality is "quality" here
 		newsEvent.quality = 0.01 * data.GetFloat("topicality", 100 * newsEvent.quality)
 		'price is "priceModifier" here (so add 1.0 until that is done in DB)
-		newsEvent.priceModifier = 1.0 + 0.01 * data.GetFloat("price", 100 * (newsEvent.priceModifier-1.0))
-	
+		local priceMod:Float = data.GetFloat("price", 0)
+		if priceMod = 0 then priceMod = 1.0 'invalid data given
+		newsEvent.SetModifier("price", data.GetFloat("price", newsEvent.GetModifier("price")))
+		newsEvent.SetModifier("topicality::age", data.GetFloat("topicality", newsEvent.GetModifier("topicality::age")))
+
+
+		'=== MODIFIERS ===
+		'reuses existing (parent) modifiers and overrides it with custom
+		'ones
+		local nodeModifiers:TxmlNode = xml.FindElementNode(node, "modifiers")
+		For local nodeModifier:TxmlNode = EachIn xml.GetNodeChildElements(nodeModifiers)
+			If nodeModifier.getName() <> "modifier" then continue
+
+			local modKey:string = xml.FindValue(nodeModifier, "name", "mod")
+			local modValue:Float = xml.FindValueFloat(nodeModifier, "value", newsEvent.GetModifier(modKey))
+
+			newsEvent.SetModifier(modKey, modValue)
+		Next
+
 
 		'=== CONDITIONS ===
 		local nodeConditions:TxmlNode = xml.FindElementNode(node, "conditions")

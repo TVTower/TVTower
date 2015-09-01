@@ -181,7 +181,10 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		data.CutTopicality(GetTopicalityCutModifier( audienceResult.GetWholeMarketAudienceQuotePercentage()))
 
 		'if someone can watch that movie, increase the aired amount
-		data.SetTimesAired(data.GetTimesAired(owner)+1, owner)
+		'for data and licence
+		data.SetTimesBroadcasted(data.GetTimesBroadcasted(owner)+1, owner)
+		licence.SetTimesBroadcasted(licence.GetTimesBroadcasted(owner)+1, owner)
+
 		'reset trailer count
 		data.trailerAiredSinceShown = 0
 		'now the trailer is for the next broadcast...
@@ -190,7 +193,6 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		data.RefreshTrailerTopicality()
 		
 		'print "aired programme "+GetTitle()+" "+data.GetTimesAired(owner)+"x."
-
 		'print self.GetTitle() + "  finished at day="+day+" hour="+hour+" minute="+minute + " aired="+data.timesAired + " topicality="+data.topicality+" oldTop="+oldTop
 	End Method
 
@@ -476,39 +478,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	End Function
 
 
-	Method GetTopicalityCutModifier:float( audienceQuote:float = 0.5 ) {_exposeToLua}
-		'by default, all broadcasted programmes would cut their topicality by
-		'100% when broadcasted on 100% audience watching
-		'but instead of a linear growth, we use the logistical influence
-		'to grow fast at the beginning (near 0%), and
-		'to grow slower at the end (near 100%)
-
-		rem
-		"keepRate" for given quote
-		Quote  Strength 3  Strength 2  Strength 1 
-		0      1.0000      1.0000      1.0000
-		0.01                           0.9903
-		0.02                           0.9807
-		0.04                           0.9619
-		0.06                           0.9434
-		0.08                           0.9253
-		0.1    0.7435      0.8214      0.9075
-		0.2    0.5540      0.6755      0.8239
-		0.3    0.4138      0.5561      0.7481
-		0.4    0.3100      0.4582      0.6791
-		0.5    0.2329      0.3776      0.6163
-		0.6    0.1753      0.3112      0.5588
-		0.7    0.1319      0.2561      0.5061
-		0.8    0.0990      0.2102      0.4576
-		0.9    0.0737      0.1718      0.4131
-		endrem
-
-		'we do want to know what to keep, not what to cut (-> 1.0-x)
-		'strength is 1
-		return 1.0 - THelper.LogisticalInfluence_Euler(audienceQuote, 1)
-	End Method
-
-
+	'for details check game.broadcastmaterial.base.bmx: GetTopicalityCutModifier()
 	Method GetTrailerTopicalityCutModifier:float(audienceQuote:Float = 1.0) {_exposeToLua}
 		return 1.0 - THelper.LogisticalInfluence_Euler(audienceQuote, 1)
 	End Method

@@ -12,11 +12,10 @@ EndRem
 SuperStrict
 'to be able to evaluate scripts
 Import "Dig/base.util.scriptexpression.bmx"
-Import "game.gameobject.bmx"
 Import "game.world.worldtime.bmx"
 'to fetch maximum audience
 Import "game.stationmap.bmx"
-Import "game.broadcastmaterial.base.bmx"
+Import "game.publicimage.bmx"
 'to access gamerules (definitions)
 Import "game.gamerules.bmx"
 'to access genres

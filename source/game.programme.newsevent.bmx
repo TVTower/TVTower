@@ -8,7 +8,7 @@ Import "Dig/base.util.mersenne.bmx"
 Import "Dig/base.util.math.bmx"
 'for TBroadcastSequence
 Import "game.broadcast.base.bmx"
-Import "game.gameobject.bmx"
+Import "game.broadcastmaterialsource.base.bmx"
 Import "game.gameconstants.bmx"
 Import "game.world.worldtime.bmx"
 
@@ -260,15 +260,14 @@ End Function
 
 
 
-Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
+Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	Field title:TLocalizedString
 	Field description:TLocalizedString
 	Field genre:Int = 0
 	Field quality:Float = -1.0 'none
-	Field priceModifier:Float = 1.0
+	Field topicality:Float = 1.0
 	'time when something happened or will happen. "-1" = not happened
 	Field happenedTime:Double = -1
-	Field effects:TGameObjectEffectCollection = New TGameObjectEffectCollection
 	'type of the news event according to TVTNewsType
 	Field newsType:int = 0 'initialNews
 	Field availableYearRangeFrom:int = -1
@@ -288,21 +287,23 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	Const GENRE_CURRENTS:Int = 4	{_exposeToLua}
 
 
-	Method Init:TNewsEvent(GUID:string, title:TLocalizedString, description:TLocalizedString, Genre:Int, quality:Float=-1, priceModifier:Float=-1, newsType:int=0)
+	Method Init:TNewsEvent(GUID:string, title:TLocalizedString, description:TLocalizedString, Genre:Int, quality:Float=-1, modifiers:TData=null, newsType:int=0)
 		self.SetGUID(GUID)
 		self.title       = title
 		self.description = description
 		self.genre       = Genre
+		self.topicality  = 1.0
 		if quality >= 0 then SetQuality(quality)
-		if priceModifier >= 0 then SetPriceModifier(priceModifier)
 		self.newsType	 = newsType
+		'modificators: > 1.0 increases price (1.0 = 100%)
+		if modifiers then self.modifiers = modifiers.Copy()
 
 		Return self
 	End Method
 
 
 	Method ToString:String()
-		return "newsEvent: title=" + GetTitle() + "  quality=" + quality + "  priceModifier=" + priceModifier
+		return "newsEvent: title=" + GetTitle() + "  quality=" + quality + "  priceMod=" + GetModifier("price")
 	End Method
 
 
@@ -327,17 +328,57 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 		'clamp between 0-1.0
 		self.quality = MathHelper.Clamp(quality, 0.0, 1.0)
 	End Method
-
-
-	Method SetPriceModifier:Int(priceModifier:Float)
-		'avoid negative modifiers
-		self.priceModifier = Max(0.0, priceModifier)
-	End Method
-
+	
 
 	Function GetGenreString:String(Genre:Int)
 		return GetLocale("NEWS_"+ TVTNewsGenre.GetasString(Genre).toUpper())
 	End Function
+
+
+	Method GetTopicality:Float()
+		'refresh topicality (to avoid odd values through external modification)
+		topicality = MathHelper.Clamp(topicality, 0.0, 1.0)
+
+		local topicalityMod:Float = 1.0
+
+		'age influence
+
+		'the older the less ppl want to watch - 1hr = 0.95%, 2hr = 0.90%...
+		'means: after 20 hrs, the topicality is 0
+		local ageHours:int = floor( float(GetWorldTime().GetTimeGone() - self.happenedTime)/3600.0 )
+		'value 0-1.0
+		Local age:float = 0.01 * Max(0,100-5*Max(0, ageHours) )
+
+		topicalityMod :* age * GetModifier("age")
+
+		
+
+		return topicality * topicalityMod
+	End Method
+
+
+	'override
+	Method GetMaxTopicality:Float()
+		local maxTopicality:Float = 1.0
+
+		'age influence
+
+		'the older the less ppl want to watch - 1hr = 0.95%, 2hr = 0.90%...
+		'means: after 20 hrs, the topicality is 0
+		local ageHours:int = floor( float(GetWorldTime().GetTimeGone() - self.happenedTime)/3600.0 )
+		Local ageInfluence:float = 1.0 - 0.01 * Max(0, 100 - 5 * Max(0, ageHours))
+		ageInfluence :* GetModifier("topicality::age")
+
+		'the first 12 broadcasts do decrease maxTopicality
+		Local timesBroadcastedInfluence:Float = 0.01 * Min(12, GetTimesBroadcasted())
+		timesBroadcastedInfluence :* GetModifier("topicality::timesBroadcasted")
+
+		'subtract various influences (with individual weights)
+		maxTopicality :- 1.0 * ageInfluence
+		maxTopicality :- 0.5 * timesBroadcastedInfluence
+
+		return MathHelper.Clamp(maxTopicality, 0.0, 1.0)
+	End Method
 
 
 	Method HasHappened:Int()
@@ -391,6 +432,9 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 		'set happened time, add to collection list...
 		GetNewsEventCollection().setNewsHappened(self, time)
 
+		'set topicality to 100%
+		topicality = 1.0
+
 		'trigger happenEffects
 		local effectParams:TData = new TData.Add("newsEvent", self)
 		effects.RunEffects("happen", effectParams)
@@ -405,7 +449,25 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 		local effectParams:TData = new TData.Add("newsEvent", self).AddNumber("playerID", playerID)
 		effects.RunEffects("broadcast", effectParams)
 	End Method
-	
+
+
+	Method CutTopicality:Float(cutModifier:float=1.0) {_private}
+		'cutModifier can be used to manipulate the resulting cut
+		'ex. for night times, for low audience...
+		local changeValue:float = topicality
+
+		'cut by an individual cutoff factor - do not allow values > 1.0
+		'(refresh instead of cut)
+		'the value : default * invidual * individualGenre
+		changeValue :* cutModifier
+		changeValue = topicality - changeValue
+
+		'cut by at least 1%, limit to 0-Max
+		topicality = MathHelper.Clamp(topicality - Max(0.01, changeValue), 0.0, 1.0)
+
+		Return topicality
+	End Method	
+
 
 	Method IsSkippable:int()
 		'cannot skip events with "happen"-effects
@@ -418,18 +480,8 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method ComputeTopicality:Float()
-		'the older the less ppl want to watch - 1hr = 0.95%, 2hr = 0.90%...
-		'means: after 20 hrs, the topicality is 0
-		local ageHours:int = floor( float(GetWorldTime().GetTimeGone() - self.happenedTime)/3600.0 )
-		Local age:float = 0.01 * Max(0,100-5*Max(0, ageHours) )
-		'value 0-1.0
-		return age
-	End Method
-
-
 	Method GetAttractiveness:Float() {_exposeToLua}
-		return 0.35*quality + 0.6*ComputeTopicality() + 0.05
+		return 0.35*quality + 0.6*GetTopicality() + 0.05
 	End Method
 
 
@@ -455,7 +507,7 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 
 	Method ComputeBasePrice:Int() {_exposeToLua}
 		'price ranges from 500-10.000
-		Return  Max(500, 100 * ceil(100 * GetAttractiveness() * priceModifier))
+		Return  Max(500, 100 * ceil(100 * GetAttractiveness() * GetModifier("price")))
 	End Method
 End Type
 

@@ -2235,18 +2235,20 @@ Type TGUINews Extends TGUIGameListItem
 
 			Local textY:Int = screenY + 2
 			Local fontBold:TBitmapFont = GetBitmapFontManager().basefontBold
-			Local fontNormal:TBitmapFont = GetBitmapFontManager().basefont
+			Local fontNormal:TBitmapFont = GetBitmapFont("",11)
 			
 			fontBold.draw("News: " + news.newsEvent.GetTitle(), screenX + 5, textY)
 			textY :+ 14	
-			fontNormal.draw("Preis: " + news.GetPrice()+"  (Preismodifikator: "+news.newsEvent.priceModifier+")", screenX + 5, textY)
-			textY :+ 12	
+			fontNormal.draw("Preis: " + news.GetPrice()+"  (PreisMod: "+news.newsEvent.GetModifier("price")+")", screenX + 5, textY)
+			textY :+ 11	
 			fontNormal.draw("Qualitaet: "+news.GetQuality() +" (Event:"+ news.newsEvent.quality + ")", screenX + 5, textY)
-			textY :+ 12	
-			fontNormal.draw("Attraktivitaet: "+news.newsEvent.GetAttractiveness()+"    Aktualitaet: " + news.newsEvent.ComputeTopicality(), screenX + 5, textY)
-			textY :+ 12	
+			textY :+ 11	
+			fontNormal.draw("Attraktivitaet: "+news.newsEvent.GetAttractiveness()+"    Aktualitaet: " + news.newsEvent.GetTopicality(), screenX + 5, textY)
+			textY :+ 11	
+			fontNormal.draw("Ausstrahlungen: " + news.newsEvent.GetTimesBroadcasted(news.owner)+"x  (" + news.newsEvent.GetTimesBroadcasted()+"x gesamt)", screenX + 5, textY)
+			textY :+ 11	
 			fontNormal.draw("Alter: " + Long(GetWorldTime().GetTimeGone() - news.GetHappenedtime()) + " Sekunden  (" + (GetWorldTime().GetDay() - GetWorldTime().GetDay(news.GetHappenedtime())) + " Tage)", screenX + 5, textY)
-			textY :+ 12	
+			textY :+ 11	
 			Rem
 			local eventCan:string = ""
 			if news.newsEvent.skippable

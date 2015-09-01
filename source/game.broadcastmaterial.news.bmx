@@ -37,6 +37,15 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 	End Method
 
 
+	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
+		Super.FinishBroadcasting(day, hour, minute, audienceData)
+
+		For local newsEntry:TBroadcastMaterial = EachIn news
+			newsEntry.FinishBroadcasting(day, hour, minute, audienceData)
+		Next
+	End Method
+
+
 	'returns the audienceAttraction for a newsShow (3 news)
 	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
 		Local resultAudienceAttr:TAudienceAttraction = New TAudienceAttraction
@@ -256,7 +265,19 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		'inform newsEvent that it gets broadcasted by a player
 		newsEvent.doBroadcast(owner)
 	End Method
-	
+
+
+	'override
+	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
+		Super.FinishBroadcasting(day, hour, minute, audienceData)
+
+		'adjust topicality relative to possible audience 
+		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
+		newsEvent.CutTopicality( GetTopicalityCutModifier(audienceResult.GetWholeMarketAudienceQuotePercentage()) )
+
+		newsEvent.SetTimesBroadcasted( newsEvent.GetTimesBroadcasted(owner) + 1, owner )
+	End Method
+
 
 	Method SetSequenceCalculationPredecessorShare(seqCal:TSequenceCalculation, audienceFlow:Int)
 		seqCal.PredecessorShareOnShrink  = TAudience.CreateAndInitValue(0.4) '0.5

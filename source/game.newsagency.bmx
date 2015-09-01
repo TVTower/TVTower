@@ -207,8 +207,8 @@ Type TNewsAgency
 		local localizeDescription:TLocalizedString = new TLocalizedString
 		localizeDescription.Set(description, "de")
 
-
-		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, genre, quality, price, TVTNewsType.InitialNewsByInGameEvent)
+		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, genre, quality, null, TVTNewsType.InitialNewsByInGameEvent)
+		NewsEvent.SetModifier("price", price)
 
 		'send out terrorist
 		if aggressionLevel = 4
@@ -353,7 +353,8 @@ Type TNewsAgency
 		local localizeDescription:TLocalizedString = new TLocalizedString
 		localizeDescription.Set(description) 'use default lang
 		
-		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TNewsEvent.GENRE_CURRENTS, quality, price, TVTNewsType.InitialNewsByInGameEvent)
+		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TNewsEvent.GENRE_CURRENTS, quality, null, TVTNewsType.InitialNewsByInGameEvent)
+		NewsEvent.SetModifier("price", price)
 
 		'TODO
 		'add weather->audience effects
@@ -404,7 +405,9 @@ Type TNewsAgency
 		local quality:Float = 0.75*licence.GetData().review
 		'if outcome is less than 50%, it subtracts the price, else it increases
 		local priceModifier:Float = 1.0 + 0.2 * (licence.GetData().outcome - 0.5)
-		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TNewsEvent.GENRE_SHOWBIZ, quality, priceModifier, TVTNewsType.InitialNewsByInGameEvent)
+		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TNewsEvent.GENRE_SHOWBIZ, quality, null, TVTNewsType.InitialNewsByInGameEvent)
+		NewsEvent.SetModifier("price", priceModifier)
+
 		NewsEvent.doHappen() 'happen now
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
 		
