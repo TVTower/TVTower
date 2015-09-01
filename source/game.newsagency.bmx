@@ -425,6 +425,11 @@ Type TNewsAgency
 		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TNewsEvent.GENRE_SHOWBIZ, quality, null, TVTNewsType.InitialNewsByInGameEvent)
 		NewsEvent.SetModifier("price", priceModifier)
 
+		'after 20 hours a news topicality is 0 - so accelerating it by
+		'2 means it reaches topicality of 0 at 10 hours after creation.
+		NewsEvent.SetModifier("topicality::age", 2)
+
+
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
 		
 		Return NewsEvent
