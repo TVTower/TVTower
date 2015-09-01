@@ -11,6 +11,7 @@ Import "game.broadcast.base.bmx"
 Import "game.broadcastmaterialsource.base.bmx"
 Import "game.gameconstants.bmx"
 Import "game.world.worldtime.bmx"
+Import "game.player.base.bmx"
 
 
 
@@ -106,8 +107,7 @@ Type TNewsEventCollection
 				'from all lists
 				If not newsEvent.IsReuseable() then Remove(newsEvent)
 
-				'reset happenedTime so it is available again
-				newsEvent.happenedTime = -1
+				newsEvent.Reuse()
 
 				somethingDeleted = true
 			endif
@@ -265,7 +265,6 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	Field description:TLocalizedString
 	Field genre:Int = 0
 	Field quality:Float = -1.0 'none
-	Field topicality:Float = 1.0
 	'time when something happened or will happen. "-1" = not happened
 	Field happenedTime:Double = -1
 	'type of the news event according to TVTNewsType
@@ -279,6 +278,7 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	'can the event happen again - or only once?
 	'eg. dynamically created weather news should set this to FALSE
 	Field reuseable:int = True
+	Field _handledFirstTimeBroadcast:int = False
 	
 	Const GENRE_POLITICS:Int = 0	{_exposeToLua}
 	Const GENRE_SHOWBIZ:Int  = 1	{_exposeToLua}
@@ -299,6 +299,15 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		if modifiers then self.modifiers = modifiers.Copy()
 
 		Return self
+	End Method
+
+
+	Method Reuse()
+		'reset happenedTime so it is available again
+		happenedTime = -1
+		topicality = 1.0
+		'reset helper so it can "premiere" again
+		_handledFirstTimeBroadcast = False
 	End Method
 
 
@@ -429,6 +438,8 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 
 	Method doHappen(time:Double = 0.0)
+		if HasHappened() then return
+
 		'set happened time, add to collection list...
 		GetNewsEventCollection().setNewsHappened(self, time)
 
@@ -442,11 +453,21 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 
 	'call this as soon as a news containing this newsEvent is
-	'broadcasted. If playerID = -1 then this effect might target
+	'broadcasted. If playerID = -1 then this effects might target
 	'"all players" (depends on implementation)
 	Method doBroadcast(playerID:int = -1)
 		'trigger broadcastEffects
 		local effectParams:TData = new TData.Add("newsEvent", self).AddNumber("playerID", playerID)
+
+		'if nobody broadcasted till now (times are adjusted on
+		'finishBroadcast while this is called on beginBroadcast)
+		if GetTimesBroadcasted() = 0
+			if not _handledFirstTimeBroadcast
+				effects.RunEffects("broadcastFirstTime", effectParams)
+				_handledFirstTimeBroadcast = True
+			endif
+		endif
+
 		effects.RunEffects("broadcast", effectParams)
 	End Method
 
