@@ -2213,6 +2213,18 @@ Type TGUINews Extends TGUIGameListItem
 				Case 2	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("TWO_DAYS_AGO")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
 			End Select
 
+			SetAlpha oldAlpha * 0.5
+			SetColor 140,110,110
+			DrawRect(screenX + 15, screenY + 67, 152, 3)
+			SetAlpha oldAlpha
+			SetColor 255,255,255
+			DrawRect(screenX + 16, screenY + 68, 150, 1)
+			SetColor 255,100,100
+			SetAlpha oldAlpha * 0.5
+			DrawRect(screenX + 16, screenY + 68, news.newsEvent.GetMaxTopicality()*150, 1)
+			SetAlpha oldAlpha
+			DrawRect(screenX + 16, screenY + 68, news.newsEvent.GetTopicality()*150, 1)
+
 			SetColor 255, 255, 255
 			SetAlpha oldAlpha
 	
