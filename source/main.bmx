@@ -391,9 +391,12 @@ Type TApp
 		TProfiler.Leave("RessourceLoader")
 		
 
+		'needs modified "brl.mod/polledinput.mod" (disabling autopoll)
+		SetAutoPoll(False)
 		KEYMANAGER.Update()
 		MOUSEMANAGER.Update()
-
+		SetAutoPoll(True)
+		
 		'fetch and cache mouse and keyboard states for this cycle
 		GUIManager.StartUpdates()
 

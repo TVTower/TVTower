@@ -676,7 +676,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method Remove:int()
+	Method Remove()
 		'set contract base unused
 		base.RemoveCurrentlyUsedByContract( GetGUID() )
 	End Method
