@@ -2503,7 +2503,6 @@ Type RoomHandler_Studio extends TRoomHandler
 		'=== unset cross referenced objects ===
 		studioScriptsByRoom.Clear()
 		studioManagerDialogue = null
-		studioManagerEntity = null
 		studioManagerTooltip = null
 		placeScriptTooltip = null
 
@@ -5538,7 +5537,7 @@ Type RoomHandler_Credits extends TRoomHandler
 		
 	Method CleanUp()
 		'=== unset cross referenced objects ===
-		roles = new TCreditsRole[0]
+		'
 		
 		'=== remove obsolete gui elements ===
 		'
