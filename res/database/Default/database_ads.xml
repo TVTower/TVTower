@@ -947,7 +947,7 @@ Ich fühl mich wohl mit Lemor</de>
       <description>
         <de>Crazy Beats vom israelischen Star-DJ 4Locke. Jetzt alle 3 Hits auf einem Album.</de>
       </description>
-      <conditions min_audience="0.5 " min_image="12" target_group="2" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+      <conditions min_audience="0.05" min_image="12" target_group="2" allowed_genre="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
       <data infomercial="1" quality="50" repetitions="1" duration="1" profit="4000" penalty="8000" year_range_from="1992" year_range_to="1995" infomercial_profit="50" fix_infomercial_profit="1"/>
     </ad>
     <ad id="ronny-ad-Senner-Kaes" creator="5578" created_by="Ronny">
@@ -1358,7 +1358,7 @@ Available in any well-stocked drugstore.</en>
       <description>
         <de>Ganz neu Dörrgemüse  bei uns im Spezialitäten-Regal. In den Sorten Dörr-Kürbis, Dörr-Gurke und Dörr-Wassermelone!</de>
       </description>
-      <conditions min_audience="0.5 " min_image="0" target_group="0"/>
+      <conditions min_audience="0.05" min_image="0" target_group="0"/>
       <data infomercial="1" quality="31" repetitions="3" duration="3" profit="3000" penalty="450" fix_infomercial_profit="1"/>
     </ad>
     <ad id="speedminister-ad-Enemy24" creator="8605" created_by="SpeedMinister">
@@ -1428,7 +1428,7 @@ Available in any well-stocked drugstore.</en>
       <description>
         <de>Premium Honigprodukte von Ihrer  Lieblings-Imkerei Hummeldoof. Wir gewähren unseren Bienen ein gutes, motivierendes Arbeitsumfeld. Feierabendbier inklusive!</de>
       </description>
-      <conditions min_audience="0.5 " min_image="12" target_group="4"/>
+      <conditions min_audience="0.05" min_image="12" target_group="4"/>
       <data infomercial="1" quality="31" repetitions="4" duration="2" profit="3500" penalty="4150" fix_infomercial_profit="1"/>
     </ad>
     <ad id="speedminister-ad-Immobilien-Haino" creator="8605" created_by="SpeedMinister">
@@ -1845,7 +1845,7 @@ Available in any well-stocked drugstore.</en>
       <description>
         <de>Kommst Du. - Kuckst Du. - Kaufst Du.</de>
       </description>
-      <conditions min_audience="0.5 " min_image="0" target_group="0"/>
+      <conditions min_audience="0.05" min_image="0" target_group="0"/>
       <data infomercial="1" quality="20" repetitions="2" duration="2" profit="3000" penalty="3110" fix_infomercial_profit="1"/>
     </ad>
     <ad id="speedminister-ad-hexlerundschorsch-01" creator="8605" created_by="SpeedMinister">

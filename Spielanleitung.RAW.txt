@@ -4,7 +4,7 @@ Sollte etwas fehlen, unklar sein oder gar zuviel, merkt's bitte hier im Strang a
 bis dahin
 Själe
 
-Stand: 29.04.2015, 11:56
+Stand: 03.09.2015, 11:56
 
 
 sjsjsjsjsjsjsjsj
@@ -48,6 +48,8 @@ Inhalt:
 - Werbemakler
 - Nachrichtenstudio
 - Senderkauf
+- Drehbuchagentur
+- Studio
 - Chef-Kredit-Bettelei
 - Terrorist
 - FSK 18 und Gerichtsvollzieher
@@ -66,11 +68,15 @@ Inhalt:
 @Laden Speichern
 ================
 
-Derzeit ist es möglich einen Speicherpunkt anzulegen.
+Es gibt zwei Möglichkeiten, das Spiel zu speichern und zu laden.
+Zum einen kann über "Escape" ein entsprechendes Menü aufgerufen werden. Per Linksklick auf das jeweilige Menüfeld gelangt Ihr zum entsprechenden Untermenü.
+Beim Speichern noch einen Namen eingeben, beim Laden einen Spielstand aussuchen und das entsprechende Feld auswählen.
 
-Speichern - Taste „s“
-Laden - Taste „l“
+Desweiteren gibt es die Möglichkeit zum Schnellspeichern bzw. -laden.
+Dazu einfach die Tasten drücken:
 
+Schnellspeichern - Taste „s“
+Schnellladen - Taste „l“
 
 
 
@@ -219,6 +225,8 @@ Im Sendeplan wird Euch übrigens auch angezeigt, wie oft die Werbung schon einge
 
 Auch hier werden die gerissenen Lücken nach Verlassen des Raumes wieder aufgefüllt. Also schnell nochmal rein, ob noch was Günstiges hinzugekommen ist.
 
+Links unten im Raumbildschirm gibt es ein abgesetztes Icon. Fahrt mit dem Mauszeiger darauf und ein Menü klappt auf, mit dem die Werbeverträge nach Einschaltquoten oder Prämien sortiert werden können.
+
 Bitte beschwert Euch nicht allzusehr, daß die Werbeprämien noch nicht so richtig ausbalanciert sind. Das ist ein weites Feld und nicht so nebenbei zu erledigen. Wir arbeiten aber daran.
 
 
@@ -261,6 +269,28 @@ Wollt Ihr nach dem Platzieren doch lieber nochmal gucken, dann könnt Ihr den Se
 Habt Ihr den Button „kaufen“ schon angeklickt, ist es dafür freilich zu spät.
 Ihr könntet jetzt den Sendemast wieder verkaufen. Wählt Ihn dazu in der Liste rechts unten aus. Und dann auf den Button „Sendemast verkaufen“.
 Gemeinerweise erhaltet Ihr weniger Geld zurück, als er gekostet hat.
+
+
+
+
+- Drehbuchagentur
+-----------------
+
+Die Drehbuchagentur gehört zum Gesamtkomplex "Eigenproduktion", der noch in Arbeit ist.
+Momentan könnt Ihr hier Drehbücher kaufen. Die stehen auf und neben dem kleinen Schrank an der Tür.
+Drüberfahren mit dem Mauszeiger lässt Datenblätter erscheinen, auf dem die entsprechenden Informationen nachgelesen werden können.
+Klickt auf das gewünschte Drehbuch und legt es im Koffer durch loslassen der linken Maustaste ab. Sobald der Raum verlassen wird, nennt sich das gewählte Drehbuch Euer Eigen.
+
+
+
+
+- Studio
+--------
+
+Mit dem ausgewählten Drehbuch geht es ins Studio. Klickt dort auf das gewünschte Drehbuch im Koffer und legt es auf den Studioleiter ab. Ups, der ist gerade nicht da... Stellt das Drehbuch auf das Bord am rechten Rand.
+Links sollte eigentlich der Studioleiter stehen. Fahrt Ihr dort mit dem Mauszeiger drüber, erscheint eine Platzhalterinformation. Klickt links und es erscheint ein Dialog, in dem Ihr das eine Einkaufsliste fordern könnt. Diese erscheint nach Linksklick am unteren Rand.
+Mit dieser müsst Ihr runter in den Supermarkt. Aber das funktioniert noch nicht. Ab hier ist derzeit Schluss mit der Eigenproduktion.
+
 
 
 
@@ -384,8 +414,7 @@ C: Chef
 N: Newsraum
 R: Roomboard / Raumtafel"zimmer"
 
-Laden/Speichern:
-Hinweis: Zum Laden vorher ein Spiel starten!
+Schnellladen/-speichern:
 ----------------
 L: Spielstand laden
 S: Spielstand speichern
