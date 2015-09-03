@@ -248,8 +248,13 @@ Type TNewsAgency
 
 	Method UpdateWeather:int()
 		weatherUpdateTime = GetWorldTime().GetTimeGone() + 60 * randRange(weatherUpdateTimeInterval[0], weatherUpdateTimeInterval[1])
-
-
+		'limit weather forecasts to get created between xx:10-xx:40
+		'to avoid forecasts created just before the news show
+		if GetWorldTime().GetDayMinute(weatherUpdateTime) > 40
+			local newTime:Long = GetWorldTime().MakeTime(0, GetWorldtime().GetDay(weatherUpdateTime), GetWorldtime().GetDayHour(weatherUpdateTime), RandRange(10, 40), 0)
+			weatherUpdateTime = newTime
+		endif
+		
 		local newsEvent:TNewsEvent = GetWeatherNewsEvent()
 		If newsEvent
 			'Print "[LOCAL] UpdateWeather: added weather news title="+newsEvent.title+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
