@@ -612,7 +612,7 @@ Grandioses Finale.</de>
 			<effects>
 				<effect type="triggernews" parameter1="ronny-news-spitzel-02" />
 			</effects>
-			<data genre="0" price="10" quality="28" />
+			<data genre="0" price="1.10" quality="28" />
 		</news>
 		<news id="ronny-news-spitzel-02" type="2" creator="5578" created_by="Ronny">
 			<title>
@@ -623,7 +623,7 @@ Grandioses Finale.</de>
 				<de>Das Audiomaterial des Toilettenmitschnitts konnte bereinigt werden. Über die kodierte Frage &quot;Hast Du mal noch Papier?&quot; rätseln Experten.</de>
 				<en></en>
 			</description>
-			<data genre="0" price="15" quality="24" />
+			<data genre="0" price="1.15" quality="24" />
 		</news>
 	</allnews>
 </tvgdb>

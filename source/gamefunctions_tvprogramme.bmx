@@ -2204,7 +2204,9 @@ Type TGUINews Extends TGUIGameListItem
 			If Not news.paid
 				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice() + ",-", screenX + 262, screenY + 70, 90, -1, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
 			Else
-				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice() + ",-", screenX + 262, screenY + 70, 90, -1, New TVec2D.Init(ALIGN_RIGHT), TColor.CreateGrey(50))
+				SetAlpha GetAlpha()*0.75
+				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice() + ",-", screenX + 262, screenY + 70, 90, -1, New TVec2D.Init(ALIGN_RIGHT), TColor.CreateGrey(100))
+				SetAlpha GetAlpha()*2.0
 			EndIf
 
 			Select GetWorldTime().GetDay() - GetWorldTime().GetDay(news.GetHappenedtime())
