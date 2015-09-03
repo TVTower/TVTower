@@ -810,12 +810,10 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'           value IGNORING potential targetgroup limits. This
 		'           leads to some kind of "beautified" percentage value.
 		price = GetCPM(baseValue, maxCPM, getTotalMinAudience(playerID) / population)
-		'multiply by amount of "1000 viewers"-blocks
-'		price :* Max(1, getMinAudience(playerID)/1000)
 		'multiply by amount of "1000 viewers"-blocks (ignoring targetGroups)
-		'price :* Max(1, getTotalMinAudience(playerID)/1000)
+		price :* Max(1, getTotalMinAudience(playerID)/1000)
 		'multiply by amount of "1000 viewers"-blocks (_not_ ignoring targetGroups)
-		price :* Max(1, getMinAudience(playerID)/1000)
+		'price :* Max(1, getMinAudience(playerID)/1000)
 		'value cannot be higher than "maxAdContractPricePerSpot"
 		price = Min(GameRules.maxAdContractPricePerSpot, price )
 		'adjust by a balancing factor
