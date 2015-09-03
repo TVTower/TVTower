@@ -317,6 +317,17 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 	End Method
 
 
+	Function SortByName:Int(o1:Object, o2:Object)
+		Local a1:TAdContractBase = TAdContractBase(o1)
+		Local a2:TAdContractBase = TAdContractBase(o2)
+		If Not a2 Then Return 1
+		if a1.GetTitle() = a2.GetTitle() 
+			return a1.minAudienceBase > a2.minAudienceBase
+		endif
+        Return a1.GetTitle().ToLower() > a2.GetTitle().ToLower()
+	End Function
+
+
 	Method GetTitle:string() {_exposeToLua}
 		if title then return title.Get()
 	End Method

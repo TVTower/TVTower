@@ -465,11 +465,21 @@ Type TApp
 
 					If KEYMANAGER.IsHit(KEY_W)
 						If KEYMANAGER.IsDown(KEY_LSHIFT) or KEYMANAGER.IsDown(KEY_RSHIFT)
+							local adList:TList = CreateList()
+							For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
+								adList.AddLast(a)
+							Next
+							adList.Sort(True, TAdContractBase.SortByName)
+			
+
+
 							print "==== AD CONTRACT OVERVIEW ===="
 							print ".---------------------------------.------------------.---------.----------.----------.-------."
 							print "| Name                            | Audience       % |  Image  |  Profit  |  Penalty | Spots |"
 							print "|---------------------------------+------------------+---------+----------+----------|-------|"
-							For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
+
+							'For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
+							For local a:TAdContractBase = EachIn adList
 								local ad:TAdContract = new TAdContract
 								'do NOT call ad.Create() as it adds to the adcollection
 								ad.base = a
