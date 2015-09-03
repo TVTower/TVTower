@@ -520,12 +520,14 @@ Type TNewsAgency
 
 		For local playerID:int = 1 to delayedLists.Length
 			if not delayedLists[playerID-1] then continue
-			For local news:TNews = EachIn delayedLists[playerID-1]
+			'iterate over copy
+			For local news:TNews = EachIn delayedLists[playerID-1].Copy()
 				'skip news events not for publishing yet
 				If Not news.IsReadyToPublish() then continue
 
-print "announce delayed: " + GetWorldTime().GetFormattedtime(news.GetHappenedTime()) +" to " + GetWorldTime().GetFormattedtime(news.GetPublishTime())
 				announceNews(news, playerID)
+				'remove the news
+				delayedLists[playerID-1].Remove(news)
 				delayed:+1
 			Next
 		Next
