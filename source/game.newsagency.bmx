@@ -6,6 +6,8 @@ Type TNewsAgency
 	'check for a new news every x-y minutes
 	Field NextEventTimeInterval:int[] = [180, 330]
 
+	Field delayedLists:TList[]
+
 
 	'=== WEATHER HANDLING ===
 	'time of last weather event/news
@@ -53,7 +55,10 @@ Type TNewsAgency
 		terroristAggressionLevel = [0, -1]
 		terroristAggressionLevelMax = 5
 		terroristAggressionLevelProgress = [0.0, 0.0]
-		terroristAggressionLevelProgressRate = [ [0.05,0.09], [0.05,0.09] ]	
+		terroristAggressionLevelProgressRate = [ [0.05,0.09], [0.05,0.09] ]
+
+
+		delayedLists = New TList[4]
 	End Method
 	
 
@@ -63,6 +68,9 @@ Type TNewsAgency
 		'on all clients - so they should be sync'd all the time.
 		
 		ProcessUpcomingNewsEvents()
+
+		'send out delayed news to players
+		ProcessDelayedNews()
 
 		If NextEventTime < GetWorldTime().GetTimeGone() Then AnnounceNewNewsEvent()
 		If weatherUpdateTime < GetWorldTime().GetTimeGone() Then UpdateWeather()
@@ -501,10 +509,31 @@ Type TNewsAgency
 	End Method
 
 
+	'announces news to players with lower abonnement levels (delay)
+	Method ProcessDelayedNews:Int()
+		Local delayed:Int = 0
+
+		For local playerID:int = 1 to delayedLists.Length
+			if not delayedLists[playerID-1] then continue
+			For local news:TNews = EachIn delayedLists[playerID-1]
+				'skip news events not for publishing yet
+				If Not news.IsReadyToPublish() then continue
+
+print "announce delayed: " + GetWorldTime().GetFormattedtime(news.GetHappenedTime()) +" to " + GetWorldTime().GetFormattedtime(news.GetPublishTime())
+				announceNews(news, playerID)
+				delayed:+1
+			Next
+		Next
+	
+		Return delayed
+	End Method
+
+
+
 	Function GetNewsAbonnementDelay:Int(genre:Int, level:int) {_exposeToLua}
 		if level = 3 then return 0
-		if level = 2 then return 60
-		if level = 1 then return 150 'not needed but better overview
+		if level = 2 then return 60*60
+		if level = 1 then return 150*60 'not needed but better overview
 		return 150
 	End Function
 
@@ -550,8 +579,14 @@ Type TNewsAgency
 				endif
 			endif
 
-			'add to players collection
-			player.GetProgrammeCollection().AddNews(news)
+			'send now - or later
+			If news.publishDelay = 0
+				announceNews(news, player.playerID)
+			Else
+				'add to publishLater-List
+				if not delayedLists[player.playerID-1] then delayedLists[player.playerID-1] = CreateList()
+				delayedLists[player.playerID-1].AddLast(news)
+			EndIf
 		EndIf
 	End Method
 
@@ -562,6 +597,13 @@ Type TNewsAgency
 		For Local i:Int = 1 To 4
 			AddNewsEventToPlayer(newsEvent, i, forceAdd)
 		Next
+	End Method
+
+
+	'make news available for the player
+	Method announceNews:Int(news:TNews, player:int)
+		if not GetPlayerProgrammeCollection(player) then return False
+		return GetPlayerProgrammeCollection(player).AddNews(news)
 	End Method
 
 
