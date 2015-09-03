@@ -4,13 +4,14 @@ Import "game.broadcastmaterial.base.bmx"
 
 
 'could be done as "interface"
-Type TBroadcastMaterialSourceBase extends TNamedGameObject
+Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="selected"}
 	Field modifiers:TData = new TData
 	Field effects:TGameObjectEffectCollection = New TGameObjectEffectCollection
 	'how many times that source was broadcasted
 	'(per player, 0 = unknown - allows to adjust "before game start" value)
 	Field timesBroadcasted:int[] = [0]
 	Field topicality:Float = 1.0
+	Field flags:int = 0
 	
 
 	Method Initialize:int()
@@ -90,5 +91,21 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject
 		topicality = MathHelper.Clamp(topicality * refreshModifier, 0, GetMaxTopicality())
 
 		Return topicality
+	End Method
+
+
+
+
+	Method hasFlag:Int(flag:Int) {_exposeToLua}
+		Return flags & flag
+	End Method
+
+
+	Method setFlag(flag:Int, enable:Int=True)
+		If enable
+			flags :| flag
+		Else
+			flags :& ~flag
+		EndIf
 	End Method
 End Type

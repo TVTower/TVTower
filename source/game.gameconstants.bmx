@@ -31,6 +31,8 @@ Type TVTGameConstants {_exposeToLua}
 	Field ProgrammeFlag:TVTProgrammeFlag = new TVTProgrammeFlag 
 	Field ProgrammeLicenceType:TVTProgrammeLicenceType = new TVTProgrammeLicenceType 
 
+	Field NewsFlag:TVTNewsFlag = new TVTNewsFlag 
+
 	Field TargetGroup:TVTTargetGroup = new TVTTargetGroup 
 	Field PressureGroup:TVTPressureGroup = new TVTPressureGroup 
 
@@ -591,6 +593,41 @@ Type TVTProgrammeState {_exposeToLua}
 			case IN_CINEMA      return "in_cinema"
 			case RELEASED       return "released"
 			default             return "none"
+		End Select
+	End Function
+End Type
+
+
+
+Type TVTNewsFlag {_exposeToLua}
+	Const SEND_IMMEDIATELY:Int = 1
+
+	Const count:int = 1
+
+
+	Function GetAtIndex:int(index:int = 0)
+		if index <= 0 then return 0
+		return 2^(index-1)
+	End Function	
+
+
+	Function GetAsString:String(key:int = 0)
+		Select key
+			case SEND_IMMEDIATELY      return "send_immediately"
+
+
+			default
+				'loop through all flag-entries and add them if contained
+				local result:string
+				local index:int = 0
+				'do NOT start with 0 ("all")
+				For local i:int = 1 to count
+					index = GetAtIndex(i)
+					if key & index then result :+ GetAsString(index) + ","
+				Next
+				if result = "" then return "none"
+				'remove last comma
+				return result[.. result.length-1]
 		End Select
 	End Function
 End Type

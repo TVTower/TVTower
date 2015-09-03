@@ -229,6 +229,9 @@ Type TNewsAgency
 			NewsEvent.effects.AddEffect("happen", effect)
 		endif
 
+		'send without delay!
+		NewsEvent.SetFlag(TVTNewsFlag.SEND_IMMEDIATELY, True)
+
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
 		Return NewsEvent
 	End Method
@@ -242,7 +245,7 @@ Type TNewsAgency
 		local newsEvent:TNewsEvent = GetWeatherNewsEvent()
 		If newsEvent
 			'Print "[LOCAL] UpdateWeather: added weather news title="+newsEvent.title+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
-			announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone() + 0)
+			announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone())
 		EndIf
 
 	End Method
@@ -379,6 +382,7 @@ Type TNewsAgency
 		'instead of using the newsevents
 
 		NewsEvent.eventDuration = 8*3600 'only for 8 hours
+		NewsEvent.SetFlag(TVTNewsFlag.SEND_IMMEDIATELY, True)
 
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
 
@@ -532,12 +536,18 @@ Type TNewsAgency
 			local news:TNews = TNews.Create("", 0, newsEvent)
 			'Print "[LOCAL] AddNewsEventToPlayer "+forPlayer+": added news title="+news.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
 
-			if Player.newsabonnements[newsEvent.genre] >0
-				news.publishDelay = GetNewsAbonnementDelay(newsEvent.genre, Player.newsabonnements[newsEvent.genre] )
-				news.priceModRelativeNewsAgency = GetNewsRelativeExtraCharge(newsEvent.genre, GetPlayerCollection().Get(forPlayer).GetNewsAbonnement(newsEvent.genre))
-			Else
+			if forceAdd
 				news.publishDelay = 0
 				news.priceModRelativeNewsAgency = 0.0
+			elseif Player.newsabonnements[newsEvent.genre] > 0
+				news.publishDelay = GetNewsAbonnementDelay(newsEvent.genre, Player.newsabonnements[newsEvent.genre] )
+				news.priceModRelativeNewsAgency = GetNewsRelativeExtraCharge(newsEvent.genre, GetPlayer(forPlayer).GetNewsAbonnement(newsEvent.genre))
+
+				'do not charge for immediate news
+				if newsEvent.HasFlag(TVTNewsFlag.SEND_IMMEDIATELY)
+					news.publishDelay = 0
+					news.priceModRelativeNewsAgency = 0.0
+				endif
 			endif
 
 			'add to players collection

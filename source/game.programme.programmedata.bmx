@@ -410,20 +410,6 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	End Function
 
 
-	Method hasFlag:Int(flag:Int) {_exposeToLua}
-		Return flags & flag
-	End Method
-
-
-	Method setFlag(flag:Int, enable:Int=True)
-		If enable
-			flags :| flag
-		Else
-			flags :& ~flag
-		EndIf
-	End Method
-
-
 	'what to earn for each viewer
 	Method GetPerViewerRevenue:Float() {_exposeToLua}
 		local result:float = 0.0

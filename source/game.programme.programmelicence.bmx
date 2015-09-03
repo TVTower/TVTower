@@ -650,6 +650,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 
 
+	'override
 	Method hasFlag:Int(flag:Int) {_exposeToLua}
 		return GetFlags() & flag
 	End Method
