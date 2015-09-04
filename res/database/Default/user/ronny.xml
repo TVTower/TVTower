@@ -603,11 +603,11 @@ Grandioses Finale.</de>
 		<news id="ronny-news-spitzel-01" type="0" creator="5578" created_by="Ronny">
 			<title>
 				<de>Spitzelaffäre</de>
-				<en></en>
+				<en>Snooping scandal</en>
 			</title>
 			<description>
 				<de>Auf der Toilette des Bundestags wurde ein Gespräch zwischen zwei nicht genannten Politikern aufgezeichnet. Audiomaterial scheinbar zensiert, Pfeif- und Zischgeräusche überdecken Gespräch.</de>
-				<en></en>
+				<en>On the toilet of the German Bundestag a conversation between two unnamed politicians was recorded. Audio apparently iscensored as whistling and hissing noises overlap the conversation.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="ronny-news-spitzel-02" />
@@ -617,11 +617,11 @@ Grandioses Finale.</de>
 		<news id="ronny-news-spitzel-02" type="2" creator="5578" created_by="Ronny">
 			<title>
 				<de>Spitzelaffäre - Zensur herausgefiltert</de>
-				<en></en>
+				<en>Snooping scandal - censorship filtered out</en>
 			</title>
 			<description>
 				<de>Das Audiomaterial des Toilettenmitschnitts konnte bereinigt werden. Über die kodierte Frage &quot;Hast Du mal noch Papier?&quot; rätseln Experten.</de>
-				<en></en>
+				<en>The audio of the live recording on the toilet-talk could get filtered. Experts still puzzle about the encrypted question: &quot;Do you have again some paper?&quot;.</en>
 			</description>
 			<data genre="0" price="1.15" quality="24" />
 		</news>

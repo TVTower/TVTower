@@ -9601,11 +9601,11 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<news id="6b1065dd-36d5-4b4b-9904-1a8b7fd1d9c1" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="0" creator="">
 			<title>
 				<de>Terrorismusbekämpfung im Weltall</de>
-				<en></en>
+				<en>Fighting terrorism in the universe</en>
 			</title>
 			<description>
 				<de>US-Präsident Baush will zur Sicherheit den Terrorismus auch im All bekämpfen. Ein Spaceshuttle soll künftig 24h/Tag die int. Raumstation umkreisen. Kosten: 50Mrd USD.</de>
-				<en></en>
+				<en>For safety reasons US President Baush wants to fight terrorism also in space. A space shuttle should orbit around the int. space station 24/7. Cost: 50 billion USD.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="7c2911a9-c9b4-40d1-b4f6-02fb0025358a" />
@@ -9615,12 +9615,12 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		</news>
 		<news id="0b597995-f993-4124-aa24-950e2e8aa68a" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
 			<title>
-				<de>Doch kein Terrorangriff.</de>
-				<en></en>
+				<de>Doch kein Terrorangriff</de>
+				<en>No terrorist attack</en>
 			</title>
 			<description>
 				<de>Laut US Raumfahrtbehörde besteht wieder Funkkontakt mit der int. Raumstation. Alle Astronauten sind wohlauf. Einzelheiten des Unglücks sind noch unbekannt.</de>
-				<en></en>
+				<en>According to the US space agency there is again radio contact with the int. space station. All astronauts are in good health. Details of the accident are still unknown.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="e60afa58-04ad-437d-9da7-460d149d3fee" />
@@ -9631,11 +9631,11 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<news id="52a3c289-8be8-4410-9dda-b9cff4eb6f34" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
 			<title>
 				<de>Erfolgreicher Shuttlestart</de>
-				<en></en>
+				<en>Successful Shuttle launch</en>
 			</title>
 			<description>
-				<de>Endlich sind die beiden US Shuttles vom ukrainischen Weltraumbahnhof `Bikonur´ gestartet.`Die 200Mio USD Mehrkosten wegen der Probleme sind zu verkraften, so Baush´.</de>
-				<en></en>
+				<de>Endlich sind die beiden US Shuttles vom ukrainischen Weltraumbahnhof „Bikonur“ gestartet. „Die 200Mio USD Mehrkosten wegen der Probleme sind zu verkraften“, so Baush.</de>
+				<en>Finally, the two US shuttles launched from the Ukrainian spaceport "Bikonur". "The 200 million USD additional costs because of the problems are to cope", said Baush.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="10a0fd7d-0c75-4de8-925c-9095a724c12f" />
@@ -9645,12 +9645,12 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		</news>
 		<news id="bbc324f4-32b7-4e3f-a91f-5f6b6e958200" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
 			<title>
-				<de>Kälteeinbruch in der Ukraine.</de>
-				<en></en>
+				<de>Kälteeinbruch in der Ukraine</de>
+				<en>Cold snap in Ukraine</en>
 			</title>
 			<description>
 				<de>Durch heftige Schneestürme in der Ukraine verschiebt sich der Shuttlestart zur Terrorismusbekämpfung erneut. US Präsident Baush ist beunruhigt wegen der Kosten.</de>
-				<en></en>
+				<en>Through heavy snowstorms in the Ukraine, shuttle launch to combat terrorism shifts again. US President Baush is concerned about the cost.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="52a3c289-8be8-4410-9dda-b9cff4eb6f34" />
@@ -9661,11 +9661,11 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<news id="10a0fd7d-0c75-4de8-925c-9095a724c12f" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
 			<title>
 				<de>Shuttles umkreisen die Raumstation</de>
-				<en></en>
+				<en>Shuttles orbiting space station</en>
 			</title>
 			<description>
 				<de>Die beiden US Shuttles zur Sicherung der int. Raumstation vor Terrorangriffen befinden sich auf Patrouillenflug. Die Schicht der Astronauten dauert jeweils 8 Stunden.</de>
-				<en></en>
+				<en>The two US shuttles to secure the int. space station against terrorist attacks are now on patrol. Each shift of the astronauts takes 8 hours.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="4649173b-2c51-417e-b661-509f21d0112c" />
@@ -9676,11 +9676,11 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<news id="2b808db1-96cf-46ab-b912-f172fdf60b69" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
 			<title>
 				<de>Sicherheitsprogramm gescheitert!</de>
-				<en></en>
+				<en>Safety program failed!</en>
 			</title>
 			<description>
-				<de>Der Senat stoppte die Sicherheitsvorkehrungen des Präsidenten im All. ´Ohne die 2 Shuttles ist das All sicherer`, so ein Kongressminister.</de>
-				<en></en>
+				<de>Der Senat stoppte die Sicherheitsvorkehrungen des Präsidenten im All. „Ohne die 2 Shuttles ist das All sicherer“, so ein Kongressabgeordneter.</de>
+				<en>The Senate stopped President Baush's safety precaution in space. "Without these 2 shuttles space is safer," said a congressman.</en>
 			</description>
 			<effects />
 			<data genre="0" price="1.0" quality="68" />
@@ -9689,11 +9689,11 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<news id="75e966f2-929d-479d-b24a-9ef2fcbf529c" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
 			<title>
 				<de>Start der Shuttles in der Ukraine</de>
-				<en></en>
+				<en>Lift-off of shuttles in Ukraine</en>
 			</title>
 			<description>
 				<de>Die US Shuttles zur Terrorismusbekämpfung im All werden vom Ukrainischen Hafen „Bikonur“ starten. „Das ist ein gutes Signal für die Sicherheit der Welt“, so Baush.</de>
-				<en></en>
+				<en>The US shuttles to fight terrorism in space will start from the Ukrainian port "Bikonur". "This is a good signal for the security of the world", said Baush.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="f822fef6-ae57-4831-9c81-cc7001a19ba8" />
@@ -9704,11 +9704,11 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<news id="689218a0-412c-4afb-9901-fd77f62c484f" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
 			<title>
 				<de>Start der Shuttles nicht in Amerika</de>
-				<en></en>
+				<en>Shuttle lift-off not in America </en>
 			</title>
 			<description>
 				<de>Die beiden US Shuttles zur Sicherung des Alls sollen aus Kostengründen nicht in Amerika starten. Im Gespräch sind die Ukraine und Russland.</de>
-				<en></en>
+				<en>The two US shuttles to secure the space should not start in America for cost reasons. Under discussion are Ukraine and Russia.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="75e966f2-929d-479d-b24a-9ef2fcbf529c" />
@@ -9718,12 +9718,12 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		</news>
 		<news id="f822fef6-ae57-4831-9c81-cc7001a19ba8" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
 			<title>
-				<de>Start der US-Shuttles verschoben.</de>
-				<en></en>
+				<de>Start der US-Shuttles verschoben</de>
+				<en>US-Shuttle lift-off delayed</en>
 			</title>
 			<description>
-				<de>Aufgrund von Sicherheitsmängeln auf dem ukrainischen Weltraumbahnhof `Bikonur´ verschiebt sich der Start der Shuttles. Die genauen Verzögerungskosten sind unbekannt.</de>
-				<en></en>
+				<de>Aufgrund von Sicherheitsmängeln auf dem ukrainischen Weltraumbahnhof „Bikonur“ verschiebt sich der Start der Shuttles. Die genauen Verzögerungskosten sind unbekannt.</de>
+				<en>Because of safety deficiencies at the Ukrainian spaceport "Bikonur" the lift-off of the shuttles shifts. The exact cost of delay are unknown.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="bbc324f4-32b7-4e3f-a91f-5f6b6e958200" />
@@ -9734,11 +9734,11 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<news id="59077885-90a6-4827-84ce-68ac57aaa622" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
 			<title>
 				<de>TERRORANGRIFF im All?</de>
-				<en></en>
+				<en>TERRORATTACK in space?</en>
 			</title>
 			<description>
 				<de>Noch immer besteht kein Funkkontakt zur int. Raumstation. Die US Regierung rechnet mittlerweile mit dem Schlimmsten. War es ein Anschlag? Die Welt ist schockiert.</de>
-				<en></en>
+				<en>There is still no radio contact with the int. space station. The US government meanwhile expects the worst. Was there an attack? The world is shocked.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="0b597995-f993-4124-aa24-950e2e8aa68a" />
@@ -9749,11 +9749,11 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<news id="4649173b-2c51-417e-b661-509f21d0112c" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
 			<title>
 				<de>TERRORANSCHLAG auf die Raumstation!</de>
-				<en></en>
+				<en>TERRORATTACK on the space station!</en>
 			</title>
 			<description>
-				<de>Auf der int. Raumstation war eine helle Explosion zu sehen, bevor der Funkkontakt mit den Worten ´Oh God, what's that - Housten we have a problem`, endete.</de>
-				<en></en>
+				<de>Auf der int. Raumstation war eine helle Explosion zu sehen, bevor der Funkkontakt mit den Worten „Oh God, what's that - Housten we have a problem“, endete.</de>
+				<en>A bright explosion could be seen on the int. space station right before radio contact ended with the words "Oh God, what's that - Houston we have a problem".</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="59077885-90a6-4827-84ce-68ac57aaa622" />
@@ -9764,11 +9764,11 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<news id="7c2911a9-c9b4-40d1-b4f6-02fb0025358a" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
 			<title>
 				<de>Terrorismusbekämpfung – jetzt 2 Shuttles</de>
-				<en></en>
+				<en>Fighting terrorism - now 2 shuttles</en>
 			</title>
 			<description>
-				<de>Um die Sicherheit vor Terroristen im All sicherzustellen sollen jetzt 2 Spaceshuttles die int. Raumstation umkreisen. `Man kann ja nie wissen was passiert´, so Baush.</de>
-				<en></en>
+				<de>Um die Sicherheit vor Terroristen im All sicherzustellen sollen jetzt 2 Spaceshuttles die int. Raumstation umkreisen. „Man kann ja nie wissen was passiert“, so Baush.</de>
+				<en>Intended to ensure security against terrorists in space 2 space shuttle will orbit the int. space station. "You never know what happens", said Baush.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="689218a0-412c-4afb-9901-fd77f62c484f" />
@@ -9779,11 +9779,11 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<news id="e60afa58-04ad-437d-9da7-460d149d3fee" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
 			<title>
 				<de>Unglücksursache gefunden!</de>
-				<en></en>
+				<en>Cause of the accident found!</en>
 			</title>
 			<description>
-				<de>Die beiden US Shuttles kollidierten auf ihrem Patrouillenflug im All wegen eines defekten Computersystems. Baush verlangt ein zusätzliches Shuttle für Reperaturen.</de>
-				<en></en>
+				<de>Die beiden US Shuttles kollidierten auf ihrem Patrouillenflug im All wegen eines defekten Computersystems. Baush verlangt ein zusätzliches Shuttle für Reparaturen.</de>
+				<en>The two US shuttle collided on their patrol flight in space due to a faulty computer system. Baush requires an additional shuttle for repairs.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="073fb966-3ac6-42e2-9fda-e86740008573" />
@@ -9794,11 +9794,11 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<news id="073fb966-3ac6-42e2-9fda-e86740008573" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
 			<title>
 				<de>Widerstand gegen Shuttlepläne.</de>
-				<en></en>
+				<en>Resistance to shuttle plans</en>
 			</title>
 			<description>
 				<de>Das vom US Präsidenten Baush verlangte 3. Shuttle für Reperaturzwecke für weitere 20Mrd USD wird vom Senat boykottiert. Auch die Bürger protestieren in Washington.</de>
-				<en></en>
+				<en>Senate boycotts 3rd shuttle. President Baush demanded it for repair purposes. Additional costs: 20 billion USD. There are also citizens protests in Washington.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="2b808db1-96cf-46ab-b912-f172fdf60b69" />
@@ -9809,11 +9809,11 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<news id="5d4cd7b3-5932-4c8a-8563-4045be7e38da" thread_id="05662ace-7867-418c-a9c3-10fa8c1face8" type="0" creator="">
 			<title>
 				<de>Mann mit Schreibtisch erschlagen</de>
-				<en></en>
+				<en>Man slain with desk</en>
 			</title>
 			<description>
 				<de>Ein absonderlicher Mord hat sich im Norden Deutschlands abgespielt, ein 44 jähriger Mann wurde mit einem Schreibtisch erschlagen aufgefunden.</de>
-				<en></en>
+				<en>A peculiar murder took place in the north of Germany, a 44 year-old man was found dead - slain with a desk.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="44ec3ab6-aaef-4b52-a441-a192481f3b74" />
@@ -9824,11 +9824,11 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<news id="b5a5d23a-aa80-4505-ad9d-a71ea63247c9" thread_id="05662ace-7867-418c-a9c3-10fa8c1face8" type="2" creator="">
 			<title>
 				<de>Erneuter Mord mit einem Schreibtisch</de>
-				<en></en>
+				<en>Another Slying with a desk</en>
 			</title>
 			<description>
 				<de>Polizei vermutet gleichen Täter wie im ersten Fall, ein Trittbrettfahrer wird jedoch nicht ausgeschlossen, trat der Fall doch diesmal im Süden statt.</de>
-				<en></en>
+				<en>Police suspects the same perpetrators as in the first case, a copycat is not excluded as it happened this time in the south of Germany.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="8661ce67-edd4-4d30-885b-5374d39f37c3" />
@@ -9839,11 +9839,11 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<news id="8661ce67-edd4-4d30-885b-5374d39f37c3" thread_id="05662ace-7867-418c-a9c3-10fa8c1face8" type="2" creator="">
 			<title>
 				<de>Erste Spuren im Schreibtisch-Mordfall</de>
-				<en></en>
+				<en>First clues in desk-murder case</en>
 			</title>
 			<description>
-				<de>Beide Opfer des von der Bevölkerung "Schreibtisch-Mörder" genannten Täters waren Angestellte eines großen Möbelhauses.</de>
-				<en></en>
+				<de>Beide Opfer, des von der Bevölkerung „Schreibtisch-Mörder“ genannten Täters, waren Angestellte eines großen Möbelhauses.</de>
+				<en>Both victims of the "desk murderer" were employees of a large furniture store.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="3a75a2f5-c859-40df-ad2a-be5e6fd4567b" />
@@ -9854,11 +9854,11 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<news id="44ec3ab6-aaef-4b52-a441-a192481f3b74" thread_id="05662ace-7867-418c-a9c3-10fa8c1face8" type="2" creator="">
 			<title>
 				<de>Keine Spuren beim Schreibtisch-Mord</de>
-				<en></en>
+				<en>No clues in desk-murder-case </en>
 			</title>
 			<description>
-				<de>Bisher konnte die Polizei keine Zeugen auffinden oder Spuren sicherstellen. Die heiße Spur in diesem Mordfall bleibt also weiterhin noch aus</de>
-				<en></en>
+				<de>Bisher konnte die Polizei keine Zeugen auffinden oder Spuren sicherstellen. Die heiße Spur in diesem Mordfall bleibt also weiterhin noch aus.</de>
+				<en>For now the police could not find witnesses or secure evidences. Therefore the hot lead in this case remains pending.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="b5a5d23a-aa80-4505-ad9d-a71ea63247c9" />
@@ -9868,12 +9868,12 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		</news>
 		<news id="3a75a2f5-c859-40df-ad2a-be5e6fd4567b" thread_id="05662ace-7867-418c-a9c3-10fa8c1face8" type="2" creator="">
 			<title>
-				<de>Schreibtisch- Mörder verhaftet</de>
-				<en></en>
+				<de>Schreibtisch-Mörder verhaftet</de>
+				<en>Desk-murderer arrested</en>
 			</title>
 			<description>
-				<de>Die Polizei hat erste Erfolge zu verweisen. Ein ehemaliger Angestellter des Möbelhauses steht unter Verdacht in beide Mordfälle verwickelt zu sein</de>
-				<en></en>
+				<de>Die Polizei hat erste Erfolge zu verweisen. Ein ehemaliger Angestellter des Möbelhauses steht unter Verdacht in beide Mordfälle verwickelt zu sein.</de>
+				<en>The police is able to present first successes. A former employee of the furniture store is under suspicion of being involved in both murders.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="a4d64044-2db5-422d-9533-53677d8c4540" />
@@ -9884,11 +9884,11 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<news id="a4d64044-2db5-422d-9533-53677d8c4540" thread_id="05662ace-7867-418c-a9c3-10fa8c1face8" type="2" creator="">
 			<title>
 				<de>Schreibtisch-Mörder gesteht</de>
-				<en></en>
+				<en>Desk-murder confesses</en>
 			</title>
 			<description>
 				<de>Der erst vor kurzem in Untersuchungshaft vernommene Angestellte Harry Holzmüller hat beide Fälle gestanden.</de>
-				<en></en>
+				<en>The recently heard on remand employee Forrest Timberley confessed both cases.</en>
 			</description>
 			<effects />
 			<data genre="4" price="1.0" quality="78" />
@@ -9897,11 +9897,11 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<news id="7859dc7a-a913-459e-bddc-4f963ac70868" thread_id="08b4660d-4f7f-4aca-b03d-edfe271fb7e4" type="0" creator="">
 			<title>
 				<de>UFO in London gelandet!</de>
-				<en></en>
+				<en>UFO landed in London!</en>
 			</title>
 			<description>
 				<de>Eine fliegende Untertasse ist heute vorm Buckhimham Palazzo gelandet. Augenzeugen sprechen von kleinen grünen Männchen.</de>
-				<en></en>
+				<en>Today a flying saucer landed in front of Buckhimham Palazzo. Eyewitnesses speak of little green men.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="cad649a3-26ec-4b13-b00b-7b2a7937bdd2" />
@@ -9912,11 +9912,11 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<news id="cad649a3-26ec-4b13-b00b-7b2a7937bdd2" thread_id="08b4660d-4f7f-4aca-b03d-edfe271fb7e4" type="2" creator="">
 			<title>
 				<de>Aliens schrumpfen Queen</de>
-				<en></en>
+				<en>Aliens shrink Queen</en>
 			</title>
 			<description>
 				<de>Die Aliens aus der fliegenden Untertasse haben mit einem Laserstrahl die Queen angegriffen und ihre Körpergröße auf 40 cm geschrumpft.</de>
-				<en></en>
+				<en>The Aliens from the flying saucer have attacked the Queen with a laser beam and shrunk their height to 40 cm.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="64f1f8ab-d036-428a-b9fd-1543dbf319f1" />
@@ -9927,12 +9927,13 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<news id="a3bbd916-2520-4a31-8f3e-3380950230da" thread_id="08b4660d-4f7f-4aca-b03d-edfe271fb7e4" type="2" creator="">
 			<title>
 				<de>Ärzte: Queen wächst wieder!</de>
-				<en></en>
+				<en>Doctors: Queen grows back!</en>
 			</title>
 			<description>
-				<de>Die weltweit renommierten Ärzte haben ihre Untersuchungen beendet. "Sie wächst wieder, 5 cm pro Tag!"
+				<de>Die weltweit renommierten Ärzte haben ihre Untersuchungen beendet. „Sie wächst wieder, 5 cm pro Tag!“
 Ihre normale Körpergröße wird in einer Woche erwartet.</de>
-				<en></en>
+				<en>The world-renowned doctors have finished their studies. "She grows back, 5 cm per day!"
+Her normal body size is expected to be reached in a week.</en>
 			</description>
 			<effects />
 			<data genre="4" price="1.4" quality="52" />
@@ -9941,11 +9942,11 @@ Ihre normale Körpergröße wird in einer Woche erwartet.</de>
 		<news id="10976403-9968-4c3e-95c6-362c3f760944" thread_id="08b4660d-4f7f-4aca-b03d-edfe271fb7e4" type="2" creator="">
 			<title>
 				<de>Queen: Ich fühle mich gut!</de>
-				<en></en>
+				<en>Queen: I feel good!</en>
 			</title>
 			<description>
-				<de>Nach der Untersuchung der angegriffenen Queen sagte sie: "I am pleased!" und sah keine Probleme in ihrer neuen - kleinen - Körpergröße.</de>
-				<en></en>
+				<de>Nach der Untersuchung der angegriffenen Queen sagte sie: “I am pleased!“ und sah keine Probleme in ihrer neuen - kleinen - Körpergröße.</de>
+				<en>After examining the attecked Queen she said: "I am pleased!" and saw no problems in their new - small - size.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="a3bbd916-2520-4a31-8f3e-3380950230da" />
@@ -9956,11 +9957,11 @@ Ihre normale Körpergröße wird in einer Woche erwartet.</de>
 		<news id="64f1f8ab-d036-428a-b9fd-1543dbf319f1" thread_id="08b4660d-4f7f-4aca-b03d-edfe271fb7e4" type="2" creator="">
 			<title>
 				<de>UFO weggeflogen</de>
-				<en></en>
+				<en>UFO flew away</en>
 			</title>
 			<description>
 				<de>Beim Erscheinen der gesamten englischen Streitmächte flüchteten die Aliens in ihre fliegende Untertasse und verschwanden zischend.</de>
-				<en></en>
+				<en>With the appearance of the entire British armed forces the aliens flee in their flying saucer and disappeared hissing.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="10976403-9968-4c3e-95c6-362c3f760944" />
@@ -9971,11 +9972,11 @@ Ihre normale Körpergröße wird in einer Woche erwartet.</de>
 		<news id="d79c8cd7-e9b7-444c-93a8-12a983f402f3" thread_id="097948d0-cb97-4739-92fd-f66d55cd6290" type="0" creator="">
 			<title>
 				<de>Baumfäller von eigener Axt erschlagen</de>
-				<en></en>
+				<en>Logger slain by own own ax</en>
 			</title>
 			<description>
 				<de>Ein kanadischer Baumfäller wurde mit seiner eigener Axt erschlagen. Zeugenberichten nach habe sich der Baum gewehrt.</de>
-				<en></en>
+				<en>A Canadian woodcutter was slain with his own ax. According to witness reports the tree had resisted.</en>
 			</description>
 			<effects />
 			<data genre="4" price="1.0" quality="19" />
