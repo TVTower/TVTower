@@ -128,6 +128,9 @@ endrem
 	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		Super.FinishBroadcasting(day,hour,minute, audienceData)
 
+		'inform contract that it got broadcasted by a player
+		contract.doFinishBroadcast(owner, usedAsType)
+
 		if usedAsType = TVTBroadcastMaterialType.PROGRAMME
 			FinishBroadcastingAsProgramme(day, hour, minute, audienceData)
 '			GetBroadcastInformationProvider().SetInfomercialAired(licence.owner, GetBroadcastInformationProvider().GetInfomercialAired(licence.owner) + 1, GetWorldTime.MakeTime(0,day,hour,minute) )
@@ -139,6 +142,8 @@ endrem
 
 			'inform others
 			EventManager.triggerEvent(TEventSimple.Create("broadcast.advertisement.FinishBroadcasting", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
+
+			contract.base.SetTimesBroadcasted( contract.base.GetTimesBroadcasted(owner) + 1, owner )
 		endif
 
 		return TRUE
@@ -160,11 +165,19 @@ endrem
 		endif
 		'adjust topicality relative to possible audience 
 		contract.base.CutInfomercialTopicality(GetInfomercialTopicalityCutModifier( audienceResult.GetWholeMarketAudienceQuotePercentage()))
+
+
+		contract.base.SetTimesBroadcastedAsInfomercial( contract.base.GetTimesBroadcastedAsInfomercial(owner) + 1, owner )
 	End Method
 
 
 	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		Super.BeginBroadcasting(day,hour,minute, audienceData)
+
+		'inform contract that it gets broadcasted by a player
+		contract.doBeginBroadcast(owner, self.usedAsType)
+
+
 		'run as infomercial
 		if self.usedAsType = TVTBroadcastMaterialType.PROGRAMME
 			'no need to do further checks

@@ -6,6 +6,9 @@ Import "Dig/base.util.math.bmx"
 Type TBuildingBase Extends TRenderableEntity
 	Global _instance:TBuildingBase
 
+	'position at which the figure is offscren (walked out of screen
+	'along the pavement)
+	Const figureOffscreenX:int = -200
 	'position of the start of the left wall (aka the building sprite)
 	Const leftWallX:int = 127
 	'position of the inner left/right side of the building

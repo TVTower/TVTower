@@ -243,7 +243,7 @@ Type TProgrammePlanInformationProviderBase extends TGameInformationProvider
 			Case INFOMERCIAL_AIRED
 				local i:Long[] = Long[](obj)
 				if i.length >= 3
-					SetInfomercialAired( int(i[0]), int(i[1]), i[2] )
+					SetInfomercialsAired( int(i[0]), int(i[1]), i[2] )
 				else
 					print "Set: INFOMERCIAL_AIRED. Incorrect param length."
 				endif
@@ -283,7 +283,7 @@ Type TProgrammePlanInformationProviderBase extends TGameInformationProvider
 	End Method
 
 
-	Method SetInfomercialAired(player:int, count:int, time:Long)
+	Method SetInfomercialsAired(player:int, count:int, time:Long)
 		infomercialsAired[player] = count
 
 		if firstInfomercialAired = -1 or firstInfomercialAired > time
@@ -310,7 +310,7 @@ Type TProgrammePlanInformationProviderBase extends TGameInformationProvider
 			Case LAST_INFOMERCIAL_AIRED
 				return string( GetLastInfomercialAired() )
 			Case INFOMERCIAL_AIRED
-				return string( GetInfomercialAired( int(string(params)) ) )
+				return string( GetInfomercialsAired( int(string(params)) ) )
 		End Select
 	End Method
 
@@ -340,7 +340,7 @@ Type TProgrammePlanInformationProviderBase extends TGameInformationProvider
 	End Method
 
 
-	Method GetInfomercialAired:int(player:int)
+	Method GetInfomercialsAired:int(player:int)
 		return infomercialsAired[player]
 	End Method
 

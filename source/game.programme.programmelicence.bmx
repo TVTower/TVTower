@@ -286,7 +286,7 @@ Type TProgrammeLicenceCollection
 
 		For Licence = EachIn sourceList
 			'ignore if filtered out
-			If Licence.IsOwned() or not Licence.isReleased() Then continue
+			If Licence.IsOwned() Then continue
 			'ignoring episodes
 			If not includeEpisodes and Licence.isEpisode() Then continue
 
@@ -306,7 +306,7 @@ Type TProgrammeLicenceCollection
 
 		For Licence = EachIn sourceList
 			'ignore if filtered out
-			If Licence.IsOwned() or not Licence.isReleased() Then continue
+			If Licence.IsOwned() Then continue
 			'ignoring episodes
 			If not includeEpisodes and Licence.isEpisode() Then continue
 
@@ -327,7 +327,7 @@ Type TProgrammeLicenceCollection
 
 		For Licence = EachIn sourceList
 			'ignore if filtered out
-			If Licence.IsOwned() or not Licence.isReleased() Then continue
+			If Licence.IsOwned() Then continue
 			'ignoring episodes
 			If not includeEpisodes and Licence.isEpisode() Then continue
 
@@ -354,8 +354,8 @@ Type TProgrammeLicenceCollection
 		Local resultList:TList = CreateList()
 
 		For Licence = EachIn licences
-			'ignore already used or unreleased
-			If Licence.IsOwned() or not Licence.isReleased() Then continue
+			'ignore already used
+			If Licence.IsOwned() Then continue
 			'ignore episodes
 			If Licence.isEpisode() Then continue
 
@@ -384,6 +384,8 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	Field data:TProgrammeData				{_exposeToLua}
 	'the latest hour-(from-start) one of the planned programmes ends
 	Field latestPlannedEndHour:int = -1
+	'the maximum amount of broadcasts possible for this licence (0 = disabled)
+	Field broadcastLimit:int = 0
 	'is this licence a: collection, series, episode or single element?
 	'you cannot distinguish between "series" and "collections" without
 	'as both could contain "shows" or "episodes"
@@ -572,6 +574,16 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	Method GetEpisodeNumber:int()
 		if not self.parentLicenceGUID then return 1
 		return GetParentLicence().GetSubLicencePosition(self)+1
+	End Method
+
+
+	Method isAvailable:int() {_exposeToLua}
+		if not isReleased() then return False
+
+		'exceeded broadcastLimit
+		if broadcastLimit > 0 and data.GetTimesBroadcasted() >= broadcastLimit then return False
+
+		return True
 	End Method
 
 
@@ -1302,6 +1314,7 @@ Type TProgrammeLicenceFilter
 	Field caption:string = ""
 	Field genres:Int[]
 	Field flags:int
+	Field checkAvailability:int = True
 	Field qualityMin:Float = -1.0
 	Field qualityMax:Float = -1.0
 	Field relativeTopicalityMin:Float = -1.0
@@ -1569,6 +1582,9 @@ Type TProgrammeLicenceFilter
 	'     True is returned genre 1 or 2 or flag "trash" or flag "bmovie"
 	Method DoesFilter:Int(licence:TProgrammeLicence)
 		if not licence then return False
+
+		if checkAvailability and not licence.isAvailable() then return False
+		
 		'check flags filter does NOT care for
 		if notFlags > 0 and (licence.GetFlags() & notFlags) > 0 then return False
 

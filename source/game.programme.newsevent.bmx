@@ -430,30 +430,6 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method AddEffectByData:int(effectData:TData)
-		if not effectData then return False
-
-		Select effectData.GetString("type").ToLower()
-			case "triggernews"
-				local triggerGUID:string = effectData.GetString("parameter1", "")
-				local happenTimeType:int = effectData.GetInt("parameter2", -1)
-				local happenTimeData:int[] = [..
-					effectData.GetInt("parameter3", -1), ..
-					effectData.GetInt("parameter4", -1), ..
-					effectData.GetInt("parameter5", -1), ..
-					effectData.GetInt("parameter6", -1) ..
-				]
-				if triggerGUID = "" then return False
-				effects.AddEffect("happen", ..
-					new TNewsEffect_TriggerNews.Init( ..
-						triggerGUID, happenTimeType, happenTimeData ..
-				))
-				return True
-		End Select
-		return False
-	End Method
-
-
 	Method doHappen(time:Long = 0)
 		if HasHappened() then return
 
@@ -464,7 +440,7 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		topicality = 1.0
 
 		'trigger happenEffects
-		local effectParams:TData = new TData.Add("newsEvent", self)
+		local effectParams:TData = new TData.Add("source", self)
 		effects.RunEffects("happen", effectParams)
 	End Method
 
@@ -472,9 +448,9 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	'call this as soon as a news containing this newsEvent is
 	'broadcasted. If playerID = -1 then this effects might target
 	'"all players" (depends on implementation)
-	Method doBroadcast(playerID:int = -1)
+	Method doBeginBroadcast(playerID:int = -1, broadcastType:int = 0)
 		'trigger broadcastEffects
-		local effectParams:TData = new TData.Add("newsEvent", self).AddNumber("playerID", playerID)
+		local effectParams:TData = new TData.Add("source", self).AddNumber("playerID", playerID)
 
 		'if nobody broadcasted till now (times are adjusted on
 		'finishBroadcast while this is called on beginBroadcast)
@@ -566,6 +542,26 @@ Type TNewsEffect_TriggerNews extends TGameObjectEffect
 	'4 = "A"-"B" hours from now
 	Field happenTimeType:int = 4
 
+
+	Function CreateFromData:TNewsEffect_TriggerNews(data:TData)
+		if not data then return null
+
+		'local source:TNewsEvent = TNewsEvent(data.get("source"))
+		local triggerGUID:string = data.GetString("parameter1", "")
+		local happenTimeType:int = data.GetInt("parameter2", -1)
+		local happenTimeData:int[] = [..
+			data.GetInt("parameter3", -1), ..
+			data.GetInt("parameter4", -1), ..
+			data.GetInt("parameter5", -1), ..
+			data.GetInt("parameter6", -1) ..
+		]
+
+		if triggerGUID = "" then return Null
+
+		return new TNewsEffect_TriggerNews.Init( triggerGUID, happenTimeType, happenTimeData )
+	End Function
+
+
 	
 	Method ToString:string()
 		local name:string = data.GetString("name", "default")
@@ -621,6 +617,7 @@ Type TNewsEffect_TriggerNews extends TGameObjectEffect
 
 	'override to trigger a specific news
 	Method EffectFunc:int(params:TData)
+	print "Trigger News:"+ triggerNewsGUID
 		'set the happenedTime of the defined news to somewhere in the future
 		local news:TNewsEvent = GetNewsEventCollection().GetByGUID(triggerNewsGUID)
 		if not news
@@ -632,3 +629,6 @@ Type TNewsEffect_TriggerNews extends TGameObjectEffect
 		return True
 	End Method
 End Type
+
+
+GameObjectEffectCreator.RegisterEffect("triggerNews", new TNewsEffect_TriggerNews)

@@ -370,6 +370,9 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Field cachedDirectors:TProgrammePersonBase[] {nosave}
 	Field genreDefinitionCache:TMovieGenreDefinition = Null {nosave}
 
+	Field _handledFirstTimeBroadcast:int = False
+	Field _handledFirstTimeBroadcastAsTrailer:int = False
+
 
 	Rem
 	"modifiers" : extra data block containing various information (if set)
@@ -1287,6 +1290,44 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 			case TVTProgrammeState.IN_PRODUCTION
 				if isReleased() then SetState(TVTProgrammeState.RELEASED)
 		End Select
+	End Method
+
+
+
+	'override
+	'called as soon as the programme is broadcasted
+	Method doBeginBroadcast(playerID:int = -1, broadcastType:int = 0)
+		'trigger broadcastEffects
+		local effectParams:TData = new TData.Add("source", self).AddNumber("playerID", playerID)
+
+
+		'send as programme
+		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
+			'if nobody broadcasted till now (times are adjusted on
+			'finishBroadcast while this is called on beginBroadcast)
+			if GetTimesBroadcasted() = 0
+				if not _handledFirstTimeBroadcast
+					effects.RunEffects("broadcastFirstTime", effectParams)
+					_handledFirstTimeBroadcast = True
+				endif
+			endif
+
+			effects.RunEffects("broadcast", effectParams)
+
+
+		'send as trailer
+		elseif broadcastType = TVTBroadcastMaterialType.ADVERTISEMENT
+			'if nobody broadcasted till now (times are adjusted on
+			'finishBroadcast while this is called on beginBroadcast)
+			if GetTimesTrailerAired() = 0
+				if not _handledFirstTimeBroadcastAsTrailer
+					effects.RunEffects("broadcastFirstTimeTrailer", effectParams)
+					_handledFirstTimeBroadcastAsTrailer = True
+				endif
+			endif
+
+			effects.RunEffects("broadcastInfomercial", effectParams)
+		endif
 	End Method
 End Type
 

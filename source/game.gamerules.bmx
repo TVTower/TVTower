@@ -31,8 +31,6 @@ Type TGameRules {_exposeToLua}
 	'speed is used for figures, elevator, ...
 	Field worldSpeed:float = 1.0
 
-	'x coordinate figures are when "offscreen" (left the building)
-	Field offscreenX:int = -200
 	'maximum price (profit/penalty) for a single adspot
 	Field maxAdContractPricePerSpot:int = 1000000
 

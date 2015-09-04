@@ -9608,7 +9608,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>For safety reasons US President Baush wants to fight terrorism also in space. A space shuttle should orbit around the int. space station 24/7. Cost: 50 billion USD.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="7c2911a9-c9b4-40d1-b4f6-02fb0025358a" />
+				<effect trigger="happen" type="triggernews" parameter1="7c2911a9-c9b4-40d1-b4f6-02fb0025358a" />
 			</effects>
 			<data genre="0" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9623,7 +9623,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>According to the US space agency there is again radio contact with the int. space station. All astronauts are in good health. Details of the accident are still unknown.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="e60afa58-04ad-437d-9da7-460d149d3fee" />
+				<effect trigger="happen" type="triggernews" parameter1="e60afa58-04ad-437d-9da7-460d149d3fee" />
 			</effects>
 			<data genre="0" price="1.0" quality="78" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9638,7 +9638,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>Finally, the two US shuttles launched from the Ukrainian spaceport "Bikonur". "The 200 million USD additional costs because of the problems are to cope", said Baush.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="10a0fd7d-0c75-4de8-925c-9095a724c12f" />
+				<effect trigger="happen" type="triggernews" parameter1="10a0fd7d-0c75-4de8-925c-9095a724c12f" />
 			</effects>
 			<data genre="0" price="1.0" quality="49" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9653,7 +9653,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>Through heavy snowstorms in the Ukraine, shuttle launch to combat terrorism shifts again. US President Baush is concerned about the cost.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="52a3c289-8be8-4410-9dda-b9cff4eb6f34" />
+				<effect trigger="happen" type="triggernews" parameter1="52a3c289-8be8-4410-9dda-b9cff4eb6f34" />
 			</effects>
 			<data genre="0" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9668,7 +9668,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>The two US shuttles to secure the int. space station against terrorist attacks are now on patrol. Each shift of the astronauts takes 8 hours.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="4649173b-2c51-417e-b661-509f21d0112c" />
+				<effect trigger="happen" type="triggernews" parameter1="4649173b-2c51-417e-b661-509f21d0112c" />
 			</effects>
 			<data genre="0" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9696,7 +9696,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>The US shuttles to fight terrorism in space will start from the Ukrainian port "Bikonur". "This is a good signal for the security of the world", said Baush.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="f822fef6-ae57-4831-9c81-cc7001a19ba8" />
+				<effect trigger="happen" type="triggernews" parameter1="f822fef6-ae57-4831-9c81-cc7001a19ba8" />
 			</effects>
 			<data genre="0" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9711,7 +9711,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>The two US shuttles to secure the space should not start in America for cost reasons. Under discussion are Ukraine and Russia.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="75e966f2-929d-479d-b24a-9ef2fcbf529c" />
+				<effect trigger="happen" type="triggernews" parameter1="75e966f2-929d-479d-b24a-9ef2fcbf529c" />
 			</effects>
 			<data genre="0" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9726,7 +9726,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>Because of safety deficiencies at the Ukrainian spaceport "Bikonur" the lift-off of the shuttles shifts. The exact cost of delay are unknown.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="bbc324f4-32b7-4e3f-a91f-5f6b6e958200" />
+				<effect trigger="happen" type="triggernews" parameter1="bbc324f4-32b7-4e3f-a91f-5f6b6e958200" />
 			</effects>
 			<data genre="0" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9741,7 +9741,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>There is still no radio contact with the int. space station. The US government meanwhile expects the worst. Was there an attack? The world is shocked.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="0b597995-f993-4124-aa24-950e2e8aa68a" />
+				<effect trigger="happen" type="triggernews" parameter1="0b597995-f993-4124-aa24-950e2e8aa68a" />
 			</effects>
 			<data genre="0" price="1.0" quality="78" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9756,7 +9756,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>A bright explosion could be seen on the int. space station right before radio contact ended with the words "Oh God, what's that - Houston we have a problem".</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="59077885-90a6-4827-84ce-68ac57aaa622" />
+				<effect trigger="happen" type="triggernews" parameter1="59077885-90a6-4827-84ce-68ac57aaa622" />
 			</effects>
 			<data genre="0" price="1.0" quality="88" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9771,7 +9771,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>Intended to ensure security against terrorists in space 2 space shuttle will orbit the int. space station. "You never know what happens", said Baush.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="689218a0-412c-4afb-9901-fd77f62c484f" />
+				<effect trigger="happen" type="triggernews" parameter1="689218a0-412c-4afb-9901-fd77f62c484f" />
 			</effects>
 			<data genre="0" price="1.0" quality="49" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9786,7 +9786,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>The two US shuttle collided on their patrol flight in space due to a faulty computer system. Baush requires an additional shuttle for repairs.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="073fb966-3ac6-42e2-9fda-e86740008573" />
+				<effect trigger="happen" type="triggernews" parameter1="073fb966-3ac6-42e2-9fda-e86740008573" />
 			</effects>
 			<data genre="0" price="1.0" quality="78" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9801,7 +9801,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>Senate boycotts 3rd shuttle. President Baush demanded it for repair purposes. Additional costs: 20 billion USD. There are also citizens protests in Washington.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="2b808db1-96cf-46ab-b912-f172fdf60b69" />
+				<effect trigger="happen" type="triggernews" parameter1="2b808db1-96cf-46ab-b912-f172fdf60b69" />
 			</effects>
 			<data genre="0" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9816,7 +9816,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>A peculiar murder took place in the north of Germany, a 44 year-old man was found dead - slain with a desk.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="44ec3ab6-aaef-4b52-a441-a192481f3b74" />
+				<effect trigger="happen" type="triggernews" parameter1="44ec3ab6-aaef-4b52-a441-a192481f3b74" />
 			</effects>
 			<data genre="4" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9831,7 +9831,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>Police suspects the same perpetrators as in the first case, a copycat is not excluded as it happened this time in the south of Germany.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="8661ce67-edd4-4d30-885b-5374d39f37c3" />
+				<effect trigger="happen" type="triggernews" parameter1="8661ce67-edd4-4d30-885b-5374d39f37c3" />
 			</effects>
 			<data genre="4" price="1.0" quality="68" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9846,7 +9846,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>Both victims of the "desk murderer" were employees of a large furniture store.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="3a75a2f5-c859-40df-ad2a-be5e6fd4567b" />
+				<effect trigger="happen" type="triggernews" parameter1="3a75a2f5-c859-40df-ad2a-be5e6fd4567b" />
 			</effects>
 			<data genre="4" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9861,7 +9861,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>For now the police could not find witnesses or secure evidences. Therefore the hot lead in this case remains pending.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="b5a5d23a-aa80-4505-ad9d-a71ea63247c9" />
+				<effect trigger="happen" type="triggernews" parameter1="b5a5d23a-aa80-4505-ad9d-a71ea63247c9" />
 			</effects>
 			<data genre="4" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9876,7 +9876,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>The police is able to present first successes. A former employee of the furniture store is under suspicion of being involved in both murders.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="a4d64044-2db5-422d-9533-53677d8c4540" />
+				<effect trigger="happen" type="triggernews" parameter1="a4d64044-2db5-422d-9533-53677d8c4540" />
 			</effects>
 			<data genre="4" price="1.0" quality="49" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9904,7 +9904,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>Today a flying saucer landed in front of Buckhimham Palazzo. Eyewitnesses speak of little green men.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="cad649a3-26ec-4b13-b00b-7b2a7937bdd2" />
+				<effect trigger="happen" type="triggernews" parameter1="cad649a3-26ec-4b13-b00b-7b2a7937bdd2" />
 			</effects>
 			<data genre="4" price="1.30" quality="88" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9919,7 +9919,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>The Aliens from the flying saucer have attacked the Queen with a laser beam and shrunk their height to 40 cm.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="64f1f8ab-d036-428a-b9fd-1543dbf319f1" />
+				<effect trigger="happen" type="triggernews" parameter1="64f1f8ab-d036-428a-b9fd-1543dbf319f1" />
 			</effects>
 			<data genre="4" price="1.20" quality="78" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9949,7 +9949,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>After examining the attecked Queen she said: "I am pleased!" and saw no problems in their new - small - size.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="a3bbd916-2520-4a31-8f3e-3380950230da" />
+				<effect trigger="happen" type="triggernews" parameter1="a3bbd916-2520-4a31-8f3e-3380950230da" />
 			</effects>
 			<data genre="4" price="1.2" quality="67" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9964,7 +9964,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>With the appearance of the entire British armed forces the aliens flee in their flying saucer and disappeared hissing.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="10976403-9968-4c3e-95c6-362c3f760944" />
+				<effect trigger="happen" type="triggernews" parameter1="10976403-9968-4c3e-95c6-362c3f760944" />
 			</effects>
 			<data genre="4" price="1.20" quality="73" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -9992,7 +9992,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>Kidd, the legendary car of the series „Night-Ryder“ gets scrapped. This announced the current owner of the car.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="7d63161c-7937-4cce-95c6-2c82529c06ac" />
+				<effect trigger="happen" type="triggernews" parameter1="7d63161c-7937-4cce-95c6-2c82529c06ac" />
 			</effects>
 			<data genre="1" price="1.0" quality="9" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10007,7 +10007,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>David Hasseldorf opposes the scrapping of his toy and has set up a foundation "Save Kidd".</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="296f6aca-a031-4f2f-b6a5-2317abadbb40" />
+				<effect trigger="happen" type="triggernews" parameter1="296f6aca-a031-4f2f-b6a5-2317abadbb40" />
 			</effects>
 			<data genre="1" price="1.0" quality="9" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10022,7 +10022,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>Although David Hasseldorf has collected $ 1.7 million for the conservation of Kidd, the car was scrapped.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="ec53534e-da72-4cbe-ab00-f2f4e3005ed1" />
+				<effect trigger="happen" type="triggernews" parameter1="ec53534e-da72-4cbe-ab00-f2f4e3005ed1" />
 			</effects>
 			<data genre="1" price="1.0" quality="9" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10050,7 +10050,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>Everyone knows: eco-sim games are addictive. Now politics intervenes and calls for an extra tax on games of this genre.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="24c635b8-7a9c-4faf-9b72-b24f7b193afa" />
+				<effect trigger="happen" type="triggernews" parameter1="24c635b8-7a9c-4faf-9b72-b24f7b193afa" />
 			</effects>
 			<data genre="0" price="1.0" quality="49" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10078,7 +10078,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>Despite special tax on trading simulation and strategy games (Eco-Sims) sales do not go back. The federal government still does not see itself beaten: The tax remains.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="b468ddac-247c-465d-9693-a7ab81b08fb1" />
+				<effect trigger="happen" type="triggernews" parameter1="b468ddac-247c-465d-9693-a7ab81b08fb1" />
 			</effects>
 			<data genre="0" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10093,7 +10093,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>The coalition has agreed. To supplement the public purse allEco-Sim games now cost 15% more than games of other genres.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="22925a92-8d65-4515-9f99-676d56c1d74b" />
+				<effect trigger="happen" type="triggernews" parameter1="22925a92-8d65-4515-9f99-676d56c1d74b" />
 			</effects>
 			<data genre="0" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10108,7 +10108,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>Today police arrested a native of Italy plumber and his brother. They smuggled trading simulation and strategy games through a pipe system.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="85e5385e-eb33-4bee-8697-0e1b145e1ce3" />
+				<effect trigger="happen" type="triggernews" parameter1="85e5385e-eb33-4bee-8697-0e1b145e1ce3" />
 			</effects>
 			<data genre="0" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10123,7 +10123,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>During todays census at the zoo of Chemnitz they lacked a rhinoceros. The population is requested not to leave the house.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="777c94c2-49a6-4e72-ad02-06c33f7350bc" />
+				<effect trigger="happen" type="triggernews" parameter1="777c94c2-49a6-4e72-ad02-06c33f7350bc" />
 			</effects>
 			<data genre="4" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10138,7 +10138,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>The runaway rhinoceros has been found in a clearing. Several veterinarians with stun guns are ready to catch it.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="a4f30290-dc9f-49e0-ad44-727e00e44693" />
+				<effect trigger="happen" type="triggernews" parameter1="a4f30290-dc9f-49e0-ad44-727e00e44693" />
 			</effects>
 			<data genre="4" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10153,7 +10153,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>The missing rhino from the Chemnitz Zoo has been seen in a nearby forest by witnesses.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="8906094a-6ee5-4054-9e8c-9eea78ea8950" />
+				<effect trigger="happen" type="triggernews" parameter1="8906094a-6ee5-4054-9e8c-9eea78ea8950" />
 			</effects>
 			<data genre="4" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10181,7 +10181,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>According to a letter claiming responsibility, the animal rights activists of the group "ZORRO" are responsible for the elopement of the rhinoceros.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03" />
+				<effect trigger="happen" type="triggernews" parameter1="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03" />
 			</effects>
 			<data genre="4" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10196,7 +10196,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>Tourists have been attacked in their motor home in Chemnitz forest by the runaway rhinoceros. The damage amounts to about € 50,000.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485" />
+				<effect trigger="happen" type="triggernews" parameter1="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485" />
 			</effects>
 			<data genre="4" price="1.05" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10211,7 +10211,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>The Health Minister has enacted a law requiring every breathing person must pay a fee for oxygen. The fee depends on the lung capacity.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="5af0af95-84b8-4018-96e6-9e25e93a2687" />
+				<effect trigger="happen" type="triggernews" parameter1="5af0af95-84b8-4018-96e6-9e25e93a2687" />
 			</effects>
 			<data genre="0" price="1.0" quality="78" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10239,7 +10239,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>After heavy criticism, the Health Ministry will reconsider the proposed fee on oxygen.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="d39a88bf-fa64-40f9-936e-0d15d355f26b" />
+				<effect trigger="happen" type="triggernews" parameter1="d39a88bf-fa64-40f9-936e-0d15d355f26b" />
 			</effects>
 			<data genre="0" price="1.05" quality="74" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10254,7 +10254,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>The American auto giant is bleeding red ink. One reason is the poor sales of the new model Montana.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="bd268c78-0e6c-4659-a833-66565e0a4af8" />
+				<effect trigger="happen" type="triggernews" parameter1="bd268c78-0e6c-4659-a833-66565e0a4af8" />
 			</effects>
 			<data genre="3" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10269,7 +10269,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>The American car company wants to dismiss 5,000 employees due to the high losses.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="5345cee0-138e-4531-a239-71015a8ca909" />
+				<effect trigger="happen" type="triggernews" parameter1="5345cee0-138e-4531-a239-71015a8ca909" />
 			</effects>
 			<data genre="3" price="1.0" quality="49" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10284,7 +10284,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>In several Fort factories employees stopped their work and protest now against the planned 5,000 layoffs.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="d3ca7812-9b3e-41e5-852c-e4f4ef045a06" />
+				<effect trigger="happen" type="triggernews" parameter1="d3ca7812-9b3e-41e5-852c-e4f4ef045a06" />
 			</effects>
 			<data genre="0" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10338,7 +10338,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>In the German Bundestag the Minister of Finance requested the obligation of every German citizen for keeping a koala.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="d4b58f67-56ed-4c7b-a524-3c641187c348" />
+				<effect trigger="happen" type="triggernews" parameter1="d4b58f67-56ed-4c7b-a524-3c641187c348" />
 			</effects>
 			<data genre="0" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10353,7 +10353,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>The finance minister admitted his secret love for koalas though it turned out that koalas have painful hard Nails.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="17528858-a7e0-4b6d-a515-d245e40ce87c" />
+				<effect trigger="happen" type="triggernews" parameter1="17528858-a7e0-4b6d-a515-d245e40ce87c" />
 			</effects>
 			<data genre="0" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10381,7 +10381,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>After his confession in the Koala affair, the Minister of Finance has decided to abandon his post and to withdraw.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="23fc5b0e-d3d8-4049-970b-236966ec8da5" />
+				<effect trigger="happen" type="triggernews" parameter1="23fc5b0e-d3d8-4049-970b-236966ec8da5" />
 			</effects>
 			<data genre="0" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10396,7 +10396,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>Grienpies is appalled by the demand of the Minister of Finance: Koalas do not tolerate menthol candies!</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="bf0ee1be-3dc3-4581-8614-fff5253d6330" />
+				<effect trigger="happen" type="triggernews" parameter1="bf0ee1be-3dc3-4581-8614-fff5253d6330" />
 			</effects>
 			<data genre="0" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10411,7 +10411,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>The whole world is laughing at the request of the Minister of Finance to make keeping a koala a duty.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="79b75334-0bec-4061-a029-890601f10b5e" />
+				<effect trigger="happen" type="triggernews" parameter1="79b75334-0bec-4061-a029-890601f10b5e" />
 			</effects>
 			<data genre="0" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10465,7 +10465,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="8bc34c83-4fc3-4aab-afa6-f67fa479902c" />
+				<effect trigger="happen" type="triggernews" parameter1="8bc34c83-4fc3-4aab-afa6-f67fa479902c" />
 			</effects>
 			<data genre="3" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10480,7 +10480,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="71ffceeb-a304-4d09-80bd-69fe8e672eab" />
+				<effect trigger="happen" type="triggernews" parameter1="71ffceeb-a304-4d09-80bd-69fe8e672eab" />
 			</effects>
 			<data genre="3" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10495,7 +10495,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="b06abbd3-94a3-4ebc-8635-9c4beb24195f" />
+				<effect trigger="happen" type="triggernews" parameter1="b06abbd3-94a3-4ebc-8635-9c4beb24195f" />
 			</effects>
 			<data genre="3" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10562,7 +10562,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="e250f180-310d-4639-bdd4-229b818f3a92" />
+				<effect trigger="happen" type="triggernews" parameter1="e250f180-310d-4639-bdd4-229b818f3a92" />
 			</effects>
 			<data genre="2" price="1.0" quality="23" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10603,7 +10603,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="0dd305ab-89ef-4961-8a6b-5e67e809d309" />
+				<effect trigger="happen" type="triggernews" parameter1="0dd305ab-89ef-4961-8a6b-5e67e809d309" />
 			</effects>
 			<data genre="3" price="1.0" quality="49" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10618,7 +10618,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="2195e517-be06-4729-8508-824119e5d4aa" />
+				<effect trigger="happen" type="triggernews" parameter1="2195e517-be06-4729-8508-824119e5d4aa" />
 			</effects>
 			<data genre="3" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10633,7 +10633,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="7c626ce4-5ae7-45d7-9909-6c2b42ce18e3" />
+				<effect trigger="happen" type="triggernews" parameter1="7c626ce4-5ae7-45d7-9909-6c2b42ce18e3" />
 			</effects>
 			<data genre="3" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10661,7 +10661,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="44977907-8f02-4023-a42b-c109b8837a86" />
+				<effect trigger="happen" type="triggernews" parameter1="44977907-8f02-4023-a42b-c109b8837a86" />
 			</effects>
 			<data genre="3" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10821,7 +10821,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="441f0aa3-0412-4236-991c-ddae48f2b62a" />
+				<effect trigger="happen" type="triggernews" parameter1="441f0aa3-0412-4236-991c-ddae48f2b62a" />
 			</effects>
 			<data genre="0" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10836,7 +10836,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="fb43d1ce-61b8-4625-8385-520b8f0d282c" />
+				<effect trigger="happen" type="triggernews" parameter1="fb43d1ce-61b8-4625-8385-520b8f0d282c" />
 			</effects>
 			<data genre="0" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10864,7 +10864,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="d86c9008-6752-4358-b545-2d09e23bf24a" />
+				<effect trigger="happen" type="triggernews" parameter1="d86c9008-6752-4358-b545-2d09e23bf24a" />
 			</effects>
 			<data genre="0" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10879,7 +10879,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="7949493e-c6e0-4b59-a06c-044ddbf66dd0" />
+				<effect trigger="happen" type="triggernews" parameter1="7949493e-c6e0-4b59-a06c-044ddbf66dd0" />
 			</effects>
 			<data genre="0" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10894,7 +10894,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="2899a642-b0dc-4285-98e0-10835eb911fc" />
+				<effect trigger="happen" type="triggernews" parameter1="2899a642-b0dc-4285-98e0-10835eb911fc" />
 			</effects>
 			<data genre="4" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10935,7 +10935,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="39ecbad4-2155-4374-a610-c4473ec8a493" />
+				<effect trigger="happen" type="triggernews" parameter1="39ecbad4-2155-4374-a610-c4473ec8a493" />
 			</effects>
 			<data genre="4" price="1.0" quality="49" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10963,7 +10963,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="920616c0-05b7-4078-a253-d070e58b7b98" />
+				<effect trigger="happen" type="triggernews" parameter1="920616c0-05b7-4078-a253-d070e58b7b98" />
 			</effects>
 			<data genre="4" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11056,7 +11056,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="a5bba03c-67ff-4070-ad92-e1e663cf33a4" />
+				<effect trigger="happen" type="triggernews" parameter1="a5bba03c-67ff-4070-ad92-e1e663cf33a4" />
 			</effects>
 			<data genre="4" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11084,7 +11084,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="5f7ea775-4031-4cf8-8bc0-83c9b0aca07d" />
+				<effect trigger="happen" type="triggernews" parameter1="5f7ea775-4031-4cf8-8bc0-83c9b0aca07d" />
 			</effects>
 			<data genre="4" price="1.0" quality="27" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11112,7 +11112,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="9c1f0f27-72d6-4bbd-b271-939ab31c3010" />
+				<effect trigger="happen" type="triggernews" parameter1="9c1f0f27-72d6-4bbd-b271-939ab31c3010" />
 			</effects>
 			<data genre="4" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11166,7 +11166,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="cee19a85-bbf4-4d2b-9239-cca90d8d76ad" />
+				<effect trigger="happen" type="triggernews" parameter1="cee19a85-bbf4-4d2b-9239-cca90d8d76ad" />
 			</effects>
 			<data genre="0" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11181,7 +11181,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="34edc95f-49f3-4131-bc39-8ed5cfc293b1" />
+				<effect trigger="happen" type="triggernews" parameter1="34edc95f-49f3-4131-bc39-8ed5cfc293b1" />
 			</effects>
 			<data genre="0" price="1.0" quality="68" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11196,7 +11196,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="1b87d798-85de-486d-a683-25c11db8c929" />
+				<effect trigger="happen" type="triggernews" parameter1="1b87d798-85de-486d-a683-25c11db8c929" />
 			</effects>
 			<data genre="0" price="1.0" quality="78" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11211,7 +11211,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="661a9905-912e-4801-ad63-73b9ead7fd78" />
+				<effect trigger="happen" type="triggernews" parameter1="661a9905-912e-4801-ad63-73b9ead7fd78" />
 			</effects>
 			<data genre="0" price="1.0" quality="49" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11226,7 +11226,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="c3848e4a-6629-4481-b036-7aa9abad6e92" />
+				<effect trigger="happen" type="triggernews" parameter1="c3848e4a-6629-4481-b036-7aa9abad6e92" />
 			</effects>
 			<data genre="0" price="1.0" quality="49" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11254,7 +11254,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="9c5ec87d-9056-46ca-a38b-58ce5dddf2eb" />
+				<effect trigger="happen" type="triggernews" parameter1="9c5ec87d-9056-46ca-a38b-58ce5dddf2eb" />
 			</effects>
 			<data genre="0" price="1.0" quality="78" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11269,7 +11269,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="d8e0085f-2835-48e3-b0a8-4ab489f277f2" />
+				<effect trigger="happen" type="triggernews" parameter1="d8e0085f-2835-48e3-b0a8-4ab489f277f2" />
 			</effects>
 			<data genre="4" price="1.0" quality="88" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11284,7 +11284,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="4bd3a222-4c38-4aa5-b511-d3550bee5860" />
+				<effect trigger="happen" type="triggernews" parameter1="4bd3a222-4c38-4aa5-b511-d3550bee5860" />
 			</effects>
 			<data genre="4" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11299,7 +11299,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="e023198f-1705-46b7-aee4-ce17880e65b3" />
+				<effect trigger="happen" type="triggernews" parameter1="e023198f-1705-46b7-aee4-ce17880e65b3" />
 			</effects>
 			<data genre="4" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11314,7 +11314,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="565d023d-7826-47c9-a9cd-bb36ed847c73" />
+				<effect trigger="happen" type="triggernews" parameter1="565d023d-7826-47c9-a9cd-bb36ed847c73" />
 			</effects>
 			<data genre="4" price="1.0" quality="68" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11329,7 +11329,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="fd620ae0-8d62-4243-83f2-b36b024d3594" />
+				<effect trigger="happen" type="triggernews" parameter1="fd620ae0-8d62-4243-83f2-b36b024d3594" />
 			</effects>
 			<data genre="4" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11344,7 +11344,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="2836dfe1-18a3-46bf-9b72-7120ac8f85f5" />
+				<effect trigger="happen" type="triggernews" parameter1="2836dfe1-18a3-46bf-9b72-7120ac8f85f5" />
 			</effects>
 			<data genre="4" price="1.0" quality="88" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11359,7 +11359,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="1aad1ce7-966c-4d3b-a6d1-1a0ece958440" />
+				<effect trigger="happen" type="triggernews" parameter1="1aad1ce7-966c-4d3b-a6d1-1a0ece958440" />
 			</effects>
 			<data genre="4" price="1.0" quality="88" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11374,7 +11374,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="3b01bf6c-1551-4fc7-b196-d129cce1f7a5" />
+				<effect trigger="happen" type="triggernews" parameter1="3b01bf6c-1551-4fc7-b196-d129cce1f7a5" />
 			</effects>
 			<data genre="0" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11389,7 +11389,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="64897c07-0f8a-4f2e-ae52-e09ec7295066" />
+				<effect trigger="happen" type="triggernews" parameter1="64897c07-0f8a-4f2e-ae52-e09ec7295066" />
 			</effects>
 			<data genre="0" price="1.0" quality="49" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11417,7 +11417,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="0e8af79d-2b80-4802-884e-bcaa3b70ed22" />
+				<effect trigger="happen" type="triggernews" parameter1="0e8af79d-2b80-4802-884e-bcaa3b70ed22" />
 			</effects>
 			<data genre="3" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11432,7 +11432,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="f6890750-2d10-44cd-822c-52e09bcc431c" />
+				<effect trigger="happen" type="triggernews" parameter1="f6890750-2d10-44cd-822c-52e09bcc431c" />
 			</effects>
 			<data genre="3" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11460,7 +11460,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="de5a8f0e-3445-432d-987d-56d998d173b6" />
+				<effect trigger="happen" type="triggernews" parameter1="de5a8f0e-3445-432d-987d-56d998d173b6" />
 			</effects>
 			<data genre="3" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11475,7 +11475,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="a8aab24e-fbaa-4fa0-b815-5b4b3a6aca35" />
+				<effect trigger="happen" type="triggernews" parameter1="a8aab24e-fbaa-4fa0-b815-5b4b3a6aca35" />
 			</effects>
 			<data genre="3" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11516,7 +11516,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="e2ec64a7-fc37-4a07-b567-1f7761821df7" />
+				<effect trigger="happen" type="triggernews" parameter1="e2ec64a7-fc37-4a07-b567-1f7761821df7" />
 			</effects>
 			<data genre="2" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11531,7 +11531,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="ef0b1006-b2ce-41b9-a783-1b556124df40" />
+				<effect trigger="happen" type="triggernews" parameter1="ef0b1006-b2ce-41b9-a783-1b556124df40" />
 			</effects>
 			<data genre="2" price="1.0" quality="49" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11546,7 +11546,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="a4138dc1-9369-4735-9377-64a569cde6dc" />
+				<effect trigger="happen" type="triggernews" parameter1="a4138dc1-9369-4735-9377-64a569cde6dc" />
 			</effects>
 			<data genre="2" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11561,7 +11561,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="571543da-edcb-48c5-866d-e978491be0b9" />
+				<effect trigger="happen" type="triggernews" parameter1="571543da-edcb-48c5-866d-e978491be0b9" />
 			</effects>
 			<data genre="2" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11589,7 +11589,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="b0dca345-b75e-4d34-97c1-9467339cdbb0" />
+				<effect trigger="happen" type="triggernews" parameter1="b0dca345-b75e-4d34-97c1-9467339cdbb0" />
 			</effects>
 			<data genre="1" price="1.0" quality="0" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11617,7 +11617,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="af1d00d5-19bd-4135-8e66-46263735f688" />
+				<effect trigger="happen" type="triggernews" parameter1="af1d00d5-19bd-4135-8e66-46263735f688" />
 			</effects>
 			<data genre="1" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11632,7 +11632,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="89857ce2-b83a-4f36-97da-5a780db79d03" />
+				<effect trigger="happen" type="triggernews" parameter1="89857ce2-b83a-4f36-97da-5a780db79d03" />
 			</effects>
 			<data genre="1" price="1.0" quality="9" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11647,7 +11647,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="f67941dc-54a1-428f-b3c0-c58d7877aa85" />
+				<effect trigger="happen" type="triggernews" parameter1="f67941dc-54a1-428f-b3c0-c58d7877aa85" />
 			</effects>
 			<data genre="1" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11662,7 +11662,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="91a7a88b-b4ff-47b3-b709-6e98d6232cbb" />
+				<effect trigger="happen" type="triggernews" parameter1="91a7a88b-b4ff-47b3-b709-6e98d6232cbb" />
 			</effects>
 			<data genre="1" price="1.0" quality="9" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11677,7 +11677,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="a0104185-2bc8-4b05-90e1-383418c8d66d" />
+				<effect trigger="happen" type="triggernews" parameter1="a0104185-2bc8-4b05-90e1-383418c8d66d" />
 			</effects>
 			<data genre="1" price="1.0" quality="0" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11692,7 +11692,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="7fed1494-c4fb-44b1-842f-c6caf08ce376" />
+				<effect trigger="happen" type="triggernews" parameter1="7fed1494-c4fb-44b1-842f-c6caf08ce376" />
 			</effects>
 			<data genre="1" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11707,7 +11707,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="257927dc-8179-4896-87a7-9db3384cd69d" />
+				<effect trigger="happen" type="triggernews" parameter1="257927dc-8179-4896-87a7-9db3384cd69d" />
 			</effects>
 			<data genre="0" price="1.0" quality="0" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11722,7 +11722,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="f05fce0f-39b4-471c-85dc-21c5845ea970" />
+				<effect trigger="happen" type="triggernews" parameter1="f05fce0f-39b4-471c-85dc-21c5845ea970" />
 			</effects>
 			<data genre="0" price="1.15" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11750,7 +11750,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="b368f82c-392c-47d5-b494-f8bfe9029c25" />
+				<effect trigger="happen" type="triggernews" parameter1="b368f82c-392c-47d5-b494-f8bfe9029c25" />
 			</effects>
 			<data genre="4" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11765,7 +11765,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="0edca939-dbee-41f9-a1bf-8bec9b7718fb" />
+				<effect trigger="happen" type="triggernews" parameter1="0edca939-dbee-41f9-a1bf-8bec9b7718fb" />
 			</effects>
 			<data genre="4" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11780,7 +11780,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="ff1f0a05-040c-4930-a314-12784ce12177" />
+				<effect trigger="happen" type="triggernews" parameter1="ff1f0a05-040c-4930-a314-12784ce12177" />
 			</effects>
 			<data genre="4" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11821,7 +11821,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="00f05239-8ab5-41c3-b6d5-de1b86491511" />
+				<effect trigger="happen" type="triggernews" parameter1="00f05239-8ab5-41c3-b6d5-de1b86491511" />
 			</effects>
 			<data genre="1" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11836,7 +11836,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="c0bcc0b2-0a77-4615-8070-7c044af5b9f9" />
+				<effect trigger="happen" type="triggernews" parameter1="c0bcc0b2-0a77-4615-8070-7c044af5b9f9" />
 			</effects>
 			<data genre="1" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11851,7 +11851,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="214c6e1b-b643-465d-8f7c-e40bae941dbc" />
+				<effect trigger="happen" type="triggernews" parameter1="214c6e1b-b643-465d-8f7c-e40bae941dbc" />
 			</effects>
 			<data genre="1" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11879,7 +11879,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="fb74b1bd-a603-4eaa-ae64-9b549dd96903" />
+				<effect trigger="happen" type="triggernews" parameter1="fb74b1bd-a603-4eaa-ae64-9b549dd96903" />
 			</effects>
 			<data genre="0" price="1.0" quality="78" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11894,7 +11894,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="935ffed6-639e-4bb1-80a1-607cc4665772" />
+				<effect trigger="happen" type="triggernews" parameter1="935ffed6-639e-4bb1-80a1-607cc4665772" />
 			</effects>
 			<data genre="0" price="1.20" quality="75" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11909,7 +11909,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="896c6fc0-4eb8-4363-ba30-c9742b91713c" />
+				<effect trigger="happen" type="triggernews" parameter1="896c6fc0-4eb8-4363-ba30-c9742b91713c" />
 			</effects>
 			<data genre="0" price="1.05" quality="71" />
 			<conditions year_range_from="-1" year_range_to="-1" />

@@ -66,6 +66,9 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		Super.FinishBroadcasting(day, hour, minute, audienceData)
 
+		'inform data that it got broadcasted by a player
+		data.doFinishBroadcast(owner, usedAsType)
+
 		if not isOwnedByPlayer()
 			TLogger.Log("FinishBroadcastingAsProgramme", "===========", LOG_ERROR)
 			TLogger.Log("FinishBroadcastingAsProgramme", "Finishing programme ~q"+GetTitle()+"~q which is not owned by a player! Report to developers asap.", LOG_ERROR)
@@ -99,6 +102,9 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	'override
 	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		Super.BeginBroadcasting:int(day, hour, minute, audienceData)
+
+		'inform data that it gets broadcasted by a player
+		data.doBeginBroadcast(owner, usedAsType)
 
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 
@@ -170,11 +176,11 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		If data.IsPaid()
 			Local penalty:TAudience = TAudience.CreateAndInit(-0.25, -0.25, -0.15, -0.35, -0.15, -0.55, -0.15, -0.15, -0.15)
 			penalty.MultiplyFloat(data.blocks)
-			GetPublicImageCollection().Get(owner).ChangeImage(penalty)			
+			GetPublicImage(owner).ChangeImage(penalty)			
 		ElseIf data.IsTrash()
 			Local penalty:TAudience = TAudience.CreateAndInit(0, 0, +0.2, -0.2, +0.2, -0.5, -0.1, 0, 0)
 			penalty.MultiplyFloat(data.blocks)			
-			GetPublicImageCollection().Get(owner).ChangeImage(penalty)						
+			GetPublicImage(owner).ChangeImage(penalty)						
 		End If
 
 		'adjust topicality relative to possible audience 

@@ -54,6 +54,11 @@ Function GetPublicImageCollection:TPublicImageCollection()
 End Function
 
 
+Function GetPublicImage:TPublicImage(playerID:int)
+	Return TPublicImageCollection.GetInstance().Get(playerID)
+End Function
+
+
 
 
 Type TPublicImage {_exposeToLua="selected"}

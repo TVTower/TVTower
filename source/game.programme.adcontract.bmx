@@ -25,6 +25,8 @@ Import "game.player.base.bmx"
 'to access datasheet-functions
 Import "common.misc.datasheet.bmx"
 
+Import "game.broadcastmaterialsource.base.bmx"
+
 'to access programmeplanner information
 Import "game.gameinformation.bmx"
 
@@ -217,7 +219,7 @@ End Function
 
 'contracts bases for advertisement - straight from the DB
 'they just contain data to base new contracts of
-Type TAdContractBase extends TNamedGameObject {_exposeToLua}
+Type TAdContractBase extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Field title:TLocalizedString
 	Field description:TLocalizedString
 	'days to fullfill a (signed) contract
@@ -289,13 +291,18 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 	'array of contract guids using this base at the moment
 	Field currentlyUsedByContracts:string[]
 
+	'TODO: store in BroadcastInformationProvider
+	Field timesBroadcastedAsInfomercial:int[] = [0]
+	Field _handledFirstTimeBroadcast:int = False
+	Field _handledFirstTimeBroadcastAsInfomercial:int = False
+	
 	rem
-	"topicality:infomercialWearoff"
-	  changes how much an infomercial loses topicality during sending it
-	"topicality:infomercialRefresh"
-	  changes how much an infomercial "regenerates" on topicality per day
+		modifiers:
+		"topicality:infomercialWearoff"
+		  changes how much an infomercial loses topicality during sending it
+		"topicality:infomercialRefresh"
+		  changes how much an infomercial "regenerates" on topicality per day
 	endrem
-	Field modifiers:TData = new TData
 	
 
 	Method Create:TAdContractBase(GUID:String, title:TLocalizedString, description:TLocalizedString, daysToFinish:Int, spotCount:Int, targetgroup:Int, minAudience:Float, minImage:Float, fixedPrice:Int, profit:Float, penalty:Float)
@@ -326,6 +333,31 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 		endif
         Return a1.GetTitle().ToLower() > a2.GetTitle().ToLower()
 	End Function
+
+
+	'playerID < 0 means "get all"
+	Method GetTimesBroadcastedAsInfomercial:Int(playerID:int = -1)
+		if playerID >= timesBroadcastedAsInfomercial.length then Return 0
+		if playerID >= 0 then Return timesBroadcastedAsInfomercial[playerID]
+
+		local result:int = 0
+		For local i:int = 0 until timesBroadcastedAsInfomercial.length
+			result :+ timesBroadcastedAsInfomercial[i]
+		Next
+		Return result
+	End Method
+
+
+	Method SetTimesBroadcastedAsInfomercial:Int(times:int, playerID:int)
+		if playerID < 0 then playerID = 0
+
+		'resize array if player has no entry yet
+		if playerID >= timesBroadcastedAsInfomercial.length
+			timesBroadcastedAsInfomercial = timesBroadcastedAsInfomercial[.. playerID + 1]
+		endif
+
+		timesBroadcastedAsInfomercial[playerID] = times
+	End Method
 
 
 	Method GetTitle:string() {_exposeToLua}
@@ -366,23 +398,6 @@ Type TAdContractBase extends TNamedGameObject {_exposeToLua}
 
 	Method GetInfomercialWearoffModifier:float()
 		return GetModifier("topicality::infomercialWearoff")
-	End Method
-
-
-	'returns the stored value for a modifier - defaults to "100%"
-	Method GetModifier:Float(modifierKey:string, defaultValue:Float = 1.0)
-		return modifiers.GetFloat(modifierKey, defaultValue)
-	End Method
-
-
-	'stores a modifier value
-	Method SetModifier:int(modifierKey:string, value:Float)
-		'skip adding the modifier if it is the same - or a default value
-		'-> keeps datasets smaller
-		if GetModifier(modifierKey) = value then return False
-		
-		modifiers.AddNumber(modifierKey, value)
-		return True
 	End Method
 
 
@@ -489,7 +504,7 @@ End Type
 
 
 'the useable contract for advertisements used in the playercollections
-Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
+Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	'holds raw contract data
 	Field base:TAdContractBase = Null
 	'how many spots were successfully sent up to now
@@ -1352,6 +1367,47 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'=== OVERLAY / BORDER ===
 		skin.RenderBorder(x, y, sheetWidth, sheetHeight)
 	End Method
+
+
+	'=== LISTENERS ===
+	'methods called when special events happen
+
+	'override
+	'called as soon as a advertisement of this contract is
+	'broadcasted. If playerID = -1 then this effects might target
+	'"all players" (depends on implementation)
+	Method doBeginBroadcast(playerID:int = -1, broadcastType:int = 0)
+		'trigger broadcastEffects
+		local effectParams:TData = new TData.Add("contract", self).AddNumber("playerID", playerID)
+
+		'send as advertisement?
+		if broadcastType = TVTBroadcastMaterialType.ADVERTISEMENT
+			'if nobody broadcasted till now (times are adjusted on
+			'finishBroadcast while this is called on beginBroadcast)
+			if base.GetTimesBroadcasted() = 0
+				if not base._handledFirstTimeBroadcast
+					base.effects.RunEffects("broadcastFirstTime", effectParams)
+					base._handledFirstTimeBroadcast = True
+				endif
+			endif
+
+			base.effects.RunEffects("broadcast", effectParams)
+
+
+		elseif broadcastType = TVTBroadcastMaterialType.PROGRAMME
+			'if nobody broadcasted till now (times are adjusted on
+			'finishBroadcast while this is called on beginBroadcast)
+			if base.GetTimesBroadcastedAsInfomercial() = 0
+				if not base._handledFirstTimeBroadcastAsInfomercial
+					base.effects.RunEffects("broadcastFirstTimeInfomercial", effectParams)
+					base._handledFirstTimeBroadcastAsInfomercial = True
+				endif
+			endif
+
+			base.effects.RunEffects("broadcastInfomercial", effectParams)
+		endif
+	End Method
+
 
 
 	'===== AI-LUA HELPER FUNCTIONS =====

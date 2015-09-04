@@ -263,13 +263,16 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		Super.BeginBroadcasting(day, hour, minute, audienceData)
 
 		'inform newsEvent that it gets broadcasted by a player
-		newsEvent.doBroadcast(owner)
+		newsEvent.doBeginBroadcast(owner)
 	End Method
 
 
 	'override
 	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		Super.FinishBroadcasting(day, hour, minute, audienceData)
+
+		'inform newsEvent that it gets broadcasted by a player
+		newsEvent.doFinishBroadcast(owner)
 
 		'adjust topicality relative to possible audience 
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)

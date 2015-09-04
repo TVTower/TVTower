@@ -204,19 +204,19 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'also create/move other figures of the building
 		'all of them are created at "offscreen position"
 		Local fig:TFigure = GetFigureCollection().GetByName("Hausmeister")
-		If Not fig Then fig = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("janitor"), GameRules.offscreenX, 0, 65)
+		If Not fig Then fig = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("janitor"), GetBuildingBase().figureOffscreenX, 0, 65)
 		fig.MoveToOffscreen()
 		fig.SetParent(GetBuilding().buildingInner)
 		fig.SendToDoor(TRoomDoor.GetByDetails("supermarket",-1), True)
 
 		fig = GetFigureCollection().GetByName("Bote1")
-		If Not fig Then fig = New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), GameRules.offscreenX - 90, 0, 65)
+		If Not fig Then fig = New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), GetBuildingBase().figureOffscreenX - 90, 0, 65)
 		fig.MoveToOffscreen()
 		fig.SetParent(GetBuilding().buildingInner)
 		fig.SendToDoor(TRoomDoor.GetByDetails("boss", 1), True)
 
 		fig = GetFigureCollection().GetByName("Bote2")
-		If Not fig Then fig = New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), GameRules.offscreenX -60, 0, -65)
+		If Not fig Then fig = New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), GetBuildingBase().figureOffscreenX -60, 0, -65)
 		fig.MoveToOffscreen()
 		fig.SetParent(GetBuilding().buildingInner)
 		fig.SendToDoor(TRoomDoor.GetByDetails("boss", 3), True)
@@ -227,7 +227,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			local fig:TFigureTerrorist = TFigureTerrorist(GetFigureCollection().GetByName("Terrorist"+(i+1)))
 			If Not fig
 				fig = New TFigureTerrorist
-				fig.Create("Terrorist"+(i+1), GetSpriteFromRegistry("Terrorist"+(i+1)), GameRules.offscreenX, 0, 65)
+				fig.Create("Terrorist"+(i+1), GetSpriteFromRegistry("Terrorist"+(i+1)), GetBuildingBase().figureOffscreenX, 0, 65)
 			EndIf
 			fig.MoveToOffscreen()
 			fig.SetParent(GetBuilding().buildingInner)
@@ -241,7 +241,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			local fig:TFigureMarshal = TFigureMarshal(GetFigureCollection().GetByName("Marshal"+(i+1)))
 			If Not fig
 				fig = New TFigureMarshal
-				fig.Create("Marshal"+(i+1), GetSpriteFromRegistry("Marshal"+(i+1)), GameRules.offscreenX, 0, 65)
+				fig.Create("Marshal"+(i+1), GetSpriteFromRegistry("Marshal"+(i+1)), GetBuildingBase().figureOffscreenX, 0, 65)
 			EndIf
 			fig.MoveToOffscreen()
 			fig.SetParent(GetBuilding().buildingInner)

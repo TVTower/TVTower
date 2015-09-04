@@ -760,18 +760,18 @@ Type TFigure extends TFigureBase
 
 	'send a figure to the offscreen position
 	Method SendToOffscreen:Int()
-		ChangeTarget(GameRules.offscreenX, TBuildingBase.GetFloorY2(0) - 5)
+		ChangeTarget(GetBuildingBase().figureOffscreenX, TBuildingBase.GetFloorY2(0) - 5)
 	End Method
 
 
 	'instantly move a figure to the offscreen position
 	Method MoveToOffscreen:Int()
-		area.position.SetXY(GameRules.offscreenX, TBuildingBase.GetFloorY2(0))
+		area.position.SetXY(GetBuildingBase().figureOffscreenX, TBuildingBase.GetFloorY2(0))
 	End Method
 
 
 	Method IsOffscreen:int()
-		if GetFloor() = 0 and area.GetX() <= GameRules.offscreenX then return True
+		if GetFloor() = 0 and area.GetX() <= GetBuildingBase().figureOffscreenX then return True
 		return False
 	End Method
 

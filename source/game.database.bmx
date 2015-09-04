@@ -151,330 +151,6 @@ Type TDatabaseLoader
 	End Method
 
 
-rem
-	Method LoadV2:Int(xml:TXmlHelper)
-		stopWatch.Init()
-
-		Local title:String
-		Local description:String
-		Local directors:TProgrammePersonBase[], directorsRaw:String
-		Local actors:TProgrammePersonBase[], actorsRaw:String
-		Local land:String
-		Local year:Int
-		Local Genre:Int
-		Local duration:Int
-		Local xrated:Int
-		Local priceModifier:Float
-		Local review:Float
-		Local speed:Float
-		Local Outcome:Float
-		Local livehour:Int
-		Local refreshModifier:float = 1.0
-		Local wearoffModifier:float = 1.0
-
-		Local daystofinish:Int
-		Local spotcount:Int
-		Local targetgroup:Int
-		Local minimage:Float
-		Local minaudience:Float
-		Local fixedPrice:Int
-		Local profit:Float
-		Local penalty:Float
-		local price:Float
-		Local quality:Float
-
-		local nodeParent:TxmlNode
-		local nodeChild:TxmlNode
-		local nodeEpisode:TxmlNode
-
-
-		'===== IMPORT ALL MOVIES =====
-
-		'Print "reading movies from database"
-		nodeParent = xml.FindRootChild("allmovies")
-		for nodeChild = EachIn TXmlHelper.GetNodeChildElements(nodeParent)
-			If nodeChild.getName() <> "movie" then continue
-
-			'skip if not "all" are allowed (no creator data available)
-			if not IsAllowedUser("*", "programmelicence") then continue
-
-			title       = xml.FindValue(nodeChild,"title", "unknown title")
-			description = xml.FindValue(nodeChild,"description", "23")
-			actorsRaw   = xml.FindValue(nodeChild,"actors", "")
-			directorsRaw= xml.FindValue(nodeChild,"director", "")
-			land        = xml.FindValue(nodeChild,"country", "UNK")
-			year 		= xml.FindValueInt(nodeChild,"year", 1900)
-			Genre 		= xml.FindValueInt(nodeChild,"genre", 0 )
-			duration    = xml.FindValueInt(nodeChild,"blocks", 2)
-			xrated 		= xml.FindValueInt(nodeChild,"xrated", 0)
-			review 		= xml.FindValueInt(nodeChild,"critics", 0) / 255.0
-			speed 		= xml.FindValueInt(nodeChild,"speed", 0) / 255.0
-			Outcome 	= xml.FindValueInt(nodeChild,"outcome", 0) / 255.0
-			livehour 	= xml.FindValueInt(nodeChild,"time", 0)
-			'modifiers
-			priceModifier = xml.FindValueInt(nodeChild,"price", 255) / 255.0 /1.5 'normalize to "normal = 1.0", original values are bit higher
-			refreshModifier	= xml.FindValueFloat(nodeChild,"refreshModifier", 1.0)
-			wearoffModifier	= xml.FindValueFloat(nodeChild,"wearoffModifier", 1.0)
-			If duration < 0 Or duration > 12 Then duration =1
-
-			'print title+": priceModifier="+priceModifier+"  review="+review+"  speed="+speed+"  Outcome="+outcome
-
-
-			local cast:TProgrammePersonJob[]
-			For local p:TProgrammePerson = EachIn GetPersonsFromString(directorsRaw, TVTProgrammePersonJob.DIRECTOR)
-				cast :+ [new TProgrammePersonJob.Init(p, TVTProgrammePersonJob.DIRECTOR)]
-			Next
-			For local p:TProgrammePerson = EachIn GetPersonsFromString(actorsRaw, TVTProgrammePersonJob.ACTOR)
-				cast :+ [new TProgrammePersonJob.Init(p, TVTProgrammePersonJob.ACTOR)]
-			Next
-
-			local localizeTitle:TLocalizedString = new TLocalizedString
-			localizeTitle.Set(title, "de")
-			local localizeDescription:TLocalizedString = new TLocalizedString
-			localizeDescription.Set(description, "de")
-
-			local modifiers:TData = new TData
-			modifiers.AddNumber("price", priceModifier)
-			modifiers.AddNumber("refresh", refreshModifier)
-			modifiers.AddNumber("wearoff", wearoffModifier)
-			
-			local movieLicence:TProgrammeLicence = new TProgrammeLicence
-			movieLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, modifiers, Genre, duration, xrated, TVTProgrammeProductType.MOVIE))
-
-			'convert old genre definition to new one
-			convertV2genreToV3(movieLicence.data)
-			
-			'add to collection (it is sorted automatically)
-			GetProgrammeLicenceCollection().AddAutomatic(movieLicence)
-			movieLicence.SetOwner(TOwnedGameObject.OWNER_NOBODY)
-
-			releaseDaycounter:+1
-			moviesCount :+1
-			totalMoviesCount :+ 1
-		Next
-
-
-		'===== IMPORT ALL SERIES INCLUDING EPISODES =====
-
-		nodeParent = xml.FindRootChild("allseries")
-		For nodeChild = EachIn TXmlHelper.GetNodeChildElements(nodeParent)
-			If nodeChild.getName() <> "serie" then continue
-
-			'skip if not "all" are allowed (no creator data available)
-			if not IsAllowedUser("*", "programmelicence") then continue
-
-			'load series main data - in case episodes miss data
-			title       = xml.FindValue(nodeChild,"title", "unknown title")
-			description = xml.FindValue(nodeChild,"description", "")
-			actorsRaw   = xml.FindValue(nodeChild,"actors", "")
-			directorsRaw= xml.FindValue(nodeChild,"director", "")
-			land        = xml.FindValue(nodeChild,"country", "UNK")
-			year 		= xml.FindValueInt(nodeChild,"year", 1900)
-			Genre 		= xml.FindValueInt(nodeChild,"genre", 0)
-			duration    = xml.FindValueInt(nodeChild,"blocks", 2)
-			xrated 		= xml.FindValueInt(nodeChild,"xrated", 0)
-			priceModifier = xml.FindValueInt(nodeChild,"price", 255) / 255.0 /1.5 'normalize to "normal = 1.0"
-			review 		= xml.FindValueInt(nodeChild,"critics", -1) / 255.0
-			speed 		= xml.FindValueInt(nodeChild,"speed", -1) / 255.0
-			Outcome 	= xml.FindValueInt(nodeChild,"outcome", -1) / 255.0
-			livehour 	= xml.FindValueInt(nodeChild,"time", -1)
-			refreshModifier	= xml.FindValueFloat(nodeChild,"refreshModifier", 1.0)
-			wearoffModifier	= xml.FindValueFloat(nodeChild,"wearoffModifier", 1.0)
-			If duration < 0 Or duration > 12 Then duration =1
-
-
-			local cast:TProgrammePersonJob[]
-			For local p:TProgrammePersonBase = EachIn GetPersonsFromString(directorsRaw, TVTProgrammePersonJob.DIRECTOR)
-				cast :+ [new TProgrammePersonJob.Init(p, TVTProgrammePersonJob.DIRECTOR)]
-			Next
-			For local p:TProgrammePersonBase = EachIn GetPersonsFromString(actorsRaw, TVTProgrammePersonJob.ACTOR)
-				cast :+ [new TProgrammePersonJob.Init(p, TVTProgrammePersonJob.ACTOR)]
-			Next
-
-			local localizeTitle:TLocalizedString = new TLocalizedString
-			localizeTitle.Set(title, "de")
-			local localizeDescription:TLocalizedString = new TLocalizedString
-			localizeDescription.Set(description, "de")
-
-			local modifiers:TData = new TData
-			modifiers.AddNumber("price", priceModifier)
-			modifiers.AddNumber("refresh", refreshModifier)
-			modifiers.AddNumber("wearoff", wearoffModifier)
-
-			'create a licence for that series - with title and series description
-			local seriesLicence:TProgrammeLicence = new TProgrammeLicence
-			'sets the "overview"-data of the series as series header
-			seriesLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, modifiers, Genre, duration, xrated, TVTProgrammeProductType.SERIES))
-
-			'convert old genre definition to new one
-			convertV2genreToV3(seriesLicence.data)
-
-			releaseDaycounter:+1
-
-			'load episodes
-			Local EpisodeNum:Int = 0
-			For nodeEpisode = EachIn TXmlHelper.GetNodeChildElements(nodeChild)
-				If nodeEpisode.getName() = "episode"
-					EpisodeNum	= xml.FindValueInt(nodeEpisode,"number", EpisodeNum+1)
-					title      	= xml.FindValue(nodeEpisode,"title", title)
-					description = xml.FindValue(nodeEpisode,"description", description)
-					actorsRaw   = xml.FindValue(nodeEpisode,"actors", actorsRaw)
-					directorsRaw= xml.FindValue(nodeEpisode,"director", directorsRaw)
-					land        = xml.FindValue(nodeEpisode,"country", land)
-					year 		= xml.FindValueInt(nodeEpisode,"year", year)
-					Genre 		= xml.FindValueInt(nodeEpisode,"genre", Genre)
-					duration    = xml.FindValueInt(nodeEpisode,"blocks", duration)
-					xrated 		= xml.FindValueInt(nodeEpisode,"xrated", xrated)
-					priceModifier = xml.FindValueInt(nodeEpisode,"price", priceModifier * 255 * 1.5) / 255.0 /1.5 'normalize to "normal = 1.0"
-					review 		= xml.FindValueInt(nodeEpisode,"critics", review) / 255.0
-					speed 		= xml.FindValueInt(nodeEpisode,"speed", speed) / 255.0
-					Outcome 	= xml.FindValueInt(nodeEpisode,"outcome", Outcome) / 255.0
-					livehour	= xml.FindValueInt(nodeEpisode,"time", livehour)
-					refreshModifier	= xml.FindValueFloat(nodeChild,"refreshModifier", refreshModifier)
-					wearoffModifier	= xml.FindValueFloat(nodeChild,"wearoffModifier", wearoffModifier)
-
-
-					local cast:TProgrammePersonJob[]
-					For local p:TProgrammePersonBase = EachIn GetPersonsFromString(directorsRaw, TVTProgrammePersonJob.DIRECTOR)
-						cast :+ [new TProgrammePersonJob.Init(p, TVTProgrammePersonJob.DIRECTOR)]
-					Next
-					For local p:TProgrammePersonBase = EachIn GetPersonsFromString(actorsRaw, TVTProgrammePersonJob.ACTOR)
-						cast :+ [new TProgrammePersonJob.Init(p, TVTProgrammePersonJob.ACTOR)]
-					Next
-
-					local localizeTitle:TLocalizedString = new TLocalizedString
-					localizeTitle.Set(title, "de")
-					local localizeDescription:TLocalizedString = new TLocalizedString
-					localizeDescription.Set(description, "de")
-
-					local modifiers:TData = new TData
-					modifiers.AddNumber("price", priceModifier)
-					modifiers.AddNumber("refresh", refreshModifier)
-					modifiers.AddNumber("wearoff", wearoffModifier)
-
-					local episodeLicence:TProgrammeLicence = new TProgrammeLicence
-					episodeLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, modifiers, Genre, duration, xrated, TVTProgrammeProductType.SERIES))
-					'add that episode to the series licence
-					seriesLicence.AddSubLicence(episodeLicence)
-
-					'convert old genre definition to new one
-					convertV2genreToV3(episodeLicence.data)
-
-					'add episode to global collection (it is sorted automatically)
-					GetProgrammeLicenceCollection().AddAutomatic(episodeLicence)
-				EndIf
-			Next
-
-			'add to collection (it is sorted automatically)
-			GetProgrammeLicenceCollection().AddAutomatic(seriesLicence)
-			seriesLicence.SetOwner(TOwnedGameObject.OWNER_NOBODY)
-
-			seriesCount :+ 1
-			totalSeriesCount :+ 1
-		Next
-
-
-		'===== IMPORT ALL ADVERTISEMENTS / CONTRACTS =====
-
-		nodeParent = xml.FindRootChild("allads")
-		For nodeChild = EachIn TXmlHelper.GetNodeChildElements(nodeParent)
-			If nodeChild.getName() <> "ad" then continue
-
-			'skip if not "all" are allowed (no creator data available)
-			if not IsAllowedUser("*", "adcontract") then continue
-
-			title       = xml.FindValue(nodeChild,"title", "unknown title")
-			description = xml.FindValue(nodeChild,"description", "")
-			targetgroup = xml.FindValueInt(nodeChild,"targetgroup", 0)
-			spotcount	= xml.FindValueInt(nodeChild,"repetitions", 1)
-			'0-50% -> 0.0 - 0.5
-			minaudience	= xml.FindValueInt(nodeChild,"minaudience", 0) /255.0
-			minimage	= xml.FindValueInt(nodeChild,"minimage", 0) /255.0
-			fixedPrice = xml.FindValueInt(nodeChild,"fixedprice", 0)
-			if fixedPrice
-				profit	= xml.FindValueInt(nodeChild,"profit", 0)
-				penalty	= xml.FindValueInt(nodeChild,"penalty", 0)
-			else
-				'30 is the factor the old v2-values got multiplied with
-				'after normalizing - so do this to make them comparable
-				profit	= 30 * xml.FindValueFloat(nodeChild,"profit", 0)
-				penalty	= 30 * xml.FindValueFloat(nodeChild,"penalty", 0)
-			endif
-			daystofinish= xml.FindValueInt(nodeChild,"duration", 1)
-
-			local localizeTitle:TLocalizedString = new TLocalizedString
-			localizeTitle.Set(title, "de")
-			local localizeDescription:TLocalizedString = new TLocalizedString
-			localizeDescription.Set(description, "de")
-
-			'convert targetgroup to v3
-			targetGroup = TVTTargetGroup.GetAtIndex(targetGroup)
-			
-			local ad:TAdContractBase = new TAdContractBase.Create("", localizeTitle, localizeDescription, daystofinish, spotcount, targetgroup, minaudience, minimage, fixedPrice, profit, penalty)
-
-			contractsCount :+ 1
-			totalContractsCount :+ 1
-		Next
-
-
-		'===== IMPORT ALL NEWS INCLUDING EPISODES =====
-		Local newsEvent:TNewsEvent
-
-		nodeParent		= xml.FindRootChild("allnews")
-		For nodeChild = EachIn TXmlHelper.GetNodeChildElements(nodeParent)
-			If nodeChild.getName() <> "news" then continue
-			'load series main data
-			title       = xml.FindValue(nodeChild,"title", "unknown newstitle")
-			description	= xml.FindValue(nodeChild,"description", "")
-			genre		= xml.FindValueInt(nodeChild,"genre", 0)
-			quality		= 0.01 * 3.0/8.0 * xml.FindValueFloat(nodeChild,"topicality", 0)
-			price		= 1.0 + 0.01 * 3.0/8.0 * xml.FindValueFloat(nodeChild,"price", 0)
-
-			local localizeTitle:TLocalizedString = new TLocalizedString
-			localizeTitle.Set(title, "de")
-			local localizeDescription:TLocalizedString = new TLocalizedString
-			localizeDescription.Set(description, "de")
-					
-			newsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, Genre, quality, price, TVTNewsType.InitialNews)
-			GetNewsEventCollection().Add(newsEvent)
-
-			'load episodes
-			Local EpisodeNum:Int = 0
-			For nodeEpisode = EachIn TXmlHelper.GetNodeChildElements(nodeChild)
-				If nodeEpisode.getName() <> "episode" then continue
-				EpisodeNum		= xml.FindValueInt(nodeEpisode,"number", EpisodeNum+1)
-				title			= xml.FindValue(nodeEpisode,"title", "unknown Newstitle")
-				description		= xml.FindValue(nodeEpisode,"description", "")
-				genre			= xml.FindValueInt(nodeEpisode,"genre", genre)
-				quality			= 0.01 * 3.0/8.0 * xml.FindValueFloat(nodeEpisode,"topicality", quality * 100 * 8.0/3.0)
-				price			= 1.0 + 0.01 * 3.0/8.0 * xml.FindValueFloat(nodeEpisode,"price", (price-1.0) * 100 * 8.0/3.0)
-
-				local localizeTitle:TLocalizedString = new TLocalizedString
-				localizeTitle.Set(title, "de")
-				local localizeDescription:TLocalizedString = new TLocalizedString
-				localizeDescription.Set(description, "de")
-
-				'in V2 triggeredNews are of type "followingNews" !
-				local triggeredNewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, Genre, quality, price, TVTNewsType.FollowingNews)
-				GetNewsEventCollection().Add(triggeredNewsEvent)
-
-				'add the found episode as a triggereffect to the news
-				newsEvent.AddHappenEffect(new TNewsEffect_TriggerNews.Init(triggeredNewsEvent.GetGUID()))
-
-				'set the found episode as current newsEvent, so the next
-				'episode gets added as triggereffect to that news episode then
-				newsEvent = triggeredNewsEvent
-
-				totalnewscount :+1
-			Next
-
-			newsCount :+ 1
-			totalNewsCount :+ 1
-		Next
-		TLogger.log("TDatabase.Load()", "Loaded DB ~q" + xml.filename + "~q (version 2). Found " + seriesCount + " series, " + moviesCount + " movies, " + contractsCount + " advertisements, " + newsCount + " news. loading time: " + stopWatch.GetTime() + "ms", LOG_LOADING)
-	End Method
-endrem
-
 	Method LoadV3:Int(xml:TXmlHelper)
 		stopWatch.Init()
 
@@ -731,19 +407,6 @@ endrem
 		newsEvent.SetModifier("topicality::age", data.GetFloat("topicality", newsEvent.GetModifier("topicality::age")))
 
 
-		'=== MODIFIERS ===
-		'reuses existing (parent) modifiers and overrides it with custom
-		'ones
-		local nodeModifiers:TxmlNode = xml.FindElementNode(node, "modifiers")
-		For local nodeModifier:TxmlNode = EachIn xml.GetNodeChildElements(nodeModifiers)
-			If nodeModifier.getName() <> "modifier" then continue
-
-			local modKey:string = xml.FindValue(nodeModifier, "name", "mod")
-			local modValue:Float = xml.FindValueFloat(nodeModifier, "value", newsEvent.GetModifier(modKey))
-
-			newsEvent.SetModifier(modKey, modValue)
-		Next
-
 
 		'=== CONDITIONS ===
 		local nodeConditions:TxmlNode = xml.FindElementNode(node, "conditions")
@@ -755,22 +418,15 @@ endrem
 		newsEvent.availableYearRangeTo = data.GetInt("year_range_to", newsEvent.availableYearRangeTo)
 
 
-		'=== EFFECTS ===
-		local nodeEffects:TxmlNode = xml.FindElementNode(node, "effects")
-		For local nodeEffect:TxmlNode = EachIn xml.GetNodeChildElements(nodeEffects)
-			If nodeEffect.getName() <> "effect" then continue
 
-			local effectData:TData = new TData
-			xml.LoadValuesToData(nodeEffect, effectData, [..
-				"trigger", "type", ..
-				"parameter1", "parameter2", "parameter3", "parameter4", "parameter5" ..
-			])
-			'trigger = "broadcast", "firstbroadcast", ...
-			'type = "triggernews", ...
-			'parameter1 = GUID
-			'parameter2-5 = param 1-4 of effect
-			newsEvent.AddEffectByData(effectData)
-		Next
+		'=== EFFECTS ===
+		LoadV3EffectsFromNode(newsEvent, node, xml)
+
+
+
+		'=== MODIFIERS ===
+		LoadV3ModifiersFromNode(newsEvent, node, xml)
+
 	
 
 		'=== ADD TO COLLECTION ===
@@ -806,10 +462,13 @@ endrem
 		else
 			doAdd = False
 		endif
+
+
 		
 		'=== LOCALIZATION DATA ===
 		adContract.title.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "title")) )
 		adContract.description.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "description")) )
+
 
 
 		'=== DATA ===
@@ -843,6 +502,7 @@ endrem
 		adContract.fixedInfomercialProfit = data.GetFloat("fix_infomercial_profit", adContract.fixedInfomercialProfit)
 		'without data, fall back to 10% of profitBase 
 		if adContract.infomercialProfitBase = 0 then adContract.infomercialProfitBase = adContract.profitBase * 0.1
+
 
 
 		'=== AVAILABILITY ===
@@ -885,6 +545,16 @@ endrem
 		Next
 		...
 		endrem
+
+
+		'=== EFFECTS ===
+		LoadV3EffectsFromNode(adContract, node, xml)
+
+
+
+		'=== MODIFIERS ===
+		LoadV3ModifiersFromNode(adContract, node, xml)
+
 
 
 		'=== ADD TO COLLECTION ===
@@ -1029,6 +699,8 @@ endrem
 			programmeData.AddCast(new TProgrammePersonJob.Init(memberGUID, memberFunction))
 		Next
 
+
+
 		'=== GROUPS ===
 		local nodeGroups:TxmlNode = xml.FindElementNode(node, "groups")
 		data = new TData
@@ -1040,22 +712,17 @@ endrem
 		programmeData.contraPressureGroups = data.GetInt("contra_pressure_groups", programmeData.contraPressureGroups)
 
 
-		'=== EFFECTS ===
-		local nodeEffects:TxmlNode = xml.FindElementNode(node, "effects")
-		For local nodeEffect:TxmlNode = EachIn xml.GetNodeChildElements(nodeEffects)
-			If nodeEffect.getName() <> "effect" then continue
 
-			local effectData:TData = new TData
-			xml.LoadValuesToData(nodeEffect, effectData, [..
-				"trigger", "type", ..
-				"parameter1", "parameter2", "parameter3", "parameter4", "parameter5" ..
-			])
-			'trigger = "broadcast", "firstbroadcast", ...
-			'type = "triggernews", ...
-			'parameter1 = GUID
-			'parameter2-5 = param 1-4 of effect
-'			programmeData.AddEffectByData(effectData)
-		Next
+		'=== EFFECTS ===
+		LoadV3EffectsFromNode(programmeData, node, xml)
+
+
+
+		'=== MODIFIERS ===
+		'take over modifiers from parent (if episode)
+		if parentLicence then programmeData.effects = parentLicence.data.effects.Copy()
+		LoadV3ModifiersFromNode(programmeData, node, xml)
+		
 
 
 		'=== RATINGS ===
@@ -1069,22 +736,11 @@ endrem
 		programmeData.outcome = 0.01 * data.GetFloat("outcome", programmeData.outcome*100)
 
 
-		'=== MODIFIERS ===
-		'reuses existing (parent) modifiers and overrides it with custom
-		'ones
-		local nodeModifiers:TxmlNode = xml.FindElementNode(node, "modifiers")
-		For local nodeModifier:TxmlNode = EachIn xml.GetNodeChildElements(nodeModifiers)
-			If nodeModifier.getName() <> "modifier" then continue
-
-			local modKey:string = xml.FindValue(nodeModifier, "name", "mod")
-			local modValue:Float = xml.FindValueFloat(nodeModifier, "value", programmeData.GetModifier(modKey))
-
-			programmeData.SetModifier(modKey, modValue)
-		Next
-
 
 		'=== PRODUCT TYPE ===
 		programmeData.productType = productType
+
+
 
 		'=== LICENCE TYPE ===
 		'the licenceType is adjusted as soon as "AddData" was used
@@ -1434,6 +1090,36 @@ endif
 		return role
 	End Method
 
+
+	Method LoadV3EffectsFromNode(source:TBroadcastMaterialSourceBase, node:TxmlNode,xml:TXmlHelper)
+		local nodeEffects:TxmlNode = xml.FindElementNode(node, "effects")
+		For local nodeEffect:TxmlNode = EachIn xml.GetNodeChildElements(nodeEffects)
+			If nodeEffect.getName() <> "effect" then continue
+
+			local effectData:TData = new TData
+			xml.LoadValuesToData(nodeEffect, effectData, [..
+				"trigger", "type", ..
+				"parameter1", "parameter2", "parameter3", "parameter4", "parameter5" ..
+			])
+
+			source.AddEffectByData(effectData)
+		Next
+	End Method
+
+
+	Method LoadV3ModifiersFromNode(source:TBroadcastMaterialSourceBase, node:TxmlNode,xml:TXmlHelper)
+		'reuses existing (parent) modifiers and overrides it with custom
+		'ones
+		local nodeModifiers:TxmlNode = xml.FindElementNode(node, "modifiers")
+		For local nodeModifier:TxmlNode = EachIn xml.GetNodeChildElements(nodeModifiers)
+			If nodeModifier.getName() <> "modifier" then continue
+
+			local modKey:string = xml.FindValue(nodeModifier, "name", "mod")
+			local modValue:Float = xml.FindValueFloat(nodeModifier, "value", source.GetModifier(modKey))
+
+			source.SetModifier(modKey, modValue)
+		Next
+	End Method
 
 
 	'=== META DATA FUNCTIONS ===

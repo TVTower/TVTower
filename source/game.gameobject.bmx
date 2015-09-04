@@ -186,12 +186,42 @@ End Type
 
 
 
+'anonymous creator of effects
+'approach allows easy creation of effect-type-instances the caller
+'does not need to know - allows sharing of effects between various
+'classes
+Type TGameObjectEffectCreator
+	Field registeredEffects:TMap = CreateMap()
+
+	'register an effect by passing the name + creator function
+	Method RegisterEffect(effectName:string, effect:TGameObjectEffect)
+		registeredEffects.insert(effectName.ToLower(), effect)
+	End Method
+
+
+	Method CreateEffect:TGameObjectEffect(effectName:string, data:TData)
+		local effect:TGameObjectEffect = TGameObjectEffect(registeredEffects.ValueForKey( effectName.Tolower() ))
+		if effect then return effect.CreateFromData(data)
+		return null
+	End Method
+End Type
+
+Global GameObjectEffectCreator:TGameObjectEffectCreator = New TGameObjectEffectCreator
+
+
+
+
 'base effect class (eg. for newsevents, programmedata, adcontractbases)
 Type TGameObjectEffect
 	Field data:TData
 	'constant value of TVTGameObjectEffect (CHANGETREND, TERRORISTATTACK, ...)
 	Field effectTypes:int = 0
 	Field _customEffectFunc:int(data:TData, params:TData)
+
+	'function returning a _new_ effect initialized with the given data
+	Function CreateFromData:TGameObjectEffect(data:TData)
+		return new TGameObjectEffect
+	End Function
 
 
 	Method ToString:string()
@@ -248,6 +278,15 @@ End Type
 
 Type TGameObjectEffectCollection
 	Field effects:TData
+
+
+	Method Copy:TGameObjectEffectCollection()
+		local c:TGameObjectEffectCollection = new TGameObjectEffectCollection
+		if effects then c.effects = effects.Copy()
+
+		return c
+	End Method
+	
 	
 	Method GetList:TList(trigger:string)
 		if not effects then return Null

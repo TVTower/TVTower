@@ -1451,7 +1451,7 @@ Type TProgrammePlanInformationProvider extends TProgrammePlanInformationProvider
 			Case "broadcast.programme.FinishBroadcastingAsAdvertisement".ToLower()
 				GetInstance().SetTrailerAired(broadcast.owner, GetInstance().GetTrailerAired(broadcast.owner) + 1, time)
 			Case "broadcast.advertisement.FinishBroadcastingAsProgramme".ToLower()
-				GetInstance().SetInfomercialAired(broadcast.owner, GetInstance().GetInfomercialAired(broadcast.owner) + 1, time)
+				GetInstance().SetInfomercialsAired(broadcast.owner, GetInstance().GetInfomercialsAired(broadcast.owner) + 1, time)
 				GetInstance().RefreshAudienceData(broadcast.owner, time, data.Get("audienceData"))
 			Case "broadcast.programme.FinishBroadcasting".ToLower()
 				GetInstance().RefreshProgrammeData(broadcast.owner, time)
@@ -1463,8 +1463,11 @@ Type TProgrammePlanInformationProvider extends TProgrammePlanInformationProvider
 
 End Type
 
+
 'register this provider so it listens to events
+'-> overrides previous base-provider "TProgrammePlanInformationProviderBase"
 GetGameInformationCollection().AddProvider("programmeplan", TProgrammePlanInformationProvider.GetInstance())
+
 
 '===== CONVENIENCE ACCESSOR =====
 'return collection instance

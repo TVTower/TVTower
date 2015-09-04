@@ -94,8 +94,6 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	End Method
 
 
-
-
 	Method hasFlag:Int(flag:Int) {_exposeToLua}
 		Return flags & flag
 	End Method
@@ -107,5 +105,38 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 		Else
 			flags :& ~flag
 		EndIf
+	End Method
+
+
+	'add an effect defined in a data container
+	'effectData should be consisting of:
+	'trigger = "broadcast", "firstbroadcast", "happen"...
+	'type = "triggernews" (the key under which the desired effect was registered)
+	'parameter1-5
+	Method AddEffectByData:int(effectData:TData)
+		if not effectData then return False
+
+		local effectName:string = effectData.GetString("type").ToLower()
+		local effectTrigger:string = effectData.GetString("trigger").ToLower()
+		if not effectName or not effectTrigger then return False
+
+		local effect:TGameObjectEffect = GameObjectEffectCreator.CreateEffect(effectName, effectData)
+		if not effect then return False
+
+		effects.AddEffect(effectTrigger, effect)
+		return True
+	End Method
+
+
+
+	'=== LISTENERS ===
+	'methods called when special events happen
+
+	Method doBeginBroadcast(playerID:int = -1, broadcastType:int = 0)
+		'
+	End Method
+
+	Method doFinishBroadcast(playerID:int = -1, broadcastType:int = 0)
+		'
 	End Method
 End Type

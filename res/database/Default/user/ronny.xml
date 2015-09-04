@@ -610,7 +610,7 @@ Grandioses Finale.</de>
 				<en>On the toilet of the German Bundestag a conversation between two unnamed politicians was recorded. Audio apparently iscensored as whistling and hissing noises overlap the conversation.</en>
 			</description>
 			<effects>
-				<effect type="triggernews" parameter1="ronny-news-spitzel-02" />
+				<effect trigger="happen" type="triggernews" parameter1="ronny-news-spitzel-02" />
 			</effects>
 			<data genre="0" price="1.10" quality="28" />
 		</news>
