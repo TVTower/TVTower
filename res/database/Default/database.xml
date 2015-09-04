@@ -9985,11 +9985,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="91881279-bf29-49bd-9a0b-c98c36f8ceaa" thread_id="0acccc29-1ef7-4613-8f78-1c0ad3b601e5" type="0" creator="">
 			<title>
 				<de>Neid-Reiter-Auto auf den Schrott?</de>
-				<en></en>
+				<en>Night-Ryder-car to junkyard?</en>
 			</title>
 			<description>
-				<de>Kidd, das legendäre Auto der Serie "Neid-Reiter" wird verschrottet. Dies teilte der aktuelle Besitzer des Autos mit.</de>
-				<en></en>
+				<de>Kidd, das legendäre Auto der Serie „Neid-Reiter“ wird verschrottet. Dies teilte der aktuelle Besitzer des Autos mit.</de>
+				<en>Kidd, the legendary car of the series „Night-Ryder“ gets scrapped. This announced the current owner of the car.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="7d63161c-7937-4cce-95c6-2c82529c06ac" />
@@ -9999,12 +9999,12 @@ Her normal body size is expected to be reached in a week.</en>
 		</news>
 		<news id="7d63161c-7937-4cce-95c6-2c82529c06ac" thread_id="0acccc29-1ef7-4613-8f78-1c0ad3b601e5" type="2" creator="">
 			<title>
-				<de>David Hasseldoof gegen Verschrottung</de>
-				<en></en>
+				<de>David Hasseldorf gegen Verschrottung</de>
+				<en>David Hasseldorf against scrapping</en>
 			</title>
 			<description>
-				<de>David Hasseldoof widersetzt sich der Verschrottung seines Spielzeugs und hat eine Stiftung "Rettet Kidd" gegründet.</de>
-				<en></en>
+				<de>David Hasseldorf widersetzt sich der Verschrottung seines Spielzeugs und hat eine Stiftung „Rettet Kidd“ gegründet.</de>
+				<en>David Hasseldorf opposes the scrapping of his toy and has set up a foundation "Save Kidd".</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="296f6aca-a031-4f2f-b6a5-2317abadbb40" />
@@ -10015,11 +10015,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="296f6aca-a031-4f2f-b6a5-2317abadbb40" thread_id="0acccc29-1ef7-4613-8f78-1c0ad3b601e5" type="2" creator="">
 			<title>
 				<de>Kidd wird verschrottet</de>
-				<en></en>
+				<en>Kidd gets scrapped</en>
 			</title>
 			<description>
-				<de>Obwohl David Hasseldoof 1,7 Millionen Dollar zur Erhaltung Kidds gesammelt hat, wurde das Auto verschrottet.</de>
-				<en></en>
+				<de>Obwohl David Hasseldorf 1,7 Millionen Dollar zur Erhaltung Kidds gesammelt hat, wurde das Auto verschrottet.</de>
+				<en>Although David Hasseldorf has collected $ 1.7 million for the conservation of Kidd, the car was scrapped.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="ec53534e-da72-4cbe-ab00-f2f4e3005ed1" />
@@ -10030,11 +10030,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="ec53534e-da72-4cbe-ab00-f2f4e3005ed1" thread_id="0acccc29-1ef7-4613-8f78-1c0ad3b601e5" type="2" creator="">
 			<title>
 				<de>Kidd-Begräbnis</de>
-				<en></en>
+				<en>Kidd Funeral</en>
 			</title>
 			<description>
-				<de>Kidd wurde heute in der Südstadt Kölns begraben. Das Begräbnis auf dem Autofriedhof lockte zehntausende Trauernde und mussten David Hasseldoof in den Arm nehmen.</de>
-				<en></en>
+				<de>Kidd wurde heute in der Südstadt Kölns begraben. Das Begräbnis auf dem Autofriedhof lockte zehntausende Trauernde. Sie mussten David Hasseldorf in den Arm nehmen.</de>
+				<en>Kidd was buried today in the southern city of Cologne. The burial in the car cemetery attracted tens of thousands of mourners. They had to embrace David Hasseldorf.</en>
 			</description>
 			<effects />
 			<data genre="1" price="1.0" quality="6" />
@@ -10043,11 +10043,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="6bba8dff-b5da-40b1-9db8-0e3cc655c14b" thread_id="0f4bf47b-dd51-4c3e-8d44-47ed0908ae37" type="0" creator="">
 			<title>
 				<de>Politiker fordern WiSim-Steuer</de>
-				<en></en>
+				<en>Politicians call for an eco-sim tax</en>
 			</title>
 			<description>
 				<de>Ein jeder weiss: Wirtschaftssimulationen machen süchtig. Nun schreitet die Politik ein und fordert eine Extrasteuer auf Spiele dieses Genres.</de>
-				<en></en>
+				<en>Everyone knows: eco-sim games are addictive. Now politics intervenes and calls for an extra tax on games of this genre.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="24c635b8-7a9c-4faf-9b72-b24f7b193afa" />
@@ -10058,11 +10058,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="85e5385e-eb33-4bee-8697-0e1b145e1ce3" thread_id="0f4bf47b-dd51-4c3e-8d44-47ed0908ae37" type="2" creator="">
 			<title>
 				<de>WiSim-Steuer abgeschafft</de>
-				<en></en>
+				<en>Eco-Sim tax abolished</en>
 			</title>
 			<description>
 				<de>Nach Debatten, WiSims zu spielen sei das natürlichste eines Menschen, hat die Regierung ein einsehen und erlässt die Sondersteuer. Das Volk feiert ausgelassen.</de>
-				<en></en>
+				<en>After debates with consense that playing eco-sim games is the most natural people could do, the government relented and abolished the special tax. The nation wildly celebrated.</en>
 			</description>
 			<effects />
 			<data genre="0" price="1.0" quality="29" />
@@ -10071,11 +10071,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="22925a92-8d65-4515-9f99-676d56c1d74b" thread_id="0f4bf47b-dd51-4c3e-8d44-47ed0908ae37" type="2" creator="">
 			<title>
 				<de>WiSim-Steuer bringt nichts</de>
-				<en></en>
+				<en>Eco-Sim tax is useless</en>
 			</title>
 			<description>
 				<de>Trotz Sondersteuer auf WiSim-Spiele geht deren Verkauf nicht zurück. Die Bundesregierung sieht sich dennoch nicht geschlagen: Die Steuer bleibt.</de>
-				<en></en>
+				<en>Despite special tax on trading simulation and strategy games (Eco-Sims) sales do not go back. The federal government still does not see itself beaten: The tax remains.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="b468ddac-247c-465d-9693-a7ab81b08fb1" />
@@ -10086,11 +10086,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="24c635b8-7a9c-4faf-9b72-b24f7b193afa" thread_id="0f4bf47b-dd51-4c3e-8d44-47ed0908ae37" type="2" creator="">
 			<title>
 				<de>WiSim-Steuer kommt</de>
-				<en></en>
+				<en>Eco-Sim tax is coming</en>
 			</title>
 			<description>
 				<de>Die Koalition hat sich geeinigt. Um das Staatssäckel aufzubessern kosten WiSim-Spiele nun im Vergleich zu anderen Genres 15% mehr.</de>
-				<en></en>
+				<en>The coalition has agreed. To supplement the public purse allEco-Sim games now cost 15% more than games of other genres.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="22925a92-8d65-4515-9f99-676d56c1d74b" />
@@ -10101,11 +10101,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="b468ddac-247c-465d-9693-a7ab81b08fb1" thread_id="0f4bf47b-dd51-4c3e-8d44-47ed0908ae37" type="2" creator="">
 			<title>
 				<de>WiSim-Steuer: Klempner festgenommen</de>
-				<en></en>
+				<en>Eco-Sim tax: Plumper arrested</en>
 			</title>
 			<description>
 				<de>Ein aus Italien stammender Klempner und sein Bruder wurden heute von der Polizei festgenommen. Sie schmuggelten WiSim-Spiele durch ein Rohrsystem.</de>
-				<en></en>
+				<en>Today police arrested a native of Italy plumber and his brother. They smuggled trading simulation and strategy games through a pipe system.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="85e5385e-eb33-4bee-8697-0e1b145e1ce3" />
@@ -10116,11 +10116,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="1b15ca2e-e303-4863-9173-137eff033d7c" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="0" creator="">
 			<title>
 				<de>Nashorn aus Zoo entlaufen</de>
-				<en></en>
+				<en>Rhino escaped from the zoo</en>
 			</title>
 			<description>
 				<de>Im Chemnitzer Zoo fehlte heute morgen bei der Zählung ein Nashorn. Die Bevölkerung wird gebeten das Haus nicht zu verlassen.</de>
-				<en></en>
+				<en>During todays census at the zoo of Chemnitz they lacked a rhinoceros. The population is requested not to leave the house.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="777c94c2-49a6-4e72-ad02-06c33f7350bc" />
@@ -10131,11 +10131,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
 			<title>
 				<de>Chemnitzer Nashorn umzingelt</de>
-				<en></en>
+				<en>Rhino of Chemnitz surrounded</en>
 			</title>
 			<description>
-				<de>Das entlaufene Nashorn ist auf einer Lichtung gestellt worden. Mehrere Veterinäre mit Betäubungsgewehren stehen bereits es einzufangen.</de>
-				<en></en>
+				<de>Das entlaufene Nashorn ist auf einer Lichtung gestellt worden. Mehrere Veterinäre mit Betäubungsgewehren stehen bereit es einzufangen.</de>
+				<en>The runaway rhinoceros has been found in a clearing. Several veterinarians with stun guns are ready to catch it.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="a4f30290-dc9f-49e0-ad44-727e00e44693" />
@@ -10146,11 +10146,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="777c94c2-49a6-4e72-ad02-06c33f7350bc" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
 			<title>
 				<de>Nashorn im Wald untergetaucht</de>
-				<en></en>
+				<en>Rhino went underground in forest</en>
 			</title>
 			<description>
 				<de>Das vermisste Nashorn aus dem Chemnitzer Zoo ist von Zeugen in einem nahe gelegenen Wald gesehen worden.</de>
-				<en></en>
+				<en>The missing rhino from the Chemnitz Zoo has been seen in a nearby forest by witnesses.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="8906094a-6ee5-4054-9e8c-9eea78ea8950" />
@@ -10161,11 +10161,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="a4f30290-dc9f-49e0-ad44-727e00e44693" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
 			<title>
 				<de>Nashorn wieder im Zoo</de>
-				<en></en>
+				<en>Rhino back in zoo</en>
 			</title>
 			<description>
 				<de>Das freigelassene Nashorn ist nach seinem spektakulären Ausflug wieder wohlbehalten im Zoo angekommen.</de>
-				<en></en>
+				<en>After his spectacular trip the set free rhinoceros arrived back safely at the zoo.</en>
 			</description>
 			<effects />
 			<data genre="4" price="1.0" quality="15" />
@@ -10174,11 +10174,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="8906094a-6ee5-4054-9e8c-9eea78ea8950" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
 			<title>
 				<de>Ökoterroristen liessen Nashorn frei</de>
-				<en></en>
+				<en>Eco-terrorists set Rhinoceros free</en>
 			</title>
 			<description>
-				<de>Laut einem Bekennerschreiben sind die Türschützer von der Gruppe "ZORRO" für das Entlaufen des Nashorns verantwortlich.</de>
-				<en></en>
+				<de>Laut einem Bekennerschreiben sind die Tierschützer von der Gruppe "ZORRO" für das Entlaufen des Nashorns verantwortlich.</de>
+				<en>According to a letter claiming responsibility, the animal rights activists of the group "ZORRO" are responsible for the elopement of the rhinoceros.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03" />
@@ -10189,11 +10189,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
 			<title>
 				<de>Touristen vom Nashorn angegriffen</de>
-				<en></en>
+				<en>Tourists attacked by Rhino</en>
 			</title>
 			<description>
 				<de>Touristen sind im Chemnitzer Wald vom entlaufenen Nashorn in ihrem Wohnmobil angegriffen worden. Der Schaden beläuft sich auf etwa € 50.000.</de>
-				<en></en>
+				<en>Tourists have been attacked in their motor home in Chemnitz forest by the runaway rhinoceros. The damage amounts to about € 50,000.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485" />
@@ -10204,11 +10204,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="b8a64acb-74e0-4786-9810-2c6531b3bcd3" thread_id="1f0fcab5-6a25-435b-912e-8f95d2b63c15" type="0" creator="">
 			<title>
 				<de>Atmen wird teuer</de>
-				<en></en>
+				<en>Breathing becomes expensive</en>
 			</title>
 			<description>
-				<de>Die Gesundheitsministerin hat ein Gesetz erlassen, wonach jeder atmende Mensch eine Sauerstoffgebühr bezahlen muss. Die Gebühr richtet sich nach dem Lungeninhalt.</de>
-				<en></en>
+				<de>Die Gesundheitsministerin hat ein Gesetz erlassen, wonach jeder atmende Mensch eine Sauerstoffgebühr bezahlen muss. Die Gebühr richtet sich nach dem Lungenvolumen.</de>
+				<en>The Health Minister has enacted a law requiring every breathing person must pay a fee for oxygen. The fee depends on the lung capacity.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="5af0af95-84b8-4018-96e6-9e25e93a2687" />
@@ -10219,11 +10219,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="d39a88bf-fa64-40f9-936e-0d15d355f26b" thread_id="1f0fcab5-6a25-435b-912e-8f95d2b63c15" type="2" creator="">
 			<title>
 				<de>Nur noch Gebühr auf Ausatmen</de>
-				<en></en>
+				<en>Only fee to exhale</en>
 			</title>
 			<description>
 				<de>Nach dem umstrittenen Plan eine komplette Sauerstoffgebühr einzuführen, soll die Bevölkerung nur noch für das Ausatmen zahlen. Luft anhalten!</de>
-				<en></en>
+				<en>After the controversial plan to introduce a complete oxygen fee, the population will now only pay for the exhalation. Hold your breath!</en>
 			</description>
 			<effects />
 			<data genre="0" price="1.05" quality="61" />
@@ -10232,11 +10232,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="5af0af95-84b8-4018-96e6-9e25e93a2687" thread_id="1f0fcab5-6a25-435b-912e-8f95d2b63c15" type="2" creator="">
 			<title>
 				<de>Zurückrudern bei Sauerstoffgebühr</de>
-				<en></en>
+				<en>Back-pedal on oxygen fee</en>
 			</title>
 			<description>
 				<de>Nach heftiger Kritik will das Gesundheitsministerium die geplante Gebühr auf Sauerstoff überdenken.</de>
-				<en></en>
+				<en>After heavy criticism, the Health Ministry will reconsider the proposed fee on oxygen.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="d39a88bf-fa64-40f9-936e-0d15d355f26b" />
@@ -10247,11 +10247,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="2f64517a-f2d6-4720-a195-6a35cc6e72c6" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="0" creator="">
 			<title>
 				<de>Fort schreibt Verluste</de>
-				<en></en>
+				<en>Fort makes a loss</en>
 			</title>
 			<description>
 				<de>Der amerikanische Autokonzern schreibt tiefrote Zahlen. Ein Grund dafür ist der schlechte Absatz des neuen Modells Montana.</de>
-				<en></en>
+				<en>The American auto giant is bleeding red ink. One reason is the poor sales of the new model Montana.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="bd268c78-0e6c-4659-a833-66565e0a4af8" />
@@ -10261,12 +10261,12 @@ Her normal body size is expected to be reached in a week.</en>
 		</news>
 		<news id="1135edbe-daf4-4ed7-8817-b352b9ee7442" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
 			<title>
-				<de>Fort will 5000 Stellen streichen</de>
-				<en></en>
+				<de>Fort will 5.000 Stellen streichen</de>
+				<en>Fort plans to cut 5,000 jobs</en>
 			</title>
 			<description>
-				<de>Der Amerikanische Autokonzern will aufgrund der hohen Verluste 5000 Mitarbeiter entlassen.</de>
-				<en></en>
+				<de>Der Amerikanische Autokonzern will aufgrund der hohen Verluste 5.000 Mitarbeiter entlassen.</de>
+				<en>The American car company wants to dismiss 5,000 employees due to the high losses.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="5345cee0-138e-4531-a239-71015a8ca909" />
@@ -10277,11 +10277,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="5345cee0-138e-4531-a239-71015a8ca909" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
 			<title>
 				<de>Fort: Mitarbeiter streiken</de>
-				<en></en>
+				<en>Fort: workers are on strike</en>
 			</title>
 			<description>
-				<de>In mehreren Fort Werken legten die Angestellten die Arbeit nieder und protestieren nun gegen die geplanten 5000 Entlassungen.</de>
-				<en></en>
+				<de>In mehreren Fort Werken legten die Angestellten die Arbeit nieder und protestieren nun gegen die geplanten 5.000 Entlassungen.</de>
+				<en>In several Fort factories employees stopped their work and protest now against the planned 5,000 layoffs.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="d3ca7812-9b3e-41e5-852c-e4f4ef045a06" />
@@ -10292,11 +10292,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="d3ca7812-9b3e-41e5-852c-e4f4ef045a06" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
 			<title>
 				<de>Fort: Verhandlungen geplant</de>
-				<en></en>
+				<en>Fort: negotiations planned</en>
 			</title>
 			<description>
 				<de>Der amerikanische Autokonzern will mit Arbeitnehmervertretern verhandeln, um die Streiks abzuwenden.</de>
-				<en></en>
+				<en>The American auto giant wants to negotiate with employee representatives in order to avert the strikes.</en>
 			</description>
 			<effects />
 			<data genre="0" price="1.0" quality="0" />
@@ -10305,11 +10305,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="32617459-a2eb-412a-87c9-0411314c0694" thread_id="24f462b9-bac5-499e-ae2d-780f225872b1" type="0" creator="">
 			<title>
 				<de>Automaut kommt</de>
-				<en></en>
+				<en>Car toll comes</en>
 			</title>
 			<description>
 				<de>Nach schweizer Vorbild wird zum 1. Januar die Automaut eingeführt. Autofahrer waren empört, bis sie hörten, dass die Niederländer Deutschland umfahren werden.</de>
-				<en></en>
+				<en>Modeled on the Swiss approach, the car toll is introduced on January 1st. Motorists were outraged until they heard that the Dutch will bypass Germany.</en>
 			</description>
 			<effects />
 			<data genre="0" price="1.0" quality="68" />
@@ -10318,11 +10318,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="a8356756-4d49-42db-9b36-b91da8a0539f" thread_id="2c8a146f-9700-4ad0-ae4a-9328f7c00912" type="0" creator="">
 			<title>
 				<de>300-Meter-Grenze geknackt</de>
-				<en></en>
+				<en>300-meter limit crushed</en>
 			</title>
 			<description>
 				<de>Mit Hilfe eines Drachenanzugs hat der Finne Aki Wärärtiisamökölaii das Ski-Springen in Köln-Poll gewonnen und mit einem 312-Meter-Sprung einen neuen Rekord verbucht.</de>
-				<en></en>
+				<en>With the help of a dragon suit the Finn Aki Wärärtiisamökölaii won the ski jumping in Cologne-Poll and recorded with a 312-meter jump a new record.</en>
 			</description>
 			<effects />
 			<data genre="2" price="1.0" quality="29" />
@@ -10331,11 +10331,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="094806da-5113-4b57-b09a-c0639ebc20f9" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="0" creator="">
 			<title>
 				<de>Finanzminister: Koalas her!</de>
-				<en></en>
+				<en>Finance minister: Koalas to me!</en>
 			</title>
 			<description>
 				<de>Der Finanzminister beantragt im Bundestag die Verpflichtung jeden Bundesbürgers zur Haltung eines Koalas.</de>
-				<en></en>
+				<en>In the German Bundestag the Minister of Finance requested the obligation of every German citizen for keeping a koala.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="d4b58f67-56ed-4c7b-a524-3c641187c348" />
@@ -10346,11 +10346,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="bf0ee1be-3dc3-4581-8614-fff5253d6330" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
 			<title>
 				<de>Des Finanzministers Liebe</de>
-				<en></en>
+				<en>Minister of Finance's Love</en>
 			</title>
 			<description>
 				<de>Der Finanzminister hat seine heimliche Liebe zu Koalas zugegeben obwohl sich heraus gestellt hat, dass Koalas schmerzhaft hart krallen.</de>
-				<en></en>
+				<en>The finance minister admitted his secret love for koalas though it turned out that koalas have painful hard Nails.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="17528858-a7e0-4b6d-a515-d245e40ce87c" />
@@ -10361,11 +10361,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="23fc5b0e-d3d8-4049-970b-236966ec8da5" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
 			<title>
 				<de>Finanzminister schreibt Biographie</de>
-				<en></en>
+				<en>Finance minister writes biography</en>
 			</title>
 			<description>
 				<de>Der Finanzminister hat seine Memoiren geschrieben und seinem 8-Kapitel-Buch sieben Kapitel seinen Koalas gewidmet.</de>
-				<en></en>
+				<en>The finance minister has written his memoirs and dedicated his koalas seven chapters of his 8-chapter book.</en>
 			</description>
 			<effects />
 			<data genre="0" price="1.0" quality="39" />
@@ -10374,11 +10374,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="17528858-a7e0-4b6d-a515-d245e40ce87c" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
 			<title>
 				<de>Finanzminister zurückgetreten</de>
-				<en></en>
+				<en>Minister of Finance resigned</en>
 			</title>
 			<description>
 				<de>Nach seinem Bekenntnis in der Koala-Affäre, hat sich der Finanzminister entschlossen, sein Amt aufzugeben und zurück zu treten.</de>
-				<en></en>
+				<en>After his confession in the Koala affair, the Minister of Finance has decided to abandon his post and to withdraw.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="23fc5b0e-d3d8-4049-970b-236966ec8da5" />
@@ -10389,11 +10389,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="79b75334-0bec-4061-a029-890601f10b5e" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
 			<title>
 				<de>Koala-Skandal</de>
-				<en></en>
+				<en>Koala scandal</en>
 			</title>
 			<description>
 				<de>Grienpies ist über die Forderung des Finanzministers entsetzt: Koalas vertragen keine Mentholbonbons!</de>
-				<en></en>
+				<en>Grienpies is appalled by the demand of the Minister of Finance: Koalas do not tolerate menthol candies!</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="bf0ee1be-3dc3-4581-8614-fff5253d6330" />
@@ -10404,11 +10404,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="d4b58f67-56ed-4c7b-a524-3c641187c348" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
 			<title>
 				<de>Welt lacht über Koala-Minister</de>
-				<en></en>
+				<en>World laughs at Koala-Minister</en>
 			</title>
 			<description>
 				<de>Die ganze Welt lacht über den Antrag des Finanzministers, die Haltung eines Koalas zur Pflicht zu machen.</de>
-				<en></en>
+				<en>The whole world is laughing at the request of the Minister of Finance to make keeping a koala a duty.</en>
 			</description>
 			<effects>
 				<effect type="triggernews" parameter1="79b75334-0bec-4061-a029-890601f10b5e" />
@@ -10419,11 +10419,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="53d11d51-473e-499d-91dc-5cd59fb7cf34" thread_id="4234e2b1-3938-40df-8855-8f730cdd1d01" type="0" creator="">
 			<title>
 				<de>Arbeitslosenquote sinkt</de>
-				<en></en>
+				<en>Unemployment rate drops</en>
 			</title>
 			<description>
 				<de>Die Arbeitslosenquote ist im Vergleich zum Vormonat wieder gesunken. Arbeitslose langsam aber sicher in der Unterzahl.</de>
-				<en></en>
+				<en>The unemployment rate has fallen compared to previous month. Unemployed slowly but surely become the minority</en>
 			</description>
 			<effects />
 			<data genre="0" price="1.0" quality="29" />
@@ -10432,11 +10432,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="679a06d6-ade8-40fa-9770-eb3c31ef75ec" thread_id="49165cd6-34e3-4d00-8afd-f6eb3ae808ef" type="0" creator="">
 			<title>
 				<de>Flaschensammler zur Kasse gebeten?</de>
-				<en></en>
+				<en>Deposit collectors soaked?</en>
 			</title>
 			<description>
 				<de>Insider-Informationen nach sollen Flaschensammler ab sofort für ihre Tätigkeit Gewinnsteuern bezahlen. Die Vereinigung Deutscher Flaschensammler legt Berufung ein.</de>
-				<en></en>
+				<en>According to insider information bottles and deposit collectors will have to pay income tax for their activities immediately. The Association of German bottle collectors lodges an appeal.</en>
 			</description>
 			<effects />
 			<data genre="4" price="1.0" quality="9" />
@@ -10445,11 +10445,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="b6b215f8-17de-44f0-b3f5-a23e06794705" thread_id="4ea94528-27be-4366-9f5b-80e6893a3e9b" type="0" creator="">
 			<title>
 				<de>Mann will Tochter zur Brust-OP verhelfen</de>
-				<en></en>
+				<en>Man wants to leverage his daughter a breast surgery</en>
 			</title>
 			<description>
 				<de>Durch den Kauf von acht Silikon-Spritzen im Baumarkt will ein Arbeitsloser seiner Tochter zur Brust-OP verhelfen.</de>
-				<en></en>
+				<en>By purchasing eight silicon syringes at the hardware store an unemployed person wants to leverage his daughter a breast surgery.</en>
 			</description>
 			<effects />
 			<data genre="4" price="1.05" quality="9" />
