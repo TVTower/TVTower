@@ -12,7 +12,9 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	Field timesBroadcasted:int[] = [0]
 	Field topicality:Float = 1.0
 	Field flags:int = 0
-	
+	'is the source available at all?
+	Field available:int = True
+
 
 	Method Initialize:int()
 		timesBroadcasted = [0]
@@ -107,6 +109,10 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 		EndIf
 	End Method
 
+
+	Method IsAvailable:int()
+		return available
+	End Method
 
 	'add an effect defined in a data container
 	'effectData should be consisting of:

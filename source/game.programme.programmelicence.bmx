@@ -580,10 +580,12 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	Method isAvailable:int() {_exposeToLua}
 		if not isReleased() then return False
 
+		if not GetData().isAvailable() then return False
+
 		'exceeded broadcastLimit
 		if broadcastLimit > 0 and data.GetTimesBroadcasted() >= broadcastLimit then return False
 
-		return True
+		return Super.IsAvailable()
 	End Method
 
 

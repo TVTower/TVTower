@@ -1192,14 +1192,17 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	End Method
 
 
-	Method isAvailable:int()
+	'override
+	Method IsAvailable:int()
 		'if a date for a live broadcast was defined, the programme
 		'isn't anymore from this time on
 		if liveTime >= 0 and GetWorldTime().GetTimeGone() >= liveTime
 			return False
 		endif
 
-		return isReleased()
+		if not isReleased() then return False
+
+		return Super.IsAvailable()
 	End Method
 
 

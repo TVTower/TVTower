@@ -394,10 +394,11 @@ Type TDatabaseLoader
 		local data:TData = new TData
 		'price and topicality are outdated
 		xml.LoadValuesToData(nodeData, data, [..
-			"genre", "price", "topicality" ..
+			"genre", "price", "topicality", "available" ..
 		])
 			
 		newsEvent.genre = data.GetInt("genre", newsEvent.genre)
+		newsEvent.available = data.GetBool("available", newsEvent.available)
 		'topicality is "quality" here
 		newsEvent.quality = 0.01 * data.GetFloat("topicality", 100 * newsEvent.quality)
 		'price is "priceModifier" here (so add 1.0 until that is done in DB)
@@ -480,11 +481,12 @@ Type TDatabaseLoader
 			"pro_pressure_groups", "contra_pressure_groups", ..
 			"infomercial_profit", "fix_infomercial_profit", ..
 			"year_range_from", "year_range_to", ..
-			"blocks" ..
+			"available", "blocks" ..
 		])
 
 		adContract.infomercialAllowed = data.GetBool("infomercial", adContract.infomercialAllowed)
 		adContract.quality = 0.01 * data.GetFloat("quality", adContract.quality * 100.0)
+		adContract.available = data.GetBool("available", adContract.available)
 
 		'old -> now stored in "availability
 		adContract.availableYearRangeFrom = data.GetInt("year_range_from", adContract.availableYearRangeFrom)
@@ -645,13 +647,16 @@ Type TDatabaseLoader
 		xml.LoadValuesToData(nodeData, data, [..
 			"country", "year", "distribution", "blocks", ..
 			"maingenre", "subgenre", "time", "price_mod", ..
-			"flags" ..
+			"available", "flags" ..
 		])
 		programmeData.country = data.GetString("country", programmeData.country)
 		programmeData.year = data.GetInt("year", programmeData.year)
 		programmeData.distributionChannel = data.GetInt("distribution", programmeData.distributionChannel)
 		programmeData.blocks = data.GetInt("blocks", programmeData.blocks)
+		programmeData.available = data.GetBool("available", programmeData.available)
+		programmeLicence.available = programmeData.available
 		programmeData.liveTime = data.GetLong("time", programmeData.liveTime)
+		if programmeData.liveTime <= 0 then programmeData.liveTime = -1
 		'compatibility: load price mod from "price_mod" first... later
 		'override with "modifiers"-data
 		programmeData.SetModifier("price", data.GetFloat("price_mod", programmeData.GetModifier("price")))
@@ -1099,7 +1104,8 @@ endif
 			local effectData:TData = new TData
 			xml.LoadValuesToData(nodeEffect, effectData, [..
 				"trigger", "type", ..
-				"parameter1", "parameter2", "parameter3", "parameter4", "parameter5" ..
+				"parameter1", "parameter2", "parameter3", "parameter4", "parameter5", ..
+				"trigger_parameter1", "trigger_parameter2", "trigger_parameter3", "trigger_parameter4", "trigger_parameter5" ..
 			])
 
 			source.AddEffectByData(effectData)
