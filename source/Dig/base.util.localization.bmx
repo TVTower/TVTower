@@ -64,6 +64,18 @@ Type TLocalization
 	End Function
 
 
+	'Returns the value for the specified key, or the given key if
+	'nothing was found
+	Function GetLocalizedString:TLocalizedString(Key:String, group:String = Null)
+		local ls:TLocalizedString = new TLocalizedString
+		For local lang:TLocalizationLanguage = EachIn languages.Values()
+			ls.Set(lang.Get(Key, group).replace("\n", Chr(13)), lang.languageCode)
+		Next
+
+		return ls
+	End Function
+
+
 	Function GetRandomString:String(Key:String, limit:int=-1)
 		if not currentLanguage then return Key
 
@@ -204,6 +216,10 @@ Function GetRandomLocale:string(baseKey:string)
 	return TLocalization.GetRandomString(baseKey)
 End Function
 
+Function GetLocalizedString:TLocalizedString(key:string)
+	return TLocalization.GetLocalizedString(key)
+End Function
+
 
 
 
@@ -324,6 +340,14 @@ Type TLocalizedString
 		else
 			return string(values.ValueForKey(defaultLanguage))
 		endif
+	End Method
+
+
+	Method Replace:TLocalizedString(source:string, replacement:string)
+		For local k:string = EachIn values.Keys()
+			values.insert(k, string(values.ValueForKey(k)).replace(source, replacement))
+		Next
+		return self
 	End Method
 
 

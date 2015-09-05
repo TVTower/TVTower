@@ -574,20 +574,20 @@ for local playerA:int = 1 to 4
 			For local lB:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(playerB).programmeLicences
 
 				if lA = lB
-					print "found playercollection duplicate: "+lA.GetTitle()
+					print "found playercollection ("+playerA+" vs " + playerB+") duplicate: "+lA.GetTitle()
 					duplicateCount :+ 1
 					continue
 				endif
 				
 				if lA.GetGUID() = lB.GetGUID()
-					print "found playercollection GUID duplicate: "+lA.GetTitle()
+					print "found playercollection ("+playerA+" vs " + playerB+")  GUID duplicate: "+lA.GetTitle()
 					duplicateCount :+ 1
 					continue
 				endif
 
 				if lA.GetTitle() <> "Die Streichholzhammerbowle"
 					if lA.GetTitle() = lB.GetTitle()
-						print "found playercollection TITLE duplicate: "+lA.GetTitle()
+						print "found playercollection ("+playerA+" vs " + playerB+")  TITLE duplicate: "+lA.GetTitle()
 						duplicateCount :+ 1
 						continue
 					endif

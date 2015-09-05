@@ -183,6 +183,9 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		'only owner can click on it 
 		if broadcastMaterial and broadcastMaterial.GetOwner() <> GetPlayerCollection().playerID Then return False
 
+		'skip if player cannot control the material
+		if broadcastMaterial and broadcastMaterial.HasFlag(TVTBroadcastMaterialFlag.NOT_CONTROLLABLE) Then return False
+
 		return Super.IsClickable()
 	End Method
 

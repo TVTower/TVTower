@@ -95,6 +95,14 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'FALSE to avoid recursive handling (network)
 	Global fireEvents:Int = True
 
+	Const LOCK_TYPE_COUNT:int = 5
+
+	Const LOCK_TYPE_COMMON:int = 0
+	Const LOCK_TYPE_TEMPORARY:int = 1
+	Const LOCK_TYPE_THIRDPARTY:int = 2
+	Const LOCK_TYPE_BOSS:int = 4
+	Const LOCK_TYPE_GOVERNMENT:int = 8
+
 	'===== COMMON FUNCTIONS =====
 
 
@@ -247,27 +255,68 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'Set a time slot locked
 	'each lock is identifyable by "typeID_timeHours"
-	Method LockSlot:int(slotType:int=0, day:int=-1, hour:int=-1)
+	Method LockSlot:int(slotType:int=0, day:int=-1, hour:int=-1, lockTypeFlags:int=0)
 		If day = -1 Then day = GetWorldTime().getDay()
 		If hour = -1 Then hour = GetWorldTime().getDayHour()
 
-		lockedSlots.Insert((day*24 + hour) + "_" +slotType, null)
+		'remove lock flags contained in flag already
+		local flag:int = 0
+		For local i:int = 0 to LOCK_TYPE_COUNT
+			flag = 2^i
+			if flag = lockTypeFlags then continue
+			if not (flag & lockTypeFlags) and lockTypeFlags <> 0 then continue
+			lockedSlots.Remove((day*24 + hour) + "_" +slotType + "_" + flag)
+		Next
+		lockedSlots.Insert((day*24 + hour) + "_" +slotType+"_"+lockTypeFlags, null)
 	End Method
 
 
-	Method UnlockSlot:int(slotType:int=0, day:int=-1, hour:int=-1)
+	Method UnlockSlot:int(slotType:int=0, day:int=-1, hour:int=-1, lockTypeFlags:int=0)
 		If day = -1 Then day = GetWorldTime().getDay()
 		If hour = -1 Then hour = GetWorldTime().getDayHour()
 
-		lockedSlots.Remove((day*24 + hour) + "_" +slotType)
+		local flag:int = 0
+		For local i:int = 0 to LOCK_TYPE_COUNT
+			flag = 2^i
+			if not (flag & lockTypeFlags) and lockTypeFlags<>0 then continue
+			lockedSlots.Remove((day*24 + hour) + "_" +slotType + "_" + flag)
+		Next
 	End Method
 	
 
-	Method IsLockedSlot:int(slotType:int=0, day:int=-1, hour:int=-1)
+	Method IsLockedSlot:int(slotType:int=0, day:int=-1, hour:int=-1, lockTypeFlags:int=0)
 		If day = -1 Then day = GetWorldTime().getDay()
 		If hour = -1 Then hour = GetWorldTime().getDayHour()
 
-		return lockedSlots.Contains((day*24 + hour) + "_" + slotType)
+		local flag:int = 0
+		For local i:int = 0 to LOCK_TYPE_COUNT
+			flag = 2^i
+			if not (flag & lockTypeFlags) and lockTypeFlags<>0 then continue
+			if lockedSlots.Contains((day*24 + hour) + "_" + slotType + "_" + flag)
+				return True
+			endif
+		Next
+		return False
+	End Method
+
+
+	'helper function
+	'returns whether the given material occupies a locked slot
+	Method IsLockedBroadcastMaterial:int(broadcastMaterial:TBroadcastMaterial, lockTypeFlags:int=0)
+		if not broadcastMaterial then return False
+		
+		'for now we ignore owner checks - so every broadcastmaterial is just
+		'checked if it occupies a locked slot
+
+		'skip material not programmed yet
+		if broadcastMaterial.programmedDay = -1 then return False
+		 
+		for local block:int = 0 until broadcastMaterial.GetBlocks()
+			if IsLockedSlot(broadcastMaterial.usedAsType, broadcastMaterial.programmedDay, broadcastMaterial.programmedHour, lockTypeFlags)
+				return True
+			endif
+		Next
+		return False
 	End Method
 	
 
@@ -282,7 +331,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 				continue
 			endif
 
-			if int(parts[1] < time)
+			if int(parts[0] < time)
 				lockedSlots.Remove(k)
 			else
 				'as the keys are sorted by time (and then by type) we could
@@ -492,6 +541,9 @@ endrem
 		'do not allow adding objects we do not own
 		If obj.GetOwner() <> owner Then Return False
 
+		'do not allow adding objects we cannot control
+		If obj.HasFlag(TVTBroadcastMaterialFlag.NOT_CONTROLLABLE) Then Return False
+
 		'the same object is at the exact same slot - skip actions/events
 		If obj = GetObjectAtIndex(slotType, arrayIndex) Then Return True
 
@@ -555,6 +607,10 @@ endrem
 	Method RemoveObject:Object(obj:TBroadcastMaterial=Null, slotType:Int=0, day:Int=-1, hour:Int=-1)
 		If Not obj Then obj = GetObject(slotType, day, hour)
 		If Not obj Then Return Null
+
+		'do not allow removing objects we cannot control
+		'(to forcefully remove the, unset that flag before!
+		If obj.HasFlag(TVTBroadcastMaterialFlag.NOT_CONTROLLABLE) Then Return Null
 
 		'print "RON: PLAN.RemoveObject          id="+obj.id+" day="+day+" hour="+hour+" progDay="+obj.programmedDay+" progHour="+obj.programmedHour + " arrayIndex="+GetArrayIndex(obj.programmedDay*24 + obj.programmedHour) + " title:"+obj.GetTitle()
 

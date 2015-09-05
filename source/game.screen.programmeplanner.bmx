@@ -7,8 +7,8 @@ Type TScreenHandler_ProgrammePlanner
 	Global ProgrammePlannerButtons:TGUIButton[6]
 	Global PPprogrammeList:TgfxProgrammelist
 	Global PPcontractList:TgfxContractlist
-	Global disabledAdSlots:int[24]
-	Global disabledProgrammeSlots:int[24]
+	Global overlayedAdSlots:int[24]
+	Global overlayedProgrammeSlots:int[24]
 	Global fastNavigateTimer:TIntervalTimer = TIntervalTimer.Create(250)
 	Global fastNavigateInitialTimer:int = 250
 	Global fastNavigationUsedContinuously:int = FALSE
@@ -29,9 +29,6 @@ Type TScreenHandler_ProgrammePlanner
 
 	Global _eventListeners:TLink[]
 
-	Const SLOTTYPE_ALL:int = -1
-	Const SLOTTYPE_PROGRAMME:int = 0
-	Const SLOTTYPE_ADVERTISEMENT:int = 1
 
 	Function Initialize:int()
 		local screen:TScreen = ScreenCollection.GetScreen("screen_office_programmeplanner")
@@ -200,57 +197,57 @@ Type TScreenHandler_ProgrammePlanner
 	End Function
 
 
-	Function ResetSlots:int(slotType:int = -1)
+	Function ResetSlotOverlays:int(slotType:int = -1)
 		For local i:int = 0 to 23
-			if slotType = SLOTTYPE_PROGRAMME
-				disabledProgrammeSlots[i] = 0
-			elseif slotType = SLOTTYPE_ADVERTISEMENT
-				disabledAdSlots[i] = 0
+			if slotType = TVTBroadcastMaterialType.PROGRAMME
+				overlayedProgrammeSlots[i] = 0
+			elseif slotType = TVTBroadcastMaterialType.ADVERTISEMENT
+				overlayedAdSlots[i] = 0
 			else
-				disabledProgrammeSlots[i] = 0
-				disabledAdSlots[i] = 0
+				overlayedProgrammeSlots[i] = 0
+				overlayedAdSlots[i] = 0
 			endif
 		Next
 	End Function
 
 
-	Function EnableSlots:int(hours:int[] = null, slotType:int = -1)
+	Function EnableSlotOverlays:int(hours:int[] = null, slotType:int = -1)
 		If hours and hours.length > 0
 			For local hour:int = EachIn hours
-				if slotType = SLOTTYPE_PROGRAMME
-					disabledProgrammeSlots[hour] = 0
-				elseif slotType = SLOTTYPE_ADVERTISEMENT
-					disabledAdSlots[hour] = 0
+				if slotType = TVTBroadcastMaterialType.PROGRAMME
+					overlayedProgrammeSlots[hour] = 0
+				elseif slotType = TVTBroadcastMaterialType.ADVERTISEMENT
+					overlayedAdSlots[hour] = 0
 				else
-					disabledProgrammeSlots[hour] = 0
-					disabledAdSlots[hour] = 0
+					overlayedProgrammeSlots[hour] = 0
+					overlayedAdSlots[hour] = 0
 				endif
 			Next
 		Endif
 	End Function
 
 
-	Function DisableSlots:int(hours:int[] = null, slotType:int = 0)
+	Function DisableSlotOverlays:int(hours:int[] = null, slotType:int = 0)
 		If hours and hours.length > 0
 			For local hour:int = EachIn hours
-				if slotType = SLOTTYPE_PROGRAMME
-					disabledProgrammeSlots[hour] = 1
-				elseif slotType = SLOTTYPE_ADVERTISEMENT
-					disabledAdSlots[hour] = 1
+				if slotType = TVTBroadcastMaterialType.PROGRAMME
+					overlayedProgrammeSlots[hour] = 1
+				elseif slotType = TVTBroadcastMaterialType.ADVERTISEMENT
+					overlayedAdSlots[hour] = 1
 				else
-					disabledProgrammeSlots[hour] = 1
-					disabledAdSlots[hour] = 1
+					overlayedProgrammeSlots[hour] = 1
+					overlayedAdSlots[hour] = 1
 				endif
 			Next
 		Endif
 	End Function
 
 
-	Function IsDisabledSlot:int(hour:int, slotType:int = 0)
-		if slotType = SLOTTYPE_PROGRAMME
-			return disabledProgrammeSlots[hour] = 1
+	Function HasSlotOverlay:int(hour:int, slotType:int = 0)
+		if slotType = TVTBroadcastMaterialType.PROGRAMME
+			return overlayedProgrammeSlots[hour] = 1
 		else
-			return disabledAdSlots[hour] = 1
+			return overlayedAdSlots[hour] = 1
 		endif
 	End Function
 
@@ -329,75 +326,8 @@ Type TScreenHandler_ProgrammePlanner
 		return False
 	End Function
 
-rem
-	Function DrawDisabledSlots(invert:int = False)
-		local oldCol:TColor = new TColor.get()
-		SetBlend LightBlend
-		SetAlpha oldCol.a * 0.1
-		if not invert
-			SetColor 255,50,50
-		else
-			SetColor 0,255,50
-		endif
 
-		Local adBlock1:TSprite = GetSpriteFromRegistry("pp_adblock1")
-		Local programmeBlock1:TSprite = GetSpriteFromRegistry("pp_programmeblock1")
-		For local i:int = 0 to 23
-			if IsDisabledSlot(i, SLOTTYPE_PROGRAMME) = not invert
-				if i < 12
-					programmeBlock1.Draw(45, 5 + i*30)
-				else
-					programmeBlock1.Draw(380, 5 + (i-12)*30)
-				endif
-			endif
-			if IsDisabledSlot(i, SLOTTYPE_ADVERTISEMENT) = not invert
-				if i < 12
-					adBlock1.Draw(45 + programmeBlock1.GetWidth(), 5 + i*30)
-				else
-					adBlock1.Draw(380 + programmeBlock1.GetWidth(), 5 + (i-12)*30)
-				endif
-			endif
-		Next
-
-		SetBlend AlphaBlend
-		oldCol.SetRGBA()
-
-		'overlay clock background
-		Local clockMode:string = "mixed"
-		if invert then clockMode = "ok"
-		Local clockBG1:TSprite = GetSpriteFromRegistry("gfx_programmeplanner_clock1." + clockMode)
-		Local clockBG2:TSprite = GetSpriteFromRegistry("gfx_programmeplanner_clock2." + clockMode)
-		local fontColor:TColor = TColor.CreateGrey(240)
-		For local i:int = 0 to 23
-			if IsDisabledSlot(i, SLOTTYPE_PROGRAMME) = not invert or IsDisabledSlot(i, SLOTTYPE_ADVERTISEMENT) = not invert
-				if i < 12
-					if i mod 2 = 0
-						clockBG1.Draw(5, 5+1 + i*30)
-					else
-						clockBG2.Draw(5, 5+1 + i*30)
-					endif
-
-					local text:string = i
-					If i < 10 then text = "0" + text
-					SetAlpha oldCol.a * 0.75
-					GetBitmapFontManager().baseFontBold.DrawBlock(text, 6, 5 + i * 30, 39, 30, ALIGN_CENTER_CENTER, fontColor, 2,1,0.25)
-					SetAlpha oldCol.a
-				else
-					if i mod 2 = 0
-						clockBG1.Draw(340, 5+1 + (i-12)*30)
-					else
-						clockBG2.Draw(340, 5+1 + (i-12)*30)
-					endif
-					SetAlpha oldCol.a * 0.75
-					GetBitmapFontManager().baseFontBold.DrawBlock(i,  341, 5 + (i-12) * 30, 39, 30, ALIGN_CENTER_CENTER, fontColor, 2,1,0.25)
-					SetAlpha oldCol.a
-				endif
-			endif
-		Next
-	End Function
-endrem
-
-	Function DrawDisabledSlots(invert:int = False)
+	Function DrawSlotOverlays(invert:int = False)
 		local oldCol:TColor = new TColor.get()
 		SetAlpha oldCol.a * 0.65 + Min(0.15, Max(-0.20, sin(Millisecs() / 6) * 0.20))
 
@@ -406,43 +336,43 @@ endrem
 		Local clockOverlay2:TSprite = GetSpriteFromRegistry("gfx_programmeplanner_clockoverlay2.highlighted")
 
 		For local i:int = 0 to 23
-			local disabledCount:int = (IsDisabledSlot(i, SLOTTYPE_PROGRAMME) = not invert) + (IsDisabledSlot(i, SLOTTYPE_ADVERTISEMENT) = not invert)
-			if disabledCount = 2
+			local overlayedCount:int = (HasSlotOverlay(i, TVTBroadcastMaterialType.PROGRAMME) = not invert) + (HasSlotOverlay(i, TVTBroadcastMaterialType.ADVERTISEMENT) = not invert)
+			if overlayedCount = 2
 				if not invert
 					SetColor 255,50,50
 				else
 					SetColor 0,255,50
 				endif
-			elseif disabledCount = 1
+			elseif overlayedCount = 1
 				SetColor 255,150,0
 			endif
 
 			if i < 12
-				if disabledCount > 0
+				if overlayedCount > 0
 					if i mod 2 = 0
 						clockOverlay1.Draw(5, 5 + i*30)
 					else
 						clockOverlay2.Draw(5, 5 + i*30)
 					endif
 				endif
-				if IsDisabledSlot(i, SLOTTYPE_PROGRAMME) = not invert
+				if HasSlotOverlay(i, TVTBroadcastMaterialType.PROGRAMME) = not invert
 					blockOverlay.DrawArea(45, 5 + i*30, 205, 30)
 				endif
-				if IsDisabledSlot(i, SLOTTYPE_ADVERTISEMENT) = not invert
+				if HasSlotOverlay(i, TVTBroadcastMaterialType.ADVERTISEMENT) = not invert
 					blockOverlay.DrawArea(45 + 205, 5 + i*30, 85, 30)
 				endif
 			else
-				if disabledCount > 0
+				if overlayedCount > 0
 					if i mod 2 = 0
 						clockOverlay1.Draw(340, 5 + (i - 12)*30)
 					else
 						clockOverlay2.Draw(340, 5 + (i - 12)*30)
 					endif
 				endif
-				if IsDisabledSlot(i, SLOTTYPE_PROGRAMME) = not invert
+				if HasSlotOverlay(i, TVTBroadcastMaterialType.PROGRAMME) = not invert
 					blockOverlay.DrawArea(380, 5 + (i - 12)*30, 205,30)
 				endif
-				if IsDisabledSlot(i, SLOTTYPE_ADVERTISEMENT) = not invert
+				if HasSlotOverlay(i, TVTBroadcastMaterialType.ADVERTISEMENT) = not invert
 					blockOverlay.DrawArea(380 + 205, 5 + (i - 12)*30, 85,30)
 				endif
 			endif
@@ -570,6 +500,12 @@ endrem
 
 		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
 		if not item then return FALSE
+
+		'stop dragging from locked slots
+		if GetPlayerProgrammePlan(currentRoom.owner).IsLockedBroadcastMaterial(item.broadcastMaterial)
+			triggerEvent.SetVeto()
+			return FALSE
+		endif
 
 		if not ignoreCopyOrEpisodeShortcut and CreateNextEpisodeOrCopyByShortcut(item)
 			triggerEvent.SetVeto()
@@ -902,7 +838,7 @@ endrem
 		
 		GUIManager.Draw("programmeplanner",,, GUIMANAGER_TYPES_NONDRAGGED)
 
-		DrawDisabledSlots()
+		DrawSlotOverlays()
 
 		'overlay old days
 		If GetWorldTime().getDay() > planningDay
@@ -982,10 +918,14 @@ endrem
 
 		currentRoom = room
 
-		'reset potentially locked slots
-		ResetSlots(SLOTTYPE_ALL)
-		'TODO: lock slots depending on "dragged" item
-		
+		'reset and refresh locked slots of this day
+		ResetSlotOverlays()
+		local pp:TPlayerProgrammePlan = GetPlayerProgrammePlan(room.owner)
+		for local h:int = 0 to 23
+			if pp.IsLockedSlot(TVTBroadcastMaterialType.PROGRAMME, planningDay, h)
+				DisableSlotOverlays([h], TVTBroadcastMaterialType.PROGRAMME)
+			endif
+		Next
 
 		'if not initialized, do so
 		if planningDay = -1 then planningDay = GetWorldTime().getDay()

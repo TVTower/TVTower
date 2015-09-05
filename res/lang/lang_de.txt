@@ -559,3 +559,7 @@ LOCKED = Abgeschlossen
 ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY = Der Zugang zu diesem Raum ist nur mit dem richtigen Schlüssel möglich.
 BLOCKED = Blockiert
 ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE = Der Zugang zu diesem Raum ist derzeit nicht möglich.
+
+
+OPENINGSHOW_TITLE = Eröffnungsshow „%CHANNELNAME%“
+OPENINGSHOW_DESCRIPTION = Lasst die Korken knallen. %CHANNELNAME% geht an den Start.

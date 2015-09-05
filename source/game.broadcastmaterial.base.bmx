@@ -8,21 +8,42 @@ Import "game.publicimage.bmx"
 
 'Base type for programmes, advertisements...
 Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
-	Field state:int				= 0		'by default the state is "normal"
-	Field materialType:int		= 0		'original material type (may differ to usage!)
-	Field usedAsType:int		= 0		'the type this material is used for (programme as adspot -> trailer)
-	Field useableAsType:int		= 0		'the type this material can be used for (so we can forbid certain ads as tvshow etc)
+	Field flags:int = 0
+	'by default the state is "normal"
+	Field state:int = 0
+	'original material type (may differ to usage!)
+	Field materialType:int = 0
+	'the type this material is used for (programme as adspot -> trailer)
+	Field usedAsType:int= 0
+	'the type this material can be used for (so we can forbid certain ads as tvshow etc)
+	Field useableAsType:int = 0
 
-	Field programmedHour:int	= -1	'time at which the material is planned to get send
-	Field programmedDay:int		= -1
+	'time at which the material is planned to get send
+	Field programmedHour:int = -1
+	Field programmedDay:int	= -1
 
-	Field currentBlockBroadcasting:int		{_exposeToLua} '0 = läuft nicht; 1 = 1 Block; 2 = 2 Block; usw.
+	'0 = läuft nicht; 1 = 1 Block; 2 = 2 Block; usw.
+	Field currentBlockBroadcasting:int {_exposeToLua}
 
 	'states a program can be in
 	Const STATE_NORMAL:int		= 0
 	Const STATE_OK:int			= 1
 	Const STATE_FAILED:int		= 2
 	Const STATE_RUNNING:int		= 3
+
+
+	Method hasFlag:Int(flag:Int) {_exposeToLua}
+		Return flags & flag
+	End Method
+
+
+	Method setFlag(flag:Int, enable:Int=True)
+		If enable
+			flags :| flag
+		Else
+			flags :& ~flag
+		EndIf
+	End Method
 
 
 	'needed for all extending objects

@@ -100,6 +100,14 @@ End Type
 
 
 
+Type TVTBroadcastMaterialFlag {_exposeToLua}
+	Const UNKNOWN:int = 0
+	'3rd party material might be uncontrollable for the players
+	Const THIRD_PARTY_MATERIAL:int = 1
+	Const NOT_CONTROLLABLE:int = 2
+End Type
+
+	
 
 Type TVTBroadcastMaterialType {_exposeToLua}
 	Const UNKNOWN:int      = 1

@@ -1119,7 +1119,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 			contentY :+ 12	
 			skin.fontNormal.draw("Bloecke: "+data.GetBlocks(), contentX + 5, contentY)
 			contentY :+ 12	
-			skin.fontNormal.draw("Ausgestrahlt: "+data.GetTimesBroadcasted(useOwner)+"x Spieler, "+data.GetTimesBroadcasted()+"x alle", contentX + 5, contentY)
+			skin.fontNormal.draw("Ausgestrahlt: "+data.GetTimesBroadcasted(useOwner)+"x Spieler, "+data.GetTimesBroadcasted()+"x alle  Limit:"+broadcastLimit, contentX + 5, contentY)
 			contentY :+ 12	
 			skin.fontNormal.draw("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(useOwner, -1).audience.GetSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetSum())+" (alle)", contentX + 5, contentY)
 			contentY :+ 12	
