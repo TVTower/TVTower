@@ -738,6 +738,22 @@ Type TScreenHandler_ProgrammePlanner
 		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetData().get("item"))
 		local slot:int = triggerEvent.GetData().getInt("slot", -1)
 		if not list or not item or slot = -1 then return FALSE
+		if not item.broadcastMaterial then return False
+
+		local pp:TPlayerProgrammePlan = GetPlayerProgrammePlan(currentRoom.owner)
+		'loop over all slots affected by this event - except
+		'the broadcastmaterial is already placed at the given spot
+		if item.broadcastMaterial <> pp.GetObject(list.isType, planningDay, slot)
+			For local currentSlot:int = slot until slot + item.broadcastMaterial.GetBlocks()
+				'stop adding to a locked slots or slots occupied by a partially
+				'locked programme
+				'also stops if the slot is used by a not-controllable programme
+				if not pp.IsModifyableSlot(list.isType, planningDay, currentSlot)
+					triggerEvent.SetVeto()
+					return FALSE
+				endif
+			Next
+		endif
 
 		'only check slot state if interacting with the programme planner
 		if talkToProgrammePlanner

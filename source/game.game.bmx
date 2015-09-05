@@ -362,6 +362,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				broadcast.SetFlag(TVTBroadcastMaterialFlag.NOT_CONTROLLABLE)
 				'disable availability
 				broadcast.data.available = False
+				'additionally lock slots
+'				for local i:int = 0 until broadcast.GetBlocks()
+'					playerPlan.LockSlot(TVTBroadcastMaterialType.PROGRAMME, GetWorldTime().GetStartDay(), currentHour + i )
+'				Next
 
 				currentHour:+ currentLicence.getData().getBlocks()
 

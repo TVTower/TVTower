@@ -261,11 +261,13 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		'remove lock flags contained in flag already
 		local flag:int = 0
+		'flag=0 not contained in loop
+		lockedSlots.Remove((day*24 + hour) + "_" +slotType + "_" + flag)
 		For local i:int = 0 to LOCK_TYPE_COUNT
 			flag = 2^i
-			if flag = lockTypeFlags then continue
-			if not (flag & lockTypeFlags) and lockTypeFlags <> 0 then continue
-			lockedSlots.Remove((day*24 + hour) + "_" +slotType + "_" + flag)
+			if flag & lockTypeFlags and flag <> lockTypeFlags
+				lockedSlots.Remove((day*24 + hour) + "_" +slotType + "_" + flag)
+			endif
 		Next
 		lockedSlots.Insert((day*24 + hour) + "_" +slotType+"_"+lockTypeFlags, null)
 	End Method
@@ -278,22 +280,47 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		local flag:int = 0
 		For local i:int = 0 to LOCK_TYPE_COUNT
 			flag = 2^i
-			if not (flag & lockTypeFlags) and lockTypeFlags<>0 then continue
-			lockedSlots.Remove((day*24 + hour) + "_" +slotType + "_" + flag)
+			if flag & lockTypeFlags and flag <> lockTypeFlags
+				lockedSlots.Remove((day*24 + hour) + "_" +slotType + "_" + flag)
+			endif
 		Next
 	End Method
-	
 
+
+	'returns whether a slot is locked, or belongs to an object which
+	'occupies at least 1 locked slot
+	Method BelongsToLockedSlot:int(slotType:int=0, day:int=-1, hour:int=-1, lockTypeFlags:int=0)
+		local obj:TBroadcastMaterial = GetObject(slotType, day, hour)
+		local hours:int = day*24 + hour
+		if obj
+			hours = obj.programmedDay*24 + obj.programmedHour
+			For local blockHour:int = hours until hours + obj.GetBlocks()
+				if IsLockedSlot(slotType, 0, blockHour, lockTypeFlags)
+					return True
+				endif
+			Next
+			return False
+		else
+			return IsLockedSlot(slotType, day, hour, lockTypeflags)
+		endif
+	End Method 
+
+
+	'returns whether this slot is locked, ignores locks of other slots
+	'occupied by the same broadcastmaterial filling this slot
 	Method IsLockedSlot:int(slotType:int=0, day:int=-1, hour:int=-1, lockTypeFlags:int=0)
 		If day = -1 Then day = GetWorldTime().getDay()
 		If hour = -1 Then hour = GetWorldTime().getDayHour()
 
 		local flag:int = 0
+		'flag 0 is not contained in loop, do it extra
+		if lockedSlots.Contains((day*24 + hour) + "_" + slotType + "_" + flag) then return True
 		For local i:int = 0 to LOCK_TYPE_COUNT
 			flag = 2^i
-			if not (flag & lockTypeFlags) and lockTypeFlags<>0 then continue
-			if lockedSlots.Contains((day*24 + hour) + "_" + slotType + "_" + flag)
-				return True
+			if flag & lockTypeFlags and flag <> lockTypeFlags
+				if lockedSlots.Contains((day*24 + hour) + "_" + slotType + "_" + flag)
+					return True
+				endif
 			endif
 		Next
 		return False
@@ -341,6 +368,26 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Next
 		return True
 	End Method
+
+
+	'returns whether a slot is locked, or belongs to an object which
+	'occupies at least 1 locked slot
+	Method BelongsToOccupiedSlotWithFlags:int(slotType:int=0, day:int=-1, hour:int=-1, broadcastMaterialFlags:int=0)
+		local obj:TBroadcastMaterial = GetObject(slotType, day, hour)
+		if not obj then return False
+		return obj.HasFlag(broadcastMaterialFlags)
+	End Method 
+
+
+	'returns whether a slot does not belong to a locked programme,
+	'is not in the past and is not belonging to a non-controllable element
+	Method IsModifyableSlot:int(slotType:int=0, day:int=-1, hour:int=-1, lockTypeFlags:int=0, currentDay:Int=-1, currentHour:Int=-1, currentMinute:Int=-1)
+		if not IsUseableTimeSlot(slotType, day, hour, currentDay, currentHour, currentMinute) then return False
+		if BelongsToLockedSlot(slotType, day, hour, lockTypeFlags) then return False
+		if BelongsToOccupiedSlotWithFlags(slotType, day, hour, TVTBroadcastMaterialFlag.NOT_CONTROLLABLE) then return False
+
+		return True
+	End Method 
 
 
 	'returns whether the slot can be used or is already in the past...

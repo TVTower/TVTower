@@ -59,7 +59,14 @@ Type TChannelPool
 	Function GetChannel:TChannel(key:string)
 		key = key.toLower()
 		local channel:TChannel = TChannel(channels.ValueForKey(key))
-		if not channel then channel = AddChannel(key, AllocChannel())
+		'if channel was not existing yet, create a new one
+		If not channel
+			channel = AllocChannel()
+			If not channel
+				Throw "TChannelPool: Failed to allocate new channel."
+			EndIf
+			AddChannel(key, channel)
+		EndIf
 		'if we do not have a channel now, we will surely have exceeded a
 		'limit. In that case we return a random one to override it
 		If not channel and GetChannelCount() >= 1
@@ -178,6 +185,8 @@ Type TChannelPool
 
 		'remove a previously set protection?
 		'UnProtectChannel(key)
+
+		return channel
 	End Function
 
 
