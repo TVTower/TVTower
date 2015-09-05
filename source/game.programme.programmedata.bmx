@@ -887,24 +887,16 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Method GetPrice:int()
 		Local value:int = 0
 
+		'price is based on quality
+		local priceMod:float = GetQualityRaw()
+
 		'movies run in cinema (outcome >0)
 		If isType(TVTProgrammeProductType.MOVIE) and GetOutcome() > 0
-			local priceMod:float = 0.0
-			priceMod :+ 0.55 * GetOutcome()
-			priceMod :+ 0.25 * GetReview()
-			priceMod :+ 0.2 * GetSpeed()
 			priceMod = THelper.LogisticalInfluence_Euler(priceMod, 0.5)
-
 			value = 35000 + 870000 * priceMod
 		 'shows, productions, series...
 		Else
-			local priceMod:float = 0.0
-			priceMod :+ 0.45 * GetReview()
-			priceMod :+ 0.55 * GetSpeed()
-			if GetReview() > 0.5 then priceMod :* 1.1
-			if GetSpeed() > 0.6 then priceMod :* 1.1
 			priceMod = THelper.LogisticalInfluence_Euler(priceMod, 0.5)
-
 			'basefactor * priceFactor
 			value = 15000 + 100000 * priceMod
 		EndIf
@@ -1010,16 +1002,25 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 	Method GetQualityRaw:Float()
 		Local genreDef:TMovieGenreDefinition = GetGenreDefinition()
-		If genreDef.OutcomeMod > 0.0 Then
-			Return GetOutcome() * genreDef.OutcomeMod ..
-			     + GetReview() * genreDef.ReviewMod ..
-			     + GetSpeed() * genreDef.SpeedMod
-		Else
-			'if no outcome was defined, increase weight of the other
-			'parts
-			Return GetReview() * (genreDef.ReviewMod + 0.5 * genreDef.OutcomeMod) ..
-			     + GetSpeed() * (genreDef.SpeedMod + 0.5 * genreDef.OutcomeMod)
-		EndIf
+		local quality:Float = 0.0
+
+		quality :+ GetReview() * genreDef.ReviewMod
+		quality :+ GetSpeed() * genreDef.SpeedMod
+		if GetOutcome() > 0
+			quality :+ GetOutcome() * genreDef.OutcomeMod
+		'if no outcome was defined, increase weight of the other parts
+		'increase quality according to their weight to the outcome mod
+		elseif genreDef.OutcomeMod > 0 and genreDef.OutcomeMod < 1.0
+			'1.0 - genreDef.OutcomeMod = amount left to share
+			if genreDef.ReviewMod > 0
+				quality :+ genreDef.ReviewMod/(1.0 - genreDef.OutcomeMod) * GetReview()
+			endif
+			if genreDef.SpeedMod > 0 
+				quality :+ genreDef.SpeedMod/(1.0 - genreDef.OutcomeMod) * GetSpeed()
+			endif
+		endif
+
+		return quality
 	End Method
 
 
