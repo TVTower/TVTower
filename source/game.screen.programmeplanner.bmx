@@ -562,17 +562,30 @@ Type TScreenHandler_ProgrammePlanner
 	End Function
 
 
-	'intercept if a freshly created element is dropped on an slot in
-	'run state
+	'intercept if a freshly created element is dropped on a not modifyable
+	'slot
 	Function onTryDropFreshProgrammePlanElementOnRunningSlot:int(triggerEvent:TEventBase)
 		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
 		if not item then return FALSE
+		if not currentRoom then return False
 
-		local receiverList:TGUISlotList = TGUISlotList(triggerEvent._receiver)
+		local receiverList:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent._receiver)
 		if receiverList
 			local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", new TVec2D.Init(-1,-1)))
 			local slot:int = receiverList.GetSlotByCoord(coord)
 
+			'loop over all slots affected by this event
+			local pp:TPlayerProgrammePlan = GetPlayerProgrammePlan(currentRoom.owner)
+			For local currentSlot:int = slot until slot + item.broadcastMaterial.GetBlocks(receiverList.isType)
+				'stop adding to a locked slots or slots occupied by a partially
+				'locked programme
+				'also stops if the slot is used by a not-controllable programme
+				if not pp.IsModifyableSlot(receiverList.isType, planningDay, currentSlot)
+					triggerEvent.SetVeto()
+				endif
+			Next
+
+			'old "slotstate"-check approach
 			if receiverList.GetSlotState(slot) = 2
 				triggerEvent.SetVeto()
 			endif
