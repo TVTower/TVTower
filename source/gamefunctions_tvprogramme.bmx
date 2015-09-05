@@ -321,7 +321,11 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		'If isDragged() Then state = 0
 		Select broadcastMaterial.state
 			Case broadcastMaterial.STATE_NORMAL
+				if broadcastMaterial.HasFlag(TVTBroadcastMaterialFlag.NOT_CONTROLLABLE)
+					SetColor 255,252,238
+				else
 					SetColor 255,255,255
+				endif
 			Case broadcastMaterial.STATE_RUNNING
 					SetColor 255,230,120
 			Case broadcastMaterial.STATE_OK
@@ -364,6 +368,12 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			SetColor 255,255,255
 		EndIf
 
+		if broadcastMaterial.HasFlag(TVTBroadcastMaterialFlag.NOT_CONTROLLABLE)
+			SetAlpha GetAlpha() * 0.8
+			GetSpriteFromRegistry("gfx_interface_ingamechat_key.locked").Draw(GetScreenX() + GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW() - 4, GetScreenY() + 5, -1, ALIGN_RIGHT_TOP)
+			SetAlpha GetAlpha() * 1.25
+		endif
+		
 		If titleIsVisible
 			Local useType:Int = broadcastMaterial.usedAsType
 			If hasOption(GUI_OBJECT_DRAWMODE_GHOST) And lastListType > 0

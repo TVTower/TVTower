@@ -617,7 +617,6 @@ Type TNewsEffect_TriggerNews extends TGameObjectEffect
 
 	'override to trigger a specific news
 	Method EffectFunc:int(params:TData)
-	print "Trigger News:"+ triggerNewsGUID
 		'set the happenedTime of the defined news to somewhere in the future
 		local news:TNewsEvent = GetNewsEventCollection().GetByGUID(triggerNewsGUID)
 		if not news
