@@ -266,34 +266,43 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			for local placeHolder:string = EachIn placeHolders
 				replacement = ""
 				Select placeHolder.toUpper()
-					case "%ROLENAME1%"
-						if actors.length > 0 and actors[0].roleGUID <> ""
-							local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(actors[0].roleGUID)
-							if role then replacement = role.GetFirstName()
+					case "%ROLENAME1%", "%ROLENAME2%", "%ROLENAME3%", "%ROLENAME4%", "%ROLENAME5%", "%ROLENAME6%", "%ROLENAME7%"
+						local actorNum:int = int(placeHolder.toUpper().Replace("%ROLENAME", "").Replace("%",""))
+						if actorNum > 0
+							if actors.length > actorNum and actors[actorNum].roleGUID <> ""
+								local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(actors[actorNum].roleGUID)
+								if role then replacement = role.GetFirstName()
+							endif
+							'gender neutral default
+							if replacement = ""
+								Select actorNum
+									case 1	replacement = "Robin"
+									case 2	replacement = "Alex"
+									default	replacement = "Jamie"
+								End Select
+							endif
 						endif
-						'gender neutral default
-						if replacement = "" then replacement = "Robin"
-					case "%ROLENAME2%"
-						if actors.length > 1 and actors[1].roleGUID <> ""
-							local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(actors[1].roleGUID)
-							if role then replacement = role.GetFirstName()
+					case "%ROLE1%", "%ROLE2%", "%ROLE3%", "%ROLE4%", "%ROLE5%", "%ROLE6%", "%ROLE7%"
+						local actorNum:int = int(placeHolder.toUpper().Replace("%ROLE", "").Replace("%",""))
+						if actorNum > 0
+							if actors.length > actorNum and actors[actorNum].roleGUID <> ""
+								local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(actors[actorNum].roleGUID)
+								if role then replacement = role.GetFullName()
+							endif
+							'gender neutral default
+							if replacement = ""
+								Select actorNum
+									case 1	replacement = "Robin Mayer"
+									case 2	replacement = "Alex Hulley"
+									default	replacement = "Jamie Larsen"
+								End Select
+							endif
 						endif
-						'gender neutral default
-						if replacement = "" then replacement = "Alex"
-					case "%ROLE1%"
-						if actors.length > 0 and actors[0].roleGUID <> ""
-							local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(actors[0].roleGUID)
-							if role then replacement = role.GetFullName()
-						endif
-						'gender neutral default
-						if replacement = "" then replacement = "Robin Mayer"
-					case "%ROLE2%"
-						if actors.length > 1 and actors[1].roleGUID <> ""
-							local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(actors[1].roleGUID)
-							if role then replacement = role.GetFullName()
-						endif
-						'gender neutral default
-						if replacement = "" then replacement = "Alex Hulley"
+
+					case "%GENRE%"
+						replacement = GetMainGenreString()
+					case "%EPISODES%"
+						replacement = GetMainGenreString()
 				End Select
 
 				'replace if some content was filled in
