@@ -912,6 +912,8 @@ Next
 		If GetGame().cursorstate = 1 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11, 	MouseManager.y-8	,1)
 		'grabbing hand
 		If GetGame().cursorstate = 2 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11,	MouseManager.y-16	,2)
+		'open hand blocked
+		If GetGame().cursorstate = 3 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11,	MouseManager.y-8	,3)
 
 		'if a screenshot is generated, draw a logo in
 		If App.prepareScreenshot = 1

@@ -218,7 +218,13 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 
 		'set mouse to "hover"
-		If broadcastMaterial.GetOwner() = GetPlayerCollection().playerID And mouseover Then GetGame().cursorstate = 1
+		If mouseover and broadcastMaterial.IsOwnedByPlayer( GetPlayerCollection().playerID)
+			if broadcastMaterial.SourceHasFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE)
+				GetGame().cursorstate = 3
+			else
+				GetGame().cursorstate = 1
+			endif
+		endif
 		'set mouse to "dragged"
 		If isDragged() Then GetGame().cursorstate = 2
 	End Method
@@ -2149,7 +2155,13 @@ Type TGUINews Extends TGUIGameListItem
 		Super.Update()
 
 		'set mouse to "hover"
-		If news.owner = GetPlayerCollection().playerID Or news.owner <= 0 And mouseover Then GetGame().cursorstate = 1
+		'set mouse to "hover"
+		If mouseover and (news.owner <= 0 or news.IsOwnedByPlayer( GetPlayerCollection().playerID))
+			if not news.SourceHasFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE)
+				GetGame().cursorstate = 1
+			endif
+		endif
+
 		'set mouse to "dragged"
 		If isDragged() Then GetGame().cursorstate = 2
 	End Method

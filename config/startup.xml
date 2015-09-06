@@ -6,7 +6,7 @@
 		<image name="gfx_startscreen" url="res/gfx/misc/screen_menu.png" />
 		<image name="gfx_startscreen_logo" url="res/gfx/misc/logo.png" />
 		<image name="gfx_startscreen_logoSmall"	url="res/gfx/misc/logo_small.png" />
-		<image name="gfx_mousecursor" url="res/gfx/interface/cursor.png" cw="32" ch="32" f="3" />
+		<image name="gfx_mousecursor" url="res/gfx/interface/cursor.png" cw="32" ch="32" f="4" />
 		<music name="sfx_music_title" url="res/music/Chilledoutwithabeat.ogg" playOnLoad="true" loop="true" playlists="menu" />
 		<file name="resource_gui" url="config/gui.xml" />
 	</resources>
