@@ -40,6 +40,12 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	End Function
 
 
+	'override
+	Method SourceHasFlag:int(flag:Int) {_exposeToLua}
+		return licence.HasFlag(flag)
+	End Method
+	
+
 	Method CheckHourlyBroadcastingRevenue:int(audience:TAudience)
 		if not audience then return False
 

@@ -27,6 +27,15 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 	End Function
 
 
+	'override
+	Method SourceHasFlag:int(flag:Int) {_exposeToLua}
+		for local n:TNews = EachIn news
+			if n.SourceHasFlag(flag) then return True
+		Next
+		return False
+	End Method
+
+
 	'override to inform contained news too
 	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		Super.BeginBroadcasting(day, hour, minute, audienceData)
@@ -250,6 +259,12 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		
 		Return obj
 	End Function
+
+
+	'override
+	Method SourceHasFlag:int(flag:Int) {_exposeToLua}
+		return newsEvent.HasFlag(flag)
+	End Method
 
 
 	Method GetHappenedTime:Double()

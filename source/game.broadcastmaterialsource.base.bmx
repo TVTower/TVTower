@@ -114,6 +114,7 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 		return available
 	End Method
 
+
 	'add an effect defined in a data container
 	'effectData should be consisting of:
 	'trigger = "broadcast", "firstbroadcast", "happen"...

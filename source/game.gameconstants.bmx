@@ -22,6 +22,7 @@ Type TVTGameConstants {_exposeToLua}
 	Field NewsEffect:TVTNewsEffect = new TVTNewsEffect
 
 	Field BroadcastMaterialType:TVTBroadcastMaterialType = new TVTBroadcastMaterialType
+	Field BroadcastMaterialSourceFlag:TVTBroadcastMaterialSourceFlag = new TVTBroadcastMaterialSourceFlag
 
 	Field PlayerFinanceEntryType:TVTPlayerFinanceEntryType = new TVTPlayerFinanceEntryType
 
@@ -100,7 +101,7 @@ End Type
 
 
 
-Type TVTBroadcastMaterialFlag {_exposeToLua}
+Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 	Const UNKNOWN:int = 0
 	'3rd party material might be uncontrollable for the players
 	Const THIRD_PARTY_MATERIAL:int = 1

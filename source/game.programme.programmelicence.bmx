@@ -604,6 +604,17 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 
 
+	Method isNewBroadcastPossible:int() {_exposeToLua}
+		'false if not controllable
+		if HasFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE) then return False
+		'false if licence is not available (temporary, or because broadcast
+		'limit was exceeded)
+		if isAvailable() then return False
+
+		return True
+	End Method
+	
+
 	Method setPlanned:int(latestHour:int=-1)
 		if latestHour >= 0
 			'set to maximum
@@ -661,6 +672,12 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		'return the string of the best genre of the licence (packet)
 		if GetData() then return GetData().GetGenreString( GetGenre() )
 		return ""
+	End Method
+
+
+	'override
+	Method setFlag(flag:Int, enable:Int=True)
+		Throw "TProgrammeLicence does not allow SetFlag(). Use GetData().SetFlag() instead."
 	End Method
 
 

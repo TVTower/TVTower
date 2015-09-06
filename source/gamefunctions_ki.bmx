@@ -761,7 +761,7 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 
-	Method of_getProgrammeLicenceAtindex:TProgrammeLicence(arrayIndex:Int=-1)
+	Method of_getProgrammeLicenceAtIndex:TProgrammeLicence(arrayIndex:Int=-1)
 		If Not _PlayerInRoom("office") Then Return Null
 
 		Local obj:TProgrammeLicence = GetPlayer(self.ME).GetProgrammeCollection().GetProgrammeLicenceAtIndex(arrayIndex)

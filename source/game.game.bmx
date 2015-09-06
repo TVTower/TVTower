@@ -359,7 +359,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				local broadcast:TProgramme = TProgramme.Create(currentLicence)
 				playerPlan.SetProgrammeSlot(broadcast, GetWorldTime().GetStartDay(), currentHour )
 				'disable control of that programme
-				broadcast.SetFlag(TVTBroadcastMaterialFlag.NOT_CONTROLLABLE)
+				broadcast.licence.data.SetFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE, True)
 				'disable availability
 				broadcast.data.available = False
 				'additionally lock slots

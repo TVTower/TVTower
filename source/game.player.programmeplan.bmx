@@ -372,10 +372,10 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'returns whether a slot is locked, or belongs to an object which
 	'occupies at least 1 locked slot
-	Method BelongsToOccupiedSlotWithFlags:int(slotType:int=0, day:int=-1, hour:int=-1, broadcastMaterialFlags:int=0)
+	Method BelongsToOccupiedSlotWithSourceFlags:int(slotType:int=0, day:int=-1, hour:int=-1, broadcastMaterialFlags:int=0)
 		local obj:TBroadcastMaterial = GetObject(slotType, day, hour)
 		if not obj then return False
-		return obj.HasFlag(broadcastMaterialFlags)
+		return obj.SourceHasFlag(broadcastMaterialFlags)
 	End Method 
 
 
@@ -384,7 +384,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method IsModifyableSlot:int(slotType:int=0, day:int=-1, hour:int=-1, lockTypeFlags:int=0, currentDay:Int=-1, currentHour:Int=-1, currentMinute:Int=-1)
 		if not IsUseableTimeSlot(slotType, day, hour, currentDay, currentHour, currentMinute) then return False
 		if BelongsToLockedSlot(slotType, day, hour, lockTypeFlags) then return False
-		if BelongsToOccupiedSlotWithFlags(slotType, day, hour, TVTBroadcastMaterialFlag.NOT_CONTROLLABLE) then return False
+		if BelongsToOccupiedSlotWithSourceFlags(slotType, day, hour, TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE) then return False
 
 		return True
 	End Method 
@@ -589,7 +589,8 @@ endrem
 		If obj.GetOwner() <> owner Then Return False
 
 		'do not allow adding objects we cannot control
-		If obj.HasFlag(TVTBroadcastMaterialFlag.NOT_CONTROLLABLE) Then Return False
+		If obj.SourceHasFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE) then Return False
+
 
 		'the same object is at the exact same slot - skip actions/events
 		If obj = GetObjectAtIndex(slotType, arrayIndex) Then Return True
@@ -657,7 +658,7 @@ endrem
 
 		'do not allow removing objects we cannot control
 		'(to forcefully remove the, unset that flag before!
-		If obj.HasFlag(TVTBroadcastMaterialFlag.NOT_CONTROLLABLE) Then Return Null
+		If obj.SourceHasFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE) then Return Null
 
 		'print "RON: PLAN.RemoveObject          id="+obj.id+" day="+day+" hour="+hour+" progDay="+obj.programmedDay+" progHour="+obj.programmedHour + " arrayIndex="+GetArrayIndex(obj.programmedDay*24 + obj.programmedHour) + " title:"+obj.GetTitle()
 

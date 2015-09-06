@@ -56,6 +56,12 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 	End Method
 
 
+	'override
+	Method SourceHasFlag:int(flag:Int) {_exposeToLua}
+		return contract.HasFlag(flag)
+	End Method
+	
+
 	'get the title
 	Method GetTitle:string() {_exposeToLua}
 		Return contract.GetTitle()

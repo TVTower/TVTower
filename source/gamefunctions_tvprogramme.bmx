@@ -184,7 +184,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		if broadcastMaterial and broadcastMaterial.GetOwner() <> GetPlayerCollection().playerID Then return False
 
 		'skip if player cannot control the material
-		if broadcastMaterial and broadcastMaterial.HasFlag(TVTBroadcastMaterialFlag.NOT_CONTROLLABLE) Then return False
+		if broadcastMaterial and broadcastMaterial.SourceHasFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE) Then return False
 
 		return Super.IsClickable()
 	End Method
@@ -321,7 +321,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		'If isDragged() Then state = 0
 		Select broadcastMaterial.state
 			Case broadcastMaterial.STATE_NORMAL
-				if broadcastMaterial.HasFlag(TVTBroadcastMaterialFlag.NOT_CONTROLLABLE)
+				if broadcastMaterial.SourceHasFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE)
 					SetColor 255,252,238
 				else
 					SetColor 255,255,255
@@ -368,7 +368,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			SetColor 255,255,255
 		EndIf
 
-		if broadcastMaterial.HasFlag(TVTBroadcastMaterialFlag.NOT_CONTROLLABLE)
+		if broadcastMaterial.SourceHasFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE)
 			SetAlpha GetAlpha() * 0.8
 			GetSpriteFromRegistry("gfx_interface_ingamechat_key.locked").Draw(GetScreenX() + GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW() - 4, GetScreenY() + 5, -1, ALIGN_RIGHT_TOP)
 			SetAlpha GetAlpha() * 1.25

@@ -540,7 +540,7 @@ function JobEmergencySchedule:GetProgrammeLicenceList(level, maxRerunsToday, day
 
 	for i=0,MY.GetProgrammeCollection().GetProgrammeLicenceCount()-1 do
 		local licence = MY.GetProgrammeCollection().GetProgrammeLicenceAtIndex(i)
-		if ( licence ~= nil) then
+		if ( licence ~= nil and licence.IsNewBroadcastPossible()) then
 			if licence.GetQualityLevel() == level then
 				local sentAndPlannedToday = TVT.of_GetBroadcastMaterialInProgrammePlanCount(licence.GetID(), day, 1)
 				--debugMsg("GetProgrammeLicenceList: " .. i .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday)
