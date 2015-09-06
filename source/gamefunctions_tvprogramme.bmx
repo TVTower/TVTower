@@ -1830,12 +1830,16 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		endif
 	
 		licence = programmeLicence
-		Local minPrice:Int = 200000
 
-		While Not licence And minPrice >= 0
-			licence = GetProgrammeLicenceCollection().GetRandomWithPrice(minPrice)
+		local filter:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterAuction.Copy()
+
+		While Not licence And filter.priceMin >= 0
+			licence = GetProgrammeLicenceCollection().GetRandomByFilter(filter)
 			'lower the requirements
-			If Not licence Then minPrice :- 10000
+			If Not licence
+				filter.priceMin :- 5000
+				filter.ageMax :+ TWorldTime.DAYLENGTH
+			endif
 		Wend
 		If not licence
 			TLogger.log("AuctionProgrammeBlocks.Refill()", "No licences for new auction found. Database needs more entries!", LOG_ERROR)

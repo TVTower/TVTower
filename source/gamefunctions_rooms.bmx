@@ -969,6 +969,18 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		if not filterSeries then filterSeries = new TProgrammeLicenceFilter
 		if not filterAuction then filterAuction = new TProgrammeLicenceFilter
 
+		filterAuction.priceMin = 250000
+		filterAuction.priceMax = -1
+		filterAuction.licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION, TVTProgrammeLicenceType.SERIES]
+		'avoid "too used" licences
+		filterAuction.relativeTopicalityMin = 0.85
+		filterAuction.relativeTopicalityMax = -1.0
+		filterAuction.ageMin = -1
+		'maximum of 1 year since release
+		filterAuction.ageMax = TWorldTime.DAYLENGTH * GetWorldTime().GetDaysPerYear()
+		
+
+
 		'good movies must be more expensive than X _and_ of better
 		'quality then Y
 		filterMoviesGood.priceMin = movieCheapMoneyMaximum

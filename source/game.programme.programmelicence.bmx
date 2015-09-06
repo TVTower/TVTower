@@ -1344,6 +1344,10 @@ Type TProgrammeLicenceFilter
 	Field forbiddenOwners:int[]
 	Field priceMin:int = -1
 	Field priceMax:int = -1
+	Field releaseTimeMin:Long = -1
+	Field releaseTimeMax:Long = -1
+	Field ageMin:Long = -1
+	Field ageMax:Long = -1
 	Field notFlags:int
 	Field displayInMenu:int = False
 	Field id:int = 0
@@ -1417,6 +1421,10 @@ Type TProgrammeLicenceFilter
 		Next
 		priceMin = otherFilter.priceMin
 		priceMax = otherFilter.priceMax
+		releaseTimeMin = otherFilter.releaseTimeMin
+		releaseTimeMax = otherFilter.releaseTimeMax
+		ageMin = otherFilter.ageMin
+		ageMax = otherFilter.ageMax
 		notFlags = otherFilter.notFlags
 		displayInMenu = otherFilter.displayInMenu
 		return self
@@ -1629,6 +1637,14 @@ Type TProgrammeLicenceFilter
 		'check price
 		if priceMin >= 0 and licence.GetPrice() < priceMin then return False
 		if priceMax >= 0 and licence.GetPrice() > priceMax then return False
+
+		'check release time (absolute value)
+		if releaseTimeMin >= 0 and licence.data.GetReleaseTime() < releaseTimeMin then return False
+		if releaseTimeMax >= 0 and licence.data.GetReleaseTime() > releaseTimeMax then return False
+
+		'check age (relative value)
+		if ageMin >= 0 and GetWorldTime().GetTimeGone() - licence.data.GetReleaseTime() < ageMin then return False
+		if ageMax >= 0 and GetWorldTime().GetTimeGone() - licence.data.GetReleaseTime() > ageMax then return False
 
 		'check licenceType
 		if licenceTypes.length > 0

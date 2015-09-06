@@ -585,12 +585,10 @@ for local playerA:int = 1 to 4
 					continue
 				endif
 
-				if lA.GetTitle() <> "Die Streichholzhammerbowle"
-					if lA.GetTitle() = lB.GetTitle()
-						print "found playercollection ("+playerA+" vs " + playerB+")  TITLE duplicate: "+lA.GetTitle()
-						duplicateCount :+ 1
-						continue
-					endif
+				if lA.GetTitle() = lB.GetTitle() and lA.data.year = lB.data.year
+					print "found playercollection ("+playerA+" vs " + playerB+")  TITLE duplicate: "+lA.GetTitle()
+					duplicateCount :+ 1
+					continue
 				endif
 			Next
 		Next
