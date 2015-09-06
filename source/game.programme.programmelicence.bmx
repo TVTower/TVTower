@@ -978,36 +978,36 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 		local addCastTitle:string  = "", addCast:string = ""
 		if data.GetActorsString() <> ""
-			addCastTitle = GetLocale("MOVIE_ACTORS")
+			addCastTitle = GetLocale("JOB_ACTORS")
 			addCast = data.GetActorsString()
 
 		elseif data.GetCastGroupString(TVTProgrammePersonJob.SUPPORTINGACTOR) <> ""
-			addCastTitle = GetLocale("MOVIE_SUPPORTINGACTORS")
+			addCastTitle = GetLocale("JOB_SUPPORTINGACTORS")
 			addCast = data.GetCastGroupString(TVTProgrammePersonJob.SUPPORTINGACTOR)
 
 		elseif data.GetCastGroupString(TVTProgrammePersonJob.REPORTER) <> ""
-			addCastTitle = GetLocale("MOVIE_REPORTERS")
+			addCastTitle = GetLocale("JOB_REPORTERS")
 			addCast = data.GetCastGroupString(TVTProgrammePersonJob.REPORTER)
 
 		elseif data.GetCastGroupString(TVTProgrammePersonJob.GUEST) <> ""
-			addCastTitle = GetLocale("MOVIE_GUESTS")
+			addCastTitle = GetLocale("JOB_GUESTS")
 			addCast = data.GetCastGroupString(TVTProgrammePersonJob.GUEST)
 
 		elseif data.GetCastGroupString(TVTProgrammePersonJob.HOST) <> ""
-			addCastTitle = GetLocale("MOVIE_HOST")
+			addCastTitle = GetLocale("JOB_HOST")
 			addCast = data.GetCastGroupString(TVTProgrammePersonJob.HOST)
 
 		elseif data.GetCastGroupString(TVTProgrammePersonJob.SCRIPTWRITER) <> ""
-			addCastTitle = GetLocale("MOVIE_SCRIPT")
+			addCastTitle = GetLocale("JOB_SCRIPT")
 			addCast = data.GetCastGroupString(TVTProgrammePersonJob.SCRIPTWRITER)
 
 		elseif data.GetCastGroupString(TVTProgrammePersonJob.MUSICIAN) <> ""
-			addCastTitle = GetLocale("MOVIE_MUSIC")
+			addCastTitle = GetLocale("JOB_MUSIC")
 			addCast = data.GetCastGroupString(TVTProgrammePersonJob.MUSICIAN)
 		endif
 
 		'max width of director/actors - to align their content properly
-		local currTextWidth:int = Int(skin.fontSemiBold.getWidth(GetLocale("MOVIE_DIRECTOR")+":"))
+		local currTextWidth:int = Int(skin.fontSemiBold.getWidth(GetLocale("JOB_DIRECTOR")+":"))
 		if addCastTitle
 			currTextWidth = Max(currTextWidth, Int(skin.fontSemiBold.getWidth(addCastTitle+":")))
 		endif
@@ -1018,7 +1018,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		local directorH:int = 0
 		if data.GetDirectorsString() <> ""
 			directorH = 15
-			skin.fontSemiBold.drawBlock(GetLocale("MOVIE_DIRECTOR")+":", contentX + 5, contentY, contentW - 10, directorH, null, skin.textColorNeutral)
+			skin.fontSemiBold.drawBlock(GetLocale("JOB_DIRECTOR")+":", contentX + 5, contentY, contentW - 10, directorH, null, skin.textColorNeutral)
 			skin.fontNormal.drawBlock(data.GetDirectorsString(), contentX + 5 + currTextWidth + 5, contentY , contentW  - 10 - currTextWidth - 5, directorH, null, skin.textColorNeutral)
 			contentY :+ directorH
 		endif

@@ -323,14 +323,17 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetSpecificCastCount:int(job:int, limitGender:int=-1)
+	Method GetSpecificCastCount:int(job:int, limitPersonGender:int=-1, limitRoleGender:int=-1)
 		local result:int = 0
 		For local j:TProgrammePersonJob = EachIn cast
 			'skip roles with wrong gender
-			if limitGender >= 0 and j.roleGUID
+			if limitRoleGender >= 0 and j.roleGUID
 				local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(j.roleGUID)
-				if role and role.gender <> limitGender then continue
+				if role and role.gender <> limitRoleGender then continue
 			endif
+			'skip persons with wrong gender
+			if limitPersonGender >= 0 and j.gender <> limitPersonGender then continue
+
 			'current job is one of the given job(s)
 			if job & j.job then result :+ 1
 		Next
@@ -338,14 +341,17 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetSpecificCast:TProgrammePersonJob[](job:int, limitGender:int=-1)
+	Method GetSpecificCast:TProgrammePersonJob[](job:int, limitPersonGender:int=-1, limitRoleGender:int=-1)
 		local result:TProgrammePersonJob[]
 		For local j:TProgrammePersonJob = EachIn cast
 			'skip roles with wrong gender
-			if limitGender >= 0 and j.roleGUID
+			if limitRoleGender >= 0 and j.roleGUID
 				local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(j.roleGUID)
-				if role and role.gender <> limitGender then continue
+				if role and role.gender <> limitRoleGender then continue
 			endif
+			'skip persons with wrong gender
+			if limitPersonGender >= 0 and j.gender <> limitPersonGender then continue
+
 			'current job is one of the given job(s)
 			if job & j.job then result :+ [j]
 		Next
@@ -572,6 +578,55 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		'cast
 		local cast:string = ""
+
+		For local i:int = 1 to TVTProgrammePersonJob.count
+			local jobID:int = TVTProgrammePersonJob.GetAtIndex(i)
+			local requiredPersons:int = GetSpecificCastCount(jobID)
+			if requiredPersons <= 0 then continue
+
+			if cast <> "" then cast :+ ", "
+
+			local requiredPersonsMale:int = GetSpecificCastCount(jobID, TVTPersonGender.MALE)
+			local requiredPersonsFemale:int = GetSpecificCastCount(jobID, TVTPersonGender.FEMALE)
+
+			if requiredPersons = 1
+				cast :+ "|b|"+requiredPersons+"x|/b| "+GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobID, True))
+			else
+				cast :+ "|b|"+requiredPersons+"x|/b| "+GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobID, False))
+			endif
+
+			
+			local requiredDetails:string = ""
+			if requiredPersonsMale > 0
+				'write amount if multiple genders requested for this job type 
+				if requiredPersonsMale <> requiredPersons
+					requiredDetails :+ requiredPersonsMale+"x "+GetLocale("MALE")
+				else
+					requiredDetails :+ GetLocale("MALE")
+				endif
+			endif
+			if requiredPersonsFemale > 0
+				if requiredDetails <> "" then requiredDetails :+ ", "
+				'write amount if multiple genders requested for this job type 
+				if requiredPersonsFemale <> requiredPersons
+					requiredDetails :+ requiredPersonsFemale+"x "+GetLocale("FEMALE")
+				else
+					requiredDetails :+ GetLocale("FEMALE")
+				endif
+			endif
+			if requiredPersons - (requiredPersonsMale + requiredPersonsFemale) > 0
+				'write amount if genders for this job type were defined 
+				if requiredPersonsMale > 0 or requiredPersonsFemale > 0
+					if requiredDetails <> "" then requiredDetails :+ ", "
+					requiredDetails :+ (requiredPersons - (requiredPersonsMale + requiredPersonsFemale))+"x "+GetLocale("UNDEFINED")
+				endif
+			endif
+			if requiredDetails <> ""
+				cast :+ " (" + requiredDetails + ")"
+			endif
+		Next
+		 
+rem
 		local requiredDirectors:int = GetSpecificCastCount(TVTProgrammePersonJob.DIRECTOR)
 		local requiredStarRoleActorFemale:int = GetSpecificCastCount(TVTProgrammePersonJob.ACTOR, TVTPersonGender.FEMALE)
 		local requiredStarRoleActorMale:int = GetSpecificCastCount(TVTProgrammePersonJob.ACTOR, TVTPersonGender.MALE)
@@ -579,7 +634,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		if requiredDirectors > 0 then cast :+ "|b|"+requiredDirectors+"x|/b| "+GetLocale("MOVIE_DIRECTOR")
 		if cast <> "" then cast :+ ", "
-
+	
 		if requiredStarRoleActors > 0
 			local requiredStars:int = requiredStarRoleActorMale + requiredStarRoleActorFemale
 			cast :+ "|b|"+requiredStars+"x|/b| "+GetLocale("MOVIE_LEADINGACTOR")
@@ -599,6 +654,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 			cast :+ " (" + actorDetails + ")"
 		endif
+endrem
 
 		if cast <> ""
 			'render director + cast (offset by 3 px)

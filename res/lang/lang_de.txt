@@ -207,24 +207,24 @@ AD_INFOMERCIAL_NOT_AVAILABLE = Für diese Werbung steht keine Dauerwerbesendung 
 AD_INFOMERCIAL_PROFIT= Einnahmen: %PROFIT% pro 1000 Zuschauer
 
 
-MOVIE_DIRECTOR			= Regisseur
-MOVIE_DIRECTORS			= Regisseure
-MOVIE_ACTOR				= Darsteller
-MOVIE_ACTORS			= Darsteller
-MOVIE_SUPPORTINGACTOR   = Nebendarsteller
-MOVIE_SUPPORTINGACTORS  = Nebendarsteller
-MOVIE_REPORTER          = Reporter
-MOVIE_REPORTERS         = Reporter
-MOVIE_GUEST             = Gast
-MOVIE_GUESTS            = Gäste
-MOVIE_HOST              = Moderator
-MOVIE_HOSTS             = Moderatoren
-MOVIE_SCRIPT            = Drehbuch
-MOVIE_SCRIPTWRITER      = Drehbuchautor
-MOVIE_SCRIPTWRITERS     = Drehbuchautoren
-MOVIE_MUSIC             = Musik
-MOVIE_MUSICIAN          = Musiker
-MOVIE_MUSICIANS         = Musiker
+JOB_DIRECTOR        = Regisseur
+JOB_DIRECTORS       = Regisseure
+JOB_ACTOR           = Darsteller
+JOB_ACTORS          = Darsteller
+JOB_SUPPORTINGACTOR = Nebendarsteller
+JOB_SUPPORTINGACTORS= Nebendarsteller
+JOB_REPORTER        = Reporter
+JOB_REPORTERS       = Reporter
+JOB_GUEST           = Gast
+JOB_GUESTS          = Gäste
+JOB_HOST            = Moderator
+JOB_HOSTS           = Moderatoren
+JOB_SCRIPT          = Drehbuch
+JOB_SCRIPTWRITER    = Drehbuchautor
+JOB_SCRIPTWRITERS   = Drehbuchautoren
+JOB_MUSIC           = Musik
+JOB_MUSICIAN        = Musiker
+JOB_MUSICIANS       = Musiker
 
 
 MOVIE_SPEED     = Tempo
@@ -235,8 +235,6 @@ MOVIE_BLOCKS    = Blöcke
 MOVIE_XRATED    = FSK18
 MOVIE_EPISODES  = Folgen
 MOVIE_CAST      = Besetzung
-MOVIE_LEADINGACTOR = Hauptdarsteller
-MOVIE_SUPPORTINGACTOR = Nebendarsteller
 
 AD_QUALITY = Qualität
 

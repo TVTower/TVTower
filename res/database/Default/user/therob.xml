@@ -4,14 +4,14 @@
     <allprogrammes>
         <programme id="54084557-4497-48d5-8e3a-TheRobRiesenstadt" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0017136" rt_id="0" creator="TheRob">
             <title>
-      				<!-- Metropolis -->
+                <!-- Metropolis -->
                 <de>Riesenstadt - Long Cut</de>
                 <en>Big City - Long Cut</en>
             </title>
       <title_original>
                 <de>Metropolis</de>
-        <en>Metropolis</en>
-            </title_original>
+                <en>Metropolis</en>
+      </title_original>
             <description>
                 <de>Arbeiter gegen Reich. Oberwelt gegen Unterwelt. Ein stummer epischer Kampf. Remastert und extralong. Inklusive wiedergefundener und restaurierter Szenen. Hier in der Fassung der Murnau-Stiftung von 2010.</de>
                 <en>Workers against the upperclass. People from the surface against the poor living underneath. An epic and silent fight. Including the found and restored scenes. This is the Version of 2010 remasterd by the "Murnau-Stiftung".</en>
@@ -51,7 +51,7 @@
                 <programme id="39803483-0800-46e3-a153-TheRobEpisode1" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
                     <title>
                         <de>Jerry das Pferd</de>
-                        <en></en>
+                        <en>Jerry the horse</en>
                     </title>
                     <description>
                         <de>Dys Pferd Jerry zieht einen Fremden aus dem Sumpf. Dieser weicht ihm nicht mehr von der Seite. Eine wilde Verfolgungsjagd beginnt.</de>
@@ -62,7 +62,7 @@
                 <programme id="4c062f49-f1e8-400a-9c11-TheRobEpisode2" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
                     <title>
                         <de>Lozzo lernt peitschen</de>
-                        <en></en>
+                        <en>Lozzo trains whipping</en>
                     </title>
                     <description>
                         <de>Lozzo findet eine Peitsche und übt sein Zeichen. Warum er sich für Z statt L entscheidet? Ganz Mexiko hat nun eine Z Narbe auf der Brust...</de>
@@ -73,18 +73,18 @@
                 <programme id="dc0b1ca6-c1c1-496f-9882-TheRobEpisode3" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
                     <title>
                         <de>Niklas sucht James</de>
-                        <en></en>
+                        <en>Niklas looking for James</en>
                     </title>
                     <description>
                         <de>Niklas will den Bandit J.James ausschalten um selber zum Helden zu werden. Der Showdown naht...</de>
-                        <en></en>
+                        <en>Because he wants to be a hero, Niklas wants to kill the outlaw J.James. The showdown nears fast...</en>
                     </description>
                     <ratings critics="19" speed="25" />
                 </programme>
                 <programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode4" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
                     <title>
                         <de>Njamba der Fotograf</de>
-                        <en></en>
+                        <en>Njamba the photograph</en>
                     </title>
                     <description>
                         <de>Njamba, der Zulu, verlässt seinen Stamm. Sein Ziel: Landschaftsaufnaumahmen im wilden Westen. Diese werden ausgiebig gezeigt. Finanziert durch den Gesunder Schlaf e.V.</de>
@@ -106,7 +106,7 @@
                 <programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode6" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
                     <title>
                         <de>Mensch Jimmy</de>
-                        <en></en>
+                        <en>Well, Jimmy</en>
                     </title>
                     <description>
                         <de>Jimmy Baine in seinem ersten Auftritt vor seiner großen Karriere. Der Revolver sitzt schon perfekt. A Star ist born. Wer braucht da Handlung?</de>
@@ -117,7 +117,7 @@
                 <programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode7" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
                     <title>
                         <de>IIIk, wird das Wononza?</de>
-                        <en></en>
+                        <en>OMG, will this end in Wononza?</en>
                     </title>
                     <description>
                         <de>Farmleben eines Vaters mit drei Söhnen. Das Publikum hat böse Vorahnungen. Doch als sie wegschalten, war Ihre Einschaltquote schon gezählt.</de>
@@ -175,13 +175,13 @@
                 <!-- König Drosselbart, Zielgruppe Kinder -->
             <title>
                 <de>Prinz Wosselnaht</de>
-                <en></en>
+                <en>Prince Wosselnaht</en>
             </title>
       <title_original>
                 <de>König Drosselbart</de>
             </title_original>
             <description>
-                <de>Das Märchen Prinz Wosselnaht wird hier wunderbar in Szene gesetzt. Wunderbar für den Kindernachmittag geeignet.</de>
+                <de>Das Märchen Prinz Wosselnaht wird hier wunderbar in Szene gesetzt. Toll für den Kindernachmittag geeignet.</de>
                 <en></en>
             </description>
             <staff>
@@ -196,11 +196,11 @@
         <programme id="TheRob-b0db-439c-a852-BullshitBingo" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
             <title>
                 <de>Bullshit Bingo</de>
-                <en></en>
+                <en>Bullshit bingo</en>
             </title>
             <description>
                 <de>Wenn Bullshit Bingo nicht Sonstiges ist, was dann. Zur Show hat es nicht gereicht. Zur Doku leider auch nicht. Wir sind für euch durch die Welt gelaufen und haben gefragt, was Bullshit Bingo ist. Die Antwort: Sonstiges!</de>
-                <en></en>
+                <en>If bullshit binog ist not various, what else?</en>
             </description>
             <staff>
                 <member index="0" function="1">Per_custom_Freddy_13</member>
@@ -213,11 +213,11 @@
         <programme id="TheRob-b0db-439c-a852-Sonstiges" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
             <title>
                 <de>Sonstiges - das Thema</de>
-                <en></en>
+                <en>Various - the toppic</en>
             </title>
             <description>
-                <de>[0|Full] hat [1|Full], [2|Full], [3|Full] und [4|Full] eingeladen. Das Ziel ein intensive Gespräch über Sonstiges. Wie wird die Quote? Was gehört da rein. Wie wirkt es sich aus. Sehr spannende Expertenrunde. Vor allem, als der Streit ausbricht. </de>
-                <en></en>
+                <de>[0|Full] hat [1|Full], [2|Full], [3|Full] und [4|Full] eingeladen. Das Ziel ein intensive Gespräch über Sonstiges. Wie wird die Quote? Was gehört da rein. Wie wirkt es sich aus. Sehr spannende Expertenrunde. Vor allem, als der Streit ausbricht.</de>
+                <en>[0|Full] invited [1|Full], [2|Full], [3|Full] and [4|Full]. He wants intensivly to discuss various. Wie wird die Quote? Was gehört da rein. Wie wirkt es sich aus. Sehr spannende Expertenrunde. Vor allem, als der Streit ausbricht. </en>
             </description>
             <staff>
                 <member index="0" function="1">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
@@ -233,7 +233,7 @@
         <programme id="TheRob-b0db-439c-a852-EditorundKI" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
             <title>
                 <de>Editor und KI</de>
-                <en></en>
+                <en>Editor and KI</en>
             </title>
             <description>
                 <de>[0|Full] und [1|Full] in reger Diskussion. Wie steht es um den Editor? Wie muss die KI aussehen. Und hat [1|Full] richtige gehandelt? Ist Reallife wichtiger? Und wer macht jetzt die KI? Spannend, aber etwas zu langatmig </de>
@@ -250,7 +250,7 @@
         <programme id="TheRob-b0db-439c-a852-TVGigantderAnfang" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
             <title>
                 <de>TVGigant - der Anfang</de>
-                <en></en>
+                <en>TVGigant - the begining</en>
             </title>
             <description>
                 <de>[0|Full] und [1|Full] sowie [2|Full] erklären ihre Motivation. Warum TVGigant. Und wie lange halten sie durch. Wird es jemals fertig. Geht das im Einklang mit dem restlichen Leben? Wir freuen uns auf das versprochene Interview 2025!</de>
@@ -269,10 +269,10 @@
             <title>
                 <!-- Geschichte über MadTV und Rainbow Arts -->
                 <de>RatTV - Quo Vadis</de>
-                <en></en>
+                <en>RatTV - Quo Vadis</en>
             </title>
             <description>
-                <de>[1|Full] und [2|Full] von der Firma Regenbogen Wünsche sprechen über ihr Werk. [3|Full] berichtet was ihn an dem Spiel begeistert. OneHitWonder oder doch lange in Erinnerung bleibend?. Ein Klasse Sonstiges! [3|Full] wagt die Prognose: Es kommen Nachfolger! ;)</de>
+                <de>[1|Full] und [2|Full] von der Firma Regenbogen Wünsche sprechen über ihr Werk. [3|Full] berichtet was ihn an dem Spiel begeistert. OneHitWonder oder doch lange in Erinnerung bleibend?. Ein Klasse Sonstiges! [3|Full] wagt die Prognose: Es kommen Nachfolger!</de>
                 <en></en>
             </description>
             <staff>
@@ -289,7 +289,7 @@
             <title>
                 <!-- Smoke. Laut IMDB Comedy, Drama. Ich habe den Film gesehen und würde ihn niccht als Komödie bezeichnen. Als Drama auch nicht. Die Kategorie Sonstiges passt hier -->
                 <de>Raucherladen Brooklin</de>
-                <en></en>
+                <en>Buying cigarettes in Brooklin</en>
             </title>
       <title_original>
                 <de>Smoke - Raucher unter sich</de>
@@ -312,11 +312,11 @@
             <title>
                 <!-- Blue in the Face. Laut IMDB Comedy. Ich habe den Film gesehen und würde ihn nicht als Komödie bezeichnen. Die Kategorie Sonstiges passt hier -->
                 <de>Rauch in Brooklin</de>
-                <en></en>
+                <en>Blowing smoke in the Face - Brooklin</en>
             </title>
-      <title_original>
+            <title_original>
                 <de>Blue in the Face - Alles blauer Dunst</de>
-        <en>Blue in the face</en>
+                <en>Blue in the face</en>
             </title_original>
             <description>
                 <de>Wieder ist ein Zigarettenladen der Ausgang für die Geschichten einzelner Menschen. Legendär: Angst? Vor Brooklin? Vor Schweden habe ich Angst!</de>
@@ -348,7 +348,7 @@
                 <member index="3" function="2">Per_custom_Freddy_355</member>
             </staff>
             <groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
-            <data country="D" year="1981" distribution="0" maingenre="202" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
+            <data country="D" year="1981" distribution="0" maingenre="203" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
             <ratings critics="22" speed="95" outcome="0" />
         </programme>
         <programme id="5c4c567b-dda6-4d7e-b90a-RobTheTest01" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
@@ -372,7 +372,7 @@
         <programme id="8ef29506-1756-400d-8f9c-TheRobTest03" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
             <title>
                 <de>Weib, Wein und Gesang</de>
-                <en></en>
+                <en>Girls, wine and singing</en>
             </title>
             <description>
                 <de>Wikinger plündern fröhlich singend ganz Europa. Vor lauter brüderlichem Gesang sieht man das Blut kaum.</de>
@@ -416,7 +416,7 @@
             <title>
       				<!-- Blauer Bock, imdb ID ist die aus Idstein. Bei IMDB sind alle Folgen einzeln gelistet. -->
                 <de>Blau Bembelsche - Best of</de>
-                <en></en>
+                <en>Blau Bembelsche - Best of a hessian music show</en>
             </title>
       <title_original>
                 <de>Blauer Bock</de>
@@ -460,7 +460,7 @@
         <programme id="c4be7d64-35e9-4e56-8e6e-TheRobTest06" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
             <title>
                 <de>Jag den Meringo</de>
-                <en></en>
+                <en>Chasing Meringo</en>
             </title>
             <description>
                 <de>Meringo metzelt mit seiner Bande ein Dorf nieder. Jimmy Baine, der dadurch sein Kind verlor, jagt ihn erbarmungslos.</de>
@@ -481,11 +481,11 @@
                 <!-- Das war der wilde Westen -->
             <title>
                 <de>Der brave Osten</de>
-                <en></en>
+                <en>The brave east</en>
             </title>
-      <title_original>
+            <title_original>
                 <de>Das war der wilde Westen</de>
-        <en>How the west was won</en>
+                <en>How the west was won</en>
             </title_original>
             <description>
                 <de>Ein Jahrhundert in der Western Zeit wird mit Bollywood Starbesetzung episch erzählt.</de>
@@ -505,7 +505,7 @@
         <programme id="therob-programme-elefantengedaechtnis" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
             <title>
                 <de>Elefantengedächtnis</de>
-                <en></en>
+                <en>An elephant mind</en>
             </title>
             <description>
                 <de>Sendung für Schulkinder. Am Anfang werden Themen kindgerecht erklärt. Dann müssen die Kinder Fragen dazu beantworten. Die Gewinner bekommen eine Klassenfahrt geschenkt. </de>
@@ -522,7 +522,7 @@
                 <programme id="therob-programme-elefantengedaechtnis-ep101" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
                     <title>
                         <de>Zahnpasta</de>
-                        <en></en>
+                        <en>Toothpaste</en>
                     </title>
                     <description>
                         <de>Wie kommen die Streifen in die Tube und andere Fragen. Schön erklärt und pädagogisch wertvoll abgefragt.</de>
@@ -533,7 +533,7 @@
                 <programme id="therob-programme-elefantengedaechtnis-ep102" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
                     <title>
                         <de>Limonade</de>
-                        <en></en>
+                        <en>Lemonade</en>
                     </title>
                     <description>
                         <de>Von der Abfüllung über die Kohlensäure bis zum Zucker. Alles kindgerecht serviert. Empfohlen wird dem Kind beim Zuschauen zuckerfreien Tee zu servieren.</de>
@@ -566,7 +566,7 @@
                 <programme id="therob-programme-elefantengedaechtnis-ep105" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
                     <title>
                         <de>Namentanzen</de>
-                        <en></en>
+                        <en>Dancing names</en>
                     </title>
                     <description>
                         <de>Auf Grund der grandiosen Resonanz auf die letzte Sendung, wurde das Thema Namenstanzen ausführlich durchleuchtet. Inklusive Wettbewerb. Durch die geordnete Durchführung ging der Spaß flöten.</de>
@@ -580,7 +580,7 @@
             <title>
       				<!-- Früchte des Zorns -->
                 <de>Zorniges Obst</de>
-                <en></en>
+                <en>Wrathfull fruits</en>
             </title>
       <title_original>
                 <de>Früchte des Zorns</de>
@@ -603,7 +603,7 @@
             <title>
                 <!-- Wer die Nachtigall stoert -->
                 <de>Töte nicht den Nachtvogel</de>
-                <en></en>
+                <en>Do not slaught a mockingbird</en>
             </title>
       <title_original>
                 <de>Wer die Nachtigall stört</de>
@@ -627,7 +627,7 @@
             <title>
       				<!-- M Eine Stadt sucht einen Mörder -->
                 <de>Ein Dorf jagt L.</de>
-                <en></en>
+                <en>A village chases L.</en>
             </title>
       <title_original>
                 <de>M. Eine Stadt sucht einen Mörder</de>
@@ -650,9 +650,9 @@
         </programme>
         <programme id="TheRob-a9f6-4a94-8092-unperfektesLand" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0107808" rt_id="0" creator="TheRob">
             <title>
-                <!-- Perfect World -->
+        <!-- Perfect World -->
                 <de>Unperfektes Land</de>
-                <en></en>
+                <en>not a perfect land</en>
             </title>
       <title_original>
                 <de>Perfect World</de>
@@ -674,9 +674,9 @@
         </programme>
         <programme id="therob-programme-speiuebelunddubrovnik" product="5" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
             <title>
-      				<!-- Spejbl und Hurvinek keine IMDB ID gefunden -->
+                <!-- Spejbl und Hurvinek keine IMDB ID gefunden -->
                 <de>Speiübel und Dubrovnik</de>
-                <en></en>
+                <en>Spying and Dubrovnik</en>
             </title>
       <title_original>
                 <de>Spejbl und Hurvinek</de>
@@ -770,7 +770,7 @@
             <ratings critics="75" speed="31" outcome="0" />
         </programme>
         <programme id="TheRob-b5dc-4663-bd81-JayEfKay" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0102138" rt_id="0" creator="TheRob">
-                <!-- JFK - Tatort Dallas -->
+                <!-- JFK - Tatort Dallas, laut Liste schon im Spiel, aber nicht in der Database gefunden -->
             <title>
                 <de>Jay Ef Kay - Es geschah in Dallas</de>
                 <en>Jay Ef Kay - It happened in Dallas</en>
@@ -797,7 +797,7 @@
             <title>
       				<!-- Dudu ist die Grundidee, aber da das Setting in meinen Augen so verändert ist, dass man noch DuDu und Herbie anlegen kann, ohne das es stört, ist Baba auf fictional gesetzt. -->
                 <de>Baba der Trabbi</de>
-                <en></en>
+                <en>Baba the trabbi car</en>
             </title>
             <description>
                 <de>Baba der lebende Trabbi leistet seinem Besitzer wundervolle Dienste. Er kann schwimmen, fliegen und Autoknacker verprügeln. Herbeigerufen durch einen Pfiff, eilt er immer brav herbei, wenn Hilfe gebraucht wird.</de>
@@ -837,14 +837,14 @@
             <data country="USA" year="1991" distribution="0" maingenre="1" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
             <ratings critics="53" speed="47" outcome="71" />
         </programme>
-        <programme id="therob-programme-trash-skandale" product="7" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+        <programme id="therob-programme-trash-skandale" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
             <title>
                 <de>Skandale</de>
-                <en></en>
+                <en>scandals</en>
             </title>
             <description>
                 <de>[0|Full] präsentiert die Skandale von [1|Full]. Präsentiert wird alles, von Ausrastern an Drehorten über Interviews bis zu Talkshow Auftritten. Erheiternd bis zum geht nicht mehr. Aber für Jugendliche völlig ungeeignet.</de>
-                <en></en>
+                <en>[0|Full] presents the scandals of [1|Full]. Everything is shown, completly goind insane during filming vice interviews to talkshow . Unbelievable funny, but includes speech of violence, sexuality and other pervert stuff. Please keeps your kids away!</en>
             </description>
             <staff>
                 <member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
@@ -889,10 +889,63 @@
                 </programme>
             </children>
         </programme>
+        <programme id="therob-programme-mng-firmengruendungen" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                <!-- Zielgruppe Manager, geflagt als Kultur -->
+            <title>
+                <de>Firmengründungen</de>
+                <en>How to start a company</en>
+            </title>
+            <description>
+                <de>Dem geneigten Zuschauer werden Karieren von risikobereiten Firmengründern gezeigt. Schöne Lehrstunde für Schadenfrohe.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">Per_custom_Freddy_628</member>
+                <member index="1" function="2">Per_custom_Freddy_400</member>
+            </staff>
+            <groups target_groups="32" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1984" distribution="0" maingenre="300" subgenre="4" flags="4" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="45" speed="23" outcome="0" />
+            <children>
+                <programme id="therob-programme-mng-firmengruendungen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Firmenstudio in Nollywood</de>
+                        <en>Movio studio in Nollywood</en>
+                    </title>
+                    <description>
+                        <de>[1|Full] begleitet Hans Imglück auf seinem Weg Qualitätsfilme in Nollywood zu drehen. Ein grandioses Verlustgeschäft.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="43" speed="22" />
+        </programme>
+        <programme id="therob-programme-mng-firmengruendungen-epp102" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Erotikshop im Jemen</de>
+                        <en>Erotic shop in Jemen</en>
+                    </title>
+                    <description>
+                        <de>Nick Denknichlang gründet einen Erotikshop im Jemen. [1|Full] führt ein spannendes Interview über Nicks Kenntnisse vom Jemen. Wir freuen uns darauf die Episode zu drehen, was er im Gefängnis für Ideen entwickelt.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="48" speed="27" />
+                </programme>
+                <programme id="therob-programme-mng-firmengruendungen-ep103" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Kühlschrankfachladen in Grönland</de>
+                        <en>Refrigerators in Iceland</en>
+                    </title>
+                    <description>
+                        <de>[1|Full] reist mit Mia Issukalt nach Grönland und begleitet den Aufbau ihres Kühlschrankfachhandels. Ein etwas kühle Sache.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="44" speed="19" />
+                </programme>
+            </children>
+        </programme>
         <programme id="b528cab3-ec3d-43fc-TheRobCallInTest01" product="3" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
             <title>
                 <de>Schach gegen den Meister</de>
-                <en></en>
+                <en>Chess against the masters</en>
             </title>
             <description>
                 <de>Schnellschach gegen die Großmeister. Anrufen, durchkommen und den Großmeister Schachmatt setzen. Köpfchen einsetzen, lernen, in der Warteschleife Geld verlieren. Das garantierte Rundum Sorglos Paket</de>
@@ -965,9 +1018,9 @@
                 <en>Life is wonderfull</en>
             </title>
       <title_original>
-                <de>Ist das Leben nicht schön?</de>
+        <de>Ist das Leben nicht schön?</de>
         <en>It's a wonderful life</en>
-            </title_original>
+      </title_original>
             <description>
                 <de>Zu Weihnachten verfinstert sich das Leben von G.B. immer mehr. Als dann auch noch Geld aus der Firmenkasse verschwindet, möchte er sich das Leben nehmen. Da wird ihm ein Engel gesendet, der ihm die schönen Seiten des Lebens zeigen soll. </de>
 <en>At Christmas eve the life of G.B. gets darker and darker. As soon as money is lost out of the companys safe, he is desperated and wants to comit suicide. In this moment heaven sends him an angel to show him, how beautifull life is.</en>
@@ -985,7 +1038,7 @@
         <programme id="TheRob-b5dc-4663-bd81-DerOsten" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
             <title>
                 <de>Der Osten - der wahre Horror</de>
-                <en></en>
+                <en>The east - the source of evil</en>
             </title>
             <description>
                 <de>Der kommunistische Osten wird beleuchtet. Es wird bewiesen, dass alle dort Aliens sind, die die Weltherrschaft übernehmen möchten und es notwendig ist, alles mit Napalm zu verbrennen. Komplett plausibel und glaubwürdig.</de>
@@ -1003,7 +1056,7 @@
         <programme id="TheRob-b5dc-4663-bd81-DerWesten" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
             <title>
                 <de>Der Westen - der wahre Horror</de>
-                <en></en>
+                <en>The west - the source of evil</en>
             </title>
             <description>
                 <de>Der kapitalistische Westen wird beleuchtet. Es wird bewiesen, dass alle dort Aliens sind, die die Weltherrschaft übernehmen möchten und es notwendig ist, alles mit Napalm zu verbrennen. Komplett plausibel und glaubwürdig.</de>
@@ -1016,16 +1069,16 @@
             <groups target_groups="64" pro_pressure_groups="0" contra_pressure_groups="0" />
             <data country="UDSSR" year="1964" distribution="0" maingenre="11" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
             <ratings critics="25" speed="40" outcome="0" />
-        </programme>
-<programme id="5c4c567b-dda6-4d7e-b90a-geballteHand" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0163624" rt_id="0" creator="">
-            <title>
-      				<!-- Faust -->
-                <de>Geballte Hand</de>
-                <en></en>
-            </title>
+       </programme>
+       <programme id="5c4c567b-dda6-4d7e-b90a-geballteHand" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0163624" rt_id="0" creator="">
+        <title>
+                <!-- Faust -->
+         <de>Geballte Hand</de>
+         <en></en>
+      </title>
       <title_original>
-                <de>Faust</de>
-            </title_original>
+              <de>Faust</de>
+      </title_original>
             <description>
                 <de>„Da steh ich nun, ich armer Tor! Und bin so klug als wie zuvor“
 
@@ -1041,14 +1094,37 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
             <data country="D" year="1960" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
             <ratings critics="99" speed="12" outcome="55" />
         </programme>
-        <programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+        <programme id="TheRob-916a-47bf-9e2e-PlanetRoin" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0052077" rt_id="0" creator="TheRob">
+            <!-- Planet Nine - From Outer Space, geflagt als Trash und Cult -->
+            <title>
+                <de>Planet Roin - Louder Space</de>
+                <en>Planet Roin - Louder Space</en>
+            </title>
+      <title_original>
+        <de>Planet Nine - From Outer Space</de>
+        <en>Planet Nine - From Outer Space</en>
+      </title_original>
+            <description>
+                <de>Wurde zum schlechtesten Film aller Zeiten gewählt. Heute eine beliebte Ratesendung: Wer findet alle Fehler</de>
+                <en>Was elected to the worst movie ever. Today loved as a quizshow: Who finds all mistakes</en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-TowerTV-RednackRoot</member>
+                <member index="1" function="2">TheRob-TowerTV-WeckoryBallglatt</member>
+                <member index="2" function="2">TheRob-TowerTV-SoniaKinnlang</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1959" distribution="0" maingenre="16" subgenre="0" flags="24" blocks="2" time="0" price_mod="1" />
+            <ratings critics="7" speed="19" outcome="12" />
+        </programme>
+        <programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
             <title>
                 <de>Kurven der Welt - Erkenne sie alle</de>
-                <en></en>
+                <en>curves of the world - guess them all</en>
             </title>
             <description>
                 <de>Die schönsten Brüste der Welt. Dezent verpackt. Nichts und doch viel zu sehen. Die anspruchsvolle Erotikhow mit Einlagen über die Kultur des jeweiligen Landes. Selbst Kritiker konnten sich damit anfreunden. Präsentiert von einer schwedischen Schönheit</de>
-                <en></en>
+                <en>the most beautifull breasts of the world. decent hidden. Nothing and all could be seen. </en>
             </description>
             <staff>
                 <member index="0" function="1">Per_custom_Freddy_42</member>
@@ -1064,7 +1140,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
                 <modifier name="price" value="0.1" />
             </modifiers>
             <children>
-                <programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt01" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                <programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt01" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
                     <title>
                         <de>Jamaika</de>
                         <en></en>
@@ -1075,7 +1151,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
                     </description>
                     <ratings critics="20" speed="40" />
                 </programme>
-                <programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt02" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                <programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt02" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
                     <title>
                         <de>Kambodscha</de>
                         <en></en>
@@ -1086,7 +1162,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
                     </description>
                     <ratings critics="29" speed="35" />
                 </programme>
-                <programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt03" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                <programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt03" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
                     <title>
                         <de>Bulgarien</de>
                         <en></en>
@@ -1097,7 +1173,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
                     </description>
                     <ratings critics="21" speed="45" />
                 </programme>
-                <programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt04" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                <programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt04" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
                     <title>
                 <!-- Zielgruppe Damen -->
                         <de>Tunesien</de>
@@ -1111,6 +1187,297 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
             <groups target_groups="128" pro_pressure_groups="0" contra_pressure_groups="0" />
                 </programme>
             </children>
+    </programme>
+        <programme id="TheRob-99bf-Rep-KampfderPlaneten-" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                <!-- Reportage, Fiktion die auf einer wahren Begebenheit basiert, geflagt als culture und cult -->
+            <title>
+                <de>Kampf der Planeten - die wahre Geschichte</de>
+                <en>Fight of the planets - the truth</en>
+            </title>
+            <description>
+                <de>[1|Full] wurde von [2|Full] begleitet als er seine legendäre Radioreportage entwickelte und durchführte. War die Massenpanik echt? Hier wird es gezeigt! Die einzige Reportage von [0|Full].</de>
+                <en>[1|Full] was completly observed by [2|Full] as he developed and recorded his legendary radioshow. Was there really a hystery? Here it is shown! The only "watergate" movie from [0|Full].</en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
+                <member index="1" function="2">8fd0eba6-3ac0-41eb-8a86-514fa77dc9a2</member>
+                <member index="2" function="2">TheRob-TowerTV-RednackRoot</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1939" distribution="0" maingenre="300" subgenre="0" flags="12" blocks="2" time="0" price_mod="1" />
+            <ratings critics="79" speed="45" outcome="0" />
+        </programme>
+    <programme id="therob-programme-GrafRuccola01" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+      <title>
+                <!-- Kinderserie, geflagt als Animation -->
+        <de>Graf Ruccola und das Gemüse</de>
+        <en>Count Ruccola and the vegetables</en>
+     </title>
+     <description>
+     <de>Graf Ruccola ist ein Vitaminvampir und jagt Gemüse zum überleben. Ein Biss und schon sind Vitamine und Mineralien da. Kinder erlernen die leckeren Vorzüge von Gemüse.</de>
+     <en></en>
+     </description>
+     <staff>
+      <member index="0" function="1">Per_custom_Freddy_356</member>
+      <member index="1" function="2">Per_custom_Freddy_373</member>
+      <member index="2" function="2">Per_custom_Freddy_388</member>
+     </staff>
+     <groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+     <data country="F" year="1971" distribution="0" maingenre="3" subgenre="5" flags="2" blocks="1" time="0" price_mod="1.00" />
+     <ratings critics="54" speed="34" outcome="0" />
+     <children>
+    <programme id="therob-programme-GrafRuccola-ep101" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Graf Ruccola trifft Spargel</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Graf Ruccola endeckt den Spargel und jetzt riecht es beim ""um die Ecke gehen" auf einmal komisch. Warum ist das so? Und beißt Graf Ruccola noch einmal zu, oder läßt er den Spargel lieber links liegen?</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="57" speed="35" />
+                </programme>
+                <programme id="therob-programme-GrafRuccola-ep102" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Graf Ruccola trifft Spinat</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Spinat. Viel Kalium und Magnesium für das Vampirblut. Und danach den kleinen Blubb!</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="54" speed="35" />
+                </programme>
+                <programme id="therob-programme-GrafRuccola-ep103" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Graf Ruccola trifft Blumenkohl</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Weiß und blass, wie Graf Ruccola. Kann das schmecken. Ja, liebe Kinder es kann. Probiert es eifrig!</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="50" speed="30" />
+                </programme>
+                <programme id="therob-programme-GrafRuccola-ep104" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Graf Ruccola trifft Rosenkohl</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Rosenkohl, so grün und klein, das ist fein.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="49" speed="34" />
+        </programme>
+        <programme id="therob-programme-GrafRuccola-ep105" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Graf Ruccola trifft Bohnen</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Was soll man sagen, jedes Böhnchen, ein Tönchen. Graf Ruccola ißt viele Böhnchen und nutzt die Tönchen für die schönsten Kinderlieder.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="57" speed="33" />
+                </programme>
+            </children>
+        </programme>
+        <programme id="therob-programme-GrafRuccola02" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+               <title>
+                <!-- Kinderserie, geflagt als Animation -->
+                <de>Graf Ruccola und das Obst</de>
+                <en>Count Ruccola and the fruits</en>
+            </title>
+            <description>
+                <de>Graf Ruccola ist ein Vitaminvampir und jagt Obst zum überleben. Ein Biss und schon sind Vitamine und Mineralien da. Kinder erlernen die leckeren Vorzüge von Obst. Späte zweite Staffel mit neuer Technik!</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">Per_custom_Freddy_356</member>
+                <member index="1" function="2">Per_custom_Freddy_373</member>
+                <member index="2" function="2">Per_custom_Freddy_386</member>
+            </staff>
+            <groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="F" year="1989" distribution="0" maingenre="3" subgenre="5" flags="2" blocks="1" time="0" price_mod="1.00" />
+            <ratings critics="47" speed="42" outcome="0" />
+            <children>
+                <programme id="therob-programme-GrafRuccola-ep201" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Graf Ruccola trifft Kirschen</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Graf Ruccola endeckt die Kirschen, schön rot und saftig. Hmmmm. Lecker. Da macht das Beißen Spaß!</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="49" speed="45" />
+                </programme>
+                <programme id="therob-programme-GrafRuccola-ep202" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Graf Ruccola trifft Birnen</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Was eine komische Form? Aber lecker. Nur als Graf Ruccola die Glühbirne beißt, wird es unschön.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="45" speed="40" />
+                </programme>
+                <programme id="therob-programme-GrafRuccola-ep203" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Graf Ruccola trifft Erdbeeren</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Endlich wieder etwas rotes. Da kommt direkt Freude auf und der Vitaminpegel steigt.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="46" speed="37" />
+                </programme>
+                <programme id="therob-programme-GrafRuccola-ep204" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Graf Ruccola trifft Äpfel</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Äpfel, rote Äpfel. Aber auch die mit grüner und gelber Farbe werden gerne mal probiert.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="47" speed="39" />
+                </programme>
+                <programme id="therob-programme-GrafRuccola-ep205" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Graf Ruccola trifft Orangen</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>IIIIIH, schmeckt das Doof. Achso Schale. Was ist Schale? Dann lernen wir mal schälen. Wird ja doch noch lecker.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="45" speed="41" />
+                </programme>
+                 <programme id="therob-programme-GrafRuccola-ep206" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Graf Ruccola trifft Himbeeren</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Rot und saftig, wie es sein soll. Und manchmal auch sauer. Aber sauer mach lustig. Auf einen guten Biß.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="42" speed="44" />
+                </programme>
+                 <programme id="therob-programme-GrafRuccola-ep207" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Graf Ruccola trifft Trauben</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Was sollen die Kerne da? Beißt man die auch? Oder spuckt man die aus? Und wie finde ich kernlose zum Beißen?</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="45" speed="41" />
+                </programme>
+                <programme id="therob-programme-GrafRuccola-ep208" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Graf Ruccola trifft Brombeeren</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Aua, wieso beißen die mich? Achso, Dornen. Was sind denn Dornen. Wie komme ich denn unverletzt an die Brombeere?</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="50" speed="45" />
+                </programme>
+                <programme id="therob-programme-GrafRuccola-ep209" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Graf Ruccola trifft Bananen</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Ein krummes Ding zum Abschluß. Ud welches Getier versteckt sich denn in den Bananenstauden. Kommt Graf Ruccola an die Bananen?</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="37" speed="50" />
+                </programme>
+            </children>
+        </programme>
+        <programme id="therob-programme-GrafRuccola03" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+               <title>
+      				<!-- Serie für Jugendliche, geflagt als Animation -->
+                <de>Graf Ruccola und die Nachtschattengewächse</de>
+                <en></en>
+            </title>
+            <description>
+                <de>Graf Ruccola ist inzwischen ein heranwachsender, jugendlicher Vitaminvampir und lernt im Internat Freunde aus den Nachtschattengewächsen kennen. Er lernt, warum sich seine Freunde vor den monsterlichen Menschen fürchten. Aktuelle Themen der Jugendlichen gepaart mit interessanten Fakten aus der Pflanzenwelt.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">Per_custom_Freddy_356</member>
+                <member index="1" function="2">Per_custom_Freddy_363</member>
+                <member index="2" function="2">Per_custom_Freddy_356</member>
+            </staff>
+            <groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="F" year="2001" distribution="0" maingenre="3" subgenre="5" flags="2" blocks="1" time="0" price_mod="1.00" />
+            <ratings critics="56" speed="38" outcome="0" />
+            <children>
+                <programme id="therob-programme-GrafRuccola-ep301" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Graf Ruccola und die Tomate</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Graf Ruccola endeckt die Tomate, ein schönes rotes und saftiges Nachtschattengewächs. Zusammen erkunden sie das Menschendorf und sind fassungslos, als sie die Fenster mit dem Ketchup sehen!</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="59" speed="39" />
+                </programme>
+                <programme id="therob-programme-GrafRuccola-ep302" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Graf Ruccola und die Kartoffel</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Graf Ruccola lernt die Kartoffel kennen. Obwohl sehr runzelig und mit Wurzeln bedeckt, entdeckt er die inneren Werte. Zusammen geraten sie in eine Chipsfabrik</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="56" speed="39" />
+                </programme>
+                <programme id="therob-programme-GrafRuccola-ep303" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Graf Ruccola und die Aubergine</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Die Aubergine und Graf Ruccola entdecken ein geheimes AntiPasti Labor der Menschen. Dort entdeckt die Aubergine ihre vermissten Eltern in zubereiteter Form. Kann Graf Ruccola sie trösten?</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="52" speed="34" />
+                </programme>
+                <programme id="therob-programme-GrafRuccola-ep304" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Graf Ruccola und die Paprika</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Graf Ruccola muss die Paprika retten. Sie wurde von einem menschlichen Gewürzhersteller entführt. Schafft er es rechtzeitig?</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="51" speed="38" />
+                </programme>
+                <programme id="therob-programme-GrafRuccola-ep305" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Graf Ruccola und der Stechapfel</de>
+                        <en></en>
+                    </title>
+                    <description>
+                        <de>Der Stechapfel will ein Heilmittel für Husten werden. Da erzählt ihm Graf Ruccola, was er bisher alles mit den Menschen erlebt hat. Wird der Stechapfel jetzt giftig?</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="57" speed="35" />
+                </programme>
+             </children>
         </programme>
     </allprogrammes>
   <insignificantpeople>
@@ -1124,7 +1491,9 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
         <person id="TheRob-TowerTV-Mark" first_name="Mark W." last_name="Wullbrich" nick_name="" />
         <person id="TheRob-TowerTV-Thomas" first_name="Thomas" last_name="Weierunter" nick_name="" />
         <person id="TheRob-TowerTV-RuisLosset" first_name="Ruis" last_name="Losset Jr" nick_name="" />
-        <person id="TheRob-TowerTV-KalliBeckenklauer" first_name="Kalli" last_name="Beckenklauer" nick_name="" />
+        <person id="TheRob-TowerTV-RednackRoot" first_name="Rednack" last_name="Root Jr." nick_name="" />
+        <person id="TheRob-TowerTV-WeckoryBallglatt" first_name="Weckory" last_name="Ballglatt" nick_name="" />
+        <person id="TheRob-TowerTV-SoniaKinnlang" first_name="Sonia" last_name="Kinnlang" nick_name="" />
     </insignificantpeople>
     <celebritypeople>
         <person id="TheRob-celebritypeople-FizzieWang" tmdb_id="0" imdb_id="nm0000485" creator="TheRob">
@@ -1348,4 +1717,38 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
             <data prominence="3" skill="5" fame="4" scandalizing="1" price_mod="0" power="2" humor="1" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
         </person>
     </celebritypeople>
+	<scripttemplates>
+        <scripttemplate product="16" licence_type="1" guid="TheRob-Script-Rep-Drehbuecher">
+            <title>
+                <de>Drehbücher für Anfänger</de>
+                <en></en>
+            </title>
+            <description>
+                <de>Wie schreibe ich Drehbücher für TowerTV? Eine %GENRE%, die die erfolgreichsten Autoren besucht, sie genau durchleuchtet und in Interviews spannende Tips entlockt. </de>
+                <en></en>
+            </description>
+            <variables>
+                <funny>
+                    <de></de>
+                    <en></en>
+                </funny>
+            </variables>
+            <jobs>
+                <job index="0" function="1" required="1" />
+                <job index="1" function="128" required="1" gender="2" />
+                <job index="2" function="8" required="1" gender="1" />
+                <!-- there might be up to 2 additional roles without
+                     further specifications -->
+                <job index="3" function="32" required="0" gender="0" />
+                <job index="4" function="32" required="0" gender="0" />
+            </jobs>
+            <genres maingenre="300" subgenres="6" />
+            <blocks min="1" max="3" slope="20" />
+            <price min="1000" max="5000" slope="20" />
+            <potential min="10" max="50" slope="20" />
+            <outcome min="0" max="9" slope="40" />
+            <review min="15" max="50" slope="20" />
+            <speed min="20" max="50" slope="20" />
+        </scripttemplate>
+	</scripttemplates>
 </tvgdb>
