@@ -347,8 +347,8 @@ Type TBuilding Extends TBuildingBase
 				'add 50 for roof
 				area.position.y =  2 * floorHeight - 7 + 50 - GetPlayerBase().GetFigure().area.GetY()
 			else
-				if MouseY() <= 20 then area.position.y :+ ((20 - MouseY()) * 0.75)
-				if MouseY() >= GetGraphicsManager().GetHeight() - 20 then area.position.y :- ((20 - (GetGraphicsManager().GetHeight() - VMouseY())) * 0.75)
+				if MouseManager.y <= 20 then area.position.y :+ ((20 - MouseManager.y) * 0.75)
+				if MouseManager.y >= GetGraphicsManager().GetHeight() - 20 then area.position.y :- ((20 - (GetGraphicsManager().GetHeight() - MouseManager.y)) * 0.75)
 '				ghostScrollingPosition = MathHelper.Clamp(ghostScrollingPosition, - 637, 88)
 
 '				area.position.y = ghostScrollingPosition

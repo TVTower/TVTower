@@ -43,6 +43,7 @@ Import brl.System
 Import brl.PolledInput
 Import "base.util.vector.bmx"
 Import "base.util.time.bmx"
+Import "base.util.virtualgraphics.bmx"
 
 Global MOUSEMANAGER:TMouseManager = New TMouseManager
 Global KEYMANAGER:TKeyManager = New TKeyManager
@@ -370,8 +371,8 @@ Type TMouseManager
 			lastScrollWheel = MouseZ()
 		endif
 
-		x = MouseX()
-		y = MouseY()
+		x = TVirtualGfx.getInstance().VMouseX()
+		y = TVirtualGfx.getInstance().VMouseY()
 
 		For Local i:Int = 1 To 3
 			UpdateKey(i)
