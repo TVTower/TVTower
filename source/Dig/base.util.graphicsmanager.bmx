@@ -162,6 +162,22 @@ Type TGraphicsManager
 	End Method
 
 
+	Method GetRealHeight:int()
+		return realHeight
+	End Method
+
+
+	Method GetRealWidth:int()
+		return realWidth
+	End Method
+
+
+	Method HasBlackBars:int()
+		if designedWidth = -1 and designedHeight = -1 then return False
+		return designedWidth <> realWidth or designedHeight <> realHeight
+	End Method
+	
+
 	'switch between fullscreen or windowed mode
 	Method SwitchFullscreen:int()
 		SetFullscreen(1 - GetGraphicsManager().GetFullscreen())
@@ -221,6 +237,20 @@ Type TGraphicsManager
 		Else
 			if vsync then .Flip 1 else .Flip -1
 		EndIf
+	End Method
+
+
+	Method SetViewPort(x:int, y:int, w:int, h:int)
+		'the . means: access globally defined SetViewPort()
+		.SetViewPort(TVirtualGfx.getInstance().vxoff + x, TVirtualGfx.getInstance().vyoff + y, w, h)
+	End Method
+
+
+	Method GetViewPort(x:int var, y:int var, w:int var, h:int var)
+		'the . means: access globally defined SetViewPort()
+		.GetViewPort(x, y, w, h)
+		x :- TVirtualGfx.getInstance().vxoff
+		y :- TVirtualGfx.getInstance().vyoff
 	End Method
 End Type
 

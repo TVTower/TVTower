@@ -131,9 +131,9 @@ Type TTooltip Extends TEntity
 		'limit to visible areas
 		'-> moves tooltip  so that everything is visible on screen
 		local outOfScreenLeft:int = Min(0, GetScreenX())
-		local outOfScreenRight:int = Max(0, GetScreenX() + GetWidth() - GraphicsWidth())
+		local outOfScreenRight:int = Max(0, GetScreenX() + GetWidth() - GetGraphicsManager().GetWidth())
 		local outOfScreenTop:int = Min(0, GetScreenY())
-		local outOfScreenBottom:int = Max(0, GetScreenY() + GetHeight() - GraphicsHeight())
+		local outOfScreenBottom:int = Max(0, GetScreenY() + GetHeight() - GetGraphicsManager().GetHeight())
 		if outOfScreenLeft then area.position.SetX( area.GetX() + outOfScreenLeft )
 		if outOfScreenRight then area.position.SetX( area.GetX() - outOfScreenRight )
 		if outOfScreenTop then area.position.SetY( area.GetY() + outOfScreenTop )

@@ -211,6 +211,8 @@ Type TApp
 	
 			GetGraphicsManager().SetVsync(vsync)
 			GetGraphicsManager().SetResolution(800,600)
+			'GetGraphicsManager().SetResolution(1024,768)
+			GetGraphicsManager().SetDesignedResolution(800,600)
 			GetGraphicsManager().InitGraphics()
 			
 			'load graphics needed for loading screen,
@@ -365,8 +367,7 @@ Type TApp
 			filename = "screenshot_"+padded+".png"
 		Wend
 
-'		Local img:TPixmap = GrabPixmap(0, 0, GraphicsWidth(), GraphicsHeight())
-		Local img:TPixmap = VirtualGrabPixmap(0, 0, GraphicsWidth(), GraphicsHeight())
+		Local img:TPixmap = VirtualGrabPixmap(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
 
 		'add overlay
 		If overlay Then overlay.DrawOnImage(img, GetGraphicsManager().GetWidth() - overlay.GetWidth() - 10, 10, -1, Null, TColor.Create(255,255,255,0.5))
@@ -769,6 +770,13 @@ Next
 
 
 	Function Render:Int()
+		'cls only needed if virtual resolution is enabled, else the
+		'background covers everything
+		If GetGraphicsManager().HasBlackBars()
+			Cls()
+'			GetGraphicsManager().SetViewPort(0,0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
+		Endif
+
 		TProfiler.Enter("Draw")
 		ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
 
@@ -935,7 +943,7 @@ Next
 
 		SetAlpha 0.2
 		SetColor 50,0,0
-		DrawRect(0, GraphicsHeight() - 20, GraphicsWidth(), 20)
+		DrawRect(0, GetGraphicsManager().GetHeight() - 20, GetGraphicsManager().GetWidth(), 20)
 		SetAlpha 1.0
 		SetColor 255,255,255
 		DrawText("Loading: "+RURC.loadedCount+"/"+RURC.toLoadCount+"  "+String(RURC.loadedLog.Last()), 0, 580)
@@ -1367,20 +1375,20 @@ Type TSaveGame Extends TGameState
 		If Not Load Then text = getLocale("SAVEGAME_GETS_CREATED")
 
 		Local col:TColor = New TColor.Get()
-		Local pix:TPixmap = VirtualGrabPixmap(0, 0, GraphicsWidth(), GraphicsHeight() )
+		Local pix:TPixmap = VirtualGrabPixmap(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight() )
 		Cls
 		DrawPixmap(pix, 0,0)
 		SetAlpha 0.5
 		SetColor 0,0,0
-		DrawRect(0,0, GraphicsWidth(), GraphicsHeight())
+		DrawRect(0,0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
 		SetAlpha 1.0
 		SetColor 255,255,255
 
-		GetSpriteFromRegistry("gfx_errorbox").Draw(GraphicsWidth()/2, GraphicsHeight()/2, -1, New TVec2D.Init(0.5, 0.5))
+		GetSpriteFromRegistry("gfx_errorbox").Draw(GetGraphicsManager().GetWidth()/2, GetGraphicsManager().GetHeight()/2, -1, New TVec2D.Init(0.5, 0.5))
 		Local w:Int = GetSpriteFromRegistry("gfx_errorbox").GetWidth()
 		Local h:Int = GetSpriteFromRegistry("gfx_errorbox").GetHeight()
-		Local x:Int = GraphicsWidth()/2 - w/2
-		Local y:Int = GraphicsHeight()/2 - h/2
+		Local x:Int = GetGraphicsManager().GetWidth()/2 - w/2
+		Local y:Int = GetGraphicsManager().GetHeight()/2 - h/2
 		GetBitmapFont("Default", 15, BOLDFONT).drawBlock(title, x + 18, y + 15, w - 60, 40, Null, TColor.Create(150, 50, 50))
 		GetBitmapFont("Default", 12).drawBlock(text, x + 18, y + 50, w - 40, h - 60, Null, TColor.Create(50, 50, 50))
 
@@ -4360,8 +4368,10 @@ End Function
 
 
 Function DrawMenuBackground(darkened:Int=False)
-	'no cls needed - we render a background
-	'Cls
+	'cls only needed if virtual resolution is enabled, else the
+	'background covers everything
+	if GetGraphicsManager().HasBlackBars() then Cls()
+
 	SetColor 255,255,255
 	GetSpriteFromRegistry("gfx_startscreen").Draw(0,0)
 
@@ -4383,7 +4393,7 @@ Function DrawMenuBackground(darkened:Int=False)
 				Local oldAlpha:Float = GetAlpha()
 				SetAlpha TInterpolation.RegularOut(0.0, 1.0, Min(0.5*logoAnimTime, timeGone - logoAnimStart), 0.5*logoAnimTime)
 
-				logo.Draw( GraphicsWidth()/2, 150, -1, ALIGN_CENTER_CENTER, logoScale)
+				logo.Draw( GetGraphicsManager().GetWidth()/2, 150, -1, ALIGN_CENTER_CENTER, logoScale)
 				SetAlpha oldAlpha
 			EndIf
 	EndSelect

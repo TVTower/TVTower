@@ -300,7 +300,7 @@ Type TToastMessageSpawnPoint extends TEntity
 	Method Render:Int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
 		'store old render config and adjust to our needs
 		local renderConfig:TRenderconfig = TRenderConfig.Push()
-		if HasSize() then SetViewPort(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())
+		if HasSize() then GetGraphicsManager().SetViewPort(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())
 
 
 		if showBackground then RenderBackground(xOffset, yOffset)

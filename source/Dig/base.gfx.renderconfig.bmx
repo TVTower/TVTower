@@ -3,6 +3,7 @@ Import Brl.LinkedList
 Import "base.util.color.bmx"
 Import "base.util.rectangle.bmx"
 Import "base.util.vector.bmx"
+Import "base.util.graphicsmanager.bmx"
 
 
 Type TRenderConfig
@@ -30,7 +31,7 @@ Type TRenderConfig
 		SetOrigin(config.origin.x, config.origin.y)
 		SetScale(config.scale.x, config.scale.y)
 		SetRotation(config.rotation)
-		SetViewPort(config.viewPort.position.x, config.viewPort.position.y, config.viewPort.dimension.x, config.viewPort.dimension.y)
+		GetGraphicsManager().setViewPort(config.viewPort.position.x, config.viewPort.position.y, config.viewPort.dimension.x, config.viewPort.dimension.y)
 
 		return config
 	End Function
@@ -54,7 +55,7 @@ Type TRenderConfig
 		config.origin = new TVec2D; GetOrigin(config.origin.x, config.origin.y)
 		config.scale = new TVec2D; GetScale(config.scale.x, config.scale.y)
 		config.rotation = GetRotation()
-		local x:int,y:int,w:int,h:int; GetViewPort(x, y, w, h)
+		local x:int,y:int,w:int,h:int; GetGraphicsManager().GetViewPort(x, y, w, h)
 		config.viewPort = new TRectangle.Init(x,y,w,h)
 
 
@@ -86,6 +87,6 @@ Type TRenderConfig
 	'Sets the viewport of all configurations overlayed 	(passepartout)
 	Function SetStackedViewPort:TRectangle()
 		local result:TRectangle = GetStackedViewPort()
-		if result then SetViewPort(result.position.x, result.position.y, result.dimension.x, result.dimension.y)
+		if result then GetGraphicsManager().SetViewPort(result.position.x, result.position.y, result.dimension.x, result.dimension.y)
 	End Function
 End Type

@@ -228,14 +228,12 @@ Type TGUIManager
 
 	Method RestrictViewport(x:Int,y:Int,w:Int,h:Int)
 		TRenderConfig.Push()
-'		GetViewport(viewportX,viewportY,viewportW,viewportH)
-		SetViewport(x,y,w,h)
+		GetGraphicsManager().SetViewport(x,y,w,h)
 	End Method
 
 
 	Method ResetViewport()
 		TRenderConfig.Pop()
-'		SetViewport(viewportX,viewportY,viewportW,viewportH)
 	End Method
 
 

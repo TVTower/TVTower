@@ -275,7 +275,7 @@ Type TGUIModalWindowChain Extends TGUIObject
 		SetAlpha(oldCol.a * alpha * 0.5)
 		SetColor(0, 0, 0)
 		If Not DarkenedArea
-			DrawRect(0, 0, GraphicsWidth(), GraphicsHeight())
+			DrawRect(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
 		Else
 			DrawRect(DarkenedArea.getX(), DarkenedArea.getY(), DarkenedArea.getW(), DarkenedArea.getH())
 		EndIf

@@ -44,6 +44,7 @@ Import BRL.Random
 Import "base.util.event.bmx"
 Import "base.util.vector.bmx"
 Import "base.gfx.imagehelper.bmx"
+Import "base.util.graphicsmanager.bmx"
 
 
 CONST ALIGN_LEFT:FLOAT = 0
@@ -677,8 +678,8 @@ Type TSprite
 
 			local oldVPx:int, oldVPy:int, oldVPw:int, oldVPh:int
 			if clipRect
-				GetViewPort(oldVPx, oldVPy, oldVPw, oldVPh)
-				SetViewport(clipRect.GetX(), clipRect.GetY(), clipRect.GetW(), clipRect.GetH())
+				GetGraphicsManager().GetViewPort(oldVPx, oldVPy, oldVPw, oldVPh)
+				GetGraphicsManager().SetViewPort(clipRect.GetX(), clipRect.GetY(), clipRect.GetW(), clipRect.GetH())
 			endif
 
 			'render
@@ -739,7 +740,7 @@ Type TSprite
 				endif
 
 				if clipRect
-					SetViewport(oldVPx, oldVPy, oldVPw, oldVPh)
+					GetGraphicsManager().SetViewport(oldVPx, oldVPy, oldVPw, oldVPh)
 				endif
 			endif
 		endif

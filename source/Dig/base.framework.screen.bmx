@@ -40,6 +40,7 @@ Import "base.framework.layer.bmx"
 Import "base.util.deltatimer.bmx"
 Import "base.util.rectangle.bmx"
 Import "base.util.color.bmx"
+Import "base.util.graphicsmanager.bmx"
 Import BRL.Max2D
 Import BRL.LinkedList
 
@@ -339,7 +340,7 @@ Type TScreenFader
 
 
 	Method GetArea:TRectangle()
-		if not _area then _area = new TRectangle.Init(0,0, GraphicsWidth(), GraphicsHeight())
+		if not _area then _area = new TRectangle.Init(0,0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
 		return _area
 	End Method
 
@@ -380,7 +381,7 @@ Type TScreenFader
 			SetAlpha(1 - GetProgress())
 		EndIf
 		SetColor(0, 0, 0)
-		DrawRect(0, 0, GraphicsWidth(), GraphicsHeight())
+		DrawRect(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
 
 		oldCol.SetRGBA()
 	End Method

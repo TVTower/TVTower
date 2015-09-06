@@ -1,5 +1,6 @@
 SuperStrict
 Import "Dig/base.util.deltatimer.bmx"
+Import "Dig/base.util.graphicsmanager.bmx"
 
 Import "game.world.worldlighting.bmx"
 Import "game.world.worldtime.bmx"
@@ -325,7 +326,7 @@ Type TWorld
 
 
 	Method Render:Int()
-		SetViewPort(area.GetX(), area.GetY(), area.GetW(), area.GetH())
+		GetGraphicsManager().SetViewPort(area.GetX(), area.GetY(), area.GetW(), area.GetH())
 
 		'=== BACKGROUND ===
 		local skyColor:TColor = lighting.currentLight.copy()
@@ -337,7 +338,7 @@ Type TWorld
 			Cls
 		else
 			skyColor.SetRGB()
-			DrawRect(0, 0, GraphicsWidth(), GraphicsHeight())
+			DrawRect(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
 			setColor 255,255,255
 		endif
 
@@ -369,7 +370,8 @@ Type TWorld
 		'=== SNOW ===
 		if autoRenderSnow then RenderSnow()
 
-		SetViewPort(0, 0, GraphicsWidth(), GraphicsHeight())
+		'reset viewport
+		GetGraphicsManager().SetViewPort(0,0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
 	End Method
 
 

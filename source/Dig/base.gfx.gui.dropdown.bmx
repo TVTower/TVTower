@@ -255,7 +255,7 @@ Type TGUIDropDown Extends TGUIInput
 		'move list to our position
 		local listPosY:int = GetScreenY() + GetScreenHeight()
 		'if list ends below screen end we might move it above the button
-		if listPosY + list.GetScreenHeight() > GraphicsHeight()
+		if listPosY + list.GetScreenHeight() > GetGraphicsManager().GetHeight()
 			if list.GetScreenHeight() < GetScreenY()
 				listPosY = GetScreenY() - list.GetScreenHeight()
 			endif
