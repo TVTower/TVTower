@@ -665,6 +665,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 
 	'override
+	'checks flags of all data-objects contained in self and sublicences
 	Method hasFlag:Int(flag:Int) {_exposeToLua}
 		return GetFlags() & flag
 	End Method
@@ -863,7 +864,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		if useOwner > 0 and self.IsPlanned() then showMsgPlannedWarning = True
 		'if licence is for a specific programme it might contain a flag...
 		'TODO: do this for "all" via licence.HasFlag() doing recursive checks?
-		If data.HasFlag(TVTProgrammeFlag.PAID) then showMsgEarnInfo = True
+		If data.HasFlag(TVTProgrammeDataFlag.PAID) then showMsgEarnInfo = True
 
 
 		'=== CALCULATE SPECIAL AREA HEIGHTS ===
@@ -935,7 +936,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		'splitter
 		GetSpriteFromRegistry("gfx_datasheet_content_splitterV").DrawArea(contentX + 5 + 65, contentY, 2, 16)
 		'country [+year] + genre, year for non-callin-shows
-		If data.HasFlag(TVTProgrammeFlag.PAID)
+		If data.HasFlag(TVTProgrammeDataFlag.PAID)
 			skin.fontNormal.drawBlock(data.country, contentX + 5, contentY, 65, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		else
 			skin.fontNormal.drawBlock(data.country + " " + data.year, contentX + 5, contentY, 65, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
@@ -1346,7 +1347,7 @@ Type TProgrammeLicenceFilter
 		filters = CreateList()
 
 		'flags having custom categories
-		local categoryFlags:int = TVTProgrammeFlag.PAID | TVTProgrammeFlag.LIVE | TVTProgrammeFlag.TRASH
+		local categoryFlags:int = TVTProgrammeDataFlag.PAID | TVTProgrammeDataFlag.LIVE | TVTProgrammeDataFlag.TRASH
 
 		CreateVisible().AddNotFlag(categoryFlags).AddGenres([1])			'adventure
 		CreateVisible().AddNotFlag(categoryFlags).AddGenres([2])			'action
@@ -1367,18 +1368,18 @@ Type TProgrammeLicenceFilter
 		CreateVisible().AddNotFlag(categoryFlags).AddGenres([0])			'undefined
 		'show/event -> all categories
 		CreateVisible().AddNotFlag(categoryFlags).AddGenres([100, 101, 102, 200, 201, 202, 203, 204]).SetCaption("PROGRAMME_GENRE_SHOW_AND_EVENTS")
-		CreateVisible().AddFlag(TVTProgrammeFlag.LIVE)						'live
-'		CreateVisible().AddFlag(TVTProgrammeFlag.TRASH).AddGenres([301])	'Trash + Yellow Press
+		CreateVisible().AddFlag(TVTProgrammeDataFlag.LIVE)						'live
+'		CreateVisible().AddFlag(TVTProgrammeDataFlag.TRASH).AddGenres([301])	'Trash + Yellow Press
 
 		'either trash - or genre 301 (yellow press)
 		local trash:TProgrammeLicenceFilterGroup = TProgrammeLicenceFilterGroup.CreateVisible()
 		trash.SetConnectionType(TProgrammeLicenceFilterGroup.CONNECTION_TYPE_OR)
 		'store config in group for proper caption
-		trash.AddFlag(TVTProgrammeFlag.TRASH).AddGenres([301])
-		trash.AddFilter( new TProgrammeLicenceFilter.AddFlag(TVTProgrammeFlag.TRASH) )
+		trash.AddFlag(TVTProgrammeDataFlag.TRASH).AddGenres([301])
+		trash.AddFilter( new TProgrammeLicenceFilter.AddFlag(TVTProgrammeDataFlag.TRASH) )
 		trash.AddFilter( new TProgrammeLicenceFilter.AddGenres([301]) )
 
-		CreateVisible().AddFlag(TVTProgrammeFlag.PAID)						'Call-In
+		CreateVisible().AddFlag(TVTProgrammeDataFlag.PAID)						'Call-In
 	End Function
 
 
@@ -1449,7 +1450,7 @@ Type TProgrammeLicenceFilter
 				'contains that flag?
 				if flags & flag > 0
 					if result <> "" then result :+ " & "
-					result :+ GetLocale("PROGRAMME_FLAG_" + TVTProgrammeFlag.GetAsString(flag))
+					result :+ GetLocale("PROGRAMME_FLAG_" + TVTProgrammeDataFlag.GetAsString(flag))
 				endif
 			Next
 '		endif

@@ -67,42 +67,42 @@ Type TScriptBase Extends TNamedGameObject
 
 
 	Method IsLive:int()
-		return HasFlag(TVTProgrammeFlag.LIVE)
+		return HasFlag(TVTProgrammeDataFlag.LIVE)
 	End Method
 
 
 	Method IsAnimation:Int()
-		return HasFlag(TVTProgrammeFlag.ANIMATION)
+		return HasFlag(TVTProgrammeDataFlag.ANIMATION)
 	End Method
 	
 	
 	Method IsCulture:Int()
-		return HasFlag(TVTProgrammeFlag.CULTURE)
+		return HasFlag(TVTProgrammeDataFlag.CULTURE)
 	End Method	
 		
 	
 	Method IsCult:Int()
-		return HasFlag(TVTProgrammeFlag.CULT)
+		return HasFlag(TVTProgrammeDataFlag.CULT)
 	End Method
 	
 	
 	Method IsTrash:Int()
-		return HasFlag(TVTProgrammeFlag.TRASH)
+		return HasFlag(TVTProgrammeDataFlag.TRASH)
 	End Method
 	
 	
 	Method IsBMovie:Int()
-		return HasFlag(TVTProgrammeFlag.BMOVIE)
+		return HasFlag(TVTProgrammeDataFlag.BMOVIE)
 	End Method
 	
 	
 	Method IsXRated:int()
-		return HasFlag(TVTProgrammeFlag.XRATED)
+		return HasFlag(TVTProgrammeDataFlag.XRATED)
 	End Method
 
 
 	Method IsPaid:int()
-		return HasFlag(TVTProgrammeFlag.PAID)
+		return HasFlag(TVTProgrammeDataFlag.PAID)
 	End Method
 
 

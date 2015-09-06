@@ -51,7 +51,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 			if revenue > 0
 				'earn revenue for callin-shows
-				If data.HasFlag(TVTProgrammeFlag.PAID)
+				If data.HasFlag(TVTProgrammeDataFlag.PAID)
 					GetPlayerFinance(owner).EarnCallerRevenue(revenue, self)
 				'all others programmes get "sponsored"
 				Else
@@ -226,7 +226,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	
 		'Genereller Quotenbonus!
 		if data.IsLive()
-			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeFlag.LIVE)
+			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.LIVE)
 			'complex implementation
 			if definition
 				flagDefinitions :+ [definition]
@@ -251,7 +251,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		
 		'Bonus bei Betty und bei Managern
 		if data.IsCulture()
-			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeFlag.CULTURE)
+			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.CULTURE)
 			'complex implementation
 			if definition
 				flagDefinitions :+ [definition]
@@ -264,7 +264,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 		'Verringert die Nachteile des Filmalters. Bonus bei Rentnern. 'Höhere Serientreue bei Serien.
 		if data.IsCult()
-			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeFlag.CULT)
+			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.CULT)
 			'complex implementation
 			if definition
 				flagDefinitions :+ [definition]
@@ -277,7 +277,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 		'Bonus bei Arbeitslosen und Hausfrauen. Malus bei Arbeitnehmern und Managern. Trash läuft morgens und mittags gut => Bonus!
 		if data.IsTrash()
-			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeFlag.TRASH)
+			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.TRASH)
 			'complex implementation
 			if definition
 				flagDefinitions :+ [definition]
@@ -304,7 +304,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			
 		'Kleiner Bonus für Jugendliche, Arbeitnehmer, Arbeitslose, (Männer). Kleiner Malus für Kinder, Hausfrauen, Rentner, (Frauen).
 		if data.IsXRated()
-			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeFlag.XRATED)
+			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.XRATED)
 			'complex implementation
 			if definition
 				flagDefinitions :+ [definition]
@@ -316,7 +316,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 		if data.IsScripted()
-			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeFlag.SCRIPTED)
+			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.SCRIPTED)
 			if definition
 				flagDefinitions :+ [definition]
 			else
@@ -329,7 +329,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		
 
 		if data.IsPaid()
-			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeFlag.PAID)
+			local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.PAID)
 			if definition
 				flagDefinitions :+ [definition]
 			else

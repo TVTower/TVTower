@@ -211,16 +211,16 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	'amount the wearoff effect gets reduced/increased by programme flags
 	Method GetFlagsWearoffModifier:float(flags:int)
 		local flagMod:float = 1.0
-		if flags & TVTProgrammeFlag.LIVE then flagMod :* 0.75
-		'if flags & TVTProgrammeFlag.ANIMATION then flagMod :* 1.0
-		if flags & TVTProgrammeFlag.CULTURE then flagMod :* 1.05
-		if flags & TVTProgrammeFlag.CULT then flagMod :* 1.2
-		if flags & TVTProgrammeFlag.TRASH then flagMod :* 0.95
-		if flags & TVTProgrammeFlag.BMOVIE then flagMod :* 0.90
-		'if flags & TVTProgrammeFlag.XRATED then flagMod :* 1.0
-		if flags & TVTProgrammeFlag.PAID then flagMod :* 0.75
-		'if flags & TVTProgrammeFlag.SERIES then flagMod :* 1.0
-		if flags & TVTProgrammeFlag.SCRIPTED then flagMod :* 0.90
+		if flags & TVTProgrammeDataFlag.LIVE then flagMod :* 0.75
+		'if flags & TVTProgrammeDataFlag.ANIMATION then flagMod :* 1.0
+		if flags & TVTProgrammeDataFlag.CULTURE then flagMod :* 1.05
+		if flags & TVTProgrammeDataFlag.CULT then flagMod :* 1.2
+		if flags & TVTProgrammeDataFlag.TRASH then flagMod :* 0.95
+		if flags & TVTProgrammeDataFlag.BMOVIE then flagMod :* 0.90
+		'if flags & TVTProgrammeDataFlag.XRATED then flagMod :* 1.0
+		if flags & TVTProgrammeDataFlag.PAID then flagMod :* 0.75
+		'if flags & TVTProgrammeDataFlag.SERIES then flagMod :* 1.0
+		if flags & TVTProgrammeDataFlag.SCRIPTED then flagMod :* 0.90
 
 		return flagMod
 	End Method
@@ -229,16 +229,16 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	'amount the refresh effect gets reduced/increased by programme flags
 	Method GetFlagsRefreshModifier:float(flags:int)
 		local flagMod:float = 1.0
-		if flags & TVTProgrammeFlag.LIVE then flagMod :* 0.75
-		'if flags & TVTProgrammeFlag.ANIMATION then flagMod :* 1.0
-		if flags & TVTProgrammeFlag.CULTURE then flagMod :* 1.1
-		if flags & TVTProgrammeFlag.CULT then flagMod :* 1.2
-		if flags & TVTProgrammeFlag.TRASH then flagMod :* 1.05
-		if flags & TVTProgrammeFlag.BMOVIE then flagMod :* 1.05
-		'if flags & TVTProgrammeFlag.XRATED then flagMod :* 1.0
-		if flags & TVTProgrammeFlag.PAID then flagMod :* 0.85
-		'if flags & TVTProgrammeFlag.SERIES then flagMod :* 1.0
-		if flags & TVTProgrammeFlag.SCRIPTED then flagMod :* 0.90
+		if flags & TVTProgrammeDataFlag.LIVE then flagMod :* 0.75
+		'if flags & TVTProgrammeDataFlag.ANIMATION then flagMod :* 1.0
+		if flags & TVTProgrammeDataFlag.CULTURE then flagMod :* 1.1
+		if flags & TVTProgrammeDataFlag.CULT then flagMod :* 1.2
+		if flags & TVTProgrammeDataFlag.TRASH then flagMod :* 1.05
+		if flags & TVTProgrammeDataFlag.BMOVIE then flagMod :* 1.05
+		'if flags & TVTProgrammeDataFlag.XRATED then flagMod :* 1.0
+		if flags & TVTProgrammeDataFlag.PAID then flagMod :* 0.85
+		'if flags & TVTProgrammeDataFlag.SERIES then flagMod :* 1.0
+		if flags & TVTProgrammeDataFlag.SCRIPTED then flagMod :* 0.90
 
 		return flagMod
 	End Method	
@@ -340,8 +340,6 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Field blocks:Int = 1
 	'guid of a potential franchise entry
 	Field franchiseGUID:string
-	'flags contains bitwise encoded things like xRated, paid, trash ...
-	Field flags:Int = 0
 	'which kind of distribution was used? Cinema, Custom production ...
 	Field distributionChannel:int = 0
 	'ID according to TVTProgrammeProductType
@@ -398,7 +396,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		if modifiers then obj.modifiers = modifiers.Copy()
 		obj.genre       = Max(0,Genre)
 		obj.blocks      = blocks
-		obj.SetFlag(TVTProgrammeFlag.XRATED, xrated)
+		obj.SetFlag(TVTProgrammeDataFlag.XRATED, xrated)
 		obj.country     = country
 		obj.cast        = cast
 		obj.year        = year
@@ -416,7 +414,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	'what to earn for each viewer
 	Method GetPerViewerRevenue:Float() {_exposeToLua}
 		local result:float = 0.0
-		If HasFlag(TVTProgrammeFlag.PAID)
+		If HasFlag(TVTProgrammeDataFlag.PAID)
 			'leads to a maximum of "0.25 * (20+10)" if speed/review
 			'reached 100%
 			'-> 8 Euro per Viewer
@@ -696,7 +694,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Method GetFlagsString:String(delimiter:string=" / ")
 		local result:String = ""
 		'checkspecific
-		local checkFlags:int[] = [TVTProgrammeFlag.LIVE, TVTProgrammeFlag.PAID]
+		local checkFlags:int[] = [TVTProgrammeDataFlag.LIVE, TVTProgrammeDataFlag.PAID]
 
 		'checkall
 		'local checkFlags:int[]
@@ -707,7 +705,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		for local i:int = eachin checkFlags
 			if flags & i > 0
 				if result <> "" then result :+ delimiter
-				result :+ GetLocale("PROGRAMME_FLAG_" + TVTProgrammeFlag.GetAsString(i))
+				result :+ GetLocale("PROGRAMME_FLAG_" + TVTProgrammeDataFlag.GetAsString(i))
 			endif
 		Next
 
@@ -796,46 +794,46 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 	
 	Method IsLive:int()
-		return HasFlag(TVTProgrammeFlag.LIVE)
+		return HasFlag(TVTProgrammeDataFlag.LIVE)
 	End Method
 	
 	
 	Method IsAnimation:Int()
-		return HasFlag(TVTProgrammeFlag.ANIMATION)
+		return HasFlag(TVTProgrammeDataFlag.ANIMATION)
 	End Method
 	
 	
 	Method IsCulture:Int()
-		return HasFlag(TVTProgrammeFlag.CULTURE)
+		return HasFlag(TVTProgrammeDataFlag.CULTURE)
 	End Method	
 		
 	
 	Method IsCult:Int()
-		return HasFlag(TVTProgrammeFlag.CULT)
+		return HasFlag(TVTProgrammeDataFlag.CULT)
 	End Method
 	
 	
 	Method IsTrash:Int()
-		return HasFlag(TVTProgrammeFlag.TRASH)
+		return HasFlag(TVTProgrammeDataFlag.TRASH)
 	End Method
 	
 	Method IsBMovie:Int()
-		return HasFlag(TVTProgrammeFlag.BMOVIE)
+		return HasFlag(TVTProgrammeDataFlag.BMOVIE)
 	End Method
 	
 	
 	Method IsXRated:int()
-		return HasFlag(TVTProgrammeFlag.XRATED)
+		return HasFlag(TVTProgrammeDataFlag.XRATED)
 	End Method
 
 
 	Method IsPaid:int()
-		return HasFlag(TVTProgrammeFlag.PAID)
+		return HasFlag(TVTProgrammeDataFlag.PAID)
 	End Method
 
 
 	Method IsScripted:int()
-		return HasFlag(TVTProgrammeFlag.SCRIPTED)
+		return HasFlag(TVTProgrammeDataFlag.SCRIPTED)
 	End Method
 
 
@@ -1209,7 +1207,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 	Method isReleased:int()
 		'call-in shows are kind of "live"
-		if HasFlag(TVTProgrammeFlag.PAID) then return True
+		if HasFlag(TVTProgrammeDataFlag.PAID) then return True
 
 		return GetWorldTime().GetTimeGone() >= releaseTime
 	End Method

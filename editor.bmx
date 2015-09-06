@@ -191,9 +191,9 @@ Type FrameMain Extends FrameMainBase
 
 		'remove and refill flags-checkboxlist
 		m_checkList_programmeLicenceFlags.Clear()
-		For local i:int = 1 to TVTProgrammeFlag.count
-			local flag:int = TVTProgrammeFlag.GetAtIndex(i)
-			m_checkList_programmeLicenceFlags.Append( GetLocale("PROGRAMME_FLAG_" + TVTProgrammeFlag.GetAsString(flag)) )
+		For local i:int = 1 to TVTProgrammeDataFlag.count
+			local flag:int = TVTProgrammeDataFlag.GetAtIndex(i)
+			m_checkList_programmeLicenceFlags.Append( GetLocale("PROGRAMME_FLAG_" + TVTProgrammeDataFlag.GetAsString(flag)) )
 		Next
 
 
@@ -821,8 +821,8 @@ endrem
 
 
 		'flags
-		For local i:int = 1 to TVTProgrammeFlag.count
-			local flag:int = TVTProgrammeFlag.GetAtIndex(i)
+		For local i:int = 1 to TVTProgrammeDataFlag.count
+			local flag:int = TVTProgrammeDataFlag.GetAtIndex(i)
 			m_checkList_programmeLicenceFlags.Check( i - 1, licence.GetData().HasFlag(flag) )
 		Next
 

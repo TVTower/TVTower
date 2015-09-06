@@ -28,7 +28,7 @@ Type TVTGameConstants {_exposeToLua}
 	Field ProgrammeProductType:TVTProgrammeProductType = new TVTProgrammeProductType
 	Field ProgrammeState:TVTProgrammeState = new TVTProgrammeState 
 	Field ProgrammeGenre:TVTProgrammeGenre = new TVTProgrammeGenre 
-	Field ProgrammeFlag:TVTProgrammeFlag = new TVTProgrammeFlag 
+	Field ProgrammeFlag:TVTProgrammeDataFlag = new TVTProgrammeDataFlag 
 	Field ProgrammeLicenceType:TVTProgrammeLicenceType = new TVTProgrammeLicenceType 
 
 	Field NewsFlag:TVTNewsFlag = new TVTNewsFlag 
@@ -498,7 +498,7 @@ End Type
 
 
 
-Type TVTProgrammeFlag {_exposeToLua}
+Type TVTProgrammeDataFlag {_exposeToLua}
 	'Genereller Quotenbonus!
 	Const LIVE:Int = 1
 	'Bonus bei Kindern / Jugendlichen. Malus bei Rentnern / Managern.

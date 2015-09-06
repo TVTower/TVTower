@@ -1216,7 +1216,7 @@ endif
 				data.genre = TVTProgrammeGenre.Western
 			case 8 'old LIVE
 				data.genre = TVTProgrammeGenre.Undefined
-				data.SetFlag(TVTProgrammeFlag.LIVE)
+				data.SetFlag(TVTProgrammeDataFlag.LIVE)
 			case 9 'old KIDS
 				data.genre = TVTProgrammeGenre.Family
 			case 10 'old CARTOON
@@ -1232,7 +1232,7 @@ endif
 			case 15 'old YELLOWPRESS
 				'hier sind nur "Trash"-Programme drin
 				data.genre = TVTProgrammeGenre.Undefined
-				data.SetFlag(TVTProgrammeFlag.TRASH)
+				data.SetFlag(TVTProgrammeDataFlag.TRASH)
 			case 17 'old SHOW
 				data.genre = TVTProgrammeGenre.Show
 			case 18 'old MONUMENTAL
@@ -1241,7 +1241,7 @@ endif
 				data.genre = TVTProgrammeGenre.Undefined
 			case 20 'old CALLINSHOW
 				data.genre = TVTProgrammeGenre.Undefined
-				data.SetFlag(TVTProgrammeFlag.PAID)
+				data.SetFlag(TVTProgrammeDataFlag.PAID)
 			default
 				data.genre = TVTProgrammeGenre.Undefined
 		End Select

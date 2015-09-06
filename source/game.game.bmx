@@ -617,7 +617,7 @@ endrem
 			programmeData.country = "D" 'make depending on station map?
 			programmeData.year = GetWorldTime().GetYear()
 			programmeData.liveTime = GetWorldTime().MakeTime(GetWorldTime().GetYear(), 0, 0, 5)
-			programmeData.SetFlag(TVTProgrammeFlag.LIVE, True)
+			programmeData.SetFlag(TVTProgrammeDataFlag.LIVE, True)
 			GetProgrammeDataCollection().Add(programmeData)
 
 			local programmeLicence:TProgrammeLicence = new TProgrammeLicence
@@ -631,7 +631,7 @@ endrem
 		'start programmes should be similar to "cheap movie list" of the
 		'movieagency - but they do not allow paid programmes
 		local startProgrammeFilter:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesCheap.Copy()
-		startProgrammeFilter.AddNotFlag(TVTProgrammeFlag.PAID)
+		startProgrammeFilter.AddNotFlag(TVTProgrammeDataFlag.PAID)
 		
 		For Local playerids:Int = 1 To 4
 			Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerids)

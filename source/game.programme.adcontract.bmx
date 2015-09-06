@@ -1013,7 +1013,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		if flag < 0 then return ""
 
 
-		local flags:string[] = TVTProgrammeFlag.GetAsString(flag).split(",")
+		local flags:string[] = TVTProgrammeDataFlag.GetAsString(flag).split(",")
 		local flagStrings:string[]
 		For local f:string = EachIn flags
 			flagStrings :+ [GetLocale("PROGRAMME_FLAG_"+f)]
