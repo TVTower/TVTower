@@ -604,9 +604,29 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 
 
+	Method IsControllable:int() {_exposeToLua}
+		'single-licence
+		'if GetSubLicenceCount() = 0
+			if Super.IsControllable()
+				if GetData() then return GetData().IsControllable()
+				return True
+			endif
+		'endif
+
+		'ask sublicences?
+		rem
+		'if licence is a collection: ask subs
+		For local licence:TProgrammeLicence = eachin subLicences
+			if not licence.IsControllable() then return FALSE
+		Next
+		endrem
+		return False
+	End Method
+
+
 	Method isNewBroadcastPossible:int() {_exposeToLua}
 		'false if not controllable
-		if HasFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE) then return False
+		if not IsControllable() then return False
 		'false if licence is not available (temporary, or because broadcast
 		'limit was exceeded)
 		if isAvailable() then return False
@@ -676,8 +696,16 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 
 	'override
-	Method setFlag(flag:Int, enable:Int=True)
-		Throw "TProgrammeLicence does not allow SetFlag(). Use GetData().SetFlag() instead."
+	'checks flags of all data-objects contained in self and sublicences
+	Method hasDataFlag:Int(flag:Int) {_exposeToLua}
+		return GetDataFlags() & flag
+	End Method
+
+
+	'override
+	'checks flags of all data-objects contained in self and sublicences
+	Method hasBroadcastFlag:Int(flag:Int) {_exposeToLua}
+		return GetBroadcastFlags() & flag
 	End Method
 
 
@@ -686,20 +714,46 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	Method hasFlag:Int(flag:Int) {_exposeToLua}
 		return GetFlags() & flag
 	End Method
-	
+
+
+	'returns the flags as a mix of all licences
+	Method GetFlags:int() {_exposeToLua}
+		'single-licence
+		if GetSubLicenceCount() = 0 and GetData() then return flags
+
+		local allFlags:int
+		For local licence:TProgrammeLicence = eachin subLicences
+			allFlags :| licence.GetFlags()
+		Next
+		return allFlags
+	End Method
+
+
+	'returns the flags as a mix of all licences
+	Method GetBroadcastFlags:int() {_exposeToLua}
+		'single-licence
+		if GetSubLicenceCount() = 0 and GetData() then return broadcastFlags
+
+		local allBroadcastFlags:int
+		For local licence:TProgrammeLicence = eachin subLicences
+			allBroadcastFlags :| licence.GetBroadcastFlags()
+		Next
+		return allBroadcastFlags
+	End Method	
+
 
 	'returns the flags as a mix of all licences
 	'ATTENTION: if ONE has xrated, all are xrated, if one has trash, all ..
 	'so this kind of "taints"
-	Method GetFlags:int() {_exposeToLua}
+	Method GetDataFlags:int() {_exposeToLua}
 		'single-licence
 		if GetSubLicenceCount() = 0 and GetData() then return GetData().flags
 
-		local flags:int
+		local allFlags:int
 		For local licence:TProgrammeLicence = eachin subLicences
-			flags :| licence.GetFlags()
+			allFlags :| licence.GetDataFlags()
 		Next
-		return flags
+		return allFlags
 	End Method
 
 
@@ -1333,7 +1387,8 @@ TProgrammeLicenceFilter.Init()
 Type TProgrammeLicenceFilter
 	Field caption:string = ""
 	Field genres:Int[]
-	Field flags:int
+	Field dataFlags:int
+	Field notDataFlags:int
 	Field checkAvailability:int = True
 	Field qualityMin:Float = -1.0
 	Field qualityMax:Float = -1.0
@@ -1348,7 +1403,6 @@ Type TProgrammeLicenceFilter
 	Field releaseTimeMax:Long = -1
 	Field ageMin:Long = -1
 	Field ageMax:Long = -1
-	Field notFlags:int
 	Field displayInMenu:int = False
 	Field id:int = 0
 
@@ -1370,43 +1424,46 @@ Type TProgrammeLicenceFilter
 		'flags having custom categories
 		local categoryFlags:int = TVTProgrammeDataFlag.PAID | TVTProgrammeDataFlag.LIVE | TVTProgrammeDataFlag.TRASH
 
-		CreateVisible().AddNotFlag(categoryFlags).AddGenres([1])			'adventure
-		CreateVisible().AddNotFlag(categoryFlags).AddGenres([2])			'action
-		CreateVisible().AddNotFlag(categoryFlags).AddGenres([4, 17])		'crime & thriller
-		CreateVisible().AddNotFlag(categoryFlags).AddGenres([5])			'comedy
+		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([1])			'adventure
+		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([2])			'action
+		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([4, 17])		'crime & thriller
+		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([5])			'comedy
 		'documentation & reportage
-		CreateVisible().AddNotFlag(categoryFlags).AddGenres([6, 300]).SetCaption("PROGRAMME_GENRE_DOCUMENTARIES_AND_FEATURES")
-		CreateVisible().AddNotFlag(categoryFlags).AddGenres([7])			'drama
-		CreateVisible().AddNotFlag(categoryFlags).AddGenres([8])			'erotic
-		CreateVisible().AddNotFlag(categoryFlags).AddGenres([9, 3])			'family & cartoons
-		CreateVisible().AddNotFlag(categoryFlags).AddGenres([10, 14])		'fantasy & mystery
-		CreateVisible().AddNotFlag(categoryFlags).AddGenres([11])			'history
-		CreateVisible().AddNotFlag(categoryFlags).AddGenres([12])			'horror
-		CreateVisible().AddNotFlag(categoryFlags).AddGenres([13])			'monumental
-		CreateVisible().AddNotFlag(categoryFlags).AddGenres([15])			'lovestory
-		CreateVisible().AddNotFlag(categoryFlags).AddGenres([16])			'scifi
-		CreateVisible().AddNotFlag(categoryFlags).AddGenres([18])			'western
-		CreateVisible().AddNotFlag(categoryFlags).AddGenres([0])			'undefined
+		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([6, 300]).SetCaption("PROGRAMME_GENRE_DOCUMENTARIES_AND_FEATURES")
+		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([7])			'drama
+		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([8])			'erotic
+		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([9, 3])			'family & cartoons
+		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([10, 14])		'fantasy & mystery
+		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([11])			'history
+		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([12])			'horror
+		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([13])			'monumental
+		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([15])			'lovestory
+		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([16])			'scifi
+		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([18])			'western
+		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([0])			'undefined
 		'show/event -> all categories
-		CreateVisible().AddNotFlag(categoryFlags).AddGenres([100, 101, 102, 200, 201, 202, 203, 204]).SetCaption("PROGRAMME_GENRE_SHOW_AND_EVENTS")
-		CreateVisible().AddFlag(TVTProgrammeDataFlag.LIVE)						'live
-'		CreateVisible().AddFlag(TVTProgrammeDataFlag.TRASH).AddGenres([301])	'Trash + Yellow Press
+		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([100, 101, 102, 200, 201, 202, 203, 204]).SetCaption("PROGRAMME_GENRE_SHOW_AND_EVENTS")
+		CreateVisible().AddDataFlag(TVTProgrammeDataFlag.LIVE)						'live
+'		CreateVisible().AddDataFlag(TVTProgrammeDataFlag.TRASH).AddGenres([301])	'Trash + Yellow Press
 
 		'either trash - or genre 301 (yellow press)
 		local trash:TProgrammeLicenceFilterGroup = TProgrammeLicenceFilterGroup.CreateVisible()
 		trash.SetConnectionType(TProgrammeLicenceFilterGroup.CONNECTION_TYPE_OR)
 		'store config in group for proper caption
-		trash.AddFlag(TVTProgrammeDataFlag.TRASH).AddGenres([301])
-		trash.AddFilter( new TProgrammeLicenceFilter.AddFlag(TVTProgrammeDataFlag.TRASH) )
+		trash.AddDataFlag(TVTProgrammeDataFlag.TRASH).AddGenres([301])
+		trash.AddFilter( new TProgrammeLicenceFilter.AddDataFlag(TVTProgrammeDataFlag.TRASH) )
 		trash.AddFilter( new TProgrammeLicenceFilter.AddGenres([301]) )
 
-		CreateVisible().AddFlag(TVTProgrammeDataFlag.PAID)						'Call-In
+		CreateVisible().AddDataFlag(TVTProgrammeDataFlag.PAID)						'Call-In
 	End Function
 
 
 	Method InitFrom:TProgrammeLicenceFilter(otherFilter:TProgrammeLicenceFilter)
 		caption = otherFilter.caption
-		flags = otherFilter.flags
+		dataFlags = otherFilter.dataFlags
+		notDataFlags = otherFilter.notDataFlags
+		'flags = otherFilter.flags
+		'notFlags = otherFilter.notFlags
 		for local i:int = EachIn otherFilter.genres
 			genres :+ [i]
 		Next
@@ -1425,7 +1482,6 @@ Type TProgrammeLicenceFilter
 		releaseTimeMax = otherFilter.releaseTimeMax
 		ageMin = otherFilter.ageMin
 		ageMax = otherFilter.ageMax
-		notFlags = otherFilter.notFlags
 		displayInMenu = otherFilter.displayInMenu
 		return self
 	End Method
@@ -1473,7 +1529,7 @@ Type TProgrammeLicenceFilter
 			For local flagNumber:int = 0 to 7 'manual limitation to "7" to exclude series/paid?
 				flag = 2^flagNumber
 				'contains that flag?
-				if flags & flag > 0
+				if dataFlags & flag > 0
 					if result <> "" then result :+ " & "
 					result :+ GetLocale("PROGRAMME_FLAG_" + TVTProgrammeDataFlag.GetAsString(flag))
 				endif
@@ -1515,7 +1571,7 @@ Type TProgrammeLicenceFilter
 
 	'returns a filter which contains ALL given genres and flags
 	'so it is like "genre1 AND genre2 AND flag1 AND flag2"
-	Function Get:TProgrammeLicenceFilter(genres:int[], flags:int=0)
+	Function Get:TProgrammeLicenceFilter(genres:int[], dataFlags:int=0)
 		local result:TProgrammeLicenceFilter
 		For local filter:TProgrammeLicenceFilter = EachIn filters
 			if genres.length > 0
@@ -1536,9 +1592,9 @@ Type TProgrammeLicenceFilter
 				if not result then continue
 			endif
 
-			'check flags
+			'check dataFlags
 			'skip if not all were set
-			if (filter.flags & flags) <> flags then continue
+			if (filter.dataFlags & dataFlags) <> dataFlags then continue
 
 			'found the filter
 			return filter
@@ -1559,7 +1615,7 @@ Type TProgrammeLicenceFilter
 			g:+ i
 		Next
 
-		return "filter["+id+"]  genres=~q"+g+"~q  flags="+flags
+		return "filter["+id+"]  genres=~q"+g+"~q  dataflags="+dataFlags
 	End Method
 	
 
@@ -1575,15 +1631,15 @@ Type TProgrammeLicenceFilter
 	End Method
 
 
-	Method AddFlag:TProgrammeLicenceFilter(flag:int)
-		self.flags :| flag
+	Method AddDataFlag:TProgrammeLicenceFilter(flag:int)
+		self.dataFlags :| flag
 
 		return self
 	End Method
 
 
-	Method AddNotFlag:TProgrammeLicenceFilter(flag:int)
-		self.notFlags :| flag
+	Method AddNotDataFlag:TProgrammeLicenceFilter(flag:int)
+		self.notDataFlags :| flag
 
 		return self
 	End Method
@@ -1614,7 +1670,7 @@ Type TProgrammeLicenceFilter
 		if checkAvailability and not licence.isAvailable() then return False
 		
 		'check flags filter does NOT care for
-		if notFlags > 0 and (licence.GetFlags() & notFlags) > 0 then return False
+		if notDataFlags > 0 and (licence.GetDataFlags() & notDataFlags) > 0 then return False
 
 		'check if it fits to the desired genres
 		if genres.length > 0
@@ -1674,7 +1730,7 @@ Type TProgrammeLicenceFilter
 		endif
 				
 		'check flags share something
-		if flags > 0 and (licence.GetFlags() & flags) <= 0 then return False
+		if dataFlags > 0 and (licence.GetDataFlags() & dataFlags) <= 0 then return False
 
 		return True
 	End Method

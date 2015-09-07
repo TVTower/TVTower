@@ -41,8 +41,14 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	'override
-	Method SourceHasFlag:int(flag:Int) {_exposeToLua}
-		return licence.HasFlag(flag)
+	Method SourceHasBroadcastFlag:int(flag:Int) {_exposeToLua}
+		'do not ask programmedata but licence
+		return licence.HasBroadcastFlag(flag)
+	End Method
+
+
+	Method IsControllable:int() {_exposeToLua}
+		return licence.IsControllable()
 	End Method
 	
 

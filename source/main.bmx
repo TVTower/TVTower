@@ -9,6 +9,7 @@ Import Brl.Retro
 Import brl.timer
 Import brl.Graphics
 Import brl.glmax2d
+Import brl.eventqueue
 Import "Dig/base.util.registry.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
 Import "Dig/base.util.registry.imageloader.bmx"
@@ -54,7 +55,7 @@ Import "game.figure.base.bmx"
 Import "game.gameinformation.bmx"
 
 ?Linux
-Import "external/bufferedglmax2d/bufferedglmax2d.bmx"
+'Import "external/bufferedglmax2d/bufferedglmax2d.bmx"
 ?Win32
 Import brl.D3D9Max2D
 Import brl.D3D7Max2D
@@ -159,6 +160,8 @@ TLogger.changePrintMode(LOG_ERROR | LOG_DEV | LOG_AI, True)
 
 'Enthaelt Verbindung zu Einstellungen und Timern, sonst nix
 Type TApp
+	'mobile devices: running in background or foreground?
+	Field runningInBackground:int = False
 	'developer/base configuration
 	Field configBase:TData = New TData
 	'configuration containing base + user
@@ -268,6 +271,29 @@ Type TApp
 		EndIf
 	End Function
 
+
+	Method IsRunningInBackground:int()
+		return runningInBackground
+	End Method
+
+
+	Method SetRunningInBackground:int(bool:int=True)
+		runningInBackground = bool
+	End Method
+
+
+	Method ProcessRunningInBackground()
+		If not IsRunningInBackground() then return
+		
+		While IsRunningInBackground()
+			'TODO: store "setRunningInBackground()" time and adjust
+			'      delay according to the time being in background
+			Delay(250)
+			PollEvent()
+		Wend
+	End Method
+
+		
 
 	Method LoadSettings:Int()
 		Local storage:TDataXmlStorage = New TDataXmlStorage
@@ -4506,6 +4532,22 @@ Function PrintBroadcastOverview(day:int = -1, lastHour:int = -1)
 End Function
 
 
+?bmxng and (android or ios)
+Function handleMobileDeviceEvents:Int(data:Object, event:Int)
+	Select event
+		Case SDL_APP_WILLENTERBACKGROUND
+			App.SetRunningInBackground(True)
+			Return False
+		Case SDL_APP_DIDENTERBACKGROUND
+		Case SDL_APP_WILLENTERFOREGROUND
+		Case SDL_APP_DIDENTERFOREGROUND
+			App.SetRunningInBackground(False)
+			Return False
+	End Select
+	Return True
+End Function
+?
+
 
 Function DEV_switchRoom:Int(room:TRoom)
 	'do not react if already switching
@@ -4550,6 +4592,11 @@ End Function
 
 Function StartApp:Int()
 	TProfiler.Enter("StartApp")
+
+	?bmxng and (android or ios)
+	SetEventFilterCallback(handleMobileDeviceEvents)
+	?
+	
 	'assign dev config (resources are now loaded)
 	GameRules.devConfig = TData(GetRegistry().Get("DEV_CONFIG", New TData))
 
@@ -4638,6 +4685,9 @@ Function StartTVTower(start:Int=True)
 TProfiler.Enter("InitialLoading")
 	ShowApp()
 	Repeat
+		'handle if app is run in background (mobile devices like android/iOS)
+		App.ProcessRunningInBackground()
+
 		'instead of only checking for resources in main loop
 		'(happens eg. 30 times a second), check each update cycle
 		TProfiler.Enter("RessourceLoader")
@@ -4672,6 +4722,9 @@ TProfiler.Leave("InitialLoading")
 TProfiler.Enter("GameLoop")
 	StartApp()
 	Repeat
+		'handle if app is run in background (mobile devices like android/iOS)
+		App.ProcessRunningInBackground()
+
 		GetDeltaTimer().Loop()
 
 		'process events not directly triggered
@@ -4681,7 +4734,6 @@ TProfiler.Enter("EventManager")
 TProfiler.Leave("EventManager")
 		'If RandRange(0,20) = 20 Then GCCollect()
 	Until TApp.ExitApp
-'	Until AppTerminate() Or TApp.ExitApp
 TProfiler.Leave("GameLoop")
 
 	'take care of network

@@ -359,7 +359,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				local broadcast:TProgramme = TProgramme.Create(currentLicence)
 				playerPlan.SetProgrammeSlot(broadcast, GetWorldTime().GetStartDay(), currentHour )
 				'disable control of that programme
-				broadcast.licence.data.SetFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE, True)
+				broadcast.licence.SetControllable(False)
+				if broadcast.isControllable() then Throw "controllable!"
 				'disable availability
 				broadcast.data.available = False
 				'additionally lock slots
@@ -631,7 +632,7 @@ endrem
 		'start programmes should be similar to "cheap movie list" of the
 		'movieagency - but they do not allow paid programmes
 		local startProgrammeFilter:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesCheap.Copy()
-		startProgrammeFilter.AddNotFlag(TVTProgrammeDataFlag.PAID)
+		startProgrammeFilter.AddNotDataFlag(TVTProgrammeDataFlag.PAID)
 		
 		For Local playerids:Int = 1 To 4
 			Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerids)

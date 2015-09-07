@@ -184,7 +184,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		if broadcastMaterial and broadcastMaterial.GetOwner() <> GetPlayerCollection().playerID Then return False
 
 		'skip if player cannot control the material
-		if broadcastMaterial and broadcastMaterial.SourceHasFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE) Then return False
+		if broadcastMaterial and not broadcastMaterial.IsControllable() Then return False
 
 		return Super.IsClickable()
 	End Method
@@ -219,7 +219,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 		'set mouse to "hover"
 		If mouseover and broadcastMaterial.IsOwnedByPlayer( GetPlayerCollection().playerID)
-			if broadcastMaterial.SourceHasFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE)
+			if not broadcastMaterial.IsControllable()
 				GetGame().cursorstate = 3
 			else
 				GetGame().cursorstate = 1
@@ -327,7 +327,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		'If isDragged() Then state = 0
 		Select broadcastMaterial.state
 			Case broadcastMaterial.STATE_NORMAL
-				if broadcastMaterial.SourceHasFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE)
+				if not broadcastMaterial.IsControllable()
 					SetColor 255,252,238
 				else
 					SetColor 255,255,255
@@ -374,7 +374,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			SetColor 255,255,255
 		EndIf
 
-		if broadcastMaterial.SourceHasFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE)
+		if not broadcastMaterial.IsControllable()
 			SetAlpha GetAlpha() * 0.8
 			GetSpriteFromRegistry("gfx_interface_ingamechat_key.locked").Draw(GetScreenX() + GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW() - 4, GetScreenY() + 5, -1, ALIGN_RIGHT_TOP)
 			SetAlpha GetAlpha() * 1.25
@@ -2157,7 +2157,7 @@ Type TGUINews Extends TGUIGameListItem
 		'set mouse to "hover"
 		'set mouse to "hover"
 		If mouseover and (news.owner <= 0 or news.IsOwnedByPlayer( GetPlayerCollection().playerID))
-			if not news.SourceHasFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE)
+			if news.IsControllable()
 				GetGame().cursorstate = 1
 			endif
 		endif

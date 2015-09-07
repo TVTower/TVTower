@@ -57,8 +57,8 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 
 
 	'override
-	Method SourceHasFlag:int(flag:Int) {_exposeToLua}
-		return contract.HasFlag(flag)
+	Method SourceHasBroadcastFlag:int(flag:Int) {_exposeToLua}
+		return contract.HasBroadcastFlag(flag)
 	End Method
 	
 
@@ -72,6 +72,10 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 		Return contract.GetBlocks()
 	End Method
 
+
+	Method IsControllable:int() {_exposeToLua}
+		return contract.IsControllable()
+	End Method
 
 rem
 	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )

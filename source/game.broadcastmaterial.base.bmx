@@ -32,7 +32,12 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 	Const STATE_RUNNING:int		= 3
 
 
-	Method SourceHasFlag:int(flag:Int) abstract {_exposeToLua}
+	Method SourceHasBroadcastFlag:int(flag:Int) abstract {_exposeToLua}
+
+
+	Method IsControllable:int()
+		return True
+	End Method
 
 
 	Method hasFlag:Int(flag:Int) {_exposeToLua}

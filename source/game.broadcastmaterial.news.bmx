@@ -28,11 +28,18 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 
 
 	'override
-	Method SourceHasFlag:int(flag:Int) {_exposeToLua}
+	Method SourceHasBroadcastFlag:int(flag:Int) {_exposeToLua}
 		for local n:TNews = EachIn news
-			if n.SourceHasFlag(flag) then return True
+			if n.SourceHasBroadcastFlag(flag) then return True
 		Next
 		return False
+	End Method
+
+
+	Method IsControllable:int() {_exposeToLua}
+		For local n:TNews = EachIn news
+			if not n.IsControllable() then return False
+		Next
 	End Method
 
 
@@ -262,8 +269,8 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	'override
-	Method SourceHasFlag:int(flag:Int) {_exposeToLua}
-		return newsEvent.HasFlag(flag)
+	Method SourceHasBroadcastFlag:int(flag:Int) {_exposeToLua}
+		return newsEvent.HasBroadcastFlag(flag)
 	End Method
 
 

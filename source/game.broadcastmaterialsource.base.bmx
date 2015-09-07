@@ -12,6 +12,7 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	Field timesBroadcasted:int[] = [0]
 	Field topicality:Float = 1.0
 	Field flags:int = 0
+	Field broadcastFlags:int = 0
 	'is the source available at all?
 	Field available:int = True
 
@@ -110,8 +111,32 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	End Method
 
 
+	Method hasBroadcastFlag:Int(flag:Int) {_exposeToLua}
+		Return broadcastFlags & flag
+	End Method
+
+
+	Method setBroadcastFlag(flag:Int, enable:Int=True)
+		If enable
+			broadcastFlags :| flag
+		Else
+			broadcastFlags :& ~flag
+		EndIf
+	End Method
+	
+
 	Method IsAvailable:int()
 		return available
+	End Method
+
+
+	Method IsControllable:int()
+		return not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE)
+	End Method
+
+
+	Method SetControllable(bool:int = True)
+		setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE, not bool)
 	End Method
 
 
