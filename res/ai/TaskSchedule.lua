@@ -109,10 +109,10 @@ function TaskSchedule:GetLicenceFromTable(licenceID, l)
 	return nil
 end
 
-function TaskSchedule:GetMaxAudiencePercentageByHour(hour)
+function TaskSchedule:GetMaxAudiencePercentage(day, hour)
 -- neue Fassung...
 -- Eventuell mit ein wenig "Unsicherheit" versehen (schon in Blitzmax)
-	return TVT.getPotentialAudiencePercentageForHour(hour)
+	return TVT.getPotentialAudiencePercentage(day, hour)
 
 -- alte Fassung...
 --[[
@@ -177,8 +177,8 @@ function TaskSchedule:GuessedAudienceForHourAndLevel(day, hour, broadcast)
 		return MY.GetProgrammePlan().GetAudience()
 	end
 	
-	local level = self:GetQualityLevel(hour) --Welchen Qualitätslevel sollte ein Film/Werbung um diese Uhrzeit haben
-	local globalPercentageByHour = self:GetMaxAudiencePercentageByHour(hour) -- Die Maximalquote: Entspricht ungefähr "maxAudiencePercentage"
+	local level = self:GetQualityLevel(day, hour) --Welchen Qualitätslevel sollte ein Film/Werbung um diese Uhrzeit haben
+	local globalPercentageByHour = self:GetMaxAudiencePercentage(day, hour) -- Die Maximalquote: Entspricht ungefähr "maxAudiencePercentage"
 	local averageMovieQualityByLevel = self:GetAverageMovieQualityByLevel(level) -- Die Durchschnittsquote dieses Qualitätslevels
 	local broadcastQuality = 0
 	local riskyness = 0.60 -- 1.0 means assuming to get all
@@ -199,8 +199,8 @@ function TaskSchedule:GuessedAudienceForHourAndLevel(day, hour, broadcast)
 	return guessedAudience
 end
 
-function TaskSchedule:GetQualityLevel(hour)
-	local maxAudience = self:GetMaxAudiencePercentageByHour(hour)
+function TaskSchedule:GetQualityLevel(day, hour)
+	local maxAudience = self:GetMaxAudiencePercentage(day, hour)
 	if (maxAudience <= 0.05) then
 		return 1 --Nachtprogramm
 	elseif (maxAudience <= 0.10) then
@@ -442,7 +442,7 @@ end
 
 function JobEmergencySchedule:SetContractOrTrailerToEmptyBlock(choosenSpot, day, hour)
 	local fixedDay, fixedHour = self.ScheduleTask:FixDayAndHour(day, hour)
-	local level = self.ScheduleTask:GetQualityLevel(fixedHour)
+	local level = self.ScheduleTask:GetQualityLevel(fixedDay, fixedHour)
 
 	local previousProgramme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
 	local guessedAudience = self.ScheduleTask:GuessedAudienceForHourAndLevel(fixedDay, fixedHour, previousProgramme)
@@ -484,7 +484,7 @@ end
 function JobEmergencySchedule:SetMovieOrInfomercialToEmptyBlock(day, hour)
 	local fixedDay, fixedHour = self.ScheduleTask:FixDayAndHour(day, hour)
 
-	local level = self.ScheduleTask:GetQualityLevel(fixedHour)
+	local level = self.ScheduleTask:GetQualityLevel(fixedDay, fixedHour)
 	--debugMsg("Quality-Level: " .. level .. " (" .. fixedHour .. ")")
 	local licenceList = nil
 	local choosenLicence = nil

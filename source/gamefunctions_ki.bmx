@@ -548,17 +548,22 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 
-	Method getPotentialAudiencePercentageForHour:Float(hour:int = -1)
+	Method getPotentialAudiencePercentage:Float(day:int = - 1, hour:int = -1)
+		if day = -1 then day = GetWorldTime().GetDay()
+		if hour = -1 then hour = GetWorldTime().GetDayHour()
+		local time:Long = GetWorldTime().MakeTime(day, hour, 0, 0)
+
 		'percentage of each population group watching now
 		'local percentage:TAudience = TBroadcast.GetPotentialAudiencePercentageForHour(hour).GetAvg()
 
 		'percentage of each group in the population
 		local population:TAudience = TAudience.CreateWithBreakdown(1.0)
-		'GetPotentialAudienceForHour multiplies percentage watching now
-		'with the given population percentage
+		'GetPotentialAudienceModifier returns percentage watching now
+		population.Multiply(TBroadcast.GetPotentialAudienceModifier(time))
+
 		'-> GetSum() contains the total percentage of the population
 		'   watching TV now
-		return TBroadcast.GetPotentialAudienceForHour(population, hour).GetSum()
+		return population.GetSum()
 	End Method
 
 

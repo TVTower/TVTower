@@ -13,8 +13,8 @@ Type TAudienceResultBase
 	Field PlayerId:Int
 	'Der Titel des Programmes
 	Field Title:String
-	'Zu welcher Stunde gehört das Result
-	Field Hour:Int
+	'time of the broadcast this result belongs to
+	Field Time:Long
 	Field broadcastMaterial:TBroadcastMaterial
 	'was it an outage (programme was not sent)?
 	Field broadcastOutage:Int = False
@@ -198,7 +198,7 @@ Type TAudienceResult extends TAudienceResultBase
 	Method ToAudienceResultBase:TAudienceResultBase(audienceResult:TAudienceResult)
 		local base:TAudienceResultBase = new TAudienceResultBase
 		base.PlayerId = self.PlayerId
-		base.Hour = self.Hour
+		base.Time = self.Time
 		base.Title = self.Title
 		base.broadcastMaterial = self.broadcastMaterial
 		base.Audience = self.Audience

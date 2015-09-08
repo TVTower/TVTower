@@ -17,7 +17,6 @@ Framework BRL.StandardIO
 Import "source/main.bmx"
 Incbin "source/version.txt"
 
-'"Sprite" in Savegame hinterlegt - kann raus
 
 ?Win32
 rem

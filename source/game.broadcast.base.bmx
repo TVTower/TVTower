@@ -76,7 +76,7 @@ Type TBroadcastManager
 
 	'Führt die Berechnung für die Einschaltquoten der Sendeblöcke durch
 	Method BroadcastProgramme(day:Int=-1, hour:Int, recompute:Int = 0, bc:TBroadcast = null)
-		BroadcastCommon(hour, TVTBroadcastMaterialType.PROGRAMME, recompute, bc)
+		BroadcastCommon(day, hour, TVTBroadcastMaterialType.PROGRAMME, recompute, bc)
 
 		'assign current programme broadcastmaterial
 		currentProgrammeBroadcastMaterial = GetCurrentBroadcast().PlayersBroadcasts
@@ -85,7 +85,7 @@ Type TBroadcastManager
 
 	'Führt die Berechnung für die Nachrichten(-Show)-Ausstrahlungen durch
 	Method BroadcastNewsShow(day:Int=-1, hour:Int, recompute:Int = 0)
-		BroadcastCommon(hour, TVTBroadcastMaterialType.NEWSSHOW, recompute)
+		BroadcastCommon(day, hour, TVTBroadcastMaterialType.NEWSSHOW, recompute)
 	End Method
 
 
@@ -198,25 +198,6 @@ Type TBroadcastManager
 		SetAudienceResult(playerID, GetCurrentBroadcast().GetAudienceResult(playerID))
 	End Method
 
-	
-	'Ist noch nicht fertig!
-	Method ManipulatePotentialAudience(factor:Float, day:Int, hour:Int, followingHours:Int = 0 ) 'factor = -0.1 und +2.0
-		Local realDay:Int = day
-		Local realHour:Int
-		For Local i:Int = 0 to followingHours
-			realHour = hour + i
-			If realHour > 23
-				Local rest:Int = realHour / 24
-				realDay = day + (realHour - rest) / 24
-				realHour = rest
-			Else
-				realDay = day
-			End If
-			'PotentialAudienceManipulations.Insert(realDay + "|" + realHour, factor)
-			Throw "Implementiere mich!"
-		Next
-	End Method
-
 
 	'===== Hilfsmethoden =====
 
@@ -242,10 +223,13 @@ Type TBroadcastManager
 
 
 	'Der Ablauf des Broadcasts, verallgemeinert für Programme und News.
-	Method BroadcastCommon:TBroadcast(hour:Int, broadcastType:Int, recompute:Int, bc:TBroadcast = null )
+	Method BroadcastCommon:TBroadcast(day:int, hour:Int, broadcastType:Int, recompute:Int, bc:TBroadcast = null )
 		If bc = Null Then bc = New TBroadcast
 		bc.BroadcastType = broadcastType
-		bc.Hour = hour
+
+		if day < 0 then day = GetWorldTime().GetDay()
+		bc.Time = GetWorldTime().MakeTime(day, hour, 0, 0)
+
 		Sequence.SetCurrentBroadcast(bc)
 
 		'setup markets to compete for
@@ -292,7 +276,7 @@ Type TBroadcastManager
 
 	Function ChangeImageCauseOfBroadcast(bc:TBroadcast)
 		If (bc.TopAudience > 1000) 'Nur etwas ändern, wenn auch ein paar Zuschauer einschalten und nicht alle Sendeausfall haben.
-			Local modification:TAudience = TBroadcast.GetPotentialAudienceForHour(TAudience.CreateAndInitValue(1))
+			Local modification:TAudience = TBroadcast.GetPotentialAudienceModifier(bc.time)
 
 			'If (broadcastType = 0) Then 'Movies
 				Local map:TMap = CreateMap()
@@ -341,8 +325,8 @@ End Function
 'Quotenberechnung statt und es wird das Ergebnis gecached, so dass man die
 'Berechnung einige Zeit aufbewahren kann.
 Type TBroadcast
-	'Für welche Stunde gilt dieser Broadcast
-	Field Hour:Int = -1
+	'time of the Broadcast (since start of the game)
+	Field Time:Long = -1
 	Field BroadcastType:Int
 	'Wie sahen die Märkte zu dieser Zeit aus?
 	Field AudienceMarkets:TList = CreateList()
@@ -402,7 +386,7 @@ Type TBroadcast
 		ComputeAndSetPlayersProgrammeAttraction(lastMovieBroadcast, lastNewsShowBroadcast)
 
 		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
-			market.ComputeAudience(Hour)
+			market.ComputeAudience(Time)
 			AssimilateResults(market)
 		Next
 
@@ -426,7 +410,7 @@ Type TBroadcast
 		ComputeAndSetPlayersProgrammeAttractionForPlayer(playerId, lastMovieBroadcast, lastNewsShowBroadcast)
 
 		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
-			market.ComputeAudience(Hour)
+			market.ComputeAudience(Time)
 			AssimilateResultsForPlayer(playerId, market)
 		Next
 		GetAudienceResult(playerId).Refresh()
@@ -513,29 +497,15 @@ Type TBroadcast
 
 
 	Method AddMarket(playerIDs:Int[])
-		'Echt mega beschissener Code :( . Aber wie geht's mit Arrays in BlitzMax besser? Irgendwas mit Schnittmengen oder Contains?
-		'Oder ein Remove eines Elements? ListFromArray geht mit Int-Arrays nicht... usw... Ich hab bisher keine Lösung.
-		'Ich bräuchte sowas wie array1.remove(array2)
-		'RONNY @Manuel: dafuer schreibt man Hilfsfunktionen - oder laesst den
-		'               Code so wie er jetzt ist
-		Local playerIDsList:TList = CreateList()
+		'create array of players not existing in "playerIDs"
 		Local withoutPlayerIDs:Int[]
-
-		'Liste machen, damit Contains funktioniert
-		For Local i:Int = EachIn playerIDs
-			playerIDsList.AddLast(String(i))
-		Next
-
 		For Local i:Int = 1 To 4
-			'Wie geht Contains bei Arrays?
-			If Not (playerIDsList.Contains(String(i)))
-				withoutPlayerIDs = withoutPlayerIDs[..withoutPlayerIDs.length + 1]
-				withoutPlayerIDs[withoutPlayerIDs.length - 1] = i
-			End If
+			If THelper.IntArrayContainsNumber(playerIDs, i) then continue
+			withoutPlayerIDs :+ [i]
 		Next
 
 		Local audience:Int = GetStationMapCollection().GetShareAudience(playerIDs, withoutPlayerIDs)
-		If audience > 0 Then
+		If audience > 0
 			Local market:TAudienceMarketCalculation = New TAudienceMarketCalculation
 			market.maxAudience = TAudience.CreateWithBreakdown(audience)
 			For Local i:Int = 0 To playerIDs.length - 1
@@ -605,13 +575,13 @@ Type TBroadcast
 
 	'returns how many percent of the target group are possibly watching
 	'TV at the given hour 
-	Function GetPotentialAudiencePercentageForHour:TAudience(forHour:Int = -1)
-		If forHour < 0 Then forHour = GetWorldTime().GetDayHour()
+	Function GetPotentialAudiencePercentage_TimeMod:TAudience(time:Long = -1)
+		If time < 0 Then time = GetWorldTime().GetTimeGone()
 
 		local result:TAudience
 
 		'TODO: Eventuell auch in ein config-File auslagern
-		Select forHour
+		Select GetWorldTime().GetDayHour(time)
 			Case 0  result = TAudience.CreateAndInit(2, 6, 16, 11, 21, 19, 23, 100, 100)
 			Case 1  result = TAudience.CreateAndInit(0.5, 4, 7, 7, 15, 9, 13, 100, 100)
 			Case 2  result = TAudience.CreateAndInit(0.2, 1, 4, 4, 10, 3, 8, 100, 100)
@@ -643,8 +613,16 @@ Type TBroadcast
 	End Function
 	
 
-	Function GetPotentialAudienceForHour:TAudience(maxAudience:TAudience, forHour:Int = -1)
-		return maxAudience.Copy().Multiply( GetPotentialAudiencePercentageForHour(forHour) )
+	Function GetPotentialAudienceModifier:TAudience(forHour:int = -1)
+		local modifier:TAudience = TAudience.CreateAndInitValue(1)
+
+		'modify according to current hour
+		modifier.Multiply( GetPotentialAudiencePercentage_TimeMod(forHour) )
+
+		'modify according to weather 
+		'modifier.Multiply( GetPotentialAudiencePercentage_WeatherMod(forHour) )
+
+		return modifier
 	End Function
 End Type
 
@@ -781,28 +759,31 @@ Type TBroadcastFeedback
 
 
 	Method CalculateAudienceInterest(bc:TBroadcast, attr:TAudienceAttraction)
-		Local maxAudience:TAudience = TBroadcast.GetPotentialAudienceForHour(TAudience.CreateAndInitValue(1), bc.Hour)
+		Local maxAudienceMod:TAudience = TBroadcast.GetPotentialAudienceModifier(bc.Time)
 
 		AudienceInterest = New TAudience
 
-		If (bc.Hour >= 0 And bc.Hour <= 1)
-			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 1, 2, 1, 2, 1, 2, 0, 0), 0.10)
-		Elseif (bc.Hour >= 2 And bc.Hour <= 5)
-			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 0, 1, 0, 2, 0, 2, 0, 0), 0.225)
-		Elseif (bc.Hour = 6)
-			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 1, 1, 1, 1, 0, 1, 1, 0, 0), 0.20)
-		Elseif (bc.Hour >= 7 And bc.Hour <= 8)
-			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 1, 1, 1, 1, 0, 1, 1, 0, 0), 0.125)
-		Elseif (bc.Hour >= 9 And bc.Hour <= 11)
-			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 0, 2, 0, 1, 0, 2, 0, 0), 0.125)
-		ElseIf (bc.Hour >= 13 And bc.Hour <= 16)
-			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 2, 2, 2, 0, 2, 0, 2, 0, 0), 0.05)
-		ElseIf (bc.Hour >= 22 And bc.Hour <= 23)
-			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 1, 2, 2, 2, 2, 2, 0, 0), 0.05)
+		local hour:int = GetWorldTime().GetDayHour(bc.time)
+
+		If (hour >= 0 And hour <= 1)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, TAudience.CreateAndInit( 0, 1, 2, 1, 2, 1, 2, 0, 0), 0.10)
+		Elseif (hour >= 2 And hour <= 5)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, TAudience.CreateAndInit( 0, 0, 1, 0, 2, 0, 2, 0, 0), 0.225)
+		Elseif (hour = 6)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, TAudience.CreateAndInit( 1, 1, 1, 1, 0, 1, 1, 0, 0), 0.20)
+		Elseif (hour >= 7 And hour <= 8)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, TAudience.CreateAndInit( 1, 1, 1, 1, 0, 1, 1, 0, 0), 0.125)
+		Elseif (hour >= 9 And hour <= 11)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, TAudience.CreateAndInit( 0, 0, 2, 0, 1, 0, 2, 0, 0), 0.125)
+		ElseIf (hour >= 13 And hour <= 16)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, TAudience.CreateAndInit( 2, 2, 2, 0, 2, 0, 2, 0, 0), 0.05)
+		ElseIf (hour >= 22 And hour <= 23)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, TAudience.CreateAndInit( 0, 1, 2, 2, 2, 2, 2, 0, 0), 0.05)
 		Else
-			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 1, 2, 2, 2, 2, 1, 2, 0, 0), 0.05)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, TAudience.CreateAndInit( 1, 2, 2, 2, 2, 1, 2, 0, 0), 0.05)
 		EndIf
 	End Method
+	
 
 	Method GetFirstAllowed:TKeyValueNumber(sortMap:TNumberSortMap, allowed:TAudience)
 		For local kv:TKeyValueNumber = eachin sortMap.Content
@@ -929,10 +910,10 @@ Type TAudienceMarketCalculation
 	End Method
 
 
-	Method ComputeAudience(forHour:Int = -1)
-		If forHour <= 0 Then forHour = GetWorldTime().GetDayHour()
+	Method ComputeAudience(time:Long = -1)
+		If time <= 0 Then time = GetWorldTime().GetTimeGone()
 
-		CalculatePotentialChannelSurfer(forHour)
+		CalculatePotentialChannelSurfer(time)
 
 		'Die Zapper, um die noch gekämpft werden kann.
 		Local ChannelSurferToShare:TAudience = PotentialChannelSurfer.Copy()
@@ -966,7 +947,7 @@ Type TAudienceMarketCalculation
 				Local currKeyInt:Int = currKey.ToInt()
 				AudienceResults[currKeyInt-1] = New TAudienceResult
 				AudienceResults[currKeyInt-1].PlayerId = currKeyInt
-				AudienceResults[currKeyInt-1].Hour = forHour
+				AudienceResults[currKeyInt-1].Time = Time
 
 				AudienceResults[currKeyInt-1].WholeMarket = MaxAudience
 				AudienceResults[currKeyInt-1].PotentialMaxAudience = ChannelSurferToShare 'die 100% der Quote
@@ -984,11 +965,12 @@ Type TAudienceMarketCalculation
 	End Method
 
 
-	Method CalculatePotentialChannelSurfer(forHour:Int)
+	Method CalculatePotentialChannelSurfer(time:Long)
 		MaxAudience.Round()
 
 		'Die Anzahl der potentiellen/üblichen Zuschauer um diese Zeit
-		PotentialChannelSurfer = TBroadcast.GetPotentialAudienceForHour(MaxAudience, forHour)
+		PotentialChannelSurfer = MaxAudience.Copy()
+		PotentialChannelSurfer.Multiply(TBroadcast.GetPotentialAudienceModifier(time))
 
 		Local audienceFlowSum:TAudience = new TAudience
 		For Local attractionTemp:TAudienceAttraction = EachIn AudienceAttractions.Values()
