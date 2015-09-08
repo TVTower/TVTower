@@ -290,95 +290,104 @@ Type TStationMapCollection
 		If playerIDs.length <1 Then Return new TVec3D.Init(0,0,0.0)
 		If Not withoutPlayerIDs Then withoutPlayerIDs = New Int[0]
 
-	rem
-		'does not work currently (see below "TODO")
+		Local result:TVec3D
 
 		'=== CHECK CACHE ===
 		'if already cached, save time...
+
+		'== GENERATE KEY ==
 		Local cacheKey:String = ""
 		For Local i:Int = 0 To playerIDs.length-1
 			cacheKey:+ "_"+playerIDs[i]
 		Next
-		cacheKey:+"_without_"
-		For Local i:Int = 0 To withoutPlayerIDs.length-1
-			cacheKey:+ "_"+withoutPlayerIDs[i]
-		Next
-		If shareCache And shareCache.contains(cacheKey) Then Return TVec3D(shareMap.ValueForKey(cacheKey))
-	end rem
-	
-		Local map:TMap = GetShareMap()
-		Local result:TVec3D	= new TVec3D.Init(0,0,0.0)
-		Local share:Int	= 0
-		Local total:Int	= 0
-		Local playerFlags:Int[]
-		Local allFlag:Int = 0
-		Local withoutPlayerFlags:Int[]
-		Local withoutFlag:Int = 0
-		playerFlags	= playerFlags[.. playerIDs.length]
-		withoutPlayerFlags = withoutPlayerFlags[.. withoutPlayerIDs.length]
+		if withoutPlayerIDs.length > 0
+			cacheKey:+"_without_"
+			For Local i:Int = 0 To withoutPlayerIDs.length-1
+				cacheKey:+ "_"+withoutPlayerIDs[i]
+			Next
+		endif
 
-		For Local i:Int = 0 To playerIDs.length-1
-			'player 1=1, 2=2, 3=4, 4=8 ...
-			playerFlags[i]	= getMaskIndex( playerIDs[i] )
-			allFlag :| playerFlags[i]
-		Next
-
-		For Local i:Int = 0 To withoutPlayerIDs.length-1
-			'player 1=1, 2=2, 3=4, 4=8 ...
-			withoutPlayerFlags[i] = getMaskIndex( withoutPlayerIDs[i] )
-			withoutFlag :| withoutPlayerFlags[i]
-		Next
+		'== LOAD CACHE ==
+		If shareCache and shareCache.contains(cacheKey)
+			result = TVec3D(shareCache.ValueForKey(cacheKey))
+		endif
 
 
-		Local someoneUsesPoint:Int = False
-		Local allUsePoint:Int = False
-		For Local mapValue:TVec3D = EachIn map.Values()
-			someoneUsesPoint = False
-			allUsePoint = False
+		'== GENERATE CACHE ==
+		if not result
+			result = new TVec3D.Init(0,0,0.0)
+			Local map:TMap = GetShareMap()
+			Local share:Int	= 0
+			Local total:Int	= 0
+			Local playerFlags:Int[]
+			Local allFlag:Int = 0
+			Local withoutPlayerFlags:Int[]
+			Local withoutFlag:Int = 0
+			playerFlags	= playerFlags[.. playerIDs.length]
+			withoutPlayerFlags = withoutPlayerFlags[.. withoutPlayerIDs.length]
 
-			'we need to check if one on our ignore list is there
-				'no need to do this individual, we can just check the groupFlag
-				Rem
-				local someoneUnwantedUsesPoint:int	= FALSE
-				for local i:int = 0 to withoutPlayerFlags.length-1
-					if int(mapValue.z) & withoutPlayerFlags[i]
-						someoneUnwantedUsesPoint = true
-						exit
-					endif
-				Next
-				if someoneUnwantedUsesPoint then continue
-				endrem
-			If Int(mapValue.z) & withoutFlag Then Continue
+			For Local i:Int = 0 To playerIDs.length-1
+				'player 1=1, 2=2, 3=4, 4=8 ...
+				playerFlags[i]	= getMaskIndex( playerIDs[i] )
+				allFlag :| playerFlags[i]
+			Next
 
-			'as we have multiple flags stored in AllFlag, we have to
-			'compare the result to see if all of them hit,
-			'if only one of it hits, we just check for <>0
-			If (Int(mapValue.z) & allFlag) = allFlag
-				allUsePoint = True
-				someoneUsesPoint = True
-			Else
-				For Local i:Int = 0 To playerFlags.length-1
-					If Int(mapValue.z) & playerFlags[i] Then someoneUsesPoint = True;Exit
-				Next
-			EndIf
-			'someone has a station there
-			If someoneUsesPoint Then total:+ populationmap[mapValue.x, mapValue.y]
-			'all searched have a station there
-			If allUsePoint Then share:+ populationmap[mapValue.x, mapValue.y]
-		Next
-		result.setXY(share, total)
-		If total = 0 Then result.z = 0.0 Else result.z = Float(share)/Float(total)
-Rem
-		print "total: "+total
-		print "share:"+share
-		print "result:"+result.z
-		print "allFlag:"+allFlag
-		print "cache:"+cacheKey
-		print "--------"
-endrem
-'TODO: Schauen wieso der Cache-Wert fuer die Quotenberechnung nicht funktioniert
-		'add to cache...
-		'shareCache.insert(cacheKey, result )
+			For Local i:Int = 0 To withoutPlayerIDs.length-1
+				'player 1=1, 2=2, 3=4, 4=8 ...
+				withoutPlayerFlags[i] = getMaskIndex( withoutPlayerIDs[i] )
+				withoutFlag :| withoutPlayerFlags[i]
+			Next
+
+
+			Local someoneUsesPoint:Int = False
+			Local allUsePoint:Int = False
+			For Local mapValue:TVec3D = EachIn map.Values()
+				someoneUsesPoint = False
+				allUsePoint = False
+
+				'we need to check if one on our ignore list is there
+					'no need to do this individual, we can just check the groupFlag
+					Rem
+					local someoneUnwantedUsesPoint:int	= FALSE
+					for local i:int = 0 to withoutPlayerFlags.length-1
+						if int(mapValue.z) & withoutPlayerFlags[i]
+							someoneUnwantedUsesPoint = true
+							exit
+						endif
+					Next
+					if someoneUnwantedUsesPoint then continue
+					endrem
+				If Int(mapValue.z) & withoutFlag Then Continue
+
+				'as we have multiple flags stored in AllFlag, we have to
+				'compare the result to see if all of them hit,
+				'if only one of it hits, we just check for <>0
+				If (Int(mapValue.z) & allFlag) = allFlag
+					allUsePoint = True
+					someoneUsesPoint = True
+				Else
+					For Local i:Int = 0 To playerFlags.length-1
+						If Int(mapValue.z) & playerFlags[i] Then someoneUsesPoint = True;Exit
+					Next
+				EndIf
+				'someone has a station there
+				If someoneUsesPoint Then total:+ populationmap[mapValue.x, mapValue.y]
+				'all searched have a station there
+				If allUsePoint Then share:+ populationmap[mapValue.x, mapValue.y]
+			Next
+			result.setXY(share, total)
+			If total = 0 Then result.z = 0.0 Else result.z = Float(share)/Float(total)
+
+			'store new cached data
+			if shareCache then shareCache.insert(cacheKey, result )
+
+			'print "uncached: "+cacheKey
+			'print "share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
+		'else
+			'print "cached: "+cacheKey
+			'print "share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
+		endif
+
 
 		Return result
 	End Method
