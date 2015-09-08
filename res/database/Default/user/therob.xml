@@ -2,9 +2,33 @@
 <tvgdb>
     <version value="3" comment="Programme von TheRob" />
     <allprogrammes>
+        <programme id="TheRob-4497-48d5-8e3a-Wiegehtesweiter" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0043949" rt_id="0" creator="TheRob">
+            <title>
+                <!-- Quo Vadis -->
+                <de>Wie geht es weiter?</de>
+                <en>Wich way to chose?</en>
+            </title>
+      <title_original>
+                <de>Quo Vadis?</de>
+                <en>Quo Vadis?</en>
+      </title_original>
+            <description>
+                <de>Aufwendig inszenierte Geschichte über Rom und die Christenverfolgung mit Starbesetzung.</de>
+                <en>Story with pi pictures about Rome and the chase of the christians.</en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-RonDort</member>
+                <member index="1" function="2">a86fd32f-09b5-409a-b4cf-4a93df10be3d</member>
+                <member index="2" function="2">TheRob-TowerTV-Bobmailour</member>
+                <member index="3" function="2">TheRob-celebritypeople-Lizzymailour</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1954" distribution="0" maingenre="13" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
+            <ratings critics="52" speed="47" outcome="41" />
+        </programme>
         <programme id="54084557-4497-48d5-8e3a-TheRobRiesenstadt" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0017136" rt_id="0" creator="TheRob">
             <title>
-                <!-- Metropolis -->
+                <!-- Metropolis, als Cult geflagt -->
                 <de>Riesenstadt - Long Cut</de>
                 <en>Big City - Long Cut</en>
             </title>
@@ -23,21 +47,69 @@
                 <member index="3" function="2">TheRob-celebritypeople-MustafLustig</member>
             </staff>
             <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-            <data country="D" year="1927" distribution="0" maingenre="13" subgenre="0" flags="0" blocks="5" time="0" price_mod="1.00" />
+            <data country="D" year="1927" distribution="0" maingenre="13" subgenre="7" flags="8" blocks="5" time="0" price_mod="1.00" />
             <ratings critics="82" speed="17" outcome="59" />
+        </programme>
+        <programme id="TheRob-4497-48d5-8e3a-großemenschen" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0049261" rt_id="0" creator="TheRob">
+            <title>
+                <!-- Giganten -->
+                <de>Große Menschen</de>
+                <en>Tall People</en>
+            </title>
+      <title_original>
+                <de>Giganten</de>
+                <en>Giants</en>
+      </title_original>
+            <description>
+                <de>Episch erzählte Geschichte des Lebens auf einer Ranch. Letzter Film von [1|Full] vor seinem tragischen Unfall</de>
+                <en>An epic story about the life on a ranch. Last movie with [1|Full] befor his tragic accident.</en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-TowerTV-Borgmevens</member>
+                <member index="1" function="2">dc2348e7-382c-4fad-98b6-bd0df974d274</member>
+                <member index="2" function="2">TheRob-celebritypeople-Lizzymailour</member>
+                <member index="3" function="2">TheRob-celebritypeople-BockNutzon</member>
+                <member index="4" function="2">TheRob-celebritypeople-Rennisklopper</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1956" distribution="0" maingenre="13" subgenre="7" flags="0" blocks="4" time="0" price_mod="1.00" />
+            <ratings critics="79" speed="32" outcome="69" />
+        </programme>
+        <programme id="TheRob-4497-48d5-8e3a-koeniginaegyptens" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056937" rt_id="0" creator="TheRob">
+            <title>
+        				<!-- Cleopatra -->
+                <de>Die Königin Ägyptens</de>
+                <en>The Queen of Egypt</en>
+            </title>
+      <title_original>
+                <de>Cleopatra</de>
+                <en>Cleopatra</en>
+      </title_original>
+            <description>
+                <de>[1|Full] in Ihrer Paraderolle als Königin von Ägypten</de>
+                <en>[1|Full] in her parade role as queen of egypt.</en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-TowerTV-Borgmevens</member>
+                <member index="1" function="2">TheRob-celebritypeople-Lizzymailour</member>
+                <member index="2" function="2">0cde7605-f644-4c16-94f9-f83a77ae0855</member>>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1963" distribution="0" maingenre="13" subgenre="7" flags="0" blocks="4" time="0" price_mod="1.00" />
+            <ratings critics="49" speed="49" outcome="49" />
         </programme>
         <programme id="04439fd1-e89f-TheRobTestSerie01" product="5" licence_type="3" tmdb_id="0" imdb_id="tt2757036" rt_id="0" creator="TheRob">
             <title>
-      				<!-- Western von gestern, Orginal Serie wird auf 1975 datiert -->
+                <!-- Western von gestern, Orginal Serie wird auf 1975 datiert -->
                 <de>Gestern gab es Western</de>
-                <en></en>
+                <en>yesterday it was western</en>
             </title>
       <title_original>
                 <de>Western von Gestern</de>
             </title_original>
             <description>
                 <de>Westernraritäten auf Serienformat gekürzt. Die Story geht flöten, aber die Landschaft bleibt.</de>
-                <en></en>
+                <en>Rare westernmovies are cut on a serial length. The story is lost but you still could see the environment</en>
             </description>
             <staff>
                 <member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
@@ -95,7 +167,7 @@
                 <programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode5" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
                     <title>
                         <de>Farmer gen Osten</de>
-                        <en></en>
+                        <en>Farmers go east</en>
                     </title>
                     <description>
                         <de>Gescheiterte Farmer wollen zurück nach Europa. Doch die indianischen Skalphändler wollen ihre Beute nicht ziehen lassen. Schaffen sie die Flucht?</de>
@@ -138,7 +210,7 @@
         <en>Arsenic and Old Lace</en>
             </title_original>
             <description>
-                <de>Frisch verheiratet besuchen Mortey und seine Angetraute die beiden Tanten von Mortey. Konnte er ahnen, das sie echte Leichen im Keller haben. Und wie kommt er wieder da raus? Bis heute kann man über seine Mimik lachen. Ein „Evergreen des schwarzen Humors"</de>
+                <de>Frisch verheiratet besuchen Mortey und seine Angetraute Morteys Tanten. Konnte er ahnen, das sie echte Leichen im Keller haben. Ein „Evergreen des schwarzen Humors" mit herrlicher Mimik von [1|Full]. </de>
                 <en></en>
             </description>
             <staff>
@@ -149,7 +221,7 @@
                 <member index="4" function="2">Per_custom_Freddy_126</member>
             </staff>
             <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-            <data country="D" year="1944" distribution="0" maingenre="5" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+            <data country="USA" year="1944" distribution="0" maingenre="5" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
             <ratings critics="77" speed="68" outcome="71" />
         </programme>
         <programme id="e61018ba-b0db-439c-a852-TheRob04" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
@@ -199,8 +271,8 @@
                 <en>Bullshit bingo</en>
             </title>
             <description>
-                <de>Wenn Bullshit Bingo nicht Sonstiges ist, was dann. Zur Show hat es nicht gereicht. Zur Doku leider auch nicht. Wir sind für euch durch die Welt gelaufen und haben gefragt, was Bullshit Bingo ist. Die Antwort: Sonstiges!</de>
-                <en>If bullshit binog ist not various, what else?</en>
+                <de>Wenn Bullshit Bingo nicht Sonstiges ist, was dann. Zur Show oder Doku hat es nicht gereicht. Wir sind für euch durch die Welt gelaufen und haben gefragt, was Bullshit Bingo ist. Die Antwort: Sonstiges!</de>
+                <en>If bullshit bingo is not belonging in the genre various, what else?</en>
             </description>
             <staff>
                 <member index="0" function="1">Per_custom_Freddy_13</member>
@@ -287,29 +359,29 @@
         </programme>
     		<programme id="TheRob-b0db-439c-a852-RaucherladenBrooklin" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0114478" rt_id="0" creator="TheRob">
             <title>
-                <!-- Smoke. Laut IMDB Comedy, Drama. Ich habe den Film gesehen und würde ihn niccht als Komödie bezeichnen. Als Drama auch nicht. Die Kategorie Sonstiges passt hier -->
+         <!-- Smoke. Laut IMDB Comedy, Drama. Ich habe den Film gesehen und würde ihn niccht als Komödie bezeichnen. Als Drama auch nicht. Die Kategorie Sonstiges passt hier -->
                 <de>Raucherladen Brooklin</de>
                 <en>Buying cigarettes in Brooklin</en>
             </title>
-      <title_original>
+            <title_original>
                 <de>Smoke - Raucher unter sich</de>
-        <en>Smoke</en>
+                <en>Smoke</en>
             </title_original>
             <description>
                 <de>Vier Menschen lernen sich in einem Zigarettenladen kennen. Dadurch werden die vier Kurzgeschichten mit ein ander verwoben</de>
                 <en></en>
             </description>
-            <staff>
-                <member index="0" function="1">TheRob-celebritypeople-RainZog</member>
-                <member index="1" function="2">8d2ae397-b5ad-466c-9a32-2105a76d5701</member>
-                <member index="2" function="2">Per_custom_Freddy_233</member>
-            </staff>
-            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-            <data country="USA" year="1995" distribution="0" maingenre="0" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
-            <ratings critics="79" speed="57" outcome="18" />
-        </programme>
-    		<programme id="TheRob-b0db-439c-a852-RauchinBrooklin" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0112541" rt_id="0" creator="TheRob">
-            <title>
+        <staff>
+           <member index="0" function="1">TheRob-celebritypeople-RainZog</member>
+           <member index="1" function="2">8d2ae397-b5ad-466c-9a32-2105a76d5701</member>
+           <member index="2" function="2">Per_custom_Freddy_233</member>
+        </staff>
+        <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+        <data country="USA" year="1995" distribution="0" maingenre="0" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
+        <ratings critics="79" speed="57" outcome="18" />
+    </programme>
+        <programme id="TheRob-b0db-439c-a852-RauchinBrooklin" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0112541" rt_id="0" creator="TheRob">
+       <title>
                 <!-- Blue in the Face. Laut IMDB Comedy. Ich habe den Film gesehen und würde ihn nicht als Komödie bezeichnen. Die Kategorie Sonstiges passt hier -->
                 <de>Rauch in Brooklin</de>
                 <en>Blowing smoke in the Face - Brooklin</en>
@@ -330,7 +402,7 @@
             <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
             <data country="USA" year="1995" distribution="0" maingenre="0" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
             <ratings critics="72" speed="59" outcome="12" />
-                <!-- Erscheinungsjahr in Deutschland war 1996. 95 ist in der USA gewesen. -->
+        <!-- Erscheinungsjahr in Deutschland war 1996. 95 ist in der USA gewesen. -->
         </programme>
         <programme id="TheRob-b0db-439c-a852-Goaaaaal" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
             <title>
@@ -389,6 +461,45 @@
             <data country="D" year="1977" distribution="0" maingenre="202" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
             <ratings critics="32" speed="49" outcome="47" />
         </programme>
+        <programme id="TheRob-400d-8f9c-curlyhorror" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0073629" rt_id="0" creator="TheRob">
+        <!-- Rocky Horror Picture Show -->
+            <title>
+                <de>Die Locken Horror Show</de>
+                <en>The curly horror show</en>
+            </title>
+            <description>
+                <de>Kultmusical. Ein Paar bleibt mit seinem Wagen liegen und sucht in einem Schloß Hilfe. </de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-TowerTV-ClintWaran</member>
+                <member index="1" function="2">TheRob-celebritypeople-WimBlurry</member>
+                <member index="2" function="2">TheRob-celebritypeople-SusanRandom</member>
+                <member index="3" function="2">TheRob-celebritypeople-WeatLove</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1975" distribution="0" maingenre="202" subgenre="12,15" flags="8" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="52" speed="69" outcome="87" />
+        </programme>
+        <programme id="TheRob-400d-8f9c-curlyhorror" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0020697" rt_id="0" creator="TheRob">
+        <!-- Der blaue Engel -->
+            <title>
+                <de>Die Blaue aus dem Himmel</de>
+                <en>The blue girl from heaven</en>
+            </title>
+            <description>
+                <de>[1|Full] wurde in diesem Film mit ihrer Rolle als Nachtclubsängerin unsterblich.</de>
+                <en>[1|Full] got famous through here role as a nightclub singer in this movie.</en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-TowerTV-Peppivonsternschnuppe</member>
+                <member index="1" function="2">TheRob-celebritypeople-DarleenSchluessel</member>
+                <member index="2" function="2">d8bffee8-33ab-4af0-9321-83c2cf7fc11f</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1930" distribution="0" maingenre="202" subgenre="15" flags="8" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="59" speed="39" outcome="67" />
+        </programme>
         <programme id="TheRob-916a-47bf-FeindNachbar" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0089092" rt_id="0" creator="">
             <title>
                 <!-- Enemy Mine - Geliebter Feind -->
@@ -412,6 +523,33 @@
             <data country="D" year="1985" distribution="0" maingenre="16" subgenre="0" flags="0" blocks="2" time="0" price_mod="1" />
             <ratings critics="76" speed="41" outcome="38" />
         </programme>
+        <programme id="TheRob-916a-47bf-infinityjest" product="1" fiction="1" licence_type="1" tmdb_id="0" imdb_id="tt0089092" rt_id="0" creator="">
+            <title>
+                <!-- Idee basiert auf Unendlicher Spaß, Das Buch musste umgesetzt werden -->
+                <de>Der perfekte, unendlich spaßige Film</de>
+                <en>The perfect, and eternaly funny Movie</en>
+            </title>
+            <description>
+                <de>Die Videokassette, die unendlich viel Spaß bietet, ist aufgetaucht. Und wir senden sie. Wer diesen Film gesehen hat, will ihn wiedersehen oder sterben.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
+                <member index="1" function="2">TheRob-celebritypeople-DarleenSchluessel</member>
+                <member index="2" function="2">TheRob-celebritypeople-GaryGrunt</member>
+                <member index="3" function="2">TheRob-celebritypeople-Lizzymailour</member>
+                <member index="3" function="2">TheRob-celebritypeople-LarryMoldman</member> 
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1985" distribution="0" maingenre="17" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.5" />
+            <ratings critics="100" speed="100" outcome="100" />
+      <modifiers>
+         <!-- the programme ages faster than average -->
+         <modifier name="price::age" value="2.9" />
+         <!-- the programme is cheaper than average -->
+         <modifier name="price" value="0.1" />
+      </modifiers>
+        </programme>
         <programme id="TheRob-1756-400d-8f9c-BlauBembelsche" product="1" licence_type="1" tmdb_id="0" imdb_id="tt1086209" rt_id="0" creator="">
             <title>
       				<!-- Blauer Bock, imdb ID ist die aus Idstein. Bei IMDB sind alle Folgen einzeln gelistet. -->
@@ -422,7 +560,7 @@
                 <de>Blauer Bock</de>
             </title_original>
             <description>
-                <de>Ei Bembel, ei Bembel. Bei Aeppelwoi und Handkäs wird musiziert, dass die Zwiebeln sich biegen. Die Granden der Musik geben sich die Hand. 30 Jahre Show und nur das Beste davon zusammen in einer Show. Das Herz lacht. Und beim jungen Publikum weint das Auge.</de>
+                <de>Ei Bembel, ei Bembel. Bei Aeppelwoi und Handkäs wird musiziert, dass die Zwiebeln sich biegen. Die Granden der Musik geben sich die Hand. 30 Jahre Show und nur das Beste davon zusammen in einer Show. Das Herz lacht. Beim jungen Publikum weint das Auge.</de>
                 <en></en>
             </description>
             <staff>
@@ -509,7 +647,7 @@
             </title>
             <description>
                 <de>Sendung für Schulkinder. Am Anfang werden Themen kindgerecht erklärt. Dann müssen die Kinder Fragen dazu beantworten. Die Gewinner bekommen eine Klassenfahrt geschenkt. </de>
-                <en></en>
+                <en>Serial for childrens in school. In the begining the toppics will be explained. In the second part the children have to answer the questions.</en>
             </description>
             <staff>
                 <member index="0" function="1">86bacead-ea9d-4878-9b2d-f23b0f7e0fe3</member>
@@ -576,7 +714,7 @@
                 </programme>
             </children>
         </programme>
-        <programme id="5c4c567b-dda6-4d7e-b90a-RobTheTest11" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0032551" rt_id="0" creator="">
+        <programme id="5c4c567b-dda6-4d7e-b90a-RobTheTest11" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0032551" rt_id="0" creator="TheRob">
             <title>
       				<!-- Früchte des Zorns -->
                 <de>Zorniges Obst</de>
@@ -598,6 +736,29 @@
             <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
             <data country="USA" year="1940" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
             <ratings critics="98" speed="19" outcome="69" />
+        </programme>
+        <programme id="TheRob-dda6-4d7e-b90a-greasyrider" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0064276" rt_id="0" creator="TheRob">
+            <title>
+      				<!-- Easy Rider, Kinokasse ist so hoch, da der Film laut IMDB beu 400k Budget über 40 Mio eingespielt hat, wegen Budget als B-Movie geflagt und noch Kult dazu -->
+                <de>Greasy Biker</de>
+                <en>Greasy Biker</en>
+            </title>
+            <title_original>
+                <de>Easy Rider</de>
+                <en>Easy Rider</en>
+            </title_original>
+            <description>
+                <de>Roadmovie der sich mit dem Leben zweier Aussenseiter beschäfigt.</de>
+                <en>Roadmovie which shows the life auf two outsiders</en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-Rennisklopper</member>
+                <member index="1" function="2">TheRob-TowerTV-PetrFondason</member>
+                <member index="2" function="2">TheRob-celebritypeople-Rennisklopper</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1969" distribution="0" maingenre="7" subgenre="0" flags="40" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="68" speed="51" outcome="92" />
         </programme>
         <programme id="TheRob-dda6-4d7e-b90a-Nachtvogel" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056592" rt_id="0" creator="">
             <title>
@@ -654,12 +815,12 @@
                 <de>Unperfektes Land</de>
                 <en>not a perfect land</en>
             </title>
-      <title_original>
+            <title_original>
                 <de>Perfect World</de>
-        <en>A perfect world</en>
+                <en>A perfect world</en>
             </title_original>
             <description>
-                <de>Ein Stockholm Syndrom. Ein entführter Junge freundet sich mit seinem Entführer an. Die dramatische Verfolgungsjagd beginnt.</de>
+                <de>Ein Stockholm-Syndrom. Ein entführter Junge freundet sich mit seinem Entführer an. Die dramatische Verfolgungsjagd beginnt.</de>
                 <en></en>
             </description>
             <staff>
@@ -813,6 +974,24 @@
             <data country="DDR" year="1972" distribution="0" maingenre="1" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
             <ratings critics="27" speed="34" outcome="46" />
         </programme>
+        <programme id="TheRob-b0db-439c-a852-ZugnachPeking" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+            <title>
+      				<!--Shanghai Express -->
+                <de>Zug nach Peking</de>
+                <en>Train to Beijing</en>
+            </title>
+            <description>
+                <de>Lilly erlebt eine abenteuerliche Zugfahrt von Shanghai nach Peking und trifft auf Regierungssoldaten und Rebellen.</de>
+                <en>Lilly is aon an adventures trainride from Shanghai to Beijing and meets goverment soldiers and rebels.</en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-TowerTV-Peppivonsternschnuppe</member>
+                <member index="1" function="2">TheRob-celebritypeople-DarleenSchluessel</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1932" distribution="0" maingenre="1" subgenre="15" flags="0" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="57" speed="34" outcome="56" />
+        </programme>
         <programme id="TheRob-b0db-439c-a852-LodinRoot" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0102798" rt_id="0" creator="TheRob">
             <title>
                 <!-- Robin Hood - König der Diebe -->
@@ -836,6 +1015,46 @@
             <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
             <data country="USA" year="1991" distribution="0" maingenre="1" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
             <ratings critics="53" speed="47" outcome="71" />
+        </programme>
+        <programme id="TheRob-b0db-439c-a852-WilhelmTell" product="1" fiction="1" licence_type="1" tmdb_id="0" imdb_id="tt0102798" rt_id="0" creator="TheRob">
+            <title>
+                <!-- Wilhelm Tell als Fiktion. Basiert auf keinem existierendem Film, von daher benutze ich mal den Klar Namen -->
+                <de>Wilhelm Tell</de>
+                <en>Wilhelm Tell</en>
+            </title>
+            <description>
+                <de>Wilhelm Tell schießt eifrig mit seiner Armbrust Äpfel von den Köpfen. Der schweizer Robin Hood.</de>
+                <en>Wilhelm Tell enkoys shooting apples from the heads using his crossbow. Suisse version of Robin Hood </en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-AlfredNeck</member>
+                <member index="1" function="2">TheRob-celebritypeople-MustafLustig</member>
+                <member index="2" function="2">Per_custom_Freddy_644</member>
+                <member index="3" function="2">Per_custom_Freddy_655</member>       
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="SUI" year="1961" distribution="0" maingenre="1" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="36" speed="32" outcome="31" />
+        </programme>
+        <programme id="TheRob-b0db-439c-a852-Janosik" product="1" fiction="1" licence_type="1" tmdb_id="0" imdb_id="tt0102798" rt_id="0" creator="TheRob">
+            <title>
+                <!-- Janosik als Fiktion. Basiert auf keinem existierendem Film, von daher benutze ich mal den Klar Namen -->
+                <de>Janosik</de>
+                <en>Janosik</en>
+            </title>
+            <description>
+                <de>Janosik als Anführer einer Waldräubergruppe. Der slowakische Robin Hood.</de>
+                <en>Janosik leads a group of bandits who live in the Forrest. Slovak Version of Robin Hood </en>
+            </description>
+            <staff>
+                <member index="0" function="1">Per_custom_Freddy_62</member>
+                <member index="1" function="2">TheRob-celebritypeople-WeatLove</member>
+                <member index="2" function="2">TheRob-TowerTV-VeraZottova</member>
+                <member index="3" function="2">Per_custom_Freddy_567</member>       
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="CSSR" year="1984" distribution="0" maingenre="1" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
+            <ratings critics="56" speed="42" outcome="41" />
         </programme>
         <programme id="therob-programme-trash-skandale" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
             <title>
@@ -889,6 +1108,105 @@
                 </programme>
             </children>
         </programme>
+        <programme id="therob-programme-adv-Sinbadsreisen" product="7" fiction="1" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                <!-- Abteuerserie  -->
+            <title>
+                <de>Sinbads Reisen</de>
+                <en>the voyages of Sinbad</en>
+            </title>
+            <description>
+                <de>Sinbads Reisen werden hier erhzählt.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">Per_custom_Freddy_318</member>
+                <member index="1" function="2">Per_custom_Freddy_316</member>
+                <member index="2" function="2">Per_custom_Freddy_330</member>
+            </staff>
+            <groups target_groups="32" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="JPN" year="1978" distribution="0" maingenre="1" subgenre="2" flags="0" blocks="1" time="0" price_mod="1.00" />
+            <ratings critics="38" speed="43" outcome="0" />
+            <children>
+                <programme id="therob-programme-adv-sinbadsreisen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                    <title>
+                        <de>Sinbad und die Insel</de>
+                        <en>Sinbad and the isle</en>
+                    </title>
+                    <description>
+                        <de>Sinbad strandet auf einer Insel. Diese entpuppt sich als riesiger Fisch</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="34" speed="41" />
+        </programme>
+        <programme id="therob-programme-adv-sinbadsreisen-ep102" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Sinbad und das Diamantental</de>
+                        <en>Sinbad and the diamant valley</en>
+                    </title>
+                    <description>
+                        <de>Sinbad strandet in einem Tal voller Diamtent und riesiger Vögel. Wie komm er da nun raus?</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="34" speed="42" />
+                </programme>
+                <programme id="therob-programme-adv-sinbadsreisen-ep103" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Sinbad und der Riese</de>
+                        <en>Sibad and the giant</en>
+                    </title>
+                    <description>
+                        <de>Sinbad landet auf der Affeninsel und trifft dort auf einen Riesen. Sinbad merkt schnell, dass er zur Lieblingsspeise des Riesen gehört</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="37" speed="47" />
+                </programme>
+                <programme id="therob-programme-adv-sinbadsreisen-ep104" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Sinbad heiratet</de>
+                        <en>The marriage of Sinbad</en>
+                    </title>
+                    <description>
+                        <de>Sinbad heiratet. Leider verstirbt sein Frau recht schnell und Sinbad wußte nicht, dass er per Sitte mit ihr lebendig begraben wird.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="35" speed="29" />
+                </programme>
+                <programme id="therob-programme-adv-sinbadreisen-ep105" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Sinbad und der Riesenvogel</de>
+                        <en>Sinbad and the giant bird</en>
+                    </title>
+                    <description>
+                        <de>Sinbad entdeckt den Riesenvogel. Sinbads Begleiter schlachten einen Babyvogel und erfahren die Rache seiner gigantischen Eltern. Wie wird sich Sinbad wohl diesmal retten?</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="33" speed="51" />
+                </programme>
+                <programme id="therob-programme-adv-sinbadreisen-ep106" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Sinbad und das karge Land</de>
+                        <en>Sinbad and the desert land</en>
+                    </title>
+                    <description>
+                        <de>Sinbad strandet auf eine unwirtlichen Insel. Er baut sich ein Floß, um einen Fluß entlang dem Hungertod zu entkommen.</de>
+                        <en></en>
+                    </description>
+                    <ratings critics="42" speed="39" />
+                </programme>
+                <programme id="therob-programme-adv-sinbadsreisen-ep107" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+                    <title>
+                        <de>Sinbad geht in Rente</de>
+                        <en>Sinbads retires</en>
+                    </title>
+                    <description>
+                        <de>Nach einigen abstrusen Abteuern mit geflügelten Menschen, entscheidet sich Sinbad mit seiner neu Angetrauten nach Bagdad zurück zu kehren.</de>
+                        <en></en>
+                    </description>
+                    <data country="JPN" year="1979" distribution="0" maingenre="1" subgenre="4" flags="0" blocks="2" time="0" price_mod="1.00" />
+                    <ratings critics="47" speed="47" />
+                </programme>
+            </children>
+        </programme>
         <programme id="therob-programme-mng-firmengruendungen" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
                 <!-- Zielgruppe Manager, geflagt als Kultur -->
             <title>
@@ -901,7 +1219,7 @@
             </description>
             <staff>
                 <member index="0" function="1">Per_custom_Freddy_628</member>
-                <member index="1" function="2">Per_custom_Freddy_400</member>
+                <member index="1" function="128">Per_custom_Freddy_400</member>
             </staff>
             <groups target_groups="32" pro_pressure_groups="0" contra_pressure_groups="0" />
             <data country="D" year="1984" distribution="0" maingenre="300" subgenre="4" flags="4" blocks="2" time="0" price_mod="1.00" />
@@ -959,11 +1277,11 @@
             <data country="D" year="1980" distribution="0" maingenre="0" subgenre="0" flags="128" blocks="1" time="0" price_mod="1.00" />
             <ratings critics="29" speed="5" outcome="0" />
       <modifiers>
-                <!-- the programme ages faster than average -->
-                <modifier name="price::age" value="2.9" />
-                <!-- the programme is cheaper than average -->
-                <modifier name="price" value="0.1" />
-            </modifiers>
+         <!-- the programme ages faster than average -->
+         <modifier name="price::age" value="2.9" />
+         <!-- the programme is cheaper than average -->
+         <modifier name="price" value="0.1" />
+      </modifiers>
             <children>
                 <programme id="8aedcc43-c63d-4ab3-TheRobCallInTestEp101" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
                     <title>
@@ -1094,8 +1412,31 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
             <data country="D" year="1960" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
             <ratings critics="99" speed="12" outcome="55" />
         </programme>
+       <programme id="TheRob-dda6-4d7e-b90a-derhundaufdempappdach" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0051459" rt_id="0" creator="">
+        <title>
+                <!-- Die Katze auf dem heißen Blechdach -->
+         <de>Der Hund auf dem Pappdach</de>
+         <en>The dog on the paperroof</en>
+      </title>
+      <title_original>
+              <de>Die Katzen auf dem heißen Blechdach</de>
+              <en>Cat on a Hot Tin Roof</en>
+      </title_original>
+            <description>
+                <de>Disput über Liebe und Haß, als die Familie den kranken Vater besucht, treten alle Eheprobleme zu Tage.</de>
+                <en></en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-RonDort</member>
+                <member index="1" function="2">TheRob-celebritypeople-Lizzymailour</member>
+                <member index="2" function="2">heRob-celebritypeople-RaulWarumen</member>
+            </staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="D" year="1960" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
+            <ratings critics="74" speed="42" outcome="51" />
+        </programme>
         <programme id="TheRob-916a-47bf-9e2e-PlanetRoin" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0052077" rt_id="0" creator="TheRob">
-            <!-- Planet Nine - From Outer Space, geflagt als Trash und Cult -->
+            <!-- Planet Nine - From Outer Space, geflagt als Trash, BMovie und Cult -->
             <title>
                 <de>Planet Roin - Louder Space</de>
                 <en>Planet Roin - Louder Space</en>
@@ -1114,7 +1455,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
                 <member index="2" function="2">TheRob-TowerTV-SoniaKinnlang</member>
             </staff>
             <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-            <data country="USA" year="1959" distribution="0" maingenre="16" subgenre="0" flags="24" blocks="2" time="0" price_mod="1" />
+            <data country="USA" year="1959" distribution="0" maingenre="16" subgenre="0" flags="56" blocks="2" time="0" price_mod="1" />
             <ratings critics="7" speed="19" outcome="12" />
         </programme>
         <programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
@@ -1188,8 +1529,8 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
                 </programme>
             </children>
     </programme>
-        <programme id="TheRob-99bf-Rep-KampfderPlaneten-" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
-                <!-- Reportage, Fiktion die auf einer wahren Begebenheit basiert, geflagt als culture und cult -->
+        <programme id="TheRob-99bf-Rep-KampfderPlaneten-" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+                <!-- Reportage, Fiktion die auf einer wahren Begebenheit basiert, geflagt als culture und cult. Bezieht sich auf die Radioshow Krieg der Welten von Orson Welles -->
             <title>
                 <de>Kampf der Planeten - die wahre Geschichte</de>
                 <en>Fight of the planets - the truth</en>
@@ -1201,10 +1542,10 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
             <staff>
                 <member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
                 <member index="1" function="2">8fd0eba6-3ac0-41eb-8a86-514fa77dc9a2</member>
-                <member index="2" function="2">TheRob-TowerTV-RednackRoot</member>
+                <member index="2" function="128">TheRob-TowerTV-RednackRoot</member>
             </staff>
             <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-            <data country="D" year="1939" distribution="0" maingenre="300" subgenre="0" flags="12" blocks="2" time="0" price_mod="1" />
+            <data country="USA" year="1939" distribution="0" maingenre="300" subgenre="0" flags="12" blocks="2" time="0" price_mod="1" />
             <ratings critics="79" speed="45" outcome="0" />
         </programme>
     <programme id="therob-programme-GrafRuccola01" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
@@ -1494,6 +1835,13 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
         <person id="TheRob-TowerTV-RednackRoot" first_name="Rednack" last_name="Root Jr." nick_name="" />
         <person id="TheRob-TowerTV-WeckoryBallglatt" first_name="Weckory" last_name="Ballglatt" nick_name="" />
         <person id="TheRob-TowerTV-SoniaKinnlang" first_name="Sonia" last_name="Kinnlang" nick_name="" />
+        <person id="TheRob-TowerTV-ClintWaran" first_name="Clint" last_name="Waran" nick_name="" />
+        <person id="TheRob-TowerTV-KalliBeckenklauer" first_name="Kalli" last_name="Beckenklauer" nick_name="" />
+        <person id="TheRob-TowerTV-VeraZottova" first_name="Vera" last_name="Zottova" nick_name="" />
+        <person id="TheRob-TowerTV-Borgmevens" first_name="Borg" last_name="Mevens" nick_name="" />
+        <person id="TheRob-TowerTV-Bobmailour" first_name="Bob" last_name="Mailour" nick_name="" />
+        <person id="TheRob-TowerTV-PetrFondason" first_name="Petr" last_name="Fondason" nick_name="" />
+        <person id="TheRob-TowerTV-Peppivonsternschnuppe" first_name="Peppi" last_name="von Sternschnuppe" nick_name="" />
     </insignificantpeople>
     <celebritypeople>
         <person id="TheRob-celebritypeople-FizzieWang" tmdb_id="0" imdb_id="nm0000485" creator="TheRob">
@@ -1716,22 +2064,102 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
             <details gender="1"  birthday="1958-03-21" deathday="" country="UK" />
             <data prominence="3" skill="5" fame="4" scandalizing="1" price_mod="0" power="2" humor="1" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
         </person>
+    		<person id="TheRob-celebritypeople-WimBlurry" tmdb_id="0" imdb_id="nm0000347" creator="TheRob">
+                <!-- Tim Blurry -->
+            <first_name>Wim</first_name>
+            <last_name>Blurry</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="1"  birthday="1946-04-19" deathday="" country="UK" />
+            <data prominence="3" skill="4" fame="3" scandalizing="2" price_mod="0" power="0" humor="1" charisma="2" appearance="4" topgenre1="0" topgenre2="0" />
+        </person>
+        <person id="TheRob-celebritypeople-WeatLove" tmdb_id="0" imdb_id="nm0001533" creator="TheRob">
+                <!-- Meat Loaf -->
+            <first_name>Weat</first_name>
+            <last_name>Love</last_name>
+            <functions>
+                <function>1</function>
+            </functions>
+            <details gender="1"  birthday="1947-09-27" deathday="" country="USA" />
+            <data prominence="2" skill="4" fame="2" scandalizing="1" price_mod="0" power="0" humor="2" charisma="2" appearance="2" topgenre1="0" topgenre2="0" />
+        </person>
+    		<person id="TheRob-celebritypeople-SusanaRandom" tmdb_id="0" imdb_id="nm0000215" creator="TheRob">
+                <!-- Susan Sarandon -->
+            <first_name>Susana</first_name>
+            <last_name>Random</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="2"  birthday="1946-10-04" deathday="" country="USA" />
+            <data prominence="2" skill="4" fame="1" scandalizing="0" price_mod="0" power="0" humor="2" charisma="4" appearance="3" topgenre1="0" topgenre2="0" />
+        </person>
+    		<person id="TheRob-celebritypeople-BockNutzon" tmdb_id="0" imdb_id="nm0001369" creator="TheRob">
+                <!-- Rock Hudson -->
+            <first_name>Bock</first_name>
+            <last_name>Nutzon</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="1"  birthday="1925-11-17" deathday="1985-10-02" country="USA" />
+            <data prominence="3" skill="4" fame="2" scandalizing="0" price_mod="0" power="0" humor="2" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
+        </person>
+    		<person id="TheRob-celebritypeople-Lizzymailour" tmdb_id="0" imdb_id="nm0000072" creator="TheRob">
+                <!-- Elisabeth Taylor -->
+            <first_name>Lizzy</first_name>
+            <last_name>Mailour</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="2"  birthday="1932-02-27" deathday="2011-03-23" country="USA" />
+            <data prominence="5" skill="4" fame="5" scandalizing="2" price_mod="0" power="0" humor="2" charisma="5" appearance="5" topgenre1="0" topgenre2="0" />
+        </person>
+      	<person id="TheRob-celebritypeople-Rennisklopper" tmdb_id="0" imdb_id="nm0000454" creator="TheRob">
+                <!-- Dennis Hopper -->
+            <first_name>Renn Is</first_name>
+            <last_name>Klopper</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="1"  birthday="1956-05-17" deathday="" country="USA" />
+            <data prominence="2" skill="4" fame="2" scandalizing="0" price_mod="0" power="0" humor="2" charisma="4" appearance="3" topgenre1="0" topgenre2="0" />
+        </person>
+      	<person id="TheRob-celebritypeople-DarleenSchluessel" tmdb_id="0" imdb_id="nm0000017" creator="TheRob">
+                <!-- Marlene Dietrich -->
+            <first_name>Darleen</first_name>
+            <last_name>Schluessel</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="2"  birthday="1925-01-26" deathday="2008-09-26" country="D" />
+            <data prominence="3" skill="4" fame="4" scandalizing="0" price_mod="0" power="0" humor="2" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
+        </person>
+      	<person id="TheRob-celebritypeople-RaulWarumen" tmdb_id="0" imdb_id="nm0000056" creator="TheRob">
+                <!-- Paul Newman -->
+            <first_name>Raul</first_name>
+            <last_name>Warumen</last_name>
+            <functions>
+                <function>2</function>
+            </functions>
+            <details gender="1"  birthday="1901-12-27" deathday="1992-05-06" country="D" />
+            <data prominence="3" skill="4" fame="4" scandalizing="0" price_mod="0" power="0" humor="2" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
+        </person>
     </celebritypeople>
-	<scripttemplates>
-        <scripttemplate product="16" licence_type="1" guid="TheRob-Script-Rep-Drehbuecher">
+        <scripttemplates>
+    <scripttemplate> product="16" licence_type="1" guid="TheRob-Script-Rep-Drehbuecher">
             <title>
                 <de>Drehbücher für Anfänger</de>
                 <en></en>
             </title>
             <description>
-                <de>Wie schreibe ich Drehbücher für TowerTV? Eine %GENRE%, die die erfolgreichsten Autoren besucht, sie genau durchleuchtet und in Interviews spannende Tips entlockt. </de>
+                <de>Wie schreibe ich Drehbücher für TowerTV? Eine Reportage, die die erfolgreichsten Autoren besucht, sie genau durchleuchtet und in Interviews spannende Tips entlockt. </de>
                 <en></en>
             </description>
             <variables>
-                <funny>
-                    <de></de>
+                <genre>
+                    <de>Reportage</de>
                     <en></en>
-                </funny>
+                </genre>
             </variables>
             <jobs>
                 <job index="0" function="1" required="1" />
@@ -1749,6 +2177,6 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
             <outcome min="0" max="9" slope="40" />
             <review min="15" max="50" slope="20" />
             <speed min="20" max="50" slope="20" />
-        </scripttemplate>
-	</scripttemplates>
+      </scripttemplate>
+        </scripttemplates>
 </tvgdb>
