@@ -94,6 +94,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		GetGame().SetGamestate(TGame.STATE_RUNNING, True)
 
 		If startNewGame
+			'refresh states of old programme productions (now we now
+			'the start year and are therefore able to refresh who has
+			'done which programme yet)
+			GetProgrammeDataCollection().UpdateAll()
+
 			'Begin Game - fire Events
 			EventManager.registerEvent(TEventSimple.Create("Game.OnMinute", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().getDay()) ))
 			EventManager.registerEvent(TEventSimple.Create("Game.OnHour", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().getDay()) ))

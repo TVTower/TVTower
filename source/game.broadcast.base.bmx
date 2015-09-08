@@ -275,7 +275,7 @@ Type TBroadcastManager
 
 
 	Function ChangeImageCauseOfBroadcast(bc:TBroadcast)
-		If (bc.TopAudience > 1000) 'Nur etwas ändern, wenn auch ein paar Zuschauer einschalten und nicht alle Sendeausfall haben.
+		If (bc.GetTopAudience() > 1000) 'Nur etwas ändern, wenn auch ein paar Zuschauer einschalten und nicht alle Sendeausfall haben.
 			Local modification:TAudience = TBroadcast.GetPotentialAudienceModifier(bc.time)
 
 			'If (broadcastType = 0) Then 'Movies
@@ -340,13 +340,13 @@ Type TBroadcast
 	Field Feedback:TBroadcastFeedback[4]
 
 	'Die höchste Zuschauerzahl
-	Field TopAudience:Int
+	Field _TopAudience:Int = -1 {nosave}
 	'Die höchste Zuschauerquote
-	Field TopAudienceRate:Float
+	Field _TopAudienceRate:Float = -1.0 {nosave}
 	'Die Programmattraktivität
-	Field TopAttraction:Float
+	Field _TopAttraction:Float = -1.0 {nosave}
 	'Die beste Programmqualität
-	Field TopQuality:Float
+	Field _TopQuality:Float = -1.0 {nosave}
 
 	'===== Öffentliche Methoden =====
 
@@ -422,6 +422,30 @@ Type TBroadcast
 			If market.GetId() = id Then Return market
 		Next
 		Return Null
+	End Method
+
+
+	Method GetTopAudience:int()
+		if _TopAudience < 0 then FindTopValues()
+		return _TopAudience
+	End Method
+
+
+	Method GetTopAudienceRate:Float()
+		if _TopAudienceRate < 0 then FindTopValues()
+		return _TopAudienceRate
+	End Method
+
+
+	Method GetTopAttraction:Float()
+		if _TopAttraction < 0 then FindTopValues()
+		return _TopAttraction
+	End Method
+
+
+	Method GetTopQuality:Float()
+		if _TopQuality < 0 then FindTopValues()
+		return _TopQuality
 	End Method
 
 
@@ -527,17 +551,17 @@ Type TBroadcast
 			Local audienceResult:TAudienceResult = AudienceResults[playerId-1]
 			If audienceResult Then
 				currAudience = audienceResult.Audience.GetSum()
-				If (currAudience > TopAudience) Then TopAudience = currAudience
+				If (currAudience > _TopAudience) Then _TopAudience = currAudience
 
 				currAudienceRate = audienceResult.GetAudienceQuotePercentage()
-				If (currAudienceRate > TopAudienceRate) Then TopAudienceRate = currAudienceRate
+				If (currAudienceRate > _TopAudienceRate) Then _TopAudienceRate = currAudienceRate
 
 				If audienceResult.AudienceAttraction Then
 					currAttraction = audienceResult.AudienceAttraction.GetWeightedAverage()
-					If (currAttraction > TopAttraction) Then TopAttraction = currAttraction
+					If (currAttraction > _TopAttraction) Then _TopAttraction = currAttraction
 	
 					currQuality = audienceResult.AudienceAttraction.Quality
-					If (currQuality > TopQuality) Then TopQuality = currQuality
+					If (currQuality > _TopQuality) Then _TopQuality = currQuality
 				EndIf
 			Endif
 		Next

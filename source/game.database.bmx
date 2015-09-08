@@ -801,11 +801,17 @@ endif
 		'licence ... so add this specific programmeData to the global
 		'data collection
 		GetProgrammeDataCollection().Add(programmeData)
+
+		rem
+			do NOT finish the programme here - do this "live", so the
+			current year is known, and only released programmes are
+			finished!
 		'also set the programme as "finished" and inform cast (for level ups)
 		For local job:TProgrammePersonJob = eachIn programmeData.GetCast()
 			local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID( job.personGUID )
 			if person then person.FinishProduction(programmeData.GetGUID())
 		Next
+		endrem
 
 
 		programmeLicence.SetOwner(TOwnedGameObject.OWNER_NOBODY)

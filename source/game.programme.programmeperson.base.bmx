@@ -2,6 +2,7 @@ SuperStrict
 Import Brl.Map
 Import Brl.Math
 Import "Dig/base.util.mersenne.bmx"
+Import "Dig/base.util.string.bmx"
 Import "game.gameobject.bmx"
 Import "game.gameconstants.bmx"
 Import "game.programme.programmerole.bmx"
@@ -172,6 +173,8 @@ Type TProgrammePersonBase extends TGameObject
 	field canLevelUp:int = True
 	'is this an real existing person or someone we imaginated for the game?
 	field fictional:int = False
+	'is the person currently filming something?
+	field producingGUID:string = ""
 
 
 	'override to add another generic naming
@@ -180,6 +183,31 @@ Type TProgrammePersonBase extends TGameObject
 		self.GUID = GUID
 	End Method
 
+
+	Method SerializeTProgrammePersonBaseToString:string()
+		return StringHelper.EscapeString(lastName, ":") + "::" + ..
+		       StringHelper.EscapeString(firstName, ":") + "::" + ..
+		       StringHelper.EscapeString(nickName, ":") + "::" + ..
+		       job + "::" + ..
+		       jobsDone + "::" + ..
+		       canLevelUp + "::" + ..
+		       fictional + "::" + ..
+		       StringHelper.EscapeString(producingGUID, ":") + "::"
+	End Method
+
+
+	Method DeSerializeTProgrammePersonBaseFromString(text:String)
+		local vars:string[] = text.split("::")
+		if vars.length > 0 then lastName = StringHelper.UnEscapeString(vars[0])
+		if vars.length > 1 then firstName = StringHelper.UnEscapeString(vars[1])
+		if vars.length > 2 then nickName = StringHelper.UnEscapeString(vars[2])
+		if vars.length > 3 then job = int(vars[3])
+		if vars.length > 4 then jobsDone = int(vars[4])
+		if vars.length > 5 then canLevelUp = int(vars[5])
+		if vars.length > 6 then fictional = int(vars[6])
+		if vars.length > 7 then producingGUID = StringHelper.UnEscapeString(vars[7])
+	End Method
+	
 
 	Method GetTopGenre:Int()
 		'base persons does not have top genres (-> unspecified)
@@ -238,8 +266,14 @@ Type TProgrammePersonBase extends TGameObject
 	End Method
 
 
+	Method StartProduction:int(programmeDataGUID:string)
+		producingGUID = programmeDataGUID
+	End Method
+
+
 	Method FinishProduction:int(programmeDataGUID:string)
 		jobsDone :+ 1
+		producingGUID = ""
 	End Method
 End Type
 
@@ -275,6 +309,25 @@ Type TProgrammePersonJob
 		return self
 	End Method
 
+
+	Method SerializeTProgrammePersonJobToString:string()
+		return StringHelper.EscapeString(personGUID, ":") + "::" +..
+		       job + "::" +..
+		       gender + "::" +..
+		       StringHelper.EscapeString(country, ":") + "::" + ..
+		       StringHelper.EscapeString(roleGUID, ":")
+	End Method
+
+
+	Method DeSerializeTProgrammePersonJobFromString(text:String)
+		local vars:string[] = text.split("::")
+		if vars.length > 0 then personGUID = StringHelper.UnEscapeString(vars[0])
+		if vars.length > 1 then job = int(vars[1])
+		if vars.length > 2 then gender = int(vars[2])
+		if vars.length > 3 then country = StringHelper.UnEscapeString(vars[3])
+		if vars.length > 4 then roleGUID = StringHelper.UnEscapeString(vars[4])
+	End Method
+	
 
 	Method IsSimilar:int(otherJob:TProgrammePersonJob)
 		if job <> otherJob.job then return False

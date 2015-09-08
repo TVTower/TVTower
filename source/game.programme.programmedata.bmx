@@ -293,6 +293,17 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	End Method
 
 
+	'updates all programmes programmes (checks for new states)
+	'call this after a game start to set all "old programmes" to be
+	'finished
+	Method UpdateAll:int()
+		local now:Double = GetWorldTime().GetTimeGone()
+		For local pd:TProgrammeData = EachIn entries.Values()
+			pd.Update()
+		Next 
+	End Method
+
+
 	Function _SortUnreleasedByRelease:Int(o1:Object, o2:Object)
 		Local p1:TProgrammeData = TProgrammeData(o1)
 		Local p2:TProgrammeData = TProgrammeData(o2)
@@ -1269,6 +1280,11 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 
 	Method onCinemaRelease:int(time:Long = 0)
+		'inform each person in the cast that the production finished
+		For local job:TProgrammePersonJob = eachIn GetCast()
+			local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID( job.personGUID )
+			if person then person.FinishProduction(GetGUID())
+		Next
 		return True
 	End Method
 
@@ -1281,7 +1297,18 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Method Update:int()
 		Select state
 			case TVTProgrammeState.NONE
-				if isInProduction() then SetState(TVTProgrammeState.IN_PRODUCTION)
+				'repair old programme (finished before game start year)
+				'and loop through all states (prod - cinema - release)
+				if isReleased()
+					SetState(TVTProgrammeState.IN_PRODUCTION)
+					SetState(TVTProgrammeState.IN_CINEMA)
+					SetState(TVTProgrammeState.RELEASED)
+				elseif isInCinema()
+					SetState(TVTProgrammeState.IN_PRODUCTION)
+					SetState(TVTProgrammeState.IN_CINEMA)
+				elseif isInProduction()
+					SetState(TVTProgrammeState.IN_PRODUCTION)
+				endif
 			case TVTProgrammeState.IN_PRODUCTION
 				if isInCinema()
 					SetState(TVTProgrammeState.IN_CINEMA)

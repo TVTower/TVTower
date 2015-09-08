@@ -174,6 +174,15 @@ Type StringHelper
 		Return (ch>=Asc("0") And ch<=Asc("9")) Or ((ch>=Asc("A") And ch<=Asc("Z")) Or (ch>=Asc("a") And ch<=Asc("z")))
 	End Function
 
+
+	Function EscapeString:string(in:string, escapeChar:string=":")
+		return in.replace("\","\\").replace(escapeChar, "\"+escapeChar)
+	End Function
+
+
+	Function UnEscapeString:string(in:string, escapeChar:string=":")
+		return in.replace("\"+escapeChar, escapeChar).replace("\\", "\")
+	End Function
 	
 
 	Function UTF8toISO8859:String(s:string)

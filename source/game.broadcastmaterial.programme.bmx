@@ -180,7 +180,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		local popData:TData = new TData
 		popData.AddNumber("attractionQuality", audienceResult.AudienceAttraction.Quality)
 		popData.AddNumber("audienceSum", audienceResult.Audience.GetSum())
-		popData.AddNumber("broadcastTopAudience", GetBroadcastManager().GetCurrentBroadcast().TopAudience)
+		popData.AddNumber("broadcastTopAudience", GetBroadcastManager().GetCurrentBroadcast().GetTopAudience())
 
 		popularity.FinishBroadcastingProgramme(popData, GetBlocks())
 		

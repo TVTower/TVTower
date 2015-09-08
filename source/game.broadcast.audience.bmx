@@ -96,10 +96,7 @@ Type TAudience
 
 	'=== PUBLIC ===
 
-	'only possible when also serializing "TAudienceAttraction"
-	'!!!!!!
-	rem
-	Method SerializeToString:string()
+	Method SerializeTAudienceToString:string()
 		'convert FloatToInt
 		return iD + "," +..
 		       f2i(Children) + "," +..
@@ -119,7 +116,7 @@ Type TAudience
 	End Method
 
 
-	Method DeSerializeFromString(text:String)
+	Method DeSerializeTAudienceFromString(text:String)
 		local vars:string[] = text.split(",")
 		if vars.length > 0 then iD = int(vars[0])
 		if vars.length > 1 then Children = float(vars[1])
@@ -132,7 +129,7 @@ Type TAudience
 		if vars.length > 8 then Women = float(vars[8])
 		if vars.length > 9 then Men = float(vars[9])
 	End Method
-	endrem
+
 
 	Method Copy:TAudience()
 		Local result:TAudience = New TAudience

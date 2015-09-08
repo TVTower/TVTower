@@ -94,7 +94,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 	field calculatedTopGenreCache:int = 0 {nosave}
 
 	'array containing GUIDs of all programmes 
-	Field producedProgrammes:string[]
+	Field producedProgrammes:string[] {nosave}
+	Field producedProgrammesCached:int = False {nosave}
 
 	Field channelSympathy:Float[4]
 
@@ -110,7 +111,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 			local genres:int[]
 			local bestGenre:int=0
-			For local guid:string = EachIn producedProgrammes
+			For local guid:string = EachIn GetProducedProgrammes()
 				local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(guid)
 				if not programmeData then continue
 				
@@ -193,7 +194,16 @@ Type TProgrammePerson extends TProgrammePersonBase
 	End Method
 
 
-	'override to extend with xp gain
+	'override to emit events
+	Method StartProduction:int(programmeDataGUID:string)
+		Super.StartProduction(programmeDataGUID)
+		'emit event so eg. news agency could react to it ("bla has a new job")
+		'-> or to set them on the "scandals" list
+		EventManager.triggerEvent(TEventSimple.Create("programmeperson.onStartProduction", New TData.addString("programmeDataGUID", programmeDataGUID), Self))
+	End Method
+
+	
+	'override to extend with xp gain + send out events
 	Method FinishProduction:int(programmeDataGUID:string)
 		Super.FinishProduction(programmeDataGUID)
 		
@@ -208,11 +218,29 @@ Type TProgrammePerson extends TProgrammePersonBase
 		'add programme
 		producedProgrammes :+ [programmeDataGUID]
 
+		producedProgrammesCached = True
 
 		'reset cached calculations
 		calculatedTopGenreCache = -1
+
+		'emit event so eg. news agency could react to it ("bla goes on holiday")
+		EventManager.triggerEvent(TEventSimple.Create("programmeperson.onFinishProduction", New TData.addString("programmeDataGUID", programmeDataGUID), Self))
 	End Method
 
+
+	Method GetProducedProgrammes:String[]()
+		if not producedProgrammesCached
+			'fill up with already finished
+			For local programmeData:TProgrammeData = EachIn GetProgrammeDataCollection().entries
+				if programmeData.IsReleased() or programmeData.IsInCinema()
+					producedProgrammes :+ [programmeData.GetGUID()]
+				endif
+			Next
+			producedProgrammesCached = True
+		endif
+		return producedProgrammes
+	End Method
+	
 
 	Method SetChannelSympathy:int(channel:int, newSympathy:float)
 		if channel < 0 or channel >= channelSympathy.length then return False

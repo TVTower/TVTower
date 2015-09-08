@@ -4157,7 +4157,6 @@ Type GameEvents
 
 		TLogger.Log("GameEvents.OnDay", "begin of day "+(GetWorldTime().GetDaysRun()+1)+" (real day: "+day+")", LOG_DEBUG)
 
-
 		'finish upcoming programmes (set them to cinema, released...)
 		GetProgrammeDataCollection().UpdateUnreleased()
 
