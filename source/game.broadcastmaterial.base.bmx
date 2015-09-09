@@ -227,8 +227,10 @@ End Type
 Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="selected"}
 	'default implementation	
 	Method GenrePopularityMod:Float(genreDefinition:TGenreDefinitionBase)
-		Return Max(-0.5, Min(0.5, genreDefinition.Popularity.Popularity / 100)) 'Popularity => Wert zwischen -50 und +50
+		'Popularity => Wert zwischen -50 und +50
+		Return Max(-0.5, Min(0.5, genreDefinition.Popularity.Popularity / 100))
 	End Method
+
 	
 	'default implementation
 	Method GenreTargetGroupMod:TAudience(genreDefinition:TGenreDefinitionBase)
@@ -238,26 +240,32 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		'Return genreDefinition.AudienceAttraction.Copy().MultiplyFloat(1.2).SubtractFloat(0.6).CutBordersFloat(-0.6, 0.6)
 	End Method
 
+
 	'default implementation	
 	Method FlagPopularityMod:Float(definition:TGenreDefinitionBase)
-		Return Max(-0.5, Min(0.5, definition.Popularity.Popularity / 100)) 'Popularity => Wert zwischen -50 und +50
+		'Popularity => Wert zwischen -50 und +50
+		Return Max(-0.5, Min(0.5, definition.Popularity.Popularity / 100))
 	End Method
+
 	
 	'default implementation
 	Method FlagTargetGroupMod:TAudience(definition:TGenreDefinitionBase)
 		'max 100% ?
 		Return definition.AudienceAttraction.Copy().CutBordersFloat(-1.0, 1.0)
 	End Method
+
 	
 	'default implementation
 	Method GetTrailerMod:TAudience()
 		Return TAudience.CreateAndInitValue(0)
 	End Method	
+
 	
 	'default implementation
 	Method GetMiscMod:TAudience(hour:Int)
 		Return TAudience.CreateAndInitValue(0)
 	End Method
+
 	
 	'default implementation
 	Method GetPublicImageMod:TAudience()
@@ -270,6 +278,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		result.CutBordersFloat(-0.35, 0.35)
 		Return result
 	End Method	
+
 	
 	'default implementation
 	Method GetQualityOverTimeEffectMod:Float(quality:Float, block:Int )
@@ -292,6 +301,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	Method GetLuckMod:TAudience()
 		Return TAudience.CreateAndInitValue(0)
 	End Method
+
 	
 	'default implementation
 	Method GetAudienceFlowBonus:TAudience(block:Int, result:TAudienceAttraction, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction)

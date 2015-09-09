@@ -6,6 +6,45 @@ Type TGenreDefinitionBase
 	Field AudienceAttraction:TAudience
 	Field Popularity:TGenrePopularity
 	Field TimeMods:Float[]
+	
+
+	Method LoadFromMap(data:TMap)
+		local mapData:TData = new TData.Init(data.Copy())
+		referenceId = mapData.GetInt("id")
+
+		InitBasic(referenceId, mapData)
+	End Method
+
+
+	Method InitBasic:TGenreDefinitionBase(referenceID:int, data:TData = null)
+		if not data then data = new TData
+		self.referenceId = referenceID
+
+		TimeMods = TimeMods[..24]
+		For Local i:Int = 0 To 23
+			TimeMods[i] = data.GetFloat("timeMod_" + i, 1.0)
+		Next
+
+		AudienceAttraction = New TAudience
+		AudienceAttraction.Children = data.GetFloat("Children", 0.5)
+		AudienceAttraction.Teenagers = data.GetFloat("Teenagers", 0.5)
+		AudienceAttraction.HouseWives = data.GetFloat("HouseWives", 0.5)
+		AudienceAttraction.Employees = data.GetFloat("Employees", 0.5)
+		AudienceAttraction.Unemployed = data.GetFloat("Unemployed", 0.5)
+		AudienceAttraction.Manager = data.GetFloat("Manager", 0.5)
+		AudienceAttraction.Pensioners = data.GetFloat("Pensioners", 0.5)
+		AudienceAttraction.Women = data.GetFloat("Women", 0.5)
+		AudienceAttraction.Men = data.GetFloat("Men", 0.5)
+
+		'if there was a popularity already, remove that first
+		if Popularity then GetPopularityManager().RemovePopularity(Popularity)
+
+		Popularity = TGenrePopularity.Create(referenceId, RandRange(-10, 10), RandRange(-25, 25))
+		GetPopularityManager().AddPopularity(Popularity) 'Zum Manager hinzufügen
+
+		return self
+	End Method
+
 
 	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase) Abstract
 	rem

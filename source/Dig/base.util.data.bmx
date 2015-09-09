@@ -43,7 +43,21 @@ Type TData
 	field data:TMap = CreateMap()
 
 	Method Init:TData(data:TMap=null)
-		if data then self.data = data
+		if data
+			'convert all keys to lower case
+			'attention: do not directly modify the data set (modification
+			'while iteration might be bad)
+			local modifyKeys:string[]
+			For local k:string = EachIn data.Keys()
+				if k <> k.toLower() then modifyKeys :+ [k]
+			Next
+			For local k:string = EachIn modifyKeys
+				data.Insert(k.ToLower(), data.ValueForKey(k))
+				data.Remove(k)
+			Next
+			
+			self.data = data
+		endif
 
 		return self
 	End Method

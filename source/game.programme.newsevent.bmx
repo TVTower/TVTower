@@ -304,6 +304,7 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	'eg. dynamically created weather news should set this to FALSE
 	Field reuseable:int = True
 	Field _handledFirstTimeBroadcast:int = False
+	Field _genreDefinitionCache:TNewsGenreDefinition = Null {nosave}
 	
 	Const GENRE_POLITICS:Int = 0	{_exposeToLua}
 	Const GENRE_SHOWBIZ:Int  = 1	{_exposeToLua}
@@ -497,6 +498,19 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	'AI/LUA-helper
 	Method GetAttractiveness:Float() {_exposeToLua}
 		return 0.35*quality + 0.6*GetTopicality() + 0.05
+	End Method
+
+
+	Method GetGenreDefinition:TNewsGenreDefinition()
+		If Not _genreDefinitionCache Then
+			_genreDefinitionCache = GetNewsGenreDefinitionCollection().Get(Genre)
+
+			If Not _genreDefinitionCache
+				TLogger.Log("GetGenreDefinition()", "NewsEvent ~q"+GetTitle()+"~q: Genre #"+Genre+" misses a genreDefinition. Creating BASIC definition-", LOG_ERROR)
+				_genreDefinitionCache = new TNewsGenreDefinition.InitBasic(Genre, null)
+			EndIf
+		EndIf
+		Return _genreDefinitionCache
 	End Method
 
 

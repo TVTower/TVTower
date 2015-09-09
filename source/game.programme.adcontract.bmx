@@ -808,7 +808,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 
 		'=== DYNAMIC PRICE ===
-		Local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG", new TData.Init()))
+		Local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG", new TData))
 		Local balancingFactor:float = devConfig.GetFloat("DEV_AD_BALANCING_FACTOR", 1.0)
 		Local limitedToGenreMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_GENRE_MULTIPLIER", 2.0)
 		Local limitedToProgrammeFlagMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_PROGRAMME_FLAG_MULTIPLIER", 1.5)

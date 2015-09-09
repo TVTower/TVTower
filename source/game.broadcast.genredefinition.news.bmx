@@ -51,26 +51,11 @@ End Function
 
 
 Type TNewsGenreDefinition Extends TGenreDefinitionBase
-	Method LoadFromMap(data:TMap)
-		referenceId = String(data.ValueForKey("id")).ToInt()
-		'referenceId = String(data.ValueForKey("name"))
 
-		AudienceAttraction = New TAudience
-		AudienceAttraction.Children = String(data.ValueForKey("Children")).ToFloat()
-		AudienceAttraction.Teenagers = String(data.ValueForKey("Teenagers")).ToFloat()
-		AudienceAttraction.HouseWives = String(data.ValueForKey("HouseWives")).ToFloat()
-		AudienceAttraction.Employees = String(data.ValueForKey("Employees")).ToFloat()
-		AudienceAttraction.Unemployed = String(data.ValueForKey("Unemployed")).ToFloat()
-		AudienceAttraction.Manager = String(data.ValueForKey("Manager")).ToFloat()
-		AudienceAttraction.Pensioners = String(data.ValueForKey("Pensioners")).ToFloat()
-		AudienceAttraction.Women = String(data.ValueForKey("Women")).ToFloat()
-		AudienceAttraction.Men = String(data.ValueForKey("Men")).ToFloat()
+	Method InitBasic:TNewsGenreDefinition(genreId:int, data:TData)
+		Super.InitBasic(genreId, data)
 
-		Popularity = TGenrePopularity.Create(referenceId, RandRange(-10, 10), RandRange(-25, 25))
-		GetPopularityManager().AddPopularity(Popularity) 'Zum Manager hinzufügen
-
-		'Print "Load newsgenre " + referenceId + ": " + AudienceAttraction.ToString()
-		'print "OutcomeMod: " + OutcomeMod + " | ReviewMod: " + ReviewMod + " | SpeedMod: " + SpeedMod
+		return self
 	End Method
 
 

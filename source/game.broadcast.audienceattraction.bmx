@@ -28,11 +28,13 @@ Type TAudienceAttraction Extends TAudience
 	Field GenreDefinition:TGenreDefinitionBase
 	Field Malfunction:Int '1 = Sendeausfall
 
+
 	Function CreateAndInitAttraction:TAudienceAttraction(group0:Float, group1:Float, group2:Float, group3:Float, group4:Float, group5:Float, group6:Float, subgroup0:Float, subgroup1:Float)
 		Local result:TAudienceAttraction = New TAudienceAttraction
 		result.SetValues(group0, group1, group2, group3, group4, group5, group6, subgroup0, subgroup1)
 		Return result
 	End Function
+
 
 	Method SetPlayerId(playerId:Int)
 		Self.Id = playerId
@@ -41,6 +43,7 @@ Type TAudienceAttraction Extends TAudience
 		Self.PublicImageAttraction.Id = playerId
 	End Method
 
+
 	Method SetFixAttraction:TAudienceAttraction(attraction:TAudience)
 		Self.BaseAttraction = attraction.Copy()
 		Self.FinalAttraction = attraction.Copy()
@@ -48,6 +51,7 @@ Type TAudienceAttraction Extends TAudience
 		Self.SetValuesFrom(attraction)
 		Return Self
 	End Method
+
 
 	Method AddAttraction:TAudienceAttraction(audienceAttr:TAudienceAttraction)
 		If Not audienceAttr Then Return Self
@@ -74,6 +78,7 @@ Type TAudienceAttraction Extends TAudience
 		Return Self
 	End Method
 
+
 	Method MultiplyAttrFactor:TAudienceAttraction(factor:float)
 		Self.MultiplyFloat(factor)
 
@@ -96,6 +101,7 @@ Type TAudienceAttraction Extends TAudience
 
 		Return Self
 	End Method
+
 
 	Method Recalculate()
 		Local result:TAudience = new TAudience
@@ -130,62 +136,7 @@ Type TAudienceAttraction Extends TAudience
 		Self.SetValuesFrom(result)
 	End Method
 
-rem - Später - Neue Berechnung
-	Method Recalculate()
-		'Neues Punktesystem
-		Local result:TAudience = new TAudience
-				
-		result.AddFloat(GenrePopularityMod)
-		result.Add(GenreTargetGroupMod)
-		result.Add(TrailerMod)
-		result.Add(MiscMod)
-		result.AddFloat(GenreTimeMod)
 
-		Self.PublicImageAttraction = result.Copy()
-		'Self.PublicImageAttraction.AddFloat(1)
-		'Self.PublicImageAttraction.MultiplyFloat(Quality)
-
-		result.Add(PublicImageMod)
-		result.Add(LuckMod)
-		result.MultiplyFloat(Quality)
-		result.Add(AudienceFlowBonus)
-		Self.BaseAttraction = result.Copy()
-
-		'result.Add(AudienceFlowBonus)
-		result.AddFloat(QualityOverTimeEffectMod)		
-		result.Add(SequenceEffect)
-
-		'avoid negative attraction values or values > 100%
-		'-> else you could have a negative audience
-		result.CutBordersFloat(0.0, 1.0)
-
-		Self.FinalAttraction = result
-		Self.SetValuesFrom(result)
-	End Method
-
-	Method ManipulateAudienceResult:TAudience(quality:Float, manipulation:TAudience)
-		Local qualityTemp:Float = quality
-		
-		If quality > 30
-			qualityTemp = 30 + (quality / 5)
-		End If
-		
-		manipulation.Children = 0
-		manipulation.Teenagers = 0
-		manipulation.HouseWives = 0
-		manipulation.Employees = 0
-		manipulation.Unemployed = 0
-		manipulation.Manager = 0
-		manipulation.Pensioners = 0
-		manipulation.Women = 0
-		manipulation.Men = 0		
-	End Method
-	
-	Method FixMultiplicator:Float(multiplicator:Float)
-				
-	End Method
-endrem	
-	
 	Method CopyBaseAttractionFrom(otherAudienceAttraction:TAudienceAttraction)
 		Quality = otherAudienceAttraction.Quality
 		GenrePopularityMod = otherAudienceAttraction.GenrePopularityMod

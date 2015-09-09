@@ -98,6 +98,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		Next
 		Return resultAudienceAttr
 	End Method
+
 rem
 	Method CalculateNewsBlockAudienceAttraction:TAudienceAttraction(news:TNews, lastMovieBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False)
 		GetAudienceAttractionInternal(
@@ -396,6 +397,11 @@ endrem
 		return newsEvent
 	End Method
 
+
+	Method GetGenreDefinition:TGenreDefinitionBase()
+		Return newsEvent.GetGenreDefinition()
+	End Method
+	
 
 	'===== AI-LUA HELPER FUNCTIONS =====
 

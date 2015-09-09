@@ -81,69 +81,20 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 	Field BadFollower:TList = CreateList()
 
 
-	Method LoadFromMap(data:TMap)
-		referenceId = String(data.ValueForKey("id")).ToInt()
-		OutcomeMod = String(data.ValueForKey("outcomeMod")).ToFloat()
-		ReviewMod = String(data.ValueForKey("reviewMod")).ToFloat()
-		SpeedMod = String(data.ValueForKey("speedMod")).ToFloat()
+	Method InitBasic:TMovieGenreDefinition(genreId:int, data:TData)
+		Super.InitBasic(genreId, data)
 
-		GoodFollower = TList(data.ValueForKey("goodFollower"))
+		OutcomeMod = data.GetFloat("outcomeMod", 1.0)
+		ReviewMod = data.GetFloat("reviewMod", 1.0)
+		SpeedMod = data.GetFloat("speedMod", 1.0)
+
+		GoodFollower = TList(data.Get("goodFollower"))
 		If GoodFollower = Null Then GoodFollower = CreateList()
-		BadFollower = TList(data.ValueForKey("badFollower"))
+		BadFollower = TList(data.Get("badFollower"))
 		If BadFollower = Null Then BadFollower = CreateList()
-
-
-		TimeMods = TimeMods[..24]
-		For Local i:Int = 0 To 23
-			TimeMods[i] = String(data.ValueForKey("timeMod_" + i)).ToFloat()
-		Next
-
-		AudienceAttraction = New TAudience
-		AudienceAttraction.Children = String(data.ValueForKey("Children")).ToFloat()
-		AudienceAttraction.Teenagers = String(data.ValueForKey("Teenagers")).ToFloat()
-		AudienceAttraction.HouseWives = String(data.ValueForKey("HouseWives")).ToFloat()
-		AudienceAttraction.Employees = String(data.ValueForKey("Employees")).ToFloat()
-		AudienceAttraction.Unemployed = String(data.ValueForKey("Unemployed")).ToFloat()
-		AudienceAttraction.Manager = String(data.ValueForKey("Manager")).ToFloat()
-		AudienceAttraction.Pensioners = String(data.ValueForKey("Pensioners")).ToFloat()
-		AudienceAttraction.Women = String(data.ValueForKey("Women")).ToFloat()
-		AudienceAttraction.Men = String(data.ValueForKey("Men")).ToFloat()
-
-		'if there was a popularity already, remove that first
-		if Popularity then GetPopularityManager().RemovePopularity(Popularity)
-
-		Popularity = TGenrePopularity.Create(referenceId, RandRange(-10, 10), RandRange(-25, 25))
-		GetPopularityManager().AddPopularity(Popularity) 'Zum Manager hinzufügen
 
 		'print "Load moviegenre" + referenceId + ": " + AudienceAttraction.ToString()
 		'print "OutcomeMod: " + OutcomeMod + " | ReviewMod: " + ReviewMod + " | SpeedMod: " + SpeedMod
-	End Method
-
-
-	Method InitBasic:TMovieGenreDefinition(genreId:int)
-		self.referenceId = genreId
-
-		TimeMods = TimeMods[..24]
-		For Local i:Int = 0 To 23
-			TimeMods[i] = 1.0
-		Next
-
-		AudienceAttraction = New TAudience
-		AudienceAttraction.Children = 0.5
-		AudienceAttraction.Teenagers = 0.5
-		AudienceAttraction.HouseWives = 0.5
-		AudienceAttraction.Employees = 0.5
-		AudienceAttraction.Unemployed = 0.5
-		AudienceAttraction.Manager = 0.5
-		AudienceAttraction.Pensioners = 0.5
-		AudienceAttraction.Women = 0.5
-		AudienceAttraction.Men = 0.5
-
-		'if there was a popularity already, remove that first
-		if Popularity then GetPopularityManager().RemovePopularity(Popularity)
-
-		Popularity = TGenrePopularity.Create(referenceId, RandRange(-10, 10), RandRange(-25, 25))
-		GetPopularityManager().AddPopularity(Popularity) 'Zum Manager hinzufügen
 
 		return self
 	End Method
@@ -271,9 +222,9 @@ End Type
 
 Type TMovieFlagDefinition Extends TMovieGenreDefinition
 
-	Method InitBasic:TMovieFlagDefinition(flagID:int)
+	Method InitBasic:TMovieFlagDefinition(flagID:int, data:TData)
 		'init with flagID so popularity (created there) gets this ID too 
-		Super.InitBasic(flagID)
+		Super.InitBasic(flagID, data)
 		
 		return self
 	End Method
