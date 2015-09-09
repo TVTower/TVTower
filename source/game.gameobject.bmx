@@ -276,12 +276,12 @@ End Type
 
 
 
-Type TGameObjectEffectCollection
+Type TGameObjectEffectGroup
 	Field effects:TData
 
 
-	Method Copy:TGameObjectEffectCollection()
-		local c:TGameObjectEffectCollection = new TGameObjectEffectCollection
+	Method Copy:TGameObjectEffectGroup()
+		local c:TGameObjectEffectGroup = new TGameObjectEffectGroup
 		if effects then c.effects = effects.Copy()
 
 		return c

@@ -228,6 +228,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 	End Method
 
 
+	'refresh cache (for newly converted "insignifants" or after a savegame)
 	Method GetProducedProgrammes:String[]()
 		if not producedProgrammesCached
 			'fill up with already finished

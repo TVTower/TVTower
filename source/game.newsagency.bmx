@@ -232,7 +232,7 @@ Type TNewsAgency
 			endif
 			effect._customEffectFunc = TFigureTerrorist.SendFigureToRoom
 			'mark as a special effect so AI can categorize it accordingly
-			effect.setEffectType(TVTNewsEffect.TERRORISTATTACK)
+			effect.setEffectType(TVTGameObjectEffect.TERRORIST_ATTACK)
 
 			NewsEvent.effects.AddEffect("happen", effect)
 		endif

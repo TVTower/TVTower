@@ -19,7 +19,7 @@ Type TVTGameConstants {_exposeToLua}
 	Field NewsType:TVTNewsType = new TVTNewsType
 	Field NewsHandling:TVTNewsHandling = new TVTNewsHandling
 	Field NewsGenre:TVTNewsGenre = new TVTNewsGenre
-	Field NewsEffect:TVTNewsEffect = new TVTNewsEffect
+	Field GameObjectEffect:TVTGameObjectEffect = new TVTGameObjectEffect
 
 	Field BroadcastMaterialType:TVTBroadcastMaterialType = new TVTBroadcastMaterialType
 	Field BroadcastMaterialSourceFlag:TVTBroadcastMaterialSourceFlag = new TVTBroadcastMaterialSourceFlag
@@ -91,12 +91,11 @@ End Type
 
 
 
-
-Type TVTNewsEffect {_exposeToLua}
+Type TVTGameObjectEffect {_exposeToLua}
 	Const NONE:int = 0
-	Const CHANGEMAXAUDIENCE:int = 1
-	Const CHANGETREND:int = 2
-	Const TERRORISTATTACK:int = 4
+	Const CHANGE_AUDIENCE:int = 1
+	Const CHANGE_TREND:int = 2
+	Const TERRORIST_ATTACK:int = 4
 End Type
 
 

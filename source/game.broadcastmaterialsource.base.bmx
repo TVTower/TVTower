@@ -1,12 +1,13 @@
 SuperStrict
 Import "game.gameobject.bmx"
+Import "game.gameobject.effect.bmx"
 Import "game.broadcastmaterial.base.bmx"
 
 
 'could be done as "interface"
 Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="selected"}
 	Field modifiers:TData = new TData
-	Field effects:TGameObjectEffectCollection = New TGameObjectEffectCollection
+	Field effects:TGameObjectEffectGroup = New TGameObjectEffectGroup
 	'how many times that source was broadcasted
 	'(per player, 0 = unknown - allows to adjust "before game start" value)
 	Field timesBroadcasted:int[] = [0]
