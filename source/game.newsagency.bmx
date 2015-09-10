@@ -508,7 +508,9 @@ Type TNewsAgency
 			announced:+1
 		Next
 		'invalidate upcoming list 
-		if announced > 0 then GetNewsEventCollection()._upcomingNewsEvents.Clear()
+		if announced > 0 and GetNewsEventCollection()._upcomingNewsEvents
+			GetNewsEventCollection()._upcomingNewsEvents.Clear()
+		endif
 	
 		Return announced
 	End Method

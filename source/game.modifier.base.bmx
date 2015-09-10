@@ -321,58 +321,67 @@ Type TGameModifierTimeFrame
 	End Method
 
 
-	Method SetTimeBegin_HoursFromNow(hoursMin:int, hoursMax:int = -1)
+	Method SetTimeBegin_Auto(timeType:int, timeValues:int[])
+		SetTimeBegin( CalcTime_Auto(timeType, timeValues) )
+	End Method	
+
+
+	Function CalcTime_HoursFromNow:Long(hoursMin:int, hoursMax:int = -1)
 		if hoursMax = -1
-			timeBegin = GetWorldTime().getTimeGone() + hoursMin * TWorldTime.HOURLENGTH
+			return GetWorldTime().getTimeGone() + hoursMin * TWorldTime.HOURLENGTH
 		else
-			timeBegin = GetWorldTime().getTimeGone() + RandRange(hoursMin, hoursMax) * TWorldTime.HOURLENGTH
+			return GetWorldTime().getTimeGone() + RandRange(hoursMin, hoursMax) * TWorldTime.HOURLENGTH
 		endif
-	End Method
+	End Function
 
 
-	Method SetTimeBegin_DaysFromNowAtHour(daysBegin:int, daysEnd:int = -1, atHourMin:int, atHourMax:int = -1)
+	Function CalcTime_DaysFromNowAtHour:Long(daysBegin:int, daysEnd:int = -1, atHourMin:int, atHourMax:int = -1)
+		local result:Long
 		if daysEnd = -1
-			timeBegin = GetWorldTime().MakeTime(0, GetWorldTime().GetDay() + daysBegin, 0, 0)
+			result = GetWorldTime().MakeTime(0, GetWorldTime().GetDay() + daysBegin, 0, 0)
 		else
-			timeBegin = GetWorldTime().MakeTime(0, GetWorldTime().GetDay() + RandRange(daysBegin, daysEnd), 0, 0)
+			result = GetWorldTime().MakeTime(0, GetWorldTime().GetDay() + RandRange(daysBegin, daysEnd), 0, 0)
 		endif
 
 		if atHourMax = -1
-			timeBegin :+ atHourMin * TWorldTime.HOURLENGTH
+			result :+ atHourMin * TWorldTime.HOURLENGTH
 		else
 			'convert into minutes:
 			'for 7-9 this is 7:00, 7:01 ... 8:59, 9:00
-			timeBegin :+ RandRange(atHourMin*60, atHourMax*60) * 60
+			result :+ RandRange(atHourMin*60, atHourMax*60) * 60
 		endif
-	End Method
+		
+		return result
+	End Function
 
 
-	Method SetTimeFrame(timeType:int, timeValues:int[])
-		if not timeValues or timeValues.length < 1 then return
+	Function CalcTime_Auto:long(timeType:int, timeValues:int[])
+		if not timeValues or timeValues.length < 1 then return -1
 		
 		'what kind of happen time data do we have?
 		Select timeType
 			'1 = "A"-"B" hours from now
 			case 1
 				if timeValues.length > 1
-					SetTimeBegin_HoursFromNow(timeValues[0], timeValues[1])
+					return CalcTime_HoursFromNow(timeValues[0], timeValues[1])
 				else
-					SetTimeBegin_HoursFromNow(timeValues[0], -1)
+					return CalcTime_HoursFromNow(timeValues[0], -1)
 				endif
 			'2 = "A"-"B" days from now at "C":00 - "D":00 o'clock
 			case 4
-				if timeValues.length <= 1 then return
+				if timeValues.length <= 1 then return -1
 				
 				if timeValues.length = 2
-					SetTimeBegin_DaysFromNowAtHour(timeValues[0], -1, timeValues[1])
+					return CalcTime_DaysFromNowAtHour(timeValues[0], -1, timeValues[1])
 				elseif timeValues.length = 3
-					SetTimeBegin_DaysFromNowAtHour(timeValues[0], timeValues[1], timeValues[2])
+					return CalcTime_DaysFromNowAtHour(timeValues[0], timeValues[1], timeValues[2])
 				else
-					SetTimeBegin_DaysFromNowAtHour(timeValues[0], timeValues[1], timeValues[2], timeValues[3])
+					return CalcTime_DaysFromNowAtHour(timeValues[0], timeValues[1], timeValues[2], timeValues[3])
 				endif
 		End Select
-	End Method	
-
+		return -1
+	End Function
+	
 
 	Method HasExpired:int()
 		if timeEnd >= 0

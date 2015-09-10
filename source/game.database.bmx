@@ -1113,7 +1113,6 @@ endif
 				"parameter1", "parameter2", "parameter3", "parameter4", "parameter5", ..
 				"trigger_parameter1", "trigger_parameter2", "trigger_parameter3", "trigger_parameter4", "trigger_parameter5" ..
 			])
-
 			source.AddEffectByData(effectData)
 		Next
 	End Method

@@ -99,10 +99,10 @@ Type TNewsEventCollection
 	Method RemoveOutdatedNewsEvents(minAgeInDays:int=5)
 		local somethingDeleted:int = False
 		For local newsEvent:TNewsEvent = eachin allNewsEvents.Copy().Values()
+			'not happened yet - should not happen
+			if newsEvent.HasHappened() then continue
+
 			if abs(GetWorldTime().GetDay(newsEvent.happenedTime) - GetWorldTime().GetDay()) >= minAgeInDays
-				'not happened yet
-				if newsEvent.happenedTime = -1 then continue
-				
 				'if the news event cannot get used again remove them
 				'from all lists
 				if not newsEvent.IsReuseable()
@@ -146,9 +146,10 @@ Type TNewsEventCollection
 	Method ResetReuseableNewsEvents(minAgeInDays:int=5)
 		local somethingReset:int = False
 		For local newsEvent:TNewsEvent = eachin allNewsEvents.Values()
+			'not happened yet
+			if newsEvent.HasHappened() then continue
+
 			if abs(GetWorldTime().GetDay(newsEvent.happenedTime) - GetWorldTime().GetDay()) >= minAgeInDays
-				'not happened yet
-				if newsEvent.happenedTime = -1 then continue
 				'not reuseable
 				If not newsEvent.IsReuseable() then continue
 
@@ -432,17 +433,18 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 
 	Method doHappen(time:Long = 0)
-		if HasHappened() then return
-
 		'set happened time, add to collection list...
 		GetNewsEventCollection().setNewsHappened(self, time)
 
-		'set topicality to 100%
-		topicality = 1.0
+		if time = 0 or time <= GetWorldTime().GetTimeGone()
+print "happen: "+ GetTitle() +"  " + GetWorldTime().GetFormattedTime()
+			'set topicality to 100%
+			topicality = 1.0
 
-		'trigger happenEffects
-		local effectParams:TData = new TData.Add("source", self)
-		effects.Run("happen", effectParams)
+			'trigger happenEffects
+			local effectParams:TData = new TData.Add("source", self)
+			effects.Run("happen", effectParams)
+		endif
 	End Method
 
 
@@ -547,21 +549,16 @@ End Type
 
 Type TGameModifierNews_TriggerNews extends TGameModifierBase
 	Field triggerNewsGUID:string
-	'params for time generation  [A,B,C,D]
-	Field happenTimeData:int[]	= [8,16,0,0]
-	'what kind of happen time data do we have?
-	'1 = "A" days from now
-	'2 = "A" hours from now
-	'3 = "A" days from now at "B":00
-	'4 = "A"-"B" hours from now
-	Field happenTimeType:int = 4
-
+	Field happenTimeType:int = 1
+	Field happenTimeData:int[] = [8,16,0,0]
 
 	Function CreateFromData:TGameModifierNews_TriggerNews(data:TData)
 		if not data then return null
 
 		'local source:TNewsEvent = TNewsEvent(data.get("source"))
-		local triggerGUID:string = data.GetString("parameter1", "")
+		local triggerNewsGUID:string = data.GetString("parameter1", "")
+		if triggerNewsGUID = "" then return Null
+
 		local happenTimeType:int = data.GetInt("parameter2", -1)
 		local happenTimeData:int[] = [..
 			data.GetInt("parameter3", -1), ..
@@ -570,11 +567,19 @@ Type TGameModifierNews_TriggerNews extends TGameModifierBase
 			data.GetInt("parameter6", -1) ..
 		]
 
-		if triggerGUID = "" then return Null
 
-		return new TGameModifierNews_TriggerNews.Init( triggerGUID, happenTimeType, happenTimeData )
+
+		local obj:TGameModifierNews_TriggerNews = new TGameModifierNews_TriggerNews
+		obj.triggerNewsGUID = triggerNewsGUID
+		'obj.timeFrame.SetTimeBegin_Auto(-1)
+		if happenTimeType <> -1
+			obj.happenTimeType = happenTimeType
+			obj.happenTimeData = happenTimeData
+		endif
+	
+
+		return obj
 	End Function
-
 
 	
 	Method ToString:string()
@@ -583,51 +588,6 @@ Type TGameModifierNews_TriggerNews extends TGameModifierBase
 	End Method
 
 
-	'default params trigger the news 5 hours after the triggering one
-	Method Init:TGameModifierNews_TriggerNews(triggerNewsGUID:string, happentimeType:int = -1, happenTimeData:int[] = null)
-		self.triggerNewsGUID = triggerNewsGUID
-		if happenTimeType > 0
-			self.happenTimeType = happenTimeType
-		endif
-		if happenTimeData and happenTimeData.length = 4
-			'only use values defined in the happenTimeData-array
-			local happenTimeDataNew:int[] = [self.happenTimeData[0], self.happenTimeData[1], self.happenTimeData[2], self.happenTimeData[3]]
-			for local i:int = 0 until happenTimeData.length
-				if happenTimeData[i] >= 0 then happenTimeDataNew[i] = happenTimeData[i]
-			Next
-
-			self.happenTimeData = happenTimeDataNew
-		endif
-		return self
-	End Method
-
-
-	Method GetHappenTime:Double()
-		Select happenTimeType
-			'data is days from now
-			case 1
-				local happenTime:Double = GetWorldTime().getTimeGone()
-				return happenTime + happenTimeData[0]*60*60*24
-			'data is hours from now
-			case 2
-				local happenTime:Double = GetWorldTime().getTimeGone()
-				return happenTime + happenTimeData[0]*60*60
-			'data is days from now at X:00
-			case 3
-				return GetWorldTime().MakeTime(GetWorldTime().GetYear(), GetWorldTime().GetDayOfYear() + happenTimeData[0], happenTimeData[1], 0)
-			'data is hours "a - b" from now
-			case 4
-				local happenTime:Double = GetWorldTime().getTimeGone()
-				'add starthour "a"
-				happenTime :+ happenTimeData[0] * 60*60
-				'add random seconds between "a" and "b"
-				happenTime :+ randRange(0, (happenTimeData[1] - happenTimeData[0]) *60*60)
-				'7-9 = 7:00, 7:01, ... 9:00
-				return happenTime
-		End Select
-		return 0
-	End Method
-	
 
 	'override to trigger a specific news
 	Method RunFunc:int(params:TData)
@@ -637,8 +597,9 @@ Type TGameModifierNews_TriggerNews extends TGameModifierBase
 			TLogger.Log("TGameModifierNews_TriggerNews", "cannot find news to trigger: "+triggerNewsGUID, LOG_ERROR)
 			return false
 		endif
-		GetNewsEventCollection().setNewsHappened(news, GetHappenTime())
-
+		local triggerTime:Long = TGameModifierTimeFrame.CalcTime_Auto(happenTimeType, happenTimeData)
+		GetNewsEventCollection().setNewsHappened(news, triggerTime)
+print "triggere News:" + news.GetTitle() +"  time:"+GetWorldTime().GetFormattedtime(triggerTime)
 		return True
 	End Method
 End Type
