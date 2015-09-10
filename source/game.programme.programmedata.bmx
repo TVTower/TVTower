@@ -1271,9 +1271,9 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 
 	Method onProductionStart:int(time:Long = 0)
-		'trigger effects
-		local effectParams:TData = new TData.Add("source", self)
-		effects.RunEffects("productionStart", effectParams)
+		'trigger effects/modifiers
+		local params:TData = new TData.Add("source", self)
+		effects.Run("productionStart", params)
 
 		return True
 	End Method
@@ -1336,12 +1336,12 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 			'finishBroadcast while this is called on beginBroadcast)
 			if GetTimesBroadcasted() = 0
 				if not _handledFirstTimeBroadcast
-					effects.RunEffects("broadcastFirstTime", effectParams)
+					effects.Run("broadcastFirstTime", effectParams)
 					_handledFirstTimeBroadcast = True
 				endif
 			endif
 
-			effects.RunEffects("broadcast", effectParams)
+			effects.Run("broadcast", effectParams)
 
 
 		'send as trailer
@@ -1350,12 +1350,12 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 			'finishBroadcast while this is called on beginBroadcast)
 			if GetTimesTrailerAired() = 0
 				if not _handledFirstTimeBroadcastAsTrailer
-					effects.RunEffects("broadcastFirstTimeTrailer", effectParams)
+					effects.Run("broadcastFirstTimeTrailer", effectParams)
 					_handledFirstTimeBroadcastAsTrailer = True
 				endif
 			endif
 
-			effects.RunEffects("broadcastInfomercial", effectParams)
+			effects.Run("broadcastInfomercial", effectParams)
 		endif
 	End Method
 End Type

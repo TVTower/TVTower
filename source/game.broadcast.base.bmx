@@ -16,6 +16,7 @@ Import "game.broadcast.audienceattraction.bmx"
 Import "game.broadcast.audienceresult.bmx"
 Import "game.broadcast.genredefinition.movie.bmx"
 Import "game.broadcast.genredefinition.news.bmx"
+Import "game.modifier.base.bmx"
 Import "game.publicimage.bmx"
 Import "game.stationmap.bmx"
 Import "game.world.worldtime.bmx"
@@ -1149,3 +1150,60 @@ Type TBroadcastSequence
 	End Method
 End Type
 
+
+
+
+
+Type TGameModifierAudience extends TGameModifier_TimeLimited
+	Field audienceMod:Float = 0.5
+	global className:string = "ModifierAudience"
+
+	
+	Method ToString:string()
+		if timeFrame
+			return className + ": "+timeFrame.timeBegin +" - " +timeFrame.timeEnd
+		else
+			return className + ": expired"
+		endif
+	End Method
+
+
+	Method ModifierFunc:int(params:TData)
+		local audience:TAudience = TAudience(params.Get("audience"))
+		if not audience then Throw(className + " failed. Param misses 'audience'.")
+
+		audience.MultiplyFloat(audienceMod)
+		return True
+	End Method
+End Type
+
+
+
+'common weather modifier (_not_ used for special weather phenomens!)
+Type TGameModifierAudience_Weather extends TGameModifierAudience
+	global className:string = "ModifierAudience:Weather"
+
+	
+	Method ToString:string()
+		'override to use this types global
+		return Super.ToString()
+	End Method
+
+
+	Method ModifierFunc:int(params:TData)
+		local audience:TAudience = TAudience(params.Get("audience"))
+		if not audience then Throw(className + " failed. Param misses 'audience'.")
+
+'		hier das wetter holen und Effekte drauf abstellen
+
+'		GetWorldWeather()
+
+'		wenn regen, dann mod :+ 0.05 usw.
+
+'		audience.MultiplyFloat(audienceMod)
+		return True
+	End Method
+End Type
+
+
+GameModifierCreator.RegisterModifier("ModifyAudience", new TGameModifierAudience)

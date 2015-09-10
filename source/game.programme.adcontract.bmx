@@ -1386,12 +1386,12 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 			'finishBroadcast while this is called on beginBroadcast)
 			if base.GetTimesBroadcasted() = 0
 				if not base._handledFirstTimeBroadcast
-					base.effects.RunEffects("broadcastFirstTime", effectParams)
+					base.effects.Run("broadcastFirstTime", effectParams)
 					base._handledFirstTimeBroadcast = True
 				endif
 			endif
 
-			base.effects.RunEffects("broadcast", effectParams)
+			base.effects.Run("broadcast", effectParams)
 
 
 		elseif broadcastType = TVTBroadcastMaterialType.PROGRAMME
@@ -1399,12 +1399,12 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 			'finishBroadcast while this is called on beginBroadcast)
 			if base.GetTimesBroadcastedAsInfomercial() = 0
 				if not base._handledFirstTimeBroadcastAsInfomercial
-					base.effects.RunEffects("broadcastFirstTimeInfomercial", effectParams)
+					base.effects.Run("broadcastFirstTimeInfomercial", effectParams)
 					base._handledFirstTimeBroadcastAsInfomercial = True
 				endif
 			endif
 
-			base.effects.RunEffects("broadcastInfomercial", effectParams)
+			base.effects.Run("broadcastInfomercial", effectParams)
 		endif
 	End Method
 

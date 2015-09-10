@@ -32,6 +32,7 @@ Type TWorldTime {_exposeToLua="selected"}
 	Global _instance:TWorldTime
 
 	Const DAYLENGTH:int      = 86400
+	Const HOURLENGTH:int     = 3600
 	Const DAYPHASE_DAWN:int	 = 0
 	Const DAYPHASE_DAY:int	 = 1
 	Const DAYPHASE_DUSK:int	 = 2

@@ -1,13 +1,14 @@
 SuperStrict
 Import "game.gameobject.bmx"
-Import "game.gameobject.effect.bmx"
+Import "game.modifier.base.bmx"
 Import "game.broadcastmaterial.base.bmx"
 
 
 'could be done as "interface"
 Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="selected"}
+	'contains "numeric" modifiers (simple key:num-pairs)
 	Field modifiers:TData = new TData
-	Field effects:TGameObjectEffectGroup = New TGameObjectEffectGroup
+	Field effects:TGameModifierGroup = New TGameModifierGroup
 	'how many times that source was broadcasted
 	'(per player, 0 = unknown - allows to adjust "before game start" value)
 	Field timesBroadcasted:int[] = [0]
@@ -153,10 +154,10 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 		local effectTrigger:string = effectData.GetString("trigger").ToLower()
 		if not effectName or not effectTrigger then return False
 
-		local effect:TGameObjectEffect = GameObjectEffectCreator.CreateEffect(effectName, effectData)
+		local effect:TGameModifierBase = GameModifierCreator.CreateModifier(effectName, effectData)
 		if not effect then return False
 
-		effects.AddEffect(effectTrigger, effect)
+		effects.AddEntry(effectTrigger, effect)
 		return True
 	End Method
 

@@ -220,7 +220,7 @@ Type TNewsAgency
 
 		'send out terrorist
 		if aggressionLevel = 4
-			local effect:TGameObjectEffect = new TGameObjectEffect
+			local effect:TGameModifierBase = new TGameModifierBase
 
 			effect.GetData().Add("figure", GetGame().terrorists[terroristGroup])
 			effect.GetData().AddNumber("group", terroristGroup)
@@ -230,11 +230,11 @@ Type TNewsAgency
 			else
 				effect.GetData().Add("room", GetRoomCollection().GetFirstByDetails("vrduban")) 'TODO: Hier müsste doch eigentlich das RoomBoard und die Position des Schildes abgefragt werden
 			endif
-			effect._customEffectFunc = TFigureTerrorist.SendFigureToRoom
+			effect._customRunFunc = TFigureTerrorist.SendFigureToRoom
 			'mark as a special effect so AI can categorize it accordingly
-			effect.setEffectType(TVTGameObjectEffect.TERRORIST_ATTACK)
+			effect.setModifierType(TVTGameModifierBase.TERRORIST_ATTACK)
 
-			NewsEvent.effects.AddEffect("happen", effect)
+			NewsEvent.effects.AddEntry("happen", effect)
 		endif
 
 		'send without delay!

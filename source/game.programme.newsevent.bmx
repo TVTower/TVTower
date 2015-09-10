@@ -442,7 +442,7 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 		'trigger happenEffects
 		local effectParams:TData = new TData.Add("source", self)
-		effects.RunEffects("happen", effectParams)
+		effects.Run("happen", effectParams)
 	End Method
 
 
@@ -457,12 +457,12 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		'finishBroadcast while this is called on beginBroadcast)
 		if GetTimesBroadcasted() = 0
 			if not _handledFirstTimeBroadcast
-				effects.RunEffects("broadcastFirstTime", effectParams)
+				effects.Run("broadcastFirstTime", effectParams)
 				_handledFirstTimeBroadcast = True
 			endif
 		endif
 
-		effects.RunEffects("broadcast", effectParams)
+		effects.Run("broadcast", effectParams)
 	End Method
 
 
@@ -545,7 +545,7 @@ End Type
 
 
 
-Type TNewsEffect_TriggerNews extends TGameObjectEffect
+Type TGameModifierNews_TriggerNews extends TGameModifierBase
 	Field triggerNewsGUID:string
 	'params for time generation  [A,B,C,D]
 	Field happenTimeData:int[]	= [8,16,0,0]
@@ -557,7 +557,7 @@ Type TNewsEffect_TriggerNews extends TGameObjectEffect
 	Field happenTimeType:int = 4
 
 
-	Function CreateFromData:TNewsEffect_TriggerNews(data:TData)
+	Function CreateFromData:TGameModifierNews_TriggerNews(data:TData)
 		if not data then return null
 
 		'local source:TNewsEvent = TNewsEvent(data.get("source"))
@@ -572,19 +572,19 @@ Type TNewsEffect_TriggerNews extends TGameObjectEffect
 
 		if triggerGUID = "" then return Null
 
-		return new TNewsEffect_TriggerNews.Init( triggerGUID, happenTimeType, happenTimeData )
+		return new TGameModifierNews_TriggerNews.Init( triggerGUID, happenTimeType, happenTimeData )
 	End Function
 
 
 	
 	Method ToString:string()
 		local name:string = data.GetString("name", "default")
-		return "TNewsEffect_TriggerNews ("+name+")"
+		return "TGameModifier_TriggerNews ("+name+")"
 	End Method
 
 
 	'default params trigger the news 5 hours after the triggering one
-	Method Init:TNewsEffect_TriggerNews(triggerNewsGUID:string, happentimeType:int = -1, happenTimeData:int[] = null)
+	Method Init:TGameModifierNews_TriggerNews(triggerNewsGUID:string, happentimeType:int = -1, happenTimeData:int[] = null)
 		self.triggerNewsGUID = triggerNewsGUID
 		if happenTimeType > 0
 			self.happenTimeType = happenTimeType
@@ -630,11 +630,11 @@ Type TNewsEffect_TriggerNews extends TGameObjectEffect
 	
 
 	'override to trigger a specific news
-	Method EffectFunc:int(params:TData)
+	Method RunFunc:int(params:TData)
 		'set the happenedTime of the defined news to somewhere in the future
 		local news:TNewsEvent = GetNewsEventCollection().GetByGUID(triggerNewsGUID)
 		if not news
-			TLogger.Log("TNewsEffect_TriggerNews", "cannot find news to trigger: "+triggerNewsGUID, LOG_ERROR)
+			TLogger.Log("TGameModifierNews_TriggerNews", "cannot find news to trigger: "+triggerNewsGUID, LOG_ERROR)
 			return false
 		endif
 		GetNewsEventCollection().setNewsHappened(news, GetHappenTime())
@@ -644,4 +644,38 @@ Type TNewsEffect_TriggerNews extends TGameObjectEffect
 End Type
 
 
-GameObjectEffectCreator.RegisterEffect("triggerNews", new TNewsEffect_TriggerNews)
+
+
+Type TGameModifierNews_ModifyAvailability extends TGameModifierBase
+	Field newsGUID:string
+	Field enableBackup:int = True
+	Field enable:int = True
+
+	Function CreateFromData:TGameModifierNews_ModifyAvailability(data:TData)
+		if not data then return null
+
+		'local source:TNewsEvent = TNewsEvent(data.get("source"))
+		local modifier:TGameModifierNews_ModifyAvailability = new TGameModifierNews_ModifyAvailability 
+		modifier.newsGUID = data.GetString("parameter1", "")
+		modifier.enable = data.GetBool("parameter2", True)
+
+		return modifier
+	End Function
+
+
+	'override
+	Method UndoFunc:int()
+		'set backup
+	End Method
+
+
+	'override to trigger a specific news
+	Method RunFunc:int(params:TData)
+'		enableBackup = ...
+'		enable = ...
+	End Method
+End Type
+	
+
+GameModifierCreator.RegisterModifier("TriggerNews", new TGameModifierNews_TriggerNews)
+GameModifierCreator.RegisterModifier("ModifyNewsAvailability", new TGameModifierNews_ModifyAvailability)

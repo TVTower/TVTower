@@ -1772,9 +1772,9 @@ Type TFigureDeliveryBoy Extends TFigure
 
 
 	'used in news effect function
-	Function SendFigureToRoom(data:TData, params:TData)
-		Local figure:TFigureDeliveryBoy = TFigureDeliveryBoy(data.Get("figure"))
-		Local room:TRoomBase = TRoomBase(data.Get("room"))
+	Function SendFigureToRoom(source:TGameModifierBase, params:TData)
+		Local figure:TFigureDeliveryBoy = TFigureDeliveryBoy(source.GetData().Get("figure"))
+		Local room:TRoomBase = TRoomBase(source.GetData().Get("room"))
 		If Not figure Or Not room Then Return
 
 		figure.SetDeliverToRoom(room)
