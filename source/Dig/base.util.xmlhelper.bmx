@@ -37,6 +37,7 @@ SuperStrict
 Import Brl.Standardio
 Import "external/libxml/libxml.bmx"
 Import "base.util.data.bmx"
+Import "base.util.string.bmx"
 Import Brl.Retro 'for filesize
 
 
@@ -102,7 +103,7 @@ Type TXmlHelper
 	End Method
 
 
-	Function findAttribute:String(node:TxmlNode, attributeName:String, defaultValue:String)
+	Function FindAttribute:String(node:TxmlNode, attributeName:String, defaultValue:String)
 		If HasAttribute(node, attributeName) Then Return GetAttribute(node, attributeName) Else Return defaultValue
 	End Function
 
@@ -143,7 +144,38 @@ Type TXmlHelper
 		Next
 		return data
 	End Function
+	
 
+	'loads values of a node into a tdata object
+	Function LoadAllValuesToData:TData(node:TXmlNode, data:TData, ignoreNames:String[] = null)
+		if not node then return data
+
+
+		'=== ATTRIBUTES ===
+		Local att:TList = node.GetAttributeList()
+		For Local attribute:TxmlBase = EachIn att
+			if StringHelper.InArray(attribute.GetName(), ignoreNames, False) then continue
+
+			data.Add(attribute.GetName().toLower(), node.GetAttribute(attribute.GetName()))
+		Next
+
+
+		'=== CHILD ELEMENTS ===
+		For Local subNode:TxmlNode = EachIn GetNodeChildElements(node)
+			if StringHelper.InArray(subNode.GetName(), ignoreNames, False) then continue
+
+			If subNode.getName().ToLower() = "data"
+				local subData:TData = new TData
+				LoadAllValuesToData(subNode, subData, ignoreNames)
+				data.Add("data", subData)
+			endif
+
+			data.Add(subNode.getName().ToLower(), subNode.getContent())
+		Next
+
+		return data
+	End Function
+	
 
 	'search for an attribute
 	'(compared to node.HasAttribute() this is NOT case sensitive!)

@@ -226,6 +226,11 @@ Type TData
 	End Method
 
 
+	Method Has:int(key:string)
+		return data.Contains(key)
+	End Method
+	
+
 	Method Get:object(key:string, defaultValue:object=null)
 		'only react if the "::" is in the middle of something
 		if key.Find("::") > 0

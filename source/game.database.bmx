@@ -1108,11 +1108,23 @@ endif
 			If nodeEffect.getName() <> "effect" then continue
 
 			local effectData:TData = new TData
+			rem
+			'old approach: load only defined ones
 			xml.LoadValuesToData(nodeEffect, effectData, [..
 				"trigger", "type", ..
+				"probability", ..
 				"parameter1", "parameter2", "parameter3", "parameter4", "parameter5", ..
 				"trigger_parameter1", "trigger_parameter2", "trigger_parameter3", "trigger_parameter4", "trigger_parameter5" ..
 			])
+			endrem
+			'new approach: load every thing and let the effect
+			'              decide whether something is missing
+			xml.LoadAllValuesToData(nodeEffect, effectData)
+			'check if the effect has all needed configurations
+			For local f:string = EachIn ["trigger", "type"]
+				if not effectData.Has(f) then ThrowNodeError("DB: <effects> is missing ~q" + f+"~q.", nodeEffect)
+			Next
+
 			source.AddEffectByData(effectData)
 		Next
 	End Method
@@ -1125,10 +1137,14 @@ endif
 		For local nodeModifier:TxmlNode = EachIn xml.GetNodeChildElements(nodeModifiers)
 			If nodeModifier.getName() <> "modifier" then continue
 
-			local modKey:string = xml.FindValue(nodeModifier, "name", "mod")
-			local modValue:Float = xml.FindValueFloat(nodeModifier, "value", source.GetModifier(modKey))
+			local modifierData:TData = new TData
+			xml.LoadAllValuesToData(nodeModifier, modifierData)
+			'check if the modifier has all needed definitions
+			For local f:string = EachIn ["name", "value"]
+				if not modifierData.Has(f) then ThrowNodeError("DB: <modifier> is missing ~q" + f+"~q.", nodeModifier)
+			Next
 
-			source.SetModifier(modKey, modValue)
+			source.SetModifier(modifierData.GetString("name"), modifierData.GetFloat("value"))
 		Next
 	End Method
 
@@ -1199,7 +1215,20 @@ endif
 		endif
 		return data
 	End Method
-	
+
+
+
+	Method ThrowNodeError(err:string, node:TxmlNode)
+		local error:string
+		error :+ "ERROR~n"
+		error :+ err + "~n"
+		error :+ "File: ~q" + config.GetString("currentFileURI") + "~q  Line:" + node.getLineNumber() +" ~n"
+		error :+ "- - - -~n"
+		error :+ node.ToString()+"~n"
+		error :+ "- - - -~n"
+		Throw(error)
+	End Method
+
 
 	Function convertV2genreToV3:int(data:TProgrammeData)
 		Select data.genre

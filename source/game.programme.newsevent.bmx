@@ -437,7 +437,6 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		GetNewsEventCollection().setNewsHappened(self, time)
 
 		if time = 0 or time <= GetWorldTime().GetTimeGone()
-print "happen: "+ GetTitle() +"  " + GetWorldTime().GetFormattedTime()
 			'set topicality to 100%
 			topicality = 1.0
 
@@ -559,24 +558,20 @@ Type TGameModifierNews_TriggerNews extends TGameModifierBase
 		local triggerNewsGUID:string = data.GetString("parameter1", "")
 		if triggerNewsGUID = "" then return Null
 
-		local happenTimeType:int = data.GetInt("parameter2", -1)
-		local happenTimeData:int[] = [..
-			data.GetInt("parameter3", -1), ..
-			data.GetInt("parameter4", -1), ..
-			data.GetInt("parameter5", -1), ..
-			data.GetInt("parameter6", -1) ..
-		]
+		local happenTime:int[] = StringHelper.StringToIntArray(data.GetString("parameter2", ""), ",")
 
 
 
 		local obj:TGameModifierNews_TriggerNews = new TGameModifierNews_TriggerNews
 		obj.triggerNewsGUID = triggerNewsGUID
-		'obj.timeFrame.SetTimeBegin_Auto(-1)
-		if happenTimeType <> -1
-			obj.happenTimeType = happenTimeType
-			obj.happenTimeData = happenTimeData
+
+		if happenTime.length >= 2 and happenTime[0] <> -1
+			obj.happenTimeType = happenTime[0]
+			obj.happenTimeData = [-1,-1,-1,-1]
+			for local i:int = 1 until happenTime.length
+				obj.happenTimeData[i-1] = happenTime[i]
+			Next
 		endif
-	
 
 		return obj
 	End Function
@@ -599,7 +594,7 @@ Type TGameModifierNews_TriggerNews extends TGameModifierBase
 		endif
 		local triggerTime:Long = TGameModifierTimeFrame.CalcTime_Auto(happenTimeType, happenTimeData)
 		GetNewsEventCollection().setNewsHappened(news, triggerTime)
-print "triggere News:" + news.GetTitle() +"  time:"+GetWorldTime().GetFormattedtime(triggerTime)
+
 		return True
 	End Method
 End Type
