@@ -599,6 +599,34 @@ Grandioses Finale.</de>
 				following news (follow up) = 2
 
 				News vom Typ 1 und 2 werden nicht per "Zufall" ausgeloest
+
+				Diese News hat den Effekt "TriggerNewsChoice", das bedeutet,
+				eine der dort aufgelisteten Nachrichten wird zufaellig ausgewaehlt
+
+
+				time (a,B,C,D,E)
+				a = Zeittyp
+					1 = "B"-"C" Stunden von jetzt
+					2 = "B"-"C" Tage von jetzt um "D":00 - "E":00 Uhr
+
+				hier ist es time="1,4,8", also kommt die Folgenachricht
+				nach 4-8 Stunden
+
+				choose ("or" oder "and"):
+				Gibt an, ob alle "newsX" ausgeloest werden - oder nur eine
+				einzige der moeglichen Folgenews
+				Natuerlich nur, wenn "probability" erreicht wird - also
+				alle unter gleicher Bedingung, im Gegensatz zu
+				individuellen Triggern - mit ihren eigenen Wahrscheinlich-
+				keiten)
+
+				probability:
+				die Wahrscheinlichkeit, dass ueberhaupt eine der
+				Folgenachrichten ausgewaehlt wird
+
+				newsX + probabilityX:
+				Folgenachricht und ihre Wahrscheinlichkeit im Falle einer
+				"oder"-Verknuepfung          
 		-->
 		<news id="ronny-news-spitzel-01" type="0" creator="5578" created_by="Ronny">
 			<title>
@@ -610,20 +638,34 @@ Grandioses Finale.</de>
 				<en>On the toilet of the German Bundestag a conversation between two unnamed politicians was recorded. Audio apparently iscensored as whistling and hissing noises overlap the conversation.</en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" parameter1="ronny-news-spitzel-02" />
+				<effect trigger="happen" type="triggernewschoice" choose="or" probability="50" time="1,4,8"
+					news1="ronny-news-spitzel-02a" probability1="60"
+					news2="ronny-news-spitzel-02b" probability2="40"
+				/>
 			</effects>
 			<data genre="0" price="1.10" quality="28" />
 		</news>
-		<news id="ronny-news-spitzel-02" type="2" creator="5578" created_by="Ronny">
+		<news id="ronny-news-spitzel-02a" type="2" creator="5578" created_by="Ronny">
 			<title>
 				<de>Spitzelaffäre - Zensur herausgefiltert</de>
 				<en>Snooping scandal - censorship filtered out</en>
 			</title>
 			<description>
-				<de>Das Audiomaterial des Toilettenmitschnitts konnte bereinigt werden. Über die kodierte Frage &quot;Hast Du mal noch Papier?&quot; rätseln Experten.</de>
-				<en>The audio of the live recording on the toilet-talk could get filtered. Experts still puzzle about the encrypted question: &quot;Do you have again some paper?&quot;.</en>
+				<de>Das Audiomaterial des Toilettenmitschnitts konnte bereinigt werden. Über die kodierte Frage „Hast Du mal noch Papier?“ rätseln Experten.</de>
+				<en>The audio of the live recording on the toilet-talk could get filtered. Experts still puzzle about the encrypted question: "Do you have again some paper?".</en>
 			</description>
 			<data genre="0" price="1.15" quality="24" />
+		</news>
+		<news id="ronny-news-spitzel-02b" type="2" creator="5578" created_by="Ronny">
+			<title>
+				<de>Spitzelaffäre - Experten uneinig</de>
+				<en>Snooping scandal - experts discordant</en>
+			</title>
+			<description>
+				<de>Verschiedene Experten haben das Audiomaterial analysiert. Die Ergebnisse sind strittig: ging es um Atompolitik oder doch nur schnöden Smalltalk?</de>
+				<en>Various experts have analyzed the audio recording. The results are controversial: was it about nuclear policy or just disdainful smalltalk?</en>
+			</description>
+			<data genre="0" price="1.05" quality="20" />
 		</news>
 	</allnews>
 </tvgdb>

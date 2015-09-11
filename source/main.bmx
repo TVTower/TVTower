@@ -559,6 +559,7 @@ endrem
 
 '						RoomHandler_MovieAgency.GetInstance().RefillBlocks(true, 0.9)
 
+
 'dubletten
 local duplicateCount:int = 0
 local arr:TProgrammeLicence[] = TProgrammeLicence[] (GetProgrammeLicenceCollection().licences.ToArray())
@@ -631,6 +632,9 @@ For local playerID:int = 1 to 4
 	Next
 Next
 
+local news:TNewsEvent = GetNewsEventCollection().GetByGUID("ronny-news-spitzel-01")
+GetNewsAgency().announceNewsEvent(news, 0, False)
+print "happen: "+ news.GetTitle() + "  at: "+GetWorldTime().GetformattedTime(news.happenedTime)
 
 					EndIf
 

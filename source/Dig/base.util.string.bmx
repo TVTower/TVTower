@@ -410,6 +410,8 @@ Type StringHelper
 
 
 	Function StringToIntArray:int[](s:string, delim:string=",")
+		if s.length = 0 then return new Int[0]
+		
 		local sArray:string[] = s.split(delim)
 		local a:int[ sArray.length ]
 		For local i:int = 0 until a.length

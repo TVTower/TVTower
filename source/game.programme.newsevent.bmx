@@ -432,6 +432,8 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	End Method
 
 
+	'ATTENTION:
+	'to emit an artificial news, use GetNewsAgency().announceNewsEvent()
 	Method doHappen(time:Long = 0)
 		'set happened time, add to collection list...
 		GetNewsEventCollection().setNewsHappened(self, time)
@@ -550,22 +552,37 @@ Type TGameModifierNews_TriggerNews extends TGameModifierBase
 	Field triggerNewsGUID:string
 	Field happenTimeType:int = 1
 	Field happenTimeData:int[] = [8,16,0,0]
+	'% chance to trigger the news when "RunFunc()" is called
+	Field triggerProbability:Int = 100
+	
 
 	Function CreateFromData:TGameModifierNews_TriggerNews(data:TData)
+		return CreateIndexedFromData(data, "")
+	End Function
+
+
+	Function CreateIndexedFromData:TGameModifierNews_TriggerNews(data:TData, index:string="")
 		if not data then return null
 
 		'local source:TNewsEvent = TNewsEvent(data.get("source"))
-		local triggerNewsGUID:string = data.GetString("parameter1", "")
+		local triggerNewsGUID:string = data.GetString("news"+index, data.GetString("news", ""))
 		if triggerNewsGUID = "" then return Null
 
-		local happenTime:int[] = StringHelper.StringToIntArray(data.GetString("parameter2", ""), ",")
-
-
+		local happenTimeString:string = data.GetString("time"+index, data.GetString("time", ""))
+		local happenTime:int[]
+		if happenTimeString <> "" 
+			happenTime = StringHelper.StringToIntArray(happenTimeString, ",")
+		else
+			happenTime = [1, 8,16,0,0]
+		endif
+		local triggerProbability:int = data.GetInt("probability"+index, 100)
 
 		local obj:TGameModifierNews_TriggerNews = new TGameModifierNews_TriggerNews
 		obj.triggerNewsGUID = triggerNewsGUID
+		obj.triggerProbability = triggerProbability
 
-		if happenTime.length >= 2 and happenTime[0] <> -1
+
+		if happenTime.length > 0 and happenTime[0] <> -1
 			obj.happenTimeType = happenTime[0]
 			obj.happenTimeData = [-1,-1,-1,-1]
 			for local i:int = 1 until happenTime.length
@@ -575,7 +592,7 @@ Type TGameModifierNews_TriggerNews extends TGameModifierBase
 
 		return obj
 	End Function
-
+	
 	
 	Method ToString:string()
 		local name:string = data.GetString("name", "default")
@@ -586,6 +603,9 @@ Type TGameModifierNews_TriggerNews extends TGameModifierBase
 
 	'override to trigger a specific news
 	Method RunFunc:int(params:TData)
+		'skip if probability is missed
+		if triggerProbability <> 100 and RandRange(0, 100) > triggerProbability then return False
+
 		'set the happenedTime of the defined news to somewhere in the future
 		local news:TNewsEvent = GetNewsEventCollection().GetByGUID(triggerNewsGUID)
 		if not news
@@ -602,6 +622,77 @@ End Type
 
 
 
+'grouping various news triggers and triggering "all" or "one"
+'of them
+Type TGameModifierNews_TriggerNewsChoice extends TGameModifierNews_TriggerNews
+	Field modifiers:TGameModifierNews_TriggerNews[]
+	Field modifiersProbability:int[]
+	'how child elements are choosen: "or" or "and" ?
+	Field chooseType:string = 1
+
+	Const CHOOSETYPE_OR:int = 0
+	Const CHOOSETYPE_AND:int = 1
+
+
+	Function CreateFromData:TGameModifierNews_TriggerNewsChoice(data:TData)
+		'load defaults
+		local template:TGameModifierNews_TriggerNews = Super.CreateFromData(data)
+		if not template then template = new TGameModifierNews_TriggerNews
+
+		local obj:TGameModifierNews_TriggerNewsChoice = new TGameModifierNews_TriggerNewsChoice
+		obj.triggerNewsGUID = template.triggerNewsGUID
+		obj.triggerProbability = template.triggerProbability
+		obj.happenTimeType = template.happenTimeType
+		obj.happenTimeData = template.happenTimeData
+		if data.GetString("choose").ToLower() = "or"
+			obj.chooseType = CHOOSETYPE_OR
+		else
+			obj.chooseType = CHOOSETYPE_AND
+		endif
+
+
+		'load children
+		local childIndex:int = 0 
+		local child:TGameModifierNews_TriggerNews
+		Repeat
+			childIndex :+1
+			child = CreateIndexedFromData(data, childIndex)
+			if child
+				obj.modifiers :+ [child]
+				obj.modifiersProbability :+ [child.triggerProbability]
+				'reset individual probability to 100%
+				child.triggerProbability = 100
+			endif
+		Until not child
+
+		return obj
+	End Function
+	
+
+	'override to trigger a specific news
+	Method RunFunc:int(params:TData)
+		'skip if probability is missed
+		if triggerProbability <> 100 and RandRange(0, 100) > triggerProbability then return False
+		if choosetype = CHOOSETYPE_OR
+			'loop through all options and choose the one with the
+			'probability below choosen one
+			local randValue:int = RandRange(0,100)
+			For local i:int = 0 until modifiers.length
+				'skip all failed - except last (to trigger at least one)
+				if modifiers[i].triggerProbability > randValue and i <> modifiers.length -1 then continue
+				modifiers[i].RunFunc(params)
+			Next
+		else
+			For local m:TGameModifierNews_TriggerNews = Eachin modifiers
+				m.RunFunc(params)
+			Next
+		endif
+	End Method
+End Type
+
+
+
+
 Type TGameModifierNews_ModifyAvailability extends TGameModifierBase
 	Field newsGUID:string
 	Field enableBackup:int = True
@@ -612,8 +703,8 @@ Type TGameModifierNews_ModifyAvailability extends TGameModifierBase
 
 		'local source:TNewsEvent = TNewsEvent(data.get("source"))
 		local modifier:TGameModifierNews_ModifyAvailability = new TGameModifierNews_ModifyAvailability 
-		modifier.newsGUID = data.GetString("parameter1", "")
-		modifier.enable = data.GetBool("parameter2", True)
+		modifier.newsGUID = data.GetString("news", "")
+		modifier.enable = data.GetBool("enable", True)
 
 		return modifier
 	End Function
@@ -634,4 +725,5 @@ End Type
 	
 
 GameModifierCreator.RegisterModifier("TriggerNews", new TGameModifierNews_TriggerNews)
+GameModifierCreator.RegisterModifier("TriggerNewsChoice", new TGameModifierNews_TriggerNewsChoice)
 GameModifierCreator.RegisterModifier("ModifyNewsAvailability", new TGameModifierNews_ModifyAvailability)

@@ -146,7 +146,7 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	'effectData should be consisting of:
 	'trigger = "broadcast", "firstbroadcast", "happen"...
 	'type = "triggernews" (the key under which the desired effect was registered)
-	'parameter1-5
+	'news-5
 	Method AddEffectByData:int(effectData:TData)
 		if not effectData then return False
 
