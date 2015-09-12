@@ -4,7 +4,7 @@ Import "game.popularity.bmx"
 
 
 Type TGenrePopularity Extends TPopularity
-	Function Create:TGenrePopularity(contentId:Int, popularity:Float = 0.0, longTermPopularity:Float = 0.0)
+	Function Create:TGenrePopularity(referenceGUID:string, popularity:Float = 0.0, longTermPopularity:Float = 0.0)
 		Local obj:TGenrePopularity = New TGenrePopularity
 
 		obj.LongTermPopularityLowerBound		= -50
@@ -28,7 +28,7 @@ Type TGenrePopularity Extends TPopularity
 		obj.ChangeLowerBound					= -35
 		obj.ChangeUpperBound					= 35
 
-		obj.ContentId = contentId
+		obj.referenceGUID = referenceGUID
 		obj.SetPopularity(popularity)
 		obj.SetLongTermPopularity(longTermPopularity)
 		'obj.LogFile = TLogFile.Create("GenrePopularity Log", "GenrePopularityLog" + contentId + ".txt")
@@ -39,7 +39,8 @@ Type TGenrePopularity Extends TPopularity
 
 	'a programme just finished airing
 	Method FinishBroadcastingProgramme(data:TData, blocks:Int)
-		Local quality:Float = data.GetInt("attractionQuality", 0)
+		Local quality:Float = data.GetFloat("attractionQuality", 0)
+		'scale audiencefactor (decrease total number by *0.75)
 		Local audienceFactor:Float = data.GetInt("audienceSum", 0) / (data.GetInt("broadcastTopAudience", 1) * 0.75)
 		audienceFactor = Min(Max(audienceFactor, 0.1), 1)
 
@@ -54,6 +55,29 @@ Type TGenrePopularity Extends TPopularity
 		changeVal = Min(Max(changeVal, 0.25), 1.5)
 
 		ChangeTrend(changeVal)
-		'Print "BroadcastedProgramme: Change Trend '" + GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(audienceResult.AudienceAttraction.Genre)) + "': " + changeVal
+		'Print "BroadcastedProgramme: Change Trend '" + referenceGUID + "': " + changeVal +". New Trend: "+ Popularity
+	End Method
+
+
+	'a programme just finished airing
+	Method FinishBroadcastingNews(data:TData, newsSlot:Int)
+		'scale audiencefactor (decrease total number by *0.75)
+		Local quality:Float = data.GetFloat("attractionQuality", 0)
+		Local audienceFactor:Float = data.GetInt("audienceSum", 0) / (data.GetInt("broadcastTopAudience", 1) * 0.75)
+		audienceFactor = Min(Max(audienceFactor, 0.1), 1)
+
+		Local changeVal:Float = quality * audienceFactor
+
+		'each news slot has less influence to the trends
+		select newsSlot
+			case 1	changeVal :* 0.6
+			case 2	changeVal :* 0.4
+			case 3	changeVal :* 0.2
+		end select
+
+		changeVal = Min(Max(changeVal, 0.25), 1.5)
+
+		ChangeTrend(changeVal)
+		'Print "BroadcastedNews: Change Trend '" + referenceGUID + "': " + changeVal +"  newsSlot:"+newsSlot +". New Trend: "+ Popularity
 	End Method
 End Type

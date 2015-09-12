@@ -699,7 +699,7 @@ Type TBroadcastFeedback
 			if material Then
 				Local genreDefinition:TGenreDefinitionBase = material.GetGenreDefinition()
 				If genreDefinition Then
-					Local popularityValue:Float = genreDefinition.Popularity.Popularity
+					Local popularityValue:Float = genreDefinition.GetPopularity().Popularity
 					If (popularityValue < -35) Then
 						AddFeedbackStatement(8, POPULARITY, -2)
 					ElseIf (popularityValue < -10) Then

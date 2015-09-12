@@ -228,7 +228,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	'default implementation	
 	Method GenrePopularityMod:Float(genreDefinition:TGenreDefinitionBase)
 		'Popularity => Wert zwischen -50 und +50
-		Return Max(-0.5, Min(0.5, genreDefinition.Popularity.Popularity / 100))
+		Return Max(-0.5, Min(0.5, genreDefinition.GetPopularity().Popularity / 100))
 	End Method
 
 	
@@ -244,7 +244,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	'default implementation	
 	Method FlagPopularityMod:Float(definition:TGenreDefinitionBase)
 		'Popularity => Wert zwischen -50 und +50
-		Return Max(-0.5, Min(0.5, definition.Popularity.Popularity / 100))
+		Return Max(-0.5, Min(0.5, definition.GetPopularity().Popularity / 100))
 	End Method
 
 	
@@ -393,6 +393,11 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 			'movie-attraction-data ... if done on "reference base" keep
 			'paying attention to this when modifying the attraction
 			result.CopyBaseAttractionFrom(lastMovieBlockAttraction)
+
+			if usedAsType = TVTBroadcastMaterialType.NEWS
+				'modify this by genre popularity
+				result.MiscMod.Multiply(GetMiscMod(hour))
+			endif
 		Endif
 
 		'7 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten

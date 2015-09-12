@@ -556,12 +556,7 @@ Type TGameModifierNews_TriggerNews extends TGameModifierBase
 	Field triggerProbability:Int = 100
 	
 
-	Function CreateFromData:TGameModifierNews_TriggerNews(data:TData)
-		return CreateIndexedFromData(data, "")
-	End Function
-
-
-	Function CreateIndexedFromData:TGameModifierNews_TriggerNews(data:TData, index:string="")
+	Function CreateFromData:TGameModifierNews_TriggerNews(data:TData, index:string="")
 		if not data then return null
 
 		'local source:TNewsEvent = TNewsEvent(data.get("source"))
@@ -624,69 +619,45 @@ End Type
 
 'grouping various news triggers and triggering "all" or "one"
 'of them
-Type TGameModifierNews_TriggerNewsChoice extends TGameModifierNews_TriggerNews
-	Field modifiers:TGameModifierNews_TriggerNews[]
-	Field modifiersProbability:int[]
-	'how child elements are choosen: "or" or "and" ?
-	Field chooseType:string = 1
-
-	Const CHOOSETYPE_OR:int = 0
-	Const CHOOSETYPE_AND:int = 1
+Type TGameModifierNews_TriggerNewsChoice extends TGameModifierChoice
+	'% chance to trigger the news when "RunFunc()" is called
+	Field triggerProbability:Int = 100
 
 
-	Function CreateFromData:TGameModifierNews_TriggerNewsChoice(data:TData)
-		'load defaults
-		local template:TGameModifierNews_TriggerNews = Super.CreateFromData(data)
-		if not template then template = new TGameModifierNews_TriggerNews
-
-		local obj:TGameModifierNews_TriggerNewsChoice = new TGameModifierNews_TriggerNewsChoice
-		obj.triggerNewsGUID = template.triggerNewsGUID
-		obj.triggerProbability = template.triggerProbability
-		obj.happenTimeType = template.happenTimeType
-		obj.happenTimeData = template.happenTimeData
-		if data.GetString("choose").ToLower() = "or"
-			obj.chooseType = CHOOSETYPE_OR
-		else
-			obj.chooseType = CHOOSETYPE_AND
-		endif
-
-
-		'load children
-		local childIndex:int = 0 
-		local child:TGameModifierNews_TriggerNews
-		Repeat
-			childIndex :+1
-			child = CreateIndexedFromData(data, childIndex)
-			if child
-				obj.modifiers :+ [child]
-				obj.modifiersProbability :+ [child.triggerProbability]
-				'reset individual probability to 100%
-				child.triggerProbability = 100
-			endif
-		Until not child
-
-		return obj
+	'override to create this type instead of the generic one
+	Function CreateNewInstance:TGameModifierNews_TriggerNewsChoice()
+		return new TGameModifierNews_TriggerNewsChoice
 	End Function
 	
 
-	'override to trigger a specific news
+	'override to care for triggerProbability
+	Method CustomCreateFromData(data:TData, index:string)
+		Super.CustomCreateFromData(data, index)
+
+		'load defaults
+		local template:TGameModifierNews_TriggerNews = TGameModifierNews_TriggerNews.CreateFromData(data)
+		if not template then template = new TGameModifierNews_TriggerNews
+
+		triggerProbability = template.triggerProbability
+
+		'correct individual probability of the loaded choices
+		for local i:int = 0 until modifiers.length
+			local triggerModifier:TGameModifierNews_TriggerNews = TGameModifierNews_TriggerNews(modifiers[i])
+			if not triggerModifier then continue
+			modifiersProbability[i] = triggerModifier.triggerProbability
+			'reset individual probability to 100%
+			triggerModifier.triggerProbability = 100
+		Next
+	End Method
+	
+
+	'override to trigger a specific news only if general probability
+	'was met
 	Method RunFunc:int(params:TData)
 		'skip if probability is missed
 		if triggerProbability <> 100 and RandRange(0, 100) > triggerProbability then return False
-		if choosetype = CHOOSETYPE_OR
-			'loop through all options and choose the one with the
-			'probability below choosen one
-			local randValue:int = RandRange(0,100)
-			For local i:int = 0 until modifiers.length
-				'skip all failed - except last (to trigger at least one)
-				if modifiers[i].triggerProbability > randValue and i <> modifiers.length -1 then continue
-				modifiers[i].RunFunc(params)
-			Next
-		else
-			For local m:TGameModifierNews_TriggerNews = Eachin modifiers
-				m.RunFunc(params)
-			Next
-		endif
+
+		return Super.RunFunc(params)
 	End Method
 End Type
 
@@ -698,7 +669,7 @@ Type TGameModifierNews_ModifyAvailability extends TGameModifierBase
 	Field enableBackup:int = True
 	Field enable:int = True
 
-	Function CreateFromData:TGameModifierNews_ModifyAvailability(data:TData)
+	Function CreateFromData:TGameModifierNews_ModifyAvailability(data:TData, index:string="")
 		if not data then return null
 
 		'local source:TNewsEvent = TNewsEvent(data.get("source"))

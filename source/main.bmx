@@ -632,9 +632,23 @@ For local playerID:int = 1 to 4
 	Next
 Next
 
-local news:TNewsEvent = GetNewsEventCollection().GetByGUID("ronny-news-spitzel-01")
+'rem
+local news:TNewsEvent = GetNewsEventCollection().GetByGUID("ronny-news-sandsturm-01")
 GetNewsAgency().announceNewsEvent(news, 0, False)
 print "happen: "+ news.GetTitle() + "  at: "+GetWorldTime().GetformattedTime(news.happenedTime)
+'endrem
+
+rem
+local m:TProgrammeLicence
+m = GetProgrammeLicenceCollection().GetByGUID("TheRob-b0db-fant-ReisemitSandmaennchen")
+if m then print m.data.GetTitle()+"   Akt.:"+m.data.GetTopicality()+" / " + m.data.GetMaxTopicality() +"  old: " + m.data.GetMaxTopicality2()
+
+m = GetProgrammeLicenceCollection().GetByGUID("TheRob-b0db-myst-VerschwandmitSandmaennchen")
+if m then print m.data.GetTitle()+"   Akt.:"+m.data.GetTopicality()+" / " + m.data.GetMaxTopicality() +"  old: " + m.data.GetMaxTopicality2()
+
+m = GetProgrammeLicenceCollection().GetByGUID("c1ba65e2-12d2-489b-89dd-41ceff24d7e9")
+if m then print m.data.GetTitle()+"   Akt.:"+m.data.GetTopicality()+" / " + m.data.GetMaxTopicality() +"  old: " + m.data.GetMaxTopicality2()
+endrem
 
 					EndIf
 

@@ -1,24 +1,38 @@
 ﻿Import "game.broadcast.audience.bmx" 'has no other game dependencies
 Import "game.popularity.genre.bmx"
+Import "game.gameobject.bmx"
 
-Type TGenreDefinitionBase
+Type TGenreDefinitionBase extends TGameObject
 	Field referenceId:Int
 	Field AudienceAttraction:TAudience
-	Field Popularity:TGenrePopularity
 	Field TimeMods:Float[]
+	'cache popularity (possible because the genre exists the whole game)
+	Field _popularity:TPopularity {nosave}
+
+
+	'override
+	Method SetGUID:Int(GUID:String)
+		if GUID="" then GUID = GetGUIDBaseName()+"-"+id
+		self.GUID = GUID
+	End Method
+
+
+	Method GetGUIDBaseName:string()
+		return "genredefinitionbase"
+	End Method
 	
 
 	Method LoadFromMap(data:TMap)
 		local mapData:TData = new TData.Init(data.Copy())
-		referenceId = mapData.GetInt("id")
-
-		InitBasic(referenceId, mapData)
+		InitBasic(mapData.GetInt("id"), mapData)
 	End Method
 
 
 	Method InitBasic:TGenreDefinitionBase(referenceID:int, data:TData = null)
 		if not data then data = new TData
-		self.referenceId = referenceID
+
+		SetGUID(GetGUIDBaseName() +"-"+ referenceID)
+		self.referenceID = referenceID
 
 		TimeMods = TimeMods[..24]
 		For Local i:Int = 0 To 23
@@ -37,14 +51,18 @@ Type TGenreDefinitionBase
 		AudienceAttraction.Men = data.GetFloat("Men", 0.5)
 
 		'if there was a popularity already, remove that first
-		if Popularity then GetPopularityManager().RemovePopularity(Popularity)
-
-		Popularity = TGenrePopularity.Create(referenceId, RandRange(-10, 10), RandRange(-25, 25))
+		local popularity:TGenrePopularity = TGenrePopularity.Create(GetGUID(), RandRange(-10, 10), RandRange(-25, 25))
 		GetPopularityManager().AddPopularity(Popularity) 'Zum Manager hinzufügen
 
 		return self
 	End Method
 
+
+	Method GetPopularity:TPopularity()
+		if not _popularity then _popularity = GetPopularityManager().GetByGUID(GetGUID())
+		return _popularity
+	End Method
+	
 
 	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase) Abstract
 	rem

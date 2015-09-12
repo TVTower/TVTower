@@ -80,7 +80,12 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 	Field GoodFollower:TList = CreateList()
 	Field BadFollower:TList = CreateList()
 
+	'override
+	Method GetGUIDBaseName:string()
+		return "movie-genre-definition"
+	End Method
 
+	
 	Method InitBasic:TMovieGenreDefinition(genreId:int, data:TData)
 		Super.InitBasic(genreId, data)
 
@@ -97,6 +102,11 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		'print "OutcomeMod: " + OutcomeMod + " | ReviewMod: " + ReviewMod + " | SpeedMod: " + SpeedMod
 
 		return self
+	End Method
+
+
+	Method GetPopularity:TGenrePopularity()
+		return TGenrePopularity(Super.GetPopularity())
 	End Method
 
 

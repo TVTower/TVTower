@@ -176,7 +176,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		CheckHourlyBroadcastingRevenue(audienceResult.audience)
 
 		'adjust trend/popularity
-		Local popularity:TGenrePopularity = data.GetGenreDefinition().Popularity
+		Local popularity:TGenrePopularity = data.GetGenreDefinition().GetPopularity()
 		local popData:TData = new TData
 		popData.AddNumber("attractionQuality", audienceResult.AudienceAttraction.Quality)
 		popData.AddNumber("audienceSum", audienceResult.Audience.GetSum())

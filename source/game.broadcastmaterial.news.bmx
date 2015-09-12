@@ -56,8 +56,28 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		Super.FinishBroadcasting(day, hour, minute, audienceData)
 
-		For local newsEntry:TBroadcastMaterial = EachIn news
+		'adjust topicality relative to possible audience 
+		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
+
+		local newsSlot:int 
+		for local i:int = 0 to 2
+			local newsEntry:TBroadcastMaterial = news[i]
+			if not newsEntry then continue
+
 			newsEntry.FinishBroadcasting(day, hour, minute, audienceData)
+
+			local news:TNews = TNews(newsEntry)
+			if news
+				'adjust trend/popularity
+				local popData:TData = new TData
+				popData.AddNumber("attractionQuality", audienceResult.AudienceAttraction.Quality)
+				popData.AddNumber("audienceSum", audienceResult.Audience.GetSum())
+				popData.AddNumber("broadcastTopAudience", GetBroadcastManager().GetCurrentBroadcast().GetTopAudience())
+
+				Local popularity:TGenrePopularity = news.newsEvent.GetGenreDefinition().GetPopularity()
+				popularity.FinishBroadcastingNews(popData, i+1)
+			endif
+
 		Next
 	End Method
 
@@ -322,6 +342,19 @@ rem
 		Return genreDefintion.CalculateAudienceAttraction(self, GetWorldTime().GetHour())
 	End Method
 endrem
+
+
+
+	Method GetMiscMod:TAudience(hour:Int)
+		Local result:TAudience = TAudience.CreateAndInitValue(0)
+
+		'for all associated genres
+		'- for now only the genre itself
+		result.AddFloat( FlagPopularityMod(newsEvent.GetGenreDefinition()) )
+
+		Return result
+	End Method
+	
 
 	Method GetQuality:Float() {_exposeToLua}
 		local quality:float = newsEvent.GetQuality()

@@ -52,6 +52,12 @@ End Function
 
 Type TNewsGenreDefinition Extends TGenreDefinitionBase
 
+	'override
+	Method GetGUIDBaseName:string()
+		return "news-genre-definition"
+	End Method
+
+
 	Method InitBasic:TNewsGenreDefinition(genreId:int, data:TData)
 		Super.InitBasic(genreId, data)
 
@@ -59,6 +65,11 @@ Type TNewsGenreDefinition Extends TGenreDefinitionBase
 	End Method
 
 
+	Method GetPopularity:TGenrePopularity()
+		return TGenrePopularity(Super.GetPopularity())
+	End Method
+
+rem
 	Method CalculateAudienceAttraction:TAudienceAttraction(news:TBroadcastMaterial, hour:Int, luckFactor:Int = 1)
 		Throw "TODO"
 		'Local result:TAudienceAttraction = Null
@@ -71,6 +82,7 @@ Type TNewsGenreDefinition Extends TGenreDefinitionBase
 
 		'Return result
 	End Method
+endrem
 
 	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase)
 		Return TAudience.CreateAndInitValue(1) 'TODO: Prüfen ob hier auch was zu machen ist?

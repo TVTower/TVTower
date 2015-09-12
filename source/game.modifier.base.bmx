@@ -24,7 +24,7 @@ Type TGameModifierBase
 
 
 	'function returning a _new_ effect initialized with the given data
-	Function CreateFromData:TGameModifierBase(data:TData)
+	Function CreateFromData:TGameModifierBase(data:TData, index:string="")
 		return new TGameModifierBase
 	End Function
 
@@ -245,8 +245,78 @@ Type TGameModifierGroup
 End Type
 
 
+'grouping various triggers and triggering "all" or "one"
+'of them
+Type TGameModifierChoice extends TGameModifierBase
+	Field modifiers:TGameModifierBase[]
+	Field modifiersProbability:int[]
+	'how child elements are choosen: "or" or "and" ?
+	Field chooseType:string = 1
+
+	Const CHOOSETYPE_OR:int = 0
+	Const CHOOSETYPE_AND:int = 1
 
 
+	Function CreateFromData:TGameModifierChoice(data:TData, index:string="")
+		if not data then return null
+
+		local obj:TGameModifierChoice = CreateNewInstance()
+
+		obj.CustomCreateFromData(data, index)
+
+		return obj
+	End Function
+
+
+	Function CreateNewInstance:TGameModifierChoice()
+		return new TGameModifierChoice
+	End Function
+
+
+	Method CustomCreateFromData(data:TData, index:string)
+		if data.GetString("choose").ToLower() = "or"
+			chooseType = CHOOSETYPE_OR
+		else
+			chooseType = CHOOSETYPE_AND
+		endif
+
+		LoadChoices()
+	End Method
+	
+
+	Method LoadChoices:int()
+		'load children
+		local childIndex:int = 0 
+		local child:TGameModifierBase
+		Repeat
+			childIndex :+1
+			child = CreateFromData(data, childIndex)
+			if child
+				self.modifiers :+ [child]
+			endif
+		Until not child
+	End Method
+
+
+	'override to trigger a specific news
+	Method RunFunc:int(params:TData)
+		if choosetype = CHOOSETYPE_OR
+			'loop through all options and choose the one with the
+			'probability below choosen one
+			local randValue:int = RandRange(0,100)
+			For local i:int = 0 until modifiers.length
+				'skip all failed - except last (to trigger at least one)
+				if modifiersProbability[i] > randValue and i <> modifiers.length -1 then continue
+
+				modifiers[i].RunFunc(params)
+			Next
+		else
+			For local m:TGameModifierBase = Eachin modifiers
+				m.RunFunc(params)
+			Next
+		endif
+	End Method
+End Type
 
 
 
@@ -257,7 +327,7 @@ Type TGameModifier_TimeLimited extends TGameModifierBase
 
 	
 	'function returning a _new_ modifier initialized with the given data
-	Function CreateFromData:TGameModifier_TimeLimited(data:TData)
+	Function CreateFromData:TGameModifier_TimeLimited(data:TData, index:string="")
 		return new TGameModifier_TimeLimited
 	End Function
 

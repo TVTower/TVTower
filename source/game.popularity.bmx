@@ -1,11 +1,11 @@
 Import Brl.LinkedList
 Import "Dig/base.util.event.bmx"
 Import "Dig/base.util.mersenne.bmx"
-
+Import "game.modifier.base.bmx"
 
 
 Type TPopularityManager
-	Field Popularities:TList = CreateList()
+	Field Popularities:TMap = CreateMap()
 	Field updateInterval:int = 720	'update every x minutes (720 = 12*60)
 	Field updateTimeLeft:int = 720	'time till next update (in game minutes)
 	Global _instance:TPopularityManager
@@ -19,22 +19,27 @@ Type TPopularityManager
 
 	Method Initialize:int()
 		'reset list
-		Popularities = CreateList()
+		Popularities = CreateMap()
 	End Method
 
 
-	'call this once a game minuted
+	Method GetByGUID:TPopularity(GUID:String)
+		Return TPopularity(Popularities.ValueForKey(GUID))
+	End Method
+
+
+	'call this once a game minute
 	Method Update:Int(triggerEvent:TEventBase)
 		updateTimeLeft :- 1
 		'do not update until interval is gone
 		if updateTimeLeft > 0 then return FALSE
 
 		'print "TPopularityManager: Updating popularities"
-		For Local popularity:TPopularity = EachIn Self.Popularities
+		For Local popularity:TPopularity = EachIn Self.Popularities.Values()
 			popularity.UpdatePopularity()
 			popularity.AdjustTrendDirectionRandomly()
 			popularity.UpdateTrend()
-			'print " - cId "+popularity.ContentId + ":  P: " + popularity.Popularity + " - L: " + popularity.LongTermPopularity + " - T: " + popularity.Trend + " - S: " + popularity.Surfeit
+			'print " - referenceGUID "+popularity.referenceGUID + ":  P: " + popularity.Popularity + " - L: " + popularity.LongTermPopularity + " - T: " + popularity.Trend + " - S: " + popularity.Surfeit
 		Next
 		'reset time till next update
 		updateTimeLeft = updateInterval
@@ -42,12 +47,12 @@ Type TPopularityManager
 
 
 	Method RemovePopularity(popularity:TPopularity)
-		Popularities.Remove(popularity)
+		Popularities.Remove(popularity.referenceGUID.ToLower())
 	End Method
 
 
 	Method AddPopularity(popularity:TPopularity)
-		Popularities.addLast(popularity)
+		Popularities.insert(popularity.referenceGUID.ToLower(), popularity)
 	End Method
 End Type
 
@@ -60,9 +65,9 @@ End Function
 
 
 Type TPopularity
-	Field ContentId:Int
+	Field referenceGUID:string
 	Field LongTermPopularity:Float				'Zu welchem Wert entwickelt sich die Popularität langfristig ohne den Spielereinfluss (-50 bis +50)
-	Field Popularity:Float						'Wie populär ist das Genre. Ein Wert üblicherweise zwischen -50 und +100 (es kann aber auch mehr oder weniger werden...)
+	Field Popularity:Float						'Wie populär ist das Element. Ein Wert üblicherweise zwischen -50 und +100 (es kann aber auch mehr oder weniger werden...)
 	Field Trend:Float							'Wie entwicklet sich die Popularität
 	Field Surfeit:Int							'1 = Übersättigung des Trends
 	Field SurfeitCounter:Int					'Wenn bei 3, dann ist er übersättigt
@@ -90,12 +95,12 @@ Type TPopularity
 
 	'Field LogFile:TLogFile
 
-	Function Create:TPopularity(contentId:Int, popularity:Float = 0.0, longTermPopularity:Float = 0.0)
+	Function Create:TPopularity(referenceGUID:string, popularity:Float = 0.0, longTermPopularity:Float = 0.0)
 		Local obj:TPopularity = New TPopularity
-		obj.ContentId = contentId
+		obj.referenceGUID = referenceGUID
 		obj.SetPopularity(popularity)
 		obj.SetLongTermPopularity(longTermPopularity)
-		'obj.LogFile = TLogFile.Create("Popularity Log", "PopularityLog" + contentId + ".txt")
+		'obj.LogFile = TLogFile.Create("Popularity Log", "PopularityLog" + referenceGUID + ".txt")
 		Return obj
 	End Function
 
@@ -195,5 +200,55 @@ Type TPopularity
 
 	Method SetLongTermPopularity(value:float)
 		LongTermPopularity = Max(LongTermPopularityLowerBound, Min(LongTermPopularityUpperBound, value))
+	End Method
+End Type
+
+
+
+
+Type TGameModifierPopularity_ModifyPopularity extends TGameModifierBase
+	Field popularityGUID:string = ""
+	Field valueMin:int = 0
+	Field valueMax:int = 0
+	Field modifyProbability:int = 100
+	
+
+	Function CreateFromData:TGameModifierPopularity_ModifyPopularity(data:TData, index:string="")
+		if not data then return null
+
+		'local source:TNewsEvent = TNewsEvent(data.get("source"))
+		local popularityGUID:string = data.GetString("guid"+index, data.GetString("guid", ""))
+		if popularityGUID = "" then return Null
+
+		local obj:TGameModifierPopularity_ModifyPopularity = new TGameModifierPopularity_ModifyPopularity
+		obj.valueMin = data.GetInt("valueMin"+index, 0)
+		obj.valueMax = data.GetInt("valueMax"+index, 0)
+		obj.modifyProbability = data.GetInt("probability"+index)
+
+		return obj
+	End Function
+	
+	
+	Method ToString:string()
+		local name:string = data.GetString("name", "default")
+		return "TGameModifierPopularity_ModifyPopularity ("+name+")"
+	End Method
+
+
+	'override to trigger a specific news
+	Method RunFunc:int(params:TData)
+		'skip if probability is missed
+		if modifyProbability <> 100 and RandRange(0, 100) > triggerProbability then return False
+
+		local popularity:TPopularity = GetPopularityManager().GetByGUID(popularityGUID)
+		if not popularity
+			TLogger.Log("TGameModifierPopularity_ModifyPopularity", "cannot find popularity to trigger: "+popularityGUID, LOG_ERROR)
+			return false
+		endif
+		local changeBy:int = RandRange(valueMin, valueMax)
+		popularity.ChangeTrend( changeBy )
+		print "changed trend: "+changeBy
+
+		return True
 	End Method
 End Type
