@@ -386,8 +386,8 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Rem
 	"modifiers" : extra data block containing various information (if set)
 	
-	"maxTopicality::ageInfluence" - influence of the age on the max topicality
-	"maxTopicality"
+	"topicality::age" - influence of the age on the max topicality
+	"topicality::timesBroadcasted" - influence of the broadcast amount to max topicality
 	"price"
 	"wearoff" - changes how much a programme loses during sending it
 	"refresh" - changes how much a programme "regenerates" (multiplied with genreModifier)
@@ -962,21 +962,22 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	'override
 	Method GetMaxTopicality:Float()
 		Local age:Int = Max(0, GetWorldTime().GetYear() - year)
-		Local timesBroadcasted:Int = Min(40, GetTimesBroadcasted() * 4)
+		'maximum of 25 broadcasts decrease up to "50%" of max topicality
+		Local timesBroadcasted:Int = 0.5 * Min(100, GetTimesBroadcasted() * 4)
 
 		'modifiers could increase or decrease influences of age/aired/...
 		local ageInfluence:Float = age * GetModifier("topicality::age")
 		local timesBroadcastedInfluence:Float = timesBroadcasted * GetModifier("topicality::timesBroadcasted")
-		
-		If Self.IsCult() 'Bei Kult-Filmen ist der Nachteil des Filmalters und der Anzahl der Ausstrahlungen deutlich verringert.
-			If age >= 20
-				return 0.01 * Max(10, 80 - Max(40, (ageInfluence - 20) * 0.5) - timesBroadcastedInfluence * 0.5)
-			Else
-				return 0.01 * Max(10, 100 - ageInfluence - timesBroadcastedInfluence * 0.5)
-			Endif
-		Else
-			return 0.01 * Max(1, 100 - ageInfluence - timesBroadcastedInfluence)
+
+		'cult-movies are less affected by aging or broadcast amounts
+		If Self.IsCult()
+			ageInfluence :* 0.75
+			timesBroadcastedInfluence :* 0.50
 		EndIf
+
+		local influencePercentage:Float = 0.01 * MathHelper.Clamp(ageInfluence + timesBroadcastedInfluence, 0, 100)
+		return 1.0 - THelper.LogisticalInfluence_Euler(influencePercentage, 1)
+		'return MathHelper.Clamp(1.0 - influencePercentage, 0.0, 1.0)
 	End Method
 
 
