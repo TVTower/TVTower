@@ -593,7 +593,8 @@ Grandioses Finale.</de>
 	</allprogrammes>
 
 	<allnews>
-		<!-- news type:
+		<!--
+			type:
 				initial news = 0
 				initial news by game event = 1
 				following news (follow up) = 2
@@ -604,7 +605,7 @@ Grandioses Finale.</de>
 				eine der dort aufgelisteten Nachrichten wird zufaellig ausgewaehlt
 
 
-				time (a,B,C,D,E)
+			time (a,B,C,D,E)
 				a = Zeittyp
 					1 = "B"-"C" Stunden von jetzt
 					2 = "B"-"C" Tage von jetzt um "D":00 - "E":00 Uhr
@@ -612,7 +613,7 @@ Grandioses Finale.</de>
 				hier ist es time="1,4,8", also kommt die Folgenachricht
 				nach 4-8 Stunden
 
-				choose ("or" oder "and"):
+			choose ("or" oder "and"):
 				Gibt an, ob alle "newsX" ausgeloest werden - oder nur eine
 				einzige der moeglichen Folgenews
 				Natuerlich nur, wenn "probability" erreicht wird - also
@@ -620,11 +621,11 @@ Grandioses Finale.</de>
 				individuellen Triggern - mit ihren eigenen Wahrscheinlich-
 				keiten)
 
-				probability:
+			probability:
 				die Wahrscheinlichkeit, dass ueberhaupt eine der
 				Folgenachrichten ausgewaehlt wird
 
-				newsX + probabilityX:
+			newsX + probabilityX:
 				Folgenachricht und ihre Wahrscheinlichkeit im Falle einer
 				"oder"-Verknuepfung          
 		-->
@@ -666,6 +667,89 @@ Grandioses Finale.</de>
 				<en>Various experts have analyzed the audio recording. The results are controversial: was it about nuclear policy or just disdainful smalltalk?</en>
 			</description>
 			<data genre="0" price="1.05" quality="20" />
+		</news>
+		<!--
+			Beispiel fuer eine Nachrichtenkette
+			  _ Ep1 __
+			 |        \
+			 |60%      \40%
+			Ep2a       Ep2b
+			 |          |
+			 |         Ep2b1
+			 |         /
+			 |_ Ep3 __/
+		-->
+		<news id="ronny-news-drucktaste-01" type="0" creator="5578" created_by="Ronny">
+			<title>
+				<de>"DRUCK"-Taste: Abgaben geplant</de>
+				<en>"PRINT"-Key: planned duties</en>
+			</title>
+			<description>
+				<de>Die VG Text-und-Computer strengt eine Vergütung für die Nutzung auf Computertastaturen befindlicher "Druck"-Tasten an. Schon die Absicht zu Drucken ist abzugelten.</de>
+				<en>The collecting society "Text and Computer" filed a compensation for the use of "print" keys which can be found on computer keyboards. The intention to print is enough to justify compensation.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernewschoice" choose="or" probability="50" time="1,4,8"
+					news1="ronny-news-drucktaste-02a" probability1="60"
+					news2="ronny-news-drucktaste-02b" probability2="40"
+				/>
+			</effects>
+			<data genre="3" price="1" quality="38" />
+		</news>
+		<news id="ronny-news-drucktaste-02a" type="2" creator="5578" created_by="Ronny">
+			<title>
+				<de>"DRUCK"-Taste: Plombe spart Abgaben</de>
+				<en>"PRINT"-Key: Seal saves compensation</en>
+			</title>
+			<description>
+				<de>Tastaturhersteller wie Charry oder LogischTec haben reagiert: sie verplomben die "DRUCK"-Taste um die sonst fälligen Abgaben zu umgehen.</de>
+				<en>Keyboard manufacturers such as Charry or LogischTec have reacted: they seal the "PRINT" key to bypass the otherwise due duties.</en>
+			</description>
+			<effects>
+				<!-- "morgen oder uebermorgen, 9-12 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,2,9,12" news="ronny-news-drucktaste-03" />
+			</effects>
+			<data genre="3" price="1.15" quality="35" />
+		</news>
+		<news id="ronny-news-drucktaste-02b" type="2" creator="5578" created_by="Ronny">
+			<title>
+				<de>"DRUCK"-Taste: Vereine demonstrieren</de>
+				<en>"PRINT"-Key: Associations demonstrating</en>
+			</title>
+			<description>
+				<de>Der Verein der Internetausdrucker und -archivierer (RAR eV) ruft zur Großdemo auf: Freiheit für die "DRUCK"-Taste.</de>
+				<en>The association of "People printing out and archiving the Internet" (RAR society) calls for major demonstration: freedom for the "PRINT"-key.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,4,8" news="ronny-news-drucktaste-02b1" />
+			</effects>
+			<data genre="3" price="1.08" quality="29" />
+		</news>
+		<news id="ronny-news-drucktaste-02b1" type="2" creator="5578" created_by="Ronny">
+			<title>
+				<de>"DRUCK"-Taste: Für private Haushalte kostenlos</de>
+				<en>"PRINT"-Key: Free for private households</en>
+			</title>
+			<description>
+				<de>Nach den Demos des RAR eV rudert die Politik zurück: das Drücken der "DRUCK"-Taste im privaten Rahmen bleibt abgabenfrei. Entsprechende "Privat"-Tastaturen sind nun erhältlich.</de>
+				<en>After demonstrations of the RAR society the politics are rowing back: pressing the "PRINT"-key in private remains tax-free. Corresponding "private household" keyboards are now available.</en>
+			</description>
+			<effects>
+				<!-- "morgen 9 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,9,9" news="ronny-news-drucktaste-03" />
+			</effects>
+			<data genre="3" price="1.05" quality="35" />
+		</news>
+		<news id="ronny-news-drucktaste-03" type="2" creator="5578" created_by="Ronny">
+			<title>
+				<de>"DRUCK"-Taste: Keine Abgaben mehr</de>
+				<en>"PRINT"-Key: No more compensation</en>
+			</title>
+			<description>
+				<de>Regierung stimmt Vorschlag der VG "Text und Computer" zu: die "DRUCK"-Taste wird wieder abgabenfrei. Den Mehreinnahmen von 1.200 Euro stünden Verwaltungskosten von 2,8 Millionen Euro gegenüber.</de>
+				<en>Government approves proposal of collecting society "Text and Computer": the "PRINT" key is duty-free again. The additional revenue of 1,200 Euro stood administrative expenses of 2.8 million Euros.</en>
+			</description>
+			<data genre="3" price="1.05" quality="30" />
 		</news>
 	</allnews>
 </tvgdb>

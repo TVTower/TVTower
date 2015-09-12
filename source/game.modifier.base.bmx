@@ -368,7 +368,7 @@ Type TGameModifierTimeFrame
 					return CalcTime_HoursFromNow(timeValues[0], -1)
 				endif
 			'2 = "A"-"B" days from now at "C":00 - "D":00 o'clock
-			case 4
+			case 2
 				if timeValues.length <= 1 then return -1
 				
 				if timeValues.length = 2
