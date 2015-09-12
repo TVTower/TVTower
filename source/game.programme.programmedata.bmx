@@ -936,9 +936,10 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		'shrinkage: fast shrinking at the begin (low distance) and slow
 		'           shrinking the more it gets to ageDistance = 0.0
 		'the age factor is also used in "GetMaxTopicality())
-		Local ageDistance:Float = 0.01 * Max(0, 100 - Max(0, GetWorldTime().GetYear() - year))
+		'the modifier "price::age" increases the "age" used in _this_
+		'calculation 
+		Local ageDistance:Float = 0.01 * Max(0, 100 - Max(0, GetModifier("price::age") * (GetWorldTime().GetYear() - year)))
 		value :* (1.0 - THelper.LogisticalInfluence_Euler(1.0 - Max(0.30, ageDistance), 0.85))
-		value :* GetModifier("price::age")
 		
 		'=== FLAGS ===
 		'BMovies lower the price
