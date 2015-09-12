@@ -751,5 +751,63 @@ Grandioses Finale.</de>
 			</description>
 			<data genre="3" price="1.05" quality="30" />
 		</news>
+		<news id="ronny-news-reizdarm-01" type="0" creator="5578" created_by="Ronny">
+			<title>
+				<de>Bauchflusensieb löst Reizdarm aus</de>
+				<en>Belly lint filter triggers IBS</en>
+			</title>
+			<description>
+				<de>Der Vertreiber des mechanischen Bauchflusensieb „Saubermann Öko“, die Nepp AG, ruft ihr Produkt zurück. Der rückseitig gelagerte Gurtverschluss kann einen Reizdarm auslösen.</de>
+				<en>The distributor of the mechanical belly lint filter "CleanMan Eco", the Hoax Corp. is recalling their product. The rear mounted buckle can trigger an irritable bowel syndrome (IBS).</en>
+			</description>
+			<data genre="4" price="1.20" quality="18" />
+		</news>
+		<news id="ronny-news-usbratte-01" type="0" creator="5578" created_by="Ronny">
+			<title>
+				<de>USB-Ratte: Mausersatz für große Hände</de>
+				<en>USB-Rat: Mouse replacement for huge hands</en>
+			</title>
+			<description>
+				<de>Auf der Internationalen Messe für Computerzubehör (IMC) wurde nun die USB-Ratte vorgestellt. Im Gegensatz zu Mäusen, sind USB-Ratten für richtige Männerhände geeignet.</de>
+				<en>At the International Exhibition for Computer Accessories (ECA), the USB-Rat was presented. Unlike mice, USB-Rats are suitable for real men hands.</en>
+			</description>
+			<data genre="3" price="0.90" quality="42" />
+		</news>
+
+		<news id="ronny-news-sandsturm-01" type="0" creator="5578" created_by="Ronny">
+			<title>
+				<de>Sandsturm am nördlichen Polarkreis</de>
+				<en>Sandstorm near the Arctic Circle</en>
+			</title>
+			<description>
+				<de>Forscher der Polarstation „Frostpfote“ beobachteten am gestrigen Vormittag einen Sandsturm. Forscher Jörnssen: „Er wirkte so real, genauso wie die Kamele“.</de>
+				<en>Yesterday morning researchers at the polar station "Frost paw" observed a sandstorm. Researcher Jörnssen: "It looked so real, just like the camels."</en>
+			</description>
+			<effects>
+				<!-- "morgen 9-15 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,9,15" news="ronny-news-sandsturm-02" />
+			</effects>
+			<data genre="4" price="0.90" quality="48" />
+		</news>
+		<news id="ronny-news-sandsturm-02" type="2" creator="5578" created_by="Ronny">
+			<title>
+				<de>Sandsturm war nicht echt</de>
+				<en>Sandstorm was not real</en>
+			</title>
+			<description>
+				<de>Die Forscher der Polarstation gaben kleinlaut zu, dass aus Versehen der neue TV vor dem Fenster stand. Es lief Patty Glansens Liebesfilm „|b|Dornen der Wüste|/b|“.</de>
+				<en>The researchers of the polar station admitted sheepishly that inadvertently their new TV stood in front of the window. It played Patty Glansen's romantic movie "|b|Thorns of the desert|/b|".</en>
+			</description>
+			<!-- 
+				- Popularitaet von "Patty Glansen" erhoehen
+				- Interesse an Liebesfilmen um 1-2% steigern
+			-->
+			<effects>
+				<effect trigger="happen" type="modifyPersonPopularity" person="21e88c65-0cc6-4bd1-bd14-b48b6ce25402" valueMin="1" valueMax="2" />
+				<effect trigger="happen" type="modifyGenrePopularity" genre="15" valueMin="1" valueMax="3" />
+			</effects>
+
+			<data genre="4" price="1.10" quality="28" />
+		</news>
 	</allnews>
 </tvgdb>
