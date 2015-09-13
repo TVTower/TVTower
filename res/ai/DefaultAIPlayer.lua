@@ -72,7 +72,8 @@ function DefaultAIPlayer:initializePlayer()
 	--self.NameX = "zzz"
 
 	--TODO: Strategie und Charakter festlegen
-	self.Ventruesome = 5
+	--Waghalsigkeit 3-8
+	self.Ventruesome = math.random(3,8)
 	self.Strategy = DefaultStrategy()
 end
 
@@ -114,7 +115,7 @@ function DefaultAIPlayer:TickAnalyse()
 end
 
 function DefaultAIPlayer:OnDayBegins()
-	self.Strategy:Start()
+	self.Strategy:Start(self)
 
 	self.Stats:OnDayBegins()
 

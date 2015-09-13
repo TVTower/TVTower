@@ -604,6 +604,10 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 
 
+	Method SuperIsControllable:int() {_exposeToLua}
+		return Super.IsControllable()
+	End Method
+	
 	Method IsControllable:int() {_exposeToLua}
 		'single-licence
 		'if GetSubLicenceCount() = 0
@@ -629,7 +633,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		if not IsControllable() then return False
 		'false if licence is not available (temporary, or because broadcast
 		'limit was exceeded)
-		if isAvailable() then return False
+		if not isAvailable() then return False
 
 		return True
 	End Method

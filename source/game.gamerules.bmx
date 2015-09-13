@@ -34,6 +34,8 @@ Type TGameRules {_exposeToLua}
 	'maximum price (profit/penalty) for a single adspot
 	Field maxAdContractPricePerSpot:int = 1000000
 
+	Field startProgrammeAmount:int = 0
+
 	'penalty to pay if a player sends an xrated movie at the wrong time
 	Field sentXRatedPenalty:int = 25000
 

@@ -4512,7 +4512,7 @@ Function PrintBroadcastOverview(day:int = -1, lastHour:int = -1)
 
 	For local player:int = 1 to 4
 		print "====== PLAYER " + player + " ======"
-		For local hour:int = 0 Until lastHour
+		For local hour:int = 0 to lastHour
 			local audience:TAudience = stat.GetAudience(player, hour, false)
 			local progSlot:TBroadcastMaterial = GetPlayerProgrammePlan(player).GetProgramme(day, hour)
 			local adSlot:TBroadcastMaterial = GetPlayerProgrammePlan(player).GetAdvertisement(day, hour)

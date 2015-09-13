@@ -1210,6 +1210,20 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	End Method
 
 
+	Method GetProgrammeLicences:TProgrammeLicence[]()
+		Local ret:TProgrammeLicence[ GetProgrammeLicencesInStock() ]
+		local c:int = 0
+		local lists:TProgrammeLicence[][] = [listMoviesGood,listMoviesCheap,listSeries]
+		For local j:int = 0 to lists.length-1
+			For Local licence:TProgrammeLicence = EachIn lists[j]
+				if licence Then ret[c] = licence
+				c :+ 1
+			Next
+		Next
+		return ret
+	End Method
+	
+
 	Method GetProgrammeLicenceByPosition:TProgrammeLicence(position:int)
 		if position > GetProgrammeLicencesInStock() then return null
 		local currentPosition:int = 0

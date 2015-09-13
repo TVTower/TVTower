@@ -9,8 +9,10 @@ _G["TaskMovieDistributor"] = class(AITask, function(c)
 	c.CheckMode = 0
 	c.MovieList = nil
 	c.TargetRoom = TVT.ROOM_MOVIEAGENCY
+	c.BuyStartProgrammeJob = nil
 	c.CheckMoviesJob = nil
 	c.AppraiseMovies = nil
+	c.ProgrammesPossessed = 0
 	c.CurrentBargainBudget = 0
 	c:ResetDefaults()
 end)
@@ -28,6 +30,9 @@ end
 
 function TaskMovieDistributor:Activate()
 	-- Was getan werden soll:
+	self.BuyStartProgrammeJob = JobBuyStartProgramme()
+	self.BuyStartProgrammeJob.MovieDistributorTask = self
+
 	self.CheckMoviesJob = JobCheckMovies()
 	self.CheckMoviesJob.MovieDistributorTask = self
 
@@ -44,8 +49,20 @@ function TaskMovieDistributor:Activate()
 	self.MoviesAtAuctioneer = {}
 end
 
+
+function TaskMovieDistributor:OnDayBegins()
+	local moviesNeeded = 4 - (TVT.Rules.startProgrammeAmount + self.ProgrammesPossessed)
+	if moviesNeeded > 0 then
+		self.SituationPriority = 10 + moviesNeeded * 5 
+		debugMsg("Startprogramm fehlt: erhoehe Prio! " .. self.SituationPriority)			
+	end
+end
+
+
 function TaskMovieDistributor:GetNextJobInTargetRoom()
-	if (self.CheckMoviesJob.Status ~= JOB_STATUS_DONE) then
+	if (self.BuyStartProgrammeJob.Status ~= JOB_STATUS_DONE) then
+		return self.BuyStartProgrammeJob
+	elseif (self.CheckMoviesJob.Status ~= JOB_STATUS_DONE) then
 		return self.CheckMoviesJob
 	elseif (self.AppraiseMovies.Status ~= JOB_STATUS_DONE) then
 		return self.AppraiseMovies
@@ -73,6 +90,95 @@ function TaskMovieDistributor:OnMoneyChanged(value, reason, reference)
 	elseif (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.PAYBACK_AUCTIONBID)) then
 		self.CurrentBudget = self.CurrentBudget + value -- Zurück zahlen
 	end
+end
+-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+_G["JobBuyStartProgramme"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.CurrentMovieIndex = 0
+	c.MovieDistributorTask = nil
+	c.AllMoviesChecked = false
+end)
+
+function JobBuyStartProgramme:typename()
+	return "JobBuyStartProgramme"
+end
+
+function JobBuyStartProgramme:Prepare(pParams)
+	--debugMsg("Schaue Filmangebot an")
+	self.CurrentMovieIndex = 0
+end
+
+function JobBuyStartProgramme:Tick()
+	local player = _G["globalPlayer"]
+	
+	--try to buy at least 4-x cheap start programmes
+	local moviesNeeded = 4 - (TVT.Rules.startProgrammeAmount + self.MovieDistributorTask.ProgrammesPossessed)
+	if moviesNeeded <= 0 then
+		self.Status = JOB_STATUS_DONE
+		return True
+	end
+	
+	local licencesResponse = TVT.md_getProgrammeLicences()
+	if ((licencesResponse.result == TVT.RESULT_WRONGROOM) or (licencesResponse.result == TVT.RESULT_NOTFOUND)) then
+		self.Status = JOB_STATUS_DONE
+		return True
+	end
+
+
+	-- budget is based on needed*price, so if we find cheaper programmes
+	-- we might buy more than needed
+	local startMovieBudget = player.Strategy.startProgrammePriceMax
+	local startMovieBudgetMax = 2 * startMovieBudget
+	local startMoviesBudget = moviesNeeded * player.Strategy.startProgrammeBudget / 4
+		
+
+	local movies = TVT.convertToProgrammeLicences(licencesResponse.data)	
+	local goodMovies = {}
+	-- sort lowest first
+	local sortByPrice = function(a, b)
+		return a.GetPrice() < b.GetPrice()
+	end
+
+	-- add "okay" movies to the list of candidates
+	for k,v in pairs(movies) do
+		--avoid the absolute trash :-)
+		if (v:GetQuality(0) >= 0.10 and v:GetPrice() <= startMovieBudgetMax) then
+			table.insert(goodMovies, v)
+		end
+	end
+	table.sort(goodMovies, sortByPrice)
+
+	
+	local buyStartMovies = {}
+	for k,v in pairs(goodMovies) do
+		-- stop iteration if getting low on budget
+		if startMoviesBudget < v.GetPrice() then break end 
+		-- a single licence could be more expensive than the average budget
+		if v.GetPrice() <= startMovieBudgetMax then
+			table.insert(buyStartMovies, v)
+			startMoviesBudget = startMoviesBudget - v.GetPrice()
+		end
+	end
+
+	for k,v in pairs(buyStartMovies) do
+		--only buy whole start programme set if possible with budget
+		--else each one should be cheaper than the single licence limit
+		if (table.count(buyStartMovies) >= moviesNeeded or v.GetPrice() < startMovieBudget) then
+			debugMsg("Kaufe Startprogramm: " .. v.GetTitle() .. " (" .. v.GetId() .. ") - Preis: " .. v:GetPrice())
+			TVT.addToLog("Kaufe Startprogramm: " .. v.GetTitle() .. " (" .. v.GetId() .. ") - Preis: " .. v:GetPrice())
+			TVT.md_doBuyProgrammeLicence(v.GetId())
+			
+			self.MovieDistributorTask:PayFromBudget(v:GetPrice())
+			self.MovieDistributorTask.CurrentBargainBudget = self.MovieDistributorTask.CurrentBargainBudget - v:GetPrice()							
+
+			--increase counter to skip buying more
+			self.MovieDistributorTask.ProgrammesPossessed = self.MovieDistributorTask.ProgrammesPossessed + 1
+		end
+	end
+	
+	self.Status = JOB_STATUS_DONE
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -283,19 +389,20 @@ end
 function JobBuyMovies:Tick()
 	local movies = self.MovieDistributorTask.MoviesAtDistributor
 
-	--TODO: Prüfen wie viele Filme überhaupt gebraucht werden
-
 	for k,v in pairs(movies) do		
 		if (v:GetPrice() <= self.MovieDistributorTask.CurrentBudget) then
-			if (v:GetPrice() <= self.MovieDistributorTask.CurrentBargainBudget) then -- Tagesbudget für gute Angebote ohne konkreten Bedarf
+			-- Tagesbudget für gute Angebote ohne konkreten Bedarf
+			if v:GetPrice() <= self.MovieDistributorTask.CurrentBargainBudget then
 				if (v.GetAttractiveness() > 1) then
-					--debugMsg("Kaufe Film: " .. v.GetId() .. " - Attraktivität: ".. v.GetAttractiveness() .. " - Preis: " .. v:GetPrice() .. " - Qualität: " .. v.GetQuality(0))
 					debugMsg("Kaufe Film: " .. v.GetTitle() .. " (" .. v.GetId() .. ") - Preis: " .. v:GetPrice())
 					TVT.addToLog("Kaufe Film: " .. v.GetTitle() .. " (" .. v.GetId() .. ") - Preis: " .. v:GetPrice())
 					TVT.md_doBuyProgrammeLicence(v.GetId())
 					
 					self.MovieDistributorTask:PayFromBudget(v:GetPrice())
 					self.MovieDistributorTask.CurrentBargainBudget = self.MovieDistributorTask.CurrentBargainBudget - v:GetPrice()							
+
+					--increase counter to skip buying more "needed ones"
+					self.MovieDistributorTask.ProgrammesPossessed = self.MovieDistributorTask.ProgrammesPossessed + 1
 				end			
 			end
 		end

@@ -503,7 +503,13 @@ function JobEmergencySchedule:SetMovieOrInfomercialToEmptyBlock(day, hour)
 	
 	if (table.count(licenceList) == 0) then licenceList = self:GetFilteredProgrammeLicenceList(level, 1, 3, fixedDay) end
 	if (table.count(licenceList) == 0) then licenceList = self:GetFilteredProgrammeLicenceList(level+1, 1, 3, fixedDay) end
+	if TVT.of_getProgrammeLicenceCount() < 4 then
+		if (table.count(licenceList) == 0) then licenceList = self:GetFilteredProgrammeLicenceList(level+1, 1, 5, fixedDay) end
+	end
 	if (table.count(licenceList) == 0) then licenceList = self:GetFilteredProgrammeLicenceList(level+2, 1, 1, fixedDay) end
+	if TVT.of_getProgrammeLicenceCount() < 4 then
+		if (table.count(licenceList) == 0) then licenceList = self:GetFilteredProgrammeLicenceList(level+2, 1, 6, fixedDay) end
+	end
 	if (table.count(licenceList) == 0) then licenceList = self:GetInfomercialLicenceList(3, fixedDay) end
 
 	if (table.count(licenceList) == 1) then
@@ -540,7 +546,8 @@ function JobEmergencySchedule:GetProgrammeLicenceList(level, maxRerunsToday, day
 
 	for i=0,MY.GetProgrammeCollection().GetProgrammeLicenceCount()-1 do
 		local licence = MY.GetProgrammeCollection().GetProgrammeLicenceAtIndex(i)
-		if ( licence ~= nil and licence.IsNewBroadcastPossible()) then
+		if ( licence ~= nil and licence.isNewBroadcastPossible() == 1) then
+			-- TVT.PrintOut("licence is broadcastable: " .. licence.GetTitle() .. "   " .. licence.isNewBroadcastPossible() .. "  " .. licence.GetData().IsControllable())
 			if licence.GetQualityLevel() == level then
 				local sentAndPlannedToday = TVT.of_GetBroadcastMaterialInProgrammePlanCount(licence.GetID(), day, 1)
 				--debugMsg("GetProgrammeLicenceList: " .. i .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday)

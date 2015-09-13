@@ -571,8 +571,16 @@ Type TLuaFunctions {_exposeToLua}
 		return TAdContract(obj)
 	End Method
 
+	Method convertToAdContracts:TAdContract[](obj:object)
+		return TAdContract[](obj)
+	End Method
+
 	Method convertToProgrammeLicence:TProgrammeLicence(obj:object)
 		return TProgrammeLicence(obj)
+	End Method
+
+	Method convertToProgrammeLicences:TProgrammeLicence[](obj:object)
+		return TProgrammeLicence[](obj)
 	End Method
 
 
@@ -754,7 +762,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method of_getProgrammeLicenceByID:TProgrammeLicence(id:Int=-1)
 		If Not _PlayerInRoom("office") Then Return Null
 
-		Local obj:TProgrammeLicence = GetPlayer(self.ME).GetProgrammeCollection().GetProgrammeLicence(id)
+		Local obj:TProgrammeLicence = GetPlayerProgrammeCollection(self.ME).GetProgrammeLicence(id)
 		If obj Then Return obj Else Return Null
 	End Method
 
@@ -762,14 +770,14 @@ Type TLuaFunctions {_exposeToLua}
 	Method of_getProgrammeLicenceCount:Int()
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 
-		Return GetPlayerProgrammeCollectionCollection().Get(Self.ME).GetProgrammeLicenceCount()
+		Return GetPlayerProgrammeCollection(Self.ME).GetProgrammeLicenceCount()
 	End Method
 
 
 	Method of_getProgrammeLicenceAtIndex:TProgrammeLicence(arrayIndex:Int=-1)
 		If Not _PlayerInRoom("office") Then Return Null
 
-		Local obj:TProgrammeLicence = GetPlayer(self.ME).GetProgrammeCollection().GetProgrammeLicenceAtIndex(arrayIndex)
+		Local obj:TProgrammeLicence = GetPlayerProgrammeCollection(Self.ME).GetProgrammeLicenceAtIndex(arrayIndex)
 		If obj Then Return obj Else Return Null
 	End Method
 
@@ -904,6 +912,19 @@ Type TLuaFunctions {_exposeToLua}
 		endif
 	End Method
 
+
+	Method md_getProgrammeLicences:TLuaFunctionResult()
+		If Not _PlayerInRoom("movieagency") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
+
+
+		local licences:TProgrammeLicence[] = RoomHandler_MovieAgency.GetInstance().GetProgrammeLicences()
+		If licences and licences.length > 0
+			Return TLuaFunctionResult.Create(self.RESULT_OK, licences)
+		else
+			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+		endif
+	End Method
+	
 
 	Method md_doBuyProgrammeLicence:Int(licenceID:Int=-1)
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM

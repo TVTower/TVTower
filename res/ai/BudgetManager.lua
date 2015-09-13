@@ -38,7 +38,7 @@ function BudgetManager:Initialize()
 
 	self.TodayStartAccountBalance = playerMoney		-- Legt fest, dass angenommen wird, gestern habe man den gleichen Kontostand gehabt
 
-	self.BudgetMinimum = math.round(playerMoney / 5)	-- Legt das Minimalbudget fest: 50% des Startwertes
+	self.BudgetMinimum = math.round(playerMoney * 0.4)	-- Legt das Minimalbudget fest: 40% des Startwertes
 	self.BudgetMaximum = math.round(playerMoney * 0.8)  -- Das Maximalbudget entspricht am Anfang 80% des Startwertes
 end
 
@@ -50,7 +50,7 @@ function BudgetManager:CalculateBudget() -- Diese Methode wird immer zu Beginn d
 	self.BudgetHistory[OLD_BUDGET_2] = self.BudgetHistory[OLD_BUDGET_1]
 	self.BudgetHistory[OLD_BUDGET_1] = self.BudgetHistory[TODAY_BUDGET]
 
-	-- Gestrigte Werte
+	-- Gestrige Werte
 	local YesterdayBudget = self.BudgetHistory[TODAY_BUDGET]
 	local YesterdayStartAccountBalance = self.TodayStartAccountBalance	-- den gestrigen Wert zwischenspeichern
 
@@ -61,7 +61,7 @@ function BudgetManager:CalculateBudget() -- Diese Methode wird immer zu Beginn d
 	self.BudgetMaximum = self.TodayStartAccountBalance * 0.95
 
 	local YesterdayTurnOver = self.TodayStartAccountBalance - (YesterdayStartAccountBalance - YesterdayBudget) -- Gestriger Umsatz
-	-- TODO: Anstatt dem YesterdayBudget kann man auc die tatsächtlichen gestrigen Ausgaben anführen. (denn im Moment ist es sehr ungenau)
+	-- TODO: Anstatt dem YesterdayBudget kann man auch die tatsächtlichen gestrigen Ausgaben anführen. (denn im Moment ist es sehr ungenau)
 
 	-- Ermittle ein neues Budget für den heutigen Tag auf Grund der Erfahrungswerte
 	local myBudget = self:CalculateAverageBudget(self.TodayStartAccountBalance, YesterdayTurnOver)
