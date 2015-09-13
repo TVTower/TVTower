@@ -185,6 +185,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		LoadDatabase(userDBDir)
 
 
+
 		'=== FIGURES ===
 		'set all non human players to AI
 		If isGameLeader()

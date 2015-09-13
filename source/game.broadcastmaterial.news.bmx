@@ -75,7 +75,12 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 				popData.AddNumber("broadcastTopAudience", GetBroadcastManager().GetCurrentBroadcast().GetTopAudience())
 
 				Local popularity:TGenrePopularity = news.newsEvent.GetGenreDefinition().GetPopularity()
+if popularity
 				popularity.FinishBroadcastingNews(popData, i+1)
+else
+	TLogger.Log("FinishBroadcastingNews", "Popularity inexistent.", LOG_ERROR)
+	debugstop
+endif
 			endif
 
 		Next

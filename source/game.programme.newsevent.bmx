@@ -505,7 +505,7 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 
 	Method GetGenreDefinition:TNewsGenreDefinition()
-		If Not _genreDefinitionCache Then
+		If Not _genreDefinitionCache
 			_genreDefinitionCache = GetNewsGenreDefinitionCollection().Get(Genre)
 
 			If Not _genreDefinitionCache

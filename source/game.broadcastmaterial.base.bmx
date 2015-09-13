@@ -395,8 +395,8 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 			result.CopyBaseAttractionFrom(lastMovieBlockAttraction)
 
 			if usedAsType = TVTBroadcastMaterialType.NEWS
-				'modify this by genre popularity
-				result.MiscMod.Multiply(GetMiscMod(hour))
+				'news have their own mod each time
+				result.MiscMod = GetMiscMod(hour)
 			endif
 		Endif
 

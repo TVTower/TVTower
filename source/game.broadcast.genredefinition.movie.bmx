@@ -232,6 +232,12 @@ End Type
 
 Type TMovieFlagDefinition Extends TMovieGenreDefinition
 
+	'override
+	Method GetGUIDBaseName:string()
+		return "movie-flag-definition"
+	End Method
+
+
 	Method InitBasic:TMovieFlagDefinition(flagID:int, data:TData)
 		'init with flagID so popularity (created there) gets this ID too 
 		Super.InitBasic(flagID, data)

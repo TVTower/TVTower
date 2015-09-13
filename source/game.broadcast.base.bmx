@@ -1086,7 +1086,8 @@ Type TBroadcastSequence
 
 		local foundProgramme:int = 0
 		local foundNewsShow:int = 0
-		For local curr:TBroadcast = eachin sequence
+		'iterate over copy to allow modification of the original list
+		For local curr:TBroadcast = eachin sequence.Copy()
 			if curr.BroadcastType = TVTBroadcastMaterialType.PROGRAMME
 				if foundProgramme < amountOfEntriesToKeep
 					foundProgramme :+ 1

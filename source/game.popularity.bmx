@@ -19,12 +19,14 @@ Type TPopularityManager
 
 	Method Initialize:int()
 		'reset list
-		Popularities = CreateMap()
+		Popularities.Clear()
+		updateInterval = 720
+		updateTimeLeft = 720
 	End Method
 
 
 	Method GetByGUID:TPopularity(GUID:String)
-		Return TPopularity(Popularities.ValueForKey(GUID))
+		Return TPopularity(Popularities.ValueForKey(GUID.ToLower()))
 	End Method
 
 

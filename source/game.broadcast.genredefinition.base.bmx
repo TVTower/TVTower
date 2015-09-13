@@ -50,16 +50,18 @@ Type TGenreDefinitionBase extends TGameObject
 		AudienceAttraction.Women = data.GetFloat("Women", 0.5)
 		AudienceAttraction.Men = data.GetFloat("Men", 0.5)
 
-		'if there was a popularity already, remove that first
-		local popularity:TGenrePopularity = TGenrePopularity.Create(GetGUID(), RandRange(-10, 10), RandRange(-25, 25))
-		GetPopularityManager().AddPopularity(Popularity) 'Zum Manager hinzufügen
-
 		return self
 	End Method
 
 
 	Method GetPopularity:TPopularity()
-		if not _popularity then _popularity = GetPopularityManager().GetByGUID(GetGUID())
+		if not _popularity
+			_popularity = GetPopularityManager().GetByGUID(GetGUID())
+			if not _popularity
+				_popularity = TGenrePopularity.Create(GetGUID(), RandRange(-10, 10), RandRange(-25, 25))
+				GetPopularityManager().AddPopularity(_popularity)
+			endif
+		endif
 		return _popularity
 	End Method
 	
