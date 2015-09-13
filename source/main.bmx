@@ -733,7 +733,7 @@ endrem
 					Repeat
 						targetRoom = GetRoomCollection().GetRandom()
 					Until targetRoom.name <> "building"
-					
+					print "deliver to : "+targetRoom.name
 					TFigureTerrorist(GetGame().terrorists[whichTerrorist]).SetDeliverToRoom( targetRoom )
 				EndIf
 

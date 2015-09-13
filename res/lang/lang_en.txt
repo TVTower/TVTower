@@ -551,6 +551,18 @@ SNOW_IS_FALLING = Attention on the streets. Snow is falling and black ice is pos
 TEMPERATURES_ARE_BETWEEN_X_AND_Y = Temperatures will be between %MINTEMPERATURE% and %MAXTEMPERATURE%°C
 TEMPERATURE_IS_CONSTANT_AT_X = Temperature is at constant  %TEMPERATURE%°C
 
+
+IN_THE_LATER_HOURS1 = In the later hours
+IN_THE_LATER_HOURS2 = After dawn
+IN_THE_LATER_HOURS3 = Later
+STORMY_WINDS_OF_UP_TO_X1 = Squalls of up to %MAXWINDVELOCITY% km/h drag over the land.
+STORMY_WINDS_OF_UP_TO_X2 = Strong breezes up to squalls of %MAXWINDVELOCITY% km/h.
+NEARLY_NO_WIND1 = There is almost no wind.
+NEARLY_NO_WIND2 = It blows hardly Wind.
+SLOW_WIND_WITH_X_AND_GUST_OF_WIND_WITH_Y1 = Light breeze from %MINWINDVELOCITY% km/h and isolated gusts of up to %MAXWINDVELOCITY% km/h.
+WIND_VELOCITIES_ARE_BETWEEN_X_AND_Y1 = The wind speeds are between %MINWINDVELOCITY% and %MAXWINDVELOCITY% km/h.
+WIND_VELOCITY_IS_CONSTANT_AT_X1 = The wind speed is constant %WINDVELOCITY% km/h.
+
 LOCKED = Locked
 ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY = Access to this room is only possible with the right key.
 BLOCKED = Blocked

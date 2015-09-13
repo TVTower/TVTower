@@ -23,7 +23,7 @@ Type TGenrePopularity Extends TPopularity
 
 		obj.ChanceToChangeCompletely			= 2
 		obj.ChanceToChange						= 15
-		obj.ChanceToAdjustLongTermPopulartiy	= 25
+		obj.ChanceToAdjustLongTermPopularity	= 25
 
 		obj.ChangeLowerBound					= -35
 		obj.ChangeUpperBound					= 35

@@ -292,6 +292,8 @@ Type TNewsAgency
 		local isPartiallyCloudy:int = 0
 		local isNight:int = 0
 		local isDay:int = 0
+		local becameNight:int = False
+		local becameDay:int = False
 		local sunHours:int = 0
 		local sunAverage:float = 0.0
 		local tempMin:int = 1000, tempMax:int = -1000
@@ -307,8 +309,10 @@ Type TNewsAgency
 		'check for specific states
 		For weather = eachin upcomingWeather
 			if GetWorldTime().IsNight(weather._time)
+				if isDay then becameNight = True
 				isNight = True
 			else
+				if isNight then becameDay = True
 				isDay = True
 			endif
 
@@ -343,50 +347,69 @@ Type TNewsAgency
 		description = ""
 		
 		if isPartiallyCloudy
-			description :+ GetLocale("SKY_IS_PARTIALLY_CLOUDY")+" "
+			description :+ GetRandomLocale("SKY_IS_PARTIALLY_CLOUDY")+" "
 		elseif isCloudy
-			description :+ GetLocale("SKY_IS_OVERCAST")+" "
+			description :+ GetRandomLocale("SKY_IS_OVERCAST")+" "
 		elseif isClear
-			description :+ GetLocale("SKY_IS_WITHOUT_CLOUDS")+" "
+			description :+ GetRandomLocale("SKY_IS_WITHOUT_CLOUDS")+" "
 		endif
 
-		if isDay and not isCloudy
-			if sunAverage = 1.0
-				if not isNight then description :+ GetLocale("SUN_SHINES_WHOLE_TIME")+" "
+		if isDay or becameDay
+			if becameDay then description :+ GetRandomLocale("IN_THE_LATER_HOURS")+": "
+
+			if sunAverage = 1.0 and not isCloudy and not becameDay
+				if not isNight then description :+ GetRandomLocale("SUN_SHINES_WHOLE_TIME")+" "
 			elseif sunAverage > 0.5
-				description :+ GetLocale("SUN_WINS_AGAINST_CLOUDS")+" "
+				description :+ GetRandomLocale("SUN_WINS_AGAINST_CLOUDS")+" "
 			elseif sunAverage > 0
-				description :+ GetLocale("SUN_IS_SHINING_SOMETIMES")+" "
+				description :+ GetRandomLocale("SUN_IS_SHINING_SOMETIMES")+" "
 			else
-				description :+ GetLocale("SUN_IS_NOT_SHINING")+" "
+				description :+ GetRandomLocale("SUN_IS_NOT_SHINING")+" "
 			endif
 		endif
 
 		if isRaining and isSnowing
-			description :+ GetLocale("RAIN_AND_SNOW_ALTERNATE")+" "
+			description :+ GetRandomLocale("RAIN_AND_SNOW_ALTERNATE")+" "
 		elseif isRaining
-			description :+ GetLocale("RAIN_IS_POSSIBLE")+" "
+			description :+ GetRandomLocale("RAIN_IS_POSSIBLE")+" "
 		elseif isSnowing
-			description :+ GetLocale("SNOW_IS_FALLING")+" "
+			description :+ GetRandomLocale("SNOW_IS_FALLING")+" "
 		endif
 
+		local temperatureText:string
 		if tempMin <> tempMax
-			description :+ GetLocale("TEMPERATURES_ARE_BETWEEN_X_AND_Y").replace("%MINTEMPERATURE%", tempMin).replace("%MAXTEMPERATURE%", tempMax)
+			temperatureText = GetRandomLocale("TEMPERATURES_ARE_BETWEEN_X_AND_Y")
 		else
-			description :+ GetLocale("TEMPERATURE_IS_CONSTANT_AT_X").replace("%TEMPERATURE%", tempMin)
+			temperatureText = GetRandomLocale("TEMPERATURE_IS_CONSTANT_AT_X")
 		endif
 
-		if windMin <> windMax
-			description :+ GetLocale("WIND_VELOCITIES_ARE_BETWEEN_X_AND_Y").replace("%MINWINDVELOCITY%", MathHelper.NumberToString(windMin, 2, True)).replace("%MAXWINDVELOCITY%", MathHelper.NumberToString(windMax, 2, True))
+
+		local weatherText:string
+		if windMin < 2 and windMax < 2
+			weatherText = GetRandomLocale("NEARLY_NO_WIND")
+		elseif windMin <> windMax
+			if windMin > 0 and windMax > 10
+				if windMin > 20 and windMax > 35
+					weatherText = GetRandomLocale("STORMY_WINDS_OF_UP_TO_X")
+				else
+					weatherText = GetRandomLocale("SLOW_WIND_WITH_X_AND_GUST_OF_WIND_WITH_Y")
+				endif
+			else
+				weatherText = GetRandomLocale("WIND_VELOCITIES_ARE_BETWEEN_X_AND_Y")
+			endif
 		else
-			description :+ GetLocale("WIND_VELOCITY_IS_CONSTANT_AT_X").replace("%WINDVELOCITY%", MathHelper.NumberToString(windMin, 2, True))
+			weatherText = GetRandomLocale("WIND_VELOCITY_IS_CONSTANT_AT_X")
 		endif
-'trotz sunAverage = 1 ist "cloudy" aktiv ...entwederoder 
+
+		if temperatureText <> "" then description :+ " " + temperatureText.replace("%TEMPERATURE%", tempMin).replace("%MINTEMPERATURE%", tempMin).replace("%MAXTEMPERATURE%", tempMax)
+		if weatherText <> ""  then description :+ " " + weatherText.replace("%MINWINDVELOCITY%", MathHelper.NumberToString(windMin, 2, True)).replace("%MAXWINDVELOCITY%", MathHelper.NumberToString(windMax, 2, True))
+
+
 		local localizeTitle:TLocalizedString = new TLocalizedString
 		localizeTitle.Set(title) 'use default lang
 		local localizeDescription:TLocalizedString = new TLocalizedString
 		localizeDescription.Set(description) 'use default lang
-print title+":  " + description		 +"  " + sunAverage
+
 		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TNewsEvent.GENRE_CURRENTS, quality, null, TVTNewsType.InitialNewsByInGameEvent)
 		NewsEvent.SetModifier("price", price)
 		'after 20 hours a news topicality is 0 - so accelerating it by

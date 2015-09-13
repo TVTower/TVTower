@@ -553,6 +553,17 @@ SNOW_IS_FALLING = Atención en las calles. La nieve está cayendo y es posible h
 TEMPERATURES_ARE_BETWEEN_X_AND_Y = Las temperaturas serán entre %MINTEMPERATURE% y %MAXTEMPERATURE% °C
 TEMPERATURE_IS_CONSTANT_AT_X = La temperatura es constante en %TEMPERATURE%°C
 
+IN_THE_LATER_HOURS1 = En las horas posteriores
+IN_THE_LATER_HOURS2 = Después del amanecer
+IN_THE_LATER_HOURS3 = Luego
+STORMY_WINDS_OF_UP_TO_X1 = Chubascos de hasta %MAXWINDVELOCITY% km/h arrastre sobre la tierra.
+STORMY_WINDS_OF_UP_TO_X2 = Brisas fuertes hasta borrascas de %MAXWINDVELOCITY% km/h.
+NEARLY_NO_WIND1 = Casi no hay viento.
+NEARLY_NO_WIND2 = Sopla poco viento.
+SLOW_WIND_WITH_X_AND_GUST_OF_WIND_WITH_Y1 = Brisa débil de %MINWINDVELOCITY% km/h y ráfagas aisladas de hasta %MAXWINDVELOCITY% km/h.
+WIND_VELOCITIES_ARE_BETWEEN_X_AND_Y1 = Las velocidades del viento son entre %MINWINDVELOCITY% y %MAXWINDVELOCITY% km/h.
+WIND_VELOCITY_IS_CONSTANT_AT_X1 = La velocidad del viento es constante %WINDVELOCITY% km/h.
+
 LOCKED = Cerrada
 ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY = El acceso a esta sala sólo es posible con la tecla derecha.
 BLOCKED = Bloqueado

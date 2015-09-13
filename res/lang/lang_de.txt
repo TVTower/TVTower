@@ -541,17 +541,30 @@ STARTING_SINGLEPLAYERGAME = Starte Einzelspieler-Spiel
 
 WEATHER_FORECAST_FOR_X_TILL_Y = Wetterbericht für %BEGINHOUR% bis %ENDHOUR% Uhr
 SKY_IS_PARTIALLY_CLOUDY = Der Himmel ist teilweise bewölkt.
-SKY_IS_OVERCAST = Der Himmel ist wolkenverhangen.
+SKY_IS_OVERCAST1 = Der Himmel ist wolkenverhangen.
+SKY_IS_OVERCAST2 = Wolken bedecken den ganzen Himmel.
 SKY_IS_WITHOUT_CLOUDS = Der Himmel bleibt wolkenfrei.
 SUN_SHINES_WHOLE_TIME = Die Sonne scheint die ganze Zeit.
-SUN_WINS_AGAINST_CLOUDS = Die Sonne setzt sich gegen vorhandene Wolken durch.
+SUN_WINS_AGAINST_CLOUDS1 = Die Sonne setzt sich gegen vorhandene Wolken durch.
+SUN_WINS_AGAINST_CLOUDS2 = Die Sonne verdrängt die vorhandenen Wolken.
 SUN_IS_SHINING_SOMETIMES = Teilweise lässt sich die Sonne blicken.
 SUN_IS_NOT_SHINING = Es wird trist. Die Sonne versteckt sich.
 RAIN_AND_SNOW_ALTERNATE = Regen und Schnee wechseln sich ab.
 RAIN_IS_POSSIBLE = Mit Regen ist zu rechnen.
 SNOW_IS_FALLING = Vorsicht auf den Straßen. Schnee bringt Glätte mit sich.
-TEMPERATURES_ARE_BETWEEN_X_AND_Y = Die Temperaturen bewegen sich zwischen %MINTEMPERATURE% und %MAXTEMPERATURE%°C
-TEMPERATURE_IS_CONSTANT_AT_X = Die Temperatur beläuft sich auf konstante %TEMPERATURE%°C
+TEMPERATURES_ARE_BETWEEN_X_AND_Y = Die Temperaturen bewegen sich zwischen %MINTEMPERATURE% und %MAXTEMPERATURE%°C.
+TEMPERATURE_IS_CONSTANT_AT_X = Die Temperatur beläuft sich auf konstante %TEMPERATURE%°C.
+
+IN_THE_LATER_HOURS1 = In den späteren Stunden
+IN_THE_LATER_HOURS2 = Nach dem Morgengrauen
+IN_THE_LATER_HOURS3 = Später dann
+STORMY_WINDS_OF_UP_TO_X1 = Sturmböen von bis zu %MAXWINDVELOCITY% km/h ziehen über das Land.
+STORMY_WINDS_OF_UP_TO_X2 = Starke Brisen bis hin zu Sturmböen von %MAXWINDVELOCITY% km/h.
+NEARLY_NO_WIND1 = Es ist nahezu windstill.
+NEARLY_NO_WIND2 = Es weht kaum Wind.
+SLOW_WIND_WITH_X_AND_GUST_OF_WIND_WITH_Y1 = Leichte Brise von %MINWINDVELOCITY% km/h und vereinzelt Böen von bis zu %MAXWINDVELOCITY% km/h.
+WIND_VELOCITIES_ARE_BETWEEN_X_AND_Y1 = Die Windgeschwindigkeiten liegen zwischen %MINWINDVELOCITY% und %MAXWINDVELOCITY% km/h.
+WIND_VELOCITY_IS_CONSTANT_AT_X1 = Die Windgeschwindigkeit beträgt konstante %WINDVELOCITY% km/h.
 
 LOCKED = Abgeschlossen
 ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY = Der Zugang zu diesem Raum ist nur mit dem richtigen Schlüssel möglich.

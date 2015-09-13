@@ -84,7 +84,7 @@ Type TWorldWeather
 
 
 	Method GetWeather:int()
-		return currentWeather.GeTWorldWeather()
+		return currentWeather.GetWorldWeather()
 	End Method
 
 
@@ -462,7 +462,7 @@ Type TWorldWeatherEntry
 	Method GetCloudOkta:int()
 		local result:int = 0
 
-		Select GeTWorldWeather()
+		Select GetWorldWeather()
 			Case TWorldWeather.WEATHER_CLEAR
 				result = 0
 			Case TWorldWeather.WEATHER_FINE
@@ -475,7 +475,7 @@ Type TWorldWeatherEntry
 
 
     Method GetMaximumLight:int()
-		Select GeTWorldWeather()
+		Select GetWorldWeather()
 			case TWorldWeather.WEATHER_CLEAR        return 15
 			case TWorldWeather.WEATHER_FINE         return 15
 			case TWorldWeather.WEATHER_CLOUDY       return 14
@@ -494,14 +494,14 @@ Type TWorldWeatherEntry
 
 	'returns whether the sun is visible
     Method IsSunVisible:int()
-		return (GeTWorldWeather() = TWorldWeather.WEATHER_FINE OR GeTWorldWeather() = TWorldWeather.WEATHER_CLEAR)
+		return (GetWorldWeather() = TWorldWeather.WEATHER_FINE OR GetWorldWeather() = TWorldWeather.WEATHER_CLEAR)
 	End Method
 
 
 	'returns whether it is raining or not.
 	'returned value ranges from 0 (no rain) to 5 (full rain)
 	Method IsRaining:int()
-		Select GeTWorldWeather()
+		Select GetWorldWeather()
 			case TWorldWeather.WEATHER_LIGHTRAIN    return 1
 			case TWorldWeather.WEATHER_RAIN         return 2
 			case TWorldWeather.WEATHER_HEAVYRAIN    return 3
@@ -515,7 +515,7 @@ Type TWorldWeatherEntry
 	'returns how bright a cloud is.
 	'values are from 0-100 (so "percentage"). 100 means pure white
     Method GetCloudBrightness:int()
-		Select GeTWorldWeather()
+		Select GetWorldWeather()
 			case TWorldWeather.WEATHER_CLEAR        return 100
 			case TWorldWeather.WEATHER_FINE         return 100
 			case TWorldWeather.WEATHER_CLOUDY       return 100
@@ -526,12 +526,12 @@ Type TWorldWeatherEntry
 			case TWorldWeather.WEATHER_STORM        return 75
 			case TWorldWeather.WEATHER_SEVERESTORM  return 25
 			case TWorldWeather.WEATHER_HURRICANE    return 25
-			Default                            return 100
+			Default                                 return 100
 		End Select
 	End Method
 
 
 	Method ToString:string()
-		return "Weather="+GetworldWeatherText()+" pressure="+GetPressure()+" windVelocity="+GetWindVelocity()
+		return "Weather="+GetWorldWeatherText()+" pressure="+GetPressure()+" windVelocity="+GetWindVelocity()
 	End Method
 End Type

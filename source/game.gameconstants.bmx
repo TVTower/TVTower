@@ -814,6 +814,15 @@ Type TVTProgrammePersonJob {_exposeToLua}
 	End Function
 
 
+	Function GetAll:int[](key:int)
+		local all:int[]
+		for local i:int = 1 to count
+			if key & GetAtIndex(i) then all :+ [GetAtIndex(i)]
+		next
+		return all
+	End Function
+
+
 	Function GetAsString:string(key:int, singularForm:int = True)
 		if singularForm
 			Select key
