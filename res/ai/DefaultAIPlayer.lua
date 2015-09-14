@@ -56,6 +56,7 @@ _G["DefaultAIPlayer"] = class(AIPlayer, function(c)
 	--c.Requisitions = nil  --darf nicht überschrieben werden
 	
 	c.Ventruesome = 5 --Risikofreude = 1 - 10
+	c.BrainSpeed = 1 --Wie schnell handelt die KI = 1-3 (Aktionen pro Tick)
 end)
 
 function DefaultAIPlayer:typename()
@@ -74,6 +75,8 @@ function DefaultAIPlayer:initializePlayer()
 	--TODO: Strategie und Charakter festlegen
 	--Waghalsigkeit 3-8
 	self.Ventruesome = math.random(3,8)
+	--Handlungsgeschwindigkeit 1-3
+	self.BrainSpeed = math.random(1,3)
 	self.Strategy = DefaultStrategy()
 end
 
@@ -85,6 +88,9 @@ function DefaultAIPlayer:resume()
 	
 	if (self.Ventruesome == 0) then
 		self.Ventruesome = 5
+	end
+	if (self.BrainSpeed == 0) then
+		self.BrainSpeed = 1
 	end
 	
 	self:CleanUp()
@@ -440,7 +446,10 @@ end
 function OnTick(timeGone)
 	--debugMsg("tick" .. timeGone)
 	if (aiIsActive) then
-		getAIPlayer():Tick()
+		-- the faster the brain, the more it does per tick
+		for i=1,getAIPlayer().BrainSpeed do
+			getAIPlayer():Tick()
+		end
 	end
 end
 
