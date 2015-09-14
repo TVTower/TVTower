@@ -35,20 +35,9 @@ End Function
 Type TShoppingList extends TOwnedGameObject
 	Field script:TScript
 
-	Field directors:TProgrammePersonBase[]
-	Field hosts:TProgrammePersonBase[]
-	Field reporters:TProgrammePersonBase[]
-	Field starActors:TProgrammePersonBase[]
-	Field actors:TProgrammePersonBase[]
-	Field musicians:TProgrammePersonBase[]
-
-	Field coulisseType1Id:string
-	Field coulisseType2Id:string
-	Field coulisseType3Id:string
-
-
 	Method Init:TShoppingList(owner:int, script:TScript)
 		self.script = script
+
 		SetOwner(owner)
 		return self
 	End Method
