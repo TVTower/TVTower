@@ -168,10 +168,14 @@ endrem
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 		Local earn:Int = audienceResult.Audience.GetSum() * contract.GetPerViewerRevenue()
 		if earn > 0
-			TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial sent, earned "+earn+CURRENCYSIGN+" with an audience of " + audienceResult.Audience.GetSum(), LOG_DEBUG)
+			TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial ~q"+GetTitle()+"~q sent by player "+owner+", earned "+earn+CURRENCYSIGN+" with an audience of " + audienceResult.Audience.GetSum(), LOG_DEBUG)
+			GetPlayerFinance(owner).EarnInfomercialRevenue(earn, contract)
+		elseif earn = 0
+			TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial ~q"+GetTitle()+"~q sent by player "+owner+", earned nothing with an audience of " + audienceResult.Audience.GetSum(), LOG_DEBUG)
+			'also "earn" 0 Euro - so it is listed in the financial history
 			GetPlayerFinance(owner).EarnInfomercialRevenue(earn, contract)
 		else
-			Notify "FinishBroadcastingAsProgramme: earn value is negative: "+earn 
+			Notify "FinishBroadcastingAsProgramme: earn value is negative: "+earn+". Ad: "+GetTitle()+" (player: "+owner+")."
 		endif
 		'adjust topicality relative to possible audience 
 		contract.base.CutInfomercialTopicality(GetInfomercialTopicalityCutModifier( audienceResult.GetWholeMarketAudienceQuotePercentage()))
