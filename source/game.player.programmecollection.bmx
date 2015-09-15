@@ -166,6 +166,15 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
+	Method GetBroadcastMaterialType:int(materialSource:object) {_exposeToLua}
+		if TProgrammeLicence(materialSource) then return TVTBroadcastMaterialType.PROGRAMME
+		if TAdContract(materialSource) then return TVTBroadcastMaterialType.ADVERTISEMENT
+		if TNewsShow(materialSource) then return TVTBroadcastMaterialType.NEWSSHOW
+		if TNews(materialSource) then return TVTBroadcastMaterialType.NEWS
+		
+		return TVTBroadcastMaterialType.UNKNOWN
+	End Method
+
 	'=== ADCONTRACTS ===
 
 	'removes AdContract from Collection (Advertising-Menu in Programmeplanner)
@@ -845,8 +854,17 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
-	Method GetAdContractsArray:Object[]() {_exposeToLua}
-		Return adContracts.toArray()
+	Method GetAdContractsArray:TAdContract[]() {_exposeToLua}
+		'would return an array of type "object[]"
+		'Return adContracts.toArray()
+
+		local result:TAdContract[ adContracts.Count() ]
+		local pos:int = 0
+		For local a:TAdContract = eachin adContracts
+			result[pos] = a
+			pos :+ 1
+		Next
+		return result
 	End Method
 	
 

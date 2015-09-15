@@ -72,7 +72,19 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	End Method
 	
 
-	Method GetTopicality:Float()
+	'when used as programme
+	Method GetProgrammeTopicality:Float() {_exposeToLua}
+		return GetTopicality()
+	End Method
+
+
+	'when used as ad
+	Method GetAdTopicality:Float() {_exposeToLua}
+		return GetTopicality()
+	End Method
+	
+
+	Method GetTopicality:Float() {_exposeToLua}
 		if topicality < 0 then topicality = GetMaxTopicality()
 
 		'refresh topicality on each request
@@ -125,7 +137,18 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 			broadcastFlags :& ~flag
 		EndIf
 	End Method
-	
+
+
+	Method IsNewBroadcastPossible:int() {_exposeToLua}
+		'false if not controllable
+		if not IsControllable() then return False
+		'false if licence/contract is not available (temporary, or
+		'because broadcast limit was exceeded)
+		if not isAvailable() then return False
+
+		return True
+	End Method	
+
 
 	Method IsAvailable:int()
 		return available

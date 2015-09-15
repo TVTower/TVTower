@@ -668,6 +668,19 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 
+	Method of_getAdContracts:TLuaFunctionResult(arrayIndex:Int=-1)
+		If Not _PlayerInRoom("office") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
+
+		local contracts:TAdContract[] = GetPlayerProgrammeCollection(self.ME).GetAdContractsArray()
+		If contracts
+			Return TLuaFunctionResult.Create(self.RESULT_OK, contracts)
+		else
+			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+		endif
+	End Method
+
+
+
 	Method of_getAdContractAtIndex:TAdContract(arrayIndex:Int=-1)
 		If Not _PlayerInRoom("office") Then Return Null
 

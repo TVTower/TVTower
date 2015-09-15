@@ -1002,11 +1002,14 @@ endrem
 	End Method
 
 
-	Method GetAdvertisementsPlanned:Int(contract:TAdContract, includeSuccessful:Int=True)
-		'start with sign
-		Local startIndex:Int= Max(0, GetArrayIndex(24 * (contract.daySigned - 1)))
-		'end with latest planned element
-		Local endIndex:Int = advertisements.length-1
+	Method GetAdvertisementsPlanned:Int(contract:TAdContract, startHour:int=-1, endHour:int=-1, includeSuccessful:Int=True) {_exposeToLua}
+		'default: start with time of the sign
+		if startHour = -1 then startHour = 24 * (contract.daySigned - 1)
+		'default: end with latest planned element
+		if endHour = -1 then endHour = advertisements.length-1
+
+		Local startIndex:Int= Max(0, GetArrayIndex(startHour))
+		Local endIndex:Int = Min(endHour, advertisements.length-1)
 
 		Local count:Int	= 0
 		For Local i:Int = startIndex To endIndex

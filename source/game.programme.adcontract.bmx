@@ -381,6 +381,12 @@ Type TAdContractBase extends TBroadcastMaterialSourceBase {_exposeToLua}
 	End Method
 
 
+	'when used as programme
+	Method GetProgrammeTopicality:Float() {_exposeToLua}
+		return GetInfomercialTopicality()
+	End Method
+
+
 	Method GetInfomercialTopicality:Float() {_exposeToLua}
 		return infomercialTopicality
 	End Method
@@ -589,7 +595,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	'what to earn each hour for each viewer
 	'(broadcasted as "infomercial")
 	Method GetPerViewerRevenue:Float() {_exposeToLua}
-		if not isInfomercialAllowed() then return 0.0
+		if not IsInfomercialAllowed() then return 0.0
 
 		local result:float = 0.0
 
@@ -599,9 +605,14 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		result :* 0.001
 
 		'less revenue with less topicality
+		'by default think of no topicality at
+		local topicalityDecrease:Float = 1.0
 		if base.GetMaxInfomercialTopicality() > 0
-			result :* (base.infomercialTopicality / base.GetMaxInfomercialTopicality())
+			topicalityDecrease = 1.0 - (base.infomercialTopicality / base.GetMaxInfomercialTopicality())
 		endif
+		'cut by maximum 90%
+		result :* (0.1 + 0.9 * (1.0 - topicalityDecrease))
+
 		return result
 	End Method
 
@@ -697,7 +708,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method isInfomercialAllowed:int() {_exposeToLua}
+	Method IsInfomercialAllowed:int() {_exposeToLua}
 		return base.infomercialAllowed
 	End Method
 
@@ -904,8 +915,9 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 
 	'days left for sending all contracts from today
-	Method GetDaysLeft:Int() {_exposeToLua}
-		Return ( base.daysToFinish - (GetWorldTime().GetDay() - daySigned) )
+	Method GetDaysLeft:Int(currentDay:int = -1) {_exposeToLua}
+		if currentDay = -1 then currentDay = GetWorldTime().GetDay()
+		Return ( base.daysToFinish - (currentDay - daySigned) )
 	End Method
 
 

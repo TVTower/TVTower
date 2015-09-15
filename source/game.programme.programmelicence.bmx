@@ -607,6 +607,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	Method SuperIsControllable:int() {_exposeToLua}
 		return Super.IsControllable()
 	End Method
+
 	
 	Method IsControllable:int() {_exposeToLua}
 		'single-licence
@@ -627,17 +628,6 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		return False
 	End Method
 
-
-	Method isNewBroadcastPossible:int() {_exposeToLua}
-		'false if not controllable
-		if not IsControllable() then return False
-		'false if licence is not available (temporary, or because broadcast
-		'limit was exceeded)
-		if not isAvailable() then return False
-
-		return True
-	End Method
-	
 
 	Method setPlanned:int(latestHour:int=-1)
 		if latestHour >= 0
@@ -806,6 +796,16 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	'returns the (avg) relative topicality of a licence (package)
 	Method GetRelativeTopicality:Float() {_exposeToLua}
 		return GetTopicality() / GetMaxTopicality()
+	End Method
+
+
+	'when used as trailer Get
+	Method GetAdTopicality:Float() {_exposeToLua}
+		if GetData()
+			return GetData().GetTrailerTopicality()
+		else
+			return 0
+		endif
 	End Method
 
 
