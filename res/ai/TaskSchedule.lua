@@ -474,8 +474,8 @@ end
 _G["JobEmergencySchedule"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
 	c.ScheduleTask = nil
-	c.SlotsToCheck = 8 --4,
-	c.testCase = 0
+	c.SlotsToCheck = 12 --4,
+	--c.testCase = 0
 end)
 
 function JobEmergencySchedule:typename()
@@ -490,13 +490,13 @@ function JobEmergencySchedule:Prepare(pParams)
 end
 
 function JobEmergencySchedule:Tick()
-	if (self.testCase > 3) then
-		return nil
-	end
+	--if (self.testCase > 3) then
+	--	return nil
+	--end
 
 	if self:CheckEmergencyCase(self.SlotsToCheck) then
 		self:FillIntervals(self.SlotsToCheck)
-		self.testCase = self.testCase + 1
+		--self.testCase = self.testCase + 1
 	end
 
 	self.Status = JOB_STATUS_DONE
@@ -617,6 +617,7 @@ function JobEmergencySchedule:SetMovieOrInfomercialToEmptyBlock(day, hour)
 		debugMsg("Setze Film: ".. fixedDay .. "/" .. fixedHour .. ":05  Lizenz: " .. choosenLicence.GetTitle() .. "  quality: " .. choosenLicence.GetQuality())
 		TVT.of_setProgrammeSlot(choosenLicence, fixedDay, fixedHour)
 	else
+		TVT.PrintOut("Kein Film/Dauerwerbesendung gefunden: " .. fixedDay .. "/" .. fixedHour ..":05")
 		debugMsg("Kein Film gefunden: " .. fixedDay .. "/" .. fixedHour ..":05")
 	end
 end
@@ -968,8 +969,8 @@ function JobSchedule:OptimizeProgrammeSchedule()
 	local currentDay = WorldTime.GetDay()
 	local currentHour = WorldTime.GetDayHour()
 
-
-	for i = currentHour, currentHour + 12 do
+	local i = currentHour
+	while i <= currentHour + 12 do
 		fixedDay, fixedHour = self.ScheduleTask:FixDayAndHour(currentDay, i)
 
 		local choosenBroadcastSource = nil
@@ -1057,7 +1058,7 @@ function JobSchedule:OptimizeProgrammeSchedule()
 			local sendNewProgramme = true
 			sendProgrammeReason = "Daytime"
 
-			if currentBroadcastMaterial and currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.PROGRAMME) == 0 then
+			if currentBroadcastMaterial and currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.PROGRAMME) == 1 then
 				sendNewProgramme = false
 
 				-- avoid running the same programme each after another
@@ -1106,6 +1107,9 @@ function JobSchedule:OptimizeProgrammeSchedule()
 				end
 			end
 		end
+
+		--move to next hour
+		i = i + 1
 	end
 end
 
