@@ -22,7 +22,9 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		obj.title = title
 
 		obj.setMaterialType(TVTBroadcastMaterialType.NEWSSHOW)
-		
+		'by default a freshly created programme is of its own type
+		obj.setUsedAsType(TVTBroadcastMaterialType.ADVERTISEMENT)
+
 		Return obj
 	End Function
 
@@ -111,16 +113,27 @@ endif
 			'               verpacken - siehe RTL2 und Co.
 			Local currentNews:TNews = TNews(news[i])
 			If currentNews Then
+				'fix broken (old) savegame-information
+				if currentNews.usedAsType = 0
+					currentNews.setUsedAsType(TVTBroadcastMaterialType.NEWS)
+				endif
+
 				tempAudienceAttr = currentNews.GetAudienceAttraction(hour, block, lastMovieBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect)			
 			Else
 				tempAudienceAttr = TAudienceAttraction.CreateAndInitAttraction(0.01, 0.01, 0.01,0.01,0.01, 0.01, 0.01, 0.01, 0.01)  
 			EndIf
 
 			'different weight for news slots
-			If i = 0 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.5))
-			If i = 1 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.3))
+			If i = 0 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.45))
+			If i = 1 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.35))
 			If i = 2 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.2))
+
+			local title:string = "--"
+			if currentNews then title = currentNews.GetTitle() 
+			'print owner+")  news"+i+":  " +tempAudienceAttr.ToString() +"   " + title +"  usedAs:"+usedAsType
+
 		Next
+		'print owner+")  newsA:  " + resultAudienceAttr.ToString()
 		Return resultAudienceAttr
 	End Method
 
@@ -242,7 +255,11 @@ endrem
 		Local quality:Float = 0.0
 		local count:int = 0
 		for local i:int = 0 to 2
-			if TNews(news[i]) then quality:+TNews(news[i]).GetQuality();count:+1
+			if TNews(news[i])
+print "getquality"+i
+				quality :+ TNews(news[i]).GetQuality()
+				count :+ 1
+			endif
 		Next
 		if count > 0 then quality :/ count
 
@@ -289,6 +306,8 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		obj.newsEvent = useNewsEvent
 
 		obj.setMaterialType(TVTBroadcastMaterialType.NEWS)
+		'by default a freshly created programme is of its own type
+		obj.setUsedAsType(TVTBroadcastMaterialType.NEWS)
 		
 		Return obj
 	End Function

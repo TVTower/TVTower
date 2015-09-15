@@ -172,7 +172,7 @@ rem
 		Local quality:Float = 0
 		Local result:TAudienceAttraction = New TAudienceAttraction
 
-		result.RawQuality = data.GetQuality()
+		result.RawQuality = data.GetQualityRaw()
 
 		quality = ManipulateQualityFactor(result.RawQuality, hour, result)
 

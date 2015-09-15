@@ -2282,11 +2282,11 @@ Type TGUINews Extends TGUIGameListItem
 			
 			fontBold.draw("News: " + news.newsEvent.GetTitle(), screenX + 5, textY)
 			textY :+ 14	
-			fontNormal.draw("Preis: " + news.GetPrice()+"  (PreisMod: "+news.newsEvent.GetModifier("price")+")", screenX + 5, textY)
+			fontNormal.draw("Preis: " + news.GetPrice()+"  (PreisMod: "+MathHelper.NumberToString(news.newsEvent.GetModifier("price"),4)+")", screenX + 5, textY)
 			textY :+ 11	
-			fontNormal.draw("Qualitaet: "+news.GetQuality() +" (Event:"+ news.newsEvent.quality + ")", screenX + 5, textY)
+			fontNormal.draw("Qualitaet: " + MathHelper.NumberToString(news.GetQuality(), 4) + " (Event:" + MathHelper.NumberToString(news.newsEvent.GetQuality(),4) + ", roh=" + MathHelper.NumberToString(news.newsEvent.GetQualityRaw(), 4), screenX + 5, textY)
 			textY :+ 11	
-			fontNormal.draw("(KI-)Attraktivitaet: "+news.newsEvent.GetAttractiveness()+"    Aktualitaet: " + news.newsEvent.GetTopicality(), screenX + 5, textY)
+			fontNormal.draw("(KI-)Attraktivitaet: "+MathHelper.NumberToString(news.newsEvent.GetAttractiveness(),4)+"    Aktualitaet: " + MathHelper.NumberToString(news.newsEvent.GetTopicality(),4), screenX + 5, textY)
 			textY :+ 11	
 			fontNormal.draw("Ausstrahlungen: " + news.newsEvent.GetTimesBroadcasted(news.owner)+"x  (" + news.newsEvent.GetTimesBroadcasted()+"x gesamt)", screenX + 5, textY)
 			textY :+ 11	

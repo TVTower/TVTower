@@ -366,7 +366,8 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		if owner <= 0 Then Throw TNullObjectExceptionExt.Create("The programme '" + GetTitle() + "' has no owner.")
 		if block <= 0 and usedAsType = TVTBroadcastMaterialType.PROGRAMME Then Throw TNullObjectExceptionExt.Create("GetAudienceAttractionInternal: Invalid block param: '" + block + ".")
 
-		If block = 1 Or Not lastMovieBlockAttraction Then
+		'begin of a programme, begin of broadcast - or news show
+		If block = 1 Or Not lastMovieBlockAttraction or usedAsType = TVTBroadcastMaterialType.NEWS Then
 			'1 - Qualität des Programms
 			result.Quality = GetQuality()
 
@@ -393,11 +394,6 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 			'movie-attraction-data ... if done on "reference base" keep
 			'paying attention to this when modifying the attraction
 			result.CopyBaseAttractionFrom(lastMovieBlockAttraction)
-
-			if usedAsType = TVTBroadcastMaterialType.NEWS
-				'news have their own mod each time
-				result.MiscMod = GetMiscMod(hour)
-			endif
 		Endif
 
 		'7 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten

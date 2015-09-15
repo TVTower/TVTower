@@ -288,7 +288,7 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	Field title:TLocalizedString
 	Field description:TLocalizedString
 	Field genre:Int = 0
-	Field quality:Float = -1.0 'none
+	Field qualityRaw:Float = -1.0 'none
 	'time when something happened or will happen. "-1" = not happened
 	Field happenedTime:Long = -1
 	'time when a news gets invalid (eg. thunderstorm warning)
@@ -320,7 +320,7 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		self.description = description
 		self.genre       = Genre
 		self.topicality  = 1.0
-		if quality >= 0 then SetQuality(quality)
+		if quality >= 0 then SetQualityRaw(quality)
 		self.newsType	 = newsType
 		'modificators: > 1.0 increases price (1.0 = 100%)
 		if modifiers then self.modifiers = modifiers.Copy()
@@ -339,7 +339,7 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 
 	Method ToString:String()
-		return "newsEvent: title=" + GetTitle() + "  quality=" + quality + "  priceMod=" + GetModifier("price")
+		return "newsEvent: title=" + GetTitle() + "  quality=" + GetQualityRaw() + "  priceMod=" + GetModifier("price")
 	End Method
 
 
@@ -360,9 +360,9 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method SetQuality:Int(quality:Float)
+	Method SetQualityRaw:Int(quality:Float)
 		'clamp between 0-1.0
-		self.quality = MathHelper.Clamp(quality, 0.0, 1.0)
+		self.qualityRaw = MathHelper.Clamp(quality, 0.0, 1.0)
 	End Method
 	
 
@@ -500,7 +500,7 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 	'AI/LUA-helper
 	Method GetAttractiveness:Float() {_exposeToLua}
-		return 0.35*quality + 0.6*GetTopicality() + 0.05
+		return 0.35*GetQualityRaw() + 0.6*GetTopicality() + 0.05
 	End Method
 
 
@@ -517,24 +517,38 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetQuality:Float(luckFactor:Int = 1) {_exposeToLua}
+	Method GetQualityRaw:Float() {_exposeToLua}
 		'already calculated?
-		if quality >= 0 then return quality
+		if qualityRaw >= 0 then return qualityRaw
+
+		'create a random quality
+		qualityRaw = (Float(RandRange(1, 100)) / 100.0) '1%-Punkte bis 3%-Punkte Basis-Qualität
+
+		return qualityRaw
+	End Method
+
+
+	'contains age/topicality decrease
+	Method GetQuality:Float() {_exposeToLua}
+		Local quality:Float = GetQualityRaw()
+
+		'the more the news got repeated, the lower the quality in
+		'that moment (^2 increases loss per air)
+		'but a "good news" should benefit from being good - so the
+		'influence of repetitions gets lower by higher raw quality
+		'-> a news with 100% base quality will have at least 25% of
+		'   quality no matter how many times it got aired
+		'-> a news with 0% base quality will cut to up to 75% of that
+		'   resulting in <= 25% quality
 		
-		Local qualityTemp:Float = 0.0
+		quality :* (0.25*GetQualityRaw() + (1.0 - 0.75*GetQualityRaw()) * GetTopicality()^2)
+		'old variant
+		'quality :* GetTopicality() ^ 2
 
-		qualityTemp = GetAttractiveness()
+		'no minus quote, min 0.01 quote
+		quality = Max(0.01, quality)
 
-		If luckFactor = 1 Then
-			qualityTemp = qualityTemp * 0.97 + (Float(RandRange(10, 30)) / 1000.0) '1%-Punkte bis 3%-Punkte Basis-Qualität
-		Else
-			qualityTemp = qualityTemp * 0.99 + 0.01 'Mindestens 1% Qualität
-		EndIf
-
-		'no minus quote
-		quality = Max(0, qualityTemp)
-
-		return quality
+		Return quality
 	End Method
 
 

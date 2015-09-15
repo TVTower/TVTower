@@ -74,7 +74,7 @@ rem
 		Throw "TODO"
 		'Local result:TAudienceAttraction = Null
 
-		'Local rawQuality:Float = news.GetQuality()
+		'Local rawQuality:Float = news.GetQualityRaw()
 		'Local quality:Float = Max(0, Min(99, rawQuality))
 
 		'result = CalculateQuotes(quality) 'Genre/Zielgruppe-Mod

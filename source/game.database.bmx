@@ -400,7 +400,7 @@ Type TDatabaseLoader
 		newsEvent.genre = data.GetInt("genre", newsEvent.genre)
 		newsEvent.available = data.GetBool("available", newsEvent.available)
 		'topicality is "quality" here
-		newsEvent.quality = 0.01 * data.GetFloat("topicality", 100 * newsEvent.quality)
+		newsEvent.qualityRaw = 0.01 * data.GetFloat("topicality", 100 * newsEvent.qualityRaw)
 		'price is "priceModifier" here (so add 1.0 until that is done in DB)
 		local priceMod:Float = data.GetFloat("price", 0)
 		if priceMod = 0 then priceMod = 1.0 'invalid data given

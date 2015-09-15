@@ -47,13 +47,18 @@
 
 			<!-- profit/penalty get multiplied with this value if there
 			     is a limiting targetgroup.
-			     Default: 3.0
-				<DEV_AD_LIMITED_TARGETGROUP_MULTIPLIER value="3.0" />
+			     Default: 1.0
+				<DEV_AD_LIMITED_TARGETGROUP_MULTIPLIER value="1.0" />
 			-->
 			<!-- profit/penalty get multiplied with this value if there
 			     is a limiting genre defined.
-			     Default: 2.0
-				<DEV_AD_LIMITED_GENRE_MULTIPLIER value="2.0" />
+			     Default: 1.5
+				<DEV_AD_LIMITED_GENRE_MULTIPLIER value="1.5" />
+			-->
+			<!-- profit/penalty get multiplied with this value if there
+			     is a limiting flag defined (just xrated, bmovies...).
+			     Default: 1.25
+				<DEV_AD_LIMITED_PROGRAMME_FLAG_MULTIPLIER value="1.25" />
 			-->
 
 			<!-- general balancing factor -->
