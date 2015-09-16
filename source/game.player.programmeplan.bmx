@@ -188,7 +188,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			If adString <> "" Or progString <> ""
 				If progString = "" Then progString = "SENDEAUSFALL"
 				If adString = "" Then adString = " -> WERBEAUSFALL"
-				Print "[" + GetArrayIndex(time / 60) + "] " + GetWorldTime().GetYear(time) + " " + GetWorldTime().GetOnDayOfYear(time) + ".Tag " + GetWorldTime().GetDayHour(time) + ":00 : " + progString + adString
+				Print "[" + GetArrayIndex(time / 60) + "] " + GetWorldTime().GetYear(time) + " " + GetWorldTime().GetDayOfYear(time) + ".Tag " + GetWorldTime().GetDayHour(time) + ":00 : " + progString + adString
 			EndIf
 		Next
 		For Local i:Int = 0 To programmes.length - 1

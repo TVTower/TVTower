@@ -673,7 +673,7 @@ Type TGUISavegameListItem extends TGUISelectListItem
 
 	Method DrawContent()
 		local time:Double = GetFileInformation().GetDouble("game_timegone", 0)
-		local gameTime:string = GetWorldTime().getFormattedTime(time)+" "+getLocale("DAY")+" "+GetWorldTime().getOnDayOfYear(time)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(time)
+		local gameTime:string = GetWorldTime().getFormattedTime(time)+" "+getLocale("DAY")+" "+GetWorldTime().getDayOfYear(time)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(time)
 		local col:TColor = TColor.Create(120,125,160)
 		local playerCol:TColor = TColor.Create(80, 85, 120)
 		local headCol:TColor = TColor.clWhite 'TColor.Create(150,90,0)

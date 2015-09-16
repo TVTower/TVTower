@@ -306,7 +306,7 @@ Type TInGameInterface
 		EndIf
 		If THelper.MouseIn(355,533,130,45)
 			CurrentTimeToolTip.SetTitle(getLocale("GAME_TIME")+": ")
-			CurrentTimeToolTip.SetContent(GetWorldTime().getFormattedTime()+" "+getLocale("DAY")+" "+GetWorldTime().getOnDayOfYear()+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear())
+			CurrentTimeToolTip.SetContent(GetWorldTime().getFormattedTime()+" "+getLocale("DAY")+" "+GetWorldTime().getDayOfYear()+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear())
 			CurrentTimeToolTip.enabled = 1
 			CurrentTimeToolTip.Hover()
 		EndIf

@@ -10254,7 +10254,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>The American auto giant is bleeding red ink. One reason is the poor sales of the new model Montana.</en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="bd268c78-0e6c-4659-a833-66565e0a4af8" />
+				<effect trigger="happen" type="triggernews" news="1135edbe-daf4-4ed7-8817-b352b9ee7442" />
 			</effects>
 			<data genre="3" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10934,9 +10934,6 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<de>In der letzten Nacht wurde die Mona Lisa aus dem Louvre in Paris gestohlen. Ein Nachtwächter bemerkte dies, als er den Rahmen säubern wollte.</de>
 				<en></en>
 			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="39ecbad4-2155-4374-a610-c4473ec8a493" />
-			</effects>
 			<data genre="4" price="1.0" quality="49" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>

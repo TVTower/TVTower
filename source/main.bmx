@@ -944,7 +944,7 @@ endrem
 				Next
 
 
-				GetWorld().RenderDebug(660,0, 140, 130)
+				GetWorld().RenderDebug(660,0, 140, 160)
 				'GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
 			EndIf
 			'show quotes even without "DEV_OSD = true"

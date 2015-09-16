@@ -85,7 +85,7 @@ Type TScreenHandler_Financials
 		local screenOffsetX:int = 20
 		local screenOffsetY:int = 10
 
-		local finance:TPlayerFinance= GetPlayerCollection().Get(room.owner).GetFinance(financeShowDay)
+		local finance:TPlayerFinance = GetPlayer(room.owner).GetFinance(financeShowDay)
 
 		local captionColor:TColor = new TColor.CreateGrey(70)
 		local captionFont:TBitmapFont = GetBitmapFont("Default", 14, BOLDFONT)
@@ -105,8 +105,8 @@ Type TScreenHandler_Financials
 
 		'=== DAY CHANGER ===
 		'add 1 to "today" as we are on this day then
-		local today:int = GetWorldTime().MakeTime(0, financeShowDay+1, 0, 0)
-		local todayText:string = GetWorldTime().GetOnDayOfYear(today)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(today)
+		local today:int = GetWorldTime().MakeTime(0, financeShowDay, 0, 0)
+		local todayText:string = GetWorldTime().GetDayOfYear(today)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().GetYear(today)
 		textFont.DrawBlock(GetLocale("GAMEDAY")+" "+todayText, 30 + screenOffsetX, 15 +  screenOffsetY, 160, 20, ALIGN_CENTER_CENTER, TColor.CreateGrey(90), 2, 1, 0.2)
 
 
@@ -332,7 +332,7 @@ Type TScreenHandler_Financials
 		Next
 		if hoveredDay > 0
 			local time:int = GetWorldTime().MakeTime(0, hoveredDay, 0, 0)
-			local gameDay:string = GetWorldTime().GetOnDayOfYear(time)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(time)
+			local gameDay:string = GetWorldTime().GetDayOfYear(time)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(time)
 			if GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money > 0
 				textSmallFont.Draw(GetLocale("GAMEDAY")+" "+gameDay+": |color=50,110,50|"+TFunctions.dottedValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money)+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
 			Else

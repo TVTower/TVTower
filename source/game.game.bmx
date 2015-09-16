@@ -951,7 +951,7 @@ endrem
 			'day
 			If worldTime.GetDayHour() = 0 And worldTime.GetDayMinute() = 0
 				'year
-				If worldTime.GetOnDayOfYear() = 1
+				If worldTime.GetDayOfYear() = 1
 					EventManager.triggerEvent(TEventSimple.Create("Game.OnYear", New TData.addNumber("minute", worldTime.GetDayMinute()).addNumber("hour", worldTime.GetDayHour()).addNumber("day", worldTime.GetDay()) ))
 
 					'reset availableNewsEventList - maybe this is a year

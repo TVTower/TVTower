@@ -498,7 +498,7 @@ Type TWorld
 	End Method
 	
 
-	Method RenderDebug:int(x:Float = 0, y:Float = 0, width:int=200, height:int=120)
+	Method RenderDebug:int(x:Float = 0, y:Float = 0, width:int=200, height:int=160)
 		SetColor 0,0,0
 		SetAlpha GetAlpha()*0.5
 		DrawRect(x,y,width,height)
@@ -507,17 +507,23 @@ Type TWorld
 		local dy:int = 5
 		DrawText("== World Data ==", x + 10, y + dy)
 		dy :+ 12
-		local minute:string = GetWorldTime().GetDayMinute()
-		if minute.length = 1 then minute = "0"+minute
-		DrawText("time: "+GetWorldTime().GetDayHour()+":"+minute+" "+GetWorldTime().GetDayPhaseText(), x + 10, y + dy)
+		DrawText("time: "+GetWorldTime().GetFormattedTime()+" "+GetWorldTime().GetDayPhaseText(), x + 10, y + dy)
 		dy :+ 12
-		DrawText("year: "+GetWorldTime().GetYear()+"  season: "+GetWorldTime().GetSeason()+"/4", x + 10, y + dy)
+		DrawText("date: "+GetWorldTime().GetFormattedDate(), x + 10, y+ dy)
+		dy :+ 12
+		DrawText("day: "+GetWorldTime().GetDay(), x + 10, y+ dy)
+		dy :+ 12
+		DrawText("day: "+GetWorldTime().GetDayOfMonth()+" of month: "+GetWorldTime().GetMonth(), x + 10, y+ dy)
+		dy :+ 12
+		DrawText("day: "+GetWorldTime().GetDayOfYear()+" of year: "+GetWorldTime().GetYear(), x + 10, y+ dy)
+		dy :+ 12
+		DrawText("season: "+GetWorldTime().GetSeason()+"/4", x + 10, y + dy)
 		dy :+ 12
 		DrawText("weather: "+Weather.GetWeatherText(), x + 10, y + dy)
 		dy :+ 12
-		DrawText("wind: "+Weather.GetWindVelocity(), x + 10, y + dy)
+		DrawText("wind: "+MathHelper.NumberToString(Weather.GetWindVelocity(),4), x + 10, y + dy)
 		dy :+ 12
-		DrawText("temp: "+Weather.GetTemperature(), x + 10, y + dy)
+		DrawText("temp: "+MathHelper.NumberToString(Weather.GetTemperature(),4), x + 10, y + dy)
 		dy :+ 12
 		DrawText("speed: "+int(GetWorldTime().GetTimeFactor()), x + 10, y + dy)
 		dy :+ 12
@@ -538,8 +544,7 @@ Type TWorld
 		if (sunset mod 3600)/60 < 10 then sunSetString :+ "0"
 		sunSetString:+(sunset mod 3600)/60
 		
-		DrawText("rise: "+sunRiseString+"  set: "+sunSetString, x + 10, y+ 89)
-		DrawText("realDay: "+GetWorldTime().GetDayOfMonth()+"/"+GetWorldTime().GetMonth(), x + 10, y+ 101)
+		DrawText("rise: "+sunRiseString+"  set: "+sunSetString, x + 10, y+ dy)
 	End Method
 End Type
 

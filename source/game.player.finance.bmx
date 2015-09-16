@@ -87,7 +87,7 @@ Type TPlayerFinanceCollection
 		endif
 
 		If (arrayIndex = 0 And Not finances[playerIndex][0]) Or arrayIndex >= finances[playerIndex].length
-			print "Adding a new finance to player "+playerID+" for day "+day+ " at index "+arrayIndex
+			'print "Adding a new finance to player "+playerID+" for day "+day+ " at index "+arrayIndex
 			'TLogger.Log("TPlayer.GetFinance()", "Adding a new finance to player "+playerID+" for day "+day+ " at index "+arrayIndex, LOG_DEBUG)
 			If arrayIndex >= finances[playerIndex].length
 				'resize array
@@ -99,7 +99,7 @@ Type TPlayerFinanceCollection
 			'calling GetFinance(day-1) instead of accessing the array
 			'assures that the object is created if needed (recursion)
 			If arrayIndex > 0
-				print "take over finances: " + (day-1) +" old:" + _Get(playerID, day-1).money
+				'print "take over finances: " + (day-1) +" old:" + _Get(playerID, day-1).money
 				TPlayerFinance.TakeOverFinances(_Get(playerID, day-1), finances[playerIndex][arrayIndex])
 			endif
 		EndIf

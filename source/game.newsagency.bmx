@@ -257,7 +257,7 @@ Type TNewsAgency
 		
 		local newsEvent:TNewsEvent = GetWeatherNewsEvent()
 		If newsEvent
-			'Print "[LOCAL] UpdateWeather: added weather news title="+newsEvent.title+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
+			'Print "[LOCAL] UpdateWeather: added weather news title="+newsEvent.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
 			announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone())
 		EndIf
 

@@ -70,11 +70,15 @@ Type TWorldTime {_exposeToLua="selected"}
 
 
 	Method MakeTime:Double(year:Int, day:Int, hour:Int, minute:Int, second:int = 0) {_exposeToLua}
-		'year=1, day=1, hour=0, minute=1 should result in "1*yearInSeconds+1"
+		'old:
+		'year=1, day=1, hour=0, minute=1 should result in "1*yearInSeconds+1*60"
 		'as it is 1 minute after end of last year - new years eve ;D
 		'there is no "day 0" (as there would be no "month 0")
+		'Return ((((day-1) + year*GetDaysPerYear())*24 + hour)*60 + minute)*60 + second
 
-		Return ((((day-1) + year*GetDaysPerYear())*24 + hour)*60 + minute)*60 + second
+		'new:
+		'year=1, day=1, hour=0, minute=1 should result in "1*yearInSeconds+1*dayInSeconds+1*60"
+		Return (((day + year*GetDaysPerYear())*24 + hour)*60 + minute)*60 + second
 	End Method
 
 
@@ -132,8 +136,8 @@ Type TWorldTime {_exposeToLua="selected"}
 		If year = 0 Then Return False
 		If year < 1930 Then Return False
 
-		SetTimeGone(MakeTime(year,1,0,0))
-		SetTimeStart(MakeTime(year,1,0,0))
+		SetTimeGone(MakeTime(year,0,0,0))
+		SetTimeStart(MakeTime(year,0,0,0))
 	End Method
 
 
@@ -335,12 +339,7 @@ Type TWorldTime {_exposeToLua="selected"}
 
 
 	Method GetDayOfYear:Int(_time:Double = 0) {_exposeToLua}
-		Return (GetDay(_time) - GetYear(_time) * GetDaysPerYear())
-	End Method
-
-
-	Method GetOnDayOfYear:Int(_time:Double = 0) {_exposeToLua}
-		Return (GetOnDay(_time) - GetYear(_time) * GetDaysPerYear())
+		Return (GetDay(_time) - GetYear(_time) * GetDaysPerYear()) + 1
 	End Method
 
 
