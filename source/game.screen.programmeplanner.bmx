@@ -416,6 +416,12 @@ Type TScreenHandler_ProgrammePlanner
 		RemoveAllGuiElements(true)
 
 
+		'local plan:TPlayerProgrammePlan = GetPlayerProgrammePlan(currentRoom.owner)
+		'if plan
+		'	if plan.RemoveBrokenObjects() > 0 then Notify "Ronny: Du hattest Programme/Werbung im Programmplan die als ~qnicht programmiert~q deklariert waren."
+		'endif
+
+
 		'=== INITIALIZE VIEW ===
 		'set the planning day to the current one and recreate all gui
 		'elements
@@ -1331,7 +1337,14 @@ endif
 			if not obj then continue
 			'if already included - skip it
 			if GuiListProgrammes.ContainsBroadcastMaterial(obj) then continue
-			
+			'repair broken ones
+			if obj.programmedDay = -1 and obj.programmedHour = -1
+				if GetPlayerProgrammePlan(currentRoom.owner).RemoveBrokenObjects()
+					Notify "Ronny: Du hattest Programme/Werbung im Programmplan die als ~qnicht programmiert~q deklariert waren."
+				endif
+				continue
+			endif
+						
 			'DAYCHANGE
 			'skip programmes started yesterday (they are stored individually)
 			if obj.programmedDay < currDay and currDay  > 0
@@ -1376,12 +1389,19 @@ endif
 
 			'if already included - skip it
 			if GuiListAdvertisements.ContainsBroadcastMaterial(obj) then continue
-
+			'repair broken ones
+			if obj.programmedDay = -1 and obj.programmedHour = -1
+				if GetPlayerProgrammePlan(currentRoom.owner).RemoveBrokenObjects()
+					Notify "Ronny: Du hattest Programme/Werbung im Programmplan die als ~qnicht programmiert~q deklariert waren."
+				endif
+				continue
+			endif
+			
 			'DAYCHANGE
 			'skip programmes started yesterday (they are stored individually)
 			if obj.programmedDay < currDay and currDay > 0
 				'set to the obj still running at the begin of the planning day
-				GuiListProgrammes.SetDayChangeBroadcastMaterial(obj, currDay)
+				GuiListAdvertisements.SetDayChangeBroadcastMaterial(obj, currDay)
 				continue
 			endif
 

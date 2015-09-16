@@ -770,6 +770,53 @@ endrem
 
 
 
+	Method RemoveBrokenObjects:int()
+		'TODO: Ronny: find out when this might happen ?!
+		'fix broken ones (reported via savegame by user Teppic)
+		local toRemove:TBroadcastMaterial[]
+		local fixed:int = 0
+		'do not process things happening in the past
+		local start:int = GetArrayIndex(GetWorldTime().GetHour())
+
+		For local i:int = start until programmes.length
+			if not programmes[i] then continue
+			if programmes[i].programmedDay = -1
+				local t:long = GetWorldTime().MakeTime(0, 0, GetHourFromArrayIndex(i), 0,0)
+				programmes[i].programmedDay = GetWorldTime().GetDay(t)
+				programmes[i].programmedHour = GetWorldTime().GetDayHour(t)
+
+				toRemove :+ [programmes[i]]
+			endif
+		Next
+
+		For local i:int = start until advertisements.length
+			if not advertisements[i] then continue
+			if advertisements[i].programmedDay = -1
+				local t:long = GetWorldTime().MakeTime(0, 0, GetHourFromArrayIndex(i), 0,0)
+				advertisements[i].programmedDay = GetWorldTime().GetDay(t)
+				advertisements[i].programmedHour = GetWorldTime().GetDayHour(t)
+				toRemove :+ [advertisements[i]]
+			endif
+		Next
+
+
+		'avoid direct array modification, so we loop over an extra array
+		for local b:TBroadcastMaterial = eachin toRemove
+			local t:long = GetWorldTime().MakeTime(0, b.programmedDay, b.programmedHour, 0,0)
+			if TAdvertisement(b)
+				RemoveAdvertisement(b)
+				TLogger.Log("PlayerProgrammePlan", "RemoveBrokenObjects() had to remove BROKEN ad ~q" + b.GetTitle()+"~q from day="+GetWorldTime().GetDay(t)+" hour="+GetWorldTime().GetDayHour(t)+":55.", LOG_ERROR)
+			elseif TProgramme(b)
+				RemoveProgramme(b)
+				TLogger.Log("PlayerProgrammePlan", "RemoveBrokenObjects() had to remove BROKEN programme ~q" + b.GetTitle()+"~q from day="+GetWorldTime().GetDay(t)+" hour="+GetWorldTime().GetDayHour(t)+":00.", LOG_ERROR)
+			endif
+			fixed :+ 1
+		Next
+
+		return fixed
+	End Method
+
+
 	'===== PROGRAMME FUNCTIONS =====
 	'mostly wrapping the commong object functions
 
