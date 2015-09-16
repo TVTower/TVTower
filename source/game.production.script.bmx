@@ -467,7 +467,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 	'buy means pay and set owner, but in players collection only if left the room!!
 	Method Buy:Int(playerID:Int=-1)
-		local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(playerID, -1)
+		local finance:TPlayerFinance = GetPlayerFinance(playerID)
 		if not finance then return False
 
 		If finance.PayScript(getPrice(), self)
@@ -507,7 +507,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			canAfford = True
 		'not our licence but enough money to buy ?
 		else
-			local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(GetPlayerBaseCollection().playerID, -1)
+			local finance:TPlayerFinance = GetPlayerFinance(GetPlayerBaseCollection().playerID)
 			if finance and finance.canAfford(GetPrice())
 				canAfford = True
 			endif		

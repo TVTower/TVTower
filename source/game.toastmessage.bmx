@@ -181,7 +181,7 @@ Type TGameToastMessage extends TToastMessage
 			text = text.Replace("%H%", GetWorldTime().GetDayHour(_closeAtWorldTime))
 			text = text.Replace("%I%", GetWorldTime().GetDayMinute(_closeAtWorldTime))
 			text = text.Replace("%S%", GetWorldTime().GetDaySecond(_closeAtWorldTime))
-			text = text.Replace("%D%", GetWorldTime().GetDay(_closeAtWorldTime))
+			text = text.Replace("%D%", GetWorldTime().GetOnDay(_closeAtWorldTime))
 			text = text.Replace("%Y%", GetWorldTime().GetYear(_closeAtWorldTime))
 			text = text.Replace("%SEASON%", GetWorldTime().GetSeason(_closeAtWorldTime))
 			text = text.Replace("%TIME%", GetWorldTime().GetFormattedTime(_closeAtWorldTime))

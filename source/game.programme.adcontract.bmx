@@ -725,7 +725,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		EventManager.triggerEvent(TEventSimple.Create("adContract.onFail", New TData.addNumber("time", time), Self))
 
 		'pay penalty
-		GetPlayerFinanceCollection().Get(owner ,GetWorldTime().GetDay(time)).PayPenalty(GetPenalty(), self)
+		GetPlayerFinance(owner, GetWorldTime().GetOnDay(time)).PayPenalty(GetPenalty(), self)
 
 		'clean up (eg. decrease usage counter)
 		Remove()
@@ -738,7 +738,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		EventManager.triggerEvent(TEventSimple.Create("adContract.onFinish", New TData.addNumber("time", time), Self))
 
 		'give money
-		GetPlayerFinanceCollection().Get(owner, GetWorldTime().GetDay(time)).EarnAdProfit(GetProfit(), self)
+		GetPlayerFinance(owner, GetWorldTime().GetOnDay(time)).EarnAdProfit(GetProfit(), self)
 
 		'clean up (eg. decrease usage counter)
 		Remove()
@@ -916,7 +916,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 	'days left for sending all contracts from today
 	Method GetDaysLeft:Int(currentDay:int = -1) {_exposeToLua}
-		if currentDay = -1 then currentDay = GetWorldTime().GetDay()
+		if currentDay < 0 then currentDay = GetWorldTime().GetDay()
 		Return ( base.daysToFinish - (currentDay - daySigned) )
 	End Method
 

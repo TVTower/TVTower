@@ -458,7 +458,7 @@ Type TWorld
 		SetAlpha(oldAlpha * modifyAlpha)
 		if skyMoon
 			'show a different frame each day
-			local phase:int = skyMoon.frames - ( GetWorldTime().getDay(GetWorldTime().GetTimeGone() + 6*3600)) Mod skyMoon.frames
+			local phase:int = skyMoon.frames - ( GetWorldTime().GetDay(GetWorldTime().GetTimeGone() + 6*3600)) Mod skyMoon.frames
 			
 			skyMoon.Draw(movedMoonPoint.x, movedMoonPoint.y, phase, ALIGN_CENTER_CENTER, , 0.95+0.05*Sin(Time.GetAppTimeGone()/10))
 		else

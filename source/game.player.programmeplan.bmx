@@ -188,7 +188,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			If adString <> "" Or progString <> ""
 				If progString = "" Then progString = "SENDEAUSFALL"
 				If adString = "" Then adString = " -> WERBEAUSFALL"
-				Print "[" + GetArrayIndex(time / 60) + "] " + GetWorldTime().GetYear(time) + " " + GetWorldTime().GetDayOfYear(time) + ".Tag " + GetWorldTime().GetDayHour(time) + ":00 : " + progString + adString
+				Print "[" + GetArrayIndex(time / 60) + "] " + GetWorldTime().GetYear(time) + " " + GetWorldTime().GetOnDayOfYear(time) + ".Tag " + GetWorldTime().GetDayHour(time) + ":00 : " + progString + adString
 			EndIf
 		Next
 		For Local i:Int = 0 To programmes.length - 1
@@ -256,7 +256,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'Set a time slot locked
 	'each lock is identifyable by "typeID_timeHours"
 	Method LockSlot:int(slotType:int=0, day:int=-1, hour:int=-1, lockTypeFlags:int=0)
-		If day = -1 Then day = GetWorldTime().getDay()
+		If day < 0 Then day = GetWorldTime().GetDay()
 		If hour = -1 Then hour = GetWorldTime().getDayHour()
 
 		'remove lock flags contained in flag already
@@ -274,7 +274,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 
 	Method UnlockSlot:int(slotType:int=0, day:int=-1, hour:int=-1, lockTypeFlags:int=0)
-		If day = -1 Then day = GetWorldTime().getDay()
+		If day < 0 Then day = GetWorldTime().GetDay()
 		If hour = -1 Then hour = GetWorldTime().getDayHour()
 
 		local flag:int = 0
@@ -309,7 +309,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'returns whether this slot is locked, ignores locks of other slots
 	'occupied by the same broadcastmaterial filling this slot
 	Method IsLockedSlot:int(slotType:int=0, day:int=-1, hour:int=-1, lockTypeFlags:int=0)
-		If day = -1 Then day = GetWorldTime().getDay()
+		If day < 0 Then day = GetWorldTime().GetDay()
 		If hour = -1 Then hour = GetWorldTime().getDayHour()
 
 		local flag:int = 0
@@ -349,7 +349,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'removes slot lock info from past days (to keep things small sized)
 	Method RemoveObsoleteSlotLocks:int()
-		local time:int = GetWorldTime().getDay()*24 ' + 0 hours, start at midnight)
+		local time:int = GetWorldTime().GetDay()*24 ' + 0 hours, start at midnight)
 		
 		For local k:string = EachIn lockedSlots.Keys()
 			local parts:string[] = k.split("_")
@@ -401,7 +401,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'returns whether the slot can be used or is already in the past...
 	Function IsUseableTimeSlot:Int(slotType:Int=0, day:Int=-1, hour:Int=-1, currentDay:Int=-1, currentHour:Int=-1, currentMinute:Int=-1)
-		If day = -1 Then day = GetWorldTime().getDay()
+		If day < 0 Then day = GetWorldTime().GetDay()
 		If hour = -1 Then hour = GetWorldTime().getDayHour()
 		If currentDay =-1  Then currentDay = GetWorldTime().GetDay()
 		If currentHour =-1  Then currentHour = GetWorldTime().GetDayHour()
@@ -451,7 +451,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'returns the block of the media at the given time
 	Method GetObjectBlock:Int(objectType:Int=0, day:Int=-1, hour:Int=-1) {_exposeToLua}
-		If day = -1 Then day = GetWorldTime().getDay()
+		If day = -1 Then day = GetWorldTime().GetDay()
 		If hour = -1 Then hour = GetWorldTime().getDayHour()
 		Local startHour:Int = GetObjectStartHour(objectType, day, hour)
 
@@ -558,7 +558,7 @@ endrem
 	'attention: that is not a gamedayHour from 0-24 but in hours since day0
 	'returns -1 if no object was found
 	Method GetObjectStartHour:Int(objectType:Int=0, day:Int=-1, hour:Int=-1) {_exposeToLua}
-		If day = -1 Then day = GetWorldTime().getDay()
+		If day = -1 Then day = GetWorldTime().GetDay()
 		If hour = -1 Then hour = GetWorldTime().getDayHour()
 		Local arrayIndex:Int = GetArrayIndex(day * 24 + hour)
 
@@ -590,7 +590,7 @@ endrem
 
 	'add an object / set a slot occupied
 	Method AddObject:Int(obj:TBroadcastMaterial, slotType:Int=0, day:Int=-1, hour:Int=-1, checkSlotTime:Int=True)
-		If day = -1 Then day = GetWorldTime().getDay()
+		If day = -1 Then day = GetWorldTime().GetDay()
 		If hour = -1 Then hour = GetWorldTime().getDayHour()
 		Local arrayIndex:Int = GetArrayIndex(day * 24 + hour)
 
@@ -649,7 +649,7 @@ endrem
 		Endif
 
 		'local time:int = GetWorldTime().MakeTime(0, day, hour, 0)
-		'if obj.owner = 1 then print "..addObject day="+day+" hour="+hour+" array[" +arrayIndex + "] " + GetWorldTime().GetYear(time) + " " + GetWorldTime().GetDayOfYear(time) + ".Tag " + GetWorldTime().GetDayHour(time) + ":00 : " + obj.getTitle()+" ("+obj.getReferenceID()+")"
+		'if obj.owner = 1 then print "..addObject day="+day+" hour="+hour+" array[" +arrayIndex + "] " + GetWorldTime().GetYear(time) + " " + GetWorldTime().GetOnDayOfYear(time) + ".Tag " + GetWorldTime().GetDayHour(time) + ":00 : " + obj.getTitle()+" ("+obj.getReferenceID()+")"
 
 		'emit an event
 		If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("programmeplan.addObject", New TData.add("object", obj).add("removedObjects", removedObjects).addNumber("slotType", slotType).addNumber("day", day).addNumber("hour", hour), Self))
@@ -690,7 +690,7 @@ endrem
 			If TAdvertisement(obj) Then TAdvertisement(obj).contract.SetSpotsPlanned( GetAdvertisementsPlanned(TAdvertisement(obj).contract) )
 
 			'local time:int = GetWorldTime().MakeTime(0, programmedDay, programmedHour, 0)
-			'if obj.owner = 1 then print "..removeObject day="+programmedDay+" hour="+programmedHour+" array[" +GetArrayIndex(programmedDay*24 + programmedHour) + "] " + GetWorldTime().GetYear(time) + " " + GetWorldTime().GetDayOfYear(time) + ".Tag " + GetWorldTime().GetDayHour(time) + ":00 : " + obj.getTitle()+" ("+obj.getReferenceID()+")"
+			'if obj.owner = 1 then print "..removeObject day="+programmedDay+" hour="+programmedHour+" array[" +GetArrayIndex(programmedDay*24 + programmedHour) + "] " + GetWorldTime().GetYear(time) + " " + GetWorldTime().GetOnDayOfYear(time) + ".Tag " + GetWorldTime().GetDayHour(time) + ":00 : " + obj.getTitle()+" ("+obj.getReferenceID()+")"
 
 			'inform others
 			If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("programmeplan.removeObject", New TData.add("object", obj).addNumber("slotType", slotType).addNumber("day", programmedDay).addNumber("hour", programmedHour), Self))
@@ -703,8 +703,20 @@ endrem
 	'Removes all not-yet-run instances of the given programme from the
 	'plan's list.
 	'If removeCurrentRunning is true, also the current block can be affected
-	Method RemoveObjectInstances:Int(obj:TBroadcastMaterial, slotType:Int=0, currentHour:Int=-1, removeCurrentRunning:Int=False)
-		If currentHour = -1 Then currentHour = GetWorldTime().GetDay() * 24 + GetWorldTime().GetDayHour()
+
+'	Method RemoveObjectInstances:Int(obj:TBroadcastMaterial, slotType:Int=0, currentHour:Int=-1, removeCurrentRunning:Int=False)
+'		If currentHour = -1 Then currentHour = GetWorldTime().GetDay() * 24 + GetWorldTime().GetDayHour()
+'print currentHour
+	Method RemoveObjectInstances:Int(obj:TBroadcastMaterial, slotType:Int=0, time:Long=-1, removeCurrentRunning:Int=False)
+		If time = -1 Then time = GetWorldTime().GetTimeGone()
+		local currentHour:int = GetWorldTime().GetHour(time)
+	
+		'programme finished this block already
+		if slotType = TVTBroadcastMaterialType.PROGRAMME
+			if GetWorldTime().GetDayMinute(time) >= 55 then currentHour :+ 1
+		endif
+'print "RemoveObjectInstances: "+currentHour+"  " + obj.GetTitle()
+
 		Local array:TBroadcastMaterial[] = GetObjectArray(slotType)
 		Local earliestIndex:Int = Max(0, GetArrayIndex(currentHour - obj.GetBlocks()))
 		Local currentIndex:Int = Max(0, GetArrayIndex(currentHour))
@@ -743,7 +755,7 @@ endrem
 	'without disturbing others
 	Method ObjectPlaceable:Int(obj:TBroadcastMaterial, slotType:Int=0, day:Int=-1, hour:Int=-1)
 		If Not obj Then Return 0
-		If day = -1 Then day = GetWorldTime().getDay()
+		If day = -1 Then day = GetWorldTime().GetDay()
 		If hour = -1 Then hour = GetWorldTime().getDayHour()
 
 		'check all slots the obj will occupy...
@@ -810,7 +822,7 @@ endrem
 
 		'first of all we need to find a user of our licence
 		Local array:TBroadcastMaterial[] = GetObjectArray(TVTBroadcastMaterialType.PROGRAMME)
-		Local currentHour:Int = GetWorldTime().GetDay() * 24 + GetWorldTime().GetDayHour()
+		Local currentHour:Int = GetWorldTime().GetHour()
 		Local earliestIndex:Int = Max(0, GetArrayIndex(currentHour - licence.GetData().GetBlocks()))
 		Local currentIndex:Int = Max(0, GetArrayIndex(currentHour))
 		Local latestIndex:Int = array.length - 1
@@ -1522,7 +1534,7 @@ Type TProgrammePlanInformationProvider extends TProgrammePlanInformationProvider
 
 	Method RefreshProgrammeData(player:int, time:Long)
 		local plan:TPlayerProgrammePlan = GetPlayerProgrammePlan(player)
-		local programme:TProgramme = TProgramme(plan.GetProgramme(GetWorldTime().getDay(time), GetWorldTime().GetDayHour(time)))
+		local programme:TProgramme = TProgramme(plan.GetProgramme(GetWorldTime().GetDay(time), GetWorldTime().GetDayHour(time)))
 		'only interested in programmes
 		if not programme then return
 
@@ -1542,7 +1554,7 @@ Type TProgrammePlanInformationProvider extends TProgrammePlanInformationProvider
 		local genreKey:string = ""
 		if GetWorldTime().GetDayMinute(time) = 4 then genreKey = "newsshow"
 
-		local programme:TProgramme = TProgramme(GetPlayerProgrammePlan(player).GetProgramme(GetWorldTime().getDay(time), GetWorldTime().GetDayHour(time)))
+		local programme:TProgramme = TProgramme(GetPlayerProgrammePlan(player).GetProgramme(GetWorldTime().GetDay(time), GetWorldTime().GetDayHour(time)))
 		if programme then genreKey = string(programme.data.GetGenre())
 
 		local audience:int = audienceResult.audience.GetSum()

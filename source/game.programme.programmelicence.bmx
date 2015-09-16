@@ -518,7 +518,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 
 	Method Sell:int()
-		local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(owner,-1)
+		local finance:TPlayerFinance = GetPlayerFinance(owner)
 		if not finance then return False
 
 		finance.SellProgrammeLicence(getPrice(), self)
@@ -907,7 +907,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		'only check finances if it is no other player (avoids exposing
 		'that information to us)
 		if useOwner <= 0 or GetPlayerBaseCollection().playerID = useOwner
-			finance = GetPlayerFinanceCollection().Get(GetPlayerBaseCollection().playerID, -1)
+			finance = GetPlayerFinance(GetPlayerBaseCollection().playerID)
 		endif
 
 		local title:string

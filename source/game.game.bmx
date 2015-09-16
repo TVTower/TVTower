@@ -100,10 +100,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			GetProgrammeDataCollection().UpdateAll()
 
 			'Begin Game - fire Events
-			EventManager.registerEvent(TEventSimple.Create("Game.OnMinute", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().getDay()) ))
-			EventManager.registerEvent(TEventSimple.Create("Game.OnHour", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().getDay()) ))
+			EventManager.registerEvent(TEventSimple.Create("Game.OnMinute", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().GetDay()) ))
+			EventManager.registerEvent(TEventSimple.Create("Game.OnHour", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().GetDay()) ))
 			'so we start at day "1"
-			EventManager.registerEvent(TEventSimple.Create("Game.OnDay", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().getDay()) ))
+			EventManager.registerEvent(TEventSimple.Create("Game.OnDay", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().GetDay()) ))
 		EndIf
 	End Method
 
@@ -300,7 +300,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'give the players some money
 		For Local i:Int = 1 To 4
-			GetPlayer(i).GetFinance().TakeCredit(500000)
+			GetPlayerFinance(i).TakeCredit(500000)
 		Next
 
 
@@ -951,7 +951,7 @@ endrem
 			'day
 			If worldTime.GetDayHour() = 0 And worldTime.GetDayMinute() = 0
 				'year
-				If worldTime.GetDayOfYear() = 0
+				If worldTime.GetOnDayOfYear() = 1
 					EventManager.triggerEvent(TEventSimple.Create("Game.OnYear", New TData.addNumber("minute", worldTime.GetDayMinute()).addNumber("hour", worldTime.GetDayHour()).addNumber("day", worldTime.GetDay()) ))
 
 					'reset availableNewsEventList - maybe this is a year

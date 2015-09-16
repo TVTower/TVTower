@@ -482,7 +482,7 @@ Type TApp
 
 					If KEYMANAGER.IsHit(KEY_F)
 						If KEYMANAGER.IsDown(KEY_LSHIFT) or KEYMANAGER.IsDown(KEY_RSHIFT)
-							local text:string[] = GetPlayerFinanceOverviewText( GetWorldTime().GetDay() )
+							local text:string[] = GetPlayerFinanceOverviewText( GetWorldTime().GetOnDay() )
 							For local s:string = EachIn text
 								print s
 							Next
@@ -4182,7 +4182,7 @@ Type GameEvents
 		If GetWorldTime().GetDaysRun() >= 1
 
 			'Neuer Award faellig?
-			If GetBetty().GetAwardEnding() < GetWorldTime().getDay() - 1
+			If GetBetty().GetAwardEnding() < GetWorldTime().GetDay() - 1
 				GetBetty().GetLastAwardWinner()
 				GetBetty().SetAwardType(RandRange(0, GetBetty().MaxAwardTypes), True)
 			End If
@@ -4250,7 +4250,7 @@ Type GameEvents
 				daysToKeep = 2
 				'loop through a copy to avoid concurrent modification
 				For Local news:TNews = EachIn p.GetProgrammeCollection().news.Copy()
-					If day - GetWorldTime().getDay(news.GetHappenedTime()) >= daysToKeep
+					If day - GetWorldTime().GetDay(news.GetHappenedTime()) >= daysToKeep
 						p.GetProgrammeCollection().RemoveNews(news)
 					EndIf
 				Next
@@ -4260,7 +4260,7 @@ Type GameEvents
 				daysToKeep = 3
 				'no need to copy the array because it has a fixed length
 				For Local news:TNews = EachIn p.GetProgrammePlan().news
-					If day - GetWorldTime().getDay(news.GetHappenedTime()) >= daysToKeep
+					If day - GetWorldTime().GetDay(news.GetHappenedTime()) >= daysToKeep
 						p.GetProgrammePlan().RemoveNews(news,-1,False)
 					EndIf
 				Next

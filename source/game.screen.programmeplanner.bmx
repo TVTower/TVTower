@@ -870,7 +870,7 @@ Type TScreenHandler_ProgrammePlanner
 		DrawSlotOverlays()
 
 		'overlay old days
-		If GetWorldTime().getDay() > planningDay
+		If GetWorldTime().GetDay() > planningDay
 			SetColor 100,100,100
 			SetAlpha 0.5
 			DrawRect(5,5,675,400)
@@ -882,10 +882,10 @@ Type TScreenHandler_ProgrammePlanner
 		GetSpriteFromRegistry("screen_programmeplanner_overlay").Draw(0,0)
 
 		'time indicator
-		If planningDay = GetWorldTime().getDay() Then SetColor 0,100,0
-		If planningDay < GetWorldTime().getDay() Then SetColor 100,100,0
-		If planningDay > GetWorldTime().getDay() Then SetColor 0,0,0
-		local day:int = 1+ planningDay - GetWorldTime().getDay(GetWorldTime().GetTimeStart())
+		If planningDay = GetWorldTime().GetDay() Then SetColor 0,100,0
+		If planningDay < GetWorldTime().GetDay() Then SetColor 100,100,0
+		If planningDay > GetWorldTime().GetDay() Then SetColor 0,0,0
+		local day:int = 1+ planningDay - GetWorldTime().GetDay(GetWorldTime().GetTimeStart())
 		'GetBitmapFont("default", 11).drawBlock(day+". "+GetLocale("DAY")+"~n"+GetWorldTime().GetFormattedDayLong(day),712, 6, 56, 30, ALIGN_CENTER_CENTER)
 		GetBitmapFont("default", 11).drawBlock(day+". "+GetLocale("DAY"),712, 7, 56, 26, ALIGN_CENTER_TOP)
 		GetBitmapFont("default", 10).drawBlock(GetWorldTime().GetFormattedDayLong(day),712, 7, 56, 26, ALIGN_CENTER_BOTTOM)
@@ -957,14 +957,14 @@ Type TScreenHandler_ProgrammePlanner
 		Next
 
 		'if not initialized, do so
-		if planningDay = -1 then planningDay = GetWorldTime().getDay()
+		if planningDay = -1 then planningDay = GetWorldTime().GetDay()
 
 		GetGame().cursorstate = 0
 
 		ignoreCopyOrEpisodeShortcut  = false
 
 		'set all slots occupied or not
-		local day:int = GetWorldTime().getDay()
+		local day:int = GetWorldTime().GetDay()
 		local hour:int = GetWorldTime().GetDayHour()
 		local minute:int = GetWorldTime().GetDayMinute()
 		for local i:int = 0 to 23
@@ -987,7 +987,7 @@ Type TScreenHandler_ProgrammePlanner
 			FindHoveredPlanElement()
 		endif
 
-		if planningDay-1 < GetWorldTime().getDay(GetWorldTime().GetTimeStart())
+		if planningDay-1 < GetWorldTime().GetDay(GetWorldTime().GetTimeStart())
 			plannerPreviousDayButton.disable()
 		else
 			plannerPreviousDayButton.enable()
@@ -1198,7 +1198,7 @@ endif
 	Function ChangePlanningDay:int(day:int=0)
 		planningDay = day
 		'limit to start day
-		If planningDay < GetWorldTime().getDay(GetWorldTime().GetTimeStart()) Then planningDay = GetWorldTime().getDay(GetWorldTime().GetTimeStart())
+		If planningDay < GetWorldTime().GetDay(GetWorldTime().GetTimeStart()) Then planningDay = GetWorldTime().GetDay(GetWorldTime().GetTimeStart())
 
 		'adjust slotlists (to hide ghosts on differing days)
 		GuiListProgrammes.planDay = planningDay
@@ -1303,7 +1303,7 @@ endif
 		endif
 
 		local currDay:int = planningDay
-		if currDay = -1 then currDay = GetWorldTime().getDay()
+		if currDay = -1 then currDay = GetWorldTime().GetDay()
 
 		
 		For local guiObject:TGuiProgrammePlanElement = eachin GuiListProgrammes._slots

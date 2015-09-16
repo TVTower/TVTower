@@ -63,7 +63,7 @@ Type TScreenHandler_Statistics
 
 	'reset statistics show day to current when entering the screen
 	Function onEnterScreen:int( triggerEvent:TEventBase )
-		showDay = GetWorldTime().getDay()
+		showDay = GetWorldTime().GetDay()
 	End function
 
 	
@@ -109,8 +109,9 @@ Type TScreenHandler_Statistics
 		Local labelColor:TColor = new TColor.CreateGrey(80)
 		local audienceResult:TAudienceResultBase 
 
-		local today:int = GetWorldTime().MakeTime(0, showDay, 0, 0)
-		local todayText:string = GetWorldTime().GetDayOfYear(today)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(today)
+		'add 1 to "today" as we are on this day then
+		local today:int = GetWorldTime().MakeTime(0, showDay+1, 0, 0)
+		local todayText:string = GetWorldTime().GetOnDayOfYear(today)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(today)
 		textFont.DrawBlock(GetLocale("GAMEDAY")+" "+todayText, 50, 25, 160, 20, ALIGN_CENTER_CENTER, TColor.CreateGrey(90), 2, 1, 0.2)
 
 
@@ -285,7 +286,6 @@ Type TScreenHandler_Statistics
 			if hoveredHour >= 0
 				local time:int = GetWorldTime().MakeTime(0, showDay, hoveredHour, 0)
 				local gameDay:string = GetWorldTime().GetDay(time)
-				'GetWorldTime().GetDayOfYear(today)
 
 				local hoverX:int = curveArea.GetX() + slot * slotWidth
 				local hoverW:int = Min(curveArea.GetX() + curveArea.GetW() - hoverX, slotWidth)
@@ -388,7 +388,7 @@ Type TScreenHandler_Statistics
 			previousDayButton.Enable()
 		endif
 
-		if showDay = GetWorldTime().getDay()
+		if showDay = GetWorldTime().GetDay()
 			nextDayButton.Disable()
 		else
 			nextDayButton.Enable()

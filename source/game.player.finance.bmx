@@ -62,23 +62,33 @@ Type TPlayerFinanceCollection
 	End Method
 
 
-
 	Method Get:TPlayerFinance(playerID:int, day:int=-1)
+		If day <= 0 Then day = GetWorldTime().GetDay()
+		return _Get(playerID, day)
+	End Method
+
+
+	Method _Get:TPlayerFinance(playerID:int, day:int)
 		if playerID <= 0 then return Null
 
-		If day <= 0 Then day = GetWorldTime().GetDay()
-		'subtract start day to get a index starting at 0 and add 1 day again
-		Local arrayIndex:Int = day +1 - GetWorldTime().GetStartDay()
+		'subtract start day to get a index starting at 0, add 1 as
+		'we also have financials for the day before game start
+		Local arrayIndex:Int = day - GetWorldTime().GetStartDay() + 1
+
 		local playerIndex:int = playerID -1
 		'if the array is less than allowed: return finance from day 0
 		'which is the day before "start"
-		If arrayIndex < 0 Then Return Get(playerID, GetWorldTime().GetStartDay()-1)
+		If arrayIndex < 0 Then Return _Get(playerID, GetWorldTime().GetStartDay() - 1)
 
 		'create entry if player misses its finance entry
-		if finances.length < playerID then finances = finances[..playerID]
+		if finances.length < playerID
+			finances = finances[..playerID]
+			finances[playerIndex] = new TPlayerFinance[0]
+		endif
 
 		If (arrayIndex = 0 And Not finances[playerIndex][0]) Or arrayIndex >= finances[playerIndex].length
-			'TLogger.Log("TPlayer.GetFinance()", "Adding a new finance to player "+Self.playerID+" for day "+day+ " at index "+arrayIndex, LOG_DEBUG)
+			print "Adding a new finance to player "+playerID+" for day "+day+ " at index "+arrayIndex
+			'TLogger.Log("TPlayer.GetFinance()", "Adding a new finance to player "+playerID+" for day "+day+ " at index "+arrayIndex, LOG_DEBUG)
 			If arrayIndex >= finances[playerIndex].length
 				'resize array
 				finances[playerIndex] = finances[playerIndex][..arrayIndex+1]
@@ -88,7 +98,10 @@ Type TPlayerFinanceCollection
 			'if arrayIndex 0 - we do not need to take over
 			'calling GetFinance(day-1) instead of accessing the array
 			'assures that the object is created if needed (recursion)
-			If arrayIndex > 0 Then TPlayerFinance.TakeOverFinances(Get(playerID, day-1), finances[playerIndex][arrayIndex])
+			If arrayIndex > 0
+				print "take over finances: " + (day-1) +" old:" + _Get(playerID, day-1).money
+				TPlayerFinance.TakeOverFinances(_Get(playerID, day-1), finances[playerIndex][arrayIndex])
+			endif
 		EndIf
 		Return finances[playerIndex][arrayIndex]
 	End Method

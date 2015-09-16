@@ -1024,9 +1024,9 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 
 	Method Sell:Int()
-		If Not GetPlayerFinanceCollection().Get(owner) Then Return False
+		If Not GetPlayerFinance(owner) Then Return False
 
-		If GetPlayerFinanceCollection().Get(owner).SellStation( getSellPrice() )
+		If GetPlayerFinance(owner).SellStation( getSellPrice() )
 			owner = 0
 			Return True
 		EndIf
@@ -1051,9 +1051,9 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 
 		If HasFlag(FLAG_PAID) Then Return True
-		If Not GetPlayerFinanceCollection().Get(playerID) Then Return False
+		If Not GetPlayerFinance(playerID) Then Return False
 
-		If GetPlayerFinanceCollection().Get(playerID).PayStation( getPrice() )
+		If GetPlayerFinance(playerID).PayStation( getPrice() )
 			owner = playerID
 			SetFlag(FLAG_PAID, True)
 

@@ -496,7 +496,7 @@ Type TBuilding Extends TBuildingBase
 		'compute ufo
 		'-----------
 		'only happens between...
-		If GetWorldTime().getDay() Mod 2 = 0 And (GetWorldTime().GetDayHour() > 18 Or GetWorldTime().GetDayHour() < 7)
+		If GetWorldTime().GetDay() Mod 2 = 0 And (GetWorldTime().GetDayHour() > 18 Or GetWorldTime().GetDayHour() < 7)
 			UFO_MovementBaseSpeed = 1.0 / 60.0 '30 minutes for whole path
 
 			'only continue moving if not doing the beamanimation
@@ -536,7 +536,7 @@ Type TBuilding Extends TBuildingBase
 		SetBlend ALPHABLEND
 		'draw UFO
 		If GetWorldTime().GetDayHour() > 18 Or GetWorldTime().GetDayHour() < 7
-			If GetWorldTime().getDay() Mod 2 = 0
+			If GetWorldTime().GetDay() Mod 2 = 0
 				'compute and draw Ufo
 				Local tweenDistance:Float = MathHelper.Tween(UFO_PathCurrentDistanceOld, UFO_PathCurrentDistance, GetDeltaTimer().GetTween())
 				Local UFOPos:TVec2D = UFO_Path.GetTweenPoint(tweenDistance, True)

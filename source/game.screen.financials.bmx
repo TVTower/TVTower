@@ -69,7 +69,7 @@ Type TScreenHandler_Financials
 	'reset finance show day to current when entering the screen
 	Function onEnterFinancialScreen:int( triggerEvent:TEventBase )
 		financeHistoryStartPos = 0
-		financeShowDay = GetWorldTime().getDay()
+		financeShowDay = GetWorldTime().GetDay()
 	End function
 
 
@@ -79,7 +79,7 @@ Type TScreenHandler_Financials
 		if not room then return 0
 
 		'limit finance day between 0 and current day
-		financeShowDay = Max(0, Min(financeShowDay, GetWorldTime().getDay()))
+		financeShowDay = Max(0, Min(financeShowDay, GetWorldTime().GetDay()))
 
 
 		local screenOffsetX:int = 20
@@ -104,8 +104,9 @@ Type TScreenHandler_Financials
 
 
 		'=== DAY CHANGER ===
-		local today:int = GetWorldTime().MakeTime(0, financeShowDay, 0, 0)
-		local todayText:string = GetWorldTime().GetDayOfYear(today)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(today)
+		'add 1 to "today" as we are on this day then
+		local today:int = GetWorldTime().MakeTime(0, financeShowDay+1, 0, 0)
+		local todayText:string = GetWorldTime().GetOnDayOfYear(today)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(today)
 		textFont.DrawBlock(GetLocale("GAMEDAY")+" "+todayText, 30 + screenOffsetX, 15 +  screenOffsetY, 160, 20, ALIGN_CENTER_CENTER, TColor.CreateGrey(90), 2, 1, 0.2)
 
 
@@ -300,7 +301,7 @@ Type TScreenHandler_Financials
 		Local labelColor:TColor = new TColor.CreateGrey(80)
 
 		'first get the maximum value so we know how to scale the rest
-		For local i:Int = GetWorldTime().getDay()-showDays To GetWorldTime().getDay()
+		For local i:Int = GetWorldTime().GetDay()-showDays To GetWorldTime().GetDay()
 			'skip if day is less than startday (saves calculations)
 			if i < GetWorldTime().GetStartDay() then continue
 
@@ -321,7 +322,7 @@ Type TScreenHandler_Financials
 		local yOfZero:Float = curveArea.GetH() - yPerMoney * Abs(minValue)
 
 		local hoveredDay:int = -1
-		For local i:Int = GetWorldTime().getDay()-showDays To GetWorldTime().getDay()
+		For local i:Int = GetWorldTime().GetDay()-showDays To GetWorldTime().GetDay()
 			if THelper.MouseIn(curveArea.GetX() + (slot-0.5) * slotWidth, curveArea.GetY(), slotWidth, curveArea.GetH())
 				hoveredDay = i
 				'leave for loop
@@ -329,9 +330,9 @@ Type TScreenHandler_Financials
 			EndIf
 			slot :+ 1
 		Next
-		if hoveredDay >= 0
+		if hoveredDay > 0
 			local time:int = GetWorldTime().MakeTime(0, hoveredDay, 0, 0)
-			local gameDay:string = GetWorldTime().GetDayOfYear(time)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(time)
+			local gameDay:string = GetWorldTime().GetOnDayOfYear(time)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(time)
 			if GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money > 0
 				textSmallFont.Draw(GetLocale("GAMEDAY")+" "+gameDay+": |color=50,110,50|"+TFunctions.dottedValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money)+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
 			Else
@@ -359,20 +360,26 @@ Type TScreenHandler_Financials
 			slot = 0
 			slotPos.SetXY(0,0)
 			previousSlotPos.SetXY(0,0)
-			For local i:Int = GetWorldTime().getDay()-showDays To GetWorldTime().getDay()
+			local oldAlpha:Float = GetAlpha()
+			For local i:Int = GetWorldTime().GetDay()-showDays To GetWorldTime().GetDay()
+				local afterStart:int = not (i < GetWorldTime().GetStartDay())
+					
 				previousSlotPos.SetXY(slotPos.x, slotPos.y)
 				slotPos.SetXY(slot * slotWidth, 0)
 				'maximum is at 90% (so it is nicely visible)
 '				if maxValue > 0 then slotPos.SetY(curveArea.GetH() - Floor((player.GetFinance(i).money / float(maxvalue)) * curveArea.GetH()))
 
 				slotPos.SetY(yOfZero - player.GetFinance(i).money * yPerMoney)
-				player.color.setRGB()
-				SetAlpha 0.3
-				DrawOval(curveArea.GetX() + slotPos.GetX()-3, curveArea.GetY() + slotPos.GetY()-3,6,6)
-				SetAlpha 1.0
-				if slot > 0
-					DrawLine(curveArea.GetX() + previousSlotPos.GetX(), curveArea.GetY() + previousSlotPos.GetY(), curveArea.GetX() + slotPos.GetX(), curveArea.GetY() + slotPos.GetY())
-					SetColor 255,255,255
+				if afterStart
+					player.color.setRGB()
+					SetAlpha 0.3 * oldAlpha
+					DrawOval(curveArea.GetX() + slotPos.GetX()-3, curveArea.GetY() + slotPos.GetY()-3,6,6)
+					SetAlpha 1.0 * oldAlpha
+					if slot > 0
+						DrawLine(curveArea.GetX() + previousSlotPos.GetX(), curveArea.GetY() + previousSlotPos.GetY(), curveArea.GetX() + slotPos.GetX(), curveArea.GetY() + slotPos.GetY())
+						SetColor 255,255,255
+					endif
+					SetAlpha oldAlpha
 				endif
 				slot :+ 1
 			Next
@@ -415,7 +422,7 @@ Type TScreenHandler_Financials
 			financePreviousDayButton.Enable()
 		endif
 
-		if financeShowDay = GetWorldTime().getDay()
+		if financeShowDay = GetWorldTime().GetDay()
 			financeNextDayButton.Disable()
 		else
 			financeNextDayButton.Enable()

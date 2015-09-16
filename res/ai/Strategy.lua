@@ -8,6 +8,7 @@ _G["AIStrategy"] = class(KIDataObjekt, function(c)
 	c.startProgrammePriceMax = 70000
 	c.startProgrammeBudget = 280000
 	c.startProgrammeAmount = 4
+	c.initDone = false
 end)
 
 function AIStrategy:typename()
@@ -32,7 +33,8 @@ function DefaultStrategy:typename()
 	return "DefaultStrategy"
 end
 
-function DefaultStrategy:Start(playerAI)
+
+function DefaultStrategy:initialize()
 	if playerAI == nil then playerAI = _G["globalPlayer"] end
 
 	-- a risky player (Ventruesome = 10) will spend 25000 less for each
@@ -49,6 +51,13 @@ function DefaultStrategy:Start(playerAI)
 
 	self.startProgrammeBudget = self.startProgrammeAmount * self.startProgrammePriceMax + 8000 * (5 - playerAI.Ventruesome)
 	TVT.PrintOut(TVT.ME .. ": startProgramme=" .. self.startProgrammeAmount .. "  priceMax=" .. self.startProgrammePriceMax .. "  totalBudget=" .. self.startProgrammeBudget)
+
+	self.initDone = true
+end
+
+
+function DefaultStrategy:Start(playerAI)
+	if not initDone then self:initialize() end
 end
 
 function DefaultStrategy:Finalize(playerAI)

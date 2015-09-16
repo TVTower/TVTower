@@ -151,7 +151,7 @@ Type TScreenHandler_StationMap
 				reachIncrease = TFunctions.DottedValue(stationMapSelectedStation.getReachIncrease())
 				price = TFunctions.convertValue(stationMapSelectedStation.getPrice(), 2, 0)
 
-				local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(room.owner, -1)
+				local finance:TPlayerFinance = GetPlayerFinance(room.owner)
 				canAfford = (not finance or finance.canAfford(stationMapSelectedStation.GetPrice()))
 			endif
 
@@ -432,7 +432,7 @@ Type TScreenHandler_StationMap
 				button.SetValue(GetLocale("SELECT_LOCATION")+" ...")
 				button.disable()
 			else
-				local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(GetPlayerCollection().Get().playerID, -1)
+				local finance:TPlayerFinance = GetPlayerFinance(GetPlayerCollection().Get().playerID)
 				if finance and finance.canAfford(stationMapSelectedStation.GetPrice())
 					button.SetValue(GetLocale("BUY_STATION"))
 					button.enable()

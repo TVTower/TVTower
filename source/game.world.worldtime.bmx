@@ -179,10 +179,7 @@ Type TWorldTime {_exposeToLua="selected"}
 	'get the amount of days the worldTime completed till now
 	'returns completed days - that's why "-1"
 	Method GetDaysRun:Int() {_exposeToLua}
-		'as "GetDay()" returns current day when param is 0, we
-		'handle it this way
-		if _timeGone - _timeStart = 0 then return 0
-		return GetDay(_timeGone - _timeStart) - 1
+		return GetDay() - GetStartDay()
 	End Method
 
 
@@ -257,7 +254,7 @@ Type TWorldTime {_exposeToLua="selected"}
 	Method GetHour:int(useTime:Double = -1.0) {_exposeToLua}
 		if Long(useTime) <= 0 then useTime = _timeGone
 
-		return floor(useTime / (DAYLENGTH/24)) +1
+		return floor(useTime / (DAYLENGTH/24))
 	End Method
 
 
@@ -266,7 +263,16 @@ Type TWorldTime {_exposeToLua="selected"}
 	Method GetDay:int(useTime:Double = -1.0) {_exposeToLua}
 		if Long(useTime) <= 0 then useTime = _timeGone
 
-		return floor(useTime / DAYLENGTH) +1
+		return floor(useTime / DAYLENGTH)
+	End Method
+
+
+	'attention: LUA uses a default param of "0"
+	'-> so for this and other functions we have to use "<=0" instead of "<0"
+	Method GetOnDay:int(useTime:Double = -1.0) {_exposeToLua}
+		if Long(useTime) <= 0 then useTime = _timeGone
+
+		return floor(useTime / DAYLENGTH) + 1
 	End Method
 
 
@@ -298,7 +304,7 @@ Type TWorldTime {_exposeToLua="selected"}
 
 
 	Method GetWeekday:Int(_day:Int = -1) {_exposeToLua}
-		If _day < 0 Then _day = GetDay()
+		If _day < 0 Then _day = GetOnDay()
 		Return Max(0,_day-1) Mod _daysPerWeek
 	End Method
 
@@ -333,6 +339,11 @@ Type TWorldTime {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetOnDayOfYear:Int(_time:Double = 0) {_exposeToLua}
+		Return (GetOnDay(_time) - GetYear(_time) * GetDaysPerYear())
+	End Method
+
+
 	'this does only work if "_daysPerWeek" is 7 or lower
 	Method GetDayName:String(day:Int, longVersion:Int=0) {_exposeToLua}
 		Local versionString:String = "SHORT"
@@ -358,7 +369,7 @@ Type TWorldTime {_exposeToLua="selected"}
 
 
 	Method GetFormattedDayLong:String(_day:Int = -1) {_exposeToLua}
-		If _day < 0 Then _day = GetDay()
+		If _day < 0 Then _day = GetOnDay()
 		Return GetDayName( Max(0,_day-1) Mod _daysPerWeek, 1)
 	End Method
 
