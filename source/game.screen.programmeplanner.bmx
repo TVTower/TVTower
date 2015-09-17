@@ -462,8 +462,7 @@ Type TScreenHandler_ProgrammePlanner
 
 		'is it our plan?
 		local plan:TPlayerProgrammePlan = TPlayerProgrammePlan(triggerEvent.GetSender())
-		if not plan then return FALSE
-		if plan.owner <> GetPlayerCollection().playerID then return FALSE
+		if not plan or plan.owner <> GetPlayerCollection().playerID then return FALSE
 
 		'recreate gui elements
 		RefreshGuiElements()
@@ -526,6 +525,16 @@ Type TScreenHandler_ProgrammePlanner
 	'handle adding items at the end of a day
 	'so the removed material can be recreated as dragged gui items
 	Function onProgrammePlanAddObject:int(triggerEvent:TEventBase)
+		'do not react if not the players Programme Plan
+		'this is important, as you are _never_ able to control other
+		'players plans
+		local plan:TPlayerProgrammePlan = TPlayerProgrammePlan(triggerEvent.GetSender())
+		if not plan or plan.owner <> GetPlayer().playerID then return False
+
+		'do not react if in other players rooms
+		if not TRoomHandler.IsPlayersRoom(currentRoom) return False
+
+
 		local removedObjects:object[] = object[](triggerEvent.GetData().get("removedObjects"))
 		local addedObject:TBroadcastMaterial = TBroadcastMaterial(triggerEvent.GetData().get("object"))
 		if not removedObjects then return FALSE
