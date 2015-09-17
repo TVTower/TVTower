@@ -302,7 +302,7 @@ Type TScreenHandler_Statistics
 
 			'draw the curves
 			SetLineWidth(2)
-			GlEnable(GL_LINE_SMOOTH)
+			GetGraphicsManager().EnableSmoothLines()
 
 			local maxHour:int = 23
 			if showDay = GetWorldTime().GetDay() then maxHour = GetWorldTime().GetDayHour()

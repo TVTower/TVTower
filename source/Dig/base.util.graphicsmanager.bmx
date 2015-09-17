@@ -252,6 +252,15 @@ Type TGraphicsManager
 		x :- TVirtualGfx.getInstance().vxoff
 		y :- TVirtualGfx.getInstance().vyoff
 	End Method
+
+
+	Method EnableSmoothLines:int()
+		if renderer = RENDERER_OPENGL or renderer = RENDERER_BUFFEREDOPENGL
+			return GlEnable(GL_LINE_SMOOTH)
+		else
+			return False
+		endif
+	End Method
 End Type
 
 

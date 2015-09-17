@@ -354,7 +354,8 @@ Type TScreenHandler_Financials
 
 		'draw the curves
 		SetLineWidth(2)
-		GlEnable(GL_LINE_SMOOTH)
+		GetGraphicsManager().EnableSmoothLines()
+
 		slot = 0
 		For Local player:TPlayer = EachIn GetPlayerCollection().players
 			slot = 0
