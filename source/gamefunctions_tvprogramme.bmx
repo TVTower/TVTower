@@ -101,18 +101,21 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 	End Method
 
 
-	Method GetAssetBaseName:String()
-		Local viewType:Int = 0
-
+	Method GetViewType:int()
 		'dragged and not asked during ghost mode drawing
 		If isDragged() And Not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
-			viewType = broadcastMaterial.materialType
+			return broadcastMaterial.materialType
 		'ghost mode
 		ElseIf isDragged() And hasOption(GUI_OBJECT_DRAWMODE_GHOST) And lastListType > 0
-			viewType = lastListType
+			return lastListType
 		Else
-			viewType = broadcastMaterial.usedAsType
+			return broadcastMaterial.usedAsType
 		EndIf
+	End Method
+
+
+	Method GetAssetBaseName:String()
+		Local viewType:Int = GetViewType()
 
 		If viewType = TVTBroadcastMaterialType.PROGRAMME
 			imageBaseName = "pp_programmeblock"
@@ -466,7 +469,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 						If advertisement.contract.isSuccessful()
 							text = "- OK -"
 						Else
-							text = GetPlayerProgrammePlanCollection().Get(advertisement.owner).GetAdvertisementSpotNumber(advertisement) + "/" + advertisement.contract.GetSpotCount()
+							text = GetPlayerProgrammePlan(advertisement.owner).GetAdvertisementSpotNumber(advertisement, lastListType) + "/" + advertisement.contract.GetSpotCount()
 						EndIf
 					EndIf
 				EndIf

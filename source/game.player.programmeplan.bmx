@@ -1056,7 +1056,7 @@ endrem
 	'returns how many times an contract was programmed since signing the contract
 	'start time: contract sign
 	'end time: day +/- hour (if day > -1)
-	Method GetAdvertisementsSent:Int(contract:TAdContract, day:Int=-1, hour:Int=-1, onlySuccessful:Int=False) {_exposeToLua}
+	Method GetAdvertisementsSent:Int(contract:TAdContract, day:Int=-1, hour:Int=0, onlySuccessful:Int=False) {_exposeToLua}
 		Return GetAdvertisementsCount(contract, day, hour, True, False)
 	End Method
 
@@ -1091,7 +1091,7 @@ endrem
 	'
 	'start time: contract sign
 	'end time: day +/- hour (if day > -1)
-	Method GetAdvertisementsCount:Int(contract:TAdContract, day:Int=-1, hour:Int=-1, onlySuccessful:Int=True, includePlanned:Int=False)
+	Method GetAdvertisementsCount:Int(contract:TAdContract, day:Int=-1, hour:Int=0, onlySuccessful:Int=True, includePlanned:Int=False)
 		Local startIndex:Int= Max(0, GetArrayIndex(24 * (contract.daySigned - 1)))
 		Local endIndex:Int	= 0
 		If day = -1
@@ -1198,7 +1198,7 @@ endrem
 
 	'returns the next number a new ad spot will have (counts all existing non-failed ads + 1)
 	Method GetNextAdvertisementSpotNumber:Int(contract:TAdContract) {_exposeToLua}
-		Return 1 + GetAdvertisementsCount(contract, -1, -1, True, True)
+		Return 1 + GetAdvertisementsCount(contract, -1, 0, True, True)
 	End Method
 
 
@@ -1305,13 +1305,14 @@ endrem
 
 
 	'returns which number that given advertisement spot will have
-	Method GetAdvertisementSpotNumber:Int(advertisement:TAdvertisement) {_exposeToLua}
-		'if programmed - count all non-failed ads up to the programmed date
-		If advertisement.isProgrammed()
+	Method GetAdvertisementSpotNumber:Int(advertisement:TAdvertisement, viewType:int=-1) {_exposeToLua}
+		'if programmed (as advertisement!) - count all non-failed ads
+		'up to the programmed date
+		If advertisement.isProgrammed() and (viewType < 0 or advertisement.usedAsType = viewType)
 			Return 1 + GetAdvertisementsCount(advertisement.contract, advertisement.programmedDay, advertisement.programmedHour-1, True, True)
 		'if not programmed we just count ALL existing non-failed ads
 		Else
-			Return 1 + GetAdvertisementsCount(advertisement.contract, -1, -1, True, True)
+			Return 1 + GetAdvertisementsCount(advertisement.contract, -1, 0, True, True)
 		EndIf
 	End Method
 
