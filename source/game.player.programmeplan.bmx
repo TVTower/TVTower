@@ -648,9 +648,12 @@ endrem
 			TAdvertisement(obj).contract.SetSpotsPlanned( GetAdvertisementsPlanned(TAdvertisement(obj).contract) )
 		Endif
 
-		'local time:int = GetWorldTime().MakeTime(0, day, hour, 0)
-		'if obj.owner = 1 then print "..addObject day="+day+" hour="+hour+" array[" +arrayIndex + "] " + GetWorldTime().GetYear(time) + " " + GetWorldTime().GetOnDayOfYear(time) + ".Tag " + GetWorldTime().GetDayHour(time) + ":00 : " + obj.getTitle()+" ("+obj.getReferenceID()+")"
-
+		if slotType = TVTBroadcastMaterialType.ADVERTISEMENT
+			TLogger.Log("PlayerProgrammePlan.AddObject()", "Plan #"+owner+" added object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") to ADVERTISEMENTS, index="+arrayIndex+", day="+day+", hour="+hour+". Removed "+removedObjects.length+" objects before.", LOG_DEBUG)
+		else
+			TLogger.Log("PlayerProgrammePlan.AddObject()", "Plan #"+owner+" added object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") to PROGRAMMES, index="+arrayIndex+", day="+day+", hour="+hour+". Removed "+removedObjects.length+" objects before.", LOG_DEBUG)
+		endif
+		
 		'emit an event
 		If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("programmeplan.addObject", New TData.add("object", obj).add("removedObjects", removedObjects).addNumber("slotType", slotType).addNumber("day", day).addNumber("hour", hour), Self))
 
@@ -675,6 +678,7 @@ endrem
 		Local programmedDay:Int = obj.programmedDay
 		Local programmedHour:Int = obj.programmedHour
 
+
 		'if not programmed, skip deletion and events
 		If obj.isProgrammed()
 			'reset programmed date
@@ -689,11 +693,21 @@ endrem
 			'Advertisements: adjust planned amount
 			If TAdvertisement(obj) Then TAdvertisement(obj).contract.SetSpotsPlanned( GetAdvertisementsPlanned(TAdvertisement(obj).contract) )
 
-			'local time:int = GetWorldTime().MakeTime(0, programmedDay, programmedHour, 0)
-			'if obj.owner = 1 then print "..removeObject day="+programmedDay+" hour="+programmedHour+" array[" +GetArrayIndex(programmedDay*24 + programmedHour) + "] " + GetWorldTime().GetYear(time) + " " + GetWorldTime().GetOnDayOfYear(time) + ".Tag " + GetWorldTime().GetDayHour(time) + ":00 : " + obj.getTitle()+" ("+obj.getReferenceID()+")"
+			if slotType = TVTBroadcastMaterialType.ADVERTISEMENT
+				TLogger.Log("PlayerProgrammePlan.RemoveObject()", "Plan #"+owner+" removed object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from ADVERTISEMENTS, index="+GetArrayIndex(programmedDay*24 + programmedHour)+", programmedDay="+programmedDay+", programmedHour="+programmedHour+".", LOG_DEBUG)
+			else
+				TLogger.Log("PlayerProgrammePlan.RemoveObject()", "Plan #"+owner+" removed object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from PROGRAMMES, index="+GetArrayIndex(programmedDay*24 + programmedHour)+", programmedDay="+programmedDay+", programmedHour="+programmedHour+".", LOG_DEBUG)
+			endif
+
 
 			'inform others
 			If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("programmeplan.removeObject", New TData.add("object", obj).addNumber("slotType", slotType).addNumber("day", programmedDay).addNumber("hour", programmedHour), Self))
+		else
+			if slotType = TVTBroadcastMaterialType.ADVERTISEMENT
+				TLogger.Log("PlayerProgrammePlan.RemoveObject()", "Plan #"+owner+" SKIPPED removal of object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from ADVERTISEMENTS - not programmed.", LOG_DEBUG)
+			else
+				TLogger.Log("PlayerProgrammePlan.RemoveObject()", "Plan #"+owner+" SKIPPED removal of object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from PROGRAMMES - not programmed.", LOG_DEBUG)
+			endif
 		EndIf
 
 		Return obj
@@ -715,7 +729,14 @@ endrem
 		if slotType = TVTBroadcastMaterialType.PROGRAMME
 			if GetWorldTime().GetDayMinute(time) >= 55 then currentHour :+ 1
 		endif
-'print "RemoveObjectInstances: "+currentHour+"  " + obj.GetTitle()
+
+
+		if slotType = TVTBroadcastMaterialType.PROGRAMME
+			TLogger.Log("PlayerProgrammePlan.RemoveObjectInstances()", "Plan #"+owner+" removes all instances of object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from PROGRAMMES.", LOG_DEBUG)
+		else
+			TLogger.Log("PlayerProgrammePlan.RemoveObjectInstances()", "Plan #"+owner+" removes all instances of object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from ADVERTISEMENTS.", LOG_DEBUG)
+		endif
+		
 
 		Local array:TBroadcastMaterial[] = GetObjectArray(slotType)
 		Local earliestIndex:Int = Max(0, GetArrayIndex(currentHour - obj.GetBlocks()))

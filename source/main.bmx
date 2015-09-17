@@ -144,8 +144,8 @@ TLogger.Log("CORE", "Starting "+APP_NAME+", "+VersionString+".", LOG_INFO )
 
 '===== SETUP LOGGER FILTER =====
 TLogger.setLogMode(LOG_ALL)
-'TLogger.setPrintMode(LOG_ALL )
-TLogger.setPrintMode(LOG_AI | LOG_ERROR | LOG_SAVELOAD )
+TLogger.setPrintMode(LOG_ALL )
+'TLogger.setPrintMode(LOG_AI | LOG_ERROR | LOG_SAVELOAD )
 
 'print "ALLE MELDUNGEN AUS"
 'TLogger.SetPrintMode(0)
@@ -154,7 +154,7 @@ TLogger.setPrintMode(LOG_AI | LOG_ERROR | LOG_SAVELOAD )
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
 '@MANUEL: comment out when doing DEV to see LOG_DEV-messages
 'TLogger.changePrintMode(LOG_DEV, FALSE)
-TLogger.changePrintMode(LOG_ERROR | LOG_DEV | LOG_AI, True)
+'TLogger.changePrintMode(LOG_ERROR | LOG_DEV | LOG_AI, True)
 
 
 
@@ -4181,8 +4181,6 @@ Type GameEvents
 
 		'finish upcoming programmes (set them to cinema, released...)
 		GetProgrammeDataCollection().UpdateUnreleased()
-
-print "RONNY: ONDAY  day="+day +"   daysRun=" + GetWorldTime().GetDaysRun(time)
 
 		'if new day, not start day
 		If GetWorldTime().GetDaysRun(time) >= 1
