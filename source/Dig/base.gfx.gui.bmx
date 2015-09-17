@@ -1636,7 +1636,7 @@ Type TGUIobject
 					'we do use a "cached hit state" so we can reset it if
 					'we found a one handling it
 					If GUIManager.UpdateState_mouseButtonHit[2]
-						Local clickEvent:TEventSimple = TEventSimple.Create("guiobject.OnClick", new TData.AddNumber("button",2), Self)
+						Local clickEvent:TEventSimple = TEventSimple.Create("guiobject.OnClick", new TData.AddNumber("button",2).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 						OnClick(clickEvent)
 						'fire onClickEvent
 						EventManager.triggerEvent(clickEvent)
@@ -1654,7 +1654,7 @@ Type TGUIobject
 					If _flags & GUI_OBJECT_ENABLED and not GUIManager.UpdateState_foundHitObject
 						local isHit:int = False
 						If MouseManager.IsHit(1)
-							local hitEvent:TEvenTsimple = TEventSimple.Create("guiobject.OnHit", new TData.AddNumber("button",1), Self)
+							local hitEvent:TEvenTsimple = TEventSimple.Create("guiobject.OnHit", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 							'let the object handle the click
 							OnHit(hitEvent)
 							'fire onClickEvent
@@ -1674,16 +1674,16 @@ Type TGUIobject
 							'again "onSingleClick" AND "onClick"
 							Local clickEvent:TEventSimple
 							If MOUSEMANAGER.IsDoubleClicked(1)
-								clickEvent = TEventSimple.Create("guiobject.OnDoubleClick", new TData.AddNumber("button",1), Self)
+								clickEvent = TEventSimple.Create("guiobject.OnDoubleClick", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 								'let the object handle the click
 								OnDoubleClick(clickEvent)
 							ElseIf MOUSEMANAGER.IsSingleClicked(1)
-								clickEvent = TEventSimple.Create("guiobject.OnSingleClick", new TData.AddNumber("button",1), Self)
+								clickEvent = TEventSimple.Create("guiobject.OnSingleClick", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 								'let the object handle the click
 								OnSingleClick(clickEvent)
 							'only "hit" if done the first time
 							Else 'if not GUIManager.UpdateState_foundHitObject
-								clickEvent = TEventSimple.Create("guiobject.OnClick", new TData.AddNumber("button",1), Self)
+								clickEvent = TEventSimple.Create("guiobject.OnClick", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 								'let the object handle the click
 								OnClick(clickEvent)
 							EndIf

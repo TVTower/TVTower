@@ -1033,7 +1033,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 		'=== CAST AREA ===
 		skin.RenderContent(contentX, contentY, contentW, castH, "2")
-
+rem
 		local addCastTitle:string  = "", addCast:string = ""
 		if data.GetActorsString() <> ""
 			addCastTitle = GetLocale("JOB_ACTORS")
@@ -1090,6 +1090,50 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		'move to next content (pay attention to 3px offset)
 		contentY :+ (castH - directorH - 3)
 
+		if cast <> ""
+			contentY :+ 3
+
+			'max width of cast word - to align their content properly
+			local captionWidth:int = skin.fontSemiBold.getWidth(GetLocale("MOVIE_CAST")+":")
+			skin.fontSemiBold.drawBlock(GetLocale("MOVIE_CAST")+":", contentX + 5, contentY, contentW, castH, null, skin.textColorNeutral)
+			skin.fontNormal.drawBlock(cast, contentX + 5 + captionWidth + 5, contentY , contentW  - 10 - captionWidth - 5, castH, null, skin.textColorNeutral)
+
+			contentY:+ castH - 3
+		else
+			contentY:+ castH
+		endif
+endrem
+
+
+		'cast
+		local cast:string = ""
+
+		For local i:int = 1 to TVTProgrammePersonJob.count
+			local jobID:int = TVTProgrammePersonJob.GetAtIndex(i)
+			local requiredPersons:int = data.GetCastGroup(jobID).length
+			if requiredPersons <= 0 then continue
+
+			if cast <> "" then cast :+ ", "
+
+			if requiredPersons = 1
+				cast :+ "|b|"+GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobID, True))+":|/b| "
+			else
+				cast :+ "|b|"+GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobID, False))+":|/b| "
+			endif
+			
+			cast :+ data.GetCastGroupString(jobID)
+		Next
+
+		if cast <> ""
+			contentY :+ 3
+
+			'max width of cast word - to align their content properly
+			skin.fontNormal.drawBlock(cast, contentX + 5, contentY , contentW  - 10, castH, null, skin.textColorNeutral)
+
+			contentY:+ castH - 3
+		else
+			contentY:+ castH
+		endif
 
 		'=== BARS / MESSAGES / BOXES AREA ===
 		'background for bars + messages + boxes

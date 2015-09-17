@@ -376,9 +376,10 @@ Type TPlayerBoss
 
 	'=== EVENTS THE BOSSES LISTEN TO ===
 	Function onGameMinute:Int(triggerEvent:TEventBase)
-		Local minute:Int = triggerEvent.GetData().GetInt("minute",-1)
-		Local hour:Int = triggerEvent.GetData().GetInt("hour",-1)
-		Local day:Int = triggerEvent.GetData().GetInt("day",-1)
+		local time:Long = triggerEvent.GetData().GetLong("time",-1)
+		Local minute:Int = GetWorldTime().GetDayMinute(time)
+		Local hour:Int = GetWorldTime().GetDayHour(time)
+		Local day:Int = GetWorldTime().GetDay(time)
 
 		For local boss:TPlayerBoss = Eachin GetPlayerBossCollection().bosses
 			'=== RESET REGISTERED MALFUNCTIONS ===

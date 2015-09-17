@@ -357,6 +357,10 @@ Type TScreenHandler_Financials
 		GetGraphicsManager().EnableSmoothLines()
 
 		slot = 0
+		'TODO: integrate live curves?
+		'      Could be done via analyzing the FinanceHistory-Log and
+		'      sum up changes to blocks (fixed steps for the graphical
+		'      width of a day)
 		For Local player:TPlayer = EachIn GetPlayerCollection().players
 			slot = 0
 			slotPos.SetXY(0,0)

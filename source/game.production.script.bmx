@@ -164,6 +164,10 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	'News-Genre: Medien/Technik, Politik/Wirtschaft, Showbiz, Sport, Tagesgeschehen ODER flexibel = spezielle News (10)
 	Field topic:Int	= 0
 
+	'GUIDs of all programmes based on this script
+	'should only contain "series header"
+	Field programmeAdaptions:string[]
+
 	Field outcome:Float	= 0.0
 	Field review:Float = 0.0
 	Field speed:Float = 0.0

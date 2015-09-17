@@ -181,9 +181,9 @@ Type TWorldTime {_exposeToLua="selected"}
 
 
 	'get the amount of days the worldTime completed till now
-	'returns completed days - that's why "-1"
-	Method GetDaysRun:Int() {_exposeToLua}
-		return GetDay() - GetStartDay()
+	'returns completed days
+	Method GetDaysRun:Int(useTime:Double= -1.0) {_exposeToLua}
+		return GetDay(useTime) - GetStartDay()
 	End Method
 
 

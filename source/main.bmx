@@ -3658,7 +3658,8 @@ Type GameEvents
 	Function PlayersOnMinute:Int(triggerEvent:TEventBase)
 		If Not GetGame().isGameLeader() Then Return False
 
-		Local minute:Int = triggerEvent.GetData().getInt("minute",-1)
+		Local time:Long = triggerEvent.GetData().getInt("time",-1)
+		local minute:int = GetWorldTime().GetDayMinute(time)
 		If minute < 0 Then Return False
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
@@ -3672,7 +3673,8 @@ Type GameEvents
 	Function PlayersOnDay:Int(triggerEvent:TEventBase)
 		If Not GetGame().isGameLeader() Then Return False
 
-		Local minute:Int = triggerEvent.GetData().getInt("minute",-1)
+		Local time:Long = triggerEvent.GetData().getInt("time",-1)
+		local minute:int = GetWorldTime().GetDayMinute(time)
 		If minute < 0 Then Return False
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
@@ -3989,9 +3991,10 @@ Type GameEvents
 
 
 	Function OnMinute:Int(triggerEvent:TEventBase)
-		Local minute:Int = triggerEvent.GetData().GetInt("minute",-1)
-		Local hour:Int = triggerEvent.GetData().GetInt("hour",-1)
-		Local day:Int = triggerEvent.GetData().GetInt("day",-1)
+		local time:Long = triggerEvent.GetData().GetLong("time",-1)
+		Local minute:Int = GetWorldTime().GetDayMinute(time)
+		Local hour:Int = GetWorldTime().GetDayHour(time)
+		Local day:Int = GetWorldTime().GetDay(time)
 		If hour = -1 Then Return False
 
 		'=== UPDATE POPULARITY MANAGER ===
@@ -4171,29 +4174,36 @@ Type GameEvents
 
 
 	Function OnDay:Int(triggerEvent:TEventBase)
-		Local day:Int = triggerEvent.GetData().GetInt("day", -1)
+		local time:Long = triggerEvent.GetData().GetLong("time",-1)
+		Local day:Int = GetWorldTime().GetDay(time)
 
 		TLogger.Log("GameEvents.OnDay", "begin of day "+(GetWorldTime().GetDaysRun()+1)+" (real day: "+day+")", LOG_DEBUG)
 
 		'finish upcoming programmes (set them to cinema, released...)
 		GetProgrammeDataCollection().UpdateUnreleased()
 
-		'if new day, not start day
-		If GetWorldTime().GetDaysRun() >= 1
+print "RONNY: ONDAY  day="+day +"   daysRun=" + GetWorldTime().GetDaysRun(time)
 
+		'if new day, not start day
+		If GetWorldTime().GetDaysRun(time) >= 1
 			'Neuer Award faellig?
-			If GetBetty().GetAwardEnding() < GetWorldTime().GetDay() - 1
+			If GetBetty().GetAwardEnding() < GetWorldTime().GetDay(time) - 1
 				GetBetty().GetLastAwardWinner()
 				GetBetty().SetAwardType(RandRange(0, GetBetty().MaxAwardTypes), True)
 			End If
 
 			GetProgrammeDataCollection().RefreshTopicalities()
 			GetAdContractBaseCollection().RefreshInfomercialTopicalities()
-			GetGame().ComputeContractPenalties()
-			GetGame().ComputeDailyCosts()	'first pay everything, then earn...
-			GetGame().ComputeDailyIncome()
+			GetGame().ComputeContractPenalties(day)
+			'first pay everything ...
+			GetGame().ComputeDailyCosts(day)
+			'then earn...
+			GetGame().ComputeDailyIncome(day)
 			TAuctionProgrammeBlocks.EndAllAuctions() 'won auctions moved to programmecollection of player
-
+			if GetWorldTime().GetDayOfYear(time) = 1
+				TAuctionProgrammeBlocks.RefillAuctionsWithoutBid()
+			endif
+		
 			'reset room signs each day to their normal position
 			GetRoomBoard().ResetPositions()
 

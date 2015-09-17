@@ -609,6 +609,7 @@ endrem
 
 
 		'=== CREATE OPENING PROGRAMME ===
+		
 		For Local playerID:Int = 1 To 4
 			local programmeData:TProgrammeData = new TProgrammeData
 
@@ -625,6 +626,11 @@ endrem
 			programmeData.year = GetWorldTime().GetYear()
 			programmeData.liveTime = GetWorldTime().MakeTime(GetWorldTime().GetYear(), 0, 0, 5)
 			programmeData.SetFlag(TVTProgrammeDataFlag.LIVE, True)
+
+			programmeData.AddCast( New TProgrammePersonJob.Init("9104f9c1-7a0f-4bc0-a34c-389ce282eebf", TVTProgrammePersonJob.GUEST) )
+			programmeData.AddCast( New TProgrammePersonJob.Init("9104f9c1-7a0f-4bc0-a34c-389ce282eebf", TVTProgrammePersonJob.MUSICIAN) )
+'			programmeData.AddCast( New TProgrammePersonJob.Init("9104f9c1-7a0f-4bc0-a34c-389ce282eebf", TVTProgrammePersonJob.ACTOR) )
+			
 			GetProgrammeDataCollection().Add(programmeData)
 
 			local programmeLicence:TProgrammeLicence = new TProgrammeLicence
@@ -693,34 +699,42 @@ endrem
 
 	'override
 	'computes daily costs like station or newsagency fees for every player
-	Method ComputeDailyCosts(day:Int=-1)
+	Method ComputeDailyCosts(day:Int)
 		For Local Player:TPlayer = EachIn GetPlayerCollection().players
+			local finance:TPlayerFinance = Player.GetFinance(day)
+			if not finance then Throw "ComputeDailyCosts failed: finance = null."
 			'stationfees
-			Player.GetFinance().PayStationFees( Player.GetStationMap().CalculateStationCosts())
+			finance.PayStationFees( Player.GetStationMap().CalculateStationCosts() )
 			'interest rate for your current credit
-			Player.GetFinance().PayCreditInterest( Player.GetFinance().GetCreditInterest() )
+			finance.PayCreditInterest( finance.GetCreditInterest() )
 			'newsagencyfees			
-			Player.GetFinance(day).PayNewsAgencies(Player.GetNewsAbonnementFees())
+			finance.PayNewsAgencies(Player.GetNewsAbonnementFees())
 		Next
 	End Method
 
 
 	'computes daily income like account interest income
-	Method ComputeDailyIncome(day:Int=-1)
+	Method ComputeDailyIncome(day:Int)
 		For Local Player:TPlayer = EachIn GetPlayerCollection().players
-			If Player.GetFinance().money > 0
-				Player.GetFinance().EarnBalanceInterest( Player.GetFinance().money * TPlayerFinance.balanceInterestRate )
+			local finance:TPlayerFinance = Player.GetFinance()
+			if not finance then Throw "ComputeDailyIncome failed: finance = null."
+
+			If finance.money > 0
+				finance.EarnBalanceInterest( finance.money * TPlayerFinance.balanceInterestRate )
 			Else
 				'attention: multiply current money * -1 to make the
 				'negative value an "positive one" - a "positive expense"
-				Player.GetFinance().PayDrawingCreditInterest( -1 * Player.GetFinance().money * TPlayerFinance.drawingCreditRate )
+				finance.PayDrawingCreditInterest( -1 * finance.money * TPlayerFinance.drawingCreditRate )
 			EndIf
 		Next
 	End Method
 
 
 	'computes penalties for expired ad-contracts
-	Method ComputeContractPenalties(day:Int=-1)
+	Method ComputeContractPenalties(day:Int)
+		local obsoleteContracts:TAdContract[]
+		'add all obsolete contracts to an array to avoid concurrent
+		'modification
 		For Local Player:TPlayer = EachIn GetPlayerCollection().players
 			For Local Contract:TAdContract = EachIn Player.GetProgrammeCollection().adContracts
 				If Not contract Then Continue
@@ -729,10 +743,15 @@ endrem
 				If contract.GetDaysLeft() < 0
 					'inform contract
 					contract.Fail(GetWorldTime().MakeTime(0, day, 0, 0))
-					'remove
-					Player.GetProgrammeCollection().RemoveAdContract(contract)
+
+					obsoleteContracts :+ [contract]
 				EndIf
 			Next
+		Next
+
+		'remove all obsolete contracts
+		For local c:TAdContract = EachIn obsoleteContracts
+			GetPlayerProgrammeCollection(c.owner).RemoveAdContract(c)
 		Next
 	End Method
 
@@ -952,7 +971,7 @@ endrem
 			If worldTime.GetDayHour() = 0 And worldTime.GetDayMinute() = 0
 				'year
 				If worldTime.GetDayOfYear() = 1
-					EventManager.triggerEvent(TEventSimple.Create("Game.OnYear", New TData.addNumber("minute", worldTime.GetDayMinute()).addNumber("hour", worldTime.GetDayHour()).addNumber("day", worldTime.GetDay()) ))
+					EventManager.triggerEvent(TEventSimple.Create("Game.OnYear", New TData.addNumber("time", worldTime.GetTimeGone()) ))
 
 					'reset availableNewsEventList - maybe this is a year
 					'with some more news
@@ -962,16 +981,16 @@ endrem
 			 	'automatically change current-plan-day on day change
 			 	TScreenHandler_ProgrammePlanner.ChangePlanningDay(worldTime.GetDay())
 
-				EventManager.triggerEvent(TEventSimple.Create("Game.OnDay", New TData.addNumber("minute", worldTime.GetDayMinute()).addNumber("hour", worldTime.GetDayHour()).addNumber("day", worldTime.GetDay()) ))
+				EventManager.triggerEvent(TEventSimple.Create("Game.OnDay", New TData.addNumber("time", worldTime.GetTimeGone()) ))
 			EndIf
 
 			'hour
 			If worldTime.GetDayMinute() = 0
-				EventManager.triggerEvent(TEventSimple.Create("Game.OnHour", New TData.addNumber("minute", worldTime.GetDayMinute()).addNumber("hour", worldTime.GetDayHour()).addNumber("day", worldTime.GetDay()) ))
+				EventManager.triggerEvent(TEventSimple.Create("Game.OnHour", New TData.addNumber("time", worldTime.GetTimeGone()) ))
 			EndIf
 
 			'minute
-			EventManager.triggerEvent(TEventSimple.Create("Game.OnMinute", New TData.addNumber("minute", worldTime.GetDayMinute()).addNumber("hour", worldTime.GetDayHour()).addNumber("day", worldTime.GetDay()) ))
+			EventManager.triggerEvent(TEventSimple.Create("Game.OnMinute", New TData.addNumber("time", worldTime.GetTimeGone()) ))
 		Next
 
 		'reset time of lst minute so next update can calculate missed minutes

@@ -76,6 +76,7 @@ Type TPlayerFinanceCollection
 		Local arrayIndex:Int = day - GetWorldTime().GetStartDay() + 1
 
 		local playerIndex:int = playerID -1
+
 		'if the array is less than allowed: return finance from day 0
 		'which is the day before "start"
 		If arrayIndex < 0 Then Return _Get(playerID, GetWorldTime().GetStartDay() - 1)
@@ -93,12 +94,15 @@ Type TPlayerFinanceCollection
 				'resize array
 				finances[playerIndex] = finances[playerIndex][..arrayIndex+1]
 			EndIf
+
+			'print "create finance for player "+playerID+" at arrayIndex="+arrayIndex
 			finances[playerIndex][arrayIndex] = New TPlayerFinance.Create(playerID)
 			'reuse the money from the day before
 			'if arrayIndex 0 - we do not need to take over
 			'calling GetFinance(day-1) instead of accessing the array
 			'assures that the object is created if needed (recursion)
 			If arrayIndex > 0
+				'print "take over finances: from day " + (day-1) + " to day "+day+"  target arrayIndex: "+arrayIndex+"/" + (finances[playerIndex].length-1)
 				'print "take over finances: " + (day-1) +" old:" + _Get(playerID, day-1).money
 				TPlayerFinance.TakeOverFinances(_Get(playerID, day-1), finances[playerIndex][arrayIndex])
 			endif

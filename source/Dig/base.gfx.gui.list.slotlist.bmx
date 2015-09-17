@@ -164,6 +164,7 @@ Type TGUISlotList Extends TGUIListBase
 
 		'set startpos at point of block displacement
 		Local currentPos:TVec3D = _entriesBlockDisplacement.ToVec3D()
+		currentPos.z = -1 'set to invalid slot position
 		Local currentRect:TRectangle 'used to check if a given coord is within
 		Local slotW:Int
 		Local slotH:Int

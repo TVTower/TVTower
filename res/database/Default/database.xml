@@ -11703,9 +11703,6 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<de>Da sich so viele Terroristen bei Anschlägen auf Duban verirren, sollten sie ab sofort mit GPS ausgestattet werden. Dieses Gerücht wurde im Internet gefunden.</de>
 				<en></en>
 			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="257927dc-8179-4896-87a7-9db3384cd69d" />
-			</effects>
 			<data genre="0" price="1.0" quality="0" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>

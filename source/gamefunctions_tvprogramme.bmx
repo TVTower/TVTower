@@ -1825,11 +1825,22 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 	'give all won auctions to the winners
 	Function EndAllAuctions()
-		For Local obj:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
+		For Local obj:TAuctionProgrammeBlocks = EachIn List
 			obj.EndAuction()
 		Next
 	End Function
 
+
+	'refill all auctions without bids
+	Function RefillAuctionsWithoutBid()
+		For Local obj:TAuctionProgrammeBlocks = EachIn List
+			If Not obj.bestBidder
+				obj.Refill()
+				print obj.licence.GetTitle() +"  " + obj.licence.data.year
+			endif
+		Next
+	End Function
+	
 
 	'sets another licence into the slot
 	Method Refill:Int(programmeLicence:TProgrammeLicence=Null)
