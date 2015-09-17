@@ -40,10 +40,11 @@ Import "base.gfx.bitmapfont.bmx"
 
 'tooltips containing headline and text, updated and drawn by Tinterface
 Type TTooltip Extends TEntity
-	Field lifetime:Float		= 0.1		'how long this tooltip is existing
+	Field lifetime:Float		= 0.1		'how long this tooltip will still exist
 	Field fadeValue:Float		= 1.0		'current fading value (0-1.0)
 	Field _startLifetime:Float	= 1.0		'initial lifetime value
 	Field _startFadingTime:Float= 0.20		'at which lifetime fading starts
+	Field _aliveTime:Float      = 0.0		'how long this tooltip is already existing
 	Field title:String
 	Field content:String
 	Field minContentWidth:int	= 120
@@ -80,6 +81,7 @@ Type TTooltip Extends TEntity
 		Self.lifetime			= lifetime
 		Self._startLifetime		= Float(lifetime) / 1000.0 	'in seconds
 		Self._startFadingTime	= Min(_startLifetime/2.0, 0.1)
+		Self._aliveTime         = 0
 		Self.Hover()
 	End Method
 
@@ -115,6 +117,7 @@ Type TTooltip Extends TEntity
 		if not enabled then return False
 		
 		lifeTime :- GetDeltaTimer().GetDelta()
+		_aliveTime :+ GetDeltaTimer().GetDelta()
 
 		'start fading if lifetime is running out (lower than fade time)
 		If lifetime <= _startFadingTime
@@ -125,6 +128,7 @@ Type TTooltip Extends TEntity
 		If lifeTime <= 0 ' And enabled 'enabled - as pause sign?
 			Image	= Null
 			enabled	= False
+			_aliveTime = 0
 			Return False
 		EndIf
 

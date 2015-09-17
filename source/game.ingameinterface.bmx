@@ -626,13 +626,18 @@ Type TTooltipAudience Extends TTooltip
 
 	'override default to add "ALT-Key"-Switcher
 	Method Update:Int()
-		If KeyManager.isDown(KEY_LALT) Or KeyManager.isDown(KEY_RALT)
+		local showDetailed:int = False
+		If KeyManager.isDown(KEY_LALT) Or KeyManager.isDown(KEY_RALT) then showDetailed = True
+		'hovered for more than 1.5 seconds and not fading out
+		If _aliveTime > 1.5 and getFadeAmount() >= 1.0 then showDetailed = True
+
+
+		If showDetailed
 			If Not showDetails Then Self.dirtyImage = True
 			showDetails = True
 			'backup position
 			If Not originalPos Then originalPos = area.position.Copy()
 
-			
 		Else
 			If showDetails Then Self.dirtyImage = True
 			showDetails = False
