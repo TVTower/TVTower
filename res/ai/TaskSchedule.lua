@@ -916,8 +916,10 @@ function JobSchedule:OptimizeAdSchedule()
 			if (reuseOldTrailer == false) then 
 				-- look for upcoming programmes
 				if (table.count(upcomingProgrammesLicences) == 0) then
-					-- nothing found: use a random one
-					upcomingProgrammesLicences = { TVT.of_getProgrammeLicenceAtIndex( math.random(0, TVT.of_getAdContractCount()-1) ) }
+					-- nothing found: use a random one (if possible)
+					if TVT.of_getAdContractCount() > 0 then
+						upcomingProgrammesLicences = { TVT.of_getProgrammeLicenceAtIndex( math.random(0, TVT.of_getAdContractCount()-1) ) }
+					end
 				end
 
 				if (table.count(upcomingProgrammesLicences) > 0) then
@@ -943,8 +945,10 @@ function JobSchedule:OptimizeAdSchedule()
 		-- ============
 		-- send a random ad spot if nothing else is available
 		if (choosenBroadcastSource == nil and currentBroadcastMaterial == nil) then
-			choosenBroadcastSource = TVT.of_getAdContractAtIndex( math.random(0, TVT.of_getAdContractCount()-1) )
-			choosenBroadcastLog = "Setze Werbespot (Alternativlosigkeit): " .. fixedDay .. "/" .. fixedHour .. ":55  " .. choosenBroadcastSource.GetTitle() .. " [" ..choosenBroadcastSource.GetID() .."]  MinAud: " .. choosenBroadcastSource.GetMinAudience()
+			if TVT.of_getAdContractCount() > 0 then
+				choosenBroadcastSource = TVT.of_getAdContractAtIndex( math.random(0, TVT.of_getAdContractCount()-1) )
+				choosenBroadcastLog = "Setze Werbespot (Alternativlosigkeit): " .. fixedDay .. "/" .. fixedHour .. ":55  " .. choosenBroadcastSource.GetTitle() .. " [" ..choosenBroadcastSource.GetID() .."]  MinAud: " .. choosenBroadcastSource.GetMinAudience()
+			end
 		end
 
 

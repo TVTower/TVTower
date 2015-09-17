@@ -57,7 +57,7 @@ end
 
 
 function DefaultStrategy:Start(playerAI)
-	if not initDone then self:initialize() end
+	if not self.initDone then self:initialize() end
 end
 
 function DefaultStrategy:Finalize(playerAI)
