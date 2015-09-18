@@ -426,7 +426,7 @@ Type RoomHandler_Office extends TRoomHandler
 			If THelper.MouseIn(165,85,70,100)
 				If not SafeToolTip Then SafeToolTip = TTooltip.Create(GetLocale("ROOM_SAFE"), GetLocale("FOR_PRIVATE_AFFAIRS"), 140, 100,-1,-1)
 				SafeToolTip.enabled = 1
-				SafeToolTip.minContentWidth = 150
+				SafeToolTip.SetMinTitleAndContentWidth(150)
 				SafeToolTip.Hover()
 				GetGame().cursorstate = 1
 				If MOUSEMANAGER.IsClicked(1)
@@ -2024,7 +2024,7 @@ Type RoomHandler_News extends TRoomHandler
 		Next
 
 		if not NewsGenreTooltip then NewsGenreTooltip = TTooltip.Create("genre", "abonnement", 180,100 )
-		NewsGenreTooltip.minContentWidth = 180
+		NewsGenreTooltip.SetMinTitleAndContentWidth(180)
 		NewsGenreTooltip.enabled = 1
 		'refresh lifetime
 		NewsGenreTooltip.Hover()
@@ -3052,7 +3052,7 @@ Type RoomHandler_Studio extends TRoomHandler
 				if not studioManagerDialogue
 					If not studioManagerTooltip Then studioManagerTooltip = TTooltip.Create(GetLocale("STUDIO_MANAGER"), GetLocale("GIVES_INFORMATION_ABOUT_PRODUCTION_OR_HANDS_OUT_SHOPPING_LIST"), 150, 160,-1,-1)
 					studioManagerTooltip.enabled = 1
-					studioManagerTooltip.minContentWidth = 150
+					studioManagerTooltip.SetMinTitleAndContentWidth(150)
 					studioManagerTooltip.Hover()
 				endif
 			endif

@@ -1011,7 +1011,7 @@ Type TScreenHandler_ProgrammePlanner
 'DEVPATCH
 if draggedGuiProgrammePlanElement and not draggedGuiProgrammePlanElement.isClickable()		
 	if MouseManager.IsHit(2)
-		draggedGuiProgrammePlanElement.Remove()
+'		draggedGuiProgrammePlanElement.Remove()
 		draggedGuiProgrammePlanElement = null
 		'remove right click - to avoid leaving the room
 		MouseManager.ResetKey(2)

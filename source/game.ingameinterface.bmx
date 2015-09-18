@@ -72,10 +72,10 @@ Type TInGameInterface
 		CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
 
 		CurrentProgrammeToolTip = TTooltip.Create("", "", 40, 395)
-		CurrentProgrammeToolTip.minContentWidth = 220
+		CurrentProgrammeToolTip.SetMinTitleAndContentWidth(220)
 
 		CurrentAudienceToolTip = TTooltipAudience.Create("", "", 490, 440)
-		CurrentAudienceToolTip.minContentWidth = 200
+		CurrentProgrammeToolTip.SetMinTitleAndContentWidth(200)
 
 		CurrentTimeToolTip = TTooltip.Create("", "", 490, 535)
 		MoneyToolTip = TTooltip.Create("", "", 490, 408)
@@ -615,7 +615,7 @@ Type TTooltipAudience Extends TTooltip
 	End Method
 
 
-	Method GetContentWidth:Int()
+	Method GetContentInnerWidth:Int()
 		If audienceResult
 			Return Self.useFont.GetWidth( GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)" )
 		Else

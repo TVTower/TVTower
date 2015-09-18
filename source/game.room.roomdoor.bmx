@@ -163,6 +163,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 		If room.GetDescription(1) <> "" and GetPlayerBase().GetFigure().IsInBuilding() And THelper.MouseIn(GetScreenX(), GetScreenY() - area.GetH(), area.GetW(), area.GetH())
 			If not tooltip
 				tooltip = TRoomDoorTooltip.Create("", "", 100, 140, 0, 0)
+				tooltip.SetMinTitleAndContentWidth(100, 160)
 				tooltip.AssignRoom(room.id)
 			endif
 

@@ -47,7 +47,11 @@ Type TTooltip Extends TEntity
 	Field _aliveTime:Float      = 0.0		'how long this tooltip is already existing
 	Field title:String
 	Field content:String
-	Field minContentWidth:int	= 120
+	'if all (title + content) are less wide than this is used
+	Field _minTitleWidth:int = 120
+	'if content is wider than "title" this is used
+	Field _minContentWidth:int = 160
+
 	'left (2) and right (4) is for all elements
 	'top (1) and bottom (3) padding for content
 	Field padding:TRectangle	= new TRectangle.Init(3,5,4,7)
@@ -147,55 +151,6 @@ Type TTooltip Extends TEntity
 	End Method
 
 
-	Method getWidth:Int()
-		If Not DirtyImage And Image And imgCacheEnabled Then Return image.width
-
-		'manual config
-		If area.GetW() > 0 Then Return area.GetW()
-
-		'auto width calculation
-		If area.GetW() <= 0
-			Local result:Int = 0
-			local paddingLeftRight:int = 6
-			'width from title + content + spacing
-			result = UseFontBold.getWidth(title)
-			'add icon to width
-			If tooltipimage >=0 Then result:+ ToolTipIcons.framew + 2
-			'compare with content text width
-			result = Max(GetContentWidth(), result)
-			'add padding
-			result:+ padding.GetLeft() + padding.GetRight()
-
-			Return result
-		EndIf
-	End Method
-
-
-	Method getHeight:Int()
-		If Not DirtyImage And Image And imgCacheEnabled Then Return image.height
-
-		'manual config
-		If area.GetH() > 0 Then Return area.GetH()
-
-		'auto height calculation
-		If area.GetH() <= 0
-			Local result:Int = 0
-			'height from title + content + spacing
-			result:+ getTitleHeight()
-			result:+ getContentHeight(GetWidth())
-			Return result
-		EndIf
-	End Method
-
-
-	Method getTitleHeight:Int()
-		Local result:Int = TooltipHeader.area.GetH()
-		'add icon to height of caption
-		'If tooltipimage >= 0 Then result :+ 2
-		Return result
-	End Method
-
-
 	Method SetTitle:Int(value:String)
 		if title = value then return FALSE
 
@@ -214,28 +169,93 @@ Type TTooltip Extends TEntity
 	End Method
 
 
-	Method getContentWidth:Int()
-		'only add a line if there is text
-		if content <> "" then return minContentWidth
-		return 0
-
-		'If Len(content)>1 Then Return UseFont.getWidth(content)
-		'Return 0
+	Method SetMinTitleAndContentWidth(titleWidth:int, contentWidth:int=-1)
+		if contentWidth = -1 then contentWidth = titleWidth
+		self._minTitleWidth = titleWidth
+		self._minContentWidth = contentWidth
 	End Method
 
 
+	Method GetWidth:Int()
+		If Not DirtyImage And Image And imgCacheEnabled Then Return image.width
+
+		'manual config
+		If area.GetW() > 0 Then Return area.GetW()
+
+		'auto width calculation
+		If area.GetW() <= 0
+			return Max(GetTitleWidth(), GetContentwidth())
+		EndIf
+	End Method
+
+
+	Method GetHeight:Int()
+		If Not DirtyImage And Image And imgCacheEnabled Then Return image.height
+
+		'manual config
+		If area.GetH() > 0 Then Return area.GetH()
+
+		'auto height calculation
+		If area.GetH() <= 0
+			Local result:Int = 0
+			'height from title + content + spacing
+			result:+ getTitleHeight()
+			result:+ getContentHeight(GetContentInnerWidth())
+			Return result
+		EndIf
+	End Method
+
+
+	Method GetTitleHeight:Int()
+		Local result:Int = TooltipHeader.area.GetH()
+		'add icon to height of caption
+		'If tooltipimage >= 0 Then result :+ 2
+		Return result
+	End Method
+
+
+	'title is singleline, so no "new line" possible
+	Method GetTitleWidth:int()
+		return Max(_minTitleWidth, GetTitleInnerWidth() + padding.GetLeft() + padding.GetRight())
+	End Method
+
+
+	Method GetTitleInnerWidth:int()
+		'add icon to width
+		If tooltipimage >=0
+			return UseFontBold.getWidth(title) + ToolTipIcons.framew + 2
+		else
+			return UseFontBold.getWidth(title)
+		endif
+	End Method
+
+
+	Method GetContentWidth:Int()
+		'at least as wide as the title
+		return Max(GetTitleWidth(), GetContentInnerWidth()) + padding.GetLeft() + padding.GetRight()
+	End Method
+
+rem
+tooltip: contentbreiten richtig berechnen -
+- ueberpruefen dass sie in "Doortooltips", "im-raum-tooltips" und die
+quoten (+details)-tooltips richtig funktionieren
+
+die Toastmessages sind nicht richtig von den Dimensionen (Cheftext ueberlappt)
+endrem
 	Method GetContentInnerWidth:Int()
-		return getContentWidth() - padding.GetLeft() - padding.GetRight()
+		'return minimum
+		'if all fits in one line use content width, else minimum tooltip width
+		if content <> "" then return Min(UseFont.getWidth(content), _minContentWidth - padding.GetLeft() - padding.GetRight())
+		Return 0
 	End Method
 
 
 	Method GetContentHeight:Int(width:int)
 		local result:int = 0
-		local maxTextWidth:int = width - padding.GetLeft() - padding.GetRight()
 
 		'only add a line if there is text
 		If content <> ""
-			result :+ UseFont.getBlockHeight(content, maxTextWidth, -1)
+			result :+ UseFont.getBlockHeight(content, width, -1)
 			result :+ padding.GetTop() + padding.GetBottom()
 		endif
 		Return result
@@ -285,9 +305,8 @@ Type TTooltip Extends TEntity
 
 	Method DrawContent:Int(x:Int, y:Int, width:Int, height:Int)
 		If content = "" then return FALSE
-		local maxTextWidth:int = width - padding.GetLeft() - padding.GetRight()
 		SetColor 90,90,90
-		Usefont.drawBlock(content, x + padding.GetLeft(), y + padding.GetTop(), maxTextWidth, -1)
+		Usefont.drawBlock(content, x + padding.GetLeft(), y + padding.GetTop(), GetContentInnerWidth(), -1)
 		SetColor 255, 255, 255
 	End Method
 
