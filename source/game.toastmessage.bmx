@@ -112,7 +112,7 @@ Type TGameToastMessage extends TToastMessage
 		'attention: subtract some pixels from width (to avoid texts fitting
 		'because of rounding errors - but then when drawing they do not
 		'fit)
-		height :+ GetBitmapFontManager().baseFont.GetBlockDimension(text, area.GetW() - 3, -1).GetY()
+		height :+ GetBitmapFontManager().baseFont.GetBlockDimension(text, GetContentWidth(), -1).GetY()
 		'gfx padding
 		if showBackgroundSprite and backgroundSprite
 			height :+ backgroundSprite.GetNinePatchContentBorder().GetTop()
@@ -126,6 +126,15 @@ Type TGameToastMessage extends TToastMessage
 		endif
 		
 		area.dimension.SetY(height)
+	End Method
+
+
+	Method GetContentWidth:int()
+		if showBackgroundSprite and backgroundSprite
+			return GetScreenWidth() - backgroundSprite.GetNinePatchContentBorder().GetLeft() - backgroundSprite.GetNinePatchContentBorder().GetRight()
+		else
+			return GetScreenWidth()
+		endif
 	End Method
 
 
@@ -171,8 +180,8 @@ Type TGameToastMessage extends TToastMessage
 		endif
 
 		local captionHeight:int = GetBitmapFontManager().baseFontBold.GetMaxCharHeight()
-		GetBitmapFontManager().baseFontBold.DrawBlock(caption, contentX, contentY, contentX2 - contentX, captionHeight, null, TColor.clBlack)
-		GetBitmapFontManager().baseFont.DrawBlock(text, contentX, contentY + captionHeight, contentX2 - contentX, -1, null, TColor.CreateGrey(50))
+		GetBitmapFontManager().baseFontBold.DrawBlock(caption, contentX, contentY, GetContentWidth(), captionHeight, null, TColor.clBlack)
+		GetBitmapFontManager().baseFont.DrawBlock(text, contentX, contentY + captionHeight, GetContentWidth(), -1, null, TColor.CreateGrey(50))
 
 
 		'worldtime close hint
