@@ -197,6 +197,36 @@ Type TLocalization
 	End Function
 
 
+	Function PrintCurrentTranslationState(compareLang:string="tr")
+		'DE contains everythign
+		local master:TLocalizationLanguage = GetLanguage("de")
+		local compare:TLocalizationLanguage = GetLanguage(compareLang)
+		
+		print "---- LOCALIZATION STATE ----"
+		print "AVAILABLE:"
+		print "----------"
+		for local k:string = EachIn master.map.Keys()
+			if compare.Get(k) = k then continue
+
+			print master.languageCode+" |"+ k + " = " +master.Get(k)
+			print compare.languageCode+" |"+ k + " = " +compare.Get(k)
+			print "~t-"
+		Next
+		print "~t"
+		print "MISSING:"
+		print "--------"
+		for local k:string = EachIn master.map.Keys()
+			if compare.Get(k) <> k then continue
+
+			print master.languageCode+" |"+ k + " = " +master.Get(k)
+			print compare.languageCode+" |"+ k + " = "
+			print "~t-"
+		Next
+
+		print "----------------------------"
+	End Function
+	
+
 	'Releases all resources used by the localization class
 	Function Dispose()
 		languages.Clear()

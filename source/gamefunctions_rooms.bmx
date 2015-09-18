@@ -426,7 +426,7 @@ Type RoomHandler_Office extends TRoomHandler
 			If THelper.MouseIn(165,85,70,100)
 				If not SafeToolTip Then SafeToolTip = TTooltip.Create(GetLocale("ROOM_SAFE"), GetLocale("FOR_PRIVATE_AFFAIRS"), 140, 100,-1,-1)
 				SafeToolTip.enabled = 1
-				SafeToolTip.SetMinTitleAndContentWidth(150)
+				SafeToolTip.SetMinTitleAndContentWidth(90, 120)
 				SafeToolTip.Hover()
 				GetGame().cursorstate = 1
 				If MOUSEMANAGER.IsClicked(1)
