@@ -725,7 +725,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		EventManager.triggerEvent(TEventSimple.Create("adContract.onFail", New TData.addNumber("time", time), Self))
 
 		'pay penalty
-		GetPlayerFinance(owner, GetWorldTime().GetOnDay(time)).PayPenalty(GetPenalty(), self)
+		GetPlayerFinance(owner, GetWorldTime().GetDay(time)).PayPenalty(GetPenalty(), self)
 
 		'clean up (eg. decrease usage counter)
 		Remove()
@@ -738,7 +738,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		EventManager.triggerEvent(TEventSimple.Create("adContract.onFinish", New TData.addNumber("time", time), Self))
 
 		'give money
-		GetPlayerFinance(owner, GetWorldTime().GetOnDay(time)).EarnAdProfit(GetProfit(), self)
+		GetPlayerFinance(owner, GetWorldTime().GetDay(time)).EarnAdProfit(GetProfit(), self)
 
 		'clean up (eg. decrease usage counter)
 		Remove()
