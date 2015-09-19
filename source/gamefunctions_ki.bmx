@@ -551,7 +551,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method getPotentialAudiencePercentage:Float(day:int = - 1, hour:int = -1)
 		if day = -1 then day = GetWorldTime().GetDay()
 		if hour = -1 then hour = GetWorldTime().GetDayHour()
-		local time:Long = GetWorldTime().MakeTime(day, hour, 0, 0)
+		local time:Long = GetWorldTime().MakeTime(0, day, hour, 0, 0)
 
 		'percentage of each population group watching now
 		'local percentage:TAudience = TBroadcast.GetPotentialAudiencePercentageForHour(hour).GetAvg()

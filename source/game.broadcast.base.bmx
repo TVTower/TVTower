@@ -229,7 +229,7 @@ Type TBroadcastManager
 		bc.BroadcastType = broadcastType
 
 		if day < 0 then day = GetWorldTime().GetDay()
-		bc.Time = GetWorldTime().MakeTime(day, hour, 0, 0)
+		bc.Time = GetWorldTime().MakeTime(0, day, hour, 0, 0)
 
 		Sequence.SetCurrentBroadcast(bc)
 
