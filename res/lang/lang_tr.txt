@@ -494,14 +494,14 @@ ALREADY_OVER = Bitti mi...?
 DO_YOU_REALLY_WANT_TO_QUIT = Gerçekten çıkmak istiyor musun?
 DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN = Gerçekten oyundan çıkmak ve Ana Ekrana dönmek istiyor musun?
 
-CONTINUE_GAME = Oyunu devam
-LOAD_GAME = Oyunu yükle
-SAVE_GAME = Oyunu kaydet
-EXIT_GAME = Çıkış Oyunu
-EXIT_TO_MAINMENU = Exit to main menu
-NAME_OF_SAVEGAME = Name of savegame 
-OVERWRITE_SAVEGAME = Overwrite savegame?
-DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X = Do you really want to overwrite savegame %SAVEGAME%?
+CONTINUE_GAME = Oyuna devam et
+LOAD_GAME = Oyunu Yükle
+SAVE_GAME = Oyunu Kaydet
+EXIT_GAME = Oyundan Çıkış
+EXIT_TO_MAINMENU = Ana Menüye Çıkış
+NAME_OF_SAVEGAME = Kayıt İsmi
+OVERWRITE_SAVEGAME = Üzerine Yazılsın mı?
+DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X = Gerçekten Kayıtlı oyun %SAVEGAME% silinsin mi?
 
 ADCONTRACT_FINISHED = Reklam Kontratı tamamlandı
 ADCONTRACT_FAILED = Reklam Kontratı Başarısız
@@ -551,21 +551,21 @@ TEMPERATURES_ARE_BETWEEN_X_AND_Y = Isı %MINTEMPERATURE% ile %MAXTEMPERATURE%°C
 TEMPERATURE_IS_CONSTANT_AT_X = Isı tam olarak  %TEMPERATURE%°C sabit.
 
 
-IN_THE_LATER_HOURS1 = In the later hours
-IN_THE_LATER_HOURS2 = After dawn
-IN_THE_LATER_HOURS3 = Later
-STORMY_WINDS_OF_UP_TO_X1 = Squalls of up to %MAXWINDVELOCITY% km/h drag over the land.
-STORMY_WINDS_OF_UP_TO_X2 = Strong breezes up to squalls of %MAXWINDVELOCITY% km/h.
-NEARLY_NO_WIND1 = There is almost no wind.
-NEARLY_NO_WIND2 = It blows hardly Wind.
-SLOW_WIND_WITH_X_AND_GUST_OF_WIND_WITH_Y1 = Light breeze from %MINWINDVELOCITY% km/h and isolated gusts of up to %MAXWINDVELOCITY% km/h.
-WIND_VELOCITIES_ARE_BETWEEN_X_AND_Y1 = The wind speeds are between %MINWINDVELOCITY% and %MAXWINDVELOCITY% km/h.
-WIND_VELOCITY_IS_CONSTANT_AT_X1 = The wind speed is constant %WINDVELOCITY% km/h.
+IN_THE_LATER_HOURS1 = Önümüzdeki saatlerde
+IN_THE_LATER_HOURS2 = Şafaktan sonra
+IN_THE_LATER_HOURS3 = Sonra
+STORMY_WINDS_OF_UP_TO_X1 = Rüzgar şiddeti %MAXWINDVELOCITY% km/s üzerinde.
+STORMY_WINDS_OF_UP_TO_X2 = Sertleşen hava şartlarında rüzgar hızı %MAXWINDVELOCITY% km/s.
+NEARLY_NO_WIND1 = Hava sakin.
+NEARLY_NO_WIND2 = Rüzgarsız.
+SLOW_WIND_WITH_X_AND_GUST_OF_WIND_WITH_Y1 = Hafif esinti %MINWINDVELOCITY% km/s ile %MAXWINDVELOCITY% km/s arasında.
+WIND_VELOCITIES_ARE_BETWEEN_X_AND_Y1 = Rüzgarın hızı %MINWINDVELOCITY% ile %MAXWINDVELOCITY% km/s arasında.
+WIND_VELOCITY_IS_CONSTANT_AT_X1 = Rüzgarın şiddeti %WINDVELOCITY% km/s.
 
 LOCKED = Kilitli
 ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY = Bu odaya giriş sadece doğru anahtarla olabilir.
 BLOCKED = Bloke
 ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE = Bu odaya erişim, şu anda mümkün değil.
 
-OPENINGSHOW_TITLE = Big launch of "%CHANNELNAME%
-OPENINGSHOW_DESCRIPTION = Let's pop the corks. %CHANNELNAME% is launching today.
+OPENINGSHOW_TITLE = %CHANNELNAME% kanalından büyük açılış
+OPENINGSHOW_DESCRIPTION = Şampanyaları patlatın. %CHANNELNAME% bugün açılıyor.
