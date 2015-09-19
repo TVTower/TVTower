@@ -61,6 +61,101 @@ Function GetProgrammePerson:TProgrammePerson(guid:string)
 End Function
 
 
+'loaded on import of the module
+EventManager.registerListenerFunction("programmepersonbase.onFinishProduction", onProgrammePersonBaseFinishesProduction)
+
+'convert "insignifants" to "celebrities"
+Function onProgrammePersonBaseFinishesProduction:int(triggerEvent:TEventBase)
+
+	local p:TProgrammePersonBase = TProgrammePersonBase(triggerEvent.GetSender())
+	if not p then return false
+
+	'we cannot convert a non-fictional "insignificant" as we cannot
+	'create random birthday dates for a real person...
+	if not p.fictional then return False
+
+	if not p.canLevelUp then return false
+
+	'jobsDone is increased _after_ finishing the production,
+	'so "jobsDone <= 2" will be true until the 3rd production is finishing
+	if p.jobsDone <= 2 then return False
+
+
+	'do not work with the given person, but fetch it freshly from the
+	'collection - so multiple "finishesProductions" (with person objects
+	'instead of GUIDs!) wont trigger the conversion multiple times
+	local currentPerson:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID(p.GetGUID())
+	'skip celebrities
+	if TProgrammePerson(currentPerson) then return False
+
+	GetProgrammePersonBaseCollection().RemoveInsignificant(currentPerson)
+	currentPerson = ConvertInsignificantToCelebrity(currentPerson)
+	GetProgrammePersonBaseCollection().AddCelebrity(currentPerson)
+End Function
+
+
+
+
+Function ConvertInsignificantToCelebrity:TProgrammePersonBase(insignifant:TProgrammePersonBase)
+	'already done
+	if TProgrammePerson(insignifant) then return insignifant
+	
+	local person:TProgrammePerson = new TProgrammePerson
+	TProgrammePerson(THelper.TakeOverObjectValues(insignifant, person))
+
+	'give random stats
+	person.skill = RandRange(0,10) / 100.0
+	person.power = RandRange(0,10) / 100.0
+	person.humor = RandRange(0,10) / 100.0
+	person.charisma = RandRange(0,10) / 100.0
+	person.appearance = RandRange(0,10) / 100.0
+	person.fame = RandRange(0,10) / 100.0
+	person.scandalizing = RandRange(0,10) / 100.0
+	person.priceModifier = 0.85 + 0.3*(RandRange(0,100) / 100.0)
+
+	'gain experience and fetch earliest production date
+	local earliestProduction:int = -1
+
+
+	For local programmeDataGUID:string = EachIn person.GetProducedProgrammes()
+		local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(programmeDataGUID)
+		person.xp :+ person.GetNextExperienceGain(programmeData)
+
+		if earliestProduction = -1
+			earliestProduction = programmeData.year
+		else
+			earliestProduction = Min(programmeData.year, earliestProduction)
+		endif
+	Next
+
+	'no production found - or invalid data contained - or not enough produced
+	if earliestProduction < 0 or person.GetProducedProgrammes().length < 3
+		return insignifant
+	endif
+
+
+	'maybe first movie was done at age of 5 - 30
+	'also avoid days 29,30,31 - not possible in all months
+	person.dayOfBirth = (earliestProduction - RandRange(5,30))+"-"+RandRange(1,12)+"-"+RandRange(1,28)
+
+	'TODO: 
+	'Wenn GetAge > 50 dann mit Chance (steigend bis zu 100%)
+	'einen Todeszeitpunkt festlegen?
+	'NUR bei fiktiven Personen!
+	'Dazu brauchen wir die "letzte Produktion" als Minimaldatum (plus
+	'ein "Mindestalter" damit wir keine jungen Menschen sterben lassen)
+
+	'emit event so eg. news agency could react to it ("new star is born")
+	EventManager.triggerEvent(TEventSimple.Create("programmeperson.newCelebrity", null, person))
+
+	print "new Star is born: " + person.GetFullName() +", "+person.GetAge()+"years, born " + GetWorldTime().GetFormattedDate( GetWorldTime().GetTimeGoneFromString(person.dayOfBirth)) 
+
+	return person
+End Function
+
+
+
+
 'a person connected to a programme - directors, writers, actors...
 Type TProgrammePerson extends TProgrammePersonBase
 	field dayOfBirth:string	= "0000-00-00"
@@ -160,46 +255,44 @@ Type TProgrammePerson extends TProgrammePersonBase
 	End Method
 
 
-	'the base fee when engaged as actor
+	'override
+	'the base fee when engaged
 	'base might differ depending on sympathy for channel
-	Method GetActorBaseFee:Int(channel:int=-1)
-		'TODO: überarbeiten
-		'(50 - 650)
-		local sum:float = 50 + 100*(power + humor + charisma + appearance + 2*skill)
-		Local factor:Float = 1.0 + (fame*0.8 + scandalizing*0.2)
+	Method GetBaseFee:Int(jobID:int, channel:int=-1)
+		Select jobID
+			case TVTProgrammePersonJob.ACTOR, TVTProgrammePersonJob.SUPPORTINGACTOR 
+				'TODO: überarbeiten
+				'(50 - 650)
+				local sum:float = 50 + 100*(power + humor + charisma + appearance + 2*skill)
+				Local factor:Float = 1.0 + (fame*0.8 + scandalizing*0.2)
 
-		local sympathyMod:Float = 1.0
-		'modify by up to 50% ...
-		if channel >= 0 then sympathyMod :- 0.5 * GetChannelSympathy(channel)
+				local sympathyMod:Float = 1.0
+				'modify by up to 50% ...
+				if channel >= 0 then sympathyMod :- 0.5 * GetChannelSympathy(channel)
 
-		local xpMod:Float = 1.0
-		'up to "* 100" -> 100% xp means 2000*100 = 200000
-		xpMod :+ 100 * GetExperiencePercentage()
+				local xpMod:Float = 1.0
+				'up to "* 100" -> 100% xp means 2000*100 = 200000
+				xpMod :+ 100 * GetExperiencePercentage()
 
-		Return sympathyMod * (3000 + Floor(Int(2000 * sum * factor * xpMod * priceModifier)/100)*100)
-	End Method
+				if jobID = TVTProgrammePersonJob.ACTOR
+					Return sympathyMod * (3000 + Floor(Int(2000 * sum * factor * xpMod * priceModifier)/100)*100)
+				else
+					Return sympathyMod * (1500 + Floor(Int(900 * sum * factor * xpMod * priceModifier)/100)*100)
+				endif
 
-	
-	'the base fee when engaged as a guest in a show
-	'base might differ depending on sympathy for channel
-	Method GetGuestFee:Int(channel:int=-1)
-		'TODO: überarbeiten
-		local sum:float = 100 + 200*(fame*2 + scandalizing*0.5 + humor*0.3 + charisma*0.3 + appearance*0.3 + skill)
+			case TVTProgrammePersonJob.GUEST
+				'TODO: überarbeiten
+				local sum:float = 100 + 200*(fame*2 + scandalizing*0.5 + humor*0.3 + charisma*0.3 + appearance*0.3 + skill)
 
-		local sympathyMod:Float = 1.0
-		'modify by up to 50% ...
-		if channel >= 0 then sympathyMod :- 0.5 * GetChannelSympathy(channel)
+				local sympathyMod:Float = 1.0
+				'modify by up to 50% ...
+				if channel >= 0 then sympathyMod :- 0.5 * GetChannelSympathy(channel)
 
-		Return sympathyMod * (100 + Floor(Int(sum * priceModifier)/100)*100)
-	End Method
-
-
-	'override to emit events
-	Method StartProduction:int(programmeDataGUID:string)
-		Super.StartProduction(programmeDataGUID)
-		'emit event so eg. news agency could react to it ("bla has a new job")
-		'-> or to set them on the "scandals" list
-		EventManager.triggerEvent(TEventSimple.Create("programmeperson.onStartProduction", New TData.addString("programmeDataGUID", programmeDataGUID), Self))
+				Return sympathyMod * (100 + Floor(Int(sum * priceModifier)/100)*100)
+			default
+				print "FEE for jobID="+jobID+" not defined."
+				return 15000
+		End Select
 	End Method
 
 	
@@ -222,9 +315,6 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 		'reset cached calculations
 		calculatedTopGenreCache = -1
-
-		'emit event so eg. news agency could react to it ("bla goes on holiday")
-		EventManager.triggerEvent(TEventSimple.Create("programmeperson.onFinishProduction", New TData.addString("programmeDataGUID", programmeDataGUID), Self))
 	End Method
 
 
@@ -232,8 +322,12 @@ Type TProgrammePerson extends TProgrammePersonBase
 	Method GetProducedProgrammes:String[]()
 		if not producedProgrammesCached
 			'fill up with already finished
-			For local programmeData:TProgrammeData = EachIn GetProgrammeDataCollection().entries
-				if programmeData.IsReleased() or programmeData.IsInCinema()
+			For local programmeData:TProgrammeData = EachIn GetProgrammeDataCollection().entries.Values()
+				if not programmeData.HasCastPerson(self.GetGUID()) then continue
+				'skip "paid programming" (kind of live programme)
+				if programmeData.HasFlag(TVTProgrammeDataFlag.PAID) then continue
+
+				if programmeData.IsReleased() or programmeData.IsInProduction() or programmeData.IsInCinema()
 					producedProgrammes :+ [programmeData.GetGUID()]
 				endif
 			Next
@@ -337,4 +431,32 @@ Type TProgrammePerson extends TProgrammePersonBase
 		return 0.2 * baseGain
 	End Method
 
+
+	'override
+	Method GetAge:int()
+		local dob:Long = GetWorldTime().GetTimeGoneFromString(dayOfBirth)
+		'no dob was given
+		if dob = 0 then return Super.GetAge()
+
+		local now:Long = GetWorldTime().GetTimeGone()
+		if now < dob then return 0
+
+		return GetWorldTime().GetYear( now - dob)
+	End Method
+
+
+	'override
+	Method IsBorn:int()
+		local dob:Long = GetWorldTime().GetTimeGoneFromString(dayOfBirth)
+		'no dob was given
+		if dob = 0 then return Super.Isborn()
+
+		return GetWorldTime().GetTimeGone() > dob
+	End Method
+
+
+	'override
+	Method IsAlive:int()
+		return IsBorn()
+	End Method
 End Type

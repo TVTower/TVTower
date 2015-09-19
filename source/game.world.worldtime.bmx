@@ -15,6 +15,8 @@ Type TWorldTime {_exposeToLua="selected"}
 	Field _daysPerSeason:int = 3
 	'how many days does a week have?
 	Field _daysPerWeek:int = 7
+	'how many days does a week have?
+	Field _daysPerMonth:int = 30
 	 
 	'Speed of the world in "virtual seconds per real-time second"
 	'1.0 = realtime - a virtual day would take 86400 real-time seconds
@@ -110,6 +112,46 @@ Type TWorldTime {_exposeToLua="selected"}
 		Return 1.0 / GetTimeFactor()
 	End Method
 
+
+	Method GetTimeGoneFromString:Long(str:string)
+		'accepts format "y-m-d h:i"
+		local dateTime:string[] = str.split(" ")
+		local dateParts:string[] = dateTime[0].split("-")
+
+		local years:int = 0
+		local months:int = 0
+		local days:Float = 0
+		local hours:int = 0
+		local minutes:int = 0
+		local seconds:int = 0
+		
+
+		if dateParts.length > 0 then years = int(dateParts[0])
+		'subtract 1 as we _add_ time so "january" should be 0 instead
+		'of 1 ...
+		if dateParts.length > 1 then days = int(dateParts[1]) - 1
+		'scale down the days as there are 12days/year, 
+		if dateParts.length > 2 then days :+ int(dateParts[2]) * 12.0/365.0
+
+		if dateTime.length > 1
+			local timeParts:string[] = dateTime[1].split(":")
+			if timeParts.length > 0 then hours = int(timeParts[0])
+			if timeParts.length > 1 then minutes = int(timeParts[1])
+			if timeParts.length > 2 then seconds = int(timeParts[2])
+		endif
+		'give remainders of a rounded day value
+		local addHours:Float = 24.0 * (days - floor(days))
+		local addMinutes:Float = 60.0 * (addHours - floor(addHours))
+
+		'add remainder to hours/minutes
+		days = floor(days)
+		hours :+ floor(addHours)
+		minutes :+ floor(addMinutes)
+
+		
+		return GetWorldTime().MakeTime(years, days, hours, minutes, seconds)
+	End Method
+	
 
 	Method IsPaused:int()
 		return self._paused
@@ -334,7 +376,7 @@ Type TWorldTime {_exposeToLua="selected"}
 
 		'local month:int = ceil(GetYearProgress(useTime)*12)
 		'day = 1-30
-		return floor(GetYearProgress(usetime)*360) mod 30 +1
+		return floor(GetYearProgress(usetime)*360) mod _daysPerMonth +1
 	End Method
 
 

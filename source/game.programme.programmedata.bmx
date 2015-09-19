@@ -472,6 +472,14 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	End Method
 
 
+	Method HasCastPerson:int(personGUID:string)
+		For local doneJob:TProgrammePersonJob = EachIn cast
+			if doneJob.personGUID = personGUID then return True
+		Next
+		return False
+	End Method
+	
+
 	Method HasCast:int(job:TProgrammePersonJob)
 		'do not check job against jobs in the list, as only the
 		'content might be the same but the job a duplicate
@@ -1282,6 +1290,8 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 
 	Method onCinemaRelease:int(time:Long = 0)
+		if IsLive() then return False
+		
 		'inform each person in the cast that the production finished
 		For local job:TProgrammePersonJob = eachIn GetCast()
 			local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID( job.personGUID )
@@ -1331,12 +1341,21 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		'trigger broadcastEffects
 		local effectParams:TData = new TData.Add("source", self).AddNumber("playerID", playerID)
 
-
 		'send as programme
 		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
 			'if nobody broadcasted till now (times are adjusted on
 			'finishBroadcast while this is called on beginBroadcast)
 			if GetTimesBroadcasted() = 0
+				'inform each person in the cast that the production finished
+				'(albeit this is NOT strictly the truth)
+				if IsLive()
+					For local job:TProgrammePersonJob = eachIn GetCast()
+						local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID( job.personGUID )
+						if person then person.FinishProduction(GetGUID())
+					Next
+				endif
+
+
 				if not _handledFirstTimeBroadcast
 					effects.Run("broadcastFirstTime", effectParams)
 					_handledFirstTimeBroadcast = True

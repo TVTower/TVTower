@@ -3,6 +3,7 @@ Import Brl.Map
 Import Brl.Math
 Import "Dig/base.util.mersenne.bmx"
 Import "Dig/base.util.string.bmx"
+Import "Dig/base.util.event.bmx"
 Import "game.gameobject.bmx"
 Import "game.gameconstants.bmx"
 Import "game.programme.programmerole.bmx"
@@ -266,14 +267,41 @@ Type TProgrammePersonBase extends TGameObject
 	End Method
 
 
+	Method GetAge:int()
+		return -1
+	End Method
+
+
+	Method IsAlive:int()
+		return True
+	End Method
+
+
+	Method IsBorn:int()
+		return True
+	End Method
+	
+
+	Method GetBaseFee:Int(jobID:int, channel:int=-1)
+		return 10000
+	End Method
+	
+
 	Method StartProduction:int(programmeDataGUID:string)
 		producingGUID = programmeDataGUID
+
+		'emit event so eg. news agency could react to it ("bla has a new job")
+		'-> or to set them on the "scandals" list
+		EventManager.triggerEvent(TEventSimple.Create("programmepersonbase.onStartProduction", New TData.addString("programmeDataGUID", programmeDataGUID), Self))
 	End Method
 
 
 	Method FinishProduction:int(programmeDataGUID:string)
 		jobsDone :+ 1
 		producingGUID = ""
+
+		'emit event so eg. news agency could react to it ("bla goes on holiday")
+		EventManager.triggerEvent(TEventSimple.Create("programmepersonbase.onFinishProduction", New TData.addString("programmeDataGUID", programmeDataGUID), Self))
 	End Method
 End Type
 

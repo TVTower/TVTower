@@ -279,8 +279,7 @@ Type TDatabaseLoader
 
 			'convert to celebrity if required
 			if isCelebrity and not TProgrammePerson(person)
-				local newPerson:TProgrammePerson
-				person = TProgrammePerson(THelper.TakeOverObjectValues(person, newPerson))
+				person = ConvertInsignificantToCelebrity(person)
 			endif
 		else
 			if isCelebrity

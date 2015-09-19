@@ -154,13 +154,14 @@ Type TPlayerFinance
 	Field revenue_after:Long 			= 0
 	Field money:Long					= 0
 	Field credit:Int 					= 0
+	'obsolete, not needed anymore, remove on next
+	'"savegame"-compatibilty-change
 	Field ListLink:TLink
 	Field playerID:int					= Null
 
 	Global creditInterestRate:float		= 0.05 '5% a day
 	Global balanceInterestRate:float	= 0.01 '1% a day
 	Global drawingCreditRate:float		= 0.03 '3% a day  - rate for having a negative balance
-	Global List:TList					= CreateList()
 
 	Method Create:TPlayerFinance(playerID:int) ', startmoney:Long=500000, startcredit:Int = 500000)
 '		money = startmoney
@@ -175,7 +176,6 @@ Type TPlayerFinance
 		credit = 0
 
 		Self.playerID = playerID
-		ListLink = List.AddLast(Self)
 		Return Self
 	End Method
 
@@ -187,8 +187,6 @@ Type TPlayerFinance
 		'value than of "toFinance" - so no modification would be needed
 		'in all other cases:
 		If fromFinance
-			'remove current finance from financials.list as we create a new one
-			toFinance.ListLink.remove()
 			toFinance = Null
 			'create the new financial but give the yesterdays money/credit
 			toFinance = New TPlayerFinance.Create(fromFinance.playerID)

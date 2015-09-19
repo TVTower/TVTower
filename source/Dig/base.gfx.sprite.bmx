@@ -676,10 +676,13 @@ Type TSprite
 			local sourceY2:int = sourceY1 + ninePatch_borderDimension.GetTop()
 			local sourceY3:int = sourceY2 + ninePatch_centerDimension.GetY()
 
-			local oldVPx:int, oldVPy:int, oldVPw:int, oldVPh:int
+			local vpRect:TRectangle
 			if clipRect
-				GetGraphicsManager().GetViewPort(oldVPx, oldVPy, oldVPw, oldVPh)
-				GetGraphicsManager().SetViewPort(clipRect.GetX(), clipRect.GetY(), clipRect.GetW(), clipRect.GetH())
+				local vpx:int, vpy:int, vpw:int, vph:int
+				GetGraphicsManager().GetViewPort(vpx, vpy, vpw, vph)
+				vpRect = New TRectangle.Init(vpx, vpy, vpw, vph)
+				local intersectingVP:TRectangle = vpRect.Copy().Intersect(clipRect)
+				GetGraphicsManager().SetViewPort(intersectingVP.GetX(), intersectingVP.GetY(), intersectingVP.GetW(), intersectingVP.GetH())
 			endif
 
 			'render
@@ -739,8 +742,8 @@ Type TSprite
 					DrawResized( target, source, frame, false, clipRect )
 				endif
 
-				if clipRect
-					GetGraphicsManager().SetViewport(oldVPx, oldVPy, oldVPw, oldVPh)
+				if clipRect and vpRect
+					GetGraphicsManager().SetViewport(vpRect.GetX(), vpRect.GetY(), vpRect.GetW(), vpRect.GetH())
 				endif
 			endif
 		endif

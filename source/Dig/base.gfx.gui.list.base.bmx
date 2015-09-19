@@ -513,6 +513,20 @@ Type TGUIListBase Extends TGUIobject
 	End Method
 
 
+	Function FindGUIListBaseParent:TGUIListBase(guiObject:TGUIObject)
+		if not guiObject then return null
+		
+		local guiList:TGUIListBase = TGUIListBase(guiObject)
+		if guiList then return guiList
+		
+		local obj:TGUIObject = guiObject.GetParent()
+		while obj <> guiObject and not TGUIListBase(obj) 
+			obj = obj.GetParent()
+		wend
+		return TGUIListBase(obj)
+	End Function
+	
+
 	'override default
 	Method onDrop:Int(triggerEvent:TEventBase)
 		'we could check for dragged element here
@@ -538,9 +552,7 @@ Type TGUIListBase Extends TGUIobject
 		'Keep this in mind when sorting the items
 
 		'only handle if coming from another list ?
-		Local parent:TGUIobject = item._parent
-		If TGUIPanel(parent) Then parent = TGUIPanel(parent)._parent
-		Local fromList:TGUIListBase = TGUIListBase(parent)
+		local fromList:TGUIListBase = FindGUIListBaseParent(item._parent)
 		'if not fromList then return FALSE
 
 		Local toList:TGUIListBase = TGUIListBase(triggerEvent.GetReceiver())
@@ -597,7 +609,6 @@ endrem
 		Local list:TGUIListBase = TGUIListBase(triggerEvent.GetSender())
 		Local value:Int = triggerEvent.GetData().getInt("value",0)
 		If Not list Or value=0 Then Return False
-
 		'emit event that the scroller position has changed
 		local direction:string = ""
 		select list._orientation
@@ -620,7 +631,8 @@ endrem
 		local guiSender:TGUIObject = TGUIObject(triggerEvent.GetSender())
 		if not guiSender then return False
 
-		Local guiList:TGUIListBase = TGUIListBase(guiSender.GetParent("TGUIListBase"))
+		'search a TGUIListBase-parent
+		local guiList:TGUIListBase = FindGUIListBaseParent(guiSender)
 		If Not guiList Then Return False
 
 		'do not allow scrolling if not enabled
@@ -844,10 +856,8 @@ Type TGUIListItem Extends TGUIobject
 
 		'also remove itself from the list it may belong to
 		'this adds the object back to the guimanager
-		Local parent:TGUIobject = Self._parent
-		If TGUIPanel(parent) Then parent = TGUIPanel(parent)._parent
-		If TGUIScrollablePanel(parent) Then parent = TGUIScrollablePanel(parent)._parent
-		If TGUIListBase(parent) Then TGUIListBase(parent).RemoveItem(Self)
+		local guiList:TGUIListBase = TGUIListBase.FindGUIListBaseParent(self._parent)
+		if guiList then guiList.RemoveItem(self)
 		Return True
 	End Method
 
@@ -939,9 +949,7 @@ endrem
 		Local draw:Int=True
 		Local parent:TGUIobject = Null
 		If Not(Self._flags & GUI_OBJECT_DRAGGED)
-			parent = Self._parent
-			If TGUIPanel(parent) Then parent = TGUIPanel(parent)._parent
-			If TGUIListBase(parent) Then draw = TGUIListBase(parent).RestrictViewPort()
+			parent = TGUIListBase.FindGUIListBaseParent(self._parent)
 		EndIf
 		If draw
 			local oldCol:TColor = new TColor.Get()
