@@ -1536,7 +1536,7 @@
 				<!-- Programmalter hat hoeheren Einfluss auf Preis -->
 				<modifier name="price::age" value="2.9" />
 				<!-- Programm ist billiger als normal -->
-				<modifier name="price" value="0.1" />
+				<modifier name="price" value="2.9" />
 			</modifiers>
 			<children>
 				<programme id="8aedcc43-c63d-4ab3-TheRobCallInTestEp101" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
@@ -2840,20 +2840,103 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="F" year="1895" distribution="0" maingenre="6" subgenre="300" flags="8" blocks="1" time="0" price_mod="1.00" />
-			<ratings critics="95" speed="2" outcome="0" />
+			<ratings critics="85" speed="2" outcome="0" />
 		</programme>
+	
+		<programme id="TheRob-1756-Musik-Show-MusikderBerge" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<!-- Musik der Berge, Musikshow 102, Zielgruppe Kinder -->
+			<title>
+				<de>Musik der Berge</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Kinderchöre wandern singend durch die Berge.</de>
+				<en></en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-WeinWenk</member>
+				<member index="1" function="8">TheRob-celebritypeople-WeinWenk</member>
+				<member index="2" function="16">Per_custom_Freddy_7</member>
+				<member index="3" function="16">Per_custom_Freddy_675</member>
+			</staff>
+			<groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1971" distribution="0" maingenre="102" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
+			<ratings critics="25" speed="12" outcome="0" />
+		</programme> 
+ 
+		<programme id="TheRob-1756-Polit-Show-WasistSache" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<!-- Was ist Sache, Politshow 102, Zielgruppe Arbeitnehmer -->
+			<title>
+				<de>Was ist Sache</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Ein Politiker steht Rede und Antwort zur Lage der Nation</de>
+				<en></en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_70</member>
+				<member index="1" function="8">Per_custom_Freddy_70</member>
+				<member index="2" function="64">Per_custom_Freddy_76</member>
+			</staff>
+			<groups target_groups="8" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="DK" year="1975" distribution="0" maingenre="101" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
+			<ratings critics="35" speed="21" outcome="0" />
+		</programme> 
+
+		<programme id="TheRob-1756-Yellow-Press-DasLebenderGrace" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<!-- Das Leben der Grace, YellowPress 301, Zielgruppe Frauen -->
+			<title>
+				<de>Das Leben der [2|Full]</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Der Tod von [2|Full] wird zum Anlass genommen ihr Leben komplett zu durchleuchten. Inklusive ausgiebigen Hochzeitsaufnahmen mit dem Fürsten.</de>
+				<en></en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_377</member>
+				<member index="1" function="8">Per_custom_Freddy_352</member>
+				<member index="2" function="2">283bdb7a-ea1f-4d33-8e72-a618515f4e40</member>
+			</staff>
+			<groups target_groups="128" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="FR" year="1983" distribution="0" maingenre="301" subgenre="0" flags="0" blocks="4" time="0" price_mod="1.00" />
+			<ratings critics="35" speed="31" outcome="0" />
+		</programme> 
+ 
+		<programme id="TheRob-1756-polit-event-AnalysederReden" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<!-- Analyse der Reden, Polit Event 201, Zielgruppe Manager -->
+			<title>
+				<de>Analyse der Reden</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Die Kubakrise verängstigte alle. Hier werden die Reden von [2|Full] und [3|Full] chronologisch gezeigt und miteinander verglichen.</de>
+				<en></en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-BastlRuetli</member>
+				<member index="1" function="8">TheRob-TowerTV-BastlRuetli</member>
+				<member index="2" function="2">TheRob-TowerTV-JohnFKennedy</member>
+				<member index="3" function="2">TheRob-TowerTV-NikitaSergejewitschChruschtschow</member>
+			</staff>
+			<groups target_groups="32" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="SUI" year="1964" distribution="0" maingenre="201" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<ratings critics="65" speed="21" outcome="0" />
+		</programme>  
+ 
 	</allprogrammes>
 
 	<insignificantpeople>
-		<person id="TheRob-TowerTV-Gast2" first_name="Gast" last_name="2" nick_name="Frechdachs" />
-		<person id="TheRob-TowerTV-Sushi" first_name="Sushi" last_name="TV" nick_name="" />
-		<person id="TheRob-TowerTV-rumpel" first_name="rumpel" last_name="freddy" nick_name="" />
-		<person id="TheRob-TowerTV-speed" first_name="speed" last_name="minister" nick_name="" />
-		<person id="TheRob-TowerTV-STARS" first_name="STARS" last_name="crazy" nick_name="" />
-		<person id="TheRob-TowerTV-Michael" first_name="Michael" last_name="B" nick_name="" />
-		<person id="TheRob-TowerTV-Daniel" first_name="Daniel" last_name="W" nick_name="" />
-		<person id="TheRob-TowerTV-Mark" first_name="Mark W." last_name="Wullbrich" nick_name="" />
-		<person id="TheRob-TowerTV-Thomas" first_name="Thomas" last_name="Weierunter" nick_name="" />
+		<person id="TheRob-TowerTV-Gast2" first_name="Gast" last_name="2" nick_name="Frechdachs" levelup="0"  />
+		<person id="TheRob-TowerTV-Sushi" first_name="Sushi" last_name="TV" nick_name="" levelup="0"  />
+		<person id="TheRob-TowerTV-rumpel" first_name="rumpel" last_name="freddy" nick_name="" levelup="0"  />
+		<person id="TheRob-TowerTV-speed" first_name="speed" last_name="minister" nick_name="" levelup="0"  />
+		<person id="TheRob-TowerTV-STARS" first_name="STARS" last_name="crazy" nick_name="" levelup="0"  />
+		<person id="TheRob-TowerTV-Michael" first_name="Michael" last_name="B" nick_name="" levelup="0"  />
+		<person id="TheRob-TowerTV-Daniel" first_name="Daniel" last_name="W" nick_name="" levelup="0"  />
+		<person id="TheRob-TowerTV-Mark" first_name="Mark W." last_name="Wullbrich" nick_name="" levelup="0"  />
+		<person id="TheRob-TowerTV-Thomas" first_name="Thomas" last_name="Weierunter" nick_name="" levelup="0"  />
 		<person id="TheRob-TowerTV-RuisLosset" first_name="Ruis" last_name="Losset Jr" nick_name="" />
 		<person id="TheRob-TowerTV-RednackRoot" first_name="Rednack" last_name="Root Jr." nick_name="" />
 		<person id="TheRob-TowerTV-WeckoryBallglatt" first_name="Weckory" last_name="Ballglatt" nick_name="" />
@@ -2861,9 +2944,10 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 		<person id="TheRob-TowerTV-ClintWaran" first_name="Clint" last_name="Waran" nick_name="" />
 		<!-- Franz Beckenbauer -->
 		<person id="TheRob-TowerTV-KalliBeckenklauer" first_name="Kalli" last_name="Beckenklauer" nick_name="" />
-		<person id="TheRob-TowerTV-VeraZottova" first_name="Vera" last_name="Zottova" nick_name="" />
+		<person id="TheRob-TowerTV-VeraZottova" first_name="Vera" last_name="Zottova" nick_name="" fictional="1" />
 		<person id="TheRob-TowerTV-Borgmevens" first_name="Borg" last_name="Mevens" nick_name="" />
 		<person id="TheRob-TowerTV-Bobmailour" first_name="Bob" last_name="Mailour" nick_name="" />
+		<!-- Peter Fonda -->    
 		<person id="TheRob-TowerTV-PetrFondason" first_name="Petr" last_name="Fondason" nick_name="" />
 		<person id="TheRob-TowerTV-Peppivonsternschnuppe" first_name="Peppi" last_name="von Sternschnuppe" nick_name="" />
 		<person id="TheRob-TowerTV-JayWilland" first_name="Jay" last_name="Willand" nick_name="" />
@@ -2875,7 +2959,13 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 		<!-- Ralf Lemke -->
 		<person id="TheRob-TowerTV-RalleWenke" first_name="Ralle" last_name="Wenke" nick_name="" />
 		<!-- Klaus Gendries -->
-		<person id="TheRob-TowerTV-PaulBentris" first_name="Paul" last_name="Bentris" nick_name="" />    
+		<person id="TheRob-TowerTV-PaulBentris" first_name="Paul" last_name="Bentris" nick_name="" /> 
+		<!-- Bastl Rütli -->
+		<person id="TheRob-TowerTV-BastlRuetli" first_name="Bastl" last_name="Rütli" nick_name="" fictional="1" />
+		<!-- John F. Kennedy -->
+		<person id="TheRob-TowerTV-JohnFKennedy" first_name="John F." last_name="Kennedy" nick_name="" />
+		<!-- Nikita Sergejewitsch Chruschtschow -->
+		<person id="TheRob-TowerTV-NikitaSergejewitschChruschtschow" first_name="Nikita Sergejewitsch" last_name="Chruschtschow" nick_name="" />       
 	</insignificantpeople>
 
 	<celebritypeople>
