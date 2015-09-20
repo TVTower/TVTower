@@ -1037,15 +1037,14 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	Method Buy:Int(playerID:Int)
 		'set activation time (and refresh built time)
 		built = GetWorldTime().GetTimeGone()
-		local cYear:int = GetWorldTime().GetYear(built + 3600)
-		local cDay:int = GetWorldTime().GetDayOfYear(built + 3600)
+		local cDay:int = GetWorldTime().GetDay(built + 3600)
 		local cHour:int = GetWorldTime().GetDayHour(built + 3600)
 		'next hour at xx:00
 		if GetWorldTime().GetDayMinute() >= 5
-			SetActivationTime( GetWorldTime().MakeTime(cYear, cDay, cHour, 0))
+			SetActivationTime( GetWorldTime().MakeTime(0, cDay-1, cHour, 0))
 		'this hour at xx:05
 		else
-			SetActivationTime( GetWorldTime().MakeTime(GetWorldTime().GetYear(), GetWorldTime().GetDayOfYear(), GetWorldTime().GetDayHour(), 5, 0))
+			SetActivationTime( GetWorldTime().MakeTime(0, GetWorldTime().GetDay(), GetWorldTime().GetDayHour(), 5, 0))
 		endif
 
 
