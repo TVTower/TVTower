@@ -85,6 +85,11 @@ Function onProgrammePersonBaseFinishesProduction:int(triggerEvent:TEventBase)
 	'collection - so multiple "finishesProductions" (with person objects
 	'instead of GUIDs!) wont trigger the conversion multiple times
 	local currentPerson:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID(p.GetGUID())
+	if not currentPerson
+		TLogger.Log("onProgrammePersonBaseFinishesProduction()", "Person "+p.GetFullName()+"  " + p.GetGUID()+" not found.", LOG_ERROR)
+		return False
+	endif
+
 	'skip celebrities
 	if TProgrammePerson(currentPerson) then return False
 
@@ -134,9 +139,9 @@ Function ConvertInsignificantToCelebrity:TProgrammePersonBase(insignifant:TProgr
 	endif
 
 
-	'maybe first movie was done at age of 5 - 30
+	'maybe first movie was done at age of 5 - 40
 	'also avoid days 29,30,31 - not possible in all months
-	person.dayOfBirth = (earliestProduction - RandRange(5,30))+"-"+RandRange(1,12)+"-"+RandRange(1,28)
+	person.dayOfBirth = (earliestProduction - RandRange(5,40))+"-"+RandRange(1,12)+"-"+RandRange(1,28)
 
 	'TODO: 
 	'Wenn GetAge > 50 dann mit Chance (steigend bis zu 100%)
@@ -275,9 +280,9 @@ Type TProgrammePerson extends TProgrammePersonBase
 				xpMod :+ 100 * GetExperiencePercentage()
 
 				if jobID = TVTProgrammePersonJob.ACTOR
-					Return sympathyMod * (3000 + Floor(Int(2000 * sum * factor * xpMod * priceModifier)/100)*100)
+					Return sympathyMod * (3000 + Floor(Int(100 * sum * factor * xpMod * priceModifier)/100)*100)
 				else
-					Return sympathyMod * (1500 + Floor(Int(900 * sum * factor * xpMod * priceModifier)/100)*100)
+					Return sympathyMod * (1500 + Floor(Int(45 * sum * factor * xpMod * priceModifier)/100)*100)
 				endif
 
 			case TVTProgrammePersonJob.GUEST

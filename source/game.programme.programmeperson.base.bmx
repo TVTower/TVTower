@@ -193,7 +193,9 @@ Type TProgrammePersonBase extends TGameObject
 		       jobsDone + "::" + ..
 		       canLevelUp + "::" + ..
 		       fictional + "::" + ..
-		       StringHelper.EscapeString(producingGUID, ":") + "::"
+		       StringHelper.EscapeString(producingGUID, ":") + "::" + ..
+		       id + "::" + ..
+		       StringHelper.EscapeString(GUID, ":")
 	End Method
 
 
@@ -207,6 +209,8 @@ Type TProgrammePersonBase extends TGameObject
 		if vars.length > 5 then canLevelUp = int(vars[5])
 		if vars.length > 6 then fictional = int(vars[6])
 		if vars.length > 7 then producingGUID = StringHelper.UnEscapeString(vars[7])
+		if vars.length > 8 then id = int(vars[8])
+		if vars.length > 9 then GUID = StringHelper.UnEscapeString(vars[9])
 	End Method
 	
 
