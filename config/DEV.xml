@@ -81,7 +81,12 @@
 			<DEV_DATABASE_LOAD_ADS_CREATED_BY value="*" />
 			<DEV_DATABASE_SKIP_PROGRAMMES_CREATED_BY value="" />
 			<DEV_DATABASE_LOAD_PROGRAMMES_CREATED_BY value="*" />
-			
+
+			<!--
+			<DEV_STARTPROGRAMME_AD1_GUID value="speedminister-ad-spackeroog-01" />			
+			<DEV_STARTPROGRAMME_AD2_GUID value="speedminister-ad-spargelsund-01" />			
+			<DEV_STARTPROGRAMME_AD3_GUID value="speedminister-ad-rechtschreibdudan-01" />
+			-->
 		</data>
 	</resources>
 </tvt>

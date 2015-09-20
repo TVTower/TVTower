@@ -13,11 +13,12 @@ Import "source/game.database.bmx"
 'audienceSim
 Import "source/game.player.base.bmx"
 Import "source/game.player.programmeplan.bmx"
+Import "source/game.registry.loaders.bmx"
 
 Import brl.reflection
 
 TLogger.Log("CORE", "Starting TVTEditor.", LOG_INFO )
-TLogger.SetPrintMode(0)
+TLogger.SetPrintMode(LOG_ERROR)
 
 
 
@@ -45,8 +46,12 @@ Type MyApp Extends wxApp
 		'audienceSim
 		'load genre definitions
 		local registryLoader:TRegistryLoader = new TRegistryLoader
-		registryLoader.LoadFromXML("config/genres.xml", true)
+		registryLoader.LoadFromXML("config/programmedatamods.xml", true)
+		registryLoader.LoadFromXML("config/newsgenres.xml", true)
 
+
+		GetMovieGenreDefinitionCollection().Initialize()
+		GetNewsGenreDefinitionCollection().Initialize()
 
 		'load db
 		dbLoader = New TEditorDatabaseLoader
@@ -57,7 +62,7 @@ Type MyApp Extends wxApp
 		_frameMain.AudienceSim_RecreateAudiencesList()
 
 		'RONNY: save db
-		dbLoader.Save("test.xml")
+	'	dbLoader.Save("test.xml")
 		
 		'hide block parts
 		_frameMain.m_staticText_blockCount.Hide()

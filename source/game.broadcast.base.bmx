@@ -259,7 +259,7 @@ Type TBroadcastManager
 			'add to current set of results
 			SetAudienceResult(playerID, audienceResult)
 			
-			If audienceResult.AudienceAttraction Then			
+			If audienceResult.AudienceAttraction			
 				'if there is a malfunction, inform others
 				If audienceResult.AudienceAttraction.Malfunction
 					EventManager.triggerEvent(TEventSimple.Create("BroadcastManager.BroadcastMalfunction", new TData.addNumber("playerID", playerID), self))
@@ -395,6 +395,11 @@ Type TBroadcast
 		AudienceResults[1].Refresh()
 		AudienceResults[2].Refresh()
 		AudienceResults[3].Refresh()
+
+		if AudienceResults[0].broadcastOutage then DebugStop
+		if AudienceResults[1].broadcastOutage then DebugStop
+		if AudienceResults[2].broadcastOutage then DebugStop
+		if AudienceResults[3].broadcastOutage then DebugStop
 	End Method
 
 
@@ -506,7 +511,7 @@ Type TBroadcast
 	Method CalculateMalfunction:TAudienceAttraction(lastMovieAttraction:TAudienceAttraction)
 		Local attraction:TAudienceAttraction = new TAudienceAttraction
 		attraction.BroadcastType = 0
-		If lastMovieAttraction Then
+		If lastMovieAttraction
 			attraction.Malfunction = lastMovieAttraction.Malfunction
 			attraction.AudienceFlowBonus = lastMovieAttraction.Copy()
 			attraction.AudienceFlowBonus.MultiplyFloat(0.02)

@@ -601,11 +601,19 @@ endrem
 			endif
 		endif
 		if addContract then adContractBases :+ [addContract]
-		
 
 		If adContractBases.length = 0
 			TLogger.Log("SpreadStartProgramme", "adContractBases is empty.", LOG_ERROR)
 		EndIf
+
+		'override with DEV.xml
+		For local i:int = 0 to 2
+			local guid:string = GameRules.devConfig.GetString("DEV_STARTPROGRAMME_AD"+(i+1)+"_GUID", "")
+			if guid = "" then continue
+			
+			local devAd:TAdContractBase = GetAdContractBaseCollection().GetByGUID(guid)
+			if devAd then adContractBases[i] = devAd
+		Next
 
 
 		'=== CREATE OPENING PROGRAMME ===

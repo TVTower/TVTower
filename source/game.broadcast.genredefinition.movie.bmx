@@ -87,6 +87,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 
 	
 	Method InitBasic:TMovieGenreDefinition(genreId:int, data:TData)
+		if not data then data = new TData
 		Super.InitBasic(genreId, data)
 
 		OutcomeMod = data.GetFloat("outcomeMod", 1.0)

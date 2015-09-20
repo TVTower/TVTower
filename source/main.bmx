@@ -532,6 +532,7 @@ Type TApp
 					
 
 					If KEYMANAGER.IsHit(KEY_Y)
+'TLocalization.PrintCurrentTranslationState()					
 						'print "send to chef:"
 						'GetPlayer().SendToBoss()
 
@@ -700,7 +701,19 @@ endrem
 
 				If KEYMANAGER.IsHit(KEY_P)
 					if KEYMANAGER.IsDown(KEY_LSHIFT)
-						PrintBroadcastOverview()
+						print GetBroadcastOverviewString()
+					elseif KEYMANAGER.IsDown(KEY_RSHIFT)
+						print "====== TOTAL BROADCAST OVERVIEW ======" + "~n"
+						local result:string = ""
+						For local day:int = GetWorldTime().GetStartDay() to GetworldTime().GetDay()
+							result :+ GetBroadcastOverviewString(day)
+						Next
+
+						local logFile:TStream = WriteStream("utf8::" + "log.broadcastoverview.txt")
+						logFile.WriteString(result)
+						logFile.close()
+						print result
+						print "======================================"
 					else
 						GetPlayer().GetProgrammePlan().printOverview()
 					endif
@@ -4507,53 +4520,81 @@ End Function
 
 
 
-Function PrintBroadcastOverview(day:int = -1, lastHour:int = -1)
+Function GetBroadcastOverviewString:string(day:int = -1, lastHour:int = -1)
 	if day = -1 then day = GetWorldTime().GetDay()
 	if lastHour = -1 then lastHour = GetWorldTime().GetDayHour()
-	
+	if day < GetWorldTime().GetDay() then lastHour = 23
+	local time:Long = GetWorldTime().MakeTime(0, day, lastHour, 0, 0)
+
+	local result:string = ""
+	result :+ "==== BROADCAST OVERVIEW ====" + "~n"
+	result :+ GetWorldTime().GetFormattedDate(time) + "~n"
 
 	local stat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(day)
 	if not stat
-		print "no dailybroadcaststatistic for day "+day+" found."
-		return
+		result :+ "no dailybroadcaststatistic for day "+day+" found." + "~n"
+		return result
 	endif
 
+
 	For local player:int = 1 to 4
-		print "====== PLAYER " + player + " ======"
+		result :+ ".----------." + "~n"
+		result :+ "| PLAYER " + player + " |" + "~n"
+		result :+ ".-------.--'------.---------------------------.-----------------.----------------------.---------." + "~n"
+		result :+ "| TIME  | NEWS-Q  | PROGRAMME                 | QUOTE / SHARE   | ADVERTISEMENT        | MIN-Q   |" + "~n"
+		result :+ "|-------+---------+---------------------------+-----------------+----------------------+---------|" + "~n"
 		For local hour:int = 0 to lastHour
-			local audience:TAudience = stat.GetAudience(player, hour, false)
+			local audience:TAudienceResultBase = stat.GetAudienceResult(player, hour, false)
+			local newsAudience:TAudienceResultBase = stat.GetNewsAudienceResult(player, hour, false)
 			local progSlot:TBroadcastMaterial = GetPlayerProgrammePlan(player).GetProgramme(day, hour)
 			local adSlot:TBroadcastMaterial = GetPlayerProgrammePlan(player).GetAdvertisement(day, hour)
 
-			local progText:string, adText:string
+			local progText:string, progAudienceText:string
+			local adText:string, adAudienceText:string
+			local newsAudienceText:string
 
 			if progSlot
-				progText = LSet(progSlot.GetTitle(), 20)
+				if progSlot.isType(TVTBroadcastMaterialType.PROGRAMME)
+					progText = LSet(progSlot.GetTitle(), 25)
+				else
+					progText = LSet("[I] " + progSlot.GetTitle(), 25)
+				endif
 			else
-				progText = LSet("Keine Ausstrahlung", 20)
+				progText = LSet("Keine Ausstrahlung", 25)
 			endif
 
 			if audience
-				progText :+ " Q: " + RSet(int(audience.GetSum()), 6)
+				progAudienceText = RSet(int(audience.audience.GetSum()), 7) + " " + RSet(MathHelper.NumberToString(audience.GetAudienceQuotePercentage()*100,2), 6)+"%"
 			else
-				progText :+ " Q: " + RSet(" -/- ", 6)
+				progAudienceText = RSet(" -/- ", 7) + " " +RSet("0%", 6)
 			endif
+
+			if newsAudience
+				newsAudienceText = RSet(int(newsAudience.audience.GetSum()), 7)
+			else
+				newsAudienceText = RSet(" -/- ", 7)
+			endif
+
 
 			if adSlot
-				adText = LSet(adSlot.GetTitle(), 15)
+				adText = LSet(adSlot.GetTitle(), 20)
+				adAudienceText = RSet(" -/- ", 7)
+
 				if adSlot.isType(TVTBroadcastMaterialType.PROGRAMME)
-					adText = "Trailer: " + adText
+					adText = LSet("[T] " + adSlot.GetTitle(), 20)
 				elseif adSlot.isType(TVTBroadcastMaterialType.ADVERTISEMENT)
-					adText = "Werbung: " + adText + "  minAud:" + int(TAdvertisement(adSlot).contract.GetMinAudience())
+					adAudienceText = RSet(int(TAdvertisement(adSlot).contract.GetMinAudience()),7)
 				endif 
 			else
-				adText = LSet("-/-", 15)
+				adText = LSet("-/-", 20)
+				adAudienceText = RSet(" -/- ", 7)
 			endif
 
-			print RSet(hour, 2)+":00  " + progText + " | " + adText
+			result :+ "| " + RSet(hour, 2)+":00 | " + newsAudienceText+" | " + progText + " | " + progAudienceText+" | " + adText + " | " + adAudienceText +" |" +"~n"
 		Next
+		result :+ "'-------'---------'---------------------------'-----------------'----------------------'---------'" + "~n"
 	Next
-	print "======================"
+	return result
 End Function
 
 
