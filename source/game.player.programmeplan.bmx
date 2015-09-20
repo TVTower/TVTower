@@ -306,6 +306,25 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method 
 
 
+	'returns whether a slot is locked, or belongs to an object which
+	'occupies at least 1 locked slot
+	Method BelongsToModifiyableSlot:int(slotType:int=0, day:int=-1, hour:int=-1, lockTypeFlags:int=0)
+		local obj:TBroadcastMaterial = GetObject(slotType, day, hour)
+		local hours:int = day*24 + hour
+		if obj
+			hours = obj.programmedDay*24 + obj.programmedHour
+			For local blockHour:int = hours until hours + obj.GetBlocks()
+				if not IsModifyableSlot(slotType, 0, blockHour, lockTypeFlags)
+					return False
+				endif
+			Next
+			return True
+		else
+			return IsModifyableSlot(slotType, day, hour, lockTypeflags)
+		endif
+	End Method 
+
+
 	'returns whether this slot is locked, ignores locks of other slots
 	'occupied by the same broadcastmaterial filling this slot
 	Method IsLockedSlot:int(slotType:int=0, day:int=-1, hour:int=-1, lockTypeFlags:int=0)
@@ -589,7 +608,7 @@ endrem
 
 
 	'add an object / set a slot occupied
-	Method AddObject:Int(obj:TBroadcastMaterial, slotType:Int=0, day:Int=-1, hour:Int=-1, checkSlotTime:Int=True)
+	Method AddObject:Int(obj:TBroadcastMaterial, slotType:Int=0, day:Int=-1, hour:Int=-1, checkModifyableSlot:Int=True)
 		If day = -1 Then day = GetWorldTime().GetDay()
 		If hour = -1 Then hour = GetWorldTime().getDayHour()
 		Local arrayIndex:Int = GetArrayIndex(day * 24 + hour)
@@ -600,35 +619,33 @@ endrem
 		'do not allow adding objects we cannot control
 		If not obj.IsControllable() then Return False
 
-
 		'the same object is at the exact same slot - skip actions/events
 		If obj = GetObjectAtIndex(slotType, arrayIndex) Then Return True
 
+
+		'check all affected slots whether they allow modification 
 		'do not allow adding in the past
-		If checkSlotTime And Not IsUseableTimeSlot(slotType, day, hour)
-			TLogger.Log("TPlayerProgrammePlan.AddObject", "Failed: time is in the past", LOG_INFO)
-			Return False
-		EndIf
-
-
 		'do not allow adding to a locked slot
-		For Local i:Int = 0 To obj.GetBlocks(slotType) -1
-			If IsLockedSlot(slotType, day, hour + i)
-				if slotType = TVTBroadcastMaterialType.ADVERTISEMENT
-					TLogger.Log("TPlayerProgrammePlan.AddObject", "Failed: slot "+day+", "+(hour+i)+":55 is locked", LOG_INFO)
-				else
-					TLogger.Log("TPlayerProgrammePlan.AddObject", "Failed: slot "+day+", "+(hour+i)+":00 is locked", LOG_INFO)
+		If checkModifyableSlot
+			if not BelongsToModifiyableSlot(slotType, day, hour)
+				TLogger.Log("TPlayerProgrammePlan.AddObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+") cannot get modified - belongs to not-modifyable broadcast. GameTime:" + GetWorldTime().GetFormattedTime(), LOG_INFO)
+				return False
+			endif
+
+			For Local i:Int = 0 To obj.GetBlocks(slotType) -1
+				if Not IsModifyableSlot(slotType, day, hour + i)
+					TLogger.Log("TPlayerProgrammePlan.AddObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+", block="+i+", blockHour="+(hour+i)+") cannot get modified - is in the past or locked. GameTime:" + GetWorldTime().GetFormattedTime(), LOG_INFO)
+					Return False
 				endif
-				Return False
-			EndIf
-		Next
+			Next
+		EndIf
 		
 
 		'clear all potential overlapping objects
 		Local removedObjects:Object[]
 		Local removedObject:Object
 		For Local i:Int = 0 To obj.GetBlocks(slotType) -1
-			removedObject = RemoveObject(Null, slotType, day, hour+i)
+			removedObject = RemoveObject(Null, slotType, day, hour+i, checkModifyableSlot)
 			If removedObject then removedObjects :+ [removedObject]
 		Next
 
@@ -664,7 +681,7 @@ endrem
 	'remove object from slot / clear a slot
 	'if no obj is given it is tried to get one by day/hour
 	'returns the deleted object if one is found
-	Method RemoveObject:Object(obj:TBroadcastMaterial=Null, slotType:Int=0, day:Int=-1, hour:Int=-1)
+	Method RemoveObject:Object(obj:TBroadcastMaterial=Null, slotType:Int=0, day:Int=-1, hour:Int=-1, checkModifyableSlot:int=True)
 		If Not obj Then obj = GetObject(slotType, day, hour)
 		If Not obj Then Return Null
 
@@ -672,7 +689,15 @@ endrem
 		'(to forcefully remove the, unset that flag before!
 		If not obj.IsControllable() then Return Null
 
-		'print "RON: PLAN.RemoveObject          id="+obj.id+" day="+day+" hour="+hour+" progDay="+obj.programmedDay+" progHour="+obj.programmedHour + " arrayIndex="+GetArrayIndex(obj.programmedDay*24 + obj.programmedHour) + " title:"+obj.GetTitle()
+		If checkModifyableSlot
+			For Local i:Int = 0 To obj.GetBlocks(slotType) -1
+				if Not IsModifyableSlot(slotType, day, hour + i)
+					TLogger.Log("TPlayerProgrammePlan.RemoveObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+", block="+i+", blockHour="+(hour+i)+") cannot get modified - is in the past or locked", LOG_INFO)
+					Return Null
+				endif
+			Next
+		EndIf
+
 
 		'backup programmed date for event
 		Local programmedDay:Int = obj.programmedDay
