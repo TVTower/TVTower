@@ -67,6 +67,11 @@ Type TProductionConcept
 	Method SetScript(script:TScript)
 		self.script = script
 	End Method
+
+
+	Method IsComplete:int()
+		return False
+	End Method
 End Type
 
 

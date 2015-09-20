@@ -15,8 +15,6 @@ Type TWorldTime {_exposeToLua="selected"}
 	Field _daysPerSeason:int = 3
 	'how many days does a week have?
 	Field _daysPerWeek:int = 7
-	'how many days does a week have?
-	Field _daysPerMonth:int = 30
 	 
 	'Speed of the world in "virtual seconds per real-time second"
 	'1.0 = realtime - a virtual day would take 86400 real-time seconds
@@ -376,7 +374,7 @@ Type TWorldTime {_exposeToLua="selected"}
 
 		'local month:int = ceil(GetYearProgress(useTime)*12)
 		'day = 1-30
-		return floor(GetYearProgress(usetime)*360) mod _daysPerMonth +1
+		return floor(GetYearProgress(usetime)*360) mod 30 +1
 	End Method
 
 

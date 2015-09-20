@@ -42,6 +42,7 @@ Import "base.gfx.gui.button.bmx"
 
 Type TGUIModalWindow Extends TGUIWindowBase
 	Field DarkenedArea:TRectangle = Null
+	Field darkenedAreaAlpha:Float = 0.5
 	'the area the window centers to
 	Field screenArea:TRectangle = Null
 	Field buttons:TGUIButton[]
@@ -213,6 +214,11 @@ Type TGUIModalWindow Extends TGUIWindowBase
 		'so call Super.Update as it calls UpdateChildren already
 		Super.Update()
 
+		if closeActionStarted
+			local yUntilScreenLeft:int = VirtualHeight() - (closeActionStartPosition.y + GetScreenHeight())
+			recenter(new TVec2D.Init(0, - yUntilScreenLeft * TInterpolation.BackIn(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration)))
+		endif
+
 		if Not GuiManager.GetKeystrokeReceiver() and KeyManager.IsHit(KEY_ESCAPE)
 			'do not allow another ESC-press for X ms
 			KeyManager.blockKey(KEY_ESCAPE, 250)
@@ -234,25 +240,15 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	End Method
 
 
-	Method DrawContent()
+	Method DrawBackground()
 		local oldCol:TColor = new TColor.Get()
 		local newAlpha:Float = 1.0
-
 		if closeActionStarted
-			local yUntilScreenLeft:int = VirtualHeight() - (closeActionStartPosition.y + GetScreenHeight())
 			newAlpha = 1.0 - TInterpolation.Linear(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration)
-			recenter(new TVec2D.Init(0, - yUntilScreenLeft * TInterpolation.BackIn(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration)))
-
-			'as text "wobbles" (drawn at INT position while sprites draw
-			'with floats - so they seem to change offsets) we fade them
-			'out earlier
-			if guiCaptionTextBox then guiCaptionTextBox.alpha = 0.5 * newAlpha
-			if guiTextBox then guiTextBox.alpha = 0.5 * newAlpha
 		endif
-
 		self.alpha = newAlpha
 
-		SetAlpha(oldCol.a * alpha * 0.5)
+		SetAlpha(oldCol.a * alpha * darkenedAreaAlpha)
 		SetColor(0, 0, 0)
 		If Not DarkenedArea
 			DrawRect(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
@@ -263,5 +259,23 @@ Type TGUIModalWindow Extends TGUIWindowBase
 
 		'we manage drawing and updating our background
 		If guiBackground and guiBackground.IsEnabled() then guiBackground.Draw()
+
+
+		Super.DrawBackground()
+	End Method
+
+
+	Method DrawContent()
+		if closeActionStarted
+			local newAlpha:Float = 1.0 - TInterpolation.Linear(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration)
+
+			'as text "wobbles" (drawn at INT position while sprites draw
+			'with floats - so they seem to change offsets) we fade them
+			'out earlier
+			if guiCaptionTextBox then guiCaptionTextBox.alpha = 0.5 * newAlpha
+			if guiTextBox then guiTextBox.alpha = 0.5 * newAlpha
+		endif
+
+		Super.DrawContent()
 	End Method
 End Type

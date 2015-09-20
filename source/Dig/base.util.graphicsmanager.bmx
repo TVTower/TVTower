@@ -35,12 +35,20 @@ Rem
 	====================================================================
 EndRem
 SuperStrict
+?bmxng
+Import sdl.gl2sdlmax2d
+Import pub.opengles
+?
+?MacOs
 Import BRL.GLMax2D
 ?Win32
+Import BRL.GLMax2D
 Import "base.util.graphicsmanager.win32.bmx"
 ?Linux
+Import BRL.GLMax2D
 'Import "../source/external/bufferedglmax2d/bufferedglmax2d.bmx"
 ?
+
 Import "base.util.virtualgraphics.bmx"
 
 Type TGraphicsManager
@@ -59,12 +67,14 @@ Type TGraphicsManager
 	Global RENDERER_NAMES:string[] = [	"OpenGL",..
 										"DirectX 7", ..
 										"DirectX 9", ..
-										"Buffered OpenGL" ..
+										"Buffered OpenGL", ..
+										"GL2SDL" ..
 									 ]
 	CONST RENDERER_OPENGL:int   		= 0
 	CONST RENDERER_DIRECTX7:int 		= 1
 	CONST RENDERER_DIRECTX9:int 		= 2
 	CONST RENDERER_BUFFEREDOPENGL:int   = 3
+	CONST RENDERER_GL2SDL:int           = 4
 
 
 	Function GetInstance:TGraphicsManager()
@@ -209,8 +219,11 @@ Type TGraphicsManager
 	Method _InitGraphicsDefault:Int()
 		Select renderer
 			'buffered gl?
-			
+			?android
+			Default SetGraphicsDriver GL2Max2DDriver()
+			?not android
 			Default SetGraphicsDriver GLMax2DDriver()
+			?
 		EndSelect
 
 		_g = Graphics(realWidth, realHeight, colorDepth*fullScreen, hertz, flags)

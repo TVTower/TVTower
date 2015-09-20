@@ -68,11 +68,6 @@ Type TGraphicalApp extends TApp
 
 
 	Method Update:Int()
-		If KeyManager.IsHit(KEY_ESCAPE)
-			exitApp = true
-			print "exit now"
-		endif
-
 		local screen:TScreen = GetScreenManager().GetCurrent()
 		If screen
 			'update screen fader
@@ -85,6 +80,11 @@ Type TGraphicalApp extends TApp
 				screen.Update()
 			endif
 		EndIf
+
+		If KeyManager.IsHit(KEY_ESCAPE)
+			exitApp = true
+			print "exit now"
+		endif
 	End Method
 
 

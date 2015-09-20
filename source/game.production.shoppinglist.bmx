@@ -1,6 +1,7 @@
 SuperStrict
 Import "game.production.script.bmx"
 Import "game.programme.programmeperson.base.bmx"
+Import "game.production.productionconcept.bmx"
 
 
 Type TShoppingListCollection Extends TGameObjectCollection
@@ -34,11 +35,24 @@ End Function
 
 Type TShoppingList extends TOwnedGameObject
 	Field script:TScript
+	Field productionConcept:TProductionConcept
 
 	Method Init:TShoppingList(owner:int, script:TScript)
 		self.script = script
 
 		SetOwner(owner)
 		return self
+	End Method
+
+
+	Method SetProductionConcept(productionConcept:TProductionConcept)
+		self.productionConcept = productionConcept
+	End Method
+
+
+	Method CanStartAProduction:int()
+		if not productionConcept then return False
+
+		return productionConcept.IsComplete()
 	End Method
 End Type
