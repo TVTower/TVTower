@@ -12,6 +12,7 @@ Import "Dig/base.util.color.bmx"
 Import "Dig/base.util.time.bmx"
 Import "Dig/base.gfx.sprite.bmx"
 Import "Dig/base.gfx.bitmapfont.bmx"
+Import "game.gamerules.bmx"
 Import "game.player.color.bmx"
 Import "game.player.finance.bmx"
 Import "basefunctions.bmx"
@@ -1023,6 +1024,24 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetConstructionTime:int()
+		if GameRules.stationConstructionTime = 0 then return 0
+
+		local r:int = GetReach()
+		if r < 500000
+			return 1 + 1 * GameRules.stationConstructionTime
+		elseif r < 1000000
+			return 1 + 2 * GameRules.stationConstructionTime
+		elseif r < 2500000
+			return 1 + 3 * GameRules.stationConstructionTime
+		elseif r < 5000000
+			return 1 + 4 * GameRules.stationConstructionTime
+		else
+			return 1 + 5 * GameRules.stationConstructionTime
+		endif
+	End Method
+
+
 	Method Sell:Int()
 		If Not GetPlayerFinance(owner) Then Return False
 
@@ -1037,14 +1056,16 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	Method Buy:Int(playerID:Int)
 		'set activation time (and refresh built time)
 		built = GetWorldTime().GetTimeGone()
-		local cDay:int = GetWorldTime().GetDay(built + 3600)
-		local cHour:int = GetWorldTime().GetDayHour(built + 3600)
-		'next hour at xx:00
+
+		local constructionTime:int = GetConstructionTime()
+		if constructionTime = 0 then constructionTime :+ 1
+
+		'next hour (+construction hours) at xx:00
 		if GetWorldTime().GetDayMinute() >= 5
-			SetActivationTime( GetWorldTime().MakeTime(0, cDay-1, cHour, 0))
-		'this hour at xx:05
+			SetActivationTime( GetWorldTime().MakeTime(0, 0, GetWorldTime().GetHour(built + constructionTime*3600), 0))
+		'this hour (+construction hours) at xx:05
 		else
-			SetActivationTime( GetWorldTime().MakeTime(0, GetWorldTime().GetDay(), GetWorldTime().GetDayHour(), 5, 0))
+			SetActivationTime( GetWorldTime().MakeTime(0, 0, GetWorldTime().GetHour() + (constructionTime-1), 5, 0))
 		endif
 
 
@@ -1067,6 +1088,10 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		Local textH:Int =  GetBitmapFontManager().baseFontBold.getHeight( "Tg" )
 		Local tooltipW:Int = 180
 		Local tooltipH:Int = textH * 4 + 10 + 5
+		if GetConstructionTime() > 0
+			tooltipH :+ textH
+		endif
+
 		Local tooltipX:Int = pos.x +20 - tooltipW/2
 		Local tooltipY:Int = pos.y - radius - tooltipH
 
@@ -1095,6 +1120,12 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		GetBitmapFontManager().baseFont.draw(GetLocale("INCREASE")+": ", textX, textY)
 		GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(getReachIncrease(), 2), textX, textY, textW, 20, new TVec2D.Init(ALIGN_RIGHT), colorWhite)
 		textY:+ textH
+
+		if GetConstructionTime() > 0
+			GetBitmapFontManager().baseFont.draw(GetLocale("CONSTRUCTION_TIME")+": ", textX, textY)
+			GetBitmapFontManager().baseFontBold.drawBlock(GetConstructionTime()+"h", textX, textY, textW, 20, new TVec2D.Init(ALIGN_RIGHT), colorWhite)
+			textY:+ textH
+		Endif
 
 		GetBitmapFontManager().baseFont.draw(GetLocale("PRICE")+": ", textX, textY)
 		GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(getPrice(), 2), textX, textY, textW, 20, new TVec2D.Init(ALIGN_RIGHT), colorWhite)

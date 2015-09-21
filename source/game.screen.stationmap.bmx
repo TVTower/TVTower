@@ -165,7 +165,9 @@ Type TScreenHandler_StationMap
 			'=== BOX LINE 2 ===
 			contentY :+ boxH
 			'TODO: Build time for stations?
-			'skin.RenderBox(contentX + 5, contentY, 80, -1, "1h", "runingTime", "neutral", skin.font)
+			if GameRules.stationConstructionTime > 0
+				skin.RenderBox(contentX + 5, contentY, 80, -1, GameRules.stationConstructionTime + "h", "runningTime", "neutral", skin.fontNormal)
+			endif
 
 			'fetch financial state of room owner (not player - so take care
 			'if the player is allowed to do this)

@@ -574,3 +574,5 @@ ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE = Der Zugang zu diesem Raum ist de
 
 OPENINGSHOW_TITLE = Eröffnungsshow „%CHANNELNAME%“
 OPENINGSHOW_DESCRIPTION = Lasst die Korken knallen. %CHANNELNAME% geht an den Start.
+
+CONSTRUCTION_TIME = Bauzeit

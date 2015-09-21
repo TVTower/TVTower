@@ -569,3 +569,5 @@ ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE = Bu odaya erişim, şu anda mümk
 
 OPENINGSHOW_TITLE = %CHANNELNAME% kanalından büyük açılış
 OPENINGSHOW_DESCRIPTION = Şampanyaları patlatın. %CHANNELNAME% bugün açılıyor.
+
+CONSTRUCTION_TIME = İnşaat süresi

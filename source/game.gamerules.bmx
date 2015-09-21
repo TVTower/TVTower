@@ -42,6 +42,12 @@ Type TGameRules {_exposeToLua}
 	'does the boss has to get visited daily?
 	Field dailyBossVisit:int = True
 
+	'time a station needs to get constructed
+	'value in hours
+	'set to default on start (game.game.bmx prepareNewGame())
+	Field stationConstructionTime:int = -1
+	Field stationConstructionTimeDefault:int = 0
+
 	Field devConfig:TData = new TData
 End Type
 

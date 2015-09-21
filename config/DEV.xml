@@ -44,6 +44,13 @@
 				<DEV_ADAGENCY_LIMIT_CONTRACT_INSTANCES value="1" />
 			-->
 
+			<!-- (base) construction time of a new bought station
+			     time in hours
+			     Default: 0 (ready on next broadcast)
+
+				<DEV_STATION_CONSTRUCTION_TIME value="0" />
+			-->
+
 
 			<!-- profit/penalty get multiplied with this value if there
 			     is a limiting targetgroup.

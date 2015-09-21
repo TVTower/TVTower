@@ -258,6 +258,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'=== ADJUST GAME RULES ===
 		GameRules.dailyBossVisit = GameRules.devConfig.GetInt("DEV_DAILY_BOSS_VISIT", True)
+		GameRules.stationConstructionTime = GameRules.devConfig.GetInt("DEV_STATION_CONSTRUCTION_TIME", GameRules.stationConstructionTimeDefault)
 
 
 		'=== STATION MAP ===

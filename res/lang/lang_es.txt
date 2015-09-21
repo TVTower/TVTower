@@ -571,3 +571,5 @@ ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE = El acceso a esta sala en este mo
 
 OPENINGSHOW_TITLE = Gran lanzamiento de "%ChannelName%"
 OPENINGSHOW_DESCRIPTION = Vamos a estallar los corchos. %CHANNELNAME% está lanzando hoy.
+
+CONSTRUCTION_TIME = tiempo de construcción
