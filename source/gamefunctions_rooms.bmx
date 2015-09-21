@@ -3876,31 +3876,31 @@ endrem
 					local filterNum:int = 0
 					Select floor(i / 4)
 						case 2
-							'levelFilters[0 + 1]
+							'levelFilters[4 + 5]
 							if i mod 4 <= 1
-								filterNum = 0
-								classification = 1
+								filterNum = 4
+								classification = 4
 							else
-								filterNum = 1
-								classification = 0
+								filterNum = 5
+								classification = 5
 							endif
 						case 1
 							'levelFilters[2 + 3]
 							if i mod 4 <= 1
-								filterNum = 2
+								filterNum = 3
 								classification = 3
 							else
 								filterNum = 3
-								classification = 2
+								classification = 3
 							endif
 						case 0
-							'levelFilters[4 + 5]
+							'levelFilters[0 + 1]
 							if i mod 4 <= 1
-								filterNum = 4
-								classification = 5
+								filterNum = 0
+								classification = 0
 							else
-								filterNum = 5
-								classification = 4
+								filterNum = 1
+								classification = 1
 							endif
 					End Select
 
@@ -3915,6 +3915,7 @@ endrem
 						endif
 					Wend
 					contract = new TAdContract.Create( contractBase )
+					print "refilling ads with filternum="+filternum+"  classification="+classification
 				EndIf
 
 				'=== CHEAP LIST ===
