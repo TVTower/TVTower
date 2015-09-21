@@ -3740,14 +3740,15 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		local onDayOne:int = (Getworldtime().GetDay() = GetWorldtime().GetStartDay())
 
 		if onDayOne
+			'quotes of TOTAL REACH, not of WHO IS AT HOME
 			lowestChannelQuoteDayTime = 0.005
-			lowestChannelQuotePrimeTime = 0.008
+			lowestChannelQuotePrimeTime = 0.01
 
-			averageChannelQuoteDayTime = 0.025
-			averageChannelQuotePrimeTime = 0.06
+			averageChannelQuoteDayTime = 0.02
+			averageChannelQuotePrimeTime = 0.04
 
-			highestChannelQuoteDayTime = 0.11
-			highestChannelQuotePrimeTime = 0.20
+			highestChannelQuoteDayTime = 0.05
+			highestChannelQuotePrimeTime = 0.1
 		else
 			For local i:int = 1 to 4
 				local image:Float = GetPublicImageCollection().Get(i).GetAverageImage()
@@ -3803,8 +3804,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		local levelFilters:TAdContractBaseFilter[6]
 		'=== LOWEST ===
 		levelFilters[0] = new TAdContractbaseFilter
-		'from 50-150% of lowest (Minimum of 0.01%)
-		levelFilters[0].SetAudience(Max(spotMin, 0.5 * lowestChannelQuoteDaytime), Max(spotMin , 1.5 * lowestChannelQuoteDayTime))
+		'from 80-120% of lowest (Minimum of 0.01%)
+		levelFilters[0].SetAudience(Max(spotMin, 0.8 * lowestChannelQuoteDaytime), Max(spotMin , 1.2 * lowestChannelQuoteDayTime))
 		'1% - avgImage %
 		levelFilters[0].SetImage(0.0, lowestChannelImage)
 		'lowest should be without "limits"
@@ -3813,7 +3814,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		if limitInstances > 0 then levelFilters[0].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		levelFilters[1] = new TAdContractbaseFilter
-		levelFilters[1].SetAudience(Max(spotMin, 0.5 * lowestChannelQuotePrimeTime), Max(spotMin , 1.5 * lowestChannelQuotePrimeTime))
+		levelFilters[1].SetAudience(Max(spotMin, 0.8 * lowestChannelQuotePrimeTime), Max(spotMin , 1.2 * lowestChannelQuotePrimeTime))
 		levelFilters[1].SetImage(0.0, lowestChannelImage)
 		levelFilters[1].SetSkipLimitedToProgrammeGenre()
 		levelFilters[1].SetSkipLimitedToTargetGroup()
@@ -3821,20 +3822,20 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 		'=== AVERAGE ===
 		levelFilters[2] = new TAdContractbaseFilter
-		'from 50% of avg to 150% of avg, may cross with lowest!
-		'levelFilters[1].SetAudience(0.5 * averageChannelQuote, Max(0.01, 1.5 * averageChannelQuote))
+		'from 80% of avg to 120% of avg, may cross with lowest!
+		'levelFilters[1].SetAudience(0.8 * averageChannelQuote, Max(0.01, 1.2 * averageChannelQuote))
 		'weighted Minimum/Maximum (the more away from border, the
 		'stronger the influence)
-		local minAvg:Float = (0.7 * lowestChannelQuoteDayTime + 0.3 * averageChannelQuoteDayTime)
-		local maxAvg:Float = (0.3 * averageChannelQuoteDayTime + 0.7 * highestChannelQuoteDayTime)
+		local minAvg:Float = (0.6 * lowestChannelQuoteDayTime + 0.4 * averageChannelQuoteDayTime)
+		local maxAvg:Float = (0.4 * averageChannelQuoteDayTime + 0.6 * highestChannelQuoteDayTime)
 		levelFilters[2].SetAudience(Max(spotMin, minAvg), Max(spotMin, maxAvg))
 		'0-100% of average Image
 		levelFilters[2].SetImage(0, averageChannelImage)
 		if limitInstances > 0 then levelFilters[2].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		levelFilters[3] = new TAdContractbaseFilter
-		minAvg = (0.7 * lowestChannelQuotePrimeTime + 0.3 * averageChannelQuotePrimeTime)
-		maxAvg = (0.3 * averageChannelQuotePrimeTime + 0.7 * highestChannelQuotePrimeTime)
+		minAvg = (0.6 * lowestChannelQuotePrimeTime + 0.4 * averageChannelQuotePrimeTime)
+		maxAvg = (0.4 * averageChannelQuotePrimeTime + 0.6 * highestChannelQuotePrimeTime)
 		levelFilters[3].SetAudience(Max(spotMin, minAvg), Max(spotMin, maxAvg))
 		levelFilters[3].SetImage(0, averageChannelImage)
 		if limitInstances > 0 then levelFilters[3].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
@@ -3842,13 +3843,13 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'=== HIGH ===
 		levelFilters[4] = new TAdContractbaseFilter
 		'from 50% of avg to 150% of highest
-		levelFilters[4].SetAudience(Max(spotMin, 0.5 * highestChannelQuoteDayTime), Max(spotMin, 1.5 * highestChannelQuoteDayTime))
+		levelFilters[4].SetAudience(Max(spotMin, 0.7 * highestChannelQuoteDayTime), Max(spotMin, 1.2 * highestChannelQuoteDayTime))
 		'0-100% of highest Image
 		levelFilters[4].SetImage(0, highestChannelImage)
 		if limitInstances > 0 then levelFilters[4].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		levelFilters[5] = new TAdContractbaseFilter
-		levelFilters[5].SetAudience(Max(spotMin, 0.5 * highestChannelQuotePrimeTime), Max(spotMin, 1.5 * highestChannelQuotePrimeTime))
+		levelFilters[5].SetAudience(Max(spotMin, 0.7 * highestChannelQuotePrimeTime), Max(spotMin, 1.2 * highestChannelQuotePrimeTime))
 		levelFilters[5].SetImage(0, highestChannelImage)
 		if limitInstances > 0 then levelFilters[5].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
