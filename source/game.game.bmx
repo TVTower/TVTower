@@ -589,11 +589,11 @@ endrem
 			adContractBases :+ [addContract]
 		Next
 		'and one with 0-1% audience requirement
-		cheapFilter.SetAudience(0.0, 0.01)
+		cheapFilter.SetAudience(0.0, 0.02)
 		addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, False)
 		if not addContract  
 			print "SpreadStartProgramme: No ~qno audience~q contract in DB? Trying a 0-3% one..."
-			cheapFilter.SetAudience(0.0, 0.03)
+			cheapFilter.SetAudience(0.01, 0.04)
 			addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, False)
 			if not addContract
 				print "SpreadStartProgramme: 0-2% failed too... using random contract now."
