@@ -1328,12 +1328,12 @@
 				<audienceAttractions>
 					<audienceAttraction id="Children" value="-0.9" />
 					<audienceAttraction id="Teenagers" value="-0.8" />
-					<audienceAttraction id="HouseWives" value="0.2" />
-					<audienceAttraction id="Employees" value="-0.5" />
-					<audienceAttraction id="Unemployed" value="0.1" />
+					<audienceAttraction id="HouseWives" value="-0.3" />
+					<audienceAttraction id="Employees" value="-0.6" />
+					<audienceAttraction id="Unemployed" value="-0.3" />
 					<audienceAttraction id="Manager" value="-0.8" />
 					<audienceAttraction id="Pensioners" value="-0.6" />
-					<audienceAttraction id="Women" value="0.3" />
+					<audienceAttraction id="Women" value="-0.2" />
 					<audienceAttraction id="Men" value="-0.3" />
 				</audienceAttractions>			
 			</flag>
