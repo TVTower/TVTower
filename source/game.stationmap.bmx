@@ -1135,7 +1135,16 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 	Method DrawActivationTooltip()
 		local textCaption:string = getLocale("STATION_UNDER_CONSTRUCTION")
-		local textContent:string = GetLocale("STATION_READY_AT_ACTIVATIONTIME").REPLACE("%ACTIVATIONTIME%", GetWorldTime().GetFormattedTime(GetActivationTime()))
+		local textContent:string = GetLocale("READY_AT_TIME_X")
+		local readyTime:String = GetWorldTime().GetFormattedTime(GetActivationTime())
+		'prepend day if it does not finish today
+		if GetWorldTime().GetDay() < GetWorldTime().GetDay(GetActivationTime())
+			readyTime = GetWorldTime().GetFormattedDay(GetWorldTime().GetDaysRun(GetActivationTime()) +1) + " " + readyTime
+			textContent = GetLocale("READY_AT_DAY_X")
+		endif
+		textContent = textContent.REPLACE("%TIME%", readyTime)
+
+
 		Local textH:Int = GetBitmapFontManager().baseFontBold.getHeight( "Tg" )
 		local textW:Int = GetBitmapFontManager().baseFontBold.getWidth(textCaption)
 		textW = Max(textW, GetBitmapFontManager().baseFont.getWidth(textContent))

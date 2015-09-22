@@ -193,7 +193,13 @@ Type TGameToastMessage extends TToastMessage
 			text = text.Replace("%D%", GetWorldTime().GetOnDay(_closeAtWorldTime))
 			text = text.Replace("%Y%", GetWorldTime().GetYear(_closeAtWorldTime))
 			text = text.Replace("%SEASON%", GetWorldTime().GetSeason(_closeAtWorldTime))
-			text = text.Replace("%TIME%", GetWorldTime().GetFormattedTime(_closeAtWorldTime))
+
+			local timeString:String = GetWorldTime().GetFormattedTime(_closeAtWorldTime)
+			'prepend day if it does not finish today
+			if GetWorldTime().GetDay() < GetWorldTime().GetDay(_closeAtWorldTime)
+				timeString = GetWorldTime().GetFormattedDay(GetWorldTime().GetDaysRun(_closeAtWorldTime) +1 ) + " " + timeString
+			endif
+			text = text.Replace("%TIME%", timeString)
 			
 			GetBitmapFontManager().baseFontBold.DrawBlock(text, contentX, contentY2 - GetBitmapFontManager().baseFontBold.GetMaxCharHeight(), contentX2 - contentX, -1, null, TColor.CreateGrey(50))
 		endif

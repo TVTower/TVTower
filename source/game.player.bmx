@@ -84,6 +84,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 	Method IsLocalAI:Int(number:Int)
 		Return (IsPlayer(number) And Get(number).IsLocalAI())
 	End Method
+	
 
 	'=== EVENTS ===
 	Function OnFigureReachTarget:int(triggerEvent:TEventBase)

@@ -32,6 +32,7 @@ STARTHINT_TITLE3 = Contratos publicitarios
 STARTHINT_TEXT3 = Ad contracts have defined requirements to the minimum audience. This and of course profits/penalties are directly attached to the maximum audience a channel can reach currently.\n\nTherefore it is sometimes better to sign new contracts right before buying new stations.
 
 CLOSES_AT_TIME = Cierra a las %TIME%
+CLOSES_AT_DAY = Cierra a %TIME%
 
 GAME_TITLE = Titulo del Juego
 START_YEAR = Año de inicio
@@ -461,8 +462,13 @@ TOO_EXPENSIVE = Muy Caro
 SELL_STATION = Vender estación
 UNSELLABLE = invendible
 
-STATION_UNDER_CONSTRUCTION = En construcción
-STATION_READY_AT_ACTIVATIONTIME = presto a %ACTIVATIONTIME%
+UNDER_CONSTRUCTION = Under Construction
+READY_AT_TIME_X = presto a %TIME%
+READY_AT_DAY_X = presto a %TIME%
+STATION_UNDER_CONSTRUCTION = Estación en construcción
+NEW_STATION_WILL_BE_READY_AT_TIME_X = Nueva estación estará lista en %TIME% 
+NEW_STATION_WILL_BE_READY_AT_DAY_X = Nueva estación estará lista en %TIME%
+
 
 BUY_AND_SELL = Compra y venta
 AND_STATISTICS = y estadísticas

@@ -51,7 +51,6 @@
 				<DEV_STATION_CONSTRUCTION_TIME value="0" />
 			-->
 
-
 			<!-- profit/penalty get multiplied with this value if there
 			     is a limiting targetgroup.
 			     Default: 1.0

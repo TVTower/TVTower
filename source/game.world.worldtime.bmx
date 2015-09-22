@@ -403,6 +403,7 @@ Type TWorldTime {_exposeToLua="selected"}
 
 	'returns day of the week including gameday
 	Method GetFormattedDay:String(_day:Int = -1) {_exposeToLua}
+		if _day = -1 then _day = GetDaysRun()
 		Return _day+"."+GetLocale("DAY")+" ("+GetDayName( Max(0,_day-1) Mod _daysPerWeek, 0)+ ")"
 	End Method
 

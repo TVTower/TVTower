@@ -32,6 +32,7 @@ STARTHINT_TITLE3 = Reklam Kontratları
 STARTHINT_TEXT3 = Reklam Kontratları, en az izleyici sınırı ile tanımlanır. Reklamın getirisi ve cezası, kanalın ulaşabileceği en fazla izleyici potansiyeli ile bağlantılıdır. \n\n Bu nedenle bazen yeni istasyon anlaşması yapmadan önce kontratları imzalamak iyi olabilir.
 
 CLOSES_AT_TIME = %TIME% olunca kapanacak
+CLOSES_AT_DAY = Kapatır: %TIME%
 
 GAME_TITLE = Oyun Başlığı
 START_YEAR = Başlangıç Yılı
@@ -459,8 +460,12 @@ BUY_STATION = İstasyon Satın Al
 TOO_EXPENSIVE = Çok pahalı
 SELL_STATION = İstasyon Sat
 
-STATION_UNDER_CONSTRUCTION = Yapım Aşamasında
-STATION_READY_AT_ACTIVATIONTIME = Hazır olacağı zaman; %ACTIVATIONTIME%
+UNDER_CONSTRUCTION = Yapım Aşamasında
+READY_AT_TIME_X = Hazır olacağı zaman; %TIME%
+READY_AT_DAY_X = Hazır olacağı zaman; %TIME%
+STATION_UNDER_CONSTRUCTION = Yapım aşamasında İstasyonları
+NEW_STATION_WILL_BE_READY_AT_TIME_X = Yeni istasyon hazır olacak; %TIME% 
+NEW_STATION_WILL_BE_READY_AT_DAY_X = Yeni istasyon hazır olacak; %TIME%
 
 BUY_AND_SELL = Al ve Sat
 AND_STATISTICS = ve İstatistikler

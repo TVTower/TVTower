@@ -3535,11 +3535,11 @@ Type GameEvents
 		_eventListeners :+ [ EventManager.registerListenerFunction("publicAuthorities.onConfiscateProgrammeLicence", publicAuthorities_onConfiscateProgrammeLicence) ]
 
 		'visually inform that selling the last station is impossible
-		_eventListeners :+ [ EventManager.registerListenerFunction("StationMap.onTrySellLastStation", StationMapOnTrySellLastStation) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("StationMap.onTrySellLastStation", StationMap_OnTrySellLastStation) ]
 		'trigger audience recomputation when a station is trashed/sold
-		_eventListeners :+ [ EventManager.registerListenerFunction("StationMap.removeStation", StationMapOnSellStation) ]
-
-		_eventListeners :+ [ EventManager.registerListenerFunction("BroadcastManager.BroadcastMalfunction", PlayerBroadcastMalfunction) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("StationMap.removeStation", StationMap_OnRemoveStation) ]
+		'show ingame toastmessage if station is under construction
+		_eventListeners :+ [ EventManager.registerListenerFunction("StationMap.addStation", StationMap_OnAddStation) ]
 
 		'listen to failed or successful ending adcontracts to send out
 		'ingame toastmessages
@@ -3978,19 +3978,76 @@ Type GameEvents
 	End Function
 
 
-	Function StationMapOnSellStation:Int(triggerEvent:TEventBase)
+	Function StationMap_OnRemoveStation:Int(triggerEvent:TEventBase)
 		Local stationMap:TStationMap = TStationMap(triggerEvent.GetSender())
 		If Not stationMap Then Return False
 		
 		Local player:TPlayer = GetPlayerCollection().Get(stationMap.owner)
 		If Not player Then Return False
 
-		TLogger.Log("StationMapOnSellStation", "recomputing audience for player "+player.playerID, LOG_DEBUG)
+		TLogger.Log("StationMap_OnRemoveStation", "recomputing audience for player "+player.playerID, LOG_DEBUG)
 		GetBroadcastManager().ReComputePlayerAudience(player.playerID)
 	End Function
 
 
-	Function StationMapOnTrySellLastStation:Int(triggerEvent:TEventBase)
+	Function StationMap_OnAddStation:Int(triggerEvent:TEventBase)
+		Local stationMap:TStationMap = TStationMap(triggerEvent.GetSender())
+		If Not stationMap Then Return False
+
+		local station:TStation = TStation(triggerEvent.GetData().Get("station"))
+		if not station then return False
+
+		'only interested in the players stations
+		Local player:TPlayer = GetPlayer(stationMap.owner)
+		If Not player or not GetPlayerCollection().IsLocalHuman(player.playerID) Then Return False
+
+		'in the past?
+		if station.GetActivationTime() < GetWorldTime().GetTimeGone() then return False
+		
+
+
+		local readyTime:String = GetWorldTime().GetFormattedTime(station.GetActivationTime())
+		local closeText:string = "CLOSES_AT_TIME"
+		local readyText:string = "NEW_STATION_WILL_BE_READY_AT_TIME_X"
+		'prepend day if it does not finish today
+		if GetWorldTime().GetDay() < GetWorldTime().GetDay(station.GetActivationTime())
+			readyTime = GetWorldTime().GetFormattedDay(GetWorldTime().GetDaysRun(station.GetActivationTime()) +1) + " " + readyTime
+			closeText = "CLOSES_AT_DAY"
+			readyText = "NEW_STATION_WILL_BE_READY_AT_DAY_X"
+		endif
+		
+		'send out a toast message
+
+		'show only one message of this type?
+		'Local toastGUID:String = "toastmessage-stationmap-addstation"+player.playerID
+		'try to fetch an existing one
+		'Local toast:TGameToastMessage = TGameToastMessage(GetToastMessageCollection().GetMessageByGUID(toastGUID))
+		'If Not toast Then toast = New TGameToastMessage
+
+		Local toast:TGameToastMessage = New TGameToastMessage
+	
+		toast.SetCloseAtWorldTime( station.GetActivationTime() )
+		toast.SetCloseAtWorldTimeText(closeText)
+		toast.SetMessageType(0)
+		toast.SetPriority(5)
+
+		toast.SetCaption(GetLocale("STATION_UNDER_CONSTRUCTION"))
+		toast.SetText( GetLocale(readyText).Replace("%TIME%", readyTime) )
+
+		rem - if only 1 instance allowed
+		'if this was a new message, the guid will differ
+		If toast.GetGUID() <> toastGUID
+			toast.SetGUID(toastGUID)
+			'new messages get added to a list
+			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+		EndIf
+		endrem
+
+		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+	End Function
+
+
+	Function StationMap_OnTrySellLastStation:Int(triggerEvent:TEventBase)
 		Local stationMap:TStationMap = TStationMap(triggerEvent.GetSender())
 		If Not stationMap Then Return False
 
