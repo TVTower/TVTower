@@ -270,16 +270,16 @@ Type TToastMessageSpawnPoint extends TEntity
 
 		For local message:TToastMessage = EachIn messages
 			if message = child
-				if alignment.y = GROW_UP then result :- child.area.GetH()
+				if alignment.y = GROW_UP then result :- message.area.GetH()
 				return result
 			endif
 
 			Select alignment.y
 				case GROW_DOWN
-					result :+ child.area.GetH()
+					result :+ message.area.GetH()
 					result :+ spacerSize.GetY()
 				case GROW_UP
-					result :- child.area.GetH()
+					result :- message.area.GetH()
 					result :- spacerSize.GetY()
 			End Select
 		Next
