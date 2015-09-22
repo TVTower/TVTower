@@ -1029,15 +1029,15 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 		local r:int = GetReach()
 		if r < 500000
-			return 1 + 1 * GameRules.stationConstructionTime
+			return 1 * GameRules.stationConstructionTime
 		elseif r < 1000000
-			return 1 + 2 * GameRules.stationConstructionTime
+			return 2 * GameRules.stationConstructionTime
 		elseif r < 2500000
-			return 1 + 3 * GameRules.stationConstructionTime
+			return 3 * GameRules.stationConstructionTime
 		elseif r < 5000000
-			return 1 + 4 * GameRules.stationConstructionTime
+			return 4 * GameRules.stationConstructionTime
 		else
-			return 1 + 5 * GameRules.stationConstructionTime
+			return 5 * GameRules.stationConstructionTime
 		endif
 	End Method
 
@@ -1058,16 +1058,23 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		built = GetWorldTime().GetTimeGone()
 
 		local constructionTime:int = GetConstructionTime()
-		if constructionTime = 0 then constructionTime :+ 1
+		'do not allow negative values as a "ready now" is not possible
+		'because it affects broadcasted audience then.
+		'if constructionTime <  0
+		'	SetActivationTime( GetWorldTime().GetTimeGone()-1)
+		'else
+			if constructionTime <  0 then constructionTime = 0
 
-		'next hour (+construction hours) at xx:00
-		if GetWorldTime().GetDayMinute() >= 5
-			SetActivationTime( GetWorldTime().MakeTime(0, 0, GetWorldTime().GetHour(built + constructionTime*3600), 0))
-		'this hour (+construction hours) at xx:05
-		else
-			SetActivationTime( GetWorldTime().MakeTime(0, 0, GetWorldTime().GetHour() + (constructionTime-1), 5, 0))
-		endif
+			constructionTime :+ 1
 
+			'next hour (+construction hours) at xx:00
+			if GetWorldTime().GetDayMinute() >= 5
+				SetActivationTime( GetWorldTime().MakeTime(0, 0, GetWorldTime().GetHour(built + constructionTime*3600), 0))
+			'this hour (+construction hours) at xx:05
+			else
+				SetActivationTime( GetWorldTime().MakeTime(0, 0, GetWorldTime().GetHour() + (constructionTime-1), 5, 0))
+			endif
+		'endif
 
 
 		If HasFlag(FLAG_PAID) Then Return True
