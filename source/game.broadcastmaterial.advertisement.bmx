@@ -79,13 +79,13 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 
 
 	'override - return PAID-Flag as genre
-	Method GetGenreDefinition2:TGenreDefinitionBase()
+	Method GetGenreDefinition:TGenreDefinitionBase()
 		Return GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.PAID)
 	End Method
 
 
 	'override - lower interest again (added to genre-interest)
-	Method GetMiscMod2:TAudience(hour:Int)
+	Method GetMiscMod:TAudience(hour:Int)
 		Local result:TAudience = TAudience.CreateAndInitValue(0)
 		local flagDefinitions:TMovieFlagDefinition[]
 

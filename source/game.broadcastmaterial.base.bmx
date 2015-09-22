@@ -234,10 +234,9 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	
 	'default implementation
 	Method GenreTargetGroupMod:TAudience(genreDefinition:TGenreDefinitionBase)
-		'Zwischenlösung bis alles umgestellt
-		Return genreDefinition.AudienceAttraction.Copy().DivideFloat(2).CutBordersFloat(-0.6, 0.6)
-		'Return genreDefinition.AudienceAttraction.Copy() - Später		
-		'Return genreDefinition.AudienceAttraction.Copy().MultiplyFloat(1.2).SubtractFloat(0.6).CutBordersFloat(-0.6, 0.6)
+		'limited to -100%,+100%
+		'multiply with 0.5 to scale "-2 to +2" down to "-1 to +1"
+		Return genreDefinition.AudienceAttraction.Copy().MultiplyFloat(0.5).CutBordersFloat(-1.0, 1.0)
 	End Method
 
 

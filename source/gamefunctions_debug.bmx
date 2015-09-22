@@ -69,20 +69,25 @@ Type TDebugAudienceInfos
 
 		Local attraction:TAudienceAttraction = audienceResult.AudienceAttraction
 		Local genre:String = "kein Genre"
-
-		If attraction.BroadcastType = TVTBroadcastMaterialType.PROGRAMME Then
-			If (attraction.BaseAttraction <> Null) Then
-				genre = GetLocale("PROGRAMME_GENRE_"+TVTProgrammeGenre.GetAsString(attraction.Genre))
-			Endif
-		ElseIf attraction.BroadcastType = TVTBroadcastMaterialType.NEWSSHOW Then
-			If (attraction.BaseAttraction <> Null) Then
-				genre = "News-Genre-Mix"
-			Endif
-		Endif
+		Select attraction.BroadcastType
+			case TVTBroadcastMaterialType.PROGRAMME
+				If (attraction.BaseAttraction <> Null)
+					genre = GetLocale("PROGRAMME_GENRE_"+TVTProgrammeGenre.GetAsString(attraction.Genre))
+				Endif
+			case TVTBroadcastMaterialType.ADVERTISEMENT
+				If (attraction.BaseAttraction <> Null)
+					genre = GetLocale("INFOMERCIAL")
+				Endif
+			case TVTBroadcastMaterialType.NEWSSHOW
+				If (attraction.BaseAttraction <> Null)
+					genre = "News-Genre-Mix"
+				Endif
+		End Select
 
 		Local offset:Int = 20
 
 		GetBitmapFontManager().baseFontBold.drawStyled("Sendung: " + audienceResult.Title + "     (" + genre + ")", 25, offset + 90, TColor.clRed);
+if audienceResult.playerID = 3 then debugstop
 
 
 		font.Draw("1. Programmqualität & Aktual.", 25, offset+110, TColor.clWhite)

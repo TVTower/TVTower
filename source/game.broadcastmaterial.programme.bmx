@@ -234,6 +234,17 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Method GetMiscMod:TAudience(hour:Int)
 		Local result:TAudience = TAudience.CreateAndInitValue(0)
 
+
+		'for all defined targetgroups, increase interest
+		if data.GetTargetGroups() > 0
+			local tgAudience:TAudience = TAudience.CreateAndInitValue(0)
+			For local targetGroup:int = 1 to TVTTargetGroup.count
+				if data.HasTargetGroup(targetGroup)
+					tgAudience.SetValue(targetGroup, 0.5)
+				endif
+			Next
+		endif
+
 		local flagDefinitions:TMovieFlagDefinition[]
 	
 		'Genereller Quotenbonus!

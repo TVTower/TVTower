@@ -245,5 +245,10 @@ Type TMovieFlagDefinition Extends TMovieGenreDefinition
 		
 		return self
 	End Method
+
+
+	Method GetPopularity:TGenrePopularity()
+		return TGenrePopularity(Super.GetPopularity())
+	End Method
 	
 End Type

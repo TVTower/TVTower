@@ -395,11 +395,6 @@ Type TBroadcast
 		AudienceResults[1].Refresh()
 		AudienceResults[2].Refresh()
 		AudienceResults[3].Refresh()
-
-		if AudienceResults[0].broadcastOutage then DebugStop
-		if AudienceResults[1].broadcastOutage then DebugStop
-		if AudienceResults[2].broadcastOutage then DebugStop
-		if AudienceResults[3].broadcastOutage then DebugStop
 	End Method
 
 
