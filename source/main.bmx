@@ -4028,8 +4028,9 @@ Type GameEvents
 	
 		toast.SetCloseAtWorldTime( station.GetActivationTime() )
 		toast.SetCloseAtWorldTimeText(closeText)
+		toast.SetLifeTime(6)
 		toast.SetMessageType(0)
-		toast.SetPriority(5)
+		toast.SetPriority(2)
 
 		toast.SetCaption(GetLocale("STATION_UNDER_CONSTRUCTION"))
 		toast.SetText( GetLocale(readyText).Replace("%TIME%", readyTime) )

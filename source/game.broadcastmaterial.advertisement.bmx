@@ -77,62 +77,46 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 		return contract.IsControllable()
 	End Method
 
-rem
-	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
-		'TODO: @Manuel - hier brauchen wir eine geeignete Berechnung :D
-		If lastMovieBlockAttraction then return lastMovieBlockAttraction
 
-		Local result:TAudienceAttraction = New TAudienceAttraction
-		result.BroadcastType = 1
-		result.Genre = 20 'paid programming
-		Local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinitionCollection().Get(result.Genre)
+	'override - return PAID-Flag as genre
+	Method GetGenreDefinition2:TGenreDefinitionBase()
+		Return GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.PAID)
+	End Method
 
-		'copied and adjusted from "programme"
-		If block = 1 Then
-			'1 - Qualität des Programms
-			result.Quality = GetQuality()
 
-			'2 - Mod: Genre-Popularität / Trend
-			result.GenrePopularityMod = (genreDefinition.Popularity.Popularity / 100) 'Popularity => Wert zwischen -50 und +50
+	'override - lower interest again (added to genre-interest)
+	Method GetMiscMod2:TAudience(hour:Int)
+		Local result:TAudience = TAudience.CreateAndInitValue(0)
+		local flagDefinitions:TMovieFlagDefinition[]
 
-			'3 - Genre <> Zielgruppe
-			result.GenreTargetGroupMod = genreDefinition.AudienceAttraction.Copy()
-			result.GenreTargetGroupMod.SubtractFloat(0.5)
+		'infomercials could be "trendy" ... so we check all flags of the
+		'infomercials for trends later on
+		
+		local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.PAID)
+		if definition
+			flagDefinitions :+ [definition]
+		else
+			'really less interest in paid programming
+			'use a really high value until audience flow is corrected
+			'for such programmes
+			result.Add(TAudience.CreateAndInit(-0.5, -0.5, -0.3, -0.5, -0.3, -0.7, -0.3, -0.5, -0.5))
+		endif
 
-			'4 - Image
-			result.PublicImageMod = GetPublicImageCollection().Get(owner).GetAttractionMods()
-			result.PublicImageMod.SubtractFloat(1)
 
-			'5 - Trailer - gibt es nicht fuer Werbesendungen (die
-			'              waeren ja dann wieder Werbung)
+		if flagDefinitions.length > 0
+			local flagAudienceMod:TAudience = new TAudience.CreateAndInitValue(0.0)
+			for local definition:TMovieFlagDefinition = Eachin flagDefinitions
+				flagAudienceMod.AddFloat( flagPopularityMod(definition) )
+				flagAudienceMod.Add( flagTargetGroupMod(definition).MultiplyFloat(1.0 + GetTimeMod(definition, hour)) )
+			Next
+			flagAudienceMod.DivideFloat(flagDefinitions.length)
 
-			'6 - Flags
-			result.MiscMod = TAudience.CreateAndInit(1, 1, 1, 1, 1, 1, 1, 1, 1)
-			result.MiscMod.SubtractFloat(1)
-
-			'result.CalculateBaseAttraction()
-		Else
-			result.CopyBaseAttractionFrom(lastMovieBlockAttraction)
-		Endif
-
-		'8 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
-		result.QualityOverTimeEffectMod = ((result.Quality - 0.5)/2.5) * (block - 1)
-
-		'9 - Genres <> Sendezeit
-		result.GenreTimeMod = genreDefinition.TimeMods[hour] - 1 'Genre/Zeit-Mod
-
-		'10 - News-Mod
-		'result.NewsShowBonus = lastNewsBlockAttraction.Copy().MultiplyFloat(0.2)
-
-		'result.CalculateBlockAttraction()
-
-		'result.SequenceEffect = genreDefinition.GetSequence(lastNewsBlockAttraction, result, 0.1, 0.5)
-
-		result.Recalculate()
-
+			result.Add(flagAudienceMod)
+		endif
+		
 		Return result
 	End Method
-endrem
+
 
 	'override
 	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)

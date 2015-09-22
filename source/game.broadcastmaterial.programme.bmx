@@ -559,6 +559,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	End Method
 
 
+	'override
 	Method GetGenreDefinition:TGenreDefinitionBase()
 		Return data.GetGenreDefinition()
 	End Method
