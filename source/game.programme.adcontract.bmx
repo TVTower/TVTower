@@ -875,7 +875,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 			'if limited to specific target group ... break audience down
 			'to this specific group
 			if GetLimitedToTargetGroup() > 0
-				useAudience :* TAudience.GetAudienceBreakdown().GetValue(GetLimitedToTargetGroup())
+				useAudience :* AudienceManager.GetAudienceBreakdown().GetValue(GetLimitedToTargetGroup())
 			endif
 		endif
 

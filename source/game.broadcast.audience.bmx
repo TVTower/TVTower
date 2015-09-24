@@ -4,6 +4,84 @@ Import "Dig/base.util.helper.bmx" 'for roundInt()
 Import "game.exceptions.bmx"
 Import "game.gameconstants.bmx"
 
+
+Type TAudienceManager
+	Field currentAudienceBreakdown:TAudience = null
+	Field currentGenderBreakdown:TAudience = null
+	Field targetAudienceBreakdown:TAudience = null
+	Field targetGenderBreakdown:TAudience = null
+	Field defaultAudienceBreakdown:TAudience = null
+	Field defaultGenderBreakdown:TAudience = null
+
+	Method Initialize:int()
+		currentAudienceBreakdown = null
+		currentGenderBreakdown = null
+		targetAudienceBreakdown = null
+		targetGenderBreakdown = null
+		defaultAudienceBreakdown = null
+		defaultGenderBreakdown = null
+	End Method
+	
+
+	Method GetAudienceBreakdown:TAudience()
+		if not defaultAudienceBreakdown
+			defaultAudienceBreakDown = New TAudience
+			defaultAudienceBreakDown.Children   = 0.09  'Kinder (9%)
+			defaultAudienceBreakDown.Teenagers	 = 0.1   'Teenager (10%)
+			'adults 60%
+			defaultAudienceBreakDown.HouseWives = 0.12  'Hausfrauen (20% von 60% Erwachsenen = 12%)
+			defaultAudienceBreakDown.Employees  = 0.405 'Arbeitnehmer (67,5% von 60% Erwachsenen = 40,5%)
+			defaultAudienceBreakDown.Unemployed = 0.045 'Arbeitslose (7,5% von 60% Erwachsenen = 4,5%)
+			defaultAudienceBreakDown.Manager    = 0.03  'Manager (5% von 60% Erwachsenen = 3%)
+			defaultAudienceBreakDown.Pensioners = 0.21  'Rentner (21%)
+			'gender
+			defaultAudienceBreakDown.CalcGenderBreakdown()
+		endif
+		'set current to default (reference!) if nothing set for now
+		if not currentAudienceBreakdown then currentAudienceBreakdown = defaultAudienceBreakDown
+
+		return currentAudienceBreakdown
+	End Method
+
+
+	Method ModifyAudienceBreakdown:TAudience(AudienceModifier:TAudience, relativeChange:int = True)
+		if relativeChange
+'			currentAudienceBreakdown = GetAudienceBreakdown().Copy().ModifySumRelative(AudienceModifier)
+		else
+'			currentAudienceBreakdown = GetAudienceBreakdown().Copy().ModifySumAbsolute(AudienceModifier)
+		endif
+	End Method
+	
+
+	Method GetGenderBreakdown:TAudience()
+		if not defaultGenderBreakdown
+			'based partially on data from:
+			'http://www.bpb.de/wissen/X39RH6,0,0,Bev%F6lkerung_nach_Altersgruppen_und_Geschlecht.html
+			'(of 2010)
+			'and
+			'http://statistik.arbeitsagentur.de/Statischer-Content/Statistische-Analysen/Analytikreports/Zentrale-Analytikreports/Monatliche-Analytikreports/Generische-Publikationen/Analyse-Arbeitsmarkt-Frauen-Maenner/Analyse-Arbeitsmarkt-Frauen-Maenner-201506.pdf
+			'(of 2015)
+
+			'value describes percentage of women in that group
+			defaultGenderBreakdown = New TAudience
+			defaultGenderBreakdown.Children = 0.487
+			defaultGenderBreakdown.Teenagers = 0.487
+			defaultGenderBreakdown.HouseWives = 0.9
+			defaultGenderBreakdown.Employees = 0.4
+			defaultGenderBreakdown.Unemployed = 0.45
+			defaultGenderBreakdown.Manager = 0.20
+			defaultGenderBreakdown.Pensioners = 0.58 'the older the more women
+		endif
+		'set current to default (reference!) if nothing set for now
+		if not currentGenderBreakdown then currentGenderBreakdown = defaultGenderBreakdown
+
+		return currentGenderBreakdown
+	End Method
+End Type
+
+Global AudienceManager:TAudienceManager = new TAudienceManager
+
+
 'Diese Klasse repräsentiert das Publikum, dass die Summe seiner Zielgruppen ist.
 'Die Klasse kann sowohl Zuschauerzahlen als auch Faktoren/Quoten beinhalten
 'und stellt einige Methoden bereit die Berechnung mit Faktoren und anderen
@@ -19,8 +97,8 @@ Type TAudience
 	Field Pensioners:Float	= 0	'Rentner
 	Field Women:Float		= 0	'Frauen
 	Field Men:Float			= 0	'Männer
-	Global audienceBreakdown:TAudience = null
-	Global genderBreakdown:TAudience = null
+	'contains value of "female beings" for each group
+	Field _femalePercentage:TAudience = null
 	
 	'=== Constructors ===
 
@@ -39,57 +117,16 @@ Type TAudience
 	End Function
 
 
-	Function GetAudienceBreakdown:TAudience()
-		if not audienceBreakdown
-			audienceBreakDown = New TAudience
-			audienceBreakDown.Children   = 0.09  'Kinder (9%)
-			audienceBreakDown.Teenagers	 = 0.1   'Teenager (10%)
-			'adults 60%
-			audienceBreakDown.HouseWives = 0.12  'Hausfrauen (20% von 60% Erwachsenen = 12%)
-			audienceBreakDown.Employees  = 0.405 'Arbeitnehmer (67,5% von 60% Erwachsenen = 40,5%)
-			audienceBreakDown.Unemployed = 0.045 'Arbeitslose (7,5% von 60% Erwachsenen = 4,5%)
-			audienceBreakDown.Manager    = 0.03  'Manager (5% von 60% Erwachsenen = 3%)
-			audienceBreakDown.Pensioners = 0.21  'Rentner (21%)
-			'gender
-			audienceBreakDown.CalcGenderBreakdown()
-		endif
-		return audienceBreakDown
-	End Function
-
-
-	Function GetGenderBreakdown:Taudience()
-		if not genderBreakdown
-			'based partially on data from:
-			'http://www.bpb.de/wissen/X39RH6,0,0,Bev%F6lkerung_nach_Altersgruppen_und_Geschlecht.html
-			'(of 2010)
-			'and
-			'http://statistik.arbeitsagentur.de/Statischer-Content/Statistische-Analysen/Analytikreports/Zentrale-Analytikreports/Monatliche-Analytikreports/Generische-Publikationen/Analyse-Arbeitsmarkt-Frauen-Maenner/Analyse-Arbeitsmarkt-Frauen-Maenner-201506.pdf
-			'(of 2015)
-
-			'value describes percentage of women in that group
-			genderBreakdown = New TAudience
-			genderBreakdown.Children = 0.487
-			genderBreakdown.Teenagers = 0.487
-			genderBreakdown.HouseWives = 0.9
-			genderBreakdown.Employees = 0.4
-			genderBreakdown.Unemployed = 0.45
-			genderBreakdown.Manager = 0.20
-			genderBreakdown.Pensioners = 0.58 'the older the more women
-		endif
-		return genderBreakdown
-	End Function
-
-
 	Function CreateWithBreakdown:TAudience(audience:Int)
-		return GetAudienceBreakDown().Copy().MultiplyFloat(audience)
+		return AudienceManager.GetAudienceBreakdown().Copy().MultiplyFloat(audience)
 	End Function
 
 
 	Function CreateForSingleGender:TAudience(audience:Int, returnWomen:int=True)
 		if returnWomen
-			return GetGenderBreakdown().Copy().MultiplyFloat(audience)
+			return AudienceManager.GetGenderBreakdown().Copy().MultiplyFloat(audience)
 		else
-			return CreateAndInitValue(1).Subtract(GetGenderBreakdown()).MultiplyFloat(audience)
+			return CreateAndInitValue(1).Subtract(AudienceManager.GetGenderBreakdown()).MultiplyFloat(audience)
 		endif
 	End Function
 
@@ -170,15 +207,17 @@ Type TAudience
 	End Method
 
 
-	Method GetWeightedAverage:Float()
+	Method GetWeightedAverage:Float(audienceBreakdown:TAudience = null)
+		'fetch current breakdown if nothing was given
+		if not audienceBreakdown then audienceBreakdown = AudienceManager.GetAudienceBreakdown()
 		local result:Float = 0
-		result :+ Children * GetAudienceBreakdown().Children
-		result :+ Teenagers * GetAudienceBreakdown().Teenagers
-		result :+ HouseWives * GetAudienceBreakdown().HouseWives
-		result :+ Employees * GetAudienceBreakdown().Employees
-		result :+ Unemployed * GetAudienceBreakdown().Unemployed
-		result :+ Manager * GetAudienceBreakdown().Manager
-		result :+ Pensioners * GetAudienceBreakdown().Pensioners
+		result :+ Children * audienceBreakdown.Children
+		result :+ Teenagers * audienceBreakdown.Teenagers
+		result :+ HouseWives * audienceBreakdown.HouseWives
+		result :+ Employees * audienceBreakdown.Employees
+		result :+ Unemployed * audienceBreakdown.Unemployed
+		result :+ Manager * audienceBreakdown.Manager
+		result :+ Pensioners * audienceBreakdown.Pensioners
 
 		rem
 		'results in nearly the same
@@ -194,53 +233,56 @@ Type TAudience
 	
 
 	Method CalcGenderBreakdown()
-'old
-'		Women = Children * 0.5 + Teenagers * 0.5 + HouseWives * 0.9 + Employees * 0.4 + Unemployed * 0.4 + Manager * 0.25 + Pensioners * 0.55
-'		Men   = Children * 0.5 + Teenagers * 0.5 + HouseWives * 0.1 + Employees * 0.6 + Unemployed * 0.6 + Manager * 0.75 + Pensioners * 0.45
+		'fetch current breakdown if nothing was given
+		if not _femalePercentage then _femalePercentage = AudienceManager.GetGenderBreakdown()
 
 		Women = 0
-		Women :+ Children * GetGenderBreakdown().Children
-		Women :+ Teenagers * GetGenderBreakdown().Teenagers
-		Women :+ HouseWives * GetGenderBreakdown().HouseWives
-		Women :+ Employees * GetGenderBreakdown().Employees
-		Women :+ Unemployed * GetGenderBreakdown().Unemployed
-		Women :+ Manager * GetGenderBreakdown().Manager
-		Women :+ Pensioners * GetGenderBreakdown().Pensioners
+		Women :+ Children * _femalePercentage.Children
+		Women :+ Teenagers * _femalePercentage.Teenagers
+		Women :+ HouseWives * _femalePercentage.HouseWives
+		Women :+ Employees * _femalePercentage.Employees
+		Women :+ Unemployed * _femalePercentage.Unemployed
+		Women :+ Manager * _femalePercentage.Manager
+		Women :+ Pensioners * _femalePercentage.Pensioners
 
 		Men = 0
-		Men :+ Children * (1.0 - GetGenderBreakdown().Children)
-		Men :+ Teenagers * (1.0 - GetGenderBreakdown().Teenagers)
-		Men :+ HouseWives * (1.0 - GetGenderBreakdown().HouseWives)
-		Men :+ Employees * (1.0 - GetGenderBreakdown().Employees)
-		Men :+ Unemployed * (1.0 - GetGenderBreakdown().Unemployed)
-		Men :+ Manager * (1.0 - GetGenderBreakdown().Manager)
-		Men :+ Pensioners * (1.0 - GetGenderBreakdown().Pensioners)
+		Men :+ Children * (1.0 - _femalePercentage.Children)
+		Men :+ Teenagers * (1.0 - _femalePercentage.Teenagers)
+		Men :+ HouseWives * (1.0 - _femalePercentage.HouseWives)
+		Men :+ Employees * (1.0 - _femalePercentage.Employees)
+		Men :+ Unemployed * (1.0 - _femalePercentage.Unemployed)
+		Men :+ Manager * (1.0 - _femalePercentage.Manager)
+		Men :+ Pensioners * (1.0 - _femalePercentage.Pensioners)
 	End Method
 
 
 	'repairs broken men/women-values of attraction-object
-	Method CalcWeightedGenderModifier()
+	Method CalcWeightedGenderModifier(audienceBreakdown:TAudience = null)
+		'fetch current breakdowns if nothing was given
+		if not _femalePercentage then _femalePercentage = AudienceManager.GetGenderBreakdown()
+		if not audienceBreakdown then audienceBreakdown = AudienceManager.GetAudienceBreakdown()
+
 		Women = 0
 		'add the portion of each group * audience percentage (so it gets
 		'a weighted average)
-		Women :+ Children * GetGenderBreakdown().Children * GetAudienceBreakdown().Children
-		Women :+ Teenagers * GetGenderBreakdown().Teenagers * GetAudienceBreakdown().Teenagers
-		Women :+ HouseWives * GetGenderBreakdown().HouseWives * GetAudienceBreakdown().HouseWives
-		Women :+ Employees * GetGenderBreakdown().Employees * GetAudienceBreakdown().Employees
-		Women :+ Unemployed * GetGenderBreakdown().Unemployed * GetAudienceBreakdown().Unemployed
-		Women :+ Manager * GetGenderBreakdown().Manager * GetAudienceBreakdown().Manager
-		Women :+ Pensioners * GetGenderBreakdown().Pensioners * GetAudienceBreakdown().Pensioners
+		Women :+ Children * _femalePercentage.Children * audienceBreakdown.Children
+		Women :+ Teenagers * _femalePercentage.Teenagers * audienceBreakdown.Teenagers
+		Women :+ HouseWives * _femalePercentage.HouseWives * audienceBreakdown.HouseWives
+		Women :+ Employees * _femalePercentage.Employees * audienceBreakdown.Employees
+		Women :+ Unemployed * _femalePercentage.Unemployed * audienceBreakdown.Unemployed
+		Women :+ Manager * _femalePercentage.Manager * audienceBreakdown.Manager
+		Women :+ Pensioners * _femalePercentage.Pensioners * audienceBreakdown.Pensioners
 
 		Men = 0
 		'add the portion of each group * audience percentage (so it gets
 		'a weighted average)
-		Men :+ Children * (1.0 - GetGenderBreakdown().Children) * GetAudienceBreakdown().Children
-		Men :+ Teenagers * (1.0 - GetGenderBreakdown().Teenagers) * GetAudienceBreakdown().Teenagers
-		Men :+ HouseWives * (1.0 - GetGenderBreakdown().HouseWives) * GetAudienceBreakdown().HouseWives
-		Men :+ Employees * (1.0 - GetGenderBreakdown().Employees) * GetAudienceBreakdown().Employees
-		Men :+ Unemployed * (1.0 - GetGenderBreakdown().Unemployed) * GetAudienceBreakdown().Unemployed
-		Men :+ Manager * (1.0 - GetGenderBreakdown().Manager) * GetAudienceBreakdown().Manager
-		Men :+ Pensioners * (1.0 - GetGenderBreakdown().Pensioners) * GetAudienceBreakdown().Pensioners
+		Men :+ Children * (1.0 - _femalePercentage.Children) * audienceBreakdown.Children
+		Men :+ Teenagers * (1.0 - _femalePercentage.Teenagers) * audienceBreakdown.Teenagers
+		Men :+ HouseWives * (1.0 - _femalePercentage.HouseWives) * audienceBreakdown.HouseWives
+		Men :+ Employees * (1.0 - _femalePercentage.Employees) * audienceBreakdown.Employees
+		Men :+ Unemployed * (1.0 - _femalePercentage.Unemployed) * audienceBreakdown.Unemployed
+		Men :+ Manager * (1.0 - _femalePercentage.Manager) * audienceBreakdown.Manager
+		Men :+ Pensioners * (1.0 - _femalePercentage.Pensioners) * audienceBreakdown.Pensioners
 	End Method
 
 	

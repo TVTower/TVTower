@@ -623,7 +623,6 @@ for local playerA:int = 1 to 4
 		Next
 	Next
 Next
-print "COLLECTION DUPLICATE: "+duplicateCount+"      " + millisecs()
 
 
 'check possession
@@ -633,24 +632,16 @@ For local playerID:int = 1 to 4
 	Next
 Next
 
-'rem
+rem
 local news:TNewsEvent = GetNewsEventCollection().GetByGUID("ronny-news-sandsturm-01")
 GetNewsAgency().announceNewsEvent(news, 0, False)
 print "happen: "+ news.GetTitle() + "  at: "+GetWorldTime().GetformattedTime(news.happenedTime)
-'endrem
-
-rem
-local m:TProgrammeLicence
-m = GetProgrammeLicenceCollection().GetByGUID("TheRob-b0db-fant-ReisemitSandmaennchen")
-if m then print m.data.GetTitle()+"   Akt.:"+m.data.GetTopicality()+" / " + m.data.GetMaxTopicality() +"  old: " + m.data.GetMaxTopicality2()
-
-m = GetProgrammeLicenceCollection().GetByGUID("TheRob-b0db-myst-VerschwandmitSandmaennchen")
-if m then print m.data.GetTitle()+"   Akt.:"+m.data.GetTopicality()+" / " + m.data.GetMaxTopicality() +"  old: " + m.data.GetMaxTopicality2()
-
-m = GetProgrammeLicenceCollection().GetByGUID("c1ba65e2-12d2-489b-89dd-41ceff24d7e9")
-if m then print m.data.GetTitle()+"   Akt.:"+m.data.GetTopicality()+" / " + m.data.GetMaxTopicality() +"  old: " + m.data.GetMaxTopicality2()
 endrem
 
+local m:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID("TheRob-b0db-439c-a852-Goaaaaal")
+m.SetOwner(0)
+RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(m, 1)
+print "added Goaaal to player1's suitcase"
 					EndIf
 
 				
@@ -1146,6 +1137,7 @@ Type TGameState
 
 	Field _GameInformationCollection:TGameInformationCollection = Null
 
+	Field _AudienceManager:TAudienceManager = Null
 	Field _AdContractBaseCollection:TAdContractBaseCollection = Null
 	Field _AdContractCollection:TAdContractCollection = Null
 
@@ -1197,6 +1189,8 @@ print "TGameState.Initialize(): Reinitialize all game objects"
 		GetStationMapCollection().InitializeAll()
 		GetPopularityManager().Initialize()
 
+		AudienceManager.Initialize()
+
 		GetAdContractBaseCollection().Initialize()
 		GetAdContractCollection().Initialize()
 		GetScriptTemplateCollection().Initialize()
@@ -1242,6 +1236,8 @@ print "TGameState.RestoreGameData(): Restore game objects"
 
 		_Assign(_PlayerColorList, TPlayerColor.List, "PlayerColorList", MODE_LOAD)
 		_Assign(_GameInformationCollection, TGameInformationCollection._instance, "GameInformationCollection", MODE_LOAD)
+
+		_Assign(_AudienceManager, AudienceManager, "AudienceManager", MODE_LOAD)
 
 		_Assign(_AdContractCollection, TAdContractCollection._instance, "AdContractCollection", MODE_LOAD)
 		_Assign(_AdContractBaseCollection, TAdContractBaseCollection._instance, "AdContractBaseCollection", MODE_LOAD)
@@ -1313,6 +1309,8 @@ print "TGameState.RestoreGameData(): Restore game objects"
 
 		_Assign(TPlayerColor.List, _PlayerColorList, "PlayerColorList", MODE_SAVE)
 		_Assign(TGameInformationCollection._instance, _GameInformationCollection, "GameInformationCollection", MODE_SAVE)
+
+		_Assign(AudienceManager, _AudienceManager, "AudienceManager", MODE_SAVE)
 
 		_Assign(TBuilding._instance, _Building, "Building", MODE_SAVE)
 		_Assign(TElevator._instance, _Elevator, "Elevator", MODE_SAVE)

@@ -154,9 +154,6 @@ Type TPlayerFinance
 	Field revenue_after:Long 			= 0
 	Field money:Long					= 0
 	Field credit:Int 					= 0
-	'obsolete, not needed anymore, remove on next
-	'"savegame"-compatibilty-change
-	Field ListLink:TLink
 	Field playerID:int					= Null
 
 	Global creditInterestRate:float		= 0.05 '5% a day
