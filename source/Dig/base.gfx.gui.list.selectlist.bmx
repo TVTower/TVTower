@@ -158,14 +158,12 @@ Type TGUISelectListItem Extends TGUIListItem
 	
 	Method Draw()
 		'this allows to use a list in a modal dialogue
-		local upperParent:TGUIObject = GetParent().GetParent()
-		'local upperParent:TGUIObject = GetUppermostParent()
-		upperParent.RestrictViewPort()
-'		print TTypeID.ForObject(upperParent).name()
+		local upperParent:TGUIObject = TGUIListBase.FindGUIListBaseParent(self)
+		if upperParent then upperParent.RestrictViewPort()
 
 		Super.Draw()
 
-		upperParent.ResetViewPort()
+		if upperParent then upperParent.ResetViewPort()
 	End Method
 End Type
 
