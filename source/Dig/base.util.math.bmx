@@ -151,7 +151,7 @@ Type MathHelper
 			s = Left(s, lengthBeforeDecimalPoint + 1 + digitsAfterDecimalPoint)
 		endif
 		'for numbers below 1.0 we add a zero... 
-		if int(s) < t then s = "0"+s
+		if Long(s) < t then s = "0"+s
 
 		'move the dot accordingly
 		s = s[.. lengthBeforeDecimalPoint] + "." + s[lengthBeforeDecimalPoint .. lengthBeforeDecimalPoint + digitsAfterDecimalPoint]
