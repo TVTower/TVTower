@@ -530,7 +530,6 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 	'contains age/topicality decrease
 	Method GetQuality:Float() {_exposeToLua}
-		Local quality:Float = GetQualityRaw()
 
 		'the more the news got repeated, the lower the quality in
 		'that moment (^2 increases loss per air)
@@ -540,8 +539,10 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		'   quality no matter how many times it got aired
 		'-> a news with 0% base quality will cut to up to 75% of that
 		'   resulting in <= 25% quality
-		
-		quality :* (0.25*GetQualityRaw() + (1.0 - 0.75*GetQualityRaw()) * GetTopicality()^2)
+		Local quality:Float = 0.25 * GetQualityRaw() + 0.75 * GetQualityRaw() * GetTopicality()^2
+
+		'old variant 2:
+		'quality :* (0.75*GetQualityRaw() + (1.0 - 0.75*GetQualityRaw()) * GetTopicality()^2)
 		'old variant
 		'quality :* GetTopicality() ^ 2
 
