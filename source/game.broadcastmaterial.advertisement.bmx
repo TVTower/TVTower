@@ -86,7 +86,7 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 
 	'override - lower interest again (added to genre-interest)
 	Method GetMiscMod:TAudience(hour:Int)
-		Local result:TAudience = TAudience.CreateAndInitValue(0)
+		Local result:TAudience = new TAudience.InitValue(0, 0)
 		local flagDefinitions:TMovieFlagDefinition[]
 
 		'infomercials could be "trendy" ... so we check all flags of the
@@ -99,12 +99,12 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 			'really less interest in paid programming
 			'use a really high value until audience flow is corrected
 			'for such programmes
-			result.Add(TAudience.CreateAndInit(-0.5, -0.5, -0.3, -0.5, -0.3, -0.7, -0.3, -0.5, -0.5))
+			result.Add(new TAudience.Init(-1,  -0.5, -0.5, -0.3, -0.5, -0.3, -0.7, -0.3))
 		endif
 
 
 		if flagDefinitions.length > 0
-			local flagAudienceMod:TAudience = new TAudience.CreateAndInitValue(0.0)
+			local flagAudienceMod:TAudience = new TAudience.InitValue(0, 0)
 			for local definition:TMovieFlagDefinition = Eachin flagDefinitions
 				flagAudienceMod.AddFloat( flagPopularityMod(definition) )
 				flagAudienceMod.Add( flagTargetGroupMod(definition).MultiplyFloat(1.0 + GetTimeMod(definition, hour)) )
@@ -150,12 +150,12 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 		
 		'give money
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
-		Local earn:Int = audienceResult.Audience.GetSum() * contract.GetPerViewerRevenue()
+		Local earn:Int = audienceResult.Audience.GetTotalSum() * contract.GetPerViewerRevenue()
 		if earn > 0
-			TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial ~q"+GetTitle()+"~q sent by player "+owner+", earned "+earn+CURRENCYSIGN+" with an audience of " + audienceResult.Audience.GetSum(), LOG_DEBUG)
+			TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial ~q"+GetTitle()+"~q sent by player "+owner+", earned "+earn+CURRENCYSIGN+" with an audience of " + audienceResult.Audience.GetTotalSum(), LOG_DEBUG)
 			GetPlayerFinance(owner).EarnInfomercialRevenue(earn, contract)
 		elseif earn = 0
-			TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial ~q"+GetTitle()+"~q sent by player "+owner+", earned nothing with an audience of " + audienceResult.Audience.GetSum(), LOG_DEBUG)
+			TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial ~q"+GetTitle()+"~q sent by player "+owner+", earned nothing with an audience of " + audienceResult.Audience.GetTotalSum(), LOG_DEBUG)
 			'also "earn" 0 Euro - so it is listed in the financial history
 			GetPlayerFinance(owner).EarnInfomercialRevenue(earn, contract)
 		else
@@ -213,10 +213,10 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 			If audienceResult.broadcastOutage
 				return "OUTAGE"
 			'condition not fulfilled
-			ElseIf audienceResult.Audience.GetSum() < contract.GetMinAudience()
+			ElseIf audienceResult.Audience.GetTotalSum() < contract.GetMinAudience()
 				return "SUM"
 			'limited to a specific target group - and not fulfilled
-			ElseIf contract.GetLimitedToTargetGroup() > 0 and audienceResult.Audience.GetValue(contract.GetLimitedToTargetGroup()) < contract.GetMinAudience()
+			ElseIf contract.GetLimitedToTargetGroup() > 0 and audienceResult.Audience.GetTotalValue(contract.GetLimitedToTargetGroup()) < contract.GetMinAudience()
 				return "TARGETGROUP"
 			EndIf
 		EndIf

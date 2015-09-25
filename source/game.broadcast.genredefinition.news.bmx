@@ -85,7 +85,8 @@ rem
 endrem
 
 	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase)
-		Return TAudience.CreateAndInitValue(1) 'TODO: Prüfen ob hier auch was zu machen ist?
+		'TODO: Prüfen ob hier auch was zu machen ist?
+		Return new TAudience.InitValue(1, 1)
 	End Method
 End Type
 

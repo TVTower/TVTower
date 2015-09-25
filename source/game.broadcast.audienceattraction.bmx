@@ -10,6 +10,7 @@ Type TAudienceAttraction Extends TAudience
 	Field Quality:Float				'0 - 100
 	Field GenrePopularityMod:Float	'
 	Field GenreTargetGroupMod:TAudience
+	Field TargetGroupGenderMod:TAudience
 	Field PublicImageMod:TAudience
 	Field TrailerMod:TAudience
 	Field MiscMod:TAudience
@@ -29,11 +30,23 @@ Type TAudienceAttraction Extends TAudience
 	Field Malfunction:Int '1 = Sendeausfall
 
 
-	Function CreateAndInitAttraction:TAudienceAttraction(group0:Float, group1:Float, group2:Float, group3:Float, group4:Float, group5:Float, group6:Float, subgroup0:Float, subgroup1:Float)
-		Local result:TAudienceAttraction = New TAudienceAttraction
-		result.SetValues(group0, group1, group2, group3, group4, group5, group6, subgroup0, subgroup1)
-		Return result
-	End Function
+	Method Init:TAudienceAttraction(gender:int, children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float)
+		Super.Init(gender, children, teenagers, HouseWives, employees, unemployed, manager, pensioners)
+		Return self
+	End Method
+
+
+	Method InitValue:TAudienceAttraction(valueMale:Float, valueFemale:Float)
+		Super.InitValue(valueMale, valueFemale)
+		return self
+	End Method
+	
+
+	Method InitGenderValue:TAudienceAttraction(valueMale:float, valueFemale:float)
+		GetAudienceMale().InitValue(valueMale)
+		GetAudienceFemale().InitValue(valueFemale)
+		return self
+	End Method
 
 
 	Method SetPlayerId(playerId:Int)
@@ -123,6 +136,8 @@ Type TAudienceAttraction Extends TAudience
 		result.Add(LuckMod)
 		result.MultiplyFloat(Quality)
 		result.Add(AudienceFlowBonus)
+		result.Multiply(TargetGroupGenderMod)
+
 		Self.BaseAttraction = result.Copy()
 
 		'result.Add(AudienceFlowBonus)

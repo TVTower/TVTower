@@ -380,21 +380,21 @@ Type TInGameInterface
 
 		local result:String[]
 
-		if (feedback.AudienceInterest.Children > 0)
+		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Children) > 0)
 			'maybe sent to bed ? :D
 			'If GetWorldTime().GetDayHour() >= 5 and GetWorldTime().GetDayHour() < 22 then 'manuel: muss im Feedback-Code geprüft werden.
 			result :+ ["girl"]
 		endif
 
-		if (feedback.AudienceInterest.Pensioners > 0) then result :+ ["grandpa"]
+		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Pensioners) > 0) then result :+ ["grandpa"]
 
-		if (feedback.AudienceInterest.Teenagers > 0)
+		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Teenagers) > 0)
 			'in school monday-friday - in school from till 7 to 13 - needs no sleep :D
 			'If GetworldTime().GetWeekday()>6 or (GetWorldTime().GetDayHour() < 7 or GetWorldTime().GetDayHour() >= 13) then result :+ ["teen"] 'manuel: muss im Feedback-Code geprüft werden.
 			result :+ ["teen"]
 		endif
 
-		if (feedback.AudienceInterest.Unemployed > 0)
+		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Unemployed) > 0)
 			result :+ ["unemployed"]
 		else
 			'if there is some audience, show the sleeping unemployed
@@ -617,7 +617,7 @@ Type TTooltipAudience Extends TTooltip
 
 	Method GetContentInnerWidth:Int()
 		If audienceResult
-			Return Self.useFont.GetWidth( GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)" )
+			Return Self.useFont.GetWidth( GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)" )
 		Else
 			Return Self.Usefont.GetWidth( GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": 100 (100%)")
 		EndIf
@@ -657,7 +657,7 @@ Type TTooltipAudience Extends TTooltip
 
 		Local reach:Int = GetStationMap( GetPlayerBase().playerID ).reach
 		Local totalReach:Int = GetStationMapCollection().population
-		result:+ Usefont.GetHeight(GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)")
+		result:+ Usefont.GetHeight(GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)")
 		result:+ Usefont.GetHeight(GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 0) + " (" + MathHelper.NumberToString(100.0 * Float(reach)/totalReach, 2) + "%)")
 		result:+ 1*lineHeight
 
@@ -696,7 +696,7 @@ Type TTooltipAudience Extends TTooltip
 		Local lineTextDY:Int = lineIconDY + 2
 
 		'draw overview text
-		lineText = GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)"
+		lineText = GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)"
 		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
 		lineY :+ 1 * Self.Usefont.GetHeight(lineText)
 
@@ -711,7 +711,7 @@ Type TTooltipAudience Extends TTooltip
 		'add 1 line more - as spacing to details
 		lineY :+ lineHeight
 
-		
+'print audienceResult.ToString()	
 		If Not showDetails
 			Self.Usefont.draw(GetLocale("HINT_PRESSING_ALT_WILL_SHOW_DETAILS") , lineX, lineY, TColor.CreateGrey(150))
 		Else
@@ -719,13 +719,19 @@ Type TTooltipAudience Extends TTooltip
 			Local lines:String[TVTTargetGroup.count]
 			Local percents:String[TVTTargetGroup.count]
 			Local numbers:String[TVTTargetGroup.count]
-			Local audienceQuote:TAudience = audienceResult.GetAudienceQuote()
+			local genderlessQuote:TAudienceBase = audienceResult.GetGenderlessAudienceQuote()
 			Local targetGroupID:Int = 0
 			For Local i:Int = 1 To TVTTargetGroup.count
 				targetGroupID = TVTTargetGroup.GetAtIndex(i)
 				lines[i-1] = getLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)) + ": "
-				numbers[i-1] = TFunctions.convertValue(audienceResult.Audience.GetValue(targetGroupID), 0)
-				percents[i-1] = MathHelper.NumberToString(audienceQuote.GetValue(targetGroupID) * 100,2)
+				numbers[i-1] = TFunctions.convertValue(audienceResult.Audience.GetTotalValue(targetGroupID), 0)
+
+				if i = 8 or i = 9
+					percents[i-1] = MathHelper.NumberToString(audienceResult.Audience.GetTotalValue(targetGroupID) / audienceResult.GetPotentialMaxAudience().GetTotalValue(targetGroupID) * 100, 2)
+				else
+					percents[i-1] = MathHelper.NumberToString(audienceResult.Audience.GetTotalValue(targetGroupID) / audienceResult.GetPotentialMaxAudience().GetTotalValue(targetGroupID) * 100, 2)
+'					percents[i-1] = MathHelper.NumberToString(genderlessQuote.GetValue(targetGroupID) * 100, 2)
+				endif
 			Next
 			
 			Local colorLight:TColor = TColor.CreateGrey(240)

@@ -4293,7 +4293,7 @@ Type GameEvents
 			Local stat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic( day - 1 )
 			If stat And stat.bestBroadcast
 				Local audience:String = ""
-				If stat.bestAudienceResult Then audience = Long(stat.bestAudienceResult.audience.GetSum())+", player: "+stat.bestBroadcast.owner
+				If stat.bestAudienceResult Then audience = Long(stat.bestAudienceResult.audience.GetTotalSum())+", player: "+stat.bestBroadcast.owner
 				TLogger.Log("OnDay", "BestBroadcast: "+stat.bestBroadcast.GetTitle() + " (audience: "+audience+")", LOG_INFO)
 			Else
 				If stat
@@ -4620,13 +4620,13 @@ Function GetBroadcastOverviewString:string(day:int = -1, lastHour:int = -1)
 			endif
 
 			if audience
-				progAudienceText = RSet(int(audience.audience.GetSum()), 7) + " " + RSet(MathHelper.NumberToString(audience.GetAudienceQuotePercentage()*100,2), 6)+"%"
+				progAudienceText = RSet(int(audience.audience.GetTotalSum()), 7) + " " + RSet(MathHelper.NumberToString(audience.GetAudienceQuotePercentage()*100,2), 6)+"%"
 			else
 				progAudienceText = RSet(" -/- ", 7) + " " +RSet("0%", 6)
 			endif
 
 			if newsAudience
-				newsAudienceText = RSet(int(newsAudience.audience.GetSum()), 7)
+				newsAudienceText = RSet(int(newsAudience.audience.GetTotalSum()), 7)
 			else
 				newsAudienceText = RSet(" -/- ", 7)
 			endif

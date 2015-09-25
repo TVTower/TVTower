@@ -74,6 +74,7 @@ Type TAudienceResultBase
 		return PotentialMaxAudience
 	End Method
 
+
 	'instead of storing "audienceQuote" as field (bigger savegames)
 	'we can create it on the fly
 	'returns audience quote relative to MaxAudience of that time
@@ -82,18 +83,39 @@ Type TAudienceResultBase
 	'           target groups are not equally weighted.
 	Method GetAudienceQuote:TAudience()
 		if not Audience then return new TAudience
-
+		
 		'quote = audience / maxAudience
 		return Audience.Copy().Divide( GetPotentialMaxAudience() )
 	End Method
 
 
+	'returns a "un-gendered" quote (only target groups)
+	Method GetGenderlessAudienceQuote:TAudienceBase()
+		local result:TAudienceBase = new TAudienceBase
+		local pmAudience:TAudience = GetPotentialMaxAudience()
+		local targetGroupID:int = 0
+
+		'ignore man / women (not available with TAudienceBase)
+		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
+			targetGroupID = TVTTargetGroup.GetAtIndex(i)
+			'set to (audience.sumX / potentialAudience.sumX)
+			'this sums up values for female and male of each targetgroup 
+			result.SetValue(targetGroupID, Audience.GetTotalValue(targetGroupID) / pmAudience.GetTotalValue(targetGroupID) )
+		Next
+		return result
+	End Method
+
+
 	'returns the percentage (0-1.0) of reached audience compared to
 	'potentially reachable audience (in front of TV at that moment)
-	Method GetAudienceQuotePercentage:Float()
-		'more exact until we use some "math library" for floats
-		return Audience.GetSum() / GetPotentialMaxAudience().GetSum()
-		'return GetAudienceQuote().GetWeightedAverage()
+	Method GetAudienceQuotePercentage:Float(gender:int=-1)
+		if gender = -1
+			'more exact until we use some "math library" for floats
+			return Audience.GetTotalSum() / GetPotentialMaxAudience().GetTotalSum()
+			'return GetAudienceQuote().GetWeightedAverage()
+		else
+			return Audience.GetGenderSum(gender) / GetPotentialMaxAudience().GetGenderSum(gender)
+		endif
 	End Method
 	
 
@@ -107,7 +129,7 @@ Type TAudienceResultBase
 	Method GetPotentialMaxAudienceQuote:TAudience()
 		'no need to calculate a quote if the audience itself is 0 already
 		'-> avoids "nan"-values when dividing with "0.0f" values
-		If GetPotentialMaxAudience().GetSum() = 0 then return new TAudience
+		If GetPotentialMaxAudience().GetTotalSum() = 0 then return new TAudience
 
 		'potential quote = potential audience / whole market
 		return GetPotentialMaxAudience().Copy().Divide(WholeMarket)
@@ -117,10 +139,14 @@ Type TAudienceResultBase
 	'returns the percentage (0-1.0) of practically reachable audience
 	'(switched on the TV) compared to technically reachable audience
 	'(within range of the broadcast area)
-	Method GetPotentialMaxAudienceQuotePercentage:Float()
-		'more exact until we use some "math library" for floats
-		return GetPotentialMaxAudience().GetSum() / WholeMarket.GetSum()
-		'return GetPotentialMaxAudienceQuote().GetWeightedAverage()
+	Method GetPotentialMaxAudienceQuotePercentage:Float(gender:int=-1)
+		if gender = -1
+			'more exact until we use some "math library" for floats
+			return GetPotentialMaxAudience().GetTotalSum() / WholeMarket.GetTotalSum()
+			'return GetAudienceQuote().GetWeightedAverage()
+		else
+			return GetPotentialMaxAudience().GetGenderSum(gender) / WholeMarket.GetGenderSum(gender)
+		endif
 	End Method
 
 
@@ -132,7 +158,7 @@ Type TAudienceResultBase
 	Method GetWholeMarketAudienceQuote:TAudience()
 		'no need to calculate a quote if the audience itself is 0 already
 		'-> avoids "nan"-values when dividing with "0.0f" values
-		If not Audience or Audience.GetSum() = 0 then return new TAudience
+		If not Audience or Audience.GetTotalSum() = 0 then return new TAudience
 
 		'total quote = audience / whole market
 		return Audience.Copy().Divide(WholeMarket)
@@ -142,24 +168,62 @@ Type TAudienceResultBase
 	'returns the percentage (0-1.0) of reached audience (switched on TV
 	'and watching your channel) compared to technically reachable audience
 	'(within range of the broadcast area)
-	Method GetWholeMarketAudienceQuotePercentage:Float()
-		'more exact until we use some "math library" for floats
-		return Audience.GetSum() / WholeMarket.GetSum()
-		'return GetWholeMarketAudienceQuote().GetWeightedAverage()
+	Method GetWholeMarketAudienceQuotePercentage:Float(gender:int=-1)
+		if gender = -1
+			'more exact until we use some "math library" for floats
+			return Audience.GetTotalSum() / WholeMarket.GetTotalSum()
+			'return GetWholeMarketAudienceQuote().GetWeightedAverage()
+		else
+			return Audience.GetGenderSum(gender) / WholeMarket.GetGenderSum(gender)
+		endif
 	End Method
 
 
 
 	Method ToString:String()
 		local result:string = ""
-		if Audience then result :+ int(Audience.GetSum()) else result :+ "--"
-		result :+ " / "
-		if PotentialMaxAudience then result :+ int(PotentialMaxAudience.GetSum()) else result :+ "--"
-		result :+ " / "
-		if WholeMarket then result :+ int(WholeMarket.GetSum()) else result :+ "--"
-		result :+ "   Q: "
-		result :+ GetAudienceQuote().ToStringAverage()
+		if Audience
+			result :+ int(Audience.GetGenderSum(TVTPersonGender.MALE))
+			result :+ "/"
+			result :+ int(Audience.GetGenderSum(TVTPersonGender.FEMALE))
+		else
+			result :+ "--"
+		endif
 
+		result :+ "  /  "
+		if PotentialMaxAudience
+			result :+ int(PotentialMaxAudience.GetGenderSum(TVTPersonGender.MALE))
+			result :+ "/"
+			result :+ int(PotentialMaxAudience.GetGenderSum(TVTPersonGender.FEMALE))
+		else
+			result :+ "--"
+		endif
+		result :+ " / "
+
+		if WholeMarket
+			result :+ int(WholeMarket.GetGenderSum(TVTPersonGender.MALE))
+			result :+ "/"
+			result :+ int(WholeMarket.GetGenderSum(TVTPersonGender.FEMALE))
+		else
+			result :+ "--"
+		endif
+
+		result :+ "  "
+		local l:int = result.length
+		result :+ " Q:"+GetAudienceQuote().ToStringAverage()
+
+		if Audience
+			result :+ "~n" + Rset("", l)
+			result :+ " A:" + Audience.ToString()
+		endif
+		if PotentialMaxAudience
+			result :+ "~n" + Rset("", l)
+			result :+ "PM:" + PotentialMaxAudience.ToString()
+		endif
+		if WholeMarket
+			result :+ "~n" + Rset("", l)
+			result :+ "WM:" + WholeMarket.ToString()
+		endif
 		return result
 	End Method
 End Type
@@ -215,12 +279,5 @@ Type TAudienceResult extends TAudienceResultBase
 		Audience.Add(res.Audience)
 
 		AudienceAttraction = res.AudienceAttraction 'Ist immer gleich, deswegen einfach zuweisen
-	End Method
-
-
-	'Berechnet die Quoten neu. Muss mindestens einmal aufgerufen werden.
-	Method Refresh()
-		Audience.FixGenderCount()
-		PotentialMaxAudience.FixGenderCount()
 	End Method
 End Type

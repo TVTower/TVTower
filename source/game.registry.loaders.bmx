@@ -318,8 +318,13 @@ Type TRegistryNewsGenresLoader extends TRegistryBaseLoader
 		local audienceAttractions:TMap = CreateMap()
 		For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
 			Local attrId:String = TXmlHelper.FindValue(subNodeChild, "id", "-1")
-			Local Value:String = TXmlHelper.FindValue(subNodeChild, "value", "0.7")
-			audienceAttractions.Insert(attrId, Value)
+			Local men:String = TXmlHelper.FindValue(subNodeChild, "men", "")
+			Local women:String = TXmlHelper.FindValue(subNodeChild, "women", "")
+			local all:string  = TXmlHelper.FindValue(subNodeChild, "value", "0.7")
+			if men = "" then men = all
+			if women = "" then women = all
+			audienceAttractions.Insert(attrId+"_men", men)
+			audienceAttractions.Insert(attrId+"_women", women)
 		Next
 		'add attractions to data set
 		data.Add("audienceAttractions", audienceAttractions)
@@ -445,8 +450,13 @@ Type TRegistryProgrammeDataModsLoader extends TRegistryBaseLoader
 		local audienceAttractions:TMap = CreateMap()
 		For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
 			Local attrId:String = TXmlHelper.FindValue(subNodeChild, "id", "-1")
-			Local Value:String = TXmlHelper.FindValue(subNodeChild, "value", "0.7")
-			audienceAttractions.Insert(attrId, Value)
+			Local men:String = TXmlHelper.FindValue(subNodeChild, "men", "")
+			Local women:String = TXmlHelper.FindValue(subNodeChild, "women", "")
+			Local all:String = TXmlHelper.FindValue(subNodeChild, "value", "0.7")
+			if men = "" then men = all
+			if women = "" then women = all
+			audienceAttractions.Insert(attrId+"_men", men)
+			audienceAttractions.Insert(attrId+"_women", women)
 		Next
 		'add attractions to data set
 		data.Add("audienceAttractions", audienceAttractions)
@@ -502,12 +512,12 @@ Type TRegistryProgrammeDataModsLoader extends TRegistryBaseLoader
 
 		local timeMods:TMap = TMap(data.Get("timeMods", CreateMap()))
 		For local key:string = eachin timeMods.Keys()
-			programmeDataMod.Insert("timeMod_" + key, 	timeMods.ValueForKey(key) )
+			programmeDataMod.Insert("timeMod_" + key, timeMods.ValueForKey(key) )
 		Next
 
 		local audienceAttractions:TMap = TMap(data.Get("audienceAttractions", CreateMap()))
 		For local key:string = eachin audienceAttractions.Keys()
-			programmeDataMod.Insert(key, 	AudienceAttractions.ValueForKey(key) )
+			programmeDataMod.Insert(key, AudienceAttractions.ValueForKey(key) )
 		Next
 
 

@@ -122,13 +122,13 @@ Type TDailyBroadcastStatistic
 		if broadcast
 			if broadcastedAsType = TVTBroadcastMaterialType.NEWSSHOW
 				if not bestNewsAudienceResult then bestNewsAudienceResult = new TAudienceResultBase
-				if bestNewsAudienceResult.audience.GetSum() < audienceResult.audience.GetSum()
+				if bestNewsAudienceResult.audience.GetTotalSum() < audienceResult.audience.GetTotalSum()
 					bestNewsAudienceResult = audienceResult
 					bestNewsBroadcast = broadcast
 				endif
 			else
 				if not bestAudienceResult then bestAudienceResult = new TAudienceResultBase
-				if bestAudienceResult.audience.GetSum() < audienceResult.audience.GetSum()
+				if bestAudienceResult.audience.GetTotalSum() < audienceResult.audience.GetTotalSum()
 					bestAudienceResult = audienceResult
 					bestBroadcast = broadcast
 				endif
@@ -235,7 +235,7 @@ Type TDailyBroadcastStatistic
 
 			if not result
 				result = bestAudienceResult
-			elseif bestAudienceResult.audience.GetSum() > result.audience.GetSum()
+			elseif bestAudienceResult.audience.GetTotalSum() > result.audience.GetTotalSum()
 				result = bestAudienceResult
 			endif
 

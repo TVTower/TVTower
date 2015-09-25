@@ -73,7 +73,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 				'adjust trend/popularity
 				local popData:TData = new TData
 				popData.AddNumber("attractionQuality", audienceResult.AudienceAttraction.Quality)
-				popData.AddNumber("audienceSum", audienceResult.Audience.GetSum())
+				popData.AddNumber("audienceSum", audienceResult.Audience.GetTotalSum())
 				popData.AddNumber("broadcastTopAudience", GetBroadcastManager().GetCurrentBroadcast().GetTopAudience())
 
 				Local popularity:TGenrePopularity = news.newsEvent.GetGenreDefinition().GetPopularity()
@@ -120,7 +120,7 @@ endif
 
 				tempAudienceAttr = currentNews.GetAudienceAttraction(hour, block, lastMovieBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect)			
 			Else
-				tempAudienceAttr = TAudienceAttraction.CreateAndInitAttraction(0.01, 0.01, 0.01,0.01,0.01, 0.01, 0.01, 0.01, 0.01)  
+				tempAudienceAttr = new TAudienceAttraction.Init(-1,  0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01)  
 			EndIf
 
 			'different weight for news slots
@@ -165,7 +165,7 @@ rem
 			'2 - Mod: Genre-Popularität / Trend
 			result.GenrePopularityMod = 0
 			'3 - Genre <> Zielgruppe
-			result.GenreTargetGroupMod = TAudience.CreateAndInitValue(0)
+			result.GenreTargetGroupMod = new TAudience.InitValue(0)
 		Endif
 
 		'4 - Trailer
@@ -192,7 +192,7 @@ rem
 
 		'9 - Zufall
 		If withLuckEffect Then
-			result.LuckMod = TAudience.CreateAndInitValue(0)
+			result.LuckMod = new TAudience.InitValue(0)
 		EndIf
 
 		'10 - Audience Flow
@@ -208,14 +208,14 @@ rem
 			seqCal.Predecessor = lastMovieBlockAttraction
 			seqCal.Successor = result
 
-			seqCal.PredecessorShareOnShrink  = TAudience.CreateAndInitValue(0.5)
-			seqCal.PredecessorShareOnRise = TAudience.CreateAndInitValue(0.5)
+			seqCal.PredecessorShareOnShrink  = new TAudience.InitValue(0.5)
+			seqCal.PredecessorShareOnRise = new TAudience.InitValue(0.5)
 
 			Local seqMod:TAudience
 			If genreDefintion Then
 				seqMod = genreDefintion.AudienceAttraction.Copy().DivideFloat(1.3).MultiplyFloat(0.4).AddFloat(0.75) '0.75 - 1.15
 			Else
-				seqMod = TAudience.CreateAndInitValue(1)
+				seqMod = new TAudience.InitValue(1)
 			EndIf
 
 			result.SequenceEffect = seqCal.GetSequenceDefault(seqMod, seqMod)
@@ -350,8 +350,8 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	Method SetSequenceCalculationPredecessorShare(seqCal:TSequenceCalculation, audienceFlow:Int)
-		seqCal.PredecessorShareOnShrink  = TAudience.CreateAndInitValue(0.4) '0.5
-		seqCal.PredecessorShareOnRise = TAudience.CreateAndInitValue(0.4) '0.5
+		seqCal.PredecessorShareOnShrink = new TAudience.InitValue(0.4, 0.4) '0.5
+		seqCal.PredecessorShareOnRise = new TAudience.InitValue(0.4, 0.4) '0.5
 	End Method	
 	
 rem
@@ -370,7 +370,7 @@ endrem
 
 
 	Method GetMiscMod:TAudience(hour:Int)
-		Local result:TAudience = TAudience.CreateAndInitValue(0)
+		Local result:TAudience = new TAudience.InitValue(0, 0)
 
 		'for all associated genres
 		'- for now only the genre itself

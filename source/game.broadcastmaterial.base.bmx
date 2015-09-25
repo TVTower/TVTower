@@ -256,13 +256,13 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	
 	'default implementation
 	Method GetTrailerMod:TAudience()
-		Return TAudience.CreateAndInitValue(0)
+		Return new TAudience.InitValue(0, 0)
 	End Method	
 
 	
 	'default implementation
 	Method GetMiscMod:TAudience(hour:Int)
-		Return TAudience.CreateAndInitValue(0)
+		Return new TAudience.InitValue(0, 0)
 	End Method
 
 	
@@ -298,7 +298,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	
 	'default implementation
 	Method GetLuckMod:TAudience()
-		Return TAudience.CreateAndInitValue(0)
+		Return new TAudience.InitValue(0, 0)
 	End Method
 
 	
@@ -327,11 +327,11 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		If genreDefinition
 			seqMod = genreDefinition.AudienceAttraction.Copy().DivideFloat(1.3).MultiplyFloat(0.4).AddFloat(0.75) '0.75 - 1.15
 			borderMax = genreDefinition.AudienceAttraction.Copy().DivideFloat(10).AddFloat(0.1).CutBordersFloat(0.1, 0.2)
-			borderMin = TAudience.CreateAndInitValue(-0.2).Add(genreDefinition.AudienceAttraction.Copy().DivideFloat(10)) '-2 - -0.7
+			borderMin = new TAudience.InitValue(-0.2, -0.2).Add(genreDefinition.AudienceAttraction.Copy().DivideFloat(10)) '-2 - -0.7
 		Else
-			seqMod = TAudience.CreateAndInitValue(1)
-			borderMax = TAudience.CreateAndInitValue(0.15)
-			borderMin = TAudience.CreateAndInitValue(-0.15)
+			seqMod = new TAudience.InitValue(1, 1)
+			borderMax = new TAudience.InitValue(0.15, 0.15)
+			borderMin = new TAudience.InitValue(-0.15, -0.15)
 		EndIf
 		ret = seqCal.GetSequenceDefault(seqMod, seqMod)
 		ret.CutBorders(borderMin, borderMax)
@@ -340,11 +340,11 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	
 	Method SetSequenceCalculationPredecessorShare(seqCal:TSequenceCalculation, audienceFlow:Int)
 		If audienceFlow
-			seqCal.PredecessorShareOnShrink  = TAudience.CreateAndInitValue(0.3)
-			seqCal.PredecessorShareOnRise = TAudience.CreateAndInitValue(0.2)
+			seqCal.PredecessorShareOnShrink  = new TAudience.InitValue(0.3, 0.3)
+			seqCal.PredecessorShareOnRise = new TAudience.InitValue(0.2, 0.2)
 		Else
-			seqCal.PredecessorShareOnShrink  = TAudience.CreateAndInitValue(0.4)
-			seqCal.PredecessorShareOnRise = TAudience.CreateAndInitValue(0.2)
+			seqCal.PredecessorShareOnShrink  = new TAudience.InitValue(0.4, 0.4)
+			seqCal.PredecessorShareOnRise = new TAudience.InitValue(0.2, 0.2)
 		End If
 	End Method
 	

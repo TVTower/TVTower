@@ -1208,7 +1208,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 			Default	trailerMod = 1.6
 		EndSelect
 
-		Return TAudience.CreateAndInitValue(trailerMod)
+		Return new TAudience.InitValue(trailerMod, trailerMod)
 	End Method
 
 

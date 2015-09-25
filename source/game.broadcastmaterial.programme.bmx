@@ -59,7 +59,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		'same for "sponsored" programmes
 		if self.usedAsType = TVTBroadcastMaterialType.PROGRAMME
 			'fetch the rounded revenue for broadcasting this programme
-			Local revenue:Int = audience.GetSum() * Max(0, data.GetPerViewerRevenue())
+			Local revenue:Int = audience.GetTotalSum() * Max(0, data.GetPerViewerRevenue())
 
 			if revenue > 0
 				'earn revenue for callin-shows
@@ -179,18 +179,19 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		Local popularity:TGenrePopularity = data.GetGenreDefinition().GetPopularity()
 		local popData:TData = new TData
 		popData.AddNumber("attractionQuality", audienceResult.AudienceAttraction.Quality)
-		popData.AddNumber("audienceSum", audienceResult.Audience.GetSum())
+		popData.AddNumber("audienceSum", audienceResult.Audience.GetTotalSum())
 		popData.AddNumber("broadcastTopAudience", GetBroadcastManager().GetCurrentBroadcast().GetTopAudience())
 
 		popularity.FinishBroadcastingProgramme(popData, GetBlocks())
 		
 		'Image-Strafe
 		If data.IsPaid()
-			Local penalty:TAudience = TAudience.CreateAndInit(-0.25, -0.25, -0.15, -0.35, -0.15, -0.55, -0.15, -0.15, -0.15)
+			'-1 = for both genders
+			Local penalty:TAudience = new TAudience.Init(-1,  -0.25, -0.25, -0.15, -0.35, -0.15, -0.55, -0.15)
 			penalty.MultiplyFloat(data.blocks)
 			GetPublicImage(owner).ChangeImage(penalty)			
 		ElseIf data.IsTrash()
-			Local penalty:TAudience = TAudience.CreateAndInit(0, 0, +0.2, -0.2, +0.2, -0.5, -0.1, 0, 0)
+			Local penalty:TAudience = new TAudience.Init(-1,  0, 0, +0.2, -0.2, +0.2, -0.5, -0.1)
 			penalty.MultiplyFloat(data.blocks)			
 			GetPublicImage(owner).ChangeImage(penalty)						
 		End If
@@ -227,23 +228,30 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 	'override
 	Method GetTrailerMod:TAudience()
+		print data.GetTrailerMod().SubtractFloat(1).ToString()
 		Return data.GetTrailerMod().SubtractFloat(1)
 	End Method
 	
 
 	Method GetMiscMod:TAudience(hour:Int)
-		Local result:TAudience = TAudience.CreateAndInitValue(0)
-
+		Local result:TAudience = new TAudience.InitValue(0, 0)
 
 		'for all defined targetgroups, increase interest
 		if data.GetTargetGroups() > 0
-			local tgAudience:TAudience = TAudience.CreateAndInitValue(0)
+			local tgAudience:TAudience = new TAudience.InitValue(0, 0)
 			For local targetGroup:int = 1 to TVTTargetGroup.count
-				if data.HasTargetGroup(targetGroup)
-					tgAudience.SetValue(targetGroup, 0.5)
+				local targetGroupID:int = TVTTargetGroup.GetAtIndex(targetGroup)
+				if data.HasTargetGroup(targetGroupID)
+					'print "GetMiscMod: bonus for: "+ TVTTargetGroup.GetAsString(targetGroupID)
+
+					'for women/men this only is run for the
+					'female/male portion of the audience
+					tgAudience.ModifyTotalValue(targetGroupID, 1.5)
 				endif
 			Next
+			result.Add(tgAudience)
 		endif
+
 
 		local flagDefinitions:TMovieFlagDefinition[]
 	
@@ -256,9 +264,9 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			'simple implementation
 			else
 				If hour >= 18
-					result.Add(TAudience.CreateAndInit(2.5, 2, 2, 3, 2, 2, 2, 2, 2))
+					result.Add(new TAudience.Init(-1,  2.5, 2, 2, 3, 2, 2, 2))
 				Else
-					result.Add(TAudience.CreateAndInit(1, 1, 2, 2, 1.5, 1, 1, 1.5, 1.5))
+					result.Add(new TAudience.Init(-1,  1, 1, 2, 2, 1.5, 1, 1))
 				EndIf
 			endif
 		EndIf
@@ -280,7 +288,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 				flagDefinitions :+ [definition]
 			'simple implementation
 			else
-				result.Add(TAudience.CreateAndInit(-0.7, -0.5, -0.3, -0.3, -0.4, 2, 0, 0, 0))
+				result.Add(new TAudience.Init(-1,  -0.7, -0.5, -0.3, -0.3, -0.4, 1, 2))
 			endif
 		EndIf					
 	
@@ -293,7 +301,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 				flagDefinitions :+ [definition]
 			'simple implementation
 			else
-				result.Add(TAudience.CreateAndInit(-0.3, 0, 0.15, 0.15, 0.15, 0.15, 0.5, 0.15, 0.15))
+				result.Add(new TAudience.Init(-1,  -0.3, 0, 0.15, 0.15, 0.15, 0.15, 0.5))
 			endif
 		EndIf
 		
@@ -307,9 +315,9 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			'simple implementation
 			else
 				If hour >= 6 and hour <= 17
-					result.Add(TAudience.CreateAndInit(-0.2, 0, 0.5, 0.1, 0.4, -0.9, 0.3, 0, 0))
+					result.Add(new TAudience.Init(-1,  -0.2, 0, 0.5, 0.1, 0.4, -0.9, -0.3))
 				Else
-					result.Add(TAudience.CreateAndInit(-0.5, -0.5, 0, -0.5, -0.5, -0.7, -0.5, -0.5, -0.5))	
+					result.Add(new TAudience.Init(-1,  -0.5, -0.5, 0, -0.5, -0.5, -0.7, -0.5))	
 				End If
 			endif		
 		EndIf	
@@ -318,9 +326,9 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		'Nochmal deutlich verringerter Preis. Verringert die Nachteile des Filmalters. Bonus bei Jugendlichen. Malus bei allen anderen Zielgruppen. Bonus in der Nacht!		
 		if data.IsBMovie()
 			If hour >= 22 or hour <= 6
-				result.Add(TAudience.CreateAndInit(0, 0.5, -0.3, -0.1, 0.1, -0.5, -1, 0, 0))
+				result.Add(new TAudience.Init(-1,  0, 0.5, -0.3, -0.1, 0.1, -0.5, -1))
 			Else
-				result.Add(TAudience.CreateAndInit(0, 0.2, -0.7, -0.6, -0.5, -0.7, -0.7, -1, -0.5))
+				result.Add(new TAudience.Init(-1,  0, 0.2, -0.7, -0.6, -0.5, -0.7, -0.7))
 			EndIf
 		EndIf		
 
@@ -333,7 +341,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 				flagDefinitions :+ [definition]
 			'simple implementation
 			else
-				result.Add(TAudience.CreateAndInit(-1, 0.5, -0.2, 0.2, 0.2, 0.1, -0.5, -0.2, 0.3))
+				result.Add(new TAudience.Init(-1,  -1, 0.5, -0.2, 0.2, 0.2, 0.1, -0.5))
 			endif
 		EndIf
 
@@ -346,7 +354,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 				'really less interest in paid programming
 				'use a really high value until audience flow is corrected
 				'for such programmes
-				result.Add(TAudience.CreateAndInit(-0.2, -0.1, -0.1, -0.4, -0.6, -0.2, -0.1, -0.1, -0.1))
+				result.Add(new TAudience.Init(-1,  -0.2, -0.1, -0.1, -0.4, -0.6, -0.2, -0.1))
 			endif
 		EndIf
 		
@@ -359,13 +367,13 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 				'really less interest in paid programming
 				'use a really high value until audience flow is corrected
 				'for such programmes
-				result.Add(TAudience.CreateAndInit(-0.5, -0.5, -0.3, -0.5, -0.3, -0.7, -0.3, -0.5, -0.5))
+				result.Add(new TAudience.Init(-1,  -0.5, -0.5, -0.3, -0.5, -0.3, -0.7, -0.3))
 			endif
 		EndIf
 
 
 		if flagDefinitions.length > 0
-			local flagAudienceMod:TAudience = new TAudience.CreateAndInitValue(0.0)
+			local flagAudienceMod:TAudience = new new TAudience.InitValue(0, 0)
 			for local definition:TMovieFlagDefinition = Eachin flagDefinitions
 				flagAudienceMod.AddFloat( flagPopularityMod(definition) )
 				flagAudienceMod.Add( flagTargetGroupMod(definition).MultiplyFloat(1.0 + GetTimeMod(definition, hour)) )
@@ -382,7 +390,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	
 	Rem - Neue Variante
 	Method GetMiscMod:TAudience(hour:Int)
-		Local result:TAudience = TAudience.CreateAndInitValue(0)
+		Local result:TAudience = new TAudience.InitValue(0)
 	
 		if data.IsLive() 'Genereller Quotenbonus!
 			If hour >= 18
@@ -464,10 +472,10 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		Local flowModBaseTemp:Float
 
 		'AudienceFlow anhand der Differenz und ob steigend oder sinkend. Nur sinkend gibt richtig AudienceFlow
-		For Local i:Int = 1 To TVTTargetGroup.count
+		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
 			Local targetGroupID:int = TVTTargetGroup.GetAtIndex(i)
-			Local predecessorValue:Float = Min(lastMovieBlockAttraction.FinalAttraction.GetValue(targetGroupID), lastNewsBlockAttraction.FinalAttraction.GetValue(targetGroupID))
-			Local successorValue:Float = currentAttraction.BaseAttraction.GetValue(targetGroupID) 'FinalAttraction ist noch nicht verfügbar. BaseAttraction ist also akzeptabel.
+			Local predecessorValue:Float = Min(lastMovieBlockAttraction.FinalAttraction.GetTotalValue(targetGroupID), lastNewsBlockAttraction.FinalAttraction.GetTotalValue(targetGroupID))
+			Local successorValue:Float = currentAttraction.BaseAttraction.GetTotalValue(targetGroupID) 'FinalAttraction ist noch nicht verfügbar. BaseAttraction ist also akzeptabel.
 
 			If (predecessorValue < successorValue) 'Steigende Quote = kaum AudienceFlow
 				flowModBaseTemp = predecessorValue * 0.05
@@ -475,7 +483,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 				flowModBaseTemp = (predecessorValue - successorValue) * 0.75
 			Endif
 
-			flowModBase.SetValue(targetGroupID, Max(0.05, flowModBaseTemp))
+			flowModBase.SetTotalValue(targetGroupID, Max(0.05, flowModBaseTemp))
 		Next
 
 		'Wie gut ist der Follower? Gleiche Genre passen perfekt zusammen, aber es gibt auch gute und schlechte Followerer anderer genre
@@ -483,7 +491,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		If lastMovieBlockAttraction.GenreDefinition Then
 			flowMod = lastMovieBlockAttraction.GenreDefinition.GetAudienceFlowMod(currentAttraction.GenreDefinition)
 		Else
-			flowMod = TAudience.CreateAndInitValue(0) 'Ganze schlechter Follower
+			flowMod = new TAudience.InitValue(0, 0) 'Ganze schlechter Follower
 		EndIf
 
 		'Ermittlung des Maximalwertes für den Bonus. Wird am Schluss gebraucht

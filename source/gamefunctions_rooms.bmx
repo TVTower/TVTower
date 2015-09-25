@@ -3725,8 +3725,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		local dayWithoutPrimeTime:int[] = [0,1,2,3,4,5, 18,19,20,21,22]
 		local dayOnlyPrimeTime:int[] = [0,1,2,3,4,5,  6,7,8,9,10,11,12,13,14,15,16,17,  23]
 		if averageChannelReach > 0
-			averageChannelQuoteDayTime = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(-1, dayWithoutPrimeTime).GetSum() / averageChannelReach
-			averageChannelQuotePrimeTime = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(-1, dayOnlyPrimeTime).GetSum() / averageChannelReach
+			averageChannelQuoteDayTime = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(-1, dayWithoutPrimeTime).GetTotalSum() / averageChannelReach
+			averageChannelQuotePrimeTime = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(-1, dayOnlyPrimeTime).GetTotalSum() / averageChannelReach
 		endif
 		
 		local highestChannelImage:Float = averageChannelImage
@@ -3757,7 +3757,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 				'daytime (without night)
 				if averageChannelReach > 0
-					local audience:Float = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(i, dayWithoutPrimeTime).GetSum()
+					local audience:Float = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(i, dayWithoutPrimeTime).GetTotalSum()
 					local quote:Float = audience / averageChannelReach
 					if lowestChannelQuoteDayTime < 0 then lowestChannelQuoteDayTime = quote
 					if lowestChannelQuoteDayTime > quote then lowestChannelQuoteDayTime = quote
@@ -3766,7 +3766,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 				'primetime (without day and night)
 				if averageChannelReach > 0
-					local audience:Float = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(i, dayOnlyPrimeTime).GetSum()
+					local audience:Float = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(i, dayOnlyPrimeTime).GetTotalSum()
 					local quote:Float = audience / averageChannelReach
 					if lowestChannelQuotePrimeTime < 0 then lowestChannelQuotePrimeTime = quote
 					if lowestChannelQuotePrimeTime > quote then lowestChannelQuotePrimeTime = quote
@@ -3822,20 +3822,20 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 		'=== AVERAGE ===
 		levelFilters[2] = new TAdContractbaseFilter
-		'from 80% of avg to 120% of avg, may cross with lowest!
+		'from 70% of avg to 130% of avg, may cross with lowest!
 		'levelFilters[1].SetAudience(0.8 * averageChannelQuote, Max(0.01, 1.2 * averageChannelQuote))
 		'weighted Minimum/Maximum (the more away from border, the
 		'stronger the influence)
-		local minAvg:Float = (0.6 * lowestChannelQuoteDayTime + 0.4 * averageChannelQuoteDayTime)
-		local maxAvg:Float = (0.4 * averageChannelQuoteDayTime + 0.6 * highestChannelQuoteDayTime)
+		local minAvg:Float = (0.7 * lowestChannelQuoteDayTime + 0.3 * averageChannelQuoteDayTime)
+		local maxAvg:Float = (0.3 * averageChannelQuoteDayTime + 0.7 * highestChannelQuoteDayTime)
 		levelFilters[2].SetAudience(Max(spotMin, minAvg), Max(spotMin, maxAvg))
 		'0-100% of average Image
 		levelFilters[2].SetImage(0, averageChannelImage)
 		if limitInstances > 0 then levelFilters[2].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		levelFilters[3] = new TAdContractbaseFilter
-		minAvg = (0.6 * lowestChannelQuotePrimeTime + 0.4 * averageChannelQuotePrimeTime)
-		maxAvg = (0.4 * averageChannelQuotePrimeTime + 0.6 * highestChannelQuotePrimeTime)
+		minAvg = (0.7 * lowestChannelQuotePrimeTime + 0.3 * averageChannelQuotePrimeTime)
+		maxAvg = (0.3 * averageChannelQuotePrimeTime + 0.7 * highestChannelQuotePrimeTime)
 		levelFilters[3].SetAudience(Max(spotMin, minAvg), Max(spotMin, maxAvg))
 		levelFilters[3].SetImage(0, averageChannelImage)
 		if limitInstances > 0 then levelFilters[3].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
@@ -3915,7 +3915,7 @@ endrem
 						endif
 					Wend
 					contract = new TAdContract.Create( contractBase )
-					print "refilling ads with filternum="+filternum+"  classification="+classification
+					'print "refilling ads with filternum="+filternum+"  classification="+classification
 				EndIf
 
 				'=== CHEAP LIST ===

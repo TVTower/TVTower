@@ -276,7 +276,7 @@ Type TFunctions
 	End Function
 
 
-	Function dottedValue:String(value:Double, thousandsDelimiter:String=".", decimalDelimiter:String=",")
+	Function dottedValue:String(value:Double, thousandsDelimiter:String=".", decimalDelimiter:String=",", digitsAfterDecimalPoint:int = -1)
 		'is there a "minus" in front ?
 		Local addSign:String = ""
 		If value < 0 Then addSign="-"
@@ -290,7 +290,13 @@ Type TFunctions
 		Local result:String = ""
 
 		'do we have a fractionalValue <> ".000" ?
-		If Long(fractionalValue) > 0 Then result :+ decimalDelimiter + fractionalValue
+		If Long(fractionalValue) > 0
+			if digitsAfterDecimalPoint > 0
+				'not rounded, just truncated
+				fractionalValue = Left(fractionalValue, digitsAfterDecimalPoint)
+				result :+ decimalDelimiter + fractionalValue
+			endif
+		endif
 	
 		For Local i:Int = decimalValue.length-1 To 0 Step -1
 			result = Chr(decimalValue[i]) + result
@@ -305,7 +311,7 @@ Type TFunctions
 
 
 	'formats a value: 1000400 = 1,0 Mio
-	Function convertValue:String(value:Float, digitsAfterDecimalPoint:Int=2, typ:Int=0, delimeter:String=",")
+	Function convertValue:String(value:Double, digitsAfterDecimalPoint:Int=2, typ:Int=0, delimeter:String=",")
 		typ = MathHelper.Clamp(typ, 0,3)
       ' typ 1: 250000 = 250Tsd
       ' typ 2: 250000 = 0,25Mio
@@ -313,12 +319,12 @@ Type TFunctions
       ' typ 0: 250000 = 0,25Mio (automatically)
 
 		'find out amount of digits before decimal point
-		Local intValue:Int = Int(value)
-		Local length:Int = String(intValue).length
+		Local longValue:Long = Long(value)
+		Local length:Int = String(longValue).length
 		'avoid problems with "0.000" being shown as "-21213234923"
-		If value = 0 Then intValue = 0;length = 1
+		If value = 0 Then longValue = 0;length = 1
 		'do not count negative signs.
-		If intValue < 0 Then length:-1
+		If longValue < 0 Then length:-1
 
 		'automatically
 		If typ=0
@@ -333,7 +339,7 @@ Type TFunctions
 		If typ=3 Then Return MathHelper.NumberToString(value/1000000000.0, 2)+" "+GetLocale("ABBREVIATION_BILLION")
 
 		'add thousands-delimiter: 10000 = 10.000
-		return dottedValue(value)
+		return dottedValue(value, ".", ",", digitsAfterDecimalPoint)
     End Function
 
 End Type

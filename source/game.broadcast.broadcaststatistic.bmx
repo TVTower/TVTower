@@ -24,7 +24,7 @@ Type TBroadcastStatistic
 		'if higher than previous best-audience
 		if audienceResult
 			local best:TAudienceResultBase = GetBestAudienceResult(owner, block)
-			if best.audience.GetSum() < audienceResult.audience.GetSum()
+			if best.audience.GetTotalSum() < audienceResult.audience.GetTotalSum()
 				bestAudienceResult[owner-1][block-1] = audienceResult
 			endif
 		endif
@@ -56,7 +56,7 @@ Type TBroadcastStatistic
 		else
 			local result:TAudienceResultBase = new TAudienceResultBase
 			For local bestAudience:TAudienceResultBase = EachIn bestAudienceResult[owner-1]
-				if result.audience.GetSum() < bestAudience.audience.GetSum()
+				if result.audience.GetTotalSum() < bestAudience.audience.GetTotalSum()
 					result = bestAudience
 				endif
 			Next

@@ -1557,7 +1557,7 @@ endrem
 	Method GetAudience:Int() {_exposeToLua}
 		Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
 		If Not audienceResult Then Return 0
-		Return audienceResult.Audience.GetSum()
+		Return audienceResult.Audience.GetTotalSum()
 	End Method
 
 
@@ -1650,7 +1650,7 @@ Type TProgrammePlanInformationProvider extends TProgrammePlanInformationProvider
 		local programme:TProgramme = TProgramme(GetPlayerProgrammePlan(player).GetProgramme(GetWorldTime().GetDay(time), GetWorldTime().GetDayHour(time)))
 		if programme then genreKey = string(programme.data.GetGenre())
 
-		local audience:int = audienceResult.audience.GetSum()
+		local audience:int = audienceResult.audience.GetTotalSum()
 		if audience > int(string(audienceRecord[player].ValueForKey(genreKey)))
 			audienceRecord[player].Insert(genreKey, string(audience))
 			'save global record too

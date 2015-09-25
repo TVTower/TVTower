@@ -1,4 +1,6 @@
-﻿Import "game.broadcast.audience.bmx" 'has no other game dependencies
+﻿SuperStrict
+
+Import "game.broadcast.audience.bmx" 'has no other game dependencies
 Import "game.popularity.genre.bmx"
 Import "game.gameobject.bmx"
 
@@ -40,15 +42,11 @@ Type TGenreDefinitionBase extends TGameObject
 		Next
 
 		AudienceAttraction = New TAudience
-		AudienceAttraction.Children = data.GetFloat("Children", 0.5)
-		AudienceAttraction.Teenagers = data.GetFloat("Teenagers", 0.5)
-		AudienceAttraction.HouseWives = data.GetFloat("HouseWives", 0.5)
-		AudienceAttraction.Employees = data.GetFloat("Employees", 0.5)
-		AudienceAttraction.Unemployed = data.GetFloat("Unemployed", 0.5)
-		AudienceAttraction.Manager = data.GetFloat("Manager", 0.5)
-		AudienceAttraction.Pensioners = data.GetFloat("Pensioners", 0.5)
-		AudienceAttraction.Women = data.GetFloat("Women", 0.5)
-		AudienceAttraction.Men = data.GetFloat("Men", 0.5)
+		For local i:int = 1 to TVTTargetGroup.baseGroupCount
+			local id:int = TVTTargetGroup.GetAtIndex(i)
+			AudienceAttraction.SetGenderValue(id, data.GetFloat(TVTTargetGroup.GetAsString(id)+"_men", 0.5), TVTPersonGender.MALE)
+			AudienceAttraction.SetGenderValue(id, data.GetFloat(TVTTargetGroup.GetAsString(id)+"_women", 0.5), TVTPersonGender.FEMALE)
+		Next
 
 		return self
 	End Method
@@ -79,7 +77,7 @@ Type TGenreDefinitionBase extends TGameObject
 		Local successorValue:Float
 		Local rise:Int = false
 
-		For Local i:Int = 1 To TVTTargetGroup.count
+		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
 			Local targetGroupID:int = TVTTargetGroup.GetAtIndex(i)
 			If predecessor
 				predecessorValue = predecessor.BlockAttraction.GetValue(targetGroupID)

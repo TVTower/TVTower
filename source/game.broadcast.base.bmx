@@ -284,7 +284,7 @@ Type TBroadcastManager
 
 				Local attrList:TList = CreateList()
 				For Local i:Int = 1 To 4 'TODO: Was passiert wenn ein Spieler ausscheidet?
-					map.Insert(string.FromInt(i), TAudience.CreateAndInitValue(0))
+					map.Insert(string.FromInt(i), new TAudience.InitValue(0, 0))
 					If bc.GetAudienceResult(i).AudienceAttraction Then
 						attrList.AddLast(bc.GetAudienceResult(i).AudienceAttraction.PublicImageAttraction)
 					EndIf
@@ -297,8 +297,6 @@ Type TBroadcastManager
 				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.Unemployed, attrList, TAudience.UnemployedSort)
 				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.Manager, attrList, TAudience.ManagerSort)
 				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.Pensioners, attrList, TAudience.PensionersSort)
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.Women, attrList, TAudience.WomenSort)
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.Men, attrList, TAudience.MenSort)
 
 				For Local i:Int = 1 To 4 'TODO: Was passiert wenn ein Spieler ausscheidet?
 					Local audience:TAudience = TAudience(map.ValueForKey(string.FromInt(i)))
@@ -390,11 +388,6 @@ Type TBroadcast
 			market.ComputeAudience(Time)
 			AssimilateResults(market)
 		Next
-
-		AudienceResults[0].Refresh()
-		AudienceResults[1].Refresh()
-		AudienceResults[2].Refresh()
-		AudienceResults[3].Refresh()
 	End Method
 
 
@@ -414,7 +407,6 @@ Type TBroadcast
 			market.ComputeAudience(Time)
 			AssimilateResultsForPlayer(playerId, market)
 		Next
-		GetAudienceResult(playerId).Refresh()
 	End Method	
 
 
@@ -532,7 +524,7 @@ Type TBroadcast
 		Local audience:Int = GetStationMapCollection().GetShareAudience(playerIDs, withoutPlayerIDs)
 		If audience > 0
 			Local market:TAudienceMarketCalculation = New TAudienceMarketCalculation
-			market.maxAudience = TAudience.CreateWithBreakdown(audience)
+			market.maxAudience = new TAudience.InitWithBreakdown(audience)
 			For Local i:Int = 0 To playerIDs.length - 1
 				market.AddPlayer(playerIDs[i])
 			Next
@@ -551,7 +543,7 @@ Type TBroadcast
 		For Local playerId:Int = 1 To 4
 			Local audienceResult:TAudienceResult = AudienceResults[playerId-1]
 			If audienceResult Then
-				currAudience = audienceResult.Audience.GetSum()
+				currAudience = audienceResult.Audience.GetTotalSum()
 				If (currAudience > _TopAudience) Then _TopAudience = currAudience
 
 				currAudienceRate = audienceResult.GetAudienceQuotePercentage()
@@ -607,30 +599,30 @@ Type TBroadcast
 
 		'TODO: Eventuell auch in ein config-File auslagern
 		Select GetWorldTime().GetDayHour(time)
-			Case 0  result = TAudience.CreateAndInit(2, 6, 16, 11, 21, 19, 23, 100, 100)
-			Case 1  result = TAudience.CreateAndInit(0.5, 4, 7, 7, 15, 9, 13, 100, 100)
-			Case 2  result = TAudience.CreateAndInit(0.2, 1, 4, 4, 10, 3, 8, 100, 100)
-			Case 3  result = TAudience.CreateAndInit(0.1, 1, 3, 3, 7, 2, 5, 100, 100)
-			Case 4  result = TAudience.CreateAndInit(0.1, 0.5, 2, 3, 4, 1, 3, 100, 100)
-			Case 5  result = TAudience.CreateAndInit(0.2, 1, 2, 4, 3, 3, 3, 100, 100)
-			Case 6  result = TAudience.CreateAndInit(1, 2, 3, 6, 3, 5, 4, 100, 100)
-			Case 7  result = TAudience.CreateAndInit(4, 7, 6, 8, 4, 8, 5, 100, 100)
-			Case 8  result = TAudience.CreateAndInit(5, 2, 8, 5, 7, 11, 8, 100, 100)
-			Case 9  result = TAudience.CreateAndInit(6, 2, 9, 3, 12, 7, 10, 100, 100)
-			Case 10 result = TAudience.CreateAndInit(5, 2, 9, 3, 14, 3, 11, 100, 100)
-			Case 11 result = TAudience.CreateAndInit(5, 3, 9, 4, 15, 4, 12, 100, 100)
-			Case 12 result = TAudience.CreateAndInit(7, 9, 11, 8, 15, 8, 13, 100, 100)
-			Case 13 result = TAudience.CreateAndInit(8, 12, 14, 7, 24, 6, 19, 100, 100)
-			Case 14 result = TAudience.CreateAndInit(10, 13, 15, 6, 31, 2, 21, 100, 100)
-			Case 15 result = TAudience.CreateAndInit(11, 14, 16, 6, 29, 2, 22, 100, 100)
-			Case 16 result = TAudience.CreateAndInit(11, 15, 21, 6, 35, 2, 24, 100, 100)
-			Case 17 result = TAudience.CreateAndInit(12, 16, 22, 11, 36, 3, 25, 100, 100)
-			Case 18 result = TAudience.CreateAndInit(16, 21, 24, 18, 39, 5, 34, 100, 100)
-			Case 19 result = TAudience.CreateAndInit(24, 33, 28, 28, 46, 12, 49, 100, 100)
-			Case 20 result = TAudience.CreateAndInit(16, 36, 33, 37, 56, 23, 60, 100, 100)
-			Case 21 result = TAudience.CreateAndInit(11, 32, 31, 36, 53, 25, 62, 100, 100)
-			Case 22 result = TAudience.CreateAndInit(5, 23, 30, 30, 46, 35, 49, 100, 100)
-			Case 23 result = TAudience.CreateAndInit(3, 14, 24, 20, 34, 33, 35, 100, 100)
+			Case 0  result = new TAudience.Init(-1,  2, 6, 16, 11, 21, 19, 23)
+			Case 1  result = new TAudience.Init(-1,  0.5, 4, 7, 7, 15, 9, 13)
+			Case 2  result = new TAudience.Init(-1,  0.2, 1, 4, 4, 10, 3, 8)
+			Case 3  result = new TAudience.Init(-1,  0.1, 1, 3, 3, 7, 2, 5)
+			Case 4  result = new TAudience.Init(-1,  0.1, 0.5, 2, 3, 4, 1, 3)
+			Case 5  result = new TAudience.Init(-1,  0.2, 1, 2, 4, 3, 3, 3)
+			Case 6  result = new TAudience.Init(-1,  1, 2, 3, 6, 3, 5, 4)
+			Case 7  result = new TAudience.Init(-1,  4, 7, 6, 8, 4, 8, 5)
+			Case 8  result = new TAudience.Init(-1,  5, 2, 8, 5, 7, 11, 8)
+			Case 9  result = new TAudience.Init(-1,  6, 2, 9, 3, 12, 7, 10)
+			Case 10 result = new TAudience.Init(-1,  5, 2, 9, 3, 14, 3, 11)
+			Case 11 result = new TAudience.Init(-1,  5, 3, 9, 4, 15, 4, 12)
+			Case 12 result = new TAudience.Init(-1,  7, 9, 11, 8, 15, 8, 13)
+			Case 13 result = new TAudience.Init(-1,  8, 12, 14, 7, 24, 6, 19)
+			Case 14 result = new TAudience.Init(-1,  10, 13, 15, 6, 31, 2, 21)
+			Case 15 result = new TAudience.Init(-1,  11, 14, 16, 6, 29, 2, 22)
+			Case 16 result = new TAudience.Init(-1,  11, 15, 21, 6, 35, 2, 24)
+			Case 17 result = new TAudience.Init(-1,  12, 16, 22, 11, 36, 3, 25)
+			Case 18 result = new TAudience.Init(-1,  16, 21, 24, 18, 39, 5, 34)
+			Case 19 result = new TAudience.Init(-1,  24, 33, 28, 28, 46, 12, 49)
+			Case 20 result = new TAudience.Init(-1,  16, 36, 33, 37, 56, 23, 60)
+			Case 21 result = new TAudience.Init(-1,  11, 32, 31, 36, 53, 25, 62)
+			Case 22 result = new TAudience.Init(-1,  5, 23, 30, 30, 46, 35, 49)
+			Case 23 result = new TAudience.Init(-1,  3, 14, 24, 20, 34, 33, 35)
 		EndSelect
 
 		'convert to 0-1.0 percentage
@@ -639,7 +631,7 @@ Type TBroadcast
 	
 
 	Function GetPotentialAudienceModifier:TAudience(forHour:int = -1)
-		local modifier:TAudience = TAudience.CreateAndInitValue(1)
+		local modifier:TAudience = new TAudience.InitValue(1, 1)
 
 		'modify according to current hour
 		modifier.Multiply( GetPotentialAudiencePercentage_TimeMod(forHour) )
@@ -731,53 +723,54 @@ Type TBroadcastFeedback
 		'0 = auf keinen Fall
 		'1 = möglich, aber nicht wahrscheinlich
 		'2 = wahrscheinlich
-		Local averageAttraction:Float = attr.GetAverage()
+		Local averageAttraction:Float = attr.GetTotalAverage()
 
 		Local allowedTemp:TAudience = plausibility
 		Local sortMap:TNumberSortMap = attr.ToNumberSortMap()
 		sortMap.Sort(False)
-		Local highestKVAllowedAdults:TKeyValueNumber = GetFirstAllowed(sortMap, TAudience.CreateAndInit( 0, 1, 1, 1, 1, 1, 1, 0, 0))
+		Local highestKVAllowedAdults:TKeyValueNumber = GetFirstAllowed(sortMap, new TAudience.Init(-1,  0, 1, 1, 1, 1, 1, 1))
 
 		If highestKVAllowedAdults.Value >= 0.9 And attr.Quality > 0.8 Then 'Top-Programm
-			allowedTemp = TAudience.CreateAndInitValue(1)
-			allowedTemp.Children = plausibility.Children
+			allowedTemp = new TAudience.InitValue(1, 1)
+			allowedTemp.SetTotalValue(TVTTargetGroup.Children, plausibility.GetTotalValue(TVTTargetGroup.Children))
 		EndIf
 
 		Local highestKVAllowed:TKeyValueNumber = GetFirstAllowed(sortMap, allowedTemp)
 
 		If (averageAttraction > minAttraction) Then
-			Local attrPerMember:Float = 0.9 / allowedTemp.GetSum()
+			Local attrPerMember:Float = 0.9 / allowedTemp.GetTotalSum()
 			Local familyMemberCount:Int = Int((averageAttraction - (averageAttraction Mod attrPerMember)) / attrPerMember)
 
 			For local kv:TKeyValueNumber = eachin sortMap.Content
-				If allowedTemp.Children >= 1 And kv.Key = "0" Then
-					AudienceInterest.Children = AttractionToInterest(attr.Children, maxAudience.Children, allowedTemp.Children - 1)
-					If AudienceInterest.Children > 0 Then familyMemberCount :- 1
-				ElseIf allowedTemp.Teenagers >= 1 And kv.Key = "1" Then
-					AudienceInterest.Teenagers = AttractionToInterest(attr.Teenagers, maxAudience.Teenagers, allowedTemp.Teenagers - 1)
-					If AudienceInterest.Teenagers > 0 Then familyMemberCount :- 1
-				ElseIf allowedTemp.HouseWives >= 1 And kv.Key = "2" Then
-					AudienceInterest.HouseWives = AttractionToInterest(attr.HouseWives, maxAudience.HouseWives, allowedTemp.HouseWives - 1)
-					If AudienceInterest.HouseWives > 0 Then familyMemberCount :- 1
-				ElseIf allowedTemp.Employees >= 1 And kv.Key = "3" Then
-					AudienceInterest.Employees = AttractionToInterest(attr.Employees, maxAudience.Employees, allowedTemp.Employees - 1)
-					If AudienceInterest.Employees > 0 Then familyMemberCount :- 1
-				ElseIf allowedTemp.Unemployed >= 1 And kv.Key = "4" Then
-					AudienceInterest.Unemployed = AttractionToInterest(attr.Unemployed, maxAudience.Unemployed, allowedTemp.Unemployed - 1)
-					If AudienceInterest.Unemployed > 0 Then familyMemberCount :- 1
-				ElseIf allowedTemp.Manager >= 1 And kv.Key = "5" Then
-					AudienceInterest.Manager = AttractionToInterest(attr.Manager, maxAudience.Manager, allowedTemp.Manager - 1)
-					If AudienceInterest.Manager > 0 Then familyMemberCount :- 1
-				ElseIf allowedTemp.Pensioners >= 1 And kv.Key = "6" Then
-					AudienceInterest.Pensioners = AttractionToInterest(attr.Pensioners, maxAudience.Pensioners, allowedTemp.Pensioners - 1)
-					If AudienceInterest.Pensioners > 0 Then familyMemberCount :- 1
+				If allowedTemp.GetTotalValue(TVTTargetGroup.Children) >= 1 And kv.Key = "0" Then
+					AudienceInterest.SetTotalValue(TVTTargetGroup.Children, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Children), maxAudience.GetTotalValue(TVTTargetGroup.Children), allowedTemp.GetTotalValue(TVTTargetGroup.Children) - 1))
+					If AudienceInterest.GetTotalValue(TVTTargetGroup.Children) > 0 Then familyMemberCount :- 1
+				ElseIf allowedTemp.GetTotalValue(TVTTargetGroup.Teenagers) >= 1 And kv.Key = "1" Then
+					AudienceInterest.SetTotalValue(TVTTargetGroup.Teenagers, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Teenagers), maxAudience.GetTotalValue(TVTTargetGroup.Teenagers), allowedTemp.GetTotalValue(TVTTargetGroup.Teenagers) - 1))
+					If AudienceInterest.GetTotalValue(TVTTargetGroup.Teenagers) > 0 Then familyMemberCount :- 1
+				ElseIf allowedTemp.GetTotalValue(TVTTargetGroup.HouseWives) >= 1 And kv.Key = "2" Then
+					AudienceInterest.SetTotalValue(TVTTargetGroup.HouseWives, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.HouseWives), maxAudience.GetTotalValue(TVTTargetGroup.HouseWives), allowedTemp.GetTotalValue(TVTTargetGroup.HouseWives) - 1))
+					If AudienceInterest.GetTotalValue(TVTTargetGroup.HouseWives) > 0 Then familyMemberCount :- 1
+				ElseIf allowedTemp.GetTotalValue(TVTTargetGroup.Employees) >= 1 And kv.Key = "3" Then
+					AudienceInterest.SetTotalValue(TVTTargetGroup.Employees, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Employees), maxAudience.GetTotalValue(TVTTargetGroup.Employees), allowedTemp.GetTotalValue(TVTTargetGroup.Employees) - 1))
+					If AudienceInterest.GetTotalValue(TVTTargetGroup.Employees) > 0 Then familyMemberCount :- 1
+				ElseIf allowedTemp.GetTotalValue(TVTTargetGroup.Unemployed) >= 1 And kv.Key = "4" Then
+					AudienceInterest.SetTotalValue(TVTTargetGroup.Unemployed, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Unemployed), maxAudience.GetTotalValue(TVTTargetGroup.Unemployed), allowedTemp.GetTotalValue(TVTTargetGroup.Unemployed) - 1))
+					If AudienceInterest.GetTotalValue(TVTTargetGroup.Unemployed) > 0 Then familyMemberCount :- 1
+				ElseIf allowedTemp.GetTotalValue(TVTTargetGroup.Manager) >= 1 And kv.Key = "5" Then
+					AudienceInterest.SetTotalValue(TVTTargetGroup.Manager, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Manager), maxAudience.GetTotalValue(TVTTargetGroup.Manager), allowedTemp.GetTotalValue(TVTTargetGroup.Manager) - 1))
+					If AudienceInterest.GetTotalValue(TVTTargetGroup.Manager) > 0 Then familyMemberCount :- 1
+				ElseIf allowedTemp.GetTotalValue(TVTTargetGroup.Pensioners) >= 1 And kv.Key = "6" Then
+					AudienceInterest.SetTotalValue(TVTTargetGroup.Pensioners, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Pensioners), maxAudience.GetTotalValue(TVTTargetGroup.Pensioners), allowedTemp.GetTotalValue(TVTTargetGroup.Pensioners) - 1))
+					If AudienceInterest.GetTotalValue(TVTTargetGroup.Pensioners) > 0 Then familyMemberCount :- 1
 				EndIf
 
 				If familyMemberCount = 0 Then Return
 			Next
 		Else
 			If highestKVAllowed.Value >= (minAttraction * 2) Then
-				AudienceInterest.SetValue(highestKVAllowed.Key.ToInt(), 1)
+				'-1 = set for both
+				AudienceInterest.SetTotalValue(highestKVAllowed.Key.ToInt(), 1)
 			EndIf
 		EndIf
 	End Method
@@ -791,36 +784,37 @@ Type TBroadcastFeedback
 		local hour:int = GetWorldTime().GetDayHour(bc.time)
 
 		If (hour >= 0 And hour <= 1)
-			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, TAudience.CreateAndInit( 0, 1, 2, 1, 2, 1, 2, 0, 0), 0.10)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, new TAudience.Init(-1,  0, 1, 2, 1, 2, 1, 2), 0.10)
 		Elseif (hour >= 2 And hour <= 5)
-			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, TAudience.CreateAndInit( 0, 0, 1, 0, 2, 0, 2, 0, 0), 0.225)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, new TAudience.Init(-1,  0, 0, 1, 0, 2, 0, 2), 0.225)
 		Elseif (hour = 6)
-			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, TAudience.CreateAndInit( 1, 1, 1, 1, 0, 1, 1, 0, 0), 0.20)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, new TAudience.Init(-1,  1, 1, 1, 1, 0, 1, 1), 0.20)
 		Elseif (hour >= 7 And hour <= 8)
-			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, TAudience.CreateAndInit( 1, 1, 1, 1, 0, 1, 1, 0, 0), 0.125)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, new TAudience.Init(-1,  1, 1, 1, 1, 0, 1, 1), 0.125)
 		Elseif (hour >= 9 And hour <= 11)
-			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, TAudience.CreateAndInit( 0, 0, 2, 0, 1, 0, 2, 0, 0), 0.125)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, new TAudience.Init(-1,  0, 0, 2, 0, 1, 0, 2), 0.125)
 		ElseIf (hour >= 13 And hour <= 16)
-			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, TAudience.CreateAndInit( 2, 2, 2, 0, 2, 0, 2, 0, 0), 0.05)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, new TAudience.Init(-1,  2, 2, 2, 0, 2, 0, 2), 0.05)
 		ElseIf (hour >= 22 And hour <= 23)
-			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, TAudience.CreateAndInit( 0, 1, 2, 2, 2, 2, 2, 0, 0), 0.05)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, new TAudience.Init(-1,  0, 1, 2, 2, 2, 2, 2), 0.05)
 		Else
-			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, TAudience.CreateAndInit( 1, 2, 2, 2, 2, 1, 2, 0, 0), 0.05)
+			CalculateAudienceInterestForAllowed(attr, maxAudienceMod, new TAudience.Init(-1,  1, 2, 2, 2, 2, 1, 2), 0.05)
 		EndIf
 	End Method
 	
 
 	Method GetFirstAllowed:TKeyValueNumber(sortMap:TNumberSortMap, allowed:TAudience)
 		For local kv:TKeyValueNumber = eachin sortMap.Content
-			If allowed.Children >= 1 And kv.Key = "0" Then Return kv
-			If allowed.Teenagers >= 1 And kv.Key = TVTTargetGroup.Children Then Return kv
-			If allowed.HouseWives >= 1 And kv.Key = TVTTargetGroup.Teenagers Then Return kv
-			If allowed.Employees >= 1 And kv.Key = TVTTargetGroup.HouseWives Then Return kv
-			If allowed.Unemployed >= 1 And kv.Key = TVTTargetGroup.Employees Then Return kv
-			If allowed.Manager >= 1 And kv.Key = TVTTargetGroup.Unemployed Then Return kv
-			If allowed.Pensioners >= 1 And kv.Key = TVTTargetGroup.Manager Then Return kv
+			if allowed.GetTotalValue(TVTTargetGroup.Children) >= 1 And kv.Key = "0" Then Return kv
+			If allowed.GetTotalValue(TVTTargetGroup.Teenagers) >= 1 And kv.Key = TVTTargetGroup.Children Then Return kv
+			If allowed.GetTotalValue(TVTTargetGroup.HouseWives) >= 1 And kv.Key = TVTTargetGroup.Teenagers Then Return kv
+			If allowed.GetTotalValue(TVTTargetGroup.Employees) >= 1 And kv.Key = TVTTargetGroup.HouseWives Then Return kv
+			If allowed.GetTotalValue(TVTTargetGroup.Unemployed) >= 1 And kv.Key = TVTTargetGroup.Employees Then Return kv
+			If allowed.GetTotalValue(TVTTargetGroup.Manager) >= 1 And kv.Key = TVTTargetGroup.Unemployed Then Return kv
+			If allowed.GetTotalValue(TVTTargetGroup.Pensioners) >= 1 And kv.Key = TVTTargetGroup.Manager Then Return kv
 		Next
 	End Method
+
 
 	Method AddFeedbackStatement(importance:Int, statementKey:String, rating:Int)
 		Local statement:TBroadcastFeedbackStatement = new TBroadcastFeedbackStatement
@@ -829,6 +823,7 @@ Type TBroadcastFeedback
 		statement.Rating = rating
 		FeedbackStatements.AddLast(statement)
 	End Method
+
 
 	'Diese Methode muss aufgerufen werden, wenn ein Statement angezeigt werden soll.
 	Method GetNextAudienceStatement:TBroadcastFeedbackStatement()
@@ -846,6 +841,7 @@ Type TBroadcastFeedback
 			If randomValue <= currCount Then Return statement
 		Next
 	End Method
+	
 
 	Method AttractionToInterest:Int(attraction:Float, maxAudienceMod:Float, minValue:Int = 0)
 		If maxAudienceMod >= 0.02 Then 'Extrem streng
@@ -879,6 +875,9 @@ Type TBroadcastFeedback
 	End Method
 End Type
 
+
+
+
 Type TBroadcastFeedbackStatement
 	Field Importance :Int
 	Field Rating:Int '-2=schrecklich, -1 = negativ, 0 = neutral, 1 = positiv, 2 = hervorragend
@@ -890,6 +889,9 @@ Type TBroadcastFeedbackStatement
 		Return "Statement: " + Importance + " / " + StatementKey + " = " + Rating
 	End Method
 End Type
+
+
+
 
 'Diese Klasse repräsentiert einen Markt um den 1 bis 4 Spieler konkurieren.
 Type TAudienceMarketCalculation
@@ -915,7 +917,7 @@ Type TAudienceMarketCalculation
 		For Local playerId:String = EachIn Players
 			result :+ playerId+" "
 		Next
-		return "TAudienceMarketCalculation: players=["+result.trim()+"], population="+maxAudience.GetSum()
+		return "TAudienceMarketCalculation: players=["+result.trim()+"], population: m="+maxAudience.GetGenderSum(TVTPersonGender.MALE)+" w="+maxAudience.GetGenderSum(TVTPersonGender.FEMALE)
 	End Method
 
 
@@ -953,20 +955,10 @@ Type TAudienceMarketCalculation
 				Local attraction:TAudience = TAudience(MapValueForKey(AudienceAttractions, currKey))
 				'Die effectiveAttraction (wegen Konkurrenz) entspricht der Quote!
 				Local effectiveAttraction:TAudience = attraction.Copy().Multiply(reduceFactor)
-				'repair broken men/women-values
-				'(the attraction might contain odd values for men/women
-				'so we recalculate their values based on audience group
-				'(children, ..., pensioners) and audience gender (m/w))
-				effectiveAttraction.CalcWeightedGenderModifier()
 
 				'Anteil an der "erbeuteten" Zapper berechnen
 				Local channelSurfer:TAudience = ChannelSurferToShare.Copy().Multiply(effectiveAttraction)
 				channelSurfer.Round()
-				'now the channelSurfer-"men/women" value might be zero
-				'because of men/women-attraction-values being "0"
-				'->recalculate men/women-value 
-				channelSurfer.CalcGenderBreakdown()
-				channelSurfer.FixGenderCount()
 
 				'Ergebnis in das AudienceResult schreiben
 				Local currKeyInt:Int = currKey.ToInt()
@@ -1022,10 +1014,10 @@ Type TAudienceMarketCalculation
 			If attrRange = Null Then
 				attrRange = attraction.Copy()
 			Else
-				For local i:int = 1 to TVTTargetGroup.count
+				For local i:int = 1 to TVTTargetGroup.baseGroupCount
 					local groupKey:int = TVTTargetGroup.GetAtIndex(i)
-					local rangeValue:Float = attrRange.GetValue(groupKey)
-					attrRange.SetValue(groupKey, rangeValue + (1 - rangeValue) * attraction.GetValue(groupKey))
+					local rangeValue:Float = attrRange.GetTotalValue(groupKey)
+					attrRange.SetTotalValue(groupKey, rangeValue + (1 - rangeValue) * attraction.GetTotalValue(groupKey))
 				Next
 			EndIf
 		Next
@@ -1035,23 +1027,23 @@ Type TAudienceMarketCalculation
 		If attrSum Then
 			result = attrRange.Copy()
 
-			If result.GetSum() > 0 And attrSum.GetSum() > 0 Then
+			If result.GetTotalSum() > 0 And attrSum.GetTotalSum() > 0 Then
 				'attention: attrSum could contain "0" values (div/0 !)
 				'so a blind "result.Divide(attrSum)" is no solution!
 				'-> check all values for 0 and handle them!
 
-				For local i:int = 1 to TVTTargetGroup.count
+				For local i:int = 1 to TVTTargetGroup.baseGroupCount
 					local groupKey:int = TVTTargetGroup.GetAtIndex(i)
 					'one of the targetgroups is not attracted at all
 					'-> reduce to 0 (just set the same value so
 					'   result/attr = 1.0 )
-					if attrSum.GetValue(groupKey) = 0
-						if result.GetValue(groupKey) <> 0
-							attrSum.SetValue( groupKey, result.GetValue(groupKey) )
+					if attrSum.GetTotalValue(groupKey) = 0
+						if result.GetTotalValue(groupKey) <> 0
+							attrSum.SetTotalValue( groupKey, result.GetTotalValue(groupKey))
 						else
 							'does not matter what value we set, it will
 							'be the divisor of "0" (0/1 = 0)
-							attrSum.SetValue( groupKey, 1 )
+							attrSum.SetTotalValue( groupKey, 1)
 						endif
 					endif
 				Next

@@ -186,15 +186,15 @@ Type TScreenHandler_Statistics
 					textFont.DrawBlock(GetLocale("POTENTIAL_AUDIENCE_NUMBER")+":", labelArea.GetX(), labelArea.GetY() + 1*labelArea.GetH(), labelArea.GetW(), labelArea.GetH(), ALIGN_LEFT_CENTER, fontColor)
 					textFont.DrawBlock(GetLocale("BROADCASTING_AREA")+":", labelArea.GetX(), labelArea.GetY() + 2*labelArea.GetH(), labelArea.GetW(), labelArea.GetH(), ALIGN_LEFT_CENTER, fontColor)
 
-					boldTextFont.drawBlock(TFunctions.dottedValue(audienceResult.audience.GetSum()), valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
+					boldTextFont.drawBlock(TFunctions.dottedValue(audienceResult.audience.GetTotalSum()), valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
 					boldTextFont.drawBlock(MathHelper.NumberToString(100.0 * audienceResult.GetAudienceQuotePercentage(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), ALIGN_RIGHT_CENTER, lightFontColor)
 					TextFont.drawBlock("#"+audienceRanks[0], valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW(), valueArea.GetH(), ALIGN_RIGHT_CENTER, rankFontColor)
 
-					boldTextFont.drawBlock(TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0), valueArea.GetX(), valueArea.GetY() + 1*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
+					boldTextFont.drawBlock(TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(),0), valueArea.GetX(), valueArea.GetY() + 1*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
 					boldTextFont.drawBlock(MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 1*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), ALIGN_RIGHT_CENTER, lightFontColor)
 
-					boldTextFont.drawBlock(TFunctions.convertValue(audienceResult.WholeMarket.GetSum(),0), valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
-					boldTextFont.drawBlock(MathHelper.NumberToString(100.0 * audienceResult.WholeMarket.GetSum() / GetStationMapCollection().GetPopulation(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), ALIGN_RIGHT_CENTER, lightFontColor)
+					boldTextFont.drawBlock(TFunctions.convertValue(audienceResult.WholeMarket.GetTotalSum(),0), valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
+					boldTextFont.drawBlock(MathHelper.NumberToString(100.0 * audienceResult.WholeMarket.GetTotalSum() / GetStationMapCollection().GetPopulation(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), ALIGN_RIGHT_CENTER, lightFontColor)
 
 					'target groups
 					local halfWidth:int = 0.5 * (valueArea.GetX2() - labelArea.GetX())
@@ -209,11 +209,11 @@ Type TScreenHandler_Statistics
 
 						if drawOnLeft
 							smallTextFont.DrawBlock(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )), labelArea.GetX(), labelArea.GetY() + row*labelArea.GetH(), halfWidth - splitter, labelArea.GetH(), ALIGN_LEFT_CENTER, fontColor)
-							smallBoldTextFont.DrawBlock(TFunctions.convertValue( audienceResult.audience.GetValue(TVTTargetGroup.GetAtIndex(i)), 0 ), labelArea.GetX(), labelArea.GetY() + row*labelArea.GetH(), halfWidth - splitter - 20, labelArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
+							smallBoldTextFont.DrawBlock(TFunctions.convertValue( audienceResult.audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)), 0 ), labelArea.GetX(), labelArea.GetY() + row*labelArea.GetH(), halfWidth - splitter - 20, labelArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
 							smallTextFont.DrawBlock("#"+audienceRanks[i], labelArea.GetX(), labelArea.GetY() + row*labelArea.GetH(), halfWidth - splitter, labelArea.GetH(), ALIGN_RIGHT_CENTER, rankFontColor)
 						else
 							smallTextFont.DrawBlock(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )), labelArea.GetX() + halfWidth + splitter, labelArea.GetY() + row*labelArea.GetH(), halfWidth - splitter, labelArea.GetH(), ALIGN_LEFT_CENTER, fontColor)
-							smallBoldTextFont.DrawBlock(TFunctions.convertValue( audienceResult.audience.GetValue(TVTTargetGroup.GetAtIndex(i)), 0 ), labelArea.GetX() +  halfWidth + splitter, labelArea.GetY() + row*labelArea.GetH(), halfWidth - splitter - 20, labelArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
+							smallBoldTextFont.DrawBlock(TFunctions.convertValue( audienceResult.audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)), 0 ), labelArea.GetX() +  halfWidth + splitter, labelArea.GetY() + row*labelArea.GetH(), halfWidth - splitter - 20, labelArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
 							smallTextFont.DrawBlock("#"+audienceRanks[i], labelArea.GetX() +  halfWidth + splitter, labelArea.GetY() + row*labelArea.GetH(), halfWidth - splitter, labelArea.GetH(), ALIGN_RIGHT_CENTER, rankFontColor)
 						endif
 						drawOnLeft = 1 - drawOnLeft
@@ -258,8 +258,8 @@ Type TScreenHandler_Statistics
 
 
 			'first get the maximum value so we know how to scale the rest
-			maxValue = dailyBroadcastStatistic.GetBestAudience(room.owner).GetSum()
-			maxValue = max(maxValue, dailyBroadcastStatistic.GetBestNewsAudience(room.owner).GetSum())
+			maxValue = dailyBroadcastStatistic.GetBestAudience(room.owner).GetTotalSum()
+			maxValue = max(maxValue, dailyBroadcastStatistic.GetBestNewsAudience(room.owner).GetTotalSum())
 
 
 			local slot:int				= 0
@@ -349,7 +349,7 @@ Type TScreenHandler_Statistics
 						slotPos.SetY(yOfZero)
 						TColor.clRed.setRGB()
 					else
-						slotPos.SetY(yOfZero - audienceResult.audience.GetSum() * yPerViewer)
+						slotPos.SetY(yOfZero - audienceResult.audience.GetTotalSum() * yPerViewer)
 						color.setRGB()
 					endif
 					

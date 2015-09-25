@@ -124,7 +124,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 			modValue = 0.1
 		endif
 
-		Return TAudience.CreateAndInitValue(modValue)
+		Return new TAudience.InitValue(modValue, modValue)
 	End Method
 
 	'Override
