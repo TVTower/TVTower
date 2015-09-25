@@ -102,7 +102,7 @@ Type TDebugAudienceInfos
 		'font.Draw(genrePopularityMod, 160, offset+130, TColor.clWhite)
 		'font.drawBlock(genrePopularityQuality, 200, offset+130, 65, 25, ALIGN_RIGHT_TOP, TColor.clRed)
 		'If attraction.GenrePopularityMod Then
-			DrawAudiencePercent(new TAudience.InitValue(attraction.GenrePopularityMod,  attraction.GenrePopularityMod), 200, offset+130, true, true);
+			DrawAudiencePercent(new TAudience.InitValue(-1,  attraction.GenrePopularityMod), 200, offset+130, true, true);
 		'Endif
 
 		font.Draw("3. Genre <> Zielgruppe", 25, offset+150, TColor.clWhite)
@@ -134,10 +134,10 @@ Type TDebugAudienceInfos
 		Endif
 
 		font.Draw("7. Zuschauerentwicklung", 25, offset+230, TColor.clWhite)
-		DrawAudiencePercent(new TAudience.InitValue(attraction.QualityOverTimeEffectMod, attraction.QualityOverTimeEffectMod), 200, offset+230, true, true);
+		DrawAudiencePercent(new TAudience.InitValue(-1, attraction.QualityOverTimeEffectMod), 200, offset+230, true, true);
 
 		font.Draw("8. Genre <> Sendezeit", 25, offset+250, TColor.clWhite)
-		DrawAudiencePercent(new TAudience.InitValue(attraction.GenreTimeMod, attraction.GenreTimeMod), 200, offset+250, true, true);
+		DrawAudiencePercent(new TAudience.InitValue(-1, attraction.GenreTimeMod), 200, offset+250, true, true);
 
 		font.Draw("9. Zufall", 25, offset+270, TColor.clWhite)
 		If attraction.LuckMod Then DrawAudiencePercent(attraction.LuckMod, 200, offset+270, true, true);
@@ -288,7 +288,7 @@ endrem
 		End if
 
 		for local i:int = 1 to TVTTargetGroup.baseGroupCount
-			val = MathHelper.NumberToString(audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)),2)
+			val = MathHelper.NumberToString(0.5 * audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)),2)
 			font.drawBlock(val, x2 + 70*(i-1), y, 65, 25, ALIGN_RIGHT_TOP, color)
 		Next
 	End Function
