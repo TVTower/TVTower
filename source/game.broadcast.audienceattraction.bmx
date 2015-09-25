@@ -120,28 +120,64 @@ Type TAudienceAttraction Extends TAudience
 		Local result:TAudience = new TAudience
 		'start with an attraction of "100%"
 		result.AddFloat(1.0)
+'print "0. "
+
+		result.MultiplyFloat(Quality)
+'print "1. "
+'print "* " +Quality
+'print result.ToString()
 
 		result.AddFloat(GenrePopularityMod)
+'print "2. "
+'print "+ " +GenrePopularityMod
+'print result.ToString()
+
 		result.Add(GenreTargetGroupMod)
+'print "3. "
+'print "+ " +GenreTargetGroupMod.ToString()
+'print result.ToString()
+
 		result.Add(TrailerMod)
+'print "4. "
+'print "+ " +TrailerMod.ToString()
+'print result.ToString()
+
 		result.Add(MiscMod)
-		result.AddFloat(GenreTimeMod)
-'		result.AddFloat(QualityOverTimeEffectMod)
+'print "5. "
+'print "+ " +MiscMod.ToString()
+'print result.ToString()
 
 		Self.PublicImageAttraction = result.Copy()
 		Self.PublicImageAttraction.AddFloat(1)
 		Self.PublicImageAttraction.MultiplyFloat(Quality)
 
+
 		result.Add(PublicImageMod)
+'print "6. "
+'print result.ToString()
+
+'		result.AddFloat(QualityOverTimeEffectMod)
+'print "7. "
+'print result.ToString()
+
+		result.AddFloat(GenreTimeMod)
+'print "8. "
+'print result.ToString()
+
 		result.Add(LuckMod)
-		result.MultiplyFloat(Quality)
+'print "9. "
+'print result.ToString()
+
 		result.Add(AudienceFlowBonus)
-		result.Multiply(TargetGroupGenderMod)
+'print "10. "
+'print result.ToString()
 
 		Self.BaseAttraction = result.Copy()
 
 		'result.Add(AudienceFlowBonus)
 		result.Add(SequenceEffect)
+'print "11. "
+'print result.ToString()
 
 		'avoid negative attraction values or values > 100%
 		'-> else you could have a negative audience

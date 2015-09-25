@@ -975,6 +975,8 @@ Type TAudienceMarketCalculation
 				AudienceResults[currKeyInt-1].AudienceAttraction = TAudienceAttraction(MapValueForKey(AudienceAttractions, currKey))
 				AudienceResults[currKeyInt-1].EffectiveAudienceAttraction	= effectiveAttraction
 
+				'Print "Attraction für " + currKey + ": " + attraction.ToString()
+				'Print "ReduceFactor für " + currKey + ": " + GetReduceFactor().ToString()
 				'Print "Effektive Quote für " + currKey + ": " + effectiveAttraction.ToString()
 				'Print "Zuschauer fuer " + currKey + ": " + AudienceResults[currKeyInt-1].ToString()
 			Next
@@ -1016,8 +1018,13 @@ Type TAudienceMarketCalculation
 			Else
 				For local i:int = 1 to TVTTargetGroup.baseGroupCount
 					local groupKey:int = TVTTargetGroup.GetAtIndex(i)
-					local rangeValue:Float = attrRange.GetTotalValue(groupKey)
-					attrRange.SetTotalValue(groupKey, rangeValue + (1 - rangeValue) * attraction.GetTotalValue(groupKey))
+					For local genderIndex:int = 0 to 1
+						local gender:int = TVTPersonGender.FEMALE
+						if genderIndex = 1 then gender = TVTPersonGender.MALE
+
+						local rangeValue:Float = attrRange.GetGenderValue(groupKey, gender)
+						attrRange.SetGenderValue(groupKey, rangeValue + (1 - rangeValue) * attraction.GetGenderValue(groupKey, gender), gender)
+					Next
 				Next
 			EndIf
 		Next
@@ -1027,28 +1034,34 @@ Type TAudienceMarketCalculation
 		If attrSum Then
 			result = attrRange.Copy()
 
-			If result.GetTotalSum() > 0 And attrSum.GetTotalSum() > 0 Then
-				'attention: attrSum could contain "0" values (div/0 !)
-				'so a blind "result.Divide(attrSum)" is no solution!
-				'-> check all values for 0 and handle them!
+			For local genderIndex:int = 0 to 1
+				local gender:int = TVTPersonGender.FEMALE
+				if genderIndex = 1 then gender = TVTPersonGender.MALE
 
-				For local i:int = 1 to TVTTargetGroup.baseGroupCount
-					local groupKey:int = TVTTargetGroup.GetAtIndex(i)
-					'one of the targetgroups is not attracted at all
-					'-> reduce to 0 (just set the same value so
-					'   result/attr = 1.0 )
-					if attrSum.GetTotalValue(groupKey) = 0
-						if result.GetTotalValue(groupKey) <> 0
-							attrSum.SetTotalValue( groupKey, result.GetTotalValue(groupKey))
-						else
-							'does not matter what value we set, it will
-							'be the divisor of "0" (0/1 = 0)
-							attrSum.SetTotalValue( groupKey, 1)
+				If result.GetGenderSum(gender) > 0 And attrSum.getGenderSum(gender) > 0
+					'attention: attrSum could contain "0" values (div/0 !)
+					'so a blind "result.Divide(attrSum)" is no solution!
+					'-> check all values for 0 and handle them!
+
+					For local i:int = 1 to TVTTargetGroup.baseGroupCount
+						local groupKey:int = TVTTargetGroup.GetAtIndex(i)
+
+						'one of the targetgroups is not attracted at all
+						'-> reduce to 0 (just set the same value so
+						'   result/attr = 1.0 )
+						if attrSum.GetGenderValue(groupKey, gender) = 0
+							if result.GetGenderValue(groupKey, gender) <> 0
+								attrSum.SetGenderValue( groupKey, result.GetGenderValue(groupKey, gender), gender)
+							else
+								'does not matter what value we set, it will
+								'be the divisor of "0" (0/1 = 0)
+								attrSum.SetGenderValue( groupKey, 1, gender )
+							endif
 						endif
-					endif
-				Next
-				result.Divide(attrSum)
-			EndIf
+					Next
+				EndIf
+			Next
+			if attrSum.GetTotalSum() > 0 then result.Divide(attrSum)
 		EndIf
 		Return result
 	End Method

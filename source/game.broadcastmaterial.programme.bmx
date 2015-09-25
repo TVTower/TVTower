@@ -473,17 +473,22 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 		'AudienceFlow anhand der Differenz und ob steigend oder sinkend. Nur sinkend gibt richtig AudienceFlow
 		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
-			Local targetGroupID:int = TVTTargetGroup.GetAtIndex(i)
-			Local predecessorValue:Float = Min(lastMovieBlockAttraction.FinalAttraction.GetTotalValue(targetGroupID), lastNewsBlockAttraction.FinalAttraction.GetTotalValue(targetGroupID))
-			Local successorValue:Float = currentAttraction.BaseAttraction.GetTotalValue(targetGroupID) 'FinalAttraction ist noch nicht verfügbar. BaseAttraction ist also akzeptabel.
+			For local genderIndex:int = 0 to 1
+				local gender:int = TVTPersonGender.FEMALE
+				if genderIndex = 1 then gender = TVTPersonGender.MALE
+				Local targetGroupID:int = TVTTargetGroup.GetAtIndex(i)
+				Local predecessorValue:Float = Min(lastMovieBlockAttraction.FinalAttraction.GetGenderValue(targetGroupID, gender), lastNewsBlockAttraction.FinalAttraction.GetGenderValue(targetGroupID, gender))
+				'FinalAttraction ist noch nicht verfügbar. BaseAttraction ist also akzeptabel.
+				Local successorValue:Float = currentAttraction.BaseAttraction.GetGenderValue(targetGroupID, gender)
 
-			If (predecessorValue < successorValue) 'Steigende Quote = kaum AudienceFlow
-				flowModBaseTemp = predecessorValue * 0.05
-			Else 'Sinkende Quote
-				flowModBaseTemp = (predecessorValue - successorValue) * 0.75
-			Endif
+				If (predecessorValue < successorValue) 'Steigende Quote = kaum AudienceFlow
+					flowModBaseTemp = predecessorValue * 0.05
+				Else 'Sinkende Quote
+					flowModBaseTemp = (predecessorValue - successorValue) * 0.75
+				Endif
 
-			flowModBase.SetTotalValue(targetGroupID, Max(0.05, flowModBaseTemp))
+				flowModBase.SetGenderValue(targetGroupID, Max(0.05, flowModBaseTemp), gender)
+			Next
 		Next
 
 		'Wie gut ist der Follower? Gleiche Genre passen perfekt zusammen, aber es gibt auch gute und schlechte Followerer anderer genre

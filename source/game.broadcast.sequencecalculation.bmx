@@ -20,27 +20,32 @@ Type TSequenceCalculation
 
 		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
 			Local targetGroupID:int = TVTTargetGroup.GetAtIndex(i)
-			If Predecessor
-				predecessorValue = Predecessor.FinalAttraction.GetTotalValue(targetGroupID)
-			Else
-				predecessorValue = 0
-			EndIf
-			successorValue = Successor.BaseAttraction.GetTotalValue(targetGroupID)
+			For local genderIndex:int = 0 to 1
+				local gender:int = TVTPersonGender.FEMALE
+				if genderIndex = 1 then gender = TVTPersonGender.MALE
+				If Predecessor
+					predecessorValue = Predecessor.FinalAttraction.GetGenderValue(targetGroupID, gender)
+				Else
+					predecessorValue = 0
+				EndIf
+				successorValue = Successor.BaseAttraction.GetGenderValue(targetGroupID, gender)
 
-			Local riseModTemp:Float = 1
-			If riseModCopy Then riseModTemp = riseModCopy.GetTotalValue(targetGroupID)
-			Local shrinkModTemp:Float = 1
-			If shrinkModCopy Then shrinkModTemp = shrinkModCopy.GetTotalValue(targetGroupID)
+				Local riseModTemp:Float = 1
+				If riseModCopy Then riseModTemp = riseModCopy.GetGenderValue(targetGroupID, gender)
+				Local shrinkModTemp:Float = 1
+				If shrinkModCopy Then shrinkModTemp = shrinkModCopy.GetGenderValue(targetGroupID, gender)
 
-			Local predShareOnRiseForTG:Float = PredecessorShareOnRise.GetTotalValue(targetGroupID)
-			Local predShareOnShrinkForTG:Float = PredecessorShareOnShrink.GetTotalValue(targetGroupID)
-			Local sequence:Float = CalcSequenceCase(predecessorValue, successorValue, riseModTemp, shrinkModTemp, predShareOnRiseForTG, predShareOnShrinkForTG)
+				Local predShareOnRiseForTG:Float = PredecessorShareOnRise.GetGenderValue(targetGroupID, gender)
+				Local predShareOnShrinkForTG:Float = PredecessorShareOnShrink.GetGenderValue(targetGroupID, gender)
+				Local sequence:Float = CalcSequenceCase(predecessorValue, successorValue, riseModTemp, shrinkModTemp, predShareOnRiseForTG, predShareOnShrinkForTG)
 
-			result.SetTotalValue(targetGroupID, sequence)
+				result.SetGenderValue(targetGroupID, sequence, gender)
+			Next
 		Next
 
 		Return result
 	End Method
+
 
 	Method CalcSequenceCase:Float(predecessorValue:Float, successorValue:Float, riseMod:Float, shrinkMod:Float, predShareOnRise:Float, predShareOnShrink:Float)
 		Local rise:Int = false
