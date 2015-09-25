@@ -708,14 +708,12 @@ Type TDatabaseLoader
 		'=== GROUPS ===
 		local nodeGroups:TxmlNode = xml.FindElementNode(node, "groups")
 		data = new TData
-		xml.LoadValuesToData(nodeData, data, [..
+		xml.LoadValuesToData(nodeGroups, data, [..
 			"target_groups", "pro_pressure_groups", "contra_pressure_groups" ..
 		])
 		programmeData.targetGroups = data.GetInt("target_groups", programmeData.targetGroups)
 		programmeData.proPressureGroups = data.GetInt("pro_pressure_groups", programmeData.proPressureGroups)
 		programmeData.contraPressureGroups = data.GetInt("contra_pressure_groups", programmeData.contraPressureGroups)
-
-
 
 		'=== EFFECTS ===
 		LoadV3EffectsFromNode(programmeData, node, xml)
