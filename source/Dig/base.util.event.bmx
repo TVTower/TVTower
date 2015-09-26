@@ -253,13 +253,16 @@ Type TEventManager
 					?
 				EndIf
 
-'				Assert startTime >= self._ticks, "TEventManager: an future event didn't get triggered in time"
-				If event.getStartTime() <= _ticks			' is it time for this event?
-					If event._trigger <> ""					' only trigger event if _trigger is set
+				' is it time for this event?
+				If event.getStartTime() <= _ticks
+					' only trigger event if _trigger is set
+					If event._trigger <> ""
 						triggerEvent( event )
 					EndIf
-					_events.RemoveFirst()			' remove from list
-					_processEvents()				' another event may start on the same ticks - check again
+					' remove from list
+					_events.RemoveFirst()
+					' another event may start on the same tick - check again
+					_processEvents()
 				EndIf
 			EndIf
 		EndIf

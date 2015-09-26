@@ -879,7 +879,7 @@ print "added Goaaal to player1's suitcase"
 		EndIf
 
 		If GetGame().gamestate = TGame.STATE_RUNNING
-			if TVTDebugInfos And Not GetPlayer().GetFigure().inRoom
+			if TVTDebugInfos 'And Not GetPlayer().GetFigure().inRoom
 				SetAlpha GetAlpha() * 0.5
 				SetColor 0,0,0
 				DrawRect(0,0,160,385)
@@ -894,6 +894,16 @@ print "added Goaaal to player1's suitcase"
 				Local fig:TFigure
 				For Local i:Int = 0 To 3
 					fig = GetPlayerCollection().Get(i+1).GetFigure()
+
+					local change:string = ""
+					if fig.isChangingRoom()
+						if fig.inRoom
+							change = " <<" 'Chr(8646) '⇆
+						else
+							change = " >>" 'Chr(8646) '⇆
+						endif
+					endif
+
 					roomName = "Building"
 					If fig.inRoom
 						roomName = fig.inRoom.Name
@@ -902,7 +912,7 @@ print "added Goaaal to player1's suitcase"
 					ElseIf fig.IsAtElevator()
 						roomName = "AtElevator"
 					EndIf
-					GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName, 5, 70 + i * 11)
+					GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName+change, 5, 70 + i * 11)
 				Next
 
 				If ScreenCollection.GetCurrentScreen()
@@ -1382,6 +1392,8 @@ Type TSaveGame Extends TGameState
 		Super.RestoreGameData()
 		'restore "time gone since start"
 		Time.SetTimeGone(_Time_timeGone)
+		'set event manager to the ticks of that time
+		EventManager._ticks = _Time_timeGone
 	End Method
 
 
