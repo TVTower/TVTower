@@ -67,7 +67,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 
 
 	Method IsLocalHuman:Int(number:Int)
-		Return playerID = GetPlayerCollection().playerID
+		Return number = playerID
 	End Method
 
 

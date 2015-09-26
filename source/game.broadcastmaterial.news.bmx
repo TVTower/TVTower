@@ -256,7 +256,6 @@ endrem
 		local count:int = 0
 		for local i:int = 0 to 2
 			if TNews(news[i])
-print "getquality"+i
 				quality :+ TNews(news[i]).GetQuality()
 				count :+ 1
 			endif
