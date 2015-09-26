@@ -80,6 +80,58 @@ Type TAudienceManager
 			return new TAudienceBase.InitValue(1).Subtract( currentGenderBreakdown )
 		endif
 	End Method
+
+
+	Method GetGenderPercentage:Float(gender:int)
+		return GetGenderBreakdown(gender).GetWeightedAverage( GetAudienceBreakdown() )
+	End Method
+
+
+	Method GetGenderGroupPercentage:Float(gender:int, groups:int)
+		local portion:float = 0
+		local gBreakdown:TAudienceBase = GetGenderBreakdown(gender)
+		local aBreakdown:TAudienceBase = GetAudienceBreakdown()
+		For local i:int = 1 to TVTTargetGroup.baseGroupCount
+			local targetGroupID:int = TVTTargetGroup.GetAtIndex(i)
+			if groups & targetGroupID
+				portion :+ gBreakdown.GetValue(targetGroupID) * aBreakdown.GetValue(targetGroupID)
+			endif
+		Next
+		return portion
+	End Method
+
+
+	'returns the percentage/count of all persons in the group
+	'a "MEN + TEENAGER + EMPLOYEES"-group just returns the amount
+	'of all male teenager and male employees
+	'---
+	'In contrast to "GetGenderGroupPercentage" this allows to have
+	'TVTTargetGroup.MEN / WOMEN recognized as gender
+	Method GetTargetGroupPercentage:Float(targetGroups:int)
+		'add target groups ignoring the gender
+		if targetGroups & TVTTargetGroup.MEN
+			'just men
+			if targetGroups = TVTTargetGroup.MEN 
+				return GetGenderPercentage(TVTPersonGender.MALE)
+			'male part of target groups
+			else
+				return GetGenderGroupPercentage(TVTPersonGender.MALE, targetGroups)
+			endif
+		elseif targetGroups & TVTTargetGroup.WOMEN
+			'just women
+			if targetGroups = TVTTargetGroup.WOMEN
+				return GetGenderPercentage(TVTPersonGender.FEMALE)
+			'female part of target groups
+			else
+				return GetGenderGroupPercentage(TVTPersonGender.FEMALE, targetGroups)
+			endif
+		else
+			return GetAudienceBreakdown().GetValue(targetGroups)
+		endif
+
+		Throw "unhandled GetTargetGroupAmaount: targetGroups="+targetGroups
+		return 0
+	End Method
 End Type
 
 Global AudienceManager:TAudienceManager = new TAudienceManager
@@ -259,6 +311,10 @@ Type TAudienceBase
 				Return Manager
 			Case TVTTargetGroup.Pensioners
 				Return Pensioners
+			Case TVTTargetGroup.Men
+				Return 0
+			Case TVTTargetGroup.Women
+				Return 0
 			Default
 				'check if we got a combination of multiple
 				Return GetGroupValue(targetID)
@@ -272,7 +328,7 @@ Type TAudienceBase
 		local result:Float
 		local oneFound:int = false
 		'do NOT start with 0 ("all")
-		For local i:int = 1 to TVTTargetGroup.baseGroupCount
+		For local i:int = 1 to TVTTargetGroup.count
 			if targetIDs & TVTTargetGroup.GetAtIndex(i)
 				result :+ GetValue(i)
 				oneFound = True

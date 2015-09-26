@@ -367,7 +367,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 
 		'begin of a programme, begin of broadcast - or news show
 		If block = 1 Or Not lastMovieBlockAttraction or usedAsType = TVTBroadcastMaterialType.NEWS Then
-			'1 - Qualität des Programms
+			'1 - Qualität des Programms/Newsevents
 			result.Quality = GetQuality()
 
 			'2 - Mod: Genre-Popularität / Trend
@@ -379,6 +379,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 			If genreDefinition
 				result.GenreTargetGroupMod = GenreTargetGroupMod(genreDefinition)
 			EndIf
+
 
 			'4 - Trailer
 			result.TrailerMod = GetTrailerMod()
@@ -395,7 +396,11 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 			result.CopyBaseAttractionFrom(lastMovieBlockAttraction)
 		Endif
 
-		'7 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
+		'7 - Stetige Auswirkungen der Film-Quali.
+		'    Gute Filme bekommen mehr Attraktivität, schlechte Filme
+		'    animieren eher zum Umschalten
+		'good movies increase "perceived" quality on subsequent blocks
+		'bad movies loose on block 2,3... 
 		result.QualityOverTimeEffectMod = GetQualityOverTimeEffectMod(result.Quality, block)
 
 		'8 - Genres <> Sendezeit
@@ -417,6 +422,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 			result.Recalculate()
 			result.SequenceEffect = GetSequenceEffect(block, genreDefinition, lastNewsBlockAttraction, result, lastMovieBlockAttraction)
 		EndIf
+
 
 		'calculate final result
 		result.Recalculate()

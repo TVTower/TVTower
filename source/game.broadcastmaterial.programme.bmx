@@ -457,9 +457,10 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Endrem
 
 	Method GetAudienceFlowBonus:TAudience(block:Int, result:TAudienceAttraction, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction)
-		If block = 1 And lastMovieBlockAttraction and lastNewsBlockAttraction Then 'AudienceFlow
+		'calculate the audienceflow from one programme to another one
+		If block = 1 And lastMovieBlockAttraction and lastNewsBlockAttraction
 			Return GetAudienceFlowBonusIntern(lastMovieBlockAttraction, result, lastNewsBlockAttraction)
-		ElseIf lastMovieBlockAttraction And lastMovieBlockAttraction.AudienceFlowBonus Then
+		ElseIf lastMovieBlockAttraction And lastMovieBlockAttraction.AudienceFlowBonus
 			Return lastMovieBlockAttraction.AudienceFlowBonus.Copy().MultiplyFloat(0.25)
 		Else
 			Return Null
