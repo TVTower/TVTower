@@ -31,7 +31,7 @@ STARTHINT_TEXT2 = Yayının başarısı, programın Kalite/Reyting değerine ço
 STARTHINT_TITLE3 = Reklam Kontratları
 STARTHINT_TEXT3 = Reklam Kontratları, en az izleyici sınırı ile tanımlanır. Reklamın getirisi ve cezası, kanalın ulaşabileceği en fazla izleyici potansiyeli ile bağlantılıdır. \n\n Bu nedenle bazen yeni istasyon anlaşması yapmadan önce kontratları imzalamak iyi olabilir.
 
-CLOSES_AT_TIME = %TIME% olunca kapanacak
+CLOSES_AT_TIME = %TIME% olmadan önce...
 CLOSES_AT_DAY = Kapatır: %TIME%
 
 GAME_TITLE = Oyun Başlığı
@@ -185,7 +185,7 @@ AD_MIN_AUDIENCE			= En Az İzleyici
 AD_TARGETGROUP			= Hedef Grup
 AD_SEND_TILL_TOLATE     = çok geç!!!
 AD_SEND_TILL_MIDNIGHT   = Geceyarısına kadar yayınlanmalı !!
-AD_SEND_TILL_TOMORROW   = Yarına kadar yayınlanmalı!
+AD_SEND_TILL_TOMORROW   = Yarın Akşama kadar yayınlanmalı!
 
 AD_TILL_TOLATE			= çok geç!!!
 AD_TILL_TODAY			= bugüne kadar!!
@@ -232,7 +232,7 @@ JOB_MUSIC             = Müzik
 JOB_MUSICIAN          = Müzisyen
 JOB_MUSICIANS         = Müzisyen
 
-MOVIE_SPEED				= Hız
+MOVIE_SPEED				= Tempo
 MOVIE_CRITIC			= Eleştiri
 MOVIE_BOXOFFICE			= Gişe Hasılatı
 MOVIE_TOPICALITY		= Güncellik
@@ -251,7 +251,7 @@ LICENCETYPE_COLLECTION = Koleksiyon
 LICENCETYPE_SERIES = Dizi
 LICENCETYPE_FRANCHISE = Bayilik
 
-SERIES_WITH_X_EPISODES = %EPISODESCOUNT% bölümlük Diziler
+SERIES_WITH_X_EPISODES = %EPISODESCOUNT% bölümlük Dizi
 SCRIPT_POTENTIAL = Potansiyel
 
 PROGRAMME_GENRE_UNDEFINED = Çeşitli
@@ -491,9 +491,9 @@ SPECIAL_NEWS_BROADCAST = Özel Haberler
 
 24_HOURS_GAMEDAY = 24 saatlik Oyun Günü
 ALLOW_TRAILERS_AND_INFOMERCIALS = Fragman ve Ödemeli Programlar Açık
-ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR = Oyun yılından sonra üretilmiş oyunlara İzin ver.
-OPTION_ON = Seçenek ON
-OPTION_OFF = Seçenek OFF
+ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR = Oyun yılından sonra üretilmiş filmlere İzin ver.
+OPTION_ON = Seçenek AÇIK
+OPTION_OFF = Seçenek KAPALI
 AVAILABLE_GAMES = Mevcut Oyunlar
 ALREADY_OVER = Bitti mi...?
 DO_YOU_REALLY_WANT_TO_QUIT = Gerçekten çıkmak istiyor musun?
