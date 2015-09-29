@@ -173,9 +173,15 @@ Type TNewsEventCollection
 			RemoveOutdatedNewsEvents(days)
 			days :- 1
 		Wend
+
+		'maybe we could auto-reuse some news ?
+		if GetAvailableNewsList().Count() = 0
+			GetNewsEventCollection().RemoveEndedNewsEvents()
+		endif
 		
 		if GetAvailableNewsList().Count() = 0
 			'This should only happen if no news events were found in the database
+			TLogger.Log("TNewsEventCollection.GetRandom()", "no unused news events found.", LOG_ERROR)
 			Throw "TNewsEventCollection.GetRandom(): no unused news events found."
 		endif
 		
@@ -424,7 +430,8 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		
 		'avoid that "-1" (the default for "unset") is fetched in the
 		'next check ("time gone?")
-		If eventDuration < 0 Then Return False
+		If eventDuration < 0 Then Return True
+		
 		'check if the time is gone already
 		If happenedTime + eventDuration > GetWorldTime().GetTimeGone() Then Return False
 
