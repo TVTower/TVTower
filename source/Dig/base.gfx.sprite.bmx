@@ -68,7 +68,7 @@ Global ALIGN_RIGHT_BOTTOM:TVec2D = new TVec2D.Init(ALIGN_RIGHT, ALIGN_BOTTOM)
 
 
 Type TSpritePack
-	Field image:TImage
+	Field image:TImage {nosave}
 	Field name:String
 	Field sprites:TSprite[]
 
