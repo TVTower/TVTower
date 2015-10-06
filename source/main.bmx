@@ -679,6 +679,7 @@ endrem
 							print "currentReachStep: " + GetPlayer().GetFigure().currentReachTargetStep
 							print "-----------------"
 						EndIf
+						
 						If KEYMANAGER.isHit(KEY_D)
 							If KEYMANAGER.IsDown(KEY_RSHIFT)
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", 2))
@@ -812,6 +813,11 @@ endrem
 				'TApp.CreateConfirmExitAppDialogue(False)
 			endif
 		EndIf
+		'Force-quit with CTRL+C
+		if KEYMANAGER.IsDown(KEY_LCONTROL) and KEYMANAGER.IsHit(KEY_C)
+			TApp.ExitApp = True
+		endif
+
 		If AppTerminate() and not TApp.ExitAppDialogue
 			'ask to exit the app
 			TApp.CreateConfirmExitAppDialogue(False)
