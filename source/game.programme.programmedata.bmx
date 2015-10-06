@@ -360,9 +360,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	'announced in news etc?
 	Field releaseAnnounced:int = FALSE
 	'state of the programme (in production, cinema, released...)
-	Field state:int = 0
-	'how "fresh" a programme is (the more shown, the less this value)
-	Field topicality:Float = -1
+	Field state:Int = 0
 	'programmes descending from this programme (eg. "Lord of the Rings"
 	'as "franchise" and the individual programmes as "franchisees"
 	Field franchisees:string[] {nosave}
@@ -409,13 +407,13 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		obj.blocks      = blocks
 		obj.SetFlag(TVTProgrammeDataFlag.XRATED, xrated)
 		obj.country     = country
-		obj.cast        = cast
+		obj.cast 		= cast
 		obj.year        = year
 		if GetWorldTime().GetYear(releaseTime) < 1900
 			obj.releaseTime = GetWorldTime().Maketime(year, 1,1, 0,0)
 		endif
 		obj.liveTime    = Max(-1,liveTime)
-		obj.topicality  = obj.GetTopicality()
+		obj.topicality = obj.GetTopicality()
 		GetProgrammeDataCollection().Add(obj)
 
 		Return obj
@@ -426,13 +424,13 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Method GetPerViewerRevenue:Float() {_exposeToLua}
 		local result:float = 0.0
 		If HasFlag(TVTProgrammeDataFlag.PAID)
-			'leads to a maximum of "0.25 * (20+10)" if speed/review
+			'leads to a maximum of "0.15 * (23+12)" if speed/review
 			'reached 100%
-			'-> 8 Euro per Viewer
-			result :+ GetSpeed() * 22
-			result :+ GetReview() * 10
-			'cut to 25%
-			result :* 0.25
+			'-> 5.25 Euro per Viewer
+			result :+ GetSpeed() * 23
+			result :+ GetReview() * 12
+			'cut to 15%
+			result :* 0.15
 			'adjust by topicality
 			result :* (GetTopicality()/GetMaxTopicality())
 		Else
@@ -1025,30 +1023,28 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 		quality :+ GetReview() * genreDef.ReviewMod
 		quality :+ GetSpeed() * genreDef.SpeedMod
-		if GetOutcome() > 0
+		If GetOutcome() > 0
 			quality :+ GetOutcome() * genreDef.OutcomeMod
 		'if no outcome was defined, increase weight of the other parts
 		'increase quality according to their weight to the outcome mod
-		elseif genreDef.OutcomeMod > 0 and genreDef.OutcomeMod < 1.0
-			'1.0 - genreDef.OutcomeMod = amount left to share
-			if genreDef.ReviewMod > 0
-				quality :+ genreDef.ReviewMod/(1.0 - genreDef.OutcomeMod) * GetReview()
-			endif
-			if genreDef.SpeedMod > 0 
-				quality :+ genreDef.SpeedMod/(1.0 - genreDef.OutcomeMod) * GetSpeed()
-			endif
-		endif
-
-		return quality
+		ElseIf genreDef.OutcomeMod > 0 And genreDef.OutcomeMod < 1.0
+			If genreDef.ReviewMod > 0
+				quality :+ (genreDef.ReviewMod / (1.0 - genreDef.OutcomeMod) ) - genreDef.ReviewMod
+			EndIf
+			If genreDef.SpeedMod > 0
+				quality :+ (genreDef.SpeedMod / (1.0 - genreDef.OutcomeMod) ) - genreDef.SpeedMod
+			EndIf
+		EndIf
+		Return quality
 	End Method
 
 
 	'Diese Methode ersetzt "GetBaseAudienceQuote"
 	Method GetQuality:Float() {_exposeToLua}
-		Local quality:Float = GetQualityRaw()
+		Local quality:Float = 1.0
 
 		'the older the less ppl want to watch - 1 year = 0.99%, 2 years = 0.98%...
-		Local age:Float = 0.01 * Max(0, 100 - Max(0, GetWorldTime().GetYear() - year))
+		Local age:Float = 0.01 * Max(0, 100 - Max(0, GetWorldTime().GetYear() - year) )
 		quality :* Max(0.20, age)
 
 		'the more the programme got repeated, the lower the quality in
@@ -1059,15 +1055,10 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		'   quality no matter how many times it got aired
 		'-> a movie with 0% base quality will cut to up to 75% of that
 		'   resulting in <= 25% quality
-		
-		quality :* (0.25*GetQualityRaw() + (1.0 - 0.75*GetQualityRaw()) * GetTopicality()^2)
-		'old variant
-		'quality :* GetTopicality() ^ 2
+		quality :* 0.25 * GetQualityRaw() + 0.75 * GetQualityRaw() * GetTopicality() ^ 2
 
-		'no minus quote, min 0.01 quote
-		quality = Max(0.01, quality)
 
-		Return quality
+		Return MathHelper.Clamp(quality, 0.01, 1.0)
 	End Method
 
 
@@ -1194,18 +1185,22 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	End Method
 
 
+	'return a value between 0 - 1.0
+	'describes how much of a potential trailer-bonus of 100% was reached
 	Method GetTrailerMod:TAudience()
-		'TODO: Bessere Berechnung
+		'TODO: include "reached audience"-portion, means we
+		'      have to store amount of audience/reach having
+		'      watched the broadcasted trailers 
 		Local timesTrailerAired:Int = GetTimesTrailerAired(False)
-		Local trailerMod:Float = 1
+		Local trailerMod:Float = 0
 
 		Select timesTrailerAired
-			Case 0 	trailerMod = 1
-			Case 1 	trailerMod = 1.25
-			Case 2 	trailerMod = 1.40
-			Case 3 	trailerMod = 1.50
-			Case 4 	trailerMod = 1.55
-			Default	trailerMod = 1.6
+			Case 0 	trailerMod = 0		'+0.3
+			Case 1 	trailerMod = 0.3	'+0.25
+			Case 2 	trailerMod = 0.55	'+0.20
+			Case 3 	trailerMod = 0.75	'+0.15
+			Case 4 	trailerMod = 0.9	'+0.1
+			Default	trailerMod = 1.0
 		EndSelect
 
 		Return new TAudience.InitValue(trailerMod, trailerMod)
@@ -1293,6 +1288,8 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		if IsLive() then return False
 		
 		'inform each person in the cast that the production finished
+		if not GetCast() then return True
+
 		For local job:TProgrammePersonJob = eachIn GetCast()
 			local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID( job.personGUID )
 			if person then person.FinishProduction(GetGUID())
