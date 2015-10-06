@@ -386,11 +386,14 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		'the older the less ppl want to watch - 1hr = 0.95%, 2hr = 0.90%...
 		'means: after 20 hrs, the topicality is 0
 		local ageHours:int = floor( float(GetWorldTime().GetTimeGone() - self.happenedTime)/3600.0 )
-		Local ageInfluence:float = 1.0 - 0.01 * Max(0, 100 - 5 * Max(0, ageHours))
+		Local ageInfluence:Float = 1.0 - 0.01 * Max(0, 100 - 5 * Max(0, ageHours) )
 		ageInfluence :* GetModifier("topicality::age")
+		'the lower the quality of an newsevent, the higher the age influences
+		'the max topicality, up to 80% is possible
+		ageInfluence :* 1 + 0.8 * (1 - GetQualityRaw() )
 
 		'the first 12 broadcasts do decrease maxTopicality
-		Local timesBroadcastedInfluence:Float = 0.01 * Min(12, GetTimesBroadcasted())
+		Local timesBroadcastedInfluence:Float = 0.01 * Min(12, GetTimesBroadcasted() )
 		timesBroadcastedInfluence :* GetModifier("topicality::timesBroadcasted")
 
 		'subtract various influences (with individual weights)
@@ -542,27 +545,22 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		'that moment (^2 increases loss per air)
 		'but a "good news" should benefit from being good - so the
 		'influence of repetitions gets lower by higher raw quality
-		'-> a news with 100% base quality will have at least 25% of
+		'-> a news with 100% base quality will have at least 5% of
 		'   quality no matter how many times it got aired
-		'-> a news with 0% base quality will cut to up to 75% of that
-		'   resulting in <= 25% quality
-		Local quality:Float = 0.25 * GetQualityRaw() + 0.75 * GetQualityRaw() * GetTopicality()^2
+		'-> a news with 0% base quality will cut to up to 95% of that
+		'   resulting in <= 5% quality
+'		Local quality:Float = 0.05 * GetQualityRaw() + 0.95 * GetQualityRaw() * GetTopicality() ^ 2
 
-		'old variant 2:
-		'quality :* (0.75*GetQualityRaw() + (1.0 - 0.75*GetQualityRaw()) * GetTopicality()^2)
-		'old variant
-		'quality :* GetTopicality() ^ 2
+		'topicality also includes "topicality loss" by lower-quality events
+		Local quality:Float = GetQualityRaw() * GetTopicality() ^ 2
 
-		'no minus quote, min 0.01 quote
-		quality = Max(0.01, quality)
-
-		Return quality
+		Return Max(0, quality)
 	End Method
 
 
 	Method ComputeBasePrice:Int() {_exposeToLua}
 		'price ranges from 500-10.000
-		Return  Max(500, 100 * ceil(100 * GetAttractiveness() * GetModifier("price")))
+		Return Max(500, 100 * ceil(100 * GetAttractiveness() * GetModifier("price") ) )
 	End Method
 End Type
 
