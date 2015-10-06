@@ -605,7 +605,8 @@ Type TDatabaseLoader
 			programmeData.title = new TLocalizedString
 			programmeData.originalTitle = new TLocalizedString
 			programmeData.description = new TLocalizedString
-
+			programmeData.titleProcessed = Null
+			programmeData.descriptionProcessed = Null
 			programmeLicence = new TProgrammeLicence
 			programmeLicence.GUID = GUID
 		else
