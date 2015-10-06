@@ -410,7 +410,11 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		'movement is not done when in a room
 		FigureMovement()
 		'set the animation
-		GetFrameAnimations().SetCurrent( getAnimationToUse() )
+		GetFrameAnimations().SetCurrent( GetAnimationToUse() )
+
+		'repair missed "control regain"
+		'TODO: check why figures might miss "ReachTargetStep2" (savegame?)
+		If Not GetTarget() Then controllable = True
 
 		'this could be overwritten by extended types
 		UpdateCustom()
