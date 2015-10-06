@@ -1836,7 +1836,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		For Local obj:TAuctionProgrammeBlocks = EachIn List
 			If Not obj.bestBidder
 				obj.Refill()
-				print obj.licence.GetTitle() +"  " + obj.licence.data.year
+				if not obj.licence then print "RefillAuctionsWithoutBid: no licence available"
 			endif
 		Next
 	End Function
@@ -2298,7 +2298,7 @@ Type TGUINews Extends TGUIGameListItem
 			textY :+ 14	
 			fontNormal.draw("Preis: " + news.GetPrice()+"  (PreisMod: "+MathHelper.NumberToString(news.newsEvent.GetModifier("price"),4)+")", screenX + 5, textY)
 			textY :+ 11	
-			fontNormal.draw("Qualitaet: " + MathHelper.NumberToString(news.GetQuality(), 4) + " (Event:" + MathHelper.NumberToString(news.newsEvent.GetQuality(),4) + ", roh=" + MathHelper.NumberToString(news.newsEvent.GetQualityRaw(), 4), screenX + 5, textY)
+			fontNormal.draw("Qualitaet: " + MathHelper.NumberToString(news.GetQuality(), 4) + " (Event:" + MathHelper.NumberToString(news.newsEvent.GetQuality(),4) + ", roh=" + MathHelper.NumberToString(news.newsEvent.GetQualityRaw(), 4) + ")", screenX + 5, textY)
 			textY :+ 11	
 			fontNormal.draw("(KI-)Attraktivitaet: "+MathHelper.NumberToString(news.newsEvent.GetAttractiveness(),4)+"    Aktualitaet: " + MathHelper.NumberToString(news.newsEvent.GetTopicality(),4), screenX + 5, textY)
 			textY :+ 11	

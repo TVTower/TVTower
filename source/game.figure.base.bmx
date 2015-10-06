@@ -414,7 +414,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 		'repair missed "control regain"
 		'TODO: check why figures might miss "ReachTargetStep2" (savegame?)
-		If Not GetTarget() Then controllable = True
+		If not controllable and Not GetTarget() then controllable = True
 
 		'this could be overwritten by extended types
 		UpdateCustom()
