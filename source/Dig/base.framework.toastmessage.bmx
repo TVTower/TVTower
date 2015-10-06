@@ -176,9 +176,13 @@ Type TToastMessageCollection extends TRenderableEntity
 	
 
 	Method Update:Int()
-		For local spawnPoint:TToastMessageSpawnPoint = EachIn spawnPoints.Copy().Values()
-			spawnPoint.Update()
-		Next
+		if spawnPoints
+			'using "copy()" leads to segfaults in "TMap.NextObject() -> NextNode()"
+			'For local spawnPoint:TToastMessageSpawnPoint = EachIn spawnPoints.Copy().Values()
+			For local spawnPoint:TToastMessageSpawnPoint = EachIn spawnPoints.Values()
+				spawnPoint.Update()
+			Next
+		endif
 
 		'=== UPDATE CHILDREN ===
 		UpdateChildren()
