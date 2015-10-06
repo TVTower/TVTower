@@ -11,6 +11,12 @@
 
 extern "C"{
 
+/* Brucey */
+BBArray * bbRefArrayNull() {
+	return &bbEmptyArray;
+}
+
+
 void *bbRefFieldPtr( BBObject *obj,int index ){
 	return (char*)obj+index;
 }

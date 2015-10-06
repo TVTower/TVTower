@@ -43,6 +43,9 @@ Import "reflection.cpp"
 Private
 
 Extern
+	'Brucey
+	Function bbRefArrayNull:Object()
+
 	Function bbObjectNew:Object(class:int)
 	Function bbObjectRegisteredTypes:Int Ptr(count:int Var)
 
@@ -69,6 +72,11 @@ Extern
 	Function bbRefGetObjectClass(obj:Object)
 	Function bbRefGetSuperClass(class:int)
 End Extern
+
+
+Function GetNullArray:Object()
+	return bbRefArrayNull:Object()
+End Function
 
 
 Type TClass
@@ -162,6 +170,11 @@ Function _Assign( p:Byte Ptr,typeId:TTypeId,value:Object )
 				t = bbRefGetSuperClass( t )
 			Wend
 			If Not t then Throw "ERROR"
+		'Ron: copy from BMX-ng-reflection.mod
+		Else
+			If typeId.Name().Endswith("]") Then
+				value = bbRefArrayNull()
+			EndIf
 		EndIf
 		bbRefAssignObject p,value
 	End Select
