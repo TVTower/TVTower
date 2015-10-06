@@ -433,7 +433,8 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		
 		'avoid that "-1" (the default for "unset") is fetched in the
 		'next check ("time gone?")
-		If eventDuration < 0 Then Return True
+		'a "-1"-duration never ends
+		If eventDuration < 0 Then Return False
 		
 		'check if the time is gone already
 		If happenedTime + eventDuration > GetWorldTime().GetTimeGone() Then Return False
