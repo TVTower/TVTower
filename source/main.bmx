@@ -638,10 +638,12 @@ GetNewsAgency().announceNewsEvent(news, 0, False)
 print "happen: "+ news.GetTitle() + "  at: "+GetWorldTime().GetformattedTime(news.happenedTime)
 endrem
 
+rem
 local m:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID("TheRob-b0db-439c-a852-Goaaaaal")
 m.SetOwner(0)
 RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(m, 1)
 print "added Goaaal to player1's suitcase"
+endrem
 					EndIf
 
 				
@@ -665,8 +667,19 @@ print "added Goaaal to player1's suitcase"
 						endif
 						If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", GetPlayerCollection().playerID))
 						If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("boss", GetPlayerCollection().playerID))
-						If KEYMANAGER.IsHit(KEY_G) Then TVTGhostBuildingScrollMode = 1 - TVTGhostBuildingScrollMode
-						If KEYMANAGER.IsHit(KEY_D)
+						If KEYMANAGER.isHit(KEY_G) Then TVTGhostBuildingScrollMode = 1 - TVTGhostBuildingScrollMode
+						If KEYMANAGER.isHit(KEY_X)
+							print "Player: #" + GetPlayer().GetFigure().playerID + "   time: " + GetWorldTime().GetFormattedTime()
+							print "IsControllable: " + GetPlayer().GetFigure().IsControllable()
+							print "IsIdling: " + GetPlayer().GetFigure().IsIdling()
+							print "IsChangingRoom: " + GetPlayer().GetFigure().IsChangingRoom()
+							print "IsAtElevator: " + GetPlayer().GetFigure().IsAtElevator()
+							print "IsInElevator: " + GetPlayer().GetFigure().IsInElevator()
+							print "IsInBuilding: " + GetPlayer().GetFigure().IsInBuilding()
+							print "currentReachStep: " + GetPlayer().GetFigure().currentReachTargetStep
+							print "-----------------"
+						EndIf
+						If KEYMANAGER.isHit(KEY_D)
 							If KEYMANAGER.IsDown(KEY_RSHIFT)
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", 2))
 							Else If KEYMANAGER.IsDown(KEY_LSHIFT)
@@ -879,7 +892,7 @@ print "added Goaaal to player1's suitcase"
 		EndIf
 
 		If GetGame().gamestate = TGame.STATE_RUNNING
-			if TVTDebugInfos 'And Not GetPlayer().GetFigure().inRoom
+			if TVTDebugInfos And Not GetPlayer().GetFigure().inRoom
 				SetAlpha GetAlpha() * 0.5
 				SetColor 0,0,0
 				DrawRect(0,0,160,385)

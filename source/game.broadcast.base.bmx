@@ -1,4 +1,4 @@
-﻿Rem
+Rem
 	===========================================================
 	Diese Klasse ist der Manager der ganzen Broadcast-Thematik.
 	===========================================================
@@ -258,7 +258,17 @@ Type TBroadcastManager
 			Local audienceResult:TAudienceResult = bc.GetAudienceResult(playerID)
 			'add to current set of results
 			SetAudienceResult(playerID, audienceResult)
-			
+if playerID = 1 and audienceResult
+	if broadcastType = TVTBroadcastMaterialType.NEWSSHOW
+		print "NEWS ATTRACTION FOR PLAYER "+playerID+" hour:"+hour+":00"
+		audienceResult.AudienceAttraction.DebugPrint()
+		print "-------------------------------"
+	else
+		print "PROGRAMME ATTRACTION FOR PLAYER "+playerID+" hour:"+hour+":05"
+		audienceResult.AudienceAttraction.DebugPrint()
+		print "-------------------------------"
+	endif
+endif
 			If audienceResult.AudienceAttraction			
 				'if there is a malfunction, inform others
 				If audienceResult.AudienceAttraction.Malfunction
@@ -290,13 +300,13 @@ Type TBroadcastManager
 					EndIf
 				Next
 
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.Children, attrList, TAudience.ChildrenSort)
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.Teenagers, attrList, TAudience.TeenagersSort)
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.HouseWives, attrList, TAudience.HouseWivesSort)
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.Employees, attrList, TAudience.EmployeesSort)
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.Unemployed, attrList, TAudience.UnemployedSort)
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.Manager, attrList, TAudience.ManagerSort)
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.Pensioners, attrList, TAudience.PensionersSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.CHILDREN, attrList, TAudience.ChildrenSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.TEENAGERS, attrList, TAudience.TeenagersSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.HOUSEWIVES, attrList, TAudience.HouseWivesSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.EMPLOYEES, attrList, TAudience.EmployeesSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.UNEMPLOYED, attrList, TAudience.UnemployedSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.MANAGER, attrList, TAudience.ManagerSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.PENSIONERS, attrList, TAudience.PensionersSort)
 
 				For Local i:Int = 1 To 4 'TODO: Was passiert wenn ein Spieler ausscheidet?
 					Local audience:TAudience = TAudience(map.ValueForKey(string.FromInt(i)))
@@ -483,7 +493,7 @@ Type TBroadcast
 			'outage
 			GetAudienceResult(playerId).Title = "Malfunction!"
 			GetAudienceResult(playerId).broadcastOutage = True
-			Attractions[playerId-1] = CalculateMalfunction(lastMovieAttraction)
+			Attractions[playerId - 1] = CalculateMalfunction(lastMovieAttraction)
 		End If
 
 		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets

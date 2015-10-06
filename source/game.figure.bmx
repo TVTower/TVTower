@@ -1068,13 +1068,13 @@ Type TFigure extends TFigureBase
 		SetColor 255,255,255
 		GetBitMapFont("default").Draw(name, pos.x + 5, pos.y + 5)
 		GetBitMapFont("default").Draw("isChangingRoom: "+isChangingRoom(), pos.x+ 5, pos.y + 5 + 1*12)
-		GetBitMapFont("default").Draw("IsControllable(): "+IsControllable(), pos.x+ 5, pos.y + 5 + 2*12)
-		GetBitMapFont("default").Draw("CanMove(): "+CanMove(), pos.x+ 5, pos.y + 5 + 3*12)
-		GetBitMapFont("default").Draw("fromDoor: "+fromDoorText, pos.x+ 5, pos.y + 5 + 4*12)
-		GetBitMapFont("default").Draw("fromRoom: "+fromRoomText, pos.x+ 5, pos.y + 5 + 5*12)
-		GetBitMapFont("default").Draw("inRoom: "+inRoomText, pos.x+ 5, pos.y + 5 + 6*12)
-		GetBitMapFont("default").Draw("target: "+targetText, pos.x+ 5, pos.y + 5 + 7*12)
-		GetBitMapFont("default").Draw("targetObj: "+targetObjText, pos.x+ 5, pos.y + 5 + 8*12)
+		GetBitmapFont("default").draw("IsControllable(): " + IsControllable(), pos.x + 5, pos.y + 5 + 2 * 12)
+		GetBitmapFont("default").draw("CanMove(): " + CanMove(), pos.x + 5, pos.y + 5 + 3 * 12)
+		GetBitmapFont("default").draw("fromDoor: " + fromDoorText, pos.x + 5, pos.y + 5 + 4 * 12)
+		GetBitmapFont("default").draw("fromRoom: " + fromRoomText, pos.x + 5, pos.y + 5 + 5 * 12)
+		GetBitmapFont("default").draw("inRoom: " + inRoomText, pos.x + 5, pos.y + 5 + 6 * 12)
+		GetBitmapFont("default").draw("target: " + targetText, pos.x + 5, pos.y + 5 + 7 * 12)
+		GetBitmapFont("default").draw("targetObj: " + targetObjText, pos.x + 5, pos.y + 5 + 8 * 12)
 
 		'restore col/alpha
 		oldCol.SetRGBA()

@@ -84,40 +84,6 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 	End Method
 
 
-	'override - lower interest again (added to genre-interest)
-	Method GetMiscMod:TAudience(hour:Int)
-		Local result:TAudience = new TAudience.InitValue(0, 0)
-		local flagDefinitions:TMovieFlagDefinition[]
-
-		'infomercials could be "trendy" ... so we check all flags of the
-		'infomercials for trends later on
-		
-		local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.PAID)
-		if definition
-			flagDefinitions :+ [definition]
-		else
-			'really less interest in paid programming
-			'use a really high value until audience flow is corrected
-			'for such programmes
-			result.Add(new TAudience.Init(-1,  -0.5, -0.5, -0.3, -0.5, -0.3, -0.7, -0.3))
-		endif
-
-
-		if flagDefinitions.length > 0
-			local flagAudienceMod:TAudience = new TAudience.InitValue(0, 0)
-			for local definition:TMovieFlagDefinition = Eachin flagDefinitions
-				flagAudienceMod.AddFloat( flagPopularityMod(definition) )
-				flagAudienceMod.Add( flagTargetGroupMod(definition).MultiplyFloat(1.0 + GetTimeMod(definition, hour)) )
-			Next
-			flagAudienceMod.DivideFloat(flagDefinitions.length)
-
-			result.Add(flagAudienceMod)
-		endif
-		
-		Return result
-	End Method
-
-
 	'override
 	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		Super.FinishBroadcasting(day,hour,minute, audienceData)

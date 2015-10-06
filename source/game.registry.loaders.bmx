@@ -437,7 +437,6 @@ Type TRegistryProgrammeDataModsLoader extends TRegistryBaseLoader
 		For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
 			Local time:String = TXmlHelper.FindValue(subNodeChild, "time", "-1")
 			Local Value:String = TXmlHelper.FindValue(subNodeChild, "value", "")
-
 			timeMods.Insert(time, value)
 		Next
 		'add timemods to data set

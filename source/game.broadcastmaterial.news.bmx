@@ -93,7 +93,8 @@ endif
 	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
 		Local resultAudienceAttr:TAudienceAttraction = New TAudienceAttraction
 		resultAudienceAttr.BroadcastType = TVTBroadcastMaterialType.NEWSSHOW
-		resultAudienceAttr.Genre = -1
+'RONNY: removed Genre (contained in genreDefinition if set
+'		resultAudienceAttr.Genre = -1
 		resultAudienceAttr.GenrePopularityMod = 0
 		resultAudienceAttr.GenreTargetGroupMod = New TAudience
 		resultAudienceAttr.PublicImageMod = New TAudience
@@ -137,97 +138,6 @@ endif
 		Return resultAudienceAttr
 	End Method
 
-rem
-	Method CalculateNewsBlockAudienceAttraction:TAudienceAttraction(news:TNews, lastMovieBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False)
-		GetAudienceAttractionInternal(
-	
-	
-		Local result:TAudienceAttraction = New TAudienceAttraction
-		Local genreDefintion:TNewsGenreDefinition = null
-
-		'1 - Qualität des Programms
-		If news Then
-			genreDefintion = GetNewsGenreDefinitionCollection().Get(news.GetGenre())
-			result.Quality = news.GetQuality()
-		Endif
-		result.Quality = Max(0.01, Min(0.99, result.Quality))
-
-		If genreDefintion Then
-			'2 - Mod: Genre-Popularität / Trend
-			result.GenrePopularityMod = Max(-0.5, Min(0.5, genreDefintion.Popularity.Popularity / 100)) 'Popularity => Wert zwischen -50 und +50
-
-			'3 - Genre <> Zielgruppe
-			result.GenreTargetGroupMod = genreDefintion.AudienceAttraction.Copy()
-			result.GenreTargetGroupMod.MultiplyFloat(1.2)
-			result.GenreTargetGroupMod.SubtractFloat(0.6)
-			result.GenreTargetGroupMod.CutBordersFloat(-0.6, 0.6)
-		Else
-			'2 - Mod: Genre-Popularität / Trend
-			result.GenrePopularityMod = 0
-			'3 - Genre <> Zielgruppe
-			result.GenreTargetGroupMod = new TAudience.InitValue(0)
-		Endif
-
-		'4 - Trailer
-		result.TrailerMod = null
-
-		'5 - Flags und anderes
-		result.MiscMod = null
-
-		'4 - Image
-		local pubImage:TPublicImage = GetPublicImageCollection().Get(owner)
-		If not pubImage Then Throw TNullObjectExceptionExt.Create("The news '" + GetTitle() + "' has an owner without publicimage.")
-
-		'6 - Image
-		result.PublicImageMod = pubImage.GetAttractionMods() '0 bis 2
-		result.PublicImageMod.MultiplyFloat(0.35)
-		result.PublicImageMod.SubtractFloat(0.35)
-		result.PublicImageMod.CutBordersFloat(-0.35, 0.35)
-
-		'7 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
-		result.QualityOverTimeEffectMod = 0
-
-		'8 - Genres <> Sendezeit
-		result.GenreTimeMod = 0 'TODO
-
-		'9 - Zufall
-		If withLuckEffect Then
-			result.LuckMod = new TAudience.InitValue(0)
-		EndIf
-
-		'10 - Audience Flow
-		If lastMovieBlockAttraction And lastMovieBlockAttraction.AudienceFlowBonus Then
-			result.AudienceFlowBonus = lastMovieBlockAttraction.AudienceFlowBonus.Copy().MultiplyFloat(0.25)
-		EndIf
-
-		result.Recalculate()
-
-		'11 - Sequence
-		If withSequenceEffect Then
-			Local seqCal:TSequenceCalculation = New TSequenceCalculation
-			seqCal.Predecessor = lastMovieBlockAttraction
-			seqCal.Successor = result
-
-			seqCal.PredecessorShareOnShrink  = new TAudience.InitValue(0.5)
-			seqCal.PredecessorShareOnRise = new TAudience.InitValue(0.5)
-
-			Local seqMod:TAudience
-			If genreDefintion Then
-				seqMod = genreDefintion.AudienceAttraction.Copy().DivideFloat(1.3).MultiplyFloat(0.4).AddFloat(0.75) '0.75 - 1.15
-			Else
-				seqMod = new TAudience.InitValue(1)
-			EndIf
-
-			result.SequenceEffect = seqCal.GetSequenceDefault(seqMod, seqMod)
-
-			result.SequenceEffect.CutBordersFloat(-0.4, 0.3)
-		EndIf
-
-		result.Recalculate()
-
-		Return result
-	End Method
-endrem
 
 	'override default getter to make event id the reference id
 	Method GetReferenceID:int() {_exposeToLua}
@@ -319,7 +229,7 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	Method GetHappenedTime:Double()
-		if happenedTime = -1 then happenedTime = newsEvent.happenedTime
+		If happenedTime = - 1 Then happenedTime = newsEvent.happenedTime
 		return happenedTime
 	End Method
 
@@ -341,8 +251,8 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		newsEvent.doFinishBroadcast(owner)
 
 		'adjust topicality relative to possible audience 
-		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
-		newsEvent.CutTopicality( GetTopicalityCutModifier(audienceResult.GetWholeMarketAudienceQuotePercentage()) )
+		Local audienceResult:TAudienceResult = TAudienceResult(audienceData)
+		newsEvent.CutTopicality( GetTopicalityCutModifier(audienceResult.GetWholeMarketAudienceQuotePercentage() ) )
 
 		newsEvent.SetTimesBroadcasted( newsEvent.GetTimesBroadcasted(owner) + 1, owner )
 	End Method
@@ -367,23 +277,11 @@ rem
 endrem
 
 
-
-	Method GetMiscMod:TAudience(hour:Int)
-		Local result:TAudience = new TAudience.InitValue(0, 0)
-
-		'for all associated genres
-		'- for now only the genre itself
-		result.AddFloat( FlagPopularityMod(newsEvent.GetGenreDefinition()) )
-
-		Return result
-	End Method
-	
-
 	Method GetQuality:Float() {_exposeToLua}
-		local quality:float = newsEvent.GetQuality()
+		Local quality:Float = newsEvent.GetQuality()
 		'extra bonus for first broadcast 
-		If newsEvent.GetTimesBroadcasted() = 0 Then quality :* 1.15		
-		return Max(0.01, Min(0.99, quality))
+		If newsEvent.GetTimesBroadcasted() = 0 Then quality :* 1.10
+		Return MathHelper.Clamp(quality, 0.01, 0.99)
 	End Method
 
 
@@ -454,6 +352,7 @@ endrem
 	End Method
 
 
+	'override
 	Method GetGenreDefinition:TGenreDefinitionBase()
 		Return newsEvent.GetGenreDefinition()
 	End Method

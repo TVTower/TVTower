@@ -1,4 +1,4 @@
-﻿SuperStrict
+SuperStrict
 Import "game.gameobject.bmx"
 Import "game.broadcast.genredefinition.base.bmx"
 Import "game.broadcast.audienceattraction.bmx"
@@ -226,35 +226,48 @@ End Type
 
 Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="selected"}
 	'default implementation	
-	Method GenrePopularityMod:Float(genreDefinition:TGenreDefinitionBase)
-		'Popularity => Wert zwischen -50 und +50
-		Return Max(-0.5, Min(0.5, genreDefinition.GetPopularity().Popularity / 100))
+	'limited to 0 - 2.0, 1.0 means "no change"
+	Method GetGenrePopularityMod:Float(definition:TGenreDefinitionBase)
+		'multiply with 0.5 to scale "-2 to +2" down to "-1 to +1"
+		'add 1 to get a value between 0 - 2
+		Return 1.0 + MathHelper.Clamp(definition.GetPopularity().Popularity / 50.0, -1.0, 1.0 )
 	End Method
 
 	
 	'default implementation
-	Method GenreTargetGroupMod:TAudience(genreDefinition:TGenreDefinitionBase)
-		'limited to -100%,+100%
-		'multiply with 0.5 to scale "-2 to +2" down to "-1 to +1"
-		Return genreDefinition.AudienceAttraction.Copy().MultiplyFloat(0.5).CutBordersFloat(-1.0, 1.0)
-	End Method
+	'limited to 0 - 2.0, 1.0 means "no change"
+	Method GetGenreTargetGroupMod:TAudience(definition:TGenreDefinitionBase)
 
+		'multiply with 0.5 to scale "-2 to +2" down to "-1 to +1"
+		'add 1 to get a value between 0 - 2
+		Return definition.AudienceAttraction.Copy().MultiplyFloat(0.5).AddFloat(1.0).CutBordersFloat(0, 2.0)
+	End Method
+	
 
 	'default implementation	
-	Method FlagPopularityMod:Float(definition:TGenreDefinitionBase)
-		'Popularity => Wert zwischen -50 und +50
-		Return Max(-0.5, Min(0.5, definition.GetPopularity().Popularity / 100))
+	'return a value between -1.0 - 1.0
+	Method GetFlagPopularityMod:Float(definition:TGenreDefinitionBase)
+		'Popularity ranges between -50 to 50, so scale them to -1.0, 1.0
+		'add 1 to get a value between 0 - 2
+		Return 1.0 + MathHelper.Clamp(definition.GetPopularity().Popularity / 50.0, -1.0, 1.0 )
 	End Method
 
 	
 	'default implementation
-	Method FlagTargetGroupMod:TAudience(definition:TGenreDefinitionBase)
-		'max 100% ?
-		Return definition.AudienceAttraction.Copy().CutBordersFloat(-1.0, 1.0)
+	'limited to 0 - 2.0, 1.0 means "no change"
+	Method GetFlagTargetGroupMod:TAudience(definition:TGenreDefinitionBase)
+		'multiply with 0.5 to scale "-2 to +2" down to "-1 to +1"
+		'add 1 to get a value between 0 - 2
+		Return definition.AudienceAttraction.Copy().MultiplyFloat(0.5).AddFloat(1.0).CutBordersFloat(0, 2.0)
 	End Method
 
+	Method GetTargetGroupAttractivityMod:TAudience()
+		Return New TAudience.InitValue(1, 1)
+	End Method
 	
 	'default implementation
+	'return a value between 0 - 1.0
+	'describes how much of a potential trailer-bonus of 100% was reached
 	Method GetTrailerMod:TAudience()
 		Return new TAudience.InitValue(0, 0)
 	End Method	
@@ -270,7 +283,8 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	Method GetPublicImageMod:TAudience()
 		local pubImage:TPublicImage = GetPublicImageCollection().Get(owner)
 		If not pubImage Then Throw TNullObjectExceptionExt.Create("The programme '" + GetTitle() + "' has an owner without publicimage.")
-	
+
+		'multiplication-value
 		Local result:TAudience = pubImage.GetAttractionMods()
 		result.MultiplyFloat(0.35)
 		result.SubtractFloat(0.35)
@@ -281,18 +295,18 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	
 	'default implementation
 	Method GetQualityOverTimeEffectMod:Float(quality:Float, block:Int )
-		If (block = 1) Then Return 0			
+		If (block <= 1) Then Return 0			
 		If (quality < 0.5)
-			Return Max(-0.2, Min(0.1, ((quality - 0.5)/3) * (block - 1)))
+			Return MathHelper.Clamp( ((quality - 0.5)/3) * (block - 1), -0.2, 0.1)
 		Else
-			Return Max(-0.2, Min(0.1, ((quality - 0.5)/6) * (block - 1)))
+			Return MathHelper.Clamp( ((quality - 0.5)/6) * (block - 1), -0.2, 0.1)
 		EndIf	
 	End Method
 	
 
 	'default implementation
-	Method GetTimeMod:Float(definition:TGenreDefinitionBase, hour:Int)
-		Return definition.TimeMods[hour] - 1 'Genre/Zeit-Mod
+	Method GetGenreTimeMod:Float(definition:TGenreDefinitionBase, hour:Int)
+		Return MathHelper.Clamp(definition.TimeMods[hour], 0, 2)
 	End Method
 
 	
@@ -310,6 +324,26 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 			Return Null
 		EndIf		
 	End Method
+
+
+	'default implementation
+	'return a value between 0 - 2.0, 1.0 means "no change"
+	'takes into consideration all used flags.
+	Method GetFlagsTargetGroupMod:TAudience()
+		'method does not use a "definition"-param" as flags are a collection
+		'of multiple definitions
+		'-> in extending types we then know the flags to use...and could
+		'   manually calculate things then
+		Return New TAudience.InitValue(1, 1)
+	End Method
+
+
+	'default implementation
+	'return a value between 0 - 2.0, 1.0 means "no change"
+	Method GetFlagsPopularityMod:Float()
+		Return 1.0
+	End Method
+	
 	
 	'default implementation
 	Method GetSequenceEffect:TAudience(block:Int, genreDefinition:TGenreDefinitionBase, predecessor:TAudienceAttraction, currentProgramme:TAudienceAttraction, lastMovieBlockAttraction:TAudienceAttraction )
@@ -337,6 +371,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		ret.CutBorders(borderMin, borderMax)
 		Return ret
 	End Method
+
 	
 	Method SetSequenceCalculationPredecessorShare(seqCal:TSequenceCalculation, audienceFlow:Int)
 		If audienceFlow
@@ -347,38 +382,45 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 			seqCal.PredecessorShareOnRise = new TAudience.InitValue(0.2, 0.2)
 		End If
 	End Method
+
 	
 	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
 		Return GetAudienceAttractionInternal(hour, block, lastMovieBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect )
-	End Method		
+	End Method
+		
 	
 	Method GetAudienceAttractionInternal:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
 		Local result:TAudienceAttraction = New TAudienceAttraction
 		
 		result.BroadcastType = Self.materialType
 		Local genreDefinition:TGenreDefinitionBase = GetGenreDefinition()
+'RONNY: removed Genre
 		If genreDefinition
-			result.Genre = genreDefinition.referenceId
+'			result.Genre = genreDefinition.referenceId
 			result.GenreDefinition = genreDefinition
 		EndIf
 
-		if owner <= 0 Then Throw TNullObjectExceptionExt.Create("The programme '" + GetTitle() + "' has no owner.")
-		if block <= 0 and usedAsType = TVTBroadcastMaterialType.PROGRAMME Then Throw TNullObjectExceptionExt.Create("GetAudienceAttractionInternal: Invalid block param: '" + block + ".")
+		If owner <= 0 Then Throw TNullObjectExceptionExt.Create("The programme '" + GetTitle() + "' has no owner.")
+		If block <= 0 And usedAsType = TVTBroadcastMaterialType.PROGRAMME Then Throw TNullObjectExceptionExt.Create("GetAudienceAttractionInternal: Invalid block param: '" + block + ".")
 
 		'begin of a programme, begin of broadcast - or news show
-		If block = 1 Or Not lastMovieBlockAttraction or usedAsType = TVTBroadcastMaterialType.NEWS Then
+		If block = 1 Or Not lastMovieBlockAttraction Or usedAsType = TVTBroadcastMaterialType.NEWS
 			'1 - Qualität des Programms/Newsevents
 			result.Quality = GetQuality()
 
-			'2 - Mod: Genre-Popularität / Trend
 			If genreDefinition
-				result.GenrePopularityMod = GenrePopularityMod(genreDefinition)
+				'Popularity of the programme/news-genre (PAID-flag for ads)
+				result.GenrePopularityMod = GetGenrePopularityMod(genreDefinition)
+				'Genre-targetgroup-fit
+				result.GenreTargetGroupMod = GetGenreTargetGroupMod(genreDefinition)
 			EndIf
 
-			'3 - Genre <> Zielgruppe
-			If genreDefinition
-				result.GenreTargetGroupMod = GenreTargetGroupMod(genreDefinition)
-			EndIf
+			result.FlagsPopularityMod = GetFlagsPopularityMod()
+			result.FlagsTargetGroupMod = GetFlagsTargetGroupMod()
+			
+			'a modifier of the targetgroup attractivity (mix of genre popularity and
+			'targetgroup-fit)
+			result.targetGroupAttractivityMod = GetTargetGroupAttractivityMod()
 
 
 			'4 - Trailer
@@ -400,12 +442,12 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		'    Gute Filme bekommen mehr Attraktivität, schlechte Filme
 		'    animieren eher zum Umschalten
 		'good movies increase "perceived" quality on subsequent blocks
-		'bad movies loose on block 2,3... 
+		'bad movies loose on block 2,3...
 		result.QualityOverTimeEffectMod = GetQualityOverTimeEffectMod(result.Quality, block)
 
 		'8 - Genres <> Sendezeit
 		If genreDefinition
-			result.GenreTimeMod = GetTimeMod(genreDefinition, hour)
+			result.GenreTimeMod = GetGenreTimeMod(genreDefinition, hour)
 		EndIf
 
 		'9 - Zufall

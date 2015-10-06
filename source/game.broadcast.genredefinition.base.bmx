@@ -38,7 +38,9 @@ Type TGenreDefinitionBase extends TGameObject
 
 		TimeMods = TimeMods[..24]
 		For Local i:Int = 0 To 23
-			TimeMods[i] = data.GetFloat("timeMod_" + i, 1.0)
+			'data is stored as "-1 to +1", we want a multiplier
+			'so add +1 to value
+			TimeMods[i] = data.GetFloat("timeMod_" + i, 0) + 1.0
 		Next
 
 		AudienceAttraction = New TAudience

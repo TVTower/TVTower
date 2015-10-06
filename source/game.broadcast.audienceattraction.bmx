@@ -4,13 +4,16 @@ Import "game.broadcast.genredefinition.base.bmx"
 
 
 'Diese Klasse repräsentiert die Programmattraktivität (Inhalt von TAudience)
-'Sie beinhaltet aber zusätzlich die Informationen wie sie berechnet wurde (für Statistiken, Debugging und Nachberechnungen) unf für was sieht steht.
+'Sie beinhaltet aber zusätzlich die Informationen wie sie berechnet wurde
+'(für Statistiken, Debugging und Nachberechnungen) und für was sieht steht.
 Type TAudienceAttraction Extends TAudience
 	Field BroadcastType:Int '-1 = Sendeausfall; 1 = Film; 2 = News
 	Field Quality:Float				'0 - 100
-	Field GenrePopularityMod:Float	'
 	Field GenreTargetGroupMod:TAudience
-	Field TargetGroupGenderMod:TAudience
+	Field GenrePopularityMod:Float = 1.0
+	Field FlagsTargetGroupMod:TAudience
+	Field FlagsPopularityMod:Float = 1.0
+	Field targetGroupAttractivityMod:TAudience
 	Field PublicImageMod:TAudience
 	Field TrailerMod:TAudience
 	Field MiscMod:TAudience
@@ -25,9 +28,14 @@ Type TAudienceAttraction Extends TAudience
 	Field FinalAttraction:TAudience
 	Field PublicImageAttraction:TAudience
 
-	Field Genre:Int
 	Field GenreDefinition:TGenreDefinitionBase
 	Field Malfunction:Int '1 = Sendeausfall
+
+	Const MODINFLUENCE_GENREPOPULARITY:Float = 0.25
+	Const MODINFLUENCE_FLAGPOPULARITY:Float = 0.25
+	Const MODINFLUENCE_TRAILER:Float = 0.25
+	Const MODINFLUENCE_GENRETARGETGROUP:Float = 0.95
+	Const MODINFLUENCE_FLAGTARGETGROUP:Float = 0.95
 
 
 	Method Init:TAudienceAttraction(gender:int, children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float)
@@ -71,8 +79,11 @@ Type TAudienceAttraction Extends TAudience
 		Self.Add(audienceAttr)
 
 		Quality	:+ audienceAttr.Quality
-		GenrePopularityMod	:+ audienceAttr.GenrePopularityMod
 		If GenreTargetGroupMod Then GenreTargetGroupMod.Add(audienceAttr.GenreTargetGroupMod)
+		GenrePopularityMod :+ audienceAttr.GenrePopularityMod
+		If FlagsTargetGroupMod Then FlagsTargetGroupMod.Add(audienceAttr.FlagsTargetGroupMod)
+		FlagsPopularityMod :+ audienceAttr.FlagsPopularityMod
+		If targetGroupAttractivityMod Then targetGroupAttractivityMod.Add(audienceAttr.targetGroupAttractivityMod)
 		If PublicImageMod Then PublicImageMod.Add(audienceAttr.PublicImageMod)
 		If TrailerMod Then TrailerMod.Add(audienceAttr.TrailerMod)
 		If MiscMod Then MiscMod.Add(audienceAttr.MiscMod)
@@ -96,8 +107,11 @@ Type TAudienceAttraction Extends TAudience
 		Self.MultiplyFloat(factor)
 
 		Quality	:* factor
-		GenrePopularityMod 	:* factor
 		If GenreTargetGroupMod Then GenreTargetGroupMod.MultiplyFloat(factor)
+		GenrePopularityMod :* factor
+		If FlagsTargetGroupMod Then FlagsTargetGroupMod.MultiplyFloat(factor)
+		FlagsPopularityMod :* factor
+		If targetGroupAttractivityMod Then targetGroupAttractivityMod.MultiplyFloat(factor)
 		If PublicImageMod Then PublicImageMod.MultiplyFloat(factor)
 		If TrailerMod Then TrailerMod.MultiplyFloat(factor)
 		If MiscMod Then MiscMod.MultiplyFloat(factor)
@@ -116,68 +130,108 @@ Type TAudienceAttraction Extends TAudience
 	End Method
 
 
+	'time depending value, cannot be used for "base attractivity"
+	'(which is used by Follow-Up-Blocks)
+	Method GetGenreAttractivity:TAudience()
+		local result:TAudience = new TAudience.InitValue(1,1)
+		'adjust by genre-time-attractivity: 0.0 - 2.0
+		result.MultiplyFloat(GenreTimeMod)
+		'limit to 0-x
+		result.CutMinimumFloat(0)
+		return result
+	End Method
+
+
+	Method GetTargetGroupAttractivity:TAudience()
+		If Not GenreTargetGroupMod Or Not FlagsTargetGroupMod Return Null
+		
+		'target group interest: 0 - 2.0, influence: 95%
+		'tg with interest around 0 do hardly watch the broadcast!
+		'tg with interest > 1.0 have a general interest in the programme,
+		'regardless of the quality:
+		'  ex. erotic for male teenagers
+		'  ex. cartoons for children
+		Local _effectiveGenreTargetGroupMod:TAudience = GenreTargetGroupMod.Copy()
+		_effectiveGenreTargetGroupMod.MultiplyFloat(GenrePopularityMod)
+		_effectiveGenreTargetGroupMod.SubtractFloat(1)
+		_effectiveGenreTargetGroupMod.MultiplyFloat(MODINFLUENCE_GENRETARGETGROUP)
+		_effectiveGenreTargetGroupMod.AddFloat(1)
+		Local _effectiveFlagsTargetGroupMod:TAudience = FlagsTargetGroupMod.Copy()
+		_effectiveFlagsTargetGroupMod.MultiplyFloat(FlagsPopularityMod)
+		_effectiveFlagsTargetGroupMod.SubtractFloat(1)
+		_effectiveFlagsTargetGroupMod.MultiplyFloat(MODINFLUENCE_FLAGTARGETGROUP)
+		_effectiveFlagsTargetGroupMod.AddFloat(1)
+		 
+		Local result:TAudience = New TAudience.InitValue(1, 1)
+		result.Multiply( _effectiveGenreTargetGroupMod )
+		result.Multiply( _effectiveFlagsTargetGroupMod )
+
+
+		result.Multiply( targetGroupAttractivityMod )
+
+		result.CutMinimumFloat(0)
+
+		Return result
+	End Method
+	
+
 	Method Recalculate()
-		Local result:TAudience = new TAudience
+		Local tmpAudience:TAudience
+
+
+
+		'=== FINAL CALCULATION ===
+
+
+		Local result:TAudience = New TAudience
 		'start with an attraction of "100%"
 		result.AddFloat(1.0)
-'print "0. "
 
-		result.MultiplyFloat(Quality)
-'print "1. "
-'print "* " +Quality
-'print result.ToString()
+		'quality: 0.0 - 1.0, influence: 100%
+		result.MultiplyFloat( Quality )
 
-		result.AddFloat(GenrePopularityMod)
-'print "2. "
-'print "+ " +GenrePopularityMod
-'print result.ToString()
 
-		result.Add(GenreTargetGroupMod)
-'print "3. "
-'print "+ " +GenreTargetGroupMod.ToString()
-'print result.ToString()
+		Local targetGroupAttractivity:TAudience = GetTargetGroupAttractivity()
+		If targetGroupAttractivity Then result.Multiply( targetGroupAttractivity )
 
-		result.Add(TrailerMod)
-'print "4. "
-'print "+ " +TrailerMod.ToString()
-'print result.ToString()
 
-		result.Add(MiscMod)
-'print "5. "
-'print "+ " +MiscMod.ToString()
-'print result.ToString()
+		'trailer bonus: 0 - 1.0, influence: 25%
+		'add +1 so it gets a multiplier
+		'"multiply" because it "increases" existing interest
+		'(people more likely watch this programme)
+		If TrailerMod Then result.Multiply( TrailerMod.Copy().MultiplyFloat(MODINFLUENCE_TRAILER).AddFloat(1) )
 
+
+		If MiscMod Then result.Add(MiscMod)
+
+
+		'store the current attraction for the publicImage-calculation
 		Self.PublicImageAttraction = result.Copy()
-		Self.PublicImageAttraction.AddFloat(1)
-		Self.PublicImageAttraction.MultiplyFloat(Quality)
+		Self.PublicImageAttraction.AddFloat(1).MultiplyFloat(Quality)
 
 
-		result.Add(PublicImageMod)
-'print "6. "
-'print result.ToString()
+		If PublicImageMod Then result.Multiply( PublicImageMod.Copy().AddFloat(1.0) )
 
-'		result.AddFloat(QualityOverTimeEffectMod)
-'print "7. "
-'print result.ToString()
 
-		result.AddFloat(GenreTimeMod)
-'print "8. "
-'print result.ToString()
+		'if QualityOverTimeEffectMod Then result.AddFloat(QualityOverTimeEffectMod)
 
-		result.Add(LuckMod)
-'print "9. "
-'print result.ToString()
 
-		result.Add(AudienceFlowBonus)
-'print "10. "
-'print result.ToString()
+		If LuckMod Then result.Add(LuckMod)
 
+
+		If AudienceFlowBonus Then result.Add(AudienceFlowBonus)
+
+
+		'store for later use (audience flow etc.)
 		Self.BaseAttraction = result.Copy()
 
-		'result.Add(AudienceFlowBonus)
-		result.Add(SequenceEffect)
-'print "11. "
-'print result.ToString()
+
+		local genreAttractivity:TAudience = GetGenreAttractivity()
+		if genreAttractivity then result.Multiply( GetGenreAttractivity() )
+
+
+		if SequenceEffect Then result.Add(SequenceEffect)
+
 
 		'avoid negative attraction values or values > 100%
 		'-> else you could have a negative audience
@@ -188,40 +242,120 @@ Type TAudienceAttraction Extends TAudience
 	End Method
 
 
-	Method CopyBaseAttractionFrom(otherAudienceAttraction:TAudienceAttraction)
-		Quality = otherAudienceAttraction.Quality
-		GenrePopularityMod = otherAudienceAttraction.GenrePopularityMod
+	Method DebugPrint()
+		print " 0. START:     1 "
+		print " 1. QUALITY:   * " + Quality
 
+		Local genreAttractivity:TAudience = GetGenreAttractivity()
+		If genreAttractivity
+			print " 2. GENREATT:  * " + genreAttractivity.ToStringAverage()
+		Else
+			print " 2. GENREATT:  -/-"
+		EndIf
+
+		local targetGroupAttractivity:TAudience = GetTargetGroupAttractivity() 
+		If targetGroupAttractivity
+			print " 3. TGROUPATT: * " + targetGroupAttractivity.ToStringAverage()
+		Else
+			print " 3. TGROUPATT: -/-"
+		EndIf
+
+		If TrailerMod
+			print " 4. TRAILER:   * " + TrailerMod.Copy().MultiplyFloat(MODINFLUENCE_TRAILER).AddFloat(1).ToStringAverage()
+		Else
+			print " 4. TRAILER:   -/- "
+		endif
+
+		if MiscMod
+			print " 5. MISC:      + " + MiscMod.ToStringAverage()
+		Else
+			print " 5. MISC:      -/-"
+		endif
+
+		If PublicImageMod
+			print " 6. IMAGE:     * " + PublicImageMod.Copy().AddFloat(1.0).ToStringAverage()
+		Else
+			print " 6. IMAGE:     -/-"
+		endif
+
+		If QualityOverTimeEffectMod
+			print " 7. QOVERTIME: + " + QualityOverTimeEffectMod
+		Else
+			print " 7. QOVERTIME: -/-"
+		EndIf
+
+		If LuckMod
+			print " 7. LUCK:      + " + LuckMod.ToStringAverage()
+		Else
+			print " 7. LUCK:      -/-"
+		EndIf
+
+		If AudienceFlowBonus
+			print " 8. AUD.FLOW:  + " + AudienceFlowBonus.ToStringAverage()
+		Else
+			print " 8. AUD.FLOW:  + -/-"
+		EndIf
+
+		If SequenceEffect
+			print " 9. SEQUENCE:  + " + SequenceEffect.ToStringAverage()
+		Else
+			print " 9. SEQUENCE:  + -/-"
+		EndIf
+
+		print "10. RES        = " + FinalAttraction.ToStringAverage()
+	End Method
+
+
+	Method CopyBaseAttractionFrom(otherAudienceAttraction:TAudienceAttraction)
 		'ATTENTION: we _copy_ the objects instead of referencing it
 		'Why?:
 		'broadcastmaterial "TNewsShow" is modifying the attraction by
 		'multiplying them for each slot (1-3) with a factor. When using
 		'references, we also lower the effects of the "surrounding"
 		'programme (eg movieBlock1 news movieBlock2)
-		if otherAudienceAttraction.GenreTargetGroupMod
+
+		'float values do not need a copy (*1 is done to avoid ambiguity if changing
+		'one of the objects)
+		Quality = otherAudienceAttraction.Quality * 1
+		GenrePopularityMod = otherAudienceAttraction.GenrePopularityMod * 1
+		FlagsPopularityMod = otherAudienceAttraction.FlagsPopularityMod * 1
+
+
+		If otherAudienceAttraction.targetGroupAttractivityMod
+			targetGroupAttractivityMod = otherAudienceAttraction.targetGroupAttractivityMod.Copy()
+		Else
+			targetGroupAttractivityMod = Null
+		EndIf
+
+		If otherAudienceAttraction.GenreTargetGroupMod
 			GenreTargetGroupMod = otherAudienceAttraction.GenreTargetGroupMod.Copy()
-		else
-			GenreTargetGroupMod = null
-		endif
-		if otherAudienceAttraction.TrailerMod
+		Else
+			GenreTargetGroupMod = Null
+		EndIf
+		If otherAudienceAttraction.FlagsTargetGroupMod
+			FlagsTargetGroupMod = otherAudienceAttraction.FlagsTargetGroupMod.Copy()
+		Else
+			FlagsTargetGroupMod = Null
+		EndIf
+		If otherAudienceAttraction.TrailerMod
 			TrailerMod = otherAudienceAttraction.TrailerMod.Copy()
 		else
-			TrailerMod = null
-		endif
-		if otherAudienceAttraction.MiscMod
+			TrailerMod = Null
+		EndIf
+		If otherAudienceAttraction.MiscMod
 			MiscMod = otherAudienceAttraction.MiscMod.Copy()
-		else
-			MiscMod = null
-		endif
-		if otherAudienceAttraction.PublicImageMod
+		Else
+			MiscMod = Null
+		EndIf
+		If otherAudienceAttraction.PublicImageMod
 			PublicImageMod = otherAudienceAttraction.PublicImageMod.Copy()
-		else
-			PublicImageMod = null
-		endif
-		if otherAudienceAttraction.AudienceFlowBonus
+		Else
+			PublicImageMod = Null
+		EndIf
+		If otherAudienceAttraction.AudienceFlowBonus
 			AudienceFlowBonus = otherAudienceAttraction.AudienceFlowBonus.Copy()
-		else
-			AudienceFlowBonus = null
-		endif
+		Else
+			AudienceFlowBonus = Null
+		EndIf
 	End Method
 End Type
