@@ -305,7 +305,7 @@ Type TFigure extends TFigureBase
 
 		'limit player position (only within floor 13 and floor 0 allowed)
 		if not useAbsolutePosition
-			'beim Vergleich oben nicht "self.sprite.area.GetH()" abziehen... das war falsch und führt zum Ruckeln im obersten Stock
+			'beim Vergleich oben nicht "self.sprite.area.GetH()" abziehen... das war falsch und fï¿½hrt zum Ruckeln im obersten Stock
 			If area.GetY() < TBuildingBase.GetFloorY2(13) Then area.position.setY( TBuildingBase.GetFloorY2(13) )
 			If area.GetY() - sprite.area.GetH() > TBuildingBase.GetFloorY2(0) Then area.position.setY( TBuildingBase.GetFloorY2(0) )
 		endif
@@ -792,7 +792,7 @@ Type TFigure extends TFigureBase
 
 		If IsElevatorCalled() Then Return False 'Wenn er bereits gerufen wurde, dann abbrechen
 
-		'Wenn der Fahrstuhl schon da ist, dann auch abbrechen. TODOX: Muss überprüft werden
+		'Wenn der Fahrstuhl schon da ist, dann auch abbrechen. TODOX: Muss ï¿½berprï¿½ft werden
 		If GetElevator().CurrentFloor = GetFloor() And IsAtElevator() Then Return False
 
 		'Fahrstuhl darf man nur rufen, wenn man davor steht
@@ -831,6 +831,9 @@ Type TFigure extends TFigureBase
 	'@forceChange   defines wether the target could change target
 	'               even when not controllable
 	Method _ChangeTarget:Int(x:Int=-1, y:Int=-1, forceChange:Int=False)
+		'reset target reach
+		currentReachTargetStep = 0
+
 		'remove control
 		if forceChange then controllable = False
 		'is controlling allowed (eg. figure MUST go to a specific target)
@@ -950,7 +953,7 @@ Type TFigure extends TFigureBase
 
 		If isVisible() And CanMove()
 			If HasToChangeFloor() And IsAtElevator() And Not IsInElevator()
-				'TODOX: Blockiert.. weil noch einer aus dem Plan auswählen will
+				'TODOX: Blockiert.. weil noch einer aus dem Plan auswï¿½hlen will
 
 				'Ist der Fahrstuhl da? Kann ich einsteigen?
 				If GetElevator().CurrentFloor = GetFloor() And GetElevator().ReadyForBoarding
