@@ -3632,7 +3632,7 @@ Type GameEvents
 
 				Local changed:String = ""
 				If paramS <> ""
-					player.GetPublicImage().ChangeImage( New TAudience.AddFloat(Int(paramS)))
+					player.GetPublicImage().ChangeImage( New TAudience.AddFloat(Float(paramS)/2.0))
 					
 					If Int(paramS) > 0 Then paramS = "+"+Int(paramS)
 					changed = " ("+paramS+"%)"
