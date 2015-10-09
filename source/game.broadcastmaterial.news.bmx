@@ -13,6 +13,12 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 	Field news:TBroadcastMaterial[3]
 	Field title:string = ""
 
+	'weight of the news slots
+	CONST NEWS_WEIGHT_1:float = 0.45
+	CONST NEWS_WEIGHT_2:float = 0.35
+	CONST NEWS_WEIGHT_3:float = 0.2
+
+
 	Function Create:TNewsShow(title:String="", owner:int=0, newsA:TBroadcastMaterial, newsB:TBroadcastMaterial, newsC:TBroadcastMaterial)
 		Local obj:TNewsShow = New TNewsShow
 		obj.news[0] = newsA
@@ -107,27 +113,25 @@ endif
 		resultAudienceAttr.PublicImageAttraction = New TAudience
 		resultAudienceAttr.LuckMod = New TAudience
 
-		Local tempAudienceAttr:TAudienceAttraction = null
 		for local i:int = 0 to 2
 			'RONNY @Manuel: Todo - "Filme" usw. vorbereiten/einplanen
 			'               es koennte ja jemand "Trailer" in die News
 			'               verpacken - siehe RTL2 und Co.
 			Local currentNews:TNews = TNews(news[i])
-			If currentNews Then
-				'fix broken (old) savegame-information
-				if currentNews.usedAsType = 0
-					currentNews.setUsedAsType(TVTBroadcastMaterialType.NEWS)
-				endif
+			'skip empty slots
+			If not currentNews Then continue
+			
+			'fix broken (old) savegame-information
+			if currentNews.usedAsType = 0
+				currentNews.setUsedAsType(TVTBroadcastMaterialType.NEWS)
+			endif
 
-				tempAudienceAttr = currentNews.GetAudienceAttraction(hour, block, lastMovieBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect)			
-			Else
-				tempAudienceAttr = new TAudienceAttraction.Init(-1,  0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01)  
-			EndIf
+			Local tempAudienceAttr:TAudienceAttraction = currentNews.GetAudienceAttraction(hour, block, lastMovieBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect)			
 
 			'different weight for news slots
-			If i = 0 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.45))
-			If i = 1 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.35))
-			If i = 2 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.2))
+			If i = 0 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(NEWS_WEIGHT_1))
+			If i = 1 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(NEWS_WEIGHT_2))
+			If i = 2 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(NEWS_WEIGHT_3))
 
 			local title:string = "--"
 			if currentNews then title = currentNews.GetTitle() 
@@ -161,16 +165,13 @@ endif
     End Method
 
 
+
 	Method GetQuality:Float() {_exposeToLua}
 		Local quality:Float = 0.0
-		local count:int = 0
-		for local i:int = 0 to 2
-			if TNews(news[i])
-				quality :+ TNews(news[i]).GetQuality()
-				count :+ 1
-			endif
-		Next
-		if count > 0 then quality :/ count
+
+		If TNews(news[0]) Then quality :+ TNews(news[0]).GetQuality() * NEWS_WEIGHT_1
+		If TNews(news[1]) Then quality :+ TNews(news[1]).GetQuality() * NEWS_WEIGHT_2
+		If TNews(news[2]) Then quality :+ TNews(news[2]).GetQuality() * NEWS_WEIGHT_3
 
 		'no minus quote
 		Return Max(0, quality)

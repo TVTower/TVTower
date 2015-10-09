@@ -120,8 +120,8 @@ Type TDebugAudienceInfos
 		Endif
 		offset :+ 20
 
-		font.Draw("6. + Zuschauerentwicklung", 25, offset, TColor.clWhite)
-		DrawAudiencePercent(new TAudience.InitValue(-1, attraction.QualityOverTimeEffectMod), 200, offset, true, true)
+		font.Draw("6. + Zuschauerentwicklung (inaktiv)", 25, offset, TColor.clWhite)
+	'	DrawAudiencePercent(new TAudience.InitValue(-1, attraction.QualityOverTimeEffectMod), 200, offset, true, true)
 		offset :+ 20
 
 		font.Draw("7. + Glück / Zufall", 25, offset, TColor.clWhite)

@@ -246,42 +246,35 @@ Type TAudienceAttraction Extends TAudience
 		print " 0. START:     1 "
 		print " 1. QUALITY:   * " + Quality
 
-		Local genreAttractivity:TAudience = GetGenreAttractivity()
-		If genreAttractivity
-			print " 2. GENREATT:  * " + genreAttractivity.ToStringAverage()
-		Else
-			print " 2. GENREATT:  -/-"
-		EndIf
-
 		local targetGroupAttractivity:TAudience = GetTargetGroupAttractivity() 
 		If targetGroupAttractivity
-			print " 3. TGROUPATT: * " + targetGroupAttractivity.ToStringAverage()
+			print " 2. TGROUPATT: * " + targetGroupAttractivity.ToStringAverage()
 		Else
-			print " 3. TGROUPATT: -/-"
+			print " 2. TGROUPATT: -/-"
 		EndIf
 
 		If TrailerMod
-			print " 4. TRAILER:   * " + TrailerMod.Copy().MultiplyFloat(MODINFLUENCE_TRAILER).AddFloat(1).ToStringAverage()
+			print " 3. TRAILER:   * " + TrailerMod.Copy().MultiplyFloat(MODINFLUENCE_TRAILER).AddFloat(1).ToStringAverage()
 		Else
-			print " 4. TRAILER:   -/- "
+			print " 3. TRAILER:   -/- "
 		endif
 
 		if MiscMod
-			print " 5. MISC:      + " + MiscMod.ToStringAverage()
+			print " 4. MISC:      + " + MiscMod.ToStringAverage()
 		Else
-			print " 5. MISC:      -/-"
+			print " 4. MISC:      -/-"
 		endif
 
 		If PublicImageMod
-			print " 6. IMAGE:     * " + PublicImageMod.Copy().AddFloat(1.0).ToStringAverage()
+			print " 5. IMAGE:     * " + PublicImageMod.Copy().AddFloat(1.0).ToStringAverage()
 		Else
-			print " 6. IMAGE:     -/-"
+			print " 5. IMAGE:     -/-"
 		endif
 
 		If QualityOverTimeEffectMod
-			print " 7. QOVERTIME: + " + QualityOverTimeEffectMod
+			print "(6. QOVERTIME: + " + QualityOverTimeEffectMod+" )"
 		Else
-			print " 7. QOVERTIME: -/-"
+			print " (6. QOVERTIME: -/-)"
 		EndIf
 
 		If LuckMod
@@ -296,13 +289,22 @@ Type TAudienceAttraction Extends TAudience
 			print " 8. AUD.FLOW:  + -/-"
 		EndIf
 
-		If SequenceEffect
-			print " 9. SEQUENCE:  + " + SequenceEffect.ToStringAverage()
+		Local genreAttractivity:TAudience = GetGenreAttractivity()
+		If genreAttractivity
+			print " 9. GENREATT:  * " + genreAttractivity.ToStringAverage()
 		Else
-			print " 9. SEQUENCE:  + -/-"
+			print " 9. GENREATT:  -/-"
 		EndIf
 
-		print "10. RES        = " + FinalAttraction.ToStringAverage()
+		If SequenceEffect
+			print "10. SEQUENCE:  + " + SequenceEffect.ToStringAverage()
+		Else
+			print "10. SEQUENCE:  + -/-"
+		EndIf
+
+
+
+		print "11. RES        = " + FinalAttraction.ToStringAverage()
 	End Method
 
 
