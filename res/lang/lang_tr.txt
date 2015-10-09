@@ -61,16 +61,16 @@ VALUE = Değer
 BROADCASTING_AREA = Yayın Alanı
 
 CURRENCY = €
-OCLOCK =
+OCLOCK = Saat
 DAY = gün
-DAYS = gün
-WEEK_SHORT_MONDAY		= pzt
-WEEK_SHORT_TUESDAY		= salı
-WEEK_SHORT_WEDNESDAY	= çarş
-WEEK_SHORT_THURSDAY		= perş
-WEEK_SHORT_FRIDAY		= cuma
-WEEK_SHORT_SATURDAY		= cmt
-WEEK_SHORT_SUNDAY		= pzr
+DAYS = günler
+WEEK_SHORT_MONDAY		= Pt
+WEEK_SHORT_TUESDAY		= Sa
+WEEK_SHORT_WEDNESDAY	= Ça
+WEEK_SHORT_THURSDAY		= Pe
+WEEK_SHORT_FRIDAY		= Cu
+WEEK_SHORT_SATURDAY		= Ct
+WEEK_SHORT_SUNDAY		= Pa
 WEEK_LONG_MONDAY		= pazartesi
 WEEK_LONG_TUESDAY		= salı
 WEEK_LONG_WEDNESDAY		= çarşamba
@@ -177,7 +177,7 @@ NEXT_NOTHINGSET			= tanımsız !
 
 PROGRAMME_IN_PROGRAMME_PLAN = Plandaki Program!
 
-AD_PROFIT				= Kar
+AD_PROFIT				= Kâr
 AD_PLANNED				= planlı
 AD_TOSEND				= yayınlanmalı
 AD_PENALTY				= Tazminat
@@ -222,21 +222,21 @@ JOB_SUPPORTINGACTORS  = Yardımcı Aktör
 JOB_REPORTER          = Muhabir
 JOB_REPORTERS         = Muhabir
 JOB_GUEST             = Konuk
-JOB_GUESTS            = Konuk
+JOB_GUESTS            = Konuklar
 JOB_HOST              = Ev Sahibi
-JOB_HOSTS             = Ev Sahibi
+JOB_HOSTS             = Ev Sahibleri
 JOB_SCRIPT            = Senaryo
 JOB_SCRIPTWRITER      = Senarist
 JOB_SCRIPTWRITERS     = Senarist
 JOB_MUSIC             = Müzik
 JOB_MUSICIAN          = Müzisyen
-JOB_MUSICIANS         = Müzisyen
+JOB_MUSICIANS         = Müzisyenler
 
 MOVIE_SPEED				= Tempo
 MOVIE_CRITIC			= Eleştiri
 MOVIE_BOXOFFICE			= Gişe Hasılatı
 MOVIE_TOPICALITY		= Güncellik
-MOVIE_BLOCKS			= blok
+MOVIE_BLOCKS			= bloklar
 MOVIE_XRATED			= +18
 MOVIE_EPISODES			= bölüm
 MOVIE_CAST              = Ekip
@@ -345,7 +345,7 @@ FINANCES_HISTORY_FOR_CREDITREPAID = Kredi Geri Ödeme
 FINANCES_HISTORY_FOR_CREDITTAKEN = Kredi Alma
 FINANCES_HISTORY_FOR_STATIONBOUGHT = istasyon alımı
 FINANCES_HISTORY_FOR_STATIONSOLD = istasyon satışı
-FINANCES_HISTORY_OF_STATIONFEES = istasyon ücresi
+FINANCES_HISTORY_OF_STATIONFEES = istasyon ücreti
 FINANCES_HISTORY_FOR_MISC = çeşitli
 FINANCES_HISTORY_FOR_PROGRAMMELICENCE = Program: %TITLE%
 FINANCES_HISTORY_FOR_AUCTIONBID = Arttırma: %TITLE%
@@ -387,10 +387,10 @@ MAP_COUNTRY_HESSEN				=	Hesse
 MAP_COUNTRY_THUERINGEN			=	Thuringia
 MAP_COUNTRY_SACHSEN				=	Saxony
 MAP_COUNTRY_SACHSENANHALT		=	Saxony-Anhalt
-MAP_COUNTRY_NIEDERSACHSEN		=	Lower Saxony
+MAP_COUNTRY_NIEDERSACHSEN		=	Asagi Saksonya
 MAP_COUNTRY_SCHLESWIGHOLSTEIN	=	Schleswig-Holstein
 MAP_COUNTRY_BRANDENBURG			=	Brandenburg
-MAP_COUNTRY_NRW					=	North Rhine-Westphalia
+MAP_COUNTRY_NRW					=	Kuzey Ren Westfalya
 MAP_COUNTRY_MECKPOM				=	Mecklenburg-Hither Pomerania
 
 
@@ -422,13 +422,13 @@ DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY2         = Bir hata daha yap ve kapıyı ç
 DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER1          = Yolumdan çekil - Ve patronuna nefretimi ilet... Gırr Gırr Gırr...
 DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER2          = Git başımdan! Senin ve kanalının yanında daha fazla zaman geçirmek istemiyorum!
 
-DIALOGUE_BOSS_WILLNOTDISTURB_OTHERPLAYER =	Tamam, uhmmm, Çıkıyorum!
+DIALOGUE_BOSS_WILLNOTDISTURB_OTHERPLAYER =	Tamam ya, çıkıyorum!
 DIALOGUE_BOSS_WILLNOTDISTURB			=	Ah tamam, Patron. Çıkıyorum!
-DIALOGUE_BOSS_ASKFORCREDIT				=	Ben... Ben *uhm* kredi isteyecektim.
+DIALOGUE_BOSS_ASKFORCREDIT				=	Ben... Ya ben *öhöm* kredi isteyecektim.
 DIALOGUE_BOSS_REPAYCREDIT				=	Aldığım krediyi geri ödemek istiyordum...
-DIALOGUE_BOSS_CREDIT_OK1				=	Yine. Para. Yine?\n Hmm, Tamam... Diğerlerinden iyi iş çıkarıyorsun. Ama en fazla, |b|%CREDIT%€|/b| ..., Anladın mı?!
-DIALOGUE_BOSS_CREDIT_OK2				=	Paramı boşa harcıyorsun!\n Ama bu kez alışverişten karlı çıkacağım gibi geliyor. Verebileceğim ; \n|b|%CREDIT%€|/b| . Anlaştık mı?
-DIALOGUE_BOSS_CREDIT_OK_ACCEPT1			=	Evet, Krediyi kabul ediyorum.
+DIALOGUE_BOSS_CREDIT_OK1				=	Yine. Para. Yine?\n Neyse, Tamam... Diğerlerinden iyi iş çıkarıyorsun. Ama en fazla, |b|%CREDIT%€|/b| ..., Anladın mı?!
+DIALOGUE_BOSS_CREDIT_OK2				=	Paramı boşa harcıyorsun!\n Ama bu kez alışverişten kârlı çıkacağım gibi geliyor. Verebileceğim ; \n|b|%CREDIT%€|/b| . Anlaştık mı?
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT1			=	Evet, krediyi kabul ediyorum.
 DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF1	=	Teşekkürler, Patron. Sadece yarısı bile yeterli; |b|%CREDITHALF%€|/b|.
 DIALOGUE_BOSS_DECLINE1					=	Hmm, teşekkürler Patron. Ama sanırım kabul etmeyeceğim.
 DIALOGUE_BOSS_DECLINE2					=	Fikrimi değiştirdim. Sonra görüşürüz, Patron.
@@ -437,11 +437,11 @@ DIALOGUE_BOSS_CREDIT_REPAY				=	Kredi borcunu ödemeyi düşünmüyor musun?\n �
 DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT		=	Tamam, bir miktar ödeme yapacağım.
 DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE	=	Bugün en azından bir güzel haberin olduğunu söylememiştin.\n \n Ne kadar ödeyeceksin?
 DIALOGUE_BOSS_CREDIT_REPAY_100K			=	Tamam, |b|100.000€|/b| ödemek istiyorum.
-DIALOGUE_BOSS_CREDIT_REPAY_500K			=	Uuhm, |b|500.000€|/b| ödeyebilirim.
-DIALOGUE_BOSS_CREDIT_REPAY_ALL			=	Hmm, Borcumun tamamını, |b|%CREDIT%€|/b| , ödeyeceğim.
+DIALOGUE_BOSS_CREDIT_REPAY_500K			=	Yani, |b|500.000€|/b| ödeyebilirim.
+DIALOGUE_BOSS_CREDIT_REPAY_ALL			=	Aslinda, borcumun tamamını, |b|%CREDIT%€|/b| , ödeyeceğim.
 
-DIALOGUE_BOSS_CHANGETOPIC1				=	Başka bir konuda konuşamaz mıyız?
-DIALOGUE_BOSS_BACKTOWORK				=	Tamam, %PLAYERNAME%, Şimdi işine dön!
+DIALOGUE_BOSS_CHANGETOPIC1				=	Başka bir konuyu konuşamaz mıyız?
+DIALOGUE_BOSS_BACKTOWORK				=	Tamam, %PLAYERNAME%, Haydi iş başina!
 DIALOGUE_BOSS_BACKTOWORK_OK				=	Tamam patron, işe dönüyorum.
 
 
@@ -456,7 +456,7 @@ ACQUIRED_PROPERTY = Kazanılmış Mülk
 NEW_STATION = Yeni İstasyon
 SELECT_LOCATION = Yer Seç
 SELECT_STATION = İstasyon Seç
-BUY_STATION = İstasyon Satın Al
+BUY_STATION = İstasyonu Satın Al
 TOO_EXPENSIVE = Çok pahalı
 SELL_STATION = İstasyon Sat
 
@@ -497,12 +497,12 @@ OPTION_OFF = Seçenek KAPALI
 AVAILABLE_GAMES = Mevcut Oyunlar
 ALREADY_OVER = Bitti mi...?
 DO_YOU_REALLY_WANT_TO_QUIT = Gerçekten çıkmak istiyor musun?
-DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN = Gerçekten oyundan çıkmak ve Ana Ekrana dönmek istiyor musun?
+DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN = Gerçekten oyundan çıkmak ve ana ekrana dönmek istiyor musun?
 
 CONTINUE_GAME = Oyuna devam et
 LOAD_GAME = Oyunu Yükle
 SAVE_GAME = Oyunu Kaydet
-EXIT_GAME = Oyundan Çıkış
+EXIT_GAME = Oyun Çıkışı
 EXIT_TO_MAINMENU = Ana Menüye Çıkış
 NAME_OF_SAVEGAME = Kayıt İsmi
 OVERWRITE_SAVEGAME = Üzerine Yazılsın mı?
@@ -521,7 +521,7 @@ PROGRAMMELICENCE_X_GOT_CONFISCATED = "%TITLE%" isimli program lisansına el konu
 SEEMS_AUTHORITIES_VISITED_THE_WRONG_ROOM = Yetkililer yanlış odayı ziyaret ettiler.
 BETTER_WATCH_OUT_NEXT_TIME = Bir dahaki sefere daha dikkatli davranın.
 
-YOU_HAVE_BEEN_OUTBID = Açık arttırmada sizden iyi teklif veren oldu.
+YOU_HAVE_BEEN_OUTBID = Açık arttırmada sizden yüksek teklif veren oldu.
 SOMEONE_BID_MORE_THAN_YOU_FOR_X = "%TITLE%" için senden daha iyi teklif veren oldu.
 YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED = Verdiğiniz, %MONEY% miktarda teklif ücreti iade edildi.  
 
@@ -568,7 +568,7 @@ WIND_VELOCITIES_ARE_BETWEEN_X_AND_Y1 = Rüzgarın hızı %MINWINDVELOCITY% ile %
 WIND_VELOCITY_IS_CONSTANT_AT_X1 = Rüzgarın şiddeti %WINDVELOCITY% km/s.
 
 LOCKED = Kilitli
-ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY = Bu odaya giriş sadece doğru anahtarla olabilir.
+ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY = Bu odaya saadece doğru anahtar ile girilir.
 BLOCKED = Bloke
 ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE = Bu odaya erişim, şu anda mümkün değil.
 
