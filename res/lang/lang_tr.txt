@@ -61,7 +61,7 @@ VALUE = Değer
 BROADCASTING_AREA = Yayın Alanı
 
 CURRENCY = €
-OCLOCK = .
+OCLOCK = 
 DAY = gün
 DAYS = gün
 WEEK_SHORT_MONDAY		= Pt
