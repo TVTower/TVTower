@@ -25,10 +25,10 @@ Function SetRendererWin32:TGraphics(_g:TGraphics, renderer:Int, realWidth:Int, r
 	_g = Graphics(realWidth, realHeight, colorDepth*fullScreen, hertz, flags)
 
 	?Not bmxng
-	'on win32 we could try to fallback to DX7
+	'on win32 we could try to fallback to DX9
 	If Not _g And renderer <> RENDERER_DIRECTX9
 		Notify "Graphics initiation error! The game will try to open in DirectX 9 mode."
-		SetGraphicsDriver D3D7Max2DDriver()
+		SetGraphicsDriver D3D9Max2DDriver()
 		_g = Graphics(realWidth, realHeight, colorDepth*fullScreen, hertz, flags)
 	EndIf
 	'on win32 we could try to fallback to DX7
