@@ -11256,6 +11256,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<data genre="0" price="1.0" quality="78" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
+
 		<news id="99fe6727-f9ea-4a1d-89b5-928a655b1695" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="0" creator="">
 			<title>
 				<de>Schweres Erdbeben in San Francisco</de>
@@ -11266,9 +11267,39 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="d8e0085f-2835-48e3-b0a8-4ab489f277f2" />
+				<effect trigger="happen" type="triggernews" news="f9a45fff-1546-ffa8-aa8a6ddb4880ad7f3" />
 			</effects>
 			<data genre="4" price="1.0" quality="88" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="f9a45fff-1546-ffa8-aa8a6ddb4880ad7f3" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="0" creator="">
+			<title>
+				<de>Ausnahmezustand in San Francisco</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Nach dem Erdbeben in San Francisco erklärt Bürgermeister Cole den Ausnahmezustand, um das Chaos unter Kontrolle zu bringen.</de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="d8e0085f-2835-48e3-b0a8-4ab489f277f2" />
+			</effects>
+			<data genre="4" price="1.0" quality="78" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="d8e0085f-2835-48e3-b0a8-4ab489f277f2" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
+			<title>
+				<de>Pausenlose Suche nach Verschütteten</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Hunderte Einsatzkräfte graben sich vorsichtig zu den Verschütteten durch. Mehr als 1000 Menschen konnten bereits lebend geborgen werden.</de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="3b01bf6c-1551-4fc7-b196-d129cce1f7a5" />
+			</effects>
+			<data genre="0" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="3b01bf6c-1551-4fc7-b196-d129cce1f7a5" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
@@ -11281,7 +11312,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="4bd3a222-4c38-4aa5-b511-d3550bee5860" />
+				<effect trigger="happen" type="triggernews" news="64897c07-0f8a-4f2e-ae52-e09ec7295066" />
 			</effects>
 			<data genre="4" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11301,19 +11332,19 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<data genre="4" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news id="fd620ae0-8d62-4243-83f2-b36b024d3594" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
+		<news id="e023198f-1705-46b7-aee4-ce17880e65b3" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
 			<title>
-				<de>Erdbeben: Klopfzeichen gehört</de>
+				<de>Nachbeben in San Francisco</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Ein kleiner Junge hat unter den Erdbebentrümmern in San Francisco Klopfzeichen vernommen. Die Suche nach Überlebenden geht somit weiter. </de>
+				<de>Erneut bebte die Erde in San Francisco mit der Stärke 4,2. Panik brach jedoch keine aus, die Suchaktionen laufen weiter. </de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="565d023d-7826-47c9-a9cd-bb36ed847c73" />
+				<effect trigger="happen" type="triggernews" news="1aad1ce7-966c-4d3b-a6d1-1a0ece958440" />
 			</effects>
-			<data genre="4" price="1.0" quality="68" />
+			<data genre="4" price="1.0" quality="88" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="1aad1ce7-966c-4d3b-a6d1-1a0ece958440" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
@@ -11331,6 +11362,21 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<data genre="4" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
+		<news id="fd620ae0-8d62-4243-83f2-b36b024d3594" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
+			<title>
+				<de>Erdbeben: Klopfzeichen gehört</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Ein kleiner Junge hat unter den Erdbebentrümmern in San Francisco Klopfzeichen vernommen. Die Suche nach Überlebenden geht somit weiter. </de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="565d023d-7826-47c9-a9cd-bb36ed847c73" />
+			</effects>
+			<data genre="4" price="1.0" quality="68" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
 		<news id="565d023d-7826-47c9-a9cd-bb36ed847c73" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
 			<title>
 				<de>Erdbeben: Überlebende gefunden</de>
@@ -11341,56 +11387,39 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="2836dfe1-18a3-46bf-9b72-7120ac8f85f5" />
+				<effect trigger="happen" type="triggernews" news="faa9ad4d-7422-dfd9-ffdd-a7af5a747c44" />
 			</effects>
 			<data genre="4" price="1.0" quality="88" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news id="e023198f-1705-46b7-aee4-ce17880e65b3" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
+		<news id="faa9ad4d-7422-dfd9-ffdd-a7af5a747c44" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
 			<title>
-				<de>Nachbeben in San Francisco</de>
+				<de>Erdbeben: Bürgermeister macht Mut</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Erneut bebte die Erde in San Francisco mit der Stärke 4,2. Panik brach jedoch keine aus, die Suchaktionen laufen weiter. </de>
+				<de>7 Menschen konnten heute lebend aus den Erdbebentrümmern in San Francisco befreit werden. Erschöpft harrten Sie in einem unterirdischen Tunnel aus.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="1aad1ce7-966c-4d3b-a6d1-1a0ece958440" />
+				<effect trigger="happen" type="triggernews" news="aa493fff-2456-ffa3-fa4a-a7bc4e7cc5a3" />
 			</effects>
-			<data genre="4" price="1.0" quality="88" />
+			<data genre="4" price="1.0" quality="78" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news id="d8e0085f-2835-48e3-b0a8-4ab489f277f2" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
+		<news id="aa493fff-2456-ffa3-fa4a-a7bc4e7cc5a3" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
 			<title>
-				<de>Pausenlose Suche nach Verschütteten</de>
+				<de>Erdbeben: Aufräumarbeiten beendet</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Hunderte Einsatzkräfte graben sich vorsichtig zu den Verschütteten durch. Mehr als 1000 Menschen konnten bereits lebend geborgen werden.</de>
+				<de>Nach dem Erdbeben in San Francisco sind die Aufräumarbeiten beendet. Bei dem Erdbeben wurden insgesamt 3971 Menschen getötet.</de>
 				<en></en>
 			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="3b01bf6c-1551-4fc7-b196-d129cce1f7a5" />
-			</effects>
-			<data genre="0" price="1.0" quality="58" />
+			<data genre="4" price="1.0" quality="73" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news id="4bd3a222-4c38-4aa5-b511-d3550bee5860" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
-			<title>
-				<de>Sonderrechtszustand in San Francisco</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Nach dem Erdbeben in San Francisco erklärt Bürgermeister Cole den Sonderrechtszustand, um das Chaos unter Kontrolle zu bringen.</de>
-				<en></en>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="64897c07-0f8a-4f2e-ae52-e09ec7295066" />
-			</effects>
-			<data genre="0" price="1.0" quality="49" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
+
 		<news id="64d0b36d-2dda-4ab5-af7f-e9087c35e1ea" thread_id="ccb647c9-025f-4a00-876b-0b95ea303d7c" type="0" creator="">
 			<title>
 				<de>Massenschlägerei in Berliner Diskothek</de>
@@ -11576,6 +11605,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<data genre="2" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
+		
 		<news id="3a5e6a8d-a0ee-4175-ba92-a5bada7cf291" thread_id="d8ca951a-2240-488a-8913-ddb5b75c8add" type="0" creator="">
 			<title>
 				<de>Semmelgerste erwischt - 3,6 Promille </de>
@@ -11586,22 +11616,39 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="b0dca345-b75e-4d34-97c1-9467339cdbb0" />
+				<effect trigger="happen" type="triggernews" news="f67941dc-54a1-428f-b3c0-c58d7877aa85" />
 			</effects>
-			<data genre="1" price="1.0" quality="0" />
+			<data genre="1" price="1.0" quality="20" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news id="7fed1494-c4fb-44b1-842f-c6caf08ce376" thread_id="d8ca951a-2240-488a-8913-ddb5b75c8add" type="2" creator="">
+		<news id="f67941dc-54a1-428f-b3c0-c58d7877aa85" thread_id="d8ca951a-2240-488a-8913-ddb5b75c8add" type="2" creator="">
 			<title>
-				<de>Semmelgerste - 6 Monate Haft</de>
+				<de>Semmelgerste erneut erwischt</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Richterin B. Salosch verurteilte heute Martin Semmelgerste zu 6 Monaten Haft ohne Bewährung. Sein Rechtsanwalt besteht jedoch auf einen Fahrsimulator.</de>
+				<de>Martin Semmelgerste war trotz Führerscheintzug mit dem PKW unterwegs. Der Polizei sagte er: "Habt ihr nichts besseres zu tun als mich anzuhalten?"</de>
 				<en></en>
 			</description>
-			<effects />
-			<data genre="1" price="1.0" quality="49" />
+			<effects>
+				<effect trigger="happen" type="triggernews" news="b0dca345-b75e-4d34-97c1-9467339cdbb0" />
+			</effects>
+			<data genre="1" price="1.0" quality="18" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="b0dca345-b75e-4d34-97c1-9467339cdbb0" thread_id="d8ca951a-2240-488a-8913-ddb5b75c8add" type="2" creator="">
+			<title>
+				<de>Semmelgerste kann es nicht lassen.</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Erneut ertappte die Polizei den Schauspieler ohne Führerschein am Steuer. Semmelgerste droht nun sogar eine Gefängnisstrafe. </de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="89857ce2-b83a-4f36-97da-5a780db79d03" />
+			</effects>
+			<data genre="1" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="89857ce2-b83a-4f36-97da-5a780db79d03" thread_id="d8ca951a-2240-488a-8913-ddb5b75c8add" type="2" creator="">
@@ -11615,36 +11662,6 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="af1d00d5-19bd-4135-8e66-46263735f688" />
-			</effects>
-			<data genre="1" price="1.0" quality="19" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
-		<news id="f67941dc-54a1-428f-b3c0-c58d7877aa85" thread_id="d8ca951a-2240-488a-8913-ddb5b75c8add" type="2" creator="">
-			<title>
-				<de>Semmelgerste erneut erwischt</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Martin Semmelgerste war trotz Führerscheintzug mit dem PKW unterwegs. Der Polizei sagte er: "Habt ihr nichts besseres zu tun als mich anzuhalten?"</de>
-				<en></en>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="89857ce2-b83a-4f36-97da-5a780db79d03" />
-			</effects>
-			<data genre="1" price="1.0" quality="9" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
-		<news id="b0dca345-b75e-4d34-97c1-9467339cdbb0" thread_id="d8ca951a-2240-488a-8913-ddb5b75c8add" type="2" creator="">
-			<title>
-				<de>Semmelgerste kann es nicht lassen.</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Erneut ertappte die Polizei den Schauspieler ohne Führerschein am Steuer. Semmelgerste droht nun sogar eine Gefängnisstrafe. </de>
-				<en></en>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="f67941dc-54a1-428f-b3c0-c58d7877aa85" />
 			</effects>
 			<data genre="1" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11694,6 +11711,20 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<data genre="1" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
+		<news id="7fed1494-c4fb-44b1-842f-c6caf08ce376" thread_id="d8ca951a-2240-488a-8913-ddb5b75c8add" type="2" creator="">
+			<title>
+				<de>Semmelgerste - 6 Monate Haft</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Richterin B. Salosch verurteilte heute Martin Semmelgerste zu 6 Monaten Haft ohne Bewährung. Sein Rechtsanwalt besteht jedoch auf einen Fahrsimulator.</de>
+				<en></en>
+			</description>
+			<effects />
+			<data genre="1" price="1.0" quality="49" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+
 		<news id="fded6521-4bc8-400a-8b97-0749573812d1" thread_id="dcb76d49-9b99-41f1-9020-54d3f1f22ff7" type="0" creator="">
 			<title>
 				<de>Terroristen nur noch mit GPS?</de>
@@ -11734,6 +11765,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<data genre="0" price="1.10" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
+		
 		<news id="e730d750-5b8f-4f10-a7c5-86936521de82" thread_id="e6be4f49-d79e-4096-97ff-2cef4795a10b" type="0" creator="">
 			<title>
 				<de>Programmierer klaut bei Beate Ohse</de>
@@ -11792,6 +11824,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<data genre="4" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
+
 		<news id="d9aa67c1-5aa3-4519-9cc2-ef8e1a769ae5" thread_id="e7afb16c-023e-47d8-a23c-8f45efa02854" type="0" creator="">
 			<title>
 				<de>Grünspecht in der Eifel gesichtet</de>
