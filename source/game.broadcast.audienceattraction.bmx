@@ -227,7 +227,7 @@ Type TAudienceAttraction Extends TAudience
 
 
 		local genreAttractivity:TAudience = GetGenreAttractivity()
-		if genreAttractivity then result.Multiply( GetGenreAttractivity() )
+		if genreAttractivity then result.Multiply( genreAttractivity )
 
 
 		if SequenceEffect Then result.Add(SequenceEffect)
@@ -236,7 +236,6 @@ Type TAudienceAttraction Extends TAudience
 		'avoid negative attraction values or values > 100%
 		'-> else you could have a negative audience
 		result.CutBordersFloat(0.0, 1.0)
-
 		Self.FinalAttraction = result
 		Self.SetValuesFrom(result)
 	End Method
@@ -303,8 +302,11 @@ Type TAudienceAttraction Extends TAudience
 		EndIf
 
 
-
-		print "11. RES        = " + FinalAttraction.ToStringAverage()
+		if FinalAttraction
+			print "11. RES        = " + FinalAttraction.ToStringAverage()
+		else
+			print "11. RES        = -/-"
+		endif
 	End Method
 
 

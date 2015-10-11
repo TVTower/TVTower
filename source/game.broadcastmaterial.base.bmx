@@ -228,9 +228,10 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	'default implementation	
 	'limited to 0 - 2.0, 1.0 means "no change"
 	Method GetGenrePopularityMod:Float(definition:TGenreDefinitionBase)
-		'multiply with 0.5 to scale "-2 to +2" down to "-1 to +1"
+		'Popularity ranges from -50 to 100 (no absolute "unpopular for
+		'everyone" possible)
 		'add 1 to get a value between 0 - 2
-		Return 1.0 + MathHelper.Clamp(definition.GetPopularity().Popularity / 50.0, -1.0, 1.0 )
+		Return 1.0 + MathHelper.Clamp(definition.GetPopularity().Popularity / 100.0, -1.0, 1.0 )
 	End Method
 
 	
@@ -247,9 +248,10 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	'default implementation	
 	'return a value between -1.0 - 1.0
 	Method GetFlagPopularityMod:Float(definition:TGenreDefinitionBase)
-		'Popularity ranges between -50 to 50, so scale them to -1.0, 1.0
+		'Popularity ranges from -50 to 100 (no absolute "unpopular for
+		'everyone" possible)
 		'add 1 to get a value between 0 - 2
-		Return 1.0 + MathHelper.Clamp(definition.GetPopularity().Popularity / 50.0, -1.0, 1.0 )
+		Return 1.0 + MathHelper.Clamp(definition.GetPopularity().Popularity / 100.0, -1.0, 1.0 )
 	End Method
 
 	

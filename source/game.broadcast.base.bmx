@@ -258,7 +258,7 @@ Type TBroadcastManager
 			Local audienceResult:TAudienceResult = bc.GetAudienceResult(playerID)
 			'add to current set of results
 			SetAudienceResult(playerID, audienceResult)
-if playerID = 1 and audienceResult
+if 1 = 2 and playerID = 1 and audienceResult
 	if broadcastType = TVTBroadcastMaterialType.NEWSSHOW
 		print "NEWS ATTRACTION FOR PLAYER "+playerID+" hour:"+hour+":00"
 		audienceResult.AudienceAttraction.DebugPrint()

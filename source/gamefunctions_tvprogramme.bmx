@@ -1776,12 +1776,13 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	Field bestBidder:Int = 0			'what was bidden for that licence
 	Field slot:Int = 0					'for ordering (and displaying sheets without overlapping)
 	Field bidSavings:Float = 0.75		'how much to shape of the original price
+	Field _bidSavingsMinimum:Float = -1
+	Field _bidSavingsMaximum:Float = -1
+	Field _bidSavingsDecreaseBy:Float = -1
+	
 	'cached image
 	Field _imageWithText:TImage = Null {nosave}
 
-	Global bidSavingsMaximum:Float		= 0.85			'base value
-	Global bidSavingsMinimum:Float		= 0.50			'base value
-	Global bidSavingsDecreaseBy:Float	= 0.05			'reduce the bidSavings-value per day
 	Global List:TList = CreateList()	'list of all blocks
 
 	'todo/idea: we could add a "started" and a "endTime"-field so
@@ -1840,7 +1841,33 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			endif
 		Next
 	End Function
-	
+
+
+	Method GetBidSavingsMaximum:Float()
+		if _bidSavingsMaximum = -1.0
+			_bidSavingsMaximum = RandRange(80,90) / 100.0 '0.8 - 0.9
+		endif
+		return _bidSavingsMaximum
+	End Method
+
+
+	Method GetBidSavingsMinimum:Float()
+		if _bidSavingsMinimum = -1.0
+			'0.55 - (Max-0.05)
+			_bidSavingsMinimum = RandRange(55, GetBidSavingsMaximum()-0.05) / 100.0
+		endif
+		return _bidSavingsMinimum
+	End Method
+
+
+	Method GetBidSavingsDecreaseBy:Float()
+		if _bidSavingsDecreaseBy = -1.0
+			'0.05 - 0.10
+			_bidSavingsDecreaseBy = RandRange(5, 10) / 100.0
+		endif
+		return _bidSavingsDecreaseBy
+	End Method
+	 
 
 	'sets another licence into the slot
 	Method Refill:Int(programmeLicence:TProgrammeLicence=Null)
@@ -1876,7 +1903,10 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		'reset bids
 		bestBid = 0
 		bestBidder = 0
-		bidSavings = bidSavingsMaximum
+		_bidSavingsDecreaseBy = -1
+		_bidSavingsMaximum = -1
+		_bidSavingsMinimum = -1
+
 		'emit event
 		EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.Refill", New TData.Add("licence", licence).AddNumber("slot", slot), Self))
 	End Method
@@ -1917,12 +1947,12 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		'found nobody to buy this licence
 		'so we decrease price a bit
 		If Not bestBidder
-			Self.bidSavings :- Self.bidSavingsDecreaseBy
+			Self.bidSavings :- Self.GetBidSavingsDecreaseBy()
 		EndIf
 
 		'if we had a bidder or found nobody with the allowed price minimum
 		'we add another licence to this block and reset everything
-		If bestBidder Or Self.bidSavings < Self.bidSavingsMinimum
+		If bestBidder Or Self.bidSavings < Self.GetBidSavingsMinimum()
 			Refill()
 		EndIf
 	End Method

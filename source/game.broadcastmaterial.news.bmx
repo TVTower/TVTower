@@ -99,10 +99,10 @@ endif
 	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
 		Local resultAudienceAttr:TAudienceAttraction = New TAudienceAttraction
 		resultAudienceAttr.BroadcastType = TVTBroadcastMaterialType.NEWSSHOW
-'RONNY: removed Genre (contained in genreDefinition if set
-'		resultAudienceAttr.Genre = -1
 		resultAudienceAttr.GenrePopularityMod = 0
 		resultAudienceAttr.GenreTargetGroupMod = New TAudience
+		resultAudienceAttr.FlagsTargetGroupMod = New TAudience
+		resultAudienceAttr.FlagsPopularityMod = 0
 		resultAudienceAttr.PublicImageMod = New TAudience
 		resultAudienceAttr.TrailerMod = New TAudience
 		resultAudienceAttr.MiscMod = New TAudience
@@ -136,9 +136,11 @@ endif
 			local title:string = "--"
 			if currentNews then title = currentNews.GetTitle() 
 			'print owner+")  news"+i+":  " +tempAudienceAttr.ToString() +"   " + title +"  usedAs:"+usedAsType
-
 		Next
-		'print owner+")  newsA:  " + resultAudienceAttr.ToString()
+		'already one with "addAttraction"
+		'resultAudienceAttr.Quality = GetQuality()
+
+		'print owner+")  newsA:  " + resultAudienceAttr.ToStringAverage()
 		Return resultAudienceAttr
 	End Method
 
