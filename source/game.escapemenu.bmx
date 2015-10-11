@@ -140,6 +140,10 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 		dirTree.AddIncludeFileNames(["*"])
 		dirTree.ScanDir("", True)
 		local fileURIs:String[] = dirTree.GetFiles()
+
+		'disable autosort - handled via "compare()" now
+		'savegameList.autoSortItems = False
+		
 		'loop over all filenames
 		for local fileURI:String = EachIn fileURIs
 			'skip non-existent files
@@ -330,6 +334,7 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 		dirTree.AddIncludeFileNames(["*"])
 		dirTree.ScanDir("", True)
 		local fileURIs:String[] = dirTree.GetFiles()
+
 		'loop over all filenames
 		for local fileURI:String = EachIn fileURIs
 			'skip non-existent files
@@ -595,8 +600,21 @@ Type TGUISavegameListItem extends TGUISelectListItem
 	Function GetTypeFont:TBitmapFont()
 		return _typeDefaultFont
 	End Function
-	
 
+
+	Method Compare:Int( other:Object )
+		local otherItem:TGUISavegameListItem = TGUISavegameListItem(other)
+		if not otherItem then return 1
+
+		local timeA:int = GetFileInformation().GetInt("fileTime", 0)
+		local timeB:int = otherItem.GetFileInformation().GetInt("fileTime", 0)
+		if timeA < timeB then return 1
+		if timeA > timeB then return -1
+
+		return 0
+	End Method
+
+	
 	Method SetSavegameFile(fileURI:string)
 		local stream:TStream = ReadStream(fileURI)
 		if not stream
@@ -635,6 +653,7 @@ Type TGUISavegameListItem extends TGUISelectListItem
 		fileInformation = TData(p.DeserializeObject(content))
 
 		fileInformation.Add("fileURI", fileURI)
+		fileInformation.AddNumber("fileTime", FileTime(fileURI))
 	End Method
 
 
