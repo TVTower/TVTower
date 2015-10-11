@@ -4,7 +4,7 @@ Type TNewsAgency
 	'when to announce a new newsevent
 	Field NextEventTime:Double = -1
 	'check for a new news every x-y minutes
-	Field NextEventTimeInterval:int[] = [120, 200]
+	Field NextEventTimeInterval:int[] = [90, 140]
 
 	Field delayedLists:TList[]
 
