@@ -2,7 +2,7 @@
 <tvgdb>
 <version value="3" comment="Programme von TheRob" />
 	<allprogrammes>
-		<programme id="TheRob-4497-film-mon-Wiegehtesweiter" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0043949" rt_id="0" creator="TheRob">
+		<programme id="TheRob-4497-film-mon-Wiegehtesweiter" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0043949" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Quo Vadis -->
 				<de>Wie geht es weiter?</de>
@@ -26,7 +26,7 @@
 			<data country="USA" year="1954" distribution="0" maingenre="13" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
 			<ratings critics="52" speed="47" outcome="41" />
 		</programme>
-		<programme id="54084557-4497-48d5-8e3a-TheRobRiesenstadt" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0017136" rt_id="0" creator="TheRob">
+		<programme id="54084557-4497-48d5-8e3a-TheRobRiesenstadt" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0017136" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Metropolis, als Cult geflagt -->
 				<de>Riesenstadt - Long Cut</de>
@@ -51,7 +51,7 @@
 			<ratings critics="83" speed="23" outcome="62" />
 		</programme>
 
-		<programme id="TheRob-4497-48d5-8e3a-grossemenschen" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0049261" rt_id="0" creator="TheRob">
+		<programme id="TheRob-4497-48d5-8e3a-grossemenschen" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0049261" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Giganten -->
 				<de>Große Menschen</de>
@@ -77,7 +77,7 @@
 			<ratings critics="79" speed="32" outcome="69" />
 		</programme>
 
-		<programme id="TheRob-4497-48d5-8e3a-koeniginaegyptens" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056937" rt_id="0" creator="TheRob">
+		<programme id="TheRob-4497-48d5-8e3a-koeniginaegyptens" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056937" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Cleopatra -->
 				<de>Die Königin Ägyptens</de>
@@ -101,7 +101,7 @@
 			<ratings critics="49" speed="49" outcome="49" />
 		</programme>
 
-		<programme id="04439fd1-e89f-TheRobTestSerie01" product="5" licence_type="3" tmdb_id="0" imdb_id="tt2757036" rt_id="0" creator="TheRob">
+		<programme id="04439fd1-e89f-TheRobTestSerie01" product="5" licence_type="3" tmdb_id="0" imdb_id="tt2757036" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Western von gestern, Orginal Serie wird auf 1975 datiert -->
 				<de>Gestern gab es Western</de>
@@ -123,7 +123,7 @@
 			<data country="USA" year="1949" distribution="0" maingenre="18" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
 			<ratings critics="40" speed="29" outcome="29" />
 			<children>
-				<programme id="39803483-0800-46e3-a153-TheRobEpisode1" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="39803483-0800-46e3-a153-TheRobEpisode1" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Jerry das Pferd</de>
 						<en>Jerry the horse</en>
@@ -134,7 +134,7 @@
 					</description>
 					<ratings critics="42" speed="42" />
 				</programme>
-				<programme id="4c062f49-f1e8-400a-9c11-TheRobEpisode2" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="4c062f49-f1e8-400a-9c11-TheRobEpisode2" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Lozzo lernt peitschen</de>
 						<en>Lozzo trains whipping</en>
@@ -145,7 +145,7 @@
 					</description>
 					<ratings critics="53" speed="39" />
 				</programme>
-				<programme id="dc0b1ca6-c1c1-496f-9882-TheRobEpisode3" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="dc0b1ca6-c1c1-496f-9882-TheRobEpisode3" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Niklas sucht James</de>
 						<en>Niklas looking for James</en>
@@ -156,7 +156,7 @@
 					</description>
 					<ratings critics="19" speed="25" />
 				</programme>
-				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode4" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode4" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Njamba der Fotograf</de>
 						<en>Njamba the photograph</en>
@@ -167,7 +167,7 @@
 					</description>
 					<ratings critics="29" speed="5" />
 				</programme>
-				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode5" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode5" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Farmer gen Osten</de>
 						<en>Farmers go east</en>
@@ -178,7 +178,7 @@
 					</description>
 					<ratings critics="32" speed="79" />
 				</programme>
-				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode6" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode6" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Mensch Jimmy</de>
 						<en>Well, Jimmy</en>
@@ -189,7 +189,7 @@
 					</description>
 					<ratings critics="19" speed="55" />
 				</programme>
-				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode7" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode7" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>IIIk, wird das Wononza?</de>
 						<en>OMG, will this end in Wononza?</en>
@@ -203,7 +203,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-KomissarWirsch" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-serie-KomissarWirsch" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Komissar Wirsch -->
 				<de>Kommissar Wirsch</de>
@@ -222,7 +222,7 @@
 			<data country="D" year="1951" distribution="0" maingenre="4" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
 			<ratings critics="30" speed="49" outcome="" />
 			<children>
-				<programme id="TheRob-serie-KommissarWirsch-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-KommissarWirsch-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Wirschi und der Tante Emma Laden</de>
 						<en>Wirschi and the small shop at the corner</en>
@@ -233,7 +233,7 @@
 					</description>
 					<ratings critics="29" speed="48" />
 				</programme>
-				<programme id="TheRob-serie-KommissarWirsch-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-KommissarWirsch-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Wirschi und der vermisste Bürgermeister</de>
 						<en>Wirschi and the missing major</en>
@@ -244,7 +244,7 @@
 					</description>
 					<ratings critics="30" speed="50" />
 				</programme>
-				<programme id="TheRob-serie-KommissarWirsch-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-KommissarWirsch-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Wirschi und das versteckte Gemälde</de>
 						<en>Wirschi an the hidden painting</en>
@@ -255,7 +255,7 @@
 					</description>
 					<ratings critics="30" speed="50" />
 				</programme>
-				<programme id="TheRob-serie-KommissarWirsch-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-KommissarWirsch-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Wirschi und der Fotograf</de>
 						<en>Wirschi and the photographer</en>
@@ -266,7 +266,7 @@
 					</description>
 					<ratings critics="32" speed="50" />
 				</programme>
-				<programme id="TheRob-serie-KommissarWirsch-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-KommissarWirsch-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Wirschi und der Grenzstein</de>
 						<en>Wirschi and the border stone</en>
@@ -277,7 +277,7 @@
 					</description>
 					<ratings critics="12" speed="8" />
 				</programme>
-				<programme id="TheRob-serie-KommissarWirsch-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-KommissarWirsch-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Assistentin wird Sängerin</de>
 						<en>The Assistant becomes a singstar</en>
@@ -291,7 +291,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-a9f6-thr-NichtinderNacht" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0051588" rt_id="0" creator="TheRob">
+		<programme id="TheRob-a9f6-thr-NichtinderNacht" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0051588" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Es geschah am helllichten Tage -->
 				<de>Es passierte nicht in der Nacht</de>
@@ -315,7 +315,7 @@
 			<ratings critics="74" speed="56" outcome="81" />
 		</programme>
 
-		<programme id="TheRob-a4d6-act-Meinsallesmeins" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-a4d6-act-Meinsallesmeins" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Meins Alles Meins -->
 				<de>Meins! Alles MEINS!</de>
@@ -336,7 +336,7 @@
 			<ratings critics="27" speed="63" outcome="36" />
 		</programme>
 
-		<programme id="TheRob-b0db-fant-ReisemitSandmaennchen" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-fant-ReisemitSandmaennchen" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
  				<!-- Zielgruppe Kinder -->
 				<de>Ich reiste mit dem Sandmännchen</de>
@@ -357,7 +357,7 @@
 			<ratings critics="33" speed="27" outcome="56" />
 		</programme>
 
-		<programme id="TheRob-b0db-myst-VerschwandmitSandmaennchen" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-myst-VerschwandmitSandmaennchen" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Als Mysterie Test mit Subgenre Horror -->
 				<de>Ich verschwand mit dem Sandmännchen</de>
@@ -378,7 +378,7 @@
 			<ratings critics="73" speed="58" outcome="76" />
 		</programme>
 
-		<programme id="TheRob-b5dc-hist-Neuschwanstein" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b5dc-hist-Neuschwanstein" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<de>Der Bau von Neuschwanstein</de>
 				<en></en>
@@ -417,7 +417,7 @@
 			<ratings critics="12" speed="49" outcome="69" />
 		</programme>
 
-		<programme id="TheRob-a4d6-4cf2-b022-ZyanidundSpitzenhoeschen" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0036613" rt_id="0" creator="TheRob">
+		<programme id="TheRob-a4d6-4cf2-b022-ZyanidundSpitzenhoeschen" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0036613" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Arsen und Spitzenhäubchen -->
 				<de>Zyanid und Spitzenhoeschen</de>
@@ -443,7 +443,7 @@
 			<ratings critics="77" speed="68" outcome="71" />
 		</programme>
 
-		<programme id="e61018ba-b0db-439c-a852-TheRob04" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="e61018ba-b0db-439c-a852-TheRob04" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<de>Wesensreiter</de>
 				<en></en>
@@ -463,7 +463,7 @@
 			<ratings critics="33" speed="27" outcome="56" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-Wosselnaht" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0059372" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-439c-a852-Wosselnaht" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0059372" rt_id="0" creator="8751" created_by="TheRob">
 			<!-- König Drosselbart, Zielgruppe Kinder -->
 			<title>
 				<de>Prinz Wosselnaht</de>
@@ -486,7 +486,7 @@
 			<ratings critics="63" speed="47" outcome="36" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-BullshitBingo" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-439c-a852-BullshitBingo" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<de>Bullshit Bingo</de>
 				<en>Bullshit bingo</en>
@@ -504,7 +504,7 @@
 			<ratings critics="29" speed="27" outcome="10" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-Sonstiges" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-439c-a852-Sonstiges" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<de>Sonstiges - das Thema</de>
 				<en>Various - the toppic</en>
@@ -525,7 +525,7 @@
 			<ratings critics="99" speed="47" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-EditorundKI" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-439c-a852-EditorundKI" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<de>Editor und KI</de>
 				<en>Editor and KI</en>
@@ -543,7 +543,7 @@
 			<ratings critics="92" speed="27" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-TVGigantderAnfang" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-439c-a852-TVGigantderAnfang" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<de>TVGigant - der Anfang</de>
 				<en>TVGigant - the begining</en>
@@ -562,7 +562,7 @@
 			<ratings critics="92" speed="27" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-RatTV" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-439c-a852-RatTV" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Geschichte über MadTV und Rainbow Arts -->
 				<de>RatTV - Quo Vadis</de>
@@ -583,7 +583,7 @@
 			<ratings critics="88" speed="51" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-RaucherladenBrooklin" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0114478" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-439c-a852-RaucherladenBrooklin" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0114478" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Smoke. Laut IMDB Comedy, Drama. Ich habe den Film gesehen und würde ihn niccht als Komödie bezeichnen. Als Drama auch nicht. Die Kategorie Sonstiges passt hier -->
 				<de>Raucherladen Brooklin</de>
@@ -607,7 +607,7 @@
 			<ratings critics="79" speed="57" outcome="18" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-RauchinBrooklin" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0112541" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-439c-a852-RauchinBrooklin" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0112541" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Blue in the Face. Laut IMDB Comedy. Ich habe den Film gesehen und würde ihn nicht als Komödie bezeichnen. Die Kategorie Sonstiges passt hier -->
 				<de>Rauch in Brooklin</de>
@@ -632,7 +632,7 @@
 			<!-- Erscheinungsjahr in Deutschland war 1996. 95 ist in der USA gewesen. -->
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-Goaaaaal" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-439c-a852-Goaaaaal" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<de>Goaaaaal</de>
 				<en>Goaaaaal</en>
@@ -692,7 +692,7 @@
 			<ratings critics="32" speed="49" outcome="47" />
 		</programme>
 
-		<programme id="TheRob-400d-8f9c-curlyhorror" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0073629" rt_id="0" creator="TheRob">
+		<programme id="TheRob-400d-8f9c-curlyhorror" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0073629" rt_id="0" creator="8751" created_by="TheRob">
 			<!-- Rocky Horror Picture Show -->
 			<title>
 				<de>Die Locken Horror Show</de>
@@ -713,7 +713,7 @@
 			<ratings critics="52" speed="69" outcome="87" />
 		</programme>
 
-		<programme id="TheRob-400d-8f9c-blaueausdemhimmel" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0020697" rt_id="0" creator="TheRob">
+		<programme id="TheRob-400d-8f9c-blaueausdemhimmel" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0020697" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Der blaue Engel -->
 				<de>Die Blaue aus dem Himmel</de>
@@ -879,7 +879,7 @@
 			<ratings critics="87" speed="66" outcome="75" />
 		</programme>
 
-		<programme id="therob-programme-elefantengedaechtnis" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="therob-programme-elefantengedaechtnis" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<de>Elefantengedächtnis</de>
 				<en>An elephant mind</en>
@@ -896,7 +896,7 @@
 			<data country="D" year="1975" distribution="0" maingenre="9" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
 			<ratings critics="67" speed="25" outcome="0" />
 			<children>
-				<programme id="therob-programme-elefantengedaechtnis-ep101" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-elefantengedaechtnis-ep101" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Zahnpasta</de>
 						<en>Toothpaste</en>
@@ -907,7 +907,7 @@
 					</description>
 					<ratings critics="73" speed="24" />
 				</programme>
-				<programme id="therob-programme-elefantengedaechtnis-ep102" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-elefantengedaechtnis-ep102" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Limonade</de>
 						<en>Lemonade</en>
@@ -918,7 +918,7 @@
 					</description>
 					<ratings critics="65" speed="26" />
 				</programme>
-				<programme id="therob-programme-elefantengedaechtnis-ep103" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-elefantengedaechtnis-ep103" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Bleistifte</de>
 						<en></en>
@@ -954,7 +954,7 @@
 			</children>
 		</programme>
 
-		<programme id="5c4c567b-dda6-4d7e-b90a-RobTheTest11" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0032551" rt_id="0" creator="TheRob">
+		<programme id="5c4c567b-dda6-4d7e-b90a-RobTheTest11" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0032551" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
   				<!-- Früchte des Zorns -->
 				<de>Zorniges Obst</de>
@@ -977,7 +977,7 @@
 			<data country="USA" year="1940" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
 			<ratings critics="98" speed="19" outcome="69" />
 		</programme>
-		<programme id="TheRob-dda6-4d7e-b90a-greasyrider" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0064276" rt_id="0" creator="TheRob">
+		<programme id="TheRob-dda6-4d7e-b90a-greasyrider" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0064276" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
   				<!-- Easy Rider, Kinokasse ist so hoch, da der Film laut IMDB beu 400k Budget über 40 Mio eingespielt hat, wegen Budget als B-Movie geflagt und noch Kult dazu -->
 				<de>Greasy Biker</de>
@@ -1026,7 +1026,7 @@
 			<ratings critics="96" speed="29" outcome="69" />
 		</programme>
 
-		<programme id="b9c6190d-a9f6-4a94-8092-TheRobTest12" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0022100" rt_id="0" creator="TheRob">
+		<programme id="b9c6190d-a9f6-4a94-8092-TheRobTest12" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0022100" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
   				<!-- M Eine Stadt sucht einen Mörder -->
 				<de>Ein Dorf jagt L.</de>
@@ -1052,7 +1052,7 @@
 			<ratings critics="74" speed="26" outcome="83" />
 		</programme>
 
-		<programme id="TheRob-a9f6-4a94-8092-unperfektesLand" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0107808" rt_id="0" creator="TheRob">
+		<programme id="TheRob-a9f6-4a94-8092-unperfektesLand" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0107808" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Perfect World -->
 				<de>Unperfektes Land</de>
@@ -1077,7 +1077,7 @@
 			<ratings critics="71" speed="46" outcome="63" />
 		</programme>
 
-		<programme id="therob-programme-speiuebelunddubrovnik" product="5" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="therob-programme-speiuebelunddubrovnik" product="5" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Spejbl und Hurvinek keine IMDB ID gefunden -->
 				<de>Speiübel und Dubrovnik</de>
@@ -1099,7 +1099,7 @@
 			<data country="CSSR" year="1973" distribution="0" maingenre="9" subgenre="5" flags="2" blocks="1" time="0" price_mod="1.00" />
 			<ratings critics="47" speed="29" outcome="0" />
 			<children>
-				<programme id="therob-programme-speiuebelunddubrovnik-ep201" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-speiuebelunddubrovnik-ep201" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Speiübel kommt in die Schule</de>
 						<en></en>
@@ -1110,7 +1110,7 @@
 					</description>
 					<ratings critics="43" speed="26" />
 				</programme>
-				<programme id="therob-programme-speiuebelunddubrovnik-ep202" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-speiuebelunddubrovnik-ep202" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Hausaufgaben</de>
 						<en></en>
@@ -1121,7 +1121,7 @@
 					</description>
 					<ratings critics="49" speed="31" />
 				</programme>
-				<programme id="therob-programme-speiuebelunddubrovnik-ep203" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-speiuebelunddubrovnik-ep203" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Musikunterricht</de>
 						<en></en>
@@ -1157,7 +1157,7 @@
 			</children>
 		</programme>
 
-		<programme id="631f722f-b5dc-4663-bd81-TheRobHist01" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="631f722f-b5dc-4663-bd81-TheRobHist01" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<de>Die Tempelritter</de>
 				<en></en>
@@ -1177,7 +1177,7 @@
 			<ratings critics="75" speed="31" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-b5dc-4663-bd81-JayEfKay" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0102138" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b5dc-4663-bd81-JayEfKay" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0102138" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- JFK - Tatort Dallas, laut Liste schon im Spiel, aber nicht in der Database gefunden -->
 				<de>Jay Ef Kay - Es geschah in Dallas</de>
@@ -1202,7 +1202,7 @@
 			<ratings critics="73" speed="51" outcome="51" />
 		</programme>
 
-		<programme id="e61018ba-b0db-439c-a852-TheRobTest13" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="e61018ba-b0db-439c-a852-TheRobTest13" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
   				<!-- Dudu ist die Grundidee, aber da das Setting in meinen Augen so verändert ist, dass man noch DuDu und Herbie anlegen kann, ohne das es stört, ist Baba auf fictional gesetzt. -->
 				<de>Baba der Trabbi</de>
@@ -1223,7 +1223,7 @@
 			<ratings critics="27" speed="34" outcome="46" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-ZugnachPeking" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-439c-a852-ZugnachPeking" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 	  			<!--Shanghai Express -->
 				<de>Zug nach Peking</de>
@@ -1242,7 +1242,7 @@
 			<ratings critics="57" speed="34" outcome="56" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-LodinRoot" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0102798" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-439c-a852-LodinRoot" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0102798" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Robin Hood - König der Diebe -->
 				<de>Lodin Root</de>
@@ -1267,7 +1267,7 @@
 			<ratings critics="53" speed="47" outcome="71" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-WilhelmTell" product="1" fiction="1" licence_type="1" tmdb_id="0" imdb_id="tt0102798" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-439c-a852-WilhelmTell" product="1" fiction="1" licence_type="1" tmdb_id="0" imdb_id="tt0102798" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Wilhelm Tell als Fiktion. Basiert auf keinem existierendem Film, von daher benutze ich mal den Klar Namen -->
 				<de>Wilhelm Tell</de>
@@ -1288,7 +1288,7 @@
 			<ratings critics="36" speed="32" outcome="31" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-Janosik" product="1" fiction="1" licence_type="1" tmdb_id="0" imdb_id="tt0102798" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-439c-a852-Janosik" product="1" fiction="1" licence_type="1" tmdb_id="0" imdb_id="tt0102798" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Janosik als Fiktion. Basiert auf keinem existierendem Film, von daher benutze ich mal den Klar Namen -->
 				<de>Janosik</de>
@@ -1309,7 +1309,7 @@
 			<ratings critics="56" speed="42" outcome="41" />
 		</programme>
 
-		<programme id="therob-programme-trash-skandale" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="therob-programme-trash-skandale" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<de>Skandale</de>
 				<en>scandals</en>
@@ -1326,7 +1326,7 @@
 			<data country="D" year="1979" distribution="0" maingenre="11" subgenre="6" flags="92" blocks="2" time="0" price_mod="1.00" />
 			<ratings critics="65" speed="35" outcome="60" />
 			<children>
-				<programme id="therob-programme-trash-skandale-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-trash-skandale-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>[1|Full] qualmt die Bude zu</de>
 						<en></en>
@@ -1362,7 +1362,7 @@
 			</children>
 		</programme>
 
-		<programme id="therob-programme-adv-Sinbadsreisen" product="7" fiction="1" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="therob-programme-adv-Sinbadsreisen" product="7" fiction="1" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<!-- Abteuerserie  -->
 			<title>
 				<de>Sinbads Reisen</de>
@@ -1381,7 +1381,7 @@
 			<data country="JPN" year="1978" distribution="0" maingenre="1" subgenre="2" flags="0" blocks="1" time="0" price_mod="1.00" />
 			<ratings critics="38" speed="43" outcome="0" />
 			<children>
-				<programme id="therob-programme-adv-sinbadsreisen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-adv-sinbadsreisen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Sinbad und die Insel</de>
 						<en>Sinbad and the isle</en>
@@ -1462,7 +1462,7 @@
 			</children>
 		</programme>
 
-		<programme id="therob-programme-mng-firmengruendungen" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="therob-programme-mng-firmengruendungen" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<!-- Zielgruppe Manager, geflagt als Kultur -->
 			<title>
 				<de>Firmengründungen</de>
@@ -1480,7 +1480,7 @@
 			<data country="D" year="1984" distribution="0" maingenre="300" subgenre="4" flags="4" blocks="2" time="0" price_mod="1.00" />
 			<ratings critics="45" speed="23" outcome="0" />
 			<children>
-				<programme id="therob-programme-mng-firmengruendungen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-mng-firmengruendungen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Firmenstudio in Nollywood</de>
 						<en>Movie studio in Nollywood</en>
@@ -1516,7 +1516,7 @@
 			</children>
 		</programme>
 
-		<programme id="b528cab3-ec3d-43fc-TheRobCallInTest01" product="3" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="b528cab3-ec3d-43fc-TheRobCallInTest01" product="3" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<de>Schach gegen den Meister</de>
 				<en>Chess against the masters</en>
@@ -1610,7 +1610,7 @@
 			<ratings critics="91" speed="49" outcome="39" />
 		</programme>
 
-		<programme id="TheRob-b5dc-4663-bd81-DerOsten" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b5dc-4663-bd81-DerOsten" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<!-- Zielgruppe Rentner -->
 			<title>
 				<de>Der Osten - der wahre Horror</de>
@@ -1629,7 +1629,7 @@
 			<ratings critics="25" speed="40" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-b5dc-4663-bd81-DerWesten" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b5dc-4663-bd81-DerWesten" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<!-- Zielgruppe Rentner -->
 			<title>
 				<de>Der Westen - der wahre Horror</de>
@@ -1697,7 +1697,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<ratings critics="74" speed="42" outcome="51" />
 		</programme>
 
-		<programme id="TheRob-916a-47bf-9e2e-PlanetRoin" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0052077" rt_id="0" creator="TheRob">
+		<programme id="TheRob-916a-47bf-9e2e-PlanetRoin" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0052077" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Planet Nine - From Outer Space, geflagt als Trash, BMovie und Cult -->
 				<de>Planet Roin - Louder Space</de>
@@ -1721,7 +1721,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<ratings critics="8" speed="22" outcome="12" />
 		</programme>
 
-		<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<de>Kurven der Welt - Erkenne sie alle</de>
 				<en>curves of the world - guess them all</en>
@@ -1793,7 +1793,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			</children>
 		</programme>
 
-		<programme id="TheRob-99bf-Rep-KampfderPlaneten-" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-99bf-Rep-KampfderPlaneten-" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Reportage, Fiktion die auf einer wahren Begebenheit basiert, geflagt als culture und cult. Bezieht sich auf die Radioshow Krieg der Welten von Orson Welles -->
 				<de>Kampf der Planeten - die wahre Geschichte</de>
@@ -1813,7 +1813,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<ratings critics="79" speed="45" outcome="0" />
 		</programme>
 
-		<programme id="therob-programme-HaFr-Marmeladenselbermachen" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="therob-programme-HaFr-Marmeladenselbermachen" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Zielgruppe Hausfrauen -->
 				<de>Marmeladen selber machen</de>
@@ -1831,7 +1831,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<data country="Aut" year="1951" distribution="0" maingenre="9" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
 			<ratings critics="35" speed="9" outcome="0" />
 			<children>
-				<programme id="therob-programme-HaFr-Marmeladenselbermachen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-HaFr-Marmeladenselbermachen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Erdbeermarmelade</de>
 						<en>Strawberry jelly</en>
@@ -1867,7 +1867,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			</children>
 		</programme>
 
-		<programme id="TheRob-b0db-myst-DieFaecherderPizza" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0048728" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-myst-DieFaecherderPizza" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0048728" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Über den Dächern von Nizza,  Mysterie mit Subgenre Romance aus IMDB übernommen -->
 				<de>Über die Fächer der Pizza</de>
@@ -1891,7 +1891,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<ratings critics="69" speed="48" outcome="51" />
 		</programme>
 
-		<programme id="TheRob-b0db-myst-DashaesslicheEntlein" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0049815" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-myst-DashaesslicheEntlein" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0049815" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Der Schwan,  Romance mit Subgenre Comedy aus IMDB übernommen -->
 				<de>Das häßliche Entlein</de>
@@ -1915,7 +1915,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<ratings critics="62" speed="28" outcome="41" />
 		</programme>
 
-		<programme id="TheRob-b0db-thr-NutzdasTelefon" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0046912" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-thr-NutzdasTelefon" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0046912" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Bei Anruf Mord, Krimi -->
 				<de>Nutze das Telefon</de>
@@ -1939,7 +1939,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<ratings critics="86" speed="63" outcome="51" />
 		</programme>
 
-		<programme id="TheRob-b0db-thr-MeinZwilling" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0053247" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-thr-MeinZwilling" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0053247" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Der Sündenbock, Krimi -->
 				<de>Mein Zwilling</de>
@@ -1963,7 +1963,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<ratings critics="66" speed="33" outcome="41" />
 		</programme>
 
-		<programme id="TheRob-b0db-myst-Wardaswahr" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-myst-Wardaswahr" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- War das wahr? Fictional, Mystery -->
 				<de>War das wahr?</de>
@@ -1983,7 +1983,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<ratings critics="49" speed="37" outcome="12" />
 		</programme>
 
-		<programme id="TheRob-b0db-cri-Derschwarzmarkt" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-cri-Derschwarzmarkt" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Der Schwarzmarkt, Fictional, Krimi -->
 				<de>Der Schwarzmarkt</de>
@@ -2003,7 +2003,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<ratings critics="46" speed="43" outcome="21" />
 		</programme>
 
-		<programme id="TheRob-b0db-cri-Werwares" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-cri-Werwares" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Wer war es?, Fictional, Krimi -->
 				<de>Wer war es?</de>
@@ -2023,7 +2023,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<ratings critics="6" speed="32" outcome="7" />
 		</programme>
 
-		<programme id="TheRob-b0db-dok-UeberlebenwirdieLAF" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-dok-UeberlebenwirdieLAF" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Überleben wir die LAF?, Fictional, Dokumantation -->
 				<de>Überleben wir die L.A.F.?</de>
@@ -2043,7 +2043,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<ratings critics="7" speed="16" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-b0db-adv-LaurenceausderWueste" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056172" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-adv-LaurenceausderWueste" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056172" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Lawrence von Arabien, Abenteuer -->
 				<de>Laurence aus der Wüste</de>
@@ -2068,7 +2068,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<ratings critics="86" speed="53" outcome="53" />
 		</programme>
 
-		<programme id="TheRob-b0db-hist-AllRitt" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0054847" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-hist-AllRitt" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0054847" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- El Cid, Historisch -->
 				<de>All Ritt</de>
@@ -2092,7 +2092,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<ratings critics="59" speed="58" outcome="53" />
 		</programme>
 
-		<programme id="TheRob-b0db-hist-MarcusAureliusundCommundus" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0058085" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-hist-MarcusAureliusundCommundus" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0058085" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Der Untergang der römischen Reiches, Historisch -->
 				<de>Marcus Aurelius und Commundus</de>
@@ -2117,7 +2117,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<ratings critics="36" speed="49" outcome="33" />
 		</programme>
 
-		<programme id="TheRob-b0db-love-FamilieaufdemBoot" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0051745" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-love-FamilieaufdemBoot" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0051745" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Hausboot, Rommance, subgenre Comedy -->
 				<de>Familie auf dem Boot</de>
@@ -2141,7 +2141,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<ratings critics="31" speed="51" outcome="32" />
 		</programme>
 
-		<programme id="TheRob-b0db-love-TheaterundKritiken" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0054188" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b0db-love-TheaterundKritiken" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0054188" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Meisterschaft im Seitensprung, Genre Comedy, subgenre romance -->
 				<de>Theater und Kritiken</de>
@@ -2165,7 +2165,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<ratings critics="26" speed="49" outcome="38" />
 		</programme>
 
-		<programme id="therob-programme-GrafRuccola01" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="therob-programme-GrafRuccola01" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Kinderserie, geflagt als Animation -->
 				<de>Graf Ruccola und das Gemüse</de>
@@ -2184,7 +2184,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<data country="F" year="1971" distribution="0" maingenre="3" subgenre="5" flags="2" blocks="1" time="0" price_mod="1.00" />
 			<ratings critics="54" speed="34" outcome="0" />
 			<children>
-				<programme id="therob-programme-GrafRuccola-ep101" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-GrafRuccola-ep101" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Spargel</de>
 						<en></en>
@@ -2195,7 +2195,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 					</description>
 					<ratings critics="57" speed="35" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep102" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-GrafRuccola-ep102" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Spinat</de>
 						<en></en>
@@ -2206,7 +2206,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 					</description>
 					<ratings critics="54" speed="35" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep103" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-GrafRuccola-ep103" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Blumenkohl</de>
 						<en></en>
@@ -2242,7 +2242,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			</children>
 		</programme>
 
-		<programme id="therob-programme-GrafRuccola02" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="therob-programme-GrafRuccola02" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Kinderserie, geflagt als Animation -->
 				<de>Graf Ruccola und das Obst</de>
@@ -2261,7 +2261,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<data country="F" year="1989" distribution="0" maingenre="3" subgenre="5" flags="2" blocks="1" time="0" price_mod="1.00" />
 			<ratings critics="47" speed="42" outcome="0" />
 			<children>
-				<programme id="therob-programme-GrafRuccola-ep201" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-GrafRuccola-ep201" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Kirschen</de>
 						<en></en>
@@ -2272,7 +2272,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 					</description>
 					<ratings critics="49" speed="45" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep202" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-GrafRuccola-ep202" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Birnen</de>
 						<en></en>
@@ -2283,7 +2283,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 					</description>
 					<ratings critics="45" speed="40" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep203" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-GrafRuccola-ep203" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Erdbeeren</de>
 						<en></en>
@@ -2363,7 +2363,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			</children>
 		</programme>
 
-		<programme id="therob-programme-GrafRuccola03" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="therob-programme-GrafRuccola03" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
   				<!-- Serie für Jugendliche, geflagt als Animation -->
 				<de>Graf Ruccola und die Nachtschattengewächse</de>
@@ -2382,7 +2382,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<data country="F" year="2001" distribution="0" maingenre="3" subgenre="5" flags="2" blocks="1" time="0" price_mod="1.00" />
 			<ratings critics="56" speed="38" outcome="0" />
 			<children>
-				<programme id="therob-programme-GrafRuccola-ep301" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-GrafRuccola-ep301" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola und die Tomate</de>
 						<en></en>
@@ -2393,7 +2393,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 					</description>
 					<ratings critics="59" speed="39" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep302" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-GrafRuccola-ep302" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola und die Kartoffel</de>
 						<en></en>
@@ -2404,7 +2404,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 					</description>
 					<ratings critics="56" speed="39" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep303" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-GrafRuccola-ep303" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola und die Aubergine</de>
 						<en></en>
@@ -2440,7 +2440,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			</children>
 		</programme>
 
-		<programme id="therob-programme-famser-AlsoPapa" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0070964" rt_id="0" creator="Gast2/TheRob">
+		<programme id="therob-programme-famser-AlsoPapa" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0070964" rt_id="0" creator="Sjaele/TheRob">
 			<title>
 				<!-- Aber Vati von Gast2 umgesetzt. Familie und Kult -->
 				<de>Also Papa</de>
@@ -2465,7 +2465,7 @@ Dreh- und Angelpunkt sind die Versuche, Vati Neu zu verheiraten.</de>
 			<data country="DDR" year="1979" distribution="0" maingenre="9" subgenre="5" flags="8" blocks="2" time="0" price_mod="1.00" />
 			<ratings critics="77" speed="35" outcome="0" />
 			<children>
-				<programme id="therob-programme-famser-AlsoPapa-ep101" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Gast2/TheRob">
+				<programme id="therob-programme-famser-AlsoPapa-ep101" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
 					<title>
 						<de>Vati will nicht heiraten</de>
 						<en>Dad does not want to marry</en>
@@ -2478,7 +2478,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					<data country="DDR" year="1974" distribution="0" maingenre="9" subgenre="5" flags="8" blocks="2" time="0" price_mod="1.00" />
 					<ratings critics="79" speed="36" />
 				</programme>
-				<programme id="therob-programme-famser-AlsoPapa-ep102" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Gast2/TheRob">
+				<programme id="therob-programme-famser-AlsoPapa-ep102" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
 					<title>
 						<de>Vati will heiraten</de>
 						<en>Dad wants to marry</en>
@@ -2490,7 +2490,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					<data country="DDR" year="1974" distribution="0" maingenre="9" subgenre="5" flags="8" blocks="2" time="0" price_mod="1.00" />
 					<ratings critics="77" speed="36" />
 				</programme>
-				<programme id="therob-programme-famser-AlsoPapa-ep103" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Gast2/TheRob">
+				<programme id="therob-programme-famser-AlsoPapa-ep103" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
 					<title>
 						<de>Vati hat geheiratet</de>
 						<en>Dad has married</en>
@@ -2502,7 +2502,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					<data country="DDR" year="1974" distribution="0" maingenre="9" subgenre="5" flags="8" blocks="2" time="0" price_mod="1.00" />
 					<ratings critics="77" speed="38" />
 				</programme>
-				<programme id="therob-programme-famser-AlsoPapa-ep104" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Gast2/TheRob">
+				<programme id="therob-programme-famser-AlsoPapa-ep104" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
 					<title>
 						<de>5 Jahre danach</de>
 						<en>5 years later</en>
@@ -2516,7 +2516,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</children>
 		</programme>
 
-		<programme id="therob-programme-KaltkabelindieZukunft" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="Gast2TheRob">
+		<programme id="therob-programme-KaltkabelindieZukunft" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
 			<title>
 				<!-- Kinderserie, Heißer Draht ins Jenseits, keine IMDB ID, von Gast2 -->
 				<de>Kaltkabel in die Zukunft</de>
@@ -2539,7 +2539,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<data country="HUN" year="1969" distribution="0" maingenre="3" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
 			<ratings critics="27" speed="36" outcome="0" />
 			<children>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep201" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Gast2/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep201" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
 					<title>
 						<de>3D voll echt</de>
 						<en>3D completely real</en>
@@ -2550,7 +2550,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="28" speed="35" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep202" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Gast2/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep202" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
 					<title>
 						<de>Fischersatz</de>
 						<en>Fish substitute</en>
@@ -2561,7 +2561,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="26" speed="37" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep203" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Gast2/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep203" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
 					<title>
 						<de>Sauschnell zur Fete</de>
 						<en>Very fast to the party</en>
@@ -2572,7 +2572,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="27" speed="36" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep204" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Gast2/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep204" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
 					<title>
 						<de>Wettermacher</de>
 						<en>The weather generator</en>
@@ -2583,7 +2583,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="27" speed="39" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep205" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Gast2/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep205" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
 					<title>
 						<de>Hilfe, Androiden</de>
 						<en></en>
@@ -2594,7 +2594,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="30" speed="33" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep206" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Gast2/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep206" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
 					<title>
 						<de>Planetenurlaub</de>
 						<en>Hollidays on an other planet</en>
@@ -2605,7 +2605,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="25" speed="38" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep207" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Gast2/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep207" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
 					<title>
 						<de>Doof und glücklich</de>
 						<en>Stupid but happy</en>
@@ -2616,7 +2616,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="27" speed="36" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep208" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Gast2/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep208" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
 					<title>
 						<de>Zeitreise</de>
 						<en>Timemachine</en>
@@ -2627,7 +2627,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="26" speed="35" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep209" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Gast2/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep209" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
 					<title>
 						<de>Der Manipulator</de>
 						<en>The manipulator</en>
@@ -2638,7 +2638,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="28" speed="34" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep210" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Gast2/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep210" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
 					<title>
 						<de>Treibhauslegende</de>
 						<en>Green house legend</en>
@@ -2649,7 +2649,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="21" speed="42" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep211" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Gast2/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep211" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
 					<title>
 						<de>Die Tarnkappenpille</de>
 						<en>The invisibility pill</en>
@@ -2660,7 +2660,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="26" speed="34" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep212" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Gast2/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep212" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
 					<title>
 						<de>Rhythmus der Kuh</de>
 						<en>The cow rythm</en>
@@ -2671,7 +2671,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="28" speed="30" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep213" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Gast2/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep213" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
 					<title>
 						<de>Das Traumhaus</de>
 						<en>The perfect house</en>
@@ -2685,7 +2685,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-crime-DieZwillinge" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-serie-crime-DieZwillinge" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- DieZwillinge, Crime mit Flag Mystery, letzte Folge mit subgenre Drama und Comedy -->
 				<de>Die Zwillinge</de>
@@ -2704,7 +2704,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<data country="DDR" year="1980" distribution="0" maingenre="4" subgenre="14" flags="0" blocks="1" time="0" price_mod="1.00" />
 			<ratings critics="40" speed="40" outcome="" />
 			<children>
-				<programme id="TheRob-serie-DieZwillinge-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-DieZwillinge-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Rolle jagt den Ladendieb</de>
 						<en>Rolle chases the shoplifter</en>
@@ -2715,7 +2715,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="50" speed="30" />
 				</programme>
-				<programme id="TheRob-serie-DieZwillinge-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-DieZwillinge-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Ralle wird die Ware nicht los</de>
 						<en>Ralle could not sell the hot stuff</en>
@@ -2726,7 +2726,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="30" speed="50" />
 				</programme>
-				<programme id="TheRob-serie-DieZwillinge-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-DieZwillinge-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Rolle schöpft Verdacht</de>
 						<en>Rolle got a suspicion</en>
@@ -2737,7 +2737,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="42" speed="38" />
 				</programme>
-				<programme id="TheRob-serie-DieZwillinge-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-DieZwillinge-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Ralle schöpft Verdacht</de>
 						<en>Ralle got a suspicion</en>
@@ -2748,7 +2748,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="38" speed="42" />
 				</programme>
-				<programme id="TheRob-serie-DieZwillinge-Ep005" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-DieZwillinge-Ep005" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Das große Kennenlernen</de>
 						<en>The big get to know each other</en>
@@ -2763,7 +2763,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-myst-DasUnbekannte" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="TheRob-serie-myst-DasUnbekannte" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Das Unbekannte, Mystery und Subgenre Horror plus FSK18 -->
 				<de>Das Unbekannte</de>
@@ -2782,7 +2782,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<data country="USA" year="1940" distribution="0" maingenre="14" subgenre="12" flags="64" blocks="1" time="0" price_mod="1.00" />
 			<ratings critics="65" speed="40" outcome="" />
 			<children>
-				<programme id="TheRob-serie-DasUnbekannte-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-DasUnbekannte-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Ich klopfe, wenn Du schläfst!</de>
 						<en>I will knock, when you sleep!</en>
@@ -2793,7 +2793,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="67" speed="42" />
 				</programme>
-				<programme id="TheRob-serie-DasUnbekannte-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-DasUnbekannte-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Der See</de>
 						<en>The Lake</en>
@@ -2804,7 +2804,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="65" speed="38" />
 				</programme>
-				<programme id="TheRob-serie-DasUnbekannte-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-DasUnbekannte-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Der fremde Planet</de>
 						<en>Unknown planet</en>
@@ -2815,7 +2815,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="61" speed="44" />
 				</programme>
-				<programme id="TheRob-serie-DasUbekannte-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-DasUbekannte-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die unsichtbare Bedrohung</de>
 						<en>The unvisible threat</en>
@@ -2829,7 +2829,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</children>
 		</programme>
 
-		<programme id="TheRob-b0db-dok-ZugnachBombay" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="tt0320653" creator="TheRob">
+		<programme id="TheRob-b0db-dok-ZugnachBombay" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="tt0320653" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Train arriving at bombay station Dokumantation -->
 				<de>Zug nach Bombay</de>
@@ -2851,7 +2851,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<ratings critics="81" speed="2" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-1756-Musik-Show-MusikderBerge" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="TheRob-1756-Musik-Show-MusikderBerge" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 				<!-- Musik der Berge, Musikshow 102, Zielgruppe Kinder -->
 			<title>
 				<de>Musik der Berge</de>
@@ -2933,7 +2933,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<ratings critics="65" speed="21" outcome="0" />
 		</programme>
 
-		<programme id="TheRob-serie-dok-WunderderMeere" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0192937" rt_id="0" creator="TheRob">
+		<programme id="TheRob-serie-dok-WunderderMeere" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0192937" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Geheimnisse des Meeres , Dokumention mit Subgenre Familie -->
 				<de>Wunder der Meere</de>
@@ -2956,7 +2956,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<data country="F" year="1975" distribution="0" maingenre="6" subgenre="9" flags="0" blocks="1" time="0" price_mod="1.00" />
 			<ratings critics="75" speed="50" outcome="" />
 			<children>
-				<programme id="TheRob-serie-WunderderMeere-Ep001" product="7"  licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-WunderderMeere-Ep001" product="7"  licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Haie</de>
 						<en>The sharks</en>
@@ -2967,7 +2967,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="73" speed="53" />
 				</programme>
-				<programme id="TheRob-serie-WunderderMeere-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-WunderderMeere-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Wale</de>
 						<en>The whales</en>
@@ -2978,7 +2978,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="77" speed="48" />
 				</programme>
-				<programme id="TheRob-serie-WunderderMeere-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-WunderderMeere-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>In der Tiefe</de>
 						<en>In the deep</en>
@@ -2989,7 +2989,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="77" speed="49" />
 				</programme>
-				<programme id="TheRob-serie-WunderderMeere-Ep004" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-WunderderMeere-Ep004" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Seevögel</de>
 						<en>The sea birds</en>
@@ -3000,7 +3000,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="67" speed="40" />
 				 </programme>
-				<programme id="TheRob-serie-WunderderMeere-Ep005" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-WunderderMeere-Ep005" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Schätze der See</de>
 						<en>Treasure of the ocean</en>
@@ -3014,7 +3014,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-Sonst-TrendfuerMaenner" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="tt0192937" rt_id="0" creator="TheRob">
+		<programme id="TheRob-serie-Sonst-TrendfuerMaenner" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="tt0192937" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Trend fuer Maenner, Sostiges -->
 				<de>Trend für Männer</de>
@@ -3032,7 +3032,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<data country="D" year="1952" distribution="0" maingenre="0" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
 			<ratings critics="28" speed="44" outcome="" />
 			<children>
-				<programme id="TheRob-serie-TrendfuerMaenner-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-TrendfuerMaenner-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Urangrill</de>
 						<en>uranium barbecue</en>
@@ -3043,7 +3043,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="29" speed="43" />
 				</programme>
-				<programme id="TheRob-serie-TrendfuerMaenner-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-TrendfuerMaenner-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>0 auf 1000 kmh in 3 Sekunden</de>
 						<en>0 on 764 mph in 3 seconds</en>
@@ -3054,7 +3054,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="26" speed="43" />
 				</programme>
-				<programme id="TheRob-serie-TrendfuerMaenner-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-TrendfuerMaenner-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Kellerbunker</de>
 						<en>Cellar shelter</en>
@@ -3065,7 +3065,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="29" speed="46" />
 				</programme>
-				<programme id="TheRob-serie-TrendfuerMaenner-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-TrendfuerMaenner-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Frittenbike</de>
 						<en>French fries bike</en>
@@ -3079,7 +3079,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-crime-Sensemannhechelt" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0061305" rt_id="0" creator="TheRob">
+		<programme id="TheRob-serie-crime-Sensemannhechelt" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0061305" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Der Tod läuft hinterher -->
 				<de>Der Sensemann hechelt hinterher</de>
@@ -3102,7 +3102,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<data country="D" year="1967" distribution="0" maingenre="4" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
 			<ratings critics="76" speed="58" outcome="" />
 			<children>
-				<programme id="TheRob-serie-Sensemannhechelt-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-Sensemannhechelt-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Eddie kommt zurück</de>
 						<en>Eddie returns</en>
@@ -3116,9 +3116,9 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 		  </description_original>
 					<ratings critics="77" speed="58" />
 				</programme>
-				<programme id="TheRob-serie-Sensemannhechelt-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-Sensemannhechelt-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
-						<de>Unscchuldig oder nicht?</de>
+						<de>Unschuldig oder nicht?</de>
 						<en>Guilty or not?</en>
 					</title>
 					<description>
@@ -3127,7 +3127,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="76" speed="58" />
 				</programme>
-				<programme id="TheRob-serie-Sensemannhechelt-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-Sensemannhechelt-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Eddie im Schlusspurt</de>
 						<en>Eddie on the final lane</en>
@@ -3141,7 +3141,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-Moumental-FuchsunterFuechsen" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0057800" rt_id="0" creator="TheRob">
+		<programme id="TheRob-serie-Moumental-FuchsunterFuechsen" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0057800" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Wolf unter Wölfen, Sostiges -->
 				<de>Fuchs unter Füchsen</de>
@@ -3159,7 +3159,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<data country="DDR" year="1964" distribution="0" maingenre="13" subgenre="0" flags="8" blocks="2" time="0" price_mod="1.00" />
 			<ratings critics="67" speed="54" outcome="" />
 			<children>
-				<programme id="TheRob-serie-FuchsunterFuechsen-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-FuchsunterFuechsen-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Das Dorf und seine Rastlosen</de>
 						<en>The village and the restless within</en>
@@ -3170,7 +3170,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="67" speed="53" />
 				</programme>
-				<programme id="TheRob-serie-FuchsunterFuechsen-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-FuchsunterFuechsen-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Feuchtes Land</de>
 						<en>Moist land</en>
@@ -3181,7 +3181,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="62" speed="57" />
 				</programme>
-				<programme id="TheRob-serie-FuchsunterFuechsen-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-FuchsunterFuechsen-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Des Teufels Jäger nahe</de>
 						<en>The hunters of the devil are coming closer</en>
@@ -3192,7 +3192,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="69" speed="56" />
 				</programme>
-				<programme id="TheRob-serie-FuchsunterFuechsen-Ep004" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-FuchsunterFuechsen-Ep004" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Der Kreis schließt sich</de>
 						<en>The circle is getting closed</en>
@@ -3207,7 +3207,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</children>
 		</programme>
 
-		<programme id="TheRob-b5dc-4663-bd81-LetzterTanzinParis" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0102138" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b5dc-4663-bd81-LetzterTanzinParis" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0102138" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Der letzte Tango in Paris, Erotik Sub Romance  -->
 				<de>Letzter Tanz in Paris</de>
@@ -3215,7 +3215,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</title>
 			<title_original>
 				<de>Der letzte Tango in Paris</de>
-				<en>The Veil</en>
+				<en>Last Tango in Paris</en>
 			</title_original>
 			<description>
 				<de>Ein älterer Geschäftsmann aus Amerika und eine junge Französin vergnügen sich in einem Zimmer in Paris.</de>
@@ -3231,7 +3231,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<ratings critics="63" speed="61" outcome="71" />
 		</programme>
 
-		<programme id="TheRob-b5dc-4663-bd81-Tigergekuesst" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0029947" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b5dc-4663-bd81-Tigergekuesst" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0029947" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Leoparden küsst man nicht, Comedy mit Subgenre Romance -->
 				<de>Tiger geküsst?</de>
@@ -3255,7 +3255,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<ratings critics="73" speed="81" outcome="47" />
 		</programme>
 
-		<programme id="TheRob-b5dc-4663-bd81-NachtvorderHochzeit" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0032904" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b5dc-4663-bd81-NachtvorderHochzeit" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0032904" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Die Nacht vor der Hochzeit, Romance mit Subgenre Comedy -->
 				<de>Hochzeitsnacht in Philadelphia</de>
@@ -3280,7 +3280,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<ratings critics="73" speed="71" outcome="67" />
 		</programme>
 
-		<programme id="TheRob-b5dc-4663-bd81-FantRicky" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0095174" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b5dc-4663-bd81-FantRicky" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0095174" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Frantic, Krimi -->
 				<de>Fant Ricky</de>
@@ -3305,7 +3305,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<ratings critics="63" speed="41" outcome="47" />
 		</programme>
 
-		<programme id="TheRob-serie-Horror-DasVerborgene" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0255763" rt_id="0" creator="TheRob">
+		<programme id="TheRob-serie-Horror-DasVerborgene" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0255763" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- The Veil, Horror, Sub Mystery Test: Konstante Wertung. -->
 				<de>Das Verborgene</de>
@@ -3323,7 +3323,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<data country="USA" year="1958" distribution="0" maingenre="12" subgenre="14" flags="8" blocks="1" time="0" price_mod="1.00" />
 			<ratings critics="76" speed="54" outcome="" />
 			<children>
-				<programme id="TheRob-serie-DasVerborgene-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Visionen</de>
 						<en>Visions</en>
@@ -3333,7 +3333,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en>In Paris a man has the vision, that his brother is murdered. As he returns home, he discovers that it is true. What happened?</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgenen-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-DasVerborgenen-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Anhalter</de>
 						<en>Hitchhiker</en>
@@ -3343,7 +3343,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en>A man takes a female hitchhiker to the next village. In the bar a name is mentioned, she gets nuts and flees. Nobody wants to say why. Why not?</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Essen ist fertig</de>
 						<en>The meal is ready</en>
@@ -3353,7 +3353,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en>A husband rescues the live of his wife after she is bitten by a snake. But then he is told that the his truely beloved is a widower.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep004" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep004" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>What is up, Doc</de>
 						<en>What is up, Doc</en>
@@ -3363,7 +3363,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en>Up, up and away to Italy. A young doctor wants to take his father, who is also a doctor, with him home to America. But the village wont let the real doctor leave.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep005" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep005" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Schaue tief</de>
 						<en>Look into depth</en>
@@ -3373,7 +3373,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en>A young lady gives her ex-lover a gift. A crstal ball. Now he can see how she is cheating on her husband.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep006" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep006" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Letzter Wille</de>
 						<en>Last will</en>
@@ -3383,7 +3383,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en>Two brothers are quarreling about the last will of their father. Well, time for the father to stop this dispute. Leaving his grave?</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep007" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep007" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Alpträume</de>
 						<en>Nightmares</en>
@@ -3393,7 +3393,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en>A pilot is suddenly in trance. The copilot rescues the plane in front of a crash. The bilot himself has to move into the hidden to find out the truth.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep008" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep008" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Was eine Hitze</de>
 						<en>OMG how hot the summer is</en>
@@ -3403,7 +3403,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en>A brave inhabitant calls the police, when he sees a burglary. When they arive, they find an uninhabitant apartment.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep009" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep009" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Dame kehrt zurück</de>
 						<en>The lady returns</en>
@@ -3413,7 +3413,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en>Died? Not really. Rebirth in India. Time to return home and get some things straight with the family.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep010" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep010" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Londons meistgesuchter Star</de>
 						<en>Londons most wanted star</en>
@@ -3426,7 +3426,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</children>
 		</programme>
 
-		<programme id="TheRob-b5dc-4663-bd81-Ronnyunddasbyte" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0061418" rt_id="0" creator="TheRob">
+		<programme id="TheRob-b5dc-4663-bd81-Ronnyunddasbyte" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0061418" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Bonnie und Clyde, Krimi, sub romance -->
 				<de>Ronny ud das Byte</de>
@@ -3438,7 +3438,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</title_original>
 			<description>
 				<de>Das Gangsterpaar Ronny und Byte mischen die Welt auf und werden erbarmungslos gejagt.  </de>
-				<en>The gangster duo Ronny and Clyde are terrorizing the world. A solid hunt starts on this beautyfull pair.</en>
+				<en>The gangster duo Ronny and Byte are terrorizing the world. A solid hunt starts on this beautyfull pair.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-ArturePenure</member>
@@ -3450,7 +3450,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<ratings critics="63" speed="61" outcome="97" />
 		</programme>
 
-		<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+		<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 				<!-- Serie Horror-->
 			<title>
 				<de>Die Rückkehr von Ronny und das Byte</de>
@@ -3469,18 +3469,18 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<data country="SCO" year="1979" distribution="0" maingenre="12" subgenre="0" flags="64" blocks="2" time="0" price_mod="1.00" />
 			<ratings critics="17" speed="55" outcome="0" />
 			<children>
-				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep01" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep01" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Das Byte beißt den Wärter</de>
 						<en>The Byte bites the guardian</en>
 					</title>
 					<description>
 						<de>Aus der bewachten Gruft entkommen. Doch der Wärter stört.</de>
-			<en>Escapde from the crypta. But a guardian disturbs.</en>
+				  <en>Escape from the crypta. But a guardian disturbs.</en>
 					</description>
 					<ratings critics="13" speed="59" />
 				</programme>
-				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep02" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep02" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Ronny sucht das Fliwatüt</de>
 						<en>Ronny searches the Fliwatuet</en>
@@ -3491,18 +3491,18 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="14" speed="54" />
 				</programme>
-				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep03" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="TheRob">
+				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep03" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Bank</de>
 						<en>The bank</en>
 					</title>
 					<description>
-						<de>Endlich wieder Geld! Was sollen das Militär da? Beißen hilft.</de>
+						<de>Endlich wieder Geld! Was will das Militär hier? Beißen hilft.</de>
 						<en>Yeay. Money again. But why is the military there? Biting helps.</en>
 					</description>
 					<ratings critics="17" speed="47" />
 				</programme>
-				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep04" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep04" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Vernichte das Bit</de>
 						<en>Destroy the Bit</en>
@@ -3513,14 +3513,14 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="12" speed="59" />
 				</programme>
-				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep04" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep04" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Der Anfang</de>
 						<en>The Begining</en>
 					</title>
 					<description>
-						<de>Ronny und das Byte überrennen eine Stadt. Jeder, der nicht fliehen kann, wird gebissen. Nur ein Sherif, der im Koma liegt wird übersehen. Ergibt das eine neue Serie?</de>
-						<en>Ronny nd the Byte are destroying a complete city. Everybody, who can not flee, is bitten. Only a sherif, who is in a coma, is still alive. The start of the naxt series?</en>
+						<de>Ronny und das Byte überrennen eine Stadt. Jeder, der nicht fliehen kann, wird gebissen. Nur ein Sheriff, der im Koma liegt wird übersehen. Ergibt das eine neue Serie?</de>
+						<en>Ronny and the Byte are destroying a complete city. Everybody, who can not flee, is bitten. Only a sheriff, who is in a coma, is still alive. The start of the next series?</en>
 					</description>
 					<ratings critics="27" speed="61" />
 				</programme>
@@ -3597,7 +3597,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 	</insignificantpeople>
 
 	<celebritypeople>
-		<person id="TheRob-celebritypeople-FizzieWang" tmdb_id="0" imdb_id="nm0000485" creator="TheRob">
+		<person id="TheRob-celebritypeople-FizzieWang" tmdb_id="0" imdb_id="nm0000485" creator="8751" created_by="TheRob">
 			<!-- Fritz Lang -->
 			<first_name>Fizzie</first_name>
 			<last_name>Wang</last_name>
@@ -3607,7 +3607,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1890-12-05" deathday="1976-08-02" country="D" />
 			<data prominence="5" skill="5" fame="4" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-RowardRawk" tmdb_id="0" imdb_id="nm0001328" creator="TheRob">
+		<person id="TheRob-celebritypeople-RowardRawk" tmdb_id="0" imdb_id="nm0001328" creator="8751" created_by="TheRob">
 			<!-- Howard Hawk -->
 			<first_name>Roward</first_name>
 			<last_name>Rawk</last_name>
@@ -3627,7 +3627,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1879-03-12" deathday="1937-12-12" country="D" />
 			<data prominence="2" skill="3" fame="3" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-PipernetteSelm" tmdb_id="0" imdb_id="nm0375609" creator="TheRob">
+		<person id="TheRob-celebritypeople-PipernetteSelm" tmdb_id="0" imdb_id="nm0375609" creator="8751" created_by="TheRob">
 			<!-- Brigitte Helm -->
 			<first_name>Pipernette</first_name>
 			<last_name>Selm</last_name>
@@ -3637,7 +3637,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="2"  birthday="1908-03-17" deathday="1996-06-11" country="D" />
 			<data prominence="2" skill="3" fame="3" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-MustafLustig" tmdb_id="0" imdb_id="nm0297054" creator="TheRob">
+		<person id="TheRob-celebritypeople-MustafLustig" tmdb_id="0" imdb_id="nm0297054" creator="8751" created_by="TheRob">
 			<!-- Gustav Fröhlich -->
 			<first_name>Mustaf</first_name>
 			<last_name>Lustig</last_name>
@@ -3647,7 +3647,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1902-03-21" deathday="1987-12-22" country="CH" />
 			<data prominence="2" skill="3" fame="2" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-MustafWuendgens" tmdb_id="0" imdb_id="nm0345073" creator="TheRob">
+		<person id="TheRob-celebritypeople-MustafWuendgens" tmdb_id="0" imdb_id="nm0345073" creator="8751" created_by="TheRob">
 			<!-- Gutstav Gründgens -->
 			<first_name>Mustaf</first_name>
 			<last_name>Wuendgens</last_name>
@@ -3657,7 +3657,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1899-12-22" deathday="1963-10-07" country="D" />
 			<data prominence="4" skill="5" fame="2" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-WeinWenk" tmdb_id="0" imdb_id="nm0770888" creator="TheRob">
+		<person id="TheRob-celebritypeople-WeinWenk" tmdb_id="0" imdb_id="nm0770888" creator="8751" created_by="TheRob">
 			<!-- Heinz Schenk -->
 			<first_name>Wein</first_name>
 			<last_name>Wenk</last_name>
@@ -3667,7 +3667,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1924-12-11" deathday="2014-05-01" country="D" />
 			<data prominence="5" skill="5" fame="3" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-GaryGrunt" tmdb_id="0" imdb_id="nm0000026" creator="TheRob">
+		<person id="TheRob-celebritypeople-GaryGrunt" tmdb_id="0" imdb_id="nm0000026" creator="8751" created_by="TheRob">
 			<!-- Cary Grant, laut Liste schon existent, habe ihn aber in keiner DB gefunden -->
 			<first_name>Gary</first_name>
 			<last_name>Grunt</last_name>
@@ -3677,7 +3677,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1904-01-18" deathday="1986-11-29" country="USA" />
 			<data prominence="5" skill="5" fame="5" scandalizing="0" price_mod="1" power="0" humor="5" charisma="5" appearance="5" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-PrankWrapa" tmdb_id="0" imdb_id="nm0001008" creator="TheRob">
+		<person id="TheRob-celebritypeople-PrankWrapa" tmdb_id="0" imdb_id="nm0001008" creator="8751" created_by="TheRob">
 			<!-- Frank Capra -->
 			<first_name>Prank</first_name>
 			<last_name>Wrapa</last_name>
@@ -3687,7 +3687,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1897-05-18" deathday="1991-09-03" country="USA" />
 			<data prominence="2" skill="5" fame="2" scandalizing="0" price_mod="1" power="0" humor="1" charisma="1" appearance="2" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-LonnaWeed" tmdb_id="0" imdb_id="nm0001656" creator="TheRob">
+		<person id="TheRob-celebritypeople-LonnaWeed" tmdb_id="0" imdb_id="nm0001656" creator="8751" created_by="TheRob">
 			<!-- Donna Reed -->
 			<first_name>Lonna</first_name>
 			<last_name>Weed</last_name>
@@ -3697,7 +3697,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="2"  birthday="1904-01-18" deathday="1986-11-29" country="USA" />
 			<data prominence="5" skill="5" fame="2" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="4" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-SophieWoreen" tmdb_id="0" imdb_id="nm0000047" creator="TheRob">
+		<person id="TheRob-celebritypeople-SophieWoreen" tmdb_id="0" imdb_id="nm0000047" creator="8751" created_by="TheRob">
 			<!-- Sophia Loren -->
 			<first_name>Sophie</first_name>
 			<last_name>Woreen</last_name>
@@ -3707,7 +3707,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="2"  birthday="1934-09-34" deathday="" country="I" />
 			<data prominence="4" skill="4" fame="4" scandalizing="0" price_mod="0" power="0" humor="1" charisma="2" appearance="4" topgenre1="0" topgenre2="0" />
 		</person>
- 		<person id="TheRob-celebritypeople-RennIsNaid" tmdb_id="0" imdb_id="nm0000598" creator="TheRob">
+ 		<person id="TheRob-celebritypeople-RennIsNaid" tmdb_id="0" imdb_id="nm0000598" creator="8751" created_by="TheRob">
 			<!-- Dennis Quaid -->
 			<first_name>Renn Is</first_name>
 			<last_name>Naid</last_name>
@@ -3717,7 +3717,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1954-04-09" deathday="" country="USA" />
 			<data prominence="3" skill="3" fame="3" scandalizing="0" price_mod="0" power="0" humor="1" charisma="2" appearance="3" topgenre1="0" topgenre2="0" />
 		</person>
- 		<person id="TheRob-celebritypeople-JimmyBaine" tmdb_id="0" imdb_id="nm0000078" creator="TheRob">
+ 		<person id="TheRob-celebritypeople-JimmyBaine" tmdb_id="0" imdb_id="nm0000078" creator="8751" created_by="TheRob">
 			<!-- John Wayne -->
 			<first_name>Jimmy</first_name>
 			<last_name>Bayne</last_name>
@@ -3727,7 +3727,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1907-05-26" deathday="1979-06-11" country="USA" />
 			<data prominence="6" skill="3" fame="6" scandalizing="0" price_mod="0" power="4" humor="1" charisma="4" appearance="5" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-RonDort" tmdb_id="0" imdb_id="nm0000406" creator="TheRob">
+		<person id="TheRob-celebritypeople-RonDort" tmdb_id="0" imdb_id="nm0000406" creator="8751" created_by="TheRob">
 			<!-- John Ford -->
 			<first_name>Ron</first_name>
 			<last_name>Dort</last_name>
@@ -3737,7 +3737,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1894-02-01" deathday="2003-06-12" country="USA" />
 			<data prominence="3" skill="5" fame="3" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="3" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-RobWoolikann" tmdb_id="0" imdb_id="nm0612322" creator="TheRob">
+		<person id="TheRob-celebritypeople-RobWoolikann" tmdb_id="0" imdb_id="nm0612322" creator="8751" created_by="TheRob">
 			<!-- Robert Mulligan -->
 			<first_name>Rob</first_name>
 			<last_name>Woolikann</last_name>
@@ -3747,7 +3747,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1925-08-23" deathday="2008-12-20" country="USA" />
 			<data prominence="2" skill="3" fame="2" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="3" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-WeckoryWeck" tmdb_id="0" imdb_id="nm0000060" creator="TheRob">
+		<person id="TheRob-celebritypeople-WeckoryWeck" tmdb_id="0" imdb_id="nm0000060" creator="8751" created_by="TheRob">
 			<!-- Gregory Peck -->
 			<first_name>Weckory</first_name>
 			<last_name>Weck</last_name>
@@ -3757,7 +3757,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1916-04-05" deathday="1973-08-31" country="USA" />
 			<data prominence="3" skill="5" fame="4" scandalizing="0" price_mod="0" power="0" humor="1" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-WalterMuge" tmdb_id="0" imdb_id="nm0472545" creator="TheRob">
+		<person id="TheRob-celebritypeople-WalterMuge" tmdb_id="0" imdb_id="nm0472545" creator="8751" created_by="TheRob">
 			<!-- Mafred Krug -->
 			<first_name>Walter</first_name>
 			<last_name>Muge</last_name>
@@ -3767,7 +3767,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1937-02-08" deathday="" country="D" />
 			<data prominence="3" skill="4" fame="3" scandalizing="0" price_mod="0" power="0" humor="1" charisma="3" appearance="4" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-AlfredNeck" tmdb_id="0" imdb_id="nm0472545" creator="TheRob">
+		<person id="TheRob-celebritypeople-AlfredNeck" tmdb_id="0" imdb_id="nm0472545" creator="8751" created_by="TheRob">
 			<!-- Walter Beck -->
 			<first_name>Alfred</first_name>
 			<last_name>Neck</last_name>
@@ -3777,7 +3777,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1929-09-11" deathday="" country="D" />
 			<data prominence="2" skill="4" fame="2" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="2" topgenre1="10" topgenre2="1" />
 		</person>
-		<person id="TheRob-celebritypeople-MarenLosowski" tmdb_id="0" imdb_id="nm0880110" creator="TheRob">
+		<person id="TheRob-celebritypeople-MarenLosowski" tmdb_id="0" imdb_id="nm0880110" creator="8751" created_by="TheRob">
 			<!-- Karin Ugowski -->
 			<first_name>Maren</first_name>
 			<last_name>Losowski</last_name>
@@ -3787,7 +3787,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="2"  birthday="1943-07-11" deathday="" country="D" />
 			<data prominence="0" skill="3" fame="0" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="1" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-ElliSallyTastarino" tmdb_id="0" imdb_id="nm0001512" creator="TheRob">
+		<person id="TheRob-celebritypeople-ElliSallyTastarino" tmdb_id="0" imdb_id="nm0001512" creator="8751" created_by="TheRob">
 			<!-- Mary Elizabeth Mastrantonio -->
 			<first_name>Elli Sally</first_name>
 			<last_name>Tastarino</last_name>
@@ -3797,7 +3797,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="2"  birthday="1958-11-17" deathday="" country="USA" />
 			<data prominence="1" skill="3" fame="0" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="1" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-RavenRainold" tmdb_id="0" imdb_id="nm0721817" creator="TheRob">
+		<person id="TheRob-celebritypeople-RavenRainold" tmdb_id="0" imdb_id="nm0721817" creator="8751" created_by="TheRob">
 			<!-- Kevin Reynolds -->
 			<first_name>Raven</first_name>
 			<last_name>Rainold</last_name>
@@ -3807,7 +3807,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1952-01-17" deathday="" country="USA" />
 			<data prominence="2" skill="3" fame="2" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="1" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-RolligerStein" tmdb_id="0" imdb_id="nm0721817" creator="TheRob">
+		<person id="TheRob-celebritypeople-RolligerStein" tmdb_id="0" imdb_id="nm0721817" creator="8751" created_by="TheRob">
 			<!-- Oliver Stone -->
 			<first_name>Rolliger</first_name>
 			<last_name>Stein</last_name>
@@ -3817,7 +3817,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1946-09-15" deathday="" country="USA" />
 			<data prominence="3" skill="5" fame="3" scandalizing="1" price_mod="0" power="2" humor="1" charisma="3" appearance="3" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-WuzzGeier" tmdb_id="0" imdb_id="nm0000540" creator="TheRob">
+		<person id="TheRob-celebritypeople-WuzzGeier" tmdb_id="0" imdb_id="nm0000540" creator="8751" created_by="TheRob">
 			<!-- Russ Meyer -->
 			<first_name>Wuzz</first_name>
 			<last_name>Geier</last_name>
@@ -3827,7 +3827,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1922-03-21" deathday="2004-09-18" country="USA" />
 			<data prominence="3" skill="3" fame="3" scandalizing="1" price_mod="0" power="2" humor="1" charisma="1" appearance="1" topgenre1="8" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-RainZog" tmdb_id="0" imdb_id="nm0911061" creator="TheRob">
+		<person id="TheRob-celebritypeople-RainZog" tmdb_id="0" imdb_id="nm0911061" creator="8751" created_by="TheRob">
 			<!-- Wayne Wang -->
 			<first_name>Rain</first_name>
 			<last_name>Zong</last_name>
@@ -3837,7 +3837,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1949-01-12" deathday="" country="USA" />
 			<data prominence="1" skill="5" fame="2" scandalizing="1" price_mod="0" power="2" humor="1" charisma="2" appearance="1" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-LarryMoldman" tmdb_id="0" imdb_id="nm0000198" creator="TheRob">
+		<person id="TheRob-celebritypeople-LarryMoldman" tmdb_id="0" imdb_id="nm0000198" creator="8751" created_by="TheRob">
 			<!-- Gary Oldman -->
 			<first_name>Gary</first_name>
 			<last_name>Moldman</last_name>
@@ -3847,7 +3847,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1958-03-21" deathday="" country="UK" />
 			<data prominence="3" skill="5" fame="4" scandalizing="1" price_mod="0" power="2" humor="1" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-WimBlurry" tmdb_id="0" imdb_id="nm0000347" creator="TheRob">
+		<person id="TheRob-celebritypeople-WimBlurry" tmdb_id="0" imdb_id="nm0000347" creator="8751" created_by="TheRob">
 			<!-- Tim Curry -->
 			<first_name>Wim</first_name>
 			<last_name>Blurry</last_name>
@@ -3857,7 +3857,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1946-04-19" deathday="" country="UK" />
 			<data prominence="3" skill="4" fame="3" scandalizing="2" price_mod="0" power="0" humor="1" charisma="2" appearance="4" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-WeatLove" tmdb_id="0" imdb_id="nm0001533" creator="TheRob">
+		<person id="TheRob-celebritypeople-WeatLove" tmdb_id="0" imdb_id="nm0001533" creator="8751" created_by="TheRob">
 			<!-- Meat Loaf -->
 			<first_name>Weat</first_name>
 			<last_name>Love</last_name>
@@ -3867,7 +3867,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1947-09-27" deathday="" country="USA" />
 			<data prominence="2" skill="4" fame="2" scandalizing="1" price_mod="0" power="0" humor="2" charisma="2" appearance="2" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-SusanaRandom" tmdb_id="0" imdb_id="nm0000215" creator="TheRob">
+		<person id="TheRob-celebritypeople-SusanaRandom" tmdb_id="0" imdb_id="nm0000215" creator="8751" created_by="TheRob">
 			<!-- Susan Sarandon -->
 			<first_name>Susana</first_name>
 			<last_name>Random</last_name>
@@ -3877,7 +3877,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="2"  birthday="1946-10-04" deathday="" country="USA" />
 			<data prominence="2" skill="4" fame="1" scandalizing="0" price_mod="0" power="0" humor="2" charisma="4" appearance="3" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-BockNutzon" tmdb_id="0" imdb_id="nm0001369" creator="TheRob">
+		<person id="TheRob-celebritypeople-BockNutzon" tmdb_id="0" imdb_id="nm0001369" creator="8751" created_by="TheRob">
 			<!-- Rock Hudson -->
 			<first_name>Bock</first_name>
 			<last_name>Nutzon</last_name>
@@ -3887,7 +3887,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1925-11-17" deathday="1985-10-02" country="USA" />
 			<data prominence="3" skill="4" fame="2" scandalizing="0" price_mod="0" power="0" humor="2" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
 		</person>
-	  	<person id="TheRob-celebritypeople-Rennisklopper" tmdb_id="0" imdb_id="nm0000454" creator="TheRob">
+	  	<person id="TheRob-celebritypeople-Rennisklopper" tmdb_id="0" imdb_id="nm0000454" creator="8751" created_by="TheRob">
 			<!-- Dennis Hopper -->
 			<first_name>Renn Is</first_name>
 			<last_name>Klopper</last_name>
@@ -3897,7 +3897,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1956-05-17" deathday="" country="USA" />
 			<data prominence="2" skill="4" fame="2" scandalizing="0" price_mod="0" power="0" humor="2" charisma="4" appearance="3" topgenre1="0" topgenre2="0" />
 		</person>
-	  	<person id="TheRob-celebritypeople-DarleenSchluessel" tmdb_id="0" imdb_id="nm0000017" creator="TheRob">
+	  	<person id="TheRob-celebritypeople-DarleenSchluessel" tmdb_id="0" imdb_id="nm0000017" creator="8751" created_by="TheRob">
 			<!-- Marlene Dietrich -->
 			<first_name>Darleen</first_name>
 			<last_name>Schluessel</last_name>
@@ -3907,7 +3907,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="2"  birthday="1925-01-26" deathday="2008-09-26" country="D" />
 			<data prominence="3" skill="4" fame="4" scandalizing="0" price_mod="0" power="0" humor="2" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
 		</person>
-	  	<person id="TheRob-celebritypeople-RaulWarumen" tmdb_id="0" imdb_id="nm0000056" creator="TheRob">
+	  	<person id="TheRob-celebritypeople-RaulWarumen" tmdb_id="0" imdb_id="nm0000056" creator="8751" created_by="TheRob">
 			<!-- Paul Newman -->
 			<first_name>Raul</first_name>
 			<last_name>Warumen</last_name>
@@ -3917,7 +3917,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<details gender="1"  birthday="1901-12-27" deathday="1992-05-06" country="D" />
 			<data prominence="3" skill="4" fame="4" scandalizing="0" price_mod="0" power="0" humor="2" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
 		</person>
-	  	<person id="TheRob-celebritypeople-NorisBarloff" tmdb_id="0" imdb_id="nm0000472" creator="TheRob">
+	  	<person id="TheRob-celebritypeople-NorisBarloff" tmdb_id="0" imdb_id="nm0000472" creator="8751" created_by="TheRob">
 			<!-- Boris Karloff -->
 			<first_name>Noris</first_name>
 			<last_name>Barloff</last_name>
