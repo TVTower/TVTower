@@ -10102,6 +10102,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<data genre="0" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
+		
 		<news id="1b15ca2e-e303-4863-9173-137eff033d7c" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="0" creator="">
 			<title>
 				<de>Nashorn aus Zoo entlaufen</de>
@@ -10112,24 +10113,10 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>During todays census at the zoo of Chemnitz they lacked a rhinoceros. The population is requested not to leave the house.</en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="777c94c2-49a6-4e72-ad02-06c33f7350bc" />
+				<effect trigger="happen" type="triggernews" news="777c94c2-49a6-4e72-ad02-06c33f7350bc" time="2,1,2,5,15" />
+				<effect trigger="happen" type="triggernews" news="8906094a-6ee5-4054-9e8c-9eea78ea8950" time="2,2,2,16,23"/>
 			</effects>
 			<data genre="4" price="1.0" quality="29" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
-		<news id="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
-			<title>
-				<de>Chemnitzer Nashorn umzingelt</de>
-				<en>Rhino of Chemnitz surrounded</en>
-			</title>
-			<description>
-				<de>Das entlaufene Nashorn ist auf einer Lichtung gestellt worden. Mehrere Veterinäre mit Betäubungsgewehren stehen bereit es einzufangen.</de>
-				<en>The runaway rhinoceros has been found in a clearing. Several veterinarians with stun guns are ready to catch it.</en>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="a4f30290-dc9f-49e0-ad44-727e00e44693" />
-			</effects>
-			<data genre="4" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="777c94c2-49a6-4e72-ad02-06c33f7350bc" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
@@ -10142,9 +10129,51 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>The missing rhino from the Chemnitz Zoo has been seen in a nearby forest by witnesses.</en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="8906094a-6ee5-4054-9e8c-9eea78ea8950" />
+				<effect trigger="happen" type="triggernews" news="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03" time="1,8,20" />
 			</effects>
 			<data genre="4" price="1.0" quality="29" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="8906094a-6ee5-4054-9e8c-9eea78ea8950" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
+			<title>
+				<de>Ökoterroristen liessen Nashorn frei</de>
+				<en>Eco-terrorists set Rhinoceros free</en>
+			</title>
+			<description>
+				<de>Laut einem Bekennerschreiben sind die Tierschützer von der Gruppe "ZORRO" für das Entlaufen des Nashorns verantwortlich.</de>
+				<en>According to a letter claiming responsibility, the animal rights activists of the group "ZORRO" are responsible for the elopement of the rhinoceros.</en>
+			</description>
+			<data genre="4" price="1.0" quality="39" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
+			<title>
+				<de>Touristen vom Nashorn angegriffen</de>
+				<en>Tourists attacked by Rhino</en>
+			</title>
+			<description>
+				<de>Touristen sind im Chemnitzer Wald vom entlaufenen Nashorn in ihrem Wohnmobil angegriffen worden. Der Schaden beläuft sich auf etwa € 50.000.</de>
+				<en>Tourists have been attacked in their motor home in Chemnitz forest by the runaway rhinoceros. The damage amounts to about € 50,000.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485" time="2,1,1,4,12" />
+			</effects>
+			<data genre="4" price="1.05" quality="39" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
+			<title>
+				<de>Chemnitzer Nashorn umzingelt</de>
+				<en>Rhino of Chemnitz surrounded</en>
+			</title>
+			<description>
+				<de>Das entlaufene Nashorn ist auf einer Lichtung gestellt worden. Mehrere Veterinäre mit Betäubungsgewehren stehen bereit es einzufangen.</de>
+				<en>The runaway rhinoceros has been found in a clearing. Several veterinarians with stun guns are ready to catch it.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="a4f30290-dc9f-49e0-ad44-727e00e44693" time="2,1,1,16,23" />
+			</effects>
+			<data genre="4" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="a4f30290-dc9f-49e0-ad44-727e00e44693" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
@@ -10160,36 +10189,8 @@ Her normal body size is expected to be reached in a week.</en>
 			<data genre="4" price="1.0" quality="15" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news id="8906094a-6ee5-4054-9e8c-9eea78ea8950" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
-			<title>
-				<de>Ökoterroristen liessen Nashorn frei</de>
-				<en>Eco-terrorists set Rhinoceros free</en>
-			</title>
-			<description>
-				<de>Laut einem Bekennerschreiben sind die Tierschützer von der Gruppe "ZORRO" für das Entlaufen des Nashorns verantwortlich.</de>
-				<en>According to a letter claiming responsibility, the animal rights activists of the group "ZORRO" are responsible for the elopement of the rhinoceros.</en>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03" />
-			</effects>
-			<data genre="4" price="1.0" quality="39" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
-		<news id="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
-			<title>
-				<de>Touristen vom Nashorn angegriffen</de>
-				<en>Tourists attacked by Rhino</en>
-			</title>
-			<description>
-				<de>Touristen sind im Chemnitzer Wald vom entlaufenen Nashorn in ihrem Wohnmobil angegriffen worden. Der Schaden beläuft sich auf etwa € 50.000.</de>
-				<en>Tourists have been attacked in their motor home in Chemnitz forest by the runaway rhinoceros. The damage amounts to about € 50,000.</en>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485" />
-			</effects>
-			<data genre="4" price="1.05" quality="39" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
+
+
 		<news id="b8a64acb-74e0-4786-9810-2c6531b3bcd3" thread_id="1f0fcab5-6a25-435b-912e-8f95d2b63c15" type="0" creator="">
 			<title>
 				<de>Atmen wird teuer</de>
@@ -10200,9 +10201,24 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>The Health Minister has enacted a law requiring every breathing person must pay a fee for oxygen. The fee depends on the lung capacity.</en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="5af0af95-84b8-4018-96e6-9e25e93a2687" />
+				<effect trigger="happen" type="triggernews" news="5af0af95-84b8-4018-96e6-9e25e93a2687" time="2,1,2,9,16" />
 			</effects>
 			<data genre="0" price="1.0" quality="78" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="5af0af95-84b8-4018-96e6-9e25e93a2687" thread_id="1f0fcab5-6a25-435b-912e-8f95d2b63c15" type="2" creator="">
+			<title>
+				<de>Zurückrudern bei Sauerstoffgebühr</de>
+				<en>Back-pedal on oxygen fee</en>
+			</title>
+			<description>
+				<de>Nach heftiger Kritik will das Gesundheitsministerium die geplante Gebühr auf Sauerstoff überdenken.</de>
+				<en>After heavy criticism, the Health Ministry will reconsider the proposed fee on oxygen.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="d39a88bf-fa64-40f9-936e-0d15d355f26b" time="2,1,1,8,17" />
+			</effects>
+			<data genre="0" price="1.05" quality="74" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="d39a88bf-fa64-40f9-936e-0d15d355f26b" thread_id="1f0fcab5-6a25-435b-912e-8f95d2b63c15" type="2" creator="">
@@ -10218,21 +10234,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<data genre="0" price="1.05" quality="61" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news id="5af0af95-84b8-4018-96e6-9e25e93a2687" thread_id="1f0fcab5-6a25-435b-912e-8f95d2b63c15" type="2" creator="">
-			<title>
-				<de>Zurückrudern bei Sauerstoffgebühr</de>
-				<en>Back-pedal on oxygen fee</en>
-			</title>
-			<description>
-				<de>Nach heftiger Kritik will das Gesundheitsministerium die geplante Gebühr auf Sauerstoff überdenken.</de>
-				<en>After heavy criticism, the Health Ministry will reconsider the proposed fee on oxygen.</en>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="d39a88bf-fa64-40f9-936e-0d15d355f26b" />
-			</effects>
-			<data genre="0" price="1.05" quality="74" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
+
 		<news id="2f64517a-f2d6-4720-a195-6a35cc6e72c6" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="0" creator="">
 			<title>
 				<de>Fort schreibt Verluste</de>
@@ -10243,7 +10245,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>The American auto giant is bleeding red ink. One reason is the poor sales of the new model Montana.</en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="1135edbe-daf4-4ed7-8817-b352b9ee7442" />
+				<effect trigger="happen" type="triggernews" news="1135edbe-daf4-4ed7-8817-b352b9ee7442" time="1,8,12" />
 			</effects>
 			<data genre="3" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10258,7 +10260,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>The American car company wants to dismiss 5,000 employees due to the high losses.</en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="5345cee0-138e-4531-a239-71015a8ca909" />
+				<effect trigger="happen" type="triggernews" news="5345cee0-138e-4531-a239-71015a8ca909" time="2,1,1,8,11" />
 			</effects>
 			<data genre="3" price="1.0" quality="49" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10273,7 +10275,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>In several Fort factories employees stopped their work and protest now against the planned 5,000 layoffs.</en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="d3ca7812-9b3e-41e5-852c-e4f4ef045a06" />
+				<effect trigger="happen" type="triggernews" news="d3ca7812-9b3e-41e5-852c-e4f4ef045a06" time="2,2,3,8,18" />
 			</effects>
 			<data genre="0" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10287,10 +10289,71 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Der amerikanische Autokonzern will mit Arbeitnehmervertretern verhandeln, um die Streiks abzuwenden.</de>
 				<en>The American auto giant wants to negotiate with employee representatives in order to avert the strikes.</en>
 			</description>
-			<effects />
-			<data genre="0" price="1.0" quality="0" />
+			<effects>
+				<effect trigger="happen" type="triggernews" news="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-2" time="2,1,1,9,17" />
+			</effects>
+			<data genre="0" price="1.0" quality="35" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
+		<news id="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-2" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
+			<title>
+				<de>Fort: Verhandlungen gescheitert</de>
+				<en>Fort: negotiations failed</en>
+			</title>
+			<description>
+				<de>Der amerikanische Autokonzern beharrt auf 4000 Entlassungen. Ein Mitarbeiter dazu: „Diese Kapitalisten, das lassen wir uns nicht gefallen.“</de>
+				<en>The American car company insists on 4000 layoffs. An employee said: "These capitalists, we wont put up with that!"</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-3" time="1,9,15" />
+			</effects>
+			<data genre="0" price="1.0" quality="30" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-3" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
+			<title>
+				<de>Fahrzeuge bei Fort demoliert</de>
+				<en>Cars at Fort demolished</en>
+			</title>
+			<description>
+				<de>Mehrere Luxuslimousinen des Vorstandes sind letzte Nacht von vermummten Personen demoliert worden. Die Polizei tappt bisher im Dunkeln.</de>
+				<en>Several luxury limousines of the board have been demolished last night by masked persons. The police is still in the dark.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-4" time="2,1,1,8,12" />
+			</effects>
+			<data genre="0" price="1.0" quality="38" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-4" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
+			<title>
+				<de>Fort: Neue Gespräche geplant</de>
+				<en>Fort: new negotiations planned</en>
+			</title>
+			<description>
+				<de>Der Vorstand ist völlig überraschend zu neuen Verhandlungsgesprächen bereit. „Wir wollen wieder in Ruhe Autos herstellen“, so der Vorstandschef.</de>
+				<en>The Management Board is - completely surprising - ready for new negotiation talks. "We want to continue producing cars" said the CEO.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-5" time="1,6,11" />
+			</effects>
+			<data genre="0" price="1.0" quality="38" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-5" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
+			<title>
+				<de>Einigung bei Fort</de>
+				<en>Agreements at Fort</en>
+			</title>
+			<description>
+				<de>Der Vorstand und die Arbeitnehmervertreter des amerikanischen Autokonzerns einigten sich so eben auf 2500 Entlassungen. Beide Seiten sind zufrieden.</de>
+				<en>The Management Board and employee representatives of the American car giant agreed to 2,500 layoffs. Both sides are satisfied.</en>
+			</description>
+			<effects />
+			<data genre="0" price="1.05" quality="51" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		
 		<news id="32617459-a2eb-412a-87c9-0411314c0694" thread_id="24f462b9-bac5-499e-ae2d-780f225872b1" type="0" creator="">
 			<title>
 				<de>Automaut kommt</de>
@@ -10551,12 +10614,28 @@ Her normal body size is expected to be reached in a week.</en>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="e250f180-310d-4639-bdd4-229b818f3a92" />
+				<effect trigger="happen" type="triggernewschoice" choose="or" probability="50" time="2,1,1,8,14"
+					news1="e250f180-310d-4639-bdd4-229b818f3a92-a" probability1="40"
+					news2="e250f180-310d-4639-bdd4-229b818f3a92-b" probability2="60"
+				/>
 			</effects>
 			<data genre="2" price="1.0" quality="23" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news id="e250f180-310d-4639-bdd4-229b818f3a92" thread_id="5d832597-6cdc-4bfe-9213-0a82cd45b130" type="2" creator="">
+		<news id="e250f180-310d-4639-bdd4-229b818f3a92-a" thread_id="5d832597-6cdc-4bfe-9213-0a82cd45b130" type="2" creator="">
+			<title>
+				<de>Fußball: TV-Köche verlieren</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Da war die Suppe wohl versalzen. Die Fernsehköche verloren 1:3 gegen die Nationalmannschaft.</de>
+				<en></en>
+			</description>
+			<effects />
+			<data genre="2" price="1.05" quality="18" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="e250f180-310d-4639-bdd4-229b818f3a92-b" thread_id="5d832597-6cdc-4bfe-9213-0a82cd45b130" type="2" creator="">
 			<title>
 				<de>Fußball: TV-Köche gewinnen </de>
 				<en></en>
@@ -10752,7 +10831,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en></en>
 			</title>
 			<description>
-				<de>Die Band mit den Hits wie "Hier kommt Alexandra" gibt für nächstes Jahr ihre Abschiedstournee bekannt.</de>
+				<de>Die Band mit den Hits wie „Hier kommt Alexandra“ gibt für nächstes Jahr ihre Abschiedstournee bekannt.</de>
 				<en></en>
 			</description>
 			<effects />
@@ -10779,7 +10858,7 @@ Verlost wird dabei noch ein NASA-Topfset.</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Mit der Einführung einer Dung-Steuer für Huftiere erhöhen die Produzenten die Preise um 200%</de>
+				<de>Mit der Einführung einer Dung-Steuer für Huftiere erhöhen die Produzenten die Preise um 200%.</de>
 				<en></en>
 			</description>
 			<effects />
@@ -10810,7 +10889,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="441f0aa3-0412-4236-991c-ddae48f2b62a" />
+				<effect trigger="happen" type="triggernews" news="441f0aa3-0412-4236-991c-ddae48f2b62a" time="2,1,1,9,17" />
 			</effects>
 			<data genre="0" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10821,13 +10900,43 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Bereits vor dem Treffen der führenden Witschaftsnationen campen Demonstranten in Paris. "Wir sind zu allem bereit, so ein Demonstrant".</de>
+				<de>Bereits vor dem Treffen der führenden Witschaftsnationen campen Demonstranten in Paris. „Wir sind zu allem bereit“, so ein Demonstrant.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="fb43d1ce-61b8-4625-8385-520b8f0d282c" />
+				<effect trigger="happen" type="triggernews" news="fb43d1ce-61b8-4625-8385-520b8f0d282c" time="2,1,1,4,13" />
 			</effects>
 			<data genre="0" price="1.0" quality="29" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="fb43d1ce-61b8-4625-8385-520b8f0d282c" thread_id="94e573ec-1350-405c-b2f6-8684958e6e8b" type="2" creator="">
+			<title>
+				<de>USA - Angst vor Terrordemonstranten</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Die vereinigten Staaten fürchten Anschläge beim G8-Gipfel in Paris. Powell: „Wenn die Terrorcamper nicht verschwinden, werden wir nicht teilnehmen.“</de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="7949493e-c6e0-4b59-a06c-044ddbf66dd0" time="2,1,1,0,13" />
+			</effects>
+			<data genre="0" price="1.0" quality="29" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="7949493e-c6e0-4b59-a06c-044ddbf66dd0" thread_id="94e573ec-1350-405c-b2f6-8684958e6e8b" type="2" creator="">
+			<title>
+				<de>Tränengas gegen Terrorcamper</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Im Rahmen des anstehenden G8 Gipfels ließ die Pariser Gendarmerie die Demonstrantenlager mit Tränengas räumen.</de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="d86c9008-6752-4358-b545-2d09e23bf24a" time="1,2,6" />
+			</effects>
+			<data genre="0" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="d86c9008-6752-4358-b545-2d09e23bf24a" thread_id="94e573ec-1350-405c-b2f6-8684958e6e8b" type="2" creator="">
@@ -10843,47 +10952,18 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<data genre="0" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news id="7949493e-c6e0-4b59-a06c-044ddbf66dd0" thread_id="94e573ec-1350-405c-b2f6-8684958e6e8b" type="2" creator="">
-			<title>
-				<de>Tränengas gegen Terrorcamper</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Im Rahmen des anstehenden G8 Gipfels ließ die Pariser Gendarmerie die Demonstrantenlager mit Tränengas räumen.</de>
-				<en></en>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="d86c9008-6752-4358-b545-2d09e23bf24a" />
-			</effects>
-			<data genre="0" price="1.0" quality="19" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
-		<news id="fb43d1ce-61b8-4625-8385-520b8f0d282c" thread_id="94e573ec-1350-405c-b2f6-8684958e6e8b" type="2" creator="">
-			<title>
-				<de>USA - Angst vor Terrordemonstranten</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Die vereinigten Staaten fürchten Anschläge beim G8-Gipfel in Paris. Powell: "Wenn die Terrorcamper nicht verschwinden, werden wir nicht teilnehmen."</de>
-				<en></en>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="7949493e-c6e0-4b59-a06c-044ddbf66dd0" />
-			</effects>
-			<data genre="0" price="1.0" quality="29" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
+
 		<news id="de78d446-a89c-4281-b018-a2c6f8975211" thread_id="9707f767-9129-46ea-84d2-a4870897fdfb" type="0" creator="">
 			<title>
 				<de>Wildschwein-Randale in Schrebergärten</de>
 				<en></en>
 			</title>
 			<description>
-				<de>In den letzten Tagen kommt es vermehrt zu Wildschwein-Angriffen auf Schrebergärten. "Die Sau gehört abgeschossen", so der entrüstete Schrebergärtner Rico Milke.</de>
+				<de>In den letzten Tagen kommt es vermehrt zu Wildschwein-Angriffen auf Schrebergärten. „Die Sau gehört abgeschossen“, so der entrüstete Schrebergärtner Rico Milke.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="2899a642-b0dc-4285-98e0-10835eb911fc" />
+				<effect trigger="happen" type="triggernews" news="2899a642-b0dc-4285-98e0-10835eb911fc" time="2,1,3,6,18" />
 			</effects>
 			<data genre="4" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -10897,10 +10977,100 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<de>Der Kleingärtner Rico Milke erschoss auf der Wildschweinjagd in seinem Garten einen Polizisten. "Ich hielt ihn für ein Wildschwein", beteuerte der Schütze.</de>
 				<en></en>
 			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="2dd29a642-a0dc-f275-32ef-16815eb34ff" time="2,1,3,6,18" />
+			</effects>
+			<data genre="4" price="1.0" quality="49" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="2dd29a642-a0dc-f275-32ef-16815eb34ff" thread_id="9707f767-9129-46ea-84d2-a4870897fdfb" type="2" creator="">
+			<title>
+				<de>Wildschwein-Urteil gefällt</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Die Bachenhausener Strafkammer befand den Gärtner Rico Mielke für schuldig, den Polizisten erschossen zu haben. „Sie sind wohl blind?“, fragte der klagende Anwalt.</de>
+				<en></en>
+			</description>
 			<effects />
 			<data genre="4" price="1.0" quality="49" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
+
+		<news id="newsevent-unknown-preyts-ep1" thread_id="newsevent-unknown-preyts" type="0" creator="">
+			<title>
+				<de>Preyts neuer Trainer in Berlin?</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Dem Rekordtorschützen Michel Preyts wurde von seinem alten Verein der Trainerposten angeboten. Preyts sei interessiert, so der Vorstand.</de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="newsevent-unknown-preyts-ep2" time="2,1,2,6,18" />
+			</effects>
+			<data genre="2" price="1.0" quality="40" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="newsevent-unknown-preyts-ep2" thread_id="newsevent-unknown-preyts" type="2" creator="">
+			<title>
+				<de>Trainerschein für M. Preyts?</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Die Chancen stehen gut: „Ich möchte zuerst die Trainerlizenz erwerben, danach kann man mit mir reden.“, so der Bertaner. Berlin darf hoffen.</de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="newsevent-unknown-preyts-ep3" time="1,6,12" />
+			</effects>
+			<data genre="2" price="1.0" quality="35" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="newsevent-unknown-preyts-ep3" thread_id="newsevent-unknown-preyts" type="2" creator="">
+			<title>
+				<de>Probleme für Preyts &amp; Co</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Da der frühere Kapitän des Berta BSC bisher keinen Trainerschein besitzt, könnte die Entscheidung des Stürmers noch auf sich warten lassen...</de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="newsevent-unknown-preyts-ep4" time="2,2,3,8,21" />
+			</effects>
+			<data genre="2" price="1.0" quality="35" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="newsevent-unknown-preyts-ep4" thread_id="newsevent-unknown-preyts" type="2" creator="">
+			<title>
+				<de>Und nun, Herr Preyts?</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Alt-Bertaner Michel Preyts hat gestern den Trainerschein ausgestellt bekommen. Gespräche über die Zukunft seien nun am Laufen, so Preyts Berater.</de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="newsevent-unknown-preyts-ep2" time="2,1,1,7,11" />
+			</effects>
+			<data genre="2" price="1.0" quality="45" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="newsevent-unknown-preyts-ep5" thread_id="newsevent-unknown-preyts" type="2" creator="">
+			<title>
+				<de>Berta BSC holt Preyts</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Perfekt: Michel Preyts wird den Trainerposten in der Hauptstadt übernehmen. Er freue sich auf diese Herausforderung, so Preyts, langjährige Nr. 11.</de>
+				<en></en>
+			</description>
+			<effects />
+			<data genre="2" price="1.0" quality="50" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+			
 		<news id="53769295-e71f-4cbc-a127-3e3cfb70b394" thread_id="a3e86722-1b9a-4cf4-991f-a7da7d16872b" type="0" creator="">
 			<title>
 				<de>Rotwein gesund</de>
@@ -11142,6 +11312,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<data genre="4" price="0.90" quality="9" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
+		
 		<news id="34977b2a-b976-48f8-8254-001ebe2263f1" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="0" creator="">
 			<title>
 				<de>Wahlen in Deutschland</de>
@@ -11152,39 +11323,10 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="cee19a85-bbf4-4d2b-9239-cca90d8d76ad" />
+				<!-- time type = 3, special weekday, day 6 = saturday -->
+				<effect trigger="happen" type="triggernews" news="cee19a85-bbf4-4d2b-9239-cca90d8d76ad" time="3,5,9,15"  />
 			</effects>
 			<data genre="0" price="1.0" quality="58" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
-		<news id="661a9905-912e-4801-ad63-73b9ead7fd78" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
-			<title>
-				<de>Desaster in Wahllokalen</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Erste Hochrechnungen ergaben, die Wahlbeteiligung sei so gering wie noch nie. Die Wahllokale wollen sich auch gegen Nachmittag nicht füllen.</de>
-				<en></en>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="34edc95f-49f3-4131-bc39-8ed5cfc293b1" />
-			</effects>
-			<data genre="0" price="1.0" quality="68" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
-		<news id="c3848e4a-6629-4481-b036-7aa9abad6e92" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
-			<title>
-				<de>Kommen Neuwahlen?</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Da sich Rechte und Linke aufgrund fehlender Gespräche nicht einig werden konnten, wird nun über Neuwahlen nachgedacht.</de>
-				<en></en>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="1b87d798-85de-486d-a683-25c11db8c929" />
-			</effects>
-			<data genre="0" price="1.0" quality="78" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="cee19a85-bbf4-4d2b-9239-cca90d8d76ad" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
@@ -11197,9 +11339,37 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="661a9905-912e-4801-ad63-73b9ead7fd78" />
+				<effect trigger="happen" type="triggernews" news="661a9905-912e-4801-ad63-73b9ead7fd78" time="2,1,1,14,17" />
+				<effect trigger="happen" type="triggernews" news="34edc95f-49f3-4131-bc39-8ed5cfc293b1" time="2,1,1,19,21" />
 			</effects>
 			<data genre="0" price="1.0" quality="49" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="661a9905-912e-4801-ad63-73b9ead7fd78" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
+			<title>
+				<de>Desaster in Wahllokalen</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Erste Hochrechnungen ergaben, die Wahlbeteiligung sei so gering wie noch nie. Die Wahllokale wollen sich auch gegen Nachmittag nicht füllen.</de>
+				<en></en>
+			</description>
+			<data genre="0" price="1.0" quality="68" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="34edc95f-49f3-4131-bc39-8ed5cfc293b1" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
+			<title>
+				<de>Wahlen zum Deutschen Bundestag</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Offizielle Zählungen bezeugen: Die Wahlbeteiligung lag bei katastrophalen 28%. Nur eine Koalition aus PDS und NPD erreicht die erforderliche Mehrheit.</de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="9c5ec87d-9056-46ca-a38b-58ce5dddf2eb" time="2,1,1,8,17" />
+			</effects>
+			<data genre="0" price="1.0" quality="78" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="9c5ec87d-9056-46ca-a38b-58ce5dddf2eb" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
@@ -11212,9 +11382,24 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="c3848e4a-6629-4481-b036-7aa9abad6e92" />
+				<effect trigger="happen" type="triggernews" news="c3848e4a-6629-4481-b036-7aa9abad6e92"  time="2,2,3,9,17" />
 			</effects>
 			<data genre="0" price="1.0" quality="49" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="c3848e4a-6629-4481-b036-7aa9abad6e92" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
+			<title>
+				<de>Kommen Neuwahlen?</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Da sich Rechte und Linke aufgrund fehlender Gespräche nicht einig werden konnten, wird nun über Neuwahlen nachgedacht.</de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="1b87d798-85de-486d-a683-25c11db8c929" time="2,1,1,8,17"  />
+			</effects>
+			<data genre="0" price="1.0" quality="78" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="1b87d798-85de-486d-a683-25c11db8c929" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
@@ -11228,21 +11413,6 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			</description>
 			<effects />
 			<data genre="0" price="1.0" quality="88" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
-		<news id="34edc95f-49f3-4131-bc39-8ed5cfc293b1" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
-			<title>
-				<de>Wahlen zum Deutschen Bundestag</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Offizielle Zählungen bezeugen: Die Wahlbeteiligung lag bei katastrophalen 28%. Nur eine Koalition aus PDS und NPD erreicht die erforderliche Mehrheit.</de>
-				<en></en>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="9c5ec87d-9056-46ca-a38b-58ce5dddf2eb" />
-			</effects>
-			<data genre="0" price="1.0" quality="78" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 
@@ -11527,56 +11697,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Fußballstar Bollock hat keine Lust mehr auf Bayerische Weißwurst und Bier. Manager Hochness meint: "Michel kann gehen, wenn die Ablösesumme stimmt".</de>
+				<de>Fußballstar Bollock hat keine Lust mehr auf Bayerische Weißwurst und Bier. Manager Hochness meint: „Michel kann gehen, wenn die Ablösesumme stimmt“.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="e2ec64a7-fc37-4a07-b567-1f7761821df7" />
-			</effects>
-			<data genre="2" price="1.0" quality="29" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
-		<news id="a4138dc1-9369-4735-9377-64a569cde6dc" thread_id="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
-			<title>
-				<de>Bollock und Real einigen sich</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Wie die Blöd-Zeitung berichtet ist der Wechsel des Bayern-Star zu den Königlichen perfekt. Manager Hochness dementiert: "Ich weiß von nichts".</de>
-				<en></en>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="ef0b1006-b2ce-41b9-a783-1b556124df40" />
-			</effects>
-			<data genre="2" price="1.0" quality="49" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
-		<news id="e2ec64a7-fc37-4a07-b567-1f7761821df7" thread_id="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
-			<title>
-				<de>Hochness bestätigt nun doch Wechsel</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Michel Bollock wechselt ab nächse Saison für 75Mio € Ablöse zu Real. Hochness reibt sich die Hände: "Für das Geld bekommen wir 2 neue Bollocks."</de>
-				<en></en>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="a4138dc1-9369-4735-9377-64a569cde6dc" />
-			</effects>
-			<data genre="2" price="1.0" quality="19" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
-		<news id="ef0b1006-b2ce-41b9-a783-1b556124df40" thread_id="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
-			<title>
-				<de>Hochness verbessert Angebot</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Manager Hochness kontert auf das Real-Angebot und bietet Bollock 7 Mio€ Jahresgehalt. "Mehr ist nicht drin", so Hochness.</de>
-				<en></en>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="571543da-edcb-48c5-866d-e978491be0b9" />
+				<effect trigger="happen" type="triggernews" news="571543da-edcb-48c5-866d-e978491be0b9" time="2,1,1,7-15" />
 			</effects>
 			<data genre="2" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11590,8 +11715,53 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<de>Die Königlichen haben Interesse an Bayernstar Bollock. Die Blöd-Zeitung spricht von 60 Mio € Ablöse und 10 Mio € Jahresgehalt.</de>
 				<en></en>
 			</description>
-			<effects />
+			<effects>
+				<!-- this news is triggered some hours afterwards -->
+				<effect trigger="happen" type="triggernews" news="ef0b1006-b2ce-41b9-a783-1b556124df40"  time="1,8,13" />
+			</effects>
 			<data genre="2" price="1.0" quality="39" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="ef0b1006-b2ce-41b9-a783-1b556124df40" thread_id="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
+			<title>
+				<de>Hochness verbessert Angebot</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Manager Hochness kontert auf das Real-Angebot und bietet Bollock 7 Mio € Jahresgehalt. „Mehr ist nicht drin“, so Hochness.</de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="a4138dc1-9369-4735-9377-64a569cde6dc" time="2,1,1,12,18" />
+			</effects>
+			<data genre="2" price="1.0" quality="29" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="a4138dc1-9369-4735-9377-64a569cde6dc" thread_id="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
+			<title>
+				<de>Bollock und Real einigen sich</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Wie die Blöd-Zeitung berichtet ist der Wechsel des Bayern-Star zu den Königlichen perfekt. Manager Hochness dementiert: „Ich weiß von nichts“.</de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="e2ec64a7-fc37-4a07-b567-1f7761821df7" time="2,1,2,8,20" />
+			</effects>
+			<data genre="2" price="1.0" quality="49" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="e2ec64a7-fc37-4a07-b567-1f7761821df7" thread_id="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
+			<title>
+				<de>Hochness bestätigt nun doch Wechsel</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Michel Bollock wechselt ab nächse Saison für 75 Mio € Ablöse zu Real. Hochness reibt sich die Hände: „Für das Geld bekommen wir 2 neue Bollocks.“</de>
+				<en></en>
+			</description>
+			<data genre="2" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		
@@ -11605,7 +11775,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="f67941dc-54a1-428f-b3c0-c58d7877aa85" />
+				<effect trigger="happen" type="triggernews" news="f67941dc-54a1-428f-b3c0-c58d7877aa85" time="2,2,4,5,17" />
 			</effects>
 			<data genre="1" price="1.0" quality="20" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11620,7 +11790,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="b0dca345-b75e-4d34-97c1-9467339cdbb0" />
+				<effect trigger="happen" type="triggernews" news="b0dca345-b75e-4d34-97c1-9467339cdbb0" time="2,1,1,3,22" />
 			</effects>
 			<data genre="1" price="1.0" quality="18" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11635,7 +11805,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="89857ce2-b83a-4f36-97da-5a780db79d03" />
+				<effect trigger="happen" type="triggernews" news="89857ce2-b83a-4f36-97da-5a780db79d03" time="2,1,2,9,17"  />
 			</effects>
 			<data genre="1" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11650,7 +11820,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="af1d00d5-19bd-4135-8e66-46263735f688" />
+				<effect trigger="happen" type="triggernews" news="af1d00d5-19bd-4135-8e66-46263735f688"  time="2,1,1,5,22" />
 			</effects>
 			<data genre="1" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11665,7 +11835,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="91a7a88b-b4ff-47b3-b709-6e98d6232cbb" />
+				<effect trigger="happen" type="triggernews" news="91a7a88b-b4ff-47b3-b709-6e98d6232cbb" time="1,8,19" />
 			</effects>
 			<data genre="1" price="1.0" quality="9" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11680,7 +11850,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="a0104185-2bc8-4b05-90e1-383418c8d66d" />
+				<effect trigger="happen" type="triggernews" news="a0104185-2bc8-4b05-90e1-383418c8d66d" time="2,1,3,5,23" />
 			</effects>
 			<data genre="1" price="1.0" quality="0" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11695,7 +11865,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="7fed1494-c4fb-44b1-842f-c6caf08ce376" />
+				<effect trigger="happen" type="triggernews" news="7fed1494-c4fb-44b1-842f-c6caf08ce376" time="2,1,1,9,13"  />
 			</effects>
 			<data genre="1" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -11837,24 +12007,9 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="00f05239-8ab5-41c3-b6d5-de1b86491511" />
+				<effect trigger="happen" type="triggernews" news="00f05239-8ab5-41c3-b6d5-de1b86491511" time="2,2,3,8,23" />
 			</effects>
-			<data genre="1" price="1.0" quality="19" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
-		<news id="214c6e1b-b643-465d-8f7c-e40bae941dbc" thread_id="f0228a97-bf9b-4d35-9723-9dcbbbc99b1b" type="2" creator="">
-			<title>
-				<de>Stunthund: Alles für die Katz</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Von wegen Besserung, herumschwadronierende Journalisten spürten das Stuntdouble in einer Milchbar auf: wie eine Katze schnurrend. Das Ende einer Karriere?</de>
-				<en></en>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="c0bcc0b2-0a77-4615-8070-7c044af5b9f9" />
-			</effects>
-			<data genre="1" price="1.0" quality="19" />
+			<data genre="1" price="1.0" quality="34" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="00f05239-8ab5-41c3-b6d5-de1b86491511" thread_id="f0228a97-bf9b-4d35-9723-9dcbbbc99b1b" type="2" creator="">
@@ -11867,9 +12022,24 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="214c6e1b-b643-465d-8f7c-e40bae941dbc" />
+				<effect trigger="happen" type="triggernews" news="214c6e1b-b643-465d-8f7c-e40bae941dbc" time="2,1,2,8,23" />
 			</effects>
-			<data genre="1" price="1.0" quality="19" />
+			<data genre="1" price="1.0" quality="27" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="214c6e1b-b643-465d-8f7c-e40bae941dbc" thread_id="f0228a97-bf9b-4d35-9723-9dcbbbc99b1b" type="2" creator="">
+			<title>
+				<de>Stunthund: Alles für die Katz</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Von wegen Besserung, herumschwadronierende Journalisten spürten das Stuntdouble in einer Milchbar auf: wie eine Katze schnurrend. Das Ende einer Karriere?</de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="c0bcc0b2-0a77-4615-8070-7c044af5b9f9"  time="2,1,2,8,23"/>
+			</effects>
+			<data genre="1" price="1.0" quality="23" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="c0bcc0b2-0a77-4615-8070-7c044af5b9f9" thread_id="f0228a97-bf9b-4d35-9723-9dcbbbc99b1b" type="2" creator="">
@@ -11878,13 +12048,14 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Das aus dem Filmgeschäft ausgestiegene Bello-Hundedouble ist ganz unten angekommen:  Beim Streunen erwischt und im Hundeheim in Gewahrsam genommen.</de>
+				<de>Das aus dem Filmgeschäft ausgestiegene Bello-Hundedouble ist ganz unten angekommen: Beim Streunen erwischt und im Hundeheim in Gewahrsam genommen.</de>
 				<en></en>
 			</description>
 			<effects />
 			<data genre="1" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
+		
 		<news id="906a95a1-45c2-403c-b204-2b3f55a6bdad" thread_id="f23be612-26ee-48f8-ad1e-17e310af7997" type="0" creator="">
 			<title>
 				<de>Flandern wird unabhängig!</de>
