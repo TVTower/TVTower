@@ -425,6 +425,24 @@ Type TGameModifierTimeFrame
 	End Function
 
 
+	Function CalcTime_WeekdayAtHour:Long(weekday:int, atHourMin:int, atHourMax:int = -1)
+		local daysTillWeekday:int = (7 - GetWorldTime().GetWeekDay() + weekday) mod 7
+		if GetWorldTime().GetWeekDay() = weekday then daysTillWeekday = 7
+
+		local result:Long = GetWorldTime().MakeTime(0, GetWorldTime().GetDay() + daysTillWeekday, 0, 0)
+
+		if atHourMax = -1
+			result :+ atHourMin * TWorldTime.HOURLENGTH
+		else
+			'convert into minutes:
+			'for 7-9 this is 7:00, 7:01 ... 8:59, 9:00
+			result :+ RandRange(atHourMin*60, atHourMax*60) * 60
+		endif
+		
+		return result
+	End Function
+
+
 	Function CalcTime_Auto:long(timeType:int, timeValues:int[])
 		if not timeValues or timeValues.length < 1 then return -1
 		
@@ -447,6 +465,15 @@ Type TGameModifierTimeFrame
 					return CalcTime_DaysFromNowAtHour(timeValues[0], timeValues[1], timeValues[2])
 				else
 					return CalcTime_DaysFromNowAtHour(timeValues[0], timeValues[1], timeValues[2], timeValues[3])
+				endif
+			'3 = next "weekday A" from "B":00 - "C":00 o'clock
+			case 3
+				if timeValues.length <= 1 then return -1
+				
+				if timeValues.length = 2
+					return CalcTime_WeekdayAtHour(timeValues[0], -1, timeValues[1])
+				elseif timeValues.length >= 3
+					return CalcTime_WeekdayAtHour(timeValues[0], timeValues[1], timeValues[2])
 				endif
 		End Select
 		return -1
