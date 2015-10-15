@@ -151,7 +151,7 @@ Welcome to the future.</en>
 			<data country="D" year="1981" distribution="0" maingenre="6" flags="0" blocks="2" time="0" price_mod="1.05" />
 			<ratings critics="40" speed="12" outcome="22" />
 		</programme>
-		<programme id="ronny-programme-doku-mikroelektronik" product="4" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="ronny-programme-doku-fruitinc" product="4" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Fruit Inc. - Heimcomputer aus Cupertino</de>
 				<en>Fruit Inc. - Home computers made in Cupertino</en>
