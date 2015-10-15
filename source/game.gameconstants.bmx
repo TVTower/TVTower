@@ -391,12 +391,13 @@ Type TVTProgrammeGenre {_exposeToLua}
 
 
 	Function GetAtIndex:int(index:int)
-		if index >= 1 and index <= 18 then return index
+		if index >= 0 and index <= 18 then return index
 		if index >= 100 and index <= 102 then return index
 		if index >= 200 and index <= 204 then return index
 		if index >= 300 and index <= 301 then return index
-		return 0
+		return -1
 	End Function
+	
 
 	Function GetByString:int(keyString:string = "")
 		Select keyString.toLower()	

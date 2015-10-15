@@ -104,6 +104,9 @@ Type FrameMain Extends FrameMainBase
 	Field AudienceSim_activeProgrammeLicence:TProgrammeLicence[4]
 	Field AudienceSim_activeAudienceHour:int
 
+	'choice index 2 genreID mapping
+	Field ChoiceGenreMap:int[]
+
 
 	Method OnInit()
 		Super.OnInit()
@@ -115,8 +118,12 @@ Type FrameMain Extends FrameMainBase
 		local genreID:int
 		For local i:int = 0 to TVTProgrammeGenre.genreMaximum
 			genreID = TVTProgrammeGenre.GetAtIndex(i)
-			if genreID > 0
+			if genreID >= 0
 				genres :+ [ GetLocale("PROGRAMME_GENRE_"+TVTProgrammeGenre.GetAsString(i)) ]
+				if ChoiceGenreMap.length < genres.length
+					ChoiceGenreMap = ChoiceGenreMap[..genres.length + 1]
+				endif
+				ChoiceGenreMap[genres.length-1] = i
 			endif
 		Next
 
@@ -134,7 +141,7 @@ Type FrameMain Extends FrameMainBase
 
 
 		'=== MAINGENRE ===
-		local mainGenres:string[] = [""] + genres
+		local mainGenres:string[] = genres
 		oldProp = m_pgItem_programmeLicenceMainGenre
 		m_pgItem_programmeLicenceMainGenre = new wxEnumProperty.CreateWithArrays(..
 												oldProp.GetLabel(), oldProp.GetName(), ..
@@ -210,6 +217,12 @@ Type FrameMain Extends FrameMainBase
 	End Method
 
 
+	Method GetGenreChoiceIndex:int(genre:int)
+		for local i:int = 0 until ChoiceGenreMap.length
+			if ChoiceGenreMap[i] = genre then return i
+		Next
+		return -1
+	End Method
 
 	'==== PROGRAMME LICENCES ====
 
@@ -545,11 +558,10 @@ Type FrameMain Extends FrameMainBase
 '		print GetWorldTime().GetFormattedDay()
 		GetWorldTime().SetStartYear(year)
 '		GetWorldTime().SetTimeGone( GetWorldTime().MakeTime(year, day, hour. 0, 0) )
-'		print GetWorldTime().GetFormattedDay() + "  " + GetWorldTime().GetYear()
 
 		'create market ("buy a generic station")
 		Local market:TAudienceMarketCalculation = New TAudienceMarketCalculation
-		market.maxAudience = TAudience.CreateWithBreakdown(audience)
+		market.maxAudience = new TAudience.InitWithBreakdown(audience)
 		for local player:int = 1 to 4
 			market.AddPlayer(player)
 		Next
@@ -608,7 +620,7 @@ endrem
 			'we assume all rows are created already
 
 			For local i:int = 0 to TVTTargetGroup.count
-				local s:string = int(audienceResult.audience.GetValue( TVTTargetGroup.GetAtIndex(i) ))
+				local s:string = int(audienceResult.audience.GetTotalValue( TVTTargetGroup.GetAtIndex(i) ))
 				's :+ " ("+ int(100*potentialQuote.GetValue( TVTTargetGroup.GetAtIndex(i) ))+"%)"
 				m_listCtrl_audiences.SetStringItem(hour, i+1, s )
 			Next
@@ -637,7 +649,7 @@ endrem
 
 		local summary:string = "Quoten "+hour+" Uhr: "
 		For local player:int = 1 to 4
-			summary :+ "Sender #"+player+": "+int(audienceResults[player - 1].audience.GetSum())
+			summary :+ "Sender #"+player+": "+int(audienceResults[player - 1].audience.GetTotalSum())
 
 			if player < 4 then summary :+ "  |  "
 		Next
@@ -677,7 +689,7 @@ endrem
 			if l1.GetData().year = l2.GetData().year then sort="name"
 		endif
 
-		
+
 		Select sort.ToLower()
 			case "title"
 				'one is parent of the other?
@@ -761,23 +773,36 @@ endrem
 		list.Hide()
 
 		local entryNum:int = 0
+
 		For Local l:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().licences
 			if l.isEpisode()
-				list.InsertStringItem(entryNum, "- "+l.GetTitle())
+				list.InsertStringItem(entryNum, "-  "+l.GetTitle())
 			else
 				list.InsertStringItem(entryNum, l.GetTitle())
 			endif
 			list.SetStringItem(entryNum, 1, l.GetData().year )
 			list.SetStringItem(entryNum, 2, TVTProgrammeLicenceType.GetAsString(l.licenceType) )
+
+
+			'local creator:int = GetMetaDataCollection().GetByGUID(l.GetData().GetGUID()).GetInt("creator")
+if GetMetaDataCollection().GetByGUID(l.GetGUID())
+			local createdBy:string = GetMetaDataCollection().GetByGUID(l.GetGUID()).GetString("createdBy")
+			'list.SetStringItem(entryNum, 3, creator )
+			list.SetStringItem(entryNum, 3, createdBy )
+else
+	list.SetStringItem(entryNum, 3, "???")
+endif
 'RONNY
 '			list.SetStringItem(entryNum, 3, l.GetData().createdBy )
-			list.SetStringItem(entryNum, 3, "ronny" )
+'			list.SetStringItem(entryNum, 3, "ronny" )
 			'maybe we could just store the GUID here?
 			'or something which does NOT change at all? 
 			list.SetItemData(entryNum, l)
 
 			entryNum :+ 1
 		Next
+		'sort them
+		list.SortItems(SortProgrammeLicences, New TData.AddString("sort", "title").AddNumber("direction", 1))
 
 		list.Show()
 	End Method
@@ -804,7 +829,7 @@ endrem
 		m_pgItem_programmeLicenceYear.SetValueInt( licence.GetData().year )
 		m_pgItem_programmeLicenceCountry.SetValueString( licence.GetData().country )
 
-		m_pgItem_programmeLicenceMainGenre.SetChoiceSelection( licence.GetData().genre + 1 )
+		m_pgItem_programmeLicenceMainGenre.SetChoiceSelection( GetGenreChoiceIndex(licence.GetData().genre) )
 
 		'transfer "genres" to "array indizes"
 		local subGenres:int[]
@@ -815,6 +840,7 @@ endrem
 		Next
 		m_pgItem_programmeLicenceSubGenres.SetValueIntArray(subGenres)
 
+
 		'get
 		'm_pgItem_programmeLicenceMainGenre.GetChoiceSelection()
 
@@ -822,7 +848,6 @@ endrem
 		'item.SetWasModified(false)
 
 		m_pgItem_programmeLicenceGUID.SetValueString( licence.GetGUID() )
-
 
 
 		'flags
@@ -837,10 +862,13 @@ endrem
 		
 		'author data
 'RONNY
-'		m_pgItem_programmeLicenceCreator.SetValueInt( licence.GetData().creator )
-'		m_pgItem_programmeLicenceCreatedBy.SetValueString( licence.GetData().createdBy )
-		m_pgItem_programmeLicenceCreator.SetValueInt( 0 )
-		m_pgItem_programmeLicenceCreatedBy.SetValueString( "ronny" )
+
+		local creator:int = GetMetaDataCollection().GetByGUID(licence.GetGUID()).GetInt("creator")
+		local createdBy:string = GetMetaDataCollection().GetByGUID(licence.GetGUID()).GetString("createdBy")
+		m_pgItem_programmeLicenceCreator.SetValueInt( creator )
+		m_pgItem_programmeLicenceCreatedBy.SetValueString( createdBy )
+'		m_pgItem_programmeLicenceCreator.SetValueInt( 0 )
+'		m_pgItem_programmeLicenceCreatedBy.SetValueString( "ronny" )
 	End Method
 
 
@@ -854,7 +882,7 @@ endrem
 			ProgrammeLicences_activeProgrammeLicence.GetData().AddCast(j)
 
 			list.InsertStringItem(jobNum, GetProgrammePersonBase(j.personGUID).GetFullName())
-			list.SetStringItem(jobNum, 1, GetLocale("MOVIE_" + TVTProgrammePersonJob.GetAsString(j.job) ) )
+			list.SetStringItem(jobNum, 1, GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(j.job) ) )
 			list.SetItemData(jobNum, j)
 
 
@@ -869,11 +897,11 @@ endrem
 		local jobB:TProgrammePersonJob = TProgrammePersonJob(list.GetItemData(jobLineB))
 
 		list.SetStringItem(jobLineB, 0, GetProgrammePersonBase(jobA.personGUID).GetFullName())
-		list.SetStringItem(jobLineB, 1, GetLocale("MOVIE_" + TVTProgrammePersonJob.GetAsString(jobA.job) ) )
+		list.SetStringItem(jobLineB, 1, GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobA.job) ) )
 		list.SetItemData(jobLineB, jobA)
 
 		list.SetStringItem(jobLineA, 0, GetProgrammePersonBase(jobB.personGUID).GetFullName())
-		list.SetStringItem(jobLineA, 1, GetLocale("MOVIE_" + TVTProgrammePersonJob.GetAsString(jobB.job) ) )
+		list.SetStringItem(jobLineA, 1, GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobB.job) ) )
 		list.SetItemData(jobLineA, jobB)
 
 		'switch in licence too
@@ -960,7 +988,7 @@ Type DialogSelectCast Extends DialogSelectCastBase
 		m_choice_job.Clear()
 		For local i:int = 1 to TVTProgrammePersonJob.count
 			local key:int = TVTProgrammePersonJob.GetAtIndex(i)
-			m_choice_job.Append( GetLocale("MOVIE_" + TVTProgrammePersonJob.GetAsString(key)), new TData.AddNumber("jobKey", key) )
+			m_choice_job.Append( GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(key)), new TData.AddNumber("jobKey", key) )
 		Next
 	End Method
 
