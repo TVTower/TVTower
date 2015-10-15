@@ -137,7 +137,7 @@ Type TPlayerBase {_exposeToLua="selected"}
 
 	'returns the financial of the given day
 	'if the day is in the future, a new finance object is created
-	Method GetFinance:TPlayerFinance(day:Int=-1)
+	Method GetFinance:TPlayerFinance(day:Int=-1) {_exposeToLua}
 		return GetPlayerFinance(playerID, day)
 	End Method
 

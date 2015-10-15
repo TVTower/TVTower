@@ -1,15 +1,18 @@
 -- File: BudgetManager
-TODAY_BUDGET		= "T"
-OLD_BUDGET_1		= "1"
-OLD_BUDGET_2		= "2"
-OLD_BUDGET_3		= "3"
+TIME_TODAY		= "T"
+TIME_OLDDAY_1	= "1"
+TIME_OLDDAY_2	= "2"
+TIME_OLDDAY_3	= "3"
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["BudgetManager"] = class(KIDataObjekt, function(c)
 	KIDataObjekt.init(c)	-- must init base!
 	c.BudgetHistory = {} -- Die Budgets der letzten Tage
-	c.TodayStartAccountBalance = 0 -- Kontostand zu Beginn des Tages	
+	c.AccountBalanceHistory = {} -- Die Kontostaende der letzten Tage
 	c.InvestmentSavings = 0 -- Geld das für Investitionen angespart wird.
+
+
+	
 	c:ResetDefaults()
 end)
 
@@ -31,50 +34,58 @@ function BudgetManager:Initialize()
 
 	-- Erfahrungswerte für den Anfang mit dem Standardwert initialisieren
 	self.BudgetHistory = {}
-	self.BudgetHistory[OLD_BUDGET_3] = startBudget
-	self.BudgetHistory[OLD_BUDGET_2] = startBudget
-	self.BudgetHistory[OLD_BUDGET_1] = startBudget
-	self.BudgetHistory[TODAY_BUDGET] = startBudget
+	self.BudgetHistory[TIME_OLDDAY_3] = startBudget
+	self.BudgetHistory[TIME_OLDDAY_2] = startBudget
+	self.BudgetHistory[TIME_OLDDAY_1] = startBudget
+	self.BudgetHistory[TIME_TODAY] = startBudget
 
-	self.TodayStartAccountBalance = playerMoney		-- Legt fest, dass angenommen wird, gestern habe man den gleichen Kontostand gehabt
+	self.AccountBalanceHistory = {}
+	-- Legt fest, dass angenommen wird, gestern habe man den gleichen Kontostand gehabt
+	self.AccountBalanceHistory[TIME_OLDDAY_3] = playerMoney
+	self.AccountBalanceHistory[TIME_OLDDAY_2] = playerMoney
+	self.AccountBalanceHistory[TIME_OLDDAY_1] = playerMoney
+	self.AccountBalanceHistory[TIME_TODAY] = playerMoney
 
 	self.BudgetMinimum = math.round(playerMoney * 0.4)	-- Legt das Minimalbudget fest: 40% des Startwertes
 	self.BudgetMaximum = math.round(playerMoney * 0.8)  -- Das Maximalbudget entspricht am Anfang 80% des Startwertes
 end
 
-function BudgetManager:CalculateBudget() -- Diese Methode wird immer zu Beginn des Tages aufgerufen
+
+-- Diese Methode wird immer zu Beginn des Tages aufgerufen
+function BudgetManager:CalculateNewDayBudget()
 	TVT.addToLog("=== Budget Tag " .. WorldTime.GetDaysRun() .. " ===")	
 
 	--Die Erfahrungswerte werden wieder um einen Tag nach hinten verschoben, da ein neuer Erfahrungswert dazukommt
-	self.BudgetHistory[OLD_BUDGET_3] = self.BudgetHistory[OLD_BUDGET_2]
-	self.BudgetHistory[OLD_BUDGET_2] = self.BudgetHistory[OLD_BUDGET_1]
-	self.BudgetHistory[OLD_BUDGET_1] = self.BudgetHistory[TODAY_BUDGET]
+	self.BudgetHistory[TIME_OLDDAY_3] = self.BudgetHistory[TIME_OLDDAY_2]
+	self.BudgetHistory[TIME_OLDDAY_2] = self.BudgetHistory[TIME_OLDDAY_1]
+	self.BudgetHistory[TIME_OLDDAY_1] = self.BudgetHistory[TIME_TODAY]
 
-	-- Gestrige Werte
-	local YesterdayBudget = self.BudgetHistory[TODAY_BUDGET]
-	local YesterdayStartAccountBalance = self.TodayStartAccountBalance	-- den gestrigen Wert zwischenspeichern
+	-- preserve account balances of previous days
+	self.AccountBalanceHistory[TIME_OLDDAY_3] = self.AccountBalanceHistory[TIME_OLDDAY_2]
+	self.AccountBalanceHistory[TIME_OLDDAY_2] = self.AccountBalanceHistory[TIME_OLDDAY_1]
+	self.AccountBalanceHistory[TIME_OLDDAY_1] = self.AccountBalanceHistory[TIME_TODAY]
 
 	-- Werte nachjustieren
-	self.TodayStartAccountBalance = MY.GetMoney() -- Kontostand aktualisieren
-	TVT.addToLog(string.left("Kontostand:", 20, true) .. string.right(self.TodayStartAccountBalance, 10, true))
+	self.AccountBalanceHistory[TIME_TODAY] = MY.GetMoney() -- Kontostand aktualisieren
+	TVT.addToLog(string.left("Kontostand:", 20, true) .. string.right(self.AccountBalanceHistory[TIME_TODAY], 10, true))
 	self.BudgetMinimum = self.BudgetMinimum * 1.01
-	self.BudgetMaximum = self.TodayStartAccountBalance * 0.95
+	self.BudgetMaximum = self.AccountBalanceHistory[TIME_TODAY] * 0.95
 
-	local YesterdayTurnOver = self.TodayStartAccountBalance - (YesterdayStartAccountBalance - YesterdayBudget) -- Gestriger Umsatz
-	-- TODO: Anstatt dem YesterdayBudget kann man auch die tatsächtlichen gestrigen Ausgaben anführen. (denn im Moment ist es sehr ungenau)
+	-- Gestriger Umsatz
+	local YesterdayTurnOver = self.AccountBalanceHistory[TIME_TODAY] - (self.AccountBalanceHistory[TIME_OLDDAY_1] - self.BudgetHistory[TIME_OLDDAY_1])
+	-- TODO: Anstatt dem self.BudgetHistory[TIME_OLDDAY_1] kann man auch die tatsächtlichen gestrigen Ausgaben anführen. (denn im Moment ist es sehr ungenau)
 
 	-- Ermittle ein neues Budget für den heutigen Tag auf Grund der Erfahrungswerte
-	local myBudget = self:CalculateAverageBudget(self.TodayStartAccountBalance, YesterdayTurnOver)
+	-- Neuer History-Eintrag
+	self.BudgetHistory[TIME_TODAY] = self:CalculateAverageBudget(self.AccountBalanceHistory[TIME_TODAY], YesterdayTurnOver)
+	self.BudgetHistory[TIME_TODAY] = math.clamp(self.BudgetHistory[TIME_TODAY], self.BudgetMinimum, self.BudgetMaximum)
 
-	-- Minimal-Budget prüfen
-	if myBudget < self.BudgetMinimum then
-		myBudget = self.BudgetMinimum
-	end
+	self:UpdateBudget(self.BudgetHistory[TIME_TODAY])
+	TVT.addToLog("======")
+end
 
-	--Maximal-Budget prüfen
-	if myBudget > self.BudgetMaximum then
-		myBudget = self.BudgetMaximum
-	end
+
+function BudgetManager:UpdateBudget(pBudget)
 
 	-- TODO: Kredit ja/nein --- Zurückzahlen ja/nein
 	-- TODO: Aktuell einfach mal ne maximalen Kredit ausreizen. Es sollte hier auf eine Bewertung "Geldnot", "Investitionsfreude" bzw. auf eine Strategie zurückgegriffen werden.
@@ -87,17 +98,13 @@ function BudgetManager:CalculateBudget() -- Diese Methode wird immer zu Beginn d
 		end
 	end
 
-	-- Neuer History-Eintrag
-	self.BudgetHistory[TODAY_BUDGET] = myBudget
-
-	TVT.addToLog(string.left("Geplantes Budget:", 20, true) .. string.right(myBudget, 10, true))
-	self:CutInvestmentSavingIfNeeded(myBudget)
+	TVT.addToLog(string.left("Geplantes Budget:", 20, true) .. string.right(pBudget, 10, true))
+	self:CutInvestmentSavingIfNeeded(pBudget)
 	
 	-- Das Budget auf die Tasks verteilen
-	self:AllocateBudgetToTasks(myBudget)
-	
-	TVT.addToLog("======")
+	self:AllocateBudgetToTasks(pBudget)
 end
+
 
 function BudgetManager:CutInvestmentSavingIfNeeded(pBudget)
 	local player = _G["globalPlayer"] --Zugriff die globale Variable
@@ -116,10 +123,10 @@ function BudgetManager:CutInvestmentSavingIfNeeded(pBudget)
 end
 
 function BudgetManager:CalculateAverageBudget(pCurrentAccountBalance, pTurnOver)
-	--debugMsg("A1.1: " .. pTurnOver); debugMsg("AX.1: " .. self.BudgetHistory[OLD_BUDGET_1]); debugMsg("AX.2: " .. self.BudgetHistory[OLD_BUDGET_2]); debugMsg("AX.3: " .. self.BudgetHistory[OLD_BUDGET_3])
+	--debugMsg("A1.1: " .. pTurnOver); debugMsg("AX.1: " .. self.BudgetHistory[TIME_OLDDAY_1]); debugMsg("AX.2: " .. self.BudgetHistory[TIME_OLDDAY_2]); debugMsg("AX.3: " .. self.BudgetHistory[TIME_OLDDAY_3])
 
 	-- Alle Erfahrungswerte werden aufsummiert und mit einem Faktor gewichtet und dann durch 10 geteilt. 4 + 3 + 2 + 1 / 10
-	local TempSum = ((pTurnOver * 4) + (self.BudgetHistory[OLD_BUDGET_1] * 3) + (self.BudgetHistory[OLD_BUDGET_2] * 2) + (self.BudgetHistory[OLD_BUDGET_3] * 1)) / 10
+	local TempSum = ((pTurnOver * 4) + (self.BudgetHistory[TIME_OLDDAY_1] * 3) + (self.BudgetHistory[TIME_OLDDAY_2] * 2) + (self.BudgetHistory[TIME_OLDDAY_3] * 1)) / 10
 	if pCurrentAccountBalance > (TempSum / 2) then -- Reicht der aktuelle Kontostand aus, um das errechnete Budget zu finanzieren?
 		-- Das Budget wird um 0% bis 9% erhöht
 		TempSum = TempSum + (pCurrentAccountBalance * ((math.random(10)-1)/100)) -- TODO: Zufallswert wird durch Level und Risikoreichtum bestimmt
@@ -167,7 +174,7 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 		v.BudgetWholeDay = v.CurrentBudget							
 	end	
 	
-	-- Auf Invesitionen prüfen
+	-- Auf Investitionen prüfen
 	local investTask = self:GetTaskForInvestment(player.TaskList)
 	if (investTask ~= nil) then
 		TVT.addToLog(investTask:typename() .. "- Use Investment: " .. self.InvestmentSavings)
@@ -234,9 +241,30 @@ end
 
 function BudgetManager:OnMoneyChanged(value, reason, reference)
 	if (reference ~= nil) then
-		TVT.addToLog("$$ Überweisung: " .. value .. " für " .. reason .. ": " .. reference:GetTitle())	
+		TVT.addToLog("$$ Ueberweisung: " .. value .. " fuer " .. reason .. ": " .. reference:GetTitle())	
 	else
-		TVT.addToLog("$$ Überweisung: " .. value .. " für " .. reason)	
+		TVT.addToLog("$$ Ueberweisung: " .. value .. " fuer " .. reason)	
+	end
+
+	local renewBudget = false
+
+	-- unplanned costs
+	if (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.PAY_PENALTY)) then renewBudget = true end
+	-- or income
+	if (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.CHEAT)) then renewBudget = true end
+	if (tonumber(value) > 0) then renewBudget = true end
+
+
+	if renewBudget == true then
+		local moneyInt = MY.GetMoney()
+		local todaysProfit = MY.GetFinance(-1).GetCurrentProfit()
+
+		--local budgetNow = self:CalculateAverageBudget(MY.GetMoney(), todaysProfit)
+
+		TVT.addToLog("Profit heute: " .. todaysProfit)
+		--TVT.addToLog("budget jetzt: " .. budgetNow)
+		self:UpdateBudget(todaysProfit)
+		--self:UpdateBudget(budgetNow)
 	end
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

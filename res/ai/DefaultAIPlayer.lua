@@ -130,7 +130,7 @@ function DefaultAIPlayer:OnDayBegins()
 		v:AdjustmentsForNextDay()
 	end	
 	
-	self.Budget:CalculateBudget()
+	self.Budget:CalculateNewDayBudget()
 
 	for k,v in pairs(self.TaskList) do
 		v:OnDayBegins()

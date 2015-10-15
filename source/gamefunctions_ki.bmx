@@ -7,7 +7,7 @@
 
 Global AiLog:TLogFile[4]
 For local i:int = 0 to 3
-	AiLog[i] = TLogFile.Create("KI Log v1.0", "log.ki"+(i+1)+".txt")
+	AiLog[i] = TLogFile.Create("KI Log v1.0", "log.ki"+(i+1)+".txt", True)
 Next
 
 Global KIRunning:Int = true
@@ -276,9 +276,10 @@ Type KI
 			Local args:Object[3]
 			args[0] = String(value)
 			args[1] = String(reason)
-			args[2] = TNamedGameObject(reference)
+			args[2] = reference
 			if (KIRunning) then LuaEngine.CallLuaFunction("OnMoneyChanged", args)
 		Catch ex:Object
+		DebugStop
 			TLogger.log("KI.CallOnMoneyChanged", "Script "+scriptFileName+" does not contain function ~qOnMoneyChanged~q.", LOG_ERROR)
 		End Try
 	End Method
@@ -544,6 +545,7 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	Method addToLog:int(text:string)
+		'print "AILog "+Self.ME+": "+text
 		return AiLog[Self.ME-1].AddLog(text)
 	End Method
 

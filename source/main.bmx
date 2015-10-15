@@ -143,7 +143,7 @@ AppTitle = "TVTower: " + VersionString
 TLogger.Log("CORE", "Starting "+APP_NAME+", "+VersionString+".", LOG_INFO )
 
 '===== SETUP LOGGER FILTER =====
-TLogger.setLogMode(LOG_ALL)
+TLogger.setLogMode(LOG_ALL )
 TLogger.setPrintMode(LOG_ALL )
 'TLogger.setPrintMode(LOG_AI | LOG_ERROR | LOG_SAVELOAD )
 

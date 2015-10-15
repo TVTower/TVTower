@@ -2,7 +2,7 @@
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["AIStrategy"] = class(KIDataObjekt, function(c)
 	KIDataObjekt.init(c)	-- must init base!
-	c.TodayStartAccountBalance = 0 -- Kontostand zu Beginn des Tages
+--	c.TodayStartAccountBalance = 0 -- Kontostand zu Beginn des Tages
 
 	--amount to spend for start programme
 	c.startProgrammePriceMax = 70000

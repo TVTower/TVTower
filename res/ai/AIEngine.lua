@@ -641,3 +641,8 @@ function CutFactor(factor, minValue, maxValue)
 		return factor
 	end
 end
+
+
+function math.clamp( n, min, max )
+	return n > max and max or n < min and min or n
+end

@@ -203,7 +203,8 @@ Function _Call:Object( p:Byte Ptr,typeId:TTypeId,obj:Object,args:Object[],argTyp
 		Local f:Int(p0:int,p1:int,p2:int,p3:int,p4:int,p5:int,p6:int,p7:int) = p
 		Return String.FromInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
 	Case LongTypeId
-		Throw "TODO"
+		print "Reflection: Invoking Methods with returned LongType not supported"
+		Throw "Reflection: Invoking Methods with returned LongType not supported"
 	Case FloatTypeId
 		Local f:Float(p0:int,p1:int,p2:int,p3:int,p4:int,p5:int,p6:int,p7:int) = p
 		Return String.FromFloat( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )

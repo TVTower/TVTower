@@ -124,7 +124,7 @@ End Function
 
 'holds data of WHAT has been bought, which amount of money was used and so on ...
 'contains methods for refreshing stats when paying or selling something
-Type TPlayerFinance
+Type TPlayerFinance {_exposeToLua="selected"}
 	Field expense_programmeLicences:Int	= 0
 	Field expense_stations:Int 			= 0
 	Field expense_scripts:Int 			= 0
@@ -196,21 +196,24 @@ Type TPlayerFinance
 
 
 	'returns whether the finances allow the given transaction
-	Method CanAfford:Int(price:Int=0)
+	Method CanAfford:Int(price:Int=0) {_exposeToLua}
 		Return (money > 0 And money >= price)
 	End Method
 
 
-	Method GetCurrentProfit:Long()
+	Method GetCurrentProfit:Double() {_exposeToLua}
+	'long is currently not supported in BlitzMax-Reflection
+	'Method GetCurrentProfit:Long() {_exposeToLua}
 		return revenue_after - revenue_before
 	End Method
 
 
-	Method GetCredit:Long()
+	Method GetCredit:Long() {_exposeToLua}
 		return credit
 	End Method
+
 	
-	Method GetCreditInterest:Long() 'T�gliche Zinsen
+	Method GetCreditInterest:Long() 'Taegliche Zinsen
 		return GetCredit() * TPlayerFinance.creditInterestRate
 	End Method	
 
