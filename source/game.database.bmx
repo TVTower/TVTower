@@ -281,6 +281,7 @@ Type TDatabaseLoader
 			if isCelebrity and not TProgrammePerson(person)
 				person = ConvertInsignificantToCelebrity(person)
 			endif
+			TLogger.Log("LoadV3ProgrammePersonBaseFromNode()", "Extending programmePersonBase ~q"+person.GetFullName()+"~q. GUID="+person.GetGUID(), LOG_XML)
 		else
 			if isCelebrity
 				person = new TProgrammePerson
@@ -378,6 +379,8 @@ Type TDatabaseLoader
 			newsEvent.GUID = GUID
 		else
 			doAdd = False
+
+			TLogger.Log("LoadV3NewsEventFromNode()", "Extending newsEvent ~q"+newsEvent.GetTitle()+"~q. GUID="+newsEvent.GetGUID(), LOG_XML)
 		endif
 		
 		'=== LOCALIZATION DATA ===
@@ -461,6 +464,7 @@ Type TDatabaseLoader
 			adContract.GUID = GUID
 		else
 			doAdd = False
+			TLogger.Log("LoadV3AdContractBaseFromNode()", "Extending adContract ~q"+adContract.GetTitle()+"~q. GUID="+adContract.GetGUID(), LOG_XML)
 		endif
 
 
@@ -612,6 +616,7 @@ Type TDatabaseLoader
 		else
 			programmeData = programmeLicence.GetData()
 			if not programmeData then Throw "Loading V3 Programme from XML: Existing programmeLicence without data found."
+			TLogger.Log("LoadV3ProgrammeLicenceFromNode()", "Extending programmeLicence ~q"+programmeLicence.GetTitle()+"~q. GUID="+programmeLicence.GetGUID(), LOG_XML)
 		endif
 
 

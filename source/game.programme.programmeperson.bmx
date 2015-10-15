@@ -153,7 +153,7 @@ Function ConvertInsignificantToCelebrity:TProgrammePersonBase(insignifant:TProgr
 	'emit event so eg. news agency could react to it ("new star is born")
 	EventManager.triggerEvent(TEventSimple.Create("programmeperson.newCelebrity", null, person))
 
-	print "new Star is born: " + person.GetFullName() +", "+person.GetAge()+"years, born " + GetWorldTime().GetFormattedDate( GetWorldTime().GetTimeGoneFromString(person.dayOfBirth)) 
+	'print "new Star is born: " + person.GetFullName() +", "+person.GetAge()+"years, born " + GetWorldTime().GetFormattedDate( GetWorldTime().GetTimeGoneFromString(person.dayOfBirth)) 
 
 	return person
 End Function
