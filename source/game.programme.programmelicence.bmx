@@ -667,7 +667,10 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		'single-licence
 		if GetSubLicenceCount() = 0 and GetData() then return GetData().GetGenre()
 
-		local genres:int[]
+		'return genre if one was defined (overriding episodes)
+		if GetData() and GetData().GetGenre() >= 0 then return GetData().GetGenre()
+
+		local genres:int[] = [0] 'init genre 0 with count 0
 		local bestGenre:int=0
 		For local licence:TProgrammeLicence = eachin subLicences
 			local genre:int = licence.GetGenre()
@@ -675,7 +678,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 			genres[genre]:+1
 		Next
 		For local i:int = 0 to genres.length-1
-			if genres[i] > bestGenre then bestGenre = i
+			if genres[i] > genres[bestGenre] then bestGenre = i
 		Next
 
 		return bestGenre
