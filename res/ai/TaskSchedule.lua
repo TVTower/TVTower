@@ -635,17 +635,36 @@ function JobEmergencySchedule:GetFilteredProgrammeLicenceList(maxLevel, level, m
 end
 
 function JobEmergencySchedule:GetProgrammeLicenceList(level, maxRerunsToday, day)
-	local currentLicenceList = {}
+	local allLicences = {}
+	local useableLicences = {}
 
 	for i=0,MY.GetProgrammeCollection().GetProgrammeLicenceCount()-1 do
 		local licence = MY.GetProgrammeCollection().GetProgrammeLicenceAtIndex(i)
-		if ( licence ~= nil and licence.isNewBroadcastPossible() == 1) then
-			-- TVT.PrintOut("licence is broadcastable: " .. licence.GetTitle() .. "   " .. licence.isNewBroadcastPossible() .. "  " .. licence.GetData().IsControllable())
+		if (licence ~= nil) then
+			-- add the single licence
+			if ( licence.GetSubLicenceCount() == 0 ) then
+				table.insert(allLicences, licence)
+			-- add all sub licences (series / collection-headers)
+			else
+				for num=0, licence.GetSubLicenceCount()-1 do
+					local subLicence = licence.GetSubLicenceAtIndex(num)
+					if ( subLicence ~= nil ) then
+						table.insert(allLicences, subLicence)
+					end
+				end
+			end
+		end
+	end
+
+
+	for k,licence in pairs(allLicences) do
+		if (licence.isNewBroadcastPossible() == 1) then
+			--TVT.PrintOut("licence is broadcastable: " .. licence.GetTitle() .. "   " .. licence.isNewBroadcastPossible() .. "  " .. licence.GetData().IsControllable())
 			if licence.GetQualityLevel() == level then
 				local sentAndPlannedToday = TVT.of_GetBroadcastMaterialInProgrammePlanCount(licence.GetID(), day, 1)
 				if (sentAndPlannedToday <= maxRerunsToday) then
 					--debugMsg("GetProgrammeLicenceList: " .. licence.GetTitle() .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday .. " - A:" .. licence.GetAttractiveness() .. " Qa:" .. licence.GetQualityLevel() .. " Qo:" .. licence.GetQuality() .. " T:" .. licence.GetTopicality())
-					table.insert(currentLicenceList, licence)
+					table.insert(useableLicences, licence)
 				else
 					--debugMsg("GetProgrammeLicenceList: " .. licence.GetTitle() .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday ..  " - A:" .. licence.GetAttractiveness() .. " Qa:" .. licence.GetQualityLevel() .. " Qo:" .. licence.GetQuality() .. " T:" .. licence.GetTopicality() .. "   failed Runs " .. maxRerunsToday)
 				end
@@ -656,7 +675,7 @@ function JobEmergencySchedule:GetProgrammeLicenceList(level, maxRerunsToday, day
 		end
 	end
 
-	return currentLicenceList
+	return useableLicences
 end
 
 
