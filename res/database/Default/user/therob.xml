@@ -3596,34 +3596,35 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</staff>
 					<data country="D" year="1980" distribution="0" maingenre="204" subgenre="0" flags="8" blocks="4" time="0" price_mod="1.00" />
 				</programme>
-				<programme id="TheRob-b5dc-mov-com-Schlagzeile" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0071524" rt_id="0" creator="8751" created_by="TheRob">
-					<title>
-						<!-- Extrablatt, Comedy mit Subgenre Dramma -->
-						<de>Schlagzeile</de>
-						<en>Headline</en>
-					</title>
-					<title_original>
-						<de>Extrablatt</de>
-						<en>The Frontpage</en>
-					</title_original>
-					<description>
-						<de>Chicago in den 20ern. Ein Herausgeber möchte seinen besten Mann nicht gehen lassen und versucht mit allen Mitteln sein privates Glück zu verhindern.</de>
-						<en>Chicago in the 20ies. A Newspaper owner does not want to lose his best man. So he tries to destroy his private luck with all possibilities he finds.</en>
-					</description>
-					<staff>
-						<member index="0" function="1">81f17c33-1719-4513-ad34-ac03ac7d03a0</member>
-						<member index="1" function="2">3cc8d242-ead8-483b-b5ef-c826057abc0f</member>
-						<member index="2" function="2">TheRob-celebritypeople-WalterRattnau</member>
-						<member index="3" function="2">TheRob-celebritypeople-SusanaRandom</member>        
-					</staff>
-					<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-					<data country="USA" year="1974" distribution="0" maingenre="5" subgenre="7" flags="0" blocks="2" time="0" price_mod="1.00" />
-					<ratings critics="53" speed="71" outcome="67" />
-				</programme>    
 			</children>
 		</programme>    
 
-		<programme id="TheRob-b5dc-mov-com-Schlagzeile" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0082111" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-b5dc-mov-com-Schlagzeile" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0071524" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Extrablatt, Comedy mit Subgenre Dramma -->
+				<de>Schlagzeile</de>
+				<en>Headline</en>
+			</title>
+			<title_original>
+				<de>Extrablatt</de>
+				<en>The Frontpage</en>
+			</title_original>
+			<description>
+				<de>Chicago in den 20ern. Ein Herausgeber möchte seinen besten Mann nicht gehen lassen und versucht mit allen Mitteln sein privates Glück zu verhindern.</de>
+				<en>Chicago in the 20ies. A Newspaper owner does not want to lose his best man. So he tries to destroy his private luck with all possibilities he finds.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">81f17c33-1719-4513-ad34-ac03ac7d03a0</member>
+				<member index="1" function="2">3cc8d242-ead8-483b-b5ef-c826057abc0f</member>
+				<member index="2" function="2">TheRob-celebritypeople-WalterRattnau</member>
+				<member index="3" function="2">TheRob-celebritypeople-SusanaRandom</member>        
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1974" distribution="0" maingenre="5" subgenre="7" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="53" speed="71" outcome="67" />
+		</programme>
+		
+		<programme id="TheRob-b5dc-mov-com-MachesnichtKumpel" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0082111" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Buddy Buddy, Comedy -->
 				<de>Mach es nicht Kumpel</de>
