@@ -661,6 +661,14 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 
 
+	'override
+	'only allow broadcasts for non-series-/non-collection-headers
+	Method IsNewBroadcastPossible:int() {_exposeToLua}
+		if GetSubLicenceCount() = 0 then return Super.IsNewBroadcastPossible()
+		return False
+	End Method
+
+
 	'returns the genre of a licence - if a group, the one used the most
 	'often is returned
 	Method GetGenre:int() {_exposeToLua}
