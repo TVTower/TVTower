@@ -671,7 +671,7 @@ Type TDatabaseLoader
 		programmeData.genre = data.GetInt("maingenre", programmeData.genre)
 		For local sg:string = EachIn data.GetString("subgenre", "").split(",")
 			if sg = "" then continue
-			if not THelper.IntArrayContainsNumber(programmeData.subGenres, int(sg))
+			if not MathHelper.InIntArray(int(sg), programmeData.subGenres)
 				programmeData.subGenres :+ [int(sg)]
 			endif
 		Next
@@ -874,7 +874,7 @@ endif
 		scriptTemplate.mainGenre = data.GetInt("mainGenre", 0)
 		For local sg:string = EachIn data.GetString("subGenres", "").split(",")
 			if sg = "" then continue
-			if not THelper.IntArrayContainsNumber(scriptTemplate.subGenres, int(sg))
+			if not MathHelper.InIntArray(int(sg), scriptTemplate.subGenres)
 				scriptTemplate.subGenres :+ [int(sg)]
 			endif
 		Next

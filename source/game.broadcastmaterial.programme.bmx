@@ -24,6 +24,13 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			TLogger.Log("TProgramme.Create", "===========", LOG_ERROR)
 		endif
 
+		if licence.GetSubLicenceCount() > 0
+			TLogger.Log("TProgramme.Create", "===========", LOG_ERROR)
+			TLogger.Log("TProgramme.Create", "Creating programme ~q"+licence.GetTitle()+"~q of header licence! Report to developers asap.", LOG_ERROR)
+			TLogger.Log("TProgramme.Create", "===========", LOG_ERROR)
+			return null
+		endif
+
 		'store the owner in that moment (later on it might differ as
 		'the player sold a licence while the broadcast stays forever)
 		obj.SetOwner(licence.owner)

@@ -123,8 +123,9 @@ Function ConvertInsignificantToCelebrity:TProgrammePersonBase(insignifant:TProgr
 
 
 	For local programmeDataGUID:string = EachIn person.GetProducedProgrammes()
+		person.GainExperienceForProgramme(programmeDataGUID)
+
 		local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(programmeDataGUID)
-		person.xp :+ person.GetNextExperienceGain(programmeData)
 
 		if earliestProduction = -1
 			earliestProduction = programmeData.year
@@ -199,7 +200,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 	Field channelSympathy:Float[4]
 
-	Field xp:int = 0
+	'each job has its own xp, xp[0] is used for "general xp"
+	Field xp:int[] = [0]
 	Const MAX_XP:int = 10000
 
 
@@ -277,7 +279,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 				local xpMod:Float = 1.0
 				'up to "* 100" -> 100% xp means 2000*100 = 200000
-				xpMod :+ 100 * GetExperiencePercentage()
+				xpMod :+ 100 * GetExperiencePercentage(jobID)
 
 				if jobID = TVTProgrammePersonJob.ACTOR
 					Return sympathyMod * (3000 + Floor(Int(100 * sum * factor * xpMod * priceModifier)/100)*100)
@@ -309,9 +311,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 		'already added
 		if StringHelper.InArray(programmeDataGUID, producedProgrammes, False) then return False
 
-		'gain experience
-		xp :+ GetNextExperienceGain(programmeData)
-		
+		GainExperienceForProgramme(programmeDataGUID)
 
 		'add programme
 		producedProgrammes :+ [programmeDataGUID]
@@ -413,27 +413,77 @@ Type TProgrammePerson extends TProgrammePersonBase
 		return scandalizing
 	End Method
 
+
+	Method SetExperience(job:int, value:int)
+		local jobIndex:int = TVTProgrammePersonJob.GetIndex(job)
+		if xp.length <= jobIndex then xp = xp[ .. jobIndex + 1]
+		xp[jobIndex] = value
+
+		'recalculate total (average)
+		if job <> 0 then SetExperience(0, GetExperience(0))
+	End Method
+
+
+	Method GetExperience:int(job:int)
+		local jobIndex:int = TVTProgrammePersonJob.GetIndex(job)
+		if xp.length <= jobIndex then return 0
+
+
+		'total avg requested
+		if job <= 0
+			if xp.length = 0 then xp = xp[.. 1]
+
+			local jobs:int = 0
+			for local jobXP:int = EachIn xp
+				if jobXP > 0
+					jobs :+ 1
+					xp[0] :+ 1
+				endif
+			Next
+			if jobs > 0 then xp[0] :/ jobs
+
+			return xp[0]
+		endif
+
+		return xp[jobIndex]
+	End Method
 	
-	Method GetExperience:int()
-		return xp
+
+	Method GetExperiencePercentage:Float(job:int)
+		return GetExperience(job) / float(MAX_XP)
 	End Method
 
 
-	Method GetExperiencePercentage:Float()
-		return xp / float(MAX_XP)
-	End Method
-
-
-	Method GetNextExperienceGain:int(programmeData:TProgrammeData)
+	Method GetNextExperienceGain:int(job:int, programmeData:TProgrammeData)
 		'10 perfect movies would lead to a 100% experienced person
 		local baseGain:float = 1000 * programmeData.GetQualityRaw()
 
+		local jobXP:int = GetExperience(job)
+
 		'the more XP we have, the harder it gets
-		if xp <  500 then return 1.0 * baseGain
-		if xp < 1000 then return 0.8 * baseGain
-		if xp < 2500 then return 0.6 * baseGain
-		if xp < 5000 then return 0.4 * baseGain
+		if jobXP <  500 then return 1.0 * baseGain
+		if jobXP < 1000 then return 0.8 * baseGain
+		if jobXP < 2500 then return 0.6 * baseGain
+		if jobXP < 5000 then return 0.4 * baseGain
 		return 0.2 * baseGain
+	End Method
+
+
+	Method GainExperienceForProgramme(programmeDataGUID:string)
+		local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(programmeDataGUID)
+		if not programmeData then return
+		
+		'gain experience for each done job
+		local creditedJobs:int[]
+		For local job:TProgrammePersonJob = EachIn programmeData.GetCast()
+			if job.personGUID <> self.GetGUID() then continue
+			'already gained experience for this job (eg. multiple roles
+			'played by one actor)
+			if MathHelper.InIntArray(job.job, creditedJobs) then continue
+
+			creditedJobs :+ [job.job]
+			SetExperience(job.job, GetExperience(job.job) + GetNextExperienceGain(job.job, programmeData))
+		Next
 	End Method
 
 

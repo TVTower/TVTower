@@ -175,7 +175,7 @@ Type TProgrammePersonBase extends TGameObject
 	'is this an real existing person or someone we imaginated for the game?
 	field fictional:int = False
 	'is the person currently filming something?
-	field producingGUID:string = ""
+	field producingGUIDs:string[]
 
 
 	'override to add another generic naming
@@ -193,7 +193,7 @@ Type TProgrammePersonBase extends TGameObject
 		       jobsDone + "::" + ..
 		       canLevelUp + "::" + ..
 		       fictional + "::" + ..
-		       StringHelper.EscapeString(producingGUID, ":") + "::" + ..
+		       StringHelper.EscapeString(",".Join(producingGUIDs), ":") + "::" + ..
 		       id + "::" + ..
 		       StringHelper.EscapeString(GUID, ":")
 	End Method
@@ -208,7 +208,7 @@ Type TProgrammePersonBase extends TGameObject
 		if vars.length > 4 then jobsDone = int(vars[4])
 		if vars.length > 5 then canLevelUp = int(vars[5])
 		if vars.length > 6 then fictional = int(vars[6])
-		if vars.length > 7 then producingGUID = StringHelper.UnEscapeString(vars[7])
+		if vars.length > 7 then producingGUIDs = StringHelper.UnEscapeString(vars[7]).split(",")
 		if vars.length > 8 then id = int(vars[8])
 		if vars.length > 9 then GUID = StringHelper.UnEscapeString(vars[9])
 	End Method
@@ -289,10 +289,20 @@ Type TProgrammePersonBase extends TGameObject
 	Method GetBaseFee:Int(jobID:int, channel:int=-1)
 		return 10000
 	End Method
-	
+
+
+	Method IsProducing:int(programmeDataGUID:string)
+		For local guid:string = EachIn producingGUIDs
+			if guid = programmeDataGUID then return True
+		Next
+		return False
+	End Method
+
 
 	Method StartProduction:int(programmeDataGUID:string)
-		producingGUID = programmeDataGUID
+		if not IsProducing(programmeDataGUID)
+			producingGUIDs :+ [programmeDataGUID]
+		endif
 
 		'emit event so eg. news agency could react to it ("bla has a new job")
 		'-> or to set them on the "scandals" list
@@ -302,7 +312,12 @@ Type TProgrammePersonBase extends TGameObject
 
 	Method FinishProduction:int(programmeDataGUID:string)
 		jobsDone :+ 1
-		producingGUID = ""
+
+		local newProducingGUIDs:string[]
+		For local guid:string = EachIn producingGUIDs
+			if guid = programmeDataGUID then continue
+			newProducingGUIDs :+ [guid]
+		Next
 
 		'emit event so eg. news agency could react to it ("bla goes on holiday")
 		EventManager.triggerEvent(TEventSimple.Create("programmepersonbase.onFinishProduction", New TData.addString("programmeDataGUID", programmeDataGUID), Self))

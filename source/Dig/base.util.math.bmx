@@ -101,6 +101,14 @@ Type MathHelper
 	End Function
 
 
+	Function InIntArray:int(i:int, intArray:int[])
+		For local d:Int = EachIn intArray
+			if d = i then return True
+		Next
+		return False
+	End Function
+
+
 	'returns whether two values are approximately the same
 	'(1 and 1.00001 are identical, 1 and 1.1 not)
 	Function areApproximatelyEqual:Int(a:Float, b:Float)

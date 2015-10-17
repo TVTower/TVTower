@@ -140,14 +140,6 @@ Type THelper
 	End Function
 
 
-	Function IntArrayContainsNumber:int(arr:Int[], number:Int)
-		For local d:Int = EachIn arr
-			if d = number then return True
-		Next
-		return False
-	End Function
-
-
 	Global ListTypeID:TTypeId=TTypeId.ForObject(new TList)
 	Global MapTypeID:TTypeId=TTypeId.ForObject(new TMap)
 

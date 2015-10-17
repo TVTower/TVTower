@@ -527,7 +527,7 @@ Type TBroadcast
 		'create array of players not existing in "playerIDs"
 		Local withoutPlayerIDs:Int[]
 		For Local i:Int = 1 To 4
-			If THelper.IntArrayContainsNumber(playerIDs, i) then continue
+			If MathHelper.InIntArray(i, playerIDs) then continue
 			withoutPlayerIDs :+ [i]
 		Next
 
