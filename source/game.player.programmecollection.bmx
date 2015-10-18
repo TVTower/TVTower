@@ -61,8 +61,11 @@ End Function
 
 'holds all Programmes a player possesses
 Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected"}
-	Field programmeLicences:TList = CreateList()
-	Field movieLicences:TList = CreateList()
+	'containing all broadcastable licences (movies, episodes and collection
+	'entries)
+	Field programmeLicences:TList = CreateList() {nosave}
+
+	Field singleLicences:TList = CreateList()
 	Field seriesLicences:TList = CreateList()
 	Field collectionLicences:TList = CreateList()
 	Field news:TList = CreateList()
@@ -81,6 +84,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Field justAddedProgrammeLicences:TList = CreateList() {nosave}
 	'FALSE to avoid recursive handling (network)
 	Global fireEvents:int = TRUE
+	Global _eventListeners:TLink[]
 
 
 	Method Create:TPlayerProgrammeCollection(owner:int)
@@ -91,8 +95,10 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 
 	Method Initialize:Int()
-		programmeLicences.Clear()
-		movieLicences.Clear()
+		'invalidate
+		programmeLicences = null
+		
+		singleLicences.Clear()
 		seriesLicences.Clear()
 		adContracts.Clear()
 		scripts.Clear()
@@ -102,11 +108,23 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		suitcaseProgrammeLicences.Clear()
 		suitcaseAdContracts.Clear()
 		justAddedProgrammeLicences.Clear()
+
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "programmeproduction.onFinish", self, "onFinishProgrammeProduction" ) ]
+
 	End Method
 
 
-	Method GetMovieLicenceCount:Int() {_exposeToLua}
-		Return movieLicences.count()
+	'invalidate cache (new episodes added to series)
+	Method onFinishProgrammeProduction:int( triggerEvent:TEventBase )
+		'invalidate
+		programmeLicences = null
+	End Method
+	
+
+	Method GetSingleLicenceCount:Int() {_exposeToLua}
+		Return singleLicences.count()
 	End Method
 
 
@@ -116,7 +134,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 
 	Method GetProgrammeLicenceCount:Int() {_exposeToLua}
-		Return programmeLicences.count()
+		Return GetProgrammeLicences().count()
 	End Method
 
 
@@ -276,9 +294,12 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			if not programmeLicence.buy(owner) then return FALSE
 		endif
 
-		programmeLicences.remove(programmeLicence)
-		movieLicences.remove(programmeLicence)
+		singleLicences.remove(programmeLicence)
 		seriesLicences.remove(programmeLicence)
+		collectionLicences.remove(programmeLicence)
+
+		'invalidate
+		programmeLicences = null
 
 		suitcaseProgrammeLicences.AddLast(programmeLicence)
 
@@ -297,12 +318,13 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Method RemoveProgrammeLicenceFromSuitcase:int(licence:TProgrammeLicence)
 		if not suitcaseProgrammeLicences.Contains(licence) then return FALSE
 
-		If licence.isSingle() Then movieLicences.AddLast(licence)
+		If licence.isSingle() Then singleLicences.AddLast(licence)
 		if licence.isSeries() then seriesLicences.AddLast(licence)
 		if licence.isCollection() then collectionLicences.AddLast(licence)
 
-		programmeLicences.AddLast(licence)
-
+		'invalidate
+		programmeLicences = null
+		
 		justAddedProgrammeLicences.AddLast(licence)
 
 		suitcaseProgrammeLicences.Remove(licence)
@@ -315,17 +337,21 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	Method RemoveProgrammeLicence:Int(licence:TProgrammeLicence, sell:int=FALSE)
 		If licence = Null Then Return False
+		'do not allow removal of episodes (should get removed via header)
+		If licence.parentLicenceGUID then return False
 
 		if sell and not licence.sell() then return FALSE
 
 		'Print "RON: PlayerCollection.RemoveProgrammeLicence: sell="+sell+" title="+licence.GetTitle()
-		programmeLicences.remove(licence)
-		movieLicences.remove(licence)
+		singleLicences.remove(licence)
 		seriesLicences.remove(licence)
 		'remove from suitcase too!
 		suitcaseProgrammeLicences.remove(licence)
 		'remove from justAddedProgrammeLicences too!
 		justAddedProgrammeLicences.Remove(licence)
+
+		'invalidate
+		programmeLicences = null
 
 		'set unused again (give back to pool)
 		licence.SetOwner( TOwnedGameObject.OWNER_NOBODY )
@@ -337,11 +363,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	Method AddProgrammeLicence:Int(licence:TProgrammeLicence, buy:int=FALSE)
 		If not licence then return FALSE
-
-		if licence.isEpisode()
-			TLogger.log("TPlayerProgrammeCollection.AddProgrammeLicence", "Adding skipped: licence is a series episode", LOG_WARNING)
-			return FALSE
-		endif
+		'do not allow adding of episodes (should get removed via header)
+		If licence.parentLicenceGUID then return False
 
 		'if owner differs, check if we have to buy or got that gifted
 		'at program start or through special event...
@@ -355,10 +378,12 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 		'Print "RON: PlayerCollection.AddProgrammeLicence: buy="+buy+" title="+Licence.GetTitle()
 
-		If licence.isSingle() Then movieLicences.AddLast(licence)
+		If licence.isSingle() Then singleLicences.AddLast(licence)
 		if licence.isSeries() then seriesLicences.AddLast(licence)
 		if licence.isCollection() then collectionLicences.AddLast(licence)
-		programmeLicences.AddLast(licence)
+
+		'invalidate
+		programmeLicences = null
 
 		justAddedProgrammeLicences.AddLast(licence)
 
@@ -625,13 +650,13 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	Method GetRandomProgrammeLicence:TProgrammeLicence(serie:Int = 0) {_exposeToLua}
 		If serie Then Return Self.GetRandomSerieLicence()
-		Return Self.GetRandomMovieLicence()
+		Return Self.GetRandomSingleLicence()
 	End Method
 
 
-	Method GetRandomMovieLicence:TProgrammeLicence() {_exposeToLua}
-		if movieLicences.count() = 0 then return NULL
-		Return TProgrammeLicence(movieLicences.ValueAtIndex(rand(0, movieLicences.count() - 1)))
+	Method GetRandomSingleLicence:TProgrammeLicence() {_exposeToLua}
+		if singleLicences.count() = 0 then return NULL
+		Return TProgrammeLicence(singleLicences.ValueAtIndex(rand(0, singleLicences.count() - 1)))
 	End Method
 
 
@@ -662,15 +687,15 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	'get programmeLicence by index number in list - useful for lua-scripts
 	Method GetProgrammeLicenceAtIndex:TProgrammeLicence(arrayIndex:Int=0) {_exposeToLua}
-		if arrayIndex < 0 or arrayIndex >= programmeLicences.Count() then return Null
-		Return TProgrammeLicence(programmeLicences.ValueAtIndex(arrayIndex))
+		if arrayIndex < 0 or arrayIndex >= GetProgrammeLicenceCount() then return Null
+		Return TProgrammeLicence(GetProgrammeLicences().ValueAtIndex(arrayIndex))
 	End Method
 
 
-	'get movie licence by index number in list - useful for lua-scripts
-	Method GetMovieLicenceAtIndex:TProgrammeLicence(arrayIndex:Int=0) {_exposeToLua}
-		if arrayIndex < 0 or arrayIndex >= movieLicences.Count() then return Null
-		Return TProgrammeLicence(movieLicences.ValueAtIndex(arrayIndex))
+	'get single licence by index number in list - useful for lua-scripts
+	Method GetSingleLicenceAtIndex:TProgrammeLicence(arrayIndex:Int=0) {_exposeToLua}
+		if arrayIndex < 0 or arrayIndex >= singleLicences.Count() then return Null
+		Return TProgrammeLicence(singleLicences.ValueAtIndex(arrayIndex))
 	End Method
 
 
@@ -704,67 +729,70 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	Method GetLicencesByFilter:TProgrammeLicence[](filter:TProgrammeLicenceFilter)
 		local result:TProgrammeLicence[]
-		For local licence:TProgrammeLicence = EachIn programmeLicences
-			'add to result set
-			if filter.DoesFilter(licence) then result :+ [licence]
+		local lists:TList[] = [GetProgrammeLicences(), GetSeriesLicences(), GetCollectionLicences()]
+		For local l:TList = EachIn lists
+			For local licence:TProgrammeLicence = EachIn l
+				'add to result set
+				if filter.DoesFilter(licence) then result :+ [licence]
+			Next
 		Next
 		return result
 	End Method
 
 
-	Method GetFilteredLicenceCount:int(filter:TProgrammeLicenceFilter, includeMovies:int=TRUE, includeSeries:int=TRUE)
+	Method GetFilteredLicenceCount:int(filter:TProgrammeLicenceFilter, includeLicenceTypes:int=-1)
 		local amount:int = 0
+		if includeLicenceTypes = -1
+			includeLicenceTypes = TVTProgrammeLicenceType.SINGLE | TVTProgrammeLicenceType.COLLECTION | TVTProgrammeLicenceType.SERIES
+		endif
+
+		local lists:TList[]
+		if includeLicenceTypes & TVTProgrammeLicenceType.SINGLE then lists :+ [singleLicences]
+		if includeLicenceTypes & TVTProgrammeLicenceType.SERIES then lists :+ [seriesLicences]
+		if includeLicenceTypes & TVTProgrammeLicenceType.COLLECTION then lists :+ [collectionLicences]
+	
 		if not filter
-			if includeMovies then amount:+ movieLicences.Count()
-			if includeSeries then amount:+ seriesLicences.Count()
+			For local l:TList = EachIn lists
+				amount :+ l.Count()
+			Next
 		else
-			if includeMovies
-				For local licence:TProgrammeLicence = eachin movieLicences
+			For local l:TList = EachIn lists
+				For local licence:TProgrammeLicence = eachin l
 					if filter.DoesFilter(licence) then amount:+ 1
 				Next
-			endif
-			if includeSeries
-				For local licence:TProgrammeLicence = eachin seriesLicences
-					if filter.DoesFilter(licence) then amount:+ 1
-				Next
-			endif
+			Next
 		endif
 		return amount
 	End Method
 
 
-	Method GetProgrammeGenresCount:int(genres:int[], includeMovies:int=TRUE, includeSeries:int=TRUE) {_exposeToLua}
+	Method GetProgrammeGenresCount:int(genres:int[], includeLicenceTypes:int = -1) {_exposeToLua}
 		local amount:int = 0
-		if includeMovies
-			For local licence:TProgrammeLicence = eachin movieLicences
-				for local genre:int = eachin genres
+		if includeLicenceTypes = -1
+			includeLicenceTypes = TVTProgrammeLicenceType.SINGLE | TVTProgrammeLicenceType.COLLECTION | TVTProgrammeLicenceType.SERIES
+		endif
+
+		local lists:TList[]
+		if includeLicenceTypes & TVTProgrammeLicenceType.SINGLE then lists :+ [singleLicences]
+		if includeLicenceTypes & TVTProgrammeLicenceType.SERIES then lists :+ [seriesLicences]
+		if includeLicenceTypes & TVTProgrammeLicenceType.COLLECTION then lists :+ [collectionLicences]
+	
+		For local l:TList = EachIn lists
+			For local licence:TProgrammeLicence = eachin l
+				For local genre:int = eachin genres
 					if licence.GetGenre() = genre
 						amount:+1
 						continue
 					endif
 				Next
 			Next
-		endif
-		if includeSeries
-			For local licence:TProgrammeLicence = eachin seriesLicences
-				for local genre:int = eachin genres
-					if licence.GetGenre() = genre
-						amount:+1
-						continue
-					endif
-				Next
-			Next
-		endif
+		Next
 		return amount
 	End Method
 
 	
 	Method HasProgrammeLicence:int(licence:TProgrammeLicence) {_exposeToLua}
-		if licence.isEpisode() and licence.parentLicenceGUID
-			return programmeLicences.contains(licence.GetParentLicence())
-		else
-			return programmeLicences.contains(licence)
-		endif
+		return programmeLicences.contains(licence)
 	End Method
 
 
@@ -784,7 +812,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 
 	Method GetProgrammeLicence:TProgrammeLicence(id:Int) {_exposeToLua}
-		For Local licence:TProgrammeLicence = EachIn programmeLicences
+		For Local licence:TProgrammeLicence = EachIn GetProgrammeLicences()
 			If licence.id = id Then Return licence
 		Next
 		Return Null
@@ -792,7 +820,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 
 	Method GetProgrammeLicenceByGUID:TProgrammeLicence(GUID:String) {_exposeToLua}
-		For Local licence:TProgrammeLicence = EachIn programmeLicences
+		For Local licence:TProgrammeLicence = EachIn GetProgrammeLicences()
 			If licence.GetGUID() = GUID Then Return licence
 		Next
 		Return Null
@@ -836,21 +864,43 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
-	Method GetMovieLicences:TList() {_exposeToLua}
-		Return movieLicences
-		'Return movieLicences.toArray()
+	Method GetSingleLicences:TList() {_exposeToLua}
+		Return singleLicences
 	End Method
 
 
 	Method GetSeriesLicences:TList() {_exposeToLua}
 		Return seriesLicences
-		'Return seriesLicences.toArray()
+	End Method
+
+
+	Method GetCollectionLicences:TList() {_exposeToLua}
+		Return collectionLicences
 	End Method
 
 
 	Method GetProgrammeLicences:TList() {_exposeToLua}
+		if not programmeLicences
+			programmeLicences = CreateList()
+			local lists:TList[] = [singleLicences, seriesLicences, collectionLicences]
+			For local list:TList = EachIn lists
+				For local l:TProgrammeLicence = EachIn list
+					'add single elements (movies, documentations)
+					if l.GetSubLicenceCount() = 0
+						programmeLicences.AddLast(l)
+					'add episodes
+					else
+						'do _not_ add the header licences !
+						'programmeLicences.AddLast(l)
+						
+						For local subL:TProgrammeLicence = EachIn l.subLicences
+							programmeLicences.AddLast(subL)
+						Next
+					endif
+				Next
+			Next
+		endif
 		return programmeLicences
-		'Return programmeLicences.toArray()
 	End Method
 
 

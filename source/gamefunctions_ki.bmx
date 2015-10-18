@@ -711,7 +711,7 @@ Type TLuaFunctions {_exposeToLua}
 
 		'create a broadcast material out of the given source
 		local broadcastMaterial:TBroadcastMaterial = GetPlayer(self.ME).GetProgrammeCollection().GetBroadcastMaterial(materialSource)
-
+		if not broadcastMaterial then return self.RESULT_FAILED
 
 		'skip setting the slot if already done
 		Local existingMaterial:TBroadcastMaterial = GetPlayer(self.ME).GetProgrammePlan().GetAdvertisement(day, hour)
@@ -755,7 +755,7 @@ Type TLuaFunctions {_exposeToLua}
 
 		'create a broadcast material out of the given source
 		local broadcastMaterial:TBroadcastMaterial = GetPlayer(self.ME).GetProgrammeCollection().GetBroadcastMaterial(materialSource)
-
+		if not broadcastMaterial then return self.RESULT_FAILED
 
 		'skip setting the slot if already done
 		Local existingMaterial:TBroadcastMaterial = GetPlayer(self.ME).GetProgrammePlan().GetProgramme(day, hour)

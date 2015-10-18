@@ -359,7 +359,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			Local addWidth:Int = GetSpriteFromRegistry("pp_programmeblock1").area.GetW()
 			Local addHeight:Int = GetSpriteFromRegistry("pp_adblock1").area.GetH()
 
-			Local currentLicence:TProgrammeLicence = playerCollection.GetMovieLicenceAtIndex(0)
+			Local currentLicence:TProgrammeLicence = playerCollection.GetSingleLicenceAtIndex(0)
 			if currentLicence
 				Local currentHour:Int = 0
 

@@ -803,6 +803,7 @@ endrem
 		If day = -1 Then day = GetWorldTime().GetDay()
 		If hour = -1 Then hour = GetWorldTime().getDayHour()
 
+	
 		'check all slots the obj will occupy...
 		For Local i:Int = 0 To obj.GetBlocks() - 1
 			'... and if there is already an object, return the information

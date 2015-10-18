@@ -704,7 +704,7 @@ Type TDatabaseLoader
 			endif
 
 			'member now is capable of doing this job
-			member.AddJob(memberFunction)
+			member.SetJob(memberFunction)
 			'add cast
 			programmeData.AddCast(new TProgrammePersonJob.Init(memberGUID, memberFunction))
 		Next
@@ -1320,7 +1320,7 @@ endif
 				person.SetFirstName(firstName)
 				person.SetLastName(lastName)
 			endif
-			person.AddJob(job)
+			person.SetJob(job)
 
 			'add person
 			personArray :+ [person]

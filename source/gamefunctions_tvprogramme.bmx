@@ -1356,9 +1356,12 @@ endrem
 						If mode = MODE_PROGRAMMEPLANNER
 							If licences[i].isSingle()
 								'create and drag new block
-								New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( New TProgramme.Create(licences[i]), "programmePlanner" ).drag()
-								SetOpen(0)
-								doneSomething = True
+								local programme:TProgramme = TProgramme.Create(licences[i])
+								if programme
+									New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( programme, "programmePlanner" ).drag()
+									SetOpen(0)
+									doneSomething = True
+								endif
 							Else
 								'set the hoveredParentalLicence so the episodes-list is drawn
 								hoveredParentalLicence = licences[i]

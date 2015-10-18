@@ -70,6 +70,16 @@ Type TProgrammePersonBaseCollection
 	End Method
 
 
+	'useful to fetch a random "amateur" (aka "layman")
+	Method GetRandomInsignificant:TProgrammePersonBase(array:TProgrammePersonBase[] = null, onlyFictional:int = False)
+		if array = Null or array.length = 0 then array = GetAllInsignificantAsArray(onlyFictional)
+		If array.length = 0 Then Return Null
+
+		'randRange - so it is the same over network
+		Return array[(randRange(0, array.length-1))]
+	End Method
+	
+
 	Method GetRandomCelebrity:TProgrammePersonBase(array:TProgrammePersonBase[] = null, onlyFictional:int = False)
 		if array = Null or array.length = 0 then array = GetAllCelebritiesAsArray(onlyFictional)
 		If array.length = 0 Then Return Null
@@ -78,6 +88,17 @@ Type TProgrammePersonBaseCollection
 		Return array[(randRange(0, array.length-1))]
 	End Method
 
+
+	Method GetAllInsignificantAsArray:TProgrammePersonBase[](onlyFictional:int = False)
+		local array:TProgrammePersonBase[]
+		'create a full array containing all elements
+		For local obj:TProgrammePersonBase = EachIn insignificant.Values()
+			if onlyFictional and not obj.fictional then continue
+			array :+ [obj]
+		Next
+		return array
+	End Method
+	
 
 	Method GetAllCelebritiesAsArray:TProgrammePersonBase[](onlyFictional:int = False)
 		local array:TProgrammePersonBase[]
@@ -212,6 +233,20 @@ Type TProgrammePersonBase extends TGameObject
 		if vars.length > 8 then id = int(vars[8])
 		if vars.length > 9 then GUID = StringHelper.UnEscapeString(vars[9])
 	End Method
+
+
+	Method Compare:Int(o2:Object)
+		Local p2:TProgrammePersonBase = TProgrammePersonBase(o2)
+		If Not p2 Then Return 1
+		if GetFullName() = p2.GetFullName() 
+			if GetAge() > p2.GetAge() then return 1
+			if GetAge() < p2.GetAge() then return -1
+			return 0
+		endif
+        if GetFullName().ToLower() > p2.GetFullName().ToLower() return 1
+        if GetFullName().ToLower() < p2.GetFullName().ToLower() return -1
+        return 0
+	End Method
 	
 
 	Method GetTopGenre:Int()
@@ -220,12 +255,12 @@ Type TProgrammePersonBase extends TGameObject
 	End Method
 
 
-	Method AddJob:int(job:int)
-		'already done?
-		if self.job & job then return FALSE
-
-		'add job
-		self.job :| job
+	Method SetJob(job:Int, enable:Int=True)
+		If enable
+			self.job :| job
+		Else
+			self.job :& ~job
+		EndIf
 	End Method
 
 

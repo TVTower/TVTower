@@ -811,46 +811,46 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 	
 	Method IsLive:int()
-		return HasFlag(TVTProgrammeDataFlag.LIVE)
+		return HasFlag(TVTProgrammeDataFlag.LIVE) > 0
 	End Method
 	
 	
 	Method IsAnimation:Int()
-		return HasFlag(TVTProgrammeDataFlag.ANIMATION)
+		return HasFlag(TVTProgrammeDataFlag.ANIMATION) > 0
 	End Method
 	
 	
 	Method IsCulture:Int()
-		return HasFlag(TVTProgrammeDataFlag.CULTURE)
+		return HasFlag(TVTProgrammeDataFlag.CULTURE) > 0
 	End Method	
 		
 	
 	Method IsCult:Int()
-		return HasFlag(TVTProgrammeDataFlag.CULT)
+		return HasFlag(TVTProgrammeDataFlag.CULT) > 0
 	End Method
 	
 	
 	Method IsTrash:Int()
-		return HasFlag(TVTProgrammeDataFlag.TRASH)
+		return HasFlag(TVTProgrammeDataFlag.TRASH) > 0
 	End Method
 	
 	Method IsBMovie:Int()
-		return HasFlag(TVTProgrammeDataFlag.BMOVIE)
+		return HasFlag(TVTProgrammeDataFlag.BMOVIE) > 0
 	End Method
 	
 	
 	Method IsXRated:int()
-		return HasFlag(TVTProgrammeDataFlag.XRATED)
+		return HasFlag(TVTProgrammeDataFlag.XRATED) > 0
 	End Method
 
 
 	Method IsPaid:int()
-		return HasFlag(TVTProgrammeDataFlag.PAID)
+		return HasFlag(TVTProgrammeDataFlag.PAID) > 0
 	End Method
 
 
 	Method IsScripted:int()
-		return HasFlag(TVTProgrammeDataFlag.SCRIPTED)
+		return HasFlag(TVTProgrammeDataFlag.SCRIPTED) > 0
 	End Method
 
 

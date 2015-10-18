@@ -1454,6 +1454,7 @@ Type TProgrammeLicenceFilter
 	Field relativeTopicalityMin:Float = -1.0
 	Field relativeTopicalityMax:Float = -1.0
 	Field licenceTypes:int[]
+	Field forbiddenLicenceTypes:int[]
 	Field requiredOwners:int[]
 	Field forbiddenOwners:int[]
 	Field priceMin:int = -1
@@ -1556,6 +1557,7 @@ Type TProgrammeLicenceFilter
 	Function CreateVisible:TProgrammeLicenceFilter()
 		local obj:TProgrammeLicenceFilter = new TProgrammeLicenceFilter
 		obj.displayInMenu = True
+		obj.forbiddenLicenceTypes :+ [TVTProgrammeLicenceType.EPISODE]
 
 		'add to list
 		Add(obj)
@@ -1770,6 +1772,14 @@ Type TProgrammeLicenceFilter
 			if not hasType then return False
 		endif
 
+		'check if licencetype is one of the forbidden types
+		'if so, filter fails
+		if forbiddenLicenceTypes.length > 0
+			for local licenceType:int = eachin forbiddenLicenceTypes
+				if licenceType = licence.licenceType then return False
+			Next
+		endif
+		
 		'check if owner is one of the owners required for the filter
 		'if not, filter failed
 		if requiredOwners.length > 0
