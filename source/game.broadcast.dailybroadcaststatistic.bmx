@@ -34,14 +34,18 @@ Type TDailyBroadcastStatisticCollection
 		'adjust the earliest day to show
 		minShowDay = day
 
-		local removed:int = 0
+		'avoid concurrent map modification (remove while iterating)
+		'and store to-remove-objects in an extra array
+		local removed:string[]
 		For local key:string = Eachin statistics.Keys()
-			if int(key) < day
-				statistics.Remove(key)
-				removed :+ 1
-			endif
+			if int(key) < day then removed :+ [key]
 		Next
-		return removed
+
+		For local key:string = EachIn removed
+			statistics.Remove(key)
+		Next
+		
+		return removed.length
 	End Method
 
 

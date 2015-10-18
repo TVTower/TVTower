@@ -446,7 +446,7 @@ endrem
 		UpdateState_mouseButtonDown = MOUSEMANAGER.GetAllStatusDown()
 		UpdateState_mouseButtonHit = MOUSEMANAGER.GetAllStatusHit() 'single and double clicks!
 
-		UpdateState_foundFocusObject = false
+		UpdateState_foundFocusObject = False
 		UpdateState_foundHitObject = False
 		UpdateState_foundHoverObject = False
 	End Method
@@ -474,8 +474,6 @@ endrem
 		'if _lastUpdateTick >= 100000 then _lastUpdateTick = 0
 
 		currentState = State
-
-		UpdateState_mouseScrollwheelMovement = MOUSEMANAGER.GetScrollwheelmovement()
 
 		'store a list of special elements - maybe the list gets changed
 		'during update... some elements will get added/destroyed...

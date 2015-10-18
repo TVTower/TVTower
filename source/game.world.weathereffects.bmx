@@ -292,11 +292,16 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 		If not IsActive() then return False
 
 		local lifetime:Float
+		local removed:TData[]
 		For local lightning:TData = EachIn lightnings
 			lifetime = lightning.GetFloat("lifetime", 0) - GetDeltaTimer().GetDelta()
-			if lifetime < 0 then lightnings.Remove(lightning)
+			if lifetime < 0 then removed :+ [lightning]
 
 			lightning.AddNumber("lifetime", lifetime) 			
+		Next
+
+		For local d:TData = Eachin removed
+			lightnings.Remove(d)
 		Next
 
 		'add a new lightning if time is near
@@ -454,10 +459,12 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 		local lifetime:Float
 		local pos:TVec2D
 		local vel:TVec2D
+		local removed:TData[]
+
 		For local flake:TData = EachIn flakes
 			lifetime = flake.GetFloat("lifetime", 0) - GetDeltaTimer().GetDelta()
-			if lifetime < 0 then flakes.Remove(flake)
-
+			if lifetime < 0 then removed :+ [flake];continue
+			
 			vel = TVec2D(flake.Get("velocity", new TVec2D))
 			pos = TVec2D(flake.Get("position", new TVec2D))
 			flake.Add("oldPosition", pos.copy())	
@@ -472,6 +479,10 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 
 			flake.Add("position", pos) 			
 			flake.AddNumber("lifetime", lifetime) 			
+		Next
+
+		For local d:TData = Eachin removed
+			flakes.Remove(d)
 		Next
 
 		'add a new flake if time is near
