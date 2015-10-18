@@ -99,7 +99,7 @@ function TaskSchedule:GetMovieOrInfomercialForBlock(day, hour)
 	local licenceList = nil
 	local choosenLicence = nil
 	
-	licenceList = self.EmergencyScheduleJob:GetFilteredProgrammeLicenceList(level, level, 0, fixedDay)		
+	licenceList = self.EmergencyScheduleJob:GetFilteredProgrammeLicenceList(level, level, 0, fixedDay, fixedHour)		
 	--Bedarf erhöhen
 
 	--use worse programmes if you cannot choose from a big pool
@@ -107,23 +107,23 @@ function TaskSchedule:GetMovieOrInfomercialForBlock(day, hour)
 		level = level + 2
 	end
 	
-	if (table.count(licenceList) == 0) then licenceList = self.EmergencyScheduleJob:GetFilteredProgrammeLicenceList(level, 1, 0, fixedDay) end	
+	if (table.count(licenceList) == 0) then licenceList = self.EmergencyScheduleJob:GetFilteredProgrammeLicenceList(level, 1, 0, fixedDay, fixedHour) end	
 	if level <= 3 and (table.count(licenceList) == 0) then licenceList = self:GetInfomercialLicenceList(0, fixedDay) end
-	if (table.count(licenceList) == 0) then licenceList = self.EmergencyScheduleJob:GetFilteredProgrammeLicenceList(level+1, 1, 1, fixedDay) end
+	if (table.count(licenceList) == 0) then licenceList = self.EmergencyScheduleJob:GetFilteredProgrammeLicenceList(level+1, 1, 1, fixedDay, fixedHour) end
 	if level <= 3 and (table.count(licenceList) == 0) then licenceList = self:GetInfomercialLicenceList(1, fixedDay) end	
-	if (table.count(licenceList) == 0) then licenceList = self.EmergencyScheduleJob:GetFilteredProgrammeLicenceList(level+1, 1, 2, fixedDay) end
+	if (table.count(licenceList) == 0) then licenceList = self.EmergencyScheduleJob:GetFilteredProgrammeLicenceList(level+1, 1, 2, fixedDay, fixedHour) end
 	if level <= 3 and (table.count(licenceList) == 0) then licenceList = self:GetInfomercialLicenceList(2, fixedDay) end
 	if level <= 4 and (table.count(licenceList) == 0) then licenceList = self:GetInfomercialLicenceList(1, fixedDay) end
 	if level <= 4 and (table.count(licenceList) == 0) then licenceList = self:GetInfomercialLicenceList(2, fixedDay) end
 	
-	if (table.count(licenceList) == 0) then licenceList = self.EmergencyScheduleJob:GetFilteredProgrammeLicenceList(level+1, 1, 3, fixedDay) end
-	if (table.count(licenceList) == 0) then licenceList = self.EmergencyScheduleJob:GetFilteredProgrammeLicenceList(level+2, 1, 3, fixedDay) end
+	if (table.count(licenceList) == 0) then licenceList = self.EmergencyScheduleJob:GetFilteredProgrammeLicenceList(level+1, 1, 3, fixedDay, fixedHour) end
+	if (table.count(licenceList) == 0) then licenceList = self.EmergencyScheduleJob:GetFilteredProgrammeLicenceList(level+2, 1, 3, fixedDay, fixedHour) end
 	if TVT.of_getProgrammeLicenceCount() < 4 then
-		if (table.count(licenceList) == 0) then licenceList = self.EmergencyScheduleJob:GetFilteredProgrammeLicenceList(level+1, 1, 5, fixedDay) end
+		if (table.count(licenceList) == 0) then licenceList = self.EmergencyScheduleJob:GetFilteredProgrammeLicenceList(level+1, 1, 5, fixedDay, fixedHour) end
 	end
-	if (table.count(licenceList) == 0) then licenceList = self.EmergencyScheduleJob:GetFilteredProgrammeLicenceList(level+2, 1, 1, fixedDay) end
+	if (table.count(licenceList) == 0) then licenceList = self.EmergencyScheduleJob:GetFilteredProgrammeLicenceList(level+2, 1, 1, fixedDay, fixedHour) end
 	if TVT.of_getProgrammeLicenceCount() < 4 then
-		if (table.count(licenceList) == 0) then licenceList = self.EmergencyScheduleJob:GetFilteredProgrammeLicenceList(level+2, 1, 6, fixedDay) end
+		if (table.count(licenceList) == 0) then licenceList = self.EmergencyScheduleJob:GetFilteredProgrammeLicenceList(level+2, 1, 6, fixedDay, fixedHour) end
 	end
 
 
@@ -623,9 +623,9 @@ function JobEmergencySchedule:SetMovieOrInfomercialToEmptyBlock(day, hour)
 end
 
 
-function JobEmergencySchedule:GetFilteredProgrammeLicenceList(maxLevel, level, maxRerunsToday, day)
+function JobEmergencySchedule:GetFilteredProgrammeLicenceList(maxLevel, level, maxRerunsToday, day, hour)
 	for i = maxLevel,level,-1 do
-		programmeList = self:GetProgrammeLicenceList(i, maxRerunsToday, day)
+		programmeList = self:GetProgrammeLicenceList(i, maxRerunsToday, day, hour)
 		if (table.count(programmeList) > 0) then
 	--		debugMsg("GetFilteredProgrammeLicenceList: maxLevel: " .. maxLevel .. "   level: " .. level .. "   maxRerunsToday: " .. maxRerunsToday .. " currLevel: " .. i)
 			break
@@ -634,23 +634,18 @@ function JobEmergencySchedule:GetFilteredProgrammeLicenceList(maxLevel, level, m
 	return programmeList
 end
 
-function JobEmergencySchedule:GetProgrammeLicenceList(level, maxRerunsToday, day)
+function JobEmergencySchedule:GetProgrammeLicenceList(level, maxRerunsToday, day, hour)
 	local allLicences = {}
 	local useableLicences = {}
 
 	for i=0,MY.GetProgrammeCollection().GetProgrammeLicenceCount()-1 do
 		local licence = MY.GetProgrammeCollection().GetProgrammeLicenceAtIndex(i)
 		if (licence ~= nil) then
-			-- add the single licence
+			-- add the single licences, ignore collection/series headers
 			if ( licence.GetSubLicenceCount() == 0 ) then
-				table.insert(allLicences, licence)
-			-- add all sub licences (series / collection-headers)
-			else
-				for num=0, licence.GetSubLicenceCount()-1 do
-					local subLicence = licence.GetSubLicenceAtIndex(num)
-					if ( subLicence ~= nil ) then
-						table.insert(allLicences, subLicence)
-					end
+				-- skip xrated programme during daytime
+				if (hour >= 22 or hour + licence.GetBlocks() <= 5 or licence.GetData().IsXRated() == 0) then
+					table.insert(allLicences, licence)
 				end
 			end
 		end
@@ -937,7 +932,7 @@ function JobSchedule:OptimizeAdSchedule()
 				if (table.count(upcomingProgrammesLicences) == 0) then
 					-- nothing found: use a random one (if possible)
 					if TVT.of_getAdContractCount() > 0 then
-						upcomingProgrammesLicences = { TVT.of_getProgrammeLicenceAtIndex( math.random(0, TVT.of_getAdContractCount()-1) ) }
+						upcomingProgrammesLicences = { TVT.of_getProgrammeLicenceAtIndex( math.random(0, TVT.of_getProgrammeLicenceCount()-1) ) }
 					end
 				end
 
