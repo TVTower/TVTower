@@ -72,7 +72,7 @@ function TaskNewsAgency:BeforeBudgetSetup()
 end
 
 function TaskNewsAgency:BudgetSetup()
-	local tempAbonnementBudget = self.BudgetWholeDay * 0.55
+	local tempAbonnementBudget = self.BudgetWholeDay * 0.45
 	self.AbonnementBudget = (tempAbonnementBudget - (tempAbonnementBudget % 10000))
 	self.CurrentBudget = self.CurrentBudget - self.AbonnementBudget
 	debugMsg("BudgetSetup: AbonnementBudget: " .. self.AbonnementBudget .. "   - CurrentBudget: " .. self.CurrentBudget)

@@ -17,13 +17,13 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	'factor by what a programmes topicality DECREASES by sending it
 	'(with whole audience, so 100%, watching)
 	'ex.: 0.9 = 10% cut, 0.85 = 15% cut
-	Field wearoffFactor:float = 0.85
+	Field wearoffFactor:float = 0.50
 	'factor by what a programmes topicality INCREASES by a day switch
 	'ex.: 1.0 = 0%, 1.5 = add 50%y
 	Field refreshFactor:float = 1.5
 
 	'factor by what a trailer topicality DECREASES by sending it
-	Field trailerWearoffFactor:float = 0.85
+	Field trailerWearoffFactor:float = 0.70
 	'factor by what a trailer topicality INCREASES by broadcasting
 	'the programme
 	Field trailerRefreshFactor:float = 1.5

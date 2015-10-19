@@ -927,6 +927,15 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	'get the relative reach increase of that station
+	Method getRelativeReachIncrease:Int(refresh:Int=False) {_exposeToLua}
+		local r:float = getReach(refresh)
+		if r = 0 then return 0
+
+		Return getReachIncrease(refresh) / r
+	End Method
+
+
 	Method getReachIncrease:Int(refresh:Int=False) {_exposeToLua}
 		If reachIncrease >= 0 And Not refresh Then Return reachIncrease
 

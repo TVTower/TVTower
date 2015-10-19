@@ -191,6 +191,9 @@ Type TLogFile
 		obj.filename = filename
 		obj.immediateWrite = immediateWrite
 
+		'create the file ("renew" it)
+		CreateFile(filename)
+
 		TLogfile.logs.addLast(obj)
 
 		return obj

@@ -1249,7 +1249,7 @@ print "TGameState.Initialize(): Reinitialize all game objects"
 		GetWorld().Initialize()
 		GetGame().Initialize()
 
-		GetPlayerProgrammeCollectionCollection().InitializeAll()
+		GetPlayerProgrammeCollectionCollection().Initialize()
 		GetPlayerProgrammePlanCollection().InitializeAll()
 		GetPlayerCollection().Initialize()
 		GetPlayerFinanceCollection().Initialize()

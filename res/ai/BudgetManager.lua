@@ -10,7 +10,8 @@ _G["BudgetManager"] = class(KIDataObjekt, function(c)
 	c.BudgetHistory = {} -- Die Budgets der letzten Tage
 	c.AccountBalanceHistory = {} -- Die Kontostaende der letzten Tage
 	c.InvestmentSavings = 0 -- Geld das für Investitionen angespart wird.
-
+	-- budget at the time of last call to "UpdateBudget"
+	c.BudgetOnLastUpdateBudget = 0
 
 	
 	c:ResetDefaults()
@@ -103,6 +104,8 @@ function BudgetManager:UpdateBudget(pBudget)
 	
 	-- Das Budget auf die Tasks verteilen
 	self:AllocateBudgetToTasks(pBudget)
+
+	self.BudgetOnLastUpdateBudget = pBudget
 end
 
 
@@ -172,7 +175,7 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 	for k,v in pairs(player.TaskList) do
 		v.CurrentBudget = math.round(v.BudgetWeight * budgetUnitValue)
 		if v.BudgetMaximum() >= 0 then
-	--		v.CurrentBudget = math.min(v.CurrentBudget, v.BudgetMaximum())
+			v.CurrentBudget = math.min(v.CurrentBudget, v.BudgetMaximum())
 		end
 		v.BudgetWholeDay = v.CurrentBudget							
 	end	
@@ -242,6 +245,7 @@ function BudgetManager:IsTaskReadyForInvestment(task, rank, highestPrioTask)
 	return false
 end
 
+
 function BudgetManager:OnMoneyChanged(value, reason, reference)
 	if (reference ~= nil) then
 		TVT.addToLog("$$ Ueberweisung: " .. value .. " fuer " .. reason .. ": " .. reference:GetTitle())	
@@ -259,14 +263,20 @@ function BudgetManager:OnMoneyChanged(value, reason, reference)
 
 
 	if renewBudget == true then
-		local todaysProfit = MY.GetFinance(-1).GetCurrentProfit()
+		-- do not allow a negative profit
+		local todaysProfit = math.max(0, MY.GetFinance(-1).GetCurrentProfit())
+		local budgetNow = self:CalculateAverageBudget(MY.GetMoney(), todaysProfit)
 
-		--local budgetNow = self:CalculateAverageBudget(MY.GetMoney(), todaysProfit)
+		--update budget when at least 15.000 Euro difference since last
+		--adjustment
+		if math.abs(self.BudgetOnLastUpdateBudget - budgetNow) > 15000 then
+			--TVT.addToLog("Profit heute: " .. todaysProfit)
+			--TVT.addToLog("budget jetzt: " .. budgetNow)
+			--self:UpdateBudget(todaysProfit)
+			self:UpdateBudget(budgetNow)
 
-		TVT.addToLog("Profit heute: " .. todaysProfit)
-		--TVT.addToLog("budget jetzt: " .. budgetNow)
-		self:UpdateBudget(todaysProfit)
-		--self:UpdateBudget(budgetNow)
+			self.BudgetOnLastUpdateBudget = budgetNow
+		end
 	end
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

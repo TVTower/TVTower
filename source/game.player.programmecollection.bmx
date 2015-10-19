@@ -18,6 +18,7 @@ Import "game.production.shoppinglist.bmx"
 Type TPlayerProgrammeCollectionCollection
 	Field plans:TPlayerProgrammeCollection[]
 	Global _instance:TPlayerProgrammeCollectionCollection
+	Global _eventListeners:TLink[0]
 
 
 	Function GetInstance:TPlayerProgrammeCollectionCollection()
@@ -44,7 +45,30 @@ Type TPlayerProgrammeCollectionCollection
 			obj.Initialize()
 		Next
 	End Method
+
+
+	Method Initialize:int()
+		InitializeAll()
+
+
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
+		'=== register event listeners
+		'informing _old_ instances of the various roomhandlers
+		_eventListeners :+ [ EventManager.registerListenerFunction( "SaveGame.OnLoad", onSaveGameLoad ) ]
+	End Method
+
+
+	Function onSaveGameLoad:int( triggerEvent:TEventBase )
+		'invalidate caches
+		For local obj:TPlayerProgrammeCollection = eachin GetInstance().plans
+			obj._programmeLicences = null
+		Next
+	End Function
 End Type
+
 
 '===== CONVENIENCE ACCESSOR =====
 'return collection instance
@@ -63,7 +87,7 @@ End Function
 Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected"}
 	'containing all broadcastable licences (movies, episodes and collection
 	'entries)
-	Field programmeLicences:TList = CreateList() {nosave}
+	Field _programmeLicences:TList = CreateList() {nosave}
 
 	Field singleLicences:TList = CreateList()
 	Field seriesLicences:TList = CreateList()
@@ -96,7 +120,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	Method Initialize:Int()
 		'invalidate
-		programmeLicences = null
+		_programmeLicences = null
 		
 		singleLicences.Clear()
 		seriesLicences.Clear()
@@ -119,7 +143,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	'invalidate cache (new episodes added to series)
 	Method onFinishProgrammeProduction:int( triggerEvent:TEventBase )
 		'invalidate
-		programmeLicences = null
+		_programmeLicences = null
 	End Method
 	
 
@@ -302,7 +326,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		collectionLicences.remove(programmeLicence)
 
 		'invalidate
-		programmeLicences = null
+		_programmeLicences = null
 
 		suitcaseProgrammeLicences.AddLast(programmeLicence)
 
@@ -326,7 +350,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		if licence.isCollection() then collectionLicences.AddLast(licence)
 
 		'invalidate
-		programmeLicences = null
+		_programmeLicences = null
 		
 		justAddedProgrammeLicences.AddLast(licence)
 
@@ -354,7 +378,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		justAddedProgrammeLicences.Remove(licence)
 
 		'invalidate
-		programmeLicences = null
+		_programmeLicences = null
 
 		'set unused again (give back to pool)
 		licence.SetOwner( TOwnedGameObject.OWNER_NOBODY )
@@ -366,7 +390,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	Method AddProgrammeLicence:Int(licence:TProgrammeLicence, buy:int=FALSE)
 		If not licence then return FALSE
-		'do not allow adding of episodes (should get removed via header)
+		'do not allow adding of episodes / collection-elements
+		'(should get removed via header)
 		If licence.parentLicenceGUID then return False
 
 		'if owner differs, check if we have to buy or got that gifted
@@ -386,7 +411,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		if licence.isCollection() then collectionLicences.AddLast(licence)
 
 		'invalidate
-		programmeLicences = null
+		_programmeLicences = null
 
 		justAddedProgrammeLicences.AddLast(licence)
 
@@ -884,26 +909,28 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 
 	Method GetProgrammeLicences:TList() {_exposeToLua}
-		if not programmeLicences
-			programmeLicences = CreateList()
+		if not _programmeLicences
+			_programmeLicences = CreateList()
 			local lists:TList[] = [singleLicences, seriesLicences, collectionLicences]
+
 			For local list:TList = EachIn lists
 				For local l:TProgrammeLicence = EachIn list
 					'add single elements (movies, documentations)
 					if l.GetSubLicenceCount() = 0
+						_programmeLicences.AddLast(l)
 					'add episodes
 					else
 						'add header of series/collection too!
-						programmeLicences.AddLast(l)
-						
+						_programmeLicences.AddLast(l)
+
 						For local subL:TProgrammeLicence = EachIn l.subLicences
-							programmeLicences.AddLast(subL)
+							_programmeLicences.AddLast(subL)
 						Next
 					endif
 				Next
 			Next
 		endif
-		return programmeLicences
+		return _programmeLicences
 	End Method
 
 

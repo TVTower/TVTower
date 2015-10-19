@@ -127,11 +127,16 @@ function JobBuyStation:Tick()
 		--1) price to high
 		elseif tempStation.getPrice() > self.Task.CurrentBudget then
 			tempStation = nil
-		--2) increase to low
-		elseif tempStation.getReachIncrease() < 7500 then
+		--2) relative increase to low (at least 20% required)
+		elseif tempStation.getRelativeReachIncrease() < 0.25 then
 			tempStation = nil
-		--3)  reach to low
-		elseif tempStation.getReach() < 1000 then
+
+		--3) absolute increase too low
+		--elseif tempStation.getReachIncrease() < 1500 then
+		--	tempStation = nil
+
+		--4)  reach to low (at least 40.000 required)
+		elseif tempStation.getReach() < 40000 then
 			tempStation = nil
 		end
 
