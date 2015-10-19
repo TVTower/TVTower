@@ -1455,6 +1455,7 @@ Type TProgrammeLicenceFilter
 	Field relativeTopicalityMax:Float = -1.0
 	Field licenceTypes:int[]
 	Field forbiddenLicenceTypes:int[]
+	Field childrenForbidden:int = False
 	Field requiredOwners:int[]
 	Field forbiddenOwners:int[]
 	Field priceMin:int = -1
@@ -1511,8 +1512,8 @@ Type TProgrammeLicenceFilter
 		trash.SetConnectionType(TProgrammeLicenceFilterGroup.CONNECTION_TYPE_OR)
 		'store config in group for proper caption
 		trash.AddDataFlag(TVTProgrammeDataFlag.TRASH).AddGenres([301])
-		trash.AddFilter( new TProgrammeLicenceFilter.AddDataFlag(TVTProgrammeDataFlag.TRASH) )
-		trash.AddFilter( new TProgrammeLicenceFilter.AddGenres([301]) )
+		trash.AddFilter( new TProgrammeLicenceFilter.AddDataFlag(TVTProgrammeDataFlag.TRASH).ForbidChildren())
+		trash.AddFilter( new TProgrammeLicenceFilter.AddGenres([301]).ForbidChildren() )
 
 		CreateVisible().AddDataFlag(TVTProgrammeDataFlag.PAID)						'Call-In
 	End Function
@@ -1522,27 +1523,29 @@ Type TProgrammeLicenceFilter
 		caption = otherFilter.caption
 		dataFlags = otherFilter.dataFlags
 		notDataFlags = otherFilter.notDataFlags
-		'flags = otherFilter.flags
-		'notFlags = otherFilter.notFlags
 		for local i:int = EachIn otherFilter.genres
 			genres :+ [i]
 		Next
+		licenceTypes = otherFilter.licenceTypes[.. otherFilter.licenceTypes.length]
+		forbiddenLicenceTypes = otherFilter.forbiddenLicenceTypes[.. otherFilter.forbiddenLicenceTypes.length]
 		requiredOwners = otherFilter.requiredOwners[.. otherFilter.requiredOwners.length]
 		forbiddenOwners = otherFilter.forbiddenOwners[.. otherFilter.forbiddenOwners.length]
 		qualityMin = otherFilter.qualityMin
 		qualityMax = otherFilter.qualityMin
 		relativeTopicalityMin = otherFilter.relativeTopicalityMin
 		relativeTopicalityMax = otherFilter.relativeTopicalityMax
-		for local i:int = EachIn otherFilter.licenceTypes
-			licenceTypes :+ [i]
-		Next
+		'for local i:int = EachIn otherFilter.licenceTypes
+		'	licenceTypes :+ [i]
+		'Next
 		priceMin = otherFilter.priceMin
 		priceMax = otherFilter.priceMax
 		releaseTimeMin = otherFilter.releaseTimeMin
 		releaseTimeMax = otherFilter.releaseTimeMax
 		ageMin = otherFilter.ageMin
 		ageMax = otherFilter.ageMax
+		childrenForbidden = otherFilter.childrenForbidden
 		displayInMenu = otherFilter.displayInMenu
+
 		return self
 	End Method
 
@@ -1557,7 +1560,8 @@ Type TProgrammeLicenceFilter
 	Function CreateVisible:TProgrammeLicenceFilter()
 		local obj:TProgrammeLicenceFilter = new TProgrammeLicenceFilter
 		obj.displayInMenu = True
-		obj.forbiddenLicenceTypes :+ [TVTProgrammeLicenceType.EPISODE]
+		'obj.SetForbiddenLicenceTypes( [TVTProgrammeLicenceType.EPISODE] )
+		obj.ForbidChildren()
 
 		'add to list
 		Add(obj)
@@ -1678,6 +1682,12 @@ Type TProgrammeLicenceFilter
 
 		return "filter["+id+"]  genres=~q"+g+"~q  dataflags="+dataFlags
 	End Method
+
+
+	Method ForbidChildren:TProgrammeLicenceFilter(bool:int=True)
+		childrenForbidden = bool
+		return self
+	End Method
 	
 
 	Method AddGenres:TProgrammeLicenceFilter(newGenres:int[])
@@ -1711,13 +1721,27 @@ Type TProgrammeLicenceFilter
 	End Method
 
 
-	Method SetForbiddenOwners:int(owners:int[])
+	Method SetForbiddenOwners:TProgrammeLicenceFilter(owners:int[])
 		forbiddenOwners = owners[ .. owners.length]
+		return self
 	End Method
 
 
-	Method SetRequiredOwners:int(owners:int[])
+	Method SetRequiredOwners:TProgrammeLicenceFilter(owners:int[])
 		requiredOwners = owners[ .. owners.length]
+		return self
+	End Method
+
+
+	Method SetForbiddenLicenceTypes:TProgrammeLicenceFilter(types:int[])
+		forbiddenLicenceTypes = types[ .. types.length]
+		return self
+	End Method
+
+
+	Method SetLicenceTypes:TProgrammeLicenceFilter(types:int[])
+		licenceTypes = types[ .. types.length]
+		return self
 	End Method
 
 
@@ -1729,6 +1753,8 @@ Type TProgrammeLicenceFilter
 		if not licence then return False
 
 		if checkAvailability and not licence.isAvailable() then return False
+
+		if childrenForbidden and licence.parentLicenceGUID then return False
 		
 		'check flags filter does NOT care for
 		if notDataFlags > 0 and (licence.GetDataFlags() & notDataFlags) > 0 then return False
@@ -1772,7 +1798,7 @@ Type TProgrammeLicenceFilter
 			if not hasType then return False
 		endif
 
-		'check if licencetype is one of the forbidden types
+		'check if licenceType is one of the forbidden types
 		'if so, filter fails
 		if forbiddenLicenceTypes.length > 0
 			for local licenceType:int = eachin forbiddenLicenceTypes

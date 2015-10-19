@@ -1195,6 +1195,8 @@ endrem
 		Local programmeCollection:TPlayerProgrammeCollection = owner.GetProgrammeCollection()
 		Local filter:TProgrammeLicenceFilter = TProgrammeLicenceFilter.GetAtIndex(filterIndex)
 		Local licences:TProgrammeLicence[] = programmeCollection.GetLicencesByFilter(filter)
+print "forbidden: " + filter.forbiddenLicenceTypes.length
+print licences.length
 		'draw slots, even if empty
 		For Local i:Int = 0 Until GameRules.maxProgrammeLicencesPerFilter
 			Local entryPositionType:String = "entry"

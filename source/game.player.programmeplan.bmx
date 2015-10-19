@@ -779,7 +779,7 @@ endrem
 			If i + removeCurrentRunning * obj.GetBlocks() > currentIndex
 				For Local j:Int = 0 To obj.GetBlocks()-1
 					'method a) removeObject - emits events for each removed item
-					RemoveObject(Null, slotType, 0, GetHourFromArrayIndex(i+j))
+					RemoveObject(Null, slotType, 0, GetHourFromArrayIndex(i+j), not removeCurrentRunning)
 					'method b) just clear the array at the given index
 					'SetObjectArrayEntry(null, slotType, GetHourFromArrayIndex(i+j))
 				Next
@@ -883,6 +883,17 @@ endrem
 
 	'clear a slot so others can get placed without trouble
 	Method RemoveProgramme:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1) {_exposeToLua}
+		return _RemoveProgramme(obj, day, hour)
+	End Method
+
+
+	Method ForceRemoveProgramme:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1) {_exposeToLua}
+		return _RemoveProgramme(obj, day, hour, True)
+	End Method
+	
+
+	'clear a slot so others can get placed without trouble
+	Method _RemoveProgramme:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1, forceRemove:int=False) 
 		If Not obj Then obj = GetObject(TVTBroadcastMaterialType.PROGRAMME, day, hour)
 		'if alread not set for that time, just return success
 		If Not obj.isProgrammed() Then Return True
@@ -895,7 +906,7 @@ endrem
 			Local programmedHour:Int = obj.programmedHour
 
 			'try to remove the object from the array
-			Return (Null <> RemoveObject(obj, TVTBroadcastMaterialType.PROGRAMME, day, hour))
+			Return (Null <> RemoveObject(obj, TVTBroadcastMaterialType.PROGRAMME, day, hour, not forceRemove))
 		EndIf
 		Return False
 	End Method

@@ -169,6 +169,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			local licence:TProgrammeLicence = TProgrammeLicence(materialSource)
 			'stop if we do not own this licence
 			if not HasProgrammeLicence(licence) then Return Null
+			'do not allow broadcast of an "header"
+			'TODO: check possibility for "series trailer"
+			if licence.GetSubLicenceCount() > 0 then Return Null
 
 			'set broadcast material
 			broadcastMaterial = TProgramme.Create(licence)
@@ -648,9 +651,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	'=== GETTERS ===
 
-	Method GetRandomProgrammeLicence:TProgrammeLicence(serie:Int = 0) {_exposeToLua}
-		If serie Then Return Self.GetRandomSerieLicence()
-		Return Self.GetRandomSingleLicence()
+	Method GetRandomProgrammeLicence:TProgrammeLicence() {_exposeToLua}
+		if GetProgrammeLicenceCount() = 0 then return NULL
+		Return TProgrammeLicence(GetProgrammeLicences().ValueAtIndex(rand(0, GetProgrammeLicences().Count() - 1)))
 	End Method
 
 
@@ -729,13 +732,14 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	Method GetLicencesByFilter:TProgrammeLicence[](filter:TProgrammeLicenceFilter)
 		local result:TProgrammeLicence[]
-		local lists:TList[] = [GetProgrammeLicences(), GetSeriesLicences(), GetCollectionLicences()]
-		For local l:TList = EachIn lists
-			For local licence:TProgrammeLicence = EachIn l
+'		local lists:TList[] = [GetProgrammeLicences(), GetSeriesLicences(), GetCollectionLicences()]
+'		For local l:TList = EachIn lists
+'			For local licence:TProgrammeLicence = EachIn l
+			For local licence:TProgrammeLicence = EachIn GetProgrammeLicences()
 				'add to result set
 				if filter.DoesFilter(licence) then result :+ [licence]
 			Next
-		Next
+'		Next
 		return result
 	End Method
 
@@ -792,7 +796,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	
 	Method HasProgrammeLicence:int(licence:TProgrammeLicence) {_exposeToLua}
-		return programmeLicences.contains(licence)
+		return GetProgrammeLicences().contains(licence)
 	End Method
 
 
@@ -887,11 +891,10 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 				For local l:TProgrammeLicence = EachIn list
 					'add single elements (movies, documentations)
 					if l.GetSubLicenceCount() = 0
-						programmeLicences.AddLast(l)
 					'add episodes
 					else
-						'do _not_ add the header licences !
-						'programmeLicences.AddLast(l)
+						'add header of series/collection too!
+						programmeLicences.AddLast(l)
 						
 						For local subL:TProgrammeLicence = EachIn l.subLicences
 							programmeLicences.AddLast(subL)

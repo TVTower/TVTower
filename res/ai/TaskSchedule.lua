@@ -638,13 +638,13 @@ function JobEmergencySchedule:GetProgrammeLicenceList(level, maxRerunsToday, day
 	local allLicences = {}
 	local useableLicences = {}
 
-	for i=0,MY.GetProgrammeCollection().GetProgrammeLicenceCount()-1 do
-		local licence = MY.GetProgrammeCollection().GetProgrammeLicenceAtIndex(i)
+	for i=0,TVT.of_getProgrammeLicenceCount()-1 do
+		local licence = TVT.of_getProgrammeLicenceAtIndex(i)
 		if (licence ~= nil) then
 			-- add the single licences, ignore collection/series headers
 			if ( licence.GetSubLicenceCount() == 0 ) then
 				-- skip xrated programme during daytime
-				if (hour >= 22 or hour + licence.GetBlocks() <= 5 or licence.GetData().IsXRated() == 0) then
+				if (hour >= 22 or hour + licence.data.GetBlocks() <= 5 or licence.GetData().IsXRated() == 0) then
 					table.insert(allLicences, licence)
 				end
 			end
@@ -931,7 +931,7 @@ function JobSchedule:OptimizeAdSchedule()
 				-- look for upcoming programmes
 				if (table.count(upcomingProgrammesLicences) == 0) then
 					-- nothing found: use a random one (if possible)
-					if TVT.of_getAdContractCount() > 0 then
+					if TVT.of_getProgrammeLicenceCount() > 0 then
 						upcomingProgrammesLicences = { TVT.of_getProgrammeLicenceAtIndex( math.random(0, TVT.of_getProgrammeLicenceCount()-1) ) }
 					end
 				end

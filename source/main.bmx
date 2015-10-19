@@ -532,19 +532,21 @@ Type TApp
 					
 
 					If KEYMANAGER.IsHit(KEY_Y)
-'TLocalization.PrintCurrentTranslationState()					
-						'print "send to chef:"
-						'GetPlayer().SendToBoss()
-
 						'GetWorld().Weather.SetPressure(-14)
 						'GetWorld().Weather.SetTemperature(-10)
 
 						'send marshal to confiscate the licence
-						'local licence:TProgrammeLicence = GetPlayer().GetProgrammeCollection().GetRandomMovieLicence()
-						'GetGame().marshals[rand(0,1)].AddConfiscationJob( licence.GetGUID() )
+						rem
+						local licence:TProgrammeLicence = GetPlayer().GetProgrammeCollection().GetRandomProgrammeLicence()
+						if licence
+							TFigureMarshal(GetGame().marshals[rand(0,1)]).AddConfiscationJob( licence.GetGUID() )
+						else
+							print "no random licence to confiscate"
+						endif
+						endrem
 
 						'buy script
-rem
+						rem
 						Local s:TScript = RoomHandler_ScriptAgency.GetInstance().GetScriptByPosition(0)
 						If Not s
 							RoomHandler_ScriptAgency.GetInstance().ReFillBlocks()
@@ -556,94 +558,97 @@ rem
 							RoomHandler_ScriptAgency.GetInstance().ReFillBlocks()
 							Print "added script: "+s.GetTitle()
 						EndIf
-endrem
+						endrem
 
-'						RoomHandler_MovieAgency.GetInstance().RefillBlocks(true, 0.9)
+						rem
+						RoomHandler_MovieAgency.GetInstance().RefillBlocks(true, 0.9)
+						endrem
 
+						rem
+						'dubletten
+						local duplicateCount:int = 0
+						local arr:TProgrammeLicence[] = TProgrammeLicence[] (GetProgrammeLicenceCollection().licences.ToArray())
+						For local i:int = 0 to arr.length -1
+							
+							For local j:int = 0 to arr.length -1
+								if j = i then continue
+								if arr[i] = arr[j]
+									print "found duplicate: "+arr[i].GetTitle()
+									duplicateCount :+ 1
+									continue
+								endif
 
-'dubletten
-local duplicateCount:int = 0
-local arr:TProgrammeLicence[] = TProgrammeLicence[] (GetProgrammeLicenceCollection().licences.ToArray())
-For local i:int = 0 to arr.length -1
-	
-	For local j:int = 0 to arr.length -1
-		if j = i then continue
-		if arr[i] = arr[j]
-			print "found duplicate: "+arr[i].GetTitle()
-			duplicateCount :+ 1
-			continue
-		endif
-
-		if arr[i].GetGUID() = arr[j].GetGUID()
-			print "found GUID duplicate: "+arr[i].GetTitle()
-			duplicateCount :+ 1
-			continue
-		endif
-
-
-		if arr[i].GetTitle() <> "Die Streichholzhammerbowle"
-			if arr[i].GetTitle() = arr[j].GetTitle()
-				print "found TITLE duplicate: "+arr[i].GetTitle()
-				duplicateCount :+ 1
-				continue
-			endif
-		endif
-	Next
-Next
-'print "COLLECTION DUPLICATE: "+duplicateCount+"      " + millisecs()
-
-'Programme bei mehreren Spielern
-'duplicateCount = 0
-for local playerA:int = 1 to 4
-	for local playerB:int = 1 to 4
-		if playerA = playerB then continue 'skip same
+								if arr[i].GetGUID() = arr[j].GetGUID()
+									print "found GUID duplicate: "+arr[i].GetTitle()
+									duplicateCount :+ 1
+									continue
+								endif
 
 
-		For local lA:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(playerA).programmeLicences
-			For local lB:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(playerB).programmeLicences
+								if arr[i].GetTitle() <> "Die Streichholzhammerbowle"
+									if arr[i].GetTitle() = arr[j].GetTitle()
+										print "found TITLE duplicate: "+arr[i].GetTitle()
+										duplicateCount :+ 1
+										continue
+									endif
+								endif
+							Next
+						Next
+						'print "COLLECTION DUPLICATE: "+duplicateCount+"      " + millisecs()
 
-				if lA = lB
-					print "found playercollection ("+playerA+" vs " + playerB+") duplicate: "+lA.GetTitle()
-					duplicateCount :+ 1
-					continue
-				endif
-				
-				if lA.GetGUID() = lB.GetGUID()
-					print "found playercollection ("+playerA+" vs " + playerB+")  GUID duplicate: "+lA.GetTitle()
-					duplicateCount :+ 1
-					continue
-				endif
-
-				if lA.GetTitle() = lB.GetTitle() and lA.data.year = lB.data.year
-					print "found playercollection ("+playerA+" vs " + playerB+")  TITLE duplicate: "+lA.GetTitle()
-					duplicateCount :+ 1
-					continue
-				endif
-			Next
-		Next
-	Next
-Next
+						'Programme bei mehreren Spielern
+						'duplicateCount = 0
+						for local playerA:int = 1 to 4
+							for local playerB:int = 1 to 4
+								if playerA = playerB then continue 'skip same
 
 
-'check possession
-For local playerID:int = 1 to 4
-	For local l:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(playerID).programmeLicences
-		if l.owner <> playerID then print "found playerCollection OWNER bug: "+l.GetTitle()
-	Next
-Next
+								For local lA:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(playerA).programmeLicences
+									For local lB:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(playerB).programmeLicences
 
-rem
-local news:TNewsEvent = GetNewsEventCollection().GetByGUID("ronny-news-sandsturm-01")
-GetNewsAgency().announceNewsEvent(news, 0, False)
-print "happen: "+ news.GetTitle() + "  at: "+GetWorldTime().GetformattedTime(news.happenedTime)
-endrem
+										if lA = lB
+											print "found playercollection ("+playerA+" vs " + playerB+") duplicate: "+lA.GetTitle()
+											duplicateCount :+ 1
+											continue
+										endif
+										
+										if lA.GetGUID() = lB.GetGUID()
+											print "found playercollection ("+playerA+" vs " + playerB+")  GUID duplicate: "+lA.GetTitle()
+											duplicateCount :+ 1
+											continue
+										endif
 
-rem
-local m:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID("TheRob-b0db-439c-a852-Goaaaaal")
-m.SetOwner(0)
-RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(m, 1)
-print "added Goaaal to player1's suitcase"
-endrem
+										if lA.GetTitle() = lB.GetTitle() and lA.data.year = lB.data.year
+											print "found playercollection ("+playerA+" vs " + playerB+")  TITLE duplicate: "+lA.GetTitle()
+											duplicateCount :+ 1
+											continue
+										endif
+									Next
+								Next
+							Next
+						Next
+
+
+						'check possession
+						For local playerID:int = 1 to 4
+							For local l:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(playerID).programmeLicences
+								if l.owner <> playerID then print "found playerCollection OWNER bug: "+l.GetTitle()
+							Next
+						Next
+						endrem
+
+						rem
+						local news:TNewsEvent = GetNewsEventCollection().GetByGUID("ronny-news-sandsturm-01")
+						GetNewsAgency().announceNewsEvent(news, 0, False)
+						print "happen: "+ news.GetTitle() + "  at: "+GetWorldTime().GetformattedTime(news.happenedTime)
+						endrem
+
+						rem
+						local m:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID("TheRob-b0db-439c-a852-Goaaaaal")
+						m.SetOwner(0)
+						RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(m, 1)
+						print "added Goaaal to player1's suitcase"
+						endrem
 					EndIf
 
 				
@@ -1975,8 +1980,16 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 
 	Method AddConfiscationJob:Int(confiscateGUID:String, owner:Int=-1)
 		Local licence:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID(confiscateGUID)
+		'if licence belongs to series/collection - confiscate the whole thing
+		if licence.parentLicenceGUID
+			licence = GetProgrammeLicenceCollection().GetByGUID(licence.parentLicenceGUID)
+		endif
+
 		'no valid licence found
-		If Not licence Then Return False
+		If Not licence
+			TLogger.Log("AddConfiscationJob()", "invalid licence " + confiscateGUID, LOG_DEBUG)
+			Return False
+		EndIf
 
 		If owner = -1 Then owner = licence.owner
 		'only confiscate from players ?
@@ -1984,7 +1997,6 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 
 		confiscateProgammeLicenceGUID :+ [licence.GetGUID()]
 		confiscateProgammeLicenceFromOwner :+ [owner]
-
 		Return True
 	End Method
 
@@ -2049,17 +2061,26 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 		If Not GetPlayerCollection().isPlayer(roomOwner)
 			'block room for x hours - like terror attack ?
 		Else
+			local pc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(roomOwner)
 			'try to get the licence from the player - if that player does
 			'not own the licence (eg. someone switched roomSigns), take
 			'a random one ... :p
-			Local licence:TProgrammeLicence = GetPlayer(roomOwner).GetProgrammeCollection().GetProgrammeLicenceByGUID( GetConfiscateProgrammeLicenceGUID() )
-			If Not licence Then licence = GetPlayer(roomOwner).GetProgrammeCollection().GetRandomProgrammeLicence()
-
+			Local licence:TProgrammeLicence = pc.GetProgrammeLicenceByGUID( GetConfiscateProgrammeLicenceGUID() )
+			rem
+			if not licence
+				print "finish2 - no licence " + GetConfiscateProgrammeLicenceGUID()
+			else
+				print "finish2 - " + licence.GetTitle()
+			endif
+			endrem
+			If Not licence Then licence = pc.GetRandomProgrammeLicence()
+	
 			'hmm player does not have programme licences at all...skip
 			'removal in that case
 			If Not licence Then Return False
 				
-			GetPlayer(roomOwner).GetProgrammeCollection().RemoveProgrammeLicence(licence)
+			pc.RemoveProgrammeLicence(licence)
+			GetPlayerProgrammePlan(roomOwner).RemoveProgrammeInstancesByLicence(licence, True)
 
 			'inform others - including taken and originally intended
 			'licence (so we see if the right one was took ... to inform
@@ -4198,7 +4219,7 @@ Type GameEvents
 					'pay penalty
 					player.GetFinance().PayMisc(GameRules.sentXRatedPenalty)
 					'remove programme from plan
-					player.GetProgrammePlan().RemoveProgramme(currentProgramme, day, hour)
+					player.GetProgrammePlan().ForceRemoveProgramme(currentProgramme, day, hour)
 					'set current broadcast to malfunction
 					GetBroadcastManager().SetBroadcastMalfunction(player.playerID, TVTBroadcastMaterialType.PROGRAMME)
 					'decrease image by 0.5%
@@ -4211,7 +4232,7 @@ Type GameEvents
 						EventManager.triggerEvent(TEventSimple.Create("publicAuthorities.onStartConfiscateProgramme", New TData.AddString("broadcastMaterialGUID", currentProgramme.GetGUID()).AddNumber("owner", player.playerID), currentProgramme, player))
 
 						'Send out first marshal - Mr. Czwink or Mr. Czwank
-						TFigureMarshal(GetGame().marshals[randRange(0,1)]).AddConfiscationJob(currentProgramme.GetGUID())
+						TFigureMarshal(GetGame().marshals[randRange(0,1)]).AddConfiscationJob(currentProgramme.licence.GetGUID())
 					EndIf
 
 					'emit event (eg.for ingame toastmessages)

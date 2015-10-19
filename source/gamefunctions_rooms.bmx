@@ -971,7 +971,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		filterAuction.priceMin = 250000
 		filterAuction.priceMax = -1
-		filterAuction.licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION, TVTProgrammeLicenceType.SERIES]
+		filterAuction.licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION, TVTProgrammeLicenceType.SERIES, TVTProgrammeLicenceType.COLLECTION]
 		'avoid "too used" licences
 		filterAuction.relativeTopicalityMin = 0.85
 		filterAuction.relativeTopicalityMax = -1.0
