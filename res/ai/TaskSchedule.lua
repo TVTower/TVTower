@@ -4,7 +4,7 @@
 _G["TaskSchedule"] = class(AITask, function(c)
 	AITask.init(c)	-- must init base!
 	c.TargetRoom = TVT.ROOM_OFFICE_PLAYER_ME
-	c.BudgetWeigth = 0
+	c.BudgetWeight = 0
 	c.BasePriority = 10
 	c.TodayMovieSchedule = {}
 	c.TomorrowMovieSchedule = {}
@@ -932,7 +932,10 @@ function JobSchedule:OptimizeAdSchedule()
 				if (table.count(upcomingProgrammesLicences) == 0) then
 					-- nothing found: use a random one (if possible)
 					if TVT.of_getProgrammeLicenceCount() > 0 then
-						upcomingProgrammesLicences = { TVT.of_getProgrammeLicenceAtIndex( math.random(0, TVT.of_getProgrammeLicenceCount()-1) ) }
+						local choosenLicence = TVT.of_getProgrammeLicenceAtIndex( math.random(0, TVT.of_getProgrammeLicenceCount()-1) )
+						if choosenLicence.IsNewBroadcastPossible() then
+							upcomingProgrammesLicences = { choosenLicence }
+						end
 					end
 				end
 

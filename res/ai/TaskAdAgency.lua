@@ -5,7 +5,7 @@ _G["TaskAdAgency"] = class(AITask, function(c)
 	c.TargetRoom = TVT.ROOM_ADAGENCY;
 	c.SpotsInAgency = nil;
 	c.BasePriority = 8;
-	c.BudgetWeigth = 0
+	c.BudgetWeight = 0
 	-- zu Senden
 	-- Strafe
 	-- Zuschauer

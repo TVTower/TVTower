@@ -22,7 +22,7 @@ function TaskMovieDistributor:typename()
 end
 
 function TaskMovieDistributor:ResetDefaults()
-	self.BudgetWeigth = 7
+	self.BudgetWeight = 10
 	self.BasePriority = 8	
 	self.NeededInvestmentBudget = 150000
 	self.InvestmentPriority = 5

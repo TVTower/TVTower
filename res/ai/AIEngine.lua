@@ -151,7 +151,7 @@ _G["AITask"] = class(KIDataObjekt, function(c)
 	
 	c.CurrentBudget = 0 -- Wie viel Geld steht der KI noch zur Verfügung um diese Aufgabe zu erledigen.	
 	c.BudgetWholeDay = 0 -- Wie hoch war das Budget das die KI für diese Aufgabe an diesem Tag einkalkuliert hat.
-	c.BudgetWeigth = 0 -- Wie viele Budgetanteile verlangt diese Aufgabe vom Gesamtbudget?
+	c.BudgetWeight = 0 -- Wie viele Budgetanteile verlangt diese Aufgabe vom Gesamtbudget?
 	
 	c.InvestmentPriority = 0 -- Wie wichtig sind die Investitionen in diesen Bereich?
 	c.CurrentInvestmentPriority = 0 -- Wie ist die Prio aktuell? InvestmentPriority wird jede Runde aufaddiert.
@@ -170,7 +170,11 @@ function AITask:ResetDefaults()
 end
 
 function AITask:getBudgetUnits()
-	return self.BudgetWeigth
+	return self.BudgetWeight
+end
+
+function AITask:getStrategicPriority()
+	return 1.0
 end
 
 function AITask:PayFromBudget(value)
@@ -292,7 +296,7 @@ function AITask:RecalcPriority()
 	local calcPriority = (self.BasePriority + self.SituationPriority) * Ran1 + requisitionPriority
 	local timeFactor = (20 + TimeDiff) / 20
 
-	self.CurrentPriority = calcPriority * timeFactor
+	self.CurrentPriority = self.getStrategicPriority()  * calcPriority * timeFactor
 
 	--debugMsg("Task: " .. self:typename() .. " - Prio: " .. self.CurrentPriority .. " - TimeDiff:" .. TimeDiff .. " (c: " .. calcPriority .. ")")
 end
@@ -338,6 +342,10 @@ function AITask:BeforeBudgetSetup()
 end
 
 function AITask:BudgetSetup()
+end
+
+function AITask:BudgetMaximum()
+	return -1
 end
 
 function AITask:OnMoneyChanged(value, reason, reference)

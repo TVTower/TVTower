@@ -48,8 +48,8 @@ function DefaultStrategy:initialize()
 	else
 		self.startProgrammeAmount = 6
 	end 
-
 	self.startProgrammeBudget = self.startProgrammeAmount * self.startProgrammePriceMax + 8000 * (5 - playerAI.Ventruesome)
+
 	TVT.PrintOut(TVT.ME .. ": startProgramme=" .. self.startProgrammeAmount .. "  priceMax=" .. self.startProgrammePriceMax .. "  totalBudget=" .. self.startProgrammeBudget)
 
 	self.initDone = true

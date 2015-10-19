@@ -3,7 +3,7 @@
 _G["TaskRoomBoard"] = class(AITask, function(c)
 	AITask.init(c)	-- must init base!
 	c.TargetRoom = TVT.ROOM_ROOMBOARD
-	c.BudgetWeigth = 0
+	c.BudgetWeight = 0
 	c.BasePriority = 0
 	c.NeededInvestmentBudget = 0
 	c.InvestmentPriority = 0

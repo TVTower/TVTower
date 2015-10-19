@@ -170,7 +170,10 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 				
 	-- Die Budgets den Tasks zuweisen
 	for k,v in pairs(player.TaskList) do
-		v.CurrentBudget = math.round(v.BudgetWeigth * budgetUnitValue) 			
+		v.CurrentBudget = math.round(v.BudgetWeight * budgetUnitValue)
+		if v.BudgetMaximum() >= 0 then
+	--		v.CurrentBudget = math.min(v.CurrentBudget, v.BudgetMaximum())
+		end
 		v.BudgetWholeDay = v.CurrentBudget							
 	end	
 	
@@ -256,7 +259,6 @@ function BudgetManager:OnMoneyChanged(value, reason, reference)
 
 
 	if renewBudget == true then
-		local moneyInt = MY.GetMoney()
 		local todaysProfit = MY.GetFinance(-1).GetCurrentProfit()
 
 		--local budgetNow = self:CalculateAverageBudget(MY.GetMoney(), todaysProfit)

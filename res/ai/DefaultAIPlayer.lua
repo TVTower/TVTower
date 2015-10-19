@@ -56,6 +56,7 @@ _G["DefaultAIPlayer"] = class(AIPlayer, function(c)
 	--c.Requisitions = nil  --darf nicht überschrieben werden
 	
 	c.Ventruesome = 5 --Risikofreude = 1 - 10
+	c.NewsPriority = 5
 	c.BrainSpeed = 1 --Wie schnell handelt die KI = 1-3 (Aktionen pro Tick)
 end)
 
@@ -75,6 +76,8 @@ function DefaultAIPlayer:initializePlayer()
 	--TODO: Strategie und Charakter festlegen
 	--Waghalsigkeit 3-8
 	self.Ventruesome = math.random(3,8)
+	--Interesse an News/Geldausgabe fuer News
+	self.NewsPriority = math.random(3,8)
 	--Handlungsgeschwindigkeit 1-3
 	self.BrainSpeed = math.random(1,3)
 	self.Strategy = DefaultStrategy()
@@ -500,35 +503,35 @@ function OnMalfunction()
 end
 
 --TVTMoviePurchase
---	BudgetWeigth = 7
+--	BudgetWeight = 7
 --	BasePriority = 8
 
 --TVTNewsAgency
---	BudgetWeigth = 3
+--	BudgetWeight = 3
 --	BasePriority = 8
 
 --TVTAdAgency
---	BudgetWeigth = 0
+--	BudgetWeight = 0
 --	BasePriority = 8
 
 --TVTScheduling
---	BudgetWeigth = 0
+--	BudgetWeight = 0
 --	BasePriority = 10
 
 --TVTStations
---	BudgetWeigth = 2
+--	BudgetWeight = 2
 --	BasePriority = 3
 
 --TVTBettyTask
---	BudgetWeigth = 1
+--	BudgetWeight = 1
 --	BasePriority = 2
 
 --TVTBossTask
---	BudgetWeigth = 0
+--	BudgetWeight = 0
 --	BasePriority = 5
 
 --TVTArchive
---	BudgetWeigth = 0
+--	BudgetWeight = 0
 --	BasePriority = 3
 
 

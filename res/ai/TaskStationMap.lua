@@ -11,7 +11,7 @@ function TaskStationMap:typename()
 end
 
 function TaskStationMap:ResetDefaults()
-	self.BudgetWeigth = 0
+	self.BudgetWeight = 0
 	self.BasePriority = 1
 	self.NeededInvestmentBudget = 250000
 	self.InvestmentPriority = 7

@@ -3,7 +3,7 @@
 _G["TaskNewsAgency"] = class(AITask, function(c)
 	AITask.init(c)	-- must init base!
 	c.TargetRoom = TVT.ROOM_NEWSAGENCY_PLAYER_ME
-	c.BudgetWeigth = 3
+	c.BudgetWeight = 3
 	c.BasePriority = 8
 	c.AbonnementBudget = 0
 end)
@@ -21,7 +21,7 @@ function TaskNewsAgency:Activate()
 	self.NewsAgencyAbonnementsJob.Task = self
 
 	self.NewsAgencyJob = JobNewsAgency()
-	self.NewsAgencyJob.Task = self	
+	self.NewsAgencyJob.Task = self
 end
 
 function TaskNewsAgency:GetNextJobInTargetRoom()
@@ -38,15 +38,57 @@ function TaskNewsAgency:GetNextJobInTargetRoom()
 	self:SetWait()
 end
 
+--override
+function TaskNewsAgency:getStrategicPriority()
+	-- adjust priority according to player character
+	local player = _G["globalPlayer"]
+	if player.NewsPriority > 7 then
+		return 1.25
+	elseif player.NewsPriority >= 6 then
+		return 1.15
+	elseif player.NewsPriority >= 5 then
+		return 1.0
+	end
+
+	return 0.9
+end
+
+
 function TaskNewsAgency:BeforeBudgetSetup()
 	self:SetFixedCosts()
+
+	-- adjust budget weighting according to player character
+	local player = _G["globalPlayer"]
+
+	if player.NewsPriority > 7 then
+		self.BudgetWeight = 6 
+	elseif player.NewsPriority >= 6 then
+		self.BudgetWeight = 5 
+	elseif player.NewsPriority >= 5 then
+		self.BudgetWeight = 4 
+	else
+		self.BudgetWeight = 2
+	end 
 end
 
 function TaskNewsAgency:BudgetSetup()
 	local tempAbonnementBudget = self.BudgetWholeDay * 0.55
 	self.AbonnementBudget = (tempAbonnementBudget - (tempAbonnementBudget % 10000))
 	self.CurrentBudget = self.CurrentBudget - self.AbonnementBudget
-	--debugMsg("BudgetSetup: AbonnementBudget: " .. self.AbonnementBudget .. "   - CurrentBudget: " .. self.CurrentBudget)
+	debugMsg("BudgetSetup: AbonnementBudget: " .. self.AbonnementBudget .. "   - CurrentBudget: " .. self.CurrentBudget)
+end
+
+function TaskNewsAgency:BudgetMaximum()
+	local money = MY.GetMoney(-1)
+	if money <= 500000 then
+		return math.max(50000, math.floor(money / 10))
+	elseif money < 1000000 then
+		return math.max(110000, math.floor(money / 10))
+	elseif money < 2000000 then
+		return math.max(225000, math.floor(money / 10))
+	else
+		return 250000
+	end
 end
 
 function TaskNewsAgency:OnMoneyChanged(value, reason, reference)
