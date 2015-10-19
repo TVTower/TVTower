@@ -522,7 +522,7 @@ Type TNewsAgency
 			'ignore already announced movies
 			If licence.getData().releaseAnnounced Then Continue
 			'ignore unreleased
-			If Not licence.ignoreUnreleasedProgrammes And licence.getData().year < licence._filterReleaseDateStart Or licence.getData().year > licence._filterReleaseDateEnd Then Continue
+			If Not licence.ignoreUnreleasedProgrammes And licence.getData().GetYear() < licence._filterReleaseDateStart Or licence.getData().GetYear() > licence._filterReleaseDateEnd Then Continue
 
 			If licence.GetData().IsInProduction() then resultList.addLast(licence)
 		Next

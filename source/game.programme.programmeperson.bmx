@@ -128,9 +128,9 @@ Function ConvertInsignificantToCelebrity:TProgrammePersonBase(insignifant:TProgr
 		local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(programmeDataGUID)
 
 		if earliestProduction = -1
-			earliestProduction = programmeData.year
+			earliestProduction = programmeData.GetYear()
 		else
-			earliestProduction = Min(programmeData.year, earliestProduction)
+			earliestProduction = Min(programmeData.GetYear(), earliestProduction)
 		endif
 	Next
 

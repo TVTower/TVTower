@@ -523,7 +523,7 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 				<member index="2" function="2">ronny-programmeperson-gertkalischke</member>
 			</staff>
 			<groups target_groups="0" />
-			<data country="D/F" year="1984" distribution="0" maingenre="15" blocks="2" />
+			<data country="D/F" year="-2" relative_year_min="1980" relative_year_max="1990" distribution="0" maingenre="15" blocks="2" />
 			<ratings critics="31" speed="30" />
 			<!-- Episodes -->
 			<children>

@@ -1025,7 +1025,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		If data.HasFlag(TVTProgrammeDataFlag.PAID)
 			skin.fontNormal.drawBlock(data.country, contentX + 5, contentY, 65, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		else
-			skin.fontNormal.drawBlock(data.country + " " + data.year, contentX + 5, contentY, 65, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontNormal.drawBlock(data.country + " " + data.GetYear(), contentX + 5, contentY, 65, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		endif
 		skin.fontNormal.drawBlock(GetGenreString(), contentX + 5 + 65 + 2, contentY, contentW - 10 - 65 - 2, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		contentY :+ genreH

@@ -336,7 +336,16 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	'array holding actor(s) and director(s) and ...
 	Field cast:TProgrammePersonJob[]
 	Field country:String = "UNK"
-	Field year:Int = 1900
+
+	'year of the programme. "_" indicates private access, use GetYear().
+	Field _year:Int = 0
+	'amount of years to advance/decrease from the start year
+	'(no need to put this in savegames as then the year is already
+	' calculated)
+	Field relativeYear:Int = 0 {nosave}
+	Field relativeYearMin:Int = -1 {nosave}
+	Field relativeYearMax:Int = -1 {nosave}
+
 	'special targeted audiences?
 	Field targetGroups:int = 0
 	Field proPressureGroups:int = 0
@@ -392,7 +401,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	endrem
 
 
-	Function Create:TProgrammeData(GUID:String, title:TLocalizedString, description:TLocalizedString, cast:TProgrammePersonJob[], country:String, year:Int, releaseTime:Long=-1, liveTime:Long, Outcome:Float, review:Float, speed:Float, modifiers:TData, Genre:Int, blocks:Int, xrated:Int, productType:Int=1) {_private}
+	Function Create:TProgrammeData(GUID:String, title:TLocalizedString, description:TLocalizedString, cast:TProgrammePersonJob[], country:String, year:int, relativeYear:int, releaseTime:Long=-1, liveTime:Long, Outcome:Float, review:Float, speed:Float, modifiers:TData, Genre:Int, blocks:Int, xrated:Int, productType:Int=1) {_private}
 		Local obj:TProgrammeData = New TProgrammeData
 		obj.SetGUID(GUID)
 		obj.title       = title
@@ -408,9 +417,10 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		obj.SetFlag(TVTProgrammeDataFlag.XRATED, xrated)
 		obj.country     = country
 		obj.cast 		= cast
-		obj.year        = year
+		obj._year       = year
+		obj.relativeYear= relativeYear
 		if GetWorldTime().GetYear(releaseTime) < 1900
-			obj.releaseTime = GetWorldTime().Maketime(year, 1,1, 0,0)
+			obj.releaseTime = GetWorldTime().Maketime(obj.GetYear(), 1,1, 0,0)
 		endif
 		obj.liveTime    = Max(-1,liveTime)
 		obj.topicality = obj.GetTopicality()
@@ -854,6 +864,20 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	End Method
 
 
+	Method GetYear:int()
+		'PAID is always "live/from now"
+		if HasFlag(TVTProgrammeDataFlag.PAID) then return GetWorldTime().GetYear()
+
+		if _year = 0
+			_year = GetWorldTime().GetStartYear() + relativeYear
+			if relativeYearMin > 0 then _year = Max(_year, relativeYearMin)
+			if relativeYearMax > 0 then _year = Min(_year, relativeYearMax)
+			print GetTitle()+": set year to " + _year
+		endif
+		return _year
+	End Method
+
+
 	Method GetBlocks:int()
 		return self.blocks
 	End Method
@@ -895,7 +919,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 
 	Method SetReleaseTime(dayOfYear:int)
-		releaseTime = GetWorldTime().MakeTime(year, dayOfYear mod GetWorldTime().GetDaysPerYear(), 0, 0)
+		releaseTime = GetWorldTime().MakeTime(GetYear(), dayOfYear mod GetWorldTime().GetDaysPerYear(), 0, 0)
 	End Method
 
 
@@ -944,7 +968,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		'the age factor is also used in "GetMaxTopicality())
 		'the modifier "price::age" increases the "age" used in _this_
 		'calculation 
-		Local ageDistance:Float = 0.01 * Max(0, 100 - Max(0, GetModifier("price::age") * (GetWorldTime().GetYear() - year)))
+		Local ageDistance:Float = 0.01 * Max(0, 100 - Max(0, GetModifier("price::age") * (GetWorldTime().GetYear() - GetYear())))
 		value :* (1.0 - THelper.LogisticalInfluence_Euler(1.0 - Max(0.30, ageDistance), 0.85))
 		
 		'=== FLAGS ===
@@ -959,7 +983,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		'round to next "1000" block
 		value = Int(Floor(value / 1000) * 1000)
 
-		'print GetTitle()+"  value1: "+value + "  outcome:"+GetOutcome()+"  review:"+GetReview() + " maxTop:"+GetMaxTopicality()+" year:"+year
+		'print GetTitle()+"  value1: "+value + "  outcome:"+GetOutcome()+"  review:"+GetReview() + " maxTop:"+GetMaxTopicality()+" year:"+GetYear()
 
 		return value
 	End Method
@@ -967,7 +991,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 	'override
 	Method GetMaxTopicality:Float()
-		Local age:Int = Max(0, GetWorldTime().GetYear() - year)
+		Local age:Int = Max(0, GetWorldTime().GetYear() - GetYear())
 		'maximum of 25 broadcasts decrease up to "50%" of max topicality
 		Local timesBroadcasted:Int = 0.5 * Min(100, GetTimesBroadcasted() * 4)
 
@@ -1044,7 +1068,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		Local quality:Float = 1.0
 
 		'the older the less ppl want to watch - 1 year = 0.99%, 2 years = 0.98%...
-		Local age:Float = 0.01 * Max(0, 100 - Max(0, GetWorldTime().GetYear() - year) )
+		Local age:Float = 0.01 * Max(0, 100 - Max(0, GetWorldTime().GetYear() - GetYear()) )
 		quality :* Max(0.20, age)
 
 		'the more the programme got repeated, the lower the quality in

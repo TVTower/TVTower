@@ -632,7 +632,7 @@ endrem
 			programmeData.review = 0.1
 			programmeData.speed = 0.4
 			programmeData.country = "D" 'make depending on station map?
-			programmeData.year = GetWorldTime().GetYear()
+			programmeData._year = GetWorldTime().GetYear()
 			programmeData.liveTime = GetWorldTime().MakeTime(GetWorldTime().GetYear(), 0, 0, 5)
 			programmeData.SetFlag(TVTProgrammeDataFlag.LIVE, True)
 

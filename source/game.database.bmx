@@ -604,7 +604,6 @@ Type TDatabaseLoader
 				'reuse old one
 				productType = programmeData.productType
 			endif
-
 			programmeData.GUID = "data-"+GUID
 			programmeData.title = new TLocalizedString
 			programmeData.originalTitle = new TLocalizedString
@@ -650,12 +649,22 @@ Type TDatabaseLoader
 		local nodeData:TxmlNode = xml.FindElementNode(node, "data")
 		local data:TData = new TData
 		xml.LoadValuesToData(nodeData, data, [..
-			"country", "year", "distribution", "blocks", ..
+			"year", "relative_year_min", "relative_year_max", ..
+			"country", "distribution", "blocks", ..
 			"maingenre", "subgenre", "time", "price_mod", ..
 			"available", "flags" ..
 		])
 		programmeData.country = data.GetString("country", programmeData.country)
-		programmeData.year = data.GetInt("year", programmeData.year)
+		programmeData._year = data.GetInt("year", programmeData._year)
+		local year:string = data.GetString("year", "")
+		if programmeData._year = 0 and int(year) <= 100 or year.Find("+") >= 0 or year.Find("-") >= 0
+			programmeData.relativeYear = int(year)
+			programmeData._year = 0
+
+			programmeData.relativeYearMin = data.GetInt("relative_year_min", programmeData.relativeYearMin)
+			programmeData.relativeYearMax = data.GetInt("relative_year_max", programmeData.relativeYearMax)
+		endif
+		
 		programmeData.distributionChannel = data.GetInt("distribution", programmeData.distributionChannel)
 		programmeData.blocks = data.GetInt("blocks", programmeData.blocks)
 		programmeData.available = data.GetBool("available", programmeData.available)
@@ -804,18 +813,6 @@ endif
 		'licence ... so add this specific programmeData to the global
 		'data collection
 		GetProgrammeDataCollection().Add(programmeData)
-
-		rem
-			do NOT finish the programme here - do this "live", so the
-			current year is known, and only released programmes are
-			finished!
-		'also set the programme as "finished" and inform cast (for level ups)
-		For local job:TProgrammePersonJob = eachIn programmeData.GetCast()
-			local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID( job.personGUID )
-			if person then person.FinishProduction(programmeData.GetGUID())
-		Next
-		endrem
-
 
 		programmeLicence.SetOwner(TOwnedGameObject.OWNER_NOBODY)
 
