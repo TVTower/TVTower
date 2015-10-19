@@ -563,7 +563,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		Local adContractBases:TAdContractBase[]
 		Local cheapFilter:TAdContractBaseFilter = New TAdContractbaseFilter
 		'some easy ones
-		cheapFilter.SetAudience(0.0, 0.01)
+		cheapFilter.SetAudience(0.0, 0.02)
 		'only without image requirements? not needed for start programme
 		'you might have luck to get a better paid one :D
 		'cheapFilter.SetImage(0.0, 0.0)
@@ -590,14 +590,14 @@ endrem
 			adContractBases :+ [addContract]
 		Next
 		'and one with 0-1% audience requirement
-		cheapFilter.SetAudience(0.0, 0.02)
+		cheapFilter.SetAudience(0.015, 0.03)
 		addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, False)
 		if not addContract  
-			print "SpreadStartProgramme: No ~qno audience~q contract in DB? Trying a 0-3% one..."
-			cheapFilter.SetAudience(0.01, 0.04)
+			print "SpreadStartProgramme: No ~qno audience~q contract in DB? Trying a 1.5-4% one..."
+			cheapFilter.SetAudience(0.015, 0.04)
 			addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, False)
 			if not addContract
-				print "SpreadStartProgramme: 0-2% failed too... using random contract now."
+				print "SpreadStartProgramme: 1.5-4% failed too... using random contract now."
 				addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, True)
 			endif
 		endif

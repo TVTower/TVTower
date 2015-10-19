@@ -1,7 +1,7 @@
 SuperStrict
 
 'Application: TVGigant/TVTower
-'Author: Ronny Otto / Manuel Voegele
+'Author: Ronny Otto & Team (check "credits"-screen ingame)
 ?Not MacOS
 ' creates version.txt and puts date in it
 ' @bmk include source/version_script.bmk
