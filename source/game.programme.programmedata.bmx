@@ -872,7 +872,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 			_year = GetWorldTime().GetStartYear() + relativeYear
 			if relativeYearMin > 0 then _year = Max(_year, relativeYearMin)
 			if relativeYearMax > 0 then _year = Min(_year, relativeYearMax)
-			print GetTitle()+": set year to " + _year
+			'print GetTitle()+": set year to " + _year
 		endif
 		return _year
 	End Method
