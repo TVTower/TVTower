@@ -4113,7 +4113,7 @@ Fast in zeitdeckendem Erzähltempo beschreibt Zinnemanns Klassiker das Schicksal
 			</description>
 			<staff>
 				<member index="0" function="1">10d455be-e8e5-40eb-927b-c36e3345525d</member>
-				<member index="1" function="2">c317f4a2-7d77-49c6-b8bd-6207151abbdc</member>
+				<member index="1" function="2">0560f0a1-1e59-4f29-9e0c-c4b7f47f3dde</member>
 				<member index="2" function="2">fa7f5730-dab0-474c-83b5-89283c9ce369</member>
 				<member index="3" function="2">26c87588-7eb0-4a55-9c3b-be9f035a61c8</member>
 				<member index="4" function="2">6748096c-ad76-4d12-84ab-fb7a6c70542e</member>
@@ -6818,10 +6818,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Angora</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc" tmdb_id="0" imdb_id="" creator="">
@@ -6829,10 +6826,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Cutamaran</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="21e88c65-0cc6-4bd1-bd14-b48b6ce25402" tmdb_id="0" imdb_id="" creator="">
@@ -6840,10 +6834,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Glansen</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="2" birthday="1961" deathday="" country="D" fictional="1" />
+			<details job="2" gender="2" birthday="1961" deathday="" country="D" fictional="1" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="1cac5a80-97dc-46f6-8c34-761c4fe43db5" tmdb_id="0" imdb_id="" creator="">
@@ -6851,10 +6842,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Klein</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="c2815b12-a08d-4f85-87e6-8757620fa80b" tmdb_id="0" imdb_id="" creator="">
@@ -6862,10 +6850,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>-rol</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="3fcd8263-9bf4-4c23-9323-0e4105d75dbb" tmdb_id="0" imdb_id="nm0000719" creator="">
@@ -6873,10 +6858,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Aberham</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="c92d6a4b-0c3e-49b4-a403-2b861d9fb675" tmdb_id="0" imdb_id="" creator="">
@@ -6884,10 +6866,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Alien</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="de494c09-c094-4217-a010-5241833ef53f" tmdb_id="0" imdb_id="nm0491048" creator="">
@@ -6895,10 +6874,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Aureal</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="825f0f99-fb8e-4761-a597-fdd27a0461c6" tmdb_id="0" imdb_id="nm0000102" creator="">
@@ -6906,10 +6882,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Balcony</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="81f17c33-1719-4513-ad34-ac03ac7d03a0" tmdb_id="0" imdb_id="nm0000697" creator="">
@@ -6917,10 +6890,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Balder</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="84958220-dab8-49eb-bb73-196b735f5af2" tmdb_id="0" imdb_id="nm0097449" creator="">
@@ -6928,10 +6898,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Barthel</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="3342a0e3-66f3-4f30-922c-ebe1b0611a00" tmdb_id="0" imdb_id="nm0000107" creator="">
@@ -6939,10 +6906,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Baseringer</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="2fae00fa-0106-4734-873e-7d3a87a50a65" tmdb_id="0" imdb_id="nm0000881" creator="">
@@ -6950,10 +6914,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Baysan</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="d300cc4e-dcba-4bbf-b9d4-b111412718e1" tmdb_id="0" imdb_id="" creator="">
@@ -6961,10 +6922,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Beham</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="28cd4aa6-fd11-4696-9539-361017701fe2" tmdb_id="0" imdb_id="nm0000104" creator="">
@@ -6972,10 +6930,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Bentjieras</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="70c7d8ec-ff3b-4810-9422-03e0676b747c" tmdb_id="0" imdb_id="" creator="">
@@ -6983,10 +6938,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Blontshett</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="abcc51f0-1842-40f5-b2f7-dd1e228ea968" tmdb_id="0" imdb_id="nm0000007" creator="">
@@ -6994,10 +6946,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Boguecard</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="be3f813d-e72c-4783-8652-93181f2c2c21" tmdb_id="0" imdb_id="nm0001629" creator="">
@@ -7005,10 +6954,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Bolllak</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="3808793e-7162-4c1f-baa8-0ec46bebb501" tmdb_id="0" imdb_id="" creator="">
@@ -7016,10 +6962,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Bolllogg</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="ccf79c86-dd25-49bc-91fa-536de8e4267b" tmdb_id="0" imdb_id="nm0000591" creator="">
@@ -7027,10 +6970,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Bollonsghi</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="3d37e02e-78f2-4749-9de5-429e31b5590b" tmdb_id="0" imdb_id="" creator="">
@@ -7038,10 +6978,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Botterblom</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="eb12a6b9-6bb7-4a21-812d-6607cf493ee9" tmdb_id="0" imdb_id="" creator="">
@@ -7049,10 +6986,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Botterblom</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="79c081cb-755e-41b8-bd50-11f00e6b1382" tmdb_id="0" imdb_id="nm0108523" creator="">
@@ -7060,10 +6994,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Briceson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="9b8d6c83-3561-49b3-9ed7-996075206299" tmdb_id="0" imdb_id="" creator="">
@@ -7071,10 +7002,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Brittges</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="2613c827-dd89-4740-b57a-661dfb357130" tmdb_id="0" imdb_id="" creator="">
@@ -7082,10 +7010,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Burtjon</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="b0b014e9-182b-40ba-b1f3-8a167420c8e8" tmdb_id="0" imdb_id="nm0000114" creator="">
@@ -7093,10 +7018,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Buscemison</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="a3587709-bbbd-42f7-8819-1d29a89cacec" tmdb_id="0" imdb_id="nm0000997" creator="">
@@ -7104,10 +7026,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Buseysan</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="d92ad3b1-e2e2-455c-8b82-2ec7731607ec" tmdb_id="0" imdb_id="" creator="">
@@ -7115,10 +7034,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Cagesan</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="9f342b49-1089-47bc-8d92-722fe71d96e3" tmdb_id="0" imdb_id="" creator="">
@@ -7126,10 +7042,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Cavinski</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="3e3b73f1-24e8-4eb6-b9ed-a3d482d37284" tmdb_id="0" imdb_id="" creator="">
@@ -7137,10 +7050,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Chopkids</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="876760aa-c243-4e4b-a333-76d5a5aabf19" tmdb_id="0" imdb_id="nm0000008" creator="">
@@ -7148,10 +7058,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Ciando</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="9f9ea647-abfb-403c-8c4d-628d6373ca43" tmdb_id="0" imdb_id="nm0278006" creator="">
@@ -7159,10 +7066,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Cinclarson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="370a8d9d-ceef-4a7c-9c09-cc7e9d616311" tmdb_id="0" imdb_id="" creator="">
@@ -7170,10 +7074,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Cranberry</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="1df80fd1-2c56-473b-8687-19a6183b66e8" tmdb_id="0" imdb_id="nm0000129" creator="">
@@ -7181,10 +7082,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Cruz</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="3d00ee69-f0b6-4279-a743-dfcc98297ba0" tmdb_id="0" imdb_id="" creator="">
@@ -7192,10 +7090,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Cutamaran</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="72d0cfa6-bb40-4766-9b86-9a3ffd257f73" tmdb_id="0" imdb_id="" creator="">
@@ -7203,10 +7098,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Cutamaran</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="6b53e3ec-0d66-4131-84ec-a48b9bbe3b77" tmdb_id="0" imdb_id="" creator="">
@@ -7214,10 +7106,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Da Halma</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="8a8b38b5-13e0-4abc-adad-d8739ecc2684" tmdb_id="0" imdb_id="" creator="">
@@ -7225,10 +7114,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Dafoeson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="091373c6-0ae9-40c2-b20b-b6591b23f88c" tmdb_id="0" imdb_id="" creator="">
@@ -7236,10 +7122,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Dalyson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="506bc383-259e-4a36-9278-081aafc8f35c" tmdb_id="0" imdb_id="nm0000134" creator="">
@@ -7247,10 +7130,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Die Niere</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="4c3ad6f3-1e86-441d-b5a5-383e0408518e" tmdb_id="0" imdb_id="" creator="">
@@ -7258,10 +7138,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Dorson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="e7924d67-a4de-417d-a1f9-581fd611b534" tmdb_id="0" imdb_id="nm0000136" creator="">
@@ -7269,10 +7146,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Drops</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="b4dcefc0-4fef-4ef6-93ae-f208ee93e992" tmdb_id="0" imdb_id="nm0000379" creator="">
@@ -7280,10 +7154,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Dunstson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="ab68fbad-64d8-4328-a131-9c2d0f05e210" tmdb_id="0" imdb_id="nm0000380" creator="">
@@ -7291,10 +7162,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Duvehl</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="2d237ef7-55da-498c-93bc-523d89bad84b" tmdb_id="0" imdb_id="" creator="">
@@ -7302,10 +7170,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Eherfort</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="fdc033d7-e954-4e55-848c-e6b5e7a10d21" tmdb_id="0" imdb_id="nm0000393" creator="">
@@ -7313,10 +7178,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Falke</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="56dfb16b-be30-43c0-9d37-2189a638ea81" tmdb_id="0" imdb_id="" creator="">
@@ -7324,10 +7186,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Feniks</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="a80152d6-43dc-4f9c-a562-a5dbf821bc1f" tmdb_id="0" imdb_id="" creator="">
@@ -7335,10 +7194,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Fondason</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="070bd0dd-1a11-4b2b-80b7-922dae98c3ca" tmdb_id="0" imdb_id="nm0000148" creator="">
@@ -7346,10 +7202,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Fort</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="d57e0f86-0489-4d1f-8a76-ee7c861cbee5" tmdb_id="0" imdb_id="" creator="">
@@ -7357,10 +7210,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Fragtes</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="c104b4c8-449c-4fb6-8cbe-5dbf3e074c96" tmdb_id="0" imdb_id="" creator="">
@@ -7368,10 +7218,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Froitman</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="20162654-5f3a-49d5-950f-4e9a52729768" tmdb_id="0" imdb_id="nm0258918" creator="">
@@ -7379,10 +7226,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Gebhardt</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="1b8fcb9a-5961-43b8-af1b-1ed144880908" tmdb_id="0" imdb_id="" creator="">
@@ -7390,10 +7234,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Gibtsschon</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="becc2ecd-d309-46a1-b9c2-30253915af0c" tmdb_id="0" imdb_id="nm0000027" creator="">
@@ -7401,10 +7242,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Ginnesse</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="1f276c5b-2394-4a01-9ed1-d82a052dca57" tmdb_id="0" imdb_id="" creator="">
@@ -7412,10 +7250,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Gloom</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="5d267d5d-70a1-4b04-8bd5-bd32ffb87659" tmdb_id="0" imdb_id="" creator="">
@@ -7423,10 +7258,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Gloverson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="267e028a-d087-4fff-83fd-0ade0806ab8a" tmdb_id="0" imdb_id="" creator="">
@@ -7434,10 +7266,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Gobourner</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="c299b440-3684-48fa-bc21-85a76ae2c253" tmdb_id="0" imdb_id="nm0001072" creator="">
@@ -7445,10 +7274,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Godten</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="682d65b5-9ff7-475a-8d50-a4ded9eefa9e" tmdb_id="0" imdb_id="" creator="">
@@ -7456,10 +7282,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Goodman</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="1c6d2298-9462-4549-b09a-05a584bf9949" tmdb_id="0" imdb_id="nm0001570" creator="">
@@ -7467,10 +7290,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Gordon</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="b7415f23-4216-4eaf-8560-e4af68ddf3ab" tmdb_id="0" imdb_id="" creator="">
@@ -7478,10 +7298,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Gorriel</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="2491d32a-9594-4ea7-9c3f-ad7d387ed316" tmdb_id="0" imdb_id="nm0001073" creator="">
@@ -7489,10 +7306,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Gox</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="a569701c-0a7f-4d26-bf85-3eab9813e64f" tmdb_id="0" imdb_id="nm0001074" creator="">
@@ -7500,10 +7314,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Gox</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="ef434053-0ef7-46fa-bff5-ad4751a34453" tmdb_id="0" imdb_id="" creator="">
@@ -7511,10 +7322,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Grafer</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="336ebe49-3b96-46f4-8cd5-da6f64ff8c38" tmdb_id="0" imdb_id="" creator="">
@@ -7522,10 +7330,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Grünwald</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="c39a70f6-b8fd-40fe-96cd-9dcb0e460e53" tmdb_id="0" imdb_id="nm0000620" creator="">
@@ -7533,10 +7338,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Gurke</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="7e9aee03-78d2-49b2-95db-7f33982bbf2d" tmdb_id="0" imdb_id="" creator="">
@@ -7544,10 +7346,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Guttenborg</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="7af27da0-4abf-482c-b8a3-00612c1e4d53" tmdb_id="0" imdb_id="nm0000432" creator="">
@@ -7555,10 +7354,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Hackermin</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="bedfa8be-aaff-457d-b549-893c3a784c9b" tmdb_id="0" imdb_id="" creator="">
@@ -7566,10 +7362,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Hackl</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="d86d607a-ec9e-42a2-a74b-26a810ab6a54" tmdb_id="0" imdb_id="nm0000168" creator="">
@@ -7577,10 +7370,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Hackson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="43280255-d8ef-469e-b3ef-8eea1b081ae6" tmdb_id="0" imdb_id="nm0357891" creator="">
@@ -7588,10 +7378,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Hamiltjon</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="f4b5473d-8eb5-49f2-8b6a-6510b3e8ddc4" tmdb_id="0" imdb_id="nm0004989" creator="">
@@ -7599,10 +7386,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Hamnigan</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="0e1cbb3d-5a32-4505-96e3-c3e7b86d91fa" tmdb_id="0" imdb_id="" creator="">
@@ -7610,10 +7394,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Handerson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="8d551838-62d6-4ec3-a1f7-6b477206e235" tmdb_id="0" imdb_id="nm0000760" creator="">
@@ -7621,10 +7402,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Handerson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="aee96d95-682e-4587-8192-3f4e689e045c" tmdb_id="0" imdb_id="" creator="">
@@ -7632,10 +7410,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Hatmer</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="5343c932-757a-4dd0-85ee-9e65b88986f1" tmdb_id="0" imdb_id="nm0001330" creator="">
@@ -7643,10 +7418,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Haydenson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="3993454a-cbc2-471e-835c-0b0a44dc8f01" tmdb_id="0" imdb_id="" creator="">
@@ -7654,10 +7426,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Hjell</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="3bb46451-4b1c-4ae7-90a4-8dbbe66f3bd1" tmdb_id="0" imdb_id="" creator="">
@@ -7665,10 +7434,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Hjüpsh</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="ef4e2db6-6ab9-4386-b2d5-c2d2b9990c97" tmdb_id="0" imdb_id="nm0389219" creator="">
@@ -7676,10 +7442,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Hofingen</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="25bbcc47-1ec9-407d-840e-5efebdbc0dc3" tmdb_id="0" imdb_id="" creator="">
@@ -7687,10 +7450,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Hopperson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="6868ac17-913c-4e8c-a0b5-ee32ba6cf3e3" tmdb_id="0" imdb_id="nm0000163" creator="">
@@ -7698,10 +7458,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Hufschmied</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="b99662fc-9503-436a-900c-6c63e9b91fce" tmdb_id="0" imdb_id="nm0001379" creator="">
@@ -7709,10 +7466,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Husten</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="5317ae08-3426-4fd3-b67e-73a453ef3f64" tmdb_id="0" imdb_id="nm0000469" creator="">
@@ -7720,10 +7474,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Johmes</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="e039c83c-9815-45e2-9d80-424aedf5a1a1" tmdb_id="0" imdb_id="nm0000169" creator="">
@@ -7731,10 +7482,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Jonas</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="2371f9cf-79a1-4dc4-8909-f69511853549" tmdb_id="0" imdb_id="nm0000116" creator="">
@@ -7742,10 +7490,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Kamerun</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="a5191c4e-7619-4aec-98ca-dde532991fca" tmdb_id="0" imdb_id="" creator="">
@@ -7753,10 +7498,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Kellow</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="4cabbb45-3a31-4f65-aa52-4a99ec89a87a" tmdb_id="0" imdb_id="" creator="">
@@ -7764,10 +7506,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Kilmersan</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="df97bbf8-8ff7-44fc-be36-7798dc8f8d79" tmdb_id="0" imdb_id="nm0001429" creator="">
@@ -7775,10 +7514,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Kitanoson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="894d9223-fc65-4c78-af57-7d5d58b12a57" tmdb_id="0" imdb_id="" creator="">
@@ -7786,10 +7522,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Knall</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="d524af01-4cdf-4e4a-9d93-2995695d147b" tmdb_id="0" imdb_id="" creator="">
@@ -7797,10 +7530,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Knall</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="e0807a2d-e04d-4abf-9422-afa44b202438" tmdb_id="0" imdb_id="" creator="">
@@ -7808,10 +7538,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Konnoree</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="0b680977-89b4-4022-b474-091cbcc15a12" tmdb_id="0" imdb_id="" creator="">
@@ -7819,10 +7546,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Korbuzi</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="c5f64861-b665-4c12-a1be-515b23ef0af0" tmdb_id="0" imdb_id="nm0000131" creator="">
@@ -7830,10 +7554,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Kosake</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="8c71481d-d30b-4da8-a207-82f0bb5a5fea" tmdb_id="0" imdb_id="nm0000126" creator="">
@@ -7841,10 +7562,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Kostetnur</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="a6055f37-ab53-425e-9332-14e0dfabc424" tmdb_id="0" imdb_id="" creator="">
@@ -7852,10 +7570,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Krehl</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="153dc080-86a1-4f3d-bb13-65b3aa90f7ea" tmdb_id="0" imdb_id="nm0000040" creator="">
@@ -7863,10 +7578,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Kubus</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="280a71d8-f9ba-43e7-9ec2-cb1e06bf98e8" tmdb_id="0" imdb_id="" creator="">
@@ -7874,10 +7586,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Lee Curtisson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="46732782-8b5a-4d4b-976b-fa7bbfe43ea1" tmdb_id="0" imdb_id="" creator="">
@@ -7885,10 +7594,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Leeson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="83cd765b-e00b-486d-b075-920992f9e784" tmdb_id="0" imdb_id="" creator="">
@@ -7896,10 +7602,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Levimsun</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="690bc6cc-4c9f-4bf7-8538-5e8e556379c7" tmdb_id="0" imdb_id="nm0000489" creator="">
@@ -7907,10 +7610,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Ley</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="a2c65598-61b1-405a-96a9-41a9d6faa454" tmdb_id="0" imdb_id="" creator="">
@@ -7918,10 +7618,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Lhewelien</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="424d8116-afc9-44e4-b076-79b51c2b1f0d" tmdb_id="0" imdb_id="" creator="">
@@ -7929,10 +7626,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Lientsh</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="854537be-c9f6-4f13-90bb-97f46e821b6e" tmdb_id="0" imdb_id="nm0001466" creator="">
@@ -7940,10 +7634,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Lioney</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="75836a6f-f590-431e-a572-8eb7226beffc" tmdb_id="0" imdb_id="" creator="">
@@ -7951,10 +7642,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Lloydson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="8588812a-bde4-4497-ac45-0d37aca15fd0" tmdb_id="0" imdb_id="" creator="">
@@ -7962,10 +7650,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Lodda</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="58a6e6af-01b3-4245-ae90-f00206baf89b" tmdb_id="0" imdb_id="nm0001450" creator="">
@@ -7973,10 +7658,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Lonsburih</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="bae8ed17-ebab-4a38-b10a-50546e895a1f" tmdb_id="0" imdb_id="nm0001532" creator="">
@@ -7984,10 +7666,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>MacTiername</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="c41d6da8-46ab-4a91-af57-814a2a24d979" tmdb_id="0" imdb_id="" creator="">
@@ -7995,10 +7674,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>MakLachlon</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="3cf25d4a-f126-4346-98c9-ef1568bc0e05" tmdb_id="0" imdb_id="nm0000233" creator="">
@@ -8006,10 +7682,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Marafino</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="c57b5636-85a6-401e-b1f5-d64b66ae95ab" tmdb_id="0" imdb_id="nm0569226" creator="">
@@ -8017,10 +7690,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>McGrill</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="836b4aa3-b5c6-4529-b30d-4501594cdf13" tmdb_id="0" imdb_id="" creator="">
@@ -8028,10 +7698,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Melone</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="f9a18a26-3dc4-401d-93bb-221247211dff" tmdb_id="0" imdb_id="nm0000226" creator="">
@@ -8039,10 +7706,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Miff</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="ea76aa3d-2541-481a-b08a-e6905da0cb30" tmdb_id="0" imdb_id="" creator="">
@@ -8050,10 +7714,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Möbel</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="56035d20-9b99-4225-92e0-aee2cd9b7119" tmdb_id="0" imdb_id="" creator="">
@@ -8061,10 +7722,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Mojore</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="fdca1461-1fae-4cfc-8a3e-ab60bf1e0449" tmdb_id="0" imdb_id="nm0000194" creator="">
@@ -8072,10 +7730,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Mojore</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="55e78fc4-4fcc-4eaa-84bd-a816d0d254e2" tmdb_id="0" imdb_id="nm0000191" creator="">
@@ -8083,10 +7738,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>MuckCracker</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="3f824f65-53d2-4999-94b4-1e7ce5e8b69b" tmdb_id="0" imdb_id="nm0318854" creator="">
@@ -8094,10 +7746,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Mueller</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="5b4609a9-c753-4cd2-a415-8ed5a369597a" tmdb_id="0" imdb_id="nm0574433" creator="">
@@ -8105,10 +7754,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>NakRae</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="60a42fb1-2c26-44f4-9193-6c1549cdd657" tmdb_id="0" imdb_id="" creator="">
@@ -8116,10 +7762,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Naxwiel</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="20e172be-76f4-4c1a-a582-d574c233ac6e" tmdb_id="0" imdb_id="nm0000197" creator="">
@@ -8127,10 +7770,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Nickelsson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="6d170d62-66c1-4579-b9b1-79c06cec5699" tmdb_id="0" imdb_id="" creator="">
@@ -8138,10 +7778,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Niesson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="61b52966-3363-4fb3-a8d1-61a5555a0961" tmdb_id="0" imdb_id="" creator="">
@@ -8149,10 +7786,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Nimmer</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="2b6c2f08-bc5e-4e78-ad8e-3d70169a8fe7" tmdb_id="0" imdb_id="nm0000057" creator="">
@@ -8160,10 +7794,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Niveau</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="c3c34605-bcf7-4b82-8d91-ffbebe60d967" tmdb_id="0" imdb_id="nm0001592" creator="">
@@ -8171,10 +7802,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Pantoffoliano</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="5679447a-7706-40b9-bb7c-b191abebd5d8" tmdb_id="0" imdb_id="nm0000851" creator="">
@@ -8182,10 +7810,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Parkow</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="91ddb72a-6f14-4378-ba9e-79e7274d5c3c" tmdb_id="0" imdb_id="nm0001316" creator="">
@@ -8193,10 +7818,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Partly</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="0c7cec0b-8d48-46b8-a66b-468c272c695e" tmdb_id="0" imdb_id="nm0000200" creator="">
@@ -8204,10 +7826,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Paxtjon</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="cdd0e7aa-11eb-48d7-82cc-d693e2130d05" tmdb_id="0" imdb_id="nm0000583" creator="">
@@ -8215,10 +7834,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Pedehsen</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="5fd9f85c-9265-4529-a629-d8c4a5ce8472" tmdb_id="0" imdb_id="nm0000934" creator="">
@@ -8226,10 +7842,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Piertolucci</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="0f6fe96b-c7fe-4f4e-a382-1c0b12531b0d" tmdb_id="0" imdb_id="nm0000582" creator="">
@@ -8237,10 +7850,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Pisski</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="188024b3-d76f-4999-bc00-13c505a6c646" tmdb_id="0" imdb_id="" creator="">
@@ -8248,10 +7858,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Pleasefence</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="003bbc46-ee54-43ea-bd2b-230f0feb051f" tmdb_id="0" imdb_id="" creator="">
@@ -8259,10 +7866,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Pot</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="aa96c3b5-5a8b-481b-a426-bb5c4b059132" tmdb_id="0" imdb_id="nm0690691" creator="">
@@ -8270,10 +7874,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Pundari</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="d007e8f0-5b2f-4c19-86c2-a85166127935" tmdb_id="0" imdb_id="" creator="">
@@ -8281,10 +7882,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Renosan</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="98e18fc8-a233-4035-bf64-fa96bbed9792" tmdb_id="0" imdb_id="" creator="">
@@ -8292,10 +7890,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Rhamessan</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="514b8caf-e88f-4137-8a2d-43521569accf" tmdb_id="0" imdb_id="" creator="">
@@ -8303,10 +7898,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Rodriguezson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="91af6b99-191b-41e2-8c41-f7c0498e1c18" tmdb_id="0" imdb_id="nm0000621" creator="">
@@ -8314,10 +7906,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Ruessel</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="35ecbb4e-ee36-415d-914a-a78ed8e32d4b" tmdb_id="0" imdb_id="nm0004464" creator="">
@@ -8325,10 +7914,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Rührtmann</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="ac09552a-75f0-46cc-85ac-c49c232309d2" tmdb_id="0" imdb_id="" creator="">
@@ -8336,10 +7922,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Sbencer</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="95bfcae9-e542-49e8-9b69-a4a77e4cc42c" tmdb_id="0" imdb_id="nm0000229" creator="">
@@ -8347,10 +7930,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Sbylborg</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="8d2ae397-b5ad-466c-9a32-2105a76d5701" tmdb_id="0" imdb_id="nm0000172" creator="">
@@ -8358,10 +7938,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Scheitell</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="1312b7b5-3215-40fd-92c8-fb0a16a2aebe" tmdb_id="0" imdb_id="nm0000093" creator="">
@@ -8369,10 +7946,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Schmidt</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="218c069f-2bcf-4583-ac26-a9531c08cc8d" tmdb_id="0" imdb_id="nm0000648" creator="">
@@ -8380,10 +7954,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Schnippes</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="06b81de5-9f83-4838-a979-690fa6bb2454" tmdb_id="0" imdb_id="" creator="">
@@ -8391,10 +7962,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Schrotsam</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="1034ee00-f6ff-4db0-8800-fa3c87e9fb74" tmdb_id="0" imdb_id="nm0000217" creator="">
@@ -8402,10 +7970,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Scoreseasy</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="8d8c760f-a185-40d7-8f4c-698811b0f026" tmdb_id="0" imdb_id="nm0001716" creator="">
@@ -8413,10 +7978,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Scotch</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="faa73ce4-5b83-44ab-93b5-1bfde3c2fcc7" tmdb_id="0" imdb_id="nm0000634" creator="">
@@ -8424,10 +7986,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Sellerie</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="123df8d5-a8ca-40fe-bdae-89e70d5e0601" tmdb_id="0" imdb_id="nm0000631" creator="">
@@ -8435,10 +7994,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Sgodt</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="593b7055-d649-46f8-a63f-6bad7f015372" tmdb_id="0" imdb_id="" creator="">
@@ -8446,10 +8002,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Shiresan</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="903722dd-515c-4b8c-9075-6a3a01ec0d9c" tmdb_id="0" imdb_id="" creator="">
@@ -8457,10 +8010,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Shmidt</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="8b798c4a-b073-4d9c-b96a-cb4439d8b569" tmdb_id="0" imdb_id="nm0001768" creator="">
@@ -8468,10 +8018,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Shtiikehr</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="91671df1-2ac4-40ce-bf6e-2d73d95d01e8" tmdb_id="0" imdb_id="nm0000643" creator="">
@@ -8479,10 +8026,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Skerrittsan</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="8737ba4b-9616-4e99-86ee-3299b9e347fe" tmdb_id="0" imdb_id="nm0000225" creator="">
@@ -8490,10 +8034,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Slaterson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="31d0bb24-e005-4c7c-b23c-929d4bcc5f5a" tmdb_id="0" imdb_id="" creator="">
@@ -8501,10 +8042,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Smithee</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="af527d7c-092c-47f5-a7f0-e1b3e81a8f91" tmdb_id="0" imdb_id="" creator="">
@@ -8512,10 +8050,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Smithee</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="66d0558c-74bc-4513-a6ae-78656e60c8ec" tmdb_id="0" imdb_id="nm0000228" creator="">
@@ -8523,10 +8058,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Specki</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="ee2e87c7-2621-48c3-b835-9bdb68b9e63a" tmdb_id="0" imdb_id="nm0001765" creator="">
@@ -8534,10 +8066,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Sthenturn</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="8f489dd7-a5f3-431b-ae48-9fefcdeac40e" tmdb_id="0" imdb_id="nm0000033" creator="">
@@ -8545,10 +8074,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Stitchhog</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="ecdc2b6b-41e5-464e-a956-c20ebf8e3dd9" tmdb_id="0" imdb_id="" creator="">
@@ -8556,10 +8082,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Stuart</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="788fa2a0-7908-4e96-b3c0-51ff9386a16e" tmdb_id="0" imdb_id="nm0000071" creator="">
@@ -8567,10 +8090,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Stuart</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="9d39b385-f5a9-4204-b974-8dfa07c5fba6" tmdb_id="0" imdb_id="nm0000662" creator="">
@@ -8578,10 +8098,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Sufferhand</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="ee66c193-c82d-47a1-8f23-9d5988dca6f9" tmdb_id="0" imdb_id="" creator="">
@@ -8589,10 +8106,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Tavis</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="b4561de6-215e-46ab-9212-f0868c6fcb33" tmdb_id="0" imdb_id="" creator="">
@@ -8600,10 +8114,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Testton</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="b3e45b26-3781-44de-b56f-4809d01072f9" tmdb_id="0" imdb_id="" creator="">
@@ -8611,10 +8122,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Thinner</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="7cb0a6c9-11e7-40fc-9f13-e5c9719ae21e" tmdb_id="0" imdb_id="" creator="">
@@ -8622,10 +8130,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Tjingwiel</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="bbc9b3fc-1aed-4986-b22d-ed4c9c94d653" tmdb_id="0" imdb_id="nm0866055" creator="">
@@ -8633,10 +8138,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Tolkansan</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="0909d2a6-b543-4f5b-b287-981ac6dc31f1" tmdb_id="0" imdb_id="" creator="">
@@ -8644,10 +8146,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Tornson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="9e5808d6-1736-44a5-9409-9218230a7806" tmdb_id="0" imdb_id="nm0000399" creator="">
@@ -8655,10 +8154,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Tuencher</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="4cfa15ed-912a-44fd-bc67-c8a434af7225" tmdb_id="0" imdb_id="" creator="">
@@ -8666,10 +8162,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Turnnr</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="715885d7-8739-4cde-8b94-4349dc56b2a6" tmdb_id="0" imdb_id="" creator="">
@@ -8677,10 +8170,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Tyleer</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="058c2105-4440-4d4f-8c62-131fb2fae01c" tmdb_id="0" imdb_id="" creator="">
@@ -8688,10 +8178,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Ulmer</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="a86fd32f-09b5-409a-b4cf-4a93df10be3d" tmdb_id="0" imdb_id="nm0001811" creator="">
@@ -8699,10 +8186,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Ustinovson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="10d455be-e8e5-40eb-927b-c36e3345525d" tmdb_id="0" imdb_id="nm0000682" creator="">
@@ -8710,10 +8194,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Verhoertmich</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="c184b9f6-5210-4b3b-935b-47c6f7122c1a" tmdb_id="0" imdb_id="nm0000685" creator="">
@@ -8721,10 +8202,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Voightsan</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="30aff9fa-389f-4c2f-b581-58571857ff58" tmdb_id="0" imdb_id="" creator="">
@@ -8732,10 +8210,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>von Beef</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="ab39af52-afe6-4e11-8e4f-5b8c2ceb59e2" tmdb_id="0" imdb_id="nm0001884" creator="">
@@ -8743,10 +8218,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>von Sydowson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="f0538156-247f-45f6-a710-39c66bd7a9f9" tmdb_id="0" imdb_id="nm0938754" creator="">
@@ -8754,10 +8226,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Walther</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="88715556-4743-44c1-9e1e-99999e4c753f" tmdb_id="0" imdb_id="" creator="">
@@ -8765,10 +8234,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Weathehs</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="ef2632a4-e8e9-4faf-b8dc-55ba43822c9d" tmdb_id="0" imdb_id="nm0000244" creator="">
@@ -8776,10 +8242,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Weber</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="817052f9-cfbd-415c-a4b4-a225011afcb1" tmdb_id="0" imdb_id="" creator="">
@@ -8787,10 +8250,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Weissenacker</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="cd3a2e20-efe1-4a4c-9249-164b67d185f7" tmdb_id="0" imdb_id="nm0000216" creator="">
@@ -8798,10 +8258,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Weissenacker</last_name>
 			<nick_name>Arni</nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="ec20fc5a-a552-4119-8d1e-d310650c2830" tmdb_id="0" imdb_id="nm0000142" creator="">
@@ -8809,10 +8266,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Westforest</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="8fd0eba6-3ac0-41eb-8a86-514fa77dc9a2" tmdb_id="0" imdb_id="nm0000080" creator="">
@@ -8820,10 +8274,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Wieles</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="2b6af8c4-7775-44da-820e-1ce9c55d8cd9" tmdb_id="0" imdb_id="nm0000246" creator="">
@@ -8831,10 +8282,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Will-Es</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="f7914690-3554-4d88-bc0d-22be4b48c12f" tmdb_id="0" imdb_id="" creator="">
@@ -8842,10 +8290,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Wimslow</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="55c09b06-cbe0-4fd9-bfb8-c8ebfb5e1b4e" tmdb_id="0" imdb_id="nm0001845" creator="">
@@ -8853,10 +8298,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Witaker</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="f63c4cf3-a602-4f5a-84fd-caed3aaf8340" tmdb_id="0" imdb_id="" creator="">
@@ -8864,10 +8306,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Woodsan</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="6946dffd-0f54-4462-8587-47a8c036857c" tmdb_id="0" imdb_id="" creator="">
@@ -8875,10 +8314,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Woosan</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="34d2d3d0-34cc-4ff9-88e6-26d234c0e1e7" tmdb_id="0" imdb_id="nm0949350" creator="">
@@ -8886,10 +8322,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Yang</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="2" gender="0" birthday="" deathday="" country="" />
 			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="a255cbb2-cca8-406e-b064-25b912aad1c8" tmdb_id="0" imdb_id="" creator="">
@@ -8897,10 +8330,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<last_name>Zemeckisson</last_name>
 			<nick_name></nick_name>
 			<images />
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="0" birthday="" deathday="" country="" />
+			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 	</celebritypeople>
@@ -9177,7 +8607,6 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<person id="3e82947f-9094-4ee5-b1d7-a22557d07062" first_name="Julian" last_name="Grunnt" nick_name="" />
 		<person id="45ea26e3-d76b-42e2-aef6-cc135ddb6e51" first_name="Hugh" last_name="Grunnt" nick_name="" imdb_id="nm0000424" />
 		<person id="339eb234-3e14-4005-9faf-d7136e83ff61" first_name="Harry" last_name="Guartino" nick_name="" />
-		<person id="a435e040-1584-48d4-82cd-2ecf80bc2e42" first_name="Yohan" last_name="Gudmarn" nick_name="" />
 		<person id="ca53b0fc-53cb-443f-aba8-408d8b0bbdd8" first_name="Yohan" last_name="Gudmarn" nick_name="" imdb_id="nm0000422" />
 		<person id="f3daab70-c099-44be-a35f-68028be68e60" first_name="John" last_name="Gujelhearmin" nick_name="" />
 		<person id="3b3eb44b-539a-4686-9e0e-0a88128c40c4" first_name="Fred" last_name="Gwynmee" nick_name="" />
@@ -9527,7 +8956,6 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		<person id="03e1fd87-3d2e-42ea-b89b-31226cd0ffa0" first_name="Serge-Henri" last_name="Valckeer" nick_name="" />
 		<person id="081f7a91-2031-4660-816d-c7cd5ce6c1a2" first_name="Axl" last_name="van Armbeisser" nick_name="" />
 		<person id="3f70dde0-6264-4dcc-84af-0e6c7e06ddbe" first_name="Monique" last_name="van de Phan" nick_name="" />
-		<person id="c317f4a2-7d77-49c6-b8bd-6207151abbdc" first_name="Casper" last_name="Van Dyn" nick_name="" />
 		<person id="9664011b-c5fa-4aa0-876a-492c3731ddae" first_name="Buddy" last_name="Van Hornson" nick_name="" />
 		<person id="ced158be-81d1-4320-b4a1-577690e4e6a0" first_name="Alida" last_name="Vehli" nick_name="" imdb_id="nm0885098" />
 		<person id="8a449a63-88cb-4ada-99d4-d2675aef9b32" first_name="Michael" last_name="Vejarson" nick_name="" />

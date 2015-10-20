@@ -318,14 +318,15 @@ Type TDatabaseLoader
 			data = new TData
 			'contains custom fictional overriding the base one
 			xml.LoadValuesToData(nodeDetails, data, [..
-				"gender", "birthday", "deathday", "country", "fictional" ..
+				"gender", "birthday", "deathday", "country", "fictional", ..
+				"job" ..
 			])
 			celebrity.gender = data.GetInt("gender", celebrity.gender)
 			celebrity.SetDayOfBirth( data.GetString("birthday", celebrity.dayOfBirth) )
 			celebrity.SetDayOfDeath( data.GetString("deathday", celebrity.dayOfDeath) )
 			celebrity.country = data.GetString("country", celebrity.country)
 			celebrity.fictional = data.GetInt("fictional", celebrity.fictional)
-			
+			celebrity.job = data.GetInt("job", celebrity.job)
 
 			'=== DATA ===
 			local nodeData:TxmlNode = xml.FindElementNode(node, "data")

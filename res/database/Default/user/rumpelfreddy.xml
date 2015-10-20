@@ -725,230 +725,161 @@
         <person id="Celeb_Freddy_R_1" tmdb_id="0" imdb_id="" creator="">
             <first_name>Thomas</first_name>
             <last_name>Unterlisl</last_name>
-            <functions>
-                <function>1</function>
-            </functions>
-            <details gender="1"  birthday="1972" deathday="" country="D" />
+            <details job="1" gender="1"  birthday="1972" deathday="" country="D" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<!-- Neil Morrissey Schauspieler in Englischen Komödien und Serien und Stimme von Bob dem Baumeister-->
         <person id="Celeb_Freddy_S_1" tmdb_id="0" imdb_id="" creator="">
             <first_name>Nail</first_name>
             <last_name>Norrissey</last_name>
-            <functions>
-                <function>2</function>
-            </functions>
-            <details gender="1"  birthday="1962" deathday="" country="UK" />
+            <details job="2" gender="1"  birthday="1962" deathday="" country="UK" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<!-- Tom Hanks-->
         <person id="Celeb_Freddy_S_2" tmdb_id="0" imdb_id="" creator="">
             <first_name>Tom</first_name>
             <last_name>Hencs</last_name>
-            <functions>
-                <function>2</function>
-            </functions>
-            <details gender="1"  birthday="1956" deathday="" country="US" />
+            <details job="2" gender="1"  birthday="1956" deathday="" country="US" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
         <person id="Per_custom_Freddy_1" tmdb_id="0" imdb_id="" creator="">
 		 <!-- Express nach Sibirien (2) -->
             <first_name>Anna</first_name>
             <last_name>Adlerman</last_name>
-            <functions>
-                <function>2</function>
-            </functions>
-            <details gender="2"  birthday="1946" deathday="" country="D" fictional="1" />
+            <details job="2" gender="2"  birthday="1946" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_2" tmdb_id="0" imdb_id="" creator="">
 		 <!-- Julia in der Feenwelt(1) -->
             <first_name>Hannah</first_name>
             <last_name>Hobkinns</last_name>
-            <functions>
-                <function>1</function>
-            </functions>
-            <details gender="2"  birthday="1984" deathday="" country="UK" fictional="1" />
+            <details job="1" gender="2"  birthday="1984" deathday="" country="UK" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_3" tmdb_id="0" imdb_id="" creator="">
 		<!--  -->
             <first_name>Lena</first_name>
             <last_name>Lauterberg</last_name>
-            <functions>
-                <function>2</function>
-            </functions>
-            <details gender="2"  birthday="1979" deathday="" country="D" fictional="1" />
+            <details job="2" gender="2"  birthday="1979" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_4" tmdb_id="0" imdb_id="" creator="">
 		<!--  -->
             <first_name>Sarah</first_name>
             <last_name>van Sonderbar</last_name>
-            <functions>
-                <function>1</function>
-            </functions>
-            <details gender="2"  birthday="1987" deathday="" country="D" fictional="1" />
+            <details job="1" gender="2"  birthday="1987" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_5" tmdb_id="0" imdb_id="" creator="">
 		<!--  -->
             <first_name>Blondie</first_name>
             <last_name>Prall</last_name>
-            <functions>
-                <function>1</function>
-            </functions>
-            <details gender="2"  birthday="1976" deathday="" country="AUT" fictional="1" />
+            <details job="1" gender="2"  birthday="1976" deathday="" country="AUT" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_6" tmdb_id="0" imdb_id="" creator="">
 		<!-- Kroko See 6 (2) -->
             <first_name>Olga</first_name>
             <last_name>Ostburg</last_name>
-            <functions>
-                <function>2</function>
-            </functions>
-            <details gender="2"  birthday="1981" deathday="" country="D" fictional="1" />
+            <details job="2" gender="2"  birthday="1981" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_7" tmdb_id="0" imdb_id="" creator="">
 		<!--  -->
             <first_name>Gerlinde</first_name>
             <last_name>von Gluterhof</last_name>
-            <functions>
-                <function>1</function>
-            </functions>
-            <details gender="2"  birthday="1971" deathday="" country="D" fictional="1" />
+            <details job="1" gender="2"  birthday="1971" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_8" tmdb_id="0" imdb_id="" creator="">
 		<!-- Kroko See 6 (2)-->
             <first_name>Marie</first_name>
             <last_name>Merkl</last_name>
-            <functions>
-                <function>2</function>
-            </functions>
-            <details gender="2"  birthday="1978" deathday="" country="D" fictional="1" />
+            <details job="2" gender="2"  birthday="1978" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_9" tmdb_id="0" imdb_id="" creator="">
 		<!--  -->
             <first_name>Leonie</first_name>
             <last_name>Luberlippe</last_name>
-            <functions>
-                <function>1</function>
-            </functions>
-            <details gender="2"  birthday="1983" deathday="" country="D" fictional="1" />
+            <details job="1" gender="2"  birthday="1983" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_10" tmdb_id="0" imdb_id="" creator="">
 		<!--  -->
             <first_name>Zoe</first_name>
             <last_name>Zeckenbart</last_name>
-            <functions>
-                <function>1</function>
-            </functions>
-            <details gender="2"  birthday="1960" deathday="" country="D" fictional="1" />
+            <details job="1" gender="2"  birthday="1960" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_11" tmdb_id="0" imdb_id="" creator="">
 		<!--  -->
             <first_name>Lukas</first_name>
             <last_name>Liebsterman</last_name>
-            <functions>
-                <function>1</function>
-            </functions>
-            <details gender="1"  birthday="1980" deathday="" country="D" fictional="1" />
+            <details job="1" gender="1"  birthday="1980" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_12" tmdb_id="0" imdb_id="" creator="">
 		<!-- Kroko See 6 (1), 27 sind nicht genug (2), Frucht Kung Fu 3 (1)   -->
             <first_name>Tobias</first_name>
             <last_name>Täubchen</last_name>
-            <functions>
-                <function>1</function>
-            </functions>
-            <details gender="1"  birthday="1962" deathday="" country="D" fictional="1" />
+            <details job="1" gender="1"  birthday="1962" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_13" tmdb_id="0" imdb_id="" creator="">
 		<!-- Express nach Sibirien (1) -->
             <first_name>Hardtmann</first_name>
             <last_name>von Eisenhalt</last_name>
-            <functions>
-                <function>1</function>
-            </functions>
-            <details gender="1"  birthday="1940" deathday="" country="D" fictional="1" />
+            <details job="1" gender="1"  birthday="1940" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_14" tmdb_id="0" imdb_id="" creator="">
 		<!--  -->
             <first_name>Bernd</first_name>
             <last_name>Bohrman</last_name>
-            <functions>
-                <function>1</function>
-            </functions>
-            <details gender="1"  birthday="1976" deathday="" country="D" fictional="1" />
+            <details job="1" gender="1"  birthday="1976" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_15" tmdb_id="0" imdb_id="" creator="">
 		<!-- Express nach Sibirien (2), Frucht Kung Fu 3 (2) -->
             <first_name>David</first_name>
             <last_name>Davidson</last_name>
-            <functions>
-                <function>2</function>
-            </functions>
-            <details gender="1"  birthday="1953" deathday="" country="DK" fictional="1" />
+            <details job="2" gender="1"  birthday="1953" deathday="" country="DK" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_16" tmdb_id="0" imdb_id="" creator="">
 		<!--  -->
             <first_name>Walter</first_name>
             <last_name>Wienerwurst</last_name>
-            <functions>
-                <function>1</function>
-            </functions>
-            <details gender="1"  birthday="1982" deathday="" country="D" fictional="1" />
+            <details job="1" gender="1"  birthday="1982" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_17" tmdb_id="0" imdb_id="" creator="">
 		<!-- Krokosee 6 (2) -->
             <first_name>Felix</first_name>
             <last_name>Feuerfranz</last_name>
-            <functions>
-                <function>2</function>
-            </functions>
-            <details gender="1"  birthday="1974" deathday="" country="D"  fictional="1" />
+            <details job="2" gender="1"  birthday="1974" deathday="" country="D"  fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_18" tmdb_id="0" imdb_id="" creator="">
 		<!--  -->
             <first_name>Günter</first_name>
             <last_name>von und zu Gutberg</last_name>
-            <functions>
-                <function>1</function>
-            </functions>
-            <details gender="1"  birthday="1985" deathday="" country="D" fictional="1"  />
+            <details job="1" gender="1"  birthday="1985" deathday="" country="D" fictional="1"  />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_19" tmdb_id="0" imdb_id="" creator="">
 		<!--  -->
             <first_name>Johannes</first_name>
             <last_name>Jasager</last_name>
-            <functions>
-                <function>1</function>
-            </functions>
-            <details gender="1"  birthday="1970" deathday="" country="D" fictional="1" />
+            <details job="1" gender="1"  birthday="1970" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_20" tmdb_id="0" imdb_id="" creator="">
 		<!--  -->
             <first_name>Karl</first_name>
             <last_name>Krautrauch</last_name>
-            <functions>
-                <function>1</function>
-            </functions>
-            <details gender="1"  birthday="1968" deathday="" country="D" fictional="1" />
+            <details job="1" gender="1"  birthday="1968" deathday="" country="D" fictional="1" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
     </celebritypeople>

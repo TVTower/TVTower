@@ -5,60 +5,37 @@
         <person id="ronny-programmeperson-gertkalischke" fictional="1" creator="5578" created_by="Ronny">
             <first_name>Gert</first_name>
             <last_name>Kalischke</last_name>
-            <functions>
-                <function>1</function>
-                <function>2</function>
-            </functions>
-            <details gender="1"  birthday="1943" deathday="2014" country="NL" />
+            <details job="3" gender="1"  birthday="1943" deathday="2014" country="NL" />
             <data prominence="1" skill="2" fame="1" scandalizing="0" price_mod="1" power="3" humor="5" charisma="1" appearance="7" topgenre1="15" topgenre2="5" />
         </person>
         <person id="ronny-programmeperson-holgerpelz" fictional="1" creator="5578" created_by="Ronny">
             <first_name>Holger</first_name>
             <last_name>Pelz</last_name>
-            <functions>
-                <function>1</function>
-                <function>128</function>
-            </functions>
-            <details gender="1"  birthday="1951" deathday="2033" country="D" />
+            <details job="129" gender="1"  birthday="1951" deathday="2033" country="D" />
             <data prominence="0" skill="3" fame="0" scandalizing="0" price_mod="1" power="3" humor="1" charisma="2" appearance="3" topgenre1="6" topgenre2="300" />
         </person>
         <person id="ronny-programmeperson-samuelloew" fictional="1" creator="5578" created_by="Ronny">
             <first_name>Samuel</first_name>
             <last_name>Löw</last_name>
-            <functions>
-                <function>1</function>
-                <function>128</function>
-            </functions>
-            <details gender="1"  birthday="1959" deathday="2041" country="IL" />
+            <details job="129" gender="1"  birthday="1959" deathday="2041" country="IL" />
             <data prominence="0" skill="4" fame="0" scandalizing="0" price_mod="1" power="2" humor="2" charisma="3" appearance="3" topgenre1="6" topgenre2="300" />
         </person>
         <person id="ronny-programmeperson-thomasstone" fictional="1" creator="5578" created_by="Ronny">
             <first_name>Thomas</first_name>
             <last_name>Stone</last_name>
-            <functions>
-                <function>1</function>
-                <function>128</function>
-            </functions>
-            <details gender="1"  birthday="1929" deathday="1991" country="USA" />
+            <details job="129" gender="1"  birthday="1929" deathday="1991" country="USA" />
             <data prominence="1" skill="7" fame="0" scandalizing="0" price_mod="1" power="3" humor="1" charisma="4" appearance="1" topgenre1="6" topgenre2="300" />
         </person>
         <person id="ronny-programmeperson-bennyjameson" fictional="1" creator="5578" created_by="Ronny">
             <first_name>Benny</first_name>
             <last_name>Jameson</last_name>
-            <functions>
-                <function>4</function>
-                <function>8</function>
-            </functions>
-            <details gender="1"  birthday="1962" deathday="2040" country="CA" />
+            <details job="12" gender="1"  birthday="1962" deathday="2040" country="CA" />
             <data prominence="1" skill="4" fame="0" scandalizing="0" price_mod="1" power="2" humor="4" charisma="2" appearance="9" topgenre1="9" topgenre2="300" />
         </person>
         <person id="ronny-programmeperson-freddyjbush" fictional="1" creator="5578" created_by="Ronny">
             <first_name>Freddy J.</first_name>
             <last_name>Bush</last_name>
-            <functions>
-                <function>1</function>
-            </functions>
-            <details gender="1"  birthday="1942" deathday="2030" country="USA" />
+            <details job="1" gender="1"  birthday="1942" deathday="2030" country="USA" />
             <data prominence="1" skill="3" fame="0" scandalizing="0" price_mod="1" power="3" humor="2" charisma="2" appearance="1" topgenre1="9" topgenre2="0" />
         </person>
 	</celebritypeople>

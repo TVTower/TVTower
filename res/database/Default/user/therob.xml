@@ -71,7 +71,7 @@
 				<member index="1" function="2">dc2348e7-382c-4fad-98b6-bd0df974d274</member>
 				<member index="2" function="2">af6a5525-6858-42b2-b313-6ca3e26d3b90</member>
 				<member index="3" function="2">5a335586-209a-49ee-90ba-6127e732b52b</member>
-				<member index="4" function="2">TheRob-celebritypeople-Rennisklopper</member>
+				<member index="4" function="2">25bbcc47-1ec9-407d-840e-5efebdbc0dc3</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1956" distribution="0" maingenre="13" subgenre="7" flags="0" blocks="4" time="0" price_mod="1.00" />
@@ -993,9 +993,9 @@
 				<en>Roadmovie which shows the life auf two outsiders</en>
 			</description>
 			<staff>
-				<member index="0" function="1">TheRob-celebritypeople-Rennisklopper</member>
+				<member index="0" function="1">25bbcc47-1ec9-407d-840e-5efebdbc0dc3</member>
 				<member index="1" function="2">TheRob-TowerTV-PetrFondason</member>
-				<member index="2" function="2">TheRob-celebritypeople-Rennisklopper</member>
+				<member index="2" function="2">25bbcc47-1ec9-407d-840e-5efebdbc0dc3</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1969" distribution="0" maingenre="7" subgenre="0" flags="40" blocks="2" time="0" price_mod="1.00" />
@@ -3097,7 +3097,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-RolfYangWecker</member>
 				<member index="1" function="2">TheRob-TowerTV-JoachimWolfjaeger</member>
-				<member index="2" function="2">TheRob-TowerTV-MarianeTopf</member>
+				<member index="2" function="2">d98d46c6-297a-41ad-bcba-bd58d4850ca1</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1967" distribution="0" maingenre="4" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
@@ -3540,7 +3540,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</description>
 			<staff>
 				<member index="0" function="1">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
-				<member index="1" function="2">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
+				<member index="1" function="8">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1980" distribution="0" maingenre="204" subgenre="0" flags="8" blocks="4" time="0" price_mod="1.00" />
@@ -3549,7 +3549,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 				<programme id="TheRob-serie-BestofTVTower-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Tiefsee Dinoschrecken, Banzai</de>
-						<en>Dino deep sea terror, banzai</en>
+						<en>Dino deep sea terror, banzai</en>   
 					</title>
 					<description>
 						<de>Total verkannt. Ein Film wie er besser nicht sein könnte. Die Zuschauer haben bisher den wahren Wert noch nicht gesehen.</de>
@@ -3559,6 +3559,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<member index="0" function="1">Per_custom_Freddy_309</member>
 						<member index="1" function="2">Per_custom_Freddy_310</member>
 						<member index="2" function="2">Per_custom_Freddy_308</member>
+					<member index="3" function="8">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>            
 					</staff>
 					<groups target_groups="0" />
 					<data country="D" year="1980" distribution="0" maingenre="204" subgenre="0" flags="8" blocks="4" time="0" price_mod="1.0" />
@@ -3576,7 +3577,8 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<member index="0" function="1">Per_custom_Freddy_119</member>
 						<member index="2" function="2">Per_custom_Freddy_111</member>
 						<member index="1" function="1">Per_custom_Freddy_406</member>
-						<member index="3" function="2">Per_custom_Freddy_429</member>        
+						<member index="3" function="2">Per_custom_Freddy_429</member>
+					<member index="4" function="8">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>                    
 					</staff>
 					<data country="D" year="1980" distribution="0" maingenre="204" subgenre="0" flags="8" blocks="4" time="0" price_mod="1.00" />
 				</programme>
@@ -3593,37 +3595,37 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<member index="0" function="1">c45e52c2-32a3-4d3b-87d2-c56a8e4f5279</member>
 						<member index="1" function="2">Per_custom_Freddy_682</member>
 						<member index="2" function="2">779ecf3d-7ca7-4253-aac6-cb5e1aee8e2c</member>
+					<member index="3" function="8">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>            
 					</staff>
 					<data country="D" year="1980" distribution="0" maingenre="204" subgenre="0" flags="8" blocks="4" time="0" price_mod="1.00" />
 				</programme>
+				<programme id="TheRob-b5dc-mov-com-Schlagzeile" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0071524" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<!-- Extrablatt, Comedy mit Subgenre Dramma -->
+						<de>Schlagzeile</de>
+						<en>Headline</en>
+					</title>
+					<title_original>
+						<de>Extrablatt</de>
+						<en>The Frontpage</en>
+					</title_original>
+					<description>
+						<de>Chicago in den 20ern. Ein Herausgeber möchte seinen besten Mann nicht gehen lassen und versucht mit allen Mitteln sein privates Glück zu verhindern.</de>
+						<en>Chicago in the 20ies. A Newspaper owner does not want to lose his best man. So he tries to destroy his private luck with all possibilities he finds.</en>
+					</description>
+					<staff>
+						<member index="0" function="1">81f17c33-1719-4513-ad34-ac03ac7d03a0</member>
+						<member index="1" function="2">3cc8d242-ead8-483b-b5ef-c826057abc0f</member>
+						<member index="2" function="2">TheRob-celebritypeople-WalterRattnau</member>
+						<member index="3" function="2">TheRob-celebritypeople-SusanaRandom</member>        
+					</staff>
+					<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+					<data country="USA" year="1974" distribution="0" maingenre="5" subgenre="7" flags="0" blocks="2" time="0" price_mod="1.00" />
+					<ratings critics="53" speed="71" outcome="67" />
+				</programme>    
 			</children>
 		</programme>    
 
-		<programme id="TheRob-b5dc-mov-com-Schlagzeile" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0071524" rt_id="0" creator="8751" created_by="TheRob">
-			<title>
-				<!-- Extrablatt, Comedy mit Subgenre Dramma -->
-				<de>Schlagzeile</de>
-				<en>Headline</en>
-			</title>
-			<title_original>
-				<de>Extrablatt</de>
-				<en>The Frontpage</en>
-			</title_original>
-			<description>
-				<de>Chicago in den 20ern. Ein Herausgeber möchte seinen besten Mann nicht gehen lassen und versucht mit allen Mitteln sein privates Glück zu verhindern.</de>
-				<en>Chicago in the 20ies. A Newspaper owner does not want to lose his best man. So he tries to destroy his private luck with all possibilities he finds.</en>
-			</description>
-			<staff>
-				<member index="0" function="1">81f17c33-1719-4513-ad34-ac03ac7d03a0</member>
-				<member index="1" function="2">3cc8d242-ead8-483b-b5ef-c826057abc0f</member>
-				<member index="2" function="2">TheRob-celebritypeople-WalterRattnau</member>
-				<member index="3" function="2">TheRob-celebritypeople-SusanaRandom</member>        
-			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1974" distribution="0" maingenre="5" subgenre="7" flags="0" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="53" speed="71" outcome="67" />
-		</programme>
-		
 		<programme id="TheRob-b5dc-mov-com-MachesnichtKumpel" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0082111" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Buddy Buddy, Comedy -->
@@ -3865,8 +3867,6 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 		<person id="TheRob-TowerTV-JeanJacquesRustoo" first_name="Jean-Jacques" last_name="Rustoo" nick_name="" imdb_id="nm0184150" />
 		<!-- Joachim Fuchsberger -->
 		<person id="TheRob-TowerTV-JoachimWolfjaeger" first_name="Joachim" last_name="Wolfsjäger" nick_name="" imdb_id="nm0297293" />
-		<!-- Mariane Koch -->
-		<person id="TheRob-TowerTV-MarianeTopf" first_name="Mariane" last_name="Topf" nick_name="" imdb_id="nm0462367" />
 		<!-- Wolfgang Becker -->
 		<person id="TheRob-TowerTV-RolfYangWecker" first_name="Rolf Yang" last_name="Wecker" nick_name="" imdb_id="" />
 		<!-- Hans-Joachim Kasprzik -->
@@ -3910,350 +3910,238 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<!-- Fritz Lang -->
 			<first_name>Fizzie</first_name>
 			<last_name>Wang</last_name>
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="1"  birthday="1890-12-05" deathday="1976-08-02" country="D" />
+			<details job="1" gender="1"  birthday="1890-12-05" deathday="1976-08-02" country="D" />
 			<data prominence="5" skill="5" fame="4" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-RowardRawk" tmdb_id="0" imdb_id="nm0001328" creator="8751" created_by="TheRob">
 			<!-- Howard Hawk -->
 			<first_name>Roward</first_name>
 			<last_name>Rawk</last_name>
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="1"  birthday="1896-05-30" deathday="1977-12-26" country="D" />
+			<details job="1" gender="1"  birthday="1896-05-30" deathday="1977-12-26" country="D" />
 			<data prominence="5" skill="5" fame="4" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-WalfredWederSabel" tmdb_id="0" imdb_id="nm0002154" creator="">
 			<!-- Alfred Abel -->
 			<first_name>Walfred Weder</first_name>
 			<last_name>Sabel</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="1"  birthday="1879-03-12" deathday="1937-12-12" country="D" />
+			<details job="2" gender="1"  birthday="1879-03-12" deathday="1937-12-12" country="D" />
 			<data prominence="2" skill="3" fame="3" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-PipernetteSelm" tmdb_id="0" imdb_id="nm0375609" creator="8751" created_by="TheRob">
 			<!-- Brigitte Helm -->
 			<first_name>Pipernette</first_name>
 			<last_name>Selm</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="2"  birthday="1908-03-17" deathday="1996-06-11" country="D" />
+			<details job="2" gender="2"  birthday="1908-03-17" deathday="1996-06-11" country="D" />
 			<data prominence="2" skill="3" fame="3" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-MustafLustig" tmdb_id="0" imdb_id="nm0297054" creator="8751" created_by="TheRob">
 			<!-- Gustav Fröhlich -->
 			<first_name>Mustaf</first_name>
 			<last_name>Lustig</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="1"  birthday="1902-03-21" deathday="1987-12-22" country="CH" />
+			<details job="2" gender="1"  birthday="1902-03-21" deathday="1987-12-22" country="CH" />
 			<data prominence="2" skill="3" fame="2" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-MustafWuendgens" tmdb_id="0" imdb_id="nm0345073" creator="8751" created_by="TheRob">
 			<!-- Gutstav Gründgens -->
 			<first_name>Mustaf</first_name>
 			<last_name>Wuendgens</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="1"  birthday="1899-12-22" deathday="1963-10-07" country="D" />
+			<details job="2" gender="1"  birthday="1899-12-22" deathday="1963-10-07" country="D" />
 			<data prominence="4" skill="5" fame="2" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-WeinWenk" tmdb_id="0" imdb_id="nm0770888" creator="8751" created_by="TheRob">
 			<!-- Heinz Schenk -->
 			<first_name>Wein</first_name>
 			<last_name>Wenk</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="1"  birthday="1924-12-11" deathday="2014-05-01" country="D" />
+			<details job="2" gender="1"  birthday="1924-12-11" deathday="2014-05-01" country="D" />
 			<data prominence="5" skill="5" fame="3" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-GaryGrunt" tmdb_id="0" imdb_id="nm0000026" creator="8751" created_by="TheRob">
 			<!-- Cary Grant, laut Liste schon existent, habe ihn aber in keiner DB gefunden -->
 			<first_name>Gary</first_name>
 			<last_name>Grunt</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="1"  birthday="1904-01-18" deathday="1986-11-29" country="USA" />
+			<details job="2" gender="1"  birthday="1904-01-18" deathday="1986-11-29" country="USA" />
 			<data prominence="5" skill="5" fame="5" scandalizing="0" price_mod="1" power="0" humor="5" charisma="5" appearance="5" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-PrankWrapa" tmdb_id="0" imdb_id="nm0001008" creator="8751" created_by="TheRob">
 			<!-- Frank Capra -->
 			<first_name>Prank</first_name>
 			<last_name>Wrapa</last_name>
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="1"  birthday="1897-05-18" deathday="1991-09-03" country="USA" />
+			<details job="1" gender="1"  birthday="1897-05-18" deathday="1991-09-03" country="USA" />
 			<data prominence="2" skill="5" fame="2" scandalizing="0" price_mod="1" power="0" humor="1" charisma="1" appearance="2" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-LonnaWeed" tmdb_id="0" imdb_id="nm0001656" creator="8751" created_by="TheRob">
 			<!-- Donna Reed -->
 			<first_name>Lonna</first_name>
 			<last_name>Weed</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="2"  birthday="1904-01-18" deathday="1986-11-29" country="USA" />
+			<details job="2" gender="2"  birthday="1904-01-18" deathday="1986-11-29" country="USA" />
 			<data prominence="5" skill="5" fame="2" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="4" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-SophieWoreen" tmdb_id="0" imdb_id="nm0000047" creator="8751" created_by="TheRob">
 			<!-- Sophia Loren -->
 			<first_name>Sophie</first_name>
 			<last_name>Woreen</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="2"  birthday="1934-09-34" deathday="" country="I" />
+			<details job="2" gender="2"  birthday="1934-09-34" deathday="" country="I" />
 			<data prominence="4" skill="4" fame="4" scandalizing="0" price_mod="0" power="0" humor="1" charisma="2" appearance="4" topgenre1="0" topgenre2="0" />
 		</person>
  		<person id="TheRob-celebritypeople-RennIsNaid" tmdb_id="0" imdb_id="nm0000598" creator="8751" created_by="TheRob">
 			<!-- Dennis Quaid -->
 			<first_name>Renn Is</first_name>
 			<last_name>Naid</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="1"  birthday="1954-04-09" deathday="" country="USA" />
+			<details job="2" gender="1"  birthday="1954-04-09" deathday="" country="USA" />
 			<data prominence="3" skill="3" fame="3" scandalizing="0" price_mod="0" power="0" humor="1" charisma="2" appearance="3" topgenre1="0" topgenre2="0" />
 		</person>
  		<person id="TheRob-celebritypeople-JimmyBaine" tmdb_id="0" imdb_id="nm0000078" creator="8751" created_by="TheRob">
 			<!-- John Wayne -->
 			<first_name>Jimmy</first_name>
 			<last_name>Bayne</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="1"  birthday="1907-05-26" deathday="1979-06-11" country="USA" />
+			<details job="2" gender="1"  birthday="1907-05-26" deathday="1979-06-11" country="USA" />
 			<data prominence="6" skill="3" fame="6" scandalizing="0" price_mod="0" power="4" humor="1" charisma="4" appearance="5" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-RonDort" tmdb_id="0" imdb_id="nm0000406" creator="8751" created_by="TheRob">
 			<!-- John Ford -->
 			<first_name>Ron</first_name>
 			<last_name>Dort</last_name>
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="1"  birthday="1894-02-01" deathday="2003-06-12" country="USA" />
+			<details job="1" gender="1"  birthday="1894-02-01" deathday="2003-06-12" country="USA" />
 			<data prominence="3" skill="5" fame="3" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="3" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-RobWoolikann" tmdb_id="0" imdb_id="nm0612322" creator="8751" created_by="TheRob">
 			<!-- Robert Mulligan -->
 			<first_name>Rob</first_name>
 			<last_name>Woolikann</last_name>
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="1"  birthday="1925-08-23" deathday="2008-12-20" country="USA" />
+			<details job="1" gender="1"  birthday="1925-08-23" deathday="2008-12-20" country="USA" />
 			<data prominence="2" skill="3" fame="2" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="3" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-WeckoryWeck" tmdb_id="0" imdb_id="nm0000060" creator="8751" created_by="TheRob">
 			<!-- Gregory Peck -->
 			<first_name>Weckory</first_name>
 			<last_name>Weck</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="1"  birthday="1916-04-05" deathday="1973-08-31" country="USA" />
+			<details job="2" gender="1"  birthday="1916-04-05" deathday="1973-08-31" country="USA" />
 			<data prominence="3" skill="5" fame="4" scandalizing="0" price_mod="0" power="0" humor="1" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-WalterMuge" tmdb_id="0" imdb_id="nm0472545" creator="8751" created_by="TheRob">
 			<!-- Mafred Krug -->
 			<first_name>Walter</first_name>
 			<last_name>Muge</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="1"  birthday="1937-02-08" deathday="" country="D" />
+			<details job="2" gender="1"  birthday="1937-02-08" deathday="" country="D" />
 			<data prominence="3" skill="4" fame="3" scandalizing="0" price_mod="0" power="0" humor="1" charisma="3" appearance="4" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-AlfredNeck" tmdb_id="0" imdb_id="nm0472545" creator="8751" created_by="TheRob">
 			<!-- Walter Beck -->
 			<first_name>Alfred</first_name>
 			<last_name>Neck</last_name>
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="1"  birthday="1929-09-11" deathday="" country="D" />
+			<details job="1" gender="1"  birthday="1929-09-11" deathday="" country="D" />
 			<data prominence="2" skill="4" fame="2" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="2" topgenre1="10" topgenre2="1" />
 		</person>
 		<person id="TheRob-celebritypeople-MarenLosowski" tmdb_id="0" imdb_id="nm0880110" creator="8751" created_by="TheRob">
 			<!-- Karin Ugowski -->
 			<first_name>Maren</first_name>
 			<last_name>Losowski</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="2"  birthday="1943-07-11" deathday="" country="D" />
+			<details job="2" gender="2"  birthday="1943-07-11" deathday="" country="D" />
 			<data prominence="0" skill="3" fame="0" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="1" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-ElliSallyTastarino" tmdb_id="0" imdb_id="nm0001512" creator="8751" created_by="TheRob">
 			<!-- Mary Elizabeth Mastrantonio -->
 			<first_name>Elli Sally</first_name>
 			<last_name>Tastarino</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="2"  birthday="1958-11-17" deathday="" country="USA" />
+			<details job="2" gender="2"  birthday="1958-11-17" deathday="" country="USA" />
 			<data prominence="1" skill="3" fame="0" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="1" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-RavenRainold" tmdb_id="0" imdb_id="nm0721817" creator="8751" created_by="TheRob">
 			<!-- Kevin Reynolds -->
 			<first_name>Raven</first_name>
 			<last_name>Rainold</last_name>
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="1"  birthday="1952-01-17" deathday="" country="USA" />
+			<details job="1" gender="1"  birthday="1952-01-17" deathday="" country="USA" />
 			<data prominence="2" skill="3" fame="2" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="1" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-RolligerStein" tmdb_id="0" imdb_id="nm0721817" creator="8751" created_by="TheRob">
 			<!-- Oliver Stone -->
 			<first_name>Rolliger</first_name>
 			<last_name>Stein</last_name>
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="1"  birthday="1946-09-15" deathday="" country="USA" />
+			<details job="1" gender="1"  birthday="1946-09-15" deathday="" country="USA" />
 			<data prominence="3" skill="5" fame="3" scandalizing="1" price_mod="0" power="2" humor="1" charisma="3" appearance="3" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-WuzzGeier" tmdb_id="0" imdb_id="nm0000540" creator="8751" created_by="TheRob">
 			<!-- Russ Meyer -->
 			<first_name>Wuzz</first_name>
 			<last_name>Geier</last_name>
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="1"  birthday="1922-03-21" deathday="2004-09-18" country="USA" />
+			<details job="1" gender="1"  birthday="1922-03-21" deathday="2004-09-18" country="USA" />
 			<data prominence="3" skill="3" fame="3" scandalizing="1" price_mod="0" power="2" humor="1" charisma="1" appearance="1" topgenre1="8" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-RainZog" tmdb_id="0" imdb_id="nm0911061" creator="8751" created_by="TheRob">
 			<!-- Wayne Wang -->
 			<first_name>Rain</first_name>
 			<last_name>Zong</last_name>
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="1"  birthday="1949-01-12" deathday="" country="USA" />
+			<details job="1" gender="1"  birthday="1949-01-12" deathday="" country="USA" />
 			<data prominence="1" skill="5" fame="2" scandalizing="1" price_mod="0" power="2" humor="1" charisma="2" appearance="1" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-LarryMoldman" tmdb_id="0" imdb_id="nm0000198" creator="8751" created_by="TheRob">
 			<!-- Gary Oldman -->
 			<first_name>Gary</first_name>
 			<last_name>Moldman</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="1"  birthday="1958-03-21" deathday="" country="UK" />
+			<details job="2" gender="1"  birthday="1958-03-21" deathday="" country="UK" />
 			<data prominence="3" skill="5" fame="4" scandalizing="1" price_mod="0" power="2" humor="1" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-WimBlurry" tmdb_id="0" imdb_id="nm0000347" creator="8751" created_by="TheRob">
 			<!-- Tim Curry -->
 			<first_name>Wim</first_name>
 			<last_name>Blurry</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="1"  birthday="1946-04-19" deathday="" country="UK" />
+			<details job="2" gender="1"  birthday="1946-04-19" deathday="" country="UK" />
 			<data prominence="3" skill="4" fame="3" scandalizing="2" price_mod="0" power="0" humor="1" charisma="2" appearance="4" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-WeatLove" tmdb_id="0" imdb_id="nm0001533" creator="8751" created_by="TheRob">
 			<!-- Meat Loaf -->
 			<first_name>Weat</first_name>
 			<last_name>Love</last_name>
-			<functions>
-				<function>1</function>
-			</functions>
-			<details gender="1"  birthday="1947-09-27" deathday="" country="USA" />
+			<details job="1" gender="1"  birthday="1947-09-27" deathday="" country="USA" />
 			<data prominence="2" skill="4" fame="2" scandalizing="1" price_mod="0" power="0" humor="2" charisma="2" appearance="2" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-SusanaRandom" tmdb_id="0" imdb_id="nm0000215" creator="8751" created_by="TheRob">
 			<!-- Susan Sarandon -->
 			<first_name>Susana</first_name>
 			<last_name>Random</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="2"  birthday="1946-10-04" deathday="" country="USA" />
+			<details job="2" gender="2"  birthday="1946-10-04" deathday="" country="USA" />
 			<data prominence="2" skill="4" fame="1" scandalizing="0" price_mod="0" power="0" humor="2" charisma="4" appearance="3" topgenre1="0" topgenre2="0" />
-		</person>
-		<person id="TheRob-celebritypeople-Rennisklopper" tmdb_id="0" imdb_id="nm0000454" creator="8751" created_by="TheRob">
-			<!-- Dennis Hopper -->
-			<first_name>Renn Is</first_name>
-			<last_name>Klopper</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="1"  birthday="1956-05-17" deathday="" country="USA" />
-			<data prominence="2" skill="4" fame="2" scandalizing="0" price_mod="0" power="0" humor="2" charisma="4" appearance="3" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-DarleenSchluessel" tmdb_id="0" imdb_id="nm0000017" creator="8751" created_by="TheRob">
 			<!-- Marlene Dietrich -->
 			<first_name>Darleen</first_name>
 			<last_name>Schluessel</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="2"  birthday="1925-01-26" deathday="2008-09-26" country="D" />
+			<details job="2" gender="2"  birthday="1925-01-26" deathday="2008-09-26" country="D" />
 			<data prominence="3" skill="4" fame="4" scandalizing="0" price_mod="0" power="0" humor="2" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-RaulWarumen" tmdb_id="0" imdb_id="nm0000056" creator="8751" created_by="TheRob">
 			<!-- Paul Newman -->
 			<first_name>Raul</first_name>
 			<last_name>Warumen</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="1"  birthday="1901-12-27" deathday="1992-05-06" country="D" />
+			<details job="2" gender="1"  birthday="1901-12-27" deathday="1992-05-06" country="D" />
 			<data prominence="3" skill="4" fame="4" scandalizing="0" price_mod="0" power="0" humor="2" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="TheRob-celebritypeople-NorisBarloff" tmdb_id="0" imdb_id="nm0000472" creator="8751" created_by="TheRob">
 			<!-- Boris Karloff -->
 			<first_name>Noris</first_name>
 			<last_name>Barloff</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="1"  birthday="1887-11-23" deathday="1969-02-02" country="UK" />
+			<details job="2" gender="1"  birthday="1887-11-23" deathday="1969-02-02" country="UK" />
 			<data prominence="4" skill="4" fame="5" scandalizing="0" price_mod="0" power="2" humor="2" charisma="5" appearance="5" topgenre1="12" topgenre2="0" />
 		</person>
 	  	<person id="TheRob-celebritypeople-WalterRattnau" tmdb_id="0" imdb_id="nm0000527" creator="8751" created_by="TheRob">
 			<!-- Walter Matthau -->
 			<first_name>Walter</first_name>
 			<last_name>Rattnau</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="1"  birthday="1920-10-01" deathday="2000-07-01" country="D" />
+			<details job="2" gender="1"  birthday="1920-10-01" deathday="2000-07-01" country="D" />
 			<data prominence="4" skill="4" fame="4" scandalizing="0" price_mod="0" power="2" humor="4" charisma="4" appearance="4" topgenre1="5" topgenre2="0" />
 		</person>    
 	  	<person id="TheRob-celebritypeople-BargHable" tmdb_id="0" imdb_id="nm0000022" creator="8751" created_by="TheRob">
 			<!-- Clark Gable -->
 			<first_name>Barg</first_name>
 			<last_name>Hable</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="1"  birthday="1901-02-01" deathday="1960-11-16" country="USA" />
+			<details job="2" gender="1"  birthday="1901-02-01" deathday="1960-11-16" country="USA" />
 			<data prominence="5" skill="4" fame="5" scandalizing="0" price_mod="0" power="4" humor="1" charisma="5" appearance="4" topgenre1="15" topgenre2="13" />
 		</person>   
 	  	<person id="TheRob-celebritypeople-SteveNeckKing" tmdb_id="0" imdb_id="nm0000537" creator="8751" created_by="TheRob">
 			<!-- Steve McQueen -->
 			<first_name>Steve</first_name>
 			<last_name>Neck King</last_name>
-			<functions>
-				<function>2</function>
-			</functions>
-			<details gender="1"  birthday="1930-03-24" deathday="1980-11-07" country="USA" />
+			<details job="2" gender="1"  birthday="1930-03-24" deathday="1980-11-07" country="USA" />
 			<data prominence="4" skill="4" fame="5" scandalizing="1" price_mod="0" power="4" humor="1" charisma="3" appearance="4" topgenre1="2" topgenre2="17" />
 		</person>          
 	</celebritypeople>
