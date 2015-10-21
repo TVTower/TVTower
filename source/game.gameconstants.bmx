@@ -811,7 +811,7 @@ Type TVTProgrammePersonJob {_exposeToLua}
 
 	Function GetAtIndex:int(index:int = 0)
 		if index <= 0 then return 0
-		return 2 shl (index-1)
+		return 1 shl (index-1)
 		'return 2^(index-1)
 	End Function
 

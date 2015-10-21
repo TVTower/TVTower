@@ -326,7 +326,7 @@ Type TDatabaseLoader
 			celebrity.SetDayOfDeath( data.GetString("deathday", celebrity.dayOfDeath) )
 			celebrity.country = data.GetString("country", celebrity.country)
 			celebrity.fictional = data.GetInt("fictional", celebrity.fictional)
-			celebrity.job = data.GetInt("job", celebrity.job)
+			celebrity.SetJob( data.GetInt("job", celebrity.job) )
 
 			'=== DATA ===
 			local nodeData:TxmlNode = xml.FindElementNode(node, "data")
