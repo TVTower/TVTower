@@ -532,7 +532,7 @@
 				<en>Editor and KI</en>
 			</title>
 			<description>
-				<de>[0|Full] und [1|Full] in reger Diskussion. Wie steht es um den Editor? Wie muss die KI aussehen. Und hat [1|Full] richtige gehandelt? Ist Reallife wichtiger? Und wer macht jetzt die KI? Spannend, aber etwas zu langatmig </de>
+				<de>[0|Full] und [1|Full] in reger Diskussion. Wie steht es um den Editor? Wie muss die KI aussehen. Und hat [1|Full] richtig gehandelt? Ist Reallife wichtiger? Und wer macht jetzt die KI? Spannend, aber etwas zu langatmig </de>
 				<en></en>
 			</description>
 			<staff>
@@ -746,7 +746,7 @@
 			</title_original>
 			<description>
 				<de>Ein menschlicher und ein ausserirdischer Kampfflieger stürzen auf einem unwirtlichen Planeten ab. Nach dem sie sich dort weiter bekämpfen, merken sie, dass sie nur gemeinsam überleben können. Wohin wird diese Erkenntnis führen?</de>
-				<en></en>
+				<en>A human and an alien fighter pilot crush with their machines on a desolate and barren planet. Their fight goes on until they recognize only together they can survive. But where will this cooperation lead to... ?</en>
 			</description>
 			<staff>
 				<member index="0" function="1">cdd0e7aa-11eb-48d7-82cc-d693e2130d05</member>
@@ -766,7 +766,7 @@
 			</title>
 			<description>
 				<de>Die Videokassette, die unendlich viel Spaß bietet, ist aufgetaucht. Und wir senden sie. Wer diesen Film gesehen hat, will ihn wiedersehen oder sterben.</de>
-				<en></en>
+				<en>A VCR with unlimited fun, and we have it to show to you. Anyone who has seen it craves to see it again or wishes to die.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
@@ -797,7 +797,7 @@
 			</title_original>
 			<description>
 				<de>Ei Bembel, ei Bembel. Bei Aeppelwoi und Handkäs wird musiziert, dass die Zwiebeln sich biegen. Die Granden der Musik geben sich die Hand. 30 Jahre Show und nur das Beste davon zusammen in einer Show. Das Herz lacht. Beim jungen Publikum weint das Auge.</de>
-				<en></en>
+				<en>Ei Bembel, ei Bembel. The best of Folkoric music from hessian stars from the last 30 years. Good for every soul - so good that the youth will cry. </en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-WeinWenk</member>
@@ -819,7 +819,7 @@
 			</title>
 			<description>
 				<de>Jodeln und Alpenhorn. Mit Aufnahmen der Alpenlandschaft garniert. Bei schoener Musik werden die Alpenpaesse mit einem 57er Kaefer abgefahren.</de>
-				<en></en>
+				<en>The alps, an Alphorn and yodeln. Fine music and a VW Kaefer ´57 drives through this pittoresque countryside and mountain passes. Does anybody really need more?</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-WeinWenk</member>
@@ -840,7 +840,7 @@
 			</title>
 			<description>
 				<de>Meringo metzelt mit seiner Bande ein Dorf nieder. Jimmy Baine, der dadurch sein Kind verlor, jagt ihn erbarmungslos.</de>
-				<en></en>
+				<en>Meringo an his band of outlaws burns down a village an kills everybody. Jimmy Baine loses his child. [1|Full] turns into the hunter and chases them down.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-RonDort</member>
@@ -883,11 +883,11 @@
 		<programme id="therob-programme-elefantengedaechtnis" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<de>Elefantengedächtnis</de>
-				<en>An elephant mind</en>
+				<en>An elephant memory</en>
 			</title>
 			<description>
 				<de>Sendung für Schulkinder. Am Anfang werden Themen kindgerecht erklärt. Dann müssen die Kinder Fragen dazu beantworten. Die Gewinner bekommen eine Klassenfahrt geschenkt. </de>
-				<en>Serial for childrens in school. In the begining the toppics will be explained. In the second part the children have to answer the questions.</en>
+				<en>Serial for childrens in school. In the begining the toppics will be explained. In the second part the children have to answer the questions and the best team wins a school trip.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">86bacead-ea9d-4878-9b2d-f23b0f7e0fe3</member>
@@ -904,7 +904,7 @@
 					</title>
 					<description>
 						<de>Wie kommen die Streifen in die Tube und andere Fragen. Schön erklärt und pädagogisch wertvoll abgefragt.</de>
-						<en></en>
+						<en>Why don´t the toothpaste colors get mixed up in the tube and other questions. Nice and convenient explained.</en>
 					</description>
 					<ratings critics="73" speed="24" />
 				</programme>
@@ -915,29 +915,29 @@
 					</title>
 					<description>
 						<de>Von der Abfüllung über die Kohlensäure bis zum Zucker. Alles kindgerecht serviert. Empfohlen wird dem Kind beim Zuschauen zuckerfreien Tee zu servieren.</de>
-						<en></en>
+						<en>Bottling and charging with carbon dioxide gas and sugar, served suitable for children. Do it yourself! Prepare sugar-free tea while looking the show?</en>
 					</description>
 					<ratings critics="65" speed="26" />
 				</programme>
 				<programme id="therob-programme-elefantengedaechtnis-ep103" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Bleistifte</de>
-						<en></en>
+						<en>pencil</en>
 					</title>
 					<description>
 						<de>Blei und Farbe werden beleuchtet. Selbst die Folgen von dauerhaften Bleistift nuckeln kommen zur Sprache.</de>
-						<en></en>
+						<en>Where do the colours and lead come from? With an investigation of the consequences of constant pencil sucking.</en>
 					</description>
 					<ratings critics="66" speed="25" />
 				</programme>
 				<programme id="therob-programme-elefantengedaechtnis-ep104" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Moderator ohne Kontrolle</de>
-						<en></en>
+						<en>Moderator without control</en>
 					</title>
 					<description>
 						<de>Thema sollte Seife werden. Doch die Kinder starteten einen Wettbewerb im Namentanzen. Der Moderator bekam die Sendung nicht in Griff und wurde auch noch Letzter beim Namentanzen </de>
-						<en></en>
+						<en>Soap should have been the topic, but the children were more eager to dance their names. The moderator does not get the situation under control and even loses the dancing contest.</en>
 					</description>
 					<ratings critics="74" speed="49" />
 				</programme>
@@ -948,7 +948,7 @@
 					</title>
 					<description>
 						<de>Auf Grund der grandiosen Resonanz auf die letzte Sendung, wurde das Thema Namenstanzen ausführlich durchleuchtet. Inklusive Wettbewerb. Durch die geordnete Durchführung ging der Spaß flöten.</de>
-						<en></en>
+						<en>After the trumendous sucess and interest toward of dancing names from the last episode this episode handles with that topic. With dancing contest. As this show is regulated there most think the fun is missing.</en>
 					</description>
 					<ratings critics="59" speed="21" />
 				</programme>
@@ -967,12 +967,13 @@
 			</title_original>
 			<description>
 				<de>Die Verfilmung eines Meisterwerks. Verarmte Obstpflücker finden keinen Job. Die Rettung verspricht das Orangenpflückparadies im Osten. Die Reise beginnt. Ein viel gerühmtes Drama.</de>
-				<en></en>
+				<en>A masterpiece now on film. Poor Fruitpickers stay unemployed. but in the east there is a paradise of orange plantations. The trip begins. Highly praised drama.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-RonDort</member>
 				<member index="1" function="2">a80152d6-43dc-4f9c-a562-a5dbf821bc1f</member>
 				<member index="2" function="2">779ecf3d-7ca7-4253-aac6-cb5e1aee8e2c</member>
+				<member index="3" function="2">TheRob-TowerTV-RonSaradine</member>         
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1940" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
@@ -1014,7 +1015,7 @@
 			</title_original>
 			<description>
 				<de>Letikus ist Anwalt und verteidigt in einer kleinen Stadt einen Schwarzen. Das hat unangenehme Folgen für seine Familie</de>
-				<en></en>
+				<en>Letikus is a lawyer. In a small town he defends a black man. This process has unconveneint consequences for his family.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-RobWoolikann</member>
@@ -1039,7 +1040,7 @@
 			</title_original>
 			<description>
 				<de>Ein Klassiker der Filmkunst und einer der ersten Tonfilme. Ein Mörder versetzt ein Dorf in Angst und Schrecken. Am Schluss wird nahezu jeder verdächtigt.</de>
-				<en></en>
+				<en>A filmart masterpiece and one of the first sound films. A murder frightens a village and in the end nearly everybody becomes a suspect.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
@@ -1065,7 +1066,7 @@
 			</title_original>
 			<description>
 				<de>Ein Stockholm-Syndrom. Ein entführter Junge freundet sich mit seinem Entführer an. Die dramatische Verfolgungsjagd beginnt.</de>
-				<en></en>
+				<en>The Stockholm-Syndrom. A captured boy becomes a friend with his kidnapper. A dramatic chase beginns.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">ec20fc5a-a552-4119-8d1e-d310650c2830</member>
@@ -1082,14 +1083,14 @@
 			<title>
 				<!-- Spejbl und Hurvinek keine IMDB ID gefunden -->
 				<de>Speiübel und Dubrovnik</de>
-				<en>Spyling and Dubrovnik</en>
+				<en>Spyble and Dubrovnik</en>
 			</title>
 			<title_original>
 				<de>Spejbl und Hurvinek</de>
 			</title_original>
 			<description>
 				<de>Vater und Sohn erleben Alltagsthemen. Humorvoll für Kinder aufbereitet und der Augsburger Puppenkiste ebenbürtig.</de>
-				<en></en>
+				<en>Father and son experience everyday life. Funny and edited for kids. On one level with the famous Augsburger Puppenkiste stages.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_502</member>
@@ -1103,55 +1104,55 @@
 				<programme id="therob-programme-speiuebelunddubrovnik-ep201" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Speiübel kommt in die Schule</de>
-						<en></en>
+						<en>Spyble goes to school</en>
 					</title>
 					<description>
-						<de>Dubrovnik bringt Speiübel in die Schule. Dort freundet er sich mit Ilonka an. Spaßiger erster Schultag.</de>
-						<en></en>
+						<de>Dubrovnik bringt Speiübel in die Schule. Dort freundet sich dieser mit Ilonka an. Spaßiger erster Schultag.</de>
+						<en>Dubrovnik brings Spyble to school. Spyble befriends with Ilonka there ... funny first day at school.</en>
 					</description>
 					<ratings critics="43" speed="26" />
 				</programme>
 				<programme id="therob-programme-speiuebelunddubrovnik-ep202" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Hausaufgaben</de>
-						<en></en>
+						<en>Homework</en>
 					</title>
 					<description>
 						<de>Speiübel soll Hausaufgaben machen. Er will aber lieber mit Ilonka Verstecken spielen. Dubrovnik sucht die Beiden. Ein munteres Versteckspiel beginnt.</de>
-						<en></en>
+						<en>Spyble should do homework but prefers to play hide and seek with Ilonka. Dubrovnik has to find both. A humorous hide and seek play begins.</en>
 					</description>
 					<ratings critics="49" speed="31" />
 				</programme>
 				<programme id="therob-programme-speiuebelunddubrovnik-ep203" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Musikunterricht</de>
-						<en></en>
+						<en>The music lesson</en>
 					</title>
 					<description>
 						<de>Speiübel spielt Schlagzeug, Ilonka Flöte. Dubrovnik versucht das mit seiner Migräne zu überleben. Das klappt aber nur bedingt. Beste Darstellung, warum Eltern keine Musikinstrumente für ihre Kleinen mögen.</de>
-						<en></en>
+						<en>Spyble plays on the drum kit, Ilonka operates the flute whereas Dubrovnik seeks to survive his migraine. That does not play out very well. Best representation of why parents don't like music instruments for their children.</en>
 					</description>
 					<ratings critics="56" speed="28" />
 				</programme>
 				<programme id="therob-programme-speiuebelunddubrovnik-ep204" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Speiübel lernt schwimmen</de>
-						<en></en>
+						<en>Spyble learns to swim</en>
 					</title>
 					<description>
 						<de>Dubrovnik will Speiübel schwimmen beibringen. Der demonstriert aber ausgiebig, wie gut er im Wasser schlucken ist. Zum Schluss werden die Vorteile von Schwimmflügeln ausgiebig gewürdigt.</de>
-						<en></en>
+						<en>Dubrovnik wants to teach Spyble how to swim. But Spyble demonstrates how talented he is in swallowing water. In the end both agree on water wings.</en>
 					</description>
 					<ratings critics="44" speed="32" />
 				</programme>
 				<programme id="therob-programme-speiuebelunddubrovnik-ep205" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Plätzchen backen</de>
-						<en></en>
+						<en>Baking cookies</en>
 					</title>
 					<description>
 						<de>Speiübel und Ilonka wollen Plätzchen backen. Dubrovnik freut sich auf das Ergebnis. Doch dann merkt er, dass es sich eher auf die Küche auswirkt als auf den Geschmack.</de>
-						<en></en>
+						<en>Spyble and Ilonka want to bake cookies. Dubrovnik is excited of the results. But he recognizes that the outcome is more likely to bee seen in the kitchen interior.</en>
 					</description>
 					<ratings critics="57" speed="34" />
 				</programme>
@@ -1161,11 +1162,11 @@
 		<programme id="631f722f-b5dc-4663-bd81-TheRobHist01" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<de>Die Tempelritter</de>
-				<en></en>
+				<en>The Templars</en>
 			</title>
 			<description>
 				<de>Von der Entstehung bis zu ihrem Untergang. Die Fakten werden mit Darstellungen durch Laiendarsteller untermauert. Der Erzähler versucht sich an den Spannungsbögen.</de>
-				<en></en>
+				<en>Rise and fall of the order. Facts and some fiction with aid of amateur actors. The speaker tries to build up tention, too.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_20</member>
@@ -1207,11 +1208,11 @@
 			<title>
   				<!-- Dudu ist die Grundidee, aber da das Setting in meinen Augen so verändert ist, dass man noch DuDu und Herbie anlegen kann, ohne das es stört, ist Baba auf fictional gesetzt. -->
 				<de>Baba der Trabbi</de>
-				<en>Baba the trabbi car</en>
+				<en>Baba the Trabbi-car</en>
 			</title>
 			<description>
 				<de>Baba der lebende Trabbi leistet seinem Besitzer wundervolle Dienste. Er kann schwimmen, fliegen und Autoknacker verprügeln. Herbeigerufen durch einen Pfiff, eilt er immer brav herbei, wenn Hilfe gebraucht wird.</de>
-				<en></en>
+				<en>Baba the living Trabbi-car serves his owner as much as possible. It can swim, fly and beat car burglars. Called by a whistle Baba approaches as soon as is help is needed.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-AlfredNeck</member>
@@ -1276,7 +1277,7 @@
 			</title>
 			<description>
 				<de>Wilhelm Tell schießt eifrig mit seiner Armbrust Äpfel von den Köpfen. Der schweizer Robin Hood.</de>
-				<en>Wilhelm Tell enkoys shooting apples from the heads using his crossbow. Suisse version of Robin Hood </en>
+				<en>Wilhelm Tell enjoys shooting apples from heads using his crossbow. Suisse version of Robin Hood.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-AlfredNeck</member>
@@ -1297,7 +1298,7 @@
 			</title>
 			<description>
 				<de>Janosik als Anführer einer Waldräubergruppe. Der slowakische Robin Hood.</de>
-				<en>Janosik leads a group of bandits who live in the Forrest. Slovak Version of Robin Hood </en>
+				<en>Janosik leads a group of bandits who live in the forest. Slovak version of Robin Hood </en>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_62</member>
@@ -1313,11 +1314,11 @@
 		<programme id="therob-programme-trash-skandale" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<de>Skandale</de>
-				<en>scandals</en>
+				<en>Scandals</en>
 			</title>
 			<description>
-				<de>[0|Full] präsentiert die Skandale von [1|Full]. Präsentiert wird alles, von Ausrastern an Drehorten über Interviews bis zu Talkshow Auftritten. Erheiternd bis zum geht nicht mehr. Aber für Jugendliche völlig ungeeignet.</de>
-				<en>[0|Full] presents the scandals of [1|Full]. Everything is shown, completly goind insane during filming vice interviews to talkshow . Unbelievable funny, but includes speech of violence, sexuality and other pervert stuff. Please keeps your kids away!</en>
+				<de>[0|Full] präsentiert die Skandale von [1|Full]. Präsentiert wird alles, von Ausrastern an Drehorten über Interviews bis zu Talkshow-Auftritten. Erheiternd bis zum geht nicht mehr. Aber für Jugendliche völlig ungeeignet.</de>
+				<en>[0|Full] presents the scandals of [1|Full]. Everything is shown, completely going insane during filming vice interviews to talkshow. Unbelievable funny, but includes speech of violence, sexuality and other pervert stuff. Please keeps your kids away!</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
@@ -1367,11 +1368,11 @@
 			<!-- Abteuerserie  -->
 			<title>
 				<de>Sinbads Reisen</de>
-				<en>the voyages of Sinbad</en>
+				<en>The voyages of Sinbad</en>
 			</title>
 			<description>
 				<de>Sinbads Reisen werden hier erzählt.</de>
-				<en></en>
+				<en>Sinbads journey and adventures are told here.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_318</member>
@@ -1407,7 +1408,7 @@
 				<programme id="therob-programme-adv-sinbadsreisen-ep103" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Sinbad und der Riese</de>
-						<en>Sibad and the giant</en>
+						<en>Sinbad and the giant</en>
 					</title>
 					<description>
 						<de>Sinbad landet auf der Affeninsel und trifft dort auf einen Riesen. Sinbad merkt schnell, dass er zur Lieblingsspeise des Riesen gehört</de>
@@ -1467,11 +1468,11 @@
 			<!-- Zielgruppe Manager, geflagt als Kultur -->
 			<title>
 				<de>Firmengründungen</de>
-				<en>How to start a company</en>
+				<en>Company foundation</en>
 			</title>
 			<description>
-				<de>Dem geneigten Zuschauer werden Karieren von risikobereiten Firmengründern gezeigt. Schöne Lehrstunde für Schadenfrohe.</de>
-				<en></en>
+				<de>Dem geneigten Zuschauer werden Karrieren von risikobereiten Firmengründern gezeigt. Schöne Lehrstunde für Schadenfrohe.</de>
+				<en>Careers of venturesome company founders are shown to the audience. Beautiful lessen for gleeful ones.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_628</member>
@@ -1591,7 +1592,7 @@
 			<title>
   				<!-- Ist das Leben nicht schön? -->
 				<de>Das Leben ist schön</de>
-				<en>Life is wonderfull</en>
+				<en>Life is wonderful</en>
 			</title>
 			<title_original>
 				<de>Ist das Leben nicht schön?</de>
@@ -2063,6 +2064,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 				<member index="1" function="2">TheRob-TowerTV-PetrORuler</member>
 				<member index="2" function="2">becc2ecd-d309-46a1-b9c2-30253915af0c</member>
 				<member index="3" function="2">5e971716-fbd8-403f-a0df-9aae68c04d85</member>
+				<member index="2" function="2">TheRob-TowerTV-ArchieRemedy</member>        
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="UK" year="1962" distribution="0" maingenre="1" subgenre="0" flags="0" blocks="4" time="0" price_mod="1.00" />
@@ -3540,7 +3542,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</description>
 			<staff>
 				<member index="0" function="1">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
-				<member index="1" function="8">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+				<member index="1" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1980" distribution="0" maingenre="204" subgenre="0" flags="8" blocks="4" time="0" price_mod="1.00" />
@@ -3559,7 +3561,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<member index="0" function="1">Per_custom_Freddy_309</member>
 						<member index="1" function="2">Per_custom_Freddy_310</member>
 						<member index="2" function="2">Per_custom_Freddy_308</member>
-					<member index="3" function="8">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>            
+		  			<member index="3" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>            
 					</staff>
 					<groups target_groups="0" />
 					<data country="D" year="1980" distribution="0" maingenre="204" subgenre="0" flags="8" blocks="4" time="0" price_mod="1.0" />
@@ -3578,7 +3580,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<member index="2" function="2">Per_custom_Freddy_111</member>
 						<member index="1" function="1">Per_custom_Freddy_406</member>
 						<member index="3" function="2">Per_custom_Freddy_429</member>
-					<member index="4" function="8">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>                    
+		  			<member index="4" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>                    
 					</staff>
 					<data country="D" year="1980" distribution="0" maingenre="204" subgenre="0" flags="8" blocks="4" time="0" price_mod="1.00" />
 				</programme>
@@ -3595,10 +3597,37 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<member index="0" function="1">c45e52c2-32a3-4d3b-87d2-c56a8e4f5279</member>
 						<member index="1" function="2">Per_custom_Freddy_682</member>
 						<member index="2" function="2">779ecf3d-7ca7-4253-aac6-cb5e1aee8e2c</member>
-					<member index="3" function="8">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>            
+			  		<member index="3" function="8">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+			  		<member index="4" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>                        
 					</staff>
 					<data country="D" year="1980" distribution="0" maingenre="204" subgenre="0" flags="8" blocks="4" time="0" price_mod="1.00" />
 				</programme>
+		<programme id="TheRob-mov-drama-PicknickamWegesrand" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0072443" rt_id="0" creator="Sjaele/TheRob">
+	  		<title>
+	  			<de>Picknick am Wegesrand</de>
+	  			<en>Picknick on a sidewalk</en>
+	  		</title>
+	  		<title_original>
+	  			<de>Stalker</de>
+	  			<en>Stalker</en>
+  			</title_original>
+	  		<description>
+	  			<de>Betty überzeugt in ihrer russischen Kommenterierung. Ansonsten vergleicht sie eifrig Walkers mit Daywalkers.</de>
+	  			<en>Betty convinces with her Russian comments. Also she compares Walkers and Daywalkers.</en>
+	  		</description>
+	  		<staff>
+	  			<member index="0" function="1">TheRob-celebritypeople-AndyCharkowski</member>
+	  			<member index="1" function="2">TheRob-TowerTV-AlzaFrejndlitsch</member>
+	  			<member index="2" function="2">TheRob-TowerTV-AlexKaimanowski</member>
+	  			<member index="3" function="2">TheRob-TowerTV-NikiGringoff</member> 
+					<member index="4" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>                      
+	  		</staff>
+	  		<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+	  		<data country="UdSSR" year="1980" distribution="0" maingenre="204" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
+	  	</programme>
+   </children>
+  </programme>
+					  
 				<programme id="TheRob-b5dc-mov-com-Schlagzeile" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0071524" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<!-- Extrablatt, Comedy mit Subgenre Dramma -->
@@ -3622,9 +3651,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 					<data country="USA" year="1974" distribution="0" maingenre="5" subgenre="7" flags="0" blocks="2" time="0" price_mod="1.00" />
 					<ratings critics="53" speed="71" outcome="67" />
-				</programme>    
-			</children>
-		</programme>    
+				</programme>        
 
 		<programme id="TheRob-b5dc-mov-com-MachesnichtKumpel" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0082111" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
@@ -3798,8 +3825,8 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 		<programme id="TheRob-mov-act-SchmetterlinaufderInsel" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0072308" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Papillon, Drama, Sub Crime -->
-				<de>Farfallino auf der Insel</de>
-				<en>Farfallino on the island</en>
+				<de>Farfallino - die Flucht</de>
+				<en>Farfallino - fleeing</en>
 			</title>
 			<title_original>
 				<de>Papillon</de>
@@ -3817,7 +3844,816 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1973" distribution="0" maingenre="7" subgenre="4" flags="8" blocks="3" time="0" price_mod="1.00" />
 			<ratings critics="47" speed="63" outcome="96" />
+		</programme> 
+
+		<programme id="TheRob-mov-drama-KleinIwan" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="Sjaele/TheRob">
+			<title>
+				<!-- Iwans Kindheit, Drama sub Action -->
+				<de>Klein Iwan</de>
+				<en>Little Iwan</en>
+			</title>
+			<title_original>
+				<de>Iwans Kindheit</de>
+				<en>Iwans childhood</en>
+			</title_original>
+			<description>
+				<de>Iwan, dessen Eltern von den Deutschen ermordet wurden, schließt sich den Partisanen an. Auf seinen Erkundungsgängen will er seine Eltern rächen. 
+Traumszenen und Stimmungen verzerren die Handlung. </de>
+				<en>Iwans parents are slaughterd by the Germans. So he jois the partisans to take revenge on the Germans during his patrols. Due to his dreams and moots his inner feelings are shown.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-AndyCharkowski</member>
+				<member index="1" function="2">TheRob-TowerTV-NikolovWorlyaev</member>
+				<member index="2" function="2">TheRob-TowerTV-WaljaSutkovi</member>
+				<member index="3" function="2">TheRob-TowerTV-BallerinaRatyavina</member>        
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="UdSSR" year="1962" distribution="0" maingenre="7" subgenre="2" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="77" speed="29" outcome="72" />
+		</programme>
+	
+		<programme id="TheRob-mov-hist-AndyKopekjow" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="Sjaele/TheRob">
+			<title>
+				<!-- Andrej Rubljow, Hostorie, Sub Drama -->
+				<de>Andy Kopekjow</de>
+				<en>Andy Kopekjow</en>
+			</title>
+			<title_original>
+				<de>Andrej Rubljow</de>
+				<en>Andrej Rubljow</en>
+			</title_original>
+			<description>
+				<de>Das Leben des Ikonenmalers Kopekjow vor dem Hintergrund von Tartareneinfällen, religiösen Sektentum und die Unterdrückung durch die Obrigkeit. Vor allem die
+eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbehörde.</de>
+				<en>The life of Andrej Rubljow a Russian iconographer. Including the circumstances of the Tartars, religion and the csar family, which led to a censorship.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-AndyCharkowski</member>
+				<member index="1" function="2">TheRob-TowerTV-AntonDuonizyn</member>
+				<member index="2" function="2">TheRob-TowerTV-NikiGringoff</member>
+				<member index="3" function="2">TheRob-TowerTV-SerenaParkawskiya</member>        
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="UdSSR" year="1966" distribution="0" maingenre="11" subgenre="7" flags="0" blocks="4" time="0" price_mod="1.00" />
+			<ratings critics="84" speed="22" outcome="63" />
+		</programme>     
+	
+		<programme id="TheRob-mov-dram-StraßenwalzenpilotundGeiger" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="Sjaele/TheRob">
+			<title>
+				<!-- Die Straßenwalze und die Geige, drama -->
+				<de>Straßenwalzenpilot und Geiger</de>
+				<en>The road roller pilot and the violinist</en>
+			</title>
+			<title_original>
+				<de>Die Straßenwalze und die Geige</de>
+				<en>The road roller and the violine</en>
+			</title_original>
+			<description>
+				<de>Schon der Diplomfilm des späteren Dissidenten erweist sich als magisch aufgeladenes Assoziationsfeld um die Freundschaft eines Straßenwalzenfahrers und eines jungen Geigers.</de>
+				<en>One of the first movies of [1|Full].  The friendship of a road roller driver and a young violinist is told.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-AndyCharkowski</member>
+				<member index="1" function="2">TheRob-TowerTV-JegorZumtschenko</member>
+				<member index="2" function="2">TheRob-TowerTV-IlljitschSafrauski</member>       
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="UdSSR" year="1961" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
+			<ratings critics="93" speed="26" outcome="22" />
+		</programme>
+	
+		<programme id="TheRob-mov-scifi-Soljaris" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0069293" rt_id="0" creator="Sjaele/TheRob">
+			<title>
+				<!-- Solaris, scifi sub mystery -->
+				<de>Soljaris</de>
+				<en>Soljaris</en>
+			</title>
+			<title_original>
+				<de>Solaris</de>
+				<en>Solaris</en>
+			</title_original>
+			<description>
+				<de>Ein intelligenter Planet, um den eine irdische Raumstation kreist, projeziert Erinnerungen der Kosmonauten. So wird der Hauptheld von seiner verstorbenen Ehefrau besucht. Kein Einzelfall.</de>
+				<en>A human space station flies around an intelligent planet. The planet projects memories into the minds of the astronouts. So one is visited by his dead wife. And he is not the only one with such an experience.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-AndyCharkowski</member>
+				<member index="1" function="2">TheRob-TowerTV-DonaCanionitsch</member>
+				<member index="2" function="2">TheRob-TowerTV-NataschaBonkunstschuk</member>
+				<member index="3" function="2">TheRob-TowerTV-NikiGringoff</member>               
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="UdSSR" year="1972" distribution="0" maingenre="16" subgenre="14" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<ratings critics="87" speed="36" outcome="83" />
+		</programme>          
+	
+		<programme id="TheRob-mov-drama-Serkalo" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0072443" rt_id="0" creator="Sjaele/TheRob">
+			<title>
+				<!-- Der Spiegel, Drama -->
+				<de>Serkalo</de>
+				<en>Serkalo</en>
+			</title>
+			<title_original>
+				<de>Der Spiegel</de>
+				<en>The mirror</en>
+			</title_original>
+			<description>
+				<de>Das schwer verständliche poetische Bilderrätsel mit autobiografischen Motiven gehört zu [0|Full] Meisterwerken.</de>
+				<en>Hard to understand, but very poetic. One of the master pieces from [1|Full] with many autobiographic scenes.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-AndyCharkowski</member>
+				<member index="1" function="2">TheRob-TowerTV-DaliaTerschowa</member>
+				<member index="2" function="2">TheRob-TowerTV-IgnazDanieltsew</member>
+				<member index="3" function="2">TheRob-TowerTV-NikiGringoff</member>               
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="UdSSR" year="1975" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="79" speed="36" outcome="43" />
+		</programme>
+	
+		<programme id="TheRob-mov-drama-PicknickamWegesrand" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0072443" rt_id="0" creator="Sjaele/TheRob">
+			<title>
+				<!-- Stalker, SciFi sub drama -->
+				<de>Picknick am Wegesrand</de>
+				<en>Picknick on a sidewalk</en>
+			</title>
+			<title_original>
+				<de>Stalker</de>
+				<en>Stalker</en>
+			</title_original>
+			<description>
+				<de>Ein außerirdischer Besuch hinterließ auf der Erde Zonen in denen neben Artefakten auch phyikalische Unregelmäßigkeiten zu finden sind. Letztere zu umgehen und erstere zu finden, ist die Aufgabe der Walker.</de>
+				<en>Aliens greated zones on earth where they have hidden artifacts. These are protected by physical obstacles. The walker have the order to pass them and find the artifacts.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-AndyCharkowski</member>
+				<member index="1" function="2">TheRob-TowerTV-AlzaFrejndlitsch</member>
+				<member index="2" function="2">TheRob-TowerTV-AlexKaimanowski</member>
+				<member index="3" function="2">TheRob-TowerTV-NikiGringoff</member>               
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="UdSSR" year="1975" distribution="0" maingenre="16" subgenre="7" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<ratings critics="82" speed="56" outcome="83" />
+		</programme>     
+	
+		<programme id="TheRob-mov-drama-DertoteBaum" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091670" rt_id="0" creator="Sjaele/TheRob">
+			<title>
+				<!-- Opfer, drama -->
+				<de>Der tote Baum</de>
+				<en>The dead tree</en>
+			</title>
+			<title_original>
+				<de>Opfer</de>
+				<en>Victim</en>
+			</title_original>
+			<description>
+				<de>Während einer Geburtstagsfeier scheint ein nukleares Inferno hereinzubrechen. Die Welt kann nur gerettet werden, wenn Alexander und Maria miteinander schlafen. Zwei Wochen nach Tschernobyl wurde das letzte Werk Charkowskis uraufgeführt.</de>
+				<en>Alexander and Maria have to sleep together to rescue the world which is near of an atomic inferno. The movie was first shown two weeks after Tschernobyl.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-AndyCharkowski</member>
+				<member index="1" function="2">TheRob-TowerTV-SusannaTreehood</member>
+				<member index="2" function="2">TheRob-TowerTV-ErlandoJoschkason</member>             
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="SUE" year="1986" distribution="0" maingenre="16" subgenre="7" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<ratings critics="86" speed="26" outcome="72" />
+		</programme>   
+	
+		<programme id="TheRob-mov-com-Mozarella" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0068970" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Mortadella, comedy sub romance -->
+				<de>Mozarella</de>
+				<en>Mozarella</en>
+			</title>
+			<title_original>
+				<de>Mortadella</de>
+				<en>Mortadella</en>
+			</title_original>
+			<description>
+				<de>Eine Italienerin verliebt sich in einen Amerikaner und reist zu ihm in die USA. Als Gastgeschenk hat sie Mozarella dabei und darf deswegen nicht einreisen. Das führt zu einigen Komplikationen.</de>
+				<en>An Italian lady falls in love with an American. She wants to visit him in the USA and has Mozarella as a guest gift. She is not allowed to pass custom with it which leads to some complications.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-KarloKonicelli</member>
+				<member index="1" function="2">TheRob-celebritypeople-SophieWoreen</member>
+				<member index="2" function="2">TheRob-celebritypeople-SusanaRandom</member>
+				<member index="3" function="2">4d08e815-17f3-4912-8f2d-984454059732</member>                       
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="I" year="1971" distribution="0" maingenre="5" subgenre="15" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="46" speed="36" outcome="42" />
 		</programme>       
+	
+		<programme id="TheRob-mov-drama-DasSchloss" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0051816" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Der Schlüssel, Drama sub romance -->
+				<de>Das Schloss</de>
+				<en>The lock</en>
+			</title>
+			<title_original>
+				<de>Der Schlüssel</de>
+				<en>The key</en>
+			</title_original>
+			<description>
+				<de>Einem Kapitän eines britischen Militärbootes wird eine Wohnung zur Verfügung gestellt. In dieser trifft es auf eine adrette Dame. Eine dramatische Liebe beginnt.</de>
+				<en>A captain of an British militaryboat is allowed to use an appartment. There he meets a lovely lady. A dramatic love affair begins.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">10468d4b-c05a-4028-a9cd-c54545c42047</member>
+				<member index="1" function="2">TheRob-celebritypeople-SophieWoreen</member>
+				<member index="2" function="2">1c0582ef-99fd-4403-b743-a767a8f44bf5</member>                       
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="UK" year="1958" distribution="0" maingenre="7" subgenre="15" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<ratings critics="51" speed="36" outcome="52" />
+		</programme>       
+	
+		<programme id="TheRob-mov-rom-Sabine" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0047437" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Sabrina, romance sub comedy -->
+				<de>Sabine</de>
+				<en>Sabine</en>
+			</title>
+			<title_original>
+				<de>Sabrina</de>
+				<en>Sabrina</en>
+			</title_original>
+			<description>
+				<de>Zwei Brüder verlieben sich beide in Sabine und versuchen Ihr Herz zu erobern. Liebesgeschichte mit sehr guter Besetzung von [0|Full].</de>
+				<en>Two brothers are falling in love with sabine ad are trying to win her heart. Lovestory with good cast directed by [0|Full].</en>
+			</description>
+			<staff>
+				<member index="0" function="1">81f17c33-1719-4513-ad34-ac03ac7d03a0</member>
+				<member index="1" function="2">1fe78400-0332-4bb4-b23c-fa9f7d36933b</member>
+				<member index="2" function="2">abcc51f0-1842-40f5-b2f7-dd1e228ea968</member>
+				<member index="3" function="2">1c0582ef-99fd-4403-b743-a767a8f44bf5</member>                               
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="UK" year="1954" distribution="0" maingenre="15" subgenre="5" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="77" speed="58" outcome="72" />
+		</programme>     
+	
+		<programme id="TheRob-mov-crim-DrWarusederSpieler" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0013086" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Dr.Waruse, crime -->
+				<de>Dr. Waruse, der Spieler</de>
+				<en>Dr. Waruse, the player</en>
+			</title>
+			<title_original>
+				<de>Dr. Mabuse, der Spieler - Ein Bild der Zeit</de>
+				<en>Dr. Mabuse, the player - a picture of the time</en>
+			</title_original>
+			<description>
+				<de>Dr. Waruse der Erzkriminelle möchte in Berlin mit seinen Machenschaften Reichtum und Macht erlangen. Der erste Dr. Waruse von [0|Full].</de>
+				<en>Dr. Waruse the arch-evil wants to make a fortune and recieve power in Berlin. The first Dr. Waruse of [0|Full].</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
+				<member index="1" function="2">TheRob-TowerTV-RudolfKleineWeize</member>
+				<member index="2" function="2">TheRob-celebritypeople-WalfredWederSabel</member>                              
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1922" distribution="0" maingenre="4" subgenre="0" flags="0" blocks="4" time="0" price_mod="1.00" />
+			<ratings critics="87" speed="42" outcome="82" />
+		</programme>                                
+
+		<programme id="TheRob-mov-rom-AgentenimNebel" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0019415" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Spione, romance sub thriller -->
+				<de>Agenten im Nebel</de>
+				<en>Agents hidden in the fog</en>
+			</title>
+			<title_original>
+				<de>Spione</de>
+				<en>Spies</en>
+			</title_original>
+			<description>
+				<de>Raghi leitet einen Spionagering und setzt seine beste Agentin auf einen anderen Spion an. Er rechnete nich damit, dass sie sich in ihr Opfer verliebt.</de>
+				<en>Raghi leads a group of spies. He orders his best female agent to observe an other spy not having a clue she falls in love with her victim.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
+				<member index="1" function="2">TheRob-TowerTV-RudolfKleineWeize</member>
+				<member index="2" function="2">TheRob-TowerTV-RienaMeiers</member>
+				<member index="3" function="2">TheRob-TowerTV-WilliPitch</member>  
+				<member index="4" function="2">TheRob-TowerTV-BertaMauer</member>                                                
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1928" distribution="0" maingenre="15" subgenre="17" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<ratings critics="77" speed="48" outcome="76" />
+		</programme>  
+	
+		<programme id="TheRob-mov-scifi-LiebeaufdemMond" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0019901" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Frau im Mond, SiFi sub Romance -->
+				<de>Liebe auf dem Mond</de>
+				<en>Love on the moon</en>
+			</title>
+			<title_original>
+				<de>Frau im Mond</de>
+				<en>Lady in the moon</en>
+			</title_original>
+			<description>
+				<de>Eine Expedition zum Mond, um dort die Rohstoffe zu erschliessen, gerät in die Bredouille. [0|Full] erfand mit diesem Film nicht nur den Countdown, sondern zeigte auch weitere Grundlagen der späteren Raumfahrt.</de>
+				<en>An expedition to the moon tries to find new ressources and gets in real trouble. [0|Full] did not only invent the countdown in this movie but also shows many things which will be stantard in the future spaceprogramms.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
+				<member index="1" function="2">TheRob-TowerTV-WilliPitch</member>  
+				<member index="2" function="2">TheRob-TowerTV-BertaMauer</member>                                                
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1929" distribution="0" maingenre="16" subgenre="15" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<ratings critics="74" speed="68" outcome="56" />
+		</programme>      
+	
+		<programme id="TheRob-mov-com-SchmunzelndeErben" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0024236" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Lachende Erben, Comedy sub Romance -->
+				<de>Schmunzelnde Erben</de>
+				<en>Smiling heirs</en>
+			</title>
+			<title_original>
+				<de>Lachende Erben</de>
+				<en>Laughing heirs</en>
+			</title_original>
+			<description>
+				<de>Der trinkfreudige Frank erbt ein gut gehendes Unternehmen, wenn er vier Wochen lang kein Alkohol trinkt. Die restliche Familie versucht ihn mit allen Mitteln einen Drink aufzuzwingen.</de>
+				<en>The Alc**** loving Frank inherit a healthy company if he does not have a drink for four weeks. The rest of the family uses every trick to lat him have a drink.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-MaxHohlues</member>
+				<member index="1" function="2">TheRob-TowerTV-RienaMeiers</member>  
+				<member index="2" function="2">35ecbb4e-ee36-415d-914a-a78ed8e32d4b</member>                                                
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1933" distribution="0" maingenre="5" subgenre="15" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="54" speed="68" outcome="46" />
+		</programme> 
+	
+		<programme id="TheRob-mov-crim-HilfloseWut" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0027652" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Blinde Wut, Krimi sub Drama -->
+				<de>Hilflose Wut</de>
+				<en>Helpless rage</en>
+			</title>
+			<title_original>
+				<de>Blinde Wut</de>
+				<en>Fury</en>
+			</title_original>
+			<description>
+				<de>Ein Paar wandert durch das Land um Geld für ihre Hochzeit zu verdienen. Da wird er in einem Dorf mit einem Mörder verwechselt und verhaftet. und schon beginnt das Drama.</de>
+				<en>A couple is moving through the country to earn money for their wedding. In a small village he is taken for a murder. An the dramatic story starts.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
+				<member index="1" function="2">TheRob-celebritypeople-SilvyMelbourne</member>  
+				<member index="2" function="2">TheRob-celebritypeople-HenceTrace</member> 
+				<member index="3" function="2">TheRob-celebritypeople-WalfredWederSabel</member>                                                        
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1936" distribution="0" maingenre="4" subgenre="7" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="85" speed="63" outcome="81" />
+		</programme>    
+	
+		<programme id="TheRob-mov-crim-StreunendurchdieStadt" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0021750" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Straßen der Großstadt, Krimi sub Drama -->
+				<de>Streunen durch die Stadt</de>
+				<en>Wandering through the city</en>
+			</title>
+			<title_original>
+				<de>Straßen der Großstadt</de>
+				<en>City streets</en>
+			</title_original>
+			<description>
+				<de>Aus Liebe wird The Kid Mitglied einer Gang um seine Liebste aus dem Gefängnis zu befreien. Doch als sie frei ist will sie nichts mehr mit kriminellen Machenschaften zu tun haben.</de>
+				<en>In love The Kid joins a gang to rescue his beloved from prison. But as soon as she is free, she does not want to have anything to do with crime anymore.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-RouvenMamutia</member>
+				<member index="1" function="2">TheRob-celebritypeople-SilvyMelbourne</member>  
+				<member index="2" function="2">fa39d88a-9236-485f-af18-78b6d3c794d1</member>                                                        
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1931" distribution="0" maingenre="4" subgenre="7" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="81" speed="59" outcome="74" />
+		</programme>  
+	
+		<programme id="TheRob-mov-crim-Wirzusammen" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0030996" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Du und ich, Krimi sub Drama -->
+				<de>Wir zusammen</de>
+				<en>We together</en>
+			</title>
+			<title_original>
+				<de>Du und ich</de>
+				<en>You and me</en>
+			</title_original>
+			<description>
+				<de>Wieder eine Liebesgeschichte unter ehemaligen Kriminellen von [0|Full]. Bleiben sie auf dem rechten Pfad oder werden sie rückfällig?</de>
+				<en>Again a lovestory between ex criminals from [0|Full]. Will they stay on the legal path or will they return to crime?</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
+				<member index="1" function="2">TheRob-celebritypeople-SilvyMelbourne</member>  
+				<member index="2" function="2">TheRob-TowerTV-GregoryTaft</member>  
+				<member index="3" function="2">TheRob-TowerTV-CarltonMcStain</member>                                                              
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1938" distribution="0" maingenre="4" subgenre="7" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="64" speed="51" outcome="58" />
+		</programme> 
+	
+		<programme id="TheRob-mov-crim-Gejagt" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0029808" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Gehetzt, Krimi sub Drama -->
+				<de>Gejagt</de>
+				<en>Chased</en>
+			</title>
+			<title_original>
+				<de>Gehetzt</de>
+				<en>You Only Live Once</en>
+			</title_original>
+			<description>
+				<de>Joan ist eine Sekretärin bei einem bekannten Verteidiger und verliebt sich ind den Kriminellen Eddie. Wird ihr Glaube an das Gute im Menschen belohnt?</de>
+				<en>Joan is a secretary for a public defender. Soon she falls in love with the criminal Eddie. Will her believes in the good of the people be rewarded?</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
+				<member index="1" function="2">TheRob-celebritypeople-SilvyMelbourne</member>  
+				<member index="2" function="2">a80152d6-43dc-4f9c-a562-a5dbf821bc1f</member>
+				<member index="3" function="2">TheRob-TowerTV-CarltonMcStain</member>                                                                  
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1937" distribution="0" maingenre="4" subgenre="7" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="79" speed="58" outcome="68" />
+		</programme>        
+	
+		<programme id="TheRob-mov-dram-DerEngelmitgoldenemHaar" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0022698" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Die blonde Venus, Drama -->
+				<de>Der Engel mit goldenem Haar</de>
+				<en>The Angel with golden hair</en>
+			</title>
+			<title_original>
+				<de>Die blonde Venus</de>
+				<en>Blonde Venus</en>
+			</title_original>
+			<description>
+				<de>Dramatische Dreiecksbeziehung. Um die Heilung ihres Mannes zu finanzieren, abreitet Helen in einem Cabaret. Dort lernt sie einen Millionär kennen. Nach der Genesung ihres Mannes spitzt sich die Lage zu.</de>
+				<en>Dramatic love affair betwenn three persons. Helen starts to work in a cabaret to pay the bills of her ill husband. There she get to know a millionaire. After her husband is well again the situation escalates.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-Peppivonsternschnuppe</member>
+				<member index="1" function="2">TheRob-celebritypeople-DarleenSchluessel</member>  
+				<member index="2" function="2">TheRob-celebritypeople-GaryGrunt</member>                                                               
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1937" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="81" speed="48" outcome="71" />
+		</programme>   
+	
+		<programme id="TheRob-mov-dram-DerweiblicheTeufel" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0026276" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Der Teufel ist eine Frau, comedy -->
+				<de>Der weibliche Teufel</de>
+				<en>The female devil</en>
+			</title>
+			<title_original>
+				<de>Der Teufel ist eine Frau</de>
+				<en>The Devil Is a Woman</en>
+			</title_original>
+			<description>
+				<de>In Flashbacks erinnert sich ein Mann an eine unerreichbare Frau. Und an die Frustration der Männer, die sich in sie verliebt haben.</de>
+				<en>In flashbacks a man remembers an unreachable woman and the frustration of the men who fell in love with her.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-Peppivonsternschnuppe</member>
+				<member index="1" function="2">TheRob-celebritypeople-DarleenSchluessel</member>  
+				<member index="2" function="2">TheRob-TowerTV-LyonAntbill</member>                                                               
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1935" distribution="0" maingenre="5" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="74" speed="68" outcome="63" />
+		</programme>    
+	
+		<programme id="TheRob-mov-rom-DramainAmerika" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0021607" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Eine amerikanische Tragödie, Romance sub drama -->
+				<de>Drama in Amerika</de>
+				<en>Drama in Amerika</en>
+			</title>
+			<title_original>
+				<de>Eine amerikanische Tragödie</de>
+				<en>An American Tragedy</en>
+			</title_original>
+			<description>
+				<de>Glücklich in eine reiche Erbin verliebt, sieht die Zukunft rosig aus. Doch dann taucht die Schwangere Exliebschaft auf.</de>
+				<en>Happily in love with a rich heiress the futer shines bright. But suddenly the pregnant exaffair appears.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-Peppivonsternschnuppe</member>
+				<member index="1" function="2">TheRob-celebritypeople-SilvyMelbourne</member>  
+				<member index="2" function="2">TheRob-TowerTV-FlippiCrolmes</member>                                                               
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1931" distribution="0" maingenre="15" subgenre="7" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="64" speed="41" outcome="49" />
+		</programme>       
+ 
+		<programme id="TheRob-mov-dram-DrWarusehatseineAugenueberall" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0054371" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Die 1000 Augen des Dr. Mabuse, crime -->
+				<de>Dr. Waruse hat seine Augen überall</de>
+				<en>Dr. Waruse has his eyes everywhere</en>
+			</title>
+			<title_original>
+				<de>Die 1000 Augen des Dr. Mabuse</de>
+				<en>The 1000 eyes of Dr. Mabus</en>
+			</title_original>
+			<description>
+				<de>Als ein Jounalist ermordet wird, führen alle Hinweise zu einem Hotel. Doch wo ist Dr. Waruse? Der letzte Dr. Waruse von [0|Full]</de>
+				<en>As a journalist is killed all hints are leading to a hotel. But where is Dr. Waruse? The last Dr. Waruse of [0|Full]</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
+				<member index="1" function="2">ea76aa3d-2541-481a-b08a-e6905da0cb30</member>  
+				<member index="2" function="2">TheRob-TowerTV-PetevonSpike</member>
+				<member index="3" function="2">TheRob-TowerTV-DieterWallvomNorden</member>                                                                         
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1960" distribution="0" maingenre="4" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="64" speed="67" outcome="65" />
+		</programme>                                       
+
+		<programme id="TheRob-mov-west-FrankJamesistzurueck" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0054371" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Rache für Jesse James, western -->
+				<de>Frank James ist zurück</de>
+				<en>Frank James is back</en>
+			</title>
+			<title_original>
+				<de>Rache für Jesse James</de>
+				<en>The Return of Frank James</en>
+			</title_original>
+			<description>
+				<de>Ein Western von [0|Full]. [1|Full] spielt den Bruder von Jesse James.</de>
+				<en>A western of [0|Full]. [1|Full] acts as the brother of Jesse James.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
+				<member index="1" function="2">a80152d6-43dc-4f9c-a562-a5dbf821bc1f</member>  
+				<member index="2" function="2">TheRob-TowerTV-JeanePierley</member>
+				<member index="3" function="2">TheRob-TowerTV-RonSaradine</member>                                                                                 
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1940" distribution="0" maingenre="4" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="53" speed="70" outcome="61" />
+		</programme> 
+	
+		<programme id="TheRob-mov-adv-ImTrenchcoatdurchdieNacht" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0038417" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Im Geheimdienst, Abenteuer -->
+				<de>Im Trenchcoat durch die Nacht</de>
+				<en>With trenchcoat through the night</en>
+			</title>
+			<title_original>
+				<de>Im Geheimdienst</de>
+				<en>Cloak and Dagger</en>
+			</title_original>
+			<description>
+				<de>Ein Secret Service Agent versucht die Entwicklung der Atombombe durch die Nazis zu verhindern. Packendes Abenteuer mit [1|Full].</de>
+				<en>A secret service agent tries to stop the plans of the nazis to build a nuclear bomb. An Adventure with [1|Full] packed with tension.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
+				<member index="1" function="2">fa39d88a-9236-485f-af18-78b6d3c794d1</member>  
+				<member index="2" function="2">TheRob-TowerTV-JillSalmer</member>
+				<member index="3" function="2">5679447a-7706-40b9-bb7c-b191abebd5d8</member>                                                                                 
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1946" distribution="0" maingenre="1" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="53" speed="70" outcome="61" />
+		</programme>  
+  
+		<programme id="TheRob-mov-west-AufderJagd" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0045070" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Die Gejagten, Western -->
+				<de>Auf der Jagd</de>
+				<en>On the chase</en>
+			</title>
+			<title_original>
+				<de>Die Gejagten</de>
+				<en>Rancho Notorious</en>
+			</title_original>
+			<description>
+				<de>Nach dem seine Frau ermordet wurde, begibt sich Vern auf die Jagd und lässt sich von Rache treiben. Aber mit [1|Full] findet er mehr, als er gesucht hat.</de>
+				<en>After his wife is killed, Vern start to chase the murderes based on his wish for revenge. But with [1|Full] he finds more than he looked for.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
+				<member index="1" function="2">TheRob-celebritypeople-DarleenSchluessel</member>  
+				<member index="2" function="2">TheRob-TowerTV-ArchieRemedy</member>
+				<member index="3" function="2">TheRob-TowerTV-MelTerrier</member>                                                                                 
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1952" distribution="0" maingenre="18" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="73" speed="61" outcome="67" />
+		</programme>  
+	
+		<programme id="TheRob-mov-ero-BeichteeinesGroupies" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0065877" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Ich ein Groupie, Erotik -->
+				<de>Beichte eines Groupies</de>
+				<en>Confessions of a groupie</en>
+			</title>
+			<title_original>
+				<de>Ich - Ein Groupie</de>
+				<en>Me - a groupie</en>
+			</title_original>
+			<description>
+				<de>In Zeiten ohne Schönheitschirugie war [1|Full] einfach ein Hingucker. Dementsprechend brauchte man keine vernünftige Story, um die Männer in Scharen ins Kino zu locken.</de>
+				<en>Once upon a time there was no plastic surgery. In this time you needed no story to get men into a cinema to see [1|Full].</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-ErwinCSchluessel</member>
+				<member index="1" function="2">TheRob-TowerTV-IrisLeger</member>                                                                                 
+			</staff>
+			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1970" distribution="0" maingenre="8" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="8" speed="48" outcome="60" />
+		</programme>     
+	
+		<programme id="TheRob-mov-ero-DreiMusletiereerlebenerotischeAbenteuer" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0067739" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Die Sex-Abenteuer der drei Musketiere, Erotik -->
+				<de>Drei Musketiere erleben erotische Abenteuer</de>
+				<en>Three musketeers and their erotic adventures</en>
+			</title>
+			<title_original>
+				<de>Die Sex-Abenteuer der drei Musketiere</de>
+				<en>The sex adventures of the three musketeers</en>
+			</title_original>
+			<description>
+				<de>In Zeiten ohne Schönheitschirugie war [1|Full] einfach ein Hingucker. Diesmal mit dem Versuch einer Geschichte. VERSUCH!</de>
+				<en>Once upon a time there was no plastic surgery. In this time you needed no story to get men into a cinema to see [1|Full]. But this time they tried. TRIED!</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-ErwinCSchluessel</member>
+				<member index="1" function="2">TheRob-TowerTV-IrisLeger</member>                                                                                 
+			</staff>
+			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1971" distribution="0" maingenre="8" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="2" speed="29" outcome="41" />
+		</programme> 
+	
+		<programme id="TheRob-mov-ero-JungeDameninTrance" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0066852" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Blutjunge Verführerinnen, Erotik -->
+				<de>Junge Damen in Trance</de>
+				<en>Young teens in trance</en>
+			</title>
+			<title_original>
+				<de>Blutjunge Verführerinnen</de>
+				<en></en>
+			</title_original>
+			<description>
+				<de>In Zeiten ohne Schönheitschirugie war [1|Full] einfach ein Hingucker. Diesmal endlich wieder ohne wirkliche Geschichte. Aber mit Leckerbissen für das Auge.</de>
+				<en>Once upon a time there was no plastic surgery. In this time you needed no story to get men into a cinema to see [1|Full]. But this time a week story but the best for men eyes.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-ErwinCSchluessel</member>
+				<member index="1" function="2">TheRob-TowerTV-IrisLeger</member>                                                                                 
+			</staff>
+			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1971" distribution="0" maingenre="8" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="7" speed="34" outcome="52" />
+		</programme>                    
+		  
+		<programme id="TheRob-mov-ero-BedienungimFlugzeug" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0067794" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Die Stewardessen, Erotik -->
+				<de>Bedienung im Flugzeug</de>
+				<en>Service in the airplain</en>
+			</title>
+			<title_original>
+				<de>Die Stewardessen</de>
+				<en>The stewardesses</en>
+			</title_original>
+			<description>
+				<de>In Zeiten ohne Schönheitschirugie war [1|Full] einfach ein Hingucker. Diesmal die Fantasien der männlichen Flugreise.</de>
+				<en>Once upon a time there was no plastic surgery. In this time you needed no story to get men into a cinema to see [1|Full]. This time the fantasies of man during the travel with an airplane.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-ErwinCSchluessel</member>
+				<member index="1" function="2">TheRob-TowerTV-IrisLeger</member>                                                                                 
+			</staff>
+			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1971" distribution="0" maingenre="8" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="9" speed="42" outcome="51" />
+		</programme>  
+	
+		<programme id="TheRob-mov-com-AndrebekommtkeinDate" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0086895" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- André schafft sie alle, Comedy -->
+				<de>Andre bekommt kein Date</de>
+				<en>Andre does not get the date</en>
+			</title>
+			<title_original>
+				<de>André schafft sie alle</de>
+				<en>Andre get them all</en>
+			</title_original>
+			<description>
+				<de>Andre ist ein unwiderstehlicher Playboy. Aber bei einer Dame landet er einfach nicht.</de>
+				<en>Andre is the perfect playboy. But there is one lady where he can not get a date.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-PeteLatsche</member>
+				<member index="1" function="2">TheRob-TowerTV-IrisLeger</member>
+				<member index="2" function="2">9e22eab3-24b1-48d2-9874-1a690b01097c</member>                                                                                 
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1985" distribution="0" maingenre="5" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="18" speed="51" outcome="23" />
+		</programme>   
+	
+		<programme id="TheRob-mov-com-Repetiergewehr73" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0043137" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Winchester 73, Western -->
+				<de>Repetiergewehr 73</de>
+				<en>Repeating rifle 73</en>
+			</title>
+			<title_original>
+				<de>Winchester 73</de>
+				<en>Winchester '73</en>
+			</title_original>
+			<description>
+				<de>Mal ein anderer Western. Der Gewinner eines Gewehrs bekommt es gestohlen und folgt ihm.</de>
+				<en>A different western. After Lin wins a rifle it gets directly stolen. He follows the trail of the rifle.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-AntonWann</member>
+				<member index="1" function="2">788fa2a0-7908-4e96-b3c0-51ff9386a16e</member>
+				<member index="2" function="2">TheRob-TowerTV-JellyWinter</member>
+				<member index="3" function="2">130662a6-d95a-4a81-ba15-f7ab17599142</member>
+				<member index="4" function="2">5a335586-209a-49ee-90ba-6127e732b52b</member>                                                                                         
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1950" distribution="0" maingenre="18" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="78" speed="72" outcome="63" />
+		</programme>
+	
+		<programme id="TheRob-mov-com-GlenGlendawasauchimmer" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0045826" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Glen oder Glenda, Drama -->
+				<de>Glen, Glenda, was auch immer</de>
+				<en>Glen, Glenda, what ever</en>
+			</title>
+			<title_original>
+				<de>Glen oder Glenda</de>
+				<en>Glen or Glenda</en>
+			</title_original>
+			<description>
+				<de>Nach Planet 9 schafft [0|Full] dies mal nur einen schlechten Film. Zu richtig schlecht hat es nicht gereicht.</de>
+				<en>After Planet 9 [0|Full] could only make a bad movie. For really bad it is not good or bad enough.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-RednackRoot</member>
+				<member index="1" function="2">TheRob-TowerTV-BelraBugosi</member>
+				<member index="2" function="2">TheRob-TowerTV-RednackRoot</member>                                                                                        
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1953" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="12" speed="32" outcome="10" />
+		</programme> 
+	
+		<programme id="TheRob-mov-hor-WuergdenWuergerbevorDuselberwuergst" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0043137" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Winchester 73, Western -->
+				<de>Würg den Würger bevor Du selber würgst</de>
+				<en>Marrying the Monster</en>
+			</title>
+			<title_original>
+				<de>Die Rache des Würgers</de>
+				<en>Bride of the Monster</en>
+			</title_original>
+			<description>
+				<de>Ein verrückter Proffesor will einen Superhelden kreieren. Frankenstein? Heldenfilm? Oder einfach nur schlecht?</de>
+				<en>A mad scientist wants to create a hero. Frankenstein? Frankenweene? Hero? Or just a really bad movie?.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-RednackRoot</member>
+				<member index="1" function="2">TheRob-TowerTV-BelraBugosi</member>
+				<member index="2" function="2">TheRob-TowerTV-ChlorRontson</member>                                                                                        
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1955" distribution="0" maingenre="12" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="18" speed="37" outcome="14" />
+		</programme>                                         
+		  
 	</allprogrammes>
 
 	<insignificantpeople>
@@ -3831,34 +4667,45 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 		<person id="TheRob-TowerTV-Daniel" first_name="Daniel" last_name="W" nick_name="" levelup="0"  />
 		<person id="TheRob-TowerTV-Mark" first_name="Mark W." last_name="Wullbrich" nick_name="" levelup="0"  />
 		<person id="TheRob-TowerTV-Thomas" first_name="Thomas" last_name="Weierunter" nick_name="" levelup="0"  />
-		<!-- Muss ich noch raussuchen -->
-		<person id="TheRob-TowerTV-RuisLosset" first_name="Ruis" last_name="Losset Jr" nick_name="" />
-		<person id="TheRob-TowerTV-RednackRoot" first_name="Rednack" last_name="Root Jr." nick_name="" />
-		<person id="TheRob-TowerTV-WeckoryBallglatt" first_name="Weckory" last_name="Ballglatt" nick_name="" />
-		<person id="TheRob-TowerTV-SoniaKinnlang" first_name="Sonia" last_name="Kinnlang" nick_name="" />
-		<person id="TheRob-TowerTV-ClintWaran" first_name="Clint" last_name="Waran" nick_name="" />
+		<!-- Louis Gossett Jr. -->
+		<person id="TheRob-TowerTV-RuisLosset" first_name="Ruis" last_name="Losset Jr" nick_name="" imdb_id="nm0001283" />
+		<!-- Edward D. Wood Jr. -->   
+		<person id="TheRob-TowerTV-RednackRoot" first_name="Rednack" last_name="Root Jr." nick_name="" imdb_id="nm0000248" />
+		<!-- Gregory Walcott -->
+		<person id="TheRob-TowerTV-WeckoryBallglatt" first_name="Weckory" last_name="Ballglatt" nick_name="" imdb_id="nm0906966" />
+		<!-- Mona McKinnon -->    
+		<person id="TheRob-TowerTV-SoniaKinnlang" first_name="Sonia" last_name="Kinnlang" nick_name="" imdb_id="nm0571958" />
+		<!-- Jim Sharman --> 
+		<person id="TheRob-TowerTV-ClintWaran" first_name="Clint" last_name="Waran" nick_name="" imdb_id="nm0788940" />
 		<!-- Franz Beckenbauer -->
 		<person id="TheRob-TowerTV-KalliBeckenklauer" first_name="Kalli" last_name="Beckenklauer" nick_name="" />
 		<person id="TheRob-TowerTV-VeraZottova" first_name="Vera" last_name="Zottova" nick_name="" fictional="1" />
-		<person id="TheRob-TowerTV-Borgmevens" first_name="Borg" last_name="Mevens" nick_name="" />
-		<person id="TheRob-TowerTV-Bobmailour" first_name="Bob" last_name="Mailour" nick_name="" />
+		<!-- George Stevens -->
+		<person id="TheRob-TowerTV-Borgmevens" first_name="Borg" last_name="Mevens" nick_name="" imdb_id="nm0828419" />
+		<!-- Robert Taylor -->   
+		<person id="TheRob-TowerTV-Bobmailour" first_name="Bob" last_name="Mailour" nick_name="" imdb_id="nm0001791" />
 		<!-- Peter Fonda -->
-		<person id="TheRob-TowerTV-PetrFondason" first_name="Petr" last_name="Fondason" nick_name="" />
-		<person id="TheRob-TowerTV-Peppivonsternschnuppe" first_name="Peppi" last_name="von Sternschnuppe" nick_name="" />
-		<person id="TheRob-TowerTV-JayWilland" first_name="Jay" last_name="Willand" nick_name="" />
-		<person id="TheRob-TowerTV-PetrORuler" first_name="Petr" last_name="O Ruler" nick_name="" />
-		<person id="TheRob-TowerTV-AntonWann" first_name="Anton" last_name="Wann" nick_name="" />
-		<person id="TheRob-TowerTV-AlvinTWein" first_name="Alvin T." last_name="Wein" nick_name="" />
-		<!-- Rolf Lemke -->
-		<person id="TheRob-TowerTV-RolleWenke" first_name="Rolle" last_name="Wenke" nick_name="" />
-		<!-- Ralf Lemke -->
-		<person id="TheRob-TowerTV-RalleWenke" first_name="Ralle" last_name="Wenke" nick_name="" />
+		<person id="TheRob-TowerTV-PetrFondason" first_name="Petr" last_name="Fondason" nick_name="" imdb_id="nm0001228" />
+		<!-- Josef von Sternberg -->    
+		<person id="TheRob-TowerTV-Peppivonsternschnuppe" first_name="Peppi" last_name="von Sternschnuppe" nick_name="" imdb_id="nm0903049" />
+		<!-- Ray Milland --> 
+		<person id="TheRob-TowerTV-JayWilland" first_name="Jay" last_name="Willand" nick_name="" imdb_id="nm0001537" />
+		<!-- Peter O'Toole -->       
+		<person id="TheRob-TowerTV-PetrORuler" first_name="Petr" last_name="O Ruler" nick_name="" imdb_id="nm0000564" />
+		<!-- Anthony Mann -->   
+		<person id="TheRob-TowerTV-AntonWann" first_name="Anton" last_name="Wann" nick_name="" imdb_id="nm0542649" />
+		<!-- Erik S. Klein --> 
+		<person id="TheRob-TowerTV-AlvinTWein" first_name="Alvin T." last_name="Wein" nick_name="" imdb_id="nm0458738" />
+		<!-- Rolf Lemcke -->
+		<person id="TheRob-TowerTV-RolleWenke" first_name="Rolle" last_name="Wenke" nick_name="" imdb_id="nm1824497" />
+		<!-- Ralf Lemcke -->
+		<person id="TheRob-TowerTV-RalleWenke" first_name="Ralle" last_name="Wenke" nick_name="" imdb_id="nm0501214" />
 		<!-- Klaus Gendries -->
-		<person id="TheRob-TowerTV-PaulBentris" first_name="Paul" last_name="Bentris" nick_name="" />
+		<person id="TheRob-TowerTV-PaulBentris" first_name="Paul" last_name="Bentris" nick_name="" imdb_id="nm0312688" />
 		<!-- Bastl Rütli -->
 		<person id="TheRob-TowerTV-BastlRuetli" first_name="Bastl" last_name="Rütli" nick_name="" fictional="1" />
 		<!-- John F. Kennedy -->
-		<person id="TheRob-TowerTV-JohnFKennedy" first_name="John F." last_name="Kennedy" nick_name="" />
+		<person id="TheRob-TowerTV-JohnFKennedy" first_name="John F." last_name="Kennedy" nick_name="" imdb_id="nm0448123" />
 		<!-- Nikita Sergejewitsch Chruschtschow -->
 		<person id="TheRob-TowerTV-NikitaSergejewitschChruschtschow" first_name="Nikita Sergejewitsch" last_name="Chruschtschow" nick_name="" />
 		<!-- József Nepp -->
@@ -3902,7 +4749,83 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 		<!-- Otto Wernicke -->
 		<person id="TheRob-TowerTV-OttoPernickel" first_name="Otto" last_name="Pernickel" nick_name="" imdb_id="nm0921532" /> 
 		<!-- Franklin J. Schaffner -->
-		<person id="TheRob-TowerTV-FranklinJayController" first_name="Franklin Jay" last_name="Controller" nick_name="" imdb_id="nm0769874" />                             
+		<person id="TheRob-TowerTV-FranklinJayController" first_name="Franklin Jay" last_name="Controller" nick_name="" imdb_id="nm0769874" /> 
+		<!-- Nikolay Burlyaev -->
+		<person id="TheRob-TowerTV-NikolovWorlyaev" first_name="Nikolov" last_name="Worlyaev" nick_name="" imdb_id="nm0122168" />   
+		<!-- Valentin Zubkov -->
+		<person id="TheRob-TowerTV-WaljaSutkovi" first_name="Walja" last_name="Sutkovi" nick_name="" imdb_id="nm0958284" /> 
+		<!-- Valentina Malyavina -->
+		<person id="TheRob-TowerTV-BallerinaRatyavina" first_name="Ballerina" last_name="Ratyavina" nick_name="" imdb_id="nm0540909" /> 
+		<!-- Anatoliy Solonitsyn -->
+		<person id="TheRob-TowerTV-AntonDuonizyn" first_name="Anton" last_name="Duonizyn" nick_name="" imdb_id="nm0813463" />   
+		<!-- Nikolay Grinko -->
+		<person id="TheRob-TowerTV-NikiGringoff" first_name="Niki" last_name="Gringoff" nick_name="" imdb_id="nm0342458" /> 
+		<!-- Irina Tarkovskaya -->
+		<person id="TheRob-TowerTV-SerenaParkawskiya" first_name="Serena" last_name="Parkawskiya" nick_name="" imdb_id="nm0712173" /> 
+		<!-- Igor Fomchenko -->
+		<person id="TheRob-TowerTV-JegorZumtschenko" first_name="Jegor" last_name="Zumtschenko" nick_name="" imdb_id="nm0284436" /> 
+		<!-- Vladimir Zamanskiy -->
+		<person id="TheRob-TowerTV-IlljitschSafrauski" first_name="Illjitsch" last_name="Safrauski" nick_name="" imdb_id="nm0952519" />
+		<!-- Donatas Banionis -->
+		<person id="TheRob-TowerTV-DonaCanionitsch" first_name="Dona" last_name="Canionitsch" nick_name="" imdb_id="nm0052023" /> 
+		<!-- Natalya Bondarchuk -->
+		<person id="TheRob-TowerTV-NataschaBonkunstschuk" first_name="Natascha" last_name="Bonkunstschuk" nick_name="" imdb_id="nm0094081" />  
+		<!-- Margarita Terekhova -->
+		<person id="TheRob-TowerTV-DaliaTerschowa" first_name="Dalia" last_name="Terschowa" nick_name="" imdb_id="nm0855486" /> 
+		<!-- Ignat Daniltsev -->
+		<person id="TheRob-TowerTV-IgnazDanieltsew" first_name="Ignaz" last_name="Danieltsew" nick_name="" imdb_id="nm0200246" />
+		<!-- Alisa Freyndlikh -->
+		<person id="TheRob-TowerTV-AlzaFrejndlitsch" first_name="Alza" last_name="Frejndlitsch" nick_name="" imdb_id="nm0293981" /> 
+		<!-- Aleksandr Kaydanovskiy -->
+		<person id="TheRob-TowerTV-AlexKaimanowski" first_name="Alex" last_name="Kaimanowski" nick_name="" imdb_id="nm0435289" />
+		<!-- Erland Josephson -->
+		<person id="TheRob-TowerTV-ErlandoJoschkason" first_name="Erlando" last_name="Joschkason" nick_name="" imdb_id="nm0430746" /> 
+		<!-- Susan Fleetwood -->
+		<person id="TheRob-TowerTV-SusannaTreehood" first_name="Susanna" last_name="Treehood" nick_name="" imdb_id="nm0281453" />  
+		<!-- Mario Monicelli -->
+		<person id="TheRob-TowerTV-KarloKonicelli" first_name="Karlo" last_name="Konicelli" nick_name="" imdb_id="nm0598102" />
+		<!-- Lien Deyers -->
+		<person id="TheRob-TowerTV-RienaMeiers" first_name="Riena" last_name="Meiers" nick_name="" imdb_id="nm0223372" /> 
+		<!-- Willy Fritsch -->
+		<person id="TheRob-TowerTV-WilliPitch" first_name="Willi" last_name="Pitch" nick_name="" imdb_id="nm0295992" />
+		<!-- Gerda Maurus -->
+		<person id="TheRob-TowerTV-BertaMauer" first_name="Berta" last_name="Mauer" nick_name="" imdb_id="nm0561276" /> 
+		<!-- Max Ophüls -->
+		<person id="TheRob-TowerTV-MaxHohlues" first_name="Max" last_name="Hohlues" nick_name="" imdb_id="nm0649097" />
+		<!-- Rouben Mamoulian -->
+		<person id="TheRob-TowerTV-RouvenMamutia" first_name="Rouven" last_name="Mamutia" nick_name="" imdb_id="nm0541149" />
+		<!-- George Raft -->
+		<person id="TheRob-TowerTV-GregoryTaft" first_name="Gregory" last_name="Taft" nick_name="" imdb_id="nm0706368" />
+		<!-- Barton MacLane -->
+		<person id="TheRob-TowerTV-CarltonMcStain" first_name="Carlton" last_name="Mc Stain" nick_name="" imdb_id="nm0533692" /> 
+		<!-- Lionel Atwill -->
+		<person id="TheRob-TowerTV-LyonAntbill" first_name="Lyon" last_name="Antbill" nick_name="" imdb_id="nm0041172" /> 
+		<!-- Phillips Holmes -->
+		<person id="TheRob-TowerTV-FlippiCrolmes" first_name="Flippi" last_name="Crolmes" nick_name="" imdb_id="nm0392004" /> 
+		<!-- Peter van Eyck  -->
+		<person id="TheRob-TowerTV-PetevonSpike" first_name="Pete" last_name="von Spike" nick_name="" imdb_id="nm0886870" /> 
+		<!-- Dieter Hallervorden -->
+		<person id="TheRob-TowerTV-DieterWallvomNorden" first_name="Dieter" last_name="Wall vom Norden" nick_name="" imdb_id="nm0356448" />  
+		<!-- Gene Tierney -->
+		<person id="TheRob-TowerTV-JeanePierley" first_name="Jeane" last_name="Pierley" nick_name="" imdb_id="nm0000074" />
+		<!-- John Carradine -->
+		<person id="TheRob-TowerTV-RonSaradine" first_name="Ron" last_name="Saradine" nick_name="" imdb_id="nm0001017" />
+		<!-- Lilly Palmer -->
+		<person id="TheRob-TowerTV-JillSalmer" first_name="Jill" last_name="Salmer" nick_name="" imdb_id="nm0658339" />  
+		<!-- Arthur Kennedy  -->
+		<person id="TheRob-TowerTV-ArchieRemedy" first_name="Archie" last_name="Remedy" nick_name="" imdb_id="nm0447913" />
+		<!-- Mel Ferrer -->
+		<person id="TheRob-TowerTV-MelTerrier" first_name="Mel" last_name="Terrier" nick_name="" imdb_id="nm0002072" />
+		<!-- Erwin C. Dietrich -->
+		<person id="TheRob-TowerTV-ErwinCSchluessel" first_name="Erwin C." last_name="Schlüssel" nick_name="" imdb_id="nm0226244" />
+		<!-- Peter Fratzscher -->
+		<person id="TheRob-TowerTV-PeteLatsche" first_name="Pete" last_name="Latsche" nick_name="" imdb_id="nm0292377" /> 
+		<!-- Shelley Winters -->
+		<person id="TheRob-TowerTV-JellyWinter" first_name="Jelly" last_name="Winter" nick_name="" imdb_id="nm0001859" /> 
+		<!-- Bela Lugosi -->
+		<person id="TheRob-TowerTV-BelraBugosi" first_name="Belra" last_name="Bugosi" nick_name="" imdb_id="nm0000509" /> 
+		<!-- Tor Johnson -->
+		<person id="TheRob-TowerTV-ChlorRontson" first_name="Chlor" last_name="Rontson" nick_name="" imdb_id="nm0426363" />                                                     
 	</insignificantpeople>
 
 	<celebritypeople>
@@ -3917,10 +4840,10 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<!-- Howard Hawk -->
 			<first_name>Roward</first_name>
 			<last_name>Rawk</last_name>
-			<details job="1" gender="1"  birthday="1896-05-30" deathday="1977-12-26" country="D" />
+			<details job="1" gender="1"  birthday="1896-05-30" deathday="1977-12-26" country="USA" />
 			<data prominence="5" skill="5" fame="4" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
-		<person id="TheRob-celebritypeople-WalfredWederSabel" tmdb_id="0" imdb_id="nm0002154" creator="">
+		<person id="TheRob-celebritypeople-WalfredWederSabel" tmdb_id="0" imdb_id="nm0002154" creator="8751" created_by="TheRob">
 			<!-- Alfred Abel -->
 			<first_name>Walfred Weder</first_name>
 			<last_name>Sabel</last_name>
@@ -4143,7 +5066,28 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<last_name>Neck King</last_name>
 			<details job="2" gender="1"  birthday="1930-03-24" deathday="1980-11-07" country="USA" />
 			<data prominence="4" skill="4" fame="5" scandalizing="1" price_mod="0" power="4" humor="1" charisma="3" appearance="4" topgenre1="2" topgenre2="17" />
-		</person>          
+		</person>   
+		<person id="TheRob-celebritypeople-AndyCharkowski" tmdb_id="0" imdb_id="nm0001789" creator="8751" created_by="TheRob">
+			<!-- Andrei Tarkovsky -->
+			<first_name>Andy</first_name>
+			<last_name>Charkowski</last_name>
+			<details job="2" gender="1"  birthday="1932-04-04" deathday="1986-12-29" country="UdSSR" />
+			<data prominence="2" skill="4" fame="2" scandalizing="0" price_mod="0" power="4" humor="0" charisma="3" appearance="4" topgenre1="7" topgenre2="2" />
+		</person> 
+	 	<person id="TheRob-celebritypeople-SilvyMelbourne" tmdb_id="0" imdb_id="nm0796662" creator="8751" created_by="TheRob">
+			<!-- Sylvia Sidney -->
+			<first_name>Silvy</first_name>
+			<last_name>Melbourne</last_name>
+			<details job="2" gender="2"  birthday="1910-08-08" deathday="1999-07-01" country="USA" />
+			<data prominence="4" skill="5" fame="3" scandalizing="0" price_mod="0" power="4" humor="1" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
+		</person>   
+		<person id="TheRob-celebritypeople-HenceTrace" tmdb_id="0" imdb_id="nm0000075" creator="8751" created_by="TheRob">
+			<!-- Spencer Tracy -->
+			<first_name>Hence</first_name>
+			<last_name>Trace</last_name>
+			<details job="2" gender="1"  birthday="1900-04-05" deathday="1967-06-10" country="USA" />
+			<data prominence="5" skill="5" fame="5" scandalizing="0" price_mod="0" power="4" humor="3" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
+		</person>               
 	</celebritypeople>
 
 	<scripttemplates>
