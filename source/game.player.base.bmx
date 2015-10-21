@@ -128,6 +128,18 @@ Type TPlayerBase {_exposeToLua="selected"}
 		Return "0"
 	End Method
 	
+	
+	Method GetNewsAbonnementFees:int() {_exposeToLua}
+		return 0
+	End Method
+
+	'return CURRENT newsAbonnement
+	Method GetNewsAbonnement:Int(genre:Int) {_exposeToLua}
+		If genre > 5 Then Return 0 'max 6 categories 0-5
+		Return Self.newsabonnements[genre]
+	End Method
+
+	
 
 	'attention: when used through LUA without param, the param gets "0"
 	'instead of "-1"

@@ -460,13 +460,6 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	End Method
 
 
-	'return CURRENT newsAbonnement
-	Method GetNewsAbonnement:Int(genre:Int) {_exposeToLua}
-		If genre > 5 Then Return 0 'max 6 categories 0-5
-		Return Self.newsabonnements[genre]
-	End Method
-
-
 	Method IncreaseNewsAbonnement(genre:Int) {_exposeToLua}
 		SetNewsAbonnement( genre, GetNewsAbonnement(genre)+1 )
 	End Method

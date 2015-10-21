@@ -1,6 +1,11 @@
-'SuperStrict
-'SuperStrict
-'Import "game.gameobject.bmx"
+SuperStrict
+Import "game.gameobject.bmx"
+Import "game.figure.base.bmx"
+Import "game.figure.base.sfx.bmx"
+Import "game.building.elevator.bmx"
+Import "game.room.bmx"
+Import "game.room.roomdoor.bmx"
+
 
 
 Type TFigureCollection extends TFigureBaseCollection
@@ -134,7 +139,7 @@ Type TFigure extends TFigureBase
 
 
 	Method GetSoundSource:TSoundSourceElement()
-		if not _soundSource then _soundSource = TFigureSoundSource.Create(Self)
+		if not _soundSource then _soundSource = TFigureBaseSoundSource.Create(Self)
 		return _soundSource
 	End Method
 

@@ -1,3 +1,11 @@
+SuperStrict
+Import Brl.LinkedList
+Import "game.programme.newsevent.bmx"
+Import "game.figure.customfigures.bmx"
+Import "game.world.bmx"
+Import "game.game.base.bmx"
+
+
 'likely a kind of agency providing news...
 'at the moment only a base object
 Type TNewsAgency
@@ -158,7 +166,7 @@ Type TNewsAgency
 			'the level might be 0 already after the terrorist got his
 			'command to go to a room ... so we check the figure too
 			local level:int = terroristAggressionLevel[terroristGroup]
-			local fig:TFigureTerrorist = TFigureTerrorist(GetGame().terrorists[terroristGroup])
+			local fig:TFigureTerrorist = TFigureTerrorist(GetGameBase().terrorists[terroristGroup])
 			'figure is just delivering a bomb?
 			if fig and fig.HasToDeliver() then return terroristAggressionLevelMax
 			return level
@@ -222,7 +230,7 @@ Type TNewsAgency
 		if aggressionLevel = 4
 			local effect:TGameModifierBase = new TGameModifierBase
 
-			effect.GetData().Add("figure", GetGame().terrorists[terroristGroup])
+			effect.GetData().Add("figure", GetGameBase().terrorists[terroristGroup])
 			effect.GetData().AddNumber("group", terroristGroup)
 			'effect.GetData().Add("room", GetRoomCollection().GetRandom())
 			if terroristGroup = 0
@@ -602,19 +610,19 @@ Type TNewsAgency
 
 
 	Method AddNewsEventToPlayer:Int(newsEvent:TNewsEvent, forPlayer:Int=-1, forceAdd:Int=False, fromNetwork:Int=0)
-		local player:TPlayer = GetPlayerCollection().Get(forPlayer)
+		local player:TPlayerBase = GetPlayerBase(forPlayer)
 		'only add news/newsblock if player is Host/Player OR AI
 		'If Not GetGame().isLocalPlayer(forPlayer) And Not GetGame().isAIPlayer(forPlayer) Then Return 'TODO: Wenn man gerade Spieler 2 ist/verfolgt (Taste 2) dann bekommt Spieler 1 keine News
-		If Player.newsabonnements[newsEvent.genre] > 0 or forceAdd
+		If player.newsabonnements[newsEvent.genre] > 0 or forceAdd
 			local news:TNews = TNews.Create("", 0, newsEvent)
 			'Print "[LOCAL] AddNewsEventToPlayer "+forPlayer+": added news title="+news.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
 
 			if forceAdd
 				news.publishDelay = 0
 				news.priceModRelativeNewsAgency = 0.0
-			elseif Player.newsabonnements[newsEvent.genre] > 0
-				news.publishDelay = GetNewsAbonnementDelay(newsEvent.genre, Player.newsabonnements[newsEvent.genre] )
-				news.priceModRelativeNewsAgency = GetNewsRelativeExtraCharge(newsEvent.genre, GetPlayer(forPlayer).GetNewsAbonnement(newsEvent.genre))
+			elseif player.newsabonnements[newsEvent.genre] > 0
+				news.publishDelay = GetNewsAbonnementDelay(newsEvent.genre, player.newsabonnements[newsEvent.genre] )
+				news.priceModRelativeNewsAgency = GetNewsRelativeExtraCharge(newsEvent.genre, GetPlayerBase(forPlayer).GetNewsAbonnement(newsEvent.genre))
 
 				'do not charge for immediate news
 				if newsEvent.HasFlag(TVTNewsFlag.SEND_IMMEDIATELY)
@@ -683,7 +691,7 @@ Type TNewsAgency
 		If newsEvent
 			local skipNews:int = newsEvent.IsSkippable()
 			If skipNews
-				For Local player:TPlayer = eachin GetPlayerCollection().players
+				For Local player:TPlayerBase = eachin GetPlayerBaseCollection().players
 					'a player listens to this genre, disallow skipping
 					If player.newsabonnements[newsEvent.genre] > 0 Then skipNews = False
 				Next
