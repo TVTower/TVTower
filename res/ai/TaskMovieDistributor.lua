@@ -50,15 +50,6 @@ function TaskMovieDistributor:Activate()
 end
 
 
-function TaskMovieDistributor:OnDayBegins()
-	local moviesNeeded = 4 - (TVT.Rules.startProgrammeAmount + self.ProgrammesPossessed)
-	if moviesNeeded > 0 then
-		self.SituationPriority = 10 + moviesNeeded * 5 
-		debugMsg("Startprogramm fehlt: erhoehe Prio! " .. self.SituationPriority)			
-	end
-end
-
-
 function TaskMovieDistributor:GetNextJobInTargetRoom()
 	if (self.BuyStartProgrammeJob.Status ~= JOB_STATUS_DONE) then
 		return self.BuyStartProgrammeJob

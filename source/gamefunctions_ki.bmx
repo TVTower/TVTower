@@ -269,7 +269,16 @@ Type KI
 			TLogger.log("KI.CallOnDayBegins", "Script "+scriptFileName+" does not contain function ~qOnDayBegins~q.", LOG_ERROR)
 		End Try
 	End Method
+
 	
+	Method CallOnGameBegins()
+	    Try
+			if (KIRunning) then LuaEngine.CallLuaFunction("OnGameBegins", Null)
+		Catch ex:Object
+			TLogger.log("KI.CallOnGameBegins", "Script "+scriptFileName+" does not contain function ~qOnGameBegins~q.", LOG_ERROR)
+		End Try
+	End Method
+		
 
 	Method CallOnMoneyChanged(value:int, reason:int, reference:TNamedGameObject)
 	    Try
@@ -585,6 +594,24 @@ Type TLuaFunctions {_exposeToLua}
 		return TProgrammeLicence[](obj)
 	End Method
 
+
+	'=== GENERIC INFORMATION RETRIEVERS ===
+	'player could eg. see in interface / tooltips
+	Method GetCurrentProgramme:TBroadcastMaterial()
+		return GetPlayerProgrammePlan(self.ME).GetProgramme()
+	End Method
+
+
+	Method GetCurrentAdvertisement:TBroadcastMaterial()
+		return GetPlayerProgrammePlan(self.ME).GetAdvertisement()
+	End Method
+
+
+	Method GetCurrentAdvertisementMinAudience:int()
+		local ad:TAdvertisement = TAdvertisement(GetCurrentAdvertisement())
+		if ad then return ad.contract.GetMinAudience()
+		return 0
+	End Method
 
 
 	'=== OFFICE ===

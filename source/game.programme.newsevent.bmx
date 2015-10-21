@@ -313,12 +313,6 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	Field _handledFirstTimeBroadcast:int = False
 	Field _genreDefinitionCache:TNewsGenreDefinition = Null {nosave}
 	
-	Const GENRE_POLITICS:Int = 0	{_exposeToLua}
-	Const GENRE_SHOWBIZ:Int  = 1	{_exposeToLua}
-	Const GENRE_SPORT:Int    = 2	{_exposeToLua}
-	Const GENRE_TECHNICS:Int = 3	{_exposeToLua}
-	Const GENRE_CURRENTS:Int = 4	{_exposeToLua}
-
 
 	Method Init:TNewsEvent(GUID:string, title:TLocalizedString, description:TLocalizedString, Genre:Int, quality:Float=-1, modifiers:TData=null, newsType:int=0)
 		self.SetGUID(GUID)

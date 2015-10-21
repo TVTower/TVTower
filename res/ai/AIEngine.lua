@@ -654,3 +654,13 @@ end
 function math.clamp( n, min, max )
 	return n > max and max or n < min and min or n
 end
+
+
+function FixDayAndHour(day, hour)
+	local moduloHour = hour
+	if (hour > 23) then
+		moduloHour = hour % 24
+	end
+	local newDay = day + (hour - moduloHour) / 24
+	return newDay, moduloHour
+end

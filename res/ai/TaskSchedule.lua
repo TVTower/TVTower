@@ -387,6 +387,12 @@ function TaskSchedule:AddSpotRequisition(guessedAudience, level, day, hour)
 	self.Player:AddRequisition(requisition)
 end
 
+function TaskSchedule:FixAdvertisement(day, hour)
+	debugMsg("FixAdvertisement: " .. day .."/".. hour)
+	--increase importance of schedule task!
+	self.SituationPriority = 80
+end
+
 --function TaskSchedule:GetMovieByLevel
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -789,6 +795,8 @@ function JobSchedule:OptimizeAdSchedule()
 		elseif (fixedHour >= 19 and fixedHour <= 23) then
 			replaceBadAdsWithTrailerRate = replaceBadAdsWithTrailerRatePrimeTime
 		end
+		--without programme, we cannot send trailers
+		if TVT.of_getProgrammeLicenceCount() <= 1 then replaceBadAdsWithTrailerRate = 0 end
 
 
 		local choosenBroadcastSource = nil
@@ -817,6 +825,7 @@ function JobSchedule:OptimizeAdSchedule()
 			local adContract = TVT.of_getAdContractByID( currentBroadcastMaterial.GetReferenceID() )
 			if (previousProgramme ~= nil and adContract ~= nil) then
 				if guessedAudience < adContract.GetMinAudience() then
+debugMsg(fixedHour..":55 - unsatisfiable ad! guessedAudience="..guessedAudience)
 					sendTrailerReason = "unsatisfiable ad (aud "..math.floor(guessedAudience) .. "  <  minAud " .. adContract.GetMinAudience() .. ")"
 					sendTrailer = true
 				end
@@ -843,6 +852,8 @@ function JobSchedule:OptimizeAdSchedule()
 		if fixedHour >= 14 and fixedHour < 24 then minAudienceFactor = 0.3 end
 		-- during primetime, send ad at up to all cost?
 		if fixedHour >= 19 and fixedHour <= 23 then minAudienceFactor = 0.05 end
+		-- if we do not have any programme, allow every audience factor...
+		if TVT.of_getProgrammeLicenceCount() <= 1 then minAudienceFactor = 0 end
 
 		local betterAdContractList = self.ScheduleTask.EmergencyScheduleJob:GetMatchingSpotList(guessedAudience, minAudienceFactor, false, false)
 		if (table.count(betterAdContractList) > 0) then
@@ -866,6 +877,8 @@ function JobSchedule:OptimizeAdSchedule()
 			if guessedAudience > 0 then
 				newAudienceCoverage = newAdContract.GetMinAudience() / guessedAudience
 				oldAudienceCoverage = oldMinAudience / guessedAudience
+				--if the old ad would not get satisfied, it does not cover anything 
+				if oldAudienceCoverage > 1 then oldAudienceCoverage = -1 end
 			end
 			local audienceCoverageIncrease = newAudienceCoverage - oldAudienceCoverage
 --if fixedHour >= 19 and fixedHour <= 23 then
@@ -992,7 +1005,7 @@ function JobSchedule:OptimizeProgrammeSchedule()
 
 	local i = currentHour
 	while i <= currentHour + 12 do
-		fixedDay, fixedHour = self.ScheduleTask:FixDayAndHour(currentDay, i)
+		fixedDay, fixedHour = FixDayAndHour(currentDay, i)
 
 		local choosenBroadcastSource = nil
 		local choosenBroadcastLog = ""

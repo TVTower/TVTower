@@ -3571,6 +3571,7 @@ Type GameEvents
 		'events get ignored by non-gameleaders
 		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnMinute", PlayersOnMinute) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnDay", PlayersOnDay) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnBegin", PlayersOnBeginGame) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("Time.OnSecond", Time_OnSecond) ]
 
 		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerFinance.onChangeMoney", PlayerFinanceOnChangeMoney) ]
@@ -3742,6 +3743,16 @@ Type GameEvents
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
 			If player.isLocalAI() Then player.PlayerAI.CallOnDayBegins()
+		Next
+		Return True
+	End Function
+
+
+	Function PlayersOnBeginGame:Int(triggerEvent:TEventBase)
+		If Not GetGame().isGameLeader() Then Return False
+
+		For Local player:TPLayer = EachIn GetPlayerCollection().players
+			If player.isLocalAI() Then player.PlayerAI.CallOnGameBegins()
 		Next
 		Return True
 	End Function

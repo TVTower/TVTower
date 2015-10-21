@@ -175,7 +175,7 @@ Type TNewsAgency
 		Local title:String
 		Local description:String
 
-		local genre:int = TNewsEvent.GENRE_POLITICS
+		local genre:int = TVTNewsGenre.POLITICS_ECONOMY
 		Select aggressionLevel
 			case 1
 				if terroristGroup = 1
@@ -205,7 +205,7 @@ Type TNewsAgency
 				title = "Die Polizei warnt vor Terroristen"
 				description = "Die Polizei verlor die Spur zu einem k�rzlich gesichteten Terroristen, er soll dubanischer Herkunft sein."
 				'currents instead of politics
-				genre = TNewsEvent.GENRE_CURRENTS
+				genre = TVTNewsGenre.CURRENTAFFAIRS
 			default
 				return null
 		End Select
@@ -410,7 +410,7 @@ Type TNewsAgency
 		local localizeDescription:TLocalizedString = new TLocalizedString
 		localizeDescription.Set(description) 'use default lang
 
-		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TNewsEvent.GENRE_CURRENTS, quality, null, TVTNewsType.InitialNewsByInGameEvent)
+		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TVTNewsGenre.CURRENTAFFAIRS, quality, null, TVTNewsType.InitialNewsByInGameEvent)
 		NewsEvent.SetModifier("price", price)
 		'after 20 hours a news topicality is 0 - so accelerating it by
 		'2.5 means it reaches topicality of 0 at 8 hours after creation.
@@ -474,7 +474,7 @@ Type TNewsAgency
 		local quality:Float = 0.75*licence.GetData().review
 		'if outcome is less than 50%, it subtracts the price, else it increases
 		local priceModifier:Float = 1.0 + 0.2 * (licence.GetData().outcome - 0.5)
-		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TNewsEvent.GENRE_SHOWBIZ, quality, null, TVTNewsType.InitialNewsByInGameEvent)
+		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TVTNewsGenre.SHOWBIZ, quality, null, TVTNewsType.InitialNewsByInGameEvent)
 		NewsEvent.SetModifier("price", priceModifier)
 
 		'after 20 hours a news topicality is 0 - so accelerating it by

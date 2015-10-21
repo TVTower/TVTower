@@ -78,8 +78,8 @@ function DefaultAIPlayer:initializePlayer()
 	self.Ventruesome = math.random(3,8)
 	--Interesse an News/Geldausgabe fuer News
 	self.NewsPriority = math.random(3,8)
-	--Handlungsgeschwindigkeit 1-3
-	self.BrainSpeed = math.random(1,3)
+	--Handlungsgeschwindigkeit 2-4
+	self.BrainSpeed = math.random(2,4)
 	self.Strategy = DefaultStrategy()
 end
 
@@ -123,7 +123,14 @@ function DefaultAIPlayer:TickAnalyse()
 	self.Stats:ReadStats()
 end
 
+
+function DefaultAIPlayer:OnGameBegins()
+	self.Strategy:Start(self)
+end
+
+
 function DefaultAIPlayer:OnDayBegins()
+	--just in case we missed a "OnGameBegins"
 	self.Strategy:Start(self)
 
 	self.Stats:OnDayBegins()
@@ -429,15 +436,6 @@ function OnLoad(data)
 	end
 end
 
-function FixDayAndHour2(day, hour)
-	local moduloHour = hour
-	if (hour > 23) then
-		moduloHour = hour % 24
-	end
-	local newDay = day + (hour - moduloHour) / 24
-	return newDay, moduloHour
-end
-
 
 function OnRealTimeSecond(millisecondsPassed)
 	--if (aiIsActive) then
@@ -458,13 +456,29 @@ end
 
 
 function OnMinute(number)
+	--param "number" is passed as string
+	number = tonumber(number)
+
+	if number == 6 then 
+		local task = getAIPlayer().TaskList[_G["TASK_SCHEDULE"]]
+		if task then
+			local broadcast = TVT.GetCurrentAdvertisement()
+			if broadcast ~= nil then
+				-- only for ads
+				if broadcast.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) then
+					local audience = MY.GetProgrammePlan().GetAudience()
+					if audience < TVT.GetCurrentAdvertisementMinAudience() then
+						debugMsg("ProgrammeBegin: FixAdvertisement " .. WorldTime.GetDayHour() .. ":55 !!!   minAudience=" .. TVT.GetCurrentAdvertisementMinAudience() .. " < " .. audience)
+						task:FixAdvertisement(WorldTime.GetDay(), WorldTime.GetDayHour())
+					end
+				end
+			end
+		end
+	end
 --	debugMsg("OnMinute " .. number)
 --	if (aiIsActive) then
 --		getAIPlayer():Tick()
 --	end
-
-	--local list = MY.GetProgrammeCollection().GetProgrammeLicences()
-	--debugMsg("list count: " .. list:Count())
 
 	--Zum Test
 	--[[
@@ -472,7 +486,7 @@ function OnMinute(number)
 		local task = getAIPlayer().TaskList[TASK_SCHEDULE]
 		local guessedAudience = task:GuessedAudienceForHourAndLevel(WorldTime.GetDayHour())
 
-		local fixedDay, fixedHour = FixDayAndHour2(Worldtime.GetDay(), Worldtime.GetDayHour())
+		local fixedDay, fixedHour = FixDayAndHour(Worldtime.GetDay(), Worldtime.GetDayHour())
 		local programme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
 
 		-- RON: changed as "programme" is NIL if not existing/placed
