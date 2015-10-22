@@ -2948,7 +2948,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</title_original>
 			<description>
 				<de>[1|Full] präsentiert seine schönsten Erlebnisse aus seinen Reisen auf dem Meer.</de>
-				<en>[1|Full] presents his most beautifull moments during his journeys on the ocean.</en>
+				<en>[1|Full] presents his most beautiful moments during his journeys on the ocean.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-JeanJacquesRustoo</member>
@@ -3572,7 +3572,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en>The east - the west</en>
 					</title>
 					<description>
-						<de>Betty vergleicht die Sendungen. Aber irgendwann lacht sie nur noch über die Augenbrauen von [2|Full]. Das gibt Bauchmuskelkater...</de>
+						<de>[4|First] vergleicht die Sendungen. Aber irgendwann lacht sie nur noch über die Augenbrauen von [2|Full]. Das gibt Bauchmuskelkater...</de>
 						<en></en>
 					</description>
 					<staff>
@@ -3590,7 +3590,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en></en>
 					</title>
 					<description>
-						<de>Betty philosophiert darüber, ob dies nicht eher eine Dokumentation über Melktechniken ist und reichert viele Szenen mit ihren Erfahrungen vom Bauernhof an.</de>
+						<de>[4|First] philosophiert darüber, ob dies nicht eher eine Dokumentation über Melktechniken ist und reichert viele Szenen mit ihren Erfahrungen vom Bauernhof an.</de>
 						<en></en>
 					</description>
 					<staff>
@@ -3773,7 +3773,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 	
 		<programme id="TheRob-mov-cri-DasManifestdesDRWaruse" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0023563" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
-				<!-- Das Testament des DR. Mabuse -->
+				<!-- Das Testament des Dr. Mabuse -->
 				<de>Das Manifest des Dr. Waruse</de>
 				<en>The manifest of dr. Waruse</en>
 			</title>
@@ -3799,7 +3799,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 		<programme id="TheRob-mov-act-BrennendesHochhaus" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0072308" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Flammendes Inferno, Action -->
-				<de>Brennendes Hochhaus</de>
+				<de>Wolkenkratzer in Flammen</de>
 				<en>Burning Skyscraper</en>
 			</title>
 			<title_original>
@@ -3819,7 +3819,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1974" distribution="0" maingenre="2" subgenre="4" flags="0" blocks="3" time="0" price_mod="1.00" />
-			<ratings critics="47" speed="63" outcome="96" />
+			<ratings critics="47" speed="67" outcome="81" />
 		</programme>          
   
 		<programme id="TheRob-mov-act-SchmetterlinaufderInsel" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0072308" rt_id="0" creator="8751" created_by="TheRob">
@@ -3843,7 +3843,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1973" distribution="0" maingenre="7" subgenre="4" flags="8" blocks="3" time="0" price_mod="1.00" />
-			<ratings critics="47" speed="63" outcome="96" />
+			<ratings critics="69" speed="61" outcome="96" />
 		</programme> 
 
 		<programme id="TheRob-mov-drama-KleinIwan" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="Sjaele/TheRob">
@@ -3895,7 +3895,7 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="UdSSR" year="1966" distribution="0" maingenre="11" subgenre="7" flags="0" blocks="4" time="0" price_mod="1.00" />
-			<ratings critics="84" speed="22" outcome="63" />
+			<ratings critics="81" speed="22" outcome="63" />
 		</programme>     
 	
 		<programme id="TheRob-mov-dram-StraßenwalzenpilotundGeiger" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="Sjaele/TheRob">
@@ -3944,7 +3944,7 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="UdSSR" year="1972" distribution="0" maingenre="16" subgenre="14" flags="0" blocks="3" time="0" price_mod="1.00" />
-			<ratings critics="87" speed="36" outcome="83" />
+			<ratings critics="84" speed="36" outcome="83" />
 		</programme>          
 	
 		<programme id="TheRob-mov-drama-Serkalo" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0072443" rt_id="0" creator="Sjaele/TheRob">
@@ -3969,7 +3969,7 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="UdSSR" year="1975" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="79" speed="36" outcome="43" />
+			<ratings critics="73" speed="36" outcome="43" />
 		</programme>
 	
 		<programme id="TheRob-mov-drama-PicknickamWegesrand" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0072443" rt_id="0" creator="Sjaele/TheRob">
@@ -3994,7 +3994,7 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="UdSSR" year="1975" distribution="0" maingenre="16" subgenre="7" flags="0" blocks="3" time="0" price_mod="1.00" />
-			<ratings critics="82" speed="56" outcome="83" />
+			<ratings critics="82" speed="56" outcome="81" />
 		</programme>     
 	
 		<programme id="TheRob-mov-drama-DertoteBaum" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091670" rt_id="0" creator="Sjaele/TheRob">
@@ -4018,7 +4018,7 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="SUE" year="1986" distribution="0" maingenre="16" subgenre="7" flags="0" blocks="3" time="0" price_mod="1.00" />
-			<ratings critics="86" speed="26" outcome="72" />
+			<ratings critics="86" speed="26" outcome="71" />
 		</programme>   
 	
 		<programme id="TheRob-mov-com-Mozarella" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0068970" rt_id="8751" creator="TheRob">
@@ -4043,7 +4043,7 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="I" year="1971" distribution="0" maingenre="5" subgenre="15" flags="0" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="46" speed="36" outcome="42" />
+			<ratings critics="41" speed="36" outcome="42" />
 		</programme>       
 	
 		<programme id="TheRob-mov-drama-DasSchloss" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0051816" rt_id="8751" creator="TheRob">
@@ -4067,7 +4067,7 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="UK" year="1958" distribution="0" maingenre="7" subgenre="15" flags="0" blocks="3" time="0" price_mod="1.00" />
-			<ratings critics="51" speed="36" outcome="52" />
+			<ratings critics="47" speed="36" outcome="49" />
 		</programme>       
 	
 		<programme id="TheRob-mov-rom-Sabine" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0047437" rt_id="8751" creator="TheRob">
@@ -4082,7 +4082,7 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 			</title_original>
 			<description>
 				<de>Zwei Brüder verlieben sich beide in Sabine und versuchen Ihr Herz zu erobern. Liebesgeschichte mit sehr guter Besetzung von [0|Full].</de>
-				<en>Two brothers are falling in love with sabine ad are trying to win her heart. Lovestory with good cast directed by [0|Full].</en>
+				<en>Two brothers are falling in love with Sabine and are trying to win her heart. Lovestory with good cast directed by [0|Full].</en>
 			</description>
 			<staff>
 				<member index="0" function="1">81f17c33-1719-4513-ad34-ac03ac7d03a0</member>
@@ -4130,7 +4130,7 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 				<en>Spies</en>
 			</title_original>
 			<description>
-				<de>Raghi leitet einen Spionagering und setzt seine beste Agentin auf einen anderen Spion an. Er rechnete nich damit, dass sie sich in ihr Opfer verliebt.</de>
+				<de>Raghi leitet einen Spionagering und setzt seine beste Agentin auf einen anderen Spion an. Er rechnete nicht damit, dass sie sich in ihr Opfer verliebt.</de>
 				<en>Raghi leads a group of spies. He orders his best female agent to observe an other spy not having a clue she falls in love with her victim.</en>
 			</description>
 			<staff>
@@ -4166,7 +4166,7 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1929" distribution="0" maingenre="16" subgenre="15" flags="0" blocks="3" time="0" price_mod="1.00" />
-			<ratings critics="74" speed="68" outcome="56" />
+			<ratings critics="74" speed="63" outcome="56" />
 		</programme>      
 	
 		<programme id="TheRob-mov-com-SchmunzelndeErben" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0024236" rt_id="8751" creator="TheRob">
@@ -4278,7 +4278,7 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 				<en>You Only Live Once</en>
 			</title_original>
 			<description>
-				<de>Joan ist eine Sekretärin bei einem bekannten Verteidiger und verliebt sich ind den Kriminellen Eddie. Wird ihr Glaube an das Gute im Menschen belohnt?</de>
+				<de>Joan ist eine Sekretärin bei einem bekannten Verteidiger und verliebt sich in den Kriminellen Eddie. Wird ihr Glaube an das Gute im Menschen belohnt?</de>
 				<en>Joan is a secretary for a public defender. Soon she falls in love with the criminal Eddie. Will her believes in the good of the people be rewarded?</en>
 			</description>
 			<staff>
@@ -4386,7 +4386,7 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1960" distribution="0" maingenre="4" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="64" speed="67" outcome="65" />
+			<ratings critics="59" speed="67" outcome="61" />
 		</programme>                                       
 
 		<programme id="TheRob-mov-west-FrankJamesistzurueck" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0054371" rt_id="8751" creator="TheRob">
@@ -4411,7 +4411,7 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1940" distribution="0" maingenre="4" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="53" speed="70" outcome="61" />
+			<ratings critics="53" speed="68" outcome="61" />
 		</programme> 
 	
 		<programme id="TheRob-mov-adv-ImTrenchcoatdurchdieNacht" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0038417" rt_id="8751" creator="TheRob">
@@ -4436,7 +4436,7 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1946" distribution="0" maingenre="1" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="53" speed="70" outcome="61" />
+			<ratings critics="53" speed="68" outcome="61" />
 		</programme>  
   
 		<programme id="TheRob-mov-west-AufderJagd" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0045070" rt_id="8751" creator="TheRob">
@@ -4461,7 +4461,7 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1952" distribution="0" maingenre="18" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="73" speed="61" outcome="67" />
+			<ratings critics="71" speed="61" outcome="67" />
 		</programme>  
 	
 		<programme id="TheRob-mov-ero-BeichteeinesGroupies" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0065877" rt_id="8751" creator="TheRob">
@@ -4553,7 +4553,7 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 			</staff>
 			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1971" distribution="0" maingenre="8" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="9" speed="42" outcome="51" />
+			<ratings critics="9" speed="42" outcome="47" />
 		</programme>  
 	
 		<programme id="TheRob-mov-com-AndrebekommtkeinDate" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0086895" rt_id="8751" creator="TheRob">
@@ -4577,7 +4577,7 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1985" distribution="0" maingenre="5" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="18" speed="51" outcome="23" />
+			<ratings critics="16" speed="41" outcome="21" />
 		</programme>   
 	
 		<programme id="TheRob-mov-com-Repetiergewehr73" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0043137" rt_id="8751" creator="TheRob">
@@ -4603,7 +4603,7 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1950" distribution="0" maingenre="18" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="78" speed="72" outcome="63" />
+			<ratings critics="73" speed="72" outcome="63" />
 		</programme>
 	
 		<programme id="TheRob-mov-com-GlenGlendawasauchimmer" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0045826" rt_id="8751" creator="TheRob">
@@ -4617,7 +4617,7 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 				<en>Glen or Glenda</en>
 			</title_original>
 			<description>
-				<de>Nach Planet 9 schafft [0|Full] dies mal nur einen schlechten Film. Zu richtig schlecht hat es nicht gereicht.</de>
+				<de>Nach Planet 9 schafft [0|Full] diesmal nur einen schlechten Film. Zu richtig schlecht hat es nicht gereicht.</de>
 				<en>After Planet 9 [0|Full] could only make a bad movie. For really bad it is not good or bad enough.</en>
 			</description>
 			<staff>
@@ -4632,7 +4632,7 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 	
 		<programme id="TheRob-mov-hor-WuergdenWuergerbevorDuselberwuergst" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0043137" rt_id="8751" creator="TheRob">
 			<title>
-				<!-- Winchester 73, Western -->
+				<!-- Die Rache der Würgers, Horror -->
 				<de>Würg den Würger bevor Du selber würgst</de>
 				<en>Marrying the Monster</en>
 			</title>
@@ -4651,9 +4651,187 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1955" distribution="0" maingenre="12" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="18" speed="37" outcome="14" />
-		</programme>                                         
-		  
+			<ratings critics="18" speed="32" outcome="14" />
+		</programme>  
+	
+		<programme id="TheRob-serie-DieStraendederWelt" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Die Strände der Welt, fictional, Dok mit Sub Erotik, keine individuellen Werte -->
+				<de>Die Strände der Welt</de>
+				<en>Beaches of the world</en>
+			</title>
+			<description>
+				<de>[1|Full] zeigt die schönsten Strände der Welt. Eine tolle Dokumentation. Oder doch nur ein schöner Bikini an einer wunderschöenen Frau?</de>
+				<en>[1|Full] presents the most beautifull beaches of the world. A great documentation. Or just a nice bikini on a beautiful woman?</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-MorisWeverkov</member>
+				<member index="1" function="8">TheRob-TowerTV-VeraZottova</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="CSSR" year="1980" distribution="0" maingenre="6" subgenre="8" flags="0" blocks="1" time="0" price_mod="1.00" />
+			<ratings critics="29" speed="59" outcome="" />
+			<children>
+				<programme id="TheRob-serie-DieStraendederWelt-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Walvis Bucht</de>
+						<en>Walvis Bay</en>
+					</title>
+					<description>
+						<de>Namibia. Vera hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Namibia. Vera hops happily around the beach. The sand and animals are shown. And you could also learn a little bit about the country.</en>
+					</description>
+				</programme>
+				<programme id="TheRob-serie-DieStraendederWelt-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Oak Beach</de>
+						<en>Oak beach</en>
+					</title>
+					<description>
+						<de>Australia mit direktem Blick auf das Great Barrier Reef. Vera hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Australia with direct view on the Great Barrier Reef. Vera hops happily around the beach. The sand and animals are shown. And you could also learn a little bit about the country.</en>
+					</description>
+				</programme>
+				<programme id="TheRob-serie-DieStraendederWelt-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Vallvik</de>
+						<en>Vallvik</en>
+					</title>
+					<description>
+						<de>Schweden. Ein rauer Strand. Sollte jemand der Moderatorin sagen, dass man die Kälte deutlich an ihr sieht? Vera hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Sweden. Should anybody tell the moderater, that everybody sees clearly, she is freezing? Vera hops happily around the beach. The sand and animals are shown. And you could also learn a little bit about the country.</en>
+					</description>
+				</programme>
+				<programme id="TheRob-serie-DieStraendederWelt-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Playa Corcovado</de>
+						<en>Playa Corcovador</en>
+					</title>
+					<description>
+						<de>Costa Rica. Vera hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Costa Rica. Vera hops happily around the beach. The sand and animals are shown. And you could also learn a little bit about the country.</en>
+					</description>
+				</programme>
+				<programme id="TheRob-serie-DieStraendederWelt-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Koh Thas</de>
+						<en>Koh Thas</en>
+					</title>
+					<description>
+						<de>Kambotscha. Wer hält da denn Kokosnüsse? Vera hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Cambodia. Who's holding coconuts? Vera hops happily around the beach. The sand and animals are shown. And you could also learn a little bit about the country.</en>
+					</description>
+				</programme>
+				<programme id="TheRob-serie-DieStraendederWelt-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Vyshka</de>
+						<en>Vyshka</en>
+					</title>
+					<description>
+						<de>Russland. Wer kennt schon das kaspische Meer? Vera hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Russia. Who knows the caspian sea? Vera hops happily around the beach. The sand and animals are shown. And you could also learn a little bit about the country.</en>
+					</description>
+				</programme>
+			</children>
+		</programme>
+	
+		<programme id="TheRob-serie-Wirstellenvor" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Wir stellen vor, Music show -->
+				<de>Wir stellen vor</de>
+				<en>Do you know</en>
+			</title>
+			<description>
+				<de>Musik aus den 50ern die man kennen sollte und ihre Macher.</de>
+				<en>Music from the 50s you should know and the people behind.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_266</member>
+				<member index="1" function="8">Per_custom_Freddy_259</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="I" year="1959" distribution="0" maingenre="102" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
+			<ratings critics="30" speed="59" outcome="" />
+			<children>
+				<programme id="TheRob-serie-Wirstellenvor-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Buddy Holly</de>
+						<en>Buddy Holly</en>
+					</title>
+					<description>
+						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
+						<en>How were the songs produced? And why do the people still love the music? Who was it and how was the sound?</en>
+					</description>
+					<ratings critics="41" speed="59" />
+				</programme>
+				<programme id="TheRob-serie-Wirstellenvor-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Ritchie Valens</de>
+						<en>Ritchie Valens</en>
+					</title>
+					<description>
+						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
+						<en>How were the songs produced? And why do the people still love the music? Who was it and how was the sound?</en>
+					</description>
+					<ratings critics="28" speed="59" />
+				</programme>
+				<programme id="TheRob-serie-Wirstellenvor-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Monotones</de>
+						<en>Monotones</en>
+					</title>
+					<description>
+						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
+						<en>How were the songs produced? And why do the people still love the music? Who was it and how was the sound?</en>
+					</description>
+					<ratings critics="28" speed="59" />
+				</programme>
+				<programme id="TheRob-serie-Wirstellenvor-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Little Richard</de>
+						<en>Little Richard</en>
+					</title>
+					<description>
+						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
+						<en>How were the songs produced? And why do the people still love the music? Who was it and how was the sound?</en>
+					</description>
+					<ratings critics="30" speed="58" />
+				</programme>
+				<programme id="TheRob-serie-Wirstellenvor-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Eddie Cochran</de>
+						<en>Eddie Cochran</en>
+					</title>
+					<description>
+						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
+						<en>How were the songs produced? And why do the people still love the music? Who was it and how was the sound?</en>
+					</description>
+					<ratings critics="27" speed="60" />
+				</programme>
+				<programme id="TheRob-serie-Wirstellenvor-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Chuck Berry</de>
+						<en>Chuck Berry</en>
+					</title>
+					<description>
+						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
+						<en>How were the songs produced? And why do the people still love the music? Who was it and how was the sound?</en>
+					</description>
+					<ratings critics="32" speed="59" />
+				</programme>
+				<programme id="TheRob-serie-Wirstellenvor-Episode007" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Elvis Presley</de>
+						<en>Elvis Presley</en>
+					</title>
+					<description>
+						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
+						<en>How were the songs produced? And why do the people still love the music? Who was it and how was the sound?</en>
+					</description>
+					<ratings critics="32" speed="61" />
+				</programme>        
+			</children>
+		</programme>
 	</allprogrammes>
 
 	<insignificantpeople>
