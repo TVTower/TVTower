@@ -40,15 +40,23 @@ Type TDirectoryTree
 	End Method
 
 
-	Method AddFile(fileURI:String)
+	Method AddFile(fileURI:String, addAtTop:int=False)
 		If filePaths.Contains(fileURI) Then Return
-		filePaths.AddLast(fileURI)
+		if addAtTop
+			filePaths.AddFirst(fileURI)
+		else
+			filePaths.AddLast(fileURI)
+		endif
 	End Method
 
 
-	Method AddDirectory(directoryURI:String)
+	Method AddDirectory(directoryURI:String, addAtTop:int=False)
 		If directories.Contains(directoryURI) Then Return
-		directories.AddLast(directoryURI)
+		if addAtTop
+			directories.AddFirst(directoryURI)
+		else
+			directories.AddLast(directoryURI)
+		endif
 	End Method
 
 
