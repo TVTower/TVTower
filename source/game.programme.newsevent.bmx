@@ -100,7 +100,7 @@ Type TNewsEventCollection
 		local somethingDeleted:int = False
 		For local newsEvent:TNewsEvent = eachin allNewsEvents.Copy().Values()
 			'not happened yet - should not happen
-			if newsEvent.HasHappened() then continue
+			if not newsEvent.HasHappened() then continue
 
 			if abs(GetWorldTime().GetDay(newsEvent.happenedTime) - GetWorldTime().GetDay()) >= minAgeInDays
 				'if the news event cannot get used again remove them
