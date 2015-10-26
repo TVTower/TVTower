@@ -1400,6 +1400,7 @@ Type TSaveGame Extends TGameState
 	'this allows to have "realtime" (independend from "logic updates")
 	'effects - for visual effects (fading), sound ...
 	Field _Time_timeGone:Long = 0
+	Field _Entity_globalWorldSpeedFactor:Float =  0 
 	Const SAVEGAME_VERSION:string = "1.0"
 
 	'override to do nothing
@@ -1415,6 +1416,9 @@ Type TSaveGame Extends TGameState
 		Time.SetTimeGone(_Time_timeGone)
 		'set event manager to the ticks of that time
 		EventManager._ticks = _Time_timeGone
+
+		'restore entity speed
+		TEntity.globalWorldSpeedFactor = _Entity_globalWorldSpeedFactor
 	End Method
 
 
@@ -1433,6 +1437,8 @@ Type TSaveGame Extends TGameState
 
 		'store "time gone since start"
 		_Time_timeGone = Time.GetTimeGone()
+		'store entity speed
+		_Entity_globalWorldSpeedFactor = TEntity.globalWorldSpeedFactor
 	End Method
 	
 
@@ -1566,6 +1572,12 @@ Type TSaveGame Extends TGameState
 
 		'call game that game continues/starts now
 		GetGame().StartLoadedSaveGame()
+
+		'only unpause if there is no exit-dialogue open
+		if not TApp.ExitAppDialogue and not TApp.EscapeMenuWindow
+			GetGame().SetPaused(False)
+		endif
+
 		Return True
 	End Function
 
