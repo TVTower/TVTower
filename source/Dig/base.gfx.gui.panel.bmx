@@ -24,6 +24,14 @@ Type TGUIPanel Extends TGUIObject
 	End Method
 
 
+	Method Remove:int()
+		Super.Remove()
+
+		if guiBackground then guiBackground.Remove()
+		if guiTextBox then guiTextBox.Remove()
+	End Method
+
+
 	Method GetPadding:TRectangle()
 		'if no manual padding was setup - use sprite padding
 		if not _padding and guiBackground then return guiBackground.GetPadding()

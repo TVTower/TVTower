@@ -887,11 +887,10 @@ Type TApp
 			'RON: debug purpose - see if the managed guielements list increase over time
 			If TGUIObject.GetFocusedObject()
 				GetBitmapFontManager().baseFont.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"] focused: "+TGUIObject.GetFocusedObject()._id, textX,0)
-				textX:+160
 			Else
 				GetBitmapFontManager().baseFont.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"]" , textX,0)
-				textX:+130
 			EndIf
+			textX:+170
 
 			If GetGame().networkgame And Network.client
 				GetBitmapFontManager().baseFont.draw("Ping: "+Int(Network.client.latency)+"ms", textX,0)
@@ -1738,6 +1737,7 @@ Type TScreen_MainMenu Extends TGameScreen
 			ApplySettingsWindow()
 		EndIf
 		'unset variable - allows escape/quit-window again
+		if settingsWindow then settingsWindow.Remove()
 		settingsWindow = Null
 	End Method
 
@@ -1806,10 +1806,11 @@ Type TScreen_MainMenu Extends TGameScreen
 	End Method
 	
 
-
 	Method CreateSettingsWindow()
 		'load config
 		App.LoadSettings()
+
+		if settingsWindow then settingsWindow.Remove()
 		settingsWindow = New TSettingsWindow.Init()
 	End Method
 
@@ -2829,6 +2830,33 @@ Type TSettingsWindow
 	Field checkFullscreen:TGUICheckbox
 	Field inputGameName:TGUIInput
 	Field inputOnlinePort:TGUIInput
+
+
+	Method Remove:int()
+		'no need to remove them ... everything is handled via
+		'removal of the modalDialogue as the other elements are children
+		'of that dialogue
+		'modalDialogue.Remove()
+		rem
+			inputPlayerName.Remove()
+			inputChannelName.Remove()
+			inputStartYear.Remove()
+			inputStationmap.Remove()
+			inputDatabase.Remove()
+			checkMusic.Remove()
+			checkSfx.Remove()
+			dropdownSoundEngine.Remove()
+			dropdownRenderer.Remove()
+			checkFullscreen.Remove()
+			inputGameName.Remove()
+			inputOnlinePort.Remove()
+		endrem
+	End Method
+
+
+	Method Delete()
+		Remove()
+	End Method
 
 
 	Method ReadGuiValues:TData()

@@ -50,6 +50,15 @@ Type TGUISelectList Extends TGUIListBase
 	End Method
 
 
+	Method Remove:int()
+		Super.Remove()
+		if selectedEntry
+			selectedEntry.Remove()
+			selectedEntry = null
+		endif
+	End Method
+
+
 	'overrideable
 	Method RegisterListeners:Int()
 		'we want to know about clicks

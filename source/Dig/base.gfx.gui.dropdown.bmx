@@ -66,6 +66,7 @@ Type TGUIDropDown Extends TGUIInput
 
 		'=== ENTRY LIST ===
 		'create and style list
+		if list then list.Remove()
 		list = new TGUISelectList.Create(new TVec2D.Init(0, self.rect.GetH()), new TVec2D.Init(rect.GetW(), listHeight), "")
 		'do not add as child - we position it on our own when updating
 		'hide list to begin
@@ -96,6 +97,12 @@ Type TGUIDropDown Extends TGUIInput
 		AddEventListener(EventManager.registerListenerMethod("guiselectlist.onSelectEntry", self, "onSelectEntry", self.list ))
 
 		Return Self
+	End Method
+
+
+	Method Remove:int()
+		Super.Remove()
+		list.Remove()
 	End Method
 
 

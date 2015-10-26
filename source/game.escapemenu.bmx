@@ -243,13 +243,6 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 
 			TSaveGame.Load(fileURI)
 
-
-			'only unpause if there is no exit-dialogue open
-			if not TApp.ExitAppDialogue and not TApp.EscapeMenuWindow
-				GetGame().SetPaused(False)
-			endif
-
-
 			return True
 		endif
 
@@ -258,6 +251,8 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 
 
 	Method onLoadSavegame:int( triggerEvent:TEventBase )
+		'close escape menu regardless of "loading/saving" via
+		'shortcut or gui?
 		return True
 	End Method
 
@@ -373,6 +368,9 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 
 		if savegameName then savegameName.remove()
 		self.savegameName = null
+
+		if savegameNameLabel then savegameNameLabel.remove()
+		self.savegameNameLabel = null
 
 		'remove all event listeners
 		EventManager.unregisterListenersByLinks(_eventListeners)

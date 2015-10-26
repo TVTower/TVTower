@@ -91,6 +91,18 @@ Type TGUIListBase Extends TGUIobject
 	End Method
 
 
+	Method Remove:int()
+		super.Remove()
+
+		if guiEntriesPanel then guiEntriesPanel.Remove()
+		if guiScrollerH then guiScrollerH.Remove()
+		if guiScrollerV then guiScrollerV.Remove()
+
+		'set all entries free
+		EmptyList()
+	End Method
+
+
 	Method EmptyList:Int()
 		'traverse a copy to avoid concurrent modification
 		For Local obj:TGUIobject = EachIn entries.Copy()

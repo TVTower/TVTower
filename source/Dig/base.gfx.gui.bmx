@@ -730,6 +730,7 @@ Type TGUIobject
 			For local child:TGUIObject = eachin children.Copy()
 				child.Remove()
 			Next
+			children.Clear()
 		EndIf
 		
 		'just in case we have a managed one
@@ -1755,17 +1756,17 @@ Type TGUIobject
 			'charCode is < 0 for me when umlauts are pressed
 			if charCode < 0
 				?Win32
-				If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
-				If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
-				If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+				If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
+				If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
+				If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
 				?Mac
-				If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
-				If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
-				If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+				If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
+				If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
+				If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
 				?Linux
-				If KEYWRAPPER.pressedKey(252) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
-				If KEYWRAPPER.pressedKey(246) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
-				If KEYWRAPPER.pressedKey(163) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+				If KEYWRAPPER.pressedKey(252) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
+				If KEYWRAPPER.pressedKey(246) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
+				If KEYWRAPPER.pressedKey(163) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
 				?
 			'handle normal "keys" (excluding umlauts)
 			elseif charCode > 0

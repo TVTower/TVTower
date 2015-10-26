@@ -63,6 +63,13 @@ Type TGUIScroller Extends TGUIobject
 	End Method
 
 
+	Method Remove:Int()
+		Super.Remove()
+		if guiButtonMinus then guiButtonMinus.Remove()
+		if guiButtonPlus then guiButtonPlus.Remove()
+	End Method
+
+
 	'override to also check buttons
 	Method IsAppearanceChanged:int()
 		if guiButtonMinus and guiButtonMinus.isAppearanceChanged() then return TRUE
