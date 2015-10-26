@@ -4197,9 +4197,9 @@ Function GetBroadcastOverviewString:string(day:int = -1, lastHour:int = -1)
 
 			if progSlot
 				if progSlot.isType(TVTBroadcastMaterialType.PROGRAMME)
-					progText = LSet(progSlot.GetTitle(), 25)
+					progText = LSet(StringHelper.UTF8toISO8859(progSlot.GetTitle()), 25)
 				else
-					progText = LSet("[I] " + progSlot.GetTitle(), 25)
+					progText = LSet("[I] " + StringHelper.UTF8toISO8859(progSlot.GetTitle()), 25)
 				endif
 			else
 				progText = LSet("Keine Ausstrahlung", 25)

@@ -193,6 +193,8 @@ Type TProgrammePersonBase extends TGameObject
 	'indicator for potential "upgrades" to become a celebrity
 	field jobsDone:int = 0
 	field canLevelUp:int = True
+	field countryCode:string = ""
+	field gender:int = 0
 	'is this an real existing person or someone we imaginated for the game?
 	field fictional:int = False
 	'is the person currently filming something?

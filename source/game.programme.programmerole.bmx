@@ -67,17 +67,17 @@ Type TProgrammeRole extends TGameObject {_exposeToLua}
 	'title - like "Dr." or "Prof."
 	Field title:string 
 	Field gender:int
-	Field country:string = ""
+	Field countryCode:string = ""
 	'is this a custom role not used in a real world movie
 	Field fictional:int = False
 
 
-	Method Init:TProgrammeRole(firstName:string, lastName:string, title:string="", country:string="", gender:int=0, fictional:int = False)
+	Method Init:TProgrammeRole(firstName:string, lastName:string, title:string="", countryCode:string="", gender:int=0, fictional:int = False)
 		self.firstName = firstName
 		self.lastName = lastName
 		self.title = title
 		self.gender = gender
-		self.country = country
+		self.countryCode = countryCode
 		self.fictional = fictional
 		return self
 	End Method
@@ -164,8 +164,8 @@ Type TProgrammeRoleFilter
 
 		'limited to one of the defined countries?
 		if allowedCountries and allowedCountries.length > 0
-			For local country:string = EachIn allowedCountries
-				if role.country = country then return True
+			For local countryCode:string = EachIn allowedCountries
+				if role.countryCode = countryCode then return True
 			Next
 			return False
 		endif

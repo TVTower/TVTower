@@ -166,9 +166,7 @@ End Function
 Type TProgrammePerson extends TProgrammePersonBase
 	field dayOfBirth:string	= "0000-00-00"
 	field dayOfDeath:string	= "0000-00-00"
-	field gender:int = 0
 	field debut:Int	= 0	
-	field country:string = ""
 	'income +, reviews +++, bonus in some genres (drama!)
 	'directors, musicians: how good is he doing his "craftmanships"
 	field skill:float = 0.0
@@ -357,13 +355,13 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 
 	Method GetCountryCode:string()
-		return country
+		return countryCode
 	End Method
 
 
 	Method GetCountry:string()
-		if country <> ""
-			return GetLocale("COUNTRY_CODE_"+country)
+		if countryCode <> ""
+			return GetLocale("COUNTRY_CODE_"+countryCode)
 		else
 			return ""
 		endif
@@ -371,8 +369,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 	
 
 	Method GetCountryLong:string()
-		if country <> ""
-			return GetLocale("COUNTRY_NAME_"+country)
+		if countryCode <> ""
+			return GetLocale("COUNTRY_NAME_"+countryCode)
 		else
 			return ""
 		endif

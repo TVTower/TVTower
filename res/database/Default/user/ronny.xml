@@ -1,6 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
 	<version value="3" comment="Ronnys Programme" />
+    <insignificantpeople>
+		<person id="test1" generator="de,2" last_name="Mueller" />
+		<person id="test2" generator="de,2" last_name="Mueller" />
+		<person id="test3" generator="de,2" last_name="Mueller" />
+		<person id="test4" generator="de,2" last_name="Mueller" />
+		<person id="test5" generator="de,2" last_name="Mueller" />
+		<person id="test6" generator="de,2" last_name="Mueller" />
+		<person id="test7" generator="de,2" last_name="Mueller" />
+	</insignificantpeople>
     <celebritypeople>
         <person id="ronny-programmeperson-gertkalischke" fictional="1" creator="5578" created_by="Ronny">
             <first_name>Gert</first_name>
@@ -260,6 +269,13 @@ Educational precious and absolutly ecological.</en>
 				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
 				<!-- Patty Glansen -->
 				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+				<!-- random:
+				     generator = "countrycodes, gender, levelup"
+				     countrycodes = "countrycode1 countrycode2 ..."
+				     gender = 0 [random]  1 [male]  2 [female]
+				     levelup = 0 [no levelup]  1 [levelup]
+				-->
+				<member index="1" function="64" generator="es,0"></member>
 			</staff>
 			<groups target_groups="0" />
 			<data country="D" year="-2" relative_year_min="1984" relative_year_max="1989" distribution="0" maingenre="0" blocks="1" tags="cooking,80s" />

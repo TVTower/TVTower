@@ -2,12 +2,14 @@ SuperStrict
 Import "Dig/base.util.time.bmx"
 Import "Dig/base.util.directorytree.bmx"
 Import "Dig/base.util.xmlhelper.bmx"
+Import "Dig/base.util.hashes.bmx"
 
 Import "game.production.scripttemplate.bmx"
 Import "game.programme.programmelicence.bmx"
 Import "game.programme.adcontract.bmx"
 Import "game.programme.newsevent.bmx"
 Import "game.programme.programmeperson.bmx"
+Import "Dig/base.util.persongenerator.bmx"
 Import "game.gameconstants.bmx"
 
 
@@ -303,14 +305,43 @@ Type TDatabaseLoader
 		'=== COMMON DETAILS ===
 		local data:TData = new TData
 		xml.LoadValuesToData(node, data, [..
-			"first_name", "last_name", "nick_name", "fictional", "levelup" ..
+			"first_name", "last_name", "nick_name", "fictional", "levelup", "country", ..
+			"generator" ..
 		])
 
+
+		local generator:string = data.GetString("generator", "")
+		local p:TPersonGeneratorEntry
+		if generator
+			p = GetPersonGenerator().GetUniqueDatasetFromString(generator)
+			if p
+				person.firstName = p.firstName
+				person.lastName = p.lastName
+				person.countryCode = p.countryCode
+			else
+				person.firstName = GUID
+			endif
+
+			person.fictional = true
+		endif
+
+		'override with given ones
 		person.firstName = data.GetString("first_name", person.firstName)
 		person.lastName = data.GetString("last_name", person.lastName)
 		person.nickName = data.GetString("nick_name", person.nickName)
 		person.fictional = data.GetInt("fictional", person.fictional)
+		person.countryCode = data.GetString("country", person.countryCode)
 		person.canLevelUp = data.GetInt("levelup", person.canLevelUp)
+
+		'avoid that other persons with that name are generated
+		if p
+			'take over new name
+			p.firstName = person.firstName
+			p.lastName = person.lastName
+			GetPersonGenerator().ProtectDataset(p)
+
+			'print "generated person : " + person.firstName+" " + person.lastName+" ("+person.countryCode+")" +" GUID="+GUID
+		endif
 
 
 		'=== CELEBRITY SPECIFIC DATA ===
@@ -331,7 +362,7 @@ Type TDatabaseLoader
 			celebrity.gender = data.GetInt("gender", celebrity.gender)
 			celebrity.SetDayOfBirth( data.GetString("birthday", celebrity.dayOfBirth) )
 			celebrity.SetDayOfDeath( data.GetString("deathday", celebrity.dayOfDeath) )
-			celebrity.country = data.GetString("country", celebrity.country)
+			celebrity.countryCode = data.GetString("country", celebrity.countryCode)
 			celebrity.fictional = data.GetInt("fictional", celebrity.fictional)
 			celebrity.SetJob( data.GetInt("job", celebrity.job) )
 
@@ -708,16 +739,53 @@ Type TDatabaseLoader
 
 			local memberIndex:int = xml.FindValueInt(nodeMember, "index", 0)
 			local memberFunction:int = xml.FindValueInt(nodeMember, "function", 0)
-			local memberGUID:string = nodeMember.GetContent()
+			local memberGenerator:string = xml.FindValue(nodeMember, "generator", "")
+			local memberGUID:string = nodeMember.GetContent().Trim()
 
-			local member:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID(memberGUID)
+			local member:TProgrammePersonBase
+			if memberGUID then member = GetProgrammePersonBaseCollection().GetByGUID(memberGUID)
 			'create a simple person so jobs could get added to persons
 			'which are created after that programme
 			if not member
 				member = new TProgrammePerson
-				member.SetGUID(memberGUID)
-				member.firstName = memberGUID
-				GetProgrammePersonBaseCollection().AddInsignificant(member)
+				member.fictional = true
+
+				if memberGenerator
+					'generator is "countrycode1 countrycode2, gender, levelup"
+					local parts:string[] = memberGenerator.Split(",")
+					local levelUp:int = False
+					if parts.length >= 3 and int(parts[2]) = 1 then levelUp = True
+					local p:TPersonGeneratorEntry = GetPersonGenerator().GetUniqueDatasetFromString(memberGenerator)
+					if p
+						'avoid that other persons with that name are generated
+						GetPersonGenerator().ProtectDataset(p)
+						member.firstName = p.firstName
+						member.lastName = p.lastName
+						member.countryCode = p.countryCode
+					endif
+				endif
+
+
+				if not memberGUID 
+					memberGUID = "person-created"
+					memberGUID :+ "-" + LSet(Hashes.MD5(member.firstName + member.lastName), 12)
+					memberGUID :+ "-" + StringHelper.UTF8toISO8859(member.firstName).Replace(".", "").Replace(" ","-")
+					memberGUID :+ "-" + StringHelper.UTF8toISO8859(member.lastName).Replace(".", "").Replace(" ","-")
+				endif
+
+				if not memberGenerator and member.firstName = ""
+					member.firstName = memberGUID
+				endif
+
+				'if memberGenerator
+				'	print "generated person : " + member.firstName+" " + member.lastName +" ("+member.countryCode+")" + " GUID="+memberGUID
+				'endif
+
+				'add if we have a valid guid now
+				if memberGUID
+					member.SetGUID(memberGUID)
+					GetProgrammePersonBaseCollection().AddInsignificant(member)
+				endif
 			endif
 
 			'member now is capable of doing this job
@@ -1095,7 +1163,7 @@ endif
 			TXmlHelper.FindValue(node, "first_name", role.firstname), ..
 			TXmlHelper.FindValue(node, "last_name", role.lastname), ..
 			TXmlHelper.FindValue(node, "title", role.title), ..
-			TXmlHelper.FindValue(node, "country", role.country), ..
+			TXmlHelper.FindValue(node, "country", role.countryCode), ..
 			TXmlHelper.FindValueInt(node, "gender", role.gender), ..
 			TXmlHelper.FindValueInt(node, "fictional", role.fictional) ..
 		)
@@ -1287,50 +1355,6 @@ endif
 			default
 				data.genre = TVTProgrammeGenre.Undefined
 		End Select
-	End Function
-
-
-	Function GetPersonsFromString:TProgrammePersonBase[](personsString:string="", job:int=0)
-		local personsStringArray:string[] = personsString.split(",")
-		local personArray:TProgrammePersonBase[]
-
-		For local personString:string = eachin personsStringArray
-			'split first and lastName
-			local _name:string[] = personString.split(" ")
-			local name:string[]
-			'remove " "-strings
-			for local i:int = 0 to _name.length-1
-				if _name[i].trim() = "" then continue
-				name = name[..name.length+1]
-				name[name.length-1] = _name[i]
-			Next
-
-			'ignore "unknown" actors
-			if name.length <= 0 or name[0] = "XXX" then continue
-
-			local firstName:string = name[0]
-			local lastName:string = ""
-			'add rest to lastname
-			For local i:int = 1 to name.length - 1
-				lastName:+ name[i]+" "
-			Next
-			'trim last space
-			lastName = lastName[..lastName.length-1]
-
-			'check if the person already exists
-			local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetCelebrityByName(firstName, lastName)
-			if not person
-				'create as celebrity
-				person = new TProgrammePerson
-				person.SetFirstName(firstName)
-				person.SetLastName(lastName)
-			endif
-			person.SetJob(job)
-
-			'add person
-			personArray :+ [person]
-		Next
-		return personArray
 	End Function
 
 
