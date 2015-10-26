@@ -129,6 +129,7 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 		'listen to clicks on "load savegame"
 		'_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onclick", onClickLoadSavegame, dialogueButtons[0]) ]
 		_eventListeners :+ [ EventManager.registerListenerMethod( "guibutton.onclick", self, "onClickLoadSavegame") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "SaveGame.OnLoad", self, "onLoadSavegame") ]
 
 		return self
 	End Method
@@ -136,6 +137,9 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 
 	'override
 	Method Activate:int()
+		'remove previous entries
+		savegamelist.EmptyList()
+	
 		local dirTree:TDirectoryTree = new TDirectoryTree.Init(TSavegame.GetSavegamePath(), ["xml"], null, ["*"])
 		dirTree.AddIncludeFileNames(["*"])
 		dirTree.ScanDir("", True)
@@ -239,6 +243,7 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 
 			TSaveGame.Load(fileURI)
 
+
 			'only unpause if there is no exit-dialogue open
 			if not TApp.ExitAppDialogue and not TApp.EscapeMenuWindow
 				GetGame().SetPaused(False)
@@ -249,6 +254,11 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 		endif
 
 		return False
+	End Method
+
+
+	Method onLoadSavegame:int( triggerEvent:TEventBase )
+		return True
 	End Method
 
 
@@ -329,6 +339,9 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 
 	'override
 	Method Activate:int()
+		'remove previous entries
+		savegamelist.EmptyList()
+
 		'fill existing savegames
 		local dirTree:TDirectoryTree = new TDirectoryTree.Init(TSavegame.GetSavegamePath(), ["xml"], null, ["*"])
 		dirTree.AddIncludeFileNames(["*"])
