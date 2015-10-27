@@ -735,7 +735,7 @@ Type TAudience
 
 
 	Method DeSerializeTAudienceFromString(text:String)
-		local parts:string[] = text.split("::ab")
+		local parts:string[] = text.split("::ab=")
 		id = int(parts[0])
 		if parts.length > 1
 			GetAudienceMale().InitValue(0)
