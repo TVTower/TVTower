@@ -488,6 +488,7 @@ TODAY = Today
 YESTERDAY = Yesterday
 TWO_DAYS_AGO = Two days ago
 
+INFOMERCIAL = Infomercial
 SPECIAL_NEWS_BROADCAST = Special news
 
 24_HOURS_GAMEDAY = 24 hours gameday
@@ -544,10 +545,10 @@ STARTING_SINGLEPLAYERGAME = Starting singleplayer game
 
 WEATHER_FORECAST_FOR_X_TILL_Y = Weather forecast for %BEGINHOUR% till %ENDHOUR% o'clock
 SKY_IS_PARTIALLY_CLOUDY = Sky is partially cloudy.
-SKY_IS_OVERCAST = Sky is full of clouds.
+SKY_IS_OVERCAST1 = Sky is full of clouds.
 SKY_IS_WITHOUT_CLOUDS = Sky keeps free of clouds.
 SUN_SHINES_WHOLE_TIME = Sun will shine the whole time.
-SUN_WINS_AGAINST_CLOUDS = Sun wins against existing clouds.
+SUN_WINS_AGAINST_CLOUDS1 = Sun wins against existing clouds.
 SUN_IS_SHINING_SOMETIMES = Sun will shine from time to time.
 SUN_IS_NOT_SHINING = Grey sky, sun won't shine.
 RAIN_AND_SNOW_ALTERNATE = Rain and snow alternate.
@@ -577,3 +578,8 @@ OPENINGSHOW_TITLE = Big launch of "%CHANNELNAME%
 OPENINGSHOW_DESCRIPTION = Let's pop the corks. %CHANNELNAME% is launching today.
 
 CONSTRUCTION_TIME = Construction Time
+
+PRIMETIME = Primetime
+NIGHTTIME = Night time
+LOW_AUDIENCE = Low audience
+HIGH_AUDIENCE = High audience

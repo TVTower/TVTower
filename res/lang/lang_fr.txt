@@ -9,6 +9,7 @@ MALE = Homme
 FEMALE = femme
 UNDEFINED = Non defini
 
+
 PLAYERNAME = Nom du Joeur
 CHANNELNAME = Nom de la chaine
 STATIONMAP = Carte des stations
@@ -47,7 +48,6 @@ SAVEGAME_GETS_LOADED = Sauvegarde chargée
 
 PROGRAMMELICENCES = Programme licences
 SELECT_LICENCES_FOR_SALE = choisir licence à vendre
-
 
 YES = Oui	
 NO = Non
@@ -107,6 +107,7 @@ PLANNER_MESSAGES		= Messages
 ROOM_IS_BLOCKED = Salle bloquée
 ROOM_IS_OCCUPIED = Salle occupée
 ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = il ya déjà quelqu'un ici !
+
 ROOM_ELEVATORPLAN		= Plan de l'ascenceur
 ROOM_NEWSPLANNER		= News planner
 ROOM_FINANCES			= Finances
@@ -184,12 +185,7 @@ AD_TARGETGROUP			= Target group
 AD_SEND_TILL_TOLATE     = to late!!!
 AD_SEND_TILL_MIDNIGHT   = send till midnight !!
 AD_SEND_TILL_TOMORROW   = send till tomorrow!
-
-AD_TILL_TOLATE			= à la fin !!!
-AD_TILL_TODAY			= juqu'à today!!
-AD_TILL_TOMORROW		= jusqu'à tomorrow!
 AD_STILL_X_DAYS			= encore %1 jours
-AD_TIME					= temps
 
 AD_CHANNEL_IMAGE_TO_LOW = Image de la chaine. %CHANNELIMAGE%% < %IMAGE%%.
 AD_PLEASE_GENRE_X = SVP genre %GENRE%
@@ -211,24 +207,24 @@ AD_INFOMERCIAL_NOT_AVAILABLE = Il n'y a pas d'information pour cette annonce. TR
 AD_INFOMERCIAL_PROFIT	= Revenu: % PROFIT % par 1000 personnes à regarder
 
 
-MOVIE_DIRECTOR			= Directeur
-MOVIE_DIRECTORS			= Directeurs
-MOVIE_ACTOR				= Acteur
-MOVIE_ACTORS			= Acteurs
-MOVIE_SUPPORTINGACTOR   = Second role
-MOVIE_SUPPORTINGACTORS  = Second roles
-MOVIE_REPORTER          = Journaliste
-MOVIE_REPORTERS         = Journalistes
-MOVIE_GUEST             = Invité
-MOVIE_GUESTS            = Invités
-MOVIE_HOST              = Hôtes
-MOVIE_HOSTS             = Hôtes
-MOVIE_SCRIPT            = Scenario
-MOVIE_SCRIPTWRITER      = Scénariste
-MOVIE_SCRIPTWRITERS     = Scénaristes
-MOVIE_MUSIC             = Musique
-MOVIE_MUSICIAN          = Musicien
-MOVIE_MUSICIANS         = Musiciens
+JOB_DIRECTOR			= Directeur
+JOB_DIRECTORS			= Directeurs
+JOB_ACTOR				= Acteur
+JOB_ACTORS			= Acteurs
+JOB_SUPPORTINGACTOR   = Second role
+JOB_SUPPORTINGACTORS  = Second roles
+JOB_REPORTER          = Journaliste
+JOB_REPORTERS         = Journalistes
+JOB_GUEST             = Invité
+JOB_GUESTS            = Invités
+JOB_HOST              = Hôtes
+JOB_HOSTS             = Hôtes
+JOB_SCRIPT            = Scenario
+JOB_SCRIPTWRITER      = Scénariste
+JOB_SCRIPTWRITERS     = Scénaristes
+JOB_MUSIC             = Musique
+JOB_MUSICIAN          = Musicien
+JOB_MUSICIANS         = Musiciens
 
 MOVIE_SPEED				= Vitesse
 MOVIE_CRITIC			= Critiques
@@ -289,14 +285,14 @@ PROGRAMME_FLAG_ANIMATION = Animation
 PROGRAMME_FLAG_CULTURE = Culture
 PROGRAMME_FLAG_CULT = Culte
 PROGRAMME_FLAG_TRASH = Trash
-PROGRAMME_FLAG_BMOVIE = BMovie ?????
+PROGRAMME_FLAG_BMOVIE = série B
 PROGRAMME_FLAG_XRATED = Classé X
 PROGRAMME_FLAG_PAID = Programation payante
 PROGRAMME_FLAG_SERIES = Series
 PROGRAMME_FLAG_SCRIPTED = Scripted
 
 PROGRAMME_PRODUCT_UNDEFINED = Undefined
-PROGRAMME_PRODUCT_MOVIE = Fikm
+PROGRAMME_PRODUCT_MOVIE = Film
 PROGRAMME_PRODUCT_SERIES = Series
 PROGRAMME_PRODUCT_SHOW = Show
 PROGRAMME_PRODUCT_FEATURE = Feature
@@ -311,6 +307,7 @@ AUCTION_MAKE_BID = Offre
 AUCTION_WITHOUT_BID = Sans offre
 
 CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID= Clique sur un film ou une serie pour faire une offre.
+
 
 ERROR_NOT_POSSIBLE					= impossible!
 ERROR_NOT_ABLE_TO_SELL_LAST_STATION = Il est impossible de vendre (la derniere station)
@@ -362,6 +359,7 @@ FINANCES_HISTORY_OF_CREDITINTEREST = intéret du credit
 FINANCES_HISTORY_OF_DRAWINGCREDITINTEREST = intéret du credit
 FINANCES_HISTORY_OF_BALANCEINTEREST = balance intéret
 FINANCES_HISTORY_FOR_SOMETHING = pour quelque chose
+
 
 IMAGE_REACH = Portée
 IMAGE_SHARETOTAL = Partage
@@ -459,8 +457,12 @@ TOO_EXPENSIVE = Trop cher
 SELL_STATION = Vendre station
 UNSELLABLE = invendable
 
-STATION_UNDER_CONSTRUCTION = en Construction
-STATION_READY_AT_ACTIVATIONTIME = Pret à %ACTIVATIONTIME%
+UNDER_CONSTRUCTION = en Construction
+READY_AT_TIME_X = Pret à %ACTIVATIONTIME%
+READY_AT_DAY_X = Ready at %ACTIVATIONTIME%
+STATION_UNDER_CONSTRUCTION = Station under construction
+NEW_STATION_WILL_BE_READY_AT_TIME_X = New station will be ready at %TIME% 
+NEW_STATION_WILL_BE_READY_AT_DAY_X = New station will be ready at %TIME%
 
 BUY_AND_SELL = Acheter et vendre
 AND_STATISTICS = et statistiques
@@ -482,6 +484,7 @@ TODAY = Aujourd'hui
 YESTERDAY = Hier
 TWO_DAYS_AGO = Il y à deux jours
 
+INFOMERCIAL = Infomercial
 SPECIAL_NEWS_BROADCAST = Flash Special 
 
 24_HOURS_GAMEDAY = Journée de 24 heures 
@@ -493,6 +496,15 @@ AVAILABLE_GAMES = Jeux disponibles
 ALREADY_OVER = Déja fini...?
 DO_YOU_REALLY_WANT_TO_QUIT = Voulez vous vraiment quitter le jeu ?
 DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN = Voulez-vous vraiment quitter le jeu et revenir à l'Accueil ?
+
+CONTINUE_GAME = Continue Game
+LOAD_GAME = Load Game
+SAVE_GAME = Save Game
+EXIT_GAME = Exit Game
+EXIT_TO_MAINMENU = Exit to main menu
+NAME_OF_SAVEGAME = Name of savegame 
+OVERWRITE_SAVEGAME = Overwrite savegame?
+DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X = Do you really want to overwrite savegame %SAVEGAME%?
 
 ADCONTRACT_FINISHED = Pub terminé
 ADCONTRACT_FAILED = Pub échoué
@@ -529,10 +541,10 @@ STARTING_SINGLEPLAYERGAME = Starting singleplayer game
 
 WEATHER_FORECAST_FOR_X_TILL_Y = Weather forecast for %BEGINHOUR% till %ENDHOUR% o'clock
 SKY_IS_PARTIALLY_CLOUDY = Sky is partially cloudy.
-SKY_IS_OVERCAST = Sky is full of clouds.
+SKY_IS_OVERCAST1 = Sky is full of clouds.
 SKY_IS_WITHOUT_CLOUDS = Sky keeps free of clouds.
 SUN_SHINES_WHOLE_TIME = Sun will shine the whole time.
-SUN_WINS_AGAINST_CLOUDS = Sun wins against existing clouds.
+SUN_WINS_AGAINST_CLOUDS1 = Sun wins against existing clouds.
 SUN_IS_SHINING_SOMETIMES = Sun will shine from time to time.
 SUN_IS_NOT_SHINING = Grey sky, sun won't shine.
 RAIN_AND_SNOW_ALTERNATE = Rain and snow alternate.
@@ -541,7 +553,29 @@ SNOW_IS_FALLING = Attention on the streets. Snow is falling and black ice is pos
 TEMPERATURES_ARE_BETWEEN_X_AND_Y = Temperatures will be between %MINTEMPERATURE% and %MAXTEMPERATURE%°C
 TEMPERATURE_IS_CONSTANT_AT_X = Temperature is at constant  %TEMPERATURE%°C
 
+
+IN_THE_LATER_HOURS1 = In the later hours
+IN_THE_LATER_HOURS2 = After dawn
+IN_THE_LATER_HOURS3 = Later
+STORMY_WINDS_OF_UP_TO_X1 = Squalls of up to %MAXWINDVELOCITY% km/h drag over the land.
+STORMY_WINDS_OF_UP_TO_X2 = Strong breezes up to squalls of %MAXWINDVELOCITY% km/h.
+NEARLY_NO_WIND1 = There is almost no wind.
+NEARLY_NO_WIND2 = It blows hardly Wind.
+SLOW_WIND_WITH_X_AND_GUST_OF_WIND_WITH_Y1 = Light breeze from %MINWINDVELOCITY% km/h and isolated gusts of up to %MAXWINDVELOCITY% km/h.
+WIND_VELOCITIES_ARE_BETWEEN_X_AND_Y1 = The wind speeds are between %MINWINDVELOCITY% and %MAXWINDVELOCITY% km/h.
+WIND_VELOCITY_IS_CONSTANT_AT_X1 = The wind speed is constant %WINDVELOCITY% km/h.
+
 LOCKED = Fermé
 ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY = Uniquement possible avec le bouton droit
 BLOCKED = Bloqué
 ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE = La salle n'est pas disponible
+
+OPENINGSHOW_TITLE = Big launch of "%CHANNELNAME%
+OPENINGSHOW_DESCRIPTION = Let's pop the corks. %CHANNELNAME% is launching today.
+
+CONSTRUCTION_TIME = Construction Time
+
+PRIMETIME = Primetime
+NIGHTTIME = Night time
+LOW_AUDIENCE = Low audience
+HIGH_AUDIENCE = High audience

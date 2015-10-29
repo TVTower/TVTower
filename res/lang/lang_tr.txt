@@ -487,6 +487,7 @@ TODAY = Bugün
 YESTERDAY = Dün
 TWO_DAYS_AGO = 2 gün önce
 
+INFOMERCIAL = Infomercial
 SPECIAL_NEWS_BROADCAST = Özel Haberler
 
 24_HOURS_GAMEDAY = 24 saatlik Oyun Günü
@@ -576,3 +577,8 @@ OPENINGSHOW_TITLE = %CHANNELNAME% kanalından büyük açılış
 OPENINGSHOW_DESCRIPTION = Şampanyaları patlatın. %CHANNELNAME% bugün açılıyor.
 
 CONSTRUCTION_TIME = İnşaat süresi
+
+PRIMETIME = Primetime
+NIGHTTIME = Night time
+LOW_AUDIENCE = Low audience
+HIGH_AUDIENCE = High audience

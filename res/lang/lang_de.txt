@@ -581,3 +581,8 @@ OPENINGSHOW_TITLE = Eröffnungsshow „%CHANNELNAME%“
 OPENINGSHOW_DESCRIPTION = Lasst die Korken knallen. %CHANNELNAME% geht an den Start.
 
 CONSTRUCTION_TIME = Bauzeit
+
+PRIMETIME = Primetime
+NIGHTTIME = Nachtprogramm
+LOW_AUDIENCE = geringe Zuschauermenge
+HIGH_AUDIENCE = hohe Zuschauermenge
