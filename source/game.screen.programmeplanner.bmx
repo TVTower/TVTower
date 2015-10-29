@@ -327,6 +327,26 @@ Type TScreenHandler_ProgrammePlanner
 	End Function
 
 
+	Function DrawSlotHints()
+		local hintColor:TColor = new TColor.CreateGrey(100)
+		local f:TBitmapFont = GetBitmapFont("default", 10)
+		local oldA:float = GetAlpha()
+		local plan:TPlayerProgrammePlan = GetPlayerProgrammePlan(currentRoom.owner)
+
+		setAlpha 0.5 * oldA
+		For local i:int = 0 to 23
+			'skip drawing the hint, if something is on this slot
+			if plan.GetObject(TVTBroadcastMaterialType.PROGRAMME, -1, i) then continue
+			if i <= 5
+				f.DrawBlock(GetLocale("NIGHTPROGRAMME")+chr(13)+"|color=120,100,100|("+GetLocale("LOW_AUDIENCE")+")|/color|", 45 + 10, 5 + i*30 + 3, 205 - 2*10, 30, ALIGN_LEFT_TOP, hintColor)
+			elseif i >= 19 and i <= 23
+				f.DrawBlock(GetLocale("PRIMETIME")+chr(13)+"|color=100,120,100|("+GetLocale("HIGH_AUDIENCE")+")|/color|", 380 + 10, 5 + (i-12)*30 + 3, 205 - 2*10, 30, ALIGN_LEFT_TOP, hintColor)
+			endif
+		Next
+		setAlpha oldA
+	End Function
+	
+
 	Function DrawSlotOverlays(invert:int = False)
 		local oldCol:TColor = new TColor.get()
 		SetAlpha oldCol.a * 0.65 + Min(0.15, Max(-0.20, sin(Millisecs() / 6) * 0.20))
@@ -879,6 +899,8 @@ Type TScreenHandler_ProgrammePlanner
 		if not room then return 0
 
 		currentRoom = room
+
+		DrawSlotHints()
 		
 		GUIManager.Draw("programmeplanner",,, GUIMANAGER_TYPES_NONDRAGGED)
 
@@ -1008,17 +1030,6 @@ Type TScreenHandler_ProgrammePlanner
 			plannerPreviousDayButton.enable()
 		endif
 
-'DEVPATCH
-if draggedGuiProgrammePlanElement and not draggedGuiProgrammePlanElement.isClickable()		
-	if MouseManager.IsHit(2)
-'		draggedGuiProgrammePlanElement.Remove()
-		draggedGuiProgrammePlanElement = null
-		'remove right click - to avoid leaving the room
-		MouseManager.ResetKey(2)
-		TLogger.log("DEVPATCH: ProgrammePlanner", "removed non-clickable element via right click: "+draggedGuiProgrammePlanElement.broadcastMaterial.GetTitle(), LOG_DEV)
-	endif
-endif
-'DEVPATCH
 		'reset hovered and dragged gui objects - gets repopulated automagically
 		hoveredGuiProgrammePlanElement = null
 		draggedGuiProgrammePlanElement = null
