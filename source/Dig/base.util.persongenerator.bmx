@@ -25,7 +25,7 @@ Type TPersonGenerator
 	Field baseProvider:TPersonGeneratorCountry = new TPersonGeneratorCountry
 	Field fallbackCountryCode:string = ""
 	Field protectedNames:TMap = CreateMap()
-
+	Field _countryCodes:string[] {nosave}
 	Global _instance:TPersonGenerator = new TPersonGenerator
 	Const GENDER_UNDEFINED:int = 0
 	Const GENDER_MALE:int = 1
@@ -97,6 +97,17 @@ Type TPersonGenerator
 	End Method
 
 
+	Method GetCountryCodes:string[]()
+		if not _countryCodes
+			_countryCodes = new string[0]
+			For local code:string = EachIn providers.Keys()
+				_countryCodes :+ [code]
+			Next
+		endif
+		return _countrycodes
+	End Method
+
+
 	Method ProtectName:TPersonGenerator(firstName:string, lastName:string)
 		protectedNames.insert(firstName.ToLower()+"|"+lastName.ToLower(), "1")
 	End Method
@@ -109,6 +120,7 @@ Type TPersonGenerator
 
 	Method AddProvider:TPersonGenerator(country:TPersonGeneratorCountry)
 		if country then providers.Insert(country.countryCode.ToLower(), country)
+		_countryCodes = Null
 		return self
 	End Method
 

@@ -825,7 +825,6 @@ function JobSchedule:OptimizeAdSchedule()
 			local adContract = TVT.of_getAdContractByID( currentBroadcastMaterial.GetReferenceID() )
 			if (previousProgramme ~= nil and adContract ~= nil) then
 				if guessedAudience < adContract.GetMinAudience() then
-debugMsg(fixedHour..":55 - unsatisfiable ad! guessedAudience="..guessedAudience)
 					sendTrailerReason = "unsatisfiable ad (aud "..math.floor(guessedAudience) .. "  <  minAud " .. adContract.GetMinAudience() .. ")"
 					sendTrailer = true
 				end
@@ -1080,7 +1079,7 @@ function JobSchedule:OptimizeProgrammeSchedule()
 			if (choosenBroadcastSource == nil and oldInfomercial) then
 				sendInfomercial = false
 				choosenBroadcastSource = oldInfomercial
-				debugMsg("Belasse alte Dauerwerbesendung: " .. fixedDay .. "/" ..fixedHour .. ":55  " .. oldInfomercial.GetTitle())
+				--debugMsg("Belasse alte Dauerwerbesendung: " .. fixedDay .. "/" ..fixedHour .. ":55  " .. oldInfomercial.GetTitle())
 			end
 		end
 

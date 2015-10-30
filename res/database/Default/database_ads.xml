@@ -343,7 +343,7 @@ Aber nur mit Ulbricht Umzüge!</de>
 			<description>
 				<de>Dein freundliches Reisebüro... Wohin Du willst - solang die Kohle stimmt.</de>
 			</description>
-			<conditions min_audience="0.05" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<conditions min_audience="0.0511" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data repetitions="3" duration="2" fix_price="0" profit="3000" penalty="9000" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="774e0ca3-a31c-4afc-86be-304b02176fcd">
@@ -353,7 +353,7 @@ Aber nur mit Ulbricht Umzüge!</de>
 			<description>
 				<de>Kein Geld für den Urlaub oder die Yacht? Wir schicken Postkarten aus Uganda oder fälschen Fotos.</de>
 			</description>
-			<conditions min_audience="0.21" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<conditions min_audience="0.2074" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data repetitions="3" duration="3" profit="2500" penalty="7500" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="79e0a668-f929-4746-bcb2-b073f1f2bf65">
@@ -648,7 +648,7 @@ It's a sunny</de>
 			<description>
 				<de>Der lecker Knabberspass für Jung und Alt. Aus recycelten Altreifen, in 5 bunten Geschmacksrichtungen.</de>
 			</description>
-			<conditions min_audience="4.69" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<conditions min_audience="4.6881" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data repetitions="3" duration="3" profit="500" penalty="1500" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="c078ab28-32f5-439a-81bc-f90602f5fcbc">
@@ -861,7 +861,7 @@ Aktionswoche: Pfandfrei.</de>
 			<description>
 				<de>Schnäppchenpreise für exklusive Rucksack-Touren. Proviant und Pflaster nicht im Preis enthalten.</de>
 			</description>
-			<conditions min_audience="0.21" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<conditions min_audience="0.2074" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data repetitions="3" duration="2" profit="2250" penalty="6750" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="e77d26ae-895d-448f-b6ac-7171b785d21f">
@@ -987,7 +987,7 @@ Ich fühl mich wohl mit Lemor</de>
 			<description>
 				<de>Lustige Laternen in zahlreichen Tierformen. Jetzt neu: Kuh und Marienkäfer. Der Knaller für jeden Kindergeburtstag.</de>
 			</description>
-			<conditions min_audience="0.05" min_image="25" target_group="1" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<conditions min_audience="0.0511" min_image="25" target_group="1" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="50" repetitions="5" duration="3" profit="875" penalty="6274" infomercial_profit="150" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="ronny-ad-Meschmucke" creator="5578" created_by="Ronny">
@@ -1135,7 +1135,7 @@ Brucey - harsh fragrance for male experts.</en>
 				<de>Braten, Brot und Bier! Wir haben alles für alleinstehende Männer und Familien mit kochscheuen Hausfrauen.</de>
 				<en>Barbecue, bread and beer! We have everything for single men and families with housewives having cooking-phobia.</en>
 			</description>
-			<conditions min_audience="0.21" min_image="0" target_group="0"/>
+			<conditions min_audience="0.2074" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="21" repetitions="6" duration="3" fix_price="0" profit="2375" penalty="8421" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="ronny-ad-guten-01" creator="5578" created_by="Ronny">
@@ -1478,7 +1478,7 @@ Available in any well-stocked drugstore.</en>
 			<description>
 				<de>Echt genial: Unser Doppelbock gibt's jetzt auch alkoholfrei! Oans, zwoa, droa, g'suffa!</de>
 			</description>
-			<conditions min_audience="4.17" min_image="0" target_group="0"/>
+			<conditions min_audience="4.1617" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="31" repetitions="5" duration="2" profit="568" penalty="2432" infomercial_profit="56" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Hopfengurgler2" creator="8605" created_by="SpeedMinister">
@@ -1498,7 +1498,7 @@ Available in any well-stocked drugstore.</en>
 			<description>
 				<de>Premium Honigprodukte von Ihrer Lieblings-Imkerei Hummeldoof. Wir gewähren unseren Bienen ein gutes, motivierendes Arbeitsumfeld. Feierabendbier inklusive!</de>
 			</description>
-			<conditions min_audience="0.05" min_image="7" target_group="4"/>
+			<conditions min_audience="0.0511" min_image="7" target_group="4"/>
 			<data infomercial="1" quality="31" repetitions="3" duration="3" profit="3500" penalty="15094" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Immobilien-Haino" creator="8605" created_by="SpeedMinister">
@@ -1925,7 +1925,7 @@ Available in any well-stocked drugstore.</en>
 			<description>
 				<de>Kommst Du. - Kuckst Du. - Kaufst Du.</de>
 			</description>
-			<conditions min_audience="0.05" min_image="0" target_group="0"/>
+			<conditions min_audience="0.0511" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="20" repetitions="4" duration="3" profit="3200" penalty="2771" infomercial_profit="20" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-hexlerundschorsch-01" creator="8605" created_by="SpeedMinister">
@@ -1986,7 +1986,7 @@ Available in any well-stocked drugstore.</en>
 			<description>
 				<de>Unschlagbar im Preis. Fenster und Türen abkleben war gestern. Wir sind kosteneffizient, das werden Sie sehen. Zum Termin erscheinen wir! - oft! - manchmal.</de>
 			</description>
-			<conditions min_audience="0.47" min_image="0" target_group="0"/>
+			<conditions min_audience="0.4679" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="21" repetitions="6" duration="3" profit="2000" penalty="6883" infomercial_profit="188" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-overbrain-01" creator="8605" created_by="SpeedMinister">

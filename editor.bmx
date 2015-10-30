@@ -686,7 +686,7 @@ endrem
 
 		'for same year numbers, use title-sort
 		if sort.ToLower() = "year"
-			if l1.GetData().year = l2.GetData().year then sort="name"
+			if l1.GetData()._year = l2.GetData()._year then sort="name"
 		endif
 
 
@@ -717,7 +717,7 @@ endrem
 			'case "year"
 			default 'by year
 				'no need to check "=" (is done already above)
-				if l1.GetData().year < l2.GetData().year
+				if l1.GetData()._year < l2.GetData()._year
 					return before
 				else
 					return after
@@ -780,7 +780,7 @@ endrem
 			else
 				list.InsertStringItem(entryNum, l.GetTitle())
 			endif
-			list.SetStringItem(entryNum, 1, l.GetData().year )
+			list.SetStringItem(entryNum, 1, l.GetData()._year )
 			list.SetStringItem(entryNum, 2, TVTProgrammeLicenceType.GetAsString(l.licenceType) )
 
 
@@ -826,7 +826,7 @@ endif
 
 		'base data
 		m_pgItem_programmeLicenceBlocks.SetValueInt( licence.GetData().GetBlocks() )
-		m_pgItem_programmeLicenceYear.SetValueInt( licence.GetData().year )
+		m_pgItem_programmeLicenceYear.SetValueInt( licence.GetData()._year )
 		m_pgItem_programmeLicenceCountry.SetValueString( licence.GetData().country )
 
 		m_pgItem_programmeLicenceMainGenre.SetChoiceSelection( GetGenreChoiceIndex(licence.GetData().genre) )
@@ -1427,7 +1427,7 @@ Type TEditorDatabaseLoader Extends TDatabaseLoader
 		if person.gender > 0 then detailsNode.setAttribute("gender", person.gender)
 		if person.dayOfBirth <> "0000-00-00" then detailsNode.setAttribute("birthday", person.dayOfBirth)
 		if person.dayOfDeath <> "0000-00-00" then detailsNode.setAttribute("deathday", person.dayOfDeath)
-		if person.country <> "" then detailsNode.setAttribute("country", person.country)
+		if person.countryCode <> "" then detailsNode.setAttribute("countryCode", person.countryCode)
 
 		local dataNode:TXmlNode = node.AddChild("data")
 		if person.skill > 0 then dataNode.setAttribute("skill", MathHelper.NumberToString(person.skill*100,2, TRUE))
@@ -1568,8 +1568,8 @@ Type TEditorDatabaseLoader Extends TDatabaseLoader
 		if not parentLicence or (licence.GetData().country <> parentLicence.GetData().country)
 			dataNode.setAttribute("country", licence.GetData().country)
 		endif
-		if not parentLicence or (licence.GetData().year <> parentLicence.GetData().year)
-			dataNode.setAttribute("year", licence.GetData().year)
+		if not parentLicence or (licence.GetData()._year <> parentLicence.GetData()._year)
+			dataNode.setAttribute("year", licence.GetData()._year)
 		endif
 		if not parentLicence or (licence.GetData().distributionChannel <> parentLicence.GetData().distributionChannel)
 			dataNode.setAttribute("distribution", licence.GetData().distributionChannel)
