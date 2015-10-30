@@ -393,7 +393,13 @@ Type TPlayerBoss
 			'await the player each day at 16:00 (except player is already there)
 			if GameRules.dailyBossVisit and not boss.playerVisitsMe
 				If minute = 0 and hour = 16 and not boss.awaitingPlayerVisit
-					boss.awaitingPlayerVisit = True
+
+					'only await if malfunctions are registered
+					'TODO: change this with awards/other subjects the
+					'      boss wants to talk about
+					if boss.registeredNewsMalfunctions or boss.registeredProgrammeMalfunctions
+						boss.awaitingPlayerVisit = True
+					endif
 				EndIf
 			endif
 
