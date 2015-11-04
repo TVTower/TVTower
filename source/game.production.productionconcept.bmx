@@ -40,7 +40,7 @@ Type TProductionConcept
 	Field script:TScript
 
 	'each assigned person (directors, actors, ...)
-	Field cast:TProgrammePersonJob[]
+	Field cast:TProgrammePersonBase[]
 
 	Field productionFocus:TProductionFocusBase
 
@@ -61,17 +61,50 @@ Type TProductionConcept
 
 	Method Initialize:int()
 		'reset cast, focus, ...
+		if script 
+			cast = new TProgrammePersonBase[ script.cast.length ]
+		endif
+		if not productionFocus then productionFocus = new TProductionFocusBase
+
 	End Method
 	
 
 	Method SetScript(script:TScript)
 		self.script = script
+
+		'resize cast space
+		Initialize()
 	End Method
 
+
+	Method SetCast:int(castIndex:int, person:TProgrammePersonBase)
+		if not cast or castIndex >= cast.length then return False
+		cast[castIndex] = person
+		return True
+	End Method
 
 	Method IsComplete:int()
-		return False
+		if not script then return False
+		if not IsCastComplete() then return False
+		if not IsFocusPointsComplete() then return False
+
+		return True
 	End Method
+
+
+	Method IsCastComplete:int()
+		if not script then return False
+		For local i:int = 0 to cast.length
+			if not cast[i] then return False
+		Next
+		return True
+	End Method
+
+
+	Method IsFocusPointsComplete:int()
+		if not productionFocus then return False
+		return productionFocus.GetFocusPointsSet() < productionFocus.GetFocusPointsSet()
+	End Method	
 End Type
 
 
@@ -82,6 +115,15 @@ Type TProductionFocusBase
 	Field outfitAndMask:int
 	Field team:int
 	Field productionSpeed:int
+
+
+	Method Initialize:int()
+		coulisse = 0
+		outfitAndMask = 0
+		team = 0
+		productionSpeed = 0
+	End Method
+
 
 	Method SetCoulisse(value:int)
 		coulisse = MathHelper.Clamp(value, 0, 10)
@@ -139,6 +181,13 @@ Type TProductionFocusFictionalProgramme extends TProductionFocusBase
 	Field stunts:int
 	Field vfxAndSfx:int
 
+
+	Method Initialize:int()
+		Super.Initialize()
+		stunts = 0
+		vfxAndSfx = 0
+	End Method
+		
 
 	Method SetStunts(value:int)
 		stunts = MathHelper.Clamp(value, 0, 10)
