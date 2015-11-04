@@ -981,10 +981,15 @@ Type TApp
 				GetWorld().RenderDebug(660,0, 140, 160)
 				'GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
 			EndIf
+
+			if not GetPlayerCollection().IsHuman( GetPlayerCollection().playerID )
+				GetBitmapFont("default", 20).DrawBlock("OBSERVING AI PLAYER #" +GetPlayerCollection().playerID, 20,20, GetGraphicsManager().GetWidth()-40, 355, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+			endif
+
 			'show quotes even without "DEV_OSD = true"
 			If TVTDebugQuoteInfos Then debugAudienceInfos.Draw()
 		endif
-
+		
 		'draw loading resource information
 		RenderLoadingResourcesInformation()
 
