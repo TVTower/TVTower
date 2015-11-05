@@ -753,7 +753,11 @@ Type TApp
 					Repeat
 						targetRoom = GetRoomCollection().GetRandom()
 					Until targetRoom.name <> "building"
-					print "deliver to : "+targetRoom.name
+					if targetRoom.owner
+						print "deliver to : "+targetRoom.name + " #"+targetRoom.owner
+					else
+						print "deliver to : "+targetRoom.name
+					endif
 					TFigureTerrorist(GetGame().terrorists[whichTerrorist]).SetDeliverToRoom( targetRoom )
 				EndIf
 

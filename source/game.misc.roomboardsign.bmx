@@ -348,6 +348,34 @@ Type TRoomBoard
 		For Local sign:TRoomBoardSign = EachIn List
 			sign.Draw()
 		Next
+
+		'debug
+		rem
+		local hovered:TRoomBoardSign = GetSignByXY(MouseX(), MouseY())
+		local hoveredOriginal:TRoomBoardSign = GetSignByOriginalXY(MouseX(), MouseY())
+		'tint sign which is below the cursor
+		'green: current position (should be below cursor)
+		'blue: original position of that sign
+		if hovered
+			SetAlpha 0.5
+			SetColor 0,255,0
+			DrawRect(hovered.rect.GetX(), hovered.rect.GetY(), hovered.rect.GetW(), hovered.rect.GetH())
+			'hovered.Draw()
+			SetColor 0,0,255
+			DrawRect(hovered.OrigPos.GetX(), hovered.OrigPos.GetY(), hovered.rect.GetW(), hovered.rect.GetH())
+			SetColor 255,255,255
+			SetAlpha 1.0
+		endif
+		'tint sign which belongs originally on the slot below the cursor
+		'red: current position of the original sign
+		if hoveredOriginal
+			SetAlpha 0.5
+			SetColor 255,0,0
+			DrawRect(hoveredOriginal.rect.GetX(), hoveredOriginal.rect.GetY(), hoveredOriginal.rect.GetW(), hoveredOriginal.rect.GetH())
+			SetColor 255,255,255
+			SetAlpha 1.0
+		endif
+		endrem
 	End Method
 End Type
 
@@ -448,7 +476,8 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 	'draw the Block inclusive text
 	'zeichnet den Block inklusive Text
 	Method Draw()
-		SetColor 255,255,255;dragable=1  'normal
+		'SetColor 255,255,255
+		dragable=1  'normal
 
 		If dragged = 1
 			If GetRoomBoard().AdditionallyDragged > 0 Then SetAlpha 1.0 - 1.0/GetRoomBoard().AdditionallyDragged * 0.25
@@ -457,6 +486,7 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 				imageDraggedCache = GenerateCacheImage( GetSpriteFromRegistry(imageDraggedBaseName + Max(0, door.GetOwner())) )
 			Endif
 			imageDraggedCache.Draw(rect.GetX(),rect.GetY())
+			If GetRoomBoard().AdditionallyDragged > 0 Then SetAlpha 1.0
 		Else
 			'refresh cache if needed
 			If not imageCache
@@ -471,7 +501,6 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 				imageCache.Draw(rect.GetX(),rect.GetY())
 			EndIf
 		EndIf
-		SetAlpha 1
 	End Method
 
 
