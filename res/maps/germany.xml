@@ -47,7 +47,7 @@
 				<state name="schleswigholstein"	x="193" y="2"	sprite="map_schleswigholstein" />
 				<state name="brandenburg"		x="339" y="68"	sprite="map_brandenburg" />
 				<state name="nrw"				x="35"  y="117"	sprite="map_nrw" />
-				<state name="meckpom"			x="338" y="11"	sprite="map_meckpom" />
+				<state name="meckpom"			x="298" y="11"	sprite="map_meckpom" />
 			</states>
 		</stationmapdata>
 	</resources>
