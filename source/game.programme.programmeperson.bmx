@@ -295,7 +295,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 				Return sympathyMod * (100 + Floor(Int(sum * priceModifier)/100)*100)
 			default
-				print "FEE for jobID="+jobID+" not defined."
+'				print "FEE for jobID="+jobID+" not defined."
 				return 15000
 		End Select
 	End Method
