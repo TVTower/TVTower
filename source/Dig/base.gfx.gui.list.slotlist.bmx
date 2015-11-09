@@ -277,10 +277,12 @@ Type TGUISlotList Extends TGUIListBase
 		If item
 			EventManager.triggerEvent(TEventSimple.Create("guiList.addItem", new TData.Add("item", item).AddNumber("slot",slot) , Self))
 			Self._slots[slot] = item
+			EventManager.triggerEvent(TEventSimple.Create("guiList.addedItem", new TData.Add("item", item).AddNumber("slot",slot) , Self))
 		Else
 			If Self._slots[slot]
 				EventManager.triggerEvent(TEventSimple.Create("guiList.removeItem", new TData.Add("item", Self._slots[slot]).AddNumber("slot",slot) , Self))
 				Self._slots[slot] = Null
+				EventManager.triggerEvent(TEventSimple.Create("guiList.removedItem", new TData.Add("item", Self._slots[slot]).AddNumber("slot",slot) , Self))
 			EndIf
 		EndIf
 		Return True

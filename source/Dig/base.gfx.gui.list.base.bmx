@@ -259,12 +259,14 @@ Type TGUIListBase Extends TGUIobject
 		'so a normal AddItem-handler can work with calculated dimensions from now on
 		'Local dimension:TVec2D = item.getDimension()
 
+		EventManager.triggerEvent(TEventSimple.Create("guiList.addItem", new TData.Add("item", item) , Self))
+
 		entries.addLast(item)
 
 		'run the custom compare method
 		If autoSortItems Then entries.sort()
 
-		EventManager.triggerEvent(TEventSimple.Create("guiList.addItem", new TData.Add("item", item) , Self))
+		EventManager.triggerEvent(TEventSimple.Create("guiList.addedItem", new TData.Add("item", item) , Self))
 
 		Return True
 	End Method
@@ -273,13 +275,16 @@ Type TGUIListBase Extends TGUIobject
 	'base handling of remove item
 	Method _RemoveItem:Int(item:TGUIobject)
 		If entries.Remove(item)
+			EventManager.triggerEvent(TEventSimple.Create("guiList.removeItem", new TData.Add("item", item) , Self))
+
 			'remove from panel and item gets managed by guimanager
 			guiEntriesPanel.removeChild(item)
 
-			EventManager.triggerEvent(TEventSimple.Create("guiList.removeItem", new TData.Add("item", item) , Self))
+			EventManager.triggerEvent(TEventSimple.Create("guiList.removedItem", new TData.Add("item", item) , Self))
 			
 			Return True
 		Else
+			DebugStop
 			Print "not able to remove item "+item._id
 			Return False
 		EndIf
@@ -296,6 +301,8 @@ Type TGUIListBase Extends TGUIobject
 		EndIf
 		Return False
 	End Method
+
+
 	'overrideable RemoveItem-Handler
 	Method RemoveItem:Int(item:TGUIobject)
 		If _RemoveItem(item)
@@ -869,7 +876,7 @@ Type TGUIListItem Extends TGUIobject
 		'also remove itself from the list it may belong to
 		'this adds the object back to the guimanager
 		local guiList:TGUIListBase = TGUIListBase.FindGUIListBaseParent(self._parent)
-		if guiList then guiList.RemoveItem(self)
+		if guiList and guiList.HasItem(self) then guiList.RemoveItem(self)
 		Return True
 	End Method
 

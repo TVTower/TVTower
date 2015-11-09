@@ -161,8 +161,8 @@ Type TGUIScroller Extends TGUIobject
 
 
 	Method SetCurrentValue(currentValue:Double)
-		self.currentValue = Max(minValue, Min(maxValue, currentValue))
 		EventManager.registerEvent( TEventSimple.Create( "guiobject.onChangeValue", null, self ) )
+		self.currentValue = Max(minValue, Min(maxValue, currentValue))
 	End Method
 
 
