@@ -37,7 +37,7 @@ End Function
 '- what to produce (script)
 '- with whom to produce (cast)
 '- how to produce (focus points)
-Type TProductionConcept
+Type TProductionConcept Extends TGameObject
 	Field script:TScript
 
 	'each assigned person (directors, actors, ...)
@@ -78,6 +78,22 @@ Type TProductionConcept
 
 		'resize cast space
 		Initialize()
+	End Method
+
+
+	Method SetProductionCompany(productionCompany:TProductionCompanyBase)
+		'skip if no change is needed
+		if self.productionCompany = productionCompany then return
+
+
+		self.productionCompany = productionCompany
+
+		'init if not done
+		if not productionFocus then Initialize()
+		productionFocus.SetFocusPointsMax( productionCompany.GetFocusPoints() )
+
+
+		EventManager.triggerEvent( TEventSimple.Create("ProductionConcept.SetProductionCompany", new TData.Add("productionCompany", productionCompany), Self ) )
 	End Method
 
 
