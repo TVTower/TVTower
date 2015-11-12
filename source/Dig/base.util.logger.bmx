@@ -162,7 +162,9 @@ Type TLogger
 			endif
 
 			'message = StringHelper.UTF8toISO8859(message)
-			'message = StringHelper.RemoveUmlauts(message)
+			?Win32
+			message = StringHelper.RemoveUmlauts(message)
+			?
 
 			print "[" + CurrentTime() + "] " + debugtext + Upper(showFunctionText) + ": " + message
 		endif
