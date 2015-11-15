@@ -10,11 +10,11 @@
 
 		product:
 			which format of programme is scripted here?
-			  0 = undefined         1 = movie
-			  2 = series            4 = dokusoap
-			  8 = show             16 = reportage
-			 32 = commercial       64 = event
-			128 = misc
+			(fictional = programme with a "story")
+			  0 = undefined           1 = movie (fictional)
+			  2 = series (fictional)  3 = show
+			  4 = reportage           5 = commercial
+			  6 = event               7 = misc
 
 		licence_type:
 			which kind of programme is scripted here?

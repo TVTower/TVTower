@@ -152,8 +152,8 @@ End Type
 '"product" in the DB
 Type TVTProgrammeProductType {_exposeToLua}
 	Const UNDEFINED:int = 0         '0
-	Const MOVIE:int = 1             '1	'movies
-	Const SERIES:int = 2            '2  'series with a "story"
+	Const MOVIE:int = 1             '1	'movies (fictional)
+	Const SERIES:int = 2            '2  'series with a "story" (fictional)
 	Const SHOW:int = 3              '3
 	Const FEATURE:int = 4           '4  'reportages
 	Const INFOMERCIAL:int = 5       '5

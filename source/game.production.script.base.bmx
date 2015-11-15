@@ -116,6 +116,12 @@ Type TScriptBase Extends TNamedGameObject
 	End Method
 
 
+	Method isFictional:int()
+		if scriptProductType = TVTProgrammeProductType.MOVIE then return True
+		if scriptProductType = TVTProgrammeProductType.SERIES then return True
+		return False
+	End Method
+
 	'returns the genre of a script - if a group, the one used the most
 	'often is returned
 	Method GetMainGenre:int()
