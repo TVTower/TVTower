@@ -18,6 +18,11 @@ Type TProductionCompanyBaseCollection Extends TGameObjectCollection
 	Method GetByGUID:TProductionCompanyBase(GUID:String)
 		Return TProductionCompanyBase( Super.GetByGUID(GUID) )
 	End Method
+
+
+	Method GetRandom:TProductionCompanyBase()
+		Return TProductionCompanyBase( Super.GetRandom() )
+	End Method
 End Type
 
 

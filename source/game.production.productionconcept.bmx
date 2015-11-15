@@ -74,6 +74,22 @@ Type TProductionConcept Extends TGameObject
 	Method SetScript(script:TScript)
 		self.script = script
 
+		if script
+			if script.isFictional()
+				if not TProductionFocusFictionalProgramme(productionFocus)
+					productionFocus = new TProductionFocusFictionalProgramme.CopyFrom(productionFocus)
+				endif
+			else
+				if not TProductionFocusBase(productionFocus)
+					productionFocus = new TProductionFocusBase.CopyFrom(productionFocus)
+				endif
+			endif
+		else
+			'reset
+			productionFocus = new TProductionFocusBase
+		endif
+			
+
 		EventManager.triggerEvent( TEventSimple.Create("ProductionConcept.SetScript", new TData.Add("script", script), Self ) )
 
 		'resize cast space
@@ -90,8 +106,11 @@ Type TProductionConcept Extends TGameObject
 
 		'init if not done
 		if not productionFocus then Initialize()
-		productionFocus.SetFocusPointsMax( productionCompany.GetFocusPoints() )
-
+		if productionCompany
+			productionFocus.SetFocusPointsMax( productionCompany.GetFocusPoints() )
+		else
+			productionFocus.SetFocusPointsMax( 0 )
+		endif
 
 		EventManager.triggerEvent( TEventSimple.Create("ProductionConcept.SetProductionCompany", new TData.Add("productionCompany", productionCompany), Self ) )
 	End Method
@@ -123,6 +142,8 @@ Type TProductionConcept Extends TGameObject
 		
 
 	Method SetProductionFocus:int(focusIndex:int, value:int)
+		if not productionCompany then return False
+		
 		if not productionFocus or focusIndex > productionFocus.GetFocusAspectCount() or focusIndex < 1 then return False
 		'skip if nothing to do
 		if productionFocus.GetFocus(focusIndex) = value then return False
@@ -156,7 +177,8 @@ Type TProductionConcept Extends TGameObject
 
 
 	Method IsFocusPointsComplete:int()
-		if not productionFocus then return False
+		if not productionCompany then return False
+		if not productionFocus or productionFocus.GetFocusPointsMax() = 0 then return False
 		return productionFocus.GetFocusPointsSet() = productionFocus.GetFocusPointsMax()
 	End Method	
 End Type
@@ -178,6 +200,19 @@ Type TProductionFocusBase
 		outfitAndMask = 0
 		team = 0
 		productionSpeed = 0
+	End Method
+
+
+	Method CopyFrom:TProductionFocusBase(source:TProductionFocusBase)
+		if not source then Initialize()
+
+		coulisse = source.coulisse
+		outfitAndMask = source.outfitAndMask
+		team = source.team
+		productionSpeed = source.productionSpeed
+		focusPointsMax = source.focusPointsMax
+
+		return self
 	End Method
 
 
@@ -305,7 +340,9 @@ Type TProductionFocusBase
 
 	Method GetFocusPointsMax:int()
 		'without limit, each focus aspect can contain 10 points
-		if focusPointsMax < 0 then focusPointsMax = GetFocusAspectCount() * 10
+		'if focusPointsMax < 0 then focusPointsMax = GetFocusAspectCount() * 10
+		'set to 0
+		if focusPointsMax < 0 then focusPointsMax = 0
 		return focusPointsMax
 	End Method
 
@@ -329,6 +366,19 @@ Type TProductionFocusFictionalProgramme extends TProductionFocusBase
 		vfxAndSfx = 0
 
 		focusAspectCount = TProductionFocusBase.focusAspectCount + 2
+	End Method
+
+
+	Method CopyFrom:TProductionFocusFictionalProgramme(source:TProductionFocusBase)
+		Super.CopyFrom(source)
+
+		local mySource:TProductionFocusFictionalProgramme = TProductionFocusFictionalProgramme(source)
+		if mySource
+			stunts = mySource.stunts
+			vfxAndSfx = mySource.vfxAndSfx
+		endif
+
+		return self
 	End Method
 
 
