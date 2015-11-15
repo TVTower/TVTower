@@ -198,7 +198,7 @@ Type TGUIDropDown Extends TGUIInput
 		If Not dropdown Or value=0 Then Return False
 
 		local newEntryPos:int = -1
-		If value > 1
+		If value >= 1
 			newEntryPos = Min(dropdown.list.entries.count()-1, dropdown.GetEntryPos(dropdown.GetSelectedEntry()) + 1)
 		else
 			newEntryPos = Max(0, dropdown.GetEntryPos(dropdown.GetSelectedEntry()) - 1)
