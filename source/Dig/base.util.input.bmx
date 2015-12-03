@@ -74,7 +74,8 @@ Rem
 	            might call it "tripleClick" :D).
 End Rem
 Type TMouseManager
-	Field lastPos:TVec2D = new TVec2D
+	Field lastPos:TVec2D = new TVec2D.Init(0,0)
+	Field currentPos:TVec2D = new TVec2D.Init(0,0)
 	Field x:float = 0.0
 	Field y:float = 0.0
 	Field lastScrollWheel:int = 0
@@ -219,6 +220,11 @@ Type TMouseManager
 		return _hitPosition[key]
 	End Method
 
+
+	Method GetPosition:TVec2D()
+		return currentPos
+	End Method
+	
 
 	'returns how many milliseconds a button is down
 	Method GetDownTime:Int(key:Int)
@@ -373,6 +379,8 @@ Type TMouseManager
 
 		x = TVirtualGfx.getInstance().VMouseX()
 		y = TVirtualGfx.getInstance().VMouseY()
+		currentPos.x = x
+		currentPos.y = y
 
 		For Local i:Int = 1 To 3
 			UpdateKey(i)

@@ -74,14 +74,13 @@ Type TGUIManager
 
 	'=== PRIVATE PROPERTIES ===
 
-	Field _dropOnListenerLink:TLink
 	Field _defaultfont:TBitmapFont
 	Field _ignoreMouse:Int = False
 	'is there an object listening to keystrokes?
 	Field _keystrokeReceivingObject:TGUIObject = Null
 
-	'Global viewportX:Int=0,viewportY:Int=0,viewportW:Int=0,viewportH:Int=0
 	Global _instance:TGUIManager
+	Global _eventListeners:TLink[]
 
 
 	Method New()
@@ -96,13 +95,13 @@ Type TGUIManager
 
 
 	Method Init:TGUIManager()
-		'remove an potential old event listener
-		if _dropOnListenerLink
-			EventManager.unregisterListenerByLink(_dropOnListenerLink)
-		endif
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
 
 		'is something dropping on a gui element?
-		_dropOnListenerLink = EventManager.registerListenerFunction("guiobject.onDrop", TGUIManager.onDrop)
+		_eventListeners :+ [EventManager.registerListenerFunction("guiobject.onDrop", TGUIManager.onDrop)]
 
 		'gui specific settings
 		config.AddNumber("panelGap",10)
@@ -792,6 +791,16 @@ Type TGUIobject
 	End Method
 
 
+	Method onFinishDrag:Int(triggerEvent:TEventBase)
+		return True
+	End Method
+
+
+	Method onFinishDrop:Int(triggerEvent:TEventBase)
+		return True
+	End Method
+	
+
 	'default drop handler for all gui objects
 	'by default they do nothing
 	Method onDrop:Int(triggerEvent:TEventBase)
@@ -1194,7 +1203,9 @@ Type TGUIobject
 			GUIManager.SortLists()
 
 			'inform others - item finished dragging
-			EventManager.triggerEvent(TEventSimple.Create("guiobject.onFinishDrag", new TData.Add("coord", coord), Self))
+			local ev:TEventSimple = TEventSimple.Create("guiobject.onFinishDrag", new TData.Add("coord", coord), Self)
+			EventManager.triggerEvent(ev)
+			self.onFinishDrag(ev)
 
 			Return True
 		else
@@ -1238,7 +1249,10 @@ Type TGUIobject
 			GUIManager.SortLists()
 
 			'inform others - item finished dropping - Receiver of "event" may now be helding the guiobject dropped on
-			EventManager.triggerEvent(TEventSimple.Create("guiobject.onFinishDrop", new TData.Add("coord", coord), Self, event.GetReceiver()))
+			local ev:TEventSimple = TEventSimple.Create("guiobject.onFinishDrop", new TData.Add("coord", coord), Self, event.GetReceiver())
+			EventManager.triggerEvent(ev)
+			self.onFinishDrop(ev)
+
 			Return True
 		else
 			Return FALSE

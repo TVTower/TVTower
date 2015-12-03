@@ -112,6 +112,9 @@ Type TGUIListBase Extends TGUIobject
 			obj = null
 		Next
 		entries.Clear()
+
+		'also reset scroll state!
+		ScrollToFirstItem()
 	End Method
 
 
@@ -638,8 +641,15 @@ endrem
 				If value < 0 then direction = "left"
 				If value > 0 then direction = "right"
 		End Select
-		if direction <> "" then	EventManager.registerEvent(TEventSimple.Create("guiobject.onScrollPositionChanged", new TData.AddString("direction", direction).AddNumber("scrollAmount", 25), list))
-
+		if direction <> ""
+			local scrollAmount:int = 25
+			'try to scroll by 0.5 of an item height
+			local item:TGUIObject
+			if list.entries.Count() > 0 then item = TGUIObject(list.entries.First())
+			if item then scrollAmount = item.rect.GetH() * 0.5
+			
+			EventManager.registerEvent(TEventSimple.Create("guiobject.onScrollPositionChanged", new TData.AddString("direction", direction).AddNumber("scrollAmount", scrollAmount), list))
+		endif
 		'set to accepted so that nobody else receives the event
 		triggerEvent.SetAccepted(True)
 	End Function

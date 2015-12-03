@@ -140,12 +140,12 @@ Type TGUISelectListItem Extends TGUIListItem
 		Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
 		If mouseover
 			SetColor 250,210,100
-			DrawRect(getScreenX(), getScreenY(), maxWidth, rect.getH())
+			DrawRect(getScreenX(), getScreenY(), maxWidth, getScreenHeight())
 			SetColor 255,255,255
 		ElseIf selected
 			SetAlpha GetAlpha()*0.5
 			SetColor 250,210,100
-			DrawRect(getScreenX(), getScreenY(), maxWidth, rect.getH())
+			DrawRect(getScreenX(), getScreenY(), maxWidth, getScreenHeight())
 			SetColor 255,255,255
 			SetAlpha GetAlpha()*2.0
 		EndIf

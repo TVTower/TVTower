@@ -339,19 +339,30 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 	End Method
 
 
-
 	Method DrawBackground()
+		if not mouseover and not selected then return
+
+		
+		local oldCol:TColor = new TColor.Get()
+		SetAlpha oldCol.a * GetScreenAlpha()
+
+		local upperParent:TGUIObject = GetParent("TGUIListBase")
+		upperParent.RestrictContentViewPort()
+		
 		If mouseover
 			SetColor 250,210,100
-			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), rect.getH())
+			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), GetScreenHeight())
 			SetColor 255,255,255
 		ElseIf selected
 			SetAlpha GetAlpha()*0.5
 			SetColor 250,210,100
-			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), rect.getH())
+			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), GetScreenHeight())
 			SetColor 255,255,255
 			SetAlpha GetAlpha()*2.0
 		EndIf
+
+		upperParent.ResetViewPort()
+		oldCol.SetRGBA()
 	End Method
 
 
