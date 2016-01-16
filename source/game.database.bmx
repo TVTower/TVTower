@@ -438,13 +438,13 @@ Type TDatabaseLoader
 		local data:TData = new TData
 		'price and topicality are outdated
 		xml.LoadValuesToData(nodeData, data, [..
-			"genre", "price", "topicality", "available" ..
+			"genre", "price", "quality", "available" ..
 		])
-			
+
 		newsEvent.genre = data.GetInt("genre", newsEvent.genre)
 		newsEvent.available = data.GetBool("available", newsEvent.available)
 		'topicality is "quality" here
-		newsEvent.qualityRaw = 0.01 * data.GetFloat("topicality", 100 * newsEvent.qualityRaw)
+		newsEvent.qualityRaw = 0.01 * data.GetFloat("quality", 100 * newsEvent.qualityRaw)
 		'price is "priceModifier" here (so add 1.0 until that is done in DB)
 		local priceMod:Float = data.GetFloat("price", 0)
 		if priceMod = 0 then priceMod = 1.0 'invalid data given

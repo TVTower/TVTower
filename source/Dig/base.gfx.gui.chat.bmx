@@ -42,10 +42,10 @@ Type TGUIChat Extends TGUIPanel
 
 		guiList = New TGUIListBase.Create(New TVec2D.Init(0,0), New TVec2D.Init(GetContentScreenWidth(),GetContentScreenHeight()), limitState)
 		guiList.setOption(GUI_OBJECT_ACCEPTS_DROP, False)
-		guiList.autoSortItems = False
+		guiList.SetAutoSortItems(False)
 		guiList.SetAcceptDrop("")
 		guiList.setParent(Self)
-		guiList.autoScroll = True
+		guiList.SetAutoScroll(True)
 		guiList.SetBackground(Null)
 
 		guiInput = New TGUIInput.Create(New TVec2D.Init(0, dimension.y),New TVec2D.Init(dimension.x,-1), "", 32, limitState)

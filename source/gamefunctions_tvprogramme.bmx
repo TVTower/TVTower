@@ -221,7 +221,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 
 		'set mouse to "hover"
-		If mouseover and broadcastMaterial.IsOwnedByPlayer( GetPlayerCollection().playerID)
+		If isHovered() and broadcastMaterial.IsOwnedByPlayer( GetPlayerCollection().playerID)
 			if not broadcastMaterial.IsControllable()
 				GetGame().cursorstate = 3
 			else
@@ -352,7 +352,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		If hoveredElement
 			Local oldAlpha:Float = GetAlpha()
 			'i am the hovered one (but not in ghost mode)
-			'we could also check "self.mouseover", this way we could
+			'we could also check "self.isHovered()", this way we could
 			'override it without changing the objects "behaviour" (if there is one)
 			If Self = hoveredElement
 				If Not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
@@ -2204,7 +2204,7 @@ Type TGUINews Extends TGUIGameListItem
 
 		'set mouse to "hover"
 		'set mouse to "hover"
-		If mouseover and (news.owner <= 0 or news.IsOwnedByPlayer( GetPlayerCollection().playerID))
+		If isHovered() and (news.owner <= 0 or news.IsOwnedByPlayer( GetPlayerCollection().playerID))
 			if news.IsControllable()
 				GetGame().cursorstate = 1
 			endif
@@ -2602,7 +2602,7 @@ Type TGuiAdContract Extends TGUIGameListItem
 			
 
 		'set mouse to "hover"
-		If contract.owner = GetPlayer().playerID Or contract.owner <= 0 And mouseover Then GetGame().cursorstate = 1
+		If contract.owner = GetPlayer().playerID Or contract.owner <= 0 And isHovered() Then GetGame().cursorstate = 1
 				
 		
 		'set mouse to "dragged"

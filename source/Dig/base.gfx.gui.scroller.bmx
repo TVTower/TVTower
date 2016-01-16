@@ -262,7 +262,7 @@ Type TGUIScroller Extends TGUIobject
 		Super.Update()
 
 		'check if mouse over progressRect
-		if not mouseover
+		if not isHovered()
 			progressRectHovered = False
 
 		else

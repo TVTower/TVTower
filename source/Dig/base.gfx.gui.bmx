@@ -41,7 +41,9 @@ Const GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE:Int	= 2^14
 Const GUI_OBJECT_CHILDREN_CHANGE_GUIORDER:Int	= 2^15
 
 '===== GUI STATUS CONSTANTS =====
-CONST GUI_OBJECT_STATUS_APPEARANCE_CHANGED:Int	= 2^0
+CONST GUI_OBJECT_STATUS_HOVERED:Int	= 2^0
+CONST GUI_OBJECT_STATUS_SELECTED:Int = 2^1
+CONST GUI_OBJECT_STATUS_APPEARANCE_CHANGED:Int	= 2^2
 
 Const GUI_OBJECT_ORIENTATION_VERTICAL:Int   = 0
 Const GUI_OBJECT_ORIENTATION_HORIZONTAL:Int = 1
@@ -588,7 +590,6 @@ Type TGUIobject
 	Field value:String = ""
 	Field mouseIsClicked:TVec2D	= Null			'null = not clicked
 	Field mouseIsDown:TVec2D = new TVec2D.Init(-1,-1)
-	Field mouseOver:Int	= 0						'could be done with TVec2D
 	Field children:TList = Null
 	Field _id:Int
 	Field _padding:TRectangle = null 'by default no padding
@@ -1000,7 +1001,7 @@ Type TGUIobject
 
 
 	Method hasOption:Int(option:Int)
-		Return _flags & option
+		Return (_flags & option) <> 0
 	End Method
 
 
@@ -1014,7 +1015,7 @@ Type TGUIobject
 
 
 	Method HasStatus:Int(statusCode:Int)
-		Return _status & statusCode
+		Return (_status & statusCode) <> 0
 	End Method
 
 
@@ -1027,8 +1028,38 @@ Type TGUIobject
 	End Method
 
 
+	Method IsHovered:Int()
+		Return (_status & GUI_OBJECT_STATUS_HOVERED) <> 0
+	End Method
+
+
+	Method SetHovered:Int(bool:int)
+		SetStatus(GUI_OBJECT_STATUS_HOVERED, bool)
+	End Method
+
+
+	Method IsSelected:Int()
+		Return (_status & GUI_OBJECT_STATUS_SELECTED) <> 0
+	End Method
+
+
+	Method SetSelected:Int(bool:int)
+		'skip if already done
+		if IsSelected() = bool then return True
+
+		if bool
+			onSelect()
+		else
+			onDeselect()
+		endif
+		SetStatus(GUI_OBJECT_STATUS_SELECTED, bool)
+
+		return True
+	End Method
+
+
 	Method IsAppearanceChanged:Int()
-		Return _status & GUI_OBJECT_STATUS_APPEARANCE_CHANGED
+		Return (_status & GUI_OBJECT_STATUS_APPEARANCE_CHANGED) <> 0
 	End Method
 
 
@@ -1061,25 +1092,35 @@ Type TGUIobject
 	End Method
 
 
+	Method onSelect:Int()
+		EventManager.triggerEvent( TEventSimple.Create( "GUIObject.onSelect", null, Self ) )
+	End Method
+
+
+	Method onDeselect:Int()
+		EventManager.triggerEvent( TEventSimple.Create( "GUIObject.onDeselect", null, Self ) )
+	End Method
+
+
 	Method isDragable:Int()
-		Return _flags & GUI_OBJECT_DRAGABLE
+		Return (_flags & GUI_OBJECT_DRAGABLE) <> 0
 	End Method
 
 
 	Method isDragged:Int()
-		Return _flags & GUI_OBJECT_DRAGGED
+		Return (_flags & GUI_OBJECT_DRAGGED) <> 0
 	End Method
 
 
 	Method IsClickable:int()
-		return _flags & GUI_OBJECT_CLICKABLE
+		return (_flags & GUI_OBJECT_CLICKABLE) <> 0
 	End Method
 
 
 	Method IsVisible:Int()
 		'i am invisible if my parent is not visible
 '		if _parent and not _parent.IsVisible() then return FALSE
-		Return _flags & GUI_OBJECT_VISIBLE
+		Return (_flags & GUI_OBJECT_VISIBLE) <> 0
 	End Method
 
 
@@ -1110,7 +1151,7 @@ Type TGUIobject
 
 
 	Method IsEnabled:int()
-		return _flags & GUI_OBJECT_ENABLED
+		return (_flags & GUI_OBJECT_ENABLED) <> 0
 	End Method
 	
 
@@ -1564,7 +1605,7 @@ Type TGUIobject
 			if not isDragged()
 				'reset clicked position as soon as leaving the widget
 				mouseIsClicked = Null
-				mouseover = 0
+				SetHovered(false)
 				setState("")
 			endif
 			'mouseclick somewhere - should deactivate active object
@@ -1587,7 +1628,7 @@ Type TGUIobject
 
 		'=== HANDLE MOUSE CLICKS / POSITION ===
 		'skip objects the mouse is not over (except it is already dragged).
-		'ATTENTION: this differs to self.mouseOver (which is set later on)
+		'ATTENTION: this differs to self.isHovered() (which is set later on)
 		if not containsXY(mousePos.x, mousePos.y) and not isDragged() then return FALSE
 
 
@@ -1623,12 +1664,12 @@ Type TGUIobject
 
 			If Not GUIManager.UpdateState_foundHoverObject And _flags & GUI_OBJECT_ENABLED
 
-				'do not create "mouseover" for dragged objects
+				'do not create "hovered" for dragged objects
 				If Not isDragged()
 					'create event: onmouseenter
-					If mouseover = 0
+					If not isHovered()
 						EventManager.triggerEvent( TEventSimple.Create( "guiobject.OnMouseEnter", null, Self ) )
-						mouseover = 1
+						SetHovered(true)
 					EndIf
 					GUIManager.UpdateState_foundHoverObject = True
 				EndIf
@@ -1735,7 +1776,7 @@ Type TGUIobject
 
 	Method DrawBaseFormText:Object(_value:String, x:Float, y:Float)
 		Local col:TColor = TColor.Create(100,100,100)
-		If mouseover Then col = TColor.Create(50,50,50)
+		If isHovered() Then col = TColor.Create(50,50,50)
 		If Not(_flags & GUI_OBJECT_ENABLED) Then col = TColor.Create(150,150,150)
 
 		Return GetFont().drawStyled(_value,x,y, col, 1, 1, 0.5)
@@ -1770,17 +1811,17 @@ Type TGUIobject
 			'charCode is < 0 for me when umlauts are pressed
 			if charCode < 0
 				?Win32
-				If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
-				If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
-				If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
+				If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+				If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+				If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
 				?Mac
-				If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
-				If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
-				If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
+				If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+				If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+				If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
 				?Linux
-				If KEYWRAPPER.pressedKey(252) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
-				If KEYWRAPPER.pressedKey(246) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
-				If KEYWRAPPER.pressedKey(163) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
+				If KEYWRAPPER.pressedKey(252) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+				If KEYWRAPPER.pressedKey(246) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+				If KEYWRAPPER.pressedKey(163) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
 				?
 			'handle normal "keys" (excluding umlauts)
 			elseif charCode > 0

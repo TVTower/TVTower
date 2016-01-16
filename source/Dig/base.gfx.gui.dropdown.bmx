@@ -340,7 +340,7 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 
 
 	Method DrawBackground()
-		if not mouseover and not selected then return
+		if not isHovered() and not isSelected() then return
 
 		
 		local oldCol:TColor = new TColor.Get()
@@ -349,11 +349,11 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 		local upperParent:TGUIObject = GetParent("TGUIListBase")
 		upperParent.RestrictContentViewPort()
 		
-		If mouseover
+		If isHovered()
 			SetColor 250,210,100
 			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), GetScreenHeight())
 			SetColor 255,255,255
-		ElseIf selected
+		ElseIf isSelected()
 			SetAlpha GetAlpha()*0.5
 			SetColor 250,210,100
 			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), GetScreenHeight())

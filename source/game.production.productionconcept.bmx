@@ -50,7 +50,7 @@ Type TProductionConcept Extends TGameObject
 
 	Field niveau:Float = 0.0
 	Field innovation:Float = 0.0
-	
+
 	'optional for shows
 	Field targetGroup:Int = -1
 	'live = more risk, more expensive, more speed
@@ -74,19 +74,15 @@ Type TProductionConcept Extends TGameObject
 	Method SetScript(script:TScript)
 		self.script = script
 
+		'reset
+		productionFocus = new TProductionFocusBase
+
 		if script
 			if script.isFictional()
-				if not TProductionFocusFictionalProgramme(productionFocus)
-					productionFocus = new TProductionFocusFictionalProgramme.CopyFrom(productionFocus)
-				endif
+				if not productionFocus.IsFictional() then productionFocus.EnableFictional(true)
 			else
-				if not TProductionFocusBase(productionFocus)
-					productionFocus = new TProductionFocusBase.CopyFrom(productionFocus)
-				endif
+				if productionFocus.IsFictional() then productionFocus.EnableFictional(false)
 			endif
-		else
-			'reset
-			productionFocus = new TProductionFocusBase
 		endif
 			
 
@@ -158,6 +154,76 @@ Type TProductionConcept Extends TGameObject
 	End Method
 
 
+	Method GetTotalCost:int()
+		local result:int
+		result :+ GetCastCost()
+		result :+ GetProductionCost()
+		return result
+	End Method
+
+
+	Method GetCastCost:int()
+		local result:int = 0
+		For local i:int = 0 until cast.length
+			if not cast[i] then continue
+
+			result :+ cast[i].GetBaseFee( script.cast[i].job, script.blocks)
+		Next
+		return result
+	End Method
+
+
+	Method GetProductionCost:int()
+		if productionCompany
+			local fee:int = productionCompany.GetFee(script.owner)
+
+			'each set point costs a bit more than the previous
+			local focusPoints:int = productionFocus.GetFocusPointsSet()
+			For local i:int = 1 until focusPoints
+				fee :+ 500*i
+			Next
+			return fee
+		endif
+
+		return 0
+	End Method
+
+
+	Method GetBaseProductionTime:int()
+		local base:int = 12 * 60
+		if productionFocus
+			'SPEED
+			'point decrease:
+			'1/10 = 90min
+			'2/10 = 175min (90 + 85) 
+			'3/10 = 255min (90 + 85 + 80) 
+			'... 
+			local speedPoints:int = productionFocus.GetFocus(TVTProductionFocus.PRODUCTION_SPEED)
+			For local i:int = 0 until speedPoints
+				base :- Max(0, 90 - 5*i)
+			Next
+
+			'TEAM (good teams work a bit more efficient)
+			local teamPoints:int = productionFocus.GetFocus(TVTProductionFocus.TEAM)
+			For local i:int = 0 until teamPoints
+				base :- Max(0, 25 - 2*i)
+			Next
+
+			'POINTS ADD TO TIME !
+			local focusPoints:int = productionFocus.GetFocusPointsSet()
+			'ignore points without penalty
+			focusPoints :- (teamPoints + speedPoints)
+			if focusPoints > 0
+				For local i:int = 0 until focusPoints
+					base :+ (10 + i*5)
+				Next
+			endif
+		endif
+		'round minutes to hours
+		return floor(base/60)
+	End Method
+
+
 	Method IsComplete:int()
 		if not script then return False
 		if not IsCastComplete() then return False
@@ -187,119 +253,79 @@ End Type
 
 
 Type TProductionFocusBase
-	Field coulisse:int
-	Field outfitAndMask:int
-	Field team:int
-	Field productionSpeed:int
+	Field focusPoints:int[]
 	Field focusPointsMax:int = -1
+	Field activeFocusIndices:int[]
 	global focusAspectCount:int = 4
 
 
+	Method New()
+		Initialize()
+	End Method
+
 	Method Initialize:int()
-		coulisse = 0
-		outfitAndMask = 0
-		team = 0
-		productionSpeed = 0
+		focusPoints = new Int[6]
+
+		EnableFictional(false)
 	End Method
 
 
-	Method CopyFrom:TProductionFocusBase(source:TProductionFocusBase)
-		if not source then Initialize()
-
-		coulisse = source.coulisse
-		outfitAndMask = source.outfitAndMask
-		team = source.team
-		productionSpeed = source.productionSpeed
-		focusPointsMax = source.focusPointsMax
-
-		return self
+	Method EnableFictional:int(bool:int = true)
+		if bool
+			activeFocusIndices = [TVTProductionFocus.COULISSE, ..
+			                      TVTProductionFocus.OUTFIT_AND_MASK, ..
+			                      TVTProductionFocus.VFX_AND_SFX, ..
+			                      TVTProductionFocus.STUNTS, ..
+			                      ..
+			                      TVTProductionFocus.TEAM, ..
+			                      TVTProductionFocus.PRODUCTION_SPEED ..
+			                     ]
+		else
+			activeFocusIndices = [TVTProductionFocus.COULISSE, ..
+			                      TVTProductionFocus.OUTFIT_AND_MASK, ..
+			                      ..
+			                      TVTProductionFocus.TEAM, ..
+			                      TVTProductionFocus.PRODUCTION_SPEED ..
+			                     ]
+		endif
 	End Method
 
 
-	Method SetFocus(index:int, value:int)
-		Select index
-			case 1
-				SetCoulisse(value)
-			case 2
-				SetOutfitAndMask(value)
-			case 3
-				SetTeam(value)
-			case 4
-				SetProductionSpeed(value)
-		End Select
+	Method IsFictional:int()
+		return (activeFocusIndices.length = 6)
+	End Method
+	
+
+	Method SetFocus:int(index:int, value:int)
+		if focusPoints.length < index or index < 1 then return False
+
+		'reset old, so GetFocusPointsLeft() returns correct value
+		focusPoints[index -1] = 0
+		focusPoints[index -1] = MathHelper.Clamp(value, 0, Min(focusPoints[index -1] + GetFocusPointsLeft(), 10))
+
 		'emit event with corrected value (via GetFocus())
 		EventManager.triggerEvent( TEventSimple.Create("ProductionFocus.SetFocus", new TData.AddNumber("focusIndex", index).AddNumber("value", GetFocus(index)), Self ) )
+		return True
 	End Method
 
 
 	Method GetFocus:int(index:int)
-		Select index
-			case 1
-				return GetCoulisse()
-			case 2
-				return GetOutfitAndMask()
-			case 3
-				return GetTeam()
-			case 4
-				return GetProductionSpeed()
-		End Select
-		return -1
+		if focusPoints.length < index or index < 1 then return -1
+
+		return focusPoints[index -1]
 	End Method
 
 
-	Method SetCoulisse(value:int)
-		'reset old, so GetFocusPointsLeft() returns correct value
-		coulisse = 0
-		coulisse = MathHelper.Clamp(value, 0, Min(coulisse + GetFocusPointsLeft(), 10))
-	End Method
-
-
-	Method SetOutfitAndMask(value:int)
-		'reset old, so GetFocusPointsLeft() returns correct value
-		outfitAndMask = 0
-		outfitAndMask = MathHelper.Clamp(value, 0, Min(outfitAndMask + GetFocusPointsLeft(), 10))
-	End Method
-
-
-	Method SetTeam(value:int)
-		'reset old, so GetFocusPointsLeft() returns correct value
-		team = 0
-		team = MathHelper.Clamp(value, 0, Min(GetFocusPointsLeft(), 10))
-	End Method
-	
-
-	Method SetProductionSpeed(value:int)
-		'reset old, so GetFocusPointsLeft() returns correct value
-		productionSpeed = 0
-		productionSpeed = MathHelper.Clamp(value, 0, Min(GetFocusPointsLeft(), 10))
-	End Method
-
-
-	Method GetCoulisse:int()
-		return coulisse
-	End Method
-
-
-	Method GetOutfitAndMask:int()
-		return outfitAndMask
-	End Method
-
-
-	Method GetTeam:int()
-		return team
-	End Method
-
-
-	Method GetProductionSpeed:int()
-		return productionSpeed
+	Method GetOrderedFocusIndices:int[]()
+		return activeFocusIndices
 	End Method
 
 
 	Method GetFocusPointsSet:int()
 		local result:int = 0
 
-		For local i:int = 1 to GetFocusAspectCount()
-			result :+ GetFocus(i)
+		For local focusIndex:int = EachIn activeFocusIndices
+			result :+ GetFocus(focusIndex)
 		Next
 
 		return result
@@ -319,13 +345,14 @@ Type TProductionFocusBase
 		'from all aspects until point maximum is no longer beat
 		local trimPoints:int = GetFocusPointsSet() - GetFocusPointsMax()
 		While trimPoints > 0
-			For local i:int = GetFocusAspectCount() until 0 step -1
+			For local i:int = activeFocusIndices.length-1 to 0 step -1
 				trimPoints = GetFocusPointsSet() - GetFocusPointsMax()
 				if trimPoints <= 0 then exit
 
-				if GetFocus(i) <= 0 then continue
+				local focusIndex:int = activeFocusIndices[i]
+				if GetFocus( focusIndex ) <= 0 then continue
 
-				SetFocus(i, GetFocus(i) - 1)
+				SetFocus(focusIndex, GetFocus(focusIndex) - 1)
 			Next
 		Wend
 	End Method
@@ -348,93 +375,6 @@ Type TProductionFocusBase
 
 
 	Method GetFocusAspectCount:int()
-		return focusAspectCount
+		return activeFocusIndices.length
 	End Method
 End Type
-
-
-'focus set for 
-Type TProductionFocusFictionalProgramme extends TProductionFocusBase
-	Field stunts:int
-	Field vfxAndSfx:int
-	global focusAspectCount:int = 6
-
-
-	Method Initialize:int()
-		Super.Initialize()
-		stunts = 0
-		vfxAndSfx = 0
-
-		focusAspectCount = TProductionFocusBase.focusAspectCount + 2
-	End Method
-
-
-	Method CopyFrom:TProductionFocusFictionalProgramme(source:TProductionFocusBase)
-		Super.CopyFrom(source)
-
-		local mySource:TProductionFocusFictionalProgramme = TProductionFocusFictionalProgramme(source)
-		if mySource
-			stunts = mySource.stunts
-			vfxAndSfx = mySource.vfxAndSfx
-		endif
-
-		return self
-	End Method
-
-
-	Method SetFocus(index:int, value:int)
-		Select index
-			case TProductionFocusBase.focusAspectCount + 1
-				SetStunts(value)
-			case TProductionFocusBase.focusAspectCount + 2
-				SetVfxAndSfx(value)
-		End Select
-
-		'emit event
-		Super.SetFocus(index, value)
-	End Method
-
-
-	Method GetFocus:int(index:int)
-		Select index
-			case TProductionFocusBase.focusAspectCount + 1
-				return GetStunts()
-			case TProductionFocusBase.focusAspectCount + 2
-				return GetVfxAndSfx()
-
-			default
-				return Super.GetFocus(index)
-		End Select
-	End Method
-			
-
-	Method SetStunts(value:int)
-		'reset old, so GetFocusPointsLeft() returns correct value
-		stunts = 0
-		stunts = MathHelper.Clamp(value, 0, Min(GetFocusPointsLeft(), 10))
-	End Method
-
-
-	Method SetVfxAndSfx(value:int)
-		'reset old, so GetFocusPointsLeft() returns correct value
-		vfxAndSfx = 0
-		vfxAndSfx = MathHelper.Clamp(value, 0, Min(GetFocusPointsLeft(), 10))
-	End Method
-
-
-	Method GetStunts:int()
-		return stunts
-	End Method
-
-
-	Method GetVfxAndSfx:int()
-		return vfxAndSfx
-	End Method
-
-
-	'override so it uses this types global
-	Method GetFocusAspectCount:int()
-		return focusAspectCount
-	End Method
-End Type
-
