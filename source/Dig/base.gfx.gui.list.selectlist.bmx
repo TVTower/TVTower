@@ -80,7 +80,6 @@ Type TGUISelectList Extends TGUIListBase
 			'remove old entry
 			Self.DeselectEntry()
 			Self.selectedEntry = entry
-			print "select"
 			If TGUIListItem(Self.selectedEntry) Then TGUIListItem(Self.selectedEntry).SetSelected(True)
 
 			'inform others: we successfully selected an item
@@ -91,7 +90,6 @@ Type TGUISelectList Extends TGUIListBase
 
 	Method DeselectEntry:Int()
 		If TGUIListItem(selectedEntry)
-			print "deselect"
 			TGUIListItem(selectedEntry).SetSelected(False)
 		EndIf
 		selectedEntry = Null

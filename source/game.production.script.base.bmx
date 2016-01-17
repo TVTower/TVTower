@@ -152,6 +152,14 @@ Type TScriptBase Extends TNamedGameObject
 		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(_genre))
 	End Function
 
+	Method GetProductionTypeString:String(_productionType:Int=-1)
+		If _productionType < 0 Then _productionType = self.scriptProductType
+		return _GetProductionTypeString(_productionType)
+	End Method
+
+	Function _GetProductionTypeString:string(_productionType:Int)
+		Return GetLocale("PROGRAMME_PRODUCT_" + TVTProgrammeProductType.GetAsString(_productionType))
+	End Function
 
 
 	Method GetSubScriptCount:int()

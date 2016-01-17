@@ -571,7 +571,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		'=== COUNTRY / YEAR / GENRE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, genreH, "1")
-		skin.fontNormal.drawBlock(GetMainGenreString(), contentX + 5, contentY, contentW - 10, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		skin.fontNormal.drawBlock(GetMainGenreString()+"-"+GetProductionTypeString(), contentX + 5, contentY, contentW - 10, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		contentY :+ genreH
 
 	

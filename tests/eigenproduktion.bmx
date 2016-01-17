@@ -722,11 +722,11 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		newProductionButton.spriteName = "gfx_gui_button.datasheet"
 
 		'=== START PRODUCTION BUTTON ===
-		startProductionButton = new TGUIButton.Create(new TVec2D.Init(20, 200), new TVec2D.Init(100, 28), "Produktion starten", "supermarket_customproduction_newproduction")
+		startProductionButton = new TGUIButton.Create(new TVec2D.Init(20, 220), new TVec2D.Init(100, 28), "Produktion starten", "supermarket_customproduction_newproduction")
 		startProductionButton.disable()
 		startProductionButton.spriteName = "gfx_gui_button.datasheet"
 
-		shoppingListList = new TGUISelectList.Create(new TVec2D.Init(20,20), new TVec2D.Init(150,150), "supermarket_customproduction_newproduction")
+		shoppingListList = new TGUISelectList.Create(new TVec2D.Init(20,20), new TVec2D.Init(150,180), "supermarket_customproduction_newproduction")
 		'add some items to that list
 		for local i:int = 1 to 10
 			local script:TScript = GetScriptCollection().GetRandomAvailable()
@@ -739,7 +739,7 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 			shoppingListList.AddItem( item )
 		Next
 		'refresh scrolling state
-		shoppingListList.Resize(150, 170)
+		shoppingListList.Resize(150, 180)
 	End Method
 
 
@@ -805,7 +805,7 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 
 
 		'=== SHOPPING LIST ===
-		outer.Init(10, 15, 200, 200)
+		outer.Init(10, 15, 210, 210)
 		contentX = skin.GetContentX(outer.GetX())
 		contentY = skin.GetContentY(outer.GetY())
 		contentW = skin.GetContentW(outer.GetW())
@@ -837,8 +837,8 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 
 
 		'=== CHECK AND START BOX ===
-		outer.SetXY(10, 220)
-		outer.dimension.SetXY(200,136)
+		outer.SetXY(10, 230)
+		outer.dimension.SetXY(210,136)
 		contentX = skin.GetContentX(outer.GetX())
 		contentY = skin.GetContentY(outer.GetY())
 		contentW = skin.GetContentW(outer.GetW())
@@ -972,8 +972,8 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		endif
 		outerH = outerSizeH + titleH + productionCompanyH + productionFocusH
 		
-		outer.SetXY(590, 15)
-		outer.dimension.SetXY(200, outerH)
+		outer.SetXY(580, 15)
+		outer.dimension.SetXY(210, outerH)
 		contentX = skin.GetContentX(outer.GetX())
 		contentY = skin.GetContentY(outer.GetY())
 		contentW = skin.GetContentW(outer.GetW())
@@ -1102,9 +1102,9 @@ End Type
 
 Type TGuiShoppingListSelectListItem Extends TGuiShoppingListListItem
 	Field displayName:string = ""
-	Const scaleAsset:Float = 0.8
-	Const paddingBottom:Int	= 2
-	Const paddingTop:Int = 1
+	Const scaleAsset:Float = 0.80
+	Const paddingBottom:Int	= 3
+	Const paddingTop:Int = 2
 
 
     Method Create:TGuiShoppingListSelectListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
@@ -1190,28 +1190,48 @@ endrem
 
 
 	Method DrawShoppingList()
+		if isHovered()
+			local oldCol:TColor = new TColor.Get()
+			SetAlpha 0.05 * oldCol.a
+			SetColor 200,100,50
+			DrawRect(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())
+			oldCol.SetRGBA()
+		endif
+		
 		GetAsset().draw(Self.GetScreenX(), Self.GetScreenY(), -1, null, scaleAsset)
 
 		local textOffsetX:int = asset.GetWidth()*scaleAsset + 3
 		local title:string = "unknown script"
 		local titleSize:TVec2D
 		local genreColor:TColor
+		local titleFont:TBitmapFont = GetBitmapFont("default",,BOLDFONT)
+		local oldMod:float = titleFont.lineHeightModifier
+		titleFont.lineHeightModifier :* 0.9
+
 		if shoppingList then title = shoppingList.script.GetTitle()
 
 		if isSelected()
-			titleSize = GetBitmapFont("default",,BOLDFONT).DrawBlock(title, int(GetScreenX()+ textOffsetX), int(GetScreenY()+3), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-6,,TColor.clRed)
-			genreColor = TColor.CreateGrey(100, 0.25)
+			titleSize = titleFont.DrawBlock(title, int(GetScreenX()+ textOffsetX), int(GetScreenY()+2), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-4,,TColor.Create(100,0,0))
+			genreColor = TColor.CreateGrey(0, 0.6)
 		else
 			if isHovered()
-				titleSize = GetBitmapFont("default").DrawBlock(title, int(GetScreenX()+ textOffsetX), int(GetScreenY()+3), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-6,,TColor.CreateGrey(0))
-				genreColor = TColor.CreateGrey(50, 0.25)
+				titleSize = titleFont.DrawBlock(title, int(GetScreenX()+ textOffsetX), int(GetScreenY()+2), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-4,,TColor.CreateGrey(50))
+				genreColor = TColor.CreateGrey(50, 0.6)
 			else
-				titleSize = GetBitmapFont("default").DrawBlock(title, int(GetScreenX()+ textOffsetX), int(GetScreenY()+3), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-6,,TColor.CreateGrey(50))
-				genreColor = TColor.CreateGrey(100, 0.25)
+				titleSize = titleFont.DrawBlock(title, int(GetScreenX()+ textOffsetX), int(GetScreenY()+2), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-4,,TColor.CreateGrey(100))
+				genreColor = TColor.CreateGrey(100, 0.6)
 			endif
 		endif
+		titleFont.lineHeightModifier = oldMod
+		
 
-		GetBitmapFont("default",,BOLDFONT).DrawBlock("Action-Film", int(GetScreenX()+ textOffsetX), int(GetScreenY()+3 + titleSize.y), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-6,,genreColor)
+		if shoppingList
+			local productionTypeText:string = shoppingList.script.GetProductionTypeString()
+			local genreText:string = shoppingList.script.GetMainGenreString()
+			local text:string = productionTypeText
+			if genreText <> productionTypeText then text :+ " / "+genreText
+			GetBitmapFont("default").DrawBlock(text, int(GetScreenX()+ textOffsetX), int(GetScreenY()+2 + titleSize.y), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-4,,genreColor)
+		endif
 	End Method
 	
 
@@ -1461,8 +1481,8 @@ Type TGUICastListItem Extends TGUISelectListItem
 	Field displayJobID:int = -1
 	Field lastDisplayJobID:int = -1
 
-	Const paddingBottom:Int	= 3
-	Const paddingTop:Int = 2
+	Const paddingBottom:Int	= 5
+	Const paddingTop:Int = 0
 
 
 	Method CreateSimple:TGUICastListItem(person:TProgrammePersonBase, displayJobID:int)
