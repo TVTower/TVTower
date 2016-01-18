@@ -9312,7 +9312,7 @@ eindringlich gezeigten Grausamkeiten f√ºhrten zu einer Zensur durch die Filmbeh√
 				<member index="3" function="2">TheRob-TowerTV-RonSaradine</member>                                                                                 
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1940" distribution="0" maingenre="4" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<data country="USA" year="1940" distribution="0" maingenre="18" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
 			<ratings critics="53" speed="68" outcome="61" />
 		</programme> 
 	

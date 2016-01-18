@@ -1278,6 +1278,18 @@ Type TStationMapSection
 	End Function
 
 
+	Function DrawAll()
+		if not sections then return
+		local oldA:float = Getalpha()
+		SetAlpha oldA * 0.8
+		For local section:TStationMapSection = EachIn sections
+			if not section.sprite then continue
+			section.sprite.Draw(section.rect.getx(), section.rect.gety())
+		Next
+		Setalpha oldA
+	End Function
+	
+
 	Function Reset:int()
 		sections = CreateList()
 	End Function

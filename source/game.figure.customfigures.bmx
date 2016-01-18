@@ -260,16 +260,25 @@ Type TFigureDeliveryBoy Extends TFigure
 			Else
 				'instead of sending the figure to the correct door, we
 				'ask the roomsigns where to go to
-				'1) get sign of the door
-				Local roomDoor:TRoomDoorBase = GetRoomDoorCollection().GetMainDoorToRoom(deliverToRoom.id)
-				'2) get sign which is now at the slot/floor of the room
+				'1) search for a sign to the room
+				Local roomSign:TRoomBoardSign = GetRoomBoard().GetFirstSignByRoom(deliverToRoom.id)
+				'2) get sign which was originally at the same position
+				'   as the sign we just found
 				Local sign:TRoomBoardSign
-				If roomDoor Then sign = GetRoomBoard().GetSignByCurrentPosition(roomDoor.doorSlot, roomDoor.onFloor)
+				If roomSign
+					sign = GetRoomBoard().GetSignByOriginalXY( roomSign.rect.GetX(), roomSign.rect.GetY() )
+				endif
 
 				If sign And sign.door
 					intentedDeliverToRoom = deliverToRoom
 					deliverToRoom = TRoomDoor(sign.door).GetRoom()
-					TLogger.Log("TFigureDeliveryBoy", Self.name+" is sent to room "+deliverToRoom.name+" (intended room: "+intentedDeliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
+					local deliverText:string = deliverToRoom.name
+					local intendedText:string = intentedDeliverToRoom.name
+					if deliverToRoom.owner then deliverText :+ " #"+deliverToRoom.owner
+					if intentedDeliverToRoom.owner then intendedText :+ " #"+intentedDeliverToRoom.owner
+
+					TLogger.Log("TFigureDeliveryBoy", Self.name+" is sent to room "+deliverText+" (intended room: "+intendedText+")", LOG_DEBUG | LOG_AI, True)
+
 					SendToDoor(sign.door)
 				Else
 					TLogger.Log("TFigureDeliveryBoy", Self.name+" cannot send to a room, sign of target over empty room slot (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)

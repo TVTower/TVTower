@@ -215,13 +215,26 @@ Type StringHelper
 
 
 	Function RemoveUmlauts:string(text:string)
-		text = text.replace("ü", "ue")
-		text = text.replace("Ü", "Ue")
-		text = text.replace("ö", "oe")
-		text = text.replace("Ö", "Oe")
-		text = text.replace("ä", "ae")
-		text = text.replace("Ä", "Ae")
-		text = text.replace("ß", "ss")
+		local s:string[]
+		local t:string[]
+		s :+ ["ü Ü ö Ö ä Ä ß"]
+		t :+ ["ue Ue oe Oe ae Ae ss"]
+
+		s :+ ["„ “ ” « »"]
+		t :+ ["~q ~q ~q ~q ~q"]
+
+		s :+ ["é è ê É È Ê á à â Á À Â ó ò ô Ó Ò Ô ú ù û Ú Ù Û"]
+		t :+ ["e e e E E E a a a A A A o o o O O O u u u U U U"]
+
+
+		For local i:int = 0 until s.length
+			local src:string[] = s[i].split(" ")
+			local tar:string[] = t[i].split(" ")
+			For local j:int = 0 until src.length
+				text = text.replace(src[j], tar[j])
+			Next
+		Next
+	
 		return text
 	End function
 	

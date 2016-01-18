@@ -753,7 +753,11 @@ Type TApp
 					Repeat
 						targetRoom = GetRoomCollection().GetRandom()
 					Until targetRoom.name <> "building"
-					print "deliver to : "+targetRoom.name
+					if targetRoom.owner
+						print "deliver to : "+targetRoom.name + " #"+targetRoom.owner
+					else
+						print "deliver to : "+targetRoom.name
+					endif
 					TFigureTerrorist(GetGame().terrorists[whichTerrorist]).SetDeliverToRoom( targetRoom )
 				EndIf
 
@@ -981,10 +985,15 @@ Type TApp
 				GetWorld().RenderDebug(660,0, 140, 160)
 				'GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
 			EndIf
+
+			if not GetPlayerCollection().IsHuman( GetPlayerCollection().playerID )
+				GetBitmapFont("default", 20).DrawBlock("OBSERVING AI PLAYER #" +GetPlayerCollection().playerID, 20,20, GetGraphicsManager().GetWidth()-40, 355, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+			endif
+
 			'show quotes even without "DEV_OSD = true"
 			If TVTDebugQuoteInfos Then debugAudienceInfos.Draw()
 		endif
-
+		
 		'draw loading resource information
 		RenderLoadingResourcesInformation()
 
@@ -4237,9 +4246,9 @@ Function GetBroadcastOverviewString:string(day:int = -1, lastHour:int = -1)
 
 			if progSlot
 				if progSlot.isType(TVTBroadcastMaterialType.PROGRAMME)
-					progText = LSet(StringHelper.UTF8toISO8859(progSlot.GetTitle()), 25)
+					progText = LSet(StringHelper.RemoveUmlauts(progSlot.GetTitle()), 25)
 				else
-					progText = LSet("[I] " + StringHelper.UTF8toISO8859(progSlot.GetTitle()), 25)
+					progText = LSet("[I] " + StringHelper.RemoveUmlauts(progSlot.GetTitle()), 25)
 				endif
 			else
 				progText = LSet("Keine Ausstrahlung", 25)
@@ -4248,7 +4257,7 @@ Function GetBroadcastOverviewString:string(day:int = -1, lastHour:int = -1)
 			if audience
 				progAudienceText = RSet(int(audience.audience.GetTotalSum()), 7) + " " + RSet(MathHelper.NumberToString(audience.GetAudienceQuotePercentage()*100,2), 6)+"%"
 			else
-				progAudienceText = RSet(" -/- ", 7) + " " +RSet("0%", 6)
+				progAudienceText = RSet(" -/- ", 7) + " " +RSet("0%", 7)
 			endif
 
 			if newsAudience
@@ -4263,7 +4272,7 @@ Function GetBroadcastOverviewString:string(day:int = -1, lastHour:int = -1)
 				adAudienceText = RSet(" -/- ", 7)
 
 				if adSlot.isType(TVTBroadcastMaterialType.PROGRAMME)
-					adText = LSet("[T] " + adSlot.GetTitle(), 20)
+					adText = LSet("[T] " + StringHelper.RemoveUmlauts(adSlot.GetTitle()), 20)
 				elseif adSlot.isType(TVTBroadcastMaterialType.ADVERTISEMENT)
 					adAudienceText = RSet(int(TAdvertisement(adSlot).contract.GetMinAudience()),7)
 				endif 

@@ -67,7 +67,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 
 
 	Method IsLocalHuman:Int(number:Int)
-		Return number = playerID
+		Return number = playerID and not (Get(number).IsLocalAI() or Get(number).IsRemoteAI())
 	End Method
 
 
@@ -340,13 +340,13 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 
 
 	Method IsLocalHuman:Int()
-		Return playerID = GetPlayerCollection().playerID
+		Return playerID = GetPlayerCollection().playerID and not playerAI
 		'Return playerType = PLAYERTYPE_LOCAL_HUMAN
 	End Method
 
 
 	Method IsRemoteHuman:Int()
-		Return playerType = TPlayer.PLAYERTYPE_REMOTE_HUMAN
+		Return playerType = TPlayer.PLAYERTYPE_REMOTE_HUMAN and not playerAI
 	End Method
 
 

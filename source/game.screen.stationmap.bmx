@@ -302,7 +302,9 @@ Type TScreenHandler_StationMap
 		_DrawStationMapBuyPanel(590, 5, room)
 		_DrawStationMapSellPanel(590, 150, room)
 
-
+		'debug draw station map sections
+		'TStationMapSection.DrawAll()
+		
 		'draw stations and tooltips
 		GetPlayerCollection().Get(room.owner).GetStationMap().Draw()
 

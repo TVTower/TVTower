@@ -1353,15 +1353,15 @@ Type TScreenHandler_ProgrammePlanner
 		'===== CREATE NEW =====
 		'create missing gui elements for all programmes/ads
 		local daysProgramme:TBroadcastMaterial[] = GetPlayerProgrammePlan(currentRoom.owner).GetProgrammesInTimeSpan(currDay, 0, currDay, 23)
+		local repairBrokenAd:int = False
+		local repairBrokenProgramme:int = False
 		For local obj:TBroadcastMaterial = eachin daysProgramme
 			if not obj then continue
 			'if already included - skip it
 			if GuiListProgrammes.ContainsBroadcastMaterial(obj) then continue
 			'repair broken ones
 			if obj.programmedDay = -1 and obj.programmedHour = -1
-				if GetPlayerProgrammePlan(currentRoom.owner).RemoveBrokenObjects()
-					Notify "Ronny: Du hattest Programme/Werbung im Programmplan die als ~qnicht programmiert~q deklariert waren."
-				endif
+				repairBrokenProgramme = True
 				continue
 			endif
 						
@@ -1411,9 +1411,7 @@ Type TScreenHandler_ProgrammePlanner
 			if GuiListAdvertisements.ContainsBroadcastMaterial(obj) then continue
 			'repair broken ones
 			if obj.programmedDay = -1 and obj.programmedHour = -1
-				if GetPlayerProgrammePlan(currentRoom.owner).RemoveBrokenObjects()
-					Notify "Ronny: Du hattest Programme/Werbung im Programmplan die als ~qnicht programmiert~q deklariert waren."
-				endif
+				repairBrokenAd = True
 				continue
 			endif
 			
@@ -1449,6 +1447,13 @@ Type TScreenHandler_ProgrammePlanner
 				print "ADD ERROR - could not add advertisement"
 			endif
 		Next
+
+
+		if repairBrokenAd or repairBrokenProgramme
+			if GetPlayerProgrammePlan(currentRoom.owner).RemoveBrokenObjects()
+				Notify "Ronny: Du hattest Programme/Werbung im Programmplan die als ~qnicht programmiert~q deklariert waren."
+			endif
+		endif
 
 
 		haveToRefreshGuiElements = FALSE
