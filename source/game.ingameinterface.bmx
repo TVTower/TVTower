@@ -72,10 +72,10 @@ Type TInGameInterface
 		CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
 
 		CurrentProgrammeToolTip = TTooltip.Create("", "", 40, 395)
-		CurrentProgrammeToolTip.SetMinTitleAndContentWidth(220)
+		CurrentProgrammeToolTip.SetMinTitleAndContentWidth(240)
 
 		CurrentAudienceToolTip = TTooltipAudience.Create("", "", 490, 440)
-		CurrentProgrammeToolTip.SetMinTitleAndContentWidth(200)
+		CurrentAudienceToolTip.SetMinTitleAndContentWidth(200)
 
 		CurrentTimeToolTip = TTooltip.Create("", "", 490, 535)
 		MoneyToolTip = TTooltip.Create("", "", 490, 408)
@@ -237,6 +237,25 @@ Type TInGameInterface
 			If programmePlan
 				content	= GetLocale("AUDIENCE_NUMBER")+": "+programmePlan.getFormattedAudience()+ " ("+MathHelper.NumberToString(programmePlan.GetAudiencePercentage()*100,2)+"%)"
 
+				'Newsshow details
+				If GetWorldTime().GetDayMinute()<5
+					local newsCount:int = 0
+					Local show:TNewsShow = TNewsShow(programmePlan.GetNewsShow())
+
+					if show and show.news then newsCount = show.news.length
+
+					If newsCount > 0
+						content :+ "~n"
+						For local i:int = 0 until newsCount
+							if show.news[i]
+								content :+ "~n"+(i+1)+"/"+newsCount+": " + show.news[i].GetTitle()
+							else
+								content :+ "~n"+(i+1)+"/"+newsCount+": -/-"
+							endif
+						Next
+					endif
+				EndIf
+
 				'show additional information if channel is player's channel
 				If programmePlan.owner = GetPlayerBaseCollection().playerID
 					If GetWorldTime().GetDayMinute() >= 5 And GetWorldTime().GetDayMinute() < 55
@@ -269,7 +288,9 @@ Type TInGameInterface
 						Else
 							content :+ "~n ~n|b||color=200,100,100|"+getLocale("NEXT_ADBLOCK")+":|/color||/b|~n"+ GetLocale("NEXT_NOTHINGSET")
 						EndIf
+
 					ElseIf GetWorldTime().GetDayMinute()>=55 Or GetWorldTime().GetDayMinute()<5
+						'upcoming programme hint
 						Local obj:TBroadcastMaterial = programmePlan.GetProgramme()
 						If TProgramme(obj)
 							content :+ "~n ~n|b|"+getLocale("NEXT_PROGRAMME")+":|/b|~n"
