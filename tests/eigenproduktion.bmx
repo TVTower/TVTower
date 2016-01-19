@@ -139,65 +139,66 @@ Type TMyApp Extends TGraphicalApp
 			RoomHandler_Supermarket.GetInstance().CreateNewConcept(script)
 		endif
 
-		if KeyManager.IsHit(KEY_1)
-			currentProductionConcept.SetCast(0, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True))
-		Endif
-		if KeyManager.IsHit(KEY_2)
-			currentProductionConcept.SetCast(1, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True))
-		Endif
-		if KeyManager.IsHit(KEY_3)
-			RoomHandler_Supermarket.GetInstance().castSlotList.SetSlotCast(2, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True) )
-			'currentProductionConcept.SetCast(2, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True))
-		Endif
-		if KeyManager.IsHit(KEY_4)
-			RoomHandler_Supermarket.GetInstance().castSlotList.SetSlotCast(3, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True) )
-		Endif
-		if KeyManager.IsHit(KEY_5)
-			currentProductionConcept.SetCast(4, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True))
-		Endif
+		if RoomHandler_Supermarket.GetInstance().currentProductionConcept
+			if KeyManager.IsHit(KEY_1)
+				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetCast(0, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True))
+			Endif
+			if KeyManager.IsHit(KEY_2)
+				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetCast(1, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True))
+			Endif
+			if KeyManager.IsHit(KEY_3)
+				RoomHandler_Supermarket.GetInstance().castSlotList.SetSlotCast(2, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True) )
+				'currentProductionConcept.SetCast(2, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True))
+			Endif
+			if KeyManager.IsHit(KEY_4)
+				RoomHandler_Supermarket.GetInstance().castSlotList.SetSlotCast(3, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True) )
+			Endif
+			if KeyManager.IsHit(KEY_5)
+				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetCast(4, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True))
+			Endif
 
-		if KeyManager.IsHit(KEY_Q)
-			currentProductionConcept.SetProductionCompany( TProductionCompanyBase(RoomHandler_Supermarket.GetInstance().productionCompanySelect.GetEntryByPos(0).data.Get("productionCompany")) )
-		Endif
-		if KeyManager.IsHit(KEY_W)
-			currentProductionConcept.SetProductionCompany( TProductionCompanyBase(RoomHandler_Supermarket.GetInstance().productionCompanySelect.GetEntryByPos(1).data.Get("productionCompany")) )
-		Endif
-		if KeyManager.IsHit(KEY_E)
-			currentProductionConcept.SetProductionCompany( TProductionCompanyBase(RoomHandler_Supermarket.GetInstance().productionCompanySelect.GetEntryByPos(2).data.Get("productionCompany")) )
-		Endif
-		if KeyManager.IsHit(KEY_R)
-			'random one
-			currentProductionConcept.SetProductionCompany( GetProductionCompanyBaseCollection().GetRandom() )
-		Endif
+			if KeyManager.IsHit(KEY_Q)
+				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionCompany( TProductionCompanyBase(RoomHandler_Supermarket.GetInstance().productionCompanySelect.GetEntryByPos(0).data.Get("productionCompany")) )
+			Endif
+			if KeyManager.IsHit(KEY_W)
+				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionCompany( TProductionCompanyBase(RoomHandler_Supermarket.GetInstance().productionCompanySelect.GetEntryByPos(1).data.Get("productionCompany")) )
+			Endif
+			if KeyManager.IsHit(KEY_E)
+				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionCompany( TProductionCompanyBase(RoomHandler_Supermarket.GetInstance().productionCompanySelect.GetEntryByPos(2).data.Get("productionCompany")) )
+			Endif
+			if KeyManager.IsHit(KEY_R)
+				'random one
+				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionCompany( GetProductionCompanyBaseCollection().GetRandom() )
+			Endif
 
-		if KeyManager.IsHit(KEY_NUM1)
-			currentProductionConcept.SetProductionFocus(1, RandRange(0,10))
-		Endif
-		if KeyManager.IsHit(KEY_NUM2)
-			currentProductionConcept.SetProductionFocus(2, RandRange(0,10))
-		Endif
-		if KeyManager.IsHit(KEY_NUM3)
-			currentProductionConcept.SetProductionFocus(3, RandRange(0,10))
-		Endif
-		if KeyManager.IsHit(KEY_NUM4)
-			currentProductionConcept.SetProductionFocus(4, RandRange(0,10))
-		Endif
-		if KeyManager.IsHit(KEY_NUM5)
-			currentProductionConcept.SetProductionFocus(5, RandRange(0,10))
-		Endif
-		if KeyManager.IsHit(KEY_NUM6)
-			currentProductionConcept.SetProductionFocus(6, RandRange(0,10))
-		Endif
-		if KeyManager.IsHit(KEY_NUM7)
-			currentProductionConcept.SetProductionFocus(7, RandRange(0,10))
-		Endif
-		if KeyManager.IsHit(KEY_NUM8)
-			currentProductionConcept.productionFocus.SetFocusPointsMax( Max(0, currentProductionConcept.productionFocus.focusPointsMax - 1))
-		Endif
-		if KeyManager.IsHit(KEY_NUM9)
-			currentProductionConcept.productionFocus.SetFocusPointsMax( currentProductionConcept.productionFocus.focusPointsMax + 1)
-		Endif
-		
+			if KeyManager.IsHit(KEY_NUM1)
+				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(1, RandRange(0,10))
+			Endif
+			if KeyManager.IsHit(KEY_NUM2)
+				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(2, RandRange(0,10))
+			Endif
+			if KeyManager.IsHit(KEY_NUM3)
+				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(3, RandRange(0,10))
+			Endif
+			if KeyManager.IsHit(KEY_NUM4)
+				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(4, RandRange(0,10))
+			Endif
+			if KeyManager.IsHit(KEY_NUM5)
+				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(5, RandRange(0,10))
+			Endif
+			if KeyManager.IsHit(KEY_NUM6)
+				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(6, RandRange(0,10))
+			Endif
+			if KeyManager.IsHit(KEY_NUM7)
+				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(7, RandRange(0,10))
+			Endif
+			if KeyManager.IsHit(KEY_NUM8)
+				RoomHandler_Supermarket.GetInstance().currentProductionConcept.productionFocus.SetFocusPointsMax( Max(0, RoomHandler_Supermarket.GetInstance().currentProductionConcept.productionFocus.focusPointsMax - 1))
+			Endif
+			if KeyManager.IsHit(KEY_NUM9)
+				RoomHandler_Supermarket.GetInstance().currentProductionConcept.productionFocus.SetFocusPointsMax( RoomHandler_Supermarket.GetInstance().currentProductionConcept.productionFocus.focusPointsMax + 1)
+			Endif
+		endif
 
 		'check if new resources have to get loaded
 		TRegistryUnloadedResourceCollection.GetInstance().Update()
@@ -261,8 +262,6 @@ MyApp.Run()
 
 
 
-Global currentProductionConcept:TProductionConcept
-
 Type TTestScreen extends TScreen
 	Global _eventListeners:TLink[]
 
@@ -306,6 +305,8 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 	Field castSlotList:TGUICastSlotList
 	Field repositionSliders:int = True
 
+	Field currentProductionConcept:TProductionConcept
+
 	Global hoveredGuiCastItem:TGUICastListItem
 
 	Global _instance:RoomHandler_Supermarket
@@ -343,6 +344,12 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickCastItem, "TGUICastListItem") ]
 		'we want to know if we hover a specific block
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverCastItem, "TGUICastListItem" ) ]
+		'shopping list is selected, enable production button
+		_eventListeners :+ [ EventManager.registerListenerFunction("GUISelectList.onSelectEntry", onSelectShoppingListItem, shoppingListList ) ]
+		'create/abort production
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickNewProductionButton, "TGUIButton" ) ]
+
+
 
 		'GUI -> LOGIC
 		'react to clicks on slider or other ways of changing it
@@ -428,6 +435,40 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 	End Method
 
 
+	'=== SELECTLIST - SHOPPINGLIST SELECTION ===
+
+	'GUI -> GUI
+	'enable production-button upon selection of an entry
+	Function onSelectShoppingListItem:int(triggerEvent:TeventBase)
+		local item:TGuiShoppingListSelectListItem = TGuiShoppingListSelectListItem(triggerEvent.GetData().Get("entry"))
+		local list:TGUISelectList = TGUISelectList(triggerEvent.GetSender())
+		if GetInstance().shoppingListList <> list or not item then return False
+
+		GetInstance().newProductionButton.Enable()
+	End Function
+
+
+	'GUI -> GUI
+	'create new production or abort current
+	Function onClickNewProductionButton:int(triggerEvent:TeventBase)
+		'only interested in newProductionButton
+		if GetInstance().newProductionButton <> TGUIButton(triggerEvent.GetSender()) then return False
+
+		'abort existing
+		if GetInstance().currentProductionConcept
+			print "TODO - abort"
+			GetInstance().currentProductionConcept = null
+
+		'create new one
+		else
+			local currentGUIScript:TGuiShoppingListSelectListItem = TGuiShoppingListSelectListItem(GetInstance().shoppingListList.getSelectedEntry())
+			if currentGUIScript and currentGUIScript.shoppingList
+				GetInstance().CreateNewConcept(currentGUIScript.shoppingList.script)
+			endif
+		endif
+	End Function
+
+
 	'=== DROPDOWN - PRODUCTION COMPANY - EVENTS ===
 
 	'GUI -> LOGIC reaction
@@ -442,7 +483,7 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		local company:TProductionCompanyBase = TProductionCompanyBase(entry.data.Get("productionCompany"))
 		if not company then return False
 
-		currentProductionConcept.SetProductionCompany(company)
+		GetInstance().currentProductionConcept.SetProductionCompany(company)
 	End Function
 
 
@@ -450,7 +491,7 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 	Function onProductionConceptChangeProductionCompany:int(triggerEvent:TEventBase)
 		local productionConcept:TProductionConcept = TProductionConcept(triggerEvent.GetSender())
 		local company:TProductionCompanyBase = TProductionCompanyBase(triggerEvent.GetData().Get("productionCompany"))
-		if productionConcept <> currentProductionConcept then return False
+		if productionConcept <> GetInstance().currentProductionConcept then return False
 
 		'skip without changes
 		local newItem:TGUIDropDownItem
@@ -486,13 +527,13 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 	'Adjusts the GUI sliders to represent the new values.
 	Function onProductionConceptChangeProductionFocus:int(triggerEvent:TEventBase)
 		local productionFocus:TProductionFocusBase = TProductionFocusBase(triggerEvent.GetSender())
-		if currentProductionConcept.productionFocus <> productionFocus then return False
+		if GetInstance().currentProductionConcept.productionFocus <> productionFocus then return False
 
 		local focusIndex:int = triggerEvent.GetData().GetInt("focusIndex")
 		local value:int = triggerEvent.GetData().GetInt("value")
 
 		'skip without production company!
-		if not currentProductionConcept.productionCompany then return False
+		if not GetInstance().currentProductionConcept.productionCompany then return False
 
 		'skip focus aspects without sliders
 		if focusIndex < 0 or GetInstance().productionFocusSlider.length < focusIndex then return False
@@ -532,10 +573,10 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		
 		'adjust slider limit dynamically
 		local focusIndex:int = slider.data.GetInt("focusIndex")
-		local currentValue:int = Max(0, currentProductionConcept.GetProductionFocus(focusIndex))
+		local currentValue:int = Max(0, GetInstance().currentProductionConcept.GetProductionFocus(focusIndex))
 		local desiredValue:int = int(slider.GetValue())
 		'available points (of 10)
-		local maxValue:int = Min(10, currentProductionConcept.productionFocus.GetFocusPointsLeft() + currentValue)
+		local maxValue:int = Min(10, GetInstance().currentProductionConcept.productionFocus.GetFocusPointsLeft() + currentValue)
 
 		slider.SetLimitValueRange(0, maxValue)
 	End Function
@@ -562,16 +603,16 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		if not slider then return False
 
 		local focusIndex:int = slider.data.GetInt("focusIndex")
-		local currentValue:int = currentProductionConcept.GetProductionFocus(focusIndex)
+		local currentValue:int = GetInstance().currentProductionConcept.GetProductionFocus(focusIndex)
 		local newValue:int = int(slider.GetValue())
 
 		'skip if nothing to do
 		if newValue = currentValue then return False
 
 		'set logic-value
-		currentProductionConcept.SetProductionFocus( focusIndex, newValue )
+		GetInstance().currentProductionConcept.SetProductionFocus( focusIndex, newValue )
 		'fetch resulting value (might differ because of limitations)
-		newValue = Max(0, currentProductionConcept.GetProductionFocus(focusIndex))
+		newValue = Max(0, GetInstance().currentProductionConcept.GetProductionFocus(focusIndex))
 
 		'there might be a limitation - so adjust gui slider
 		if newValue <> int(slider.GetValue())
@@ -611,10 +652,10 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 
 		if item and triggerEvent.IsTrigger("guiList.addedItem")
 			'print "set "+slot + "  " + item.person.GetFullName()
-			currentProductionConcept.SetCast(slot, item.person)
+			GetInstance().currentProductionConcept.SetCast(slot, item.person)
 		else
 			'print "clear "+slot
-			currentProductionConcept.SetCast(slot, null)
+			GetInstance().currentProductionConcept.SetCast(slot, null)
 		endif
 	End Function
 		
@@ -1357,8 +1398,8 @@ Type TGUICastSlotList Extends TGUISlotList
 
 		selectCastSlot = GetSlotByCoord(coord, True)
 		
-		if selectCastSlot >= 0 and currentProductionConcept
-			local jobID:int = currentProductionConcept.script.cast[selectCastSlot].job
+		if selectCastSlot >= 0 and RoomHandler_Supermarket.GetInstance().currentProductionConcept
+			local jobID:int = RoomHandler_Supermarket.GetInstance().currentProductionConcept.script.cast[selectCastSlot].job
 			OpenSelectCastWindow(jobID)
 		endif
 	End Method
@@ -1946,7 +1987,7 @@ endrem
 	endif
 	if jobID >= 0
 		skin.fontSemibold.drawBlock(GetLocale("JOB_"+TVTProgrammePersonJob.GetAsString(jobID)), contentX + 5, contentY, 94, 25, ALIGN_LEFT_CENTER, skin.textColorLabel)
-		skin.RenderBox(contentX + 5 + 94, contentY, contentW - 10 - 94 +1, -1, TFunctions.DottedValue(cast.GetBaseFee(jobID, currentProductionConcept.script.blocks)), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+		skin.RenderBox(contentX + 5 + 94, contentY, contentW - 10 - 94 +1, -1, TFunctions.DottedValue(cast.GetBaseFee(jobID, RoomHandler_Supermarket.GetInstance().currentProductionConcept.script.blocks)), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 	endif
 	contentY :+ boxH
 

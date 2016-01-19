@@ -68,7 +68,10 @@ Type TGUISelectList Extends TGUIListBase
 
 	Method onClickOnEntry:Int(triggerEvent:TEventBase)
 		Local entry:TGUIListItem = TGUIListItem( triggerEvent.getSender() )
-		If Not entry Then Return False
+		'do not check non existing entries
+		If not entry Then Return False
+		'only react if self possesses the entry
+		If not entry or not Self.HasItem(entry) then return False
 
 		SelectEntry(entry)
 	End Method

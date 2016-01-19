@@ -145,10 +145,10 @@ Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 	Method DrawBackground()
 		Local oldCol:TColor = New TColor.Get()
 		SetColor(125, 160, 215)
-		If mouseover
+		If IsHovered()
 			SetAlpha(oldCol.a * 0.75)
 			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), rect.getH())
-		ElseIf selected
+		ElseIf IsSelected()
 			SetAlpha(oldCol.a * 0.5)
 			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), rect.getH())
 		EndIf

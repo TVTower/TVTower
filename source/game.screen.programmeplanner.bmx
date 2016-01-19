@@ -306,19 +306,19 @@ Type TScreenHandler_ProgrammePlanner
 
 	Function RefreshHoveredProgrammePlanElement:int()
 		For local guiObject:TGuiProgrammePlanElement = eachin GuiListProgrammes._slots
-			if guiObject.isDragged() or guiObject.mouseOver
+			if guiObject.isDragged() or guiObject.isHovered()
 				hoveredGuiProgrammePlanElement = guiObject
 				return True
 			endif
 		Next
 		For local guiObject:TGuiProgrammePlanElement = eachin GuiListAdvertisements._slots
-			if guiObject.isDragged() or guiObject.mouseOver
+			if guiObject.isDragged() or guiObject.isHovered()
 				hoveredGuiProgrammePlanElement = guiObject
 				return True
 			endif
 		Next
 		For local guiObject:TGuiProgrammePlanElement = eachin GuiManager.ListDragged
-			if guiObject.isDragged() or guiObject.mouseOver
+			if guiObject.isDragged() or guiObject.isHovered()
 				hoveredGuiProgrammePlanElement = guiObject
 				return True
 			endif
