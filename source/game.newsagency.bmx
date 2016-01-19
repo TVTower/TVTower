@@ -551,9 +551,7 @@ Type TNewsAgency
 			announced:+1
 		Next
 		'invalidate upcoming list 
-		if announced > 0 and GetNewsEventCollection()._upcomingNewsEvents
-			GetNewsEventCollection()._upcomingNewsEvents.Clear()
-		endif
+		if announced > 0 then GetNewsEventCollection()._InvalidateUpcomingNewsEvents()
 	
 		Return announced
 	End Method
@@ -661,32 +659,35 @@ Type TNewsAgency
 
 	'generates a new news event from various sources (such as new
 	'movie announcements, actor news ...)
-	Method GenerateNewNewsEvent:TNewsEvent()
+	Method GenerateNewNewsEvent:TNewsEvent(genre:int = -1)
 		local newsEvent:TNewsEvent = null
 
 		'=== TYPE MOVIE NEWS ===
-		'35% chance: try to load some movie news ("new movie announced...")
-		If Not newsEvent And RandRange(1,100) < 35
-			newsEvent = GetMovieNewsEvent()
-		EndIf
+		'25% chance: try to load some movie news ("new movie announced...")
+		if genre = -1 or genre = TVTNewsGenre.SHOWBIZ
+			If Not newsEvent And RandRange(1,100) < 25
+				newsEvent = GetMovieNewsEvent()
+			EndIf
+		endif
 
 
 		'=== TYPE RANDOM NEWS ===
 		'if no "special case" triggered, just use a random news
 		If Not newsEvent
-			newsEvent = GetNewsEventCollection().GetRandomAvailable()
+			newsEvent = GetNewsEventCollection().GetRandomAvailable(genre)
 		EndIf
 
 		return newsEvent
 	End Method
 
 
-	Method AnnounceNewNewsEvent:Int(delayAnnouncement:Int=0, forceAdd:Int=False)
+	Method AnnounceNewNewsEvent:Int(genre:int=-1, adjustHappenedTime:Int=0, forceAdd:Int=False)
 		'=== CREATE A NEW NEWS ===
-		Local newsEvent:TNewsEvent = GenerateNewNewsEvent()
+		Local newsEvent:TNewsEvent = GenerateNewNewsEvent(genre)
 
 
 		'=== ANNOUNCE THE NEWS ===
+		local announced:int = False
 		'only announce if forced or somebody is listening
 		If newsEvent
 			local skipNews:int = newsEvent.IsSkippable()
@@ -695,17 +696,21 @@ Type TNewsAgency
 					'a player listens to this genre, disallow skipping
 					If player.newsabonnements[newsEvent.genre] > 0 Then skipNews = False
 				Next
+				if skipNews then print "skip news: "+newsEvent.GetTitle()
 			EndIf
 
 			If not skipNews or forceAdd
-				'Print "[LOCAL] AnnounceNewNews: added news title="+newsEvent.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
-				announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone() + delayAnnouncement, forceAdd)
+				announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone() + adjustHappenedTime, forceAdd)
+				announced = True
+				Print "[LOCAL] AnnounceNewNews: added news title="+newsEvent.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
 			EndIf
 		EndIf
 
 
 		'=== ADJUST TIME FOR NEXT NEWS ANNOUNCEMENT ===
 		ResetNextEventTime()
+
+		return announced
 	End Method
 
 

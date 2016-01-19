@@ -314,9 +314,19 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		Next
 
 		'create 3 starting news, True = add even without news abonnement
-		GetNewsAgency().AnnounceNewNewsEvent(-60, True)
-		GetNewsAgency().AnnounceNewNewsEvent(-120, True)
-		GetNewsAgency().AnnounceNewNewsEvent(-120, True)
+		GetNewsAgency().AnnounceNewNewsEvent(-1,  -60 * 60, True)
+		GetNewsAgency().AnnounceNewNewsEvent(-1, -120 * 60, True)
+		GetNewsAgency().AnnounceNewNewsEvent(-1, -120 * 60, True)
+
+		'create 3 random news happened some time before today ...
+		'Limit to CurrentAffairs as this is the starting abonnement of
+		'all players
+		'Create one which is available at start in all cases (>3h old)
+		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(180,210))
+		For local i:int = 0 to 1
+			GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(5,15)*RandRange(5,10))
+		Next
+	
 		'adjust news agency to wait some time until next news
 		GetNewsAgency().ResetNextEventTime()
 
