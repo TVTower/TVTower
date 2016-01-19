@@ -1846,7 +1846,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<data genre="4" price="1.0" quality="88" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news id="f9a45fff-1546-ffa8-aa8a6ddb4880ad7f3" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="0" creator="">
+		<news id="f9a45fff-1546-ffa8-aa8a6ddb4880ad7f3" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
 			<title>
 				<de>Ausnahmezustand in San Francisco</de>
 				<en></en>
