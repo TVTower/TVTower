@@ -1026,43 +1026,60 @@ endrem
 	End Method
 
 
-	Method DrawContent()
+	Method Draw()
+		if not isDragged()
+			'this allows to use a list in a modal dialogue
+			local upperParent:TGUIObject = TGUIListBase.FindGUIListBaseParent(self)
+			if upperParent then upperParent.RestrictViewPort()
+
+			Super.Draw()
+
+			if upperParent then upperParent.ResetViewPort()
+		else
+			Super.Draw()
+		endif
+	End Method
+
+
+	Method DrawSimpleBackground()
 		Local atPoint:TVec2D = GetScreenPos()
-		Local draw:Int=True
-		Local parent:TGUIobject = Null
-		If Not(Self._flags & GUI_OBJECT_DRAGGED)
-			parent = TGUIListBase.FindGUIListBaseParent(self._parent)
+
+		local oldCol:TColor = new TColor.Get()
+
+		Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
+
+		'self.GetScreenX() and self.GetScreenY() include parents coordinate
+		SetColor 0,0,0
+		DrawRect(atPoint.GetX(), atPoint.GetY(), maxWidth, rect.getH())
+		If Self._flags & GUI_OBJECT_DRAGGED
+			SetColor 125,0,125
+		Else
+			SetColor 125,125,125
 		EndIf
-		If draw
-			local oldCol:TColor = new TColor.Get()
+		DrawRect(atPoint.GetX() + 1, atPoint.GetY() + 1, maxWidth-2, rect.getH()-2)
 
-			Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
-
-			'self.GetScreenX() and self.GetScreenY() include parents coordinate
-			SetColor 0,0,0
-			DrawRect(atPoint.GetX(), atPoint.GetY(), maxWidth, rect.getH())
-			If Self._flags & GUI_OBJECT_DRAGGED
-				SetColor 125,0,125
-			Else
-				SetColor 125,125,125
-			EndIf
+		'hovered
+		if isHovered()
+			SetBlend LightBlend
+			SetAlpha 0.25 * GetAlpha()
 			DrawRect(atPoint.GetX() + 1, atPoint.GetY() + 1, maxWidth-2, rect.getH()-2)
+			SetAlpha 4 * GetAlpha()
+			SetBlend AlphaBlend
+		endif
 
-			'hovered
-			if isHovered()
-				SetBlend LightBlend
-				SetAlpha 0.25 * GetAlpha()
-				DrawRect(atPoint.GetX() + 1, atPoint.GetY() + 1, maxWidth-2, rect.getH()-2)
-				SetAlpha 4 * GetAlpha()
-				SetBlend AlphaBlend
-			endif
+		oldCol.SetRGBA()
+	End Method
 
-			GetFont().drawBlock(value + " [" + Self._id + "]", atPoint.GetX() + 5, atPoint.GetY() + 2 + 0.5*(rect.getH() - GetFont().getHeight(value)), maxWidth-2, rect.GetH(), null, valueColor)
 
-			oldCol.SetRGBA()
-		EndIf
-		If Not(Self._flags & GUI_OBJECT_DRAGGED) And TGUIListBase(parent)
-			TGUIListBase(parent).ResetViewPort()
-		EndIf
+	Method DrawValue()
+		'draw value
+		Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
+		GetFont().drawBlock(value + " [" + Self._id + "]", GetScreenX() + 5, GetScreenY() + 2 + 0.5*(rect.getH() - GetFont().getHeight(value)), maxWidth-2, rect.GetH(), null, valueColor)
+	End Method
+	
+
+	Method DrawContent()
+		DrawSimpleBackground()
+		DrawValue()
 	End Method
 End Type

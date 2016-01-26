@@ -370,8 +370,6 @@ Type TGUIChatEntry Extends TGUIListItem
 
 
 	Method DrawContent()
-		Self.getParent("tguilistbase").RestrictViewPort()
-
 		If Self.showtime <> Null Then SetAlpha Float(Self.showtime - Time.GetTimeGone())/500.0
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
@@ -392,7 +390,5 @@ Type TGUIChatEntry Extends TGUIListItem
 		GetBitmapFontManager().baseFont.drawBlock(GetValue(), getScreenX()+move.x, getScreenY()+move.y, maxWidth-move.X, maxHeight, Null, valueColor, 2, 1, 0.5)
 
 		SetAlpha 1.0
-
-		Self.getParent("tguilistbase").ResetViewPort()
 	End Method
 End Type

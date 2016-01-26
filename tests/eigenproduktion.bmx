@@ -474,6 +474,8 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 	'GUI -> LOGIC reaction
 	'set production concepts production company according to selection
 	Function onProductionConceptChangeProductionCompanyDropDown:int(triggerEvent:TeventBase)
+		if not GetInstance().currentProductionConcept then return False
+		
 		local dropdown:TGUIDropDown = TGUIDropDown(triggerEvent.GetSender())
 		if dropdown <> GetInstance().productionCompanySelect then return False
 
@@ -489,6 +491,8 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 
 	'LOGIC -> GUI reaction
 	Function onProductionConceptChangeProductionCompany:int(triggerEvent:TEventBase)
+		if not GetInstance().currentProductionConcept then return False
+
 		local productionConcept:TProductionConcept = TProductionConcept(triggerEvent.GetSender())
 		local company:TProductionCompanyBase = TProductionCompanyBase(triggerEvent.GetData().Get("productionCompany"))
 		if productionConcept <> GetInstance().currentProductionConcept then return False
@@ -526,6 +530,8 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 	'Triggered on change of the production concepts production focus.
 	'Adjusts the GUI sliders to represent the new values.
 	Function onProductionConceptChangeProductionFocus:int(triggerEvent:TEventBase)
+		if not GetInstance().currentProductionConcept then return False
+
 		local productionFocus:TProductionFocusBase = TProductionFocusBase(triggerEvent.GetSender())
 		if GetInstance().currentProductionConcept.productionFocus <> productionFocus then return False
 
@@ -568,8 +574,9 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 	
 
 	'helper, so slider limit could get adjusted by other objects too
-	Function _AdjustProductionConceptFocusSliderLimit(slider:TGUISlider)
-		if not slider then return
+	Function _AdjustProductionConceptFocusSliderLimit:int(slider:TGUISlider)
+		if not GetInstance().currentProductionConcept then return False
+		if not slider then return False
 		
 		'adjust slider limit dynamically
 		local focusIndex:int = slider.data.GetInt("focusIndex")
@@ -599,6 +606,7 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 	'Triggered on each change to a TGUISlider element. Additionally the
 	'function adjusts slider values on limited production focus values.
 	Function onProductionConceptChangeFocusSliders:int(triggerEvent:TEventBase)
+		if not GetInstance().currentProductionConcept then return False
 		local slider:TGUISlider = _GetEventFocusSlider(triggerEvent)
 		if not slider then return False
 
@@ -640,6 +648,8 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 
 	'GUI -> LOGIC reaction
 	Function onProductionConceptChangeCastSlotList:int(triggerEvent:TEventBase)
+		if not GetInstance().currentProductionConcept then return False
+
 		'local list:TGUICastSlotList = TGUICastSlotList( triggerEvent.GetSender() )
 		local item:TGUICastListItem = TGUICastListItem( triggerEvent.GetData().Get("item") )
 		local slot:int = triggerEvent.GetData().GetInt("slot")
@@ -785,6 +795,8 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 
 
 	Method UpdateCustomProduction()
+		if not GetInstance().currentProductionConcept then return
+
 		'gets refilled in gui-updates
 		hoveredGuiCastItem = null
 
@@ -948,9 +960,10 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		'calc height
 		local castAreaH:int = 215
 		local msgAreaH:int = 0
-		if not currentProductionConcept.IsCastComplete() then msgAreaH :+ msgH + msgPaddingY
-		if not currentProductionConcept.IsFocusPointsComplete() then msgAreaH :+ msgH + msgPaddingY
-
+		if currentProductionConcept
+			if not currentProductionConcept.IsCastComplete() then msgAreaH :+ msgH + msgPaddingY
+			if not currentProductionConcept.IsFocusPointsComplete() then msgAreaH :+ msgH + msgPaddingY
+		endif
 		outerH = outerSizeH + titleH + subTitleH + castAreaH + msgAreaH
 		
 		outer.SetXY(225, 15)

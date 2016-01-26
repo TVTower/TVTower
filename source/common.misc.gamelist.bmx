@@ -184,19 +184,4 @@ Type TGUIGameListItem Extends TGUIListItem
 			SetAlpha oldAlpha
 		EndIf
 	End Method
-	
-
-	Method Draw()
-		if not isDragged()
-			'this allows to use a list in a modal dialogue
-			local upperParent:TGUIObject = TGUIListBase.FindGUIListBaseParent(self)
-			if upperParent then upperParent.RestrictViewPort()
-
-			Super.Draw()
-
-			if upperParent then upperParent.ResetViewPort()
-		else
-			Super.Draw()
-		endif
-	End Method
 End Type

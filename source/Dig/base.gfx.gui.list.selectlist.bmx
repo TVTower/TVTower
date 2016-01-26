@@ -109,7 +109,7 @@ End Type
 
 Type TGUISelectListItem Extends TGUIListItem
     Method Create:TGUISelectListItem(position:TVec2D=null, dimension:TVec2D=null, value:String="")
-   		Super.Create(position, dimension, "")
+   		Super.Create(position, dimension, value)
 		'revert dragable
 		SetOption(GUI_OBJECT_DRAGABLE, False)
 
@@ -117,21 +117,19 @@ Type TGUISelectListItem Extends TGUIListItem
 	End Method
 
 
-	Method DrawBackground()
+	Method DrawSimpleSelectBackground()
 		local oldCol:TColor = new TColor.Get()
 
 		'available width is parentsDimension minus startingpoint
 		Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
 		If isHovered()
+			SetAlpha GetAlpha()*0.3
 			SetColor 250,210,100
 			DrawRect(getScreenX(), getScreenY(), maxWidth, getScreenHeight())
-			SetColor 255,255,255
 		ElseIf isSelected()
-			SetAlpha GetAlpha()*0.5
+			SetAlpha GetAlpha()*0.4
 			SetColor 250,210,100
 			DrawRect(getScreenX(), getScreenY(), maxWidth, getScreenHeight())
-			SetColor 255,255,255
-			SetAlpha GetAlpha()*2.0
 		EndIf
 
 		oldCol.SetRGBA()
@@ -140,27 +138,15 @@ Type TGUISelectListItem Extends TGUIListItem
 
 	Method DrawValue()
 		'draw value
-		GetFont().draw(value, Int(GetScreenX() + 5), Int(GetScreenY() + 2 + 0.5*(rect.getH()- GetFont().getHeight(Self.value))), valueColor)
+		Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
+		GetFont().drawBlock(value + " [" + Self._id + "]", GetScreenX() + 5, GetScreenY() + 2 + 0.5*(rect.getH() - GetFont().getHeight(value)), maxWidth-2, rect.GetH(), null, valueColor)
 	End Method
 
 
 	Method DrawContent()
+		DrawSimpleBackground()
+		DrawSimpleSelectBackground()
 		DrawValue()
-	End Method
-
-	
-	Method Draw()
-		if not isDragged()
-			'this allows to use a list in a modal dialogue
-			local upperParent:TGUIObject = TGUIListBase.FindGUIListBaseParent(self)
-			if upperParent then upperParent.RestrictViewPort()
-
-			Super.Draw()
-
-			if upperParent then upperParent.ResetViewPort()
-		else
-			Super.Draw()
-		endif
 	End Method
 End Type
 
