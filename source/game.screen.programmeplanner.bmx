@@ -140,11 +140,10 @@ Type TScreenHandler_ProgrammePlanner
 		'   -> so "onDrop" is not possible
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropProgrammePlanElement, "TGUIProgrammePlanElement") ]
 		'drag/drop ... from or to one of the two lists
-		'slot lists - so AddItem instead of AddedItem
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.removeItem", onRemoveItemFromSlotList, GuiListProgrammes) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.removeItem", onRemoveItemFromSlotList, GuiListAdvertisements) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.addItem", onAddItemToSlotList, GuiListProgrammes) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.addItem", onAddItemToSlotList, GuiListAdvertisements) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.removedItem", onRemoveItemFromSlotList, GuiListProgrammes) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.removedItem", onRemoveItemFromSlotList, GuiListAdvertisements) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.addedItem", onAddItemToSlotList, GuiListProgrammes) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.addedItem", onAddItemToSlotList, GuiListAdvertisements) ]
 		'so we can forbid adding to a "past"-slot
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.TryAddItem", onTryAddItemToSlotList, GuiListProgrammes) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.TryAddItem", onTryAddItemToSlotList, GuiListAdvertisements) ]
@@ -680,7 +679,6 @@ Type TScreenHandler_ProgrammePlanner
 		else
 			print "[ERROR] dragged item from unknown list - removing from programmeplan at "+slot+":00 - FAILED"
 		endif
-
 
 		return TRUE
 	End Function

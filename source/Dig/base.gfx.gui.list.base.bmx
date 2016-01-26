@@ -1041,36 +1041,6 @@ endrem
 	End Method
 
 
-	Method DrawSimpleBackground()
-		Local atPoint:TVec2D = GetScreenPos()
-
-		local oldCol:TColor = new TColor.Get()
-
-		Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
-
-		'self.GetScreenX() and self.GetScreenY() include parents coordinate
-		SetColor 0,0,0
-		DrawRect(atPoint.GetX(), atPoint.GetY(), maxWidth, rect.getH())
-		If Self._flags & GUI_OBJECT_DRAGGED
-			SetColor 125,0,125
-		Else
-			SetColor 125,125,125
-		EndIf
-		DrawRect(atPoint.GetX() + 1, atPoint.GetY() + 1, maxWidth-2, rect.getH()-2)
-
-		'hovered
-		if isHovered()
-			SetBlend LightBlend
-			SetAlpha 0.25 * GetAlpha()
-			DrawRect(atPoint.GetX() + 1, atPoint.GetY() + 1, maxWidth-2, rect.getH()-2)
-			SetAlpha 4 * GetAlpha()
-			SetBlend AlphaBlend
-		endif
-
-		oldCol.SetRGBA()
-	End Method
-
-
 	Method DrawValue()
 		'draw value
 		Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
@@ -1079,7 +1049,6 @@ endrem
 	
 
 	Method DrawContent()
-		DrawSimpleBackground()
 		DrawValue()
 	End Method
 End Type

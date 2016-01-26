@@ -613,6 +613,15 @@ Type TGUIobject
 	'Field _lastDrawTick:int			= 0
 	'Field _lastUpdateTick:int		= 0
 
+	'=== HOOKS ===
+	'allow custom functions to get hooked in
+	Field _customDraw:int(obj:TGUIObject)
+	Field _customDrawBackground:int(obj:TGUIObject)
+	Field _customDrawContent:int(obj:TGUIObject)
+	Field _customDrawChildren:int(obj:TGUIObject)
+	Field _customDrawOverlay:int(obj:TGUIObject)
+
+
 	Global ghostAlpha:Float			= 0.5
 	Global _focusedObject:TGUIObject= Null
 	Global _lastID:Int
@@ -1495,10 +1504,33 @@ Type TGUIobject
 
 
 	Method Draw()
-		DrawBackground()
-		DrawContent()
-		DrawChildren()
-		DrawOverlay()
+		if _customDraw
+			_customDraw(self)
+		else
+			if _customDrawBackground
+				_customDrawBackground(self)
+			else
+				DrawBackground()
+			endif
+
+			if _customDrawContent
+				_customDrawContent(self)
+			else
+				DrawContent()
+			endif
+			
+			if _customDrawOverlay
+				_customDrawChildren(self)
+			else
+				DrawChildren()
+			endif
+			
+			if _customDrawOverlay
+				_customDrawOverlay(self)
+			else
+				DrawOverlay()
+			endif
+		endif
 	End Method
 
 

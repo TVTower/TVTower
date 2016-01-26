@@ -62,28 +62,25 @@ Type TGUISelectList Extends TGUIListBase
 	'overrideable
 	Method RegisterListeners:Int()
 		'we want to know about clicks
-		AddEventListener(EventManager.registerListenerMethod("GUIListItem.onClick",	Self, "onClickOnEntry"))
+		AddEventListener(EventManager.registerListenerMethod("GUISelectListItem.onClick",	Self, "onClickOnEntry"))
 	End Method
 
 
 	Method onClickOnEntry:Int(triggerEvent:TEventBase)
-		Local entry:TGUIListItem = TGUIListItem( triggerEvent.getSender() )
-		'do not check non existing entries
-		If not entry Then Return False
-		'only react if self possesses the entry
-		If not entry or not Self.HasItem(entry) then return False
+		Local entry:TGUISelectListItem = TGUISelectListItem( triggerEvent.getSender() )
+		If Not entry Then Return False
 
 		SelectEntry(entry)
 	End Method
 
 
-	Method SelectEntry:Int(entry:TGUIListItem)
+	Method SelectEntry:Int(entry:TGUISelectListItem)
 		'only mark selected if we are owner of that entry
 		If Self.HasItem(entry)
 			'remove old entry
-			Self.DeselectEntry()
+			Self.deselectEntry()
 			Self.selectedEntry = entry
-			If TGUIListItem(Self.selectedEntry) Then TGUIListItem(Self.selectedEntry).SetSelected(True)
+			If TGUISelectListItem(Self.selectedEntry) Then TGUISelectListItem(Self.selectedEntry).SetSelected(True)
 
 			'inform others: we successfully selected an item
 			EventManager.triggerEvent( TEventSimple.Create( "GUISelectList.onSelectEntry", new TData.Add("entry", entry) , Self ) )
@@ -92,10 +89,10 @@ Type TGUISelectList Extends TGUIListBase
 	
 
 	Method DeselectEntry:Int()
-		If TGUIListItem(selectedEntry)
-			TGUIListItem(selectedEntry).SetSelected(False)
+		If TGUISelectListItem(selectedEntry)
+			TGUISelectListItem(selectedEntry).SetSelected(False)
+			selectedEntry = Null
 		EndIf
-		selectedEntry = Null
 	End Method
 
 
@@ -109,27 +106,45 @@ End Type
 
 Type TGUISelectListItem Extends TGUIListItem
     Method Create:TGUISelectListItem(position:TVec2D=null, dimension:TVec2D=null, value:String="")
-   		Super.Create(position, dimension, value)
-		'revert dragable
-		SetOption(GUI_OBJECT_DRAGABLE, False)
+		if not dimension then dimension = new TVec2D.Init(80,20)
+
+		'no "super.Create..." as we do not need events and dragable and...
+   		Super.CreateBase(position, dimension, "")
+
+		SetValue(value)
+
+		GUIManager.add(Self)
 
 		Return Self
 	End Method
 
 
-	Method DrawSimpleSelectBackground()
+	'override onClick to emit a special event
+	Method OnClick:int(triggerEvent:TEventBase)
+		Super.OnClick(triggerEvent)
+		'inform others that a selectlistitem was clicked
+		'this makes the "selectlistitem-clicked"-event filterable even
+		'if the itemclass gets extended (compared to the general approach
+		'of "guiobject.onclick")
+		EventManager.triggerEvent(TEventSimple.Create("GUISelectListItem.onClick", null, Self, triggerEvent.GetReceiver()) )
+	End Method
+
+
+	Method DrawBackground()
 		local oldCol:TColor = new TColor.Get()
 
 		'available width is parentsDimension minus startingpoint
 		Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
 		If isHovered()
-			SetAlpha GetAlpha()*0.3
 			SetColor 250,210,100
 			DrawRect(getScreenX(), getScreenY(), maxWidth, getScreenHeight())
+			SetColor 255,255,255
 		ElseIf isSelected()
-			SetAlpha GetAlpha()*0.4
+			SetAlpha GetAlpha()*0.5
 			SetColor 250,210,100
 			DrawRect(getScreenX(), getScreenY(), maxWidth, getScreenHeight())
+			SetColor 255,255,255
+			SetAlpha GetAlpha()*2.0
 		EndIf
 
 		oldCol.SetRGBA()
@@ -138,55 +153,24 @@ Type TGUISelectListItem Extends TGUIListItem
 
 	Method DrawValue()
 		'draw value
-		Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
-		GetFont().drawBlock(value + " [" + Self._id + "]", GetScreenX() + 5, GetScreenY() + 2 + 0.5*(rect.getH() - GetFont().getHeight(value)), maxWidth-2, rect.GetH(), null, valueColor)
+		GetFont().draw(value, Int(GetScreenX() + 5), Int(GetScreenY() + 2 + 0.5*(rect.getH()- GetFont().getHeight(Self.value))), valueColor)
 	End Method
 
 
 	Method DrawContent()
-		DrawSimpleBackground()
-		DrawSimpleSelectBackground()
 		DrawValue()
 	End Method
-End Type
 
-
-
-
-Type TGUICustomSelectListItem Extends TGUISelectListItem
-	'allow custom functions to get hooked in
-	Field _customDraw:int(obj:TGUIObject)
-	Field _customDrawValue:int(obj:TGUIObject)
-	Field _customDrawBackground:int(obj:TGUIObject)
-
-
-    Method Create:TGUICustomSelectListItem(position:TVec2D=null, dimension:TVec2D=null, value:String="")
-   		Super.Create(position, dimension, value)
-		Return Self
-	End Method
-
-
-	Method DrawBackground()
-		if _customDrawBackground
-			_customDrawBackground(self)
-		else
-			Super.DrawBackground()
-		endif
-	End Method
-
-
-	Method DrawValue()
-		if _customDrawValue
-			_customDrawValue(self)
-		else
-			Super.DrawValue()
-		endif
-	End Method
-
-
+	
 	Method Draw()
-		if _customDraw
-			_customDraw(self)
+		if not isDragged()
+			'this allows to use a list in a modal dialogue
+			local upperParent:TGUIObject = TGUIListBase.FindGUIListBaseParent(self)
+			if upperParent then upperParent.RestrictViewPort()
+
+			Super.Draw()
+
+			if upperParent then upperParent.ResetViewPort()
 		else
 			Super.Draw()
 		endif
