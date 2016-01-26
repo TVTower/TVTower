@@ -832,8 +832,9 @@ endrem
 			Else
 				backgroundColor.setRGBA()
 			EndIf
-
-			DrawRect(rect.GetX(), rect.GetY(), rect.GetW(), rect.GetH())
+			if GetAlpha() > 0
+				DrawRect(rect.GetX(), rect.GetY(), rect.GetW(), rect.GetH())
+			endif
 
 			oldCol.SetRGBA()
 		EndIf

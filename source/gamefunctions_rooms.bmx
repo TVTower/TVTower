@@ -507,7 +507,7 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		'=== CREATE ELEMENTS ===
 		if not GuiListSuitCase
-			GuiListSuitcase	= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200, 80), "archive")
+			GuiListSuitcase	= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(180, GetSpriteFromRegistry("gfx_movie_undefined").area.GetH()), "archive")
 			GuiListSuitcase.guiEntriesPanel.minSize.SetXY(200,80)
 			GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			GuiListSuitcase.acceptType = TGUIProgrammeLicenceSlotList.acceptAll
@@ -1034,10 +1034,12 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		'=== create gui elements if not done yet
 		if not GuiListMoviesGood
-			GuiListMoviesGood = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,50), new TVec2D.Init(220,80), "movieagency")
-			GuiListMoviesCheap = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,148), new TVec2D.Init(220,80), "movieagency")
-			GuiListSeries = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,246), new TVec2D.Init(220,80), "movieagency")
-			GuiListSuitcase = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200,80), "movieagency")
+			local videoCase:TSprite = GetSpriteFromRegistry("gfx_movie_undefined")
+
+			GuiListMoviesGood = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,50), new TVec2D.Init(200, videoCase.area.GetH()), "movieagency")
+			GuiListMoviesCheap = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,148), new TVec2D.Init(200, videoCase.area.GetH()), "movieagency")
+			GuiListSeries = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,246), new TVec2D.Init(200, videoCase.area.GetH()), "movieagency")
+			GuiListSuitcase = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(180, videoCase.area.GetH()), "movieagency")
 
 			GuiListMoviesGood.guiEntriesPanel.minSize.SetXY(200,80)
 			GuiListMoviesCheap.guiEntriesPanel.minSize.SetXY(200,80)
@@ -1058,8 +1060,6 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			GuiListMoviesCheap.SetItemLimit(listMoviesCheap.length)
 			GuiListSeries.SetItemLimit(listSeries.length)
 			GuiListSuitcase.SetItemLimit(GameRules.maxProgrammeLicencesInSuitcase)
-
-			local videoCase:TSprite = GetSpriteFromRegistry("gfx_movie_undefined")
 
 			GuiListMoviesGood.SetSlotMinDimension(videoCase.area.GetW(), videoCase.area.GetH())
 			GuiListMoviesCheap.SetSlotMinDimension(videoCase.area.GetW(), videoCase.area.GetH())
@@ -3164,13 +3164,19 @@ Type RoomHandler_AdAgency extends TRoomHandler
 				GuiListNormal[listIndex].setZindex(i)
 			Next
 
-			GuiListSuitcase	= new TGUIAdContractSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(215,80), "adagency")
+			GuiListSuitcase	= new TGUIAdContractSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(215, GetSpriteFromRegistry("gfx_contracts_0_dragged").area.GetH()), "adagency")
 			GuiListSuitcase.SetAutofillSlots(true)
 
-			GuiListCheap = new TGUIAdContractSlotList.Create(new TVec2D.Init(70, 220), new TVec2D.Init(10 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
+			GuiListCheap = new TGUIAdContractSlotList.Create(new TVec2D.Init(70, 220), new TVec2D.Init(5 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
 			'GuiListCheap = new TGUIAdContractSlotList.Create(new TVec2D.Init(70, 200), new TVec2D.Init(10 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
 			'GuiListCheap.setEntriesBlockDisplacement(70,0)
 			'GuiListCheap.SetEntryDisplacement( -2*GuiListNormal[0]._slotMinDimension.x, 5)
+
+			GuiListCheap.Move(0, -20)
+			GuiListCheap.Resize(-1, GuiListCheap.rect.GetH() + 20) 'for 4x displacement
+			GuiListcheap.SetEntriesBlockDisplacement(0, 20) 'displace by 20
+
+
 
 			GuiListCheap.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
@@ -4299,7 +4305,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 			local sprite:TSprite = GetSpriteFromRegistry("gfx_scripts_0")
 			local spriteSuitcase:TSprite = GetSpriteFromRegistry("gfx_scripts_0_dragged")
 			for local i:int = 0 to GuiListNormal.length-1
-				GuiListNormal[i] = new TGUIScriptSlotList.Create(new TVec2D.Init(233 + (GuiListNormal.length-1 - i)*22, 143 + i*2), new TVec2D.Init(17, 52), "scriptagency")
+				GuiListNormal[i] = new TGUIScriptSlotList.Create(new TVec2D.Init(233 + (GuiListNormal.length-1 - i)*22, 143 + i*2), new TVec2D.Init(17, sprite.area.GetH()), "scriptagency")
 				GuiListNormal[i].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 				GuiListNormal[i].SetItemLimit( scriptsNormalAmount / GuiListNormal.length  )
 				GuiListNormal[i].Resize(sprite.area.GetW() * (scriptsNormalAmount / GuiListNormal.length), sprite.area.GetH() )
@@ -4308,11 +4314,13 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 				GuiListNormal[i].setZindex(i)
 			Next
 
-			GuiListSuitcase	= new TGUIScriptSlotlist.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200,80), "scriptagency")
+			GuiListSuitcase	= new TGUIScriptSlotlist.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(150, spriteSuitcase.area.GetH()), "scriptagency")
 			GuiListSuitcase.SetAutofillSlots(true)
 
-			GuiListNormal2 = new TGUIScriptSlotlist.Create(new TVec2D.Init(188, 240), new TVec2D.Init(10 + sprite.area.GetW()*scriptsNormal2Amount, sprite.area.GetH()), "scriptagency")
-			GuiListNormal2.setEntriesBlockDisplacement(18, 11)
+			'for more than 1 entry
+			'GuiListNormal2 = new TGUIScriptSlotlist.Create(new TVec2D.Init(188, 240), new TVec2D.Init(10 + sprite.area.GetW()*scriptsNormal2Amount, sprite.area.GetH()), "scriptagency")
+			'GuiListNormal2.setEntriesBlockDisplacement(18, 11)
+			GuiListNormal2 = new TGUIScriptSlotlist.Create(new TVec2D.Init(206, 251), new TVec2D.Init(10 + sprite.area.GetW()*scriptsNormal2Amount, sprite.area.GetH()), "scriptagency")
 
 			GuiListNormal2.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )

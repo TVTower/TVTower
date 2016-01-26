@@ -582,7 +582,7 @@ Type TGUIobject
 	Field data:TData = new TData
 	Field scale:Float = 1.0
 	Field alpha:Float = 1.0
-	'where to attach the object
+	'where to attach the object [unused]
 	Field handlePosition:TVec2D	= new TVec2D.Init(0, 0)
 	'where to attach the content within the object
 	Field contentPosition:TVec2D = new TVec2D.Init(0.5, 0.5)
@@ -1167,6 +1167,16 @@ Type TGUIobject
 	Method Resize(w:Float = 0, h:Float = 0)
 		If w > 0 Then rect.dimension.setX(w)
 		If h > 0 Then rect.dimension.setY(h)
+	End Method
+
+
+	Method SetPosition(x:Float, y:Float)
+		rect.position.SetXY(x, y)
+	End Method
+
+
+	Method Move(dx:Float, dy:Float)
+		rect.position.AddXY(dx, dy)
 	End Method
 
 
