@@ -98,16 +98,16 @@ Type TDatabaseLoader
 
 	Method LoadDir(dbDirectory:string)
 		'build file list of xml files in the given directory
-		local dirTree:TDirectoryTree = new TDirectoryTree.Init(dbDirectory, ["xml"], null, ["*"])
+		local dirTree:TDirectoryTree = new TDirectoryTree.SimpleInit()
+		dirTree.SetIncludeFileEndings(["xml"])
 		'exclude some files as we add it by default to load it
 		'as the first files / specific order (as they do not require
 		'others - this avoids "extending X"-log-entries)
-		dirTree.AddIncludeFileNames(["*"])
-		dirTree.AddExcludeFileNames(["database_people", "database_ads", "database_programmes", "database_news"])
+		dirTree.SetExcludeFileNames(["database_people", "database_ads", "database_programmes", "database_news"])
 
 		'add the rest of available files in the given dir
 		'(this also sorts the files)
-		dirTree.ScanDir()
+		dirTree.ScanDir(dbDirectory)
 
 		'add that files at the top
 		'(in reversed order as each is added at top of the others!)
