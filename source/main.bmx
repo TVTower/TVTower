@@ -1666,6 +1666,7 @@ Type TScreen_MainMenu Extends TGameScreen
 
 	Method Create:TScreen_MainMenu(name:String)
 		Super.Create(name)
+		SetGroupName("ExGame", "MainMenu")
 
 		Self.SetScreenChangeEffects(Null,Null) 'menus do not get changers
 
@@ -1947,6 +1948,7 @@ Type TScreen_GameSettings Extends TGameScreen
 
 	Method Create:TScreen_GameSettings(name:String)
 		Super.Create(name)
+		SetGroupName("ExGame", "GameSettings")
 
 		'===== CREATE AND SETUP GUI =====
 		guiSettingsWindow = New TGUIGameWindow.Create(settingsArea.position, settingsArea.dimension, name)
@@ -2425,6 +2427,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 
 	Method Create:TScreen_NetworkLobby(name:String)
 		Super.Create(name)
+		SetGroupName("ExGame", "NetworkLobby")
 
 		'create and setup GUI objects
 		Local guiButtonsWindow:TGUIGameWindow
@@ -2662,6 +2665,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 	Method Create:TScreen_PrepareGameStart(name:String)
 		Super.Create(name)
+		SetGroupName("ExGame", "PrepareGameStart")
 
 		messageWindow = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D.Init(400,250), name)
 		'messageWindow.DarkenedArea = new TRectangle.Init(0,0,800,385)
@@ -4132,9 +4136,8 @@ Function DrawMenuBackground(darkened:Int=False)
 
 
 	'draw an (animated) logo
-	Select GetGame().gamestate
-		Case TGame.STATE_NETWORKLOBBY, TGame.STATE_MAINMENU
-
+	Select ScreenCollection.GetCurrentScreen().name.toUpper()
+		Case "NetworkLobby".toUpper(), "MainMenu".toUpper()
 			Global logoAnimStart:Int = 0
 			Global logoAnimTime:Int = 1500
 			Global logoScale:Float = 0.0
@@ -4151,7 +4154,7 @@ Function DrawMenuBackground(darkened:Int=False)
 				logo.Draw( GetGraphicsManager().GetWidth()/2, 150, -1, ALIGN_CENTER_CENTER, logoScale)
 				SetAlpha oldAlpha
 			EndIf
-	EndSelect
+	End Select
 
 	If GetGame().gamestate = TGame.STATE_MAINMENU
 		SetColor 255,255,255

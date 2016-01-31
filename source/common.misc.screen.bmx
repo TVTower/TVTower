@@ -2,6 +2,7 @@ SuperStrict
 Import "basefunctions.bmx"
 Import "Dig/base.util.event.bmx"
 Import "Dig/base.util.color.bmx"
+Import "Dig/base.util.interpolation.bmx"
 
 
 
@@ -94,11 +95,13 @@ Type TScreenCollection
 
 	Method _SetCurrentScreen:int(screen:TScreen)
 		if screen <> currentScreen
-			if screen then screen.Enter(currentScreen)
+			if screen
+				screen.Start()
+				screen.Enter(currentScreen)
+			EndIf
 			currentScreen = screen
 
 			'if not currentScreen then currentScreen = baseScreen
-			if currentScreen then currentScreen.Start()
 		endif
 		return TRUE
 	End Method
@@ -142,11 +145,14 @@ Type TScreenCollection
 		EventManager.triggerEvent(TEventSimple.Create("screen.onDraw", null, GetCurrentScreen()))
 
 		'handle screen change effects (LEAVE) for current screen
-		if targetScreen
-			if GetCurrentScreen()._leaveScreenEffect then GetCurrentScreen()._leaveScreenEffect.Draw(tweenValue)
+		'keep drawing the last state until the screen is changed
+		if targetScreen and targetScreen <> GetCurrentScreen()
+			if GetCurrentScreen()._leaveScreenEffect
+				GetCurrentScreen()._leaveScreenEffect.Draw(tweenValue)
+			endif
 		'handle screen change effects (ENTER) for current screen
-		else
-			if GetCurrentScreen()._enterScreenEffect then GetCurrentScreen()._enterScreenEffect.Draw(tweenValue)
+		else if not GetCurrentScreen().FinishedEnterEffect()
+			GetCurrentScreen()._enterScreenEffect.Draw(tweenValue)
 		endif
 
 		'draw things on top of everything - eg an ingame interface
@@ -155,22 +161,20 @@ Type TScreenCollection
 
 
 	Method UpdateCurrent:int(deltaTime:float)
-		if not GetCurrentScreen() then return FALSE
-
 		'handle screen change (effects finished)
 		if targetScreen and GetCurrentScreen() and GetCurrentScreen().FinishedLeaveEffect()
 			_SetCurrentScreen(targetScreen)
 			targetScreen = null
 		endif
 
+		if not GetCurrentScreen() then return FALSE
+
 		'handle screen change effects (LEAVE) for current screen
 		if targetScreen and not GetCurrentScreen().FinishedLeaveEffect()
 			GetCurrentScreen()._leaveScreenEffect.Update(deltaTime)
 		'handle screen change effects (ENTER) for current screen
-		else
-			if not GetCurrentScreen().FinishedEnterEffect()
-				GetCurrentScreen()._enterScreenEffect.Update(deltaTime)
-			endif
+		else if not GetCurrentScreen().FinishedEnterEffect()
+			GetCurrentScreen()._enterScreenEffect.Update(deltaTime)
 		endif
 
 		GetCurrentScreen().update(deltaTime)
@@ -186,13 +190,16 @@ Type TScreenCollection
 	End Function
 End Type
 Global ScreenCollection:TScreenCollection = TScreenCollection.Create(null)
-
+ScreenCollection.SetScreenDimension(800,600)
 
 
 'base screen object
 Type TScreen
-    Field name:string						'identifier (in screens map)
-	Field subScreens:TMap = CreateMap()		'containing all screens this screen controlls
+    'identifier (in screens map)
+    Field name:string = "default"
+    Field group:string = ""
+	'containing all screens this screen controlls
+	Field subScreens:TMap = CreateMap()
 	Field parentScreen:TScreen = null
 	Field _enterScreenEffect:TScreenChangeEffect = null
 	Field _leaveScreenEffect:TScreenChangeEffect = null
@@ -215,6 +222,17 @@ Type TScreen
 
 	Method SetName(name:string)
 		self.name = name
+	End Method
+
+
+	Method SetGroup(group:string)
+		self.group = group
+	End Method
+
+
+	Method SetGroupName(group:string, name:string)
+		SetGroup(group)
+		SetName(name)
 	End Method
 
 
@@ -264,16 +282,16 @@ Type TScreen
 	End Method
 
 
-	Method GetSubScreen:TScreen(name:string)
-		name = lower(name)
+	Method GetSubScreen:TScreen(screenName:string)
+		screenName = lower(screenName)
 		'checking my subs
 		For local key:string = eachin subScreens.Keys()
-			if lower(key) = name then return TScreen(subScreens.ValueForKey(key))
+			if lower(key) = screenName then return TScreen(subScreens.ValueForKey(key))
 		Next
 		'not found? - checking the subs of my subs
 		For local screen:TScreen = eachin subScreens.Values()
 			if not screen then continue
-			local res:TScreen = screen.GetSubScreen(name)
+			local res:TScreen = screen.GetSubScreen(screenName)
 			if res then return res
 		Next
 		return null
@@ -297,7 +315,7 @@ Type TScreen
 	End Method
 
 
-	'gets called right after entering that screen
+	'gets called right before entering that screen
 	'so use this to init certain values or elements on that screen
 	Method Start:int()
 	End Method
@@ -326,11 +344,14 @@ End Type
 Type TScreenChangeEffect
 	Field _finished:int       = FALSE
 	Field _duration:int       = 0		'time the effect runs (in milliseconds)
+	Field _timeLeft:int       = 0
 	Field _name:string        = "TScreenChangeEffect"
 	Field _direction:int      = 0
 	Field _progress:float     = 0.0		'0-1.0
-	Field _progressMax:float  = 1.0		'0-1.0
+	'Field _progressMax:float  = 1.0		'0-1.0
 	Field _progressOld:float  = 0.0		'for tweening
+	Field _waitAtBegin:int    = 0
+	Field _waitAtEnd:int    = 0
 	Field _area:TRectangle    = null
 	Field ID:int = 0
 	const DIRECTION_CLOSE:int = 0
@@ -350,7 +371,7 @@ Type TScreenChangeEffect
 
 	'amount a value has to change per millisecond
 	Method GetSpeed:float()
-		return 1000.0/_duration
+		return 1000.0/ (_duration - _waitAtBegin - _waitAtEnd)
 	End Method
 
 
@@ -371,8 +392,28 @@ Type TScreenChangeEffect
 	End Method
 
 
+	Method SetDuration(milliseconds:int=250)
+		'incorporate potentially gone time
+		local timeGone:int = _duration - _timeLeft
+		_duration = milliseconds - timeGone
+
+		_timeLeft = _duration
+	End Method
+
+
+	Method SetWaitAtBegin(milliseconds:int=250)
+		_waitAtBegin = milliseconds
+	End Method
+
+
+	Method SetWaitAtEnd(milliseconds:int=250)
+		_waitAtEnd = milliseconds
+	End Method
+
+
 	Method Reset()
 		_finished = FALSE
+		_timeLeft = _duration
 		_progress = 0.0
 		_progressOld = 0.0
 	End Method
@@ -393,8 +434,12 @@ Type TScreenChangeEffect
 		_progressOld = _progress 'for tweening
 		_progress :+ deltaTime * GetSpeed()
 
+		_timeLeft :- int(deltaTime*1000)
 
-		if _progress > _progressMax then SetFinished(TRUE)
+		'doing this finishes without guarantee of having it rendered
+		'in that moment!
+		'if _progress > _progressMax then SetFinished(TRUE)
+		if _timeLeft < 0 then SetFinished(TRUE)
 	End Method
 End Type
 
@@ -406,10 +451,10 @@ Type TScreenChangeEffect_SimpleFader extends TScreenChangeEffect
 
 	Method Create:TScreenChangeEffect_SimpleFader(direction:int=0, area:TRectangle=null)
 		_direction = direction
-		_duration  = 250 '250 millisecs time
-		_area      = null
+		SetDuration(350)
+		_area = null
 		if area then _area = area.copy()
-		_name      = "TScreenChangeEffect_SimpleFader"
+		_name = "TScreenChangeEffect_SimpleFader"
 		return self
 	End Method
 
@@ -420,7 +465,6 @@ Type TScreenChangeEffect_SimpleFader extends TScreenChangeEffect
 		if _direction = DIRECTION_OPEN then tweenProgress = Max(0, 1.0 - tweenProgress)
 
 		SetAlpha tweenProgress
-
 		_color.SetRGB()
 		DrawRect(GetArea().GetX(), GetArea().GetY(), GetArea().GetW(), GetArea().GetH())
 		oldCol.SetRGBA()
@@ -434,22 +478,35 @@ Type TScreenChangeEffect_ClosingRects extends TScreenChangeEffect_SimpleFader
 	Method Create:TScreenChangeEffect_ClosingRects(direction:int=0, area:TRectangle=null)
 		Super.Create(direction, area)
 		_name = "TScreenChangeEffect_ClosingRects"
-		_duration = 250
-		_progressMax = 1.2 'so it is fullblack a bit longer
+		SetDuration(600)
+		'so it is full black a bit longer
+		if direction = DIRECTION_CLOSE
+			SetWaitAtBegin(0)
+			SetWaitAtEnd(200)
+		else
+			SetWaitAtBegin(200)
+			SetWaitAtEnd(0) 'so it is full black a bit longer
+		endif
 		return self
 	End Method
 
 
 	Method Draw:int(tweenValue:Float=1.0)
 		local oldCol:TColor = new TColor.Get()
-		local tweenProgress:float = MathHelper.Tween(_progressOld, _progress, tweenValue)
-		if _direction = DIRECTION_OPEN then tweenProgress = Max(0, 1.0 - tweenProgress)
+		'use a non-linear tween
+		local currentProgress:float = MathHelper.Clamp(MathHelper.Tween(_progressOld, _progress, tweenValue), 0,1)
+		if _direction = DIRECTION_OPEN
+			currentProgress = 1.0 - currentProgress
+		endif
+
+		local alphaProgress:Float = currentProgress
+		local tweenProgress:Float = MathHelper.Clamp(TInterpolation.RegularInOut(0, 1, currentProgress, 1.0))
 
 		local rectsWidth:float  = tweenProgress * (GetArea().GetW() / 2)
 		local rectsHeight:float = tweenProgress * (GetArea().GetH() / 2)
 
 		_color.SetRGB()
-		SetAlpha tweenProgress
+		SetAlpha alphaProgress
 
 		DrawRect(GetArea().GetX(), GetArea().GetY(), rectsWidth, rectsHeight)
 		DrawRect(GetArea().GetX(), GetArea().GetY() + GetArea().GetH() - rectsHeight, rectsWidth, rectsHeight)

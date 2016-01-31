@@ -51,8 +51,11 @@ Type TGameScreen Extends TScreen
 
 	Method Create:TGameScreen(name:String)
 		Super.Create(name)
-		_enterScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_OPEN)
-		_leaveScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_CLOSE)
+		SetGroup("Game")
+
+		'no default screen change effect
+		'_enterScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_OPEN)
+		'_leaveScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_CLOSE)
 
 		EventManager.registerListenerMethod("Language.onSetLanguage", Self, "onSetLanguage")
 		Return Self
@@ -109,6 +112,7 @@ Type TInGameScreen Extends TScreen
 
 	Method Create:TInGameScreen(name:String)
 		Super.Create(name)
+		SetGroup("InGame")
 		'limit content area
 		_contentArea = New TRectangle.Init(0, 0, 800, 385)
 		Return Self
@@ -146,8 +150,12 @@ Type TInGameScreen Extends TScreen
 
 	'override to react to different screentypes
 	Method Enter:Int(fromScreen:TScreen=Null)
-		Local screenName:String = ""
-		If fromScreen Then screenName = fromScreen.ToString().toUpper()
+		Local fromScreenGroup:String = ""
+		Local fromScreenName:String = ""
+		If fromScreen
+			fromScreenGroup = fromScreen.group.toUpper()
+			fromScreenName = fromScreen.name.toUpper()
+		EndIf
 
 		'no change effect when going to a subscreen or parent (aka screen has parent)
 		If Not HasScreenChangeEffect(fromScreen)
@@ -155,28 +163,69 @@ Type TInGameScreen Extends TScreen
 			Return True
 		EndIf
 
-		Select screenName
-			Case "TInGameScreen".toUpper()
-				_enterScreenEffect = New TScreenChangeEffect_ClosingRects.Create(TScreenChangeEffect.DIRECTION_OPEN, _contentArea)
+
+		'print "Enter: "+fromScreenGroup+"::"+fromScreenName+" -> "+group+"::"+name
+		Select fromScreenGroup
+			Case "ExGame"
+				'no effect when switching ExGame=>ExGame
+				'ExGame::* => ExGame::*
+				If group.toUpper() = "ExGame".toUpper()
+					'
+				'else fade into that screen
+				'ExGame::* => *::*
+				Else
+					_enterScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_OPEN)
+				EndIf
+			Case "InGame".toUpper()
+				'fade in when coming from a previous game
+				'InGame::* => ExGame::*
+				If group.toUpper() = "ExGame".toUpper()
+					_enterScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_OPEN)
+				Else
+					_enterScreenEffect = New TScreenChangeEffect_ClosingRects.Create(TScreenChangeEffect.DIRECTION_OPEN, _contentArea)
+				EndIf
 			Default
+				print "-> FADE default"
 				_enterScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_OPEN)
 		End Select
 	End Method
 
 
 	Method Leave:Int(toScreen:TScreen=Null)
-		Local screenName:String = ""
-		If toScreen Then screenName = toScreen.ToString().toUpper()
-
+		Local toScreenGroup:String = ""
+		Local toScreenName:String = ""
+		If toScreen
+			toScreenGroup = toScreen.group.toUpper()
+			toScreenName = toScreen.name.toUpper()
+		EndIf
+		
 		'no change effect when leaving a subscreen
 		If Not HasScreenChangeEffect(toScreen)
 			_leaveScreenEffect = Null
 			Return True
 		EndIf
 
-		Select screenName
-			Case "TInGameScreen".toUpper()
-				_leaveScreenEffect = New TScreenChangeEffect_ClosingRects.Create(TScreenChangeEffect.DIRECTION_CLOSE, _contentArea)
+		'print "Leave: "+group+"::"+name + " -> " + toScreenGroup+"::"+toScreenName
+		Select toScreenGroup
+			Case "ExGame"
+				'no effect when switching ExGame=>ExGame
+				'ExGame::* => ExGame::*
+				If group.toUpper() = "ExGame".toUpper()
+					'
+				'else fade out of that screen
+				'*::* => ExGame::*
+				Else
+					_leaveScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_CLOSE)
+				EndIf
+			Case "InGame".toUpper()
+				'fade out when starting the game
+				'ExGame::* => InGame::*
+				If group.toUpper() = "ExGame".toUpper()
+					_leaveScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_CLOSE)
+				Else
+					'InGame::World => InGame::*
+					_leaveScreenEffect = New TScreenChangeEffect_ClosingRects.Create(TScreenChangeEffect.DIRECTION_CLOSE, _contentArea)
+				EndIf
 			Default
 				_leaveScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_CLOSE)
 		End Select
@@ -253,6 +302,9 @@ Type TInGameScreen_World Extends TInGameScreen
 
 	Method Create:TInGameScreen_World(name:String)
 		Super.Create(name)
+		SetGroup("InGame")
+		SetName(name)
+
 		instance = Self
 
 		Initialize()
@@ -274,7 +326,7 @@ Type TInGameScreen_World Extends TInGameScreen
 
 
 	Method ToString:String()
-		Return "TInGameScreen_World: name="+name
+		Return "TInGameScreen_World: group="+group+" name="+name
 	End Method
 
 
@@ -340,6 +392,8 @@ Type TInGameScreen_Room Extends TInGameScreen
 
 	Method Create:TInGameScreen_Room(name:String)
 		Super.Create(name)
+		SetGroup("InGame")
+		SetName(name)
 
 		'register events
 		Initialize()
@@ -370,7 +424,7 @@ Type TInGameScreen_Room Extends TInGameScreen
 			rooms :+ room.name
 		Next
 
-		Return "TInGameScreen_Room: name="+ name +" rooms="+rooms
+		Return "TInGameScreen_Room: group="+group+" name="+ name +" rooms="+rooms
 	End Method
 
 
