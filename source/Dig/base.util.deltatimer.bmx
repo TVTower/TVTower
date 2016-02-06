@@ -100,13 +100,23 @@ Type TDeltaTimer
 	End Function
 
 
-	Method Init:TDeltaTimer(UpdatesPerSecond:int = 60, RendersPerSecond:int = -1)
-		_updateRate = 1.0 / UpdatesPerSecond	'UPS
-		_renderRate = 1.0 / RendersPerSecond	'FPS
+	Method Init:TDeltaTimer(updatesPerSecond:int = 60, rendersPerSecond:int = -1)
+		SetUpdateRate(updatesPerSecond) 'UPS
+		SetRenderRate(rendersPerSecond) 'FPS
 		Reset()
 		return self
 	End Method
 
+
+	Method SetRenderRate(rendersPerSecond:int = -1)
+		_renderRate = 1.0 / rendersPerSecond	'FPS
+	End Method
+
+
+	Method SetUpdateRate(updatesPerSecond:int = 60)
+		_updateRate = 1.0 / updatesPerSecond
+	End Method
+	
 
 	Method Reset()
 		_loopBeginTime = Time.GetTimeGone()

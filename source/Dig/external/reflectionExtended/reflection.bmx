@@ -50,6 +50,10 @@ ModuleInfo "License: zlib/libpng"
 ModuleInfo "Copyright: Blitz Research Ltd"
 ModuleInfo "Modserver: BRL"
 
+ModuleInfo "History: 1.19 [grable]"
+ModuleInfo "History: Fixed TTypeId.PointerType() recursing over root PointerTypeId"
+ModuleInfo "History: 1.18 [grable]"
+ModuleInfo "History: Added check for NullTypeId in TypeTagForId, also improved error message"
 ModuleInfo "History: 1.17 [grable]"
 ModuleInfo "History: Fixed missing ElementType for ArrayTypeId"
 ModuleInfo "History: 1.16 [gwron]"
@@ -259,7 +263,7 @@ Function _Assign( p:Byte Ptr,typeId:TTypeId,value:Object )
 	End Select
 End Function
 
-Function _Call:Object( callableP:Byte Ptr, retTypeId:TTypeId, obj:Object=null, args:Object[], argtypes:TTypeId[])
+Function _Call:Object( callableP:Byte Ptr, retTypeId:TTypeId, obj:Object=Null, args:Object[], argtypes:TTypeId[])
 	Local q:Int[10], sp:Byte Ptr = q
 
 	If obj 'method call of an instance
@@ -289,7 +293,7 @@ Function _Call:Object( callableP:Byte Ptr, retTypeId:TTypeId, obj:Object=null, a
 			Return String.FromDouble( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
 		Default
 			If retTypeId.ExtendsType(PointerTypeId) Or retTypeId.ExtendsType(FunctionTypeId) Then
-				If not obj 'function call
+				If Not obj 'function call
 					Local f:Int(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
 					Return String.FromInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
 				Else 'method call
@@ -333,8 +337,9 @@ Function TypeTagForId$( id:TTypeId )
 		Case FloatTypeId Return "f"
 		Case DoubleTypeId Return "d"
 		Case StringTypeId Return "$"
+		Case NullTypeId Return "Null"
 	End Select
-	Throw "ERROR"
+	Throw "~q" + id.Name() + "~q was unexpected at this time"
 End Function
 
 Function TypeIdForTag:TTypeId( ty$ )
@@ -516,7 +521,7 @@ bbdoc: Primitive null type
 End Rem
 Global NullTypeId:TTypeId=New TTypeId.Init( "Null",4 )
 
-' finish setup of array type (set default for zero-sized or null-arrays)
+' finish setup of array type
 ArrayTypeId._ElementType = NullTypeId
 
 Rem
@@ -729,7 +734,7 @@ Type TField Extends TMember
 	bbdoc: Invoke function pointer field
 	End Rem
 	Method Invoke:Object( obj:Object, args:Object[] = Null)
-		Return _Call( GetPointer(obj), _typeId.ReturnType(), null, args, _typeId.ArgTypes())
+		Return _Call( GetPointer(obj), _typeId.ReturnType(), Null, args, _typeId.ArgTypes())
 	EndMethod	
 	
 	Field _index
@@ -838,7 +843,7 @@ Type TFunction Extends TMember
 	bbdoc: Invoke type function
 	endrem	
 	Method Invoke:Object( obj:Object, args:Object[] = Null)
-		Return _Call( FunctionPtr(obj), ReturnType(), null, args, ArgTypes())
+		Return _Call( FunctionPtr(obj), ReturnType(), Null, args, ArgTypes())
 	End Method
 	
 	Field _selfTypeId:TTypeId, _fptr:Byte Ptr, _index:Int
@@ -908,10 +913,11 @@ Type TTypeId
 			_pointerType._elementType = Self
 			If _super Then
 				_pointerType._super = _super.PointerType()
+				_pointerType._TypeTag = TypeTagForId(_pointerType).ToCString()
 			Else
 				_pointerType._super = PointerTypeId
+				_pointerType._TypeTag = "*".ToCString()
 			EndIf
-			_pointerType._TypeTag = TypeTagForId(_pointerType).ToCString()
 		EndIf
 		Return _pointerType
 	End Method
@@ -1428,4 +1434,3 @@ EndRem
 	Global _count,_nameMap:TMap=New TMap,_classMap:TMap=New TMap
 	
 End Type
-

@@ -348,6 +348,7 @@ Type StringHelper
 				If formatLengthStr <> "" Then formatLength = Int(formatLengthStr)
 				If formatDPStr <> "" Then formatDP = Int(formatDPStr)
 
+				'integer
 				If formatType = "d"
 					Local ds:String = Int(args[argnum])
 					While ds.Length < formatLength
@@ -360,16 +361,19 @@ Type StringHelper
 						EndIf
 					Wend
 					result :+ ds
+				'float (or double)
 				ElseIf formatType = "f"
 					'Ronny: replaced code with a rounding one from
 					'       our framework
-					Local df:Float = Float(args[argnum])
+					Local df:Double = Double(args[argnum])
 					result :+ MathHelper.NumberToString(df, formatDP)
+				'char
 				ElseIf formatType = "c"
 					If foundPadding Or foundMinus
 						Throw "StringHelper.printf(): Error parsing format string!"
 					endif
 					result :+ chr(Int(args[argnum]))
+				'string
 				ElseIf formatType = "s" Or formatType = "S"
 					If foundPadding
 						Throw "StringHelper.printf(): Error parsing format string!"
@@ -384,6 +388,7 @@ Type StringHelper
 						EndIf
 					Wend
 					result :+ ds
+				'hex
 				ElseIf formatType = "x" Or formatType = "X"
 					Local ds:String = Hex(Int(args[argnum])).ToLower()
 					If formatType = "X" Then ds = ds.ToUpper()

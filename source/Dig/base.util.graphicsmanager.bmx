@@ -61,21 +61,22 @@ Type TGraphicsManager
 	Field designedHeight:int= -1
 	Field hertz:int			= 60
 	Field vsync:int			= TRUE
-	Field flags:Int			= 0 'GRAPHICS_BACKBUFFER | GRAPHICS_ALPHABUFFER '& GRAPHICS_ACCUMBUFFER & GRAPHICS_DEPTHBUFFER
+	Field flags:Int			= GRAPHICS_BACKBUFFER '0 'GRAPHICS_BACKBUFFER | GRAPHICS_ALPHABUFFER '& GRAPHICS_ACCUMBUFFER & GRAPHICS_DEPTHBUFFER
 	Global _instance:TGraphicsManager
 	Global _g:TGraphics
 	Global RENDERER_NAMES:string[] = [	"OpenGL",..
 										"DirectX 7", ..
 										"DirectX 9", ..
+										"DirectX 11", ..
 										"Buffered OpenGL", ..
 										"GL2SDL" ..
 									 ]
 	CONST RENDERER_OPENGL:int   		= 0
 	CONST RENDERER_DIRECTX7:int 		= 1
 	CONST RENDERER_DIRECTX9:int 		= 2
-	CONST RENDERER_BUFFEREDOPENGL:int   = 3
-	CONST RENDERER_GL2SDL:int           = 4
-
+	CONST RENDERER_DIRECTX11:Int 		= 3
+	CONST RENDERER_BUFFEREDOPENGL:int   = 4
+	CONST RENDERER_GL2SDL:int           = 5
 
 	Function GetInstance:TGraphicsManager()
 		If not _instance Then _instance = New TGraphicsManager
