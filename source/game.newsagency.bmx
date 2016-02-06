@@ -1,4 +1,4 @@
-SuperStrict
+﻿SuperStrict
 Import Brl.LinkedList
 Import "game.programme.newsevent.bmx"
 Import "game.figure.customfigures.bmx"
@@ -191,15 +191,15 @@ Type TNewsAgency
 					description = "Es ist ein Eklat: ein Botschafter der VR Duban beleidigte seinen Amtskollegen aus der Freien Republik Duban."
 				else
 					title = "Botschafter der FR Duban beschimpft Nachbarn"
-					description = "Das kann nicht sein: ein Botschafter der FR Duban beleidigte den Repr�sentanten der Volksrepublik Duban."
+					description = "Das kann nicht sein: ein Botschafter der FR Duban beleidigte den Repräsentanten der Volksrepublik Duban."
 				endif
 			case 2
 				if terroristGroup = 1
-					title = "Botschafter verpr�gelt"
+					title = "Botschafter verprügelt"
 					description = "Auf dem Heimweg wurde der Botschafter der VR Duban in der Tiefgarage bewusstlos geschlagen. Zeugen sahen einen PKW der FR Duban davonfahren."
 				else
-					title = "Wohnung eines Botschafters verw�stet"
-					description = "Die Wohnung des Botschafters der Freien Republik Duban wurde verw�stet. Hinweise deuten auf Kreise der VR DUBAN."
+					title = "Wohnung eines Botschafters verwüstet"
+					description = "Die Wohnung des Botschafters der Freien Republik Duban wurde verwüstet. Hinweise deuten auf Kreise der VR DUBAN."
 				endif
 			case 3
 				if terroristGroup = 1
@@ -207,11 +207,11 @@ Type TNewsAgency
 					description = "Die VR Duban droht offen mit Rache. Die Schuldigen sollen gefunden worden sein. Die Situation ist brenzlig."
 				else
 					title = "FR Duban warnt vor Konsequenzen"
-					description = "Genug. So der knappe Wortlaut der Botschaft. Die FR Duban ergreift Gegenma�nahmen."
+					description = "Genug. So der knappe Wortlaut der Botschaft. Die FR Duban ergreift Gegenmaßnahmen."
 				endif
 			case 4
 				title = "Die Polizei warnt vor Terroristen"
-				description = "Die Polizei verlor die Spur zu einem k�rzlich gesichteten Terroristen, er soll dubanischer Herkunft sein."
+				description = "Die Polizei verlor die Spur zu einem kürzlich gesichteten Terroristen, er soll dubanischer Herkunft sein."
 				'currents instead of politics
 				genre = TVTNewsGenre.CURRENTAFFAIRS
 			default

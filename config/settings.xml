@@ -17,10 +17,16 @@
 		OPENGL         = 0
 		DIRECTX7       = 1
 		DIRECTX9       = 2
-		BUFFEREDOPENGL = 3
+		DIRECTX11      = 3
+		BUFFEREDOPENGL = 4
 	-->
 	<renderer>0</renderer>
 	<colordepth>16</colordepth>
+
+	<screenW>800</screenW>
+	<screenH>600</screenH>
+	<vsync>TRUE</vsync>
+	<fps>-1</fps>
 
 	<!--
 		disable all weather effects?

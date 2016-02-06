@@ -194,10 +194,6 @@ Type TApp
 		obj.creationTime = MilliSecs()
 
 		If initializeGUI Then
-			GetDeltatimer().Init(updatesPerSecond, framesPerSecond)
-			GetDeltaTimer()._funcUpdate = update
-			GetDeltaTimer()._funcRender = render		
-
 			'register to quit confirmation dialogue
 			EventManager.registerListenerFunction( "guiModalWindow.onClose", onAppConfirmExit )
 			EventManager.registerListenerFunction( "guiModalWindowChain.onClose", onCloseEscapeMenu )
@@ -208,9 +204,13 @@ Type TApp
 			obj.ApplySettings()
 			'override settings with app arguments (params when executing)
 			obj.ApplyAppArguments()
+
+			GetDeltatimer().Init(updatesPerSecond, obj.config.GetInt("fps", framesPerSecond))
+			GetDeltaTimer()._funcUpdate = update
+			GetDeltaTimer()._funcRender = render		
 	
-			GetGraphicsManager().SetVsync(vsync)
-			GetGraphicsManager().SetResolution(800,600)
+			GetGraphicsManager().SetVsync(obj.config.GetBool("vsync", vsync))
+			GetGraphicsManager().SetResolution(obj.config.GetInt("screenW", 800), obj.config.GetInt("screenH", 600))
 			'GetGraphicsManager().SetResolution(1024,768)
 			GetGraphicsManager().SetDesignedResolution(800,600)
 			GetGraphicsManager().InitGraphics()
@@ -239,6 +239,9 @@ Type TApp
 				Case "-directx9"
 					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: DirectX 9", LOG_LOADING)
 					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_DIRECTX9)
+'				Case "-directx11"
+'					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: DirectX 11", LOG_LOADING)
+'					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_DIRECTX11)
 				?
 				Case "-opengl"
 					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: OpenGL", LOG_LOADING)
@@ -325,6 +328,9 @@ Type TApp
 		GetGraphicsManager().SetFullscreen(config.GetBool("fullscreen", False))
 		GetGraphicsManager().SetRenderer(config.GetInt("renderer", GetGraphicsManager().GetRenderer()))
 		GetGraphicsManager().SetColordepth(config.GetInt("colordepth", 16))
+		GetGraphicsManager().SetVSync(config.GetBool("vsync", True))
+
+		GetDeltatimer().SetRenderRate(config.GetInt("fps", -1))
 
 		TSoundManager.SetAudioEngine(config.GetString("sound_engine", "AUTOMATIC"))
 		TSoundManager.GetInstance().MuteMusic(Not config.GetBool("sound_music", True))
@@ -1001,14 +1007,24 @@ Type TApp
 		'draw system things at last (-> on top)
 		GUIManager.Draw("SYSTEM")
 
+		'instead of using mousemanager.x and mousemanager.y (read
+		'on last Update() - which might have been some millisecs ago)
+		'we use the direct system values MouseX() and MouseY()
 		'default pointer
-		If GetGame().cursorstate = 0 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-9, 	MouseManager.y-2	,0)
+		'ATTENTION: this is only done for DISPLAY. For handling the
+		'clicks, we still use the information from the last update call
+		'as the next update is then also handling the clicks we do now
+		'(and then, the coordinates are correct again)
+		'if MouseManager.x <> MouseX() or MouseManager.y <> MouseY()
+		'	print MouseManager.x+" <> "+MouseX()+" or "+MouseManager.y+" <> "+MouseY()
+		'endif
+		If GetGame().cursorstate = 0 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseX()-9,  MouseY()-2,  0)
 		'open hand
-		If GetGame().cursorstate = 1 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11, 	MouseManager.y-8	,1)
+		If GetGame().cursorstate = 1 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseX()-11, MouseY()-8,  1)
 		'grabbing hand
-		If GetGame().cursorstate = 2 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11,	MouseManager.y-16	,2)
+		If GetGame().cursorstate = 2 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseX()-11, MouseY()-16, 2)
 		'open hand blocked
-		If GetGame().cursorstate = 3 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11,	MouseManager.y-8	,3)
+		If GetGame().cursorstate = 3 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseX()-11, MouseY()-8	,  3)
 
 		'if a screenshot is generated, draw a logo in
 		If App.prepareScreenshot = 1
@@ -2841,6 +2857,9 @@ Type TSettingsWindow
 	Field dropdownSoundEngine:TGUIDropDown
 	Field dropdownRenderer:TGUIDropDown
 	Field checkFullscreen:TGUICheckbox
+	Field checkVSync:TGUICheckbox
+	Field inputWindowResolutionWidth:TGUIInput
+	Field inputWindowResolutionHeight:TGUIInput
 	Field inputGameName:TGUIInput
 	Field inputOnlinePort:TGUIInput
 
@@ -2888,6 +2907,9 @@ Type TSettingsWindow
 
 		data.Add("renderer", dropdownRenderer.GetSelectedEntry().data.GetString("value", "0"))
 		data.AddBoolString("fullscreen", checkFullscreen.IsChecked())
+		data.AddBoolString("vsync", checkVSync.IsChecked())
+		data.Add("screenW", inputWindowResolutionWidth.GetValue())
+		data.Add("screenH", inputWindowResolutionHeight.GetValue())
 		data.Add("gamename", inputGameName.GetValue())
 		data.Add("onlineport", inputOnlinePort.GetValue())
 
@@ -2904,6 +2926,9 @@ Type TSettingsWindow
 		checkMusic.SetChecked(data.GetBool("sound_music", True))
 		checkSfx.SetChecked(data.GetBool("sound_effects", True))
 		checkFullscreen.SetChecked(data.GetBool("fullscreen", False))
+		checkVSync.SetChecked(data.GetBool("vsync", True))
+		inputWindowResolutionWidth.SetValue(Max(400, data.GetInt("screenW", 800)))
+		inputWindowResolutionHeight.SetValue(Max(300, data.GetInt("screenW", 600)))
 
 		'check available sound engine entries
 		Local selectedDropDownItem:TGUIDropDownItem
@@ -2954,7 +2979,7 @@ Type TSettingsWindow
 		Local labelH:Int = 12
 		Local inputH:Int = 0
 		Local windowW:Int = 670
-		Local windowH:Int = 380
+		Local windowH:Int = 420
 
 		modalDialogue = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D.Init(windowW, windowH), "SYSTEM")
 
@@ -3017,7 +3042,7 @@ Type TSettingsWindow
 		checkMusic = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth,-1), "")
 		checkMusic.SetCaption(GetLocale("MUSIC"))
 		canvas.AddChild(checkMusic)
-		nextY :+ Max(inputH, checkMusic.GetScreenHeight())
+		nextY :+ Max(inputH - 5, checkMusic.GetScreenHeight())
 
 		checkSfx = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth,-1), "")
 		checkSfx.SetCaption(GetLocale("SFX"))
@@ -3066,11 +3091,11 @@ Type TSettingsWindow
 
 		Local labelRenderer:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("RENDERER") + ":")
 		dropdownRenderer = New TGUIDropDown.Create(New TVec2D.Init(nextX, nextY + 12), New TVec2D.Init(inputWidth,-1), "", 128)
-		Local rendererValues:String[] = ["0", "3"]
+		Local rendererValues:String[] = ["0", "4"]
 		Local rendererTexts:String[] = ["OpenGL", "Buffered OpenGL"]
 		?Win32
-			rendererValues :+ ["1","2"]
-			rendererTexts :+ ["DirectX 7", "DirectX 9"]
+			rendererValues :+ ["1","2","3"]
+			rendererTexts :+ ["DirectX 7", "DirectX 9", "DirectX 11"]
 		?
 		itemHeight = 0
 		For Local i:Int = 0 Until rendererValues.Length
@@ -3089,7 +3114,22 @@ Type TSettingsWindow
 		checkFullscreen = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth,-1), "")
 		checkFullscreen.SetCaption(GetLocale("FULLSCREEN"))
 		canvas.AddChild(checkFullscreen)
-		nextY :+ Max(inputH, checkFullscreen.GetScreenHeight()) + labelH * 1.5
+		nextY :+ Max(inputH -5, checkFullscreen.GetScreenHeight())
+
+		checkVSync = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth,-1), "")
+		checkVSync.SetCaption(GetLocale("VSYNC"))
+		canvas.AddChild(checkVSync)
+		nextY :+ Max(inputH, checkVSync.GetScreenHeight())
+
+		Local labelWindowResolution:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("WINDOW_MODE_RESOLUTION")+":")
+		inputWindowResolutionWidth = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + 12), New TVec2D.Init(inputWidth/2 - 15,-1), "", 4)
+		inputWindowResolutionHeight = New TGUIInput.Create(New TVec2D.Init(nextX + inputWidth/2 + 15, nextY + 12), New TVec2D.Init(inputWidth/2 - 15,-1), "", 4)
+		Local labelWindowResolutionX:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX + inputWidth/2 - 4, nextY + 18), "x")
+		canvas.AddChild(labelWindowResolution)
+		canvas.AddChild(labelWindowResolutionX)
+		canvas.AddChild(inputWindowResolutionWidth)
+		canvas.AddChild(inputWindowResolutionHeight)
+		nextY :+ inputH + 5 + labelH * 1.5
 
 
 		'MULTIPLAYER
@@ -4426,8 +4466,8 @@ Function StartTVTower(start:Int=True)
 	EventManager.Init()
 	
 	TProfiler.Enter("StartTVTower: Create App")
-	App = TApp.Create(30, -1, True) 'create with screen refreshrate and vsync
-'	App = TApp.Create(30, 40, False) 'create with refreshrate of 40
+	App = TApp.Create(60, -1, True) 'create with screen refreshrate and vsync
+	'App = TApp.Create(30, -1, False) 'create with refreshrate of 40
 	App.LoadResources("config/resources.xml")
 	TProfiler.Leave("StartTVTower: Create App")
 
@@ -4477,6 +4517,7 @@ TProfiler.Leave("InitialLoading")
 
 	'b) set language
 	App.SetLanguage(App.config.GetString("language", "de"))
+	TLocalization.SetFallbackLanguage("en")
 
 	'c) everything loaded - normal game loop
 TProfiler.Enter("GameLoop")
