@@ -41,7 +41,9 @@ Const GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE:Int	= 2^14
 Const GUI_OBJECT_CHILDREN_CHANGE_GUIORDER:Int	= 2^15
 
 '===== GUI STATUS CONSTANTS =====
-CONST GUI_OBJECT_STATUS_APPEARANCE_CHANGED:Int	= 2^0
+CONST GUI_OBJECT_STATUS_HOVERED:Int	= 2^0
+CONST GUI_OBJECT_STATUS_SELECTED:Int = 2^1
+CONST GUI_OBJECT_STATUS_APPEARANCE_CHANGED:Int	= 2^2
 
 Const GUI_OBJECT_ORIENTATION_VERTICAL:Int   = 0
 Const GUI_OBJECT_ORIENTATION_HORIZONTAL:Int = 1
@@ -68,20 +70,19 @@ Type TGUIManager
 	Field UpdateState_mouseButtonDown:Int[]
 	Field UpdateState_mouseButtonHit:Int[]
 	Field UpdateState_mouseScrollwheelMovement:Int = 0
-	Field UpdateState_foundHitObject:Int = False
+	Field UpdateState_foundHitObject:Int[] = [0,0,0]
 	Field UpdateState_foundHoverObject:Int = False
 	Field UpdateState_foundFocusObject:Int = False
 
 	'=== PRIVATE PROPERTIES ===
 
-	Field _dropOnListenerLink:TLink
 	Field _defaultfont:TBitmapFont
 	Field _ignoreMouse:Int = False
 	'is there an object listening to keystrokes?
 	Field _keystrokeReceivingObject:TGUIObject = Null
 
-	'Global viewportX:Int=0,viewportY:Int=0,viewportW:Int=0,viewportH:Int=0
 	Global _instance:TGUIManager
+	Global _eventListeners:TLink[]
 
 
 	Method New()
@@ -96,13 +97,13 @@ Type TGUIManager
 
 
 	Method Init:TGUIManager()
-		'remove an potential old event listener
-		if _dropOnListenerLink
-			EventManager.unregisterListenerByLink(_dropOnListenerLink)
-		endif
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
 
 		'is something dropping on a gui element?
-		_dropOnListenerLink = EventManager.registerListenerFunction("guiobject.onDrop", TGUIManager.onDrop)
+		_eventListeners :+ [EventManager.registerListenerFunction("guiobject.onDrop", TGUIManager.onDrop)]
 
 		'gui specific settings
 		config.AddNumber("panelGap",10)
@@ -447,7 +448,7 @@ endrem
 		UpdateState_mouseButtonHit = MOUSEMANAGER.GetAllStatusHit() 'single and double clicks!
 
 		UpdateState_foundFocusObject = False
-		UpdateState_foundHitObject = False
+		UpdateState_foundHitObject = [0,0,0]
 		UpdateState_foundHoverObject = False
 	End Method
 
@@ -581,7 +582,7 @@ Type TGUIobject
 	Field data:TData = new TData
 	Field scale:Float = 1.0
 	Field alpha:Float = 1.0
-	'where to attach the object
+	'where to attach the object [unused]
 	Field handlePosition:TVec2D	= new TVec2D.Init(0, 0)
 	'where to attach the content within the object
 	Field contentPosition:TVec2D = new TVec2D.Init(0.5, 0.5)
@@ -589,7 +590,6 @@ Type TGUIobject
 	Field value:String = ""
 	Field mouseIsClicked:TVec2D	= Null			'null = not clicked
 	Field mouseIsDown:TVec2D = new TVec2D.Init(-1,-1)
-	Field mouseOver:Int	= 0						'could be done with TVec2D
 	Field children:TList = Null
 	Field _id:Int
 	Field _padding:TRectangle = null 'by default no padding
@@ -612,6 +612,15 @@ Type TGUIobject
 	Field className:String			= ""
 	'Field _lastDrawTick:int			= 0
 	'Field _lastUpdateTick:int		= 0
+
+	'=== HOOKS ===
+	'allow custom functions to get hooked in
+	Field _customDraw:int(obj:TGUIObject)
+	Field _customDrawBackground:int(obj:TGUIObject)
+	Field _customDrawContent:int(obj:TGUIObject)
+	Field _customDrawChildren:int(obj:TGUIObject)
+	Field _customDrawOverlay:int(obj:TGUIObject)
+
 
 	Global ghostAlpha:Float			= 0.5
 	Global _focusedObject:TGUIObject= Null
@@ -791,6 +800,16 @@ Type TGUIobject
 		EndIf
 	End Method
 
+
+	Method onFinishDrag:Int(triggerEvent:TEventBase)
+		return True
+	End Method
+
+
+	Method onFinishDrop:Int(triggerEvent:TEventBase)
+		return True
+	End Method
+	
 
 	'default drop handler for all gui objects
 	'by default they do nothing
@@ -991,7 +1010,7 @@ Type TGUIobject
 
 
 	Method hasOption:Int(option:Int)
-		Return _flags & option
+		Return (_flags & option) <> 0
 	End Method
 
 
@@ -1005,7 +1024,7 @@ Type TGUIobject
 
 
 	Method HasStatus:Int(statusCode:Int)
-		Return _status & statusCode
+		Return (_status & statusCode) <> 0
 	End Method
 
 
@@ -1018,8 +1037,38 @@ Type TGUIobject
 	End Method
 
 
+	Method IsHovered:Int()
+		Return (_status & GUI_OBJECT_STATUS_HOVERED) <> 0
+	End Method
+
+
+	Method SetHovered:Int(bool:int)
+		SetStatus(GUI_OBJECT_STATUS_HOVERED, bool)
+	End Method
+
+
+	Method IsSelected:Int()
+		Return (_status & GUI_OBJECT_STATUS_SELECTED) <> 0
+	End Method
+
+
+	Method SetSelected:Int(bool:int)
+		'skip if already done
+		if IsSelected() = bool then return True
+
+		if bool
+			onSelect()
+		else
+			onDeselect()
+		endif
+		SetStatus(GUI_OBJECT_STATUS_SELECTED, bool)
+
+		return True
+	End Method
+
+
 	Method IsAppearanceChanged:Int()
-		Return _status & GUI_OBJECT_STATUS_APPEARANCE_CHANGED
+		Return (_status & GUI_OBJECT_STATUS_APPEARANCE_CHANGED) <> 0
 	End Method
 
 
@@ -1052,25 +1101,35 @@ Type TGUIobject
 	End Method
 
 
+	Method onSelect:Int()
+		EventManager.triggerEvent( TEventSimple.Create( "GUIObject.onSelect", null, Self ) )
+	End Method
+
+
+	Method onDeselect:Int()
+		EventManager.triggerEvent( TEventSimple.Create( "GUIObject.onDeselect", null, Self ) )
+	End Method
+
+
 	Method isDragable:Int()
-		Return _flags & GUI_OBJECT_DRAGABLE
+		Return (_flags & GUI_OBJECT_DRAGABLE) <> 0
 	End Method
 
 
 	Method isDragged:Int()
-		Return _flags & GUI_OBJECT_DRAGGED
+		Return (_flags & GUI_OBJECT_DRAGGED) <> 0
 	End Method
 
 
 	Method IsClickable:int()
-		return _flags & GUI_OBJECT_CLICKABLE
+		return (_flags & GUI_OBJECT_CLICKABLE) <> 0
 	End Method
 
 
 	Method IsVisible:Int()
 		'i am invisible if my parent is not visible
 '		if _parent and not _parent.IsVisible() then return FALSE
-		Return _flags & GUI_OBJECT_VISIBLE
+		Return (_flags & GUI_OBJECT_VISIBLE) <> 0
 	End Method
 
 
@@ -1101,13 +1160,23 @@ Type TGUIobject
 
 
 	Method IsEnabled:int()
-		return _flags & GUI_OBJECT_ENABLED
+		return (_flags & GUI_OBJECT_ENABLED) <> 0
 	End Method
 	
 
 	Method Resize(w:Float = 0, h:Float = 0)
 		If w > 0 Then rect.dimension.setX(w)
 		If h > 0 Then rect.dimension.setY(h)
+	End Method
+
+
+	Method SetPosition(x:Float, y:Float)
+		rect.position.SetXY(x, y)
+	End Method
+
+
+	Method Move(dx:Float, dy:Float)
+		rect.position.AddXY(dx, dy)
 	End Method
 
 
@@ -1194,7 +1263,9 @@ Type TGUIobject
 			GUIManager.SortLists()
 
 			'inform others - item finished dragging
-			EventManager.triggerEvent(TEventSimple.Create("guiobject.onFinishDrag", new TData.Add("coord", coord), Self))
+			local ev:TEventSimple = TEventSimple.Create("guiobject.onFinishDrag", new TData.Add("coord", coord), Self)
+			EventManager.triggerEvent(ev)
+			self.onFinishDrag(ev)
 
 			Return True
 		else
@@ -1238,7 +1309,10 @@ Type TGUIobject
 			GUIManager.SortLists()
 
 			'inform others - item finished dropping - Receiver of "event" may now be helding the guiobject dropped on
-			EventManager.triggerEvent(TEventSimple.Create("guiobject.onFinishDrop", new TData.Add("coord", coord), Self, event.GetReceiver()))
+			local ev:TEventSimple = TEventSimple.Create("guiobject.onFinishDrop", new TData.Add("coord", coord), Self, event.GetReceiver())
+			EventManager.triggerEvent(ev)
+			self.onFinishDrop(ev)
+
 			Return True
 		else
 			Return FALSE
@@ -1440,10 +1514,33 @@ Type TGUIobject
 
 
 	Method Draw()
-		DrawBackground()
-		DrawContent()
-		DrawChildren()
-		DrawOverlay()
+		if _customDraw
+			_customDraw(self)
+		else
+			if _customDrawBackground
+				_customDrawBackground(self)
+			else
+				DrawBackground()
+			endif
+
+			if _customDrawContent
+				_customDrawContent(self)
+			else
+				DrawContent()
+			endif
+			
+			if _customDrawOverlay
+				_customDrawChildren(self)
+			else
+				DrawChildren()
+			endif
+			
+			if _customDrawOverlay
+				_customDrawOverlay(self)
+			else
+				DrawOverlay()
+			endif
+		endif
 	End Method
 
 
@@ -1550,7 +1647,7 @@ Type TGUIobject
 			if not isDragged()
 				'reset clicked position as soon as leaving the widget
 				mouseIsClicked = Null
-				mouseover = 0
+				SetHovered(false)
 				setState("")
 			endif
 			'mouseclick somewhere - should deactivate active object
@@ -1573,7 +1670,7 @@ Type TGUIobject
 
 		'=== HANDLE MOUSE CLICKS / POSITION ===
 		'skip objects the mouse is not over (except it is already dragged).
-		'ATTENTION: this differs to self.mouseOver (which is set later on)
+		'ATTENTION: this differs to self.isHovered() (which is set later on)
 		if not containsXY(mousePos.x, mousePos.y) and not isDragged() then return FALSE
 
 
@@ -1609,12 +1706,12 @@ Type TGUIobject
 
 			If Not GUIManager.UpdateState_foundHoverObject And _flags & GUI_OBJECT_ENABLED
 
-				'do not create "mouseover" for dragged objects
+				'do not create "hovered" for dragged objects
 				If Not isDragged()
 					'create event: onmouseenter
-					If mouseover = 0
+					If not isHovered()
 						EventManager.triggerEvent( TEventSimple.Create( "guiobject.OnMouseEnter", null, Self ) )
-						mouseover = 1
+						SetHovered(true)
 					EndIf
 					GUIManager.UpdateState_foundHoverObject = True
 				EndIf
@@ -1634,7 +1731,7 @@ Type TGUIobject
 					'inform others about a right guiobject click
 					'we do use a "cached hit state" so we can reset it if
 					'we found a one handling it
-					If GUIManager.UpdateState_mouseButtonHit[2]
+					If (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1)) and not GUIManager.UpdateState_foundHitObject[2 -1]
 						Local clickEvent:TEventSimple = TEventSimple.Create("guiobject.OnClick", new TData.AddNumber("button",2).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 						OnClick(clickEvent)
 						'fire onClickEvent
@@ -1644,74 +1741,83 @@ Type TGUIobject
 						'have to modify the event IF they accepted the click
 
 						'reset Button
-						GUIManager.UpdateState_mouseButtonHit[2] = False
+						if MouseManager.IsLongClicked(1)
+							GUIManager.UpdateState_mouseButtonHit[1] = False
+							'MouseManager.ResetClicked(1) 'long and normal
+						else
+							GUIManager.UpdateState_mouseButtonHit[2] = False
+						endif
+
+						GUIManager.UpdateState_foundHitObject[2 -1] = True
 					EndIf
 
 
 					'IsClicked does not include waiting time - so check for
 					'single and double clicks too
-					If _flags & GUI_OBJECT_ENABLED and not GUIManager.UpdateState_foundHitObject
+					If _flags & GUI_OBJECT_ENABLED and not GUIManager.UpdateState_foundHitObject[0]
 						local isHit:int = False
-						If MouseManager.IsHit(1)
-							local hitEvent:TEvenTsimple = TEventSimple.Create("guiobject.OnHit", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
-							'let the object handle the click
-							OnHit(hitEvent)
-							'fire onClickEvent
-							EventManager.triggerEvent(hitEvent)
+						if not MouseManager.IsLongClicked(1)
+							If MouseManager.IsHit(1)
+								local hitEvent:TEvenTsimple = TEventSimple.Create("guiobject.OnHit", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+								'let the object handle the click
+								OnHit(hitEvent)
+								'fire onClickEvent
+								EventManager.triggerEvent(hitEvent)
 
-							isHit = True
-						endif
-						
-						If MOUSEMANAGER.IsClicked(1) or MOUSEMANAGER.GetClicks(1) > 0
-							'=== SET CLICKED VAR ====
-							mouseIsClicked = MouseManager.GetClickposition(1)
+								isHit = True
+							endif
+							
+							If MOUSEMANAGER.IsClicked(1) or MOUSEMANAGER.GetClicks(1) > 0
+								'=== SET CLICKED VAR ====
+								mouseIsClicked = MouseManager.GetClickposition(1)
 
-							'=== SEND OUT CLICK EVENT ====
-							'if recognized as "double click" no normal "onClick"
-							'is emitted. Same for "single clicks".
-							'this avoids sending "onClick" and after 100ms
-							'again "onSingleClick" AND "onClick"
-							Local clickEvent:TEventSimple
-							If MOUSEMANAGER.IsDoubleClicked(1)
-								clickEvent = TEventSimple.Create("guiobject.OnDoubleClick", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
-								'let the object handle the click
-								OnDoubleClick(clickEvent)
-							ElseIf MOUSEMANAGER.IsSingleClicked(1)
-								clickEvent = TEventSimple.Create("guiobject.OnSingleClick", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
-								'let the object handle the click
-								OnSingleClick(clickEvent)
-							'only "hit" if done the first time
-							Else 'if not GUIManager.UpdateState_foundHitObject
-								clickEvent = TEventSimple.Create("guiobject.OnClick", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
-								'let the object handle the click
-								OnClick(clickEvent)
+								'=== SEND OUT CLICK EVENT ====
+								'if recognized as "double click" no normal "onClick"
+								'is emitted. Same for "single clicks".
+								'this avoids sending "onClick" and after 100ms
+								'again "onSingleClick" AND "onClick"
+								Local clickEvent:TEventSimple
+								If MOUSEMANAGER.IsDoubleClicked(1)
+									clickEvent = TEventSimple.Create("guiobject.OnDoubleClick", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+									'let the object handle the click
+									OnDoubleClick(clickEvent)
+								ElseIf MOUSEMANAGER.IsSingleClicked(1)
+									clickEvent = TEventSimple.Create("guiobject.OnSingleClick", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+									'let the object handle the click
+									OnSingleClick(clickEvent)
+								'only "hit" if done the first time
+								Else 'if not GUIManager.UpdateState_foundHitObject
+									clickEvent = TEventSimple.Create("guiobject.OnClick", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+									'let the object handle the click
+									OnClick(clickEvent)
+								EndIf
+								'fire onClickEvent
+								EventManager.triggerEvent(clickEvent)
+
+								'added for imagebutton and arrowbutton not being reset when mouse standing still
+		'						MouseIsDown = Null
+								'reset mouse button
+								'-> do not reset it as it would disable
+								'   "doubleclick" recognition
+								'MOUSEMANAGER.ResetKey(1)
+								'but we can reset clicked state
+								MOUSEMANAGER.ResetClicked(1)
+
+								isHit = True
 							EndIf
-							'fire onClickEvent
-							EventManager.triggerEvent(clickEvent)
 
-							'added for imagebutton and arrowbutton not being reset when mouse standing still
-	'						MouseIsDown = Null
-							'reset mouse button
-							'-> do not reset it as it would disable
-							'   "doubleclick" recognition
-							'MOUSEMANAGER.ResetKey(1)
-							'but we can reset clicked state
-							MOUSEMANAGER.ResetClicked(1)
+							If isHit
+								'reset Button cache
+								GUIManager.UpdateState_mouseButtonHit[1] = False
 
-							isHit = True
-						EndIf
+								'clicking on an object sets focus to it
+								'so remove from old before
+								'Ronny: 2014/05/11 - commented out, still needed?
+								'If Not HasFocus() Then GUIManager.ResetFocus()
 
-						If isHit
-							'reset Button cache
-							GUIManager.UpdateState_mouseButtonHit[1] = False
-
-							'clicking on an object sets focus to it
-							'so remove from old before
-							'Ronny: 2014/05/11 - commented out, still needed?
-							'If Not HasFocus() Then GUIManager.ResetFocus()
-
-							GUIManager.UpdateState_foundHitObject = True
-						EndIf
+								GUIManager.UpdateState_foundHitObject[0] = True
+							EndIf
+						endif
 					EndIf
 				EndIf
 			EndIf
@@ -1721,7 +1827,7 @@ Type TGUIobject
 
 	Method DrawBaseFormText:Object(_value:String, x:Float, y:Float)
 		Local col:TColor = TColor.Create(100,100,100)
-		If mouseover Then col = TColor.Create(50,50,50)
+		If isHovered() Then col = TColor.Create(50,50,50)
 		If Not(_flags & GUI_OBJECT_ENABLED) Then col = TColor.Create(150,150,150)
 
 		Return GetFont().drawStyled(_value,x,y, col, 1, 1, 0.5)
@@ -1756,17 +1862,17 @@ Type TGUIobject
 			'charCode is < 0 for me when umlauts are pressed
 			if charCode < 0
 				?Win32
-				If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
-				If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
-				If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
+				If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+				If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+				If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
 				?Mac
-				If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
-				If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
-				If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
+				If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+				If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+				If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
 				?Linux
-				If KEYWRAPPER.pressedKey(252) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
-				If KEYWRAPPER.pressedKey(246) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
-				If KEYWRAPPER.pressedKey(163) Then If shiftPressed Then value:+ "ï¿½" Else value :+ "ï¿½"
+				If KEYWRAPPER.pressedKey(252) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+				If KEYWRAPPER.pressedKey(246) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+				If KEYWRAPPER.pressedKey(163) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
 				?
 			'handle normal "keys" (excluding umlauts)
 			elseif charCode > 0

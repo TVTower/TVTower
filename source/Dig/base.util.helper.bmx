@@ -35,8 +35,14 @@ Rem
 	====================================================================
 EndRem
 SuperStrict
-'Import BRL.Reflection
+?Not bmxng
+'using custom to have support for const/function reflection
 Import "external/reflectionExtended/reflection.bmx"
+'Import BRL.Reflection
+?bmxng
+'ng has it built-in!
+Import BRL.Reflection
+?
 Import BRL.Retro
 Import "base.util.input.bmx" 		'Mousemanager
 Import "base.util.rectangle.bmx"	'TRectangle

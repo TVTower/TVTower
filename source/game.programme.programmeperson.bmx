@@ -1,6 +1,7 @@
 SuperStrict
 Import "game.programme.programmeperson.base.bmx"
 Import "game.programme.programmedata.bmx"
+Import "basefunctions.bmx"
 
 rem
 Type TProgrammePersonCollection extends TProgrammePersonBaseCollection
@@ -109,14 +110,7 @@ Function ConvertInsignificantToCelebrity:TProgrammePersonBase(insignifant:TProgr
 	TProgrammePerson(THelper.TakeOverObjectValues(insignifant, person))
 
 	'give random stats
-	person.skill = RandRange(0,10) / 100.0
-	person.power = RandRange(0,10) / 100.0
-	person.humor = RandRange(0,10) / 100.0
-	person.charisma = RandRange(0,10) / 100.0
-	person.appearance = RandRange(0,10) / 100.0
-	person.fame = RandRange(0,10) / 100.0
-	person.scandalizing = RandRange(0,10) / 100.0
-	person.priceModifier = 0.85 + 0.3*(RandRange(0,100) / 100.0)
+	person.SetRandomAttributes()
 
 	'gain experience and fetch earliest production date
 	local earliestProduction:int = -1
@@ -229,7 +223,36 @@ Type TProgrammePerson extends TProgrammePersonBase
 		endif
 			
 		return topGenre1
-	End Method	
+	End Method
+
+
+	Method SetRandomAttributes:int(onlyEmpty:int=False)
+		'reset attributes, so they get all refilled
+		if not onlyEmpty
+			skill = 0
+			power = 0
+			humor = 0
+			charisma = 0
+			appearance = 0
+			fame = 0
+			scandalizing = 0
+			priceModifier = 0
+		endif
+	
+		'base values
+		if skill = 0 then skill = BiasedRandRange(0,100, 0.1) / 100.0
+		if power = 0 then power = BiasedRandRange(0,100, 0.1) / 100.0
+		if humor = 0 then humor = BiasedRandRange(0,100, 0.1) / 100.0
+		if charisma = 0 then charisma = BiasedRandRange(0,100, 0.1) / 100.0
+		'given at birth (or by a doctor :-))
+		if appearance = 0 then appearance = BiasedRandRange(0,100, 0.2) / 100.0
+
+		'things which might change later on
+		if fame = 0 then fame = BiasedRandRange(0,50, 0.1) / 100.0
+		if scandalizing = 0 then scandalizing = BiasedRandRange(0,25, 0.2) / 100.0
+
+		if priceModifier = 0 then priceModifier = 0.85 + 0.3*(RandRange(0,100) / 100.0)
+	End Method
 
 
 	Method SetDayOfBirth:Int(date:String="")
@@ -263,41 +286,135 @@ Type TProgrammePerson extends TProgrammePersonBase
 	'override
 	'the base fee when engaged
 	'base might differ depending on sympathy for channel
-	Method GetBaseFee:Int(jobID:int, channel:int=-1)
+	Method GetBaseFee:Int(jobID:int, blocks:int, channel:int=-1)
+		'1 = 1, 2 = 1.75, 3 = 2.5, 4 = 3.25, 5 = 4 ... 
+		local blocksMod:Float = 0.25 + blocks * 0.75
+		local sympathyMod:Float = 1.0
+		local xpMod:Float = 1.0
+		local baseFee:Int = 0
+		local dynamicFee:Int = 0
+		
 		Select jobID
-			case TVTProgrammePersonJob.ACTOR, TVTProgrammePersonJob.SUPPORTINGACTOR 
-				'TODO: überarbeiten
-				'(50 - 650)
-				local sum:float = 50 + 100*(power + humor + charisma + appearance + 2*skill)
-				Local factor:Float = 1.0 + (fame*0.8 + scandalizing*0.2)
+			case TVTProgrammePersonJob.ACTOR,..
+			     TVTProgrammePersonJob.SUPPORTINGACTOR, ..
+			     TVTProgrammePersonJob.HOST
 
-				local sympathyMod:Float = 1.0
-				'modify by up to 50% ...
-				if channel >= 0 then sympathyMod :- 0.5 * GetChannelSympathy(channel)
+				'attributes: 0 - 6.0
+				local attributeMod:float = (power + humor + charisma + appearance + 2*skill)
+				'attributes: 0 - 12.0  (alternative: "* 1-2")
+				attributeMod :* 1.0 + (fame*0.8 + scandalizing*0.2)
 
-				local xpMod:Float = 1.0
-				'up to "* 100" -> 100% xp means 2000*100 = 200000
-				xpMod :+ 100 * GetExperiencePercentage(jobID)
+				'sympathy: modify by up to 25% ...
+				if channel >= 0 then sympathyMod = 1.0 - 0.25 * GetChannelSympathy(channel)
+
+				'xp: up to "100% of XP"
+				xpMod :+ 1.0 * GetExperiencePercentage(jobID)
 
 				if jobID = TVTProgrammePersonJob.ACTOR
-					Return sympathyMod * (3000 + Floor(Int(100 * sum * factor * xpMod * priceModifier)/100)*100)
-				else
-					Return sympathyMod * (1500 + Floor(Int(45 * sum * factor * xpMod * priceModifier)/100)*100)
+					baseFee = 15000
+					dynamicFee = 35000 * attributeMod
+				elseif jobID = TVTProgrammePersonJob.SUPPORTINGACTOR
+					baseFee = 7500
+					dynamicFee = 20000 * attributeMod
+				elseif jobID = TVTProgrammePersonJob.HOST
+					baseFee = 2500
+					dynamicFee = 25000 * attributeMod
 				endif
 
+			case TVTProgrammePersonJob.DIRECTOR,..
+			     TVTProgrammePersonJob.SCRIPTWRITER 
+
+				'attributes: 0 - 6.0
+				local attributeMod:float = (2 * power + 0.75 * humor + 1.25 * charisma + 0.5 * appearance + 2*skill)
+				'attributes: 0 - 13.2  (alternative: "* 1-2.2")
+				attributeMod :* 1.0 + (fame*1.1 + scandalizing*0.1)
+
+				'sympathy: modify by up to 25% ...
+				if channel >= 0 then sympathyMod = 1.0 - 0.25 * GetChannelSympathy(channel)
+
+				'xp: up to "100% of XP"
+				xpMod :+ 1.0 * GetExperiencePercentage(jobID)
+
+				if jobID = TVTProgrammePersonJob.DIRECTOR
+					baseFee = 20000
+					dynamicFee = 30000 * attributeMod
+				elseif jobID = TVTProgrammePersonJob.SCRIPTWRITER
+					baseFee = 5000
+					dynamicFee = 30000 * attributeMod
+				endif
+
+			case TVTProgrammePersonJob.MUSICIAN
+				'attributes: 0 - 6.0
+				local attributeMod:float = (1.25 * power + 0.5 * humor + 1.5 * charisma + 1.0 * appearance + 1.75*skill)
+				'attributes: 0 - 18  (alternative: "* 1-3")
+				attributeMod :* 1.0 + (fame*1.5 + scandalizing*0.5)
+
+				'sympathy: modify by up to 30% ...
+				if channel >= 0 then sympathyMod = 1.0 - 0.30 * GetChannelSympathy(channel)
+
+				'xp: up to "100% of XP"
+				xpMod :+ 1.0 * GetExperiencePercentage(jobID)
+
+				baseFee = 10000
+				dynamicFee = 40000 * attributeMod
+
+			case TVTProgrammePersonJob.REPORTER
+				'attributes: 0 - 6.0
+				local attributeMod:float = (1.25 * power + 0.25 * humor + 1.5 * charisma + 0.5 * appearance + 2.5*skill)
+				'attributes: 0 - 9.0  (alternative: "* 1-1.5")
+				attributeMod :* 1.0 + (fame*0.4 + scandalizing*0.1)
+
+				'sympathy: modify by up to 50% ...
+				if channel >= 0 then sympathyMod = 1.0 - 0.50 * GetChannelSympathy(channel)
+
+				'xp: up to "100% of XP"
+				xpMod :+ 1.0 * GetExperiencePercentage(jobID)
+
+				baseFee = 5000
+				dynamicFee = 10000 * attributeMod
+								
 			case TVTProgrammePersonJob.GUEST
-				'TODO: überarbeiten
-				local sum:float = 100 + 200*(fame*2 + scandalizing*0.5 + humor*0.3 + charisma*0.3 + appearance*0.3 + skill)
+				'attributes: 0 - 1.9
+				local attributeMod:Float = humor*0.3 + charisma*0.3 + appearance*0.3 + skill
+				'attributes: 0 - 6.65  (alternative: "* 1-3.5")
+				attributeMod :* 1.0 + (fame*2 + scandalizing*0.5)
 
-				local sympathyMod:Float = 1.0
-				'modify by up to 50% ...
-				if channel >= 0 then sympathyMod :- 0.5 * GetChannelSympathy(channel)
+				'sympathy: modify by up to 50% ...
+				if channel >= 0 then sympathyMod = 1.0 - 0.5 * GetChannelSympathy(channel)
 
-				Return sympathyMod * (100 + Floor(Int(sum * priceModifier)/100)*100)
+				'xp: up to "50% of XP"
+				xpMod :+ 0.5 * GetExperiencePercentage(jobID)
+
+				baseFee = 5000
+				dynamicFee = 15000 * attributeMod
 			default
-				print "FEE for jobID="+jobID+" not defined."
-				return 15000
+				'print "FEE for jobID="+jobID+" not defined."
+				'dynamic fee: 0 - 380
+				'attributes: 0 - 2.1
+				local attributeMod:Float = humor*0.1 + charisma*0.4 + appearance*0.4 + 1.2 * skill
+				'attributes: 0 - 4.83  (alternative: "* 1-2.3")
+				attributeMod :* 1.0 + (fame*1.1 + scandalizing*0.2)
+
+				'modify by up to 25% ...
+				if channel >= 0 then sympathyMod = 1.0 - 0.25 * GetChannelSympathy(channel)
+
+				'xp: up to "25% of XP"
+				xpMod :+ 0.25 * GetExperiencePercentage(jobID)
+
+				baseFee = 7000
+				dynamicFee = 10000 * attributeMod
 		End Select
+
+		local fee:float = baseFee
+		'incorporate the dynamic fee amount
+		fee :+ dynamicFee * xpMod * sympathyMod * priceModifier
+		'incorporate the block amount modifier
+		fee :* blocksMod
+		'round to next "1000" block
+		'fee = Int(Floor(fee / 1000) * 1000)
+		'round to "beautiful" (100, ..., 1000, 1250, 1500, ..., 2500)
+		fee = TFunctions.RoundToBeautifulValue(fee)
+		return fee
 	End Method
 
 	

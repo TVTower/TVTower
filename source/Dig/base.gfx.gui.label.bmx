@@ -12,7 +12,7 @@ Type TGUILabel Extends TGUIobject
 	Field contentDisplacement:TVec2D = new TVec2D.Init(0,0)
 	Field color:TColor = TColor.Create(0,0,0)
 	Field valueEffectType:int = 1
-	Field valueEffectSpecial:Float = 0.25
+	Field valueEffectSpecial:Float = 1.0
 	Field _valueDimensionCache:TVec2D = null
 
 	Global _typeDefaultFont:TBitmapFont
@@ -109,7 +109,7 @@ Type TGUILabel Extends TGUIobject
 		local oldCol:TColor = new TColor.Get()
 		SetAlpha oldCol.a * GetScreenAlpha()
 
-		GetFont().drawBlock(value, GetScreenX() + contentDisplacement.GetX(), GetScreenY() + contentDisplacement.GetY(), GetScreenWidth() - 2*contentDisplacement.GetX(), GetScreenHeight() - 2*contentDisplacement.GetY(), new TVec2D.Init(contentPosition.x, contentPosition.y), color, valueEffectType, true, valueEffectSpecial)
+		GetFont().drawBlock(value, GetScreenX() + contentDisplacement.GetX(), GetScreenY() + contentDisplacement.GetY(), GetScreenWidth() - 2*contentDisplacement.GetX(), GetScreenHeight() - 2*contentDisplacement.GetY(), contentPosition, color, valueEffectType, true, valueEffectSpecial)
 
 		oldCol.SetRGBA()
 	End Method

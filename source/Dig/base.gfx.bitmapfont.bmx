@@ -626,6 +626,8 @@ Type TBitmapFont
 
 
 	Method drawStyled:TVec2D(text:String,x:Float,y:Float, color:TColor=null, style:int=0, doDraw:int=1, special:float=-1.0)
+		if special = -1 then special = 1 '100%
+
 		if drawAtFixedPoints
 			x = int(x)
 			y = int(y)
@@ -642,11 +644,7 @@ Type TBitmapFont
 		if style = STYLE_EMBOSS
 			height:+ 1
 			if doDraw
-				if special <> -1.0
-					SetAlpha float(special * oldColor.a)
-				else
-					SetAlpha float(0.75 * oldColor.a)
-				endif
+				SetAlpha float(special * 0.5 * oldColor.a)
 				draw(text, x, y+1, TColor.clWhite)
 			endif
 		'shadow
@@ -654,19 +652,19 @@ Type TBitmapFont
 			height:+ 1
 			width:+1
 			if doDraw
-				if special <> -1.0 then SetAlpha special*oldColor.a else SetAlpha 0.5*oldColor.a
+				SetAlpha special*0.5*oldColor.a
 				draw(text, x+1,y+1, TColor.clBlack)
 			endif
 		'glow
 		else if style = STYLE_GLOW
 			if doDraw
 				SetColor 0,0,0
-				if special <> -1.0 then SetAlpha 0.5*oldColor.a else SetAlpha 0.25*oldColor.a
+				SetAlpha special*0.25*oldColor.a
 				draw(text, x-2,y)
 				draw(text, x+2,y)
 				draw(text, x,y-2)
 				draw(text, x,y+2)
-				if special <> -1.0 then SetAlpha special*oldColor.a else SetAlpha 0.5*oldColor.a
+				SetAlpha special*0.5*oldColor.a
 				draw(text, x+1,y+1)
 				draw(text, x-1,y-1)
 			endif
@@ -749,17 +747,14 @@ Type TBitmapFont
 			if not color
 				color = oldColor.copy()
 			else
-				'when drawing to a pixmap, take screen alpha into
-				'consideration
-				if drawToPixmap
-					'create a copy to not modify the original
-					color = color.copy()
-					color.a :* oldColor.a
-				endif
+				'take screen alpha into consideration
+				'create a copy to not modify the original
+				color = color.copy()
+				color.a :* oldColor.a
 			endif
 			'black text is default
 '			if not color then color = TColor.Create(0,0,0)
-			if color then color.SetRGB()
+			if color then color.SetRGBA()
 
 		endif
 		'set the lineHeight before the "for-loop" so it has a set
@@ -888,7 +883,7 @@ Type TBitmapFont
 		Next
 
 		'restore color
-		if doDraw then oldColor.SetRGB()
+		if doDraw then oldColor.SetRGBA()
 
 		return new TVec2D.Init(width, height)
 	End Method

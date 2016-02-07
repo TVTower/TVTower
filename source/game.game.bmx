@@ -124,7 +124,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		if GameScreen_World
 			GameScreen_World.Initialize()
 		else
-			GameScreen_World = New TInGameScreen_World.Create("InGame_World")
+			GameScreen_World = New TInGameScreen_World.Create("World")
 			ScreenCollection.Add(GameScreen_World)
 		endif
 		

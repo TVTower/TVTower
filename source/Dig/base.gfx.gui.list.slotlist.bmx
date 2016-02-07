@@ -48,7 +48,7 @@ Type TGUISlotList Extends TGUIListBase
     Method Create:TGUISlotList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 
-		autoSortItems = False
+		setListOption(GUILIST_AUTOSORT_ITEMS, False)
 
 		Return Self
 	End Method
@@ -274,15 +274,25 @@ Type TGUISlotList Extends TGUIListBase
 	Method _SetSlot:Int(slot:Int, item:TGUIobject)
 		If slot < 0 Or slot > Self._slots.length-1 Then Return False
 
-		If item
-			EventManager.triggerEvent(TEventSimple.Create("guiList.addItem", new TData.Add("item", item).AddNumber("slot",slot) , Self))
-			Self._slots[slot] = item
-		Else
-			If Self._slots[slot]
-				EventManager.triggerEvent(TEventSimple.Create("guiList.removeItem", new TData.Add("item", Self._slots[slot]).AddNumber("slot",slot) , Self))
-				Self._slots[slot] = Null
-			EndIf
-		EndIf
+		'skip clearing an empty slot
+		if not item and not Self._slots[slot] then Return False
+
+		local slotItem:TGUIObject = Self._slots[slot]
+
+		if item
+			EventManager.triggerEvent(TEventSimple.Create("guiList.AddItem", new TData.Add("item", item).AddNumber("slot",slot) , Self))
+		elseif slotItem
+			EventManager.triggerEvent(TEventSimple.Create("guiList.RemoveItem", new TData.Add("item", slotItem).AddNumber("slot",slot) , Self))
+		endif
+		
+		Self._slots[slot] = item
+
+		if item
+			EventManager.triggerEvent(TEventSimple.Create("guiList.AddedItem", new TData.Add("item", item).AddNumber("slot",slot) , Self))
+		elseif slotItem
+			EventManager.triggerEvent(TEventSimple.Create("guiList.RemovedItem", new TData.Add("item", slotItem).AddNumber("slot",slot) , Self))
+		endif
+
 		Return True
 	End Method
 
@@ -411,6 +421,7 @@ Type TGUISlotList Extends TGUIListBase
 
 			'remove it
 			Self._SetSlot(slot, Null)
+
 			'remove from panel - and add back to guimanager
 			'guiEntriesPanel.removeChild(item)
 

@@ -40,6 +40,7 @@ Import BRL.Map
 
 Type TLocalization
 	Global currentLanguage:TLocalizationLanguage
+	Global fallbackLanguage:TLocalizationLanguage
 	Global languages:TMap = CreateMap()
 	Global languagesCount:int = 0
 
@@ -58,8 +59,17 @@ Type TLocalization
 	'Returns the value for the specified key, or the given key if
 	'nothing was found
 	Function GetString:String(Key:String, group:String = Null)
-		if not currentLanguage then return Key
-		
+		'skip "has"-check without a fallback
+		if not fallbackLanguage
+			if not currentLanguage then Return Key
+		elseif fallbackLanguage <> currentLanguage
+			if currentLanguage.Has(Key, group)
+				Return currentLanguage.Get(Key, group).replace("\n", Chr(13))
+			else
+				Return fallbackLanguage.Get(Key, group).replace("\n", Chr(13))
+			endif
+		endif
+
 		Return currentLanguage.Get(Key, group).replace("\n", Chr(13))
 	End Function
 
@@ -77,8 +87,24 @@ Type TLocalization
 
 
 	Function GetRandomString:String(Key:String, limit:int=-1)
-		if not currentLanguage then return Key
+		'skip "has"-check without a fallback
+		if not fallbackLanguage
+			if not currentLanguage then Return Key
+		elseif fallbackLanguage <> currentLanguage
+			if currentLanguage.Has(Key)
+				Return _GetRandomString(currentLanguage, Key)
+			else
+				Return _GetRandomString(fallbackLanguage, Key)
+			endif
+		endif
 
+		Return _GetRandomString(currentLanguage, Key)
+	End Function
+
+
+	Function _GetRandomString:string(language:TLocalizationLanguage, key:string, limit:int=-1)
+		if not language then return key
+		
 		local availableStrings:int = 1
 		local subKey:string = ""
 		Repeat
@@ -110,6 +136,25 @@ Type TLocalization
 		languages.insert(language.languageCode, language)
 	End Function
 
+
+	Function SetFallbackLanguage:Int(language:String)
+		local lang:TLocalizationLanguage = GetLanguage(language)
+
+		if lang
+			fallbackLanguage = lang
+			Return True
+		else
+			Return False
+		endif
+	End Function
+
+
+	'Returns the current language
+	Function GetFallbackLanguageCode:String()
+		if fallbackLanguage then return fallbackLanguage.languageCode
+		return ""
+	End Function
+	
 
 	Function SetCurrentLanguage:Int(language:String)
 		local lang:TLocalizationLanguage = GetLanguage(language)
@@ -202,7 +247,7 @@ Type TLocalization
 		local master:TLocalizationLanguage = GetLanguage("de")
 		local compare:TLocalizationLanguage = GetLanguage(compareLang)
 		
-		print "---- LOCALIZATION STATE ----"
+		print "=== LANGUAGE FILES ============="
 		print "AVAILABLE:"
 		print "----------"
 		for local k:string = EachIn master.map.Keys()
@@ -210,7 +255,7 @@ Type TLocalization
 
 			print master.languageCode+" |"+ k + " = " +master.Get(k)
 			print compare.languageCode+" |"+ k + " = " +compare.Get(k)
-			print "~t-"
+			print Chr(8203) 'zero width space, else it skips "~n"
 		Next
 		print "~t"
 		print "MISSING:"
@@ -220,10 +265,10 @@ Type TLocalization
 
 			print master.languageCode+" |"+ k + " = " +master.Get(k)
 			print compare.languageCode+" |"+ k + " = "
-			print "~t-"
+			print Chr(8203) 'zero width space, else it skips "~n"
 		Next
 
-		print "----------------------------"
+		print "================================"
 	End Function
 	
 
@@ -232,6 +277,7 @@ Type TLocalization
 		languages.Clear()
 		languages = Null
 		currentLanguage = Null
+		fallbackLanguage = Null
 	End Function
 End Type
 
@@ -322,6 +368,13 @@ Type TLocalizationLanguage
 			Return String(ret)
 		EndIf
 	End Method
+
+
+	Method Has:int(key:string, group:String = Null)
+		If group Then key = group + "::" + Key
+
+		return map.Contains(lower(key))
+	End Method
 End Type
 
 
@@ -363,12 +416,16 @@ Type TLocalizedString
 	End Method
 
 
-	Method Get:String(language:String="")
+	Method Get:String(language:String="", returnDefault:int = True)
 		if language="" then language = currentLanguage
 		if values.Contains(language)
 			return string(values.ValueForKey(language))
 		else
-			return string(values.ValueForKey(defaultLanguage))
+			If returnDefault
+				return string(values.ValueForKey(defaultLanguage))
+			Else
+				return ""
+			EndIf
 		endif
 	End Method
 

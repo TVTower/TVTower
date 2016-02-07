@@ -83,6 +83,7 @@ Type TGUIGameListItem Extends TGUIListItem
 	Field lastListID:int
 	Field inListID:int
 	Field asset:TSprite = Null
+	Field assetName:string = ""
 	Field assetDefault:TSprite = Null
 	Field assetDragged:TSprite = Null
 
@@ -107,7 +108,7 @@ Type TGUIGameListItem Extends TGUIListItem
 		Self.assetDefault = GetSpriteFromRegistry(nameDefault)
 		Self.assetDragged = GetSpriteFromRegistry(nameDragged)
 
-		Self.SetAsset(Self.assetDefault)
+		Self.SetAsset(Self.assetDefault, self.assetNameDefault)
 	End Method
 
 
@@ -117,14 +118,31 @@ Type TGUIGameListItem Extends TGUIListItem
 	End Method
 
 
-	Method SetAsset(sprite:TSprite=Null)
-		If Not sprite Then sprite = Self.assetDefault
+	Method SetAsset(sprite:TSprite=Null, name:string = "")
+		If Not sprite then sprite = Self.assetDefault
+		If Not name then name = Self.assetNameDefault
 
+			
 		'only resize if not done already
-		If Self.asset <> sprite
+		If Self.asset <> sprite or self.assetName <> name
 			Self.asset = sprite
+			Self.assetName = name
 			Self.Resize(sprite.area.GetW(), sprite.area.GetH())
 		EndIf
+	End Method
+
+
+	'acts as cache
+	Method GetAsset:TSprite()
+		'refresh cache if not set or wrong sprite name
+		if not asset or asset.GetName() <> assetName
+			SetAsset(GetSpriteFromRegistry(self.assetNameDefault))
+			'new -non default- sprite: adjust appearance
+			if asset.GetName() <> "defaultsprite"
+				SetAppearanceChanged(TRUE)
+			endif
+		endif
+		return asset
 	End Method
 
 
@@ -157,11 +175,11 @@ Type TGUIGameListItem Extends TGUIListItem
 	Method DrawContent()
 		asset.draw(Self.GetScreenX(), Self.GetScreenY())
 		'hovered
-		If Self.mouseover
+		If isHovered() and not isDragged()
 			Local oldAlpha:Float = GetAlpha()
 			SetAlpha 0.20*oldAlpha
 			SetBlend LightBlend
-			asset.draw(Self.GetScreenX(), Self.GetScreenY())
+			GetAsset().draw(Self.GetScreenX(), Self.GetScreenY())
 			SetBlend AlphaBlend
 			SetAlpha oldAlpha
 		EndIf

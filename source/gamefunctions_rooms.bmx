@@ -412,7 +412,8 @@ Type RoomHandler_Office extends TRoomHandler
 
 		GetPlayer().GetFigure().fromroom = Null
 		If MOUSEMANAGER.IsClicked(1)
-			If THelper.IsIn(MouseManager.x,MouseManager.y,25,40,150,295)
+			'emulated right click or clicked door
+			If MOUSEMANAGER.IsLongClicked(1) or THelper.IsIn(MouseManager.x,MouseManager.y,25,40,150,295)
 				GetPlayer().GetFigure().LeaveRoom()
 				MOUSEMANAGER.resetKey(1)
 			EndIf
@@ -422,45 +423,49 @@ Type RoomHandler_Office extends TRoomHandler
 		'allowed for owner only - or with key
 		If GetPlayer().HasMasterKey() OR IsPlayersRoom(room)
 			GetGame().cursorstate = 0
-			'safe - reachable for all
-			If THelper.MouseIn(165,85,70,100)
-				If not SafeToolTip Then SafeToolTip = TTooltip.Create(GetLocale("ROOM_SAFE"), GetLocale("FOR_PRIVATE_AFFAIRS"), 140, 100,-1,-1)
-				SafeToolTip.enabled = 1
-				SafeToolTip.SetMinTitleAndContentWidth(90, 120)
-				SafeToolTip.Hover()
-				GetGame().cursorstate = 1
-				If MOUSEMANAGER.IsClicked(1)
-					MOUSEMANAGER.resetKey(1)
-					GetGame().cursorstate = 0
 
-					ScreenCollection.GoToSubScreen("screen_office_safe")
-				endif
-			EndIf
+			'only if player does not want to leave room
+			if not MouseManager.IsLongClicked(1)
+				'safe - reachable for all
+				If THelper.MouseIn(165,85,70,100)
+					If not SafeToolTip Then SafeToolTip = TTooltip.Create(GetLocale("ROOM_SAFE"), GetLocale("FOR_PRIVATE_AFFAIRS"), 140, 100,-1,-1)
+					SafeToolTip.enabled = 1
+					SafeToolTip.SetMinTitleAndContentWidth(90, 120)
+					SafeToolTip.Hover()
+					GetGame().cursorstate = 1
+					If MOUSEMANAGER.IsClicked(1)
+						MOUSEMANAGER.resetKey(1)
+						GetGame().cursorstate = 0
 
-			'planner - reachable for all
-			If THelper.IsIn(MouseManager.x, MouseManager.y, 600,140,128,210)
-				If not PlannerToolTip Then PlannerToolTip = TTooltip.Create(GetLocale("ROOM_PROGRAMMEPLANNER"), GetLocale("AND_STATISTICS"), 580, 140)
-				PlannerToolTip.enabled = 1
-				PlannerToolTip.Hover()
-				GetGame().cursorstate = 1
-				If MOUSEMANAGER.IsClicked(1)
-					MOUSEMANAGER.resetKey(1)
-					GetGame().cursorstate = 0
-					ScreenCollection.GoToSubScreen("screen_office_programmeplanner")
-				endif
-			EndIf
+						ScreenCollection.GoToSubScreen("screen_office_safe")
+					endif
+				EndIf
 
-			If THelper.IsIn(MouseManager.x, MouseManager.y, 732,45,160,170)
-				If not StationsToolTip Then StationsToolTip = TTooltip.Create(GetLocale("ROOM_STATIONMAP"), GetLocale("BUY_AND_SELL"), 650, 80, 0, 0)
-				StationsToolTip.enabled = 1
-				StationsToolTip.Hover()
-				GetGame().cursorstate = 1
-				If MOUSEMANAGER.IsClicked(1)
-					MOUSEMANAGER.resetKey(1)
-					GetGame().cursorstate = 0
-					ScreenCollection.GoToSubScreen("screen_office_stationmap")
-				endif
-			EndIf
+				'planner - reachable for all
+				If THelper.IsIn(MouseManager.x, MouseManager.y, 600,140,128,210)
+					If not PlannerToolTip Then PlannerToolTip = TTooltip.Create(GetLocale("ROOM_PROGRAMMEPLANNER"), GetLocale("AND_STATISTICS"), 580, 140)
+					PlannerToolTip.enabled = 1
+					PlannerToolTip.Hover()
+					GetGame().cursorstate = 1
+					If MOUSEMANAGER.IsClicked(1)
+						MOUSEMANAGER.resetKey(1)
+						GetGame().cursorstate = 0
+						ScreenCollection.GoToSubScreen("screen_office_programmeplanner")
+					endif
+				EndIf
+
+				If THelper.IsIn(MouseManager.x, MouseManager.y, 732,45,160,170)
+					If not StationsToolTip Then StationsToolTip = TTooltip.Create(GetLocale("ROOM_STATIONMAP"), GetLocale("BUY_AND_SELL"), 650, 80, 0, 0)
+					StationsToolTip.enabled = 1
+					StationsToolTip.Hover()
+					GetGame().cursorstate = 1
+					If MOUSEMANAGER.IsClicked(1)
+						MOUSEMANAGER.resetKey(1)
+						GetGame().cursorstate = 0
+						ScreenCollection.GoToSubScreen("screen_office_stationmap")
+					endif
+				EndIf
+			endif
 
 			If StationsToolTip Then StationsToolTip.Update()
 			If PlannerToolTip Then PlannerToolTip.Update()
@@ -507,7 +512,7 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		'=== CREATE ELEMENTS ===
 		if not GuiListSuitCase
-			GuiListSuitcase	= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200, 80), "archive")
+			GuiListSuitcase	= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(180, GetSpriteFromRegistry("gfx_movie_undefined").area.GetH()), "archive")
 			GuiListSuitcase.guiEntriesPanel.minSize.SetXY(200,80)
 			GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			GuiListSuitcase.acceptType = TGUIProgrammeLicenceSlotList.acceptAll
@@ -718,6 +723,8 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		'remove right click - to avoid leaving the room
 		MouseManager.ResetKey(2)
+		'also avoid long click (touch screen)
+		MouseManager.ResetLongClicked(1)
 	End Function
 
 
@@ -859,7 +866,7 @@ Type RoomHandler_Archive extends TRoomHandler
 					openCollectionTooltip.Hover()
 
 					GetGame().cursorstate = 1
-					If MOUSEMANAGER.IsHit(1)
+					If MOUSEMANAGER.IsClicked(1) and not MouseManager.IsLongClicked(1)
 						MOUSEMANAGER.resetKey(1)
 						GetGame().cursorstate = 0
 						programmeList.SetOpen(1)
@@ -1034,10 +1041,12 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		'=== create gui elements if not done yet
 		if not GuiListMoviesGood
-			GuiListMoviesGood = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,50), new TVec2D.Init(220,80), "movieagency")
-			GuiListMoviesCheap = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,148), new TVec2D.Init(220,80), "movieagency")
-			GuiListSeries = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,246), new TVec2D.Init(220,80), "movieagency")
-			GuiListSuitcase = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200,80), "movieagency")
+			local videoCase:TSprite = GetSpriteFromRegistry("gfx_movie_undefined")
+
+			GuiListMoviesGood = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,50), new TVec2D.Init(200, videoCase.area.GetH()), "movieagency")
+			GuiListMoviesCheap = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,148), new TVec2D.Init(200, videoCase.area.GetH()), "movieagency")
+			GuiListSeries = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,246), new TVec2D.Init(200, videoCase.area.GetH()), "movieagency")
+			GuiListSuitcase = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(180, videoCase.area.GetH()), "movieagency")
 
 			GuiListMoviesGood.guiEntriesPanel.minSize.SetXY(200,80)
 			GuiListMoviesCheap.guiEntriesPanel.minSize.SetXY(200,80)
@@ -1058,8 +1067,6 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			GuiListMoviesCheap.SetItemLimit(listMoviesCheap.length)
 			GuiListSeries.SetItemLimit(listSeries.length)
 			GuiListSuitcase.SetItemLimit(GameRules.maxProgrammeLicencesInSuitcase)
-
-			local videoCase:TSprite = GetSpriteFromRegistry("gfx_movie_undefined")
 
 			GuiListMoviesGood.SetSlotMinDimension(videoCase.area.GetW(), videoCase.area.GetH())
 			GuiListMoviesCheap.SetSlotMinDimension(videoCase.area.GetW(), videoCase.area.GetH())
@@ -1708,17 +1715,19 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		'show a auction-tooltip (but not if we dragged a block)
 		if not hoveredGuiProgrammeLicence
-			If THelper.IsIn(MouseManager.x, MouseManager.y, 210,220,140,60)
-				If not AuctionToolTip Then AuctionToolTip = TTooltip.Create(GetLocale("AUCTION"), GetLocale("MOVIES_AND_SERIES_AUCTION"), 200, 180, 0, 0)
-				AuctionToolTip.enabled = 1
-				AuctionToolTip.Hover()
-				GetGame().cursorstate = 1
-				If MOUSEMANAGER.IsClicked(1)
-					MOUSEMANAGER.resetKey(1)
-					GetGame().cursorstate = 0
-					ScreenCollection.GoToSubScreen("screen_movieauction")
-				endif
-			EndIf
+			if not MouseManager.IsLongClicked(1)
+				If THelper.IsIn(MouseManager.x, MouseManager.y, 210,220,140,60)
+					If not AuctionToolTip Then AuctionToolTip = TTooltip.Create(GetLocale("AUCTION"), GetLocale("MOVIES_AND_SERIES_AUCTION"), 200, 180, 0, 0)
+					AuctionToolTip.enabled = 1
+					AuctionToolTip.Hover()
+					GetGame().cursorstate = 1
+					If MOUSEMANAGER.IsClicked(1)
+						MOUSEMANAGER.resetKey(1)
+						GetGame().cursorstate = 0
+						ScreenCollection.GoToSubScreen("screen_movieauction")
+					endif
+				EndIf
+			endif
 		endif
 
 		'delete unused and create new gui elements
@@ -1990,15 +1999,17 @@ Type RoomHandler_News extends TRoomHandler
 		if not IsPlayersRoom(room) then return False
 
 		'pinwall
-		If THelper.IsIn(MouseManager.x, MouseManager.y, 167,60,240,160)
-			If not PlannerToolTip Then PlannerToolTip = TTooltip.Create("Newsplaner", "Hinzufügen und entfernen", 180, 100, 0, 0)
-			PlannerToolTip.enabled = 1
-			PlannerToolTip.Hover()
-			GetGame().cursorstate = 1
-			If MOUSEMANAGER.IsClicked(1)
-				MOUSEMANAGER.resetKey(1)
-				GetGame().cursorstate = 0
-				ScreenCollection.GoToSubScreen("screen_newsstudio_newsplanner")
+		if not MouseManager.IsLongClicked(1)
+			If THelper.IsIn(MouseManager.x, MouseManager.y, 167,60,240,160)
+				If not PlannerToolTip Then PlannerToolTip = TTooltip.Create("Newsplaner", "Hinzufügen und entfernen", 180, 100, 0, 0)
+				PlannerToolTip.enabled = 1
+				PlannerToolTip.Hover()
+				GetGame().cursorstate = 1
+				If MOUSEMANAGER.IsClicked(1)
+					MOUSEMANAGER.resetKey(1)
+					GetGame().cursorstate = 0
+					ScreenCollection.GoToSubScreen("screen_newsstudio_newsplanner")
+				endif
 			endif
 		endif
 	End Function
@@ -2270,6 +2281,8 @@ Type RoomHandler_News extends TRoomHandler
 		
 		'remove right click - to avoid leaving the room
 		MouseManager.ResetKey(2)
+		'also avoid long click (touch screen)
+		MouseManager.ResetLongClicked(1)
 	End Function
 
 
@@ -2605,6 +2618,8 @@ Type RoomHandler_Studio extends TRoomHandler
 
 		'remove right click - to avoid leaving the room
 		MouseManager.ResetKey(2)
+		'also avoid long click (touch screen)
+		MouseManager.ResetLongClicked(1)
 	End Function
 	
 
@@ -3040,20 +3055,22 @@ Type RoomHandler_Studio extends TRoomHandler
 		if not IsPlayersRoom(TRoom(triggerEvent.GetSender())) then return False
 
 		'mouse over studio manager
-		if THelper.MouseIn(0,100,150,300)
-			if not studioManagerDialogue
-				'generate the dialogue if not done yet
-				if MouseManager.IsHit(1) and not draggedGuiScript
-					GenerateStudioManagerDialogue()
-				endif
-
-				'show tooltip of studio manager
-				'only show when no dialogue is (or just got) opened 
+		if not MouseManager.IsLongClicked(1)
+			if THelper.MouseIn(0,100,150,300)
 				if not studioManagerDialogue
-					If not studioManagerTooltip Then studioManagerTooltip = TTooltip.Create(GetLocale("STUDIO_MANAGER"), GetLocale("GIVES_INFORMATION_ABOUT_PRODUCTION_OR_HANDS_OUT_SHOPPING_LIST"), 150, 160,-1,-1)
-					studioManagerTooltip.enabled = 1
-					studioManagerTooltip.SetMinTitleAndContentWidth(150)
-					studioManagerTooltip.Hover()
+					'generate the dialogue if not done yet
+					if MouseManager.IsClicked(1) and not draggedGuiScript
+						GenerateStudioManagerDialogue()
+					endif
+
+					'show tooltip of studio manager
+					'only show when no dialogue is (or just got) opened 
+					if not studioManagerDialogue
+						If not studioManagerTooltip Then studioManagerTooltip = TTooltip.Create(GetLocale("STUDIO_MANAGER"), GetLocale("GIVES_INFORMATION_ABOUT_PRODUCTION_OR_HANDS_OUT_SHOPPING_LIST"), 150, 160,-1,-1)
+						studioManagerTooltip.enabled = 1
+						studioManagerTooltip.SetMinTitleAndContentWidth(150)
+						studioManagerTooltip.Hover()
+					endif
 				endif
 			endif
 		endif
@@ -3164,13 +3181,19 @@ Type RoomHandler_AdAgency extends TRoomHandler
 				GuiListNormal[listIndex].setZindex(i)
 			Next
 
-			GuiListSuitcase	= new TGUIAdContractSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(215,80), "adagency")
+			GuiListSuitcase	= new TGUIAdContractSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(215, GetSpriteFromRegistry("gfx_contracts_0_dragged").area.GetH()), "adagency")
 			GuiListSuitcase.SetAutofillSlots(true)
 
-			GuiListCheap = new TGUIAdContractSlotList.Create(new TVec2D.Init(70, 220), new TVec2D.Init(10 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
+			GuiListCheap = new TGUIAdContractSlotList.Create(new TVec2D.Init(70, 220), new TVec2D.Init(5 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
 			'GuiListCheap = new TGUIAdContractSlotList.Create(new TVec2D.Init(70, 200), new TVec2D.Init(10 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
 			'GuiListCheap.setEntriesBlockDisplacement(70,0)
 			'GuiListCheap.SetEntryDisplacement( -2*GuiListNormal[0]._slotMinDimension.x, 5)
+
+			GuiListCheap.Move(0, -20)
+			GuiListCheap.Resize(-1, GuiListCheap.rect.GetH() + 20) 'for 4x displacement
+			GuiListcheap.SetEntriesBlockDisplacement(0, 20) 'displace by 20
+
+
 
 			GuiListCheap.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
@@ -3999,6 +4022,8 @@ endrem
 
 		'remove right click - to avoid leaving the room
 		MouseManager.ResetKey(2)
+		'also avoid long click (touch screen)
+		MouseManager.ResetLongClicked(1)
 	End Function
 
 
@@ -4208,7 +4233,7 @@ endrem
 			if THelper.IsIn(MouseManager.x,MouseManager.y, 5, 335, boxWidth, boxHeight)
 				ListSortVisible = True
 
-				if MouseManager.IsHit(1)
+				if MouseManager.isClicked(1) and not MouseManager.IsLongClicked(1)
 					local contentX:int = 5 + skin.GetContentX()
 					local sortKeys:int[] = [0, 1, 2]
 					For local i:int = 0 to 2
@@ -4299,7 +4324,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 			local sprite:TSprite = GetSpriteFromRegistry("gfx_scripts_0")
 			local spriteSuitcase:TSprite = GetSpriteFromRegistry("gfx_scripts_0_dragged")
 			for local i:int = 0 to GuiListNormal.length-1
-				GuiListNormal[i] = new TGUIScriptSlotList.Create(new TVec2D.Init(233 + (GuiListNormal.length-1 - i)*22, 143 + i*2), new TVec2D.Init(17, 52), "scriptagency")
+				GuiListNormal[i] = new TGUIScriptSlotList.Create(new TVec2D.Init(233 + (GuiListNormal.length-1 - i)*22, 143 + i*2), new TVec2D.Init(17, sprite.area.GetH()), "scriptagency")
 				GuiListNormal[i].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 				GuiListNormal[i].SetItemLimit( scriptsNormalAmount / GuiListNormal.length  )
 				GuiListNormal[i].Resize(sprite.area.GetW() * (scriptsNormalAmount / GuiListNormal.length), sprite.area.GetH() )
@@ -4308,11 +4333,13 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 				GuiListNormal[i].setZindex(i)
 			Next
 
-			GuiListSuitcase	= new TGUIScriptSlotlist.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200,80), "scriptagency")
+			GuiListSuitcase	= new TGUIScriptSlotlist.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(150, spriteSuitcase.area.GetH()), "scriptagency")
 			GuiListSuitcase.SetAutofillSlots(true)
 
-			GuiListNormal2 = new TGUIScriptSlotlist.Create(new TVec2D.Init(188, 240), new TVec2D.Init(10 + sprite.area.GetW()*scriptsNormal2Amount, sprite.area.GetH()), "scriptagency")
-			GuiListNormal2.setEntriesBlockDisplacement(18, 11)
+			'for more than 1 entry
+			'GuiListNormal2 = new TGUIScriptSlotlist.Create(new TVec2D.Init(188, 240), new TVec2D.Init(10 + sprite.area.GetW()*scriptsNormal2Amount, sprite.area.GetH()), "scriptagency")
+			'GuiListNormal2.setEntriesBlockDisplacement(18, 11)
+			GuiListNormal2 = new TGUIScriptSlotlist.Create(new TVec2D.Init(206, 251), new TVec2D.Init(10 + sprite.area.GetW()*scriptsNormal2Amount, sprite.area.GetH()), "scriptagency")
 
 			GuiListNormal2.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
@@ -4906,6 +4933,8 @@ endrem
 
 		'remove right click - to avoid leaving the room
 		MouseManager.ResetKey(2)
+		'also avoid long click (touch screen)
+		MouseManager.ResetLongClicked(1)
 	End Function
 
 

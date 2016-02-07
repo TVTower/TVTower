@@ -7,11 +7,11 @@ Import "game.game.base.bmx" 'to change game cursor
 
 
 'a graphical representation of shopping lists in studios/supermarket
-Type TGuiShoppingList Extends TGUIGameListItem
+Type TGuiShoppingListListItem Extends TGUIGameListItem
 	Field shoppingList:TShoppingList
 
 
-    Method Create:TGuiShoppingList(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+    Method Create:TGuiShoppingListListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
 		Super.Create(pos, dimension, value)
 
 		Self.assetNameDefault = "gfx_studio_shoppinglist_0"
@@ -21,14 +21,14 @@ Type TGuiShoppingList Extends TGUIGameListItem
 	End Method
 
 
-	Method CreateWithShoppingList:TGuiShoppingList(shoppingList:TShoppingList)
+	Method CreateWithShoppingList:TGuiShoppingListListItem(shoppingList:TShoppingList)
 		Self.Create()
 		Self.SetShoppingList(shoppingList)
 		Return Self
 	End Method
 
 
-	Method SetShoppingList:TGuiShoppingList(shoppingList:TShoppingList)
+	Method SetShoppingList:TGuiShoppingListListItem(shoppingList:TShoppingList)
 		Self.shoppingList = shoppingList
 		Self.InitAssets(GetAssetName(shoppingList.script.GetMainGenre(), False), GetAssetName(shoppingList.script.GetMainGenre(), True))
 
@@ -41,7 +41,7 @@ Type TGuiShoppingList Extends TGUIGameListItem
 		Super.Update()
 
 		'set mouse to "hover"
-		If shoppingList.owner = GetPlayerBaseCollection().playerID Or shoppingList.owner <= 0 And mouseover
+		If shoppingList.owner = GetPlayerBaseCollection().playerID Or shoppingList.owner <= 0 And isHovered()
 			GetGameBase().cursorstate = 1
 		EndIf
 				
@@ -77,8 +77,7 @@ Type TGuiShoppingList Extends TGUIGameListItem
 	End Method
 
 
-
-	Method Draw()
+	Method DrawContent()
 		SetColor 255,255,255
 		Local oldCol:TColor = New TColor.Get()
 
@@ -94,7 +93,7 @@ Type TGuiShoppingList Extends TGUIGameListItem
 			EndIf
 		EndIf
 
-		Super.Draw()
+		Super.DrawContent()
 
 		oldCol.SetRGBA()
 	End Method
@@ -112,7 +111,7 @@ Type TGUIShoppingListSlotList Extends TGUIGameSlotList
 
 	Method ContainsShoppingList:Int(shoppingList:TShoppingList)
 		For Local i:Int = 0 To Self.GetSlotAmount()-1
-			Local block:TGuiShoppingList = TGuiShoppingList( Self.GetItemBySlot(i) )
+			Local block:TGuiShoppingListListItem = TGuiShoppingListListItem( Self.GetItemBySlot(i) )
 			If block And block.shoppingList = shoppingList Then Return True
 		Next
 		Return False

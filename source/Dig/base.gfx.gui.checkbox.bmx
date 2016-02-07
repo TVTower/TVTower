@@ -214,8 +214,8 @@ Type TGUICheckBox Extends TGUIButton
 
 			Local oldCol:TColor = caption.color.copy()
 			If isChecked() Then caption.color.AdjustFactor(-60)
-			If mouseover Then caption.color.AdjustFactor(-30)
-			
+			If isHovered() Then caption.color.AdjustFactor(-30)
+
 			caption.Draw()
 			'reset color 
 			caption.color = oldCol

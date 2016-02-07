@@ -98,7 +98,7 @@ Type TProgrammePersonBaseCollection
 		Next
 		return array
 	End Method
-	
+
 
 	Method GetAllCelebritiesAsArray:TProgrammePersonBase[](onlyFictional:int = False)
 		local array:TProgrammePersonBase[]
@@ -323,8 +323,27 @@ Type TProgrammePersonBase extends TGameObject
 	End Method
 	
 
-	Method GetBaseFee:Int(jobID:int, channel:int=-1)
-		return 10000
+	Method GetBaseFee:Int(jobID:int, blocks:int, channel:int=-1)
+		Select jobID
+			case TVTProgrammePersonJob.ACTOR
+				return 5000
+			case TVTProgrammePersonJob.SUPPORTINGACTOR
+				return 2500
+			case TVTProgrammePersonJob.HOST
+			    return 1500
+			case TVTProgrammePersonJob.DIRECTOR
+				return 7500
+			case TVTProgrammePersonJob.SCRIPTWRITER 
+				return 4000
+			case TVTProgrammePersonJob.MUSICIAN 
+				return 2500
+			case TVTProgrammePersonJob.REPORTER 
+				return 1000
+			case TVTProgrammePersonJob.GUEST 
+				return 500
+			default
+				return 1000
+		End Select
 	End Method
 
 

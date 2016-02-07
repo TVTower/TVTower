@@ -98,16 +98,16 @@ Type TDatabaseLoader
 
 	Method LoadDir(dbDirectory:string)
 		'build file list of xml files in the given directory
-		local dirTree:TDirectoryTree = new TDirectoryTree.Init(dbDirectory, ["xml"], null, ["*"])
+		local dirTree:TDirectoryTree = new TDirectoryTree.SimpleInit()
+		dirTree.SetIncludeFileEndings(["xml"])
 		'exclude some files as we add it by default to load it
 		'as the first files / specific order (as they do not require
 		'others - this avoids "extending X"-log-entries)
-		dirTree.AddIncludeFileNames(["*"])
-		dirTree.AddExcludeFileNames(["database_people", "database_ads", "database_programmes", "database_news"])
+		dirTree.SetExcludeFileNames(["database_people", "database_ads", "database_programmes", "database_news"])
 
 		'add the rest of available files in the given dir
 		'(this also sorts the files)
-		dirTree.ScanDir()
+		dirTree.ScanDir(dbDirectory)
 
 		'add that files at the top
 		'(in reversed order as each is added at top of the others!)
@@ -386,6 +386,9 @@ Type TDatabaseLoader
 			celebrity.appearance = 0.01 * data.GetFloat("appearance", 100*celebrity.appearance)
 			celebrity.topGenre1 = data.GetInt("topgenre1", celebrity.topGenre1)
 			celebrity.topGenre2 = data.GetInt("topgenre2", celebrity.topGenre2)
+
+			'fill not given attributes with random data
+			if celebrity.fictional then celebrity.SetRandomAttributes()
 		endif
 
 
@@ -435,13 +438,13 @@ Type TDatabaseLoader
 		local data:TData = new TData
 		'price and topicality are outdated
 		xml.LoadValuesToData(nodeData, data, [..
-			"genre", "price", "topicality", "available" ..
+			"genre", "price", "quality", "available" ..
 		])
-			
+
 		newsEvent.genre = data.GetInt("genre", newsEvent.genre)
 		newsEvent.available = data.GetBool("available", newsEvent.available)
 		'topicality is "quality" here
-		newsEvent.qualityRaw = 0.01 * data.GetFloat("topicality", 100 * newsEvent.qualityRaw)
+		newsEvent.qualityRaw = 0.01 * data.GetFloat("quality", 100 * newsEvent.qualityRaw)
 		'price is "priceModifier" here (so add 1.0 until that is done in DB)
 		local priceMod:Float = data.GetFloat("price", 0)
 		if priceMod = 0 then priceMod = 1.0 'invalid data given
@@ -747,7 +750,7 @@ Type TDatabaseLoader
 			'create a simple person so jobs could get added to persons
 			'which are created after that programme
 			if not member
-				member = new TProgrammePerson
+				member = new TProgrammePersonBase
 				member.fictional = true
 
 				if memberGenerator

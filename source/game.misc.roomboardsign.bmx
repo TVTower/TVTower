@@ -283,43 +283,45 @@ Type TRoomBoard
 			'block is dragable
 			If DraggingAllowed And sign.dragable
 				'if right mbutton clicked and block dragged: reset coord of block
-				If MOUSEMANAGER.IsHit(2) And sign.dragged
+				If (MOUSEMANAGER.IsClicked(2) or MouseManager.IsLongClicked(1)) And sign.dragged
 					sign.SetCoords(sign.StartPos.x, sign.StartPos.y)
 					sign.dragged = False
 					MOUSEMANAGER.resetKey(2)
-				EndIf
+					MOUSEMANAGER.resetKey(1) 'also first button
 
-				'if left mbutton clicked: drop, replace with underlaying block...
-				If MouseManager.IsHit(1)
-					'search for underlaying block (we have a block dragged already)
-					If sign.dragged
-						'obj over old position - drop ?
-						If THelper.MouseIn(sign.StartPosBackup.x, sign.StartPosBackup.y, sign.rect.GetW(), sign.rect.GetH())
-							sign.dragged = False
-						EndIf
+				Else
+					'if left mbutton clicked: drop, replace with underlaying block...
+					If MouseManager.IsClicked(1)
+						'search for underlaying block (we have a block dragged already)
+						If sign.dragged
+							'obj over old position - drop ?
+							If THelper.MouseIn(sign.StartPosBackup.x, sign.StartPosBackup.y, sign.rect.GetW(), sign.rect.GetH())
+								sign.dragged = False
+							EndIf
 
-						'want to drop in origin-position
-						If sign.containsCoord(MouseManager.x, MouseManager.y)
-							sign.dragged = False
-							MouseManager.resetKey(1)
-						'not dropping on origin: search for other underlaying obj
-						Else
-							For Local otherSign:TRoomBoardSign = EachIn List
-								if otherSign = sign then continue
-								If otherSign.containsCoord(MouseManager.x, MouseManager.y) And otherSign.dragged = False And otherSign.dragable
-'									If game.networkgame Then
-'										Network.SendMovieAgencyChange(Network.NET_SWITCH, GetPlayerCollection().playerID, OtherlocObj.Programme.id, -1, locObj.Programme)
-'	  								End If
-									sign.SwitchBlock(otherSign)
-									MouseManager.resetKey(1)
-									Exit	'exit enclosing for-loop (stop searching for other underlaying blocks)
-								EndIf
-							Next
-						EndIf		'end: drop in origin or search for other obj underlaying
-					Else			'end: an obj is dragged
-						If sign.containsCoord(MouseManager.x, MouseManager.y)
-							sign.dragged = 1
-							MouseManager.resetKey(1)
+							'want to drop in origin-position
+							If sign.containsCoord(MouseManager.x, MouseManager.y)
+								sign.dragged = False
+								MouseManager.resetKey(1)
+							'not dropping on origin: search for other underlaying obj
+							Else
+								For Local otherSign:TRoomBoardSign = EachIn List
+									if otherSign = sign then continue
+									If otherSign.containsCoord(MouseManager.x, MouseManager.y) And otherSign.dragged = False And otherSign.dragable
+	'									If game.networkgame Then
+	'										Network.SendMovieAgencyChange(Network.NET_SWITCH, GetPlayerCollection().playerID, OtherlocObj.Programme.id, -1, locObj.Programme)
+	'	  								End If
+										sign.SwitchBlock(otherSign)
+										MouseManager.resetKey(1)
+										Exit	'exit enclosing for-loop (stop searching for other underlaying blocks)
+									EndIf
+								Next
+							EndIf		'end: drop in origin or search for other obj underlaying
+						Else			'end: an obj is dragged
+							If sign.containsCoord(MouseManager.x, MouseManager.y)
+								sign.dragged = 1
+								MouseManager.resetKey(1)
+							EndIf
 						EndIf
 					EndIf
 				EndIf 				'end: left mbutton clicked
@@ -476,8 +478,7 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 	'draw the Block inclusive text
 	'zeichnet den Block inklusive Text
 	Method Draw()
-		'SetColor 255,255,255
-		dragable=1  'normal
+		SetColor 255,255,255;dragable=1  'normal
 
 		If dragged = 1
 			If GetRoomBoard().AdditionallyDragged > 0 Then SetAlpha 1.0 - 1.0/GetRoomBoard().AdditionallyDragged * 0.25
@@ -501,6 +502,7 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 				imageCache.Draw(rect.GetX(),rect.GetY())
 			EndIf
 		EndIf
+		SetAlpha 1
 	End Method
 
 

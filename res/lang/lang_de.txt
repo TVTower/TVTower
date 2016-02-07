@@ -19,6 +19,11 @@ GRAPHICS = Grafik
 MUSIC = Musik
 SFX = Soundeffekte
 FULLSCREEN = Vollbild
+VSYNC = VSync
+WINDOW_MODE_RESOLUTION = Auflösung im Fenstermodus
+INPUT = Eingabe
+USE_TOUCH_INPUT = Nutze Touchscreen-Eingabe 
+MOVE_INSTEAD_CLICK_RADIUS = Radius "Bewegen statt Klick"
 MULTIPLAYER = Mehrspieler
 DEFAULTS_FOR_NEW_GAME= Vorgaben "Neues Spiel"
 RENDERER = Renderer
@@ -42,6 +47,8 @@ GAME_TIME = Spielzeit
 GAMEDAY = Spieltag
 BETTY_FEELINGS = Bettys Gefühle für Dich
 THERE_IS_NO_LOVE_IN_THE_AIR_YET = Derzeit liegt noch keine Liebe in der Luft ;D
+MENU = Menü
+OPEN_MENU = Menü öffnen
 
 PLEASE_BE_PATIENT = Bitte etwas Geduld
 SAVEGAME_GETS_CREATED = Speicherstand wird erstellt
@@ -207,7 +214,7 @@ AD_INFOMERCIAL = Du wirst für die Ausstrahlung von Dauerwerbesendungen bezahlt.
 AD_INFOMERCIAL_NOT_AVAILABLE = Für diese Werbung steht keine Dauerwerbesendung zur Verfügung.
 AD_INFOMERCIAL_PROFIT= Einnahmen: %PROFIT% pro 1000 Zuschauer
 
-
+JOB_ALL = Alle Berufe
 JOB_DIRECTOR        = Regisseur
 JOB_DIRECTORS       = Regisseure
 JOB_ACTOR           = Darsteller
@@ -226,6 +233,24 @@ JOB_SCRIPTWRITERS   = Drehbuchautoren
 JOB_MUSIC           = Musik
 JOB_MUSICIAN        = Musiker
 JOB_MUSICIANS       = Musiker
+
+JOB_AMATEUR = Amateur
+JOB_AMATEUR_DIRECTOR         = Regiepraktikant
+JOB_AMATEUR_DIRECTORS        = Regiepraktikanten
+JOB_AMATEUR_ACTOR            = Laiendarsteller
+JOB_AMATEUR_ACTORS           = Laiendarsteller
+JOB_AMATEUR_SUPPORTINGACTOR  = Laiennebendarsteller
+JOB_AMATEUR_SUPPORTINGACTORS = Laiennebendarsteller
+JOB_AMATEUR_REPORTER         = Amateurreporter
+JOB_AMATEUR_REPORTERS        = Amateurreporter
+JOB_AMATEUR_GUEST            = unerfahrener Gast
+JOB_AMATEUR_GUESTS           = unerfahrene Gäste
+JOB_AMATEUR_HOST             = Moderatorenneuling
+JOB_AMATEUR_HOSTS            = Moderatorenneulinge
+JOB_AMATEUR_SCRIPTWRITER     = unerfahrener Drehbuchautor
+JOB_AMATEUR_SCRIPTWRITERS    = unerfahrene Drehbuchautoren
+JOB_AMATEUR_MUSICIAN         = Freizeitmusiker
+JOB_AMATEUR_MUSICIANS        = Freizeitmusiker
 
 
 MOVIE_SPEED     = Tempo
@@ -586,3 +611,22 @@ PRIMETIME = Primetime
 NIGHTTIME = Nachtprogramm
 LOW_AUDIENCE = geringe Zuschauermenge
 HIGH_AUDIENCE = hohe Zuschauermenge
+
+COULISSE = Kulissen
+OUTFIT_AND_MASK = Ausstattung / Maske
+STUNTS = Stunts
+VFX_AND_SFX = VFX / SFX
+TEAM = Team (Techniker, etc.)
+PRODUCTION_SPEED = Produktionstempo
+
+CAST_EXPERIENCE = Erfahrung
+CAST_FAME = Bekanntheit
+CAST_SKILL = Fertigkeit
+CAST_POWER = Kraft
+CAST_HUMOR = Humor
+CAST_CHARISMA = Charisma
+CAST_APPEARANCE = Aussehen
+
+POINTSSET_OF_POINTSMAX_POINTS_SET = %POINTSSET%/%POINTSMAX% Punkte vergeben
+PRODUCTION_FOCUS_POINTS_NOT_SET_COMPLETELY = Produktionsschwerpunkte nicht komplett gesetzt
+NO_PRODUCTION_COMPANY_SELECTED = Keine Produktionsfirma ausgewählt

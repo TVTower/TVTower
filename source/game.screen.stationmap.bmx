@@ -355,12 +355,15 @@ Type TScreenHandler_StationMap
 		GetPlayerCollection().Get(room.owner).GetStationMap().Update()
 
 		'process right click
-		if MOUSEMANAGER.isHit(2)
+		if MOUSEMANAGER.isHit(2) or MouseManager.IsLongClicked(1)
 			local reset:int = (stationMapSelectedStation or stationMapMouseoverStation)
 
 			ResetStationMapAction(0)
 
-			if reset then MOUSEMANAGER.ResetKey(2)
+			if reset
+				MOUSEMANAGER.ResetKey(2)
+				MOUSEMANAGER.ResetKey(1) 'also normal clicks
+			endif
 		Endif
 
 
@@ -534,18 +537,18 @@ Type TScreenHandler_StationMap
 		stationList.deselectEntry()
 
 		For Local station:TStation = EachIn GetPlayerCollection().Get(playerID).GetStationMap().Stations
-			local item:TGUICustomSelectListItem = new TGUICustomSelectListItem.Create(new TVec2D, new TVec2D.Init(100,20), GetLocale("STATION")+" (" + TFunctions.convertValue(station.reach, 2, 0) + ")")
+			local item:TGUISelectListItem = new TGUISelectListItem.Create(new TVec2D, new TVec2D.Init(100,20), GetLocale("STATION")+" (" + TFunctions.convertValue(station.reach, 2, 0) + ")")
 			'link the station to the item
 			item.data.Add("station", station)
-			item._customDrawValue = DrawMapStationListEntry
+			item._customDrawContent = DrawMapStationListEntryContent
 			stationList.AddItem( item )
 		Next
 	End Function
 
 
 	'custom drawing function for list entries
-	Function DrawMapStationListEntry:int(obj:TGUIObject)
-		local item:TGUICustomSelectListItem = TGUICustomSelectListItem(obj)
+	Function DrawMapStationListEntryContent:int(obj:TGUIObject)
+		local item:TGUISelectListItem = TGUISelectListItem(obj)
 		if not item then return False
 
 		local station:TStation = TStation(item.data.Get("station"))

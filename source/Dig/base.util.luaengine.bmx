@@ -40,6 +40,7 @@ Import Brl.Retro
 ?Not bmxng
 'using custom to have support for const/function reflection
 Import "external/reflectionExtended/reflection.bmx"
+'Import BRL.Reflection
 ?bmxng
 'ng has it built-in!
 Import BRL.Reflection
@@ -344,14 +345,12 @@ Type TLuaEngine
 		Local obj:Object = lua_unboxobject(getLuaState(), 1)
 		Local typeId:TTypeId = TTypeId.ForObject(obj)
 		Local ident:String = lua_tostring(getLuaState(), 2)
-
 		'by default allow read access to lists/maps ?!
 		Local whiteListedType:Int = whiteListedTypes.contains(typeId.name().toLower())
 
 		'only expose if type ("parent") is set to get exposed
 		If Not whiteListedType And Not typeId.MetaData("_exposeToLua") Then Return False
 		Local exposeType:String = typeId.MetaData("_exposeToLua")
-
 		'===== SKIP PRIVATE THINGS =====
 		'each variable/function with an underscore is private
 		'eg.: function _myPrivateFunction
@@ -631,7 +630,7 @@ endrem
 		If func Then t = func.Invoke(args)
 		?
 		If mth Then t = mth.Invoke(obj, args)
-		Local typeId:TTypeId = funcOrMeth.TypeId()
+		Local typeId:TTypeId = funcOrMeth.TypeID().ReturnType()
 		If Object[](t).length > 0 Then typeId = ArrayTypeId
 
 		Select typeId

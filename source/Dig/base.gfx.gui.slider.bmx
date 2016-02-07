@@ -45,6 +45,10 @@ Type TGUISlider extends TGUIObject
 	Field minValue:Double
 	Field maxValue:Double
 	Field valueType:int = 0
+	'limit the "configurable" value range?
+	Field limitValue:int = False
+	Field limitMinValue:Double
+	Field limitMaxValue:Double
 	Field steps:int = 0 '<1 disables steps
 	Field handleSpriteName:String = "gfx_gui_slider.handle"
 	Field gaugeSpriteName:String = "gfx_gui_slider.gauge"
@@ -99,6 +103,41 @@ Type TGUISlider extends TGUIObject
 	End Method
 
 
+	Method SetLimitMinValue(value:Double)
+		limitValue = true
+		limitMinValue = value
+	End Method
+
+
+	Method SetLimitMaxValue(value:Double)
+		limitValue = true
+		limitMaxValue = value
+	End Method
+
+
+	Method SetLimitValueRange(minValue:Double, maxValue:Double)
+		SetLimitMinValue(minValue)
+		SetLimitMaxValue(maxValue)
+	End Method
+
+
+	Method DisableLimitValue()
+		limitValue = False
+	End Method
+
+
+	Method GetLimitMaxValue:Double()
+		if not limitValue then return maxValue
+		return limitMaxValue
+	End Method
+
+
+	Method GetLimitMinValue:Double()
+		if not limitValue then return minValue
+		return limitMinValue
+	End Method
+	
+
 	Method GetCurrentValue:Double()
 		'this rounds to "int/float/double" before! - according to type
 		'settings
@@ -120,18 +159,25 @@ Type TGUISlider extends TGUIObject
 
 	'override default
 	Method SetValue(newValue:string)
-		value = Max(minValue, Min(maxValue, Double(newValue)))
+		local newValueD:Double = Max(minValue, Min(maxValue, Double(newValue)))
 		if steps > 0
 			local length:Double = (maxValue - minValue)
 			local stepSize:Double = length / steps
 			'math. rounding
-'			local newValue:Double = ceil(stepSize * (Double(value) / length) - 0.5)
+			'newValueD = ceil(stepSize * (newValueD / length) - 0.5)
 			'step rounding
-'			local newValue:Double = stepSize * ceil(stepSize * (Double(value) / length) -0.5)
-			local newValue:Double = Ceil(Double(value) / stepSize - 0.5) * stepSize
-			value = newValue
+			'newValueD = stepSize * ceil(stepSize * (newValueD / length) -0.5)
+			newValueD = Ceil(newValueD / stepSize - 0.5) * stepSize
 		endif
-		EventManager.registerEvent( TEventSimple.Create( "guiobject.onChangeValue", null, self ) )
+
+		'clamp value by potential limitations
+		if limitValue then newValueD = Max(limitMinValue, Min(newValueD, limitMaxValue))
+		
+		'only adjust when different
+		if value <> string(newValueD)
+			EventManager.registerEvent( TEventSimple.Create( "guiobject.onChangeValue", null, self ) )
+			value = newValueD
+		endif
 	End Method
 
 
@@ -150,7 +196,8 @@ Type TGUISlider extends TGUIObject
 
 	Method SetValueByMouse()
 		'convert current mouse position to local widget coordinates
-		local mousePos:TVec2D = New TVec2D.Init(MouseManager.x - GetScreenX() - GetGaugeOffsetX(), MouseManager.y - GetScreenY() - GetGaugeOffsetY())
+		'-9 is "manual adjustment"
+		local mousePos:TVec2D = New TVec2D.Init(MouseManager.x - GetScreenX() - 9 - GetGaugeOffsetX(), MouseManager.y - GetScreenY() - GetGaugeOffsetY())
 
 		local scale:Float = (maxValue - minValue + 1) / Float(maxValue - minValue)
 		'scroll to the percentage

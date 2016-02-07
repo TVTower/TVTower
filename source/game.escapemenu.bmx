@@ -140,9 +140,9 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 		'remove previous entries
 		savegamelist.EmptyList()
 	
-		local dirTree:TDirectoryTree = new TDirectoryTree.Init(TSavegame.GetSavegamePath(), ["xml"], null, ["*"])
-		dirTree.AddIncludeFileNames(["*"])
-		dirTree.ScanDir("", True)
+		local dirTree:TDirectoryTree = new TDirectoryTree.SimpleInit()
+		dirTree.SetIncludeFileEndings(["xml"])
+		dirTree.ScanDir(TSavegame.GetSavegamePath(), True)
 		local fileURIs:String[] = dirTree.GetFiles()
 
 		'disable autosort - handled via "compare()" now
@@ -338,9 +338,9 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 		savegamelist.EmptyList()
 
 		'fill existing savegames
-		local dirTree:TDirectoryTree = new TDirectoryTree.Init(TSavegame.GetSavegamePath(), ["xml"], null, ["*"])
-		dirTree.AddIncludeFileNames(["*"])
-		dirTree.ScanDir("", True)
+		local dirTree:TDirectoryTree = new TDirectoryTree.SimpleInit()
+		dirTree.SetIncludeFileEndings(["xml"])
+		dirTree.ScanDir(TSavegame.GetSavegamePath(), True)
 		local fileURIs:String[] = dirTree.GetFiles()
 
 		'loop over all filenames

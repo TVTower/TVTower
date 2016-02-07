@@ -18,6 +18,11 @@ GRAPHICS = Graphics
 MUSIC = Music
 SFX = Sound effects
 FULLSCREEN = Fullscreen
+VSYNC = VSync
+WINDOW_MODE_RESOLUTION = Window mode resolution
+INPUT = Input
+USE_TOUCH_INPUT = Use touch input 
+MOVE_INSTEAD_CLICK_RADIUS = Move instead click radius
 MULTIPLAYER = Multiplayer
 RENDERER = Renderer
 SOUND_ENGINE = Soundengine
@@ -41,6 +46,8 @@ GAME_TIME = Game time
 GAMEDAY = Gameday
 BETTY_FEELINGS = Bettys feelings about you
 THERE_IS_NO_LOVE_IN_THE_AIR_YET = There is no love in the air yet... ;D
+MENU = Menu
+OPEN_MENU = Open Menu
 
 PLEASE_BE_PATIENT = Please be patient
 SAVEGAME_GETS_CREATED = Savegame gets created
@@ -212,7 +219,7 @@ AD_INFOMERCIAL			= You get paid for airing infomercials. Income depends on audie
 AD_INFOMERCIAL_NOT_AVAILABLE = There is no infomercial possible for this advertisement.
 AD_INFOMERCIAL_PROFIT	= Income: %PROFIT% per 1000 people watching
 
-
+JOB_ALL = All jobs
 JOB_DIRECTOR        = Director
 JOB_DIRECTORS       = Directors
 JOB_ACTOR           = Actor
@@ -231,6 +238,25 @@ JOB_SCRIPTWRITERS   = Scriptwriters
 JOB_MUSIC           = Music
 JOB_MUSICIAN        = Musician
 JOB_MUSICIANS       = Musicians
+
+JOB_AMATEUR = Amateur
+JOB_AMATEUR_DIRECTOR         = Amateur director
+JOB_AMATEUR_DIRECTORS        = Amateur directors
+JOB_AMATEUR_ACTOR            = Amateur actor
+JOB_AMATEUR_ACTORS           = Amateur actors
+JOB_AMATEUR_SUPPORTINGACTOR  = Amateur supporting actor
+JOB_AMATEUR_SUPPORTINGACTORS = Amateur supporting actors
+JOB_AMATEUR_REPORTER         = Amateur reporter
+JOB_AMATEUR_REPORTERS        = Amateur reporters
+JOB_AMATEUR_GUEST            = Amateur guest
+JOB_AMATEUR_GUESTS           = Amateur guests
+JOB_AMATEUR_HOST             = Amateur host
+JOB_AMATEUR_HOSTS            = Amateur hosts
+JOB_AMATEUR_SCRIPTWRITER     = Amateur scriptwriter
+JOB_AMATEUR_SCRIPTWRITERS    = Amateur scriptwriters
+JOB_AMATEUR_MUSICIAN         = Amateur musician
+JOB_AMATEUR_MUSICIANS        = Amateur musicians
+
 
 MOVIE_SPEED				= Speed
 MOVIE_CRITIC			= Critics
@@ -583,3 +609,22 @@ PRIMETIME = Primetime
 NIGHTTIME = Night time
 LOW_AUDIENCE = Low audience
 HIGH_AUDIENCE = High audience
+
+COULISSE = Coulisse
+OUTFIT_AND_MASK = Outfit / Mask
+STUNTS = Stunts
+VFX_AND_SFX = VFX / SFX
+TEAM = Team (Technicians, etc.)
+PRODUCTION_SPEED = Production speed
+
+CAST_EXPERIENCE = Experience
+CAST_FAME = Fame
+CAST_SKILL = Skill
+CAST_POWER = Power
+CAST_HUMOR = Humor
+CAST_CHARISMA = Charisma
+CAST_APPEARANCE = Appearance
+
+POINTSSET_OF_POINTSMAX_POINTS_SET = %POINTSSET%/%POINTSMAX% points set
+PRODUCTION_FOCUS_POINTS_NOT_SET_COMPLETELY = Production focus points not set completely
+NO_PRODUCTION_COMPANY_SELECTED = No production company selected

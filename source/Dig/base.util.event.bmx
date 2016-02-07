@@ -36,8 +36,14 @@ Rem
 EndRem
 SuperStrict
 Import brl.Map
-Import brl.Reflection
-'Import brl.retro
+?Not bmxng
+'using custom to have support for const/function reflection
+Import "external/reflectionExtended/reflection.bmx"
+'Import BRL.Reflection
+?bmxng
+'ng has it built-in!
+Import BRL.Reflection
+?
 ?Threaded
 Import Brl.threads
 ?

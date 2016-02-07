@@ -27,7 +27,8 @@ Import Brl.Math
 Import Pub.StdC
 ?Win32
 	Import "windows.c"
-	Import "libiphlpapi.a"
+'	Import "libiphlpapi.a"
+	Import "-liphlpapi"
 ?Linux
 	Import "linux.c"
 	Import "bsd.c"

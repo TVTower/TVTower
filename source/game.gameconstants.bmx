@@ -39,6 +39,8 @@ Type TVTGameConstants {_exposeToLua}
 
 	Field PersonGender:TVTPersonGender = new TVTPersonGender 
 	Field ProgrammePersonJob:TVTProgrammePersonJob = new TVTProgrammePersonJob
+
+	Field ProductionFocus:TVTProductionFocus = new TVTProductionFocus
 End Type
 Global GameConstants:TVTGameConstants = New TVTGameConstants
 
@@ -84,6 +86,38 @@ Type TVTNewsGenre {_exposeToLua}
 			case SPORT              return "sport"
 			case TECHNICS_MEDIA     return "technics_media"
 			case CURRENTAFFAIRS     return "currentaffairs"
+			default                 return "unknown"
+		end select
+	End Function
+End Type
+
+
+
+Type TVTProductionFocus {_exposeToLua}
+	Const NONE:int = 0
+	Const COULISSE:int = 1
+	Const OUTFIT_AND_MASK:int = 2
+	Const TEAM:int = 3
+	Const PRODUCTION_SPEED:int = 4
+	Const VFX_AND_SFX:int = 5
+	Const STUNTS:int = 6
+	Const count:int = 6
+
+
+	Function GetAtIndex:int(index:int)
+		'each index has a const, so just return index
+		return index
+	End Function
+
+
+	Function GetAsString:String(key:Int)
+		select key
+			case COULISSE           return "coulisse"
+			case OUTFIT_AND_MASK    return "outfit_and_mask"
+			case TEAM               return "team"
+			case PRODUCTION_SPEED   return "production_speed"
+			case VFX_AND_SFX        return "vfx_and_sfx"
+			case STUNTS             return "stunts"
 			default                 return "unknown"
 		end select
 	End Function
@@ -152,8 +186,8 @@ End Type
 '"product" in the DB
 Type TVTProgrammeProductType {_exposeToLua}
 	Const UNDEFINED:int = 0         '0
-	Const MOVIE:int = 1             '1	'movies
-	Const SERIES:int = 2            '2  'series with a "story"
+	Const MOVIE:int = 1             '1	'movies (fictional)
+	Const SERIES:int = 2            '2  'series with a "story" (fictional)
 	Const SHOW:int = 3              '3
 	Const FEATURE:int = 4           '4  'reportages
 	Const INFOMERCIAL:int = 5       '5

@@ -161,8 +161,8 @@ Type TGUIScroller Extends TGUIobject
 
 
 	Method SetCurrentValue(currentValue:Double)
-		self.currentValue = Max(minValue, Min(maxValue, currentValue))
 		EventManager.registerEvent( TEventSimple.Create( "guiobject.onChangeValue", null, self ) )
+		self.currentValue = Max(minValue, Min(maxValue, currentValue))
 	End Method
 
 
@@ -233,6 +233,9 @@ Type TGUIScroller Extends TGUIobject
 			EndIf
 		EndIf
 
+		'avoid that the mouse down gets handled as "long click"
+		MouseManager.ResetLongClicked(1)
+
 		'emit event that the scroller position has changed
 		If sender = guiScroller.guiButtonMinus
 			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("direction", "up"), guiScroller ) )
@@ -262,7 +265,7 @@ Type TGUIScroller Extends TGUIobject
 		Super.Update()
 
 		'check if mouse over progressRect
-		if not mouseover
+		if not isHovered()
 			progressRectHovered = False
 
 		else

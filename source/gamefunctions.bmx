@@ -145,10 +145,10 @@ Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 	Method DrawBackground()
 		Local oldCol:TColor = New TColor.Get()
 		SetColor(125, 160, 215)
-		If mouseover
+		If IsHovered()
 			SetAlpha(oldCol.a * 0.75)
 			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), rect.getH())
-		ElseIf selected
+		ElseIf IsSelected()
 			SetAlpha(oldCol.a * 0.5)
 			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), rect.getH())
 		EndIf
@@ -522,7 +522,11 @@ Type TError
 
 
 	Method Update()
-		MouseManager.resetKey(2) 'no right clicking allowed as long as "error notice is active"
+		'no right clicking allowed as long as "error notice is active"
+		MouseManager.ResetKey(2)
+		'also avoid long-clicking (touch)
+		MouseManager.ResetLongClicked(1)
+		
 		If Mousemanager.IsClicked(1)
 			If THelper.MouseIn(pos.x,pos.y, sprite.area.GetW(), sprite.area.GetH())
 				link.Remove()

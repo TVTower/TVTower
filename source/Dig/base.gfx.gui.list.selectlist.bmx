@@ -80,7 +80,7 @@ Type TGUISelectList Extends TGUIListBase
 			'remove old entry
 			Self.deselectEntry()
 			Self.selectedEntry = entry
-			If TGUISelectListItem(Self.selectedEntry) Then TGUISelectListItem(Self.selectedEntry).selected = True
+			If TGUISelectListItem(Self.selectedEntry) Then TGUISelectListItem(Self.selectedEntry).SetSelected(True)
 
 			'inform others: we successfully selected an item
 			EventManager.triggerEvent( TEventSimple.Create( "GUISelectList.onSelectEntry", new TData.Add("entry", entry) , Self ) )
@@ -90,7 +90,7 @@ Type TGUISelectList Extends TGUIListBase
 
 	Method DeselectEntry:Int()
 		If TGUISelectListItem(selectedEntry)
-			TGUISelectListItem(selectedEntry).selected = False
+			TGUISelectListItem(selectedEntry).SetSelected(False)
 			selectedEntry = Null
 		EndIf
 	End Method
@@ -105,9 +105,6 @@ End Type
 
 
 Type TGUISelectListItem Extends TGUIListItem
-	Field selected:Int = False
-
-
     Method Create:TGUISelectListItem(position:TVec2D=null, dimension:TVec2D=null, value:String="")
 		if not dimension then dimension = new TVec2D.Init(80,20)
 
@@ -138,14 +135,14 @@ Type TGUISelectListItem Extends TGUIListItem
 
 		'available width is parentsDimension minus startingpoint
 		Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
-		If mouseover
+		If isHovered()
 			SetColor 250,210,100
-			DrawRect(getScreenX(), getScreenY(), maxWidth, rect.getH())
+			DrawRect(getScreenX(), getScreenY(), maxWidth, getScreenHeight())
 			SetColor 255,255,255
-		ElseIf selected
+		ElseIf isSelected()
 			SetAlpha GetAlpha()*0.5
 			SetColor 250,210,100
-			DrawRect(getScreenX(), getScreenY(), maxWidth, rect.getH())
+			DrawRect(getScreenX(), getScreenY(), maxWidth, getScreenHeight())
 			SetColor 255,255,255
 			SetAlpha GetAlpha()*2.0
 		EndIf
@@ -174,49 +171,6 @@ Type TGUISelectListItem Extends TGUIListItem
 			Super.Draw()
 
 			if upperParent then upperParent.ResetViewPort()
-		else
-			Super.Draw()
-		endif
-	End Method
-End Type
-
-
-
-
-Type TGUICustomSelectListItem Extends TGUISelectListItem
-	'allow custom functions to get hooked in
-	Field _customDraw:int(obj:TGUIObject)
-	Field _customDrawValue:int(obj:TGUIObject)
-	Field _customDrawBackground:int(obj:TGUIObject)
-
-
-    Method Create:TGUICustomSelectListItem(position:TVec2D=null, dimension:TVec2D=null, value:String="")
-   		Super.Create(position, dimension, value)
-		Return Self
-	End Method
-
-
-	Method DrawBackground()
-		if _customDrawBackground
-			_customDrawBackground(self)
-		else
-			Super.DrawBackground()
-		endif
-	End Method
-
-
-	Method DrawValue()
-		if _customDrawValue
-			_customDrawValue(self)
-		else
-			Super.DrawValue()
-		endif
-	End Method
-
-
-	Method Draw()
-		if _customDraw
-			_customDraw(self)
 		else
 			Super.Draw()
 		endif

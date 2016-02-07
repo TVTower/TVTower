@@ -92,11 +92,19 @@ Type TGUIDropDown Extends TGUIInput
 		AddEventListener(EventManager.registerListenerMethod("guiobject.onRemoveFocus", Self, "onRemoveFocus", self ))
 		'listen to clicks to dropdown-items
 		AddEventListener(EventManager.registerListenerMethod("GUIDropDownItem.onClick",	Self.list, "onClickOnEntry" ))
+		'someone uses the mouse wheel to scroll over the panel
+		AddEventListener(EventManager.registerListenerFunction( "guiobject.OnScrollwheel", onScrollWheel, Self))
 
 		'to register if an item was selected
 		AddEventListener(EventManager.registerListenerMethod("guiselectlist.onSelectEntry", self, "onSelectEntry", self.list ))
 
 		Return Self
+	End Method
+
+
+	Method Resize(w:Float = 0, h:Float = 0)
+		Super.Resize(w, h)
+		if list then list.Resize(w, -1)
 	End Method
 
 
@@ -125,7 +133,6 @@ Type TGUIDropDown Extends TGUIInput
 
 		'close on click on a list item
 		if receiver and list.HasItem(receiver)
-			EventManager.triggerEvent( TEventSimple.Create("GUIDropDown.onSelectEntry", null, Self, receiver) )
 			SetSelectedEntry(receiver)
 
 			'reset mouse button to avoid clicks below
@@ -172,8 +179,6 @@ Type TGUIDropDown Extends TGUIInput
 		if not item then return False
 
 		SetSelectedEntry(item)
-		'inform others: we successfully selected an item
-		EventManager.triggerEvent( TEventSimple.Create("GUIDropDown.onSelectEntry", null, Self, item) )
 	EndMethod
 
 
@@ -186,9 +191,30 @@ Type TGUIDropDown Extends TGUIInput
 	End Method
 
 
+	'handle clicks on the up/down-buttons and inform others about changes
+	Function onScrollWheel:Int( triggerEvent:TEventBase )
+		Local dropdown:TGUIDropDown = TGUIDropDown(triggerEvent.GetSender())
+		Local value:Int = triggerEvent.GetData().getInt("value",0)
+		If Not dropdown Or value=0 Then Return False
+
+		local newEntryPos:int = -1
+		If value >= 1
+			newEntryPos = Min(dropdown.list.entries.count()-1, dropdown.GetEntryPos(dropdown.GetSelectedEntry()) + 1)
+		else
+			newEntryPos = Max(0, dropdown.GetEntryPos(dropdown.GetSelectedEntry()) - 1)
+		endif
+		dropdown.SetSelectedEntryByPos( newEntryPos )
+
+		'set to accepted so that nobody else receives the event
+		triggerEvent.SetAccepted(True)
+	End Function
+
+
 	Method SetSelectedEntry(item:TGUIObject)
 		selectedEntry = item
 		SetValue(item.GetValue())
+
+		EventManager.triggerEvent( TEventSimple.Create("GUIDropDown.onSelectEntry", null, Self, item) )
 	End Method
 
 
@@ -198,18 +224,27 @@ Type TGUIDropDown Extends TGUIInput
 
 
 	Method SetSelectedEntryByPos:Int(itemPos:int=0)
-		local item:TGUIObject = GetSelectedEntryByPos(itemPos)
+		local item:TGUIObject = GetEntryByPos(itemPos)
 		if item then SetSelectedEntry(item)
 	End Method
 
 
-	Method GetSelectedEntryByPos:TGUIObject(itemPos:int=0)
+	Method GetEntryByPos:TGUIObject(itemPos:int=0)
 		local item:TGUIObject = TGUIObject(list.entries.ValueAtIndex(itemPos))
 		if not item then return Null
 
 		return Item
 	End Method
 
+
+	Method GetEntryPos:int(entry:TGUIObject)
+		if not entry then return -1
+		For local i:int = 0 until list.entries.count()
+			if entry = TGUIObject(list.entries.ValueAtIndex(i)) then return i
+		Next
+		return -1
+	End Method
+	
 
 	Method GetEntries:TList()
 		return list.entries
@@ -304,19 +339,30 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 	End Method
 
 
-
 	Method DrawBackground()
-		If mouseover
+		if not isHovered() and not isSelected() then return
+
+		
+		local oldCol:TColor = new TColor.Get()
+		SetAlpha oldCol.a * GetScreenAlpha()
+
+		local upperParent:TGUIObject = GetParent("TGUIListBase")
+		upperParent.RestrictContentViewPort()
+		
+		If isHovered()
 			SetColor 250,210,100
-			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), rect.getH())
+			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), GetScreenHeight())
 			SetColor 255,255,255
-		ElseIf selected
+		ElseIf isSelected()
 			SetAlpha GetAlpha()*0.5
 			SetColor 250,210,100
-			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), rect.getH())
+			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), GetScreenHeight())
 			SetColor 255,255,255
 			SetAlpha GetAlpha()*2.0
 		EndIf
+
+		upperParent.ResetViewPort()
+		oldCol.SetRGBA()
 	End Method
 
 
@@ -332,7 +378,7 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 
 
 	Method DrawValue()
-		GetFont().draw(value, getScreenX(), Int(GetScreenY() + 2 + 0.5*(rect.getH()- GetFont().getHeight(value))), valueColor)
+		GetFont().DrawBlock(value, getScreenX()+2, GetScreenY(), GetScreenWidth()-4, GetScreenHeight(), ALIGN_LEFT_CENTER, valueColor)
 	End Method
 
 

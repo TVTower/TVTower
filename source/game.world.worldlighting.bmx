@@ -33,6 +33,9 @@ Type TWorldLighting
 		dayFog = TColor.Create(225, 240, 255)
 		nightFog = TColor.Create(15, 30, 80)
 
+		currentLight = fullLight.Copy()
+		currentFogColor = dayFog.Copy()
+
 		return Self 
 	End Method
 

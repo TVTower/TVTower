@@ -116,6 +116,12 @@ Type TScriptBase Extends TNamedGameObject
 	End Method
 
 
+	Method isFictional:int()
+		if scriptProductType = TVTProgrammeProductType.MOVIE then return True
+		if scriptProductType = TVTProgrammeProductType.SERIES then return True
+		return False
+	End Method
+
 	'returns the genre of a script - if a group, the one used the most
 	'often is returned
 	Method GetMainGenre:int()
@@ -146,6 +152,14 @@ Type TScriptBase Extends TNamedGameObject
 		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(_genre))
 	End Function
 
+	Method GetProductionTypeString:String(_productionType:Int=-1)
+		If _productionType < 0 Then _productionType = self.scriptProductType
+		return _GetProductionTypeString(_productionType)
+	End Method
+
+	Function _GetProductionTypeString:string(_productionType:Int)
+		Return GetLocale("PROGRAMME_PRODUCT_" + TVTProgrammeProductType.GetAsString(_productionType))
+	End Function
 
 
 	Method GetSubScriptCount:int()

@@ -140,10 +140,10 @@ Type TScreenHandler_ProgrammePlanner
 		'   -> so "onDrop" is not possible
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropProgrammePlanElement, "TGUIProgrammePlanElement") ]
 		'drag/drop ... from or to one of the two lists
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.removeItem", onRemoveItemFromSlotList, GuiListProgrammes) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.removeItem", onRemoveItemFromSlotList, GuiListAdvertisements) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.addItem", onAddItemToSlotList, GuiListProgrammes) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.addItem", onAddItemToSlotList, GuiListAdvertisements) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.removedItem", onRemoveItemFromSlotList, GuiListProgrammes) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.removedItem", onRemoveItemFromSlotList, GuiListAdvertisements) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.addedItem", onAddItemToSlotList, GuiListProgrammes) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.addedItem", onAddItemToSlotList, GuiListAdvertisements) ]
 		'so we can forbid adding to a "past"-slot
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.TryAddItem", onTryAddItemToSlotList, GuiListProgrammes) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.TryAddItem", onTryAddItemToSlotList, GuiListAdvertisements) ]
@@ -306,19 +306,19 @@ Type TScreenHandler_ProgrammePlanner
 
 	Function RefreshHoveredProgrammePlanElement:int()
 		For local guiObject:TGuiProgrammePlanElement = eachin GuiListProgrammes._slots
-			if guiObject.isDragged() or guiObject.mouseOver
+			if guiObject.isDragged() or guiObject.isHovered()
 				hoveredGuiProgrammePlanElement = guiObject
 				return True
 			endif
 		Next
 		For local guiObject:TGuiProgrammePlanElement = eachin GuiListAdvertisements._slots
-			if guiObject.isDragged() or guiObject.mouseOver
+			if guiObject.isDragged() or guiObject.isHovered()
 				hoveredGuiProgrammePlanElement = guiObject
 				return True
 			endif
 		Next
 		For local guiObject:TGuiProgrammePlanElement = eachin GuiManager.ListDragged
-			if guiObject.isDragged() or guiObject.mouseOver
+			if guiObject.isDragged() or guiObject.isHovered()
 				hoveredGuiProgrammePlanElement = guiObject
 				return True
 			endif
@@ -680,7 +680,6 @@ Type TScreenHandler_ProgrammePlanner
 			print "[ERROR] dragged item from unknown list - removing from programmeplan at "+slot+":00 - FAILED"
 		endif
 
-
 		return TRUE
 	End Function
 
@@ -869,6 +868,8 @@ Type TScreenHandler_ProgrammePlanner
 
 			'remove right click - to avoid leaving the room
 			MouseManager.ResetKey(2)
+			'also avoid long click (touch screen)
+			MouseManager.ResetLongClicked(1)
 		endif
 	End Function
 

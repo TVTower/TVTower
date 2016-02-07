@@ -42,10 +42,10 @@ Type TGUIChat Extends TGUIPanel
 
 		guiList = New TGUIListBase.Create(New TVec2D.Init(0,0), New TVec2D.Init(GetContentScreenWidth(),GetContentScreenHeight()), limitState)
 		guiList.setOption(GUI_OBJECT_ACCEPTS_DROP, False)
-		guiList.autoSortItems = False
+		guiList.SetAutoSortItems(False)
 		guiList.SetAcceptDrop("")
 		guiList.setParent(Self)
-		guiList.autoScroll = True
+		guiList.SetAutoScroll(True)
 		guiList.SetBackground(Null)
 
 		guiInput = New TGUIInput.Create(New TVec2D.Init(0, dimension.y),New TVec2D.Init(dimension.x,-1), "", 32, limitState)
@@ -370,8 +370,6 @@ Type TGUIChatEntry Extends TGUIListItem
 
 
 	Method DrawContent()
-		Self.getParent("tguilistbase").RestrictViewPort()
-
 		If Self.showtime <> Null Then SetAlpha Float(Self.showtime - Time.GetTimeGone())/500.0
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
@@ -392,7 +390,5 @@ Type TGUIChatEntry Extends TGUIListItem
 		GetBitmapFontManager().baseFont.drawBlock(GetValue(), getScreenX()+move.x, getScreenY()+move.y, maxWidth-move.X, maxHeight, Null, valueColor, 2, 1, 0.5)
 
 		SetAlpha 1.0
-
-		Self.getParent("tguilistbase").ResetViewPort()
 	End Method
 End Type
