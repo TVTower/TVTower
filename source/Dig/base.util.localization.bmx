@@ -247,7 +247,7 @@ Type TLocalization
 		local master:TLocalizationLanguage = GetLanguage("de")
 		local compare:TLocalizationLanguage = GetLanguage(compareLang)
 		
-		print "---- LOCALIZATION STATE ----"
+		print "=== LANGUAGE FILES ============="
 		print "AVAILABLE:"
 		print "----------"
 		for local k:string = EachIn master.map.Keys()
@@ -255,7 +255,7 @@ Type TLocalization
 
 			print master.languageCode+" |"+ k + " = " +master.Get(k)
 			print compare.languageCode+" |"+ k + " = " +compare.Get(k)
-			print "~t-"
+			print Chr(8203) 'zero width space, else it skips "~n"
 		Next
 		print "~t"
 		print "MISSING:"
@@ -265,10 +265,10 @@ Type TLocalization
 
 			print master.languageCode+" |"+ k + " = " +master.Get(k)
 			print compare.languageCode+" |"+ k + " = "
-			print "~t-"
+			print Chr(8203) 'zero width space, else it skips "~n"
 		Next
 
-		print "----------------------------"
+		print "================================"
 	End Function
 	
 
@@ -416,12 +416,16 @@ Type TLocalizedString
 	End Method
 
 
-	Method Get:String(language:String="")
+	Method Get:String(language:String="", returnDefault:int = True)
 		if language="" then language = currentLanguage
 		if values.Contains(language)
 			return string(values.ValueForKey(language))
 		else
-			return string(values.ValueForKey(defaultLanguage))
+			If returnDefault
+				return string(values.ValueForKey(defaultLanguage))
+			Else
+				return ""
+			EndIf
 		endif
 	End Method
 

@@ -868,6 +868,8 @@ Type TScreenHandler_ProgrammePlanner
 
 			'remove right click - to avoid leaving the room
 			MouseManager.ResetKey(2)
+			'also avoid long click (touch screen)
+			MouseManager.ResetLongClicked(1)
 		endif
 	End Function
 

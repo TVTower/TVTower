@@ -937,6 +937,29 @@ Type TGUIListItem Extends TGUIobject
 	'override onClick to emit a special event
 	Method OnClick:int(triggerEvent:TEventBase)
 		Super.OnClick(triggerEvent)
+
+
+		Local data:TData = triggerEvent.GetData()
+		If Not data Then Return False
+
+
+		'only react on clicks with left mouse button
+		If data.getInt("button") <> 1 Then Return False
+
+		'we handled the click
+		triggerEvent.SetAccepted(True)
+
+		If isDragged()
+			'instead of using auto-coordinates, we use the coord of the
+			'mouseposition when the "hit" started
+			'drop(new TVec2D.Init(data.getInt("x",-1), data.getInt("y",-1)))
+			drop(MouseManager.GetClickPosition(1))
+		Else
+			'same for dragging
+			'drag(new TVec2D.Init(data.getInt("x",-1), data.getInt("y",-1)))
+			drag(MouseManager.GetClickPosition(1))
+		EndIf
+
 		'inform others that a selectlistitem was clicked
 		'this makes the "listitem-clicked"-event filterable even
 		'if the itemclass gets extended (compared to the general approach
@@ -958,26 +981,6 @@ endrem
 
 	'override default
 	Method onHit:Int(triggerEvent:TEventBase)
-		Local data:TData = triggerEvent.GetData()
-		If Not data Then Return False
-
-
-		'only react on clicks with left mouse button
-		If data.getInt("button") <> 1 Then Return False
-
-		'we handled the click
-		triggerEvent.SetAccepted(True)
-
-		If isDragged()
-			'instead of using auto-coordinates, we use the coord of the
-			'mouseposition when the "hit" started
-			'drop(new TVec2D.Init(data.getInt("x",-1), data.getInt("y",-1)))
-			drop(MouseManager.GetClickPosition(1))
-		Else
-			'same for dragging
-			'drag(new TVec2D.Init(data.getInt("x",-1), data.getInt("y",-1)))
-			drag(MouseManager.GetClickPosition(1))
-		EndIf
 	End Method
 
 

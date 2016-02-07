@@ -171,6 +171,8 @@ Type TApp
 	'store listener for music loaded in "startup"
 	Field OnLoadMusicListener:TLink
 
+	Field openEscapeMenu:int = False
+
 	'able to draw loading screen?
 	Global baseResourcesLoaded:Int = 0
 	'holds bg for loading screen and more
@@ -336,6 +338,9 @@ Type TApp
 		TSoundManager.GetInstance().MuteMusic(Not config.GetBool("sound_music", True))
 		TSoundManager.GetInstance().MuteSfx(Not config.GetBool("sound_effects", True))
 
+		MouseManager._minSwipeDistance = config.GetInt("touchClickRadius", 10)
+		MouseManager._ignoreFirstClick = config.GetBool("touchInput", False)
+
 		if TGame._instance Then GetGame().LoadConfig(config)
 	End Method
 
@@ -446,6 +451,8 @@ Type TApp
 		'non gui elements (eg. to leave rooms)
 		If App.ExitAppDialogue or App.EscapeMenuWindow
 			MouseManager.ResetKey(2)
+			'also avoid long click (touch screen)
+			MouseManager.ResetLongClicked(1)
 
 			'this sets all IsClicked(), IsHit() to False
 			MouseManager.Disable(1)
@@ -652,6 +659,8 @@ Type TApp
 						RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(m, 1)
 						print "added Goaaal to player1's suitcase"
 						endrem
+
+'						PrintCurrentTranslationState("fr")
 					EndIf
 
 				
@@ -813,7 +822,7 @@ Type TApp
 
 		ScreenCollection.UpdateCurrent(GetDeltaTimer().GetDelta())
 	
-		If Not GuiManager.GetKeystrokeReceiver() And KEYWRAPPER.hitKey(KEY_ESCAPE)
+		If App.openEscapeMenu or (Not GuiManager.GetKeystrokeReceiver() And KEYWRAPPER.hitKey(KEY_ESCAPE))
 			'ask to exit to main menu
 			'TApp.CreateConfirmExitAppDialogue(True)
 			If GetGame().gamestate = TGame.STATE_RUNNING
@@ -824,6 +833,7 @@ Type TApp
 				'ask to exit the app - from main menu?
 				'TApp.CreateConfirmExitAppDialogue(False)
 			endif
+			App.openEscapeMenu = False
 		EndIf
 		'Force-quit with CTRL+C
 		if KEYMANAGER.IsDown(KEY_LCONTROL) and KEYMANAGER.IsHit(KEY_C)
@@ -2387,7 +2397,7 @@ Type TScreen_GameSettings Extends TGameScreen
 	'	rewrite to Assets instead of global list in TColor ?
 	'	local colors:TList = Assets.GetList("PlayerColors")
 
-		If MOUSEMANAGER.IsHit(1)
+		If MOUSEMANAGER.IsClicked(1)
 			Local slotPos:TVec2D = New TVec2D.Init(guiPlayersPanel.GetContentScreenX(),guiPlayersPanel.GetContentScreeny())
 			For Local i:Int = 0 To 3
 				Local colorRect:TRectangle = New TRectangle.Init(slotPos.GetIntX() + 2, Int(guiChannelNames[i].GetContentScreenY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
@@ -2862,6 +2872,8 @@ Type TSettingsWindow
 	Field inputWindowResolutionHeight:TGUIInput
 	Field inputGameName:TGUIInput
 	Field inputOnlinePort:TGUIInput
+	Field inputTouchClickRadius:TGUIInput
+	Field checkTouchInput:TGUICheckbox
 
 
 	Method Remove:int()
@@ -2910,8 +2922,12 @@ Type TSettingsWindow
 		data.AddBoolString("vsync", checkVSync.IsChecked())
 		data.Add("screenW", inputWindowResolutionWidth.GetValue())
 		data.Add("screenH", inputWindowResolutionHeight.GetValue())
+
 		data.Add("gamename", inputGameName.GetValue())
 		data.Add("onlineport", inputOnlinePort.GetValue())
+
+		data.AddBoolString("touchInput", checkTouchInput.IsChecked())
+		data.Add("touchClickRadius", inputTouchClickRadius.GetValue())
 
 		Return data
 	End Method
@@ -2928,7 +2944,9 @@ Type TSettingsWindow
 		checkFullscreen.SetChecked(data.GetBool("fullscreen", False))
 		checkVSync.SetChecked(data.GetBool("vsync", True))
 		inputWindowResolutionWidth.SetValue(Max(400, data.GetInt("screenW", 800)))
-		inputWindowResolutionHeight.SetValue(Max(300, data.GetInt("screenW", 600)))
+		inputWindowResolutionHeight.SetValue(Max(300, data.GetInt("screenH", 600)))
+		checkTouchInput.SetChecked(data.GetBool("touchInput", MouseManager._ignoreFirstClick))
+		inputTouchClickRadius.SetValue(Max(5, data.GetInt("touchClickRadius", MouseManager._minSwipeDistance)))
 
 		'check available sound engine entries
 		Local selectedDropDownItem:TGUIDropDownItem
@@ -2973,12 +2991,12 @@ Type TSettingsWindow
 	Method Init:TSettingsWindow()
 		'LAYOUT CONFIG
 		Local nextY:Int = 0, nextX:Int = 0
-		Local rowWidth:Int = 215
+		Local rowWidth:Int[] = [210,210,250]
 		Local checkboxWidth:Int = 180
 		Local inputWidth:Int = 170
 		Local labelH:Int = 12
 		Local inputH:Int = 0
-		Local windowW:Int = 670
+		Local windowW:Int = 700
 		Local windowH:Int = 420
 
 		modalDialogue = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D.Init(windowW, windowH), "SYSTEM")
@@ -3032,7 +3050,7 @@ Type TSettingsWindow
 
 
 		nextY = 0
-		nextX = 1*rowWidth
+		nextX = rowWidth[0]
 		'SOUND
 		Local labelTitleSound:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("SOUND_OUTPUT"))
 		labelTitleSound.SetFont(GetBitmapFont("default", 14, BOLDFONT))
@@ -3134,7 +3152,7 @@ Type TSettingsWindow
 
 		'MULTIPLAYER
 		nextY = 0
-		nextX = 2*rowWidth
+		nextX = rowWidth[0] + rowWidth[1]
 		Local labelTitleMultiplayer:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("MULTIPLAYER"))
 		labelTitleMultiplayer.SetFont(GetBitmapFont("default", 14, BOLDFONT))
 		canvas.AddChild(labelTitleMultiplayer)
@@ -3151,7 +3169,31 @@ Type TSettingsWindow
 		inputOnlinePort = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + 12), New TVec2D.Init(50,-1), "", 4)
 		canvas.AddChild(labelOnlinePort)
 		canvas.AddChild(inputOnlinePort)
+		nextY :+ inputH + labelH * 1.5
+		nextY :+ 15
+
+		'INPUT
+		'nextY = 0
+		'nextX = rowWidth[0] + rowWidth[1]
+		Local labelTitleInput:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("INPUT"))
+		labelTitleInput.SetFont(GetBitmapFont("default", 14, BOLDFONT))
+		canvas.AddChild(labelTitleInput)
+		nextY :+ 25
+
+		checkTouchInput = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth + 20,-1), "")
+		checkTouchInput.SetCaption(GetLocale("USE_TOUCH_INPUT"))
+		canvas.AddChild(checkTouchInput)
+		nextY :+ Max(inputH, checkTouchInput.GetScreenHeight())
+
+		Local labelTouchClickRadius:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("MOVE_INSTEAD_CLICK_RADIUS")+":")
+		inputTouchClickRadius = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + 12), New TVec2D.Init(50,-1), "", 4)
+		Local labelTouchClickRadiusPixel:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX + 55 , nextY + 18), "px")
+		canvas.AddChild(labelTouchClickRadius)
+		canvas.AddChild(inputTouchClickRadius)
+		canvas.AddChild(labelTouchClickRadiusPixel)
+
 		nextY :+ inputH + 5
+
 
 		'fill values
 		SetGuiValues(App.config)
@@ -3638,17 +3680,21 @@ Type GameEvents
 	'called each time a room (the active player visits) is updated
 	Function RoomOnUpdate:Int(triggerEvent:TEventBase)
 		'handle normal right click
-		If MOUSEMANAGER.IsHit(2)
+		If MOUSEMANAGER.IsHit(2) or MOUSEMANAGER.IsLongClicked(1)
 			'check subrooms
 			'only leave a room if not in a subscreen
 			'if in subscreen, go to parent one
 			If ScreenCollection.GetCurrentScreen().parentScreen
 				ScreenCollection.GoToParentScreen()
 				MOUSEMANAGER.ResetKey(2)
+				'also avoid long click (touch screen)
+				MouseManager.ResetLongClicked(1)
 			Else
 				'leaving prohibited - just reset button
 				If Not GetPlayer().GetFigure().LeaveRoom()
 					MOUSEMANAGER.resetKey(2)
+					'also avoid long click (touch screen)
+					MouseManager.ResetLongClicked(1)
 				EndIf
 			EndIf
 		EndIf
@@ -4387,7 +4433,126 @@ Function DEV_switchRoom:Int(room:TRoom)
 	Return True
 End Function
 
+Function PrintCurrentTranslationState(compareLang:string="tr")
+	print "=== TRANSLATION STATUS: DE - "+compareLang.ToUpper()+" ====="
 
+	TLocalization.PrintCurrentTranslationState(compareLang)
+
+	print "~t"
+	print "=== PROGRAMMES ================="
+	print "AVAILABLE:"
+	print "----------"
+	For local obj:TProgrammeData = EachIn GetProgrammeDataCollection().entries.Values()	
+		local printed:int = False
+		if obj.title.Get("de") <> obj.title.Get(compareLang)
+			print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
+			print "      "+compareLang+": "+ obj.title.Get(compareLang).Replace("~n", "~n          ")
+			printed = True
+		endif
+		if obj.description.Get("de") <> obj.description.Get(compareLang)
+			print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
+			print "      "+compareLang+": "+ obj.description.Get(compareLang).Replace("~n", "~n          ")
+			printed = True
+		endif
+		if printed then print Chr(8203) 'zero width space, else it skips "~n"
+	Next
+
+	print "~t"
+	print "MISSING:"
+	print "--------"
+	For local obj:TProgrammeData = EachIn GetProgrammeDataCollection().entries.Values()	
+		local printed:int = False
+		if obj.title.Get("de") = obj.title.Get(compareLang)
+			print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
+			print "      "+compareLang+": "
+			printed = True
+		endif
+		if obj.description.Get("de") = obj.description.Get(compareLang)
+			print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
+			print "      "+compareLang+": "
+			printed = True
+		endif
+		if printed then print Chr(8203) 'zero width space, else it skips "~n"
+	Next	
+
+
+	print "~t"
+	print "=== ADCONTRACTS ================"
+	print "AVAILABLE:"
+	print "----------"
+	For local obj:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()	
+		local printed:int = False
+		if obj.title.Get("de") <> obj.title.Get(compareLang)
+			print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
+			print "      "+compareLang+": "+ obj.title.Get(compareLang).Replace("~n", "~n          ")
+			printed = True
+		endif
+		if obj.description.Get("de") <> obj.description.Get(compareLang)
+			print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
+			print "      "+compareLang+": "+ obj.description.Get(compareLang).Replace("~n", "~n          ")
+			printed = True
+		endif
+		if printed then print Chr(8203) 'zero width space, else it skips "~n"
+	Next
+
+	print "~t"
+	print "MISSING:"
+	print "--------"
+	For local obj:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()	
+		local printed:int = False
+		if obj.title.Get("de") = obj.title.Get(compareLang)
+			print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
+			print "      "+compareLang+": "
+			printed = True
+		endif
+		if obj.description.Get("de") = obj.description.Get(compareLang)
+			print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
+			print "      "+compareLang+": "
+			printed = True
+		endif
+		if printed then print Chr(8203) 'zero width space, else it skips "~n"
+	Next	
+
+
+
+	print "~t"
+	print "=== NEWSEVENTS ================="
+	print "AVAILABLE:"
+	print "----------"
+	For local obj:TNewsEvent = EachIn GetNewsEventCollection().allNewsEvents.Values()	
+		local printed:int = False
+		if obj.title.Get("de") <> obj.title.Get(compareLang)
+			print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
+			print "      "+compareLang+": "+ obj.title.Get(compareLang).Replace("~n", "~n          ")
+			printed = True
+		endif
+		if obj.description.Get("de") <> obj.description.Get(compareLang)
+			print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
+			print "      "+compareLang+": "+ obj.description.Get(compareLang).Replace("~n", "~n          ")
+			printed = True
+		endif
+		if printed then print Chr(8203) 'zero width space, else it skips "~n"
+	Next
+
+	print "~t"
+	print "MISSING:"
+	print "--------"
+	For local obj:TNewsEvent = EachIn GetNewsEventCollection().allNewsEvents.Values()	
+		local printed:int = False
+		if obj.title.Get("de") = obj.title.Get(compareLang)
+			print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
+			print "      "+compareLang+": "
+			printed = True
+		endif
+		if obj.description.Get("de") = obj.description.Get(compareLang)
+			print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
+			print "      "+compareLang+": "
+			printed = True
+		endif
+		if printed then print Chr(8203) 'zero width space, else it skips "~n"
+	Next	
+	print "================================"
+End Function
 
 
 Function StartApp:Int()

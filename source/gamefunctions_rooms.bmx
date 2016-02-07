@@ -412,7 +412,8 @@ Type RoomHandler_Office extends TRoomHandler
 
 		GetPlayer().GetFigure().fromroom = Null
 		If MOUSEMANAGER.IsClicked(1)
-			If THelper.IsIn(MouseManager.x,MouseManager.y,25,40,150,295)
+			'emulated right click or clicked door
+			If MOUSEMANAGER.IsLongClicked(1) or THelper.IsIn(MouseManager.x,MouseManager.y,25,40,150,295)
 				GetPlayer().GetFigure().LeaveRoom()
 				MOUSEMANAGER.resetKey(1)
 			EndIf
@@ -422,45 +423,49 @@ Type RoomHandler_Office extends TRoomHandler
 		'allowed for owner only - or with key
 		If GetPlayer().HasMasterKey() OR IsPlayersRoom(room)
 			GetGame().cursorstate = 0
-			'safe - reachable for all
-			If THelper.MouseIn(165,85,70,100)
-				If not SafeToolTip Then SafeToolTip = TTooltip.Create(GetLocale("ROOM_SAFE"), GetLocale("FOR_PRIVATE_AFFAIRS"), 140, 100,-1,-1)
-				SafeToolTip.enabled = 1
-				SafeToolTip.SetMinTitleAndContentWidth(90, 120)
-				SafeToolTip.Hover()
-				GetGame().cursorstate = 1
-				If MOUSEMANAGER.IsClicked(1)
-					MOUSEMANAGER.resetKey(1)
-					GetGame().cursorstate = 0
 
-					ScreenCollection.GoToSubScreen("screen_office_safe")
-				endif
-			EndIf
+			'only if player does not want to leave room
+			if not MouseManager.IsLongClicked(1)
+				'safe - reachable for all
+				If THelper.MouseIn(165,85,70,100)
+					If not SafeToolTip Then SafeToolTip = TTooltip.Create(GetLocale("ROOM_SAFE"), GetLocale("FOR_PRIVATE_AFFAIRS"), 140, 100,-1,-1)
+					SafeToolTip.enabled = 1
+					SafeToolTip.SetMinTitleAndContentWidth(90, 120)
+					SafeToolTip.Hover()
+					GetGame().cursorstate = 1
+					If MOUSEMANAGER.IsClicked(1)
+						MOUSEMANAGER.resetKey(1)
+						GetGame().cursorstate = 0
 
-			'planner - reachable for all
-			If THelper.IsIn(MouseManager.x, MouseManager.y, 600,140,128,210)
-				If not PlannerToolTip Then PlannerToolTip = TTooltip.Create(GetLocale("ROOM_PROGRAMMEPLANNER"), GetLocale("AND_STATISTICS"), 580, 140)
-				PlannerToolTip.enabled = 1
-				PlannerToolTip.Hover()
-				GetGame().cursorstate = 1
-				If MOUSEMANAGER.IsClicked(1)
-					MOUSEMANAGER.resetKey(1)
-					GetGame().cursorstate = 0
-					ScreenCollection.GoToSubScreen("screen_office_programmeplanner")
-				endif
-			EndIf
+						ScreenCollection.GoToSubScreen("screen_office_safe")
+					endif
+				EndIf
 
-			If THelper.IsIn(MouseManager.x, MouseManager.y, 732,45,160,170)
-				If not StationsToolTip Then StationsToolTip = TTooltip.Create(GetLocale("ROOM_STATIONMAP"), GetLocale("BUY_AND_SELL"), 650, 80, 0, 0)
-				StationsToolTip.enabled = 1
-				StationsToolTip.Hover()
-				GetGame().cursorstate = 1
-				If MOUSEMANAGER.IsClicked(1)
-					MOUSEMANAGER.resetKey(1)
-					GetGame().cursorstate = 0
-					ScreenCollection.GoToSubScreen("screen_office_stationmap")
-				endif
-			EndIf
+				'planner - reachable for all
+				If THelper.IsIn(MouseManager.x, MouseManager.y, 600,140,128,210)
+					If not PlannerToolTip Then PlannerToolTip = TTooltip.Create(GetLocale("ROOM_PROGRAMMEPLANNER"), GetLocale("AND_STATISTICS"), 580, 140)
+					PlannerToolTip.enabled = 1
+					PlannerToolTip.Hover()
+					GetGame().cursorstate = 1
+					If MOUSEMANAGER.IsClicked(1)
+						MOUSEMANAGER.resetKey(1)
+						GetGame().cursorstate = 0
+						ScreenCollection.GoToSubScreen("screen_office_programmeplanner")
+					endif
+				EndIf
+
+				If THelper.IsIn(MouseManager.x, MouseManager.y, 732,45,160,170)
+					If not StationsToolTip Then StationsToolTip = TTooltip.Create(GetLocale("ROOM_STATIONMAP"), GetLocale("BUY_AND_SELL"), 650, 80, 0, 0)
+					StationsToolTip.enabled = 1
+					StationsToolTip.Hover()
+					GetGame().cursorstate = 1
+					If MOUSEMANAGER.IsClicked(1)
+						MOUSEMANAGER.resetKey(1)
+						GetGame().cursorstate = 0
+						ScreenCollection.GoToSubScreen("screen_office_stationmap")
+					endif
+				EndIf
+			endif
 
 			If StationsToolTip Then StationsToolTip.Update()
 			If PlannerToolTip Then PlannerToolTip.Update()
@@ -718,6 +723,8 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		'remove right click - to avoid leaving the room
 		MouseManager.ResetKey(2)
+		'also avoid long click (touch screen)
+		MouseManager.ResetLongClicked(1)
 	End Function
 
 
@@ -859,7 +866,7 @@ Type RoomHandler_Archive extends TRoomHandler
 					openCollectionTooltip.Hover()
 
 					GetGame().cursorstate = 1
-					If MOUSEMANAGER.IsHit(1)
+					If MOUSEMANAGER.IsClicked(1) and not MouseManager.IsLongClicked(1)
 						MOUSEMANAGER.resetKey(1)
 						GetGame().cursorstate = 0
 						programmeList.SetOpen(1)
@@ -1708,17 +1715,19 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		'show a auction-tooltip (but not if we dragged a block)
 		if not hoveredGuiProgrammeLicence
-			If THelper.IsIn(MouseManager.x, MouseManager.y, 210,220,140,60)
-				If not AuctionToolTip Then AuctionToolTip = TTooltip.Create(GetLocale("AUCTION"), GetLocale("MOVIES_AND_SERIES_AUCTION"), 200, 180, 0, 0)
-				AuctionToolTip.enabled = 1
-				AuctionToolTip.Hover()
-				GetGame().cursorstate = 1
-				If MOUSEMANAGER.IsClicked(1)
-					MOUSEMANAGER.resetKey(1)
-					GetGame().cursorstate = 0
-					ScreenCollection.GoToSubScreen("screen_movieauction")
-				endif
-			EndIf
+			if not MouseManager.IsLongClicked(1)
+				If THelper.IsIn(MouseManager.x, MouseManager.y, 210,220,140,60)
+					If not AuctionToolTip Then AuctionToolTip = TTooltip.Create(GetLocale("AUCTION"), GetLocale("MOVIES_AND_SERIES_AUCTION"), 200, 180, 0, 0)
+					AuctionToolTip.enabled = 1
+					AuctionToolTip.Hover()
+					GetGame().cursorstate = 1
+					If MOUSEMANAGER.IsClicked(1)
+						MOUSEMANAGER.resetKey(1)
+						GetGame().cursorstate = 0
+						ScreenCollection.GoToSubScreen("screen_movieauction")
+					endif
+				EndIf
+			endif
 		endif
 
 		'delete unused and create new gui elements
@@ -1990,15 +1999,17 @@ Type RoomHandler_News extends TRoomHandler
 		if not IsPlayersRoom(room) then return False
 
 		'pinwall
-		If THelper.IsIn(MouseManager.x, MouseManager.y, 167,60,240,160)
-			If not PlannerToolTip Then PlannerToolTip = TTooltip.Create("Newsplaner", "Hinzufügen und entfernen", 180, 100, 0, 0)
-			PlannerToolTip.enabled = 1
-			PlannerToolTip.Hover()
-			GetGame().cursorstate = 1
-			If MOUSEMANAGER.IsClicked(1)
-				MOUSEMANAGER.resetKey(1)
-				GetGame().cursorstate = 0
-				ScreenCollection.GoToSubScreen("screen_newsstudio_newsplanner")
+		if not MouseManager.IsLongClicked(1)
+			If THelper.IsIn(MouseManager.x, MouseManager.y, 167,60,240,160)
+				If not PlannerToolTip Then PlannerToolTip = TTooltip.Create("Newsplaner", "Hinzufügen und entfernen", 180, 100, 0, 0)
+				PlannerToolTip.enabled = 1
+				PlannerToolTip.Hover()
+				GetGame().cursorstate = 1
+				If MOUSEMANAGER.IsClicked(1)
+					MOUSEMANAGER.resetKey(1)
+					GetGame().cursorstate = 0
+					ScreenCollection.GoToSubScreen("screen_newsstudio_newsplanner")
+				endif
 			endif
 		endif
 	End Function
@@ -2270,6 +2281,8 @@ Type RoomHandler_News extends TRoomHandler
 		
 		'remove right click - to avoid leaving the room
 		MouseManager.ResetKey(2)
+		'also avoid long click (touch screen)
+		MouseManager.ResetLongClicked(1)
 	End Function
 
 
@@ -2605,6 +2618,8 @@ Type RoomHandler_Studio extends TRoomHandler
 
 		'remove right click - to avoid leaving the room
 		MouseManager.ResetKey(2)
+		'also avoid long click (touch screen)
+		MouseManager.ResetLongClicked(1)
 	End Function
 	
 
@@ -3040,20 +3055,22 @@ Type RoomHandler_Studio extends TRoomHandler
 		if not IsPlayersRoom(TRoom(triggerEvent.GetSender())) then return False
 
 		'mouse over studio manager
-		if THelper.MouseIn(0,100,150,300)
-			if not studioManagerDialogue
-				'generate the dialogue if not done yet
-				if MouseManager.IsHit(1) and not draggedGuiScript
-					GenerateStudioManagerDialogue()
-				endif
-
-				'show tooltip of studio manager
-				'only show when no dialogue is (or just got) opened 
+		if not MouseManager.IsLongClicked(1)
+			if THelper.MouseIn(0,100,150,300)
 				if not studioManagerDialogue
-					If not studioManagerTooltip Then studioManagerTooltip = TTooltip.Create(GetLocale("STUDIO_MANAGER"), GetLocale("GIVES_INFORMATION_ABOUT_PRODUCTION_OR_HANDS_OUT_SHOPPING_LIST"), 150, 160,-1,-1)
-					studioManagerTooltip.enabled = 1
-					studioManagerTooltip.SetMinTitleAndContentWidth(150)
-					studioManagerTooltip.Hover()
+					'generate the dialogue if not done yet
+					if MouseManager.IsClicked(1) and not draggedGuiScript
+						GenerateStudioManagerDialogue()
+					endif
+
+					'show tooltip of studio manager
+					'only show when no dialogue is (or just got) opened 
+					if not studioManagerDialogue
+						If not studioManagerTooltip Then studioManagerTooltip = TTooltip.Create(GetLocale("STUDIO_MANAGER"), GetLocale("GIVES_INFORMATION_ABOUT_PRODUCTION_OR_HANDS_OUT_SHOPPING_LIST"), 150, 160,-1,-1)
+						studioManagerTooltip.enabled = 1
+						studioManagerTooltip.SetMinTitleAndContentWidth(150)
+						studioManagerTooltip.Hover()
+					endif
 				endif
 			endif
 		endif
@@ -4005,6 +4022,8 @@ endrem
 
 		'remove right click - to avoid leaving the room
 		MouseManager.ResetKey(2)
+		'also avoid long click (touch screen)
+		MouseManager.ResetLongClicked(1)
 	End Function
 
 
@@ -4214,7 +4233,7 @@ endrem
 			if THelper.IsIn(MouseManager.x,MouseManager.y, 5, 335, boxWidth, boxHeight)
 				ListSortVisible = True
 
-				if MouseManager.IsHit(1)
+				if MouseManager.isClicked(1) and not MouseManager.IsLongClicked(1)
 					local contentX:int = 5 + skin.GetContentX()
 					local sortKeys:int[] = [0, 1, 2]
 					For local i:int = 0 to 2
@@ -4914,6 +4933,8 @@ endrem
 
 		'remove right click - to avoid leaving the room
 		MouseManager.ResetKey(2)
+		'also avoid long click (touch screen)
+		MouseManager.ResetLongClicked(1)
 	End Function
 
 

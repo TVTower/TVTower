@@ -27,6 +27,8 @@
 	<screenH>600</screenH>
 	<vsync>TRUE</vsync>
 	<fps>-1</fps>
+	<touchInput>False</touchInput>
+	<touchClickRadius>10</touchClickRadius>
 
 	<!--
 		disable all weather effects?

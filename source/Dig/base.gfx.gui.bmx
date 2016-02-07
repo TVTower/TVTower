@@ -70,7 +70,7 @@ Type TGUIManager
 	Field UpdateState_mouseButtonDown:Int[]
 	Field UpdateState_mouseButtonHit:Int[]
 	Field UpdateState_mouseScrollwheelMovement:Int = 0
-	Field UpdateState_foundHitObject:Int = False
+	Field UpdateState_foundHitObject:Int[] = [0,0,0]
 	Field UpdateState_foundHoverObject:Int = False
 	Field UpdateState_foundFocusObject:Int = False
 
@@ -448,7 +448,7 @@ endrem
 		UpdateState_mouseButtonHit = MOUSEMANAGER.GetAllStatusHit() 'single and double clicks!
 
 		UpdateState_foundFocusObject = False
-		UpdateState_foundHitObject = False
+		UpdateState_foundHitObject = [0,0,0]
 		UpdateState_foundHoverObject = False
 	End Method
 
@@ -1731,7 +1731,7 @@ Type TGUIobject
 					'inform others about a right guiobject click
 					'we do use a "cached hit state" so we can reset it if
 					'we found a one handling it
-					If GUIManager.UpdateState_mouseButtonHit[2]
+					If (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1)) and not GUIManager.UpdateState_foundHitObject[2 -1]
 						Local clickEvent:TEventSimple = TEventSimple.Create("guiobject.OnClick", new TData.AddNumber("button",2).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 						OnClick(clickEvent)
 						'fire onClickEvent
@@ -1741,74 +1741,83 @@ Type TGUIobject
 						'have to modify the event IF they accepted the click
 
 						'reset Button
-						GUIManager.UpdateState_mouseButtonHit[2] = False
+						if MouseManager.IsLongClicked(1)
+							GUIManager.UpdateState_mouseButtonHit[1] = False
+							'MouseManager.ResetClicked(1) 'long and normal
+						else
+							GUIManager.UpdateState_mouseButtonHit[2] = False
+						endif
+
+						GUIManager.UpdateState_foundHitObject[2 -1] = True
 					EndIf
 
 
 					'IsClicked does not include waiting time - so check for
 					'single and double clicks too
-					If _flags & GUI_OBJECT_ENABLED and not GUIManager.UpdateState_foundHitObject
+					If _flags & GUI_OBJECT_ENABLED and not GUIManager.UpdateState_foundHitObject[0]
 						local isHit:int = False
-						If MouseManager.IsHit(1)
-							local hitEvent:TEvenTsimple = TEventSimple.Create("guiobject.OnHit", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
-							'let the object handle the click
-							OnHit(hitEvent)
-							'fire onClickEvent
-							EventManager.triggerEvent(hitEvent)
+						if not MouseManager.IsLongClicked(1)
+							If MouseManager.IsHit(1)
+								local hitEvent:TEvenTsimple = TEventSimple.Create("guiobject.OnHit", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+								'let the object handle the click
+								OnHit(hitEvent)
+								'fire onClickEvent
+								EventManager.triggerEvent(hitEvent)
 
-							isHit = True
-						endif
-						
-						If MOUSEMANAGER.IsClicked(1) or MOUSEMANAGER.GetClicks(1) > 0
-							'=== SET CLICKED VAR ====
-							mouseIsClicked = MouseManager.GetClickposition(1)
+								isHit = True
+							endif
+							
+							If MOUSEMANAGER.IsClicked(1) or MOUSEMANAGER.GetClicks(1) > 0
+								'=== SET CLICKED VAR ====
+								mouseIsClicked = MouseManager.GetClickposition(1)
 
-							'=== SEND OUT CLICK EVENT ====
-							'if recognized as "double click" no normal "onClick"
-							'is emitted. Same for "single clicks".
-							'this avoids sending "onClick" and after 100ms
-							'again "onSingleClick" AND "onClick"
-							Local clickEvent:TEventSimple
-							If MOUSEMANAGER.IsDoubleClicked(1)
-								clickEvent = TEventSimple.Create("guiobject.OnDoubleClick", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
-								'let the object handle the click
-								OnDoubleClick(clickEvent)
-							ElseIf MOUSEMANAGER.IsSingleClicked(1)
-								clickEvent = TEventSimple.Create("guiobject.OnSingleClick", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
-								'let the object handle the click
-								OnSingleClick(clickEvent)
-							'only "hit" if done the first time
-							Else 'if not GUIManager.UpdateState_foundHitObject
-								clickEvent = TEventSimple.Create("guiobject.OnClick", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
-								'let the object handle the click
-								OnClick(clickEvent)
+								'=== SEND OUT CLICK EVENT ====
+								'if recognized as "double click" no normal "onClick"
+								'is emitted. Same for "single clicks".
+								'this avoids sending "onClick" and after 100ms
+								'again "onSingleClick" AND "onClick"
+								Local clickEvent:TEventSimple
+								If MOUSEMANAGER.IsDoubleClicked(1)
+									clickEvent = TEventSimple.Create("guiobject.OnDoubleClick", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+									'let the object handle the click
+									OnDoubleClick(clickEvent)
+								ElseIf MOUSEMANAGER.IsSingleClicked(1)
+									clickEvent = TEventSimple.Create("guiobject.OnSingleClick", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+									'let the object handle the click
+									OnSingleClick(clickEvent)
+								'only "hit" if done the first time
+								Else 'if not GUIManager.UpdateState_foundHitObject
+									clickEvent = TEventSimple.Create("guiobject.OnClick", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+									'let the object handle the click
+									OnClick(clickEvent)
+								EndIf
+								'fire onClickEvent
+								EventManager.triggerEvent(clickEvent)
+
+								'added for imagebutton and arrowbutton not being reset when mouse standing still
+		'						MouseIsDown = Null
+								'reset mouse button
+								'-> do not reset it as it would disable
+								'   "doubleclick" recognition
+								'MOUSEMANAGER.ResetKey(1)
+								'but we can reset clicked state
+								MOUSEMANAGER.ResetClicked(1)
+
+								isHit = True
 							EndIf
-							'fire onClickEvent
-							EventManager.triggerEvent(clickEvent)
 
-							'added for imagebutton and arrowbutton not being reset when mouse standing still
-	'						MouseIsDown = Null
-							'reset mouse button
-							'-> do not reset it as it would disable
-							'   "doubleclick" recognition
-							'MOUSEMANAGER.ResetKey(1)
-							'but we can reset clicked state
-							MOUSEMANAGER.ResetClicked(1)
+							If isHit
+								'reset Button cache
+								GUIManager.UpdateState_mouseButtonHit[1] = False
 
-							isHit = True
-						EndIf
+								'clicking on an object sets focus to it
+								'so remove from old before
+								'Ronny: 2014/05/11 - commented out, still needed?
+								'If Not HasFocus() Then GUIManager.ResetFocus()
 
-						If isHit
-							'reset Button cache
-							GUIManager.UpdateState_mouseButtonHit[1] = False
-
-							'clicking on an object sets focus to it
-							'so remove from old before
-							'Ronny: 2014/05/11 - commented out, still needed?
-							'If Not HasFocus() Then GUIManager.ResetFocus()
-
-							GUIManager.UpdateState_foundHitObject = True
-						EndIf
+								GUIManager.UpdateState_foundHitObject[0] = True
+							EndIf
+						endif
 					EndIf
 				EndIf
 			EndIf

@@ -355,12 +355,15 @@ Type TScreenHandler_StationMap
 		GetPlayerCollection().Get(room.owner).GetStationMap().Update()
 
 		'process right click
-		if MOUSEMANAGER.isHit(2)
+		if MOUSEMANAGER.isHit(2) or MouseManager.IsLongClicked(1)
 			local reset:int = (stationMapSelectedStation or stationMapMouseoverStation)
 
 			ResetStationMapAction(0)
 
-			if reset then MOUSEMANAGER.ResetKey(2)
+			if reset
+				MOUSEMANAGER.ResetKey(2)
+				MOUSEMANAGER.ResetKey(1) 'also normal clicks
+			endif
 		Endif
 
 

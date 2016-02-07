@@ -233,6 +233,9 @@ Type TGUIScroller Extends TGUIobject
 			EndIf
 		EndIf
 
+		'avoid that the mouse down gets handled as "long click"
+		MouseManager.ResetLongClicked(1)
+
 		'emit event that the scroller position has changed
 		If sender = guiScroller.guiButtonMinus
 			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("direction", "up"), guiScroller ) )

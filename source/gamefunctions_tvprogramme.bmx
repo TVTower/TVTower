@@ -1353,7 +1353,7 @@ endrem
 
 				'only interact if allowed
 				If clicksAllowed
-					If MOUSEMANAGER.IsHit(1)
+					If MOUSEMANAGER.IsShortClicked(1)
 						If mode = MODE_PROGRAMMEPLANNER
 							If licences[i].isSingle()
 								'create and drag new block
@@ -1382,7 +1382,6 @@ endrem
 						'something changed, so stop looping through rest
 						If doneSomething
 							MOUSEMANAGER.resetKey(1)
-							MOUSEMANAGER.resetClicked(1)
 							Return True
 						EndIf
 					EndIf
@@ -1533,7 +1532,7 @@ endrem
 					
 					'only interact if allowed
 					If clicksAllowed
-						If MOUSEMANAGER.IsHit(1)
+						If MOUSEMANAGER.IsShortClicked(1)
 							'create and drag new block
 							New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( New TProgramme.Create(licence), "programmePlanner" ).drag()
 							SetOpen(0)
@@ -1565,7 +1564,7 @@ endrem
 
 		'only react to genre area if episode area is not open
 		If openState <3
-			If MOUSEMANAGER.IsHit(1) And THelper.MouseIn(genresRect.GetX(), genresRect.GetY() + genresStartY, genresRect.GetW(), genreSize.GetY()*TProgrammeLicenceFilter.GetVisibleCount())
+			If MOUSEMANAGER.IsShortClicked(1) And THelper.MouseIn(genresRect.GetX(), genresRect.GetY() + genresStartY, genresRect.GetW(), genreSize.GetY()*TProgrammeLicenceFilter.GetVisibleCount())
 				SetOpen(2)
 				Local visibleFilters:TProgrammeLicenceFilter[] = TProgrammeLicenceFilter.GetVisible()
 				currentGenre = Max(0, Min(visibleFilters.length-1, Floor((MouseManager.y - (genresRect.GetY() + genresStartY)) / genreSize.GetY())))
@@ -1731,7 +1730,7 @@ Type TgfxContractlist Extends TPlannerList
 					GetGame().cursorstate = 1
 					'only interact if allowed
 					If clicksAllowed
-						If MOUSEMANAGER.IsHit(1)
+						If MOUSEMANAGER.IsShortClicked(1)
 							New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( New TAdvertisement.Create(contract), "programmePlanner" ).drag()
 							MOUSEMANAGER.resetKey(1)
 							SetOpen(0)
@@ -1744,9 +1743,10 @@ Type TgfxContractlist Extends TPlannerList
 			Next
 		EndIf
 
-		If MOUSEMANAGER.IsHit(2)
+		If MOUSEMANAGER.IsClicked(2) or MouseManager.IsLongClicked(1)
 			SetOpen(0)
 			MOUSEMANAGER.resetKey(2)
+			MOUSEMANAGER.resetKey(1) 'also normal clicks
 		EndIf
 
 		'close if mouse hit outside - simple mode: so big rect
