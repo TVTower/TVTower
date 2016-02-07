@@ -46,6 +46,8 @@ GAME_TIME = Game time
 GAMEDAY = Gameday
 BETTY_FEELINGS = Bettys feelings about you
 THERE_IS_NO_LOVE_IN_THE_AIR_YET = There is no love in the air yet... ;D
+MENU = Menu
+OPEN_MENU = Open Menu
 
 PLEASE_BE_PATIENT = Please be patient
 SAVEGAME_GETS_CREATED = Savegame gets created

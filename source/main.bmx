@@ -821,8 +821,9 @@ Type TApp
 		GetGame().cursorstate = 0
 
 		ScreenCollection.UpdateCurrent(GetDeltaTimer().GetDelta())
-	
-		If App.openEscapeMenu or (Not GuiManager.GetKeystrokeReceiver() And KEYWRAPPER.hitKey(KEY_ESCAPE))
+
+		local openEscapeMenu:int = App.openEscapeMenu or openEscapeMenuViaInterface
+		If openEscapeMenu or (Not GuiManager.GetKeystrokeReceiver() And KEYWRAPPER.hitKey(KEY_ESCAPE))
 			'ask to exit to main menu
 			'TApp.CreateConfirmExitAppDialogue(True)
 			If GetGame().gamestate = TGame.STATE_RUNNING
@@ -834,6 +835,7 @@ Type TApp
 				'TApp.CreateConfirmExitAppDialogue(False)
 			endif
 			App.openEscapeMenu = False
+			openEscapeMenuViaInterface = False
 		EndIf
 		'Force-quit with CTRL+C
 		if KEYMANAGER.IsDown(KEY_LCONTROL) and KEYMANAGER.IsHit(KEY_C)

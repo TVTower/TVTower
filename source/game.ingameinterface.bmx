@@ -10,6 +10,7 @@ Import "game.player.base.bmx"
 Import "game.player.programmeplan.bmx"
 Import "game.game.base.bmx"
 
+Global openEscapeMenuViaInterface:Int = False
 'Interface, border, TV-antenna, audience-picture and number, watch...
 'updates tv-images shown and so on
 Type TInGameInterface
@@ -22,6 +23,7 @@ Type TInGameInterface
 	Field CurrentAudienceToolTip:TTooltipAudience
 	Field MoneyToolTip:TTooltip
 	Field BettyToolTip:TTooltip
+	Field MenuToolTip:TTooltip
 	Field CurrentTimeToolTip:TTooltip
 	Field tooltips:TList = CreateList()
 	Field noiseSprite:TSprite
@@ -80,6 +82,7 @@ Type TInGameInterface
 		CurrentTimeToolTip = TTooltip.Create("", "", 490, 535)
 		MoneyToolTip = TTooltip.Create("", "", 490, 408)
 		BettyToolTip = TTooltip.Create("", "", 490, 485)
+		MenuToolTip = TTooltip.Create("", "", 470, 560)
 
 		'collect them in one list (to sort them correctly)
 		tooltips.AddLast(CurrentProgrammeToolTip)
@@ -87,6 +90,7 @@ Type TInGameInterface
 		tooltips.AddLast(CurrentTimeToolTip)
 		tooltips.AddLast(MoneyTooltip)
 		tooltips.AddLast(BettyToolTip)
+		tooltips.AddLast(MenuToolTip)
 
 
 		noiseSprite = GetSpriteFromRegistry("gfx_interface_tv_noise")
@@ -139,7 +143,7 @@ Type TInGameInterface
 		Next
 
 			'channel selection (tvscreen on interface)
-		If MOUSEMANAGER.IsHit(1)
+		If MOUSEMANAGER.IsClicked(1)
 			For Local i:Int = 1 To 4
 				If THelper.MouseIn( 75 + i * 33, 171 + 383, 33, 41)
 					ShowChannel = i
@@ -231,7 +235,7 @@ Type TInGameInterface
 		EndIf
 
 
-		If THelper.MouseIn(20,385,280,200)
+		If THelper.MouseIn(20,382,280,200)
 			CurrentProgrammeToolTip.SetTitle(CurrentProgrammeText)
 			local content:String = ""
 			If programmePlan
@@ -314,7 +318,17 @@ Type TInGameInterface
 			CurrentProgrammeToolTip.enabled = 1
 			CurrentProgrammeToolTip.Hover()
 	    EndIf
-		If THelper.MouseIn(355,468,130,30)
+		If THelper.MouseIn(355,413,130,34)
+			MoneyToolTip.title = getLocale("MONEY")
+			local content:String = ""
+			content	= "|b|"+getLocale("MONEY")+":|/b| "+TFunctions.DottedValue(GetPlayerBase().GetMoney()) + getLocale("CURRENCY")
+			content	:+ "~n"
+			content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ TFunctions.DottedValue(GetPlayerBase().GetCredit()) + getLocale("CURRENCY")+"|/color|"
+			MoneyTooltip.SetContent(content)
+			MoneyToolTip.enabled 	= 1
+			MoneyToolTip.Hover()
+		EndIf
+		If THelper.MouseIn(355,457,130,37)
 			local playerProgrammePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan( GetPlayerBaseCollection().playerID )
 			if playerProgrammePlan
 				CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_NUMBER")+": "+playerProgrammePlan.getFormattedAudience()+ " ("+MathHelper.NumberToString(playerProgrammePlan.GetAudiencePercentage() * 100,2)+"%)")
@@ -325,34 +339,33 @@ Type TInGameInterface
 				CurrentTimeToolTip.dirtyImage = True
 			endif
 		EndIf
-		If THelper.MouseIn(355,533,130,45)
-			CurrentTimeToolTip.SetTitle(getLocale("GAME_TIME")+": ")
-			CurrentTimeToolTip.SetContent(GetWorldTime().getFormattedTime()+" "+getLocale("DAY")+" "+GetWorldTime().getDayOfYear()+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear())
-			CurrentTimeToolTip.enabled = 1
-			CurrentTimeToolTip.Hover()
-		EndIf
-		If THelper.MouseIn(355,415,130,30)
-			MoneyToolTip.title = getLocale("MONEY")
-			local content:String = ""
-			content	= "|b|"+getLocale("MONEY")+":|/b| "+TFunctions.DottedValue(GetPlayerBase().GetMoney()) + getLocale("CURRENCY")
-			content	:+ "~n"
-			content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ TFunctions.DottedValue(GetPlayerBase().GetCredit()) + getLocale("CURRENCY")+"|/color|"
-			MoneyTooltip.SetContent(content)
-			MoneyToolTip.enabled 	= 1
-			MoneyToolTip.Hover()
-		EndIf
-		If THelper.MouseIn(355,510,130,15)
+		If THelper.MouseIn(355,508,130,13)
 			BettyToolTip.SetTitle(getLocale("BETTY_FEELINGS"))
 			BettyToolTip.SetContent(getLocale("THERE_IS_NO_LOVE_IN_THE_AIR_YET"))
 			BettyToolTip.enabled = 1
 			BettyToolTip.Hover()
 		EndIf
-
+		If THelper.MouseIn(355,535,130,37)
+			CurrentTimeToolTip.SetTitle(getLocale("GAME_TIME")+": ")
+			CurrentTimeToolTip.SetContent(GetWorldTime().getFormattedTime()+" "+getLocale("DAY")+" "+GetWorldTime().getDayOfYear()+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear())
+			CurrentTimeToolTip.enabled = 1
+			CurrentTimeToolTip.Hover()
+		EndIf
+		If THelper.MouseIn(385,577,70,23)
+			MenuToolTip.SetTitle(getLocale("MENU"))
+			MenuToolTip.SetContent(getLocale("OPEN_MENU"))
+			MenuToolTip.enabled = 1
+			MenuToolTip.Hover()
+			If MouseManager.IsClicked(1)
+				openEscapeMenuViaInterface = True
+				MouseManager.ResetKey(1)
+			EndIf
+		EndIf
 
 		'=== SHOW / HIDE / LOCK CHAT ===
 		if not ChatShow
 			'arrow area
-			if MouseManager.IsHit(1) and THelper.MouseIn(540, 397, 200, 20)
+			if MouseManager.IsClicked(1) and THelper.MouseIn(540, 397, 200, 20)
 				'reset unread
 				ChatContainsUnread = False
 
@@ -362,12 +375,12 @@ Type TInGameInterface
 				MouseManager.ResetKey(1)
 			endif
 			'lock area
-			if MouseManager.IsHit(1) and THelper.MouseIn(770, 397, 20, 20)
+			if MouseManager.IsClicked(1) and THelper.MouseIn(770, 397, 20, 20)
 				ChatShowHideLocked = 1- ChatShowHideLocked
 			endif
 		else
 			'arrow area
-			if MouseManager.IsHit(1) and THelper.MouseIn(540, 583, 200, 17)
+			if MouseManager.IsClicked(1) and THelper.MouseIn(540, 583, 200, 17)
 				'reset unread
 				ChatContainsUnread = False
 
@@ -377,7 +390,7 @@ Type TInGameInterface
 				MouseManager.ResetKey(1)
 			endif
 			'lock area
-			if MouseManager.IsHit(1) and THelper.MouseIn(770, 583, 20, 20)
+			if MouseManager.IsClicked(1) and THelper.MouseIn(770, 583, 20, 20)
 				ChatShowHideLocked = 1 - ChatShowHideLocked
 			endif
 		endif
@@ -521,9 +534,9 @@ Type TInGameInterface
 				EndIf
 		    Next
 
-			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayerBase().getMoneyFormatted(), 366, 421, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(200,230,200), 2, 1, 0.5)
+			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayerBase().getMoneyFormatted(), 366, 418, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(200,230,200), 2, 1, 0.5)
 
-			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayerProgrammePlanCollection().Get(playerID).getFormattedAudience(), 366, 463, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(200,200,230), 2, 1, 0.5)
+			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayerProgrammePlanCollection().Get(playerID).getFormattedAudience(), 366, 460, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(200,200,230), 2, 1, 0.5)
 
 			'=== DRAW SECONDARY INFO ===
 '			local oldAlpha:Float = GetAlpha()
@@ -532,18 +545,18 @@ Type TInGameInterface
 			'current days financial win/loss
 			local profit:int = GetPlayerFinance(playerID).GetCurrentProfit()
 			if profit > 0
-				GetBitmapFont("Default", 12, BOLDFONT).drawBlock("+"+TFunctions.DottedValue(profit), 366, 421+15, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(170,200,170), 2, 1, 0.5)
+				GetBitmapFont("Default", 12, BOLDFONT).drawBlock("+"+TFunctions.DottedValue(profit), 366, 418+15, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(170,200,170), 2, 1, 0.5)
 			elseif profit = 0
-				GetBitmapFont("Default", 12, BOLDFONT).drawBlock(0, 366, 421+15, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(170,170,170), 2, 1, 0.5)
+				GetBitmapFont("Default", 12, BOLDFONT).drawBlock(0, 366, 418+15, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(170,170,170), 2, 1, 0.5)
 			else
-				GetBitmapFont("Default", 12, BOLDFONT).drawBlock(TFunctions.DottedValue(profit), 366, 421+15, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(200,170,170), 2, 1, 0.5)
+				GetBitmapFont("Default", 12, BOLDFONT).drawBlock(TFunctions.DottedValue(profit), 366, 418+15, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(200,170,170), 2, 1, 0.5)
 			endif
 
 			'market share
-			GetBitmapFont("Default", 12, BOLDFONT).drawBlock(MathHelper.NumberToString(GetPlayerProgrammePlan(playerID).GetAudiencePercentage()*100,2)+"%", 366, 463+15, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(170,170,200), 2, 1, 0.5)
+			GetBitmapFont("Default", 12, BOLDFONT).drawBlock(MathHelper.NumberToString(GetPlayerProgrammePlan(playerID).GetAudiencePercentage()*100,2)+"%", 366, 460+15, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(170,170,200), 2, 1, 0.5)
 
 			'current day
-		 	GetBitmapFont("Default", 12, BOLDFONT).drawBlock((GetWorldTime().GetDaysRun()+1) + ". "+GetLocale("DAY"), 366, 555, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(180,180,180), 2, 1, 0.5)
+		 	GetBitmapFont("Default", 12, BOLDFONT).drawBlock((GetWorldTime().GetDaysRun()+1) + ". "+GetLocale("DAY"), 366, 554, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(180,180,180), 2, 1, 0.5)
 
 			SetAlpha oldAlpha
 		EndIf 'bottomimg is dirty
@@ -551,7 +564,7 @@ Type TInGameInterface
 		SetBlend ALPHABLEND
 
 'DrawRect(366, 542, 112, 15)
-		GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetWorldTime().getFormattedTime() + " "+GetLocale("OCLOCK"), 366, 540, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(220,220,220), 2, 1, 0.5)
+		GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetWorldTime().getFormattedTime() + " "+GetLocale("OCLOCK"), 366, 539, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(220,220,220), 2, 1, 0.5)
 
 
 		'=== DRAW CHAT OVERLAY + ARROWS ===
