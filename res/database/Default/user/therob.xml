@@ -28,7 +28,7 @@
 					</title>
 					<description>
 						<de>Kommissar Wirsch ermittelt bei einem Kaugummiklau. Wer kaut denn da auf einmal im Dorf?</de>
-						<en></en>
+						<en>Inspector Wirsch is looking for a theft, who ist stealing chewing gum. Who is chewing too much?</en>
 					</description>
 					<ratings critics="29" speed="48" />
 				</programme>
@@ -98,7 +98,7 @@
 			</title>
 			<description>
 				<de>Ein Mann, der Alles in der Welt als sein Eigentum betracht, rastet aus, als ihm eine Krawatte entwendet wird. Eine der ersten Ammoklaufverfilmungen. </de>
-				<en></en>
+				<en>A man, thinks everything in the world belongs to him. Somebody steals one of his ties. Time to show the world: "It is mine! ALL MINE!"</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-PrankWrapa</member>
@@ -115,11 +115,11 @@
 			<title>
  				<!-- Zielgruppe Kinder -->
 				<de>Ich reiste mit dem Sandmännchen</de>
-				<en></en>
+				<en>Travelling with the Sandman</en>
 			</title>
 			<description>
 				<de>Ein kleiner Junge wird der Begleiter des Sandmännchens und begleitet ihn durch die unterschiedlichen Schlafgeschichten.</de>
-				<en></en>
+				<en>A small boy joins the Sandman on his journeys and is visiting different sleep-well stories.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
@@ -136,11 +136,11 @@
 			<title>
 				<!-- Als Mysterie Test mit Subgenre Horror -->
 				<de>Ich verschwand mit dem Sandmännchen</de>
-				<en></en>
+				<en>I disappeared with the Sandman</en>
 			</title>
 			<description>
 				<de>Wieder ein Sandmännchenfilm. Gleiche Besetzung - komplett andere Zielgruppe, denn es wird gruselig. Denn es wird gruselig. Der Protagonist wird vom Sandmännchen gezwungen, ihn bei seinem Einschläferungsjob in die Psychatrie zu begleiten.</de>
-				<en></en>
+				<en>Once again a movie with the Sandman. Same actors. But a complete different movie. This time it gets scary. </en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
@@ -2073,9 +2073,377 @@
 						<en>How were the songs produced? And why do the people still love the music? Who was it and how was the sound?</en>
 					</description>
 					<ratings critics="32" speed="61" />
-				</programme>        
+				</programme>
 			</children>
 		</programme>
+		
+		<programme id="TheRob-a4d6-dram-OhioKid" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0059037" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Cincinnati Kid -->
+				<de>Ohio Kid</de>
+				<en>Ohio Kid</en>
+			</title>
+			<title_original>
+				<de>Cincinnati Kid</de>
+				<en>Cincinnati Kid</en>
+			</title_original>        
+			<description>
+				<de>Das große Poker Duell zwischen dem aufstrebenden Jungspund und dem Altmeister. [1|Full] und [3|Full] treffen aufeinander.</de>
+				<en>A great Poker game between a young but sucessfull man and the old master. [1|Full] and [3|Full] in a great movie together.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-CoremanJudeson</member>
+				<member index="1" function="2">TheRob-celebritypeople-SteveNeckKing</member>
+				<member index="2" function="2">TheRob-TowerTV-AnneWagrecht</member>
+				<member index="3" function="2">TheRob-TowerTV-EddiePMobison</member>
+				<member index="4" function="2">TheRob-TowerTV-CharlieWalden</member>        
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1965" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="74" speed="56" outcome="68" />
+		</programme>  
+	
+		<programme id="TheRob-a4d6-west-RenoSmith" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0060748" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Nevada Smith -->
+				<de>Reno Smith</de>
+				<en>Reno Smith</en>
+			</title>
+			<title_original>
+				<de>Nevada Smith</de>
+				<en>Nevada Smith</en>
+			</title_original>        
+			<description>
+				<de>Ein Halbblut will den Tod seiner Eltern rächen.</de>
+				<en>A Half Indian wants to get revenge for his killed parents.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-HerrieHaveaway</member>
+				<member index="1" function="2">TheRob-celebritypeople-SteveNeckKing</member>
+				<member index="2" function="2">TheRob-TowerTV-CharlieWalden</member>
+				<member index="3" function="2">c287f169-6814-45ea-a8a3-01efbb6a21c3</member>       
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1966" distribution="0" maingenre="18" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<ratings critics="57" speed="59" outcome="62" />
+		</programme> 
+
+		<programme id="TheRob-a4d6-act-BulltheHit" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0062765" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Bullitt -->
+				<de>Bullthehit</de>
+				<en>Bullthehit</en>
+			</title>
+			<title_original>
+				<de>Bullitt</de>
+				<en>Bullitt</en>
+			</title_original>        
+			<description>
+				<de>Leutnant Bullthehit soll einen Zeugen schützen. Das klappt leider nur bedingt, führt aber zu einer legendären Autojagd.</de>
+				<en>Lieutenant Bullthehit has to protect a witness. This does nnot work out well but leads to an unforgotten carchase.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-PeteRates</member>
+				<member index="1" function="2">TheRob-celebritypeople-SteveNeckKing</member>
+				<member index="2" function="2">ab68fbad-64d8-4328-a131-9c2d0f05e210</member>
+				<member index="3" function="2">c0f0c5a7-60e5-4e52-94e6-1cb7cf66daff</member> 
+				<member index="4" function="2">TheRob-TowerTV-BobSawn</member>               
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1968" distribution="0" maingenre="2" subgenre="4" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="57" speed="79" outcome="72" />
+		</programme>
+	
+		<programme id="TheRob-a4d6-act-24StundenRennen" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0067334" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Le Mans -->
+				<de>24 Stunden Rennen</de>
+				<en>24 hour race </en>
+			</title>
+			<title_original>
+				<de>Le Mans</de>
+				<en>Le Mans</en>
+			</title_original>        
+			<description>
+				<de>Porsche 917 gegen Ferrari 512S. Und etwas Story drum herum.</de>
+				<en>Porsche 917 versus Ferrari 512S. Surrounded with a story.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-LeeVDogin</member>
+				<member index="1" function="2">TheRob-celebritypeople-SteveNeckKing</member>
+				<member index="2" function="2">TheRob-TowerTV-SiggiDampf</member>
+				<member index="3" function="2">TheRob-TowerTV-HelgaSanderson</member>                
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1971" distribution="0" maingenre="2" subgenre="1" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="48" speed="82" outcome="53" />
+		</programme>
+	
+		<programme id="TheRob-a4d6-act-RunAway" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0068638" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Getaway -->
+				<de>Run Away</de>
+				<en>Run Away</en>
+			</title>
+			<title_original>
+				<de>Getaway</de>
+				<en>The Getaway</en>
+			</title_original>        
+			<description>
+				<de>Nach seinem Ausbruch aus dem Gefägniss gerät [1|Full] schnell in eine Spirale krimineller Machenschaffen. Für seine Flucht nicht gerade förderlich.</de>
+				<en>After his escape from prison [1|Full] gets pretty fast again criminal. This is not very usefull for his flight.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-SamyPickindale</member>
+				<member index="1" function="2">TheRob-celebritypeople-SteveNeckKing</member>
+				<member index="2" function="2">TheRob-TowerTV-ElliMCGrave</member>
+				<member index="3" function="2">41946f51-d770-40f4-807a-fd74b85c97b8</member>                
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1972" distribution="0" maingenre="2" subgenre="4" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<ratings critics="63" speed="66" outcome="64" />
+		</programme>
+	
+		<programme id="TheRob-a4d6-act-BreaktheChain" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0068638" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Gesprengte Kette -->
+				<de>Break the Chain</de>
+				<en>Break the Chain</en>
+			</title>
+			<title_original>
+				<de>Gesprengte Ketten</de>
+				<en>The Great Escape</en>
+			</title_original>        
+			<description>
+				<de>Basierend auf einer wahren Geschichte wird der Versuch eines Ausbruchs aus einem der sichersten Gefängnisse der Wehrmacht verfilmt.</de>
+				<en>Based on a true Story. The try of a prison escape from one of the most secured prisons of the Wehrmacht.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-RonWurges</member>
+				<member index="1" function="2">TheRob-celebritypeople-SteveNeckKing</member>
+				<member index="2" function="2">TheRob-TowerTV-BanesWarner</member>
+				<member index="3" function="2">ff87975d-c9cc-4204-b7bb-ea8826fe9208</member>
+				<member index="4" function="2">267e028a-d087-4fff-83fd-0ade0806ab8a</member>
+				<member index="5" function="2">TheRob-TowerTV-DaveMcWarum</member>                                
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1963" distribution="0" maingenre="1" subgenre="7" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<ratings critics="83" speed="69" outcome="84" />
+		</programme>
+	
+		<programme id="TheRob-b5dc-4663-hist-DieWikinger" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<de>Die Wikinger</de>
+				<en>The Vikings</en>
+			</title>
+			<description>
+				<de>Von der Entstehung bis zu ihrem Untergang. Die Fakten werden mit Darstellungen durch Laiendarsteller untermauert und inklusive nachgebauten Boot. Der Erzähler versucht sich an den Spannungsbögen.</de>
+				<en>Rise and fall of the Vikings. Facts and some fiction with aid of amateur actors and including a rebuilt boat. The speaker tries to build up tention, too.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_20</member>
+				<member index="1" function="2">TheRob-TowerTV-BastlRuetli</member>
+				<member index="2" function="2">Per_custom_Freddy_634</member>
+				<member index="3" function="2">Per_custom_Freddy_149</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1971" distribution="0" maingenre="11" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<ratings critics="71" speed="37" outcome="0" />
+		</programme>
+	
+		<programme id="TheRob-Mon-TvTower-EinmonumentalerVersuch" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<de>Ein Monumentaler Versuch</de>
+				<en>A monumental Try</en>
+			</title>
+			<description>
+				<de>24 Stunden im Leben an einer dänischen Familie am Tag des Ausbruches des zweiten Weltkrieges. Die Kritiker feierten das Werk, doch wer ist wirklich bereit für einen 24 Stunden Film?</de>
+				<en>24 hours in the life in a family from Denmark during the day the second world war begins. The critics were euphoric, but who was ready for a 24 hours movie?</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_70</member>
+				<member index="1" function="2">Per_custom_Freddy_72</member>
+				<member index="2" function="2">Per_custom_Freddy_75</member>
+				<member index="3" function="2">Per_custom_Freddy_74</member>
+				<member index="4" function="2">Rumpelfreddy-fictionalperson-AnnaAdlerman</member>        
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="DK" year="1951" distribution="0" maingenre="13" subgenre="9" flags="0" blocks="24" time="0" price_mod="1.00" />
+			<ratings critics="81" speed="17" outcome="0" />
+		</programme>
+	
+		<programme id="TheRob-a4d6-hor-Glog" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0051418" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Blob- Schrecken ohne Namen -->
+				<de>Glog - namenloser Schrecken</de>
+				<en>Glog</en>
+			</title>
+			<title_original>
+				<de>Blob- Schrecken ohne Namen</de>
+				<en>The Blob</en>
+			</title_original>        
+			<description>
+				<de>Ein süßer Meteor wird zu einem widerlichen Schleimmonster.</de>
+				<en>A wonderfull meteorit transforms to a mean jelly monster.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-ErwinSWealthyyesJr</member>
+				<member index="1" function="2">TheRob-celebritypeople-SteveNeckKing</member>
+				<member index="2" function="2">TheRob-TowerTV-AnnaBorseaut</member>                       
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1958" distribution="0" maingenre="12" subgenre="16" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<ratings critics="33" speed="52" outcome="34" />
+		</programme>
+	
+		<programme id="TheRob-1757-Polit-Show-UndJetzt?" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<!-- Und Jetzt?, Politshow 102, Zielgruppe Arbeitnehmer -->
+			<title>
+				<de>Und Jetzt?</de>
+				<en>And Now?</en>
+			</title>
+			<description>
+				<de>Ein Schauspieler startet in seine politische Kariere. Ein ausführliches Interview.</de>
+				<en>An actor starts his political career. An intensive interview.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">Per_custom_Freddy_149</member>
+				<member index="1" function="8">TowerTV-VeraZottova</member>
+				<member index="2" function="64">TheRob-TowerTV-DonaldMcWegan</member>
+			</staff>
+			<groups target_groups="8" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1978" distribution="0" maingenre="101" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<ratings critics="55" speed="41" outcome="0" />
+		</programme>    
+	
+		<programme id="TheRob-serie-adv-RobinWusoe" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0167516" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Robinson Crusoe, Abenteuer -->
+				<de>Robin Wusoe</de>
+				<en>Robin Wusoe</en>
+			</title>
+			<title_original>
+				<de>Robinson Crusoe</de>
+				<en>Les aventures de Robinson Crusoë</en>
+			</title_original>        
+			<description>
+				<de>Die Geschichte von Robin Wusoe und seinen Abenteuern in spannenden vier Folgen.</de>
+				<en>The story of Robin Wusoe told in wonderfull four parts.</en>
+			</description>
+			<staff>
+				<member index="0" function="2">TheRob-TowerTV-BobMuffman</member>
+				<member index="1" function="2">1TheRob-TowerTV-FlavioCavello</member>        
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D/F" year="1964" distribution="0" maingenre="1" subgenre="0" flags="8" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="67" speed="54" outcome="" />
+			<children>
+				<programme id="TheRob-serie-RobinWusoe-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Wie es began</de>
+						<en>How it began</en>
+					</title>
+					<description>
+						<de>Robin Wusoe erzählt von dem Start seiner Reise und von seinen Wünschen und Träumen.</de>
+						<en>Robin Wusoe describes the beginning of his journey. And his wishes and dreams.</en>
+					</description>
+					<ratings critics="47" speed="53" />
+				</programme>
+				<programme id="TheRob-serie-RobinWusoe-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Freitag?</de>
+						<en>Friday?</en>
+					</title>
+					<description>
+						<de>Auf einer Insel gestranded trifft Robin einen fremden Mann.</de>
+						<en>Stranded on an island Robin meets a stranger.</en>
+					</description>
+					<ratings critics="52" speed="47" />
+				</programme>
+				<programme id="TheRob-serie-RobinWusoe-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Kannibalen!!</de>
+						<en>Canibals!</en>
+					</title>
+					<description>
+						<de>Robin und Friday verstehen langsam, dass sie sich die Insel mit ein paar sehr unfreundlichen Menschen teilen.</de>
+						<en>Robin and Friday are getting aware that they are sharing with some unfriendly humans.</en>
+					</description>
+					<ratings critics="69" speed="56" />
+				</programme>
+				<programme id="TheRob-serie-RobinWusoe-Ep004" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Endlich Heimat</de>
+						<en>Home! Sweet Home</en>
+					</title>
+					<description>
+						<de>Auf nach Hause. Wie gelingt die Flucht.</de>
+						<en>Up, up and away. How will the escape work?</en>
+					</description>
+					<data country="D/F" year="1964" distribution="0" maingenre="13" subgenre="1" flags="8" blocks="4" time="0" price_mod="1.00" />
+					<ratings critics="67" speed="53" />
+				</programme>
+			</children>
+		</programme>
+	
+		<programme id="TheRob-serie-fant-RingeundRosen" product="5" licence_type="3" tmdb_id="0" imdb_id="tt3636830" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- The Rose and the Ring, Fantasy -->
+				<de>Ringe und Rosen</de>
+				<en>Rings and Roses</en>
+			</title>
+			<title_original>
+				<de>The Rose and the Ring</de>
+				<en>The Rose and the Ring</en>
+			</title_original>      
+			<description>
+				<de>Die Geschichte einer königlichen Familie in Paflagonia.</de>
+				<en>The story of a royal family in Paflagonia.</en>
+			</description>
+			<staff>
+				<member index="0" function="2">TheRob-TowerTV-JacquiMountain</member>
+				<member index="1" function="2">TheRob-TowerTV-DaveMcWarum</member>                
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1953" distribution="0" maingenre="10" subgenre="0" flags="8" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="67" speed="54" outcome="" />
+			<children>
+				<programme id="TheRob-serie-RingeundRosen-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Das Frühstück</de>
+						<en>Breakfast</en>
+					</title>
+					<description>
+						<de>Als Einleitung wird die Familie beim Frühstück beleuchtet.</de>
+						<en>Indroducing the family. The breakfast of the whole bunch together is the perfect start.</en>
+					</description>
+					<ratings critics="47" speed="38" />
+				</programme>
+				<programme id="TheRob-serie-RingeundRosen-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Der Ring</de>
+						<en>The Ring</en>
+					</title>
+					<description>
+						<de>Endlich Fantasy. Der magische Ring taucht auf.</de>
+						<en>The fantasy part starts. A magic ring appears.</en>
+					</description>
+					<ratings critics="32" speed="47" />
+				</programme>
+				<programme id="TheRob-serie-RingeundRosen-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Die Flucht</de>
+						<en>The Escape</en>
+					</title>
+					<description>
+						<de>Und es Zeit für die Konsequenzen. Die Flucht wird nötig. Wenn man mit einem magischen Ring spielt...</de>
+						<en>Tie for consequences. If you play with the magic ring, escape is necessary.</en>
+					</description>
+					<ratings critics="49" speed="46" />
+				</programme>
+			</children>
+		</programme>                                   
+	
 	</allprogrammes>
 
 	<insignificantpeople>
@@ -2090,19 +2458,62 @@
 		<person id="TheRob-TowerTV-Mark" first_name="Mark W." last_name="Wullbrich" nick_name="" levelup="0"  />
 		<person id="TheRob-TowerTV-Thomas" first_name="Thomas" last_name="Weierunter" nick_name="" levelup="0"  />
 
+		<!-- Vera Zottova -->
 		<person id="TheRob-TowerTV-VeraZottova" first_name="Vera" last_name="Zottova" nick_name="" fictional="1" />
 		<!-- Bastl Rütli -->
 		<person id="TheRob-TowerTV-BastlRuetli" first_name="Bastl" last_name="Rütli" nick_name="" fictional="1" creator="8751" created_by="TheRob" />
 		<!-- Moris Wewerkov -->
-		<person id="TheRob-TowerTV-MorisWeverkov" first_name="Moris" last_name="Weverkov" nick_name="" fictional="1" creator="8751" created_by="TheRob" />
+		<person id="TheRob-TowerTV-MorisWeverkov" first_name="Moris" last_name="Weverkov" nick_name="" fictional="1" creator="8751" created_by="TheRob" /> 
+		<!-- Norman Jewison -->
+		<person id="TheRob-TowerTV-CoremanJudeson" first_name="Coreman" last_name="Judeson" nick_name="" imdb_id="nm0356448" creator="8751" created_by="TheRob" /> 
+		<!-- Ann-Margret -->
+		<person id="TheRob-TowerTV-AnneWagrecht" first_name="Anne" last_name="Wagrecht" nick_name="" imdb_id="nm0000268" creator="8751" created_by="TheRob" />
+		<!-- Edward G. Robinson -->
+		<person id="TheRob-TowerTV-EddiePMobison" first_name="Eddie P." last_name="Mobison" nick_name="" imdb_id="nm0000064" creator="8751" created_by="TheRob" /> 
+		<!-- Karl Malden -->
+		<person id="TheRob-TowerTV-CharlieWalden" first_name="Charlie" last_name="Walden" nick_name="" imdb_id="nm0001500" creator="8751" created_by="TheRob" /> 
+		<!-- Henry Hathaway -->
+		<person id="TheRob-TowerTV-HerrieHaveaway" first_name="Herrie" last_name="Haveaway" nick_name="" imdb_id="nm0368871" creator="8751" created_by="TheRob" />
+		<!-- Robert Vaughn -->
+		<person id="TheRob-TowerTV-BobSawn" first_name="Bob" last_name="Sawn" nick_name="" imdb_id="nm0001816" creator="8751" created_by="TheRob" /> 
+		<!-- Peter Yates -->
+		<person id="TheRob-TowerTV-PeteRates" first_name="Pete" last_name="Rates" nick_name="" imdb_id="nm0946811" creator="8751" created_by="TheRob" /> 
+		<!-- Siegfried Rauch -->
+		<person id="TheRob-TowerTV-SiggiDampf" first_name="Siggi" last_name="Dampf" nick_name="" imdb_id="nm0712022" creator="8751" created_by="TheRob" />
+		<!-- Lee H. Katzin -->
+		<person id="TheRob-TowerTV-LeeVDogin" first_name="Lee V." last_name="Dogin" nick_name="" imdb_id="nm0441914" creator="8751" created_by="TheRob" />
+		<!-- Elga Andersen -->
+		<person id="TheRob-TowerTV-HelgaSanderson" first_name="Helga" last_name="Sanderson" nick_name="" imdb_id="nm0026130" creator="8751" created_by="TheRob" /> 
+		<!-- Sam Peckinpah -->
+		<person id="TheRob-TowerTV-SamyPickindale" first_name="Samy" last_name="Pickindale" nick_name="" imdb_id="nm0001603" creator="8751" created_by="TheRob" />
+		<!-- Ali MacGraw -->
+		<person id="TheRob-TowerTV-ElliMCGrave" first_name="Elli" last_name="Mc Grave" nick_name="" imdb_id="nm0001603" creator="8751" created_by="TheRob" />  
+		<!-- John Sturges -->
+		<person id="TheRob-TowerTV-RonWurges" first_name="Ron" last_name="Wurges" nick_name="" imdb_id="nm0836328" creator="8751" created_by="TheRob" />
+		<!-- James Garner -->
+		<person id="TheRob-TowerTV-BanesWarner" first_name="Banes" last_name="Warner" nick_name="" imdb_id="nm0001258" creator="8751" created_by="TheRob" />
+		<!-- Irvin S. Yeaworth Jr. -->
+		<person id="TheRob-TowerTV-ErwinSWealthyyesJr" first_name="Erwin S." last_name="Wealthyyes Jr." nick_name="" imdb_id="nm0947105" creator="8751" created_by="TheRob" />
+		<!-- Aneta Corsaut -->
+		<person id="TheRob-TowerTV-AnnaBorseaut" first_name="Anna" last_name="Borseaut" nick_name="" imdb_id="nm0181080" creator="8751" created_by="TheRob" />
+		<!-- David McCallum -->
+		<person id="TheRob-TowerTV-DaveMcWarum" first_name="Dave" last_name="Mc Warum" nick_name="" imdb_id="nm0564724" creator="8751" created_by="TheRob" />
+		<!-- Ronald Reagan -->
+		<person id="TheRob-TowerTV-DonaldMcWegan" first_name="Donald" last_name="Mc Wegan" nick_name="" imdb_id="nm0001654" creator="8751" created_by="TheRob" />
+		<!-- Jacqueline Hill -->
+		<person id="TheRob-TowerTV-JacquiMountain" first_name="Jacqui" last_name="Mountain" nick_name="" imdb_id="nm0384340" creator="8751" created_by="TheRob" />
+		<!-- Robert Hoffmann -->
+		<person id="TheRob-TowerTV-BobMuffman" first_name="Bob" last_name="Muffman" nick_name="" imdb_id="nm0389073" creator="8751" created_by="TheRob" />
+		<!-- Fabian Cevallos -->
+		<person id="TheRob-TowerTV-FlavioCavello" first_name="Flavio" last_name="Cavello" nick_name="" imdb_id="nm0149173" creator="8751" created_by="TheRob" />                     
 	</insignificantpeople>
 
 	<celebritypeople>
-         
+		 
 	</celebritypeople>
 
 	<scripttemplates>
-		<scripttemplate product="4" licence_type="1" guid="TheRob-Script-Rep-Drehbuecher">
+		<scripttemplate product="16" licence_type="1" guid="TheRob-Script-Rep-Drehbuecher">
 			<title>
 				<de>Drehbücher für Anfänger</de>
 				<en>Moviescripts fo beginners</en>
@@ -2133,7 +2544,7 @@
 			<review min="15" max="50" slope="20" />
 			<speed min="20" max="50" slope="20" />
 		</scripttemplate>
-		<scripttemplate product="4" licence_type="1" guid="TheRob-Script-Rep-AusmeinemGebiet">
+		<scripttemplate product="16" licence_type="1" guid="TheRob-Script-Rep-AusmeinemGebiet">
 			<title>
 				<de>Reportagen aus dem Sendegebiet</de>
 				<en>Local report</en>
@@ -2163,7 +2574,7 @@
 			<review min="25" max="52" slope="30" />
 			<speed min="20" max="40" slope="20" />
 		</scripttemplate>
-		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Talk-DieNeuestenFilme">
+		<scripttemplate product="16" licence_type="1" guid="TheRob-Script-Talk-DieNeuestenFilme">
 			<title>
 				<de>Die neusten Filme</de>
 				<en>Upcoming movies</en>
@@ -2193,7 +2604,7 @@
 			<review min="20" max="50" slope="30" />
 			<speed min="20" max="42" slope="25" />
 		</scripttemplate>
-		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Talk-KalaueramlaufendenBand">
+		<scripttemplate product="16" licence_type="1" guid="TheRob-Script-Talk-KalaueramlaufendenBand">
 			<title>
 				<de>Kalauer am laufenden Band</de>
 				<en>Gags, jokes and gags</en>
