@@ -2303,8 +2303,8 @@
 				<en>And Now?</en>
 			</title>
 			<description>
-				<de>Ein Schauspieler startet in seine politische Kariere. Ein ausführliches Interview.</de>
-				<en>An actor starts his political career. An intensive interview.</en>
+				<de>Ein Schauspieler startet in seine politische Kariere. Ein ausführliches Interview.Spoiler: [2|Full] will Präsident werden... HaHaHa</de>
+				<en>An actor starts his political career. An intensive interview. Spoiler: [2|Full] wants to be welected as US President. We are still laughing.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_149</member>
@@ -2336,7 +2336,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D/F" year="1964" distribution="0" maingenre="1" subgenre="0" flags="8" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="67" speed="54" outcome="" />
+			<ratings critics="67" speed="44" outcome="" />
 			<children>
 				<programme id="TheRob-serie-RobinWusoe-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
@@ -2347,7 +2347,6 @@
 						<de>Robin Wusoe erzählt von dem Start seiner Reise und von seinen Wünschen und Träumen.</de>
 						<en>Robin Wusoe describes the beginning of his journey. And his wishes and dreams.</en>
 					</description>
-					<ratings critics="47" speed="53" />
 				</programme>
 				<programme id="TheRob-serie-RobinWusoe-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
@@ -2358,7 +2357,6 @@
 						<de>Auf einer Insel gestranded trifft Robin einen fremden Mann.</de>
 						<en>Stranded on an island Robin meets a stranger.</en>
 					</description>
-					<ratings critics="52" speed="47" />
 				</programme>
 				<programme id="TheRob-serie-RobinWusoe-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
@@ -2369,7 +2367,6 @@
 						<de>Robin und Friday verstehen langsam, dass sie sich die Insel mit ein paar sehr unfreundlichen Menschen teilen.</de>
 						<en>Robin and Friday are getting aware that they are sharing with some unfriendly humans.</en>
 					</description>
-					<ratings critics="69" speed="56" />
 				</programme>
 				<programme id="TheRob-serie-RobinWusoe-Ep004" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
@@ -2377,7 +2374,7 @@
 						<en>Home! Sweet Home</en>
 					</title>
 					<description>
-						<de>Auf nach Hause. Wie gelingt die Flucht.</de>
+						<de>Auf nach Hause. Wie gelingt die Flucht?</de>
 						<en>Up, up and away. How will the escape work?</en>
 					</description>
 					<data country="D/F" year="1964" distribution="0" maingenre="13" subgenre="1" flags="8" blocks="4" time="0" price_mod="1.00" />
@@ -2405,8 +2402,8 @@
 				<member index="1" function="2">TheRob-TowerTV-DaveMcWarum</member>                
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1953" distribution="0" maingenre="10" subgenre="0" flags="8" blocks="2" time="0" price_mod="1.00" />
-			<ratings critics="67" speed="54" outcome="" />
+			<data country="USA" year="1953" distribution="0" maingenre="10" subgenre="0" flags="8" blocks="1" time="0" price_mod="1.00" />
+			<ratings critics="47" speed="38" outcome="" />
 			<children>
 				<programme id="TheRob-serie-RingeundRosen-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
@@ -2417,7 +2414,6 @@
 						<de>Als Einleitung wird die Familie beim Frühstück beleuchtet.</de>
 						<en>Indroducing the family. The breakfast of the whole bunch together is the perfect start.</en>
 					</description>
-					<ratings critics="47" speed="38" />
 				</programme>
 				<programme id="TheRob-serie-RingeundRosen-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
@@ -2428,7 +2424,6 @@
 						<de>Endlich Fantasy. Der magische Ring taucht auf.</de>
 						<en>The fantasy part starts. A magic ring appears.</en>
 					</description>
-					<ratings critics="32" speed="47" />
 				</programme>
 				<programme id="TheRob-serie-RingeundRosen-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
@@ -2437,9 +2432,9 @@
 					</title>
 					<description>
 						<de>Und es Zeit für die Konsequenzen. Die Flucht wird nötig. Wenn man mit einem magischen Ring spielt...</de>
-						<en>Tie for consequences. If you play with the magic ring, escape is necessary.</en>
+						<en>Time for consequences. If you play with the magic ring, escape is necessary.</en>
 					</description>
-					<ratings critics="49" speed="46" />
+					<ratings critics="49" speed="42" />
 				</programme>
 			</children>
 		</programme>                                   
