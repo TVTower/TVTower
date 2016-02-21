@@ -163,12 +163,12 @@ Type TSpriteParticle
 
 		'pcount:+1
 		vel :* 0.99 '1.02 '0.98
-		x :+ (vel * Cos(angle-90)) * deltaTime
+		x :- (vel * Cos(angle-90)) * deltaTime
 		y :- (vel * Sin(angle-90)) * deltaTime
 		'increase decay if half of life time is gone
-		if life / startLife < 0.5 then alpha :* 0.97 * (1.0 - deltaTime)
+		if life / startLife < 0.5 then alpha :* 0.95 * (1.0 - deltaTime)
 
-		if life / startLife > 0.8 then scale :* 1.1
+		if life / startLife > 0.8 then scale :* 1.02
 		if life / startLife > 0.8 then alpha :* 1.1
 
 		If y < 330 Then	scale :* 1.05 * (1.0 - deltaTime)
@@ -184,7 +184,7 @@ Type TSpriteParticle
 		SetRotation angle
 		SetScale(scale, scale)
 		if sprite
-			sprite.draw(x,y)
+			sprite.draw(x,y, ALIGN_CENTER)
 		else
 			DrawOval(x-3, y-3, 6,6)
 		endif

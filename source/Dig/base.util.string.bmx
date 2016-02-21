@@ -437,4 +437,11 @@ Type StringHelper
 		Next
 		return a
 	End Function
+
+
+	Function UCFirst:string(s:string, length:int = 1)
+		if s.length = 0 then return ""
+
+		return Upper( Left(s, length) ) + Right(s, s.length - length)
+	End Function
 End Type
