@@ -6807,6 +6807,100 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 		</programme>
 
 		<!-- programmes from "therob.xml" -->
+        <programme id="TheRob-mov-dram-NurmitdieserbestimmtenFrau" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0029650" rt_id="8751" creator="TheRob">
+            <title>
+                <!-- Diese bestimmte Frau, Drama, Sub Romance -->
+                <de>Nur mit dieser bestimmen Frau</de>
+                <en>Only with this certain woman</en>
+            </title>
+            <title_original>
+                <de>Diese bestimmte Frau</de>
+                <en>That Certain Woman</en>
+            </title_original>
+            <description>
+                <de>Schnell verliebt, schnell zusammen abgehauen und auch schnell schwanger. Aber was passiert, wenn man glücklich zusammen ist, ein Kind erwartet und nicht weiß, dass sein Vater die Ehe heimlich annuliert hat?</de>
+                <en>Fast in love, fast run away and a fast pregnancy. Everything is fine. But what happens if the father in law elopes the marriage without his happily son knowing?</en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-TowerTV-EdmundGulden</member>
+                <member index="1" function="2">506bc383-259e-4a36-9278-081aafc8f35c</member>
+                <member index="2" function="2">a80152d6-43dc-4f9c-a562-a5dbf821bc1f</member>                                                                                             			</staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1937" distribution="0" maingenre="7" subgenre="15" flags="0" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="69" speed="37" outcome="52" />
+        </programme>        
+    
+        <programme id="TheRob-mov-dram-JazzeineboeseDame" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0030287" rt_id="8751" creator="TheRob">
+            <title>
+                <!-- Jezebel - Die boshafte Lady, Drama, Sub Romance -->
+                <de>Jazz - eine böse Dame</de>
+                <en>Jazz - a mean lady</en>
+            </title>
+            <title_original>
+                <de>Jezebel - Die boshafte Lady</de>
+                <en>Jezebel</en>
+            </title_original>
+            <description>
+                <de>1850 in den USA. Eine Dame merkt, dass sie ihren Mann verliert. Um ihn zu behalten geht sie kompromisslos vor. Denn der Schein muss bestehen bleiben.</de>
+                <en>1850 in the USA. A lady discovers, that her marriage is moving towards divorce. To keep her husband for the perfect world she acts uncompromising.</en>
+            </description>
+            <staff>
+                <member index="0" function="1">c6431bc0-a0c6-4638-ab30-573066975d0f</member>
+                <member index="1" function="2">506bc383-259e-4a36-9278-081aafc8f35c</member>
+                <member index="2" function="2">a80152d6-43dc-4f9c-a562-a5dbf821bc1f</member>                                                                                          			</staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1938" distribution="0" maingenre="7" subgenre="15" flags="0" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="78" speed="52" outcome="67" />
+        </programme> 
+    
+        <programme id="TheRob-mov-dram-PfadindieBerge" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0028401" rt_id="8751" creator="TheRob">
+            <title>
+                <!-- Kampf in den Bergen, Drama, Sub Romance -->
+                <de>Pfad in die Berge</de>
+                <en>Trail in the mountains</en>
+            </title>
+            <title_original>
+                <de>Kampf in den Bergen</de>
+                <en>The Trail of the Lonesome Pine</en>
+            </title_original>
+            <description>
+                <de>Eine Familien Fehde brodelt fröhlich vor sich hin. Aber durch wirtschaftliche Veränderungen, wie eine Eisenbahntrasse und eine Kohlemine, kann alles endlich eskalieren.</de>
+                <en>A feud has been boiling for decades. Due to new economic circumstances like coal mines and railroads it is time to escelate.</en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-TowerTV-HenryHastAway</member>
+                <member index="1" function="2">TheRob-celebritypeople-SilvyMelbourne</member>
+                <member index="2" function="2">a80152d6-43dc-4f9c-a562-a5dbf821bc1f</member> 
+                <member index="3" function="2">3288623a-bed4-4c85-8670-47c991164df4</member>                                                                                               			</staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1936" distribution="0" maingenre="7" subgenre="15" flags="0" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="58" speed="62" outcome="57" />
+        </programme>    
+    
+        <programme id="TheRob-mov-dram-TrommelnamFluss" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0031252" rt_id="8751" creator="TheRob">
+            <title>
+                <!-- Trommeln am Mohawk, Drama, Sub Romance -->
+                <de>Trommeln am Fluß</de>
+                <en>Drums at the river</en>
+            </title>
+            <title_original>
+                <de>Trommeln am Mohawk</de>
+                <en>Drums Along the Mohawk</en>
+            </title_original>
+            <description>
+                <de>Ein wunderschönes Farmleben eines glücklichen Ehepaares in Amerika. Doch dann kommt der Krieg mit den Briten in ihr Land und die Indianer wollen auch mitreden..</de>
+                <en>A wonderfull life on a farm of a mariaged couple in America. But suddenly the war with England and the Indians are troubling their lifes.</en>
+            </description>
+            <staff>
+                <member index="0" function="1">TheRob-celebritypeople-RonDort</member>
+                <member index="1" function="2">TheRob-TowerTV-ClaudiaColgerd</member>
+                <member index="2" function="2">a80152d6-43dc-4f9c-a562-a5dbf821bc1f</member> 
+                <member index="3" function="2">TheRob-TowerTV-RonSaradine</member>                                                                                               			</staff>
+            <groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+            <data country="USA" year="1936" distribution="0" maingenre="7" subgenre="15" flags="0" blocks="2" time="0" price_mod="1.00" />
+            <ratings critics="58" speed="62" outcome="57" />
+        </programme>
+        
 		<programme id="TheRob-4497-film-mon-Wiegehtesweiter" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0043949" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Quo Vadis -->
@@ -6843,8 +6937,8 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>Metropolis</en>
 			</title_original>
 			<description>
-				<de>Arbeiter gegen Reich. Oberwelt gegen Unterwelt. Ein stummer epischer Kampf. Remastert und extralong. Inklusive wiedergefundener und restaurierter Szenen. Hier in der Fassung der Murnau-Stiftung von 2010.</de>
-				<en>Workers against the upperclass. People from the surface against the poor living underneath. An epic and silent fight. Including the found and restored scenes. This is the Version of 2010 remastered by the "Murnau-Stiftung".</en>
+				<de>Arbeiter gegen Reich. Oberwelt gegen Unterwelt. Ein stummer epischer Kampf. Remastert und extralong. Inklusive wiedergefundener und restaurierter Szenen. Hier in der Fassung der Murnau-Stiftung.</de>
+				<en>Workers against the upperclass. People from the surface against the poor living underneath. An epic and silent fight. Including the found and restored scenes. This is the version remastered by the "Murnau-Stiftung".</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
@@ -7047,17 +7141,64 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			</title_original>
 			<description>
 				<de>Frisch verheiratet besuchen Mortey und seine Angetraute Morteys Tanten. Konnte er ahnen, das sie echte Leichen im Keller haben. Ein „Evergreen des schwarzen Humors" mit herrlicher Mimik von [1|Full]. </de>
-				<en></en>
+				<en>Just Married, Mortey and his wife visit his aunts. He realizes that they are have enough skeletons rattling around in one's closet to fill a cemetery. An Evergreen of black humour. Unforgettable mimic of [1|Full].</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-PrankWrapa</member>
 				<member index="1" function="2">TheRob-celebritypeople-GaryGrunt</member>
+				<member index="2" function="2">TheRob-TowerTV-PeteWore</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1944" distribution="0" maingenre="5" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
 			<ratings critics="77" speed="68" outcome="71" />
 		</programme>
 
+		<programme id="TheRob-mov-dok-b022-HinterderfeindlichenLinie" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0274560" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- How to Operate Behind Enemy Lines, Doku -->
+				<de>Hinter der feindlichen Linie</de>
+				<en>Behind Enemy Lines</en>
+			</title>
+			<title_original>
+				<de>Wie man hinter feindlichen Linien agiert</de>
+				<en>How to Operate Behind Enemy Lines</en>
+			</title_original>
+			<description>
+				<de>Dokumentation über Taktiken, die das Überleben hinter feindlichen Linien ermöglicht.</de>
+				<en>Documentation, that shows tactics how to survive behind enemy lines.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-RonDort</member>
+				<member index="1" function="2">TheRob-celebritypeople-RonDort</member>
+				<member index="2" function="2">TheRob-TowerTV-PeteWore</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1943" distribution="0" maingenre="6" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
+			<ratings critics="37" speed="23" outcome="0" />
+		</programme>   
+	
+		<programme id="TheRob-mov-4cf2-dok-StufedieIndustriekraftein" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0274519" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- German Industrial Manpower, Doku -->
+				<de>Stufe die Industriekraft ein</de>
+				<en>How to Analyze the Industrial Power</en>
+			</title>
+			<title_original>
+				<de>Deutsche Industrie Kraft</de>
+				<en>German Industrial Manpower</en>
+			</title_original>
+			<description>
+				<de>Wie analysiere ich die Industriekraft eines anderen Landes. Ausführlich erklärt und sehr gut mit rchhpüh </de>
+				<en>How to analyse the industrial power of an other nation. Very good explained in detail and also zzzzzzz </en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-RonDort</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1943" distribution="0" maingenre="6" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
+			<ratings critics="21" speed="12" outcome="0" />
+		</programme>
+		
 		<programme id="TheRob-b0db-439c-a852-Wosselnaht" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0059372" rt_id="0" creator="8751" created_by="TheRob">
 			<!-- König Drosselbart, Zielgruppe Kinder -->
 			<title>
@@ -7322,7 +7463,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<title>
   				<!-- M Eine Stadt sucht einen Mörder -->
 				<de>Ein Dorf jagt L.</de>
-				<en>A village chases L.</en>
+				<en>A Village Chases L.</en>
 			</title>
 			<title_original>
 				<de>M. Eine Stadt sucht einen Mörder</de>
@@ -7335,14 +7476,14 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-FizzieWang</member>
 				<member index="1" function="2">TheRob-TowerTV-OttoPernickel</member>
-				<member index="2" function="2">08bbc458-64af-4a27-8158-b5dbfb6bb885</member>
+				<member index="2" function="2">TheRob-TowerTV-PeteWore</member>
 				<member index="3" function="2">TheRob-celebritypeople-MustafWuendgens</member>
-				<member index="4" function="2">94ca78fd-399e-42b4-ada9-b869db926529</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1931" distribution="0" maingenre="17" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
 			<ratings critics="74" speed="26" outcome="83" />
 		</programme>
+		
 		<programme id="TheRob-a9f6-4a94-8092-unperfektesLand" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0107808" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Perfect World -->
@@ -9314,8 +9455,204 @@ eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbeh�
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1940" distribution="0" maingenre="18" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
 			<ratings critics="53" speed="68" outcome="61" />
-		</programme> 
-	
+		</programme>
+
+		<programme id="TheRob-serie-SamuraiAdam" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0080274" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Shogun, Serie Abenteuer, Sub Historie -->
+				<de>Samurai Adam</de>
+				<en>Samurai Adam</en>
+			</title>
+			<title_original>
+				<de>Shogun</de>
+				<en>Shogun</en>
+			</title_original>
+			<description>
+				<de>Der englische Navigator Adam strandet in Japan und wird dort zum Samurai ausgebildet. Die Serie zeigt seinen Lernprozess und die Geschichte Japans.</de>
+				<en>The English navigator Adam is stranded in Japan and starts his education to become a Samurai. The series shows his prozess in learning and the history of Japan.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-JerryHeathrow</member>
+				<member index="1" function="2">TheRob-TowerTV-RicardoKammerlein</member>
+				<member index="2" function="2">TheRob-TowerTV-ToshinoSisune</member>
+				<member index="2" function="2">TheRob-TowerTV-YokoDiewada</member>
+				<member index="2" function="2">8fd0eba6-3ac0-41eb-8a86-514fa77dc9a2</member>                
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1980" distribution="0" maingenre="1" subgenre="11" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="88" speed="67" outcome="" />
+			<children>
+				<programme id="TheRob-serie-SamuraiAdam-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="tt1488968" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Episode 1.1</de>
+						<en>Episode 1.1</en>
+					</title>
+					<description>
+						<de>Im 17ten Jahrhundert strandet der englische Navigator Adam in Japan. Durch Intrigen in der Adelsgesellschaft wird er von einem rivalisierenden Lord zur Todestrafe verurteilt.</de>
+						<en>In the early 17th century the English Navigator Adam strands in Japan. Through intrigues in the feudal society Adam is send to death by a rival lord.</en>
+					</description>
+					<ratings critics="91" speed="62" />
+				</programme>
+				<programme id="TheRob-serie-SamuraiAdam-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="tt1488969" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Episode 1.2</de>
+						<en>Episode 1.2</en>
+					</title>
+					<description>
+						<de>Lord Woronga rettet Adam vor dem Tod und benennt ihn in Anrin-san um. Er befiehlt Sariko der Tutor von Anrin-san zu werden und ihm alles notwendige beizubringen.</de>
+						<en>Lord Woronga rescues Adam and renames him to Anrin-san. He orders Sariko to be the tutor of Anrin-san and teach him everything necessary.</en>
+					</description>
+					<ratings critics="88" speed="67" />
+				</programme>
+				<programme id="TheRob-serie-SamuraiAdam-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="tt1488970" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Episode 1.3</de>
+						<en>Episode 1.3</en>
+					</title>
+					<description>
+						<de>Sariko und Anrin-san beginnen ihre Romanze, Anrin-san wird für seine Tapferkeit geehrt und Lord Woronga bereitet sich und seine Armee auf einen Krieg vor. Und bei all dem taucht auf einmal Sarikos Ehemann auf.</de>
+						<en>Sariko and Anrin-san begin a romance, Anrin-san is honored for bravery and Lord Woronga is preparing his army for war. And suddenly Sarikos husband returns.</en>
+					</description>
+					<ratings critics="86" speed="65" />
+				</programme>
+				<programme id="TheRob-serie-SamuraiAdam-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="tt1484292" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Episode 1.4</de>
+						<en>Episode 1.4</en>
+					</title>
+					<description>
+						<de>Anrin-san wird immer besser als Samurai. Währenddessen nehmen die Intrigen im Adel wieder zu. Sariko verrät einem Priester einen Plan für ein Attentat.</de>
+						<en>Anrin-san gets better and better as a Samurai. During his trainig the intrigues of the feudals are getting worse again. Sariko tells a priest about an planned assignation.</en>
+					</description>
+					<ratings critics="83" speed="72" />
+				</programme>
+				<programme id="TheRob-serie-SamuraiAdam-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Episode 1.5</de>
+						<en>Episode 1.5</en>
+					</title>
+					<description>
+						<de>Nach dem Sieg in der großen Schlacht wird Lord Woronga zum Shogun. Da aber Sariko in der Schlacht gefallen ist, entschließt sich Anrin-san dazu ein neues Boot zu bauen um Japan mit gebrochenem Herzen zu verlassen.</de>
+						<en>After the victory in the final battle Lord Woronga becomes Shogun. But since Sariko has died during the battle, Anrin-san decides to build a new ship. With a broken heart he wants to leave Japan.</en>
+					</description>
+					<ratings critics="90" speed="66" />
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="TheRob-serie-Sanddornkahn" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="tt0074050" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Sandokan, Action -->
+				<de>Sanddornkahn</de>
+				<en>Sanddornkahn</en>
+			</title>
+			<title_original>
+				<de>Der Tiger von Malaysia</de>
+				<en>Sandokan</en>
+			</title_original>      
+			<description>
+				<de>Pirat Sanddornkahn kämpft gegen die Engländer um ihre ruchlose Herrschaft zu unterbinden.</de>
+				<en>Pirate Sanddornkahn fights against the British Empire. He wants to stop their cruel goverment.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-SergeWolltihnka</member>
+				<member index="1" function="2">TheRob-TowerTV-KabiraWedira</member>
+				<member index="2" function="2">TheRob-TowerTV-RolfoBella</member>
+				<member index="2" function="2">TheRob-TowerTV-PhilliGemoy</member>        
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="I" year="1976" distribution="0" maingenre="2" subgenre="0" flags="0" blocks="1" time="0" price_mod="1.00" />
+			<ratings critics="42" speed="46" outcome="" />
+			<children>
+				<programme id="TheRob-serie-Sanddornkahn-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="tt1306736" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Episode 1.1</de>
+						<en>Episode 1.1</en>
+					</title>
+					<description>
+						<de>Sanddornkahn erkennt die Ungerechtigkeiten der Briten und entscheidet sich für den Kampf</de>
+						<en>Sanddornkahn sees how mean the British people are to the citizens and decides to fight back.</en>
+					</description>
+				</programme>
+				<programme id="TheRob-serie-Sanddornkahn-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="tt1306736" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Episode 1.2</de>
+						<en>Episode 1.2</en>
+					</title>
+					<description>
+						<de>Sanddornkahn jagt das erste britische Schiff und versenkt es.</de>
+						<en>Sanddornkahn chases the first British ship and destroys it.</en>
+					</description>
+				</programme>
+				<programme id="TheRob-serie-Sanddornkahn-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="tt1306738" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Episode 1.3</de>
+						<en>Episode 1.3</en>
+					</title>
+					<description>
+						<de>Ausgerechnet in eine britische Lady verliebt sich Sanddornkahn und bringt sich dadurch in Gefahr.</de>
+						<en>How couldt it be? Sanddornkahn falls in love with a British lady and gets into danger.</en>
+					</description>
+					<ratings critics="54" speed="30" />
+				</programme>
+				<programme id="TheRob-serie-Sanddornkahn-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="tt1306739" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Episode 1.4</de>
+						<en>Episode 1.4</en>
+					</title>
+					<description>
+						<de>Die Royal Navy verstärkt ihre Suche nach Sanddornkahn und will ihn endlich gefangen nehmen.</de>
+						<en>The Royal navy invests more in the chase of Sanddornkahn. They want to arrest him as fast as possible.</en>
+					</description>
+				</programme>
+				<programme id="TheRob-serie-Sanddornkahn-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="tt1306740" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Episode 1.5</de>
+						<en>Episode 1.5</en>
+					</title>
+					<description>
+						<de>Sanddornkahn setzt sich erfolgreich zur Wehr und schwächt den Gegner deutlich.</de>
+						<en>Sanddornkahn defends him self very well and weakens his opponent clearly.</en>
+					</description>
+					<ratings critics="30" speed="59" />
+				</programme>
+				<programme id="TheRob-serie-Sanddornkahn-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="tt1306741" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Episode 1.6</de>
+						<en>Episode 1.6</en>
+					</title>
+					<description>
+						<de>Der große Sieg und endlich Zeit für den Ruhestand.</de>
+						<en>The great victory and finaly time for retirement.</en>
+					</description>
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="TheRob-mov-west-BaldipuhdasGespenst" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0063674" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Rache für Jesse James, western -->
+				<de>Baldipuh - das Gespenst</de>
+				<en>Baldipuh - the ghost</en>
+			</title>
+			<title_original>
+				<de>Balduin, das Nachtgespenst </de>
+				<en></en>
+			</title_original>
+			<description>
+				<de>Ein exentrischer Aristokrat und ein geldgieriger Kunsthändler treiben sich gegenseitig in den Wahnsinn.</de>
+				<en>An exentric aristocrat and an art dealer, who is looking for fortune, are going on each other nerves.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-DennisPatell</member>
+				<member index="1" function="2">TheRob-TowerTV-ReanWarin</member>  
+				<member index="2" function="2">TheRob-TowerTV-LouDerFume</member>                                                                              
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="FR" year="1968" distribution="0" maingenre="5" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="53" speed="58" outcome="51" />
+		</programme>
+							
 		<programme id="TheRob-mov-adv-ImTrenchcoatdurchdieNacht" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0038417" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Im Geheimdienst, Abenteuer -->

@@ -2481,6 +2481,38 @@
 		<person id="3535a46a-f9e9-4519-a5de-2a2566b0adf1" first_name="Wim" last_name="Zomerer" nick_name="" imdb_id="nm0957779" />
 		<person id="fee7aeab-0e92-4cbf-82e5-6e456583fa51" first_name="Edward" last_name="Zwigg" nick_name="" imdb_id="nm0001880" />
 
+   
+        <!-- Richard Chamberlain -->
+        <person id="TheRob-TowerTV-RicardoKammerlein" first_name="Ricardo" last_name="Kammerlein" nick_name="" imdb_id="nm0000328" /> 
+        <!-- Toshirô Mifune -->
+        <person id="TheRob-TowerTV-ToshinoSisune" first_name="Toshino" last_name="Sisune" nick_name="" imdb_id="nm0001536" />  
+        <!-- Yôko Shimada -->
+        <person id="TheRob-TowerTV-YokoDiewada" first_name="Yoko" last_name="Diewada" nick_name="" imdb_id="nm0793577" />  
+        <!-- Jerry London -->
+        <person id="TheRob-TowerTV-JerryHeathrow" first_name="Jerry" last_name="Heathrow" nick_name="" imdb_id="nm0518719" />   
+        <!-- Sergio Sollima -->
+        <person id="TheRob-TowerTV-SergeWolltihnka" first_name="Serge" last_name="Wolltihnka" nick_name="" imdb_id="nm0813177" /> 
+        <!-- Kabir Bedi -->
+        <person id="TheRob-TowerTV-KabiraWedira" first_name="Kabira" last_name="Wedira" nick_name="" imdb_id="nm0001934" />  
+        <!-- Adolfo Celi -->
+        <person id="TheRob-TowerTV-RolfoBella" first_name="Rolfo" last_name="Bella" nick_name="" imdb_id="nm0148041" />  
+        <!-- Philippe Leroy -->
+        <person id="TheRob-TowerTV-PhilliGemoy" first_name="Philli" last_name="Gemoy" nick_name="" imdb_id="nm0006573" /> 
+        <!-- Denys de La Patellière -->
+        <person id="TheRob-TowerTV-DennisPatell" first_name="Dennis" last_name="Patell" nick_name="" imdb_id="nm0478800" />  
+        <!-- Louis de Funès -->
+        <person id="TheRob-TowerTV-LouDerFume" first_name="Lou" last_name="Derfume" nick_name="" imdb_id="nm0000086" />  
+        <!-- Jean Gabin -->
+        <person id="TheRob-TowerTV-ReanWarin" first_name="Rean" last_name="Warin" nick_name="" imdb_id="nm0300064" />                          
+        <!-- Peter Lorre -->
+        <person id="TheRob-TowerTV-PeteWore" first_name="Pete" last_name="Wore" nick_name="" imdb_id="nm0000048" />
+        <!-- Edmund Goulding -->
+        <person id="TheRob-TowerTV-EdmundGulden" first_name="Edmund" last_name="Gulden" nick_name="" imdb_id="nm0332539" />
+        <!-- Henry Hathaway -->
+        <person id="TheRob-TowerTV-HenryHastAway" first_name="Henry Hast" last_name="Away" nick_name="" imdb_id="nm0368871" />
+        <!-- Claudette Colbert -->
+        <person id="TheRob-TowerTV-ClaudiaColgerd" first_name="Claudia" last_name="Colgerd" nick_name="" imdb_id="nm0001055" />        
+            
 		<!-- Louis Gossett Jr. -->
 		<person id="TheRob-TowerTV-RuisLosset" first_name="Ruis" last_name="Losset Jr" nick_name="" imdb_id="nm0001283" creator="8751" created_by="TheRob" />
 		<!-- Edward D. Wood Jr. -->   
