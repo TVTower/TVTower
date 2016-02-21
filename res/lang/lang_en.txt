@@ -56,7 +56,6 @@ SAVEGAME_GETS_LOADED = Savegame gets loaded
 PROGRAMMELICENCES = Programme licences
 SELECT_LICENCES_FOR_SALE = Select licences for sale
 
-
 YES = Yes
 NO = No
 MONEY = Money
@@ -71,6 +70,7 @@ CURRENCY = €
 OCLOCK =
 DAY = day
 DAYS = days
+DATE = date
 WEEK_SHORT_MONDAY		= mo
 WEEK_SHORT_TUESDAY		= tu
 WEEK_SHORT_WEDNESDAY	= we
@@ -85,6 +85,10 @@ WEEK_LONG_THURSDAY		= thursday
 WEEK_LONG_FRIDAY		= friday
 WEEK_LONG_SATURDAY		= saturday
 WEEK_LONG_SUNDAY		= sunday
+SEASON_SPRING           = spring
+SEASON_SUMMER           = summer
+SEASON_AUTUMN           = autumn
+SEASON_WINTER           = winter
 
 
 MENU_SOLO_GAME			= Solo game

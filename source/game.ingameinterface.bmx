@@ -80,6 +80,7 @@ Type TInGameInterface
 		CurrentAudienceToolTip.SetMinTitleAndContentWidth(200)
 
 		CurrentTimeToolTip = TTooltip.Create("", "", 490, 535)
+		CurrentTimeTooltip._minContentWidth = 190
 		MoneyToolTip = TTooltip.Create("", "", 490, 408)
 		BettyToolTip = TTooltip.Create("", "", 490, 485)
 		MenuToolTip = TTooltip.Create("", "", 470, 560)
@@ -346,8 +347,12 @@ Type TInGameInterface
 			BettyToolTip.Hover()
 		EndIf
 		If THelper.MouseIn(355,535,130,37)
-			CurrentTimeToolTip.SetTitle(getLocale("GAME_TIME")+": ")
-			CurrentTimeToolTip.SetContent(GetWorldTime().getFormattedTime()+" "+getLocale("DAY")+" "+GetWorldTime().getDayOfYear()+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear())
+			CurrentTimeToolTip.SetTitle(getLocale("GAME_TIME")+": " + GetWorldTime().getFormattedTime())
+			local content:string = ""
+			content :+ "|b|"+GetLocale("GAMEDAY")+":|/b| "+GetWorldTime().getDayOfYear()+"/"+GetWorldTime().GetDaysPerYear()
+			content :+ "~n"
+			content :+ "|b|"+GetLocale("DATE")+":|/b| "+GetWorldTime().GetFormattedDate(-1,"d.m.y")+" ("+GetLocale("SEASON_"+GetWorldTime().GetSeasonName())+")"
+			CurrentTimeToolTip.SetContent(content)
 			CurrentTimeToolTip.enabled = 1
 			CurrentTimeToolTip.Hover()
 		EndIf

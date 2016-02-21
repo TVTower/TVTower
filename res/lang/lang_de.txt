@@ -71,6 +71,7 @@ CURRENCY = €
 OCLOCK = Uhr
 DAY = Tag
 DAYS = Tage
+DATE = Datum
 WEEK_SHORT_MONDAY   = Mo
 WEEK_SHORT_TUESDAY  = Di
 WEEK_SHORT_WEDNESDAY= Mi
@@ -85,6 +86,10 @@ WEEK_LONG_THURSDAY  = Donnerstag
 WEEK_LONG_FRIDAY    = Freitag
 WEEK_LONG_SATURDAY  = Samstag
 WEEK_LONG_SUNDAY    = Sonntag
+SEASON_SPRING       = Frühling
+SEASON_SUMMER       = Sommer
+SEASON_AUTUMN       = Herbst
+SEASON_WINTER       = Winter
 
 
 MENU_SOLO_GAME = Einzelspieler

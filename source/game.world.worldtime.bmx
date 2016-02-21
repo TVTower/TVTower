@@ -293,6 +293,17 @@ Type TWorldTime {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetSeasonName:string(useTime:Double = -1.0) {_exposeToLua}
+		Select GetSeason(useTime)
+			Case 1  return "SPRING"
+			Case 2  return "SUMMER"
+			Case 3  return "AUTUMN"
+			Case 4  return "WINTER"
+			default return "UNKNOWN"
+		End Select
+	End Method
+
+
 	'attention: LUA uses a default param of "0"
 	'-> so for this and other functions we have to use "<=0" instead of "<0"
 	Method GetHour:int(useTime:Double = -1.0) {_exposeToLua}
