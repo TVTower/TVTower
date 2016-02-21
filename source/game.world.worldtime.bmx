@@ -12,7 +12,7 @@ Type TWorldTime {_exposeToLua="selected"}
 	'(enables calculation of missed time between two updates)
 	Field _timeGoneLastUpdate:Double = -1.0
 	'how many days does each season have? (year = 4 * value)
-	Field _daysPerSeason:int = 3
+	Field _daysPerSeason:int = 4
 	'how many days does a week have?
 	Field _daysPerWeek:int = 7
 	 
@@ -60,7 +60,7 @@ Type TWorldTime {_exposeToLua="selected"}
 		_timeStart = 0:double
 		_timeGone = 0:double
 		_timeGoneLastUpdate = -1:double
-		_daysPerSeason = 3
+		_daysPerSeason = 4
 		_daysPerWeek = 7
 		_timeFactor = 60.0
 		currentPhase = 0
@@ -78,7 +78,7 @@ Type TWorldTime {_exposeToLua="selected"}
 
 		'new:
 		'year=1, day=1, hour=0, minute=1 should result in "1*yearInSeconds+1*dayInSeconds+1*60"
-		Return (((day + year*GetDaysPerYear())*24 + hour)*60 + minute)*60 + second
+		Return ((double(day + year*GetDaysPerYear())*24 + hour)*60 + minute)*60 + second
 	End Method
 
 
@@ -128,8 +128,8 @@ Type TWorldTime {_exposeToLua="selected"}
 		'subtract 1 as we _add_ time so "january" should be 0 instead
 		'of 1 ...
 		if dateParts.length > 1 then days = int(dateParts[1]) - 1
-		'scale down the days as there are 12days/year, 
-		if dateParts.length > 2 then days :+ int(dateParts[2]) * 12.0/365.0
+		'scale down the days as there are x days/year, 
+		if dateParts.length > 2 then days :+ int(dateParts[2]) * (GetDaysPerYear()/365.0)
 
 		if dateTime.length > 1
 			local timeParts:string[] = dateTime[1].split(":")
@@ -384,33 +384,29 @@ Type TWorldTime {_exposeToLua="selected"}
 
 
 	'this does only work if "_daysPerWeek" is 7 or lower
-	Method GetDayName:String(day:Int, longVersion:Int=0) {_exposeToLua}
-		Local versionString:String = "SHORT"
-		If longVersion = 1 Then versionString = "LONG"
-
+	Method GetDayName:String(day:Int) {_exposeToLua}
 		Select day
-			Case 0	Return GetLocale("WEEK_"+versionString+"_MONDAY")
-			Case 1	Return GetLocale("WEEK_"+versionString+"_TUESDAY")
-			Case 2	Return GetLocale("WEEK_"+versionString+"_WEDNESDAY")
-			Case 3	Return GetLocale("WEEK_"+versionString+"_THURSDAY")
-			Case 4	Return GetLocale("WEEK_"+versionString+"_FRIDAY")
-			Case 5	Return GetLocale("WEEK_"+versionString+"_SATURDAY")
-			Case 6	Return GetLocale("WEEK_"+versionString+"_SUNDAY")
-			Default	Return "not a day"
-		EndSelect
+			Case 0	Return "MONDAY"
+			Case 1	Return "TUESDAY"
+			Case 2	Return "WEDNESDAY"
+			Case 3	Return "THURSDAY"
+			Case 4	Return "FRIDAY"
+			Case 5	Return "SATURDAY"
+			Case 6	Return "SUNDAY"
+			Default	Return "UNKNOWN"
+		End Select
 	End Method
 
 
 	'returns day of the week including gameday
 	Method GetFormattedDay:String(_day:Int = -1) {_exposeToLua}
 		if _day = -1 then _day = GetDaysRun()
-		Return _day+"."+GetLocale("DAY")+" ("+GetDayName( Max(0,_day-1) Mod _daysPerWeek, 0)+ ")"
+		Return _day+"."+GetLocale("DAY")+" ("+ GetLocale("WEEK_SHORT_"+GetDayName(GetWeekday(_day)))+ ")"
 	End Method
 
 
 	Method GetFormattedDayLong:String(_day:Int = -1) {_exposeToLua}
-		If _day < 0 Then _day = GetOnDay()
-		Return GetDayName( Max(0,_day-1) Mod _daysPerWeek, 1)
+		Return GetLocale("WEEK_LONG_"+GetDayName(GetWeekday(_day)))
 	End Method
 
 

@@ -58,7 +58,8 @@ Type TWorldWeather
 	End Method
 
 
-	Method GetTimeSinceUpdate:Int()
+	Method GetTimeSinceUpdate:Double()
+		if lastUpdateTime = -1 then return 0
 		return GetWorldTime().GetTimeGone() - lastUpdateTime
 	End Method
 
@@ -164,7 +165,7 @@ Type TWorldWeather
 		local baseWeather:TWorldWeatherEntry = TWorldWeatherEntry(upcomingWeather.Last())
 		if not baseWeather then baseWeather = GetCurrentWeather()
 
-		local weatherTime:int = baseWeather._time
+		local weatherTime:Double = baseWeather._time
 
 		For local i:int = upcomingWeather.Count() until limit
 			if weatherTime >= 0 then weatherTime :+ weatherInterval
@@ -342,7 +343,7 @@ Type TWorldWeatherEntry
 	End Method
 
 
-	Method GetTime:Float()
+	Method GetTime:Double()
 		return _time
 	End Method
 

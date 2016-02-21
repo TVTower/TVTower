@@ -191,7 +191,7 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 	Field lightnings:TList = CreateList()
 	Field lightningLifetimeMin:int = 150
 	Field lightningLifetimeMax:int = 210
-	Field nextLightningTime:int = 0
+	Field nextLightningTime:Double = 0
 	Field nextLightningIntervalMin:int = 3500
 	Field nextLightningIntervalMax:int = 7500
 	Field spritesSide:TSprite[]
@@ -386,7 +386,7 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 	Field flakes:TList = CreateList()
 	Field flakeLifetimeMin:int = 2800
 	Field flakeLifetimeMax:int = 4000
-	Field nextFlakeTime:int = 0
+	Field nextFlakeTime:Double = 0
 	Field nextFlakeIntervalMin:int = 75
 	Field nextFlakeIntervalMax:int = 140
 	Field nextFlakeEmitAmountMin:int = 1
@@ -692,8 +692,7 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 			'skip invisible ones
 			if entity.area.GetX() > 801 then continue
 			if entity.area.GetX() < - (entity.area.GetW()+1) then continue
-
-			SetAlpha (oldColor.a*0.9 + 0.1*(float(cloudNumber)/(clouds.Count())) )
+			SetAlpha effectAlpha * (oldColor.a*0.9 + 0.1*(float(cloudNumber)/(clouds.Count())) )
 			if entity.sprite
 				entity.Render()
 			else
