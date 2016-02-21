@@ -4,6 +4,7 @@
 ' Author:
 ' License:
 '**************************************************************************************************
+'SuperStrict
 
 Global AiLog:TLogFile[4]
 For local i:int = 0 to 3
@@ -12,7 +13,6 @@ Next
 
 Global KIRunning:Int = true
 
-'SuperStrict
 Type KI
 	Field playerID:int
 	Field LuaEngine:TLuaEngine {nosave}
@@ -335,11 +335,13 @@ Type TLuaFunctions {_exposeToLua}
 	Const RESULT_INUSE:int     = -32
 	Const RESULT_SKIPPED:int   = -64
 
-	'const + helpers
-	Field Rules:TGameRules
-	Field Constants:TVTGameConstants
+	'=== CONST + HELPERS 
 
-	'get instantiated during "new"
+	'convenience access to game rules (constants)
+	Field Rules:TGameRules
+	'convenience access to game constants (constants)
+	Field Constants:TVTGameConstants
+	'gets instantiated during "new"
 	Field ME:Int
 	
 	Field ROOM_TOWER:Int = 0
@@ -892,6 +894,8 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 
+	'SIGN the spot with the corresponding ID
+	'Returns result-IDs: WRONGROOM / OK / NOTFOUND
 	Method sa_doBuySpot:Int(contractID:Int = -1)
 		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
 
@@ -904,6 +908,8 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 
+	'TAKE the spot with the corresponding ID (NOT signed yet)
+	'Returns result-IDs: WRONGROOM / OK / NOTFOUND
 	Method sa_doTakeSpot:Int(contractID:Int = -1)
 		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
 
@@ -916,11 +922,13 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 
+	'GIVE BACK the spot with the corresponding ID (if not signed yet)
+	'Returns result-IDs: WRONGROOM / OK / NOTFOUND
 	Method sa_doGiveBackSpot:Int(contractID:Int = -1)
 		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
 
 		local contract:TAdContract = GetPlayer(self.ME).GetProgrammeCollection().GetUnsignedAdContractFromSuitcase(contractID)
-		'this does not sign - signing is done when leaving the room!
+
 		if contract and RoomHandler_AdAgency.GetInstance().TakeContractFromPlayer( contract, self.ME )
 			Return self.RESULT_OK
 		else
@@ -932,7 +940,9 @@ Type TLuaFunctions {_exposeToLua}
 
 	'=== MOVIE AGENCY ===
 	'main screen
-	
+
+	'Get Amount of licences available at the movie agency
+	'Returns: amount
 	Method md_getProgrammeLicenceCount:Int()
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
@@ -940,6 +950,8 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 
+	'Get licence at a specific position from movie agency
+	'Returns: LuaFunctionResult (resultID, licence)
 	Method md_getProgrammeLicence:TLuaFunctionResult(position:Int = -1)
 		If Not _PlayerInRoom("movieagency") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
@@ -955,6 +967,8 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 
+	'Get all licences from movie agency
+	'Returns: LuaFunctionResult (resultID, licences)
 	Method md_getProgrammeLicences:TLuaFunctionResult()
 		If Not _PlayerInRoom("movieagency") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
@@ -968,6 +982,8 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 	
 
+	'BUY a programme licence with the corresponding ID
+	'Returns result-IDs: WRONGROOM / OK / NOTFOUND
 	Method md_doBuyProgrammeLicence:Int(licenceID:Int=-1)
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
@@ -978,6 +994,8 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 
+	'SELL a programme licence with the corresponding ID
+	'Returns result-IDs: WRONGROOM / OK / NOTFOUND
 	Method md_doSellProgrammeLicence:Int(licenceID:Int=-1)
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
@@ -992,6 +1010,8 @@ Type TLuaFunctions {_exposeToLua}
 	'=== MOVIE DEALER ===
 	'Movie Agency - Auctions
 
+	'GET an auction programme block at the given array position
+	'Returns: TAuctionProgrammeBlocks
 	Method md_getAuctionMovieBlock:TAuctionProgrammeBlocks(ArrayID:Int = -1)
 		If Not _PlayerInRoom("movieagency") Then Return null
 		If ArrayID >= TAuctionProgrammeBlocks.List.Count() Or arrayID < 0 Then Return null
