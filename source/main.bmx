@@ -660,7 +660,7 @@ Type TApp
 						print "added Goaaal to player1's suitcase"
 						endrem
 
-'						PrintCurrentTranslationState("fr")
+'						PrintCurrentTranslationState("en")
 					EndIf
 
 				
@@ -3682,7 +3682,7 @@ Type GameEvents
 	'called each time a room (the active player visits) is updated
 	Function RoomOnUpdate:Int(triggerEvent:TEventBase)
 		'handle normal right click
-		If MOUSEMANAGER.IsHit(2) or MOUSEMANAGER.IsLongClicked(1)
+		If MOUSEMANAGER.IsClicked(2) or MOUSEMANAGER.IsLongClicked(1)
 			'check subrooms
 			'only leave a room if not in a subscreen
 			'if in subscreen, go to parent one
