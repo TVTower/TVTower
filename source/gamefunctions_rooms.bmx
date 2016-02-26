@@ -3877,14 +3877,17 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		if limitInstances > 0 then levelFilters[5].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		TLogger.log("AdAgency.RefillBlocks", "Refilling "+ GetWorldTime().GetFormattedTime() +". Filter details", LOG_DEBUG)
-		
+
 rem
 print "REFILL:"
-print "level0:  audience "+"0.0%"+" - "+MathHelper.NumberToString(100*lowestChannelQuote, 4)+"%"
+print "level0:  audienceDay "+"0.0%"+" - "+MathHelper.NumberToString(100*lowestChannelQuotePrimeTime, 4)+"%"
+print "level0:  audiencePrime "+"0.0%"+" - "+MathHelper.NumberToString(100*lowestChannelQuoteDayTime, 4)+"%"
 print "level0:  image    "+"0.0"+" - "+lowestChannelImage
-print "level1:  audience "+MathHelper.NumberToString(100 * (0.5 * averageChannelQuote),4)+"% - "+MathHelper.NumberToString(100 * Max(0.01, 1.5 * averageChannelQuote),4)+"%"
+print "level1:  audienceDay "+MathHelper.NumberToString(100 * (0.5 * averageChannelQuoteDayTime),4)+"% - "+MathHelper.NumberToString(100 * Max(0.01, 1.5 * averageChannelQuoteDayTime),4)+"%"
+print "level1:  audiencePrime "+MathHelper.NumberToString(100 * (0.5 * averageChannelQuotePrimeTime),4)+"% - "+MathHelper.NumberToString(100 * Max(0.01, 1.5 * averageChannelQuotePrimeTime),4)+"%"
 print "level1:  image     0.00 - "+averageChannelImage
-print "level2:  audience "+MathHelper.NumberToString(100*(Max(0.01, 0.5 * highestChannelQuote)),4)+"% - "+MathHelper.NumberToString(100 * Max(0.03, 1.5 * highestChannelQuote),4)+"%"
+print "level2:  audienceDay "+MathHelper.NumberToString(100*(Max(0.01, 0.5 * highestChannelQuoteDayTime)),4)+"% - "+MathHelper.NumberToString(100 * Max(0.03, 1.5 * highestChannelQuoteDayTime),4)+"%"
+print "level2:  audiencePrime "+MathHelper.NumberToString(100*(Max(0.01, 0.5 * highestChannelQuotePrimeTime)),4)+"% - "+MathHelper.NumberToString(100 * Max(0.03, 1.5 * highestChannelQuotePrimeTime),4)+"%"
 print "level2:  image     0.00 - "+highestChannelImage
 print "------------------"
 endrem
@@ -3977,7 +3980,7 @@ endrem
 		Next
 
 		'now all filters contain "valid ranges"
-		TLogger.log("AdAgency.RefillBlocks", "  Cheap filter: "+cheapListFilter.ToString(), LOG_DEBUG)
+		TLogger.log("AdAgency.RefillBlocks", "    Cheap filter: "+cheapListFilter.ToString(), LOG_DEBUG)
 
 		for local i:int = 0 until 6
 			if i mod 2 = 0

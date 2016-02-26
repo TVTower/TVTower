@@ -668,11 +668,10 @@ Type TDatabaseLoader
 		'=======
 		'ATTENTION: does not work once the DB splits between data and licence!
 		'=======
-		if parentLicence and programmeLicence.parentLicenceGUID
+		if parentLicence and programmeLicence.parentLicenceGUID and parentLicence.GetGUID() <> programmeLicence.parentLicenceGUID
 			programmeLicence = new TProgrammeLicence
 			programmeLicence.GUID = GUID + "-parent-" + parentLicence.GetGUID()
-			TLogger.log("DB", "Auto-corrected duplicate programmelicence: ~q"+programmeLicence.GUID+"~q.", LOG_LOADING)
-			print "Auto-corrected duplicate programmelicence: ~q"+programmeLicence.GUID+"~q."
+			TLogger.log("LoadV3ProgrammeLicenceFromNode()", "Auto-corrected duplicate programmelicence: ~q"+programmeLicence.GUID+"~q.", LOG_LOADING)
 		endif
 
 
@@ -860,20 +859,25 @@ Type TDatabaseLoader
 			'the episodeNumber is currently not needed, as we
 			'autocalculate it by the position in the xml-episodes-list
 			'local episodeNumber:int = xml.FindValueInt(nodeEpisode, "index", 1)
-if episodeLicence.GetParentLicence() and episodeLicence.parentLicenceGUID
-	print "Episode: ~q"+episodeLicence.GetTitle()+"~q already has parent: ~q"+episodeLicence.GetParentLicencE().GetTitle()+"~q."
-	TLogger.Log("DB: ","Episode: ~q"+episodeLicence.GetTitle()+"~q already has parent: ~q"+episodeLicence.GetParentLicencE().GetTitle()+"~q.", LOG_ERROR)
-endif
-	
+
+			'only add episode if not already done
+			if programmeLicence = episodeLicence.GetParentLicence()
+				TLogger.Log("LoadV3ProgrammeLicenceFromNode()","Episode: ~q"+episodeLicence.GetTitle()+"~q already added to series: ~q"+episodeLicence.GetParentLicencE().GetTitle()+"~q. Skipped.", LOG_XML)
+				continue
+			endif
+
+			'inform if we add an episode again 
+			if episodeLicence.GetParentLicence() and episodeLicence.parentLicenceGUID
+				TLogger.Log("LoadV3ProgrammeLicenceFromNode()","Episode: ~q"+episodeLicence.GetTitle()+"~q already has parent: ~q"+episodeLicence.GetParentLicencE().GetTitle()+"~q. Multi-usage intended?", LOG_XML)
+			endif
+
 			'add the episode
 			programmeLicence.AddSubLicence(episodeLicence)
-
-'			print programmeLicence.isSeries() +"  " +programmeLicence.GetSubLicenceCount()
 		Next
 
 		if programmeLicence.isSeries() and programmeLicence.GetSubLicenceCount() = 0
 			programmeLicence.licenceType = TVTProgrammeLicenceType.SINGLE
-			print "Series with 0 episodes found. Converted to single: "+programmeLicence.GetTitle()
+			TLogger.Log("LoadV3ProgrammeLicenceFromNode()","Series with 0 episodes found. Converted to single: "+programmeLicence.GetTitle(), LOG_XML)
 		endif
 
 		
