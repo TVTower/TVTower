@@ -69,6 +69,8 @@ Type TWorldTime {_exposeToLua="selected"}
 	End Method
 
 
+	'create a time in seconds
+	'attention: there are only GetDaysPerYear() days per year, not 365!
 	Method MakeTime:Double(year:Int, day:Int, hour:Int, minute:Int, second:int = 0) {_exposeToLua}
 		'old:
 		'year=1, day=1, hour=0, minute=1 should result in "1*yearInSeconds+1*60"
@@ -79,6 +81,22 @@ Type TWorldTime {_exposeToLua="selected"}
 		'new:
 		'year=1, day=1, hour=0, minute=1 should result in "1*yearInSeconds+1*dayInSeconds+1*60"
 		Return ((double(day + year*GetDaysPerYear())*24 + hour)*60 + minute)*60 + second
+	End Method
+
+
+	'create a time in seconds
+	'attention: month and day use real world values (12m and 365d)
+	Method MakeRealTime:Double(year:int, month:int, day:int, hour:int, minute:int, second:int = 0) {_exposeToLua}
+		Return ((double((30*month + day)*GetDaysPerYear()/360.0 + year*GetDaysPerYear())*24 + hour)*60 + minute)*60 + second
+	End Method
+
+
+	Method AddTime:int(year:int, day:int, hour:Double, minute:Double, second:Double)
+		local add:Double = second + 60*(minute + 60*(hour + 24*(day + year*GetDaysPerYear())))
+		
+		_timeGone :+ add
+		'also set last update
+		_timeGoneLastUpdate :+ add
 	End Method
 
 
