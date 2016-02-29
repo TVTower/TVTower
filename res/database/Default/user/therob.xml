@@ -2268,8 +2268,8 @@
 				<member index="4" function="2">Rumpelfreddy-fictionalperson-AnnaAdlerman</member>        
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="DK" year="1951" distribution="0" maingenre="13" subgenre="9" flags="0" blocks="24" time="0" price_mod="1.00" />
-			<ratings critics="81" speed="17" outcome="0" />
+			<data country="DK" year="1951" distribution="0" maingenre="13" subgenre="9" flags="12" blocks="24" time="0" price_mod="1.00" />
+			<ratings critics="81" speed="17" outcome="2" />
 		</programme>
 	
 		<programme id="TheRob-a4d6-hor-Glog" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0051418" rt_id="0" creator="8751" created_by="TheRob">
