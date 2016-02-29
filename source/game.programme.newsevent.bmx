@@ -34,7 +34,11 @@ Type TNewsEventCollection
 
 
 	Function GetInstance:TNewsEventCollection()
-		if not _instance then _instance = new TNewsEventCollection
+		if not _instance
+			_instance = new TNewsEventCollection
+			'create arrays
+			_instance._InvalidateCaches()
+		endif
 		return _instance
 	End Function
 
@@ -225,6 +229,9 @@ Type TNewsEventCollection
 
 	'returns (and creates if needed) a list containing only available news
 	Method GetAvailableNewsList:TList(genre:int=-1)
+		'create if missing
+		if not _availableNewsEvents then _InvalidateAvailableNewsEvents()
+
 		if not _availableNewsEvents[genre+1]
 			_availableNewsEvents[genre+1] = CreateList()
 			'GetInitialNewsList() does NOT contain "initialInGameNews",
@@ -247,6 +254,9 @@ Type TNewsEventCollection
 	'returns (and creates if needed) a list containing only already used
 	'news
 	Method GetUsedNewsList:TList(genre:int=-1)
+		'create if missing
+		if not _usedNewsEvents then _InvalidateUsedNewsEvents()
+
 		if not _usedNewsEvents[genre+1]
 			_usedNewsEvents[genre+1] = CreateList()
 			For local event:TNewsEvent = EachIn allNewsEvents.Values()
@@ -264,6 +274,9 @@ Type TNewsEventCollection
 
 	'returns (and creates if needed) a list containing only initial news
 	Method GetInitialNewsList:TList(genre:int=-1)
+		'create if missing
+		if not _initialNewsEvents then _InvalidateInitialNewsEvents()
+
 		if not _initialNewsEvents[genre+1]
 			_initialNewsEvents[genre+1] = CreateList()
 			For local event:TNewsEvent = EachIn allNewsEvents.Values()
@@ -280,6 +293,9 @@ Type TNewsEventCollection
 
 	'returns (and creates if needed) a list containing only follow up news
 	Method GetFollowingNewsList:TList(genre:int=-1)
+		'create if missing
+		if not _followingNewsEvents then _InvalidateFollowingNewsEvents()
+
 		if not _followingNewsEvents[genre+1]
 			_followingNewsEvents[genre+1] = CreateList()
 			For local event:TNewsEvent = EachIn allNewsEvents.Values()
@@ -296,6 +312,9 @@ Type TNewsEventCollection
 
 	'returns (and creates if needed) a list containing only initial news
 	Method GetUpcomingNewsList:TList(genre:int=-1)
+		'create if missing
+		if not _upcomingNewsEvents then _InvalidateUpcomingNewsEvents()
+		
 		if not _upcomingNewsEvents[genre+1]
 			_upcomingNewsEvents[genre+1] = CreateList()
 			For local event:TNewsEvent = EachIn allNewsEvents.Values()

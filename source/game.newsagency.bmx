@@ -265,7 +265,9 @@ Type TNewsAgency
 		
 		local newsEvent:TNewsEvent = GetWeatherNewsEvent()
 		If newsEvent
-			'Print "[LOCAL] UpdateWeather: added weather news title="+newsEvent.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
+			?debug
+			Print "[NEWSAGENCY | LOCAL] UpdateWeather: added weather news title="+newsEvent.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
+			?
 			announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone())
 		EndIf
 
@@ -696,13 +698,17 @@ Type TNewsAgency
 					'a player listens to this genre, disallow skipping
 					If player.newsabonnements[newsEvent.genre] > 0 Then skipNews = False
 				Next
-				if skipNews then print "skip news: "+newsEvent.GetTitle()
+				?debug
+				if skipNews then print "[NEWSAGENCY] skip news: "+newsEvent.GetTitle()
+				?
 			EndIf
 
 			If not skipNews or forceAdd
 				announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone() + adjustHappenedTime, forceAdd)
 				announced = True
-				Print "[LOCAL] AnnounceNewNews: added news title="+newsEvent.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
+				?debug
+				Print "[NEWSAGENCY | LOCAL] AnnounceNewNews: added news title="+newsEvent.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
+				?
 			EndIf
 		EndIf
 
