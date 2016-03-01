@@ -37,7 +37,7 @@ Rem
 	====================================================================
 EndRem
 SuperStrict
-Import BRL.PNGLoader
+Import Brl.OGGLoader
 Import "base.util.registry.bmx"
 Import "base.sfx.soundmanager.bmx"
 'register this loader

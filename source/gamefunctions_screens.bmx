@@ -185,7 +185,7 @@ Type TInGameScreen Extends TScreen
 					_enterScreenEffect = New TScreenChangeEffect_ClosingRects.Create(TScreenChangeEffect.DIRECTION_OPEN, _contentArea)
 				EndIf
 			Default
-				print "-> FADE default"
+				'print "-> FADE default"
 				_enterScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_OPEN)
 		End Select
 	End Method

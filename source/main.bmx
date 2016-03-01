@@ -216,6 +216,12 @@ Type TApp
 			'GetGraphicsManager().SetResolution(1024,768)
 			GetGraphicsManager().SetDesignedResolution(800,600)
 			GetGraphicsManager().InitGraphics()
+
+			MouseManager._minSwipeDistance = obj.config.GetInt("touchClickRadius", 10)
+			MouseManager._ignoreFirstClick = obj.config.GetBool("touchInput", False)
+			MouseManager._longClickModeEnabled = obj.config.GetBool("longClickMode", True)
+			MouseManager._longClickTime = obj.config.GetInt("longClickTime", 400)
+
 			
 			'load graphics needed for loading screen,
 			'load directly (no delayed loading)
@@ -340,6 +346,7 @@ Type TApp
 
 		MouseManager._minSwipeDistance = config.GetInt("touchClickRadius", 10)
 		MouseManager._ignoreFirstClick = config.GetBool("touchInput", False)
+		MouseManager._longClickModeEnabled = config.GetBool("longClickMode", True)
 
 		if TGame._instance Then GetGame().LoadConfig(config)
 	End Method
@@ -2876,7 +2883,21 @@ Type TSettingsWindow
 	Field inputOnlinePort:TGUIInput
 	Field inputTouchClickRadius:TGUIInput
 	Field checkTouchInput:TGUICheckbox
+	Field checkLongClickMode:TGUICheckbox
+	Field inputLongClickTime:TGUIInput
 
+	'labels for deactivation
+	Field labelLongClickTime:TGUILabel
+	Field labelLongClickTimeMilliseconds:TGUILabel
+	Field labelTouchClickRadiusPixel:TGUILabel
+	Field labelTouchClickRadius:TGUILabel
+
+	Field _eventListeners:TLink[]
+
+
+	Method New()
+		EventManager.registerListenerMethod("guiCheckBox.onSetChecked", Self, "onCheckCheckboxes", "TGUICheckbox")
+	End Method
 
 	Method Remove:int()
 		'no need to remove them ... everything is handled via
@@ -2897,10 +2918,13 @@ Type TSettingsWindow
 			inputGameName.Remove()
 			inputOnlinePort.Remove()
 		endrem
+
+		EventManager.unregisterListenersByLinks(_eventListeners)
 	End Method
 
 
 	Method Delete()
+
 		Remove()
 	End Method
 
@@ -2930,6 +2954,8 @@ Type TSettingsWindow
 
 		data.AddBoolString("touchInput", checkTouchInput.IsChecked())
 		data.Add("touchClickRadius", inputTouchClickRadius.GetValue())
+		data.AddBoolString("longClickMode", checkLongClickMode.IsChecked())
+		data.Add("longClicktime", inputLongClickTime.GetValue())
 
 		Return data
 	End Method
@@ -2949,6 +2975,21 @@ Type TSettingsWindow
 		inputWindowResolutionHeight.SetValue(Max(300, data.GetInt("screenH", 600)))
 		checkTouchInput.SetChecked(data.GetBool("touchInput", MouseManager._ignoreFirstClick))
 		inputTouchClickRadius.SetValue(Max(5, data.GetInt("touchClickRadius", MouseManager._minSwipeDistance)))
+		checkLongClickMode.SetChecked(data.GetBool("longClickMode", MouseManager._longClickModeEnabled))
+		inputLongClickTime.SetValue(Max(50, data.GetInt("longClickTime", MouseManager._longClickTime)))
+
+		'disable certain elements if needed
+		if not checkLongClickMode.IsChecked()
+			labelLongClickTime.Disable()
+			inputLongClickTime.Disable()
+			labelLongClickTimeMilliseconds.Disable()
+		endif
+		if not checkTouchInput.IsChecked()
+			labelTouchClickRadius.Disable()
+			inputTouchClickRadius.Disable()
+			labelTouchClickRadiusPixel.Disable()
+		endif
+
 
 		'check available sound engine entries
 		Local selectedDropDownItem:TGUIDropDownItem
@@ -2999,7 +3040,7 @@ Type TSettingsWindow
 		Local labelH:Int = 12
 		Local inputH:Int = 0
 		Local windowW:Int = 700
-		Local windowH:Int = 420
+		Local windowH:Int = 500
 
 		modalDialogue = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D.Init(windowW, windowH), "SYSTEM")
 
@@ -3182,17 +3223,44 @@ Type TSettingsWindow
 		canvas.AddChild(labelTitleInput)
 		nextY :+ 25
 
-		checkTouchInput = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth + 20,-1), "")
-		checkTouchInput.SetCaption(GetLocale("USE_TOUCH_INPUT"))
+		checkTouchInput = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth + 20,-1), GetLocale("USE_TOUCH_INPUT"))
 		canvas.AddChild(checkTouchInput)
-		nextY :+ Max(inputH, checkTouchInput.GetScreenHeight())
+		nextY :+ checkTouchInput.GetScreenHeight()
 
-		Local labelTouchClickRadius:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("MOVE_INSTEAD_CLICK_RADIUS")+":")
-		inputTouchClickRadius = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + 12), New TVec2D.Init(50,-1), "", 4)
-		Local labelTouchClickRadiusPixel:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX + 55 , nextY + 18), "px")
+		local labelTouchInput:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("USE_TOUCH_INPUT_EXPLANATION"))
+		canvas.AddChild(labelTouchInput)
+		labelTouchInput.Resize(checkboxWidth+30,-1)
+		labelTouchInput.SetFont( GetBitmapFont("default", 10) )
+		labelTouchInput.SetValueColor(new TColor.CreateGrey(75))
+		labelTouchInput.SetValue(labelTouchInput.GetValue() + labelTouchInput.GetValueDimension().y)
+		nextY :+ labelTouchInput.GetValueDimension().y + 5
+
+		labelTouchClickRadius = New TGUILabel.Create(New TVec2D.Init(nextX + 22, nextY), GetLocale("MOVE_INSTEAD_CLICK_RADIUS")+":")
+		inputTouchClickRadius = New TGUIInput.Create(New TVec2D.Init(nextX + 22, nextY + 12), New TVec2D.Init(50,-1), "", 4)
+		labelTouchClickRadiusPixel = New TGUILabel.Create(New TVec2D.Init(nextX + 22 + 55, nextY + 18), "px")
 		canvas.AddChild(labelTouchClickRadius)
 		canvas.AddChild(inputTouchClickRadius)
 		canvas.AddChild(labelTouchClickRadiusPixel)
+		nextY :+ Max(inputH, inputTouchClickRadius.GetScreenHeight()) + 18
+
+
+		checkLongClickMode = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth + 20,-1), GetLocale("LONGCLICK_MODE"))
+		canvas.AddChild(checkLongClickMode)
+		nextY :+ checkLongClickMode.GetScreenHeight()
+
+		local labelLongClickMode:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("LONGCLICK_MODE_EXPLANATION"))
+		canvas.AddChild(labelLongClickMode)
+		labelLongClickMode.Resize(checkboxWidth+30, -1)
+		labelLongClickMode.SetFont( GetBitmapFont("default", 10) )
+		labelLongClickMode.SetValueColor(new TColor.CreateGrey(75))
+		nextY :+ labelLongClickMode.GetValueDimension().y + 5
+
+		labelLongClickTime = New TGUILabel.Create(New TVec2D.Init(nextX + 22, nextY), GetLocale("LONGCLICK_TIME")+":")
+		inputLongClickTime = New TGUIInput.Create(New TVec2D.Init(nextX + 22, nextY + 12), New TVec2D.Init(50,-1), "", 4)
+		labelLongClickTimeMilliseconds = New TGUILabel.Create(New TVec2D.Init(nextX + 22 + 55 , nextY + 18), "ms")
+		canvas.AddChild(labelLongClickTime)
+		canvas.AddChild(inputLongClickTime)
+		canvas.AddChild(labelLongClickTimeMilliseconds)
 
 		nextY :+ inputH + 5
 
@@ -3203,6 +3271,54 @@ Type TSettingsWindow
 		modalDialogue.Open()
 
 		Return Self
+	End Method
+
+
+	Method onCheckCheckboxes:int(event:TEventSimple)
+		local checkBox:TGUICheckbox = TGUICheckbox(event.GetSender())
+		if not checkBox then return False
+
+		if checkBox = checkLongClickMode
+			if not labelLongClickTime then return False
+			if not inputLongClickTime then return False
+			if not labelLongClickTimeMilliseconds then return False
+			
+			if checkLongClickMode.IsChecked()
+				if not labelLongClickTime.IsEnabled()
+					labelLongClickTime.Enable()
+					inputLongClickTime.Enable()
+					labelLongClickTimeMilliseconds.Enable()
+				endif
+			else
+				if labelLongClickTime.IsEnabled()
+					labelLongClickTime.Disable()
+					inputLongClickTime.Disable()
+					labelLongClickTimeMilliseconds.Disable()
+				endif
+			endif
+		endif
+
+		if checkBox = checkTouchInput
+			if not labelTouchClickRadius then return False
+			if not inputTouchClickRadius then return False
+			if not labelTouchClickRadiusPixel then return False
+
+			if checkTouchInput.IsChecked()
+				if not labelTouchClickRadius.IsEnabled()
+					labelTouchClickRadius.Enable()
+					inputTouchClickRadius.Enable()
+					labelTouchClickRadiusPixel.Enable()
+				endif
+			else
+				if labelTouchClickRadius.IsEnabled()
+					labelTouchClickRadius.Disable()
+					inputTouchClickRadius.Disable()
+					labelTouchClickRadiusPixel.Disable()
+				endif
+			endif
+		endif
+
+		return True
 	End Method
 End Type
 

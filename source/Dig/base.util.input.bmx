@@ -107,9 +107,10 @@ Type TMouseManager
 	'time (in ms) to wait for another click to recognize doubleclicks
 	'so it is also the maximum time "between" that needed two clicks
 	Field _doubleClickTime:int = 250
-	Field _longClickTime:int = 500
+	Field _longClickTime:int = 400
 
 	'TOUCH emulation
+	field _longClickModeEnabled:int = True
 	Field _ignoreFirstClick:int = False 'skip first click (touch screens)
 	Field _hasIgnoredFirstClick:int[] = [0,0,0] 'currently ignoring?
 	'distance in pixels, if mouse moved further away, the next
@@ -216,6 +217,7 @@ Type TMouseManager
 	'returns whether the button got clicked, no waiting time
 	'is added. Button needs to have been down for a while
 	Method isLongClicked:Int(key:Int)
+		if not _longClickModeEnabled then return False
 		if not _enabled[key] then return False
 
 		if not _keyLongClicked[key]
@@ -393,8 +395,10 @@ Type TMouseManager
 					_clickPosition[i] = new TVec2D.Init(x,y)
 				endif
 
-				if _keyHitTime[i] <> 0 and _keyHitTime[i] + _longClickTime < Time.GetAppTimeGone()
-					_keyLongClicked[i] = True
+				if _longClickModeEnabled
+					if _keyHitTime[i] <> 0 and _keyHitTime[i] + _longClickTime < Time.GetAppTimeGone()
+						_keyLongClicked[i] = True
+					endif
 				endif
 			endif
 			_keyStatus[i] = KEY_STATE_NORMAL
