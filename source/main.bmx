@@ -3040,7 +3040,7 @@ Type TSettingsWindow
 		Local labelH:Int = 12
 		Local inputH:Int = 0
 		Local windowW:Int = 700
-		Local windowH:Int = 500
+		Local windowH:Int = 490
 
 		modalDialogue = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D.Init(windowW, windowH), "SYSTEM")
 
@@ -3232,7 +3232,7 @@ Type TSettingsWindow
 		labelTouchInput.Resize(checkboxWidth+30,-1)
 		labelTouchInput.SetFont( GetBitmapFont("default", 10) )
 		labelTouchInput.SetValueColor(new TColor.CreateGrey(75))
-		labelTouchInput.SetValue(labelTouchInput.GetValue() + labelTouchInput.GetValueDimension().y)
+		labelTouchInput.SetValue(labelTouchInput.GetValue())
 		nextY :+ labelTouchInput.GetValueDimension().y + 5
 
 		labelTouchClickRadius = New TGUILabel.Create(New TVec2D.Init(nextX + 22, nextY), GetLocale("MOVE_INSTEAD_CLICK_RADIUS")+":")

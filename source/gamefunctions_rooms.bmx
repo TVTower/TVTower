@@ -2754,12 +2754,6 @@ Type RoomHandler_Studio extends TRoomHandler
 			else
 				pc.MoveScriptFromStudioToArchive(script)
 			endif
-
-			'remove ALL shopping lists for this script
-			'ATTENTION: this removes the shopping lists, as soon
-			'           as a script is dropped back to the suitcase
-			'           -> Maybe keep it until you leave the room?
-			pc.RemoveShoppingListsByScript(script)
 		endif
 
 		return studioScriptsByRoom.Remove(roomGUID)
@@ -3024,6 +3018,8 @@ Type RoomHandler_Studio extends TRoomHandler
 				local slStart:int = 640 'right aligned
 				slStart :- slCount * (slSprite.GetWidth() + 5)
 				For local sl:TShoppingList = EachIn roomOwner.GetProgrammeCollection().GetShoppingLists()
+					'only show 
+					if sl.script <> GetCurrentStudioScript(roomGUID) then continue
 					slSprite.Draw(slStart, 335)
 					slStart :+ (slSprite.GetWidth() + 5)
 				Next

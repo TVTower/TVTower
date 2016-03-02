@@ -56,3 +56,39 @@ Type TShoppingList extends TOwnedGameObject
 		return productionConcept.IsComplete()
 	End Method
 End Type
+
+
+Type TShoppingListFilter
+	Field requiredOwners:int[]
+	Field forbiddenOwners:int[]
+	Field scriptGUID:string
+
+	
+	Method DoesFilter:Int(shoppingList:TShoppingList)
+		if not shoppingList then return False
+
+		if scriptGUID
+			if not shoppingList.script then return False
+			if scriptGUID <> shoppingList.GetGUID() then return False
+		endif
+
+		'check if owner is one of the owners required for the filter
+		'if not, filter failed
+		if requiredOwners.length > 0
+			local hasOwner:int = False
+			for local owner:int = eachin requiredOwners
+				if owner = shoppingList.owner then hasOwner = True;exit
+			Next
+			if not hasOwner then return False
+		endif
+
+		'check if owner is one of the forbidden owners
+		'if so, filter fails
+		if forbiddenOwners.length > 0
+			for local owner:int = eachin forbiddenOwners
+				if owner = shoppingList.owner then return False
+			Next
+		endif
+	
+	End Method
+End Type

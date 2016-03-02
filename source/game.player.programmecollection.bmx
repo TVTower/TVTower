@@ -177,6 +177,15 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
+	Method GetFilterShoppingListsCount:Int(filter:TShoppingListFilter) {_exposeToLua}
+		local count:int = 0
+		For local sl:TShoppingList = EachIn shoppingLists
+			if filter.DoesFilter(sl) then count :+ 1
+		Next
+		return count
+	End Method
+
+
 	Method GetSuitcaseProgrammeLicenceCount:int() {_exposeToLua}
 		return suitcaseProgrammeLicences.count()
 	End Method
@@ -585,8 +594,13 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Method RemoveScript:Int(script:TScript, sell:int=FALSE)
 		If script = Null Then Return False
 
-		if sell and not script.sell() then return FALSE
+		if sell
+			if not script.sell() then return FALSE
+		endif
 
+		'sold or "destroyed" script, so destroy its shopping lists too
+		DestroyShoppingListsByScript(script)
+		
 		scripts.remove(script)
 		studioScripts.remove(script)
 		'remove from suitcase too!
@@ -633,9 +647,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			return False
 		endif
 		
-		local shoppingList:TShoppingList = new TShoppingList.Init(owner, script)
-		GetShoppingListCollection().Add(shoppingList)
-		AddShoppingList(shoppingList)
+		AddShoppingList( new TShoppingList.Init(owner, script) )
 		return True
 	End Method
 
@@ -648,14 +660,29 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			shoppingList.SetOwner(owner)
 		endif
 
+		GetShoppingListCollection().Add(shoppingList)
 		shoppingLists.AddLast(shoppingList)
 
 		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addShoppingList", new TData.add("shoppingList", shoppingList), self))
 		return TRUE
 	End Method
 
+
+	'remove from PlayerProgrammeCollection _AND_ "ShoppingListCollection"
+	Method DestroyShoppingList:Int(shoppingList:TShoppingList)
+		if shoppingList = Null then return False
+
+		if not RemoveShoppingList(shoppingList) then return False
+
+		'emit event to inform others
+		EventManager.triggerEvent( TEventSimple.Create("programmecollection.destroyShoppingList", new TData.Add("shoppingList", shoppingList), self))
+
+		GetShoppingListCollection().Remove(shoppingList)
+	End Method
+
 	
-	'totally remove a shopping list from the collection
+	'remove a shopping list from the collection
+	'ATTENTION: it is then still in "ShoppingListCollection" !
 	Method RemoveShoppingList:Int(shoppingList:TShoppingList)
 		if shoppingList = Null then return False
 
@@ -663,13 +690,33 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 		'emit an event so eg. network can recognize the change
 		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.removeShoppingList", new TData.add("shoppingList", shoppingList), self))
+		return True
+	End Method
+
+	'destroy all shopping list of a given script
+	'HINT: they are also removed from GetShoppingListCollection() !
+	Method DestroyShoppingListsByScript:Int(script:TScript)
+		local remove:TShoppingList[]
+		For local sl:TShoppingList = EachIn shoppingLists
+			if sl.script = script then remove :+ [sl]
+		Next
+
+		For local sl:TShoppingList = EachIn remove
+			DestroyShoppingList(sl)
+		Next
 	End Method
 
 
-	'totally remove all shopping list of a given script
+	'remove all shopping list of a given script
+	'ATTENTION: they are then still in the GetShoppingListCollection() !
 	Method RemoveShoppingListsByScript:Int(script:TScript)
+		local remove:TShoppingList[]
 		For local sl:TShoppingList = EachIn shoppingLists
-			if sl.script = script then RemoveShoppingList(sl)
+			if sl.script = script then remove :+ [sl]
+		Next
+
+		For local sl:TShoppingList = EachIn remove
+			RemoveShoppingList(sl)
 		Next
 	End Method
 
