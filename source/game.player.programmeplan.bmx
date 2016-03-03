@@ -166,7 +166,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Print "=== AD/PROGRAMME PLAN PLAYER " + owner + " ==="
 		For Local i:Int = 0 To Max(programmes.length - 1, advertisements.length - 1)
 			Local currentHour:Int = GetHourFromArrayIndex(i) 'hours since start
-			Local time:Int = GetWorldTime().MakeTime(0, 0, currentHour, 0)
+			Local time:Double = GetWorldTime().MakeTime(0, 0, currentHour, 0)
 			Local adString:String = ""
 			Local progString:String = ""
 
@@ -368,7 +368,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'removes slot lock info from past days (to keep things small sized)
 	Method RemoveObsoleteSlotLocks:int()
-		local time:int = GetWorldTime().GetDay()*24 ' + 0 hours, start at midnight)
+		local time:Double = GetWorldTime().GetDay()*24 ' + 0 hours, start at midnight)
 		
 		For local k:string = EachIn lockedSlots.Keys()
 			local parts:string[] = k.split("_")
@@ -1050,8 +1050,8 @@ endrem
 
 	'Returns whether a used-as-programme can be placed at the given day/time
 	'without intercepting other programmes
-	Method ProgrammePlaceable:Int(obj:TBroadcastMaterial, time:Int=-1, day:Int=-1)
-		Return ObjectPlaceable(obj, TVTBroadcastMaterialType.PROGRAMME, time, day)
+	Method ProgrammePlaceable:Int(obj:TBroadcastMaterial, day:Int=-1, hour:int=-1)
+		Return ObjectPlaceable(obj, TVTBroadcastMaterialType.PROGRAMME, day, hour)
 	End Method
 
 
@@ -1251,8 +1251,8 @@ endrem
 
 
 	'Returns whether a programme can be placed at the given day/time
-	Method AdvertisementPlaceable:Int(obj:TBroadcastMaterial, time:Int=-1, day:Int=-1)
-		Return ObjectPlaceable(obj, TVTBroadcastMaterialType.ADVERTISEMENT, time, day)
+	Method AdvertisementPlaceable:Int(obj:TBroadcastMaterial, day:Int=-1, hour:int=-1)
+		Return ObjectPlaceable(obj, TVTBroadcastMaterialType.ADVERTISEMENT, day, hour)
 	End Method
 
 

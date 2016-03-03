@@ -113,7 +113,7 @@ Type TScreenHandler_Financials
 
 		'=== NEWS LOG ===
 		captionFont.DrawBlock(GetLocale("FINANCES_LAST_FINANCIAL_ACTIVITIES"), 500 + screenOffsetX, 13 + screenOffsetY,  240, captionHeight, ALIGN_CENTER_CENTER, captionColor, 1,,0.5)
-		local list:TList = GetPlayerFinanceHistoryListCollection().Get(room.owner)
+		local list:TList = GetPlayerFinanceHistoryList(room.owner)
 		local logSlot:int = 0
 		local logH:int = 19
 		local history:TPlayerFinanceHistoryEntry
@@ -331,7 +331,7 @@ Type TScreenHandler_Financials
 			slot :+ 1
 		Next
 		if hoveredDay > 0
-			local time:int = GetWorldTime().MakeTime(0, hoveredDay, 0, 0)
+			local time:Double = GetWorldTime().MakeTime(0, hoveredDay, 0, 0)
 			local gameDay:string = GetWorldTime().GetDayOfYear(time)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(time)
 			if GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money > 0
 				textSmallFont.Draw(GetLocale("GAMEDAY")+" "+gameDay+": |color=50,110,50|"+TFunctions.dottedValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money)+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))

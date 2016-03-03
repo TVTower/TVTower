@@ -330,7 +330,7 @@ endrem
     End Method
 
 
-    Method GetPublishTime:int() {_exposeToLua}
+    Method GetPublishTime:Double() {_exposeToLua}
 		return GetHappenedTime() + publishdelay
     End Method
 

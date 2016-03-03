@@ -284,7 +284,7 @@ Type TScreenHandler_Statistics
 			Next
 
 			if hoveredHour >= 0
-				local time:int = GetWorldTime().MakeTime(0, showDay, hoveredHour, 0)
+				local time:Double = GetWorldTime().MakeTime(0, showDay, hoveredHour, 0)
 				local gameDay:string = GetWorldTime().GetDay(time)
 
 				local hoverX:int = curveArea.GetX() + slot * slotWidth

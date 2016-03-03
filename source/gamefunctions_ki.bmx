@@ -191,7 +191,7 @@ Type KI
 	End Method
 
 
-	Method CallOnBossCalls(latestWorldTime:int=0)
+	Method CallOnBossCalls(latestWorldTime:Double=0)
 		Local args:Object[1]
 		args[0] = String(latestWorldTime)
 		if (KIRunning) then LuaEngine.CallLuaFunction("OnBossCalls", args)

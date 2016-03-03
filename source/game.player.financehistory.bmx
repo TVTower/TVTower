@@ -46,6 +46,10 @@ Function GetPlayerFinanceHistoryListCollection:TPlayerFinanceHistoryListCollecti
 	Return TPlayerFinanceHistoryListCollection.GetInstance()
 End Function
 
+Function GetPlayerFinanceHistoryList:TList(player:int)
+	Return TPlayerFinanceHistoryListCollection.GetInstance().Get(player)
+End Function
+
 
 
 Type TPlayerFinanceHistoryEntry
@@ -57,7 +61,7 @@ Type TPlayerFinanceHistoryEntry
 	Field worldTime:Double = 0
 
 
-	Method Init:TPlayerFinanceHistoryEntry(typeID:int, money:int, obj:object=null, worldTime:int = -1)
+	Method Init:TPlayerFinanceHistoryEntry(typeID:int, money:Long, obj:object=null, worldTime:Double = -1)
 		if worldTime = -1 then worldTime = GetWorldTime().GetTimeGone()
 		self.typeID = typeID
 		self.obj = obj
@@ -82,7 +86,7 @@ Type TPlayerFinanceHistoryEntry
 	End Method
 
 
-	Method GetMoney:int()
+	Method GetMoney:Long()
 		return money
 	End Method
 

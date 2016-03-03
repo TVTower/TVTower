@@ -93,7 +93,7 @@ Type TPlayerBase {_exposeToLua="selected"}
 	'maximum abonnementlevel for this day
 	Field newsabonnementsDayMax:Int[] = [-1,-1,-1,-1,-1,-1]
 	'when was the level set
-	Field newsabonnementsSetTime:Int[6]
+	Field newsabonnementsSetTime:Double[6]
 		
 
 	Method GetPlayerID:Int() {_exposeToLua}
