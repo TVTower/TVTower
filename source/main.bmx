@@ -362,7 +362,6 @@ Type TApp
 		Local oldLang:String = TLocalization.GetCurrentLanguageCode()
 		'select language
 		TLocalization.SetCurrentLanguage(languageCode)
-		TLocalizedString.SetCurrentLanguage(languageCode)
 
 		'skip further actions if the same language is already set
 		If oldLang = languageCode Then Return False

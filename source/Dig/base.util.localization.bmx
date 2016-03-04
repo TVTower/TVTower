@@ -137,11 +137,12 @@ Type TLocalization
 	End Function
 
 
-	Function SetFallbackLanguage:Int(language:String)
-		local lang:TLocalizationLanguage = GetLanguage(language)
+	Function SetFallbackLanguage:Int(languageCode:String)
+		local lang:TLocalizationLanguage = GetLanguage(languageCode)
 
 		if lang
 			fallbackLanguage = lang
+			TLocalizedString.defaultLanguage = languageCode
 			Return True
 		else
 			Return False
@@ -156,11 +157,13 @@ Type TLocalization
 	End Function
 	
 
-	Function SetCurrentLanguage:Int(language:String)
-		local lang:TLocalizationLanguage = GetLanguage(language)
+	Function SetCurrentLanguage:Int(languageCode:String)
+		local lang:TLocalizationLanguage = GetLanguage(languageCode)
 
 		if lang
 			currentLanguage = lang
+			TLocalizedString.SetCurrentLanguage(languageCode)
+
 			Return True
 		else
 			Return False
@@ -382,7 +385,8 @@ End Type
 
 Type TLocalizedString
 	Field values:TMap = CreateMap()
-	Global defaultLanguage:string = "de"
+	Global fallbackLanguage:string = "de"
+	Global defaultLanguage:string = "en"
 	Global currentLanguage:string = "de"
 
 
@@ -420,13 +424,14 @@ Type TLocalizedString
 		if language="" then language = currentLanguage
 		if values.Contains(language)
 			return string(values.ValueForKey(language))
-		else
-			If returnDefault
+		elseif returnDefault
+			if values.Contains(defaultLanguage)
 				return string(values.ValueForKey(defaultLanguage))
-			Else
-				return ""
-			EndIf
+			elseif fallbackLanguage <> defaultLanguage and values.Contains(fallbackLanguage)
+				return string(values.ValueForKey(fallbackLanguage))
+			endif
 		endif
+		return ""
 	End Method
 
 
