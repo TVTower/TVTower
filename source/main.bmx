@@ -338,6 +338,9 @@ Type TApp
 		GetGraphicsManager().SetColordepth(config.GetInt("colordepth", 16))
 		GetGraphicsManager().SetVSync(config.GetBool("vsync", True))
 
+		GetGraphicsManager().SetResolution(config.GetInt("screenW", 800), config.GetInt("screenH", 600))
+		GetGraphicsManager().InitGraphics()
+
 		GetDeltatimer().SetRenderRate(config.GetInt("fps", -1))
 
 		TSoundManager.SetAudioEngine(config.GetString("sound_engine", "AUTOMATIC"))
@@ -1036,13 +1039,13 @@ Type TApp
 		'if MouseManager.x <> MouseX() or MouseManager.y <> MouseY()
 		'	print MouseManager.x+" <> "+MouseX()+" or "+MouseManager.y+" <> "+MouseY()
 		'endif
-		If GetGame().cursorstate = 0 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseX()-9,  MouseY()-2,  0)
+		If GetGame().cursorstate = 0 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-9,  MouseManager.y-2,  0)
 		'open hand
-		If GetGame().cursorstate = 1 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseX()-11, MouseY()-8,  1)
+		If GetGame().cursorstate = 1 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11, MouseManager.y-8,  1)
 		'grabbing hand
-		If GetGame().cursorstate = 2 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseX()-11, MouseY()-16, 2)
+		If GetGame().cursorstate = 2 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11, MouseManager.y-16, 2)
 		'open hand blocked
-		If GetGame().cursorstate = 3 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseX()-11, MouseY()-8	,  3)
+		If GetGame().cursorstate = 3 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11, MouseManager.y-8	,  3)
 
 		'if a screenshot is generated, draw a logo in
 		If App.prepareScreenshot = 1
