@@ -22,7 +22,7 @@ Import "../source/game.registry.loaders.bmx" 'genres
 
 Import "../source/game.production.productionconcept.bmx"
 Import "../source/game.production.productioncompany.bmx"
-Import "../source/game.production.shoppinglist.gui.bmx"
+Import "../source/game.production.productionconcept.gui.bmx"
 
 
 
@@ -300,7 +300,7 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 	Field productionFocusLabel:string[6]
 	Field newProductionButton:TGUIButton
 	Field startProductionButton:TGUIButton
-	Field shoppingListList:TGUISelectList
+	Field productionConceptList:TGUISelectList
 	Field productionCompanySelect:TGUIDropDown
 	Field castSlotList:TGUICastSlotList
 	Field repositionSliders:int = True
@@ -344,8 +344,8 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickCastItem, "TGUICastListItem") ]
 		'we want to know if we hover a specific block
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverCastItem, "TGUICastListItem" ) ]
-		'shopping list is selected, enable production button
-		_eventListeners :+ [ EventManager.registerListenerFunction("GUISelectList.onSelectEntry", onSelectShoppingListItem, shoppingListList ) ]
+		'production concept list is selected, enable production button
+		_eventListeners :+ [ EventManager.registerListenerFunction("GUISelectList.onSelectEntry", onSelectProductionConceptListItem, productionConceptList ) ]
 		'create/abort production
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickNewProductionButton, "TGUIButton" ) ]
 
@@ -392,13 +392,7 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 
 
 	Method CreateNewConcept(script:TScript)
-		'sollte normalerweise von der "ShoppingList" uebernommen werden
-		'-> und die Shoppingliste dann geloescht, sobald die Produktion
-		'   eingestellt ist - mit dem "TProductionConcept" kann dann ins
-		'   Studio gegangen werden
-		currentProductionConcept = new TProductionConcept
-		currentProductionConcept.Initialize()
-		currentProductionConcept.SetScript(script)
+		currentProductionConcept = new TProductionConcept.Initialize(1, script)
 
 		'=== RESET GUI ===
 		For local i:int = 0 to productionFocusSlider.length -1
@@ -435,14 +429,14 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 	End Method
 
 
-	'=== SELECTLIST - SHOPPINGLIST SELECTION ===
+	'=== SELECTLIST - PRODUCTIONCONCEPT SELECTION ===
 
 	'GUI -> GUI
 	'enable production-button upon selection of an entry
-	Function onSelectShoppingListItem:int(triggerEvent:TeventBase)
-		local item:TGuiShoppingListSelectListItem = TGuiShoppingListSelectListItem(triggerEvent.GetData().Get("entry"))
+	Function onSelectProductionConceptListItem:int(triggerEvent:TeventBase)
+		local item:TGuiProductionConceptSelectListItem = TGuiProductionConceptSelectListItem(triggerEvent.GetData().Get("entry"))
 		local list:TGUISelectList = TGUISelectList(triggerEvent.GetSender())
-		if GetInstance().shoppingListList <> list or not item then return False
+		if GetInstance().productionConceptList <> list or not item then return False
 
 		GetInstance().newProductionButton.Enable()
 	End Function
@@ -461,9 +455,9 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 
 		'create new one
 		else
-			local currentGUIScript:TGuiShoppingListSelectListItem = TGuiShoppingListSelectListItem(GetInstance().shoppingListList.getSelectedEntry())
-			if currentGUIScript and currentGUIScript.shoppingList
-				GetInstance().CreateNewConcept(currentGUIScript.shoppingList.script)
+			local currentGUIScript:TGuiProductionConceptSelectListItem = TGuiProductionConceptSelectListItem(GetInstance().productionConceptList.getSelectedEntry())
+			if currentGUIScript and currentGUIScript.productionConcept
+				GetInstance().CreateNewConcept(currentGUIScript.productionConcept.script)
 			endif
 		endif
 	End Function
@@ -777,20 +771,20 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		startProductionButton.disable()
 		startProductionButton.spriteName = "gfx_gui_button.datasheet"
 
-		shoppingListList = new TGUISelectList.Create(new TVec2D.Init(20,20), new TVec2D.Init(150,180), "supermarket_customproduction_newproduction")
+		productionConceptList = new TGUISelectList.Create(new TVec2D.Init(20,20), new TVec2D.Init(150,180), "supermarket_customproduction_newproduction")
 		'add some items to that list
 		for local i:int = 1 to 10
 			local script:TScript = GetScriptCollection().GetRandomAvailable()
-			local shoppingList:TShoppingList = new TShoppingList.Init(1, script)
-			local item:TGuiShoppingListSelectListItem = new TGuiShoppingListSelectListItem.Create(null, new TVec2D.Init(150,24), "ICON + Drehbuchtitel "+i)
+			local productionConcept:TProductionConcept = new TProductionConcept.Initialize(1, script)
+			local item:TGuiProductionConceptSelectListItem = new TGuiProductionConceptSelectListItem.Create(null, new TVec2D.Init(150,24), "ICON + Drehbuchtitel "+i)
 
 			script.SetOwner(1)
-			item.SetShoppingList(shoppingList)
+			item.SetProductionConcept(productionConcept)
 			'base items do not have a size - so we have to give a manual one
-			shoppingListList.AddItem( item )
+			productionConceptList.AddItem( item )
 		Next
 		'refresh scrolling state
-		shoppingListList.Resize(150, 180)
+		productionConceptList.Resize(150, 180)
 	End Method
 
 
@@ -857,7 +851,7 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 
 
 
-		'=== SHOPPING LIST ===
+		'=== PRODUCTION CONCEPT LIST ===
 		outer.Init(10, 15, 210, 210)
 		contentX = skin.GetContentX(outer.GetX())
 		contentY = skin.GetContentY(outer.GetY())
@@ -872,9 +866,9 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		contentY :+ titleH
 		skin.RenderContent(contentX, contentY, contentW, listH , "2")
 		'reposition list
-		if shoppingListList.rect.getX() <> contentX + 5
-			shoppingListList.rect.SetXY(contentX + 5, contentY + 3)
-			shoppingListList.Resize(contentW - 10, listH - 6)
+		if productionConceptList.rect.getX() <> contentX + 5
+			productionConceptList.rect.SetXY(contentX + 5, contentY + 3)
+			productionConceptList.Resize(contentW - 10, listH - 6)
 		endif
 		contentY :+ listH
 
@@ -1154,14 +1148,14 @@ End Type
 
 
 
-Type TGuiShoppingListSelectListItem Extends TGuiShoppingListListItem
+Type TGuiProductionConceptSelectListItem Extends TGuiProductionConceptListItem
 	Field displayName:string = ""
 	Const scaleAsset:Float = 0.80
 	Const paddingBottom:Int	= 3
 	Const paddingTop:Int = 2
 
 
-    Method Create:TGuiShoppingListSelectListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+    Method Create:TGuiProductionConceptSelectListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
 		Super.Create(pos, dimension, value)
 		SetOption(GUI_OBJECT_DRAGABLE, False)
 
@@ -1222,11 +1216,11 @@ endrem
 			Local oldCol:TColor = new TColor.Get()
 			SetColor 255,220,180
 
-			DrawShoppingList()
+			DrawProductionConceptItem()
 
 			oldCol.SetRGBA()
 		Else
-			DrawShoppingList()
+			DrawProductionConceptItem()
 		EndIf
 		
 		'hovered
@@ -1235,7 +1229,7 @@ endrem
 			SetAlpha 0.20*oldAlpha
 			SetBlend LightBlend
 
-			DrawShoppingList()
+			DrawProductionConceptItem()
 
 			SetBlend AlphaBlend
 			SetAlpha oldAlpha
@@ -1243,7 +1237,7 @@ endrem
 	End Method
 
 
-	Method DrawShoppingList()
+	Method DrawProductionConceptItem()
 		if isHovered()
 			local oldCol:TColor = new TColor.Get()
 			SetAlpha 0.05 * oldCol.a
@@ -1262,7 +1256,7 @@ endrem
 		local oldMod:float = titleFont.lineHeightModifier
 		titleFont.lineHeightModifier :* 0.9
 
-		if shoppingList then title = shoppingList.script.GetTitle()
+		if productionConcept then title = productionConcept.script.GetTitle()
 
 		if isSelected()
 			titleSize = titleFont.DrawBlock(title, int(GetScreenX()+ textOffsetX), int(GetScreenY()+2), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-4,,TColor.Create(100,0,0))
@@ -1279,9 +1273,9 @@ endrem
 		titleFont.lineHeightModifier = oldMod
 		
 
-		if shoppingList
-			local productionTypeText:string = shoppingList.script.GetProductionTypeString()
-			local genreText:string = shoppingList.script.GetMainGenreString()
+		if productionConcept
+			local productionTypeText:string = productionConcept.script.GetProductionTypeString()
+			local genreText:string = productionConcept.script.GetMainGenreString()
 			local text:string = productionTypeText
 			if genreText <> productionTypeText then text :+ " / "+genreText
 			GetBitmapFont("default").DrawBlock(text, int(GetScreenX()+ textOffsetX), int(GetScreenY()+2 + titleSize.y), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-4,,genreColor)

@@ -635,3 +635,6 @@ CAST_APPEARANCE = Appearance
 POINTSSET_OF_POINTSMAX_POINTS_SET = %POINTSSET%/%POINTSMAX% points set
 PRODUCTION_FOCUS_POINTS_NOT_SET_COMPLETELY = Production focus points not set completely
 NO_PRODUCTION_COMPANY_SELECTED = No production company selected
+
+STUDIO_MANAGER = Studio manager
+STUDIO_MANAGER_TOOLTIP = Gives information about production and hands out new shopping lists

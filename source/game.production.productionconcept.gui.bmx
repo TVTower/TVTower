@@ -1,36 +1,36 @@
 SuperStrict
 Import "Dig/base.util.graphicsmanager.bmx"
 Import "common.misc.gamelist.bmx"
-Import "game.production.shoppinglist.bmx"
+Import "game.production.productionconcept.bmx"
 Import "game.player.base.bmx"
 Import "game.game.base.bmx" 'to change game cursor
 
 
 'a graphical representation of shopping lists in studios/supermarket
-Type TGuiShoppingListListItem Extends TGUIGameListItem
-	Field shoppingList:TShoppingList
+Type TGuiProductionConceptListItem Extends TGUIGameListItem
+	Field productionConcept:TProductionConcept
 
 
-    Method Create:TGuiShoppingListListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+    Method Create:TGuiProductionConceptListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
 		Super.Create(pos, dimension, value)
 
-		Self.assetNameDefault = "gfx_studio_shoppinglist_0"
-		Self.assetNameDragged = "gfx_studio_shoppinglist_0"
+		Self.assetNameDefault = "gfx_studio_productionConcept_0"
+		Self.assetNameDragged = "gfx_studio_productionConcept_0"
 
 		Return Self
 	End Method
 
 
-	Method CreateWithShoppingList:TGuiShoppingListListItem(shoppingList:TShoppingList)
+	Method CreateWithproductionConcept:TGuiProductionConceptListItem(productionConcept:TProductionConcept)
 		Self.Create()
-		Self.SetShoppingList(shoppingList)
+		Self.SeTProductionConcept(productionConcept)
 		Return Self
 	End Method
 
 
-	Method SetShoppingList:TGuiShoppingListListItem(shoppingList:TShoppingList)
-		Self.shoppingList = shoppingList
-		Self.InitAssets(GetAssetName(shoppingList.script.GetMainGenre(), False), GetAssetName(shoppingList.script.GetMainGenre(), True))
+	Method SeTProductionConcept:TGuiProductionConceptListItem(productionConcept:TProductionConcept)
+		Self.productionConcept = productionConcept
+		Self.InitAssets(GetAssetName(productionConcept.script.GetMainGenre(), False), GetAssetName(productionConcept.script.GetMainGenre(), True))
 
 		Return Self
 	End Method
@@ -41,7 +41,7 @@ Type TGuiShoppingListListItem Extends TGUIGameListItem
 		Super.Update()
 
 		'set mouse to "hover"
-		If shoppingList.owner = GetPlayerBaseCollection().playerID Or shoppingList.owner <= 0 And isHovered()
+		If productionConcept.owner = GetPlayerBaseCollection().playerID Or productionConcept.owner <= 0 And isHovered()
 			GetGameBase().cursorstate = 1
 		EndIf
 				
@@ -73,7 +73,7 @@ Type TGuiShoppingListListItem Extends TGUIGameListItem
 		SetAlpha 1.0
 
 		DrawRect(sheetX - sheetAlign*300, sheetY, 300, 100)
-		'shoppingList.ShowSheet(sheetX, sheetY, sheetAlign)
+		'productionConcept.ShowSheet(sheetX, sheetY, sheetAlign)
 	End Method
 
 
@@ -84,7 +84,7 @@ Type TGuiShoppingListListItem Extends TGUIGameListItem
 		'make faded as soon as not "dragable" for us
 		If Not isDragable()
 			'in our collection
-			If shoppingList.owner = GetPlayerBaseCollection().playerID
+			If productionConcept.owner = GetPlayerBaseCollection().playerID
 				SetAlpha 0.80*oldCol.a
 				SetColor 200,200,200
 			Else
@@ -102,17 +102,17 @@ End Type
 
 
 
-Type TGUIShoppingListSlotList Extends TGUIGameSlotList
-    Method Create:TGUIShoppingListSlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
+Type TGUIProductionConceptSlotList Extends TGUIGameSlotList
+    Method Create:TGUIProductionConceptSlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 		Return Self
 	End Method
 
 
-	Method ContainsShoppingList:Int(shoppingList:TShoppingList)
+	Method ContainsproductionConcept:Int(productionConcept:TProductionConcept)
 		For Local i:Int = 0 To Self.GetSlotAmount()-1
-			Local block:TGuiShoppingListListItem = TGuiShoppingListListItem( Self.GetItemBySlot(i) )
-			If block And block.shoppingList = shoppingList Then Return True
+			Local block:TGuiProductionConceptListItem = TGuiProductionConceptListItem( Self.GetItemBySlot(i) )
+			If block And block.productionConcept = productionConcept Then Return True
 		Next
 		Return False
 	End Method

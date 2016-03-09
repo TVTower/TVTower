@@ -447,8 +447,9 @@ Type TGUISlotList Extends TGUIListBase
 					SetColor 255,255,255
 					DrawRect(atPoint.GetX()+pos.getX()+1, atPoint.GetY()+pos.getY()+1, _slotMinDimension.getX()-2, _slotMinDimension.getY()-2)
 					SetColor 0,0,0
-					DrawText("slot "+i+"|"+GetSlotByCoord(pos.ToVec2D()), atPoint.GetX()+pos.getX(), atPoint.GetY()+pos.getY())
+					DrawText("slot "+i+"|"+GetSlotByCoord(pos.ToVec2D()), atPoint.GetX()+pos.getX()+1, atPoint.GetY()+pos.getY()+1)
 					SetColor 255,255,255
+					DrawText("slot "+i+"|"+GetSlotByCoord(pos.ToVec2D()), atPoint.GetX()+pos.getX(), atPoint.GetY()+pos.getY())
 				Next
 				SetAlpha 1.0
 				ResetViewPort()

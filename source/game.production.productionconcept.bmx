@@ -37,7 +37,7 @@ End Function
 '- what to produce (script)
 '- with whom to produce (cast)
 '- how to produce (focus points)
-Type TProductionConcept Extends TGameObject
+Type TProductionConcept Extends TOwnedGameObject
 	Field script:TScript
 
 	'each assigned person (directors, actors, ...)
@@ -61,21 +61,28 @@ Type TProductionConcept Extends TGameObject
 	Field trophyMoney:Int = 0
 
 
-	Method Initialize:int()
-		'reset cast, focus, ...
-		if script 
-			cast = new TProgrammePersonBase[ script.cast.length ]
-		endif
-		if not productionFocus then productionFocus = new TProductionFocusBase
+	Method Initialize:TProductionConcept(owner:int, script:TScript)
+		SetOwner(owner)
 
+		'set script and reset production focus / cast
+		SetScript(script)
+
+		return self
+	End Method
+
+
+	Method Reset()
+		'reset cast
+		if script then cast = new TProgrammePersonBase[ script.cast.length ]
+
+		productionFocus = new TProductionFocusBase
 	End Method
 	
 
 	Method SetScript(script:TScript)
 		self.script = script
-
-		'reset
-		productionFocus = new TProductionFocusBase
+		'resize cast space / focus
+		Reset()
 
 		if script
 			if script.isFictional()
@@ -84,12 +91,8 @@ Type TProductionConcept Extends TGameObject
 				if productionFocus.IsFictional() then productionFocus.EnableFictional(false)
 			endif
 		endif
-			
 
 		EventManager.triggerEvent( TEventSimple.Create("ProductionConcept.SetScript", new TData.Add("script", script), Self ) )
-
-		'resize cast space
-		Initialize()
 	End Method
 
 
@@ -101,7 +104,7 @@ Type TProductionConcept Extends TGameObject
 		self.productionCompany = productionCompany
 
 		'init if not done
-		if not productionFocus then Initialize()
+		if not productionFocus then productionFocus = new TProductionFocusBase
 		if productionCompany
 			productionFocus.SetFocusPointsMax( productionCompany.GetFocusPoints() )
 		else
@@ -376,5 +379,43 @@ Type TProductionFocusBase
 
 	Method GetFocusAspectCount:int()
 		return activeFocusIndices.length
+	End Method
+End Type
+
+
+
+
+Type TProductionConceptFilter
+	Field requiredOwners:int[]
+	Field forbiddenOwners:int[]
+	Field scriptGUID:string
+
+	
+	Method DoesFilter:Int(concept:TProductionConcept)
+		if not concept then return False
+
+		if scriptGUID
+			if not concept.script then return False
+			if scriptGUID <> concept.script.GetGUID() then return False
+		endif
+
+		'check if owner is one of the owners required for the filter
+		'if not, filter failed
+		if requiredOwners.length > 0
+			local hasOwner:int = False
+			for local owner:int = eachin requiredOwners
+				if owner = concept.owner then hasOwner = True;exit
+			Next
+			if not hasOwner then return False
+		endif
+
+		'check if owner is one of the forbidden owners
+		'if so, filter fails
+		if forbiddenOwners.length > 0
+			for local owner:int = eachin forbiddenOwners
+				if owner = concept.owner then return False
+			Next
+		endif
+	
 	End Method
 End Type

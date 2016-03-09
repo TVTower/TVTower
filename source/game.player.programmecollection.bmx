@@ -11,7 +11,7 @@ Import "game.broadcastmaterial.news.bmx"
 Import "game.broadcastmaterial.programme.bmx"
 Import "game.broadcastmaterial.advertisement.bmx"
 Import "game.production.script.bmx"
-Import "game.production.shoppinglist.bmx"
+Import "game.production.productionconcept.bmx"
 
 
 
@@ -95,8 +95,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Field news:TList = CreateList()
 	Field scripts:TList = CreateList()
 	Field adContracts:TList = CreateList()
-	'shopping lists for productions
-	Field shoppingLists:TList = CreateList()
+	'production concepts for productions
+	Field productionConcepts:TList = CreateList()
 	'scripts in the suitcase
 	Field suitcaseScripts:TList = CreateList()
 	'scripts in our studios
@@ -126,7 +126,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		seriesLicences.Clear()
 		adContracts.Clear()
 		scripts.Clear()
-		shoppingLists.Clear()
+		productionConcepts.Clear()
 		studioScripts.Clear()
 		suitcaseScripts.Clear()
 		suitcaseProgrammeLicences.Clear()
@@ -172,15 +172,15 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
-	Method GetShoppingListsCount:Int() {_exposeToLua}
-		Return shoppingLists.count()
+	Method GetProductionConceptCount:Int() {_exposeToLua}
+		Return productionConcepts.count()
 	End Method
 
 
-	Method GetFilterShoppingListsCount:Int(filter:TShoppingListFilter) {_exposeToLua}
+	Method GetFilteredProductionConceptCount:Int(filter:TProductionConceptFilter) {_exposeToLua}
 		local count:int = 0
-		For local sl:TShoppingList = EachIn shoppingLists
-			if filter.DoesFilter(sl) then count :+ 1
+		For local pc:TProductionConcept = EachIn productionConcepts
+			if filter.DoesFilter(pc) then count :+ 1
 		Next
 		return count
 	End Method
@@ -598,8 +598,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			if not script.sell() then return FALSE
 		endif
 
-		'sold or "destroyed" script, so destroy its shopping lists too
-		DestroyShoppingListsByScript(script)
+		'sold or "destroyed" script, so destroy its production conepts too
+		DestroyProductionConceptsByScript(script)
 		
 		scripts.remove(script)
 		studioScripts.remove(script)
@@ -631,92 +631,96 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 	
-	'=== SHOPPINGLISTS  ===
-	Method CanCreateShoppingList:Int() {_exposeToLua}
-		'do not allow more shopping lists than the rules say!
-		return shoppingLists.count() < GameRules.maxShoppingLists
+	'=== PRODUCTION CONCEPTS  ===
+	Method CanCreateProductionConcept:Int(script:TScript) {_exposeToLua}
+		'do not allow more concepts than the rules say!
+		return GetProductionConceptCollection().GetProductionConceptsByScript(script).length  < GameRules.maxProductionConceptsPerScript
 	End Method
 
 	
-	Method CreateShoppingList:Int(script:TScript)
+	Method CreateProductionConcept:Int(script:TScript)
 		if not script then return False
-		if not CanCreateShoppingList()
+		if not CanCreateProductionConcept(script)
 			'emit event to inform others (eg. for ingame warning)
-			EventManager.triggerEvent( TEventSimple.Create("programmecollection.onCreateShoppingListFailed", new TData.AddNumber("shoppingListsCount", shoppingLists.count()).AddNumber("playerID", owner)) )
+			EventManager.triggerEvent( TEventSimple.Create("programmecollection.onCreateProductionConceptFailed", new TData.AddNumber("productionConceptCount", GetProductionConceptCollection().GetProductionConceptsByScript(script).length).AddNumber("playerID", owner)) )
 
 			return False
 		endif
 		
-		AddShoppingList( new TShoppingList.Init(owner, script) )
+		AddProductionConcept( new TProductionConcept.Initialize(owner, script) )
 		return True
 	End Method
 
 
-	Method AddShoppingList:Int(shoppingList:TShoppingList)
-		if not shoppingList then return False
-		if shoppingLists.contains(shoppingList) then return False
+	Method AddProductionConcept:Int(productionConcept:TProductionConcept)
+		if not productionConcept then return False
+		if productionConcepts.contains(productionConcept) then return False
 
-		if owner <> shoppingList.owner
-			shoppingList.SetOwner(owner)
+		if owner <> productionConcept.owner
+			productionConcept.SetOwner(owner)
 		endif
 
-		GetShoppingListCollection().Add(shoppingList)
-		shoppingLists.AddLast(shoppingList)
+		GetProductionConceptCollection().Add(productionConcept)
+		productionConcepts.AddLast(productionConcept)
 
-		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addShoppingList", new TData.add("shoppingList", shoppingList), self))
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addProductionConcept", new TData.add("productionConcept", productionConcept), self))
 		return TRUE
 	End Method
 
 
-	'remove from PlayerProgrammeCollection _AND_ "ShoppingListCollection"
-	Method DestroyShoppingList:Int(shoppingList:TShoppingList)
-		if shoppingList = Null then return False
-
-		if not RemoveShoppingList(shoppingList) then return False
+	'remove from PlayerProgrammeCollection _AND_ "ProductionConceptCollection"
+	Method DestroyProductionConcept:Int(productionConcept:TProductionConcept)
+		'failed to remove from programme collection ?
+		if not RemoveProductionConcept(productionConcept) then return False
+		'failed to remove from production concept collection ?
+		if not GetProductionConceptCollection().Remove(productionConcept) then return False
 
 		'emit event to inform others
-		EventManager.triggerEvent( TEventSimple.Create("programmecollection.destroyShoppingList", new TData.Add("shoppingList", shoppingList), self))
+		if fireEvents then EventManager.triggerEvent( TEventSimple.Create("programmecollection.destroyProductionConcept", new TData.Add("productionConcept", productionConcept), self))
 
-		GetShoppingListCollection().Remove(shoppingList)
-	End Method
-
-	
-	'remove a shopping list from the collection
-	'ATTENTION: it is then still in "ShoppingListCollection" !
-	Method RemoveShoppingList:Int(shoppingList:TShoppingList)
-		if shoppingList = Null then return False
-
-		if not shoppingLists.remove(shoppingList) then Return False
-
-		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.removeShoppingList", new TData.add("shoppingList", shoppingList), self))
 		return True
 	End Method
 
-	'destroy all shopping list of a given script
-	'HINT: they are also removed from GetShoppingListCollection() !
-	Method DestroyShoppingListsByScript:Int(script:TScript)
-		local remove:TShoppingList[]
-		For local sl:TShoppingList = EachIn shoppingLists
-			if sl.script = script then remove :+ [sl]
+	
+	'remove a production conept from the collection
+	'ATTENTION: it is then still in "ProductionConceptCollection" !
+	Method RemoveProductionConcept:Int(productionConcept:TProductionConcept)
+		if productionConcept = Null then return False
+		if not productionConcepts.remove(productionConcept) then Return False
+
+		'emit an event so eg. network can recognize the change
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.removeProductionConcept", new TData.add("productionConcept", productionConcept), self))
+
+		return True
+	End Method
+	
+
+	'destroy all production concepts of a given script
+	'HINT: they are also removed from ProductionConceptCollection !
+	Method DestroyProductionConceptsByScript:Int(script:TScript)
+		local remove:TProductionConcept[]
+		For local pc:TProductionConcept = EachIn productionConcepts
+			if pc.script = script then remove :+ [pc]
 		Next
 
-		For local sl:TShoppingList = EachIn remove
-			DestroyShoppingList(sl)
+		For local pc:TProductionConcept = EachIn remove
+			DestroyProductionConcept(pc)
 		Next
+
+		return remove.length
 	End Method
 
 
-	'remove all shopping list of a given script
-	'ATTENTION: they are then still in the GetShoppingListCollection() !
-	Method RemoveShoppingListsByScript:Int(script:TScript)
-		local remove:TShoppingList[]
-		For local sl:TShoppingList = EachIn shoppingLists
-			if sl.script = script then remove :+ [sl]
+	'remove all production concepts of a given script
+	'ATTENTION: they are then still in the ProductionConceptCollection !
+	Method RemoveProductionConceptsByScript:Int(script:TScript)
+		local remove:TProductionConcept[]
+		For local pc:TProductionConcept = EachIn productionConcepts
+			if pc.script = script then remove :+ [pc]
 		Next
 
-		For local sl:TShoppingList = EachIn remove
-			RemoveShoppingList(sl)
+		For local pc:TProductionConcept = EachIn remove
+			RemoveProductionConcept(pc)
 		Next
 	End Method
 
@@ -795,10 +799,10 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
-	'get script by index number in list - useful for lua-scripts
-	Method GetShoppingListAtIndex:TShoppingList(arrayIndex:Int=0) {_exposeToLua}
-		if arrayIndex < 0 or arrayIndex >= scripts.Count() then return Null
-		Return TShoppingList(shoppingLists.ValueAtIndex(arrayIndex))
+	'get production concept by index number in list - useful for lua-scripts
+	Method GetProductionConceptAtIndex:TProductionConcept(arrayIndex:Int=0) {_exposeToLua}
+		if arrayIndex < 0 or arrayIndex >= productionConcepts.Count() then return Null
+		Return TProductionConcept(productionConcepts.ValueAtIndex(arrayIndex))
 	End Method
 
 
@@ -927,16 +931,16 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
-	Method GetShoppingList:TShoppingList(guid:string) {_exposeToLua}
-		For Local sl:TShoppingList = EachIn shoppingLists
-			If sl.GetGUID() = guid Then Return sl
+	Method GetProductionConcept:TProductionConcept(guid:string) {_exposeToLua}
+		For Local pc:TProductionConcept = EachIn productionConcepts
+			If pc.GetGUID() = guid Then Return pc
 		Next
 		Return Null
 	End Method
 
 
-	Method GetShoppingLists:TList() {_exposeToLua}
-		Return shoppingLists
+	Method GetProductionConcepts:TList() {_exposeToLua}
+		Return productionConcepts
 	End Method
 
 

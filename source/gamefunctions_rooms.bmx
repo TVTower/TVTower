@@ -2433,7 +2433,7 @@ Type RoomHandler_Boss extends TRoomHandler
 End Type
 
 
-'Studio: emitting and receiving the shopping lists for specific
+'Studio: emitting and receiving the production concepts for specific
 '        scripts
 Type RoomHandler_Studio extends TRoomHandler
 	'a map containing "roomGUID"=>"script" pairs
@@ -2442,6 +2442,7 @@ Type RoomHandler_Studio extends TRoomHandler
 	Global studioManagerDialogue:TDialogue
 	Global studioScriptLimit:int = 1
 
+	Global deskGuiListPos:TVec2D = new TVec2D.Init(300,335)
 	Global suitcasePos:TVec2D = new TVec2D.Init(520,70)
 	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(19,32)
 
@@ -2455,9 +2456,13 @@ Type RoomHandler_Studio extends TRoomHandler
 	Global haveToRefreshGuiElements:int = TRUE
 	Global guiListStudio:TGUIScriptSlotList
 	Global guiListSuitcase:TGUIScriptSlotList
+	Global guiListDeskProductionConcepts:TGUIProductionConceptSlotList
 
 	Global hoveredGuiScript:TGUIScript
 	Global draggedGuiScript:TGUIScript
+
+	Global hoveredGuiProductionConcept:TGuiProductionConceptListItem
+	Global draggedGuiProductionConcept:TGuiProductionConceptListItem
 
 	Global _instance:RoomHandler_Studio
 	Global _eventListeners:TLink[]
@@ -2485,14 +2490,15 @@ Type RoomHandler_Studio extends TRoomHandler
 
 		'=== create gui elements if not done yet
 		if not guiListStudio
-			local sprite:TSprite = GetSpriteFromRegistry("gfx_scripts_0")
+			local spriteScript:TSprite = GetSpriteFromRegistry("gfx_scripts_0")
+			local spriteProductionConcept:TSprite = GetSpriteFromRegistry("gfx_studio_productionconcept_0")
 			local spriteSuitcase:TSprite = GetSpriteFromRegistry("gfx_scripts_0_dragged")
 			guiListStudio = new TGUIScriptSlotList.Create(new TVec2D.Init(730, 300), new TVec2D.Init(17, 52), "studio")
 			guiListStudio.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			guiListStudio.SetItemLimit( studioScriptLimit )
 			'increase list size by 2 times - makes it easier to drop
-			guiListStudio.Resize(2 * sprite.area.GetW(), sprite.area.GetH() )
-			guiListStudio.SetSlotMinDimension(2 * sprite.area.GetW(), sprite.area.GetH())
+			guiListStudio.Resize(2 * spriteScript.area.GetW(), spriteScript.area.GetH() )
+			guiListStudio.SetSlotMinDimension(2 * spriteScript.area.GetW(), spriteScript.area.GetH())
 			guiListStudio.SetAcceptDrop("TGuiScript")
 
 			guiListSuitcase	= new TGUIScriptSlotlist.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200,80), "studio")
@@ -2502,6 +2508,14 @@ Type RoomHandler_Studio extends TRoomHandler
 			guiListSuitcase.SetEntryDisplacement( 0, 0 )
 			guiListSuitcase.SetAcceptDrop("TGuiScript")
 
+			guiListDeskProductionConcepts = new TGUIProductionConceptSlotList.Create(new TVec2D.Init(deskGuiListPos.GetX(), deskGuiListPos.GetY()), new TVec2D.Init(250,80), "studio")
+			guiListDeskProductionConcepts.SetAutofillSlots(True)
+			guiListDeskProductionConcepts.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+			guiListDeskProductionConcepts.SetItemLimit(GameRules.maxProductionConceptsPerScript)
+			guiListDeskProductionConcepts.SetSlotMinDimension(spriteProductionConcept.area.GetW(), spriteProductionConcept.area.GetH())
+			guiListDeskProductionConcepts.SetEntryDisplacement( 0, 0 )
+			guiListDeskProductionConcepts.SetAcceptDrop("TGuiProductionConceptListItem")
+			guiListDeskProductionConcepts._debugMode = True	
 
 			'default studioManager dimension
 			local studioManagerAreaDimension:TVec2D = new TVec2D.Init(150,270)
@@ -2524,14 +2538,19 @@ Type RoomHandler_Studio extends TRoomHandler
 		'to react on changes in the programmeCollection (eg. custom script finished)
 		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.removeScript", onChangeProgrammeCollection ) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.moveScript", onChangeProgrammeCollection ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.removeProductionConcept", onChangeProgrammeCollection ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.addProductionConcept", onChangeProgrammeCollection ) ]
 		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
 		'is only emitted if the drop is successful (so it "visually" happened)
 		'drop ... to studio manager or suitcase
 		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropScript, "TGuiScript" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropProductionConcept, "TGuiProductionConceptListItem" ) ]
 		'we want to know if we hover a specific block - to show a datasheet
 		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverScript, "TGuiScript" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverProductionConcept, "TGuiProductionConceptListItem" ) ]
 		'this lists want to delete the item if a right mouse click happens...
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickScript, "TGuiScript") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickProductionConcept, "TGuiProductionConceptListItem") ]
 
 		'(re-)localize content
 		SetLanguage()
@@ -2557,6 +2576,36 @@ Type RoomHandler_Studio extends TRoomHandler
 	Method RegisterHandler:int()
 		if GetInstance() <> self then self.CleanUp()
 		GetRoomHandlerCollection().SetHandler("studio", GetInstance())
+	End Method
+
+
+	Method AbortScreenActions:Int()
+		local abortedAction:int = False
+
+		if draggedGuiProductionConcept
+			'try to drop the concept back
+			draggedGuiProductionConcept.dropBackToOrigin()
+			draggedGuiProductionConcept = null
+			hoveredGuiProductionConcept = null
+			abortedAction = True
+		endif
+
+		if draggedGuiScript
+			'try to drop the licence back
+			draggedGuiScript.dropBackToOrigin()
+			draggedGuiScript = null
+			hoveredGuiScript = null
+			abortedAction = True
+		endif
+
+		'Try to drop back dragged elements
+		For local obj:TGUIScript = eachIn GuiManager.ListDragged.Copy()
+			obj.dropBackToOrigin()
+			'successful or not - get rid of the gui element
+			obj.Remove()
+		Next
+
+		return abortedAction
 	End Method
 	
 
@@ -2621,7 +2670,37 @@ Type RoomHandler_Studio extends TRoomHandler
 		'also avoid long click (touch screen)
 		MouseManager.ResetLongClicked(1)
 	End Function
-	
+
+
+	'in case of right mouse button click a dragged production concept is
+	'removed
+	Function onClickProductionConcept:int(triggerEvent:TEventBase)
+		if not CheckPlayerInRoom("studio") then return FALSE
+
+		'only react if the click came from the right mouse button
+		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE
+
+		local guiItem:TGuiProductionConceptListItem= TGuiProductionConceptListItem(triggerEvent._sender)
+		'ignore wrong types and NON-dragged items
+		if not guiItem or not guiItem.isDragged() then return FALSE
+
+		if not GetPlayer().GetProgrammeCollection().DestroyProductionConcept(guiItem.productionConcept)
+			TLogger.log("Studio.onClickProductionConcept", "Not able to destroy production concept: "+guiItem.productionConcept.GetGUID()+"  " +guiItem.productionConcept.script.GetTitle(), LOG_ERROR)
+		endif
+
+		'remove gui object
+		guiItem.remove()
+		guiItem = null
+
+		'rebuild elements (also resets hovered/dragged)
+		GetInstance().RefreshGuiElements()
+
+		'remove right click - to avoid leaving the room
+		MouseManager.ResetKey(2)
+		'also avoid long click (touch screen)
+		MouseManager.ResetLongClicked(1)
+	End Function
+		
 
 	Function onMouseOverScript:int( triggerEvent:TEventBase )
 		if not CheckPlayerInRoom("studio") then return FALSE
@@ -2631,6 +2710,19 @@ Type RoomHandler_Studio extends TRoomHandler
 
 		hoveredGuiScript = item
 		if item.isDragged() then draggedGuiScript = item
+
+		return TRUE
+	End Function
+
+
+	Function onMouseOverProductionConcept:int( triggerEvent:TEventBase )
+		if not CheckPlayerInRoom("studio") then return FALSE
+
+		local item:TGuiProductionConceptListItem = TGuiProductionConceptListItem(triggerEvent.GetSender())
+		if item = Null then return FALSE
+
+		hoveredGuiProductionConcept = item
+		if item.isDragged() then draggedGuiProductionConcept = item
 
 		return TRUE
 	End Function
@@ -2693,6 +2785,31 @@ Type RoomHandler_Studio extends TRoomHandler
 	End Function
 
 
+	Function onDropProductionConcept:int( triggerEvent:TEventBase )
+		if not CheckPlayerInRoom("studio") then return FALSE
+
+		local guiBlock:TGuiProductionConceptListItem = TGuiProductionConceptListItem( triggerEvent._sender )
+		local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
+		if not guiBlock or not receiver then return FALSE
+
+		'try to get a list out of the drag-source-guiobject 
+		local source:TGuiObject = TGuiObject(triggerEvent.GetData().Get("source"))
+		local sourceList:TGUIProductionConceptSlotList
+		if source
+			local sourceParent:TGUIobject = source._parent
+			if TGUIPanel(sourceParent) then sourceParent = TGUIPanel(sourceParent)._parent
+			sourceList = TGUIProductionConceptSlotList(sourceParent)
+		endif
+		'only interested in drops FROM a list
+		if not sourceList then return FALSE
+
+
+		print "TODO: reorder concept lists ?"
+		
+		return TRUE
+	End Function
+
+
 	'override
 	Method onTryLeaveRoom:int( triggerEvent:TEventBase )
 		'non players can always leave
@@ -2709,8 +2826,14 @@ Type RoomHandler_Studio extends TRoomHandler
 				triggerEvent.SetVeto()
 				return FALSE
 			endif
+
+			'do not allow leaving as long as we have a dragged block
+			if draggedGuiProductionConcept or draggedGuiScript
+				triggerEvent.setVeto()
+				return FALSE
+			endif
 		endif
-		
+
 		return TRUE
 	End Method
 
@@ -2729,8 +2852,6 @@ Type RoomHandler_Studio extends TRoomHandler
 		if player
 			player.GetProgrammeCollection().MoveScriptFromSuitcaseToStudio(script)
 		endif
-
-		'recreate shopping list?
 
 		return True
 	End Method
@@ -2771,14 +2892,22 @@ Type RoomHandler_Studio extends TRoomHandler
 	Function RemoveAllGuiElements:int()
 		guiListStudio.EmptyList()
 		guiListSuitcase.EmptyList()
+		guiListDeskProductionConcepts.EmptyList()
 
 		For local guiScript:TGUIScript = eachin GuiManager.listDragged.Copy()
 			guiScript.remove()
 			guiScript = null
 		Next
 
+		For local guiConcept:TGuiProductionConceptListItem = eachin GuiManager.listDragged.Copy()
+			guiConcept.remove()
+			guiConcept = null
+		Next
+
 		hoveredGuiScript = null
 		draggedGuiScript = null
+		draggedGuiProductionConcept = null
+		hoveredGuiProductionConcept = null
 
 		'to recreate everything during next update...
 		haveToRefreshGuiElements = TRUE
@@ -2804,7 +2933,8 @@ Type RoomHandler_Studio extends TRoomHandler
 		'helper vars
 		local programmeCollection:TPlayerProgrammeCollection = roomOwner.GetProgrammeCollection()
 
-
+		'=== REMOVE SCRIPTS ===
+		
 		'dragged scripts
 		local draggedScripts:TList = CreateList()
 		For local guiScript:TGUIScript = EachIn GuiManager.listDragged.Copy()
@@ -2832,8 +2962,30 @@ Type RoomHandler_Studio extends TRoomHandler
 		Next
 
 
+		'=== REMOVE PRODUCTION CONCEPTS ===
+		
+		'dragged ones
+		local draggedProductionConcepts:TList = CreateList()
+		For local guiProductionConcept:TGuiProductionConceptListItem = EachIn GuiManager.listDragged.Copy()
+			draggedProductionConcepts.AddLast(guiProductionConcept.productionConcept)
+			'remove the dragged one, gets replaced by a new instance
+			guiProductionConcept.Remove()
+		Next
+
+		'desk production concepts
+		For local guiProductionConcept:TGuiProductionConceptListItem = eachin guiListDeskProductionConcepts._slots
+			'if the concept is for the current set script, skip deletion
+			if guiProductionConcept.productionConcept.script = GetCurrentStudioScript(roomGUID) then continue
+
+			guiProductionConcept.remove()
+			guiProductionConcept = null
+		Next
+
+
 		'===== CREATE NEW =====
 		'create missing gui elements for all script-lists
+
+		'=== SCRIPTS ===
 
 		'studio list
 		local studioScript:TScript = GetCurrentStudioScript(roomGUID)
@@ -2872,15 +3024,41 @@ Type RoomHandler_Studio extends TRoomHandler
 			if draggedScripts.contains(script) then block.Drag()
 		Next
 
+
+		'=== PRODUCTION CONCEPTS ===
+
+		'studio desk - only if a studio script was set
+		if studioScript
+			'try to fill in our list
+			For local pc:TProductionConcept = EachIn programmeCollection.GetProductionConcepts()
+				if pc.script <> GetCurrentStudioScript(roomGUID) then continue
+				if guiListDeskProductionConcepts.ContainsProductionConcept(pc) then continue
+				
+				if guiListDeskProductionConcepts.getFreeSlot() >= 0
+
+					local block:TGuiProductionConceptListItem = new TGuiProductionConceptListItem.CreateWithProductionConcept(pc)
+					guiListDeskProductionConcepts.addItem(block, "-1")
+
+					'we deleted the dragged concept before - now drag
+					'the new instances again -> so they keep their "ghost
+					'information"
+					if draggedProductionConcepts.contains(pc) then block.Drag()
+				else
+					TLogger.log("Studio.RefreshGuiElements", "productionconcept exists but does not fit in guiListDeskProductionConcepts - concept removed.", LOG_ERROR)
+					programmeCollection.RemoveProductionConcept(pc)
+				endif
+			Next
+		endif		
+
 		haveToRefreshGuiElements = FALSE
 	End Method
 
 
-	Function onClickCreateShoppingList(data:TData)
+	Function onClickCreateProductionConcept(data:TData)
 		local script:TScript = TScript(data.Get("script"))
 		if not script then return
 
-		GetPlayer().GetProgrammeCollection().CreateShoppingList(script)
+		GetPlayer().GetProgrammeCollection().CreateProductionConcept(script)
 
 		'recreate the dialogue (changed list amounts)
 		GetInstance().GenerateStudioManagerDialogue()
@@ -2899,14 +3077,14 @@ Type RoomHandler_Studio extends TRoomHandler
 		if readyToProduce
 			text = "Informationen ueber derzeitige Produktion anbieten"
 		elseif script
-			'to display the amount of shopping lists per script we
-			'call the shoppinglistcollection instead of the player's
+			'to display the amount of production concepts per script we
+			'call the productionconcept collection instead of the player's
 			'programmecollection
-			conceptCount = GetShoppingListCollection().GetShoppingListsByScript(script).length
+			conceptCount = GetProductionConceptCollection().GetProductionConceptsByScript(script).length
 			text = "Du willst also |b|"+script.GetTitle()+"|/b| produzieren?"
 			text :+"~n~n"
 			text :+"Bisher sind |b|"+conceptCount+" Produktionen|/b| mit diesem Drehbuch geplant."
-			if not GetPlayer().GetProgrammeCollection().CanCreateShoppingList()
+			if not GetPlayer().GetProgrammeCollection().CanCreateProductionConcept(script)
 				text :+"~n~n"
 				text :+"Im übrigen ist Dein Platz für Einkaufslisten erschöpft. Bitte entferne erst eine Einkaufsliste bevor Ich eine neue ausgeben kann."
 			endif
@@ -2923,14 +3101,14 @@ Type RoomHandler_Studio extends TRoomHandler
 		texts[0] = TDialogueTexts.Create(text)
 
 		if script
-			if GetPlayer().GetProgrammeCollection().CanCreateShoppingList()
+			if GetPlayer().GetProgrammeCollection().CanCreateProductionConcept(script)
 				local answerText:string
 				if conceptCount > 0
 					answerText = "Ich brauche noch eine Einkaufsliste für dieses Drehbuch."
 				else
 					answerText = "Ich brauche eine Einkaufsliste für dieses Drehbuch."
 				endif
-				texts[0].AddAnswer(TDialogueAnswer.Create( answerText, -1, null, onClickCreateShoppingList, new TData.Add("script", script)))
+				texts[0].AddAnswer(TDialogueAnswer.Create( answerText, -1, null, onClickCreateProductionConcept, new TData.Add("script", script)))
 			endif
 		endif
 		texts[0].AddAnswer(TDialogueAnswer.Create( "Tschüss", -2, Null))
@@ -2981,6 +3159,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		if studioManagerEntity Then studioManagerEntity.Render()
 		GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
+		'=== HIGHLIGHT INTERACTIONS ===
 		'make suitcase/vendor highlighted if needed
 		local highlightSuitcase:int = False
 		local highlightStudioManager:int = False
@@ -3008,23 +3187,7 @@ Type RoomHandler_Studio extends TRoomHandler
 			SetBlend AlphaBlend
 		endif
 
-
-
 		local roomOwner:TPlayer = GetPlayer(TRoom(triggerEvent.GetSender()).owner)
-		if roomOwner
-			local slCount:int = roomOwner.GetProgrammeCollection().GetShoppingListsCount()
-			if slCount > 0
-				local slSprite:TSprite = GetSpriteFromRegistry("gfx_studio_shoppinglist_0")
-				local slStart:int = 640 'right aligned
-				slStart :- slCount * (slSprite.GetWidth() + 5)
-				For local sl:TShoppingList = EachIn roomOwner.GetProgrammeCollection().GetShoppingLists()
-					'only show 
-					if sl.script <> GetCurrentStudioScript(roomGUID) then continue
-					slSprite.Draw(slStart, 335)
-					slStart :+ (slSprite.GetWidth() + 5)
-				Next
-			endif
-		endif
 
 		if roomOwner and studioManagerTooltip then studioManagerTooltip.Render()
 
@@ -3035,7 +3198,8 @@ Type RoomHandler_Studio extends TRoomHandler
 			hoveredGuiScript.DrawSheet()
 		endif
 
-		'DrawDebug(TRoom(triggerEvent.GetSender()))
+		DrawDebug(TRoom(triggerEvent.GetSender()))
+		guiListDeskProductionConcepts.DrawDebug()
 
 		'draw after potential tooltips
 		if roomOwner and studioManagerDialogue then studioManagerDialogue.Draw()
@@ -3062,7 +3226,7 @@ Type RoomHandler_Studio extends TRoomHandler
 					'show tooltip of studio manager
 					'only show when no dialogue is (or just got) opened 
 					if not studioManagerDialogue
-						If not studioManagerTooltip Then studioManagerTooltip = TTooltip.Create(GetLocale("STUDIO_MANAGER"), GetLocale("GIVES_INFORMATION_ABOUT_PRODUCTION_OR_HANDS_OUT_SHOPPING_LIST"), 150, 160,-1,-1)
+						If not studioManagerTooltip Then studioManagerTooltip = TTooltip.Create(GetLocale("STUDIO_MANAGER"), GetLocale("STUDIO_MANAGER_TOOLTIP"), 150, 160,-1,-1)
 						studioManagerTooltip.enabled = 1
 						studioManagerTooltip.SetMinTitleAndContentWidth(150)
 						studioManagerTooltip.Hover()
@@ -3083,10 +3247,11 @@ Type RoomHandler_Studio extends TRoomHandler
 		'delete unused and create new gui elements
 		if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()
 
-		'reset hovered block - will get set automatically on gui-update
+		'reset hovered/dragged blocks - will get set automatically on gui-update
 		hoveredGuiScript = null
-		'reset dragged block too
 		draggedGuiScript = null
+		hoveredGuiProductionConcept = null
+		draggedGuiProductionConcept = null
 
 		GUIManager.Update("studio")
 	End Method

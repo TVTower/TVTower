@@ -91,7 +91,7 @@ Import "game.ingameinterface.bmx"
 Import "game.database.bmx"
 Import "game.game.base.bmx"
 Import "game.production.script.gui.bmx"
-Import "game.production.shoppinglist.gui.bmx"
+Import "game.production.productionconcept.gui.bmx"
 Import "game.figure.bmx"
 Import "game.figure.customfigures.bmx"
 Import "game.newsagency.bmx"
@@ -1219,6 +1219,7 @@ Type TGameState
 
 	Field _ScriptTemplateCollection:TScriptTemplateCollection = Null
 	Field _ScriptCollection:TScriptCollection = Null
+	Field _ShoppingListCollection:TShoppingListCollection = Null
 	Field _ProgrammeRoleCollection:TProgrammeRoleCollection = Null
 	Field _ProgrammePersonBaseCollection:TProgrammePersonBaseCollection = Null
 	Field _ProgrammeDataCollection:TProgrammeDataCollection = Null
@@ -1271,6 +1272,7 @@ print "TGameState.Initialize(): Reinitialize all game objects"
 		GetAdContractCollection().Initialize()
 		GetScriptTemplateCollection().Initialize()
 		GetScriptCollection().Initialize()
+		GetShoppingListCollection().Initialize()
 		GetProgrammeRoleCollection().Initialize()
 		GetProgrammePersonBaseCollection().Initialize()
 		GetProgrammeDataCollection().Initialize()
@@ -1321,6 +1323,7 @@ print "TGameState.RestoreGameData(): Restore game objects"
 
 		_Assign(_ScriptTemplateCollection, TScriptTemplateCollection._instance, "ScriptTemplateCollection", MODE_LOAD)
 		_Assign(_ScriptCollection, TScriptCollection._instance, "ScriptCollection", MODE_LOAD)
+		_Assign(_ShoppingListCollection, TShoppingListCollection._instance, "ShoppingListCollection", MODE_LOAD)
 		_Assign(_ProgrammeRoleCollection, TProgrammeRoleCollection._instance, "ProgrammeRoleCollection", MODE_LOAD)
 		_Assign(_ProgrammePersonBaseCollection, TProgrammePersonBaseCollection._instance, "ProgrammePersonBaseCollection", MODE_LOAD)
 		_Assign(_ProgrammeDataCollection, TProgrammeDataCollection._instance, "ProgrammeDataCollection", MODE_LOAD)
@@ -1375,6 +1378,7 @@ print "TGameState.RestoreGameData(): Restore game objects"
 		'database data for scripts
 		_Assign(TScriptTemplateCollection._instance, _ScriptTemplateCollection, "ScriptTemplateCollection", MODE_SAVE)
 		_Assign(TScriptCollection._instance, _ScriptCollection, "ScriptCollection", MODE_SAVE)
+		_Assign(TShoppingListCollection._instance, _ShoppingListCollection, "ShoppingListCollection", MODE_SAVE)
 		'database data for persons and their roles
 		_Assign(TProgrammePersonBaseCollection._instance, _ProgrammePersonBaseCollection, "ProgrammePersonBaseCollection", MODE_SAVE)
 		_Assign(TProgrammeRoleCollection._instance, _ProgrammeRoleCollection, "ProgrammeRoleCollection", MODE_SAVE)
@@ -3810,8 +3814,8 @@ Type GameEvents
 				'also avoid long click (touch screen)
 				MouseManager.ResetLongClicked(1)
 			Else
-				'leaving prohibited - just reset button
-				If Not GetPlayer().GetFigure().LeaveRoom()
+				'leaving allowed - reset button
+				If GetPlayer().GetFigure().LeaveRoom()
 					MOUSEMANAGER.resetKey(2)
 					'also avoid long click (touch screen)
 					MouseManager.ResetLongClicked(1)

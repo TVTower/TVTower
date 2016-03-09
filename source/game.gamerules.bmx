@@ -25,8 +25,9 @@ Type TGameRules {_exposeToLua}
 	Field maxScriptsInSuitcase:int = 10
 	'is the amount of user owned scripts limited?
 	Field maxScripts:int = -1
-	'how many shopping lists could be exist at the same time?
-	Field maxShoppingLists:int = 5
+	'how many production concepts could be "planned" at the same time
+	'(per script)
+	Field maxProductionConceptsPerScript:int = 5
 	'speed of the world (1.0 means "normal", 2.0 = double as fast)
 	'speed is used for figures, elevator, ...
 	Field worldSpeed:float = 1.0
