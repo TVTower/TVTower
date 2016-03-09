@@ -2509,7 +2509,8 @@ Type RoomHandler_Studio extends TRoomHandler
 			guiListSuitcase.SetAcceptDrop("TGuiScript")
 
 			guiListDeskProductionConcepts = new TGUIProductionConceptSlotList.Create(new TVec2D.Init(deskGuiListPos.GetX(), deskGuiListPos.GetY()), new TVec2D.Init(250,80), "studio")
-			guiListDeskProductionConcepts.SetAutofillSlots(True)
+			'make the list items sortable by the player
+			guiListDeskProductionConcepts.SetAutofillSlots(False)
 			guiListDeskProductionConcepts.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			guiListDeskProductionConcepts.SetItemLimit(GameRules.maxProductionConceptsPerScript)
 			guiListDeskProductionConcepts.SetSlotMinDimension(spriteProductionConcept.area.GetW(), spriteProductionConcept.area.GetH())
@@ -2792,19 +2793,18 @@ Type RoomHandler_Studio extends TRoomHandler
 		local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
 		if not guiBlock or not receiver then return FALSE
 
-		'try to get a list out of the drag-source-guiobject 
-		local source:TGuiObject = TGuiObject(triggerEvent.GetData().Get("source"))
-		local sourceList:TGUIProductionConceptSlotList
-		if source
-			local sourceParent:TGUIobject = source._parent
-			if TGUIPanel(sourceParent) then sourceParent = TGUIPanel(sourceParent)._parent
-			sourceList = TGUIProductionConceptSlotList(sourceParent)
-		endif
-		'only interested in drops FROM a list
-		if not sourceList then return FALSE
+		local receiverList:TGUIProductionConceptSlotList = TGUIProductionConceptSlotList(TGUIListBase.FindGUIListBaseParent(receiver))
+		'only interested in drops to the list
+		if not receiverList then return FALSE
 
 
-		print "TODO: reorder concept lists ?"
+		'save order of concepts
+		For local i:int = 0 until guiListDeskProductionConcepts._slots.length
+			guiBlock = TGuiProductionConceptListItem(guiListDeskProductionConcepts.GetItemBySlot(i))
+			if not guiBlock then continue
+			
+			guiBlock.productionConcept.studioSlot = i
+		Next
 		
 		return TRUE
 	End Function
@@ -3036,8 +3036,9 @@ Type RoomHandler_Studio extends TRoomHandler
 				
 				if guiListDeskProductionConcepts.getFreeSlot() >= 0
 
+					'try to place it at the slot we defined before
 					local block:TGuiProductionConceptListItem = new TGuiProductionConceptListItem.CreateWithProductionConcept(pc)
-					guiListDeskProductionConcepts.addItem(block, "-1")
+					guiListDeskProductionConcepts.addItem(block, string(pc.studioSlot))
 
 					'we deleted the dragged concept before - now drag
 					'the new instances again -> so they keep their "ghost
@@ -3193,13 +3194,14 @@ Type RoomHandler_Studio extends TRoomHandler
 
 		GUIManager.Draw("studio")
 
-		if hoveredGuiScript and not studioManagerDialogue
-			'draw the current sheet
-			hoveredGuiScript.DrawSheet()
+		'draw data sheets for scripts or production concepts
+		if not studioManagerDialogue 
+			if hoveredGuiScript then hoveredGuiScript.DrawSheet()
+			if hoveredGuiProductionConcept then hoveredGuiProductionConcept.DrawSheet()
 		endif
 
-		DrawDebug(TRoom(triggerEvent.GetSender()))
-		guiListDeskProductionConcepts.DrawDebug()
+		'DrawDebug(TRoom(triggerEvent.GetSender()))
+		'guiListDeskProductionConcepts.DrawDebug()
 
 		'draw after potential tooltips
 		if roomOwner and studioManagerDialogue then studioManagerDialogue.Draw()

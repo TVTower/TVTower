@@ -39,6 +39,10 @@ End Function
 '- how to produce (focus points)
 Type TProductionConcept Extends TOwnedGameObject
 	Field script:TScript
+	'storing the position/order in the studio saves the hassle of storing
+	'this information in a "scriptOrder"-Collection
+	Field studioSlot:int = -1
+
 
 	'each assigned person (directors, actors, ...)
 	Field cast:TProgrammePersonBase[]

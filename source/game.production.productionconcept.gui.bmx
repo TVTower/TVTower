@@ -10,7 +10,6 @@ Import "game.game.base.bmx" 'to change game cursor
 Type TGuiProductionConceptListItem Extends TGUIGameListItem
 	Field productionConcept:TProductionConcept
 
-
     Method Create:TGuiProductionConceptListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
 		Super.Create(pos, dimension, value)
 

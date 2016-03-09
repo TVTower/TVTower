@@ -1,7 +1,6 @@
 SuperStrict
 Import "game.world.worldtime.bmx"
 Import "game.production.productionconcept.bmx"
-Import "game.production.shoppinglist.bmx"
 Import "game.production.script.bmx"
 Import "game.broadcastmaterial.news.bmx"
 
