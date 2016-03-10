@@ -389,6 +389,17 @@ Type TVec3D {_exposeToLua="selected"}
 		SetXYZ(otherVec.x, otherVec.y, 0)
 	End Method
 
+	Method AddX:TVec3D(x:Float)
+		self.x :+ x
+		return Self
+	End Method
+
+
+	Method AddY:TVec3D(y:Float)
+		self.y :+ y
+		return Self
+	End Method
+
 
 	Method AddXY:TVec3D(x:Float, y:Float)
 		self.x :+ x

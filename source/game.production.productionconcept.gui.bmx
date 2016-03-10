@@ -52,16 +52,8 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 
 	Method DrawSheet(leftX:Int=30, rightX:Int=30)
-		Local sheetY:Float 	= 20
-		Local sheetX:Float 	= leftX
-		Local sheetAlign:Int= 0
-
-		'just use the half of a screen - ensures the data sheet does not overlap
-		'the object
-		If MouseManager.x < GetGraphicsManager().GetWidth()/2
-			sheetX = GetGraphicsManager().GetWidth() - rightX
-			sheetAlign = 1
-		EndIf
+		Local sheetY:Float 	= 120
+		Local sheetX:Float 	= GetGraphicsManager().GetWidth()/2
 
 		SetColor 0,0,0
 		SetAlpha 0.2
@@ -71,10 +63,278 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		SetColor 255,255,255
 		SetAlpha 1.0
 
-		DrawRect(sheetX - sheetAlign*300, sheetY, 300, 100)
-		'productionConcept.ShowSheet(sheetX, sheetY, sheetAlign)
+		ShowStudioSheet(sheetX, sheetY, 0)
 	End Method
 
+
+	Method ShowStudioSheet:Int(x:Int,y:Int, align:int=0, useOwner:int=-1)
+		if useOwner = -1 then useOwner = productionConcept.owner
+
+		'=== PREPARE VARIABLES ===
+		local sheetWidth:int = 290
+		local sheetHeight:int = 0 'calculated later
+		if align = 1 then x = x + sheetWidth
+		if align = 0 then x = x - 0.5 * sheetWidth
+		if align = -1 then x = x - sheetWidth
+
+		local skin:TDatasheetSkin = GetDatasheetSkin("studioProductionConcept")
+		local contentW:int = skin.GetContentW(sheetWidth)
+		local contentX:int = x + skin.GetContentY()
+		local contentY:int = y + skin.GetContentY()
+
+		local title:string = productionConcept.script.GetTitle()
+		local conceptIsEmpty:int = True
+		'started production setup already?
+		if productionConcept.productionFocus.GetFocusPointsSet() > 0 then conceptIsEmpty = False
+		if productionConcept.GetCastGroup(-1).length > 0 then conceptIsEmpty = False
+
+		local showMsgOrderWarning:Int = False
+		local showMsgIncomplete:Int = not conceptIsEmpty and not productionConcept.IsComplete()
+		local showMsgNotPlanned:Int = conceptIsEmpty
+
+
+		'save on requests to the player finance
+		local finance:TPlayerFinance
+		'only check finances if it is no other player (avoids exposing
+		'that information to us)
+		if useOwner <= 0 or GetPlayerBaseCollection().playerID = useOwner
+			finance = GetPlayerFinance(GetPlayerBaseCollection().playerID)
+		endif
+
+		'can player afford this licence?
+		local canAfford:int = False
+		'if it is another player... just display "can afford"
+		if useOwner > 0
+			canAfford = True
+		'not our licence but enough money to buy
+		elseif finance and finance.canAfford(productionConcept.GetTotalCost())
+			canAfford = True
+		endif
+
+		'if planned unordered (1-3-2) warn the user
+		'if ... then showMsgOrderWarning = True
+
+		'=== CALCULATE SPECIAL AREA HEIGHTS ===
+		local titleH:int = 18, genreH:int = 16, descriptionH:int = 70, castH:int=50
+		local splitterHorizontalH:int = 6
+		local boxH:int = 0, msgH:int = 0, barH:int = 0
+		local msgAreaH:int = 0, boxAreaH:int = 0, barAreaH:int = 0
+		local boxAreaPaddingY:int = 4, msgAreaPaddingY:int = 4, barAreaPaddingY:int = 4
+		 
+		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).GetY()
+		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
+		barH = skin.GetBarSize(100, -1).GetY()
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).getBlockHeight(title, contentW - 10, 100))
+
+
+		'message area
+		If showMsgOrderWarning then msgAreaH :+ msgH
+		If showMsgNotPlanned then msgAreaH :+ msgH
+		If showMsgIncomplete then msgAreaH :+ msgH
+
+		'if there are messages, add padding of messages
+		if msgAreaH > 0 then msgAreaH :+ 2* msgAreaPaddingY
+
+
+		'total height
+		sheetHeight = titleH + genreH + descriptionH + msgAreaH + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
+
+		if not conceptIsEmpty
+			'box area
+			'contains 1 line of boxes
+			'box area might start with padding and end with padding
+			boxAreaH = 1 * boxH
+			if msgAreaH = 0 then boxAreaH :+ boxAreaPaddingY
+			'no ending if nothing comes after "boxes"
+
+			'bar area starts with padding, ends with padding and contains
+			'also contains 2 bars (production values + cast)
+			barAreaH = 2 * barAreaPaddingY + 2 * (barH + 2)
+
+			sheetHeight :+ castH + barAreaH + boxAreaH
+
+			'there is a splitter between description and cast...
+			sheetHeight :+ splitterHorizontalH
+		endif
+
+		
+		'=== RENDER ===
+	
+		'=== TITLE AREA ===
+		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
+			if titleH <= 18
+				GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY -1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			else
+				GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY +1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			endif
+		contentY :+ titleH
+
+	
+		'=== GENRE AREA ===
+		skin.RenderContent(contentX, contentY, contentW, genreH, "1")
+		'splitter
+		GetSpriteFromRegistry("gfx_datasheet_content_splitterV").DrawArea(contentX + 5 + 65, contentY, 2, 16)
+		skin.fontNormal.drawBlock(productionConcept.script.GetMainGenre(), contentX + 5 + 65 + 2, contentY, contentW - 10 - 65 - 2, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		contentY :+ genreH
+
+	
+		'=== DESCRIPTION AREA ===
+		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
+		skin.fontNormal.drawBlock(productionConcept.script.GetDescription(), contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, null, skin.textColorNeutral)
+		contentY :+ descriptionH
+
+
+		if not conceptIsEmpty
+			'splitter
+			skin.RenderContent(contentX, contentY, contentW, splitterHorizontalH, "1")
+			contentY :+ splitterHorizontalH
+			
+
+			'=== CAST AREA ===
+			skin.RenderContent(contentX, contentY, contentW, castH, "2")
+			'cast
+			local cast:string = ""
+
+			For local i:int = 1 to TVTProgrammePersonJob.count
+				local jobID:int = TVTProgrammePersonJob.GetAtIndex(i)
+				local requiredPersons:int = productionConcept.GetCastGroup(jobID).length
+				print jobID+": "+productionConcept.GetCastGroup(jobID).length + "  " + productionConcept.cast.length
+				if requiredPersons <= 0 then continue
+
+				if cast <> "" then cast :+ ", "
+
+				if requiredPersons = 1
+					cast :+ "|b|"+GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobID, True))+":|/b| "
+				else
+					cast :+ "|b|"+GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobID, False))+":|/b| "
+				endif
+				
+				cast :+ productionConcept.GetCastGroupString(jobID)
+			Next
+
+			if cast <> ""
+				contentY :+ 3
+
+				'max width of cast word - to align their content properly
+				skin.fontNormal.drawBlock(cast, contentX + 5, contentY , contentW  - 10, castH, null, skin.textColorNeutral)
+
+				contentY:+ castH - 3
+			else
+				contentY:+ castH
+			endif
+		endif
+
+		'=== BARS / MESSAGES / BOXES AREA ===
+		'background for bars + messages + boxes
+		if not conceptIsEmpty
+			skin.RenderContent(contentX, contentY, contentW, msgAreaH, "1_bottom")
+		else
+			skin.RenderContent(contentX, contentY, contentW, barAreaH + msgAreaH + boxAreaH, "1_bottom")
+		endif
+
+
+		if not conceptIsEmpty
+			'===== DRAW BARS =====
+
+			'bars have a top-padding
+			contentY :+ barAreaPaddingY
+			'production values
+			skin.RenderBar(contentX + 5, contentY, 200, 12, 1.0)
+			skin.fontSemiBold.drawBlock(GetLocale("PRODUCTION_VALUE"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+			contentY :+ barH + 2
+			'cast
+			skin.RenderBar(contentX + 5, contentY, 200, 12, 1.0)
+			skin.fontSemiBold.drawBlock(GetLocale("CAST"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+			contentY :+ barH + 2
+		endif
+
+
+		'=== MESSAGES ===
+		'if there is a message then add padding to the begin
+		if msgAreaH > 0 then contentY :+ msgAreaPaddingY
+
+		If showMsgOrderWarning
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("EPISODES_NOT_IN_ORDER"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			contentY :+ msgH
+		endif
+		If showMsgIncomplete
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_INCOMPLETE"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			contentY :+ msgH
+		endif
+		If showMsgNotPlanned
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_NOT_DONE"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			contentY :+ msgH
+		endif
+
+		'if there is a message then add padding to the bottom
+		if msgAreaH > 0 then contentY :+ msgAreaPaddingY
+
+
+		if not conceptIsEmpty
+			'=== BOXES ===
+			'boxes have a top-padding (except with messages)
+			if msgAreaH = 0 then contentY :+ boxAreaPaddingY
+
+
+			'=== BOX LINE 1 ===
+			'production time
+			skin.RenderBox(contentX + 5, contentY, 47, -1, 2, "duration", "neutral", skin.fontBold)
+			'price
+			if canAfford
+				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(productionConcept.GetTotalCost()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+			else
+				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(productionConcept.GetTotalCost()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
+			endif
+			'=== BOX LINE 2 ===
+			contentY :+ boxH
+		endif
+
+
+		'=== DEBUG ===
+rem
+		If TVTDebugInfos
+			'begin at the top ...again
+			contentY = y + skin.GetContentY()
+			local oldAlpha:Float = GetAlpha()
+
+			SetAlpha oldAlpha * 0.75
+			SetColor 0,0,0
+			DrawRect(contentX, contentY, contentW, sheetHeight - skin.GetContentPadding().GetTop() - skin.GetContentPadding().GetBottom())
+			SetColor 255,255,255
+			SetAlpha oldAlpha
+
+			skin.fontBold.drawBlock("Programm: "+GetTitle(), contentX + 5, contentY, contentW - 10, 28)
+			contentY :+ 28
+			skin.fontNormal.draw("Letzte Stunde im Plan: "+latestPlannedEndHour, contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Tempo: "+MathHelper.NumberToString(data.GetSpeed(), 4), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Kritik: "+MathHelper.NumberToString(data.GetReview(), 4), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Kinokasse: "+MathHelper.NumberToString(data.GetOutcome(), 4), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Preismodifikator: "+MathHelper.NumberToString(data.GetModifier("price"), 4), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Qualitaet roh: "+MathHelper.NumberToString(GetQualityRaw(), 4)+"  (ohne Alter, Wdh.)", contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Qualitaet: "+MathHelper.NumberToString(GetQuality(), 4), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Aktualitaet: "+MathHelper.NumberToString(GetTopicality(), 4)+" von " + MathHelper.NumberToString(data.GetMaxTopicality(), 4), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Bloecke: "+data.GetBlocks(), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Ausgestrahlt: "+data.GetTimesBroadcasted(useOwner)+"x Spieler, "+data.GetTimesBroadcasted()+"x alle  Limit:"+broadcastLimit, contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(useOwner, -1).audience.GetTotalSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetTotalSum())+" (alle)", contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Preis: "+GetPrice(), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Trailerakt.-modifikator: "+MathHelper.NumberToString(data.GetTrailerMod().GetTotalAverage(), 4), contentX + 5, contentY)
+		endif
+endrem
+		'=== OVERLAY / BORDER ===
+		skin.RenderBorder(x, y, sheetWidth, sheetHeight)
+	End Method
 
 	Method DrawContent()
 		SetColor 255,255,255

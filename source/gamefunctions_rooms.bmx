@@ -2516,7 +2516,9 @@ Type RoomHandler_Studio extends TRoomHandler
 			guiListDeskProductionConcepts.SetSlotMinDimension(spriteProductionConcept.area.GetW(), spriteProductionConcept.area.GetH())
 			guiListDeskProductionConcepts.SetEntryDisplacement( 0, 0 )
 			guiListDeskProductionConcepts.SetAcceptDrop("TGuiProductionConceptListItem")
-			guiListDeskProductionConcepts._debugMode = True	
+			guiListDeskProductionConcepts._debugMode = True
+			guiListDeskProductionConcepts._customDrawContent = DrawProductionConceptStudioSlotListContent
+			
 
 			'default studioManager dimension
 			local studioManagerAreaDimension:TVec2D = new TVec2D.Init(150,270)
@@ -3066,33 +3068,39 @@ Type RoomHandler_Studio extends TRoomHandler
 	End Function
 
 
-	Method GenerateStudioManagerDialogue()
+	Method GenerateStudioManagerDialogue(dialogueType:int = 0)
 		if not GetPlayer().GetFigure().inRoom then return
 		
 		local roomGUID:string = GetPlayer().GetFigure().inRoom.GetGUID()
 		local script:TScript = GetCurrentStudioScript(roomGUID)
-		local readyToProduce:int = 0
 		local conceptCount:int = 0
 		
 		local text:string
-		if readyToProduce
-			text = "Informationen ueber derzeitige Produktion anbieten"
-		elseif script
-			'to display the amount of production concepts per script we
-			'call the productionconcept collection instead of the player's
-			'programmecollection
-			conceptCount = GetProductionConceptCollection().GetProductionConceptsByScript(script).length
-			text = "Du willst also |b|"+script.GetTitle()+"|/b| produzieren?"
-			text :+"~n~n"
-			text :+"Bisher sind |b|"+conceptCount+" Produktionen|/b| mit diesem Drehbuch geplant."
-			if not GetPlayer().GetProgrammeCollection().CanCreateProductionConcept(script)
-				text :+"~n~n"
-				text :+"Im übrigen ist Dein Platz für Einkaufslisten erschöpft. Bitte entferne erst eine Einkaufsliste bevor Ich eine neue ausgeben kann."
-			endif
+		'=== SCRIPT HINT ===
+		if dialogueType = 2
+			text = "Informationen ueber Drehbuch anbieten"
+		'=== PRODUCTION CONCEPT HINT ===
+		if dialogueType = 1
+			text = "Informationen ueber Produktionsplan (erwartete Qualitaet) anbieten"
+		'=== INFORMATION ABOUT CURRENT PRODUCTION ===
 		else
-			text = "Hi"
-			text :+"~n~n"
-			text :+"Bring doch einfach mal ein Drehbuch vorbei. Dann können wir sicher was feines produzieren."
+			if script
+				'to display the amount of production concepts per script we
+				'call the productionconcept collection instead of the player's
+				'programmecollection
+				conceptCount = GetProductionConceptCollection().GetProductionConceptsByScript(script).length
+				text = "Du willst also |b|"+script.GetTitle()+"|/b| produzieren?"
+				text :+"~n~n"
+				text :+"Bisher sind |b|"+conceptCount+" Produktionen|/b| mit diesem Drehbuch geplant."
+				if not GetPlayer().GetProgrammeCollection().CanCreateProductionConcept(script)
+					text :+"~n~n"
+					text :+"Im übrigen ist Dein Platz für Einkaufslisten erschöpft. Bitte entferne erst eine Einkaufsliste bevor Ich eine neue ausgeben kann."
+				endif
+			else
+				text = "Hi"
+				text :+"~n~n"
+				text :+"Bring doch einfach mal ein Drehbuch vorbei. Dann können wir sicher was feines produzieren."
+			endif
 		endif
 
 		text = text.replace("%PLAYERNAME%", GetPlayerBase().name)
@@ -3152,6 +3160,29 @@ Type RoomHandler_Studio extends TRoomHandler
 			endif
 		endif
 	End Method
+
+
+	'custom draw function for "DrawContent()" call of that list
+	Function DrawProductionConceptStudioSlotListContent:int(guiObject:TGuiObject)
+		Local list:TGUIProductionConceptSlotList = TGUIProductionConceptSlotList(guiObject)
+		if not list then return False
+
+		Local atPoint:TVec2D = guiObject.GetScreenPos()
+		local spriteProductionConcept:TSprite = GetSpriteFromRegistry("gfx_studio_productionconcept_0")
+
+		SetAlpha 0.20
+		For Local i:Int = 0 until list._slots.length
+			local item:TGUIObject = list.GetItemBySlot(i)
+			if item then continue
+
+			local pos:TVec3D = list.GetSlotCoord(i)
+			pos.AddX(list._slotMinDimension.x * 0.5)
+			pos.AddY(list._slotMinDimension.y * 0.5)
+
+			spriteProductionConcept.Draw(atPoint.x + pos.x, atPoint.y + pos.y, -1, ALIGN_CENTER_CENTER, 0.7)
+		Next
+		SetAlpha 1.0
+	End Function	
 
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
@@ -3221,8 +3252,20 @@ Type RoomHandler_Studio extends TRoomHandler
 			if THelper.MouseIn(0,100,150,300)
 				if not studioManagerDialogue
 					'generate the dialogue if not done yet
-					if MouseManager.IsClicked(1) and not draggedGuiScript
-						GenerateStudioManagerDialogue()
+					if MouseManager.IsClicked(1)
+						if draggedGuiProductionConcept
+							draggedGuiProductionConcept.dropBackToOrigin()
+							draggedGuiProductionConcept = null
+
+							GenerateStudioManagerDialogue(2)
+						elseif draggedGuiScript
+							draggedGuiScript.dropBackToOrigin()
+							draggedGuiScript = null
+
+							GenerateStudioManagerDialogue(1)
+						else
+							GenerateStudioManagerDialogue(0)
+						endif
 					endif
 
 					'show tooltip of studio manager

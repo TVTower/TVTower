@@ -138,6 +138,31 @@ Type TProductionConcept Extends TOwnedGameObject
 	End Method
 
 
+	Method GetCastGroup:TProgrammePersonBase[](jobFlag:int)
+		local res:TProgrammePersonBase[0]
+		if not script then return res
+		
+		For local i:int = 0 until script.cast.length
+			local job:TProgrammePersonJob = script.cast[i]
+			if (job.job = jobFlag or jobFlag = -1) and cast[i]
+				res :+ [ GetProgrammePersonBaseCollection().GetByGUID(cast[i].GetGUID()) ]
+			endif
+		Next
+		return res
+	End Method
+
+
+	Method GetCastGroupString:string(jobFlag:int)
+		local result:string = ""
+		local group:TProgrammePersonBase[] = GetCastGroup(jobFlag)
+		for local i:int = 0 to group.length-1
+			if result <> "" then result:+ ", "
+			result:+ group[i].GetFullName()
+		Next
+		return result
+	End Method
+
+
 	Method GetProductionFocus:int(focusIndex:int)
 		if not productionFocus or focusIndex > productionFocus.GetFocusAspectCount() or focusIndex < 1 then return False
 		return productionFocus.GetFocus(focusIndex)
