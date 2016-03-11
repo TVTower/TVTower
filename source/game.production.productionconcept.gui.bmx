@@ -51,9 +51,31 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 	End Method
 
 
+	Method IsUnplanned:int()
+return False
+	
+		if not productionConcept then return True
+
+		'started production setup already?
+		if productionConcept.productionFocus.GetFocusPointsSet() > 0 then return False
+		if productionConcept.GetCastGroup(-1).length > 0 then return False
+
+		return True
+	End Method
+
+
+	Method IsIncomplete:int()
+		if not productionConcept then return True
+		'incomplete = (unplanned or complete)
+		return not (IsUnplanned() or productionConcept.IsComplete())
+	End Method
+
+
 	Method DrawSheet(leftX:Int=30, rightX:Int=30)
-		Local sheetY:Float 	= 120
+		Local sheetY:Float 	= 80 
 		Local sheetX:Float 	= GetGraphicsManager().GetWidth()/2
+		'move down if unplanned (less spaced needed on datasheet)
+		if IsUnplanned() then sheetY :+ 50
 
 		SetColor 0,0,0
 		SetAlpha 0.2
@@ -71,7 +93,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		if useOwner = -1 then useOwner = productionConcept.owner
 
 		'=== PREPARE VARIABLES ===
-		local sheetWidth:int = 290
+		local sheetWidth:int = 310
 		local sheetHeight:int = 0 'calculated later
 		if align = 1 then x = x + sheetWidth
 		if align = 0 then x = x - 0.5 * sheetWidth
@@ -83,14 +105,11 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		local contentY:int = y + skin.GetContentY()
 
 		local title:string = productionConcept.script.GetTitle()
-		local conceptIsEmpty:int = True
-		'started production setup already?
-		if productionConcept.productionFocus.GetFocusPointsSet() > 0 then conceptIsEmpty = False
-		if productionConcept.GetCastGroup(-1).length > 0 then conceptIsEmpty = False
+		local conceptIsEmpty:int = IsUnplanned()
 
 		local showMsgOrderWarning:Int = False
-		local showMsgIncomplete:Int = not conceptIsEmpty and not productionConcept.IsComplete()
-		local showMsgNotPlanned:Int = conceptIsEmpty
+		local showMsgIncomplete:Int = IsIncomplete()
+		local showMsgNotPlanned:Int = IsUnplanned()
 
 
 		'save on requests to the player finance
@@ -115,7 +134,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		'if ... then showMsgOrderWarning = True
 
 		'=== CALCULATE SPECIAL AREA HEIGHTS ===
-		local titleH:int = 18, genreH:int = 16, descriptionH:int = 70, castH:int=50
+		local titleH:int = 18, descriptionH:int = 70, castH:int=50
 		local splitterHorizontalH:int = 6
 		local boxH:int = 0, msgH:int = 0, barH:int = 0
 		local msgAreaH:int = 0, boxAreaH:int = 0, barAreaH:int = 0
@@ -137,7 +156,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 
 		'total height
-		sheetHeight = titleH + genreH + descriptionH + msgAreaH + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
+		sheetHeight = titleH + descriptionH + msgAreaH + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
 
 		if not conceptIsEmpty
 			'box area
@@ -148,8 +167,8 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 			'no ending if nothing comes after "boxes"
 
 			'bar area starts with padding, ends with padding and contains
-			'also contains 2 bars (production values + cast)
-			barAreaH = 2 * barAreaPaddingY + 2 * (barH + 2)
+			'also contains 1 bar (production potential)
+			barAreaH = 2 * barAreaPaddingY + 1 * (barH + 2)
 
 			sheetHeight :+ castH + barAreaH + boxAreaH
 
@@ -168,14 +187,6 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 				GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY +1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			endif
 		contentY :+ titleH
-
-	
-		'=== GENRE AREA ===
-		skin.RenderContent(contentX, contentY, contentW, genreH, "1")
-		'splitter
-		GetSpriteFromRegistry("gfx_datasheet_content_splitterV").DrawArea(contentX + 5 + 65, contentY, 2, 16)
-		skin.fontNormal.drawBlock(productionConcept.script.GetMainGenre(), contentX + 5 + 65 + 2, contentY, contentW - 10 - 65 - 2, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-		contentY :+ genreH
 
 	
 		'=== DESCRIPTION AREA ===
@@ -197,8 +208,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 			For local i:int = 1 to TVTProgrammePersonJob.count
 				local jobID:int = TVTProgrammePersonJob.GetAtIndex(i)
-				local requiredPersons:int = productionConcept.GetCastGroup(jobID).length
-				print jobID+": "+productionConcept.GetCastGroup(jobID).length + "  " + productionConcept.cast.length
+				local requiredPersons:int = productionConcept.script.GetSpecificCast(jobID).length
 				if requiredPersons <= 0 then continue
 
 				if cast <> "" then cast :+ ", "
@@ -208,8 +218,8 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 				else
 					cast :+ "|b|"+GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobID, False))+":|/b| "
 				endif
-				
-				cast :+ productionConcept.GetCastGroupString(jobID)
+
+				cast :+ productionConcept.GetCastGroupString(jobID, False, GetLocale("JOB_POSITION_UNASSIGNED"))
 			Next
 
 			if cast <> ""
@@ -224,9 +234,10 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 			endif
 		endif
 
+
 		'=== BARS / MESSAGES / BOXES AREA ===
 		'background for bars + messages + boxes
-		if not conceptIsEmpty
+		if conceptIsEmpty
 			skin.RenderContent(contentX, contentY, contentW, msgAreaH, "1_bottom")
 		else
 			skin.RenderContent(contentX, contentY, contentW, barAreaH + msgAreaH + boxAreaH, "1_bottom")
@@ -238,13 +249,9 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 			'bars have a top-padding
 			contentY :+ barAreaPaddingY
-			'production values
+			'production potential
 			skin.RenderBar(contentX + 5, contentY, 200, 12, 1.0)
-			skin.fontSemiBold.drawBlock(GetLocale("PRODUCTION_VALUE"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
-			contentY :+ barH + 2
-			'cast
-			skin.RenderBar(contentX + 5, contentY, 200, 12, 1.0)
-			skin.fontSemiBold.drawBlock(GetLocale("CAST"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+			skin.fontSemiBold.drawBlock(GetLocale("PRODUCTION_POTENTIAL"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
 			contentY :+ barH + 2
 		endif
 
@@ -352,6 +359,14 @@ endrem
 			EndIf
 		EndIf
 
+		if IsIncomplete()
+			SetColor 250,200,150
+		elseif IsUnplanned()
+			'default color
+		else 'ready to plan
+			SetColor 200,250,150
+		endif
+		
 		Super.DrawContent()
 
 		oldCol.SetRGBA()

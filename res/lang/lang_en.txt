@@ -264,6 +264,8 @@ JOB_AMATEUR_SCRIPTWRITERS    = Amateur scriptwriters
 JOB_AMATEUR_MUSICIAN         = Amateur musician
 JOB_AMATEUR_MUSICIANS        = Amateur musicians
 
+JOB_POSITION_UNASSIGNED      = Unassigned
+
 
 MOVIE_SPEED				= Speed
 MOVIE_CRITIC			= Critics
@@ -623,6 +625,8 @@ STUNTS = Stunts
 VFX_AND_SFX = VFX / SFX
 TEAM = Team (Technicians, etc.)
 PRODUCTION_SPEED = Production speed
+
+PRODUCTION_POTENTIAL = Potential
 
 CAST_EXPERIENCE = Experience
 CAST_FAME = Fame

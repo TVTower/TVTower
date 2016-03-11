@@ -3080,7 +3080,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		if dialogueType = 2
 			text = "Informationen ueber Drehbuch anbieten"
 		'=== PRODUCTION CONCEPT HINT ===
-		if dialogueType = 1
+		elseif dialogueType = 1
 			text = "Informationen ueber Produktionsplan (erwartete Qualitaet) anbieten"
 		'=== INFORMATION ABOUT CURRENT PRODUCTION ===
 		else

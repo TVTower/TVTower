@@ -138,26 +138,59 @@ Type TProductionConcept Extends TOwnedGameObject
 	End Method
 
 
-	Method GetCastGroup:TProgrammePersonBase[](jobFlag:int)
-		local res:TProgrammePersonBase[0]
-		if not script then return res
-		
-		For local i:int = 0 until script.cast.length
+	Method GetCastGroup:TProgrammePersonBase[](jobFlag:int, skipEmpty:int = True)
+		if not script then return new TProgrammePersonBase[0]
+
+		local res:TProgrammePersonBase[]
+		local jobs:TProgrammePersonJob[] = script.GetSpecificCast(jobFlag)
+		if not skipEmpty and jobs
+			res = new TProgrammePersonBase[jobs.length]
+		else
+			res = new TProgrammePersonBase[0]
+		endif
+
+		'skip further processing
+		if not jobs or jobs.length = 0 then	return res
+
+		'loop through all (potentially assigned) cast entries and check
+		'whether their job fits to the desired one
+		local castIndex:int = 0
+		For local i:int = 0 until cast.length
 			local job:TProgrammePersonJob = script.cast[i]
-			if (job.job = jobFlag or jobFlag = -1) and cast[i]
-				res :+ [ GetProgrammePersonBaseCollection().GetByGUID(cast[i].GetGUID()) ]
+			if not job then continue 'flawed data?
+			
+			if (job.job = jobFlag or jobFlag = -1)
+				if not skipEmpty
+					if cast[castIndex]
+						res[castIndex] = GetProgrammePersonBaseCollection().GetByGUID(cast[i].GetGUID())
+					else
+						res[castIndex] = null
+					endif
+				else
+					if cast[castIndex]
+						res :+ [ GetProgrammePersonBaseCollection().GetByGUID(cast[i].GetGUID()) ]
+					endif
+				endif
+				castIndex :+ 1
 			endif
 		Next
 		return res
 	End Method
 
 
-	Method GetCastGroupString:string(jobFlag:int)
+	Method GetCastGroupString:string(jobFlag:int, skipEmpty:int = True, nameOfEmpty:string = "")
 		local result:string = ""
-		local group:TProgrammePersonBase[] = GetCastGroup(jobFlag)
+		local group:TProgrammePersonBase[] = GetCastGroup(jobFlag, skipEmpty)
 		for local i:int = 0 to group.length-1
-			if result <> "" then result:+ ", "
-			result:+ group[i].GetFullName()
+			if skipEmpty and group[i] = null then continue
+
+			if group[i]
+				if result <> "" then result:+ ", "
+				result:+ group[i].GetFullName()
+			else
+				if nameOfEmpty and result <> "" then result:+ ", "
+				result:+ nameOfEmpty
+			endif
 		Next
 		return result
 	End Method

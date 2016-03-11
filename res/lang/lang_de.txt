@@ -261,6 +261,8 @@ JOB_AMATEUR_SCRIPTWRITERS    = unerfahrene Drehbuchautoren
 JOB_AMATEUR_MUSICIAN         = Freizeitmusiker
 JOB_AMATEUR_MUSICIANS        = Freizeitmusiker
 
+JOB_POSITION_UNASSIGNED      = Unbesetzt
+
 
 MOVIE_SPEED     = Tempo
 MOVIE_CRITIC    = Kritik
@@ -627,6 +629,8 @@ STUNTS = Stunts
 VFX_AND_SFX = VFX / SFX
 TEAM = Team (Techniker, etc.)
 PRODUCTION_SPEED = Produktionstempo
+
+PRODUCTION_POTENTIAL = Potenzial
 
 CAST_EXPERIENCE = Erfahrung
 CAST_FAME = Bekanntheit
