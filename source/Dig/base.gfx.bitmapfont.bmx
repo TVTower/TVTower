@@ -500,14 +500,15 @@ Type TBitmapFont
 					if i < (paragraphs.length-1) or nicelyTruncateLastLine
 						'search for the "most right" position of a
 						'linebreak
-						For local charPos:int = 0 To linePartial.length-1
+						'no need to check for the last char (no break then ;-)
+						For local charPos:int = 0 To linePartial.length-1 -1
 							'special line break rules (spaces, -, ...)
 							If linePartial[charPos] = Asc(" ")
-								breakPosition = charPos
+								breakPosition = charPos+1
 								FoundBreakPosition=TRUE
 							endif
 							If linePartial[charPos] = Asc("-")
-								breakPosition = charPos
+								breakPosition = charPos+1
 								FoundBreakPosition=TRUE
 							endif
 						Next
