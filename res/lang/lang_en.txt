@@ -545,6 +545,10 @@ NAME_OF_SAVEGAME = Name of savegame
 OVERWRITE_SAVEGAME = Overwrite savegame?
 DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X = Do you really want to overwrite savegame %SAVEGAME%?
 
+CREDIT_REPAID = credit repaid
+CREDIT_TAKEN = credit taken
+ACCOUNT_BALANCE_VALUE = account balance
+
 ADCONTRACT_FINISHED = Advertisement contract finished
 ADCONTRACT_FAILED = Advertisement contract failed
 ADCONTRACT_X_SUCCESSFULLY_FINISHED = Advertisement contract "%TITLE%" successfully finished.

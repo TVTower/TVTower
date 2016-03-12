@@ -3361,6 +3361,8 @@ Type GameEvents
 		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerBoss.onCallPlayer", PlayerBoss_OnCallPlayer) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerBoss.onCallPlayerForced", PlayerBoss_OnCallPlayerForced) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerBoss.onPlayerEnterBossRoom", PlayerBoss_OnPlayerEnterBossRoom) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerBoss.onPlayerTakesCredit", PlayerBoss_OnTakeOrRepayCredit) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerBoss.onPlayerRepaysCredit", PlayerBoss_OnTakeOrRepayCredit) ]
 
 		'=== PUBLIC AUTHORITIES ===
 		'-> create ingame notifications
@@ -3647,6 +3649,31 @@ Type GameEvents
 		If Not boss Or Not player Then Return False
 
 		player.SendToBoss()
+	End Function
+
+
+	Function PlayerBoss_OnTakeOrRepayCredit:Int(triggerEvent:TEventBase)
+		local value:int = triggerEvent.GetData().GetInt("value", 0)
+		'send out a toast message
+		Local toast:TGameToastMessage = New TGameToastMessage
+	
+		'show it for some seconds
+		toast.SetLifeTime(3)
+
+		if triggerEvent.IsTrigger("PlayerBoss.onPlayerTakesCredit")
+			toast.SetMessageType(2) 'positive
+			toast.SetCaption(StringHelper.UCFirst(GetLocale("CREDIT_TAKEN")))
+			toast.SetText(StringHelper.UCFirst(GetLocale("ACCOUNT_BALANCE"))+": |b||color=0,125,0|+ "+ TFunctions.DottedValue(value) + " " + getLocale("CURRENCY") + "|/color||/b|")
+		else
+			toast.SetMessageType(3) 'negative
+			toast.SetCaption(StringHelper.UCFirst(GetLocale("CREDIT_REPAID")))
+			toast.SetText(StringHelper.UCFirst(GetLocale("ACCOUNT_BALANCE"))+": |b||color=125,0,0|- "+ TFunctions.DottedValue(value) + " " + getLocale("CURRENCY") + "|/color||/b|")
+		endif
+
+		'play a special sound instead of the default one
+		toast.GetData().AddString("onAddMessageSFX", "positiveMoneyChange")
+
+		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 	End Function
 
 

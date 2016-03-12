@@ -9,7 +9,7 @@ Import "Dig/base.util.helper.bmx"
 Type TDialogue
 	'list of TDialogueTexts
 	Field _texts:TList = CreateList()
-	Field _currentText:Int = 0
+	Field _currentTextIndex:Int = 0
 	Field _rect:TRectangle = new TRectangle.Init(0,0,0,0)
 	Field contentWidth:Int = 0
 
@@ -40,13 +40,13 @@ Type TDialogue
 			MouseManager.resetKey(1)
 		endif
 
-		Local nextText:Int = _currentText
+		Local nextTextIndex:Int = _currentTextIndex
 		If Self._texts.Count() > 0
-			Local returnValue:Int = TDialogueTexts(_texts.ValueAtIndex(_currentText)).Update(_rect.getX() + 10, _rect.getY() + 10, contentWidth - 20 - 45, _rect.getH(), clicked)
-			If returnValue <> - 1 Then nextText = returnValue
+			Local returnValue:Int = TDialogueTexts(_texts.ValueAtIndex(_currentTextIndex)).Update(_rect.getX() + 10, _rect.getY() + 10, contentWidth - 20 - 45, _rect.getH(), clicked)
+			If returnValue <> -1 Then nextTextIndex = returnValue
 		EndIf
-		_currentText = nextText
-		If _currentText = -2 Then _currentText = 0;Return 0
+		_currentTextIndex = nextTextIndex
+		If _currentTextIndex = -2 Then print "leave";_currentTextIndex = 0;Return 0
 		Return 1
 	End Method
 
@@ -94,7 +94,7 @@ Type TDialogue
 	    DrawDialog("default", _rect.getX(), _rect.getY(), _rect.getW(), _rect.getH(), "StartLeftDown", 0, "", contentWidth, GetBitmapFont("Default", 14))
 		SetColor 0, 0, 0
 		If Self._texts.Count() > 0
-			TDialogueTexts(Self._texts.ValueAtIndex(Self._currentText)).Draw(_rect.getX() + 10, _rect.getY() + 10, contentWidth - 20 - 45, _rect.getH())
+			TDialogueTexts(Self._texts.ValueAtIndex(Self._currentTextIndex)).Draw(_rect.getX() + 10, _rect.getY() + 10, contentWidth - 20 - 45, _rect.getH())
 		endif
 		SetColor 255, 255, 255
 	End Method
@@ -134,7 +134,7 @@ Type TDialogueAnswer
 				Return _leadsTo
 			EndIf
 		EndIf
-		Return - 1
+		Return -1
 	End Method
 
 
@@ -179,7 +179,11 @@ Type TDialogueTexts
 		_goTo = -1
 		For Local answer:TDialogueAnswer = EachIn(Self._answers)
 			Local returnValue:Int = answer.Update(x + 9, y + ydisplace, w - 9, h, clicked)
-			If returnValue <> - 1 Then _goTo = returnValue
+			If returnValue <> - 1
+				_goTo = returnValue
+				'handled click
+				clicked = False
+			endif
 			ydisplace :+ GetBitmapFont("Default", 14).getHeight(answer._text) + 2
 		Next
 		Return _goTo

@@ -547,6 +547,10 @@ OVERWRITE_SAVEGAME = Speicherstand überschreiben?
 DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X = Willst du wirklich %SAVEGAME% überschreiben?
 
 
+CREDIT_REPAID = Kredit zurückgezahlt
+CREDIT_TAKEN = Kredit aufgenommen
+ACCOUNT_BALANCE = Kontostand
+
 ADCONTRACT_FINISHED = Werbevertrag beendet
 ADCONTRACT_FAILED = Werbevertrag fehlgeschlagen
 ADCONTRACT_X_SUCCESSFULLY_FINISHED = Werbevertrag "%TITLE%" erfolgreich abgeschlossen.
