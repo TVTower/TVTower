@@ -1,6 +1,21 @@
 <?xml version="1.0"?>
 <tvt>
 	<resources>
+		<resource name="map_citynames">
+			<type>Data</type>
+			<children>
+				<!-- parts, comma separated (optional ", ")
+				     part1 - prefix (optional)
+				     part2 - main
+				     part3 - ending (optional)
+				-->
+				<child name="part1" value="alt-, alten, bad , bergisch , geest, groß, großen, hohen, holz, klein, kleinen, kloster, lütt , mark, markt, marsch, mittel, märkisch , neu-, neuen, nieder, norder, ober, oster, süder, unter, wald, wasser" />
+				<child name="part2" value="annen, bewen, bitter, blaken, blujers, bonter, breiden, brilten, brimps, brokken, brus, brustel, bruwen, budas, cabels, demer, dratten, dri, drokel, druell, epp, etern, euden, euker, euter, fehls, flantz, foden, foll, freschen, froben, frusen, fuisers, füjers, gamb, geier, gigs, gitter, glex, gliangs, glog, greiders, grewels, griten, grokel, hauschen, hennen, heuels, hevels, hotten, huhsen, juisen, jützen, kacker, kags, kehls, keiers, ketis, kregen, kregis, kroners, larnings, lessen, luntzel, martes, masen, medes, moneys, mub, musen, nargs, nasings, ne, nörden, opo, piels, prilmers, priners, pügen, quachten, ragers, reckes, ries, rizen, rons, rucks, rujers, ruk, saden, saides, sain, salgis, schaab, schabels, schaugis, schaven, schekers, schloners, schlugel, schoschen, schrannen, schrihs, schrinners, schrunden, schrungen, schuges, schwieden, schwieven, schwilges, schwilter, spamen, spree, sprels, spreus, spriewers, spruges, spruggen, sprüsch, spuels, spys, stabers, stannen, stelles, stieten, strail, strakels, stravers, striber, striels, strus, strüt, stuv, stüters, tachs, tatt, totten, tren, trichten, troskers, trükis, vanen, vurren, wagols, woben, wotten, zaven, ziggen, ziven, zunnen, zyden" />
+				<child name="part3" value=", a, ach, au, bach, bad, beck, bek, berg, born, borstel, broich, bruck, brunn, brunnen, brück, burg, by, büttel, dorf, ecke, ede, en, feld, felde, ford, forst, furt, gast, hagen, hain, ham, hausen, heide, heim, hof, hofen, horn, hoven, hude, huden, husen, hütten, ikon, in, ing, ingen, ingsen, itz, kirchen, leben, lust, moor, moos, mund, mühle, mühlen, münde, ow, rade, raden, rath, reuth, rich, rode, roden, sand, scheid, scheidt, see, sen, stadt, stede, steden, stedt, stedten, stein, stetten, städt, tal, thal, torf, trop, trup, walde, weiler, werder, werth, wik, wil, witz, worth, wörth" />
+			</children>
+		</resource>
+
+
 		<!-- images used to recognize when mouse is over a specific state -->
 		<resource name="map_collisionPack">
 			<type>SpritePack</type>
