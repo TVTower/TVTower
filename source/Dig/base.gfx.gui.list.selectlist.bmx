@@ -62,25 +62,25 @@ Type TGUISelectList Extends TGUIListBase
 	'overrideable
 	Method RegisterListeners:Int()
 		'we want to know about clicks
-		AddEventListener(EventManager.registerListenerMethod("GUISelectListItem.onClick",	Self, "onClickOnEntry"))
+		AddEventListener(EventManager.registerListenerMethod("GUIListItem.onClick",	Self, "onClickOnEntry"))
 	End Method
 
 
 	Method onClickOnEntry:Int(triggerEvent:TEventBase)
-		Local entry:TGUISelectListItem = TGUISelectListItem( triggerEvent.getSender() )
+		Local entry:TGUIListItem = TGUIListItem( triggerEvent.getSender() )
 		If Not entry Then Return False
 
 		SelectEntry(entry)
 	End Method
 
 
-	Method SelectEntry:Int(entry:TGUISelectListItem)
+	Method SelectEntry:Int(entry:TGUIListItem)
 		'only mark selected if we are owner of that entry
 		If Self.HasItem(entry)
 			'remove old entry
 			Self.deselectEntry()
 			Self.selectedEntry = entry
-			If TGUISelectListItem(Self.selectedEntry) Then TGUISelectListItem(Self.selectedEntry).SetSelected(True)
+			Self.selectedEntry.SetSelected(True)
 
 			'inform others: we successfully selected an item
 			EventManager.triggerEvent( TEventSimple.Create( "GUISelectList.onSelectEntry", new TData.Add("entry", entry) , Self ) )
@@ -89,8 +89,8 @@ Type TGUISelectList Extends TGUIListBase
 	
 
 	Method DeselectEntry:Int()
-		If TGUISelectListItem(selectedEntry)
-			TGUISelectListItem(selectedEntry).SetSelected(False)
+		If TGUIListItem(selectedEntry)
+			TGUIListItem(selectedEntry).SetSelected(False)
 			selectedEntry = Null
 		EndIf
 	End Method
@@ -116,17 +116,6 @@ Type TGUISelectListItem Extends TGUIListItem
 		GUIManager.add(Self)
 
 		Return Self
-	End Method
-
-
-	'override onClick to emit a special event
-	Method OnClick:int(triggerEvent:TEventBase)
-		Super.OnClick(triggerEvent)
-		'inform others that a selectlistitem was clicked
-		'this makes the "selectlistitem-clicked"-event filterable even
-		'if the itemclass gets extended (compared to the general approach
-		'of "guiobject.onclick")
-		EventManager.triggerEvent(TEventSimple.Create("GUISelectListItem.onClick", null, Self, triggerEvent.GetReceiver()) )
 	End Method
 
 

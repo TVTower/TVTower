@@ -40,6 +40,9 @@ Type TGUIListBase Extends TGUIobject
 
 	Field _listFlags:int = 0
 
+	'amount (percentage) a list is scrolled based on item height 
+	Field scrollItemHeightPercentage:Float = 0.5
+
 	Field entries:TList	= CreateList()
 	Field entriesLimit:Int = -1
 	'private mouseover-field (ignoring covering child elements)
@@ -688,7 +691,7 @@ endrem
 			'try to scroll by 0.5 of an item height
 			local item:TGUIObject
 			if list.entries.Count() > 0 then item = TGUIObject(list.entries.First())
-			if item then scrollAmount = item.rect.GetH() * 0.5
+			if item then scrollAmount = item.rect.GetH() * list.scrollItemHeightPercentage
 			
 			EventManager.registerEvent(TEventSimple.Create("guiobject.onScrollPositionChanged", new TData.AddString("direction", direction).AddNumber("scrollAmount", scrollAmount), list))
 		endif

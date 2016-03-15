@@ -1418,6 +1418,16 @@ Type TGUIobject
 	End Method
 
 
+	Method GetScreenX2:Float()
+		return GetScreenX() + GetScreenWidth()
+	End Method
+
+
+	Method GetScreenY2:Float()
+		return GetScreenY() + GetScreenHeight()
+	End Method
+
+
 	'override this methods if the object something like
 	'virtual size or "addtional padding"
 

@@ -3653,6 +3653,10 @@ Type GameEvents
 
 
 	Function PlayerBoss_OnTakeOrRepayCredit:Int(triggerEvent:TEventBase)
+		'only show toast message on success
+		local success:int = triggerEvent.GetData().GetBool("result", False)
+		if not success then return false
+		
 		local value:int = triggerEvent.GetData().GetInt("value", 0)
 		'send out a toast message
 		Local toast:TGameToastMessage = New TGameToastMessage

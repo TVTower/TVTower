@@ -527,12 +527,20 @@ Type TPlayerBoss
 	Function onDialogueTakeCredit:int(triggerEvent:TEventBase)
 		local value:int = triggerEvent.GetData().GetInt("value", 0)
 		GetPlayerBoss().PlayerTakesCredit(value)
+
+		'remove an old dialogue (containing old credit information)
+		GetPlayerBoss().ResetDialogues()
+		GetPlayerBoss().GenerateDialogues(GetPlayerBase().playerID)
 	End Function
 
 
 	Function onDialogueRepayCredit:int(triggerEvent:TEventBase)
 		local value:int = triggerEvent.GetData().GetInt("value", 0)
 		GetPlayerBoss().PlayerRepaysCredit(value)
+
+		'remove an old dialogue (containing old credit information)
+		GetPlayerBoss().ResetDialogues()
+		GetPlayerBoss().GenerateDialogues(GetPlayerBase().playerID)
 	End Function
 
 End Type
