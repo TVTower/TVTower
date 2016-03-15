@@ -52,8 +52,6 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 
 	Method IsUnplanned:int()
-return False
-	
 		if not productionConcept then return True
 
 		'started production setup already?

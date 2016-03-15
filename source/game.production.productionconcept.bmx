@@ -145,33 +145,41 @@ Type TProductionConcept Extends TOwnedGameObject
 		local jobs:TProgrammePersonJob[] = script.GetSpecificCast(jobFlag)
 		if not skipEmpty and jobs
 			res = new TProgrammePersonBase[jobs.length]
-		else
-			res = new TProgrammePersonBase[0]
 		endif
 
-		'skip further processing
+		'skip further processing with no slots for this specific job
 		if not jobs or jobs.length = 0 then	return res
+
 
 		'loop through all (potentially assigned) cast entries and check
 		'whether their job fits to the desired one
 		local castIndex:int = 0
 		For local i:int = 0 until cast.length
 			local job:TProgrammePersonJob = script.cast[i]
-			if not job then continue 'flawed data?
+			'flawed data?
+			if not job then continue
+			'skip different jobs
+			if (job.job <> jobFlag and jobFlag <> -1) then continue
+
+			if castIndex > res.length then Throw "GetCastGroup(): castIndex("+castIndex+") > res.length("+res.length+")"
+
 			
-			if (job.job = jobFlag or jobFlag = -1)
-				if not skipEmpty
-					if cast[castIndex]
-						res[castIndex] = GetProgrammePersonBaseCollection().GetByGUID(cast[i].GetGUID())
-					else
-						res[castIndex] = null
-					endif
+			if not skipEmpty
+				if cast[i]
+					res[castIndex] = GetProgrammePersonBaseCollection().GetByGUID(cast[i].GetGUID())
 				else
-					if cast[castIndex]
-						res :+ [ GetProgrammePersonBaseCollection().GetByGUID(cast[i].GetGUID()) ]
-					endif
+					res[castIndex] = null
 				endif
+
 				castIndex :+ 1
+			else
+				if cast[i]
+					local guid:string = cast[i].GetGUID()
+					local p:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID(guid)
+					res :+ [ GetProgrammePersonBaseCollection().GetByGUID(cast[i].GetGUID()) ]
+
+					castIndex :+ 1
+				endif
 			endif
 		Next
 		return res

@@ -2442,7 +2442,7 @@ Type RoomHandler_Studio extends TRoomHandler
 	Global studioManagerDialogue:TDialogue
 	Global studioScriptLimit:int = 1
 
-	Global deskGuiListPos:TVec2D = new TVec2D.Init(300,335)
+	Global deskGuiListPos:TVec2D = new TVec2D.Init(350,335)
 	Global suitcasePos:TVec2D = new TVec2D.Init(520,70)
 	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(19,32)
 
@@ -3094,7 +3094,7 @@ Type RoomHandler_Studio extends TRoomHandler
 				text :+"Bisher sind |b|"+conceptCount+" Produktionen|/b| mit diesem Drehbuch geplant."
 				if not GetPlayer().GetProgrammeCollection().CanCreateProductionConcept(script)
 					text :+"~n~n"
-					text :+"Im übrigen ist Dein Platz für Einkaufslisten erschöpft. Bitte entferne erst eine Einkaufsliste bevor Ich eine neue ausgeben kann."
+					text :+"Im übrigen ist Dein Platz für Einkaufslisten erschöpft. Bitte entferne erst eine Einkaufsliste bevor Ich eine neue ausgeben kann (Liste aufheben und per Rechtsklick löschen)."
 				endif
 			else
 				text = "Hi"

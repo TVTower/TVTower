@@ -10,6 +10,7 @@ Import "../source/Dig/base.util.registry.bitmapfontloader.bmx"
 
 Import "../source/Dig/base.util.registry.bmx"
 Import "../source/Dig/base.gfx.gui.dropdown.bmx"
+Import "../source/Dig/base.gfx.gui.checkbox.bmx"
 Import "../source/Dig/base.gfx.gui.slider.bmx"
 Import "../source/Dig/base.gfx.gui.button.bmx"
 Import "../source/Dig/base.gfx.gui.list.slotlist.bmx"
@@ -107,7 +108,8 @@ Type TMyApp Extends TGraphicalApp
 		Next
 
 		RoomHandler_Supermarket.GetInstance().Initialize()
-		RoomHandler_Supermarket.GetInstance().CreateNewConcept(script)
+		'local productionConcept:TProductionConcept = new TProductionConcept.Initialize(1, GetRandomScript())
+		'RoomHandler_Supermarket.GetInstance().SetProductionConcept( productionConcept )
 
 
 		'debug
@@ -116,6 +118,19 @@ Type TMyApp Extends TGraphicalApp
 			if TProgrammePerson(p[i]) then print "failed: "+i+"   " + p[i].GetGUID() 
 		next
 	End Method
+
+
+	Function GetRandomScript:TScript()
+		'get a new script
+		local script:TScript = GetScriptCollection().GetRandomAvailable()
+
+		'use first episode of a series
+		if script.isSeries()
+			script = GetScriptCollection().GetByGUID( script.GetSubScriptAtIndex(0).GetGUID() )
+		endif
+
+		return script
+	End Function
 
 
 	Method Update:Int()
@@ -133,10 +148,11 @@ Type TMyApp Extends TGraphicalApp
 
 		if KeyManager.IsHit(KEY_SPACE)
 			'get a new script
-			local script:TScript = GetScriptCollection().GetRandomAvailable()
+			local script:TScript = GetRandomScript()
 			script.SetOwner(1)
-
-			RoomHandler_Supermarket.GetInstance().CreateNewConcept(script)
+			local productionConcept:TProductionConcept = new TProductionConcept.Initialize(1, script)
+			'create new and take over
+			RoomHandler_Supermarket.GetInstance().SetCurrentProductionConcept( productionConcept, RoomHandler_Supermarket.GetInstance().currentProductionConcept)
 		endif
 
 		if RoomHandler_Supermarket.GetInstance().currentProductionConcept
@@ -298,12 +314,14 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 	'datasheet
 	Field productionFocusSlider:TGUISlider[6]
 	Field productionFocusLabel:string[6]
-	Field newProductionButton:TGUIButton
 	Field startProductionButton:TGUIButton
 	Field productionConceptList:TGUISelectList
+	Field productionConceptTakeOver:TGUICheckbox
 	Field productionCompanySelect:TGUIDropDown
 	Field castSlotList:TGUICastSlotList
 	Field repositionSliders:int = True
+	'set to true and production GUI changes wont affect logic
+	Field refreshingProductionGUI:int = False
 
 	Field currentProductionConcept:TProductionConcept
 
@@ -344,16 +362,10 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickCastItem, "TGUICastListItem") ]
 		'we want to know if we hover a specific block
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverCastItem, "TGUICastListItem" ) ]
-		'production concept list is selected, enable production button
-		_eventListeners :+ [ EventManager.registerListenerFunction("GUISelectList.onSelectEntry", onSelectProductionConceptListItem, productionConceptList ) ]
-		'create/abort production
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickNewProductionButton, "TGUIButton" ) ]
 
 
 
 		'GUI -> LOGIC
-		'react to clicks on slider or other ways of changing it
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onChangeValue", onChangeFocusPointSlider, "TGUISlider" ) ]
 		'changes to the cast (slot) list
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.addedItem", onProductionConceptChangeCastSlotList, "TGUICastSlotList" ) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.removedItem", onProductionConceptChangeCastSlotList, "TGUICastSlotList" ) ]
@@ -363,6 +375,8 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onRemoveFocus", onProductionConceptRemoveFocusSliderFocus, "TGUISlider" ) ]
 		'changes to production company dropdown
 		_eventListeners :+ [ EventManager.registerListenerFunction("GUIDropDown.onSelectEntry", onProductionConceptChangeProductionCompanyDropDown, "TGUIDropDown" ) ]
+		'select a production concept
+		_eventListeners :+ [ EventManager.registerListenerFunction("GUISelectList.onSelectEntry", onSelectProductionConcept) ]
 
 
 		'LOGIC -> GUI
@@ -391,73 +405,165 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 	End Method
 
 
-	Method CreateNewConcept(script:TScript)
-		currentProductionConcept = new TProductionConcept.Initialize(1, script)
+	'reset gui elements to their initial state (new production)
+	Method ResetProductionConceptGUI()
+		refreshingProductionGUI = True
 
-		'=== RESET GUI ===
 		For local i:int = 0 to productionFocusSlider.length -1
 			productionFocusSlider[i].SetValue(0)
 		Next
 
 		productionCompanySelect.SetValue("Produktionsfirma")
 
+		'cast: remove old entries
+		castSlotList.EmptyList()
+
+		refreshingProductionGUI = False
+	End Method
+	
+
+	'set all gui elements to the values of the production concept
+	Method RefreshProductionConceptGUI()
+		if not currentProductionConcept then return
+	
+
+		'=== CAST SLOT LIST ===
+		castSlotList.SetItemLimit( currentProductionConcept.script.cast.length )
+		For local i:int = 0 until currentProductionConcept.script.cast.length
+			castSlotList.SetSlotJob(currentProductionConcept.script.cast[i].job, i)
+			'also create gui
+			castSlotList.SetSlotCast(i, currentProductionConcept.cast[i])
+		Next
+		
+
+		'=== PRODUCTION COMPANY ===
+		local productionCompanyItem:TGUIDropDownItem
+		For local i:TGUIDropDownItem = EachIn productionCompanySelect.GetEntries()
+			if not i.data or i.data.Get("productionCompany") <> currentProductionConcept.productionCompany then continue
+
+			productionCompanyItem = i
+			exit
+		Next
+		'adjust gui dropdown
+		if productionCompanyItem then productionCompanySelect.SetSelectedEntry(productionCompanyItem)
+
+
+		'=== PRODUCTION FOCUS ITEMS ===
 		'hide sliders according to focuspoint type of script
 		'(this is _different_ to the "disable" action done in
 		' UpdateCustomProduction())
 		For local i:int = 0 to productionFocusSlider.length -1
 			if currentProductionConcept.productionFocus.GetFocusAspectCount() <= i
 				productionFocusSlider[i].Hide()
-'				productionFocusSlider[i].Disable()
 			endif
 		Next
 		'or enable them...
 		For local i:int = 0 to productionFocusSlider.length -1
 			if currentProductionConcept.productionFocus.GetFocusAspectCount() > i
 				productionFocusSlider[i].Show()
-'				productionFocusSlider[i].Enable()
 			endif
 		Next
 		'reposition them
 		repositionSliders = True
 
-		'cast: remove old entries
-		castSlotList.EmptyList()
-		castSlotList.SetItemLimit( script.cast.length )
-		For local i:int = 0 until script.cast.length
-			castSlotList.SetSlotJob(script.cast[i].job, i)
-		Next
+	End Method
+	
+
+	Method SetCurrentProductionConcept(productionConcept:TProductionConcept = null, takeOverConcept:TProductionConcept = null)
+		currentProductionConcept = productionConcept
+		'use values of the new concept if nothing defined to take over
+		if not takeOverConcept then takeOverConcept = productionConcept
+
+		
+		ResetProductionConceptGUI()
+
+		'=== TAKE OVER OLD CONCEPT VALUES ===
+
+		'=== CAST ===
+		'loop over all jobs and try to take over as much of them as
+		'possible.
+		'So if there are 3 actors in the old concept but only 2 in the
+		'new one, 2 of 3 actors are taken over
+		'Cast not available in the new one, is ignored
+		local currentCastIndex:int = 0
+		for local jobIndex:int = 1 to TVTProgrammePersonJob.Count
+			local jobID:int = TVTProgrammePersonJob.GetAtIndex(jobIndex)
+			local castGroup:TProgrammePersonBase[] = currentProductionConcept.GetCastGroup(jobID, False)
+			local oldCastGroup:TProgrammePersonBase[] = takeOverConcept.GetCastGroup(jobID)
+
+			'skip group if current concept does not contain that group
+			if castGroup.length = 0 then continue
+
+			'leave group empty if previous concept does not contain that
+			'job
+			if oldCastGroup.length = 0
+				currentCastIndex :+ castGroup.length
+				continue
+			endif
+
+			'has to collapse unused cast slots? 
+			local hasToCollapseUnused:int = (castGroup.length - oldCastGroup.length) < 0
+
+			'try to fill slots
+			for local castGroupIndex:int = 0 until castGroup.length
+				'skip other cast slots not available in old concept
+				if castGroupIndex >= oldCastGroup.length
+					currentCastIndex :+ (castGroup.length - castGroupIndex)
+					continue
+				endif
+				'collapse: skip unused
+				if hasToCollapseUnused and not oldCastGroup[castGroupIndex] then continue
+
+				currentProductionConcept.SetCast(currentCastIndex, oldCastGroup[castGroupIndex])
+print "currentProductionConcept.SetCast("+currentCastIndex+", oldCastGroup["+castGroupIndex+"])"
+
+				'SetCast() fails if the index is > than allowed, so
+				'we should not need to do additional checks...
+				currentCastIndex :+ 1
+				'stop filling if there is no space left
+				if currentCastIndex > castGroup.length then exit
+			Next
+		Next			
+
+
+		'=== PRODUCTION COMPANY ===
+		if takeOverConcept.productionCompany
+			currentProductionConcept.SetProductionCompany(takeOverConcept.productionCompany)
+		endif
+
+
+		'=== PRODUCTION FOCUS POINTS ===
+		if takeOverConcept.productionFocus
+			for local i:int = 0 until takeOverConcept.productionFocus.focusPoints.length
+				currentProductionConcept.productionFocus.SetFocus(i, takeOverConcept.productionFocus.GetFocus(i) )
+			Next
+		endif
+
+		'refresh the gui objects (create items, set sliders,  ...)
+		RefreshProductionConceptGUI()
 	End Method
 
 
 	'=== SELECTLIST - PRODUCTIONCONCEPT SELECTION ===
 
-	'GUI -> GUI
-	'enable production-button upon selection of an entry
-	Function onSelectProductionConceptListItem:int(triggerEvent:TeventBase)
-		local item:TGuiProductionConceptSelectListItem = TGuiProductionConceptSelectListItem(triggerEvent.GetData().Get("entry"))
-		local list:TGUISelectList = TGUISelectList(triggerEvent.GetSender())
-		if GetInstance().productionConceptList <> list or not item then return False
-
-		GetInstance().newProductionButton.Enable()
-	End Function
+	'GUI -> LOGIC
+	'create new production / pause current
+	Function onSelectProductionConcept:int(triggerEvent:TeventBase)
+		'only interested in production concept list entries
+		if GetInstance().productionConceptList <> TGUIListBase(triggerEvent.GetSender()) then return False
 
 
-	'GUI -> GUI
-	'create new production or abort current
-	Function onClickNewProductionButton:int(triggerEvent:TeventBase)
-		'only interested in newProductionButton
-		if GetInstance().newProductionButton <> TGUIButton(triggerEvent.GetSender()) then return False
-
-		'abort existing
-		if GetInstance().currentProductionConcept
-			print "TODO - abort"
-			GetInstance().currentProductionConcept = null
-
-		'create new one
-		else
-			local currentGUIScript:TGuiProductionConceptSelectListItem = TGuiProductionConceptSelectListItem(GetInstance().productionConceptList.getSelectedEntry())
-			if currentGUIScript and currentGUIScript.productionConcept
-				GetInstance().CreateNewConcept(currentGUIScript.productionConcept.script)
+		'create new one ?
+		local currentGUIScript:TGuiProductionConceptSelectListItem = TGuiProductionConceptSelectListItem(GetInstance().productionConceptList.getSelectedEntry())
+		if not currentGUIScript or not currentGUIScript.productionConcept then return False
+		
+		'skip if not changed
+		if currentGUIScript.productionConcept <> GetInstance().currentProductionConcept
+			'take over values from last concept - if desired
+			if GetInstance().productionConceptTakeOver.isChecked() and GetInstance().currentProductionConcept
+				GetInstance().SetCurrentProductionConcept(currentGUIScript.productionConcept, GetInstance().currentProductionConcept)
+			else
+				GetInstance().SetCurrentProductionConcept(currentGUIScript.productionConcept, null)
 			endif
 		endif
 	End Function
@@ -499,7 +605,7 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 			newItem = i
 			exit
 		Next
-		if newItem = GetInstance().productionCompanySelect.GetSelectedEntry() then return False
+	'	if newItem = GetInstance().productionCompanySelect.GetSelectedEntry() then return False
 
 		'adjust gui dropdown
 		GetInstance().productionCompanySelect.SetSelectedEntry(newItem)
@@ -612,7 +718,9 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		if newValue = currentValue then return False
 
 		'set logic-value
-		GetInstance().currentProductionConcept.SetProductionFocus( focusIndex, newValue )
+		if not GetInstance().refreshingProductionGUI
+			GetInstance().currentProductionConcept.SetProductionFocus( focusIndex, newValue )
+		endif
 		'fetch resulting value (might differ because of limitations)
 		newValue = Max(0, GetInstance().currentProductionConcept.GetProductionFocus(focusIndex))
 
@@ -654,12 +762,14 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		'if GetInstance().castSlotList.GetSlotCast(slot) = item.person then return False
 
 
-		if item and triggerEvent.IsTrigger("guiList.addedItem")
-			'print "set "+slot + "  " + item.person.GetFullName()
-			GetInstance().currentProductionConcept.SetCast(slot, item.person)
-		else
-			'print "clear "+slot
-			GetInstance().currentProductionConcept.SetCast(slot, null)
+		if not GetInstance().refreshingProductionGUI
+			if item and triggerEvent.IsTrigger("guiList.addedItem")
+				'print "set "+slot + "  " + item.person.GetFullName()
+				GetInstance().currentProductionConcept.SetCast(slot, item.person)
+			else
+				'print "clear "+slot
+				GetInstance().currentProductionConcept.SetCast(slot, null)
+			endif
 		endif
 	End Function
 		
@@ -696,18 +806,6 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		
 		'remove right click - to avoid leaving the room
 		MouseManager.ResetKey(2)
-	End Function
-
-
-	'we need to know whether we hovered an cast entry to show the
-	'datasheet
-	Function onChangeFocusPointSlider:int( triggerEvent:TEventBase )
-'		local item:TGUICastListItem = TGUICastListItem(triggerEvent.GetSender())
-'		if item = Null then return FALSE
-
-'		hoveredGuiCastItem = item
-
-		return TRUE
 	End Function
 
 
@@ -761,24 +859,29 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		Next
 
 
-		'=== NEW PRODUCTION BUTTON ===
-		newProductionButton = new TGUIButton.Create(new TVec2D.Init(20, 20), new TVec2D.Init(100, 28), "Neue Produktion", "supermarket_customproduction_newproduction")
-		newProductionButton.disable()
-		newProductionButton.spriteName = "gfx_gui_button.datasheet"
-
 		'=== START PRODUCTION BUTTON ===
 		startProductionButton = new TGUIButton.Create(new TVec2D.Init(20, 220), new TVec2D.Init(100, 28), "Produktion starten", "supermarket_customproduction_newproduction")
 		startProductionButton.disable()
 		startProductionButton.spriteName = "gfx_gui_button.datasheet"
 
-		productionConceptList = new TGUISelectList.Create(new TVec2D.Init(20,20), new TVec2D.Init(150,180), "supermarket_customproduction_newproduction")
+		'=== PRODUCTION TAKEOVER CHECKBOX ===
+		productionConceptTakeOver = new TGUICheckbox.Create(new TVec2D.Init(20, 220), new TVec2D.Init(100, 28), "Einstellungen übernehmen", "supermarket_customproduction_productionconceptbox")
+
+	
+		'=== PRODUCTION CONCEPT LIST ===
+		productionConceptList = new TGUISelectList.Create(new TVec2D.Init(20,20), new TVec2D.Init(150,180), "supermarket_customproduction_productionconceptbox")
+		'scroll one concept per "scroll"
+		productionConceptList.scrollItemHeightPercentage = 1.0
 		'add some items to that list
 		for local i:int = 1 to 10
-			local script:TScript = GetScriptCollection().GetRandomAvailable()
+			local script:TScript = TMyApp.GetRandomScript()
 			local productionConcept:TProductionConcept = new TProductionConcept.Initialize(1, script)
 			local item:TGuiProductionConceptSelectListItem = new TGuiProductionConceptSelectListItem.Create(null, new TVec2D.Init(150,24), "ICON + Drehbuchtitel "+i)
 
 			script.SetOwner(1)
+			'parent too
+			if script.IsEpisode() then script.GetParentScript().SetOwner(1)
+
 			item.SetProductionConcept(productionConcept)
 			'base items do not have a size - so we have to give a manual one
 			productionConceptList.AddItem( item )
@@ -789,19 +892,17 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 
 
 	Method UpdateCustomProduction()
-		if not GetInstance().currentProductionConcept then return
-
 		'gets refilled in gui-updates
 		hoveredGuiCastItem = null
 
 		'disable _all_ sliders if no production company is selected
-		if not currentProductionConcept.productionCompany and productionFocusSlider[0].IsEnabled()
+		if not currentProductionConcept or (not currentProductionConcept.productionCompany and productionFocusSlider[0].IsEnabled())
 			For local i:int = 0 to productionFocusSlider.length -1
 				productionFocusSlider[i].Disable()
 			Next
 		endif
 		'or enable (specific of) them...
-		if currentProductionConcept.productionCompany and not productionFocusSlider[0].IsEnabled()
+		if currentProductionConcept and currentProductionConcept.productionCompany and not productionFocusSlider[0].IsEnabled()
 			For local i:int = 0 to productionFocusSlider.length -1
 				if currentProductionConcept.productionFocus.GetFocusAspectCount() > i
 					productionFocusSlider[i].Enable()
@@ -810,6 +911,7 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		endif
 
 		GuiManager.Update("supermarket_customproduction_castbox_modal")
+		GuiManager.Update("supermarket_customproduction_productionconceptbox")
 		GuiManager.Update("supermarket_customproduction_newproduction")
 		GuiManager.Update("supermarket_customproduction_productionbox")
 		GuiManager.Update("supermarket_customproduction_castbox")
@@ -858,9 +960,10 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		contentW = skin.GetContentW(outer.GetW())
 		contentH = skin.GetContentH(outer.GetH())
 
-		buttonAreaH = newProductionButton.rect.GetH() + 2*buttonAreaPaddingY
+		local checkboxArea:int = productionConceptTakeOver.rect.GetH() + 0*buttonAreaPaddingY
 
-		local listH:int = contentH - titleH - buttonAreaH
+		local listH:int = contentH - titleH - checkboxArea
+
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock("Einkaufslisten", contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		contentY :+ titleH
@@ -873,271 +976,270 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		contentY :+ listH
 
 		skin.RenderContent(contentX, contentY, contentW, contentH - (listH+titleH) , "1_bottom")
-		'reposition button
-		newProductionButton.rect.SetXY(contentX + 5, contentY + buttonAreaPaddingY)
-		newProductionButton.Resize(contentW - 10)
+		'reposition checkbox
+		productionConceptTakeOver.rect.SetXY(contentX + 5, contentY + buttonAreaPaddingY)
+		productionConceptTakeOver.Resize(contentW - 10)
 		contentY :+ contentH - (listH+titleH)
 
 		skin.RenderBorder(outer.GetX(), outer.GetY(), outer.GetW(), outer.GetH())
 
 
 
+		if GetInstance().currentProductionConcept
+			'=== CHECK AND START BOX ===
+			outer.SetXY(10, 230)
+			outer.dimension.SetXY(210,136)
+			contentX = skin.GetContentX(outer.GetX())
+			contentY = skin.GetContentY(outer.GetY())
+			contentW = skin.GetContentW(outer.GetW())
+			contentH = skin.GetContentH(outer.GetH())
 
-		'=== CHECK AND START BOX ===
-		outer.SetXY(10, 230)
-		outer.dimension.SetXY(210,136)
-		contentX = skin.GetContentX(outer.GetX())
-		contentY = skin.GetContentY(outer.GetY())
-		contentW = skin.GetContentW(outer.GetW())
-		contentH = skin.GetContentH(outer.GetH())
+			buttonAreaH = startProductionButton.rect.GetH() + 2*buttonAreaPaddingY
 
-		buttonAreaH = newProductionButton.rect.GetH() + 2*buttonAreaPaddingY
+			'reset
+			contentY = contentY
+			skin.RenderContent(contentX, contentY, contentW, contentH - buttonAreaH, "1_top")
+			contentY :+ 3
+			skin.fontBold.drawBlock("Besetzung", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorLabel, 0,1,1.0,True, True)
+			if currentProductionConcept
+				skin.fontNormal.drawBlock(TFunctions.DottedValue(currentProductionConcept.GetCastCost()), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
+			else
+				skin.fontNormal.drawBlock("0", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
+			endif
+			contentY :+ subtitleH
+			skin.fontBold.drawBlock("Produktion", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorLabel, 0,1,1.0,True, True)
+			if currentProductionConcept
+				skin.fontNormal.drawBlock(TFunctions.DottedValue(currentProductionConcept.GetProductionCost()), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
+			else
+				skin.fontNormal.drawBlock("0", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
+			endif
+			contentY :+ subtitleH
 
-		'reset
-		contentY = contentY
-		skin.RenderContent(contentX, contentY, contentW, contentH - buttonAreaH, "1_top")
-		contentY :+ 3
-		skin.fontBold.drawBlock("Besetzung", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorLabel, 0,1,1.0,True, True)
-		if currentProductionConcept
-			skin.fontNormal.drawBlock(TFunctions.DottedValue(currentProductionConcept.GetCastCost()), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
-		else
-			skin.fontNormal.drawBlock("0", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
-		endif
-		contentY :+ subtitleH
-		skin.fontBold.drawBlock("Produktion", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorLabel, 0,1,1.0,True, True)
-		if currentProductionConcept
-			skin.fontNormal.drawBlock(TFunctions.DottedValue(currentProductionConcept.GetProductionCost()), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
-		else
-			skin.fontNormal.drawBlock("0", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
-		endif
-		contentY :+ subtitleH
+			SetColor 150,150,150
+			DrawRect(contentX + 5, contentY-1, contentW - 10, 1)
+			SetColor 255,255,255
 
-		SetColor 150,150,150
-		DrawRect(contentX + 5, contentY-1, contentW - 10, 1)
-		SetColor 255,255,255
+			contentY :+ 1
+			skin.fontBold.drawBlock("Gesamtkosten", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			if currentProductionConcept
+				skin.fontBold.drawBlock(TFunctions.DottedValue(currentProductionConcept.GetTotalCost()), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
+			else
+				skin.fontBold.drawBlock("0", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
+			endif
+				
 
-		contentY :+ 1
-		skin.fontBold.drawBlock("Gesamtkosten", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-		if currentProductionConcept
-			skin.fontBold.drawBlock(TFunctions.DottedValue(currentProductionConcept.GetTotalCost()), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
-		else
-			skin.fontBold.drawBlock("0", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
-		endif
+			contentY :+ subtitleH
+
+			contentY :+ 10
+			skin.fontBold.drawBlock("Dauer", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			if currentProductionConcept
+				skin.fontNormal.drawBlock(currentProductionConcept.GetBaseProductionTime()+" Stunden", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			else
+				skin.fontNormal.drawBlock("", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			endif
+			contentY :+ subtitleH
+
+			contentY :+ (contentH - buttonAreaH) - 4*subtitleH - 3 -1 - 10
+
+			skin.RenderContent(contentX, contentY, contentW, buttonAreaH, "1_bottom")
+			'reposition button
+			startProductionButton.rect.SetXY(contentX + 5, contentY + buttonAreaPaddingY)
+			startProductionButton.Resize(contentW - 10)
+			contentY :+ buttonAreaH
+
+			skin.RenderBorder(outer.GetX(), outer.GetY(), outer.GetW(), outer.GetH())
+
+
+			'=== CAST / MESSAGE BOX ===
+			'calc height
+			local castAreaH:int = 215
+			local msgAreaH:int = 0
+			if currentProductionConcept
+				if not currentProductionConcept.IsCastComplete() then msgAreaH :+ msgH + msgPaddingY
+				if not currentProductionConcept.IsFocusPointsComplete() then msgAreaH :+ msgH + msgPaddingY
+			endif
+			outerH = outerSizeH + titleH + subTitleH + castAreaH + msgAreaH
 			
+			outer.SetXY(225, 15)
+			outer.dimension.SetXY(350, outerH)
+			contentX = skin.GetContentX(outer.GetX())
+			contentY = skin.GetContentY(outer.GetY())
+			contentW = skin.GetContentW(outer.GetW())
+			contentH = skin.GetContentH(outer.GetH())
 
-		contentY :+ subtitleH
+			'reset
+			contentY = contentY
 
-		contentY :+ 10
-		skin.fontBold.drawBlock("Dauer", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-		if currentProductionConcept
-			skin.fontNormal.drawBlock(currentProductionConcept.GetBaseProductionTime()+" Stunden", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-		else
-			skin.fontNormal.drawBlock("", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-		endif
-		contentY :+ subtitleH
-
-		contentY :+ (contentH - buttonAreaH) - 4*subtitleH - 3 -1 - 10
-
-		skin.RenderContent(contentX, contentY, contentW, buttonAreaH, "1_bottom")
-		'reposition button
-		startProductionButton.rect.SetXY(contentX + 5, contentY + buttonAreaPaddingY)
-		startProductionButton.Resize(contentW - 10)
-		contentY :+ buttonAreaH
-
-		skin.RenderBorder(outer.GetX(), outer.GetY(), outer.GetW(), outer.GetH())
-
-
-
-
-
-		'=== CAST / MESSAGE BOX ===
-		'calc height
-		local castAreaH:int = 215
-		local msgAreaH:int = 0
-		if currentProductionConcept
-			if not currentProductionConcept.IsCastComplete() then msgAreaH :+ msgH + msgPaddingY
-			if not currentProductionConcept.IsFocusPointsComplete() then msgAreaH :+ msgH + msgPaddingY
-		endif
-		outerH = outerSizeH + titleH + subTitleH + castAreaH + msgAreaH
-		
-		outer.SetXY(225, 15)
-		outer.dimension.SetXY(350, outerH)
-		contentX = skin.GetContentX(outer.GetX())
-		contentY = skin.GetContentY(outer.GetY())
-		contentW = skin.GetContentW(outer.GetW())
-		contentH = skin.GetContentH(outer.GetH())
-
-		'reset
-		contentY = contentY
-
-		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-		if currentProductionConcept
-			skin.fontCaption.drawBlock(currentProductionConcept.script.title.Get(), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-		endif
-		contentY :+ titleH
-
-		skin.RenderContent(contentX, contentY, contentW, subTitleH, "1")
-		skin.fontNormal.drawBlock("Untertitel", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-		contentY :+ subTitleH
-
-		skin.RenderContent(contentX, contentY, contentW, castAreaH, "2")
-		'reposition cast list
-		if castSlotList.rect.getX() <> contentX + 5
-			castSlotList.rect.SetXY(contentX +5, contentY + 3)
-			castSlotList.resize(contentW - 10, castAreaH - 6 )
-		endif
-
-		contentY :+ castAreaH
-
-		if msgAreaH > 0 
-			skin.RenderContent(contentX, contentY, contentW, msgAreaH, "1_bottom")
-			if not currentProductionConcept.IsCastComplete() 
-				skin.RenderMessage(contentX + 5 , contentY + 3, contentW - 10, -1, "Besetzung unvollstaendig", "audience", "warning")
-				contentY :+ msgH + msgPaddingY
+			skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
+			if currentProductionConcept
+				skin.fontCaption.drawBlock(currentProductionConcept.script.title.Get(), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			endif
-			if not currentProductionConcept.IsFocusPointsComplete()
-				if currentProductionConcept.productionCompany
-					skin.RenderMessage(contentX + 5 , contentY + 3, contentW - 10, -1, GetLocale("PRODUCTION_FOCUS_POINTS_NOT_SET_COMPLETELY"), "spotsplanned", "neutral")
-				else
-					skin.RenderMessage(contentX + 5 , contentY + 3, contentW - 10, -1, GetLocale("NO_PRODUCTION_COMPANY_SELECTED"), "spotsplanned", "warning")
+			contentY :+ titleH
+
+			skin.RenderContent(contentX, contentY, contentW, subTitleH, "1")
+			skin.fontNormal.drawBlock("Untertitel", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			contentY :+ subTitleH
+
+			skin.RenderContent(contentX, contentY, contentW, castAreaH, "2")
+			'reposition cast list
+			if castSlotList.rect.getX() <> contentX + 5
+				castSlotList.rect.SetXY(contentX +5, contentY + 3)
+				castSlotList.resize(contentW - 10, castAreaH - 6 )
+			endif
+
+			contentY :+ castAreaH
+
+			if msgAreaH > 0 
+				skin.RenderContent(contentX, contentY, contentW, msgAreaH, "1_bottom")
+				if not currentProductionConcept.IsCastComplete() 
+					skin.RenderMessage(contentX + 5 , contentY + 3, contentW - 10, -1, "Besetzung unvollstaendig", "audience", "warning")
+					contentY :+ msgH + msgPaddingY
 				endif
-				contentY :+ msgH + msgPaddingY
+				if not currentProductionConcept.IsFocusPointsComplete()
+					if currentProductionConcept.productionCompany
+						skin.RenderMessage(contentX + 5 , contentY + 3, contentW - 10, -1, GetLocale("PRODUCTION_FOCUS_POINTS_NOT_SET_COMPLETELY"), "spotsplanned", "neutral")
+					else
+						skin.RenderMessage(contentX + 5 , contentY + 3, contentW - 10, -1, GetLocale("NO_PRODUCTION_COMPANY_SELECTED"), "spotsplanned", "warning")
+					endif
+					contentY :+ msgH + msgPaddingY
+				endif
 			endif
-		endif
 
-		skin.RenderBorder(outer.GetX(), outer.GetY(), outer.GetW(), outer.GetH())
-
+			skin.RenderBorder(outer.GetX(), outer.GetY(), outer.GetW(), outer.GetH())
 
 
 
-		'=== PRODUCTION BOX ===
-		local productionFocusSliderH:int = 21
-		local productionFocusLabelH:int = 15
-		local productionCompanyH:int = 60
-		local productionFocusH:int = titleH + subTitleH + 5 'bottom padding
-		if currentProductionConcept.productionFocus
-			productionFocusH :+ currentProductionConcept.productionFocus.GetFocusAspectCount() * (productionFocusSliderH + productionFocusLabelH)
-		endif
-		outerH = outerSizeH + titleH + productionCompanyH + productionFocusH
+
+			'=== PRODUCTION BOX ===
+			local productionFocusSliderH:int = 21
+			local productionFocusLabelH:int = 15
+			local productionCompanyH:int = 60
+			local productionFocusH:int = titleH + subTitleH + 5 'bottom padding
+			if currentProductionConcept.productionFocus
+				productionFocusH :+ currentProductionConcept.productionFocus.GetFocusAspectCount() * (productionFocusSliderH + productionFocusLabelH)
+			endif
+			outerH = outerSizeH + titleH + productionCompanyH + productionFocusH
+			
+			outer.SetXY(580, 15)
+			outer.dimension.SetXY(210, outerH)
+			contentX = skin.GetContentX(outer.GetX())
+			contentY = skin.GetContentY(outer.GetY())
+			contentW = skin.GetContentW(outer.GetW())
+			contentH = skin.GetContentH(outer.GetH())
+
 		
-		outer.SetXY(580, 15)
-		outer.dimension.SetXY(210, outerH)
-		contentX = skin.GetContentX(outer.GetX())
-		contentY = skin.GetContentY(outer.GetY())
-		contentW = skin.GetContentW(outer.GetW())
-		contentH = skin.GetContentH(outer.GetH())
+			'reset
+			contentY = contentY
+			skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
+			skin.fontCaption.drawBlock("Produktionsdetails", contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			contentY :+ titleH
 
-	
-		'reset
-		contentY = contentY
-		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-		skin.fontCaption.drawBlock("Produktionsdetails", contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-		contentY :+ titleH
+			skin.RenderContent(contentX, contentY, contentW, productionCompanyH + productionFocusH, "1")
 
-		skin.RenderContent(contentX, contentY, contentW, productionCompanyH + productionFocusH, "1")
-
-		skin.fontSemiBold.drawBlock("Produktionsfirma", contentX + 5, contentY + 3, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-		'reposition dropdown
-		if productionCompanySelect.rect.getX() <> contentX + 5
-			productionCompanySelect.rect.SetXY(contentX + 5, contentY + 20)
-			productionCompanySelect.resize(contentW - 10, -1)
-		endif
-		contentY :+ productionCompanyH
-
-		skin.fontSemiBold.drawBlock("Schwerpunkte", contentX + 5, contentY + 3, contentW - 10, titleH - 3, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-		contentY :+ titleH
-		'reposition sliders
-		if repositionSliders
-			local sliderOrder:int[]
-			if currentProductionConcept and currentProductionConcept.productionFocus
-				sliderOrder = currentProductionConcept.productionFocus.GetOrderedFocusIndices()
-			else
-				sliderOrder = [1,2,3,4,5,6]
+			skin.fontSemiBold.drawBlock("Produktionsfirma", contentX + 5, contentY + 3, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			'reposition dropdown
+			if productionCompanySelect.rect.getX() <> contentX + 5
+				productionCompanySelect.rect.SetXY(contentX + 5, contentY + 20)
+				productionCompanySelect.resize(contentW - 10, -1)
 			endif
-			For local i:int = 0 until sliderOrder.length
-				local sliderNum:int = sliderOrder[i]
-				local slider:TGUISlider = productionFocusSlider[ sliderNum-1]
-				slider.rect.SetXY(contentX + 5, contentY + productionFocusLabelH + i * (productionFocusLabelH + productionFocusSliderH))
-				slider.Resize(contentW - 10)
-			Next
-			repositionSliders = False
-		endif
+			contentY :+ productionCompanyH
 
-if currentProductionConcept and currentProductionConcept.productionFocus
-		local pF:TProductionFocusBase = currentProductionConcept.productionFocus
-		For local labelNum:int = EachIn pF.GetOrderedFocusIndices()
-'		For local labelNum:int = 0 until productionFocusLabel.length
-			if not productionFocusSlider[labelNum-1].IsVisible() then continue
-			local focusIndex:int = productionFocusSlider[labelNum-1].data.GetInt("focusIndex")
-			local label:string = GetLocale(TVTProductionFocus.GetAsString(focusIndex))
-			skin.fontNormal.drawBlock(label, contentX + 10, contentY, contentW - 15, titleH, ALIGN_LEFT_CENTER, skin.textColorLabel, 0,1,1.0,True, True)
-			contentY :+ (productionFocusLabelH + productionFocusSliderH)
-		Next
-
-		'inform about unused skill points / missing company selection
-		local color:TColor
-		if currentProductionConcept.productionCompany
-			if pF.GetFocusPointsSet() < pF.GetFocusPointsMax()
-				color = skin.textColorWarning
-			else
-				color = skin.textColorLabel
+			skin.fontSemiBold.drawBlock("Schwerpunkte", contentX + 5, contentY + 3, contentW - 10, titleH - 3, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			contentY :+ titleH
+			'reposition sliders
+			if repositionSliders
+				local sliderOrder:int[]
+				if currentProductionConcept and currentProductionConcept.productionFocus
+					sliderOrder = currentProductionConcept.productionFocus.GetOrderedFocusIndices()
+				else
+					sliderOrder = [1,2,3,4,5,6]
+				endif
+				For local i:int = 0 until sliderOrder.length
+					local sliderNum:int = sliderOrder[i]
+					local slider:TGUISlider = productionFocusSlider[ sliderNum-1]
+					slider.rect.SetXY(contentX + 5, contentY + productionFocusLabelH + i * (productionFocusLabelH + productionFocusSliderH))
+					slider.Resize(contentW - 10)
+				Next
+				repositionSliders = False
 			endif
-			local text:string = GetLocale("POINTSSET_OF_POINTSMAX_POINTS_SET").replace("%POINTSSET%", pF.GetFocusPointsSet()).replace("%POINTSMAX%", pF.GetFocusPointsMax())
-			skin.fontNormal.drawBlock("|i|"+text+"|/i|", contentX + 5, contentY, contentW - 10, subTitleH, ALIGN_CENTER_CENTER, color, 0,1,1.0,True, True)
+
+			if currentProductionConcept.productionFocus
+				local pF:TProductionFocusBase = currentProductionConcept.productionFocus
+				For local labelNum:int = EachIn pF.GetOrderedFocusIndices()
+		'		For local labelNum:int = 0 until productionFocusLabel.length
+					if not productionFocusSlider[labelNum-1].IsVisible() then continue
+					local focusIndex:int = productionFocusSlider[labelNum-1].data.GetInt("focusIndex")
+					local label:string = GetLocale(TVTProductionFocus.GetAsString(focusIndex))
+					skin.fontNormal.drawBlock(label, contentX + 10, contentY, contentW - 15, titleH, ALIGN_LEFT_CENTER, skin.textColorLabel, 0,1,1.0,True, True)
+					contentY :+ (productionFocusLabelH + productionFocusSliderH)
+				Next
+
+				'inform about unused skill points / missing company selection
+				local color:TColor
+				if currentProductionConcept.productionCompany
+					if pF.GetFocusPointsSet() < pF.GetFocusPointsMax()
+						color = skin.textColorWarning
+					else
+						color = skin.textColorLabel
+					endif
+					local text:string = GetLocale("POINTSSET_OF_POINTSMAX_POINTS_SET").replace("%POINTSSET%", pF.GetFocusPointsSet()).replace("%POINTSMAX%", pF.GetFocusPointsMax())
+					skin.fontNormal.drawBlock("|i|"+text+"|/i|", contentX + 5, contentY, contentW - 10, subTitleH, ALIGN_CENTER_CENTER, color, 0,1,1.0,True, True)
+				endif
+				contentY :+ subTitleH
+			endif
+			skin.RenderBorder(outer.GetX(), outer.GetY(), outer.GetW(), outer.GetH())
+
+			GuiManager.Draw("supermarket_customproduction_productionconceptbox")
+			GuiManager.Draw("supermarket_customproduction_newproduction")
+			GuiManager.Draw("supermarket_customproduction_productionbox")
+			GuiManager.Draw("supermarket_customproduction_castbox")
+	'		GuiManager.Draw("supermarket_customproduction_castbox", -1000,-1000, GUIMANAGER_TYPES_NONDRAGGED)
+
+			GuiManager.Draw("supermarket_customproduction")
+	'		GuiManager.Draw("supermarket_customproduction_castbox", -1000,-1000, GUIMANAGER_TYPES_DRAGGED)
+			GuiManager.Draw("supermarket_customproduction_castbox_modal")
+
+			'draw datasheet if needed
+			if hoveredGuiCastItem then hoveredGuiCastItem.DrawDatasheet(hoveredGuiCastItem.GetScreenX() - 230, hoveredGuiCastItem.GetScreenX() - 170 )
+
+		else
+			GuiManager.Draw("supermarket_customproduction_productionconceptbox")
 		endif
-		contentY :+ subTitleH
-endif
-		skin.RenderBorder(outer.GetX(), outer.GetY(), outer.GetW(), outer.GetH())
-
-		GuiManager.Draw("supermarket_customproduction_newproduction")
-		GuiManager.Draw("supermarket_customproduction_productionbox")
-		GuiManager.Draw("supermarket_customproduction_castbox")
-'		GuiManager.Draw("supermarket_customproduction_castbox", -1000,-1000, GUIMANAGER_TYPES_NONDRAGGED)
-
-		'mouse cross
-		'DrawRect(MouseManager.x, MouseY()-5, 1,10)
-		'DrawRect(MouseManager.x-5, MouseY(), 10,1)
-
-		GuiManager.Draw("supermarket_customproduction")
-'		GuiManager.Draw("supermarket_customproduction_castbox", -1000,-1000, GUIMANAGER_TYPES_DRAGGED)
-		GuiManager.Draw("supermarket_customproduction_castbox_modal")
-
-		'draw datasheet if needed
-		if hoveredGuiCastItem then hoveredGuiCastItem.DrawDatasheet(hoveredGuiCastItem.GetScreenX() - 230, hoveredGuiCastItem.GetScreenX() - 170 )
 
 
 		'=== DEBUG ===
 		local debugX:int = 20
 		local debugY:int = 400
+		if GetInstance().currentProductionConcept
+			SetColor 0,0,0
+			SetAlpha 0.5
+			DrawRect(debugX, debugY, 180, 20 + castSlotList.GetSlotAmount() * 15 + 5)
+			SetColor 255,255,255
+			SetAlpha 1.0
+			DrawText("Cast:", debugX + 5, debugY)
+			For local i:int = 0 until castSlotList.GetSlotAmount()
+				if currentProductionConcept.GetCast(i)
+					DrawText((i+1)+") " + currentProductionConcept.GetCast(i).GetFullName(), debugX + 5, debugY + 20 + i * 15)
+				else
+					DrawText((i+1)+") ", debugX + 5, debugY + 20 + i * 15)
+				endif
+			Next
 
-		SetColor 0,0,0
-		SetAlpha 0.5
-		DrawRect(debugX, debugY, 180, 20 + castSlotList.GetSlotAmount() * 15 + 5)
-		SetColor 255,255,255
-		SetAlpha 1.0
-		DrawText("Cast:", debugX + 5, debugY)
-		For local i:int = 0 until castSlotList.GetSlotAmount()
-			if currentProductionConcept.GetCast(i)
-				DrawText((i+1)+") " + currentProductionConcept.GetCast(i).GetFullName(), debugX + 5, debugY + 20 + i * 15)
-			else
-				DrawText((i+1)+") ", debugX + 5, debugY + 20 + i * 15)
-			endif
-		Next
+			debugX = 220
 
+			SetColor 0,0,0
+			SetAlpha 0.5
+			DrawRect(debugX, debugY, 190, 20 + currentProductionConcept.productionFocus.GetFocusAspectCount() * 15 + 5)
+			SetColor 255,255,255
+			SetAlpha 1.0
+			DrawText("FocusPoints: " + currentProductionConcept.productionFocus.GetFocusPointsSet()+"/" + currentProductionConcept.productionFocus.GetFocusPointsMax(), debugX + 5, debugY)
+			For local i:int = 0 until currentProductionConcept.productionFocus.GetFocusAspectCount()
+				DrawText((i+1)+") " + currentProductionConcept.productionFocus.GetFocus( TVTProductionFocus.GetAtIndex(i+1) ), debugX + 5, debugY + 20 + i * 15)
+			
+				DrawText(GetLocale(TVTProductionFocus.GetAsString(i+1)), debugX + 45, debugY + 20 + i * 15)
+			Next
 
-		debugX = 220
-
-		SetColor 0,0,0
-		SetAlpha 0.5
-		DrawRect(debugX, debugY, 190, 20 + currentProductionConcept.productionFocus.GetFocusAspectCount() * 15 + 5)
-		SetColor 255,255,255
-		SetAlpha 1.0
-		DrawText("FocusPoints: " + currentProductionConcept.productionFocus.GetFocusPointsSet()+"/" + currentProductionConcept.productionFocus.GetFocusPointsMax(), debugX + 5, debugY)
-		For local i:int = 0 until currentProductionConcept.productionFocus.GetFocusAspectCount()
-			DrawText((i+1)+") " + currentProductionConcept.productionFocus.GetFocus( TVTProductionFocus.GetAtIndex(i+1) ), debugX + 5, debugY + 20 + i * 15)
-		
-			DrawText(GetLocale(TVTProductionFocus.GetAsString(i+1)), debugX + 45, debugY + 20 + i * 15)
-		Next
+		endif
 
 		DrawText("Tasten:", 50,525)
 		DrawText("1-5: Zufallsbesetzung #1-5   Num1-7: Focus #1-7   Num8/9: FocusPoints +/-", 50,540)
@@ -1150,6 +1252,7 @@ End Type
 
 Type TGuiProductionConceptSelectListItem Extends TGuiProductionConceptListItem
 	Field displayName:string = ""
+	Field minHeight:int = 50 '61
 	Const scaleAsset:Float = 0.80
 	Const paddingBottom:Int	= 3
 	Const paddingTop:Int = 2
@@ -1191,7 +1294,7 @@ endrem
 		If parentPanel Then maxWidth = parentPanel.getContentScreenWidth() '- GetScreenWidth()
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
-		Local dimension:TVec2D = New TVec2D.Init(maxWidth, asset.GetHeight() * scaleAsset)
+		Local dimension:TVec2D = New TVec2D.Init(maxWidth, max(minHeight, asset.GetHeight() * scaleAsset))
 		
 		'add padding
 		dimension.addXY(0, Self.paddingTop)
@@ -1205,6 +1308,29 @@ endrem
 		EndIf
 
 		Return dimension
+	End Method
+
+
+	Method DrawBackground()
+		local oldCol:TColor = new TColor.Get()
+
+		'available width is parentsDimension minus startingpoint
+		Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
+		If isHovered()
+			if isSelected()
+				SetAlpha 0.15 * oldCol.a
+			else
+				SetAlpha 0.05 * oldCol.a
+			endif
+			SetColor 200,150,75
+			DrawRect(GetScreenX(), GetScreenY() + paddingTop, GetScreenWidth(), GetScreenHeight() - paddingBottom -2)
+		ElseIf isSelected()
+			SetAlpha 0.15 * oldCol.a
+			SetColor 250,210,100
+			DrawRect(getScreenX(), getScreenY(), maxWidth, getScreenHeight() - paddingBottom -2)
+		EndIf
+
+		oldCol.SetRGBA()
 	End Method
 
 
@@ -1234,39 +1360,54 @@ endrem
 			SetBlend AlphaBlend
 			SetAlpha oldAlpha
 		EndIf
+
+		SetColor 150,150,150
+		DrawLine(GetScreenX() + 10, GetScreenY2() - paddingBottom -1, GetScreenX2() - 20, GetScreenY2() - paddingBottom -1)
+		SetColor 210,210,210
+		DrawLine(GetScreenX() + 10, GetScreenY2() - paddingBottom, GetScreenX2() - 20, GetScreenY2() - paddingBottom)
 	End Method
 
 
 	Method DrawProductionConceptItem()
-		if isHovered()
-			local oldCol:TColor = new TColor.Get()
-			SetAlpha 0.05 * oldCol.a
-			SetColor 200,100,50
-			DrawRect(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())
-			oldCol.SetRGBA()
-		endif
-		
 		GetAsset().draw(Self.GetScreenX(), Self.GetScreenY(), -1, null, scaleAsset)
 
 		local textOffsetX:int = asset.GetWidth()*scaleAsset + 3
 		local title:string = "unknown script"
+		local subtitle:string = ""
 		local titleSize:TVec2D
+		local subTitleSize:TVec2D
 		local genreColor:TColor
 		local titleFont:TBitmapFont = GetBitmapFont("default",,BOLDFONT)
 		local oldMod:float = titleFont.lineHeightModifier
 		titleFont.lineHeightModifier :* 0.9
 
-		if productionConcept then title = productionConcept.script.GetTitle()
+		if productionConcept
+			title = productionConcept.script.GetTitle()
+			if productionConcept.script.IsEpisode()
+				local seriesScript:TScript = productionConcept.script.GetParentScript()
+				subtitle = (seriesScript.GetSubScriptPosition(productionConcept.script)+1)+"/"+seriesScript.GetSubscriptCount()+": "+ title
+				title = seriesScript.GetTitle()
+			endif
+		endif
 
 		if isSelected()
-			titleSize = titleFont.DrawBlock(title, int(GetScreenX()+ textOffsetX), int(GetScreenY()+2), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-4,,TColor.Create(100,0,0))
+			titleSize = titleFont.DrawBlock(title, int(GetScreenX()+ textOffsetX), int(GetScreenY()+2), GetScreenWidth() - textOffsetX - 1, GetScreenHeight()-4,,TColor.Create(100,0,0))
+			if subTitle
+				subTitleSize = titleFont.DrawBlock(subTitle, int(GetScreenX()+ textOffsetX), int(GetScreenY() + titleSize.y + 2), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-4,,TColor.Create(100,0,0))
+			endif
 			genreColor = TColor.CreateGrey(0, 0.6)
 		else
 			if isHovered()
 				titleSize = titleFont.DrawBlock(title, int(GetScreenX()+ textOffsetX), int(GetScreenY()+2), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-4,,TColor.CreateGrey(50))
+				if subTitle
+					subTitleSize = titleFont.DrawBlock(subTitle, int(GetScreenX()+ textOffsetX), int(GetScreenY() + titleSize.y + 2), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-4,,TColor.CreateGrey(50))
+				endif
 				genreColor = TColor.CreateGrey(50, 0.6)
 			else
 				titleSize = titleFont.DrawBlock(title, int(GetScreenX()+ textOffsetX), int(GetScreenY()+2), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-4,,TColor.CreateGrey(100))
+				if subTitle
+					subTitleSize = titleFont.DrawBlock(subTitle, int(GetScreenX()+ textOffsetX), int(GetScreenY() + titleSize.y + 2), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-4,,TColor.CreateGrey(100))
+				endif
 				genreColor = TColor.CreateGrey(100, 0.6)
 			endif
 		endif
@@ -1278,7 +1419,11 @@ endrem
 			local genreText:string = productionConcept.script.GetMainGenreString()
 			local text:string = productionTypeText
 			if genreText <> productionTypeText then text :+ " / "+genreText
-			GetBitmapFont("default").DrawBlock(text, int(GetScreenX()+ textOffsetX), int(GetScreenY()+2 + titleSize.y), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-4,,genreColor)
+			if subTitle
+				GetBitmapFont("default").DrawBlock(text, int(GetScreenX()+ textOffsetX), int(GetScreenY()+2 + titleSize.y + subTitleSize.y), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-4,,genreColor)
+			else
+				GetBitmapFont("default").DrawBlock(text, int(GetScreenX()+ textOffsetX), int(GetScreenY()+2 + titleSize.y), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-4,,genreColor)
+			endif
 		endif
 	End Method
 	
@@ -1866,9 +2011,10 @@ Function ShowCastSheet:Int(cast:TProgrammePersonBase, jobID:int=-1, x:Int,y:Int,
 
 			local firstJobID:int = -1
 			for local jobIndex:int = 1 to TVTProgrammePersonJob.Count 
-				if not cast.HasJob(jobIndex) then continue
+				local jobID:int = TVTProgrammePersonJob.GetAtIndex(jobIndex)
+				if not cast.HasJob(jobID) then continue
 
-				firstJobID = jobIndex
+				firstJobID = jobID
 				exit
 			next
 
