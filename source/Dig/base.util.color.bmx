@@ -2,7 +2,7 @@ SuperStrict
 Import BRL.Max2D 'to "SetColor()"
 Import BRL.Math
 Import BRL.LinkedList
-
+Import "base.util.math.bmx"
 
 
 Type TColor
@@ -175,84 +175,86 @@ Type TColor
 	End Method
 
 
+	'convert rgb to hsl
+	'Formula adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+	'code based on the jscript code at:
+	'https://github.com/mjackson/mjijackson.github.com/blob/master/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript.txt
 	Method ToHSL(h:float var, s:float var, l:float var)
+		'convert 0-255 to 0-1
 		Local rk:float = r / 255.0
 		local gk:float = g / 255.0
 		local bk:float = b / 255.0
 
-		Local maxV:float = rk
-		local minV:float = gk
-	
-		If gk > maxV Then maxV = gk
-		If bk > maxV Then maxV = bk
-		If rk < minV Then minV = rk
-		If bk < minV Then minV = bk
-	
+		'calculate max/min of r,g,b
+		Local maxV:float = Max(rk, Max(gk, bk))
+		local minV:float = Min(rk, Min(gk, bk))
+
+		l = (maxV + minV) / 2.0
+
 		If maxV = minV
 			h = 0
 			s = 0
-			l = maxV
 		Else
-			If maxV = rk
-				h = (60 * (gk - bk) / (maxV - minV)) Mod 360
-			ElseIf maxV = gk
-				h = (60 * (bk - rk) / (maxV - minV)) + 120
-			ElseIf maxV = bk
-				h = (60 * (rk - gk) / (maxV - minV)) + 240
-			EndIf
-		
-			l = (maxV + minV) / 2
-			If l <= 0.5
-				s = (maxV - minV) / (2 * l)
-			ElseIf l > 0.5
-				s = (maxV - minV) / (2 - 2*l)
-			EndIf
+			local d:float = maxV - minV
+			if l > 0.5
+				s = d / (2 - maxV - minV)
+			else
+				s = d / (maxV + minV)
+			endif
+
+			select maxV
+				case rK
+					'according to mjijackson
+					h = (gK - bK) / d
+					if g < b then h :+ 6
+
+					'according to wikipedia
+					'h = ((gK - bK) / d) mod 6
+				case gK
+					h = (bK - rK) / d + 2
+				case bK
+					h = (rK - gK) / d + 4
+			end select
+			h :/ 6.0
 		EndIf
 	End Method
 	
 
-	'code based on Yashas work:
-	'http://www.blitzmax.com/codearcs/codearcs.php?code=2333
+	'code based on the jscript code at:
+	'https://github.com/mjackson/mjijackson.github.com/blob/master/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript.txt
 	Method FromHSL(h:float, s:float, l:float)
-		Local p:float, q:float
-		
-		If l < 0.5
+		'grayscale
+		if Abs(s) < 0.0001 'floating point problems in bmax
+			r = MathHelper.Clamp(int(l * 255), 0,255)
+			g = r
+			b = r
+			return
+		endif
+
+        local q:float
+        if l < 0.5
 			q = l * (1 + s)
-		Else
-			q = l + s - (l*s)
-		EndIf
-		p = 2*l - q
-		
-		Local tR:float = h + 0.3333; If tR > 1 Then tR:- 1
-		Local tG:float = h
-		Local tB:float = h - 0.3333; If tB < 0 Then tB:+ 1
-		r = p*255
-		g = p*255
-		b = p*255
-		
-		If tR < 0.1666
-			r = 255 * (p + ((q - p) * 6 * tR))
-		ElseIf tR < 0.5 And tR >= 0.1666
-			r = 255 * (q)
-		ElseIf tR < 0.6666 And tR >= 0.5
-			r = 255 * (p + ((q - p) * 6 * (0.6666 - tR)))
-		EndIf
-		
-		If tG < 0.1666
-			g = 255 * (p + ((q - p) * 6 * tG))
-		ElseIf tG < 0.5 And tG >= 0.1666
-			g = 255 * (q)
-		ElseIf tG < 0.6666 And tG >= 0.5
-			g = 255 * (p + ((q - p) * 6 * (0.6666 - tG)))
-		EndIf
-		
-		If tB < 0.1666
-			b = 255 * (p + ((q - p) * 6 * tB))
-		ElseIf tB < 0.5 And tB >= 0.1666
-			b = 255 * (q)
-		ElseIf tB < 0.6666 And tB >= 0.5
-			b = 255 * (p + ((q - p) * 6 * (0.6666 - tB)))
-		EndIf
+		else
+			q = l + s - l * s
+		endif
+
+		local p:float = 2 * l - q
+        r = 255 * hue2rgb(p, q, h + 1/3.0)
+        g = 255 * hue2rgb(p, q, h)
+        b = 255 * hue2rgb(p, q, h - 1/3.0)
+
+		Function hue2rgb:Float(p:float, q:float, t:float)
+			if t < 0
+				t :+ 1
+			elseif t > 1
+				t :- 1
+			endif
+
+			if t < 1/6.0 then return p + (q - p) * 6.0 * t
+			if t < 1/2.0 then return q
+			if t < 2/3.0 then return p + (q - p) * (2/3.0 - t) * 6.0
+			return p
+		End Function
 	End Method
 
 
