@@ -51,29 +51,11 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 	End Method
 
 
-	Method IsUnplanned:int()
-		if not productionConcept then return True
-
-		'started production setup already?
-		if productionConcept.productionFocus.GetFocusPointsSet() > 0 then return False
-		if productionConcept.GetCastGroup(-1).length > 0 then return False
-
-		return True
-	End Method
-
-
-	Method IsIncomplete:int()
-		if not productionConcept then return True
-		'incomplete = (unplanned or complete)
-		return not (IsUnplanned() or productionConcept.IsComplete())
-	End Method
-
-
 	Method DrawSheet(leftX:Int=30, rightX:Int=30)
 		Local sheetY:Float 	= 80 
 		Local sheetX:Float 	= GetGraphicsManager().GetWidth()/2
 		'move down if unplanned (less spaced needed on datasheet)
-		if IsUnplanned() then sheetY :+ 50
+		if productionConcept.IsUnplanned() then sheetY :+ 50
 
 		SetColor 0,0,0
 		SetAlpha 0.2
@@ -103,11 +85,11 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		local contentY:int = y + skin.GetContentY()
 
 		local title:string = productionConcept.script.GetTitle()
-		local conceptIsEmpty:int = IsUnplanned()
+		local conceptIsEmpty:int = productionConcept.IsUnplanned()
 
 		local showMsgOrderWarning:Int = False
-		local showMsgIncomplete:Int = IsIncomplete()
-		local showMsgNotPlanned:Int = IsUnplanned()
+		local showMsgIncomplete:Int = productionConcept.IsGettingPlanned()
+		local showMsgNotPlanned:Int = productionConcept.IsUnplanned()
 
 
 		'save on requests to the player finance
@@ -357,12 +339,14 @@ endrem
 			EndIf
 		EndIf
 
-		if IsIncomplete()
+		if productionConcept.IsProduceable()
+			SetColor 190,250,150
+		elseif productionConcept.IsPlanned()
+			SetColor 150,200,250
+		elseif productionConcept.IsGettingPlanned()
 			SetColor 250,200,150
-		elseif IsUnplanned()
+		else 'elseif productionConcept.IsUnplanned()
 			'default color
-		else 'ready to plan
-			SetColor 200,250,150
 		endif
 		
 		Super.DrawContent()

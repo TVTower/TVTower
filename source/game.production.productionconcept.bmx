@@ -57,12 +57,12 @@ Type TProductionConcept Extends TOwnedGameObject
 
 	'optional for shows
 	Field targetGroup:Int = -1
-	'live = more risk, more expensive, more speed
-	Field live:Int = false
-	'bonus like CallIn-Show. review--
-	Field callInCompetition:Int = False
 	'the higher the more speed
 	Field trophyMoney:Int = 0
+
+	'depositCostPaid, live, ...
+	Field flags:int = 0
+	
 
 
 	Method Initialize:TProductionConcept(owner:int, script:TScript)
@@ -116,6 +116,20 @@ Type TProductionConcept Extends TOwnedGameObject
 		endif
 
 		EventManager.triggerEvent( TEventSimple.Create("ProductionConcept.SetProductionCompany", new TData.Add("productionCompany", productionCompany), Self ) )
+	End Method
+
+
+	Method hasFlag:Int(flag:Int)
+		Return flags & flag
+	End Method
+
+
+	Method setFlag(flag:Int, enable:Int=True)
+		If enable
+			flags :| flag
+		Else
+			flags :& ~flag
+		EndIf
 	End Method
 
 
@@ -227,6 +241,11 @@ Type TProductionConcept Extends TOwnedGameObject
 	End Method
 
 
+	Method GetDepositCost:int()
+		return int(0.1 * GetTotalCost())
+	End Method
+
+
 	Method GetTotalCost:int()
 		local result:int
 		result :+ GetCastCost()
@@ -297,10 +316,44 @@ Type TProductionConcept Extends TOwnedGameObject
 	End Method
 
 
-	Method IsComplete:int()
+	Method IsDepositPaid:int()
+		return hasFlag(TVTProductionConceptFlag.DEPOSIT_PAID)
+	End Method
+
+
+	Method IsUnplanned:int()
+		'started production setup already?
+		if productionFocus.GetFocusPointsSet() > 0 then return False
+		if GetCastGroup(-1).length > 0 then return False
+
+		return True
+	End Method
+
+
+	Method IsPlanned:int()
 		if not script then return False
 		if not IsCastComplete() then return False
-		if not IsFocusPointsComplete() then return False
+		'focus points not needed to be used at all
+		'but one point spent is a must
+		if not IsFocusPointsMinimumUsed() then return False
+		'if not IsFocusPointsComplete() then return False
+
+		return True
+	End Method	
+
+
+	Method IsGettingPlanned:int()
+		if IsUnplanned() then return False
+		if IsPlanned() then return False
+
+		return True
+	End Method
+
+
+	Method IsProduceable:int()
+		If not IsPlanned() then return False
+		'ready to get produced
+		if not IsDepositPaid() then return False
 
 		return True
 	End Method
@@ -319,7 +372,14 @@ Type TProductionConcept Extends TOwnedGameObject
 		if not productionCompany then return False
 		if not productionFocus or productionFocus.GetFocusPointsMax() = 0 then return False
 		return productionFocus.GetFocusPointsSet() = productionFocus.GetFocusPointsMax()
-	End Method	
+	End Method
+
+
+	Method IsFocusPointsMinimumUsed:int()
+		if not productionCompany then return False
+		if not productionFocus or productionFocus.GetFocusPointsMax() = 0 then return False
+		return productionFocus.GetFocusPointsSet() > 0
+	End Method
 End Type
 
 

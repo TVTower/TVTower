@@ -32,6 +32,8 @@ Type TVTGameConstants {_exposeToLua}
 	Field ProgrammeFlag:TVTProgrammeDataFlag = new TVTProgrammeDataFlag 
 	Field ProgrammeLicenceType:TVTProgrammeLicenceType = new TVTProgrammeLicenceType 
 
+	Field ProductionConceptFlag:TVTProductionConceptFlag = new TVTProductionConceptFlag 
+
 	Field NewsFlag:TVTNewsFlag = new TVTNewsFlag 
 
 	Field TargetGroup:TVTTargetGroup = new TVTTargetGroup 
@@ -636,6 +638,46 @@ Type TVTProgrammeState {_exposeToLua}
 			case IN_CINEMA      return "in_cinema"
 			case RELEASED       return "released"
 			default             return "none"
+		End Select
+	End Function
+End Type
+
+
+
+Type TVTProductionConceptFlag {_exposeToLua}
+	'live = more risk, more expensive, more speed
+	Const LIVE:Int = 1
+	'bonus like CallIn-Show. review
+	Const CALLIN_COMPETITION:Int = 2
+	'deposit payment paid?
+	Const DEPOSIT_PAID:Int = 4
+
+	Const count:int = 3
+
+
+	Function GetAtIndex:int(index:int = 0)
+		if index <= 0 then return 0
+		return 2^(index-1)
+	End Function	
+
+
+	Function GetAsString:String(key:int = 0)
+		Select key
+			case LIVE               return "live"
+			case CALLIN_COMPETITION return "callincompetition"
+			case DEPOSIT_PAID       return "depositpaid"
+			default
+				'loop through all flag-entries and add them if contained
+				local result:string
+				local index:int = 0
+				'do NOT start with 0 ("all")
+				For local i:int = 1 to count
+					index = GetAtIndex(i)
+					if key & index then result :+ GetAsString(index) + ","
+				Next
+				if result = "" then return "none"
+				'remove last comma
+				return result[.. result.length-1]
 		End Select
 	End Function
 End Type
