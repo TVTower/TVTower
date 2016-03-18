@@ -83,6 +83,16 @@ Type TElevator Extends TEntity
 	Global _initDone:Int = False
 	Global _instance:TElevator
 
+	Const DOOR_CLOSED:int = 0
+	Const DOOR_OPEN:int = 1
+	Const DOOR_OPENING:int = 2
+	Const DOOR_CLOSING:int = 3
+	Const ELEVATOR_AWAITING_TASK:int = 0
+	Const ELEVATOR_CLOSING_DOOR:int = 1
+	Const ELEVATOR_MOVING:int = 2
+	Const ELEVATOR_OPENING_DOOR:int = 3
+	Const ELEVATOR_BOARDING:int = 4
+
 
 	'===== Konstruktor, Speichern, Laden =====
 	Function GetInstance:TElevator()
@@ -92,8 +102,8 @@ Type TElevator Extends TEntity
 
 
 	Method Initialize:TElevator()
-		ElevatorStatus = 0
-		DoorStatus = 0
+		ElevatorStatus = ELEVATOR_AWAITING_TASK
+		DoorStatus = DOOR_CLOSED
 		CurrentFloor = 8
 		TargetFloor = 0
 		Direction:Int = 1
@@ -137,7 +147,7 @@ Type TElevator Extends TEntity
 		InitSprites()
 
 		door.GetFrameAnimations().SetCurrent("open")
-		doorStatus = 1 'open
+		doorStatus = DOOR_OPEN 'open
 		ElevatorStatus	= 0
 
 		If Not _initDone
@@ -185,13 +195,23 @@ Type TElevator Extends TEntity
 	Method EnterTheElevator:Int(figure:TFigureBase, myTargetFloor:Int=-1) 'bzw. einsteigen
 		If Not IsAllowedToEnterToElevator(figure, myTargetFloor) Then Return False
 
-		Return AddPassenger(figure)
+		if AddPassenger(figure)
+			figure.boardingState = 0
+			return true
+		else
+			return false
+		endif
 	End Method
 
 
 	'aussteigen
 	Method LeaveTheElevator:Int(figure:TFigureBase)
-		Return RemovePassenger(figure)
+		if RemovePassenger(figure)
+			figure.boardingState = 0
+			return true
+		else
+			return false
+		endif
 	End Method
 
 
@@ -404,11 +424,13 @@ Type TElevator Extends TEntity
 
 			Local figure:TFigureBase = GetFigureBaseCollection().GetByGUID(figureGUID)
 			If Not figure Then Continue
+			'ignore _deboarding_ ones
+			if figure.boardingState = -1 then continue
 
 			'move with 50% of normal movement speed
 			Local moveX:Float = 0.5 * figure.initialDX * deltaTime
 
-			If figure.PosOffset.getX() <> PassengerOffset[i].getX()
+			If figure.PosOffset.getIntX() <> PassengerOffset[i].getIntX()
 				'set to 1 -> indicator we are moving in the elevator (boarding)
 				figure.boardingState = 1
 
@@ -430,11 +452,11 @@ Type TElevator Extends TEntity
 
 			'unset boarding state in all cases - to avoid keeping
 			'"boarding" when loading a savegame
-			If Abs(figure.PosOffset.getX() - PassengerOffset[i].getX()) <= moveX
-				'set state to 0 so figures can recognize they
-				'reached the displaced x
-				figure.boardingState = 0
-			EndIf
+			if figure.boardingState <> 0
+				If figure.PosOffset.getIntX() = PassengerOffset[i].getIntX()
+					figure.boardingState = 0
+				EndIf
+			endif
 		Next
 	End Method
 
@@ -449,16 +471,17 @@ Type TElevator Extends TEntity
 
 			Local figure:TFigureBase = GetFigureBaseCollection().GetByGUID(figureGUID)
 			If Not figure Then Continue
+			'ignore _boarding_ ones
+			if figure.boardingState = 1 then continue
 
 			'move with 50% of normal movement speed
 			Local moveX:Float = 0.5 * figure.initialDX * deltaTime
 
 			Local route:TFloorRoute = GetRouteByPassenger(figure, 0)
-
 			'Will die Person aussteigen?
 			'-> elevator on same floor and route is a "SEND"-route
 			If route And route.floornumber = CurrentFloor And route.call = 0 
-				If figure.PosOffset.getX() <> 0
+				If figure.PosOffset.getIntX() <> 0
 					'set state to -1 -> indicator we are moving in the
 					'elevator but from Offset to 0 (different to boarding)
 					figure.boardingState = -1
@@ -466,8 +489,8 @@ Type TElevator Extends TEntity
 					'avoid rounding errors ("jittering") and set to
 					'target if movement will reach target
 					'we only do that if offsets differ to avoid doing it
-					'if no offset is set
-
+					'if no offset is set.
+					'
 					'set x to 0 so it settles to that value
 					'set "y" to 0 so figures can recognize they
 					'reached the displaced x
@@ -484,10 +507,9 @@ Type TElevator Extends TEntity
 					EndIf
 				EndIf
 
-
 				'leave if door open and figure on its way
-				If doorStatus = 0 and Abs(figure.PosOffset.getIntX()) = 0
-'					print "leave " + figure.GetGUID()
+				If doorStatus = DOOR_OPEN and figure.PosOffset.getIntX() = 0
+					'print "DEBOARDING: LEAVE figure: "+ figure.name+ "  offset: "+figure.PosOffset.getX()
 					'set state to 0 so figures can recognize they
 					'reached the displaced x
 					figure.boardingState = 0
@@ -505,14 +527,14 @@ Type TElevator Extends TEntity
 	Method OpenDoor()
 		GetSoundSource().PlayRandomSfx("elevator_door_open")
 		door.GetFrameAnimations().SetCurrent("opendoor", True)
-		DoorStatus = 2 'wird geoeffnet
+		DoorStatus = DOOR_OPENING
 	End Method
 
 
 	Method CloseDoor()
 		GetSoundSource().PlayRandomSfx("elevator_door_close")
 		door.GetFrameAnimations().SetCurrent("closedoor", True)
-		DoorStatus = 3 'closing
+		DoorStatus = DOOR_CLOSING
 	End Method
 
 
@@ -537,8 +559,7 @@ Type TElevator Extends TEntity
 		EndIf
 
 
-		'0 = wait for next task
-		If ElevatorStatus = 0
+		If ElevatorStatus = ELEVATOR_AWAITING_TASK
 			If waitAtFloorTimer.isExpired()
 'print Millisecs()+"  Elevator: 0) wait for next Task - expired"
 				'fix potentially borked deboarding states
@@ -553,41 +574,43 @@ Type TElevator Extends TEntity
 			'do we still have deboarding passengers?
 			'-> let them deboard before starting the next route
 			If HasDeboardingPassengers()
+'print Millisecs()+"  Elevator: 0) move deboarding"
 				MoveDeboardingPassengersToCenter()
 			Else
+'print Millisecs()+"  Elevator: 0) get next target"
 				'get next target on a route
 				TargetFloor = CalculateNextTarget()
 				'found new target
 				If CurrentFloor <> TargetFloor
 'print Millisecs()+"  Elevator: 0) new target -> 1)"
 					ReadyForBoarding = False
-					'close doors
-					ElevatorStatus = 1
+					ElevatorStatus = ELEVATOR_CLOSING_DOOR
 				EndIf
 			EndIf
 		EndIf
 
-		'1 = close doors
-		If ElevatorStatus = 1
+
+		If ElevatorStatus = ELEVATOR_CLOSING_DOOR
+'print Millisecs()+"  Elevator: 1) closing door - doorStatus="+doorStatus
 			'Wenn die Wartezeit vorbei ist, dann Tueren schliessen
-			If doorStatus <> 0 And doorStatus <> 3 And waitAtFloorTimer.isExpired() Then CloseDoor()
+			If doorStatus <> DOOR_CLOSED And doorStatus <> DOOR_CLOSING
+				If waitAtFloorTimer.isExpired() Then CloseDoor()
+			EndIf
 
 			'wait until door animation finished
 			If door.GetFrameAnimations().getCurrentAnimationName() = "closedoor"
 				If door.GetFrameAnimations().getCurrent().isFinished()
 'print Millisecs()+"  Elevator: 1) closed -> 2)"
 					door.GetFrameAnimations().SetCurrent("closed")
-					'closed
-					doorStatus = 0
-					'2 = move
-					ElevatorStatus = 2
+					doorStatus = DOOR_CLOSED
+					ElevatorStatus = ELEVATOR_MOVING
 					GetSoundSource().PlayOrContinueRandomSFX("elevator_engine")
 				EndIf
 			EndIf
 		EndIf
 
-		'2 = move
-		If ElevatorStatus = 2
+
+		If ElevatorStatus = ELEVATOR_MOVING
 			'Check again if there is a new target which can get a lift
 			'on this route
 			TargetFloor = CalculateNextTarget()
@@ -597,7 +620,7 @@ Type TElevator Extends TEntity
 			If CurrentFloor = TargetFloor
 'print Millisecs()+"  Elevator: 2) reached floor -> 3)"
 				'open doors
-				ElevatorStatus = 3
+				ElevatorStatus = ELEVATOR_OPENING_DOOR
 				'Direction = 0
 			Else
 				'backup for tweening
@@ -626,8 +649,8 @@ Type TElevator Extends TEntity
 			EndIf
 		EndIf
 
-		If ElevatorStatus = 3 '3 = Tueren oeffnen
-			If doorStatus = 0
+		If ElevatorStatus = ELEVATOR_OPENING_DOOR
+			If doorStatus = DOOR_CLOSED
 'print Millisecs()+"  Elevator: 3) open door"
 				OpenDoor()
 				'set time for the doors to keep open
@@ -646,17 +669,18 @@ Type TElevator Extends TEntity
 				
 				If door.GetFrameAnimations().GetCurrent().isFinished()
 'print Millisecs()+"  Elevator: 3) opened -> 4)"
-					'deboarding
-					ElevatorStatus = 4
+					ElevatorStatus = ELEVATOR_BOARDING
 					door.GetFrameAnimations().SetCurrent("open")
-					'open
-					doorStatus = 1
+					doorStatus = DOOR_OPEN
 				EndIf
 			EndIf
 		EndIf
 
-		'4 = (de-)boarding
-		If ElevatorStatus = 4
+		'(de-)boarding
+		If ElevatorStatus = ELEVATOR_BOARDING
+			'continue deboarding (if needed)
+			MoveDeboardingPassengersToCenter()
+
 			If ReadyForBoarding = False
 				ReadyForBoarding = True
 			'happens in Else-part so the Update-loop could switch back
@@ -668,15 +692,18 @@ Type TElevator Extends TEntity
 					'remove unused routes
 					RemoveIgnoredRoutes()
 					'0 = wait for next task
-					ElevatorStatus = 0
+					ElevatorStatus = ELEVATOR_AWAITING_TASK
 					RouteLogic.BoardingDone()
 				EndIf
 			EndIf
 		EndIf
 
 		'move passengers to their positions if needed.
-		'Of course do not so if deboarding.
-		If ElevatorStatus <> 3 Then MovePassengerToPosition()
+		'Of course do not so if de/boarding.
+		If ElevatorStatus <> ELEVATOR_OPENING_DOOR
+'			print "move"
+			MovePassengerToPosition()
+		endif
 
 		'animate doors
 		door.Update()
@@ -909,7 +936,7 @@ Type TElevatorSmartLogic Extends TElevatorRouteLogic
 				'Während dem fahren darf man die Richtung dann aber doch
 				'nicht ändern... erst bei der nächsten Station erhält
 				'man den Vorteil
-				If Elevator.ElevatorStatus <> 2
+				If Elevator.ElevatorStatus <> TElevator.ELEVATOR_MOVING
 					'Neue Richtung bestimmen bzw. alte bestätigen... um
 					'den Spieler zu bevorzugen
 					Elevator.Direction = GetPlayerPreferenceDirection()

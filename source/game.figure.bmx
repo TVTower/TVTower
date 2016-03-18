@@ -797,7 +797,7 @@ Type TFigure extends TFigureBase
 
 		If IsElevatorCalled() Then Return False 'Wenn er bereits gerufen wurde, dann abbrechen
 
-		'Wenn der Fahrstuhl schon da ist, dann auch abbrechen. TODOX: Muss �berpr�ft werden
+		'Wenn der Fahrstuhl schon da ist, dann auch abbrechen. TODOX: Muss ueberprueft werden
 		If GetElevator().CurrentFloor = GetFloor() And IsAtElevator() Then Return False
 
 		'Fahrstuhl darf man nur rufen, wenn man davor steht
@@ -958,8 +958,6 @@ Type TFigure extends TFigureBase
 
 		If isVisible() And CanMove()
 			If HasToChangeFloor() And IsAtElevator() And Not IsInElevator()
-				'TODOX: Blockiert.. weil noch einer aus dem Plan ausw�hlen will
-
 				'Ist der Fahrstuhl da? Kann ich einsteigen?
 				If GetElevator().CurrentFloor = GetFloor() And GetElevator().ReadyForBoarding
 					GoOnBoardAndSendElevator()
