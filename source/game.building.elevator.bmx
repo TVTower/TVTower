@@ -375,8 +375,16 @@ Type TElevator Extends TEntity
 
 			'fetch "send" route ... if existing
 			Local route:TFloorRoute = GetRouteByPassenger(figure, 0)
+
+			if not route
+				TLogger.Log("FixDeboardingPassengers", "Figure "+figure.name+" ("+figure.GetGUID()+") has no route!", LOG_ERROR)
+				figure.boardingState = -1
+				fixedsomething = true
+			endif
+			
 			'-> elevator on same floor
 			If route And route.floornumber = CurrentFloor
+				TLogger.Log("FixDeboardingPassengers", "Figure "+figure.name+" ("+figure.GetGUID()+") had borked boarding state. Fixed!", LOG_DEBUG)
 				'fix boarding state -> set to deboarding
 				figure.boardingState = -1
 				fixedSomething = True
@@ -456,15 +464,18 @@ Type TElevator Extends TEntity
 					figure.boardingState = -1
 
 					'avoid rounding errors ("jittering") and set to
-					'target if distance is smaller than movement
+					'target if movement will reach target
 					'we only do that if offsets differ to avoid doing it
 					'if no offset is set
-					If Abs(figure.PosOffset.getX()) <= moveX
-						'set x to 0 so it settles to that value
-						'set "y" to 0 so figures can recognize they
-						'reached the displaced x
+
+					'set x to 0 so it settles to that value
+					'set "y" to 0 so figures can recognize they
+					'reached the displaced x
+					If (Abs(figure.PosOffset.getX()) - moveX) < 0
+'						print "reachedCenter " + figure.name
 						figure.PosOffset.setX( 0 )
 					Else
+'						print "moveToCenter " + figure.name
 						If figure.PosOffset.getX() > 0
 							figure.PosOffset.AddX( -moveX )
 						Else
@@ -473,8 +484,10 @@ Type TElevator Extends TEntity
 					EndIf
 				EndIf
 
-				'unset in all cases
-				If Abs(figure.PosOffset.getX()) <= moveX
+
+				'leave if door open and figure on its way
+				If doorStatus = 0 and Abs(figure.PosOffset.getIntX()) = 0
+'					print "leave " + figure.GetGUID()
 					'set state to 0 so figures can recognize they
 					'reached the displaced x
 					figure.boardingState = 0
@@ -527,13 +540,16 @@ Type TElevator Extends TEntity
 		'0 = wait for next task
 		If ElevatorStatus = 0
 			If waitAtFloorTimer.isExpired()
+'print Millisecs()+"  Elevator: 0) wait for next Task - expired"
 				'fix potentially borked deboarding states
 				If FixDeboardingPassengers()
+'print Millisecs()+"  Elevator: 0) fixed - delay waiting timer"
 					'if there was something to fix - wait a bit more
 					waitAtFloorTimer.SetInterval(0.5 * waitAtFloorTime / TEntity.globalWorldSpeedFactor, True)
 				EndIf
 			EndIf
 
+	
 			'do we still have deboarding passengers?
 			'-> let them deboard before starting the next route
 			If HasDeboardingPassengers()
@@ -543,6 +559,7 @@ Type TElevator Extends TEntity
 				TargetFloor = CalculateNextTarget()
 				'found new target
 				If CurrentFloor <> TargetFloor
+'print Millisecs()+"  Elevator: 0) new target -> 1)"
 					ReadyForBoarding = False
 					'close doors
 					ElevatorStatus = 1
@@ -558,6 +575,7 @@ Type TElevator Extends TEntity
 			'wait until door animation finished
 			If door.GetFrameAnimations().getCurrentAnimationName() = "closedoor"
 				If door.GetFrameAnimations().getCurrent().isFinished()
+'print Millisecs()+"  Elevator: 1) closed -> 2)"
 					door.GetFrameAnimations().SetCurrent("closed")
 					'closed
 					doorStatus = 0
@@ -577,6 +595,7 @@ Type TElevator Extends TEntity
 			'has the elevator arrived but the doors are still closed?
 			'open them!
 			If CurrentFloor = TargetFloor
+'print Millisecs()+"  Elevator: 2) reached floor -> 3)"
 				'open doors
 				ElevatorStatus = 3
 				'Direction = 0
@@ -607,8 +626,9 @@ Type TElevator Extends TEntity
 			EndIf
 		EndIf
 
-		If ElevatorStatus = 3 '3 = TÃ¼ren Ã¶ffnen
+		If ElevatorStatus = 3 '3 = Tueren oeffnen
 			If doorStatus = 0
+'print Millisecs()+"  Elevator: 3) open door"
 				OpenDoor()
 				'set time for the doors to keep open
 				'adjust this by worldSpeedFactor at that time
@@ -619,11 +639,13 @@ Type TElevator Extends TEntity
 			'continue door animation for opening doors
 			'also deboard passengers as soon as finished
 			If door.GetFrameAnimations().getCurrentAnimationName() = "opendoor"
+'print Millisecs()+"  Elevator: 3) opening..."
 				'while the door animation is active, the deboarding
 				'figures will move to the exit/door
 				MoveDeboardingPassengersToCenter()
 				
 				If door.GetFrameAnimations().GetCurrent().isFinished()
+'print Millisecs()+"  Elevator: 3) opened -> 4)"
 					'deboarding
 					ElevatorStatus = 4
 					door.GetFrameAnimations().SetCurrent("open")
@@ -642,6 +664,7 @@ Type TElevator Extends TEntity
 			Else
 				'if the waiting time is expired, search a new target
 				If waitAtFloorTimer.isExpired()
+'print Millisecs()+"  Elevator: 4) timer expired, searching new target -> 0)"
 					'remove unused routes
 					RemoveIgnoredRoutes()
 					'0 = wait for next task
