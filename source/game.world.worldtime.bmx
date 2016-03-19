@@ -12,7 +12,7 @@ Type TWorldTime {_exposeToLua="selected"}
 	'(enables calculation of missed time between two updates)
 	Field _timeGoneLastUpdate:Double = -1.0
 	'how many days does each season have? (year = 4 * value)
-	Field _daysPerSeason:int = 4
+	Field _daysPerSeason:int = 3
 	'how many days does a week have?
 	Field _daysPerWeek:int = 7
 	 
