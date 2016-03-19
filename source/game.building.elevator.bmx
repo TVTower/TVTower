@@ -462,8 +462,11 @@ Type TElevator Extends TEntity
 
 
 	'Aktualisiert das Offset und bewegt die Figur zum Ausgang
-	Method MoveDeboardingPassengersToCenter()
+	Method MoveDeboardingPassengersToCenter:int(useFloor:int = -1, limitSimultanoeusDeboardingPersonsTo:int=-1)
+		if useFloor = -1 then useFloor = CurrentFloor
+
 		Local deltaTime:Float = GetDeltaTimer().GetDelta() * GetWorldSpeedFactor()
+		local deboardingPersons:int = 0
 	
 		For Local i:Int = 0 To Len(PassengerPosition) - 1
 			Local figureGUID:String = PassengerPosition[i]
@@ -474,37 +477,48 @@ Type TElevator Extends TEntity
 			'ignore _boarding_ ones
 			if figure.boardingState = 1 then continue
 
-			'move with 50% of normal movement speed
-			Local moveX:Float = 0.5 * figure.initialDX * deltaTime
+			'move with 75% of normal movement speed
+			Local moveX:Float = 0.75 * figure.initialDX * deltaTime
+
 
 			Local route:TFloorRoute = GetRouteByPassenger(figure, 0)
 			'Will die Person aussteigen?
 			'-> elevator on same floor and route is a "SEND"-route
-			If route And route.floornumber = CurrentFloor And route.call = 0 
+			If route And route.floornumber = useFloor And route.call = 0 
 				If figure.PosOffset.getIntX() <> 0
+					local reachedPos:int = False
+					
 					'set state to -1 -> indicator we are moving in the
 					'elevator but from Offset to 0 (different to boarding)
 					figure.boardingState = -1
 
 					'avoid rounding errors ("jittering") and set to
-					'target if movement will reach target
-					'we only do that if offsets differ to avoid doing it
-					'if no offset is set.
-					'
-					'set x to 0 so it settles to that value
-					'set "y" to 0 so figures can recognize they
-					'reached the displaced x
+					'target if movement will reach target (or reached)
 					If (Abs(figure.PosOffset.getX()) - moveX) < 0
 '						print "reachedCenter " + figure.name
-						figure.PosOffset.setX( 0 )
+						reachedPos = True
 					Else
 '						print "moveToCenter " + figure.name
-						If figure.PosOffset.getX() > 0
+						If figure.PosOffset.getIntX() > 0
 							figure.PosOffset.AddX( -moveX )
+							if figure.PosOffset.getIntX() <= 0 then reachedPos = True
 						Else
 							figure.PosOffset.AddX( +moveX )
+							if figure.PosOffset.getIntX() >= 0 then reachedPos = True
 						EndIf
 					EndIf
+
+					'set x to 0 so it settles to that value
+					if reachedPos
+						figure.PosOffset.setX( 0 )
+					'at least one passenger is deboarding
+					else
+						deboardingPersons :+ 1
+						'only deboard x persons per turn?
+						if limitSimultanoeusDeboardingPersonsTo <> -1 and deboardingPersons >= limitSimultanoeusDeboardingPersonsTo
+							return deboardingPersons
+						endif
+					endif
 				EndIf
 
 				'leave if door open and figure on its way
@@ -575,7 +589,7 @@ Type TElevator Extends TEntity
 			'-> let them deboard before starting the next route
 			If HasDeboardingPassengers()
 'print Millisecs()+"  Elevator: 0) move deboarding"
-				MoveDeboardingPassengersToCenter()
+				MoveDeboardingPassengersToCenter(-1, -1) 'no deboarding limit
 			Else
 'print Millisecs()+"  Elevator: 0) get next target"
 				'get next target on a route
@@ -615,6 +629,7 @@ Type TElevator Extends TEntity
 			'on this route
 			TargetFloor = CalculateNextTarget()
 
+
 			'has the elevator arrived but the doors are still closed?
 			'open them!
 			If CurrentFloor = TargetFloor
@@ -647,6 +662,12 @@ Type TElevator Extends TEntity
 					figure.area.position.setY( area.GetY() + spriteInner.area.GetH())
 				Next
 			EndIf
+
+			'reaching target soon - begin deboarding movement
+			if 5 > Abs(area.GetY() - (TBuildingBase.GetFloorY2(TargetFloor) + spriteInner.area.GetH()))
+				',1 = move each passenger one after another, not simultaneously
+				MoveDeboardingPassengersToCenter(TargetFloor, 1)
+			endif
 		EndIf
 
 		If ElevatorStatus = ELEVATOR_OPENING_DOOR
@@ -664,8 +685,8 @@ Type TElevator Extends TEntity
 			If door.GetFrameAnimations().getCurrentAnimationName() = "opendoor"
 'print Millisecs()+"  Elevator: 3) opening..."
 				'while the door animation is active, the deboarding
-				'figures will move to the exit/door
-				MoveDeboardingPassengersToCenter()
+				'figures will move to the exit/door (one after another)
+				MoveDeboardingPassengersToCenter(-1, 1)
 				
 				If door.GetFrameAnimations().GetCurrent().isFinished()
 'print Millisecs()+"  Elevator: 3) opened -> 4)"

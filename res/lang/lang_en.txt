@@ -642,6 +642,7 @@ CAST_APPEARANCE = Appearance
 
 POINTSSET_OF_POINTSMAX_POINTS_SET = %POINTSSET%/%POINTSMAX% points set
 PRODUCTION_FOCUS_POINTS_NOT_SET_COMPLETELY = Production focus points not set completely
+NEED_TO_SPENT_AT_LEAST_ONE_POINT_OF_PRODUCTION_FOCUS_POINTS = At least one point has to get spent on focus points
 NO_PRODUCTION_COMPANY_SELECTED = No production company selected
 
 STUDIO_MANAGER = Studio manager

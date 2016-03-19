@@ -333,6 +333,8 @@ Type TFigure extends TFigureBase
 		If GetVelocity().GetX() = 0 or not moveable
 			'boarding/deboarding movement
 			If boardingState <> 0
+				'default (when not walking to your elevator position)
+				result = "standFront"
 				'multiply boardingState : if boarding it is 1, if deboarding it is -1
 				'so multiplying negates value if needed
 				If boardingState * PosOffset.GetX() > 0 Then result = "walkRight"
