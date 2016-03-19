@@ -126,8 +126,8 @@ Type TElevator Extends TEntity
 		FloorRouteList.Clear()
 		Passengers.Clear()
 	
-		PassengerPosition  = PassengerPosition[..6]
-		PassengerOffset    = PassengerOffset[..6]
+		PassengerPosition  = New String[6]
+		PassengerOffset    = New TVec2D[6]
 		PassengerOffset[0] = New TVec2D.Init(0, 0)
 		PassengerOffset[1] = New TVec2D.Init(-13, 0)
 		PassengerOffset[2] = New TVec2D.Init(12, 0)
@@ -587,10 +587,16 @@ Type TElevator Extends TEntity
 	
 			'do we still have deboarding passengers?
 			'-> let them deboard before starting the next route
-			If HasDeboardingPassengers()
+			local canCloseDoors:int = True
+			If HasDeboardingPassengers() 'and not  waitAtFloorTimer.isExpired()
+				canCloseDoors = False
 'print Millisecs()+"  Elevator: 0) move deboarding"
-				MoveDeboardingPassengersToCenter(-1, -1) 'no deboarding limit
-			Else
+				if not MoveDeboardingPassengersToCenter(-1, -1) 'no deboarding limit
+					canCloseDoors = True
+				endif
+			endif
+
+			if canCloseDoors
 'print Millisecs()+"  Elevator: 0) get next target"
 				'get next target on a route
 				TargetFloor = CalculateNextTarget()
@@ -625,6 +631,7 @@ Type TElevator Extends TEntity
 
 
 		If ElevatorStatus = ELEVATOR_MOVING
+'print Millisecs()+"  Elevator: 2) moving"
 			'Check again if there is a new target which can get a lift
 			'on this route
 			TargetFloor = CalculateNextTarget()
@@ -699,6 +706,7 @@ Type TElevator Extends TEntity
 
 		'(de-)boarding
 		If ElevatorStatus = ELEVATOR_BOARDING
+'print Millisecs()+"  Elevator: 4) boarding"
 			'continue deboarding (if needed)
 			MoveDeboardingPassengersToCenter()
 
