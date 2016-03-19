@@ -12,6 +12,8 @@
 				<child name="gfx_gui_button.default"					x="0"	y="0"	w="36"	h="36" ninepatch="true" />
 				<child name="gfx_gui_button.default.hover"				x="36"	y="0"	w="36"	h="36" ninepatch="true" />
 				<child name="gfx_gui_button.default.active"				x="72"	y="0"	w="36"	h="36" ninepatch="true" />
+				<child name="gfx_gui_button.default.positive"			x="108"	y="0"	w="36"	h="36" ninepatch="true" />
+				<child name="gfx_gui_button.default.negative"			x="144"	y="0"	w="36"	h="36" ninepatch="true" />
 				<child name="gfx_gui_button.rounded"					x="400"	y="0"	w="25"	h="25" ninepatch="true" />
 				<child name="gfx_gui_button.rounded.hover"				x="425"	y="0"	w="25"	h="25" ninepatch="true" />
 				<child name="gfx_gui_button.rounded.active"				x="450"	y="0"	w="25"	h="25" ninepatch="true" />

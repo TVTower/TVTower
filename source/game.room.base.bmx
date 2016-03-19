@@ -156,6 +156,7 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 	Const BLOCKEDSTATE_BOMB:int       = 1 'eg. after terrorists attacked
 	Const BLOCKEDSTATE_RENOVATION:int = 2 'eg. for rooms not "bombable"
 	Const BLOCKEDSTATE_MARSHAL:int    = 3 'eg. archive when not enough money
+	Const BLOCKEDSTATE_SHOOTING_:int  = 4 'studios: when in production
 
 
 	'init a room base with basic variables

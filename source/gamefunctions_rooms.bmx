@@ -2439,6 +2439,10 @@ Type RoomHandler_Studio extends TRoomHandler
 	'a map containing "roomGUID"=>"script" pairs
 	Field studioScriptsByRoom:TMap = CreateMap()
 
+	'contains all production concepts with state "production ready"
+	'once one starts productions in a studio
+	Field productionsToProduce:TList = CreateList()
+
 	Global studioManagerDialogue:TDialogue
 	Global studioScriptLimit:int = 1
 
@@ -2887,6 +2891,97 @@ Type RoomHandler_Studio extends TRoomHandler
 		if not roomGUID then return Null
 
 		return TScript(studioScriptsByRoom.ValueForKey(roomGUID))
+	End Method
+
+
+	'start the production in the given studio
+	'returns amount of productions
+	Method StartProductionInStudio:int(roomGUID:string)
+		if not roomGUID then return False
+
+		local script:TScript = GetCurrentStudioScript(roomGUID)
+		if not script then return False
+
+		'- cleanup (remove potentially existing previous productions
+		'  of that script)
+		'- fetch all concepts in that studio
+		'- create productions of all concepts "ready to produce"
+		'- start shooting of first production
+
+		local removeProductions:TProduction[]
+		For local production:TProduction = EachIn productionsToProduce
+			if production.productionConcept.script <> script then continue
+
+			removeProductions :+ [production]
+		Next
+		For local production:TProduction = EachIn removeProductions
+			productionsToProduce.Remove(production)
+		Next
+		
+		local productionCount:int = 0
+		For local productionConcept:TProductionConcept = EachIn GetProductionConceptCollection().GetProductionConceptsByScript(script)
+			'skip produced concepts
+			if productionConcept.IsProduced() then continue
+			'skip not-produceable concepts
+			if not productionConcept.IsProduceable() then continue
+
+			local production:TProduction = new TProduction
+			production.SetProductionConcept(productionConcept)
+			production.SetStudio(roomGUID)
+
+			productionsToProduce.AddLast(production)
+			productionCount :+ 1
+		Next
+
+		'sort productions by "slots"
+		SortList(productionsToProduce, True, SortProductionsByStudioSlot)
+
+		return productionCount
+	End Method
+
+
+	Function SortProductionsByStudioSlot:int(o1:object, o2:object)
+		local p1:TProduction = TProduction(o1)
+		local p2:TProduction = TProduction(o2)
+		if not p2 then return 1
+		if not p1 then return -1
+
+		if p1.productionConcept.studioSlot < p2.productionConcept.studioSlot then return 1
+		if p1.productionConcept.studioSlot > p2.productionConcept.studioSlot then return -1
+		return 0
+	End Function
+
+
+	Method UpdateProductions:int()
+		local finishedProductions:TProduction[]
+		'check if one of the productions is finished now
+		For local production:TProduction = EachIn productionsToProduce
+			production.Update()
+
+			if production.IsProduced() then finishedProductions :+ [production]
+		Next
+
+		'remove finished ones and start follow ups of the used studio
+		'(extra step to avoid concurrent list modification)
+		local startedProductions:int = 0
+		For local production:TProduction = EachIn finishedProductions
+			productionsToProduce.Remove(production)
+
+			'fetch next production of that script and start its shooting
+			local nextProduction:TProduction
+			For local p:TProduction = EachIn productionsToProduce
+				if p.studioRoomGUID <> production.studioRoomGUID then continue
+
+				nextProduction = p
+				exit
+			Next 
+			if nextProduction
+				nextProduction.Start()
+				startedProductions :+ 1
+			endif
+		Next
+
+		return startedProductions
 	End Method
 
 

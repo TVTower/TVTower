@@ -367,6 +367,8 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 
 
 		'GUI -> LOGIC
+		'finish planning/make production ready 
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickFinishProductionConcept, "TGUIButton") ]
 		'changes to the cast (slot) list
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.addedItem", onProductionConceptChangeCastSlotList, "TGUICastSlotList" ) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiList.removedItem", onProductionConceptChangeCastSlotList, "TGUICastSlotList" ) ]
@@ -464,7 +466,18 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		Next
 		'reposition them
 		repositionSliders = True
+	End Method
 
+
+	Method PayCurrentProductionConceptDeposit:int()
+		if not currentProductionConcept then return False
+		'already paid ?
+		if currentProductionConcept.IsDepositPaid() then return False
+
+		print "TODO: connect to player finance"
+		if currentProductionConcept.PayDeposit() then return True
+
+		return False
 	End Method
 	
 
@@ -793,7 +806,7 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		return TRUE
 	End Function
 	
-
+			
 	'in case of right mouse button click we want to remove the
 	'cast
 	Function onClickCastItem:int(triggerEvent:TEventBase)
@@ -814,6 +827,25 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		
 		'remove right click - to avoid leaving the room
 		MouseManager.ResetKey(2)
+	End Function
+	
+
+	'finish production concept
+	Function onClickFinishProductionConcept:int(triggerEvent:TEventBase)
+		'skip other buttons
+		if triggerEvent.GetSender() <> GetInstance().finishProductionConcept then return False
+
+		if not GetInstance().currentProductionConcept then return False
+		'already at last step
+		if GetInstance().currentProductionConcept.IsProduceable() then return False
+		'nothing to do (should be disabled already)
+		if GetInstance().currentProductionConcept.IsUnplanned() then return False
+
+		if GetInstance().currentProductionConcept.IsPlanned()
+			return GetInstance().PayCurrentProductionConceptDeposit()
+		endif
+
+		return True
 	End Function
 
 
@@ -880,17 +912,26 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		productionConceptList = new TGUISelectList.Create(new TVec2D.Init(20,20), new TVec2D.Init(150,180), "supermarket_customproduction_productionconceptbox")
 		'scroll one concept per "scroll"
 		productionConceptList.scrollItemHeightPercentage = 1.0
+
+		'create some random concepts
 		'add some items to that list
 		for local i:int = 1 to 10
 			local script:TScript = TMyApp.GetRandomScript()
-			local productionConcept:TProductionConcept = new TProductionConcept.Initialize(1, script)
-			local item:TGuiProductionConceptSelectListItem = new TGuiProductionConceptSelectListItem.Create(null, new TVec2D.Init(150,24), "ICON + Drehbuchtitel "+i)
-
 			script.SetOwner(1)
 			'parent too
 			if script.IsEpisode() then script.GetParentScript().SetOwner(1)
 
+			local productionConcept:TProductionConcept = new TProductionConcept.Initialize(1, script)
+			GetProductionConceptCollection().Add(productionConcept)
+		Next
+
+		For local productionConcept:TProductionConcept = EachIn GetProductionConceptCollection().entries.Values()
+			'skip produced concepts
+			if productionConcept.IsProduced() then continue
+
+			local item:TGuiProductionConceptSelectListItem = new TGuiProductionConceptSelectListItem.Create(null, new TVec2D.Init(150,24), "concept")
 			item.SetProductionConcept(productionConcept)
+
 			'base items do not have a size - so we have to give a manual one
 			productionConceptList.AddItem( item )
 		Next
@@ -903,19 +944,40 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		'gets refilled in gui-updates
 		hoveredGuiCastItem = null
 
-		'disable _all_ sliders if no production company is selected
-		if not currentProductionConcept or (not currentProductionConcept.productionCompany and productionFocusSlider[0].IsEnabled())
-			For local i:int = 0 to productionFocusSlider.length -1
-				productionFocusSlider[i].Disable()
-			Next
+		'disable / enable elements according to state
+		if not currentProductionConcept or currentProductionConcept.IsProduceable()
+			if (not currentProductionConcept.productionCompany or productionFocusSlider[0].IsEnabled())
+				'disable _all_ sliders if no production company is selected
+				For local i:int = 0 to productionFocusSlider.length -1
+					productionFocusSlider[i].Disable()
+				Next
+			endif
+			
+			'general elements
+			if productionCompanySelect.IsEnabled()
+				productionCompanySelect.Disable()
+				castSlotList.Disable()
+				'if currentProductionConcept then print "DISABLE " + currentProductionConcept.script.GetTitle()
+			endif
 		endif
+
 		'or enable (specific of) them...
-		if currentProductionConcept and currentProductionConcept.productionCompany and not productionFocusSlider[0].IsEnabled()
-			For local i:int = 0 to productionFocusSlider.length -1
-				if currentProductionConcept.productionFocus.GetFocusAspectCount() > i
-					productionFocusSlider[i].Enable()
-				endif
-			Next
+		if currentProductionConcept and not currentProductionConcept.IsProduceable()
+			'sliders only with selected production company
+			if currentProductionConcept.productionCompany and not productionFocusSlider[0].IsEnabled()
+				For local i:int = 0 to productionFocusSlider.length -1
+					if currentProductionConcept.productionFocus.GetFocusAspectCount() > i
+						productionFocusSlider[i].Enable()
+					endif
+				Next
+			endif
+
+			'general elements
+			if not productionCompanySelect.IsEnabled()
+				productionCompanySelect.Enable()
+				castSlotList.Enable()
+				'if currentProductionConcept then print "ENABLE " + currentProductionConcept.script.GetTitle()
+			endif
 		endif
 
 		GuiManager.Update("supermarket_customproduction_castbox_modal")
@@ -931,12 +993,17 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		if currentProductionConcept and refreshFinishProductionConcept
 			if currentProductionConcept.IsProduceable()
 				finishProductionConcept.Disable()
+				finishProductionConcept.spriteName = "gfx_gui_button.datasheet.informative"
+
 				finishProductionConcept.SetValue("|b|Planung abgeschlossen|/b|")
 			elseif currentProductionConcept.IsPlanned()
 				finishProductionConcept.Enable()
+				'TODO: positive/negative je nach Geldstand
+				finishProductionConcept.spriteName = "gfx_gui_button.datasheet.positive"
 				finishProductionConcept.SetValue("|b|Planung abschließen|/b|~nund |b|"+TFunctions.DottedValue(currentProductionConcept.GetDepositCost())+" " + GetLocale("CURRENCY")+"|/b| anzahlen")
 			else
 				finishProductionConcept.Disable()
+				finishProductionConcept.spriteName = "gfx_gui_button.datasheet"
 				finishProductionConcept.SetValue("|b|Planung...|/b|~n(|b|"+TFunctions.DottedValue(currentProductionConcept.GetDepositCost())+" " + GetLocale("CURRENCY")+"|/b| anzuzahlen)")
 			endif
 		endif
@@ -1355,8 +1422,8 @@ endrem
 			bgColor = TColor.Create(180,110,60, 0.1)
 		'default
 		else 'elseif productionConcept.IsUnplanned()
-			if IsHovered()
-				bgColor = TColor.Create(150,150,150, 0.1)
+			if IsHovered() or isSelected()
+				bgColor = TColor.Create(175,165,120, 0.25)
 			endif
 		endif
 

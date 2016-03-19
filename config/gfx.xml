@@ -62,6 +62,9 @@
 				<child name="gfx_gui_button.datasheet.negative"				x="0"	y="190"	w="30"	h="30" ninepatch="true" />
 				<child name="gfx_gui_button.datasheet.negative.hover"		x="30"	y="190"	w="30"	h="30" ninepatch="true" />
 				<child name="gfx_gui_button.datasheet.negative.active"		x="60"	y="190"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.informative"			x="0"	y="220"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.informative.hover"	x="30"	y="220"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.informative.active"	x="60"	y="220"	w="30"	h="30" ninepatch="true" />
 			</children>
 		</spritepack>
 

@@ -133,6 +133,13 @@ Type TProductionConcept Extends TOwnedGameObject
 	End Method
 
 
+	Method PayDeposit:int()
+		SetFlag(TVTProductionConceptFlag.DEPOSIT_PAID, True)
+
+		return True
+	End Method
+
+
 	Method GetCast:TProgrammePersonBase(castIndex:int)
 		if not cast or castIndex >= cast.length or castIndex < 0 then return Null
 		return cast[castIndex]
@@ -318,6 +325,11 @@ Type TProductionConcept Extends TOwnedGameObject
 
 	Method IsDepositPaid:int()
 		return hasFlag(TVTProductionConceptFlag.DEPOSIT_PAID)
+	End Method
+
+
+	Method IsProduced:int()
+		return hasFlag(TVTProductionConceptFlag.PRODUCED)
 	End Method
 
 

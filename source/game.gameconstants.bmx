@@ -651,6 +651,8 @@ Type TVTProductionConceptFlag {_exposeToLua}
 	Const CALLIN_COMPETITION:Int = 2
 	'deposit payment paid?
 	Const DEPOSIT_PAID:Int = 4
+	'finished shooting of this production?
+	Const PRODUCED:Int = 5
 
 	Const count:int = 3
 
@@ -666,6 +668,7 @@ Type TVTProductionConceptFlag {_exposeToLua}
 			case LIVE               return "live"
 			case CALLIN_COMPETITION return "callincompetition"
 			case DEPOSIT_PAID       return "depositpaid"
+			case PRODUCED           return "produced"
 			default
 				'loop through all flag-entries and add them if contained
 				local result:string

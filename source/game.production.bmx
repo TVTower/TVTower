@@ -1,8 +1,9 @@
 SuperStrict
 Import "game.world.worldtime.bmx"
 Import "game.production.productionconcept.bmx"
-Import "game.production.script.bmx"
-Import "game.broadcastmaterial.news.bmx"
+Import "game.programme.newsevent.bmx"
+Import "game.programme.programmelicence.bmx"
+
 
 Type TProductionCollection Extends TGameObjectCollection
 	Field latestProductionByRoom:TMap = CreateMap()
@@ -15,11 +16,12 @@ Type TProductionCollection Extends TGameObjectCollection
 	End Function
 
 
-	'override to store latest production on a per-room-basis
+	'override to _additionally_ store latest production on a
+	'per-room-basis
 	Method Add:int(obj:TGameObject)
 		local p:TProduction = TProduction(obj)
 		if p
-			local roomGUID:string = p.studioGUID
+			local roomGUID:string = p.studioRoomGUID
 			if roomGUID <> ""
 				'if the production is newer than a potential previous
 				'production, replace the previous with the new one 
@@ -49,18 +51,16 @@ End Function
 
 
 
-Type TProduction Extends TGameObject
-	Field concept:TProductionConcept
+Type TProduction Extends TOwnedGameObject
+	Field productionConcept:TProductionConcept
 	'in which room was/is this production recorded (might no longer
 	'be a studio!)
-	Field studioGUID:string
-	Field newsTopic:TNews = null
-	Field guests:TList
-	Field reporters:TList
-	Field additionalBudget:Int
+	Field studioRoomGUID:string
 	'0 = waiting, 1 = running, 2 = finished
 	Field status:Int = 0
+	'start of shooting
 	Field startDate:Double
+	'end of shooting
 	Field endDate:Double
 
 
@@ -70,20 +70,66 @@ Type TProduction Extends TGameObject
 	End Method
 
 
-	Method GetScript:TScript()
-		Return concept.script
+	Method SetProductionConcept(concept:TProductionConcept)
+		productionConcept = concept
 	End Method
-	
 
-	Method Start()
+
+	Method IsInProduction:int()
+		return status = 1
+	End Method
+
+
+	Method IsProduced:int()
+		return status = 2
+	End Method
+
+
+	Method SetStudio:int(studioGUID:string)
+		studioRoomGUID = studioGUID
+		return True
+	End Method
+
+
+	Method Start:TProduction()
+		print "start production"
 		startDate = GetWorldTime().GetTimeGone()
-		endDate = startDate + 500 * 60 '500 minutes
+		endDate = startDate + productionConcept.GetBaseProductionTime() * 3600
+
+		status = 1
+
+		return self
 	End Method
 
 
-	Method Finalize()
+	Method Finalize:TProduction()
+		status = 2
+
+		print "Dreharbeiten beendet - Programm herstellen"
 		'Local genreDefinition:TMovieGenreDefinition = Game.BroadcastManager.GetMovieGenreDefinition(concept.script.genre)
 
 		'change skills of the actors / director / ...
+
+		return self
+	End Method
+
+
+	Method Update:int()
+		Select status
+			'already finished
+			case 2
+				return False
+			'not yet started
+			case 0
+				return False
+			'in production
+			case 1
+				if GetWorldTime().GetTimeGone() < endDate
+					Finalize()
+					return True
+				endif
+		End Select
+
+		return False
 	End Method
 End Type

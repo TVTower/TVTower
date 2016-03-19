@@ -3956,6 +3956,11 @@ Type GameEvents
 		'check if it is time for new news
 		GetNewsAgency().Update()
 
+		'=== UPDATE STUDIOS ===
+		'check if new productions finished (0:00, 0:05, ...)
+		if (minute + 5) mod 5 = 0
+			RoomHandler_Studio.GetInstance().UpdateProductions()
+		endif
 
 		'=== CHANGE OFFER OF MOVIEAGENCY AND ADAGENCY ===
 		'countdown for the refillers

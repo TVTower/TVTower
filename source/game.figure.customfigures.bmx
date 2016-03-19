@@ -245,6 +245,16 @@ Type TFigureDeliveryBoy Extends TFigure
 
 
 	Method UpdateCustom:Int()
+rem
+		'somehow broken?
+		if deliverToRoom and IsIdling() and not IsOffScreen()
+			Throw "PROBLEM: DeliveryBoy - falsche Variablen - korrigieren!!"
+
+			deliveryDone = False
+			'oder
+			'deliverToRoom = Null
+		endif
+endrem	
 		'nothing to do - move to offscreen (leave building)
 		If Not deliverToRoom And Not GetTarget()
 			If Not IsOffScreen() Then SendToOffscreen()

@@ -198,7 +198,6 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Field basedOnScriptGUID:String = ""
 
 
-
 	Function CreateFromTemplate:TScript(template:TScriptTemplate)
 		local script:TScript = new TScript
 		script.title = template.GenerateFinalTitle()
