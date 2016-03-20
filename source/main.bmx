@@ -92,6 +92,7 @@ Import "game.database.bmx"
 Import "game.game.base.bmx"
 Import "game.production.script.gui.bmx"
 Import "game.production.productionconcept.gui.bmx"
+Import "game.production.productionmanager.bmx"
 Import "game.figure.bmx"
 Import "game.figure.customfigures.bmx"
 Import "game.newsagency.bmx"
@@ -3959,7 +3960,7 @@ Type GameEvents
 		'=== UPDATE STUDIOS ===
 		'check if new productions finished (0:00, 0:05, ...)
 		if (minute + 5) mod 5 = 0
-			RoomHandler_Studio.GetInstance().UpdateProductions()
+			GetProductionManager().Update()
 		endif
 
 		'=== CHANGE OFFER OF MOVIEAGENCY AND ADAGENCY ===

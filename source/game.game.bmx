@@ -1013,7 +1013,7 @@ endrem
 			EventManager.triggerEvent(TEventSimple.Create("Game.OnMinute", New TData.addNumber("time", worldTime.GetTimeGone()) ))
 		Next
 
-		'reset time of lst minute so next update can calculate missed minutes
+		'reset time of last minute so next update can calculate missed minutes
 		lastTimeMinuteGone = worldTime.GetTimeGone()
 	End Method
 End Type

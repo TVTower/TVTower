@@ -56,7 +56,7 @@ Type TProduction Extends TOwnedGameObject
 	'in which room was/is this production recorded (might no longer
 	'be a studio!)
 	Field studioRoomGUID:string
-	'0 = waiting, 1 = running, 2 = finished
+	'0 = waiting, 1 = running, 2 = finished, 3 = aborted/paused
 	Field status:Int = 0
 	'start of shooting
 	Field startDate:Double
@@ -96,7 +96,19 @@ Type TProduction Extends TOwnedGameObject
 		startDate = GetWorldTime().GetTimeGone()
 		endDate = startDate + productionConcept.GetBaseProductionTime() * 3600
 
+print "start: "+GetWorldTime().GetFormattedDate(startDate)
+print "ende: "+GetWorldTime().GetFormattedDate(endDate)
+
 		status = 1
+
+		return self
+	End Method
+
+
+	Method Abort:TProduction()
+		print "abort production"
+
+		status = 3
 
 		return self
 	End Method
@@ -119,12 +131,15 @@ Type TProduction Extends TOwnedGameObject
 			'already finished
 			case 2
 				return False
+			'aborted / paused
+			case 3
+				return False
 			'not yet started
 			case 0
 				return False
 			'in production
 			case 1
-				if GetWorldTime().GetTimeGone() < endDate
+				if GetWorldTime().GetTimeGone() > endDate
 					Finalize()
 					return True
 				endif

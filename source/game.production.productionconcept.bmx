@@ -43,6 +43,9 @@ Type TProductionConcept Extends TOwnedGameObject
 	'this information in a "scriptOrder"-Collection
 	Field studioSlot:int = -1
 
+	Field customTitle:string
+	Field customDescription:string
+
 
 	'each assigned person (directors, actors, ...)
 	Field cast:TProgrammePersonBase[]
@@ -81,6 +84,28 @@ Type TProductionConcept Extends TOwnedGameObject
 
 		productionFocus = new TProductionFocusBase
 	End Method
+
+
+	Method SetCustomTitle(value:string)
+		customTitle = value
+	End Method
+
+
+	Method SetCustomDescription(value:string)
+		customDescription = value
+	End Method
+
+
+	Method GetTitle:string()
+		if customTitle or not script then return customTitle
+		return script.GetTitle()
+	end Method
+
+
+	Method GetDescription:string()
+		if customTitle or not script then return customDescription
+		return script.GetDescription()
+	end Method
 	
 
 	Method SetScript(script:TScript)

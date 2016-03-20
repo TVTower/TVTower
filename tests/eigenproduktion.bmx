@@ -24,6 +24,7 @@ Import "../source/game.registry.loaders.bmx" 'genres
 Import "../source/game.production.productionconcept.bmx"
 Import "../source/game.production.productioncompany.bmx"
 Import "../source/game.production.productionconcept.gui.bmx"
+Import "../source/game.production.productionmanager.bmx"
 
 
 
@@ -38,6 +39,12 @@ Type TMyApp Extends TGraphicalApp
 
 	Method Prepare:Int()
 		Super.Prepare()
+
+		'set worldTime to 20:00, day 3 of 12 a year, in 1985
+		GetWorldTime().SetTimeGone( GetWorldTime().MakeTime(1985, 3, 20, 0, 0) )
+		'set speed 10x realtime
+		GetWorldTime().SetTimeFactor(120)
+
 
 		Local gm:TGraphicsManager = TGraphicsManager.GetInstance()
 		GetDeltatimer().Init(30, -1)
@@ -137,6 +144,10 @@ Type TMyApp Extends TGraphicalApp
 		'fetch and cache mouse and keyboard states for this cycle
 		GUIManager.StartUpdates()
 
+		'update worldtime (eg. in games this is the ingametime)
+		GetWorldTime().Update()
+		
+		GetProductionManager().Update()
 
 		'=== UPDATE GUI ===
 		'system wide gui elements
@@ -214,6 +225,24 @@ Type TMyApp Extends TGraphicalApp
 			if KeyManager.IsHit(KEY_NUM9)
 				RoomHandler_Supermarket.GetInstance().currentProductionConcept.productionFocus.SetFocusPointsMax( RoomHandler_Supermarket.GetInstance().currentProductionConcept.productionFocus.focusPointsMax + 1)
 			Endif
+
+			if KeyManager.IsHit(KEY_P)
+				if RoomHandler_Supermarket.GetInstance().currentProductionConcept.IsProduceable()
+					local count:int = GetProductionManager().StartProductionInStudio("test", RoomHandler_Supermarket.GetInstance().currentProductionConcept.script)
+					print "added "+count+" productions to shoot"
+				else
+					print RoomHandler_Supermarket.GetInstance().currentProductionConcept.GetTitle()+"  not ready"
+				endif
+			endif
+		endif
+
+		if KeyManager.IsHit(KEY_UP)
+			GetWorldTime().SetTimeFactor( 2 * GetWorldTime().GetTimeFactor())
+			print "factor: "+GetWorldTime().GetTimeFactor()
+		endif
+		if KeyManager.IsHit(KEY_DOWN)
+			GetWorldTime().SetTimeFactor( Max(10, 0.5 * GetWorldTime().GetTimeFactor()))
+			print "factor: "+GetWorldTime().GetTimeFactor()
 		endif
 
 		'check if new resources have to get loaded
@@ -257,6 +286,8 @@ Type TMyApp Extends TGraphicalApp
 		'if there is a resource loading currently - display information
 		RenderLoadingResourcesInformation()
 
+
+		DrawText("worldTime: "+GetWorldTime().GetFormattedTime(-1, "h:i:s")+ " at day "+GetWorldTime().GetDayOfYear()+" in "+GetWorldTime().GetYear(), 90, 0)
 
 
 		'=== DRAW MOUSE CURSOR ===

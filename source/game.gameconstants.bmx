@@ -652,7 +652,7 @@ Type TVTProductionConceptFlag {_exposeToLua}
 	'deposit payment paid?
 	Const DEPOSIT_PAID:Int = 4
 	'finished shooting of this production?
-	Const PRODUCED:Int = 5
+	Const PRODUCED:Int = 8
 
 	Const count:int = 3
 
