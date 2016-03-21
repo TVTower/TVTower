@@ -33,6 +33,7 @@
 				<child name="gfx_datasheet_icon_audience"           x="261"  y="72"   w="24"  h="23" />
 				<child name="gfx_datasheet_icon_ok"                 x="287"  y="72"   w="24"  h="23" />
 				<child name="gfx_datasheet_icon_ok2"                x="313"  y="72"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_pencil"             x="339"  y="72"   w="24"  h="23" />
 				<!-- same than minAudience -->
 				<child name="gfx_datasheet_icon_audienceIncrease"   x="79"  y="72"   w="24"  h="23" />
 				<child name="gfx_datasheet_icon_audience"           x="261"  y="72"   w="24"  h="23" />

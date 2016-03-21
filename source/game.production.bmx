@@ -96,9 +96,6 @@ Type TProduction Extends TOwnedGameObject
 		startDate = GetWorldTime().GetTimeGone()
 		endDate = startDate + productionConcept.GetBaseProductionTime() * 3600
 
-print "start: "+GetWorldTime().GetFormattedDate(startDate)
-print "ende: "+GetWorldTime().GetFormattedDate(endDate)
-
 		status = 1
 
 		return self
@@ -118,6 +115,26 @@ print "ende: "+GetWorldTime().GetFormattedDate(endDate)
 		status = 2
 
 		print "Dreharbeiten beendet - Programm herstellen"
+
+		'production effects
+		'- production value calculation
+		'- cast:
+		'- - levelups / skill adjustments / XP gain
+		'- - adding the job (if not done automatically) so it becomes
+		'    specialized for this kind of production somewhen
+		'
+		'programme creation:
+		'- programme data
+		'- programme licence
+		'- adding licence to player collection!
+
+
+		'=== PRODUCTION EFFECTS ===
+		'Fetch corresponding genre definition, with this we are able to
+		'see what values are "expected" for this genre.
+		'Depending on the "fit" of actors, directors, ... values are
+		'modified then.
+
 		'Local genreDefinition:TMovieGenreDefinition = Game.BroadcastManager.GetMovieGenreDefinition(concept.script.genre)
 
 		'change skills of the actors / director / ...

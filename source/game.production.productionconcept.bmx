@@ -14,6 +14,12 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 	End Function
 
 
+	'override
+	Method GetRandom:TProductionConcept()
+		return TProductionConcept( Super.GetRandom() )
+	End Method
+	
+
 	Method GetProductionConceptsByScript:TProductionConcept[](script:TScript)
 		local result:TProductionConcept[]
 		For local pc:TProductionConcept = EachIn self
@@ -46,6 +52,8 @@ Type TProductionConcept Extends TOwnedGameObject
 	Field customTitle:string
 	Field customDescription:string
 
+	Field customSeriesTitle:string
+	Field customSeriesDescription:string
 
 	'each assigned person (directors, actors, ...)
 	Field cast:TProgrammePersonBase[]

@@ -20,7 +20,18 @@ Type TProductionManager
 	Method Update:int()
 		UpdateProductions()
 	End Method
-	
+
+
+	'returns first found production in the given room/studio
+	Method GetProductionInStudio:TProduction(roomGUID:string)
+		For local production:TProduction = EachIn productionsToProduce
+			if production.studioRoomGUID <> roomGUID then continue
+
+			return production
+		Next
+		return null
+	End Method	
+
 
 	'start the production in the given studio
 	'returns amount of productions

@@ -102,8 +102,8 @@ Type TMyApp Extends TGraphicalApp
 
 
 		'get a new script
-		local script:TScript = GetScriptCollection().GetRandomAvailable()
-		script.SetOwner(1)
+		'local script:TScript = GetScriptCollection().GetRandomAvailable()
+		'script.SetOwner(1)
 
 		'create some companies
 		local cnames:string[] = ["Movie World", "Picture Fantasy", "UniPics", "Motion Gems", "Screen Jewel"]
@@ -157,92 +157,130 @@ Type TMyApp Extends TGraphicalApp
 		Super.Update()
 
 
-		if KeyManager.IsHit(KEY_SPACE)
-			'get a new script
-			local script:TScript = GetRandomScript()
-			script.SetOwner(1)
-			local productionConcept:TProductionConcept = new TProductionConcept.Initialize(1, script)
-			'create new and take over
-			RoomHandler_Supermarket.GetInstance().SetCurrentProductionConcept( productionConcept, RoomHandler_Supermarket.GetInstance().currentProductionConcept)
-		endif
+		if not GuiManager.GetKeystrokeReceiver()
+			if KeyManager.IsHit(KEY_SPACE)
+				'get a new script
+				local script:TScript = GetRandomScript()
+				script.SetOwner(1)
+				local productionConcept:TProductionConcept = new TProductionConcept.Initialize(1, script)
+				'create new and take over
+				RoomHandler_Supermarket.GetInstance().SetCurrentProductionConcept( productionConcept, RoomHandler_Supermarket.GetInstance().currentProductionConcept)
+			endif
 
-		if RoomHandler_Supermarket.GetInstance().currentProductionConcept
-			if KeyManager.IsHit(KEY_1)
-				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetCast(0, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True))
-			Endif
-			if KeyManager.IsHit(KEY_2)
-				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetCast(1, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True))
-			Endif
-			if KeyManager.IsHit(KEY_3)
-				RoomHandler_Supermarket.GetInstance().castSlotList.SetSlotCast(2, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True) )
-				'currentProductionConcept.SetCast(2, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True))
-			Endif
-			if KeyManager.IsHit(KEY_4)
-				RoomHandler_Supermarket.GetInstance().castSlotList.SetSlotCast(3, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True) )
-			Endif
-			if KeyManager.IsHit(KEY_5)
-				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetCast(4, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True))
-			Endif
+			if RoomHandler_Supermarket.GetInstance().currentProductionConcept
+				if KeyManager.IsHit(KEY_1)
+					RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetCast(0, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True))
+				Endif
+				if KeyManager.IsHit(KEY_2)
+					RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetCast(1, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True))
+				Endif
+				if KeyManager.IsHit(KEY_3)
+					RoomHandler_Supermarket.GetInstance().castSlotList.SetSlotCast(2, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True) )
+					'currentProductionConcept.SetCast(2, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True))
+				Endif
+				if KeyManager.IsHit(KEY_4)
+					RoomHandler_Supermarket.GetInstance().castSlotList.SetSlotCast(3, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True) )
+				Endif
+				if KeyManager.IsHit(KEY_5)
+					RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetCast(4, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True))
+				Endif
 
-			if KeyManager.IsHit(KEY_Q)
-				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionCompany( TProductionCompanyBase(RoomHandler_Supermarket.GetInstance().productionCompanySelect.GetEntryByPos(0).data.Get("productionCompany")) )
-			Endif
-			if KeyManager.IsHit(KEY_W)
-				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionCompany( TProductionCompanyBase(RoomHandler_Supermarket.GetInstance().productionCompanySelect.GetEntryByPos(1).data.Get("productionCompany")) )
-			Endif
-			if KeyManager.IsHit(KEY_E)
-				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionCompany( TProductionCompanyBase(RoomHandler_Supermarket.GetInstance().productionCompanySelect.GetEntryByPos(2).data.Get("productionCompany")) )
-			Endif
-			if KeyManager.IsHit(KEY_R)
-				'random one
+				if KeyManager.IsHit(KEY_Q)
+					RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionCompany( TProductionCompanyBase(RoomHandler_Supermarket.GetInstance().productionCompanySelect.GetEntryByPos(0).data.Get("productionCompany")) )
+				Endif
+				if KeyManager.IsHit(KEY_W)
+					RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionCompany( TProductionCompanyBase(RoomHandler_Supermarket.GetInstance().productionCompanySelect.GetEntryByPos(1).data.Get("productionCompany")) )
+				Endif
+				if KeyManager.IsHit(KEY_E)
+					RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionCompany( TProductionCompanyBase(RoomHandler_Supermarket.GetInstance().productionCompanySelect.GetEntryByPos(2).data.Get("productionCompany")) )
+				Endif
+				if KeyManager.IsHit(KEY_R)
+					'random one
+					RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionCompany( GetProductionCompanyBaseCollection().GetRandom() )
+				Endif
+
+				if KeyManager.IsHit(KEY_NUM1)
+					RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(1, RandRange(0,10))
+				Endif
+				if KeyManager.IsHit(KEY_NUM2)
+					RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(2, RandRange(0,10))
+				Endif
+				if KeyManager.IsHit(KEY_NUM3)
+					RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(3, RandRange(0,10))
+				Endif
+				if KeyManager.IsHit(KEY_NUM4)
+					RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(4, RandRange(0,10))
+				Endif
+				if KeyManager.IsHit(KEY_NUM5)
+					RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(5, RandRange(0,10))
+				Endif
+				if KeyManager.IsHit(KEY_NUM6)
+					RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(6, RandRange(0,10))
+				Endif
+				if KeyManager.IsHit(KEY_NUM7)
+					RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(7, RandRange(0,10))
+				Endif
+				if KeyManager.IsHit(KEY_NUM8)
+					RoomHandler_Supermarket.GetInstance().currentProductionConcept.productionFocus.SetFocusPointsMax( Max(0, RoomHandler_Supermarket.GetInstance().currentProductionConcept.productionFocus.focusPointsMax - 1))
+				Endif
+				if KeyManager.IsHit(KEY_NUM9)
+					RoomHandler_Supermarket.GetInstance().currentProductionConcept.productionFocus.SetFocusPointsMax( RoomHandler_Supermarket.GetInstance().currentProductionConcept.productionFocus.focusPointsMax + 1)
+				Endif
+
+				if KeyManager.IsHit(KEY_P)
+					if RoomHandler_Supermarket.GetInstance().currentProductionConcept.IsProduceable()
+						local count:int = GetProductionManager().StartProductionInStudio("test", RoomHandler_Supermarket.GetInstance().currentProductionConcept.script)
+						print "added "+count+" productions to shoot"
+					else
+						print RoomHandler_Supermarket.GetInstance().currentProductionConcept.GetTitle()+"  not ready"
+					endif
+				endif
+			endif
+		
+
+			'create demo production
+			if KeyManager.IsHit(KEY_O)
+				if not RoomHandler_Supermarket.GetInstance().currentProductionConcept
+					local productionConcept:TProductionConcept = GetProductionConceptCollection().GetRandom()
+					'create new and take over
+					RoomHandler_Supermarket.GetInstance().SetCurrentProductionConcept( productionConcept, RoomHandler_Supermarket.GetInstance().currentProductionConcept)
+				endif
+				
+				'random company
 				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionCompany( GetProductionCompanyBaseCollection().GetRandom() )
-			Endif
 
-			if KeyManager.IsHit(KEY_NUM1)
-				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(1, RandRange(0,10))
-			Endif
-			if KeyManager.IsHit(KEY_NUM2)
-				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(2, RandRange(0,10))
-			Endif
-			if KeyManager.IsHit(KEY_NUM3)
-				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(3, RandRange(0,10))
-			Endif
-			if KeyManager.IsHit(KEY_NUM4)
-				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(4, RandRange(0,10))
-			Endif
-			if KeyManager.IsHit(KEY_NUM5)
-				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(5, RandRange(0,10))
-			Endif
-			if KeyManager.IsHit(KEY_NUM6)
-				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(6, RandRange(0,10))
-			Endif
-			if KeyManager.IsHit(KEY_NUM7)
-				RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(7, RandRange(0,10))
-			Endif
-			if KeyManager.IsHit(KEY_NUM8)
-				RoomHandler_Supermarket.GetInstance().currentProductionConcept.productionFocus.SetFocusPointsMax( Max(0, RoomHandler_Supermarket.GetInstance().currentProductionConcept.productionFocus.focusPointsMax - 1))
-			Endif
-			if KeyManager.IsHit(KEY_NUM9)
-				RoomHandler_Supermarket.GetInstance().currentProductionConcept.productionFocus.SetFocusPointsMax( RoomHandler_Supermarket.GetInstance().currentProductionConcept.productionFocus.focusPointsMax + 1)
-			Endif
+				For local i:int = 0 until RoomHandler_Supermarket.GetInstance().currentProductionConcept.cast.length
+					RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetCast(i, GetProgrammePersonBaseCollection().GetRandomCelebrity(null, True))
+				Next
+				For local i:int = 0 until RoomHandler_Supermarket.GetInstance().currentProductionConcept.productionFocus.focusPoints.length
+					RoomHandler_Supermarket.GetInstance().currentProductionConcept.SetProductionFocus(i, RandRange(0,10))
+				Next
 
-			if KeyManager.IsHit(KEY_P)
+				'pay for it
+				RoomHandler_Supermarket.GetInstance().PayCurrentProductionConceptDeposit()
+				
 				if RoomHandler_Supermarket.GetInstance().currentProductionConcept.IsProduceable()
 					local count:int = GetProductionManager().StartProductionInStudio("test", RoomHandler_Supermarket.GetInstance().currentProductionConcept.script)
+
+					local production:TProduction = GetProductionManager().GetProductionInStudio("test")
+					if production
+						'1 minute production time
+						production.endDate = production.startDate + 60*1
+					endif
+
 					print "added "+count+" productions to shoot"
 				else
 					print RoomHandler_Supermarket.GetInstance().currentProductionConcept.GetTitle()+"  not ready"
 				endif
 			endif
-		endif
-
-		if KeyManager.IsHit(KEY_UP)
-			GetWorldTime().SetTimeFactor( 2 * GetWorldTime().GetTimeFactor())
-			print "factor: "+GetWorldTime().GetTimeFactor()
-		endif
-		if KeyManager.IsHit(KEY_DOWN)
-			GetWorldTime().SetTimeFactor( Max(10, 0.5 * GetWorldTime().GetTimeFactor()))
-			print "factor: "+GetWorldTime().GetTimeFactor()
+			if KeyManager.IsHit(KEY_UP)
+				GetWorldTime().SetTimeFactor( 2 * GetWorldTime().GetTimeFactor())
+				print "factor: "+GetWorldTime().GetTimeFactor()
+			endif
+			if KeyManager.IsHit(KEY_DOWN)
+				GetWorldTime().SetTimeFactor( Max(10, 0.5 * GetWorldTime().GetTimeFactor()))
+				print "factor: "+GetWorldTime().GetTimeFactor()
+			endif
 		endif
 
 		'check if new resources have to get loaded
@@ -345,6 +383,8 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 	'datasheet
 	Field productionFocusSlider:TGUISlider[6]
 	Field productionFocusLabel:string[6]
+	Field editTextsButton:TGUIButton
+	Field editTextsWindow:TGUIEditTextsModalWindow
 	Field finishProductionConcept:TGUIButton
 	Field productionConceptList:TGUISelectList
 	Field productionConceptTakeOver:TGUICheckbox
@@ -358,6 +398,7 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 	Field currentProductionConcept:TProductionConcept
 
 	Global hoveredGuiCastItem:TGUICastListItem
+	Global hoveredGuiProductionConcept:TGuiProductionConceptListItem
 
 	Global _instance:RoomHandler_Supermarket
 	'ENTFERNEN 
@@ -392,8 +433,10 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		'GUI -> GUI
 		'this lists want to delete the item if a right mouse click happens...
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickCastItem, "TGUICastListItem") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickEditTextsButton, "TGUIButton") ]
 		'we want to know if we hover a specific block
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverCastItem, "TGUICastListItem" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverProductionConceptItem, "TGuiProductionConceptListItem" ) ]
 
 
 
@@ -411,6 +454,8 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction("GUIDropDown.onSelectEntry", onProductionConceptChangeProductionCompanyDropDown, "TGUIDropDown" ) ]
 		'select a production concept
 		_eventListeners :+ [ EventManager.registerListenerFunction("GUISelectList.onSelectEntry", onSelectProductionConcept) ]
+		'edit title/description
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiModalWindow.onClose", onCloseEditTextsWindow, "TGUIEditTextsModalWindow") ]
 
 
 		'LOGIC -> GUI
@@ -587,6 +632,64 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		refreshFinishProductionConcept = true
 	End Method
 
+
+	Method OpenEditTextsWindow()
+		if editTextsWindow then editTextsWindow.Remove()
+
+		editTextsWindow = New TGUIEditTextsModalWindow.Create(New TVec2D.Init(250,60), New TVec2D.Init(300,220), "supermarket_customproduction_productionbox_modal")
+		editTextsWindow.SetZIndex(100000)
+		editTextsWindow.SetConcept(GetInstance().currentProductionConcept)
+		editTextsWindow.Open()
+		GuiManager.Add(editTextsWindow)
+		print "opened text edit"
+	End Method
+
+
+	Function onCloseEditTextsWindow:int( triggerEvent:TEventBase )
+		local closeButton:int = triggerEvent.GetData().GetInt("closeButton", -1)
+		if closeButton <> 1 then return False
+
+		local window:TGUIEditTextsModalWindow = TGUIEditTextsModalWindow( triggerEvent.GetSender() )
+
+		local title:String = ""
+		local description:String = "" 
+		local parentTitle:String = ""
+		local parentDescription:String = "" 
+
+		title = window.inputTitle.GetValue()
+		description = window.inputDescription.GetValue()
+
+		if window.concept.script.IsEpisode()
+			parentTitle = title
+			parentDescription = description
+			title = window.inputSubTitle.GetValue()
+			description = window.inputSubDescription.GetValue()
+		endif
+		
+		if title <> window.concept.script.GetTitle()
+			window.concept.SetCustomTitle(title)
+			print "customTitle"
+		endif
+		if description <> window.concept.script.GetDescription()
+			window.concept.SetCustomDescription(description)
+			print "customDescription"
+		endif
+		if window.concept.script.IsEpisode()
+			local seriesScript:TScript = window.concept.script.GetParentScript()
+			if title <> seriesScript.GetTitle()
+				window.concept.customSeriesTitle = parentTitle
+				print "customSeriesTitle"
+			endif
+			if description <> window.concept.script.GetDescription()
+				window.concept.customSeriesDescription = parentDescription
+				print "customSeriesDescription"
+			endif
+		endif
+		print "TODO: titel uebernehmen" 
+		'...
+		
+	End Function
+	
 
 	'=== SELECTLIST - PRODUCTIONCONCEPT SELECTION ===
 
@@ -782,6 +885,17 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 	
 	'=== CAST LISTS - EVENTS ===
 
+	'GUI -> GUI reactio
+	Function onMouseOverProductionConceptItem:int( triggerEvent:TEventBase )
+		local item:TGuiProductionConceptListItem = TGuiProductionConceptListItem(triggerEvent.GetSender())
+		if item = Null then return FALSE
+
+		GetInstance().hoveredGuiProductionConcept = item
+
+		return TRUE
+	End Function
+
+
 	'LOGIC -> GUI reaction
 	'GUI -> GUI reaction
 	Function onProductionConceptChangeCast:int(triggerEvent:TEventBase)
@@ -800,6 +914,16 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 	End Function
 
 
+	'open modal window for editing titles
+	Function onClickEditTextsButton:int(triggerEvent:TEventBase)
+		local button:TGUIButton = TGUIButton(triggerEvent._sender)
+		'ignore wrong types and NON-dragged items
+		if not button or button <> GetInstance().editTextsButton then return FALSE
+
+		GetInstance().OpenEditTextsWindow()
+	End Function
+
+	
 	'GUI -> LOGIC reaction
 	Function onProductionConceptChangeCastSlotList:int(triggerEvent:TEventBase)
 		if not GetInstance().currentProductionConcept then return False
@@ -930,8 +1054,18 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		Next
 
 
+		'=== EDIT TEXTS BUTTON ===
+		editTextsButton = new TGUIButton.Create(new TVec2D.Init(530, 26), new TVec2D.Init(30, 28), "...", "supermarket_customproduction_newproduction")
+		'editTextsButton.disable()
+		editTextsButton.caption.SetSpriteName("gfx_datasheet_icon_pencil")
+		editTextsButton.caption.SetValueSpriteMode( TGUILabel.MODE_SPRITE_ONLY )
+		editTextsButton.spriteName = "gfx_gui_button.datasheet"
+
+
 		'=== FINISH CONCEPT BUTTON ===
 		finishProductionConcept = new TGUIButton.Create(new TVec2D.Init(20, 220), new TVec2D.Init(100, 28), "...", "supermarket_customproduction_newproduction")
+		finishProductionConcept.caption.SetSpriteName("gfx_datasheet_icon_money")
+		finishProductionConcept.caption.SetValueSpriteMode( TGUILabel.MODE_SPRITE_LEFT_OF_TEXT3 )
 		finishProductionConcept.disable()
 		finishProductionConcept.spriteName = "gfx_gui_button.datasheet"
 
@@ -974,10 +1108,11 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 	Method UpdateCustomProduction()
 		'gets refilled in gui-updates
 		hoveredGuiCastItem = null
+		hoveredGuiProductionConcept = null
 
 		'disable / enable elements according to state
 		if not currentProductionConcept or currentProductionConcept.IsProduceable()
-			if (not currentProductionConcept.productionCompany or productionFocusSlider[0].IsEnabled())
+			if (not currentProductionConcept or not currentProductionConcept.productionCompany or productionFocusSlider[0].IsEnabled())
 				'disable _all_ sliders if no production company is selected
 				For local i:int = 0 to productionFocusSlider.length -1
 					productionFocusSlider[i].Disable()
@@ -1012,6 +1147,7 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		endif
 
 		GuiManager.Update("supermarket_customproduction_castbox_modal")
+		GuiManager.Update("supermarket_customproduction_productionbox_modal")
 		GuiManager.Update("supermarket_customproduction_productionconceptbox")
 		GuiManager.Update("supermarket_customproduction_newproduction")
 		GuiManager.Update("supermarket_customproduction_productionbox")
@@ -1192,7 +1328,7 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 
 			skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 			if currentProductionConcept
-				skin.fontCaption.drawBlock(currentProductionConcept.script.title.Get(), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+				skin.fontCaption.drawBlock(currentProductionConcept.GetTitle(), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			endif
 			contentY :+ titleH
 
@@ -1322,6 +1458,7 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 			GuiManager.Draw("supermarket_customproduction")
 	'		GuiManager.Draw("supermarket_customproduction_castbox", -1000,-1000, GUIMANAGER_TYPES_DRAGGED)
 			GuiManager.Draw("supermarket_customproduction_castbox_modal")
+			GuiManager.Draw("supermarket_customproduction_productionbox_modal")
 
 			'draw datasheet if needed
 			if hoveredGuiCastItem then hoveredGuiCastItem.DrawDatasheet(hoveredGuiCastItem.GetScreenX() - 230, hoveredGuiCastItem.GetScreenX() - 170 )
@@ -1364,6 +1501,10 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 			Next
 
 		endif
+
+
+		'draw script-sheet
+		if hoveredGuiProductionConcept then hoveredGuiProductionConcept.DrawSupermarketSheet()
 
 		DrawText("Tasten:", 50,525)
 		DrawText("1-5: Zufallsbesetzung #1-5   Num1-7: Focus #1-7   Num8/9: FocusPoints +/-", 50,540)
@@ -1524,11 +1665,15 @@ endrem
 		titleFont.lineHeightModifier :* 0.9
 
 		if productionConcept
-			title = productionConcept.script.GetTitle()
+			title = productionConcept.GetTitle()
 			if productionConcept.script.IsEpisode()
 				local seriesScript:TScript = productionConcept.script.GetParentScript()
 				subtitle = (seriesScript.GetSubScriptPosition(productionConcept.script)+1)+"/"+seriesScript.GetSubscriptCount()+": "+ title
-				title = seriesScript.GetTitle()
+				if productionConcept.customSeriesTitle
+					title = productionConcept.customSeriesTitle
+				else
+					title = seriesScript.GetTitle()
+				endif
 			endif
 		endif
 
@@ -2308,11 +2453,66 @@ End Function
 
 
 
-Type TGUISelectCastWindow extends TGUIModalWindow
-	Field jobFilterSelect:TGUIDropDown
+
+Type TGUIProductionModalWindow extends TGUIModalWindow
 	Field buttonOK:TGUIButton
 	Field buttonCancel:TGUIButton
 	Field _eventListeners:TLink[]
+
+
+	Method Create:TGUIProductionModalWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
+		Super.CreateBase(pos, dimension, limitState)
+
+		darkenedAreaAlpha = 0.25 '0.5 is default
+
+
+		buttonOK = new TGUIButton.Create(new TVec2D.Init(10, dimension.GetY() - 44), new TVec2D.Init(136, 28), "OK", "")
+		buttonOK.spriteName = "gfx_gui_button.datasheet"
+		buttonCancel = new TGUIButton.Create(new TVec2D.Init(dimension.GetX() - 15 - 136, dimension.GetY() - 44), new TVec2D.Init(136, 28), "Cancel", "")
+		buttonCancel.spriteName = "gfx_gui_button.datasheet"
+
+		AddChild(buttonOK)
+		AddChild(buttonCancel)
+	End Method
+
+
+	Method Remove:Int()
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		return Super.Remove()
+	End Method
+
+
+	'override to skip animation
+	Method IsClosed:int()
+		return closeActionStarted
+	End Method
+
+
+	Method Resize(w:Float = 0, h:Float = 0)
+		Super.Resize(w, h)
+		if buttonOK then buttonOK.rect.position.SetY( rect.dimension.GetY() - 44)
+		if buttonCancel then buttonCancel.rect.position.SetY( rect.dimension.GetY() - 44)
+	End Method
+	
+
+	'override to _not_ recenter
+	Method Recenter:Int(moveBy:TVec2D=Null)
+		return True
+	End Method
+
+
+	Method Update:int()
+		if buttonCancel.IsClicked() then Close(2)
+		if buttonOK.IsClicked() then Close(1)
+
+		return super.Update()
+	End Method	
+End Type
+
+
+
+Type TGUISelectCastWindow extends TGUIProductionModalWindow
+	Field jobFilterSelect:TGUIDropDown
 	'only list persons with the following job?
 	Field listOnlyJobID:int = -1
 	'select a person for the following job (for correct fee display)
@@ -2322,9 +2522,7 @@ Type TGUISelectCastWindow extends TGUIModalWindow
 
 	'override
 	Method Create:TGUISelectCastWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
-		Super.CreateBase(pos, dimension, limitState)
-
-		darkenedAreaAlpha = 0.25 '0.5 is default
+		Super.Create(pos, dimension, limitState)
 
 		jobFilterSelect = new TGUIDropDown.Create(new TVec2D.Init(15,12), new TVec2D.Init(180,-1), "Hauptberuf", 128, "")
 		jobFilterSelect.SetZIndex( GetZIndex() + 1)
@@ -2344,30 +2542,18 @@ Type TGUISelectCastWindow extends TGUIModalWindow
 		castSelectList = new TGUICastSelectList.Create(new TVec2D.Init(15,50), new TVec2D.Init(270, dimension.y - 103), "")
 
 
-
-		buttonOK = new TGUIButton.Create(new TVec2D.Init(10, dimension.GetY() - 44), new TVec2D.Init(136, 28), "Person auswählen", "")
-		buttonOK.spriteName = "gfx_gui_button.datasheet"
-		buttonCancel = new TGUIButton.Create(new TVec2D.Init(dimension.GetX() - 15 - 136, dimension.GetY() - 44), new TVec2D.Init(136, 28), "Abbrechen", "")
-		buttonCancel.spriteName = "gfx_gui_button.datasheet"
-
 		AddChild(jobFilterSelect)
 		AddChild(castSelectList)
-		AddChild(buttonOK)
-		AddChild(buttonCancel)
 
+		buttonOK.SetValue("Person auswählen")
+		buttonCancel.SetValue("Abbrechen")
 
 		_eventListeners :+ [ EventManager.registerListenerMethod("GUIDropDown.onSelectEntry", self, "onCastChangeJobFilterDropdown", "TGUIDropDown" ) ]
 		_eventListeners :+ [ EventManager.registerListenerMethod("guiobject.OnDoubleClick", self, "onDoubleClickCastListItem", "TGUICastListItem" ) ]
 
-
 		Return self
 	End Method
 
-
-	Method Remove:Int()
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		return Super.Remove()
-	End Method
 
 
 	'GUI->GUI
@@ -2405,18 +2591,6 @@ Type TGUISelectCastWindow extends TGUIModalWindow
 		if not item or not item.person then return Null
 
 		return item.person
-	End Method
-
-
-	'override to skip animation
-	Method IsClosed:int()
-		return closeActionStarted
-	End Method
-
-
-	'override to _not_ recenter
-	Method Recenter:Int(moveBy:TVec2D=Null)
-		return True
 	End Method
 
 
@@ -2515,15 +2689,7 @@ Type TGUISelectCastWindow extends TGUIModalWindow
 		'adjust which filter we are using
 		castSelectList.filteredJobID = filterToJobID
 	End Method
-
-
-	Method Update:int()
-		if buttonCancel.IsClicked() then Close(2)
-		if buttonOK.IsClicked() then Close(1)
-
-		return super.Update()
-	End Method	
-
+	
 
 	Method DrawBackground()
 		Super.DrawBackground()
@@ -2542,9 +2708,153 @@ Type TGUISelectCastWindow extends TGUIModalWindow
 		skin.RenderBorder(outer.GetX(), outer.GetY(), outer.GetW(), outer.GetH())
 
 	End Method
+End Type
+
+
+
+
+Type TGUIEditTextsModalWindow extends TGUIProductionModalWindow
+	Field inputTitle:TGUIInput
+	Field inputDescription:TGUIInput
+	Field inputSubTitle:TGUIInput
+	Field inputSubDescription:TGUIInput
+	Field labelTitle:TGUILabel
+	Field labelDescription:TGUILabel
+	Field labelEpisode:TGUILabel
+	Field labelSubTitle:TGUILabel
+	Field labelSubDescription:TGUILabel
+	
+	Field concept:TProductionConcept
+
+	'override
+	Method Create:TGUIEditTextsModalWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
+		Super.Create(pos, dimension, limitState)
+
+		labelTitle = new TGUILabel.Create(new TVec2D.Init(15,12), GetLocale("TITLE"), null, "")
+		labelDescription = new TGUILabel.Create(new TVec2D.Init(15,60), GetLocale("DESCRIPTION"), null, "")
+		labelEpisode = new TGUILabel.Create(new TVec2D.Init(15,115), GetLocale("EPISODE"), null, "")
+		labelEpisode.SetFont( GetBitmapFontManager().Get("default", 13, BOLDFONT) )
+		labelSubTitle = new TGUILabel.Create(new TVec2D.Init(15,137), GetLocale("TITLE"), null, "")
+		labelSubDescription = new TGUILabel.Create(new TVec2D.Init(15,180), GetLocale("DESCRIPTION"), null, "")
+
+		inputTitle = new TGUIInput.Create(new TVec2D.Init(15,12+13), new TVec2D.Init(265,-1), "Titel", 128, "")
+		inputDescription = new TGUIInput.Create(new TVec2D.Init(15,60+13), new TVec2D.Init(265,-1), "Text", 128, "")
+		inputSubTitle = new TGUIInput.Create(new TVec2D.Init(15,137+13), new TVec2D.Init(265,-1), "Subtitel", 128, "")
+		inputSubDescription = new TGUIInput.Create(new TVec2D.Init(15,180+13), new TVec2D.Init(265,-1), "Subtext", 128, "")
+
+		AddChild(labelTitle)
+		AddChild(labelDescription)
+		AddChild(labelEpisode)
+		AddChild(labelSubTitle)
+		AddChild(labelSubDescription)
+
+		AddChild(inputTitle)
+		AddChild(inputDescription)
+		AddChild(inputSubTitle)
+		AddChild(inputSubDescription)
+
+		buttonOK.SetValue("Texte ändern")
+		buttonCancel.SetValue("Abbrechen")
+
+		_eventListeners :+ [ EventManager.registerListenerMethod("guiinput.onChangeValue", self, "onChangeInputValues", "TGUIInput" ) ]
+
+		Return self
+	End Method
+
+
+	'override
+	Method Remove:int()
+		Super.Remove()
+		concept = null
+	End Method
 	
 
-	Method DrawContent()
-		Super.DrawContent()
+	'override to fill with content on open
+	Method Open:Int()
+		Super.Open()
+
+		'read values
+		if concept
+			if concept.script.IsEpisode()
+				local seriesScript:TScript = concept.script.GetParentScript()
+				inputTitle.SetValue(seriesScript.GetTitle())
+				inputDescription.SetValue(seriesScript.GetDescription())
+
+				inputSubTitle.SetValue(concept.script.GetTitle())
+				inputSubDescription.SetValue(concept.script.GetDescription())
+			else
+				inputTitle.SetValue(concept.script.GetTitle())
+				inputDescription.SetValue(concept.script.GetDescription())
+			endif
+		endif
+	End Method
+
+
+	Method SetConcept:int(concept:TProductionConcept)
+		if not concept then return False
+
+		self.concept = concept
+		if concept.script.IsEpisode()
+			inputSubDescription.Show()
+			inputSubTitle.Show()
+			labelSubDescription.Show()
+			labelSubTitle.Show()
+			labelEpisode.Show()
+
+			local seriesScript:TScript = concept.script.GetParentScript()
+			labelEpisode.SetValue( GetLocale("EPISODE") +": "+(seriesScript.GetSubScriptPosition(concept.script)+1)+"/"+seriesScript.GetSubscriptCount() )
+
+			Resize(-1,280)
+		else
+			inputSubDescription.Hide()
+			inputSubTitle.Hide()
+			labelSubDescription.Hide()
+			labelSubTitle.Hide()
+			labelEpisode.Hide()
+			Resize(-1,155)
+		endif
+	End Method
+		
+
+	Method DrawBackground()
+		Super.DrawBackground()
+
+		local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
+
+		local outer:TRectangle = GetScreenRect().Copy()
+		local contentX:int = skin.GetContentX(outer.GetX())
+		local contentY:int = skin.GetContentY(outer.GetY())
+		local contentW:int = skin.GetContentW(outer.GetW())
+		local contentH:int = skin.GetContentH(outer.GetH())
+
+
+		if concept and concept.script.IsEpisode()
+			local topH:int = int((contentH - 35)/2.0) - 8
+			skin.RenderContent(contentX, contentY, contentW, topH, "1_top")
+			skin.RenderContent(contentX, contentY + topH, contentW, contentH - topH - 35, "1")
+		else
+			skin.RenderContent(contentX, contentY, contentW, contentH - 35, "1_top")
+		endif
+
+		skin.RenderContent(contentX, contentY+contentH-35, contentW, 35, "1_bottom")
+
+		skin.RenderBorder(outer.GetX(), outer.GetY(), outer.GetW(), outer.GetH())
+	End Method
+
+
+	Method onChangeInputValues:int( triggerEvent:TEventBase )
+		local input:TGUIInput = TGUIInput( triggerEvent.GetSender() )
+
+		if inputTitle
+			'ueberpruefen ob Titel OK
+			'wenn leer - dann Originaltext wieder einbinden
+		elseif inputSubTitle
+			'ueberpruefen ob Titel OK
+			'wenn leer - dann Originaltext wieder einbinden
+		elseif inputDescription
+			'wenn leer - dann Originaltext wieder einbinden
+		elseif inputSubDescription
+			'wenn leer - dann Originaltext wieder einbinden
+		endif
 	End Method
 End Type

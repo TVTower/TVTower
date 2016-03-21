@@ -644,10 +644,18 @@ CAST_HUMOR = Humor
 CAST_CHARISMA = Charisma
 CAST_APPEARANCE = Aussehen
 
+TITLE = Titel
+DESCRIPTION = Beschreibung
+EPISODE = Folge
+
 POINTSSET_OF_POINTSMAX_POINTS_SET = %POINTSSET%/%POINTSMAX% Punkte vergeben
 PRODUCTION_FOCUS_POINTS_NOT_SET_COMPLETELY = Produktionsschwerpunkte nicht komplett gesetzt
 NEED_TO_SPENT_AT_LEAST_ONE_POINT_OF_PRODUCTION_FOCUS_POINTS = Mindestens einen Punkt bei den Schwerpunkten setzen
 NO_PRODUCTION_COMPANY_SELECTED = Keine Produktionsfirma ausgewählt
+PRODUCTION_SETUP_NOT_DONE = Produktion noch nicht konzipiert
+PRODUCTION_SETUP_INCOMPLETE = Produktionskonzept unvollständig
+EPISODES_NOT_IN_ORDER = Episoden nicht in richtiger Reihenfolge
+
 
 STUDIO_MANAGER = Studioleiter
 STUDIO_MANAGER_TOOLTIP = Gibt Informationen zu geplanten Produktionen und händigt Einkaufslisten aus
