@@ -31,6 +31,8 @@ RENDERER = Renderer
 SOUND_ENGINE = Soundengine
 DEFAULTS_FOR_NEW_GAME= Defaults for "New Game"
 PORT_ONLINEGAME = Port for online games
+IN_ROOMS_SLOWDOWN_TIME_TO = In rooms slowdown time to
+GAME_SPEED_IN_ROOMS = Game speed in rooms
 
 STARTHINT_TITLE1 = Programme plan
 STARTHINT_TEXT1 = The CTRL-key allows you to place a programme multiple times on your plan. While the SHIFT-key tries to place the next episode of a series.

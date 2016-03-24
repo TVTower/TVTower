@@ -580,7 +580,7 @@ Type TElevator Extends TEntity
 				If FixDeboardingPassengers()
 'print Millisecs()+"  Elevator: 0) fixed - delay waiting timer"
 					'if there was something to fix - wait a bit more
-					waitAtFloorTimer.SetInterval(0.5 * waitAtFloorTime / TEntity.globalWorldSpeedFactor, True)
+					waitAtFloorTimer.SetInterval(0.5 * waitAtFloorTime / TEntity.GetGlobalWorldSpeedFactor(), True)
 				EndIf
 			EndIf
 
@@ -684,7 +684,7 @@ Type TElevator Extends TEntity
 				'set time for the doors to keep open
 				'adjust this by worldSpeedFactor at that time
 				'so a higher factor shortens time to wait
-				waitAtFloorTimer.SetInterval(waitAtFloorTime / TEntity.globalWorldSpeedFactor, True)
+				waitAtFloorTimer.SetInterval(waitAtFloorTime / TEntity.GetGlobalWorldSpeedFactor(), True)
 			EndIf
 
 			'continue door animation for opening doors

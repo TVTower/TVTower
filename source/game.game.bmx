@@ -947,6 +947,23 @@ endrem
 			stateSyncTime = Time.GetTimeGone() + stateSyncTimer
 		EndIf
 
+		'allow slowdown in rooms
+		if not GetGame().networkGame
+			if not InRoomSlowDownActive
+				if GetPlayer().IsInRoom() 'and not GetPlayer().GetFigure().IsInBuilding()
+					GetWorldTime().SetTimeFactorMod(GameRules.InRoomTimeSlowDownMod)
+					TEntity.globalWorldSpeedFactorMod = GameRules.InRoomTimeSlowDownMod
+					InRoomSlowDownActive = True
+				endif
+			else
+				if not GetPlayer().IsInRoom() 'and not GetPlayer().GetFigure().IsInBuilding()
+					GetWorldTime().SetTimeFactorMod(1.0)
+					TEntity.globalWorldSpeedFactorMod = 1.0
+					InRoomSlowDownActive = False
+				endif
+			endif
+		endif
+
 
 		'=== REALTIME GONE CHECK ===
 		'checks if at least 1 second is gone since the last call

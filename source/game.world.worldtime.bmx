@@ -21,6 +21,7 @@ Type TWorldTime {_exposeToLua="selected"}
 	'3600.0 = a virtual day takes 24 real-time seconds
 	'60.0 : 1 virtual minute = 1 real-time second
 	Field _timeFactor:Float = 60.0
+	Field _timeFactorMod:Float = 1.0
 	'current "phase" of the day: 0=Dawn  1=Day  2=Dusk  3=Night
 	Field currentPhase:int
 	'time at which the dawn starts
@@ -112,7 +113,22 @@ Type TWorldTime {_exposeToLua="selected"}
 
 	'returns how many "virtual seconds" equal to one "real time second"
 	Method GetTimeFactor:Float()
-		Return self._timeFactor * (not _paused)
+		Return self._timeFactor * self.GetTimeFactorMod() * (not _paused)
+	End Method
+
+
+	Method SetTimeFactorMod:int(timeFactorMod:Float)
+		self._timeFactorMod = Max(0.0, timeFactorMod)
+	End Method
+
+
+	Method AdjustTimeFactorMod:int(adjustBy:Float = 0.0)
+		SetTimeFactorMod(_timeFactorMod + adjustBy)
+	End Method
+
+
+	Method GetTimeFactorMod:Float()
+		Return self._timeFactorMod
 	End Method
 
 

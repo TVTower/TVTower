@@ -33,6 +33,7 @@ DEFAULTS_FOR_NEW_GAME= Vorgaben "Neues Spiel"
 RENDERER = Renderer
 SOUND_ENGINE = Soundengine
 PORT_ONLINEGAME = Port für Onlinespiele
+GAME_SPEED_IN_ROOMS = Spielgeschwind. in Räumen
 
 STARTHINT_TITLE1 = Programmplaner
 STARTHINT_TEXT1 = Mit der STRG+Taste könnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen.

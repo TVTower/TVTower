@@ -218,6 +218,8 @@ Type TApp
 			GetGraphicsManager().SetDesignedResolution(800,600)
 			GetGraphicsManager().InitGraphics()
 
+			GameRules.InRoomTimeSlowDownMod = obj.config.GetInt("inroomslowdown", 100) / 100.0
+
 			MouseManager._minSwipeDistance = obj.config.GetInt("touchClickRadius", 10)
 			MouseManager._ignoreFirstClick = obj.config.GetBool("touchInput", False)
 			MouseManager._longClickModeEnabled = obj.config.GetBool("longClickMode", True)
@@ -341,6 +343,8 @@ Type TApp
 
 		GetGraphicsManager().SetResolution(config.GetInt("screenW", 800), config.GetInt("screenH", 600))
 		GetGraphicsManager().InitGraphics()
+
+		GameRules.InRoomTimeSlowDownMod = config.GetInt("inroomslowdown", 100) / 100.0
 
 		GetDeltatimer().SetRenderRate(config.GetInt("fps", -1))
 
@@ -1451,6 +1455,7 @@ Type TSaveGame Extends TGameState
 	'effects - for visual effects (fading), sound ...
 	Field _Time_timeGone:Long = 0
 	Field _Entity_globalWorldSpeedFactor:Float =  0 
+	Field _Entity_globalWorldSpeedFactorMod:Float =  0 
 	Const SAVEGAME_VERSION:string = "1.0"
 
 	'override to do nothing
@@ -1469,6 +1474,7 @@ Type TSaveGame Extends TGameState
 
 		'restore entity speed
 		TEntity.globalWorldSpeedFactor = _Entity_globalWorldSpeedFactor
+		TEntity.globalWorldSpeedFactorMod = _Entity_globalWorldSpeedFactorMod
 	End Method
 
 
@@ -1489,6 +1495,7 @@ Type TSaveGame Extends TGameState
 		_Time_timeGone = Time.GetTimeGone()
 		'store entity speed
 		_Entity_globalWorldSpeedFactor = TEntity.globalWorldSpeedFactor
+		_Entity_globalWorldSpeedFactorMod = TEntity.globalWorldSpeedFactorMod
 	End Method
 	
 
@@ -2887,6 +2894,7 @@ Type TSettingsWindow
 	Field inputWindowResolutionWidth:TGUIInput
 	Field inputWindowResolutionHeight:TGUIInput
 	Field inputGameName:TGUIInput
+	Field inputInRoomSlowdown:TGUIInput
 	Field inputOnlinePort:TGUIInput
 	Field inputTouchClickRadius:TGUIInput
 	Field checkTouchInput:TGUICheckbox
@@ -2944,6 +2952,7 @@ Type TSettingsWindow
 		data.Add("startyear", inputStartYear.GetValue())
 		'data.Add("stationmap", inputStationmap.GetValue())
 		data.Add("databaseDir", inputDatabase.GetValue())
+		data.Add("inroomslowdown", inputInRoomSlowdown.GetValue())
 
 		data.AddBoolString("sound_music", checkMusic.IsChecked())
 		data.AddBoolString("sound_effects", checkSfx.IsChecked())
@@ -2974,6 +2983,7 @@ Type TSettingsWindow
 		inputStartYear.SetValue(data.GetInt("startyear", 1985))
 		'inputStationmap.SetValue(data.GetString("stationmap", "res/maps/germany.xml"))
 		inputDatabase.SetValue(data.GetString("databaseDir", "res/database/Default"))
+		inputInRoomSlowdown.SetValue(data.GetInt("inroomslowdown", 100))
 		checkMusic.SetChecked(data.GetBool("sound_music", True))
 		checkSfx.SetChecked(data.GetBool("sound_effects", True))
 		checkFullscreen.SetChecked(data.GetBool("fullscreen", False))
@@ -3096,6 +3106,22 @@ Type TSettingsWindow
 		inputDatabase.disable()
 		canvas.AddChild(labelDatabase)
 		canvas.AddChild(inputDatabase)
+		nextY :+ inputH + labelH * 1.5
+		nextY :+ 15
+
+
+		'SINGLEPLAYER
+		Local labelTitleSingleplayer:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("SINGLEPLAYER"))
+		labelTitleSingleplayer.SetFont(GetBitmapFont("default", 14, BOLDFONT))
+		canvas.AddChild(labelTitleSingleplayer)
+		nextY :+ 25
+
+		Local labelInRoomSlowdown:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("GAME_SPEED_IN_ROOMS")+":")
+		inputInRoomSlowdown = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(75,-1), "", 128)
+		local labelInRoomSlowdownPercentage:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX + 75 + 5, nextY + 18), "%")
+		canvas.AddChild(labelInRoomSlowdown)
+		canvas.AddChild(inputInRoomSlowdown)
+		canvas.AddChild(labelInRoomSlowdownPercentage)
 		nextY :+ inputH + labelH * 1.5
 
 

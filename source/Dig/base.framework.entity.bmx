@@ -450,6 +450,7 @@ Type TEntity extends TRenderableEntity
 	Field worldSpeedFactor:Float = -1.0
 	'a world speed factor of 1.0 means realtime, 2.0 = fast forward 
 	Global globalWorldSpeedFactor:Float = 1.0
+	Global globalWorldSpeedFactorMod:Float = 1.0
 
 
 	Method New()
@@ -461,8 +462,14 @@ Type TEntity extends TRenderableEntity
 		return "entity-"+id
 	End Method
 
+
+	Function GetGlobalWorldSpeedFactor:float()
+		return globalWorldSpeedFactor * globalWorldSpeedFactorMod
+	End Function
+	
+
 	Method GetWorldSpeedFactor:float()
-		if worldSpeedFactor < 0 then return globalWorldSpeedFactor
+		if worldSpeedFactor < 0 then return GetGlobalWorldSpeedFactor()
 		return worldSpeedFactor
 	End Method
 

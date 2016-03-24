@@ -16,6 +16,8 @@ Type TGameBase {_exposeToLua="selected"}
 
 	Field nextXRatedCheckMinute:Int = -1
 
+	Field InRoomSlowDownActive:int = False
+	
 	'last sync
 	Field stateSyncTime:Int	= 0
 	'sync every

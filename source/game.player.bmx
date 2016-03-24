@@ -267,11 +267,14 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 
 
 	Method isInRoom:Int(roomName:String="") {_exposeToLua}
+		return GetFigure().IsInRoom(roomName)
+rem
 		If roomName <> ""
 			Return (GetFigure().inRoom And GetFigure().inRoom.Name.toLower() = roomname.toLower())
 		Else
 			Return GetFigure().inRoom <> null
 		EndIf
+endrem
 	End Method
 
 

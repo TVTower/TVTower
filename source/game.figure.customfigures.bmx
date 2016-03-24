@@ -153,8 +153,8 @@ Type TFigureJanitor Extends TFigure
 		EndIf
 
 		If Not inRoom And nextActionTimer.isExpired() And Not hasToChangeFloor()
-			nextActionTimer.SetRandomness(-nextActionRandomTime / TEntity.globalWorldSpeedFactor, nextActionRandomTime * TEntity.globalWorldSpeedFactor)
-			nextActionTimer.SetInterval(nextActionTime / TEntity.globalWorldSpeedFactor)
+			nextActionTimer.SetRandomness(-nextActionRandomTime / TEntity.GetGlobalWorldSpeedFactor(), nextActionRandomTime * TEntity.GetGlobalWorldSpeedFactor())
+			nextActionTimer.SetInterval(nextActionTime / TEntity.GetGlobalWorldSpeedFactor())
 			nextActionTimer.Reset()
 
 			

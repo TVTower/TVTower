@@ -32,6 +32,10 @@ Type TGameRules {_exposeToLua}
 	'speed is used for figures, elevator, ...
 	Field worldSpeed:float = 1.0
 
+	'percentage of the gametime when in a room (default = 100%)
+	'use a lower value, to slow down the game then (movement + time)
+	Field InRoomTimeSlowDownMod:Float = 1.0
+
 	'maximum price (profit/penalty) for a single adspot
 	Field maxAdContractPricePerSpot:int = 1000000
 
