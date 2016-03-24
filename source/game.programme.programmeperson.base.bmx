@@ -257,6 +257,11 @@ Type TProgrammePersonBase extends TGameObject
 	End Method
 
 
+	Method GetProducedGenreCount:Int(genre:int)
+		return 0
+	End Method
+
+
 	Method SetJob(job:Int, enable:Int=True)
 		If enable
 			self.job :| job

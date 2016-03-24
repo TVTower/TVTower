@@ -69,6 +69,9 @@ Function GetMovieGenreDefinitionCollection:TMovieGenreDefinitionCollection()
 	Return TMovieGenreDefinitionCollection.GetInstance()
 End Function
 
+Function GetMovieGenreDefinition:TMovieGenreDefinition(genreID:int)
+	Return TMovieGenreDefinitionCollection.GetInstance().Get(genreID)
+End Function
 
 
 

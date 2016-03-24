@@ -157,6 +157,11 @@ Type TMyApp Extends TGraphicalApp
 		Super.Update()
 
 
+		if MouseManager.IsHit(2)
+			RoomHandler_Supermarket.GetInstance().SetCurrentProductionConcept(null)
+			MouseManager.ResetKey(2)
+		endif
+
 		if not GuiManager.GetKeystrokeReceiver()
 			if KeyManager.IsHit(KEY_SPACE)
 				'get a new script
@@ -497,6 +502,12 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		'cast: remove old entries
 		castSlotList.EmptyList()
 
+		'reselect currently selected production concept
+		local selectedGuiConcept:TGuiProductionConceptSelectListItem = TGuiProductionConceptSelectListItem(productionConceptList.GetSelectedEntry())
+		if selectedGuiConcept and selectedGuiConcept.productionConcept <> currentProductionConcept
+			productionConceptList.DeselectEntry()
+		endif
+
 		refreshingProductionGUI = False
 	End Method
 	
@@ -566,66 +577,67 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		ResetProductionConceptGUI()
 
 		'=== TAKE OVER OLD CONCEPT VALUES ===
+		if currentProductionConcept
+			'=== CAST ===
+			'loop over all jobs and try to take over as much of them as
+			'possible.
+			'So if there are 3 actors in the old concept but only 2 in the
+			'new one, 2 of 3 actors are taken over
+			'Cast not available in the new one, is ignored
+			local currentCastIndex:int = 0
+			for local jobIndex:int = 1 to TVTProgrammePersonJob.Count
+				local jobID:int = TVTProgrammePersonJob.GetAtIndex(jobIndex)
+				local castGroup:TProgrammePersonBase[] = currentProductionConcept.GetCastGroup(jobID, False)
+				local oldCastGroup:TProgrammePersonBase[] = takeOverConcept.GetCastGroup(jobID)
 
-		'=== CAST ===
-		'loop over all jobs and try to take over as much of them as
-		'possible.
-		'So if there are 3 actors in the old concept but only 2 in the
-		'new one, 2 of 3 actors are taken over
-		'Cast not available in the new one, is ignored
-		local currentCastIndex:int = 0
-		for local jobIndex:int = 1 to TVTProgrammePersonJob.Count
-			local jobID:int = TVTProgrammePersonJob.GetAtIndex(jobIndex)
-			local castGroup:TProgrammePersonBase[] = currentProductionConcept.GetCastGroup(jobID, False)
-			local oldCastGroup:TProgrammePersonBase[] = takeOverConcept.GetCastGroup(jobID)
+				'skip group if current concept does not contain that group
+				if castGroup.length = 0 then continue
 
-			'skip group if current concept does not contain that group
-			if castGroup.length = 0 then continue
-
-			'leave group empty if previous concept does not contain that
-			'job
-			if oldCastGroup.length = 0
-				currentCastIndex :+ castGroup.length
-				continue
-			endif
-
-			'has to collapse unused cast slots? 
-			local hasToCollapseUnused:int = (castGroup.length - oldCastGroup.length) < 0
-
-			'try to fill slots
-			for local castGroupIndex:int = 0 until castGroup.length
-				'skip other cast slots not available in old concept
-				if castGroupIndex >= oldCastGroup.length
-					currentCastIndex :+ (castGroup.length - castGroupIndex)
+				'leave group empty if previous concept does not contain that
+				'job
+				if oldCastGroup.length = 0
+					currentCastIndex :+ castGroup.length
 					continue
 				endif
-				'collapse: skip unused
-				if hasToCollapseUnused and not oldCastGroup[castGroupIndex] then continue
 
-				currentProductionConcept.SetCast(currentCastIndex, oldCastGroup[castGroupIndex])
+				'has to collapse unused cast slots? 
+				local hasToCollapseUnused:int = (castGroup.length - oldCastGroup.length) < 0
 
-				'SetCast() fails if the index is > than allowed, so
-				'we should not need to do additional checks...
-				currentCastIndex :+ 1
-				'stop filling if there is no space left
-				if currentCastIndex > castGroup.length then exit
-			Next
-		Next			
+				'try to fill slots
+				for local castGroupIndex:int = 0 until castGroup.length
+					'skip other cast slots not available in old concept
+					if castGroupIndex >= oldCastGroup.length
+						currentCastIndex :+ (castGroup.length - castGroupIndex)
+						continue
+					endif
+					'collapse: skip unused
+					if hasToCollapseUnused and not oldCastGroup[castGroupIndex] then continue
+
+					currentProductionConcept.SetCast(currentCastIndex, oldCastGroup[castGroupIndex])
+
+					'SetCast() fails if the index is > than allowed, so
+					'we should not need to do additional checks...
+					currentCastIndex :+ 1
+					'stop filling if there is no space left
+					if currentCastIndex > castGroup.length then exit
+				Next
+			Next			
 
 
-		'=== PRODUCTION COMPANY ===
-		if takeOverConcept.productionCompany
-			currentProductionConcept.SetProductionCompany(takeOverConcept.productionCompany)
+			'=== PRODUCTION COMPANY ===
+			if takeOverConcept.productionCompany
+				currentProductionConcept.SetProductionCompany(takeOverConcept.productionCompany)
+			endif
+
+
+			'=== PRODUCTION FOCUS POINTS ===
+			if takeOverConcept.productionFocus
+				for local i:int = 0 until takeOverConcept.productionFocus.focusPoints.length
+					currentProductionConcept.productionFocus.SetFocus(i, takeOverConcept.productionFocus.GetFocus(i) )
+				Next
+			endif
 		endif
-
-
-		'=== PRODUCTION FOCUS POINTS ===
-		if takeOverConcept.productionFocus
-			for local i:int = 0 until takeOverConcept.productionFocus.focusPoints.length
-				currentProductionConcept.productionFocus.SetFocus(i, takeOverConcept.productionFocus.GetFocus(i) )
-			Next
-		endif
-
+	
 		'refresh the gui objects (create items, set sliders,  ...)
 		RefreshProductionConceptGUI()
 
@@ -677,11 +689,11 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		if window.concept.script.IsEpisode()
 			local seriesScript:TScript = window.concept.script.GetParentScript()
 			if title <> seriesScript.GetTitle()
-				window.concept.customSeriesTitle = parentTitle
+				seriesScript.SetCustomTitle(parentTitle)
 				print "customSeriesTitle"
 			endif
 			if description <> window.concept.script.GetDescription()
-				window.concept.customSeriesDescription = parentDescription
+				seriesScript.SetCustomDescription(parentDescription)
 				print "customSeriesDescription"
 			endif
 		endif
@@ -1221,7 +1233,7 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		local listH:int = contentH - titleH - checkboxArea
 
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock("Einkaufslisten", contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		GetBitmapFontManager().Get("default", 13	, BOLDFONT).drawBlock("Einkaufslisten", contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		contentY :+ titleH
 		skin.RenderContent(contentX, contentY, contentW, listH , "2")
 		'reposition list
@@ -1669,11 +1681,7 @@ endrem
 			if productionConcept.script.IsEpisode()
 				local seriesScript:TScript = productionConcept.script.GetParentScript()
 				subtitle = (seriesScript.GetSubScriptPosition(productionConcept.script)+1)+"/"+seriesScript.GetSubscriptCount()+": "+ title
-				if productionConcept.customSeriesTitle
-					title = productionConcept.customSeriesTitle
-				else
-					title = seriesScript.GetTitle()
-				endif
+				title = seriesScript.GetTitle()
 			endif
 		endif
 
@@ -1728,8 +1736,6 @@ endrem
 			endif
 		endif
 	End Method
-	
-
 End Type
 
 
@@ -1887,16 +1893,20 @@ endrem
 	Method DrawContent()
 		Super.DrawContent()
 
-		SetAlpha 0.4 * GetAlpha()
+		SetAlpha 0.5 * GetAlpha()
 		For local slot:int = 0 until _slots.length
 			if _slots[slot] then continue
 			if slotJob.length < slot then continue
 			
 			local coord:TVec3D = GetSlotCoord(slot)
 
-			TGUICastListItem.DrawCast(GetScreenX() + coord.GetX(), GetScreenY() + coord.GetY(), GetContentScreenWidth(), GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(GetSlotJob(slot))), "Klicken um Person auszuwählen", null, 0,0,0)
+			if MouseManager._ignoreFirstClick 'touch mode
+				TGUICastListItem.DrawCast(GetScreenX() + coord.GetX(), GetScreenY() + coord.GetY(), GetContentScreenWidth(), GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(GetSlotJob(slot))), GetLocale("TOUCH_TO_SELECT_PERSON"), null, 0,0,0)
+			else
+				TGUICastListItem.DrawCast(GetScreenX() + coord.GetX(), GetScreenY() + coord.GetY(), GetContentScreenWidth(), GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(GetSlotJob(slot))), GetLocale("CLICK_TO_SELECT_PERSON"), null, 0,0,0)
+			endif
 		Next
-		SetAlpha 2.5 * GetAlpha()
+		SetAlpha 2.0 * GetAlpha()
 
 '		if selectCastWindow then selectCastWindow.Draw()
 	End Method
@@ -2051,7 +2061,15 @@ Type TGUICastListItem Extends TGUISelectListItem
 				'only check items from the slot lists, not the select ones
 				if TGUICastSlotList(parentList)
 					local slotListSlot:int = RoomHandler_Supermarket.GetInstance().castSlotList.GetSlotByCoord( MouseManager.GetPosition() )
-					if slotListSlot >= 0 then return TGUICastSlotList(parentList).GetSlotJob(slotListSlot)
+					if slotListSlot >= 0
+						local slotJob:int = TGUICastSlotList(parentList).GetSlotJob(slotListSlot)
+						if slotJob > 0
+							return TGUICastSlotList(parentList).GetSlotJob(slotListSlot)
+						else
+							print "return last: "+lastDisplayJobID
+							return lastDisplayJobID
+						endif
+					endif
 				endif
 
 				return lastDisplayJobID
@@ -2067,6 +2085,8 @@ Type TGUICastListItem Extends TGUISelectListItem
 			else
 				'print "unknown: displayJobID = "+displayJobID
 			endif
+
+			if displayJobID = 0 then displayJobID = lastDisplayJobID
 		endif
 
 		return displayJobID
@@ -2111,7 +2131,11 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 		local name:string = displayName
 		if isAmateur and not isDragged()
-			name = GetLocale("JOB_AMATEUR_" + TVTProgrammePersonJob.GetAsString( GetDisplayJobID() ))
+			if GetDisplayJobID() > 0
+				name = GetLocale("JOB_AMATEUR_" + TVTProgrammePersonJob.GetAsString( GetDisplayJobID() ))
+			else
+				name = GetLocale("JOB_AMATEUR")
+			endif
 			displayName = name
 		endif
 		DrawCast(GetScreenX(), GetScreenY(), GetScreenWidth(), name, "", null, xpPercentage, 0, 1)
@@ -2212,6 +2236,9 @@ Type TGUICastListItem Extends TGUISelectListItem
 		if name or nameHint
 			local border:TRectangle = nameSprite.GetNinePatchContentBorder()
 
+			local oldCol:TColor = new TColor.Get()
+
+			SetAlpha( Max(0.6, oldCol.a) )
 			if name
 				skin.fontSemiBold.drawBlock( ..
 					name, ..
@@ -2222,6 +2249,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 					ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			endif
 
+			SetAlpha( Max(0.75, oldCol.a) )
 			if nameHint
 				skin.fontNormal.drawBlock( ..
 					nameHint, ..
@@ -2231,6 +2259,8 @@ Type TGUICastListItem Extends TGUISelectListItem
 					Max(15, nameSprite.GetHeight() - (border.GetTop() + border.GetBottom())), ..
 					ALIGN_RIGHT_CENTER, skin.textColorNeutral)
 			endif
+
+			SetAlpha (oldCol.a)
 		endif
 	End Function	
 End Type
@@ -2330,7 +2360,11 @@ Function ShowCastSheet:Int(cast:TProgrammePersonBase, jobID:int=-1, x:Int,y:Int,
 				skin.fontNormal.drawBlock(genreText + GetLocale("JOB_"+TVTProgrammePersonJob.GetAsString(firstJobID)), contentX + 5, contentY, contentW - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			else
 				'use the given jobID but declare as amateur
-				skin.fontNormal.drawBlock(GetLocale("JOB_AMATEUR_"+TVTProgrammePersonJob.GetAsString(jobID)), contentX + 5, contentY, contentW - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+				if jobID > 0
+					skin.fontNormal.drawBlock(GetLocale("JOB_AMATEUR_"+TVTProgrammePersonJob.GetAsString(jobID)), contentX + 5, contentY, contentW - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+				else
+					skin.fontNormal.drawBlock(GetLocale("JOB_AMATEUR"), contentX + 5, contentY, contentW - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+				endif
 			endif
 
 			contentY :+ jobDescriptionH
@@ -2677,7 +2711,12 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 			'base items do not have a size - so we have to give a manual one
 			local item:TGUICastListItem = new TGUICastListItem.CreateSimple( p, selectJobID )
 			if p = amateur
-				item.displayName = GetLocale("JOB_AMATEUR_" + TVTProgrammePersonJob.GetAsString(selectJobID))
+				if selectJobID > 0
+					item.displayName = GetLocale("JOB_AMATEUR_" + TVTProgrammePersonJob.GetAsString(selectJobID))
+				else
+					item.displayName = GetLocale("JOB_AMATEUR")
+				endif
+
 				item.isAmateur = True
 			endif
 			item.Resize(180,40)

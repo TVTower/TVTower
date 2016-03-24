@@ -63,6 +63,10 @@ Type TProduction Extends TOwnedGameObject
 	'end of shooting
 	Field endDate:Double
 
+	Field scriptGenreFit:Float = -1.0
+	Field castFit:Float = -1.0
+	Field productionValueMod:Float = 1.0
+
 
 	Method SetGUID:Int(GUID:String)
 		if GUID="" then GUID = "production-"+id
@@ -98,6 +102,25 @@ Type TProduction Extends TOwnedGameObject
 
 		status = 1
 
+
+		'=== CALCULATE BASE PRODUCTION VALUES ===
+
+		'=== CALCULATE FITS ===
+		'do that in advance (with current actor skills)
+
+		'Fetch corresponding genre definition, with this we are able to
+		'see what values are "expected" for this genre.
+		'Depending on the "fit" of actors, directors, ... values are
+		'modified then.
+		'Each script contains some values for review, speed, ...
+		'which get modified by the "fit" (good ++, bad --)
+		scriptGenreFit = productionConcept.script.CalculateGenreCriteriaFit() 
+		print "scriptGenreFit:" +scriptGenreFit
+
+		castFit = productionConcept.CalculateCastFit() 
+		print "castFit:" +castFit
+		
+
 		return self
 	End Method
 
@@ -116,26 +139,24 @@ Type TProduction Extends TOwnedGameObject
 
 		print "Dreharbeiten beendet - Programm herstellen"
 
-		'production effects
-		'- production value calculation
+		'1) production effects
+		'- modify production values (longer production time, random..)
 		'- cast:
 		'- - levelups / skill adjustments / XP gain
 		'- - adding the job (if not done automatically) so it becomes
 		'    specialized for this kind of production somewhen
 		'
-		'programme creation:
+		'2) programme creation:
 		'- programme data
 		'- programme licence
 		'- adding licence to player collection!
 
 
-		'=== PRODUCTION EFFECTS ===
-		'Fetch corresponding genre definition, with this we are able to
-		'see what values are "expected" for this genre.
-		'Depending on the "fit" of actors, directors, ... values are
-		'modified then.
+		'=== 1. PRODUCTION EFFECTS ===
+		'productionValueMod ...
 
-		'Local genreDefinition:TMovieGenreDefinition = Game.BroadcastManager.GetMovieGenreDefinition(concept.script.genre)
+
+		'calculate
 
 		'change skills of the actors / director / ...
 

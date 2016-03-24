@@ -226,6 +226,20 @@ Type TProgrammePerson extends TProgrammePersonBase
 	End Method
 
 
+
+	Method GetProducedGenreCount:Int(genre:int)
+		local count:int = 0
+		For local guid:string = EachIn GetProducedProgrammes()
+			local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(guid)
+			if not programmeData then continue
+			
+			if programmeData.GetGenre() = genre then count :+ 1
+		Next
+
+		return count
+	End Method
+
+
 	Method SetRandomAttributes:int(onlyEmpty:int=False)
 		'reset attributes, so they get all refilled
 		if not onlyEmpty

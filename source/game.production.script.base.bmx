@@ -7,6 +7,8 @@ Import "game.gameconstants.bmx" 'to access type-constants
 Type TScriptBase Extends TNamedGameObject
 	Field title:TLocalizedString
 	Field description:TLocalizedString
+	Field customTitle:string = ""
+	Field customDescription:string = ""
 	Field scriptLicenceType:Int = 0
 	Field scriptProductType:Int = 0
 	Field mainGenre:Int
@@ -55,14 +57,26 @@ Type TScriptBase Extends TNamedGameObject
 
 
 	Method GetTitle:string()
+		if customTitle then return customTitle
 		if title then return title.Get()
 		return ""
 	End Method
 
 
 	Method GetDescription:string()
+		if customDescription then return customDescription
 		if description then return description.Get()
 		return ""
+	End Method
+
+
+	Method SetCustomTitle(value:string)
+		customTitle = value
+	End Method
+
+
+	Method SetCustomDescription(value:string)
+		customDescription = value
 	End Method
 
 
@@ -122,6 +136,7 @@ Type TScriptBase Extends TNamedGameObject
 		return False
 	End Method
 
+
 	'returns the genre of a script - if a group, the one used the most
 	'often is returned
 	Method GetMainGenre:int()
@@ -152,10 +167,12 @@ Type TScriptBase Extends TNamedGameObject
 		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(_genre))
 	End Function
 
+
 	Method GetProductionTypeString:String(_productionType:Int=-1)
 		If _productionType < 0 Then _productionType = self.scriptProductType
 		return _GetProductionTypeString(_productionType)
 	End Method
+
 
 	Function _GetProductionTypeString:string(_productionType:Int)
 		Return GetLocale("PROGRAMME_PRODUCT_" + TVTProgrammeProductType.GetAsString(_productionType))

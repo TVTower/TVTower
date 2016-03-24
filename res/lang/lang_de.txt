@@ -647,6 +647,8 @@ CAST_APPEARANCE = Aussehen
 TITLE = Titel
 DESCRIPTION = Beschreibung
 EPISODE = Folge
+CLICK_TO_SELECT_PERSON = Klicken um Person auszuwählen
+TOUCH_TO_SELECT_PERSON = Antippen um Person auszuwählen
 
 POINTSSET_OF_POINTSMAX_POINTS_SET = %POINTSSET%/%POINTSMAX% Punkte vergeben
 PRODUCTION_FOCUS_POINTS_NOT_SET_COMPLETELY = Produktionsschwerpunkte nicht komplett gesetzt

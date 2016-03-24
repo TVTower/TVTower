@@ -1,11 +1,13 @@
 SuperStrict
 Import "Dig/base.gfx.bitmapfont.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
+Import "Dig/base.util.math.bmx"
 Import "game.gameobject.bmx"
 Import "game.player.finance.bmx"
 Import "game.player.base.bmx"
 Import "basefunctions.bmx" 'dottedValue
 Import "game.production.scripttemplate.bmx"
+Import "game.broadcast.genredefinition.movie.bmx"
 'to access datasheet-functions
 Import "common.misc.datasheet.bmx"
 
@@ -161,8 +163,9 @@ End Function
 
 Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Field ownProduction:Int	= false
-	'News-Genre: Medien/Technik, Politik/Wirtschaft, Showbiz, Sport, Tagesgeschehen ODER flexibel = spezielle News (10)
-	Field topic:Int	= 0
+
+	Field newsTopicGUID:string = ""
+	Field newsGenre:int
 
 	'GUIDs of all programmes based on this script
 	'should only contain "series header"
@@ -177,14 +180,12 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	'it is more a "job" definition (+role in the case of actors)
 	Field cast:TProgrammePersonJob[]
 
-	'0=director, 1=host, 2=actor, 4=musician, 8=intellectual, 16=reporter(, 32=candidate)
+	'See TVTProgrammePersonJob
 	Field allowedGuestTypes:int	= 0
 
 	Field requiredStudioSize:Int = 1
+	'more expensive
 	Field requireAudience:Int = 0
-	Field coulisseType1:Int	= -1
-	Field coulisseType2:Int	= -1
-	Field coulisseType3:Int = -1
 
 	Field targetGroup:Int = -1
 
@@ -452,6 +453,108 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		value = Int(Floor(value / 100) * 100)
 
 		Return value
+	End Method
+
+	'mixes main and subgenre criterias
+	Method CalculateTotalGenreCriterias(totalReview:float var, totalSpeed:float var, totalOutcome:float var)
+		Local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition(mainGenre)
+		if not genreDefinition
+			TLogger.Log("TScript.CalculateTotalGenreCriterias()", "script with wrong movie genre definition, criteria calculation failed.", LOG_ERROR)
+			return
+		endif
+
+		totalOutcome = genreDefinition.OutcomeMod
+		totalReview = genreDefinition.ReviewMod
+		totalSpeed = genreDefinition.SpeedMod
+
+		'build subgenre-averages
+		local subGenreDefinition:TMovieGenreDefinition
+		local subGenreCount:int
+		local subGenreOutcome:Float, subGenreReview:Float, subGenreSpeed:Float
+		For local i:int = 0 until subGenres.length
+			subGenreDefinition = GetMovieGenreDefinition(i)
+			if not subGenreDefinition then continue
+
+			subGenreOutcome :+ subGenreDefinition.OutcomeMod
+			subGenreReview :+ subGenreDefinition.ReviewMod
+			subGenreSpeed :+ subGenreDefinition.SpeedMod
+			subGenreCount :+ 1
+		Next
+		if subGenreCount > 1
+			subGenreOutcome :/ subGenreCount
+			subGenreReview :/ subGenreCount
+			subGenreSpeed :/ subGenreCount
+		endif
+
+		'mix maingenre and subgenres by 60:40
+		if subGenreCount > 0
+			'if main genre ignores outcome, ignore for subgenres too!
+			if totalOutcome > 0
+				totalOutcome = totalOutcome*0.6 + subGenreOutcome*0.4
+			endif
+			totalReview = totalReview*0.6 + subGenreReview*0.4
+			totalSpeed = totalSpeed*0.6 + subGenreSpeed*0.4
+		endif
+	End Method
+
+
+	'returns the criteria-congruence
+	'(is review-speed-outcome weight of script the same as in the genres)
+	'a value of 1.0 means a perfect match (eg. x*50% speed, x*20% outcome
+	' and x*30% review)
+	Method CalculateGenreCriteriaFit:Float()
+		local reviewGenre:Float, speedGenre:Float, outcomeGenre:Float
+		CalculateTotalGenreCriterias(reviewGenre, speedGenre, outcomeGenre)
+
+		'scale to total of 100%
+		local resultTotal:Float = reviewGenre + speedGenre + outcomeGenre
+		reviewGenre :/ resultTotal
+		speedGenre :/ resultTotal
+		outcomeGenre :/ resultTotal
+
+		rem
+		reviewGenre = 0.5
+		speedGenre = 0.3
+		outcomeGenre = 0.2
+
+		'100% fit
+		review = 0.4
+		speed = 0.24
+		outcome = 0.16
+		endrem
+
+		'scale to bigges property
+		local maxPropertyScript:Float, maxPropertyGenre:Float
+		if outcomeGenre > 0 
+			maxPropertyScript = Max(review, Max(speed, outcome))
+			maxPropertyGenre = Max(reviewGenre, Max(speedGenre, outcomeGenre))
+		else
+			maxPropertyScript = Max(review, speed)
+			maxPropertyGenre = Max(reviewGenre, speedGenre)
+		endif
+		if maxPropertyGenre = 0 or MathHelper.AreApproximatelyEqual(maxPropertyScript, maxPropertyGenre)
+			return 1
+		endif
+
+		local scaleFactor:Float = maxPropertyGenre / maxPropertyScript
+		local distanceReview:Float = Abs(reviewGenre - review*scaleFactor)
+		local distanceSpeed:Float = Abs(speedGenre - speed*scaleFactor)
+		local distanceOutcome:Float = Abs(outcomeGenre - outcome*scaleFactor)
+		'ignore outcome ?
+		if outcomeGenre = 0 then distanceOutcome = 0 
+
+		rem
+		'print "maxPropertyGenre:   "+maxPropertyGenre
+		'print "maxPropertyScript:  "+maxPropertyScript
+		print "scaleFactor:        "+scaleFactor
+		print "Review Abweichung:  "+distanceReview
+		print "Speed Abweichung:   "+distanceSpeed
+		if outcomeGenre > 0
+			print "Outcome Abweichung:   "+distanceOutcome
+		endif
+		endrem
+
+		return 1.0 - (distanceReview + distanceSpeed + distanceOutcome)	
 	End Method
 
 

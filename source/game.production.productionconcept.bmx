@@ -49,12 +49,6 @@ Type TProductionConcept Extends TOwnedGameObject
 	'this information in a "scriptOrder"-Collection
 	Field studioSlot:int = -1
 
-	Field customTitle:string
-	Field customDescription:string
-
-	Field customSeriesTitle:string
-	Field customSeriesDescription:string
-
 	'each assigned person (directors, actors, ...)
 	Field cast:TProgrammePersonBase[]
 
@@ -95,24 +89,24 @@ Type TProductionConcept Extends TOwnedGameObject
 
 
 	Method SetCustomTitle(value:string)
-		customTitle = value
+		if script then script.SetCustomTitle(value)
 	End Method
 
 
 	Method SetCustomDescription(value:string)
-		customDescription = value
+		if script then script.SetCustomDescription(value)
 	End Method
 
 
 	Method GetTitle:string()
-		if customTitle or not script then return customTitle
-		return script.GetTitle()
+		if script then return script.GetTitle()
+		return ""
 	end Method
 
 
 	Method GetDescription:string()
-		if customTitle or not script then return customDescription
-		return script.GetDescription()
+		if script then return script.GetDescription()
+		return ""
 	end Method
 	
 
@@ -257,6 +251,41 @@ Type TProductionConcept Extends TOwnedGameObject
 		return result
 	End Method
 
+
+	Method CalculateCastFit:Float()
+		local personCount:int = 0
+		local castFit:Float = 0.0
+		
+		'check if person is experienced in this genre
+		For local person:TProgrammePersonBase = EachIn cast
+			local personFit:Float = 0.0
+			if script.subGenres and script.subGenres.length > 0
+				'main genre fit - up to 50%
+				personFit :+ Min(0.5, 0.1 * person.GetProducedGenreCount( script.GetMainGenre() ))
+
+				'other genre fit - up to 50%
+				local subGenreFit:Float = 0.0
+				For local genre:int = EachIn script.subGenres
+					subGenreFit :+ Min(1.0, 0.1 * person.GetProducedGenreCount( genre ) )
+				Next
+				subGenreFit :/ script.subGenres.length
+
+				personFit :+ 0.5 * subGenreFit
+			else
+				'main genre fit - up to 100%
+				personFit :+ Min(1.0, 0.1 * person.GetProducedGenreCount( script.GetMainGenre() ))
+			endif
+print "personFit: "+personFit+"   ["+person.GetFullName()+"]"
+
+			'TODO: character attributes
+
+			castFit :+ personFit
+			personCount :+1
+		Next
+
+		return castFit / personCount
+	End Method
+	
 
 	Method GetProductionFocus:int(focusIndex:int)
 		if not productionFocus or focusIndex > productionFocus.GetFocusAspectCount() or focusIndex < 1 then return False
