@@ -336,17 +336,29 @@ Type TApp
 
 
 	Method ApplySettings:Int()
-		GetGraphicsManager().SetFullscreen(config.GetBool("fullscreen", False))
-		GetGraphicsManager().SetRenderer(config.GetInt("renderer", GetGraphicsManager().GetRenderer()))
-		GetGraphicsManager().SetColordepth(config.GetInt("colordepth", 16))
-		GetGraphicsManager().SetVSync(config.GetBool("vsync", True))
-
-		GetGraphicsManager().SetResolution(config.GetInt("screenW", 800), config.GetInt("screenH", 600))
-		GetGraphicsManager().InitGraphics()
+		local adjusted:int = False
+		if GetGraphicsManager().SetFullscreen(config.GetBool("fullscreen", False))
+			adjusted = True
+		endif
+		if GetGraphicsManager().SetRenderer(config.GetInt("renderer", GetGraphicsManager().GetRenderer()))
+			adjusted = True
+		endif
+		if GetGraphicsManager().SetColordepth(config.GetInt("colordepth", 16))
+			adjusted = True
+		endif
+		if GetGraphicsManager().SetVSync(config.GetBool("vsync", True))
+			adjusted = True
+		endif
+		if GetGraphicsManager().SetResolution(config.GetInt("screenW", 800), config.GetInt("screenH", 600))
+			adjusted = True
+		endif
+		if adjusted then GetGraphicsManager().InitGraphics()
 
 		GameRules.InRoomTimeSlowDownMod = config.GetInt("inroomslowdown", 100) / 100.0
 
 		GetDeltatimer().SetRenderRate(config.GetInt("fps", -1))
+
+		adjusted = False
 
 		TSoundManager.SetAudioEngine(config.GetString("sound_engine", "AUTOMATIC"))
 		TSoundManager.GetInstance().MuteMusic(Not config.GetBool("sound_music", True))

@@ -64,7 +64,9 @@ Type TSoundManager
 	End Function
 
 
-	Function SetAudioEngine(engine:string)
+	Function SetAudioEngine:int(engine:string)
+		if engine.ToUpper() = audioEngine then return False
+		
 		'limit to allowed engines
 		Select engine.ToUpper()
 			case "NONE"
@@ -88,6 +90,8 @@ Type TSoundManager
 			default
 				audioEngine = "AUTOMATIC"
 		End Select
+
+		return True
 	End Function
 
 
@@ -296,6 +300,9 @@ Type TSoundManager
 
 
 	Method MuteSfx:Int(bool:Int=True)
+		'already muted
+		if sfxOn = Not bool then return False
+
 		If bool
 			TLogger.Log("TSoundManager.MuteSfx()", "Muting all sound effects", LOG_DEBUG)
 		Else
@@ -306,10 +313,15 @@ Type TSoundManager
 		Next
 
 		sfxOn = Not bool
+
+		return True
 	End Method
 
 
 	Method MuteMusic:Int(bool:Int=True)
+		'already muted
+		if musicOn = Not bool then return False
+		
 		if not audioEngineEnabled then return False
 
 		If bool
@@ -325,6 +337,8 @@ Type TSoundManager
 			If activeMusicChannel Then ResumeChannel(activeMusicChannel)
 		EndIf
 		musicOn = Not bool
+
+		return True
 	End Method
 
 

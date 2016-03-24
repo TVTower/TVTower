@@ -86,8 +86,13 @@ Type TGraphicsManager
 
 
 	Method SetResolution:int(width:int, height:int)
-		realWidth = width
-		realHeight = height
+		if realWidth <> width or realHeight <> height
+			realWidth = width
+			realHeight = height
+			return True
+		else
+			return False
+		endif
 	End Method
 
 
@@ -107,7 +112,10 @@ Type TGraphicsManager
 			fullscreen = bool
 			'create a new graphics object if already in graphics mode
 			if _g then InitGraphics()
+
+			return True
 		endif
+		return False
 	End Method
 	
 
@@ -117,7 +125,12 @@ Type TGraphicsManager
 
 
 	Method SetVSync:Int(bool:int = TRUE)
-		vsync = bool
+		if vsync <> bool
+			vsync = bool
+			return True
+		else
+			return False
+		endif
 	End Method
 
 
@@ -127,7 +140,12 @@ Type TGraphicsManager
 
 
 	Method SetColordepth:Int(value:int=0)
-		colorDepth = value
+		if colorDepth <> value
+			colorDepth = value
+			return True
+		else
+			return False
+		endif
 	End Method
 	
 
@@ -137,7 +155,12 @@ Type TGraphicsManager
 
 
 	Method SetRenderer:Int(value:int = 0)
-		renderer = value
+		if renderer <> value
+			renderer = value
+			return True
+		else
+			return False
+		endif
 	End Method
 
 
