@@ -946,7 +946,7 @@ Type TGUIListItem Extends TGUIobject
 		If Not data Then Return False
 
 		'skip reaction if parental list is disabled
-		if not TGUIListBase.FindGUIListBaseParent(self).IsEnabled() then return False
+		if TGUIListBase.FindGUIListBaseParent(self) and not TGUIListBase.FindGUIListBaseParent(self).IsEnabled() then return False
 
 		'only react on clicks with left mouse button
 		If data.getInt("button") <> 1 Then Return False

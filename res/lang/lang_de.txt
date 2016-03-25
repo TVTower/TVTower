@@ -29,6 +29,7 @@ USE_TOUCH_INPUT = Nutze Touchscreen-Eingabe
 USE_TOUCH_INPUT_EXPLANATION = Der erste Klick setzt den Mauscursor, fortfolgende zählen als Klick. Erneute Cursorpositionierung bei zu großem Abstand zwischen den Klickpositionen.
 MOVE_INSTEAD_CLICK_RADIUS = Radius "Bewegen statt Klick"
 MULTIPLAYER = Mehrspieler
+SINGLEPLAYER = Einzelspieler
 DEFAULTS_FOR_NEW_GAME= Vorgaben "Neues Spiel"
 RENDERER = Renderer
 SOUND_ENGINE = Soundengine

@@ -157,7 +157,7 @@ Type TMyApp Extends TGraphicalApp
 		Super.Update()
 
 
-		if MouseManager.IsHit(2)
+		if MouseManager.IsClicked(2)
 			RoomHandler_Supermarket.GetInstance().SetCurrentProductionConcept(null)
 			MouseManager.ResetKey(2)
 		endif

@@ -115,10 +115,10 @@ Type TProduction Extends TOwnedGameObject
 		'Each script contains some values for review, speed, ...
 		'which get modified by the "fit" (good ++, bad --)
 		scriptGenreFit = productionConcept.script.CalculateGenreCriteriaFit() 
-		print "scriptGenreFit:" +scriptGenreFit
-
 		castFit = productionConcept.CalculateCastFit() 
-		print "castFit:" +castFit
+		print "---------"
+		print "scriptGenreFit: " + scriptGenreFit
+		print "castFit:        " + castFit
 		
 
 		return self

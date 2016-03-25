@@ -27,6 +27,7 @@ USE_TOUCH_INPUT = Use touch input
 USE_TOUCH_INPUT_EXPLANATION = First click places mouse cursor, the following count as clicks. Cursor-repositioning if distance between click positions is too great.
 MOVE_INSTEAD_CLICK_RADIUS = Move instead click radius
 MULTIPLAYER = Multiplayer
+SINGLEPLAYER = Singleplayer
 RENDERER = Renderer
 SOUND_ENGINE = Soundengine
 DEFAULTS_FOR_NEW_GAME= Defaults for "New Game"

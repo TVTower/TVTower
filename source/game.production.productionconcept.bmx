@@ -1,7 +1,7 @@
 SuperStrict
 Import "game.production.script.bmx"
 Import "game.production.productioncompany.base.bmx"
-Import "game.programme.programmeperson.base.bmx"
+Import "game.programme.programmeperson.bmx"
 
 
 Type TProductionConceptCollection Extends TGameObjectCollection
@@ -67,7 +67,10 @@ Type TProductionConcept Extends TOwnedGameObject
 
 	'depositCostPaid, live, ...
 	Field flags:int = 0
-	
+
+	Field castFit:Float = -1.0
+	'cache calculated vars
+	Field _scriptGenreFit:Float = -1.0 {nosave}
 
 
 	Method Initialize:TProductionConcept(owner:int, script:TScript)
@@ -84,7 +87,14 @@ Type TProductionConcept Extends TOwnedGameObject
 		'reset cast
 		if script then cast = new TProgrammePersonBase[ script.cast.length ]
 
+		ResetCache()
+
 		productionFocus = new TProductionFocusBase
+	End Method
+
+
+	Method ResetCache()
+		_scriptGenreFit = -1
 	End Method
 
 
@@ -122,6 +132,8 @@ Type TProductionConcept Extends TOwnedGameObject
 				if productionFocus.IsFictional() then productionFocus.EnableFictional(false)
 			endif
 		endif
+
+		ResetCache()
 
 		EventManager.triggerEvent( TEventSimple.Create("ProductionConcept.SetScript", new TData.Add("script", script), Self ) )
 	End Method
@@ -179,6 +191,9 @@ Type TProductionConcept Extends TOwnedGameObject
 		if cast[castIndex] = person then return False
 
 		cast[castIndex] = person
+
+		'reset precalculated value
+		castFit = -1.0
 
 		EventManager.triggerEvent( TEventSimple.Create("ProductionConcept.SetCast", new TData.AddNumber("castIndex", castIndex).Add("person", person), Self ) )
 
@@ -252,38 +267,99 @@ Type TProductionConcept Extends TOwnedGameObject
 	End Method
 
 
-	Method CalculateCastFit:Float()
+	Method CalculateCastFit:Float(recalculate:int = False)
+		'use already calculated value
+		if castFit >= 0 and not recalculate then return castFit
+		 
+		local castFitSum:Float = 0.0
 		local personCount:int = 0
-		local castFit:Float = 0.0
-		
-		'check if person is experienced in this genre
-		For local person:TProgrammePersonBase = EachIn cast
-			local personFit:Float = 0.0
-			if script.subGenres and script.subGenres.length > 0
-				'main genre fit - up to 50%
-				personFit :+ Min(0.5, 0.1 * person.GetProducedGenreCount( script.GetMainGenre() ))
 
-				'other genre fit - up to 50%
+		For local castIndex:int = 0 until cast.length
+			local person:TProgrammePersonBase = cast[castIndex]
+			if not person then continue
+
+			local personFit:Float = 0.0
+			local genreFit:Float = 0.0
+
+
+
+			'=== GENRE FIT ===
+
+			'== GENRE FIT #1
+			'check if person is experienced in this genre because of
+			'already done productions
+
+			'main genre - 100% reached after 4 productions
+			local mainGenreFit:Float = Min(1.0, 0.25 * person.GetProducedGenreCount( script.GetMainGenre() ))
+			'sub genre
+			if script.subGenres and script.subGenres.length > 0
 				local subGenreFit:Float = 0.0
 				For local genre:int = EachIn script.subGenres
+					'100% reached after 10 productions
 					subGenreFit :+ Min(1.0, 0.1 * person.GetProducedGenreCount( genre ) )
 				Next
 				subGenreFit :/ script.subGenres.length
 
-				personFit :+ 0.5 * subGenreFit
+				genreFit :+ 0.6 * mainGenreFit + 0.4 * subGenreFit
 			else
-				'main genre fit - up to 100%
-				personFit :+ Min(1.0, 0.1 * person.GetProducedGenreCount( script.GetMainGenre() ))
+				genreFit :+ 1.0 * mainGenreFit
 			endif
-print "personFit: "+personFit+"   ["+person.GetFullName()+"]"
 
+
+			'== GENRE FIT #2
+			'increase fit for top genres (20% genre1, 15% genre2)
+			'exception: genre "MISC" ("undefined" / id=0)
+			if script.GetMainGenre() <> TVTProgrammeGenre.Undefined
+				if TProgrammePerson(person)
+					local p:TProgrammePerson = TProgrammePerson(person)
+					if p.topGenre1 = script.GetMainGenre() 
+						genreFit = Min(1.0, genreFit + 0.20)
+					elseif p.topGenre2 = script.GetMainGenre() 
+						genreFit = Min(1.0, genreFit + 0.15)
+					endif
+				endif
+			endif
+			
+
+			'== GENRE FIT #3
+			'increase fit by up to 35% for the persons skill (versatility)
+			if TProgrammePerson(person)
+				genreFit = Min(1.0, genreFit + 0.35 * TProgrammePerson(person).skill)
+			endif
+
+
+
+			'=== JOB FIT ===
+			local jobFit:Float = person.HasJob( script.cast[castIndex].job )
+
+
+
+			'=== ATTRIBUTES - GENRE FIT ===
 			'TODO: character attributes
 
-			castFit :+ personFit
+
+
+			'=== TOTAL FIT ===
+
+			personFit = 0.4 * genreFit + 0.6 * jobFit
+			if not jobFit and RandRange(0,100) < 90
+				personFit :* 0.2
+			endif
+print person.GetFullName() + " [as ~q"+ TVTProgrammePersonJob.GetAsString( script.cast[castIndex].job ) + "~q]"
+print "  genreFit:  "+genreFit
+print "    jobFit:  "+jobFit
+print "  --------------------"
+print "  personFit: "+personFit
+
+			castFitSum :+ personFit
 			personCount :+1
 		Next
 
-		return castFit / personCount
+		if recalculate or castFit < 0
+			castFit = castFitSum / personCount
+		endif
+
+		return castFit
 	End Method
 	
 

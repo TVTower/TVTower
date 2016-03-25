@@ -272,7 +272,7 @@ Type TProgrammePersonBase extends TGameObject
 
 
 	Method HasJob:int(job:int)
-		return self.job & job
+		return (self.job & job) > 0
 	End Method
 
 
