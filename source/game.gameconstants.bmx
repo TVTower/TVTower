@@ -948,4 +948,20 @@ Type TVTProgrammePersonJob {_exposeToLua}
 			End Select
 		endif
 	End Function
+
+
+	Function GetByString:int(keyString:string = "")
+		Select keyString.toLower()
+			case "unknown"         return UNKNOWN
+			case "director"        return DIRECTOR
+			case "actor"           return ACTOR
+			case "scriptwriter"    return SCRIPTWRITER
+			case "host"            return HOST
+			case "musician"        return MUSICIAN
+			case "supportingactor" return SUPPORTINGACTOR
+			case "guest"           return GUEST
+			case "reporter"        return REPORTER
+			default                return UNKNOWN
+		End Select
+	End Function	
 End Type

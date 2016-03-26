@@ -442,6 +442,7 @@ Type TRegistryProgrammeDataModsLoader extends TRegistryBaseLoader
 		'add timemods to data set
 		data.Add("timeMods", timeMods)
 
+
 		'load audienceAttractions
 		subNode = TXmlHelper.FindChild(node, "audienceAttractions")
 		if not subNode then return Null
@@ -459,6 +460,25 @@ Type TRegistryProgrammeDataModsLoader extends TRegistryBaseLoader
 		Next
 		'add attractions to data set
 		data.Add("audienceAttractions", audienceAttractions)
+
+
+		'load castAttributes
+		subNode = TXmlHelper.FindChild(node, "castAttributes")
+		if subNode
+			local castAttributes:TMap = null
+			For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
+				if not castAttributes then castAttributes = CreateMap()
+				Local jobID:int = TVTProgrammePersonJob.GetByString(subNodeChild.GetName().ToLower())
+				Local attribute:String = TXmlHelper.FindValue(subNodeChild, "attribute", "").toLower()
+				Local value:String = TXmlHelper.FindValue(subNodeChild, "value", "1.0")
+
+				if jobID = TVTProgrammePersonJob.UNKNOWN then continue
+
+				castAttributes.Insert(jobID+"_"+attribute, value)
+			Next
+			'add attractions to data set
+			if castAttributes then data.Add("castAttributes", castAttributes)
+		endif
 
 		return data
 	End Method

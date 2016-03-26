@@ -14,15 +14,23 @@
 				              value is a modificator (0.0 = no change)
 				audienceAttractions:
 							  modifier for different targetgroups
-								-2 extreme unpopular
-								-1 unpopular
-								0  average
-								+1 popular
-								+2 extreme popular
+							    -2 extreme unpopular
+							    -1 unpopular
+							     0  average
+							    +1 popular
+							    +2 extreme popular
 								
 				Sources:
 				http://de.statista.com/statistik/daten/studie/168613/umfrage/die-beliebtesten-filmgenres-in-deutschland/
 				http://www.ffa.de/downloads/publikationen/Filmgenres_2010-2011.pdf
+
+				castAttributes:
+							  modifier for different attributes a cast
+							  (director, actor, ...) has
+							    skill, power, humor, charisma, appearance
+							    1.0 = default, average importance
+							    2.0 = doubled importance
+							    0.0 = absolutely unimportant / ignored
 			-->
 			<genre id="0" name="various" outcome-mod="0.1" review-mod="0.3" speed-mod="0.6">
 				<goodFollower></goodFollower>
@@ -61,7 +69,7 @@
 					<audienceAttraction id="Unemployed" value="0" />
 					<audienceAttraction id="Manager" value="0" />
 					<audienceAttraction id="Pensioners" value="0" />
-				</audienceAttractions>			
+				</audienceAttractions>
 			</genre>
 			<genre id="1" name="adventure" outcome-mod="0.45" review-mod="0.25" speed-mod="0.3">
 				<goodFollower>2,10</goodFollower>
@@ -100,8 +108,15 @@
 					<audienceAttraction id="Unemployed" men="0.4" women="0.3" />
 					<audienceAttraction id="Manager" men="-0.2" women="-0.3" />
 					<audienceAttraction id="Pensioners" men="-0.3" women="-0.3" />
-				</audienceAttractions>			
-			</genre>		
+				</audienceAttractions>
+				<castAttributes>
+					<actor attribute="power" value="1.2" />
+					<actor attribute="humor" value="1.1" />
+					<supportingactor attribute="power" value="1.1" />
+					<supportingactor attribute="humor" value="1.2" />
+					<supportingactor attribute="appearance" value="1.1" />
+				</castAttributes>
+			</genre>
 			<genre id="2" name="action" outcome-mod="0.5" review-mod="0.2" speed-mod="0.3">
 				<goodFollower>1,4,17</goodFollower>
 				<badFollower>6,7</badFollower>
@@ -139,8 +154,13 @@
 					<audienceAttraction id="Unemployed" men="0.6" women="0.4" />
 					<audienceAttraction id="Manager" men="-0.2" women="-0.4" />
 					<audienceAttraction id="Pensioners" men="-0.3" women="-0.6" />
-				</audienceAttractions>			
-			</genre>		
+				</audienceAttractions>
+				<castAttributes>
+					<actor attribute="power" value="1.2" />
+					<supportingactor attribute="power" value="1.1" />
+					<supportingactor attribute="appearance" value="1.1" />
+				</castAttributes>
+			</genre>
 			<genre id="3" name="cartoon" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">
 				<goodFollower>5,9</goodFollower>
 				<badFollower>17,12,8,13</badFollower>
@@ -178,11 +198,11 @@
 					<audienceAttraction id="Unemployed" men="0.1" women="0.05" />
 					<audienceAttraction id="Manager" value="-0.6" />
 					<audienceAttraction id="Pensioners" value="-0.6" />
-				</audienceAttractions>			
+				</audienceAttractions>
 			</genre>
 			<genre id="4" name="crime" outcome-mod="0.3" review-mod="0.4" speed-mod="0.3">
 				<goodFollower>2,17</goodFollower>
-				<badFollower>3,6</badFollower>		
+				<badFollower>3,6</badFollower>
 				<timeMods>
 					<timeMod time="0" value="0.1"/>
 					<timeMod time="1" value="0.05"/>
@@ -217,7 +237,11 @@
 					<audienceAttraction id="Unemployed" men="0.4" women="0.6" />
 					<audienceAttraction id="Manager" value="0.4" />
 					<audienceAttraction id="Pensioners" men="0.5" women="0.4" />
-				</audienceAttractions>			
+				</audienceAttractions>
+				<castAttributes>
+					<actor attribute="charisma" value="1.2" />
+					<supportingactor attribute="charisma" value="1.1" />
+				</castAttributes>
 			</genre>
 			<genre id="5" name="comedy" outcome-mod="0.5" review-mod="0.2" speed-mod="0.3">
 				<goodFollower>0,9,10,15</goodFollower>
@@ -256,7 +280,13 @@
 					<audienceAttraction id="Unemployed" value="0.5" />
 					<audienceAttraction id="Manager" value="-0.3" />
 					<audienceAttraction id="Pensioners" value="0" />
-				</audienceAttractions>			
+				</audienceAttractions>
+				<castAttributes>
+					<actor attribute="humor" value="1.2" />
+					<actor attribute="appearance" value="1.1" />
+					<supportingactor attribute="humor" value="1.2" />
+					<supportingactor attribute="appearance" value="1.1" />
+				</castAttributes>
 			</genre>
 			<genre id="6" name="documentation" outcome-mod="0.2" review-mod="0.5" speed-mod="0.3">
 				<goodFollower>0,7,11,200,201,202,203</goodFollower>
@@ -295,7 +325,11 @@
 					<audienceAttraction id="Unemployed" value="-0.4" />
 					<audienceAttraction id="Manager" value="0.4" />
 					<audienceAttraction id="Pensioners" value="0.6" />
-				</audienceAttractions>			
+				</audienceAttractions>
+				<castAttributes>
+					<actor attribute="skill" value="1.2" />
+					<actor attribute="charisma" value="1.1" />
+				</castAttributes>
 			</genre>
 			<genre id="7" name="drama" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">
 				<goodFollower>4, 6,13</goodFollower>
@@ -334,7 +368,13 @@
 					<audienceAttraction id="Unemployed" men="0" women="0.2" />
 					<audienceAttraction id="Manager" value="0" />
 					<audienceAttraction id="Pensioners" men="0.25" women="0.5" />
-				</audienceAttractions>			
+				</audienceAttractions>
+				<castAttributes>
+					<actor attribute="skill" value="1.2" />
+					<actor attribute="charisma" value="1.2" />
+					<supportingactor attribute="skill" value="1.2" />
+					<supportingactor attribute="charisma" value="1.2" />
+				</castAttributes>
 			</genre>
 			<genre id="8" name="erotic" outcome-mod="0.2" review-mod="0.2" speed-mod="0.6">
 				<goodFollower></goodFollower>
@@ -373,7 +413,13 @@
 					<audienceAttraction id="Unemployed" men="0.5" women="-0.2" />
 					<audienceAttraction id="Manager" men="0" women="-0.5" />
 					<audienceAttraction id="Pensioners" men="-0.2" women="-0.6" />
-				</audienceAttractions>			
+				</audienceAttractions>	
+				<castAttributes>
+					<actor attribute="skill" value="0.9" />
+					<actor attribute="appearance" value="1.4" />
+					<supportingactor attribute="appearance" value="1.4" />
+					<supportingactor attribute="skill" value="0.9" />
+				</castAttributes>
 			</genre>
 			<genre id="9" name="family" outcome-mod="0.40" review-mod="0.3" speed-mod="0.3">
 				<goodFollower>1,3,5</goodFollower>
@@ -412,7 +458,13 @@
 					<audienceAttraction id="Unemployed" men="0" women="0.25" />
 					<audienceAttraction id="Manager" value="-0.5" />
 					<audienceAttraction id="Pensioners" men="0.05" women="0.15" />
-				</audienceAttractions>			
+				</audienceAttractions>
+				<castAttributes>
+					<actor attribute="humor" value="1.1" />
+					<actor attribute="appearance" value="1.1" />
+					<supportingactor attribute="humor" value="1.1" />
+					<supportingactor attribute="appearance" value="1.1" />
+				</castAttributes>
 			</genre>
 			<genre id="10" name="fantasy" outcome-mod="0.6" review-mod="0.2" speed-mod="0.2">
 				<goodFollower>2,14,16</goodFollower>
@@ -451,7 +503,13 @@
 					<audienceAttraction id="Unemployed" men="0.6" women="0.3" />
 					<audienceAttraction id="Manager" value="-0.2" />
 					<audienceAttraction id="Pensioners" men="-0.3" women="-0.5" />
-				</audienceAttractions>			
+				</audienceAttractions>
+				<castAttributes>
+					<actor attribute="power" value="1.1" />
+					<actor attribute="appearance" value="1.1" />
+					<supportingactor attribute="power" value="1.1" />
+					<supportingactor attribute="appearance" value="1.1" />
+				</castAttributes>
 			</genre>
 			<genre id="11" name="history" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">
 				<goodFollower>6,7,13,201</goodFollower>
@@ -490,7 +548,12 @@
 					<audienceAttraction id="Unemployed" men="0.1" women="0" />
 					<audienceAttraction id="Manager" value="0.6" />
 					<audienceAttraction id="Pensioners" men="0.5" women="0.2" />
-				</audienceAttractions>			
+				</audienceAttractions>
+				<castAttributes>
+					<director attribute="charisma" value="1.1" />
+					<actor attribute="charisma" value="1.1" />
+					<supportingactor attribute="charisma" value="1.1" />
+				</castAttributes>
 			</genre>
 			<genre id="12" name="horror" outcome-mod="0.4" review-mod="0.2" speed-mod="0.4">
 				<goodFollower>2,10,16,17</goodFollower>
@@ -529,7 +592,7 @@
 					<audienceAttraction id="Unemployed" men="0.3" women="0" />
 					<audienceAttraction id="Manager" value="-0.3" />
 					<audienceAttraction id="Pensioners" men="-0.6" women="-0.8" />
-				</audienceAttractions>			
+				</audienceAttractions>	
 			</genre>
 			<genre id="13" name="monumental" outcome-mod="0.4" review-mod="0.4" speed-mod="0.2">
 				<goodFollower>6,10,11,18</goodFollower>
@@ -568,7 +631,12 @@
 					<audienceAttraction id="Unemployed" men="0.2" women="-0.1" />
 					<audienceAttraction id="Manager" value="0" />
 					<audienceAttraction id="Pensioners" men="0.4" women="0.2" />
-				</audienceAttractions>			
+				</audienceAttractions>
+				<castAttributes>
+					<director attribute="charisma" value="1.1" />
+					<actor attribute="charisma" value="1.1" />
+					<supportingactor attribute="charisma" value="1.05" />
+				</castAttributes>
 			</genre>
 			<genre id="14" name="mystery" outcome-mod="0.6" review-mod="0.2" speed-mod="0.2">
 				<goodFollower>4,11,17</goodFollower>
@@ -607,7 +675,7 @@
 					<audienceAttraction id="Unemployed" men="0.4" women="0.2" />
 					<audienceAttraction id="Manager" value="-0.5" />
 					<audienceAttraction id="Pensioners" value="-0.6" />
-				</audienceAttractions>			
+				</audienceAttractions>
 			</genre>
 			<genre id="15" name="love" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">
 				<goodFollower>5,9,202,203</goodFollower>
@@ -646,7 +714,13 @@
 					<audienceAttraction id="Unemployed" men="-0.2" women="0.6" />
 					<audienceAttraction id="Manager" value="-0.3" />
 					<audienceAttraction id="Pensioners" men="-0.2" women="0.3" />
-				</audienceAttractions>			
+				</audienceAttractions>
+				<castAttributes>
+					<actor attribute="humor" value="1.1" />
+					<actor attribute="appearance" value="1.2" />
+					<supportingactor attribute="humor" value="1.1" />
+					<supportingactor attribute="appearance" value="1.2" />
+				</castAttributes>
 			</genre>
 			<genre id="16" name="sci-fi" outcome-mod="0.6" review-mod="0.2" speed-mod="0.2">
 				<goodFollower>1,2,10,14,17</goodFollower>
@@ -685,11 +759,11 @@
 					<audienceAttraction id="Unemployed" men="0.5" women="0" />
 					<audienceAttraction id="Manager" value="-0.5" />
 					<audienceAttraction id="Pensioners" men="-0.4" women="-0.6" />
-				</audienceAttractions>			
+				</audienceAttractions>
 			</genre>
 			<genre id="17" name="thriller" outcome-mod="0.3" review-mod="0.4" speed-mod="0.3">
 				<goodFollower>2,4,14</goodFollower>
-				<badFollower>5,8,201</badFollower>		
+				<badFollower>5,8,201</badFollower>
 				<timeMods>
 					<timeMod time="0" value="0.1"/>
 					<timeMod time="1" value="0"/>
@@ -724,7 +798,12 @@
 					<audienceAttraction id="Unemployed" value="0.25" />
 					<audienceAttraction id="Manager" value="0" />
 					<audienceAttraction id="Pensioners" value="-0.3" />
-				</audienceAttractions>			
+				</audienceAttractions>
+				<castAttributes>
+					<actor attribute="charisma" value="1.1" />
+					<supportingactor attribute="charisma" value="1.1" />
+					<supportingactor attribute="appearance" value="1.1" />
+				</castAttributes>
 			</genre>
 			<genre id="18" name="western" outcome-mod="0.4" review-mod="0.3" speed-mod="0.3">
 				<goodFollower>2,13</goodFollower>
@@ -763,7 +842,11 @@
 					<audienceAttraction id="Unemployed" men="0.2" women="-0.2" />
 					<audienceAttraction id="Manager" value="0" />
 					<audienceAttraction id="Pensioners" men="0.5" women="0" />
-				</audienceAttractions>			
+				</audienceAttractions>
+				<castAttributes>
+					<actor attribute="power" value="1.1" />
+					<supportingactor attribute="appearance" value="1.1" />
+				</castAttributes>
 			</genre>
 
 
@@ -804,7 +887,13 @@
 					<audienceAttraction id="Unemployed" men="0.1" women="0.5" />
 					<audienceAttraction id="Manager" value="-0.2" />
 					<audienceAttraction id="Pensioners" men="0.1" women="0.2" />
-				</audienceAttractions>			
+				</audienceAttractions>
+				<castAttributes>
+					<actor attribute="humor" value="1.1" />
+					<actor attribute="appearance" value="1.1" />
+					<supportingactor attribute="humor" value="1.1" />
+					<supportingactor attribute="appearance" value="1.1" />
+				</castAttributes>
 			</genre>
 			<genre id="101" name="show_politics" outcome-mod="0.2" review-mod="0.6" speed-mod="0.2">
 				<goodFollower>4,6,17</goodFollower>
@@ -843,7 +932,13 @@
 					<audienceAttraction id="Unemployed" men="-0.3" women="-0.5" />
 					<audienceAttraction id="Manager" men="0.6" women="0.4" />
 					<audienceAttraction id="Pensioners" men="0.5" women="0.3" />
-				</audienceAttractions>			
+				</audienceAttractions>
+				<castAttributes>
+					<actor attribute="charisma" value="1.1" />
+					<actor attribute="appearance" value="1.1" />
+					<supportingactor attribute="charisma" value="1.1" />
+					<supportingactor attribute="appearance" value="1.1" />
+				</castAttributes>
 			</genre>
 			<genre id="102" name="show_music" outcome-mod="0.2" review-mod="0.35" speed-mod="0.45">
 				<goodFollower>5,9</goodFollower>
@@ -882,7 +977,13 @@
 					<audienceAttraction id="Unemployed" men="0.1" women="0.4" />
 					<audienceAttraction id="Manager" men="-0.5" women="-0.2" />
 					<audienceAttraction id="Pensioners" men="0.15" women="0.3" />
-				</audienceAttractions>			
+				</audienceAttractions>
+				<castAttributes>
+					<actor attribute="humor" value="1.1" />
+					<actor attribute="appearance" value="1.1" />
+					<supportingactor attribute="humor" value="1.1" />
+					<supportingactor attribute="appearance" value="1.1" />
+				</castAttributes>
 			</genre>
 			
 
@@ -925,7 +1026,7 @@
 					<audienceAttraction id="Pensioners" value="0.5" />
 					<audienceAttraction id="Women" value="0.5" />
 					<audienceAttraction id="Men" value="0.5" />
-				</audienceAttractions>			
+				</audienceAttractions>
 			</genre>
 			<genre id="201" name="event_politics" outcome-mod="0.15" review-mod="0.65" speed-mod="0.2">
 				<goodFollower>4,6,17</goodFollower>
@@ -964,7 +1065,11 @@
 					<audienceAttraction id="Unemployed" men="-0.25" women="-0.5" />
 					<audienceAttraction id="Manager" value="0.5" />
 					<audienceAttraction id="Pensioners" value="0.5" />
-				</audienceAttractions>			
+				</audienceAttractions>
+				<castAttributes>
+					<actor attribute="charisma" value="1.1" />
+					<supportingactor attribute="charisma" value="1.1" />
+				</castAttributes>
 			</genre>
 			<genre id="202" name="event_music" outcome-mod="0.15" review-mod="0.35" speed-mod="0.5">
 				<goodFollower>5,9</goodFollower>
@@ -1003,7 +1108,13 @@
 					<audienceAttraction id="Unemployed" men="0.1" women="0.3" />
 					<audienceAttraction id="Manager" value="-0.5" />
 					<audienceAttraction id="Pensioners" value="0.4" />
-				</audienceAttractions>			
+				</audienceAttractions>
+				<castAttributes>
+					<actor attribute="humor" value="1.1" />
+					<actor attribute="appearance" value="1.1" />
+					<supportingactor attribute="humor" value="1.1" />
+					<supportingactor attribute="appearance" value="1.1" />
+				</castAttributes>
 			</genre>
 			<genre id="203" name="event_sport" outcome-mod="0.15" review-mod="0.3" speed-mod="0.55">
 				<goodFollower>0,1,2</goodFollower>
@@ -1041,7 +1152,7 @@
 					<audienceAttraction id="Unemployed" men="0.6" women="-0.1" />
 					<audienceAttraction id="Manager" men="0.4" women="0" />
 					<audienceAttraction id="Pensioners" men="0.2" women="0" />
-				</audienceAttractions>			
+				</audienceAttractions>
 			</genre>
 			<genre id="204" name="event_showbiz" outcome-mod="0.2" review-mod="0.3" speed-mod="0.5">
 				<goodFollower>5,6,9</goodFollower>
@@ -1080,7 +1191,13 @@
 					<audienceAttraction id="Unemployed" men="0.2" women="0.5" />
 					<audienceAttraction id="Manager" value="-0.7" />
 					<audienceAttraction id="Pensioners" men="0" women="0.2" />
-				</audienceAttractions>			
+				</audienceAttractions>
+				<castAttributes>
+					<actor attribute="humor" value="1.1" />
+					<actor attribute="appearance" value="1.1" />
+					<supportingactor attribute="humor" value="1.1" />
+					<supportingactor attribute="appearance" value="1.1" />
+				</castAttributes>
 			</genre>
 			<genre id="300" name="feature" outcome-mod="0.1" review-mod="0.4" speed-mod="0.5">
 				<goodFollower>feature_yellowpress,history,documentary</goodFollower>
@@ -1119,7 +1236,7 @@
 					<audienceAttraction id="Unemployed" value="-0.3" />
 					<audienceAttraction id="Manager" value="0.5" />
 					<audienceAttraction id="Pensioners" value="0.6" />
-				</audienceAttractions>			
+				</audienceAttractions>
 			</genre>
 
 
@@ -1160,7 +1277,7 @@
 					<audienceAttraction id="Unemployed" men="0" women="0.4" />
 					<audienceAttraction id="Manager" value="-0.1" />
 					<audienceAttraction id="Pensioners" value="0.1" />
-				</audienceAttractions>			
+				</audienceAttractions>
 			</genre>
 		</genres>
 		<flags>
@@ -1199,7 +1316,7 @@
 					<audienceAttraction id="Unemployed" value="0.3" />
 					<audienceAttraction id="Manager" value="0.2" />
 					<audienceAttraction id="Pensioners" value="0" />
-				</audienceAttractions>			
+				</audienceAttractions>
 			</flag>
 			<flag id="64" name="xrated" outcome-mod="0.3" review-mod="0.1" speed-mod="0.6">
 				<timeMods>
@@ -1236,7 +1353,7 @@
 					<audienceAttraction id="Unemployed" men="0.5" women="0.1" />
 					<audienceAttraction id="Manager" men="0" women="-0.2" />
 					<audienceAttraction id="Pensioners" men="-0.3" women="-0.5" />
-				</audienceAttractions>			
+				</audienceAttractions>
 			</flag>
 			<flag id="128" name="paidprograming" outcome-mod="0" review-mod="0.2" speed-mod="0.8">
 				<timeMods>
@@ -1273,7 +1390,7 @@
 					<audienceAttraction id="Unemployed" men="-0.1" women="0.2" />
 					<audienceAttraction id="Manager" value="-0.7" />
 					<audienceAttraction id="Pensioners" value="-0.1" />
-				</audienceAttractions>			
+				</audienceAttractions>
 			</flag>
 		</flags>
 	</programmedatamods>

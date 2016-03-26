@@ -83,6 +83,10 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 	Field GoodFollower:TList = CreateList()
 	Field BadFollower:TList = CreateList()
 
+	'map: jobName_attribute=>value
+	Field castAttributes:TMap = null
+
+
 	'override
 	Method GetGUIDBaseName:string()
 		return "movie-genre-definition"
@@ -102,12 +106,24 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		BadFollower = TList(data.Get("badFollower"))
 		If BadFollower = Null Then BadFollower = CreateList()
 
+		'might be null!
+		castAttributes = TMap(data.Get("castAttributes"))
+
 		'print "Load moviegenre" + referenceId + ": " + AudienceAttraction.ToString()
 		'print "OutcomeMod: " + OutcomeMod + " | ReviewMod: " + ReviewMod + " | SpeedMod: " + SpeedMod
 
 		return self
 	End Method
 
+
+	Method GetCastAttribute:Float(jobID:int, attribute:string = "")
+		if not castAttributes then return 1.0
+		local value:object = castAttributes.ValueForKey(jobID+"_"+attribute)
+		if not value or string(value) then return 1.0
+
+		return float(string(value))
+	End Method
+	
 
 	Method GetPopularity:TGenrePopularity()
 		return TGenrePopularity(Super.GetPopularity())
