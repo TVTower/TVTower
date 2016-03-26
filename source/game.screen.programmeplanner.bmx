@@ -1360,11 +1360,26 @@ Type TScreenHandler_ProgrammePlanner
 			if not obj then continue
 			'if already included - skip it
 			if GuiListProgrammes.ContainsBroadcastMaterial(obj) then continue
+
+			'repair broken hours (could happen up to v0.2.7 because
+			'of days=0 hours>24 params )
+			if obj.programmedHour > 23
+				obj.programmedDay :+ int(obj.programmedHour / 24)
+				obj.programmedHour = obj.programmedHour mod 24
+			endif
 			'repair broken ones
 			if obj.programmedDay = -1 and obj.programmedHour = -1
 				repairBrokenProgramme = True
 				continue
+			'today or yesterday ending after midnight
+			elseif obj.programmedDay = currDay or (obj.programmedDay+1 = currDay and obj.programmedHour + obj.GetBlocks() > 24)
+				'ok
+			'someday _not_ today or yesterday+endingToday
+			else
+				repairBrokenProgramme = True
+				continue
 			endif
+
 						
 			'DAYCHANGE
 			'skip programmes started yesterday (they are stored individually)
