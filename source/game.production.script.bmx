@@ -503,6 +503,9 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	'a value of 1.0 means a perfect match (eg. x*50% speed, x*20% outcome
 	' and x*30% review)
 	Method CalculateGenreCriteriaFit:Float()
+		'Fetch corresponding genre definition, with this we are able to
+		'see what values are "expected" for this genre.
+		
 		local reviewGenre:Float, speedGenre:Float, outcomeGenre:Float
 		CalculateTotalGenreCriterias(reviewGenre, speedGenre, outcomeGenre)
 

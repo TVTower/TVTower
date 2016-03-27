@@ -66,6 +66,7 @@ Type TProduction Extends TOwnedGameObject
 	Field scriptGenreFit:Float = -1.0
 	Field castFit:Float = -1.0
 	Field productionValueMod:Float = 1.0
+	Field effectiveFocusPoints:Float = 0.0
 
 
 	Method SetGUID:Int(GUID:String)
@@ -103,23 +104,35 @@ Type TProduction Extends TOwnedGameObject
 		status = 1
 
 
-		'=== CALCULATE BASE PRODUCTION VALUES ===
 
-		'=== CALCULATE FITS ===
-		'do that in advance (with current actor skills)
+		'=== 1. CALCULATE BASE PRODUCTION VALUES ===
 
-		'Fetch corresponding genre definition, with this we are able to
-		'see what values are "expected" for this genre.
-		'Depending on the "fit" of actors, directors, ... values are
-		'modified then.
-		'Each script contains some values for review, speed, ...
-		'which get modified by the "fit" (good ++, bad --)
+		'=== 1.1. CALCULATE FITS ===
+
+		'=== 1.1.1 GENRE ===
+		'Compare genre definition with script values (expected vs real)
 		scriptGenreFit = productionConcept.script.CalculateGenreCriteriaFit() 
+
+		'=== 1.1.2 CAST ===
+		'Calculate how the selected cast fits to their assigned jobs
 		castFit = productionConcept.CalculateCastFit() 
+
+
+		'=== 1.2 INDIVIDUAL IMPROVEMENTS ===
+
+		'=== 1.2.1 CAST SYMPATHY ===
+		'improve cast job by "sympathy" (they like your channel, so they
+		'do a slightly better job)
+		'TODO
+
+
+		'=== 1.3 MODIFY PRODUCTION VALUE ===
+		effectiveFocusPoints = productionConcept.CalculateEffectiveFocusPoints()
+
 		print "---------"
-		print "scriptGenreFit: " + scriptGenreFit
-		print "castFit:        " + castFit
-		
+		print "scriptGenreFit:       " + scriptGenreFit
+		print "castFit:              " + castFit
+		print "effectiveFocusPoints: " + effectiveFocusPoints + " / " + productionConcept._effectiveFocusPointsMax+"   "+MathHelper.NumberToString(productionConcept.GetEffectiveFocusPointsRatio()*100, 2)+"%"
 
 		return self
 	End Method
@@ -154,6 +167,11 @@ Type TProduction Extends TOwnedGameObject
 
 		'=== 1. PRODUCTION EFFECTS ===
 		'productionValueMod ...
+
+
+		'by 5% chance increase value - so bad productions create
+		'a superior programme - or blockbusters fail for unknown reasons
+		'if RandRange(0,100) < 5 then value :+ MathHelper.Clamp(value, 0.2, 0.5)
 
 
 		'calculate

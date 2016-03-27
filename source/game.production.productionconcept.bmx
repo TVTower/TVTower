@@ -71,6 +71,8 @@ Type TProductionConcept Extends TOwnedGameObject
 	Field castFit:Float = -1.0
 	'cache calculated vars
 	Field _scriptGenreFit:Float = -1.0 {nosave}
+	Field _effectiveFocusPoints:Float = -1.0 {nosave}
+	Field _effectiveFocusPointsMax:Float = -1.0 {nosave}
 
 
 	Method Initialize:TProductionConcept(owner:int, script:TScript)
@@ -95,6 +97,8 @@ Type TProductionConcept Extends TOwnedGameObject
 
 	Method ResetCache()
 		_scriptGenreFit = -1
+		_effectiveFocusPoints = -1
+		_effectiveFocusPointsMax = -1
 	End Method
 
 
@@ -153,6 +157,8 @@ Type TProductionConcept Extends TOwnedGameObject
 		else
 			productionFocus.SetFocusPointsMax( 0 )
 		endif
+
+		ResetCache()
 
 		EventManager.triggerEvent( TEventSimple.Create("ProductionConcept.SetProductionCompany", new TData.Add("productionCompany", productionCompany), Self ) )
 	End Method
@@ -267,7 +273,53 @@ Type TProductionConcept Extends TOwnedGameObject
 	End Method
 
 
+	'returns the percentage of used to maximum focus points
+	Method GetEffectiveFocusPointsRatio:Float()
+		'a "drama" production might have VFX-priority of 0.5, each point
+		'spent there is only added by 50% to the effective ratio
+
+		if _effectiveFocusPointsMax < 0 then CalculateEffectiveFocusPoints()
+
+		if _effectiveFocusPointsMax > 0 
+			return _effectiveFocusPoints / _effectiveFocusPointsMax
+		elseif _effectiveFocusPointsMax = 0
+			return 0.0
+		endif
+	End Method
+	
+
+	Method CalculateEffectiveFocusPoints:Float(recalculate:int = False)
+		if not productionFocus then return 0.0
+
+		if _effectiveFocusPoints >= 0 and not recalculate then return _effectiveFocusPoints
+
+		_effectiveFocusPoints = 0.0
+		_effectiveFocusPointsMax = 0.0
+		
+		Local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition(script.mainGenre)
+
+		For local focusPointID:int = EachIn productionFocus.GetOrderedFocusIndices()
+			'production speed does not add to quality
+			if focusPointID = TVTProductionFocus.PRODUCTION_SPEED then continue
+			
+			if genreDefinition
+				_effectiveFocusPoints :+ GetProductionFocus(focusPointID) * genreDefinition.GetFocusPointPriority(focusPointID)
+				_effectiveFocusPointsMax :+ TProductionFocusBase.focusPointLimit * genreDefinition.GetFocusPointPriority(focusPointID)
+			else
+				_effectiveFocusPoints :+ GetProductionFocus(focusPointID)
+				_effectiveFocusPointsMax :+ TProductionFocusBase.focusPointLimit
+			endif
+		Next
+
+		return _effectiveFocusPoints
+	End Method
+
+	'returns how good or bad the fit of the selected cast is
 	Method CalculateCastFit:Float(recalculate:int = False)
+		'Calculate how good or bad the fit of the selected cast is
+		'- do they know their job?
+		'- is it the right genre for them?
+
 		'use already calculated value
 		if castFit >= 0 and not recalculate then return castFit
 		 
@@ -331,7 +383,8 @@ Type TProductionConcept Extends TOwnedGameObject
 
 			'=== JOB FIT ===
 			local jobFit:Float = person.HasJob( script.cast[castIndex].job )
-
+			'by 5% chance "switch" effect
+			if RandRange(0,100) < 5 then jobFit = 1.0 - jobFit
 
 
 			'=== ATTRIBUTES - GENRE FIT ===
@@ -539,7 +592,7 @@ Type TProductionFocusBase
 	Field focusPoints:int[]
 	Field focusPointsMax:int = -1
 	Field activeFocusIndices:int[]
-	global focusAspectCount:int = 4
+	Global focusPointLimit:int = 10
 
 
 	Method New()
@@ -554,6 +607,7 @@ Type TProductionFocusBase
 
 
 	Method EnableFictional:int(bool:int = true)
+		'movielike programme
 		if bool
 			activeFocusIndices = [TVTProductionFocus.COULISSE, ..
 			                      TVTProductionFocus.OUTFIT_AND_MASK, ..
@@ -563,6 +617,7 @@ Type TProductionFocusBase
 			                      TVTProductionFocus.TEAM, ..
 			                      TVTProductionFocus.PRODUCTION_SPEED ..
 			                     ]
+		'features, documentations...
 		else
 			activeFocusIndices = [TVTProductionFocus.COULISSE, ..
 			                      TVTProductionFocus.OUTFIT_AND_MASK, ..
@@ -584,7 +639,7 @@ Type TProductionFocusBase
 
 		'reset old, so GetFocusPointsLeft() returns correct value
 		focusPoints[index -1] = 0
-		focusPoints[index -1] = MathHelper.Clamp(value, 0, Min(focusPoints[index -1] + GetFocusPointsLeft(), 10))
+		focusPoints[index -1] = MathHelper.Clamp(value, 0, Min(focusPoints[index -1] + GetFocusPointsLeft(), focusPointLimit))
 
 		'emit event with corrected value (via GetFocus())
 		EventManager.triggerEvent( TEventSimple.Create("ProductionFocus.SetFocus", new TData.AddNumber("focusIndex", index).AddNumber("value", GetFocus(index)), Self ) )
@@ -649,8 +704,8 @@ Type TProductionFocusBase
 	
 
 	Method GetFocusPointsMax:int()
-		'without limit, each focus aspect can contain 10 points
-		'if focusPointsMax < 0 then focusPointsMax = GetFocusAspectCount() * 10
+		'without limit, each focus aspect can contain focusPointLimit(10) points
+		'if focusPointsMax < 0 then focusPointsMax = GetFocusAspectCount() * focusPointLimit
 		'set to 0
 		if focusPointsMax < 0 then focusPointsMax = 0
 		return focusPointsMax

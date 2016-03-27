@@ -123,6 +123,20 @@ Type TVTProductionFocus {_exposeToLua}
 			default                 return "unknown"
 		end select
 	End Function
+
+
+
+	Function GetByString:int(keyString:string = "")
+		Select keyString.toLower()
+			case "coulisse"          return COULISSE
+			case "outfit_and_mask"   return OUTFIT_AND_MASK
+			case "team"              return TEAM
+			case "production_speed"  return PRODUCTION_SPEED
+			case "vfx_and_sfx"       return VFX_AND_SFX
+			case "stunts"            return STUNTS
+			default                  return NONE
+		End Select
+	End Function
 End Type
 
 

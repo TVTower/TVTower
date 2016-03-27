@@ -83,8 +83,11 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 	Field GoodFollower:TList = CreateList()
 	Field BadFollower:TList = CreateList()
 
+	'=== helpers for custom production ===
 	'map: jobName_attribute=>value
 	Field castAttributes:TMap = null
+	'map focusPoint=>value
+	Field focusPointPriorities:TMap = null
 
 
 	'override
@@ -108,6 +111,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 
 		'might be null!
 		castAttributes = TMap(data.Get("castAttributes"))
+		focusPointPriorities = TMap(data.Get("focusPointPriorities"))
 
 		'print "Load moviegenre" + referenceId + ": " + AudienceAttraction.ToString()
 		'print "OutcomeMod: " + OutcomeMod + " | ReviewMod: " + ReviewMod + " | SpeedMod: " + SpeedMod
@@ -115,6 +119,12 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		return self
 	End Method
 
+
+	Method SetCastAttribute(jobID:int, attribute:string = "", value:float)
+		if not castAttributes then castAttributes = CreateMap()
+		castAttributes.Insert(jobID+"_"+attribute, string(value))
+	End Method
+	
 
 	Method GetCastAttribute:Float(jobID:int, attribute:string = "")
 		if not castAttributes then return 1.0
@@ -125,6 +135,21 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 	End Method
 	
 
+	Method SetFocusPointPriority(focusPointID:int, value:float)
+		if not focusPointPriorities then focusPointPriorities = CreateMap()
+		focusPointPriorities.Insert(string(focusPointID), string(value))
+	End Method
+
+	
+	Method GetFocusPointPriority:Float(focusPointID:int )
+		if not focusPointPriorities then return 1.0
+		local value:object = focusPointPriorities.ValueForKey(string(focusPointID))
+		if not value or string(value) then return 1.0
+
+		return float(string(value))
+	End Method
+
+	
 	Method GetPopularity:TGenrePopularity()
 		return TGenrePopularity(Super.GetPopularity())
 	End Method

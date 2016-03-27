@@ -480,6 +480,25 @@ Type TRegistryProgrammeDataModsLoader extends TRegistryBaseLoader
 			if castAttributes then data.Add("castAttributes", castAttributes)
 		endif
 
+
+
+		'load focusPointPriorities
+		subNode = TXmlHelper.FindChild(node, "focusPointPriorities")
+		if subNode
+			local focusPointPriorities:TMap = null
+			For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
+				if not focusPointPriorities then focusPointPriorities = CreateMap()
+				Local focusPointID:int = TVTProductionFocus.GetByString(subNodeChild.GetName().ToLower())
+				Local value:String = TXmlHelper.FindValue(subNodeChild, "value", "1.0")
+
+				if focusPointID = TVTProductionFocus.NONE then continue
+
+				focusPointPriorities.Insert(string(focusPointID), value)
+			Next
+			'add priorities to data set
+			if focusPointPriorities then data.Add("focusPointPriorities", focusPointPriorities)
+		endif
+
 		return data
 	End Method
 

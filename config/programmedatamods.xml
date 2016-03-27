@@ -116,6 +116,10 @@
 					<supportingactor attribute="humor" value="1.2" />
 					<supportingactor attribute="appearance" value="1.1" />
 				</castAttributes>
+				<focusPointPriorities>
+					<coulisse value="1.1" />
+					<stunts value="1.1" />
+				</focusPointPriorities>
 			</genre>
 			<genre id="2" name="action" outcome-mod="0.5" review-mod="0.2" speed-mod="0.3">
 				<goodFollower>1,4,17</goodFollower>
@@ -160,6 +164,10 @@
 					<supportingactor attribute="power" value="1.1" />
 					<supportingactor attribute="appearance" value="1.1" />
 				</castAttributes>
+				<focusPointPriorities>
+					<vfx_and_sfx value="1.1" />
+					<stunts value="1.2" />
+				</focusPointPriorities>
 			</genre>
 			<genre id="3" name="cartoon" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">
 				<goodFollower>5,9</goodFollower>
@@ -375,6 +383,9 @@
 					<supportingactor attribute="skill" value="1.2" />
 					<supportingactor attribute="charisma" value="1.2" />
 				</castAttributes>
+				<focusPointPriorities>
+					<coulisse value="1.2" />
+				</focusPointPriorities>
 			</genre>
 			<genre id="8" name="erotic" outcome-mod="0.2" review-mod="0.2" speed-mod="0.6">
 				<goodFollower></goodFollower>
@@ -420,6 +431,12 @@
 					<supportingactor attribute="appearance" value="1.4" />
 					<supportingactor attribute="skill" value="0.9" />
 				</castAttributes>
+				<focusPointPriorities>
+					<coulisse value="1.2" />
+					<outfit_and_mask value="0.8" />
+					<stunts value="0.5" />
+					<vfx_and_sfx value="0.5" />
+				</focusPointPriorities>
 			</genre>
 			<genre id="9" name="family" outcome-mod="0.40" review-mod="0.3" speed-mod="0.3">
 				<goodFollower>1,3,5</goodFollower>
