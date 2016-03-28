@@ -470,7 +470,7 @@ Type TEntity extends TRenderableEntity
 
 	Method GetWorldSpeedFactor:float()
 		if worldSpeedFactor < 0 then return GetGlobalWorldSpeedFactor()
-		return worldSpeedFactor
+		return worldSpeedFactor * globalWorldSpeedFactorMod
 	End Method
 
 
