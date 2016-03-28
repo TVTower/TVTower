@@ -84,6 +84,20 @@ Type TStationMapCollection
 	Function onSaveGameLoad(triggerEvent:TEventBase)
 		TLogger.Log("TStationMapCollection", "Savegame loaded - reloading map data", LOG_DEBUG | LOG_SAVELOAD)
 
+		'fix missing mapConfigFile:
+		if FileType(_instance.mapConfigFile) <> 1
+			local oldURI:string = _instance.mapConfigFile
+			local base:string = _instance.mapConfigFile.Replace("res/maps/", "")
+			'old version - stored in "res/maps/countryname.xml"
+			if base.Find("/") <= 0
+				_instance.mapConfigFile = "res/maps/" + StripAll(_instance.mapConfigFile) + "/" + StripDir(_instance.mapConfigFile)
+			'new version - stored in "res/maps/countryname/file.xml"
+			else
+				'fall back to "germany"
+				_instance.mapConfigFile = "res/maps/germany/germany.xml"
+			endif
+			TLogger.Log("TStationMap.onSaveGameLoad()", "Fixed map configuration file URI: old=~q"+oldURI+"~q, new=~q"+_instance.mapConfigFile+"~q.", LOG_ERROR | LOG_SAVELOAD)
+		endif
 		_instance.LoadMapFromXML()
 	End Function
 

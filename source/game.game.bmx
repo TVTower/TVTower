@@ -184,8 +184,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'do this here, as saved games already contain the database
 		TLogger.Log("Game.PrepareNewGame()", "loading database", LOG_DEBUG)
 		LoadDatabase(userDBDir)
-
-
+		'load map specific databases
+		LoadDatabase("res/maps/germany/database")
 
 		'=== FIGURES ===
 		'set all non human players to AI
@@ -264,7 +264,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'=== STATION MAP ===
 		'load the used map
-		GetStationMapCollection().LoadMapFromXML("res/maps/germany.xml")
+		GetStationMapCollection().LoadMapFromXML("res/maps/germany/germany.xml")
+'		GetStationMapCollection().LoadMapFromXML("res/maps/germany.xml")
 
 		'create base stations
 		For Local i:Int = 1 To 4

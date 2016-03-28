@@ -19,7 +19,7 @@
 		<!-- images used to recognize when mouse is over a specific state -->
 		<resource name="map_collisionPack">
 			<type>SpritePack</type>
- 			<url>res/maps/germany_collision.png</url>
+ 			<url>res/maps/germany/germany_collision.png</url>
 			<children>
 				<child name="map_sachsen"				x="139"	y="351"	w="179"	h="74" />
 				<child name="map_niedersachsen"			x="423"	y="0"	w="264"	h="128" />
@@ -44,8 +44,8 @@
 			<!-- map with graytone values of population density,
 				 colordepth must be RGBA, not Grayscale !!
 			-->
-			<densitymap type="pixmap" url="res/maps/germany_densitymap.png" />
-			<surface type="sprite" url="res/maps/germany_surface.png" />
+			<densitymap type="pixmap" url="res/maps/germany/germany_densitymap.png" />
+			<surface type="sprite" url="res/maps/germany/germany_surface.png" />
 			<states>
 				<state name="bremen"			x="187" y="81"	sprite="map_bremen" />
 				<state name="berlin"			x="432" y="108"	sprite="map_berlin" />
