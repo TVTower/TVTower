@@ -33,7 +33,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		Super.Initialize()
 
 		'do this every new game - or like now,just on a new "app start"?
-		SetRandomizerBase( Time.MillisecsLong() )
+		SetRandomizerBase( Millisecs() )
 
 
 		'=== GAME TIME / SPEED ===
@@ -183,9 +183,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'load all movies, news, series and ad-contracts
 		'do this here, as saved games already contain the database
 		TLogger.Log("Game.PrepareNewGame()", "loading database", LOG_DEBUG)
-		LoadDatabase(userDBDir)
+		LoadDatabase(userDBDir, true)
 		'load map specific databases
-		LoadDatabase("res/maps/germany/database")
+		LoadDatabase("res/maps/germany/database", False)
 
 		'=== FIGURES ===
 		'set all non human players to AI
@@ -741,11 +741,11 @@ endrem
 			if not finance then Throw "ComputeDailyIncome failed: finance = null."
 
 			If finance.money > 0
-				finance.EarnBalanceInterest( finance.money * TPlayerFinance.balanceInterestRate )
+				finance.EarnBalanceInterest( Long(finance.money * TPlayerFinance.balanceInterestRate) )
 			Else
 				'attention: multiply current money * -1 to make the
 				'negative value an "positive one" - a "positive expense"
-				finance.PayDrawingCreditInterest( -1 * finance.money * TPlayerFinance.drawingCreditRate )
+				finance.PayDrawingCreditInterest( Long(-1 * finance.money * TPlayerFinance.drawingCreditRate) )
 			EndIf
 		Next
 	End Method

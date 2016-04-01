@@ -498,8 +498,8 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 
 	Method DrawSheet(leftX:Int=30, rightX:Int=30, width:Int=0)
-		Local sheetY:Float 	= 20
-		Local sheetX:Float 	= leftX
+		Local sheetY:Int = 20
+		Local sheetX:Int = leftX
 		Local sheetAlign:Int= 0
 		If width = 0 Then width = GetGraphicsManager().GetWidth()
 		'if mouse on left side of area - align sheet on right side
@@ -1115,7 +1115,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				If i = currentGenre Then entryDrawType = "active"
 				'hovered - draw hover effect if hovering
 				'can only haver if no episode list is open
-				If Self.openState <3 And THelper.MouseIn(currX, currY, genreSize.GetX(), genreSize.GetY()-1) Then entryDrawType="hovered"
+				If Self.openState <3 And THelper.MouseIn(currX, currY, int(genreSize.GetX()), int(genreSize.GetY())-1) Then entryDrawType="hovered"
 
 				'add "top" portion when drawing first item
 				'do this in the for loop, so the entrydrawType is known
@@ -1246,7 +1246,7 @@ endrem
 				If i = currentEntry Then tapeDrawType = "hovered"
 				'hovered - draw hover effect if hovering
 				'we add 1 pixel to height - to hover between tapes too
-				If THelper.MouseIn(currX, currY + 1, entrySize.GetX(), entrySize.GetY()) Then tapeDrawType="hovered"
+				If THelper.MouseIn(currX, currY + 1, int(entrySize.GetX()), int(entrySize.GetY())) Then tapeDrawType="hovered"
 
 
 				If licences[i].isSingle()
@@ -1345,7 +1345,7 @@ endrem
 			EndIf
 
 			'we add 1 pixel to height - to hover between tapes too
-			If THelper.MouseIn(entriesRect.GetX(), currY+1, entrySize.GetX(), entrySize.GetY())
+			If THelper.MouseIn(int(entriesRect.GetX()), currY+1, int(entrySize.GetX()), int(entrySize.GetY()))
 				GetGame().cursorstate = 1
 				Local doneSomething:Int = False
 				'store for sheet-display
@@ -1440,7 +1440,7 @@ endrem
 				'active - if tape is the currently used
 				If i = currentSubEntry Then tapeDrawType = "hovered"
 				'hovered - draw hover effect if hovering
-				If THelper.MouseIn(currX, currY + 1, entrySize.GetX(), entrySize.GetY()) Then tapeDrawType="hovered"
+				If THelper.MouseIn(currX, currY + 1, int(entrySize.GetX()), int(entrySize.GetY())) Then tapeDrawType="hovered"
 
 				If licence.isSingle()
 					GetSpriteFromRegistry("gfx_programmetape_movie."+tapeDrawType).draw(currX + 8, currY+1)
@@ -1524,7 +1524,7 @@ endrem
 
 			
 			If licence
-				If THelper.MouseIn(subEntriesRect.GetX(), currY + 1, entrySize.GetX(), entrySize.GetY())
+				If THelper.MouseIn(int(subEntriesRect.GetX()), currY + 1, int(entrySize.GetX()), int(entrySize.GetY()))
 					GetGame().cursorstate = 1 'mouse-over-hand
 
 					'store for sheet-display
@@ -1564,7 +1564,7 @@ endrem
 
 		'only react to genre area if episode area is not open
 		If openState <3
-			If MOUSEMANAGER.IsShortClicked(1) And THelper.MouseIn(genresRect.GetX(), genresRect.GetY() + genresStartY, genresRect.GetW(), genreSize.GetY()*TProgrammeLicenceFilter.GetVisibleCount())
+			If MOUSEMANAGER.IsShortClicked(1) And THelper.MouseIn(int(genresRect.GetX()), int(genresRect.GetY()) + genresStartY, int(genresRect.GetW()), int(genreSize.GetY())*TProgrammeLicenceFilter.GetVisibleCount())
 				SetOpen(2)
 				Local visibleFilters:TProgrammeLicenceFilter[] = TProgrammeLicenceFilter.GetVisible()
 				currentGenre = Max(0, Min(visibleFilters.length-1, Floor((MouseManager.y - (genresRect.GetY() + genresStartY)) / genreSize.GetY())))
@@ -1677,7 +1677,7 @@ Type TgfxContractlist Extends TPlannerList
 				if contract.GetDaysLeft() <= 0 then SetColor 255,220,220
 				
 				'hovered - draw hover effect if hovering
-				If THelper.MouseIn(currX, currY, entrySize.GetX(), entrySize.GetY()-1)
+				If THelper.MouseIn(currX, currY, int(entrySize.GetX()), int(entrySize.GetY())-1)
 					GetSpriteFromRegistry("gfx_programmetape_movie.hovered").draw(currX + 8, currY+1)
 				Else
 					GetSpriteFromRegistry("gfx_programmetape_movie."+drawType).draw(currX + 8, currY+1)
@@ -1723,7 +1723,7 @@ Type TgfxContractlist Extends TPlannerList
 			For Local i:Int = 0 Until GameRules.maxContracts
 				Local contract:TAdContract = programmeCollection.GetAdContractAtIndex(i)
 
-				If contract And THelper.MouseIn(entriesRect.GetX(), currY, entrySize.GetX(), entrySize.GetY()-1)
+				If contract And THelper.MouseIn(int(entriesRect.GetX()), currY, int(entrySize.GetX()), int(entrySize.GetY())-1)
 					'store for outside use (eg. displaying a sheet)
 					hoveredAdContract = contract
 
@@ -2100,8 +2100,8 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			
 			If obj.area.containsXY(MouseManager.x, MouseManager.y)
 				Local leftX:Int = 30, rightX:Int = 30
-				Local sheetY:Float 	= 20
-				Local sheetX:Float 	= leftX
+				Local sheetY:Int = 20
+				Local sheetX:Int = leftX
 				Local sheetAlign:Int= 0
 				'if mouse on left side of screen - align sheet on right side
 				If MouseManager.x < GetGraphicsManager().GetWidth()/2
@@ -2467,11 +2467,16 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 		EndIf
 
 		'use the name of the returned sprite - default or specific one
+		if not GetSpriteFromRegistry(assetName, assetNameDefault)
+			print "assetName:"+assetName+"  assetNameDefault:"+assetNameDefault
+		endif
 		assetName = GetSpriteFromRegistry(assetName, assetNameDefault).GetName()
 
 		'check if "dragged" exists
 		Local assetNameDragged:String = assetName+".dragged"
-		If GetSpriteFromRegistry(assetNameDragged).GetName() <> assetNameDragged
+		local assetDragged:TSprite = GetSpriteFromRegistry(assetNameDragged)
+		if not assetDragged then print "assetDragged failed"
+		If assetDragged and assetDragged.GetName() <> assetNameDragged
 			assetNameDragged = assetName
 		EndIf
 		
@@ -2498,8 +2503,8 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 
 	Method DrawSheet(leftX:Int=30, rightX:Int=30)
 '		self.parentBlock.DrawSheet()
-		Local sheetY:Float 	= 20
-		Local sheetX:Float 	= leftX
+		Local sheetY:Int = 20
+		Local sheetX:Int = leftX
 		Local sheetAlign:Int= 0
 		'if mouse on left side of screen - align sheet on right side
 		If MouseManager.x < GetGraphicsManager().GetWidth()/2
@@ -2510,7 +2515,7 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 		SetColor 0,0,0
 		SetAlpha 0.2
 		Local x:Float = Self.GetScreenX()
-		Local tri:Float[]=[sheetX+20,sheetY+25,sheetX+20,sheetY+90,Self.GetScreenX()+Self.GetScreenWidth()/2.0+3,Self.GetScreenY()+Self.GetScreenHeight()/2.0]
+		Local tri:Float[]=[Float(sheetX+20),Float(sheetY+25),Float(sheetX+20),Float(sheetY+90),Self.GetScreenX()+Self.GetScreenWidth()/2.0+3,Self.GetScreenY()+Self.GetScreenHeight()/2.0]
 		DrawPoly(tri)
 		SetColor 255,255,255
 		SetAlpha 1.0
@@ -2611,8 +2616,8 @@ Type TGuiAdContract Extends TGUIGameListItem
 
 
 	Method DrawSheet(leftX:Int=30, rightX:Int=30, forceAlign:int = -1)
-		Local sheetY:Float 	= 20
-		Local sheetX:Float 	= leftX
+		Local sheetY:Int = 20
+		Local sheetX:Int = leftX
 		Local sheetAlign:Int= 0
 		'if mouse on left side of screen - align sheet on right side
 		'METHOD 1

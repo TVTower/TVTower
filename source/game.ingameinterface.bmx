@@ -229,7 +229,7 @@ Type TInGameInterface
 			'noise on interface-tvscreen
 			ChangeNoiseTimer :+ deltaTime
 			If ChangeNoiseTimer >= 0.20
-				noiseDisplace.position.SetXY(Rand(0, noiseDisplace.dimension.GetX()),Rand(0, noiseDisplace.dimension.GetY()))
+				noiseDisplace.position.SetXY(Rand(0, int(noiseDisplace.dimension.GetX())),Rand(0, int(noiseDisplace.dimension.GetY())))
 				ChangeNoiseTimer = 0.0
 				NoiseAlpha = 0.45 - (Rand(0,20)*0.01)
 			EndIf

@@ -74,11 +74,10 @@ Type TBuildingBase Extends TRenderableEntity
 
 
 	'returns floor of a given y-coordinate (local to building coordinates)
-	Method GetFloor:Int(y:Int)
-'		Return MathHelper.Clamp(14 - Ceil((y - area.GetY()) / 73),0,13)
+	Method GetFloor:Int(y:Float)
 		y :- uppermostFloorTop
-		y = Ceil(y / floorHeight)
-		return MathHelper.Clamp(13 - y, 0, 13)
+		y = y / floorHeight
+		return MathHelper.Clamp(13 - int(y), 0, 13)
 	End Method
 
 

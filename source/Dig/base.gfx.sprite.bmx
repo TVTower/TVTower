@@ -302,8 +302,8 @@ Type TSprite
 	'copies a given sprites image to the own area
 	Method SetImageContent(img:TImage, color:TColor)
 		Local tmppix:TPixmap = LockImage(parent.image, 0)
-			tmppix.Window(area.GetX(), area.GetY(), area.GetW(), area.GetH()).ClearPixels(0)
-			DrawImageOnImage(ColorizeImageCopy(img, color), tmppix, area.GetX(), area.GetY())
+			tmppix.Window(int(area.GetX()), int(area.GetY()), int(area.GetW()), int(area.GetH())).ClearPixels(0)
+			DrawImageOnImage(ColorizeImageCopy(img, color), tmppix, int(area.GetX()), int(area.GetY()))
 		UnlockImage(parent.image, 0)
 		GCCollect() '<- FIX!
 	End Method
@@ -432,10 +432,10 @@ Type TSprite
 
 		Local DestPixmap:TPixmap
 		if includeBorder
-			DestPixmap = LockImage(parent.image, 0, False, True).Window(area.GetX(), area.GetY(), area.GetW(), area.GetH())
+			DestPixmap = LockImage(parent.image, 0, False, True).Window(int(area.GetX()), int(area.GetY()), int(area.GetW()), int(area.GetH()))
 		else
 			local border:TRectangle = GetNinePatchBorderDimension()
-			DestPixmap = LockImage(parent.image, 0, False, True).Window(area.GetX()+ border.GetLeft(), area.GetY() + border.GetTop(), area.GetW() - border.GetLeft() - border.GetRight(), area.GetH() - border.GetTop() - border.GetBottom())
+			DestPixmap = LockImage(parent.image, 0, False, True).Window(int(area.GetX()+ border.GetLeft()), int(area.GetY() + border.GetTop()), int(area.GetW() - border.GetLeft() - border.GetRight()), int(area.GetH() - border.GetTop() - border.GetBottom()))
 		endif
 
 		UnlockImage(parent.image)
@@ -448,7 +448,7 @@ Type TSprite
 	Method GetFrameImage:TImage(frame:Int=0)
 		'give back whole image if no frames are configured
 		if frames <= 0 then frame = 0
-		Local DestPixmap:TPixmap = LockImage(parent.image, 0, False, True).Window(area.GetX() + frame * framew, area.GetY(), framew, area.GetH())
+		Local DestPixmap:TPixmap = LockImage(parent.image, 0, False, True).Window(int(area.GetX() + frame * framew), int(area.GetY()), framew, int(area.GetH()))
 		GCCollect() '<- FIX!
 		Return TImage.Load(DestPixmap, 0, 255, 0, 255)
 	End Method
@@ -461,9 +461,9 @@ Type TSprite
 
 		Local DestPixmap:TPixmap
 		if frame >= 0
-			DestPixmap = LockImage(parent.image, 0, False, True).Window(area.GetX() + frame * framew, area.GetY(), framew, area.GetH())
+			DestPixmap = LockImage(parent.image, 0, False, True).Window(int(area.GetX() + frame * framew), int(area.GetY()), framew, int(area.GetH()))
 		Else
-			DestPixmap = LockImage(parent.image, 0, False, True).Window(area.GetX(), area.GetY(), area.GetW(), area.GetH())
+			DestPixmap = LockImage(parent.image, 0, False, True).Window(int(area.GetX()), int(area.GetY()), int(area.GetW()), int(area.GetH()))
 		EndIf
 		'GCCollect() '<- FIX!
 		return DestPixmap
@@ -489,7 +489,7 @@ Type TSprite
 	'removes the part of the sprite packs image occupied by the sprite
 	Method ClearImageData:int()
 		Local tmppix:TPixmap = LockImage(parent.image, 0)
-		tmppix.Window(area.GetX(), area.GetY(), area.GetW(), area.GetH()).ClearPixels(0)
+		tmppix.Window(int(area.GetX()), int(area.GetY()), int(area.GetW()), int(area.GetH())).ClearPixels(0)
 		GCCollect() '<- FIX!
 	End Method
 
@@ -574,7 +574,7 @@ Type TSprite
 		'remove old image part
 		ClearImageData()
 		'draw now colorized image on the parent image
-		DrawImageOnImage(newImg, parent.image, area.GetX(), area.GetY())
+		DrawImageOnImage(newImg, parent.image, int(area.GetX()), int(area.GetY()))
 	End Method
 
 
@@ -606,7 +606,7 @@ Type TSprite
 			y :- alignment.GetY() * area.GetH()
 		endif
 
-		DrawImageOnImage(getPixmap(frame), imageOrPixmap, x + offset.GetLeft(), y + offset.GetTop(), modifyColor)
+		DrawImageOnImage(getPixmap(frame), imageOrPixmap, int(x + offset.GetLeft()), int(y + offset.GetTop()), modifyColor)
 	End Method
 
 
@@ -682,7 +682,7 @@ Type TSprite
 				GetGraphicsManager().GetViewPort(vpx, vpy, vpw, vph)
 				vpRect = New TRectangle.Init(vpx, vpy, vpw, vph)
 				local intersectingVP:TRectangle = vpRect.Copy().Intersect(clipRect)
-				GetGraphicsManager().SetViewPort(intersectingVP.GetX(), intersectingVP.GetY(), intersectingVP.GetW(), intersectingVP.GetH())
+				GetGraphicsManager().SetViewPort(int(intersectingVP.GetX()), int(intersectingVP.GetY()), int(intersectingVP.GetW()), int(intersectingVP.GetH()))
 			endif
 
 			'render
@@ -743,7 +743,7 @@ Type TSprite
 				endif
 
 				if clipRect and vpRect
-					GetGraphicsManager().SetViewport(vpRect.GetX(), vpRect.GetY(), vpRect.GetW(), vpRect.GetH())
+					GetGraphicsManager().SetViewport(int(vpRect.GetX()), int(vpRect.GetY()), int(vpRect.GetW()), int(vpRect.GetH()))
 				endif
 			endif
 		endif
@@ -848,9 +848,9 @@ rem
 				floor(targetCopy.GetX() + clipL), floor(targetCopy.GetY() + clipT), ceil(targetCopy.GetW() - clipR - clipL), ceil(targetCopy.GetH() - clipB - clipT), ..
 				area.GetX() + sourceCopy.GetX() + clipL*(1.0-scaleX), area.GetY() + sourceCopy.GetY() + (clipT/targetcopy.GetH())*scaleY, sourceCopy.GetW()*scaleX, sourceCopy.GetH()*scaleY)
 endrem
-			DrawSubImageRect(parent.image, floor(targetCopy.GetX()), floor(targetCopy.GetY()), ceil(targetCopy.GetW()), ceil(targetCopy.GetH()), area.GetX() + sourceCopy.GetX(), area.GetY() + sourceCopy.GetY(), sourceCopy.GetW(), sourceCopy.GetH())
+			DrawSubImageRect(parent.image, Float(floor(targetCopy.GetX())), Float(floor(targetCopy.GetY())), Float(ceil(targetCopy.GetW())), Float(ceil(targetCopy.GetH())), Float(area.GetX() + sourceCopy.GetX()), Float(area.GetY() + sourceCopy.GetY()), sourceCopy.GetW(), sourceCopy.GetH())
 		else
-			DrawSubImageRect(parent.image, floor(targetCopy.GetX()), floor(targetCopy.GetY()), ceil(targetCopy.GetW()), ceil(targetCopy.GetH()), area.GetX() + sourceCopy.GetX(), area.GetY() + sourceCopy.GetY(), sourceCopy.GetW(), sourceCopy.GetH())
+			DrawSubImageRect(parent.image, Float(floor(targetCopy.GetX())), Float(floor(targetCopy.GetY())), Float(ceil(targetCopy.GetW())), Float(ceil(targetCopy.GetH())), Float(area.GetX() + sourceCopy.GetX()), Float(area.GetY() + sourceCopy.GetY()), sourceCopy.GetW(), sourceCopy.GetH())
 		endif
 	End Method
 
@@ -881,7 +881,7 @@ endrem
 		local currentY:float = y
 		while heightLeft >= 1
 			local heightPart:float = Min(area.GetH(), heightLeft) 'draw part of sprite or whole ?
-			DrawSubImageRect( parent.image, x + offset.GetLeft(), currentY + offset.GetTop(), area.GetW(), ceil(heightPart), area.GetX(), area.GetY(), area.GetW(), ceil(heightPart) )
+			DrawSubImageRect( parent.image, x + offset.GetLeft(), currentY + offset.GetTop(), area.GetW(), Float(Ceil(heightPart)), area.GetX(), area.GetY(), area.GetW(), Float(Ceil(heightPart)) )
 			currentY :+ floor(heightPart * scale)
 			heightLeft :- (heightPart * scale)
 		Wend
@@ -897,7 +897,7 @@ endrem
 			local currentX:float = x
 			while widthLeft > 0
 				local widthPart:float = Min(area.GetW(), widthLeft) 'draw part of sprite or whole ?
-				DrawSubImageRect( parent.image, currentX + offset.GetLeft(), currentY + offset.GetTop(), ceil(widthPart), ceil(heightPart), self.area.GetX(), self.area.GetY(), ceil(widthPart), ceil(heightPart) )
+				DrawSubImageRect( parent.image, currentX + offset.GetLeft(), currentY + offset.GetTop(), Float(Ceil(widthPart)), Float(Ceil(heightPart)), self.area.GetX(), self.area.GetY(), Float(Ceil(widthPart)), Float(Ceil(heightPart)) )
 				currentX :+ floor(widthPart * scale)
 				widthLeft :- (widthPart * scale)
 			Wend

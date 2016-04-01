@@ -128,7 +128,7 @@ Type TGUIScrollablePanel Extends TGUIPanel
 	Method RestrictViewport:Int()
 		Local screenRect:TRectangle = Self.GetScreenRect()
 		If screenRect
-			GUIManager.RestrictViewport(screenRect.getX() - scrollPosition.getX() , screenRect.getY() - scrollPosition.getY(), screenRect.getW(), screenRect.getH())
+			GUIManager.RestrictViewport(int(screenRect.getX() - scrollPosition.getX()), int(screenRect.getY() - scrollPosition.getY()), int(screenRect.getW()), int(screenRect.getH()))
 			Return True
 		Else
 			Return False

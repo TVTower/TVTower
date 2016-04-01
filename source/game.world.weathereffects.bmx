@@ -175,9 +175,9 @@ Type TWeatherEffectRain extends TWeatherEffectBase
 		For local i:int = 0 until layerPositions.length
 			color = colorMax * 1.0 / 1.5^(layerPositions.length-1 - i)
 			SetColor(color, color, color)
-			SetAlpha oldColor.a * useAlpha * alphaMax * 1.0 / 2^(layerPositions.length-1 - i)
+			SetAlpha Float(oldColor.a * useAlpha * alphaMax * 1.0 / 2^(layerPositions.length-1 - i))
 		
-			layerSprites[i].TileDraw(area.GetX() + layerPositions[i].x - layerSprites[i].GetWidth(), area.GetY() + layerPositions[i].y, area.GetW() - (layerPositions[i].x - layerSprites[i].GetWidth()), area.GetH() + layerSprites[i].GetHeight())
+			layerSprites[i].TileDraw(area.GetX() + layerPositions[i].x - layerSprites[i].GetWidth(), int(area.GetY() + layerPositions[i].y), int(area.GetW() - (layerPositions[i].x - layerSprites[i].GetWidth())), int(area.GetH() + layerSprites[i].GetHeight()))
 		Next
 
 		oldColor.SetRGBA()
@@ -267,16 +267,16 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 		'comfing-from-side lightning
 		if spritesSide and spritesSide.length > 0 and Rand(0,10) < 3
 			if rand(0,1) = 0
-				lightning.Add("position", new TVec2D.Init(area.GetX(), rand(area.GetY(), area.GetY() - rand(0,60))))
+				lightning.Add("position", new TVec2D.Init(area.GetX(), rand(int(area.GetY()), int(area.GetY() - rand(0,60)))))
 				lightning.AddNumber("direction", 0)
 			else
-				lightning.Add("position", new TVec2D.Init(area.GetX2(), rand(area.GetY(), area.GetY() - rand(0,60))))
+				lightning.Add("position", new TVec2D.Init(area.GetX2(), rand(int(area.GetY()), int(area.GetY() - rand(0,60)))))
 				lightning.AddNumber("direction", 1)
 			endif
 			lightning.AddNumber("useSpritesSide", 1)
 			lightning.AddNumber("spriteNumber", rand(0, spritesSide.length-1))
 		else
-			lightning.Add("position", new TVec2D.Init(rand(area.GetX(), area.GetX2()), rand(area.GetY(), area.GetY() - rand(0,60))))
+			lightning.Add("position", new TVec2D.Init(rand(int(area.GetX()), int(area.GetX2())), rand(int(area.GetY()), int(area.GetY() - rand(0,60)))))
 			lightning.AddNumber("useSpritesSide", 0)
 			lightning.AddNumber("direction", rand(0,1))
 			lightning.AddNumber("spriteNumber", rand(0, sprites.length-1))
@@ -442,7 +442,7 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 		flake.AddNumber("spriteNumber", spriteNumber)
 		flake.AddNumber("direction", rand(0,1))
 
-		local pos:TVec2D = new TVec2D.Init(rand(area.GetX(), area.GetX2()), area.GetY() - rand(0, -60) - spriteHeight )
+		local pos:TVec2D = new TVec2D.Init(rand(int(area.GetX()), int(area.GetX2())), area.GetY() - rand(0, -60) - spriteHeight )
 		flake.Add("position", pos)
 		flake.Add("oldPosition", pos.copy())	
 		flake.Add("velocity", new TVec2D.Init(rand(-10,10)/10.0, rand(75, 90) ))
@@ -472,7 +472,7 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 			pos.y :+ GetDeltaTimer().GetDelta() * vel.y
 
 			'adjust position
-			pos.AddXY(sin(pos.y * 0.75)*1.25, 0)
+			pos.AddXY(Float(sin(pos.y * 0.75)*1.25), 0.0)
 
 			'below ground
 			if pos.y > area.GetY2() then flakes.Remove(flake)
@@ -648,11 +648,11 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 
 		For local cloud:TData = eachin clouds
 			entity = TSpriteEntity(cloud.Get("spriteEntity"))
-			entity.velocity.SetX(TInterpolation.Linear(..
+			entity.velocity.SetX(Float(TInterpolation.Linear(..
 				cloud.GetFloat("velocityX"),..
 				cloud.GetFloat("velocityStrengthX") * windStrength,..
-				Min(1800, timeSinceLastUpdate), 1800)..
-			)
+				Float(Min(1800, timeSinceLastUpdate)), 1800)..
+			))
 			'do not use the global worldSpeed
 			entity.worldSpeedFactor = GetWorldTime().GetTimeFactor() * 0.01
 		

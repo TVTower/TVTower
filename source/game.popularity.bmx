@@ -1,3 +1,4 @@
+SuperStrict
 Import Brl.LinkedList
 Import "Dig/base.util.event.bmx"
 Import "Dig/base.util.mersenne.bmx"
@@ -283,7 +284,7 @@ Type TGameModifierPopularity_ModifyPopularity extends TGameModifierBase
 	'override to trigger a specific news
 	Method RunFunc:int(params:TData)
 		'skip if probability is missed
-		if modifyProbability <> 100 and RandRange(0, 100) > triggerProbability then return False
+		if modifyProbability <> 100 and RandRange(0, 100) > modifyProbability then return False
 
 		local popularity:TPopularity = GetPopularityManager().GetByGUID(popularityGUID)
 		if not popularity

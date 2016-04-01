@@ -809,7 +809,7 @@ endrem
 		endif
 				
 
-		_mouseOverArea = THelper.MouseIn(GetScreenX(), GetScreenY(), rect.GetW(), rect.GetH())
+		_mouseOverArea = THelper.MouseIn(Int(GetScreenX()), Int(GetScreenY()), Int(rect.GetW()), Int(rect.GetH()))
 
 		If hasListOption(GUILIST_AUTOHIDE_SCROLLER)
 			If _mouseOverArea
@@ -898,9 +898,9 @@ Type TGUIListItem Extends TGUIobject
 	'how long until auto remove? (initial value)
 	Field initialLifetime:Float	= Null
 	'how long until hiding (current value)
-	Field showtime:Float = Null
+	Field showtime:Double = Null
 	'how long until hiding (initial value)
-	Field initialShowtime:Float	= Null
+	Field initialShowtime:Int = Null
 	'color of the displayed value
 	Field valueColor:TColor	= new TColor
 
@@ -1016,8 +1016,8 @@ endrem
 			InitialShowtime = milliseconds
 			showtime = Time.GetTimeGone() + milliseconds
 		Else
-			InitialShowtime = Null
-			showtime = Null
+			InitialShowtime = 0
+			showtime = 0
 		EndIf
 	End Method
 

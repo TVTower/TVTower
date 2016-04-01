@@ -267,7 +267,7 @@ Type TGUIModalWindowChain Extends TGUIObject
 		if closeActionStarted
 			local yUntilScreenLeft:int = VirtualHeight() - (closeActionStartPosition.y + GetScreenHeight())
 			newAlpha = 1.0 - TInterpolation.Linear(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration)
-			recenter(new TVec2D.Init(0, - yUntilScreenLeft * TInterpolation.BackIn(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration)))
+			recenter(new TVec2D.Init(0, - yUntilScreenLeft * Float(TInterpolation.BackIn(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration))))
 		endif
 
 		self.alpha = newAlpha

@@ -929,10 +929,10 @@ Type TGUIobject
 
 	Method RestrictContentViewport:Int()
 		GUIManager.RestrictViewport(..
-			GetContentScreenX(), ..
-			GetContentScreenY(), ..
-			GetContentScreenWidth(), ..
-			GetContentScreenHeight() ..
+			int(GetContentScreenX()), ..
+			int(GetContentScreenY()), ..
+			int(GetContentScreenWidth()), ..
+			int(GetContentScreenHeight()) ..
 		)
 	End Method
 	
@@ -940,7 +940,12 @@ Type TGUIobject
 	Method RestrictViewport:Int()
 		Local screenRect:TRectangle = GetScreenRect()
 		If screenRect
-			GUIManager.RestrictViewport(screenRect.getX(),screenRect.getY(), screenRect.getW(),screenRect.getH())
+			GUIManager.RestrictViewport(..
+				int(screenRect.getX()), ..
+				int(screenRect.getY()), ..
+				int(screenRect.getW()), ..
+				int(screenRect.getH()) ..
+			)
 			Return True
 		Else
 			Return False
@@ -1227,11 +1232,11 @@ Type TGUIobject
 	End Method
 
 
-	Method SetPadding:Int(top:Int,Left:Int,bottom:Int,Right:Int)
+	Method SetPadding:Int(top:Float, left:Float, bottom:Float, right:Float)
 		if not _padding
 			_padding = new TRectangle.Init(top, left, bottom, right)
 		else
-			_padding.setTLBR(top,Left,bottom,Right)
+			_padding.setTLBR(top, left, bottom, right)
 		endif
 		resize()
 	End Method

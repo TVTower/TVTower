@@ -41,6 +41,7 @@ Import "base.util.registry.bmx"
 Import "base.gfx.sprite.bmx"
 
 'register this loader
+print "init image loader"
 new TRegistryImageLoader.Init()
 
 

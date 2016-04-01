@@ -181,7 +181,7 @@ Type TWorldTime {_exposeToLua="selected"}
 		minutes :+ floor(addMinutes)
 
 		
-		return GetWorldTime().MakeTime(years, days, hours, minutes, seconds)
+		return GetWorldTime().MakeTime(years, int(days), hours, minutes, seconds)
 	End Method
 	
 

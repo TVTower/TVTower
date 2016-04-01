@@ -231,15 +231,15 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 
 				Local srcSprite:TSprite = TSpritepack(parent).GetSprite(src)
 
-				Local x:Int = data.GetInt("x", srcSprite.area.GetX())
-				Local y:Int = data.GetInt("y", srcSprite.area.GetY())
-				Local w:Int = data.GetInt("w", srcSprite.area.GetW())
-				Local h:Int = data.GetInt("h", srcSprite.area.GetH())
+				Local x:Int = data.GetInt("x", int(srcSprite.area.GetX()))
+				Local y:Int = data.GetInt("y", int(srcSprite.area.GetY()))
+				Local w:Int = data.GetInt("w", int(srcSprite.area.GetW()))
+				Local h:Int = data.GetInt("h", int(srcSprite.area.GetH()))
 
-				Local offsetTop:Int = data.GetInt("offsetTop", srcSprite.offset.GetTop())
-				Local offsetLeft:Int = data.GetInt("offsetLeft", srcSprite.offset.GetLeft())
-				Local offsetBottom:Int = data.GetInt("offsetBottom", srcSprite.offset.GetBottom())
-				Local offsetRight:Int = data.GetInt("offsetRight", srcSprite.offset.GetRight())
+				Local offsetTop:Int = data.GetInt("offsetTop", int(srcSprite.offset.GetTop()))
+				Local offsetLeft:Int = data.GetInt("offsetLeft", int(srcSprite.offset.GetLeft()))
+				Local offsetBottom:Int = data.GetInt("offsetBottom", int(srcSprite.offset.GetBottom()))
+				Local offsetRight:Int = data.GetInt("offsetRight", int(srcSprite.offset.GetRight()))
 				Local frames:Int = data.GetInt("frames", srcSprite.frames)
 
 				'create a copy of the sprite, copy the src image to it

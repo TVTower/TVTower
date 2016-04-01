@@ -324,7 +324,7 @@ Type TColor
 
 
 	Method ToInt:int()
-		return ARGB_Color(ceil(self.a*255), self.r, self.g, self.b )
+		return ARGB_Color(int(ceil(self.a*255)), self.r, self.g, self.b )
 	End Method
 
 

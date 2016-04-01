@@ -334,7 +334,7 @@ Type TWorldWeatherEntry
 				newTemperature = Min(20, newTemperature)
 		EndSelect
 		if newTemperature <> GetTemperature() + temperatureChange
-			newTemperature :+ randRange(-3*_config.increment, 3*_config.increment)
+			newTemperature :+ randRange(int(-3*_config.increment), int(3*_config.increment))
 		endif
 		
 		if temperatureChange <> 0

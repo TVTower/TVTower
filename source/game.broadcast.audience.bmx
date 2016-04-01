@@ -505,7 +505,8 @@ Type TAudienceBase
 				HouseWives :/ audience.HouseWives
 			endif
 
-			if audience.Employees = 0 and (Abs(Employees - audience.Employees < 0.01))
+			if audience.Employees = 0 and (Abs(Employees - audience.Employees) < 0.01)
+				'TODO: this seems pretty useless
 				if Abs(Employees - audience.Employees) > 0.01
 					throw "TAudienceBase.Divide: Div/0 - audience.Employees is 0. Employees is " + Employees
 				else
@@ -515,7 +516,8 @@ Type TAudienceBase
 				Employees :/ audience.Employees
 			endif
 
-			if audience.Unemployed = 0 and (Abs(Unemployed - audience.Unemployed < 0.01))
+			if audience.Unemployed = 0 and (Abs(Unemployed - audience.Unemployed) < 0.01)
+				'TODO: this seems pretty useless
 				if Abs(Unemployed - audience.Unemployed) > 0.01
 					throw "TAudienceBase.Divide: Div/0 - audience.Unemployed is 0. Unemployed is " + Unemployed
 				else
@@ -525,7 +527,8 @@ Type TAudienceBase
 				Unemployed :/ audience.Unemployed
 			endif
 
-			if audience.Manager = 0 and (Abs(Manager - audience.Manager < 0.01))
+			if audience.Manager = 0 and (Abs(Manager - audience.Manager) < 0.01)
+				'TODO: this seems pretty useless
 				if Abs(Manager - audience.Manager) > 0.01
 					throw "TAudienceBase.Divide: Div/0 - audience.Manager is 0. Manager is " + Manager
 				else
@@ -535,7 +538,8 @@ Type TAudienceBase
 				Manager :/ audience.Manager
 			endif
 
-			if audience.Pensioners = 0 and (Abs(Pensioners - audience.Pensioners < 0.01))
+			if audience.Pensioners = 0 and (Abs(Pensioners - audience.Pensioners) < 0.01)
+				'TODO: this seems pretty useless
 				if Abs(Pensioners - audience.Pensioners) > 0.01
 					throw "TAudienceBase.Divide: Div/0 - audience.Pensioners is 0. Pensioners is " + Pensioners
 				else

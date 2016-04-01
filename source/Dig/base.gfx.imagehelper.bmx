@@ -104,7 +104,7 @@ Function DrawImageOnImage:int(src:object, dest:object, x:Int, y:Int, modifyColor
 					mixR = ARGB_Red(sourcePixel) * modifyColor.r/255.0
 					mixG = ARGB_Green(sourcePixel) * modifyColor.g/255.0
 					mixB = ARGB_Blue(sourcePixel) * modifyColor.b/255.0
-					WritePixel(destination, x+i,y+j, ARGB_Color(sourceA*255.0, mixR, mixG, mixB))
+					WritePixel(destination, x+i,y+j, ARGB_Color(int(sourceA*255.0), mixR, mixG, mixB))
 				else
 					WritePixel(destination, x+i,y+j, sourcePixel)
 				endif
@@ -131,7 +131,7 @@ Function DrawImageOnImage:int(src:object, dest:object, x:Int, y:Int, modifyColor
 				mixG = Min(255, Max(0, mixG))
 				mixB = Min(255, Max(0, mixB))
 
-				WritePixel(destination, x+i,y+j, ARGB_Color(mixA*255.0, mixR, mixG, mixB))
+				WritePixel(destination, x+i,y+j, ARGB_Color(int(mixA*255.0), mixR, mixG, mixB))
 			endif
 		Next
 	Next

@@ -500,7 +500,7 @@ Type TScreenChangeEffect_ClosingRects extends TScreenChangeEffect_SimpleFader
 		endif
 
 		local alphaProgress:Float = currentProgress
-		local tweenProgress:Float = MathHelper.Clamp(TInterpolation.RegularInOut(0, 1, currentProgress, 1.0))
+		local tweenProgress:Float = MathHelper.Clamp(Float(TInterpolation.RegularInOut(0, 1, currentProgress, 1.0)))
 
 		local rectsWidth:float  = tweenProgress * (GetArea().GetW() / 2)
 		local rectsHeight:float = tweenProgress * (GetArea().GetH() / 2)

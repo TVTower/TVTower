@@ -359,7 +359,7 @@ Type TBitmapFont
 		for local charKey:string = eachin chars.keys()
 			bitmapFontChar = TBitmapFontChar(chars.ValueForKey(charKey))
 			if not bitmapFontChar then continue
-			charmap.AddElement(charKey, bitmapFontChar.area.GetW()+spaceBetweenChars,bitmapFontChar.area.GetH()+spaceBetweenChars ) 'add box of char and package atlas
+			charmap.AddElement(charKey, int(bitmapFontChar.area.GetW()+spaceBetweenChars), int(bitmapFontChar.area.GetH()+spaceBetweenChars) ) 'add box of char and package atlas
 		Next
 		return charmap
 	End Method
@@ -380,7 +380,7 @@ Type TBitmapFont
 			local charPix:TPixmap = LockImage(TBitmapFontChar(chars.ValueForKey(charKey)).img)
 			'make sure the pixmaps are 8bit alpha-format
 '			If charPix.format <> 2 Then charPix.convert(PF_A8)
-			DrawImageOnImage(charPix, pix, rect.GetX(), rect.GetY())
+			DrawImageOnImage(charPix, pix, int(rect.GetX()), int(rect.GetY()))
 			UnlockImage(TBitmapFontChar(chars.ValueForKey(charKey)).img)
 			' es fehlt noch charWidth - extraTyp?
 
@@ -850,9 +850,9 @@ Type TBitmapFont
 							sprite = TSprite(font.charsSprites.ValueForKey(string(displayCharCode)))
 							if sprite
 								if drawToPixmap
-									sprite.DrawOnImage(drawToPixmap, x+lineWidth+tx, y+height+ty+styleDisplaceY - font.displaceY, -1, null, color)
+									sprite.DrawOnImage(drawToPixmap, int(x+lineWidth+tx), int(y+height+ty+styleDisplaceY - font.displaceY), -1, null, color)
 								else
-									sprite.Draw(x+lineWidth+tx,y+height+ty+styleDisplaceY - font.displaceY)
+									sprite.Draw(int(x+lineWidth+tx), int(y+height+ty+styleDisplaceY - font.displaceY))
 								endif
 							endif
 						endif

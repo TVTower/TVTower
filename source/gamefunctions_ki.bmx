@@ -288,8 +288,8 @@ Type KI
 			args[2] = reference
 			if (KIRunning) then LuaEngine.CallLuaFunction("OnMoneyChanged", args)
 		Catch ex:Object
-		DebugStop
 			TLogger.log("KI.CallOnMoneyChanged", "Script "+scriptFileName+" does not contain function ~qOnMoneyChanged~q.", LOG_ERROR)
+			'DebugStop
 		End Try
 	End Method
 

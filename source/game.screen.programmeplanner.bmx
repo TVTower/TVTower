@@ -54,11 +54,11 @@ Type TScreenHandler_ProgrammePlanner
 			local area:TRectangle = new TRectangle.Init(45,5,625,12 * GetSpriteFromRegistry("pp_programmeblock1").area.GetH())
 
 			GuiListProgrammes = new TGUIProgrammePlanSlotList.Create(area.position, area.dimension, "programmeplanner")
-			GuiListProgrammes.Init("pp_programmeblock1", GetSpriteFromRegistry("pp_adblock1").area.GetW() + gapBetweenHours)
+			GuiListProgrammes.Init("pp_programmeblock1", int(GetSpriteFromRegistry("pp_adblock1").area.GetW() + gapBetweenHours))
 			GuiListProgrammes.isType = TVTBroadcastMaterialType.PROGRAMME
 
 			GuiListAdvertisements = new TGUIProgrammePlanSlotList.Create(new TVec2D.Init(area.GetX() + GetSpriteFromRegistry("pp_programmeblock1").area.GetW(), area.GetY()), area.dimension, "programmeplanner")
-			GuiListAdvertisements.Init("pp_adblock1", GetSpriteFromRegistry("pp_programmeblock1").area.GetW() + gapBetweenHours)
+			GuiListAdvertisements.Init("pp_adblock1", int(GetSpriteFromRegistry("pp_programmeblock1").area.GetW() + gapBetweenHours))
 			GuiListAdvertisements.isType = TVTBroadcastMaterialType.ADVERTISEMENT
 
 
@@ -349,7 +349,7 @@ Type TScreenHandler_ProgrammePlanner
 
 	Function DrawSlotOverlays(invert:int = False)
 		local oldCol:TColor = new TColor.get()
-		SetAlpha oldCol.a * 0.65 + Min(0.15, Max(-0.20, sin(Millisecs() / 6) * 0.20))
+		SetAlpha oldCol.a * 0.65 + float(Min(0.15, Max(-0.20, sin(Millisecs() / 6) * 0.20)))
 
 		Local blockOverlay:TSprite = GetSpriteFromRegistry("gfx_programmeplanner_blockoverlay.highlighted")
 		Local clockOverlay1:TSprite = GetSpriteFromRegistry("gfx_programmeplanner_clockoverlay1.highlighted")
@@ -1056,7 +1056,7 @@ Type TScreenHandler_ProgrammePlanner
 			'modify action time AND reset timer
 			if fastNavigationUsedContinuously
 				'decrease action time each time a bit more...
-				fastNavigateTimer.setInterval( Max(50, fastNavigateTimer.GetInterval() * 0.9), true )
+				fastNavigateTimer.setInterval( Int(Max(50, fastNavigateTimer.GetInterval() * 0.9)), true )
 			else
 				'set to initial value
 				fastNavigateTimer.setInterval( fastNavigateInitialTimer, true )
@@ -1100,7 +1100,7 @@ Type TScreenHandler_ProgrammePlanner
 
 
 		'hide or show help
-		If THelper.IsIn(MouseManager.x, MouseManager.y, 0,365,20,20)
+		If THelper.IsIn(int(MouseManager.x), int(MouseManager.y), 0,365,20,20)
 			showPlannerShortCutHintTime = 90
 			showPlannerShortCutHintFadeAmount = 1
 		else

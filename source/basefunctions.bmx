@@ -252,7 +252,7 @@ Type TFunctions
 	End Function
 
 
-	Function RoundToBeautifulValue:Int(value:Int)
+	Function RoundToBeautifulValue:Long(value:Double)
 		'dev
 		If Not roundToBeautifulEnabled Then Return value
 

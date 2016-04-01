@@ -106,7 +106,7 @@ Type TNewsAgency
 		'adjust level progress
 
 		'randRange uses "ints", so convert 1.0 to 100
-		local increase:Float = 0.01 * randRange(terroristAggressionLevelProgressRate[terroristNumber][0]*100, terroristAggressionLevelProgressRate[terroristNumber][1]*100)
+		local increase:Float = 0.01 * randRange(int(terroristAggressionLevelProgressRate[terroristNumber][0]*100), int(terroristAggressionLevelProgressRate[terroristNumber][1]*100))
 		'if not the mainaggressor, grow slower
 		if terroristNumber <> mainAggressor then increase :* 0.5
 
@@ -643,7 +643,7 @@ Type TNewsAgency
 	End Method
 
 
-	Method announceNewsEvent:Int(newsEvent:TNewsEvent, happenedTime:Long=0, forceAdd:Int=False)
+	Method announceNewsEvent:Int(newsEvent:TNewsEvent, happenedTime:Double=0, forceAdd:Int=False)
 		newsEvent.doHappen(happenedTime)
 
 		For Local i:Int = 1 To 4

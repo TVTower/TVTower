@@ -160,7 +160,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 		if not room then return False
 
 		'only show tooltip if not "empty" and mouse in door-rect
-		If room.GetDescription(1) <> "" and GetPlayerBase().GetFigure().IsInBuilding() And THelper.MouseIn(GetScreenX(), GetScreenY() - area.GetH(), area.GetW(), area.GetH())
+		If room.GetDescription(1) <> "" and GetPlayerBase().GetFigure().IsInBuilding() And THelper.MouseIn(Int(GetScreenX()), Int(GetScreenY() - area.GetH()), Int(area.GetW()), Int(area.GetH()))
 			If not tooltip
 				tooltip = TRoomDoorTooltip.Create("", "", 100, 140, 0, 0)
 				tooltip.SetMinTitleAndContentWidth(100, 160)
@@ -272,11 +272,11 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 
 	'returns a door by the given (local to parent/building) coordinates
-	Function GetByCoord:TRoomDoorBase( x:int, y:int )
+	Function GetByCoord:TRoomDoorBase( x:Float, y:Float )
 		For Local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().list
 			'also allow invisible rooms... so just check if hit the area
 			'If room.doortype >= 0 and THelper.IsIn(x, y, room.Pos.x, Building.area.position.y + TBuilding.GetFloorY2(room.pos.y) - room.doorDimension.Y, room.doorDimension.x, room.doorDimension.y)
-			If THelper.IsIn(x, y, door.area.GetX(), door.area.GetY() - (door.area.GetH() -1), door.area.GetW(), door.area.GetH())
+			If THelper.IsIn(int(x), int(y), int(door.area.GetX()), int(door.area.GetY() - (door.area.GetH() -1)), int(door.area.GetW()), int(door.area.GetH()))
 				Return door
 			EndIf
 		Next

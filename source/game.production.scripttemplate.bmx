@@ -540,22 +540,22 @@ Type TScriptTemplate Extends TScriptBase
 
 
 	Method GetOutcome:Float()
-		return 0.001 * WeightedRandRange(1000*outcomeMin, 1000*outcomeMax, outcomeSlope)
+		return 0.001 * WeightedRandRange(int(1000*outcomeMin), int(1000*outcomeMax), outcomeSlope)
 	End Method
 
 
 	Method GetReview:Float()
-		return 0.001 * WeightedRandRange(1000*reviewMin, 1000*reviewMax, reviewSlope)
+		return 0.001 * WeightedRandRange(int(1000*reviewMin), int(1000*reviewMax), reviewSlope)
 	End Method
 
 
 	Method GetSpeed:Float()
-		return 0.001 * WeightedRandRange(1000*speedMin, 1000*speedMax, speedSlope)
+		return 0.001 * WeightedRandRange(int(1000*speedMin), int(1000*speedMax), speedSlope)
 	End Method
 
 
 	Method GetPotential:Float()
-		return 0.001 * WeightedRandRange(1000*potentialMin, 1000*potentialMax, potentialSlope)
+		return 0.001 * WeightedRandRange(int(1000*potentialMin), int(1000*potentialMax), potentialSlope)
 	End Method
 
 

@@ -153,8 +153,8 @@ Type TFigureJanitor Extends TFigure
 		EndIf
 
 		If Not inRoom And nextActionTimer.isExpired() And Not hasToChangeFloor()
-			nextActionTimer.SetRandomness(-nextActionRandomTime / TEntity.GetGlobalWorldSpeedFactor(), nextActionRandomTime * TEntity.GetGlobalWorldSpeedFactor())
-			nextActionTimer.SetInterval(nextActionTime / TEntity.GetGlobalWorldSpeedFactor())
+			nextActionTimer.SetRandomness(int(-nextActionRandomTime / TEntity.GetGlobalWorldSpeedFactor()), int(nextActionRandomTime * TEntity.GetGlobalWorldSpeedFactor()))
+			nextActionTimer.SetInterval(int(nextActionTime / TEntity.GetGlobalWorldSpeedFactor()))
 			nextActionTimer.Reset()
 
 			
@@ -204,12 +204,14 @@ Type TFigureDeliveryBoy Extends TFigure
 
 
 	'used in news effect function
-	Function SendFigureToRoom(source:TGameModifierBase, params:TData)
+	Function SendFigureToRoom:int(source:TGameModifierBase, params:TData)
 		Local figure:TFigureDeliveryBoy = TFigureDeliveryBoy(source.GetData().Get("figure"))
 		Local room:TRoomBase = TRoomBase(source.GetData().Get("room"))
-		If Not figure Or Not room Then Return
+		If Not figure Or Not room Then Return False
 
 		figure.SetDeliverToRoom(room)
+
+		return True
 	End Function
 
 
@@ -276,7 +278,7 @@ endrem
 				'   as the sign we just found
 				Local sign:TRoomBoardSign
 				If roomSign
-					sign = GetRoomBoard().GetSignByOriginalXY( roomSign.rect.GetX(), roomSign.rect.GetY() )
+					sign = GetRoomBoard().GetSignByOriginalXY( int(roomSign.rect.GetX()), int(roomSign.rect.GetY()) )
 				endif
 
 				If sign And sign.door

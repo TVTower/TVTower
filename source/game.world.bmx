@@ -173,7 +173,7 @@ Type TWorld
 	
 		'=== SETUP STARS ===
 		For Local i:Int = 0 until stars.length
-			stars[i] = new TVec3D.Init(Rand(area.GetX(), area.GetX2()), Rand(area.GetY(), area.GetY2()), 50+Rand(0,StarsBrightness-50))
+			stars[i] = new TVec3D.Init(Rand(int(area.GetX()), int(area.GetX2())), Rand(int(area.GetY()), int(area.GetY2())), 50+Rand(0,StarsBrightness-50))
 		Next
 	End Method
 	
@@ -267,7 +267,7 @@ Type TWorld
 			local windStrength:Float = Weather.GetWindVelocity() * 0.5
 			if windStrength = 0.0 then windStrength = 0.1
 		
-			cloudEffect.AdjustCloudMovement(windStrength, weather.GetTimeSinceUpdate(), wrapClouds)
+			cloudEffect.AdjustCloudMovement(windStrength, int(weather.GetTimeSinceUpdate()), wrapClouds)
 		endif
 	End Method
 
@@ -277,7 +277,7 @@ Type TWorld
 		If Weather and Weather.NeedsUpdate()
 			'to always have 48 hours "prediction" we need
 			'updateWeatherEvery/3600 * 24 entries
-			Weather.GenerateUpcomingWeather(Weather.weatherInterval/3600.0 * 24)
+			Weather.GenerateUpcomingWeather(int(Weather.weatherInterval/3600.0 * 24))
 
 			'update the weather
 			Weather.Update()
@@ -326,7 +326,7 @@ Type TWorld
 
 
 	Method Render:Int()
-		GetGraphicsManager().SetViewPort(area.GetX(), area.GetY(), area.GetW(), area.GetH())
+		GetGraphicsManager().SetViewPort(int(area.GetX()), int(area.GetY()), int(area.GetW()), int(area.GetH()))
 
 		'=== BACKGROUND ===
 		local skyColor:TColor = lighting.currentLight.copy()
@@ -433,17 +433,17 @@ Type TWorld
 			 	if stars[i].z < 0
 					'place at another spot with new color
 					stars[i].z = 50+Rand(0, starsBrightness-50)
-					stars[i].x = Rand(area.GetX(), area.GetX2())
-					stars[i].y = Rand(area.GetY(), area.GetY2()) 
+					stars[i].x = Rand(int(area.GetX()), int(area.GetX2()))
+					stars[i].y = Rand(int(area.GetY()), int(area.GetY2())) 
 				endif
 			endif
 			'some get a blue-ish color
 			if ((stars[i].x * stars[i].y) mod 3) = 0
-				SetColor(stars[i].z , stars[i].z , stars[i].z +50)
+				SetColor(int(stars[i].z), int(stars[i].z), int(stars[i].z + 50))
 			else
-				SetColor(stars[i].z , stars[i].z , stars[i].z)
+				SetColor(int(stars[i].z), int(stars[i].z), int(stars[i].z))
 			endif
-			Plot(stars[i].x , stars[i].y )
+			Plot(int(stars[i].x) , int(stars[i].y) )
 		Next
 		oldCol.SetRGBA()
 	End Method
@@ -459,9 +459,9 @@ Type TWorld
 		if skyMoon
 			'show a different frame each day
 			local phase:int = (skyMoon.frames -1) - ( GetWorldTime().GetDay(GetWorldTime().GetTimeGone() + 6*3600)) Mod skyMoon.frames
-			skyMoon.Draw(movedMoonPoint.x, movedMoonPoint.y, phase, ALIGN_CENTER_CENTER, , 0.95+0.05*Sin(Time.GetAppTimeGone()/10))
+			skyMoon.Draw(movedMoonPoint.x, movedMoonPoint.y, phase, ALIGN_CENTER_CENTER, , Float(0.95+0.05*Sin(Time.GetAppTimeGone()/10)))
 		else
-			DrawOval(movedMoonPoint.x-15, movedMoonPoint.y-15, 30,30)
+			DrawOval(int(movedMoonPoint.x-15), int(movedMoonPoint.y-15), 30,30)
 		endif
 		SetAlpha(oldAlpha)
 	End Method
@@ -477,10 +477,10 @@ Type TWorld
 			SetAlpha(oldAlpha * modifyAlpha)
 
 			SetRotation(rotation*3)
-			if skySunRays then skySunRays.Draw(movedSunPoint.x, movedSunPoint.y, -1, ALIGN_CENTER_CENTER, 1.0 + 0.10*Sin(Time.GetAppTimeGone()/10))
+			if skySunRays then skySunRays.Draw(movedSunPoint.x, movedSunPoint.y, -1, ALIGN_CENTER_CENTER, Float(1.0 + 0.10*Sin(Time.GetAppTimeGone()/10)))
 
 			SetRotation(rotation*1)
-			skySun.Draw(movedSunPoint.x, movedSunPoint.y, -1, ALIGN_CENTER_CENTER, 0.95+0.05*Sin(Time.GetAppTimeGone()/10))
+			skySun.Draw(movedSunPoint.x, movedSunPoint.y, -1, ALIGN_CENTER_CENTER, Float(0.95+0.05*Sin(Time.GetAppTimeGone()/10)))
 
 			SetRotation(0)
 		else

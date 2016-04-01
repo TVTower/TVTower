@@ -480,7 +480,7 @@ Type TZipStream Extends TStream
 				OpenCurrentFile_()				' Reopen it
 				pos_ = 0
 			EndIf
-			DiscardBytes_(newPos - pos_)
+			DiscardBytes_( int(newPos - pos_) )
 		EndIf
 		Assert Pos() = newPos Else "TZipStream.Seek : Pos() should be " + newPos + " but is " + Pos()
 		Return Pos()
@@ -509,7 +509,7 @@ Type TZipStream Extends TStream
 		'DebugLog "Read"
 		'DebugStop
 		Assert unzfile Else "Attempt to read from closed stream"
-		Local ret% = unzReadCurrentFile(unzfile , buf, count)
+		Local ret% = unzReadCurrentFile(unzfile , buf, int(count))
 		'DebugLog "Read(post) " + ret
 		CheckZlibError(ret)
 		pos_ :+ ret

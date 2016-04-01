@@ -93,8 +93,8 @@ Type TRoomBoard
 	End Function
 
 
-	Function GetFloor:int(signY:int)
-		return 13 - ((signY - 41) / 23)
+	Function GetFloor:int(signY:Float)
+		return 13 - ((int(signY) - 41) / 23)
 	End Function
 
 
@@ -110,8 +110,8 @@ Type TRoomBoard
 	End Function
 
 
-	Function GetSlot:int(signX:int)
-		select signX
+	Function GetSlot:int(signX:Float)
+		select int(signX)
 			case 26		return 1
 			case 208	return 2
 			case 417	return 3
@@ -127,6 +127,7 @@ Type TRoomBoard
 
 		return TRoomBoardSign(List.ValueAtIndex(arrayIndex))
 	End Method
+
 	
 	Method GetSignById:TRoomBoardSign(id:int)
 		For local sign:TRoomBoardSign = eachin list
@@ -152,7 +153,7 @@ Type TRoomBoard
 	'return the sign now at the given position
 	Method GetSignByCurrentPosition:TRoomBoardSign(signSlot:int, signFloor:int)
 		For local sign:TRoomBoardSign = eachin list
-			if GetSlot(sign.rect.GetX()) = signSlot and GetFloor(sign.rect.GetY()) = signFloor
+			if GetSlot(int(sign.rect.GetX())) = signSlot and GetFloor(int(sign.rect.GetY())) = signFloor
 				return sign
 			endif
 		Next
@@ -255,7 +256,7 @@ Type TRoomBoard
 		For Local sign:TRoomBoardSign = EachIn List
 			If not sign.dragged then continue
 
-			sign.SetCoords(sign.StartPos.x, sign.StartPos.y)
+			sign.SetCoords(int(sign.StartPos.x), int(sign.StartPos.y))
 			sign.dragged = False
 			droppedSomethingBack = True
 		Next
@@ -284,7 +285,7 @@ Type TRoomBoard
 			If DraggingAllowed And sign.dragable
 				'if right mbutton clicked and block dragged: reset coord of block
 				If (MOUSEMANAGER.IsClicked(2) or MouseManager.IsLongClicked(1)) And sign.dragged
-					sign.SetCoords(sign.StartPos.x, sign.StartPos.y)
+					sign.SetCoords(int(sign.StartPos.x), int(sign.StartPos.y))
 					sign.dragged = False
 					MOUSEMANAGER.resetKey(2)
 					MOUSEMANAGER.resetKey(1) 'also first button
@@ -295,7 +296,7 @@ Type TRoomBoard
 						'search for underlaying block (we have a block dragged already)
 						If sign.dragged
 							'obj over old position - drop ?
-							If THelper.MouseIn(sign.StartPosBackup.x, sign.StartPosBackup.y, sign.rect.GetW(), sign.rect.GetH())
+							If THelper.MouseIn(int(sign.StartPosBackup.x), int(sign.StartPosBackup.y), int(sign.rect.GetW()), int(sign.rect.GetH()))
 								sign.dragged = False
 							EndIf
 
@@ -331,9 +332,9 @@ Type TRoomBoard
 			If sign.dragged = 1
 				AdditionallyDragged :+1
 				Local displacement:Int = AdditionallyDragged * 5
-				sign.setCoords(MouseManager.x - sign.rect.GetW()/2 - displacement, 11+ MouseManager.y - sign.rect.GetH()/2 - displacement)
+				sign.setCoords(int(MouseManager.x - sign.rect.GetW()/2 - displacement), int(11+ MouseManager.y - sign.rect.GetH()/2 - displacement))
 			Else
-				sign.SetCoords(sign.StartPos.x, sign.StartPos.y)
+				sign.SetCoords(int(sign.StartPos.x), int(sign.StartPos.y))
 			EndIf
 		Next
 		ReverseList list 'reorder: first are not dragged obj
@@ -426,8 +427,8 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 	Method IsAtOriginalPosition:int() {_exposeToLua}
 		'startPos is the position of the undragged sign,
 		'"originalPos" contains the position before potential switches
-		if door.doorSlot <> GetRoomBoard().GetSlot(StartPos.GetX()) then return False
-		if door.onFloor <> GetRoomBoard().GetFloor(StartPos.GetY()) then return False
+		if door.doorSlot <> GetRoomBoard().GetSlot(int(StartPos.GetX())) then return False
+		if door.onFloor <> GetRoomBoard().GetFloor(int(StartPos.GetY())) then return False
 
 		return True
 	End Method

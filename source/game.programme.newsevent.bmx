@@ -503,7 +503,7 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 	'ATTENTION:
 	'to emit an artificial news, use GetNewsAgency().announceNewsEvent()
-	Method doHappen(time:Long = 0)
+	Method doHappen(time:Double = 0)
 		'set happened time, add to collection list...
 		GetNewsEventCollection().setNewsHappened(self, time)
 

@@ -768,7 +768,7 @@ rem
 		endif
 		if not station then return False
 endrem
-		local station:TStation	= GetStationMapCollection().GetMap(playerID, True).getStation(pos.x, pos.y)
+		local station:TStation	= GetStationMap(playerID, True).getStation(int(pos.x), int(pos.y))
 
 		'disable events - ignore it to avoid recursion
 		TStationMap.fireEvents = FALSE
@@ -778,14 +778,14 @@ endrem
 					'create the station if not existing
 					if not station then station = TStation.Create(pos,-1, radius, playerID)
 
-					GetStationMapCollection().GetMap(playerID).AddStation( station, FALSE )
+					GetStationMap(playerID).AddStation( station, FALSE )
 					print "[NET] StationMap player "+playerID+" - add station "+station.pos.GetIntX()+","+station.pos.GetIntY()
 
 					return TRUE
 			case NET_DELETE
 					if not station then return FALSE
 
-					GetStationMapCollection().GetMap(playerID).RemoveStation( station, FALSE )
+					GetStationMap(playerID).RemoveStation( station, FALSE )
 					print "[NET] StationMap player "+playerID+" - removed station "+station.pos.GetIntX()+","+station.pos.GetIntY()
 					return TRUE
 		EndSelect

@@ -32,8 +32,8 @@ Type TVirtualGfx
 	Field vwidth:Int
 	Field vheight:Int
 
-	Field vxoff:Float
-	Field vyoff:Float
+	Field vxoff:Int
+	Field vyoff:Int
 
 	Field vscale:Float
 
@@ -179,7 +179,7 @@ Type TVirtualGfx
 	Method VirtualGrabPixmap:TPixmap(x:int,y:int,w:int,h:int)
 		local scaleX:float = float(GraphicsWidth()) / float(self.vwidth)
 		local scaleY:float = float(GraphicsHeight()) / float(self.vheight)
-		return _max2dDriver.GrabPixmap(float(X)*scaleX + self.vxoff, float(Y)*scaleY + self.vyoff, float(w)*scaleX, float(h)*scaleY)
+		return _max2dDriver.GrabPixmap(int(x*scaleX + self.vxoff), int(y*scaleY + self.vyoff), int(w*scaleX), int(h*scaleY))
 	End Method
 
 End Type

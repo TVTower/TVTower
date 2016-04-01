@@ -202,7 +202,7 @@ Type TSpriteFrameAnimation
 
 
 	Method ResetFrameTimer()
-		frameTimer = framesTime[currentFrame] + 0.001*Rand(-1000*randomness, 1000*randomness)
+		frameTimer = framesTime[currentFrame] + 0.001*Rand(Int(-1000*randomness), Int(1000*randomness))
 	End Method
 
 

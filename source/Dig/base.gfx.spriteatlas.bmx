@@ -41,7 +41,7 @@ Type TSpriteAtlas
 
 		for local name:string = eachin newElements.Keys()
 			local rect:TRectangle = TRectangle(newElements.ValueForKey(name))
-			AddElement(name, rect.GetW(), rect.GetH())
+			AddElement(name, int(rect.GetW()), int(rect.GetH()))
 		next
 	End Method
 

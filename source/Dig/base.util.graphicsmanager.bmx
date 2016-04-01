@@ -36,8 +36,9 @@ Rem
 EndRem
 SuperStrict
 ?bmxng
-Import sdl.gl2sdlmax2d
-Import pub.opengles
+Import BRL.GLMax2D
+'Import sdl.gl2sdlmax2d
+'Import pub.opengles
 ?
 ?MacOs
 Import BRL.GLMax2D
@@ -52,53 +53,53 @@ Import BRL.GLMax2D
 Import "base.util.virtualgraphics.bmx"
 
 Type TGraphicsManager
-	Field fullscreen:int	= 0
-	Field renderer:int		= 0
-	Field colorDepth:int	= 16
-	Field realWidth:int		= 800
-	Field realHeight:int	= 600
-	Field designedWidth:int	= -1
-	Field designedHeight:int= -1
-	Field hertz:int			= 60
-	Field vsync:int			= TRUE
+	Field fullscreen:Int	= 0
+	Field renderer:Int		= 0
+	Field colorDepth:Int	= 16
+	Field realWidth:Int		= 800
+	Field realHeight:Int	= 600
+	Field designedWidth:Int	= -1
+	Field designedHeight:Int= -1
+	Field hertz:Int			= 60
+	Field vsync:Int			= True
 	Field flags:Int			= GRAPHICS_BACKBUFFER '0 'GRAPHICS_BACKBUFFER | GRAPHICS_ALPHABUFFER '& GRAPHICS_ACCUMBUFFER & GRAPHICS_DEPTHBUFFER
 	Global _instance:TGraphicsManager
 	Global _g:TGraphics
-	Global RENDERER_NAMES:string[] = [	"OpenGL",..
+	Global RENDERER_NAMES:String[] = [	"OpenGL",..
 										"DirectX 7", ..
 										"DirectX 9", ..
 										"DirectX 11", ..
 										"Buffered OpenGL", ..
 										"GL2SDL" ..
 									 ]
-	CONST RENDERER_OPENGL:int   		= 0
-	CONST RENDERER_DIRECTX7:int 		= 1
-	CONST RENDERER_DIRECTX9:int 		= 2
-	CONST RENDERER_DIRECTX11:Int 		= 3
-	CONST RENDERER_BUFFEREDOPENGL:int   = 4
-	CONST RENDERER_GL2SDL:int           = 5
+	Const RENDERER_OPENGL:Int   		= 0
+	Const RENDERER_DIRECTX7:Int 		= 1
+	Const RENDERER_DIRECTX9:Int 		= 2
+	Const RENDERER_DIRECTX11:Int 		= 3
+	Const RENDERER_BUFFEREDOPENGL:Int   = 4
+	Const RENDERER_GL2SDL:Int           = 5
 
 	Function GetInstance:TGraphicsManager()
-		If not _instance Then _instance = New TGraphicsManager
+		If Not _instance Then _instance = New TGraphicsManager
 		Return _instance
 	End Function
 
 
 
-	Method SetResolution:int(width:int, height:int)
-		if realWidth <> width or realHeight <> height
+	Method SetResolution:Int(width:Int, height:Int)
+		If realWidth <> width Or realHeight <> height
 			realWidth = width
 			realHeight = height
-			return True
-		else
-			return False
-		endif
+			Return True
+		Else
+			Return False
+		EndIf
 	End Method
 
 
 	'set the resolution the assets are designed for
 	'things get resized according the real resolution
-	Method SetDesignedResolution:int(width:int, height:int)
+	Method SetDesignedResolution:Int(width:Int, height:Int)
 		designedWidth = width
 		designedHeight = height
 	End Method
@@ -107,113 +108,113 @@ Type TGraphicsManager
 	'ATTENTION: there is no guarantee that it works flawless on
 	'all computers (graphics context/images might have to be
 	'initialized again)
-	Method SetFullscreen:Int(bool:int = TRUE)
-		if fullscreen <> bool
+	Method SetFullscreen:Int(bool:Int = True)
+		If fullscreen <> bool
 			fullscreen = bool
 			'create a new graphics object if already in graphics mode
-			if _g then InitGraphics()
+			If _g Then InitGraphics()
 
-			return True
-		endif
-		return False
+			Return True
+		EndIf
+		Return False
 	End Method
 	
 
 	Method GetFullscreen:Int()
-		return (fullscreen = true)
+		Return (fullscreen = True)
 	End Method
 
 
-	Method SetVSync:Int(bool:int = TRUE)
-		if vsync <> bool
+	Method SetVSync:Int(bool:Int = True)
+		If vsync <> bool
 			vsync = bool
-			return True
-		else
-			return False
-		endif
+			Return True
+		Else
+			Return False
+		EndIf
 	End Method
 
 
-	Method SetHertz:Int(value:int=0)
+	Method SetHertz:Int(value:Int=0)
 		hertz = value
 	End Method
 
 
-	Method SetColordepth:Int(value:int=0)
-		if colorDepth <> value
+	Method SetColordepth:Int(value:Int=0)
+		If colorDepth <> value
 			colorDepth = value
-			return True
-		else
-			return False
-		endif
+			Return True
+		Else
+			Return False
+		EndIf
 	End Method
 	
 
 	Method GetColordepth:Int()
-		return colorDepth
+		Return colorDepth
 	End Method
 
 
-	Method SetRenderer:Int(value:int = 0)
-		if renderer <> value
+	Method SetRenderer:Int(value:Int = 0)
+		If renderer <> value
 			renderer = value
-			return True
-		else
-			return False
-		endif
+			Return True
+		Else
+			Return False
+		EndIf
 	End Method
 
 
 	Method GetRenderer:Int()
-		return renderer
+		Return renderer
 	End Method
 	
 
-	Method GetRendererName:String(forRenderer:int=-1)
-		if forRenderer = -1 then forRenderer = self.renderer
-		if forRenderer < 0 or forRenderer > RENDERER_NAMES.length
-			return "UNKNOWN"
-		else
-			return RENDERER_NAMES[forRenderer]
-		endif
+	Method GetRendererName:String(forRenderer:Int=-1)
+		If forRenderer = -1 Then forRenderer = Self.renderer
+		If forRenderer < 0 Or forRenderer > RENDERER_NAMES.length
+			Return "UNKNOWN"
+		Else
+			Return RENDERER_NAMES[forRenderer]
+		EndIf
 	End Method
 
 
-	Method SetFlags:Int(value:int = 0)
+	Method SetFlags:Int(value:Int = 0)
 		flags = value
 	End Method
 
 
-	Method GetHeight:int()
-		if designedHeight = -1 then return realHeight
-		return designedHeight
+	Method GetHeight:Int()
+		If designedHeight = -1 Then Return realHeight
+		Return designedHeight
 	End Method
 
 
-	Method GetWidth:int()
-		if designedWidth = -1 then return realWidth
-		return designedWidth
+	Method GetWidth:Int()
+		If designedWidth = -1 Then Return realWidth
+		Return designedWidth
 	End Method
 
 
-	Method GetRealHeight:int()
-		return realHeight
+	Method GetRealHeight:Int()
+		Return realHeight
 	End Method
 
 
-	Method GetRealWidth:int()
-		return realWidth
+	Method GetRealWidth:Int()
+		Return realWidth
 	End Method
 
 
-	Method HasBlackBars:int()
-		if designedWidth = -1 and designedHeight = -1 then return False
-		return designedWidth <> realWidth or designedHeight <> realHeight
+	Method HasBlackBars:Int()
+		If designedWidth = -1 And designedHeight = -1 Then Return False
+		Return designedWidth <> realWidth Or designedHeight <> realHeight
 	End Method
 	
 
 	'switch between fullscreen or windowed mode
-	Method SwitchFullscreen:int()
+	Method SwitchFullscreen:Int()
 		SetFullscreen(1 - GetGraphicsManager().GetFullscreen())
 	End Method
 
@@ -221,12 +222,12 @@ Type TGraphicsManager
 	Method InitGraphics:Int()
 		'initialize virtual graphics only when "InitGraphics()" is run
 		'for the first time
-		if not _g then InitVirtualGraphics()
+		If Not _g Then InitVirtualGraphics()
 
 		'needed to allow ?win32 + ?bmxng
 		?win32
 		_InitGraphicsWin32()
-		?not win32
+		?Not win32
 		_InitGraphicsDefault()
 		?
 
@@ -245,14 +246,14 @@ Type TGraphicsManager
 			'buffered gl?
 			?android
 			Default SetGraphicsDriver GL2Max2DDriver()
-			?not android
+			?Not android
 			Default SetGraphicsDriver GLMax2DDriver()
 			?
 		EndSelect
 
 		_g = Graphics(realWidth, realHeight, colorDepth*fullScreen, hertz, flags)
 
-		if not _g then Throw "Graphics initiation error! no render engine available."
+		If Not _g Then Throw "Graphics initiation error! no render engine available."
 	End Method
 
 
@@ -267,36 +268,37 @@ Type TGraphicsManager
 	End Method
 
 	
-	Method Flip(restrictFPS:int=FALSE)
+	Method Flip(restrictFPS:Int=False)
 		'we call "."flip so we call the "original flip function"
 		If Not restrictFPS
-			if vsync then .Flip 1 else .Flip 0
+			If vsync Then .Flip 1 Else .Flip 0
 		Else
-			if vsync then .Flip 1 else .Flip -1
+			If vsync Then .Flip 1 Else .Flip -1
 		EndIf
 	End Method
 
 
-	Method SetViewPort(x:int, y:int, w:int, h:int)
+	Method SetViewport(x:Int, y:Int, w:Int, h:Int)
 		'the . means: access globally defined SetViewPort()
-		.SetViewPort(TVirtualGfx.getInstance().vxoff + x, TVirtualGfx.getInstance().vyoff + y, w, h)
+		.SetViewport(TVirtualGfx.getInstance().vxoff + x, TVirtualGfx.getInstance().vyoff + y, w, h)
 	End Method
 
 
-	Method GetViewPort(x:int var, y:int var, w:int var, h:int var)
+	Method GetViewport(x:Int Var, y:Int Var, w:Int Var, h:Int Var)
 		'the . means: access globally defined SetViewPort()
-		.GetViewPort(x, y, w, h)
+		.GetViewport(x, y, w, h)
 		x :- TVirtualGfx.getInstance().vxoff
 		y :- TVirtualGfx.getInstance().vyoff
 	End Method
 
 
-	Method EnableSmoothLines:int()
-		if renderer = RENDERER_OPENGL or renderer = RENDERER_BUFFEREDOPENGL
-			return GlEnable(GL_LINE_SMOOTH)
-		else
-			return False
-		endif
+	Method EnableSmoothLines:Int()
+		If renderer = RENDERER_OPENGL Or renderer = RENDERER_BUFFEREDOPENGL
+			GlEnable(GL_LINE_SMOOTH)
+			Return True
+		Else
+			Return False
+		EndIf
 	End Method
 End Type
 

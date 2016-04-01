@@ -323,7 +323,7 @@ Type TScreenHandler_Financials
 
 		local hoveredDay:int = -1
 		For local i:Int = GetWorldTime().GetDay()-showDays To GetWorldTime().GetDay()
-			if THelper.MouseIn(curveArea.GetX() + (slot-0.5) * slotWidth, curveArea.GetY(), slotWidth, curveArea.GetH())
+			if THelper.MouseIn(int(curveArea.GetX() + (slot-0.5) * slotWidth), int(curveArea.GetY()), slotWidth, int(curveArea.GetH()))
 				hoveredDay = i
 				'leave for loop
 				exit

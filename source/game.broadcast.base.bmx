@@ -335,7 +335,7 @@ End Function
 'Berechnung einige Zeit aufbewahren kann.
 Type TBroadcast
 	'time of the Broadcast (since start of the game)
-	Field Time:Long = -1
+	Field Time:Double = -1
 	Field BroadcastType:Int
 	'Wie sahen die Märkte zu dieser Zeit aus?
 	Field AudienceMarkets:TList = CreateList()
@@ -602,7 +602,7 @@ Type TBroadcast
 
 	'returns how many percent of the target group are possibly watching
 	'TV at the given hour 
-	Function GetPotentialAudiencePercentage_TimeMod:TAudience(time:Long = -1)
+	Function GetPotentialAudiencePercentage_TimeMod:TAudience(time:Double = -1)
 		If time < 0 Then time = GetWorldTime().GetTimeGone()
 
 		local result:TAudience
@@ -640,14 +640,14 @@ Type TBroadcast
 	End Function
 	
 
-	Function GetPotentialAudienceModifier:TAudience(forHour:int = -1)
+	Function GetPotentialAudienceModifier:TAudience(time:Double = -1)
 		local modifier:TAudience = new TAudience.InitValue(1, 1)
 
 		'modify according to current hour
-		modifier.Multiply( GetPotentialAudiencePercentage_TimeMod(forHour) )
+		modifier.Multiply( GetPotentialAudiencePercentage_TimeMod(time) )
 
 		'modify according to weather 
-		'modifier.Multiply( GetPotentialAudiencePercentage_WeatherMod(forHour) )
+		'modifier.Multiply( GetPotentialAudiencePercentage_WeatherMod(time) )
 
 		return modifier
 	End Function
@@ -753,25 +753,25 @@ Type TBroadcastFeedback
 
 			For local kv:TKeyValueNumber = eachin sortMap.Content
 				If allowedTemp.GetTotalValue(TVTTargetGroup.Children) >= 1 And kv.Key = "0" Then
-					AudienceInterest.SetTotalValue(TVTTargetGroup.Children, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Children), maxAudience.GetTotalValue(TVTTargetGroup.Children), allowedTemp.GetTotalValue(TVTTargetGroup.Children) - 1))
+					AudienceInterest.SetTotalValue(TVTTargetGroup.Children, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Children), maxAudience.GetTotalValue(TVTTargetGroup.Children), int(allowedTemp.GetTotalValue(TVTTargetGroup.Children) - 1)))
 					If AudienceInterest.GetTotalValue(TVTTargetGroup.Children) > 0 Then familyMemberCount :- 1
 				ElseIf allowedTemp.GetTotalValue(TVTTargetGroup.Teenagers) >= 1 And kv.Key = "1" Then
-					AudienceInterest.SetTotalValue(TVTTargetGroup.Teenagers, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Teenagers), maxAudience.GetTotalValue(TVTTargetGroup.Teenagers), allowedTemp.GetTotalValue(TVTTargetGroup.Teenagers) - 1))
+					AudienceInterest.SetTotalValue(TVTTargetGroup.Teenagers, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Teenagers), maxAudience.GetTotalValue(TVTTargetGroup.Teenagers), int(allowedTemp.GetTotalValue(TVTTargetGroup.Teenagers) - 1)))
 					If AudienceInterest.GetTotalValue(TVTTargetGroup.Teenagers) > 0 Then familyMemberCount :- 1
 				ElseIf allowedTemp.GetTotalValue(TVTTargetGroup.HouseWives) >= 1 And kv.Key = "2" Then
-					AudienceInterest.SetTotalValue(TVTTargetGroup.HouseWives, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.HouseWives), maxAudience.GetTotalValue(TVTTargetGroup.HouseWives), allowedTemp.GetTotalValue(TVTTargetGroup.HouseWives) - 1))
+					AudienceInterest.SetTotalValue(TVTTargetGroup.HouseWives, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.HouseWives), maxAudience.GetTotalValue(TVTTargetGroup.HouseWives), int(allowedTemp.GetTotalValue(TVTTargetGroup.HouseWives) - 1)))
 					If AudienceInterest.GetTotalValue(TVTTargetGroup.HouseWives) > 0 Then familyMemberCount :- 1
 				ElseIf allowedTemp.GetTotalValue(TVTTargetGroup.Employees) >= 1 And kv.Key = "3" Then
-					AudienceInterest.SetTotalValue(TVTTargetGroup.Employees, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Employees), maxAudience.GetTotalValue(TVTTargetGroup.Employees), allowedTemp.GetTotalValue(TVTTargetGroup.Employees) - 1))
+					AudienceInterest.SetTotalValue(TVTTargetGroup.Employees, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Employees), maxAudience.GetTotalValue(TVTTargetGroup.Employees), int(allowedTemp.GetTotalValue(TVTTargetGroup.Employees) - 1)))
 					If AudienceInterest.GetTotalValue(TVTTargetGroup.Employees) > 0 Then familyMemberCount :- 1
 				ElseIf allowedTemp.GetTotalValue(TVTTargetGroup.Unemployed) >= 1 And kv.Key = "4" Then
-					AudienceInterest.SetTotalValue(TVTTargetGroup.Unemployed, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Unemployed), maxAudience.GetTotalValue(TVTTargetGroup.Unemployed), allowedTemp.GetTotalValue(TVTTargetGroup.Unemployed) - 1))
+					AudienceInterest.SetTotalValue(TVTTargetGroup.Unemployed, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Unemployed), maxAudience.GetTotalValue(TVTTargetGroup.Unemployed), int(allowedTemp.GetTotalValue(TVTTargetGroup.Unemployed) - 1)))
 					If AudienceInterest.GetTotalValue(TVTTargetGroup.Unemployed) > 0 Then familyMemberCount :- 1
 				ElseIf allowedTemp.GetTotalValue(TVTTargetGroup.Manager) >= 1 And kv.Key = "5" Then
-					AudienceInterest.SetTotalValue(TVTTargetGroup.Manager, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Manager), maxAudience.GetTotalValue(TVTTargetGroup.Manager), allowedTemp.GetTotalValue(TVTTargetGroup.Manager) - 1))
+					AudienceInterest.SetTotalValue(TVTTargetGroup.Manager, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Manager), maxAudience.GetTotalValue(TVTTargetGroup.Manager), int(allowedTemp.GetTotalValue(TVTTargetGroup.Manager) - 1)))
 					If AudienceInterest.GetTotalValue(TVTTargetGroup.Manager) > 0 Then familyMemberCount :- 1
 				ElseIf allowedTemp.GetTotalValue(TVTTargetGroup.Pensioners) >= 1 And kv.Key = "6" Then
-					AudienceInterest.SetTotalValue(TVTTargetGroup.Pensioners, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Pensioners), maxAudience.GetTotalValue(TVTTargetGroup.Pensioners), allowedTemp.GetTotalValue(TVTTargetGroup.Pensioners) - 1))
+					AudienceInterest.SetTotalValue(TVTTargetGroup.Pensioners, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Pensioners), maxAudience.GetTotalValue(TVTTargetGroup.Pensioners), int(allowedTemp.GetTotalValue(TVTTargetGroup.Pensioners) - 1)))
 					If AudienceInterest.GetTotalValue(TVTTargetGroup.Pensioners) > 0 Then familyMemberCount :- 1
 				EndIf
 
@@ -947,7 +947,7 @@ Type TAudienceMarketCalculation
 	End Method
 
 
-	Method ComputeAudience(time:Long = -1)
+	Method ComputeAudience(time:Double = -1)
 		If time <= 0 Then time = GetWorldTime().GetTimeGone()
 
 		CalculatePotentialChannelSurfer(time)
@@ -994,7 +994,7 @@ Type TAudienceMarketCalculation
 	End Method
 
 
-	Method CalculatePotentialChannelSurfer(time:Long)
+	Method CalculatePotentialChannelSurfer(time:Double)
 		MaxAudience.Round()
 
 		'Die Anzahl der potentiellen/üblichen Zuschauer um diese Zeit

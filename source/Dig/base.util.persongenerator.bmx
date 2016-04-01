@@ -529,7 +529,7 @@ Type TPersonGeneratorCountry_China extends TPersonGeneratorCountry
 			"Wu", "Wei", "Shen", "Nie", "Xing", "Qi", "Tu", "Shu", "Geng", "Mu", "Bu", ..
 			"Ling", "Jin", "Sheng", "Zhen", "Pei", "Xi", "Tan", "Weng", "Sui", "Gan", "Bo", "Ke", "Nguyen", "Ouyang", ..
 			"Chai", "Ran", "Gu", "Kat", "Rao", "Qu", "Teng", "Jin", "Zang", "Liao", "Gou", "Chu", "Lou", "Yan", "Lang", ..
-			"Ji", "Gao", "Ao", "Mi", "Bian", "Sin", "Tong", "Sang", "Chen", "Ming" ..
+			"Ji", "Gao", "Ao", "Mi", "Bian", "Sin", "Tong", "Sang", "Chen", "Ming" ..
 			]
 	End Method
 End Type

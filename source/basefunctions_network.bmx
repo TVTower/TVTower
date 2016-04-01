@@ -308,9 +308,9 @@ Type TNetworkClient extends TNetworkConnection
 				Send(response)
 				
 			Case NET_PINGRESPONSE
-				latency = Time.GetTimeGone() - response.getInt(1)
-				response.setInt(2, response.senderIP)
-				response.setInt(3, response.senderPort)
+				latency = Time.GetTimeGone() - response.getLong(1)
+				response.SetInt(2, response.senderIP)
+				response.SetInt(3, response.senderPort)
 				If enetpeer=pingpeer
 					enet_peer_disconnect(pingpeer)
 					pingpeer=Null
@@ -324,7 +324,7 @@ Type TNetworkClient extends TNetworkConnection
 
 	Method Ping:Int(ip:Int=0,port:Int=0)
 		local obj:TNetworkObject = TNetworkObject.Create(NET_PINGREQUEST)
-		obj.setInt(1, Time.GetTimeGone())
+		obj.SetLong(1, Time.GetTimeGone())
 		Return Send(obj)
 	End Method
 End Type
@@ -418,7 +418,7 @@ Type TNetworkServer Extends TNetworkConnection
 				If client
 					client.SendEvent(NET_LEAVEGAMERESPONSE, NET_PACKET_RELIABLE)
 					answer = TNetworkObject.Create(NET_PLAYERLEFT)
-					answer.setInt(1, client.playerID)
+					answer.SetInt(1, client.playerID)
 					answer.setString(2, client.name)
 					Broadcast(answer, null, NET_PACKET_RELIABLE)
 					clients.remove(client)
@@ -429,7 +429,7 @@ Type TNetworkServer Extends TNetworkConnection
 				If client
 					Disconnect(client,1)
 					answer = TNetworkObject.Create(NET_PLAYERLEFT)
-					answer.setInt(1, client.playerID)
+					answer.SetInt(1, client.playerID)
 					Broadcast(answer)
 				EndIf
 				client = TNetworkClient.Find(enet_peer_ip(enetpeer),enet_peer_port(enetpeer))
@@ -461,15 +461,15 @@ Type TNetworkServer Extends TNetworkConnection
 					'answer the clients join request, inform about the
 					'playerID the client has to assign
 					answer = TNetworkObject.Create(NET_JOINRESPONSE)
-					answer.setInt(1, 1)
-					answer.setInt(2, clients.count()) 'change to GetSlot() or so
+					answer.SetInt(1, 1)
+					answer.SetInt(2, clients.count()) 'change to GetSlot() or so
 					SendToClient(client, answer,NET_PACKET_RELIABLE)
 					TLogger.Log("Network.EvaluateEvent()", "Handle join: send back accepted join packet", LOG_DEBUG | LOG_NETWORK)
 
 					'send peer data
 					'Tell everyone new client joined
 					answer = TNetworkObject.Create(NET_PLAYERJOINED)
-					answer.setInt(1, clients.count()) 'change to GetSlot() or so
+					answer.SetInt(1, clients.count()) 'change to GetSlot() or so
 					answer.setString(2, client.name)
 
 					'inform callback about playerjoined
@@ -479,8 +479,8 @@ Type TNetworkServer Extends TNetworkConnection
 				Else
 					TLogger.Log("Network.EvaluateEvent()", "Handle join: client cannot join, no name already taken. Rename not possible.", LOG_DEBUG | LOG_NETWORK)
 					answer = TNetworkObject.Create(NET_JOINRESPONSE)
-					answer.setInt(1, 0) 'no, you can't joint
-					answer.setInt(2, 1) 'reason: name already taken
+					answer.SetInt(1, 0) 'no, you can't joint
+					answer.SetInt(2, 1) 'reason: name already taken
 					client.Send(answer,NET_PACKET_RELIABLE)
 					Return
 				EndIf
@@ -625,9 +625,9 @@ EndType
 'including playerposition, programmesending, changes of elevatorpositions etc.
 Type TDigNetwork
 	Global localFallbackIP:int = 0
-	Global localPort:int = 4544
+	Global localPort:short = 4544
 	' only for lan (up to now) - announcements
-	Global infoPort:int	= 4543
+	Global infoPort:short	= 4543
 	Global maxPlayers:int = 4
 	field fallbackip:String	= "192.168.0.3"
 
@@ -959,7 +959,7 @@ Type TDigNetwork
 			obj.setInt(1, self.GetUsedSlots())
 			obj.setInt(2, self.GetMaxSlots())
 			obj.setInt(3, self.GetMyIP())
-			obj.setInt(4, self.localPort)
+			obj.SetInt(4, self.localPort)
 			obj.setString(5, client.playerName)
 			obj.setString(6, self.announceTitle)
 		

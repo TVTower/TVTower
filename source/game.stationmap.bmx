@@ -84,20 +84,6 @@ Type TStationMapCollection
 	Function onSaveGameLoad(triggerEvent:TEventBase)
 		TLogger.Log("TStationMapCollection", "Savegame loaded - reloading map data", LOG_DEBUG | LOG_SAVELOAD)
 
-		'fix missing mapConfigFile:
-		if FileType(_instance.mapConfigFile) <> 1
-			local oldURI:string = _instance.mapConfigFile
-			local base:string = _instance.mapConfigFile.Replace("res/maps/", "")
-			'old version - stored in "res/maps/countryname.xml"
-			if base.Find("/") <= 0
-				_instance.mapConfigFile = "res/maps/" + StripAll(_instance.mapConfigFile) + "/" + StripDir(_instance.mapConfigFile)
-			'new version - stored in "res/maps/countryname/file.xml"
-			else
-				'fall back to "germany"
-				_instance.mapConfigFile = "res/maps/germany/germany.xml"
-			endif
-			TLogger.Log("TStationMap.onSaveGameLoad()", "Fixed map configuration file URI: old=~q"+oldURI+"~q, new=~q"+_instance.mapConfigFile+"~q.", LOG_ERROR | LOG_SAVELOAD)
-		endif
 		_instance.LoadMapFromXML()
 	End Function
 
@@ -165,9 +151,9 @@ Type TStationMapCollection
 		endif
 
 		'move pixmap so it overlays the rest
-		Local pix:TPixmap = CreatePixmap(srcPix.width + populationMapOffset.x, srcPix.height + populationMapOffset.y, srcPix.format)
+		Local pix:TPixmap = CreatePixmap(int(srcPix.width + populationMapOffset.x), int(srcPix.height + populationMapOffset.y), srcPix.format)
 		pix.ClearPixels(0)
-		pix.paste(srcPix, populationMapOffset.x, populationMapOffset.y)
+		pix.paste(srcPix, int(populationMapOffset.x), int(populationMapOffset.y))
 
 		populationMap = new Int[pix.width, pix.height]
 		populationMapSize.SetXY(pix.width, pix.height)
@@ -470,7 +456,7 @@ Type TStationMapCollection
 		'mark all others (except the given one) as "white"
 		'-> then count pop on all spots "just blue" and not "white"
 		
-		Self._FillPoints(Points, removeStation.pos.x, removeStation.pos.y, ARGB_Color(255, 0, 255, 255))
+		Self._FillPoints(Points, int(removeStation.pos.x), int(removeStation.pos.y), ARGB_Color(255, 0, 255, 255))
 
 		'overwrite with stations owner already has - red pixels get overwritten with white,
 		'count red at the end for increase amount
@@ -482,14 +468,14 @@ Type TStationMapCollection
 			'exclude the station to remove...
 			if _Station = removeStation then continue
 		
-			If THelper.IsIn(removeStation.pos.x, removeStation.pos.y, _station.pos.x - 2*stationRadius, _station.pos.y - 2 * stationRadius, 4*stationRadius, 4*stationRadius)
-				Self._FillPoints(Points, _Station.pos.x, _Station.pos.y, ARGB_Color(255, 255, 255, 255))
+			If THelper.IsIn(int(removeStation.pos.x), int(removeStation.pos.y), int(_station.pos.x - 2*stationRadius), int(_station.pos.y - 2 * stationRadius), int(4*stationRadius), int(4*stationRadius))
+				Self._FillPoints(Points, int(_Station.pos.x), int(_Station.pos.y), ARGB_Color(255, 255, 255, 255))
 			EndIf
 		Next
 
 		'count all "exclusively blue" spots
 		For Local point:TVec3D = EachIn points.Values()
-			If ARGB_Red(point.z) = 0 'And ARGB_Blue(point.z) = 255
+			If ARGB_Red(int(point.z)) = 0 'And ARGB_Blue(point.z) = 255
 				returnvalue:+ populationmap[point.x, point.y]
 			EndIf
 		Next
@@ -512,13 +498,13 @@ Type TStationMapCollection
 			'increases are for estimations - so they should include
 			'non-finished stations too
 		
-			If THelper.IsIn(_x,_y, _station.pos.x - 2*stationRadius, _station.pos.y - 2 * stationRadius, 4*stationRadius, 4*stationRadius)
-				Self._FillPoints(Points, _Station.pos.x, _Station.pos.y, ARGB_Color(255, 255, 255, 255))
+			If THelper.IsIn(int(_x), int(_y), int(_station.pos.x - 2*stationRadius), int(_station.pos.y - 2 * stationRadius), int(4*stationRadius), int(4*stationRadius))
+				Self._FillPoints(Points, int(_Station.pos.x), int(_Station.pos.y), ARGB_Color(255, 255, 255, 255))
 			EndIf
 		Next
 
 		For Local point:TVec3D = EachIn points.Values()
-			If ARGB_Red(point.z) = 0 And ARGB_Blue(point.z) = 255
+			If ARGB_Red(int(point.z)) = 0 And ARGB_Blue(int(point.z)) = 255
 				returnvalue:+ populationmap[point.x, point.y]
 			EndIf
 		Next
@@ -533,12 +519,12 @@ Type TStationMapCollection
 			'skip inactive stations
 			if not station.IsActive() then continue
 
-			Self._FillPoints(Points, station.pos.x, station.pos.y, ARGB_Color(255, 255, 255, 255))
+			Self._FillPoints(Points, int(station.pos.x), int(station.pos.y), ARGB_Color(255, 255, 255, 255))
 		Next
 		Local returnValue:Int = 0
 
 		For Local point:TVec3D = EachIn points.Values()
-			If ARGB_Red(point.z) = 255 And ARGB_Blue(point.z) = 255
+			If ARGB_Red(int(point.z)) = 255 And ARGB_Blue(int(point.z)) = 255
 				returnValue:+ populationmap[point.x, point.y]
 			EndIf
 		Next
@@ -935,7 +921,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	'get the reach of that station
 	Method getReach:Int(refresh:Int=False) {_exposeToLua}
 		If reach >= 0 And Not refresh Then Return reach
-		reach = GetStationMapCollection().CalculateStationReach(pos.x, pos.y)
+		reach = GetStationMapCollection().CalculateStationReach(int(pos.x), int(pos.y))
 
 		Return reach
 	End Method
@@ -958,7 +944,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 			Return 0
 		EndIf
 
-		reachIncrease = GetStationMap(owner).CalculateAudienceIncrease(pos.x, pos.y)
+		reachIncrease = GetStationMap(owner).CalculateAudienceIncrease(int(pos.x), int(pos.y))
 
 		Return reachIncrease
 	End Method
@@ -980,14 +966,14 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 	'if nobody needs that info , remove the method
 	Method GetHoveredMapSection:TStationMapSection()
-		Return TStationMapSection.get(Self.pos.x, Self.pos.y)
+		Return TStationMapSection.get(int(pos.x), int(pos.y))
 	End Method
 
 
 	Method getFederalState:String(refresh:Int=False) {_exposeToLua}
 		If federalState <> "" And Not refresh Then Return federalState
 
-		Local hoveredSection:TStationMapSection = TStationMapSection.get(Self.pos.x, Self.pos.y)
+		Local hoveredSection:TStationMapSection = TStationMapSection.get(int(pos.x), int(pos.y))
 		If hoveredSection Then federalState = hoveredSection.name
 
 		Return federalState
@@ -1214,7 +1200,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 			SetAlpha 0.25 * oldAlpha
 			DrawOval(pos.x - radius - 2, pos.y - radius -2, 2 * (radius + 2), 2 * (radius + 2))
 
-			SetAlpha Min(0.9, Max(0,Sin(Time.GetAppTimeGone()/3)) + 0.5 ) * oldAlpha
+			SetAlpha Float(Min(0.9, Max(0,Sin(Time.GetAppTimeGone()/3)) + 0.5 ) * oldAlpha)
 		Else
 			SetAlpha 0.4 * oldAlpha
 		EndIf
@@ -1283,7 +1269,7 @@ Type TStationMapSection
 			if not section.sprite then continue
 
 			If section.rect.containsXY(x,y)
-				If section.sprite.PixelIsOpaque(x-section.rect.getX(), y-section.rect.getY()) > 0
+				If section.sprite.PixelIsOpaque(int(x-section.rect.getX()), int(y-section.rect.getY())) > 0
 					Return section
 				EndIf
 			EndIf

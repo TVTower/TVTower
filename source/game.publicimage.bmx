@@ -111,7 +111,7 @@ Type TPublicImage {_exposeToLua="selected"}
 	End Method
 
 
-	Function ChangeForTargetGroup(playerAudience:TMap, targetGroup:Int, attrList:TList, compareFunc( o1:Object,o2:Object )=CompareObjects)
+	Function ChangeForTargetGroup(playerAudience:TMap, targetGroup:Int, attrList:TList, compareFunc:int( o1:Object,o2:Object )=CompareObjects)
 		Local tempList:TList = attrList.Copy()
 		SortList(tempList,False,compareFunc)
 		'RONNY:

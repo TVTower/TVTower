@@ -241,7 +241,7 @@ Type TGUIinput Extends TGUIobject
 		EndIf
 
 		'vertical align overlayArea (ceil: "odd" values get rounded so coords are more likely within button area)
-		overlayArea.position.SetY(ceil((rect.GetH()- overlayArea.GetH())/2))
+		overlayArea.position.SetY(Float(Ceil((rect.GetH()- overlayArea.GetH())/2)))
 		'draw the icon or label if needed
 		If GetOverlaySprite()
 			GetOverlaySprite().Draw(position.GetX() + overlayArea.GetX(), position.getY() + overlayArea.GetY())
@@ -268,7 +268,7 @@ Type TGUIinput Extends TGUIobject
 			GetFont().draw(printValue, position.GetIntX(), position.GetIntY())
 
 			local oldAlpha:float = GetAlpha()
-			SetAlpha Ceil(Sin(Time.GetTimeGone() / 4)) * oldAlpha
+			SetAlpha Float(Ceil(Sin(Time.GetTimeGone() / 4)) * oldAlpha)
 			GetFont().draw("_", Int(position.GetIntX() + GetFont().getWidth(printValue)), Int(position.GetY()) )
 
 			SetAlpha oldAlpha

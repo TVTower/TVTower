@@ -91,7 +91,7 @@ Type TDialogue
 
 	Method Draw()
 		SetColor 255, 255, 255
-	    DrawDialog("default", _rect.getX(), _rect.getY(), _rect.getW(), _rect.getH(), "StartLeftDown", 0, "", contentWidth, GetBitmapFont("Default", 14))
+	    DrawDialog("default", int(_rect.getX()), int(_rect.getY()), int(_rect.getW()), int(_rect.getH()), "StartLeftDown", 0, "", contentWidth, GetBitmapFont("Default", 14))
 		SetColor 0, 0, 0
 		If Self._texts.Count() > 0
 			TDialogueTexts(Self._texts.ValueAtIndex(Self._currentTextIndex)).Draw(_rect.getX() + 10, _rect.getY() + 10, contentWidth - 20 - 45, _rect.getH())
@@ -124,7 +124,7 @@ Type TDialogueAnswer
 
 	Method Update:Int(x:Float, y:Float, w:Float, h:Float, clicked:Int = 0)
 		Self._highlighted = False
-		If THelper.MouseIn( x, y-2, w, GetBitmapFontManager().baseFont.getBlockHeight(Self._text, w, h))
+		If THelper.MouseIn(Int(x), int(y-2), int(w), int(GetBitmapFontManager().baseFont.getBlockHeight(Self._text, w, h)))
 			Self._highlighted = True
 			If clicked
 				'emit the event if there is one

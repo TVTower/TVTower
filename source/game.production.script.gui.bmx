@@ -64,8 +64,8 @@ Type TGuiScript Extends TGUIGameListItem
 
 
 	Method DrawSheet(leftX:Int=30, rightX:Int=30)
-		Local sheetY:Float 	= 20
-		Local sheetX:Float 	= leftX
+		Local sheetY:Int 	= 20
+		Local sheetX:Int 	= leftX
 		Local sheetAlign:Int= 0
 		'if mouse on left side of screen - align sheet on right side
 		'METHOD 1
@@ -83,7 +83,7 @@ Type TGuiScript Extends TGUIGameListItem
 		SetColor 0,0,0
 		SetAlpha 0.2
 		Local x:Float = Self.GetScreenX()
-		Local tri:Float[]=[sheetX+20,sheetY+25,sheetX+20,sheetY+90,Self.GetScreenX()+Self.GetScreenWidth()/2.0+3,Self.GetScreenY()+Self.GetScreenHeight()/2.0]
+		Local tri:Float[]=[float(sheetX+20),float(sheetY+25),float(sheetX+20),float(sheetY+90),Self.GetScreenX()+Self.GetScreenWidth()/2.0+3,Self.GetScreenY()+Self.GetScreenHeight()/2.0]
 		DrawPoly(tri)
 		SetColor 255,255,255
 		SetAlpha 1.0

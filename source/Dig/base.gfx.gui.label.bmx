@@ -214,12 +214,12 @@ Type TGUILabel Extends TGUIobject
 				sprite.Draw(GetScreenX() + contentDisplacement.GetX() + mydim.X, GetScreenY() + contentDisplacement.GetY() + 0.5 * mydim.y)
 
 			case MODE_SPRITE_ABOVE_TEXT
-				sprite.Draw(GetScreenX() + 0.5 * GetScreenWidth(), GetScreenY() + contentDisplacement.GetY(), ALIGN_CENTER)
+				sprite.Draw(GetScreenX() + 0.5 * GetScreenWidth(), GetScreenY() + contentDisplacement.GetY(), -1, ALIGN_CENTER_CENTER)
 				GetFont().drawBlock(value, GetScreenX() + contentDisplacement.GetX() + sprite.GetWidth(), GetScreenY() + contentDisplacement.GetY(), GetScreenWidth() - 2*contentDisplacement.GetX(), GetScreenHeight() - 2*contentDisplacement.GetY() + sprite.GetHeight(), contentPosition, color, valueEffectType, true, valueEffectSpecial)
 
 			case MODE_SPRITE_BELOW_TEXT
 				local dim:TVec2D = GetFont().drawBlock(value, GetScreenX() + contentDisplacement.GetX(), GetScreenY() + contentDisplacement.GetY(), GetScreenWidth() - 2*contentDisplacement.GetX(), GetScreenHeight() - 2*contentDisplacement.GetY(), contentPosition, color, valueEffectType, true, valueEffectSpecial)
-				sprite.Draw(GetScreenX() + 0.5 * GetScreenWidth(), GetScreenY() + contentDisplacement.GetY() + dim.y, ALIGN_CENTER)
+				sprite.Draw(GetScreenX() + 0.5 * GetScreenWidth(), GetScreenY() + contentDisplacement.GetY() + dim.y, -1, ALIGN_CENTER_CENTER)
 
 			case MODE_SPRITE_ONLY
 				sprite.Draw(GetScreenX() + 0.5 * GetScreenWidth(), GetScreenY() + 0.5 * GetScreenHeight(), -1, ALIGN_CENTER_CENTER)

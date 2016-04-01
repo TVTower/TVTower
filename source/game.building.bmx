@@ -152,8 +152,8 @@ Type TBuilding Extends TBuildingBase
 			'=== DRAW ELEVATOR BORDER ===
 			Local elevatorBorder:TSprite= GetSpriteFromRegistry("gfx_building_Fahrstuhl_Rahmen")
 			For Local i:Int = 0 To 13
-				DrawImageOnImage(elevatorBorder.getImage(), Pix, 250, 67 - elevatorBorder.area.GetH() + floorHeight*i)
-				DrawImageOnImage(elevatorBorder.getImage(), Pix, 250, 67 - elevatorBorder.area.GetH() + floorHeight*i)
+				DrawImageOnImage(elevatorBorder.getImage(), Pix, 250, 67 - Int(elevatorBorder.area.GetH()) + floorHeight*i)
+				DrawImageOnImage(elevatorBorder.getImage(), Pix, 250, 67 - Int(elevatorBorder.area.GetH()) + floorHeight*i)
 			Next
 
 			'=== DRAW DOORS ===
@@ -164,7 +164,7 @@ Type TBuilding Extends TBuildingBase
 				Local sprite:TSprite = door.GetSprite()
 				If Not sprite Then Continue
 
-				sprite.DrawOnImage(pix, innerX + door.area.GetX(), door.area.GetY(), MathHelper.Clamp(door.doorType, 0,5), ALIGN_LEFT_BOTTOM)
+				sprite.DrawOnImage(pix, Int(innerX + door.area.GetX()), Int(door.area.GetY()), Int(MathHelper.Clamp(door.doorType, 0,5)), ALIGN_LEFT_BOTTOM)
 			Next
 
 
@@ -320,7 +320,7 @@ Type TBuilding Extends TBuildingBase
 		If Not GetInstance().room.hotspots.contains(hotspot) Then Return False
 
 		'hotspot position is LOCAL to building, so no transition needed
-		GetPlayerBase().GetFigure().changeTarget( hotspot.area.getX() + hotspot.area.getW()/2, hotspot.area.getY() )
+		GetPlayerBase().GetFigure().changeTarget( Int(hotspot.area.getX() + hotspot.area.getW()/2), Int(hotspot.area.getY()) )
 		'ignore clicks to elevator plans on OTHER floors
 		'in this case just move to the target, but do not "enter" the room
 		If hotspot.name <> "elevatorplan" Or GetInstance().GetFloor(hotspot.area.GetY()) = GetInstance().GetFloor(GetPlayerBase().GetFigure().area.GetY())
@@ -463,7 +463,7 @@ Type TBuilding Extends TBuildingBase
 		If GetFloor(GetPlayerBase().GetFigure().area.GetY()) <= 4
 			'mix entrance color so it is a mixture of current sky colors
 			'brightness and full brightness (white)
-			TColor.CreateGrey(GetWorld().lighting.GetSkyBrightness() * 255).Mix(TColor.clWhite, 0.7).SetRGB()
+			TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 0.7).SetRGB()
 			'draw figures outside the wall
 			For Local Figure:TFigureBase = EachIn GetFigureBaseCollection().entries.Values()
 				If Not Figure.alreadydrawn Then Figure.Draw()
@@ -474,7 +474,7 @@ Type TBuilding Extends TBuildingBase
 
 			gfx_buildingEntrance.Draw(GetScreenX(), GetScreenY())
 
-			TColor.CreateGrey(GetWorld().lighting.GetSkyBrightness() * 255).Mix(TColor.clWhite, 0.9).SetRGB()
+			TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 0.9).SetRGB()
 			'draw wall
 			gfx_buildingEntranceWall.Draw(GetScreenX(), GetScreenY())
 			'draw fence
@@ -532,7 +532,7 @@ Type TBuilding Extends TBuildingBase
 		Local skyInfluence:Float = 0
 
 		skyInfluence = 0.7
-		TColor.CreateGrey(GetWorld().lighting.GetSkyBrightness() * 255).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
+		TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
 		SetBlend ALPHABLEND
 		'draw UFO
 		If GetWorldTime().GetDayHour() > 18 Or GetWorldTime().GetDayHour() < 7
@@ -553,17 +553,17 @@ Type TBuilding Extends TBuildingBase
 		SetBlend MASKBLEND
 
 		skyInfluence = 0.7
-		TColor.CreateGrey(GetWorld().lighting.GetSkyBrightness() * 255).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
+		TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
 		gfx_bgBuildings[0].Draw(GetScreenX(), 105 + 0.25 * (area.GetY() + 5 + BuildingHeight - gfx_bgBuildings[0].area.GetH()), - 1)
 		gfx_bgBuildings[1].Draw(GetScreenX() + 674, 105 + 0.25 * (area.GetY() + 5 + BuildingHeight - gfx_bgBuildings[1].area.GetH()), - 1)
 
 		skyInfluence = 0.5
-		TColor.CreateGrey(GetWorld().lighting.GetSkyBrightness() * 255).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
+		TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
 		gfx_bgBuildings[2].Draw(GetScreenX(), 120 + 0.35 * (area.GetY() + BuildingHeight - gfx_bgBuildings[2].area.GetH()), - 1)
 		gfx_bgBuildings[3].Draw(GetScreenX() + 676, 120 + 0.35 * (area.GetY() + 60 + BuildingHeight - gfx_bgBuildings[3].area.GetH()), - 1)
 
 		skyInfluence = 0.3
-		TColor.CreateGrey(GetWorld().lighting.GetSkyBrightness() * 255).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
+		TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
 		gfx_bgBuildings[4].Draw(GetScreenX(), 45 + 0.80 * (area.GetY() + BuildingHeight - gfx_bgBuildings[4].area.GetH()), - 1)
 		gfx_bgBuildings[5].Draw(GetScreenX() + 674, 45 + 0.80 * (area.GetY() + BuildingHeight - gfx_bgBuildings[5].area.GetH()), - 1)
 

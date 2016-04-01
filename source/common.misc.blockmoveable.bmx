@@ -31,8 +31,8 @@ Type TBlockMoveable Extends TOwnedGameObject
 
 
 	'checks if x, y are within startPoint+dimension
-	Method containsCoord:Byte(x:Int, y:Int)
-		Return THelper.IsIn( x,y, Self.StartPos.getX(), Self.StartPos.getY(), Self.rect.getW(), Self.rect.getH() )
+	Method containsCoord:Int(x:Float, y:Float)
+		Return THelper.IsIn( int(x), int(y), int(Self.StartPos.getX()), int(Self.StartPos.getY()), int(Self.rect.getW()), int(Self.rect.getH()) )
 	End Method
 
 

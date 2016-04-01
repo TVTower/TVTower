@@ -237,7 +237,7 @@ Type TGUIChat Extends TGUIPanel
 	End Method
 
 
-	Method SetPadding:Int(top:Int,Left:Int,bottom:Int,Right:Int)
+	Method SetPadding:Int(top:Float, left:Float, bottom:Float, right:Float)
 		GetPadding().setTLBR(top,Left,bottom,Right)
 		resize()
 	End Method

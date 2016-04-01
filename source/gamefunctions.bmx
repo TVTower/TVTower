@@ -185,7 +185,7 @@ Type TGUIChatWindow Extends TGUIGameWindow
 		'positioned similar
 		Super.Create(pos, dimension, limitState)
 
-		guiPanel = AddContentBox(0,0,GetContentScreenWidth()-10,-1)
+		guiPanel = AddContentBox(0, 0, int(GetContentScreenWidth()-10), -1)
 		'we manage the panel
 		AddChild(guiPanel)
 
@@ -202,7 +202,7 @@ Type TGUIChatWindow Extends TGUIGameWindow
 	End Method
 
 
-	Method SetPadding:Int(top:Int,Left:Int,bottom:Int,Right:Int)
+	Method SetPadding:Int(top:Float, left:Float, bottom:Float, right:Float)
 		GetPadding().setTLBR(top,Left,bottom,Right)
 		resize()
 	End Method

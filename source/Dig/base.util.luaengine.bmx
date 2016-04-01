@@ -37,6 +37,18 @@ EndRem
 SuperStrict
 Import Pub.Lua
 Import Brl.Retro
+
+Rem
+	===============================
+	ATTENTION =====================
+	===============================
+	BMXNG-switch is used multiple times (ReturnType() is not the same
+	compared to the call in reflectionExtended)
+	-> imports
+	-> _invoke()
+	
+EndRem
+
 ?Not bmxng
 'using custom to have support for const/function reflection
 Import "external/reflectionExtended/reflection.bmx"
@@ -518,9 +530,9 @@ Type TLuaEngine
 					Case IntTypeId, ShortTypeId, ByteTypeId
 						fld.SetInt(obj, lua_tointeger(getLuaState(), 3))
 					Case LongTypeId
-						fld.SetLong(obj, lua_tonumber(getLuaState(), 3))
+						fld.SetLong(obj, Long(lua_tonumber(getLuaState(), 3)))
 					Case FloatTypeId
-						fld.SetFloat(obj, lua_tonumber(getLuaState(), 3))
+						fld.SetFloat(obj, Float(lua_tonumber(getLuaState(), 3)))
 					Case DoubleTypeId
 						fld.SetDouble(obj, lua_tonumber(getLuaState(), 3))
 					Case StringTypeId
@@ -593,9 +605,9 @@ Type TLuaEngine
 				Case IntTypeId, ShortTypeId, ByteTypeId
 					args[i] = String.FromInt(lua_tointeger(getLuaState(), i + 1))
 				Case LongTypeId
-					args[i] = String.FromLong(lua_tonumber(getLuaState(), i + 1))
+					args[i] = String.FromLong(Long(lua_tonumber(getLuaState(), i + 1)))
 				Case FloatTypeId
-					args[i] = String.FromFloat(lua_tonumber(getLuaState(), i + 1))
+					args[i] = String.FromFloat(Float(lua_tonumber(getLuaState(), i + 1)))
 				Case DoubleTypeId
 					args[i] = String.FromDouble(lua_tonumber(getLuaState(), i + 1))
 				Case StringTypeId
@@ -630,7 +642,12 @@ endrem
 		If func Then t = func.Invoke(args)
 		?
 		If mth Then t = mth.Invoke(obj, args)
+		?not bmxng
 		Local typeId:TTypeId = funcOrMeth.TypeID().ReturnType()
+		?bmxng
+		Local typeId:TTypeId = funcOrMeth.TypeId()
+		?
+
 		If Object[](t).length > 0 Then typeId = ArrayTypeId
 
 		Select typeId
@@ -669,27 +686,32 @@ endrem
 			lua_pop(getLuaState(), 2)
 			Return Null
 		EndIf
-		For Local i:Int = 0 Until args.length
-			Local typeId:TTypeId = TTypeId.ForObject(args[i])
-			Select typeId
-				Case IntTypeId, ShortTypeId, ByteTypeId
-					lua_pushinteger(getLuaState(), args[i].ToString().ToInt())
-				Case LongTypeId
-					lua_pushnumber(getLuaState(), args[i].ToString().ToLong())
-				Case FloatTypeId
-					lua_pushnumber(getLuaState(), args[i].ToString().ToFloat())
-				Case DoubleTypeId
-					lua_pushnumber(getLuaState(), args[i].ToString().ToDouble())
-				Case StringTypeId
-					Local s:String = args[i].ToString()
-					lua_pushlstring(getLuaState(), s, s.length)
-				Case ArrayTypeId
-					Self.lua_pushArray(args[i])
-				Default
-					Self.lua_pushobject(args[i])
-			End Select
-		Next
-		If lua_pcall(getLuaState(), args.length, 1, 0) Then DumpError()
+
+		if args
+			For Local i:Int = 0 Until args.length
+				Local typeId:TTypeId = TTypeId.ForObject(args[i])
+				Select typeId
+					Case IntTypeId, ShortTypeId, ByteTypeId
+						lua_pushinteger(getLuaState(), args[i].ToString().ToInt())
+					Case LongTypeId
+						lua_pushnumber(getLuaState(), args[i].ToString().ToLong())
+					Case FloatTypeId
+						lua_pushnumber(getLuaState(), args[i].ToString().ToFloat())
+					Case DoubleTypeId
+						lua_pushnumber(getLuaState(), args[i].ToString().ToDouble())
+					Case StringTypeId
+						Local s:String = args[i].ToString()
+						lua_pushlstring(getLuaState(), s, s.length)
+					Case ArrayTypeId
+						Self.lua_pushArray(args[i])
+					Default
+						Self.lua_pushobject(args[i])
+				End Select
+			Next
+			If lua_pcall(getLuaState(), args.length, 1, 0) Then DumpError()
+		else
+			If lua_pcall(getLuaState(), 0, 1, 0) Then DumpError()
+		endif
 
 		Local ret:Object
 		If Not lua_isnil(getLuaState(), -1) Then ret = lua_tostring(getLuaState(), -1)

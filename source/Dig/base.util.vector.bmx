@@ -586,7 +586,7 @@ End Type
 
 
 
-Function PositiveModulo:Float(value:Float, modulo:Short)
+Function PositiveModulo:Double(value:Double, modulo:Int)
 	value = value mod modulo
 	If value < 0 Then value :+ modulo
 	Return value

@@ -10,6 +10,7 @@ Import brl.timer
 Import brl.Graphics
 Import brl.glmax2d
 Import brl.eventqueue
+'Import "Dig/external/persistence.mod/persistence_json.bmx"
 Import "Dig/base.util.registry.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
 Import "Dig/base.util.registry.imageloader.bmx"
@@ -1684,8 +1685,10 @@ Type TSaveGame Extends TGameState
 
 		TPersist.maxDepth = 4096
 		'save the savegame data as xml
-		Local persist:TPersist = New TPersist
-		persist.SerializeToFile(saveGame, saveName)
+		'TPersist.format=False
+		New TPersist.SerializeToFile(saveGame, saveName)
+		'TPersistJSON.format=False
+		'New TPersistJSON.SerializeToFile(saveGame, saveName+".json")
 		'tell everybody we finished saving
 		'payload is saveName and saveGame-object
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnSave", New TData.addString("saveName", saveName).add("saveGame", saveGame)))
@@ -2017,7 +2020,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		Local panelGap:Int = GUIManager.config.GetInt("panelGap", 10)
 		guiSettingsWindow.SetPadding(headerSize, panelGap, panelGap, panelGap)
 
-		guiPlayersPanel = guiSettingsWindow.AddContentBox(0,0,-1, playerBoxDimension.GetY() + 2 * panelGap)
+		guiPlayersPanel = guiSettingsWindow.AddContentBox(0,0,-1, int(playerBoxDimension.GetY() + 2 * panelGap))
 		guiSettingsPanel = guiSettingsWindow.AddContentBox(0,0,-1, 100)
 
 		guiGameTitleLabel	= New TGUILabel.Create(New TVec2D.Init(0, 0), "", TColor.CreateGrey(90), name)
@@ -3616,7 +3619,7 @@ Type GameEvents
 
 
 	Function PlayerBoss_OnCallPlayerForced:Int(triggerEvent:TEventBase)
-		Local latestTime:Long = triggerEvent.GetData().GetLong("latestTime", GetWorldTime().GetTimeGone() + 2*3600)
+		Local latestTime:Long = triggerEvent.GetData().GetLong("latestTime", Long(GetWorldTime().GetTimeGone() + 2*3600))
 		Local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
 		Local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
 
@@ -3641,7 +3644,7 @@ Type GameEvents
 
 	
 	Function PlayerBoss_OnCallPlayer:Int(triggerEvent:TEventBase)
-		Local latestTime:Long = triggerEvent.GetData().GetLong("latestTime", GetWorldTime().GetTimeGone() + 2*3600)
+		Local latestTime:Long = triggerEvent.GetData().GetLong("latestTime", Long(GetWorldTime().GetTimeGone() + 2*3600))
 		Local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
 		Local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
 
@@ -4434,7 +4437,7 @@ Function DrawMenuBackground(darkened:Int=False)
 				logoScale :* TInterpolation.BounceOut(0.0, 1.0, Min(logoAnimTime, timeGone - logoAnimStart), logoAnimTime)
 
 				Local oldAlpha:Float = GetAlpha()
-				SetAlpha TInterpolation.RegularOut(0.0, 1.0, Min(0.5*logoAnimTime, timeGone - logoAnimStart), 0.5*logoAnimTime)
+				SetAlpha Float(TInterpolation.RegularOut(0.0, 1.0, Min(0.5*logoAnimTime, timeGone - logoAnimStart), 0.5*logoAnimTime))
 
 				logo.Draw( GetGraphicsManager().GetWidth()/2, 150, -1, ALIGN_CENTER_CENTER, logoScale)
 				SetAlpha oldAlpha
@@ -4476,7 +4479,6 @@ Function ColorizePlayerExtras()
 	Local gray3:TColor = TColor.Create(225, 225, 225)
 
 	GetRegistry().Set("gfx_building_sign_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_base").GetColorizedImage(gray), "gfx_building_sign_0"))
-	GetRegistry().Set("gfx_building_sign_dragged_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_dragged_base").GetColorizedImage(gray), "gfx_building_sign_dragged_0"))
 	GetRegistry().Set("gfx_interface_channelbuttons_off_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_off").GetColorizedImage(gray2), "gfx_interface_channelbuttons_off_0"))
 	GetRegistry().Set("gfx_interface_channelbuttons_on_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_on").GetColorizedImage(gray2), "gfx_interface_channelbuttons_on_0"))
 	GetRegistry().Set("gfx_roomboard_sign_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base").GetColorizedImage(gray3,-1, COLORIZEMODE_OVERLAY), "gfx_roomboard_sign_0"))
@@ -4484,8 +4486,8 @@ Function ColorizePlayerExtras()
 
 	'colorizing for every player
 	For Local i:Int = 1 To 4
-		GetPlayerCollection().Get(i).RecolorFigure()
-		Local color:TColor = GetPlayerCollection().Get(i).color
+		GetPlayer(i).RecolorFigure()
+		Local color:TColor = GetPlayer(i).color
 
 		GetRegistry().Set("stationmap_antenna"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("stationmap_antenna0").GetColorizedImage(color,-1, COLORIZEMODE_OVERLAY), "stationmap_antenna"+i))
 		GetRegistry().Set("gfx_building_sign_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_base").GetColorizedImage(color), "gfx_building_sign_"+i))

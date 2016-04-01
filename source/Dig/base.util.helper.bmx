@@ -101,13 +101,13 @@ Type THelper
 
 	'returns whether the mouse is within the given rectangle coords
 	Function MouseIn:int(x:Int,y:Int, w:Int,h:Int)
-		return IsIn(MouseManager.x, MouseManager.y, x,y,w,h)
+		return IsIn(Int(MouseManager.x), Int(MouseManager.y), x,y,w,h)
 	End Function
 
 
 	'returns whether the mouse is within the given rectangle
 	Function MouseInRect:int(rect:TRectangle)
-		return IsIn(MouseManager.x, MouseManager.y, rect.position.x, rect.position.y, rect.dimension.x, rect.dimension.y)
+		return IsIn(int(MouseManager.x), int(MouseManager.y), int(rect.position.x), int(rect.position.y), int(rect.dimension.x), int(rect.dimension.y))
 	End Function
 
 

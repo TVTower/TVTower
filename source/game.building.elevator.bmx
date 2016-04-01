@@ -112,7 +112,7 @@ Type TElevator Extends TEntity
 		WaitAtFloorTime = 1500
 
 		'limit speed between 50 - 240 pixels per second, default 120
-		Speed = Max(50, Min(240, GameRules.devConfig.GetInt("DEV_ELEVATOR_SPEED", Self.speed)))
+		Speed = Max(50, Min(240, GameRules.devConfig.GetInt("DEV_ELEVATOR_SPEED", int(Self.speed))))
 		'adjust wait at floor time : 1000 - 2000 ms, default 1700
 		WaitAtFloorTime = Max(1000, Min(2000, GameRules.devConfig.GetInt("DEV_ELEVATOR_WAITTIME", Self.WaitAtFloorTime)))
 
@@ -223,11 +223,12 @@ Type TElevator Extends TEntity
 
 
 	Method GetDoorCenterX:Int()
-		Return area.GetX() + door.sprite.framew/2
+		Return area.GetX() + GetDoorWidth()/2
 	End Method
 	
 
 	Method GetDoorWidth:Int()
+		if not door then return 0
 		Return door.sprite.framew
 	End Method
 
@@ -561,7 +562,7 @@ Type TElevator Extends TEntity
 		'it has to reach the first pixel of the floor until the
 		'function returns the new one, instead of positioning it
 		'directly on the floorground
-		Local tmpCurrentFloor:Int = GetBuildingBase().GetFloor(area.GetY() + spriteInner.area.GetH() - 1)
+		Local tmpCurrentFloor:Int = GetBuildingBase().GetFloor(int(area.GetY() + spriteInner.area.GetH() - 1))
 		Local tmpFloorY:Int = TBuildingBase.GetFloorY2(tmpCurrentFloor)
 		Local tmpElevatorBottomY:Int = area.GetY() + spriteInner.area.GetH()
 
@@ -580,7 +581,7 @@ Type TElevator Extends TEntity
 				If FixDeboardingPassengers()
 'print Millisecs()+"  Elevator: 0) fixed - delay waiting timer"
 					'if there was something to fix - wait a bit more
-					waitAtFloorTimer.SetInterval(0.5 * waitAtFloorTime / TEntity.GetGlobalWorldSpeedFactor(), True)
+					waitAtFloorTimer.SetInterval(int(0.5 * waitAtFloorTime / TEntity.GetGlobalWorldSpeedFactor()), True)
 				EndIf
 			EndIf
 
@@ -684,7 +685,7 @@ Type TElevator Extends TEntity
 				'set time for the doors to keep open
 				'adjust this by worldSpeedFactor at that time
 				'so a higher factor shortens time to wait
-				waitAtFloorTimer.SetInterval(waitAtFloorTime / TEntity.GetGlobalWorldSpeedFactor(), True)
+				waitAtFloorTimer.SetInterval(int(waitAtFloorTime / TEntity.GetGlobalWorldSpeedFactor()), True)
 			EndIf
 
 			'continue door animation for opening doors

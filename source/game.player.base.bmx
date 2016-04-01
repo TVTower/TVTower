@@ -189,7 +189,7 @@ Type TPlayerBase {_exposeToLua="selected"}
 		'clear occupied area within pixmap
 		oldSprite.ClearImageData()
 		'draw the new figure at that area
-		DrawImageOnImage(newImage, figuresPack.image, oldSprite.area.GetX(), oldSprite.area.GetY())
+		DrawImageOnImage(newImage, figuresPack.image, int(oldSprite.area.GetX()), int(oldSprite.area.GetY()))
 	End Method
 
 
