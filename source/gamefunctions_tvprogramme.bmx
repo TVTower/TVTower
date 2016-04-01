@@ -1858,7 +1858,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	Method GetBidSavingsMinimum:Float()
 		if _bidSavingsMinimum = -1.0
 			'0.55 - (Max-0.05)
-			_bidSavingsMinimum = RandRange(55, GetBidSavingsMaximum()-0.05) / 100.0
+			_bidSavingsMinimum = RandRange(55, int(100*(GetBidSavingsMaximum()-0.05))) / 100.0
 		endif
 		return _bidSavingsMinimum
 	End Method
