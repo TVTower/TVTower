@@ -96,7 +96,7 @@ Type TDatabaseLoader
 	End Method
 
 
-	Method LoadDir(dbDirectory:string)
+	Method LoadDir(dbDirectory:string, required:int = False)
 		'build file list of xml files in the given directory
 		local dirTree:TDirectoryTree = new TDirectoryTree.SimpleInit()
 		dirTree.SetIncludeFileEndings(["xml"])
@@ -118,17 +118,21 @@ Type TDatabaseLoader
 
 
 		local fileURIs:String[] = dirTree.GetFiles()
+		local validURIs:int = 0
 		'loop over all filenames
 		for local fileURI:String = EachIn fileURIs
 			'skip non-existent files
-			if filesize(fileURI) = 0 then continue
-			
+			if FileType(fileURI) <> 1 then continue
+
+			validURIs :+ 1
 			Load(fileURI)
 		Next
 
-		TLogger.log("TDatabase.Load()", "Loaded from "+fileURIs.length + " DBs. Found " + totalSeriesCount + " series, " + totalMoviesCount + " movies, " + totalContractsCount + " advertisements, " + totalNewsCount + " news, " + totalProgrammeRolesCount + " roles in scripts, " + totalScriptTemplatesCount + " script templates. Loading time: " + stopWatchAll.GetTime() + "ms", LOG_LOADING)
+		if required or validURIs > 0
+			TLogger.log("TDatabase.Load()", "Loaded from "+validURIs + " DBs. Found " + totalSeriesCount + " series, " + totalMoviesCount + " movies, " + totalContractsCount + " advertisements, " + totalNewsCount + " news, " + totalProgrammeRolesCount + " roles in scripts, " + totalScriptTemplatesCount + " script templates. Loading time: " + stopWatchAll.GetTime() + "ms", LOG_LOADING)
+		endif
 
-		if totalSeriesCount = 0 or totalMoviesCount = 0 or totalNewsCount = 0 or totalContractsCount = 0
+		if required and (totalSeriesCount = 0 or totalMoviesCount = 0 or totalNewsCount = 0 or totalContractsCount = 0)
 			Notify "Important data is missing:  series:"+totalSeriesCount+"  movies:"+totalMoviesCount+"  news:"+totalNewsCount+"  adcontracts:"+totalContractsCount
 		endif
 	End Method
@@ -965,13 +969,13 @@ Type TDatabaseLoader
 		nodeData = xml.FindElementNode(node, "outcome")
 		data = xml.LoadValuesToData(nodeData, new TData, ["min", "max", "slope", "value"])
 		if data.GetInt("value", -1) >= 0
-			local value:Float = 0.01 * data.GetInt("value", 100 * scriptTemplate.outcomeMin)
+			local value:Float = 0.01 * data.GetInt("value", int(100 * scriptTemplate.outcomeMin))
 			scriptTemplate.SetOutcomeRange(value, value, 0.5)
 		else
 			scriptTemplate.SetOutcomeRange( ..
-				0.01 * data.GetInt("min", 100 * scriptTemplate.outcomeMin), ..
-				0.01 * data.GetInt("max", 100 * scriptTemplate.outcomeMax), ..
-				0.01 * data.GetInt("slope", 100 * scriptTemplate.outcomeSlope) ..
+				0.01 * data.GetInt("min", int(100 * scriptTemplate.outcomeMin)), ..
+				0.01 * data.GetInt("max", int(100 * scriptTemplate.outcomeMax)), ..
+				0.01 * data.GetInt("slope", int(100 * scriptTemplate.outcomeSlope)) ..
 			)
 		endif
 
@@ -979,13 +983,13 @@ Type TDatabaseLoader
 		nodeData = xml.FindElementNode(node, "review")
 		data = xml.LoadValuesToData(nodeData, new TData, ["min", "max", "slope", "value"])
 		if data.GetInt("value", -1) >= 0
-			local value:Float = 0.01 * data.GetInt("value", 100 * scriptTemplate.reviewMin)
+			local value:Float = 0.01 * data.GetInt("value", int(100 * scriptTemplate.reviewMin))
 			scriptTemplate.SetReviewRange(value, value, 0.5)
 		else
 			scriptTemplate.SetReviewRange( ..
-				0.01 * data.GetInt("min", 100 * scriptTemplate.reviewMin), ..
-				0.01 * data.GetInt("max", 100 * scriptTemplate.reviewMax), ..
-				0.01 * data.GetInt("slope", 100 * scriptTemplate.reviewSlope) ..
+				0.01 * data.GetInt("min", int(100 * scriptTemplate.reviewMin)), ..
+				0.01 * data.GetInt("max", int(100 * scriptTemplate.reviewMax)), ..
+				0.01 * data.GetInt("slope", int(100 * scriptTemplate.reviewSlope)) ..
 			)
 		endif
 
@@ -993,13 +997,13 @@ Type TDatabaseLoader
 		nodeData = xml.FindElementNode(node, "speed")
 		data = xml.LoadValuesToData(nodeData, new TData, ["min", "max", "slope", "value"])
 		if data.GetInt("value", -1) >= 0
-			local value:Float = 0.01 * data.GetInt("value", 100 * scriptTemplate.speedMin)
+			local value:Float = 0.01 * data.GetInt("value", int(100 * scriptTemplate.speedMin))
 			scriptTemplate.SetSpeedRange(value, value, 0.5)
 		else
 			scriptTemplate.SetSpeedRange( ..
-				0.01 * data.GetInt("min", 100 * scriptTemplate.speedMin), ..
-				0.01 * data.GetInt("max", 100 * scriptTemplate.speedMax), ..
-				0.01 * data.GetInt("slope", 100 * scriptTemplate.speedSlope) ..
+				0.01 * data.GetInt("min", int(100 * scriptTemplate.speedMin)), ..
+				0.01 * data.GetInt("max", int(100 * scriptTemplate.speedMax)), ..
+				0.01 * data.GetInt("slope", int(100 * scriptTemplate.speedSlope)) ..
 			)
 		endif
 
@@ -1007,13 +1011,13 @@ Type TDatabaseLoader
 		nodeData = xml.FindElementNode(node, "potential")
 		data = xml.LoadValuesToData(nodeData, new TData, ["min", "max", "slope", "value"])
 		if data.GetInt("value", -1) >= 0
-			local value:Float = 0.01 * data.GetInt("value", 100 * scriptTemplate.potentialMin)
+			local value:Float = 0.01 * data.GetInt("value", int(100 * scriptTemplate.potentialMin))
 			scriptTemplate.SetPotentialRange(value, value, 0.5)
 		else
 			scriptTemplate.SetPotentialRange( ..
-				0.01 * data.GetInt("min", 100 * scriptTemplate.potentialMin), ..
-				0.01 * data.GetInt("max", 100 * scriptTemplate.potentialMax), ..
-				0.01 * data.GetInt("slope", 100 * scriptTemplate.potentialSlope) ..
+				0.01 * data.GetInt("min", int(100 * scriptTemplate.potentialMin)), ..
+				0.01 * data.GetInt("max", int(100 * scriptTemplate.potentialMax)), ..
+				0.01 * data.GetInt("slope", int(100 * scriptTemplate.potentialSlope)) ..
 			)
 		endif
 
@@ -1028,7 +1032,7 @@ Type TDatabaseLoader
 			scriptTemplate.SetBlocksRange( ..
 				data.GetInt("min", scriptTemplate.blocksMin), ..
 				data.GetInt("max", scriptTemplate.blocksMax), ..
-				0.01 * data.GetInt("slope", 100 * scriptTemplate.blocksSlope) ..
+				0.01 * data.GetInt("slope", int(100 * scriptTemplate.blocksSlope)) ..
 			)
 		endif
 
@@ -1042,7 +1046,7 @@ Type TDatabaseLoader
 			scriptTemplate.SetPriceRange( ..
 				data.GetInt("min", scriptTemplate.priceMin), ..
 				data.GetInt("max", scriptTemplate.priceMax), ..
-				0.01 * data.GetInt("slope", 100 * scriptTemplate.priceSlope) ..
+				0.01 * data.GetInt("slope", int(100 * scriptTemplate.priceSlope)) ..
 			)
 		endif
 
@@ -1394,7 +1398,7 @@ End Type
 
 
 
-Function LoadDatabase(dbDirectory:String)
+Function LoadDatabase(dbDirectory:String, required:int = False)
 	local loader:TDatabaseLoader = new TDatabaseLoader
-	loader.LoadDir(dbDirectory)
+	loader.LoadDir(dbDirectory, required)
 End Function
