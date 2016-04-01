@@ -1,5 +1,6 @@
 SuperStrict
 Import "game.gameobject.bmx"
+Import "game.game.base.bmx"
 Import "game.figure.base.bmx"
 Import "game.figure.base.sfx.bmx"
 Import "game.building.elevator.bmx"
@@ -397,7 +398,7 @@ Type TFigure extends TFigureBase
 			if Time.GetTimeGone() - lastGreetTime < greetTime
 				local scale:float = TInterpolation.BackOut(0.0, 1.0, Min(greetTime, Time.GetTimeGone() - lastGreetTime), greetTime)
 				local oldAlpha:float = GetAlpha()
-				SetAlpha TInterpolation.RegularOut(0.5, 1.0, Min(0.5*greetTime, Time.GetTimeGone() - lastGreetTime), 0.5*greetTime)
+				SetAlpha Float(TInterpolation.RegularOut(0.5, 1.0, Min(0.5*greetTime, Time.GetTimeGone() - lastGreetTime), 0.5*greetTime))
 				'subtract half width from position - figure is drawn centered
 				'figure right of me
 				If Figure.area.GetX() > area.GetX()
@@ -758,9 +759,9 @@ Type TFigure extends TFigureBase
  		If not door then return FALSE
 
 		If forceSend
-			ForceChangeTarget(door.area.GetX() + 5, door.area.GetY())
+			ForceChangeTarget(int(door.area.GetX() + 5), int(door.area.GetY()))
 		Else
-			ChangeTarget(door.area.GetX() + 5, door.area.GetY())
+			ChangeTarget(int(door.area.GetX() + 5), int(door.area.GetY()))
 		EndIf
 	End Method
 
@@ -957,23 +958,24 @@ Type TFigure extends TFigureBase
 		'call figureBase update (does movement and updates current animation)
 		Super.Update()
 
+		if GetGameBase().PlayingAGame()
+			If isVisible() And CanMove()
+				If HasToChangeFloor() And IsAtElevator() And Not IsInElevator()
+					'Ist der Fahrstuhl da? Kann ich einsteigen?
+					If GetElevator().CurrentFloor = GetFloor() And GetElevator().ReadyForBoarding
+						GoOnBoardAndSendElevator()
+					Else 'Ansonsten ruf ich ihn halt
+						CallElevator()
+					EndIf
+				EndIf
 
-		If isVisible() And CanMove()
-			If HasToChangeFloor() And IsAtElevator() And Not IsInElevator()
-				'Ist der Fahrstuhl da? Kann ich einsteigen?
-				If GetElevator().CurrentFloor = GetFloor() And GetElevator().ReadyForBoarding
-					GoOnBoardAndSendElevator()
-				Else 'Ansonsten ruf ich ihn halt
-					CallElevator()
+				If IsInElevator() and GetElevator().ReadyForBoarding
+					If (not GetTarget() OR GetElevator().CurrentFloor = GetFloor(GetTargetMovetoPosition()))
+						GetElevator().LeaveTheElevator(Self)
+					EndIf
 				EndIf
 			EndIf
-
-			If IsInElevator() and GetElevator().ReadyForBoarding
-				If (not GetTarget() OR GetElevator().CurrentFloor = GetFloor(GetTargetMovetoPosition()))
-					GetElevator().LeaveTheElevator(Self)
-				EndIf
-			EndIf
-		EndIf
+		Endif
 
 
 		'maybe someone is interested in this information
@@ -1031,7 +1033,7 @@ Type TFigure extends TFigureBase
 		endif
 
 		'center figure
-		tweenPos.AddXY(- ceil(area.GetW()/2) + PosOffset.getX(), - sprite.area.GetH() + PosOffset.getY())
+		tweenPos.AddXY(- Float(ceil(area.GetW()/2)) + PosOffset.getX(), - sprite.area.GetH() + PosOffset.getY())
 
 		'with parent: set local to parent (add parents screen coord)
 		'RONNY: 2015/01/22 - no longer needed with new RenderAt-function
