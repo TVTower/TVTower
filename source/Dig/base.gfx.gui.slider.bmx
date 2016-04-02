@@ -197,15 +197,22 @@ Type TGUISlider extends TGUIObject
 	Method SetValueByMouse()
 		'convert current mouse position to local widget coordinates
 		'-9 is "manual adjustment"
-		local mousePos:TVec2D = New TVec2D.Init(MouseManager.x - GetScreenX() - 9 - GetGaugeOffsetX(), MouseManager.y - GetScreenY() - GetGaugeOffsetY())
+		local mousePos:TVec2D = New TVec2D.Init(..
+									MouseManager.x - GetScreenX() - GetGaugeOffsetX(), ..
+									MouseManager.y - GetScreenY() - GetGaugeOffsetY() ..
+								)
 
 		local scale:Float = (maxValue - minValue + 1) / Float(maxValue - minValue)
+		local lengthX:float = GetGaugeW() - 2* GetGaugeOffsetX()
 		'scroll to the percentage
 		Select direction
 			case DIRECTION_RIGHT
-				SetRelativeValue( Max(0.0, scale * Min(1.0, (mousePos.x) / GetGaugeW())) )
+				if steps > 0 then mousePos.x :- 0.5 *(GetGaugeW() / float(steps+1))
+				SetRelativeValue( Max(0.0, scale * Min(1.0, mousePos.x/lengthX)) )
+				'SetRelativeValue( Max(0.0, scale * Min(1.0, (mousePos.x) / GetGaugeW())) )
 			case DIRECTION_LEFT
-				SetRelativeValue( Max(0.0, scale * Min(1.0, 1.0 - (mousePos.x) / GetGaugeW())) )
+				if steps > 0 then mousePos.x :+ 0.5 *(GetGaugeW() / float(steps+1))
+				SetRelativeValue( Max(0.0, scale * Min(1.0, 1.0 - mousePos.x/lengthX)) )
 			case DIRECTION_UP
 				SetRelativeValue( Max(0.0, scale * Min(1.0, 1.0 - (mousePos.y) / GetGaugeH())) )
 			case DIRECTION_DOWN
@@ -384,7 +391,7 @@ Type TGUISlider extends TGUIObject
 						if switchDirection
 							gaugeSprite.DrawArea(position.getX() + GetGaugeOffsetX(), position.getY() + GetGaugeOffsetY(), filledW, GetGaugeH(), -1, TSprite.BORDER_RIGHT)
 						else
-							gaugeFilledSprite.DrawArea(position.getX() + GetGaugeOffsetX(), position.getY() + GetGaugeOffsetY(), filledW, GetGaugeH(), -1, TSprite.BORDER_RIGHT)
+							gaugeFilledSprite.DrawArea(position.getX() + GetGaugeOffsetX(), position.getY() + GetGaugeOffsetY(), filledW - gaugeFilledSprite.GetNinePatchBorderDimension().GetRight(), GetGaugeH(), -1, TSprite.BORDER_RIGHT)
 						endif
 					endif
 
