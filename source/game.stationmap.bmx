@@ -28,6 +28,7 @@ Type TStationMapCollection
 	Field population:Int = 0 {nosave}
 	Field populationmap:Int[,] {nosave}
 	Field populationMapSize:TVec2D = new TVec2D.Init() {nosave}
+	Field config:TData = new TData
 
 	Field mapConfigFile:string = ""
 	'does the shareMap has to get regenerated during the next
@@ -100,9 +101,16 @@ Type TStationMapCollection
 		Local surfaceNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "surface")
 		If not surfaceNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><surface>-entry.")
 
+		Local configNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "config")
+		If not configNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><config>-entry.")
+
 		'directly load the given resources
 		registryLoader.LoadSingleResourceFromXML(densityNode, TRUE, new TData.AddString("name", "map_PopulationDensity"))
 		registryLoader.LoadSingleResourceFromXML(surfaceNode, TRUE, new TData.AddString("name", "map_Surface"))
+
+		TXmlHelper.LoadAllValuesToData(configNode, _instance.config)
+		'TODO: citynames
+		'TXmlHelper.LoadAllValuesToData(cityNamesNode, _instance.cityNames)
 
 		'=== LOAD STATES ===
 		'remove old states
@@ -127,11 +135,12 @@ Type TStationMapCollection
 	'load a map configuration from a specific xml file
 	'eg. "germany.xml"
 	'we use xmlLoader so image ressources in the file get autoloaded
-	Method LoadMapFromXML:int(xmlFile:string="")
+	Method LoadMapFromXML:int(xmlFile:string="", baseUri:string = "")
 		if xmlFile <> "" then mapConfigFile = xmlFile
 
 		'=== LOAD XML CONFIG ===
 		local registryLoader:TRegistryLoader = new TRegistryLoader
+		registryLoader.baseURI = baseURI
 		registryLoader.LoadFromXML(mapConfigFile, TRUE)
 		'TLogger.Log("TGetStationMapCollection().LoadMapFromXML", "config parsed", LOG_LOADING)
 
@@ -140,6 +149,7 @@ Type TStationMapCollection
 
 		Return True
 	End Method
+	
 
 	Method CreatePopulationMap()
 		local stopWatch:TStopWatch = new TStopWatch.Init()
