@@ -1129,6 +1129,10 @@ Type TDatabaseLoader
 		endif
 		scriptTemplate.scriptLicenceType = scriptLicenceType
 
+		'=== SCRIPT - MISC ===
+		scriptTemplate.flags = TXmlHelper.FindValueInt(node,"flags", 0)
+
+
 		rem
 			auto correction cannot be done this way, as a show could
 			be also defined having multiple episodes or a reportage
