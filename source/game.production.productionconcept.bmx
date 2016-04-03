@@ -55,21 +55,25 @@ Type TProductionConcept Extends TOwnedGameObject
 	Field productionCompany:TProductionCompanyBase
 	Field productionFocus:TProductionFocusBase
 
-	Field additionalBudget:Int
+'	Field additionalBudget:Int
 
-	Field niveau:Float = 0.0
-	Field innovation:Float = 0.0
+'	Field niveau:Float = 0.0
+'	Field innovation:Float = 0.0
 
 	'optional for shows
 	Field targetGroup:Int = -1
 	'the higher the more speed
-	Field trophyMoney:Int = 0
+'	Field trophyMoney:Int = 0
 
 	'depositCostPaid, live, ...
 	Field flags:int = 0
+	Field liveTime:int = -1
 
 	Field castFit:Float = -1.0
-	'cache calculated vars
+	Field castSympathy:Float = 0.0
+	Field castSympathyCached:int = False
+	'cache calculated vars (values which could get recalculated every-
+	'time with the same output regardless of time)
 	Field _scriptGenreFit:Float = -1.0 {nosave}
 	Field _effectiveFocusPoints:Float = -1.0 {nosave}
 	Field _effectiveFocusPointsMax:Float = -1.0 {nosave}
@@ -200,6 +204,8 @@ Type TProductionConcept Extends TOwnedGameObject
 
 		'reset precalculated value
 		castFit = -1.0
+		castSympathy = 1.0
+		castSympathyCached = False
 
 		EventManager.triggerEvent( TEventSimple.Create("ProductionConcept.SetCast", new TData.AddNumber("castIndex", castIndex).Add("person", person), Self ) )
 
@@ -314,6 +320,35 @@ Type TProductionConcept Extends TOwnedGameObject
 		return _effectiveFocusPoints
 	End Method
 
+
+	Method CalculateCastSympathy:Float(recalculate:int = False)
+		if castSympathyCached and not recalculate then return castSympathy
+
+		if not owner then return 1.0
+
+		local personSympathy:Float = 0.0
+		local personCount:int = 0
+
+		For local castIndex:int = 0 until cast.length
+			'skip empty ore "ProgrammePersonBase" (no channel sympathy)
+			local person:TProgrammePerson = TProgrammePerson(cast[castIndex])
+			if not person then continue
+
+			personSympathy :+ person.GetChannelSympathy(owner)
+			personCount :+ 1
+		Next
+		if personCount > 0
+			castSympathy = personSympathy / personCount
+		else
+			personSympathy = 0.0
+		endif
+
+		castSympathyCached = True
+
+		return castSympathy
+	End Method
+
+
 	'returns how good or bad the fit of the selected cast is
 	Method CalculateCastFit:Float(recalculate:int = False)
 		'Calculate how good or bad the fit of the selected cast is
@@ -325,6 +360,8 @@ Type TProductionConcept Extends TOwnedGameObject
 		 
 		local castFitSum:Float = 0.0
 		local personCount:int = 0
+		local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition(script.mainGenre)
+
 
 		For local castIndex:int = 0 until cast.length
 			local person:TProgrammePersonBase = cast[castIndex]
@@ -387,9 +424,28 @@ Type TProductionConcept Extends TOwnedGameObject
 			if RandRange(0,100) < 5 then jobFit = 1.0 - jobFit
 
 
-			'=== ATTRIBUTES - GENRE FIT ===
-			'TODO: character attributes
+			'=== ATTRIBUTES - GENRE MOD ===
+			'allows to gain bonus from having the right attributes for
+			'the desired job, regardless of whether you are experienced
+			'in this job or not
+			local attributeMod:Float = 0
+			local attributeCount:int = 0
+			'loop through all attributes and add their weighted values
+			for local i:int = 1 to TVTProgrammePersonAttribute.count
+				local attributeID:int = TVTProgrammePersonAttribute.GetAtIndex(i)
+				local attribute:Float = genreDefinition.GetCastAttribute(script.cast[castIndex].job, attributeID)
+				if MathHelper.AreApproximatelyEqual(attribute, 1.0) then continue
 
+				attributeMod :+ (attribute - 1.0)
+				attributeCount :+ 1
+			Next
+			if attributeCount > 0
+				attributeMod = 1.0 + attributeMod/attributeCount
+			else
+				attributeMod = 1.0
+			endif
+			
+			
 
 
 			'=== TOTAL FIT ===
@@ -398,11 +454,17 @@ Type TProductionConcept Extends TOwnedGameObject
 			if not jobFit and RandRange(0,100) < 90
 				personFit :* 0.2
 			endif
-print person.GetFullName() + " [as ~q"+ TVTProgrammePersonJob.GetAsString( script.cast[castIndex].job ) + "~q]"
-print "  genreFit:  "+genreFit
-print "    jobFit:  "+jobFit
-print "  --------------------"
-print "  personFit: "+personFit
+			'apply attribute mod
+			personFit :* attributeMod
+			
+			rem
+			print person.GetFullName() + " [as ~q"+ TVTProgrammePersonJob.GetAsString( script.cast[castIndex].job ) + "~q]"
+			print "     genreFit:  "+genreFit
+			print "       jobFit:  "+jobFit
+			print " attributeMod:  "+attributeMod
+			print " --------------------"
+			print "    personFit:  "+personFit
+			endrem
 
 			castFitSum :+ personFit
 			personCount :+1
@@ -457,7 +519,7 @@ print "  personFit: "+personFit
 		For local i:int = 0 until cast.length
 			if not cast[i] then continue
 
-			result :+ cast[i].GetBaseFee( script.cast[i].job, script.blocks)
+			result :+ cast[i].GetBaseFee( script.cast[i].job, script.GetBlocks())
 		Next
 		return result
 	End Method

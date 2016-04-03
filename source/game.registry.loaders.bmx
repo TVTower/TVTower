@@ -469,12 +469,13 @@ Type TRegistryProgrammeDataModsLoader extends TRegistryBaseLoader
 			For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
 				if not castAttributes then castAttributes = CreateMap()
 				Local jobID:int = TVTProgrammePersonJob.GetByString(subNodeChild.GetName().ToLower())
-				Local attribute:String = TXmlHelper.FindValue(subNodeChild, "attribute", "").toLower()
+				Local attributeID:int = TVTProgrammePersonAttribute.GetByString(TXmlHelper.FindValue(subNodeChild, "attribute", ""))
 				Local value:String = TXmlHelper.FindValue(subNodeChild, "value", "1.0")
 
 				if jobID = TVTProgrammePersonJob.UNKNOWN then continue
+				if attributeID = TVTProgrammePersonAttribute.NONE then continue
 
-				castAttributes.Insert(jobID+"_"+attribute, value)
+				castAttributes.Insert(jobID+"_"+attributeID, value)
 			Next
 			'add attractions to data set
 			if castAttributes then data.Add("castAttributes", castAttributes)

@@ -175,10 +175,10 @@ Type TProgrammePerson extends TProgrammePersonBase
 	'income +++
 	'how famous is this person?
 	field fame:float = 0.0
-	'price manipulation. varying price but constant "quality" 
-	field priceModifier:Float = 1.0
 	'of interest for shows or special events / trigger for news / 0-1.0
 	field scandalizing:float = 0.0
+	'price manipulation. varying price but constant "quality" 
+	field priceModifier:Float = 1.0
 	'at which genres this person is doing his best job
 	'TODO: maybe change this later to a general genreExperience-Container
 	'which increases over time

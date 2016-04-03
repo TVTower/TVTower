@@ -30,7 +30,7 @@ Type TVTGameConstants {_exposeToLua}
 	Field ProgrammeState:TVTProgrammeState = new TVTProgrammeState 
 	Field ProgrammeGenre:TVTProgrammeGenre = new TVTProgrammeGenre 
 	Field ProgrammeFlag:TVTProgrammeDataFlag = new TVTProgrammeDataFlag 
-	Field ProgrammeLicenceType:TVTProgrammeLicenceType = new TVTProgrammeLicenceType 
+	Field ProgrammeLicenceType:TVTProgrammeLicenceType = new TVTProgrammeLicenceType
 
 	Field ProductionConceptFlag:TVTProductionConceptFlag = new TVTProductionConceptFlag 
 
@@ -41,6 +41,7 @@ Type TVTGameConstants {_exposeToLua}
 
 	Field PersonGender:TVTPersonGender = new TVTPersonGender 
 	Field ProgrammePersonJob:TVTProgrammePersonJob = new TVTProgrammePersonJob
+	Field ProgrammePersonAttribute:TVTProgrammePersonAttribute = new TVTProgrammePersonAttribute
 
 	Field ProductionFocus:TVTProductionFocus = new TVTProductionFocus
 End Type
@@ -139,6 +140,54 @@ Type TVTProductionFocus {_exposeToLua}
 	End Function
 End Type
 
+
+
+Type TVTProgrammePersonAttribute {_exposeToLua}
+	Const NONE:int = 0
+	Const SKILL:int = 1
+	Const POWER:int = 2
+	Const HUMOR:int = 3
+	Const CHARISMA:int = 4
+	Const APPEARANCE:int = 5
+	Const FAME:int = 6
+	Const SCANDALIZING:int = 7
+	Const count:int = 7
+
+
+	Function GetAtIndex:int(index:int)
+		'each index has a const, so just return index
+		return index
+	End Function
+
+
+	Function GetAsString:String(key:Int)
+		select key
+			case SKILL          return "skill"
+			case POWER          return "power"
+			case HUMOR          return "humor"
+			case CHARISMA       return "charisma"
+			case APPEARANCE     return "appearance"
+			case FAME           return "fame"
+			case SCANDALIZING   return "scandalizing"
+			default             return "unknown"
+		end select
+	End Function
+
+
+
+	Function GetByString:int(keyString:string = "")
+		Select keyString.toLower()
+			case "skill"        return SKILL
+			case "power"        return POWER
+			case "humor"        return HUMOR
+			case "charisma"     return CHARISMA
+			case "appearance"   return APPEARANCE
+			case "fame"         return FAME
+			case "scandalizing" return SCANDALIZING
+			default             return NONE
+		End Select
+	End Function
+End Type
 
 
 Type TVTGameModifierBase {_exposeToLua}

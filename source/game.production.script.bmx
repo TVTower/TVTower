@@ -169,6 +169,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 	'GUIDs of all programmes based on this script
 	'should only contain "series header"
+	'TODO: needed - or obsolete with productionconcept?
 	Field programmeAdaptions:string[]
 
 	Field outcome:Float	= 0.0
@@ -197,6 +198,8 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	'This is used for "shows" to be able to use different values of
 	'outcome/speed/price/... while still having a connecting link
 	Field basedOnScriptGUID:String = ""
+	'how many productions were done using that script?
+	Field productionCount:int = 0
 
 
 	Function CreateFromTemplate:TScript(template:TScriptTemplate)
@@ -549,12 +552,16 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		rem
 		'print "maxPropertyGenre:   "+maxPropertyGenre
 		'print "maxPropertyScript:  "+maxPropertyScript
+		print "mainGenre:          "+mainGenre
 		print "scaleFactor:        "+scaleFactor
+		print "review:             "+review + "  genre:" + reviewGenre
+		print "speed:              "+speed + "  genre:" + speedGenre
 		print "Review Abweichung:  "+distanceReview
 		print "Speed Abweichung:   "+distanceSpeed
 		if outcomeGenre > 0
 			print "Outcome Abweichung:   "+distanceOutcome
 		endif
+		print "ergebnis:           "+(1.0 - (distanceReview + distanceSpeed + distanceOutcome))
 		endrem
 
 		return 1.0 - (distanceReview + distanceSpeed + distanceOutcome)	

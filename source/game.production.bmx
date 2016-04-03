@@ -3,6 +3,7 @@ Import "game.world.worldtime.bmx"
 Import "game.production.productionconcept.bmx"
 Import "game.programme.newsevent.bmx"
 Import "game.programme.programmelicence.bmx"
+Import "game.stationmap.bmx"
 
 
 Type TProductionCollection Extends TGameObjectCollection
@@ -65,8 +66,9 @@ Type TProduction Extends TOwnedGameObject
 
 	Field scriptGenreFit:Float = -1.0
 	Field castFit:Float = -1.0
+	Field castSympathyMod:Float = 1.0
 	Field productionValueMod:Float = 1.0
-	Field effectiveFocusPoints:Float = 0.0
+	Field effectiveFocusPointsMod:Float = 1.0
 
 
 	Method SetGUID:Int(GUID:String)
@@ -96,6 +98,22 @@ Type TProduction Extends TOwnedGameObject
 	End Method
 
 
+	'returns a modificator to a script's intrinsic values (speed, review..)
+	Method GetProductionValueMod:Float()
+		local value:Float
+		value = 0.4 * scriptGenreFit + 0.5 * castFit
+
+		'sympathy of the cast influences result a bit
+		value :+ 0.1 * (castSympathyMod - 1.0)
+
+		'it is important to set the production priority according
+		'to the genre
+		value :* 1.00 * effectiveFocusPointsMod
+
+		return value
+	End Method
+
+
 	Method Start:TProduction()
 		print "start production"
 		startDate = GetWorldTime().GetTimeGone()
@@ -107,7 +125,7 @@ Type TProduction Extends TOwnedGameObject
 
 		'=== 1. CALCULATE BASE PRODUCTION VALUES ===
 
-		'=== 1.1. CALCULATE FITS ===
+		'=== 1.1 CALCULATE FITS ===
 
 		'=== 1.1.1 GENRE ===
 		'Compare genre definition with script values (expected vs real)
@@ -123,16 +141,23 @@ Type TProduction Extends TOwnedGameObject
 		'=== 1.2.1 CAST SYMPATHY ===
 		'improve cast job by "sympathy" (they like your channel, so they
 		'do a slightly better job)
-		'TODO
+		castSympathyMod = 1.0 + productionConcept.CalculateCastSympathy()
 
+		'=== 1.2.2 MODIFY PRODUCTION VALUE ===
+		effectiveFocusPointsMod = 1.0 + productionConcept.GetEffectiveFocusPointsRatio()
 
-		'=== 1.3 MODIFY PRODUCTION VALUE ===
-		effectiveFocusPoints = productionConcept.CalculateEffectiveFocusPoints()
-
+		rem
 		print "---------"
-		print "scriptGenreFit:       " + scriptGenreFit
-		print "castFit:              " + castFit
-		print "effectiveFocusPoints: " + effectiveFocusPoints + " / " + productionConcept._effectiveFocusPointsMax+"   "+MathHelper.NumberToString(productionConcept.GetEffectiveFocusPointsRatio()*100, 2)+"%"
+		print "scriptGenreFit:          " + scriptGenreFit
+		print "castFit:                 " + castFit
+		print "castSympathyMod:         " + castSympathyMod
+		print "effectiveFocusPointsMod: " + effectiveFocusPointsMod
+		endrem
+
+
+
+		'=== 2. PRODUCTION EFFECTS ===
+		'modify production time (longer by random chance?)
 
 		return self
 	End Method
@@ -152,31 +177,99 @@ Type TProduction Extends TOwnedGameObject
 
 		print "Dreharbeiten beendet - Programm herstellen"
 
-		'1) production effects
-		'- modify production values (longer production time, random..)
+		'inform script about a done production based on the script
+		productionConcept.script.productionCount :+ 1
+		'same for the concept itself
+		productionConcept.SetFlag(TVTProductionConceptFlag.PRODUCED, true)
+
+
+		'=== 1. PRODUCTION EFFECTS ===
+		'- modify production values (random..)
 		'- cast:
 		'- - levelups / skill adjustments / XP gain
 		'- - adding the job (if not done automatically) so it becomes
 		'    specialized for this kind of production somewhen
-		'
-		'2) programme creation:
-		'- programme data
-		'- programme licence
-		'- adding licence to player collection!
 
+		'=== 1.1 PRODUCTION VALUES ===
+		local productionValueMod:Float = GetProductionValueMod()
+		'by 5% chance increase value and 5% chance to decrease
+		'- so bad productions create a superior programme (or even worse)
+		'- or blockbusters fail for unknown reasons (or get even better)
+		if RandRange(0,100) < 5 then productionValueMod = Max(productionValueMod*1.5, productionValueMod + RandRange(5,35)/100.0)
+		if RandRange(0,100) < 5 then productionValueMod = Min(productionValueMod*0.5, productionValueMod - RandRange(5,35)/100.0)
+		print "Produktionswert: "+GetProductionValueMod()
+		print "Produktionswert end: "+productionValueMod
 
-		'=== 1. PRODUCTION EFFECTS ===
-		'productionValueMod ...
+		'by 5% chance increase or lower price regardless of value
+		local productionPriceMod:Float = 1.0
+		if RandRange(0,100) < 5 then productionPriceMod :+ RandRange(5,35)/100.0
+		if RandRange(0,100) < 5 then productionPriceMod :- RandRange(5,35)/100.0
+		
+		
 
-
-		'by 5% chance increase value - so bad productions create
-		'a superior programme - or blockbusters fail for unknown reasons
-		'if RandRange(0,100) < 5 then value :+ MathHelper.Clamp(value, 0.2, 0.5)
-
-
-		'calculate
-
+		'=== 1.2 CAST ===
 		'change skills of the actors / director / ...
+
+
+
+		'=== 2. PROGRAMME CREATION ===
+		local programmeData:TProgrammeData = new TProgrammeData
+		programmeData.GUID = "data-customProduction-"+GetGUID()
+
+		'=== 2.1 PROGRAMME BASE PROPERTIES ===
+		'TODO: custom title/description
+		'TODO: country = senderkarten "kuerzel"!
+		programmeData.title = productionConcept.script.title.Copy()
+		programmeData.description = productionConcept.script.description.Copy()
+		programmeData.country = GetStationMapCollection().config.GetString("nameShort", "UNK")
+		programmeData._year = GetWorldTime().GetYear()
+		programmeData.distributionChannel = 0
+		programmeData.blocks = productionConcept.script.GetBlocks()
+		programmeData.available = true
+		if productionConcept.script.IsLive()
+			if programmeData.liveTime <= 0 then productionConcept.liveTime
+		endif
+		if priceModifier <> 1.0
+			programmeData.SetModifier("price", priceModifier)
+		endif
+		programmeData.flags = productionConcept.script.flags
+		programmeData.genre = productionConcept.script.mainGenre
+		if productionConcept.script.subGenres
+			For local sg:int = EachIn productionConcept.script.subGenres
+				if sg = 0 then continue
+				programmeData.subGenres :+ [sg]
+			Next
+		endif
+
+		'=== 2.2 PROGRAMME CAST ===
+		For local castIndex:int = 0 until productionConcept.cast.length
+			local p:TProgrammePersonBase = productionConcept.cast[castIndex]
+			local job:TProgrammePersonJob = productionConcept.script.cast[castIndex]
+			if not p or not job then continue
+
+			'person is now capable of doing this job
+			p.SetJob(job.job)
+			programmeData.AddCast(new TProgrammePersonJob.Init(p.GetGUID(), job.job))
+		Next
+
+		'=== 2.3 PROGRAMME PRODUCTION PROPERTIES ===
+		programmeData.review = productionValueMod * productionConcept.script.review
+		programmeData.speed = productionValueMod * productionConcept.script.speed
+		programmeData.outcome = productionValueMod * productionConcept.script.outcome
+		
+
+		'=== 2.3 PROGRAMME LICENCE ===
+		'todo: parentlicence - serien 
+		local programmeLicence:TProgrammeLicence = new TProgrammeLicence
+		programmeLicence.GUID = "customProduction-"+GetGUID()
+		programmeLicence.SetData(programmeData)
+		programmeLicence.available = true
+
+print "produziert: " + programmeLicence.GetTitle()
+		
+		'=== 3. ADD TO PLAYER ===
+		'if owner then ...
+
 
 		return self
 	End Method
