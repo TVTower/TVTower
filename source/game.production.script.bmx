@@ -167,10 +167,9 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Field newsTopicGUID:string = ""
 	Field newsGenre:int
 
-	'GUIDs of all programmes based on this script
-	'should only contain "series header"
-	'TODO: needed - or obsolete with productionconcept?
-	Field programmeAdaptions:string[]
+	'GUID of a programme based on this script
+	'(also for "series header" programmes)
+	Field usedInProgrammeGUID:string
 
 	Field outcome:Float	= 0.0
 	Field review:Float = 0.0

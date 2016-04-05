@@ -375,6 +375,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		If licence = Null Then Return False
 		'do not allow removal of episodes (should get removed via header)
 		If licence.parentLicenceGUID then return False
+		'not owning
+		if not HasProgrammeLicence(licence) then return False
 
 		if sell and not licence.sell() then return FALSE
 
@@ -402,6 +404,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		'do not allow adding of episodes / collection-elements
 		'(should get removed via header)
 		If licence.parentLicenceGUID then return False
+		'already added
+		if HasProgrammeLicence(licence) then return False
 
 		'if owner differs, check if we have to buy or got that gifted
 		'at program start or through special event...

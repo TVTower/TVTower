@@ -438,8 +438,25 @@ Type StringHelper
 		return a
 	End Function
 
+	'convert first alpha (optional alphanumeric) character to uppercase.
+	'does _not_ work with UTF8 characters (would need some utf8-library
+	'like glib or so)
+	Function UCFirst:String(s:String, length:Int = 1, skipNumeric:Int = True)
+		If s.length = 0 Then Return ""
 
-	Function UCFirst:string(s:string, length:int = 1)
+		For Local start:Int = 0 Until s.length
+			Local ch:Int = s[start]
+			If (ch>=Asc("a") And ch<=Asc("z")) Or (Not skipNumeric And (ch>=Asc("0") And ch<=Asc("9")))
+				Return Left(s, start) + Upper( Mid(s, start+1, length) ) + Right(s, s.length - length - start)
+			EndIf
+		Next
+		
+		Return s
+	End Function
+
+	'convert very first character to uppercase, skips checks
+	'of wether non-alpha-chars are there
+	Function UCFirstSimple:string(s:string, length:int = 1)
 		if s.length = 0 then return ""
 
 		return Upper( Left(s, length) ) + Right(s, s.length - length)

@@ -83,6 +83,9 @@ Type TMyApp Extends TGraphicalApp
 		dbLoader = New TDatabaseLoader
 		dbLoader.LoadDir(registryLoader.baseURI + "res/database/Default")
 
+		'load stationmap
+		GetStationMapCollection().LoadMapFromXML("res/maps/germany/germany.xml", registryLoader.baseURI)
+
 		'set game time
 		GetWorldTime().SetStartYear(1985)
 		'refresh states of old programme productions (now we now
@@ -653,7 +656,6 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		editTextsWindow.SetConcept(GetInstance().currentProductionConcept)
 		editTextsWindow.Open()
 		GuiManager.Add(editTextsWindow)
-		print "opened text edit"
 	End Method
 
 

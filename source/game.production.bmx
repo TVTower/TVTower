@@ -3,6 +3,7 @@ Import "game.world.worldtime.bmx"
 Import "game.production.productionconcept.bmx"
 Import "game.programme.newsevent.bmx"
 Import "game.programme.programmelicence.bmx"
+Import "game.player.programmecollection.bmx"
 Import "game.stationmap.bmx"
 
 
@@ -213,32 +214,21 @@ Type TProduction Extends TOwnedGameObject
 
 
 		'=== 2. PROGRAMME CREATION ===
+		Local programmeGUID:string = "customProduction-"+productionConcept.script.GetGUID()
 		local programmeData:TProgrammeData = new TProgrammeData
-		programmeData.GUID = "data-customProduction-"+GetGUID()
+		programmeData.SetGUID("data-"+programmeGUID)
 
 		'=== 2.1 PROGRAMME BASE PROPERTIES ===
-		'TODO: custom title/description
-		'TODO: country = senderkarten "kuerzel"!
-		programmeData.title = productionConcept.script.title.Copy()
-		programmeData.description = productionConcept.script.description.Copy()
+		FillProgrammeDataByScript(programmeData, productionConcept.script)
 		programmeData.country = GetStationMapCollection().config.GetString("nameShort", "UNK")
 		programmeData._year = GetWorldTime().GetYear()
 		programmeData.distributionChannel = 0
-		programmeData.blocks = productionConcept.script.GetBlocks()
 		programmeData.available = true
 		if productionConcept.script.IsLive()
-			if programmeData.liveTime <= 0 then productionConcept.liveTime
+			if programmeData.liveTime <= 0 then programmeData.liveTime = productionConcept.liveTime
 		endif
-		if priceModifier <> 1.0
-			programmeData.SetModifier("price", priceModifier)
-		endif
-		programmeData.flags = productionConcept.script.flags
-		programmeData.genre = productionConcept.script.mainGenre
-		if productionConcept.script.subGenres
-			For local sg:int = EachIn productionConcept.script.subGenres
-				if sg = 0 then continue
-				programmeData.subGenres :+ [sg]
-			Next
+		if productionPriceMod <> 1.0
+			programmeData.SetModifier("price", productionPriceMod)
 		endif
 
 		'=== 2.2 PROGRAMME CAST ===
@@ -257,23 +247,88 @@ Type TProduction Extends TOwnedGameObject
 		programmeData.speed = productionValueMod * productionConcept.script.speed
 		programmeData.outcome = productionValueMod * productionConcept.script.outcome
 		
+		'=== 2.4 PROGRAMME LICENCE ===
 
-		'=== 2.3 PROGRAMME LICENCE ===
-		'todo: parentlicence - serien 
+		'todo: parentlicence - serien
 		local programmeLicence:TProgrammeLicence = new TProgrammeLicence
-		programmeLicence.GUID = "customProduction-"+GetGUID()
+		programmeLicence.SetGUID(programmeGUID)
 		programmeLicence.SetData(programmeData)
 		programmeLicence.available = true
+		programmeLicence.licenceType = productionConcept.script.scriptLicenceType
 
+		local addLicence:TProgrammeLicence = programmeLicence
+		if programmeLicence.IsEpisode()
+			local parentLicence:TProgrammeLicence = CreateParentalLicence(programmeLicence)
+			'add the episode
+			if parentLicence
+print "Serienkopf angelegt: " + parentLicence.GetTitle()
+				parentLicence.AddSubLicence(programmeLicence)
+				addLicence = parentLicence
+			endif
+		endif
 print "produziert: " + programmeLicence.GetTitle()
+
+		'=== 3. INFORM SCRIPT ===
+		productionConcept.script.usedInProgrammeGUID = programmeLicence.GetGUID()
 		
-		'=== 3. ADD TO PLAYER ===
-		'if owner then ...
+		'=== 4. ADD TO PLAYER ===
+		'add licence (or its header-licence)
+		if owner and GetPlayerProgrammeCollection(owner)
+			GetPlayerProgrammeCollection(owner).AddProgrammeLicence(addLicence, False)
+		endif
 
 
 		return self
 	End Method
 
+
+	Method CreateParentalLicence:TProgrammeLicence(programmeLicence:TProgrammeLicence)
+		if not programmeLicence.IsEpisode() then return Null
+		'TODO: collections
+
+		if productionConcept.script = productionConcept.script.GetParentScript() then Throw "script and parent same : IsEpisode() failed."
+
+		'check if there is a licence already
+		local parentProgrammeGUID:string = "customProduction-header-"+productionConcept.script.GetParentScript().GetGUID() 
+		local parentLicence:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID(parentProgrammeGUID)
+
+		'create new licence if needed
+		if not parentLicence
+			parentLicence = new TProgrammeLicence
+			parentLicence.SetGUID(parentProgrammeGUID)
+			parentLicence.SetData(new TProgrammeData)
+			'optional
+			parentLicence.GetData().SetGUID("data-"+parentProgrammeGUID)
+			'fill with basic data (title, description, ...)
+			FillProgrammeDataByScript(parentLicence.GetData(), productionConcept.script.GetParentScript())
+		endif
+
+		'inform parental script about the usage
+		productionConcept.script.GetParentScript().usedInProgrammeGUID = parentLicence.GetGUID()
+
+		'refill data with current information (cast, avg ratings)
+		local parentData:TProgrammeData = parentLicence.GetData()
+		'TODO
+		
+		return parentLicence
+	End Method
+
+
+	Function FillProgrammeDataByScript(programmeData:TProgrammeData, script:TScript)
+		'TODO: custom title/description
+		programmeData.title = script.title.Copy()
+		programmeData.description = script.description.Copy()
+		programmeData.blocks = script.GetBlocks()
+		programmeData.flags = script.flags
+		programmeData.genre = script.mainGenre
+		if script.subGenres
+			For local sg:int = EachIn script.subGenres
+				if sg = 0 then continue
+				programmeData.subGenres :+ [sg]
+			Next
+		endif
+	End Function
+	
 
 	Method Update:int()
 		Select status
