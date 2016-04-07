@@ -190,17 +190,16 @@ Type TProgrammeLicenceCollection
 		if licence.licenceType = TVTProgrammeLicenceType.FRANCHISE then return False
 
 		'=== SINGLES ===
-		if licence.isSingle() then AddSingle(licence, skipDuplicates)
-
+		if licence.isSingle() then return AddSingle(licence, skipDuplicates)
 
 		'=== SERIES ===
-		if licence.isSeries() then AddSeries(licence, skipDuplicates)
-		if licence.isEpisode() then AddEpisode(licence, skipDuplicates)
+		if licence.isSeries() then return AddSeries(licence, skipDuplicates)
+		if licence.isEpisode() then return AddEpisode(licence, skipDuplicates)
 
 		'=== COLLECTIONS ===
-		if licence.isCollection() then AddCollection(licence, skipDuplicates)
+		if licence.isCollection() then return AddCollection(licence, skipDuplicates)
 
-		return True
+		return False
 	End Method
 		
 
@@ -394,6 +393,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	Field parentLicenceGUID:string = ""
 	'other licences this licence covers
 	Field subLicences:TProgrammeLicence[]
+	Field episodeNumber:int = -1
 	'store stats for each owner
 	Field broadcastStatistics:TBroadcastStatistic[]
 
@@ -436,7 +436,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 
 
-	Method AddSubLicence:int(licence:TProgrammeLicence)
+	Method AddSubLicence:int(licence:TProgrammeLicence, index:int = -1)
 		'=== ADJUST LICENCE TYPES ===
 
 		'as each licence is individual we easily can set the main licence
@@ -444,7 +444,18 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		licence.parentLicenceGUID = self.GetGUID()
 
 		'add to array of sublicences
-		subLicences :+ [licence]
+		if index = -1 or subLicences.length = 0
+			subLicences :+ [licence]
+		'set at the given index and move the existing ones +1
+		'[1,2,3] + add(x, 2) = [1,2,x,3]
+		else
+			if index = 0
+				subLicences = [licence] + sublicences
+			else
+				subLicences = subLicences[.. index] + [licence] + subLicences[index ..]
+			endif 
+		endif
+		
 		Return TRUE
 	End Method
 
@@ -573,6 +584,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 	Method GetEpisodeNumber:int()
 		if not self.parentLicenceGUID then return 1
+
+		if episodeNumber > 0 then return episodeNumber
+
 		return GetParentLicence().GetSubLicencePosition(self)+1
 	End Method
 

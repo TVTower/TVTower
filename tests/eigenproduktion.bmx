@@ -136,7 +136,7 @@ Type TMyApp Extends TGraphicalApp
 
 		'use first episode of a series
 		if script.isSeries()
-			script = GetScriptCollection().GetByGUID( script.GetSubScriptAtIndex(0).GetGUID() )
+			script = TScript(script.GetSubScriptAtIndex(0))
 		endif
 
 		return script
@@ -249,7 +249,18 @@ Type TMyApp Extends TGraphicalApp
 			'create demo production
 			if KeyManager.IsHit(KEY_O)
 				if not RoomHandler_Supermarket.GetInstance().currentProductionConcept
-					local productionConcept:TProductionConcept = GetProductionConceptCollection().GetRandom()
+					local productionConcept:TProductionConcept
+					if KeyManager.IsDown(KEY_LSHIFT)
+						print "shoot random episode"
+						productionConcept = GetProductionConceptCollection().GetRandomEpisode()
+						if not productionConcept
+							print "no episode concept available, returning normal one"
+							productionConcept = GetProductionConceptCollection().GetRandom()
+						endif
+					else
+						print "shoot random programme"
+						productionConcept = GetProductionConceptCollection().GetRandom()
+					endif
 					'create new and take over
 					RoomHandler_Supermarket.GetInstance().SetCurrentProductionConcept( productionConcept, RoomHandler_Supermarket.GetInstance().currentProductionConcept)
 				endif
@@ -1096,12 +1107,28 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		'add some items to that list
 		for local i:int = 1 to 10
 			local script:TScript = TMyApp.GetRandomScript()
-			script.SetOwner(1)
-			'parent too
-			if script.IsEpisode() then script.GetParentScript().SetOwner(1)
+
+			if script.IsEpisode()
+				'parent too
+				script.GetParentScript().SetOwner(1)
+			else
+				script.SetOwner(1)
+			endif
 
 			local productionConcept:TProductionConcept = new TProductionConcept.Initialize(1, script)
 			GetProductionConceptCollection().Add(productionConcept)
+
+			'add two others of that series
+			if script.IsEpisode()
+				for local subI:int = 1 until 2
+					local otherScript:TScript = TScript(script.GetParentScript().GetSubScriptAtIndex(1))
+					local otherConcept:TProductionConcept = new TProductionConcept.Initialize(1, otherScript)
+					GetProductionConceptCollection().Add(otherConcept)
+					otherScript.SetOwner(1)
+				Next
+			endif
+				
+
 		Next
 
 		For local productionConcept:TProductionConcept = EachIn GetProductionConceptCollection().entries.Values()
@@ -1719,7 +1746,11 @@ endrem
 
 		titleSize = titleFont.DrawBlock(title, int(GetScreenX()+ textOffsetX), int(GetScreenY()+2), GetScreenWidth() - textOffsetX - 1, GetScreenHeight()-4,,titleColor)
 		if subTitle
-			subTitleSize = titleFont.DrawBlock(subTitle, int(GetScreenX()+ textOffsetX), int(GetScreenY() + titleSize.y + 2), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-4,,titleColor)
+			if titleSize.y > 20
+				subTitleSize = titleFont.DrawBlock(subTitle, int(GetScreenX()+ textOffsetX), int(GetScreenY() + titleSize.y + 2), GetScreenWidth() - textOffsetX - 3, 14,,titleColor)
+			else
+				subTitleSize = titleFont.DrawBlock(subTitle, int(GetScreenX()+ textOffsetX), int(GetScreenY() + titleSize.y + 2), GetScreenWidth() - textOffsetX - 3, 28,,titleColor)
+			endif
 		endif
 
 

@@ -402,7 +402,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Method AddProgrammeLicence:Int(licence:TProgrammeLicence, buy:int=FALSE)
 		If not licence then return FALSE
 		'do not allow adding of episodes / collection-elements
-		'(should get removed via header)
+		'(should get added via header)
 		If licence.parentLicenceGUID then return False
 		'already added
 		if HasProgrammeLicence(licence) then return False

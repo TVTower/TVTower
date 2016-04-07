@@ -70,6 +70,9 @@ Type TProduction Extends TOwnedGameObject
 	Field castSympathyMod:Float = 1.0
 	Field productionValueMod:Float = 1.0
 	Field effectiveFocusPointsMod:Float = 1.0
+	'FALSE to avoid recursive handling (network)
+	Global fireEvents:int = TRUE
+	
 
 
 	Method SetGUID:Int(GUID:String)
@@ -160,6 +163,10 @@ Type TProduction Extends TOwnedGameObject
 		'=== 2. PRODUCTION EFFECTS ===
 		'modify production time (longer by random chance?)
 
+
+		'emit an event so eg. network can recognize the change
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("production.start", null, self))
+
 		return self
 	End Method
 
@@ -168,6 +175,9 @@ Type TProduction Extends TOwnedGameObject
 		print "abort production"
 
 		status = 3
+
+		'emit an event so eg. network can recognize the change
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("production.abort", null, self))
 
 		return self
 	End Method
@@ -232,7 +242,7 @@ Type TProduction Extends TOwnedGameObject
 		endif
 
 		'=== 2.2 PROGRAMME CAST ===
-		For local castIndex:int = 0 until productionConcept.cast.length
+		For local castIndex:int = 0 until Min(productionConcept.cast.length, productionConcept.script.cast.length)
 			local p:TProgrammePersonBase = productionConcept.cast[castIndex]
 			local job:TProgrammePersonJob = productionConcept.script.cast[castIndex]
 			if not p or not job then continue
@@ -258,16 +268,33 @@ Type TProduction Extends TOwnedGameObject
 
 		local addLicence:TProgrammeLicence = programmeLicence
 		if programmeLicence.IsEpisode()
+			'set episode according to script-episode-index
+			programmeLicence.episodeNumber = productionConcept.script.GetParentScript().GetSubScriptPosition(productionConcept.script) + 1
+
 			local parentLicence:TProgrammeLicence = CreateParentalLicence(programmeLicence)
 			'add the episode
 			if parentLicence
-print "Serienkopf angelegt: " + parentLicence.GetTitle()
-				parentLicence.AddSubLicence(programmeLicence)
+				'add licence at the position of the defined episode no.
+				parentLicence.AddSubLicence(programmeLicence, programmeLicence.episodeNumber - 1)
 				addLicence = parentLicence
+
+				'fill that licence with episode specific data
+				'(averages, cast)
+				FillParentalLicence(parentLicence)
+
+				GetProgrammeLicenceCollection().AddAutomatic(parentLicence)
 			endif
 		endif
-print "produziert: " + programmeLicence.GetTitle()
+		GetProgrammeLicenceCollection().AddAutomatic(programmeLicence)
 
+print "produziert: " + programmeLicence.GetTitle()
+if programmeLicence.IsEpisode()
+	print "Serie besteht nun aus den Folgen:"
+	For local epIndex:int = 0 until addLicence.GetSubLicenceCount()
+		print "subLicences["+epIndex+"] = " + addLicence.subLicences[epIndex].episodeNumber+" | " + addLicence.subLicences[epIndex].GetTitle()
+	Next
+endif
+	
 		'=== 3. INFORM SCRIPT ===
 		productionConcept.script.usedInProgrammeGUID = programmeLicence.GetGUID()
 		
@@ -277,6 +304,8 @@ print "produziert: " + programmeLicence.GetTitle()
 			GetPlayerProgrammeCollection(owner).AddProgrammeLicence(addLicence, False)
 		endif
 
+		'emit an event so eg. network can recognize the change
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("production.finish", null, self))
 
 		return self
 	End Method
@@ -292,6 +321,7 @@ print "produziert: " + programmeLicence.GetTitle()
 		local parentProgrammeGUID:string = "customProduction-header-"+productionConcept.script.GetParentScript().GetGUID() 
 		local parentLicence:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID(parentProgrammeGUID)
 
+
 		'create new licence if needed
 		if not parentLicence
 			parentLicence = new TProgrammeLicence
@@ -301,16 +331,63 @@ print "produziert: " + programmeLicence.GetTitle()
 			parentLicence.GetData().SetGUID("data-"+parentProgrammeGUID)
 			'fill with basic data (title, description, ...)
 			FillProgrammeDataByScript(parentLicence.GetData(), productionConcept.script.GetParentScript())
+
+			parentLicence.licenceType = TVTProgrammeLicenceType.SERIES
+
+print "Serienkopf angelegt: " + parentLicence.GetTitle()
+		else
+			if productionConcept.script.GetParentScript().usedInProgrammeGUID <> parentLicence.GetGUID()
+				Throw "CreateParentalLicence() failed: another programme is already assigned to the parent script."
+			endif
 		endif
 
+		return parentLicence
+	End Method
+
+
+	'refill data with current information (cast, avg ratings)
+	Method FillParentalLicence(parentLicence:TProgrammeLicence)
 		'inform parental script about the usage
 		productionConcept.script.GetParentScript().usedInProgrammeGUID = parentLicence.GetGUID()
 
-		'refill data with current information (cast, avg ratings)
 		local parentData:TProgrammeData = parentLicence.GetData()
-		'TODO
-		
-		return parentLicence
+
+		'=== CAST ===
+		'only list "visible" persons: HOST, ACTOR, SUPPORTINGACTOR, GUEST, REPORTER
+		local seriesCast:TProgrammePersonBase[]
+		local seriesJobs:TProgrammePersonJob[]
+		local jobFilter:int = TVTProgrammePersonJob.HOST | ..
+		                      TVTProgrammePersonJob.ACTOR | ..
+		                      TVTProgrammePersonJob.SUPPORTINGACTOR | ..
+		                      TVTProgrammePersonJob.GUEST | ..
+		                      TVTProgrammePersonJob.REPORTER
+		parentData.ClearCast()
+		For local subLicence:TProgrammeLicence = eachin parentLicence.subLicences
+			For local job:TProgrammePersonJob = EachIn subLicence.GetData().GetCast()
+				'only add visible ones
+				if job.job & jobFilter <= 0 then continue
+				'add if that person is not listed with the same job yet
+				'(ignore multiple roles)
+				if not parentData.HasCast(job, False)
+					parentData.AddCast(new TProgrammePersonJob.Init(job.personGUID, job.job))
+				endif
+			Next 
+		Next
+
+		'=== RATINGS ===
+		parentData.review = 0
+		parentData.speed = 0
+		parentData.outcome = 0
+		if parentLicence.GetSubLicenceCount() > 0
+			For local subLicence:TProgrammeLicence = eachin parentLicence.subLicences
+				parentData.review :+ subLicence.GetData().review
+				parentData.speed :+ subLicence.GetData().speed
+				parentData.outcome :+ subLicence.GetData().outcome
+			Next
+			parentData.review :/ parentLicence.GetSubLicenceCount()
+			parentData.speed :/ parentLicence.GetSubLicenceCount()
+			parentData.outcome :/ parentLicence.GetSubLicenceCount()
+		endif
 	End Method
 
 

@@ -862,7 +862,8 @@ Type TDatabaseLoader
 
 			'the episodeNumber is currently not needed, as we
 			'autocalculate it by the position in the xml-episodes-list
-			'local episodeNumber:int = xml.FindValueInt(nodeEpisode, "index", 1)
+			'local episodeNumber:int = xml.FindValueInt(nodeEpisode, "index", -1)
+			local episodeNumber:int = -1
 
 			'only add episode if not already done
 			if programmeLicence = episodeLicence.GetParentLicence()
@@ -876,7 +877,7 @@ Type TDatabaseLoader
 			endif
 
 			'add the episode
-			programmeLicence.AddSubLicence(episodeLicence)
+			programmeLicence.AddSubLicence(episodeLicence, episodeNumber)
 		Next
 
 		if programmeLicence.isSeries() and programmeLicence.GetSubLicenceCount() = 0

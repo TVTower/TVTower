@@ -18,7 +18,20 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 	Method GetRandom:TProductionConcept()
 		return TProductionConcept( Super.GetRandom() )
 	End Method
-	
+
+
+	Method GetRandomEpisode:TProductionConcept()
+		local array:TProductionConcept[]
+		'create a full array containing all elements
+		For local obj:TProductionConcept = EachIn entries.Values()
+			if not obj.script or not obj.script.IsEpisode() then continue
+			array :+ [obj]
+		Next
+		if array.length = 0 then return Null
+		if array.length = 1 then return array[0]
+
+		Return array[(randRange(0, array.length-1))]
+	End Method	
 
 	Method GetProductionConceptsByScript:TProductionConcept[](script:TScript)
 		local result:TProductionConcept[]

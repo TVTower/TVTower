@@ -452,6 +452,17 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	End Method
 
 
+	Method ClearCast:int()
+		cast = new TProgrammePersonJob[0]
+
+		'invalidate caches
+		cachedActors = cachedActors[..0]
+		cachedDirectors = cachedDirectors[..0]
+
+		return True
+	End Method
+	
+
 	Method AddCast:int(job:TProgrammePersonJob)
 		if HasCast(job) then return False
 
@@ -476,6 +487,11 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 			newCast :+ [j]
 		Next
 		cast = newCast
+
+		'invalidate caches
+		cachedActors = cachedActors[..0]
+		cachedDirectors = cachedDirectors[..0]
+
 		return True
 	End Method
 
@@ -488,13 +504,13 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	End Method
 	
 
-	Method HasCast:int(job:TProgrammePersonJob)
+	Method HasCast:int(job:TProgrammePersonJob, checkRoleGUID:int = True)
 		'do not check job against jobs in the list, as only the
 		'content might be the same but the job a duplicate
 		For local doneJob:TProgrammePersonJob = EachIn cast
 			if job.personGUID <> doneJob.personGUID then continue 
 			if job.job <> doneJob.job then continue 
-			if job.roleGUID <> doneJob.roleGUID then continue
+			if checkRoleGUID and job.roleGUID <> doneJob.roleGUID then continue
 
 			return True
 		Next
