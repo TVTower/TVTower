@@ -11,6 +11,82 @@ Import "Dig/base.util.data.bmx"
 Import "Dig/base.util.mersenne.bmx"
 Import "game.world.worldtime.bmx"
 
+'as game modifiers are stored in savegames, we need a way to decouple
+'function pointers from saved objects
+'We store all theses functions in a collection and retrieve them via
+'individual keys/identifiers
+
+Type TGameModifierFunctionsCollection
+	Field functions:TMap = CreateMap()
+	Global _instance:TGameModifierFunctionsCollection
+
+
+	Function GetInstance:TGameModifierFunctionsCollection()
+		if not _instance then _instance = new TGameModifierFunctionsCollection
+		return _instance
+	End Function
+
+
+	Method RegisterRunFunction(key:string, func:int(source:TGameModifierBase, params:TData))
+		key = "run_"+key.ToLower()
+		if functions.Contains(key) then return
+
+		functions.Insert(key, new TGameModifierRunFunction.Init(key, func))
+	End Method
+
+
+	Method RegisterUndoFunction(key:string, func:int(source:TGameModifierBase))
+		key = "undo_"+key.ToLower()
+		if functions.Contains(key) then return
+
+		functions.Insert(key, new TGameModifierUndoFunction.Init(key, func))
+	End Method
+
+
+	Method GetRunFunction:TGameModifierRunFunction(key:string)
+		return TGameModifierRunFunction(functions.ValueForKey("run_"+key.ToLower()))
+	End Method
+
+
+	Method GetUndoFunction:TGameModifierUndoFunction(key:string)
+		return TGameModifierUndoFunction(functions.ValueForKey("undo_"+key.ToLower()))
+	End Method
+End Type
+
+'===== CONVENIENCE ACCESSOR =====
+'return collection instance
+Function GetGameModifierFunctionsCollection:TGameModifierFunctionsCollection()
+	Return TGameModifierFunctionsCollection.GetInstance()
+End Function
+
+
+
+
+Type TGameModifierRunFunction
+	Field key:string
+	Field func:int(source:TGameModifierBase, params:TData)
+
+	Method Init:TGameModifierRunFunction(key:string, func:int(source:TGameModifierBase, params:TData))
+		self.key = key.ToLower()
+		self.func = func
+		return self
+	End Method
+End Type	
+
+
+
+
+Type TGameModifierUndoFunction
+	Field key:string
+	Field func:int(source:TGameModifierBase)
+
+	Method Init:TGameModifierUndoFunction(key:string, func:int(source:TGameModifierBase))
+		self.key = key.ToLower()
+		self.func = func
+		return self
+	End Method
+End Type
+
 
 
 
@@ -19,8 +95,8 @@ Type TGameModifierBase
 	Field data:TData
 	'constant value of TVTGameModifierBase (CHANGETREND, TERRORISTATTACK, ...)
 	Field modifierTypes:int = 0
-	Field _customRunFunc:int(source:TGameModifierBase, params:TData)
-	Field _customUndoFunc:int(source:TGameModifierBase)
+	Field _customRunFuncKey:string
+	Field _customUndoFuncKey:string
 
 
 	'function returning a _new_ effect initialized with the given data
@@ -88,7 +164,10 @@ Type TGameModifierBase
 
 	'call to undo the changes - if possible
 	Method Undo:int()
-		if _customUndoFunc then return _customUndoFunc(self)
+		if _customUndoFuncKey
+			local wrapper:TGameModifierUndoFunction = GetGameModifierFunctionsCollection().GetUndoFunction(_customUndoFuncKey)
+			if wrapper then return wrapper.func(self)
+		endif
 
 		return UndoFunc()
 	End Method
@@ -96,7 +175,10 @@ Type TGameModifierBase
 
 	'call to handle/emit the modifier/effect
 	Method Run:int(params:TData)
-		if _customRunFunc then return _customRunFunc(self, params)
+		if _customRunFuncKey
+			local wrapper:TGameModifierRunFunction = GetGameModifierFunctionsCollection().GetRunFunction(_customRunFuncKey)
+			if wrapper then return wrapper.func(self, params)
+		endif
 
 		return RunFunc(params)
 	End Method

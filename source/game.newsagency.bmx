@@ -66,6 +66,9 @@ Type TNewsAgency
 		terroristAggressionLevelProgressRate = [ [0.05,0.09], [0.05,0.09] ]
 
 
+		'register custom game modifier functions
+		GetGameModifierFunctionsCollection().RegisterRunFunction("TFigureTerrorist.SendFigureToRoom", TFigureTerrorist.SendFigureToRoom)
+
 		delayedLists = New TList[4]
 	End Method
 	
@@ -238,7 +241,7 @@ Type TNewsAgency
 			else
 				effect.GetData().Add("room", GetRoomCollection().GetFirstByDetails("vrduban")) 'TODO: Hier m�sste doch eigentlich das RoomBoard und die Position des Schildes abgefragt werden
 			endif
-			effect._customRunFunc = TFigureTerrorist.SendFigureToRoom
+			effect._customRunFuncKey = "TFigureTerrorist.SendFigureToRoom"
 			'mark as a special effect so AI can categorize it accordingly
 			effect.setModifierType(TVTGameModifierBase.TERRORIST_ATTACK)
 
