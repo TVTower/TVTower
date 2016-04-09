@@ -45,6 +45,12 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		GetWorldTime().SetTimeFactor(30.0)
 
 
+		if not GameScreen_World
+			GameScreen_World = New TInGameScreen_World.Create("World")
+			ScreenCollection.Add(GameScreen_World)
+		endif
+
+
 		'=== EVENTS ===
 		'=== remove all registered event listeners
 		EventManager.unregisterListenersByLinks(_eventListeners)
@@ -121,12 +127,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		
 		'Game screens
-		if GameScreen_World
-			GameScreen_World.Initialize()
-		else
-			GameScreen_World = New TInGameScreen_World.Create("World")
-			ScreenCollection.Add(GameScreen_World)
-		endif
+		GameScreen_World.Initialize()
 		
 
 		'=== SETUP TOOLTIPS ===
