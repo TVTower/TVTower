@@ -597,7 +597,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		if not GetData().isAvailable() then return False
 
 		'exceeded broadcastLimit
-		if broadcastLimit > 0 and data.GetTimesBroadcasted() >= broadcastLimit then return False
+		if broadcastLimit > 0 and GetTimesBroadcasted() >= broadcastLimit then return False
 
 		return Super.IsAvailable()
 	End Method
@@ -887,6 +887,20 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		Return value
 	End Method
 
+
+	Method GetTimesBroadcasted:int(owner:int = -1)
+		if GetSubLicenceCount() = 0 then return data.GetTimesBroadcasted(owner)
+
+		local sum:int = 0
+		For local sub:TProgrammeLicence = EachIn subLicences
+			sum :+ sub.GetTimesBroadcasted(owner)
+		Next
+		if GetSubLicenceCount() = 0 then return 0
+
+		'round upwards, the first broadcast already return "1"
+		return int(ceil(float(sum) / GetSubLicenceCount()))
+	End Method
+	
 
 	Method ShowSheet:Int(x:Int,y:Int, align:int=0, showMode:int=0, useOwner:int=-1)
 		if useOwner = -1 then useOwner = owner
@@ -1218,7 +1232,7 @@ endrem
 		'blocks
 		skin.RenderBox(contentX + 5, contentY, 47, -1, data.GetBlocks(), "duration", "neutral", skin.fontBold)
 		'repetitions
-		skin.RenderBox(contentX + 5 + 51, contentY, 52, -1, data.GetTimesBroadcasted(useOwner), "repetitions", "neutral", skin.fontBold)
+		skin.RenderBox(contentX + 5 + 51, contentY, 52, -1, GetTimesBroadcasted(useOwner), "repetitions", "neutral", skin.fontBold)
 		'record
 		skin.RenderBox(contentX + 5 + 107, contentY, 83, -1, TFunctions.convertValue(GetBroadcastStatistic(useOwner).GetBestAudienceResult(useOwner, -1).audience.GetTotalSum(),2), "maxAudience", "neutral", skin.fontBold)
 		'price
@@ -1264,7 +1278,7 @@ endrem
 			contentY :+ 12	
 			skin.fontNormal.draw("Bloecke: "+data.GetBlocks(), contentX + 5, contentY)
 			contentY :+ 12	
-			skin.fontNormal.draw("Ausgestrahlt: "+data.GetTimesBroadcasted(useOwner)+"x Spieler, "+data.GetTimesBroadcasted()+"x alle  Limit:"+broadcastLimit, contentX + 5, contentY)
+			skin.fontNormal.draw("Ausgestrahlt: "+GetTimesBroadcasted(useOwner)+"x Spieler, "+GetTimesBroadcasted()+"x alle  Limit:"+broadcastLimit, contentX + 5, contentY)
 			contentY :+ 12	
 			skin.fontNormal.draw("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(useOwner, -1).audience.GetTotalSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetTotalSum())+" (alle)", contentX + 5, contentY)
 			contentY :+ 12	
