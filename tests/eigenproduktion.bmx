@@ -693,26 +693,19 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		
 		if title <> window.concept.script.GetTitle()
 			window.concept.SetCustomTitle(title)
-			print "customTitle"
 		endif
 		if description <> window.concept.script.GetDescription()
 			window.concept.SetCustomDescription(description)
-			print "customDescription"
 		endif
 		if window.concept.script.IsEpisode()
 			local seriesScript:TScript = window.concept.script.GetParentScript()
 			if title <> seriesScript.GetTitle()
 				seriesScript.SetCustomTitle(parentTitle)
-				print "customSeriesTitle"
 			endif
 			if description <> window.concept.script.GetDescription()
 				seriesScript.SetCustomDescription(parentDescription)
-				print "customSeriesDescription"
 			endif
 		endif
-		print "TODO: titel uebernehmen" 
-		'...
-		
 	End Function
 	
 
@@ -1102,10 +1095,11 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 		productionConceptList = new TGUISelectList.Create(new TVec2D.Init(20,20), new TVec2D.Init(150,180), "supermarket_customproduction_productionconceptbox")
 		'scroll one concept per "scroll"
 		productionConceptList.scrollItemHeightPercentage = 1.0
+		productionConceptList.SetAutosortItems(true) 'sort concepts
 
 		'create some random concepts
 		'add some items to that list
-		for local i:int = 1 to 10
+		for local i:int = 1 to 4
 			local script:TScript = TMyApp.GetRandomScript()
 
 			if script.IsEpisode()
@@ -1120,9 +1114,11 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 
 			'add two others of that series
 			if script.IsEpisode()
-				for local subI:int = 1 until 2
-					local otherScript:TScript = TScript(script.GetParentScript().GetSubScriptAtIndex(1))
+				productionConcept.studioSlot = 1
+				for local subI:int = 1 to 2
+					local otherScript:TScript = TScript(script.GetParentScript().GetSubScriptAtIndex(subI))
 					local otherConcept:TProductionConcept = new TProductionConcept.Initialize(1, otherScript)
+					otherConcept.studioSlot = subI + 1
 					GetProductionConceptCollection().Add(otherConcept)
 					otherScript.SetOwner(1)
 				Next
@@ -1131,7 +1127,21 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 
 		Next
 
+		local productionConcepts:TProductionConcept[]
 		For local productionConcept:TProductionConcept = EachIn GetProductionConceptCollection().entries.Values()
+			productionConcepts :+ [productionConcept]
+		Next
+		
+		'sort by series/name
+'		productionConcepts.Sort(true)
+
+		For local productionConcept:TProductionConcept = EachIn productionConcepts
+
+'if productionConcept.script.IsEpisode()
+'	print Lset("E: " + productionConcept.studioSlot+"  "+productionConcept.GetTitle(),40) + productionConcept.GetGUID() 
+'else
+'	print Lset(productionConcept.GetTitle(),40) + productionConcept.GetGUID() 
+'endif
 			'skip produced concepts
 			if productionConcept.IsProduced() then continue
 
@@ -1141,6 +1151,8 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 			'base items do not have a size - so we have to give a manual one
 			productionConceptList.AddItem( item )
 		Next
+		productionConceptList.entries.sort(true)
+		productionConceptList.RecalculateElements()
 		'refresh scrolling state
 		productionConceptList.Resize(150, 180)
 	End Method
@@ -1203,16 +1215,16 @@ Type RoomHandler_Supermarket 'extends TRoomHandler
 				finishProductionConcept.Disable()
 				finishProductionConcept.spriteName = "gfx_gui_button.datasheet.informative"
 
-				finishProductionConcept.SetValue("|b|Planung abgeschlossen|/b|")
+				finishProductionConcept.SetValue("|b|"+GetLocale("FINISHED_PLANNING")+"|/b|")
 			elseif currentProductionConcept.IsPlanned()
 				finishProductionConcept.Enable()
 				'TODO: positive/negative je nach Geldstand
 				finishProductionConcept.spriteName = "gfx_gui_button.datasheet.positive"
-				finishProductionConcept.SetValue("|b|Planung abschließen|/b|~nund |b|"+TFunctions.DottedValue(currentProductionConcept.GetDepositCost())+" " + GetLocale("CURRENCY")+"|/b| anzahlen")
+				finishProductionConcept.SetValue("|b|"+GetLocale("FINISH_PLANNING")+"|/b|~n" + GetLocale("AND_PAY_DOWN_MONEY").Replace("%money%", "|b|"+TFunctions.DottedValue(currentProductionConcept.GetDepositCost())+" " + GetLocale("CURRENCY")+"|/b|"))
 			else
 				finishProductionConcept.Disable()
 				finishProductionConcept.spriteName = "gfx_gui_button.datasheet"
-				finishProductionConcept.SetValue("|b|Planung...|/b|~n(|b|"+TFunctions.DottedValue(currentProductionConcept.GetDepositCost())+" " + GetLocale("CURRENCY")+"|/b| anzuzahlen)")
+				finishProductionConcept.SetValue("|b|"+GetLocale("PLANNING")+"|/b|~n(" + GetLocale("MONEY_TO_PAY_DOWN").Replace("%money%", "|b|"+TFunctions.DottedValue(currentProductionConcept.GetDepositCost())+" " + GetLocale("CURRENCY")+"|/b|") +")")
 			endif
 		endif
 
@@ -1576,6 +1588,47 @@ Type TGuiProductionConceptSelectListItem Extends TGuiProductionConceptListItem
 		Return Self
 	End Method
 
+
+
+
+	Method Compare:Int(Other:Object)
+		Local otherItem:TGuiProductionConceptSelectListItem = TGuiProductionConceptSelectListItem(Other)
+		If not otherItem or not otherItem.productionConcept or not otherItem.productionConcept.script then return -1 'before
+		if not productionConcept or not productionConcept.script then return 1 'after
+
+		'both are episodes of the same series
+		if productionConcept.script.GetParentScript() = otherItem.productionConcept.script.GetParentScript()
+			if productionConcept.studioSlot < otherItem.productionConcept.studioSlot
+				return -1 'before other
+			elseif productionConcept.studioSlot > otherItem.productionConcept.studioSlot
+				return 1 'after it
+			endif
+
+			'else: order by name
+		endif
+
+		local titleA:string = productionConcept.GetTitle()
+		local titleB:string = otherItem.productionConcept.GetTitle()
+		if productionConcept.script.IsEpisode() then titleA = productionConcept.script.GetParentScript().GetTitle() + titleA
+		if otherItem.productionConcept.script.IsEpisode() then titleB = otherItem.productionConcept.script.GetParentScript().GetTitle() + titleB
+
+		'let the name be sorted alphabetically 
+		if titleA < titleB
+			return -1 'before
+		elseif titleA > titleB
+			return 1 'after
+		else
+			'sort by guid
+			if productionConcept.GetGUID() < otherItem.productionConcept.GetGUID()
+				return -1 'before
+			else
+				return 1
+			endif
+		endif
+
+		Return Super.Compare(Other)
+	End Method
+	
 rem
 TODO: might be needed somewhen
 	'override to add scaleAsset
@@ -2042,19 +2095,15 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 
     Method Create:TGUICastListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
-
 		'no "super.Create..." as we do not need events and dragable and...
    		Super.CreateBase(pos, dimension, "")
 
-		'SetLifetime(30000) '30 seconds
-		'SetValue(":D")
 		SetValueColor(TColor.Create(0,0,0))
 		
 		GUIManager.add(Self)
 
 		Return Self
 	End Method
-
 
 
 	'override
@@ -2074,7 +2123,6 @@ Type TGUICastListItem Extends TGUISelectListItem
 	Method onFinishDrop:int(triggerEvent:TEventBase)
 		if Super.OnFinishDrop(triggerEvent)
 			'refresh displayJobID
-			'print "refresh jobID"
 			displayJobID = -1
 			GetDisplayJobID()
 			return true
@@ -2099,7 +2147,6 @@ Type TGUICastListItem Extends TGUISelectListItem
 						if slotJob > 0
 							return TGUICastSlotList(parentList).GetSlotJob(slotListSlot)
 						else
-							print "return last: "+lastDisplayJobID
 							return lastDisplayJobID
 						endif
 					endif
@@ -2612,8 +2659,8 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 		AddChild(jobFilterSelect)
 		AddChild(castSelectList)
 
-		buttonOK.SetValue("Person auswählen")
-		buttonCancel.SetValue("Abbrechen")
+		buttonOK.SetValue(GetLocale("SELECT_PERSON"))
+		buttonCancel.SetValue(GetLocale("CANCEL"))
 
 		_eventListeners :+ [ EventManager.registerListenerMethod("GUIDropDown.onSelectEntry", self, "onCastChangeJobFilterDropdown", "TGUIDropDown" ) ]
 		_eventListeners :+ [ EventManager.registerListenerMethod("guiobject.OnDoubleClick", self, "onDoubleClickCastListItem", "TGUICastListItem" ) ]
@@ -2738,7 +2785,7 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 			'custom production not possible with real persons...
 			if not p.fictional then continue
 			if not p.IsAlive() then continue
-			'we also want to avoid "children" (only available for celebs
+			'we also want to avoid "children" (only available for celebs)
 			if TProgrammePerson(p) and p.GetAge() < 10 then continue
 			
 			'base items do not have a size - so we have to give a manual one
@@ -2749,7 +2796,6 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 				else
 					item.displayName = GetLocale("JOB_AMATEUR")
 				endif
-
 				item.isAmateur = True
 			endif
 			item.Resize(180,40)

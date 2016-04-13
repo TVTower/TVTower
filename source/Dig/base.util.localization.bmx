@@ -344,6 +344,9 @@ Type TLocalizationLanguage
 			'skip corrupt keys
 			If Key = "" then continue
 
+			'unescape + new line or tab
+			value = value.replace("\\", "\").replace("\n", "~n").replace("\t", "~t")
+
 			If group <> ""
 				'insert as "groupname::key"
 				lang.map.Insert(lower(group + "::" + Key), value)

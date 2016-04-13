@@ -105,7 +105,7 @@ Type TProduction Extends TOwnedGameObject
 	'returns a modificator to a script's intrinsic values (speed, review..)
 	Method GetProductionValueMod:Float()
 		local value:Float
-		value = 0.4 * scriptGenreFit + 0.5 * castFit
+		value = 0.3 * scriptGenreFit + 0.6 * castFit
 
 		'sympathy of the cast influences result a bit
 		value :+ 0.1 * (castSympathyMod - 1.0)
@@ -287,7 +287,7 @@ Type TProduction Extends TOwnedGameObject
 		endif
 		GetProgrammeLicenceCollection().AddAutomatic(programmeLicence)
 
-print "produziert: " + programmeLicence.GetTitle()
+print "produziert: " + programmeLicence.GetTitle() + "  (Preis: "+programmeLicence.GetPrice()+")"
 if programmeLicence.IsEpisode()
 	print "Serie besteht nun aus den Folgen:"
 	For local epIndex:int = 0 until addLicence.GetSubLicenceCount()

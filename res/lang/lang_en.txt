@@ -657,5 +657,12 @@ PRODUCTION_SETUP_NOT_DONE = Production setup not done
 PRODUCTION_SETUP_INCOMPLETE = Production setup incomplete
 EPISODES_NOT_IN_ORDER = Episodes not in order
 
+SELECT_PERSON = Select person
+FINISHED_PLANNING = Finished planning
+FINISH_PLANNING = Finish planning
+AND_PAY_DOWN_MONEY = and pay down %money%
+PLANNING = Planning ...
+MONEY_TO_PAY_DOWN = %money% to pay down
+
 STUDIO_MANAGER = Studio manager
 STUDIO_MANAGER_TOOLTIP = Gives information about production and hands out new shopping lists

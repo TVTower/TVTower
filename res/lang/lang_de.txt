@@ -660,6 +660,13 @@ PRODUCTION_SETUP_NOT_DONE = Produktion noch nicht konzipiert
 PRODUCTION_SETUP_INCOMPLETE = Produktionskonzept unvollständig
 EPISODES_NOT_IN_ORDER = Episoden nicht in richtiger Reihenfolge
 
+SELECT_PERSON = Person auswählen
+FINISHED_PLANNING = Planung abgeschlossen
+FINISH_PLANNING = Planung abschließen
+AND_PAY_DOWN_MONEY = und %money% anzahlen
+PLANNING = Planung ...
+MONEY_TO_PAY_DOWN = %money% anzuzahlen
+
 
 STUDIO_MANAGER = Studioleiter
 STUDIO_MANAGER_TOOLTIP = Gibt Informationen zu geplanten Produktionen und händigt Einkaufslisten aus

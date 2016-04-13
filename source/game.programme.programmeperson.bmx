@@ -94,9 +94,12 @@ Function onProgrammePersonBaseFinishesProduction:int(triggerEvent:TEventBase)
 	'skip celebrities
 	if TProgrammePerson(currentPerson) then return False
 
+	'skip failed conversions
+	local celeb:TProgrammePersonBase = ConvertInsignificantToCelebrity(currentPerson)
+	if not TProgrammePerson(celeb) then return False
+
 	GetProgrammePersonBaseCollection().RemoveInsignificant(currentPerson)
-	currentPerson = ConvertInsignificantToCelebrity(currentPerson)
-	GetProgrammePersonBaseCollection().AddCelebrity(currentPerson)
+	GetProgrammePersonBaseCollection().AddCelebrity(celeb)
 End Function
 
 
