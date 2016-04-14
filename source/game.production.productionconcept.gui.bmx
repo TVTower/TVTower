@@ -566,6 +566,263 @@ End Type
 
 
 
+Type TGuiProductionConceptSelectListItem Extends TGuiProductionConceptListItem
+	Field displayName:string = ""
+	Field minHeight:int = 50 '61
+	Const scaleAsset:Float = 0.55
+	Const paddingBottom:Int	= 2
+	Const paddingTop:Int = 2
+
+
+    Method Create:TGuiProductionConceptSelectListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+		Super.Create(pos, dimension, value)
+		SetOption(GUI_OBJECT_DRAGABLE, False)
+
+		Self.InitAssets(GetAssetName(0, False), GetAssetName(0, True))
+
+		'resize it
+		GetDimension()
+
+		Return Self
+	End Method
+
+
+
+
+	Method Compare:Int(Other:Object)
+		Local otherItem:TGuiProductionConceptSelectListItem = TGuiProductionConceptSelectListItem(Other)
+		If not otherItem or not otherItem.productionConcept or not otherItem.productionConcept.script then return -1 'before
+		if not productionConcept or not productionConcept.script then return 1 'after
+
+		'both are episodes of the same series
+		if productionConcept.script.GetParentScript() = otherItem.productionConcept.script.GetParentScript()
+			if productionConcept.studioSlot < otherItem.productionConcept.studioSlot
+				return -1 'before other
+			elseif productionConcept.studioSlot > otherItem.productionConcept.studioSlot
+				return 1 'after it
+			endif
+
+			'else: order by name
+		endif
+
+		local titleA:string = productionConcept.GetTitle()
+		local titleB:string = otherItem.productionConcept.GetTitle()
+		if productionConcept.script.IsEpisode() then titleA = productionConcept.script.GetParentScript().GetTitle() + titleA
+		if otherItem.productionConcept.script.IsEpisode() then titleB = otherItem.productionConcept.script.GetParentScript().GetTitle() + titleB
+
+		'let the name be sorted alphabetically 
+		if titleA < titleB
+			return -1 'before
+		elseif titleA > titleB
+			return 1 'after
+		else
+			'sort by guid
+			if productionConcept.GetGUID() < otherItem.productionConcept.GetGUID()
+				return -1 'before
+			else
+				return 1
+			endif
+		endif
+
+		Return Super.Compare(Other)
+	End Method
+	
+rem
+TODO: might be needed somewhen
+	'override to add scaleAsset
+	Method SetAsset(sprite:TSprite=Null, name:string = "")
+		If Not sprite then sprite = Self.assetDefault
+		If Not name then name = Self.assetNameDefault
+
+			
+		'only resize if not done already
+		If Self.asset <> sprite or self.assetName <> name
+			Self.asset = sprite
+			Self.assetName = name
+			Self.Resize(sprite.area.GetW() * scaleAsset, sprite.area.GetH() * scaleAsset)
+		EndIf
+	End Method
+endrem
+
+	Method getDimension:TVec2D()
+		'available width is parentsDimension minus startingpoint
+		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
+		Local maxWidth:Int = 300
+		If parentPanel Then maxWidth = parentPanel.getContentScreenWidth() '- GetScreenWidth()
+		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
+
+		Local dimension:TVec2D = New TVec2D.Init(maxWidth, max(minHeight, asset.GetHeight() * scaleAsset))
+		
+		'add padding
+		dimension.addXY(0, Self.paddingTop)
+		dimension.addXY(0, Self.paddingBottom)
+
+		'set current size and refresh scroll limits of list
+		'but only if something changed (eg. first time or content changed)
+		If Self.rect.getW() <> dimension.getX() Or Self.rect.getH() <> dimension.getY()
+			'resize item
+			Self.Resize(dimension.getX(), dimension.getY())
+		EndIf
+
+		Return dimension
+	End Method
+
+
+	Method DrawBackground()
+		local oldCol:TColor = new TColor.Get()
+
+		'available width is parentsDimension minus startingpoint
+		Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
+		local bgColor:TColor
+
+		'ready for production
+		if productionConcept.IsProduceable()
+			bgColor = TColor.Create(110,180,60, 0.1)
+		'planned but not paid
+		elseif productionConcept.isPlanned()
+			bgColor = TColor.Create(60,110,180, 0.1)
+		'in planning
+		elseif productionConcept.IsGettingPlanned()
+			bgColor = TColor.Create(180,110,60, 0.1)
+		'default
+		else 'elseif productionConcept.IsUnplanned()
+			if IsHovered() or isSelected()
+				bgColor = TColor.Create(175,165,120, 0.25)
+			endif
+		endif
+
+
+		if bgColor
+			If isSelected() then bgColor.a :+ 0.05; bgColor.AdjustBrightness(0.1)
+			If isHovered() then bgColor.a :+ 0.1; bgColor.AdjustBrightness(0.1)
+
+			bgColor.SetRGBA()
+
+			DrawRect(GetScreenX(), GetScreenY() + paddingTop -2, GetScreenWidth(), GetScreenHeight() - paddingBottom -3)
+
+			oldCol.SetRGBA()
+		endif
+	End Method
+
+
+	'override
+	Method DrawContent()
+		DrawProductionConceptItem()
+		
+		'hovered
+		If isHovered() and not isDragged()
+			Local oldAlpha:Float = GetAlpha()
+			SetAlpha 0.20*oldAlpha
+			SetBlend LightBlend
+
+			DrawProductionConceptItem()
+
+			SetBlend AlphaBlend
+			SetAlpha oldAlpha
+		EndIf
+
+		SetColor 150,150,150
+		DrawLine(GetScreenX() + 10, GetScreenY2() - paddingBottom -1, GetScreenX2() - 20, GetScreenY2() - paddingBottom -1)
+		SetColor 210,210,210
+		DrawLine(GetScreenX() + 10, GetScreenY2() - paddingBottom, GetScreenX2() - 20, GetScreenY2() - paddingBottom)
+	End Method
+
+
+	Method DrawProductionConceptItem()
+		GetAsset().draw(Self.GetScreenX(), Self.GetScreenY(), -1, null, scaleAsset)
+
+		'ready for production
+		if productionConcept.IsProduceable()
+			GetSpriteFromRegistry("gfx_datasheet_icon_ok").Draw(Self.GetScreenX()-2, Self.GetScreenY() + GetAsset().GetHeight() * scaleAsset -1)
+		'finished planning
+		elseif productionConcept.IsPlanned()
+			GetSpriteFromRegistry("gfx_datasheet_icon_ok2").Draw(Self.GetScreenX()-2, Self.GetScreenY() + GetAsset().GetHeight() * scaleAsset -1)
+		'planning not yet finished
+		elseif productionConcept.IsGettingPlanned()
+			GetSpriteFromRegistry("gfx_datasheet_icon_warning").Draw(Self.GetScreenX()-3, Self.GetScreenY() + GetAsset().GetHeight() * scaleAsset -1)
+		'default
+		else 'elseif productionConcept.IsUnplanned()
+			'nothing
+		endif
+
+		local textOffsetX:int = asset.GetWidth()*scaleAsset + 3
+		local title:string = "unknown script"
+		local subtitle:string = ""
+		local titleSize:TVec2D
+		local subTitleSize:TVec2D
+		local genreColor:TColor
+		local titleColor:TColor
+		local titleFont:TBitmapFont = GetBitmapFont("default",,BOLDFONT)
+		local oldMod:float = titleFont.lineHeightModifier
+		titleFont.lineHeightModifier :* 0.9
+
+		if productionConcept
+			title = productionConcept.GetTitle()
+			if productionConcept.script.IsEpisode()
+				local seriesScript:TScript = productionConcept.script.GetParentScript()
+				subtitle = (seriesScript.GetSubScriptPosition(productionConcept.script)+1)+"/"+seriesScript.GetSubscriptCount()+": "+ title
+				title = seriesScript.GetTitle()
+			endif
+		endif
+
+
+		'finished
+		if productionConcept.IsProduceable()
+			titleColor = TColor.Create(80,150,30)
+			genreColor = TColor.CreateGrey(0, 0.6)
+		'all slots filled, just not paid
+		elseif productionConcept.IsPlanned()
+			titleColor = TColor.Create(30,80,150)
+			genreColor = TColor.CreateGrey(0, 0.6)
+		'planned but not finished
+		elseif productionConcept.IsGettingPlanned()
+			titleColor = TColor.Create(150,80,30)
+			genreColor = TColor.CreateGrey(0, 0.6)
+		'default /unplanned
+		else 'elseif productionConcept.IsUnplanned()
+			titleColor = TColor.CreateGrey(50)
+			genreColor = TColor.CreateGrey(0, 0.6)
+		endif
+		
+
+		if isSelected()
+			titleColor.AdjustBrightness(+0.05)
+			genreColor.AdjustBrightness(+0.05)
+		endif
+		if isHovered()
+			titleColor.AdjustBrightness(+0.05)
+			genreColor.AdjustBrightness(+0.05)
+		endif
+
+
+		titleSize = titleFont.DrawBlock(title, int(GetScreenX()+ textOffsetX), int(GetScreenY()+2), GetScreenWidth() - textOffsetX - 1, GetScreenHeight()-4,,titleColor)
+		if subTitle
+			if titleSize.y > 20
+				subTitleSize = titleFont.DrawBlock(subTitle, int(GetScreenX()+ textOffsetX), int(GetScreenY() + titleSize.y + 2), GetScreenWidth() - textOffsetX - 3, 14,,titleColor)
+			else
+				subTitleSize = titleFont.DrawBlock(subTitle, int(GetScreenX()+ textOffsetX), int(GetScreenY() + titleSize.y + 2), GetScreenWidth() - textOffsetX - 3, 28,,titleColor)
+			endif
+		endif
+
+
+		titleFont.lineHeightModifier = oldMod
+		
+
+		if productionConcept
+			local productionTypeText:string = productionConcept.script.GetProductionTypeString()
+			local genreText:string = productionConcept.script.GetMainGenreString()
+			local text:string = productionTypeText
+			if genreText <> productionTypeText then text :+ " / "+genreText
+			if subTitle
+				GetBitmapFont("default").DrawBlock(text, int(GetScreenX()+ textOffsetX), int(GetScreenY()+2 + titleSize.y + subTitleSize.y), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-4,,genreColor)
+			else
+				GetBitmapFont("default").DrawBlock(text, int(GetScreenX()+ textOffsetX), int(GetScreenY()+2 + titleSize.y), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-4,,genreColor)
+			endif
+		endif
+	End Method
+End Type
+
+
 
 Type TGUIProductionConceptSlotList Extends TGUIGameSlotList
     Method Create:TGUIProductionConceptSlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")

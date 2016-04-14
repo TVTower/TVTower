@@ -997,7 +997,7 @@ Type TScreenHandler_ProgrammePlanner
 		'if not initialized, do so
 		if planningDay = -1 then planningDay = GetWorldTime().GetDay()
 
-		GetGame().cursorstate = 0
+		GetGameBase().cursorstate = 0
 
 		ignoreCopyOrEpisodeShortcut  = false
 

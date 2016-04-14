@@ -98,6 +98,15 @@ Import "game.figure.bmx"
 Import "game.figure.customfigures.bmx"
 Import "game.newsagency.bmx"
 
+Import "game.roomhandler.base.bmx"
+Import "game.roomhandler.adagency.bmx"
+Import "game.roomhandler.betty.bmx"
+Import "game.roomhandler.credits.bmx"
+Import "game.roomhandler.elevatorplan.bmx"
+Import "game.roomhandler.roomagency.bmx"
+Import "game.roomhandler.roomboard.bmx"
+Import "game.roomhandler.scriptagency.bmx"
+Import "game.roomhandler.studio.bmx"
 
 '===== Includes =====
 Include "game.player.bmx"
@@ -845,7 +854,7 @@ Type TApp
 
 
 		TError.UpdateErrors()
-		GetGame().cursorstate = 0
+		GetGameBase().cursorstate = 0
 
 		ScreenCollection.UpdateCurrent(GetDeltaTimer().GetDelta())
 
@@ -1057,13 +1066,13 @@ Type TApp
 		'if MouseManager.x <> MouseX() or MouseManager.y <> MouseY()
 		'	print MouseManager.x+" <> "+MouseX()+" or "+MouseManager.y+" <> "+MouseY()
 		'endif
-		If GetGame().cursorstate = 0 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-9,  MouseManager.y-2,  0)
+		If GetGameBase().cursorstate = 0 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-9,  MouseManager.y-2,  0)
 		'open hand
-		If GetGame().cursorstate = 1 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11, MouseManager.y-8,  1)
+		If GetGameBase().cursorstate = 1 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11, MouseManager.y-8,  1)
 		'grabbing hand
-		If GetGame().cursorstate = 2 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11, MouseManager.y-16, 2)
+		If GetGameBase().cursorstate = 2 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11, MouseManager.y-16, 2)
 		'open hand blocked
-		If GetGame().cursorstate = 3 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11, MouseManager.y-8	,  3)
+		If GetGameBase().cursorstate = 3 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11, MouseManager.y-8	,  3)
 
 		'if a screenshot is generated, draw a logo in
 		If App.prepareScreenshot = 1
@@ -1320,6 +1329,7 @@ print "TGameState.Initialize(): Reinitialize all game objects"
 		GetBetty().Initialize()
 
 		'initialize known room handlers + event registration
+		RegisterRoomHandlers()
 		GetRoomHandlerCollection().Initialize()
 	End Method
 
@@ -4304,10 +4314,10 @@ Type AppEvents
 		Local obj:TGUIObject = TGUIObject(triggerEvent.GetSender())
 		If Not obj Then Return False
 		
-		If obj.isDragable() And GetGame().cursorstate = 0
-			GetGame().cursorstate = 1
+		If obj.isDragable() And GetGameBase().cursorstate = 0
+			GetGameBase().cursorstate = 1
 		EndIf
-		If obj.isDragged() Then GetGame().cursorstate = 2
+		If obj.isDragged() Then GetGameBase().cursorstate = 2
 	End Function
 
 

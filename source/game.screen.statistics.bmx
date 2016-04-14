@@ -394,7 +394,7 @@ Type TScreenHandler_Statistics
 			nextDayButton.Enable()
 		endif
 
-		GetGame().cursorstate = 0
+		GetGameBase().cursorstate = 0
 		GuiManager.Update("officeStatisticsScreen")
 	End Function
 End Type

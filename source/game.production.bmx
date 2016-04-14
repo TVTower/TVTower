@@ -333,8 +333,6 @@ endif
 			FillProgrammeDataByScript(parentLicence.GetData(), productionConcept.script.GetParentScript())
 
 			parentLicence.licenceType = TVTProgrammeLicenceType.SERIES
-
-print "Serienkopf angelegt: " + parentLicence.GetTitle()
 		else
 			if productionConcept.script.GetParentScript().usedInProgrammeGUID <> parentLicence.GetGUID()
 				Throw "CreateParentalLicence() failed: another programme is already assigned to the parent script."

@@ -223,13 +223,13 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		'set mouse to "hover"
 		If isHovered() and broadcastMaterial.IsOwnedByPlayer( GetPlayerCollection().playerID)
 			if not broadcastMaterial.IsControllable()
-				GetGame().cursorstate = 3
+				GetGameBase().cursorstate = 3
 			else
-				GetGame().cursorstate = 1
+				GetGameBase().cursorstate = 1
 			endif
 		endif
 		'set mouse to "dragged"
-		If isDragged() Then GetGame().cursorstate = 2
+		If isDragged() Then GetGameBase().cursorstate = 2
 	End Method
 
 
@@ -1346,7 +1346,7 @@ endrem
 
 			'we add 1 pixel to height - to hover between tapes too
 			If THelper.MouseIn(int(entriesRect.GetX()), currY+1, int(entrySize.GetX()), int(entrySize.GetY()))
-				GetGame().cursorstate = 1
+				GetGameBase().cursorstate = 1
 				Local doneSomething:Int = False
 				'store for sheet-display
 				hoveredLicence = licences[i]
@@ -1525,7 +1525,7 @@ endrem
 			
 			If licence
 				If THelper.MouseIn(int(subEntriesRect.GetX()), currY + 1, int(entrySize.GetX()), int(entrySize.GetY()))
-					GetGame().cursorstate = 1 'mouse-over-hand
+					GetGameBase().cursorstate = 1 'mouse-over-hand
 
 					'store for sheet-display
 					hoveredLicence = licence
@@ -1727,7 +1727,7 @@ Type TgfxContractlist Extends TPlannerList
 					'store for outside use (eg. displaying a sheet)
 					hoveredAdContract = contract
 
-					GetGame().cursorstate = 1
+					GetGameBase().cursorstate = 1
 					'only interact if allowed
 					If clicksAllowed
 						If MOUSEMANAGER.IsShortClicked(1)
@@ -2206,12 +2206,12 @@ Type TGUINews Extends TGUIGameListItem
 		'set mouse to "hover"
 		If isHovered() and (news.owner <= 0 or news.IsOwnedByPlayer( GetPlayerCollection().playerID))
 			if news.IsControllable()
-				GetGame().cursorstate = 1
+				GetGameBase().cursorstate = 1
 			endif
 		endif
 
 		'set mouse to "dragged"
-		If isDragged() Then GetGame().cursorstate = 2
+		If isDragged() Then GetGameBase().cursorstate = 2
 	End Method
 
 
@@ -2551,154 +2551,4 @@ End Type
 
 
 
-
-
-'a graphical representation of contracts at the ad-agency ...
-Type TGuiAdContract Extends TGUIGameListItem
-	Field contract:TAdContract
-
-
-    Method Create:TGuiAdContract(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
-		Super.Create(pos, dimension, value)
-
-		Self.assetNameDefault = "gfx_contracts_0"
-		Self.assetNameDragged = "gfx_contracts_0_dragged"
-
-		Return Self
-	End Method
-
-
-	Method CreateWithContract:TGuiAdContract(contract:TAdContract)
-		Self.Create()
-		Self.setContract(contract)
-		Return Self
-	End Method
-
-
-	Method SetContract:TGuiAdContract(contract:TAdContract)
-		Self.contract		= contract
-		'targetgroup is between 0-9
-		Self.InitAssets(GetAssetName(contract.GetLimitedToTargetGroup(), False), GetAssetName(contract.GetLimitedToTargetGroup(), True))
-
-		Return Self
-	End Method
-
-
-	Method GetAssetName:String(targetGroup:Int=-1, dragged:Int=False)
-		If targetGroup < 0 And contract Then targetGroup = contract.GetLimitedToTargetGroup()
-		Local result:String = "gfx_contracts_" + Min(9,Max(0, TVTTargetGroup.GetIndexes(targetGroup)[0]))
-		If dragged Then result = result + "_dragged"
-		Return result
-	End Method
-
-
-	'override default update-method
-	Method Update:Int()
-		Super.Update()
-
-		'disable dragging if not signable
-		If contract.owner <= 0
-			If Not contract.IsAvailableToSign(GetPlayer().playerID)
-				SetOption(GUI_OBJECT_DRAGABLE, False)
-			Else
-				SetOption(GUI_OBJECT_DRAGABLE, True)
-			EndIf
-		EndIf
-			
-
-		'set mouse to "hover"
-		If contract.owner = GetPlayer().playerID Or contract.owner <= 0 And isHovered() Then GetGame().cursorstate = 1
-				
-		
-		'set mouse to "dragged"
-		If isDragged() Then GetGame().cursorstate = 2
-	End Method
-
-
-	Method DrawSheet(leftX:Int=30, rightX:Int=30, forceAlign:int = -1)
-		Local sheetY:Int = 20
-		Local sheetX:Int = leftX
-		Local sheetAlign:Int= 0
-		'if mouse on left side of screen - align sheet on right side
-		'METHOD 1
-		'instead of using the half screen width, we use another
-		'value to remove "flipping" when hovering over the desk-list
-		'if MouseManager.x < RoomHandler_AdAgency.suitcasePos.GetX()
-		'METHOD 2
-		'just use the half of a screen - ensures the data sheet does not overlap
-		'the object
-		If forceAlign <> -1
-			sheetAlign = forceAlign
-		elseIf MouseManager.x < GetGraphicsManager().GetWidth()/2
-			sheetAlign = 1
-		EndIf
-
-		if sheetAlign = 1
-			sheetX = GetGraphicsManager().GetWidth() - rightX
-		endif
-
-		SetColor 0,0,0
-		SetAlpha 0.2
-		local pointA:TVec2D = new TVec2D.Init(GetScreenX() + 0.5 * GetScreenWidth(), GetScreenY() + 0.25 * GetScreenHeight())
-		local pointB:TVec2D = new TVec2D.Init(sheetX + (sheetAlign=0)*100 - (sheetalign=1)*100, sheetY + 75)
-		local pointC:TVec2D = pointB.Copy().RotateAroundPoint(pointA, 5)
-		'this centers the middle of BC
-		pointB.RotateAroundPoint(pointA, -4)
-		Local tri:Float[]=[pointB.x,pointB.y, pointA.x,pointA.y, pointC.x,pointC.y]
-		DrawPoly(tri)
-		SetColor 255,255,255
-		SetAlpha 1.0
-
-		Self.contract.ShowSheet(sheetX,sheetY, sheetAlign, TVTBroadcastMaterialType.ADVERTISEMENT)
-	End Method
-
-
-	Method Draw()
-		SetColor 255,255,255
-		Local oldCol:TColor = New TColor.Get()
-
-		'make faded as soon as not "dragable" for us
-		If Not isDragable()
-			'in our collection
-			If contract.owner = GetPlayerCollection().playerID
-				SetAlpha 0.80*oldCol.a
-				SetColor 200,200,200
-			Else
-				SetAlpha 0.70*oldCol.a
-'				SetColor 250,200,150
-			EndIf
-		EndIf
-
-		'mark special vendor-contracts
-		If contract.owner <> GetPlayerCollection().playerID
-			if contract.GetDaysToFinish() <= 1
-				SetColor 255,230,215
-			endif
-		Endif
-
-		Super.Draw()
-
-		oldCol.SetRGBA()
-	End Method
-End Type
-
-
-
-
-Type TGUIAdContractSlotList Extends TGUIGameSlotList
-
-    Method Create:TGUIAdContractSlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
-		Super.Create(position, dimension, limitState)
-		Return Self
-	End Method
-
-
-	Method ContainsContract:Int(contract:TAdContract)
-		For Local i:Int = 0 To Self.GetSlotAmount()-1
-			Local block:TGuiAdContract = TGuiAdContract( Self.GetItemBySlot(i) )
-			If block And block.contract = contract Then Return True
-		Next
-		Return False
-	End Method
-End Type
 
