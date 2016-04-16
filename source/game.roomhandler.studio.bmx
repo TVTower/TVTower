@@ -1,4 +1,4 @@
-SuperStrict
+﻿SuperStrict
 Import "Dig/base.util.registry.spriteentityloader.bmx"
 Import "Dig/base.gfx.gui.bmx"
 Import "common.misc.dialogue.bmx"

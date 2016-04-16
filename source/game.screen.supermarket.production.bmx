@@ -92,8 +92,19 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction("ProductionConcept.SetProductionCompany", onProductionConceptChangeProductionCompany ) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("ProductionFocus.SetFocus", onProductionConceptChangeProductionFocus ) ]
 
+		'to reload concept list when entering a screen
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onEnter", onEnterScreen, screen) ]
+
 		'to update/draw the screen
 		_eventListeners :+ _RegisterScreenHandler( onUpdate, onDraw, screen )
+	End Method
+
+
+	Method SetLanguage()
+	End Method
+
+
+	Method AbortScreenActions:Int()
 	End Method
 
 
@@ -106,6 +117,11 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		GetInstance().Render()
 	End Function
 
+
+	Function onEnterScreen:int( triggerEvent:TEventBase )
+		GetInstance().ReloadProductionConceptContent()
+	End Function
+	
 
 	'reset gui elements to their initial state (new production)
 	Method ResetProductionConceptGUI()
@@ -652,14 +668,8 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		'==========================
 
 		'=== PRODUCTION COMPANY SELECT ===
-		productionCompanySelect = new TGUIDropDown.Create(new TVec2D.Init(600,200), new TVec2D.Init(150,-1), "Produktionsfirma", 128, "supermarket_customproduction_productionbox")
-		'add some items to that list
-		For local p:TProductionCompanyBase = EachIn GetProductionCompanyBaseCollection().entries.values()
-			'base items do not have a size - so we have to give a manual one
-			local item:TGUIDropDownItem = new TGUIDropDownItem.Create(null, null, p.name+" [Lvl: "+p.GetLevel()+"]")
-			item.data = new TData.Add("productionCompany", p)
-			productionCompanySelect.AddItem( item )
-		Next
+		productionCompanySelect = new TGUIDropDown.Create(new TVec2D.Init(600,200), new TVec2D.Init(150,-1), GetLocale("PRODUCTION_COMPANY"), 128, "supermarket_customproduction_productionbox")
+		'entries added during ReloadProductionConceptContent()
 
 
 		'=== PRODUCTION WEIGHTS ===
@@ -692,8 +702,8 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		finishProductionConcept.spriteName = "gfx_gui_button.datasheet"
 
 		'=== PRODUCTION TAKEOVER CHECKBOX ===
-		productionConceptTakeOver = new TGUICheckbox.Create(new TVec2D.Init(20, 220), new TVec2D.Init(100, 28), "Einstellungen übernehmen", "supermarket_customproduction_productionconceptbox")
-
+		productionConceptTakeOver = new TGUICheckbox.Create(new TVec2D.Init(20, 220), new TVec2D.Init(100, 28), GetLocale("TAKE_OVER_SETTINGS"), "supermarket_customproduction_productionconceptbox")
+		productionConceptTakeOver.SetFont( GetBitmapFontManager().Get("default", 12) )
 	
 		'=== PRODUCTION CONCEPT LIST ===
 		productionConceptList = new TGUISelectList.Create(new TVec2D.Init(20,20), new TVec2D.Init(150,180), "supermarket_customproduction_productionconceptbox")
@@ -702,6 +712,27 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		productionConceptList.SetAutosortItems(true) 'sort concepts
 
 
+		ReloadProductionConceptContent()
+	End Method
+
+
+	Method ReloadProductionConceptContent()
+		'=== PRODUCTION COMPANY SELECT ===
+		productionCompanySelect.list.EmptyList()
+		productionCompanySelect.SetValue(GetLocale("PRODUCTION_COMPANY"))
+		
+		'add some items to that list
+		For local p:TProductionCompanyBase = EachIn GetProductionCompanyBaseCollection().entries.values()
+			'base items do not have a size - so we have to give a manual one
+			local item:TGUIDropDownItem = new TGUIDropDownItem.Create(null, null, p.name+" [Lvl: "+p.GetLevel()+"]")
+			item.data = new TData.Add("productionCompany", p)
+			productionCompanySelect.AddItem( item )
+		Next
+
+
+		'=== CONCEPTS ===
+		productionConceptList.EmptyList()
+
 		local productionConcepts:TProductionConcept[]
 		For local productionConcept:TProductionConcept = EachIn GetProductionConceptCollection().entries.Values()
 			productionConcepts :+ [productionConcept]
@@ -709,9 +740,8 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		
 		'sort by series/name
 '		productionConcepts.Sort(true)
-
+		
 		For local productionConcept:TProductionConcept = EachIn productionConcepts
-
 'if productionConcept.script.IsEpisode()
 '	print Lset("E: " + productionConcept.studioSlot+"  "+productionConcept.GetTitle(),40) + productionConcept.GetGUID() 
 'else
@@ -730,16 +760,10 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		productionConceptList.RecalculateElements()
 		'refresh scrolling state
 		productionConceptList.Resize(150, 180)
-	End Method
+	End Method	
 
 
 	Method Update()
-		if MouseManager.IsClicked(2)
-			SetCurrentProductionConcept(null)
-			MouseManager.ResetKey(2)
-		endif
-
-
 		'gets refilled in gui-updates
 		hoveredGuiCastItem = null
 		hoveredGuiProductionConcept = null
@@ -786,6 +810,12 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		GuiManager.Update("supermarket_customproduction_newproduction")
 		GuiManager.Update("supermarket_customproduction_productionbox")
 		GuiManager.Update("supermarket_customproduction_castbox")
+
+
+		if currentProductionConcept and (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
+			SetCurrentProductionConcept(null)
+			MouseManager.ResetKey(2)
+		endif
 	End Method
 
 
@@ -810,11 +840,6 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		endif
 
 		SetColor(255,255,255)
-
-		SetColor 50,50,50
-		DrawRect(0,375,800,225)
-		SetColor 255,255,255
-
 
 		local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
 

@@ -16,6 +16,8 @@
 	RoomHandler_ElevatorPlan.GetInstance().RegisterHandler()
 	RoomHandler_Roomboard.GetInstance().RegisterHandler()
 
+	RoomHandler_Supermarket.GetInstance().RegisterHandler()
+
 	RoomHandler_Credits.GetInstance().RegisterHandler()
 End Function
 

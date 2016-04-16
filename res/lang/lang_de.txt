@@ -666,7 +666,8 @@ FINISH_PLANNING = Planung abschließen
 AND_PAY_DOWN_MONEY = und %money% anzahlen
 PLANNING = Planung ...
 MONEY_TO_PAY_DOWN = %money% anzuzahlen
-
+TAKE_OVER_SETTINGS = Einstellungen übernehmen
+PRODUCTION_COMPANY = Produktionsfirma
 
 STUDIO_MANAGER = Studioleiter
 STUDIO_MANAGER_TOOLTIP = Gibt Informationen zu geplanten Produktionen und händigt Einkaufslisten aus

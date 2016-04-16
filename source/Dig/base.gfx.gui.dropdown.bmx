@@ -184,10 +184,14 @@ Type TGUIDropDown Extends TGUIInput
 
 	'override onClick to add open/close toggle
 	Method onClick:int(triggerEvent:TEventBase)
-		'reset mouse button to avoid clicks below
-		MouseManager.ResetKey(1)
+		local button:int = triggerEvent.GetData().GetInt("button")
 
-		SetOpen(1- IsOpen())
+		if button = 1 'left button
+			'reset mouse button to avoid clicks below
+			MouseManager.ResetKey(1)
+
+			SetOpen(1- IsOpen())
+		endif
 	End Method
 
 
@@ -292,6 +296,16 @@ Type TGUIDropDown Extends TGUIInput
 			'remove focus from gui object
 			GuiManager.ResetFocus()
 		endif
+
+		'close with right click
+		if isOpen() and (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
+			'close the list
+			SetOpen(False)
+			'remove focus from gui object
+			GuiManager.ResetFocus()
+
+			MouseManager.ResetKey(2)
+		endif
 		
 
 		'move list to our position
@@ -369,11 +383,16 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 	'override onClick to close parental list
 	Method OnClick:int(triggerEvent:TEventBase)
 		Super.OnClick(triggerEvent)
-		'inform others that a dropdownitem was clicked
-		'this makes the "dropdownitem-clicked"-event filterable even
-		'if the itemclass gets extended (compared to the general approach
-		'of "guiobject.onclick")
-		EventManager.triggerEvent(TEventSimple.Create("GUIDropDownItem.onClick", null, Self, triggerEvent.GetReceiver()) )
+
+		local button:int = triggerEvent.GetData().GetInt("button")
+
+		if button = 1 'left button
+			'inform others that a dropdownitem was clicked
+			'this makes the "dropdownitem-clicked"-event filterable even
+			'if the itemclass gets extended (compared to the general approach
+			'of "guiobject.onclick")
+			EventManager.triggerEvent(TEventSimple.Create("GUIDropDownItem.onClick", new TData.AddNumber("button", button), Self, triggerEvent.GetReceiver()) )
+		endif
 	End Method
 
 

@@ -32,7 +32,7 @@
 		<screen name="screen_boss" image="screen_bg_boss" />
 		<screen name="screen_studio" image="screen_bg_studio" />
 		<screen name="screen_supermarket" image="screen_bg_supermarket" />
-		<screen name="screen_supermarket_production" image="screen_bg_supermarket" />
+		<screen name="screen_supermarket_production" image="screen_bg_supermarket" parent="screen_supermarket" />
 		<screen name="screen_betty" image="screen_bg_betty" />
 		<screen name="screen_adagency" image="screen_bg_adagency" />
 		<screen name="screen_elevatorplan" image="screen_bg_roomboard" />

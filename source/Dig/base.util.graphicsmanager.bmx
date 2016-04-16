@@ -35,6 +35,9 @@ Rem
 	====================================================================
 EndRem
 SuperStrict
+Import brl.Graphics
+Import brl.glmax2d
+
 ?bmxng
 Import BRL.GLMax2D
 'Import sdl.gl2sdlmax2d

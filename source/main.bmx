@@ -7,9 +7,10 @@ Import Brl.Stream
 Import Brl.Retro
 
 Import brl.timer
-Import brl.Graphics
-Import brl.glmax2d
 Import brl.eventqueue
+?Threaded
+Import brl.Threads
+?
 'Import "Dig/external/persistence.mod/persistence_json.bmx"
 Import "Dig/base.util.registry.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
@@ -17,7 +18,6 @@ Import "Dig/base.util.registry.imageloader.bmx"
 Import "Dig/base.util.registry.bitmapfontloader.bmx"
 Import "Dig/base.util.registry.soundloader.bmx"
 Import "Dig/base.util.registry.spriteentityloader.bmx"
-Import "Dig/base.util.luaengine.bmx"
 
 Import "Dig/base.util.deltatimer.bmx"
 Import "Dig/base.util.event.bmx"
@@ -49,54 +49,37 @@ Import "basefunctions.bmx"
 Import "common.misc.screen.bmx"
 Import "common.misc.dialogue.bmx"
 Import "common.misc.gamelist.bmx"
-Import "game.world.bmx"
-Import "game.toastmessage.bmx"
-
-Import "game.gameinformation.bmx"
-
-?Linux
-'Import "external/bufferedglmax2d/bufferedglmax2d.bmx"
-?Win32
-Import brl.D3D9Max2D
-Import brl.D3D7Max2D
-?Threaded
-Import brl.Threads
-?
 
 'game specific
-Import "game.gamerules.bmx"
+Import "game.world.bmx"
+Import "game.toastmessage.bmx"
+Import "game.gameinformation.bmx"
 Import "game.registry.loaders.bmx"
 Import "game.exceptions.bmx"
 
-Import "game.broadcastmaterial.base.bmx"
-Import "game.broadcast.base.bmx"
-Import "game.player.finance.bmx"
-Import "game.player.boss.bmx"
-'Import "game.player.bmx"
-Import "game.stationmap.bmx"
-Import "game.building.bmx"
-'needed by gamefunctions
-Import "game.broadcastmaterial.programme.bmx"
-'needed by game.player.bmx
-Import "game.player.programmecollection.bmx"
-'needed by game.player.bmx
-Import "game.player.programmeplan.bmx"
-
-Import "game.production.bmx"
+Import "game.gamerules.bmx"
 
 Import "game.room.base.bmx"
 Import "game.misc.roomboardsign.bmx"
-Import "game.betty.bmx"
-Import "game.ingameinterface.bmx"
+Import "game.figure.bmx"
+Import "game.figure.customfigures.bmx"
+Import "game.player.finance.bmx"
+Import "game.player.boss.bmx"
+Import "game.player.bmx"
+Import "game.ai.bmx"
 
 Import "game.database.bmx"
 Import "game.game.base.bmx"
+Import "game.production.bmx"
 Import "game.production.script.gui.bmx"
 Import "game.production.productionconcept.gui.bmx"
 Import "game.production.productionmanager.bmx"
-Import "game.figure.bmx"
-Import "game.figure.customfigures.bmx"
+
+Import "game.betty.bmx"
+Import "game.building.bmx"
+Import "game.ingameinterface.bmx"
 Import "game.newsagency.bmx"
+Import "game.stationmap.bmx"
 
 Import "game.roomhandler.base.bmx"
 Import "game.roomhandler.adagency.bmx"
@@ -110,12 +93,13 @@ Import "game.roomhandler.roomagency.bmx"
 Import "game.roomhandler.roomboard.bmx"
 Import "game.roomhandler.scriptagency.bmx"
 Import "game.roomhandler.studio.bmx"
+Import "game.roomhandler.supermarket.bmx"
 
+'needed by gamefunctions
+Import "game.broadcastmaterial.programme.bmx"
 'remove when planner screen is importable
 import "common.misc.plannerlist.contractlist.bmx"
 
-Import "game.player.bmx"
-Import "game.ai.bmx"
 
 '===== Includes =====
 
@@ -133,10 +117,11 @@ Include "game.game.bmx"
 
 Include "game.escapemenu.bmx"
 
+
 '===== Globals =====
 Global VersionDate:String = LoadText("incbin::source/version.txt")
 Global VersionString:String = "v0.2.7 Build ~q" + VersionDate+"~q"
-Global CopyrightString:String = "by Ronny Otto & Manuel Vögele"
+Global CopyrightString:String = "by Ronny Otto & Team"
 Global APP_NAME:string = "TVTower"
 Global LOG_NAME:string = "log.profiler.txt"
 
@@ -158,17 +143,11 @@ TLogger.Log("CORE", "Starting "+APP_NAME+", "+VersionString+".", LOG_INFO )
 
 '===== SETUP LOGGER FILTER =====
 TLogger.setLogMode(LOG_ALL )
-TLogger.setPrintMode(LOG_ALL )
-'TLogger.setPrintMode(LOG_AI | LOG_ERROR | LOG_SAVELOAD )
-
-'print "ALLE MELDUNGEN AUS"
-'TLogger.SetPrintMode(0)
-
-'TLogger.setPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
+TLogger.setPrintMode(LOG_ALL ) '(LOG_AI | LOG_ERROR | LOG_SAVELOAD )
+'TLogger.SetPrintMode(0) 'all messages off
+'TLogger.SetPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
-'@MANUEL: comment out when doing DEV to see LOG_DEV-messages
 'TLogger.changePrintMode(LOG_DEV, FALSE)
-'TLogger.changePrintMode(LOG_ERROR | LOG_DEV | LOG_AI, True)
 
 
 
@@ -745,6 +724,9 @@ Type TApp
 							Else If KEYMANAGER.IsDown(KEY_LSHIFT)
 								'go to first studio of the player
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", GetPlayerCollection().playerID))
+							Else If KEYMANAGER.IsDown(KEY_LCONTROL)
+								'go to first studio of the player
+								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("supermarket"))
 							Else
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("scriptagency"))
 							EndIf

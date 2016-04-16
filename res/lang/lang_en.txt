@@ -663,6 +663,8 @@ FINISH_PLANNING = Finish planning
 AND_PAY_DOWN_MONEY = and pay down %money%
 PLANNING = Planning ...
 MONEY_TO_PAY_DOWN = %money% to pay down
+TAKE_OVER_SETTINGS = Take over settings
+PRODUCTION_COMPANY = Production company
 
 STUDIO_MANAGER = Studio manager
 STUDIO_MANAGER_TOOLTIP = Gives information about production and hands out new shopping lists

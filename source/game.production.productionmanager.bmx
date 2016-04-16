@@ -1,5 +1,6 @@
 SuperStrict
 Import "game.production.productionconcept.bmx"
+Import "game.production.productioncompany.bmx"
 Import "game.production.bmx"
 
 
@@ -9,6 +10,7 @@ Type TProductionManager
 	Field productionsToProduce:TList = CreateList()
 
 	Global _instance:TProductionManager
+	Global createdEnvironment:int = False
 
 
 	Function GetInstance:TProductionManager()
@@ -16,6 +18,21 @@ Type TProductionManager
 		return _instance
 	End Function
 
+
+	Method New()
+		if not createdEnvironment
+			'create some companies
+			local cnames:string[] = ["Movie World", "Picture Fantasy", "UniPics", "Motion Gems", "Screen Jewel"]
+			For local i:int = 0 until cnames.length
+				local c:TProductionCompany = new TProductionCompany
+				c.name = cnames[i]
+				c.SetExperience( BiasedRandRange(0, 0.35 * TProductionCompanyBase.MAX_XP, 0.25) )
+				GetProductionCompanyBaseCollection().Add(c)
+			Next
+			createdEnvironment = true
+		endif
+	End Method
+	
 
 	Method Update:int()
 		UpdateProductions()
