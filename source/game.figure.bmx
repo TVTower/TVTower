@@ -476,6 +476,14 @@ Type TFigure extends TFigureBase
 	End Method
 
 
+	'override
+	Method GetInRoomID:Int()
+		if inRoom then return inRoom.id
+
+		return Super.GetInRoomID()
+	End Method
+
+
 	'override to add buildingsupport
 	Method CanMove:int()
 		If not IsInBuilding() then return False

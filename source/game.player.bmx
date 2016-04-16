@@ -1,8 +1,11 @@
-'SuperStrict
-'Import "game.player.programmeplan.bmx"
+SuperStrict
+Import "game.player.programmeplan.bmx"
 'Import "game.broadcast.audienceresult.bmx"
 'Import "game.publicimage.bmx"
-'Import "game.figure.bmx"
+Import "game.figure.bmx"
+Import "game.building.bmx"
+Import "game.newsagency.bmx"
+Import "game.player.boss.bmx"
 
 
 Type TPlayerCollection extends TPlayerBaseCollection
@@ -140,17 +143,17 @@ Type TPlayerCollection extends TPlayerBaseCollection
 
 		if reason = "inuse"
 			'inform player AI
-			If player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctions.RESULT_INUSE)
+			If player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctionsBase.RESULT_INUSE)
 			'tooltip only for active user
 			If player.isLocalHuman() then GetBuilding().CreateRoomUsedTooltip(door, room)
 		elseif reason = "blocked"
 			'inform player AI
-			If player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctions.RESULT_NOTALLOWED)
+			If player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctionsBase.RESULT_NOTALLOWED)
 			'tooltip only for active user
 			If player.isLocalHuman() then GetBuilding().CreateRoomBlockedTooltip(door, room)
 		elseif reason = "locked"
 			'inform player AI
-			If player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctions.RESULT_NOTALLOWED)
+			If player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctionsBase.RESULT_NOTALLOWED)
 			'tooltip only for active user
 			If player.isLocalHuman() then GetBuilding().CreateRoomLockedTooltip(door, room)
 		endif
@@ -168,7 +171,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		EventManager.triggerEvent( TEventSimple.Create("player.onBeginEnterRoom", null, player, room) )
 
 		'inform player AI
-		If room and player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctions.RESULT_OK)
+		If room and player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctionsBase.RESULT_OK)
 	End Function
 	
 
@@ -206,21 +209,8 @@ End Function
 
 'class holding name, channelname, infos about the figure, programmeplan, programmecollection and so on - from a player
 Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
-	Field playerAI:KI
-	'type of the player, local/remote human/ai
-	Field playerType:int = 0
 	'ID of a remote player who controls this (ai) player
 	field playerControlledByID:int = -1
-
-	'distinguishing between LOCAL and REMOTE ai allows multiple players
-	'to control multiple AI without needing to share "THEIR" AI files
-	'-> maybe this allows for some kind of "AI fight" (or "team1 vs team2"
-	'   games)
-	Const PLAYERTYPE_LOCAL_HUMAN:int = 0
-	Const PLAYERTYPE_LOCAL_AI:int = 1
-	Const PLAYERTYPE_REMOTE_HUMAN:int = 2
-	Const PLAYERTYPE_REMOTE_AI:int = 3
-	Const PLAYERTYPE_INACTIVE:int = 4
 
 
 	Method onLoad:int(triggerEvent:TEventBase)
@@ -337,37 +327,6 @@ endrem
 '	End Method
 
 
-	Method IsHuman:Int()
-		Return IsLocalHuman() or IsRemoteHuman()
-	End Method
-
-
-	Method IsLocalHuman:Int()
-		Return playerID = GetPlayerCollection().playerID and not playerAI
-		'Return playerType = PLAYERTYPE_LOCAL_HUMAN
-	End Method
-
-
-	Method IsRemoteHuman:Int()
-		Return playerType = TPlayer.PLAYERTYPE_REMOTE_HUMAN and not playerAI
-	End Method
-
-
-	Method IsRemoteAI:Int()
-		Return playerType = TPlayer.PLAYERTYPE_REMOTE_AI
-	End Method
-
-
-	Method IsLocalAI:Int()
-		Return playerType = TPlayer.PLAYERTYPE_LOCAL_AI
-	End Method
-
-
-	Method SetPlayerType(playerType:int)
-		self.playerType = playerType
-	End Method
-
-
 	Method SetLocalHumanControlled()
 		playerAI = Null
 		playerControlledByID = GetPlayerCollection().playerID
@@ -399,8 +358,8 @@ endrem
 	End Method
 
 
-	Method InitAI(luafile:String="")
-		PlayerAI = new KI.Create(playerID, luafile)
+	Method InitAI(ai:TAiBase)
+		PlayerAI = ai
 		PlayerAI.Start()
 	End Method
 
@@ -415,69 +374,13 @@ endrem
 	End Method
 
 
-	'return which is the highest level for the given genre today
-	'(which was active for longer than X game minutes)
-	'if the last time a abonnement level was set was before today
-	'use the current level value
-	Method GetNewsAbonnementDaysMax:Int(genre:Int)
-		If genre > 5 Then Return 0 'max 6 categories 0-5
+	Method SetNewsAbonnement:int(genre:Int, level:Int, sendToNetwork:Int = True) {_exposeToLua}
+		If super.SetNewsAbonnement(genre, level, sendToNetwork)
+			EventManager.triggerEvent( TEventSimple.Create("player.SetNewsAbonnement", new TData.AddNumber("genre", genre).AddNumber("level", level).AddNumber("sendToNetwork", sendToNetwork), self) )
 
-		'not set yet - use the current abonnement
-		if newsabonnementsDayMax[genre] = -1
-			SetNewsAbonnementDaysMax(genre, newsabonnements[genre])
-		endif
-
-		'if level of genre changed - adjust maximum
-		if newsabonnementsDayMax[genre] <> newsabonnements[genre]
-			'if the "set time" is not the current day, we assume
-			'the current abonnement level as maxium
-			'eg.: genre set 23:50 - not catched by the "30 min check"
-			'also a day change sets maximum even if level is lower than
-			'maximum (which is not allowed during day to pay for the best
-			'level you had this day)
-			if GetWorldTime().GetDay(newsabonnementsSetTime[genre]) < GetWorldTime().GetDay()
-				'NOT 0:00 (the time daily costs are computed)
-				if GetWorldTime().GetDayMinute() > 0
-					SetNewsAbonnementDaysMax(genre, newsabonnements[genre])
-				EndIf
-			EndIf
-
-			'more than 30 mins gone since last "abonnement set"
-			if GetWorldTime().GetTimeGone() - newsabonnementsSetTime[genre] > 30*60
-				'only set maximum if the new level is higher than the
-				'current days maxmimum.
-				if newsabonnementsDayMax[genre] < newsabonnements[genre]
-					SetNewsAbonnementDaysMax(genre, newsabonnements[genre])
-				EndIf
-			EndIf
+			return True
 		EndIf
-
-		return newsabonnementsDayMax[genre]
-	End Method
-
-
-	'sets the current maximum level of a news abonnement level for that day
-	Method SetNewsAbonnementDaysMax:Int(genre:Int, level:int)
-		If genre > 5 Then Return 0 'max 6 categories 0-5
-		newsabonnementsDayMax[genre] = level
-	End Method
-
-
-	Method IncreaseNewsAbonnement(genre:Int) {_exposeToLua}
-		SetNewsAbonnement( genre, GetNewsAbonnement(genre)+1 )
-	End Method
-
-
-	Method SetNewsAbonnement(genre:Int, level:Int, sendToNetwork:Int = True) {_exposeToLua}
-		If level > GameRules.maxAbonnementLevel Then level = 0 'before: Return
-		If genre > 5 Then Return 'max 6 categories 0-5
-		If newsabonnements[genre] <> level
-			newsabonnements[genre] = level
-			'set at which time we did this
-			newsabonnementsSetTime[genre] = GetWorldTime().GetTimeGone()
-
-			If GetGame().networkgame And Network.IsConnected And sendToNetwork Then NetworkHelper.SendNewsSubscriptionChange(Self.playerID, genre, level)
-		EndIf
+		return False
 	End Method
 
 

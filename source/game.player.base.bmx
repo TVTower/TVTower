@@ -4,6 +4,8 @@ Import "Dig/base.util.registry.spriteloader.bmx"
 Import "game.player.color.bmx"
 Import "game.player.finance.bmx"
 Import "game.figure.base.bmx"
+Import "game.gamerules.bmx"
+Import "game.ai.base.bmx"
 
 
 Type TPlayerBaseCollection
@@ -84,6 +86,11 @@ Type TPlayerBase {_exposeToLua="selected"}
 	'actual figure the player uses
 	Field Figure:TFigureBase {_exposeToLua}
 
+	Field playerAI:TAiBase
+
+	'type of the player, local/remote human/ai
+	Field playerType:int = 0
+
 	'1=ready, 0=not set, ...
 	Field networkstate:Int = 0
 
@@ -94,6 +101,16 @@ Type TPlayerBase {_exposeToLua="selected"}
 	Field newsabonnementsDayMax:Int[] = [-1,-1,-1,-1,-1,-1]
 	'when was the level set
 	Field newsabonnementsSetTime:Double[6]
+
+	'distinguishing between LOCAL and REMOTE ai allows multiple players
+	'to control multiple AI without needing to share "THEIR" AI files
+	'-> maybe this allows for some kind of "AI fight" (or "team1 vs team2"
+	'   games)
+	Const PLAYERTYPE_LOCAL_HUMAN:int = 0
+	Const PLAYERTYPE_LOCAL_AI:int = 1
+	Const PLAYERTYPE_REMOTE_HUMAN:int = 2
+	Const PLAYERTYPE_REMOTE_AI:int = 3
+	Const PLAYERTYPE_INACTIVE:int = 4
 		
 
 	Method GetPlayerID:Int() {_exposeToLua}
@@ -139,6 +156,75 @@ Type TPlayerBase {_exposeToLua="selected"}
 		Return Self.newsabonnements[genre]
 	End Method
 
+
+
+
+	'return which is the highest level for the given genre today
+	'(which was active for longer than X game minutes)
+	'if the last time a abonnement level was set was before today
+	'use the current level value
+	Method GetNewsAbonnementDaysMax:Int(genre:Int) {_exposeToLua}
+		If genre > 5 Then Return 0 'max 6 categories 0-5
+
+		'not set yet - use the current abonnement
+		if newsabonnementsDayMax[genre] = -1
+			SetNewsAbonnementDaysMax(genre, newsabonnements[genre])
+		endif
+
+		'if level of genre changed - adjust maximum
+		if newsabonnementsDayMax[genre] <> newsabonnements[genre]
+			'if the "set time" is not the current day, we assume
+			'the current abonnement level as maxium
+			'eg.: genre set 23:50 - not catched by the "30 min check"
+			'also a day change sets maximum even if level is lower than
+			'maximum (which is not allowed during day to pay for the best
+			'level you had this day)
+			if GetWorldTime().GetDay(newsabonnementsSetTime[genre]) < GetWorldTime().GetDay()
+				'NOT 0:00 (the time daily costs are computed)
+				if GetWorldTime().GetDayMinute() > 0
+					SetNewsAbonnementDaysMax(genre, newsabonnements[genre])
+				EndIf
+			EndIf
+
+			'more than 30 mins gone since last "abonnement set"
+			if GetWorldTime().GetTimeGone() - newsabonnementsSetTime[genre] > 30*60
+				'only set maximum if the new level is higher than the
+				'current days maxmimum.
+				if newsabonnementsDayMax[genre] < newsabonnements[genre]
+					SetNewsAbonnementDaysMax(genre, newsabonnements[genre])
+				EndIf
+			EndIf
+		EndIf
+
+		return newsabonnementsDayMax[genre]
+	End Method
+
+
+	'sets the current maximum level of a news abonnement level for that day
+	Method SetNewsAbonnementDaysMax:Int(genre:Int, level:int)
+		If genre > 5 Then Return 0 'max 6 categories 0-5
+		newsabonnementsDayMax[genre] = level
+	End Method
+
+
+	Method IncreaseNewsAbonnement(genre:Int) {_exposeToLua}
+		SetNewsAbonnement( genre, GetNewsAbonnement(genre)+1 )
+	End Method
+
+
+	Method SetNewsAbonnement:int(genre:Int, level:Int, sendToNetwork:Int = True) {_exposeToLua}
+		If level > GameRules.maxAbonnementLevel Then level = 0 'before: Return
+		If genre > 5 Then Return False 'max 6 categories 0-5
+		If newsabonnements[genre] <> level
+			newsabonnements[genre] = level
+			'set at which time we did this
+			newsabonnementsSetTime[genre] = GetWorldTime().GetTimeGone()
+
+			return True
+		EndIf
+
+		return False
+	End Method
 	
 
 	'attention: when used through LUA without param, the param gets "0"
@@ -214,7 +300,38 @@ Type TPlayerBase {_exposeToLua="selected"}
 		If s.playerID > Self.playerID Then Return 1
 		Return 0
 	End Method
+	
 
+	Method IsHuman:Int()
+		Return IsLocalHuman() or IsRemoteHuman()
+	End Method
+
+
+	Method IsLocalHuman:Int()
+		Return playerID = GetPlayerBaseCollection().playerID and not playerAI
+		'Return playerType = PLAYERTYPE_LOCAL_HUMAN
+	End Method
+
+
+	Method IsRemoteHuman:Int()
+		Return playerType = TPlayerBase.PLAYERTYPE_REMOTE_HUMAN and not playerAI
+	End Method
+
+
+	Method IsRemoteAI:Int()
+		Return playerType = TPlayerBase.PLAYERTYPE_REMOTE_AI
+	End Method
+
+
+	Method IsLocalAI:Int()
+		Return playerType = TPlayerBase.PLAYERTYPE_LOCAL_AI
+	End Method
+
+
+	Method SetPlayerType(playerType:int)
+		self.playerType = playerType
+	End Method
+	
 
 	Method IsActivePlayer:Int()
 		Return (playerID = GetPlayerBaseCollection().playerID)

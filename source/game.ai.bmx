@@ -1,125 +1,56 @@
-'**************************************************************************************************
-' This program was written with BLIde
-' Application:
-' Author:
-' License:
-'**************************************************************************************************
-'SuperStrict
+SuperStrict
+Import "Dig/base.util.logger.bmx"
+Import "Dig/base.gfx.gui.chat.bmx"
+Import "game.ai.base.bmx"
+Import "game.gamerules.bmx"
+Import "game.gameconstants.bmx"
+Import "game.room.bmx"
+Import "game.room.roomdoor.bmx"
+Import "game.broadcast.audience.bmx"
+Import "game.programme.adcontract.bmx"
+Import "game.programme.programmelicence.bmx"
+'Import "game.programme.newsevent.bmx"
+Import "game.broadcastmaterial.advertisement.bmx"
+
+Import "game.player.programmeplan.bmx"
+Import "game.player.boss.bmx"
+
+Import "game.newsagency.bmx"
+
+Import "game.misc.roomboardsign.bmx"
+Import "game.game.base.bmx"
+
+Import "game.roomhandler.movieagency.bmx"
+Import "game.roomhandler.adagency.bmx"
+
 
 Global AiLog:TLogFile[4]
 For local i:int = 0 to 3
-	AiLog[i] = TLogFile.Create("KI Log v1.0", "log.ki"+(i+1)+".txt", True)
+	AiLog[i] = TLogFile.Create("AI Log v1.0", "log.ai"+(i+1)+".txt", True)
 Next
 
-Global KIRunning:Int = true
 
-Type KI
-	Field playerID:int
-	Field LuaEngine:TLuaEngine {nosave}
-	Field scriptFileName:String
-	'contains the code used to reinitialize the AI
-	Field scriptSaveState:string
-	'time in milliseconds of the last "onTick"-call
-	Field LastTickTime:Long
+Type TAi extends TAiBase
 
-
-	Method Create:KI(playerID:Int, luaScriptFileName:String)
-		self.playerID		= playerID
-		self.scriptFileName = luaScriptFileName
+	'override
+	Method Create:TAi(playerID:Int, luaScriptFileName:String)
+		Super.Create(playerID, luaScriptFileName)
 		Return self
 	End Method
 
 
-	Method OnCreate()
-		Local args:Object[1]
-		args[0] = String(playerID)
-		if (KIRunning) then LuaEngine.CallLuaFunction("OnCreate", args)
-	End Method
-
-
 	Method Start()
-		'register engine and functions
-		if not LuaEngine then LuaEngine = TLuaEngine.Create("")
-
-		'load lua file
-		LoadScript(scriptFileName)
-
+		Super.Start()
+		
 		'==== LINK SPECIAL OBJECTS
 		'own functions for player
 		LuaEngine.RegisterBlitzmaxObject("TVT", TLuaFunctions.Create(PlayerID))
 		'the player
-		LuaEngine.RegisterBlitzmaxObject("MY", GetPlayer(PlayerID))
+		LuaEngine.RegisterBlitzmaxObject("MY", GetPlayerBase(PlayerID))
 		'the game object
-		LuaEngine.RegisterBlitzmaxObject("Game", GetGame())
+		LuaEngine.RegisterBlitzmaxObject("Game", GetGameBase())
 		'the game object
 		LuaEngine.RegisterBlitzmaxObject("WorldTime", GetWorldTime())
-
-		'register source and available objects
-		LuaEngine.RegisterToLua()
-	End Method
-
-
-	Method Stop()
-'		scriptEnv.ShutDown()
-'		KI_EventManager.unregisterKI(Self)
-	End Method
-
-
-	'loads a .lua-file and registers needed objects
-	Method LoadScript:int(luaScriptFileName:string)
-		if luaScriptFileName <> "" then scriptFileName = luaScriptFileName
-		if scriptFileName = "" then return FALSE
-
-		'only load for existing players
-		If not GetPlayer(PlayerID)
-			TLogger.log("KI.LoadScript()", "TPlayer "+PlayerID+" not found.", LOG_ERROR)
-			return FALSE
-		endif
-
-		Local loadingStopWatch:TStopWatch = new TStopWatch.Init()
-		'load content
-		LuaEngine.SetSource(LoadText(scriptFileName))
-
-		'if there is content set, print it
-		If LuaEngine.GetSource() <> ""
-			TLogger.log("KI.LoadScript", "ReLoaded LUA AI for player "+playerID+". Loading Time: " + loadingStopWatch.GetTime() + "ms", LOG_DEBUG | LOG_LOADING)
-		else
-			TLogger.log("KI.LoadScript", "Loaded LUA AI for player "+playerID+". Loading Time: " + loadingStopWatch.GetTime() + "ms", LOG_DEBUG | LOG_LOADING)
-		endif
-	End Method
-
-
-	'loads the current file again
-	Method ReloadScript:int()
-		if scriptFileName="" then return FALSE
-		LoadScript(scriptFileName)
-	End Method
-
-
-	Method CallOnLoad()
-	    Try
-			Local args:Object[1]
-			args[0] = self.scriptSaveState
-			if (KIRunning) then LuaEngine.CallLuaFunction("OnLoad", args)
-		Catch ex:Object
-			TLogger.log("KI.CallOnLoad", "Script "+scriptFileName+" does not contain function ~qOnLoad~q.", LOG_ERROR)
-		End Try
-	End Method
-
-
-	Method CallOnSave:string()
-		'reset (potential old) save state
-		scriptSaveState = ""
-
-	    Try
-			Local args:Object[1]
-			args[0] = string(GetWorldTime().GetTimeGone())
-			if (KIRunning) then scriptSaveState = string(LuaEngine.CallLuaFunction("OnSave", args))
-		Catch ex:Object
-			TLogger.log("KI.CallOnSave", "Script "+scriptFileName+" does not contain function ~qOnSave~q.", LOG_ERROR)
-		End Try
-
-		return scriptSaveState
 	End Method
 
 
@@ -128,7 +59,7 @@ Type KI
 	'- more than 1 RealTime second passed since last tick
 	'or
 	'- another InGameMinute passed since last tick
-	Method ConditionalCallOnTick:Int()
+	Method ConditionalCallOnTick()
 		'time between two ticks = time between two GameMinutes or maximum
 		'1 second (eg. if speed is 0)
 		local tickInterval:Long = 1000
@@ -141,164 +72,200 @@ Type KI
 			'store time of this tick
 			LastTickTime = Time.GetTimeGone()
 
-			Local args:Object[] = [String(LastTickTime)]
-			if KIRunning then LuaEngine.CallLuaFunction("OnTick", args)
+			if not AiRunning then return
+
+			Local args:Object[1]
+			args[0] = String(LastTickTime)
+
+			CallLuaFunction("OnTick", args)
 		endif
 	End Method
 
 
+	Method CallOnLoad()
+		if not AiRunning then return
+
+		Local args:Object[1]
+		args[0] = self.scriptSaveState
+
+		CallLuaFunction("OnLoad", args)
+	End Method
+
+
+	Method CallOnSave()
+		if not AiRunning then return
+
+		'reset (potential old) save state
+		scriptSaveState = ""
+
+		Local args:Object[1]
+		args[0] = string(GetWorldTime().GetTimeGone())
+
+		scriptSaveState = string(CallLuaFunction("OnSave", args))
+	End Method
+
+
 	Method CallOnRealtimeSecond(millisecondsGone:Int=0)
+		if not AiRunning then return
+
 		Local args:Object[1]
 		args[0] = String(millisecondsGone)
-		if KIRunning then LuaEngine.CallLuaFunction("OnRealTimeSecond", args)
+
+		CallLuaFunction("OnRealTimeSecond", args)
 	End Method
 
 
 	Method CallOnMinute(minute:Int=0)
+		if not AiRunning then return
+
 		Local args:Object[1]
 		args[0] = String(minute)
-		if (KIRunning) then LuaEngine.CallLuaFunction("OnMinute", args)
+
+		CallLuaFunction("OnMinute", args)
 	End Method
 
 
 	'eg. use this if one whispers to the AI
 	Method CallOnChat(fromID:int=0, text:String = "")
-	    Try
-			Local args:Object[2]
-			args[0] = text
-			args[1] = string(fromID)
-			LuaEngine.CallLuaFunction("OnChat", args)
-		Catch ex:Object
-			TLogger.log("KI.CallOnChat", "Script "+scriptFileName+" does not contain function ~qOnChat~q.", LOG_ERROR)
-		End Try
+		if not AiRunning then return
+
+		Local args:Object[2]
+		args[0] = text
+		args[1] = string(fromID)
+
+		CallLuaFunction("OnChat", args)
 	End Method
 
 
-	Method CallOnProgrammeLicenceAuctionGetOutbid(licence:TProgrammeLicence, bid:int, bidderID:int)
+	Method CallOnProgrammeLicenceAuctionGetOutbid(licence:object, bid:int, bidderID:int)
+		if not AiRunning then return
+
 		Local args:Object[3]
-		args[0] = licence
+		args[0] = TProgrammeLicence(licence)
 		args[1] = string(bid)
 		args[2] = string(bidderID)
-		if (KIRunning) then LuaEngine.CallLuaFunction("OnProgrammeLicenceAuctionGetOutbid", args)
+
+		CallLuaFunction("OnProgrammeLicenceAuctionGetOutbid", args)
 	End Method
 
 
-	Method CallOnProgrammeLicenceAuctionWin(licence:TProgrammeLicence, bid:int)
+	Method CallOnProgrammeLicenceAuctionWin(licence:object, bid:int)
+		if not AiRunning then return
+
 		Local args:Object[2]
-		args[0] = licence
+		args[0] = TProgrammeLicence(licence)
 		args[1] = string(bid)
-		if (KIRunning) then LuaEngine.CallLuaFunction("OnProgrammeLicenceAuctionWin", args)
+
+		CallLuaFunction("OnProgrammeLicenceAuctionWin", args)
 	End Method
 
 
 	Method CallOnBossCalls(latestWorldTime:Double=0)
+		if not AiRunning then return
+
 		Local args:Object[1]
 		args[0] = String(latestWorldTime)
-		if (KIRunning) then LuaEngine.CallLuaFunction("OnBossCalls", args)
+
+		CallLuaFunction("OnBossCalls", args)
 	End Method
 
 
 	Method CallOnBossCallsForced()
-		if (KIRunning) then LuaEngine.CallLuaFunction("OnBossCallsForced")
+		if not AiRunning then return
+
+		CallLuaFunction("OnBossCallsForced", Null)
 	End Method
 
 
 	Method CallOnPublicAuthoritiesStopXRatedBroadcast()
-		if (KIRunning) then LuaEngine.CallLuaFunction("OnPublicAuthoritiesStopXRatedBroadcast")
+		if not AiRunning then return
+
+		CallLuaFunction("OnPublicAuthoritiesStopXRatedBroadcast", Null)
 	End Method
 
 
-	Method CallOnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedLicence:TProgrammeLicence, targetLicence:TProgrammeLicence)
+	Method CallOnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedLicence:object, targetLicence:object)
+		if not AiRunning then return
+
 		Local args:Object[2]
-		args[0] = confiscatedLicence
-		args[1] = targetLicence
-		if (KIRunning) then LuaEngine.CallLuaFunction("OnPublicAuthoritiesConfiscateProgrammeLicence", args)
+		args[0] = TProgrammeLicence(confiscatedLicence)
+		args[1] = TProgrammeLicence(targetLicence)
+
+		CallLuaFunction("OnPublicAuthoritiesConfiscateProgrammeLicence", args)
 	End Method
 
 
 	Method CallOnLeaveRoom(roomId:int)
-	    Try
-			Local args:Object[1]
-			args[0] = String(roomId)
-			if (KIRunning) then LuaEngine.CallLuaFunction("OnLeaveRoom", args)
-		Catch ex:Object
-			TLogger.log("KI.CallOnLeaveRoom", "Script "+scriptFileName+" does not contain function ~qOnLeaveRoom~q.", LOG_ERROR)
-		End Try
+		if not AiRunning then return
+
+		Local args:Object[1]
+		args[0] = String(roomId)
+
+		CallLuaFunction("OnLeaveRoom", args)
 	End Method
 
 
 	Method CallOnReachRoom(roomId:Int)
-	    Try
-			Local args:Object[1]
-			args[0] = String(roomId)
-			if (KIRunning) then LuaEngine.CallLuaFunction("OnReachRoom", args)
-		Catch ex:Object
-			TLogger.log("KI.CallOnReachRoom", "Script "+scriptFileName+" does not contain function ~qOnReachRoom~q.", LOG_ERROR)
-		End Try
+		if not AiRunning then return
+
+		Local args:Object[1]
+		args[0] = String(roomId)
+
+		CallLuaFunction("OnReachRoom", args)
 	End Method
 
 
-
 	Method CallOnBeginEnterRoom(roomId:int, result:int)
-	    Try
-			Local args:Object[2]
-			args[0] = String(roomId)
-			args[1] = String(result)
-			if (KIRunning) then LuaEngine.CallLuaFunction("OnBeginEnterRoom", args)
-		Catch ex:Object
-			TLogger.log("KI.CallOnBeginEnterRoom", "Script "+scriptFileName+" does not contain function ~qOnBeginEnterRoom~q.", LOG_ERROR)
-		End Try
+		if not AiRunning then return
+
+		Local args:Object[2]
+		args[0] = String(roomId)
+		args[1] = String(result)
+
+		CallLuaFunction("OnBeginEnterRoom", args)
 	End Method
 	
 
 	Method CallOnEnterRoom(roomId:int)
-	    Try
-			Local args:Object[1]
-			args[0] = String(roomId)
-			if (KIRunning) then LuaEngine.CallLuaFunction("OnEnterRoom", args)
-		Catch ex:Object
-			TLogger.log("KI.CallOnEnterRoom", "Script "+scriptFileName+" does not contain function ~qOnEnterRoom~q.", LOG_ERROR)
-		End Try
+		if not AiRunning then return
+
+		Local args:Object[1]
+		args[0] = String(roomId)
+
+		CallLuaFunction("OnEnterRoom", args)
 	End Method
 
 	
 	Method CallOnDayBegins()
-	    Try
-			if (KIRunning) then LuaEngine.CallLuaFunction("OnDayBegins", Null)
-		Catch ex:Object
-			TLogger.log("KI.CallOnDayBegins", "Script "+scriptFileName+" does not contain function ~qOnDayBegins~q.", LOG_ERROR)
-		End Try
+		if not AiRunning then return
+
+		CallLuaFunction("OnDayBegins", Null)
 	End Method
 
 	
 	Method CallOnGameBegins()
-	    Try
-			if (KIRunning) then LuaEngine.CallLuaFunction("OnGameBegins", Null)
-		Catch ex:Object
-			TLogger.log("KI.CallOnGameBegins", "Script "+scriptFileName+" does not contain function ~qOnGameBegins~q.", LOG_ERROR)
-		End Try
+		if not AiRunning then return
+
+		CallLuaFunction("OnGameBegins", Null)
 	End Method
 		
 
-	Method CallOnMoneyChanged(value:int, reason:int, reference:TNamedGameObject)
-	    Try
-			Local args:Object[3]
-			args[0] = String(value)
-			args[1] = String(reason)
-			args[2] = reference
-			if (KIRunning) then LuaEngine.CallLuaFunction("OnMoneyChanged", args)
-		Catch ex:Object
-			TLogger.log("KI.CallOnMoneyChanged", "Script "+scriptFileName+" does not contain function ~qOnMoneyChanged~q.", LOG_ERROR)
-			'DebugStop
-		End Try
+	Method CallOnMoneyChanged(value:int, reason:int, reference:object)
+		if not AiRunning then return
+
+		Local args:Object[3]
+		args[0] = String(value)
+		args[1] = String(reason)
+		args[2] = TNamedGameObject(reference)
+
+		CallLuaFunction("OnMalfunction", args)
 	End Method
 
+
 	Method CallOnMalfunction()
-	    Try
-			if (KIRunning) then LuaEngine.CallLuaFunction("OnMalfunction", Null)
-		Catch ex:Object
-			TLogger.log("KI.CallOnMalfunction", "Script "+scriptFileName+" does not contain function ~qOnMalfunction~q.", LOG_ERROR)
-		End Try
+		if not AiRunning then return
+
+		CallLuaFunction("OnMalfunction", Null)
 	End Method
 End Type
 
@@ -325,16 +292,7 @@ Type TLuaFunctionResult {_exposeToLua}
 End Type
 
 
-Type TLuaFunctions {_exposeToLua}
-	Const RESULT_OK:int        =   1
-	Const RESULT_FAILED:int    =   0
-	Const RESULT_WRONGROOM:int =  -2
-	Const RESULT_NOKEY:int     =  -4
-	Const RESULT_NOTFOUND:int  =  -8
-	Const RESULT_NOTALLOWED:int= -16
-	Const RESULT_INUSE:int     = -32
-	Const RESULT_SKIPPED:int   = -64
-
+Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	'=== CONST + HELPERS 
 
 	'convenience access to game rules (constants)
@@ -382,13 +340,13 @@ Type TLuaFunctions {_exposeToLua}
 			'from room has to be set AND inroom <> null (no building!)
 		'	GetPlayer(Self.ME).isComingFromRoom(roomname) and GetPlayer(Self.ME).isInRoom()
 		'Else
-			Return GetPlayer(Self.ME).isInRoom(roomname)
+			Return GetPlayerBase(Self.ME).isInRoom(roomname)
 		'EndIf
 	End Method
 
 
 	Method _PlayerOwnsRoom:Int() {_private}
-		Return Self.ME = GetPlayer(Self.ME).GetFigure().inRoom.owner
+		Return Self.ME = TFigure(GetPlayerBase(Self.ME).GetFigure()).inRoom.owner
 	End Method
 
 
@@ -484,15 +442,15 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	Method getPlayerRoom:Int()
-		Local room:TRoomBase = GetPlayer(self.ME).GetFigure().inRoom
-		If room Then Return room.id
+		Local roomID:int = GetPlayerBase(self.ME).GetFigure().GetInRoomID()
+		If roomID Then Return roomID
 
 		Return self.RESULT_NOTFOUND
 	End Method
 
 
 	Method getPlayerTargetRoom:Int()
-		local roomDoor:TRoomDoor = TRoomDoor(GetPlayer(self.ME).GetFigure().GetTarget())
+		local roomDoor:TRoomDoor = TRoomDoor(GetPlayerBase(self.ME).GetFigure().GetTarget())
 		If roomDoor and roomDoor.GetRoom() then Return roomDoor.GetRoom().id
 
 		Return self.RESULT_NOTFOUND
@@ -519,7 +477,7 @@ Type TLuaFunctions {_exposeToLua}
 		If room
 			Local door:TRoomDoorBase = GetRoomDoorCollection().GetMainDoorToRoom(room.id)
 			If door
-				GetPlayer(self.ME).GetFigure().SendToDoor(door)
+				TFigure(GetPlayerBase(self.ME).GetFigure()).SendToDoor(door)
 				Return self.RESULT_OK
 			EndIf
 		endif
@@ -529,7 +487,7 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	Method doGoToRelative:Int(relX:Int = 0, relYFloor:Int = 0) 'Nur x wird unterstuetzt. Negativ: Nach links; Positiv: nach rechts
-		GetPlayer(self.ME).GetFigure().GoToCoordinatesRelative(relX, relYFloor)
+		TFigure(GetPlayerBase(self.ME).GetFigure()).GoToCoordinatesRelative(relX, relYFloor)
 		Return self.RESULT_OK
 	End Method
 
@@ -539,7 +497,7 @@ Type TLuaFunctions {_exposeToLua}
 		If not Room then return self.RESULT_NOTFOUND
 		if not Room.hasOccupant() then return self.RESULT_OK
 
-		If Room.isOccupant( GetPlayer(self.ME).figure ) then Return -1
+		If Room.isOccupant( GetPlayerBase(self.ME).GetFigure() ) then Return -1
 		Return self.RESULT_INUSE
 	End Method
 
@@ -683,7 +641,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method of_getAdvertisementSlot:TLuaFunctionResult(day:Int = -1, hour:Int = -1)
 		If Not _PlayerInRoom("office") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
-		Local material:TBroadcastMaterial = GetPlayer(self.ME).GetProgrammePlan().GetAdvertisement(day, hour)
+		Local material:TBroadcastMaterial = GetPlayerProgrammePlan(self.ME).GetAdvertisement(day, hour)
 		If material
 			Return TLuaFunctionResult.Create(self.RESULT_OK, material)
 		else
@@ -695,7 +653,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method of_getAdContractCount:Int()
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 
-		Return GetPlayerProgrammeCollectionCollection().Get(Self.ME).GetAdContractCount()
+		Return GetPlayerProgrammeCollection(Self.ME).GetAdContractCount()
 	End Method
 
 
@@ -715,7 +673,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method of_getAdContractAtIndex:TAdContract(arrayIndex:Int=-1)
 		If Not _PlayerInRoom("office") Then Return Null
 
-		Local obj:TAdContract = GetPlayer(self.ME).GetProgrammeCollection().GetAdContractAtIndex(arrayIndex)
+		Local obj:TAdContract = GetPlayerProgrammeCollection(self.ME).GetAdContractAtIndex(arrayIndex)
 		If obj Then Return obj Else Return Null
 	End Method
 
@@ -723,7 +681,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method of_getAdContractByID:TAdContract(id:Int=-1)
 		If Not _PlayerInRoom("office") Then Return Null
 
-		Local obj:TAdContract = GetPlayer(self.ME).GetProgrammeCollection().GetAdContract(id)
+		Local obj:TAdContract = GetPlayerProgrammeCollection(self.ME).GetAdContract(id)
 		If obj Then Return obj Else Return Null
 	End Method
 
@@ -739,11 +697,11 @@ Type TLuaFunctions {_exposeToLua}
 		If Not _PlayerOwnsRoom() Then Return self.RESULT_WRONGROOM
 
 		'create a broadcast material out of the given source
-		local broadcastMaterial:TBroadcastMaterial = GetPlayer(self.ME).GetProgrammeCollection().GetBroadcastMaterial(materialSource)
+		local broadcastMaterial:TBroadcastMaterial = GetPlayerProgrammeCollection(self.ME).GetBroadcastMaterial(materialSource)
 		if not broadcastMaterial then return self.RESULT_FAILED
 
 		'skip setting the slot if already done
-		Local existingMaterial:TBroadcastMaterial = GetPlayer(self.ME).GetProgrammePlan().GetAdvertisement(day, hour)
+		Local existingMaterial:TBroadcastMaterial = GetPlayerProgrammePlan(self.ME).GetAdvertisement(day, hour)
 		if existingMaterial
 			if broadcastMaterial.GetReferenceID() = existingMaterial.GetReferenceID() and broadcastMaterial.materialType = existingMaterial.materialType
 				return self.RESULT_SKIPPED
@@ -751,7 +709,7 @@ Type TLuaFunctions {_exposeToLua}
 		endif
 
 
-		if GetPlayer(self.ME).GetProgrammePlan().SetAdvertisementSlot(broadcastMaterial, day, hour)
+		if GetPlayerProgrammePlan(self.ME).SetAdvertisementSlot(broadcastMaterial, day, hour)
 			return self.RESULT_OK
 		else
 			return self.RESULT_NOTALLOWED
@@ -763,7 +721,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method of_getProgrammeSlot:TLuaFunctionResult(day:Int = -1, hour:Int = -1)
 		If Not _PlayerInRoom("office") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
-		Local material:TBroadcastMaterial = GetPlayer(self.ME).GetProgrammePlan().GetProgramme(day, hour)
+		Local material:TBroadcastMaterial = GetPlayerProgrammePlan(self.ME).GetProgramme(day, hour)
 		If material
 			Return TLuaFunctionResult.Create(self.RESULT_OK, material)
 		else
@@ -783,11 +741,11 @@ Type TLuaFunctions {_exposeToLua}
 		If Not _PlayerOwnsRoom() Then Return self.RESULT_WRONGROOM
 
 		'create a broadcast material out of the given source
-		local broadcastMaterial:TBroadcastMaterial = GetPlayer(self.ME).GetProgrammeCollection().GetBroadcastMaterial(materialSource)
+		local broadcastMaterial:TBroadcastMaterial = GetPlayerProgrammeCollection(self.ME).GetBroadcastMaterial(materialSource)
 		if not broadcastMaterial then return self.RESULT_FAILED
 
 		'skip setting the slot if already done
-		Local existingMaterial:TBroadcastMaterial = GetPlayer(self.ME).GetProgrammePlan().GetProgramme(day, hour)
+		Local existingMaterial:TBroadcastMaterial = GetPlayerProgrammePlan(self.ME).GetProgramme(day, hour)
 		if existingMaterial
 			if broadcastMaterial.GetReferenceID() = existingMaterial.GetReferenceID() and broadcastMaterial.materialType = existingMaterial.materialType
 				return self.RESULT_SKIPPED
@@ -795,7 +753,7 @@ Type TLuaFunctions {_exposeToLua}
 		endif
 
 
-		if GetPlayer(self.ME).GetProgrammePlan().SetProgrammeSlot(broadcastMaterial, day, hour)
+		if GetPlayerProgrammePlan(self.ME).SetProgrammeSlot(broadcastMaterial, day, hour)
 			return self.RESULT_OK
 		else
 			return self.RESULT_NOTALLOWED
@@ -847,22 +805,22 @@ Type TLuaFunctions {_exposeToLua}
 	Method ne_doNewsInPlan:Int(slot:int=1, ObjectID:Int = -1)
 		If Not (_PlayerInRoom("newsroom") or _PlayerInRoom("news")) Then Return self.RESULT_WRONGROOM
 
-		local player:TPlayer = GetPlayer(self.ME)
+		local player:TPlayerBase = GetPlayerBase(self.ME)
 
 		'Es ist egal ob ein Spieler einen Schluessel fuer den Raum hat,
 		'Es ist nur schauen erlaubt fuer "Fremde"
-		If Self.ME <> player.GetFigure().inRoom.owner Then Return self.RESULT_WRONGROOM
+		If Self.ME <> TFigure(player.GetFigure()).inRoom.owner Then Return self.RESULT_WRONGROOM
 
 		If ObjectID = 0 'News bei slotID loeschen
-			if player.GetProgrammePlan().RemoveNews(null, slot)
+			if GetPlayerProgrammePlan(self.ME).RemoveNews(null, slot)
 				Return self.RESULT_OK
 			else
 				Return self.RESULT_NOTFOUND
 			endif
 		Else
-			Local news:TBroadcastMaterial = player.GetProgrammeCollection().GetNews(ObjectID)
+			Local news:TBroadcastMaterial = GetPlayerProgrammeCollection(self.ME).GetNews(ObjectID)
 			If not news or not TNews(news) then Return self.RESULT_NOTFOUND
-			player.GetProgrammePlan().SetNews(TNews(news), slot)
+			GetPlayerProgrammePlan(self.ME).SetNews(TNews(news), slot)
 
 			Return self.RESULT_OK
 		EndIf
@@ -927,7 +885,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method sa_doGiveBackSpot:Int(contractID:Int = -1)
 		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
 
-		local contract:TAdContract = GetPlayer(self.ME).GetProgrammeCollection().GetUnsignedAdContractFromSuitcase(contractID)
+		local contract:TAdContract = GetPlayerProgrammeCollection(self.ME).GetUnsignedAdContractFromSuitcase(contractID)
 
 		if contract and RoomHandler_AdAgency.GetInstance().TakeContractFromPlayer( contract, self.ME )
 			Return self.RESULT_OK
@@ -999,7 +957,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method md_doSellProgrammeLicence:Int(licenceID:Int=-1)
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
-		For local licence:TProgrammeLicence = eachin GetPlayer(self.ME).GetProgrammeCollection().suitcaseProgrammeLicences
+		For local licence:TProgrammeLicence = eachin GetPlayerProgrammeCollection(self.ME).suitcaseProgrammeLicences
 			if licence.id = licenceID then return RoomHandler_MovieAgency.GetInstance().BuyProgrammeLicenceFromPlayer(licence)
 		Next
 		Return self.RESULT_NOTFOUND

@@ -100,25 +100,31 @@ Import "game.newsagency.bmx"
 
 Import "game.roomhandler.base.bmx"
 Import "game.roomhandler.adagency.bmx"
+Import "game.roomhandler.archive.bmx"
 Import "game.roomhandler.betty.bmx"
 Import "game.roomhandler.credits.bmx"
 Import "game.roomhandler.elevatorplan.bmx"
+Import "game.roomhandler.movieagency.bmx"
+Import "game.roomhandler.news.bmx"
 Import "game.roomhandler.roomagency.bmx"
 Import "game.roomhandler.roomboard.bmx"
 Import "game.roomhandler.scriptagency.bmx"
 Import "game.roomhandler.studio.bmx"
 
+'remove when planner screen is importable
+import "common.misc.plannerlist.contractlist.bmx"
+
+Import "game.player.bmx"
+Import "game.ai.bmx"
+
 '===== Includes =====
-Include "game.player.bmx"
 
 'Types: - TError - Errorwindows with handling
 '		- base class For buttons And extension newsbutton
 Include "gamefunctions.bmx"
 
 Include "gamefunctions_screens.bmx"
-Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme-data/Blocks and dnd-objects
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
-Include "gamefunctions_ki.bmx"					'LUA connection
 Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
 Include "gamefunctions_debug.bmx"
 Include "gamefunctions_network.bmx"
@@ -826,27 +832,27 @@ Type TApp
 				If KEYMANAGER.Ishit(Key_F6) Then GetSoundManager().PlayMusicPlaylist("default")
 
 				If KEYMANAGER.Ishit(Key_F9)
-					If (KIRunning)
+					If (TAiBase.AiRunning)
 						TLogger.Log("CORE", "AI deactivated", LOG_INFO | LOG_DEV )
-						KIRunning = False
+						TAiBase.AiRunning = False
 					Else
 						TLogger.Log("CORE", "AI activated", LOG_INFO | LOG_DEV )
-						KIRunning = True
+						TAiBase.AiRunning = True
 					EndIf
 				EndIf
 				If KEYMANAGER.Ishit(Key_F10)
-					If (KIRunning)
+					If (TAiBase.AiRunning)
 						For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
 							If GetPlayerBase().GetFigure() <> fig Then fig.moveable = False
 						Next
 						TLogger.Log("CORE", "AI Figures deactivated", LOG_INFO | LOG_DEV )
-						KIRunning = False
+						TAiBase.AiRunning = False
 					Else
 						For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
 							If GetPlayerBase().GetFigure() <> fig Then fig.moveable = True
 						Next
 						TLogger.Log("CORE", "AI activated", LOG_INFO | LOG_DEV )
-						KIRunning = True
+						TAiBase.AiRunning = True
 					EndIf
 				EndIf
 			EndIf

@@ -1,3 +1,5 @@
+'import "common.misc.plannerlist.contractlist.bmx"
+
 Type TScreenHandler_ProgrammePlanner
 	Global showPlannerShortCutHintTime:int = 0
 	Global showPlannerShortCutHintFadeAmount:int = 1
@@ -935,7 +937,7 @@ Type TScreenHandler_ProgrammePlanner
 
 		SetColor 255,255,255
 		If PPprogrammeList.GetOpen() > 0
-			PPprogrammeList.owner = GetPlayer(currentRoom.owner)
+			PPprogrammeList.owner = currentRoom.owner
 			PPprogrammeList.Draw()
 			If TRoomHandler.IsPlayersRoom(currentRoom)
 				openedProgrammeListThisVisit = True
@@ -943,7 +945,7 @@ Type TScreenHandler_ProgrammePlanner
 		endif
 
 		If PPcontractList.GetOpen() > 0
-			PPcontractList.owner = GetPlayer(currentRoom.owner)
+			PPcontractList.owner = currentRoom.owner
 			PPcontractList.Draw()
 		endif
 
@@ -1092,10 +1094,10 @@ Type TScreenHandler_ProgrammePlanner
 			GuiListProgrammes.setOption(GUI_OBJECT_CLICKABLE, False)
 		EndIf
 
-		PPprogrammeList.owner = GetPlayer(currentRoom.owner)
+		PPprogrammeList.owner = currentRoom.owner
 		PPprogrammeList.Update()
 
-		PPcontractList.owner = GetPlayer(currentRoom.owner)
+		PPcontractList.owner = currentRoom.owner
 		PPcontractList.Update()
 
 

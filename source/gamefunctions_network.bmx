@@ -208,6 +208,9 @@ Type TNetworkHelper
 		'changes to rooms (eg. owner changes)
 		EventManager.registerListenerFunction("RoomAgency.rentRoom", TNetworkHelper.onChangeRoomAgency)
 
+		'news subscription
+		EventManager.registerListenerFunction("player.SetNewsAbonnement", TNetworkHelper.onPlayerSetNewsAbonnement)
+
 		'changes to the player's programmecollection
 		EventManager.registerListenerFunction("programmecollection.removeProgrammeLicence", TNetworkHelper.onChangeProgrammeCollection)
 		EventManager.registerListenerFunction("programmecollection.addProgrammeLicence", TNetworkHelper.onChangeProgrammeCollection)
@@ -362,6 +365,16 @@ Type TNetworkHelper
 		return FALSE
 	End Function
 
+
+	Function onPlayerSetNewsAbonnement:int( triggerEvent:TEventBase )
+		local genre:int = triggerEvent.GetData().GetInt("genre")
+		local level:int = triggerEvent.GetData().GetInt("level")
+		local sendToNetwork:int = triggerEvent.GetData().GetInt("sendToNetwork")
+		local playerID:int = TPlayerBase(triggerEvent.GetSender()).playerID
+
+		NetworkHelper.SendNewsSubscriptionChange(playerID, genre, level)
+	End Function
+	
 
 	Function onChangeMovieAgency:int( triggerEvent:TEventBase )
 		Select triggerEvent.getTrigger()

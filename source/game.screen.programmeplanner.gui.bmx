@@ -1,3 +1,12 @@
+SuperStrict
+
+Import "common.misc.gamelist.bmx"
+Import "game.broadcastmaterial.base.bmx"
+Import "game.broadcastmaterial.programme.bmx"
+Import "game.broadcastmaterial.advertisement.bmx"
+Import "game.game.base.bmx"
+Import "game.player.programmeplan.bmx"
+
 
 'base element for list items in the programme planner
 Type TGUIProgrammePlanElement Extends TGUIGameListItem
@@ -146,7 +155,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 	'override to disable clicks for items of other players
 	Method IsClickable:int()
 		'only owner can click on it 
-		if broadcastMaterial and broadcastMaterial.GetOwner() <> GetPlayerCollection().playerID Then return False
+		if broadcastMaterial and broadcastMaterial.GetOwner() <> GetPlayerBaseCollection().playerID Then return False
 
 		'skip if player cannot control the material
 		if broadcastMaterial and not broadcastMaterial.IsControllable() Then return False
@@ -183,7 +192,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 
 		'set mouse to "hover"
-		If isHovered() and broadcastMaterial.IsOwnedByPlayer( GetPlayerCollection().playerID)
+		If isHovered() and broadcastMaterial.IsOwnedByPlayer( GetPlayerBaseCollection().playerID)
 			if not broadcastMaterial.IsControllable()
 				GetGameBase().cursorstate = 3
 			else
@@ -646,10 +655,10 @@ endrem
 		'1. find out when it was send:
 		'   just ask the plan when the programme at "0:00" really started
 		Local startHour:Int = 0
-		Local player:TPlayer = GetPlayerCollection().Get(material.owner)
+		Local player:TPlayerBase = GetPlayerBase(material.owner)
 		If player
 			If day < 0 Then day = GetWorldTime().GetDay()
-			startHour = player.GetProgrammePlan().GetObjectStartHour(material.materialType,day,0)
+			startHour = GetPlayerProgrammePlan(player.playerID).GetObjectStartHour(material.materialType,day,0)
 			'get a 0-23 value
 			startHour = startHour Mod 24
 		Else

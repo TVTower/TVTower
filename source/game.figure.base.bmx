@@ -172,6 +172,11 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		'a figureBase cannot be in a room (is always in building)
 		return False
 	End Method
+
+
+	Method GetInRoomID:Int()
+		return 0
+	End Method
 	
 
 	Method CanMove:int()

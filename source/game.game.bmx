@@ -193,7 +193,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		If isGameLeader()
 			For Local id:Int = 1 To 4
 				If GetPlayer(id).IsLocalAI()
-					GetPlayer(id).InitAI("res/ai/DefaultAIPlayer.lua")
+					GetPlayer(id).InitAI( new TAI.Create(id, "res/ai/DefaultAIPlayer.lua") )
 				EndIf
 			Next
 		EndIf
