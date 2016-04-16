@@ -22,8 +22,8 @@ Function SetRendererWin32:TGraphics(_g:TGraphics, renderer:Int, realWidth:Int, r
 			SetGraphicsDriver D3D7Max2DDriver()
 		Case RENDERER_DIRECTX9
 			SetGraphicsDriver D3D9Max2DDriver()
-'		Case RENDERER_DIRECTX11
-'			SetGraphicsDriver D3D11Max2DDriver()
+		Case RENDERER_DIRECTX11
+			SetGraphicsDriver D3D11Max2DDriver()
 		?
 		Default SetGraphicsDriver GLMax2DDriver()
 	EndSelect
