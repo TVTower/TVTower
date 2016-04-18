@@ -543,7 +543,7 @@ Type TDatabaseLoader
 
 		adContract.blocks = data.GetInt("blocks", adContract.blocks)
 		adContract.spotCount = data.GetInt("repetitions", adContract.spotcount)
-		adContract.fixedPrice = data.GetInt("fix_price", adContract.fixedPrice)
+		adContract.fixedPrice = data.GetBool("fix_price", adContract.fixedPrice)
 		adContract.daysToFinish = data.GetInt("duration", adContract.daysToFinish)
 		adContract.proPressureGroups = data.GetInt("pro_pressure_groups", adContract.proPressureGroups)
 		adContract.contraPressureGroups = data.GetInt("contra_pressure_groups", adContract.contraPressureGroups)

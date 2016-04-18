@@ -122,6 +122,8 @@ Type TProduction Extends TOwnedGameObject
 		print "start production"
 		startDate = GetWorldTime().GetTimeGone()
 		endDate = startDate + productionConcept.GetBaseProductionTime() * 3600
+		print "  start: "+ GetWorldTime().GetFormattedDate(startDate)
+		print "    end: "+ GetWorldTime().GetFormattedDate(endDate)
 
 		status = 1
 
@@ -189,7 +191,7 @@ Type TProduction Extends TOwnedGameObject
 		print "Dreharbeiten beendet - Programm herstellen"
 
 		'inform script about a done production based on the script
-		productionConcept.script.productionCount :+ 1
+		'productionConcept.script.productionCount :+ 1
 		'same for the concept itself
 		productionConcept.SetFlag(TVTProductionConceptFlag.PRODUCED, true)
 

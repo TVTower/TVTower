@@ -258,7 +258,7 @@ Type TAi extends TAiBase
 		args[1] = String(reason)
 		args[2] = TNamedGameObject(reference)
 
-		CallLuaFunction("OnMalfunction", args)
+		CallLuaFunction("OnMoneyChanged", args)
 	End Method
 
 

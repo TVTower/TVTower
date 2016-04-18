@@ -11,7 +11,9 @@ Import "common.misc.datasheet.bmx"
 Import "game.programme.programmeperson.base.bmx"
 Import "game.production.productionconcept.bmx"
 Import "game.production.productionconcept.gui.bmx"
+Import "game.production.productionmanager.bmx"
 Import "game.screen.base.bmx"
+Import "game.player.finance.bmx"
 
 
 Type TScreenHandler_SupermarketProduction extends TScreenHandler
@@ -192,13 +194,8 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 	Method PayCurrentProductionConceptDeposit:int()
 		if not currentProductionConcept then return False
-		'already paid ?
-		if currentProductionConcept.IsDepositPaid() then return False
 
-		print "TODO: connect to player finance"
-		if currentProductionConcept.PayDeposit() then return True
-
-		return False
+		return GetProductionManager().PayProductionConceptDeposit(currentProductionConcept)
 	End Method
 	
 
@@ -655,6 +652,8 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 
 	Method InitCustomProductionElements()
+		local screenDefaultFont:TBitmapFont = GetBitmapFontManager().Get("default", 12)
+
 		'=== CAST ===
 		'============
 		castSlotList = new TGUICastSlotList.Create(new TVec2D.Init(300,200), new TVec2D.Init(200, 200), "supermarket_customproduction_castbox")
@@ -700,11 +699,12 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		finishProductionConcept.caption.SetValueSpriteMode( TGUILabel.MODE_SPRITE_LEFT_OF_TEXT3 )
 		finishProductionConcept.disable()
 		finishProductionConcept.spriteName = "gfx_gui_button.datasheet"
+		finishProductionConcept.SetFont( screenDefaultFont )
 
 		'=== PRODUCTION TAKEOVER CHECKBOX ===
 		productionConceptTakeOver = new TGUICheckbox.Create(new TVec2D.Init(20, 220), new TVec2D.Init(100, 28), GetLocale("TAKE_OVER_SETTINGS"), "supermarket_customproduction_productionconceptbox")
-		productionConceptTakeOver.SetFont( GetBitmapFontManager().Get("default", 12) )
-	
+		productionConceptTakeOver.SetFont( screenDefaultFont )
+
 		'=== PRODUCTION CONCEPT LIST ===
 		productionConceptList = new TGUISelectList.Create(new TVec2D.Init(20,20), new TVec2D.Init(150,180), "supermarket_customproduction_productionconceptbox")
 		'scroll one concept per "scroll"

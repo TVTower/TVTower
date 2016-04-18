@@ -39,6 +39,25 @@ Type TProductionManager
 	End Method
 
 
+	Method PayProductionConceptDeposit:int(productionConcept:TProductionConcept)
+		if not productionConcept then return False
+		'already paid ?
+		if productionConcept.IsDepositPaid() then return False
+
+		'if invalid owner or finance not existing, skip payment and
+		'just set the deposit as paid
+		if GetPlayerFinance(productionConcept.owner)
+			if not GetPlayerFinance(productionConcept.owner).PayProductionStuff(productionConcept.GetDepositCost())
+				return False
+			endif
+		endif
+
+		if productionConcept.PayDeposit() then return True
+
+		return False
+	End Method
+	
+
 	'returns first found production in the given room/studio
 	Method GetProductionInStudio:TProduction(roomGUID:string)
 		For local production:TProduction = EachIn productionsToProduce
