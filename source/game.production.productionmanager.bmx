@@ -41,22 +41,17 @@ Type TProductionManager
 
 	Method PayProductionConceptDeposit:int(productionConcept:TProductionConcept)
 		if not productionConcept then return False
-		'already paid ?
-		if productionConcept.IsDepositPaid() then return False
 
-		'if invalid owner or finance not existing, skip payment and
-		'just set the deposit as paid
-		if GetPlayerFinance(productionConcept.owner)
-			if not GetPlayerFinance(productionConcept.owner).PayProductionStuff(productionConcept.GetDepositCost())
-				return False
-			endif
-		endif
-
-		if productionConcept.PayDeposit() then return True
-
-		return False
+		return productionConcept.PayDeposit()
 	End Method
-	
+
+
+	Method PayProduction:int(productionConcept:TProductionConcept)
+		if not productionConcept then return False
+
+		return productionConcept.PayBalance()
+	End Method	
+
 
 	'returns first found production in the given room/studio
 	Method GetProductionInStudio:TProduction(roomGUID:string)
@@ -138,6 +133,13 @@ Type TProductionManager
 
 		return productionCount
 	End Method
+
+
+	Function CanCreateProductionOfScript:int(script:TScript)
+		if not script then return False
+		
+		return (script.productionCount + 1) < script.ProductionCountMax
+	End Function
 
 
 	Function SortProductionsByStudioSlot:int(o1:object, o2:object)

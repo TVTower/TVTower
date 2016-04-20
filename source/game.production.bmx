@@ -83,6 +83,12 @@ Type TProduction Extends TOwnedGameObject
 
 	Method SetProductionConcept(concept:TProductionConcept)
 		productionConcept = concept
+
+		if productionConcept
+			owner = productionConcept.owner
+		else
+			owner = 0
+		endif
 	End Method
 
 
@@ -118,6 +124,27 @@ Type TProduction Extends TOwnedGameObject
 	End Method
 
 
+	Method PayProduction:int()
+		'already paid rest?
+		if productionConcept.IsBalancePaid() then return False
+
+		'if invalid owner or finance not existing, skip payment and
+		'just set the prodcuction as paid
+		if GetPlayerFinance(productionConcept.owner)
+			if not GetPlayerFinance(productionConcept.owner).PayProductionStuff(productionConcept.GetTotalCost() - productionConcept.GetDepositCost())
+				'TODO: auto-sell the production?
+				'      and give back deposit payment?
+
+				'return False
+			endif
+		endif
+
+		if productionConcept.PayBalance() then return True
+
+		return False
+	End Method
+
+
 	Method Start:TProduction()
 		print "start production"
 		startDate = GetWorldTime().GetTimeGone()
@@ -127,6 +154,8 @@ Type TProduction Extends TOwnedGameObject
 
 		status = 1
 
+		'calculate costs
+		productionConcept.CalculateCosts()
 
 
 		'=== 1. CALCULATE BASE PRODUCTION VALUES ===
@@ -194,6 +223,9 @@ Type TProduction Extends TOwnedGameObject
 		'productionConcept.script.productionCount :+ 1
 		'same for the concept itself
 		productionConcept.SetFlag(TVTProductionConceptFlag.PRODUCED, true)
+
+		'pay for the production (balance cost)
+		PayProduction()
 
 
 		'=== 1. PRODUCTION EFFECTS ===
@@ -302,6 +334,7 @@ endif
 		
 		'=== 4. ADD TO PLAYER ===
 		'add licence (or its header-licence)
+print "owner: "+owner
 		if owner and GetPlayerProgrammeCollection(owner)
 			GetPlayerProgrammeCollection(owner).AddProgrammeLicence(addLicence, False)
 		endif

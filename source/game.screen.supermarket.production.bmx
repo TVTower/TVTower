@@ -195,9 +195,9 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 	Method PayCurrentProductionConceptDeposit:int()
 		if not currentProductionConcept then return False
 
-		return GetProductionManager().PayProductionConceptDeposit(currentProductionConcept)
+		return currentProductionConcept.PayDeposit()
 	End Method
-	
+
 
 	Method SetCurrentProductionConcept(productionConcept:TProductionConcept = null, takeOverConcept:TProductionConcept = null)
 		currentProductionConcept = productionConcept

@@ -198,9 +198,10 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	'outcome/speed/price/... while still having a connecting link
 	Field basedOnScriptGUID:String = ""
 	'how many productions were done using that script?
-	'Field productionCount:int = 0
+	Field productionCount:int = 0
 	'how often can you produce this script?
-	'Field productionCountMax:int = 1
+	'value is used by "basedOnScriptGUID"-referenced scripts
+	Field productionCountMax:int = 1
 
 
 	Function CreateFromTemplate:TScript(template:TScriptTemplate)

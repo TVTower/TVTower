@@ -714,10 +714,12 @@ Type TVTProductionConceptFlag {_exposeToLua}
 	Const CALLIN_COMPETITION:Int = 2
 	'deposit payment paid?
 	Const DEPOSIT_PAID:Int = 4
+	'rest of total payment paid?
+	Const BALANCE_PAID:Int = 8
 	'finished shooting of this production?
-	Const PRODUCED:Int = 8
+	Const PRODUCED:Int = 16
 
-	Const count:int = 3
+	Const count:int = 4
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -731,6 +733,7 @@ Type TVTProductionConceptFlag {_exposeToLua}
 			case LIVE               return "live"
 			case CALLIN_COMPETITION return "callincompetition"
 			case DEPOSIT_PAID       return "depositpaid"
+			case BALANCE_PAID       return "balancepaid"
 			case PRODUCED           return "produced"
 			default
 				'loop through all flag-entries and add them if contained

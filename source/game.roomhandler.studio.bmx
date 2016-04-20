@@ -6,6 +6,7 @@ Import "game.roomhandler.base.bmx"
 Import "game.player.programmecollection.bmx"
 Import "game.production.script.gui.bmx"
 Import "game.production.productionconcept.gui.bmx"
+Import "game.production.productionmanager.bmx"
 
 
 'Studio: emitting and receiving the production concepts for specific
@@ -562,8 +563,15 @@ Type RoomHandler_Studio extends TRoomHandler
 
 		'=== SCRIPTS ===
 
-		'studio list
+		'studio concept list
 		local studioScript:TScript = GetCurrentStudioScript(roomGUID)
+		if studioScript
+			'adjust list limit
+			local minConceptLimit:int = Min(studioScriptLimit, studioScript.productionCountMax)
+			guiListDeskProductionConcepts.SetItemLimit( minConceptLimit )
+		endif
+
+		'studio list
 		if studioScript and not guiListStudio.ContainsScript(studioScript)
 			'try to fill in our list
 			if guiListStudio.getFreeSlot() >= 0
@@ -606,6 +614,9 @@ Type RoomHandler_Studio extends TRoomHandler
 		if studioScript
 			'try to fill in our list
 			For local pc:TProductionConcept = EachIn programmeCollection.GetProductionConcepts()
+				'skip produced ones
+				if pc.IsProduced() then continue
+				
 				if pc.script <> GetCurrentStudioScript(roomGUID) then continue
 				if guiListDeskProductionConcepts.ContainsProductionConcept(pc) then continue
 				
@@ -628,6 +639,18 @@ Type RoomHandler_Studio extends TRoomHandler
 
 		haveToRefreshGuiElements = FALSE
 	End Method
+
+
+	Function onClickStartProduction(data:TData)
+		if not TFigure(GetPlayerBase().GetFigure()).inRoom then return
+
+		local roomGUID:string = TFigure(GetPlayerBase().GetFigure()).inRoom.GetGUID()
+		local script:TScript = TScript(data.Get("script"))
+		if not script then return
+
+		local count:int = GetProductionManager().StartProductionInStudio(roomGUID, script)
+		print "added "+count+" productions to shoot"
+	End Function
 
 
 	Function onClickCreateProductionConcept(data:TData)
@@ -662,9 +685,16 @@ Type RoomHandler_Studio extends TRoomHandler
 				'call the productionconcept collection instead of the player's
 				'programmecollection
 				conceptCount = GetProductionConceptCollection().GetProductionConceptsByScript(script).length
+				local countText:string = conceptCount
+				if script.productionCountMax > 0 then countText = conceptCount + "/"+script.productionCountMax 
+
 				text = "Du willst also |b|"+script.GetTitle()+"|/b| produzieren?"
 				text :+"~n~n"
-				text :+"Bisher sind |b|"+conceptCount+" Produktionen|/b| mit diesem Drehbuch geplant."
+				if conceptCount = 1
+					text :+"Bisher ist |b|"+conceptCount+" Produktion|/b| mit diesem Drehbuch geplant."
+				else
+					text :+"Bisher sind |b|"+conceptCount+" Produktionen|/b| mit diesem Drehbuch geplant."
+				endif
 				if not GetPlayerProgrammeCollection( GetPlayerBase().playerID ).CanCreateProductionConcept(script)
 					text :+"~n~n"
 					text :+"Im übrigen ist Dein Platz für Einkaufslisten erschöpft. Bitte entferne erst eine Einkaufsliste bevor Ich eine neue ausgeben kann (Liste aufheben und per Rechtsklick löschen)."
@@ -682,8 +712,34 @@ Type RoomHandler_Studio extends TRoomHandler
 		local texts:TDialogueTexts[1]
 		texts[0] = TDialogueTexts.Create(text)
 
+
+		if dialogueType = 0 and script
+			local productionConcepts:TProductionConcept[] = GetProductionConceptCollection().GetProductionConceptsByScript(script)
+			local conceptCount:int = productionConcepts.length
+			local produceableConceptCount:int = 0
+			local produceableConcepts:string = ""
+			for local pc:TProductionConcept = EachIn productionConcepts
+				if pc.IsProduceable()
+					if produceableConcepts <> "" then produceableConcepts :+ ", "
+					produceableConceptCount :+ 1
+					produceableConcepts :+ string(produceableConceptCount)
+				endif
+			next
+
+			if produceableConcepts > 0
+				local answerText:string
+				if produceableConcepts = 1
+					answerText = "Produktion starten."
+				else
+					answerText = "Alle möglichen Produktionen ("+produceableConcepts+") durchführen."
+				endif
+				texts[0].AddAnswer(TDialogueAnswer.Create( answerText, -1, null, onClickStartProduction, new TData.Add("script", script)))
+			endif
+		endif
+
+
 		if script
-			if GetPlayerProgrammeCollection( GetPlayerBase().playerID ).CanCreateProductionConcept(script)
+			if TProductionManager.CanCreateProductionOfScript(script)
 				local answerText:string
 				if conceptCount > 0
 					answerText = "Ich brauche noch eine Einkaufsliste für dieses Drehbuch."
@@ -694,6 +750,7 @@ Type RoomHandler_Studio extends TRoomHandler
 			endif
 		endif
 		texts[0].AddAnswer(TDialogueAnswer.Create( "Tschüss", -2, Null))
+
 
 		studioManagerDialogue = new TDialogue
 		studioManagerDialogue.SetArea(new TRectangle.Init(150, 40, 460, 230))

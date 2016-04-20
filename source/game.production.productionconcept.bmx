@@ -91,6 +91,11 @@ Type TProductionConcept Extends TOwnedGameObject
 	Field _effectiveFocusPoints:Float = -1.0 {nosave}
 	Field _effectiveFocusPointsMax:Float = -1.0 {nosave}
 
+	'storage for precalculated values (eg. costs of actors get higher
+	'inbetween)
+	Field depositCost:int = -1
+	Field totalCost:int = -1
+
 
 	Method Initialize:TProductionConcept(owner:int, script:TScript)
 		SetOwner(owner)
@@ -196,7 +201,24 @@ Type TProductionConcept Extends TOwnedGameObject
 
 
 	Method PayDeposit:int()
+		'already paid ?
+		if IsDepositPaid() then return False
+
+		'if invalid owner or finance not existing, skip payment and
+		'just set the deposit as paid
+		if GetPlayerFinance(owner)
+			if not GetPlayerFinance(owner).PayProductionStuff(GetDepositCost())
+				return False
+			endif
+		endif
+
 		SetFlag(TVTProductionConceptFlag.DEPOSIT_PAID, True)
+		return True
+	End Method
+
+
+	Method PayBalance:int()
+		SetFlag(TVTProductionConceptFlag.BALANCE_PAID, True)
 
 		return True
 	End Method
@@ -514,12 +536,24 @@ Type TProductionConcept Extends TOwnedGameObject
 	End Method
 
 
+	Method CalculateCosts()
+		totalCost = GetTotalCost()
+		depositCost = GetDepositCost()
+	End Method
+
+
 	Method GetDepositCost:int()
+		'return precalculated if existing
+		if depositCost >= 0 then return depositCost
+		
 		return int(0.1 * GetTotalCost())
 	End Method
 
 
 	Method GetTotalCost:int()
+		'return precalculated if existing
+		if totalCost >= 0 then return totalCost
+
 		local result:int
 		result :+ GetCastCost()
 		result :+ GetProductionCost()
@@ -591,6 +625,10 @@ Type TProductionConcept Extends TOwnedGameObject
 
 	Method IsDepositPaid:int()
 		return hasFlag(TVTProductionConceptFlag.DEPOSIT_PAID)
+	End Method
+
+	Method IsBalancePaid:int()
+		return hasFlag(TVTProductionConceptFlag.BALANCE_PAID)
 	End Method
 
 
