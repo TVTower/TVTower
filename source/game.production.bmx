@@ -5,6 +5,7 @@ Import "game.programme.newsevent.bmx"
 Import "game.programme.programmelicence.bmx"
 Import "game.player.programmecollection.bmx"
 Import "game.stationmap.bmx"
+Import "game.room.base.bmx"
 
 
 Type TProductionCollection Extends TGameObjectCollection
@@ -194,6 +195,19 @@ Type TProduction Extends TOwnedGameObject
 		'=== 2. PRODUCTION EFFECTS ===
 		'modify production time (longer by random chance?)
 
+
+		'=== 3. BLOCK STUDIO ===
+		'set studio blocked
+		if GetRoomBaseByGUID(studioRoomGUID)
+			'time in seconds
+			'also add 5 minutes to avoid people coming in in the break
+			'between two productions
+			local productionTime:int = (endDate - startDate) + 600
+			GetRoomBaseByGUID(studioRoomGUID).SetBlocked(productionTime, TRoomBase.BLOCKEDSTATE_SHOOTING)
+			GetRoomBaseByGUID(studioRoomGUID).blockedText = productionConcept.GetTitle()
+		endif
+
+
 		'emit an event so eg. network can recognize the change
 		if fireEvents then EventManager.registerEvent(TEventSimple.Create("production.start", null, self))
 
@@ -317,7 +331,8 @@ Type TProduction Extends TOwnedGameObject
 		if owner
 			addLicence.SetOwner(owner)
 		endif
-	
+
+rem
 print "produziert: " + programmeLicence.GetTitle() + "  (Preis: "+programmeLicence.GetPrice()+")"
 if programmeLicence.IsEpisode()
 	print "Serie besteht nun aus den Folgen:"
@@ -325,6 +340,7 @@ if programmeLicence.IsEpisode()
 		print "subLicences["+epIndex+"] = " + addLicence.subLicences[epIndex].episodeNumber+" | " + addLicence.subLicences[epIndex].GetTitle()
 	Next
 endif
+endrem
 	
 		'=== 3. INFORM / REMOVE SCRIPT ===
 		'inform script about a done production based on the script
@@ -335,7 +351,6 @@ endif
 		'and should be removed from the player
 
 		if owner and productionConcept.script.GetParentScript().IsProduced()
-			print "finished production, remove script from player"
 			GetPlayerProgrammeCollection(owner).RemoveScript(productionConcept.script.GetParentScript(), False)
 		endif
 		
@@ -345,6 +360,11 @@ endif
 		if owner and GetPlayerProgrammeCollection(owner)
 			GetPlayerProgrammeCollection(owner).AddProgrammeLicence(addLicence, False)
 		endif
+
+
+		'=== 5. REMOVE PRODUCTION CONCEPT ===
+		'now only the production itself knows about the concept
+		GetProductionConceptCollection().Remove(productionConcept)
 
 
 		'emit an event so eg. network can recognize the change

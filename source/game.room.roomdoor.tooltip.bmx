@@ -72,9 +72,29 @@ Type TRoomDoorTooltip extends TTooltip
 		local newContent:String = room.GetDescription(2)
 		if room.IsBlocked()
 			'add line spacer
-			if newContent<>"" then newContent :+ chr(13) + chr(13)
-			'add blocked message
-			newContent :+ GetLocale("ROOM_IS_BLOCKED")
+			if newContent<>"" then newContent :+ "~n"
+
+			if room.blockedState = TRoomBase.BLOCKEDSTATE_SHOOTING
+				'add blocked message
+				local endTime:string
+				'today - only hours
+				if GetWorldTime().GetDay(room.blockedUntil) = GetWorldTime().GetDay()
+					endTime = GetWorldTime().GetFormattedTime(room.blockedUntil)
+				'tomorrow?
+				elseif GetWorldTime().GetDay(room.blockedUntil) - GetWorldTime().GetDay() = 1
+					endTime = GetLocale("TOMORROW")+" " +GetWorldTime().GetFormattedTime(room.blockedUntil)
+				'other day: show game day + hour
+				else
+					endTime = GetWorldTime().GetFormattedDate(room.blockedUntil)
+				endif
+
+				newContent :+ GetLocale("SHOOTING_IN_PROGRESS") + "~n"
+				if room.blockedText then newContent :+ "|b|"+room.blockedText + "|/b|~n"
+				newContent :+ GetLocale("BLOCKED_UNTIL_TIME").Replace("%TIME%", endTime)
+			else
+				'add blocked message
+				newContent :+ GetLocale("ROOM_IS_BLOCKED")
+			endif
 		endif
 		if newContent <> content then SetContent(newContent)
 

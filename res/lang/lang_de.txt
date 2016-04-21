@@ -125,6 +125,8 @@ PLANNER_MESSAGES  = Mitteilungen
 
 ROOM_IS_BLOCKED = Raum ist blockiert!
 ROOM_IS_OCCUPIED = Raum ist besetzt
+SHOOTING_IN_PROGRESS = Dreharbeiten im Gange
+BLOCKED_UNTIL_TIME = Blockiert bis %TIME%
 ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = Da ist schon jemand in diesem Raum.
 
 ROOM_ELEVATORPLAN		= Fahrstuhlziel-Planer
@@ -522,6 +524,7 @@ X_RATED = FSK18
 MOVIES_AND_SERIES_AUCTION = Film- und Serienversteigerung
 
 OLD = Alt
+TOMORROW = Morgen
 TODAY = Heute
 YESTERDAY = Gestern
 TWO_DAYS_AGO = Vorgestern

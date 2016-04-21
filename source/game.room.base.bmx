@@ -48,6 +48,14 @@ Type TRoomBaseCollection
 	End Method
 
 
+	Function GetByGUID:TRoomBase(guid:string)
+		For Local room:TRoomBase = EachIn GetInstance().list
+			If room.GetGUID() = guid Then Return room
+		Next
+		Return Null
+	End Function
+
+
 	Function Get:TRoomBase(ID:int)
 		For Local room:TRoomBase = EachIn GetInstance().list
 			If room.id = ID Then Return room
@@ -103,6 +111,10 @@ Function GetRoomBase:TRoomBase(roomID:Int)
 	Return TRoomBaseCollection.GetInstance().Get(roomID)
 End Function
 
+Function GetRoomBaseByGUID:TRoomBase(guid:string)
+	Return TRoomBaseCollection.GetInstance().GetByGUID(guid)
+End Function
+
 
 
 Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
@@ -120,6 +132,8 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 	Field blockedState:Int = BLOCKEDSTATE_NONE 
 	'time until this seconds in the game are gone
 	Field blockedUntil:Double = 0
+	Field blockedUntilShownInTooltip:int = False
+	Field blockedText:string = ""
 	'if > 0 : time a bomb was placed 
 	Field bombPlacedTime:Double = -1
 	'if > 0 : a bomb explosion will be drawn
@@ -156,7 +170,7 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 	Const BLOCKEDSTATE_BOMB:int       = 1 'eg. after terrorists attacked
 	Const BLOCKEDSTATE_RENOVATION:int = 2 'eg. for rooms not "bombable"
 	Const BLOCKEDSTATE_MARSHAL:int    = 3 'eg. archive when not enough money
-	Const BLOCKEDSTATE_SHOOTING_:int  = 4 'studios: when in production
+	Const BLOCKEDSTATE_SHOOTING:int   = 4 'studios: when in production
 
 
 	'init a room base with basic variables
@@ -198,13 +212,13 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 		if blockedState = BLOCKEDSTATE_BOMB
 			'"placerholder rooms" (might get rent later)
 			if owner = 0 and IsUsableAsStudio() 
-				time = 60 * 24
+				time = 60 * 60 * 24
 			'rooms like movie agency
 			elseIf owner = 0
-				time = 60 * 2
+				time = 60 * 60 * 2
 			'player rooms
 			elseIf owner > 0
-				time = 30 
+				time = 60 * 30 
 			endif
 		endif
 
@@ -212,11 +226,11 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 		if blockedState = BLOCKEDSTATE_RENOVATION
 			if owner = 0 and IsUsableAsStudio() 
 				'ATTENTION: "randRange" to get the same in multiplayer games
-				time = 60 * randRange(5,10)
+				time = 60 * 60 * randRange(5,10)
 			elseIf owner = 0
-				time = 30 * randRange(1,3)
+				time = 60 * 30 * randRange(1,3)
 			elseIf owner > 0
-				time = 10 * randRange(1,2) 
+				time = 60 * 10 * randRange(1,2) 
 			endif
 		endif
 
@@ -224,7 +238,7 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 		if blockedState = BLOCKEDSTATE_RENOVATION
 			'just blocks player rooms
 			If owner > 0
-				time = 15 * randRange(1,4) 
+				time = 60 * 15 * randRange(1,4) 
 			endif
 		endif
 			
@@ -232,13 +246,21 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method SetBlocked:int(blockTimeInMinutes:int = 0, blockedState:int = 0)
+	Method SetBlocked:int(blockTimeInSeconds:int = 0, blockedState:int = 0)
 		'remove blockage without effects!
-		if blockTimeInMinutes = 0
+		if blockTimeInSeconds = 0
 			blockedState = BLOCKEDSTATE_NONE
+			blockedUntilShownInTooltip = False
 		else
 			self.blockedState = blockedState
-			blockedUntil = GetWorldTime().GetTimeGone() + 60*blockTimeInMinutes
+
+			'when doing shooting, show the time until end of blocking
+			'when showing a tooltip
+			if blockedState = BLOCKEDSTATE_SHOOTING
+				blockedUntilShownInTooltip = True
+			endif
+			
+			blockedUntil = GetWorldTime().GetTimeGone() + blockTimeInSeconds
 		endif
 	End Method
 

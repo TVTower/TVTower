@@ -140,6 +140,7 @@ Type TProductionManager
 			if production.studioRoomGUID <> roomGUID then continue
 
 			production.Start()
+
 			'start the FIRST production only!
 			return productionCount
 		Next

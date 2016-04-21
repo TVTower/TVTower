@@ -123,8 +123,10 @@ PLANNER_STATISTICS      = Statistics
 PLANNER_MESSAGES		= Messages
 
 ROOM_IS_BLOCKED = Room is blocked!
-ROOM_IS_OCCUPIED = Raum ist besetzt!
-ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = In diesem Raum ist schon jemand.
+ROOM_IS_OCCUPIED = Room is occupied!
+SHOOTING_IN_PROGRESS = Shooting in progress
+BLOCKED_UNTIL_TIME = Blocked until %TIME%
+ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = There is already someone in this room.
 
 ROOM_ELEVATORPLAN		= Elevator target planner
 ROOM_NEWSPLANNER		= News planner
@@ -522,6 +524,7 @@ X_RATED = X-rated
 MOVIES_AND_SERIES_AUCTION = Movie and series auction
 
 OLD = Old
+TOMORROW = Tomorrow
 TODAY = Today
 YESTERDAY = Yesterday
 TWO_DAYS_AGO = Two days ago

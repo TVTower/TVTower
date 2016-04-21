@@ -26,8 +26,8 @@ Type TGameRules {_exposeToLua}
 	'is the amount of user owned scripts limited?
 	Field maxScripts:int = -1
 	'how many production concepts could be "planned" at the same time
-	'(per script)
-	Field maxProductionConceptsPerScript:int = 5
+	'(per script - for series and shows ...)
+	Field maxProductionConceptsPerScript:int = 8
 	'speed of the world (1.0 means "normal", 2.0 = double as fast)
 	'speed is used for figures, elevator, ...
 	Field worldSpeed:float = 1.0
