@@ -94,7 +94,7 @@ Type TTooltip Extends TEntity
 	Method Compare:Int(other:Object)
 		Local otherTip:TTooltip = TTooltip(other)
 		'no weighting
-		If Not otherTip then Return 0
+		If Not otherTip then Return Super.Compare(other)
 		If otherTip = Self then Return 0
 		If otherTip.GetLifePercentage() = GetLifePercentage() Then Return 0
 		'below me

@@ -615,7 +615,7 @@ Type TGUISavegameListItem extends TGUISelectListItem
 
 	Method Compare:Int( other:Object )
 		local otherItem:TGUISavegameListItem = TGUISavegameListItem(other)
-		if not otherItem then return 1
+		if not otherItem then return Super.Compare(other)
 
 		local timeA:int = GetFileInformation().GetInt("fileTime", 0)
 		local timeB:int = otherItem.GetFileInformation().GetInt("fileTime", 0)

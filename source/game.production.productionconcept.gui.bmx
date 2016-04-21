@@ -27,7 +27,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 	End Method
 
 
-	Method SeTProductionConcept:TGuiProductionConceptListItem(productionConcept:TProductionConcept)
+	Method SetProductionConcept:TGuiProductionConceptListItem(productionConcept:TProductionConcept)
 		Self.productionConcept = productionConcept
 		Self.InitAssets(GetAssetName(productionConcept.script.GetMainGenre(), False), GetAssetName(productionConcept.script.GetMainGenre(), True))
 
@@ -100,8 +100,25 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		local contentX:int = x + skin.GetContentY()
 		local contentY:int = y + skin.GetContentY()
 
-		local title:string = productionConcept.script.GetTitle()
 		local conceptIsEmpty:int = productionConcept.IsUnplanned()
+		local title:string = productionConcept.script.GetTitle()
+		local description:string = productionConcept.script.GetDescription()
+
+		'series episode
+		if productionConcept.script.IsEpisode() and productionConcept.script.GetParentScript() <> productionConcept.script
+			local episodesMax:int = productionConcept.script.GetParentScript().GetSubScriptCount()
+			local episodeNum:int = 1 + productionConcept.script.GetParentScript().GetSubScriptPosition(productionConcept.script)
+			
+			title = episodeNum+"/"+episodesMax+": "+title
+
+			'episode got no description?
+			if not description
+				description = productionConcept.script.GetParentScript().GetDescription()
+			endif
+
+			description = "|i|"+productionConcept.script.GetParentScript().GetTitle()+"|/i|~n~n" + description
+		endif
+
 
 		local showMsgOrderWarning:Int = False
 		local showMsgIncomplete:Int = productionConcept.IsGettingPlanned()
@@ -187,7 +204,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 	
 		'=== DESCRIPTION AREA ===
 		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
-		skin.fontNormal.drawBlock(productionConcept.script.GetDescription(), contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, null, skin.textColorNeutral)
+		skin.fontNormal.drawBlock(description, contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, null, skin.textColorNeutral)
 		contentY :+ descriptionH
 
 
@@ -587,12 +604,12 @@ Type TGuiProductionConceptSelectListItem Extends TGuiProductionConceptListItem
 	End Method
 
 
-
-
 	Method Compare:Int(Other:Object)
 		Local otherItem:TGuiProductionConceptSelectListItem = TGuiProductionConceptSelectListItem(Other)
-		If not otherItem or not otherItem.productionConcept or not otherItem.productionConcept.script then return -1 'before
+		if not otherItem then return Super.Compare(other)
+		If not otherItem.productionConcept or not otherItem.productionConcept.script then return -1 'before
 		if not productionConcept or not productionConcept.script then return 1 'after
+		if otherItem = self then return 0 'no change
 
 		'both are episodes of the same series
 		if productionConcept.script.GetParentScript() = otherItem.productionConcept.script.GetParentScript()
@@ -600,9 +617,16 @@ Type TGuiProductionConceptSelectListItem Extends TGuiProductionConceptListItem
 				return -1 'before other
 			elseif productionConcept.studioSlot > otherItem.productionConcept.studioSlot
 				return 1 'after it
+			'order by episode if nothing was defined
+			else
+				local parentScript:TScript = productionConcept.script.GetParentScript()
+				if parentScript.GetSubScriptPosition(productionConcept.script) < parentScript.GetSubScriptPosition(otherItem.productionConcept.script)
+					return -1 'before other
+				elseif parentScript.GetSubScriptPosition(productionConcept.script) > parentScript.GetSubScriptPosition(otherItem.productionConcept.script)
+					return 1 'after other
+				endif
+				'else: sort alphabetically
 			endif
-
-			'else: order by name
 		endif
 
 		local titleA:string = productionConcept.GetTitle()
@@ -619,14 +643,14 @@ Type TGuiProductionConceptSelectListItem Extends TGuiProductionConceptListItem
 			'sort by guid
 			if productionConcept.GetGUID() < otherItem.productionConcept.GetGUID()
 				return -1 'before
-			else
+			elseif productionConcept.GetGUID() > otherItem.productionConcept.GetGUID()
 				return 1
 			endif
 		endif
 
-		Return Super.Compare(Other)
+		Return 0
 	End Method
-	
+
 rem
 TODO: might be needed somewhen
 	'override to add scaleAsset

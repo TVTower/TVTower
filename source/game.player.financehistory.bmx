@@ -81,7 +81,7 @@ Type TPlayerFinanceHistoryEntry
 
 	Method Compare:int(otherObject:Object)
 		local other:TPlayerFinanceHistoryEntry = TPlayerFinanceHistoryEntry(otherObject)
-		If Not other Return 1
+		If Not other Return Super.Compare(otherObject)
 		Return other.worldTime - self.worldTime
 	End Method
 

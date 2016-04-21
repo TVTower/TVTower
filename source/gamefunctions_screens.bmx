@@ -149,7 +149,7 @@ Type TInGameScreen Extends TScreen
 
 
 	'override to react to different screentypes
-	Method Enter:Int(fromScreen:TScreen=Null)
+	Method BeginEnter:Int(fromScreen:TScreen=Null)
 		Local fromScreenGroup:String = ""
 		Local fromScreenName:String = ""
 		If fromScreen
@@ -191,7 +191,7 @@ Type TInGameScreen Extends TScreen
 	End Method
 
 
-	Method Leave:Int(toScreen:TScreen=Null)
+	Method BeginLeave:Int(toScreen:TScreen=Null)
 		Local toScreenGroup:String = ""
 		Local toScreenName:String = ""
 		If toScreen

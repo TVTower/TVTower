@@ -96,8 +96,8 @@ Type TScreenCollection
 	Method _SetCurrentScreen:int(screen:TScreen)
 		if screen <> currentScreen
 			if screen
-				screen.Start()
-				screen.Enter(currentScreen)
+				screen.BeginEnter(currentScreen)
+				screen.state = TScreen.STATE_ENTERING
 			EndIf
 			currentScreen = screen
 
@@ -108,7 +108,11 @@ Type TScreenCollection
 
 
 	Method _SetTargetScreen:int(screen:TScreen)
-		if currentScreen then currentScreen.Leave(screen)
+		if currentScreen
+			currentScreen.BeginLeave(screen)
+			currentScreen.state = TScreen.STATE_LEAVING
+		endif
+			
 		targetScreen = screen
 		return TRUE
 	End Method
@@ -163,6 +167,10 @@ Type TScreenCollection
 	Method UpdateCurrent:int(deltaTime:float)
 		'handle screen change (effects finished)
 		if targetScreen and GetCurrentScreen() and GetCurrentScreen().FinishedLeaveEffect()
+			if GetCurrentScreen().state = TScreen.STATE_LEAVING
+				GetCurrentScreen().FinishLeave()
+			endif
+
 			_SetCurrentScreen(targetScreen)
 			targetScreen = null
 		endif
@@ -175,6 +183,10 @@ Type TScreenCollection
 		'handle screen change effects (ENTER) for current screen
 		else if not GetCurrentScreen().FinishedEnterEffect()
 			GetCurrentScreen()._enterScreenEffect.Update(deltaTime)
+		endif
+
+		if GetCurrentScreen().state = TScreen.STATE_ENTERING and GetCurrentScreen().FinishedEnterEffect()
+			GetCurrentScreen().FinishEnter()
 		endif
 
 		GetCurrentScreen().update(deltaTime)
@@ -203,6 +215,10 @@ Type TScreen
 	Field parentScreen:TScreen = null
 	Field _enterScreenEffect:TScreenChangeEffect = null
 	Field _leaveScreenEffect:TScreenChangeEffect = null
+	Field state:int = 0
+	Const STATE_NONE:int = 0
+	Const STATE_ENTERING:int = 1
+	Const STATE_LEAVING:int = 2
 
 
 	Method Create:TScreen(name:string)
@@ -310,19 +326,24 @@ Type TScreen
 	End Method
 
 
-	Method Enter:int(fromScreen:TScreen=null)
+	'gets called right when entering that screen
+	'so use this to init certain values or elements on that screen
+	Method BeginEnter:int(fromScreen:TScreen=null)
 		if _enterScreenEffect then _enterScreenEffect.Reset()
 	End Method
 
 
-	'gets called right before entering that screen
-	'so use this to init certain values or elements on that screen
-	Method Start:int()
+	'called when finished entering (eg. animation finished)
+	Method FinishEnter:int()
 	End Method
 
 
-	Method Leave:int(toScreen:TScreen=null)
+	Method BeginLeave:int(toScreen:TScreen=null)
 		if _leaveScreenEffect then _leaveScreenEffect.Reset()
+	End Method
+
+
+	Method FinishLeave:int()
 	End Method
 
 

@@ -325,6 +325,7 @@ Type TRectangle {_exposeToLua="selected"}
 
 	Method Compare:Int(otherObj:Object)
 		Local rect:TRectangle = TRectangle(otherObj)
+		if not rect then return Super.Compare(otherObj)
 		If rect.dimension.y*rect.dimension.x < dimension.y*dimension.x then Return -1
 		If rect.dimension.y*rect.dimension.x > dimension.y*dimension.x then Return 1
 		Return 0

@@ -297,6 +297,11 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
+	Method LeaveRoom:Int(force:Int=False)
+		return True
+	End Method
+	
+
 	'split into two steps to allow a "waiting time"
 	'step 1/2
 	Method ReachTargetStep1:int()

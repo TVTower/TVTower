@@ -296,7 +296,7 @@ Type TPlayerBase {_exposeToLua="selected"}
 
 	Method Compare:Int(otherObject:Object)
 		Local s:TPlayerBase = TPlayerBase(otherObject)
-		If Not s Then Return 1
+		If Not s Then Return Super.Compare(otherObject)
 		If s.playerID > Self.playerID Then Return 1
 		Return 0
 	End Method

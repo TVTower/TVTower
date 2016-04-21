@@ -88,7 +88,7 @@ Type TLayer
 	Method Compare:Int(other:Object)
 		Local otherLayer:TLayer = TLayer(other)
 		'no weighting
-		If Not otherLayer then Return 0
+		If Not otherLayer then Return Super.Compare(other)
 		If otherLayer = Self then Return 0
 		If otherLayer.zIndex = zIndex Then Return 0
 		'below me

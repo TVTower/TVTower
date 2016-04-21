@@ -471,7 +471,8 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 
 	Method Compare:Int(otherObject:Object)
 	   Local s:TRoomBoardSign = TRoomBoardSign(otherObject)
-	   If Not s Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
+	   ' Objekt nicht gefunden, an das Ende der Liste setzen
+	   If Not s Then Return Super.Compare(otherObject)
 	   Return (dragged * 100)-(s.dragged * 100)
 	End Method
 

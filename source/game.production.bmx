@@ -146,11 +146,9 @@ Type TProduction Extends TOwnedGameObject
 
 
 	Method Start:TProduction()
-		print "start production"
 		startDate = GetWorldTime().GetTimeGone()
 		endDate = startDate + productionConcept.GetBaseProductionTime() * 3600
-		print "  start: "+ GetWorldTime().GetFormattedDate(startDate)
-		print "    end: "+ GetWorldTime().GetFormattedDate(endDate)
+		TLogger.Log("TProduction.Start", "Starting production ~q"+productionConcept.GetTitle()+"~q. Production: "+ GetWorldTime().GetFormattedDate(startDate) + "  -  " + GetWorldTime().GetFormattedDate(endDate), LOG_DEBUG)
 
 		status = 1
 
@@ -193,7 +191,6 @@ Type TProduction Extends TOwnedGameObject
 
 		'=== 2. PRODUCTION EFFECTS ===
 		'modify production time (longer by random chance?)
-
 
 		'emit an event so eg. network can recognize the change
 		if fireEvents then EventManager.registerEvent(TEventSimple.Create("production.start", null, self))

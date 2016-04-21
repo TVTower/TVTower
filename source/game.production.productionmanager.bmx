@@ -137,8 +137,18 @@ Type TProductionManager
 
 	Function CanCreateProductionOfScript:int(script:TScript)
 		if not script then return False
-		
-		return (script.productionCount + 1) < script.ProductionCountMax
+
+		if not script.IsSeries()
+			return (script.productionCount + 1) <= script.ProductionCountMax
+		else
+			'check if there is at least one episode script which is not
+			'produced yet
+			for local subScript:TScript = EachIn script.subScripts
+				if CanCreateProductionOfScript(subScript) then return True
+			Next
+
+			return False
+		endif
 	End Function
 
 

@@ -46,7 +46,7 @@ Type TDialogue
 			If returnValue <> -1 Then nextTextIndex = returnValue
 		EndIf
 		_currentTextIndex = nextTextIndex
-		If _currentTextIndex = -2 Then print "leave";_currentTextIndex = 0;Return 0
+		If _currentTextIndex = -2 Then _currentTextIndex = 0;Return 0
 		Return 1
 	End Method
 

@@ -102,6 +102,18 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 	End Method
 
 
+	Method RemoveAllGuiElements:int()
+		productionConceptList.EmptyList()
+		productionCompanySelect.list.EmptyList()
+		castSlotList.EmptyList()
+
+		hoveredGuiProductionConcept = null
+		hoveredGuiCastItem = null
+
+'		'to recreate everything during next update...
+	End Method
+
+
 	Method SetLanguage()
 	End Method
 
@@ -206,6 +218,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 		
 		ResetProductionConceptGUI()
+		ReloadProductionConceptContent()
 
 		'=== TAKE OVER OLD CONCEPT VALUES ===
 		if currentProductionConcept
@@ -656,7 +669,9 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 		'=== CAST ===
 		'============
-		castSlotList = new TGUICastSlotList.Create(new TVec2D.Init(300,200), new TVec2D.Init(200, 200), "supermarket_customproduction_castbox")
+		if not castSlotList
+			castSlotList = new TGUICastSlotList.Create(new TVec2D.Init(300,200), new TVec2D.Init(200, 200), "supermarket_customproduction_castbox")
+		endif
 
 		castSlotList.SetSlotMinDimension(230, 42)
 		'occupy the first free slot?
@@ -667,13 +682,17 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		'==========================
 
 		'=== PRODUCTION COMPANY SELECT ===
-		productionCompanySelect = new TGUIDropDown.Create(new TVec2D.Init(600,200), new TVec2D.Init(150,-1), GetLocale("PRODUCTION_COMPANY"), 128, "supermarket_customproduction_productionbox")
+		if not productionCompanySelect
+			productionCompanySelect = new TGUIDropDown.Create(new TVec2D.Init(600,200), new TVec2D.Init(150,-1), GetLocale("PRODUCTION_COMPANY"), 128, "supermarket_customproduction_productionbox")
+		endif
 		'entries added during ReloadProductionConceptContent()
 
 
 		'=== PRODUCTION WEIGHTS ===
 		For local i:int = 0 to productionFocusSlider.length -1
-			productionFocusSlider[i] = New TGUISlider.Create(New TVec2D.Init(640,300 + i*25), New TVec2D.Init(150,22), "0", "supermarket_customproduction_productionbox")
+			if not productionFocusSlider[i]
+				productionFocusSlider[i] = New TGUISlider.Create(New TVec2D.Init(640,300 + i*25), New TVec2D.Init(150,22), "0", "supermarket_customproduction_productionbox")
+			endif
 			productionFocusSlider[i].SetValueRange(0,10)
 			productionFocusSlider[i].steps = 10
 			productionFocusSlider[i]._gaugeOffset.SetY(2)
@@ -686,7 +705,9 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 
 		'=== EDIT TEXTS BUTTON ===
-		editTextsButton = new TGUIButton.Create(new TVec2D.Init(530, 26), new TVec2D.Init(30, 28), "...", "supermarket_customproduction_newproduction")
+		if not editTextsButton
+			editTextsButton = new TGUIButton.Create(new TVec2D.Init(530, 26), new TVec2D.Init(30, 28), "...", "supermarket_customproduction_newproduction")
+		endif
 		'editTextsButton.disable()
 		editTextsButton.caption.SetSpriteName("gfx_datasheet_icon_pencil")
 		editTextsButton.caption.SetValueSpriteMode( TGUILabel.MODE_SPRITE_ONLY )
@@ -694,7 +715,9 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 
 		'=== FINISH CONCEPT BUTTON ===
-		finishProductionConcept = new TGUIButton.Create(new TVec2D.Init(20, 220), new TVec2D.Init(100, 28), "...", "supermarket_customproduction_newproduction")
+		if not finishProductionConcept
+			finishProductionConcept = new TGUIButton.Create(new TVec2D.Init(20, 220), new TVec2D.Init(100, 28), "...", "supermarket_customproduction_newproduction")
+		endif
 		finishProductionConcept.caption.SetSpriteName("gfx_datasheet_icon_money")
 		finishProductionConcept.caption.SetValueSpriteMode( TGUILabel.MODE_SPRITE_LEFT_OF_TEXT3 )
 		finishProductionConcept.disable()
@@ -702,11 +725,15 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		finishProductionConcept.SetFont( screenDefaultFont )
 
 		'=== PRODUCTION TAKEOVER CHECKBOX ===
-		productionConceptTakeOver = new TGUICheckbox.Create(new TVec2D.Init(20, 220), new TVec2D.Init(100, 28), GetLocale("TAKE_OVER_SETTINGS"), "supermarket_customproduction_productionconceptbox")
+		if not productionConceptTakeOver
+			productionConceptTakeOver = new TGUICheckbox.Create(new TVec2D.Init(20, 220), new TVec2D.Init(100, 28), GetLocale("TAKE_OVER_SETTINGS"), "supermarket_customproduction_productionconceptbox")
+		endif
 		productionConceptTakeOver.SetFont( screenDefaultFont )
 
 		'=== PRODUCTION CONCEPT LIST ===
-		productionConceptList = new TGUISelectList.Create(new TVec2D.Init(20,20), new TVec2D.Init(150,180), "supermarket_customproduction_productionconceptbox")
+		if not productionConceptList
+			productionConceptList = new TGUISelectList.Create(new TVec2D.Init(20,20), new TVec2D.Init(150,180), "supermarket_customproduction_productionconceptbox")
+		endif
 		'scroll one concept per "scroll"
 		productionConceptList.scrollItemHeightPercentage = 1.0
 		productionConceptList.SetAutosortItems(true) 'sort concepts
@@ -739,14 +766,10 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		Next
 		
 		'sort by series/name
-'		productionConcepts.Sort(true)
+		productionConcepts.Sort(true)
 		
 		For local productionConcept:TProductionConcept = EachIn productionConcepts
-'if productionConcept.script.IsEpisode()
-'	print Lset("E: " + productionConcept.studioSlot+"  "+productionConcept.GetTitle(),40) + productionConcept.GetGUID() 
-'else
-'	print Lset(productionConcept.GetTitle(),40) + productionConcept.GetGUID() 
-'endif
+
 			'skip produced concepts
 			if productionConcept.IsProduced() then continue
 
@@ -756,11 +779,12 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			'base items do not have a size - so we have to give a manual one
 			productionConceptList.AddItem( item )
 		Next
-		productionConceptList.entries.sort(true)
+'		productionConceptList.entries.sort(true)
+
 		productionConceptList.RecalculateElements()
 		'refresh scrolling state
-		productionConceptList.Resize(150, 180)
-	End Method	
+		productionConceptList.Resize(-1, -1)
+	End Method
 
 
 	Method Update()
@@ -811,10 +835,20 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		GuiManager.Update("supermarket_customproduction_productionbox")
 		GuiManager.Update("supermarket_customproduction_castbox")
 
+		if (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
+			'leaving room now
+			if not currentProductionConcept
+				RemoveAllGuiElements()
+'				InitCustomProductionElements()
+'				ReloadProductionConceptContent()
+'				RefreshProductionConceptGUI()
+			endif
 
-		if currentProductionConcept and (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
-			SetCurrentProductionConcept(null)
-			MouseManager.ResetKey(2)
+			'just aborting current production planning
+			if currentProductionConcept
+				SetCurrentProductionConcept(null)
+				MouseManager.ResetKey(2)
+			endif
 		endif
 	End Method
 

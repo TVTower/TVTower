@@ -239,7 +239,7 @@ Type TProgrammePersonBase extends TGameObject
 
 	Method Compare:Int(o2:Object)
 		Local p2:TProgrammePersonBase = TProgrammePersonBase(o2)
-		If Not p2 Then Return 1
+		If Not p2 Then Return Super.Compare(o2)
 		if GetFullName() = p2.GetFullName() 
 			if GetAge() > p2.GetAge() then return 1
 			if GetAge() < p2.GetAge() then return -1

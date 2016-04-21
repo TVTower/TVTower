@@ -326,7 +326,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 
 
-	'override default method to add sublicences
+	'override default method to add subscripts
 	Method SetOwner:int(owner:int=0)
 		GetScriptCollection().SetScriptOwner(self, owner)
 

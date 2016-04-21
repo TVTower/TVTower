@@ -2793,8 +2793,8 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 	End Method
 
 
-	Method Enter:Int(fromScreen:TScreen=Null)
-		Super.Enter(fromScreen)
+	Method BeginEnter:Int(fromScreen:TScreen=Null)
+		Super.BeginEnter(fromScreen)
 
 		If wait = 0 Then wait = Time.GetTimeGone()
 		Reset()
@@ -3884,9 +3884,11 @@ Type GameEvents
 				MOUSEMANAGER.ResetKey(2)
 				'also avoid long click (touch screen)
 				MouseManager.ResetLongClicked(1)
+print "right1" 
 			Else
 				'leaving allowed - reset button
 				If GetPlayer().GetFigure().LeaveRoom()
+print "right2" 
 					MOUSEMANAGER.resetKey(2)
 					'also avoid long click (touch screen)
 					MouseManager.ResetLongClicked(1)
