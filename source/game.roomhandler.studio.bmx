@@ -864,7 +864,7 @@ print "added "+count+" productions to shoot"
 		if script 
 			if dialogueType = 0 and produceableConceptCount > 0
 				local answerText:string
-				if produceableConcepts = 1
+				if produceableConceptCount = 1
 					answerText = "Produktion starten."
 				else
 					answerText = "Alle möglichen Produktionen ("+produceableConcepts+") durchführen."
