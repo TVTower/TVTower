@@ -23,6 +23,13 @@ Type TScriptBase Extends TNamedGameObject
 	Field parentScriptGUID:string = ""
 	'all associated child scripts (episodes)
 	Field subScripts:TScriptBase[]
+	'GUID of a programme produced with this script
+	Field usedInProgrammeGUID:string
+	'amount of times this script was used in productions
+	Field usedInProductionsCount:int = 0
+	'limit (for shows - this limits how often it - and its script-clones
+	'could get produced)
+	Field usedInProductionsLimit:int = 1
 
 
 	'override to add another generic naming
@@ -136,6 +143,44 @@ Type TScriptBase Extends TNamedGameObject
 		if scriptProductType = TVTProgrammeProductType.MOVIE then return True
 		if scriptProductType = TVTProgrammeProductType.SERIES then return True
 		return False
+	End Method
+
+
+	Method GetEpisodeNumber:Int() {_exposeToLua}
+		return 0
+	End Method
+
+
+	'returns whether a new production could be done with this script
+	'or if a limit is already reached
+	Method CanGetProduced:int()
+		Return CanGetProducedCount() > 0
+	End Method
+
+
+	Method CanGetProducedCount:int()
+		if GetParentScript() and self <> GetParentScript()
+			return GetParentScript().CanGetProducedCount()
+		endif
+
+		'return a high number when there is no limit
+		if usedInProductionsLimit <= 0 then return 1000
+
+		return usedInProductionsLimit - usedInProductionsCount
+	End Method
+	
+
+	Method IsProduced:int()
+		if isSeries()
+			'check if there is at least one episode script which is not
+			'produced yet
+			for local subScript:TScriptBase = EachIn subScripts
+				if not subScript.IsProduced() then return False
+			Next
+			return True
+		else
+			return usedInProgrammeGUID <> ""
+		endif
 	End Method
 
 

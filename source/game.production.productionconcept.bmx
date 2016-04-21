@@ -31,12 +31,22 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 		if array.length = 1 then return array[0]
 
 		Return array[(randRange(0, array.length-1))]
-	End Method	
+	End Method
+		
 
-	Method GetProductionConceptsByScript:TProductionConcept[](script:TScript)
+	Method GetProductionConceptsByScript:TProductionConcept[](script:TScriptBase)
 		local result:TProductionConcept[]
 		For local pc:TProductionConcept = EachIn self
 			if pc.script = script then result :+ [pc]
+		Next
+		return result
+	End Method
+
+
+	Method GetProductionConceptsByScripts:TProductionConcept[](scripts:TScriptBase[])
+		local result:TProductionConcept[]
+		For local script:TScriptBase = EachIn scripts
+			result :+ GetProductionConceptsByScript(script)
 		Next
 		return result
 	End Method
@@ -670,6 +680,8 @@ Type TProductionConcept Extends TOwnedGameObject
 		If not IsPlanned() then return False
 		'ready to get produced
 		if not IsDepositPaid() then return False
+		'already produced
+		if IsProduced() then return False
 
 		return True
 	End Method
@@ -677,7 +689,7 @@ Type TProductionConcept Extends TOwnedGameObject
 
 	Method IsCastComplete:int()
 		if not script then return False
-		For local i:int = 0 to cast.length
+		For local i:int = 0 until cast.length
 			if not cast[i] then return False
 		Next
 		return True

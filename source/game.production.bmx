@@ -131,12 +131,14 @@ Type TProduction Extends TOwnedGameObject
 		'if invalid owner or finance not existing, skip payment and
 		'just set the prodcuction as paid
 		if GetPlayerFinance(productionConcept.owner)
-			if not GetPlayerFinance(productionConcept.owner).PayProductionStuff(productionConcept.GetTotalCost() - productionConcept.GetDepositCost())
-				'TODO: auto-sell the production?
-				'      and give back deposit payment?
+			'for now: forced payment
+			GetPlayerFinance(productionConcept.owner).PayProductionStuff(productionConcept.GetTotalCost() - productionConcept.GetDepositCost(), True)
 
+			'TODO: auto-sell the production?
+			'      and give back deposit payment?
+			'if not GetPlayerFinance(productionConcept.owner).PayProductionStuff(productionConcept.GetTotalCost() - productionConcept.GetDepositCost())
 				'return False
-			endif
+			'endif
 		endif
 
 		if productionConcept.PayBalance() then return True
@@ -216,11 +218,6 @@ Type TProduction Extends TOwnedGameObject
 
 		print "Dreharbeiten beendet - Programm herstellen"
 
-		'inform script about a done production based on the script
-		'productionConcept.script.productionCount :+ 1
-		'same for the concept itself
-		productionConcept.SetFlag(TVTProductionConceptFlag.PRODUCED, true)
-
 		'pay for the production (balance cost)
 		PayProduction()
 
@@ -289,8 +286,6 @@ Type TProduction Extends TOwnedGameObject
 		programmeData.outcome = productionValueMod * productionConcept.script.outcome
 		
 		'=== 2.4 PROGRAMME LICENCE ===
-
-		'todo: parentlicence - serien
 		local programmeLicence:TProgrammeLicence = new TProgrammeLicence
 		programmeLicence.SetGUID(programmeGUID)
 		programmeLicence.SetData(programmeData)
@@ -318,6 +313,11 @@ Type TProduction Extends TOwnedGameObject
 		endif
 		GetProgrammeLicenceCollection().AddAutomatic(programmeLicence)
 
+		'set owner of licence (and sublicences)
+		if owner
+			addLicence.SetOwner(owner)
+		endif
+	
 print "produziert: " + programmeLicence.GetTitle() + "  (Preis: "+programmeLicence.GetPrice()+")"
 if programmeLicence.IsEpisode()
 	print "Serie besteht nun aus den Folgen:"
@@ -326,15 +326,26 @@ if programmeLicence.IsEpisode()
 	Next
 endif
 	
-		'=== 3. INFORM SCRIPT ===
+		'=== 3. INFORM / REMOVE SCRIPT ===
+		'inform script about a done production based on the script
+		'(parental script is already informed on creation of its licence)
+		productionConcept.script.usedInProductionsCount :+ 1
 		productionConcept.script.usedInProgrammeGUID = programmeLicence.GetGUID()
+		'if the script does not allow further productions, it is finished
+		'and should be removed from the player
+
+		if owner and productionConcept.script.GetParentScript().IsProduced()
+			print "finished production, remove script from player"
+			GetPlayerProgrammeCollection(owner).RemoveScript(productionConcept.script.GetParentScript(), False)
+		endif
 		
 		'=== 4. ADD TO PLAYER ===
 		'add licence (or its header-licence)
-print "owner: "+owner
+
 		if owner and GetPlayerProgrammeCollection(owner)
 			GetPlayerProgrammeCollection(owner).AddProgrammeLicence(addLicence, False)
 		endif
+
 
 		'emit an event so eg. network can recognize the change
 		if fireEvents then EventManager.registerEvent(TEventSimple.Create("production.finish", null, self))
@@ -379,6 +390,7 @@ print "owner: "+owner
 	Method FillParentalLicence(parentLicence:TProgrammeLicence)
 		'inform parental script about the usage
 		productionConcept.script.GetParentScript().usedInProgrammeGUID = parentLicence.GetGUID()
+		productionConcept.script.GetParentScript().usedInProductionsCount :+ 1
 
 		local parentData:TProgrammeData = parentLicence.GetData()
 

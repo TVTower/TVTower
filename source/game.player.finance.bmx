@@ -473,8 +473,8 @@ Type TPlayerFinance {_exposeToLua="selected"}
 
 
 	'refreshs stats about paid money from buying stuff for own production
-	Method PayProductionStuff:Int(price:Long)
-		If canAfford(price)
+	Method PayProductionStuff:Int(price:Long, forcedPayment:int = False)
+		If canAfford(price) or forcedPayment
 			TLogger.Log("TFinancial.PayProductionStuff()", "Player "+playerID+" paid "+price+" for product stuff", LOG_DEBUG)
 			'add this to our history
 			new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAY_PRODUCTIONSTUFF, -price).AddTo(playerID)

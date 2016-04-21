@@ -3884,11 +3884,9 @@ Type GameEvents
 				MOUSEMANAGER.ResetKey(2)
 				'also avoid long click (touch screen)
 				MouseManager.ResetLongClicked(1)
-print "right1" 
 			Else
 				'leaving allowed - reset button
 				If GetPlayer().GetFigure().LeaveRoom()
-print "right2" 
 					MOUSEMANAGER.resetKey(2)
 					'also avoid long click (touch screen)
 					MouseManager.ResetLongClicked(1)

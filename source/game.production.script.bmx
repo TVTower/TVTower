@@ -167,10 +167,6 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Field newsTopicGUID:string = ""
 	Field newsGenre:int
 
-	'GUID of a programme based on this script
-	'(also for "series header" programmes)
-	Field usedInProgrammeGUID:string
-
 	Field outcome:Float	= 0.0
 	Field review:Float = 0.0
 	Field speed:Float = 0.0
@@ -197,11 +193,6 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	'This is used for "shows" to be able to use different values of
 	'outcome/speed/price/... while still having a connecting link
 	Field basedOnScriptGUID:String = ""
-	'how many productions were done using that script?
-	Field productionCount:int = 0
-	'how often can you produce this script?
-	'value is used by "basedOnScriptGUID"-referenced scripts
-	Field productionCountMax:int = 1
 
 
 	Function CreateFromTemplate:TScript(template:TScriptTemplate)
@@ -431,6 +422,13 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 	Method GetBlocks:Int() {_exposeToLua}
 		return blocks
+	End Method
+
+
+	Method GetEpisodeNumber:Int() {_exposeToLua}
+		if self <> GetParentScript() then return GetParentScript().GetSubScriptPosition(self) + 1
+
+		return 0
 	End Method
 
 	

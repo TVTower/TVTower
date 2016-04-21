@@ -100,7 +100,14 @@ Type TProductionManager
 		Next
 		
 		local productionCount:int = 0
-		For local productionConcept:TProductionConcept = EachIn GetProductionConceptCollection().GetProductionConceptsByScript(script)
+		local productionConcepts:TProductionConcept[]
+		if script.IsSeries()
+			productionConcepts = GetProductionConceptCollection().GetProductionConceptsByScripts(script.subScripts)
+		else
+			productionConcepts = GetProductionConceptCollection().GetProductionConceptsByScript(script)
+		endif
+
+		For local productionConcept:TProductionConcept = EachIn productionConcepts
 			'skip produced concepts
 			if productionConcept.IsProduced() then continue
 			'skip not-produceable concepts
@@ -119,37 +126,26 @@ Type TProductionManager
 			SortList(productionsToProduce, True, SortProductionsByStudioSlot)
 		endif
 
-
 		'actually start the production
 		'- first hit production (with that script) is the one we should
 		'  start
 		'- other productions are produced once the first one is finished
 		For local production:TProduction = EachIn productionsToProduce
-			if production.productionConcept.script <> script then continue
+			'series? skip if not an episode of this serie 
+			if production.productionConcept.script.GetParentScript().IsSeries()
+				if production.productionConcept.script.parentScriptGUID <> script.GetGUID() then continue
+			else
+				if production.productionConcept.script <> script then continue
+			endif
 			if production.studioRoomGUID <> roomGUID then continue
 
 			production.Start()
+			'start the FIRST production only!
+			return productionCount
 		Next
 
 		return productionCount
 	End Method
-
-
-	Function CanCreateProductionOfScript:int(script:TScript)
-		if not script then return False
-
-		if not script.IsSeries()
-			return (script.productionCount + 1) <= script.ProductionCountMax
-		else
-			'check if there is at least one episode script which is not
-			'produced yet
-			for local subScript:TScript = EachIn script.subScripts
-				if CanCreateProductionOfScript(subScript) then return True
-			Next
-
-			return False
-		endif
-	End Function
 
 
 	Function SortProductionsByStudioSlot:int(o1:object, o2:object)

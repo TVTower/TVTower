@@ -602,7 +602,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			if not script.sell() then return FALSE
 		endif
 
-		'sold or "destroyed" script, so destroy its production conepts too
+		'sold or "destroyed" script, so destroy its production concepts too
 		DestroyProductionConceptsByScript(script)
 		
 		scripts.remove(script)
