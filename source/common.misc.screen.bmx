@@ -314,6 +314,10 @@ Type TScreen
 	End Method
 
 
+	Method Start()
+	End Method
+
+
 	Method FinishedLeaveEffect:int()
 		if not _leaveScreenEffect then return TRUE
 		return _leaveScreenEffect.Finished()
@@ -329,6 +333,7 @@ Type TScreen
 	'gets called right when entering that screen
 	'so use this to init certain values or elements on that screen
 	Method BeginEnter:int(fromScreen:TScreen=null)
+		Start()
 		if _enterScreenEffect then _enterScreenEffect.Reset()
 	End Method
 

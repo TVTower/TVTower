@@ -120,7 +120,7 @@ Include "game.escapemenu.bmx"
 
 '===== Globals =====
 Global VersionDate:String = LoadText("incbin::source/version.txt")
-Global VersionString:String = "v0.2.7 Build ~q" + VersionDate+"~q"
+Global VersionString:String = "v0.3.0-dev Build ~q" + VersionDate+"~q"
 Global CopyrightString:String = "by Ronny Otto & Team"
 Global APP_NAME:string = "TVTower"
 Global LOG_NAME:string = "log.profiler.txt"
@@ -2143,7 +2143,7 @@ Type TScreen_GameSettings Extends TGameScreen
 
 
 	'override to set guielements values (instead of only on screen creation)
-	Method Start:Int()
+	Method Start()
 		'assign player/channel names
 		For Local i:Int = 0 To 3
 			GetPlayer(i+1)
@@ -3423,6 +3423,9 @@ Type GameEvents
 		_eventListeners :+ [ EventManager.registerListenerFunction("ProgrammeLicenceAuction.onGetOutbid", ProgrammeLicenceAuction_OnGetOutbid) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("ProgrammeLicenceAuction.onWin", ProgrammeLicenceAuction_OnWin) ]
 
+		'listen to custom programme events to send out toastmessages
+		_eventListeners :+ [ EventManager.registerListenerFunction("production.finalize", Production_OnFinalize) ]
+
 		'we want to handle "/dev bla"-commands via chat
 		_eventListeners :+ [ EventManager.registerListenerFunction("chat.onAddEntry", onChatAddEntry ) ]
 	End Function
@@ -3820,7 +3823,30 @@ Type GameEvents
 		toast.SetLifeTime(8)
 		toast.SetMessageType(2) 'positive
 		toast.SetCaption(GetLocale("YOU_HAVE_WON_AN_AUCTION"))
-		toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", licence.GetTitle()))
+		toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", "|b|"+licence.GetTitle()+"|/b|"))
+		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+	End Function	
+
+
+	Function Production_OnFinalize:Int(triggerEvent:TEventBase)
+		'only interested in auctions the player won
+		Local production:TProduction = TProduction(triggerEvent.GetSender())
+		If not production or production.owner <> GetPlayerBase().playerID Then Return False
+
+		'send out a toast message
+		Local toast:TGameToastMessage = New TGameToastMessage
+		local title:string = production.productionConcept.GetTitle()
+		if production.productionConcept.script.GetEpisodeNumber() > 0
+			title = production.productionConcept.script.GetParentScript().GetTitle() + ": "
+			title :+ production.productionConcept.script.GetEpisodeNumber() + "/" + production.productionConcept.script.GetParentScript().GetSubScriptCount()+" "
+			title :+ production.productionConcept.GetTitle()
+		endif
+	
+		'show it for some seconds
+		toast.SetLifeTime(8)
+		toast.SetMessageType(2) 'positive
+		toast.SetCaption(GetLocale("SHOOTING_FINISHED"))
+		toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", "|b|"+title+"|/b|"))
 		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 	End Function	
 
