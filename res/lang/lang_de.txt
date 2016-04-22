@@ -126,6 +126,7 @@ PLANNER_MESSAGES  = Mitteilungen
 ROOM_IS_BLOCKED = Raum ist blockiert!
 ROOM_IS_OCCUPIED = Raum ist besetzt
 SHOOTING_IN_PROGRESS = Dreharbeiten im Gange
+SHOOTING_FINISHED = Dreharbeiten beendet
 BLOCKED_UNTIL_TIME = Blockiert bis %TIME%
 ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = Da ist schon jemand in diesem Raum.
 
@@ -671,6 +672,7 @@ PLANNING = Planung ...
 MONEY_TO_PAY_DOWN = %money% anzuzahlen
 TAKE_OVER_SETTINGS = Einstellungen übernehmen
 PRODUCTION_COMPANY = Produktionsfirma
+EDIT_TEXTS = Texte ändern
 
 STUDIO_MANAGER = Studioleiter
 STUDIO_MANAGER_TOOLTIP = Gibt Informationen zu geplanten Produktionen und händigt Einkaufslisten aus

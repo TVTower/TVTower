@@ -228,7 +228,6 @@ Type RoomHandler_Studio extends TRoomHandler
 		local roomGUID:string = GetStudioGUIDByScript(script)
 		if roomGUID
 			GetInstance().RemoveCurrentStudioScript(roomGUID)
-			print "removed current"
 
 			'refresh gui if player is in room
 			if CheckPlayerInRoom("studio")

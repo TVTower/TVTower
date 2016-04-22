@@ -228,9 +228,12 @@ Type TProduction Extends TOwnedGameObject
 
 
 	Method Finalize:TProduction()
+		'already finalized before
+		if status = 2 then return self
+		
 		status = 2
 
-		print "Dreharbeiten beendet - Programm herstellen"
+		TLogger.Log("TProduction.Finalize()", "Finished shooting.", LOG_DEBUG)
 
 		'pay for the production (balance cost)
 		PayProduction()
@@ -250,8 +253,10 @@ Type TProduction Extends TOwnedGameObject
 		'- or blockbusters fail for unknown reasons (or get even better)
 		if RandRange(0,100) < 5 then productionValueMod = Max(productionValueMod*1.5, productionValueMod + RandRange(5,35)/100.0)
 		if RandRange(0,100) < 5 then productionValueMod = Min(productionValueMod*0.5, productionValueMod - RandRange(5,35)/100.0)
-		print "Produktionswert: "+GetProductionValueMod()
-		print "Produktionswert end: "+productionValueMod
+
+		
+		TLogger.Log("TProduction.Finalize()", "ProductionValueMod    : "+GetProductionValueMod(), LOG_DEBUG)
+		TLogger.Log("TProduction.Finalize()", "ProductionValueMod end: "+productionValueMod, LOG_DEBUG)
 
 		'by 5% chance increase or lower price regardless of value
 		local productionPriceMod:Float = 1.0
@@ -368,7 +373,7 @@ endrem
 
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent(TEventSimple.Create("production.finish", null, self))
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("production.finalize", null, self))
 
 		return self
 	End Method

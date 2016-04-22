@@ -125,6 +125,7 @@ PLANNER_MESSAGES		= Messages
 ROOM_IS_BLOCKED = Room is blocked!
 ROOM_IS_OCCUPIED = Room is occupied!
 SHOOTING_IN_PROGRESS = Shooting in progress
+SHOOTING_FINISHED = Shooting finished
 BLOCKED_UNTIL_TIME = Blocked until %TIME%
 ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = There is already someone in this room.
 
@@ -668,6 +669,7 @@ PLANNING = Planning ...
 MONEY_TO_PAY_DOWN = %money% to pay down
 TAKE_OVER_SETTINGS = Take over settings
 PRODUCTION_COMPANY = Production company
+EDIT_TEXTS = Edit texts
 
 STUDIO_MANAGER = Studio manager
 STUDIO_MANAGER_TOOLTIP = Gives information about production and hands out new shopping lists

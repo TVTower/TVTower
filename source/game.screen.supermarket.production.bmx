@@ -1,4 +1,4 @@
-SuperStrict
+﻿SuperStrict
 Import "Dig/base.gfx.gui.window.modal.bmx"
 Import "Dig/base.gfx.gui.button.bmx"
 Import "Dig/base.gfx.gui.dropdown.bmx"
@@ -1467,8 +1467,8 @@ Type TGUIProductionEditTextsModalWindow extends TGUIProductionModalWindow
 		AddChild(inputSubTitle)
 		AddChild(inputSubDescription)
 
-		buttonOK.SetValue("Texte ändern")
-		buttonCancel.SetValue("Abbrechen")
+		buttonOK.SetValue(GetLocale("EDIT_TEXTS"))
+		buttonCancel.SetValue(GetLocale("CANCEL"))
 
 		_eventListeners :+ [ EventManager.registerListenerMethod("guiinput.onChangeValue", self, "onChangeInputValues", "TGUIInput" ) ]
 
