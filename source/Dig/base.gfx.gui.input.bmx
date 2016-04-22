@@ -16,6 +16,7 @@ Type TGUIinput Extends TGUIobject
     Field maxTextWidthBase:Int
     Field maxTextWidthCurrent:Int
     Field spriteName:String = "gfx_gui_input.default"
+    Field cursorPos:int
 
 	'=== OVERLAY ===
 	'containing text or an icon (displayed separate from input widget)

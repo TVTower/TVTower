@@ -45,6 +45,11 @@ Type TColor
 	End Function
 
 
+	Method ToString:string()
+		return r+", "+g+", "+b+", "+a
+	End Method
+
+
 	Function FromName:TColor(name:String, alpha:float=1.0)
 		Select name.ToLower()
 				Case "red"
