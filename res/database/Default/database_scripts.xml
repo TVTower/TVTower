@@ -222,8 +222,8 @@
 
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-eroticmovie1">
 			<title>
-				<de>%WOMAN% %ACTION% dem %MAN%</de>
-				<en>%WOMAN% %ACTION% the %MAN%</en>
+				<de>%WOMAN% %ACTION% %MAN%</de>
+				<en>%WOMAN% %ACTION% %MAN%</en>
 			</title>
 			<description>
 				<de>%WOMAN% ist eine Tagträumerin und verliert sich in ihren erotischen Fantasien.</de>
@@ -235,13 +235,58 @@
 					<de>Julie|Anne|Cecille|Verona|Ludmilla|Barbarelle|Susan|Penelope</de>
 				</woman>
 				<action>
-					<de>verführt|umgarnt|turtelt mit|bezirzt</de>
-					<en>ensnares|enmeshes|whispers sweet nothings to|bewitches</en>
+					<de>verführt den|umgarnt den|turtelt mit dem|bezirzt den</de>
+					<en>ensnares the|enmeshes the|whispers sweet nothings to the|bewitches the</en>
 				</action>
 				<man>
 					<de>Mann ihrer Träume|Abt|Lehrer|Professor|Chef</de>
-					<en>Man of her dreams|Abbot|Teacher|Professor|Boss</en>
+					<en>man of her dreams|abbot|teacher|professor|boss</en>
 				</man>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="2" />
+				<job index="2" function="2" required="0" gender="1" />
+				<job index="3" function="32" required="0" gender="2" />
+			</jobs>
+
+			<genres maingenre="100" />
+			<blocks min="1" max="3" slope="50" />
+			<price min="15000" max="25000" slope="40" />
+			<potential min="30" max="65" slope="45" />
+			<outcome min="20" max="45" slope="40" />
+			<review min="15" max="60" slope="40" />
+			<speed min="25" max="65" slope="50" />
+		</scripttemplate>
+
+
+		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-show1">
+			<title>
+				<de>%KIND%%DATE%</de>
+				<de>%KIND%%DATE%</de>
+			</title>
+			<description>
+				<de>Lustige Einspieler und Gäste bekannt aus Funk und Fernsehen. Der Moderator bietet peinliche Tanzeinlagen. Nette Unterhaltung für Unbesorgte.</de>
+			</description>
+
+			<variables>
+				<kind>
+					<de>Das %INNER%-Quiz|Das %INNER%-Duell|Die %INNER%-Show</de>
+				</kind>
+				<inner>
+					<de>%ATTRIBUTE% %GROUP%</de>
+				</inner>
+				<attribute>
+					<de>tierische|große|abgefahrene|lustige|skurile</de>
+				</attribute>
+				<group>
+					<de>Promi|Kinder|Politiker|Musik|Film|Rate|Reise</de>
+				</group>
+				<date>
+					<!-- either add the game year (with space!), or nothing -->
+					<de> %GAMEYEAR%|</de>
+				</date>
 			</variables>
 
 			<jobs>
@@ -258,8 +303,7 @@
 			<outcome min="20" max="35" slope="40" />
 			<review min="25" max="45" slope="40" />
 			<speed min="45" max="60" slope="50" />
-		</scripttemplate>
-		
+		</scripttemplate>		
 
 		<!-- === SERIES === -->
 		<scripttemplate product="2" licence_type="3" guid="scripttemplate-random-ron-averagedayseries01">

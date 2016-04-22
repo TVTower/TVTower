@@ -1,82 +1,6 @@
 SuperStrict
-Import Brl.Map
-Import "Dig/base.util.event.bmx"
+Import "game.gameinformation.base.bmx"
 Import "game.world.worldtime.bmx"
-
-
-Type TGameInformationCollection
-	Field providers:TMap = CreateMap()
-	?Threaded
-	Field _dataMutex:TMutex = CreateMutex()
-	?
-	Global _instance:TGameInformationCollection
-
-
-	Function GetInstance:TGameInformationCollection()
-		if not _instance then _instance = new TGameInformationCollection
-		return _instance
-	End Function
-
-
-	Method AddProvider(providerKey:string, provider:TGameInformationProvider)
-		providers.Insert(providerKey, provider)
-	End Method
-	
-
-	Method GetProvider:TGameInformationProvider(providerKey:string)
-		Return TGameInformationProvider(providers.ValueForKey(providerKey.ToUpper()))
-	End Method
-
-
-	Method Get:object(providerKey:string, key:string, params:TData=null)
-		return GetProvider(providerKey).Get(key, params)
-	End Method
-
-
-	Method ToString:String()
-		local elementCount:int = 0
-		For Local k:String = EachIn providers.Keys()
-			elementCount :+ 1
-		Next
-
-		Return "TGameInformationCollection: " + elementCount + " information providers."
-	End Method
-End Type
-
-'===== CONVENIENCE ACCESSOR =====
-'return collection instance
-Function GetGameInformationCollection:TGameInformationCollection()
-	Return TGameInformationCollection.GetInstance()
-End Function
-
-
-
-
-'base class for all information providers
-Type TGameInformationProvider
-	Method Set(key:string, obj:object) abstract
-	
-	Method Get:object(key:string, params:object = null) abstract
-
-	Method GetString:string(key:string, params:object = null)
-		return string(Get(key, params))
-	End Method
-	
-	Method GetFloat:Float(key:string, params:object = null)
-		return float(string(Get(key, params)))
-	End Method
-	
-	Method GetInt:Int(key:string, params:object = null)
-		return int(string(Get(key, params)))
-	End Method
-	
-	Method GetLong:Long(key:string, params:object = null)
-		return Long(string(Get(key, params)))
-	End Method
-End Type
-
-
-
 
 
 'contains general information of all broadcasts in the programmeplans
@@ -121,7 +45,7 @@ Type TProgrammePlanInformationProviderBase extends TGameInformationProvider
 		Reset()
 
 		'register provider to provider collection
-		GetGameInformationCollection().AddProvider("broadcast", self)
+		GetGameInformationCollection().AddProvider("programmeplan", self)
 	End Method
 
 
@@ -359,6 +283,55 @@ End Function
 
 
 
+
+Type TWorldTimeInformationProviderBase extends TGameInformationProvider
+	Global _instance:TWorldTimeInformationProviderBase
+
+	Function GetInstance:TWorldTimeInformationProviderBase()
+		if not _instance then _instance = new TWorldTimeInformationProviderBase
+		return _instance
+	End Function
+
+
+	Method New()
+		Reset()
+
+		'register provider to provider collection
+		GetGameInformationCollection().AddProvider("worldtime", self)
+	End Method
+
+
+	Method Reset()
+		'nothing cached
+	End Method
+
+	
+	Method Set(key:string, obj:object)
+		Select int(key)
+			Default
+				print "Set is not allowed for TWorldTimeInformationProviderBase"
+		End Select
+	End Method
+
+
+	Method Get:object(key:string, params:object)
+		Select key.ToLower()
+			Case "gameyear"
+				return string( GetWorldTime().GetYear() )
+			Default
+				return ""
+		End Select
+	End Method
+End Type
+
+'===== CONVENIENCE ACCESSOR =====
+'return collection instance
+Function GetWorldTimeProviderBase:TWorldTimeInformationProviderBase()
+	Return TWorldTimeInformationProviderBase.GetInstance()
+End Function
+
+
 '===== REGISTER PROVIDERS ====
-GetGameInformationCollection().AddProvider("programmeplan", TProgrammePlanInformationProviderBase.GetInstance())
+TProgrammePlanInformationProviderBase.GetInstance()
+TWorldTimeInformationProviderBase.GetInstance()
 

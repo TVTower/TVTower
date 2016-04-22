@@ -7,6 +7,7 @@ Import "Dig/base.util.math.bmx"
 Import "game.production.script.base.bmx"
 Import "game.gameconstants.bmx" 'to access type-constants
 Import "game.programme.programmeperson.base.bmx" 'to access TProgrammePersonJob
+Import "game.gameinformation.base.bmx" 'to access worldtime
 
 
 Type TScriptTemplateCollection Extends TGameObjectCollection
@@ -237,38 +238,62 @@ Type TScriptTemplate Extends TScriptBase
 	Method _ReplacePlaceholders:TLocalizedString(text:TLocalizedString)
 		local result:TLocalizedString = text.copy()
 
-		'for each defined language we check for existent placeholders
-		'which then get replaced by a random string stored in the
-		'variable with the same name
-		For local lang:string = EachIn text.GetLanguageKeys()
-			local value:string = text.Get(lang)
-			local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%")
+		'do it 3 times, this allows for placeholder definitions within
+		'placeholders (at least some of them)!
+		for local i:int = 0 to 2
+			'for each defined language we check for existent placeholders
+			'which then get replaced by a random string stored in the
+			'variable with the same name
+			For local lang:string = EachIn text.GetLanguageKeys()
+				'use result already (to allow recursive-replacement)
+				local value:string = result.Get(lang)
+				local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%")
 
-			local replacement:TLocalizedString
-			for local placeHolder:string = EachIn placeHolders
-				'check if there is already a placeholder variable stored
-				replacement = GetPlaceholderVariableString(placeHolder, "", False)
-				'check if the variable is defined (this leaves global
-				'placeholders like %ACTOR% intact even without further
-				'variable definition)
-				if not replacement then replacement = GetVariableString(placeHolder, "", False)
-				'only use ONE option out of the group ("option1|option2|option3")
-				if replacement
-					replacement = _GetRandomFromLocalizedString( replacement )
-					'if the parent stores this variable (too) then save
-					'the placeholder there instead of the children
-					'so other children could use the same placeholders
-					'(if there is no parent then "self" is returned)
-					if GetParentScript().GetVariableString(placeHolder, "", False)
-						GetParentScript().AddPlaceHolderVariable(placeHolder, replacement)
-					else
-						AddPlaceHolderVariable(placeHolder, replacement)
+				local replacement:TLocalizedString
+				for local placeHolder:string = EachIn placeHolders
+					'check if there is already a placeholder variable stored
+					replacement = GetPlaceholderVariableString(placeHolder, "", False)
+					'check if the variable is defined (this leaves global
+					'placeholders like %ACTOR% intact even without further
+					'variable definition)
+					if not replacement then replacement = GetVariableString(placeHolder, "", False)
+					'only use ONE option out of the group ("option1|option2|option3")
+					if replacement
+						replacement = _GetRandomFromLocalizedString( replacement )
+						'if the parent stores this variable (too) then save
+						'the placeholder there instead of the children
+						'so other children could use the same placeholders
+						'(if there is no parent then "self" is returned)
+						if GetParentScript().GetVariableString(placeHolder, "", False)
+							GetParentScript().AddPlaceHolderVariable(placeHolder, replacement)
+						else
+							AddPlaceHolderVariable(placeHolder, replacement)
+						endif
+						'store the replacement in the value
+						value = value.replace(placeHolder, replacement.Get(lang))
 					endif
-					'store the replacement in the value
-					value = value.replace(placeHolder, replacement.Get(lang))
-				endif
+				Next
+				
+				result.Set(value, lang)
 			Next
-			
+		Next
+
+
+		'replace common placeholders (%GAMEYEAR% and so on)
+		'loop over "text", but replace in "result"
+		For local lang:string = EachIn text.GetLanguageKeys()
+			local value:string = result.Get(lang)
+			local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%")
+			for local placeHolder:string = EachIn placeHolders
+				local replacement:string = placeHolder
+				Select placeHolder.toLower()
+					case "%gameyear%"
+						replacement = string(GetGameInformation("worldtime", "gameyear"))
+				End Select
+
+				value = value.replace(placeHolder, replacement)
+			Next
+
 			result.Set(value, lang)
 		Next
 	

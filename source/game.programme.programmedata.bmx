@@ -443,6 +443,9 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 			result :* 0.15
 			'adjust by topicality
 			result :* (GetTopicality()/GetMaxTopicality())
+
+			'dynamic modifier
+			result :* GetPerViewerRevenueModifier()
 		Else
 			'by default no programme has a sponsorship
 			result = 0.0
@@ -695,6 +698,11 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 	Method GetTrailerWearoffModifier:float()
 		return GetModifier("topicality::trailerWearoff")
+	End Method
+
+
+	Method GetPerViewerRevenueModifier:float()
+		return GetModifier("callin::perViewerRevenue")
 	End Method
 
 
