@@ -327,6 +327,11 @@ Type TGUISlider extends TGUIObject
 
 		'adjust value
 		if MouseIsDown and hasFocus() Then SetValueByMouse()
+
+		'process long clicks to avoid odd "right click behaviour"
+		if hasFocus() and MouseManager.IsLongClicked(1)
+			MouseManager.ResetKey(1)
+		endif
 	End Method	
 
 
