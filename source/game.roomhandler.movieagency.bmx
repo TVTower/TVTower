@@ -294,7 +294,18 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or not figure.playerID then return FALSE
 
-		GetPlayerProgrammeCollection(figure.playerID).ReaddProgrammeLicencesFromSuitcase()
+		'disabled auto-suitcase-readding
+		'now we use
+		'- readd when timer fires
+		'- readd when going into another room than the movieagency 
+		'GetPlayerProgrammeCollection(figure.playerID).ReaddProgrammeLicencesFromSuitcase()
+
+		local player:TPlayerBase = GetPlayerBase(figure.playerID)
+		'empty suitcase after 20 realtime seconds
+		if player
+			player.emptyProgrammeSuitcase = True
+			player.emptyProgrammeSuitcaseTime = Time.GetTimeGone() + 20 * 1000
+		endif
 
 		return TRUE
 	End Method

@@ -929,12 +929,18 @@ endrem
 		'==== ADJUST TIME ====
 		worldTime.Update()
 
-		'==== UPDATE WORLD ===
+		'==== UPDATE WORLD ====
 		'only update weather as it affects news etc.
 		'lighting/effects are only updated when figure is outside of a
 		'room (updateWeather is skipping processing if done just moments
 		'ago)
 		GetWorld().UpdateWeather()
+
+
+		'==== UPDATE PLAYERS ====
+		'eg. they empty their suitcases after a given time (licences
+		'to archive)
+		GetPlayerBaseCollection().Update()
 
 
 		'==== CHECK BOMBS ====

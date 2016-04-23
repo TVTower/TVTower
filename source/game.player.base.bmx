@@ -57,6 +57,13 @@ Type TPlayerBaseCollection
 	Method IsLocalPlayer:Int(number:Int)
 		Return number = playerID
 	End Method
+
+
+	Method Update()
+		For local p:TPlayerBase = Eachin players
+			p.Update()
+		Next
+	End Method
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -90,6 +97,9 @@ Type TPlayerBase {_exposeToLua="selected"}
 
 	'type of the player, local/remote human/ai
 	Field playerType:int = 0
+
+	Field emptyProgrammeSuitcase:int = False
+	Field emptyProgrammeSuitcaseTime:int = 0
 
 	'1=ready, 0=not set, ...
 	Field networkstate:Int = 0
@@ -240,14 +250,6 @@ Type TPlayerBase {_exposeToLua="selected"}
 	End Method
 
 
-	'nothing up to now
-	Method UpdateFinances:Int()
-		'For Local i:Int = 0 To 6
-		'
-		'Next
-	End Method
-
-
 	'loads a new figurbase and colorizes it
 	Method UpdateFigureBase:int(newfigurebase:Int)
 		'load configuration from registry
@@ -289,8 +291,8 @@ Type TPlayerBase {_exposeToLua="selected"}
 	End Method
 
 
+	'called every tick
 	Method Update:Int()
-		'nothing up to now
 	End Method
 
 

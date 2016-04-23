@@ -168,6 +168,18 @@ Type TPlayerCollection extends TPlayerBaseCollection
 
 		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
 
+		'when entering something else then the movieagency
+		if room
+			if room.name <> "movieagency"
+				'try to empty the suitcase
+				player.emptyProgrammeSuitcase = True
+				player.emptyProgrammeSuitcaseTime = Time.GetTimeGone()
+				player.EmptyProgrammeSuitcaseIfNeeded()
+			else
+				player.emptyProgrammeSuitcase = False
+			endif
+		endif
+
 		EventManager.triggerEvent( TEventSimple.Create("player.onBeginEnterRoom", null, player, room) )
 
 		'inform player AI
@@ -320,6 +332,27 @@ endrem
 
 		Return Player
 	End Function
+
+
+	Method EmptyProgrammeSuitcaseIfNeeded()
+		if not emptyProgrammeSuitcase then return
+
+		if emptyProgrammeSuitcaseTime <= Time.GetTimeGone()
+			print "readd now"
+			GetPlayerProgrammeCollection(playerID).ReaddProgrammeLicencesFromSuitcase()
+
+			emptyProgrammeSuitcase = False
+			emptyProgrammeSuitcaseTime = Time.GetTimeGone()
+		endif
+	End Method
+
+
+	'override
+	Method Update:int()
+		Super.Update()
+
+		EmptyProgrammeSuitcaseIfNeeded()
+	End Method
 
 
 '	Method IsAI:Int() {_exposeToLua}
