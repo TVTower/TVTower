@@ -105,7 +105,7 @@ Type TScreenHandler_Financials
 
 		'=== DAY CHANGER ===
 		'add 1 to "today" as we are on this day then
-		local today:int = GetWorldTime().MakeTime(0, financeShowDay, 0, 0)
+		local today:Double = GetWorldTime().MakeTime(0, financeShowDay, 0, 0)
 		local todayText:string = GetWorldTime().GetDayOfYear(today)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().GetYear(today)
 		textFont.DrawBlock(GetLocale("GAMEDAY")+" "+todayText, 30 + screenOffsetX, 15 +  screenOffsetY, 160, 20, ALIGN_CENTER_CENTER, TColor.CreateGrey(90), 2, 1, 0.2)
 

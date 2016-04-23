@@ -110,7 +110,7 @@ Type TScreenHandler_Statistics
 		local audienceResult:TAudienceResultBase 
 
 		'add 1 to "today" as we are on this day then
-		local today:int = GetWorldTime().MakeTime(0, showDay, 0, 0)
+		local today:Double = GetWorldTime().MakeTime(0, showDay, 0, 0)
 		local todayText:string = GetWorldTime().GetDayOfYear(today)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().GetYear(today)
 		textFont.DrawBlock(GetLocale("GAMEDAY")+" "+todayText, 50, 25, 160, 20, ALIGN_CENTER_CENTER, TColor.CreateGrey(90), 2, 1, 0.2)
 

@@ -338,7 +338,6 @@ endrem
 		if not emptyProgrammeSuitcase then return
 
 		if emptyProgrammeSuitcaseTime <= Time.GetTimeGone()
-			print "readd now"
 			GetPlayerProgrammeCollection(playerID).ReaddProgrammeLicencesFromSuitcase()
 
 			emptyProgrammeSuitcase = False
