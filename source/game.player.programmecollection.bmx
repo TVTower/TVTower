@@ -200,7 +200,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		'check if we find something valid
 		if TProgrammeLicence(materialSource)
 			local licence:TProgrammeLicence = TProgrammeLicence(materialSource)
-			'stop if we do not own this licence
+			'stop if we do not own this licence (and not in suitcase now)
 			if not HasProgrammeLicence(licence) then Return Null
 			'do not allow broadcast of an "header"
 			'TODO: check possibility for "series trailer"
@@ -376,7 +376,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		'do not allow removal of episodes (should get removed via header)
 		If licence.parentLicenceGUID then return False
 		'not owning
-		if not HasProgrammeLicence(licence) then return False
+		if not HasProgrammeLicence(licence) and not HasProgrammeLicenceInSuitcase(licence) then return False
 
 		if sell and not licence.sell() then return FALSE
 
@@ -404,7 +404,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		'do not allow adding of episodes / collection-elements
 		'(should get added via header)
 		If licence.parentLicenceGUID then return False
-		'already added
+		'already added (to archive, not suitcase)
 		if HasProgrammeLicence(licence) then return False
 
 		'if owner differs, check if we have to buy or got that gifted
