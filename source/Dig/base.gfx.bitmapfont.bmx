@@ -1033,7 +1033,9 @@ Type TBitmapFontStyle
 
 
 	Method GetColor:TColor()
-		return TColor(colors.Last())
+		local col:TColor = TColor(colors.Last())
+		if not col then col = new TColor.Get()
+		return col
 	End Method
 
 

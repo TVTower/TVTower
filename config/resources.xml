@@ -7,6 +7,7 @@
 		<file name="resource_interface" url="config/interface.xml" />
 		<file name="resource_gfx_building" url="config/gfx_building.xml" />
 		<file name="resource_gfx" url="config/gfx.xml" />
+		<file name="resource_figuregenerator" url="config/figuregenerator.xml" />
 		<file name="resource_colors" url="config/settings_colors.xml" />
 		<file name="resource_newsgenres" url="config/newsgenres.xml" />
 		<file name="resource_programmedatamods" url="config/programmedatamods.xml" />

@@ -106,32 +106,32 @@ Type TColor
 	Method Mix:TColor(otherColor:TColor, mixFactor:float = 0.5)
 		'clamp mixFactor to 0-1.0
 		mixFactor = Min(1.0, Max(0.0, mixFactor)) 
-		self.r = self.r * (1.0 - mixFactor) + otherColor.r * mixFactor
-		self.g = self.g * (1.0 - mixFactor) + otherColor.g * mixFactor
-		self.b = self.b * (1.0 - mixFactor) + otherColor.b * mixFactor
-		self.a = self.a * (1.0 - mixFactor) + otherColor.a * mixFactor
+		self.r = Min(255, Max(0, self.r * (1.0 - mixFactor) + otherColor.r * mixFactor))
+		self.g = Min(255, Max(0, self.g * (1.0 - mixFactor) + otherColor.g * mixFactor))
+		self.b = Min(255, Max(0, self.b * (1.0 - mixFactor) + otherColor.b * mixFactor))
+		self.a = Min(1.0, Max(0, self.a * (1.0 - mixFactor) + otherColor.a * mixFactor))
 		return self
 	End Method
 
 
 	Method AdjustRelative:TColor(percentage:float=1.0)
-		self.r = Max(0, self.r * (1.0+percentage))
-		self.g = Max(0, self.g * (1.0+percentage))
-		self.b = Max(0, self.b * (1.0+percentage))
+		self.r = Min(255, Max(0, self.r * (1.0+percentage)))
+		self.g = Min(255, Max(0, self.g * (1.0+percentage)))
+		self.b = Min(255, Max(0, self.b * (1.0+percentage)))
 		return self
 	End Method
 
 
 	Method AdjustFactor:TColor(factor:int=100)
-		self.r = Max(0, self.r + factor)
-		self.g = Max(0, self.g + factor)
-		self.b = Max(0, self.b + factor)
+		self.r = Min(255, Max(0, self.r + factor))
+		self.g = Min(255, Max(0, self.g + factor))
+		self.b = Min(255, Max(0, self.b + factor))
 		return self
 	End Method
 
 
 	'faster than using the RGB-HSL-RGB conversion
-	'but corrects are not exactly the same
+	'but results are not exactly the same
 	Method AdjustSaturationRGB:TColor(percentage:Float = 0.0)
 		'convert relative param to absolute param
 		percentage = 1.0 + percentage
@@ -168,13 +168,13 @@ Type TColor
 
 	Method AdjustRGB:TColor(r:int=-1,g:int=-1,b:int=-1, overwrite:int=0)
 		if overwrite
-			self.r = r
-			self.g = g
-			self.b = b
+			self.r = Min(255, Max(0, r))
+			self.g = Min(255, Max(0, g))
+			self.b = Min(255, Max(0, b))
 		else
-			self.r :+r
-			self.g :+g
-			self.b :+b
+			self.r = Min(255, Max(0, self.r + r))
+			self.g = Min(255, Max(0, self.g + g))
+			self.b = Min(255, Max(0, self.b + b))
 		endif
 		return self
 	End Method

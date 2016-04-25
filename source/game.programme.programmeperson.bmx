@@ -2,6 +2,7 @@ SuperStrict
 Import "game.programme.programmeperson.base.bmx"
 Import "game.programme.programmedata.bmx"
 Import "basefunctions.bmx"
+Import "Dig/base.util.figuregenerator.bmx"
 
 rem
 Type TProgrammePersonCollection extends TProgrammePersonBaseCollection
@@ -188,6 +189,11 @@ Type TProgrammePerson extends TProgrammePersonBase
 	field topGenre1:Int = 0
 	field topGenre2:Int = 0
 	field calculatedTopGenreCache:int = 0 {nosave}
+
+	field figure:TFigureGeneratorFigure
+	field figureImage:TImage {nosave}
+	'tried to create it? 
+	field figureImageCreationFailed:int = False {nosave}
 
 	'array containing GUIDs of all programmes 
 	Field producedProgrammes:string[] {nosave}
@@ -645,5 +651,71 @@ Type TProgrammePerson extends TProgrammePersonBase
 	'override
 	Method IsAlive:int()
 		return IsBorn()
+	End Method
+
+
+	Method GetFigure:TFigureGeneratorFigure()
+		if not figure
+			local ageFlag:int = 1 'young
+			if GetAge() > 50
+				ageFlag = 2
+				if Rand(100) < 20 then ageFlag = 1 'make younger
+			endif
+
+			local genderFlag:int = 0 'random
+			if gender = TVTPersonGender.MALE then genderFlag = 1
+			if gender = TVTPersonGender.FEMALE then genderFlag = 2
+
+			local skinTone:int = 0 'random
+			local randomSkin:int = Rand(100)
+			Select countryCode.ToLower()
+				'asian
+				case "jap", "kor", "vn", "cn", "th"
+					skinTone = 1
+					if randomSkin < 5 then skinTone = 3 'caucasian
+				'african
+				case "br", "ar", "gh", "sa", "mz", "mex"
+					skinTone = 2
+					if randomSkin < 5 then skinTone = 3 'caucasian
+				'caucasian
+				case "ca", "swe", "no", "fi", "ru", "dk", "d", "de", "fr", "uk", "cz", "pl", "nl", "sui", "aut", "aus"
+					skinTone = 3
+					if randomSkin < 5
+						skinTone = 2
+					elseif randomSkin < 10
+						skinTone = 1
+					endif
+				'caucasian or african and some asian
+				case "us", "usa"
+					if randomSkin > 50
+						skinTone = 3
+					elseif randomSkin > 10
+						skinTone = 2
+					else
+						skinTone = 1
+					endif
+				default
+					if randomSkin < 10      'asian
+						skinTone = 3
+					elseif randomSkin < 50  'african
+						skinTone = 2
+					else                    'most actors are caucasian
+						skinTone = 1
+					endif
+			End Select
+			
+			figure = TFigureGenerator.GenerateFigure(skinTone, genderFlag, ageFlag)
+		endif
+		return figure
+	End Method
+
+
+	Method GetFigureImage:TImage()
+		if not GetFigure() then return Null
+		if not figureImage and not figureImageCreationFailed
+			figureImage = GetFigure().GenerateImage()
+			if not figureImage then figureImageCreationFailed = True
+		endif
+		return figureImage
 	End Method
 End Type

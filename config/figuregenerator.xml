@@ -1,0 +1,219 @@
+<?xml version="1.0"?>
+<tvt>
+	<resources>
+		<spritepack name="gfx_figureGeneratorPack">
+ 			<url>res/gfx/misc/figuregenerator.png</url>
+ 			<flags>FILTEREDIMAGE,MASKEDIMAGE,DYNAMICIMAGE</flags>
+			<children>
+				<child name="figuregenerator_bodyFemale1"     x="1"   y="1"   w="40"   h="40" />
+				<child name="figuregenerator_bodyFemale2"     x="1"   y="43"  w="40"   h="40" />
+				<child name="figuregenerator_bodyMale1"       x="1"   y="85"  w="40"   h="40" />
+
+				<child name="figuregenerator_head1"           x="43"  y="1"   w="40"   h="40" />
+				<child name="figuregenerator_head2"           x="43"  y="43"  w="40"   h="40" />
+				<child name="figuregenerator_head3"           x="43"  y="85"  w="40"   h="40" />
+				<child name="figuregenerator_head4"           x="43"  y="127" w="40"   h="40" />
+				<child name="figuregenerator_head5"           x="43"  y="169" w="40"   h="40" />
+				<child name="figuregenerator_head6"           x="43"  y="211" w="40"   h="40" />
+				<child name="figuregenerator_head7"           x="43"  y="253" w="40"   h="40" />
+				<child name="figuregenerator_head8"           x="43"  y="295" w="40"   h="40" />
+				<child name="figuregenerator_head9"           x="43"  y="337" w="40"   h="40" />
+				<child name="figuregenerator_head10"          x="43"  y="379" w="40"   h="40" />
+				<child name="figuregenerator_head11"          x="85"  y="1"   w="40"   h="40" />
+				<child name="figuregenerator_head12"          x="85"  y="43"  w="40"   h="40" />
+				<child name="figuregenerator_head13"          x="85"  y="85"  w="40"   h="40" />
+				<child name="figuregenerator_head14"          x="85"  y="127" w="40"   h="40" />
+				<child name="figuregenerator_head15"          x="85"  y="169" w="40"   h="40" />
+				<child name="figuregenerator_head16"          x="85"  y="211" w="40"   h="40" />
+				<child name="figuregenerator_head17"          x="85"  y="253" w="40"   h="40" />
+				<child name="figuregenerator_head18"          x="85"  y="295" w="40"   h="40" />
+				<child name="figuregenerator_head19"          x="85"  y="337" w="40"   h="40" />
+				<child name="figuregenerator_head20"          x="85"  y="379" w="40"   h="40" />
+
+				<child name="figuregenerator_ears1"           x="127" y="1"   w="40"   h="40" />
+				<child name="figuregenerator_ears2"           x="127" y="43"  w="40"   h="40" />
+				<child name="figuregenerator_ears3"           x="127" y="85"  w="40"   h="40" />
+				<child name="figuregenerator_ears4"           x="127" y="127" w="40"   h="40" />
+				<child name="figuregenerator_ears5"           x="127" y="169" w="40"   h="40" />
+				<child name="figuregenerator_ears6"           x="127" y="211" w="40"   h="40" />
+				<child name="figuregenerator_ears7"           x="127" y="253" w="40"   h="40" />
+				<child name="figuregenerator_ears8"           x="127" y="295" w="40"   h="40" />
+
+				<child name="figuregenerator_eyes1"           x="169" y="1"   w="40"   h="40" />
+				<child name="figuregenerator_eyes2"           x="169" y="43"  w="40"   h="40" />
+				<child name="figuregenerator_eyes3"           x="169" y="85"  w="40"   h="40" />
+				<child name="figuregenerator_eyes4"           x="169" y="127" w="40"   h="40" />
+				<child name="figuregenerator_eyes5"           x="169" y="169" w="40"   h="40" />
+				<child name="figuregenerator_eyes6"           x="169" y="211" w="40"   h="40" />
+				<child name="figuregenerator_eyes7"           x="169" y="253" w="40"   h="40" />
+				<child name="figuregenerator_eyes8"           x="169" y="295" w="40"   h="40" />
+
+				<child name="figuregenerator_clothesFemale1"  x="211" y="1"   w="40"   h="40" />
+				<child name="figuregenerator_clothesFemale2"  x="211" y="43"  w="40"   h="40" />
+				<child name="figuregenerator_clothesFemale3"  x="211" y="85"  w="40"   h="40" />
+				<child name="figuregenerator_clothesFemale4"  x="211" y="127" w="40"   h="40" />
+				<child name="figuregenerator_clothesFemale5"  x="211" y="169" w="40"   h="40" />
+				<child name="figuregenerator_clothesFemale6"  x="211" y="211" w="40"   h="40" />
+				<child name="figuregenerator_clothesFemale7"  x="211" y="253" w="40"   h="40" />
+				<child name="figuregenerator_clothesFemale8"  x="211" y="295" w="40"   h="40" />
+				<child name="figuregenerator_clothesFemale9"  x="211" y="337" w="40"   h="40" />
+				<child name="figuregenerator_clothesFemale10" x="211" y="379" w="40"   h="40" />
+				<child name="figuregenerator_clothesMale1"    x="253" y="1"   w="40"   h="40" />
+				<child name="figuregenerator_clothesMale2"    x="253" y="43"  w="40"   h="40" />
+				<child name="figuregenerator_clothesMale3"    x="253" y="85"  w="40"   h="40" />
+				<child name="figuregenerator_clothesMale4"    x="253" y="127" w="40"   h="40" />
+				<child name="figuregenerator_clothesMale5"    x="253" y="169" w="40"   h="40" />
+				<child name="figuregenerator_clothesMale6"    x="253" y="211" w="40"   h="40" />
+				<child name="figuregenerator_clothesMale7"    x="253" y="253" w="40"   h="40" />
+				<child name="figuregenerator_clothesMale8"    x="253" y="295" w="40"   h="40" />
+				<child name="figuregenerator_clothesMale8"    x="253" y="295" w="40"   h="40" />
+				<child name="figuregenerator_clothesMale9"    x="253" y="337" w="40"   h="40" />
+
+				<child name="figuregenerator_hairMale1"       x="295" y="1"   w="40"   h="40" />
+				<child name="figuregenerator_hairMale2"       x="295" y="43"  w="40"   h="40" />
+				<child name="figuregenerator_hairMale3"       x="295" y="85"  w="40"   h="40" />
+				<child name="figuregenerator_hairMale4"       x="295" y="127" w="40"   h="40" />
+				<child name="figuregenerator_hairMale5"       x="295" y="169" w="40"   h="40" />
+				<child name="figuregenerator_hairMale6"       x="295" y="211" w="40"   h="40" />
+				<child name="figuregenerator_hairMale7"       x="295" y="253" w="40"   h="40" />
+				<child name="figuregenerator_hairMale8"       x="295" y="295" w="40"   h="40" />
+				<child name="figuregenerator_hairMale9"       x="295" y="337" w="40"   h="40" />
+
+				<child name="figuregenerator_hairFemale1"     x="337" y="1"   w="40"   h="40" />
+				<child name="figuregenerator_hairFemale2"     x="337" y="43"  w="40"   h="40" />
+				<child name="figuregenerator_hairFemale3"     x="337" y="85"  w="40"   h="40" />
+				<child name="figuregenerator_hairFemale4"     x="337" y="127" w="40"   h="40" />
+				<child name="figuregenerator_hairFemale5"     x="337" y="169" w="40"   h="40" />
+				<child name="figuregenerator_hairFemale6"     x="337" y="211" w="40"   h="40" />
+				<child name="figuregenerator_hairFemale7"     x="337" y="253" w="40"   h="40" />
+				<child name="figuregenerator_hairFemale8"     x="337" y="295" w="40"   h="40" />
+
+				<child name="figuregenerator_mouth1"          x="379" y="1"   w="40"   h="40" />
+				<child name="figuregenerator_mouth2"          x="379" y="43"  w="40"   h="40" />
+				<child name="figuregenerator_mouth3"          x="379" y="85"  w="40"   h="40" />
+				<child name="figuregenerator_mouth4"          x="379" y="127" w="40"   h="40" />
+				<child name="figuregenerator_mouth5"          x="379" y="169" w="40"   h="40" />
+				<child name="figuregenerator_mouth6"          x="379" y="211" w="40"   h="40" />
+				<child name="figuregenerator_mouth7"          x="379" y="253" w="40"   h="40" />
+				<child name="figuregenerator_mouth8"          x="379" y="295" w="40"   h="40" />
+
+				<child name="figuregenerator_nose1"           x="421" y="1"   w="40"   h="40" />
+				<child name="figuregenerator_nose2"           x="421" y="43"  w="40"   h="40" />
+				<child name="figuregenerator_nose3"           x="421" y="85"  w="40"   h="40" />
+				<child name="figuregenerator_nose4"           x="421" y="127" w="40"   h="40" />
+				<child name="figuregenerator_nose5"           x="421" y="169" w="40"   h="40" />
+
+				<child name="figuregenerator_beard1"          x="463" y="1"   w="40"   h="40" />
+				<child name="figuregenerator_beard2"          x="463" y="43"  w="40"   h="40" />
+				<child name="figuregenerator_beard3"          x="463" y="85"  w="40"   h="40" />
+				<child name="figuregenerator_beard4"          x="463" y="127" w="40"   h="40" />
+				<child name="figuregenerator_beard5"          x="463" y="169" w="40"   h="40" />
+				<child name="figuregenerator_beard6"          x="463" y="211" w="40"   h="40" />
+			</children>
+		</spritepack>
+
+		<figuregeneratorpart sprite="figuregenerator_bodyFemale1"   partType="3"  gender="2" age="0" skin="1" />
+		<figuregeneratorpart sprite="figuregenerator_bodyFemale2"   partType="3"  gender="2" age="0" skin="1" />
+		<figuregeneratorpart sprite="figuregenerator_bodyMale1"     partType="3"  gender="1" age="0" skin="1" />
+
+		<figuregeneratorpart sprite="figuregenerator_head1"         partType="6"  gender="0" age="0" skin="1" />
+		<figuregeneratorpart sprite="figuregenerator_head2"         partType="6"  gender="0" age="0" skin="1"  />
+		<figuregeneratorpart sprite="figuregenerator_head3"         partType="6"  gender="0" age="0" skin="1"  />
+		<figuregeneratorpart sprite="figuregenerator_head4"         partType="6"  gender="0" age="0" skin="1"  />
+		<figuregeneratorpart sprite="figuregenerator_head5"         partType="6"  gender="0" age="0" skin="1"  />
+		<figuregeneratorpart sprite="figuregenerator_head6"         partType="6"  gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_head7"         partType="6"  gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_head8"         partType="6"  gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_head9"         partType="6"  gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_head10"        partType="6"  gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_head11"        partType="6"  gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_head12"        partType="6"  gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_head13"        partType="6"  gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_head14"        partType="6"  gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_head15"        partType="6"  gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_head16"        partType="6"  gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_head17"        partType="6"  gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_head18"        partType="6"  gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_head19"        partType="6"  gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_head20"        partType="6"  gender="0" age="0" skin="1" /> 
+
+		<figuregeneratorpart sprite="figuregenerator_ears1"         partType="10" gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_ears2"         partType="10" gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_ears3"         partType="10" gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_ears4"         partType="10" gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_ears5"         partType="10" gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_ears6"         partType="10" gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_ears7"         partType="10" gender="0" age="0" skin="1" /> 
+		<figuregeneratorpart sprite="figuregenerator_ears8"         partType="10" gender="0" age="0" skin="1" /> 
+
+		<figuregeneratorpart sprite="figuregenerator_eyes1"         partType="7"  gender="0" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_eyes2"         partType="7"  gender="0" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_eyes3"         partType="7"  gender="0" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_eyes4"         partType="7"  gender="0" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_eyes5"         partType="7"  gender="0" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_eyes6"         partType="7"  gender="0" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_eyes7"         partType="7"  gender="0" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_eyes8"         partType="7"  gender="0" age="0" />
+
+		<figuregeneratorpart sprite="figuregenerator_clothesFemale1"  partType="5"  gender="2" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_clothesFemale2"  partType="5"  gender="2" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_clothesFemale3"  partType="5"  gender="2" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_clothesFemale4"  partType="5"  gender="2" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_clothesFemale5"  partType="5"  gender="2" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_clothesFemale6"  partType="5"  gender="2" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_clothesFemale7"  partType="5"  gender="2" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_clothesFemale8"  partType="5"  gender="2" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_clothesFemale9"  partType="5"  gender="2" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_clothesFemale10" partType="5"  gender="2" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_clothesMale1"    partType="5"  gender="1" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_clothesMale2"    partType="5"  gender="1" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_clothesMale3"    partType="5"  gender="1" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_clothesMale4"    partType="5"  gender="1" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_clothesMale5"    partType="5"  gender="1" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_clothesMale6"    partType="5"  gender="1" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_clothesMale7"    partType="5"  gender="1" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_clothesMale8"    partType="5"  gender="1" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_clothesMale9"    partType="5"  gender="1" age="0" />
+
+		<figuregeneratorpart sprite="figuregenerator_hairMale1"     partType="12" gender="1" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_hairMale2"     partType="12" gender="1" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_hairMale3"     partType="12" gender="1" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_hairMale4"     partType="12" gender="1" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_hairMale5"     partType="12" gender="1" age="2" />
+		<figuregeneratorpart sprite="figuregenerator_hairMale6"     partType="12" gender="1" age="2" />
+		<figuregeneratorpart sprite="figuregenerator_hairMale7"     partType="12" gender="1" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_hairMale8"     partType="12" gender="1" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_hairMale9"     partType="12" gender="1" age="0" />
+
+		<figuregeneratorpart sprite="figuregenerator_hairFemale1"   partType="12" gender="2" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_hairFemale2"   partType="12" gender="2" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_hairFemale3"   partType="12" gender="2" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_hairFemale4"   partType="12" gender="2" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_hairFemale5"   partType="12" gender="2" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_hairFemale6"   partType="12" gender="2" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_hairFemale7"   partType="12" gender="2" age="1" />
+		<figuregeneratorpart sprite="figuregenerator_hairFemale8"   partType="12" gender="2" age="1" />
+
+		<figuregeneratorpart sprite="figuregenerator_mouth1"        partType="11" gender="2" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_mouth2"        partType="11" gender="2" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_mouth3"        partType="11" gender="0" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_mouth4"        partType="11" gender="0" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_mouth5"        partType="11" gender="0" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_mouth6"        partType="11" gender="0" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_mouth7"        partType="11" gender="0" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_mouth8"        partType="11" gender="0" age="0" />
+
+		<figuregeneratorpart sprite="figuregenerator_nose1"         partType="9"  gender="0" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_nose2"         partType="9"  gender="0" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_nose3"         partType="9"  gender="0" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_nose4"         partType="9"  gender="0" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_nose5"         partType="9"  gender="0" age="0" />
+
+		<figuregeneratorpart sprite="figuregenerator_beard1"        partType="14" gender="1" age="2" />
+		<figuregeneratorpart sprite="figuregenerator_beard2"        partType="14" gender="1" age="2" />
+		<figuregeneratorpart sprite="figuregenerator_beard3"        partType="14" gender="1" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_beard4"        partType="14" gender="1" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_beard5"        partType="14" gender="1" age="0" />
+		<figuregeneratorpart sprite="figuregenerator_beard5"        partType="14" gender="1" age="0" />
+	</resources>
+</tvt>

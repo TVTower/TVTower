@@ -1962,13 +1962,16 @@ Type TGUICastListItem Extends TGUISelectListItem
 			endif
 			displayName = name
 		endif
-		DrawCast(GetScreenX(), GetScreenY(), GetScreenWidth(), name, "", null, xpPercentage, 0, 1)
+		
+		local face:TImage
+		if TProgrammePerson(person) then face = TProgrammePerson(person).GetFigureImage()
+		DrawCast(GetScreenX(), GetScreenY(), GetScreenWidth(), name, "", face, xpPercentage, 0, 1)
 
 		If isHovered()
 			SetBlend LightBlend
 			SetAlpha 0.10 * GetAlpha()
 
-			DrawCast(GetScreenX(), GetScreenY(), GetScreenWidth(), name, "", null, xpPercentage, 0, 1)
+			DrawCast(GetScreenX(), GetScreenY(), GetScreenWidth(), name, "", face, xpPercentage, 0, 1)
 
 			SetBlend AlphaBlend
 			SetAlpha 10.0 * GetAlpha()
@@ -2026,7 +2029,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 	End Method
 
 
-	Function DrawCast(x:int, y:int, w:int, name:string, nameHint:string="", face:TSprite=null, xp:float, sympathy:float, mood:int)
+	Function DrawCast(x:int, y:int, w:int, name:string, nameHint:string="", face:object=null, xp:float, sympathy:float, mood:int)
 		'Draw name bg
 		'Draw xp bg + front bar
 		'Draw sympathy bg + front bar
@@ -2047,6 +2050,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 		'face/icon-area covers 36px + shadow, place bar a bit "below"
 		nameSprite.DrawArea(x + nameOffsetX, y + nameOffsetY, w - nameOffsetX, nameSprite.GetHeight())
 
+
 		'=== BARS ===
 		skin.RenderBar(x + nameOffsetX, y + barOffsetY, 200, -1, xp, -1.0, "cast_bar_xp")
 		skin.RenderBar(x + nameOffsetX, y + barOffsetY + barH, 200, -1, sympathy, -1.0, "cast_bar_sympathy")
@@ -2055,7 +2059,14 @@ Type TGUICastListItem Extends TGUISelectListItem
 		iconSprite.Draw(x, y)
 
 		'maybe "TProgrammePersonBase.GetFace()" ?
-		if face then face.Draw(x, y)
+		if TSprite(face)
+			TSprite(face).Draw(x, y)
+		else
+			if TImage(face)
+				DrawImageArea(TImage(face), x, y, 2, 4, 36, 34)
+				'DrawImage(TProgrammePerson(person).GetFigureImage(), GetScreenX(), GetScreenY())
+			endif
+		endif
 
 		if name or nameHint
 			local border:TRectangle = nameSprite.GetNinePatchContentBorder()
