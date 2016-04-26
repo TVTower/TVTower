@@ -431,7 +431,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 
 	Method GetSubLicenceAtIndex:TProgrammeLicence(arrayIndex:int=1) {_exposeToLua}
-		if arrayIndex > subLicences.length or arrayIndex < 0 then return null
+		if arrayIndex >= subLicences.length or arrayIndex < 0 then return null
 		return subLicences[arrayIndex]
 	End Method
 

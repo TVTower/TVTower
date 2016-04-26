@@ -17,6 +17,11 @@ Type TPlannerList extends TOwnedGameObject
 	Method getOpen:Int()
 		Return Self.openState And enabled
 	End Method
+
+
+	Method GetEntriesRect:TRectangle()
+		return entriesRect
+	End Method
 End Type
 
 

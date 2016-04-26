@@ -232,7 +232,7 @@ Type TScriptBase Extends TNamedGameObject
 
 
 	Method GetSubScriptAtIndex:TScriptBase(arrayIndex:int=1)
-		if arrayIndex > subScripts.length or arrayIndex < 0 then return null
+		if arrayIndex >= subScripts.length or arrayIndex < 0 then return null
 		return subScripts[arrayIndex]
 	End Method
 

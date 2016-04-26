@@ -5,6 +5,7 @@ Import "game.programme.programmelicence.gui.bmx"
 Import "game.player.programmecollection.bmx"
 Import "game.game.base.bmx"
 Import "game.screen.programmeplanner.gui.bmx"
+Import "Dig/base.gfx.gui.button.bmx"
 
 
 'the programmelist shown in the programmeplaner
@@ -17,12 +18,22 @@ Type TgfxProgrammelist Extends TPlannerList
 	Field currentEntry:Int = -1
 	Field currentSubEntry:Int = -1
 	Field subEntriesRect:TRectangle
+	Field entriesPage:int = 1
+	Field entriesPages:int = 1
+	Field subEntriesPage:int = 1
+	Field subEntriesPages:int = 1
+
+	Field entriesButtonPrev:TGUIButton
+	Field entriesButtonNext:TGUIButton
+	Field subEntriesButtonPrev:TGUIButton
+	Field subEntriesButtonNext:TGUIButton
 
 	'licence with children
 	Field hoveredParentalLicence:TProgrammeLicence = Null
 	'licence 
 	Field hoveredLicence:TProgrammeLicence = Null
 
+	Const MAX_LICENCES_PER_PAGE:int= 8
 	Const MODE_PROGRAMMEPLANNER:Int=0	'creates a GuiProgrammePlanElement
 	Const MODE_ARCHIVE:Int=1			'creates a GuiProgrammeLicence
 
@@ -41,19 +52,64 @@ Type TgfxProgrammelist Extends TPlannerList
 		genresRect.dimension.y :+ TProgrammeLicenceFilter.GetVisibleCount() * genreSize.GetY()
 		genresRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmegenres_bottom.default").area.GetH()
 
-		'recalculate dimension of the area of all entries (also if not all slots occupied)
-		entriesRect = New TRectangle.Init(genresRect.GetX() - 175, genresRect.GetY(), entrySize.GetX(), 0)
-		entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
-		entriesRect.dimension.y :+ GameRules.maxProgrammeLicencesPerFilter * entrySize.GetY()
-		entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
-
-		'recalculate dimension of the area of all entries (also if not all slots occupied)
-		subEntriesRect = New TRectangle.Init(entriesRect.GetX() + 175, entriesRect.GetY(), entrySize.GetX(), 0)
-		subEntriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
-		subEntriesRect.dimension.y :+ 10 * entrySize.GetY()
-		subEntriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
 
 		Return Self
+	End Method
+
+
+	'override
+	Method GetEntriesRect:TRectangle()
+		if not entriesRect
+			'recalculate dimension of the area of all entries (also if not all slots occupied)
+			entriesRect = New TRectangle.Init(genresRect.GetX() - 175, genresRect.GetY(), entrySize.GetX(), 0)
+			entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
+			'max 10 licences per page
+			entriesRect.dimension.y :+ MAX_LICENCES_PER_PAGE * entrySize.GetY()
+
+			if entriesPages > 1
+				entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_bottomButton.default").area.GetH()
+			else
+				entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
+			endif
+
+			'height added when button visible
+			'entriesRectButtonH = GetSpriteFromRegistry("gfx_programmeentries_bottomButton.default").area.GetH() - GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
+		endif
+		
+		return entriesRect
+	End Method
+
+
+	Method GetSubEntriesRect:TRectangle()
+		if not subEntriesRect
+			'recalculate dimension of the area of all entries (also if not all slots occupied)
+			subEntriesRect = New TRectangle.Init(GetEntriesRect().GetX() + 175, GetEntriesRect().GetY(), entrySize.GetX(), 0)
+			subEntriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
+			'max 10 licences per page
+			subEntriesRect.dimension.y :+ MAX_LICENCES_PER_PAGE * entrySize.GetY()
+			subEntriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
+			'height added when button visible
+			'subEntriesRectButtonH = GetSpriteFromRegistry("gfx_programmeentries_bottomButton.default").area.GetH() - GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
+		endif
+		return subEntriesRect
+	End Method
+	
+
+	Method SetEntriesPages(pages:int)
+		if entriesPages <> pages
+			entriesPages = pages
+			'reset rect
+			entriesRect = null
+		endif
+	End Method
+
+
+	Method SetSubEntriesPages(pages:int)
+		if subEntriesPages <> pages
+			subEntriesPages = pages
+			'reset rect
+			subEntriesRect = null
+		endif
 	End Method
 
 
@@ -177,27 +233,32 @@ endrem
 		If filterIndex < 0 Then Return False
 
 		If not owner then Return False 
-
-		Local currSprite:TSprite
-		'maybe it has changed since initialization
-		entrySize = GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.dimension.copy()
-		Local currY:Int = entriesRect.GetY()
-		Local currX:Int = entriesRect.GetX()
-		Local font:TBitmapFont = GetBitmapFont("Default", 10)
 			 
 		Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(owner)
 		Local filter:TProgrammeLicenceFilter = TProgrammeLicenceFilter.GetAtIndex(filterIndex)
 		Local licences:TProgrammeLicence[] = programmeCollection.GetLicencesByFilter(filter)
 
+		SetEntriesPages( ceil(licences.length / Float(MAX_LICENCES_PER_PAGE)) )
+
+		Local currSprite:TSprite
+		'maybe it has changed since initialization
+		entrySize = GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.dimension.copy()
+		Local currY:Int = GetEntriesRect().GetY()
+		Local currX:Int = GetEntriesRect().GetX()
+		Local font:TBitmapFont = GetBitmapFont("Default", 10)
+
+
 		'draw slots, even if empty
-		For Local i:Int = 0 Until GameRules.maxProgrammeLicencesPerFilter
+		local startIndex:int = (entriesPage-1)*MAX_LICENCES_PER_PAGE
+		local endIndex:int = entriesPage*MAX_LICENCES_PER_PAGE -1
+		For Local i:Int = startIndex To endIndex
 			Local entryPositionType:String = "entry"
-			If i = 0 Then entryPositionType = "first"
-			If i = GameRules.maxProgrammeLicencesPerFilter-1 Then entryPositionType = "last"
+			If i = startIndex Then entryPositionType = "first"
+			If i = endIndex Then entryPositionType = "last"
 
 			Local entryDrawType:String = "default"
 			Local tapeDrawType:String = "default"
-			If i < licences.length 
+			If licences and i < licences.length 
 				'== BACKGROUND ==
 				'planned is more important than new - both only happen
 				'on startprogrammes
@@ -221,7 +282,7 @@ endrem
 			'add "top" portion when drawing first item
 			'do this in the for loop, so the entrydrawType is known
 			'(top-portion could contain color code of the drawType)
-			If i = 0
+			If i = startIndex
 				currSprite = GetSpriteFromRegistry("gfx_programmeentries_top."+entryDrawType)
 				currSprite.draw(currX, currY)
 				currY :+ currSprite.area.GetH()
@@ -230,7 +291,7 @@ endrem
 
 
 			'=== DRAW TAPE===
-			If i < licences.length
+			If licences and i < licences.length
 				'== ADJUST TAPE TYPE ==
 				'do that afterwards because now "new" and "planned" are
 				'already handled
@@ -258,16 +319,51 @@ endrem
 			'add "bottom" portion when drawing last item
 			'do this in the for loop, so the entrydrawType is known
 			'(top-portion could contain color code of the drawType)
-			If i = GameRules.maxProgrammeLicencesPerFilter-1
-				currSprite = GetSpriteFromRegistry("gfx_programmeentries_bottom."+entryDrawType)
+			If i = endIndex
+				if entriesPages > 1
+					currSprite = GetSpriteFromRegistry("gfx_programmeentries_bottomButton."+entryDrawType)
+				else
+					currSprite = GetSpriteFromRegistry("gfx_programmeentries_bottom."+entryDrawType)
+				endif
 				currSprite.draw(currX, currY)
 				currY :+ currSprite.area.GetH()
 			EndIf
 		Next
-		
+
+		'handle page buttons
+		if entriesPages > 1
+			local w:int = 0.5 * GetSubEntriesRect().GetW() - 14 - 20
+			if not entriesButtonPrev
+				entriesButtonPrev = new TGUIButton.Create(new TVec2D.Init(currX + 5 , currY - 23), new TVec2D.Init(w, 18), "<", "PLANNERLIST_PROGRAMMELIST")
+				entriesButtonPrev.spriteName = "gfx_gui_button.datasheet"
+				'manage on our own
+				GuiManager.Remove(entriesButtonPrev)
+			endif
+			if not entriesButtonNext
+				entriesButtonNext = new TGUIButton.Create(new TVec2D.Init(currX + GetEntriesRect().GetW() - 7 - w, currY - 23), new TVec2D.Init(w, 18), ">", "PLANNERLIST_PROGRAMMELIST")
+				entriesButtonNext.spriteName = "gfx_gui_button.datasheet"
+				GuiManager.Remove(entriesButtonNext)
+			endif
+
+
+			local oldAlpha:float = GetAlpha()
+			if entriesButtonPrev
+				if not entriesButtonPrev.IsEnabled() then SetAlpha 0.5*oldAlpha
+				entriesButtonPrev.Draw()
+				if not entriesButtonPrev.IsEnabled() then SetAlpha oldAlpha
+			endif
+			if entriesButtonNext
+				if not entriesButtonNext.IsEnabled() then SetAlpha 0.5*oldAlpha
+				entriesButtonNext.Draw()
+				if not entriesButtonNext.IsEnabled() then SetAlpha oldAlpha
+			endif			
+
+			GetBitmapFont("Default", 10).DrawBlock(entriesPage+"/" + entriesPages, currX, currY - 22, GetEntriesRect().GetW(), 20, ALIGN_CENTER_CENTER, TColor.clBlack)
+		endif
+				
 		Rem
 		'debug
-		currY = entriesRect.GetY()
+		currY = GetEntriesRect().GetY()
 		For Local i:Int = 0 To GameRules.maxProgrammeLicencesPerFilter
 			if i = 0
 				Local currSprite:TSprite
@@ -290,12 +386,12 @@ endrem
 			SetColor 0,255,0
 			If i mod 2 = 0 then SetColor 255,0,0
 			SetAlpha 1.0
-			DrawRect(entriesRect.GetX(), currY+1, entrySize.GetX(), 1)
+			DrawRect(GetEntriesRect().GetX(), currY+1, entrySize.GetX(), 1)
 			'we add 1 pixel to y - as we hover between tapes too
-			DrawRect(entriesRect.GetX(), currY+1 + entrySize.GetY() - 1, entrySize.GetX(), 1)
+			DrawRect(GetEntriesRect().GetX(), currY+1 + entrySize.GetY() - 1, entrySize.GetX(), 1)
 			SetAlpha 0.4
 			'we add 1 pixel to height - as we hover between tapes too
-			DrawRect(entriesRect.GetX(), currY+1, entrySize.GetX(), entrySize.GetY())
+			DrawRect(GetEntriesRect().GetX(), currY+1, entrySize.GetX(), entrySize.GetY())
 
 			currY:+ entrySize.y
 
@@ -312,16 +408,60 @@ endrem
 
 		If not owner Then Return False  
 
-		Local currY:Int = entriesRect.GetY()
+		Local currY:Int = GetEntriesRect().GetY()
 		Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(owner)
 		Local filter:TProgrammeLicenceFilter = TProgrammeLicenceFilter.GetAtIndex(filterIndex)
 		Local licences:TProgrammeLicence[] = programmeCollection.GetLicencesByFilter(filter)
+		if not licences
+			SetEntriesPages( 1 )
+			return False
+		endif
+		
+		SetEntriesPages( ceil(licences.length / Float(MAX_LICENCES_PER_PAGE)) )
 
-		For Local i:Int = 0 Until licences.length
+		'handle page buttons (before other click handling here)
+		if entriesPages > 1
+			if entriesButtonPrev
+				entriesButtonPrev.Update()
 
-			If i = 0
+				if entriesPage = 1
+					if entriesButtonPrev.IsEnabled() then entriesButtonPrev.Disable()
+				else
+					if not entriesButtonPrev.IsEnabled() then entriesButtonPrev.Enable()
+				endif
+
+				if entriesButtonPrev.IsClicked()
+					entriesPage = Min(entriesPage, entriesPage-1)
+					entriesButtonPrev.mouseIsClicked = null
+					MouseManager.ResetKey(1)
+				endif
+			endif
+
+			if entriesButtonNext
+				entriesButtonNext.Update()
+
+				if entriesPage = entriesPages
+					if entriesButtonNext.IsEnabled() then entriesButtonNext.Disable()
+				else
+					if not entriesButtonNext.IsEnabled() then entriesButtonNext.Enable()
+				endif
+
+				'need to check "hit" - outer rect is checking for hit too
+				if entriesButtonNext.IsClicked()
+					entriesPage = Max(entriesPage, entriesPage+1)
+					entriesButtonNext.mouseIsClicked = null
+					MouseManager.ResetKey(1)
+				endif
+			endif
+		endif
+
+
+		local startIndex:int = (entriesPage-1)*MAX_LICENCES_PER_PAGE
+		local endIndex:int = Min(licences.length-1, entriesPage*MAX_LICENCES_PER_PAGE -1)
+		For Local i:Int = startIndex to endIndex
+			If i = startIndex
 				Local currSprite:TSprite
-				If licences[0].IsPlanned()
+				If licences[startIndex].IsPlanned()
 					currSprite = GetSpriteFromRegistry("gfx_programmeentries_top.planned")
 				Else
 					'switch background to "new" if the licence is a just-added-one
@@ -338,7 +478,7 @@ endrem
 			EndIf
 
 			'we add 1 pixel to height - to hover between tapes too
-			If THelper.MouseIn(int(entriesRect.GetX()), currY+1, int(entrySize.GetX()), int(entrySize.GetY()))
+			If THelper.MouseIn(int(GetEntriesRect().GetX()), currY+1, int(entrySize.GetX()), int(entrySize.GetY()))
 				GetGameBase().cursorstate = 1
 				Local doneSomething:Int = False
 				'store for sheet-display
@@ -384,6 +524,8 @@ endrem
 			'next tape
 			currY :+ entrySize.y
 		Next
+
+
 		Return False
 	End Method
 
@@ -391,18 +533,30 @@ endrem
 	Method DrawSubTapes:Int(parentLicence:TProgrammeLicence)
 		If Not parentLicence Then Return False
 
+		SetSubEntriesPages( ceil(parentLicence.GetSubLicenceCount() / Float(MAX_LICENCES_PER_PAGE)) )
+
 		Local hoveredLicence:TProgrammeLicence = Null
 		Local currSprite:TSprite
-		Local currY:Int = subEntriesRect.GetY()
-		Local currX:Int = subEntriesRect.GetX()
+		Local currY:Int = GetSubEntriesRect().GetY()
+		Local currX:Int = GetSubEntriesRect().GetX()
 		Local font:TBitmapFont = GetBitmapFont("Default", 10)
-				
-		For Local i:Int = 0 To parentLicence.GetSubLicenceCount()-1
-			Local licence:TProgrammeLicence = parentLicence.GetsubLicenceAtIndex(i)
+
+
+		local startIndex:int = (subEntriesPage-1)*MAX_LICENCES_PER_PAGE
+		local endIndex:int = subEntriesPage*MAX_LICENCES_PER_PAGE -1
+		'if no paging was used, hide empty slots
+		'(to have consistent button coordinates we show empty slots on
+		' subsequent pages)
+		if subEntriesPage = 1
+			endIndex = Min(parentLicence.GetSubLicenceCount()-1, endIndex)
+		endif
+
+		For Local i:Int = startIndex to endIndex				
+			Local licence:TProgrammeLicence = parentLicence.GetSubLicenceAtIndex(i)
 
 			Local entryPositionType:String = "entry"
-			If i = 0 Then entryPositionType = "first"
-			If i = parentLicence.GetSubLicenceCount()-1 Then entryPositionType = "last"
+			If i = startIndex Then entryPositionType = "first"
+			If i = endIndex Then entryPositionType = "last"
 
 			Local entryDrawType:String = "default"
 			Local tapeDrawType:String = "default"
@@ -419,7 +573,7 @@ endrem
 			'add "top" portion when drawing first item
 			'do this in the for loop, so the entrydrawType is known
 			'(top-portion could contain color code of the drawType)
-			If i = 0
+			If i = startIndex
 				currSprite = GetSpriteFromRegistry("gfx_programmeentries_top."+entryDrawType)
 				currSprite.draw(currX, currY)
 				currY :+ currSprite.area.GetH()
@@ -450,20 +604,55 @@ endrem
 			'add "bottom" portion when drawing last item
 			'do this in the for loop, so the entrydrawType is known
 			'(top-portion could contain color code of the drawType)
-			If i = parentLicence.GetSubLicenceCount()-1
-				currSprite = GetSpriteFromRegistry("gfx_programmeentries_bottom."+entryDrawType)
+			If i = endIndex
+				if subEntriesPages > 1
+					currSprite = GetSpriteFromRegistry("gfx_programmeentries_bottomButton."+entryDrawType)
+				else
+					currSprite = GetSpriteFromRegistry("gfx_programmeentries_bottom."+entryDrawType)
+				endif
 				currSprite.draw(currX, currY)
 				currY :+ currSprite.area.GetH()
 			EndIf
 		Next
 
+		'handle page buttons
+		if subEntriesPages > 1
+			local w:int = 0.5 * GetSubEntriesRect().GetW() - 14 - 20
+			if not subEntriesButtonPrev
+				subEntriesButtonPrev = new TGUIButton.Create(new TVec2D.Init(currX + 5 , currY - 23), new TVec2D.Init(w, 18), "<", "PLANNERLIST_PROGRAMMELIST")
+				subEntriesButtonPrev.spriteName = "gfx_gui_button.datasheet"
+				'manage on our own
+				GuiManager.Remove(subEntriesButtonPrev)
+			endif
+			if not subEntriesButtonNext
+				subEntriesButtonNext = new TGUIButton.Create(new TVec2D.Init(currX + GetSubEntriesRect().GetW() - 7 - w, currY - 23), new TVec2D.Init(w, 18), ">", "PLANNERLIST_PROGRAMMELIST")
+				subEntriesButtonNext.spriteName = "gfx_gui_button.datasheet"
+				GuiManager.Remove(subEntriesButtonNext)
+			endif
+			
+
+			local oldAlpha:float = GetAlpha()
+			if subEntriesButtonPrev
+				if not subEntriesButtonPrev.IsEnabled() then SetAlpha 0.5*oldAlpha
+				subEntriesButtonPrev.Draw()
+				if not subEntriesButtonPrev.IsEnabled() then SetAlpha oldAlpha
+			endif
+			if subEntriesButtonNext
+				if not subEntriesButtonNext.IsEnabled() then SetAlpha 0.5*oldAlpha
+				subEntriesButtonNext.Draw()
+				if not subEntriesButtonNext.IsEnabled() then SetAlpha oldAlpha
+			endif
+			GetBitmapFont("Default", 10).DrawBlock(subEntriesPage+"/" + subEntriesPages, currX, currY - 22, GetSubEntriesRect().GetW(), 20, ALIGN_CENTER_CENTER, TColor.clBlack)
+		endif
+
+
 		Rem
 		'debug - hitbox
-		currY = subEntriesRect.GetY()
-		For Local i:Int = 0 To parentLicence.GetSubLicenceCount()-1
+		currY = GetSubEntriesRect().GetY()
+		For Local i:Int = startIndex To endIndex
 			Local licence:TProgrammeLicence = parentLicence.GetsubLicenceAtIndex(i)
 
-			If i = 0
+			If i = startIndex
 				Local currSprite:TSprite
 				If licence And licence.IsPlanned()
 					currSprite = GetSpriteFromRegistry("gfx_programmeentries_top.planned")
@@ -474,7 +663,7 @@ endrem
 			EndIf
 
 
-			If THelper.MouseIn(subEntriesRect.GetX(), currY + 1, entrySize.GetX(), entrySize.GetY())
+			If THelper.MouseIn(GetSubEntriesRect().GetX(), currY + 1, entrySize.GetX(), entrySize.GetY())
 				SetColor 100,255,100
 				If i mod 2 = 0 then SetColor 255,100,100
 			Else
@@ -482,11 +671,11 @@ endrem
 				If i mod 2 = 0 then SetColor 255,0,0
 			EndIf
 			SetAlpha 1.0
-			DrawRect(subEntriesRect.GetX(), currY + 1, entrySize.GetX(), 1)
-			DrawRect(subEntriesRect.GetX(), currY + 1 + entrySize.GetY() - 1, entrySize.GetX(), 1)
+			DrawRect(GetSubEntriesRect().GetX(), currY + 1, entrySize.GetX(), 1)
+			DrawRect(GetSubEntriesRect().GetX(), currY + 1 + entrySize.GetY() - 1, entrySize.GetX(), 1)
 			SetAlpha 0.3
 			'complete size
-			DrawRect(subEntriesRect.GetX(), currY + 1, entrySize.GetX(), entrySize.GetY() - 1)
+			DrawRect(GetSubEntriesRect().GetX(), currY + 1, entrySize.GetX(), entrySize.GetY() - 1)
 
 			currY:+ entrySize.y
 
@@ -498,14 +687,60 @@ endrem
 
 
 	Method UpdateSubTapes:Int(parentLicence:TProgrammeLicence)
-		If Not parentLicence Then Return False
-		
-		Local currY:Int = subEntriesRect.GetY() '+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
+		if not parentLicence
+			SetEntriesPages( 1 )
+			return False
+		endif
 
-		For Local i:Int = 0 To parentLicence.GetSubLicenceCount()-1
+		SetSubEntriesPages( ceil(parentLicence.GetSubLicenceCount() / Float(MAX_LICENCES_PER_PAGE)) )
+
+
+		'handle page buttons (before other click handling here)
+		if subEntriesPages > 1
+			if subEntriesButtonPrev
+				subEntriesButtonPrev.Update()
+
+				if subEntriesPage = 1
+					if subEntriesButtonPrev.IsEnabled() then subEntriesButtonPrev.Disable()
+				else
+					if not subEntriesButtonPrev.IsEnabled() then subEntriesButtonPrev.Enable()
+				endif
+
+				if subEntriesButtonPrev.IsClicked()
+					subEntriesPage = Min(subEntriesPage, subEntriesPage-1)
+					subEntriesButtonPrev.mouseIsClicked = null
+					MouseManager.ResetKey(1)
+				endif
+			endif
+
+			if subEntriesButtonNext
+				subEntriesButtonNext.Update()
+
+				if subEntriesPage = subEntriesPages
+					if subEntriesButtonNext.IsEnabled() then subEntriesButtonNext.Disable()
+				else
+					if not subEntriesButtonNext.IsEnabled() then subEntriesButtonNext.Enable()
+				endif
+
+				'need to check "hit" - outer rect is checking for hit too
+				if subEntriesButtonNext.IsClicked()
+					subEntriesPage = Max(subEntriesPage, subEntriesPage+1)
+					subEntriesButtonNext.mouseIsClicked = null
+					MouseManager.ResetKey(1)
+				endif
+			endif
+		endif
+
+
+		
+		Local currY:Int = GetSubEntriesRect().GetY() '+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
+
+		local startIndex:int = (subEntriesPage-1)*MAX_LICENCES_PER_PAGE
+		local endIndex:int = Min(parentLicence.GetSubLicenceCount()-1, entriesPage*MAX_LICENCES_PER_PAGE -1)
+		For Local i:Int = startIndex to endIndex				
 			Local licence:TProgrammeLicence = parentLicence.GetsubLicenceAtIndex(i)
 
-			If i = 0
+			If i = startIndex
 				Local currSprite:TSprite
 				If licence And licence.IsPlanned()
 					currSprite = GetSpriteFromRegistry("gfx_programmeentries_top.planned")
@@ -517,7 +752,7 @@ endrem
 
 			
 			If licence
-				If THelper.MouseIn(int(subEntriesRect.GetX()), currY + 1, int(entrySize.GetX()), int(entrySize.GetY()))
+				If THelper.MouseIn(int(GetSubEntriesRect().GetX()), currY + 1, int(entrySize.GetX()), int(entrySize.GetY()))
 					GetGameBase().cursorstate = 1 'mouse-over-hand
 
 					'store for sheet-display
@@ -539,6 +774,13 @@ endrem
 			'next tape
 			currY :+ entrySize.y
 		Next
+
+		'handle page buttons
+		if subEntriesPages > 1
+			if subEntriesButtonPrev then subEntriesButtonPrev.Update()
+			if subEntriesButtonNext then subEntriesButtonNext.Update()
+		endif
+
 		Return False
 	End Method
 
@@ -578,9 +820,9 @@ endrem
 			'in all cases the genre selector is opened
 			If genresRect.containsXY(MouseManager.x, MouseManager.y) Then closeMe = False
 			'check tape rect
-			If openState >=2 And entriesRect.containsXY(MouseManager.x, MouseManager.y)  Then closeMe = False
+			If openState >=2 And GetEntriesRect().containsXY(MouseManager.x, MouseManager.y) then closeMe = False
 			'check episodetape rect
-			If openState >=3 And subEntriesRect.containsXY(MouseManager.x, MouseManager.y)  Then closeMe = False
+			If openState >=3 And GetSubEntriesRect().containsXY(MouseManager.x, MouseManager.y)  Then closeMe = False
 
 			If closeMe
 				SetOpen(0)
@@ -598,6 +840,9 @@ endrem
 			enabled = 0
 		Else
 			enabled = 1
+
+			entriesPage = 1
+			subEntriesPage = 1
 		EndIf
 
 		Self.openState = newState

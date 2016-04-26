@@ -1116,6 +1116,17 @@ Type TScreenHandler_ProgrammePlanner
 		local button:TGUIButton = TGUIButton( triggerEvent._sender )
 		if not button then return 0
 
+		'ignore other buttons than the plan buttons
+		if not GUIManager.IsState(button, "programmeplanner_buttons") then return 0
+		rem
+		local validButton:int = False
+		for local b:TGUIButton = EachIn ProgrammePlannerButtons
+			if button = b then validButton = True; exit
+		next
+		if button = plannerNextDayButton then validButton = True
+		if button = plannerPreviousDayButton then validButton = True
+		endrem
+
 		'only react if the click came from the left mouse button
 		if triggerEvent.GetData().getInt("button",0) <> 1 then return TRUE
 
