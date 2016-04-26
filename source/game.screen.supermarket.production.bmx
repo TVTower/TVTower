@@ -846,7 +846,9 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 			'just aborting current production planning
 			if currentProductionConcept
-				SetCurrentProductionConcept(null)
+				if not castSlotList.SelectCastWindowIsOpen()
+					SetCurrentProductionConcept(null)
+				endif
 				MouseManager.ResetKey(2)
 			endif
 		endif
@@ -1211,6 +1213,12 @@ Type TGUIProductionModalWindow extends TGUIModalWindow
 	Method Update:int()
 		if buttonCancel.IsClicked() then Close(2)
 		if buttonOK.IsClicked() then Close(1)
+
+		if (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
+			Close(2)
+			MouseManager.ResetKey(1)
+			MouseManager.ResetKey(2)
+		endif
 
 		return super.Update()
 	End Method	
@@ -1618,6 +1626,12 @@ Type TGUICastSlotList Extends TGUISlotList
 		_eventListeners :+ [ EventManager.registerListenerMethod( "guiModalWindow.onClose", self, "onCloseSelectCastWindow", "TGUISelectCastWindow") ]
 		
 		return self
+	End Method
+
+
+	Method SelectCastWindowIsOpen:int()
+		if not selectCastWindow then return False
+		return not selectCastWindow.IsClosed()
 	End Method
 
 
