@@ -200,6 +200,19 @@ Type RoomHandler_News extends TRoomHandler
 
 		If PlannerToolTip Then PlannerToolTip.Render()
 		If NewsGenreTooltip then NewsGenreTooltip.Render()
+
+
+		if TVTDebugInfos
+			SetColor 0,0,0
+			SetAlpha 0.5
+			DrawRect(15,35, 180, 140)
+			SetAlpha 1.0
+			SetColor 255,255,255
+			GetBitmapFont("default", 12).Draw("Newstimer:", 20, 40)
+			For local i:int = 0 until TVTNewsGenre.count
+				GetBitmapFont("default", 10).Draw(GetLocale("NEWS_"+TVTNewsGenre.GetAsString(i))+":  "+GetWorldTime().GetFormattedtime(GetNewsAgency().NextEventTimes[i]), 20, 60 + 12*i)
+			Next
+		endif
 	End Function
 
 
@@ -223,7 +236,7 @@ Type RoomHandler_News extends TRoomHandler
 		'pinwall
 		if not MouseManager.IsLongClicked(1)
 			If THelper.IsIn(MouseManager.x, MouseManager.y, 167,60,240,160)
-				If not PlannerToolTip Then PlannerToolTip = TTooltip.Create("Newsplaner", "Hinzufügen und entfernen", 180, 100, 0, 0)
+				If not PlannerToolTip Then PlannerToolTip = TTooltip.Create("Newsplaner", GetLocale("MANAGE_BROADCASTED_NEWS"), 180, 100, 0, 0)
 				PlannerToolTip.enabled = 1
 				PlannerToolTip.Hover()
 				GetGameBase().cursorstate = 1

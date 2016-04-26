@@ -10,9 +10,13 @@ Import "game.game.base.bmx"
 'at the moment only a base object
 Type TNewsAgency
 	'when to announce a new newsevent
-	Field NextEventTime:Double = -1
+'	Field NextEventTime:Double = -1
 	'check for a new news every x-y minutes
-	Field NextEventTimeInterval:int[] = [90, 140]
+'	Field NextEventTimeInterval:int[] = [90, 140]
+
+	Field NextEventTimes:Double[]
+	'check for a new news every x-y minutes
+	Field NextEventTimeIntervals:int[][]
 
 	Field delayedLists:TList[]
 
@@ -52,8 +56,31 @@ Type TNewsAgency
 
 	Method Initialize:int()
 		'=== RESET TO INITIAL STATE ===
-		NextEventTime = -1
-		NextEventTimeInterval = [180, 330]
+		'NextEventTime = -1
+		'NextEventTimeInterval = [180, 330]
+
+		NextEventTimes = new Double[ TVTNewsGenre.count ]
+		NextEventTimeIntervals = NextEventTimeIntervals[.. TVTNewsGenre.count]
+		For local i:int = 0 until TVTNewsGenre.count
+			'NextEventTimes[i] = GetWorldTime().GetTimeGone() - 60 * RandRange(60,180) 
+			NextEventTimes[i] = -1
+			NextEventTimeIntervals[i] = [180, 300]
+
+			Select i
+				case TVTNewsGenre.POLITICS_ECONOMY
+					NextEventTimeIntervals[i] = [210, 330]
+				case TVTNewsGenre.SHOWBIZ
+					NextEventTimeIntervals[i] = [180, 290]
+				case TVTNewsGenre.SPORT
+					NextEventTimeIntervals[i] = [200, 300]
+				case TVTNewsGenre.TECHNICS_MEDIA
+					NextEventTimeIntervals[i] = [220, 350]
+				'default
+			'	case TVTNewsGenre.CURRENT_AFFAIRS
+			'		NextEventTimeIntervals[i] = [180, 300]
+			End Select
+		Next
+
 		weatherUpdateTime = 0
 		weatherUpdateTimeInterval = [270, 300]
 		weatherType = 0
@@ -83,7 +110,15 @@ Type TNewsAgency
 		'send out delayed news to players
 		ProcessDelayedNews()
 
-		If NextEventTime < GetWorldTime().GetTimeGone() Then AnnounceNewNewsEvent()
+'		If NextEventTime < GetWorldTime().GetTimeGone() Then AnnounceNewNewsEvent()
+		for local i:int = 0 until TVTNewsGenre.count
+			if NextEventTimes[i] = -1
+				TLogger.Log("NewsAgency", "Initialize NextEventTime for genre "+i, LOG_DEBUG)
+				ResetNextEventTime(i, RandRange(-120, 0))
+			endif
+			
+			If NextEventTimes[i] < GetWorldTime().GetTimeGone() Then AnnounceNewNewsEvent(i)
+		Next
 		If weatherUpdateTime < GetWorldTime().GetTimeGone() Then UpdateWeather()
 
 		UpdateTerrorists()
@@ -704,6 +739,7 @@ Type TNewsAgency
 				?debug
 				if skipNews then print "[NEWSAGENCY] skip news: "+newsEvent.GetTitle()
 				?
+				if skipNews then TLogger.Log("NewsAgency", "Skip news: ~q"+newsEvent.GetTitle()+"~q as nobody is listening.", LOG_DEBUG)
 			EndIf
 
 			If not skipNews or forceAdd
@@ -712,23 +748,42 @@ Type TNewsAgency
 				?debug
 				Print "[NEWSAGENCY | LOCAL] AnnounceNewNews: added news title="+newsEvent.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
 				?
+				if skipNews then TLogger.Log("NewsAgency", "Added news: ~q"+newsEvent.GetTitle()+"~q for time "+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)+".", LOG_DEBUG)
 			EndIf
 		EndIf
 
 
 		'=== ADJUST TIME FOR NEXT NEWS ANNOUNCEMENT ===
-		ResetNextEventTime()
+		ResetNextEventTime(genre)
 
 		return announced
 	End Method
 
 
-	Method ResetNextEventTime:int()
+	Method ResetNextEventTime:int(genre:int, addMinutes:int = 0)
+		if genre >= TVTNewsGenre.count or genre < 0 then return False
+
+		'during night, news come not that often
+		if GetWorldTime().GetDayHour() < 4
+			addMinutes :+ RandRange(15,45)
+		'during night, news come not that often
+		elseif GetWorldTime().GetDayHour() >= 22
+			addMinutes :+ RandRange(15,30)
+		'work time - even earlier now
+		elseif GetWorldTime().GetDayHour() > 8 and GetWorldTime().GetDayHour() < 14
+			addMinutes :- RandRange(15,30)
+		endif
+
+
 		'adjust time until next news
-		NextEventTime = GetWorldTime().GetTimeGone() + 60 * randRange(NextEventTimeInterval[0], NextEventTimeInterval[1])
-		'50% chance to have an even longer time (up to 2x)
-		If RandRange(0,10) > 5
-			NextEventTime :+ randRange(NextEventTimeInterval[0], NextEventTimeInterval[1])
+		NextEventTimes[genre] = GetWorldTime().GetTimeGone() + 60 * (randRange(NextEventTimeIntervals[genre][0], NextEventTimeIntervals[genre][1]) + addMinutes)
+
+		'25% chance to have an even longer time (up to 2x)
+		If RandRange(0,100) < 25
+			NextEventTimes[genre] :+ randRange(NextEventTimeIntervals[genre][0], NextEventTimeIntervals[genre][1])
+			TLogger.Log("NewsAgency", "Reset NextEventTime for genre "+genre+" to "+ GetWorldTime().GetFormattedTime(NextEventTimes[genre])+" ("+Long(NextEventTimes[genre])+"). DOUBLE TIME.", LOG_DEBUG)
+		else
+			TLogger.Log("NewsAgency", "Reset NextEventTime for genre "+genre+" to "+ GetWorldTime().GetFormattedTime(NextEventTimes[genre])+" ("+Long(NextEventTimes[genre])+")", LOG_DEBUG)
 		EndIf
 	End Method
 End Type

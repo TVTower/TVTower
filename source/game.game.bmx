@@ -330,7 +330,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		Next
 	
 		'adjust news agency to wait some time until next news
-		GetNewsAgency().ResetNextEventTime()
+		'disabled, no longer needed as AnnounceNewNewsEvent() already
+		'resets next event times
+		'GetNewsAgency().ResetNextEventTime(-1)
 
 		'place them into the players news shows
 		Local newsToPlace:TNews

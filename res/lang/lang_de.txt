@@ -676,3 +676,5 @@ EDIT_TEXTS = Texte ändern
 
 STUDIO_MANAGER = Studioleiter
 STUDIO_MANAGER_TOOLTIP = Gibt Informationen zu geplanten Produktionen und händigt Einkaufslisten aus
+
+MANAGE_BROADCASTED_NEWS = Auszustrahlende Nachrichten verwalten
