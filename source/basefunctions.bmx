@@ -219,6 +219,7 @@ Type TFunctions
 
 
 	Function CreateEmptyImage:TImage(width:Int, height:Int, flags:Int=DYNAMICIMAGE | FILTEREDIMAGE)
+		if width < 0 or height < 0 then Throw "CreateEmptyImage() called with invalid dimensions. Width="+width+", height="+height+"."
 		Local image:TImage = CreateImage(width, height, flags)
 		Local pixmap:TPixmap = LockImage(image)
 		pixmap.ClearPixels(0)

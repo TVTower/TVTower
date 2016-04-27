@@ -686,15 +686,26 @@ endrem
 		'(to forcefully remove the, unset that flag before!
 		If not obj.IsControllable() then Return Null
 
-		'backup programmed date for event
-		Local programmedDay:Int = obj.programmedDay
-		Local programmedHour:Int = obj.programmedHour
-
-
 		'if not programmed, skip deletion and events
 		If obj.isProgrammed()
+			'backup programmed date for event
+			Local programmedDay:Int = obj.programmedDay
+			Local programmedHour:Int = obj.programmedHour
+
 			'nothing to remove
-			if not GetObject(slotType, programmedDay, programmedHour) then return Null
+			if not GetObject(slotType, programmedDay, programmedHour)
+				obj = GetObject(slotType, day, hour)
+				if not obj
+					TLogger.Log("TPlayerProgrammePlan.RemoveObject", "Failed with programmedDay and programmedHour being invalid.", LOG_ERROR)
+					return Null
+				endif
+				programmedDay = obj.programmedDay
+				programmedHour = obj.programmedHour
+				TLogger.Log("TPlayerProgrammePlan.RemoveObject", "Using alternative GetObject.", LOG_DEBUG)
+				?debug
+				DebugStop
+				?
+			endif
 
 			If checkModifyableSlot
 				For Local i:Int = 0 To obj.GetBlocks(slotType) -1

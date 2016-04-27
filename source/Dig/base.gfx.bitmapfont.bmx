@@ -204,6 +204,7 @@ Type TBitmapFont
 '	global currentTextBlockStyle:TTextBlockStyle
 '	global previousTextBlockStyle:TTextBlockStyle = new TTextBlockStyle
 	global drawToPixmap:TPixmap = null
+	global pixmapOrigin:TVec2D = new TVec2D.Init(0,0)
 'DISABLECACHE	global ImageCaches:TMap = CreateMap()
 	global eventRegistered:int = 0
 
@@ -905,7 +906,7 @@ Type TBitmapFont
 							sprite = TSprite(font.charsSprites.ValueForKey(string(displayCharCode)))
 							if sprite
 								if drawToPixmap
-									sprite.DrawOnImage(drawToPixmap, int(x+lineWidth+tx), int(y+height+ty+styleDisplaceY - font.displaceY), -1, null, color)
+									sprite.DrawOnImage(drawToPixmap, int(pixmapOrigin.x + x+lineWidth+tx), int(pixmapOrigin.y + y+height+ty+styleDisplaceY - font.displaceY), -1, null, color)
 								else
 									sprite.Draw(int(x+lineWidth+tx), int(y+height+ty+styleDisplaceY - font.displaceY))
 								endif

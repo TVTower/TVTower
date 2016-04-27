@@ -362,14 +362,19 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 			Select useType
 				Case TVTBroadcastMaterialType.PROGRAMME
-					DrawProgrammeBlockText(New TRectangle.Init(GetScreenX(), GetScreenY(), GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW()-1,-1))
+					DrawProgrammeBlockText(New TRectangle.Init(GetScreenX(), GetScreenY(), GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW()-1,30))
 				Case TVTBroadcastMaterialType.ADVERTISEMENT
-					DrawAdvertisementBlockText(New TRectangle.Init(GetScreenX(), GetScreenY(), GetSpriteFromRegistry(GetAssetBaseName()+"2").area.GetW()-4,-1))
+					DrawAdvertisementBlockText(New TRectangle.Init(GetScreenX(), GetScreenY(), GetSpriteFromRegistry(GetAssetBaseName()+"2").area.GetW()-4,30))
 			End Select
 		EndIf
 	End Method
 
 
+	Field textImageAd:TImage {nosave}
+	Field textImageProgramme:TImage {nosave}
+	Field cacheStringAd:string {nosave}
+	Field cacheStringProgramme:string {nosave}
+	
 	Method DrawProgrammeBlockText:Int(textArea:TRectangle, titleColor:TColor=Null, textColor:TColor=Null)
 		Local title:String			= broadcastMaterial.GetTitle()
 		Local titleAppend:String	= ""
@@ -401,11 +406,8 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		End Select
 
 
-		Local maxWidth:Int			= textArea.GetW()
+		Local maxWidth:Int = textArea.GetW()
 		Local titleFont:TBitmapFont = GetBitmapFont("DefaultThin", 12, BOLDFONT)
-		Local useFont:TBitmapFont	= GetBitmapFont("Default", 12, ITALICFONT)
-		If Not titleColor Then titleColor = TColor.Create(0,0,0)
-		If Not textColor Then textColor = TColor.Create(50,50,50)
 
 		'shorten the title to fit into the block
 		While titleFont.getWidth(title + titleAppend) > maxWidth And title.length > 4
@@ -414,12 +416,37 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		'add eg. "(1/10)"
 		title = title + titleAppend
 
-		'draw
-		titleFont.drawBlock(title, textArea.position.GetIntX() + 5, textArea.position.GetIntY() +2, textArea.GetW() - 5, 18, Null, titleColor, 0, True, 1.0, False)
-		useFont.draw(text, textArea.position.GetIntX() + 5, textArea.position.GetIntY() + 17, textColor)
-		useFont.draw(text2, textArea.position.GetIntX() + 138, textArea.position.GetIntY() + 17, textColor)
+		'refresh cache?
+		local newCacheString:string = title + text + text2
+		if newCacheString <> cacheStringProgramme
+			textImageProgramme = null
+			cacheStringProgramme = newCacheString
+		endif
 
-		SetColor 255,255,255
+		'create cache if needed
+		if not textImageProgramme
+			Local useFont:TBitmapFont = GetBitmapFont("Default", 12, ITALICFONT)
+			If Not titleColor Then titleColor = TColor.Create(0,0,0)
+			If Not textColor Then textColor = TColor.Create(50,50,50)
+
+			textImageProgramme = TFunctions.CreateEmptyImage(textArea.GetW(), textArea.GetH())
+			TBitmapFont.setRenderTarget(textImageProgramme)
+			TBitmapFont.pixmapOrigin.SetXY(-textArea.position.x, -textArea.position.y)
+
+			'draw
+			titleFont.drawBlock(title, textArea.position.GetIntX() + 5, textArea.position.GetIntY() +2, textArea.GetW() - 5, 18, Null, titleColor, 0, True, 1.0, False)
+			useFont.draw(text, textArea.position.GetIntX() + 5, textArea.position.GetIntY() + 17, textColor)
+			useFont.draw(text2, textArea.position.GetIntX() + 138, textArea.position.GetIntY() + 17, textColor)
+
+			SetColor 255,255,255
+
+			TBitmapFont.pixmapOrigin.SetXY(0, 0)
+			TBitmapFont.setRenderTarget(null)
+		endif
+
+		if textImageProgramme
+			DrawImage(textImageProgramme, textArea.position.GetIntX(), textArea.position.GetIntY())
+		endif
 	End Method
 
 
@@ -456,15 +483,37 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 				EndIf
 		End Select
 
-		'draw
-		If Not titleColor Then titleColor = TColor.Create(0,0,0)
-		If Not textColor Then textColor = TColor.Create(50,50,50)
 
-		GetBitmapFont("DefaultThin", 10, BOLDFONT).drawBlock(title, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 2, textArea.GetW(), 18, Null, TColor.CreateGrey(0), 0,1,1.0, False)
-		textColor.setRGB()
-		GetBitmapFont("Default", 10).drawBlock(text, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 30)
-		GetBitmapFont("Default", 10).drawBlock(text2,textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 20, New TVec2D.Init(ALIGN_RIGHT))
-		SetColor 255,255,255 'eigentlich alte Farbe wiederherstellen
+		'refresh cache?
+		local newCacheString:string = title + text + text2
+		if newCacheString <> cacheStringAd
+			textImageAd = null
+			cacheStringAd = newCacheString
+		endif
+
+		'create cache if needed
+		if not textImageAd
+			textImageAd = TFunctions.CreateEmptyImage(textArea.GetW(), textArea.GetH())
+			TBitmapFont.setRenderTarget(textImageAd)
+			TBitmapFont.pixmapOrigin.SetXY(-textArea.position.x, -textArea.position.y)
+
+			If Not titleColor Then titleColor = TColor.Create(0,0,0)
+			If Not textColor Then textColor = TColor.Create(50,50,50)
+
+			GetBitmapFont("DefaultThin", 10, BOLDFONT).drawBlock(title, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 2, textArea.GetW(), 18, Null, TColor.CreateGrey(0), 0,1,1.0, False)
+			textColor.setRGB()
+			GetBitmapFont("Default", 10).drawBlock(text, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 30)
+			GetBitmapFont("Default", 10).drawBlock(text2,textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 20, New TVec2D.Init(ALIGN_RIGHT))
+
+			SetColor 255,255,255
+
+			TBitmapFont.pixmapOrigin.SetXY(0, 0)
+			TBitmapFont.setRenderTarget(null)
+		endif
+
+		if textImageAd
+			DrawImage(textImageAd, textArea.position.GetIntX(), textArea.position.GetIntY())
+		endif
 	End Method
 
 

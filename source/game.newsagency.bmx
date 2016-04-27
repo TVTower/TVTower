@@ -54,13 +54,17 @@ Type TNewsAgency
 	End Function
 
 
-	Method Initialize:int()
-		'=== RESET TO INITIAL STATE ===
-		'NextEventTime = -1
-		'NextEventTimeInterval = [180, 330]
-
+	Method New()
 		NextEventTimes = new Double[ TVTNewsGenre.count ]
 		NextEventTimeIntervals = NextEventTimeIntervals[.. TVTNewsGenre.count]
+		For local i:int = 0 until TVTNewsGenre.count
+			NextEventTimeIntervals[i] = [180, 300]
+		Next
+	End Method
+
+
+	Method Initialize:int()
+		'=== RESET TO INITIAL STATE ===
 		For local i:int = 0 until TVTNewsGenre.count
 			'NextEventTimes[i] = GetWorldTime().GetTimeGone() - 60 * RandRange(60,180) 
 			NextEventTimes[i] = -1
