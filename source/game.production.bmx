@@ -200,8 +200,8 @@ Type TProduction Extends TOwnedGameObject
 		'set studio blocked
 		if GetRoomBaseByGUID(studioRoomGUID)
 			'time in seconds
-			'also add 5 minutes to avoid people coming in in the break
-			'between two productions
+			'also add 5 minutes to avoid people coming into the studio
+			'in the break between two productions
 			local productionTime:int = (endDate - startDate) + 600
 			GetRoomBaseByGUID(studioRoomGUID).SetBlocked(productionTime, TRoomBase.BLOCKEDSTATE_SHOOTING)
 			GetRoomBaseByGUID(studioRoomGUID).blockedText = productionConcept.GetTitle()
@@ -254,16 +254,22 @@ Type TProduction Extends TOwnedGameObject
 		if RandRange(0,100) < 5 then productionValueMod = Max(productionValueMod*1.5, productionValueMod + RandRange(5,35)/100.0)
 		if RandRange(0,100) < 5 then productionValueMod = Min(productionValueMod*0.5, productionValueMod - RandRange(5,35)/100.0)
 
-		
-		TLogger.Log("TProduction.Finalize()", "ProductionValueMod    : "+GetProductionValueMod(), LOG_DEBUG)
-		TLogger.Log("TProduction.Finalize()", "ProductionValueMod end: "+productionValueMod, LOG_DEBUG)
-
 		'by 5% chance increase or lower price regardless of value
 		local productionPriceMod:Float = 1.0
 		if RandRange(0,100) < 5 then productionPriceMod :+ RandRange(5,35)/100.0
 		if RandRange(0,100) < 5 then productionPriceMod :- RandRange(5,35)/100.0
-		
-		
+
+		'star power bonus
+		'this is calculated at the end, as this is some kind of
+		'"advertising bonus" for the outcome-portion
+		local castFameMod:Float = productionConcept.CalculateCastFameMod()
+
+
+		TLogger.Log("TProduction.Finalize()", "ProductionValueMod    : "+GetProductionValueMod(), LOG_DEBUG)
+		TLogger.Log("TProduction.Finalize()", "ProductionValueMod end: "+productionValueMod, LOG_DEBUG)
+		TLogger.Log("TProduction.Finalize()", "ProductionPriceMod    : "+ProductionPriceMod, LOG_DEBUG)
+		TLogger.Log("TProduction.Finalize()", "CastFameMod           : "+castFameMod, LOG_DEBUG)
+
 
 		'=== 1.2 CAST ===
 		'change skills of the actors / director / ...
@@ -303,6 +309,9 @@ Type TProduction Extends TOwnedGameObject
 		programmeData.review = productionValueMod * productionConcept.script.review
 		programmeData.speed = productionValueMod * productionConcept.script.speed
 		programmeData.outcome = productionValueMod * productionConcept.script.outcome
+		'modify outcome by castFameMod ("attractors/startpower")
+		programmeData.outcome = Min(1.0, programmeData.outcome * castFameMod)
+
 		
 		'=== 2.4 PROGRAMME LICENCE ===
 		local programmeLicence:TProgrammeLicence = new TProgrammeLicence

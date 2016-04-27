@@ -93,6 +93,7 @@ Type TProductionConcept Extends TOwnedGameObject
 	Field liveTime:int = -1
 
 	Field castFit:Float = -1.0
+	Field castFameMod:Float = -1.0
 	Field castSympathy:Float = 0.0
 	Field castSympathyCached:int = False
 	'cache calculated vars (values which could get recalculated every-
@@ -499,7 +500,9 @@ Type TProductionConcept Extends TOwnedGameObject
 			if not jobFit and RandRange(0,100) < 90
 				personFit :* 0.2
 			endif
-			'apply attribute mod
+			'a persons maximum fit is 0.5 (without attributes)
+			personFit :* 0.5
+			'apply attribute mod (so persons with attributes are better)
 			personFit :* attributeMod
 			
 			rem
@@ -521,7 +524,41 @@ Type TProductionConcept Extends TOwnedGameObject
 
 		return castFit
 	End Method
-	
+
+
+	'returns bonus modificator because of fame/popularity of the cast
+	Method CalculateCastFameMod:Float(recalculate:int = False)
+		'use already calculated value
+		if castFameMod >= 0 and not recalculate then return castFameMod
+		 
+		local castFameModSum:Float = 0.0
+		local personCount:int = 0
+
+		For local castIndex:int = 0 until cast.length
+			local person:TProgrammePersonBase = cast[castIndex]
+			if not person then continue
+
+			local jobID:int = script.cast[castIndex].job
+			local personFameMod:Float = 1.0
+
+			if TProgrammePerson(person)
+				personFameMod :+ 0.75 * TProgrammePerson(person).GetFame()
+				'really experienced persons benefit from it too (eg.
+				'won awards and so on)
+				personFameMod :+ 0.25 * TProgrammePerson(person).GetExperiencePercentage(jobID)
+			endif
+
+			castFameModSum :+ personFameMod
+			personCount :+1
+		Next
+
+		if recalculate or castFameMod < 0
+			castFameMod = castFameModSum / personCount
+		endif
+
+		return castFameMod
+	End Method
+		
 
 	Method GetProductionFocus:int(focusIndex:int)
 		if not productionFocus or focusIndex > productionFocus.GetFocusAspectCount() or focusIndex < 1 then return False
