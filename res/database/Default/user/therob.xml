@@ -2601,18 +2601,22 @@
 		</scripttemplate>
 		<scripttemplate product="16" licence_type="1" guid="TheRob-Script-Talk-KalaueramlaufendenBand">
 			<title>
-				<de>Kalauer am laufenden Band</de>
-				<en>Gags, jokes and gags</en>
+				<de>%GROANERS% am laufenden Band</de>
+				<en>%TYPE% %GROANERS%</en>
 			</title>
 			<description>
 				<de>Ein Moderator lässt seine Gäste Sketche aufführen und gibt Ihnen spontane Regieanweisungen.</de>
-				<en></en>
+				<en>A host has his guests doing some skits while giving off-the-cuff stage directions.</en>
 			</description>
 			<variables>
-				<genre>
-					<de>Sketchshow</de>
-					<en></en>
-				</genre>
+				<type>
+					<de>am laufenden Band|ohne Ende|auf Kommando|im Dutzend|ganz spontan</de>
+					<en>churned out|unlimited|on command|family package|par excellence</en>
+				</type>
+				<groaners>
+					<de>Gags|Kalauer|Witze|Scherze|Ulk|Zoten|Späßchen</de>
+					<en>Gags|Laughs|Jests|Yarns</en>
+				</groaners>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />

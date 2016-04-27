@@ -91,7 +91,7 @@
 
 				<child name="gfx_scripts_0"	x="0"	y="52"	w="34"	h="59" />
 				<child name="gfx_scripts_1"	x="34"	y="52"	w="34"	h="59" />
-				<child name="gfx_scripts_2"	x="64"	y="52"	w="34"	h="59" />
+				<child name="gfx_scripts_2"	x="68"	y="52"	w="34"	h="59" />
 
 				<child name="gfx_scriptagency_vendor"		x="106"	y="0"	w="190"	h="245" />
 				<child name="gfx_scriptagency_vendor_hand"	x="301"	y="0"	w="112"	h="41"	f="2" />
