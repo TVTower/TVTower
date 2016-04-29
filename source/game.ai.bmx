@@ -1272,4 +1272,12 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
 		endif
 	End Method
+
+
+	Method ar_GetSuitcaseProgrammeLicences:TLuaFunctionResult(position:Int = -1)
+		If Not _PlayerInRoom("archive") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
+
+		local licences:TProgrammeLicence[] = GetPlayerProgrammeCollection(self.ME).GetSuitcaserogrammeLicencesArray()
+		Return TLuaFunctionResult.Create(self.RESULT_OK, licences)
+	End Method
 End Type

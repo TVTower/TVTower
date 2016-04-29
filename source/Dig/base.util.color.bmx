@@ -244,9 +244,9 @@ Type TColor
 		endif
 
 		local p:float = 2 * l - q
-        r = 255 * hue2rgb(p, q, h + 1/3.0)
-        g = 255 * hue2rgb(p, q, h)
-        b = 255 * hue2rgb(p, q, h - 1/3.0)
+        r = Min(255, Max(0, 255 * hue2rgb(p, q, h + 1/3.0)))
+        g = Min(255, Max(0, 255 * hue2rgb(p, q, h)))
+        b = Min(255, Max(0, 255 * hue2rgb(p, q, h - 1/3.0)))
 
 		Function hue2rgb:Float(p:float, q:float, t:float)
 			if t < 0

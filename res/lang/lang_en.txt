@@ -485,6 +485,19 @@ DIALOGUE_BOSS_CHANGETOPIC1				=	Can't we talk about something different?
 DIALOGUE_BOSS_BACKTOWORK				=	Okay %PLAYERNAME%, now back to work!
 DIALOGUE_BOSS_BACKTOWORK_OK				=	Aye sire, on my way.
 
+DIALOGUE_SUPERMARKET_TITLE1 = Hey Dude !
+DIALOGUE_SUPERMARKET_TITLE2 = Hi %PLAYERNAME% !
+DIALOGUE_SUPERMARKET_TITLE3 = Howdy, %PLAYERNAME% !
+DIALOGUE_SUPERMARKET_TEXT1 = What do you want to do today?
+DIALOGUE_SUPERMARKET_TEXT2 = What can I do for you today??
+DIALOGUE_SUPERMARKET_TEXT3 = You are able to make a good job on your own? I am going to have a joi... I am going to get some fresh air.
+DIALOGUE_SUPERMARKET_TEXT4 = Just do it, I am still having a throbbing head ... that ...party yesterday...
+
+DIALOGUE_SUPERMARKET_PLAN_A_PRODUCTION = I want to plan a TV-production and to buy everything needed for it
+DIALOGUE_SUPERMARKET_BUY_A_PRESENT = I want to buy a present
+DIALOGUE_SUPERMARKET_GOODBYE1 = I'm off then. Bye bye.
+DIALOGUE_SUPERMARKET_GOODBYE2 = See you. Bye.
+DIALOGUE_SUPERMARKET_GOODBYE3 = Making tracks now. See you.
 
 
 DIALOGUE_BETTY_WELCOME = Oh Hi?\nYou absolutely could come along more often.
@@ -660,6 +673,7 @@ NO_PRODUCTION_COMPANY_SELECTED = No production company selected
 PRODUCTION_SETUP_NOT_DONE = Production setup not done
 PRODUCTION_SETUP_INCOMPLETE = Production setup incomplete
 EPISODES_NOT_IN_ORDER = Episodes not in order
+PRODUCTION_CONCEPTS = Shopping lists
 
 SELECT_PERSON = Select person
 FINISHED_PLANNING = Finished planning

@@ -2,10 +2,13 @@ SuperStrict
 Import "game.roomhandler.base.bmx"
 Import "game.player.base.bmx"
 Import "game.screen.supermarket.production.bmx"
+Import "game.screen.supermarket.presents.bmx"
+Import "common.misc.dialogue.bmx"
 
 
 
 Type RoomHandler_SuperMarket extends TRoomHandler
+	Global dialogue:TDialogue
 	Global _eventListeners:TLink[]
 	Global _instance:RoomHandler_SuperMarket
 
@@ -22,6 +25,7 @@ Type RoomHandler_SuperMarket extends TRoomHandler
 
 		'reset/initialize screens (event connection etc.)
 		TScreenHandler_SupermarketProduction.GetInstance().Initialize()
+		TScreenHandler_SupermarketPresents.GetInstance().Initialize()
 
 
 		'=== REGISTER HANDLER ===
@@ -69,30 +73,107 @@ Type RoomHandler_SuperMarket extends TRoomHandler
 
 	Method SetLanguage()
 		TScreenHandler_SupermarketProduction.GetInstance().SetLanguage()
+		TScreenHandler_SupermarketPresents.GetInstance().SetLanguage()
 	End Method
 
 
 	'override: clear the screen (remove dragged elements)
 	Method AbortScreenActions:Int()
-		'abort handling dragged elements in the production screen
+		'abort handling dragged elements in the production / present
+		'screens
 		TScreenHandler_SupermarketProduction.GetInstance().AbortScreenActions()
+		TScreenHandler_SupermarketPresents.GetInstance().AbortScreenActions()
 
 		return False
 	End Method
+
+
+	Function GenerateDialogue()
+
+		'each array entry is a "topic" the chef could talk about
+		local text:string
+
+		text = GetRandomLocale("DIALOGUE_SUPERMARKET_TITLE")
+		text :+ "~n~n"
+		text :+ GetRandomLocale("DIALOGUE_SUPERMARKET_TEXT")
+
+		text = text.replace("%PLAYERNAME%", GetPlayerBase().name)
+
+		Local dialogueText:TDialogueTexts = TDialogueTexts.Create(text)
+		'local acceptEvent:TEventSimple = TEventSimple.Create("dialogue.onTakeBossCredit", new TData.AddNumber("value", GetPlayerBase().GetCreditAvailable()))
+		'null = event when click
+		dialogueText.AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_SUPERMARKET_PLAN_A_PRODUCTION"), 0, Null, onClickPlanAProduction))
+		dialogueText.AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_SUPERMARKET_BUY_A_PRESENT"), 0, Null, onClickBuySomePresents))
+		dialogueText.AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_SUPERMARKET_GOODBYE"), -2, Null))
 	
+		dialogue = new TDialogue
+		dialogue.SetArea(new TRectangle.Init(140, 40, 400, 200))
+		dialogue.AddTexts([dialogueText])
+
+		dialogue.moveDialogueBalloonStart = -40
+	End Function
+
+
+	Function onClickBuySomePresents(data:TData)
+		ScreenCollection.GoToSubScreen("screen_supermarket_presents")
+		dialogue = null
+	End Function
+
+
+	Function onClickPlanAProduction(data:TData)
+'		If MOUSEMANAGER.IsClicked(1)
+'			MOUSEMANAGER.resetKey(1)
+'			GetGameBase().cursorstate = 0
+
+			ScreenCollection.GoToSubScreen("screen_supermarket_production")
+			dialogue = null
+'		endif
+	End Function
+
 
 	Function onDrawSupermarket:int( triggerEvent:TEventBase )
-
+		If dialogue then dialogue.Draw()
 	End Function
 
 
 	Function onUpdateSupermarket:int( triggerEvent:TEventBase )
-		If MOUSEMANAGER.IsClicked(1)
-			MOUSEMANAGER.resetKey(1)
-			GetGameBase().cursorstate = 0
+		if not dialogue
+rem
+			'method a
+			'require the player to click on the dude first
+			
+			'over dude
+			if THelper.IsIn(MouseManager.x, MouseManager.y, 0,0,160,300)
+				GetGameBase().cursorstate = 1
+				If MOUSEMANAGER.IsClicked(1) and not MouseManager.IsLongClicked(1)
+					MOUSEMANAGER.resetKey(1)
+					GetGameBase().cursorstate = 0
 
-			ScreenCollection.GoToSubScreen("screen_supermarket_production")
+					GenerateDialogue()
+				endif
+			endif
+endrem
+
+			'method b
+			'just show the dialogue, do not require the player to first
+			'click on the dude
+			GenerateDialogue()
 		endif
 
+		
+		if dialogue
+			'leave the room
+			if dialogue.Update() = 0
+				dialogue = null
+				GetPlayerBase().GetFigure().LeaveRoom()
+			endif
+
+			'reset right clicks as long as dialogue exists
+			'-> leave via "say good bye"
+			If MOUSEMANAGER.IsClicked(2) or MouseManager.IsLongClicked(1)
+				MOUSEMANAGER.resetKey(1)
+				MOUSEMANAGER.resetKey(2)
+			endif
+		endif
 	End Function
 End Type

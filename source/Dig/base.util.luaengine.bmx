@@ -308,7 +308,7 @@ Type TLuaEngine
 					Self.lua_pushArray(typeId.GetArrayElement(obj, i))
 				'for everything else, we just push the object...
 				Default
-					if typeId.ElementType().ExtendsType(ArrayTypeId)
+					if typeId and typeId.ElementType().ExtendsType(ArrayTypeId)
 						Self.lua_pushArray(typeId.GetArrayElement(obj, i))
 					else
 						Self.lua_pushObject(typeId.GetArrayElement(obj, i))
@@ -463,7 +463,7 @@ Type TLuaEngine
 				Case ArrayTypeId
 					lua_pushArray(fld.Get(obj))
 				Default
-					if fld.TypeID().ExtendsType(ArrayTypeId)
+					if fld.TypeId() and fld.TypeID().ExtendsType(ArrayTypeId)
 						lua_pushArray(fld.Get(obj))
 					else
 						lua_pushobject(fld.Get(obj))
@@ -665,7 +665,7 @@ endrem
 			Case ArrayTypeId
 				lua_pushArray(t)
 			Default
-				if typeId.ExtendsType(ArrayTypeId)
+				if typeId and typeId.ExtendsType(ArrayTypeId)
 					lua_pushArray(t)
 				else
 					lua_pushobject(t)
@@ -705,7 +705,11 @@ endrem
 					Case ArrayTypeId
 						Self.lua_pushArray(args[i])
 					Default
-						Self.lua_pushobject(args[i])
+						if typeId and typeId.ExtendsType(ArrayTypeId)
+							Self.lua_pushArray(args[i])
+						else
+							Self.lua_pushObject(args[i])
+						endif
 				End Select
 			Next
 			If lua_pcall(getLuaState(), args.length, 1, 0) Then DumpError()

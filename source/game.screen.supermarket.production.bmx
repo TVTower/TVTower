@@ -119,6 +119,10 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 
 	Method AbortScreenActions:Int()
+		if castSlotList.SelectCastWindowIsOpen()
+			castSlotList.selectCastWindow.Close(2)
+		endif
+		SetCurrentProductionConcept(null)
 	End Method
 
 
@@ -910,7 +914,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		local listH:int = contentH - titleH - checkboxArea
 
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-		GetBitmapFontManager().Get("default", 13	, BOLDFONT).drawBlock("Einkaufslisten", contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		GetBitmapFontManager().Get("default", 13	, BOLDFONT).drawBlock(GetLocale("PRODUCTION_CONCEPTS"), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		contentY :+ titleH
 		skin.RenderContent(contentX, contentY, contentW, listH , "2")
 		'reposition list

@@ -111,3 +111,55 @@ End Type
 Function GetBetty:TBetty()
 	Return TBetty.GetInstance()
 End Function
+
+
+
+Type TBettyPresent
+	'price for the player
+	Field price:int
+	'value for betty
+	Field bettyValue:int
+	'locale key
+	Field name:string 
+
+	Global presents:TBettyPresent[10]
+
+
+	Function Initialize()
+		'feet spray
+		presents[0] = new TBettyPresent.Init("BETTY_PRESENT_1",      99, -250)
+		'dinner
+		presents[1] = new TBettyPresent.Init("BETTY_PRESENT_2",     500,   10)
+		'nose operation
+		presents[2] = new TBettyPresent.Init("BETTY_PRESENT_3",    1000, -500)
+		'custom written script / novel
+		presents[3] = new TBettyPresent.Init("BETTY_PRESENT_4",   30000,  100)
+		'pearl necklace
+		presents[4] = new TBettyPresent.Init("BETTY_PRESENT_5",   60000,  150)
+		'coat (negative!)
+		presents[5] = new TBettyPresent.Init("BETTY_PRESENT_6",   80000, -500)
+		'diamond necklace
+		presents[6] = new TBettyPresent.Init("BETTY_PRESENT_7",  100000,  200)
+		'sports car
+		presents[7] = new TBettyPresent.Init("BETTY_PRESENT_8",  250000,  350)
+		'ring
+		presents[8] = new TBettyPresent.Init("BETTY_PRESENT_9",  500000,  450)
+		'boat/yacht
+		presents[9] = new TBettyPresent.Init("BETTY_PRESENT_10",1000000,  500)
+	End Function
+	
+
+	Function GetPresent:TBettyPresent(index:int)
+		if not presents[0] then Initialize()
+		return presents[index]
+	End Function
+
+
+	Method Init:TBettyPresent(name:string, price:int, bettyValue:int)
+		self.name = name
+		self.price = price
+		self.bettyValue = bettyValue
+		return self
+	End Method
+End Type
+

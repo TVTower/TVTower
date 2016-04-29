@@ -189,6 +189,20 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Method GetSuitcaseProgrammeLicenceCount:int() {_exposeToLua}
 		return suitcaseProgrammeLicences.count()
 	End Method
+
+
+	Method GetSuitcaserogrammeLicencesArray:TProgrammeLicence[]() {_exposeToLua}
+		'would return an array of type "object[]"
+		'Return suitcaseProgrammeLicences.toArray()
+
+		local result:TProgrammeLicence[ suitcaseProgrammeLicences.Count() ]
+		local pos:int = 0
+		For local p:TProgrammeLicence = eachin suitcaseProgrammeLicences
+			result[pos] = p
+			pos :+ 1
+		Next
+		return result
+	End Method
 	
 
 	'returns a freshly created broadcast material
