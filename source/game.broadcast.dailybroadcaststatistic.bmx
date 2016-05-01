@@ -20,6 +20,7 @@ Type TDailyBroadcastStatisticCollection
 
 	Method Initialize:TDailyBroadcastStatisticCollection()
 		statistics.Clear()
+		minShowDay = 0
 
 		return self
 	End Method
