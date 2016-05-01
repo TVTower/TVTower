@@ -508,7 +508,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	Method GetLicenceType:int()
 		return licenceType
 	End Method
-	
+
 
 	Function setIgnoreUnreleasedProgrammes(ignore:int=TRUE, releaseStart:int=1900, releaseEnd:int=2100)
 		ignoreUnreleasedProgrammes = ignore

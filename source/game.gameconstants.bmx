@@ -31,6 +31,7 @@ Type TVTGameConstants {_exposeToLua}
 	Field ProgrammeGenre:TVTProgrammeGenre = new TVTProgrammeGenre 
 	Field ProgrammeFlag:TVTProgrammeDataFlag = new TVTProgrammeDataFlag 
 	Field ProgrammeLicenceType:TVTProgrammeLicenceType = new TVTProgrammeLicenceType
+	Field ProgrammeDistributionChannel:TVTProgrammeDistributionChannel = new TVTProgrammeDistributionChannel
 
 	Field ProductionConceptFlag:TVTProductionConceptFlag = new TVTProductionConceptFlag 
 
@@ -215,6 +216,34 @@ Type TVTBroadcastMaterialType {_exposeToLua}
 	Const NEWS:int         = 8
 	Const NEWSSHOW:int     = 16
 End Type
+
+
+
+
+'to ease access to "comparisons" without knowing
+'the licence object itself
+Type TVTProgrammeDistributionChannel {_exposeToLua}
+	Const UNKNOWN:int    = 0
+	Const CINEMA:int     = 1
+	Const TV:int         = 2 'custom production
+	Const count:int      = 2
+	
+
+	Function GetAtIndex:int(index:int = 0)
+		return index
+	End Function
+
+
+	Function GetAsString:String(key:int = 0)
+		Select key
+			case CINEMA      return "cinema"
+			case TV          return "tv"
+			default          return "unknown"
+		End Select
+	End Function
+End Type
+
+
 
 
 'to ease access to "comparisons" without knowing
@@ -627,6 +656,8 @@ Type TVTProgrammeDataFlag {_exposeToLua}
 	Const SERIES:Int = 256
 	'Scripted-Shows/Series/Reportages ... Trash-TV!
 	Const SCRIPTED:Int = 512
+	'Scripted-Shows/Series/Reportages ... Trash-TV!
+	Const CUSTOMPRODUCTION:Int = 512
 
 	Const count:int = 10
 

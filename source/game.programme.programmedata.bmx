@@ -362,6 +362,8 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Field franchiseGUID:string
 	'which kind of distribution was used? Cinema, Custom production ...
 	Field distributionChannel:int = 0
+	'is this a production of a user?
+	Field producedByPlayerID:int = 0
 	'ID according to TVTProgrammeProductType
 	Field productType:Int = 1
 	'at which day was the programme released?
@@ -971,15 +973,19 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 		'=== TOPICALITY ===
 		'the more current the more expensive
-		'multipliers stack"
+		'multipliers "stack"
 		local topicalityModifier:Float = 1.0
-		If (GetMaxTopicality() >= 0.80) Then topicalityModifier = 1.1
-		If (GetMaxTopicality() >= 0.85) Then topicalityModifier = 1.3
-		If (GetMaxTopicality() >= 0.90) Then topicalityModifier = 1.7
-		If (GetMaxTopicality() >= 0.94) Then topicalityModifier = 2.25
-		If (GetMaxTopicality() >= 0.98) Then topicalityModifier = 3.0
+		If (GetMaxTopicality() >= 0.80) Then topicalityModifier :+ 0.1
+		If (GetMaxTopicality() >= 0.85) Then topicalityModifier :+ 0.2
+		If (GetMaxTopicality() >= 0.90) Then topicalityModifier :+ 0.4
+		If (GetMaxTopicality() >= 0.94) Then topicalityModifier :+ 0.55
+		If (GetMaxTopicality() >= 0.98) Then topicalityModifier :+ 0.75
 		'make just released programmes even more expensive
-		If (GetMaxTopicality() > 0.99)  Then topicalityModifier = 4.5
+		'ATTENTION: don't do this to custom productions as they would
+		'           be easy to sell then ;-)
+		if not IsCustomProduction()
+			If (GetMaxTopicality() > 0.99)  Then topicalityModifier :+ 1.0
+		endif
 
 		value :* topicalityModifier
 
@@ -1290,6 +1296,11 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		if isReleased() then return False
 		
 		return GetProductionStartTime() <= GetWorldTime().GetTimeGone() and GetCinemaReleaseTime() > GetWorldTime().GetTimeGone()
+	End Method
+
+
+	Method isCustomProduction:int() {_exposeToLua}
+		return producedByPlayerID <> 0
 	End Method
 	
 
