@@ -137,7 +137,10 @@ Type RoomHandler_SuperMarket extends TRoomHandler
 
 
 	Function onUpdateSupermarket:int( triggerEvent:TEventBase )
-		if not dialogue
+		if not dialogue and ..
+		   not GetPlayerBase().GetFigure().isLeavingRoom() and ..
+		   GetPlayerBase().GetFigure().GetInRoomID() > 0
+		   ' not GetPlayerBase().GetFigure().isLeavingRoom()
 rem
 			'method a
 			'require the player to click on the dude first
@@ -159,7 +162,6 @@ endrem
 			'click on the dude
 			GenerateDialogue()
 		endif
-
 		
 		if dialogue
 			'leave the room
@@ -168,12 +170,19 @@ endrem
 				GetPlayerBase().GetFigure().LeaveRoom()
 			endif
 
+			'prepare leaving - will remove room now
+			If MOUSEMANAGER.IsClicked(2) or MouseManager.IsLongClicked(1)
+				dialogue = null
+			endif
+
 			'reset right clicks as long as dialogue exists
 			'-> leave via "say good bye"
+			rem
 			If MOUSEMANAGER.IsClicked(2) or MouseManager.IsLongClicked(1)
 				MOUSEMANAGER.resetKey(1)
 				MOUSEMANAGER.resetKey(2)
 			endif
+			endrem
 		endif
 	End Function
 End Type
