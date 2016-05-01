@@ -67,6 +67,7 @@ Type TProduction Extends TOwnedGameObject
 	Field endDate:Double
 
 	Field scriptGenreFit:Float = -1.0
+	Field productionCompanyQuality:Float = 0.0
 	Field castFit:Float = -1.0
 	Field castSympathyMod:Float = 1.0
 	Field productionValueMod:Float = 1.0
@@ -112,7 +113,7 @@ Type TProduction Extends TOwnedGameObject
 	'returns a modificator to a script's intrinsic values (speed, review..)
 	Method GetProductionValueMod:Float()
 		local value:Float
-		value = 0.3 * scriptGenreFit + 0.6 * castFit
+		value = 0.2 * scriptGenreFit + 0.7 * castFit
 
 		'sympathy of the cast influences result a bit
 		value :+ 0.1 * (castSympathyMod - 1.0)
@@ -120,6 +121,9 @@ Type TProduction Extends TOwnedGameObject
 		'it is important to set the production priority according
 		'to the genre
 		value :* 1.00 * effectiveFocusPointsMod
+
+		'production company quality decides about result too
+		value :* (0.5 + 0.5 * productionCompanyQuality)
 
 		return value
 	End Method
@@ -171,6 +175,10 @@ Type TProduction Extends TOwnedGameObject
 		'Calculate how the selected cast fits to their assigned jobs
 		castFit = productionConcept.CalculateCastFit() 
 
+		'=== 1.1.3 PRODUCTIONCOMPANY ===
+		'Calculate how the selected company does its job at all
+		productionCompanyQuality = productionConcept.productionCompany.GetQuality() 
+
 
 		'=== 1.2 INDIVIDUAL IMPROVEMENTS ===
 
@@ -182,13 +190,12 @@ Type TProduction Extends TOwnedGameObject
 		'=== 1.2.2 MODIFY PRODUCTION VALUE ===
 		effectiveFocusPointsMod = 1.0 + productionConcept.GetEffectiveFocusPointsRatio()
 
-		rem
-		print "---------"
-		print "scriptGenreFit:          " + scriptGenreFit
-		print "castFit:                 " + castFit
-		print "castSympathyMod:         " + castSympathyMod
-		print "effectiveFocusPointsMod: " + effectiveFocusPointsMod
-		endrem
+ 
+		TLogger.Log("TProduction.Start()", "scriptGenreFit:           " + scriptGenreFit, LOG_DEBUG)
+		TLogger.Log("TProduction.Start()", "castFit:                  " + castFit, LOG_DEBUG)
+		TLogger.Log("TProduction.Start()", "castSympathyMod:          " + castSympathyMod, LOG_DEBUG)
+		TLogger.Log("TProduction.Start()", "effectiveFocusPointsMod:  " + effectiveFocusPointsMod, LOG_DEBUG)
+		TLogger.Log("TProduction.Start()", "productionCompanyQuality: " + productionCompanyQuality, LOG_DEBUG)
 
 
 
@@ -251,13 +258,26 @@ Type TProduction Extends TOwnedGameObject
 		'by 5% chance increase value and 5% chance to decrease
 		'- so bad productions create a superior programme (or even worse)
 		'- or blockbusters fail for unknown reasons (or get even better)
-		if RandRange(0,100) < 5 then productionValueMod = Max(productionValueMod*1.5, productionValueMod + RandRange(5,35)/100.0)
-		if RandRange(0,100) < 5 then productionValueMod = Min(productionValueMod*0.5, productionValueMod - RandRange(5,35)/100.0)
+		local luck:int = RandRange(0,100)
+		if luck < 5
+			productionValueMod :* RandRange(120,135)/100.0
+		elseif luck > 95
+			productionValueMod :* RandRange(65,75)/100.0
+		endif
 
 		'by 5% chance increase or lower price regardless of value
 		local productionPriceMod:Float = 1.0
-		if RandRange(0,100) < 5 then productionPriceMod :+ RandRange(5,35)/100.0
-		if RandRange(0,100) < 5 then productionPriceMod :- RandRange(5,35)/100.0
+		luck = RandRange(0,100)
+		if luck < 5
+			productionPriceMod :+ RandRange(5,20)/100.0
+		elseif luck > 95
+			productionPriceMod :- RandRange(5,20)/100.0
+		endif
+
+		'custom productions are sellable right after production, and
+		'really "young" productions are too expensive, which is why
+		'we lower the price at all
+
 
 		'star power bonus
 		'this is calculated at the end, as this is some kind of
@@ -285,8 +305,11 @@ Type TProduction Extends TOwnedGameObject
 		FillProgrammeDataByScript(programmeData, productionConcept.script)
 		programmeData.country = GetStationMapCollection().config.GetString("nameShort", "UNK")
 		programmeData._year = GetWorldTime().GetYear()
-		programmeData.distributionChannel = 0
+		programmeData.distributionChannel = TVTProgrammeDistributionChannel.TV
+		programmeData.releaseTime = GetWorldTime().GetTimeGone()
 		programmeData.available = true
+		programmeData.producedByPlayerID = owner
+
 		if productionConcept.script.IsLive()
 			if programmeData.liveTime <= 0 then programmeData.liveTime = productionConcept.liveTime
 		endif
@@ -357,6 +380,9 @@ endif
 endrem
 	
 		'=== 3. INFORM / REMOVE SCRIPT ===
+		'inform production company
+		productionConcept.productionCompany.FinishProduction(programmeData.GetGUID())
+		
 		'inform script about a done production based on the script
 		'(parental script is already informed on creation of its licence)
 		productionConcept.script.usedInProductionsCount :+ 1

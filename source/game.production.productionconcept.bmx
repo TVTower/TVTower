@@ -357,6 +357,10 @@ Type TProductionConcept Extends TOwnedGameObject
 			if genreDefinition
 				_effectiveFocusPoints :+ GetProductionFocus(focusPointID) * genreDefinition.GetFocusPointPriority(focusPointID)
 				_effectiveFocusPointsMax :+ TProductionFocusBase.focusPointLimit * genreDefinition.GetFocusPointPriority(focusPointID)
+
+				'print "_effectiveFocusPoints :+ "+GetProductionFocus(focusPointID)+" * "+genreDefinition.GetFocusPointPriority(focusPointID)
+				'print "_effectiveFocusPointsMax :+ "+TProductionFocusBase.focusPointLimit+" * "+genreDefinition.GetFocusPointPriority(focusPointID)
+
 			else
 				_effectiveFocusPoints :+ GetProductionFocus(focusPointID)
 				_effectiveFocusPointsMax :+ TProductionFocusBase.focusPointLimit
@@ -376,11 +380,10 @@ Type TProductionConcept Extends TOwnedGameObject
 		local personCount:int = 0
 
 		For local castIndex:int = 0 until cast.length
-			'skip empty ore "ProgrammePersonBase" (no channel sympathy)
 			local person:TProgrammePerson = TProgrammePerson(cast[castIndex])
-			if not person then continue
-
-			personSympathy :+ person.GetChannelSympathy(owner)
+			if person
+				personSympathy :+ person.GetChannelSympathy(owner)
+			endif
 			personCount :+ 1
 		Next
 		if personCount > 0
@@ -497,6 +500,8 @@ Type TProductionConcept Extends TOwnedGameObject
 			'=== TOTAL FIT ===
 
 			personFit = 0.4 * genreFit + 0.6 * jobFit
+			'if the person does not know anything about the done job
+			'chances are high for the person not fitting at all
 			if not jobFit and RandRange(0,100) < 90
 				personFit :* 0.2
 			endif
@@ -504,15 +509,26 @@ Type TProductionConcept Extends TOwnedGameObject
 			personFit :* 0.5
 			'apply attribute mod (so persons with attributes are better)
 			personFit :* attributeMod
+
+			'a persons fit depends on its XP
+			'so make 50% of the fit dependend from XP
+			local xpMod:Float = 0.5
+			if TProgrammePerson(person) then xpMod :+ 0.5 * TProgrammePerson(person).GetExperiencePercentage(script.cast[castIndex].job)
+			personFit :* xpMod
 			
-			rem
-			print person.GetFullName() + " [as ~q"+ TVTProgrammePersonJob.GetAsString( script.cast[castIndex].job ) + "~q]"
-			print "     genreFit:  "+genreFit
-			print "       jobFit:  "+jobFit
-			print " attributeMod:  "+attributeMod
-			print " --------------------"
-			print "    personFit:  "+personFit
-			endrem
+			TLogger.Log("TProductionConcept.CalculateCastFit()", " --------------------", LOG_DEBUG)
+			TLogger.Log("TProductionConcept.CalculateCastFit()", person.GetFullName() + " [as ~q"+ TVTProgrammePersonJob.GetAsString( script.cast[castIndex].job ) + "~q]", LOG_DEBUG)
+			TLogger.Log("TProductionConcept.CalculateCastFit()", "     genreFit:  "+genreFit, LOG_DEBUG)
+			TLogger.Log("TProductionConcept.CalculateCastFit()", "       jobFit:  "+jobFit, LOG_DEBUG)
+			TLogger.Log("TProductionConcept.CalculateCastFit()", " attributeMod:  "+attributeMod, LOG_DEBUG)
+			if TProgrammePerson(person)
+				TLogger.Log("TProductionConcept.CalculateCastFit()", " (sympathy   :  "+TProgrammePerson(person).GetChannelSympathy(owner)+")", LOG_DEBUG)
+				TLogger.Log("TProductionConcept.CalculateCastFit()", " (xp         :  "+(TProgrammePerson(person).GetExperiencePercentage(script.cast[castIndex].job)*100)+"%)", LOG_DEBUG)
+			else
+				TLogger.Log("TProductionConcept.CalculateCastFit()", " (sympathy   :  --)", LOG_DEBUG)
+				TLogger.Log("TProductionConcept.CalculateCastFit()", " (xp         :  --)", LOG_DEBUG)
+			endif
+			TLogger.Log("TProductionConcept.CalculateCastFit()", "=   personFit:  "+personFit, LOG_DEBUG)
 
 			castFitSum :+ personFit
 			personCount :+1
