@@ -1234,6 +1234,7 @@ Type TGameState
 
 	Field _ScriptTemplateCollection:TScriptTemplateCollection = Null
 	Field _ScriptCollection:TScriptCollection = Null
+	Field _ProductionManager:TProductionManager = Null
 	Field _ProductionConceptCollection:TProductionConceptCollection = Null
 	Field _ProgrammeRoleCollection:TProgrammeRoleCollection = Null
 	Field _ProgrammePersonBaseCollection:TProgrammePersonBaseCollection = Null
@@ -1288,6 +1289,7 @@ print "TGameState.Initialize(): Reinitialize all game objects"
 		GetScriptTemplateCollection().Initialize()
 		GetScriptCollection().Initialize()
 		GetProductionConceptCollection().Initialize()
+		GetProductionManager().Initialize()
 		GetProgrammeRoleCollection().Initialize()
 		GetProgrammePersonBaseCollection().Initialize()
 		GetProgrammeDataCollection().Initialize()
@@ -1332,6 +1334,7 @@ print "TGameState.RestoreGameData(): Restore game objects"
 		_Assign(_GameInformationCollection, TGameInformationCollection._instance, "GameInformationCollection", MODE_LOAD)
 
 		_Assign(_AudienceManager, AudienceManager, "AudienceManager", MODE_LOAD)
+		_Assign(_ProductionManager, TProductionManager._instance, "ProductionManager", MODE_LOAD)
 
 		_Assign(_AdContractCollection, TAdContractCollection._instance, "AdContractCollection", MODE_LOAD)
 		_Assign(_AdContractBaseCollection, TAdContractBaseCollection._instance, "AdContractBaseCollection", MODE_LOAD)
@@ -1407,6 +1410,7 @@ print "TGameState.RestoreGameData(): Restore game objects"
 		_Assign(TGameInformationCollection._instance, _GameInformationCollection, "GameInformationCollection", MODE_SAVE)
 
 		_Assign(AudienceManager, _AudienceManager, "AudienceManager", MODE_SAVE)
+		_Assign(TProductionManager._instance, _ProductionManager, "ProductionManager", MODE_SAVE)
 
 		_Assign(TBuilding._instance, _Building, "Building", MODE_SAVE)
 		_Assign(TElevator._instance, _Elevator, "Elevator", MODE_SAVE)
