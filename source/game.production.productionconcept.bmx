@@ -589,7 +589,7 @@ Type TProductionConcept Extends TOwnedGameObject
 		'skip if nothing to do
 		if productionFocus.GetFocus(focusIndex) = value then return False
 
-		productionFocus.SetFocus(focusIndex, value)
+		productionFocus.SetFocus(focusIndex, value, True)
 		'maybe some limitation corrected the value
 		value = productionFocus.GetFocus(focusIndex)
 
@@ -812,12 +812,18 @@ Type TProductionFocusBase
 	End Method
 	
 
-	Method SetFocus:int(index:int, value:int)
+	Method SetFocus:int(index:int, value:int, checkLimits:int = True)
 		if focusPoints.length < index or index < 1 then return False
 
 		'reset old, so GetFocusPointsLeft() returns correct value
 		focusPoints[index -1] = 0
-		focusPoints[index -1] = MathHelper.Clamp(value, 0, Min(focusPoints[index -1] + GetFocusPointsLeft(), focusPointLimit))
+		if checkLimits
+			'check a total focus point limit
+			focusPoints[index -1] = MathHelper.Clamp(value, 0, Max(0, Min(focusPoints[index -1] + GetFocusPointsLeft(), focusPointLimit)))
+		else
+			'use the absolute limit
+			focusPoints[index -1] = MathHelper.Clamp(value, 0, focusPointLimit)
+		endif
 
 		'emit event with corrected value (via GetFocus())
 		EventManager.triggerEvent( TEventSimple.Create("ProductionFocus.SetFocus", new TData.AddNumber("focusIndex", index).AddNumber("value", GetFocus(index)), Self ) )
@@ -853,6 +859,9 @@ Type TProductionFocusBase
 	End Method
 
 
+	'removes focus points 1 by 1 from each focus aspects until they are
+	'within a limit
+	'so 3,3,3,0,0 with limit 5 becomes 2,1,1,0,0
 	Method ClampFocusPoints()
 		if GetFocusPointsSet() = 0 then return
 		
@@ -861,14 +870,20 @@ Type TProductionFocusBase
 		'from all aspects until point maximum is no longer beat
 		local trimPoints:int = GetFocusPointsSet() - GetFocusPointsMax()
 		While trimPoints > 0
+
+			'start at bottom
 			For local i:int = activeFocusIndices.length-1 to 0 step -1
+				local focusIndex:int = activeFocusIndices[i]
+
 				trimPoints = GetFocusPointsSet() - GetFocusPointsMax()
 				if trimPoints <= 0 then exit
 
-				local focusIndex:int = activeFocusIndices[i]
 				if GetFocus( focusIndex ) <= 0 then continue
 
-				SetFocus(focusIndex, GetFocus(focusIndex) - 1)
+				'to avoid removing more than "-1" (if it still exceeds
+				'a limit), make sure to use "False" to disable this
+				'check
+				SetFocus(focusIndex, GetFocus(focusIndex) - 1, False)
 			Next
 		Wend
 	End Method

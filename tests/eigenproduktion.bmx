@@ -145,6 +145,7 @@ Function Update:Int()
 	MouseManager.Update()
 	KeyManager.Update()
 
+	EventManager.Update()
 	EventManager.triggerEvent( TEventSimple.Create("room.onScreenUpdate", new TData.Add("room", null) , ScreenCollection.GetCurrentScreen() ) )
 	
 	'fetch and cache mouse and keyboard states for this cycle
