@@ -52,6 +52,11 @@ GAME_TIME = Game time
 GAMEDAY = Gameday
 BETTY_FEELINGS = Bettys feelings about you
 THERE_IS_NO_LOVE_IN_THE_AIR_YET = There is no love in the air yet... ;D
+BETTY_KNOWS_WHO_YOU_ARE = Betty knows who you are
+BETTY_SEEMS_TO_LIKE_YOU = Betty seems to like you
+BETTY_SEEMS_TO_LIKE_YOU_A_BIT_MORE = Betty seems to like you a bit more
+BETTY_LOVES_YOU = Betty loves you
+BETTY_REALLY_LOVES_YOU = Betty really loves you
 MENU = Menu
 OPEN_MENU = Open Menu
 
@@ -674,6 +679,19 @@ PRODUCTION_SETUP_NOT_DONE = Production setup not done
 PRODUCTION_SETUP_INCOMPLETE = Production setup incomplete
 EPISODES_NOT_IN_ORDER = Episodes not in order
 PRODUCTION_CONCEPTS = Shopping lists
+
+NO_PRESENT_SELECTED = No present selected
+BUY_PRESENTTITLE_FOR_PRICE = Buy %PRESENTTITLE% for %PRICE%
+BETTY_PRESENT_1 = foot spray
+BETTY_PRESENT_2 = dinner for two
+BETTY_PRESENT_3 = nose operation
+BETTY_PRESENT_4 = custom written novel
+BETTY_PRESENT_5 = pearl necklace
+BETTY_PRESENT_6 = Chinese hamster coat
+BETTY_PRESENT_7 = blood diamond necklace
+BETTY_PRESENT_8 = sports car
+BETTY_PRESENT_9 = ring
+BETTY_PRESENT_10= yacht
 
 SELECT_PERSON = Select person
 FINISHED_PLANNING = Finished planning

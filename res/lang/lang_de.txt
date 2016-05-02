@@ -53,6 +53,11 @@ GAME_TIME = Spielzeit
 GAMEDAY = Spieltag
 BETTY_FEELINGS = Bettys Gefühle für Dich
 THERE_IS_NO_LOVE_IN_THE_AIR_YET = Derzeit liegt noch keine Liebe in der Luft ;D
+BETTY_KNOWS_WHO_YOU_ARE = Betty weiss immerhin wer Du bist
+BETTY_SEEMS_TO_LIKE_YOU = Betty scheint Dich zu mögen
+BETTY_SEEMS_TO_LIKE_YOU_A_BIT_MORE = Betty scheint Dich ein bisschen mehr als nur zu mögen
+BETTY_LOVES_YOU = Betty liebt Dich
+BETTY_REALLY_LOVES_YOU = Betty liebt Dich wirklich
 MENU = Menü
 OPEN_MENU = Menü öffnen
 
@@ -679,6 +684,20 @@ PRODUCTION_SETUP_NOT_DONE = Produktion noch nicht konzipiert
 PRODUCTION_SETUP_INCOMPLETE = Produktionskonzept unvollständig
 EPISODES_NOT_IN_ORDER = Episoden nicht in richtiger Reihenfolge
 PRODUCTION_CONCEPTS = Einkaufslisten
+
+NO_PRESENT_SELECTED = Kein Geschenk ausgewählt
+BUY_PRESENTTITLE_FOR_PRICE = Kaufe %PRESENTTITLE% für %PRICE%
+BETTY_PRESENT_1 = Fußspray
+BETTY_PRESENT_2 = Abendessen für Zwei
+BETTY_PRESENT_3 = Nasen-OP
+BETTY_PRESENT_4 = individuell geschriebenes Buch
+BETTY_PRESENT_5 = Perlenkette
+BETTY_PRESENT_6 = Zwerghamsterfell
+BETTY_PRESENT_7 = Kette mit großem Blutdiamant
+BETTY_PRESENT_8 = Sportwagen
+BETTY_PRESENT_9 = Ring
+BETTY_PRESENT_10= Jacht
+
 
 SELECT_PERSON = Person auswählen
 FINISHED_PLANNING = Planung abgeschlossen

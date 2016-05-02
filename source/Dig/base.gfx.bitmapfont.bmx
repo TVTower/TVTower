@@ -201,8 +201,6 @@ Type TBitmapFont
 	Field _maxCharHeightAboveBaseline:int = 0
 	Field _hasEllipsis:int = -1
 
-'	global currentTextBlockStyle:TTextBlockStyle
-'	global previousTextBlockStyle:TTextBlockStyle = new TTextBlockStyle
 	global drawToPixmap:TPixmap = null
 	global pixmapOrigin:TVec2D = new TVec2D.Init(0,0)
 'DISABLECACHE	global ImageCaches:TMap = CreateMap()
@@ -619,7 +617,7 @@ Type TBitmapFont
 					alignedX = x
 				endif
 			EndIf
-			local p:TVec2D = __drawStyled( lines[i], alignedX, y, color, style, doDraw,special, fontStyle)
+			local p:TVec2D = __drawStyled( lines[i], alignedX, y, color, style, doDraw, special, fontStyle)
 
 			y :+ Max(lineHeight, p.y)
 			'add extra spacing _between_ lines
@@ -658,7 +656,7 @@ Type TBitmapFont
 
 	'can adjust used font or color
 	Method ProcessCommand:int(command:string, payload:string, fontStyle:TBitMapFontStyle)
-		if command = "color"
+		if command = "color" and not fontStyle.ignoreColorTag
 			local colors:string[] = payload.split(",")
 			local color:TColor
 			if colors.length >= 3
@@ -682,7 +680,7 @@ Type TBitmapFont
 			'backup current setting
 			fontStyle.PushColor( color )
 		endif
-		if command = "/color"
+		if command = "/color" and not fontStyle.ignoreColorTag
 			'local color:TColor =
 			fontStyle.PopColor()
 		endif
@@ -725,7 +723,7 @@ Type TBitmapFont
 		local vec:TVec2D = __drawStyled(text, x, y, color, style, doDraw, special, fontStyle)
 
 		'restore backup
-		'TBitmapFontStyle.Reset()
+		'fontStyle.Reset()
 
 		return vec
 	End Method
@@ -751,7 +749,9 @@ Type TBitmapFont
 			height:+ 1
 			if doDraw
 				SetAlpha float(special * 0.5 * oldColor.a)
-				__draw(text, x, y+1, TColor.clWhite, , fontStyle)
+				fontStyle.ignoreColorTag :+ 1
+				__draw(text, x, y+1, TColor.clWhite, doDraw, fontStyle)
+				fontStyle.ignoreColorTag :- 1
 			endif
 		'shadow
 		else if style = STYLE_SHADOW
@@ -759,20 +759,24 @@ Type TBitmapFont
 			width:+1
 			if doDraw
 				SetAlpha special*0.5*oldColor.a
-				__draw(text, x+1,y+1, TColor.clBlack, , fontStyle)
+				fontStyle.ignoreColorTag :+ 1
+				__draw(text, x+1,y+1, TColor.clBlack, doDraw, fontStyle)
+				fontStyle.ignoreColorTag :- 1
 			endif
 		'glow
 		else if style = STYLE_GLOW
 			if doDraw
+				fontStyle.ignoreColorTag :+ 1
 				SetColor 0,0,0
 				SetAlpha special*0.25*oldColor.a
-				__draw(text, x-2,y, , , fontStyle)
-				__draw(text, x+2,y, , , fontStyle)
-				__draw(text, x,y-2, , , fontStyle)
-				__draw(text, x,y+2, , , fontStyle)
+				__draw(text, x-2,y, ,doDraw, fontStyle)
+				__draw(text, x+2,y, ,doDraw, fontStyle)
+				__draw(text, x,y-2, ,doDraw, fontStyle)
+				__draw(text, x,y+2, ,doDraw, fontStyle)
 				SetAlpha special*0.5*oldColor.a
-				__draw(text, x+1,y+1, , , fontStyle)
-				__draw(text, x-1,y-1, , , fontStyle)
+				__draw(text, x+1,y+1, ,doDraw, fontStyle)
+				__draw(text, x-1,y-1, ,doDraw, fontStyle)
+				fontStyle.ignoreColorTag :- 1
 			endif
 		endif
 
@@ -827,6 +831,8 @@ Type TBitmapFont
 		local font:TBitmapFont = fontStyle.GetFont()
 '		if not color then color = new TColor.Get()
 
+		'store current color
+		fontStyle.PushColor(color)
 
 		For text:string = eachin textLines
 		
@@ -859,13 +865,15 @@ Type TBitmapFont
 						currentControlCommand = commandData[0]
 						if commandData.length>1 then currentControlCommandPayload = commandData[1]
 
-						ProcessCommand(currentControlCommand, currentControlCommandPayload, fontStyle)
+						if doDraw
+							ProcessCommand(currentControlCommand, currentControlCommandPayload, fontStyle)
+							if fontStyle.GetColor()
+								color = fontStyle.GetColor().Copy()
+								color.SetRGBA()
+							endif
+						endif
 						'cache font to speed up processing
 						font = fontStyle.GetFont()
-						if doDraw and fontStyle.GetColor()
-							color = fontStyle.GetColor().Copy()
-							color.SetRGBA()
-						endif
 
 						'reset
 						currentControlCommand = ""
@@ -942,6 +950,8 @@ Type TBitmapFont
 		'restore color
 		if doDraw then oldColor.SetRGBA()
 
+		fontStyle.PopColor()
+
 		return new TVec2D.Init(width, height)
 	End Method
 
@@ -963,6 +973,8 @@ Type TBitmapFontStyle
 	'one counter for each style (italicfont, boldfont)
 	Field fontStyles:int[2]
 	Field colors:TList = CreateList()
+	Field ignoreColorTag:int = False
+	Field ignoreStyleTags:int = False
 	Global styleDisplaceY:int = 0
 
 	Method Reset()
@@ -1063,40 +1075,7 @@ Type TBitmapFontStyle
 	End Method
 End Type
 
-rem
-Type TTextBlockStyle
-	Field fontName:string = ""
-	Field fontSize:int = 12
-	Field fontStyle:int = 0
-	Field color:TColor = null
-	Field styleDisplaceY:int
 
-	
-	Method Reset()
-		fontStyle = 0
-		color = null
-		styleDisplaceY = 0
-	End Method
-
-
-	Method CopyFrom(other:TTextBlockStyle)
-		fontName = other.fontName
-		fontSize = other.fontSize
-		fontStyle = other.fontStyle
-		if other.color
-			color = other.color.Copy()
-		else
-			color = null
-		endif
-		styleDisplaceY = other.styleDisplaceY
-	End Method
-	
-
-	Method GetFont:TBitmapfont()
-		return GetBitmapFontManager().Get(fontName, fontSize, fontStyle)
-	End Method
-End Type
-endrem
 
 
 ' - max2d/max2d.bmx -> loadimagefont

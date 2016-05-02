@@ -305,7 +305,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'give the players some money
 		For Local i:Int = 1 To 4
 			if not GetPlayerFinance(i) then print "finance "+i+" failed."
-			print "taking credit now: " + i
 			GetPlayerFinance(i).TakeCredit(500000)
 		Next
 

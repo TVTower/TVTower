@@ -445,6 +445,17 @@ Type TFigure extends TFigureBase
 	End Method
 
 
+	Method IsEnteringRoom:int()
+		return currentAction = ACTION_ENTERING
+	End Method
+
+
+	Method IsLeavingRoom:int()
+		return currentAction = ACTION_LEAVING
+	End Method
+
+
+
 	'override to add room support
 	Method IsInBuilding:int()
 		If isChangingRoom() Then Return False

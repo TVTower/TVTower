@@ -155,6 +155,21 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
+	Method IsChangingRoom:int()
+		return False
+	End Method
+
+
+	Method IsEnteringRoom:int()
+		return False
+	End Method
+
+
+	Method IsLeavingRoom:int()
+		return False
+	End Method
+
+
 	Method IsIdling:int()
 		If GetTarget() then return False
 		If IsWaitingToEnter() or IsWaitingToLeave() then return False

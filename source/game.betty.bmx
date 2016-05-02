@@ -1,13 +1,15 @@
 SuperStrict
+Import "Dig/base.util.localization.bmx"
+Import "Dig/base.util.logger.bmx"
 Import "game.world.worldtime.bmx"
 
 
 
 
 Type TBetty
-	Field InLove:Float[5]
-	Field LoveSum:Float
-	Field AwardWinner:Float[5]
+	Field InLove:Long[4]
+	Field LoveSum:Long
+	Field AwardWinner:Long[4]
 	Field AwardSum:Float = 0.0
 	Field CurrentAwardType:Int = 0
 	Field AwardEndingAtDay:Int = 0
@@ -16,6 +18,7 @@ Type TBetty
 	Field LastAwardWinner:Int = 0
 	Field LastAwardType:Int = 0
 	Global _instance:TBetty
+	Const LOVE_MAXIMUM:int = 10000
 
 
 	Function GetInstance:TBetty()
@@ -25,9 +28,9 @@ Type TBetty
 
 
 	Method Initialize:int()
-		InLove = new Float[5]
+		InLove = new Long[4]
 		LoveSum = 0
-		AwardWinner = new Float[5]
+		AwardWinner = new Long[4]
 		AwardSum = 0.0
 		CurrentAwardType = 0
 		AwardEndingAtDay = 0
@@ -36,28 +39,56 @@ Type TBetty
 		LastAwardWinner = 0
 		LastAwardType = 0
 	End Method
+
+
+	Method GivePresent:int(playerID:int, present:TBettyPresent)
+		if not present then return False
+		'TODO: collect times betty got this present
+		'      each time decreases "effect" ...
+		
+		AdjustLove(playerId, present.bettyValue)
+
+		TLogger.Log("Betty", "Player "+playerID+" gave Betty a present ~q"+present.GetName()+"~q.", LOG_DEBUG)
+		return True
+	End Method
+
+	
+	Method GetLoveSummary:string()
+		local res:string
+		res :+ RSet(GetInLove(1),5)+" ("+RSet(LSet(GetInLoveShare(1),4)+"%",7)+")~t"
+		res :+ RSet(GetInLove(2),5)+" ("+RSet(LSet(GetInLoveShare(2),4)+"%",7)+")~t"
+		res :+ RSet(GetInLove(3),5)+" ("+RSet(LSet(GetInLoveShare(3),4)+"%",7)+")~t"
+		res :+ RSet(GetInLove(4),5)+" ("+RSet(LSet(GetInLoveShare(4),4)+"%",7)+")~t"
+		return res
+	End Method
 	
 
-	Method AdjustLove(PlayerID:Int, Amount:Float)
-		For Local i:Int = 1 To 4
-			Self.InLove[i] :-Amount / 4
+	Method AdjustLove(PlayerID:Int, Amount:Int)
+		'modify each players love amount (eg. subtract) 
+		For Local i:Int = 0 until 4
+			Self.InLove[i] :- Amount / 4
 		Next
-		Self.InLove[PlayerID] :+Amount * 5 / 4
+
+		'add back the "lost" sum to the player + 25%
+		Self.InLove[PlayerID-1] :+ Amount * 5 / 4
+
 		Self.LoveSum = 0
-		For Local i:Int = 1 To 4
-			Self.LoveSum:+Self.InLove[i]
+
+		For Local i:Int = 0 Until 4
+			'only add positive ones
+			Self.LoveSum :+ Max(0, Self.InLove[i])
 		Next
 	End Method
 
 
 	Method AdjustAward(PlayerID:Int, Amount:Float)
-		For Local i:Int = 1 To 4
+		For Local i:Int = 0 Until 4
 			Self.AwardWinner[i] :-Amount / 4
 		Next
-		Self.AwardWinner[PlayerID] :+Amount * 5 / 4
+		Self.AwardWinner[PlayerID-1] :+ Amount * 5 / 4
 		Self.AwardSum = 0
-		For Local i:Int = 1 To 4
-			Self.AwardSum:+Self.AwardWinner[i]
+		For Local i:Int = 0 Until 4
+			Self.AwardSum :+ Self.AwardWinner[i]
 		Next
 	End Method
 
@@ -85,9 +116,20 @@ Type TBetty
 	End Method
 
 
-	Method GetRealLove:Int(PlayerID:Int)
-		If Self.LoveSum < 100 Then Return Ceil(Self.InLove[PlayerID] / 100)
-		Return Ceil(Self.InLove[PlayerID] / Self.LoveSum)
+	Method GetInLove:Int(PlayerID:Int)
+		Return Self.InLove[PlayerID -1]
+	End Method
+
+
+	Method GetInLovePercentage:Float(PlayerID:Int)
+		Return Self.InLove[PlayerID -1] / Float(LOVE_MAXIMUM)
+	End Method
+
+
+	'returns a value how love is shared between players
+	Method GetInLoveShare:Float(PlayerID:Int)
+		If Self.LoveSum <= 0 then return 0
+		Return Max(0.0, Min(1.0, Self.InLove[PlayerID -1] / Float(self.LoveSum)))
 	End Method
 
 
@@ -119,8 +161,8 @@ Type TBettyPresent
 	Field price:int
 	'value for betty
 	Field bettyValue:int
-	'locale key
-	Field name:string 
+	'locale key for GetLocale(key)
+	Field localeKey:string 
 
 	Global presents:TBettyPresent[10]
 
@@ -139,7 +181,7 @@ Type TBettyPresent
 		'coat (negative!)
 		presents[5] = new TBettyPresent.Init("BETTY_PRESENT_6",   80000, -500)
 		'diamond necklace
-		presents[6] = new TBettyPresent.Init("BETTY_PRESENT_7",  100000,  200)
+		presents[6] = new TBettyPresent.Init("BETTY_PRESENT_7",  100000, -700)
 		'sports car
 		presents[7] = new TBettyPresent.Init("BETTY_PRESENT_8",  250000,  350)
 		'ring
@@ -147,19 +189,26 @@ Type TBettyPresent
 		'boat/yacht
 		presents[9] = new TBettyPresent.Init("BETTY_PRESENT_10",1000000,  500)
 	End Function
-	
+
 
 	Function GetPresent:TBettyPresent(index:int)
 		if not presents[0] then Initialize()
+		if index < 0 or index >= presents.length then return Null
+
 		return presents[index]
 	End Function
 
 
-	Method Init:TBettyPresent(name:string, price:int, bettyValue:int)
-		self.name = name
+	Method Init:TBettyPresent(localeKey:string, price:int, bettyValue:int)
+		self.localeKey = localeKey
 		self.price = price
 		self.bettyValue = bettyValue
 		return self
+	End Method
+
+
+	Method GetName:string()
+		return GetLocale(localeKey)
 	End Method
 End Type
 

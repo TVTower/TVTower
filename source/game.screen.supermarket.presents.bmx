@@ -1,11 +1,16 @@
 SuperStrict
 Import "game.screen.base.bmx"
 Import "game.betty.bmx"
+Import "game.player.base.bmx"
 Import "Dig/base.gfx.gui.button.bmx"
 Import "common.misc.datasheet.bmx"
 
 
 Type TScreenHandler_SupermarketPresents extends TScreenHandler
+	Global box:TRectangle = new TRectangle.Init(55,50,690,310)
+	Global selectedPresent:int = 0
+	Global lastSelectedPresent:int = 0
+
 	Global buyButton:TGUIButton
 	Global presentButtons:TGUIButton[10]
 	Global _eventListeners:TLink[]
@@ -26,7 +31,9 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 
 		'=== create gui elements if not done yet
 		if not buyButton
-			buyButton = new TGUIButton.Create(new TVec2D.Init(20, 10), new TVec2D.Init(100, -1), GetLocale("BUY"), "supermarket_presents")
+			buyButton = new TGUIButton.Create(new TVec2D.Init(box.GetX() + 0.5*box.GetW() - 200, box.GetY2() - 40), new TVec2D.Init(400, 25), "", "supermarket_presents")
+			buyButton.spriteName = "gfx_gui_button.datasheet"
+			buybutton.SetValue( GetLocale("SELECT_PRESENT_TO_BUY") )
 		endif
 
 		if not presentButtons[0]
@@ -55,9 +62,9 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 		
 		'=== register event listeners
 		'listen to clicks on the four buttons
-'		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickButtons, "TGUIArrowButton") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickButtons, "TGUIButton") ]
 		'reset button text when entering a screen
-'		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onEnter", onEnterScreen, screen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onEnter", onEnterScreen, screen) ]
 
 		'to update/draw the screen
 		_eventListeners :+ _RegisterScreenHandler( onUpdate, onDraw, screen )
@@ -76,15 +83,34 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 
 	'reset button text when entering the screen
 	Function onEnterScreen:int( triggerEvent:TEventBase )
-		'...
+		'enforce button update
+		selectedPresent = 0
+		lastSelectedPresent = -1
 	End function
 
 	
 	Function onClickButtons:int(triggerEvent:TEventBase)
 		local button:TGUIButton = TGUIButton(triggerEvent.GetSender())
-		if not button or not buyButton then return False
+		if not button then return False
 
-		'buy
+		if button = buyButton
+			'buy te present
+			if selectedPresent > 0
+				local present:TBettyPresent = TBettyPresent.GetPresent(selectedPresent-1)
+				if GetPlayerBase().GetFinance().PayMisc(present.price)
+					GetBetty().GivePresent(GetPlayerBase().playerID, present)
+				endif
+			endif
+			selectedPresent = 0
+		endif
+
+		For local i:int = 0 until presentButtons.length
+			if presentButtons[i] <> button then continue
+
+			selectedPresent = i+1
+			exit
+		Next
+			 
 	End Function
 
 
@@ -101,7 +127,6 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 	Method Render()
 		local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
 
-		local box:TRectangle = new TRectangle.Init(55,50,690,300)
 		local contentX:int, contentY:int, contentW:int, contentH:int
 		contentX = skin.GetContentX(box.GetX())
 		contentY = skin.GetContentY(box.GetY())
@@ -110,9 +135,9 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 
 		skin.RenderContent(contentX, contentY, contentW, 20, "1_top")
 		contentY :+ 20
-		skin.RenderContent(contentX, contentY, contentW, contentH - 20 - 20 , "2")
-		contentY :+ contentH - 20 - 20
-		skin.RenderContent(contentX, contentY, contentW, 20 , "1_bottom")
+		skin.RenderContent(contentX, contentY, contentW, contentH - 20 - 30 , "2")
+		contentY :+ contentH - 20 - 30
+		skin.RenderContent(contentX, contentY, contentW, 30 , "1_bottom")
 
 		GuiManager.Draw("supermarket_presents")
 		
@@ -121,6 +146,31 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 
 	
 	Method Update()
+		local present:TBettyPresent = TBettyPresent.GetPresent(selectedPresent -1)
+
+		if lastSelectedPresent <> selectedPresent
+			if not present
+				buyButton.SetValue( GetLocale("NO_PRESENT_SELECTED") )
+				buyButton.disable()
+			else
+				local presentTitle:string = present.GetName()
+				local presentPrice:string = TFunctions.DottedValue(present.price) + GetLocale("CURRENCY")
+				if not GetPlayerBase().GetFinance().CanAfford(present.price)
+					presentPrice = "|color=255,0,0|"+presentPrice+"|/color|"
+				endif
+				buyButton.SetValue(GetLocale("BUY_PRESENTTITLE_FOR_PRICE").Replace("%PRESENTTITLE%", "|color=50,90,135|"+presentTitle+"|/color|").Replace("%PRICE%", presentPrice) )
+				buyButton.Enable()
+			endif
+				
+			lastSelectedPresent = selectedPresent
+		endif
+		if present
+			if not GetPlayerBase().GetFinance().CanAfford(present.price)
+				if buyButton.IsEnabled() then buyButton.Disable(); lastSelectedPresent = -1
+			else
+				if not buyButton.IsEnabled() then buyButton.Enable(); lastSelectedPresent = -1
+			endif
+		endif
 		GuiManager.Update("supermarket_presents")
 	End Method
 End Type

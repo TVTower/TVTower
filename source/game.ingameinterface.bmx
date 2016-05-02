@@ -6,6 +6,8 @@ Import "Dig/base.util.graphicsmanager.bmx"
 
 Import "game.gui.chat.bmx"
 
+Import "game.betty.bmx"
+
 Import "game.player.base.bmx"
 Import "game.player.programmeplan.bmx"
 Import "game.game.base.bmx"
@@ -342,7 +344,20 @@ Type TInGameInterface
 		EndIf
 		If THelper.MouseIn(355,508,130,13)
 			BettyToolTip.SetTitle(getLocale("BETTY_FEELINGS"))
-			BettyToolTip.SetContent(getLocale("THERE_IS_NO_LOVE_IN_THE_AIR_YET"))
+			local bettyLove:Float = GetBetty().GetInLovePercentage( GetPlayerBase().playerID )
+			if bettyLove = 0
+				BettyToolTip.SetContent(getLocale("THERE_IS_NO_LOVE_IN_THE_AIR_YET"))
+			elseif bettyLove < 0.1
+				BettyToolTip.SetContent(getLocale("BETTY_KNOWS_WHO_YOU_ARE"))
+			elseif bettyLove < 0.2
+				BettyToolTip.SetContent(getLocale("BETTY_SEEMS_TO_LIKE_YOU"))
+			elseif bettyLove < 0.4
+				BettyToolTip.SetContent(getLocale("BETTY_SEEMS_TO_LIKE_YOU_A_BIT_MORE"))
+			elseif bettyLove < 0.75
+				BettyToolTip.SetContent(getLocale("BETTY_LOVES_YOU"))
+			else
+				BettyToolTip.SetContent(getLocale("BETTY_REALLY_LOVES_YOU"))
+			endif
 			BettyToolTip.enabled = 1
 			BettyToolTip.Hover()
 		EndIf
@@ -564,11 +579,19 @@ Type TInGameInterface
 		 	GetBitmapFont("Default", 12, BOLDFONT).drawBlock((GetWorldTime().GetDaysRun()+1) + ". "+GetLocale("DAY"), 366, 554, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(180,180,180), 2, 1, 0.5)
 
 			SetAlpha oldAlpha
+
+			local bettyLove:Float = GetBetty().GetInLovePercentage( playerID )
+			if bettyLove * 127 >= 1
+				SetColor 180,40,0
+				DrawRect(358, 510, 127 * bettyLove, 8)
+				Setcolor 255,255,255
+			endif
+			'DrawText(GetBetty().GetInLovePercentage( playerID ),358, 525)
+			'DrawText(GetBetty().GetLoveSummary(),358, 535)
 		EndIf 'bottomimg is dirty
 
 		SetBlend ALPHABLEND
 
-'DrawRect(366, 542, 112, 15)
 		GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetWorldTime().getFormattedTime() + " "+GetLocale("OCLOCK"), 366, 539, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(220,220,220), 2, 1, 0.5)
 
 
