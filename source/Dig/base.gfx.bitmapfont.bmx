@@ -471,7 +471,7 @@ Type TBitmapFont
 		local limitHeight:int = (heightLeft > 0)
 
 		'for each line/paragraph
-		For Local i:Int= 0 To paragraphs.length-1
+		For Local i:Int= 0 Until paragraphs.length
 			'skip paragraphs if no space was left
 			if limitHeight and heightLeft < lineHeight then continue
 
@@ -485,14 +485,13 @@ Type TBitmapFont
 				'whether to skip the next char of a new line
 				local skipNextChar:int	= FALSE
 
-				'copy the line to do processing and shortening
-				linePartial = line
 
 				'as long as the part of the line does not fit into
 				'the given width, we have to search for linebreakers
 				while (w>0 and self.getWidth(linePartial) > w) and linePartial.length >0
 					'whether we found a break position by a rule
 					local FoundBreakPosition:int = FALSE
+					local spaces:int = 0
 
 					'search for "nice" linebreak:
 					'- if not on last line
@@ -501,28 +500,38 @@ Type TBitmapFont
 						'search for the "most right" position of a
 						'linebreak
 						'no need to check for the last char (no break then ;-)
-						For local charPos:int = 0 To linePartial.length-1 -1
+						For local charPos:int = 0 until linePartial.length -1
 							'special line break rules (spaces, -, ...)
 							If linePartial[charPos] = Asc(" ")
+								'use first space in a row ("  ")
+								if spaces = 0
+									breakPosition = charPos+1
+									FoundBreakPosition=TRUE
+									'if it is a " "-space, we have to skip it
+									skipNextChar = TRUE 'aka delete the " "
+								endif
+								spaces :+ 1
+									
+							elseif linePartial[charPos] = Asc("-")
 								breakPosition = charPos+1
 								FoundBreakPosition=TRUE
-							endif
-							If linePartial[charPos] = Asc("-")
-								breakPosition = charPos+1
-								FoundBreakPosition=TRUE
+
+								skipNextChar = FALSE
+
+								spaces = 0
+							else
+								spaces = 0
 							endif
 						Next
+						'remove spaces at end
+						if spaces > 0
+							linePartial  = linePartial[.. linePartial.length - spaces]
+						endif
 					endif
 
 					'if no line break rule hit, use a "cut" in the
 					'middle of a word
 					if not FoundBreakPosition then breakPosition = Max(0, linePartial.length-1 -1)
-
-					'if it is a " "-space, we have to skip it
-					if linePartial[breakPosition] = ASC(" ")
-						skipNextChar = TRUE 'aka delete the " "
-					endif
-
 
 					'cut off the part AFTER the breakposition
 					linePartial = linePartial[..breakPosition]
@@ -536,7 +545,7 @@ Type TBitmapFont
 				'strip the processed part from the original line
 				line = line[linePartial.length..]
 
-				if skipNextChar then line = line[Min(1, line.length)..]
+			'	if skipNextChar then line = line[Min(1, line.length)..]
 			'until no text left, or no space left for another line
 			until line.length = 0  or (limitHeight and heightLeft < lineHeight)
 
