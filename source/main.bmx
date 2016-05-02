@@ -199,9 +199,9 @@ Type TApp
 			obj.OnLoadMusicListener = EventManager.registerListenerFunction( "RegistryLoader.onLoadResource",	TApp.onLoadMusicResource )
 	
 			obj.LoadSettings()
-			obj.ApplySettings()
-			'override settings with app arguments (params when executing)
+			'override default settings with app arguments (params when executing)
 			obj.ApplyAppArguments()
+			obj.ApplySettings()
 
 			GetDeltatimer().Init(updatesPerSecond, obj.config.GetInt("fps", framesPerSecond))
 			GetDeltaTimer()._funcUpdate = update
