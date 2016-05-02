@@ -2321,7 +2321,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="f05fce0f-39b4-471c-85dc-21c5845ea970" />
+				<effect trigger="happen" type="triggernews" news="94c8810c-b24b-44f2-a88a-3fb3d49fac22" />
 			</effects>
 			<data genre="0" price="1.15" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
