@@ -1130,8 +1130,15 @@ Type TDatabaseLoader
 		endif
 		scriptTemplate.scriptLicenceType = scriptLicenceType
 
+
 		'=== SCRIPT - MISC ===
-		scriptTemplate.flags = TXmlHelper.FindValueInt(node,"flags", 0)
+		nodeData = xml.FindElementNode(node, "data")
+		data = new TData
+		xml.LoadValuesToData(nodeData, data, [..
+			"flags", "flags_optional" ..
+		])
+		scriptTemplate.flags = data.GetInt("flags", 0)
+		scriptTemplate.flagsOptional = data.GetInt("flags_optional", 0)
 
 
 		rem

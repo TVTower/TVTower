@@ -208,6 +208,9 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		script.price = template.GetPrice()
 		script.cast = template.GetJobs()
 
+		script.flags = template.flags
+		script.flagsOptional = template.flagsOptional
+
 		script.scriptLicenceType = template.scriptLicenceType
 		script.scriptProductType = template.scriptProductType
 
@@ -861,7 +864,7 @@ endrem
 
 		'=== X-Rated Overlay ===
 		If IsXRated()
-			GetSpriteFromRegistry("ggfx_datasheet_overlay_xrated").Draw(contentX + sheetWidth, y, -1, ALIGN_RIGHT_TOP)
+			GetSpriteFromRegistry("gfx_datasheet_overlay_xrated").Draw(contentX + sheetWidth, y, -1, ALIGN_RIGHT_TOP)
 		Endif				
 	End Method
 End Type

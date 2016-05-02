@@ -15,6 +15,8 @@ Type TScriptBase Extends TNamedGameObject
 	Field subGenres:Int[]
 	'flags contains bitwise encoded things like xRated, paid, trash ...
 	Field flags:Int = 0
+	'flags which _might_ be enabled during production
+	Field flagsOptional:int = 0
 	'is the live time fixed?
 	Field liveTime:int =  -1
 	'is the script title/description editable?
