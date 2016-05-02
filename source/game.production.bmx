@@ -113,17 +113,21 @@ Type TProduction Extends TOwnedGameObject
 	'returns a modificator to a script's intrinsic values (speed, review..)
 	Method GetProductionValueMod:Float()
 		local value:Float
-		value = 0.2 * scriptGenreFit + 0.7 * castFit
+		'=== BASE ===
+		value = 0.4 * scriptGenreFit + 0.6 * castFit
 
+
+		'=== MODIFIERS ===
 		'sympathy of the cast influences result a bit
-		value :+ 0.1 * (castSympathyMod - 1.0)
-
+		value :* (1.0 + 0.1 * (castSympathyMod - 1.0))
+		
 		'it is important to set the production priority according
 		'to the genre
 		value :* 1.00 * effectiveFocusPointsMod
 
 		'production company quality decides about result too
-		value :* (0.5 + 0.5 * productionCompanyQuality)
+		value :* (1.0 + 0.25 * productionCompanyQuality)
+
 
 		return value
 	End Method
@@ -223,9 +227,9 @@ Type TProduction Extends TOwnedGameObject
 
 
 	Method Abort:TProduction()
-		print "abort production"
-
 		status = 3
+
+		TLogger.Log("TProduction.Abort()", "Aborted shooting.", LOG_DEBUG)
 
 		'emit an event so eg. network can recognize the change
 		if fireEvents then EventManager.registerEvent(TEventSimple.Create("production.abort", null, self))
@@ -309,6 +313,20 @@ Type TProduction Extends TOwnedGameObject
 		programmeData.releaseTime = GetWorldTime().GetTimeGone()
 		programmeData.available = true
 		programmeData.producedByPlayerID = owner
+
+		programmeData.SetFlag(TVTProgrammeDataFlag.CUSTOMPRODUCTION, True)
+		'enable mandatory flags
+		programmeData.SetFlag(productionConcept.script.flags, True)
+		'randomly enable optional flags
+		if productionConcept.script.flagsOptional > 0
+			For local i:int = 1 until TVTProgrammeDataFlag.count
+				local optionalFlag:int = TVTProgrammeDataFlag.GetAtIndex(i)
+				if productionConcept.script.flagsOptional & optionalFlag > 0
+					programmeData.SetFlag(optionalFlag, True)
+					print "ENABLE "+optionalFlag
+				endif
+			Next
+		endif
 
 		if productionConcept.script.IsLive()
 			if programmeData.liveTime <= 0 then programmeData.liveTime = productionConcept.liveTime

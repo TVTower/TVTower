@@ -191,7 +191,8 @@ Type TProgrammePersonBase extends TGameObject
 	field nickName:String = ""
 	field job:int = 0
 	'indicator for potential "upgrades" to become a celebrity
-	field jobsDone:int = 0
+	field jobsDone:int
+	field jobsDoneTotal:int[]
 	field canLevelUp:int = True
 	field countryCode:string = ""
 	field gender:int = 0
@@ -199,6 +200,12 @@ Type TProgrammePersonBase extends TGameObject
 	field fictional:int = False
 	'is the person currently filming something?
 	field producingGUIDs:string[]
+
+
+	Method New()
+		'increase array so 0 (all) + all jobs fit into it
+		jobsDoneTotal = jobsDoneTotal[.. TVTProgrammePersonJob.count + 1]
+	End Method
 
 
 	'override to add another generic naming
@@ -209,11 +216,16 @@ Type TProgrammePersonBase extends TGameObject
 
 
 	Method SerializeTProgrammePersonBaseToString:string()
+		local jobsDoneString:string = string(jobsDone)
+		For local i:int = eachin jobsDoneTotal
+			if jobsDoneString <> "" then jobsDoneString :+","
+			jobsDoneString :+ string(i)
+		Next
 		return StringHelper.EscapeString(lastName, ":") + "::" + ..
 		       StringHelper.EscapeString(firstName, ":") + "::" + ..
 		       StringHelper.EscapeString(nickName, ":") + "::" + ..
 		       job + "::" + ..
-		       jobsDone + "::" + ..
+		       jobsDoneString + "::" + ..
 		       canLevelUp + "::" + ..
 		       fictional + "::" + ..
 		       StringHelper.EscapeString(",".Join(producingGUIDs), ":") + "::" + ..
@@ -228,7 +240,13 @@ Type TProgrammePersonBase extends TGameObject
 		if vars.length > 1 then firstName = StringHelper.UnEscapeString(vars[1])
 		if vars.length > 2 then nickName = StringHelper.UnEscapeString(vars[2])
 		if vars.length > 3 then job = int(vars[3])
-		if vars.length > 4 then jobsDone = int(vars[4])
+		if vars.length > 4
+			local jD:string[] = vars[4].split(",")
+			jobsDone = int(jD[0])
+			For local i:int = 1 until jD.length
+				jobsDoneTotal[i-1] = int(jD[i-1])
+			Next
+		endif
 		if vars.length > 5 then canLevelUp = int(vars[5])
 		if vars.length > 6 then fictional = int(vars[6])
 		if vars.length > 7 then producingGUIDs = StringHelper.UnEscapeString(vars[7]).split(",")
@@ -273,6 +291,16 @@ Type TProgrammePersonBase extends TGameObject
 
 	Method HasJob:int(job:int)
 		return (self.job & job) > 0
+	End Method
+
+
+	Method GetJobsDone:int(job:int)
+		local jobIndex:int = TVTProgrammePersonJob.GetIndex(job)
+		if jobIndex = 0 and job <> 0
+			TLogger.Log("GetJobsDone()", "unsupported job-param.", LOG_ERROR)
+		endif
+		
+		return self.jobsDoneTotal[jobIndex]
 	End Method
 
 
@@ -331,15 +359,15 @@ Type TProgrammePersonBase extends TGameObject
 	Method GetBaseFee:Int(jobID:int, blocks:int, channel:int=-1)
 		Select jobID
 			case TVTProgrammePersonJob.ACTOR
-				return 5000
-			case TVTProgrammePersonJob.SUPPORTINGACTOR
-				return 2500
-			case TVTProgrammePersonJob.HOST
-			    return 1500
-			case TVTProgrammePersonJob.DIRECTOR
-				return 7500
-			case TVTProgrammePersonJob.SCRIPTWRITER 
 				return 4000
+			case TVTProgrammePersonJob.SUPPORTINGACTOR
+				return 2000
+			case TVTProgrammePersonJob.HOST
+			    return 1000
+			case TVTProgrammePersonJob.DIRECTOR
+				return 5000
+			case TVTProgrammePersonJob.SCRIPTWRITER 
+				return 2000
 			case TVTProgrammePersonJob.MUSICIAN 
 				return 2500
 			case TVTProgrammePersonJob.REPORTER 
@@ -371,8 +399,14 @@ Type TProgrammePersonBase extends TGameObject
 	End Method
 
 
-	Method FinishProduction:int(programmeDataGUID:string)
+	Method FinishProduction:int(programmeDataGUID:string, job:int)
 		jobsDone :+ 1
+		jobsDoneTotal[0] :+ 1
+		For local jobIndex:int = 1 to TVTProgrammePersonJob.count
+			if (job & TVTProgrammePersonJob.GetAtIndex(jobIndex)) > 0
+				jobsDoneTotal[jobIndex] :+ 1
+			endif
+		Next
 
 		local newProducingGUIDs:string[]
 		For local guid:string = EachIn producingGUIDs

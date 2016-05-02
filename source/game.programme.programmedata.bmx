@@ -352,9 +352,13 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Field contraPressureGroups:int = 0
 	'time of a live event
 	Field liveTime:Long = -1
+	'outcome in cinema
 	Field outcome:Float	= 0
+	'outcome in first TV broadcast
+	Field outcomeTV:Float = -1.0
 	Field review:Float = 0
 	Field speed:Float = 0
+
 	Field genre:Int	= 0
 	Field subGenres:Int[]
 	Field blocks:Int = 1
@@ -845,6 +849,18 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		return ""
 	End Method
 
+
+	'first premiered on TV?
+	Method IsTVDistribution:int() {_exposeToLua}
+		return distributionChannel & TVTProgrammeDistributionChannel.TV > 0
+	End Method
+
+
+	'first premiered in cinema?
+	Method IsCinemaDistribution:int() {_exposeToLua}
+		return distributionChannel & TVTProgrammeDistributionChannel.CINEMA > 0
+	End Method
+
 	
 	Method IsLive:int()
 		return HasFlag(TVTProgrammeDataFlag.LIVE) > 0
@@ -916,6 +932,12 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 
 	'returns a value from 0.0 - 1.0 (0-100%)
+	Method GetOutcomeTV:Float()
+		return self.outcomeTV
+	End Method
+
+
+	'returns a value from 0.0 - 1.0 (0-100%)
 	Method GetSpeed:Float()
 		return self.speed
 	End Method
@@ -956,7 +978,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		local priceMod:float = GetQualityRaw()
 
 		'movies run in cinema (outcome >0)
-		If isType(TVTProgrammeProductType.MOVIE) and GetOutcome() > 0
+		If isType(TVTProgrammeProductType.MOVIE) ' and GetOutcome() > 0
 			priceMod = THelper.LogisticalInfluence_Euler(priceMod, 0.5)
 			value = 35000 + 870000 * priceMod
 		 'shows, productions, series...
@@ -1079,6 +1101,9 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		quality :+ GetSpeed() * genreDef.SpeedMod
 		If GetOutcome() > 0
 			quality :+ GetOutcome() * genreDef.OutcomeMod
+		'tv uses same mod
+		ElseIf GetOutcomeTV() >= 0
+			quality :+ GetOutcomeTV() * genreDef.OutcomeMod
 		'if no outcome was defined, increase weight of the other parts
 		'increase quality according to their weight to the outcome mod
 		ElseIf genreDef.OutcomeMod > 0 And genreDef.OutcomeMod < 1.0
@@ -1351,7 +1376,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 		For local job:TProgrammePersonJob = eachIn GetCast()
 			local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID( job.personGUID )
-			if person then person.FinishProduction(GetGUID())
+			if person then person.FinishProduction(GetGUID(), job.job)
 		Next
 		return True
 	End Method
@@ -1390,7 +1415,6 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	End Method
 
 
-
 	'override
 	'called as soon as the programme is broadcasted
 	Method doBeginBroadcast(playerID:int = -1, broadcastType:int = 0)
@@ -1407,7 +1431,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 				if IsLive()
 					For local job:TProgrammePersonJob = eachIn GetCast()
 						local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID( job.personGUID )
-						if person then person.FinishProduction(GetGUID())
+						if person then person.FinishProduction(GetGUID(), job.job)
 					Next
 				endif
 

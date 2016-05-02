@@ -90,6 +90,19 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		'inform data that it got broadcasted by a player
 		data.doFinishBroadcast(owner, usedAsType)
 
+		'calculate outcome for TV
+		if data.IsTVDistribution() and data.GetOutcomeTV() < 0
+			local audienceResult:TAudienceResult = TAudienceResult(audienceData)
+			Local quote:Float = audienceResult.GetWholeMarketAudienceQuotePercentage()
+			'base it partially on te production (script) outcome but
+			'also on the quote achieved on its first broadcast
+			'(this makes it dependend on the managers knowledge on when
+			' to best send a specific programme genre)
+			data.outcomeTV = 0.4 * quote + 0.6 * data.GetOutcome()
+		Endif
+
+		
+
 		if not isOwnedByPlayer()
 			TLogger.Log("FinishBroadcastingAsProgramme", "===========", LOG_ERROR)
 			TLogger.Log("FinishBroadcastingAsProgramme", "Finishing programme ~q"+GetTitle()+"~q which is not owned by a player! Report to developers asap.", LOG_ERROR)

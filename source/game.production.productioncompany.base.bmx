@@ -137,7 +137,7 @@ Type TProductionCompanyBase extends TGameObject
 		'up to "* 100" -> 100% xp means 2000*100 = 200000
 		xpMod :+ 100 * GetExperiencePercentage()
 
-		Return sympathyMod * priceModifier * (15000 + Floor(Int(10000 * xpMod)/100)*100)
+		Return sympathyMod * priceModifier * (10000 + Floor(Int(8000 * xpMod)/100)*100)
 	End Method
 
 

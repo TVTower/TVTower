@@ -30,6 +30,10 @@ GetWorldTime().SetTimeGone( GetWorldTime().MakeTime(1985, 3, 20, 0, 0) )
 'set speed 10x realtime
 GetWorldTime().SetTimeFactor(120)
 
+'for local i:int = 0 to 10
+'	print THelper.LogisticalInfluence_Euler(i / 10.0, 3.0)
+'next
+'end
 
 Local gm:TGraphicsManager = TGraphicsManager.GetInstance()
 GetDeltatimer().Init(30, -1)

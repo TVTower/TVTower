@@ -160,14 +160,21 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 		SetColor 255,255,255
 		local oldCol:TColor = new TColor.get()
 
+		local markFaded:int = False
 		'make faded as soon as not "dragable" for us
 		If licence.owner <> GetPlayerBaseCollection().playerID And (licence.owner<=0 And Not IsAffordable())
-			SetAlpha oldCol.a * 0.75
+			markFaded = True
 		endif
+		if licence.owner = GetPlayerBaseCollection().playerID and not licence.IsTradeable()
+			markFaded = True
+		endif
+
+
+		if markFaded then SetAlpha oldCol.a * 0.75
 
 		Super.Draw()
 
-		If licence.owner <> GetPlayerBaseCollection().playerID And (licence.owner<=0 And Not IsAffordable())
+		if markFaded
 			SetAlpha oldCol.a * 0.75 * 0.90
 		else
 			SetAlpha oldCol.a * 0.9

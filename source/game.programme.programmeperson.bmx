@@ -80,7 +80,7 @@ Function onProgrammePersonBaseFinishesProduction:int(triggerEvent:TEventBase)
 
 	'jobsDone is increased _after_ finishing the production,
 	'so "jobsDone <= 2" will be true until the 3rd production is finishing
-	if p.jobsDone <= 2 then return False
+	if p.GetJobsDone(0) <= 2 then return False
 
 
 	'do not work with the given person, but fetch it freshly from the
@@ -334,14 +334,14 @@ Type TProgrammePerson extends TProgrammePersonBase
 				xpMod :+ 1.0 * GetExperiencePercentage(jobID)
 
 				if jobID = TVTProgrammePersonJob.ACTOR
-					baseFee = 15000
+					baseFee = 7500
 					dynamicFee = 35000 * attributeMod
 				elseif jobID = TVTProgrammePersonJob.SUPPORTINGACTOR
-					baseFee = 7500
-					dynamicFee = 20000 * attributeMod
+					baseFee = 5000
+					dynamicFee = 12500 * attributeMod
 				elseif jobID = TVTProgrammePersonJob.HOST
 					baseFee = 2500
-					dynamicFee = 25000 * attributeMod
+					dynamicFee = 17500 * attributeMod
 				endif
 
 			case TVTProgrammePersonJob.DIRECTOR,..
@@ -359,11 +359,11 @@ Type TProgrammePerson extends TProgrammePersonBase
 				xpMod :+ 1.0 * GetExperiencePercentage(jobID)
 
 				if jobID = TVTProgrammePersonJob.DIRECTOR
-					baseFee = 20000
-					dynamicFee = 30000 * attributeMod
+					baseFee = 12500
+					dynamicFee = 20000 * attributeMod
 				elseif jobID = TVTProgrammePersonJob.SCRIPTWRITER
 					baseFee = 5000
-					dynamicFee = 30000 * attributeMod
+					dynamicFee = 5000 * attributeMod
 				endif
 
 			case TVTProgrammePersonJob.MUSICIAN
@@ -378,8 +378,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 				'xp: up to "100% of XP"
 				xpMod :+ 1.0 * GetExperiencePercentage(jobID)
 
-				baseFee = 10000
-				dynamicFee = 40000 * attributeMod
+				baseFee = 7500
+				dynamicFee = 22500 * attributeMod
 
 			case TVTProgrammePersonJob.REPORTER
 				'attributes: 0 - 6.0
@@ -393,8 +393,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 				'xp: up to "100% of XP"
 				xpMod :+ 1.0 * GetExperiencePercentage(jobID)
 
-				baseFee = 5000
-				dynamicFee = 10000 * attributeMod
+				baseFee = 3000
+				dynamicFee = 5000 * attributeMod
 								
 			case TVTProgrammePersonJob.GUEST
 				'attributes: 0 - 1.9
@@ -408,8 +408,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 				'xp: up to "50% of XP"
 				xpMod :+ 0.5 * GetExperiencePercentage(jobID)
 
-				baseFee = 5000
-				dynamicFee = 15000 * attributeMod
+				baseFee = 1500
+				dynamicFee = 4500 * attributeMod
 			default
 				'print "FEE for jobID="+jobID+" not defined."
 				'dynamic fee: 0 - 380
@@ -424,8 +424,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 				'xp: up to "25% of XP"
 				xpMod :+ 0.25 * GetExperiencePercentage(jobID)
 
-				baseFee = 7000
-				dynamicFee = 10000 * attributeMod
+				baseFee = 2000
+				dynamicFee = 6000 * attributeMod
 		End Select
 
 		local fee:float = baseFee
@@ -442,8 +442,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 	
 	'override to extend with xp gain + send out events
-	Method FinishProduction:int(programmeDataGUID:string)
-		Super.FinishProduction(programmeDataGUID)
+	Method FinishProduction:int(programmeDataGUID:string, job:int)
+		Super.FinishProduction(programmeDataGUID, job:int)
 		
 		local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(programmeDataGUID)
 		'already added
@@ -674,11 +674,11 @@ Type TProgrammePerson extends TProgrammePersonBase
 					skinTone = 1
 					if randomSkin < 5 then skinTone = 3 'caucasian
 				'african
-				case "br", "ar", "gh", "sa", "mz", "mex"
+				case "br", "ar", "gh", "sa", "mz", "mex", "ind", "pak"
 					skinTone = 2
 					if randomSkin < 5 then skinTone = 3 'caucasian
 				'caucasian
-				case "ca", "swe", "no", "fi", "ru", "dk", "d", "de", "fr", "uk", "cz", "pl", "nl", "sui", "aut", "aus"
+				case "ca", "swe", "no", "fi", "ru", "dk", "d", "de", "fr", "it", "uk", "cz", "pl", "nl", "sui", "aut", "aus"
 					skinTone = 3
 					if randomSkin < 5
 						skinTone = 2

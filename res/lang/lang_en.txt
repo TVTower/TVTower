@@ -281,6 +281,7 @@ JOB_POSITION_UNASSIGNED      = Unassigned
 MOVIE_SPEED				= Speed
 MOVIE_CRITIC			= Critics
 MOVIE_BOXOFFICE			= Box-office
+MOVIE_TVAUDIENCE        = TV-audience
 MOVIE_TOPICALITY		= Topicality
 MOVIE_BLOCKS			= blocks
 MOVIE_XRATED			= X-rated

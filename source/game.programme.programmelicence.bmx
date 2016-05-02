@@ -528,7 +528,27 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 
 
+	Method IsTradeable:int()
+		if GetSubLicenceCount() = 0 and GetData()
+			if GetData().IsTVDistribution() and GetData().GetOutcomeTV() < 0
+				return False
+			endif
+
+		else
+			'if licence is a collection: ask subs
+			For local licence:TProgrammeLicence = eachin subLicences
+				if not licence.IsTradeable() then return FALSE
+			Next
+		endif
+
+		return True
+	End Method
+
+
 	Method Sell:int()
+		'forbid selling if not tradeable
+		if not IsTradeable() then return False
+		
 		local finance:TPlayerFinance = GetPlayerFinance(owner)
 		if not finance then return False
 
@@ -1192,8 +1212,19 @@ endrem
 		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_CRITIC"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
 		contentY :+ barH + 2
 		'boxoffice/outcome
-		skin.RenderBar(contentX + 5, contentY, 200, 12, data.GetOutcome())
-		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_BOXOFFICE"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+		if data.IsTVDistribution()
+			skin.RenderBar(contentX + 5, contentY, 200, 12, data.GetOutcomeTV())
+			'use a different text color if tv-outcome is not calculated
+			'yet
+			if data.GetOutcomeTV() < 0
+				skin.fontSemiBold.drawBlock(GetLocale("MOVIE_TVAUDIENCE"), contentX + 5 + 200 + 5, contentY, 75, 15, null, new TColor.Create(180,50,50))
+			else
+				skin.fontSemiBold.drawBlock(GetLocale("MOVIE_TVAUDIENCE"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+			endif
+		else
+			skin.RenderBar(contentX + 5, contentY, 200, 12, data.GetOutcome())
+			skin.fontSemiBold.drawBlock(GetLocale("MOVIE_BOXOFFICE"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+		endif
 		contentY :+ barH + 2
 		'topicality/maxtopicality
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetTopicality(), GetMaxTopicality())
@@ -1236,10 +1267,14 @@ endrem
 		'record
 		skin.RenderBox(contentX + 5 + 107, contentY, 83, -1, TFunctions.convertValue(GetBroadcastStatistic(useOwner).GetBestAudienceResult(useOwner, -1).audience.GetTotalSum(),2), "maxAudience", "neutral", skin.fontBold)
 		'price
-		if canAfford
-			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(GetPrice()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+		if IsTradeable()
+			if canAfford
+				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(GetPrice()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+			else
+				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(GetPrice()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
+			endif
 		else
-			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(GetPrice()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
+			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, "- ?? -", "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 		endif
 		'=== BOX LINE 2 ===
 		contentY :+ boxH
@@ -1267,6 +1302,8 @@ endrem
 			skin.fontNormal.draw("Kritik: "+MathHelper.NumberToString(data.GetReview(), 4), contentX + 5, contentY)
 			contentY :+ 12	
 			skin.fontNormal.draw("Kinokasse: "+MathHelper.NumberToString(data.GetOutcome(), 4), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("TV-Kasse: "+MathHelper.NumberToString(data.GetOutcomeTV(), 4), contentX + 5, contentY)
 			contentY :+ 12	
 			skin.fontNormal.draw("Preismodifikator: "+MathHelper.NumberToString(data.GetModifier("price"), 4), contentX + 5, contentY)
 			contentY :+ 12	

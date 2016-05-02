@@ -427,14 +427,16 @@ Type TProductionConcept Extends TOwnedGameObject
 			'check if person is experienced in this genre because of
 			'already done productions
 
-			'main genre - 100% reached after 4 productions
-			local mainGenreFit:Float = Min(1.0, 0.25 * person.GetProducedGenreCount( script.GetMainGenre() ))
+			'main genre - 96% reached after 10 productions
+			'euler strength: 3.0, so for done jobs: 26%, 45%, 59%, ...
+			'(it is easier to adopt for a genre than for a job itself)
+			local mainGenreFit:Float = THelper.LogisticalInfluence_Euler(Min(1.0, 0.1 * person.GetProducedGenreCount( script.GetMainGenre() )), 3)
 			'sub genre
 			if script.subGenres and script.subGenres.length > 0
 				local subGenreFit:Float = 0.0
 				For local genre:int = EachIn script.subGenres
-					'100% reached after 10 productions
-					subGenreFit :+ Min(1.0, 0.1 * person.GetProducedGenreCount( genre ) )
+					'96% reached after 8 productions
+					subGenreFit :+ THelper.LogisticalInfluence_Euler(Min(1.0, 0.125 * person.GetProducedGenreCount( genre )), 3)
 				Next
 				subGenreFit :/ script.subGenres.length
 
@@ -468,7 +470,9 @@ Type TProductionConcept Extends TOwnedGameObject
 
 
 			'=== JOB FIT ===
-			local jobFit:Float = person.HasJob( script.cast[castIndex].job )
+			local jobsDone:int = 0.10 * person.GetJobsDone(0) + 0.9 * person.GetJobsDone( script.cast[castIndex].job )
+			'euler strength: 2.5, so for done jobs: 22%, 39%, 52%, ...
+			local jobFit:Float = THelper.LogisticalInfluence_Euler(Min(1.0, 0.1 * jobsDone), 2.5)
 			'by 5% chance "switch" effect
 			if RandRange(0,100) < 5 then jobFit = 1.0 - jobFit
 
@@ -499,22 +503,26 @@ Type TProductionConcept Extends TOwnedGameObject
 
 			'=== TOTAL FIT ===
 
-			personFit = 0.4 * genreFit + 0.6 * jobFit
+			personFit = 0.3 * genreFit + 0.7 * jobFit
 			'if the person does not know anything about the done job
 			'chances are high for the person not fitting at all
-			if not jobFit and RandRange(0,100) < 90
-				personFit :* 0.2
+			if not jobFit < 0.1 and RandRange(0,100) < 90
+				personFit :* 0.20
 			endif
-			'a persons maximum fit is 0.5 (without attributes)
-			personFit :* 0.5
+			'a persons maximum fit is 0.75 (without attributes)
+			personFit :* 0.75
 			'apply attribute mod (so persons with attributes are better)
 			personFit :* attributeMod
 
 			'a persons fit depends on its XP
 			'so make 50% of the fit dependend from XP
-			local xpMod:Float = 0.5
-			if TProgrammePerson(person) then xpMod :+ 0.5 * TProgrammePerson(person).GetExperiencePercentage(script.cast[castIndex].job)
+			local xpMod:Float = 0.75
+			if TProgrammePerson(person) then xpMod :+ 0.25 * TProgrammePerson(person).GetExperiencePercentage(script.cast[castIndex].job)
 			personFit :* xpMod
+
+			'increase lower fits (increases distance from "nobody" to "novice")
+			personFit = THelper.LogisticalInfluence_Euler(personFit, 2)
+
 			
 			TLogger.Log("TProductionConcept.CalculateCastFit()", " --------------------", LOG_DEBUG)
 			TLogger.Log("TProductionConcept.CalculateCastFit()", person.GetFullName() + " [as ~q"+ TVTProgrammePersonJob.GetAsString( script.cast[castIndex].job ) + "~q]", LOG_DEBUG)
@@ -652,7 +660,7 @@ Type TProductionConcept Extends TOwnedGameObject
 
 
 	Method GetBaseProductionTime:int()
-		local base:int = 12 * 60
+		local base:int = 9 * 60
 		if productionFocus
 			'SPEED
 			'point decrease:

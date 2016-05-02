@@ -116,7 +116,7 @@
 				<job index="4" function="32" required="0" />
 			</jobs>
 
-			<genres maingenre="1" subgenres="2,3" />
+			<genres maingenre="15" subgenres="5" />
 			<blocks min="2" max="3" slope="30" />
 			<price min="8000" max="10000" slope="60" />
 			<potential min="50" max="70" slope="45" />

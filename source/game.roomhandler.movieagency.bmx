@@ -404,9 +404,14 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Method BuyProgrammeLicenceFromPlayer:int(licence:TProgrammeLicence)
 		'do not buy if unowned
 		if not licence.isOwnedByPlayer() then return False
+		'do not buy if not tradeable
+		if not licence.IsTradeable() then return False
 
 		'remove from player (lists and suitcase) - and give him money
-		GetPlayerProgrammeCollection(licence.owner).RemoveProgrammeLicence(licence, TRUE)
+		if not GetPlayerProgrammeCollection(licence.owner).RemoveProgrammeLicence(licence, TRUE)
+			return False
+		endif
+		
 		'add to agency's lists - if not existing yet
 		if not HasProgrammeLicence(licence) then AddProgrammeLicence(licence)
 
@@ -597,6 +602,17 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	'does not care ... just update animations is important
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
 		Super.onUpdateRoom(triggerEvent)
+rem
+		'disable non-tradeable licences (or vice versa)
+		For local guiLicence:TGUIProgrammeLicence = eachin GuiListSuitcase._slots
+			if not guiLicence.licence then continue
+			if not guiLicence.licence.IsTradeable()
+				if guiLicence.IsEnabled() then guiLicence.Disable()
+			else
+				if not guiLicence.IsEnabled() then guiLicence.Enable()
+			endif
+		Next
+endrem		
 
 		if AuctionEntity Then AuctionEntity.Update()
 		if VendorEntity Then VendorEntity.Update()
@@ -640,6 +656,15 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'if not - just veto the event so it does not get dragged
 		if owner <= 0
 			if not GetPlayerBase().getFinance().canAfford(item.licence.getPrice())
+				triggerEvent.setVeto()
+				return FALSE
+			endif
+		endif
+
+		'check whether a player could sell the licence
+		'if not - just veto the event so it does not get dragged
+		if owner = GetPlayerBaseCollection().playerID
+			if not item.licence.IsTradeable()
 				triggerEvent.setVeto()
 				return FALSE
 			endif
