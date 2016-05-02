@@ -19,6 +19,10 @@ Type TProductionManager
 	End Function
 
 
+	Method Initialize()
+	End Method
+
+
 	Method New()
 		if not createdEnvironment
 			'create some companies
