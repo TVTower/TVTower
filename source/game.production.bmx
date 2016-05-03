@@ -6,6 +6,7 @@ Import "game.programme.programmelicence.bmx"
 Import "game.player.programmecollection.bmx"
 Import "game.stationmap.bmx"
 Import "game.room.base.bmx"
+Import "game.popularity.person.bmx"
 
 
 Type TProductionCollection Extends TGameObjectCollection
@@ -323,7 +324,7 @@ Type TProduction Extends TOwnedGameObject
 				local optionalFlag:int = TVTProgrammeDataFlag.GetAtIndex(i)
 				if productionConcept.script.flagsOptional & optionalFlag > 0
 					programmeData.SetFlag(optionalFlag, True)
-					print "ENABLE "+optionalFlag
+print "RON: ENABLE "+optionalFlag
 				endif
 			Next
 		endif
@@ -335,7 +336,16 @@ Type TProduction Extends TOwnedGameObject
 			programmeData.SetModifier("price", productionPriceMod)
 		endif
 
-		'=== 2.2 PROGRAMME CAST ===
+
+		'=== 2.2 PROGRAMME PRODUCTION PROPERTIES ===
+		programmeData.review = productionValueMod * productionConcept.script.review
+		programmeData.speed = productionValueMod * productionConcept.script.speed
+		programmeData.outcome = productionValueMod * productionConcept.script.outcome
+		'modify outcome by castFameMod ("attractors/startpower")
+		programmeData.outcome = Min(1.0, programmeData.outcome * castFameMod)
+
+
+		'=== 2.3 PROGRAMME CAST ===
 		For local castIndex:int = 0 until Min(productionConcept.cast.length, productionConcept.script.cast.length)
 			local p:TProgrammePersonBase = productionConcept.cast[castIndex]
 			local job:TProgrammePersonJob = productionConcept.script.cast[castIndex]
@@ -344,14 +354,20 @@ Type TProduction Extends TOwnedGameObject
 			'person is now capable of doing this job
 			p.SetJob(job.job)
 			programmeData.AddCast(new TProgrammePersonJob.Init(p.GetGUID(), job.job))
-		Next
 
-		'=== 2.3 PROGRAMME PRODUCTION PROPERTIES ===
-		programmeData.review = productionValueMod * productionConcept.script.review
-		programmeData.speed = productionValueMod * productionConcept.script.speed
-		programmeData.outcome = productionValueMod * productionConcept.script.outcome
-		'modify outcome by castFameMod ("attractors/startpower")
-		programmeData.outcome = Min(1.0, programmeData.outcome * castFameMod)
+			'inform person and adjust its popularity
+			if TProgrammePerson(p)
+				local popularity:TPersonPopularity = TPersonPopularity(TProgrammePerson(p).GetPopularity())
+				if popularity
+					local params:TData = new TData
+					params.AddNumber("time", GetWorldTime().GetTimeGone())
+					params.AddNumber("quality", programmeData.GetQualityRaw())
+					params.AddNumber("job", job.job)
+
+					popularity.FinishProgrammeProduction(params)
+				endif
+			endif
+		Next
 
 		
 		'=== 2.4 PROGRAMME LICENCE ===

@@ -1,6 +1,7 @@
 SuperStrict
 Import "game.programme.programmeperson.base.bmx"
 Import "game.programme.programmedata.bmx"
+Import "game.popularity.person.bmx"
 Import "basefunctions.bmx"
 Import "Dig/base.util.figuregenerator.bmx"
 
@@ -189,7 +190,9 @@ Type TProgrammePerson extends TProgrammePersonBase
 	field topGenre1:Int = 0
 	field topGenre2:Int = 0
 	field calculatedTopGenreCache:int = 0 {nosave}
-
+	'cache popularity (possible because the genre exists the whole game)
+	Field _popularity:TPopularity {nosave}
+	
 	field figure:TFigureGeneratorFigure
 	field figureImage:TImage {nosave}
 	'tried to create it? 
@@ -477,6 +480,24 @@ Type TProgrammePerson extends TProgrammePersonBase
 			producedProgrammesCached = True
 		endif
 		return producedProgrammes
+	End Method
+
+
+	Method GetPopularity:TPopularity()
+		if not _popularity
+			_popularity = GetPopularityManager().GetByGUID(GetGUID())
+			if not _popularity
+				_popularity = TPersonPopularity.Create(GetGUID(), BiasedRandRange(-10, 10, fame), BiasedRandRange(-25, 25, fame))
+				GetPopularityManager().AddPopularity(_popularity)
+			endif
+		endif
+		return _popularity
+	End Method
+
+
+	'override
+	Method GetPopularityValue:Float()
+		return GetPopularity().Popularity
 	End Method
 	
 

@@ -1,5 +1,7 @@
 ﻿SuperStrict
 Import "Dig/base.util.data.bmx"
+Import "Dig/base.util.math.bmx"
+Import "game.gameconstants.bmx"
 Import "game.popularity.bmx"
 
 
@@ -90,21 +92,20 @@ Type TPersonPopularity Extends TPopularity
 
 		if changeVal = 0 then return
 
+		'Print "FinishProgrammeProduction: Change Trend '" + referenceGUID + "': " + changeVal +"  quality:"+quality +". Current Popularity: "+ Popularity
 		ChangeTrend(changeVal)
-		'Print "FinishProgrammeProduction: Change Trend '" + referenceGUID + "': " + changeVal +". New Trend: "+ Popularity
 	End Method
 
 
 	'finished broacasting a programme (as programme, not trailer)
 	Method FinishBroadcastingProgramme(data:TData)
-		'scale audiencefactor (decrease total number by *0.75)
-		Local quality:Float = data.GetFloat("quality", 0)
-		Local audienceFactor:Float = Math.Clamp(data.GetInt("audienceSum", 0) / (data.GetInt("audienceMax", 1)), 0, 1)
+		Local attractionQuality:Float = data.GetFloat("attractionQuality", 0)
+		Local audienceFactor:Float = MathHelper.Clamp(data.GetFloat("audienceWholeMarketQuote", 0), 0, 1)
 
-		Local changeVal:Float = Math.Clamp(quality * audienceFactor, 0, 1.5)
-		if changeVal = 0 then return 
+		Local changeVal:Float = MathHelper.Clamp(attractionQuality * audienceFactor, 0, 1.5)
+		if changeVal = 0 then return
 
+		'Print "FinishBroadcastingProgramme: Change Trend '" + referenceGUID + "': " + changeVal +"  attractionQuality:"+attractionQuality +"  audienceFactor:"+audienceFactor+". Current Popularity: "+ Popularity
 		ChangeTrend(changeVal)
-		'Print "FinishBroadcastingProgramme: Change Trend '" + referenceGUID + "': " + changeVal +"  newsSlot:"+newsSlot +". New Trend: "+ Popularity
 	End Method
 End Type

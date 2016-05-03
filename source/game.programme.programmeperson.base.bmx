@@ -280,6 +280,12 @@ Type TProgrammePersonBase extends TGameObject
 	End Method
 
 
+	'base implementation: nobody knows the person
+	Method GetPopularityValue:Float()
+		return 0.0
+	End Method
+
+
 	Method SetJob(job:Int, enable:Int=True)
 		If enable
 			self.job :| job

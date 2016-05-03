@@ -3,14 +3,17 @@ Import "game.broadcast.audience.bmx"
 Import "game.broadcast.genredefinition.base.bmx"
 
 
-'Diese Klasse repräsentiert die Programmattraktivität (Inhalt von TAudience)
-'Sie beinhaltet aber zusätzlich die Informationen wie sie berechnet wurde
-'(für Statistiken, Debugging und Nachberechnungen) und für was sieht steht.
+'class represents attractivity of a broadcast (it is content of TAudience)
+'It also contains additional information on how it is calculated (for
+'statistics, debugging and recalculation)
 Type TAudienceAttraction Extends TAudience
-	Field BroadcastType:Int '-1 = Sendeausfall; 1 = Film; 2 = News
-	Field Quality:Float				'0 - 100
+	'types: -1 (outage), 1 (movie, 2 (news)
+	Field BroadcastType:Int
+	'0 - 100
+	Field Quality:Float
 	Field GenreTargetGroupMod:TAudience
 	Field GenrePopularityMod:Float = 1.0
+	Field CastMod:Float = 1.0
 	Field FlagsTargetGroupMod:TAudience
 	Field FlagsPopularityMod:Float = 1.0
 	Field targetGroupAttractivityMod:TAudience
@@ -29,13 +32,16 @@ Type TAudienceAttraction Extends TAudience
 	Field PublicImageAttraction:TAudience
 
 	Field GenreDefinition:TGenreDefinitionBase
-	Field Malfunction:Int '1 = Sendeausfall
+	'boolean, outage = 1
+	Field Malfunction:Int
 
 	Const MODINFLUENCE_GENREPOPULARITY:Float = 0.25
 	Const MODINFLUENCE_FLAGPOPULARITY:Float = 0.25
 	Const MODINFLUENCE_TRAILER:Float = 0.25
 	Const MODINFLUENCE_GENRETARGETGROUP:Float = 0.95
 	Const MODINFLUENCE_FLAGTARGETGROUP:Float = 0.95
+	Const MODINFLUENCE_MISC:Float = 1.0
+	Const MODINFLUENCE_CAST:Float = 0.20
 
 
 	Method Init:TAudienceAttraction(gender:int, children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float)
@@ -79,6 +85,7 @@ Type TAudienceAttraction Extends TAudience
 		Self.Add(audienceAttr)
 
 		Quality	:+ audienceAttr.Quality
+		CastMod :+ audienceAttr.CastMod
 		If GenreTargetGroupMod Then GenreTargetGroupMod.Add(audienceAttr.GenreTargetGroupMod)
 		GenrePopularityMod :+ audienceAttr.GenrePopularityMod
 		If FlagsTargetGroupMod Then FlagsTargetGroupMod.Add(audienceAttr.FlagsTargetGroupMod)
@@ -107,6 +114,7 @@ Type TAudienceAttraction Extends TAudience
 		Self.MultiplyFloat(factor)
 
 		Quality	:* factor
+		CastMod :* factor
 		If GenreTargetGroupMod Then GenreTargetGroupMod.MultiplyFloat(factor)
 		GenrePopularityMod :* factor
 		If FlagsTargetGroupMod Then FlagsTargetGroupMod.MultiplyFloat(factor)
@@ -202,7 +210,10 @@ Type TAudienceAttraction Extends TAudience
 		If TrailerMod Then result.Multiply( TrailerMod.Copy().MultiplyFloat(MODINFLUENCE_TRAILER).AddFloat(1) )
 
 
-		If MiscMod Then result.Add(MiscMod)
+		If MiscMod Then result.Multiply( MiscMod.Copy().MultiplyFloat(MODINFLUENCE_MISC) )
+
+
+		result.MultiplyFloat(CastMod * MODINFLUENCE_CAST)
 
 
 		'store the current attraction for the publicImage-calculation
@@ -264,48 +275,50 @@ Type TAudienceAttraction Extends TAudience
 			print " 4. MISC:      -/-"
 		endif
 
+		print " 5. CASTMOD:      + " + CastMod
+
 		If PublicImageMod
-			print " 5. IMAGE:     * " + PublicImageMod.Copy().AddFloat(1.0).ToStringAverage()
+			print " 6. IMAGE:     * " + PublicImageMod.Copy().AddFloat(1.0).ToStringAverage()
 		Else
-			print " 5. IMAGE:     -/-"
+			print " 6. IMAGE:     -/-"
 		endif
 
 		If QualityOverTimeEffectMod
-			print "(6. QOVERTIME: + " + QualityOverTimeEffectMod+" )"
+			print "(7. QOVERTIME: + " + QualityOverTimeEffectMod+" )"
 		Else
-			print " (6. QOVERTIME: -/-)"
+			print " (7. QOVERTIME: -/-)"
 		EndIf
 
 		If LuckMod
-			print " 7. LUCK:      + " + LuckMod.ToStringAverage()
+			print " 8. LUCK:      + " + LuckMod.ToStringAverage()
 		Else
-			print " 7. LUCK:      -/-"
+			print " 8. LUCK:      -/-"
 		EndIf
 
 		If AudienceFlowBonus
-			print " 8. AUD.FLOW:  + " + AudienceFlowBonus.ToStringAverage()
+			print " 9. AUD.FLOW:  + " + AudienceFlowBonus.ToStringAverage()
 		Else
-			print " 8. AUD.FLOW:  + -/-"
+			print " 9. AUD.FLOW:  + -/-"
 		EndIf
 
 		Local genreAttractivity:TAudience = GetGenreAttractivity()
 		If genreAttractivity
-			print " 9. GENREATT:  * " + genreAttractivity.ToStringAverage()
+			print "10. GENREATT:  * " + genreAttractivity.ToStringAverage()
 		Else
-			print " 9. GENREATT:  -/-"
+			print "10. GENREATT:  -/-"
 		EndIf
 
 		If SequenceEffect
-			print "10. SEQUENCE:  + " + SequenceEffect.ToStringAverage()
+			print "11. SEQUENCE:  + " + SequenceEffect.ToStringAverage()
 		Else
-			print "10. SEQUENCE:  + -/-"
+			print "11. SEQUENCE:  + -/-"
 		EndIf
 
 
 		if FinalAttraction
-			print "11. RES        = " + FinalAttraction.ToStringAverage()
+			print "12. RES        = " + FinalAttraction.ToStringAverage()
 		else
-			print "11. RES        = -/-"
+			print "12. RES        = -/-"
 		endif
 	End Method
 
@@ -319,8 +332,9 @@ Type TAudienceAttraction Extends TAudience
 		'programme (eg movieBlock1 news movieBlock2)
 
 		'float values do not need a copy (*1 is done to avoid ambiguity if changing
-		'one of the objects)
+		'one of the objects - eg. float to TAudience)
 		Quality = otherAudienceAttraction.Quality * 1
+		CastMod = otherAudienceAttraction.CastMod * 1
 		GenrePopularityMod = otherAudienceAttraction.GenrePopularityMod * 1
 		FlagsPopularityMod = otherAudienceAttraction.FlagsPopularityMod * 1
 

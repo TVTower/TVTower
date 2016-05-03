@@ -505,6 +505,25 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	End Method
 
 
+	Method GetCastPopularity:Float()
+		local res:Float = 0.0
+		local castCount:int = 0
+
+		For local job:TProgrammePersonJob = EachIn cast
+			local p:TProgrammePersonBase = GetProgrammePersonBase(job.personGUID)
+			if not p then continue
+			res :+ p.GetPopularityValue()
+			castCount :+1
+		Next
+		if castCount > 0 then res = res / castCount
+
+		'Popularity ranges from -50 to 100 (no absolute "unpopular for
+		'everyone" possible)
+		'return a value between 0 and 1
+		Return 0.5 * (1.0 + MathHelper.Clamp(res / 100.0, -1.0, 1.0 ))
+	End Method
+
+
 	Method HasCastPerson:int(personGUID:string)
 		For local doneJob:TProgrammePersonJob = EachIn cast
 			if doneJob.personGUID = personGUID then return True
@@ -1093,6 +1112,12 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	End Method
 
 
+	'returns a value describing how strong the cast's popularity
+	'modifies the quality of the programme -> perceivedQuality
+	Method GetCastQualityMod:Float()
+	End Method
+
+
 	Method GetQualityRaw:Float()
 		Local genreDef:TMovieGenreDefinition = GetGenreDefinition()
 		local quality:Float = 0.0
@@ -1118,13 +1143,16 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	End Method
 
 
-	'Diese Methode ersetzt "GetBaseAudienceQuote"
+
+	'returns the perceived quality of the programme
+	'replaces "GetBaseAudienceQuote"
 	Method GetQuality:Float() {_exposeToLua}
 		Local quality:Float = 1.0
 
 		'the older the less ppl want to watch - 1 year = 0.99%, 2 years = 0.98%...
 		Local age:Float = 0.01 * Max(0, 100 - Max(0, GetWorldTime().GetYear() - GetYear()) )
 		quality :* Max(0.20, age)
+
 
 		'the more the programme got repeated, the lower the quality in
 		'that moment (^2 increases loss per air)

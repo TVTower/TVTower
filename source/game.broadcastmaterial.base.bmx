@@ -263,9 +263,11 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		Return definition.AudienceAttraction.Copy().MultiplyFloat(0.5).AddFloat(1.0).CutBordersFloat(0, 2.0)
 	End Method
 
+
 	Method GetTargetGroupAttractivityMod:TAudience()
 		Return New TAudience.InitValue(1, 1)
 	End Method
+
 	
 	'default implementation
 	'return a value between 0 - 1.0
@@ -274,10 +276,18 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		Return new TAudience.InitValue(0, 0)
 	End Method	
 
+
+	'default implementation
+	'returns a modifier describing positive or negative impacts
+	'of the cast (eg. popularity/trending actors)
+	Method GetCastMod:Float()
+		Return 1.0
+	End Method
+
 	
 	'default implementation
 	Method GetMiscMod:TAudience(hour:Int)
-		Return new TAudience.InitValue(0, 0)
+		Return new TAudience.InitValue(1.0, 1.0)
 	End Method
 
 	
@@ -431,7 +441,10 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 			'5 - Flags und anderes
 			result.MiscMod = GetMiscMod(hour)
 
-			'6 - Image
+			'6 - Cast and its benefits/effects
+			result.CastMod = GetCastMod()
+
+			'7 - Image
 			result.PublicImageMod = GetPublicImageMod()
 		Else
 			'COPY, not reference the childelements to avoid news manipulating
@@ -440,28 +453,28 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 			result.CopyBaseAttractionFrom(lastMovieBlockAttraction)
 		Endif
 
-		'7 - Stetige Auswirkungen der Film-Quali.
+		'8 - Stetige Auswirkungen der Film-Quali.
 		'    Gute Filme bekommen mehr Attraktivität, schlechte Filme
 		'    animieren eher zum Umschalten
 		'good movies increase "perceived" quality on subsequent blocks
 		'bad movies loose on block 2,3...
 		result.QualityOverTimeEffectMod = GetQualityOverTimeEffectMod(result.Quality, block)
 
-		'8 - Genres <> Sendezeit
+		'9 - Genres <> Sendezeit
 		If genreDefinition
 			result.GenreTimeMod = GetGenreTimeMod(genreDefinition, hour)
 		EndIf
 
-		'9 - Zufall
+		'10 - Zufall
 		If withLuckEffect Then result.LuckMod = GetLuckMod()
 
 		'calculate intermediary result for AudienceFlowBonus-calculation
 		result.Recalculate()
 
-		'10 - Audience Flow
+		'11 - Audience Flow
 		result.AudienceFlowBonus = GetAudienceFlowBonus(block, result, lastMovieBlockAttraction, lastNewsBlockAttraction) 		
 
-		'11 - Sequence
+		'12 - Sequence
 		If withSequenceEffect
 			result.Recalculate()
 			result.SequenceEffect = GetSequenceEffect(block, genreDefinition, lastNewsBlockAttraction, result, lastMovieBlockAttraction)

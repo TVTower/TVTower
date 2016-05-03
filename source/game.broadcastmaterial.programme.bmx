@@ -4,6 +4,7 @@ Import "game.broadcast.base.bmx"
 Import "game.broadcast.audienceresult.bmx"
 Import "game.programme.programmelicence.bmx"
 Import "game.player.finance.bmx"
+Import "game.programme.programmeperson.bmx"
 Import "game.publicimage.bmx"
 'Import "game.gameevents.bmx"
 
@@ -202,9 +203,22 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		local popData:TData = new TData
 		popData.AddNumber("attractionQuality", audienceResult.AudienceAttraction.Quality)
 		popData.AddNumber("audienceSum", audienceResult.Audience.GetTotalSum())
+		popData.AddNumber("audienceWholeMarketQuote", audienceResult.GetWholeMarketAudienceQuotePercentage())
 		popData.AddNumber("broadcastTopAudience", GetBroadcastManager().GetCurrentBroadcast().GetTopAudience())
 
 		popularity.FinishBroadcastingProgramme(popData, GetBlocks())
+
+print "total: "+ audienceResult.Audience.GetTotalSum()
+print "whole: "+ audienceResult.WholeMarket.GetTotalSum()
+print "perc:  "+ audienceResult.GetWholeMarketAudienceQuotePercentage()
+
+		'adjust popularity of cast too
+		For local job:TProgrammePersonJob = EachIn data.cast
+			local p:TProgrammePerson = GetProgrammePerson(job.personGUID)
+			if not p then continue
+			TPersonPopularity(p.GetPopularity()).FinishBroadcastingProgramme(popData)
+		Next
+		
 		
 		'Image-Strafe
 		If data.IsPaid()
@@ -245,6 +259,16 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 	Method GetQuality:Float() {_exposeToLua}
 		Return data.GetQuality()
+	End Method
+
+
+	'override
+	Method GetCastMod:Float()
+		local result:Float = 1.0
+		'cast popularity has influence of up to 50%
+		result :+ 0.75 * data.GetCastPopularity()
+		'print "castmod: "+result +"  pop: "+ data.GetCastPopularity()
+		return result
 	End Method
 
 
