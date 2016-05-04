@@ -25,7 +25,8 @@ Function SetRendererWin32:TGraphics(_g:TGraphics, renderer:Int, realWidth:Int, r
 		Case RENDERER_DIRECTX11
 			SetGraphicsDriver D3D11Max2DDriver()
 		?
-		Default SetGraphicsDriver GLMax2DDriver()
+		Default
+			SetGraphicsDriver GLMax2DDriver()
 	EndSelect
 
 	_g = Graphics(realWidth, realHeight, colorDepth*fullScreen, hertz, flags)
@@ -55,7 +56,5 @@ Function SetRendererWin32:TGraphics(_g:TGraphics, renderer:Int, realWidth:Int, r
 		_g = Graphics(realWidth, realHeight, colorDepth*fullScreen, hertz, flags)
 	EndIf
 	?
-	If Not _g Then Throw "Graphics initiation error! no render engine available."
-
 	return _g
 End Function

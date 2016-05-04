@@ -160,9 +160,12 @@ Type TGraphicsManager
 
 	Method SetRenderer:Int(value:Int = 0)
 		If renderer <> value
+print "setRenderer to : "+value + " "+GetRendererName(value)
 			renderer = value
+print "           now : "+renderer + " "+GetRendererName()
 			Return True
 		Else
+print "setRenderer already was at : "+value + " "+GetRendererName(value)
 			Return False
 		EndIf
 	End Method
@@ -227,12 +230,16 @@ Type TGraphicsManager
 		'for the first time
 		If Not _g Then InitVirtualGraphics()
 
+		'close old one
+		if _g then CloseGraphics(_g)
+
 		'needed to allow ?win32 + ?bmxng
 		?win32
 		_InitGraphicsWin32()
 		?Not win32
 		_InitGraphicsDefault()
 		?
+		If Not _g Then Throw "Graphics initiation error! no render engine available."
 
 
 		SetBlend ALPHABLEND
@@ -255,8 +262,6 @@ Type TGraphicsManager
 		EndSelect
 
 		_g = Graphics(realWidth, realHeight, colorDepth*fullScreen, hertz, flags)
-
-		If Not _g Then Throw "Graphics initiation error! no render engine available."
 	End Method
 
 
