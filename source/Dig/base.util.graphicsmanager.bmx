@@ -38,18 +38,16 @@ SuperStrict
 Import brl.Graphics
 Import brl.glmax2d
 
-?bmxng
+?android
+Import sdl.gl2sdlmax2d
+Import pub.opengles
+?not android
 Import BRL.GLMax2D
-'Import sdl.gl2sdlmax2d
-'Import pub.opengles
 ?
-?MacOs
-Import BRL.GLMax2D
+
 ?Win32
-Import BRL.GLMax2D
 Import "base.util.graphicsmanager.win32.bmx"
 ?Linux
-Import BRL.GLMax2D
 'Import "../source/external/bufferedglmax2d/bufferedglmax2d.bmx"
 ?
 
@@ -160,12 +158,9 @@ Type TGraphicsManager
 
 	Method SetRenderer:Int(value:Int = 0)
 		If renderer <> value
-print "setRenderer to : "+value + " "+GetRendererName(value)
 			renderer = value
-print "           now : "+renderer + " "+GetRendererName()
 			Return True
 		Else
-print "setRenderer already was at : "+value + " "+GetRendererName(value)
 			Return False
 		EndIf
 	End Method
@@ -259,7 +254,7 @@ print "setRenderer already was at : "+value + " "+GetRendererName(value)
 			?Not android
 			Default SetGraphicsDriver GLMax2DDriver()
 			?
-		EndSelect
+		End Select
 
 		_g = Graphics(realWidth, realHeight, colorDepth*fullScreen, hertz, flags)
 	End Method
@@ -271,6 +266,8 @@ print "setRenderer already was at : "+value + " "+GetRendererName(value)
 		'done in base.util.graphicsmanager.win32.bmx
 		'alternatively to "_g = Func(_g,...)"
 		'SetRenderWin32 could also use "_g:TGraphics var"
+		'attention: renderer is passed by referenced (might be changed)
+		'           during execution of SetRendererWin32(...)
 		_g = SetRendererWin32(_g, renderer, realWidth, realHeight, colorDepth, fullScreen, hertz, flags)
 		?
 	End Method

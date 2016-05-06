@@ -251,6 +251,7 @@ Type TApp
 					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: DirectX 11", LOG_LOADING)
 					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_DIRECTX11)
 					config.AddNumber("renderer", GetGraphicsManager().RENDERER_DIRECTX11)
+				?
 				Case "-opengl"
 					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: OpenGL", LOG_LOADING)
 					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_OPENGL)
@@ -3171,11 +3172,9 @@ Type TSettingsWindow
 		?Win32
 			soundEngineValues :+ ["WINDOWS_ASIO","WINDOWS_DS"]
 			soundEngineTexts :+ ["ASIO", "Direct Sound"]
-		?
 		?Linux
 			soundEngineValues :+ ["LINUX_ALSA","LINUX_PULSE","LINUX_OSS"]
 			soundEngineTexts :+ ["ALSA", "PulseAudio", "OSS"]
-		?
 		?MacOS
 			soundEngineValues :+ ["MACOSX_CORE"]
 			soundEngineTexts :+ ["CoreAudio"]
@@ -3206,11 +3205,27 @@ Type TSettingsWindow
 
 		Local labelRenderer:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("RENDERER") + ":")
 		dropdownRenderer = New TGUIDropDown.Create(New TVec2D.Init(nextX, nextY + 12), New TVec2D.Init(inputWidth,-1), "", 128)
-		Local rendererValues:String[] = ["0", "4"]
-		Local rendererTexts:String[] = ["OpenGL", "Buffered OpenGL"]
+		'Local rendererValues:String[] = ["0", "4"]
+		'Local rendererTexts:String[] = ["OpenGL", "Buffered OpenGL"]
+		Local rendererValues:String[] = ["0"]
+		Local rendererTexts:String[] = ["OpenGL"]
+		
 		?Win32
-			rendererValues :+ ["1","2","3"]
-			rendererTexts :+ ["DirectX 7", "DirectX 9", "DirectX 11"]
+			'rendererValues :+ ["1","2","3"]
+			'rendererTexts :+ ["DirectX 7", "DirectX 9", "DirectX 11"]
+
+			if D3D7Max2DDriver()
+				rendererValues :+ ["1"]
+				rendererTexts :+ ["DirectX 7"]
+			endif
+			if D3D9Max2DDriver()
+				rendererValues :+ ["2"]
+				rendererTexts :+ ["DirectX 9"]
+			endif
+			if D3D11Max2DDriver()
+				rendererValues :+ ["3"]
+				rendererTexts :+ ["DirectX 11"]
+			endif
 		?
 		itemHeight = 0
 		For Local i:Int = 0 Until rendererValues.Length
