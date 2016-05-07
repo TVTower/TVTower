@@ -39,15 +39,17 @@ Import brl.Graphics
 Import brl.glmax2d
 
 ?android
+'Import BRL.GLMax2D
 Import sdl.gl2sdlmax2d
 Import pub.opengles
-?not android
-Import BRL.GLMax2D
 ?
-
+?MacOs
+Import BRL.GLMax2D
 ?Win32
+Import BRL.GLMax2D
 Import "base.util.graphicsmanager.win32.bmx"
 ?Linux
+Import BRL.GLMax2D
 'Import "../source/external/bufferedglmax2d/bufferedglmax2d.bmx"
 ?
 

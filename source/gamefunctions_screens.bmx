@@ -258,7 +258,7 @@ Type TInGameScreen Extends TScreen
 				If GetIngameInterface().chat.antiSpamTimer < Time.GetAppTimeGone()
 					GUIManager.setFocus( GetIngameInterface().chat.guiInput )
 				Else
-					Print "no spam pls (input stays deactivated)"
+					Print "no spam pls (input stays deactivated). Timer: " + (GetIngameInterface().chat.antiSpamTimer - Time.GetAppTimeGone())+"ms"
 				EndIf
 			EndIf
 		EndIf

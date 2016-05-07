@@ -33,7 +33,7 @@ Type TGUIChat Extends TGUIPanel
 	Field keepInputActive:Int = True
 
 	'time when again allowed to send
-	Global antiSpamTimer:Int = 0
+	Global antiSpamTimer:Long = 0
 	Global antiSpamTime:Int	= 100
 
 
@@ -135,7 +135,7 @@ Type TGUIChat Extends TGUIPanel
 		KEYMANAGER.blockKey(KEY_ENTER, 250) 'block for 100ms
 
 		'trigger antiSpam
-		guiChat.antiSpamTimer = Time.GetTimeGone() + guiChat.antiSpamTime
+		guiChat.antiSpamTimer = Time.GetAppTimeGone() + guiChat.antiSpamTime
 
 		If guiChat.guiInputHistory.last() <> guiInput.value
 			guiChat.guiInputHistory.AddLast(guiInput.value)

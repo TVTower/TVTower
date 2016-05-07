@@ -242,6 +242,15 @@ Type TPopularity
 	End Method
 
 
+	Method ModifyPopularity(addPercentage:Float = 0.0, addValue:Float = 0.0)
+		if addPercentage <> 0.0
+			Popularity :* (1.0 + addPercentage)
+		endif
+
+		Popularity :+ addValue
+	End Method
+
+
 	Method SetLongTermPopularity(value:float)
 		LongTermPopularity = Max(LongTermPopularityLowerBound, Min(LongTermPopularityUpperBound, value))
 	End Method

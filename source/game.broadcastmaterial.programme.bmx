@@ -208,10 +208,6 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 		popularity.FinishBroadcastingProgramme(popData, GetBlocks())
 
-print "total: "+ audienceResult.Audience.GetTotalSum()
-print "whole: "+ audienceResult.WholeMarket.GetTotalSum()
-print "perc:  "+ audienceResult.GetWholeMarketAudienceQuotePercentage()
-
 		'adjust popularity of cast too
 		For local job:TProgrammePersonJob = EachIn data.cast
 			local p:TProgrammePerson = GetProgrammePerson(job.personGUID)

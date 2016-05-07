@@ -102,48 +102,52 @@ Type TDebugAudienceInfos
 		endif
 		offset :+ 20
 
-		font.Draw("3. * TrailerMod", 25, offset, TColor.clWhite)
+		font.Draw("3. * TrailerMod ("+MathHelper.NumberToString(TAudienceAttraction.MODINFLUENCE_TRAILER*100)+"%)", 25, offset, TColor.clWhite)
 		If attraction.TrailerMod
 			font.drawBlock(genre, 60, offset, 205, 25, ALIGN_RIGHT_TOP, colorLight )
 			DrawAudiencePercent(attraction.TrailerMod.Copy().MultiplyFloat(TAudienceAttraction.MODINFLUENCE_TRAILER).AddFloat(1), 200, offset, true, true)
 		Endif
 		offset :+ 20
 
-		font.Draw("4. + Sonstige Mods", 25, offset, TColor.clWhite)
+		font.Draw("4. + Sonstige Mods ("+MathHelper.NumberToString(TAudienceAttraction.MODINFLUENCE_MISC*100)+"%)", 25, offset, TColor.clWhite)
 		If attraction.MiscMod
 			DrawAudiencePercent(attraction.MiscMod, 200, offset, true, true)
 		Endif
 		offset :+ 20
 
-		font.Draw("5. * SenderimageMod", 25, offset, TColor.clWhite)
+		font.Draw("5. + CastMod ("+MathHelper.NumberToString(TAudienceAttraction.MODINFLUENCE_CAST*100)+"%)", 25, offset, TColor.clWhite)
+		DrawAudiencePercent(new TAudience.InitValue(attraction.CastMod,  attraction.CastMod), 200, offset, true, true)
+		offset :+ 20
+
+		font.Draw("6. * SenderimageMod", 25, offset, TColor.clWhite)
 		If attraction.PublicImageMod
 			DrawAudiencePercent(attraction.PublicImageMod.Copy().AddFloat(1.0), 200, offset, true, true)
 		Endif
 		offset :+ 20
 
-		font.Draw("6. + Zuschauerentwicklung (inaktiv)", 25, offset, TColor.clWhite)
+		font.Draw("7. + Zuschauerentwicklung (inaktiv)", 25, offset, TColor.clWhite)
 	'	DrawAudiencePercent(new TAudience.InitValue(-1, attraction.QualityOverTimeEffectMod), 200, offset, true, true)
 		offset :+ 20
 
-		font.Draw("7. + Glück / Zufall", 25, offset, TColor.clWhite)
+		font.Draw("9. + Glück / Zufall", 25, offset, TColor.clWhite)
 		If attraction.LuckMod
 			DrawAudiencePercent(attraction.LuckMod, 200, offset, true, true)
 		endif
 		offset :+ 20
 
-		font.Draw("8. + Audience Flow Bonus", 25, offset, TColor.clWhite)
+		font.Draw("9. + Audience Flow Bonus", 25, offset, TColor.clWhite)
 		if attraction.AudienceFlowBonus
 			DrawAudiencePercent(attraction.AudienceFlowBonus, 200, offset, true, true)
 		endif
 		offset :+ 20
 
-		font.Draw("9. * Genreattraktivität (zeitabh.)", 25, offset, TColor.clWhite)
+		font.Draw("10. * Genreattraktivität (zeitabh.)", 25, offset, TColor.clWhite)
 		if attraction.GetGenreAttractivity()
 			DrawAudiencePercent(attraction.GetGenreAttractivity(), 200, offset, true, true)
 		endif
 		offset :+ 20
 	
-		font.Draw("10. + Sequence", 25, offset, TColor.clWhite)
+		font.Draw("11. + Sequence", 25, offset, TColor.clWhite)
 		If attraction.SequenceEffect
 			DrawAudiencePercent(attraction.SequenceEffect, 200, offset, true, true)
 		endif

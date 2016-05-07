@@ -762,14 +762,25 @@ Type TGameModifierNews_ModifyAvailability extends TGameModifierBase
 
 	'override
 	Method UndoFunc:int()
-		'set backup
+		local newsEvent:TNewsEvent = TNewsEvent(GetNewsEventCollection().GetByGUID( newsGUID ))
+		if not newsEvent
+			print "TGameModifierNews_ModifyAvailability: Undo failed, newsEvent ~q"+newsGUID+"~q not found."
+		endif
+
+		newsEvent.available = enableBackup
 	End Method
 
 
 	'override to trigger a specific news
 	Method RunFunc:int(params:TData)
-'		enableBackup = ...
-'		enable = ...
+		local newsEvent:TNewsEvent = TNewsEvent(GetNewsEventCollection().GetByGUID( newsGUID ))
+		if not newsEvent
+			print "TGameModifierNews_ModifyAvailability: Run failed, newsEvent ~q"+newsGUID+"~q not found."
+		endif
+
+		enableBackup = newsEvent.available
+		
+		newsEvent.available = enable
 	End Method
 End Type
 	
