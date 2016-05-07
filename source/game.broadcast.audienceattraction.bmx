@@ -213,7 +213,7 @@ Type TAudienceAttraction Extends TAudience
 		If MiscMod Then result.Multiply( MiscMod.Copy().MultiplyFloat(MODINFLUENCE_MISC) )
 
 
-		result.MultiplyFloat(CastMod * MODINFLUENCE_CAST)
+		result.MultiplyFloat(1.0 + (CastMod-1.0) * MODINFLUENCE_CAST)
 
 
 		'store the current attraction for the publicImage-calculation
