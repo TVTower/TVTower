@@ -421,11 +421,14 @@ endrem
 		'(parental script is already informed on creation of its licence)
 		productionConcept.script.FinishProduction(programmeLicence.GetGUID())
 
-		'if the script does not allow further productions, it is finished
-		'and should be removed from the player
-
-		if owner and productionConcept.script.GetParentScript().IsProduced()
-			GetPlayerProgrammeCollection(owner).RemoveScript(productionConcept.script.GetParentScript(), False)
+		if owner
+			'if the script does not allow further productions, it is finished
+			'and should be removed from the player
+			if productionConcept.script.GetParentScript().IsProduced()
+				GetPlayerProgrammeCollection(owner).RemoveScript(productionConcept.script.GetParentScript(), False)
+			else
+				'remove finished concepts
+			endif
 		endif
 		
 		'=== 4. ADD TO PLAYER ===
@@ -438,6 +441,9 @@ endrem
 
 		'=== 5. REMOVE PRODUCTION CONCEPT ===
 		'now only the production itself knows about the concept
+		if owner and GetPlayerProgrammeCollection(owner)
+			GetPlayerProgrammeCollection(owner).RemoveProductionConcept(productionConcept)
+		endif
 		GetProductionConceptCollection().Remove(productionConcept)
 
 
@@ -482,7 +488,9 @@ endrem
 
 	'refill data with current information (cast, avg ratings)
 	Method FillParentalLicence(parentLicence:TProgrammeLicence)
-		'inform parental script about the usage
+		'inform parental script about the usage, also increases
+		'production count if all episodes are produced (at least +1 than
+		'the series production count)
 		productionConcept.script.GetParentScript().FinishProduction(parentLicence.GetGUID())
 
 		local parentData:TProgrammeData = parentLicence.GetData()

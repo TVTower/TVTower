@@ -592,8 +592,8 @@ Type RoomHandler_Studio extends TRoomHandler
 		if studioScript
 			'adjust list limit
 			local minConceptLimit:int = 1
-			if studioScript.IsSeries()
-				minConceptLimit = Min(GameRules.maxProductionConceptsPerScript, studioScript.GetSubScriptCount())
+			if studioScript.GetSubScriptCount() > 0
+				minConceptLimit = Min(GameRules.maxProductionConceptsPerScript, studioScript.GetSubScriptCount() - studioScript.GetProductionsCount())
 			else
 				minConceptLimit = Min(GameRules.maxProductionConceptsPerScript, studioScript.CanGetProducedCount())
 			endif
@@ -711,9 +711,9 @@ Type RoomHandler_Studio extends TRoomHandler
 		
 		'if it is a series, fetch first free episode script
 		if script.IsSeries()
-			print "CreateProductionConcept : ist Serie"
+			'print "CreateProductionConcept : is series"
 			if script.GetEpisodes() = 0 then return False
-			print "                        : hat Episoden"
+			'print "                        : has episodes"
 			
 			for local subScript:TScript = EachIn script.subScripts
 				if subScript.CanGetProduced()
@@ -728,7 +728,7 @@ Type RoomHandler_Studio extends TRoomHandler
 
 			if useScript.IsSeries() then return False
 		endif
-			print "CreateProductionConcept : erstellen... " + useScript.GetTitle()
+		'print "CreateProductionConcept : create... " + useScript.GetTitle()
 		GetPlayerProgrammeCollection( playerID ).CreateProductionConcept(useScript)
 
 		
@@ -772,21 +772,26 @@ Type RoomHandler_Studio extends TRoomHandler
 		local produceableConcepts:string = ""
 
 
-		if script 
-			if script.IsSeries()
+		if script
+			'=== PRODUCED CONCEPT COUNT ===
+			producedConceptCount = script.GetProductionsCount()
+
+		
+			'=== COLLECT PRODUCEABLE CONCEPTS ===
+			if script.GetSubScriptCount() > 0
 				productionConcepts = GetProductionConceptCollection().GetProductionConceptsByScripts(script.subScripts)
-				'sort by slots or guid
-				local list:TList = new TList.FromArray(productionConcepts)
-				list.Sort(True, SortProductionConceptsBySlotAndEpisode)
-				for local i:int = 0 until list.Count()
-					productionConcepts[i] = TProductionConcept(list.ValueAtIndex(i))
-				Next
 			else
 				productionConcepts = GetProductionConceptCollection().GetProductionConceptsByScript(script)
 			endif
 
+			'sort by slots or guid
+			local list:TList = new TList.FromArray(productionConcepts)
+			list.Sort(True, SortProductionConceptsBySlotAndEpisode)
+			for local i:int = 0 until list.Count()
+				productionConcepts[i] = TProductionConcept(list.ValueAtIndex(i))
+			Next
+
 			For local pc:TProductionConcept = EachIn productionConcepts
-				if pc.IsProduced() then producedConceptCount :+1
 				if pc.IsProduceable()
 					if produceableConcepts <> "" then produceableConcepts :+ ", "
 					produceableConceptCount :+ 1
@@ -797,11 +802,18 @@ Type RoomHandler_Studio extends TRoomHandler
 					endif
 				endif
 			Next
+			
 			'prepend "episodes" to episodes-string
 			if script.IsSeries() then produceableConcepts = GetLocale("MOVIE_EPISODES")+" "+produceableConcepts
 
 			conceptCount = productionConcepts.length
-			conceptCountMax = script.CanGetProducedCount()
+		
+			'series?
+			if script.GetSubScriptCount() > 0
+				conceptCountMax = script.GetSubScriptCount() - producedConceptCount
+			else
+				conceptCountMax = script.CanGetProducedCount()
+			endif
 		endif
 
 		
@@ -817,17 +829,17 @@ Type RoomHandler_Studio extends TRoomHandler
 			if script
 				text = "Du willst also |b|"+script.GetTitle()+"|/b| produzieren?"
 				text :+"~n~n"
-				if conceptCount = 1
+
+				local countText:string = conceptCount
+				if conceptCountMax > 0 and conceptCountMax < 1000 then countText = conceptCount + "/" + conceptCountMax
+
+				if conceptCount = 1 and conceptCountMax = 1
 					if producedConceptCount = 0
 						text :+"Bisher ist |b|1 Produktion|/b| mit diesem Drehbuch geplant."
 					else
 						text :+"Bisher wurde bereits |b|1 Produktion|/b| mit diesem Drehbuch durchgeführt."
 					endif
 				else
-					local countText:string = conceptCount
-					if conceptCountMax > 0 and conceptCountMax < 1000 then countText = (conceptCount-producedConceptCount) + "/" + conceptCountMax 
-					if script.GetSubScriptCount() > 0 then countText = (conceptCount-producedConceptCount) + "/"+script.GetSubScriptCount()
-
 					if producedConceptCount = 0
 						text :+"Bisher sind |b|"+countText+" Produktionen|/b| mit diesem Drehbuch geplant."
 					else
@@ -873,10 +885,14 @@ Type RoomHandler_Studio extends TRoomHandler
 
 			'limit concepts: shows have none, programmes 1 and series
 			'are limited by their episodes
-			local conceptMax:int = script.CanGetProducedCount()
-			if script.IsSeries() then conceptMax = script.GetSubScriptCount()
+			local conceptMax:int
+			if script.GetSubScriptCount() > 0
+				conceptMax = script.GetSubScriptCount() - script.GetProductionsCount()
+			else
+				conceptMax = script.CanGetProducedCount()
+			endif
 
-			If conceptCount < conceptMax 
+			If conceptCount < conceptCountMax 
 				local answerText:string
 				if conceptCount > 0
 					answerText = "Ich brauche noch eine Einkaufsliste für dieses Drehbuch."

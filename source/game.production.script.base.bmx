@@ -149,7 +149,28 @@ Type TScriptBase Extends TNamedGameObject
 
 
 	Method FinishProduction(programmeLicenceGUID:string)
-		usedInProductionsCount :+ 1
+		'series header? - check if children were produced +1 than the
+		'header
+		'So if series is produced 2 times and there are some episodes
+		'produced 4 times and one only 1 time, it does not increase
+		'the production count for the series (while the episodes still
+		'have this information)
+		if GetSubScriptCount() > 0
+			local allEpisodesProduced:int = True
+
+			for local sub:TScriptBase = EachIn subScripts
+				if sub.usedInProductionsCount <= usedInProductionsCount
+					allEpisodesProduced = False
+					exit
+				endif
+			Next
+			if allEpisodesProduced
+				usedInProductionsCount :+ 1
+			endif
+		else
+			usedInProductionsCount :+ 1
+		endif
+
 		usedInProgrammeGUID = programmeLicenceGUID
 	End Method
 
@@ -167,14 +188,41 @@ Type TScriptBase Extends TNamedGameObject
 
 
 	Method CanGetProducedCount:int()
-		if GetParentScript() and self <> GetParentScript()
-			return GetParentScript().CanGetProducedCount()
+		local res:int = usedInProductionsLimit - usedInProductionsCount
+
+		if GetSubScriptCount() > 0
+			For local sub:TScriptBase = EachIn subScripts
+				res = Min(res, sub.CanGetProducedCount())
+			Next
 		endif
 
 		'return a high number when there is no limit
-		if usedInProductionsLimit <= 0 then return 1000
+		if usedInProductionsLimit <= 0 then res = 1000
 
-		return usedInProductionsLimit - usedInProductionsCount
+		return res
+	End Method
+
+
+	'returns amount of productions done with this script
+	'
+	'For series it returns the amount of episodes of a current "series
+	'production" (like a in a "season")
+	Method GetProductionsCount:int()
+		if GetSubScriptCount() > 0
+			local res:int = 0
+			'for series we check for episodes with a lower production
+			'count than the series header
+			for local sub:TScriptBase = EachIn subScripts
+				if usedInProductionsCount < sub.usedInProductionsCount
+					res :+1
+				endif
+			next
+			return res
+		else
+			'for non-series we just use the production count of this
+			'script
+			return usedInProductionsCount
+		endif
 	End Method
 	
 

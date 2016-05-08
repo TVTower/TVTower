@@ -86,7 +86,7 @@ Type TDialogue
 		DialogSprite.Draw(dx, dy)
 
 		If DialogText <> ""
-			DialogFont.drawBlock(DialogText, x + 10, y + 10, DialogWidth - 20, Height - 16, Null, TColor.clBlack)
+			DialogFont.drawBlock(DialogText, x + 10, y + 10, DialogWidth - 25, Height - 16, Null, TColor.clBlack)
 		EndIf
 	End Function
 
