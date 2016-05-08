@@ -75,8 +75,27 @@ Type TScriptCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GenerateRandom:TScript()
-		local template:TScriptTemplate = GetScriptTemplateCollection().GetRandom()
+	Method GenerateRandom:TScript(avoidTemplateGUIDs:string[])
+		local template:TScriptTemplate
+		if not avoidTemplateGUIDs or avoidTemplateGUIDs.length = 0
+			template = GetScriptTemplateCollection().GetRandomByFilter(True, True)
+		else
+			local foundValid:int = False
+			local tries:int = 0
+			Repeat
+				template = GetScriptTemplateCollection().GetRandomByFilter(True, True)
+				'is this template forbidden?
+				foundValid = not StringHelper.InArray(template.GetGUID(), avoidTemplateGUIDs)
+				tries :+ 1
+
+				if tries > 100
+					print "TScriptCollection.GenerateRandom() - failed. No available template found (avoid-list too big?). Using an unfiltered entry."
+					'get a random one, ignore availability
+					template = GetScriptTemplateCollection().GetRandomByFilter(False, True)
+				endif
+			Until foundValid or tries > 100
+		endif
+	
 		local script:TScript = TScript.CreateFromTemplate(template)
 		script.SetOwner(TOwnedGameObject.OWNER_NOBODY)
 		Add(script)
@@ -84,12 +103,26 @@ Type TScriptCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GetRandomAvailable:TScript()
+	Method GetRandomAvailable:TScript(avoidTemplateGUIDs:string[] = null)
 		'if no script is available, create (and return) some a new one
-		if GetAvailableScriptList().Count() = 0 then return GenerateRandom()
+		if GetAvailableScriptList().Count() = 0 then return GenerateRandom(avoidTemplateGUIDs)
 
 		'fetch a random script
-		return TScript(GetAvailableScriptList().ValueAtIndex(randRange(0, GetAvailableScriptList().Count() - 1)))
+		if not avoidTemplateGUIDs or avoidTemplateGUIDs.length = 0
+			return TScript(GetAvailableScriptList().ValueAtIndex(randRange(0, GetAvailableScriptList().Count() - 1)))
+		else
+			local possibleScripts:TScript[]
+			for local s:TScript = EachIn GetAvailableScriptList()
+				if not s.basedOnScriptTemplateGUID or not StringHelper.InArray(s.basedOnScriptTemplateGUID, avoidTemplateGUIDs)
+					possibleScripts :+ [s]
+				else
+					print "skipped: " + s.GetTitle() +" as template ~q"+s.basedOnScriptTemplateGUID+"~q is to avoid."
+				endif
+			next
+			if possibleScripts.length = 0 then return GenerateRandom(avoidTemplateGUIDs)
+
+			return possibleScripts[ randRange(0, possibleScripts.length - 1) ]
+		endif
 	End Method
 
 
@@ -102,6 +135,9 @@ Type TScriptCollection Extends TGameObjectCollection
 			For local script:TScript = EachIn GetParentScriptList()
 				'skip used scripts (or scripts already at the vendor)
 				if script.IsOwned() then continue
+				'skip scripts not available yet (or anymore)
+				'(eg. they are obsolete now, or not yet possible)
+				'if not script.IsAvailable() then continue
 
 				_availableScripts.AddLast(script)
 			Next
@@ -193,6 +229,9 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	'This is used for "shows" to be able to use different values of
 	'outcome/speed/price/... while still having a connecting link
 	Field basedOnScriptGUID:String = ""
+	'template this script is based on (this allows to avoid that too
+	'many scripts are based on the same script template on the same time)
+	Field basedOnScriptTemplateGUID:String = ""
 
 
 	Function CreateFromTemplate:TScript(template:TScriptTemplate)
@@ -229,6 +268,8 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			local subScript:TScript = TScript.CreateFromTemplate(subTemplate)
 			if subScript then script.AddSubScript(subScript)
 		Next
+
+		script.basedOnScriptTemplateGUID = template.GetGUID()
 
 		'reset the state of the template
 		'without that, the following scripts created with this template
@@ -318,6 +359,16 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		return result
 	End Method	
 
+
+	'override
+	Method FinishProduction(programmeLicenceGUID:string)
+		Super.FinishProduction(programmeLicenceGUID)
+
+		if basedOnScriptTemplateGUID
+			local template:TScriptTemplate = GetScriptTemplateCollection().GetByGUID(basedOnScriptTemplateGUID)
+			if template then template.FinishProduction(programmeLicenceGUID)
+		endif
+	End Method
 
 
 	'override default method to add subscripts

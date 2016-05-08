@@ -148,6 +148,12 @@ Type TScriptBase Extends TNamedGameObject
 	End Method
 
 
+	Method FinishProduction(programmeLicenceGUID:string)
+		usedInProductionsCount :+ 1
+		usedInProgrammeGUID = programmeLicenceGUID
+	End Method
+
+
 	Method GetEpisodeNumber:Int() {_exposeToLua}
 		return 0
 	End Method

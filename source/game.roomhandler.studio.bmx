@@ -687,7 +687,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		if not script then return
 
 		local count:int = GetProductionManager().StartProductionInStudio(roomGUID, script)
-print "added "+count+" productions to shoot"
+'print "added "+count+" productions to shoot"
 
 		'leave room now, remove dialogue before
 		RoomHandler_Studio.studioManagerDialogue = null

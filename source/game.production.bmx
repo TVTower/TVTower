@@ -419,8 +419,8 @@ endrem
 		
 		'inform script about a done production based on the script
 		'(parental script is already informed on creation of its licence)
-		productionConcept.script.usedInProductionsCount :+ 1
-		productionConcept.script.usedInProgrammeGUID = programmeLicence.GetGUID()
+		productionConcept.script.FinishProduction(programmeLicence.GetGUID())
+
 		'if the script does not allow further productions, it is finished
 		'and should be removed from the player
 
@@ -483,8 +483,7 @@ endrem
 	'refill data with current information (cast, avg ratings)
 	Method FillParentalLicence(parentLicence:TProgrammeLicence)
 		'inform parental script about the usage
-		productionConcept.script.GetParentScript().usedInProgrammeGUID = parentLicence.GetGUID()
-		productionConcept.script.GetParentScript().usedInProductionsCount :+ 1
+		productionConcept.script.GetParentScript().FinishProduction(parentLicence.GetGUID())
 
 		local parentData:TProgrammeData = parentLicence.GetData()
 

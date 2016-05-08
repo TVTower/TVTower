@@ -30,15 +30,22 @@ Type TScriptTemplateCollection Extends TGameObjectCollection
 		Return TScriptTemplate( Super.GetByGUID(GUID) )
 	End Method
 
-
+	
 	Method GetRandom:TScriptTemplate()
+		return TScriptTemplate(super.GetRandom())
+	End Method
+
+
+	Method GetRandomByFilter:TScriptTemplate(skipNotAvailable:int = True, skipEpisodes:int = True)
 		'instead of using "super.GetRandom" we use a custom variant
 		'to NOT return episodes...
 		local array:TScriptTemplate[]
 		'create a full array containing all elements
 		For local obj:TScriptTemplate = EachIn entries.Values()
 			'skip episode scripts
-			if obj.scriptLicenceType = TVTProgrammeLicenceType.EPISODE then continue
+			if skipEpisodes and obj.scriptLicenceType = TVTProgrammeLicenceType.EPISODE then continue
+			'skip not available ones (eg. limit of productions reached)
+			if skipNotAvailable and not obj.IsAvailable() then continue
 
 			array :+ [obj]
 		Next
@@ -105,6 +112,9 @@ Type TScriptTemplate Extends TScriptBase
 	Field coulisseType3:Int = -1
 
 	Field targetGroup:Int = -1
+
+	Field productionLimit:int = -1
+	Field productionTimes:int = 0
 
 
 	'reset things used for random data
@@ -312,6 +322,32 @@ Type TScriptTemplate Extends TScriptBase
 		return _ReplacePlaceholders(description)
 	End Method
 
+
+	Method IsAvailable:int()
+		if GetProductionLimit() > 0 and GetProductionTimes() >= GetProductionLimit() then return False
+		return True
+	End Method
+
+
+	Method GetProductionLimit:int()
+		return productionLimit
+	End Method
+
+
+	Method GetProductionTimes:int()
+		return productionTimes
+	End Method
+
+
+	Method SetProductionTimes(times:int)
+		productionTimes = times
+	End Method
+
+
+	Method FinishProduction(programmeLicenceGUID:string)
+		SetProductionTimes( GetProductionTimes() + 1)
+	End Method
+		
 
 	'set a job to the specific index
 	'the index must be existing already

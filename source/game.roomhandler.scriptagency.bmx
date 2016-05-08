@@ -601,18 +601,28 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 
 		'=== ACTUALLY CREATE SCRIPTS ===
+		local usedTemplateGUIDs:string[]
+
 		for local j:int = 0 to lists.length-1
 			for local i:int = 0 to lists[j].length-1
+				if lists[j][i] and lists[j][i].basedOnScriptTemplateGUID
+					usedTemplateGUIDs :+ [lists[j][i].basedOnScriptTemplateGUID]
+				endif
 				'if exists and is valid...skip it
 				if lists[j][i] then continue
 
-				'get a new script
-				script = GetScriptCollection().GetRandomAvailable()
+				'get a new script - but avoid having multiple scripts
+				'of the same base template (high similarity)
+				script = GetScriptCollection().GetRandomAvailable(usedTemplateGUIDs)
 
 				'add new script to slot
 				if script
 					GetScriptCollection().SetScriptOwner(script, TOwnedGameObject.OWNER_VENDOR)
 					lists[j][i] = script
+
+					if script.basedOnScriptTemplateGUID
+						usedTemplateGUIDs :+ [script.basedOnScriptTemplateGUID]
+					endif
 				endif
 			Next
 		Next
