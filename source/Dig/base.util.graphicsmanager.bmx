@@ -54,6 +54,8 @@ Import BRL.GLMax2D
 ?
 
 Import "base.util.virtualgraphics.bmx"
+Import "base.util.logger.bmx"
+
 
 Type TGraphicsManager
 	Field fullscreen:Int	= 0
@@ -236,7 +238,13 @@ Type TGraphicsManager
 		?Not win32
 		_InitGraphicsDefault()
 		?
-		If Not _g Then Throw "Graphics initiation error! no render engine available."
+		If Not _g
+			TLogger.Log("GraphicsManager.InitGraphics()", "Failed to initialize graphics.", LOG_ERROR)
+			Throw "Failed to initialize graphics! No render engine available."
+		endif
+
+		'now "renderer" contains the ID of the used renderer
+		TLogger.Log("GraphicsManager.InitGraphics()", "Initialized graphics with ~q"+GetRendererName()+"~q.", LOG_DEBUG)
 
 
 		SetBlend ALPHABLEND
@@ -252,9 +260,13 @@ Type TGraphicsManager
 		Select renderer
 			'buffered gl?
 			?android
-			Default SetGraphicsDriver GL2Max2DDriver()
+			Default
+				TLogger.Log("GraphicsManager.InitGraphics()", "SetGraphicsDriver ~qGL2SDL~q.", LOG_DEBUG)
+				SetGraphicsDriver GL2Max2DDriver()
 			?Not android
-			Default SetGraphicsDriver GLMax2DDriver()
+			Default
+				TLogger.Log("GraphicsManager.InitGraphics()", "SetGraphicsDriver ~qOpenGL~q.", LOG_DEBUG)
+				SetGraphicsDriver GLMax2DDriver()
 			?
 		End Select
 
