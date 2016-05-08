@@ -67,7 +67,7 @@ Type TGraphicsManager
 	Field designedHeight:Int= -1
 	Field hertz:Int			= 60
 	Field vsync:Int			= True
-	Field flags:Int			= GRAPHICS_BACKBUFFER '0 'GRAPHICS_BACKBUFFER | GRAPHICS_ALPHABUFFER '& GRAPHICS_ACCUMBUFFER & GRAPHICS_DEPTHBUFFER
+	Field flags:Int			= 0 'GRAPHICS_BACKBUFFER '0 'GRAPHICS_BACKBUFFER | GRAPHICS_ALPHABUFFER '& GRAPHICS_ACCUMBUFFER & GRAPHICS_DEPTHBUFFER
 	Global _instance:TGraphicsManager
 	Global _g:TGraphics
 	Global RENDERER_NAMES:String[] = [	"OpenGL",..

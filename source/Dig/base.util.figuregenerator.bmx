@@ -268,19 +268,19 @@ Type TFigureGeneratorFigure
 		local img:TImage
 		for local partType:int = eachin partOrder
 			if not parts[partType -1] then continue
-			if not parts[partType -1].sprite then continue
+			if not parts[partType -1].GetSprite() then continue
 
 			if not img
-				img = parts[partType -1].sprite.GetImageCopy()
+				img = parts[partType -1].GetSprite().GetImageCopy()
 				LockImage(img).ClearPixels(0)
 			endif
 			
 			local col:TColor = partsColor[partType -1]
 			if not col then col = TColor.clWhite
 
-			DrawImageOnImage(parts[partType -1].sprite.GetImage(), img, 0, 0, col)
+			DrawImageOnImage(parts[partType -1].GetSprite().GetImage(), img, 0, 0, col)
 
-			'print "partIndex:"+(partType -1)+" col:"+col.ToString()+"  sprite:"+parts[partType -1].sprite.name
+			'print "partIndex:"+(partType -1)+" col:"+col.ToString()+"  sprite:"+parts[partType -1].GetSprite().name
 		Next
 		'print "---------"
 		return img
@@ -342,16 +342,18 @@ Type TFigureGeneratorPart
 		if sprite then return partType + "_" + sprite.name + "_" + gender + "_" +age
 		return partType + "_" + "nosprite" + "_" + gender + "_" +age
 	End Method
+
+
+	Method GetSprite:TSprite()
+		if not sprite
+			if spriteName then sprite = GetSpriteFromRegistry(spriteName)
+		endif
+		return sprite
+	End Method
 	
 
 	Method Draw(x:int, y:int, color:TColor)
-		if not sprite
-			if spriteName
-				sprite = GetSpriteFromRegistry(spriteName)
-			else
-				return
-			endif
-		endif
+		if not GetSprite() then return
 		
 		if color
 			local oldCol:TColor = new TColor.Get()
