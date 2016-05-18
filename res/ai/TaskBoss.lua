@@ -38,7 +38,7 @@ end
 function TaskBoss:BeforeBudgetSetup()
 	self:SetFixedCosts()
 
-	local money = MY.GetCredit()
+	local money = MY.GetMoney()
 	local credit = MY.GetCredit()
 	if (money - credit) > 500000 then	
 		local credit = MY.GetCredit()
