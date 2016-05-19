@@ -122,10 +122,16 @@ Type TRegistryImageLoader extends TRegistryBaseLoader
 		local name:string = GetNameFromConfig(data)
 		if resourceName = "image"
 			local img:TImage = LoadImage(pixmap, data.GetInt("flags"))
+			if not img
+				TLogger.Log("TRegistryImageLoader.LoadFromConfig()", "File ~q"+data.GetString("url")+"~q could not be loaded as image.", LOG_ERROR)
+				return Null
+			endif
+
 			GetRegistry().Set(name, img)
 
 			'load potential new sprites from scripts
 			LoadScriptResults(data, img)
+
 			'indicate that the loading was successful
 			return img
 		else
@@ -246,9 +252,12 @@ Type TRegistryImageLoader extends TRegistryBaseLoader
 	'runs all array children in "scriptsData" of the given dataset
 	Method LoadScriptResults:int(data:Tdata, parent:object)
 		local scriptsData:TData[] = TData[](data.Get("scriptsData", new TData[0]))
+		if not scriptsData or scriptsData.length = 0 then return False
+		
 		For local scriptData:TData = eachin scriptsData
 			RunScriptData(scriptData, parent)
 		Next
+		return True
 	End Method
 
 

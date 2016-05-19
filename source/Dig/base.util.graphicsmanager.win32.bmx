@@ -44,6 +44,17 @@ Function SetRendererWin32:TGraphics(_g:TGraphics, renderer:Int var, realWidth:In
 	if not drivers[currentDriverIndex]
 		TLogger.Log("GraphicsManager.InitGraphics()", "~q"+driversName[currentDriverIndex]+"~q not available or incompatible GPU.", LOG_WARNING)
 
+		local driversAvailable:string = ""
+		For local i:int = 0 until drivers.length
+			if driversAvailable <> "" then driversAvailable :+ ", "
+			if drivers[i]
+				driversAvailable :+ driversName[i] +" [OK]"
+			else
+				driversAvailable :+ driversName[i] +" [--]"
+			endif
+		Next
+		TLogger.Log("GraphicsManager.InitGraphics()", "Known renderers: "+driversAvailable, LOG_WARNING)
+		
 		'loop over all drivers
 		for local i:int = 0 until driversID.length
 			'skip current
@@ -95,6 +106,12 @@ Function SetRendererWin32:TGraphics(_g:TGraphics, renderer:Int var, realWidth:In
 				exit
 			endif
 		Next
+
+		'nothing changed?
+		if renderer = driversID[currentDriverIndex]
+			TLogger.Log("GraphicsManager.InitGraphics()", "Failed to find an alternative way to create the graphics context.", LOG_ERROR)
+		endif
+
 	endif
 	
 	return _g

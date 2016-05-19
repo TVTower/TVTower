@@ -125,7 +125,10 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 		'+ create a spritepack (name+"_pack") if no "parent"-spritepack
 		'  is contained in the dataset
 		local sprite:TSprite = new TSprite.InitFromConfig(data)
-		if not sprite then return Null
+		if not sprite
+			TLogger.Log("TRegistrySpriteLoader.LoadSpriteFromConfig()", "File ~q"+data.GetString("url")+"~q could not be loaded as sprite.", LOG_ERROR)
+			return Null
+		endif
 
 		'add to registry
 		GetRegistry().Set(GetNameFromConfig(data), sprite)

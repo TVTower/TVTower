@@ -113,11 +113,11 @@ Type TGraphicsManager
 	'ATTENTION: there is no guarantee that it works flawless on
 	'all computers (graphics context/images might have to be
 	'initialized again)
-	Method SetFullscreen:Int(bool:Int = True)
+	Method SetFullscreen:Int(bool:Int = True, reInitGraphics:int = True)
 		If fullscreen <> bool
 			fullscreen = bool
 			'create a new graphics object if already in graphics mode
-			If _g Then InitGraphics()
+			If _g and reInitGraphics Then InitGraphics()
 
 			Return True
 		EndIf
@@ -225,6 +225,8 @@ Type TGraphicsManager
 
 
 	Method InitGraphics:Int()
+		TLogger.Log("GraphicsManager.InitGraphics()", "Initializing graphics.", LOG_DEBUG)
+
 		'initialize virtual graphics only when "InitGraphics()" is run
 		'for the first time
 		If Not _g Then InitVirtualGraphics()
@@ -241,6 +243,7 @@ Type TGraphicsManager
 		If Not _g
 			TLogger.Log("GraphicsManager.InitGraphics()", "Failed to initialize graphics.", LOG_ERROR)
 			Throw "Failed to initialize graphics! No render engine available."
+			end
 		endif
 
 		'now "renderer" contains the ID of the used renderer
@@ -253,6 +256,7 @@ Type TGraphicsManager
 
 		'virtual resolution
 		SetVirtualGraphics(GetWidth(), GetHeight(), False)
+		TLogger.Log("GraphicsManager.InitGraphics()", "Initialized virtual graphics (for optional letterboxes).", LOG_DEBUG)
 	End Method
 
 

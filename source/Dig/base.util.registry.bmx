@@ -505,6 +505,8 @@ Type TRegistryUnloadedResource
 
 
 	Method Load:Int()
+		EventManager.triggerEvent(TEventSimple.Create("RegistryLoader.onBeginLoadResource", new TData.AddString("name", name).AddString("resourceName", resourceName)))
+
 		'try to find a loader for the objects resource type
 		local loader:TRegistryBaseLoader = TRegistryLoader.GetResourceLoader(resourceName)
 		if not loader then return false
