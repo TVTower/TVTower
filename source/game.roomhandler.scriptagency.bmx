@@ -71,7 +71,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 				GuiListNormal[i].setZindex(i)
 			Next
 
-			GuiListSuitcase	= new TGUIScriptSlotlist.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(150, spriteSuitcase.area.GetH()), "scriptagency")
+			GuiListSuitcase	= new TGUIScriptSlotlist.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(175, spriteSuitcase.area.GetH()), "scriptagency")
 			GuiListSuitcase.SetAutofillSlots(true)
 
 			'for more than 1 entry
@@ -103,6 +103,10 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 			VendorArea = new TGUISimpleRect.Create(vendorAreaPosition, vendorAreaDimension, "scriptagency" )
 			'vendor should accept drop - else no recognition
 			VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
+			VendorArea.zIndex = 0
+
+			'must be above vendorArea, as they overlap
+			GuiListSuitcase.zIndex = 100
 		endif
 
 		
@@ -870,7 +874,13 @@ endrem
 			SetBlend AlphaBlend
 		endif
 
+		'debug
+		'SetAlpha 0.4
+		'DrawRect(VendorArea.rect.GetX(),VendorArea.rect.GetY(), VendorArea.rect.GetW(), VendorArea.rect.GetH())
+		'SetAlpha 1.0
+		'DrawRect(GuiListSuitcase.GetScreenX(),GuiListSuitcase.GetScreenY(), GuiListSuitcase.GetScreenWidth(), GuiListSuitcase.GetScreenHeight())
 
+		
 		GUIManager.Draw("scriptagency")
 
 		if hoveredGuiScript
