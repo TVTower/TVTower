@@ -99,7 +99,7 @@ Type TPlayerBase {_exposeToLua="selected"}
 	Field playerType:int = 0
 
 	Field emptyProgrammeSuitcase:int = False
-	Field emptyProgrammeSuitcaseTime:int = 0
+	Field emptyProgrammeSuitcaseTime:Long = 0
 
 	'1=ready, 0=not set, ...
 	Field networkstate:Int = 0
@@ -121,6 +121,18 @@ Type TPlayerBase {_exposeToLua="selected"}
 	Const PLAYERTYPE_REMOTE_HUMAN:int = 2
 	Const PLAYERTYPE_REMOTE_AI:int = 3
 	Const PLAYERTYPE_INACTIVE:int = 4
+
+
+	'reset everything to base state
+	Method Initialize:int()
+		emptyProgrammeSuitcase = False
+		emptyProgrammeSuitcaseTime = 0
+		for local i:int = 0 until newsabonnements.length
+			newsabonnements[i] = 0
+			newsabonnementsDayMax[i] = -1
+			newsabonnementsSetTime[i] = 0
+		next
+	End Method
 		
 
 	Method GetPlayerID:Int() {_exposeToLua}

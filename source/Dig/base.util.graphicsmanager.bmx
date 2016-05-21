@@ -267,10 +267,12 @@ Type TGraphicsManager
 			Default
 				TLogger.Log("GraphicsManager.InitGraphics()", "SetGraphicsDriver ~qGL2SDL~q.", LOG_DEBUG)
 				SetGraphicsDriver GL2Max2DDriver()
+				renderer = RENDERER_GL2SDL
 			?Not android
 			Default
 				TLogger.Log("GraphicsManager.InitGraphics()", "SetGraphicsDriver ~qOpenGL~q.", LOG_DEBUG)
 				SetGraphicsDriver GLMax2DDriver()
+				renderer = RENDERER_OPENGL
 			?
 		End Select
 
@@ -317,7 +319,9 @@ Type TGraphicsManager
 
 	Method EnableSmoothLines:Int()
 		If renderer = RENDERER_OPENGL Or renderer = RENDERER_BUFFEREDOPENGL
+			?not android
 			GlEnable(GL_LINE_SMOOTH)
+			?
 			Return True
 		Else
 			Return False

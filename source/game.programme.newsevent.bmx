@@ -17,8 +17,17 @@ Import "game.player.base.bmx"
 
 
 Type TNewsEventCollection
-	'holding all existent news events (also triggered news)
+	'contains news just happened
+	Field newsEventsHistory:TNewsEvent[]
+	Field newsEventsHistoryIndex:int=0
+	'holding all existent news events (also triggered news, but not
+	'non-reuseable ones or happened one-time-events)
+	Field managedNewsEvents:TMap = CreateMap()
+	'holding all news event ever created (including non-reuseable ones)
 	Field allNewsEvents:TMap = CreateMap()
+	
+	'holding a number of "sethappened"-newsevents (for ordering)
+	Field nextNewsNumber:Long = 0
 	'=== CACHE ===
 	'cache for faster access
 
@@ -44,8 +53,14 @@ Type TNewsEventCollection
 
 
 	Method Initialize:TNewsEventCollection()
+		newsEventsHistory = new TNewsEvent[0]
+		newsEventsHistoryIndex = 0
+		
+		managedNewsEvents.Clear()
 		allNewsEvents.Clear()
 		_InvalidateCaches()
+
+		nextNewsNumber = 0
 
 		return self
 	End Method
@@ -86,8 +101,9 @@ Type TNewsEventCollection
 
 	
 	Method Add:int(obj:TNewsEvent)
-		'add to common map
+		'add to common maps
 		'special lists get filled when using their Getters
+		managedNewsEvents.Insert(obj.GetGUID(), obj)
 		allNewsEvents.Insert(obj.GetGUID(), obj)
 
 		_InvalidateCaches()
@@ -103,8 +119,34 @@ Type TNewsEventCollection
 	End Method
 
 
+	Method AddHappenedEvent:int(obj:TNewsEvent)
+		'max 100 entries
+		if newsEventsHistory.length > 100
+			newsEventsHistory = newsEventsHistory[50 ..]
+		endif
+		'resize if needed
+		if newsEventsHistory.length < newsEventsHistoryIndex+1
+			newsEventsHistory = newsEventsHistory[.. newsEventsHistory.length + 10]
+		endif
+		
+		newsEventsHistory[newsEventsHistoryIndex] = obj
+
+		newsEventsHistoryIndex :+ 1
+	End Method
+
+
+
 	Method Remove:int(obj:TNewsEvent)
 		allNewsEvents.Remove(obj.GetGUID())
+
+		_InvalidateCaches()
+
+		return TRUE
+	End Method
+
+
+	Method RemoveManaged:int(obj:TNewsEvent)
+		managedNewsEvents.Remove(obj.GetGUID())
 
 		_InvalidateCaches()
 
@@ -122,13 +164,16 @@ Type TNewsEventCollection
 	
 
 	Method GetByGUID:TNewsEvent(GUID:String)
-		Return TNewsEvent(allNewsEvents.ValueForKey(GUID))
+		Return TNewsEvent(managedNewsEvents.ValueForKey(GUID))
 	End Method
 
 
 	Method RemoveOutdatedNewsEvents(minAgeInDays:int=5, genre:int=-1)
 		local somethingDeleted:int = False
-		For local newsEvent:TNewsEvent = eachin allNewsEvents.Copy().Values()
+		local toRemove:TNewsEvent[]
+		local toReuse:TNewsEvent[]
+		
+		For local newsEvent:TNewsEvent = eachin managedNewsEvents.Values()
 			'not happened yet - should not happen
 			if not newsEvent.HasHappened() then continue
 			'only interested in a specific genre?
@@ -138,15 +183,24 @@ Type TNewsEventCollection
 				'if the news event cannot get used again remove them
 				'from all lists
 				if not newsEvent.IsReuseable()
-					Remove(newsEvent)
+					toRemove :+ [newsEvent]
 				else
-					newsEvent.Reuse()
+					toReuse :+ [newsEvent]
 				endif
 
 				somethingDeleted = true
 			endif
 		Next
 
+		'to deletion/modification in an extra step - this avoids
+		'to create a map-copy just to avoid concurrent modification
+		For local n:TNewsEvent = Eachin toRemove
+			RemoveManaged(n)
+		Next
+		For local n:TNewsEvent = Eachin toReuse
+			n.Reuse()
+		Next
+		
 		'reset caches, so lists get filled correctly
 		if somethingDeleted then _InvalidateCaches()
 	End Method
@@ -155,7 +209,10 @@ Type TNewsEventCollection
 	'remove news events which no longer "happen" (eg. thunderstorm warnings) 
 	Method RemoveEndedNewsEvents(genre:int=-1)
 		local somethingDeleted:int = False
-		For local newsEvent:TNewsEvent = eachin allNewsEvents.Copy().Values()
+		local toRemove:TNewsEvent[]
+		local toReuse:TNewsEvent[]
+
+		For local newsEvent:TNewsEvent = eachin managedNewsEvents.Values()
 			'only interested in a specific genre?
 			if genre <> -1 and newsEvent.genre <> genre then continue 
 
@@ -163,14 +220,24 @@ Type TNewsEventCollection
 				'if the news event cannot get used again remove them
 				'from all lists
 				if not newsEvent.IsReuseable()
-					Remove(newsEvent)
+					toRemove :+ [newsEvent]
 				else
-					newsEvent.Reuse()
+					toReuse :+ [newsEvent]
 				endif
-
+				
 				somethingDeleted = true
 			endif
 		Next
+
+		'to deletion/modification in an extra step - this avoids
+		'to create a map-copy just to avoid concurrent modification
+		For local n:TNewsEvent = Eachin toRemove
+			RemoveManaged(n)
+		Next
+		For local n:TNewsEvent = Eachin toReuse
+			n.Reuse()
+		Next
+		
 
 		'reset caches, so lists get filled correctly
 		if somethingDeleted then _InvalidateCaches()
@@ -180,7 +247,9 @@ Type TNewsEventCollection
 	'resets already used news events of the past so they can get used again
 	Method ResetReuseableNewsEvents(minAgeInDays:int=5, genre:int=-1)
 		local somethingReset:int = False
-		For local newsEvent:TNewsEvent = eachin allNewsEvents.Values()
+		local toReuse:TNewsEvent[]
+
+		For local newsEvent:TNewsEvent = eachin managedNewsEvents.Values()
 			'not happened yet
 			if newsEvent.HasHappened() then continue
 			'only interested in a specific genre?
@@ -190,10 +259,14 @@ Type TNewsEventCollection
 				'not reuseable
 				If not newsEvent.IsReuseable() then continue
 
-				newsEvent.Reuse()
+				toReuse :+ [newsEvent]
 
 				somethingReset = True
 			endif
+		Next
+
+		For local n:TNewsEvent = Eachin toReuse
+			n.Reuse()
 		Next
 
 		'reset caches, so lists get filled correctly
@@ -227,6 +300,15 @@ Type TNewsEventCollection
 	End Method
 
 
+	Method GetNewsHistory:TNewsEvent[](limit:int=-1)
+		if limit = -1
+			return newsEventsHistory[.. newsEventsHistoryIndex]
+		else
+			return newsEventsHistory[Max(0,newsEventsHistoryIndex-limit) .. newsEventsHistoryIndex]
+		endif
+	End Method
+	
+
 	'returns (and creates if needed) a list containing only available news
 	Method GetAvailableNewsList:TList(genre:int=-1)
 		'create if missing
@@ -235,7 +317,7 @@ Type TNewsEventCollection
 		if not _availableNewsEvents[genre+1]
 			_availableNewsEvents[genre+1] = CreateList()
 			'GetInitialNewsList() does NOT contain "initialInGameNews",
-			'use "allNewsEvents.Values()" to have them included too.
+			'use "managedNewsEvents.Values()" to have them included too.
 			'But skip "followingNews" then!
 			For local event:TNewsEvent = EachIn GetInitialNewsList(genre)
 				'skip news happened somewhen (past or future)
@@ -252,14 +334,14 @@ Type TNewsEventCollection
 
 
 	'returns (and creates if needed) a list containing only already used
-	'news
+	'news (which are reuseable!)
 	Method GetUsedNewsList:TList(genre:int=-1)
 		'create if missing
 		if not _usedNewsEvents then _InvalidateUsedNewsEvents()
 
 		if not _usedNewsEvents[genre+1]
 			_usedNewsEvents[genre+1] = CreateList()
-			For local event:TNewsEvent = EachIn allNewsEvents.Values()
+			For local event:TNewsEvent = EachIn managedNewsEvents.Values()
 				'skip not happened events - or upcoming events
 				if not event.HasHappened() then continue
 				'only interested in a specific genre?
@@ -279,7 +361,7 @@ Type TNewsEventCollection
 
 		if not _initialNewsEvents[genre+1]
 			_initialNewsEvents[genre+1] = CreateList()
-			For local event:TNewsEvent = EachIn allNewsEvents.Values()
+			For local event:TNewsEvent = EachIn managedNewsEvents.Values()
 				if event.newsType <> TVTNewsType.InitialNews then continue
 				'only interested in a specific genre?
 				if genre <> -1 and event.genre <> genre then continue 
@@ -298,7 +380,7 @@ Type TNewsEventCollection
 
 		if not _followingNewsEvents[genre+1]
 			_followingNewsEvents[genre+1] = CreateList()
-			For local event:TNewsEvent = EachIn allNewsEvents.Values()
+			For local event:TNewsEvent = EachIn managedNewsEvents.Values()
 				if event.newsType <> TVTNewsType.FollowingNews then continue
 				'only interested in a specific genre?
 				if genre <> -1 and event.genre <> genre then continue 
@@ -317,7 +399,7 @@ Type TNewsEventCollection
 		
 		if not _upcomingNewsEvents[genre+1]
 			_upcomingNewsEvents[genre+1] = CreateList()
-			For local event:TNewsEvent = EachIn allNewsEvents.Values()
+			For local event:TNewsEvent = EachIn managedNewsEvents.Values()
 				'skip events already happened or not happened at all (-> "-1")
 				if event.HasHappened() or event.happenedTime = -1 then continue
 				'only interested in a specific genre?
@@ -333,7 +415,16 @@ Type TNewsEventCollection
 	Method setNewsHappened(news:TNewsEvent, time:Double = 0)
 		'nothing set - use "now"
 		if time = 0 then time = GetWorldTime().GetTimeGone()
-		news.happenedtime = time
+
+		if news.happenedTime <> time
+			news.newsNumber = nextNewsNumber
+			nextNewsNumber :+ 1
+
+			news.happenedTime = time
+
+			'add to the "happened" list
+			if news.HasHappened() then AddHappenedEvent(news)
+		endif
 
 		'reset only specific caches, so news gets in the correct list
 		'- no need to invalidate newstype-specific caches
@@ -342,8 +433,34 @@ Type TNewsEventCollection
 		_InvalidateAvailableNewsEvents()
 
 		'remove the news if it cannot happen again
-		if not news.IsReuseable() then Remove(news)
+		if not news.IsReuseable() then RemoveManaged(news)
 	End Method
+
+
+	Function SortByHappenedTime:int(o1:object, o2:object)
+		local n1:TNewsEvent = TNewsEvent(o1)
+		local n2:TNewsEvent = TNewsEvent(o2)
+		if not n2 then return 1
+		if not n1 then return -1
+
+		if n1.happenedTime > n2.happenedTime then return 1
+		if n1.happenedTime < n2.happenedTime then return -1
+		return 0
+	End Function
+
+
+
+	Function SortByNewsNumber:int(o1:object, o2:object)
+		local n1:TNewsEvent = TNewsEvent(o1)
+		local n2:TNewsEvent = TNewsEvent(o2)
+		if not n2 then return 1
+		if not n1 then return -1
+
+		if n1.newsNumber > n2.newsNumber then return 1
+		if n1.newsNumber < n2.newsNumber then return -1
+		'fall back to happened time
+		return SortByHappenedTime(o1, o2)
+	End Function
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -361,6 +478,8 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	Field qualityRaw:Float = -1.0 'none
 	'time when something happened or will happen. "-1" = not happened
 	Field happenedTime:Long = -1
+	'number of the news since begin of game (for potential ordering)
+	Field newsNumber:Long = 0
 	'time when a news gets invalid (eg. thunderstorm warning)
 	Field eventDuration:Int = -1
 	'type of the news event according to TVTNewsType

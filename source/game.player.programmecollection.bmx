@@ -405,7 +405,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		'invalidate
 		_programmeLicences = null
 
-		'set unused again (give back to pool)
+		'set unused again (give back to pool), do this regardless of
+		'"sell" result
 		licence.SetOwner( TOwnedGameObject.OWNER_NOBODY )
 
 		'emit an event so eg. network can recognize the change
@@ -908,6 +909,14 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	Method HasNews:int(newsObject:TNews) {_exposeToLua}
 		return news.contains(newsObject)
+	End Method
+
+
+	Method HasNewsEvent:int(newsEvent:TNewsEvent) {_exposeToLua}
+		For local n:TNews = EachIn news
+			if n.newsEvent = newsEvent then return True
+		Next
+		return False
 	End Method
 
 

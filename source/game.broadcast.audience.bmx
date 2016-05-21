@@ -41,15 +41,15 @@ Type TAudienceManager
 		return currentAudienceBreakdown
 	End Method
 
-
+rem
 	Method ModifyAudienceBreakdown:TAudienceBase(AudienceModifier:TAudienceBase, relativeChange:int = True)
 		if relativeChange
-'			currentAudienceBreakdown = GetAudienceBreakdown().Copy().ModifySumRelative(AudienceModifier)
+			currentAudienceBreakdown = GetAudienceBreakdown().Copy().ModifySumRelative(AudienceModifier)
 		else
-'			currentAudienceBreakdown = GetAudienceBreakdown().Copy().ModifySumAbsolute(AudienceModifier)
+			currentAudienceBreakdown = GetAudienceBreakdown().Copy().ModifySumAbsolute(AudienceModifier)
 		endif
 	End Method
-	
+endrem	
 
 	'returns the female percentage by default
 	Method GetGenderBreakdown:TAudienceBase(gender:int=-1)

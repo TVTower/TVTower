@@ -609,36 +609,83 @@ Type TBroadcast
 
 		'TODO: Eventuell auch in ein config-File auslagern
 		Select GetWorldTime().GetDayHour(time)
-			Case 0  result = new TAudience.Init(-1,  2, 6, 16, 11, 21, 19, 23)
-			Case 1  result = new TAudience.Init(-1,  0.5, 4, 7, 7, 15, 9, 13)
-			Case 2  result = new TAudience.Init(-1,  0.2, 1, 4, 4, 10, 3, 8)
-			Case 3  result = new TAudience.Init(-1,  0.1, 1, 3, 3, 7, 2, 5)
-			Case 4  result = new TAudience.Init(-1,  0.1, 0.5, 2, 3, 4, 1, 3)
-			Case 5  result = new TAudience.Init(-1,  0.2, 1, 2, 4, 3, 3, 3)
-			Case 6  result = new TAudience.Init(-1,  1, 2, 3, 6, 3, 5, 4)
-			Case 7  result = new TAudience.Init(-1,  4, 7, 6, 8, 4, 8, 5)
-			Case 8  result = new TAudience.Init(-1,  5, 2, 8, 5, 7, 11, 8)
-			Case 9  result = new TAudience.Init(-1,  6, 2, 9, 3, 12, 7, 10)
-			Case 10 result = new TAudience.Init(-1,  5, 2, 9, 3, 14, 3, 11)
-			Case 11 result = new TAudience.Init(-1,  5, 3, 9, 4, 15, 4, 12)
-			Case 12 result = new TAudience.Init(-1,  7, 9, 11, 8, 15, 8, 13)
-			Case 13 result = new TAudience.Init(-1,  8, 12, 14, 7, 24, 6, 19)
-			Case 14 result = new TAudience.Init(-1,  10, 13, 15, 6, 31, 2, 21)
-			Case 15 result = new TAudience.Init(-1,  11, 14, 16, 6, 29, 2, 22)
-			Case 16 result = new TAudience.Init(-1,  11, 15, 21, 6, 35, 2, 24)
-			Case 17 result = new TAudience.Init(-1,  12, 16, 22, 11, 36, 3, 25)
-			Case 18 result = new TAudience.Init(-1,  16, 21, 24, 18, 39, 5, 34)
-			Case 19 result = new TAudience.Init(-1,  24, 33, 28, 28, 46, 12, 49)
-			Case 20 result = new TAudience.Init(-1,  16, 36, 33, 37, 56, 23, 60)
-			Case 21 result = new TAudience.Init(-1,  11, 32, 31, 36, 53, 25, 62)
-			Case 22 result = new TAudience.Init(-1,  5, 23, 30, 30, 46, 35, 49)
-			Case 23 result = new TAudience.Init(-1,  3, 14, 24, 20, 34, 33, 35)
+			'                                  gender
+			'                                    |  children
+			'                                    |    |  teenagers
+			'                                    |    |    |  housewives 
+			'                                    |    |    |    |  employees
+			'                                    |    |    |    |    |  unemployed
+			'                                    |    |    |    |    |    |  manager
+			'                                    |    |    |    |    |    |    |  pensioners
+			Case 0  result = new TAudience.Init(-1,   2,   6,  16,  11,  21,  19,  23)
+			Case 1  result = new TAudience.Init(-1, 0.5,   4,   7,   7,  15,   9,  13)
+			Case 2  result = new TAudience.Init(-1, 0.2,   1,   4,   4,  10,   3,   8)
+			Case 3  result = new TAudience.Init(-1, 0.1,   1,   3,   3,   7,   2,   5)
+			Case 4  result = new TAudience.Init(-1, 0.1, 0.5,   2,   3,   4,   1,   3)
+			Case 5  result = new TAudience.Init(-1, 0.2,   1,   2,   4,   3,   3,   3)
+			Case 6  result = new TAudience.Init(-1,   1,   2,   3,   6,   3,   5,   4)
+			Case 7  result = new TAudience.Init(-1,   4,   7,   6,   8,   4,   8,   5)
+			Case 8  result = new TAudience.Init(-1,   5,   2,   8,   5,   7,  11,   8)
+			Case 9  result = new TAudience.Init(-1,   6,   2,   9,   3,  12,   7,  10)
+			Case 10 result = new TAudience.Init(-1,   5,   2,   9,   3,  14,   3,  11)
+			Case 11 result = new TAudience.Init(-1,   5,   3,   9,   4,  15,   4,  12)
+			Case 12 result = new TAudience.Init(-1,   7,   9,  11,   8,  15,   8,  13)
+			Case 13 result = new TAudience.Init(-1,   8,  12,  14,   7,  24,   6,  19)
+			Case 14 result = new TAudience.Init(-1,  10,  13,  15,   6,  31,   2,  21)
+			Case 15 result = new TAudience.Init(-1,  11,  14,  16,   6,  29,   2,  22)
+			Case 16 result = new TAudience.Init(-1,  11,  15,  21,   6,  35,   2,  24)
+			Case 17 result = new TAudience.Init(-1,  12,  16,  22,  11,  36,   3,  25)
+			Case 18 result = new TAudience.Init(-1,  16,  21,  24,  18,  39,   5,  34)
+			Case 19 result = new TAudience.Init(-1,  24,  33,  28,  28,  46,  12,  49)
+			Case 20 result = new TAudience.Init(-1,  16,  36,  33,  37,  56,  23,  60)
+			Case 21 result = new TAudience.Init(-1,  11,  32,  31,  36,  53,  25,  62)
+			Case 22 result = new TAudience.Init(-1,   5,  23,  30,  30,  46,  35,  49)
+			Case 23 result = new TAudience.Init(-1,   3,  14,  24,  20,  34,  33,  35)
 		EndSelect
 
 		'convert to 0-1.0 percentage
 		return result.multiplyFloat(0.01)
 	End Function
-	
+
+rem
+	'returns how many percent of the people watch TV depending on the
+	'world weather (rain = better audience)
+	Function GetPotentialAudiencePercentage_WeatherMod:TAudience(time:Double = -1)
+		If time < 0 Then time = GetWorldTime().GetTimeGone()
+
+		local result:TAudience
+
+		'create a result value describing how big the influence of the
+		'weather is.
+		'  0 =   0% influence (no modification)
+		'100 = 100% influence (sun = no watcher, rain = 100% watcher)
+		Select GetWorldTime().GetDayHour(time)
+			'during night times, people do not do things outside
+			Case 0,1,2,3,4,5,6,7
+				result = new TAudience.InitValue(0, 0)
+			Case 8   result = new TAudience.InitValue( 5,  5)
+			Case 9   result = new TAudience.InitValue(10, 10)
+			Case 10  result = new TAudience.InitValue(12, 12)
+			Case 11  result = new TAudience.InitValue(13, 13)
+			Case 12  result = new TAudience.InitValue(14, 14)
+			'midday and afternoon people love doing things outside
+			Case 13,14,15,16,17
+			  result = new TAudience.InitValue(15, 15)
+			Case 18  result = new TAudience.InitValue(14, 14)
+			Case 19  result = new TAudience.InitValue(13, 13)
+			Case 20  result = new TAudience.InitValue(12, 12)
+			Case 21  result = new TAudience.InitValue(11, 11)
+			Case 22  result = new TAudience.InitValue(10, 10)
+			Case 23  result = new TAudience.InitValue( 5,  5)
+		EndSelect
+
+		'fetch the current weather
+		GetWorldWeather()
+
+		'convert to 0-1.0 percentage
+		return result.multiplyFloat(0.01)
+	End Function
+endrem	
 
 	Function GetPotentialAudienceModifier:TAudience(time:Double = -1)
 		local modifier:TAudience = new TAudience.InitValue(1, 1)

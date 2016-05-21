@@ -725,7 +725,7 @@ Type TNewsAgency
 	End Method
 
 
-	Method AnnounceNewNewsEvent:Int(genre:int=-1, adjustHappenedTime:Int=0, forceAdd:Int=False)
+	Method AnnounceNewNewsEvent:TNewsEvent(genre:int=-1, adjustHappenedTime:Int=0, forceAdd:Int=False)
 		'=== CREATE A NEW NEWS ===
 		Local newsEvent:TNewsEvent = GenerateNewNewsEvent(genre)
 
@@ -740,10 +740,17 @@ Type TNewsAgency
 					'a player listens to this genre, disallow skipping
 					If player.newsabonnements[newsEvent.genre] > 0 Then skipNews = False
 				Next
-				?debug
-				if skipNews then print "[NEWSAGENCY] skip news: "+newsEvent.GetTitle()
-				?
-				if skipNews then TLogger.Log("NewsAgency", "Skip news: ~q"+newsEvent.GetTitle()+"~q as nobody is listening.", LOG_DEBUG)
+				if not forceAdd
+					?debug
+					if skipNews then print "[NEWSAGENCY] Nobody listens to genre "+newsEvent.genre+". Skip news: ~q"+newsEvent.GetTitle()+"~q."
+					?
+					if skipNews then TLogger.Log("NewsAgency", "Nobody listens to genre "+newsEvent.genre+". Skip news: ~q"+newsEvent.GetTitle()+"~q.", LOG_DEBUG)
+				else
+					?debug
+					if skipNews then print "[NEWSAGENCY] Nobody listens to genre "+newsEvent.genre+". Would skip news, but am forced to add: ~q"+newsEvent.GetTitle()+"~q."
+					?
+					if skipNews then TLogger.Log("NewsAgency", "Nobody listens to genre "+newsEvent.genre+". Would skip news, but am forced to add: ~q"+newsEvent.GetTitle()+"~q.", LOG_DEBUG)
+				endif
 			EndIf
 
 			If not skipNews or forceAdd
@@ -752,7 +759,7 @@ Type TNewsAgency
 				?debug
 				Print "[NEWSAGENCY | LOCAL] AnnounceNewNews: added news title="+newsEvent.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
 				?
-				if skipNews then TLogger.Log("NewsAgency", "Added news: ~q"+newsEvent.GetTitle()+"~q for time "+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)+".", LOG_DEBUG)
+				TLogger.Log("NewsAgency", "Added news: ~q"+newsEvent.GetTitle()+"~q for time "+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)+".", LOG_DEBUG)
 			EndIf
 		EndIf
 
@@ -760,7 +767,8 @@ Type TNewsAgency
 		'=== ADJUST TIME FOR NEXT NEWS ANNOUNCEMENT ===
 		ResetNextEventTime(genre)
 
-		return announced
+		if announced then return newsEvent
+		return Null
 	End Method
 
 

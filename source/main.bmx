@@ -197,11 +197,17 @@ Type TApp
 			EventManager.registerListenerFunction( "guiModalWindowChain.onClose", onCloseEscapeMenu )
 			EventManager.registerListenerFunction( "RegistryLoader.onLoadXmlFromFinished",	TApp.onLoadXmlFromFinished )
 			obj.OnLoadMusicListener = EventManager.registerListenerFunction( "RegistryLoader.onLoadResource",	TApp.onLoadMusicResource )
+
+			?debug
+			EventManager.registerListenerFunction( "RegistryLoader.onLoadResource", TApp.onLoadResource )
+			EventManager.registerListenerFunction( "RegistryLoader.onBeginLoadResource", TApp.onBeginLoadResource )
+			?
 	
 			obj.LoadSettings()
 			'override default settings with app arguments (params when executing)
 			obj.ApplyAppArguments()
-			obj.ApplySettings()
+			'do not init graphics, this is done some lines later
+			obj.ApplySettings(False)
 
 			GetDeltatimer().Init(updatesPerSecond, obj.config.GetInt("fps", framesPerSecond))
 			GetDeltaTimer()._funcUpdate = update
@@ -221,6 +227,7 @@ Type TApp
 			MouseManager._longClickTime = obj.config.GetInt("longClickTime", 400)
 
 			
+			TLogger.Log("App.Create()", "Loading base resources.", LOG_DEBUG)
 			'load graphics needed for loading screen,
 			'load directly (no delayed loading)
 			obj.LoadResources(obj.baseResourceXmlUrl, True)			
@@ -263,6 +270,21 @@ Type TApp
 			End Select
 		Next
 	End Method
+
+
+	Function onBeginLoadResource( triggerEvent:TEventBase )
+		Local resourceName:String = triggerEvent.GetData().GetString("resourceName")
+		Local name:String = triggerEvent.GetData().GetString("name")
+		TLogger.Log("App.onLoadResource", "Loading ~q"+name+"~q ["+resourceName+"]", LOG_LOADING)
+	End Function
+
+
+	Function onLoadResource( triggerEvent:TEventBase )
+		Local resourceName:String = triggerEvent.GetData().GetString("resourceName")
+		Local name:String = triggerEvent.GetData().GetString("name")
+		TLogger.Log("App.onLoadResource", "Loaded ~q"+name+"~q ["+resourceName+"]", LOG_LOADING)
+	End Function
+	
 
 
 	'if no startup-music was defined, try to play menu music if some
@@ -335,24 +357,29 @@ Type TApp
 	End Method
 
 
-	Method ApplySettings:Int()
+	Method ApplySettings:Int(doInitGraphics:int = True)
 		local adjusted:int = False
-		if GetGraphicsManager().SetFullscreen(config.GetBool("fullscreen", False))
+		if GetGraphicsManager().SetFullscreen(config.GetBool("fullscreen", False), False)
+			TLogger.Log("ApplySettings()", "SetFullscreen = "+config.GetBool("fullscreen", False), LOG_DEBUG)
 			adjusted = True
 		endif
 		if GetGraphicsManager().SetRenderer(config.GetInt("renderer", GetGraphicsManager().GetRenderer()))
+			TLogger.Log("ApplySettings()", "SetRenderer = "+config.GetInt("renderer", GetGraphicsManager().GetRenderer()), LOG_DEBUG)
 			adjusted = True
 		endif
 		if GetGraphicsManager().SetColordepth(config.GetInt("colordepth", 16))
+			TLogger.Log("ApplySettings()", "SetColordepth = "+config.GetInt("colordepth", -1), LOG_DEBUG)
 			adjusted = True
 		endif
 		if GetGraphicsManager().SetVSync(config.GetBool("vsync", True))
+			TLogger.Log("ApplySettings()", "SetVSync = "+config.GetBool("vsync", False), LOG_DEBUG)
 			adjusted = True
 		endif
 		if GetGraphicsManager().SetResolution(config.GetInt("screenW", 800), config.GetInt("screenH", 600))
+			TLogger.Log("ApplySettings()", "SetResolution = "+config.GetInt("screenW", 800)+"x"+config.GetInt("screenH", 600), LOG_DEBUG)
 			adjusted = True
 		endif
-		if adjusted then GetGraphicsManager().InitGraphics()
+		if adjusted and doInitGraphics then GetGraphicsManager().InitGraphics()
 
 		GameRules.InRoomTimeSlowDownMod = config.GetInt("inroomslowdown", 100) / 100.0
 
@@ -373,8 +400,18 @@ Type TApp
 
 
 	Method LoadResources:Int(path:String="config/resources.xml", directLoad:Int=False)
+		?debug
+		local deferred:string = ""
+		if not directLoad then deferred = "(Deferred) "
+		TLogger.Log("App.LoadResources()", deferred+"Loading resources from ~q"+path+"~q.", LOG_DEBUG)
+		?
+
 		Local registryLoader:TRegistryLoader = New TRegistryLoader
 		registryLoader.LoadFromXML(path, directLoad)
+
+		?debug
+		TLogger.Log("App.LoadResources()", deferred+"Loading resources from ~q"+path+"~q finished.", LOG_DEBUG)
+		?
 	End Method
 
 
@@ -4767,7 +4804,7 @@ Function PrintCurrentTranslationState(compareLang:string="tr")
 	print "=== NEWSEVENTS ================="
 	print "AVAILABLE:"
 	print "----------"
-	For local obj:TNewsEvent = EachIn GetNewsEventCollection().allNewsEvents.Values()	
+	For local obj:TNewsEvent = EachIn GetNewsEventCollection().managedNewsEvents.Values()	
 		local printed:int = False
 		if obj.title.Get("de") <> obj.title.Get(compareLang)
 			print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
@@ -4785,7 +4822,7 @@ Function PrintCurrentTranslationState(compareLang:string="tr")
 	print "~t"
 	print "MISSING:"
 	print "--------"
-	For local obj:TNewsEvent = EachIn GetNewsEventCollection().allNewsEvents.Values()	
+	For local obj:TNewsEvent = EachIn GetNewsEventCollection().managedNewsEvents.Values()	
 		local printed:int = False
 		if obj.title.Get("de") = obj.title.Get(compareLang)
 			print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")

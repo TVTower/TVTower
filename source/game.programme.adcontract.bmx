@@ -335,6 +335,25 @@ Type TAdContractBase extends TBroadcastMaterialSourceBase {_exposeToLua}
 	End Function
 
 
+	Method IsAvailable:int()
+		'field "available" = false ?
+		if not super.IsAvailable() then return False
+		
+		'skip contracts not available in this game year
+		if availableYearRangeFrom >= 0 and availableYearRangeTo >= 0
+			if GetWorldTime().GetYear() < availableYearRangeFrom or GetWorldTime().GetYear() > availableYearRangeTo then return False
+		endif
+
+		'a special script expression defines custom rules for adcontracts
+		'to be available or not
+		if availableScript and not ScriptExpression.Eval(availableScript, TAdContractBaseFilter.HandleScriptVariables)
+			return False
+		endif
+
+		return True
+	End Method
+	
+
 	'playerID < 0 means "get all"
 	Method GetTimesBroadcastedAsInfomercial:Int(playerID:int = -1)
 		if playerID >= timesBroadcastedAsInfomercial.length then Return 0
@@ -1608,10 +1627,8 @@ Type TAdContractBaseFilter
 	Method DoesFilter:Int(contract:TAdContractBase)
 		if not contract then return False
 
-		'skip contracts not available in this game year
-		if contract.availableYearRangeFrom >= 0 and contract.availableYearRangeTo >= 0
-			if GetWorldTime().GetYear() < contract.availableYearRangeFrom or GetWorldTime().GetYear() > contract.availableYearRangeTo then return False
-		endif
+		'skip contracts not available (year or by script expression)
+		if not contract.IsAvailable() then return False
 
 
 		if minAudienceMin >= 0 and contract.minAudienceBase < minAudienceMin then return False
@@ -1646,14 +1663,6 @@ Type TAdContractBaseFilter
 			For local genre:int = EachIn limitedToProgrammeGenres
 				if contract.limitedToProgrammeGenre = genre then return True
 			Next
-			return False
-		endif
-
-
-		'a special script expression defines custom rules for adcontracts
-		'to be available or not
-		'Run this after the more simple checks to avoid cpu load
-		if contract.availableScript and not ScriptExpression.Eval(contract.availableScript, HandleScriptVariables)
 			return False
 		endif
 

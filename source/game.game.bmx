@@ -1,6 +1,9 @@
 
 'Game - holds time, audience, money and other variables (typelike structure makes it easier to save the actual state)
 Type TGame Extends TGameBase {_exposeToLua="selected"}
+	Field startAdContractBaseGUIDs:string[3]
+	Field startProgrammeGUIDs:string[]
+	
 	Global _initDone:Int = False
 	Global _eventListeners:TLink[]
 	Global StartTipWindow:TGUIModalWindow
@@ -169,6 +172,240 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method ResetPlayer(playerID:int)
+		local player:TPlayer = GetPlayer(playerID)
+		if not player then return
+
+
+		Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerID)
+		Local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan(playerID)
+
+		'TODO: ueberpruefen, ob der Programmplan eines alten Spielers
+		'      gespeichert werden sollte (bspweise in TPlayer)
+		'      So koennte auch bei alten Spielern noch auf die Historie
+		'      zurueckgegriffen werden
+		 
+
+		'=== SELL ALL PROGRAMMES ===
+		'sell forced too (so also programmed ones)
+		local lists:TList[] = [ programmeCollection.suitcaseProgrammeLicences, ..
+		                        programmeCollection.singleLicences, ..
+		                        programmeCollection.seriesLicences, ..
+		                        programmeCollection.collectionLicences ]
+		local sellLicences:TProgrammeLicence[]
+		For local list:TList = EachIn lists
+			For local licence:TProgrammeLicence = EachIn list
+				sellLicences :+ [licence]
+			Next
+		Next
+		For local licence:TProgrammeLicence = EachIn sellLicences
+			if licence.sell()
+				print "sold licence: "+licence.getTitle()
+			endif
+		Next
+
+
+		'=== ABANDON ALL CONTRACTS ===
+
+
+		'=== SELL ALL SCRIPTS ===
+
+
+		'=== ABORT PRODUCTIONS ? ===
+
+
+		'=== STOP ROOM RENT CONTRACTS ===
+
+
+		'=== RESET NEWS ABONNEMENTS ===
+
+
+		'=== REMOVE DELAYED NEWS ===
+		'better call GetNewsAgency().RemoveNewsForPlayer(playerID)
+
+
+		'=== SELL ALL STATIONS ===
+	End Method
+
+
+	Method PreparePlayer(playerID:int)
+print "PreparePlayer("+playerID+")"
+
+		local player:TPlayer = GetPlayer(playerID)
+		'create player if not done yet
+		if not player
+print "PreparePlayer("+playerID+"): creating new player"
+			GetPlayerCollection().Set(playerID, TPlayer.Create(playerID, "Player", "Channel", GetSpriteFromRegistry("Player"+playerID), 190, 13, 90, TPlayerColor.getByOwner(0), "Player "+playerID))
+			player = GetPlayer(playerID)
+		endif
+
+
+		'get names from settings
+		GetPlayer(playerID).Name = ScreenGameSettings.guiPlayerNames[playerID-1].Value
+		GetPlayer(playerID).channelname = ScreenGameSettings.guiChannelNames[playerID-1].Value
+
+
+		'=== FIGURE ===
+		If isGameLeader()
+			If GetPlayer(playerID).IsLocalAI()
+				GetPlayer(playerID).InitAI( new TAI.Create(playerID, "res/ai/DefaultAIPlayer.lua") )
+			EndIf
+		EndIf
+
+		'move all figure to offscreen, and set target to their office
+		'(for now just to the "floor", later maybe to the boss)
+		GetPlayer(playerID).GetFigure().MoveToOffscreen()
+		GetPlayer(playerID).GetFigure().area.position.x :+ playerID*3 + (playerID Mod 2)*15
+		'forcefully send (no controlling possible until reaching the target)
+		'GetPlayer(i).GetFigure().SendToDoor( TRoomDoor.GetByDetails("office", i), True)
+		GetPlayer(playerID).GetFigure().ForceChangeTarget(TRoomDoor.GetByDetails("news", playerID).area.GetX() + 60, TRoomDoor.GetByDetails("news", playerID).area.GetY())
+
+
+
+		'=== STATIONMAP ===
+		'create station map if not done yet
+		local map:TStationMap = GetStationMap(playerID, True)
+
+		'add new station
+		local s:TStation = TStation.Create( New TVec2D.Init(310, 260),-1, GetStationMapCollection().stationRadius, playerID )
+		'first station is not sellable (this enforces competition)
+		s.SetFlag(TStation.FLAG_SELLABLE, False)
+
+		map.AddStation( s, False )
+
+		GetStationMapCollection().Update()
+
+
+
+		'=== FINANCE ===
+		if not GetPlayerFinance(playerID) then print "finance "+playerID+" failed."
+		GetPlayerFinance(playerID).TakeCredit(500000)
+
+
+
+		'=== SETUP NEWS + ABONNEMENTS ===
+		'have a level 1 abonnement for currents
+		GetPlayer(playerID).SetNewsAbonnement(4, 1)
+
+
+		'fetch last 3 news events
+		For local ne:TNewsEvent = EachIn GetNewsEventCollection().GetNewsHistory(3)
+			if GetPlayerProgrammeCollection(playerID).HasNewsEvent(ne) then continue
+			GetNewsAgency().AddNewsEventToPlayer(ne, playerID, True)
+		Next
+		
+
+		'place them into the players news shows
+		Local newsToPlace:TNews
+		local count:int = GetPlayerProgrammeCollection(playerID).GetNewsCount()
+		local placeAmount:int = 3
+		For Local i:Int = 0 until placeAmount
+			'attention: instead of using "GetNewsAtIndex(i)" we always
+			'use the same starting point - as each "placed" news is
+			'removed from the collection leaving the next on this listIndex
+			newsToPlace = GetPlayerProgrammeCollection(playerID).GetNewsAtIndex(Max(0, count -placeAmount))
+			'within a game (player restart) there might not be enough
+			'news ... but we cannot create new news just because of one
+			'player (others would benefit too)
+			If Not newsToPlace then continue
+
+			'set it paid - so money does not change
+			newsToPlace.paid = True
+			'calculate paid Price of the news
+			newsToPlace.Pay()
+			'set planned
+			GetPlayerProgrammePlan(playerID).SetNews(newsToPlace, i)
+		Next
+
+
+
+		'=== FETCH START CONTRACTS ===
+		'generate if not done yet
+		GenerateStartAdContracts()
+
+		'create contracts out of the preselected adcontractbases
+		For Local guid:String = EachIn startAdContractBaseGUIDs
+			local adContractBase:TAdContractBase = GetAdContractBaseCollection().GetByGUID(guid)
+			if adContractBase
+				'forcefully add to the collection (skips requirements checks)
+				GetPlayerProgrammeCollection(playerID).AddAdContract(New TAdContract.Create(adContractBase), True)
+			endif
+		Next
+
+
+
+		'=== CREATE OPENING PROGRAMME ===
+		local programmeData:TProgrammeData = new TProgrammeData
+
+		programmeData.title = GetLocalizedString("OPENINGSHOW_TITLE")
+		programmeData.description = GetLocalizedString("OPENINGSHOW_DESCRIPTION")
+		programmeData.title.replace("%CHANNELNAME%", GetPlayer(playerID).channelName)
+		programmeData.description.replace("%CHANNELNAME%", GetPlayer(playerID).channelName)
+
+		programmeData.blocks = 5
+		programmeData.genre = TVTProgrammeGenre.SHOW
+		programmeData.review = 0.1
+		programmeData.speed = 0.4
+		programmeData.country = "D" 'make depending on station map?
+		programmeData._year = GetWorldTime().GetYear()
+		programmeData.liveTime = GetWorldTime().MakeTime(GetWorldTime().GetYear(), 0, 0, 5)
+		programmeData.SetFlag(TVTProgrammeDataFlag.LIVE, True)
+
+		programmeData.AddCast( New TProgrammePersonJob.Init("9104f9c1-7a0f-4bc0-a34c-389ce282eebf", TVTProgrammePersonJob.GUEST) )
+		programmeData.AddCast( New TProgrammePersonJob.Init("9104f9c1-7a0f-4bc0-a34c-389ce282eebf", TVTProgrammePersonJob.MUSICIAN) )
+		
+		GetProgrammeDataCollection().Add(programmeData)
+
+		local programmeLicence:TProgrammeLicence = new TProgrammeLicence
+		programmeLicence.setData(programmeData)
+		programmeLicence.broadcastLimit = 1
+		programmeLicence.licenceType = TVTProgrammeLicenceType.SINGLE
+		GetPlayerProgrammeCollection(playerID).AddProgrammeLicence(programmeLicence)
+
+
+
+		'=== SETUP START PROGRAMME PLAN ===
+
+		Local lastblocks:Int=0
+		Local playerCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerID)
+		Local playerPlan:TPlayerProgrammePlan = GetPlayerProgrammePlan(playerID)
+
+'		SortList(playerCollection.adContracts)
+
+		Local currentLicence:TProgrammeLicence = playerCollection.GetSingleLicenceAtIndex(0)
+		if currentLicence
+			Local currentHour:Int = 0
+
+			Local broadcast:TProgramme = TProgramme.Create(currentLicence)
+			playerPlan.SetProgrammeSlot(broadcast, GetWorldTime().GetStartDay(), currentHour )
+			'disable control of that programme
+			broadcast.licence.SetControllable(False)
+			if broadcast.isControllable() then Throw "controllable!"
+			'disable availability
+			broadcast.data.available = False
+			'additionally lock slots
+'				for local i:int = 0 until broadcast.GetBlocks()
+'					playerPlan.LockSlot(TVTBroadcastMaterialType.PROGRAMME, GetWorldTime().GetStartDay(), currentHour + i )
+'				Next
+
+			currentHour:+ currentLicence.getData().getBlocks()
+
+			'add two infomercials after that programme
+			playerPlan.SetProgrammeSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), currentHour )
+			currentHour :+ 1
+			playerPlan.SetProgrammeSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), currentHour )
+			currentHour :+ 1
+
+			'place ads for all broadcasted hours
+			If playerCollection.GetRandomAdContract()
+				For local i:int = 0 to currentHour-1
+					playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), i )
+				Next
+			EndIf
+		endif
+	End Method
+
+	
 	Method PrepareNewGame:Int()
 		SetStartYear(userStartYear)
 
@@ -188,28 +425,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'load map specific databases
 		LoadDatabase("res/maps/germany/database", False)
 
+
+
 		'=== FIGURES ===
-		'set all non human players to AI
-		If isGameLeader()
-			For Local id:Int = 1 To 4
-				If GetPlayer(id).IsLocalAI()
-					GetPlayer(id).InitAI( new TAI.Create(id, "res/ai/DefaultAIPlayer.lua") )
-				EndIf
-			Next
-		EndIf
-
-
-		'move all figures to offscreen, and set their target to their
-		'offices (for now just to the "floor", later maybe to the boss)
-		For Local i:Int = 1 To 4
-			GetPlayer(i).GetFigure().MoveToOffscreen()
-			GetPlayer(i).GetFigure().area.position.x :+ i*3 + (i Mod 2)*15
-			'forcefully send (no controlling possible until reaching the target)
-			'GetPlayer(i).GetFigure().SendToDoor( TRoomDoor.GetByDetails("office", i), True)
-			GetPlayer(i).GetFigure().ForceChangeTarget(TRoomDoor.GetByDetails("news", i).area.GetX() + 60, TRoomDoor.GetByDetails("news", i).area.GetY())
-		Next
-
-		'also create/move other figures of the building
+		'create/move other figures of the building
 		'all of them are created at "offscreen position"
 		Local fig:TFigure = GetFigureCollection().GetByName("Hausmeister")
 		If Not fig Then fig = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("janitor"), GetBuildingBase().figureOffscreenX, 0, 65)
@@ -258,6 +477,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		Next
 
 
+
 		'=== ADJUST GAME RULES ===
 		GameRules.dailyBossVisit = GameRules.devConfig.GetInt("DEV_DAILY_BOSS_VISIT", True)
 		GameRules.stationConstructionTime = GameRules.devConfig.GetInt("DEV_STATION_CONSTRUCTION_TIME", GameRules.stationConstructionTimeDefault)
@@ -268,27 +488,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		GetStationMapCollection().LoadMapFromXML("res/maps/germany/germany.xml")
 '		GetStationMapCollection().LoadMapFromXML("res/maps/germany.xml")
 
-		'create base stations
-		For Local i:Int = 1 To 4
-			'create station map if not done yet
-			local map:TStationMap = GetStationMap(i, True)
-			'add new station
-			local s:TStation = TStation.Create( New TVec2D.Init(310, 260),-1, GetStationMapCollection().stationRadius, i )
-			'first station is not sellable (this enforces competition)
-			s.SetFlag(TStation.FLAG_SELLABLE, False)
-
-			map.AddStation( s, False )
-		Next
-
-		'update the collection so it contains the audience reach of each player
-		GetStationMapCollection().Update()
-
-
-		'get names from settings
-		For Local i:Int = 1 To 4
-			GetPlayer(i).Name = ScreenGameSettings.guiPlayerNames[i-1].Value
-			GetPlayer(i).channelname = ScreenGameSettings.guiChannelNames[i-1].Value
-		Next
 
 		'create series/movies in movie agency
 		RoomHandler_MovieAgency.GetInstance().ReFillBlocks()
@@ -299,116 +498,40 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		Next
 
 
-		'give each player some programme
-		SpreadStartProgramme()
-
-		'give the players some money
-		For Local i:Int = 1 To 4
-			if not GetPlayerFinance(i) then print "finance "+i+" failed."
-			GetPlayerFinance(i).TakeCredit(500000)
-		Next
-
-
-		'=== SETUP NEWS + ABONNEMENTS ===
-		'adjust abonnement for each newsgroup to 1
-		For Local playerids:Int = 1 To 4
-			'only have abonnement for currents
-			GetPlayer(playerids).SetNewsAbonnement(4, 1)
-		Next
-
-		'create 3 starting news, True = add even without news abonnement
-		GetNewsAgency().AnnounceNewNewsEvent(-1,  -60 * 60, True)
-		GetNewsAgency().AnnounceNewNewsEvent(-1, -120 * 60, True)
-		GetNewsAgency().AnnounceNewNewsEvent(-1, -120 * 60, True)
-
 		'create 3 random news happened some time before today ...
 		'Limit to CurrentAffairs as this is the starting abonnement of
 		'all players
 		'Create one which is available at start in all cases (>3h old)
-		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(180,210))
+		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(180,210), True)
 		For local i:int = 0 to 1
-			GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(5,15)*RandRange(5,10))
+			GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(5,15)*RandRange(5,10), True)
+		Next
+
+		
+		'create 3 starting news with random genre (for starting news show)
+		for local i:int = 0 until 3
+			'genre = -1 to use a random genre
+			local newsEvent:TNewsEvent = GetNewsAgency().GenerateNewNewsEvent(-1)
+			'local newsEvent:TNewsEvent = GetNewsAgency().GetMovieNewsEvent()
+			if newsEvent
+				'time must be lower than for the "current affairs" news
+				'so they are recognizeable as the latest ones
+				local adjustMinutes:int = (-10*(i+1) + RandRange(-10, 10)) * 60
+				newsEvent.doHappen( GetWorldTime().GetTimeGone() + adjustMinutes )
+			endif
 		Next
 	
 		'adjust news agency to wait some time until next news
-		'disabled, no longer needed as AnnounceNewNewsEvent() already
+		'RON: disabled, no longer needed as AnnounceNewNewsEvent() already
 		'resets next event times
 		'GetNewsAgency().ResetNextEventTime(-1)
 
-		'place them into the players news shows
-		Local newsToPlace:TNews
-		For Local playerID:Int = 1 To 4
-			For Local i:Int = 0 To 2
-				'attention: instead of using "GetNewsAtIndex(i)" we always
-				'use (0) - as each "placed" news is removed from the collection
-				'leaving the next on listIndex 0
-				newsToPlace = GetPlayerProgrammeCollectionCollection().Get(playerID).GetNewsAtIndex(0)
-				If Not newsToPlace
-					'throw "GetGame().PrepareNewGame: initial news " + i + " missing."
-					Continue
-				EndIf
-				'set it paid - so money does not change
-				newsToPlace.paid = True
-				'calculate paid Price of the news
-				newsToPlace.Pay()
-				'set planned
-				GetPlayerProgrammePlanCollection().Get(playerID).SetNews(newsToPlace, i)
-			Next
+
+		For local playerID:int = 1 to 4
+			PreparePlayer(playerID)
 		Next
 
-
-
-		'=== SETUP START PROGRAMME PLAN ===
-
-		Local lastblocks:Int=0
-		Local playerCollection:TPlayerProgrammeCollection
-		Local playerPlan:TPlayerProgrammePlan
-
-		'creation of blocks for players rooms
-		For Local playerids:Int = 1 To 4
-			lastblocks = 0
-			playerCollection = GetPlayerProgrammeCollectionCollection().Get(playerids)
-			playerPlan = GetPlayerProgrammePlanCollection().Get(playerids)
-
-			SortList(playerCollection.adContracts)
-
-			Local addWidth:Int = GetSpriteFromRegistry("pp_programmeblock1").area.GetW()
-			Local addHeight:Int = GetSpriteFromRegistry("pp_adblock1").area.GetH()
-
-			Local currentLicence:TProgrammeLicence = playerCollection.GetSingleLicenceAtIndex(0)
-			if currentLicence
-				Local currentHour:Int = 0
-
-				local broadcast:TProgramme = TProgramme.Create(currentLicence)
-				playerPlan.SetProgrammeSlot(broadcast, GetWorldTime().GetStartDay(), currentHour )
-				'disable control of that programme
-				broadcast.licence.SetControllable(False)
-				if broadcast.isControllable() then Throw "controllable!"
-				'disable availability
-				broadcast.data.available = False
-				'additionally lock slots
-'				for local i:int = 0 until broadcast.GetBlocks()
-'					playerPlan.LockSlot(TVTBroadcastMaterialType.PROGRAMME, GetWorldTime().GetStartDay(), currentHour + i )
-'				Next
-
-				currentHour:+ currentLicence.getData().getBlocks()
-
-				'add two infomercials after that programme
-				playerPlan.SetProgrammeSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), currentHour )
-				currentHour :+ 1
-				playerPlan.SetProgrammeSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), currentHour )
-				currentHour :+ 1
-
-				'place ads for all broadcasted hours
-				If playerCollection.GetRandomAdContract()
-					For local i:int = 0 to currentHour-1
-						playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), i )
-					Next
-				EndIf
-			endif
-		Next
-
-
+		
 		'=== SETUP INTERFACE ===
 		
 		'switch active TV channel to player
@@ -450,7 +573,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		World.InitCloudEffect(50, GetSpriteGroupFromRegistry("gfx_world_sky_clouds"))
 		World.cloudEffect.Start() 'clouds from begin
 	End Method
-
 
 
 	Function InitRoomsAndDoors()
@@ -535,8 +657,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	End Function
 
 
-
-
 	Method SetStartYear(year:int)
 		year = Max(1980, year)
 		'set start year
@@ -547,7 +667,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	Method GetStartYear:Int()
 		return GetWorldTime().GetStartYear()
 	End Method
-
 
 
 	Function CreateStartTips:Int()
@@ -573,10 +692,18 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	End Function
 
 
-	Method SpreadStartProgramme:Int()
+	Method GenerateStartAdContracts:Int()
+		'remove invalidated/obsolete/no-longer-available entries
+		For local i:int = 0 until startAdContractBaseGUIDs.length
+			local adContractBase:TAdContractBase = GetAdContractBaseCollection().GetByGUID(startAdContractBaseGUIDs[i])
+			if adContractBase and not adContractBase.IsAvailable()
+				startAdContractBaseGUIDs[i] = null
+			endif
+		Next
+		
+		
 		'all players get the same adContractBase (but of course another
 		'contract for each of them)
-		Local adContractBases:TAdContractBase[]
 		Local cheapFilter:TAdContractBaseFilter = New TAdContractbaseFilter
 		'some easy ones
 		cheapFilter.SetAudience(0.0, 0.02)
@@ -587,101 +714,43 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		cheapFilter.SetSkipLimitedToProgrammeGenre()
 		cheapFilter.SetSkipLimitedToTargetGroup()
 
-rem
-		local contracts:TAdContractBase[] = GetAdContractBaseCollection().GetAllAsArray()
-		For local contract:TAdContractBase = EachIn contracts
-			if not cheapFilter.DoesFilter(contract) then continue
-
-			print contract.GetTitle() + "  " + contract.minAudienceBase
-		Next
-endrem
-
 		local addContract:TAdContractBase
-		For Local i:Int = 0 To 1
-			addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, False)
+		For Local i:Int = 0 until startAdContractBaseGUIDs.length
+			'already assigned (and available - others are already removed)
+			if startAdContractBaseGUIDs[i] then continue
+
+			if i < startAdContractBaseGUIDs.length-1
+				addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, False)
+			else
+				'and one with 0-1% audience requirement
+				cheapFilter.SetAudience(0.015, 0.03)
+				addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, False)
+				if not addContract  
+					print "GenerateStartAdContracts: No ~qno audience~q contract in DB? Trying a 1.5-4% one..."
+					cheapFilter.SetAudience(0.015, 0.04)
+					addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, False)
+					if not addContract
+						print "GenerateStartAdContracts: 1.5-4% failed too... using random contract now."
+						addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, True)
+					endif
+				endif
+			endif
+			
 			if not addContract
-				print "SpreadStartProgramme: GetAdContractBaseCollection().GetRandomByFilter failed! Skipping contract ..."
+				print "GenerateStartAdContracts: GetAdContractBaseCollection().GetRandomByFilter failed! Skipping contract ..."
 				continue
 			endif
-			adContractBases :+ [addContract]
+			startAdContractBaseGUIDs[i] = addContract.GetGUID()
 		Next
-		'and one with 0-1% audience requirement
-		cheapFilter.SetAudience(0.015, 0.03)
-		addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, False)
-		if not addContract  
-			print "SpreadStartProgramme: No ~qno audience~q contract in DB? Trying a 1.5-4% one..."
-			cheapFilter.SetAudience(0.015, 0.04)
-			addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, False)
-			if not addContract
-				print "SpreadStartProgramme: 1.5-4% failed too... using random contract now."
-				addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, True)
-			endif
-		endif
-		if addContract then adContractBases :+ [addContract]
-
-		If adContractBases.length = 0
-			TLogger.Log("SpreadStartProgramme", "adContractBases is empty.", LOG_ERROR)
-		EndIf
 
 		'override with DEV.xml
-		For local i:int = 0 to 2
+		For local i:int = 0 until startAdContractBaseGUIDs.length
 			local guid:string = GameRules.devConfig.GetString("DEV_STARTPROGRAMME_AD"+(i+1)+"_GUID", "")
 			if guid = "" then continue
-			
+
 			local devAd:TAdContractBase = GetAdContractBaseCollection().GetByGUID(guid)
-			if devAd then adContractBases[i] = devAd
-		Next
-
-
-		'=== CREATE OPENING PROGRAMME ===
-		
-		For Local playerID:Int = 1 To 4
-			local programmeData:TProgrammeData = new TProgrammeData
-
-			programmeData.title = GetLocalizedString("OPENINGSHOW_TITLE")
-			programmeData.description = GetLocalizedString("OPENINGSHOW_DESCRIPTION")
-			programmeData.title.replace("%CHANNELNAME%", GetPlayer(playerID).channelName)
-			programmeData.description.replace("%CHANNELNAME%", GetPlayer(playerID).channelName)
-
-			programmeData.blocks = 5
-			programmeData.genre = TVTProgrammeGenre.SHOW
-			programmeData.review = 0.1
-			programmeData.speed = 0.4
-			programmeData.country = "D" 'make depending on station map?
-			programmeData._year = GetWorldTime().GetYear()
-			programmeData.liveTime = GetWorldTime().MakeTime(GetWorldTime().GetYear(), 0, 0, 5)
-			programmeData.SetFlag(TVTProgrammeDataFlag.LIVE, True)
-
-			programmeData.AddCast( New TProgrammePersonJob.Init("9104f9c1-7a0f-4bc0-a34c-389ce282eebf", TVTProgrammePersonJob.GUEST) )
-			programmeData.AddCast( New TProgrammePersonJob.Init("9104f9c1-7a0f-4bc0-a34c-389ce282eebf", TVTProgrammePersonJob.MUSICIAN) )
-'			programmeData.AddCast( New TProgrammePersonJob.Init("9104f9c1-7a0f-4bc0-a34c-389ce282eebf", TVTProgrammePersonJob.ACTOR) )
-			
-			GetProgrammeDataCollection().Add(programmeData)
-
-			local programmeLicence:TProgrammeLicence = new TProgrammeLicence
-			programmeLicence.setData(programmeData)
-			programmeLicence.broadcastLimit = 1
-			programmeLicence.licenceType = TVTProgrammeLicenceType.SINGLE
-			GetPlayerProgrammeCollection(playerID).AddProgrammeLicence(programmeLicence)
-		Next
-
-
-		'start programmes should be similar to "cheap movie list" of the
-		'movieagency - but they do not allow paid programmes
-		local startProgrammeFilter:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesCheap.Copy()
-		startProgrammeFilter.AddNotDataFlag(TVTProgrammeDataFlag.PAID)
-		
-		For Local playerids:Int = 1 To 4
-			Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerids)
-'			For Local i:Int = 0 Until GameRules.startMovieAmount
-'				ProgrammeCollection.AddProgrammeLicence(GetProgrammeLicenceCollection().GetRandomByFilter(startProgrammeFilter))
-'			Next
-
-			'create contracts out of the preselected adcontractbases
-			For Local adContractBase:TAdContractBase = EachIn adContractBases
-				'forcefully add to the collection (skips requirements checks)
-				ProgrammeCollection.AddAdContract(New TAdContract.Create(adContractBase), True)
-			Next
+			'only override if the ad exists
+			if devAd then startAdContractBaseGUIDs[i] = devAd.GetGUID()
 		Next
 	End Method
 
