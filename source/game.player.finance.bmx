@@ -26,6 +26,15 @@ Type TPlayerFinanceCollection
 	End Method
 
 
+	Method ResetFinance(playerID:int)
+		local playerIndex:int = playerID -1
+
+		if finances.length > playerIndex
+			finances[playerIndex] = new TPlayerFinance[0]
+		endif
+	End Method
+
+
 	Method GetTotal:TPlayerFinance(playerID:int)
 		local totalFinance:TPlayerFinance = New TPlayerFinance
 		local finance:TPlayerFinance

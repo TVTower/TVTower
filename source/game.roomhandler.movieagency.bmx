@@ -81,6 +81,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'avoid "too used" licences
 		filterAuction.relativeTopicalityMin = 0.85
 		filterAuction.relativeTopicalityMax = -1.0
+		filterAuction.checkTradeability = True
 		filterAuction.ageMin = -1
 		'maximum of 1 year since release
 		filterAuction.ageMax = TWorldTime.DAYLENGTH * GetWorldTime().GetDaysPerYear()
@@ -96,6 +97,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		filterMoviesGood.qualityMax = -1.0
 		filterMoviesGood.relativeTopicalityMin = 0.25
 		filterMoviesGood.relativeTopicalityMax = -1.0
+		filterMoviesGood.checkTradeability = True
 		'filterMoviesGood.connectionType = TProgrammeLicenceFilterGroup.CONNECTION_TYPE_AND
 		'filterMoviesGood.filters[0].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
 		'filterMoviesGood.filters[0].priceMin = movieCheapMoneyMaximum
@@ -113,6 +115,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		filterMoviesCheap.filters[0].priceMax = movieCheapMoneyMaximum
 		filterMoviesCheap.filters[0].relativeTopicalityMin = 0.25
 		filterMoviesCheap.filters[0].relativeTopicalityMax = -1.0
+		filterMoviesCheap.filters[0].checkTradeability = True
 
 		filterMoviesCheap.filters[1].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
 		'filterMoviesCheap.filters[1].SetRequiredOwners([TOwnedGameObject.OWNER_NOBODY])
@@ -120,6 +123,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		filterMoviesCheap.filters[1].qualityMax = movieCheapQualityMaximum
 		filterMoviesCheap.filters[1].relativeTopicalityMin = 0.25
 		filterMoviesCheap.filters[1].relativeTopicalityMax = -1.0
+		filterMoviesCheap.filters[1].checkTradeability = True
 		
 		'filter them by price too - eg. for auction ?
 		filterSeries.licenceTypes = [TVTProgrammeLicenceType.SERIES]
@@ -127,6 +131,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'as long as there are not that much series, allow 10% instead of 25%
 		filterSeries.relativeTopicalityMin = 0.10
 		filterSeries.relativeTopicalityMax = -1.0
+		filterSeries.checkTradeability = True
 
 
 		'=== REGISTER HANDLER ===

@@ -396,6 +396,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	Field episodeNumber:int = -1
 	'store stats for each owner
 	Field broadcastStatistics:TBroadcastStatistic[]
+	'is this licence tradeable? if not, licence cannot get sold.
+	'use this eg. for opening programme
+	Field tradeable:int = True
 
 '	Field cacheTextOverlay:TImage 			{nosave}
 '	Field cacheTextOverlayMode:string = ""	{nosave}	'for which mode the text was cached
@@ -530,6 +533,8 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 	Method IsTradeable:int()
 		if GetSubLicenceCount() = 0 and GetData()
+			if not tradeable then return False
+			
 			if GetData().IsTVDistribution() and GetData().GetOutcomeTV() < 0
 				return False
 			endif
@@ -638,11 +643,6 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 
 
-	Method SuperIsControllable:int() {_exposeToLua}
-		return Super.IsControllable()
-	End Method
-
-	
 	Method IsControllable:int() {_exposeToLua}
 		'single-licence
 		'if GetSubLicenceCount() = 0
@@ -1514,6 +1514,7 @@ Type TProgrammeLicenceFilter
 	Field dataFlags:int
 	Field notDataFlags:int
 	Field checkAvailability:int = True
+	Field checkTradeability:int = False
 	Field qualityMin:Float = -1.0
 	Field qualityMax:Float = -1.0
 	Field relativeTopicalityMin:Float = -1.0
@@ -1586,6 +1587,8 @@ Type TProgrammeLicenceFilter
 
 	Method InitFrom:TProgrammeLicenceFilter(otherFilter:TProgrammeLicenceFilter)
 		caption = otherFilter.caption
+		checkTradeability = otherFilter.checkTradeability
+		checkAvailability = otherFilter.checkAvailability
 		dataFlags = otherFilter.dataFlags
 		notDataFlags = otherFilter.notDataFlags
 		for local i:int = EachIn otherFilter.genres
@@ -1818,6 +1821,7 @@ Type TProgrammeLicenceFilter
 		if not licence then return False
 
 		if checkAvailability and not licence.isAvailable() then return False
+		if checkTradeability and not licence.isTradeable() then return False
 
 		if childrenForbidden and licence.parentLicenceGUID then return False
 		

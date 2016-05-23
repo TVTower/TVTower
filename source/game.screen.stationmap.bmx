@@ -613,7 +613,7 @@ Type TScreenHandler_StationMap
 		'only players can "enter screens" - so just use "inRoom"
 
 		For local i:int = 0 to 3
-			local show:int = GetStationMapCollection().GetMap(GetPlayerCollection().Get().GetFigure().inRoom.owner).showStations[i]
+			local show:int = GetStationMapCollection().GetMap(GetPlayerCollection().Get().GetFigure().inRoom.owner).GetShowStation(i+1)
 			stationMapShowStations[i].SetChecked(show)
 		Next
 	End Function
@@ -630,9 +630,9 @@ Type TScreenHandler_StationMap
 		if not GetPlayerCollection().IsPlayer(player) then return FALSE
 
 		'only set if not done already
-		if GetPlayerCollection().Get().GetStationMap().showStations[player-1] <> button.isChecked()
+		if GetPlayerCollection().Get().GetStationMap().GetShowStation(player) <> button.isChecked()
 			TLogger.Log("StationMap", "show stations for player "+player+": "+button.isChecked(), LOG_DEBUG)
-			GetPlayerCollection().Get().GetStationMap().showStations[player-1] = button.isChecked()
+			GetPlayerCollection().Get().GetStationMap().SetShowStation(player, button.isChecked())
 		endif
 	End Function
 End Type

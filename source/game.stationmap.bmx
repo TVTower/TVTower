@@ -20,7 +20,7 @@ Import "basefunctions.bmx"
 'parent of all stationmaps
 Type TStationMapCollection
 	'list of stationmaps
-	Field stationMaps:TStationMap[4]
+	Field stationMaps:TStationMap[0]
 	'map containing bitmask-coded information for "used" pixels
 	Field shareMap:TMap = Null {nosave}
 	Field shareCache:TMap = Null {nosave}
@@ -185,7 +185,11 @@ Type TStationMapCollection
 
 	Method Add:int(map:TStationMap)
 		'check boundaries
-		If map.owner < 1 or map.owner > stationMaps.length return FALSE
+		If map.owner < 1 then return False
+
+		'resize if needed
+		if map.owner > stationMaps.length then stationMaps = stationMaps[ .. map.owner+1]
+
 		'add to array array - zerobased
 		stationMaps[map.owner-1] = map
 		return TRUE
@@ -197,30 +201,31 @@ Type TStationMapCollection
 		If map.owner < 1 or map.owner > stationMaps.length return FALSE
 		'remove from array - zero based
 		stationMaps[map.owner-1] = Null
+
+		'invalidate caches
+		'shareCache.Clear()
+		'shareMap.Clear()
+		GenerateShareMap()
+		
 		return TRUE
 	End Method
 
 
-	'return the stationmap of other players
+	'return the stationmap of other channels
 	'do not expose to Lua... else they get access to buy/sell
-	Method GetMap:TStationMap(playerID:Int, createIfMissing:int = False)
+	Method GetMap:TStationMap(channelNumber:Int, createIfMissing:int = False)
 		'check boundaries
-		If playerID < 1 or playerID > stationMaps.length
-			Throw "GetStationMapCollection().GetMap: playerID ~q"+playerID+"~q is out of bounds."
+		If channelNumber < 1 or (not createIfMissing and channelNumber > stationMaps.length)
+			Throw "GetStationMapCollection().GetMap: channelNumber ~q"+channelNumber+"~q is out of bounds."
 		Endif
 
-		'remove until not thrown for ages
-		If stationMaps[playerID-1] and stationMaps[playerID-1].owner <> playerID
-			Throw("StationMapCollection: station order corrupt?!")
-		EndIf
-
 		'create if missing
-		if not stationMaps[playerID-1] and createIfMissing
-			stationMaps[playerID-1] = TStationMap.Create(playerID)
+		if (channelNumber > stationMaps.length or not stationMaps[channelNumber-1]) and createIfMissing
+			Add(TStationMap.Create(channelNumber))
 		endif
 		
 		'zero based
-		Return stationMaps[playerID-1]
+		Return stationMaps[channelNumber-1]
 	End Method
 
 
@@ -284,22 +289,22 @@ Type TStationMapCollection
 
 
 
-	'returns the shared amount of audience between players
-	Method GetShareAudience:Int(playerIDs:Int[], withoutPlayerIDs:Int[]=Null)
-		Return GetShare(playerIDs, withoutPlayerIDs).x
+	'returns the shared amount of audience between channels
+	Method GetShareAudience:Int(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
+		Return GetShare(channelNumbers, withoutChannelNumbers).x
 	End Method
 
 
-	Method GetSharePercentage:Float(playerIDs:Int[], withoutPlayerIDs:Int[]=Null)
-		Return GetShare(playerIDs, withoutPlayerIDs).z
+	Method GetSharePercentage:Float(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
+		Return GetShare(channelNumbers, withoutChannelNumbers).z
 	End Method
 
 
-	'returns a share between players, encoded in a TVec3D containing:
+	'returns a share between channels, encoded in a TVec3D containing:
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
-	Method GetShare:TVec3D(playerIDs:Int[], withoutPlayerIDs:Int[]=Null)
-		If playerIDs.length <1 Then Return new TVec3D.Init(0,0,0.0)
-		If Not withoutPlayerIDs Then withoutPlayerIDs = New Int[0]
+	Method GetShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
+		If channelNumbers.length <1 Then Return new TVec3D.Init(0,0,0.0)
+		If Not withoutChannelNumbers Then withoutChannelNumbers = New Int[0]
 
 		Local result:TVec3D
 
@@ -308,13 +313,13 @@ Type TStationMapCollection
 
 		'== GENERATE KEY ==
 		Local cacheKey:String = ""
-		For Local i:Int = 0 To playerIDs.length-1
-			cacheKey:+ "_"+playerIDs[i]
+		For Local i:Int = 0 To channelNumbers.length-1
+			cacheKey:+ "_"+channelNumbers[i]
 		Next
-		if withoutPlayerIDs.length > 0
+		if withoutChannelNumbers.length > 0
 			cacheKey:+"_without_"
-			For Local i:Int = 0 To withoutPlayerIDs.length-1
-				cacheKey:+ "_"+withoutPlayerIDs[i]
+			For Local i:Int = 0 To withoutChannelNumbers.length-1
+				cacheKey:+ "_"+withoutChannelNumbers[i]
 			Next
 		endif
 
@@ -330,23 +335,23 @@ Type TStationMapCollection
 			Local map:TMap = GetShareMap()
 			Local share:Int	= 0
 			Local total:Int	= 0
-			Local playerFlags:Int[]
+			Local channelFlags:Int[]
 			Local allFlag:Int = 0
-			Local withoutPlayerFlags:Int[]
+			Local withoutChannelFlags:Int[]
 			Local withoutFlag:Int = 0
-			playerFlags	= playerFlags[.. playerIDs.length]
-			withoutPlayerFlags = withoutPlayerFlags[.. withoutPlayerIDs.length]
+			channelFlags = channelFlags[.. channelNumbers.length]
+			withoutChannelFlags = withoutChannelFlags[.. withoutChannelNumbers.length]
 
-			For Local i:Int = 0 To playerIDs.length-1
-				'player 1=1, 2=2, 3=4, 4=8 ...
-				playerFlags[i]	= getMaskIndex( playerIDs[i] )
-				allFlag :| playerFlags[i]
+			For Local i:Int = 0 To channelNumbers.length-1
+				'channel 1=1, 2=2, 3=4, 4=8 ...
+				channelFlags[i] = getMaskIndex( channelNumbers[i] )
+				allFlag :| channelFlags[i]
 			Next
 
-			For Local i:Int = 0 To withoutPlayerIDs.length-1
-				'player 1=1, 2=2, 3=4, 4=8 ...
-				withoutPlayerFlags[i] = getMaskIndex( withoutPlayerIDs[i] )
-				withoutFlag :| withoutPlayerFlags[i]
+			For Local i:Int = 0 To withoutChannelNumbers.length-1
+				'channel 1=1, 2=2, 3=4, 4=8 ...
+				withoutChannelFlags[i] = getMaskIndex( withoutChannelNumbers[i] )
+				withoutFlag :| withoutChannelFlags[i]
 			Next
 
 
@@ -360,8 +365,8 @@ Type TStationMapCollection
 					'no need to do this individual, we can just check the groupFlag
 					Rem
 					local someoneUnwantedUsesPoint:int	= FALSE
-					for local i:int = 0 to withoutPlayerFlags.length-1
-						if int(mapValue.z) & withoutPlayerFlags[i]
+					for local i:int = 0 to withoutChannelFlags.length-1
+						if int(mapValue.z) & withoutChannelFlags[i]
 							someoneUnwantedUsesPoint = true
 							exit
 						endif
@@ -377,8 +382,8 @@ Type TStationMapCollection
 					allUsePoint = True
 					someoneUsesPoint = True
 				Else
-					For Local i:Int = 0 To playerFlags.length-1
-						If Int(mapValue.z) & playerFlags[i] Then someoneUsesPoint = True;Exit
+					For Local i:Int = 0 To channelFlags.length-1
+						If Int(mapValue.z) & channelFlags[i] Then someoneUsesPoint = True;Exit
 					Next
 				EndIf
 				'someone has a station there
@@ -423,11 +428,15 @@ Type TStationMapCollection
 			'gets regenerated)
 			'this individual way saves calculation time (only do what
 			'is needed)
+			local m:TStationMap
 			For local i:int = 1 to stationMaps.length
-				if GetMap(i).changed
-					GetMap(i).RecalculateAudienceSum()
+				m = GetMap(i)
+				if not m then continue
+				
+				if m.changed
+					m.RecalculateAudienceSum()
 					'we handled the changed flag
-					GetMap(i).changed = False
+					m.changed = False
 				endif
 			Next
 
@@ -803,7 +812,26 @@ Type TStationMap {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetShowStation:int(channelNumber:int)
+		if showStations.length > channelNumber or channelNumber <= 0 then return False
+
+		return showStations[channelNumber-1]
+	End Method
+
+
+	Method SetShowStation(channelNumber:int, enable:int)
+		if showStations.length > channelNumber or channelNumber <= 0 then return
+
+		showStations[channelNumber-1] = enable
+	End Method
+	
+
+
 	Method Update()
+		if GetStationMapCollection().stationMaps.length <> showStations.length
+			showStations = showStations[.. GetStationMapCollection().stationMaps.length + 1]
+		endif
+	
 		UpdateStations()
 	End Method
 
@@ -824,6 +852,10 @@ Type TStationMap {_exposeToLua="selected"}
 
 	'draw a players stationmap
 	Method Draw()
+		if GetStationMapCollection().stationMaps.length <> showStations.length
+			showStations = showStations[.. GetStationMapCollection().stationMaps.length + 1]
+		endif
+		
 		SetColor 255,255,255
 
 		'draw all stations from all players (except filtered)

@@ -623,6 +623,18 @@ Type TNewsAgency
 	End Method
 
 
+	Method ResetDelayedList(playerID:int=0)
+		if playerID<=0
+			For local i:int = 1 to delayedLists.Length
+				if delayedLists[i-1] then delayedLists[i-1].Clear()
+			Next
+		else
+			if delayedLists.length <= playerID and delayedLists[playerID-1]
+				delayedLists[playerID-1].Clear()
+			endif
+		endif
+	End Method
+
 
 	Function GetNewsAbonnementDelay:Int(genre:Int, level:int) {_exposeToLua}
 		if level = 3 then return 0

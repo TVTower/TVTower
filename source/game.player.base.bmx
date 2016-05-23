@@ -86,6 +86,8 @@ Type TPlayerBase {_exposeToLua="selected"}
 	Field channelname:String
 	'global used ID of the player
 	Field playerID:Int = 0
+	'channel ID the player works for
+	Field channelID:Int = 0
 	'the color used to colorize symbols and figures
 	Field color:TPlayerColor
 	'actual number of an array of figure-images

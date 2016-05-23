@@ -83,10 +83,10 @@ Type TDailyBroadcastStatistic
 
 	'only stores ONE rank-setup at a time, to save processing time
 	Global _cachedRanks:int[] {nosave}
-	Global _cachedRanksOwner:int = -1 {nosave}
+	Global _cachedRanksChannelNumber:int = -1 {nosave}
 	Global _cachedRanksHour:int = -1 {nosave}
 	Global _cachedNewsRanks:int[] {nosave}
-	Global _cachedNewsRanksOwner:int = -1 {nosave}
+	Global _cachedNewsRanksChannelNumber:int = -1 {nosave}
 	Global _cachedNewsRanksHour:int = -1 {nosave}
 
 
@@ -100,9 +100,9 @@ Type TDailyBroadcastStatistic
 
 
 
-	Method _SetBroadcastResult:Int(broadcast:TBroadcastMaterial, owner:int, hour:int, audienceResult:TAudienceResultBase, broadcastedAsType:int = 0)
+	Method _SetBroadcastResult:Int(broadcast:TBroadcastMaterial, channelNumber:int, hour:int, audienceResult:TAudienceResultBase, broadcastedAsType:int = 0)
 		if hour < 0 then return False
-		if owner <= 0 then return False
+		if channelNumber <= 0 then return False
 
 		'if no audience result was given (outage or something)
 		if not audienceResult
@@ -114,12 +114,12 @@ Type TDailyBroadcastStatistic
 		'in the case of an outage
 		local useAllAudiences:TAudienceResultBase[][] = GetAudienceArrayToUse(broadcastedAsType)
 
-		'if no audiences were stored for this owner yet, create a array first
-		if not useAllAudiences[owner-1] then useAllAudiences[owner-1] = new TAudienceResultBase[1]
+		'if no audiences were stored for this channelNumber yet, create a array first
+		if not useAllAudiences[channelNumber-1] then useAllAudiences[channelNumber-1] = new TAudienceResultBase[1]
 		'resize array if needed
-		if useAllAudiences[owner-1].length <= hour then useAllAudiences[owner-1] = useAllAudiences[owner-1][.. hour+1]
+		if useAllAudiences[channelNumber-1].length <= hour then useAllAudiences[channelNumber-1] = useAllAudiences[channelNumber-1][.. hour+1]
 		'assign audience
-		useAllAudiences[owner-1][hour] = audienceResult
+		useAllAudiences[channelNumber-1][hour] = audienceResult
 
 		'store this hours audience as "best audience" if it is higher
 		'than previous best-audience. Ignore "no broadcast"-audiences
@@ -144,8 +144,8 @@ Type TDailyBroadcastStatistic
 	End Method
 
 	
-	Method _GetAudience:TAudience(owner:int, hour:int, createIfMissing:int = False, broadcastedAsType:int = 0)
-		local result:TAudienceResultBase = _GetAudienceResult(owner, hour, False, broadcastedAsType)
+	Method _GetAudience:TAudience(channelNumber:int, hour:int, createIfMissing:int = False, broadcastedAsType:int = 0)
+		local result:TAudienceResultBase = _GetAudienceResult(channelNumber, hour, False, broadcastedAsType)
 		if not result
 			if createIfMissing then return new TAudience
 			return null
@@ -155,19 +155,19 @@ Type TDailyBroadcastStatistic
 	End Method
 
 	
-	Method _GetAudienceResult:TAudienceResultBase(owner:int, hour:int, createIfMissing:int = False, broadcastedAsType:int = 0)
+	Method _GetAudienceResult:TAudienceResultBase(channelNumber:int, hour:int, createIfMissing:int = False, broadcastedAsType:int = 0)
 		local useAllAudiences:TAudienceResultBase[][] = GetAudienceArrayToUse(broadcastedAsType)
 
-		if owner <= 0 or owner > useAllAudiences.length or hour > 23 or hour < 0
+		if channelNumber <= 0 or channelNumber > useAllAudiences.length or hour > 23 or hour < 0
 			if createIfMissing then return new TAudienceResultBase
 			return Null
-		elseif not useAllAudiences[owner-1] or useAllAudiences[owner-1].length <= hour
+		elseif not useAllAudiences[channelNumber-1] or useAllAudiences[channelNumber-1].length <= hour
 			if createIfMissing then return new TAudienceResultBase
 			return Null
 		endif
 
-		if useAllAudiences[owner-1][hour]
-			return useAllAudiences[owner-1][hour]
+		if useAllAudiences[channelNumber-1].length > hour
+			return useAllAudiences[channelNumber-1][hour]
 		else
 			return Null
 		endif
@@ -175,12 +175,12 @@ Type TDailyBroadcastStatistic
 
 	'returns the average of that days broadcasts audienceresults for the
 	'given player - or all
-	Method _GetAverageAudience:TAudience(owner:int = -1, broadcastedAsType:int = 0, skipHours:int[])
+	Method _GetAverageAudience:TAudience(channelNumber:int = -1, broadcastedAsType:int = 0, skipHours:int[])
 		local checkPlayers:int[]
-		if owner <= 0
+		if channelNumber <= 0
 			checkPlayers = [0,1,2,3]
 		else
-			checkPlayers = [owner-1]
+			checkPlayers = [channelNumber-1]
 		endif
 
 		local result:TAudience = new TAudience
@@ -214,25 +214,25 @@ Type TDailyBroadcastStatistic
 	End Function
 
 
-	'returns the best audience result of a specific owner/player
-	Method _GetBestAudience:TAudience(owner:Int, broadcastedAsType:int = 0, skipHours:int[])
-		if owner <= 0 then return New TAudience
+	'returns the best audience result of a specific channelNumber/player
+	Method _GetBestAudience:TAudience(channelNumber:Int, broadcastedAsType:int = 0, skipHours:int[])
+		if channelNumber <= 0 then return New TAudience
 	
-		local result:TAudienceResultBase = _GetBestAudienceResult(owner, broadcastedAsType, skipHours)
+		local result:TAudienceResultBase = _GetBestAudienceResult(channelNumber, broadcastedAsType, skipHours)
 		if result then return result.audience
 
 		return new TAudience
 	End Method
 
 
-	'returns the best audience result of a specific owner/player
-	Method _GetBestAudienceResult:TAudienceResultBase(owner:Int, broadcastedAsType:int = 0, skipHours:int[])
-		if owner <= 0 then return New TAudienceResultBase
+	'returns the best audience result of a specific channelNumber/player
+	Method _GetBestAudienceResult:TAudienceResultBase(channelNumber:Int, broadcastedAsType:int = 0, skipHours:int[])
+		if channelNumber <= 0 then return New TAudienceResultBase
 		
 		local result:TAudienceResultBase
 		local useAllAudiences:TAudienceResultBase[][] = GetAudienceArrayToUse(broadcastedAsType)
 		local hour:int = 0
-		For local bestAudienceResult:TAudienceResultBase = EachIn useAllAudiences[owner-1]
+		For local bestAudienceResult:TAudienceResultBase = EachIn useAllAudiences[channelNumber-1]
 			if InIntArray(hour, skipHours)
 				hour :+ 1
 				continue
@@ -252,14 +252,14 @@ Type TDailyBroadcastStatistic
 
 	'returns an int array containing the "rank" (1-4) for each target
 	'group in the given hour for the given type
-	Method _GetAudienceRanking:int[](owner:int, hour:int, broadcastedAsType:int = 0)
+	Method _GetAudienceRanking:int[](channelNumber:int, hour:int, broadcastedAsType:int = 0)
 		'return cached values if possible
 		if broadcastedAsType = TVTBroadcastMaterialType.PROGRAMME
-			if _cachedRanksHour = hour and _cachedRanksOwner = owner
+			if _cachedRanksHour = hour and _cachedRanksChannelNumber = channelNumber
 				return _cachedRanks
 			endif
 		else
-			if _cachedNewsRanksHour = hour and _cachedNewsRanksOwner = owner
+			if _cachedNewsRanksHour = hour and _cachedNewsRanksChannelNumber = channelNumber
 				return _cachedNewsRanks
 			endif
 		endif
@@ -271,10 +271,10 @@ Type TDailyBroadcastStatistic
 	
 		'store all available audiences in one list for a later sort
 		local availableAudiences:TList = CreateList()
-		For local i:int = 1 to 4
+		For local i:int = 1 to allAudienceResults.length
 			local audience:TAudience = _GetAudience(i, hour, false, broadcastedAsType)
 			if not audience then audience = new TAudience
-			'fill with player id for identification
+			'fill with channelNumber for identification
 			if audience.id <= 0 then audience.id = i
 
 			availableAudiences.AddLast(audience)
@@ -313,7 +313,7 @@ Type TDailyBroadcastStatistic
 			local rank:int = 1
 			For local audience:TAudience = EachIn availableAudiences
 				'store rank as the group value
-				if audience.id = owner then result[i] = rank
+				if audience.id = channelNumber then result[i] = rank
 				rank :+1
 			Next
 		Next
@@ -321,11 +321,11 @@ Type TDailyBroadcastStatistic
 		'cache values
 		if broadcastedAsType = TVTBroadcastMaterialType.PROGRAMME
 			_cachedRanksHour = hour
-			_cachedRanksOwner = owner
+			_cachedRanksChannelNumber = channelNumber
 			_cachedRanks = result
 		else
 			_cachedNewsRanksHour = hour
-			_cachedNewsRanksOwner = owner
+			_cachedNewsRanksChannelNumber = channelNumber
 			_cachedNewsRanks = result
 		endif
 		
@@ -333,93 +333,93 @@ Type TDailyBroadcastStatistic
 	End Method
 
 
-	Method SetBroadcastResult:Int(broadcast:TBroadcastMaterial, owner:int, hour:int, audienceResult:TAudienceResultBase)
-		_SetBroadcastResult(broadcast, owner, hour, audienceResult, TVTBroadcastMaterialType.PROGRAMME)
+	Method SetBroadcastResult:Int(broadcast:TBroadcastMaterial, channelNumber:int, hour:int, audienceResult:TAudienceResultBase)
+		_SetBroadcastResult(broadcast, channelNumber, hour, audienceResult, TVTBroadcastMaterialType.PROGRAMME)
 	End Method
 
 
-	Method SetNewsBroadcastResult:Int(broadcast:TBroadcastMaterial, owner:int, hour:int, audienceResult:TAudienceResultBase)
-		_SetBroadcastResult(broadcast, owner, hour, audienceResult, TVTBroadcastMaterialType.NEWSSHOW)
+	Method SetNewsBroadcastResult:Int(broadcast:TBroadcastMaterial, channelNumber:int, hour:int, audienceResult:TAudienceResultBase)
+		_SetBroadcastResult(broadcast, channelNumber, hour, audienceResult, TVTBroadcastMaterialType.NEWSSHOW)
 	End Method
 
 
-	Method GetAudience:TAudience(owner:int, hour:int, createIfMissing:int = False)
-		return _GetAudience(owner, hour, createIfMissing, TVTBroadcastMaterialType.PROGRAMME)
+	Method GetAudience:TAudience(channelNumber:int, hour:int, createIfMissing:int = False)
+		return _GetAudience(channelNumber, hour, createIfMissing, TVTBroadcastMaterialType.PROGRAMME)
 	End Method
 
 
-	Method GetAudienceResult:TAudienceResultBase(owner:int, hour:int, createIfMissing:int = False)
-		return _GetAudienceResult(owner, hour, createIfMissing, TVTBroadcastMaterialType.PROGRAMME)
+	Method GetAudienceResult:TAudienceResultBase(channelNumber:int, hour:int, createIfMissing:int = False)
+		return _GetAudienceResult(channelNumber, hour, createIfMissing, TVTBroadcastMaterialType.PROGRAMME)
 	End Method
 
 
-	Method GetNewsAudience:TAudience(owner:int, hour:int, createIfMissing:int = False)
-		return _GetAudience(owner, hour, createIfMissing, TVTBroadcastMaterialType.NEWSSHOW)
+	Method GetNewsAudience:TAudience(channelNumber:int, hour:int, createIfMissing:int = False)
+		return _GetAudience(channelNumber, hour, createIfMissing, TVTBroadcastMaterialType.NEWSSHOW)
 	End Method
 
 
-	Method GetNewsAudienceResult:TAudienceResultBase(owner:int, hour:int, createIfMissing:int = False)
-		return _GetAudienceResult(owner, hour, createIfMissing, TVTBroadcastMaterialType.NEWSSHOW)
+	Method GetNewsAudienceResult:TAudienceResultBase(channelNumber:int, hour:int, createIfMissing:int = False)
+		return _GetAudienceResult(channelNumber, hour, createIfMissing, TVTBroadcastMaterialType.NEWSSHOW)
 	End Method
 
 
-	Method GetBestAudience:TAudience(owner:Int)
-		return _GetBestAudience(owner, TVTBroadcastMaterialType.PROGRAMME, null)
+	Method GetBestAudience:TAudience(channelNumber:Int)
+		return _GetBestAudience(channelNumber, TVTBroadcastMaterialType.PROGRAMME, null)
 	End Method
 
 
-	Method GetBestAudienceForHours:TAudience(owner:Int, skipHours:int[])
-		return _GetBestAudience(owner, TVTBroadcastMaterialType.PROGRAMME, skipHours)
+	Method GetBestAudienceForHours:TAudience(channelNumber:Int, skipHours:int[])
+		return _GetBestAudience(channelNumber, TVTBroadcastMaterialType.PROGRAMME, skipHours)
 	End Method
 
 
-	Method GetBestAudienceResult:TAudienceResultBase(owner:Int)
-		return _GetBestAudienceResult(owner, TVTBroadcastMaterialType.PROGRAMME, null)
+	Method GetBestAudienceResult:TAudienceResultBase(channelNumber:Int)
+		return _GetBestAudienceResult(channelNumber, TVTBroadcastMaterialType.PROGRAMME, null)
 	End Method
 
 
-	Method GetBestNewsAudience:TAudience(owner:Int)
-		return _GetBestAudience(owner, TVTBroadcastMaterialType.NEWSSHOW, null)
+	Method GetBestNewsAudience:TAudience(channelNumber:Int)
+		return _GetBestAudience(channelNumber, TVTBroadcastMaterialType.NEWSSHOW, null)
 	End Method
 
 
-	Method GetBestNewsAudienceForHours:TAudience(owner:Int, skipHours:int[])
-		return _GetBestAudience(owner, TVTBroadcastMaterialType.NEWSSHOW, skipHours)
+	Method GetBestNewsAudienceForHours:TAudience(channelNumber:Int, skipHours:int[])
+		return _GetBestAudience(channelNumber, TVTBroadcastMaterialType.NEWSSHOW, skipHours)
 	End Method
 
 
-	Method GetBestNewsAudienceResult:TAudienceResultBase(owner:Int)
-		return _GetBestAudienceResult(owner, TVTBroadcastMaterialType.NEWSSHOW, null)
+	Method GetBestNewsAudienceResult:TAudienceResultBase(channelNumber:Int)
+		return _GetBestAudienceResult(channelNumber, TVTBroadcastMaterialType.NEWSSHOW, null)
 	End Method
 
 
 
-	Method GetAverageAudience:TAudience(owner:int = -1)
-		return _GetAverageAudience(owner, TVTBroadcastMaterialType.PROGRAMME, null)
+	Method GetAverageAudience:TAudience(channelNumber:int = -1)
+		return _GetAverageAudience(channelNumber, TVTBroadcastMaterialType.PROGRAMME, null)
 	End Method
 
 
-	Method GetAverageAudienceForHours:TAudience(owner:int = -1, skipHours:int[])
-		return _GetAverageAudience(owner, TVTBroadcastMaterialType.PROGRAMME, skipHours)
+	Method GetAverageAudienceForHours:TAudience(channelNumber:int = -1, skipHours:int[])
+		return _GetAverageAudience(channelNumber, TVTBroadcastMaterialType.PROGRAMME, skipHours)
 	End Method
 
 
-	Method GetAverageNewsAudience:TAudience(owner:int = -1)
-		return _GetAverageAudience(owner, TVTBroadcastMaterialType.NEWSSHOW, null)
+	Method GetAverageNewsAudience:TAudience(channelNumber:int = -1)
+		return _GetAverageAudience(channelNumber, TVTBroadcastMaterialType.NEWSSHOW, null)
 	End Method
 
 
-	Method GetAverageNewsAudienceForHours:TAudience(owner:int = -1, skipHours:int[])
-		return _GetAverageAudience(owner, TVTBroadcastMaterialType.NEWSSHOW, skipHours)
+	Method GetAverageNewsAudienceForHours:TAudience(channelNumber:int = -1, skipHours:int[])
+		return _GetAverageAudience(channelNumber, TVTBroadcastMaterialType.NEWSSHOW, skipHours)
 	End Method
 
 
-	Method GetAudienceRanking:int[](owner:Int, hour:int)
-		return _GetAudienceRanking(owner, hour, TVTBroadcastMaterialType.PROGRAMME)
+	Method GetAudienceRanking:int[](channelNumber:Int, hour:int)
+		return _GetAudienceRanking(channelNumber, hour, TVTBroadcastMaterialType.PROGRAMME)
 	End Method	
 
 
-	Method GetNewsAudienceRanking:int[](owner:Int, hour:int)
-		return _GetAudienceRanking(owner, hour, TVTBroadcastMaterialType.NEWSSHOW)
+	Method GetNewsAudienceRanking:int[](channelNumber:Int, hour:int)
+		return _GetAudienceRanking(channelNumber, hour, TVTBroadcastMaterialType.NEWSSHOW)
 	End Method	
 End Type

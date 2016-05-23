@@ -291,11 +291,11 @@ endrem
 	End Method
 
 
-	
 	'Damit man GetFinance nicht in Lua verfügbar machen muss
 	Method GetCreditInterest:int() {_exposeToLua}
 		return GetFinance().GetCreditInterest()
 	end Method
+
 	
 	Method GetNewsAbonnementFees:int() {_exposeToLua}
 		Local newsagencyfees:Int =0

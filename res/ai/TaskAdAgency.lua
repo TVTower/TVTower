@@ -203,24 +203,26 @@ end
 
 function SignRequisitedContracts:Tick()
 	--debugMsg("SignRequisitedContracts")
-
-	--Sortieren
-	local sortMethod = function(a, b)
-		return a.GetAttractiveness() > b.GetAttractiveness()
-	end
-	--RONNY: Achtung, es muss ueberprueft werden, ob die Liste NULL-
-	--       Eintraege enthaelt (evtl "verschwunden", oder durch einen
-	--       "Refill"-Aufruf nicht mehr beim Makler zu haben.)
-	--       Dach kann sortiert werden, ohne "Null-Zugriffe" innerhalb
-	--       der Sortiermethode.
-	for i=#self.AdAgencyTask.SpotsInAgency,1,-1 do
-		if self.AdAgencyTask.SpotsInAgency[i] == nil then
-			--TVT.PrintOut("======== ENTFERNE UNGUELTIGEN WERBEVERTRAG ========")
-			table.remove(self.AdAgencyTask.SpotsInAgency, i)
+	if (self.AdAgencyTask.SpotsInAgency ~= nil) then
+		--Sortieren
+		local sortMethod = function(a, b)
+			return a.GetAttractiveness() > b.GetAttractiveness()
 		end
+		--RONNY: Achtung, es muss ueberprueft werden, ob die Liste NULL-
+		--       Eintraege enthaelt (evtl "verschwunden", oder durch einen
+		--       "Refill"-Aufruf nicht mehr beim Makler zu haben.)
+		--       Dach kann sortiert werden, ohne "Null-Zugriffe" innerhalb
+		--       der Sortiermethode.
+		for i=#self.AdAgencyTask.SpotsInAgency,1,-1 do
+			if self.AdAgencyTask.SpotsInAgency[i] == nil then
+				--TVT.PrintOut("======== ENTFERNE UNGUELTIGEN WERBEVERTRAG ========")
+				table.remove(self.AdAgencyTask.SpotsInAgency, i)
+			end
+		end
+		
+		table.sort(self.AdAgencyTask.SpotsInAgency, sortMethod)
 	end
-	
-	table.sort(self.AdAgencyTask.SpotsInAgency, sortMethod)
+
 
 	for k,requisition in pairs(self.SpotRequisitions) do
 		local neededSpotCount = requisition.Count
@@ -334,6 +336,10 @@ end
 
 -- sign "good contracts" (not an emergency-sign!)
 function SignContracts:Tick()
+	if (self.AdAgencyTask.SpotsInAgency == nil) then
+		return 0
+	end
+	
 	--debugMsg("SignContracts")
 
 	--Sortieren

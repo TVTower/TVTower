@@ -173,6 +173,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 	Method ResetPlayer(playerID:int)
+print "ResetPlayer("+playerID+")"
+print "--------------"
 		local player:TPlayer = GetPlayer(playerID)
 		if not player then return
 
@@ -192,44 +194,111 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		                        programmeCollection.singleLicences, ..
 		                        programmeCollection.seriesLicences, ..
 		                        programmeCollection.collectionLicences ]
-		local sellLicences:TProgrammeLicence[]
+		local licences:TProgrammeLicence[]
 		For local list:TList = EachIn lists
 			For local licence:TProgrammeLicence = EachIn list
-				sellLicences :+ [licence]
+				licences :+ [licence]
 			Next
 		Next
-		For local licence:TProgrammeLicence = EachIn sellLicences
+		For local licence:TProgrammeLicence = EachIn licences
+			'remove regardless of a successful sale
+			programmePlan.RemoveProgrammeInstancesByLicence(licence, True)
 			if licence.sell()
-				print "sold licence: "+licence.getTitle()
+				print "ResetPlayer("+playerID+"): sold licence: "+licence.getTitle()
+			else
+				print "ResetPlayer("+playerID+"): cannot sell licence: "+licence.getTitle()
+			
+				'absolutely remove non-tradeable data?
+				'for now: no! We want to be able to retrieve information
+				'         about these licences.
+				if not licence.isTradeable()
+				'	GetProgrammeLicenceCollection().RemoveAutomatic(licence)
+				'	GetProgrammeDataCollection().Remove(licence.data)
+				endif
 			endif
 		Next
 
 
-		'=== ABANDON ALL CONTRACTS ===
+
+		'=== ABANDON/ABORT ALL CONTRACTS ===
+		lists = [ programmeCollection.suitcaseAdContracts, ..
+		          programmeCollection.adContracts ]
+		local contracts:TAdContract[]
+		For local list:TList = EachIn lists
+			For local contract:TAdContract = EachIn list
+				contracts :+ [contract]
+			Next
+		Next
+		For local contract:TAdContract = EachIn contracts
+			contract.Fail( GetWorldTime().GetTimeGone() )
+			print "aborted contract: "+contract.getTitle()
+		Next
+
 
 
 		'=== SELL ALL SCRIPTS ===
+		lists = [ programmeCollection.scripts, ..
+		          programmeCollection.suitcaseScripts, ..
+		          programmeCollection.studioScripts ]
+		local scripts:TScript[]
+		For local list:TList = EachIn lists
+			For local script:TScript = EachIn list
+				scripts :+ [script]
+			Next
+		Next
+		For local script:TScript = EachIn scripts
+			'remove script, sell it and destroy production concepts
+			'linked to that script
+			programmeCollection.RemoveScript(script, True)
+			print "sold script: "+script.getTitle()
+		Next
+
 
 
 		'=== ABORT PRODUCTIONS ? ===
-
+'productionConcepts - noch da wenn verkauft
 
 		'=== STOP ROOM RENT CONTRACTS ===
 
 
 		'=== RESET NEWS ABONNEMENTS ===
+		'reset so next player wont start with a higher level for this day
+		For local i:int = 0 until TVTNewsGenre.count
+			player.SetNewsAbonnementDaysMax(i, 0)
+			player.SetNewsAbonnement(i, 0)
+		Next
 
+		
 
 		'=== REMOVE DELAYED NEWS ===
-		'better call GetNewsAgency().RemoveNewsForPlayer(playerID)
+		GetNewsAgency().ResetDelayedList(playerID)
 
 
 		'=== SELL ALL STATIONS ===
+
+
+		'=== RESET BOSS (OR INIT NEW ONE?) ===
+		'reset mood
+		'reset talk-about-subject-counters...
+		'assign new playerID !
+
+
+		'=== RESET FINANCES ===
+		GetPlayerFinanceCollection().ResetFinance(playerID)
+
+
+		'create absolutely new collections/plans ...
+		new TPlayerProgrammeCollection.Create(playerID)
+		new TPlayerProgrammePlan.Create(playerID)
+
+		TPublicImage.Create(Player.playerID)
+
 	End Method
 
 
 	Method PreparePlayer(playerID:int)
 print "PreparePlayer("+playerID+")"
+print "--------------"
 
 		local player:TPlayer = GetPlayer(playerID)
 		'create player if not done yet
@@ -252,13 +321,19 @@ print "PreparePlayer("+playerID+"): creating new player"
 			EndIf
 		EndIf
 
-		'move all figure to offscreen, and set target to their office
+		'move figure to offscreen, and set target to their office
 		'(for now just to the "floor", later maybe to the boss)
-		GetPlayer(playerID).GetFigure().MoveToOffscreen()
-		GetPlayer(playerID).GetFigure().area.position.x :+ playerID*3 + (playerID Mod 2)*15
+		local figure:TFigure = GetPlayer(playerID).GetFigure()
+		'remove potential elevator passenger 
+		GetElevator().LeaveTheElevator(figure)
+
+		if figure.inRoom then figure.LeaveRoom(True)
+
+		figure.MoveToOffscreen()
+		figure.area.position.x :+ playerID*3 + (playerID Mod 2)*15
 		'forcefully send (no controlling possible until reaching the target)
 		'GetPlayer(i).GetFigure().SendToDoor( TRoomDoor.GetByDetails("office", i), True)
-		GetPlayer(playerID).GetFigure().ForceChangeTarget(TRoomDoor.GetByDetails("news", playerID).area.GetX() + 60, TRoomDoor.GetByDetails("news", playerID).area.GetY())
+		figure.ForceChangeTarget(TRoomDoor.GetByDetails("news", playerID).area.GetX() + 60, TRoomDoor.GetByDetails("news", playerID).area.GetY())
 
 
 
@@ -359,6 +434,8 @@ print "PreparePlayer("+playerID+"): creating new player"
 		local programmeLicence:TProgrammeLicence = new TProgrammeLicence
 		programmeLicence.setData(programmeData)
 		programmeLicence.broadcastLimit = 1
+		'disable sellability
+		programmeLicence.tradeable = False
 		programmeLicence.licenceType = TVTProgrammeLicenceType.SINGLE
 		GetPlayerProgrammeCollection(playerID).AddProgrammeLicence(programmeLicence)
 
@@ -374,10 +451,18 @@ print "PreparePlayer("+playerID+"): creating new player"
 
 		Local currentLicence:TProgrammeLicence = playerCollection.GetSingleLicenceAtIndex(0)
 		if currentLicence
-			Local currentHour:Int = 0
+			Local startHour:Int = 0
+			Local currentHour:int = 0
+			local startDay:Int = GetWorldTime().GetStartDay()
+			'starting while game is already running?
+			'-> either another day, or on start day but after 0:05
+			if GetWorldTime().GetStartDay() <> GetWorldTime().GetDay() or GetWorldTime().GetDayTime() > 60*5 
+				startDay = GetWorldTime().GetDay()
+				startHour = GetWorldTime().GetDayHour() + 1
+			endif
 
 			Local broadcast:TProgramme = TProgramme.Create(currentLicence)
-			playerPlan.SetProgrammeSlot(broadcast, GetWorldTime().GetStartDay(), currentHour )
+			playerPlan.SetProgrammeSlot(broadcast, startDay, startHour )
 			'disable control of that programme
 			broadcast.licence.SetControllable(False)
 			if broadcast.isControllable() then Throw "controllable!"
@@ -391,15 +476,15 @@ print "PreparePlayer("+playerID+"): creating new player"
 			currentHour:+ currentLicence.getData().getBlocks()
 
 			'add two infomercials after that programme
-			playerPlan.SetProgrammeSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), currentHour )
+			playerPlan.SetProgrammeSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), startDay, startHour + currentHour )
 			currentHour :+ 1
-			playerPlan.SetProgrammeSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), currentHour )
+			playerPlan.SetProgrammeSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), startDay, startHour + currentHour )
 			currentHour :+ 1
 
 			'place ads for all broadcasted hours
 			If playerCollection.GetRandomAdContract()
 				For local i:int = 0 to currentHour-1
-					playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), i )
+					playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), startDay, startHour + i )
 				Next
 			EndIf
 		endif

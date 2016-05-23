@@ -275,7 +275,25 @@ Type TNewsEventCollection
 
 
 	Method GetRandomAvailable:TNewsEvent(genre:int=-1)
-	
+
+		'loaded old savegame?
+		'-> managedNewsEvents not yet used?!
+		if GetAvailableNewsList(genre).Count() = 0
+			local c:int = 0
+			for local e:TNewsEvent = EachIn managedNewsEvents.Values()
+				if e.IsReuseable() then c :+ 1
+			Next
+			if c = 0
+				for local e:TNewsEvent = EachIn allNewsEvents.Values()
+					if e.IsReuseable()
+						managedNewsEvents.insert(e.GetGUID(), e)
+					endif
+				Next
+				_InvalidateAvailableNewsEvents()
+			endif
+		endif
+
+
 		'if no news is available, make older ones available again
 		'start with 5 days ago and lower until we got a news
 		local days:int = 5
