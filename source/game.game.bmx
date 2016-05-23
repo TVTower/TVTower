@@ -147,8 +147,22 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 		TLogger.Log("Game.PrepareStart()", "colorizing images corresponding to playercolors", LOG_DEBUG)
-		ColorizePlayerExtras()
+		Local gray:TColor = TColor.Create(200, 200, 200)
+		Local gray2:TColor = TColor.Create(100, 100, 100)
+		Local gray3:TColor = TColor.Create(225, 225, 225)
 
+		GetRegistry().Set("gfx_building_sign_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_base").GetColorizedImage(gray), "gfx_building_sign_0"))
+		GetRegistry().Set("gfx_roomboard_sign_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base").GetColorizedImage(gray3,-1, COLORIZEMODE_OVERLAY), "gfx_roomboard_sign_0"))
+		GetRegistry().Set("gfx_roomboard_sign_dragged_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base_dragged").GetColorizedImage(gray3,-1, COLORIZEMODE_OVERLAY), "gfx_roomboard_sign_dragged_0"))
+		GetRegistry().Set("gfx_interface_channelbuttons_off_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_off").GetColorizedImage(gray2), "gfx_interface_channelbuttons_off_0"))
+		GetRegistry().Set("gfx_interface_channelbuttons_on_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_on").GetColorizedImage(gray2), "gfx_interface_channelbuttons_on_0"))
+
+		if not startNewGame
+			ColorizePlayerExtras(1)
+			ColorizePlayerExtras(2)
+			ColorizePlayerExtras(3)
+			ColorizePlayerExtras(4)
+		endif
 
 		TLogger.Log("Game.PrepareStart()", "drawing doors, plants and lights on the building-sprite", LOG_DEBUG)
 		'also registers events...
@@ -180,20 +194,39 @@ print "SetPlayerBankrupt("+playerID+")"
 
 		local figure:TFigure = player.GetFigure()
 		if figure
-			'give the player a new figure
-			player.Figure = New TFigure.Create(figure.name + Millisecs(), figure.sprite, 0, 0, figure.initialdx)
-			player.Figure.SetParent(GetBuilding().buildingInner)
-			player.Figure.playerID = playerID
-			player.Figure.SendToOffscreen()
-			player.Figure.MoveToOffscreen()
-
-
 			'remove figure from game once it reaches its target
 			figure.removeOnReachTarget = True
 			'move figure to offscreen (figure got fired)
 			if figure.inRoom then figure.LeaveRoom(True)
 			figure.SendToOffscreen(True) 'force
 			figure.playerID = 0
+			'create a sprite copy for this figure, so the real player
+			'can create a new one
+			figure.sprite = new TSprite.InitFromImage( figure.sprite.GetImageCopy(False), "Player"+playerID, figure.sprite.frames)
+
+
+			'give the player a new figure
+			player.Figure = New TFigure.Create(figure.name, GetSpriteFromRegistry("Player"+playerID), 0, 0, figure.initialdx)
+			local colors:TPlayerColor[] = TPlayerColor.getUnowned(TPlayerColor.Create(255,255,255))
+			local newColor:TPlayerColor = colors[RandRange(0, colors.length-1)]
+			if newColor
+				Player.color.SetOwner(0).RemoveFromList()
+				Player.color = newcolor.SetOwner(playerID).AddToList()
+				Player.RecolorFigure(Player.color)
+			endif
+			'choose a random one
+			if player.figurebase <= 5
+				'male
+				player.UpdateFigureBase(RandRange(0,5))
+			else
+				'female
+				player.UpdateFigureBase(RandRange(6,12))
+			endif
+
+			player.Figure.SetParent(GetBuilding().buildingInner)
+			player.Figure.playerID = playerID
+			player.Figure.SendToOffscreen()
+			player.Figure.MoveToOffscreen()
 		endif
 
 
@@ -306,6 +339,16 @@ print "--------------"
 
 
 
+		'=== RESET BETTY FEELINGS ===
+		GetBetty().InLove[PlayerID-1] = 0
+		GetBetty().AdjustLove(playerID, 0) 'recalc other things
+
+		GetBetty().AwardWinner[PlayerID-1] = 0
+		GetBetty().AdjustAward(playerID, 0) 'recalc other things
+		print "ResetPlayer("+playerID+"): Adjusted betty love and awards"
+
+
+
 		'=== RESET NEWS ABONNEMENTS ===
 		'reset so next player wont start with a higher level for this day
 		For local i:int = 0 until TVTNewsGenre.count
@@ -340,17 +383,17 @@ print "--------------"
 
 		'=== RESET FINANCES ===
 		GetPlayerFinanceCollection().ResetFinance(playerID)
+		'keep history of previous player (if linked somewhere)
+		'and instead of "GetPlayerFinanceHistoryList(playerID).clear()"
+		'just create a new one
+		GetPlayerFinanceHistoryListCollection().Set(playerID, CreateList())
 	End Method
 
 
 	Method PreparePlayer(playerID:int)
-print "PreparePlayer("+playerID+")"
-print "--------------"
-
 		local player:TPlayer = GetPlayer(playerID)
 		'create player if not done yet
 		if not player
-print "PreparePlayer("+playerID+"): creating new player"
 			GetPlayerCollection().Set(playerID, TPlayer.Create(playerID, "Player", "Channel", GetSpriteFromRegistry("Player"+playerID), 190, 13, 90, TPlayerColor.getByOwner(0), "Player "+playerID))
 			player = GetPlayer(playerID)
 		endif
@@ -360,6 +403,10 @@ print "PreparePlayer("+playerID+"): creating new player"
 		GetPlayer(playerID).Name = ScreenGameSettings.guiPlayerNames[playerID-1].Value
 		GetPlayer(playerID).channelname = ScreenGameSettings.guiChannelNames[playerID-1].Value
 
+
+		'colorize figure, signs, ...
+		ColorizePlayerExtras(playerID)
+		
 
 		'=== 3RD PARTY PLAYER COMPONENTS ===
 		TPublicImage.Create(Player.playerID)
@@ -542,6 +589,22 @@ print "PreparePlayer("+playerID+"): creating new player"
 			EndIf
 		endif
 	End Method
+
+
+	'- kann vor Spielstart durchgefuehrt werden
+	'- kann mehrfach ausgefuehrt werden
+	Function ColorizePlayerExtras(playerID:int)
+		'colorize the images
+		GetPlayer(playerID).RecolorFigure()
+		Local color:TColor = GetPlayer(playerID).color
+
+		GetRegistry().Set("stationmap_antenna"+playerID, New TSprite.InitFromImage(GetSpriteFromRegistry("stationmap_antenna0").GetColorizedImage(color,-1, COLORIZEMODE_OVERLAY), "stationmap_antenna"+playerID))
+		GetRegistry().Set("gfx_building_sign_"+playerID, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_base").GetColorizedImage(color), "gfx_building_sign_"+playerID))
+		GetRegistry().Set("gfx_roomboard_sign_"+playerID, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base").GetColorizedImage(color,-1, COLORIZEMODE_OVERLAY), "gfx_roomboard_sign_"+playerID))
+		GetRegistry().Set("gfx_roomboard_sign_dragged_"+playerID, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base_dragged").GetColorizedImage(color, -1, COLORIZEMODE_OVERLAY), "gfx_roomboard_sign_dragged_"+playerID))
+		GetRegistry().Set("gfx_interface_channelbuttons_off_"+playerID, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_off").GetColorizedImage(color, playerID), "gfx_interface_channelbuttons_off_"+playerID))
+		GetRegistry().Set("gfx_interface_channelbuttons_on_"+playerID, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_on").GetColorizedImage(color, playerID), "gfx_interface_channelbuttons_on_"+playerID))
+	End Function
 
 	
 	Method PrepareNewGame:Int()

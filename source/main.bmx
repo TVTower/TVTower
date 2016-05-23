@@ -4558,40 +4558,6 @@ End Function
 
 
 
-
-
-
-'- kann vor Spielstart durchgefuehrt werden
-'- kann mehrfach ausgefuehrt werden
-Function ColorizePlayerExtras()
-	'colorize the images
-	Local gray:TColor = TColor.Create(200, 200, 200)
-	Local gray2:TColor = TColor.Create(100, 100, 100)
-	Local gray3:TColor = TColor.Create(225, 225, 225)
-
-	GetRegistry().Set("gfx_building_sign_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_base").GetColorizedImage(gray), "gfx_building_sign_0"))
-	GetRegistry().Set("gfx_interface_channelbuttons_off_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_off").GetColorizedImage(gray2), "gfx_interface_channelbuttons_off_0"))
-	GetRegistry().Set("gfx_interface_channelbuttons_on_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_on").GetColorizedImage(gray2), "gfx_interface_channelbuttons_on_0"))
-	GetRegistry().Set("gfx_roomboard_sign_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base").GetColorizedImage(gray3,-1, COLORIZEMODE_OVERLAY), "gfx_roomboard_sign_0"))
-	GetRegistry().Set("gfx_roomboard_sign_dragged_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base_dragged").GetColorizedImage(gray3,-1, COLORIZEMODE_OVERLAY), "gfx_roomboard_sign_dragged_0"))
-
-	'colorizing for every player
-	For Local i:Int = 1 To 4
-		GetPlayer(i).RecolorFigure()
-		Local color:TColor = GetPlayer(i).color
-
-		GetRegistry().Set("stationmap_antenna"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("stationmap_antenna0").GetColorizedImage(color,-1, COLORIZEMODE_OVERLAY), "stationmap_antenna"+i))
-		GetRegistry().Set("gfx_building_sign_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_base").GetColorizedImage(color), "gfx_building_sign_"+i))
-		GetRegistry().Set("gfx_roomboard_sign_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base").GetColorizedImage(color,-1, COLORIZEMODE_OVERLAY), "gfx_roomboard_sign_"+i))
-		GetRegistry().Set("gfx_roomboard_sign_dragged_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base_dragged").GetColorizedImage(color, -1, COLORIZEMODE_OVERLAY), "gfx_roomboard_sign_dragged_"+i))
-		GetRegistry().Set("gfx_interface_channelbuttons_off_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_off").GetColorizedImage(color, i), "gfx_interface_channelbuttons_off_"+i))
-		GetRegistry().Set("gfx_interface_channelbuttons_on_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_on").GetColorizedImage(color, i), "gfx_interface_channelbuttons_on_"+i))
-	Next
-End Function
-
-
-
-
 Function GetBroadcastOverviewString:string(day:int = -1, lastHour:int = -1)
 	if day = -1 then day = GetWorldTime().GetDay()
 	if lastHour = -1 then lastHour = GetWorldTime().GetDayHour()

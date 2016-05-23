@@ -61,7 +61,6 @@ Type TFigureBaseCollection extends TEntityCollection
 
 		if figuresToRemove.length > 0
 			For local f:TFigureBase = EachIn figuresToRemove
-				print "removing "+f.name
 				Remove(f)
 			Next
 			figuresToRemove = figuresToRemove[..0]

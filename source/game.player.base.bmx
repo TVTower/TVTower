@@ -275,9 +275,7 @@ Type TPlayerBase {_exposeToLua="selected"}
 		If figureCount = 0 then return False
 
 		'limit the figurebase to the available figures
-		If newfigurebase > figureCount-1 Then newfigurebase = 0
-		If newfigurebase < 0 Then newfigurebase = figureCount-1
-		figurebase = newfigurebase
+		figurebase = MathHelper.Clamp(newfigurebase, 0, figureCount-1)
 
 		Local newSpriteName:string = playerFigures[figurebase].trim().toLower()
 		Local newSprite:TSprite = GetSpriteFromRegistry(newSpriteName)

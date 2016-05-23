@@ -23,13 +23,16 @@ Type TPlayerColor extends TColor
 		Next
 		list.Clear()
 	End Function
+
+
+	Method RemoveFromList:TPlayerColor()
+		list.remove(self)
+		return self
+	End Method
 	
 
 	Method AddToList:TPlayerColor()
-		'remove first and append as last color
-		list.remove(self)
-		list.AddLast(self)
-
+		Super.AddToList()
 		return self
 	End Method
 	
@@ -45,5 +48,15 @@ Type TPlayerColor extends TColor
 			if obj.ownerID = ownerID then return obj
 		Next
 		return Null
+	End Function
+
+
+	Function getUnowned:TPlayerColor[](defaultColor:TPlayerColor)
+		local unowned:TPlayerColor[]
+		For local c:TPlayerColor = EachIn List
+			if c.ownerID = 0 then unowned :+ [c]
+		Next
+		if unowned.length = 0 then unowned :+ [defaultColor]
+		return unowned
 	End Function
 End Type
