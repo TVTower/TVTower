@@ -172,6 +172,38 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method SetPlayerBankrupt(playerID:int)
+print "SetPlayerBankrupt("+playerID+")"
+
+		local player:TPlayer = GetPlayer(playerID)
+		if not player then return
+
+		local figure:TFigure = player.GetFigure()
+		if figure
+			'give the player a new figure
+			player.Figure = New TFigure.Create(figure.name + Millisecs(), figure.sprite, 0, 0, figure.initialdx)
+			player.Figure.SetParent(GetBuilding().buildingInner)
+			player.Figure.playerID = playerID
+			player.Figure.SendToOffscreen()
+			player.Figure.MoveToOffscreen()
+
+
+			'remove figure from game once it reaches its target
+			figure.removeOnReachTarget = True
+			'move figure to offscreen (figure got fired)
+			if figure.inRoom then figure.LeaveRoom(True)
+			figure.SendToOffscreen(True) 'force
+			figure.playerID = 0
+		endif
+
+
+		'reset everything of that player
+		ResetPlayer(playerID)
+		'prepare new player data (take credit, give starting programme...)
+		PreparePlayer(playerID)
+	End Method
+
+
 	Method ResetPlayer(playerID:int)
 print "ResetPlayer("+playerID+")"
 print "--------------"
@@ -231,7 +263,7 @@ print "--------------"
 		Next
 		For local contract:TAdContract = EachIn contracts
 			contract.Fail( GetWorldTime().GetTimeGone() )
-			print "aborted contract: "+contract.getTitle()
+			print "ResetPlayer("+playerID+"): aborted contract: "+contract.getTitle()
 		Next
 
 
@@ -250,15 +282,28 @@ print "--------------"
 			'remove script, sell it and destroy production concepts
 			'linked to that script
 			programmeCollection.RemoveScript(script, True)
-			print "sold script: "+script.getTitle()
+			print "ResetPlayer("+playerID+"): sold script: "+script.getTitle()
 		Next
 
 
 
 		'=== ABORT PRODUCTIONS ? ===
-'productionConcepts - noch da wenn verkauft
+		local productions:TProduction[]
+		For local p:TProduction = EachIn GetProductionManager().productionsToProduce
+			if p.owner = playerID then productions :+ [p]
+		Next
+		For local p:TProduction = EachIn productions
+			GetProductionManager().AbortProduction(p)
+			'delete corresponding concept too
+			GetProductionConceptCollection().Remove(p.productionConcept)
+			print "ResetPlayer("+playerID+"): stopped production: "+p.productionConcept.GetTitle()
+		Next
+		
+
 
 		'=== STOP ROOM RENT CONTRACTS ===
+		print "ResetPlayer("+playerID+"): TODO - stop room rental"
+
 
 
 		'=== RESET NEWS ABONNEMENTS ===
@@ -274,25 +319,27 @@ print "--------------"
 		GetNewsAgency().ResetDelayedList(playerID)
 
 
+
 		'=== SELL ALL STATIONS ===
+		local map:TStationMap = GetStationMap(playerID, True)
+		For local station:TStation = EachIn map.stations
+			map.Removestation(station, True, True)
+			print "ResetPlayer("+playerID+"): sold station"
+		Next
+		GetStationMapCollection().Update()
+
 
 
 		'=== RESET BOSS (OR INIT NEW ONE?) ===
 		'reset mood
 		'reset talk-about-subject-counters...
 		'assign new playerID !
+		GetPlayerBoss(playerID).Initialize()
+
 
 
 		'=== RESET FINANCES ===
 		GetPlayerFinanceCollection().ResetFinance(playerID)
-
-
-		'create absolutely new collections/plans ...
-		new TPlayerProgrammeCollection.Create(playerID)
-		new TPlayerProgrammePlan.Create(playerID)
-
-		TPublicImage.Create(Player.playerID)
-
 	End Method
 
 
@@ -314,6 +361,12 @@ print "PreparePlayer("+playerID+"): creating new player"
 		GetPlayer(playerID).channelname = ScreenGameSettings.guiChannelNames[playerID-1].Value
 
 
+		'=== 3RD PARTY PLAYER COMPONENTS ===
+		TPublicImage.Create(Player.playerID)
+		new TPlayerProgrammeCollection.Create(playerID)
+		new TPlayerProgrammePlan.Create(playerID)
+
+
 		'=== FIGURE ===
 		If isGameLeader()
 			If GetPlayer(playerID).IsLocalAI()
@@ -328,7 +381,7 @@ print "PreparePlayer("+playerID+"): creating new player"
 		GetElevator().LeaveTheElevator(figure)
 
 		if figure.inRoom then figure.LeaveRoom(True)
-
+		figure.SetParent(GetBuilding().buildingInner)
 		figure.MoveToOffscreen()
 		figure.area.position.x :+ playerID*3 + (playerID Mod 2)*15
 		'forcefully send (no controlling possible until reaching the target)

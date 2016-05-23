@@ -135,6 +135,23 @@ Type TPlayerBoss
 	End Method
 
 
+	Method Initialize()
+		mood = 50.0
+		awaitingPlayerVisit = False
+		awaitingPlayerVisitTillTime = 0
+		awaitingPlayerAccepted = False
+		awaitingPlayerCalled = False
+		playerVisitsMe = False
+		creditMaximum = 600000
+		favoriteMovieGUID = ""
+		talkSubjects = new TPlayerBossTalkSubjects[0]
+		Dialogues.Clear()
+		registeredProgrammeMalfunctions = 0
+		registeredNewsMalfunctions = 0
+		playerID = -1
+	End Method
+
+
 	Method RegisterEvents:Int()
 		'register events for all bosses
 		if not registeredEvents

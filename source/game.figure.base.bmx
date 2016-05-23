@@ -4,6 +4,7 @@ Import "Dig/base.util.registry.spriteloader.bmx"
 
 
 Type TFigureBaseCollection extends TEntityCollection
+	Field figuresToRemove:TFigureBase[]
 	Global _eventsRegistered:int= FALSE
 	Global _instance:TFigureBaseCollection
 
@@ -53,8 +54,18 @@ Type TFigureBaseCollection extends TEntityCollection
 
 	Method UpdateAll:int()
 		For Local Figure:TFigureBase = EachIn entries.Values()
-			Figure.Update()
+			if not Figure.Update()
+				figuresToRemove :+ [Figure]
+			endif
 		Next
+
+		if figuresToRemove.length > 0
+			For local f:TFigureBase = EachIn figuresToRemove
+				print "removing "+f.name
+				Remove(f)
+			Next
+			figuresToRemove = figuresToRemove[..0]
+		endif
 	End Method
 
 
@@ -95,6 +106,10 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	'still waiting to enter a room)
 	Field currentReachTargetStep:int = 0
 	Field currentAction:int = 0
+	'remove figure from game when it reached the final target
+	Field removeOnReachTarget:int = False
+	'figure alive? "false" to remove the figure from game
+	Field alive:int = True
 
 	'how long to wait until entering the target (door/hotspot)
 	'or how long to wait until start moving when having left
@@ -269,6 +284,23 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
+	'send a figure to the offscreen position
+	Method SendToOffscreen:Int(forceSend:int=False)
+		'
+	End Method
+
+
+	'instantly move a figure to the offscreen position
+	Method MoveToOffscreen:Int()
+		'
+	End Method
+
+
+	Method IsOffscreen:int()
+		return False
+	End Method
+
+
 	'change the target of the figure
 	'@forceChange   defines wether the target could change target
 	'               even when not controllable
@@ -349,6 +381,8 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		'TODO: place this in a custom "Route"-object? so there could
 		'      be a chain of targets which you cannot skip
 		if not GetTarget() then controllable = True
+
+		if removeOnReachTarget then alive = False
 	End Method
 
 
@@ -443,6 +477,8 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 		'this could be overwritten by extended types
 		UpdateCustom()
+
+		return alive
 	End Method
 
 

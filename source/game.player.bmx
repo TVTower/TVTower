@@ -319,10 +319,6 @@ endrem
 		Player.Figure = New TFigure.Create(FigureName, sprite, x, onFloor, dx)
 		Player.Figure.playerID = playerID
 
-		TPublicImage.Create(Player.playerID)
-		new TPlayerProgrammeCollection.Create(playerID)
-		new TPlayerProgrammePlan.Create(playerID)
-
 		'create a new boss for the player
 		GetPlayerBossCollection().Set(playerID, new TPlayerBoss)
 

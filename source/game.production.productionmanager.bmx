@@ -65,7 +65,14 @@ Type TProductionManager
 			return production
 		Next
 		return null
-	End Method	
+	End Method
+
+
+	Method AbortProduction:int(production:TProduction)
+		if production.Abort()
+			return productionsToProduce.Remove(production)
+		endif
+	End Method
 
 
 	'start the production in the given studio

@@ -734,22 +734,10 @@ Type TApp
 							If KEYMANAGER.IsHit(KEY_3) Then GetGame().SetActivePlayer(3)
 							If KEYMANAGER.IsHit(KEY_4) Then GetGame().SetActivePlayer(4)
 						else
-							If KEYMANAGER.IsHit(KEY_1)
-								GetGame().ResetPlayer(1)
-								GetGame().PreparePlayer(1)
-							endif
-							If KEYMANAGER.IsHit(KEY_2)
-								GetGame().ResetPlayer(2)
-								GetGame().PreparePlayer(2)
-							endif
-							If KEYMANAGER.IsHit(KEY_3)
-								GetGame().ResetPlayer(3)
-								GetGame().PreparePlayer(3)
-							endif
-							If KEYMANAGER.IsHit(KEY_4)
-								GetGame().ResetPlayer(4)
-								GetGame().PreparePlayer(4)
-							endif
+							If KEYMANAGER.IsHit(KEY_1) then GetGame().SetPlayerBankrupt(1)
+							If KEYMANAGER.IsHit(KEY_2) then GetGame().SetPlayerBankrupt(2)
+							If KEYMANAGER.IsHit(KEY_3) then GetGame().SetPlayerBankrupt(3)
+							If KEYMANAGER.IsHit(KEY_4) then GetGame().SetPlayerBankrupt(4)
 						endif
 
 						If KEYMANAGER.IsHit(KEY_W)

@@ -785,12 +785,18 @@ Type TFigure extends TFigureBase
 	End Method
 
 
+	'override
 	'send a figure to the offscreen position
-	Method SendToOffscreen:Int()
-		ChangeTarget(GetBuildingBase().figureOffscreenX, TBuildingBase.GetFloorY2(0) - 5)
+	Method SendToOffscreen:Int(forceSend:Int = False)
+		if forceSend
+			ForceChangeTarget(GetBuildingBase().figureOffscreenX, TBuildingBase.GetFloorY2(0) - 5)
+		else
+			ChangeTarget(GetBuildingBase().figureOffscreenX, TBuildingBase.GetFloorY2(0) - 5)
+		endif
 	End Method
 
 
+	'override
 	'instantly move a figure to the offscreen position
 	Method MoveToOffscreen:Int()
 		area.position.SetXY(GetBuildingBase().figureOffscreenX, TBuildingBase.GetFloorY2(0))
@@ -975,7 +981,7 @@ Type TFigure extends TFigureBase
 
 	Method Update:int()
 		'call figureBase update (does movement and updates current animation)
-		Super.Update()
+		local result:int = Super.Update()
 
 		if GetGameBase().PlayingAGame()
 			If isVisible() And CanMove()
@@ -1002,6 +1008,8 @@ Type TFigure extends TFigureBase
 			EventManager.triggerEvent( TEventSimple.Create("figure.onSyncTimer", self) )
 			SyncTimer.Reset()
 		EndIf
+
+		return result
 	End Method
 
 

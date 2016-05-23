@@ -762,17 +762,19 @@ Type TStationMap {_exposeToLua="selected"}
 	End Method
 
 
-	Method RemoveStation:Int(station:TStation, sell:Int=False)
+	Method RemoveStation:Int(station:TStation, sell:Int=False, forcedRemoval:int=False)
 		If Not station Then Return False
 
-		'not allowed to sell this station
-		If not station.HasFlag(TStation.FLAG_SELLABLE) then Return False
+		if not forcedRemoval
+			'not allowed to sell this station
+			If not station.HasFlag(TStation.FLAG_SELLABLE) then Return False
 
-		'check if we try to sell our last station...
-		If stations.count() = 1
-			EventManager.triggerEvent(TEventSimple.Create("StationMap.onTrySellLastStation", null, self))
-			Return False
-		EndIf
+			'check if we try to sell our last station...
+			If stations.count() = 1
+				EventManager.triggerEvent(TEventSimple.Create("StationMap.onTrySellLastStation", null, self))
+				Return False
+			EndIf
+		endif
 
 		If sell And Not station.sell() Then Return False
 
