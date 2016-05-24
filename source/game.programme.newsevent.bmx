@@ -126,7 +126,7 @@ Type TNewsEventCollection
 		endif
 		'resize if needed
 		if newsEventsHistory.length < newsEventsHistoryIndex+1
-			newsEventsHistory = newsEventsHistory[.. newsEventsHistory.length + 10]
+			newsEventsHistory = newsEventsHistory[.. newsEventsHistoryIndex + 10]
 		endif
 		
 		newsEventsHistory[newsEventsHistoryIndex] = obj

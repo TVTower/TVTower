@@ -19,6 +19,10 @@ Type TGameBase {_exposeToLua="selected"}
 	'stores the level of banruptcy for each player
 	'0 = everything ok, 1-3 = days with negative balance
 	Field playerBankruptLevel:int[]
+	'stores the time of when the level was set, this is to avoid
+	'increasing the level on a day change while some milliseconds before
+	'the daily costs were paid...
+	Field playerBankruptLevelTime:Long[]
 
 	'last sync
 	Field stateSyncTime:Int	= 0
@@ -115,6 +119,7 @@ Type TGameBase {_exposeToLua="selected"}
 		onlinegame = 0
 
 		playerBankruptLevel = new Int[0]
+		playerBankruptLevelTime = new Long[0]
 
 		'remove existing figures
 		'might be done by GetFigure[Base]Collection().Initialize() already
@@ -170,7 +175,7 @@ Type TGameBase {_exposeToLua="selected"}
 	End Method
 	
 
-	Method SetPlayerBankruptLevel:int(playerID:int, level:int)
+	Method SetPlayerBankruptLevel:int(playerID:int, level:int, time:Long=-1)
 		if playerID < 1 then return False
 		
 		'resize if needed
@@ -178,7 +183,15 @@ Type TGameBase {_exposeToLua="selected"}
 			playerBankruptLevel = playerBankruptLevel[.. playerID]
 		endif
 
+		if playerBankruptLevelTime.length < playerID
+			playerBankruptLevelTime = playerBankruptLevelTime[.. playerID]
+		endif
+
+		'value already set
+		if playerBankruptLevel[playerID -1] = level then return False
+
 		playerBankruptLevel[playerID -1] = level
+
 		return True
 	End Method
 
@@ -187,6 +200,13 @@ Type TGameBase {_exposeToLua="selected"}
 		if playerID < 1 or playerBankruptLevel.length < playerID then return 0
 
 		return playerBankruptLevel[playerID -1]
+	End Method
+
+
+	Method GetPlayerBankruptLevelTime:Long(playerID:int)
+		if playerID < 1 or playerBankruptLevelTime.length < playerID then return 0
+
+		return playerBankruptLevelTime[playerID -1]
 	End Method
 
 

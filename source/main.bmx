@@ -3925,6 +3925,10 @@ Type GameEvents
 		local playerID:int = triggerEvent.GetData().GetInt("playerID", -1)
 		if playerID <> GetPlayerBaseCollection().playerID then return False
 
+		'only interested in the first two days (afterwards player is
+		'already gameover)
+		if GetGame().GetPlayerBankruptLevel(playerID) > 2 then return False
+
 		'send out a toast message
 		Local toast:TGameToastMessage = New TGameToastMessage
 		local text:string

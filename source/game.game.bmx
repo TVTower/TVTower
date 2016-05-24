@@ -203,6 +203,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		for local playerID:int = 1 to 4
 			if GetPlayerFinance(playerID).GetMoney() < 0
+				'skip level increase if level was adjusted that day already
+				if GetWorldTime().GetDay() = GetWorldTime().GetDay(GetPlayerBankruptLevelTime(playerID)) then continue
+
 				SetPlayerBankruptLevel(playerID, GetPlayerBankruptLevel(playerID)+1)
 
 				if GetPlayerBankruptLevel(playerID) >= 3
@@ -1047,16 +1050,19 @@ print "--------------"
 
 		local playerID:int = finance.playerID
 		if finance.GetMoney() < 0 and GetGame().GetPlayerBankruptLevel(playerID) = 0
-			GetGame().SetPlayerBankruptLevel(playerID, 1)
+			GetGame().SetPlayerBankruptLevel(playerID, 1, -1)
 		elseif finance.GetMoney() >= 0 and GetGame().GetPlayerBankruptLevel(playerID) <> 0
-			GetGame().SetPlayerBankruptLevel(playerID, 0)
+			GetGame().SetPlayerBankruptLevel(playerID, 0, -1)
 		endif
 	End Function
 
 
 	'override
-	Method SetPlayerBankruptLevel:int(playerID:int, level:int)
+	Method SetPlayerBankruptLevel:int(playerID:int, level:int, time:Long = -1)
 		if not Super.SetPlayerBankruptLevel(playerID, level) then return False
+
+		if time = -1 then time = GetWorldTime().GetTimeGone()
+		playerBankruptLevelTime[playerID -1] = time
 
 		EventManager.triggerEvent( TEventSimple.Create("Game.SetPlayerBankruptLevel", new TData.AddNumber("playerID", playerID) ) )
 
