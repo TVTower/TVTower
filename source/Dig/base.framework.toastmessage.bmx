@@ -89,6 +89,14 @@ Type TToastMessageCollection extends TRenderableEntity
 
 	'=== UTILITY FUNCTIONS ===
 
+	'removes all message in all spawn points
+	Method RemoveAllMessages:Int()
+		for local spawnPoint:TToastMessageSpawnPoint = EachIn spawnPoints.Values()
+			spawnPoint.RemoveAllMessages()
+		next
+	End Method
+
+
 	'add a point for messages to spawn from
 	Method AddSpawnPoint:Int(spawnPoint:TToastMessageSpawnPoint)
 		spawnPoint.SetParent(self)
@@ -235,6 +243,11 @@ Type TToastMessageSpawnPoint extends TEntity
 
 		messages.AddFirst(message)
 		return True
+	End Method
+
+
+	Method RemoveAllMessages:Int()
+		messages.Clear()
 	End Method
 
 

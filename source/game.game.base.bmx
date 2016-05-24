@@ -13,8 +13,12 @@ Type TGameBase {_exposeToLua="selected"}
 	Field cursorstate:Int = 0
 	'0 = Mainmenu, 1=Running, ...
 	Field gamestate:Int = -1
+	Field gameOver:int = False
 
 	Field nextXRatedCheckMinute:Int = -1
+	'stores the level of banruptcy for each player
+	'0 = everything ok, 1-3 = days with negative balance
+	Field playerBankruptLevel:int[]
 
 	'last sync
 	Field stateSyncTime:Int	= 0
@@ -89,6 +93,7 @@ Type TGameBase {_exposeToLua="selected"}
 		title = "MyGame"
 		cursorstate = 0
 		gamestate = 1 'mainmenu
+		gameOver = False
 
 		nextXRatedCheckMinute = -1
 		stateSyncTime = 0
@@ -151,6 +156,36 @@ Type TGameBase {_exposeToLua="selected"}
 
 	Method Update(deltaTime:Float=1.0)
 		'stub
+	End Method
+
+
+	Method SetGameOver()
+		gameOver = True
+	End Method
+
+
+	Method IsGameOver:int()
+		return gameOver = True
+	End Method
+	
+
+	Method SetPlayerBankruptLevel:int(playerID:int, level:int)
+		if playerID < 1 then return False
+		
+		'resize if needed
+		if playerBankruptLevel.length < playerID
+			playerBankruptLevel = playerBankruptLevel[.. playerID]
+		endif
+
+		playerBankruptLevel[playerID -1] = level
+		return True
+	End Method
+
+
+	Method GetPlayerBankruptLevel:int(playerID:int)
+		if playerID < 1 or playerBankruptLevel.length < playerID then return 0
+
+		return playerBankruptLevel[playerID -1]
 	End Method
 
 

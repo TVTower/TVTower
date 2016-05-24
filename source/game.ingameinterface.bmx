@@ -88,13 +88,13 @@ Type TInGameInterface
 		MenuToolTip = TTooltip.Create("", "", 470, 560)
 
 		'collect them in one list (to sort them correctly)
+		tooltips.Clear()
 		tooltips.AddLast(CurrentProgrammeToolTip)
 		tooltips.AddLast(CurrentAudienceToolTip)
 		tooltips.AddLast(CurrentTimeToolTip)
 		tooltips.AddLast(MoneyTooltip)
 		tooltips.AddLast(BettyToolTip)
 		tooltips.AddLast(MenuToolTip)
-
 
 		noiseSprite = GetSpriteFromRegistry("gfx_interface_tv_noise")
 		'set space "left" when subtracting the genre image

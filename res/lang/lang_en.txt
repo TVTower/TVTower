@@ -711,3 +711,10 @@ STUDIO_MANAGER_TOOLTIP = Gives information about production and hands out new sh
 MANAGE_BROADCASTED_NEWS = Manage broadcasted news
 
 RIGHT_CLICK_TO_DELETE = Right click to delete
+
+YOUR_BALANCE_IS_POSITIVE_AGAIN = Your balance is positive again.
+YOUR_BALANCE_IS_NEGATIVE = Your balance is negative.
+YOU_ARE_NO_LONGER_IN_DANGER_TO_GET_FIRED = You are no longer in danger to get fired.
+YOU_HAVE_X_DAYS_TO_GET_INTO_THE_BLACK = You have %DAYS% to get into the black.
+YOU_HAVE_ONLY_TODAY_TO_GET_INTO_THE_BLACK = You have only today to get into the black.
+YOU_ARE_IN_DANGER_TO_GET_FIRED = You are in danger to get fired!

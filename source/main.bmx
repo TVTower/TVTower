@@ -540,7 +540,8 @@ Type TApp
 					EndIf
 				EndIf
 
-				If GetGame().gamestate = TGame.STATE_RUNNING
+				'in game and not gameover
+				If GetGame().gamestate = TGame.STATE_RUNNING and not GetGame().IsGameOver() 
 					If KEYMANAGER.IsDown(KEY_UP) Then GetWorldTime().AdjustTimeFactor(+5)
 					If KEYMANAGER.IsDown(KEY_DOWN) Then GetWorldTime().AdjustTimeFactor(-5)
 
@@ -3482,6 +3483,8 @@ Type GameEvents
 		_eventListeners :+ [ EventManager.registerListenerFunction("StationMap.removeStation", StationMap_OnRemoveStation) ]
 		'show ingame toastmessage if station is under construction
 		_eventListeners :+ [ EventManager.registerListenerFunction("StationMap.addStation", StationMap_OnAddStation) ]
+		'show ingame toastmessage if bankruptcy could happen
+		_eventListeners :+ [ EventManager.registerListenerFunction("Game.SetPlayerBankruptLevel", Game_OnSetPlayerBankruptLevel) ]
 
 		'listen to failed or successful ending adcontracts to send out
 		'ingame toastmessages
@@ -3917,6 +3920,55 @@ Type GameEvents
 		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 	End Function	
 
+
+	Function Game_OnSetPlayerBankruptLevel:Int(triggerEvent:TEventBase)
+		'only interested in levels of the player
+		local playerID:int = triggerEvent.GetData().GetInt("playerID", -1)
+		if playerID <> GetPlayerBaseCollection().playerID then return False
+
+		'send out a toast message
+		Local toast:TGameToastMessage = New TGameToastMessage
+		local text:string
+		if GetGame().GetPlayerBankruptLevel(playerID) = 0
+			'show it for some seconds
+			toast.SetLifeTime(8)
+			toast.SetMessageType(2) 'positive
+			text =  GetLocale("YOUR_BALANCE_IS_POSITIVE_AGAIN")
+			text :+ "~n"
+			text :+ "|color=0,125,0|"+GetLocale("YOU_ARE_NO_LONGER_IN_DANGER_TO_GET_FIRED")+"|/color|"
+		elseif GetGame().GetPlayerBankruptLevel(playerID) = 1
+			'show it for some seconds
+			toast.SetLifeTime(8)
+			toast.SetMessageType(3) 'warning
+			text =  GetLocale("YOUR_BALANCE_IS_NEGATIVE")
+			text :+ "~n"
+			text :+ GetLocale("YOU_HAVE_X_DAYS_TO_GET_INTO_THE_BLACK").Replace("%DAYS%", 2+GetLocale("DAYS"))
+			text :+ "~n"
+			text :+ "|color=125,0,0|"+GetLocale("YOU_ARE_IN_DANGER_TO_GET_FIRED")+"|/color|"
+		else
+			'make this message a bit more sticky
+			local midnight:long = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(), 23, 59, 59)
+
+			toast.SetCloseAtWorldTime(midnight)
+			toast.SetCloseAtWorldTimeText("CLOSES_AT_TIME")
+			toast.SetPriority(10)
+			
+			toast.SetMessageType(1) 'negative
+			text =  GetLocale("YOUR_BALANCE_IS_NEGATIVE")
+			text :+ "~n"
+			text :+ GetLocale("YOU_HAVE_ONLY_TODAY_TO_GET_INTO_THE_BLACK")
+			text :+ "~n"
+			text :+ "|color=125,0,0|"+GetLocale("YOU_ARE_IN_DANGER_TO_GET_FIRED")+"|/color|"
+		endif
+		toast.SetText(text)
+		
+		toast.SetCaption(GetLocale("ACCOUNT_BALANCE"))
+
+		if not GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+			print "failed to add toast message"
+		endif
+	End Function
+	
 	
 	Function AdContract_OnFinish:Int(triggerEvent:TEventBase)
 		Local contract:TAdContract = TAdContract(triggerEvent.GetSender())
@@ -4288,12 +4340,14 @@ Type GameEvents
 			if GetWorldTime().GetDayOfYear(time) = 1
 				TAuctionProgrammeBlocks.RefillAuctionsWithoutBid()
 			endif
+
+			'Check if a player goes bankrupt now
+			GetGame().UpdatePlayerBankruptLevel()
 		
 			'reset room signs each day to their normal position
 			GetRoomBoard().ResetPositions()
 
 
-			'DISABLED
 			'remove no longer needed DailyBroadcastStatistics
 			'by default we store maximally 1 year + current day
 			local statisticDaysToKeep:int = 4 * GetWorldTime()._daysPerSeason

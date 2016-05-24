@@ -217,6 +217,11 @@ Type TPlayerFinance {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetMoney:Long() {_exposeToLua}
+		return money
+	End Method
+
+
 	Method GetCredit:Long() {_exposeToLua}
 		return credit
 	End Method
@@ -233,13 +238,13 @@ Type TPlayerFinance {_exposeToLua="selected"}
 		revenue_after	:+ value
 		
 		'emit event to inform others
-		EventManager.triggerEvent( TEventSimple.Create("PlayerFinance.onChangeMoney", new TData.AddNumber("value", value).AddNumber("playerID", playerID).AddNumber("reason", reason).Add("reference", reference)) )
+		EventManager.triggerEvent( TEventSimple.Create("PlayerFinance.onChangeMoney", new TData.AddNumber("value", value).AddNumber("playerID", playerID).AddNumber("reason", reason).Add("reference", reference), self) )
 	End Method
 
 
 	Method TransactionFailed:int(value:Long, reason:int, reference:TNamedGameObject=null)
 		'emit event to inform others
-		EventManager.triggerEvent( TEventSimple.Create("PlayerFinance.onTransactionFailed", new TData.AddNumber("value", value).AddNumber("playerID", playerID)) )
+		EventManager.triggerEvent( TEventSimple.Create("PlayerFinance.onTransactionFailed", new TData.AddNumber("value", value).AddNumber("playerID", playerID), self) )
 		return False
 	End Method
 

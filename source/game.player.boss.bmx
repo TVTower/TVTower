@@ -86,7 +86,8 @@ Type TPlayerBoss
 	'did the player accept and is on his way to the boss?
 	Field awaitingPlayerAccepted:Int = False
 	'was the player already called (toastmessage for active player)?
-	Field awaitingPlayerCalled:Int = False
+	'skip saving this information, so after load the boss calls again
+	Field awaitingPlayerCalled:Int = False {nosave}
 	Field playerVisitsMe:int = False
 	'amount the boss is likely to give the player
 	Field creditMaximum:Int	= 600000
@@ -330,8 +331,10 @@ Type TPlayerBoss
 	'-> this creates an event the game listens to and creates
 	'   a toastmessage in the case of the active player, so they can react
 	Method CallPlayer:Int()
-		'give the player 2 hrs
-		awaitingPlayerVisitTillTime = GetWorldTime().GetTimeGone() + 7200
+		'give the player 2 hrs or reuse old time (eg. savegame)
+		if awaitingPlayerVisitTillTime = 0
+			awaitingPlayerVisitTillTime = GetWorldTime().GetTimeGone() + 7200
+		endif
 		awaitingPlayerCalled = True
 		awaitingPlayerAccepted = False
 
@@ -528,6 +531,7 @@ Type TPlayerBoss
 
 		'no longer await the visit of this player
 		boss.awaitingPlayerVisit = False
+		boss.awaitingPlayerVisitTillTime = 0
 
 		boss.playerVisitsMe = True
 

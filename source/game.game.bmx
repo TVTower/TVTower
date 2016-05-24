@@ -70,6 +70,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'handle savegame loading (assign sprites)
 		_eventListeners :+ [ EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("SaveGame.OnBeginSave", onSaveGameBeginSave) ]
+		'handle finance change (reset bankrupt level if positive balance)
+		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerFinance.onChangeMoney", onPlayerChangeMoney) ]
 	End Method
 
 
@@ -121,6 +123,20 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 	'=== PREPARE A GAME ===
 
+	'override
+	'run this BEFORE the first game is started
+	Function PrepareFirstGameStart:Int(startNewGame:Int)
+		'=== SETUP TOOLTIPS ===
+		TTooltip.UseFontBold = GetBitmapFontManager().baseFontBold
+		TTooltip.UseFont = GetBitmapFontManager().baseFont
+		TTooltip.ToolTipIcons = GetSpriteFromRegistry("gfx_building_tooltips")
+		TTooltip.TooltipHeader = GetSpriteFromRegistry("gfx_tooltip_header")
+
+		'=== SETUP INTERFACE ===
+		GetInGameInterface() 'calls init() if not done yet
+	End Function
+
+
 	'run this before EACH started game
 	Method PrepareStart(startNewGame:Int)
 		If startNewGame
@@ -132,14 +148,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'Game screens
 		GameScreen_World.Initialize()
 		
-
-		'=== SETUP TOOLTIPS ===
-		TTooltip.UseFontBold = GetBitmapFontManager().baseFontBold
-		TTooltip.UseFont = GetBitmapFontManager().baseFont
-		TTooltip.ToolTipIcons = GetSpriteFromRegistry("gfx_building_tooltips")
-		TTooltip.TooltipHeader = GetSpriteFromRegistry("gfx_tooltip_header")
-
-
 
 		'=== ALL GAMES ===
 		'TLogger.Log("Game.PrepareStart()", "preparing all room handlers and screens for new game", LOG_DEBUG)
@@ -186,6 +194,26 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method UpdatePlayerBankruptLevel()
+		'todo: individual time? eg. 24hrs after going into negative balance
+
+		for local playerID:int = 1 to 4
+			if GetPlayerFinance(playerID).GetMoney() < 0
+				SetPlayerBankruptLevel(playerID, GetPlayerBankruptLevel(playerID)+1)
+
+				if GetPlayerBankruptLevel(playerID) >= 3
+					SetPlayerBankrupt(playerID)
+				endif
+			else
+				if GetPlayerBankruptLevel(playerID) <> 0
+					SetPlayerBankruptLevel(playerID, 0)
+				endif
+			endif
+		Next
+
+	End Method
+
+
 	Method SetPlayerBankrupt(playerID:int)
 print "SetPlayerBankrupt("+playerID+")"
 
@@ -205,35 +233,46 @@ print "SetPlayerBankrupt("+playerID+")"
 			figure.sprite = new TSprite.InitFromImage( figure.sprite.GetImageCopy(False), "Player"+playerID, figure.sprite.frames)
 
 
-			'give the player a new figure
-			player.Figure = New TFigure.Create(figure.name, GetSpriteFromRegistry("Player"+playerID), 0, 0, figure.initialdx)
-			local colors:TPlayerColor[] = TPlayerColor.getUnowned(TPlayerColor.Create(255,255,255))
-			local newColor:TPlayerColor = colors[RandRange(0, colors.length-1)]
-			if newColor
-				Player.color.SetOwner(0).RemoveFromList()
-				Player.color = newcolor.SetOwner(playerID).AddToList()
-				Player.RecolorFigure(Player.color)
-			endif
-			'choose a random one
-			if player.figurebase <= 5
-				'male
-				player.UpdateFigureBase(RandRange(0,5))
-			else
-				'female
-				player.UpdateFigureBase(RandRange(6,12))
-			endif
+			if player.IsLocalAI()
+				'give the player a new figure
+				player.Figure = New TFigure.Create(figure.name, GetSpriteFromRegistry("Player"+playerID), 0, 0, figure.initialdx)
+				local colors:TPlayerColor[] = TPlayerColor.getUnowned(TPlayerColor.Create(255,255,255))
+				local newColor:TPlayerColor = colors[RandRange(0, colors.length-1)]
+				if newColor
+					Player.color.SetOwner(0).RemoveFromList()
+					Player.color = newcolor.SetOwner(playerID).AddToList()
+					Player.RecolorFigure(Player.color)
+				endif
+				'choose a random one
+				if player.figurebase <= 5
+					'male
+					player.UpdateFigureBase(RandRange(0,5))
+				else
+					'female
+					player.UpdateFigureBase(RandRange(6,12))
+				endif
 
-			player.Figure.SetParent(GetBuilding().buildingInner)
-			player.Figure.playerID = playerID
-			player.Figure.SendToOffscreen()
-			player.Figure.MoveToOffscreen()
+				player.Figure.SetParent(GetBuilding().buildingInner)
+				player.Figure.playerID = playerID
+				player.Figure.SendToOffscreen()
+				player.Figure.MoveToOffscreen()
+			endif
 		endif
 
 
-		'reset everything of that player
-		ResetPlayer(playerID)
-		'prepare new player data (take credit, give starting programme...)
-		PreparePlayer(playerID)
+		'only start a new player if it is a local ai player
+		if player.IsLocalAI()
+			'reset everything of that player
+			ResetPlayer(playerID)
+			'prepare new player data (take credit, give starting programme...)
+			PreparePlayer(playerID)
+		endif
+
+		if player.IsLocalHuman()
+			GetGame().SetGameOver()
+			'disable figure control (disable changetarget)
+			player.GetFigure().controllable = False
+		endif
 	End Method
 
 
@@ -387,6 +426,8 @@ print "--------------"
 		'and instead of "GetPlayerFinanceHistoryList(playerID).clear()"
 		'just create a new one
 		GetPlayerFinanceHistoryListCollection().Set(playerID, CreateList())
+		'also reset bankrupt level
+		SetPlayerBankruptLevel(playerID, 0)
 	End Method
 
 
@@ -961,6 +1002,9 @@ print "--------------"
 		'if not done yet: run preparation for first game
 		'(eg. if loading is done from mainmenu)
 		PrepareFirstGameStart(False)
+
+		'remove all old messages
+		GetToastMessageCollection().RemoveAllMessages()
 	End Function
 
 
@@ -974,6 +1018,11 @@ print "--------------"
 
 		'set active player again (sets correct game screen)
 		GetInstance().SetActivePlayer()
+
+		'set bankrupt level again (so toast messages might appear or not)
+		For Local player:TPlayer = EachIn GetPlayerCollection().players
+			GetInstance().SetPlayerBankruptLevel(player.playerID, GetInstance().GetPlayerBankruptLevel(player.playerID))
+		Next
 	End Function
 
 
@@ -985,6 +1034,30 @@ print "--------------"
 			If player.isLocalAI() Then player.PlayerAI.CallOnSave()
 		Next
 	End Function
+
+
+	'run when financial balance of a player changes
+	Function onPlayerChangeMoney(triggerEvent:TEventBase)
+		local finance:TPlayerFinance = TPlayerFinance(triggerEvent.GetSender())
+		if not finance then return
+
+		local playerID:int = finance.playerID
+		if finance.GetMoney() < 0 and GetGame().GetPlayerBankruptLevel(playerID) = 0
+			GetGame().SetPlayerBankruptLevel(playerID, 1)
+		elseif finance.GetMoney() >= 0 and GetGame().GetPlayerBankruptLevel(playerID) <> 0
+			GetGame().SetPlayerBankruptLevel(playerID, 0)
+		endif
+	End Function
+
+
+	'override
+	Method SetPlayerBankruptLevel:int(playerID:int, level:int)
+		if not Super.SetPlayerBankruptLevel(playerID, level) then return False
+
+		EventManager.triggerEvent( TEventSimple.Create("Game.SetPlayerBankruptLevel", new TData.AddNumber("playerID", playerID) ) )
+
+		return True
+	End Method
 
 
 	Method SetPaused(bool:Int=False)
