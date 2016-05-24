@@ -400,15 +400,15 @@ Type TBuilding Extends TBuildingBase
 			Figure.alreadydrawn = False
 		Next
 
-		'only draw the building roof if the player figure is in a specific
-		'area
-		If GetFloor(GetPlayerBase().GetFigure().area.GetY()) >= 8
-			SetColor 255, 255, 255
-			gfx_buildingRoof.Draw(GetScreenX() + leftWallX, GetScreenY(), -1, ALIGN_LEFT_BOTTOM)
-		EndIf
-
 		GetElevator().DrawFloorDoors()
 		gfx_building.draw(GetScreenX() + leftWallX, area.GetY())
+
+		'only draw the building roof if the player figure (or ghost view)
+		'is in a specific area
+		If area.GetY() >= 0
+			SetColor 255, 255, 255
+			gfx_buildingRoof.Draw(GetScreenX() + leftWallX, area.GetY(), 0, ALIGN_LEFT_BOTTOM)
+		EndIf
 
 		'draw owner signs next to doors,
 		'draw open doors overlaying the doors drawn directly on the bg sprite
@@ -459,8 +459,9 @@ Type TBuilding Extends TBuildingBase
 		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(13), -1, ALIGN_LEFT_BOTTOM)
 		GetSpriteFromRegistry("gfx_building_Pflanze3b").Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
 
+
 		'draw entrance on top of figures
-		If GetFloor(GetPlayerBase().GetFigure().area.GetY()) <= 4
+		If area.GetY() < -500
 			'mix entrance color so it is a mixture of current sky colors
 			'brightness and full brightness (white)
 			TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 0.7).SetRGB()
