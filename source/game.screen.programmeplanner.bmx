@@ -337,8 +337,8 @@ Type TScreenHandler_ProgrammePlanner
 
 		setAlpha 0.5 * oldA
 		For local i:int = 0 to 23
-			'skip drawing the hint, if something is on this slot
-			if plan.GetObject(TVTBroadcastMaterialType.PROGRAMME, -1, i) then continue
+			'skip drawing the hint, if something is on this slot (on that day)
+			if plan.GetObject(TVTBroadcastMaterialType.PROGRAMME, planningDay, i) then continue
 			if i <= 5
 				f.DrawBlock(GetLocale("NIGHTPROGRAMME")+chr(13)+"|color=120,100,100|("+GetLocale("LOW_AUDIENCE")+")|/color|", 45 + 10, 5 + i*30 + 3, 205 - 2*10, 30, ALIGN_LEFT_TOP, hintColor)
 			elseif i >= 19 and i <= 23
