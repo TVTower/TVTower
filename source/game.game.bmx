@@ -104,6 +104,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 	Method EndGame:int()
 		SetGameState(TGame.STATE_MAINMENU)
+		GetToastMessageCollection().RemoveAllMessages()
 		TLogger.Log("TGame", "====== END CURRENT GAME ======", LOG_DEBUG)
 	End Method
 

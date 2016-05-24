@@ -114,6 +114,7 @@ Type TGameBase {_exposeToLua="selected"}
 		startNetworkGame = 0
 		onlinegame = 0
 
+		playerBankruptLevel = new Int[0]
 
 		'remove existing figures
 		'might be done by GetFigure[Base]Collection().Initialize() already
