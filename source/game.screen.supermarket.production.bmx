@@ -2078,10 +2078,10 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 		'maybe "TProgrammePersonBase.GetFace()" ?
 		if TSprite(face)
-			TSprite(face).Draw(x, y)
+			TSprite(face).Draw(x+5, y+3)
 		else
 			if TImage(face)
-				DrawImageArea(TImage(face), x, y, 2, 4, 36, 34)
+				DrawImageArea(TImage(face), x+1, y+3, 2, 4, 34, 33)
 				'DrawImage(TProgrammePerson(person).GetFigureImage(), GetScreenX(), GetScreenY())
 			endif
 		endif
