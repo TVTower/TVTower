@@ -48,6 +48,7 @@ CLOSES_AT_DAY = Schließt sich am %TIME%
 
 GAME_TITLE = Spieltitel
 START_YEAR = Startjahr
+DAY_OF_YEAR = Tag des Jahres
 
 GAME_TIME = Spielzeit
 GAMEDAY = Spieltag

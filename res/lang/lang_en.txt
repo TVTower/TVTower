@@ -47,6 +47,7 @@ CLOSES_AT_DAY = Closes at %TIME%
 
 GAME_TITLE = Game title
 START_YEAR = Start year
+DAY_OF_YEAR = Day of year
 
 GAME_TIME = Game time
 GAMEDAY = Gameday
