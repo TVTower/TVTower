@@ -54,6 +54,16 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		endif
 
 
+		'=== SETUP TOOLTIPS ===
+		TTooltip.UseFontBold = GetBitmapFontManager().baseFontBold
+		TTooltip.UseFont = GetBitmapFontManager().baseFont
+		TTooltip.ToolTipIcons = GetSpriteFromRegistry("gfx_building_tooltips")
+		TTooltip.TooltipHeader = GetSpriteFromRegistry("gfx_tooltip_header")
+
+		'=== SETUP INTERFACE ===
+		GetInGameInterface() 'calls init() if not done yet
+
+
 		'=== EVENTS ===
 		'=== remove all registered event listeners
 		EventManager.unregisterListenersByLinks(_eventListeners)
@@ -86,7 +96,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 	Method StartLoadedSaveGame:Int()
-		print "====== START SAVED GAME ======"
+		TLogger.Log("TGame", "====== START SAVED GAME ======", LOG_DEBUG)
 		PrepareStart(False)
 		_Start(False)
 	End Method
@@ -94,7 +104,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 	Method EndGame:int()
 		SetGameState(TGame.STATE_MAINMENU)
-		print "====== END CURRENT GAME ======"
+		TLogger.Log("TGame", "====== END CURRENT GAME ======", LOG_DEBUG)
 	End Method
 
 
@@ -126,14 +136,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	'override
 	'run this BEFORE the first game is started
 	Function PrepareFirstGameStart:Int(startNewGame:Int)
-		'=== SETUP TOOLTIPS ===
-		TTooltip.UseFontBold = GetBitmapFontManager().baseFontBold
-		TTooltip.UseFont = GetBitmapFontManager().baseFont
-		TTooltip.ToolTipIcons = GetSpriteFromRegistry("gfx_building_tooltips")
-		TTooltip.TooltipHeader = GetSpriteFromRegistry("gfx_tooltip_header")
-
-		'=== SETUP INTERFACE ===
-		GetInGameInterface() 'calls init() if not done yet
+'
 	End Function
 
 

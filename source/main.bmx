@@ -1322,7 +1322,6 @@ Type TGameState
 
 
 	Method Initialize:Int()
-print "TGameState.Initialize(): Reinitialize all game objects"
 		TLogger.Log("TGameState.Initialize()", "Reinitialize all game objects", LOG_DEBUG)
 
 		'reset player colors
@@ -1375,7 +1374,6 @@ print "TGameState.Initialize(): Reinitialize all game objects"
 
 
 	Method RestoreGameData:Int()
-print "TGameState.RestoreGameData(): Restore game objects"
 		_Assign(_FigureCollection, TFigureCollection._instance, "FigureCollection", MODE_LOAD)
 		_Assign(_RoomDoorBaseCollection, TRoomDoorBaseCollection._instance, "RoomDoorBaseCollection", MODE_LOAD)
 		_Assign(_RoomBaseCollection, TRoomBaseCollection._instance, "RoomBaseCollection", MODE_LOAD)

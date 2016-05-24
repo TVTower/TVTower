@@ -306,8 +306,15 @@ Type RoomHandler_Boss extends TRoomHandler
 		local boss:TPlayerBoss = GetPlayerBoss(room.owner)
 		if not boss then return False
 
-		'generate the dialogue if not done yet
-		If boss.Dialogues.Count() <= 0 then boss.GenerateDialogues(GetPlayer().playerID)
+
+		'generate the dialogue if not done yet (and not just leaving)
+		if boss.Dialogues.Count() <= 0 and ..
+		   not GetPlayerBase().GetFigure().isLeavingRoom() and ..
+		   GetPlayerBase().GetFigure().GetInRoomID() > 0
+
+			boss.GenerateDialogues(GetPlayer().playerID)
+		endif
+
 		For Local dialog:TDialogue = EachIn boss.Dialogues
 			If dialog.Update() = 0
 				GetPlayer().GetFigure().LeaveRoom()
