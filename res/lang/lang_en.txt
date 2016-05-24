@@ -709,3 +709,5 @@ STUDIO_MANAGER = Studio manager
 STUDIO_MANAGER_TOOLTIP = Gives information about production and hands out new shopping lists
 
 MANAGE_BROADCASTED_NEWS = Manage broadcasted news
+
+RIGHT_CLICK_TO_DELETE = Right click to delete

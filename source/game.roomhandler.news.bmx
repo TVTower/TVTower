@@ -26,6 +26,11 @@ Type RoomHandler_News extends TRoomHandler
 
 	Global _instance:RoomHandler_News
 	Global _eventListeners:TLink[]
+	Global showDeleteHintTimer:Long = 0
+	'how long to display?
+	Global showDeleteHintTime:int = 4000
+	'time to wait until hint is shown
+	Global showDeleteHintDwellTime:Int = 1000
 
 
 	Function GetInstance:RoomHandler_News()
@@ -370,6 +375,25 @@ Type RoomHandler_News extends TRoomHandler
 
 		SetColor 255,255,255  'normal
 		GUIManager.Draw("Newsplanner")
+
+		if draggedGuiNews
+			'wait to show hint
+			if showDeleteHintTimer = 0
+				showDeleteHintTimer = Time.GetTimeGone() + showDeleteHintDwellTime
+			'remove hint ? - no keep invisible until nothing is dragged
+			'(like a reset)
+			'elseif showDeleteHintTimer + showDeleteHintTime < Time.GetTimeGone()
+				'showDeleteHintTimer = 0
+			'show hint
+			elseif showDeleteHintTimer < Time.GetTimeGone() and showDeleteHintTime + showDeleteHintTimer > Time.GetTimeGone()
+				local oldA:float = Getalpha()
+				SetAlpha oldA * 7
+				GetBitmapFont("default", 12, BOLDFONT).DrawBlock(GetLocale("RIGHT_CLICK_TO_DELETE"), draggedGuiNews.GetScreenX(), draggedGuiNews.GetScreenY2() + 3, draggedGuiNews.GetScreenWidth(), 30, ALIGN_CENTER_TOP, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+				SetAlpha oldA
+			endif
+		else
+			showDeleteHintTimer = 0
+		endif
 
 	End Function
 

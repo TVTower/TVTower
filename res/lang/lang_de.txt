@@ -715,3 +715,5 @@ STUDIO_MANAGER = Studioleiter
 STUDIO_MANAGER_TOOLTIP = Gibt Informationen zu geplanten Produktionen und händigt Einkaufslisten aus
 
 MANAGE_BROADCASTED_NEWS = Auszustrahlende Nachrichten verwalten
+
+RIGHT_CLICK_TO_DELETE = Löschen mit Rechtsklick
