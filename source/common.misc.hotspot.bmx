@@ -59,6 +59,17 @@ Type THotspot Extends TRenderableEntity
 	End Method
 
 
+rem
+	Method Render:Int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
+'		if tooltipEnabled
+			DrawRect(xOffset + area.GetX(),yOffset + area.GetY(),area.GetW(), area.GetH())
+'			DrawRect(xOffset + GetScreenArea().GetX(),0,GetScreenArea().GetW(), GetScreenArea().GetH())
+'		endif
+		Super.Render(xOffset, yOffset, alignment)
+	End Method
+endrem	
+
+
 	'update tooltip
 	'handle clicks -> send events so eg can send figure to it
 	Method Update:Int()
@@ -88,6 +99,9 @@ Type THotspot Extends TRenderableEntity
 		UpdateChildren()
 
 		'delete old tooltips
-		If tooltip And tooltip.lifetime < 0 Then RemoveChild(tooltip)
+		If tooltip And tooltip.lifetime < 0
+			RemoveChild(tooltip)
+			tooltip = null
+		Endif
 	End Method
 End Type
