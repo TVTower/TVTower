@@ -120,7 +120,7 @@ Include "game.escapemenu.bmx"
 
 '===== Globals =====
 Global VersionDate:String = LoadText("incbin::source/version.txt")
-Global VersionString:String = "v0.3.0-dev Build ~q" + VersionDate+"~q"
+Global VersionString:String = "v0.3.1 Build ~q" + VersionDate+"~q"
 Global CopyrightString:String = "by Ronny Otto & Team"
 Global APP_NAME:string = "TVTower"
 Global LOG_NAME:string = "log.profiler.txt"
@@ -1177,12 +1177,13 @@ Type TApp
 
 		EscapeMenuWindow = New TGUIModalWindowChain.Create(New TVec2D, New TVec2D.Init(400,150), "SYSTEM")
 		EscapeMenuWindow.SetZIndex(99000)
-		EscapeMenuWindow.SetCenterLimit(new TRectangle.setTLBR(30,0,0,0))
+		EscapeMenuWindow.SetCenterLimit(new TRectangle.setTLBR(20,0,0,0))
 		EscapeMenuWindow.Open()
 
 		'append menu after creation of screen ares, so it recenters properly
-		local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New TVec2D, New TVec2D.Init(300,305), "SYSTEM")
+		local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New TVec2D, New TVec2D.Init(300,355), "SYSTEM")
 		EscapeMenuWindow.SetContentElement(mainMenu)
+		mainMenu.SetCaption(GetLocale("MENU"))
 
 		'menu is always ingame...
 		EscapeMenuWindow.SetDarkenedArea(New TRectangle.Init(0,0,800,385))

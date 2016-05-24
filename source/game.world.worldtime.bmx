@@ -117,6 +117,11 @@ Type TWorldTime {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetRawTimeFactor:Float()
+		Return self._timeFactor
+	End Method
+
+
 	Method SetTimeFactorMod:int(timeFactorMod:Float)
 		self._timeFactorMod = Max(0.0, timeFactorMod)
 	End Method
