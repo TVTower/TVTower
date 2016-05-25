@@ -326,7 +326,9 @@ Type TWorld
 
 
 	Method Render:Int()
-		GetGraphicsManager().SetViewPort(int(area.GetX()), int(area.GetY()), int(area.GetW()), int(area.GetH()))
+		local vpX:int, vpY:int, vpW:int, vpH:int
+		GetGraphicsManager().GetViewPort(vpX, vpY, vpW, vpH)
+'		GetGraphicsManager().SetViewPort(int(area.GetX()), int(area.GetY()), int(area.GetW()), int(area.GetH()))
 
 		'=== BACKGROUND ===
 		local skyColor:TColor = lighting.currentLight.copy()
@@ -371,7 +373,8 @@ Type TWorld
 		if autoRenderSnow then RenderSnow()
 
 		'reset viewport
-		GetGraphicsManager().SetViewPort(0,0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
+		GetGraphicsManager().SetViewPort(vpX, vpY, vpW, vpH)
+		'GetGraphicsManager().SetViewPort(0,0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
 	End Method
 
 

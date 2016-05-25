@@ -938,8 +938,11 @@ Type TApp
 		'cls only needed if virtual resolution is enabled, else the
 		'background covers everything
 		If GetGraphicsManager().HasBlackBars()
-			Cls()
-'			GetGraphicsManager().SetViewPort(0,0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
+			SetClsColor 0,0,0
+			'use graphicsmanager's cls as it resets virtual resolution
+			'first
+			'Cls()
+			GetGraphicsManager().Cls()
 		Endif
 
 		TProfiler.Enter("Draw")
@@ -1591,7 +1594,13 @@ Type TSaveGame Extends TGameState
 
 		Local col:TColor = New TColor.Get()
 		Local pix:TPixmap = VirtualGrabPixmap(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight() )
-		Cls
+
+		SetClsColor 0,0,0
+		'use graphicsmanager's cls as it resets virtual resolution
+		'first
+		'Cls()
+		GetGraphicsManager().Cls()
+
 		DrawPixmap(pix, 0,0)
 		SetAlpha 0.5
 		SetColor 0,0,0
@@ -4565,7 +4574,13 @@ End Function
 Function DrawMenuBackground(darkened:Int=False)
 	'cls only needed if virtual resolution is enabled, else the
 	'background covers everything
-	if GetGraphicsManager().HasBlackBars() then Cls()
+	if GetGraphicsManager().HasBlackBars()
+		SetClsColor 0,0,0
+		'use graphicsmanager's cls as it resets virtual resolution
+		'first
+		'Cls()
+		GetGraphicsManager().Cls()
+	endif
 
 	SetColor 255,255,255
 	GetSpriteFromRegistry("gfx_startscreen").Draw(0,0)

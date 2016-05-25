@@ -292,6 +292,16 @@ Type TGraphicsManager
 		?
 	End Method
 
+
+	Method Cls()
+		local x:int, y:int, w:int, h:int
+		.GetViewport(x,y,w,h)
+		.SetViewport( 0, 0, GraphicsWidth(), GraphicsHeight() )
+		brl.max2d.Cls()
+		.SetViewport(x,y,w,h)
+'		SetViewport( TVirtualGfx.GetInstance().vxoff, TVirtualGfx.GetInstance().vyoff, TVirtualGfx.GetInstance().vwidth, TVirtualGfx.GetInstance().vheight )
+	End Method
+	
 	
 	Method Flip(restrictFPS:Int=False)
 		'we call "."flip so we call the "original flip function"
@@ -304,8 +314,18 @@ Type TGraphicsManager
 
 
 	Method SetViewport(x:Int, y:Int, w:Int, h:Int)
+		'limit the viewport to the virtual dimension (to disable drawing
+		'on the black bars)
+
+		x = Max(0, x)
+		y = Max(0, y)
+
 		'the . means: access globally defined SetViewPort()
-		.SetViewport(TVirtualGfx.getInstance().vxoff + x, TVirtualGfx.getInstance().vyoff + y, w, h)
+		.SetViewport(TVirtualGfx.getInstance().vxoff + x, ..
+		             TVirtualGfx.getInstance().vyoff + y, ..
+		             Min(w, TVirtualGfx.getInstance().vWidth - x), ..
+		             Min(h, TVirtualGfx.getInstance().vHeight - y) ..
+		            )
 	End Method
 
 
