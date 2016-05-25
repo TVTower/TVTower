@@ -949,14 +949,14 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			contentY = contentY
 			skin.RenderContent(contentX, contentY, contentW, contentH - buttonAreaH, "1_top")
 			contentY :+ 3
-			skin.fontBold.drawBlock("Besetzung", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorLabel, 0,1,1.0,True, True)
+			skin.fontBold.drawBlock(GetLocale("MOVIE_CAST"), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorLabel, 0,1,1.0,True, True)
 			if currentProductionConcept
 				skin.fontNormal.drawBlock(TFunctions.DottedValue(currentProductionConcept.GetCastCost()), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
 			else
 				skin.fontNormal.drawBlock("0", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
 			endif
 			contentY :+ subtitleH
-			skin.fontBold.drawBlock("Produktion", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorLabel, 0,1,1.0,True, True)
+			skin.fontBold.drawBlock(GetLocale("PRODUCTION"), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorLabel, 0,1,1.0,True, True)
 			if currentProductionConcept
 				skin.fontNormal.drawBlock(TFunctions.DottedValue(currentProductionConcept.GetProductionCost()), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
 			else
@@ -969,7 +969,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			SetColor 255,255,255
 
 			contentY :+ 1
-			skin.fontBold.drawBlock("Gesamtkosten", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontBold.drawBlock(GetLocale("TOTAL_COSTS"), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			if currentProductionConcept
 				skin.fontBold.drawBlock(TFunctions.DottedValue(currentProductionConcept.GetTotalCost()), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
 			else
@@ -980,7 +980,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			contentY :+ subtitleH
 
 			contentY :+ 10
-			skin.fontBold.drawBlock("Dauer", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontBold.drawBlock(GetLocale("DURATION"), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			if currentProductionConcept
 				skin.fontNormal.drawBlock(currentProductionConcept.GetBaseProductionTime()+" Stunden", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			else
@@ -1026,7 +1026,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			contentY :+ titleH
 
 			skin.RenderContent(contentX, contentY, contentW, subTitleH, "1")
-			skin.fontNormal.drawBlock("Untertitel", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontNormal.drawBlock(GetLocale("SUBHEADING"), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			contentY :+ subTitleH
 
 			skin.RenderContent(contentX, contentY, contentW, castAreaH, "2")
@@ -1084,12 +1084,12 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			'reset
 			contentY = contentY
 			skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-			skin.fontCaption.drawBlock("Produktionsdetails", contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontCaption.drawBlock(GetLocale("PRODUCTION_DETAILS"), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			contentY :+ titleH
 
 			skin.RenderContent(contentX, contentY, contentW, productionCompanyH + productionFocusH, "1")
 
-			skin.fontSemiBold.drawBlock("Produktionsfirma", contentX + 5, contentY + 3, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontSemiBold.drawBlock(GetLocale("PRODUCTION_COMPANY"), contentX + 5, contentY + 3, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			'reposition dropdown
 			if productionCompanySelect.rect.getX() <> contentX + 5
 				productionCompanySelect.rect.SetXY(contentX + 5, contentY + 20)
@@ -1097,7 +1097,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			endif
 			contentY :+ productionCompanyH
 
-			skin.fontSemiBold.drawBlock("Schwerpunkte", contentX + 5, contentY + 3, contentW - 10, titleH - 3, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontSemiBold.drawBlock(GetLocale("PRODUCTION_FOCUS"), contentX + 5, contentY + 3, contentW - 10, titleH - 3, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			contentY :+ titleH
 			'reposition sliders
 			if repositionSliders

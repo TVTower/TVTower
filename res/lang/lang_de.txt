@@ -724,3 +724,10 @@ YOU_ARE_NO_LONGER_IN_DANGER_TO_GET_FIRED = Du bist nicht länger in Gefahr gekü
 YOU_HAVE_X_DAYS_TO_GET_INTO_THE_BLACK = Du hast noch %DAYS% um schwarze Zahlen zu schreiben.
 YOU_HAVE_ONLY_TODAY_TO_GET_INTO_THE_BLACK = Du hast nur noch heute um schwarze Zahlen zu schreiben.
 YOU_ARE_IN_DANGER_TO_GET_FIRED = Du schwebst in Gefahr gekündigt zu werden!
+
+PRODUCTION = Produktion
+TOTAL_COSTS = Gesamtkosten
+DURATION = Dauer
+SUBHEADING = Untertitel
+PRODUCTION_DETAILS = Produktionsdetails
+PRODUCTION_FOCUS = Produktionsschwerpunkte

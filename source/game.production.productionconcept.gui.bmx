@@ -426,8 +426,10 @@ endrem
 		if not conceptIsEmpty
 			sheetHeight :+ castH
 
-			'there is a splitter between description and cast...
-			sheetHeight :+ splitterHorizontalH
+			if msgAreaH > 0
+				'there is a splitter between description and cast...
+				sheetHeight :+ splitterHorizontalH
+			endif
 		endif
 
 		
@@ -521,28 +523,29 @@ endrem
 
 		'=== BARS / MESSAGES / BOXES AREA ===
 		'background for bars + messages + boxes
-		skin.RenderContent(contentX, contentY, contentW, msgAreaH, "1_bottom")
+		if msgAreaH > 0
+			skin.RenderContent(contentX, contentY, contentW, msgAreaH, "1_bottom")
 
+			'=== MESSAGES ===
+			'if there is a message then add padding to the begin
+			contentY :+ msgAreaPaddingY
 
-		'=== MESSAGES ===
-		'if there is a message then add padding to the begin
-		if msgAreaH > 0 then contentY :+ msgAreaPaddingY
+			If showMsgOrderWarning
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("EPISODES_NOT_IN_ORDER"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				contentY :+ msgH
+			endif
+			If showMsgIncomplete
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_INCOMPLETE"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				contentY :+ msgH
+			endif
+			If showMsgNotPlanned
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_NOT_DONE"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				contentY :+ msgH
+			endif
 
-		If showMsgOrderWarning
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("EPISODES_NOT_IN_ORDER"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
-			contentY :+ msgH
+			'if there is a message then add padding to the bottom
+			contentY :+ msgAreaPaddingY
 		endif
-		If showMsgIncomplete
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_INCOMPLETE"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
-			contentY :+ msgH
-		endif
-		If showMsgNotPlanned
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_NOT_DONE"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
-			contentY :+ msgH
-		endif
-
-		'if there is a message then add padding to the bottom
-		if msgAreaH > 0 then contentY :+ msgAreaPaddingY
 
 		'=== OVERLAY / BORDER ===
 		skin.RenderBorder(x, y, sheetWidth, sheetHeight)

@@ -718,3 +718,10 @@ YOU_ARE_NO_LONGER_IN_DANGER_TO_GET_FIRED = You are no longer in danger to get fi
 YOU_HAVE_X_DAYS_TO_GET_INTO_THE_BLACK = You have %DAYS% to get into the black.
 YOU_HAVE_ONLY_TODAY_TO_GET_INTO_THE_BLACK = You have only today to get into the black.
 YOU_ARE_IN_DANGER_TO_GET_FIRED = You are in danger to get fired!
+
+PRODUCTION = Production
+TOTAL_COSTS = Total costs
+DURATION = Duration
+SUBHEADING = Subheading
+PRODUCTION_DETAILS = Production details
+PRODUCTION_FOCUS = Production focus
