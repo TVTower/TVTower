@@ -750,7 +750,7 @@
 		<!--  -->
             <first_name>Gerlinde</first_name>
             <last_name>von Gluterhof</last_name>
-            <details job="1" gender="2"  birthday="1971" deathday="" country="D" />
+            <details job="1" gender="2"  birthday="1961" deathday="" country="D" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
 		<person id="Per_custom_Freddy_8" fictional="1" creator="8667" created_by="Rumpelfreddy">
@@ -841,7 +841,7 @@
 		<!--  -->
             <first_name>Karl</first_name>
             <last_name>Krautrauch</last_name>
-            <details job="1" gender="1"  birthday="1968" deathday="" country="D" />
+            <details job="1" gender="1"  birthday="1953" deathday="" country="D" />
             <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
         </person>
     </celebritypeople>
