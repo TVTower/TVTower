@@ -465,7 +465,7 @@ print "--------------"
 		'=== FIGURE ===
 		If isGameLeader()
 			If GetPlayer(playerID).IsLocalAI()
-				GetPlayer(playerID).InitAI( new TAI.Create(playerID, "res/ai/DefaultAIPlayer.lua") )
+				GetPlayer(playerID).InitAI( new TAI.Create(playerID, "res/ai/DefaultAIPlayer/DefaultAIPlayer.lua") )
 			EndIf
 		EndIf
 

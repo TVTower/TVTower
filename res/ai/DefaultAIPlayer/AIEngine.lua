@@ -7,7 +7,7 @@
 -- Created at: 12.12.2007
 
 -- ##### INCLUDES #####
-dofile("res/ai/SLF.lua")
+dofile("res/ai/DefaultAIPlayer/SLF.lua")
 
 -- ##### GLOBALS #####
 globalPlayer = nil

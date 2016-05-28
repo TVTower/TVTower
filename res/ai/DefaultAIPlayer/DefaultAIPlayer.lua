@@ -1,26 +1,27 @@
 -- File: DefaultAIPlayer
 -- ============================
--- Autor: Manuel Vögele (STARS_crazy@gmx.de)
--- Version: 16.04.2015
+-- Autoren: Manuel Vögele (STARS_crazy@gmx.de)
+--          Ronny Otto
+-- Version: 25.05.2016
 
-APP_VERSION = "1.3"
+APP_VERSION = "1.4"
 
 -- ##### INCLUDES #####
 -- use slash for directories - windows accepts it, linux needs it
 -- or maybe package.config:sub(1,1)
-dofile("res/ai/AIEngine.lua")
-dofile("res/ai/CommonObjects.lua")
-dofile("res/ai/BudgetManager.lua")
-dofile("res/ai/Strategy.lua")
-dofile("res/ai/TaskMovieDistributor.lua")
-dofile("res/ai/TaskNewsAgency.lua")
-dofile("res/ai/TaskAdAgency.lua")
-dofile("res/ai/TaskSchedule.lua")
-dofile("res/ai/TaskStationMap.lua")
-dofile("res/ai/TaskBoss.lua")
-dofile("res/ai/TaskRoomBoard.lua")
+dofile("res/ai/DefaultAIPlayer/AIEngine.lua")
+dofile("res/ai/DefaultAIPlayer/CommonObjects.lua")
+dofile("res/ai/DefaultAIPlayer/BudgetManager.lua")
+dofile("res/ai/DefaultAIPlayer/Strategy.lua")
+dofile("res/ai/DefaultAIPlayer/TaskMovieDistributor.lua")
+dofile("res/ai/DefaultAIPlayer/TaskNewsAgency.lua")
+dofile("res/ai/DefaultAIPlayer/TaskAdAgency.lua")
+dofile("res/ai/DefaultAIPlayer/TaskSchedule.lua")
+dofile("res/ai/DefaultAIPlayer/TaskStationMap.lua")
+dofile("res/ai/DefaultAIPlayer/TaskBoss.lua")
+dofile("res/ai/DefaultAIPlayer/TaskRoomBoard.lua")
 if (unitTestMode) then
-	dofile("res/ai/UnitTests.lua")
+	dofile("res/ai/DefaultAIPlayer/UnitTests.lua")
 end
 
 -- ##### GLOBALS #####
