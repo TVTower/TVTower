@@ -1927,7 +1927,7 @@ Type TScreen_MainMenu Extends TGameScreen
 
 
 	Method PrepareGameObject()
-		print "====== PREPARE NEW GAME ======"
+		TLogger.Log("====== PREPARE NEW GAME ======", "", LOG_DEBUG)
 
 		'reset game data collections
 		new TGameState.Initialize()
@@ -2841,7 +2841,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 	'override to reset values
 	Method Start:Int()
-		print "====== START NEW GAME ======"
+		TLogger.Log("====== START NEW GAME ======", "", LOG_DEBUG)
 		Reset()
 		
 		If GetGame().networkGame

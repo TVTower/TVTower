@@ -139,9 +139,9 @@ Function ConvertInsignificantToCelebrity:TProgrammePersonBase(insignifant:TProgr
 	endif
 
 
-	'maybe first movie was done at age of 5 - 40
+	'maybe first movie was done at age of 10 - 40
 	'also avoid days 29,30,31 - not possible in all months
-	person.dayOfBirth = (earliestProduction - RandRange(5,40))+"-"+RandRange(1,12)+"-"+RandRange(1,28)
+	person.dayOfBirth = (earliestProduction - RandRange(10,40))+"-"+RandRange(1,12)+"-"+RandRange(1,28)
 
 	'TODO: 
 	'Wenn GetAge > 50 dann mit Chance (steigend bis zu 100%)
@@ -656,6 +656,11 @@ Type TProgrammePerson extends TProgrammePersonBase
 		if now < dob then return 0
 
 		return GetWorldTime().GetYear( now - dob)
+	End Method
+
+
+	Method GetDOB:long()
+		return GetWorldTime().GetTimeGoneFromString(dayOfBirth)
 	End Method
 
 

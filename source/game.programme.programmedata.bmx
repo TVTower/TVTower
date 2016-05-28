@@ -524,8 +524,10 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	End Method
 
 
-	Method HasCastPerson:int(personGUID:string)
+	Method HasCastPerson:int(personGUID:string, job:int = -1)
 		For local doneJob:TProgrammePersonJob = EachIn cast
+			if job >= 0 and doneJob.job & job <= 0 then continue
+			
 			if doneJob.personGUID = personGUID then return True
 		Next
 		return False

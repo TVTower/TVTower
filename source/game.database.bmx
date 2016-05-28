@@ -135,6 +135,10 @@ Type TDatabaseLoader
 		if required and (totalSeriesCount = 0 or totalMoviesCount = 0 or totalNewsCount = 0 or totalContractsCount = 0)
 			Notify "Important data is missing:  series:"+totalSeriesCount+"  movies:"+totalMoviesCount+"  news:"+totalNewsCount+"  adcontracts:"+totalContractsCount
 		endif
+
+
+		'fix potentially corrupt data
+		FixLoadedData()
 	End Method
 
 
@@ -1315,6 +1319,70 @@ Type TDatabaseLoader
 		return data
 	End Method
 
+
+	Method FixLoadedData()
+		FixPersonsDayOfBirth()
+	End Method
+
+
+	Method FixPersonsDayOfBirth()
+		'=== CHECK BIRTHDATES ===
+		'persons might have been used in productions dated earlier than
+		'their hardcoded day-of-birth
+
+		'only TProgrammePerson have a DOB, so we could skip insignificants
+		For local person:TProgrammePerson = EachIn GetProgrammePersonBaseCollection().celebrities.Values()
+			'ignore persons without a given date of birth
+			if person.GetDOB() <= 0 then continue
+
+
+			'loop through all known productions and find earliest date
+			local earliestProductionData:TProgrammeData
+			For local programmeDataGUID:string = EachIn person.GetProducedProgrammes()
+				local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(programmeDataGUID)
+				if not programmeData
+					TLogger.Log("TDatabase.FixLoadedDate()", "No ProgrammeData found for GUID ~q"+programmeDataGUID+"~q.", LOG_ERROR)
+					continue
+				endif
+				
+				if not earliestProductionData or programmeData.GetYear() < earliestProductionData.GetYear()
+					earliestProductionData = programmeData
+				endif
+			Next
+
+			'no production found
+			if not earliestProductionData then continue
+
+			'person should be at least 5 years (fictional)
+			local dobYear:int = GetWorldTime().GetYear( person.GetDOB() )
+			local ageOnProduction:int = earliestProductionData.GetProductionStartTime() - person.GetDOB()
+			local ageOnProductionYears:int = earliestProductionData.GetYear() - dobYear
+			local adjustAge:int = False
+
+			'in "time", not years - so babies are possible (eg. actors)
+			if ageOnProduction <= 0
+				TLogger.Log("TDatabase.FixLoadedData()", "Person ~q"+person.GetFullName()+"~q (GUID=~q"+person.getGUID()+"~q) is born in "+dobYear+". Impossible to have produced ~q"+earliestProductionData.GetTitle()+" in "+earliestProductionData.GetYear()+".", LOG_LOADING | LOG_WARNING)
+				adjustAge = True
+			elseif ageOnProductionYears < 5
+				'too young director or scriptwriter
+				if earliestProductionData.HasCastPerson(person.GetGUID(), TVTProgrammePersonJob.DIRECTOR | TVTProgrammePersonJob.SCRIPTWRITER)
+					TLogger.Log("TDatabase.FixLoadedData()", "Person ~q"+person.GetFullName()+"~q (GUID=~q"+person.getGUID()+"~q) is born in "+dobYear+". Impossible to have produced ~q"+earliestProductionData.GetTitle()+" in "+earliestProductionData.GetYear()+". Directors and Scriptwriters need to be at least 5 years old.", LOG_LOADING | LOG_WARNING)
+					adjustAge = True
+				endif
+			endif
+
+			if adjustAge
+				'we are able to correct non-fictional ones
+				if person.fictional
+					person.dayOfBirth = (earliestProductionData.GetYear() - RandRange(5,25)) + "-" + GetWorldTime().GetMonth(person.GetDOB()) + "-" + GetWorldTime().GetDayOfYear(person.GetDOB())
+					local dobYearNew:int = GetWorldTime().GetYear( person.GetDOB() )
+					TLogger.Log("TDatabase.FixLoadedData()", "Adjusted DOB of person ~q"+person.GetFullName()+"~q (GUID=~q"+person.getGUID()+"~q). Was "+dobYear+" and is now "+dobYearNew+".", LOG_LOADING | LOG_WARNING)
+				else
+					TLogger.Log("TDatabase.FixLoadedData()", "Cannot adjust DOB of person ~q"+person.GetFullName()+"~q (GUID=~q"+person.getGUID()+"~q). Person is non-fictional, so DOB should be correct.", LOG_LOADING | LOG_WARNING)
+				endif
+			endif
+		Next
+	End Method
 
 
 	Method ThrowNodeError(err:string, node:TxmlNode)
