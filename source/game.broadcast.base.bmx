@@ -258,17 +258,7 @@ Type TBroadcastManager
 			Local audienceResult:TAudienceResult = bc.GetAudienceResult(playerID)
 			'add to current set of results
 			SetAudienceResult(playerID, audienceResult)
-if 1 = 2 and playerID = 1 and audienceResult
-	if broadcastType = TVTBroadcastMaterialType.NEWSSHOW
-		print "NEWS ATTRACTION FOR PLAYER "+playerID+" hour:"+hour+":00"
-		audienceResult.AudienceAttraction.DebugPrint()
-		print "-------------------------------"
-	else
-		print "PROGRAMME ATTRACTION FOR PLAYER "+playerID+" hour:"+hour+":05"
-		audienceResult.AudienceAttraction.DebugPrint()
-		print "-------------------------------"
-	endif
-endif
+
 			If audienceResult.AudienceAttraction			
 				'if there is a malfunction, inform others
 				If audienceResult.AudienceAttraction.Malfunction

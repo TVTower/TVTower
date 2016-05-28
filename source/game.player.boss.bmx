@@ -47,6 +47,11 @@ Type TPlayerBossCollection
 		If id = -1 Then id = playerID
 		If Not IsBoss(id) Then Return Null
 
+		if bosses[id-1] and bosses[id-1].playerID = -1
+			bosses[id-1].playerID = id
+			TLogger.Log("TPlayerBossCollection.Get()", "Fixed broken playerID for boss #"+id, LOG_DEBUG)
+		endif
+
 		Return bosses[id-1]
 	End Method
 
@@ -385,6 +390,11 @@ Type TPlayerBoss
 	Method PlayerTakesCredit:int(value:int)
 		local result:int = False
 		if GetPlayerBase(playerID).GetCreditAvailable() >= value
+			if not GetPlayerFinance(playerID)
+				TLogger.Log("TPlayerBoss.PlayerTakesCredit()", "GetPlayerFinance() failed for playerID="+playerID+".", LOG_ERROR)
+				return False
+			endif
+
 			GetPlayerFinance(playerID).TakeCredit(value)
 			result = True
 		endif

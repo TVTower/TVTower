@@ -423,7 +423,10 @@ print "--------------"
 		'reset mood
 		'reset talk-about-subject-counters...
 		'assign new playerID !
-		GetPlayerBoss(playerID).Initialize()
+		local boss:TPlayerBoss = GetPlayerBoss(playerID)
+		boss.Initialize()
+		'assign new playerID (initialize unsets it)
+		GetPlayerBossCollection().Set(playerID, boss)
 
 
 
