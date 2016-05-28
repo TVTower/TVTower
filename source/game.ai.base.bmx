@@ -34,6 +34,11 @@ Type TAiBase
 		'register engine and functions
 		if not LuaEngine then LuaEngine = TLuaEngine.Create("")
 
+		'stay compatible for some versions...
+		if scriptFileName = "res/ai/DefaultAIPlayer.lua"
+			scriptFileName = "res/ai/DefaultAIPlayer/DefaultAIPlayer.lua"
+		endif
+
 		'load lua file
 		LoadScript(scriptFileName)
 
@@ -73,13 +78,14 @@ Type TAiBase
 
 
 	Method CallLuaFunction:object(name:string, args:object[])
-	    Try
+'	    Try
 			return LuaEngine.CallLuaFunction(name, args)
-		Catch ex:Object
-			TLogger.log("Ai.CallLuaFunction", "Script "+scriptFileName+" does not contain function ~q"+name+"~q.", LOG_ERROR | LOG_AI)
-		End Try
+'		Catch ex:Object
+'			print "ex: "+ex.ToString()
+'			TLogger.log("Ai.CallLuaFunction", "Script "+scriptFileName+" does not contain function ~q"+name+"~q. Or the function resulted in an error.", LOG_ERROR | LOG_AI)
+'		End Try
 
-		return Null
+'		return Null
 	End Method
 
 
