@@ -213,6 +213,14 @@ Type TRegistryLoader
 
 	'appends a given uri to the current base uri
 	Method GetUri:String(uri:string="")
+		?android
+			'try to prepend "sdl::" if the file seems to be within the
+			'APK
+			if filesize(uri) <= 0 and uri.Find("sdl::") <> 0
+				uri = "sdl::"+uri
+			endif
+		?		
+	
 		return baseURI + uri
 	End Method
 
@@ -220,12 +228,13 @@ Type TRegistryLoader
 	Method LoadFromXML:int(file:string, forceDirectLoad:int=FALSE)
 		file = GetUri(file)
 
-		if FileSize(file) <= 0
-			TLogger.Log("TRegistryLoader.LoadFromXML", "file '" + file + "' not found.", LOG_LOADING)
+		xmlHelper = TXmlHelper.Create(file, "", False)
+		if not xmlHelper.xmlDoc
+			TLogger.Log("TRegistryLoader.LoadFromXML", "file '" + file + "' not found or invalid.", LOG_LOADING)
 			return FALSE
 		endif
 
-		xmlHelper = TXmlHelper.Create(file)
+
 		LoadResourcesFromXML(xmlHelper.GetRootNode(), forceDirectLoad)
 
 		'load everything until everything from that file was loaded

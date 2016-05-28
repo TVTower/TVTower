@@ -46,16 +46,34 @@ Type TXmlHelper
 	Field xmlDoc:TxmlDoc
 
 
-	Function Create:TXmlHelper(filename:String, rootNode:String="")
+	Function Create:TXmlHelper(filename:String, rootNode:String="", createIfMissing:Int=True)
 		Local obj:TXmlHelper = New TXmlHelper
 		if filesize(filename) >= 0
 			obj.filename = filename
 			obj.xmlDoc = TxmlDoc.parseFile(filename)
 		else
 			obj.filename = filename
-			obj.xmlDoc = TxmlDoc.newDoc("1.0")
-			if rootNode <> "" then obj.CreateRootNode(rootNode)
+
+			'try to load it via a stream (maybe SDL wants to help out)
+			local stream:TStream = OpenStream(filename)
+			if stream
+				obj.xmlDoc = TxmlDoc.ReadDoc(stream)
+				stream.Close()
+			else
+				if createIfmissing
+					obj.xmlDoc = TxmlDoc.newDoc("1.0")
+					if rootNode <> "" then obj.CreateRootNode(rootNode)
+				endif
+			endif
 		endif
+		Return obj
+	End Function
+
+
+	Function CreateFromString:TXmlHelper(content:String, rootNode:String="")
+		Local obj:TXmlHelper = New TXmlHelper
+		obj.filename = "memory"
+		obj.xmlDoc = TxmlDoc.parseDoc(content)
 		Return obj
 	End Function
 

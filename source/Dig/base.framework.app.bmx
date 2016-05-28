@@ -116,6 +116,9 @@ Type TApp
 
 	Method ShutDown:Int()
 		print "App shutdown completed. Bye."
+		'on android this really quits the app, for now this is needed
+		'but might become obsolete once BMX-NG gets properly updated
+		End
 	End Method
 
 

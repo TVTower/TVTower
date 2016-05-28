@@ -36,12 +36,8 @@ Rem
 EndRem
 SuperStrict
 Import brl.Graphics
-Import brl.glmax2d
-
 ?android
-'Import BRL.GLMax2D
 Import sdl.gl2sdlmax2d
-Import pub.opengles
 ?
 ?MacOs
 Import BRL.GLMax2D
@@ -113,11 +109,11 @@ Type TGraphicsManager
 	'ATTENTION: there is no guarantee that it works flawless on
 	'all computers (graphics context/images might have to be
 	'initialized again)
-	Method SetFullscreen:Int(bool:Int = True, reInitGraphics:int = True)
+	Method SetFullscreen:Int(bool:Int = True, reInitGraphics:Int = True)
 		If fullscreen <> bool
 			fullscreen = bool
 			'create a new graphics object if already in graphics mode
-			If _g and reInitGraphics Then InitGraphics()
+			If _g And reInitGraphics Then InitGraphics()
 
 			Return True
 		EndIf
@@ -232,7 +228,7 @@ Type TGraphicsManager
 		If Not _g Then InitVirtualGraphics()
 
 		'close old one
-		if _g then CloseGraphics(_g)
+		If _g Then CloseGraphics(_g)
 
 		'needed to allow ?win32 + ?bmxng
 		?win32
@@ -339,7 +335,7 @@ Type TGraphicsManager
 
 	Method EnableSmoothLines:Int()
 		If renderer = RENDERER_OPENGL Or renderer = RENDERER_BUFFEREDOPENGL
-			?not android
+			?Not android
 			GlEnable(GL_LINE_SMOOTH)
 			?
 			Return True
