@@ -645,6 +645,14 @@ Type TDatabaseLoader
 		'TODO: SPLIT LICENCES FROM DATA
 		programmeLicence = GetProgrammeLicenceCollection().GetByGUID(GUID)
 		if not programmeLicence
+			'check if we reuse an existing programmedata (for series
+			'episodes we cannot rely on existence of licences, as they
+			'all get added at the end, not on load of an episode)
+			local existingProgrammeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID("data-"+GUID)
+			if existingProgrammeData
+				TLogger.Log("LoadV3ProgrammeLicenceFromNode()", "Extending programmeLicence ~q"+existingProgrammeData.GetTitle()+"~q. GUID="+GUID, LOG_XML)
+			endif
+		
 			'try to clone the parent's data - if that fails, create
 			'a new instance
 			if parentLicence then programmeData = TProgrammeData(THelper.CloneObject(parentLicence.data, "id"))
