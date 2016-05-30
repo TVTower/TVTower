@@ -466,6 +466,8 @@ Type TScriptTemplate Extends TScriptBase
 				until validRoleGUID
 				'assign the role
 				job.roleGUID = validRoleGUID
+				'and assign the gender definition
+				job.gender = role.gender
 				usedRoleGUIDs :+ [validRoleGUID]
 
 				'mark the job for having a randomly assigned role

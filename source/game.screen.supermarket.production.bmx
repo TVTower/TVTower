@@ -172,7 +172,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		'=== CAST SLOT LIST ===
 		castSlotList.SetItemLimit( currentProductionConcept.script.cast.length )
 		For local i:int = 0 until currentProductionConcept.script.cast.length
-			castSlotList.SetSlotJob(currentProductionConcept.script.cast[i].job, i)
+			castSlotList.SetSlotJob(currentProductionConcept.script.cast[i], i)
 			'also create gui
 			castSlotList.SetSlotCast(i, currentProductionConcept.cast[i])
 		Next
@@ -1620,7 +1620,7 @@ End Type
 
 Type TGUICastSlotList Extends TGUISlotList
 	'contains job for each slot
-	Field slotJob:int[]
+	Field slotJob:TProgrammePersonJob[]
 	Field _eventListeners:TLink[]
 	Field selectCastWindow:TGUISelectCastWindow
 	'the currently clicked/selected slot for a cast selection
@@ -1656,21 +1656,28 @@ Type TGUICastSlotList Extends TGUISlotList
 	End Method
 
 
-	Method SetSlotJob:int(jobID:int, slotIndex:int)
+	Method SetSlotJob:int(job:TProgrammePersonJob, slotIndex:int)
 		if slotIndex >= slotJob.length then return False
-		slotJob[slotIndex] = jobID
+		slotJob[slotIndex] = job
 	End Method
 
 
-	Method GetSlotJob:int(slotIndex:int)
-		if slotIndex >= slotJob.length then return 0
+	Method GetSlotJob:TProgrammePersonJob(slotIndex:int)
+		if slotIndex >= slotJob.length then return null
 		return slotJob[slotIndex]
+	End Method
+
+
+	Method GetSlotJobID:int(slotIndex:int)
+		if slotIndex >= slotJob.length then return 0
+		if slotJob[slotIndex] then return slotJob[slotIndex].job
+		return 0
 	End Method
 
 
 	'override
 	Method EmptyList:Int()
-		slotJob = new Int[0]
+		slotJob = new TProgrammePersonJob[0]
 	
 		return Super.EmptyList()
 	End Method
@@ -1699,7 +1706,7 @@ Type TGUICastSlotList Extends TGUISlotList
 
 		if person
 			'print "SetSlotCast: AddItem " + slotIndex +"  "+person.GetFullName()
-			i = new TGUICastListItem.CreateSimple(person, GetSlotJob(slotIndex) )
+			i = new TGUICastListItem.CreateSimple(person, GetSlotJob(slotIndex).job )
 			'hide the name of amateurs
 			if not TProgrammePerson(person) then i.isAmateur = True
 			i.SetOption(GUI_OBJECT_DRAGABLE, True)
@@ -1726,7 +1733,9 @@ Type TGUICastSlotList Extends TGUISlotList
 	Method GetJobID:int(entry:TGUIListItem)
 		local slotIndex:int = getSlot(entry)
 		if slotIndex = -1 then return 0
-		return GetSlotJob(slotIndex)
+		local job:TProgrammePersonJob = GetSlotJob(slotIndex)
+		if job then return job.job
+		return 0
 	End Method
 
 
@@ -1783,10 +1792,23 @@ endrem
 			
 			local coord:TVec3D = GetSlotCoord(slot)
 
+			local job:TProgrammePersonJob = GetSlotJob(slot)
+
+			local genderHint:string
+			if job
+'				local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(j.roleGUID)
+
+				if job.gender = TVTPersonGender.MALE
+					genderHint = " ("+GetLocale("MALE")+")"
+				elseif job.gender = TVTPersonGender.FEMALE
+					genderHint = " ("+GetLocale("FEMALE")+")"
+				endif
+			endif
+
 			if MouseManager._ignoreFirstClick 'touch mode
-				TGUICastListItem.DrawCast(GetScreenX() + coord.GetX(), GetScreenY() + coord.GetY(), GetContentScreenWidth(), GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(GetSlotJob(slot))), GetLocale("TOUCH_TO_SELECT_PERSON"), null, 0,0,0)
+				TGUICastListItem.DrawCast(GetScreenX() + coord.GetX(), GetScreenY() + coord.GetY(), GetContentScreenWidth(), GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("TOUCH_TO_SELECT_PERSON"), null, 0,0,0)
 			else
-				TGUICastListItem.DrawCast(GetScreenX() + coord.GetX(), GetScreenY() + coord.GetY(), GetContentScreenWidth(), GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(GetSlotJob(slot))), GetLocale("CLICK_TO_SELECT_PERSON"), null, 0,0,0)
+				TGUICastListItem.DrawCast(GetScreenX() + coord.GetX(), GetScreenY() + coord.GetY(), GetContentScreenWidth(), GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("CLICK_TO_SELECT_PERSON"), null, 0,0,0)
 			endif
 		Next
 		SetAlpha 2.0 * GetAlpha()
@@ -1908,9 +1930,9 @@ Type TGUICastListItem Extends TGUISelectListItem
 				if TGUICastSlotList(parentList)
 					local slotListSlot:int = TScreenHandler_SupermarketProduction.GetInstance().castSlotList.GetSlotByCoord( MouseManager.GetPosition() )
 					if slotListSlot >= 0
-						local slotJob:int = TGUICastSlotList(parentList).GetSlotJob(slotListSlot)
+						local slotJob:int = TGUICastSlotList(parentList).GetSlotJobID(slotListSlot)
 						if slotJob > 0
-							return TGUICastSlotList(parentList).GetSlotJob(slotListSlot)
+							return TGUICastSlotList(parentList).GetSlotJobID(slotListSlot)
 						else
 							return lastDisplayJobID
 						endif
@@ -2073,9 +2095,11 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 
 		'=== BARS ===
-		skin.RenderBar(x + nameOffsetX, y + barOffsetY, 200, -1, xp, -1.0, "cast_bar_xp")
-		skin.RenderBar(x + nameOffsetX, y + barOffsetY + barH, 200, -1, sympathy, -1.0, "cast_bar_sympathy")
-
+		if nameHint = ""
+			skin.RenderBar(x + nameOffsetX, y + barOffsetY, 200, -1, xp, -1.0, "cast_bar_xp")
+			skin.RenderBar(x + nameOffsetX, y + barOffsetY + barH, 200, -1, sympathy, -1.0, "cast_bar_sympathy")
+		endif
+		
 		'=== FACE / ICON ===
 		iconSprite.Draw(x, y)
 
@@ -2105,12 +2129,12 @@ Type TGUICastListItem Extends TGUISelectListItem
 					ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			endif
 
-			SetAlpha( Max(0.75, oldCol.a) )
+			SetAlpha( Max(0.6, oldCol.a) )
 			if nameHint
 				skin.fontNormal.drawBlock( ..
 					nameHint, ..
 					x + nameTextOffsetX + border.GetLeft(), ..
-					y + nameOffsetY + border.GetTop(), .. '-1 to align it more properly
+					y + nameOffsetY + border.GetTop() + barOffsetY - 3, .. '-1 to align it more properly
 					w - nameTextOffsetX - (border.GetRight() + border.GetLeft()),  ..
 					Max(15, nameSprite.GetHeight() - (border.GetTop() + border.GetBottom())), ..
 					ALIGN_RIGHT_CENTER, skin.textColorNeutral)

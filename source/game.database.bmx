@@ -314,7 +314,7 @@ Type TDatabaseLoader
 		local data:TData = new TData
 		xml.LoadValuesToData(node, data, [..
 			"first_name", "last_name", "nick_name", "fictional", "levelup", "country", ..
-			"generator" ..
+			"job", "gender", "generator" ..
 		])
 
 

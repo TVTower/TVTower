@@ -497,13 +497,34 @@ Type TProductionConcept Extends TOwnedGameObject
 			else
 				attributeMod = 1.0
 			endif
-			
-			
+
+
+			'if the cast defines a specific gender for this position,
+			'then we reduce the personFit by up to 20%.
+			'This happens for 80% of all "wrong-gender"-assignments.
+			'The other 12% have luck - they perfectly seem to fit into
+			'that role.
+			'And even 8% benefit from being another gender (script writer
+			'was wrong then ;-))
+			local genderFit:Float = 1.0
+			if script.cast[castIndex].gender <> 0
+				if person.gender <> script.cast[castIndex].gender
+					local luck:int = RandRange(0,100)
+					if luck <= 80 '80%
+						genderFit = RandRange(1,20)/100.0
+					elseif luck <= 88 '8%
+						genderFit = RandRange(100,120)/100.0
+					else
+						'no change
+					endif
+				endif
+			endif
+						
 
 
 			'=== TOTAL FIT ===
 
-			personFit = 0.3 * genreFit + 0.7 * jobFit
+			personFit = (0.3 * genreFit + 0.7 * jobFit) * genderFit
 			'if the person does not know anything about the done job
 			'chances are high for the person not fitting at all
 			if not jobFit < 0.1 and RandRange(0,100) < 90
@@ -528,6 +549,7 @@ Type TProductionConcept Extends TOwnedGameObject
 			TLogger.Log("TProductionConcept.CalculateCastFit()", person.GetFullName() + " [as ~q"+ TVTProgrammePersonJob.GetAsString( script.cast[castIndex].job ) + "~q]", LOG_DEBUG)
 			TLogger.Log("TProductionConcept.CalculateCastFit()", "     genreFit:  "+genreFit, LOG_DEBUG)
 			TLogger.Log("TProductionConcept.CalculateCastFit()", "       jobFit:  "+jobFit, LOG_DEBUG)
+			TLogger.Log("TProductionConcept.CalculateCastFit()", "    genderFit:  "+genderFit, LOG_DEBUG)
 			TLogger.Log("TProductionConcept.CalculateCastFit()", " attributeMod:  "+attributeMod, LOG_DEBUG)
 			if TProgrammePerson(person)
 				TLogger.Log("TProductionConcept.CalculateCastFit()", " (sympathy   :  "+TProgrammePerson(person).GetChannelSympathy(owner)+")", LOG_DEBUG)
