@@ -1377,12 +1377,13 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 		'normal person)
 		local amateur:TProgrammePersonBase
 		Repeat
-			amateur = GetProgrammePersonBaseCollection().GetRandomInsignificant(null, True)
+			'only bookable amateurs
+			amateur = GetProgrammePersonBaseCollection().GetRandomInsignificant(null, True, True)
 			'print "check " + amateur.GetFullName() + "  " + amateur.GetAge() +"  fictional:"+amateur.fictional
 			'if not amateur.IsAlive() then print "skip: dead "+amateur.GetFullName()
 			'if not (amateur.GetAge() >= 10) then print "skip: too young "+amateur.GetFullName()
 			'if not amateur.fictional then print "skip: real "+amateur.GetFullName()
-		Until amateur.IsAlive() and amateur.fictional
+		Until amateur.IsAlive() and amateur.fictional and amateur.bookable
 
 		persons = [amateur] + persons
 
@@ -1392,6 +1393,8 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 		For local p:TProgrammePersonBase = EachIn persons
 			'custom production not possible with real persons...
 			if not p.fictional then continue
+			'also the person must be bookable for productions (maybe retired?)
+			if not p.bookable then continue
 			if not p.IsAlive() then continue
 			'we also want to avoid "children" (only available for celebs)
 			if TProgrammePerson(p) and p.GetAge() < 10 then continue

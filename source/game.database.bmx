@@ -337,9 +337,12 @@ Type TDatabaseLoader
 		person.firstName = data.GetString("first_name", person.firstName)
 		person.lastName = data.GetString("last_name", person.lastName)
 		person.nickName = data.GetString("nick_name", person.nickName)
-		person.fictional = data.GetInt("fictional", person.fictional)
+		person.fictional = data.GetBool("fictional", person.fictional)
+		person.bookable = data.GetBool("bookable", person.bookable)
 		person.countryCode = data.GetString("country", person.countryCode)
 		person.canLevelUp = data.GetInt("levelup", person.canLevelUp)
+		person.SetJob(data.GetInt("job", person.job))
+		person.gender = data.GetInt("gender", person.gender)
 
 		'avoid that other persons with that name are generated
 		if p

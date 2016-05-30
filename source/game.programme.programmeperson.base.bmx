@@ -71,8 +71,8 @@ Type TProgrammePersonBaseCollection
 
 
 	'useful to fetch a random "amateur" (aka "layman")
-	Method GetRandomInsignificant:TProgrammePersonBase(array:TProgrammePersonBase[] = null, onlyFictional:int = False)
-		if array = Null or array.length = 0 then array = GetAllInsignificantAsArray(onlyFictional)
+	Method GetRandomInsignificant:TProgrammePersonBase(array:TProgrammePersonBase[] = null, onlyFictional:int = False, onlyBookable:int = False)
+		if array = Null or array.length = 0 then array = GetAllInsignificantAsArray(onlyFictional, onlyBookable)
 		If array.length = 0 Then Return Null
 
 		'randRange - so it is the same over network
@@ -80,8 +80,8 @@ Type TProgrammePersonBaseCollection
 	End Method
 	
 
-	Method GetRandomCelebrity:TProgrammePersonBase(array:TProgrammePersonBase[] = null, onlyFictional:int = False)
-		if array = Null or array.length = 0 then array = GetAllCelebritiesAsArray(onlyFictional)
+	Method GetRandomCelebrity:TProgrammePersonBase(array:TProgrammePersonBase[] = null, onlyFictional:int = False, onlyBookable:int = False)
+		if array = Null or array.length = 0 then array = GetAllCelebritiesAsArray(onlyFictional, onlyBookable)
 		If array.length = 0 Then Return Null
 
 		'randRange - so it is the same over network
@@ -89,22 +89,24 @@ Type TProgrammePersonBaseCollection
 	End Method
 
 
-	Method GetAllInsignificantAsArray:TProgrammePersonBase[](onlyFictional:int = False)
+	Method GetAllInsignificantAsArray:TProgrammePersonBase[](onlyFictional:int = False, onlyBookable:int = False)
 		local array:TProgrammePersonBase[]
 		'create a full array containing all elements
 		For local obj:TProgrammePersonBase = EachIn insignificant.Values()
 			if onlyFictional and not obj.fictional then continue
+			if onlyBookable and not obj.bookable then continue
 			array :+ [obj]
 		Next
 		return array
 	End Method
 
 
-	Method GetAllCelebritiesAsArray:TProgrammePersonBase[](onlyFictional:int = False)
+	Method GetAllCelebritiesAsArray:TProgrammePersonBase[](onlyFictional:int = False, onlyBookable:int = False)
 		local array:TProgrammePersonBase[]
 		'create a full array containing all elements
 		For local obj:TProgrammePersonBase = EachIn celebrities.Values()
 			if onlyFictional and not obj.fictional then continue
+			if onlyBookable and not obj.bookable then continue
 			array :+ [obj]
 		Next
 		return array
@@ -196,6 +198,10 @@ Type TProgrammePersonBase extends TGameObject
 	field canLevelUp:int = True
 	field countryCode:string = ""
 	field gender:int = 0
+	'can this person _theoretically_ be booked for a production
+	'(this allows disabling show-guests like "the queen" - which might
+	' be guest in an older show)
+	field bookable:int = True
 	'is this an real existing person or someone we imaginated for the game?
 	field fictional:int = False
 	'is the person currently filming something?
@@ -230,7 +236,8 @@ Type TProgrammePersonBase extends TGameObject
 		       fictional + "::" + ..
 		       StringHelper.EscapeString(",".Join(producingGUIDs), ":") + "::" + ..
 		       id + "::" + ..
-		       StringHelper.EscapeString(GUID, ":")
+		       StringHelper.EscapeString(GUID, ":") + "::" + ..
+		       bookable
 	End Method
 
 
@@ -252,6 +259,7 @@ Type TProgrammePersonBase extends TGameObject
 		if vars.length > 7 then producingGUIDs = StringHelper.UnEscapeString(vars[7]).split(",")
 		if vars.length > 8 then id = int(vars[8])
 		if vars.length > 9 then GUID = StringHelper.UnEscapeString(vars[9])
+		if vars.length > 10 then bookable = int(vars[10])
 	End Method
 
 
