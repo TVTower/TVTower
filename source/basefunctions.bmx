@@ -25,13 +25,6 @@ Const CURRENCYSIGN:String = Chr(8364) 'eurosign
 
 
 
-Function SortListArray(List:TList Var)
-	Local Arr:Object[] = List.ToArray()
-	Arr.Sort()
-	List = List.FromArray(arr)
-End Function
-
-
 Type TNumberCurveValue
 	Field _value:Int
 
@@ -130,65 +123,6 @@ Function MergeLists:TList(a:TList,b:TList)
 End Function
 
 
-Type TStringHelper
-   Function FirstPart:String(txt:String,trenn:Byte=32)
-      Local i:Short
-      For i=0 To txt.length-1
-         If txt[i]=trenn Then
-           Return txt[..i]+":"
-         End If
-      Next
-      Return ""
-   End Function
-
-   Function LastPart:String(txt:String,trenn:Byte=32)
-      Local i:Short
-      For i = 0 To txt.length - 1
-         If txt[i]=trenn Then
-          Return txt[(i+1)..]
-         End If
-      Next
-      Return txt
-   End Function
-
-	Function gparam:String(txt:String, Count:Int, trenn:Byte = 32)
-		Local x:Int = 0
-		Local lastpos:Int = 0
-		For Local i:Int = 0 To txt.length-1
-			If txt[i]=trenn
-				x:+1
-				If x=count Then Return txt[lastpos..i]
-				lastpos=i+1
-			EndIf
-		Next
-		If x < Count - 1 Then Return Null
-		Return txt[lastpos..x]
-	End Function
-End Type
-
-
-Global LastSeekPos:Int =0
-Function Stream_SeekString:Int(str:String, stream:TStream)
-  If stream <> Null
-    stream.Seek(LastSeekPos)
-	Local lastchar:Int=0
-	For Local i:Int = LastSeekPos To stream.Size()-1
-	  stream.Seek(i)
-	  If stream.ReadByte() = str[lastchar] Then lastchar:+1 Else lastchar = 0
-	  If lastchar = Len(str) Then LastSeekPos=i;Return i
-	Next
-	If LastSeekPos > 0 Then Return Stream_SeekString(str,stream)
-	Return -1
-  EndIf
-End Function
-
-Function SortListFast(list:TList)
-		Local Arr:Object[] = ListToArray(list)
-		Arr.Sort()
-		list = ListFromArray(Arr)
-End Function
-
-
 
 Function RequestFromUrl:String(myurl:String)
 	Local myip:TStream    = ReadStream(myurl$)	'Now we gonna open the requested URL to read
@@ -204,6 +138,7 @@ Function RequestFromUrl:String(myurl:String)
 	CloseStream myip							'Don't forget to close the opened stream in the end!
 	Return ipstring$							'Just return what we've got
 End Function
+
 
 
 'collection of useful functions
@@ -224,32 +159,6 @@ Type TFunctions
 		Local pixmap:TPixmap = LockImage(image)
 		pixmap.ClearPixels(0)
 		Return image
-	End Function
-
-
-	Function ListDir:String(dir:String, onlyExtension:String = "", out:String = "")
-		Local separator:String = "/"
-		?Not bmxng
-		Local csd:Int = ReadDir(dir:String)
-		?bmxng
-		Local csd:Byte Ptr = ReadDir(dir:String)
-		?
-		If Not csd Then Return ""
-
-		Repeat
-		Local file:String = NextFile(csd)
-		If file:String = "" Then Exit
-		If FileType(dir + separator + file) = 1
-			If onlyExtension = "" Or ExtractExt(dir + separator + file) = onlyExtension
-				out = out + dir + separator + file + Chr:String(13) + Chr:String(10)
-			EndIf
-		EndIf
-
-		If FileType(dir + separator + file) = 2 And file <> ".." And file <> "."
-			out:String = out:String + ListDir:String(dir:String + separator + file:String, onlyExtension)
-		EndIf
-		Forever
-		Return out$
 	End Function
 
 

@@ -2840,7 +2840,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 
 	'override to reset values
-	Method Start:Int()
+	Method Start()
 		TLogger.Log("====== START NEW GAME ======", "", LOG_DEBUG)
 		Reset()
 		
