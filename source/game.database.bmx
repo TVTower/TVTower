@@ -314,7 +314,7 @@ Type TDatabaseLoader
 		local data:TData = new TData
 		xml.LoadValuesToData(node, data, [..
 			"first_name", "last_name", "nick_name", "fictional", "levelup", "country", ..
-			"job", "gender", "generator" ..
+			"job", "gender", "generator", "face_code" ..
 		])
 
 
@@ -343,6 +343,7 @@ Type TDatabaseLoader
 		person.canLevelUp = data.GetInt("levelup", person.canLevelUp)
 		person.SetJob(data.GetInt("job", person.job))
 		person.gender = data.GetInt("gender", person.gender)
+		person.faceCode = data.GetString("face_code", person.faceCode)
 
 		'avoid that other persons with that name are generated
 		if p
@@ -360,6 +361,15 @@ Type TDatabaseLoader
 		if TProgrammePerson(person)
 			'create a celebrity to avoid casting each time
 			local celebrity:TProgrammePerson = TProgrammePerson(person)
+
+			'=== IMAGES ===
+			local nodeImages:TxmlNode = xml.FindElementNode(node, "images")
+			data = new TData
+			'contains custom fictional overriding the base one
+			xml.LoadValuesToData(nodeImages, data, [..
+				"face_code" ..
+			])
+			celebrity.faceCode = data.GetString("face_code", celebrity.faceCode)
 
 
 			'=== DETAILS ===

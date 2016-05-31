@@ -42,7 +42,88 @@ Type TFigureGenerator
 		if potentialParts.length = 0 then return null
 		return potentialParts[ Rand(0, potentialParts.length-1) ]
 	End Function
-	
+
+
+	Function GetPartAtIndex:TFigureGeneratorPart(partType:int, index:int)
+		if partType < 1 or partType > registeredParts.length then return Null
+		if not registeredParts[partType-1] then return Null
+		if registeredParts[partType-1].Count() <= index then return Null
+
+		return TFigureGeneratorPart(registeredParts[partType-1].ValueAtIndex(index))
+	End Function
+
+
+	Function GetPartIndex:Int(partType:int, part:TFigureGeneratorPart)
+		if partType < 1 or partType > registeredParts.length then return -1
+		if not registeredParts[partType-1] then return -1
+
+		for local i:int = 0 until registeredParts[partType-1].Count()
+			if part = TFigureGeneratorPart(registeredParts[partType-1].ValueAtIndex(i))
+				return i
+			endif
+		Next
+		return -1
+	End Function
+
+
+	Function GenerateFigureFromCode:TFigureGeneratorFigure(code:string)
+		local subCodes:string[] = code.Split(":")
+		if subCodes.length < 17
+			if subCodes.length >= 3
+				print "GenerateFigureFromCode(): invalid code. Using first 3 params for default generator."
+				'gender:age:skinTone -> skinTone, gender, age
+				return GenerateFigure(int(subCodes[2]), int(subCodes[0]), int(subCodes[1]))
+			endif
+		else
+			local fig:TFigureGeneratorFigure = new TFigureGeneratorFigure
+			local skinColor:TColor
+			local colors:TColor[fig.parts.length]
+			
+			fig.gender = int(subCodes[0])
+			fig.age = int(subCodes[1])
+			fig.skinTone = int(subCodes[2])
+			if subCodes[3].Find("#") = 0
+				skinColor = new TColor.FromHex(subCodes[3])
+			endif
+			for local i:int = 4 to 17
+				local partCode:string[] = subCodes[i].split("#")
+				local partIndex:int = int(partCode[0])
+				local partType:int = i - 4 +1
+				if partIndex < 0
+					fig.SetPart(partType, Null)
+					fig.SetPartColor(partType, Null)
+					continue
+				endif
+				local part:TFigureGeneratorPart = GetPartAtIndex(partType, partIndex)
+
+				fig.SetPart(partType, part)
+				if partCode.length = 2
+					colors[partType -1] = new TColor.FromHex(partCode[1])
+
+					if fig.parts[partType -1].skinVisible and not skinColor
+						skinColor = colors[partType -1]
+					endif
+				else
+					fig.SetPartColor(partType, null)
+				endif
+			Next
+
+			if skinColor then fig.SetSkinColor(skinColor)
+
+			'override skincolors if needed
+			For local i:int = 0 to colors.length
+				'only set valid colors, all other colors like "explicit null"
+				'are set before 
+				if colors[i] then fig.SetPartColor(i+1, colors[i])
+			Next
+
+			return fig
+		endif
+
+		print "GenerateFigureFromCode(): invalid code. Using absolute random params for generator."
+		return GenerateFigure(0,0,0)
+	End Function
+						
 
 	Function GenerateFigure:TFigureGeneratorFigure(skinTone:int, gender:int, age:int=0)
 		local fig:TFigureGeneratorFigure = new TFigureGeneratorFigure
@@ -66,7 +147,7 @@ Type TFigureGenerator
 		fig.gender = gender
 		fig.age = age
 
-		fig.SetSkinTone(skinTone) 
+		fig.SetSkinTone(skinTone)
 		fig.ColorizeElements()
 		return fig
 	End Function
@@ -83,10 +164,44 @@ Type TFigureGeneratorFigure
 	Global partOrder:int[] = [  1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  14,  11,  12,  13]
 	Global useChance:int[] = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100,  25, 100, 100, 100]
 
+
+	Method GetFigureCode:string()
+		local code:string = gender+":"+age+":"+skinTone
+		local skinColor:TColor = GetSkinColor()
+		if skinColor
+			code :+ ":"+skinColor.ToHex()
+		else
+			code :+ ":-1"
+		endif
+		
+		for local i:int = 0 until parts.length
+			if code <> "" then code :+ ":"
+			local partType:int = i + 1
+			local partIndex:int = TFigureGenerator.GetPartIndex(partType, parts[i])
+			if parts[i] and partIndex<>-1
+				code :+ partIndex
+				if not parts[i].skinVisible or not skinColor
+					if partsColor[i] then code :+ "#"+partsColor[i].ToHex()
+				endif
+			else
+				code :+"-1"
+			endif
+		Next
+		return code
+	End Method
+
+
 	Method SetPart(partType:int, part:TFigureGeneratorPart = null)
 		if partType < 1 or partType > parts.length then return
 		
 		parts[partType-1] = part
+	End Method
+	
+
+	Method SetPartColor(partType:int, color:TColor = null)
+		if partType < 1 or partType > parts.length then return
+		
+		partsColor[partType-1] = color
 	End Method
 
 
@@ -122,11 +237,26 @@ Type TFigureGeneratorFigure
 		EndSelect
 		'add a bit variation
 		mixColor.AdjustBrightness(Rand(10)/100.0 - 0.05)
-		
+
+		SetSkinColor(mixColor)
+	End Method
+
+
+	Method GetSkinColor:TColor()
 		For local partType:int = eachin partOrder
 			if not parts[partType -1] then continue
 			if not parts[partType -1].skinVisible then continue
-			partsColor[partType -1] = mixColor
+			return partsColor[partType -1]
+		Next
+		return Null
+	End Method
+	
+
+	Method SetSkinColor(color:TColor)
+		For local partType:int = eachin partOrder
+			if not parts[partType -1] then continue
+			if not parts[partType -1].skinVisible then continue
+			partsColor[partType -1] = color
 		Next
 	End Method
 

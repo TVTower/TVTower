@@ -333,6 +333,36 @@ Type TColor
 	End Method
 
 
+	Method ToHex:string()
+		'lossy compression of alpha!
+		local h:string = ""
+		h :+ Right(Hex(r),2)
+		h :+ Right(Hex(g),2)
+		h :+ Right(Hex(b),2)
+		'do not append alpha if alpha is 1.0
+		if a < 1.0
+			h:+ Right(Hex(int(ceil(a*255))),2)
+		endif
+		return h
+	End Method
+
+
+	Method FromHex:TColor(hexColor:string)
+		local start:int = 0
+		local colIndex:int = 0
+		if hexColor.Find("#") = 0 then start :+1
+		for local i:int = start until hexColor.length step 2
+			local part:string = Mid(hexColor, i+1, 2)
+			if colIndex = 0 then r = ("$"+part).ToInt()
+			if colIndex = 1 then g = ("$"+part).ToInt()
+			if colIndex = 2 then b = ("$"+part).ToInt()
+			if colIndex = 3 then a = ("$"+part).ToInt()/255.0
+			colIndex :+1
+		Next
+		return self
+	End Method
+
+
 	'same as set()
 	Method setRGB:TColor()
 		SetColor(self.r, self.g, self.b)

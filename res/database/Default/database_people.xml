@@ -22,7 +22,7 @@
 			<first_name>Patty</first_name>
 			<last_name>Glansen</last_name>
 			<nick_name></nick_name>
-			<images />
+			<images face_code="2:2:2:#EDA657:-1:-1:1:-1:7#C808A8:6:2:-1:3:3:7:13#581410:-1:-1" />
 			<details job="2" gender="2" birthday="1961" deathday="" country="D" fictional="1" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
@@ -1829,7 +1829,7 @@
 		<person id="24967622-b169-4413-90df-6dc574464b65" first_name="Kalle" last_name="Knall" nick_name="" fictional="1" gender="1" />
 		<person id="13ce58ce-216d-4f5c-a9ca-bed86eef67e3" first_name="Kalle" last_name="Knausrig" nick_name="" fictional="1" gender="1" />
 		<person id="4bd36da9-4f07-4067-af4a-01ff5175ad73" first_name="Ulfs" last_name="Maul" nick_name="" fictional="1" gender="1" />
-		<person id="9104f9c1-7a0f-4bc0-a34c-389ce282eebf" first_name="Ronny" last_name="Otto" nick_name="" fictional="1" gender="1" />
+		<person id="9104f9c1-7a0f-4bc0-a34c-389ce282eebf" first_name="Ronny" last_name="Otto" nick_name="" fictional="1" gender="1" face_code="1:2:2:#ECA472:-1:-1:2:-1:11#9090b0:3:7:-1:2:1:7:8#303010:-1:2#807020" />
 		<person id="c1543aab-18a4-44ad-be31-34bc1c972553" first_name="Santiago `de Chile´" last_name="Perez" nick_name="" fictional="1" gender="1" bookable="0" />
 		<person id="22274e45-da7e-4fb2-8698-3a2364973e1a" first_name="Matthias" last_name="Pfeife" nick_name="" fictional="1" gender="1" />
 		<person id="afa8d190-c907-4fcf-9c34-d55136ab3c99" first_name="Mariusz" last_name="Plauz" nick_name="" fictional="1" gender="1" />

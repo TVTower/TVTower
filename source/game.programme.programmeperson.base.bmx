@@ -198,6 +198,8 @@ Type TProgrammePersonBase extends TGameObject
 	field canLevelUp:int = True
 	field countryCode:string = ""
 	field gender:int = 0
+	'a text code representing the config for the figure generator
+	field faceCode:string
 	'can this person _theoretically_ be booked for a production
 	'(this allows disabling show-guests like "the queen" - which might
 	' be guest in an older show)
