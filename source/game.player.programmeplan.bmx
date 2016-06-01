@@ -1064,6 +1064,16 @@ endrem
 		If Not obj Then Return (Null<>RemoveObject(Null, TVTBroadcastMaterialType.PROGRAMME, day, hour))
 '		if not obj then return FALSE
 
+		'for live programme, check if day/hour is valid
+		if TProgramme(obj)
+			local p:TProgramme = TProgramme(obj)
+			if p.data.IsLive()
+				'hour or day incorrect
+				if GetWorldTime().GetDayHour( p.data.liveTime ) <> hour then return False 
+				if GetWorldTime().GetDay( p.data.liveTime ) <> day then return False
+			endif
+		endif
+
 		Return AddObject(obj, TVTBroadcastMaterialType.PROGRAMME, day, hour)
 	End Method
 

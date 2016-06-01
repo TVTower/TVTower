@@ -930,6 +930,8 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Method GetYear:int()
 		'PAID is always "live/from now"
 		if HasFlag(TVTProgrammeDataFlag.PAID) then return GetWorldTime().GetYear()
+		'for live-programme just use the live-time
+		if HasFlag(TVTProgrammeDataFlag.LIVE) and liveTime <= 0 then return GetWorldTime().GetYear(liveTime)
 
 		if _year = 0
 			_year = GetWorldTime().GetStartYear() + relativeYear

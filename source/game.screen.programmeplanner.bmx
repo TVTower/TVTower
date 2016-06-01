@@ -217,12 +217,12 @@ Type TScreenHandler_ProgrammePlanner
 		If hours and hours.length > 0
 			For local hour:int = EachIn hours
 				if slotType = TVTBroadcastMaterialType.PROGRAMME
-					overlayedProgrammeSlots[hour] = 0
+					overlayedProgrammeSlots[hour] = 1
 				elseif slotType = TVTBroadcastMaterialType.ADVERTISEMENT
-					overlayedAdSlots[hour] = 0
+					overlayedAdSlots[hour] = 1
 				else
-					overlayedProgrammeSlots[hour] = 0
-					overlayedAdSlots[hour] = 0
+					overlayedProgrammeSlots[hour] = 1
+					overlayedAdSlots[hour] = 1
 				endif
 			Next
 		Endif
@@ -233,12 +233,12 @@ Type TScreenHandler_ProgrammePlanner
 		If hours and hours.length > 0
 			For local hour:int = EachIn hours
 				if slotType = TVTBroadcastMaterialType.PROGRAMME
-					overlayedProgrammeSlots[hour] = 1
+					overlayedProgrammeSlots[hour] = 0
 				elseif slotType = TVTBroadcastMaterialType.ADVERTISEMENT
-					overlayedAdSlots[hour] = 1
+					overlayedAdSlots[hour] = 0
 				else
-					overlayedProgrammeSlots[hour] = 1
-					overlayedAdSlots[hour] = 1
+					overlayedProgrammeSlots[hour] = 0
+					overlayedAdSlots[hour] = 0
 				endif
 			Next
 		Endif
@@ -577,6 +577,7 @@ Type TScreenHandler_ProgrammePlanner
 
 	'intercept if item does not allow dropping on specific lists
 	'eg. certain ads as programme if they do not allow no commercial shows
+	'eg. a live programme can only be dropped to a specific slot
 	Function onTryDropProgrammePlanElement:int(triggerEvent:TEventBase)
 		'do not react if in other players rooms
 		if not TRoomHandler.IsPlayersRoom(currentRoom) return False
@@ -587,8 +588,24 @@ Type TScreenHandler_ProgrammePlanner
 		local list:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent.GetReceiver())
 		if not list then return FALSE
 
+
 		'check if that item is allowed to get dropped on such a list
-		'...
+		local receiverList:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent._receiver)
+		if receiverList
+			local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", new TVec2D.Init(-1,-1)))
+			local slot:int = receiverList.GetSlotByCoord(coord)
+
+			'check if it is a live programme
+			if TProgramme(item.broadcastMaterial) and TProgramme(item.broadcastMaterial).data.IsLive()
+				local liveTime:long = TProgramme(item.broadcastMaterial).data.liveTime
+				if planningDay <> GetWorldTime().GetDay( liveTime ) or ..
+				   slot <> GetWorldTime().GetDayHour( liveTime )
+					triggerEvent.SetVeto()
+					return False
+				endif
+			endif
+		endif
+
 
 		'mark that something was dropped this round and no shortcuts should
 		'get used
@@ -999,11 +1016,39 @@ Type TScreenHandler_ProgrammePlanner
 		'reset and refresh locked slots of this day
 		ResetSlotOverlays()
 		local pp:TPlayerProgrammePlan = GetPlayerProgrammePlan(room.owner)
+		local hrs:int[]
 		for local h:int = 0 to 23
 			if pp.IsLockedSlot(TVTBroadcastMaterialType.PROGRAMME, planningDay, h)
-				DisableSlotOverlays([h], TVTBroadcastMaterialType.PROGRAMME)
+				hrs :+ [h]
 			endif
 		Next
+		if hrs.length > 0 then DisableSlotOverlays(hrs, TVTBroadcastMaterialType.PROGRAMME)
+
+		'enable slot overlay if a dragged element is "live"
+		if draggedGuiProgrammePlanElement
+			local programme:TProgramme = TProgramme(draggedGuiProgrammePlanElement.broadcastMaterial)
+
+			if programme
+				'if KEYMANAGER.IsHit(KEY_SPACE)
+				'	'set live time to 22:00
+				'	programme.data.liveTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(), 22, 0,0)
+				'	programme.data.SetFlag(TVTProgrammeDataFlag.LIVE, True)
+				'endif
+
+				if programme.data.IsLive()
+					local liveHours:int[]
+					local blockTime:Long = programme.data.liveTime
+					For local i:int = 0 to programme.GetBlocks()
+						if GetWorldTime().GetDay(blockTime) = planningDay 
+							liveHours :+ [ GetWorldTime().GetDayHour(blockTime) ]
+						endif
+						blockTime :+ 3600
+					Next
+					EnableSlotOverlays(liveHours, TVTBroadcastMaterialType.PROGRAMME)
+				endif
+			endif
+		endif
+		
 
 		'if not initialized, do so
 		if planningDay = -1 then planningDay = GetWorldTime().GetDay()
