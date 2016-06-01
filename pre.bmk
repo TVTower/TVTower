@@ -1,0 +1,16 @@
+@define CreateVersionFile
+	bmk.Sys("echo \"\" > ".. %exepath% .."/source/version.txt")
+@end
+
+@define doVersion
+	version = os.date('%d.%m.%y %H:%M')
+
+	bmk.Sys("echo \"" .. version .. "\" > " .. %exepath% .. "/source/version.txt")
+#	file = io.open(arg1,"w")
+#	file:write(version)
+#	file:close()
+@end
+
+# run the pre compile step install
+#CreateVersionFile
+doVersion
