@@ -639,18 +639,27 @@ Type TScreenHandler_ProgrammePlanner
 
 		'dropping on daychangebuttons means trying to change the day
 		'while elements are dragged
-		if plannerPreviousDayButton = triggerEvent.GetReceiver()
+		if plannerPreviousDayButton = triggerEvent.GetReceiver() or ..
+		   plannerNExtDayButton = triggerEvent.GetReceiver()
+		
 			triggerEvent.SetVeto()
 
-			ChangePlanningDay(planningDay-1)
-			'reset mousebutton
-			MouseManager.ResetKey(1)
+			if plannerPreviousDayButton = triggerEvent.GetReceiver()
+				ChangePlanningDay(planningDay-1)
+			else
+				ChangePlanningDay(planningDay+1)
+			endif
 
-			return False
-		elseif plannerNextDayButton = triggerEvent.GetReceiver()
-			triggerEvent.SetVeto()
+			'remove that programme from plan now
+			'do this to avoid "handleDropBack()" returning true
+			if item.lastList = GuiListAdvertisements
+				GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(item.broadcastMaterial)
+				GuiListAdvertisements.RemoveItem(item)
+			elseif item.lastList = GuiListProgrammes
+				GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
+				GuiListProgrammes.RemoveItem(item)
+			endif
 
-			ChangePlanningDay(planningDay+1)
 			'reset mousebutton
 			MouseManager.ResetKey(1)
 
@@ -672,14 +681,14 @@ Type TScreenHandler_ProgrammePlanner
 
 		if list = GuiListProgrammes
 			if not GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
-				print "[WARNING] dragged item from programmelist - removing from programmeplan at "+slot+":00 - FAILED"
+				TLogger.Log("onRemoveItemFromSlotList()", "Dragged item from programmelist - removing from programmeplan at "+slot+":00 - FAILED", LOG_WARNING)
 			endif
 		elseif list = GuiListAdvertisements
 			if not GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(item.broadcastMaterial)
-				print "[WARNING] dragged item from adlist - removing from programmeplan at "+slot+":00 - FAILED"
+				TLogger.Log("onRemoveItemFromSlotList()", "Dragged item from adlist - removing from programmeplan at "+slot+":00 - FAILED", LOG_WARNING)
 			endif
 		else
-			print "[ERROR] dragged item from unknown list - removing from programmeplan at "+slot+":00 - FAILED"
+			TLogger.Log("onRemoveItemFromSlotList()", "Dragged item from unknown list - removing from programmeplan at "+slot+":00 - FAILED", LOG_WARNING)
 		endif
 
 		return TRUE
@@ -698,12 +707,12 @@ Type TScreenHandler_ProgrammePlanner
 			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
 				if item.lastList = GuiListAdvertisements
 					if not GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(item.broadcastMaterial)
-						print "[ERROR] dropped item from another day on active day - removal in other days adlist FAILED"
+						TLogger.Log("onDropProgrammePlanElementBack()", "Dropped item from another day on active day - removal in other days adlist FAILED", LOG_ERROR)
 						return False
 					Endif
 				ElseIf item.lastList = GuiListProgrammes
 					if not GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
-						print "[ERROR] dropped item from another day on active day - removal in other days programmelist FAILED"
+						TLogger.Log("onDropProgrammePlanElementBack()", "Dropped item from another day on active day - removal in other days programmelist FAILED", LOG_ERROR)
 						return False
 					Endif
 				Endif
@@ -740,12 +749,12 @@ Type TScreenHandler_ProgrammePlanner
 			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
 				if item.lastList = GuiListAdvertisements
 					if not GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(item.broadcastMaterial)
-						print "[ERROR] dropped item from another day on active day - removal in other days adlist FAILED"
+						TLogger.Log("onAddItemToSlotList()", "Dropped item from another day on active day - removal in other days adlist FAILED", LOG_ERROR)
 						return False
 					Endif
 				ElseIf item.lastList = GuiListProgrammes
 					if not GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
-						print "[ERROR] dropped item from another day on active day - removal in other days programmelist FAILED"
+						TLogger.Log("onAddItemToSlotList()", "Dropped item from another day on active day - removal in other days programmelist FAILED", LOG_ERROR)
 						return False
 					Endif
 				Endif
@@ -758,22 +767,22 @@ Type TScreenHandler_ProgrammePlanner
 			'remove it from there (was "silenced" during automatic mode)
 			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
 				if not GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
-					print "[ERROR] dropped item on programmelist - removal from other day FAILED"
+					TLogger.Log("onAddItemToSlotList()", "Dropped item on programmelist - removal from other day FAILED", LOG_ERROR)
 					return False
 				endif
 			Endif
 
 			if not GetPlayerProgrammePlan(currentRoom.owner).SetProgrammeSlot(item.broadcastMaterial, planningDay, slot)
-				print "[WARNING] dropped item on programmelist - adding to programmeplan at "+slot+":00 - FAILED"
+				TLogger.Log("onAddItemToSlotList()", "Dropped item on programmelist - adding to programmeplan at "+slot+":00 - FAILED", LOG_WARNING)
 				return FALSE
 			endif
 		elseif list = GuiListAdvertisements
 			if not GetPlayerProgrammePlan(currentRoom.owner).SetAdvertisementSlot(item.broadcastMaterial, planningDay, slot)
-				print "[WARNING] dropped item on adlist - adding to programmeplan at "+slot+":00 - FAILED"
+				TLogger.Log("onAddItemToSlotList()", "Dropped item on adlist - adding to programmeplan at "+slot+":00 - FAILED", LOG_ERROR)
 				return FALSE
 			endif
 		else
-			print "[ERROR] dropped item on unknown list - adding to programmeplan at "+slot+":00 - FAILED"
+			TLogger.Log("onAddItemToSlotList()", "Dropped item on unknown list - adding to programmeplan at "+slot+":00 - FAILED", LOG_ERROR)
 			return FALSE
 		endif
 

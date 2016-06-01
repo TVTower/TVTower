@@ -694,17 +694,17 @@ endrem
 
 			'nothing to remove
 			if not GetObject(slotType, programmedDay, programmedHour)
-				obj = GetObject(slotType, day, hour)
-				if not obj
+				'obj = GetObject(slotType, day, hour)
+				'if not obj
 					TLogger.Log("TPlayerProgrammePlan.RemoveObject", "Failed with programmedDay and programmedHour being invalid.", LOG_ERROR)
 					return Null
-				endif
-				programmedDay = obj.programmedDay
-				programmedHour = obj.programmedHour
-				TLogger.Log("TPlayerProgrammePlan.RemoveObject", "Using alternative GetObject.", LOG_DEBUG)
-				?debug
-				DebugStop
-				?
+				'endif
+				'programmedDay = obj.programmedDay
+				'programmedHour = obj.programmedHour
+				'TLogger.Log("TPlayerProgrammePlan.RemoveObject", "Using alternative GetObject.", LOG_DEBUG)
+				'?debug
+				'DebugStop
+				'?
 			endif
 
 			If checkModifyableSlot
@@ -752,10 +752,6 @@ endrem
 	'Removes all not-yet-run instances of the given programme from the
 	'plan's list.
 	'If removeCurrentRunning is true, also the current block can be affected
-
-'	Method RemoveObjectInstances:Int(obj:TBroadcastMaterial, slotType:Int=0, currentHour:Int=-1, removeCurrentRunning:Int=False)
-'		If currentHour = -1 Then currentHour = GetWorldTime().GetDay() * 24 + GetWorldTime().GetDayHour()
-'print currentHour
 	Method RemoveObjectInstances:Int(obj:TBroadcastMaterial, slotType:Int=0, time:Long=-1, removeCurrentRunning:Int=False)
 		If time = -1 Then time = GetWorldTime().GetTimeGone()
 		local currentHour:int = GetWorldTime().GetHour(time)
@@ -922,22 +918,21 @@ endrem
 	
 
 	'clear a slot so others can get placed without trouble
-	Method _RemoveProgramme:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1, forceRemove:int=False) 
+	Method _RemoveProgramme:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1, forceRemove:int=False)
+		'if no obj was provided, use the day/time to fetch an object
 		If Not obj Then obj = GetObject(TVTBroadcastMaterialType.PROGRAMME, day, hour)
+		if not obj then return False
 		'if alread not set for that time, just return success
 		If Not obj.isProgrammed() Then Return True
 
-		If obj
-			'print "RON: PLAN.RemoveProgramme       owner="+owner+" day="+day+" hour="+hour + " obj :"+obj.GetTitle()
+		'print "RON: PLAN.RemoveProgramme       owner="+owner+" day="+day+" hour="+hour + " obj :"+obj.GetTitle()
 
-			'backup programmed date
-			Local programmedDay:Int = obj.programmedDay
-			Local programmedHour:Int = obj.programmedHour
+		'backup programmed date
+		Local programmedDay:Int = obj.programmedDay
+		Local programmedHour:Int = obj.programmedHour
 
-			'try to remove the object from the array
-			Return (Null <> RemoveObject(obj, TVTBroadcastMaterialType.PROGRAMME, day, hour, not forceRemove))
-		EndIf
-		Return False
+		'try to remove the object from the array
+		Return (Null <> RemoveObject(obj, TVTBroadcastMaterialType.PROGRAMME, day, hour, not forceRemove))
 	End Method
 
 
