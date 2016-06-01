@@ -120,7 +120,7 @@ Include "game.escapemenu.bmx"
 
 '===== Globals =====
 Global VersionDate:String = LoadText("incbin::source/version.txt").Trim()
-Global VersionString:String = "v0.3.2 Build ~q" + VersionDate+"~q"
+Global VersionString:String = "v0.3.3-Dev Build ~q" + VersionDate+"~q"
 Global CopyrightString:String = "by Ronny Otto & Team"
 Global APP_NAME:string = "TVTower"
 Global LOG_NAME:string = "log.profiler.txt"
@@ -4609,14 +4609,14 @@ Function DrawMenuBackground(darkened:Int=False)
 
 	If GetGame().gamestate = TGame.STATE_MAINMENU
 		SetColor 255,255,255
-		GetBitmapFont("Default",13, BOLDFONT).DrawBlock("Wir brauchen Deine Hilfe!", 10,490, 300,20, Null,TColor.Create(75,75,140))
-		GetBitmapFont("Default",12).DrawBlock("Beteilige Dich an Diskussionen rund um alle Spielelemente in TVTower.", 10,510, 300,30, Null,TColor.Create(75,75,140))
-		GetBitmapFont("Default",12, BOLDFONT).drawBlock("http://www.gamezworld.de/phpforum", 10,537, 500,20, Null,TColor.Create(75,75,180))
+		GetBitmapFont("Default",13, BOLDFONT).DrawBlock("Wir brauchen Deine Hilfe!", 10,460, 300,20, Null,TColor.Create(75,75,140))
+		GetBitmapFont("Default",12).DrawBlock("Beteilige Dich an Diskussionen rund um alle Spielelemente in TVTower.", 10,480, 300,30, Null,TColor.Create(75,75,140))
+		GetBitmapFont("Default",12, BOLDFONT).drawBlock("www.gamezworld.de/phpforum", 10,507, 500,20, Null,TColor.Create(75,75,180))
 		SetAlpha 0.5 * GetAlpha()
-		GetBitmapFont("Default",11).drawBlock("(Keine Anmeldung notwendig)", 10,551, 500,20, Null,TColor.Create(75,75,180))
+		GetBitmapFont("Default",11).drawBlock("(Keine Anmeldung notwendig)", 10,521, 500,20, Null,TColor.Create(60,60,150))
 		SetAlpha 2.0 * GetAlpha()
-		GetBitmapFont("Default",11, ITALICFONT).drawBlock(versionstring, 10,575, 500,20, Null,TColor.Create(75,75,140))
-		GetBitmapFont("Default",11, ITALICFONT).drawBlock(copyrightstring, 10,585, 500,20, Null,TColor.Create(60,60,120))
+		GetBitmapFont("Default",12, ITALICFONT).drawBlock(versionstring, 10,565, 500,20, Null,TColor.Create(75,75,140))
+		GetBitmapFont("Default",12, ITALICFONT).drawBlock(copyrightstring+", www.TVTower.org", 10,580, 500,20, Null,TColor.Create(60,60,120))
 	EndIf
 
 	If darkened
