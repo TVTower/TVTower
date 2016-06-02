@@ -3,4 +3,4 @@ REM Start TVTower in "OpenGL" mode, and log console output to log.console.txt
 REM Starte TVTower im "OpenGL"-Modus und speichere Konsolenausgaben in log.console.txt
 
 Echo starting TVTower in mode "OpenGL" ...
-TVTower.exe -opengl > log.console.txt
+TVTower_Win32.exe -opengl > log.console.txt

@@ -24,5 +24,37 @@
 	end
 @end
 
+@define doCopyBinaries
+	local inFile = %exepath% .. "/" .. %outfile%
+	local outFile = %exepath% .. "/TVTower"
+
+	if bmk.Platform() == "linux" and bmk.IsDebugBuild() == 0 then
+		if bmk.CPU() == "x86" then
+			outFile = outFile .. "_Linux32"
+		elseif bmk.CPU() == "x64" then
+			outFile = outFile .. "_Linux64"
+		end
+		bmk.Sys("cp " .. bmk.Quote(inFile) .. " " .. bmk.Quote(outFile))
+	elseif bmk.Platform() == "win32" and bmk.IsDebugBuild() == 0 then
+		#My MicroXP only accepts backslashes for the copy command
+		# ":" to make a replace without "pattern"
+		inFile = inFile:gsub("/", "\\")
+		outFile = outFile:gsub("/", "\\")
+
+		inFile = inFile .. ".exe"
+
+		if bmk.CPU() == "x86" then
+			outFile = outFile .. "_Win32.exe"
+		elseif bmk.CPU() == "x64" then
+			outFile = outFile .. "_Win32.exe"
+		else
+			outFile = outFile .. "_Win.exe"
+		end
+		bmk.Sys("copy /Y " .. bmk.Quote(inFile) .. " " .. bmk.Quote(outFile))
+	end
+@end
+
 # run the post install
 doPostInstall
+# copy files accordingly
+doCopyBinaries

@@ -1,5 +1,9 @@
 /TVTower
 /TVTower.debug
+/TVTower_noPulseAudio
+/TVTower_Linux32
+/TVTower_Linux64
+/TVTower_Linux32_noPulseAudio
 *.exe
 *.bak
 *.app
@@ -12,5 +16,4 @@ TVTower.blpo
 /anleitung.txt
 screenshot*.png
 screenshot*.jpg
-/TVTower_noPulseAudio
 .DS_Store

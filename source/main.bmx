@@ -2234,8 +2234,9 @@ Type TScreen_GameSettings Extends TGameScreen
 		'left/right arrows to change figure base
 		For Local i:Int = 0 To 7
 			If sender = guiFigureArrows[i]
-				If i Mod 2  = 0 Then GetPlayerCollection().Get(1+Ceil(i/2)).UpdateFigureBase(GetPlayerCollection().Get(Ceil(1+i/2)).figurebase -1)
-				If i Mod 2 <> 0 Then GetPlayerCollection().Get(1+Ceil(i/2)).UpdateFigureBase(GetPlayerCollection().Get(Ceil(1+i/2)).figurebase +1)
+				local playerID:int = 1+int(Ceil(i/2))
+				If i Mod 2  = 0 Then GetPlayerBase(playerID).UpdateFigureBase(GetPlayerBase(playerID).figurebase -1)
+				If i Mod 2 <> 0 Then GetPlayerBase(playerID).UpdateFigureBase(GetPlayerBase(playerID).figurebase +1)
 				modifiedPlayers = True
 			EndIf
 		Next
