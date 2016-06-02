@@ -6,28 +6,24 @@ Import "base.util.logger.bmx"
 Import "base.util.vector.bmx"
 
 'the needed module files are located in "external/maxmod2_lite.mod.zip"
-?Not bmxng
 Import MaxMod2.ogg
-
 Import MaxMod2.rtaudio
 'Import MaxMod2.rtaudionopulse
 Import MaxMod2.WAV
-?bmxng
-Import brl.audio
-?
+'MaxModVerbose True
 
 'type to store music files (ogg) in it
-'data is stored in bank
+'(no longer) data is stored in bank
 'Play-Method is adopted from maxmod2.bmx-Function "play"
 Type TDigAudioStream
-	Field bank:TBank
+	'Field bank:TBank
 	Field loop:Int
 	Field url:String
 
 
 	Function Create:TDigAudioStream(url:Object, loop:Int=False)
 		Local obj:TDigAudioStream = New TDigAudioStream
-		obj.bank = LoadBank(url)
+		'obj.bank = LoadBank(url)
 		obj.loop = loop
 		obj.url = "unknown"
 		If String(url) Then obj.url=String(url)
@@ -37,7 +33,7 @@ Type TDigAudioStream
 
 	Method Clone:TDigAudioStream(deepClone:Int = False)
 		Local c:TDigAudioStream = New TDigAudioStream
-		c.bank = Self.bank
+		'c.bank = Self.bank
 		c.loop = Self.loop
 		c.url = Self.url
 		Return c
@@ -45,18 +41,30 @@ Type TDigAudioStream
 
 
 	Method isValid:Int()
-		If Not Self.bank Then Return False
-		Return True
+		if url
+			return FileType(url) <> 1
+		else
+			return False
+		endif
+
+		'If Not Self.bank Then Return False
+		'Return True
 	End Method
 
 
 	Method GetChannel:TChannel(volume:Float)
-?bmxng
-		Local channel:TChannel = New TChannel()
-?Not bmxng
-		Local channel:TChannel = CueMusic(Self.bank, loop)
+		if not url then Throw "no url to play"
+		'if not bank then Throw "empty bank"
+		'Local channel:TChannel = CueMusic(Self.bank, loop)
+		'if not channel
+		'	channel = CueMusic(self.url, loop)
+			local channel:TChannel = CueMusic(self.url, loop)
+			if not channel
+				throw "TDigAudioStream.GetChannel() failed to CueMusic"
+			endif
+		'endif
 		channel.SetVolume(volume)
-?
+
 		Return channel
 	End Method
 End Type
@@ -64,7 +72,7 @@ End Type
 
 Type TDigAudioStreamOgg Extends TDigAudioStream
 	Method CreateWithFile:TDigAudioStreamOgg(url:Object, loop:Int = False, useMemoryStream:Int = False)
-		Self.bank = LoadBank(url)
+		'Self.bank = LoadBank(url)
 		Self.loop = loop
 		Self.url = "unknown"
 		If String(url) Then Self.url=String(url)
@@ -74,7 +82,7 @@ Type TDigAudioStreamOgg Extends TDigAudioStream
 
 	Method Clone:TDigAudioStreamOgg(deepClone:Int = False)
 		Local c:TDigAudioStreamOgg = New TDigAudioStreamOgg
-		c.bank = Self.bank
+		'c.bank = Self.bank
 		c.loop = Self.loop
 		c.url = Self.url
 		Return c
@@ -179,9 +187,8 @@ Type TSoundManager
 
 
 	Function InitSpecificAudioEngine:Int(engine:String)
-?Not bmxng
 		TMaxModRtAudioDriver.Init(engine)
-?
+
 		'
 		If Not SetAudioDriver("MaxMod RtAudio")
 			If engine = audioEngine
@@ -191,6 +198,7 @@ Type TSoundManager
 			EndIf
 			Return False
 		Else
+			SetAudioStreamDriver("MaxMod RtAudio")
 			Return True
 		EndIf
 	End Function
@@ -198,9 +206,8 @@ Type TSoundManager
 
 	Function InitAudioEngine:Int()
 		'reenable rtAudio-messages
-?Not bmxng
 		TMaxModRtAudioDriver.showWarnings(False)
-?
+
 		Local engines:String[] = [audioEngine]
 		'add automatic-engine if manual setup is not already set to it
 		If audioEngine <> "AUTOMATIC" Then engines :+ ["AUTOMATIC"]
@@ -239,9 +246,8 @@ Type TSoundManager
 		EndIf
 
 		'reenable rtAudio-messages
-?Not bmxng
 		TMaxModRtAudioDriver.showWarnings(True)
-?
+
 		TLogger.Log("SoundManager.SetAudioEngine()", "initialized with engine ~q"+foundWorkingEngine+"~q.", LOG_DEBUG)
 		Return True
 	End Function
@@ -482,7 +488,7 @@ Type TSoundManager
 	Method FadeOverToNextTitle:Int()
 		If Not audioEngineEnabled Then Return False
 
-		If (fadeProcess = 0) Then
+		If (fadeProcess = 0) and nextMusicTitleStream Then
 			fadeProcess = 1
 			inactiveMusicChannel = nextMusicTitleStream.GetChannel(0)
 			ResumeChannel(inactiveMusicChannel)

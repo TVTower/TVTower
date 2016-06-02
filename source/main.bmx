@@ -546,8 +546,13 @@ Type TApp
 					If KEYMANAGER.IsDown(KEY_DOWN) Then GetWorldTime().AdjustTimeFactor(-5)
 
 					If KEYMANAGER.IsDown(KEY_RIGHT)
-						TEntity.globalWorldSpeedFactor :+ 0.05
-						GetWorldTime().AdjustTimeFactor(+5)
+						if not KEYMANAGER.IsDown(KEY_LCONTROL)
+							TEntity.globalWorldSpeedFactor :+ 0.05
+							GetWorldTime().AdjustTimeFactor(+5)
+						else
+							'play next song
+							GetSoundManager().FadeOverToNextTitle()
+						endif
 					EndIf
 					If KEYMANAGER.IsDown(KEY_LEFT) Then
 						TEntity.globalWorldSpeedFactor = Max( TEntity.globalWorldSpeedFactor - 0.05, 0)
