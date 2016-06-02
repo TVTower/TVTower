@@ -809,6 +809,17 @@ endrem
 		If Not obj Then Return 0
 		FixDayHour(day, hour)
 
+
+		'check live-programme
+		if slotType = TVTBroadcastMaterialType.PROGRAMME and TProgramme(obj)
+			local p:TProgramme = TProgramme(obj)
+			if p.data.IsLive()
+				'hour or day incorrect
+				if GetWorldTime().GetDayHour( p.data.liveTime ) <> hour then return False 
+				if GetWorldTime().GetDay( p.data.liveTime ) <> day then return False
+			endif
+		endif
+
 	
 		'check all slots the obj will occupy...
 		For Local i:Int = 0 To obj.GetBlocks() - 1
@@ -1064,15 +1075,10 @@ endrem
 		If Not obj Then Return (Null<>RemoveObject(Null, TVTBroadcastMaterialType.PROGRAMME, day, hour))
 '		if not obj then return FALSE
 
-		'for live programme, check if day/hour is valid
-		if TProgramme(obj)
-			local p:TProgramme = TProgramme(obj)
-			if p.data.IsLive()
-				'hour or day incorrect
-				if GetWorldTime().GetDayHour( p.data.liveTime ) <> hour then return False 
-				if GetWorldTime().GetDay( p.data.liveTime ) <> day then return False
-			endif
-		endif
+		'check if we are allowed to place it there
+		'(eg. live-programme)
+		if not ProgrammePlaceable(obj, day, hour) then return False
+		
 
 		Return AddObject(obj, TVTBroadcastMaterialType.PROGRAMME, day, hour)
 	End Method

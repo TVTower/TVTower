@@ -179,9 +179,9 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 		else
 			SetAlpha oldCol.a * 0.9
 		endif
-		if licence.HasDataFlag(TVTProgrammeDataFlag.PAID) then GetSpriteFromRegistry("gfx_movie_flag_paid").Draw(GetScreenX(), GetScreenY() + GetScreenHeight() - 3, ALIGN_BOTTOM)
-		if licence.HasDataFlag(TVTProgrammeDataFlag.XRATED) then GetSpriteFromRegistry("gfx_movie_flag_xrated").Draw(GetScreenX(), GetScreenY() + GetScreenHeight()  - 36, ALIGN_BOTTOM)
-		if licence.HasDataFlag(TVTProgrammeDataFlag.LIVE) then GetSpriteFromRegistry("gfx_movie_flag_live").Draw(GetScreenX(), GetScreenY() + GetScreenHeight()  - 7, ALIGN_BOTTOM)
+		if licence.HasDataFlag(TVTProgrammeDataFlag.PAID) then GetSpriteFromRegistry("gfx_movie_flag_paid").Draw(GetScreenX(), GetScreenY() + GetScreenHeight() - 3, -1, ALIGN_LEFT_BOTTOM)
+		if licence.HasDataFlag(TVTProgrammeDataFlag.XRATED) then GetSpriteFromRegistry("gfx_movie_flag_xrated").Draw(GetScreenX(), GetScreenY() + GetScreenHeight()  - 36, -1, ALIGN_LEFT_BOTTOM)
+		if licence.HasDataFlag(TVTProgrammeDataFlag.LIVE) then GetSpriteFromRegistry("gfx_movie_flag_live").Draw(GetScreenX(), GetScreenY() + GetScreenHeight()  - 7, -1, ALIGN_LEFT_BOTTOM)
 
 		SetAlpha oldCol.a
 	End Method

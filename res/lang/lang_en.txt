@@ -354,8 +354,9 @@ PROGRAMME_PRODUCT_INFOMERCIAL = Infomercial
 PROGRAMME_PRODUCT_EVENT = Event
 PROGRAMME_PRODUCT_MISC = Misc
 
-MOVIE_CALLINSHOW		= You earn %PROFIT% per 1.000 viewers.
-MOVIE_TRAILER			= Airing a trailer may increase interest in upcoming broadcastings of the promoted programme.
+MOVIE_LIVESHOW= Live programme
+MOVIE_CALLINSHOW = You earn %PROFIT% per 1.000 viewers.
+MOVIE_TRAILER = Airing a trailer may increase interest in upcoming broadcastings of the promoted programme.
 
 AUCTION_MAKE_BID = Bid
 AUCTION_WITHOUT_BID = Without bid
@@ -549,6 +550,7 @@ TOMORROW = Tomorrow
 TODAY = Today
 YESTERDAY = Yesterday
 TWO_DAYS_AGO = Two days ago
+IN_X_DAYS = In %DAYS% days
 
 INFOMERCIAL = Infomercial
 SPECIAL_NEWS_BROADCAST = Special news

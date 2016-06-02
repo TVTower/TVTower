@@ -15,6 +15,7 @@
 				<child name="gfx_datasheet_msg_good"           x="0"    y="43"   w="40"  h="28"  ninepatch="true" />
 				<child name="gfx_datasheet_msg_neutral"        x="40"   y="43"   w="40"  h="28"  ninepatch="true" />
 				<child name="gfx_datasheet_msg_warning"        x="80"   y="43"   w="40"  h="28"  ninepatch="true" />
+				<child name="gfx_datasheet_msg_bad"            x="80"   y="43"   w="40"  h="28"  ninepatch="true" />
 				<child name="gfx_datasheet_box_good"           x="120"  y="43"   w="40"  h="28"  ninepatch="true" />
 				<child name="gfx_datasheet_box_neutral"        x="160"  y="43"   w="40"  h="28"  ninepatch="true" />
 				<child name="gfx_datasheet_box_bad"            x="200"  y="43"   w="40"  h="28"  ninepatch="true" />

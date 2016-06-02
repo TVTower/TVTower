@@ -38,12 +38,17 @@ new TRegistryFigureGeneratorPartLoader.Init()
 registryLoader.LoadFromXML("config/figuregenerator.xml", True)
 
 global figImage:TImage 
+global figImage2:TImage
+global fig:TFigureGeneratorFigure
 Function Update:Int()
 	MouseManager.Update()
 	KeyManager.Update()
 
 	if KeyManager.IsHit(KEY_SPACE)
-		figImage = figureGenerator.GenerateFigure(0, 1, 2).GenerateImage()
+'		fig = figureGenerator.GenerateFigureFromCode("2:2:2:#EDA657:-1:-1:1:-1:7#C808A8:6:2:-1:3:3:7:13#581410:-1:-1")
+		fig = figureGenerator.GenerateFigure(0, 0, 2)
+		figImage = fig.GenerateImage()
+		print fig.GetFigureCode()
 
 		'generate new
 		for local i:int = 0 until 64
@@ -68,6 +73,8 @@ Function Render:int()
 	Next
 	DrawRect(500,300, 40,40)
 	if figImage then DrawImage(figImage, 500,300)
+	DrawRect(500,350, 40,40)
+	if figImage2 then DrawImage(figImage2, 500,350)
 
 	DrawText("Tasten:", 50,525)
 	DrawText("Leertaste: Neues Gesicht", 50,570)

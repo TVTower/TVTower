@@ -865,7 +865,7 @@ endrem
 		if highlightVendor or highlightSuitcase
 			local oldCol:TColor = new TColor.Get()
 			SetBlend LightBlend
-			SetAlpha oldCol.a * (0.4 + 0.2 * sin(Time.GetAppTimeGone() / 5))
+			SetAlpha oldCol.a * Float(0.4 + 0.2 * sin(Time.GetAppTimeGone() / 5))
 
 			if VendorEntity and highlightVendor then VendorEntity.Render()
 			if highlightSuitcase then GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())

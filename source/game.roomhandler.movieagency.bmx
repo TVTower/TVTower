@@ -816,7 +816,7 @@ endrem
 		if highlightAuction or highlightVendor or highlightSuitcase
 			local oldCol:TColor = new TColor.Get()
 			SetBlend LightBlend
-			SetAlpha oldCol.a * (0.4 + 0.2 * sin(Time.GetAppTimeGone() / 5))
+			SetAlpha oldCol.a * Float(0.4 + 0.2 * sin(Time.GetAppTimeGone() / 5))
 
 			if AuctionEntity and highlightAuction then AuctionEntity.Render()
 			if VendorEntity and highlightVendor then VendorEntity.Render()
@@ -856,7 +856,7 @@ endrem
 		'show a auction-tooltip (but not if we dragged a block)
 		if not hoveredGuiProgrammeLicence
 			if not MouseManager.IsLongClicked(1)
-				If THelper.IsIn(MouseManager.x, MouseManager.y, 210,220,140,60)
+				If THelper.MouseIn(210,220,140,60)
 					If not AuctionToolTip Then AuctionToolTip = TTooltip.Create(GetLocale("AUCTION"), GetLocale("MOVIES_AND_SERIES_AUCTION"), 200, 180, 0, 0)
 					AuctionToolTip.enabled = 1
 					AuctionToolTip.Hover()
@@ -952,7 +952,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 
 	Method Create:TAuctionProgrammeBlocks(slot:Int=0, licence:TProgrammeLicence)
-		Self.area.position.SetXY(140 + (slot Mod 2) * 260, 80 + Ceil(slot / 2) * 60)
+		Self.area.position.SetXY(140 + (slot Mod 2) * 260, 80 + int(Ceil(slot / 2)) * 60)
 		Self.area.dimension.CopyFrom(GetSpriteFromRegistry("gfx_auctionmovie").area.dimension)
 		Self.slot = slot
 		Self.Refill(licence)

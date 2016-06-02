@@ -1029,11 +1029,11 @@ Type TScreenHandler_ProgrammePlanner
 			local programme:TProgramme = TProgramme(draggedGuiProgrammePlanElement.broadcastMaterial)
 
 			if programme
-				'if KEYMANAGER.IsHit(KEY_SPACE)
-				'	'set live time to 22:00
-				'	programme.data.liveTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(), 22, 0,0)
-				'	programme.data.SetFlag(TVTProgrammeDataFlag.LIVE, True)
-				'endif
+				if KEYMANAGER.IsHit(KEY_SPACE)
+					'set live time to 22:00
+					programme.data.liveTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(), 22, 0,0)
+					programme.data.SetFlag(TVTProgrammeDataFlag.LIVE, True)
+				endif
 
 				if programme.data.IsLive()
 					local liveHours:int[]

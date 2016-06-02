@@ -991,6 +991,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		
 		Local showMsgPlannedWarning:Int = False
 		Local showMsgEarnInfo:Int = False
+		Local showMsgLiveInfo:Int = False
 		
 		'only if planned and in archive
 		'if useOwner > 0 and GetPlayer().figure.inRoom
@@ -999,6 +1000,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		'if licence is for a specific programme it might contain a flag...
 		'TODO: do this for "all" via licence.HasFlag() doing recursive checks?
 		If data.HasFlag(TVTProgrammeDataFlag.PAID) then showMsgEarnInfo = True
+		If data.IsLive() then showMsgLiveInfo = True
 
 
 		'=== CALCULATE SPECIAL AREA HEIGHTS ===
@@ -1018,6 +1020,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		'message area
 		If showMsgEarnInfo then msgAreaH :+ msgH
 		If showMsgPlannedWarning then msgAreaH :+ msgH
+		If showMsgLiveInfo then msgAreaH :+ msgH
 		'if there are messages, add padding of messages
 		if msgAreaH > 0 then msgAreaH :+ 2* msgAreaPaddingY
 
@@ -1092,78 +1095,6 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 		'=== CAST AREA ===
 		skin.RenderContent(contentX, contentY, contentW, castH, "2")
-rem
-		local addCastTitle:string  = "", addCast:string = ""
-		if data.GetActorsString() <> ""
-			addCastTitle = GetLocale("JOB_ACTORS")
-			addCast = data.GetActorsString()
-
-		elseif data.GetCastGroupString(TVTProgrammePersonJob.SUPPORTINGACTOR) <> ""
-			addCastTitle = GetLocale("JOB_SUPPORTINGACTORS")
-			addCast = data.GetCastGroupString(TVTProgrammePersonJob.SUPPORTINGACTOR)
-
-		elseif data.GetCastGroupString(TVTProgrammePersonJob.REPORTER) <> ""
-			addCastTitle = GetLocale("JOB_REPORTERS")
-			addCast = data.GetCastGroupString(TVTProgrammePersonJob.REPORTER)
-
-		elseif data.GetCastGroupString(TVTProgrammePersonJob.GUEST) <> ""
-			addCastTitle = GetLocale("JOB_GUESTS")
-			addCast = data.GetCastGroupString(TVTProgrammePersonJob.GUEST)
-
-		elseif data.GetCastGroupString(TVTProgrammePersonJob.HOST) <> ""
-			addCastTitle = GetLocale("JOB_HOST")
-			addCast = data.GetCastGroupString(TVTProgrammePersonJob.HOST)
-
-		elseif data.GetCastGroupString(TVTProgrammePersonJob.SCRIPTWRITER) <> ""
-			addCastTitle = GetLocale("JOB_SCRIPT")
-			addCast = data.GetCastGroupString(TVTProgrammePersonJob.SCRIPTWRITER)
-
-		elseif data.GetCastGroupString(TVTProgrammePersonJob.MUSICIAN) <> ""
-			addCastTitle = GetLocale("JOB_MUSIC")
-			addCast = data.GetCastGroupString(TVTProgrammePersonJob.MUSICIAN)
-		endif
-
-		'max width of director/actors - to align their content properly
-		local currTextWidth:int = Int(skin.fontSemiBold.getWidth(GetLocale("JOB_DIRECTOR")+":"))
-		if addCastTitle
-			currTextWidth = Max(currTextWidth, Int(skin.fontSemiBold.getWidth(addCastTitle+":")))
-		endif
-
-		'render director + cast (offset by 3 px)
-		contentY :+ 3
-		'director
-		local directorH:int = 0
-		if data.GetDirectorsString() <> ""
-			directorH = 15
-			skin.fontSemiBold.drawBlock(GetLocale("JOB_DIRECTOR")+":", contentX + 5, contentY, contentW - 10, directorH, null, skin.textColorNeutral)
-			skin.fontNormal.drawBlock(data.GetDirectorsString(), contentX + 5 + currTextWidth + 5, contentY , contentW  - 10 - currTextWidth - 5, directorH, null, skin.textColorNeutral)
-			contentY :+ directorH
-		endif
-
-		'actors or other additional cast members
-		if addCast <> ""
-			skin.fontSemiBold.drawBlock(addCastTitle+":", contentX + 5, contentY, contentW - 10, (castH- directorH), null, skin.textColorNeutral)
-			'add 2 px to height to allow a slight oversized cast block
-			skin.fontNormal.drawBlock(addCast, contentX + 5 + currTextWidth + 5, contentY, contentW - 10 - currTextWidth - 5, (castH - directorH), null, skin.textColorNeutral)
-		endif
-		'move to next content (pay attention to 3px offset)
-		contentY :+ (castH - directorH - 3)
-
-		if cast <> ""
-			contentY :+ 3
-
-			'max width of cast word - to align their content properly
-			local captionWidth:int = skin.fontSemiBold.getWidth(GetLocale("MOVIE_CAST")+":")
-			skin.fontSemiBold.drawBlock(GetLocale("MOVIE_CAST")+":", contentX + 5, contentY, contentW, castH, null, skin.textColorNeutral)
-			skin.fontNormal.drawBlock(cast, contentX + 5 + captionWidth + 5, contentY , contentW  - 10 - captionWidth - 5, castH, null, skin.textColorNeutral)
-
-			contentY:+ castH - 3
-		else
-			contentY:+ castH
-		endif
-endrem
-
-
 		'cast
 		local cast:string = ""
 
@@ -1235,6 +1166,22 @@ endrem
 		'=== MESSAGES ===
 		'if there is a message then add padding to the begin
 		if msgAreaH > 0 then contentY :+ msgAreaPaddingY
+
+		If showMsgLiveInfo
+			local time:string = ""
+			if GetWorldTime().GetDay( data.liveTime ) = GetWorldTime().GetDay()
+				time = GetLocale("TODAY")
+			elseif GetWorldTime().GetDay( data.liveTime ) = GetWorldTime().GetDay() + 1 
+				time = GetLocale("TOMORROW")
+			else
+				time = GetLocale("IN_X_DAYS").Replace("%DAYS%", GetWorldTime().GetDaysRun( data.liveTime ) - GetWorldTime().GetDaysRun())
+			endif
+			'programme start time
+			time :+ ", "+ GetWorldTime().GetDayHour( data.liveTime )+":05"
+			
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_LIVESHOW")+": "+time, "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			contentY :+ msgH
+		EndIf
 
 		If showMsgEarnInfo
 			'convert back cents to euros and round it

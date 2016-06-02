@@ -348,8 +348,7 @@ PROGRAMME_PRODUCT_INFOMERCIAL = Dauerwerbesendung
 PROGRAMME_PRODUCT_EVENT = Event
 PROGRAMME_PRODUCT_MISC = Diverses
 
-
-
+MOVIE_LIVESHOW= Live-Ausstrahlung
 MOVIE_CALLINSHOW= Du verdienst %PROFIT% je 1.000 Zuschauer.
 MOVIE_TRAILER= Das Ausstrahlen einer Programmvorschau kann das Interesse an folgenden Ausstrahlungen des beworbenen Programmes erhöhen.
 
@@ -551,6 +550,7 @@ TOMORROW = Morgen
 TODAY = Heute
 YESTERDAY = Gestern
 TWO_DAYS_AGO = Vorgestern
+IN_X_DAYS = In %DAYS% Tagen
 
 INFOMERCIAL = Dauerwerbesendung
 SPECIAL_NEWS_BROADCAST = Nachrichtenspezial

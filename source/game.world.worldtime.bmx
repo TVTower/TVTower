@@ -477,6 +477,7 @@ Type TWorldTime {_exposeToLua="selected"}
 		Local strYear:String = GetYear(time)
 		Local strMonth:String = GetMonth(time)
 		Local strDay:String = GetDayOfMonth(time)
+		Local strGameDay:String = GetDaysRun(time)
 		
 		If Int(strMonth) < 10 Then strMonth = "0"+strMonth
 		If Int(strDay) < 10 Then strDay = "0"+strDay

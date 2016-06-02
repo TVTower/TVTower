@@ -1092,7 +1092,7 @@ endrem
 				spriteName = "gfx_gui_button.datasheet.positive"
 			endif
 
-			if THelper.IsIn(MouseManager.x,MouseManager.y, contentX + 5 + i*38, 342, 35, 27)
+			if THelper.MouseIn(contentX + 5 + i*38, 342, 35, 27)
 				spriteName :+ ".hover"
 			endif
 			GetSpriteFromRegistry(spriteName).DrawArea(contentX + 5 + i*38, 342, 35,27)
@@ -1141,14 +1141,14 @@ endrem
 			local skin:TDatasheetSkin = GetDatasheetSkin("default")
 			local boxWidth:int = 28 + 3 * 38
 			local boxHeight:int = 35 + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
-			if THelper.IsIn(MouseManager.x,MouseManager.y, 5, 335, boxWidth, boxHeight)
+			if THelper.MouseIn(5, 335, boxWidth, boxHeight)
 				ListSortVisible = True
 
 				if MouseManager.isClicked(1) and not MouseManager.IsLongClicked(1)
 					local contentX:int = 5 + skin.GetContentX()
 					local sortKeys:int[] = [0, 1, 2]
 					For local i:int = 0 to 2
-						If THelper.IsIn(MouseManager.x,MouseManager.y, contentX + i*38, 342, 35, 27)
+						If THelper.MouseIn(contentX + i*38, 342, 35, 27)
 							'sort now
 							if ListSortMode <> sortKeys[i]
 								ListSortMode = sortKeys[i]

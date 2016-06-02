@@ -75,7 +75,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 
 		'if possible, change the target to the clicked door
 		if mouseClicked
-			local sign:TRoomBoardSign = GetRoomBoard().GetSignByOriginalXY(MouseManager.x,MouseManager.y)
+			local sign:TRoomBoardSign = GetRoomBoard().GetSignByOriginalXY(MouseManager.GetPosition().GetIntX(),MouseManager.GetPosition().GetIntY())
 			if sign and sign.door
 				TFigure(GetPlayerBase().GetFigure()).SendToDoor(sign.door)
 			endif
