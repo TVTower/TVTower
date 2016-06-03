@@ -136,6 +136,11 @@ Type TProductionManager
 		if productionCount > 0
 			SortList(productionsToProduce, True, SortProductionsByStudioSlot)
 		endif
+		'debug
+		for local prod:TProduction = eachin productionsToProduce
+			print prod.productionConcept.GetTitle()+ "  ep:" + prod.productionConcept.script.GetEpisodeNumber()+"  slot:"+prod.productionConcept.studioSlot
+		Next
+	 	
 
 		'actually start the production
 		'- first hit production (with that script) is the one we should
@@ -163,12 +168,16 @@ Type TProductionManager
 	Function SortProductionsByStudioSlot:int(o1:object, o2:object)
 		local p1:TProduction = TProduction(o1)
 		local p2:TProduction = TProduction(o2)
-		if not p2 then return 1
-		if not p1 then return -1
+		if not p2 or not p2.productionConcept or not p2.productionConcept.script then return -1
+		if not p1 or not p1.productionConcept or not p1.productionConcept.script then return 1
 
-		if p1.productionConcept.studioSlot < p2.productionConcept.studioSlot then return 1
-		if p1.productionConcept.studioSlot > p2.productionConcept.studioSlot then return -1
-		return 0
+		'slots are equal
+		if p1.productionConcept.studioSlot = -1 and p2.productionConcept.studioSlot = -1
+			'sort by their position in the parent script / episode number
+			return p1.productionConcept.script.GetEpisodeNumber() - p2.productionConcept.script.GetEpisodeNumber()
+		else
+			return p1.productionConcept.studioSlot - p2.productionConcept.studioSlot
+		endif
 	End Function
 
 
