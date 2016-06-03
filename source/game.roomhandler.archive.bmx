@@ -393,7 +393,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		'open list when clicking dude
 		if not draggedGuiProgrammeLicence
 			If not programmeList.GetOpen()
-				if THelper.IsIn(MouseManager.x, MouseManager.y, 605,65,160,90) Or THelper.IsIn(MouseManager.x, MouseManager.y, 525,155,240,225)
+				if THelper.MouseIn(605,65,160,90) Or THelper.MouseIn(525,155,240,225)
 					'activate tooltip
 					If not openCollectionTooltip Then openCollectionTooltip = TTooltip.Create(GetLocale("PROGRAMMELICENCES"), GetLocale("SELECT_LICENCES_FOR_SALE"), 470, 130, 0, 0)
 					openCollectionTooltip.enabled = 1

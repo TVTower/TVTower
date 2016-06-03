@@ -275,7 +275,7 @@ Type TScreenHandler_Statistics
 
 			hoveredHour = GetWorldTime().GetDayHour()
 			For local i:Int = 0 To 23
-				if THelper.MouseIn(curveArea.GetX() + slot * slotWidth, curveArea.GetY(), slotWidth, curveArea.GetH())
+				if THelper.MouseIn(int(curveArea.GetX() + slot * slotWidth), int(curveArea.GetY()), int(slotWidth), int(curveArea.GetH()))
 					hoveredHour = i
 					'leave for loop
 					exit

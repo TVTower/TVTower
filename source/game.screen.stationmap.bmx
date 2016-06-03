@@ -371,7 +371,7 @@ Type TScreenHandler_StationMap
 		'1. searching
 		If stationMapMode = 1
 			'create a temporary station if not done yet
-			if not StationMapMouseoverStation then StationMapMouseoverStation = GetStationMapCollection().getMap(room.owner).getTemporaryStation( MouseManager.x, MouseManager.y )
+			if not StationMapMouseoverStation then StationMapMouseoverStation = GetStationMapCollection().getMap(room.owner).getTemporaryStation( MouseManager.GetPosition().GetIntX(), MouseManager.GetPosition().GetIntY() )
 			local mousePos:TVec2D = new TVec2D.Init( MouseManager.x, MouseManager.y)
 
 			'if the mouse has moved - refresh the station data and move station
@@ -386,7 +386,7 @@ Type TScreenHandler_StationMap
 			if MOUSEMANAGER.isClicked(1)
 				'check reach and valid federal state
 				if StationMapMouseoverStation.GetHoveredMapSection() and StationMapMouseoverStation.getReach()>0
-					StationMapSelectedStation = GetStationMapCollection().getMap(room.owner).getTemporaryStation( StationMapMouseoverStation.pos.x, StationMapMouseoverStation.pos.y )
+					StationMapSelectedStation = GetStationMapCollection().getMap(room.owner).getTemporaryStation( StationMapMouseoverStation.pos.GetIntX(), StationMapMouseoverStation.pos.GetIntY() )
 				endif
 			endif
 

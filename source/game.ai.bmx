@@ -528,7 +528,7 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 		'local percentage:TAudience = TBroadcast.GetPotentialAudiencePercentageForHour(hour).GetAvg()
 
 		'percentage of each group in the population
-		local population:TAudience = new TAudience.InitWithBreakdown(1.0)
+		local population:TAudience = new TAudience.InitWithBreakdown(1)
 		'GetPotentialAudienceModifier returns percentage watching now
 		population.Multiply(TBroadcast.GetPotentialAudienceModifier(time))
 

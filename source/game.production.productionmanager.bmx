@@ -30,7 +30,7 @@ Type TProductionManager
 			For local i:int = 0 until cnames.length
 				local c:TProductionCompany = new TProductionCompany
 				c.name = cnames[i]
-				c.SetExperience( BiasedRandRange(0, 0.35 * TProductionCompanyBase.MAX_XP, 0.25) )
+				c.SetExperience( BiasedRandRange(0, int(0.35 * TProductionCompanyBase.MAX_XP), 0.25) )
 				GetProductionCompanyBaseCollection().Add(c)
 			Next
 			createdEnvironment = true

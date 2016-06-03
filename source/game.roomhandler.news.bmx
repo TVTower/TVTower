@@ -240,7 +240,7 @@ Type RoomHandler_News extends TRoomHandler
 
 		'pinwall
 		if not MouseManager.IsLongClicked(1)
-			If THelper.IsIn(MouseManager.x, MouseManager.y, 167,60,240,160)
+			If THelper.MouseIn(167,60,240,160)
 				If not PlannerToolTip Then PlannerToolTip = TTooltip.Create("Newsplaner", GetLocale("MANAGE_BROADCASTED_NEWS"), 180, 100, 0, 0)
 				PlannerToolTip.enabled = 1
 				PlannerToolTip.Hover()

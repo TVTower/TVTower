@@ -242,7 +242,7 @@ print "SetPlayerBankrupt("+playerID+")"
 
 			if player.IsLocalAI()
 				'give the player a new figure
-				player.Figure = New TFigure.Create(figure.name, GetSpriteFromRegistry("Player"+playerID), 0, 0, figure.initialdx)
+				player.Figure = New TFigure.Create(figure.name, GetSpriteFromRegistry("Player"+playerID), 0, 0, int(figure.initialdx))
 				local colors:TPlayerColor[] = TPlayerColor.getUnowned(TPlayerColor.Create(255,255,255))
 				local newColor:TPlayerColor = colors[RandRange(0, colors.length-1)]
 				if newColor
@@ -484,7 +484,7 @@ print "--------------"
 		figure.area.position.x :+ playerID*3 + (playerID Mod 2)*15
 		'forcefully send (no controlling possible until reaching the target)
 		'GetPlayer(i).GetFigure().SendToDoor( TRoomDoor.GetByDetails("office", i), True)
-		figure.ForceChangeTarget(TRoomDoor.GetByDetails("news", playerID).area.GetX() + 60, TRoomDoor.GetByDetails("news", playerID).area.GetY())
+		figure.ForceChangeTarget(int(TRoomDoor.GetByDetails("news", playerID).area.GetX()) + 60, int(TRoomDoor.GetByDetails("news", playerID).area.GetY()))
 
 
 

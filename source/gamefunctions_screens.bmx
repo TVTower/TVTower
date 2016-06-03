@@ -358,7 +358,7 @@ Type TInGameScreen_World Extends TInGameScreen
 		If Not fig.IsInRoom()
 			If MOUSEMANAGER.isClicked(1) And Not GUIManager._ignoreMouse
 				If Not fig.isChangingRoom()
-					If THelper.IsIn(MouseManager.x, MouseManager.y, 0, 0, 800, 385)
+					If THelper.MouseIn(0, 0, 800, 385)
 						'convert mouse position to building-coordinates
 						Local x:Int = MouseManager.x - GetBuilding().buildingInner.GetScreenX()
 						Local y:Int = MouseManager.y - GetBuilding().buildingInner.GetScreenY()

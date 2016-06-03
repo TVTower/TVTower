@@ -154,7 +154,7 @@ Type RoomHandler_Office extends TRoomHandler
 		GetPlayer().GetFigure().fromroom = Null
 		If MOUSEMANAGER.IsClicked(1)
 			'emulated right click or clicked door
-			If MOUSEMANAGER.IsLongClicked(1) or THelper.IsIn(MouseManager.x,MouseManager.y,25,40,150,295)
+			If MOUSEMANAGER.IsLongClicked(1) or THelper.MouseIn(25,40,150,295)
 				GetPlayer().GetFigure().LeaveRoom()
 				MOUSEMANAGER.resetKey(1)
 			EndIf
@@ -183,7 +183,7 @@ Type RoomHandler_Office extends TRoomHandler
 				EndIf
 
 				'planner - reachable for all
-				If THelper.IsIn(MouseManager.x, MouseManager.y, 600,140,128,210)
+				If THelper.MouseIn(600,140,128,210)
 					If not PlannerToolTip Then PlannerToolTip = TTooltip.Create(GetLocale("ROOM_PROGRAMMEPLANNER"), GetLocale("AND_STATISTICS"), 580, 140)
 					PlannerToolTip.enabled = 1
 					PlannerToolTip.Hover()
@@ -195,7 +195,7 @@ Type RoomHandler_Office extends TRoomHandler
 					endif
 				EndIf
 
-				If THelper.IsIn(MouseManager.x, MouseManager.y, 732,45,160,170)
+				If THelper.MouseIn(732,45,160,170)
 					If not StationsToolTip Then StationsToolTip = TTooltip.Create(GetLocale("ROOM_STATIONMAP"), GetLocale("BUY_AND_SELL"), 650, 80, 0, 0)
 					StationsToolTip.enabled = 1
 					StationsToolTip.Hover()

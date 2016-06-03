@@ -528,7 +528,7 @@ Type TError
 		MouseManager.ResetLongClicked(1)
 		
 		If Mousemanager.IsClicked(1)
-			If THelper.MouseIn(pos.x,pos.y, sprite.area.GetW(), sprite.area.GetH())
+			If THelper.MouseIn(int(pos.x),int(pos.y), int(sprite.area.GetW()), int(sprite.area.GetH()))
 				link.Remove()
 				MouseManager.resetKey(1) 'clicked to remove error
 			EndIf

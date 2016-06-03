@@ -1055,7 +1055,7 @@ endrem
 		if highlightVendor or highlightSuitcase
 			local oldCol:TColor = new TColor.Get()
 			SetBlend LightBlend
-			SetAlpha oldCol.a * (0.4 + 0.2 * sin(Time.GetAppTimeGone() / 5))
+			SetAlpha oldCol.a * Float(0.4 + 0.2 * sin(Time.GetAppTimeGone() / 5))
 
 			if highlightVendor then	GetSpriteFromRegistry("gfx_screen_adagency_vendor").Draw(VendorArea.getScreenX(), VendorArea.getScreenY())
 			if highlightSuitcase then GetSpriteFromRegistry("gfx_suitcase_big").Draw(suitcasePos.GetX(), suitcasePos.GetY())

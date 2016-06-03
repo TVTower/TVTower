@@ -429,7 +429,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			If Not titleColor Then titleColor = TColor.Create(0,0,0)
 			If Not textColor Then textColor = TColor.Create(50,50,50)
 
-			textImageProgramme = TFunctions.CreateEmptyImage(textArea.GetW(), textArea.GetH())
+			textImageProgramme = TFunctions.CreateEmptyImage(int(textArea.GetW()), int(textArea.GetH()))
 			TBitmapFont.setRenderTarget(textImageProgramme)
 			TBitmapFont.pixmapOrigin.SetXY(-textArea.position.x, -textArea.position.y)
 
@@ -493,7 +493,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 		'create cache if needed
 		if not textImageAd
-			textImageAd = TFunctions.CreateEmptyImage(textArea.GetW(), textArea.GetH())
+			textImageAd = TFunctions.CreateEmptyImage(int(textArea.GetW()), int(textArea.GetH()))
 			TBitmapFont.setRenderTarget(textImageAd)
 			TBitmapFont.pixmapOrigin.SetXY(-textArea.position.x, -textArea.position.y)
 

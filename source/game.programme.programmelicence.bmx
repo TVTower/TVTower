@@ -949,7 +949,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		if useOwner = -1 then useOwner = owner
 		
 		'=== PREPARE VARIABLES ===
-		local sheetWidth:int = 310
+		local sheetWidth:int = 320 'geaendert von 310
 		local sheetHeight:int = 0 'calculated later
 		'move sheet to left when right-aligned
 		if align = 1 then x = x - sheetWidth
