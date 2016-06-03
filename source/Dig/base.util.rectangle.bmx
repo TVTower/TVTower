@@ -235,6 +235,23 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetIntX:int()
+		return position.GetIntX()
+	End Method
+
+	Method GetIntY:int()
+		return position.GetIntY()
+	End Method
+
+	Method GetIntW:int()
+		return dimension.GetIntX()
+	End Method
+
+	Method GetIntH:int()
+		return dimension.GetIntY()
+	End Method
+
+
 	'setter when using "sides" insteadsof coords
 	Method setTLBR:TRectangle(top:float, left:float, bottom:float, right:float)
 		position.setXY(top, left)

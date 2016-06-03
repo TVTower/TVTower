@@ -129,7 +129,7 @@ Type TDatasheetSkin
 
 
 
-	Method RenderBar(x:int, y:int, w:int, h:int=-1, progress:Float=0.5, secondProgress:Float=-1.0, barSkin:string="bar")
+	Method RenderBar(x:Float, y:Float, w:int, h:int=-1, progress:Float=0.5, secondProgress:Float=-1.0, barSkin:string="bar")
 		'drawing the filled bar "clipped" so potential gradients
 		'(like normal->danger: green->red) are working as intended
 		'-> instead of truncating the width/height of the area, we
@@ -162,23 +162,23 @@ Type TDatasheetSkin
 	End Method
 
 
-	Method GetContentX:int(x:int = 0)
-		return x + contentPadding.GetLeft()
+	Method GetContentX:int(x:Float = 0)
+		return int(x + contentPadding.GetLeft())
 	End Method
 
 	
-	Method GetContentY:int(y:int = 0)
-		return y + contentPadding.GetTop()
+	Method GetContentY:int(y:Float = 0)
+		return int(y + contentPadding.GetTop())
 	End Method
 
 
-	Method GetContentW:int(sheetWidth:int)
-		return sheetWidth - contentPadding.GetLeft() - contentPadding.GetRight()
+	Method GetContentW:int(sheetWidth:Float)
+		return int(sheetWidth - contentPadding.GetLeft() - contentPadding.GetRight())
 	End Method
 
 
-	Method GetContentH:int(sheetHeight:int)
-		return sheetHeight - contentPadding.GetTop() - contentPadding.GetBottom()
+	Method GetContentH:int(sheetHeight:Float)
+		return int(sheetHeight - contentPadding.GetTop() - contentPadding.GetBottom())
 	End Method
 	
 

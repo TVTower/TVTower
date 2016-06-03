@@ -930,7 +930,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		productionConceptTakeOver.Resize(contentW - 10)
 		contentY :+ contentH - (listH+titleH)
 
-		skin.RenderBorder(outer.GetX(), outer.GetY(), outer.GetW(), outer.GetH())
+		skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
 
 
 
@@ -996,7 +996,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			finishProductionConcept.Resize(contentW - 10, 38)
 			contentY :+ buttonAreaH
 
-			skin.RenderBorder(outer.GetX(), outer.GetY(), outer.GetW(), outer.GetH())
+			skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
 
 
 			'=== CAST / MESSAGE BOX ===
@@ -1058,7 +1058,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 				endif
 			endif
 
-			skin.RenderBorder(outer.GetX(), outer.GetY(), outer.GetW(), outer.GetH())
+			skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
 
 
 
@@ -1140,7 +1140,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 				endif
 				contentY :+ subTitleH
 			endif
-			skin.RenderBorder(outer.GetX(), outer.GetY(), outer.GetW(), outer.GetH())
+			skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
 
 			GuiManager.Draw("supermarket_customproduction_productionconceptbox")
 			GuiManager.Draw("supermarket_customproduction_newproduction")
@@ -1434,7 +1434,7 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 		skin.RenderContent(contentX, contentY, contentW, 38, "1_top")
 		skin.RenderContent(contentX, contentY+38, contentW, contentH-73, "1")
 		skin.RenderContent(contentX, contentY+contentH-35, contentW, 35, "1_bottom")
-		skin.RenderBorder(outer.GetX(), outer.GetY(), outer.GetW(), outer.GetH())
+		skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
 
 	End Method
 End Type
@@ -1567,7 +1567,7 @@ Type TGUIProductionEditTextsModalWindow extends TGUIProductionModalWindow
 
 		skin.RenderContent(contentX, contentY+contentH-35, contentW, 35, "1_bottom")
 
-		skin.RenderBorder(outer.GetX(), outer.GetY(), outer.GetW(), outer.GetH())
+		skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
 	End Method
 
 
@@ -2041,12 +2041,12 @@ Type TGUICastListItem Extends TGUISelectListItem
 	End Method
 
 
-	Method DrawDatasheet(leftX:Int=30, rightX:Int=30)
+	Method DrawDatasheet(leftX:Float=30, rightX:Float=30)
 		Local sheetY:Float 	= 20
-		Local sheetX:Float 	= leftX
+		Local sheetX:Float 	= int(leftX)
 		Local sheetAlign:Int= 0
 		If MouseManager.x < GetGraphicsManager().GetWidth()/2
-			sheetX = GetGraphicsManager().GetWidth() - rightX
+			sheetX = GetGraphicsManager().GetWidth() - int(rightX)
 			sheetAlign = 1
 		EndIf
 
@@ -2072,7 +2072,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 	End Method
 
 
-	Function DrawCast(x:int, y:int, w:int, name:string, nameHint:string="", face:object=null, xp:float, sympathy:float, mood:int)
+	Function DrawCast(x:Float, y:Float, w:Float, name:string, nameHint:string="", face:object=null, xp:float, sympathy:float, mood:int)
 		'Draw name bg
 		'Draw xp bg + front bar
 		'Draw sympathy bg + front bar
@@ -2145,7 +2145,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 	End Function
 
 
-	Function ShowCastSheet:Int(cast:TProgrammePersonBase, jobID:int=-1, x:Int,y:Int, align:int=0, showAmateurInformation:int = False)
+	Function ShowCastSheet:Int(cast:TProgrammePersonBase, jobID:int=-1, x:Float,y:Float, align:int=0, showAmateurInformation:int = False)
 		'=== PREPARE VARIABLES ===
 		local sheetWidth:int = 250
 		local sheetHeight:int = 0 'calculated later
@@ -2154,8 +2154,8 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 		local skin:TDatasheetSkin = GetDatasheetSkin("cast")
 		local contentW:int = skin.GetContentW(sheetWidth)
-		local contentX:int = x + skin.GetContentY()
-		local contentY:int = y + skin.GetContentY()
+		local contentX:int = int(x) + skin.GetContentX()
+		local contentY:int = int(y) + skin.GetContentY()
 
 		local celebrity:TProgrammePerson = TProgrammePerson(cast)
 
@@ -2357,7 +2357,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 
 		'=== OVERLAY / BORDER ===
-		skin.RenderBorder(x, y, sheetWidth, sheetHeight)
+		skin.RenderBorder(int(x), int(y), sheetWidth, sheetHeight)
 	End Function
 
 End Type

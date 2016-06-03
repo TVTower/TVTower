@@ -141,7 +141,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 
 		GuiManager.Draw("supermarket_presents")
 		
-		skin.RenderBorder(box.GetX(), box.GetY(), box.GetW(), box.GetH())
+		skin.RenderBorder(box.GetIntX(), box.GetIntY(), box.GetIntW(), box.GetIntH())
 	End Method
 
 	

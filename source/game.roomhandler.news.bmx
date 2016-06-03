@@ -703,7 +703,7 @@ Type TGUINews Extends TGUIGameListItem
 
 		'===== CREATE CACHE IF MISSING =====
 		If Not cacheTextOverlay
-			cacheTextOverlay = TFunctions.CreateEmptyImage(rect.GetW(), rect.GetH())
+			cacheTextOverlay = TFunctions.CreateEmptyImage(rect.GetIntW(), rect.GetIntH())
 '			cacheTextOverlay = CreateImage(rect.GetW(), rect.GetH(), DYNAMICIMAGE | FILTEREDIMAGE)
 
 			'render to image

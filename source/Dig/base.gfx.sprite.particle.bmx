@@ -184,7 +184,7 @@ Type TSpriteParticle
 		SetRotation angle
 		SetScale(scale, scale)
 		if sprite
-			sprite.Draw(int(x),int(y), -1, ALIGN_CENTER_CENTER)
+			sprite.Draw(x,y, -1, ALIGN_CENTER_CENTER)
 		else
 			DrawOval(x-3, y-3, 6,6)
 		endif

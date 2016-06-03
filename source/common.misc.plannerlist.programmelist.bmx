@@ -238,7 +238,7 @@ endrem
 		Local filter:TProgrammeLicenceFilter = TProgrammeLicenceFilter.GetAtIndex(filterIndex)
 		Local licences:TProgrammeLicence[] = programmeCollection.GetLicencesByFilter(filter)
 
-		SetEntriesPages( ceil(licences.length / Float(MAX_LICENCES_PER_PAGE)) )
+		SetEntriesPages( int(ceil(licences.length / Float(MAX_LICENCES_PER_PAGE))) )
 
 		Local currSprite:TSprite
 		'maybe it has changed since initialization
@@ -417,7 +417,7 @@ endrem
 			return False
 		endif
 		
-		SetEntriesPages( ceil(licences.length / Float(MAX_LICENCES_PER_PAGE)) )
+		SetEntriesPages( int(ceil(licences.length / Float(MAX_LICENCES_PER_PAGE))) )
 
 		'handle page buttons (before other click handling here)
 		if entriesPages > 1
@@ -533,7 +533,7 @@ endrem
 	Method DrawSubTapes:Int(parentLicence:TProgrammeLicence)
 		If Not parentLicence Then Return False
 
-		SetSubEntriesPages( ceil(parentLicence.GetSubLicenceCount() / Float(MAX_LICENCES_PER_PAGE)) )
+		SetSubEntriesPages( int(ceil(parentLicence.GetSubLicenceCount() / Float(MAX_LICENCES_PER_PAGE))) )
 
 		Local hoveredLicence:TProgrammeLicence = Null
 		Local currSprite:TSprite
@@ -692,7 +692,7 @@ endrem
 			return False
 		endif
 
-		SetSubEntriesPages( ceil(parentLicence.GetSubLicenceCount() / Float(MAX_LICENCES_PER_PAGE)) )
+		SetSubEntriesPages( int(ceil(parentLicence.GetSubLicenceCount() / Float(MAX_LICENCES_PER_PAGE))) )
 
 
 		'handle page buttons (before other click handling here)

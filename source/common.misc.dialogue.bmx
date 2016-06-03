@@ -131,7 +131,7 @@ Type TDialogueAnswer
 	Method Update:Int(x:Float, y:Float, w:Float, h:Float, clicked:Int = 0)
 		Self._highlighted = False
 
-		If THelper.MouseIn(Int(x), int(y-2), _size.x + 9, _size.y)
+		If THelper.MouseIn(Int(x), int(y-2), _size.GetIntX() + 9, _size.GetIntY())
 			Self._highlighted = True
 			If clicked
 				'emit the event if there is one

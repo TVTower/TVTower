@@ -894,13 +894,13 @@ End Type
 'basic list item
 Type TGUIListItem Extends TGUIobject
 	'how long until auto remove? (current value)
-	Field lifetime:Float = Null
+	Field lifetime:Long = 0
 	'how long until auto remove? (initial value)
-	Field initialLifetime:Float	= Null
+	Field initialLifetime:Int = 0
 	'how long until hiding (current value)
-	Field showtime:Double = Null
+	Field showtime:Long = 0
 	'how long until hiding (initial value)
-	Field initialShowtime:Int = Null
+	Field initialShowtime:Int = 0
 	'color of the displayed value
 	Field valueColor:TColor	= new TColor
 
