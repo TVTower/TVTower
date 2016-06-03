@@ -1,0 +1,34 @@
+Compilation Guide WINDOWS
+-------------------------
+
+- download the most current pre-build buildpackage
+    bmx-ng.X.XX.Windows_x86_64.tar.gz
+  from
+    https://github.com/GWRon/BMXNG-Packs
+- unzip (for now we call this folder "BlitzMax")
+
+
+- download/clone TVTower from
+    https://github.com/GWRon/TVTower
+
+- either compile via command line, or via editor
+  - command line
+    - move into "BlitzMax/bin"
+    - for x86
+      "bmk.exe makeapp -r -g x86 -quick -w path/to/TVTower/TVTower.bmx"
+    - for x64
+      "bmk.exe makeapp -r -g x64 -quick -w path/to/TVTower/TVTower.bmx"
+  - via editor
+    - open up BlitzMax/MaxIDE_Win** (the one corresponding to your OS)
+    - open "path/to/TVTower/TVTower.bmx"
+    - adjust settings
+      "Program"
+        "Build Options"
+          [x] Quick Build
+          [ ] Build GUI App
+          [x] Overload Warnings
+    - click the flying rocket to build + run TVTower
+
+  - a script also creates a "TVTower_Win**.exe" file after compilation
+    but the binary "TVTower.exe" is kept, as this is used by the MaxIDE-
+    debugger (not needed for you to play the game)

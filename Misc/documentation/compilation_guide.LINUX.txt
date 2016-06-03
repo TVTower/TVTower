@@ -1,0 +1,41 @@
+Compilation Guide LINUX
+-----------------------
+
+- download the most current pre-build buildpackage
+    bmx-ng.X.XX.Linux_x86_64.tar.gz
+  from
+    https://github.com/GWRon/BMXNG-Packs
+- unzip (for now we call this folder "BlitzMax")
+- if needed, mark as executable ("chmod +x"):
+  BlitzMax/bin/bcc
+  BlitzMax/bin/bmk
+  BlitzMax/bin/makedocs
+  BlitzMax/bin/docmods
+  BlitzMax/MaxIDE_Linux32
+  BlitzMax/MaxIDE_Linux64
+
+
+- download/clone TVTower from
+    https://github.com/GWRon/TVTower
+
+- either compile via command line, or via editor
+  - command line
+    - move into "BlitzMax/bin"
+    - for x86
+      "./bmk makeapp -r -g x86 -quick -w path/to/TVTower/TVTower.bmx"
+    - for x64
+      "./bmk makeapp -r -g x64 -quick -w path/to/TVTower/TVTower.bmx"
+  - via editor
+    - open up BlitzMax/MaxIDE_Linux** (the one corresponding to your OS)
+    - open "path/to/TVTower/TVTower.bmx"
+    - adjust settings
+      "Program"
+        "Build Options"
+          [x] Quick Build
+          [ ] Build GUI App
+          [x] Overload Warnings
+    - click the flying rocket to build + run TVTower
+
+  - a script also creates a "TVTower_Linux**" file after compilation
+    but the binary "TVTower" is kept, as this is used by the MaxIDE-
+    debugger (not needed for you to play the game)
