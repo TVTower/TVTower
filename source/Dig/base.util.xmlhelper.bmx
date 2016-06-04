@@ -150,15 +150,15 @@ Type TXmlHelper
 
 
 	'loads values of a node into a tdata object
-	Function LoadValuesToData:TData(node:TXmlNode, data:TData, fieldNames:String[])
+	Function LoadValuesToData:TData(node:TXmlNode, data:TData, fieldNames:String[], searchInChildNodeNames:string[] = null)
 		if not node then return data
 
 		For Local fieldName:String = EachIn fieldNames
-			If Not TXmlHelper.HasValue(node, fieldName) Then Continue
+			If Not TXmlHelper.HasValue(node, fieldName, searchInChildNodeNames) Then Continue
 			'use the first fieldname ("frames|f" -> add as "frames")
 			Local names:String[] = fieldName.ToLower().Split("|")
 
-			data.Add(names[0], FindValue(node, fieldName, ""))
+			data.Add(names[0], FindValue(node, fieldName, "", "", searchInChildNodeNames))
 		Next
 		return data
 	End Function
@@ -222,7 +222,7 @@ Type TXmlHelper
 	End Function
 
 
-	Function HasValue:Int(node:TXmlNode, fieldName:String)
+	Function HasValue:Int(node:TXmlNode, fieldName:String, searchInChildNodeNames:string[] = null)
 		if not node then return False
 
 		'loop through all potential fieldnames ("frames|f" -> "frames", "f")
@@ -235,6 +235,11 @@ Type TXmlHelper
 				If subNode.getType() = XML_TEXT_NODE Then Continue
 				If subNode.getName().ToLower() = name Then Return True
 				If subNode.getName().ToLower() = "data" And HasAttribute(subNode, name) Then Return True
+				If searchInChildNodeNames and searchInChildNodeNames.length > 0
+					if searchInChildNodeNames[0] = "*" or StringHelper.InArray(subNode.getName(), searchInChildNodeNames, False)
+						return HasValue(subNode, fieldName, searchInChildNodeNames)
+					endif
+				endif
 			Next
 		Next
 		Return False
@@ -245,8 +250,11 @@ Type TXmlHelper
 	'- the current NODE's attributes
 	'  <obj FIELDNAME="bla" />
 	'- the first level children
-	'- <obj><FIELDNAME>bla</FIELDNAME><anotherfield ...></anotherfield></obj>
-	Function FindValue:String(node:TxmlNode, fieldName:String, defaultValue:String, logString:String="")
+	'  <obj><FIELDNAME>bla</FIELDNAME><anotherfield ...></anotherfield></obj>
+	'- in one of the children defined in "searchInChildNodeNames" (recursive!)
+	'  ["other"] or ["*"] 
+	'  <obj><other><FIELDNAME>bla</FIELDNAME></other></obj>
+	Function FindValue:String(node:TxmlNode, fieldName:String, defaultValue:String, logString:String="", searchInChildNodeNames:string[] = null)
 		if node 
 			'loop through all potential fieldnames ("frames|f" -> "frames", "f")
 			Local fieldNames:String[] = fieldName.ToLower().Split("|")
@@ -258,6 +266,11 @@ Type TXmlHelper
 				For Local subNode:TxmlNode = EachIn GetNodeChildElements(node)
 					If subNode.getName().ToLower() = name Then Return subNode.getContent()
 					If subNode.getName().ToLower() = "data" And HasAttribute(subNode, name) Then Return GetAttribute(subNode, name)
+					If searchInChildNodeNames and searchInChildNodeNames.length > 0
+						if searchInChildNodeNames[0] = "*" or StringHelper.InArray(subNode.getName(), searchInChildNodeNames, False)
+							return FindValue(subNode, fieldName, defaultValue, logString, searchInChildNodeNames)
+						endif
+					endif					
 				Next
 			Next
 		endif
@@ -266,22 +279,22 @@ Type TXmlHelper
 	End Function
 
 
-	Function FindValueInt:Int(node:TxmlNode, fieldName:String, defaultValue:Int, logString:String="")
-		Local result:String = FindValue(node, fieldName, String(defaultValue), logString)
+	Function FindValueInt:Int(node:TxmlNode, fieldName:String, defaultValue:Int, logString:String="", searchInChildNodeNames:string[] = null)
+		Local result:String = FindValue(node, fieldName, String(defaultValue), logString, searchInChildNodeNames)
 		If result = Null Then Return defaultValue
 		Return Int( result )
 	End Function
 
 
-	Function FindValueFloat:Float(node:TxmlNode, fieldName:String, defaultValue:Int, logString:String="")
-		Local result:String = FindValue(node, fieldName, String(defaultValue), logString)
+	Function FindValueFloat:Float(node:TxmlNode, fieldName:String, defaultValue:Int, logString:String="", searchInChildNodeNames:string[] = null)
+		Local result:String = FindValue(node, fieldName, String(defaultValue), logString, searchInChildNodeNames)
 		If result = Null Then Return defaultValue
 		Return Float( result )
 	End Function
 
 
-	Function FindValueBool:Float(node:TxmlNode, fieldName:String, defaultValue:Int, logString:String="")
-		Local result:String = FindValue(node, fieldName, String(defaultValue), logString)
+	Function FindValueBool:Float(node:TxmlNode, fieldName:String, defaultValue:Int, logString:String="", searchInChildNodeNames:string[] = null)
+		Local result:String = FindValue(node, fieldName, String(defaultValue), logString, searchInChildNodeNames)
 		Select result.toLower()
 			Case "0", "false"	Return False
 			Case "1", "true"	Return True
