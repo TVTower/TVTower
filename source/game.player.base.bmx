@@ -102,6 +102,8 @@ Type TPlayerBase {_exposeToLua="selected"}
 
 	Field emptyProgrammeSuitcase:int = False
 	Field emptyProgrammeSuitcaseTime:Long = 0
+	'in which room was the programme suitcase filled the last time? 
+	Field emptyProgrammeSuitcaseFromRoom:string = ""
 
 	'1=ready, 0=not set, ...
 	Field networkstate:Int = 0

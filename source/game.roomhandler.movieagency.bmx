@@ -309,6 +309,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'empty suitcase after 20 realtime seconds
 		if player
 			player.emptyProgrammeSuitcase = True
+			player.emptyProgrammeSuitcaseFromRoom = "movieagency"
 			player.emptyProgrammeSuitcaseTime = Time.GetTimeGone() + 20 * 1000
 		endif
 

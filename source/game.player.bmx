@@ -170,10 +170,17 @@ Type TPlayerCollection extends TPlayerBaseCollection
 
 		'when entering something else then the movieagency
 		if room
-			if room.name <> "movieagency"
+			local doEmpty:int = False
+			'coming from the movieagency and entering another room
+			if player.emptyProgrammeSuitcaseFromRoom = "movieagency" and room.name <> "movieagency" then doEmpty = True
+			'coming from archive - for now nothing!
+			'if player.emptyProgrammeSuitcaseFromRoom = "archive" and room.name <> "archive" and room.name <> "movieagency" then doEmpty = True
+			
+			if doEmpty
 				'try to empty the suitcase
 				player.emptyProgrammeSuitcase = True
 				player.emptyProgrammeSuitcaseTime = Time.GetTimeGone()
+
 				player.EmptyProgrammeSuitcaseIfNeeded()
 			else
 				player.emptyProgrammeSuitcase = False
@@ -330,15 +337,19 @@ endrem
 	End Function
 
 
-	Method EmptyProgrammeSuitcaseIfNeeded()
-		if not emptyProgrammeSuitcase then return
+	Method EmptyProgrammeSuitcaseIfNeeded:int()
+		if not emptyProgrammeSuitcase then return False
 
 		if emptyProgrammeSuitcaseTime <= Time.GetTimeGone()
 			GetPlayerProgrammeCollection(playerID).ReaddProgrammeLicencesFromSuitcase()
 
 			emptyProgrammeSuitcase = False
 			emptyProgrammeSuitcaseTime = Time.GetTimeGone()
+			emptyProgrammeSuitcaseFromRoom = ""
+			return True
 		endif
+
+		return False
 	End Method
 
 
