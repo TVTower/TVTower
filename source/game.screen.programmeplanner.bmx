@@ -597,9 +597,9 @@ Type TScreenHandler_ProgrammePlanner
 
 			'check if it is a live programme
 			if TProgramme(item.broadcastMaterial) and TProgramme(item.broadcastMaterial).data.IsLive()
-				local liveTime:long = TProgramme(item.broadcastMaterial).data.liveTime
-				if planningDay <> GetWorldTime().GetDay( liveTime ) or ..
-				   slot <> GetWorldTime().GetDayHour( liveTime )
+				local releaseTime:long = TProgramme(item.broadcastMaterial).data.releaseTime
+				if planningDay <> GetWorldTime().GetDay( releaseTime ) or ..
+				   slot <> GetWorldTime().GetDayHour( releaseTime )
 					triggerEvent.SetVeto()
 					return False
 				endif
@@ -1031,13 +1031,14 @@ Type TScreenHandler_ProgrammePlanner
 			if programme
 				if KEYMANAGER.IsHit(KEY_SPACE)
 					'set live time to 22:00
-					programme.data.liveTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(), 22, 0,0)
+					programme.data.releaseTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(), 22, 0,0)
 					programme.data.SetFlag(TVTProgrammeDataFlag.LIVE, True)
+					programme.data.distributionChannel = TVTProgrammeDistributionChannel.TV
 				endif
 
 				if programme.data.IsLive()
 					local liveHours:int[]
-					local blockTime:Long = programme.data.liveTime
+					local blockTime:Long = programme.data.releaseTime
 					For local i:int = 0 to programme.GetBlocks()
 						if GetWorldTime().GetDay(blockTime) = planningDay 
 							liveHours :+ [ GetWorldTime().GetDayHour(blockTime) ]

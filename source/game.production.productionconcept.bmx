@@ -711,6 +711,10 @@ Type TProductionConcept Extends TOwnedGameObject
 				Next
 			endif
 		endif
+
+		'live productions are done a bit faster
+		if script.IsLive() then base :* 0.5
+		
 		'round minutes to hours
 		return floor(base/60)
 	End Method

@@ -337,21 +337,10 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Field cast:TProgrammePersonJob[]
 	Field country:String = "UNK"
 
-	'year of the programme. "_" indicates private access, use GetYear().
-	Field _year:Int = 0
-	'amount of years to advance/decrease from the start year
-	'(no need to put this in savegames as then the year is already
-	' calculated)
-	Field relativeYear:Int = 0 {nosave}
-	Field relativeYearMin:Int = -1 {nosave}
-	Field relativeYearMax:Int = -1 {nosave}
-
 	'special targeted audiences?
 	Field targetGroups:int = 0
 	Field proPressureGroups:int = 0
 	Field contraPressureGroups:int = 0
-	'time of a live event
-	Field liveTime:Long = -1
 	'outcome in cinema
 	Field outcome:Float	= 0
 	'outcome in first TV broadcast
@@ -371,6 +360,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	'ID according to TVTProgrammeProductType
 	Field productType:Int = 1
 	'at which day was the programme released?
+	'for live shows this is the time of the live event
 	Field releaseTime:Long = -1
 	'announced in news etc?
 	Field releaseAnnounced:int = FALSE
@@ -405,35 +395,6 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	"wearoff" - changes how much a programme loses during sending it
 	"refresh" - changes how much a programme "regenerates" (multiplied with genreModifier)
 	endrem
-
-
-	Function Create:TProgrammeData(GUID:String, title:TLocalizedString, description:TLocalizedString, cast:TProgrammePersonJob[], country:String, year:int, relativeYear:int, releaseTime:Long=-1, liveTime:Long, Outcome:Float, review:Float, speed:Float, modifiers:TData, Genre:Int, blocks:Int, xrated:Int, productType:Int=1) {_private}
-		Local obj:TProgrammeData = New TProgrammeData
-		obj.SetGUID(GUID)
-		obj.title       = title
-		obj.description = description
-		obj.productType = productType
-		obj.review      = Max(0,Min(1.0, review))
-		obj.speed       = Max(0,Min(1.0, speed))
-		obj.outcome     = Max(0,Min(1.0, Outcome))
-		'modificators: > 1.0 increases price (1.0 = 100%)
-		if modifiers then obj.modifiers = modifiers.Copy()
-		obj.genre       = Max(0,Genre)
-		obj.blocks      = blocks
-		obj.SetFlag(TVTProgrammeDataFlag.XRATED, xrated)
-		obj.country     = country
-		obj.cast 		= cast
-		obj._year       = year
-		obj.relativeYear= relativeYear
-		if GetWorldTime().GetYear(releaseTime) < 1900
-			obj.releaseTime = GetWorldTime().Maketime(obj.GetYear(), 1,1, 0,0)
-		endif
-		obj.liveTime    = Max(-1,liveTime)
-		obj.topicality = obj.GetTopicality()
-		GetProgrammeDataCollection().Add(obj)
-
-		Return obj
-	End Function
 
 
 	'what to earn for each viewer
@@ -927,19 +888,16 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	End Method
 
 
+	Method IsVisible:int()
+		return not (HasFlag(TVTProgrammeDataFlag.INVISIBLE) > 0)
+	End Method
+	
+
 	Method GetYear:int()
 		'PAID is always "live/from now"
 		if HasFlag(TVTProgrammeDataFlag.PAID) then return GetWorldTime().GetYear()
-		'for live-programme just use the live-time
-		if HasFlag(TVTProgrammeDataFlag.LIVE) and liveTime <= 0 then return GetWorldTime().GetYear(liveTime)
 
-		if _year = 0
-			_year = GetWorldTime().GetStartYear() + relativeYear
-			if relativeYearMin > 0 then _year = Max(_year, relativeYearMin)
-			if relativeYearMax > 0 then _year = Min(_year, relativeYearMax)
-			'print GetTitle()+": set year to " + _year
-		endif
-		return _year
+		return GetWorldTime().GetYear(releaseTime)
 	End Method
 
 
@@ -1320,10 +1278,13 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 	'override
 	Method IsAvailable:int()
-		'if a date for a live broadcast was defined, the programme
-		'isn't anymore from this time on
-		if liveTime >= 0 and GetWorldTime().GetTimeGone() >= liveTime
-			return False
+		'live programme is available 10 days before
+		if IsLive()
+			if GetWorldTime().GetDay() + 10 >= GetWorldTime().GetDay(releaseTime)
+				return True
+			else
+				return False
+			endif
 		endif
 
 		if not isReleased() then return False
@@ -1341,6 +1302,9 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 
 	Method isInCinema:int()
+		'live programme is never in a cinema
+		if IsLive() then return False
+
 		if isReleased() then return False
 		' without stored outcome, the movie wont run in the cinemas
 		if outcome <= 0 then return False
@@ -1350,6 +1314,9 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 
 	Method isInProduction:int()
+		'live programme is never "in production"
+		if IsLive() then return False
+
 		if isReleased() then return False
 		
 		return GetProductionStartTime() <= GetWorldTime().GetTimeGone() and GetCinemaReleaseTime() > GetWorldTime().GetTimeGone()

@@ -658,8 +658,10 @@ Type TVTProgrammeDataFlag {_exposeToLua}
 	Const SCRIPTED:Int = 512
 	'Scripted-Shows/Series/Reportages ... Trash-TV!
 	Const CUSTOMPRODUCTION:Int = 512
+	'these programmes are hidden from the planner selection
+	Const INVISIBLE:Int = 1024
 
-	Const count:int = 10
+	Const count:int = 11
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -680,6 +682,7 @@ Type TVTProgrammeDataFlag {_exposeToLua}
 			case PAID      return "paid"
 			case SERIES    return "series"
 			case SCRIPTED  return "scripted"
+			case INVISIBLE return "invisible"
 			default
 				'loop through all flag-entries and add them if contained
 				local result:string

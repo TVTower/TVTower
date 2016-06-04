@@ -572,10 +572,13 @@ print "--------------"
 		programmeData.genre = TVTProgrammeGenre.SHOW
 		programmeData.review = 0.1
 		programmeData.speed = 0.4
+		programmeData.outcome = 0.5
 		programmeData.country = "D" 'make depending on station map?
-		programmeData._year = GetWorldTime().GetYear()
-		programmeData.liveTime = GetWorldTime().MakeTime(GetWorldTime().GetYear(), 0, 0, 5)
+		programmeData.releaseTime = GetWorldTime().MakeTime(GetWorldTime().GetYear(), 0, 0, 5)
 		programmeData.SetFlag(TVTProgrammeDataFlag.LIVE, True)
+		programmeData.distributionChannel = TVTProgrammeDistributionChannel.TV
+		'hide from player/vendor/...
+		programmeData.SetFlag(TVTProgrammeDataFlag.INVISIBLE, True)
 
 		programmeData.AddCast( New TProgrammePersonJob.Init("9104f9c1-7a0f-4bc0-a34c-389ce282eebf", TVTProgrammePersonJob.GUEST) )
 		programmeData.AddCast( New TProgrammePersonJob.Init("9104f9c1-7a0f-4bc0-a34c-389ce282eebf", TVTProgrammePersonJob.MUSICIAN) )

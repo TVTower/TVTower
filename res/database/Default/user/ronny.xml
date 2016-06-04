@@ -50,6 +50,20 @@
 	</celebritypeople>
 	
 	<allprogrammes>
+		<programme id="ronny-programme-livereportage-raketenstart1" product="4" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Erster Start der Ariane-2</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Der erste Start der Trägerrakete Ariane-2, LIVE. Fiebern Sie mit - der Countdown läuft: 9, 8 ...</de>
+				<en></en>
+			</description>
+			<groups target_groups="96" />
+			<data country="D" year="1985" distribution="2" maingenre="300" subgenre="16" flags="0" blocks="1" price_mod="0.90" />
+			<releaseTime year="1985" day="6" hour="18" />
+			<ratings critics="45" speed="30" outcome="40" />
+		</programme>
 		<programme id="ronny-programme-doku-kutler-wunderwaffen" product="4" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Kutlers Wunderwaffen</de>
@@ -64,7 +78,7 @@
 				<member index="1" function="128">ronny-programmeperson-holgerpelz</member>
 			</staff>
 			<groups target_groups="64" />
-			<data country="D" year="-4" relative_year_min="1975" relative_year_max="1990" distribution="0" maingenre="6" subgenre="11" flags="0" blocks="1" time="0" price_mod="0.95" />
+			<data country="D" year="0" year_relative="-4" year_relative_min="1975" year_relative_max="1990" distribution="0" maingenre="6" subgenre="11" flags="0" blocks="1" price_mod="0.95" />
 			<ratings critics="45" speed="20" outcome="24" />
 		</programme>
 		<programme id="ronny-programme-doku-kutler-alaaf" product="4" fictional="1" creator="5578" created_by="Ronny">
@@ -81,7 +95,7 @@
 				<member index="1" function="128">ronny-programmeperson-holgerpelz</member>
 			</staff>
 			<groups target_groups="64" />
-			<data country="D" year="-3" relative_year_min="1976" relative_year_max="1991" distribution="0" maingenre="6" subgenre="11" flags="0" blocks="1" time="0" price_mod="0.95" />
+			<data country="D" year="0" year_relative="-3" year_relative_min="1976" year_relative_max="1991" distribution="0" maingenre="6" subgenre="11" flags="0" blocks="1" price_mod="0.95" />
 			<ratings critics="38" speed="28" outcome="27" />
 		</programme>
 		<programme id="ronny-programme-doku-kutler-untergang" product="4" fictional="1" creator="5578" created_by="Ronny">
@@ -98,7 +112,7 @@
 				<member index="1" function="128">ronny-programmeperson-holgerpelz</member>
 			</staff>
 			<groups target_groups="64" />
-			<data country="D" year="+2" relative_year_min="1979" relative_year_max="1993" distribution="0" maingenre="6" subgenre="11" flags="0" blocks="1" time="0" price_mod="0.95" />
+			<data country="D" year="0" year_relative="+2" year_relative_min="1979" year_relative_max="1993" distribution="0" maingenre="6" subgenre="11" flags="0" blocks="1" price_mod="0.95" />
 			<ratings critics="49" speed="30" outcome="20" />
 		</programme>
 		<programme id="ronny-programme-doku-eyebeam-btx-digitalewelt" product="4" fictional="1" creator="5578" created_by="Ronny">
@@ -115,7 +129,7 @@
 				<member index="1" function="128">ronny-programmeperson-samuelloew</member>
 			</staff>
 			<groups target_groups="256" />
-			<data country="D" year="-4" relative_year_min="1981" relative_year_max="1983" distribution="0" maingenre="6" flags="0" blocks="2" time="0" price_mod="1.05" />
+			<data country="D" year="0" year_relative="-4" year_relative_min="1981" year_relative_max="1983" distribution="0" maingenre="6" flags="0" blocks="2" price_mod="1.05" />
 			<ratings critics="55" speed="15" outcome="25" />
 		</programme>
 		<programme id="ronny-programme-doku-mikroelektronik" product="4" fictional="1" creator="5578" created_by="Ronny">
@@ -134,7 +148,7 @@ Welcome to the future.</en>
 				<member index="1" function="128">ronny-programmeperson-samuelloew</member>
 			</staff>
 			<groups target_groups="256" />
-			<data country="D" year="1981" distribution="0" maingenre="6" flags="0" blocks="2" time="0" price_mod="1.05" />
+			<data country="D" year="1981" distribution="0" maingenre="6" flags="0" blocks="2" price_mod="1.05" />
 			<ratings critics="40" speed="12" outcome="22" />
 		</programme>
 		<programme id="ronny-programme-doku-fruitinc" product="4" fictional="1" creator="5578" created_by="Ronny">
@@ -153,7 +167,7 @@ Contains an exclusive interview with investor Mark Mikikulla.</en>
 				<member index="1" function="128">ronny-programmeperson-thomasstone</member>
 			</staff>
 			<groups target_groups="256" />
-			<data country="USA" year="1981" distribution="0" maingenre="6" flags="0" blocks="2" time="0" price_mod="1.05" />
+			<data country="USA" year="1981" distribution="0" maingenre="6" flags="0" blocks="2" price_mod="1.05" />
 			<ratings critics="25" speed="22" outcome="0" />
 		</programme>
 		<programme id="ronny-programme-family-papierflieger" product="7" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
@@ -172,7 +186,7 @@ Educational precious and absolutly ecological.</en>
 				<member index="1" function="128">ronny-programmeperson-bennyjameson</member>
 			</staff>
 			<groups target_groups="256" />
-			<data country="USA" year="-5" relative_year_min="1978" relative_year_max="1984" distribution="0" maingenre="0" subgenre="9" flags="0" blocks="1" time="0" price_mod="0.95" />
+			<data country="USA" year="0" year_relative="-5" year_relative_min="1978" year_relative_max="1984" distribution="0" maingenre="0" subgenre="9" flags="0" blocks="1" price_mod="0.95" />
 			<ratings critics="20" speed="30" outcome="0" />
 			<!-- Episodes -->
 			<children>
@@ -234,7 +248,7 @@ Educational precious and absolutly ecological.</en>
 				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
 			</staff>
 			<groups target_groups="0" />
-			<data country="D" year="1983" distribution="0" maingenre="9" subgenre="15" flags="16" blocks="2" time="0" price_mod="0.9" />
+			<data country="D" year="1983" distribution="0" maingenre="9" subgenre="15" flags="16" blocks="2" price_mod="0.9" />
 			<ratings critics="40" speed="20" outcome="48" />
 		</programme>
 		<programme id="ronny-programme-kartoffeln-01" product="1" fictional="1" creator="5578" created_by="Ronny">
@@ -251,7 +265,7 @@ Educational precious and absolutly ecological.</en>
 				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
 			</staff>
 			<groups target_groups="0" />
-			<data country="D" year="1985" distribution="0" maingenre="15" subgenre="0" flags="16" blocks="2" time="0" price_mod="0.95" />
+			<data country="D" year="1985" distribution="0" maingenre="15" subgenre="0" flags="16" blocks="2" price_mod="0.95" />
 			<ratings critics="32" speed="28" outcome="42" />
 		</programme>
 		<!-- Series -->
@@ -278,7 +292,7 @@ Educational precious and absolutly ecological.</en>
 				<member index="1" function="64" generator="es,0"></member>
 			</staff>
 			<groups target_groups="0" />
-			<data country="D" year="-2" relative_year_min="1984" relative_year_max="1989" distribution="0" maingenre="0" blocks="1" tags="cooking,80s" />
+			<data country="D" year="0" year_relative="-2" year_relative_min="1984" year_relative_max="1989" distribution="0" maingenre="0" blocks="1" tags="cooking,80s" />
 			<modifiers>
 				<!-- the programme ages faster than average -->
 				<modifier name="topicality::age" value="1.5" />
@@ -350,7 +364,7 @@ Educational precious and absolutly ecological.</en>
 				<member index="1" function="2">common-amateur-actors</member>
 			</staff>
 			<groups target_groups="0" />
-			<data country="D" year="-3" relative_year_min="1977" relative_year_max="1988" distribution="0" maingenre="0" blocks="1" />
+			<data country="D" year="0" year_relative="-3" year_relative_min="1977" year_relative_max="1988" distribution="0" maingenre="0" blocks="1" />
 			<ratings critics="44" speed="20" />
 			<!-- Episodes -->
 			<children>
@@ -516,7 +530,7 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 				<member index="2" function="2">ronny-programmeperson-gertkalischke</member>
 			</staff>
 			<groups target_groups="0" />
-			<data country="D/F" year="-2" relative_year_min="1980" relative_year_max="1990" distribution="0" maingenre="15" blocks="2" />
+			<data country="D/F" year="0" year_relative="-2" year_relative_min="1980" year_relative_max="1990" distribution="0" maingenre="15" blocks="2" />
 			<ratings critics="31" speed="30" />
 			<!-- Episodes -->
 			<children>

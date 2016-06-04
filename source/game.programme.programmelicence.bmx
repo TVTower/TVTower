@@ -531,11 +531,28 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 
 
+	Method IsVisible:int()
+		if GetSubLicenceCount() = 0 and GetData()
+			return GetData().IsVisible()
+		else
+			'it is enough if one licence is visible
+			For local licence:TProgrammeLicence = eachin subLicences
+				if licence.IsVisible() then return True
+			Next
+			return False
+		endif
+	End Method
+
+
 	Method IsTradeable:int()
 		if GetSubLicenceCount() = 0 and GetData()
 			if not tradeable then return False
-			
-			if GetData().IsTVDistribution() and GetData().GetOutcomeTV() < 0
+
+			'disallow selling a custom production until it was
+			'broadcasted at least once
+			if GetData().GetTimesBroadcasted() <= 0 and GetData().IsCustomProduction()
+			'using this would also disable selling live programme
+			'if GetData().IsTVDistribution() and GetData().GetOutcomeTV() < 0
 				return False
 			endif
 
@@ -617,12 +634,21 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 
 	Method isAvailable:int() {_exposeToLua}
-		if not isReleased() then return False
+		'checking for isReleased() hides "live" programme"
+		'also: GetData().isAvailable() calls data.isReleased() already
+		'if not isReleased() then return False
 
-		if not GetData().isAvailable() then return False
+		'single-licence
+		if GetSubLicenceCount() = 0 and GetData() and not GetData().isAvailable() then return False
 
 		'exceeded broadcastLimit
 		if broadcastLimit > 0 and GetTimesBroadcasted() >= broadcastLimit then return False
+
+		'if licence is a collection: ask subs
+		'one single available entry is enough to return True
+		For local licence:TProgrammeLicence = eachin subLicences
+			if licence.isAvailable() then return True
+		Next
 
 		return Super.IsAvailable()
 	End Method
@@ -1169,15 +1195,15 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 		If showMsgLiveInfo
 			local time:string = ""
-			if GetWorldTime().GetDay( data.liveTime ) = GetWorldTime().GetDay()
+			if GetWorldTime().GetDay( data.releaseTime ) = GetWorldTime().GetDay()
 				time = GetLocale("TODAY")
-			elseif GetWorldTime().GetDay( data.liveTime ) = GetWorldTime().GetDay() + 1 
+			elseif GetWorldTime().GetDay( data.releaseTime ) = GetWorldTime().GetDay() + 1 
 				time = GetLocale("TOMORROW")
 			else
-				time = GetLocale("IN_X_DAYS").Replace("%DAYS%", GetWorldTime().GetDaysRun( data.liveTime ) - GetWorldTime().GetDaysRun())
+				time = GetLocale("IN_X_DAYS").Replace("%DAYS%", GetWorldTime().GetDaysRun( data.releaseTime ) - GetWorldTime().GetDaysRun())
 			endif
 			'programme start time
-			time :+ ", "+ GetWorldTime().GetDayHour( data.liveTime )+":05"
+			time :+ ", "+ GetWorldTime().GetDayHour( data.releaseTime )+":05"
 			
 			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_LIVESHOW")+": "+time, "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
@@ -1462,6 +1488,7 @@ Type TProgrammeLicenceFilter
 	Field notDataFlags:int
 	Field checkAvailability:int = True
 	Field checkTradeability:int = False
+	Field checkVisibility:int = True
 	Field qualityMin:Float = -1.0
 	Field qualityMax:Float = -1.0
 	Field relativeTopicalityMin:Float = -1.0
@@ -1536,6 +1563,7 @@ Type TProgrammeLicenceFilter
 		caption = otherFilter.caption
 		checkTradeability = otherFilter.checkTradeability
 		checkAvailability = otherFilter.checkAvailability
+		checkVisibility = otherFilter.checkVisibility
 		dataFlags = otherFilter.dataFlags
 		notDataFlags = otherFilter.notDataFlags
 		for local i:int = EachIn otherFilter.genres
@@ -1769,6 +1797,7 @@ Type TProgrammeLicenceFilter
 
 		if checkAvailability and not licence.isAvailable() then return False
 		if checkTradeability and not licence.isTradeable() then return False
+		if checkVisibility and not licence.isVisible() then return False
 
 		if childrenForbidden and licence.parentLicenceGUID then return False
 		

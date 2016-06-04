@@ -309,7 +309,6 @@ Type TProduction Extends TOwnedGameObject
 		'=== 2.1 PROGRAMME BASE PROPERTIES ===
 		FillProgrammeDataByScript(programmeData, productionConcept.script)
 		programmeData.country = GetStationMapCollection().config.GetString("nameShort", "UNK")
-		programmeData._year = GetWorldTime().GetYear()
 		programmeData.distributionChannel = TVTProgrammeDistributionChannel.TV
 		programmeData.releaseTime = GetWorldTime().GetTimeGone()
 		programmeData.available = true
@@ -323,14 +322,29 @@ Type TProduction Extends TOwnedGameObject
 			For local i:int = 1 until TVTProgrammeDataFlag.count
 				local optionalFlag:int = TVTProgrammeDataFlag.GetAtIndex(i)
 				if productionConcept.script.flagsOptional & optionalFlag > 0
-					programmeData.SetFlag(optionalFlag, True)
-print "RON: ENABLE "+optionalFlag
+					'do not enable X-Rated for live productions when
+					'live time is not in the night
+					if optionalFlag = TVTProgrammeDataFlag.XRATED
+						if productionConcept.liveTime <= 22 and productionConcept.liveTime >= 6
+							programmeData.SetFlag(optionalFlag, True)
+						endif
+					else
+						programmeData.SetFlag(optionalFlag, True)
+					endif
 				endif
 			Next
 		endif
 
+		'use the defined liveHour, the production is then ready on the
+		'next day
 		if productionConcept.script.IsLive()
-			if programmeData.liveTime <= 0 then programmeData.liveTime = productionConcept.liveTime
+			local nowDay:int = GetWorldTime().GetDay( programmeData.releaseTime )
+			'move to next day if live show is in less than 2 hours
+			if GetWorldTime().GetTimeGone() - programmeData.releaseTime < 2*3600
+				programmeData.releaseTime = GetWorldTime().MakeTime(0, nowDay +1, productionConcept.liveTime, 0, 0)
+			else
+				programmeData.releaseTime = GetWorldTime().MakeTime(0, nowDay, productionConcept.liveTime, 0, 0)
+			endif
 		endif
 		if productionPriceMod <> 1.0
 			programmeData.SetModifier("price", productionPriceMod)

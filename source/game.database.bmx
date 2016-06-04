@@ -3,6 +3,7 @@ Import "Dig/base.util.time.bmx"
 Import "Dig/base.util.directorytree.bmx"
 Import "Dig/base.util.xmlhelper.bmx"
 Import "Dig/base.util.hashes.bmx"
+Import "Dig/base.util.mersenne.bmx"
 
 Import "game.production.scripttemplate.bmx"
 Import "game.programme.programmelicence.bmx"
@@ -719,30 +720,18 @@ Type TDatabaseLoader
 		local nodeData:TxmlNode = xml.FindChild(node, "data")
 		local data:TData = new TData
 		xml.LoadValuesToData(nodeData, data, [..
-			"year", "relative_year_min", "relative_year_max", ..
 			"country", "distribution", "blocks", ..
-			"maingenre", "subgenre", "time", "price_mod", ..
+			"maingenre", "subgenre", "price_mod", ..
 			"available", "flags" ..
 		]) 'also allow a "<live>" block
 		'], ["live"]) 'also allow a "<live>" block
 		
 		programmeData.country = data.GetString("country", programmeData.country)
-		programmeData._year = data.GetInt("year", programmeData._year)
-		local year:string = data.GetString("year", "")
-		if programmeData._year = 0 and int(year) <= 100 or year.Find("+") >= 0 or year.Find("-") >= 0
-			programmeData.relativeYear = int(year)
-			programmeData._year = 0
-
-			programmeData.relativeYearMin = data.GetInt("relative_year_min", programmeData.relativeYearMin)
-			programmeData.relativeYearMax = data.GetInt("relative_year_max", programmeData.relativeYearMax)
-		endif
 		
 		programmeData.distributionChannel = data.GetInt("distribution", programmeData.distributionChannel)
 		programmeData.blocks = data.GetInt("blocks", programmeData.blocks)
 		programmeData.available = data.GetBool("available", programmeData.available)
 		programmeLicence.available = programmeData.available
-		programmeData.liveTime = data.GetLong("time", programmeData.liveTime)
-		if programmeData.liveTime <= 0 then programmeData.liveTime = -1
 		'compatibility: load price mod from "price_mod" first... later
 		'override with "modifiers"-data
 		programmeData.SetModifier("price", data.GetFloat("price_mod", programmeData.GetModifier("price")))
@@ -757,61 +746,29 @@ Type TDatabaseLoader
 			endif
 		Next
 
-		'for movies/series set a releaseDay until we have that
-		'in the db.
-		if not parentLicence
-			releaseDayCounter :+ 1
-			programmeData.SetReleaseTime(releaseDayCounter mod GetWorldTime().GetDaysPerYear())
-		endif
 
-		'== DATA: LIVE ==
-		local releaseTimeNode:TxmlNode = xml.FindChild(nodeData, "releaseTime")
+		'=== RELEASE INFORMATION ===
+		local releaseData:TData = new TData
+		local timeFields:string[] = [..
+			"year", "year_relative", "year_relative_min", "year_relative_max", ..
+			"day", "day_random_min", "day_random_max", "day_random_slope", ..
+			"hour", "hour_random_min", "hour_random_max", "day_random_slope" ..
+		]
+		'try to load it from the "<data>" block
+		'(this is done to allow the old v3-"year" definition)
+		xml.LoadValuesToData(nodeData, releaseData, timeFields)
+		'override data by a <releaseTime> block
+		local releaseTimeNode:TxmlNode = xml.FindChild(node, "releaseTime")
 		if releaseTimeNode
-			local releaseData:TData = new TData
-			xml.LoadValuesToData(releaseTimeNode, releaseData, [..
-				"year", "year_relative", "year_min", "year_max", ..
-				"day", "day_min", "day_max", ..
-				"hour", "hour_min", "hour_max" ..
-			])
-
-			local releaseYearRelative:int = releaseData.GetInt("year_relative", 0)
-			local releaseYear:int = releaseData.GetInt("year", 0)
-			local releaseDay:int = releaseData.GetInt("day", 0)
-			local releaseHour:int = releaseData.GetInt("hour", 0)
-			local releaseYearMin:int = releaseData.GetInt("year_min", 0)
-			local releaseDayMin:int = releaseData.GetInt("day_min", 0)
-			local releaseHourMin:int = releaseData.GetInt("hour_min", 0)
-			local releaseYearMax:int = releaseData.GetInt("year_max", 0)
-			local releaseDayMax:int = releaseData.GetInt("day_max", 0)
-			local releaseHourMax:int = releaseData.GetInt("hour_max", 0)
-'alles in einen string packen und folgende Berechnungen "bei Bedarf"
-'ausfuehren
-
-			if releaseYear = 0 then releaseYear = GetWorldTime().GetYear() + releaseYearRelative
-			if releaseYearMax = 0 then releaseYearMax = releaseYear
-			releaseYear = MathHelper.Clamp(releaseYear, releaseYearMin, releaseYearMax)
-'hier todo
-'			if releaseDay = 0 then releaseDay = 1
-'			if releaseYearMax = 0 then releaseYearMax = releaseYear
-'			releaseYear = MathHelper.Clamp(releaseYear, releaseYearMin, releaseYearMax)
-
-
-
-'			local releaseTime:Long
-			
-
-'			_year = GetWorldTime().GetStartYear() + relativeYear
-'			if relativeYearMin > 0 then _year = Max(_year, relativeYearMin)
-'			if relativeYearMax > 0 then _year = Min(_year, relativeYearMax)
-
-
-'	Field releaseTimeYear:int {nosave}
-'	Field releaseTimeDay:int {nosave}
-'	Field releaseTimeHour:int {nosave}
-
-
-'			hier "releaseTime"-Teile einlesen
+			xml.LoadValuesToData(nodeData, releaseData, timeFields)
 		endif
+
+		'convert various time definitions to an absolute time
+		'(this relies on "GetWorldTime()" being initialized already with
+		' the game time)
+		programmeData.releaseTime = CreateReleaseTime(releaseData, programmeData.releaseTime)
+		'print programmeData.GetTitle() +"   is released: "+ GetWorldTime().GetFormattedDate(programmeData.releaseTime)
+
 
 		'=== STAFF ===
 		local nodeStaff:TxmlNode = xml.FindChild(node, "staff")
@@ -1302,7 +1259,7 @@ Type TDatabaseLoader
 			source.AddEffectByData(effectData)
 		Next
 	End Method
-
+	
 
 	Method LoadV3ModifiersFromNode(source:TBroadcastMaterialSourceBase, node:TxmlNode,xml:TXmlHelper)
 		'reuses existing (parent) modifiers and overrides it with custom
@@ -1389,6 +1346,69 @@ Type TDatabaseLoader
 		endif
 		return data
 	End Method
+
+
+	Function CreateReleaseTime:Long(releaseData:TData, oldReleaseTime:Long)
+		local releaseYear:int = releaseData.GetInt("year", 0)
+		local releaseYearRelative:int = releaseData.GetInt("year_relative", 0)
+		local releaseYearRelativeMin:int = releaseData.GetInt("year_relative_min", 0)
+		local releaseYearRelativeMax:int = releaseData.GetInt("year_relative_max", 0)
+
+		local releaseDay:int = releaseData.GetInt("day", -1)
+		local releaseHour:int = MathHelper.Clamp(releaseData.GetInt("hour", -1), 0, 23)
+
+		local releaseDayRandomMin:int = Max(0,releaseData.GetInt("day_random_min", 0))
+		local releaseDayRandomMax:int = Max(0,releaseData.GetInt("day_random_max", 0))
+		local releaseDayRandomSlope:Float = MathHelper.Clamp(releaseData.GetFloat("day_random_slope", 0.5), 0.0, 1.0)
+		local releaseHourRandomMin:int = MathHelper.Clamp(releaseData.GetInt("hour_random_min", 0), 0, 23)
+		local releaseHourRandomMax:int = MathHelper.Clamp(releaseData.GetInt("hour_random_max", 0), 0, 23)
+		local releaseHourRandomSlope:Float = MathHelper.Clamp(releaseData.GetFloat("hour_random_slope", 0.5), 0.0, 1.0)
+
+		MathHelper.SortIntValues(releaseYearRelativeMin, releaseYearRelativeMax)
+		MathHelper.SortIntValues(releaseDayRandomMin, releaseDayRandomMax)
+		MathHelper.SortIntValues(releaseHourRandomMin, releaseHourRandomMax)
+
+
+		'no year definition? use the given one
+		if releaseYear = 0 and releaseYearRelative = 0 and oldReleaseTime <> 0
+			return oldReleaseTime
+		endif
+			
+
+'alles in einen string packen und folgende Berechnungen "bei Bedarf"
+'ausfuehren
+
+		'= YEAR =
+		if releaseYear = 0 then releaseYear = GetWorldTime().GetYear() + releaseYearRelative
+		if releaseYearRelativeMax = 0 then releaseYearRelativeMax = releaseYear
+		releaseYear = MathHelper.Clamp(releaseYear, releaseYearRelativeMin, releaseYearRelativeMax)
+
+		'= DAY =
+		'if no fixed day was defined then use a random one.
+		'defaults to day 1
+		if releaseDay = -1
+			if releaseDayRandomMin <> 0 and releaseDayRandomMax <> 0
+				releaseDay = BiasedRandRange(releaseDayRandomMin, releaseDayRandomMax, releaseDayRandomSlope)
+			else
+				releaseDay = 1 'first day as default
+			endif
+		endif
+
+		'= HOUR =
+		'if no fixed hour was defined then use a random one.
+		'defaults to midnight (0)
+		if releaseHour = -1
+			if releaseHourRandomMin <> 0 and releaseHourRandomMax <> 0
+				releaseHour = BiasedRandRange(releaseHourRandomMin, releaseHourRandomMax, releaseHourRandomSlope)
+			else
+				releaseHour = 1 'first day as default
+			endif
+		endif
+
+		'= TIME =
+		'local releaseTime:String = ":".Join([string(releaseYear), string(releaseYearRelative), string(releaseYearMin), string(releaseYearMax), string(releaseDay), string(releaseHour)])
+		return GetWorldTime().MakeTime(releaseYear, releaseDay, releaseHour, 0, 0)
+	End Function
 
 
 	Method FixLoadedData()

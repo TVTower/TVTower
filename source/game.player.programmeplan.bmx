@@ -815,8 +815,8 @@ endrem
 			local p:TProgramme = TProgramme(obj)
 			if p.data.IsLive()
 				'hour or day incorrect
-				if GetWorldTime().GetDayHour( p.data.liveTime ) <> hour then return False 
-				if GetWorldTime().GetDay( p.data.liveTime ) <> day then return False
+				if GetWorldTime().GetDayHour( p.data.releaseTime ) <> hour then return False 
+				if GetWorldTime().GetDay( p.data.releaseTime ) <> day then return False
 			endif
 		endif
 
