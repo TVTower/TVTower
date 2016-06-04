@@ -1039,7 +1039,7 @@ Type TScreenHandler_ProgrammePlanner
 				if programme.data.IsLive()
 					local liveHours:int[]
 					local blockTime:Long = programme.data.releaseTime
-					For local i:int = 0 to programme.GetBlocks()
+					For local i:int = 0 until programme.GetBlocks()
 						if GetWorldTime().GetDay(blockTime) = planningDay 
 							liveHours :+ [ GetWorldTime().GetDayHour(blockTime) ]
 						endif
