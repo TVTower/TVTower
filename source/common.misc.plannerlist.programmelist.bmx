@@ -731,14 +731,13 @@ endrem
 			endif
 		endif
 
-
 		
 		Local currY:Int = GetSubEntriesRect().GetY() '+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 
 		local startIndex:int = (subEntriesPage-1)*MAX_LICENCES_PER_PAGE
-		local endIndex:int = Min(parentLicence.GetSubLicenceCount()-1, entriesPage*MAX_LICENCES_PER_PAGE -1)
+		local endIndex:int = Min(parentLicence.GetSubLicenceCount()-1, subEntriesPage*MAX_LICENCES_PER_PAGE -1)
 		For Local i:Int = startIndex to endIndex				
-			Local licence:TProgrammeLicence = parentLicence.GetsubLicenceAtIndex(i)
+			Local licence:TProgrammeLicence = parentLicence.GetSubLicenceAtIndex(i)
 
 			If i = startIndex
 				Local currSprite:TSprite
