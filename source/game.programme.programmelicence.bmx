@@ -1537,7 +1537,7 @@ Type TProgrammeLicenceFilter
 	Field ageMin:Long = 0
 	Field ageMax:Long = 0
 	Field checkTimeToReleaseMin:int = False
-	Field checkTimeToReleaseMax:int = True
+	Field checkTimeToReleaseMax:int = False
 	Field timeToReleaseMin:Long = 0
 	Field timeToReleaseMax:Long = 0
 	Field displayInMenu:int = False
@@ -1838,7 +1838,7 @@ Type TProgrammeLicenceFilter
 		return self
 	End Method
 
-global debug:int = False
+
 	'checks if the given programmelicence contains at least ONE of the given
 	'filter criterias ("OR"-chain of criterias)
 	'Ex.: filter cares for genres 1,2 and flags "trash" and "bmovie"

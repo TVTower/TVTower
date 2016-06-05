@@ -182,20 +182,12 @@ Type TgfxProgrammelist Extends TPlannerList
 				'so add 1 pixel to textY
 				textRect.position.SetY(currY + 1)
 
-
 				Local licenceCount:Int = programmeCollection.GetFilteredLicenceCount(visibleFilters[i])
 				Local filterName:String = visibleFilters[i].GetCaption()
 
 				
 				If licenceCount > 0
 					GetBitmapFontManager().baseFont.drawBlock(filterName + " (" +licenceCount+ ")", textRect.GetX(), textRect.GetY(), textRect.GetW(), textRect.GetH(), ALIGN_LEFT_CENTER, TColor.clBlack)
-Rem
-					SetAlpha 0.6; SetColor 0, 255, 0
-					'takes 20% of fps...
-					For Local i:Int = 0 To genrecount -1
-						DrawLine(currX + 121 + i * 2, currY + 4 + lineHeight*genres - 1, currX + 121 + i * 2, currY + 17 + lineHeight*genres - 1)
-					Next
-endrem
 				Else
 					SetAlpha 0.25 * GetAlpha()
 					GetBitmapFontManager().baseFont.drawBlock(filterName, textRect.GetX(), textRect.GetY(), textRect.GetW(), textRect.GetH(), ALIGN_LEFT_CENTER, TColor.clBlack)
