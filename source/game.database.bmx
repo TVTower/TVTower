@@ -768,14 +768,16 @@ Type TDatabaseLoader
 		'override data by a <releaseTime> block
 		local releaseTimeNode:TxmlNode = xml.FindChild(node, "releaseTime")
 		if releaseTimeNode
-			xml.LoadValuesToData(nodeData, releaseData, timeFields)
+			xml.LoadValuesToData(releaseTimeNode, releaseData, timeFields)
 		endif
 
 		'convert various time definitions to an absolute time
 		'(this relies on "GetWorldTime()" being initialized already with
 		' the game time)
 		programmeData.releaseTime = CreateReleaseTime(releaseData, programmeData.releaseTime)
-
+		if programmeData.releaseTime = 0
+			print "Failed to create releaseTime for ~q"+programmeData.GetTitle()+"~q (GUID: ~q"+GUID+"~q."
+		endif
 
 		'=== STAFF ===
 		local nodeStaff:TxmlNode = xml.FindChild(node, "staff")

@@ -28,7 +28,8 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	'the programme
 	Field trailerRefreshFactor:float = 1.5
 	'helper data
-	Field _unreleasedProgrammeData:TList = CreateList() {nosave}
+	Field _unreleasedProgrammeData:TList {nosave}
+	Field _liveProgrammeData:TList {nosave}
 
 	Global _instance:TProgrammeDataCollection
 
@@ -50,6 +51,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 
 	Method _InvalidateCaches()
 		_unreleasedProgrammeData = Null
+		_liveProgrammeData = Null
 	End Method
 
 
@@ -85,6 +87,24 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		_unreleasedProgrammeData.Sort(True, _SortUnreleasedByRelease)
 
 		return _unreleasedProgrammeData
+	End Method	
+
+
+	'returns (and creates if needed) a list containing only live
+	'programmeData
+	Method GetLiveProgrammeDataList:TList()
+		if not _liveProgrammeData
+			_liveProgrammeData = CreateList()
+			For local data:TProgrammeData = EachIn entries.Values()
+				if not data.IsLive() then continue
+
+				_liveProgrammeData.AddLast(data)
+			Next
+		endif
+		'order by release
+		_liveProgrammeData.Sort(True, _SortUnreleasedByRelease)
+
+		return _liveProgrammeData
 	End Method	
 
 
@@ -293,6 +313,23 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	End Method
 
 
+	'updates live programmes (checks if they aired now)
+	Method UpdateLive:int()
+		local live:TList = GetLiveProgrammeDataList()
+		local invalidate:int = False
+		
+		For local pd:TProgrammeData = EachIn live
+			'only check up to the current year
+			if pd.GetReleaseTime() > GetWorldTime().GetTimeGone() then exit
+
+			if pd.IsLive() and pd.UpdateLiveState()
+				invalidate = True
+			endif
+		Next
+		if invalidate then _liveProgrammeData = null
+	End Method
+
+
 	'updates all programmes programmes (checks for new states)
 	'call this after a game start to set all "old programmes" to be
 	'finished
@@ -369,6 +406,9 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	'programmes descending from this programme (eg. "Lord of the Rings"
 	'as "franchise" and the individual programmes as "franchisees"
 	Field franchisees:string[] {nosave}
+	'bitmask for all players whether they currently broadcast it
+	Field playersBroadcasting:int
+	Field playersLiveBroadcasting:int
 
 	'=== trailer data ===
 	Field trailerTopicality:float = 1.0
@@ -849,6 +889,55 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	End Method
 
 
+	Method SetPlayerIsBroadcasting(playerID:int, enable:int)
+		local flag:int = 2^(playerID-1)
+		If enable
+			playersBroadcasting :| flag
+		Else
+			playersBroadcasting :& ~flag
+		EndIf
+	End Method
+
+
+	Method IsPlayerIsBroadcasting:int(playerID:int)
+		local flag:int = 2^(playerID-1)
+		return (playersBroadcasting & flag > 0)
+	End Method
+
+
+	Method SetPlayerIsLiveBroadcasting(playerID:int, enable:int)
+		local flag:int = 2^(playerID-1)
+		If enable
+			playersLiveBroadcasting :| flag
+		Else
+			playersLiveBroadcasting :& ~flag
+		EndIf
+	End Method
+
+
+	Method IsPlayerIsLiveBroadcasting:int(playerID:int)
+		local flag:int = 2^(playerID-1)
+		return (playersBroadcasting & flag > 0)
+	End Method	
+
+
+	'returns whether the state was updated
+	Method UpdateLiveState:int()
+		'cannot update as long somebody is broadcasting that programme
+		if playersLiveBroadcasting > 0 then return False
+
+		
+		' xx:05 - movies begin then
+		if IsLive() and GetWorldTime().GetTimeGone() > releaseTime + 5*60
+			SetFlag(TVTProgrammeDataFlag.LIVE, False)
+			SetFlag(TVTProgrammeDataFlag.LIVEONTAPE, True)
+			return True
+		endif
+		return False
+	End Method
+
+
+
 	Method IsLiveOnTape:int()
 		return HasFlag(TVTProgrammeDataFlag.LIVEONTAPE) > 0
 	End Method
@@ -1284,6 +1373,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	'override
 	Method IsAvailable:int()
 		'live programme is available 10 days before
+
 		if IsLive()
 			if GetWorldTime().GetDay() + 10 >= GetWorldTime().GetDay(releaseTime)
 				return True
@@ -1422,9 +1512,36 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	'override
 	'called as soon as the last block of a programme ends
 	Method doFinishBroadcast(playerID:int = -1, broadcastType:int = 0)
+		'mark broadcasting state
+		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
+			if playerID > 0
+				SetPlayerIsBroadcasting(playerID, False)
+				'reset of live in all cases
+				SetPlayerIsLiveBroadcasting(playerID, False)
+			endif
+		endif
+
+rem 'now done by GetProgrammeDataCollection().UpdateLive() run every
+    'game minute
+
 		if IsLive()
 			SetFlag(TVTProgrammeDataFlag.LIVE, False)
 			SetFlag(TVTProgrammeDataFlag.LIVEONTAPE, True)
+		endif
+endrem
+	End Method
+
+
+	'override
+	'called as soon as the last block of a programme ends
+	Method doAbortBroadcast(playerID:int = -1, broadcastType:int = 0)
+		'mark broadcasting state
+		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
+			if playerID > 0
+				SetPlayerIsBroadcasting(playerID, False)
+				'reset of live in all cases
+				SetPlayerIsLiveBroadcasting(playerID, False)
+			endif
 		endif
 	End Method
 
@@ -1432,6 +1549,17 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	'override
 	'called as soon as the programme is broadcasted
 	Method doBeginBroadcast(playerID:int = -1, broadcastType:int = 0)
+		'mark broadcasting state
+		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
+			if playerID > 0
+				SetPlayerIsBroadcasting(playerID, True)
+				'if broadcasting right at live time - mark it
+				if isLive() and GetWorldTime().GetDayHour() = GetWorldTime().GetDayHour( releaseTime )
+					SetPlayerIsLiveBroadcasting(playerID, True)
+				endif
+			endif
+		endif
+
 		'trigger broadcastEffects
 		local effectParams:TData = new TData.Add("source", self).AddNumber("playerID", playerID)
 

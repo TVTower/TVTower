@@ -1532,8 +1532,14 @@ Type TProgrammeLicenceFilter
 	Field priceMax:int = -1
 	Field releaseTimeMin:Long = -1
 	Field releaseTimeMax:Long = -1
-	Field ageMin:Long = -1
-	Field ageMax:Long = -1
+	Field checkAgeMin:int = False
+	Field checkAgeMax:int = False
+	Field ageMin:Long = 0
+	Field ageMax:Long = 0
+	Field checkTimeToReleaseMin:int = False
+	Field checkTimeToReleaseMax:int = True
+	Field timeToReleaseMin:Long = 0
+	Field timeToReleaseMax:Long = 0
 	Field displayInMenu:int = False
 	Field id:int = 0
 
@@ -1555,37 +1561,37 @@ Type TProgrammeLicenceFilter
 		'flags having custom categories
 		local categoryFlags:int = TVTProgrammeDataFlag.PAID | TVTProgrammeDataFlag.LIVE | TVTProgrammeDataFlag.TRASH
 
-		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([1])			'adventure
-		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([2])			'action
-		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([4, 17])		'crime & thriller
-		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([5])			'comedy
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([1])			'adventure
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([2])			'action
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([4, 17])		'crime & thriller
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([5])			'comedy
 		'documentation & reportage
-		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([6, 300]).SetCaption("PROGRAMME_GENRE_DOCUMENTARIES_AND_FEATURES")
-		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([7])			'drama
-		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([8])			'erotic
-		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([9, 3])			'family & cartoons
-		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([10, 14])		'fantasy & mystery
-		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([11])			'history
-		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([12])			'horror
-		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([13])			'monumental
-		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([15])			'lovestory
-		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([16])			'scifi
-		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([18])			'western
-		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([0])			'undefined
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([6, 300]).SetCaption("PROGRAMME_GENRE_DOCUMENTARIES_AND_FEATURES")
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([7])			'drama
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([8])			'erotic
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([9, 3])			'family & cartoons
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([10, 14])		'fantasy & mystery
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([11])			'history
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([12])			'horror
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([13])			'monumental
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([15])			'lovestory
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([16])			'scifi
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([18])			'western
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([0])			'undefined
 		'show/event -> all categories
-		CreateVisible().AddNotDataFlag(categoryFlags).AddGenres([100, 101, 102, 200, 201, 202, 203, 204]).SetCaption("PROGRAMME_GENRE_SHOW_AND_EVENTS")
-		CreateVisible().AddDataFlag(TVTProgrammeDataFlag.LIVE)						'live
-'		CreateVisible().AddDataFlag(TVTProgrammeDataFlag.TRASH).AddGenres([301])	'Trash + Yellow Press
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([100, 101, 102, 200, 201, 202, 203, 204]).SetCaption("PROGRAMME_GENRE_SHOW_AND_EVENTS")
+		CreateVisible().SetDataFlag(TVTProgrammeDataFlag.LIVE)						'live
+'		CreateVisible().SetDataFlag(TVTProgrammeDataFlag.TRASH).AddGenres([301])	'Trash + Yellow Press
 
 		'either trash - or genre 301 (yellow press)
 		local trash:TProgrammeLicenceFilterGroup = TProgrammeLicenceFilterGroup.CreateVisible()
 		trash.SetConnectionType(TProgrammeLicenceFilterGroup.CONNECTION_TYPE_OR)
 		'store config in group for proper caption
-		trash.AddDataFlag(TVTProgrammeDataFlag.TRASH).AddGenres([301])
-		trash.AddFilter( new TProgrammeLicenceFilter.AddDataFlag(TVTProgrammeDataFlag.TRASH).ForbidChildren())
+		trash.SetDataFlag(TVTProgrammeDataFlag.TRASH).AddGenres([301])
+		trash.AddFilter( new TProgrammeLicenceFilter.SetDataFlag(TVTProgrammeDataFlag.TRASH).ForbidChildren())
 		trash.AddFilter( new TProgrammeLicenceFilter.AddGenres([301]).ForbidChildren() )
 
-		CreateVisible().AddDataFlag(TVTProgrammeDataFlag.PAID)						'Call-In
+		CreateVisible().SetDataFlag(TVTProgrammeDataFlag.PAID)						'Call-In
 	End Function
 
 
@@ -1616,6 +1622,14 @@ Type TProgrammeLicenceFilter
 		releaseTimeMax = otherFilter.releaseTimeMax
 		ageMin = otherFilter.ageMin
 		ageMax = otherFilter.ageMax
+		checkAgeMin = otherFilter.checkAgeMin
+		checkAgeMax = otherFilter.checkAgeMax
+
+		timeToReleaseMin = otherFilter.timeToReleaseMin
+		timeToReleaseMax = otherFilter.timeToReleaseMax
+		checkTimeToReleaseMin = otherFilter.checkTimeToReleaseMin
+		checkTimeToReleaseMax = otherFilter.checkTimeToReleaseMax
+
 		childrenForbidden = otherFilter.childrenForbidden
 		displayInMenu = otherFilter.displayInMenu
 
@@ -1775,15 +1789,22 @@ Type TProgrammeLicenceFilter
 	End Method
 
 
-	Method AddDataFlag:TProgrammeLicenceFilter(flag:int)
-		self.dataFlags :| flag
-
+	Method SetDataFlag:TProgrammeLicenceFilter(flag:int, enable:int = 1)
+		If enable
+			dataFlags :| flag
+		Else
+			dataFlags :& ~flag
+		EndIf
 		return self
 	End Method
 
 
-	Method AddNotDataFlag:TProgrammeLicenceFilter(flag:int)
-		self.notDataFlags :| flag
+	Method SetNotDataFlag:TProgrammeLicenceFilter(flag:int, enable:int = 1)
+		If enable
+			notDataFlags :| flag
+		Else
+			notDataFlags :& ~flag
+		EndIf
 
 		return self
 	End Method
@@ -1817,7 +1838,7 @@ Type TProgrammeLicenceFilter
 		return self
 	End Method
 
-
+global debug:int = False
 	'checks if the given programmelicence contains at least ONE of the given
 	'filter criterias ("OR"-chain of criterias)
 	'Ex.: filter cares for genres 1,2 and flags "trash" and "bmovie"
@@ -1861,8 +1882,12 @@ Type TProgrammeLicenceFilter
 		if releaseTimeMax >= 0 and licence.data.GetReleaseTime() > releaseTimeMax then return False
 
 		'check age (relative value)
-		if ageMin >= 0 and GetWorldTime().GetTimeGone() - licence.data.GetReleaseTime() < ageMin then return False
-		if ageMax >= 0 and GetWorldTime().GetTimeGone() - licence.data.GetReleaseTime() > ageMax then return False
+		if checkAgeMin and GetWorldTime().GetTimeGone() - licence.data.GetReleaseTime() < ageMin then return False
+		if checkAgeMax and GetWorldTime().GetTimeGone() - licence.data.GetReleaseTime() > ageMax then return False
+
+		'check time to relase (aka "negative age")
+		if checkTimeToReleaseMin and licence.data.GetReleaseTime() - GetWorldTime().GetTimeGone() < timeToReleaseMin then return False
+		if checkTimeToReleaseMax and licence.data.GetReleaseTime() - GetWorldTime().GetTimeGone() > timeToReleaseMax then return False
 
 		'check licenceType
 		if licenceTypes.length > 0

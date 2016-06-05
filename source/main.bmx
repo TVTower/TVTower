@@ -4288,6 +4288,13 @@ Type GameEvents
 				player.GetProgrammePlan().InformCurrentBroadcast(day, hour, minute)
 			Next
 		EndIf
+
+
+		'=== UPDATE LIVE PROGRAMME STATES ===
+		'(do that AFTER setting the broadcasts, so the programme data
+		' knows whether it is broadcasted currently or not)
+		'remove LIVE-status from programmes once they started
+		GetProgrammeDataCollection().UpdateLive()
 	
 		Return True
 	End Function

@@ -60,7 +60,7 @@
 				<en></en>
 			</description>
 			<groups target_groups="96" />
-			<data country="D" distribution="2" maingenre="300" subgenre="16" flags="0" blocks="1" price_mod="0.90" />
+			<data country="D" distribution="2" maingenre="300" subgenre="16" flags="1" blocks="1" price_mod="0.90" />
 			<releaseTime year="1985" day="6" hour="18" />
 			<ratings critics="45" speed="30" outcome="40" />
 		</programme>
@@ -75,7 +75,7 @@
 				<en>The big opener show for the Summer Olympics 1988 in Seoul. Big pictures and a fantastic dance with the theme "Heaven, Earth and Men"</en>
 			</description>
 			<groups target_groups="70" />
-			<data country="D" distribution="2" maingenre="203" subgenre="204" flags="0" blocks="3" price_mod="1.00" />
+			<data country="D" distribution="2" maingenre="203" subgenre="204" flags="1" blocks="3" price_mod="1.00" />
 			<releaseTime year="1988" day="10" hour="12" />
 			<ratings critics="65" speed="40" outcome="65" />
 		</programme>

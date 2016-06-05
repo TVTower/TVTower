@@ -1010,6 +1010,8 @@ endrem
 			'if the object is the current broadcasted thing, reset audience
 			If programme And obj = programme
 				GetBroadcastManager().SetBroadcastMalfunction(owner, TVTBroadcastMaterialType.PROGRAMME)
+
+				programme.AbortBroadcasting(GetWorldTime().GetDay(), GetWorldTime().GetDayHour(), GetWorldTime().GetDayMinute(), null)
 			EndIf
 			doneSomething = True
 		EndIf

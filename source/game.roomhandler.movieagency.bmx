@@ -82,9 +82,10 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		filterAuction.relativeTopicalityMin = 0.85
 		filterAuction.relativeTopicalityMax = -1.0
 		filterAuction.checkTradeability = True
-		filterAuction.ageMin = -1
 		'maximum of 1 year since release
 		filterAuction.ageMax = TWorldTime.DAYLENGTH * GetWorldTime().GetDaysPerYear()
+		filterAuction.checkAgeMin = False
+		filterAuction.checkAgeMax = True
 		
 
 
@@ -995,6 +996,15 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	End Function
 
 
+	Function GetCurrentLiveOffers:int()
+		local res:int = 0
+		For Local obj:TAuctionProgrammeBlocks = EachIn List
+			if obj.licence.GetData().IsLive() then res :+1
+		Next
+		return res
+	End Function
+
+
 	'refill all auctions without bids
 	Function RefillAuctionsWithoutBid()
 		For Local obj:TAuctionProgrammeBlocks = EachIn List
@@ -1040,17 +1050,43 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		endif
 	
 		licence = programmeLicence
+		local filter:TProgrammeLicenceFilter
 
-		local filter:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterAuction.Copy()
 
-		While Not licence And filter.priceMin >= 0
-			licence = GetProgrammeLicenceCollection().GetRandomByFilter(filter)
-			'lower the requirements
-			If Not licence
-				filter.priceMin :- 5000
-				filter.ageMax :+ TWorldTime.DAYLENGTH
-			endif
-		Wend
+		'try to find a "live" programme first
+		if GetCurrentLiveOffers() < 3
+			filter = RoomHandler_MovieAgency.GetInstance().filterAuction.Copy()
+			filter.SetDataFlag(TVTProgrammeDataFlag.LIVE)
+			'only take live-programme starting not earlier than 3 days
+			'from now
+			'this is needed to avoid a "live"-programme being no longer
+			'live
+			filter.timeToReleaseMin = 3 * TWorldTime.DAYLENGTH
+			filter.checkTimeToReleaseMin = True
+			filter.checkTimeToReleaseMax = False
+			filter.checkAgeMin = False
+			filter.checkAgeMax = False
+			
+			While Not licence And filter.priceMin >= 0
+				licence = GetProgrammeLicenceCollection().GetRandomByFilter(filter)
+				'lower the requirements
+				If Not licence then filter.priceMin :- 25000
+			End While
+		endif
+
+
+		'find a normal licence
+		if not licence
+			filter = RoomHandler_MovieAgency.GetInstance().filterAuction.Copy()
+			While Not licence And filter.priceMin >= 0
+				licence = GetProgrammeLicenceCollection().GetRandomByFilter(filter)
+				'lower the requirements
+				If Not licence
+					filter.priceMin :- 5000
+					filter.ageMax :+ TWorldTime.DAYLENGTH
+				endif
+			Wend
+		endif
 		If not licence
 			TLogger.log("AuctionProgrammeBlocks.Refill()", "No licences for new auction found. Database needs more entries!", LOG_ERROR)
 			'If Not licence Then Throw "[ERROR] TAuctionProgrammeBlocks.Refill - no licence"
@@ -1221,7 +1257,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			If Not _imageWithText Then Throw "GetImage Error for gfx_auctionmovie"
 
 			Local pix:TPixmap = LockImage(_imageWithText)
-			Local font:TBitmapFont		= GetBitmapFont("Default", 12)
+			Local font:TBitmapFont = GetBitmapFont("Default", 12)
 			Local titleFont:TBitmapFont	= GetBitmapFont("Default", 12, BOLDFONT)
 
 			'set target for fonts
@@ -1233,9 +1269,9 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			Else
 				font.drawStyled(GetLocale("AUCTION_WITHOUT_BID"), 31,33, TColor.CreateGrey(150), 0, 1, 0.25)
 			EndIf
-			titleFont.drawBlock(licence.GetTitle(), 31,5, 215,30, Null, TColor.clBlack, 1, 1, 0.50)
+			titleFont.drawBlock(licence.GetTitle(), 31,5, 215,30, ALIGN_LEFT_TOP, TColor.clBlack, 1, 1, 0.50)
 
-			font.drawBlock(GetLocale("AUCTION_MAKE_BID")+": "+TFunctions.DottedValue(GetNextBid())+CURRENCYSIGN, 31,33, 212,20, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack, 1)
+			font.drawBlock(GetLocale("AUCTION_MAKE_BID")+": "+TFunctions.DottedValue(GetNextBid())+CURRENCYSIGN, 31,33, 212,20, ALIGN_RIGHT_TOP, TColor.clBlack, 1)
 
 			'reset target for fonts
 			TBitmapFont.setRenderTarget(Null)
@@ -1243,6 +1279,20 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		SetColor 255,255,255
 		SetAlpha 1
 		DrawImage(_imageWithText, area.GetX(), area.GetY())
+
+		'live
+		If licence.data.IsLive()
+			GetSpriteFromRegistry("pp_live").Draw(area.GetX() + _imageWithText.width - 8, area.GetY() +3,  -1, ALIGN_RIGHT_TOP)
+		EndIf
+		'xrated
+		If licence.data.IsXRated()
+			GetSpriteFromRegistry("pp_xrated").Draw(area.GetX() + _imageWithText.width - 8, area.GetY() +3,  -1, ALIGN_RIGHT_TOP)
+		EndIf
+		'paid
+		If licence.data.IsPaid()
+			GetSpriteFromRegistry("pp_paid").Draw(area.GetX() + _imageWithText.width - 8, area.GetY() +3,  -1, ALIGN_RIGHT_TOP)
+		EndIf
+
     End Method
 
 

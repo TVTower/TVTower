@@ -190,6 +190,11 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method AbortBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
+		'print "continue broadcasting the next block of: "+GetTitle()
+	End Method
+
+
 	'returns whether a programme is programmed for that given day
 	Method IsProgrammedForDay:int(day:int)
 		if programmedDay = -1 then return FALSE

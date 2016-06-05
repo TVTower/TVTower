@@ -135,6 +135,14 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	'override
+	Method AbortBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
+		Super.AbortBroadcasting(day, hour, minute, audienceData)
+
+		data.doAbortBroadcast(owner, usedAsType)
+	End Method	
+
+
+	'override
 	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		Super.BeginBroadcasting:int(day, hour, minute, audienceData)
 
