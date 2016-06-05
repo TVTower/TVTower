@@ -167,7 +167,7 @@
 	reportage_undefined
 	reportage_yellowpress
 -->
-				<child name="gfx_auctionmovie" 						x="0"	y="450"	w="256"	h="55" />
+				<child name="gfx_auctionmovie" 						x="192"	y="83"	w="256"	h="55" />
 				<child name="gfx_movieagency_vendor"	 			x="0"	y="0"	w="190"	h="220" />
 				<child name="gfx_movieagency_vendor_eyes"	 		x="191"	y="0"	w="56"	h="19" />
 				<child name="gfx_movieagency_hammer"		 		x="191"	y="20"	w="134"	h="60" />

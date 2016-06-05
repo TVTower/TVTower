@@ -245,13 +245,14 @@ Type TDatabaseLoader
 					Next
 					
 					GetProgrammeLicenceCollection().AddAutomatic(licence)
-
+					rem
 					if GetWorldTime().GetYear(licence.GetData().releaseTime) > 1985 and licence.IsAvailable()
 						print licence.GetTitle() +"   is released: "+ GetWorldTime().GetFormattedDate(licence.GetData().releaseTime)+"  available:"+licence.IsAvailable() +" isReleased:"+licence.IsReleased() +" isLive:"+licence.GetData().IsLive() +"  relTime:"+ (GetWorldTime().GetTimeGone() >= licence.GetData().releaseTime)
 						For local sub:TProgrammeLicence = eachin licence.subLicences
 							if sub.isAvailable() then print "episode ~q"+sub.GetTitle()+" is available"
 						Next
 					endif
+					endrem
 				endif
 			Next
 		endif
