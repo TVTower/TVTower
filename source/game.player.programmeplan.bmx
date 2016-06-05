@@ -815,8 +815,19 @@ endrem
 			local p:TProgramme = TProgramme(obj)
 			if p.data.IsLive()
 				'hour or day incorrect
-				if GetWorldTime().GetDayHour( p.data.releaseTime ) <> hour then return False 
-				if GetWorldTime().GetDay( p.data.releaseTime ) <> day then return False
+				if GameRules.onlyExactLiveProgrammeTimeAllowedInProgrammePlan
+					if GetWorldTime().GetDayHour( p.data.releaseTime ) <> hour then return False 
+					if GetWorldTime().GetDay( p.data.releaseTime ) <> day then return False
+				'all times after the live event are allowed too
+				else
+					'live happens on a later day
+					if GetWorldTime().GetDay( p.data.releaseTime ) > day
+						return False
+					'live happens on that day but on a later hour
+					elseif GetWorldTime().GetDay( p.data.releaseTime ) = day
+						if GetWorldTime().GetDayHour( p.data.releaseTime ) > hour then return False 
+					endif
+				endif
 			endif
 		endif
 

@@ -32,6 +32,10 @@ Type TGameRules {_exposeToLua}
 	'speed is used for figures, elevator, ...
 	Field worldSpeed:float = 1.0
 
+	'if disabled, player is allowed to place a live programme
+	'also at later times (eg. 2 hours later)
+	Field onlyExactLiveProgrammeTimeAllowedInProgrammePlan:int = True
+
 	'percentage of the gametime when in a room (default = 100%)
 	'use a lower value, to slow down the game then (movement + time)
 	Field InRoomTimeSlowDownMod:Float = 1.0

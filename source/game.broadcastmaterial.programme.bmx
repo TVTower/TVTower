@@ -534,9 +534,13 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	Method ShowSheet:int(x:int,y:int,align:int)
+		local extra:TData = new TData
+		extra.AddNumber("programmedDay", programmedDay)
+		extra.AddNumber("programmedHour", programmedHour)
+
 		'show sheet with stats of the broadcast owner, not the current
 		'licence owner
-		self.licence.ShowSheet(x,y,align, self.usedAsType, owner)
+		self.licence.ShowSheet(x,y,align, self.usedAsType, owner, extra)
 	End Method
 
 

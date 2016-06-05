@@ -239,9 +239,9 @@
 				<child name="gfx_series_undefined"	 		x="225"	y="380"	w="15"	h="70" />
 
 
-				<child name="gfx_movie_flag_paid"	 		x="0"	y="221"	w="15"	h="4" />
-				<child name="gfx_movie_flag_xrated"	 		x="0"	y="226"	w="15"	h="4" />
-				<child name="gfx_movie_flag_live"	 		x="0"	y="231"	w="15"	h="4" />
+				<child name="gfx_movie_flag_paid"	 		x="0"	y="221"	w="15"	h="5" />
+				<child name="gfx_movie_flag_xrated"	 		x="0"	y="226"	w="15"	h="5" />
+				<child name="gfx_movie_flag_live"	 		x="0"	y="231"	w="15"	h="5" />
 			</children>
 		</spritepack>
 
@@ -305,6 +305,7 @@
 				<child name="pp_programmeblock2_dragged"			x="0"	y="0"	w="214"	h="70" offsetTop="4" offsetLeft="4" offsetbottom="6" offsetright="5" />
 				<child name="pp_xrated"								x="321"	y="110"	w="13"	h="12" offsetTop="0" />
 				<child name="pp_paid"								x="334"	y="110"	w="13"	h="12" offsetTop="-2" />
+				<child name="pp_live"								x="347"	y="110"	w="13"	h="12" offsetTop="0" />
 			</children>
 		</spritepack>
 

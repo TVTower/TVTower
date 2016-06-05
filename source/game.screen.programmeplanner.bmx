@@ -213,16 +213,16 @@ Type TScreenHandler_ProgrammePlanner
 	End Function
 
 
-	Function EnableSlotOverlays:int(hours:int[] = null, slotType:int = -1)
+	Function EnableSlotOverlays:int(hours:int[] = null, slotType:int = -1, mode:int=1)
 		If hours and hours.length > 0
 			For local hour:int = EachIn hours
 				if slotType = TVTBroadcastMaterialType.PROGRAMME
-					overlayedProgrammeSlots[hour] = 1
+					overlayedProgrammeSlots[hour] = mode
 				elseif slotType = TVTBroadcastMaterialType.ADVERTISEMENT
-					overlayedAdSlots[hour] = 1
+					overlayedAdSlots[hour] = mode
 				else
-					overlayedProgrammeSlots[hour] = 1
-					overlayedAdSlots[hour] = 1
+					overlayedProgrammeSlots[hour] = mode
+					overlayedAdSlots[hour] = mode
 				endif
 			Next
 		Endif
@@ -247,9 +247,18 @@ Type TScreenHandler_ProgrammePlanner
 
 	Function HasSlotOverlay:int(hour:int, slotType:int = 0)
 		if slotType = TVTBroadcastMaterialType.PROGRAMME
-			return overlayedProgrammeSlots[hour] = 1
+			return overlayedProgrammeSlots[hour] <> 0
 		else
-			return overlayedAdSlots[hour] = 1
+			return overlayedAdSlots[hour] <> 0
+		endif
+	End Function
+
+
+	Function GetSlotOverlay:int(hour:int, slotType:int = 0)
+		if slotType = TVTBroadcastMaterialType.PROGRAMME
+			return overlayedProgrammeSlots[hour]
+		else
+			return overlayedAdSlots[hour]
 		endif
 	End Function
 
@@ -357,46 +366,53 @@ Type TScreenHandler_ProgrammePlanner
 		Local clockOverlay1:TSprite = GetSpriteFromRegistry("gfx_programmeplanner_clockoverlay1.highlighted")
 		Local clockOverlay2:TSprite = GetSpriteFromRegistry("gfx_programmeplanner_clockoverlay2.highlighted")
 
+
 		For local i:int = 0 to 23
-			local overlayedCount:int = (HasSlotOverlay(i, TVTBroadcastMaterialType.PROGRAMME) = not invert) + (HasSlotOverlay(i, TVTBroadcastMaterialType.ADVERTISEMENT) = not invert)
-			if overlayedCount = 2
-				if not invert
-					SetColor 255,50,50
-				else
-					SetColor 0,255,50
-				endif
-			elseif overlayedCount = 1
-				SetColor 255,150,0
-			endif
+			local overlayedCount:int = 0
+			local mode1:int = GetSlotOverlay(i, TVTBroadcastMaterialType.PROGRAMME)
+			local mode2:int = GetSlotOverlay(i, TVTBroadcastMaterialType.ADVERTISEMENT)
+			overlayedCount = (mode1<>0) + (mode2<>0)
+			if invert then overlayedCount = 2 - overlayedCount
+			if not overlayedCount then continue
+
+
+			local x:int, y:int
 
 			if i < 12
-				if overlayedCount > 0
-					if i mod 2 = 0
-						clockOverlay1.Draw(5, 5 + i*30)
-					else
-						clockOverlay2.Draw(5, 5 + i*30)
-					endif
-				endif
-				if HasSlotOverlay(i, TVTBroadcastMaterialType.PROGRAMME) = not invert
-					blockOverlay.DrawArea(45, 5 + i*30, 205, 30)
-				endif
-				if HasSlotOverlay(i, TVTBroadcastMaterialType.ADVERTISEMENT) = not invert
-					blockOverlay.DrawArea(45 + 205, 5 + i*30, 85, 30)
-				endif
+				x = 5
+				y = 5 + i*30
 			else
-				if overlayedCount > 0
-					if i mod 2 = 0
-						clockOverlay1.Draw(340, 5 + (i - 12)*30)
-					else
-						clockOverlay2.Draw(340, 5 + (i - 12)*30)
-					endif
-				endif
-				if HasSlotOverlay(i, TVTBroadcastMaterialType.PROGRAMME) = not invert
-					blockOverlay.DrawArea(380, 5 + (i - 12)*30, 205,30)
-				endif
-				if HasSlotOverlay(i, TVTBroadcastMaterialType.ADVERTISEMENT) = not invert
-					blockOverlay.DrawArea(380 + 205, 5 + (i - 12)*30, 85,30)
-				endif
+				x = 340
+				y = 5 + (i - 12)*30
+			endif
+
+			'clock overlay
+			if mode1 = mode2
+				if mode1 = 1 then SetColor 110, 255, 110
+				if mode1 = 2 then SetColor 255,200,75
+			else
+				SetColor 255,190,75
+			endif
+			if i mod 2 = 0
+				clockOverlay1.Draw(x, y)
+			else
+				clockOverlay2.Draw(x, y)
+			endif
+
+			'programme overlay
+			if (mode1<>0) = not invert
+				if mode1 = 1 then SetColor 110, 255, 110
+				if mode1 = 2 then SetColor 255,200,75
+
+				blockOverlay.DrawArea(x+40, y, 205, 30)
+			endif
+
+			'ad overlay
+			if (mode2<>0) = not invert
+				if mode2 = 1 then SetColor 110, 255, 110
+				if mode2 = 2 then SetColor 255,200,75
+
+				blockOverlay.DrawArea(x+40 + 205, y, 85, 30)
 			endif
 		Next
 
@@ -595,13 +611,15 @@ Type TScreenHandler_ProgrammePlanner
 			local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", new TVec2D.Init(-1,-1)))
 			local slot:int = receiverList.GetSlotByCoord(coord)
 
-			'check if it is a live programme
-			if TProgramme(item.broadcastMaterial) and TProgramme(item.broadcastMaterial).data.IsLive()
-				local releaseTime:long = TProgramme(item.broadcastMaterial).data.releaseTime
-				if planningDay <> GetWorldTime().GetDay( releaseTime ) or ..
-				   slot <> GetWorldTime().GetDayHour( releaseTime )
-					triggerEvent.SetVeto()
-					return False
+			'check if it is a live programme (dropped on the programme slots)
+			if receiverList = GuiListProgrammes
+				if TProgramme(item.broadcastMaterial) and TProgramme(item.broadcastMaterial).data.IsLive()
+					local releaseTime:long = TProgramme(item.broadcastMaterial).data.releaseTime
+					if planningDay <> GetWorldTime().GetDay( releaseTime ) or ..
+					   slot <> GetWorldTime().GetDayHour( releaseTime )
+						triggerEvent.SetVeto()
+						return False
+					endif
 				endif
 			endif
 		endif
@@ -1013,6 +1031,9 @@ Type TScreenHandler_ProgrammePlanner
 
 		currentRoom = room
 
+		'if not initialized, do so
+		if planningDay = -1 then planningDay = GetWorldTime().GetDay()
+
 		'reset and refresh locked slots of this day
 		ResetSlotOverlays()
 		local pp:TPlayerProgrammePlan = GetPlayerProgrammePlan(room.owner)
@@ -1030,30 +1051,50 @@ Type TScreenHandler_ProgrammePlanner
 
 			if programme
 				if KEYMANAGER.IsHit(KEY_SPACE)
-					'set live time to 22:00
-					programme.data.releaseTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(), 22, 0,0)
+					'set live time to 11:00
+					programme.data.releaseTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(), 11, 0,0)
 					programme.data.SetFlag(TVTProgrammeDataFlag.LIVE, True)
 					programme.data.distributionChannel = TVTProgrammeDistributionChannel.TV
 				endif
 
-				if programme.data.IsLive()
-					local liveHours:int[]
+				'live and not planning day in the past
+				if programme.data.IsLive() and GetWorldTime().GetDay() <= planningDay 
+					local hourSlots:int[]
 					local blockTime:Long = programme.data.releaseTime
-					For local i:int = 0 until programme.GetBlocks()
-						if GetWorldTime().GetDay(blockTime) = planningDay 
-							liveHours :+ [ GetWorldTime().GetDayHour(blockTime) ]
-						endif
-						blockTime :+ 3600
-					Next
-					EnableSlotOverlays(liveHours, TVTBroadcastMaterialType.PROGRAMME)
+					if GameRules.onlyExactLiveProgrammeTimeAllowedInProgrammePlan
+						'mark allowed slots
+						For local i:int = 0 until programme.GetBlocks()
+							if GetWorldTime().GetDay(blockTime) = planningDay 
+								hourSlots :+ [ GetWorldTime().GetDayHour(blockTime) ]
+							endif
+							blockTime :+ 3600
+						Next
+						EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.PROGRAMME, 1)
+
+
+						'mark all future ad-slots allowed
+						hourSlots = new Int[0]
+						local start:int = GetWorldTime().GetDayHour()+1
+						if GetWorldTime().GetDayMinute() < 55 then start :- 1
+						if GetWorldTime().GetDay() < planningDay then start = 0
+						For local i:int = start to 23
+							hourSlots :+ [i]
+						Next
+						EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.ADVERTISEMENT, 1)
+					else
+						'mark all forbidden slots
+						local start:int = GetWorldTime().GetDayHour()+1
+						if GetWorldTime().GetDayMinute() < 5 then start :-1
+						if GetWorldTime().GetDay() < planningDay then start = 0
+						For local i:int = 0 until GetWorldTime().GetDayHour(blockTime)
+							hourSlots :+ [ i ]
+						Next
+						EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.PROGRAMME, 2)
+					endif
 				endif
 			endif
 		endif
 		
-
-		'if not initialized, do so
-		if planningDay = -1 then planningDay = GetWorldTime().GetDay()
-
 		GetGameBase().cursorstate = 0
 
 		ignoreCopyOrEpisodeShortcut  = false

@@ -660,8 +660,10 @@ Type TVTProgrammeDataFlag {_exposeToLua}
 	Const CUSTOMPRODUCTION:Int = 512
 	'these programmes are hidden from the planner selection
 	Const INVISIBLE:Int = 1024
+	'these programmes are hidden from the planner selection
+	Const LIVEONTAPE:Int = 2048
 
-	Const count:int = 11
+	Const count:int = 12
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -672,17 +674,18 @@ Type TVTProgrammeDataFlag {_exposeToLua}
 
 	Function GetAsString:String(key:int = 0)
 		Select key
-			case LIVE      return "live"
-			case ANIMATION return "animation"
-			case CULTURE   return "culture"
-			case CULT      return "cult"
-			case TRASH     return "trash"
-			case BMOVIE    return "bmovie"
-			case XRATED    return "xrated"
-			case PAID      return "paid"
-			case SERIES    return "series"
-			case SCRIPTED  return "scripted"
-			case INVISIBLE return "invisible"
+			case LIVE       return "live"
+			case ANIMATION  return "animation"
+			case CULTURE    return "culture"
+			case CULT       return "cult"
+			case TRASH      return "trash"
+			case BMOVIE     return "bmovie"
+			case XRATED     return "xrated"
+			case PAID       return "paid"
+			case SERIES     return "series"
+			case SCRIPTED   return "scripted"
+			case INVISIBLE  return "invisible"
+			case LIVEONTAPE return "liveontape"
 			default
 				'loop through all flag-entries and add them if contained
 				local result:string

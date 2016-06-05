@@ -551,6 +551,7 @@ TODAY = Heute
 YESTERDAY = Gestern
 TWO_DAYS_AGO = Vorgestern
 IN_X_DAYS = In %DAYS% Tagen
+X_DAYS_AGO = Vor %DAYS% Tagen
 
 INFOMERCIAL = Dauerwerbesendung
 SPECIAL_NEWS_BROADCAST = Nachrichtenspezial

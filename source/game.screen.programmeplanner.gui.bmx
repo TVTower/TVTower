@@ -245,6 +245,10 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 						Else
 							GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(New TRectangle.Init(drawPos.x, drawPos.y, -1, 30))
 						EndIf
+						'live
+						If TProgramme(broadcastMaterial) And TProgramme(broadcastMaterial).data.IsLive()
+							GetSpriteFromRegistry("pp_live").Draw(drawPos.x + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth(), drawPos.y,  -1, New TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP))
+						EndIf
 						'xrated
 						If TProgramme(broadcastMaterial) And TProgramme(broadcastMaterial).data.IsXRated()
 							GetSpriteFromRegistry("pp_xrated").Draw(drawPos.x + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth(), drawPos.y,  -1, New TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP))

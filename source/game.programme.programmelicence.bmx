@@ -638,17 +638,16 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		'also: GetData().isAvailable() calls data.isReleased() already
 		'if not isReleased() then return False
 
-		'single-licence
-		if GetSubLicenceCount() = 0 and GetData() and not GetData().isAvailable() then return False
+		if GetData() and not GetData().isAvailable() then return False
 
 		'exceeded broadcastLimit
 		if broadcastLimit > 0 and GetTimesBroadcasted() >= broadcastLimit then return False
 
 		'if licence is a collection: ask subs
 		'one single available entry is enough to return True
-		For local licence:TProgrammeLicence = eachin subLicences
-			if licence.isAvailable() then return True
-		Next
+		'For local licence:TProgrammeLicence = eachin subLicences
+		'	if licence.isAvailable() then return True
+		'Next
 
 		return Super.IsAvailable()
 	End Method
@@ -948,7 +947,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 	
 
-	Method ShowSheet:Int(x:Int,y:Int, align:int=0, showMode:int=0, useOwner:int=-1)
+	Method ShowSheet:Int(x:Int,y:Int, align:int=0, showMode:int=0, useOwner:int=-1, extraData:TData = null)
 		if useOwner = -1 then useOwner = owner
 		'set default mode
 		if showMode = 0 then showMode = TVTBroadcastMaterialType.PROGRAMME
@@ -963,15 +962,15 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 
 		if showMode = TVTBroadcastMaterialType.PROGRAMME
-			ShowProgrammeSheet(x, y, align, useOwner)
+			ShowProgrammeSheet(x, y, align, useOwner, extraData)
 		'trailermode
 		elseif showMode = TVTBroadcastMaterialType.ADVERTISEMENT
-			ShowTrailerSheet(x, y, align, useOwner)
+			ShowTrailerSheet(x, y, align, useOwner, extraData)
 		endif
 	End Method
 
 
-	Method ShowProgrammeSheet:Int(x:Int,y:Int, align:int=0, useOwner:int=-1)
+	Method ShowProgrammeSheet:Int(x:Int,y:Int, align:int=0, useOwner:int=-1, extraData:TData = null)
 		if useOwner = -1 then useOwner = owner
 		
 		'=== PREPARE VARIABLES ===
@@ -1026,7 +1025,33 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		'if licence is for a specific programme it might contain a flag...
 		'TODO: do this for "all" via licence.HasFlag() doing recursive checks?
 		If data.HasFlag(TVTProgrammeDataFlag.PAID) then showMsgEarnInfo = True
-		If data.IsLive() then showMsgLiveInfo = True
+		If data.IsLive() or data.IsLiveOnTape()
+			local programmedDay:int = -1
+			local programmedHour:int = -1
+			if extraData
+				programmedDay = extraData.GetInt("programmedDay", -1)
+				programmedHour = extraData.GetInt("programmedHour", -1)
+				'not programmed = freshly created or dragged, so it is
+				'live, if the live-time is not passed yet
+				if programmedDay = -1 or programmedHour = -1
+					if GetWorldTime().GetTimeGone() < data.releaseTime + 5*60 ' xx:05
+						showMsgLiveInfo = true
+					endif
+				'if programmed, check if this the time of the live broadcast
+				'if so - also display the "live"-information for something
+				'which is only "live on tape" (was live at that time)
+				else
+					if GetWorldTime().GetDay(data.releaseTime) = programmedDay and GetWorldTime().GetDayHour(data.releaseTime) = programmedHour
+						showMsgLiveInfo = true
+					endif
+				endif
+			elseif data.IsLive()
+				'it is only live until it happens
+				if GetWorldTime().GetTimeGone() < data.releaseTime + 5*60 ' xx:05
+					showMsgLiveInfo = True
+				endif
+			endif
+		endif
 
 
 		'=== CALCULATE SPECIAL AREA HEIGHTS ===
@@ -1195,16 +1220,21 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 		If showMsgLiveInfo
 			local time:string = ""
-			if GetWorldTime().GetDay( data.releaseTime ) = GetWorldTime().GetDay()
+			local days:int = GetWorldTime().GetDay( data.releaseTime ) - GetWorldTime().GetDay()
+
+			if days = 0
 				time = GetLocale("TODAY")
-			elseif GetWorldTime().GetDay( data.releaseTime ) = GetWorldTime().GetDay() + 1 
+			elseif days = 1
 				time = GetLocale("TOMORROW")
-			else
+			elseif days =-1
+				time = GetLocale("YESTERDAY")
+			elseif days > 0
 				time = GetLocale("IN_X_DAYS").Replace("%DAYS%", GetWorldTime().GetDaysRun( data.releaseTime ) - GetWorldTime().GetDaysRun())
+			else
+				time = GetLocale("X_DAYS_AGO").Replace("%DAYS%", Abs(GetWorldTime().GetDaysRun( data.releaseTime ) - GetWorldTime().GetDaysRun()))
 			endif
 			'programme start time
 			time :+ ", "+ GetWorldTime().GetDayHour( data.releaseTime )+":05"
-			
 			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_LIVESHOW")+": "+time, "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
@@ -1307,7 +1337,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 
 
-	Method ShowTrailerSheet:Int(x:Int,y:Int, align:int=0, useOwner:int = -1)
+	Method ShowTrailerSheet:Int(x:Int,y:Int, align:int=0, useOwner:int = -1, extraData:TData = null)
 		if useOwner = -1 then useOwner = owner
 		
 		'=== PREPARE VARIABLES ===

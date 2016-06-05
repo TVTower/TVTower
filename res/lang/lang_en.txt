@@ -551,6 +551,7 @@ TODAY = Today
 YESTERDAY = Yesterday
 TWO_DAYS_AGO = Two days ago
 IN_X_DAYS = In %DAYS% days
+X_DAYS_AGO = %DAYS% days ago
 
 INFOMERCIAL = Infomercial
 SPECIAL_NEWS_BROADCAST = Special news

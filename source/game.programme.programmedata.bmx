@@ -847,8 +847,13 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Method IsLive:int()
 		return HasFlag(TVTProgrammeDataFlag.LIVE) > 0
 	End Method
-	
-	
+
+
+	Method IsLiveOnTape:int()
+		return HasFlag(TVTProgrammeDataFlag.LIVEONTAPE) > 0
+	End Method
+
+
 	Method IsAnimation:Int()
 		return HasFlag(TVTProgrammeDataFlag.ANIMATION) > 0
 	End Method
@@ -1411,6 +1416,16 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 			case TVTProgrammeState.IN_PRODUCTION
 				if isReleased() then SetState(TVTProgrammeState.RELEASED)
 		End Select
+	End Method
+
+
+	'override
+	'called as soon as the last block of a programme ends
+	Method doFinishBroadcast(playerID:int = -1, broadcastType:int = 0)
+		if IsLive()
+			SetFlag(TVTProgrammeDataFlag.LIVE, False)
+			SetFlag(TVTProgrammeDataFlag.LIVEONTAPE, True)
+		endif
 	End Method
 
 
