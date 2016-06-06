@@ -4970,6 +4970,7 @@ End Function
 
 Function StartTVTower(start:Int=True)
 	Global InitialResourceLoadingDone:Int = False
+	global AppSuspendedProcessed:int = False
 
 	EventManager.Init()
 	
@@ -5031,6 +5032,18 @@ TProfiler.Leave("InitialLoading")
 TProfiler.Enter("GameLoop")
 	StartApp()
 	Repeat
+		if AppSuspended()
+			if not AppSuspendedProcessed
+				TLogger.Log("App", "App suspended.", LOG_DEBUG)
+				FlushMouse()
+				FlushKeys() 'or PollSystem()
+				AppSuspendedProcessed = True
+			endif
+		elseif AppSuspendedProcessed
+			TLogger.Log("App", "App resumed.", LOG_DEBUG)
+			AppSuspendedProcessed = False
+		endif
+
 		'handle if app is run in background (mobile devices like android/iOS)
 		App.ProcessRunningInBackground()
 
