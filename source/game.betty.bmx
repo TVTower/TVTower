@@ -145,8 +145,8 @@ Type TBetty
 
 
 	Method GetRealAward:Int(PlayerID:Int)
-		If Self.AwardSum < 100 Then Return Ceil(100 * Self.AwardWinner[PlayerID] / 100)
-		Return Ceil(100 * Self.AwardWinner[PlayerID] / Self.AwardSum)
+		If Self.AwardSum < 100 Then Return Ceil(100 * Self.AwardWinner[PlayerID-1] / 100)
+		Return Ceil(100 * Self.AwardWinner[PlayerID-1] / Self.AwardSum)
 	End Method
 End Type
 
