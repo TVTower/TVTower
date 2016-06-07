@@ -999,7 +999,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	Function GetCurrentLiveOffers:int()
 		local res:int = 0
 		For Local obj:TAuctionProgrammeBlocks = EachIn List
-			if obj.licence.GetData().IsLive() then res :+1
+			if obj.licence and obj.licence.GetData().IsLive() then res :+1
 		Next
 		return res
 	End Function
@@ -1151,7 +1151,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 		'if we had a bidder or found nobody with the allowed price minimum
 		'we add another licence to this block and reset everything
-		If bestBidder Or Self.bidSavings < Self.GetBidSavingsMinimum()
+		If bestBidder Or Self.bidSavings < Self.GetBidSavingsMinimum() or not licence
 			Refill()
 		EndIf
 	End Method
