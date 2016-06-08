@@ -78,6 +78,7 @@ INCREASE = Zuwachs
 PRICE = Preis
 VALUE = Wert
 BROADCASTING_AREA = Sendegebiet
+OF_THE_MAP = der Karte
 
 CURRENCY = €
 OCLOCK = Uhr
