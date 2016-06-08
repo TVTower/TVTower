@@ -225,8 +225,9 @@ End Type
 Type TVTProgrammeDistributionChannel {_exposeToLua}
 	Const UNKNOWN:int    = 0
 	Const CINEMA:int     = 1
-	Const TV:int         = 2 'custom production
-	Const count:int      = 2
+	Const TV:int         = 2 'produced for TV
+	Const VIDEO:int      = 3 'direct to video/dvd/br... (often B-Movies)
+	Const count:int      = 3
 	
 
 	Function GetAtIndex:int(index:int = 0)
@@ -238,6 +239,7 @@ Type TVTProgrammeDistributionChannel {_exposeToLua}
 		Select key
 			case CINEMA      return "cinema"
 			case TV          return "tv"
+			case VIDEO       return "video"
 			default          return "unknown"
 		End Select
 	End Function

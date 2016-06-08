@@ -721,8 +721,6 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 		toCut = Max(toCut, minimumRelativeCut)
 
-print GetTitle()+"   "+cutModifier+"  toCut="+toCut
-
 		'take care of minimumCut and switch back to "what to cut"
 		cutModifier = 1.0 - MathHelper.Clamp(toCut, minimumAbsoluteCut, 1.0)
 

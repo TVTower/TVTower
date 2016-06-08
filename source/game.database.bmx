@@ -875,6 +875,10 @@ Type TDatabaseLoader
 		programmeData.speed = 0.01 * data.GetFloat("speed", programmeData.speed*100)
 		programmeData.outcome = 0.01 * data.GetFloat("outcome", programmeData.outcome*100)
 
+		'auto repair outcome for non-custom productions
+		'(eg. predefined ones from the DB)
+		if not programmeData.IsCustomProduction() then programmeData.FixOutcome()
+
 
 
 		'=== PRODUCT TYPE ===

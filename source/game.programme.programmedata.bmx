@@ -388,7 +388,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Field targetGroups:int = 0
 	Field proPressureGroups:int = 0
 	Field contraPressureGroups:int = 0
-	'outcome in cinema
+	'outcome in cinema (or videomarket)
 	Field outcome:Float	= 0
 	'outcome in first TV broadcast
 	Field outcomeTV:Float = -1.0
@@ -1181,7 +1181,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	'modifies the quality of the programme -> perceivedQuality
 	Method GetCastQualityMod:Float()
 	End Method
-
+	
 
 	Method GetQualityRaw:Float()
 		Local genreDef:TMovieGenreDefinition = GetGenreDefinition()
@@ -1189,20 +1189,18 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 		quality :+ GetReview() * genreDef.ReviewMod
 		quality :+ GetSpeed() * genreDef.SpeedMod
+
 		If GetOutcome() > 0
 			quality :+ GetOutcome() * genreDef.OutcomeMod
 		'tv uses same mod
-		ElseIf GetOutcomeTV() >= 0
+		ElseIf GetOutcomeTV() > 0
 			quality :+ GetOutcomeTV() * genreDef.OutcomeMod
 		'if no outcome was defined, increase weight of the other parts
 		'increase quality according to their weight to the outcome mod
 		ElseIf genreDef.OutcomeMod > 0 And genreDef.OutcomeMod < 1.0
-			If genreDef.ReviewMod > 0
-				quality :+ (genreDef.ReviewMod / (1.0 - genreDef.OutcomeMod) ) - genreDef.ReviewMod
-			EndIf
-			If genreDef.SpeedMod > 0
-				quality :+ (genreDef.SpeedMod / (1.0 - genreDef.OutcomeMod) ) - genreDef.SpeedMod
-			EndIf
+			local add:Float = FixOutcome(genreDef)
+
+			quality :+ add
 		EndIf
 		Return quality
 	End Method
@@ -1514,6 +1512,40 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		self.state = state
 	End Method
 
+
+	Method FixOutcome:int(genreDef:TMovieGenreDefinition = null)
+		if not genreDef then genreDef = GetGenreDefinition()
+
+		local newOutcome:Float = 0
+		If genreDef.ReviewMod > 0
+			newOutcome :+ (genreDef.ReviewMod / (1.0 - genreDef.OutcomeMod) ) - genreDef.ReviewMod
+		EndIf
+		If genreDef.SpeedMod > 0
+			newOutcome :+ (genreDef.SpeedMod / (1.0 - genreDef.OutcomeMod) ) - genreDef.SpeedMod
+		EndIf
+
+
+		if IsTVDistribution() and GetOutcomeTV() <= 0
+			if GetOutcome() > 0
+				outcomeTV = GetOutcome()
+			else
+				'print "FIX TV : "+GetTitle()+"  new:"+newOutcome
+				outcomeTV = newOutcome
+			endif
+			outcome = 0
+		elseif not IsTVDistribution() and GetOutcome() <= 0
+			if GetOutcomeTV() > 0
+				outcome = GetOutcomeTV()
+			else
+				'print "FIX CIN: "+GetTitle()+"  new:"+newOutcome
+				outcome = newOutcome
+			endif
+			outcomeTV = 0
+		endif
+
+		return newOutcome
+	End Method
+	
 
 	Method onProductionStart:int(time:Long = 0)
 		'trigger effects/modifiers
