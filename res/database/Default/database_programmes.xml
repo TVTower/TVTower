@@ -4752,7 +4752,7 @@ Aufwendiges Actionspektakel von Regisseur [0|Full]</de>
 				<member index="1" function="2">0142e7e1-c601-4de6-ab42-f3a34bc3c2dd</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1990" distribution=21" maingenre="6" subgenre="0" flags="4" blocks="1" price_mod="0.33" />
+			<data country="D" year="1990" distribution="2" maingenre="6" subgenre="0" flags="4" blocks="1" price_mod="0.33" />
 			<ratings critics="80" speed="4" outcome="4" />
 		</programme>
 		<programme id="69955785-3357-4292-b20b-aba24f0cd98f" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">

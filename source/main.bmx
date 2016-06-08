@@ -3580,8 +3580,39 @@ Type GameEvents
 					GetNewsAgency().SetTerroristAggressionLevel(Int(playerS), Int(paramArray[0]))										
 					GetGame().SendSystemMessage("[DEV] Changed terror level of terror group '" + playerS + "' to '" + paramArray[0] + "'!")
 				Else
-					GetGame().SendSystemMessage("Wrong syntax (/sys help)!")
+					GetGame().SendSystemMessage("Wrong syntax (/dev help)!")
 				EndIf				
+
+			Case "sendnews"			
+				local newsGUID:string = playerS '(first payload-param)
+				local announceNow:int = int(paramS)
+				
+				if newsGUID.trim() = ""
+					GetGame().SendSystemMessage("Wrong syntax (/dev help)!")
+					return False
+				endif
+
+				if newsGUID.Find("devnews") = 0
+					'num 1-xxx
+					local num:int = Max(1, int(newsGUID.replace("devnews", "")))
+					newsGUID = GameRules.devConfig.GetString("DEV_NEWS_GUID"+num, "")
+					if not newsGUID
+						GetGame().SendSystemMessage("Incorrect devnews-syntax (/dev help)!")
+						return False
+					endif
+				endif
+
+				local news:TNewsEvent = GetNewsEventCollection().GetByGUID(newsGUID)
+				if not news then news = GetNewsEventCollection().SearchByGUID(newsGUID)
+				if not news
+					GetGame().SendSystemMessage("No news with GUID ~q"+newsGUID+"~q found.")
+					return False
+				endif
+
+				'announce that news
+				GetNewsAgency().announceNewsEvent(news, 0, announceNow)
+				GetGame().SendSystemMessage("News with GUID ~q"+newsGUID+"~q announced.")
+					
 				
 			Case "help"
 				SendHelp()
@@ -3593,12 +3624,12 @@ Type GameEvents
 
 
 		Function SendHelp()
-				Local commands:String = ""
-				commands :+ "money [player#] [+- money]~n"
-				commands :+ "bossmood [player#] [+- mood %]~n"
-				commands :+ "image [player#] [+- image %]~n"
-				commands :+ "terrorlvl [terrorgroup# 0 or 1] [level#]"
-				GetGame().SendSystemMessage("[DEV] available commands:~n"+commands)
+			GetGame().SendSystemMessage("[DEV] available commands:~n")
+			GetGame().SendSystemMessage("  |b|money|/b| [player#] [+- money]")
+			GetGame().SendSystemMessage("  |b|bossmood|/b| [player#] [+- mood %]")
+			GetGame().SendSystemMessage("  |b|image|/b| [player#] [+- image %]")
+			GetGame().SendSystemMessage("  |b|terrorlvl|/b| [terrorgroup# 0 or 1] [level#]")
+			GetGame().SendSystemMessage("  |b|sendnews|/b| [GUID / GUID portion / devnews#] [now=1, normal=0]")
 		End Function
 		
 		'internal helper function

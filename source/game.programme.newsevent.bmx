@@ -175,6 +175,23 @@ Type TNewsEventCollection
 	End Method
 
 
+	Method SearchByGUID:TNewsEvent(GUIDpart:String)
+		'skip searching if there is nothing to search
+		if GUIDPart.trim() = "" then return Null
+		
+		GUIDpart = GUIDpart.ToLower()
+
+		'find first hit
+		For local key:string = EachIn managedNewsEvents.Keys()
+			if key.ToLower().Find(GUIDpart) >= 0
+				return TNewsEvent(managedNewsEvents.ValueForKey(key))
+			endif
+		Next
+
+		return Null
+	End Method
+
+
 	Method RemoveOutdatedNewsEvents(minAgeInDays:int=5, genre:int=-1)
 		local somethingDeleted:int = False
 		local toRemove:TNewsEvent[]

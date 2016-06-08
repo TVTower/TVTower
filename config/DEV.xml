@@ -93,6 +93,10 @@
 			<DEV_STARTPROGRAMME_AD2_GUID value="speedminister-ad-spargelsund-01" />			
 			<DEV_STARTPROGRAMME_AD3_GUID value="speedminister-ad-rechtschreibdudan-01" />
 			-->
+
+			<!-- shortcuts DEV_NEWS_GUID1 - DEV_NEWS_GUID100 possible -->
+			<DEV_NEWS_GUID1 value="ronny-news-sandsturm-01" />
+			<DEV_NEWS_GUID2 value="ronny-news-usbratte-01" />
 		</data>
 	</resources>
 </tvt>
