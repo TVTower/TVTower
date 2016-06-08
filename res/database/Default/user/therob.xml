@@ -2402,8 +2402,8 @@
 				<member index="1" function="2">TheRob-TowerTV-DaveMcWarum</member>                
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1953" distribution="1" maingenre="10" subgenre="0" flags="8" blocks="1" price_mod="1.00" />
-			<ratings critics="47" speed="38" outcome="" />
+			<data country="USA" year="1953" distribution="2" maingenre="10" subgenre="0" flags="8" blocks="1" price_mod="1.00" />
+			<ratings critics="47" speed="38" outcome="30" />
 			<children>
 				<programme id="TheRob-serie-RingeundRosen-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
