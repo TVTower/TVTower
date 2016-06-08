@@ -28,6 +28,13 @@ Type TNewsEventCollection
 	
 	'holding a number of "sethappened"-newsevents (for ordering)
 	Field nextNewsNumber:Long = 0
+
+	
+	'factor by what a newsevents topicality DECREASES by sending it
+	'(with whole audience, so 100%, watching)
+	'a value > 1.0 means, it decreases to 0 with less than 100% watching
+	'ex.: 0.9 = 10% cut, 0.85 = 15% cut
+	Field wearoffFactor:float = 0.4
 	'=== CACHE ===
 	'cache for faster access
 
@@ -455,6 +462,26 @@ Type TNewsEventCollection
 	End Method
 
 
+	Method GetGenreWearoffModifier:float(genre:int)
+		'values get multiplied with the wearOff factor
+		'so this means: higher (>1.0) values increase the resulting
+		'topicality loss
+		Select genre
+			case TVTNewsGenre.POLITICS_ECONOMY
+				return 1.05
+			case TVTNewsGenre.SHOWBIZ
+				return 0.9
+			case TVTNewsGenre.SPORT
+				return 1.0
+			case TVTNewsGenre.TECHNICS_MEDIA
+				return 1.05
+			case TVTNewsGenre.CURRENTAFFAIRS
+				return 1.0
+			default
+				return 1.0
+		End Select
+	End Method
+
 	Function SortByHappenedTime:int(o1:object, o2:object)
 		local n1:TNewsEvent = TNewsEvent(o1)
 		local n2:TNewsEvent = TNewsEvent(o2)
@@ -678,19 +705,41 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	Method CutTopicality:Float(cutModifier:float=1.0) {_private}
 		'cutModifier can be used to manipulate the resulting cut
 		'ex. for night times, for low audience...
-		local changeValue:float = topicality
 
-		'cut by an individual cutoff factor - do not allow values > 1.0
-		'(refresh instead of cut)
-		'the value : default * invidual * individualGenre
-		changeValue :* cutModifier
-		changeValue = topicality - changeValue
+		'for the calculation we need to know what to cut, not what to keep
+		local toCut:Float =  (1.0 - cutModifier)
+		local minimumRelativeCut:Float = 0.02 '2%
+		local minimumAbsoluteCut:Float = 0.02 '2%
 
-		'cut by at least 1%, limit to 0-Max
-		topicality = MathHelper.Clamp(topicality - Max(0.01, changeValue), 0.0, 1.0)
+		'calculate base value (if mod was "1.0" or 100%)
+		toCut :* GetNewsEventCollection().wearoffFactor
+
+		'cutModifier can be used to manipulate the resulting cut
+		'ex. for night times, for low audience...
+		toCut :* GetWearoffModifier()
+
+		toCut = Max(toCut, minimumRelativeCut)
+
+print GetTitle()+"   "+cutModifier+"  toCut="+toCut
+
+		'take care of minimumCut and switch back to "what to cut"
+		cutModifier = 1.0 - MathHelper.Clamp(toCut, minimumAbsoluteCut, 1.0)
+
+		topicality = MathHelper.Clamp(topicality * cutModifier, 0.0, 1.0)
 
 		Return topicality
 	End Method	
+
+
+	Method GetGenreWearoffModifier:float(genre:int=-1)
+		if genre = -1 then genre = self.genre
+		return GetNewsEventCollection().GetGenreWearoffModifier(genre)
+	End Method
+
+
+	Method GetWearoffModifier:float()
+		return GetModifier("topicality::wearoff")
+	End Method
 
 
 	Method IsSkippable:int()
