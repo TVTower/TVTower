@@ -953,6 +953,8 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		if showMode = 0 then showMode = TVTBroadcastMaterialType.PROGRAMME
 
 		if KeyManager.IsDown(KEY_LALT) or KeyManager.IsDown(KEY_RALT)
+			'when doing alt-tab the "ALT"-keys keep "down"
+
 			if showMode = TVTBroadcastMaterialType.PROGRAMME
 				showMode = TVTBroadcastMaterialType.ADVERTISEMENT
 			else
@@ -1523,6 +1525,8 @@ Type TProgrammeLicenceFilter
 	Field qualityMax:Float = -1.0
 	Field relativeTopicalityMin:Float = -1.0
 	Field relativeTopicalityMax:Float = -1.0
+	Field maxTopicalityMin:Float = -1.0
+	Field maxTopicalityMax:Float = -1.0
 	Field licenceTypes:int[]
 	Field forbiddenLicenceTypes:int[]
 	Field childrenForbidden:int = False
@@ -1613,6 +1617,8 @@ Type TProgrammeLicenceFilter
 		qualityMax = otherFilter.qualityMin
 		relativeTopicalityMin = otherFilter.relativeTopicalityMin
 		relativeTopicalityMax = otherFilter.relativeTopicalityMax
+		maxTopicalityMin = otherFilter.maxTopicalityMin
+		maxTopicalityMax = otherFilter.maxTopicalityMax
 		'for local i:int = EachIn otherFilter.licenceTypes
 		'	licenceTypes :+ [i]
 		'Next
@@ -1872,6 +1878,11 @@ Type TProgrammeLicenceFilter
 		'check relative topicality (topicality/maxTopicality)
 		if relativeTopicalityMin >= 0 and licence.GetRelativeTopicality() < relativeTopicalityMin then return False
 		if relativeTopicalityMax >= 0 and licence.GetRelativeTopicality() > relativeTopicalityMax then return False
+
+		'check absolute topicality (maxTopicality)
+		'this is done to avoid selling "no longer useable entries"
+		if maxTopicalityMin >= 0 and licence.GetMaxTopicality() < maxTopicalityMin then return False
+		if maxTopicalityMax >= 0 and licence.GetMaxTopicality() > maxTopicalityMax then return False
 
 		'check price
 		if priceMin >= 0 and licence.GetPrice() < priceMin then return False
