@@ -13,7 +13,7 @@ Import "game.publicimage.bmx"
 Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Field licence:TProgrammeLicence			{_exposeToLua}
 	Field data:TProgrammeData				{_exposeToLua}
-
+	Field maxWholeMarketAudiencePercentage:Float = 0.0
 
 	Function Create:TProgramme(licence:TProgrammeLicence)
 		Local obj:TProgramme = New TProgramme
@@ -91,10 +91,12 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		'inform data that it got broadcasted by a player
 		data.doFinishBroadcast(owner, usedAsType)
 
+		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
+
 		'calculate outcome for TV
 		if data.IsTVDistribution() and data.GetOutcomeTV() < 0
-			local audienceResult:TAudienceResult = TAudienceResult(audienceData)
-			Local quote:Float = audienceResult.GetWholeMarketAudienceQuotePercentage()
+			Local quote:Float = 0
+			if audienceResult then quote = audienceResult.GetWholeMarketAudienceQuotePercentage()
 			'base it partially on te production (script) outcome but
 			'also on the quote achieved on its first broadcast
 			'(this makes it dependend on the managers knowledge on when
@@ -110,6 +112,13 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			TLogger.Log("FinishBroadcastingAsProgramme", "===========", LOG_ERROR)
 			return False
 		endif
+
+
+		'store maximum
+		if audienceResult
+			maxWholeMarketAudiencePercentage = Max(maxWholeMarketAudiencePercentage, audienceResult.GetWholeMarketAudienceQuotePercentage())
+		endif
+		
 
 		if usedAsType = TVTBroadcastMaterialType.PROGRAMME
 			FinishBroadcastingAsProgramme(day, hour, minute, audienceData)
@@ -149,7 +158,11 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		'inform data that it gets broadcasted by a player
 		data.doBeginBroadcast(owner, usedAsType)
 
+		'reset stat
+		maxWholeMarketAudiencePercentage = 0.0
+
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
+
 
 		'only fetch new audience stats when send as programme (ignore trailer)
 		if self.usedAsType = TVTBroadcastMaterialType.PROGRAMME
@@ -178,6 +191,9 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 
+		'store maximum
+		maxWholeMarketAudiencePercentage = Max(maxWholeMarketAudiencePercentage, audienceResult.GetWholeMarketAudienceQuotePercentage())
+
 		'check if revenues have to get paid (call-in-shows, sponsorships)
 		CheckHourlyBroadcastingRevenue(audienceResult.audience)
 	End Method
@@ -186,7 +202,11 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Method FinishBroadcastingAsAdvertisement:int(day:int, hour:int, minute:int, audienceData:object)
 		self.SetState(self.STATE_OK)
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
-		data.CutTrailerTopicality(GetTrailerTopicalityCutModifier(audienceResult.GetWholeMarketAudienceQuotePercentage()))
+
+		'adjust topicality relative to possible audience
+		'do not use "maxWholeMarketAudiencePercentage" here, as a trailer
+		'is only send during one block
+		data.CutTrailerTopicality(GetTrailerTopicalityCutModifier( audienceResult.GetWholeMarketAudienceQuotePercentage() ))
 		data.trailerAired:+1
 		data.trailerAiredSinceShown:+1
 	End Method
@@ -236,8 +256,12 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			GetPublicImage(owner).ChangeImage(penalty)						
 		End If
 
-		'adjust topicality relative to possible audience 
-		data.CutTopicality(GetTopicalityCutModifier( audienceResult.GetWholeMarketAudienceQuotePercentage()))
+
+		'adjust topicality relative to possible audience
+		'using the maximum of all blocks here (as this is the maximum
+		'audience knowing about that movie)
+		data.CutTopicality(GetTopicalityCutModifier( maxWholeMarketAudiencePercentage ))
+
 
 		'if someone can watch that movie, increase the aired amount
 		'for data and licence
@@ -487,7 +511,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 	'for details check game.broadcastmaterial.base.bmx: GetTopicalityCutModifier()
 	Method GetTrailerTopicalityCutModifier:float(audienceQuote:Float = 1.0) {_exposeToLua}
-		return 1.0 - THelper.LogisticalInfluence_Euler(audienceQuote, 1)
+		return GetTopicalityCutModifier( audienceQuote )
 	End Method
 
 

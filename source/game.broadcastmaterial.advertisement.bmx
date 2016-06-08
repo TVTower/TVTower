@@ -221,10 +221,10 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 	Method GetInfomercialTopicalityCutModifier:float( audienceQuote:float = 0.5 ) {_exposeToLua}
 		'by default, all infomercials would cut their topicality by
 		'100% when broadcasted on 100% audience watching
-		'but instead of a linear growth, we use the logistical influence
-		'to grow fast at the beginning (near 0%), and
-		'to grow slower at the end (near 100%)
-		return 1.0 - THelper.LogisticalInfluence_Euler(audienceQuote, 1)
+		'but instead of a linear growth, we use the non-linear influence
+
+		'we do want to know what to keep, not what to cut (-> 1.0-x)
+		return 1.0 - THelper.ATanFunction(audienceQuote, 3)
 	End Method
 
 

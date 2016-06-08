@@ -481,6 +481,7 @@ Type TNewsEventCollection
 				return 1.0
 		End Select
 	End Method
+	
 
 	Function SortByHappenedTime:int(o1:object, o2:object)
 		local n1:TNewsEvent = TNewsEvent(o1)

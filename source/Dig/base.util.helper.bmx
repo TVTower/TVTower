@@ -50,6 +50,12 @@ Import "base.util.math.bmx"
 
 'collection of useful functions
 Type THelper
+	Function ATanFunction:Float(p:Float, modifier:float=1.0)
+		local scale:float = 1.0 / (ATan(1.0 * modifier) / 90.0)
+		return scale * ATan(p * modifier) / 90.0
+	End Function
+
+
 	'the logistic function is a fast-to-slow-growing function
 	'higher values are more likely returning nearly the maximum value
 	'http://de.wikipedia.org/wiki/Logistische_Funktion

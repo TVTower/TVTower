@@ -16,17 +16,19 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 
 	'factor by what a programmes topicality DECREASES by sending it
 	'(with whole audience, so 100%, watching)
+	'a value > 1.0 means, it decreases to 0 with less than 100% watching
 	'ex.: 0.9 = 10% cut, 0.85 = 15% cut
-	Field wearoffFactor:float = 0.50
+	Field wearoffFactor:float = 1.25
 	'factor by what a programmes topicality INCREASES by a day switch
 	'ex.: 1.0 = 0%, 1.5 = add 50%y
-	Field refreshFactor:float = 1.5
+	Field refreshFactor:float = 1.4
 
 	'factor by what a trailer topicality DECREASES by sending it
-	Field trailerWearoffFactor:float = 0.70
+	'2.0 means, it reaches 0 with 50% audience/area quote
+	Field trailerWearoffFactor:float = 0.5
 	'factor by what a trailer topicality INCREASES by broadcasting
 	'the programme
-	Field trailerRefreshFactor:float = 1.5
+	Field trailerRefreshFactor:float = 1.4
 	'helper data
 	Field _unreleasedProgrammeData:TList {nosave}
 	Field _liveProgrammeData:TList {nosave}
@@ -170,58 +172,58 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 
 	Method GetGenreWearoffModifier:float(genre:int)
 		'values get multiplied with the wearOff factor
-		'so this means: higher (>1.0) values decrease the resulting
+		'so this means: higher (>1.0) values increase the resulting
 		'topicality loss
 		Select genre
 			case TVTProgrammeGenre.Adventure
 				return 1.0
 			case TVTProgrammeGenre.Action
-				return 0.95
+				return 1.05
 			case TVTProgrammeGenre.Animation
 				return 1.0
 			case TVTProgrammeGenre.Crime
-				return 0.95
+				return 1.05
 			case TVTProgrammeGenre.Comedy
-				return 1.1
+				return 0.90
 			case TVTProgrammeGenre.Documentary
-				return 1.1
+				return 0.85
 			case TVTProgrammeGenre.Drama
-				return 1.1
-			case TVTProgrammeGenre.Erotic
-				return 1.2
-			case TVTProgrammeGenre.Family
-				return 1.25
-			case TVTProgrammeGenre.Fantasy
 				return 0.95
+			case TVTProgrammeGenre.Erotic
+				return 0.80
+			case TVTProgrammeGenre.Family
+				return 0.85
+			case TVTProgrammeGenre.Fantasy
+				return 1.05
 			case TVTProgrammeGenre.History
 				return 1.0
 			case TVTProgrammeGenre.Horror
 				return 1.0
 			case TVTProgrammeGenre.Monumental
-				return 0.9
+				return 1.1
 			case TVTProgrammeGenre.Mystery
-				return 0.95
+				return 1.05
 			case TVTProgrammeGenre.Romance
 				return 1.0
 			case TVTProgrammeGenre.Scifi
-				return 0.9
+				return 1.10
 			case TVTProgrammeGenre.Thriller
-				return 0.95
+				return 1.05
 			case TVTProgrammeGenre.Western
-				return 0.90
+				return 1.10
 			case TVTProgrammeGenre.Show, ..
 			     TVTProgrammeGenre.Show_Politics, ..
 			     TVTProgrammeGenre.Show_Music
-				return 0.95
+				return 1.10
 			case TVTProgrammeGenre.Event, ..
 			     TVTProgrammeGenre.Event_Politics, ..
 			     TVTProgrammeGenre.Event_Music, ..
 			     TVTProgrammeGenre.Event_Sport, ..
 			     TVTProgrammeGenre.Event_Showbiz
-				return 0.85
+				return 1.15
 			case TVTProgrammeGenre.Feature, ..
 			     TVTProgrammeGenre.Feature_YellowPress
-				return 0.95
+				return 1.05
 			default
 				return 1.0
 		End Select
@@ -230,17 +232,21 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 
 	'amount the wearoff effect gets reduced/increased by programme flags
 	Method GetFlagsWearoffModifier:float(flags:int)
+		'values get multiplied with the wearOff factor
+		'so this means: higher (>1.0) values increase the resulting
+		'topicality loss
+		
 		local flagMod:float = 1.0
-		if flags & TVTProgrammeDataFlag.LIVE then flagMod :* 0.75
+		if flags & TVTProgrammeDataFlag.LIVE then flagMod :* 1.25
 		'if flags & TVTProgrammeDataFlag.ANIMATION then flagMod :* 1.0
-		if flags & TVTProgrammeDataFlag.CULTURE then flagMod :* 1.05
-		if flags & TVTProgrammeDataFlag.CULT then flagMod :* 1.2
-		if flags & TVTProgrammeDataFlag.TRASH then flagMod :* 0.95
-		if flags & TVTProgrammeDataFlag.BMOVIE then flagMod :* 0.90
+		if flags & TVTProgrammeDataFlag.CULTURE then flagMod :* 0.95
+		if flags & TVTProgrammeDataFlag.CULT then flagMod :* 0.85
+		if flags & TVTProgrammeDataFlag.TRASH then flagMod :* 1.10
+		if flags & TVTProgrammeDataFlag.BMOVIE then flagMod :* 1.15
 		'if flags & TVTProgrammeDataFlag.XRATED then flagMod :* 1.0
-		if flags & TVTProgrammeDataFlag.PAID then flagMod :* 0.75
+		if flags & TVTProgrammeDataFlag.PAID then flagMod :* 1.30
 		'if flags & TVTProgrammeDataFlag.SERIES then flagMod :* 1.0
-		if flags & TVTProgrammeDataFlag.SCRIPTED then flagMod :* 0.90
+		if flags & TVTProgrammeDataFlag.SCRIPTED then flagMod :* 1.15
 
 		return flagMod
 	End Method
@@ -248,6 +254,10 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 
 	'amount the refresh effect gets reduced/increased by programme flags
 	Method GetFlagsRefreshModifier:float(flags:int)
+		'values get multiplied with the refresh factor
+		'so this means: higher (>1.0) values increase the resulting
+		'refresh value
+
 		local flagMod:float = 1.0
 		if flags & TVTProgrammeDataFlag.LIVE then flagMod :* 0.75
 		'if flags & TVTProgrammeDataFlag.ANIMATION then flagMod :* 1.0
@@ -1133,8 +1143,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		EndIf
 
 		local influencePercentage:Float = 0.01 * MathHelper.Clamp(ageInfluence + timesBroadcastedInfluence, 0, 100)
-		return 1.0 - THelper.LogisticalInfluence_Euler(influencePercentage, 1)
-		'return MathHelper.Clamp(1.0 - influencePercentage, 0.0, 1.0)
+		return 1.0 - THelper.ATanFunction(influencePercentage, 2)
 	End Method
 
 
@@ -1227,32 +1236,73 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 	'override
 	Method CutTopicality:Float(cutModifier:float=1.0) {_private}
+		'for the calculation we need to know what to cut, not what to keep
+		local toCut:Float =  (1.0 - cutModifier)
+		local minimumRelativeCut:Float = 0.20 '20%
+		local minimumAbsoluteCut:Float = 0.15 '15%
+		local baseCut:Float = 0.10 '10%
+
+		rem
+
+		  toCut
+		    |          _/
+		    |        _/
+		    |      _/
+		    |_____/____________________ minimumAbsoluteCut
+		    |  _/
+		    | /
+		    ||
+		    ||                          basecut 
+		    ||_________________________
+		                    cutModifier
+
+		endrem
+
+
+
+		'calculate base value (if mod was "1.0" or 100%)
+		toCut :* GetProgrammeDataCollection().wearoffFactor
+
 		'cutModifier can be used to manipulate the resulting cut
 		'ex. for night times, for low audience...
+		toCut :* GetGenreWearoffModifier()
+		toCut :* GetFlagsWearoffModifier()
+		toCut :* GetWearoffModifier()
 
-		'cut by an individual cutoff factor - do not allow values > 1.0
-		'(refresh instead of cut)
-		'the value : default * invidual * individualGenre
-		cutModifier :* GetProgrammeDataCollection().wearoffFactor
-		cutModifier :* GetGenreWearoffModifier()
-		cutModifier :* GetFlagsWearoffModifier()
-		cutModifier :* GetWearoffModifier()
+		toCut = Max(toCut, minimumRelativeCut)
 
-		'cut by at least 5%, limit to 0-Max
-		Return Super.CutTopicality( Min(0.95, cutModifier) )
+		toCut = toCut*(1.0-baseCut) + baseCut
+
+		'take care of minimumCut and switch back to "what to cut"
+		cutModifier = 1.0 - MathHelper.Clamp(toCut, minimumAbsoluteCut, 1.0)
+
+		'take care of minimumCut and switch back to "what to cut"
+		Return Super.CutTopicality( cutModifier )
 	End Method
 
 
 	Method CutTrailerTopicality:Float(cutModifier:Float = 1.0) {_private}
-		cutModifier :* GetProgrammeDataCollection().trailerWearoffFactor
-		cutModifier :* GetWearoffModifier()
-		'trailers also get influenced by flags and genre
-		cutModifier :* GetGenreWearoffModifier()
-		cutModifier :* GetFlagsWearoffModifier()
+		'for the calculation we need to know what to cut, not what to keep
+		local toCut:Float =  (1.0 - cutModifier)
+		local minimumRelativeCut:Float = 0.10 '10%
+		local minimumAbsoluteCut:Float = 0.10 '10%
 
-		'cut by at least 5%, limit to 0-1
+		'calculate base value (if mod was "1.0" or 100%)
+		toCut :* GetProgrammeDataCollection().trailerWearoffFactor
+
+		'cutModifier can be used to manipulate the resulting cut
+		'ex. for night times, for low audience...
+		toCut :* GetGenreWearoffModifier()
+		toCut :* GetFlagsWearoffModifier()
+		toCut :* GetTrailerWearoffModifier()
+
+		toCut = Max(toCut, minimumRelativeCut)
+
+		'take care of minimumCut and switch back to "what to cut"
+		cutModifier = 1.0 - MathHelper.Clamp(toCut, minimumAbsoluteCut, 1.0)
+
 		'(trailers do not inherit "aged" topicality, so 1 is max)
-		trailerTopicality = MathHelper.Clamp(trailerTopicality * Min(0.95, cutModifier), 0.0, 1.0)
+		trailerTopicality = MathHelper.Clamp(trailerTopicality * cutModifier, 0.0, 1.0)
 
 		Return trailerTopicality
 	End Method
@@ -1260,24 +1310,36 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 	'override
 	Method RefreshTopicality:Float(refreshModifier:Float = 1.0) {_private}
+		local minimumRelativeRefresh:Float = 1.10 '110%
+		local minimumAbsoluteRefresh:Float = 0.10 '10%
+
 		refreshModifier :* GetProgrammeDataCollection().refreshFactor
 		refreshModifier :* GetRefreshModifier()
 		refreshModifier :* GetGenreRefreshModifier()
+		refreshModifier :* GetFlagsRefreshModifier()
 
-		'refresh by at least 5%, limit to 0-Max
-		Return Super.RefreshTopicality( Max(1.05, refreshModifier) )
+		refreshModifier = Max(refreshModifier, minimumRelativeRefresh)
+
+		topicality :+ Max(topicality * (refreshModifier-1.0), minimumAbsoluteRefresh)
+		topicality = MathHelper.Clamp(topicality, 0, GetMaxTopicality())
+
+		Return topicality
 	End Method
 
 
 	Method RefreshTrailerTopicality:Float(refreshModifier:Float = 1.0) {_private}
+		local minimumRelativeRefresh:Float = 1.10 '110%
+		local minimumAbsoluteRefresh:Float = 0.10 '10%
+
 		refreshModifier :* GetProgrammeDataCollection().trailerRefreshFactor
 		refreshModifier :* GetTrailerRefreshModifier()
-		'trailers also get influenced by flags and genre
 		refreshModifier :* GetGenreRefreshModifier()
 		refreshModifier :* GetFlagsRefreshModifier()
 
-		'refresh by at least 5%, limit to 0-1
-		trailerTopicality = MathHelper.Clamp(trailerTopicality * Max(1.05, refreshModifier), 0, 1.0)
+		refreshModifier = Max(refreshModifier, minimumRelativeRefresh)
+
+		trailerTopicality :+ Max(trailerTopicality * (refreshModifier-1.0), minimumAbsoluteRefresh)
+		trailerTopicality = MathHelper.Clamp(trailerTopicality, 0, 1.0)
 
 		Return trailerTopicality
 	End Method

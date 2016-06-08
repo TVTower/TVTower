@@ -95,35 +95,53 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	Method GetTopicalityCutModifier:float( audienceQuote:float = 0.5 ) {_exposeToLua}
+		'calculating the square root means increasing lower values
+		'(0.01=>0.10, 0.05=>0.22  0.1=>0.3  0.2=>0.45)
+		audienceQuote = sqr(audienceQuote)
+
+		'Assume that 25% of all TV-owners talk to others about the movie
+		'so this is some kind of "word-of-mouth"-wearoff
+		'So this means, if you reach 10%, you already reached 12.5% of
+		'this assumed "maximum".
+		audienceQuote :* 1.25
+
+		'make sure we do not exceed limits
+		audienceQuote = MathHelper.Clamp(audienceQuote, 0.0, 1.0)
+
+
+		
 		'by default, all broadcasted news would cut their topicality by
 		'100% when broadcasted on 100% audience watching
-		'but instead of a linear growth, we use the logistical influence
-		'to grow fast at the beginning (near 0%), and
-		'to grow slower at the end (near 100%)
-
+		'but we use ATan instead so it starts growing fast and looses
+		'speed at the end
 		rem
-		"keepRate" for given quote
-		Quote  Strength 3  Strength 2  Strength 1 
-		0      1.0000      1.0000      1.0000
-		0.01                           0.9903
-		0.02                           0.9807
-		0.04                           0.9619
-		0.06                           0.9434
-		0.08                           0.9253
-		0.1    0.7435      0.8214      0.9075
-		0.2    0.5540      0.6755      0.8239
-		0.3    0.4138      0.5561      0.7481
-		0.4    0.3100      0.4582      0.6791
-		0.5    0.2329      0.3776      0.6163
-		0.6    0.1753      0.3112      0.5588
-		0.7    0.1319      0.2561      0.5061
-		0.8    0.0990      0.2102      0.4576
-		0.9    0.0737      0.1718      0.4131
+		'Quote  Mod=2     Mod=3
+		0.00    0.0000    0.0000
+		0.05    0.0900    0.1192
+		0.10    0.1783    0.2333
+		0.15    0.2632    0.3385
+		0.20    0.3437    0.4327
+		0.25    0.4188    0.5152
+		0.30    0.4881    0.5867
+		0.35    0.5516    0.6483
+		0.40    0.6094    0.7014
+		0.45    0.6619    0.7472
+		0.50    0.7094    0.7868
+		0.55    0.7524    0.8214
+		0.60    0.7913    0.8516
+		0.65    0.8265    0.8782
+		0.70    0.8586    0.9018
+		0.75    0.8877    0.9228
+		0.80    0.9142    0.9415
+		0.85    0.9385    0.9584
+		0.90    0.9608    0.9736
+		0.95    0.9812    0.9874
+		1.00    1.0000    1.0000
 		endrem
 
 		'we do want to know what to keep, not what to cut (-> 1.0-x)
-		'strength is 1
-		return 1.0 - THelper.LogisticalInfluence_Euler(audienceQuote, 1)
+'		return 1.0 - audienceQuote
+		return 1.0 - THelper.ATanFunction(audienceQuote, 3)
 	End Method
 	
 

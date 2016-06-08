@@ -38,9 +38,9 @@ Type TAdContractBaseCollection
 	Field entriesCount:int = -1
 
 	'factor by what an infomercial topicality DECREASES by sending it
-	Field infomercialWearoffFactor:float = 0.75
+	Field infomercialWearoffFactor:float = 1.25
 	'factor by what an infomercial topicality INCREASES on a new day
-	Field infomercialRefreshFactor:float = 1.25
+	Field infomercialRefreshFactor:float = 1.3
 	
 	Global _instance:TAdContractBaseCollection
 
@@ -427,26 +427,42 @@ Type TAdContractBase extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 
 	Method CutInfomercialTopicality:Int(cutModifier:float=1.0) {_private}
-		local changeValue:float = infomercialTopicality
-		changeValue :* cutModifier
-		changeValue :* GetAdContractBaseCollection().infomercialWearoffFactor
-		changeValue :* GetInfomercialWearoffModifier()
-		changeValue = infomercialTopicality - changeValue
+		'for the calculation we need to know what to cut, not what to keep
+		local toCut:Float =  (1.0 - cutModifier)
+		local minimumRelativeCut:Float = 0.10 '10%
+		local minimumAbsoluteCut:Float = 0.10 '10%
 
-		'cut by at least 5%, limit to 0-max
-		infomercialTopicality = MathHelper.Clamp(infomercialTopicality - Max(0.05, changeValue), 0.0, GetMaxInfomercialTopicality())
+		'calculate base value (if mod was "1.0" or 100%)
+		toCut :* GetAdContractBaseCollection().infomercialWearoffFactor
+
+		'cutModifier can be used to manipulate the resulting cut
+		'ex. for night times, for low audience...
+		toCut :* GetInfomercialWearoffModifier()
+
+		toCut = Max(toCut, minimumRelativeCut)
+
+		'take care of minimumCut and switch back to "what to cut"
+		cutModifier = 1.0 - MathHelper.Clamp(toCut, minimumAbsoluteCut, 1.0)
+
+		infomercialTopicality = MathHelper.Clamp(infomercialTopicality * cutModifier, 0.0, GetMaxInfomercialTopicality())
+
+		Return infomercialTopicality
 	End Method
 
 
 	Method RefreshInfomercialTopicality:Int(refreshModifier:float=1.0) {_private}
-		local changeValue:float = infomercialTopicality
-		changeValue :* refreshModifier
-		changeValue :* GetAdContractBaseCollection().infomercialRefreshFactor
-		changeValue :* GetInfomercialRefreshModifier()
-		changeValue = infomercialTopicality - changeValue
+		local minimumRelativeRefresh:Float = 1.10 '110%
+		local minimumAbsoluteRefresh:Float = 0.10 '10%
 
-		'refresh by at least 5%, limit to 0-max
-		infomercialTopicality = MathHelper.Clamp(infomercialTopicality + Max(0.05, changeValue), 0.0, GetMaxInfomercialTopicality())
+		refreshModifier :* GetAdContractBaseCollection().infomercialRefreshFactor
+		refreshModifier :* GetInfomercialRefreshModifier()
+
+		refreshModifier = Max(refreshModifier, minimumRelativeRefresh)
+
+		infomercialTopicality :+ Max(infomercialTopicality * (refreshModifier-1.0), minimumAbsoluteRefresh)
+		infomercialTopicality = MathHelper.Clamp(infomercialTopicality, 0, GetMaxInfomercialTopicality())
+
+		Return infomercialTopicality
 	End Method
 	
 
