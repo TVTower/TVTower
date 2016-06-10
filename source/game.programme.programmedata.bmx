@@ -432,9 +432,6 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Field cachedDirectors:TProgrammePersonBase[] {nosave}
 	Field genreDefinitionCache:TMovieGenreDefinition = Null {nosave}
 
-	Field _handledFirstTimeBroadcast:int = False
-	Field _handledFirstTimeBroadcastAsTrailer:int = False
-
 
 	Rem
 	"modifiers" : extra data block containing various information (if set)
@@ -1615,14 +1612,37 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 			endif
 		endif
 
-rem 'now done by GetProgrammeDataCollection().UpdateLive() run every
-    'game minute
 
-		if IsLive()
-			SetFlag(TVTProgrammeDataFlag.LIVE, False)
-			SetFlag(TVTProgrammeDataFlag.LIVEONTAPE, True)
+		'=== EFFECTS ===
+		'trigger broadcastEffects
+		local effectParams:TData = new TData.Add("source", self).AddNumber("playerID", playerID)
+
+		'send as programme
+		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
+			'if nobody broadcasted till now (times are adjusted on
+			'finishBroadcast - after "onFinishBroadcasting"-call)
+			if GetTimesBroadcasted() = 0
+				If not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_DONE)
+					effects.Run("broadcastFirstTimeDone", effectParams)
+					setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_DONE, True)
+				endif
+			endif
+
+			effects.Run("broadcastDone", effectParams)
+
+		'send as trailer
+		elseif broadcastType = TVTBroadcastMaterialType.ADVERTISEMENT
+			'if nobody broadcasted till now (times are adjusted on
+			'finishBroadcast while this is called on beginBroadcast)
+			if GetTimesTrailerAired() = 0
+				If not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_SPECIAL_DONE)
+					effects.Run("broadcastFirstTimeTrailerDone", effectParams)
+					setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_SPECIAL_DONE, True)
+				endif
+			endif
+
+			effects.Run("broadcastTrailerDone", effectParams)
 		endif
-endrem
 	End Method
 
 
@@ -1636,6 +1656,20 @@ endrem
 				'reset of live in all cases
 				SetPlayerIsLiveBroadcasting(playerID, False)
 			endif
+		endif
+
+
+		'=== EFFECTS ===
+		'trigger broadcastEffects
+		local effectParams:TData = new TData.Add("source", self).AddNumber("playerID", playerID)
+
+		'send as programme
+		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
+			effects.Run("broadcastAborted", effectParams)
+
+		'send as trailer
+		elseif broadcastType = TVTBroadcastMaterialType.ADVERTISEMENT
+			effects.Run("broadcastTrailerAborted", effectParams)
 		endif
 	End Method
 
@@ -1654,13 +1688,9 @@ endrem
 			endif
 		endif
 
-		'trigger broadcastEffects
-		local effectParams:TData = new TData.Add("source", self).AddNumber("playerID", playerID)
 
 		'send as programme
 		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
-			'if nobody broadcasted till now (times are adjusted on
-			'finishBroadcast while this is called on beginBroadcast)
 			if GetTimesBroadcasted() = 0
 				'inform each person in the cast that the production finished
 				'(albeit this is NOT strictly the truth)
@@ -1670,31 +1700,43 @@ endrem
 						if person then person.FinishProduction(GetGUID(), job.job)
 					Next
 				endif
+			endif
+		endif
 
 
-				if not _handledFirstTimeBroadcast
+		'=== EFFECTS ===
+		'trigger broadcastEffects
+		local effectParams:TData = new TData.Add("source", self).AddNumber("playerID", playerID)
+
+		'send as programme
+		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
+			'if nobody broadcasted till now (times are adjusted on
+			'finishBroadcast - after "onFinishBroadcasting"-call)
+			if GetTimesBroadcasted() = 0
+				If not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME)
 					effects.Run("broadcastFirstTime", effectParams)
-					_handledFirstTimeBroadcast = True
+					setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME, True)
 				endif
 			endif
 
 			effects.Run("broadcast", effectParams)
-
 
 		'send as trailer
 		elseif broadcastType = TVTBroadcastMaterialType.ADVERTISEMENT
 			'if nobody broadcasted till now (times are adjusted on
 			'finishBroadcast while this is called on beginBroadcast)
 			if GetTimesTrailerAired() = 0
-				if not _handledFirstTimeBroadcastAsTrailer
+				If not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_SPECIAL)
 					effects.Run("broadcastFirstTimeTrailer", effectParams)
-					_handledFirstTimeBroadcastAsTrailer = True
+					setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_SPECIAL, True)
 				endif
 			endif
 
-			effects.Run("broadcastInfomercial", effectParams)
+			effects.Run("broadcastTrailer", effectParams)
 		endif
 	End Method
+
+
 End Type
 
 

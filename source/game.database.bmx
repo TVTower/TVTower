@@ -480,7 +480,6 @@ Type TDatabaseLoader
 		local priceMod:Float = data.GetFloat("price", 0)
 		if priceMod = 0 then priceMod = 1.0 'invalid data given
 		newsEvent.SetModifier("price", data.GetFloat("price", newsEvent.GetModifier("price")))
-		newsEvent.SetModifier("topicality::age", data.GetFloat("topicality", newsEvent.GetModifier("topicality::age")))
 
 
 

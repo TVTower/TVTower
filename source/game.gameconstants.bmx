@@ -205,6 +205,12 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 	'3rd party material might be uncontrollable for the players
 	Const THIRD_PARTY_MATERIAL:int = 1
 	Const NOT_CONTROLLABLE:int = 2
+	Const BROADCAST_FIRST_TIME:int = 4
+	'special = Programme->Trailer, Ad->Infomercial
+	Const BROADCAST_FIRST_TIME_SPECIAL:int = 8
+	Const BROADCAST_FIRST_TIME_DONE:int = 16
+	Const BROADCAST_FIRST_TIME_SPECIAL_DONE:int = 32
+	
 End Type
 
 	
