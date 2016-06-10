@@ -12,18 +12,50 @@ Import Brl.Math
 Import "base.util.mersenne.c"
 
 Extern "c"
-  Function SeedRand(seed:int)
-  Function Rand32:Int()
-  Function RandMax:Int(hi:int)
-  Function RandRange:Int(lo:int,hi:int)
+  Function mt_SeedRand(seed:int)
+  Function mt_Rand32:Int()
+  Function mt_RandMax:Int(hi:int)
+  Function mt_RandRange:Int(lo:int,hi:int)
 End Extern
+
+'Const MAX_INT:int = 2^31-1
+'Const MIN_INT:int = -2^31
+
+
+'custom wrapped functions to be sure to pass only "unsigned" integers
+'(within the range of the "signed integers" BlitzMax uses)
+
+Function SeedRand(seed:int)
+	if seed < 0 then Throw "SeedRand got passed a negative seed ~q"+seed+"~q. not allowed."
+	mt_SeedRand(seed)
+End Function
+
+Function Rand32:int()
+	return mt_Rand32()
+End Function
+
+Function RandMax:int(hi:int)
+	if hi < 0 then Throw "RandMax got passed a negative limit ~q"+hi+"~q. not allowed."
+	return mt_RandMax(hi)
+End Function
+
+Function RandRange:int(lo:int, hi:int)
+	if lo < 0
+		local offset:int = -lo
+		lo = 0
+		hi = hi + offset
+		return mt_RandRange(lo, hi) - offset
+	endif
+
+	return mt_RandRange(lo, hi)
+End Function
 
 
 'returns a "biased" random number
 Function BiasedRandRange:Int(lo:int, hi:int, bias:Float)
 	'higher bias values lead to more results near "hi"
 	'lower bias values lead to more results near "lo"
-	local r:Float = RandRange(0, 1000000) / 1000000.0
+	local r:Float = mt_RandRange(0, 1000000) / 1000000.0
     r = r ^ bias
     return hi - (hi - lo) * r
 End Function
@@ -32,16 +64,16 @@ End Function
 'Calculate Gaussian random numbers (based on Box-Müller approach)
 Function GaussRand:Float(mean:Float, standardDerivation:Float)
 	'+1 to be > 0 (we use Log(v1))
-	local v1:Float = (RandMax(999998)+1) / 1000000.0
-	local v2:Float = (RandMax(999998)+1) / 1000000.0
+	local v1:Float = (mt_RandMax(999998)+1) / 1000000.0
+	local v2:Float = (mt_RandMax(999998)+1) / 1000000.0
 	'blitzmax uses degrees instead of radians ... so "Cos(2*pi*v2)" got "Cos(360*v2)"
 	return mean + standardDerivation*(Sqr(-2 * Log(v1)) * Cos(360 * v2))
 End Function
 
 
 Function GaussRandRange:Double(minValue:Double, maxValue:Double, mean:Float, standardDerivation:Float)
-	local v1:Float = RandRange(0,1000000) / 1000000.0
-	local v2:Float = RandRange(0,1000000) / 1000000.0
+	local v1:Float = mt_RandRange(0,1000000) / 1000000.0
+	local v2:Float = mt_RandRange(0,1000000) / 1000000.0
 
 	return minValue + (maxValue - minValue) * mean * abs(1.0 + sqr(-2.0 * log(v1)) * cos(2.0 * pi * v2) * standardDerivation)
 End Function
@@ -59,10 +91,17 @@ End Function
 '     WeightedRange(0, 100, 0.6) will most probably return values of 20-100
 'But all of them (except 0.0 and 1.0) might return values between 0-100
 Function WeightedRandRange:Int(lo:int, hi:int, weight:Float = 0.5, strength:Float = 1.0)
+	local offset:int = 0
+	if lo < 0
+		offset = -lo
+		lo = 0
+		hi = hi + offset
+	endif
+	
 	'save processing time
-	if weight = 0.5 then return RandRange(lo, hi)
-	if weight <= 0.0 then return lo
-	if weight >= 1.0 then return hi
+	if weight = 0.5 then return RandRange(lo, hi) - offset
+	if weight <= 0.0 then return lo - offset
+	if weight >= 1.0 then return hi - offset
 
 	'a lower weight makes the "lo" values more likely
 
@@ -70,7 +109,7 @@ Function WeightedRandRange:Int(lo:int, hi:int, weight:Float = 0.5, strength:Floa
 	'it is that twe have to use a weighted random number
 	'the more we go to the extreme, the more probable it gets.
 	local probability:Float = 2.0 * abs(0.5 - weight)
-	local useWeighted:Int = RandMax(100000)/100000.0 < probability
+	local useWeighted:Int = mt_RandMax(100000)/100000.0 < probability
 
 	if useWeighted
 		'method a
@@ -106,6 +145,6 @@ Function WeightedRandRange:Int(lo:int, hi:int, weight:Float = 0.5, strength:Floa
 		lo = center - range
 	endif
 	
-	return RandRange(lo, hi)
+	return RandRange(lo, hi) - offset
 End Function
 
