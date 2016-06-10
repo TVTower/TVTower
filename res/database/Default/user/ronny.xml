@@ -53,11 +53,11 @@
 		<programme id="ronny-programme-livereportage-raketenstart1" product="4" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Erster Start der Ariane-2</de>
-				<en></en>
+				<en>First launch of Ariane-2</en>
 			</title>
 			<description>
 				<de>Der erste Start der Trägerrakete Ariane-2, LIVE. Fiebern Sie mit - der Countdown läuft: 9, 8 ...</de>
-				<en></en>
+				<en>First launch of the booster Ariane-2, LIVE. Share our excitement - the countdown is on: 9, 8 ...</en>
 			</description>
 			<groups target_groups="96" />
 			<data country="D" distribution="2" maingenre="300" subgenre="16" flags="1" blocks="1" price_mod="0.90" />
@@ -82,11 +82,11 @@
 		<programme id="ronny-programme-doku-kutler-wunderwaffen" product="4" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Kutlers Wunderwaffen</de>
-				<en></en>
+				<en>Kutlers &quot;magic bullets&quot;</en>
 			</title>
 			<description>
 				<de>Während der Führer weiterhin vom Sieg träumte, propagierte Minister Bubbels dem Volke die Wende im Kampf durch den Einsatz von Wunderwaffen. Die Reichsflugscheibe sollte die Wende vollbringen.</de>
-				<en></en>
+				<en>While the Fuhrer was still dreaming of a victory, Minister Bubbels propagated to the people a turn in the war by the use of &quot;magic bullets&quot;. The Nazi UFO will bring the turn.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">ronny-programmeperson-holgerpelz</member>
@@ -99,11 +99,11 @@
 		<programme id="ronny-programme-doku-kutler-alaaf" product="4" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Keil Kutler und Koelle Alaaf</de>
-				<en></en>
+				<en>Keil Kutler and &quot;Koelle Alaaf&quot;</en>
 			</title>
 			<description>
 				<de>Karnevalsumzüge zur Zeit von Kutler. Kutler und Bubbels verkleidet als Hänsel und Gretel. Erstmals Filmmaterial in Farbe!</de>
-				<en></en>
+				<en>Carnivals at the time of Kutler. Kutler and Bubbels dressed as Hansel and Gretel. For the first time footage in full colors!</en>
 			</description>
 			<staff>
 				<member index="0" function="1">ronny-programmeperson-holgerpelz</member>
@@ -116,11 +116,11 @@
 		<programme id="ronny-programme-doku-kutler-untergang" product="4" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Kutlers Untergang</de>
-				<en></en>
+				<en>Kutler's downfall</en>
 			</title>
 			<description>
 				<de>Emporkommen und Untergang des Diktators Kutler werden umfassend beleuchtet. Restaurierte Originalaufnahmen sind exklusiv in dieser Dokumentation zu sehen.</de>
-				<en></en>
+				<en>Ascent and downfall of dictator Kutler are extensively examined. Exclusive: This documentation contains restored footage never seen before.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">ronny-programmeperson-holgerpelz</member>
@@ -252,11 +252,11 @@ Educational precious and absolutly ecological.</en>
 		<programme id="ronny-programme-pantoffeln-01" product="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Wahre Pantoffelhelden</de>
-				<en></en>
+				<en>Truly henpecked</en>
 			</title>
 			<description>
 				<de>Gudrun erbt die Pantoffelfabrik ihres Vaters - der Bürgermeister intrigiert und die Stadt braucht ...wahre Pantoffelhelden um die Fabrik zu retten.</de>
-				<en></en>
+				<en>Gudrun inherits the chicken run of her father. The major intrigates and the city needs ... true hen-peckers.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">72d0cfa6-bb40-4766-9b86-9a3ffd257f73</member>
@@ -269,11 +269,11 @@ Educational precious and absolutly ecological.</en>
 		<programme id="ronny-programme-kartoffeln-01" product="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Die Kartoffelkönigin</de>
-				<en></en>
+				<en>The Potatoqueen</en>
 			</title>
 			<description>
-				<de>Glansen verzückt die Bauern. Dicke Kartoffeln und Dumme Bauern sucht man vergebens in dieser herzlich warmen und romantischen Fernsehkomödie.</de>
-				<en></en>
+				<de>[1|Last] verzückt die Bauern. Dicke Kartoffeln und Dumme Bauern sucht man vergebens in dieser herzlich warmen und romantischen Fernsehkomödie.</de>
+				<en>[1|Last] ecstasizes the countrymen. Big potatoes and birdbrained countrymen can be searched to no avail in this sincere warm and romantic TV-comedy.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">72d0cfa6-bb40-4766-9b86-9a3ffd257f73</member>
@@ -366,11 +366,11 @@ Educational precious and absolutly ecological.</en>
 		<programme id="ronny-programme-brisanteufer-01" product="4" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Brisante Ufer</de>
-				<en></en>
+				<en>Explosive Coasts</en>
 			</title>
 			<description>
 				<de>Ein Kamerateam begleitet Rettungsschwimmer und andere Helden unserer heimischen Gewässer.</de>
-				<en></en>
+				<en>A camera team accompanies lifeguards and other heroes of our domestic waters.</en>
 			</description>
 			<staff>
 				<!-- klaus grobe -->
@@ -386,11 +386,11 @@ Educational precious and absolutly ecological.</en>
 				<programme id="ronny-programme-brisanteufer-01-ep-01" product="4" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Die Wasserwacht</de>
-						<en></en>
+						<en>Water Rescue</en>
 					</title>
 					<description>
 						<de>Männer mit wettergegerbter Haut, viel Spritzwasser und eine launische See sind die Helden dieser Folge.</de>
-						<en></en>
+						<en>Men with weathered skin, much splash and a fickle lake are the heroes of this episode.</en>
 					</description>
 					<data price_mod="0.95" />
 					<ratings critics="48"  />
@@ -398,11 +398,11 @@ Educational precious and absolutly ecological.</en>
 				<programme id="ronny-programme-brisanteufer-01-ep-02" product="4" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Das Elb-Wehr</de>
-						<en></en>
+						<en>The Elbe-Weir</en>
 					</title>
 					<description>
 						<de>Scheinbar langweilig aber doch enorm wichtig: die Instandhaltung eines Wehrs der Elbe. Zeigt einmalige, aber langweilige, Unterwasseraufnahmen.</de>
-						<en></en>
+						<en>Apparently boring but very important: the maintenance of a weir of the Elbe. Shows unique but boring underwater footage.</en>
 					</description>
 					<data price_mod="1.0" />
 					<ratings critics="34" speed="12"  />
@@ -410,11 +410,11 @@ Educational precious and absolutly ecological.</en>
 				<programme id="ronny-programme-brisanteufer-01-ep-03" product="4" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>SOS im Freibad Gammelau</de>
-						<en></en>
+						<en>SOS at Pool Gammelau</en>
 					</title>
 					<description>
 						<de>Dramatische Szenen, eingefangen im Freibad Gammelau: Ist es ein Schokoriegel?</de>
-						<en></en>
+						<en>Dramatic scenes captured in the outdoor pool Gammelau: Is it a chocolate bar?</en>
 					</description>
 					<ratings critics="26" speed="56"  />
 				</programme>
@@ -423,12 +423,13 @@ Educational precious and absolutly ecological.</en>
 		<programme id="ronny-programme-familiefuchs-01" product="2" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Familie Fuchs</de>
-				<en></en>
+				<en>The Fox Family</en>
 			</title>
 			<description>
 				<de>Kindgerechte Abenteuer mit Felix Fuchs und seiner Familie.
 Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- und Jugendpsychologen.</de>
-				<en></en>
+				<en>Adventure with Felix Fox and his family (suitable for children).
+Instructive stories convey current findings of recognized child and youth psychologists.</en>
 			</description>
 			<staff>
 				<!-- klaus grobe -->
@@ -444,11 +445,11 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 				<programme id="ronny-programme-familiefuchs-01-ep-01" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Neue Nachbarn</de>
-						<en></en>
+						<en>New neighbours</en>
 					</title>
 					<description>
-						<de>Familie Igel zieht in den benachbarten Laubhaufen. Beim Spielen mit Ingo verletzt sich Felix an den Stacheln. Das Ende einer aufkeimenden Freundschaft?</de>
-						<en></en>
+						<de>Familie Igel zieht in den benachbarten Laubhaufen. Beim Spielen mit Ingo Igel verletzt sich Felix Fuchs an den Stacheln. Das Ende einer aufkeimenden Freundschaft?</de>
+						<en>Hedgehog Family goes to neighbouring piles of leaves. While playing with Henry Hedgehog, Felix Fox hurts himself at the thorns. The end of a burgeoning friendship?</en>
 					</description>
 					<data price_mod="0.68" />
 					<ratings critics="55"  />
@@ -456,11 +457,11 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 				<programme id="ronny-programme-familiefuchs-01-ep-02" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Maus in der Falle</de>
-						<en></en>
+						<en>Mouse in the trap</en>
 					</title>
 					<description>
 						<de>Markus Mäuserich fällt in den Weiher des Waldes. Felix Fuchs muss sich entscheiden zwischen Mittagessen und Rettung.</de>
-						<en></en>
+						<en>Marcus Mousewicz falls into the pond of the forest. Felix Fuchs has to choose between lunch and rescue.</en>
 					</description>
 					<data price_mod="0.75" />
 					<ratings critics="50" speed="30" />
@@ -468,11 +469,11 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 				<programme id="ronny-programme-familiefuchs-01-ep-03" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Frieda Fuchs</de>
-						<en></en>
+						<en>Frieda Fox</en>
 					</title>
 					<description>
 						<de>Ranzzeit. Ein süßer Duft zieht durch den Wald. Als Felix ihm folgt, trifft er Frieda. Wie umgehen mit den neuen und aufregenden Gefühlen?</de>
-						<en></en>
+						<en>Breeding season. A sweet smell wafts through the forest. As Felix trails the scent, he meets Frieda. How to deal with the new and exciting feelings?</en>
 					</description>
 					<data price_mod="0.58" />
 					<ratings critics="62" speed="22"  />
@@ -480,11 +481,11 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 				<programme id="ronny-programme-familiefuchs-01-ep-04" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Guten Morgen meine Kinder</de>
-						<en></en>
+						<en>Good morning beloved children</en>
 					</title>
 					<description>
 						<de>Weniger als zwei Monate sind vergangen und die Fähe Frieda wirft drei Kinder - Felix' Kinder. Aufregende Zeiten für die neue Familie.</de>
-						<en></en>
+						<en>Less than two months have passed and the vixen Frieda raises three children - Felix' children. Exciting times for the new family.</en>
 					</description>
 					<data price_mod="0.65" />
 					<ratings critics="69" speed="20"  />
@@ -492,11 +493,11 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 				<programme id="ronny-programme-familiefuchs-01-ep-05" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Besuch bei Ingo</de>
-						<en></en>
+						<en>Visiting Henry</en>
 					</title>
 					<description>
 						<de>Felix nimmt seine Kinder mit auf einen Besuch zu Ingo Igel. Schmetterlingsschmaus für alle.</de>
-						<en></en>
+						<en>Felix takes his children on a visit to Henry Hedgehog. Butterfly feast for all.</en>
 					</description>
 					<data price_mod="0.61" />
 					<ratings critics="59" speed="23"  />
@@ -504,11 +505,11 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 				<programme id="ronny-programme-familiefuchs-01-ep-06" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Randale im Fuchsbau</de>
-						<en></en>
+						<en>Rampage at the burrow</en>
 					</title>
 					<description>
 						<de>Als Die Kinder von Familie Fuchs es eines Nachts zu bunt treiben, kommt es zum Streit im Fuchsbau. Die jungen Füchse ziehen aus.</de>
-						<en></en>
+						<en>As the children of the Fox family went too far some night, there is a dispute at the burrow. The young foxes move out.</en>
 					</description>
 					<data price_mod="0.53" />
 					<ratings critics="58" speed="27"  />
@@ -516,12 +517,13 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 				<programme id="ronny-programme-familiefuchs-01-ep-07" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Der Grünrock</de>
-						<en></en>
+						<en>The Huntsman</en>
 					</title>
 					<description>
-						<de>Felix streift alleine durch den Wald als er den Jäger Joachim kennenlernt....
+						<de>Felix streift alleine durch den Wald als er den Jäger Joachim kennenlernt ...
 						Trauriges Finale der beliebten Kinderserie, ließ Millionen Kinderherzen erbeben.</de>
-						<en></en>
+						<en>Felix clips alone through the forest when he meets the hunter Joachim ...
+						Sad final of the popular childrens' series. Trembled a million children hearts.</en>
 					</description>
 					<data price_mod="0.70" />
 					<ratings critics="77" speed="20"  />
@@ -531,11 +533,11 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 		<programme id="ronny-programme-komtess-01" product="2" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Die Komtess</de>
-				<en></en>
+				<en>The Countess</en>
 			</title>
 			<description>
 				<de>Amouröse Verwicklungen, Intrigen unter &quot;Freundinnen&quot; ... Taschenbuchromantik in der Bretagne. Mini-TV-Serie.</de>
-				<en></en>
+				<en>Amorous entanglements, intrigues between &quot;girlfriends&quot; ... Paperback Romance in Brittany. Mini-TV series.</en>
 			</description>
 			<staff>
 				<!-- klaus grobe -->
@@ -556,7 +558,7 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 					</title>
 					<description>
 						<de>Jaqueline, Tochter des Grafen Montegrieux erblüht und entdeckt bisher unerkannte Gefühle für den Stallburschen Henri.</de>
-						<en></en>
+						<en>Jacqueline, daughter of Count Montegrieux blossoms and discovers previously unknown feelings for the stable-lad Henri.</en>
 					</description>
 					<data price_mod="0.98" />
 					<ratings critics="32" speed="28"  />
@@ -568,7 +570,7 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 					</title>
 					<description>
 						<de>Der umtriebige Graf Pomeranc besucht den Landsitz Montegrieux. Er versucht Jaqueline nachzustellen während seine Tochter Francine Henri schöne Augen macht...</de>
-						<en></en>
+						<en>The busy Earl Pomeranc visits Manor Montegrieux. He tries to be after Jaqueline while his daughter Francine makes eyes at Henri ...</en>
 					</description>
 					<data price_mod="0.98" />
 					<ratings critics="30" speed="29"  />
@@ -576,11 +578,11 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 				<programme id="ronny-programme-komtess-01-ep-03" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Eine Leiche im Keller?</de>
-						<en></en>
+						<en>Skeletons in the closet?</en>
 					</title>
 					<description>
 						<de>Große Aufregung, Graf Pomeranc ist verschwunden. Was hat Jaqueline und ihr zerissenes Nachthemd damit zu tun?</de>
-						<en></en>
+						<en>Flurries of excitement: Earl Pomeranc has disappeared. What have Jacqueline and her tattered nightgown to do with it?</en>
 					</description>
 					<data price_mod="0.98" />
 					<ratings critics="34" speed="25"  />
@@ -588,11 +590,11 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 				<programme id="ronny-programme-komtess-01-ep-04" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Die Waldhütte</de>
-						<en></en>
+						<en>The forest cabin</en>
 					</title>
 					<description>
 						<de>Alle suchen Graf Pomeranc. Jaqueline und Henri suchen im nahen Wald und landen in einer einsamen Hütte. Als ein Unwetter aufzieht, verbringen beide eine sinnliche Nacht bei knackendem Kaminfeuer.</de>
-						<en></en>
+						<en>Everybody is searching Earl Pomeranc. Jacqueline and Henri are searching in a nearby forest and stop in a secluded cabin. When a storm comes up, both spend a sensual night in front of a crackling fire.</en>
 					</description>
 					<data price_mod="0.93" />
 					<ratings critics="30" speed="30"  />
@@ -600,12 +602,13 @@ Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- un
 				<programme id="ronny-programme-komtess-01-ep-05" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Sie war es...</de>
-						<en></en>
+						<en>It was ... her</en>
 					</title>
 					<description>
 						<de>Jaqueline erfährt, dass Francine Ihren Vater umbrachte und Jaquelines Nachthemd zeriss. Das warum erschüttert: sie wollte Jaqueline aus dem Weg haben.
 Grandioses Finale.</de>
-						<en></en>
+						<en>Jaqueline finds out that Francine killed her father and also tore Jaqueline's nightgown. The reason shocks: she wanted to get Jaqueline out of the way.
+Terrific final.</en>
 					</description>
 					<data price_mod="0.95" />
 					<ratings critics="25" speed="35"  />
