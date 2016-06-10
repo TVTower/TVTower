@@ -1420,6 +1420,40 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	'methods called when special events happen
 
 	'override
+	Method doFinishBroadcast(playerID:int = -1, broadcastType:int = 0)
+		'=== EFFECTS ===
+		'trigger broadcastEffects
+		local effectParams:TData = new TData.Add("source", self).AddNumber("playerID", playerID)
+
+		'send as advertisement
+		if broadcastType = TVTBroadcastMaterialType.ADVERTISEMENT
+			'if nobody broadcasted till now (times are adjusted on
+			'finishBroadcast - after "onFinishBroadcasting"-call)
+			if base.GetTimesBroadcasted() = 0
+				If not base.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_DONE)
+					base.effects.Run("broadcastFirstTimeDone", effectParams)
+					base.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_DONE, True)
+				endif
+			endif
+
+			base.effects.Run("broadcastDone", effectParams)
+
+		'send as infomercial
+		elseif broadcastType = TVTBroadcastMaterialType.PROGRAMME
+			'if nobody broadcasted till now (times are adjusted on
+			'finishBroadcast while this is called on beginBroadcast)
+			if base.GetTimesBroadcastedAsInfomercial() = 0
+				If not base.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_SPECIAL_DONE)
+					base.effects.Run("broadcastFirstTimeInfomercialDone", effectParams)
+					base.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_SPECIAL_DONE, True)
+				endif
+			endif
+
+			base.effects.Run("broadcastInfomercialDone", effectParams)
+		endif
+	End Method
+	
+	'override
 	'called as soon as a advertisement of this contract is
 	'broadcasted. If playerID = -1 then this effects might target
 	'"all players" (depends on implementation)
@@ -1432,22 +1466,21 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 			'if nobody broadcasted till now (times are adjusted on
 			'finishBroadcast while this is called on beginBroadcast)
 			if base.GetTimesBroadcasted() = 0
-				if not base._handledFirstTimeBroadcast
+				If not base.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME)
 					base.effects.Run("broadcastFirstTime", effectParams)
-					base._handledFirstTimeBroadcast = True
+					base.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME, True)
 				endif
 			endif
 
 			base.effects.Run("broadcast", effectParams)
 
-
 		elseif broadcastType = TVTBroadcastMaterialType.PROGRAMME
 			'if nobody broadcasted till now (times are adjusted on
 			'finishBroadcast while this is called on beginBroadcast)
 			if base.GetTimesBroadcastedAsInfomercial() = 0
-				if not base._handledFirstTimeBroadcastAsInfomercial
+				If not base.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_SPECIAL)
 					base.effects.Run("broadcastFirstTimeInfomercial", effectParams)
-					base._handledFirstTimeBroadcastAsInfomercial = True
+					base.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_SPECIAL, True)
 				endif
 			endif
 

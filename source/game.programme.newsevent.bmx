@@ -120,8 +120,8 @@ Type TNewsEventCollection
 
 
 	Method AddOneTimeEvent:int(obj:TNewsEvent)
-		obj.reuseable = False
-		obj.skippable = False
+		obj.Setflag(TVTNewsFlag.UNIQUE_EVENT, True)
+		obj.Setflag(TVTNewsFlag.UNSKIPPABLE, True)
 		Add(obj)
 	End Method
 
@@ -549,14 +549,6 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	Field newsType:int = 0 'initialNews
 	Field availableYearRangeFrom:int = -1
 	Field availableYearRangeTo:int = -1
-	'can the "happening" get skipped ("happens later")
-	'eg. if no player listens to the genre
-	'news like "terrorist will attack" happen in all cases => NOT skippable
-	Field skippable:int = True
-	'can the event happen again - or only once?
-	'eg. dynamically created weather news should set this to FALSE
-	Field reuseable:int = True
-	Field _handledFirstTimeBroadcast:int = False
 	Field _genreDefinitionCache:TNewsGenreDefinition = Null {nosave}
 	
 
@@ -580,7 +572,7 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		happenedTime = -1
 		topicality = 1.0
 		'reset helper so it can "premiere" again
-		_handledFirstTimeBroadcast = False
+		setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME, False)
 	End Method
 
 
@@ -700,6 +692,7 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	End Method
 
 
+	'override
 	'call this as soon as a news containing this newsEvent is
 	'broadcasted. If playerID = -1 then this effects might target
 	'"all players" (depends on implementation)
@@ -710,13 +703,31 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		'if nobody broadcasted till now (times are adjusted on
 		'finishBroadcast while this is called on beginBroadcast)
 		if GetTimesBroadcasted() = 0
-			if not _handledFirstTimeBroadcast
+			If not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME)
 				effects.Run("broadcastFirstTime", effectParams)
-				_handledFirstTimeBroadcast = True
+				setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME, True)
 			endif
 		endif
 
 		effects.Run("broadcast", effectParams)
+	End Method
+
+
+	'override
+	Method doFinishBroadcast(playerID:int = -1, broadcastType:int = 0)
+		'trigger broadcastEffects
+		local effectParams:TData = new TData.Add("source", self).AddNumber("playerID", playerID)
+
+		'if nobody broadcasted till now (times are adjusted on
+		'finishBroadcast while this is called on beginBroadcast)
+		if GetTimesBroadcasted() = 0
+			If not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_DONE)
+				effects.Run("broadcastFirstTimeDone", effectParams)
+				setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_DONE, True)
+			endif
+		endif
+
+		effects.Run("broadcastDone", effectParams)
 	End Method
 
 
@@ -760,12 +771,12 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 	Method IsSkippable:int()
 		'cannot skip events with "happen"-effects
-		return skippable and (not effects.GetList("happen") or effects.GetList("happen").count() = 0)
+		return not HasFlag(TVTNewsFlag.UNSKIPPABLE) and (not effects.GetList("happen") or effects.GetList("happen").count() = 0)
 	End Method
 
 
 	Method IsReuseable:int()
-		return reuseable
+		return not HasFlag(TVTNewsFlag.UNIQUE_EVENT)
 	End Method
 
 

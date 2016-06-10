@@ -800,8 +800,15 @@ End Type
 
 Type TVTNewsFlag {_exposeToLua}
 	Const SEND_IMMEDIATELY:Int = 1
+	'can the event happen again - or only once?
+	'eg. dynamically created weather news should set this flag
+	Const UNIQUE_EVENT:Int = 2
+	'can the "happening" get skipped ("happens later")
+	'eg. if no player listens to the genre
+	'news like "terrorist will attack" happen in all cases => unskippable
+	Const UNSKIPPABLE:Int = 4
 
-	Const count:int = 1
+	Const count:int = 3
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -812,7 +819,9 @@ Type TVTNewsFlag {_exposeToLua}
 
 	Function GetAsString:String(key:int = 0)
 		Select key
-			case SEND_IMMEDIATELY      return "send_immediately"
+			case SEND_IMMEDIATELY  return "send_immediately"
+			case UNIQUE_EVENT      return "unique_event"
+			case UNSKIPPABLE       return "unskippable"
 
 
 			default
