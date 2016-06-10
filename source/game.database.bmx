@@ -471,6 +471,7 @@ Type TDatabaseLoader
 			"genre", "price", "quality", "available" ..
 		])
 
+		newsEvent.flags = data.GetInt("flags", newsEvent.flags)
 		newsEvent.genre = data.GetInt("genre", newsEvent.genre)
 		newsEvent.available = data.GetBool("available", newsEvent.available)
 		'topicality is "quality" here
