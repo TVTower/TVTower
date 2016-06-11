@@ -224,46 +224,24 @@ Type TNewsAgency
 		Local price:Float = 1.0 + 0.01 * (randRange(45,50) + aggressionLevel * 5)
 		Local title:String
 		Local description:String
-
 		local genre:int = TVTNewsGenre.POLITICS_ECONOMY
+
+		local localizeTitle:TLocalizedString
+		local localizeDescription:TLocalizedString
+
 		Select aggressionLevel
-			case 1
-				if terroristGroup = 1
-					title = "Botschafter der VR Duban beleidigt Amtskollegen"
-					description = "Es ist ein Eklat: ein Botschafter der VR Duban beleidigte seinen Amtskollegen aus der Freien Republik Duban."
-				else
-					title = "Botschafter der FR Duban beschimpft Nachbarn"
-					description = "Das kann nicht sein: ein Botschafter der FR Duban beleidigte den Repräsentanten der Volksrepublik Duban."
+			case 1,2,3,4
+				localizeTitle = GetRandomLocalizedString("NEWS_TERROR_GROUP"+(terroristGroup+1)+"_LEVEL"+aggressionLevel+"_TITLE")
+				localizeDescription = GetRandomLocalizedString("NEWS_TERROR_GROUP"+(terroristGroup+1)+"_LEVEL"+aggressionLevel+"_TEXT")
+
+				if aggressionLevel = 4
+					'currents instead of politics
+					genre = TVTNewsGenre.CURRENTAFFAIRS
 				endif
-			case 2
-				if terroristGroup = 1
-					title = "Botschafter verprügelt"
-					description = "Auf dem Heimweg wurde der Botschafter der VR Duban in der Tiefgarage bewusstlos geschlagen. Zeugen sahen einen PKW der FR Duban davonfahren."
-				else
-					title = "Wohnung eines Botschafters verwüstet"
-					description = "Die Wohnung des Botschafters der Freien Republik Duban wurde verwüstet. Hinweise deuten auf Kreise der VR DUBAN."
-				endif
-			case 3
-				if terroristGroup = 1
-					title = "VR Duban droht mit Vergeltung"
-					description = "Die VR Duban droht offen mit Rache. Die Schuldigen sollen gefunden worden sein. Die Situation ist brenzlig."
-				else
-					title = "FR Duban warnt vor Konsequenzen"
-					description = "Genug. So der knappe Wortlaut der Botschaft. Die FR Duban ergreift Gegenmaßnahmen."
-				endif
-			case 4
-				title = "Die Polizei warnt vor Terroristen"
-				description = "Die Polizei verlor die Spur zu einem kürzlich gesichteten Terroristen, er soll dubanischer Herkunft sein."
-				'currents instead of politics
-				genre = TVTNewsGenre.CURRENTAFFAIRS
 			default
 				return null
 		End Select
 
-		local localizeTitle:TLocalizedString = new TLocalizedString
-		localizeTitle.Set(title, "de")
-		local localizeDescription:TLocalizedString = new TLocalizedString
-		localizeDescription.Set(description, "de")
 
 		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, genre, quality, null, TVTNewsType.InitialNewsByInGameEvent)
 		NewsEvent.SetModifier("price", price)
@@ -497,28 +475,28 @@ Type TNewsAgency
 
 		licence.GetData().releaseAnnounced = True
 
-		Local title:String = getLocale("NEWS_ANNOUNCE_MOVIE_TITLE"+Rand(1,2) )
-		Local description:String = getLocale("NEWS_ANNOUNCE_MOVIE_DESCRIPTION"+Rand(1,4) )
+		Local localizeTitle:TLocalizedString
+		Local localizeDescription:TLocalizedString
 
-		'if same director and main actor...
-		If licence.GetData().getActor(1) = licence.GetData().getDirector(1)
-			title = getLocale("NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_TITLE")
-			description = getLocale("NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_DESCRIPTION")
-		EndIf
+		'no actors
 		'if no actors ...
 		If licence.GetData().getActor(1) = null
-			title = getLocale("NEWS_ANNOUNCE_MOVIE_NO_ACTOR_TITLE")
-			description = getLocale("NEWS_ANNOUNCE_MOVIE_NO_ACTOR_DESCRIPTION")
+			localizeTitle = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_NO_ACTOR_TITLE")
+			localizeDescription = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_NO_ACTOR_DESCRIPTION")
+		'if same director and main actor...
+		elseif licence.GetData().getActor(1) = licence.GetData().getDirector(1)
+			localizeTitle = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_TITLE")
+			localizeDescription = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_DESCRIPTION")
+		'default
+		else
+			localizeTitle = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_DESCRIPTION")
+			localizeDescription = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_TITLE")
 		EndIf
 
 		'replace data
-		title = Self._ReplaceProgrammeData(title, licence.GetData())
-		description = Self._ReplaceProgrammeData(description, licence.GetData())
+		Self._ReplaceProgrammeData(localizeTitle, licence.GetData())
+		Self._ReplaceProgrammeData(localizeDescription, licence.GetData())
 
-		local localizeTitle:TLocalizedString = new TLocalizedString
-		localizeTitle.Set(title) 'use default lang
-		local localizeDescription:TLocalizedString = new TLocalizedString
-		localizeDescription.Set(description) 'use default lang
 		
 		'quality and price are based on the movies data
 		'quality of movie news never can reach quality of "real" news
@@ -540,20 +518,20 @@ Type TNewsAgency
 	End Method
 
 
-	Method _ReplaceProgrammeData:String(text:String, data:TProgrammeData)
+	Method _ReplaceProgrammeData:TLocalizedString(text:TLocalizedString, data:TProgrammeData)
 		local actor:TProgrammePersonBase
 		local director:TProgrammePersonBase
 		For Local i:Int = 1 To 2
 			actor = data.GetActor(i)
 			director = data.GetDirector(i)
 			if actor
-				text = text.Replace("%ACTORNAME"+i+"%", actor.GetFullName())
+				text.Replace("%ACTORNAME"+i+"%", actor.GetFullName())
 			endif
 			if director
-				text = text.Replace("%DIRECTORNAME"+i+"%", director.GetFullName())
+				text.Replace("%DIRECTORNAME"+i+"%", director.GetFullName())
 			endif
 		Next
-		text = text.Replace("%MOVIETITLE%", data.GetTitle())
+		text.Replace("%MOVIETITLE%", data.GetTitle())
 
 		Return text
 	End Method

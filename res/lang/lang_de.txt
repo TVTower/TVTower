@@ -641,6 +641,28 @@ SLOW_WIND_WITH_X_AND_GUST_OF_WIND_WITH_Y1 = Leichte Brise von %MINWINDVELOCITY% 
 WIND_VELOCITIES_ARE_BETWEEN_X_AND_Y1 = Die Windgeschwindigkeiten liegen zwischen %MINWINDVELOCITY% und %MAXWINDVELOCITY% km/h.
 WIND_VELOCITY_IS_CONSTANT_AT_X1 = Die Windgeschwindigkeit beträgt konstante %WINDVELOCITY% km/h.
 
+
+NEWS_TERROR_GROUP1_LEVEL1_TITLE1 = Botschafter der VR Duban beleidigt Amtskollegen
+NEWS_TERROR_GROUP1_LEVEL1_TEXT1 = Es ist ein Eklat: ein Botschafter der VR Duban beleidigte seinen Amtskollegen aus der Freien Republik Duban.
+NEWS_TERROR_GROUP2_LEVEL1_TITLE1 = Botschafter der FR Duban beschimpft Nachbarn
+NEWS_TERROR_GROUP2_LEVEL1_TEXT1 = Das kann nicht sein: ein Botschafter der FR Duban beleidigte den Repräsentanten der Volksrepublik Duban.
+
+NEWS_TERROR_GROUP1_LEVEL2_TITLE1 = Botschafter verprügelt
+NEWS_TERROR_GROUP1_LEVEL2_TEXT1 = Auf dem Heimweg wurde der Botschafter der VR Duban in der Tiefgarage bewusstlos geschlagen. Zeugen sahen einen PKW der FR Duban davonfahren.
+NEWS_TERROR_GROUP2_LEVEL2_TITLE1 = Wohnung eines Botschafters verwüstet
+NEWS_TERROR_GROUP2_LEVEL2_TEXT1 = Die Wohnung des Botschafters der Freien Republik Duban wurde verwüstet. Hinweise deuten auf Kreise der VR Duban ...
+
+NEWS_TERROR_GROUP1_LEVEL3_TITLE1 = VR Duban droht mit Vergeltung
+NEWS_TERROR_GROUP1_LEVEL3_TEXT1 = Die VR Duban droht offen mit Rache. Die Schuldigen sollen gefunden worden sein. Die Situation ist brenzlig.
+NEWS_TERROR_GROUP2_LEVEL3_TITLE1 = FR Duban warnt vor Konsequenzen
+NEWS_TERROR_GROUP2_LEVEL3_TEXT1 = Genug. So der knappe Wortlaut der Botschaft. Die FR Duban ergreift Gegenmaßnahmen.
+
+NEWS_TERROR_GROUP1_LEVEL4_TITLE1 = Die Polizei warnt vor Terroristen
+NEWS_TERROR_GROUP1_LEVEL4_TEXT1 = Die Polizei verlor die Spur zu einem kürzlich gesichteten Terroristen, er soll dubanischer Herkunft sein.
+NEWS_TERROR_GROUP2_LEVEL4_TITLE1 = Die Polizei warnt vor Terroristen
+NEWS_TERROR_GROUP2_LEVEL4_TEXT1 = Die Polizei verlor die Spur zu einem kürzlich gesichteten Terroristen, er soll dubanischer Herkunft sein.
+
+
 LOCKED = Abgeschlossen
 ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY = Der Zugang zu diesem Raum ist nur mit dem richtigen Schlüssel möglich.
 BLOCKED = Blockiert

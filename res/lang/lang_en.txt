@@ -639,6 +639,28 @@ SLOW_WIND_WITH_X_AND_GUST_OF_WIND_WITH_Y1 = Light breeze from %MINWINDVELOCITY% 
 WIND_VELOCITIES_ARE_BETWEEN_X_AND_Y1 = The wind speeds are between %MINWINDVELOCITY% and %MAXWINDVELOCITY% km/h.
 WIND_VELOCITY_IS_CONSTANT_AT_X1 = The wind speed is constant %WINDVELOCITY% km/h.
 
+
+NEWS_TERROR_GROUP1_LEVEL1_TITLE1 = Ambassador of the PR Duban offends his counterpart
+NEWS_TERROR_GROUP1_LEVEL1_TEXT1 =  It is a scandal: an ambassador of PR Duban insulted his counterpart from the FR Duban.
+NEWS_TERROR_GROUP2_LEVEL1_TITLE1 = Ambassador of FR Duban insults neighbours.
+NEWS_TERROR_GROUP2_LEVEL1_TEXT1 = This cannot be true: an ambassador of FR Duban insulted the representatives of the PR Duban.
+
+NEWS_TERROR_GROUP1_LEVEL2_TITLE1 = Ambassador beaten
+NEWS_TERROR_GROUP1_LEVEL2_TEXT1 = On his way home, the Ambassador of the PR Duban was knocked out in the basement garage. Witnesses saw a car of FR Duban drive off.
+NEWS_TERROR_GROUP2_LEVEL2_TITLE1 = Apartment of an ambassador devastated
+NEWS_TERROR_GROUP2_LEVEL2_TEXT1 = The apartment of the Ambassador of the FR Duban was devastated. Clues point to the circles of VR Duban ...
+
+NEWS_TERROR_GROUP1_LEVEL3_TITLE1 = VR Duban threatens retaliation
+NEWS_TERROR_GROUP1_LEVEL3_TEXT1 = The VR Duban openly threatens with revenge. The culprits were allegedly found. The situation is tough.
+NEWS_TERROR_GROUP2_LEVEL3_TITLE1 = FR Duban warns of consequences
+NEWS_TERROR_GROUP2_LEVEL3_TEXT1 = Enough. So the concise text of the message. The FR Kuban takes countermeasures.
+
+NEWS_TERROR_GROUP1_LEVEL4_TITLE1 = The police warns of terrorists
+NEWS_TERROR_GROUP1_LEVEL4_TEXT1 = The police lost track of an recently sighted terrorist. He is claimed to be of Dubanian origin.
+NEWS_TERROR_GROUP2_LEVEL4_TITLE1 = The police warns of terrorists
+NEWS_TERROR_GROUP2_LEVEL4_TEXT1 = The police lost track of an recently sighted terrorist. He is claimed to be of Dubanian origin.
+
+
 LOCKED = Locked
 ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY = Access to this room is only possible with the right key.
 BLOCKED = Blocked
