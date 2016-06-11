@@ -40,6 +40,13 @@ Function RandMax:int(hi:int)
 End Function
 
 Function RandRange:int(lo:int, hi:int)
+	'order min/max
+	if hi < lo
+		local tmp:int = hi
+		hi = lo
+		lo = tmp
+	endif
+
 	if lo < 0
 		local offset:int = -lo
 		lo = 0
@@ -91,6 +98,13 @@ End Function
 '     WeightedRange(0, 100, 0.6) will most probably return values of 20-100
 'But all of them (except 0.0 and 1.0) might return values between 0-100
 Function WeightedRandRange:Int(lo:int, hi:int, weight:Float = 0.5, strength:Float = 1.0)
+	'order min/max
+	if hi < lo
+		local tmp:int = hi
+		hi = lo
+		lo = tmp
+	endif
+	
 	local offset:int = 0
 	if lo < 0
 		offset = -lo

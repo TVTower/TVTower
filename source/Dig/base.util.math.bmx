@@ -47,16 +47,20 @@ Type MathHelper
 
 
 	Function SortValues(valueA:Float var, valueB:Float var)
-		local newValueA:Float = min(valueA, valueB)
-		valueB = max(valueA, valueB)
-		valueA = newValueA
+		if valueB < valueA
+			local tmp:int = valueB
+			valueB = valueA
+			valueA = tmp
+		endif
 	End Function
 
 	'for "var" params we need the correct types
 	Function SortIntValues(valueA:Int var, valueB:Int var)
-		local newValueA:Int = min(valueA, valueB)
-		valueB = max(valueA, valueB)
-		valueA = newValueA
+		if valueB < valueA
+			local tmp:int = valueB
+			valueB = valueA
+			valueA = tmp
+		endif
 	End Function
 
 	'returns a linear interpolated value between startValue and endValue
@@ -134,7 +138,7 @@ Type MathHelper
 		if digitsAfterDecimalPoint <= 0 then return RoundLong(value)
 
 		Local t:Long = 10 ^ digitsAfterDecimalPoint
-		local s:string = MathHelper.RoundLong(Abs(value) * t)
+		local s:string = RoundLong(Abs(value) * t)
 		'instead of comparing "value" we use the rounded one - a value
 		'of "0.000" is sometimes represented using "-2xxxxxxx.xxxx"
 		local minus:int = (RoundLong(value * t) < 0)
