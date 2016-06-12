@@ -252,6 +252,29 @@ Type TProgrammePerson extends TProgrammePersonBase
 	End Method
 
 
+	Method GetAttribute:float(attributeID:int)
+		Select attributeID
+			case TVTProgrammePersonAttribute.SKILL
+				return skill
+			case TVTProgrammePersonAttribute.POWER
+				return power
+			case TVTProgrammePersonAttribute.HUMOR
+				return humor
+			case TVTProgrammePersonAttribute.CHARISMA
+				return charisma
+			case TVTProgrammePersonAttribute.APPEARANCE
+				return appearance
+			case TVTProgrammePersonAttribute.FAME
+				return fame
+			case TVTProgrammePersonAttribute.SCANDALIZING
+				return scandalizing
+			default
+				print "ProgrammePerson: unhandled attributeID "+attributeID
+				return 0
+		End Select
+	End Method
+	
+
 	Method SetRandomAttributes:int(onlyEmpty:int=False)
 		'reset attributes, so they get all refilled
 		if not onlyEmpty
@@ -446,12 +469,18 @@ Type TProgrammePerson extends TProgrammePersonBase
 	
 	'override to extend with xp gain + send out events
 	Method FinishProduction:int(programmeDataGUID:string, job:int)
-		Super.FinishProduction(programmeDataGUID, job:int)
-		
 		local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(programmeDataGUID)
-		'already added
-		if StringHelper.InArray(programmeDataGUID, producedProgrammes, False) then return False
+		'skip headers (series/collections)
+		if not programmeData or programmeData.IsHeader() then return False
+		'skip gaining if already done
+		'this is checked as "GetProducedProgramme()" also contains
+		'new entries already - so an "not inArray" would fail
+		if programmeData.finishedProductionForCast then return False
 
+	
+
+		Super.FinishProduction(programmeDataGUID, job:int)
+	
 		GainExperienceForProgramme(programmeDataGUID)
 
 		'add programme (do not just add, as this destroys desc-sort)
@@ -466,6 +495,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 	'refresh cache (for newly converted "insignifants" or after a savegame)
 	Method GetProducedProgrammes:String[]()
 		if not producedProgrammesCached
+			producedProgrammes = new String[0]
+			
 			'fill up with already finished
 			'ordered by release date
 			local releasedData:TList = GetProgrammeDataCollection().GetFinishedProductionProgrammeDataList()
@@ -629,8 +660,10 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 
 	Method GetNextExperienceGain:int(job:int, programmeData:TProgrammeData)
-		'10 perfect movies would lead to a 100% experienced person
-		local baseGain:float = 1000 * programmeData.GetQualityRaw()
+		'5 perfect movies would lead to a 100% experienced person
+		local baseGain:float = ((1.0/5) * MAX_XP) * programmeData.GetQualityRaw()
+		'series episodes do not get that much exp
+		if programmeData.IsEpisode() then baseGain :* 0.5
 
 		local jobXP:int = GetExperience(job)
 

@@ -2270,9 +2270,6 @@ Type TGUICastListItem Extends TGUISelectListItem
 					local i:int = 0
 					local entryNum:int = 0
 					while i < productionGUIDs.length and entryNum < 3
-if celebrity.GetFullName().Find("Kalisch") > 0
-	print "GUID: " + productionGUIDs[i]
-endif
 						local production:TProgrammeData = GetProgrammeDataCollection().GetByGUID( productionGUIDs[ i] )
 						i :+ 1
 						if not production then continue

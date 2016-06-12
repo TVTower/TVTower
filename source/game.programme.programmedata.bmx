@@ -447,7 +447,8 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	'for live shows this is the time of the live event
 	Field releaseTime:Long = -1
 	'announced in news etc?
-	Field releaseAnnounced:int = FALSE
+	Field releaseAnnounced:int = False
+	Field finishedProductionForCast:int = False
 	'state of the programme (in production, cinema, released...)
 	Field state:Int = 0
 	'bitmask for all players whether they currently broadcast it
@@ -1608,13 +1609,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		if IsLive() then return False
 		
 		if not isHeader()
-			'inform each person in the cast that the production finished
-			if not GetCast() then return True
-
-			For local job:TProgrammePersonJob = eachIn GetCast()
-				local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID( job.personGUID )
-				if person then person.FinishProduction(GetGUID(), job.job)
-			Next
+			onFinishProductionForCast()
 		endif
 		
 		return True
@@ -1623,6 +1618,22 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 	Method onRelease:int(time:Long = 0)
 		return True
+	End Method
+
+
+	'inform each person in the cast that the production finished
+	Method onFinishProductionForCast:int(time:Long = 0)
+		'already done
+		if finishedProductionForCast then return False
+		
+		if GetCast()
+			For local job:TProgrammePersonJob = eachIn GetCast()
+				local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID( job.personGUID )
+				if person then person.FinishProduction(GetGUID(), job.job)
+			Next
+		endif
+
+		finishedProductionForCast = True
 	End Method
 
 
@@ -1749,10 +1760,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 				'inform each person in the cast that the production finished
 				'(albeit this is NOT strictly the truth)
 				if IsLive()
-					For local job:TProgrammePersonJob = eachIn GetCast()
-						local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID( job.personGUID )
-						if person then person.FinishProduction(GetGUID(), job.job)
-					Next
+					onFinishProductionForCast()
 				endif
 			endif
 		endif
