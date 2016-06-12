@@ -470,10 +470,13 @@ Type TRegistryProgrammeDataModsLoader extends TRegistryBaseLoader
 				if not castAttributes then castAttributes = CreateMap()
 				Local jobID:int = TVTProgrammePersonJob.GetByString(subNodeChild.GetName().ToLower())
 				Local attributeID:int = TVTProgrammePersonAttribute.GetByString(TXmlHelper.FindValue(subNodeChild, "attribute", ""))
-				Local value:String = TXmlHelper.FindValue(subNodeChild, "value", "1.0")
+				Local value:String = TXmlHelper.FindValue(subNodeChild, "value", "0.0")
 
 				if jobID = TVTProgrammePersonJob.UNKNOWN then continue
 				if attributeID = TVTProgrammePersonAttribute.NONE then continue
+
+				'limit values to -1.0 - +1.0
+				value = string( MathHelper.Clamp(float(value), -1.0 , 1.0) )
 
 				castAttributes.Insert(jobID+"_"+attributeID, value)
 			Next
@@ -522,6 +525,9 @@ Type TRegistryProgrammeDataModsLoader extends TRegistryBaseLoader
 		programmeDataMod.Insert("outcomeMod", data.GetString("outcomeMod", -1))
 		programmeDataMod.Insert("reviewMod", data.GetString("reviewMod", -1))
 		programmeDataMod.Insert("speedMod", data.GetString("speedMod", -1))
+
+		programmeDataMod.Insert("castAttributes", data.Get("castAttributes"))
+		programmeDataMod.Insert("focusPointPriorities", data.Get("focusPointPriorities"))
 
 		If data.GetString("goodFollower") <> ""
 			local followers:string[] = data.GetString("goodFollower").split(",")

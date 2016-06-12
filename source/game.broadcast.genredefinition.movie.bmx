@@ -122,14 +122,15 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 
 	Method SetCastAttribute(jobID:int, attributeID:int, value:float)
 		if not castAttributes then castAttributes = CreateMap()
+
 		castAttributes.Insert(jobID+"_"+attributeID, string(value))
 	End Method
 	
 
 	Method GetCastAttribute:Float(jobID:int, attributeID:int)
-		if not castAttributes then return 1.0
+		if not castAttributes then return 0.0
 		local value:object = castAttributes.ValueForKey(jobID+"_"+attributeID)
-		if not value or string(value) then return 1.0
+		if not value or string(value)="" then return 0.0
 
 		return float(string(value))
 	End Method
