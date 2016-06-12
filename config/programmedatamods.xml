@@ -28,9 +28,9 @@
 							  modifier for different attributes a cast
 							  (director, actor, ...) has
 							    skill, power, humor, charisma, appearance
-							    1.0 = default, average importance
-							    2.0 = doubled importance
-							    0.0 = absolutely unimportant / ignored
+							    0.0 = default, no adjustment
+							    1.0 = absolute benefit from it  (appearance in romantic movies)
+							   -1.0 = absolute penalty for it (muscles in a lovestory...)
 			-->
 			<genre id="0" name="various" outcome-mod="0.1" review-mod="0.3" speed-mod="0.6">
 				<goodFollower></goodFollower>
@@ -110,11 +110,11 @@
 					<audienceAttraction id="Pensioners" men="-0.3" women="-0.3" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="power" value="1.2" />
-					<actor attribute="humor" value="1.1" />
-					<supportingactor attribute="power" value="1.1" />
-					<supportingactor attribute="humor" value="1.2" />
-					<supportingactor attribute="appearance" value="1.1" />
+					<actor attribute="power" value="0.2" />
+					<actor attribute="humor" value="0.1" />
+					<supportingactor attribute="power" value="0.1" />
+					<supportingactor attribute="humor" value="0.2" />
+					<supportingactor attribute="appearance" value="0.1" />
 				</castAttributes>
 				<focusPointPriorities>
 					<coulisse value="1.1" />
@@ -160,9 +160,9 @@
 					<audienceAttraction id="Pensioners" men="-0.3" women="-0.6" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="power" value="1.2" />
-					<supportingactor attribute="power" value="1.1" />
-					<supportingactor attribute="appearance" value="1.1" />
+					<actor attribute="power" value="0.2" />
+					<supportingactor attribute="power" value="0.1" />
+					<supportingactor attribute="appearance" value="0.1" />
 				</castAttributes>
 				<focusPointPriorities>
 					<vfx_and_sfx value="1.1" />
@@ -247,8 +247,8 @@
 					<audienceAttraction id="Pensioners" men="0.5" women="0.4" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="charisma" value="1.2" />
-					<supportingactor attribute="charisma" value="1.1" />
+					<actor attribute="charisma" value="0.2" />
+					<supportingactor attribute="charisma" value="0.1" />
 				</castAttributes>
 			</genre>
 			<genre id="5" name="comedy" outcome-mod="0.5" review-mod="0.2" speed-mod="0.3">
@@ -290,10 +290,10 @@
 					<audienceAttraction id="Pensioners" value="0" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="humor" value="1.2" />
-					<actor attribute="appearance" value="1.1" />
-					<supportingactor attribute="humor" value="1.2" />
-					<supportingactor attribute="appearance" value="1.1" />
+					<actor attribute="humor" value="0.2" />
+					<actor attribute="appearance" value="0.1" />
+					<supportingactor attribute="humor" value="0.2" />
+					<supportingactor attribute="appearance" value="0.1" />
 				</castAttributes>
 			</genre>
 			<genre id="6" name="documentation" outcome-mod="0.2" review-mod="0.5" speed-mod="0.3">
@@ -335,8 +335,8 @@
 					<audienceAttraction id="Pensioners" value="0.6" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="skill" value="1.2" />
-					<actor attribute="charisma" value="1.1" />
+					<actor attribute="skill" value="0.2" />
+					<actor attribute="charisma" value="0.1" />
 				</castAttributes>
 			</genre>
 			<genre id="7" name="drama" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">
@@ -378,10 +378,10 @@
 					<audienceAttraction id="Pensioners" men="0.25" women="0.5" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="skill" value="1.2" />
-					<actor attribute="charisma" value="1.2" />
-					<supportingactor attribute="skill" value="1.2" />
-					<supportingactor attribute="charisma" value="1.2" />
+					<actor attribute="skill" value="0.2" />
+					<actor attribute="charisma" value="0.2" />
+					<supportingactor attribute="skill" value="0.2" />
+					<supportingactor attribute="charisma" value="0.2" />
 				</castAttributes>
 				<focusPointPriorities>
 					<coulisse value="1.2" />
@@ -426,10 +426,10 @@
 					<audienceAttraction id="Pensioners" men="-0.2" women="-0.6" />
 				</audienceAttractions>	
 				<castAttributes>
-					<actor attribute="skill" value="0.9" />
-					<actor attribute="appearance" value="1.4" />
-					<supportingactor attribute="appearance" value="1.4" />
-					<supportingactor attribute="skill" value="0.9" />
+					<actor attribute="charisma" value="0.1" />
+					<actor attribute="appearance" value="0.4" />
+					<supportingactor attribute="appearance" value="0.4" />
+					<supportingactor attribute="skill" value="-0.05" />
 				</castAttributes>
 				<focusPointPriorities>
 					<coulisse value="1.2" />
@@ -477,10 +477,10 @@
 					<audienceAttraction id="Pensioners" men="0.05" women="0.15" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="humor" value="1.1" />
-					<actor attribute="appearance" value="1.1" />
-					<supportingactor attribute="humor" value="1.1" />
-					<supportingactor attribute="appearance" value="1.1" />
+					<actor attribute="humor" value="0.1" />
+					<actor attribute="appearance" value="0.1" />
+					<supportingactor attribute="humor" value="0.1" />
+					<supportingactor attribute="appearance" value="0.1" />
 				</castAttributes>
 			</genre>
 			<genre id="10" name="fantasy" outcome-mod="0.6" review-mod="0.2" speed-mod="0.2">
@@ -522,10 +522,10 @@
 					<audienceAttraction id="Pensioners" men="-0.3" women="-0.5" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="power" value="1.1" />
-					<actor attribute="appearance" value="1.1" />
-					<supportingactor attribute="power" value="1.1" />
-					<supportingactor attribute="appearance" value="1.1" />
+					<actor attribute="power" value="0.1" />
+					<actor attribute="appearance" value="0.1" />
+					<supportingactor attribute="power" value="0.1" />
+					<supportingactor attribute="appearance" value="0.1" />
 				</castAttributes>
 			</genre>
 			<genre id="11" name="history" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">
@@ -567,9 +567,9 @@
 					<audienceAttraction id="Pensioners" men="0.5" women="0.2" />
 				</audienceAttractions>
 				<castAttributes>
-					<director attribute="charisma" value="1.1" />
-					<actor attribute="charisma" value="1.1" />
-					<supportingactor attribute="charisma" value="1.1" />
+					<director attribute="charisma" value="0.1" />
+					<actor attribute="charisma" value="0.1" />
+					<supportingactor attribute="charisma" value="0.1" />
 				</castAttributes>
 			</genre>
 			<genre id="12" name="horror" outcome-mod="0.4" review-mod="0.2" speed-mod="0.4">
@@ -650,9 +650,9 @@
 					<audienceAttraction id="Pensioners" men="0.4" women="0.2" />
 				</audienceAttractions>
 				<castAttributes>
-					<director attribute="charisma" value="1.1" />
-					<actor attribute="charisma" value="1.1" />
-					<supportingactor attribute="charisma" value="1.05" />
+					<director attribute="charisma" value="0.1" />
+					<actor attribute="charisma" value="0.1" />
+					<supportingactor attribute="charisma" value="0.05" />
 				</castAttributes>
 			</genre>
 			<genre id="14" name="mystery" outcome-mod="0.6" review-mod="0.2" speed-mod="0.2">
@@ -733,10 +733,10 @@
 					<audienceAttraction id="Pensioners" men="-0.2" women="0.3" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="humor" value="1.1" />
-					<actor attribute="appearance" value="1.2" />
-					<supportingactor attribute="humor" value="1.1" />
-					<supportingactor attribute="appearance" value="1.2" />
+					<actor attribute="humor" value="0.1" />
+					<actor attribute="appearance" value="0.2" />
+					<supportingactor attribute="humor" value="0.1" />
+					<supportingactor attribute="appearance" value="0.2" />
 				</castAttributes>
 			</genre>
 			<genre id="16" name="sci-fi" outcome-mod="0.6" review-mod="0.2" speed-mod="0.2">
@@ -817,9 +817,9 @@
 					<audienceAttraction id="Pensioners" value="-0.3" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="charisma" value="1.1" />
-					<supportingactor attribute="charisma" value="1.1" />
-					<supportingactor attribute="appearance" value="1.1" />
+					<actor attribute="charisma" value="0.1" />
+					<supportingactor attribute="charisma" value="0.1" />
+					<supportingactor attribute="appearance" value="0.1" />
 				</castAttributes>
 			</genre>
 			<genre id="18" name="western" outcome-mod="0.4" review-mod="0.3" speed-mod="0.3">
@@ -861,8 +861,8 @@
 					<audienceAttraction id="Pensioners" men="0.5" women="0" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="power" value="1.1" />
-					<supportingactor attribute="appearance" value="1.1" />
+					<actor attribute="power" value="0.1" />
+					<supportingactor attribute="appearance" value="0.1" />
 				</castAttributes>
 			</genre>
 
@@ -906,10 +906,10 @@
 					<audienceAttraction id="Pensioners" men="0.1" women="0.2" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="humor" value="1.1" />
-					<actor attribute="appearance" value="1.1" />
-					<supportingactor attribute="humor" value="1.1" />
-					<supportingactor attribute="appearance" value="1.1" />
+					<actor attribute="humor" value="0.1" />
+					<actor attribute="appearance" value="0.1" />
+					<supportingactor attribute="humor" value="0.1" />
+					<supportingactor attribute="appearance" value="0.1" />
 				</castAttributes>
 			</genre>
 			<genre id="101" name="show_politics" outcome-mod="0.2" review-mod="0.6" speed-mod="0.2">
@@ -951,10 +951,10 @@
 					<audienceAttraction id="Pensioners" men="0.5" women="0.3" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="charisma" value="1.1" />
-					<actor attribute="appearance" value="1.1" />
-					<supportingactor attribute="charisma" value="1.1" />
-					<supportingactor attribute="appearance" value="1.1" />
+					<actor attribute="charisma" value="0.1" />
+					<actor attribute="appearance" value="0.1" />
+					<supportingactor attribute="charisma" value="0.1" />
+					<supportingactor attribute="appearance" value="0.1" />
 				</castAttributes>
 			</genre>
 			<genre id="102" name="show_music" outcome-mod="0.2" review-mod="0.35" speed-mod="0.45">
@@ -996,10 +996,10 @@
 					<audienceAttraction id="Pensioners" men="0.15" women="0.3" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="humor" value="1.1" />
-					<actor attribute="appearance" value="1.1" />
-					<supportingactor attribute="humor" value="1.1" />
-					<supportingactor attribute="appearance" value="1.1" />
+					<actor attribute="humor" value="0.1" />
+					<actor attribute="appearance" value="0.1" />
+					<supportingactor attribute="humor" value="0.1" />
+					<supportingactor attribute="appearance" value="0.1" />
 				</castAttributes>
 			</genre>
 			
@@ -1084,8 +1084,8 @@
 					<audienceAttraction id="Pensioners" value="0.5" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="charisma" value="1.1" />
-					<supportingactor attribute="charisma" value="1.1" />
+					<actor attribute="charisma" value="0.1" />
+					<supportingactor attribute="charisma" value="0.1" />
 				</castAttributes>
 			</genre>
 			<genre id="202" name="event_music" outcome-mod="0.15" review-mod="0.35" speed-mod="0.5">
@@ -1127,10 +1127,10 @@
 					<audienceAttraction id="Pensioners" value="0.4" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="humor" value="1.1" />
-					<actor attribute="appearance" value="1.1" />
-					<supportingactor attribute="humor" value="1.1" />
-					<supportingactor attribute="appearance" value="1.1" />
+					<actor attribute="humor" value="0.1" />
+					<actor attribute="appearance" value="0.1" />
+					<supportingactor attribute="humor" value="0.1" />
+					<supportingactor attribute="appearance" value="0.1" />
 				</castAttributes>
 			</genre>
 			<genre id="203" name="event_sport" outcome-mod="0.15" review-mod="0.3" speed-mod="0.55">
@@ -1210,10 +1210,10 @@
 					<audienceAttraction id="Pensioners" men="0" women="0.2" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="humor" value="1.1" />
-					<actor attribute="appearance" value="1.1" />
-					<supportingactor attribute="humor" value="1.1" />
-					<supportingactor attribute="appearance" value="1.1" />
+					<actor attribute="humor" value="0.1" />
+					<actor attribute="appearance" value="0.1" />
+					<supportingactor attribute="humor" value="0.1" />
+					<supportingactor attribute="appearance" value="0.1" />
 				</castAttributes>
 			</genre>
 			<genre id="300" name="feature" outcome-mod="0.1" review-mod="0.4" speed-mod="0.5">

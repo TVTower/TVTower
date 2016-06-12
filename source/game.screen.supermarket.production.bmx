@@ -1855,9 +1855,10 @@ Type TGUICastListItem Extends TGUISelectListItem
 	Field person:TProgrammePersonBase
 	Field displayName:string = ""
 	Field isAmateur:int = False
-	'the job this list item is "used for"
+	'the job this list item is "used for" (the dropdown-filter)
 	Field displayJobID:int = -1
 	Field lastDisplayJobID:int = -1
+	Field selectJobID:int = -1
 
 	Const paddingBottom:Int	= 5
 	Const paddingTop:Int = 0
@@ -1872,6 +1873,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 		self.isAmateur = False
 
 		self.displayJobID = -1
+		self.selectJobID = displayJobID
 		self.lastDisplayJobID = displayJobID
 
 		'resize it
@@ -2063,11 +2065,13 @@ Type TGUICastListItem Extends TGUISelectListItem
 		SetColor 255,255,255
 		SetAlpha 1.0
 
+		local jobID:int = selectJobID
+		if jobID = -1 then jobID = GetDisplayJobID()
 		if TProgrammePerson(person)
-			ShowCastSheet(person, GetDisplayJobID(), sheetX, sheetY, sheetAlign, FALSE)
+			ShowCastSheet(person, jobID, sheetX, sheetY, sheetAlign, FALSE)
 		else
 			'hide person name etc for non-celebs
-			ShowCastSheet(person, GetDisplayJobID(), sheetX, sheetY, sheetAlign, TRUE)
+			ShowCastSheet(person, jobID, sheetX, sheetY, sheetAlign, TRUE)
 		endif
 	End Method
 
@@ -2306,30 +2310,77 @@ Type TGUICastListItem Extends TGUISelectListItem
 			skin.RenderBar(contentX + 5, contentY, 100, 12, celebrity.GetExperiencePercentage(jobID))
 			skin.fontSemiBold.drawBlock(GetLocale("CAST_EXPERIENCE"), contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorLabel)
 			contentY :+ barH + 2
-			'Fame
-			skin.RenderBar(contentX + 5, contentY, 100, 12, celebrity.GetFame())
-			skin.fontSemiBold.drawBlock(GetLocale("CAST_FAME"), contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorLabel)
-			contentY :+ barH + 2
-			'Skill
-			skin.RenderBar(contentX + 5, contentY, 100, 12, celebrity.GetSkill())
-			skin.fontSemiBold.drawBlock(GetLocale("CAST_SKILL"), contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorLabel)
-			contentY :+ barH + 2
-			'Power
-			skin.RenderBar(contentX + 5, contentY, 100, 12, celebrity.GetPower())
-			skin.fontSemiBold.drawBlock(GetLocale("CAST_POWER"), contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorLabel)
-			contentY :+ barH + 2
-			'Humor
-			skin.RenderBar(contentX + 5, contentY, 100, 12, celebrity.GetHumor())
-			skin.fontSemiBold.drawBlock(GetLocale("CAST_HUMOR"), contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorLabel)
-			contentY :+ barH + 2
-			'Charisma
-			skin.RenderBar(contentX + 5, contentY, 100, 12, celebrity.GetCharisma())
-			skin.fontSemiBold.drawBlock(GetLocale("CAST_CHARISMA"), contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorLabel)
-			contentY :+ barH + 2
-			'Appearance
-			skin.RenderBar(contentX + 5, contentY, 100, 12, celebrity.GetAppearance())
-			skin.fontSemiBold.drawBlock(GetLocale("CAST_APPEARANCE"), contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorLabel)
-			contentY :+ barH + 2
+
+
+			local genreDefinition:TMovieGenreDefinition
+			if TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept
+				local script:TScript = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script
+				if script then genreDefinition = GetMovieGenreDefinition( script.mainGenre )
+			endif
+
+			local attributes:int[] = [TVTProgrammePersonAttribute.FAME, ..
+			                          TVTProgrammePersonAttribute.SKILL, ..
+			                          TVTProgrammePersonAttribute.POWER, ..
+			                          TVTProgrammePersonAttribute.HUMOR, ..
+			                          TVTProgrammePersonAttribute.CHARISMA, ..
+			                          TVTProgrammePersonAttribute.APPEARANCE ..
+			                         ]
+			For local attributeID:int = EachIn attributes
+				local mode:int = 0
+
+				local attributeFit:Float = 0.0
+				local attributeGenre:Float = 0.0
+				local attributePerson:Float = 0.0
+				if genreDefinition
+					attributeGenre = genreDefinition.GetCastAttribute(jobID, attributeID)
+					attributePerson = celebrity.GetAttribute(attributeID)
+				endif
+
+				'unimportant attribute / no bonus/malus for this attribute
+				if MathHelper.AreApproximatelyEqual(attributeGenre, 0.0)
+					mode = 1
+				'neutral
+'				elseif MathHelper.AreApproximatelyEqual(attributePerson, 0.0) 
+'					mode = 2
+				'negative
+				elseif attributeGenre < 0
+					mode = 3
+				'positive
+				else
+					mode = 4
+				endif
+
+				'set "skill" neutral if not assigned "negative/positive" already
+				if mode = 1 and attributeID = TVTProgrammePersonAttribute.SKILL
+					mode = 2
+				endif
+			
+
+				select mode
+					'unused
+					case 1
+						local oldA:Float = GetAlpha()
+						SetAlpha oldA * 0.4
+						skin.RenderBar(contentX + 5, contentY, 100, 12, celebrity.GetAttribute(attributeID))
+						SetAlpha oldA * 0.3
+						skin.fontSemiBold.drawBlock(GetLocale("CAST_"+TVTProgrammePersonAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorLabel)
+						SetAlpha oldA
+					'neutral
+					case 2
+						skin.RenderBar(contentX + 5, contentY, 100, 12, celebrity.GetAttribute(attributeID))
+						skin.fontSemiBold.drawBlock(GetLocale("CAST_"+TVTProgrammePersonAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorLabel)
+					'negative
+					case 3
+						skin.RenderBar(contentX + 5, contentY, 100, 12, celebrity.GetAttribute(attributeID))
+						skin.fontSemiBold.drawBlock(GetLocale("CAST_"+TVTProgrammePersonAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorBad)
+
+					'positive
+					case 4
+						skin.RenderBar(contentX + 5, contentY, 100, 12, celebrity.GetAttribute(attributeID))
+						skin.fontSemiBold.drawBlock(GetLocale("CAST_"+TVTProgrammePersonAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorGood)
+				End Select
+				contentY :+ barH + 2
+			Next
 		endif
 	'hidden?
 	rem

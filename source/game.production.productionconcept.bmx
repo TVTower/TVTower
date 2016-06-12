@@ -481,23 +481,27 @@ Type TProductionConcept Extends TOwnedGameObject
 			'allows to gain bonus from having the right attributes for
 			'the desired job, regardless of whether you are experienced
 			'in this job or not
-			local attributeMod:Float = 0
+			local attributeMod:Float = 1.0
 			local attributeCount:int = 0
-			'loop through all attributes and add their weighted values
-			for local i:int = 1 to TVTProgrammePersonAttribute.count
-				local attributeID:int = TVTProgrammePersonAttribute.GetAtIndex(i)
-				local attribute:Float = genreDefinition.GetCastAttribute(script.cast[castIndex].job, attributeID)
-				if MathHelper.AreApproximatelyEqual(attribute, 1.0) then continue
+			if TProgrammePerson(person)
+				'loop through all attributes and add their weighted values
+				for local i:int = 1 to TVTProgrammePersonAttribute.count
+					local attributeID:int = TVTProgrammePersonAttribute.GetAtIndex(i)
+					local attributeGenre:Float = genreDefinition.GetCastAttribute(script.cast[castIndex].job, attributeID)
+					local attributePerson:Float = TProgrammePerson(person).GetAttribute(attributeID)
+					if MathHelper.AreApproximatelyEqual(attributePerson, 0.0) then continue
+					if MathHelper.AreApproximatelyEqual(attributeGenre, 0.0) then continue
 
-				attributeMod :+ (attribute - 1.0)
-				attributeCount :+ 1
-			Next
-			if attributeCount > 0
-				attributeMod = 1.0 + attributeMod/attributeCount
-			else
-				attributeMod = 1.0
+					attributeMod :+ attributeGenre * attributePerson
+					attributeCount :+ 1
+				Next
+				'calc average
+				if attributeCount > 1
+					attributeMod :/ attributeCount
+				endif
+				print person.GetFullname() +" : mod="+attributeMod
 			endif
-
+			
 
 			'if the cast defines a specific gender for this position,
 			'then we reduce the personFit by up to 20%.
