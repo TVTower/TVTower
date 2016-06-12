@@ -32,6 +32,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	'helper data
 	Field _unreleasedProgrammeData:TList {nosave}
 	Field _liveProgrammeData:TList {nosave}
+	Field _finishedProductionProgrammeData:TList {nosave}
 
 	Global _instance:TProgrammeDataCollection
 
@@ -54,6 +55,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	Method _InvalidateCaches()
 		_unreleasedProgrammeData = Null
 		_liveProgrammeData = Null
+		_finishedProductionProgrammeData = Null
 	End Method
 
 
@@ -84,9 +86,10 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 
 				_unreleasedProgrammeData.AddLast(data)
 			Next
+
+			'order by release
+			_unreleasedProgrammeData.Sort(True, _SortByReleaseTime)
 		endif
-		'order by release
-		_unreleasedProgrammeData.Sort(True, _SortUnreleasedByRelease)
 
 		return _unreleasedProgrammeData
 	End Method	
@@ -102,13 +105,33 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 
 				_liveProgrammeData.AddLast(data)
 			Next
+
+			'order by release
+			_liveProgrammeData.Sort(True, _SortByReleaseTime)
 		endif
-		'order by release
-		_liveProgrammeData.Sort(True, _SortUnreleasedByRelease)
 
 		return _liveProgrammeData
 	End Method	
 
+
+	'returns (and creates if needed) a list containing only entries
+	'with finished production (= released or in cinema)
+	Method GetFinishedProductionProgrammeDataList:TList()
+		if not _finishedProductionProgrammeData
+			_finishedProductionProgrammeData = CreateList()
+			For local data:TProgrammeData = EachIn entries.Values()
+				if not data.IsReleased() and not data.IsInCinema() then continue
+
+				_finishedProductionProgrammeData.AddLast(data)
+			Next
+
+			'order by release
+			_finishedProductionProgrammeData.Sort(True, _SortByReleaseTime)
+		endif
+
+		return _finishedProductionProgrammeData
+	End Method
+	
 
 	Method GetGenreRefreshModifier:float(genre:int)
 		'values get multiplied with the refresh factor
@@ -351,11 +374,11 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	End Method
 
 
-	Function _SortUnreleasedByRelease:Int(o1:Object, o2:Object)
+	Function _SortByReleaseTime:Int(o1:Object, o2:Object)
 		Local p1:TProgrammeData = TProgrammeData(o1)
 		Local p2:TProgrammeData = TProgrammeData(o2)
 		If Not p2 Then Return 1
-        Return p1.GetProductionStartTime() - p2.GetProductionStartTime()
+        Return p1.releaseTime - p2.releaseTime
 	End Function	
 End Type
 

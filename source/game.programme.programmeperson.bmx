@@ -468,14 +468,20 @@ Type TProgrammePerson extends TProgrammePersonBase
 	Method GetProducedProgrammes:String[]()
 		if not producedProgrammesCached
 			'fill up with already finished
-			For local programmeData:TProgrammeData = EachIn GetProgrammeDataCollection().entries.Values()
+			'ordered by release date
+			local releasedData:TList = GetProgrammeDataCollection().GetFinishedProductionProgrammeDataList()
+
+			if releasedData.Count() > 1
+				'latest production on top (list is copied then)
+				releasedData = releasedData.reversed()
+			endif
+			
+			For local programmeData:TProgrammeData = EachIn releasedData
 				if not programmeData.HasCastPerson(self.GetGUID()) then continue
 				'skip "paid programming" (kind of live programme)
 				if programmeData.HasFlag(TVTProgrammeDataFlag.PAID) then continue
 
-				if programmeData.IsReleased() or programmeData.IsInProduction() or programmeData.IsInCinema()
-					producedProgrammes :+ [programmeData.GetGUID()]
-				endif
+				producedProgrammes :+ [programmeData.GetGUID()]
 			Next
 			producedProgrammesCached = True
 		endif
