@@ -1673,7 +1673,7 @@ Type TGUIobject
 		Else
 			'inform others about a scroll with the mousewheel
 			If GUIManager.UpdateState_mouseScrollwheelMovement <> 0
-				Local event:TEventSimple = TEventSimple.Create("guiobject.OnScrollwheel", new TData.AddNumber("value", GUIManager.UpdateState_mouseScrollwheelMovement),Self)
+				Local event:TEventSimple = TEventSimple.Create("guiobject.OnScrollwheel", new TData.AddNumber("value", GUIManager.UpdateState_mouseScrollwheelMovement).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 				EventManager.triggerEvent(event)
 				'a listener handles the scroll - so remove it for others
 				If event.isAccepted()

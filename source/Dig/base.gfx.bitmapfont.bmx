@@ -568,18 +568,18 @@ Type TBitmapFont
 	End Method
 
 
-	'draws the text in a given block according to given alignment.
+	'draws the text lines in a given block according to given alignment.
 	'@nicelyTruncateLastLine:      try to shorten a word with "..."
 	'                              or just truncate? 
 	'@centerSingleLineOnBaseline:  if only 1 line is given, is center
 	'                              calculated using baseline (no "y,g,p,...") 
-	Method drawBlock:TVec2D(text:String, x:Float, y:Float, w:Float, h:Float, alignment:TVec2D=null, color:TColor=null, style:int=0, doDraw:int = 1, special:float=1.0, nicelyTruncateLastLine:int=TRUE, centerSingleLineOnBaseline:int=False)
+	Method drawLinesBlock:TVec2D(lines:String[], x:Float, y:Float, w:Float, h:Float, alignment:TVec2D=null, color:TColor=null, style:int=0, doDraw:int = 1, special:float=1.0, nicelyTruncateLastLine:int=TRUE, centerSingleLineOnBaseline:int=False)
 		'use special chars (instead of text) for same height on all lines
 		Local alignedX:float = 0.0
 		Local lineMaxWidth:Float = 0
 		local lineWidth:Float = 0
 		Local lineHeight:float = getMaxCharHeight()
-		Local lines:string[] = TextToMultiLine(text, w, h, lineHeight, nicelyTruncateLastLine)
+
 		'first height was calculated using all characters, but we now
 		'know if we could center using baseline only (only available
 		'when there is only 1 line to draw)
@@ -635,10 +635,20 @@ Type TBitmapFont
 			Endif
 		Next
 
-		'clear everything
-		'TBitmapFontStyle.Reset()
-
 		return new TVec2D.Init(lineMaxWidth, y - startY)
+	End Method
+
+
+	'draws the text in a given block according to given alignment.
+	'@nicelyTruncateLastLine:      try to shorten a word with "..."
+	'                              or just truncate? 
+	'@centerSingleLineOnBaseline:  if only 1 line is given, is center
+	'                              calculated using baseline (no "y,g,p,...") 
+	Method drawBlock:TVec2D(text:String, x:Float, y:Float, w:Float, h:Float, alignment:TVec2D=null, color:TColor=null, style:int=0, doDraw:int = 1, special:float=1.0, nicelyTruncateLastLine:int=TRUE, centerSingleLineOnBaseline:int=False)
+		Local lineHeight:float = getMaxCharHeight()
+		Local lines:string[] = TextToMultiLine(text, w, h, lineHeight, nicelyTruncateLastLine)
+
+		return drawLinesBlock(lines, x, y, w, h, alignment, color, style, doDraw, special, nicelyTruncateLastLine, centerSingleLineOnBaseline)
 	End Method
 
 

@@ -121,6 +121,8 @@ Type TMouseManager
 	'special info read is possible (IsDown(), IsUp())
 	Field _enabled:int[] = [True, True, True, True]
 
+	Global processedAppSuspend:int = False
+
 
 
 	'reset the state of the given button
@@ -446,6 +448,20 @@ Type TMouseManager
 
 	'Update the button states
 	Method Update:Int()
+		if AppSuspended()
+			if not processedAppSuspend
+				FlushMouse()
+				lastScrollWheel = MouseZ()
+				For local i:int = 1 to 3
+					ResetKey(i)
+				Next
+				processedAppSuspend = True
+			endif
+		elseif processedAppSuspend
+			processedAppSuspend = False
+		endif
+
+
 		'by default scroll wheel did not move
 		scrollWheelMoved = 0
 
@@ -491,6 +507,8 @@ Type TKeyManager
 	Field _keyStatus:Int[256]
 	Field _blockKeyTime:Int[256]
 
+	Global processedAppSuspend:int = False
+
 
 	'returns whether the button is in normal state
 	Method isNormal:Int(key:Int)
@@ -525,6 +543,16 @@ Type TKeyManager
 
 	'refresh all key states
 	Method Update:Int()
+		if AppSuspended()
+			if not processedAppSuspend
+				FlushKeys()
+				processedAppSuspend = True
+			endif
+		elseif processedAppSuspend
+			processedAppSuspend = False
+		endif
+
+
 		local time:int = Time.GetAppTimeGone()
 		For Local i:Int = 1 To 255
 			'ignore key if it is blocked

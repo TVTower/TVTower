@@ -746,7 +746,7 @@ endrem
 
 	'positive values scroll to top or left
 	Method ScrollEntries(dx:float, dy:float)
-		guiEntriesPanel.scroll(dx,dy)
+		guiEntriesPanel.scrollBy(dx,dy)
 
 		'refresh scroller values (for "progress bar" on the scroller)
 		guiScrollerH.SetRelativeValue( GetScrollPercentageX() )

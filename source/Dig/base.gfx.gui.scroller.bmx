@@ -44,7 +44,7 @@ Type TGUIScroller Extends TGUIobject
 		self.setOption(GUI_OBJECT_CAN_GAIN_FOCUS, False)
 
 		'style myself - aligns buttons
-		onAppearanceChanged()
+		onStatusAppearanceChange()
 
 
 		'set the parent of the buttons so they inherit visible state etc.
@@ -80,7 +80,7 @@ Type TGUIScroller Extends TGUIobject
 
 
 	'override default
-	Method onAppearanceChanged:int()
+	Method onStatusAppearanceChange:int()
 		rect.position.setXY(GetParent().rect.getW() - guiButtonMinus.rect.getW(),0)
 
 		'this also aligns the buttons
@@ -210,10 +210,8 @@ Type TGUIScroller Extends TGUIobject
 		If guiScroller = Null Then Return False
 
 		'emit event that the scroller position has changed
-		If sender = guiScroller.guiButtonMinus
-			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("direction", "up").AddNumber("scrollAmount", 15), guiScroller ) )
-		ElseIf sender = guiScroller.guiButtonPlus
-			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("direction", "down").AddNumber("scrollAmount", 15), guiScroller ) )
+		If sender = guiScroller.guiButtonMinus or sender = guiScroller.guiButtonPlus
+			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("direction", sender.direction.ToLower()).AddNumber("scrollAmount", 15), guiScroller ) )
 		EndIf
 	End Function
 
@@ -233,14 +231,9 @@ Type TGUIScroller Extends TGUIobject
 			EndIf
 		EndIf
 
-		'avoid that the mouse down gets handled as "long click"
-		MouseManager.ResetLongClicked(1)
-
 		'emit event that the scroller position has changed
-		If sender = guiScroller.guiButtonMinus
-			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("direction", "up"), guiScroller ) )
-		ElseIf sender = guiScroller.guiButtonPlus
-			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("direction", "down"), guiScroller ) )
+		If sender = guiScroller.guiButtonMinus or sender = guiScroller.guiButtonPlus
+			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("direction", sender.direction.ToLower()), guiScroller ) )
 		EndIf
 	End Function
 
@@ -287,6 +280,7 @@ Type TGUIScroller Extends TGUIobject
 						case GUI_OBJECT_ORIENTATION_HORIZONTAL
 							if progressRect.GetW() > 0
 								'subtract progress start from position
+								clickPos.X :- progressRect.GetX()
 								progress = clickPos.x / progressRect.GetW()
 							endif
 						case GUI_OBJECT_ORIENTATION_VERTICAL

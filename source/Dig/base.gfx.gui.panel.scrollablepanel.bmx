@@ -91,7 +91,13 @@ Type TGUIScrollablePanel Extends TGUIPanel
 	End Method
 
 
-	Method Scroll:Int(dx:Float,dy:Float)
+	Method ScrollTo:Int(x:Float,y:Float)
+		ScrollToX(x)
+		ScrollToY(y)
+	End Method
+
+
+	Method ScrollBy:Int(dx:Float,dy:Float)
 		ScrollToX(scrollPosition.GetX() + dx)
 		ScrollToY(scrollPosition.GetY() + dy)
 	End Method
