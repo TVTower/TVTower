@@ -5066,8 +5066,6 @@ TProfiler.Enter("GameLoop")
 		if AppSuspended()
 			if not AppSuspendedProcessed
 				TLogger.Log("App", "App suspended.", LOG_DEBUG)
-				FlushMouse()
-				FlushKeys() 'or PollSystem()
 				AppSuspendedProcessed = True
 			endif
 		elseif AppSuspendedProcessed
