@@ -446,6 +446,12 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		'as parent (so sublicences can ask for sibling licences).
 		licence.parentLicenceGUID = self.GetGUID()
 
+		'inform programmeData about being episode of a series
+		if isSeries() and licence.data and self.data
+			licence.data.parentGUID = self.data.GetGUID()
+		endif
+
+
 		'add to array of sublicences
 		if index = -1 or subLicences.length = 0
 			subLicences :+ [licence]

@@ -921,12 +921,17 @@ Type TDatabaseLoader
 				TLogger.Log("LoadV3ProgrammeLicenceFromNode()","Episode: ~q"+episodeLicence.GetTitle()+"~q already has parent: ~q"+episodeLicence.GetParentLicencE().GetTitle()+"~q. Multi-usage intended?", LOG_XML)
 			endif
 
+			'mark the parent licence/data to be a "header"
+			programmeLicence.data.dataType = TVTProgrammeDataType.SERIES
+			programmeLicence.licenceType = TVTProgrammeLicenceType.SERIES
+
 			'add the episode
 			programmeLicence.AddSubLicence(episodeLicence, episodeNumber)
 		Next
 
 		if programmeLicence.isSeries() and programmeLicence.GetSubLicenceCount() = 0
 			programmeLicence.licenceType = TVTProgrammeLicenceType.SINGLE
+			programmeLicence.data.dataType = TVTProgrammeDataType.SINGLE
 			TLogger.Log("LoadV3ProgrammeLicenceFromNode()","Series with 0 episodes found. Converted to single: "+programmeLicence.GetTitle(), LOG_XML)
 		endif
 

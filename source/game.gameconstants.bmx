@@ -252,6 +252,9 @@ Type TVTProgrammeDistributionChannel {_exposeToLua}
 End Type
 
 
+'same IDs for now
+Type TVTProgrammeDataType extends TVTProgrammeLicenceType {_exposeToLua}
+End Type
 
 
 'to ease access to "comparisons" without knowing

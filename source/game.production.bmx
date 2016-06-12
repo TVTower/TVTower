@@ -313,6 +313,7 @@ Type TProduction Extends TOwnedGameObject
 		programmeData.releaseTime = GetWorldTime().GetTimeGone()
 		programmeData.available = true
 		programmeData.producedByPlayerID = owner
+		programmeData.dataType = productionConcept.script.scriptLicenceType
 
 		programmeData.SetFlag(TVTProgrammeDataFlag.CUSTOMPRODUCTION, True)
 		'enable mandatory flags
@@ -490,6 +491,7 @@ endrem
 			FillProgrammeDataByScript(parentLicence.GetData(), productionConcept.script.GetParentScript())
 
 			parentLicence.licenceType = TVTProgrammeLicenceType.SERIES
+			parentLicence.data.dataType = TVTProgrammeDataType.SERIES
 		else
 			if productionConcept.script.GetParentScript().usedInProgrammeGUID <> parentLicence.GetGUID()
 				Throw "CreateParentalLicence() failed: another programme is already assigned to the parent script."

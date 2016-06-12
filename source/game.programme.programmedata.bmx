@@ -101,6 +101,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		if not _liveProgrammeData
 			_liveProgrammeData = CreateList()
 			For local data:TProgrammeData = EachIn entries.Values()
+				if data.IsHeader() then continue
 				if not data.IsLive() then continue
 
 				_liveProgrammeData.AddLast(data)
@@ -120,6 +121,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		if not _finishedProductionProgrammeData
 			_finishedProductionProgrammeData = CreateList()
 			For local data:TProgrammeData = EachIn entries.Values()
+				if data.IsHeader() then continue
 				if not data.IsReleased() and not data.IsInCinema() then continue
 
 				_finishedProductionProgrammeData.AddLast(data)
@@ -392,7 +394,7 @@ End Function
 
 
 
-'raw data for movies, epidodes (series)
+'raw data for movies, episodes (series)
 'but also series-headers, collection-headers,...
 Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Field originalTitle:TLocalizedString
@@ -421,8 +423,20 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Field genre:Int	= 0
 	Field subGenres:Int[]
 	Field blocks:Int = 1
-	'guid of a potential franchise entry
+
+	'guid of a potential series header
+	Field parentGUID:string
+	'TVTProgrammeDataType-value
+	'(eg. "SERIES" for series-headers, or "SINGLE" for a movie)
+	Field dataType:int = 0
+	
+	'guid of a potential franchise entry (for now only one franchise per
+	'franchisee)
 	Field franchiseGUID:string
+	'programmes descending from this programme (eg. "Lord of the Rings"
+	'as "franchise" and the individual programmes as "franchisees"
+	Field franchisees:string[]
+
 	'which kind of distribution was used? Cinema, Custom production ...
 	Field distributionChannel:int = 0
 	'is this a production of a user?
@@ -436,9 +450,6 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Field releaseAnnounced:int = FALSE
 	'state of the programme (in production, cinema, released...)
 	Field state:Int = 0
-	'programmes descending from this programme (eg. "Lord of the Rings"
-	'as "franchise" and the individual programmes as "franchisees"
-	Field franchisees:string[] {nosave}
 	'bitmask for all players whether they currently broadcast it
 	Field playersBroadcasting:int
 	Field playersLiveBroadcasting:int
@@ -901,6 +912,23 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		return ""
 	End Method
 
+
+	Method IsHeader:int() {_exposeToLua}
+		return (dataType = TVTProgrammeDataType.SERIES) or ..
+		       (dataType = TVTProgrammeDataType.COLLECTION) or ..
+		       (dataType = TVTProgrammeDataType.FRANCHISE)
+	End Method
+
+
+	Method IsEpisode:int() {_exposeToLua}
+		return (dataType = TVTProgrammeDataType.EPISODE)
+	End Method
+
+
+	Method IsSingle:int() {_exposeToLua}
+		return (dataType = TVTProgrammeDataType.SINGLE)
+	End Method
+	
 
 	'first premiered on TV?
 	Method IsTVDistribution:int() {_exposeToLua}
@@ -1579,13 +1607,16 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Method onCinemaRelease:int(time:Long = 0)
 		if IsLive() then return False
 		
-		'inform each person in the cast that the production finished
-		if not GetCast() then return True
+		if not isHeader()
+			'inform each person in the cast that the production finished
+			if not GetCast() then return True
 
-		For local job:TProgrammePersonJob = eachIn GetCast()
-			local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID( job.personGUID )
-			if person then person.FinishProduction(GetGUID(), job.job)
-		Next
+			For local job:TProgrammePersonJob = eachIn GetCast()
+				local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID( job.personGUID )
+				if person then person.FinishProduction(GetGUID(), job.job)
+			Next
+		endif
+		
 		return True
 	End Method
 

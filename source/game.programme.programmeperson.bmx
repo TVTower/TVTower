@@ -454,10 +454,9 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 		GainExperienceForProgramme(programmeDataGUID)
 
-		'add programme
-		producedProgrammes :+ [programmeDataGUID]
-
-		producedProgrammesCached = True
+		'add programme (do not just add, as this destroys desc-sort)
+		producedProgrammesCached = False
+		'producedProgrammes :+ [programmeDataGUID]
 
 		'reset cached calculations
 		calculatedTopGenreCache = -1
@@ -481,7 +480,17 @@ Type TProgrammePerson extends TProgrammePersonBase
 				'skip "paid programming" (kind of live programme)
 				if programmeData.HasFlag(TVTProgrammeDataFlag.PAID) then continue
 
-				producedProgrammes :+ [programmeData.GetGUID()]
+
+				'instead of adding episodes, we add the series 
+				if programmeData.parentGUID
+					'skip if already added
+					if StringHelper.InArray(programmeData.parentGUID, producedProgrammes)
+						continue
+					endif
+					producedProgrammes :+ [programmeData.parentGUID]
+				else
+					producedProgrammes :+ [programmeData.GetGUID()]
+				endif
 			Next
 			producedProgrammesCached = True
 		endif
