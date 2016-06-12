@@ -429,6 +429,7 @@ Type TProgrammePersonBase extends TGameObject
 			if guid = programmeDataGUID then continue
 			newProducingGUIDs :+ [guid]
 		Next
+		producingGUIDs = newProducingGUIDs
 
 		'emit event so eg. news agency could react to it ("bla goes on holiday")
 		EventManager.triggerEvent(TEventSimple.Create("programmepersonbase.onFinishProduction", New TData.addString("programmeDataGUID", programmeDataGUID), Self))
