@@ -408,9 +408,11 @@ Type TProduction Extends TOwnedGameObject
 				'(averages, cast)
 				FillParentalLicence(parentLicence)
 
+				GetProgrammeDataCollection().Add(parentLicence.data)
 				GetProgrammeLicenceCollection().AddAutomatic(parentLicence)
 			endif
 		endif
+		GetProgrammeDataCollection().Add(programmeLicence.data)
 		GetProgrammeLicenceCollection().AddAutomatic(programmeLicence)
 
 		'set owner of licence (and sublicences)
