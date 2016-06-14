@@ -1591,3 +1591,16 @@ Function LoadDatabase(dbDirectory:String, required:int = False)
 	local loader:TDatabaseLoader = new TDatabaseLoader
 	loader.LoadDir(dbDirectory, required)
 End Function
+
+
+Function LoadDB(files:string[] = null, baseURI:string="")
+	'load db
+	global dbLoader:TDatabaseLoader = New TDatabaseLoader
+	if files = null
+		dbLoader.LoadDir(baseURI + "res/database/Default")
+	else
+		for local f:string = EachIn files
+			dbLoader.Load(baseURI + "res/database/Default/"+f)
+		Next
+	endif
+End Function
