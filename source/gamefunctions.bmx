@@ -256,7 +256,7 @@ Type TGUIGameWindow Extends TGUIWindowBase
 
 		Local maxOtherBoxesY:Int = 0
 		Local panelGap:Int = GUIManager.config.GetInt("panelGap", 10)
-		If children
+		If _children
 			For Local box:TGUIBackgroundBox = EachIn contentBoxes
 				maxOtherBoxesY = Max(maxOtherBoxesY, box.rect.GetY() + box.rect.GetH())
 				'after each box we want a gap

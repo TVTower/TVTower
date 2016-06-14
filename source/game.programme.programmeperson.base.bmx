@@ -145,6 +145,7 @@ Type TProgrammePersonBaseCollection
 
 		return False
 	End Method
+
 	
 	Method RemoveCelebrity:int(person:TProgrammePersonBase)
 		if person.GetGuid() and celebrities.Remove(person.GetGUID())
@@ -166,6 +167,7 @@ Type TProgrammePersonBaseCollection
 		return TRUE
 	End Method
 
+
 	Method AddCelebrity:int(person:TProgrammePersonBase)
 		celebrities.Insert(person.GetGUID(), person)
 		'invalidate count
@@ -173,6 +175,22 @@ Type TProgrammePersonBaseCollection
 
 		return TRUE
 	End Method
+
+
+	Function SortByName:Int(o1:Object, o2:Object)
+		Local p1:TProgrammePersonBase = TProgrammePersonBase(o1)
+		Local p2:TProgrammePersonBase = TProgrammePersonBase(o2)
+		If Not p2 Then Return 1
+		if p1.GetFullName() = p2.GetFullName() 
+			return p1.GetGUID() > p2.GetGUID()
+		endif
+        If p1.GetFullName().ToLower() > p2.GetFullName().ToLower()
+			return 1
+        elseif p1.GetFullName().ToLower() < p2.GetFullName().ToLower()
+			return -1
+		endif
+		return 0
+	End Function
 End Type
 '===== CONVENIENCE ACCESSOR =====
 'return collection instance

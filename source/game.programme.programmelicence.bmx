@@ -365,6 +365,22 @@ Type TProgrammeLicenceCollection
 		Next
 		Return GetRandomFromList(resultList)
 	End Method	
+
+
+	Function SortByName:Int(o1:Object, o2:Object)
+		Local p1:TProgrammeLicence = TProgrammeLicence(o1)
+		Local p2:TProgrammeLicence = TProgrammeLicence(o2)
+		If Not p2 Then Return 1
+		if p1.GetTitle() = p2.GetTitle() 
+			return p1.GetGUID() > p2.GetGUID()
+		endif
+        If p1.GetTitle().ToLower() > p2.GetTitle().ToLower()
+			return 1
+        elseif p1.GetTitle().ToLower() < p2.GetTitle().ToLower()
+			return -1
+		endif
+		return 0
+	End Function
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
