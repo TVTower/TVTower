@@ -78,7 +78,7 @@
 		<sprite name="gfx_interface_tv_programme_genre_scifi" url="res/gfx/interface/tv_programme_scifi.png" />
 		<sprite name="gfx_interface_tv_programme_genre_thriller" url="res/gfx/interface/tv_programme_thriller.png" />
 		<sprite name="gfx_interface_tv_programme_genre_western" url="res/gfx/interface/tv_programme_western.png" />
-		<sprite name="gfx_interface_tv_programme_genre_203" url="res/gfx/interface/tv_programme_sports.png" />
+		<sprite name="gfx_interface_tv_programme_genre_event_sport" url="res/gfx/interface/tv_programme_sports.png" />
 		<sprite name="gfx_interface_tv_programme_none" url="res/gfx/interface/tv_programme_none.png" />
 		<sprite name="gfx_interface_tv_programme_news" url="res/gfx/interface/tv_programme_news.png" />
 		<sprite name="gfx_interface_tv_programme_ads" url="res/gfx/interface/tv_programme_ads.png" />
