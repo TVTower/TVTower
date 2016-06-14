@@ -239,16 +239,20 @@ Type TGUIScroller Extends TGUIobject
 
 
 	Method SetButtonStates:int(enableMinus:int = True, enablePlus:int = True)
-		if enableMinus
-			guiButtonMinus.Enable()
-		else
-			guiButtonMinus.Disable()
+		if enableMinus <> guiButtonMinus.IsEnabled()
+			if enableMinus
+				guiButtonMinus.Enable()
+			else
+				guiButtonMinus.Disable()
+			endif
 		endif
 
-		if enablePlus
-			guiButtonPlus.Enable()
-		else
-			guiButtonPlus.Disable()
+		if enablePlus <> guiButtonPlus.IsEnabled()
+			if enablePlus
+				guiButtonPlus.Enable()
+			else
+				guiButtonPlus.Disable()
+			endif
 		endif
 	End Method
 

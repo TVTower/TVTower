@@ -430,13 +430,13 @@ Type TBitmapFont
 	End Method
 
 
-	Method getBlockHeight:Float(text:String, w:Float, h:Float)
+	Method getBlockHeight:Float(text:String, w:Float, h:Float, fixedLineHeight:int = -1)
 		return drawBlock(text, 0,0,w,h, null, null, 0, 0).getY()
 	End Method
 
 
-	Method getBlockDimension:TVec2D(text:String, w:Float, h:Float)
-		return drawBlock(text, 0,0,w,h, null, null, 0, 0)
+	Method getBlockDimension:TVec2D(text:String, w:Float, h:Float, fixedLineHeight:int = -1)
+		return drawBlock(text, 0,0,w,h, null, null, 0, 0, 1.0, True, False, fixedLineHeight)
 	End Method
 
 
@@ -573,27 +573,32 @@ Type TBitmapFont
 	'                              or just truncate? 
 	'@centerSingleLineOnBaseline:  if only 1 line is given, is center
 	'                              calculated using baseline (no "y,g,p,...") 
-	Method drawLinesBlock:TVec2D(lines:String[], x:Float, y:Float, w:Float, h:Float, alignment:TVec2D=null, color:TColor=null, style:int=0, doDraw:int = 1, special:float=1.0, nicelyTruncateLastLine:int=TRUE, centerSingleLineOnBaseline:int=False)
+	Method drawLinesBlock:TVec2D(lines:String[], x:Float, y:Float, w:Float, h:Float, alignment:TVec2D=null, color:TColor=null, style:int=0, doDraw:int = 1, special:float=1.0, nicelyTruncateLastLine:int=TRUE, centerSingleLineOnBaseline:int=False, fixedLineHeight:int = -1)
 		'use special chars (instead of text) for same height on all lines
 		Local alignedX:float = 0.0
 		Local lineMaxWidth:Float = 0
 		local lineWidth:Float = 0
 		Local lineHeight:float = getMaxCharHeight()
+		if fixedLineHeight > 0 then lineHeight = fixedLineHeight
 
 		'first height was calculated using all characters, but we now
 		'know if we could center using baseline only (only available
 		'when there is only 1 line to draw)
-		if lines.length = 1 and centerSingleLineOnBaseline
-			lineHeight = getMaxCharHeight(False)
-'			lineHeight = 0.25 * lineHeight + 0.75 * getMaxCharHeight(False)
-'			lineHeight :+ 1 'a bit of influence of "below baseline" chars
+		if fixedLineHeight <= 0
+			if lines.length = 1 and centerSingleLineOnBaseline
+				lineHeight = getMaxCharHeight(False)
+				'lineHeight = 0.25 * lineHeight + 0.75 * getMaxCharHeight(False)
+				'lineHeight :+ 1 'a bit of influence of "below baseline" chars
+			endif
 		endif
 
 		local blockHeight:Float = lineHeight * lines.length
-		if lines.length > 1
-			'add the lineHeightModifier for all lines but the first or
-			'single one
-			blockHeight :+ lineHeight * (lineHeightModifier-1.0)
+		if fixedLineHeight <= 0
+			if lines.length > 1
+				'add the lineHeightModifier for all lines but the first or
+				'single one
+				blockHeight :+ lineHeight * (lineHeightModifier-1.0)
+			endif
 		endif
 
 		'move along y according alignment
@@ -628,11 +633,15 @@ Type TBitmapFont
 			EndIf
 			local p:TVec2D = __drawStyled( lines[i], alignedX, y, color, style, doDraw, special, fontStyle)
 
-			y :+ Max(lineHeight, p.y)
-			'add extra spacing _between_ lines
-			If lines.length > 1 and i < lines.length-1
-				y :+ lineHeight * (lineHeightModifier-1.0)
-			Endif
+			if fixedLineHeight <= 0
+				y :+ Max(lineHeight, p.y)
+				'add extra spacing _between_ lines
+				If lines.length > 1 and i < lines.length-1
+					y :+ lineHeight * (lineHeightModifier-1.0)
+				Endif
+			else
+				y :+ fixedLineHeight
+			endif
 		Next
 
 		return new TVec2D.Init(lineMaxWidth, y - startY)
@@ -644,11 +653,11 @@ Type TBitmapFont
 	'                              or just truncate? 
 	'@centerSingleLineOnBaseline:  if only 1 line is given, is center
 	'                              calculated using baseline (no "y,g,p,...") 
-	Method drawBlock:TVec2D(text:String, x:Float, y:Float, w:Float, h:Float, alignment:TVec2D=null, color:TColor=null, style:int=0, doDraw:int = 1, special:float=1.0, nicelyTruncateLastLine:int=TRUE, centerSingleLineOnBaseline:int=False)
+	Method drawBlock:TVec2D(text:String, x:Float, y:Float, w:Float, h:Float, alignment:TVec2D=null, color:TColor=null, style:int=0, doDraw:int = 1, special:float=1.0, nicelyTruncateLastLine:int=TRUE, centerSingleLineOnBaseline:int=False, fixedLineHeight:Int = -1)
 		Local lineHeight:float = getMaxCharHeight()
 		Local lines:string[] = TextToMultiLine(text, w, h, lineHeight, nicelyTruncateLastLine)
 
-		return drawLinesBlock(lines, x, y, w, h, alignment, color, style, doDraw, special, nicelyTruncateLastLine, centerSingleLineOnBaseline)
+		return drawLinesBlock(lines, x, y, w, h, alignment, color, style, doDraw, special, nicelyTruncateLastLine, centerSingleLineOnBaseline, fixedLineHeight)
 	End Method
 
 

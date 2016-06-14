@@ -39,6 +39,8 @@ Const GUI_OBJECT_DRAWMODE_GHOST:Int				= 2^13
 Const GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE:Int	= 2^14
 'defines if changes to children change gui order (zindex on "panels")
 Const GUI_OBJECT_CHILDREN_CHANGE_GUIORDER:Int	= 2^15
+'defines whether children are updated automatically or not
+Const GUI_OBJECT_STATIC_CHILDREN:Int            = 2^16
 
 '===== GUI STATUS CONSTANTS =====
 CONST GUI_OBJECT_STATUS_HOVERED:Int	= 2^0
@@ -590,7 +592,9 @@ Type TGUIobject
 	Field value:String = ""
 	Field mouseIsClicked:TVec2D	= Null			'null = not clicked
 	Field mouseIsDown:TVec2D = new TVec2D.Init(-1,-1)
-	Field children:TList = Null
+	Field screenRect:TRectangle
+	Field _children:TList = Null
+	Field _childrenReversed:TList = Null
 	Field _id:Int
 	Field _padding:TRectangle = null 'by default no padding
 	Field _flags:Int = 0
@@ -734,12 +738,15 @@ Type TGUIobject
 		If _parent Then _parent.RemoveChild(Self)
 
 		'remove children (so they might inform their children and so on)
-		If children
+		If _children
 			'traverse along a copy to avoid concurrent modification
-			For local child:TGUIObject = eachin children.Copy()
+			local childrenCopy:TGUIObject[ _children.Count() ]
+			For local child:TGUIObject = eachin childrenCopy
 				child.Remove()
 			Next
-			children.Clear()
+			childrenCopy = null
+			_children.Clear()
+			_childrenReversed.Clear()
 		EndIf
 		
 		'just in case we have a managed one
@@ -822,6 +829,12 @@ Type TGUIobject
 	End Method
 
 
+	'default mouseover handler for all gui objects
+	'by default they do nothing
+	Method onMouseOver:Int(triggerEvent:TEventBase)
+		Return False
+	End Method
+
 
 	'default single click handler for all gui objects
 	'by default they do nothing
@@ -858,12 +871,16 @@ Type TGUIobject
 		If child._parent Then child._parent.RemoveChild(child)
 
 		child.setParent( Self )
-		If Not children Then children = CreateList()
+		If Not _children Then _children = CreateList()
+		If Not _childrenReversed Then _childrenReversed = CreateList()
 
-		If children.addLast(child)
+		If _children.addLast(child)
+			_childrenReversed.addFirst(child)
+
 			'remove from guimanager, we take care of it
 			GUIManager.Remove(child)
-			children.sort(True, TGUIManager.SortObjects)
+			_children.sort(True, TGUIManager.SortObjects)
+			_childrenReversed.sort(False, TGUIManager.SortObjects)
 
 			'maybe zindex changed now
 			if hasOption(GUI_OBJECT_CHILDREN_CHANGE_GUIORDER)
@@ -878,8 +895,9 @@ Type TGUIobject
 
 	'just deletes child from children list
 	Method DeleteChild:Int(child:TGUIobject)
-		If Not children Then Return False
-		children.Remove(child)
+		If Not _children Then Return False
+		_children.Remove(child)
+		_childrenReversed.Remove(child)
 
 		'inform object
 		child.onRemoveAsChild(self)
@@ -889,8 +907,9 @@ Type TGUIobject
 	'removes child and adds it back to the guimanager
 	Method RemoveChild:Int(child:TGUIobject)
 		'remove from children list
-		If Not children Then Return False
-		children.Remove(child)
+		If Not _children Then Return False
+		_children.Remove(child)
+		_childrenReversed.Remove(child)
 
 		'add back to guimanager
 		'RON: this should be needed but bugs out "news dnd handling"
@@ -902,9 +921,11 @@ Type TGUIobject
 
 
 	Method UpdateChildren:Int()
-		If Not children Then Return False
+		If Not _children or _children.Count() = 0 Then Return False
+		if HasOption(GUI_OBJECT_STATIC_CHILDREN) then return False
+
 		'traverse through a backup to avoid concurrent modification
-		local childrenReversedBackup:TList = children.Reversed()
+		local childrenReversedBackup:TList = _childrenReversed.Copy()
 		'update added elements
 		For Local obj:TGUIobject = EachIn childrenReversedBackup
 			'avoid getting updated multiple times
@@ -1086,8 +1107,8 @@ Type TGUIobject
 				_parent.SetAppearanceChanged(bool)
 			Endif
 			'inform children
-			If children
-				For local child:TGUIobject = EachIn children
+			If _children
+				For local child:TGUIobject = EachIn _children
 					if child.IsAppearanceChanged() then continue
 					child.SetAppearanceChanged(bool)
 				Next
@@ -1160,6 +1181,15 @@ Type TGUIobject
 		If hasOption(GUI_OBJECT_ENABLED)
 			_flags :& ~GUI_OBJECT_ENABLED
 			GUIManager.SortLists()
+
+
+			'no longer clicked
+			mouseIsClicked = Null
+			'no longer hovered or active
+			if IsHovered() then SetHovered(False)
+			setState("")
+			'remove focus
+			if HasFocus() then removeFocus()
 		EndIf
 	End Method
 
@@ -1486,19 +1516,28 @@ Type TGUIobject
 
 	'get a rectangle describing the objects area on the screen
 	Method GetScreenRect:TRectangle()
+		if screenRect then return screenRect
+
+		screenRect = new TRectangle
+
 		'dragged items ignore parents but take care of mouse position...
-		If isDragged() Then Return new TRectangle.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight() )
+		If isDragged()
+			screenRect.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight() )
+			return screenRect.Copy()
+		endif
 
 		'if the item ignores parental limits, just return its very own screen rect
 		If HasOption(GUI_OBJECT_IGNORE_PARENTLIMITS)
-			Return new TRectangle.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight() )
+			screenRect.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight() )
+			return screenRect.Copy()
 		endif
 
 		'no other limiting object - just return the object's area
 		'(no move needed as it is already oriented to screen 0,0)
 		If Not _parent
 			If Not rect Then Print "NO SELF RECT"
-			Return rect
+			screenRect.CopyFrom(rect)
+			Return screenRect.Copy()
 		EndIf
 
 
@@ -1521,10 +1560,12 @@ Type TGUIobject
 					Max(resultRect.position.getX(),getScreenX()),..
 					Max(resultRect.position.getY(),GetScreeny())..
 				)
-				Return resultRect
+				screenRect.CopyFrom(resultRect)
+				Return screenRect.Copy()
 			EndIf
 		EndIf
-		Return new TRectangle.Init(0,0,-1,-1)
+		screenRect.Init(0,0,-1,-1)
+		Return screenRect.Copy()
 	End Method
 
 
@@ -1588,13 +1629,13 @@ Type TGUIobject
 
 
 	Method DrawChildren:Int()
-		If Not children Then Return False
+		If Not _children Then Return False
 
 		'skip children if self not visible
 		if not IsVisible() then return false
 
 		'draw children
-		For Local obj:TGUIobject = EachIn children
+		For Local obj:TGUIobject = EachIn _children
 			'before skipping a dragged one, we try to ask it as a ghost (at old position)
 			If obj.isDragged() Then obj.drawGhost()
 			'skip dragged ones - as we set them to managed by GUIManager for that time
@@ -1622,10 +1663,13 @@ Type TGUIobject
 
 
 	Method Update:Int()
+		screenRect = null
+	
 		'to recognize clicks/hovers/actions on child elements:
 		'ask them first!
 		UpdateChildren()
-	
+
+
 		'if appearance changed since last update tick: inform widget
 		If isAppearanceChanged()
 			onStatusAppearanceChange()
@@ -1636,6 +1680,13 @@ Type TGUIobject
 		If GUIManager._ignoreMouse then return FALSE
 
 
+		'=== HANDLE MOUSE ===
+		if not GUIManager.UpdateState_mouseButtonDown[1]
+			mouseIsDown	= Null
+			'remove hover/active state
+			setState("")
+		endif
+
 		'mouse position could have changed since a begin of a "click"
 		'-> eg when clicking + moving the cursor very fast
 		'   in that case the mouse position should be the one of the
@@ -1645,18 +1696,15 @@ Type TGUIobject
 			mousePos = MouseManager.GetClickPosition(1)
 		Endif
 
+		local containsMouse:int = containsXY(mousePos.x, mousePos.y)
 
-		'=== HANDLE MOUSE ===
-		if not GUIManager.UpdateState_mouseButtonDown[1]
-			mouseIsDown	= Null
-			'remove hover/active state
-			setState("")
-		endif
+
 		'=== HANDLE MOUSE OVER ===
 
 		'if nothing of the obj is visible or the mouse is not in
 		'the visible part - reset the mouse states
-		If Not containsXY(mousePos.x, mousePos.y)
+		If Not containsMouse
+
 			'avoid fast mouse movement to get interpreted incorrect
 			'-> only "unhover" undragged elements
 			if not isDragged()
@@ -1686,7 +1734,7 @@ Type TGUIobject
 		'=== HANDLE MOUSE CLICKS / POSITION ===
 		'skip objects the mouse is not over (except it is already dragged).
 		'ATTENTION: this differs to self.isHovered() (which is set later on)
-		if not containsXY(mousePos.x, mousePos.y) and not isDragged() then return FALSE
+		if not containsMouse and not isDragged() then return FALSE
 
 
 		'handle mouse clicks / button releases / hover state
@@ -1694,6 +1742,7 @@ Type TGUIobject
 		'a) there is NO dragged object
 		'b) we handle the dragged object
 		'-> only react to dragged obj or all if none is dragged
+
 		If Not GUIManager.GetDraggedCount() Or isDragged()
 
 			If IsClickable()
@@ -1731,7 +1780,9 @@ Type TGUIobject
 					GUIManager.UpdateState_foundHoverObject = True
 				EndIf
 				'create event: onmouseover
-				EventManager.triggerEvent( TEventSimple.Create("guiobject.OnMouseOver", null, Self ) )
+				local mouseOverEvent:TEventSimple = TEventSimple.Create("guiobject.OnMouseOver", new TData.Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self )
+				OnMouseOver(mouseOverEvent)
+				EventManager.triggerEvent(mouseOverEvent)
 
 				'somone decided to say the button is pressed above the object
 				If MouseIsDown

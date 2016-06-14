@@ -20,12 +20,20 @@ Type TGUIinput Extends TGUIobject
 
 	'=== OVERLAY ===
 	'containing text or an icon (displayed separate from input widget)
-    Field overlaySpriteName:String = Null	'name in case of dynamic getting
-    Field overlaySprite:TSprite = Null		'icon in case of a custom created sprite
-    Field overlayText:String = ""			'text to display separately
+
+    'name in case of dynamic getting
+    Field overlaySpriteName:String = Null
+    'icon in case of a custom created sprite
+    Field overlaySprite:TSprite = Null
+    'text to display separately
+    Field overlayText:String = ""
+    'color for overlay text
+    Field overlayColor:TColor
 	'where to position the overlay: empty=none, "left", "right"
 	Field overlayPosition:String = ""
 
+	Field placeholder:string = ""
+    Field placeholderColor:TColor
 	Field valueDisplacement:TVec2D
 	Field _valueChanged:Int	= False '1 if changed
 	Field _valueBeforeEdit:String = ""
@@ -81,6 +89,21 @@ Type TGUIinput Extends TGUIobject
 
 	Method SetValueDisplacement(x:Int, y:Int)
 		valueDisplacement = new TVec2D.Init(x,y)
+	End Method
+
+
+	'override
+	Method GetValue:string()
+		'return the original value until edit was finished (or aborted)
+		if _valueChanged then return _valueBeforeEdit
+
+		return Super.GetValue()
+	End Method
+
+
+	Method GetCurrentValue:string()
+		'return the current value regardless of "in edit" or not
+		return value
 	End Method
 
 
@@ -247,7 +270,7 @@ Type TGUIinput Extends TGUIobject
 		If GetOverlaySprite()
 			GetOverlaySprite().Draw(position.GetX() + overlayArea.GetX(), position.getY() + overlayArea.GetY())
 		ElseIf overlayText<>""
-			GetFont().Draw(overlayText, position.GetX() + overlayArea.GetX(), position.getY() + overlayArea.GetY())
+			GetFont().Draw(overlayText, position.GetX() + overlayArea.GetX(), position.getY() + overlayArea.GetY(), overlayColor)
 		EndIf
 
 		return dim
@@ -263,8 +286,8 @@ Type TGUIinput Extends TGUIobject
 		'else just draw it like a normal gui object
 		If _editable AND Self = GuiManager.GetKeystrokeReceiver()
 			color.copy().AdjustFactor(-80).SetRGB()
-			While Len(printvalue) >1 And GetFont().getWidth(printValue + "_") > maxTextWidthCurrent
-				printvalue = printValue[1..]
+			While printValue.length > 1 And GetFont().getWidth(printValue + "_") > maxTextWidthCurrent
+				printValue = printValue[1..]
 			Wend
 			GetFont().draw(printValue, position.GetIntX(), position.GetIntY())
 
@@ -274,12 +297,19 @@ Type TGUIinput Extends TGUIobject
 
 			SetAlpha oldAlpha
 	    Else
-			color.setRGB()
-			While GetFont().GetWidth(printValue) > maxTextWidthCurrent And printvalue.length > 0
-				printvalue = printValue[..printvalue.length - 1]
+			if printValue.length = 0
+				printValue = placeholder
+			endif
+
+			While printValue.length > 0 and GetFont().GetWidth(printValue) > maxTextWidthCurrent
+				printValue = printValue[.. printValue.length - 1]
 			Wend
 
-			GetFont().drawStyled(printValue, position.GetIntX(), position.GetIntY(), color, 1)
+			if value.length = 0
+				GetFont().drawStyled(printValue, position.GetIntX(), position.GetIntY(), placeholderColor, 1)
+			else
+				GetFont().drawStyled(printValue, position.GetIntX(), position.GetIntY(), color, 1)
+			endif
 		EndIf
 
 	End Method
