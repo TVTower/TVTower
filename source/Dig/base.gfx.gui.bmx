@@ -261,6 +261,11 @@ Type TGUIManager
 		'undefined object - "a>b"
 		If objA And Not objB Then Return 1
 
+		'if one is the parent of the other, sort so, that the parent
+		'comes last (child on top of parent -> handled before parent)
+		if objA.HasParent(objB) then Return 1
+		if objB.HasParent(objA) then Return -1
+
 		'if objA and objB are dragged elements
 		If objA._flags & GUI_OBJECT_DRAGGED And objB._flags & GUI_OBJECT_DRAGGED
 			'if a drag was earlier -> move to top
@@ -282,6 +287,7 @@ Type TGUIManager
 		If objA.GetZIndex() > objB.GetZIndex() Then Return 1
 		'if objA is "lower"", move to bottom
 		If objA.GetZIndex() < objB.GetZIndex() Then Return -1
+	
 
 		'run custom compare job
 '		return objA.compare(objB)
@@ -998,6 +1004,8 @@ Type TGUIobject
 		_focusedObject = obj
 		'if there is a focused object now - inform about gain of focus
 		If _focusedObject then _focusedObject.setFocus()
+
+		GuiManager.SortLists()
 	End Function
 
 
@@ -1172,7 +1180,9 @@ Type TGUIobject
 	Method enable()
 		If Not hasOption(GUI_OBJECT_ENABLED)
 			_flags :| GUI_OBJECT_ENABLED
-			GUIManager.SortLists()
+
+			'should not be needed (enabled-flag is not used in sort)
+			'GUIManager.SortLists()
 		EndIf
 	End Method
 
@@ -1180,7 +1190,9 @@ Type TGUIobject
 	Method disable()
 		If hasOption(GUI_OBJECT_ENABLED)
 			_flags :& ~GUI_OBJECT_ENABLED
-			GUIManager.SortLists()
+
+			'should not be needed (enabled-flag is not used in sort)
+			'GUIManager.SortLists()
 
 
 			'no longer clicked
@@ -1768,6 +1780,7 @@ Type TGUIobject
 				EndIf
 			EndIf
 
+
 			If Not GUIManager.UpdateState_foundHoverObject And _flags & GUI_OBJECT_ENABLED
 
 				'do not create "hovered" for dragged objects
@@ -1791,7 +1804,6 @@ Type TGUIobject
 				Else
 					setState("hover")
 				EndIf
-
 
 				If IsClickable()
 					'inform others about a right guiobject click
@@ -1820,7 +1832,7 @@ Type TGUIobject
 
 					'IsClicked does not include waiting time - so check for
 					'single and double clicks too
-					If _flags & GUI_OBJECT_ENABLED and not GUIManager.UpdateState_foundHitObject[0]
+					If not GUIManager.UpdateState_foundHitObject[0]
 						local isHit:int = False
 						if not MouseManager.IsLongClicked(1)
 							If MouseManager.IsHit(1)
@@ -1829,7 +1841,6 @@ Type TGUIobject
 								OnHit(hitEvent)
 								'fire onClickEvent
 								EventManager.triggerEvent(hitEvent)
-
 								isHit = True
 							endif
 							

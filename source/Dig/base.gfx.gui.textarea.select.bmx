@@ -34,13 +34,6 @@ Type TGuiTextAreaSelect Extends TGUITextArea
 		local coord:TVec2D = TVec2D(triggerEvent.GetData().Get("coord"))
 		if not coord then return False
 
-		'ignore clicks on the scroller areas
-		if guiScrollerH.hasOption(GUI_OBJECT_ENABLED)
-			if guiScrollerH.GetScreenRect().ContainsVec(coord) then return False
-		elseif guiScrollerH.hasOption(GUI_OBJECT_ENABLED)
-			if guiScrollerV.GetScreenRect().ContainsVec(coord) then return False
-		endif
-
 		local localCoord:TVec2D = new TVec2D.Init( coord.x - GetContentScreenX(), coord.y - GetContentScreenY())
 		selectedLine = 1 + int((localCoord.y + Abs(guiTextPanel.scrollPosition.GetY())) / GetLineHeight())
 		selectedLine = MathHelper.Clamp(selectedLine, 0, GetValueLines().length -1)
