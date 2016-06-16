@@ -145,20 +145,47 @@ Type StringHelper
 	End Function
 
 
+	Function RemoveArrayIndex:int(index:int, arr:string[] var)
+		if not arr or arr.length = 0
+			return False
+		elseif arr.length = 1
+			arr = new String[0]
+		else
+			arr = arr[0 .. index] + arr[index+1 .. arr.Length]
+		endif
+		return True
+	End Function
+
+
+	Function RemoveArrayEntry:int(str:string, arr:string[] var, caseSensitive:int = True)
+		local atIndex:int = GetArrayIndex(str, arr, caseSensitive)
+		'not found
+		if atIndex < 0 then return False
+		
+		RemoveArrayIndex(atIndex, arr)
+		return True
+	End function
+
+
 	Function InArray:int(str:string, arr:string[], caseSensitive:int = True)
+		return (GetArrayIndex(str, arr, caseSensitive) >= 0)
+	End Function
+
+
+	Function GetArrayIndex:int(str:string, arr:string[], caseSensitive:int = True)
 		if caseSensitive
-			For local s:string = EachIn arr
-				if s = str then return True
+			For local i:int = 0 until arr.length
+				if arr[i] = str then return i
 			Next
 		else
 			str = str.toLower()
-			For local s:string = EachIn arr
-				if s.toLower() = str then return True
+			For local i:int = 0 until arr.length
+				if arr[i].ToLower() = str then return i
 			Next
 		endif
-		return false
+		return -1
 	End Function
-
+	
 
 	Function IsAlpha:Int( ch:Int )
 		Return (ch>=Asc("A") And ch<=Asc("Z")) Or (ch>=Asc("a") And ch<=Asc("z"))

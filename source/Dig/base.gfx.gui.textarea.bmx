@@ -158,7 +158,11 @@ Type TGUITextArea Extends TGUIobject
 		if _textDimension.getY() < guiTextPanel.getScreenheight()
 			'text might be "less high" than the available area - no need
 			'to align it at the bottom
-			yLimit = -_textDimension.getY()
+
+			'Ronny 16/06/16: commented out, does not seem to be needed
+			'                it also bugs textareas with a single line
+			'                as it allows scrolling for 1 line then
+			'yLimit = -_textDimension.getY()
 		Else
 			'maximum is at the bottom of the area, not top - so
 			'subtract height
@@ -443,7 +447,6 @@ Type TGUITextArea Extends TGUIobject
 
 	'positive values scroll to top or left
 	Method ScrollContent(dx:float, dy:float)
-'print "ScrollContent: "+int(dx)+","+int(dy)
 		ScrollContentTo(guiTextPanel.scrollPosition.GetX() + dx, guiTextPanel.scrollPosition.GetY() +dy)
 	End Method
 
@@ -456,7 +459,6 @@ Type TGUITextArea Extends TGUIobject
 			x = x * guiTextPanel.scrollLimit.GetX()
 			y = y * guiTextPanel.scrollLimit.GetY()
 		endif
-		
 		guiTextPanel.scrollTo(x,y)
 
 		'refresh scroller values (for "progress bar" on the scroller)
@@ -595,6 +597,7 @@ Type TGUITextArea Extends TGUIobject
 		Super.SetValue(value)
 		ResetTextCache()
 		UpdateContent()
+		GetTextImageCache()
 	End Method
 
 

@@ -746,11 +746,9 @@ Type TGUIobject
 		'remove children (so they might inform their children and so on)
 		If _children
 			'traverse along a copy to avoid concurrent modification
-			local childrenCopy:TGUIObject[ _children.Count() ]
-			For local child:TGUIObject = eachin childrenCopy
+			For local child:TGUIObject = eachin _children.Copy()
 				child.Remove()
 			Next
-			childrenCopy = null
 			_children.Clear()
 			_childrenReversed.Clear()
 		EndIf

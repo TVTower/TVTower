@@ -372,9 +372,13 @@ Type TEventListenerRunMethod Extends TEventListenerBase
 		If Not Self.ignoreEvent(triggerEvent)
 			Local id:TTypeId		= TTypeId.ForObject( _objectInstance )
 			Local update:TMethod	= id.FindMethod( _methodName )
-
-			update.Invoke(_objectInstance ,[triggerEvent])
-			Return True
+			if update
+				update.Invoke(_objectInstance ,[triggerEvent])
+				Return True
+			else
+				TLogger.Log("TEventListener.OnEvent", "Tried to call non-existing method ~q"+_methodName+"~q.", LOG_WARNING | LOG_DEBUG)
+				Return False
+			endif
 		EndIf
 
 		Return True
