@@ -185,7 +185,7 @@ Type TGUIChatWindow Extends TGUIGameWindow
 		'positioned similar
 		Super.Create(pos, dimension, limitState)
 
-		guiPanel = AddContentBox(0, 0, int(GetContentScreenWidth()-10), -1)
+		guiPanel = AddContentBox(0, 0, Int(GetContentScreenWidth()-10), -1)
 		'we manage the panel
 		AddChild(guiPanel)
 
@@ -202,7 +202,7 @@ Type TGUIChatWindow Extends TGUIGameWindow
 	End Method
 
 
-	Method SetPadding:Int(top:Float, left:Float, bottom:Float, right:Float)
+	Method SetPadding:Int(top:Float, Left:Float, bottom:Float, Right:Float)
 		GetPadding().setTLBR(top,Left,bottom,Right)
 		resize()
 	End Method
@@ -528,7 +528,7 @@ Type TError
 		MouseManager.ResetLongClicked(1)
 		
 		If Mousemanager.IsClicked(1)
-			If THelper.MouseIn(int(pos.x),int(pos.y), int(sprite.area.GetW()), int(sprite.area.GetH()))
+			If THelper.MouseIn(Int(pos.x),Int(pos.y), Int(sprite.area.GetW()), Int(sprite.area.GetH()))
 				link.Remove()
 				MouseManager.resetKey(1) 'clicked to remove error
 			EndIf

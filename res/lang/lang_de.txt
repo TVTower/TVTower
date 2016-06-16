@@ -755,3 +755,7 @@ DURATION = Dauer
 SUBHEADING = Untertitel
 PRODUCTION_DETAILS = Produktionsdetails
 PRODUCTION_FOCUS = Produktionsschwerpunkte
+
+DO_NOT_SHOW_AGAIN = Nicht erneut anzeigen
+DO_NOT_SHOW_ANY_TIPS = Keine weiteren Tipps anzeigen
+SHOW_INTRODUCTORY_GUIDES = Einführungs-Hilfetexte anzeigen

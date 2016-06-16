@@ -1081,6 +1081,11 @@ print "--------------"
 	End Method
 
 
+	Method IsPaused:int()
+		return GetWorldTime().IsPaused()
+	End Method
+
+
 	'override
 	'computes daily costs like station or newsagency fees for every player
 	Method ComputeDailyCosts(day:Int)

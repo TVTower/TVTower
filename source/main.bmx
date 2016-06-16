@@ -95,6 +95,8 @@ Import "game.roomhandler.scriptagency.bmx"
 Import "game.roomhandler.studio.bmx"
 Import "game.roomhandler.supermarket.bmx"
 
+Import "game.misc.ingamehelp.bmx"
+
 'needed by gamefunctions
 Import "game.broadcastmaterial.programme.bmx"
 'remove when planner screen is importable
@@ -225,6 +227,8 @@ Type TApp
 			MouseManager._ignoreFirstClick = obj.config.GetBool("touchInput", False)
 			MouseManager._longClickModeEnabled = obj.config.GetBool("longClickMode", True)
 			MouseManager._longClickTime = obj.config.GetInt("longClickTime", 400)
+
+			IngameHelpWindowCollection.showHelp = obj.config.GetBool("showIngameHelp", True)
 
 			
 			TLogger.Log("App.Create()", "Loading base resources.", LOG_DEBUG)
@@ -506,6 +510,11 @@ Type TApp
 
 		GUIManager.Update("SYSTEM")
 
+
+		'=== UPDATE INGAME HELP ===
+		IngameHelpWindowCollection.Update()
+
+	
 		'=== UPDATE TOASTMESSAGES ===
 		GetToastMessageCollection().Update()
 
@@ -739,6 +748,11 @@ Type TApp
 							If KEYMANAGER.IsHit(KEY_2) Then GetGame().SetActivePlayer(2)
 							If KEYMANAGER.IsHit(KEY_3) Then GetGame().SetActivePlayer(3)
 							If KEYMANAGER.IsHit(KEY_4) Then GetGame().SetActivePlayer(4)
+						elseif KEYMANAGER.IsDown(KEY_RSHIFT)
+							If KEYMANAGER.IsHit(Key_1) And GetPlayer(1).isLocalAI() Then GetPlayer(1).PlayerAI.reloadScript()
+							If KEYMANAGER.IsHit(Key_2) And GetPlayer(2).isLocalAI() Then GetPlayer(2).PlayerAI.reloadScript()
+							If KEYMANAGER.IsHit(Key_3) And GetPlayer(3).isLocalAI() Then GetPlayer(3).PlayerAI.reloadScript()
+							If KEYMANAGER.IsHit(Key_4) And GetPlayer(4).isLocalAI() Then GetPlayer(4).PlayerAI.reloadScript()
 						else
 							If KEYMANAGER.IsHit(KEY_1) then GetGame().SetPlayerBankrupt(1)
 							If KEYMANAGER.IsHit(KEY_2) then GetGame().SetPlayerBankrupt(2)
@@ -855,13 +869,15 @@ Type TApp
 					TFigureTerrorist(GetGame().terrorists[whichTerrorist]).SetDeliverToRoom( targetRoom )
 				EndIf
 
-				If GetGame().isGameLeader()
-					If KEYMANAGER.Ishit(Key_F1) And GetPlayer(1).isLocalAI() Then GetPlayer(1).PlayerAI.reloadScript()
-					If KEYMANAGER.Ishit(Key_F2) And GetPlayer(2).isLocalAI() Then GetPlayer(2).PlayerAI.reloadScript()
-					If KEYMANAGER.Ishit(Key_F3) And GetPlayer(3).isLocalAI() Then GetPlayer(3).PlayerAI.reloadScript()
-					If KEYMANAGER.Ishit(Key_F4) And GetPlayer(4).isLocalAI() Then GetPlayer(4).PlayerAI.reloadScript()
+				'show ingame manual
+				If KEYMANAGER.IsHit(KEY_F1) ' and not KEYMANAGER.IsDown(KEY_RSHIFT)
+					'force show manual
+					IngameHelpWindowCollection.ShowByHelpGUID("GameManual", True)
+					'avoid that this window gets replaced by another one
+					'until it is "closed"
+					IngameHelpWindowCollection.LockCurrent()
 				EndIf
-
+				
 				'only announce news in single player mode - as announces
 				'are done on all clients on their own.
 				If KEYMANAGER.Ishit(Key_F5) And Not GetGame().networkGame Then GetNewsAgency().AnnounceNewNewsEvent()
@@ -957,6 +973,9 @@ Type TApp
 		'below everything else of the interface: our toastmessages
 		GetToastMessageCollection().Render(0,0)
 
+
+		'=== RENDER INGAME HELP ===
+		IngameHelpWindowCollection.Render()
 
 '		SetBlend AlphaBlend
 		Local textX:Int = 5
@@ -1165,7 +1184,9 @@ Type TApp
 		'in single player: resume game
 		If TGame._instance And Not GetGame().networkgame
 			'only unpause if there is no exit-dialogue open
-			if not TApp.ExitAppDialogue then GetGame().SetPaused(False)
+			if not TApp.ExitAppDialogue and not IngameHelpWindowCollection.GetCurrent()
+				GetGame().SetPaused(False)
+			endif
 		Endif
 
 		Return True
@@ -1179,7 +1200,9 @@ Type TApp
 
 		EscapeMenuWindowTime = MilliSecs()
 		'in single player: pause game
-		If TGame._instance And Not GetGame().networkgame Then GetGame().SetPaused(True)
+		If TGame._instance And Not GetGame().networkgame
+			GetGame().SetPaused(True)
+		endif
 
 		TGUISavegameListItem.SetTypeFont(GetBitmapFont(""))
 
@@ -1236,8 +1259,10 @@ Type TApp
 
 		'in single player: resume game
 		If TGame._instance And Not GetGame().networkgame
-			'only unpause if there is no escape-menu open
-			if not TApp.EscapeMenuWindow then GetGame().SetPaused(False)
+			'only unpause if there is no escape-menu open or ingame help
+			if not TApp.EscapeMenuWindow and not IngameHelpWindowCollection.GetCurrent()
+				GetGame().SetPaused(False)
+			endif
 		Endif
 
 		Return True
@@ -1708,8 +1733,9 @@ Type TSaveGame Extends TGameState
 		'call game that game continues/starts now
 		GetGame().StartLoadedSaveGame()
 
-		'only unpause if there is no exit-dialogue open
-		if not TApp.ExitAppDialogue and not TApp.EscapeMenuWindow
+		'only unpause if there is no exit-dialogue open (or ingame help)
+		if not TApp.ExitAppDialogue and not TApp.EscapeMenuWindow and not IngameHelpWindowCollection.GetCurrent()
+
 			GetGame().SetPaused(False)
 		endif
 
@@ -2981,6 +3007,8 @@ Type TSettingsWindow
 	Field checkTouchInput:TGUICheckbox
 	Field checkLongClickMode:TGUICheckbox
 	Field inputLongClickTime:TGUIInput
+	
+	Field checkShowIngameHelp:TGUICheckbox
 
 	'labels for deactivation
 	Field labelLongClickTime:TGUILabel
@@ -2995,11 +3023,12 @@ Type TSettingsWindow
 		EventManager.registerListenerMethod("guiCheckBox.onSetChecked", Self, "onCheckCheckboxes", "TGUICheckbox")
 	End Method
 
+
 	Method Remove:int()
 		'no need to remove them ... everything is handled via
 		'removal of the modalDialogue as the other elements are children
 		'of that dialogue
-		'modalDialogue.Remove()
+		modalDialogue.Remove()
 		rem
 			inputPlayerName.Remove()
 			inputChannelName.Remove()
@@ -3054,6 +3083,8 @@ Type TSettingsWindow
 		data.AddBoolString("longClickMode", checkLongClickMode.IsChecked())
 		data.Add("longClicktime", inputLongClickTime.GetValue())
 
+		data.AddBoolString("showIngameHelp", checkShowIngameHelp.IsChecked())
+
 		Return data
 	End Method
 
@@ -3075,6 +3106,9 @@ Type TSettingsWindow
 		inputTouchClickRadius.SetValue(Max(5, data.GetInt("touchClickRadius", MouseManager._minSwipeDistance)))
 		checkLongClickMode.SetChecked(data.GetBool("longClickMode", MouseManager._longClickModeEnabled))
 		inputLongClickTime.SetValue(Max(50, data.GetInt("longClickTime", MouseManager._longClickTime)))
+
+		checkShowIngameHelp.SetChecked(data.GetBool("showIngameHelp", IngameHelpWindowCollection.showHelp))
+
 
 		'disable certain elements if needed
 		if not checkLongClickMode.IsChecked()
@@ -3188,7 +3222,13 @@ Type TSettingsWindow
 		canvas.AddChild(labelDatabase)
 		canvas.AddChild(inputDatabase)
 		nextY :+ inputH + labelH * 1.5
+
+		checkShowIngameHelp = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth + 20,-1), GetLocale("SHOW_INTRODUCTORY_GUIDES"))
+		canvas.AddChild(checkShowIngameHelp)
+		nextY :+ checkShowIngameHelp.GetScreenHeight()
+
 		nextY :+ 15
+
 
 
 		'SINGLEPLAYER
@@ -3466,6 +3506,12 @@ Type GameEvents
 		'react on right clicks during a rooms update (leave room)
 		_eventListeners :+ [ EventManager.registerListenerFunction("room.onUpdate", RoomOnUpdate) ]
 
+		'refresh ingame help
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnEnter", OnEnterNewScreen) ]
+		'pause on modal windows
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiModalWindow.onOpen", OnOpenModalWindow) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiModalWindow.onClose", OnCloseModalWindow) ]
+
 		'=== REGISTER TIME EVENTS ===
 		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnDay", OnDay) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnHour", OnHour) ]
@@ -3514,6 +3560,34 @@ Type GameEvents
 		_eventListeners :+ [ EventManager.registerListenerFunction("chat.onAddEntry", onChatAddEntry ) ]
 	End Function
 
+
+	Function OnOpenModalWindow:int(triggerEvent:TEventBase)
+		'only pause in single-player games
+		if not GetGame() or GetGame().networkgame then return False
+
+		If not GetGame().IsPaused() Then GetGame().SetPaused(True)
+	End Function
+
+
+	Function OnCloseModalWindow:int(triggerEvent:TEventBase)
+		'only pause in single-player games
+		if not GetGame() or GetGame().networkgame then return False
+
+		'they are handled individually
+		if TApp.ExitAppDialogue or TApp.EscapeMenuWindow then return False
+
+		If GetGame().IsPaused() Then GetGame().SetPaused(False)
+	End Function
+
+
+	Function OnEnterNewScreen:int(triggerEvent:TEventBase)
+		local screen:TScreen = TScreen(triggerEvent.GetSender())
+		if not screen then return False
+		
+		'try to show the ingame help for that screen (if there is any)
+		IngameHelpWindowCollection.ShowByHelpGUID( screen.GetName() )
+	End Function
+	
 
 	Function onChatAddEntry:Int(triggerEvent:TEventBase)
 		Local text:String = triggerEvent.GetData().GetString("text")
@@ -4973,6 +5047,21 @@ Function StartApp:Int()
 
 	'init sound receiver
 	GetSoundManager().SetDefaultReceiver(TPlayerSoundSourcePosition.Create())
+
+
+	'example for ingame-help "MainMenu"
+	'IngameHelpWindowCollection.Add(new TIngameHelpWindow.Init(GetLocale("WELCOME"), "Willkommen bei TVTower", "MainMenu"))
+
+	'generic ingame-help (available via "F1")
+	local manualContent:string = LoadText("Spielanleitung.txt").Replace("~r~n", "~n").Replace("~r", "~n")
+	local manualWindow:TIngameHelpWindow = new TIngameHelpWindow.Init(GetLocale("MANUAL"), manualContent, "GameManual")
+	manualWindow.EnableHideOption(False)
+	IngameHelpWindowCollection.Add(manualWindow)
+
+
+	'trigger initial ingamehelp for screen "MainMenu" as it is not called
+	'for the first screen
+	IngameHelpWindowCollection.ShowByHelpGUID("MainMenu")
 
 	App.Start()
 	TProfiler.Leave("StartApp")
