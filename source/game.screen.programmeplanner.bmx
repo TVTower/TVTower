@@ -124,7 +124,7 @@ Type TScreenHandler_ProgrammePlanner
 		'player enters screen - reset the guilists
 		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onEnter", onEnterProgrammePlannerScreen, screen) ]
 		'player leaves screen - only without dragged blocks
-		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnLeave", onLeaveProgrammePlannerScreen, screen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnTryLeave", onTryLeaveProgrammePlannerScreen, screen) ]
 		'player leaves office forcefully - clean up
 		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onForcefullyLeaveRoom", onForcefullyLeaveRoom) ]
 
@@ -469,7 +469,7 @@ Type TScreenHandler_ProgrammePlanner
 	End Function
 
 
-	Function onLeaveProgrammePlannerScreen:int( triggerEvent:TEventBase )
+	Function onTryLeaveProgrammePlannerScreen:int( triggerEvent:TEventBase )
 		'do not allow leaving with a list open
 		if PPprogrammeList.enabled Or PPcontractList.enabled
 			PPprogrammeList.SetOpen(0)

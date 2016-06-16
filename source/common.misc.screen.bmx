@@ -65,7 +65,7 @@ Type TScreenCollection
 
 
 	Method GoToScreen:int(screen:TScreen=null, screenName:string="")
-		'skip current screen has same name
+		'skip if current screen has same name
 		if currentScreen and currentScreen.name = lower(screenName) then return TRUE
 		'fetch screen object if missing
 		if not screen and screenName<>"" then screen = GetScreen(screenName)
@@ -73,10 +73,10 @@ Type TScreenCollection
 		if currentScreen = screen then return TRUE
 
 		'trigger event so others can attach
-		local event:TEventSimple = TEventSimple.Create("screen.onLeave", new TData.Add("toScreen", screen), currentScreen)
+		local event:TEventSimple = TEventSimple.Create("screen.onTryLeave", new TData.Add("toScreen", screen), currentScreen)
 		EventManager.triggerEvent(event)
 		if not event.isVeto()
-			local event:TEventSimple = TEventSimple.Create("screen.onEnter", new TData.Add("fromScreen", currentScreen), screen)
+			local event:TEventSimple = TEventSimple.Create("screen.onTryEnter", new TData.Add("fromScreen", currentScreen), screen)
 			EventManager.triggerEvent(event)
 			if not event.isVeto()
 				'instead of assigning currentScreen directly we use a setter
@@ -236,6 +236,11 @@ Type TScreen
 	End Method
 
 
+	Method GetName:string()
+		return name
+	End Method
+
+
 	Method SetName(name:string)
 		self.name = name
 	End Method
@@ -333,6 +338,8 @@ Type TScreen
 	'gets called right when entering that screen
 	'so use this to init certain values or elements on that screen
 	Method BeginEnter:int(fromScreen:TScreen=null)
+		EventManager.triggerEvent( TEventSimple.Create("screen.onEnter", new TData.Add("fromScreen", fromScreen), self) )
+
 		Start()
 		if _enterScreenEffect then _enterScreenEffect.Reset()
 	End Method
@@ -344,6 +351,8 @@ Type TScreen
 
 
 	Method BeginLeave:int(toScreen:TScreen=null)
+		EventManager.triggerEvent( TEventSimple.Create("screen.onLeave", new TData.Add("toScreen", toScreen), self) )
+
 		if _leaveScreenEffect then _leaveScreenEffect.Reset()
 	End Method
 

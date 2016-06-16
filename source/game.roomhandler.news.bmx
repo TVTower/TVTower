@@ -129,7 +129,7 @@ Type RoomHandler_News extends TRoomHandler
 		'figure enters screen - reset the guilists, limit listening to the 4 rooms
 		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onEnter", onEnterNewsPlannerScreen, plannerScreen) ]
 		'also we want to interrupt leaving a room with dragged items
-		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnLeave", onLeaveNewsPlannerScreen, plannerScreen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnTryLeave", onTryLeaveNewsPlannerScreen, plannerScreen) ]
 		
 		_eventListeners :+ _RegisterScreenHandler( onUpdateNews, onDrawNews, studioScreen )
 		_eventListeners :+ _RegisterScreenHandler( onUpdateNewsPlanner, onDrawNewsPlanner, plannerScreen )
@@ -577,7 +577,7 @@ Type RoomHandler_News extends TRoomHandler
 	End Function
 
 
-	Function onLeaveNewsPlannerScreen:int( triggerEvent:TEventBase )
+	Function onTryLeaveNewsPlannerScreen:int( triggerEvent:TEventBase )
 		'do not allow leaving as long as we have a dragged block
 		if draggedGuiNews
 			triggerEvent.setVeto()
