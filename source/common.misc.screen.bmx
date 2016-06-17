@@ -94,10 +94,18 @@ Type TScreenCollection
 
 
 	Method _SetCurrentScreen:int(screen:TScreen)
+rem
+local screenName:string = "NULL"
+local currentName:string = "NULL"
+if screen then screenName = screen.GetName()
+if currentScreen then currentName = currentScreen.GetName()
+
+print "_SetCurrentScreen ["+currentName+" -> "+screenName+"]"
+endrem
 		if screen <> currentScreen
 			if screen
+'print "                : begin enter"
 				screen.BeginEnter(currentScreen)
-				screen.state = TScreen.STATE_ENTERING
 			EndIf
 			currentScreen = screen
 
@@ -108,9 +116,16 @@ Type TScreenCollection
 
 
 	Method _SetTargetScreen:int(screen:TScreen)
+rem
+local screenName:string = "NULL"
+local currentName:string = "NULL"
+if screen then screenName = screen.GetName()
+if currentScreen then currentName = currentScreen.GetName()
+print "_SetTargetScreen ["+currentName+" -> "+screen.GetName()+"]"
+endrem
 		if currentScreen
 			currentScreen.BeginLeave(screen)
-			currentScreen.state = TScreen.STATE_LEAVING
+'print "               : begin leave [from: "+currentScreen.GetName()+"]"
 		endif
 			
 		targetScreen = screen
@@ -168,9 +183,9 @@ Type TScreenCollection
 		'handle screen change (effects finished)
 		if targetScreen and GetCurrentScreen() and GetCurrentScreen().FinishedLeaveEffect()
 			if GetCurrentScreen().state = TScreen.STATE_LEAVING
-				GetCurrentScreen().FinishLeave()
+'print "               : finish leave [from: "+GetCurrentScreen().GetName()+"]"
+				GetCurrentScreen().FinishLeave(targetScreen)
 			endif
-
 			_SetCurrentScreen(targetScreen)
 			targetScreen = null
 		endif
@@ -178,19 +193,24 @@ Type TScreenCollection
 		if not GetCurrentScreen() then return FALSE
 
 		'handle screen change effects (LEAVE) for current screen
-		if targetScreen and not GetCurrentScreen().FinishedLeaveEffect()
-			GetCurrentScreen()._leaveScreenEffect.Update(deltaTime)
+		if targetScreen
+			if not GetCurrentScreen().FinishedLeaveEffect()
+				GetCurrentScreen()._leaveScreenEffect.Update(deltaTime)
+			endif
 		'handle screen change effects (ENTER) for current screen
-		else if not GetCurrentScreen().FinishedEnterEffect()
-			GetCurrentScreen()._enterScreenEffect.Update(deltaTime)
-		endif
+		else
+			if not GetCurrentScreen().FinishedEnterEffect()
+				GetCurrentScreen()._enterScreenEffect.Update(deltaTime)
+			endif
 
-		if GetCurrentScreen().state = TScreen.STATE_ENTERING and GetCurrentScreen().FinishedEnterEffect()
-			GetCurrentScreen().FinishEnter()
+			if GetCurrentScreen().state = TScreen.STATE_ENTERING and GetCurrentScreen().FinishedEnterEffect()
+'print "               : finish enter [to: "+GetCurrentScreen().GetName()+"]"
+				GetCurrentScreen().FinishEnter()
+'print "----------"
+			endif
 		endif
 
 		GetCurrentScreen().update(deltaTime)
-
 
 		'trigger event so others can attach
 		EventManager.triggerEvent(TEventSimple.Create("screen.onUpdate", null, GetCurrentScreen()))
@@ -338,6 +358,8 @@ Type TScreen
 	'gets called right when entering that screen
 	'so use this to init certain values or elements on that screen
 	Method BeginEnter:int(fromScreen:TScreen=null)
+		state = TScreen.STATE_ENTERING
+
 		EventManager.triggerEvent( TEventSimple.Create("screen.onEnter", new TData.Add("fromScreen", fromScreen), self) )
 
 		Start()
@@ -347,17 +369,25 @@ Type TScreen
 
 	'called when finished entering (eg. animation finished)
 	Method FinishEnter:int()
+		state = TScreen.STATE_NONE
+
+		EventManager.triggerEvent( TEventSimple.Create("screen.onFinishEnter", null, self) )
 	End Method
 
 
 	Method BeginLeave:int(toScreen:TScreen=null)
+		state = TScreen.STATE_LEAVING
+
 		EventManager.triggerEvent( TEventSimple.Create("screen.onLeave", new TData.Add("toScreen", toScreen), self) )
 
 		if _leaveScreenEffect then _leaveScreenEffect.Reset()
 	End Method
 
 
-	Method FinishLeave:int()
+	Method FinishLeave:int(toScreen:TScreen=null)
+		state = TScreen.STATE_NONE
+
+		EventManager.triggerEvent( TEventSimple.Create("screen.onFinishLeave", new TData.Add("toScreen", toScreen), self) )
 	End Method
 
 
@@ -380,13 +410,13 @@ Type TScreenChangeEffect
 	Field _finished:int       = FALSE
 	Field _duration:int       = 0		'time the effect runs (in milliseconds)
 	Field _timeLeft:int       = 0
+	Field _waitAtBegin:int    = 0
+	Field _waitAtEnd:int      = 0
 	Field _name:string        = "TScreenChangeEffect"
 	Field _direction:int      = 0
 	Field _progress:float     = 0.0		'0-1.0
 	'Field _progressMax:float  = 1.0		'0-1.0
 	Field _progressOld:float  = 0.0		'for tweening
-	Field _waitAtBegin:int    = 0
-	Field _waitAtEnd:int    = 0
 	Field _area:TRectangle    = null
 	Field ID:int = 0
 	const DIRECTION_CLOSE:int = 0
@@ -466,14 +496,22 @@ Type TScreenChangeEffect
 	Method Update:int(deltaTime:float)
 		if Finished() then return TRUE
 
-		_progressOld = _progress 'for tweening
-		_progress :+ deltaTime * GetSpeed()
-
+		if _duration - _timeLeft  < _waitAtBegin
+			'wait begin
+		elseif _duration - _timeLeft  > _waitAtEnd
+			'move on
+			_progressOld = _progress 'for tweening
+			_progress :+ deltaTime * GetSpeed()
+		else
+			'wait end
+		endif
 		_timeLeft :- int(deltaTime*1000)
+
 
 		'doing this finishes without guarantee of having it rendered
 		'in that moment!
 		'if _progress > _progressMax then SetFinished(TRUE)
+
 		if _timeLeft < 0 then SetFinished(TRUE)
 	End Method
 End Type

@@ -755,3 +755,7 @@ PRODUCTION_FOCUS = Production focus
 DO_NOT_SHOW_AGAIN = Do not show again
 DO_NOT_SHOW_ANY_TIPS = Do not show any tips
 SHOW_INTRODUCTORY_GUIDES = Show introductory guides
+
+
+INGAME_HELP_TEXT_SCREEN_EMPTYROOM = Sorry\n\nThis room is still without function. We are working on it!
+INGAME_HELP_TITLE_SCREEN_EMPTYROOM = OUT OF ORDER

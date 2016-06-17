@@ -3507,7 +3507,8 @@ Type GameEvents
 		_eventListeners :+ [ EventManager.registerListenerFunction("room.onUpdate", RoomOnUpdate) ]
 
 		'refresh ingame help
-		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnEnter", OnEnterNewScreen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnFinishEnter", OnEnterNewScreen) ]
+
 		'pause on modal windows
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiModalWindow.onOpen", OnOpenModalWindow) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiModalWindow.onClose", OnCloseModalWindow) ]
@@ -5051,6 +5052,22 @@ Function StartApp:Int()
 
 	'example for ingame-help "MainMenu"
 	'IngameHelpWindowCollection.Add(new TIngameHelpWindow.Init(GetLocale("WELCOME"), "Willkommen bei TVTower", "MainMenu"))
+
+
+	'temporary solution
+	for local screen:TScreen = EachIn ScreenCollection.screens.Values()
+		local helpTextKeyTitle:string = "INGAME_HELP_TITLE_"+screen.GetName()
+		local helpTextKeyText:string = "INGAME_HELP_TEXT_"+screen.GetName()
+		local helpText:string = GetLocale(helpTextKeyText)
+		local helpTitle:string = GetLocale(helpTextKeyTitle)
+		if helpText = helpTextKeyText
+			print "Kein Hilfetext gefunden fuer ~q"+helpTextKeyText+"~q"
+		else
+			print "Hilfetext gefunden fuer ~q"+helpTextKeyText+"~q -> "+screen.GetName()
+			IngameHelpWindowCollection.Add( new TIngameHelpWindow.Init(GetLocale(helpTitle), GetLocale(helpText), screen.GetName()) )
+		endif
+	Next
+
 
 	'generic ingame-help (available via "F1")
 	local manualContent:string = LoadText("Spielanleitung.txt").Replace("~r~n", "~n").Replace("~r", "~n")
