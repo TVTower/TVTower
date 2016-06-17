@@ -877,6 +877,14 @@ Type TApp
 					'until it is "closed"
 					IngameHelpWindowCollection.LockCurrent()
 				EndIf
+				'show screen specific ingame help
+				If KEYMANAGER.IsHit(KEY_F2)
+					'force show manual
+					IngameHelpWindowCollection.ShowByHelpGUID(ScreenCollection.GetCurrentScreen().GetName() , True)
+					'avoid that this window gets replaced by another one
+					'until it is "closed"
+					IngameHelpWindowCollection.LockCurrent()
+				EndIf
 				
 				'only announce news in single player mode - as announces
 				'are done on all clients on their own.

@@ -215,7 +215,8 @@ Type TGUITextArea Extends TGUIobject
 
 		_wordwrap = enable
 		ResetTextCache()
-'		UpdateContent()
+		'UpdateContent()
+		'GenerateTextCache()
 	End Method
 
 
@@ -243,7 +244,11 @@ Type TGUITextArea Extends TGUIobject
 	Method GetValueLines:string[]()
 		if not _textLinesCache or (value.length > 0 and _textLinesCache.length = 0)
 			Local lineHeight:float = GetFont().getMaxCharHeight()
-			_textLinesCache = GetFont().TextToMultiLine(value, 0, 0, lineHeight)
+			if _wordwrap
+				_textLinesCache = GetFont().TextToMultiLine(value, guiTextPanel.GetContentScreenWidth(), 0, lineHeight)
+			else
+				_textLinesCache = GetFont().TextToMultiLine(value, 0, 0, lineHeight)
+			endif
 		endif
 		return _textLinesCache
 	End Method

@@ -185,31 +185,35 @@ Type TIngameHelpWindow
 
 
 		Local canvas:TGUIObject = modalDialogue.GetGuiContent()
-
-		guiTextArea = New TGUITextArea.Create(new TVec2D.Init(0,0), new TVec2D.Init(532,188 + 22 * showHideOption), "INGAMEHELP_"+helpGUID)
+		guiTextArea = New TGUITextArea.Create(new TVec2D.Init(0,0), new TVec2D.Init(532,188 + 22 * (not showHideOption)), "INGAMEHELP_"+helpGUID)
 		'guiTextArea.Move(0,0)
 		guiTextArea.SetFont( GetBitmapFont("default", 14) )
 		guiTextArea.textColor = TColor.clBlack.Copy()
-		'guiTextArea.SetWordWrap(True)
+		guiTextArea.SetWordWrap(True)
 		guiTextArea.SetValue( content )
 
 		canvas.AddChild(guiTextArea)
 
-		checkboxHideThis = New TGUICheckBox.Create(new TVec2D.Init(0,190), new TVec2D.Init(-1,-1), "", "INGAMEHELP_"+helpGUID)
-		checkboxHideThis.SetFont( GetBitmapFont("default", 12) )
-'		checkboxHideThis.textColor = TColor.clBlack.Copy()
-		checkboxHideThis.SetValue( GetLocale("DO_NOT_SHOW_AGAIN") )
+		local checkboxWidth:int = 0
+		if not IngameHelpWindowCollection.IsDisabledHelpGUID(helpGUID)
+			checkboxHideThis = New TGUICheckBox.Create(new TVec2D.Init(0,190), new TVec2D.Init(-1,-1), "", "INGAMEHELP_"+helpGUID)
+			checkboxHideThis.SetFont( GetBitmapFont("default", 12) )
+	'		checkboxHideThis.textColor = TColor.clBlack.Copy()
+			checkboxHideThis.SetValue( GetLocale("DO_NOT_SHOW_AGAIN") )
+			canvas.AddChild(checkboxHideThis)
 
-		canvas.AddChild(checkboxHideThis)
+			checkboxWidth = checkboxHideThis.GetScreenWidth() + 20
+		endif
 
-		checkboxHideAll = New TGUICheckBox.Create(new TVec2D.Init(0 + checkboxHideThis.GetScreenWidth() + 20,190), new TVec2D.Init(-1,-1), "", "INGAMEHELP_"+helpGUID)
+
+		checkboxHideAll = New TGUICheckBox.Create(new TVec2D.Init(0 + checkboxWidth,190), new TVec2D.Init(-1,-1), "", "INGAMEHELP_"+helpGUID)
 		checkboxHideAll.SetFont( GetBitmapFont("default", 12) )
 '		checkboxHideAll.textColor = TColor.clBlack.Copy()
 		checkboxHideAll.SetValue( GetLocale("DO_NOT_SHOW_ANY_TIPS") )
 
 		canvas.AddChild(checkboxHideAll)
 		if not showHideOption
-			checkboxHideThis.Hide()
+			if checkboxHideThis then checkboxHideThis.Hide()
 			checkboxHideAll.Hide()
 		endif
 
@@ -220,20 +224,22 @@ Type TIngameHelpWindow
 
 		'=== EVENTS ===
 		_eventListeners :+ [ EventManager.registerListenerMethod("guiCheckBox.onSetChecked", self, "OnSetCheckbox", checkboxHideAll) ]
-		_eventListeners :+ [ EventManager.registerListenerMethod("guiCheckBox.onSetChecked", self, "OnSetCheckbox", checkboxHideThis) ]
+		if checkboxHideThis
+			_eventListeners :+ [ EventManager.registerListenerMethod("guiCheckBox.onSetChecked", self, "OnSetCheckbox", checkboxHideThis) ]
+		endif
 	End Method
 
 
 	Method EnableHideOption:int(bool:int)
 		showHideOption = bool
 
-		if checkboxHideThis and guiTextArea and checkboxHideAll
-			if not showHideOption and checkboxHideThis.IsVisible()
-				checkboxHideThis.Hide()
+		if guiTextArea and checkboxHideAll
+			if not showHideOption and checkboxHideAll.IsVisible()
+				if checkboxHideThis then checkboxHideThis.Hide()
 				checkboxHideAll.Hide()
-				guiTextArea.Resize(-1, guiTextArea.rect.GetH() + checkboxHideThis.GetScreenheight())
+				guiTextArea.Resize(-1, guiTextArea.rect.GetH() + checkboxHideAll.GetScreenheight())
 			else
-				guiTextArea.Resize(-1, guiTextArea.rect.GetH() - checkboxHideThis.GetScreenheight())
+				guiTextArea.Resize(-1, guiTextArea.rect.GetH() - checkboxHideAll.GetScreenheight())
 			endif
 		endif
 	End Method
@@ -246,7 +252,7 @@ Type TIngameHelpWindow
 		hideFlag = 0
 		if checkboxHideAll.IsChecked()
 			hideFlag = 2
-		elseif checkboxHideThis.IsChecked()
+		elseif checkboxHideThis and checkboxHideThis.IsChecked()
 			hideFlag = 1
 		endif
 	End Method
@@ -287,6 +293,11 @@ Type TIngameHelpWindow
 			if not active then Remove()
 
 			GuiManager.Update("INGAMEHELP_"+helpGUID)
+
+			'no right clicking allowed as long as "help window" is active
+			MouseManager.ResetKey(2)
+			'also avoid long-clicking (touch)
+			MouseManager.ResetLongClicked(1)
 		endif
 	End Method
 
