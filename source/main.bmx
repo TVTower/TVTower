@@ -3565,6 +3565,9 @@ Type GameEvents
 		'listen to custom programme events to send out toastmessages
 		_eventListeners :+ [ EventManager.registerListenerFunction("production.finalize", Production_OnFinalize) ]
 
+		'reset room signs when a bomb explosion in a room happened
+		_eventListeners :+ [ EventManager.registerListenerFunction("room.onBombExplosion", Room_OnBombExplosion) ]
+
 		'we want to handle "/dev bla"-commands via chat
 		_eventListeners :+ [ EventManager.registerListenerFunction("chat.onAddEntry", onChatAddEntry ) ]
 	End Function
@@ -3972,6 +3975,14 @@ Type GameEvents
 		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 	End Function
 
+
+	Function Room_OnBombExplosion:Int(triggerEvent:TEventBase)
+		GetRoomBoard().ResetPositions()
+
+		'TODO: send out janitor to the roomboard and when arrived, he
+		'      will reset the sign positions
+	End Function
+	
 
 	Function ProgrammeLicenceAuction_OnGetOutbid:Int(triggerEvent:TEventBase)
 		'only interested in auctions in which the player got overbid
