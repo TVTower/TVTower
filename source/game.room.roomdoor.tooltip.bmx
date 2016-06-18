@@ -74,7 +74,7 @@ Type TRoomDoorTooltip extends TTooltip
 			'add line spacer
 			if newContent<>"" then newContent :+ "~n"
 
-			if room.blockedState = TRoomBase.BLOCKEDSTATE_SHOOTING
+			if room.blockedUntilShownInTooltip
 				'add blocked message
 				local endTime:string
 				'today - only hours
@@ -88,8 +88,12 @@ Type TRoomDoorTooltip extends TTooltip
 					endTime = GetWorldTime().GetFormattedDate(room.blockedUntil)
 				endif
 
-				newContent :+ GetLocale("SHOOTING_IN_PROGRESS") + "~n"
-				if room.blockedText then newContent :+ "|b|"+room.blockedText + "|/b|~n"
+
+				if room.blockedState & TRoomBase.BLOCKEDSTATE_SHOOTING > 0
+					newContent :+ GetLocale("SHOOTING_IN_PROGRESS") + "~n"
+					if room.blockedText then newContent :+ "|b|"+room.blockedText + "|/b|~n"
+				endif
+
 				newContent :+ GetLocale("BLOCKED_UNTIL_TIME").Replace("%TIME%", endTime)
 			else
 				'add blocked message

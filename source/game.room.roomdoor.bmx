@@ -207,7 +207,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 		'==== DRAW OVERLAY ===
 		if room.IsBlocked()
 			'when a bomb is the reason - draw a barrier tape
-			if room.blockedState = room.BLOCKEDSTATE_BOMB
+			if room.blockedState & room.BLOCKEDSTATE_BOMB > 0
 
 				'is there is an explosion happening in that moment?
 				'attention: not gametime but time (realtime effect)

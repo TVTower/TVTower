@@ -169,8 +169,8 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 	Const BLOCKEDSTATE_NONE:int       = 0 'not blocked at all
 	Const BLOCKEDSTATE_BOMB:int       = 1 'eg. after terrorists attacked
 	Const BLOCKEDSTATE_RENOVATION:int = 2 'eg. for rooms not "bombable"
-	Const BLOCKEDSTATE_MARSHAL:int    = 3 'eg. archive when not enough money
-	Const BLOCKEDSTATE_SHOOTING:int   = 4 'studios: when in production
+	Const BLOCKEDSTATE_MARSHAL:int    = 4 'eg. archive when not enough money
+	Const BLOCKEDSTATE_SHOOTING:int   = 8 'studios: when in production
 
 
 	'init a room base with basic variables
@@ -209,7 +209,7 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 		local time:int = 0
 		
 		'=== BOMB ===
-		if blockedState = BLOCKEDSTATE_BOMB
+		if blockedState & BLOCKEDSTATE_BOMB > 0
 			'"placerholder rooms" (might get rent later)
 			if owner = 0 and IsUsableAsStudio() 
 				time = 60 * 60 * 24
@@ -220,10 +220,16 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 			elseIf owner > 0
 				time = 60 * 30 
 			endif
-		endif
+
+		'=== MARSHAL ===
+		elseif blockedState & BLOCKEDSTATE_MARSHAL > 0
+			'just blocks player rooms
+			If owner > 0
+				time = 60 * 15 * randRange(1,4) 
+			endif
 
 		'=== RENOVATION ===
-		if blockedState = BLOCKEDSTATE_RENOVATION
+		elseif blockedState & BLOCKEDSTATE_RENOVATION > 0
 			if owner = 0 and IsUsableAsStudio() 
 				'ATTENTION: "randRange" to get the same in multiplayer games
 				time = 60 * 60 * randRange(5,10)
@@ -233,41 +239,38 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 				time = 60 * 10 * randRange(1,2) 
 			endif
 		endif
-
-		'=== MARSHAL ===
-		if blockedState = BLOCKEDSTATE_RENOVATION
-			'just blocks player rooms
-			If owner > 0
-				time = 60 * 15 * randRange(1,4) 
-			endif
-		endif
 			
 		SetBlocked(time, blockedState) 
 	End Method
 
 
-	Method SetBlocked:int(blockTimeInSeconds:int = 0, blockedState:int = 0)
+	Method SetBlocked:int(blockTimeInSeconds:int = 0, newBlockedState:int = 0)
+		blockedState :| newBlockedState
+
+		'show the time until end of blocking
+		'- when marshal visited the room
+		'- when terrorist put a bomb into a room
+		'- when shooting / production takes place
+		if blockedState & (BLOCKEDSTATE_SHOOTING | BLOCKEDSTATE_MARSHAL | BLOCKEDSTATE_BOMB) <> 0
+			blockedUntilShownInTooltip = True
+		endif
+			
+		blockedUntil = GetWorldTime().GetTimeGone() + blockTimeInSeconds
+
 		'remove blockage without effects!
 		if blockTimeInSeconds = 0
 			blockedState = BLOCKEDSTATE_NONE
 			blockedUntilShownInTooltip = False
-		else
-			self.blockedState = blockedState
-
-			'when doing shooting, show the time until end of blocking
-			'when showing a tooltip
-			if blockedState = BLOCKEDSTATE_SHOOTING
-				blockedUntilShownInTooltip = True
-			endif
-			
-			blockedUntil = GetWorldTime().GetTimeGone() + blockTimeInSeconds
 		endif
+
+		'inform others
+		EventManager.triggerEvent( TEventSimple.Create("room.onSetBlocked", New TData.AddString("roomGUID", GetGUID() ).AddString("newBlockedState", newBlockedState).AddNumber("blockTimeInSeconds", blockTimeInSeconds), Null, self) )
 	End Method
 
 
 	Method SetUnblocked:int()
 		'when it was got bombed, free the room now
-		if blockedState = BLOCKEDSTATE_BOMB
+		if blockedState & BLOCKEDSTATE_BOMB > 0
 			if IsUsableAsStudio() then SetAvailableForRent(True)
 		EndIf
 				
@@ -276,10 +279,10 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 
 
 	Method IsBlocked:Int()
-		if blockedState <> BLOCKEDSTATE_NONE and blockedUntil < GetWorldTime().GetTimeGone()
+		if blockedState > BLOCKEDSTATE_NONE and blockedUntil < GetWorldTime().GetTimeGone()
 			SetUnBlocked()
 		EndIf
-		return (blockedState <> BLOCKEDSTATE_NONE)
+		return (blockedState > BLOCKEDSTATE_NONE)
 	End Method
 
 
@@ -421,13 +424,14 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 	'checks the room for a placed bomb
 	Method CheckForBomb:int()
 		'was a bomb placed? check fuse and detonation time
-		if bombPlacedTime >= 0 and blockedState <> BLOCKEDSTATE_BOMB
+		if bombPlacedTime >= 0 and not (blockedState & BLOCKEDSTATE_BOMB > 0)
 			if bombPlacedTime + bombFuseTime < GetWorldTime().GetTimeGone()
 				SetBlockedState(BLOCKEDSTATE_BOMB)
 				'time is NOT a gametime but a real time!
 				'so the explosion is visible for a given time independent
 				'from game speed
 				bombExplosionTime = Time.GetTimeGone()
+
 				'reset placed time
 				bombPlacedTime = -1
 			endif
