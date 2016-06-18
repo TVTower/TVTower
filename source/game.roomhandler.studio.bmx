@@ -820,7 +820,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		local text:string
 		'=== SCRIPT HINT ===
 		if dialogueType = 2
-			text = "Informationen ueber Drehbuch anbieten"
+			text = "Hmmm, Ich kann Dir zu dem Drehbuch keine weiteren Details nennen. Vielleicht darf ich ja spaeter einmal Details zum Drehbuch einbringen: wie zum Beispiel das Geschlecht oder Alter einer Rolle. Das kommt aber alles auf die Entwickler an."
 		'=== PRODUCTION CONCEPT HINT ===
 		elseif dialogueType = 1
 			text = "Informationen ueber Produktionsplan (erwartete Qualitaet) anbieten"
@@ -1038,15 +1038,15 @@ Type RoomHandler_Studio extends TRoomHandler
 					'generate the dialogue if not done yet
 					if MouseManager.IsClicked(1)
 						if draggedGuiProductionConcept
-							draggedGuiProductionConcept.dropBackToOrigin()
-							draggedGuiProductionConcept = null
+'							draggedGuiProductionConcept.dropBackToOrigin()
+'							draggedGuiProductionConcept = null
 
-							GenerateStudioManagerDialogue(2)
+'							GenerateStudioManagerDialogue(1)
 						elseif draggedGuiScript
 							draggedGuiScript.dropBackToOrigin()
 							draggedGuiScript = null
 
-							GenerateStudioManagerDialogue(1)
+							GenerateStudioManagerDialogue(2)
 						else
 							GenerateStudioManagerDialogue(0)
 						endif
