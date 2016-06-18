@@ -1184,7 +1184,7 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	Method rb_SwitchSignPositions:int(slotA:int, floorA:int, slotB:int, floorB:int)
 		If Not _PlayerInRoom("roomboard") Then Return self.RESULT_WRONGROOM
 
-		If GetRoomBoard().SwitchSignPositions(slotA, floorA, slotB, floorB)
+		If GetRoomBoard().SwitchSignPositions(slotA, floorA, slotB, floorB, self.ME)
 			Return self.RESULT_OK
 		Else
 			Return self.RESULT_FAILED

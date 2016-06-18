@@ -3,6 +3,7 @@ Import "common.misc.blockmoveable.bmx"
 Import "common.misc.dragndrop.bmx"
 Import "game.room.base.bmx"
 Import "game.room.roomdoor.base.bmx"
+Import "game.player.base.bmx"
 Import "Dig/base.gfx.bitmapfont.bmx"
 
 
@@ -80,9 +81,7 @@ Type TRoomBoard
 
 	Method ResetPositions()
 		For Local obj:TRoomBoardSign = EachIn list
-			obj.rect.position.CopyFrom(obj.OrigPos)
-			obj.StartPos.CopyFrom(obj.OrigPos)
-			obj.dragged	= 0
+			obj.ResetPosition()
 		Next
 		AdditionallyDragged = 0
 	End Method
@@ -204,20 +203,26 @@ Type TRoomBoard
 	'switches the _current_ position of two signs
 	'permanentSwitch: if true, also switches original position
 	'                 (wont reset on roomboard/plan-reset)
-	Method SwitchSigns:int(signA:TRoomBoardSign, signB:TRoomBoardSign, permanentSwitch:int = False)
+	Method SwitchSigns:int(signA:TRoomBoardSign, signB:TRoomBoardSign, playerID:int = 0, permanentSwitch:int = False)
 		if not signA or not signB then return False
 
 		signA.SwitchCoords(signB)
 
 		if permanentSwitch then TVec2D.SwitchVecs(signA.OrigPos, signB.OrigPos)
 
+		if signA then signA.MarkMoved(playerID)
+		if signB then signB.MarkMoved(playerID)
+
 		return True
 	End Method
 
 
-	Method SwitchSignPositions:int(slotA:int, floorA:int, slotB:int, floorB:int, permanentSwitch:Int = False)
+	Method SwitchSignPositions:int(slotA:int, floorA:int, slotB:int, floorB:int, playerID:int = 0, permanentSwitch:Int = False)
 		Local signA:TRoomBoardSign = GetSignByCurrentPosition(slotA, floorA)
 		Local signB:TRoomBoardSign = GetSignByCurrentPosition(slotB, floorB)
+
+		if signA then signA.MarkMoved(playerID)
+		if signB then signB.MarkMoved(playerID)
 
 		if signA
 			local x:Int = GetSlotX(slotB)
@@ -249,7 +254,6 @@ Type TRoomBoard
 		return list.Count()
 	End Method
 	
-
 
 	Method DropBackDraggedSigns:Int()
 		local droppedSomethingBack:int = False
@@ -290,6 +294,9 @@ Type TRoomBoard
 					MOUSEMANAGER.resetKey(2)
 					MOUSEMANAGER.resetKey(1) 'also first button
 
+					if not sign.IsAtOriginalPosition()
+						sign.MarkMoved(GetPlayerBase().playerID)
+					endif
 				Else
 					'if left mbutton clicked: drop, replace with underlaying block...
 					If MouseManager.IsClicked(1)
@@ -313,11 +320,21 @@ Type TRoomBoard
 	'										Network.SendMovieAgencyChange(Network.NET_SWITCH, GetPlayerCollection().playerID, OtherlocObj.Programme.id, -1, locObj.Programme)
 	'	  								End If
 										sign.SwitchBlock(otherSign)
+
 										MouseManager.resetKey(1)
 										Exit	'exit enclosing for-loop (stop searching for other underlaying blocks)
 									EndIf
 								Next
 							EndIf		'end: drop in origin or search for other obj underlaying
+
+							if not sign.dragged
+								if not sign.IsAtOriginalPosition()
+									sign.MarkMoved(GetPlayerBase().playerID)
+								else
+									sign.movedByPlayers = 0
+									sign.lastMoveByPlayerID = 0
+								endif
+							endif
 						Else			'end: an obj is dragged
 							If sign.containsCoord(MouseManager.x, MouseManager.y)
 								sign.dragged = 1
@@ -394,6 +411,10 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 	Field door:TRoomDoorBase
 	Field signSlot:int = 0
 	Field signFloor:int = 0
+	'bitmask describing which player numbers moved the sign since reset
+	Field movedByPlayers:int = 0
+	'playerID of the one who moved last
+	Field lastMoveByPlayerID:int = 0
 	Field imageCache:TSprite = null {nosave}
 	Field imageDraggedCache:TSprite	= null {nosave}
 
@@ -466,6 +487,23 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 
 	Method SetDragable(_dragable:Int = 1)
 		dragable = _dragable
+	End Method
+
+
+	Method ResetPosition()
+		rect.position.CopyFrom(OrigPos)
+		StartPos.CopyFrom(OrigPos)
+
+		dragged	= 0
+		lastMoveByPlayerID = 0
+		movedByPlayers = 0
+	End Method
+
+
+	Method MarkMoved(playerID:int = 0)
+		local playerBitmaskValue:int = 2 ^ (playerID-1)
+		movedByPlayers :| playerBitmaskValue
+		lastMoveByPlayerID = playerID
 	End Method
 
 
