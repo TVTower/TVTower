@@ -1319,6 +1319,7 @@ Type TGameState
 	Field _Betty:TBetty = Null
 
 	Field _GameInformationCollection:TGameInformationCollection = Null
+	Field _IngameHelpWindowCollection:TIngameHelpWindowCollection = Null
 
 	Field _AudienceManager:TAudienceManager = Null
 	Field _AdContractBaseCollection:TAdContractBaseCollection = Null
@@ -1422,6 +1423,7 @@ Type TGameState
 
 		_Assign(_PlayerColorList, TPlayerColor.List, "PlayerColorList", MODE_LOAD)
 		_Assign(_GameInformationCollection, TGameInformationCollection._instance, "GameInformationCollection", MODE_LOAD)
+		_Assign(_IngameHelpWindowCollection, IngameHelpWindowCollection, "IngameHelp", MODE_LOAD)
 
 		_Assign(_AudienceManager, AudienceManager, "AudienceManager", MODE_LOAD)
 		_Assign(_ProductionManager, TProductionManager._instance, "ProductionManager", MODE_LOAD)
@@ -1498,6 +1500,7 @@ Type TGameState
 
 		_Assign(TPlayerColor.List, _PlayerColorList, "PlayerColorList", MODE_SAVE)
 		_Assign(TGameInformationCollection._instance, _GameInformationCollection, "GameInformationCollection", MODE_SAVE)
+		_Assign(IngameHelpWindowCollection, _IngameHelpWindowCollection, "IngameHelp", MODE_SAVE)
 
 		_Assign(AudienceManager, _AudienceManager, "AudienceManager", MODE_SAVE)
 		_Assign(TProductionManager._instance, _ProductionManager, "ProductionManager", MODE_SAVE)
@@ -4567,6 +4570,8 @@ Type GameEvents
 
 			'NEWSEVENTS
 			'remove old news events - wait a day more than "plan time"
+			'this also gets rid of "one time" news events which should
+			'have been "triggered" then
 			daysToKeep = 4
 			GetNewsEventCollection().RemoveOutdatedNewsEvents(daysToKeep)
 		EndIf
