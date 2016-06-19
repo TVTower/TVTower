@@ -4,7 +4,7 @@ Import "../source/Dig/base.gfx.gui.window.modal.bmx"
 Import "../source/Dig/base.gfx.gui.checkbox.bmx"
 
 
-Type TIngameHelpCollection
+Type TIngameHelpWindowCollection
 	Field showHelp:int = True
 	Field disabledHelpGUIDs:String[]
 	Field currentIngameHelpWindow:TIngameHelpWindow {nosave}
@@ -111,7 +111,7 @@ Type TIngameHelpCollection
 		endif
 	End Method
 End Type
-Global IngameHelpWindowCollection:TIngameHelpCollection = new TIngameHelpCollection
+Global IngameHelpWindowCollection:TIngameHelpWindowCollection = new TIngameHelpWindowCollection
 
 
 

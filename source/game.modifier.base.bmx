@@ -99,10 +99,17 @@ Type TGameModifierBase
 	Field _customUndoFuncKey:string
 
 
-	'function returning a _new_ effect initialized with the given data
-	Function CreateFromData:TGameModifierBase(data:TData, index:string="")
+	Function CreateNewInstance:TGameModifierBase()
 		return new TGameModifierBase
 	End Function
+
+
+	Method Init:TGameModifierBase(data:TData, index:string="")	
+		'by default ignore indexes <> "" (aka "children")
+		if index <> "" and index <> "0" then return null
+		
+		return self
+	End Method
 
 
 	Method ToString:string()
@@ -340,32 +347,28 @@ Type TGameModifierChoice extends TGameModifierBase
 	Const CHOOSETYPE_AND:int = 1
 
 
-	Function CreateFromData:TGameModifierChoice(data:TData, index:string="")
-		if not data then return null
-
-		local obj:TGameModifierChoice = CreateNewInstance()
-
-		obj.CustomCreateFromData(data, index)
-
-		return obj
-	End Function
-
-
 	Function CreateNewInstance:TGameModifierChoice()
+print "CreateNewInstance:TGameModifierChoice"
 		return new TGameModifierChoice
 	End Function
 
 
-	Method CustomCreateFromData(data:TData, index:string)
+	Function CreateNewChoiceInstance:TGameModifierBase()
+		return new TGameModifierBase
+	End Function
+
+
+	Method Init:TGameModifierChoice(data:TData, index:string)
 		if data.GetString("choose").ToLower() = "or"
 			chooseType = CHOOSETYPE_OR
 		else
 			chooseType = CHOOSETYPE_AND
 		endif
 
-		if index = ""
-			LoadChoices(data)
-		endif
+		'only load child-options for the parental one
+		if index = "" then LoadChoices(data)
+
+		return self
 	End Method
 	
 
@@ -375,7 +378,8 @@ Type TGameModifierChoice extends TGameModifierBase
 		local child:TGameModifierBase
 		Repeat
 			childIndex :+1
-			child = CreateFromData(data, childIndex)
+			'create the choice based on the defined type for the children
+			child = CreateNewChoiceInstance().Init(data, childIndex)
 			if child
 				self.modifiers :+ [child]
 			endif
@@ -417,9 +421,8 @@ Type TGameModifier_TimeLimited extends TGameModifierBase
 	Field timeFrame:TGameModifierTimeFrame = new TGameModifierTimeFrame
 	Field expired:int = False
 
-	
-	'function returning a _new_ modifier initialized with the given data
-	Function CreateFromData:TGameModifier_TimeLimited(data:TData, index:string="")
+
+	Function CreateNewInstance:TGameModifier_TimeLimited()
 		return new TGameModifier_TimeLimited
 	End Function
 
@@ -603,7 +606,10 @@ Type TGameModifierBaseCreator
 
 	Method CreateModifier:TGameModifierBase(modifierName:string, data:TData)
 		local modifier:TGameModifierBase = TGameModifierBase(registeredModifiers.ValueForKey( modifierName.Tolower() ))
-		if modifier then return modifier.CreateFromData(data)
+		if modifier
+			'create/return a specific instance (of the same type)
+			return modifier.CreateNewInstance().Init(data, "")
+		endif
 		return null
 	End Method
 End Type

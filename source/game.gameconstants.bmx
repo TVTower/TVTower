@@ -810,8 +810,11 @@ Type TVTNewsFlag {_exposeToLua}
 	'eg. if no player listens to the genre
 	'news like "terrorist will attack" happen in all cases => unskippable
 	Const UNSKIPPABLE:Int = 4
+	'send the news event to all players, regardless of their abonnement
+	'level
+	Const SEND_TO_ALL:Int = 8
 
-	Const count:int = 3
+	Const count:int = 4
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -825,6 +828,7 @@ Type TVTNewsFlag {_exposeToLua}
 			case SEND_IMMEDIATELY  return "send_immediately"
 			case UNIQUE_EVENT      return "unique_event"
 			case UNSKIPPABLE       return "unskippable"
+			case SEND_TO_ALL       return "send_to_all"
 
 
 			default

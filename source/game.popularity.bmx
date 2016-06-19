@@ -266,22 +266,27 @@ Type TGameModifierPopularity_ModifyPopularity extends TGameModifierBase
 	Field valueMin:int = 0
 	Field valueMax:int = 0
 	Field modifyProbability:int = 100
-	
 
-	Function CreateFromData:TGameModifierPopularity_ModifyPopularity(data:TData, index:string="")
+
+	'override to create this type instead of the generic one
+	Function CreateNewInstance:TGameModifierPopularity_ModifyPopularity()
+		return new TGameModifierPopularity_ModifyPopularity
+	End Function	
+
+
+	Method Init:TGameModifierPopularity_ModifyPopularity(data:TData, index:string="")
 		if not data then return null
 
 		'local source:TNewsEvent = TNewsEvent(data.get("source"))
 		local popularityGUID:string = data.GetString("guid"+index, data.GetString("guid", ""))
 		if popularityGUID = "" then return Null
 
-		local obj:TGameModifierPopularity_ModifyPopularity = new TGameModifierPopularity_ModifyPopularity
-		obj.valueMin = data.GetInt("valueMin"+index, 0)
-		obj.valueMax = data.GetInt("valueMax"+index, 0)
-		obj.modifyProbability = data.GetInt("probability"+index)
+		valueMin = data.GetInt("valueMin"+index, 0)
+		valueMax = data.GetInt("valueMax"+index, 0)
+		modifyProbability = data.GetInt("probability"+index)
 
-		return obj
-	End Function
+		return self
+	End Method
 	
 	
 	Method ToString:string()

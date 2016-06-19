@@ -145,6 +145,7 @@ Type TNewsEventCollection
 
 	Method Remove:int(obj:TNewsEvent)
 		allNewsEvents.Remove(obj.GetGUID())
+		managedNewsEvents.Remove(obj.GetGUID())
 
 		_InvalidateCaches()
 
@@ -171,7 +172,7 @@ Type TNewsEventCollection
 	
 
 	Method GetByGUID:TNewsEvent(GUID:String)
-		Return TNewsEvent(managedNewsEvents.ValueForKey(GUID))
+		Return TNewsEvent(allNewsEvents.ValueForKey(GUID))
 	End Method
 
 
@@ -182,9 +183,9 @@ Type TNewsEventCollection
 		GUIDpart = GUIDpart.ToLower()
 
 		'find first hit
-		For local key:string = EachIn managedNewsEvents.Keys()
+		For local key:string = EachIn allNewsEvents.Keys()
 			if key.ToLower().Find(GUIDpart) >= 0
-				return TNewsEvent(managedNewsEvents.ValueForKey(key))
+				return TNewsEvent(allNewsEvents.ValueForKey(key))
 			endif
 		Next
 
@@ -216,8 +217,8 @@ Type TNewsEventCollection
 			endif
 		Next
 
-		'to deletion/modification in an extra step - this avoids
-		'to create a map-copy just to avoid concurrent modification
+		'delete/modify in an extra step - this approach skips creation
+		'of a map-copy just to avoid concurrent modification
 		For local n:TNewsEvent = Eachin toRemove
 			RemoveManaged(n)
 		Next
@@ -253,8 +254,8 @@ Type TNewsEventCollection
 			endif
 		Next
 
-		'to deletion/modification in an extra step - this avoids
-		'to create a map-copy just to avoid concurrent modification
+		'delete/modify in an extra step - this approach skips creation
+		'of a map-copy just to avoid concurrent modification
 		For local n:TNewsEvent = Eachin toRemove
 			RemoveManaged(n)
 		Next
@@ -305,11 +306,11 @@ Type TNewsEventCollection
 		if GetAvailableNewsList(genre).Count() = 0
 			local c:int = 0
 			for local e:TNewsEvent = EachIn managedNewsEvents.Values()
-				if e.IsReuseable() then c :+ 1
+				if e.IsReuseable() or not e.HasHappened() then c :+ 1
 			Next
 			if c = 0
 				for local e:TNewsEvent = EachIn allNewsEvents.Values()
-					if e.IsReuseable()
+					if e.IsReuseable() or not e.HasHappened()
 						managedNewsEvents.insert(e.GetGUID(), e)
 					endif
 				Next
@@ -465,7 +466,12 @@ Type TNewsEventCollection
 			news.happenedTime = time
 
 			'add to the "happened" list
-			if news.HasHappened() then AddHappenedEvent(news)
+			if news.HasHappened()
+				AddHappenedEvent(news)
+
+				'remove one time events from the managed list
+				if not news.IsReuseable() then RemoveManaged(news)
+			endif
 		endif
 
 		'reset only specific caches, so news gets in the correct list
@@ -474,8 +480,16 @@ Type TNewsEventCollection
 		_InvalidateUpcomingNewsEvents()
 		_InvalidateAvailableNewsEvents()
 
+
+		'RONNY 2016/06/19:
+		'do not remove from managed as it could contain ingame-news too
+		'(these are often not reuseable)
+		'they might just have been got triggered and would never get
+		'added to the upcoming list then
+		'-> we now remove only when "happened" already
+
 		'remove the news if it cannot happen again
-		if not news.IsReuseable() then RemoveManaged(news)
+		'if not news.IsReuseable() then RemoveManaged(news)
 	End Method
 
 
@@ -682,6 +696,7 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		GetNewsEventCollection().setNewsHappened(self, time)
 
 		if time = 0 or time <= GetWorldTime().GetTimeGone()
+
 			'set topicality to 100%
 			topicality = 1.0
 
@@ -846,9 +861,15 @@ Type TGameModifierNews_TriggerNews extends TGameModifierBase
 	Field happenTimeData:int[] = [8,16,0,0]
 	'% chance to trigger the news when "RunFunc()" is called
 	Field triggerProbability:Int = 100
+
+
+	'override to create this type instead of the generic one
+	Function CreateNewInstance:TGameModifierNews_TriggerNews()
+		return new TGameModifierNews_TriggerNews
+	End Function
 	
 
-	Function CreateFromData:TGameModifierNews_TriggerNews(data:TData, index:string="")
+	Method Init:TGameModifierNews_TriggerNews(data:TData, index:string="")
 		if not data then return null
 
 		'local source:TNewsEvent = TNewsEvent(data.get("source"))
@@ -878,7 +899,7 @@ Type TGameModifierNews_TriggerNews extends TGameModifierBase
 		endif
 
 		return obj
-	End Function
+	End Method
 	
 	
 	Method ToString:string()
@@ -927,59 +948,39 @@ Type TGameModifierNews_TriggerNewsChoice extends TGameModifierChoice
 	End Method
 
 
-	'override
-	Function CreateFromData:TGameModifierNews_TriggerNewsChoice(data:TData, index:string="")
-		if not data then return null
-
-		local obj:TGameModifierNews_TriggerNewsChoice = CreateNewInstance()
-		obj.CustomCreateFromData(data, index)
-
-		return obj
-	End Function
-
-
-
 	'override to create this type instead of the generic one
 	Function CreateNewInstance:TGameModifierNews_TriggerNewsChoice()
 		return new TGameModifierNews_TriggerNewsChoice
 	End Function
+
+
+	'override to create this type instead of the generic one
+	Function CreateNewChoiceInstance:TGameModifierNews_TriggerNews()
+		return new TGameModifierNews_TriggerNews
+	End Function
 	
 
 	'override to care for triggerProbability
-	Method CustomCreateFromData(data:TData, index:string)
-		if data.GetString("choose").ToLower() = "or"
-			chooseType = CHOOSETYPE_OR
-		else
-			chooseType = CHOOSETYPE_AND
-		endif
-		if index = ""
-			'load children
-			local childIndex:int = 0 
-			local child:TGameModifierBase
-			Repeat
-				childIndex :+1
-				child = TGameModifierNews_TriggerNews.CreateFromData(data, childIndex)
-				if child
-					self.modifiers :+ [child]
-				endif
-			Until not child
-		endif
+	Method Init:TGameModifierNews_TriggerNewsChoice(data:TData, index:string)
+		Super.Init(data, index)
 
 
 		'load defaults
-		local template:TGameModifierNews_TriggerNews = TGameModifierNews_TriggerNews.CreateFromData(data)
+		local template:TGameModifierNews_TriggerNews = new TGameModifierNews_TriggerNews.Init(data, "")
 		if not template then template = new TGameModifierNews_TriggerNews
 
 		triggerProbability = template.triggerProbability
-
 		'correct individual probability of the loaded choices
 		for local i:int = 0 until modifiers.length
 			local triggerModifier:TGameModifierNews_TriggerNews = TGameModifierNews_TriggerNews(modifiers[i])
 			if not triggerModifier then continue
+
 			modifiersProbability[i] = triggerModifier.triggerProbability
 			'reset individual probability to 100%
 			triggerModifier.triggerProbability = 100
 		Next
+
+		return self
 	End Method
 	
 
@@ -1001,16 +1002,20 @@ Type TGameModifierNews_ModifyAvailability extends TGameModifierBase
 	Field enableBackup:int = True
 	Field enable:int = True
 
-	Function CreateFromData:TGameModifierNews_ModifyAvailability(data:TData, index:string="")
+
+	Function CreateNewInstance:TGameModifierNews_ModifyAvailability()
+		return new TGameModifierNews_ModifyAvailability
+	End Function
+
+
+	Method Init:TGameModifierNews_ModifyAvailability(data:TData, index:string="")
 		if not data then return null
 
-		'local source:TNewsEvent = TNewsEvent(data.get("source"))
-		local modifier:TGameModifierNews_ModifyAvailability = new TGameModifierNews_ModifyAvailability 
-		modifier.newsGUID = data.GetString("news", "")
-		modifier.enable = data.GetBool("enable", True)
+		newsGUID = data.GetString("news", "")
+		enable = data.GetBool("enable", True)
 
-		return modifier
-	End Function
+		return self
+	End Method
 
 
 	'override
