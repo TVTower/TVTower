@@ -756,6 +756,14 @@ DO_NOT_SHOW_AGAIN = Do not show again
 DO_NOT_SHOW_ANY_TIPS = Do not show any tips
 SHOW_INTRODUCTORY_GUIDES = Show introductory guides
 
+BOMB_DETONATION_IN_TVTOWER = Bomb detonation in TVTower 
+BOMB_DETONATION_IN_TVTOWER_TEXT = A bomb detonation unsettled the people of the famous TVTower. The bomb damaged the room "%ROOM%". Investigations are in full swing.
+
+BOMB_DETONATION_IN_TVTOWER_NO_CLUES = Attack on TVTower: No clues found
+BOMB_DETONATION_IN_TVTOWER_NO_CLUES_TEXT = After the attack in the famous TVTower the public authorities investigated. Unfortunately they weren't able to find some useful clues.
+
+BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES = Attack on TVTower: Clues found
+BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES_TEXT = After the attack in the famous TVTower the public authorities investigated - with success! Apparently resident TV channels (%CHANNELS%) assisted unwillently with their roomsign-switch-games.
 
 INGAME_HELP_TEXT_SCREEN_EMPTYROOM = Sorry\n\nThis room is still without function. We are working on it!
 INGAME_HELP_TITLE_SCREEN_EMPTYROOM = OUT OF ORDER

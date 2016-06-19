@@ -130,6 +130,16 @@ Type TRoom extends TRoomBase {_exposeToLua="selected"}
 	End Method
 
 
+	'override
+	Method GetDescriptionLocalized:TLocalizedString()
+		local res:TLocalizedString = Super.GetDescriptionLocalized()
+		res = res.Replace("%PLAYERNAME%", GetOwnerPlayerName())
+		res = res.Replace("%CHANNELNAME%", GetOwnerChannelName())
+
+		return res
+	End Method
+	
+
 	'override to add playername/channelname replacement
 	Method GetDescription:string(lineNumber:int=1) {_exposeToLua}
 		local res:String = Super.GetDescription(lineNumber)

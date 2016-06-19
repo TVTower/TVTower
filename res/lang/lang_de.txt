@@ -760,6 +760,17 @@ DO_NOT_SHOW_AGAIN = Nicht erneut anzeigen
 DO_NOT_SHOW_ANY_TIPS = Keine weiteren Tipps anzeigen
 SHOW_INTRODUCTORY_GUIDES = Einführungs-Hilfetexte anzeigen
 
+BOMB_DETONATION_IN_TVTOWER = Anschlag im TVTower
+BOMB_DETONATION_IN_TVTOWER_TEXT = Eine Detonation erschütterte die Menschen im bekannten TVTower. Die Bombe beschädigte den Raum "%ROOM%". Die Ermittlungen laufen.
+
+BOMB_DETONATION_IN_TVTOWER_NO_CLUES = Anschlag auf TVTower: Keine Spuren
+BOMB_DETONATION_IN_TVTOWER_NO_CLUES_TEXT = Nach dem Anschlag im bekannten TVTower ermittelten die Behörden. Leider konnten keine verwertbaren Spuren gesichert werden
+
+BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES = Anschlag auf TVTower: Spuren gefunden
+BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES_TEXT = Nach dem Anschlag im bekannten TVTower ermittelten die Behörden - mit Erfolg! Scheinbar haben ansässige Sender (%CHANNELS%) mit ihren Schilder-Tausch-Spielen zum Unglück beigetragen.
+
+INGAME_HELP_TEXT_SCREEN_EMPTYROOM = 'Tschuldigung\n\nDieser Raum ist noch ohne weitere Funktionen. Wir arbeiten aber daran!
+INGAME_HELP_TITLE_SCREEN_EMPTYROOM = AUSSER BETRIEB
 
 INGAME_HELP_TEXT_SCREEN_OFFICE_PROGRAMMEPLANNER = In diesem Bildschirm kannst Du neue Programme in den Sendplan setzen und bisherige Ausstrahlungen nachvollziehen. Zum Hinzufügen eines Programmes, dieses einfach auf der rechten Seite per Button "Programm" auswählen und dann mit der linken Maustaste auf dem gewünschten Programmplatz fallen lassen. Mittels Rechtsklick kann ein aufgehobener Programmblock gelöscht werden.\n\n|b|Interessantes Nebendetail:|/b|\nLässt Du Werbung auf einem Programmplatz fallen, so erfolgt eine Ausstrahlung als "Dauerwerbesendung". Ein Programm auf einem Werbeplatz wird hingegen zu einem Programmtrailer umgeformt.\n\nHandelt es sich bei einem Programm um ein Live-Format, so weisen farbige Markierungen darauf hin, an welcher Stelle eine Platzierung erfolgen kann.\n\n|b|Tipp für Freunde der Tastenkürzel:|/b|\nMit der STRG+Taste könnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen.
 INGAME_HELP_TITLE_SCREEN_OFFICE_PROGRAMMEPLANNER = Der Programmplaner

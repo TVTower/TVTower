@@ -44,7 +44,7 @@ Type TNewsAgency
 	'rate the aggression level progresses each game hour
 	Field terroristAggressionLevelProgressRate:Float[][] = [ [0.05,0.09], [0.05,0.09] ]	
 
-
+	Global _eventListeners:TLink[]
 	Global _instance:TNewsAgency
 
 
@@ -100,7 +100,104 @@ Type TNewsAgency
 		'register custom game modifier functions
 		GetGameModifierFunctionsCollection().RegisterRunFunction("TFigureTerrorist.SendFigureToRoom", TFigureTerrorist.SendFigureToRoom)
 
+
+		'=== REGISTER EVENTS ===
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
+		'react to confiscations
+		_eventListeners :+ [ EventManager.registerListenerMethod( "publicAuthorities.onConfiscateProgrammeLicence", self, "onPublicAuthoritiesConfiscateProgrammeLicence") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "room.onBombExplosion", self, "onRoomBombExplosion") ]
+
+
 		delayedLists = New TList[4]
+	End Method
+
+
+	Method onPublicAuthoritiesConfiscateProgrammeLicence:int(triggerEvent:TEventBase)
+		local targetProgrammeGUID:string = triggerEvent.GetData().GetString("targetProgrammeGUID")
+		local confiscatedProgrammeGUID:string = triggerEvent.GetData().GetString("confiscatedProgrammeGUID")
+		local player:TPlayerBase = TPlayerBase(triggerEvent.GetSender())
+	End Method
+
+
+	Method onRoomBombExplosion:int(triggerEvent:TEventBase)
+		local roomGUID:string = triggerEvent.GetData().GetString("roomGUID")
+		local bombRedirectedByPlayers:int = triggerEvent.GetData().GetInt("bombRedirectedByPlayers")
+		local bombLastRedirectedByPlayerID:int = triggerEvent.GetData().GetInt("bombLastRedirectedByPlayerID")
+
+		local room:TRoomBase = GetRoomCollection().GetByGUID(roomGUID)
+		if not room
+			TLogger.Log("NewsAgency", "Failed to create news for bomb explosion: no room found for roomGUID ~q"+roomGUID+"~q", LOG_ERROR)
+			return False
+		endif
+
+		'collect all channels having done this
+		local caughtChannelsArray:string[]
+		For local i:int = 1 to 4
+			if bombRedirectedByPlayers & i > 0 then caughtChannelsArray :+ [GetPlayerBase(i).channelname]
+		Next
+		local caughtChannels:string = ", ".Join(caughtChannelsArray)
+
+
+		Local quality:Float = 0.01 * randRange(75,90)
+		Local price:Float = 1.0 + 0.01 * randRange(-5,15)
+		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", null, null, TVTNewsGenre.CURRENTAFFAIRS, quality, null, TVTNewsType.InitialNewsByInGameEvent)
+		Local newsChain1GUID:string = NewsEvent.GetGUID()+"-1"
+		NewsEvent.title = GetRandomLocalizedString("BOMB_DETONATION_IN_TVTOWER")
+		NewsEvent.description = GetRandomLocalizedString("BOMB_DETONATION_IN_TVTOWER_TEXT")
+		NewsEvent.description.ReplaceLocalized("%ROOM%", room.GetDescriptionLocalized())
+
+		NewsEvent.SetModifier("price", price)
+		NewsEvent.SetModifier("topicality::age", 1.25)
+		NewsEvent.SetFlag(TVTNewsFlag.SEND_TO_ALL, True)
+
+		'add news chain 2 ?
+		local data:TData = new TData
+		data.AddString("trigger", "happen")
+		data.AddString("type", "TriggerNews")
+		data.AddNumber("probability", 100)
+		'time = in 3-7 hrs
+		data.AddString("time", "1,3,7")
+
+		data.AddString("news", newsChain1GUID)
+
+		NewsEvent.AddEffectByData(data)
+
+		'not strictly "happened", but "journalists wrote about it"
+		NewsEvent.happenedTime = GetWorldTime().GetTimeGone() + 60 * RandRange(5,20)
+
+
+
+		Local NewsChainEvent1:TNewsEvent
+		if bombRedirectedByPlayers = 0 or RandRange(0,90) < 90
+			'chain 1
+			Local qualityChain1:Float = 0.01 * randRange(50,60)
+			Local priceChain1:Float = 1.0 + 0.01 * randRange(-5,10)
+			NewsChainEvent1 = new TNewsEvent.Init(newsChain1GUID, null, null, TVTNewsGenre.CURRENTAFFAIRS, qualityChain1, null, TVTNewsType.FollowingNews)
+			NewsChainEvent1.title = GetRandomLocalizedString("BOMB_DETONATION_IN_TVTOWER_NO_CLUES")
+			NewsChainEvent1.description = GetRandomLocalizedString("BOMB_DETONATION_IN_TVTOWER_NO_CLUES_TEXT")
+			NewsChainEvent1.SetModifier("price", priceChain1)
+		else
+			'chain 2
+			Local qualityChain1:Float = 0.01 * randRange(60,80)
+			Local priceChain1:Float = 1.0 + 0.01 * randRange(0,15)
+			NewsChainEvent1 = new TNewsEvent.Init(newsChain1GUID, null, null, TVTNewsGenre.CURRENTAFFAIRS, qualityChain1, null, TVTNewsType.FollowingNews)
+			NewsChainEvent1.title = GetRandomLocalizedString("BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES")
+			NewsChainEvent1.description = GetRandomLocalizedString("BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES_TEXT")
+			NewsChainEvent1.SetModifier("price", priceChain1)
+		endif
+		NewsChainEvent1.SetModifier("topicality::age", 1.4)
+
+		NewsChainEvent1.description.ReplaceLocalized("%ROOM%", room.GetDescriptionLocalized())
+		NewsChainEvent1.description.Replace("%CHANNELS%", caughtChannels)
+
+
+		GetNewsEventCollection().AddOneTimeEvent(NewsChainEvent1)
+		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
+
+		'no need to add, the news are now queued in "upcoming"
+		'If NewsEvent then announceNewsEvent(NewsEvent, GetWorldTime().GetTimeGone() + RandRange(5,20))
 	End Method
 	
 
@@ -569,6 +666,7 @@ Type TNewsAgency
 		For local newsEvent:TNewsEvent = EachIn GetNewsEventCollection().GetUpcomingNewsList()
 			'skip news events not happening yet
 			If Not newsEvent.HasHappened() then continue
+
 			announceNewsEvent(newsEvent)
 			announced:+1
 		Next
@@ -642,6 +740,9 @@ Type TNewsAgency
 
 
 	Method AddNewsEventToPlayer:Int(newsEvent:TNewsEvent, forPlayer:Int=-1, forceAdd:Int=False, fromNetwork:Int=0)
+		'forceAdd, if the news says so
+		if not forceAdd then forceAdd = newsEvent.HasFlag(TVTNewsFlag.SEND_TO_ALL)
+		
 		local player:TPlayerBase = GetPlayerBase(forPlayer)
 		'only add news/newsblock if player is Host/Player OR AI
 		'If Not GetGame().isLocalPlayer(forPlayer) And Not GetGame().isAIPlayer(forPlayer) Then Return 'TODO: Wenn man gerade Spieler 2 ist/verfolgt (Taste 2) dann bekommt Spieler 1 keine News

@@ -138,6 +138,11 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 	Field bombPlacedTime:Double = -1
 	'if > 0 : a bomb explosion will be drawn
 	Field bombExplosionTime:Double = -1
+	'bitmask (1/2/4/8) describing which players switched the signs of
+	'the room - and therefore redirected the bomb to the wrong room
+	Field bombRedirectedByPlayers:int = 0
+	'playerID of the player who switched last
+	Field bombLastRedirectedByPlayerID:int = 0
 	Field screenName:string = ""
 	'who/what did use the door the last time (opening/closing)
 	'only this entity closes/opens the door then!
@@ -434,6 +439,9 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 
 				'reset placed time
 				bombPlacedTime = -1
+
+				'inform others
+				EventManager.triggerEvent( TEventSimple.Create("room.onBombExplosion", New TData.AddString("roomGUID", GetGUID()).AddNumber("bombRedirectedByPlayers", bombRedirectedByPlayers).AddNumber("bombLastRedirectedByPlayerID", bombLastRedirectedByPlayerID), Null, self) )
 			endif
 		endif
 	End Method
@@ -448,6 +456,11 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 		EventManager.triggerEvent( TEventSimple.Create("room."+self.name+".onUpdate", null, self) )
 
 		return 0
+	End Method
+
+
+	Method GetDescriptionLocalized:TLocalizedString()
+		return TLocalization.GetLocalizedString(description[0])
 	End Method
 
 

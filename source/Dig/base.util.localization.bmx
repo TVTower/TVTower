@@ -465,6 +465,14 @@ Type TLocalizedString
 	End Method
 
 
+	Method ReplaceLocalized:TLocalizedString(source:string, replacement:TLocalizedString)
+		For local k:string = EachIn values.Keys()
+			values.insert(k, string(values.ValueForKey(k)).replace(source, replacement.Get(k) ))
+		Next
+		return self
+	End Method
+
+
 	Method GetLanguageKeys:string[]()
 		local keys:string[]
 		for local k:string = EachIn values.Keys()
