@@ -770,7 +770,7 @@ Type TBitmapFont
 
 		'backup old color
 		local oldColor:TColor
-		if doDraw and color then oldColor = new TColor.Get()
+		if doDraw then oldColor = new TColor.Get()
 
 		'emboss
 		if style = STYLE_EMBOSS
