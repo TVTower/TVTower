@@ -882,7 +882,9 @@ Type TGameModifierNews_TriggerNews extends TGameModifierBase
 	
 	
 	Method ToString:string()
-		local name:string = data.GetString("name", "default")
+		local name:string = "default"
+		if data then name = data.GetString("name", name)
+
 		return "TGameModifier_TriggerNews ("+name+")"
 	End Method
 
@@ -916,6 +918,27 @@ Type TGameModifierNews_TriggerNewsChoice extends TGameModifierChoice
 	Field triggerProbability:Int = 100
 
 
+	'override
+	Method ToString:string()
+		local name:string = "default"
+		if data then name = data.GetString("name", name)
+
+		return "TGameModifier_TriggerNewsChoice ("+name+")"
+	End Method
+
+
+	'override
+	Function CreateFromData:TGameModifierNews_TriggerNewsChoice(data:TData, index:string="")
+		if not data then return null
+
+		local obj:TGameModifierNews_TriggerNewsChoice = CreateNewInstance()
+		obj.CustomCreateFromData(data, index)
+
+		return obj
+	End Function
+
+
+
 	'override to create this type instead of the generic one
 	Function CreateNewInstance:TGameModifierNews_TriggerNewsChoice()
 		return new TGameModifierNews_TriggerNewsChoice
@@ -924,7 +947,24 @@ Type TGameModifierNews_TriggerNewsChoice extends TGameModifierChoice
 
 	'override to care for triggerProbability
 	Method CustomCreateFromData(data:TData, index:string)
-		Super.CustomCreateFromData(data, index)
+		if data.GetString("choose").ToLower() = "or"
+			chooseType = CHOOSETYPE_OR
+		else
+			chooseType = CHOOSETYPE_AND
+		endif
+		if index = ""
+			'load children
+			local childIndex:int = 0 
+			local child:TGameModifierBase
+			Repeat
+				childIndex :+1
+				child = TGameModifierNews_TriggerNews.CreateFromData(data, childIndex)
+				if child
+					self.modifiers :+ [child]
+				endif
+			Until not child
+		endif
+
 
 		'load defaults
 		local template:TGameModifierNews_TriggerNews = TGameModifierNews_TriggerNews.CreateFromData(data)

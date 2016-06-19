@@ -106,7 +106,8 @@ Type TGameModifierBase
 
 
 	Method ToString:string()
-		local name:string = data.GetString("_name", "default")
+		local name:string = "default"
+		if data then name = data.GetString("_name", name)
 		return "TGameModifierBase ("+name+")"
 	End Method
 
@@ -362,11 +363,13 @@ Type TGameModifierChoice extends TGameModifierBase
 			chooseType = CHOOSETYPE_AND
 		endif
 
-		LoadChoices()
+		if index = ""
+			LoadChoices(data)
+		endif
 	End Method
 	
 
-	Method LoadChoices:int()
+	Method LoadChoices:int(data:TData)
 		'load children
 		local childIndex:int = 0 
 		local child:TGameModifierBase
@@ -386,11 +389,18 @@ Type TGameModifierChoice extends TGameModifierBase
 			'loop through all options and choose the one with the
 			'probability below choosen one
 			local randValue:int = RandRange(0,100)
+			local lastProbability:int = 0
+			local currProbability:int = 0
 			For local i:int = 0 until modifiers.length
-				'skip all failed - except last (to trigger at least one)
-				if modifiersProbability[i] > randValue and i <> modifiers.length -1 then continue
+				currProbability = modifiersProbability[i] + lastProbability
 
-				modifiers[i].RunFunc(params)
+				'found the correct one - or trigger at least the last one
+				if (randValue >= lastProbability and randValue < currProbability) or i = modifiers.length -1
+					modifiers[i].RunFunc(params)
+					exit
+				endif
+
+				lastProbability = currProbability
 			Next
 		else
 			For local m:TGameModifierBase = Eachin modifiers
