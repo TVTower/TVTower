@@ -139,10 +139,10 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 	'if > 0 : a bomb explosion will be drawn
 	Field bombExplosionTime:Double = -1
 	'bitmask (1/2/4/8) describing which players switched the signs of
-	'the room - and therefore redirected the bomb to the wrong room
-	Field bombRedirectedByPlayers:int = 0
+	'the room - and therefore redirected eg. a bomb to the wrong room
+	Field roomSignMovedByPlayers:int = 0
 	'playerID of the player who switched last
-	Field bombLastRedirectedByPlayerID:int = 0
+	Field roomSignLastMoveByPlayerID:int = 0
 	Field screenName:string = ""
 	'who/what did use the door the last time (opening/closing)
 	'only this entity closes/opens the door then!
@@ -441,7 +441,8 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 				bombPlacedTime = -1
 
 				'inform others
-				EventManager.triggerEvent( TEventSimple.Create("room.onBombExplosion", New TData.AddString("roomGUID", GetGUID()).AddNumber("bombRedirectedByPlayers", bombRedirectedByPlayers).AddNumber("bombLastRedirectedByPlayerID", bombLastRedirectedByPlayerID), Null, self) )
+				EventManager.triggerEvent( TEventSimple.Create("room.onBombExplosion", New TData.AddString("roomGUID", GetGUID()).AddNumber("roomSignMovedByPlayers", roomSignMovedByPlayers).AddNumber("roomSignLastMoveByPlayerID", roomSignLastMoveByPlayerID), Null, self) )
+				'EventManager.triggerEvent( TEventSimple.Create("room.onBombExplosion", New TData.AddString("roomGUID", GetGUID()).AddNumber("bombRedirectedByPlayers", bombRedirectedByPlayers).AddNumber("bombLastRedirectedByPlayerID", bombLastRedirectedByPlayerID), Null, self) )
 			endif
 		endif
 	End Method

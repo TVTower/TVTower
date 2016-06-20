@@ -497,6 +497,12 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 		dragged	= 0
 		lastMoveByPlayerID = 0
 		movedByPlayers = 0
+
+		local roomBase:TRoomBase = GetRoomBase(door.roomID)
+		if roomBase
+			roomBase.roomSignMovedByPlayers = movedByPlayers
+			roomBase.roomSignLastMoveByPlayerID = lastMoveByPlayerID
+		endif
 	End Method
 
 
@@ -504,6 +510,12 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 		local playerBitmaskValue:int = 2 ^ (playerID-1)
 		movedByPlayers :| playerBitmaskValue
 		lastMoveByPlayerID = playerID
+
+		local roomBase:TRoomBase = GetRoomBase(door.roomID)
+		if roomBase
+			roomBase.roomSignMovedByPlayers = movedByPlayers
+			roomBase.roomSignLastMoveByPlayerID = lastMoveByPlayerID
+		endif
 	End Method
 
 
