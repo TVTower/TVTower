@@ -382,6 +382,7 @@ print "CreateNewInstance:TGameModifierChoice"
 			child = CreateNewChoiceInstance().Init(data, childIndex)
 			if child
 				self.modifiers :+ [child]
+				self.modifiersProbability :+ [0]
 			endif
 		Until not child
 	End Method

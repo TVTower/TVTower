@@ -4799,28 +4799,36 @@ Function GetBroadcastOverviewString:string(day:int = -1, lastHour:int = -1)
 		For local hour:int = 0 to lastHour
 			local audience:TAudienceResultBase = stat.GetAudienceResult(player, hour, false)
 			local newsAudience:TAudienceResultBase = stat.GetNewsAudienceResult(player, hour, false)
-			local progSlot:TBroadcastMaterial = GetPlayerProgrammePlan(player).GetProgramme(day, hour)
-			local adSlot:TBroadcastMaterial = GetPlayerProgrammePlan(player).GetAdvertisement(day, hour)
+			local adAudience:TAudienceResultBase = stat.GetAdAudienceResult(player, hour, false)
+'			local progSlot:TBroadcastMaterial = GetPlayerProgrammePlan(player).GetProgramme(day, hour)
+
+			'old savegames
+			local adSlotMaterial:TBroadcastMaterial
+			if adAudience
+				adSlotMaterial = adAudience.broadcastMaterial
+			else
+				adSlotMaterial = GetPlayerProgrammePlan(player).GetAdvertisement(day, hour)
+			endif
+
 
 			local progText:string, progAudienceText:string
 			local adText:string, adAudienceText:string
 			local newsAudienceText:string
 
-			if progSlot
-				if progSlot.isType(TVTBroadcastMaterialType.PROGRAMME)
-					progText = LSet(StringHelper.RemoveUmlauts(progSlot.GetTitle()), 25)
-				else
-					progText = LSet("[I] " + StringHelper.RemoveUmlauts(progSlot.GetTitle()), 25)
-				endif
-			else
-				progText = LSet("Keine Ausstrahlung", 25)
-			endif
 
-			if audience
+			if audience and audience.broadcastMaterial
+				progText = audience.broadcastMaterial.GetTitle()
+				if not audience.broadcastMaterial.isType(TVTBroadcastMaterialType.PROGRAMME)
+					progText = "[I] " + progText
+				endif
+
 				progAudienceText = RSet(int(audience.audience.GetTotalSum()), 7) + " " + RSet(MathHelper.NumberToString(audience.GetAudienceQuotePercentage()*100,2), 6)+"%"
 			else
 				progAudienceText = RSet(" -/- ", 7) + " " +RSet("0%", 7)
+				progText = "Keine Ausstrahlung"
 			endif
+			progText = LSet(StringHelper.RemoveUmlauts(progText), 25)
+
 
 			if newsAudience
 				newsAudienceText = RSet(int(newsAudience.audience.GetTotalSum()), 7)
@@ -4829,14 +4837,14 @@ Function GetBroadcastOverviewString:string(day:int = -1, lastHour:int = -1)
 			endif
 
 
-			if adSlot
-				adText = LSet(adSlot.GetTitle(), 20)
+			if adSlotMaterial
+				adText = LSet(adSlotMaterial.GetTitle(), 20)
 				adAudienceText = RSet(" -/- ", 7)
 
-				if adSlot.isType(TVTBroadcastMaterialType.PROGRAMME)
-					adText = LSet("[T] " + StringHelper.RemoveUmlauts(adSlot.GetTitle()), 20)
-				elseif adSlot.isType(TVTBroadcastMaterialType.ADVERTISEMENT)
-					adAudienceText = RSet(int(TAdvertisement(adSlot).contract.GetMinAudience()),7)
+				if adSlotMaterial.isType(TVTBroadcastMaterialType.PROGRAMME)
+					adText = LSet("[T] " + StringHelper.RemoveUmlauts(adSlotMaterial.GetTitle()), 20)
+				elseif adSlotMaterial.isType(TVTBroadcastMaterialType.ADVERTISEMENT)
+					adAudienceText = RSet(int(TAdvertisement(adSlotMaterial).contract.GetMinAudience()),7)
 				endif 
 			else
 				adText = LSet("-/-", 20)

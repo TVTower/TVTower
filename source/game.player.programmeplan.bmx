@@ -1564,9 +1564,18 @@ endrem
 			obj = GetAdvertisement(day, hour)
 			local eventKey:String = "broadcasting.common.BeginBroadcasting"
 
+			Local audienceResult:TAudienceResultBase = GetBroadcastManager().GetAudienceResult(owner)
+
 			'inform  object that it gets broadcasted
+			'convert audienceResult object of "last programme" to be
+			'targeting the current advertisement/trailer
+			audienceResult = new TAudienceResultBase.CopyFrom(audienceResult)
+			audienceResult.broadcastMaterial = obj
+			if not obj
+				audienceResult.broadcastOutage = True
+			endif
+
 			If obj
-				Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
 				If 1 = GetAdvertisementBlock(day, hour)
 					obj.BeginBroadcasting(day, hour, minute, audienceResult)
 
@@ -1590,6 +1599,9 @@ endrem
 					eventKey = "broadcasting.common.ContinueBroadcasting"
 				EndIf
 			EndIf
+			'store audience/broadcast for daily stats (also for outage!)
+			GetDailyBroadcastStatistic( day, true ).SetBroadcastResult(obj, owner, hour, audienceResult)
+
 			'inform others (eg. boss), "broadcastMaterial" could be null!
 			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.ADVERTISEMENT).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 

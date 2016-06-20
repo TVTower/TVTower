@@ -77,6 +77,8 @@ Type TDailyBroadcastStatistic
 	Field bestAudienceResult:TAudienceResultBase
 	Field allAudienceResults:TAudienceResultBase[][4]
 
+	Field allAdAudienceResults:TAudienceResultBase[][4]
+
 	Field bestNewsBroadcast:TBroadcastMaterial
 	Field bestNewsAudienceResult:TAudienceResultBase
 	Field allNewsAudienceResults:TAudienceResultBase[][4]
@@ -93,6 +95,8 @@ Type TDailyBroadcastStatistic
 	Method GetAudienceArrayToUse:TAudienceResultBase[][](broadcastedAsType:int)
 		if broadcastedAsType = TVTBroadcastMaterialType.NEWSSHOW
 			return allNewsAudienceResults
+		elseif broadcastedAsType = TVTBroadcastMaterialType.ADVERTISEMENT
+			return allAdAudienceResults
 		else
 			return allAudienceResults
 		endif
@@ -131,7 +135,7 @@ Type TDailyBroadcastStatistic
 					bestNewsAudienceResult = audienceResult
 					bestNewsBroadcast = broadcast
 				endif
-			else
+			elseif broadcastedAsType = TVTBroadcastMaterialType.PROGRAMME
 				if not bestAudienceResult then bestAudienceResult = new TAudienceResultBase
 				if bestAudienceResult.audience.GetTotalSum() < audienceResult.audience.GetTotalSum()
 					bestAudienceResult = audienceResult
@@ -172,6 +176,7 @@ Type TDailyBroadcastStatistic
 			return Null
 		endif
 	End Method
+
 
 	'returns the average of that days broadcasts audienceresults for the
 	'given player - or all
@@ -258,6 +263,11 @@ Type TDailyBroadcastStatistic
 			if _cachedRanksHour = hour and _cachedRanksChannelNumber = channelNumber
 				return _cachedRanks
 			endif
+		'ads could use ranks of programmes
+		elseif broadcastedAsType = TVTBroadcastMaterialType.ADVERTISEMENT
+			if _cachedRanksHour = hour and _cachedRanksChannelNumber = channelNumber
+				return _cachedRanks
+			endif
 		else
 			if _cachedNewsRanksHour = hour and _cachedNewsRanksChannelNumber = channelNumber
 				return _cachedNewsRanks
@@ -319,11 +329,12 @@ Type TDailyBroadcastStatistic
 		Next
 
 		'cache values
-		if broadcastedAsType = TVTBroadcastMaterialType.PROGRAMME
+		if broadcastedAsType = TVTBroadcastMaterialType.PROGRAMME or ..
+		   broadcastedAsType = TVTBroadcastMaterialType.ADVERTISEMENT
 			_cachedRanksHour = hour
 			_cachedRanksChannelNumber = channelNumber
 			_cachedRanks = result
-		else
+		elseif broadcastedAsType = TVTBroadcastMaterialType.NEWSSHOW
 			_cachedNewsRanksHour = hour
 			_cachedNewsRanksChannelNumber = channelNumber
 			_cachedNewsRanks = result
@@ -340,6 +351,11 @@ Type TDailyBroadcastStatistic
 
 	Method SetNewsBroadcastResult:Int(broadcast:TBroadcastMaterial, channelNumber:int, hour:int, audienceResult:TAudienceResultBase)
 		_SetBroadcastResult(broadcast, channelNumber, hour, audienceResult, TVTBroadcastMaterialType.NEWSSHOW)
+	End Method
+
+
+	Method SetAdBroadcastResult:Int(broadcast:TBroadcastMaterial, channelNumber:int, hour:int, audienceResult:TAudienceResultBase)
+		_SetBroadcastResult(broadcast, channelNumber, hour, audienceResult, TVTBroadcastMaterialType.ADVERTISEMENT)
 	End Method
 
 
@@ -360,6 +376,16 @@ Type TDailyBroadcastStatistic
 
 	Method GetNewsAudienceResult:TAudienceResultBase(channelNumber:int, hour:int, createIfMissing:int = False)
 		return _GetAudienceResult(channelNumber, hour, createIfMissing, TVTBroadcastMaterialType.NEWSSHOW)
+	End Method
+
+
+	Method GetAdAudience:TAudience(channelNumber:int, hour:int, createIfMissing:int = False)
+		return _GetAudience(channelNumber, hour, createIfMissing, TVTBroadcastMaterialType.ADVERTISEMENT)
+	End Method
+
+
+	Method GetAdAudienceResult:TAudienceResultBase(channelNumber:int, hour:int, createIfMissing:int = False)
+		return _GetAudienceResult(channelNumber, hour, createIfMissing, TVTBroadcastMaterialType.ADVERTISEMENT)
 	End Method
 
 
@@ -393,6 +419,20 @@ Type TDailyBroadcastStatistic
 	End Method
 
 
+	Method GetBestAdAudience:TAudience(channelNumber:Int)
+		return _GetBestAudience(channelNumber, TVTBroadcastMaterialType.ADVERTISEMENT, null)
+	End Method
+
+
+	Method GetBestAdAudienceForHours:TAudience(channelNumber:Int, skipHours:int[])
+		return _GetBestAudience(channelNumber, TVTBroadcastMaterialType.ADVERTISEMENT, skipHours)
+	End Method
+
+
+	Method GetBestAdAudienceResult:TAudienceResultBase(channelNumber:Int)
+		return _GetBestAudienceResult(channelNumber, TVTBroadcastMaterialType.ADVERTISEMENT, null)
+	End Method
+
 
 	Method GetAverageAudience:TAudience(channelNumber:int = -1)
 		return _GetAverageAudience(channelNumber, TVTBroadcastMaterialType.PROGRAMME, null)
@@ -414,6 +454,16 @@ Type TDailyBroadcastStatistic
 	End Method
 
 
+	Method GetAverageAdAudience:TAudience(channelNumber:int = -1)
+		return _GetAverageAudience(channelNumber, TVTBroadcastMaterialType.ADVERTISEMENT, null)
+	End Method
+
+
+	Method GetAverageAdAudienceForHours:TAudience(channelNumber:int = -1, skipHours:int[])
+		return _GetAverageAudience(channelNumber, TVTBroadcastMaterialType.ADVERTISEMENT, skipHours)
+	End Method
+
+
 	Method GetAudienceRanking:int[](channelNumber:Int, hour:int)
 		return _GetAudienceRanking(channelNumber, hour, TVTBroadcastMaterialType.PROGRAMME)
 	End Method	
@@ -421,5 +471,10 @@ Type TDailyBroadcastStatistic
 
 	Method GetNewsAudienceRanking:int[](channelNumber:Int, hour:int)
 		return _GetAudienceRanking(channelNumber, hour, TVTBroadcastMaterialType.NEWSSHOW)
+	End Method	
+
+
+	Method GetAdAudienceRanking:int[](channelNumber:Int, hour:int)
+		return _GetAudienceRanking(channelNumber, hour, TVTBroadcastMaterialType.ADVERTISEMENT)
 	End Method	
 End Type
