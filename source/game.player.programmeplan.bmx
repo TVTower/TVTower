@@ -1446,7 +1446,7 @@ endrem
 			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj, TVTBroadcastMaterialType.PROGRAMME)
 			return obj
 		'=== BEGIN OF ADVERTISEMENT ===
-		ElseIf minute = 5
+		ElseIf minute = 55
 			obj = GetAdvertisement(day, hour)
 			'log in current broadcast
 			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj, TVTBroadcastMaterialType.ADVERTISEMENT)
@@ -1540,7 +1540,7 @@ endrem
 			obj = GetProgramme(day, hour)
 			local eventKey:String = "broadcast.common.FinishBroadcasting"
 
-			'inform  object that it gets broadcasted
+			'inform object that it gets broadcasted
 			If obj
 				Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
 				If obj.GetBlocks() = GetProgrammeBlock(day, hour)

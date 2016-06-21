@@ -34,15 +34,17 @@ Type TAudienceResultBase
 
 
 	Method CopyFrom:TAudienceResultBase(other:TAudienceResultBase)
-		if not other then return self
+		if other
+			PlayerId = other.PlayerId
+			Title = other.PlayerId
+			Time = other.Time
+			broadcastMaterial = other.broadcastMaterial
+			Audience = other.Audience
+			WholeMarket = other.WholeMarket
+			PotentialMaxAudience = other.PotentialMaxAudience
+		endif
 
-		PlayerId = other.PlayerId
-		Title = other.PlayerId
-		Time = other.Time
-		broadcastMaterial = other.broadcastMaterial
-		Audience = other.Audience
-		WholeMarket = other.WholeMarket
-		PotentialMaxAudience = other.PotentialMaxAudience
+		return self
 	End Method
 
 

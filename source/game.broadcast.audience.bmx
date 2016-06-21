@@ -186,7 +186,7 @@ Type TAudienceBase
 
 		Function f2i:String(f:float)
 			if float(int(f)) = f then return int(f)
-			return f
+			return string(f).replace(",",".")
 		End Function
 	End Method
 
@@ -698,6 +698,20 @@ Type TAudience
 		if gender = -1 or gender = TVTPersonGender.MALE
 			GetAudienceMale().Init(children, teenagers, HouseWives, employees, unemployed, manager, pensioners)
 		endif
+
+		return self
+	End Method
+
+
+	Method InitBase:TAudience(male:TAudienceBase, female:TAudienceBase)
+		if not male then male = new TAudienceBase.InitValue(0)
+		if not female then female = new TAudienceBase.InitValue(0)
+
+		if not audienceMale then audienceMale = new TAudienceBase
+		if not audienceFemale then audienceFemale = new TAudienceBase
+
+		audienceMale.SetValuesFrom(male)
+		audienceFemale.SetValuesFrom(female)
 
 		return self
 	End Method

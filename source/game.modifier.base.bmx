@@ -170,8 +170,15 @@ Type TGameModifierBase
 	End Method
 
 
+	Method SatisfiesConditions:int(params:TData)
+		return True
+	End Method
+
+
 	'call to undo the changes - if possible
 	Method Undo:int()
+		if not SatisfiesConditions(params) then return False
+
 		if _customUndoFuncKey
 			local wrapper:TGameModifierUndoFunction = GetGameModifierFunctionsCollection().GetUndoFunction(_customUndoFuncKey)
 			if wrapper then return wrapper.func(self)
@@ -183,6 +190,8 @@ Type TGameModifierBase
 
 	'call to handle/emit the modifier/effect
 	Method Run:int(params:TData)
+		if not SatisfiesConditions(params) then return False
+
 		if _customRunFuncKey
 			local wrapper:TGameModifierRunFunction = GetGameModifierFunctionsCollection().GetRunFunction(_customRunFuncKey)
 			if wrapper then return wrapper.func(self, params)
@@ -348,7 +357,6 @@ Type TGameModifierChoice extends TGameModifierBase
 
 
 	Function CreateNewInstance:TGameModifierChoice()
-print "CreateNewInstance:TGameModifierChoice"
 		return new TGameModifierChoice
 	End Function
 
@@ -382,7 +390,7 @@ print "CreateNewInstance:TGameModifierChoice"
 			child = CreateNewChoiceInstance().Init(data, childIndex)
 			if child
 				self.modifiers :+ [child]
-				self.modifiersProbability :+ [0]
+				self.modifiersProbability :+ [1]
 			endif
 		Until not child
 	End Method

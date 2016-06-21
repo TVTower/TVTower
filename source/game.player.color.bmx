@@ -17,6 +17,32 @@ Type TPlayerColor extends TColor
 	End Function
 	
 
+
+	'=== SERIALIZATION / DESERIALIZATION ===
+	Method SerializeTPlayerColorToString:string()
+		return r + "," +..
+		       g + "," +..
+		       b + "," +..
+		       f2i(a) + "," +..
+		       ownerID
+
+		Function f2i:String(f:float)
+			if float(int(f)) = f then return int(f)
+			return string(f).replace(",",".")
+		End Function
+	End Method
+
+
+	Method DeSerializeTPlayerColorFromString(text:String)
+		local vars:string[] = text.split(",")
+		if vars.length > 0 then r = int(vars[0])
+		if vars.length > 1 then g = int(vars[1])
+		if vars.length > 2 then b = int(vars[2])
+		if vars.length > 3 then a = float(vars[3])
+		if vars.length > 4 then ownerID = int(vars[4])
+	End Method
+
+
 	Function Initialize:Int()
 		For local pc:TPlayerColor = EachIn list
 			pc.ownerID = 0

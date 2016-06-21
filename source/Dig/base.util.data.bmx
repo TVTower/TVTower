@@ -258,9 +258,11 @@ Type TData
 		local result:object = Get(key)
 		if not result then return defaultValue
 		Select String(result).toLower()
-			case "1", "true", "yes"
+			case "true", "yes"
 				return True
 			default
+				'also allow "1" / "1.00000" or "33"
+				if int(string(result)) >= 1 then return True
 				return False
 		End Select
 		return False

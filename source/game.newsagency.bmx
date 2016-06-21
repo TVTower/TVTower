@@ -123,8 +123,8 @@ Type TNewsAgency
 
 	Method onRoomBombExplosion:int(triggerEvent:TEventBase)
 		local roomGUID:string = triggerEvent.GetData().GetString("roomGUID")
-		local bombRedirectedByPlayers:int = triggerEvent.GetData().GetInt("bombRedirectedByPlayers")
-		local bombLastRedirectedByPlayerID:int = triggerEvent.GetData().GetInt("bombLastRedirectedByPlayerID")
+		local bombRedirectedByPlayers:int = triggerEvent.GetData().GetInt("roomSignMovedByPlayers")
+		local bombLastRedirectedByPlayerID:int = triggerEvent.GetData().GetInt("roomSignLastMoveByPlayerID")
 
 		local room:TRoomBase = GetRoomCollection().GetByGUID(roomGUID)
 		if not room
@@ -133,11 +133,21 @@ Type TNewsAgency
 		endif
 
 		'collect all channels having done this
-		local caughtChannelsArray:string[]
+		local caughtChannels:string = ""
+		local caughtChannelIDs:string = ""
+		local caughtChannelIDsArray:int[]
 		For local i:int = 1 to 4
-			if bombRedirectedByPlayers & i > 0 then caughtChannelsArray :+ [GetPlayerBase(i).channelname]
+			local playerBitmask:int = 2^(i-1)
+			if bombRedirectedByPlayers & playerBitmask > 0
+				if caughtChannels <> "" then caughtChannels :+ ", "
+				caughtChannels :+ GetPlayerBase(i).channelname
+
+				if caughtChannelIDs <> "" then caughtChannelIDs :+ ","
+				caughtChannelIDs :+ string(i)
+				
+				caughtChannelIDsArray :+ [i]
+			endif
 		Next
-		local caughtChannels:string = ", ".Join(caughtChannelsArray)
 
 
 		Local quality:Float = 0.01 * randRange(75,90)
@@ -167,8 +177,6 @@ Type TNewsAgency
 		'not strictly "happened", but "journalists wrote about it"
 		NewsEvent.happenedTime = GetWorldTime().GetTimeGone() + 60 * RandRange(5,20)
 
-
-
 		Local NewsChainEvent1:TNewsEvent
 		if bombRedirectedByPlayers = 0 or RandRange(0,90) < 90
 			'chain 1
@@ -186,6 +194,48 @@ Type TNewsAgency
 			NewsChainEvent1.title = GetRandomLocalizedString("BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES")
 			NewsChainEvent1.description = GetRandomLocalizedString("BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES_TEXT")
 			NewsChainEvent1.SetModifier("price", priceChain1)
+
+
+			local data:TData
+
+			'do this for all caught ones
+			for local pID:int = EachIn caughtChannelIDsArray
+				data = new TData
+				'decrease image for all caught channels
+				data.AddString("trigger", "broadcastFirstTime")
+				data.AddString("type", "ModifyChannelPublicImage")
+				data.AddNumber("value", -0.04)
+				data.AddNumber("valueIsRelative", True)
+				data.AddNumber("playerID", pID)
+				data.AddString("log", "decrease image for all caught channels")
+				NewsChainEvent1.AddEffectByData(data)
+			Next
+
+			'increase image for a broadcasting channel not being caught
+			data = new TData
+			data.AddString("trigger", "broadcastFirstTime")
+			data.AddString("type", "ModifyChannelPublicImage")
+			data.AddNumber("value", 0.08)
+			data.AddNumber("valueIsRelative", True)
+			'use playerID of broadcasting player
+			data.AddNumber("playerID", 0)
+			data.Add("conditions", new TData.AddString("broadcaster_notInPlayerIDs", caughtChannelIDs))
+			data.AddString("log", "increase image for a broadcasting channel not being caught")
+
+			NewsChainEvent1.AddEffectByData(data)
+
+			'increase image (a bit less) for a broadcasting channel being
+			'caught but brave enough to send it...
+			data = new TData
+			data.AddString("trigger", "broadcastFirstTime")
+			data.AddString("type", "ModifyChannelPublicImage")
+			data.AddNumber("value", 0.04)
+			data.AddNumber("valueIsRelative", True)
+			'use playerID of broadcasting player
+			data.AddNumber("playerID", 0)
+			data.AddString("log", "increase for broadcasting channel")
+			data.Add("conditions", new TData.AddString("broadcaster_inPlayerIDs", caughtChannelIDs))
+			NewsChainEvent1.AddEffectByData(data)
 		endif
 		NewsChainEvent1.SetModifier("topicality::age", 1.4)
 

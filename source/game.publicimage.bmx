@@ -1,6 +1,8 @@
 ﻿SuperStrict
 Import "Dig/base.util.logger.bmx"
 Import "game.broadcast.audience.bmx"
+Import "game.modifier.base.bmx"
+
 
 Type TPublicImageCollection
 	Field entries:TPublicImage[]
@@ -96,10 +98,25 @@ Type TPublicImage {_exposeToLua="selected"}
 	End Method
 
 
+	Method ChangeImageRelative(imageChange:TAudience)
+		if not imageChange
+			TLogger.Log("ChangePublicImageRelative()", "Change player" + playerID + "'s public image failed: no parameter given.", LOG_ERROR)
+			return
+		endif
+
+		ImageValues.Multiply( new TAudience.InitValue(1.0, 1.0).Add(imageChange) )
+		'avoid negative values -> cut to at least 0
+		'also avoid values > 100
+		ImageValues.CutMinimumFloat(0).CutMaximumFloat(100)
+		
+		TLogger.Log("ChangePublicImageRelative()", "Change player" + playerID + "'s public image: " + imageChange.ToString(), LOG_DEBUG)
+	End Method
+	
+
 	Method ChangeImage(imageChange:TAudience)
 		if not imageChange
-			print "ChangeImage(): imageChange missing !"
-			end
+			TLogger.Log("ChangePublicImage()", "Change player" + playerID + "'s public image failed: no parameter given.", LOG_ERROR)
+			return
 		endif
 
 		ImageValues.Add(imageChange)
@@ -107,7 +124,7 @@ Type TPublicImage {_exposeToLua="selected"}
 		'also avoid values > 100
 		ImageValues.CutMinimumFloat(0).CutMaximumFloat(100)
 		
-		TLogger.Log("ChangePublicImage()", "Change player '" + playerID + "' public image: " + imageChange.ToString(), LOG_DEBUG)
+		TLogger.Log("ChangePublicImage()", "Change player" + playerID + "'s public image: " + imageChange.ToString(), LOG_DEBUG)
 	End Method
 
 
@@ -135,3 +152,106 @@ Type TPublicImage {_exposeToLua="selected"}
 		EndIf
 	End Function
 End Type
+
+
+
+
+Type TGameModifierPublicImage_Modify extends TGameModifierBase
+	Field playerID:Int = 0
+	Field value:TAudience
+	Field valueIsRelative:int = False
+	Field conditions:TData
+	Field logText:string
+
+
+	Function CreateNewInstance:TGameModifierPublicImage_Modify()
+		return new TGameModifierPublicImage_Modify
+	End Function
+
+
+	Method Init:TGameModifierPublicImage_Modify(data:TData, index:string="")
+		if not data then return null
+
+		local valueSimple:Float = data.GetFloat("value", 0)
+		local valueMale:Float = data.GetFloat("valueMale", 0)
+		local valueFemale:Float = data.GetFloat("valueFemale", 0)
+		local valueComplexBase:TAudienceBase = TAudienceBase(data.Get("value", null))
+		local valueComplex:TAudience = TAudience(data.Get("value", null))
+
+		if valueComplex
+			value = valueComplex.Copy()
+		elseif valueComplexBase
+			value = new TAudience.InitBase(valueComplexBase, valueComplexBase)
+		elseif valueMale <> 0 or valueFemale <> 0
+			value = new TAudience.InitValue(valueMale, valueFemale)
+		elseif valueSimple <> 0.0
+			value = new TAudience.InitValue(valueSimple, valueSimple)
+		endif
+		if not value
+			TLogger.Log("TGameModifierPublicImage_Modify.Init()", "No valid ~qvalue~q-value provided. Modifier not created.", LOG_DEBUG)
+			return null
+		Endif
+
+		valueIsRelative = data.GetBool("valueIsRelative", False)
+		playerID = data.GetInt("playerID", 0)
+		conditions = data.GetData("conditions", null)
+		logText = data.GetString("log", "")
+
+		return self
+	End Method
+
+
+	Method SatisfiesConditions:int(params:TData)
+		if not conditions then return True
+
+		local broadcastingPlayerID:int = params.GetInt("playerID", 0)
+
+		'broadcaster specific conditions
+		if broadcastingPlayerID > 0
+			local playerIDs:string = conditions.GetString("broadcaster_inPlayerIDs", "")
+			if playerIDs <> ""
+				if not StringHelper.InArray(string(broadcastingPlayerID), playerIDs.Replace(" ", "").split(","))
+					return False
+				endif
+			endif 
+
+			local notPlayerIDs:string = conditions.GetString("broadcaster_notInPlayerIDs", "")
+			if notPlayerIDs <> ""
+				if StringHelper.InArray(string(broadcastingPlayerID), notPlayerIDs.Replace(" ", "").split(","))
+					return False
+				endif
+			endif
+		endif
+
+		return True
+	End Method
+
+
+	'override to trigger a specific news
+	Method RunFunc:int(params:TData)
+		local targetPlayerID:int = playerID
+		if playerID = 0 then targetPlayerID = params.GetInt("playerID", 0)
+
+		local publicImage:TPublicImage = GetPublicImage(targetPlayerID)
+		if not publicImage
+			TLogger.Log("TGameModifierPublicImage_Modify.Run()", "Failed, public image for channel ~q"+targetPlayerID+"~q not found.", LOG_ERROR)
+			return False
+		endif
+		if not value
+			TLogger.Log("TGameModifierPublicImage_Modify.Run()", "Failed, invalid value set.", LOG_ERROR)
+			return False
+		endif
+
+		if logText then TLogger.Log("TGameModifierPublicImage_Modify.Run()", logText, LOG_DEBUG)
+
+		if valueIsRelative
+			publicImage.ChangeImageRelative( value )
+		else
+			publicImage.ChangeImage( value )
+		endif
+		return True
+	End Method
+End Type
+	
+
+GameModifierCreator.RegisterModifier("ModifyChannelPublicImage", new TGameModifierPublicImage_Modify)
