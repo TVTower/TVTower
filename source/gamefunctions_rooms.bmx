@@ -244,22 +244,26 @@ Type RoomHandler_Boss extends TRoomHandler
 		if not smokeEmitter
 			local smokeConfig:TData = new TData
 			smokeConfig.Add("sprite", GetSpriteFromRegistry("gfx_misc_smoketexture"))
-			smokeConfig.AddNumber("velocityMin", 2)
-			smokeConfig.AddNumber("velocityMax", 13)
+			smokeConfig.AddNumber("velocityMin", 25)
+			smokeConfig.AddNumber("velocityMax", 40)
 			smokeConfig.AddNumber("lifeMin", 0.3)
 			smokeConfig.AddNumber("lifeMax", 2.5)
-			smokeConfig.AddNumber("scaleMin", 0.05)
-			smokeConfig.AddNumber("scaleMax", 0.10)
-			smokeConfig.AddNumber("angleMin", 190)
-			smokeConfig.AddNumber("angleMax", 215)
+			smokeConfig.AddNumber("scaleMin", 0.2)
+			smokeConfig.AddNumber("scaleMax", 0.3)
+			smokeConfig.AddNumber("scaleRate", 1.2)
+			smokeConfig.AddNumber("alphaMin", 0.5)
+			smokeConfig.AddNumber("alphaMax", 0.8)
+			smokeConfig.AddNumber("alphaRate", -0.90)
+			smokeConfig.AddNumber("angleMin", 165)
+			smokeConfig.AddNumber("angleMax", 195)
 			smokeConfig.AddNumber("xRange", 2)
 			smokeConfig.AddNumber("yRange", 2)
 
 			local emitterConfig:TData = new TData
-			emitterConfig.Add("area", new TRectangle.Init(49, 335, 0, 0))
-			emitterConfig.AddNumber("particleLimit", 75)
-			emitterConfig.AddNumber("spawnEveryMin", 0.50)
-			emitterConfig.AddNumber("spawnEveryMax", 0.75)
+			emitterConfig.Add("area", new TRectangle.Init(44, 335, 0, 0))
+			emitterConfig.AddNumber("particleLimit", 70)
+			emitterConfig.AddNumber("spawnEveryMin", 0.45)
+			emitterConfig.AddNumber("spawnEveryMax", 0.70)
 
 			smokeEmitter = new TSpriteParticleEmitter.Init(emitterConfig, smokeConfig)
 		endif

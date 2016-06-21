@@ -116,8 +116,8 @@ Type TSpriteParticle
 	Field life:float, lifeMin:Float, lifeMax:Float
 	Field startLife:float
 	Field isAlive:Int
-	Field alpha:Float
-	Field scale:Float, scaleMin:Float, scaleMax:Float
+	Field alpha:Float, alphaMin:Float, alphaMax:Float, alphaRate:Float
+	Field scale:Float, scaleMin:Float, scaleMax:Float, scaleRate:Float
 
 
 
@@ -131,6 +131,10 @@ Type TSpriteParticle
 		lifeMax = config.GetFloat("lifeMax")
 		scaleMin = config.GetFloat("scaleMin")
 		scaleMax = config.GetFloat("scaleMax")
+		scaleRate = config.GetFloat("scaleRate", 1.0)
+		alphaMin = config.GetFloat("alphaMin", 1.0)
+		alphaMax = config.GetFloat("alphaMax", 1.0)
+		alphaRate = config.GetFloat("alphaRate", 1.0)
 		angleMin = config.GetFloat("angleMin")
 		angleMax = config.GetFloat("angleMax")
 
@@ -151,7 +155,7 @@ Type TSpriteParticle
 		angle = Rnd(angleMin, angleMax)
 
 		startLife = life
-		alpha = 0.08 * life + Rnd(1, 10) * 0.05
+		alpha = Rnd(alphaMin, alphaMax)
 	End Method
 
 
@@ -165,14 +169,10 @@ Type TSpriteParticle
 		vel :* 0.99 '1.02 '0.98
 		x :- (vel * Cos(angle-90)) * deltaTime
 		y :- (vel * Sin(angle-90)) * deltaTime
-		'increase decay if half of life time is gone
-		if life / startLife < 0.5 then alpha :* 0.95 * (1.0 - deltaTime)
 
-		if life / startLife > 0.8 then scale :* 1.02
-		if life / startLife > 0.8 then alpha :* 1.1
+		alpha :+ alpha * (alphaRate * deltatime)
+		scale :+ scale * (scaleRate * deltatime)
 
-		If y < 330 Then	scale :* 1.05 * (1.0 - deltaTime)
-		If y > 330 Then	scale :* 1.03 * (1.0 - deltaTime)
 		angle:*0.999
 	End Method
 
