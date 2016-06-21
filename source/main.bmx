@@ -4412,7 +4412,20 @@ Type GameEvents
 		'-> cut topicality
 		If (minute = 5 Or minute = 55 Or minute = 0) Or ..
 		   (minute = 4 Or minute = 54 Or minute = 59)
-			For Local player:TPlayer = EachIn GetPlayerCollection().players
+
+			'shuffle players, so each time another plan is informed the
+			'first (and their "doBegin" is called earlier than others)
+			'this is useful for "who broadcasted a news as first channel?"
+			'things.
+			local players:TPlayerBase[] = GetPlayerCollection().players[ .. ]
+			For Local a:int = 0 To players.length - 2
+				Local b:int = RandRange( a, players.length - 1)
+				Local p:TPlayerBase = players[a]
+				players[a] = players[b]
+				players[b] = p
+			Next
+
+			For Local player:TPlayer = EachIn players
 				player.GetProgrammePlan().InformCurrentBroadcast(day, hour, minute)
 			Next
 		EndIf
