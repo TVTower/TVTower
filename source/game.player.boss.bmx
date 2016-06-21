@@ -103,7 +103,7 @@ Type TPlayerBoss
 	'things the boss wants to talk about
 	Field talkSubjects:TPlayerBossTalkSubjects[]
 	'dialogues for the things the boss can talk about
-	Field Dialogues:TList = CreateList()
+	Field Dialogues:TList = CreateList() {nosave}
 
 	Field registeredProgrammeMalfunctions:int = 0
 	Field registeredNewsMalfunctions:int = 0
@@ -313,6 +313,8 @@ Type TPlayerBoss
 			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))
 
 			'clear the talk subjects - boss talked about them
+			'TODO: make sure that "questions" are not skipped by
+			'saving/loading the game
 			talkSubjects = new TPlayerBossTalkSubjects[0]
 
 		'other players
@@ -325,8 +327,12 @@ Type TPlayerBoss
 		endif
 		
 		Local ChefDialog:TDialogue = new TDialogue
-		ChefDialog.SetArea(new TRectangle.Init(350, 60, 460, 230))
 		ChefDialog.AddTexts(Chefdialoge)
+
+
+		ChefDialog.SetArea(new TRectangle.Init(300, 60, 400, 100))
+		ChefDialog.SetAnswerArea(new TRectangle.Init(400, 220, 380, 110))
+		ChefDialog.SetGrow(1,-1)
 
 		Dialogues.AddLast(ChefDialog)
 	End Method

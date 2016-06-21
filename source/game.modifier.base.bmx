@@ -177,8 +177,6 @@ Type TGameModifierBase
 
 	'call to undo the changes - if possible
 	Method Undo:int()
-		if not SatisfiesConditions(params) then return False
-
 		if _customUndoFuncKey
 			local wrapper:TGameModifierUndoFunction = GetGameModifierFunctionsCollection().GetUndoFunction(_customUndoFuncKey)
 			if wrapper then return wrapper.func(self)

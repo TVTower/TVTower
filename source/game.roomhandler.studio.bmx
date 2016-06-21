@@ -906,8 +906,12 @@ Type RoomHandler_Studio extends TRoomHandler
 
 
 		studioManagerDialogue = new TDialogue
-		studioManagerDialogue.SetArea(new TRectangle.Init(150, 40, 460, 230))
 		studioManagerDialogue.AddTexts(texts)
+
+		studioManagerDialogue.SetArea(new TRectangle.Init(150, 40, 460, 120))
+		studioManagerDialogue.SetAnswerArea(new TRectangle.Init(200, 180, 350, 70))
+		studioManagerDialogue.SetGrow(1,1)
+
 	End Method
 
 

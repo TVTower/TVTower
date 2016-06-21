@@ -107,10 +107,14 @@ Type RoomHandler_SuperMarket extends TRoomHandler
 		dialogueText.AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_SUPERMARKET_GOODBYE"), -2, Null))
 	
 		dialogue = new TDialogue
-		dialogue.SetArea(new TRectangle.Init(140, 40, 400, 200))
 		dialogue.AddTexts([dialogueText])
 
-		dialogue.moveDialogueBalloonStart = -40
+
+		dialogue.SetArea(new TRectangle.Init(140, 40, 350, 90))
+		dialogue.SetAnswerArea(new TRectangle.Init(200, 170, 350, 120))
+		'dialogue.answerStartType = "StartDownRight"
+		'dialogue.moveAnswerDialogueBalloonStart = 100
+		dialogue.SetGrow(1,1)
 	End Function
 
 
