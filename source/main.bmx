@@ -4350,10 +4350,6 @@ Type GameEvents
 			'log in current broadcasted media
 			For Local player:TPlayer = EachIn GetPlayerCollection().players
 				broadcastMaterial = player.GetProgrammePlan().LogInCurrentBroadcast(day, hour, minute)
-				'adjust currently broadcasted block
-				If broadcastMaterial
-					broadcastMaterial.currentBlockBroadcasting = player.GetProgrammePlan().GetObjectBlock(broadcastMaterial.usedAsType, day, hour)
-				EndIf
 			Next
 			
 			'step 2/2

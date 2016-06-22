@@ -1439,17 +1439,30 @@ endrem
 			'log in current broadcast
 			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj, TVTBroadcastMaterialType.NEWSSHOW)
 
+			'adjust currently broadcasted block
+			If obj then obj.currentBlockBroadcasting = GetObjectBlock(TVTBroadcastMaterialType.NEWSSHOW, day, hour)
+
+			return obj
 		'=== BEGIN OF PROGRAMME ===
 		ElseIf minute = 5
 			obj = GetProgramme(day, hour)
 			'log in current broadcast
 			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj, TVTBroadcastMaterialType.PROGRAMME)
+
+			'adjust currently broadcasted block
+			If obj then obj.currentBlockBroadcasting = GetObjectBlock(TVTBroadcastMaterialType.PROGRAMME, day, hour)
+
 			return obj
 		'=== BEGIN OF ADVERTISEMENT ===
 		ElseIf minute = 55
 			obj = GetAdvertisement(day, hour)
+
 			'log in current broadcast
 			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj, TVTBroadcastMaterialType.ADVERTISEMENT)
+
+			'adjust currently broadcasted block
+			If obj then obj.currentBlockBroadcasting = GetObjectBlock(TVTBroadcastMaterialType.ADVERTISEMENT, day, hour)
+
 			return obj
 		EndIf
 		return null
