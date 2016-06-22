@@ -152,7 +152,7 @@ Type TDialogue
 	Function DrawDialog(dialogueType:String="default", x:Int, y:Int, width:Int, Height:Int, DialogStart:String = "StartDownLeft", DialogStartMove:Int = 0, DialogText:String = "", DialogWidth:int = 0, DialogFont:TBitmapFont = Null)
 		Local dx:Float, dy:Float
 		Local DialogSprite:TSprite = GetSpriteFromRegistry(DialogStart)
-		height = Max(85, height ) 'minheight
+		height = Max(40, height ) 'minheight
 
 		Select DialogStart
 			case "StartLeftDown"
@@ -235,8 +235,8 @@ Type TDialogue
 '			endif
 		endif
 
-	    DrawDialog(dialogueType, int(GetBalloonRect().getX()), int(GetBalloonRect().GetY()), int(GetBalloonRect().getW()), int(GetBalloonRect().GetH()), startType, moveDialogueBalloonStart, "", GetBalloonRect().GetW(), GetBitmapFont("Default", 14))
-	    DrawDialog(dialogueType, int(GetAnswerBalloonRect().getX()), int(GetAnswerBalloonRect().getY()), int(GetAnswerBalloonRect().getW()), int(GetAnswerBalloonRect().getH()), answerStartType, moveAnswerDialogueBalloonStart, "", GetAnswerBalloonRect().GetW(), GetBitmapFont("Default", 14))
+	    DrawDialog(dialogueType, int(GetBalloonRect().getX()), int(GetBalloonRect().GetY()), int(GetBalloonRect().getW()), int(GetBalloonRect().GetH()), startType, moveDialogueBalloonStart, "", int(GetBalloonRect().GetW()), GetBitmapFont("Default", 14))
+	    DrawDialog(dialogueType, int(GetAnswerBalloonRect().getX()), int(GetAnswerBalloonRect().getY()), int(GetAnswerBalloonRect().getW()), int(GetAnswerBalloonRect().getH()), answerStartType, moveAnswerDialogueBalloonStart, "", int(GetAnswerBalloonRect().GetW()), GetBitmapFont("Default", 14))
 
 		dialogueText.Draw(GetContentRect(), GetAnswerContentRect())
 	End Method
@@ -277,7 +277,7 @@ Type TDialogueAnswer
 
 		'check over complete width - to allow easier selection of short
 		'texts 
-		If THelper.MouseIn(screenRect.GetX(), screenRect.GetY() + _pos.y, screenRect.GetW(), _size.y)
+		If THelper.MouseIn(int(screenRect.GetX()), int(screenRect.GetY() + _pos.y), int(screenRect.GetW()), int(_size.y))
 			Self._highlighted = True
 			If clicked
 				'emit the event if there is one

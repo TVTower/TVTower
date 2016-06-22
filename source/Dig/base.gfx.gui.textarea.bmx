@@ -577,7 +577,7 @@ Type TGUITextArea Extends TGUIobject
 			guiScrollerV.SetButtonStates(not guiTextPanel.ReachedTopLimit(), not guiTextPanel.ReachedBottomLimit())
 		endif
 
-		_mouseOverArea = THelper.MouseIn(GetScreenX(), GetScreenY(), rect.GetW(), rect.GetH())
+		_mouseOverArea = THelper.MouseIn(int(GetScreenX()), int(GetScreenY()), int(rect.GetW()), int(rect.GetH()))
 	End Method
 
 

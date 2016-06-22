@@ -74,7 +74,7 @@
 			<type>SpritePack</type>
  			<url>res/gfx/misc/dialogue.png</url>
 			<children>
-				<child name="dialogue.default" 	x="0" 	y="0" 	w="96"  h="96" ninepatch="true" />
+				<child name="dialogue.default" 	x="0" 	y="0" 	w="48"  h="48" ninepatch="true" />
 
 				<child name="StartLeftDown" 	x="128" y="0" 	w="55" 	h="59" />
 				<child name="StartRightDown" 	x="128" y="59" 	w="55" 	h="59" />

@@ -908,8 +908,10 @@ Type RoomHandler_Studio extends TRoomHandler
 		studioManagerDialogue = new TDialogue
 		studioManagerDialogue.AddTexts(texts)
 
-		studioManagerDialogue.SetArea(new TRectangle.Init(150, 40, 460, 120))
-		studioManagerDialogue.SetAnswerArea(new TRectangle.Init(200, 180, 350, 70))
+		studioManagerDialogue.SetArea(new TRectangle.Init(150, 40, 400, 120))
+		studioManagerDialogue.SetAnswerArea(new TRectangle.Init(200, 180, 320, 45))
+		studioManagerDialogue.moveAnswerDialogueBalloonStart = 240
+		studioManagerDialogue.answerStartType = "StartDownRight"
 		studioManagerDialogue.SetGrow(1,1)
 
 	End Method
@@ -1009,8 +1011,6 @@ Type RoomHandler_Studio extends TRoomHandler
 		local roomOwner:int = TRoom(triggerEvent.GetSender()).owner
 		if not GetPlayerBaseCollection().IsPlayer(roomOwner) then roomOwner = 0
 
-		if roomOwner and studioManagerTooltip then studioManagerTooltip.Render()
-
 		GUIManager.Draw("studio")
 
 		'draw data sheets for scripts or production concepts
@@ -1025,6 +1025,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		'draw after potential tooltips
 		if roomOwner and studioManagerDialogue then studioManagerDialogue.Draw()
 
+		if roomOwner and studioManagerTooltip then studioManagerTooltip.Render()
 	End Method
 
 
