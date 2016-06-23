@@ -87,7 +87,7 @@ Type TDebugAudienceInfos
 
 		Local offset:Int = 110
 
-		GetBitmapFontManager().baseFontBold.drawStyled("Sendung: " + audienceResult.Title + "     (" + genre + ")", 25, offset, TColor.clRed);
+		GetBitmapFontManager().baseFontBold.drawStyled("Sendung: " + audienceResult.GetTitle() + "     (" + genre + ")", 25, offset, TColor.clRed);
 		offset :+ 20
 
 		font.Draw("1. Programmqualität & Aktual.", 25, offset, TColor.clWhite)

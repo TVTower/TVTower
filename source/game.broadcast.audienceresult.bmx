@@ -36,7 +36,7 @@ Type TAudienceResultBase
 	Method CopyFrom:TAudienceResultBase(other:TAudienceResultBase)
 		if other
 			PlayerId = other.PlayerId
-			Title = other.PlayerId
+			Title = other.Title
 			Time = other.Time
 			broadcastMaterial = other.broadcastMaterial
 			Audience = other.Audience
