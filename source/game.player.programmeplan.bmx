@@ -1613,7 +1613,7 @@ endrem
 				EndIf
 			EndIf
 			'store audience/broadcast for daily stats (also for outage!)
-			GetDailyBroadcastStatistic( day, true ).SetBroadcastResult(obj, owner, hour, audienceResult)
+			GetDailyBroadcastStatistic( day, true ).SetAdBroadcastResult(obj, owner, hour, audienceResult)
 
 			'inform others (eg. boss), "broadcastMaterial" could be null!
 			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.ADVERTISEMENT).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
