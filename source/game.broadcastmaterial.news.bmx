@@ -115,6 +115,9 @@ endif
 		resultAudienceAttr.GenrePopularityMod = 0
 		resultAudienceAttr.FlagsPopularityMod = 0
 
+		local genreCount:int[ TVTNewsGenre.count ]
+		local slotsUsed:int = 0
+		
 		for local i:int = 0 to 2
 			'RONNY @Manuel: Todo - "Filme" usw. vorbereiten/einplanen
 			'               es koennte ja jemand "Trailer" in die News
@@ -122,6 +125,9 @@ endif
 			Local currentNews:TNews = TNews(news[i])
 			'skip empty slots
 			If not currentNews Then continue
+
+			genreCount[currentNews.GetGenre()] :+ 1
+			slotsUsed :+ 1
 			
 			'fix broken (old) savegame-information
 			if currentNews.usedAsType = 0
@@ -139,6 +145,28 @@ endif
 			if currentNews then title = currentNews.GetTitle() 
 			'print owner+")  news"+i+":  " +tempAudienceAttr.ToString() +"   " + title +"  usedAs:"+usedAsType
 		Next
+
+		local genresUsed:int = 0
+		For local g:int = EachIn genreCount
+			if g > 0 then genresUsed :+ 1
+		Next
+
+		'bonus if sending varying genres (a good "mix")
+		'5% bonus if 2+ genres used
+		if genresUsed = 2
+			resultAudienceAttr.MultiplyFloat(1.05)
+		'10% bonus if 3+ genres used
+		elseif genresUsed >= 3
+			resultAudienceAttr.MultiplyFloat(1.10)
+		endif
+
+		'malus for not sending something in each slot
+		if slotsUsed = 1
+			resultAudienceAttr.MultiplyFloat(0.90)
+		elseif slotsUsed = 2
+			resultAudienceAttr.MultiplyFloat(0.96)
+		endif
+
 		'already one with "addAttraction"
 		'resultAudienceAttr.Quality = GetQuality()
 
