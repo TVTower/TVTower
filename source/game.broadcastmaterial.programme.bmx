@@ -293,8 +293,11 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	'override
 	Method GetCastMod:Float()
 		local result:Float = 1.0
-		'cast popularity has influence of up to 50%
+		'cast popularity has influence of up to 75%
 		result :+ 0.75 * data.GetCastPopularity()
+		'cast base fame has an influence too (even if unpopular!)
+		result :+ 0.25 * data.GetCastFame()
+		
 		'print "castmod: "+result +"  pop: "+ data.GetCastPopularity()
 		return result
 	End Method

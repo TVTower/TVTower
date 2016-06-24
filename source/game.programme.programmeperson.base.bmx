@@ -314,6 +314,11 @@ Type TProgrammePersonBase extends TGameObject
 	End Method
 
 
+	Method GetAttribute:float(attributeID:int)
+		return 0
+	End Method
+
+
 	Method SetJob(job:Int, enable:Int=True)
 		If enable
 			self.job :| job

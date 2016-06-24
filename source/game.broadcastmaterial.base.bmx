@@ -435,7 +435,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 			result.GenreDefinition = genreDefinition
 		EndIf
 
-		If owner <= 0 Then Throw TNullObjectExceptionExt.Create("The programme '" + GetTitle() + "' has no owner.")
+		If owner <= 0 Then Throw TNullObjectExceptionExt.Create("The broadcast '" + GetTitle() + "' has no owner.")
 		If block <= 0 And usedAsType = TVTBroadcastMaterialType.PROGRAMME Then Throw TNullObjectExceptionExt.Create("GetAudienceAttractionInternal: Invalid block param: '" + block + ".")
 
 		'begin of a programme, begin of broadcast - or news show
