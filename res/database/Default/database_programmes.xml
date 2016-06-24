@@ -18,7 +18,7 @@
 				<member index="3" function="2">32c2f4c6-e8a6-40c3-8659-c0bf6cd37854</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1955" distribution="1" maingenre="15" subgenre="0" flags="0" blocks="2" price_mod="0.33" />
+			<data country="USA" year="1955" distribution="1" maingenre="15" subgenre="0" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="56" speed="32" outcome="75" />
 		</programme>
 		<programme id="54084557-4497-48d5-8e3a-6a6c987ebb26" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0114746" rt_id="0" creator="">
@@ -215,7 +215,7 @@ Starke Kostüme, insgesamt aber leider schwaches Remake</de>
 				<member index="3" function="2">f0538156-247f-45f6-a710-39c66bd7a9f9</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1964" distribution="1" maingenre="18" subgenre="0" flags="0" blocks="3" price_mod="0.33" />
+			<data country="D" year="1964" distribution="1" maingenre="18" subgenre="0" flags="0" blocks="3" price_mod="0.90" />
 			<ratings critics="51" speed="51" outcome="42" />
 		</programme>
 		<programme id="e3c4000f-917c-402a-8423-355c2fc29c7b" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0216216" rt_id="0" creator="">
@@ -441,7 +441,7 @@ Eine Liebe gegen jede Vernunft und Verhaltensregel, dafür umso romantischer - d
 				<member index="1" function="2">a3cca42a-90b7-4533-a240-206066759ea4</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1992" distribution="2" maingenre="6" subgenre="0" flags="4" blocks="1" price_mod="0.33" />
+			<data country="D" year="1992" distribution="2" maingenre="6" subgenre="0" flags="4" blocks="1" price_mod="0.90" />
 			<ratings critics="14" speed="23" outcome="0" />
 		</programme>
 		<programme id="6cdf8bd4-aa54-469f-a77b-4cc486e83bab" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0183649" rt_id="0" creator="">
@@ -503,7 +503,7 @@ Hochspannung auf originelle Weise</de>
 				<member index="4" function="2">2791d57d-a537-4f40-8207-6e0c3b7d3643</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1984" distribution="1" maingenre="5" subgenre="0" flags="0" blocks="2" price_mod="0.33" />
+			<data country="USA" year="1984" distribution="1" maingenre="5" subgenre="0" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="32" speed="56" outcome="32" />
 		</programme>
 		<programme id="9559311d-06a6-44e1-b016-6f2a22fce65a" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0054698" rt_id="0" creator="">
@@ -815,7 +815,7 @@ Nach einer wahren Begebenheit</de>
 				<member index="3" function="2">46729e16-ac47-4015-a539-da79e226ff89</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1979" distribution="1" maingenre="13" subgenre="0" flags="8" blocks="2" price_mod="0.33" />
+			<data country="USA" year="1979" distribution="1" maingenre="13" subgenre="0" flags="8" blocks="2" price_mod="0.90" />
 			<ratings critics="70" speed="42" outcome="56" />
 		</programme>
 		<programme id="031e9089-2f07-444f-a2fd-cb34139e6dcf" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0396171" rt_id="0" creator="">
@@ -876,7 +876,7 @@ Nach einer wahren Begebenheit</de>
 				<member index="5" function="2">8737ba4b-9616-4e99-86ee-3299b9e347fe</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1994" distribution="1" maingenre="12" subgenre="0" flags="0" blocks="3" price_mod="0.33" />
+			<data country="USA" year="1994" distribution="1" maingenre="12" subgenre="0" flags="0" blocks="3" price_mod="0.90" />
 			<ratings critics="23" speed="42" outcome="42" />
 		</programme>
 		<programme id="e81e6ca9-ee3a-4553-a2b2-0543e026de43" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0041959" rt_id="0" creator="">
@@ -939,7 +939,7 @@ Einzigartig durch die Walzermusik und das Nachkriegswien</de>
 				<member index="5" function="2">6979be0a-469b-46f3-8dd9-5f97318e60fe</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1957" distribution="1" maingenre="202" subgenre="0" flags="0" blocks="2" price_mod="0.33" />
+			<data country="D" year="1957" distribution="1" maingenre="202" subgenre="0" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="42" speed="32" outcome="47" />
 		</programme>
 		<programme id="04fc2288-b422-4fa6-b42e-aa91b922345f" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0070047" rt_id="0" creator="">
@@ -1033,7 +1033,7 @@ Horror vom Feinsten</de>
 				<member index="3" function="2">79954667-6c25-4b7a-873c-27e4ed794b20</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1981" distribution="1" maingenre="2" subgenre="0" flags="0" blocks="3" price_mod="0.33" />
+			<data country="D" year="1981" distribution="1" maingenre="2" subgenre="0" flags="0" blocks="3" price_mod="0.90" />
 			<ratings critics="65" speed="32" outcome="75" />
 		</programme>
 		<programme id="82cb8476-90f7-4cf5-b1ed-5f4dbbf25707" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0107426" rt_id="0" creator="">
@@ -1138,7 +1138,7 @@ Sehenswertes Regie-Debüt von [0|Full]</de>
 				<member index="5" function="2">fc964596-00d7-44f1-9538-4de7c5b4f023</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1990" distribution="1" maingenre="18" subgenre="0" flags="0" blocks="4" price_mod="0.33" />
+			<data country="USA" year="1990" distribution="1" maingenre="18" subgenre="0" flags="0" blocks="4" price_mod="0.90" />
 			<ratings critics="70" speed="42" outcome="75" />
 		</programme>
 		<programme id="0c046c5c-2b35-43b9-92d6-750b712a1c2e" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0081163" rt_id="0" creator="">
@@ -1475,7 +1475,7 @@ Bunte Action mit [1|Full]</de>
 				<en></en>
 			</description>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2000" distribution="2" maingenre="0" subgenre="0" flags="128" blocks="2" price_mod="0.1" />
+			<data country="D" year="2000" distribution="2" maingenre="0" subgenre="0" flags="128" blocks="2" price_mod="0.9" />
 			<ratings critics="5" speed="7" outcome="0" />
 		</programme>
 		<programme id="33739403-cb16-4dfc-b9da-42658c40f261" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0138447" rt_id="0" creator="">
@@ -1708,7 +1708,7 @@ Schwarzer Humor, gute Musik und [1|Full] in drei verschiedenen Rollen</de>
 				<member index="5" function="2">5317ae08-3426-4fd3-b67e-73a453ef3f64</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="GB" year="1964" distribution="1" maingenre="5" subgenre="0" flags="0" blocks="2" price_mod="0.33" />
+			<data country="GB" year="1964" distribution="1" maingenre="5" subgenre="0" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="61" speed="42" outcome="65" />
 		</programme>
 		<programme id="923d3ef3-db6c-48c5-afba-16f95f211a72" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0048014" rt_id="0" creator="">
@@ -1748,7 +1748,7 @@ Das Trio [1|Last], [2|Last], [3|Last] sorgt für den riesigen Spaß des Films</d
 				<member index="3" function="2">3f824f65-53d2-4999-94b4-1e7ce5e8b69b</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1961" distribution="1" maingenre="5" subgenre="0" flags="0" blocks="2" price_mod="0.33" />
+			<data country="D" year="1961" distribution="1" maingenre="5" subgenre="0" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="47" speed="65" outcome="51" />
 		</programme>
 		<programme id="7edc06e5-0205-4b63-8ff8-ec86bfdbfbf1" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0105583" rt_id="0" creator="">
@@ -1793,7 +1793,7 @@ Spannendes Abenteuer nach Karl Meier</de>
 				<member index="4" function="2">867ccfbf-f8b0-4b04-8874-243aeaba3c7b</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1965" distribution="1" maingenre="2" subgenre="0" flags="0" blocks="2" price_mod="0.33" />
+			<data country="D" year="1965" distribution="1" maingenre="2" subgenre="0" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="56" speed="70" outcome="51" />
 		</programme>
 		<programme id="5d7e43a1-5e60-41ac-9fd8-365798d3c86a" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
@@ -1874,7 +1874,7 @@ Liebevoll erzählt, nettes Kostüm für den Glücksdrachen Fuchur</de>
 				<member index="3" function="2">e1ed748b-647d-47b6-98b7-fe9c88579b12</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1984" distribution="1" maingenre="10" subgenre="0" flags="0" blocks="2" price_mod="0.33" />
+			<data country="D" year="1984" distribution="1" maingenre="10" subgenre="0" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="37" speed="37" outcome="56" />
 		</programme>
 		<programme id="999d5c89-5676-4715-a3e1-64811ee31f2f" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0266308" rt_id="0" creator="">
@@ -2227,7 +2227,7 @@ Aus einem solchen Zusammentreffen hätte man wohl mehr machen können</de>
 				<member index="5" function="2">3fc773de-c88a-4ef1-ad2f-492cd8fffd80</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1986" distribution="1" maingenre="5" subgenre="0" flags="0" blocks="2" price_mod="0.33" />
+			<data country="USA" year="1986" distribution="1" maingenre="5" subgenre="0" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="23" speed="28" outcome="28" />
 		</programme>
 		<programme id="afb3ad66-31ec-4353-9356-81d2a1cd9f87" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0098439" rt_id="0" creator="">
@@ -2268,7 +2268,7 @@ Die finstere Fledermaus als Pionier der Realverfilmungswelle</de>
 				<member index="3" function="2">3342a0e3-66f3-4f30-922c-ebe1b0611a00</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1989" distribution="1" maingenre="10" subgenre="0" flags="0" blocks="3" price_mod="0.33" />
+			<data country="USA" year="1989" distribution="1" maingenre="10" subgenre="0" flags="0" blocks="3" price_mod="0.90" />
 			<ratings critics="32" speed="61" outcome="61" />
 		</programme>
 		<programme id="9f23a668-5294-483c-92c2-5b775d23e233" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0118883" rt_id="0" creator="">
@@ -2433,7 +2433,7 @@ Schaurige Atmosphäre, packende Bilder und [1|Full] in Höchstform</de>
 				<member index="3" function="2">63987721-516f-4adc-8ae1-2292056ba570</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="GB" year="1980" distribution="1" maingenre="12" subgenre="0" flags="0" blocks="3" price_mod="0.33" />
+			<data country="GB" year="1980" distribution="1" maingenre="12" subgenre="0" flags="0" blocks="3" price_mod="0.90" />
 			<ratings critics="61" speed="61" outcome="75" />
 		</programme>
 		<programme id="b1b81bcb-ed45-4814-b8ec-bdea9028e6e1" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0099685" rt_id="0" creator="">
@@ -2766,7 +2766,7 @@ Weniger erfolgreiche Fortsetzung des Action-Hits</de>
 				<member index="5" function="2">605ff150-e5ab-4526-baf2-91eb0d316213</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1990" distribution="1" maingenre="2" subgenre="0" flags="64" blocks="2" price_mod="0.33" />
+			<data country="USA" year="1990" distribution="1" maingenre="2" subgenre="0" flags="64" blocks="2" price_mod="0.90" />
 			<ratings critics="4" speed="65" outcome="37" />
 		</programme>
 		<programme id="4e3545dc-1760-4649-8a99-e219cdd5159e" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0052618" rt_id="0" creator="">
@@ -2788,7 +2788,7 @@ Monumentaler Meilenstein</de>
 				<member index="5" function="2">87ba2b71-a0a7-4f1e-b892-acb3676aed69</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1959" distribution="1" maingenre="2" subgenre="0" flags="0" blocks="5" price_mod="0.33" />
+			<data country="USA" year="1959" distribution="1" maingenre="2" subgenre="0" flags="0" blocks="5" price_mod="0.90" />
 			<ratings critics="65" speed="61" outcome="70" />
 		</programme>
 		<programme id="8df86321-0fcd-4903-b9e9-2b67e0eaafea" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
@@ -2804,8 +2804,8 @@ Monumentaler Meilenstein</de>
 				<member index="0" function="1">336ebe49-3b96-46f4-8cd5-da6f64ff8c38</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1992" distribution="2" maingenre="6" subgenre="0" flags="4" blocks="1" price_mod="0.07" />
-			<ratings critics="47" speed="5" outcome="0" />
+			<data country="D" year="1992" distribution="2" maingenre="6" subgenre="0" flags="4" blocks="1" price_mod="1.10" />
+			<ratings critics="47" speed="5" outcome="15" />
 		</programme>
 		<programme id="cedc8a53-202f-4b47-bcd3-b87b25add3d7" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0099810" rt_id="0" creator="">
 			<title>
@@ -2841,7 +2841,7 @@ Monumentaler Meilenstein</de>
 				<member index="0" function="1">fa5cf4fe-7704-4eab-808b-5ea8f3935c6d</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="POL" year="2001" distribution="1" maingenre="0" subgenre="0" flags="16" blocks="3" price_mod="0.03" />
+			<data country="POL" year="2001" distribution="1" maingenre="0" subgenre="0" flags="16" blocks="3" price_mod="0.50" />
 			<ratings critics="5" speed="2" outcome="8" />
 		</programme>
 		<programme id="8fb1588d-27c3-4daf-9bf9-9fd338e08010" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0104431" rt_id="0" creator="">
@@ -3074,7 +3074,7 @@ Atmosphärisch dichter Thriller aus Holland</de>
 				<member index="4" function="2">3535a46a-f9e9-4519-a5de-2a2566b0adf1</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="NL" year="1987" distribution="1" maingenre="2" subgenre="0" flags="0" blocks="2" price_mod="0.33" />
+			<data country="NL" year="1987" distribution="1" maingenre="2" subgenre="0" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="47" speed="42" outcome="37" />
 		</programme>
 		<programme id="c187ad46-15a6-47a7-b183-7a9e8c54ca56" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0104498" rt_id="0" creator="">
@@ -3210,7 +3210,7 @@ Nach dem Roman von Agatha Kissme.</de>
 				<member index="3" function="2">7cb0a6c9-11e7-40fc-9f13-e5c9719ae21e</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="GB" year="1961" distribution="1" maingenre="17" subgenre="0" flags="0" blocks="2" price_mod="0.33" />
+			<data country="GB" year="1961" distribution="1" maingenre="17" subgenre="0" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="56" speed="42" outcome="56" />
 		</programme>
 		<programme id="c4348eef-2678-486b-a07c-ce00dc4fed91" product="1" licence_type="5" tmdb_id="0" imdb_id="" rt_id="0" creator="">
@@ -3262,7 +3262,7 @@ Nach dem Ende der Serie drehte R. D. Handerson noch zwei TV-Filme als Angus MacG
 				<member index="1" function="2">8d551838-62d6-4ec3-a1f7-6b477206e235</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1994" distribution="1" maingenre="2" subgenre="0" flags="0" blocks="2" price_mod="0.33" />
+			<data country="USA" year="1994" distribution="1" maingenre="2" subgenre="0" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="51" speed="65" outcome="61" />
 		</programme>
 		<programme id="a82f5075-b41b-43ff-9301-ece663dac159" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0110420" rt_id="0" creator="">
@@ -3279,7 +3279,7 @@ Nach dem Ende der Serie drehte R. D. Handerson noch zwei TV-Filme als Angus MacG
 				<member index="1" function="2">8d551838-62d6-4ec3-a1f7-6b477206e235</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1994" distribution="1" maingenre="2" subgenre="0" flags="0" blocks="2" price_mod="0.33" />
+			<data country="USA" year="1994" distribution="1" maingenre="2" subgenre="0" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="47" speed="75" outcome="61" />
 		</programme>
 		<programme id="65c5515b-cc7c-4910-acca-ffa0cebd405f" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0181689" rt_id="0" creator="">
@@ -3357,7 +3357,7 @@ Gut gemachte Action am laufenden Band</de>
 				<member index="2" function="2">10e270c0-36d8-451d-9193-e14c52381453</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1959" distribution="1" maingenre="5" subgenre="0" flags="0" blocks="2" price_mod="0.33" />
+			<data country="USA" year="1959" distribution="1" maingenre="5" subgenre="0" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="23" speed="61" outcome="51" />
 		</programme>
 		<programme id="d8d9ff73-d8d2-4a65-9149-d5e6b48bf1af" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0472043" rt_id="0" creator="">
@@ -4035,7 +4035,7 @@ Klassiker von [0|Full]</de>
 				<member index="5" function="2">62c14387-1f6e-4c45-8201-318f1e0e7cb4</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1960" distribution="1" maingenre="17" subgenre="0" flags="0" blocks="2" price_mod="0.33" />
+			<data country="USA" year="1960" distribution="1" maingenre="17" subgenre="0" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="70" speed="56" outcome="80" />
 		</programme>
 		<programme id="022e3fe7-001e-41ef-8696-89d3ab78dcf1" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0044706" rt_id="0" creator="">
@@ -4174,7 +4174,7 @@ Fast in zeitdeckendem Erzähltempo beschreibt Zinnemanns Klassiker das Schicksal
 				<member index="3" function="2">8c47e0bf-abf7-47a0-8182-8860540ee1b8</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1987" distribution="1" maingenre="2" subgenre="0" flags="64" blocks="2" price_mod="0.33" />
+			<data country="USA" year="1987" distribution="1" maingenre="2" subgenre="0" flags="64" blocks="2" price_mod="0.90" />
 			<ratings critics="28" speed="75" outcome="65" />
 		</programme>
 		<programme id="e33e9b8c-3869-4cab-978b-904c4a7a423f" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0105236" rt_id="0" creator="">
@@ -4316,7 +4316,7 @@ Nett</de>
 				<member index="5" function="2">834d00df-d96f-4cfd-85ba-29217d98a3ff</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1982" distribution="1" maingenre="2" subgenre="0" flags="0" blocks="2" price_mod="0.33" />
+			<data country="USA" year="1982" distribution="1" maingenre="2" subgenre="0" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="14" speed="56" outcome="32" />
 		</programme>
 		<programme id="2dd83894-ba84-4c08-a952-48e4d95218e7" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0089927" rt_id="0" creator="">
@@ -4468,7 +4468,7 @@ Kult aus den 80ern</de>
 				<member index="4" function="2">bbc9b3fc-1aed-4986-b22d-ed4c9c94d653</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1985" distribution="1" maingenre="16" subgenre="0" flags="0" blocks="2" price_mod="0.33" />
+			<data country="USA" year="1985" distribution="1" maingenre="16" subgenre="0" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="42" speed="61" outcome="61" />
 		</programme>
 		<programme id="6bf27807-bf40-4b58-9070-7812b43d00d6" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0096874" rt_id="0" creator="">
@@ -4509,7 +4509,7 @@ Rückkehr in die Zukunft</de>
 				<member index="4" function="2">bbc9b3fc-1aed-4986-b22d-ed4c9c94d653</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1990" distribution="1" maingenre="16" subgenre="0" flags="0" blocks="2" price_mod="0.33" />
+			<data country="USA" year="1990" distribution="1" maingenre="16" subgenre="0" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="18" speed="37" outcome="51" />
 		</programme>
 		<programme id="820cf425-7453-4bdf-bb5d-7632e9cfb6f8" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0098084" rt_id="0" creator="">
@@ -4550,7 +4550,7 @@ Genauso grausam wie genial</de>
 				<member index="2" function="2">2081cab6-b366-4935-92de-e66d8d697086</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1991" distribution="1" maingenre="17" subgenre="0" flags="0" blocks="3" price_mod="0.33" />
+			<data country="USA" year="1991" distribution="1" maingenre="17" subgenre="0" flags="0" blocks="3" price_mod="0.90" />
 			<ratings critics="70" speed="70" outcome="84" />
 		</programme>
 		<programme id="4ba8837e-ee51-4c40-8ed4-0217737f17f3" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0114369" rt_id="0" creator="">
@@ -4717,7 +4717,7 @@ Aufwendiges Actionspektakel von Regisseur [0|Full]</de>
 				<member index="6" function="2">9b48d55f-9815-4979-a656-aa213e070f6d</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1994" distribution="1" maingenre="16" subgenre="0" flags="0" blocks="3" price_mod="0.33" />
+			<data country="USA" year="1994" distribution="1" maingenre="16" subgenre="0" flags="0" blocks="3" price_mod="0.90" />
 			<ratings critics="61" speed="75" outcome="70" />
 		</programme>
 		<programme id="08ada450-5841-4e7e-88c3-5567d14a2fa4" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0100934" rt_id="0" creator="">
@@ -4752,7 +4752,7 @@ Aufwendiges Actionspektakel von Regisseur [0|Full]</de>
 				<member index="1" function="2">0142e7e1-c601-4de6-ab42-f3a34bc3c2dd</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1990" distribution="2" maingenre="6" subgenre="0" flags="4" blocks="1" price_mod="0.33" />
+			<data country="D" year="1990" distribution="2" maingenre="6" subgenre="0" flags="4" blocks="1" price_mod="0.90" />
 			<ratings critics="80" speed="4" outcome="4" />
 		</programme>
 		<programme id="69955785-3357-4292-b20b-aba24f0cd98f" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
@@ -4785,7 +4785,7 @@ Aufwendiges Actionspektakel von Regisseur [0|Full]</de>
 				<member index="0" function="1">11c74211-662a-4817-b5b5-ec2c635d0158</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2001" distribution="1" maingenre="0" subgenre="0" flags="128" blocks="1" price_mod="0.2" />
+			<data country="D" year="2001" distribution="1" maingenre="0" subgenre="0" flags="128" blocks="1" price_mod="1.0" />
 			<ratings critics="25" speed="10" outcome="0" />
 		</programme>
 		<programme id="3a0c9fba-3b1e-49e1-afdf-340e4aa1f913" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0093409" rt_id="0" creator="">
@@ -4929,7 +4929,7 @@ Spritziger Actioner mit dem Erfolgsduo [0|Last] / [1|Last]</de>
 				<member index="4" function="2">5fb04af2-5638-4b7f-82f2-7be341263d8a</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1994" distribution="1" maingenre="2" subgenre="0" flags="0" blocks="3" price_mod="0.33" />
+			<data country="USA" year="1994" distribution="1" maingenre="2" subgenre="0" flags="0" blocks="3" price_mod="0.90" />
 			<ratings critics="28" speed="70" outcome="56" />
 		</programme>
 		<programme id="71fbb079-26e6-46f7-a33f-f814881d013e" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0060315" rt_id="0" creator="">
@@ -4969,7 +4969,7 @@ Spritziger Actioner mit dem Erfolgsduo [0|Last] / [1|Last]</de>
 				<member index="2" function="2">9e19b198-4367-4637-ae6b-bb43264f8b4a</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2006" distribution="2" maingenre="6" subgenre="0" flags="4" blocks="1" price_mod="0.33" />
+			<data country="D" year="2006" distribution="2" maingenre="6" subgenre="0" flags="4" blocks="1" price_mod="0.90" />
 			<ratings critics="84" speed="37" outcome="14" />
 		</programme>
 		<programme id="de72f0f4-898a-45af-87a7-c4e57cbbdc9f" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0064116" rt_id="0" creator="">
@@ -5074,7 +5074,7 @@ Nach der erfolgreichen Serie</de>
 				<member index="4" function="2">c3c34605-bcf7-4b82-8d91-ffbebe60d967</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1993" distribution="1" maingenre="2" subgenre="0" flags="0" blocks="3" price_mod="0.33" />
+			<data country="USA" year="1993" distribution="1" maingenre="2" subgenre="0" flags="0" blocks="3" price_mod="0.90" />
 			<ratings critics="65" speed="70" outcome="61" />
 		</programme>
 		<programme id="7bbd28e8-00ef-4a3d-bf5a-418badcd1048" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
@@ -5275,7 +5275,7 @@ Von den Kritikern lange Zeit verkannt</de>
 				<member index="1" function="2">bedfa8be-aaff-457d-b549-893c3a784c9b</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="AT" year="2001" distribution="2" maingenre="6" subgenre="0" flags="4" blocks="2" price_mod="0.33" />
+			<data country="AT" year="2001" distribution="2" maingenre="6" subgenre="0" flags="4" blocks="2" price_mod="0.90" />
 			<ratings critics="52" speed="1" outcome="0" />
 		</programme>
 		<programme id="855fdb66-87d3-4fb6-8be0-56517c969d32" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0048802" rt_id="0" creator="">
@@ -5392,7 +5392,7 @@ Vielleicht der beste [1|Last] &amp; [2|Last] nach der gleichnamigen Oper von Aub
 				<member index="5" function="2">9f9ea647-abfb-403c-8c4d-628d6373ca43</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1933" distribution="1" maingenre="5" subgenre="0" flags="0" blocks="2" price_mod="0.33" />
+			<data country="USA" year="1933" distribution="1" maingenre="5" subgenre="0" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="56" speed="80" outcome="75" />
 		</programme>
 		<programme id="bc016a6c-3db2-44c3-b106-a934989e7f3d" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0058150" rt_id="0" creator="">
@@ -5436,7 +5436,7 @@ Sehr gelungener Yams Pond</de>
 				<member index="5" function="2">a2c65598-61b1-405a-96a9-41a9d6faa454</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="GB" year="1974" distribution="1" maingenre="17" subgenre="0" flags="0" blocks="3" price_mod="0.33" />
+			<data country="GB" year="1974" distribution="1" maingenre="17" subgenre="0" flags="0" blocks="3" price_mod="0.90" />
 			<ratings critics="32" speed="70" outcome="70" />
 		</programme>
 		<programme id="fb3edb42-f11e-48d6-98bd-50a0e4bec8d8" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0059800" rt_id="0" creator="">
@@ -5457,7 +5457,7 @@ Sehr gelungener Yams Pond</de>
 				<member index="5" function="2">a2c65598-61b1-405a-96a9-41a9d6faa454</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="GB" year="1965" distribution="1" maingenre="17" subgenre="0" flags="0" blocks="3" price_mod="0.33" />
+			<data country="GB" year="1965" distribution="1" maingenre="17" subgenre="0" flags="0" blocks="3" price_mod="0.90" />
 			<ratings critics="28" speed="65" outcome="80" />
 		</programme>
 		<programme id="649e905d-8df1-4776-8ce5-0216ed4acc71" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0070328" rt_id="0" creator="">
@@ -5739,7 +5739,7 @@ Tragische Liebesgeschichte</de>
 				<member index="6" function="2">c1543aab-18a4-44ad-be31-34bc1c972553</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="BOL" year="2005" distribution="2" maingenre="203" subgenre="0" flags="0" blocks="2" price_mod="0.17" />
+			<data country="BOL" year="2005" distribution="2" maingenre="203" subgenre="0" flags="0" blocks="2" price_mod="0.80" />
 			<ratings critics="7" speed="19" outcome="20" />
 			<children>
 				<programme id="3ca74c27-5958-4603-bf65-7ccc0be8b83f" product="6" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
@@ -6038,8 +6038,8 @@ Tragische Liebesgeschichte</de>
 				<member index="1" function="2">22274e45-da7e-4fb2-8698-3a2364973e1a</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2009" distribution="2" maingenre="0" subgenre="0" flags="128" blocks="1" price_mod="0.1" />
-			<ratings critics="2" speed="25" outcome="0" />
+			<data country="D" year="2009" distribution="2" maingenre="0" subgenre="0" flags="128" blocks="1" price_mod="0.85" />
+			<ratings critics="4" speed="25" outcome="15" />
 			<children>
 				<programme id="8aedcc43-c63d-4ab3-aec9-dfd858ba3f1e" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6100,7 +6100,7 @@ Tragische Liebesgeschichte</de>
 				<member index="0" function="1">common-amateur-director</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="I" year="1990" distribution="2" maingenre="203" subgenre="0" flags="0" blocks="2" price_mod="0.67" />
+			<data country="I" year="1990" distribution="2" maingenre="203" subgenre="0" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="32" speed="75" outcome="80" />
 			<children>
 				<programme id="98a65c7a-10d6-45d6-96e4-653ef6decf62" product="64" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
@@ -6160,8 +6160,8 @@ Tragische Liebesgeschichte</de>
 				<member index="0" function="1">13ce58ce-216d-4f5c-a9ca-bed86eef67e3</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2009" distribution="2" maingenre="8" subgenre="0" flags="192" blocks="2" price_mod="0.13" />
-			<ratings critics="2" speed="35" outcome="0" />
+			<data country="D" year="2009" distribution="2" maingenre="8" subgenre="0" flags="192" blocks="2" price_mod="0.85" />
+			<ratings critics="2" speed="35" outcome="15" />
 			<children>
 				<programme id="03f5cdc1-b20f-4db2-b23b-c8bede5b99ca" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6212,8 +6212,8 @@ Tragische Liebesgeschichte</de>
 				<member index="1" function="2">ec90ee47-cd37-42ca-9cb8-c2f68f8e72f4</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1999" distribution="2" maingenre="0" subgenre="0" flags="128" blocks="2" price_mod="0.13" />
-			<ratings critics="2" speed="15" outcome="0" />
+			<data country="D" year="1999" distribution="2" maingenre="0" subgenre="0" flags="128" blocks="2" price_mod="1.05" />
+			<ratings critics="2" speed="15" outcome="8" />
 			<children>
 				<programme id="36bdc248-0924-4c43-9fd2-2aab51a804b1" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6264,8 +6264,8 @@ Tragische Liebesgeschichte</de>
 				<member index="1" function="2">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1981" distribution="2" maingenre="6" subgenre="0" flags="4" blocks="1" price_mod="0.37" />
-			<ratings critics="49" speed="7" outcome="0" />
+			<data country="D" year="1981" distribution="2" maingenre="6" subgenre="0" flags="4" blocks="1" price_mod="1.0" />
+			<ratings critics="49" speed="17" outcome="0" />
 			<children>
 				<programme id="b1c87d59-cffe-4696-ac75-8f4e7fbbed76" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6273,10 +6273,10 @@ Tragische Liebesgeschichte</de>
 						<en></en>
 					</title>
 					<description>
-						<de>Klüppisch trifft Mike aus London, er behauptet ein Nachfahre der Cousine 12. Grades von Michelangelos Großtante zu sein.</de>
+						<de>[1|Last] trifft Mike aus London, er behauptet ein Nachfahre der Cousine 12. Grades von Michelangelos Großtante zu sein.</de>
 						<en></en>
 					</description>
-					<ratings critics="49" speed="7" />
+					<ratings critics="49" speed="17" />
 				</programme>
 				<programme id="02613833-d54e-4b6b-8de8-2370f4d5bb57" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6284,7 +6284,7 @@ Tragische Liebesgeschichte</de>
 						<en></en>
 					</title>
 					<description>
-						<de>Diesmal reist Klüppisch nach Paris um Nachfahren des bedeutenden Impressionisten Monet zu suchen.</de>
+						<de>Diesmal reist [1|Last] nach Paris um Nachfahren des bedeutenden Impressionisten Monet zu suchen.</de>
 						<en></en>
 					</description>
 					<ratings critics="47" speed="12" />
@@ -6295,10 +6295,10 @@ Tragische Liebesgeschichte</de>
 						<en></en>
 					</title>
 					<description>
-						<de>In Madrid spürt Klaus-Jürgen Klüppisch einen Neffen Picassos auf. Interessante Anekdoten würzen diese Episode.</de>
+						<de>In Madrid spürt [1|Full] einen Neffen Picassos auf. Interessante Anekdoten würzen diese Episode.</de>
 						<en></en>
 					</description>
-					<ratings critics="49" speed="11" />
+					<ratings critics="49" speed="18" />
 				</programme>
 				<programme id="494fa370-4744-4616-aa14-910aa692af25" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6306,7 +6306,7 @@ Tragische Liebesgeschichte</de>
 						<en></en>
 					</title>
 					<description>
-						<de>Klüppisch sendet diesmal direkt vom Hausboot eines Rembrandt-Nachfahren. Neben Kochrezepten erfährt der Zuschauer vieles aus Rembrandts Leben.</de>
+						<de>[1|Last] sendet diesmal direkt vom Hausboot eines Rembrandt-Nachfahren. Neben Kochrezepten erfährt der Zuschauer vieles aus Rembrandts Leben.</de>
 						<en></en>
 					</description>
 					<ratings critics="22" speed="15" />
@@ -6317,7 +6317,7 @@ Tragische Liebesgeschichte</de>
 						<en></en>
 					</title>
 					<description>
-						<de>Bortsch und Kandinsky. Neben einem geselligem Essen begleiten die Zuschauer Klüppisch durch die Geschichte mit Zaren und Kandinsky.</de>
+						<de>Bortsch und Kandinsky. Neben einem geselligem Essen begleiten die Zuschauer [1|Last] durch die Geschichte mit Zaren und Kandinsky.</de>
 						<en></en>
 					</description>
 					<ratings critics="49" speed="14" />
@@ -6337,9 +6337,9 @@ Tragische Liebesgeschichte</de>
 				<member index="0" function="1">3bb46451-4b1c-4ae7-90a4-8dbbe66f3bd1</member>
 				<member index="1" function="2">a6055f37-ab53-425e-9332-14e0dfabc424</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1992" distribution="2" maingenre="6" subgenre="0" flags="4" blocks="1" price_mod="0.67" />
-			<ratings critics="0" speed="32" outcome="0" />
+			<groups target_groups="64" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year_relative="-1" year_relative_min="1985" year_relative_max="1990" distribution="2" maingenre="6" subgenre="0" flags="4" blocks="1" price_mod="0.85" />
+			<ratings critics="20" speed="42" outcome="35" />
 			<children>
 				<programme id="8258fb18-d138-49b4-b07c-0519eec12d2c" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6350,10 +6350,6 @@ Tragische Liebesgeschichte</de>
 						<de>Im Schatten ihrer Schwester bastelt Madame Krussaud Figuren aus von Fans bereitgestelltem Ohrenschmalz.</de>
 						<en></en>
 					</description>
-					<staff>
-						<member index="0" function="1">3bb46451-4b1c-4ae7-90a4-8dbbe66f3bd1</member>
-						<member index="1" function="2">a6055f37-ab53-425e-9332-14e0dfabc424</member>
-					</staff>
 					<ratings critics="28" speed="32" />
 				</programme>
 				<programme id="b7f87935-b1ec-44a8-b544-398b010af809" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
@@ -6365,10 +6361,6 @@ Tragische Liebesgeschichte</de>
 						<de>[1|Full] zu Besuch bei Jens Flumme. Ausführlich wird im Gespräch erklärt, wie es zur fabulösen Erfindung des Multifunktions-Radiergummis kam.</de>
 						<en></en>
 					</description>
-					<staff>
-						<member index="0" function="1">3bb46451-4b1c-4ae7-90a4-8dbbe66f3bd1</member>
-						<member index="1" function="2">a6055f37-ab53-425e-9332-14e0dfabc424</member>
-					</staff>
 					<ratings critics="37" speed="42" />
 				</programme>
 				<programme id="ff1cff05-d8a8-43dc-9765-a975bcc49e7b" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
@@ -6380,10 +6372,6 @@ Tragische Liebesgeschichte</de>
 						<de>[1|Full] zu Besuch bei Martin Zeck. In geselliger Runde spricht [1|Last] über die umgreifende Problematik der Flaschenpfandproblematik.</de>
 						<en></en>
 					</description>
-					<staff>
-						<member index="0" function="1">3bb46451-4b1c-4ae7-90a4-8dbbe66f3bd1</member>
-						<member index="1" function="2">a6055f37-ab53-425e-9332-14e0dfabc424</member>
-					</staff>
 					<ratings critics="37" speed="45" />
 				</programme>
 				<programme id="44db9d84-e8d5-46b4-bed5-70b228a74bcb" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
@@ -6395,10 +6383,6 @@ Tragische Liebesgeschichte</de>
 						<de>Bei leckerem Brot plaudert [1|Full] mit Peter Kruste darüber, wie Kruste darauf kam, dem Brot die schmackhafte Kante zu geben.</de>
 						<en></en>
 					</description>
-					<staff>
-						<member index="0" function="1">3bb46451-4b1c-4ae7-90a4-8dbbe66f3bd1</member>
-						<member index="1" function="2">a6055f37-ab53-425e-9332-14e0dfabc424</member>
-					</staff>
 					<ratings critics="28" speed="56" />
 				</programme>
 				<programme id="ec7fe439-49ad-40d4-b1b3-fb89504184c7" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
@@ -6410,10 +6394,6 @@ Tragische Liebesgeschichte</de>
 						<de>Zum Abschluss der Serie besucht [1|Full] seine eigene Mutter, kitzelt ein paar urige Rezepte aus ihr heraus und plaudert über intime Details des immer populärer werdenden Moderators.</de>
 						<en></en>
 					</description>
-					<staff>
-						<member index="0" function="1">3bb46451-4b1c-4ae7-90a4-8dbbe66f3bd1</member>
-						<member index="1" function="2">a6055f37-ab53-425e-9332-14e0dfabc424</member>
-					</staff>
 					<ratings critics="47" speed="65" />
 				</programme>
 			</children>
@@ -6431,8 +6411,8 @@ Tragische Liebesgeschichte</de>
 				<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
 				<member index="1" function="2">660ccb76-bdbb-4c88-a608-f7a79ea73e6f</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2001" distribution="2" maingenre="301" subgenre="0" flags="0" blocks="2" price_mod="0.17" />
+			<groups target_groups="80" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="2001" distribution="2" maingenre="301" subgenre="0" flags="0" blocks="2" price_mod="0.80" />
 			<ratings critics="7" speed="1" outcome="0" />
 			<children>
 				<programme id="062287d0-1de3-47e9-b365-5ab5d163aef5" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
@@ -6452,7 +6432,7 @@ Tragische Liebesgeschichte</de>
 						<en></en>
 					</title>
 					<description>
-						<de>Erika trifft auf die 105jährige Renate aus Chemnitz. Kriegsjahre, Besatzungszeit, Wendejahre aber auch das neue Millenium werden thematisiert. Authentisch!</de>
+						<de>[1|First] trifft auf die 105jährige Renate aus Chemnitz. Kriegsjahre, Besatzungszeit, Wendejahre aber auch das neue Millenium werden thematisiert. Authentisch!</de>
 						<en></en>
 					</description>
 					<staff>
@@ -6477,7 +6457,7 @@ Tragische Liebesgeschichte</de>
 						<en></en>
 					</title>
 					<description>
-						<de>Erika Böhme trifft auf einen Mann, der sich selbst nur Bolle nennt und seit über 80 Jahren Berlins Straßen unsicher macht in dem er Kindern Lollis klaut und Hundekot in Briefkästen steckt.</de>
+						<de>[1|Full] trifft auf einen Mann, der sich selbst nur Bolle nennt und seit über 80 Jahren Berlins Straßen unsicher macht indem er Kindern Lollis klaut und Hundekot in Briefkästen steckt.</de>
 						<en></en>
 					</description>
 					<ratings critics="11" speed="7" />
@@ -6488,10 +6468,10 @@ Tragische Liebesgeschichte</de>
 						<en></en>
 					</title>
 					<description>
-						<de>Hinter einem Stand auf dem Oktoberfest vergnügt sich Erika mit dem 88jährigen Sepp. Bis die Herztabletten ihre Wirksamkeit entfalten, erzählt Sepp von seiner Kindheit.</de>
+						<de>Hinter einem Stand auf dem Oktoberfest vergnügt sich [1|First] mit dem 88jährigen Sepp. Bis die Herztabletten ihre Wirksamkeit entfalten, erzählt Sepp von seiner Kindheit.</de>
 						<en></en>
 					</description>
-					<ratings critics="2" speed="19" />
+					<ratings critics="2" speed="23" outcome="30" />
 				</programme>
 			</children>
 		</programme>
@@ -6686,8 +6666,8 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<member index="0" function="1">61439b07-6e8f-484e-9447-6c9588270e21</member>
 				<member index="1" function="2">396f8bfa-a414-4a25-85c7-4e05c687f6a0</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="AUT" year="2005" distribution="2" maingenre="6" subgenre="0" flags="4" blocks="2" price_mod="0.13" />
+			<groups target_groups="3" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="AUT" year_relative="-1" year_relative_min="2006" year_relative_max="2008" distribution="2" maingenre="6" subgenre="0" flags="4" blocks="2" price_mod="0.85" />
 			<ratings critics="35" speed="7" outcome="0" />
 			<children>
 				<programme id="c68b6bc1-f0c0-4b36-85e7-d7f32dd86063" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
@@ -6696,7 +6676,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 						<en></en>
 					</title>
 					<description>
-						<de>Peng hat's gemacht und Klaus spielt mit einer platzenden Melone den Urknall nach.</de>
+						<de>Peng hat's gemacht und [1|First] spielt mit einer platzenden Melone den Urknall nach.</de>
 						<en></en>
 					</description>
 					<ratings critics="24" speed="7" />
@@ -6718,7 +6698,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 						<en></en>
 					</title>
 					<description>
-						<de>Eine Packung H-Milch reicht Klaus Berntsch um den kleinen Zuschauern die Form der Milchstrasse zu zeigen.</de>
+						<de>Eine Packung H-Milch reicht [1|Full] um den kleinen Zuschauern die Form der Milchstrasse zu zeigen.</de>
 						<en></en>
 					</description>
 					<ratings critics="35" speed="17" />
@@ -6729,7 +6709,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 						<en></en>
 					</title>
 					<description>
-						<de>Alle 8 Planeten und den einen Explaneten stellt Berntsch vor in dem er  verschiedene Früchte auf ein Gestell patscht.</de>
+						<de>Alle 8 Planeten und den einen Explaneten stellt [1|Last] vor in dem er verschiedene Früchte auf ein Gestell patscht.</de>
 						<en></en>
 					</description>
 					<ratings critics="28" speed="9" />
@@ -6740,7 +6720,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 						<en></en>
 					</title>
 					<description>
-						<de>noch ist er blau doch Berntsch hält den Kindern die Gefahren für unseren Planeten vor Augen.</de>
+						<de>Noch ist er blau - doch [1|Last] hält den Kindern die Gefahren für unseren Planeten vor Augen.</de>
 						<en></en>
 					</description>
 					<ratings critics="38" speed="12" />
@@ -6757,7 +6737,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en></en>
 			</description>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2005" distribution="2" maingenre="8" subgenre="0" flags="192" blocks="2" price_mod="0.2" />
+			<data country="D" year="2005" distribution="2" maingenre="8" subgenre="0" flags="192" blocks="2" price_mod="0.8" />
 			<ratings critics="5" speed="30" outcome="0" />
 			<children>
 				<programme id="a710207e-6dff-4583-a015-94292f152ba9" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
@@ -8808,7 +8788,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 				<member index="2" function="2">10e270c0-36d8-451d-9193-e14c52381453</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1958" distribution="1" maingenre="15" subgenre="0" flags="0" blocks="2" price_mod="0.33" />
+			<data country="USA" year="1958" distribution="1" maingenre="15" subgenre="0" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="69" speed="73" outcome="71" />
 		</programme>      
 	

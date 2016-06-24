@@ -821,10 +821,8 @@
 			<data country="D" year="1980" distribution="2" maingenre="0" subgenre="0" flags="128" blocks="1" price_mod="1.00" />
 			<ratings critics="29" speed="5" outcome="0" />
 			<modifiers>
-				<!-- Programmalter hat hoeheren Einfluss auf Preis -->
-				<modifier name="price::age" value="2.9" />
-				<!-- Programm ist billiger als normal -->
-				<modifier name="price" value="2.9" />
+				<modifier name="price::age" value="1.2" />
+				<modifier name="price" value="1.2" />
 			</modifiers>
 			<children>
 				<programme id="8aedcc43-c63d-4ab3-TheRobCallInTestEp101" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
@@ -930,9 +928,9 @@
 			<ratings critics="24" speed="42" outcome="0" />
 			<modifiers>
 				<!-- Programmalter hat hoeheren Einfluss auf Preis -->
-				<modifier name="price::age" value="0.1" />
+				<modifier name="price::age" value="0.4" />
 				<!-- billiger als normal -->
-				<modifier name="price" value="0.1" />
+				<modifier name="price" value="0.4" />
 			</modifiers>
 			<children>
 				<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt01" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
