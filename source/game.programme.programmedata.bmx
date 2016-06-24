@@ -560,12 +560,26 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		Next
 		if castCount > 0 then res = res / castCount
 
-		'Popularity ranges from -50 to 100 (no absolute "unpopular for
-		'everyone" possible)
-		'return a value between 0 and 1
-		Return 0.5 * (1.0 + MathHelper.Clamp(res / 100.0, -1.0, 1.0 ))
+		'return a value between -1 and 1
+		Return MathHelper.Clamp(res / 100.0, -2.0, 2.0 )
 	End Method
 
+
+	Method GetCastFame:Float()
+		local res:Float = 0.0
+		local castCount:int = 0
+
+		For local job:TProgrammePersonJob = EachIn cast
+			local p:TProgrammePersonBase = GetProgrammePersonBase(job.personGUID)
+			if not p then continue
+			res :+ p.GetAttribute(TVTProgrammePersonAttribute.FAME)
+			castCount :+1
+		Next
+		if castCount > 0 then res = res / castCount
+		'return a value between 0 and 1
+		Return MathHelper.Clamp(res, 0.0, 1.0 )
+	End Method
+	
 
 	Method HasCastPerson:int(personGUID:string, job:int = -1)
 		For local doneJob:TProgrammePersonJob = EachIn cast
@@ -1114,34 +1128,30 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		'movies run in cinema (outcome >0)
 		If isType(TVTProgrammeProductType.MOVIE) ' and GetOutcome() > 0
 			priceMod = THelper.LogisticalInfluence_Euler(priceMod, 0.5)
-			value = 35000 + 870000 * priceMod
+			value = 45000 + 1200000 * priceMod
 		 'shows, productions, series...
 		Else
 			priceMod = THelper.LogisticalInfluence_Euler(priceMod, 0.5)
 			'basefactor * priceFactor
-			value = 15000 + 100000 * priceMod
+			value = 25000 + 400000 * priceMod
 		EndIf
 
 		'=== MODIFIERS ===
-		'price modifier just influences price by 25% (to avoid "0" prices)
-		value :* (0.75 + 0.25 * GetModifier("price"))
+		'price modifier just influences price by 90% (to avoid "0" prices)
+		value :* (0.10 + 0.90 * GetModifier("price", 1.0))
 
 
 		'=== TOPICALITY ===
 		'the more current the more expensive
 		'multipliers "stack"
 		local topicalityModifier:Float = 1.0
-		If (GetMaxTopicality() >= 0.80) Then topicalityModifier :+ 0.1
-		If (GetMaxTopicality() >= 0.85) Then topicalityModifier :+ 0.2
-		If (GetMaxTopicality() >= 0.90) Then topicalityModifier :+ 0.4
-		If (GetMaxTopicality() >= 0.94) Then topicalityModifier :+ 0.55
-		If (GetMaxTopicality() >= 0.98) Then topicalityModifier :+ 0.75
+		If (GetMaxTopicality() >= 0.80) Then topicalityModifier :+ 0.04
+		If (GetMaxTopicality() >= 0.85) Then topicalityModifier :+ 0.08
+		If (GetMaxTopicality() >= 0.90) Then topicalityModifier :+ 0.16
+		If (GetMaxTopicality() >= 0.94) Then topicalityModifier :+ 0.24
+		If (GetMaxTopicality() >= 0.98) Then topicalityModifier :+ 0.48
 		'make just released programmes even more expensive
-		'ATTENTION: don't do this to custom productions as they would
-		'           be easy to sell then ;-)
-		if not IsCustomProduction()
-			If (GetMaxTopicality() > 0.99)  Then topicalityModifier :+ 1.0
-		endif
+		If (GetMaxTopicality() > 0.99)  Then topicalityModifier :+ 0.80
 
 		value :* topicalityModifier
 
