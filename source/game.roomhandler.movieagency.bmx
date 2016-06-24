@@ -40,7 +40,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Global suitcasePos:TVec2D = new TVec2D.Init(350,130)
 	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(14,25)
 	Field programmesPerLine:int	= 13
-	Field movieCheapMoneyMaximum:int = 75000
+	Field movieCheapMoneyMaximum:int = 100000
 	Field movieCheapQualityMaximum:Float = 0.20
 
 	Global _instance:RoomHandler_MovieAgency
@@ -100,7 +100,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		filterMoviesGood.qualityMax = -1.0
 		filterMoviesGood.relativeTopicalityMin = 0.25
 		filterMoviesGood.relativeTopicalityMax = -1.0
-		filterMoviesGood.maxTopicalityMin = 0.35 'avoid older/broadcasted too often
+		filterMoviesGood.maxTopicalityMin = 0.45 'avoid older/broadcasted too often
 		filterMoviesGood.maxTopicalityMax = -1.0
 		filterMoviesGood.checkTradeability = True
 		'filterMoviesGood.connectionType = TProgrammeLicenceFilterGroup.CONNECTION_TYPE_AND
@@ -126,6 +126,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		filterMoviesCheap.filters[1].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
 		'filterMoviesCheap.filters[1].SetRequiredOwners([TOwnedGameObject.OWNER_NOBODY])
+		filterMoviesCheap.filters[1].priceMin = -1
+		filterMoviesCheap.filters[1].priceMax = movieCheapMoneyMaximum
 		filterMoviesCheap.filters[1].qualityMin = -1.0
 		filterMoviesCheap.filters[1].qualityMax = movieCheapQualityMaximum
 		filterMoviesCheap.filters[1].relativeTopicalityMin = 0.25
@@ -1009,7 +1011,11 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	Function GetCurrentLiveOffers:int()
 		local res:int = 0
 		For Local obj:TAuctionProgrammeBlocks = EachIn List
-			if obj.licence and obj.licence.GetData().IsLive() then res :+1
+			if obj.licence
+				if obj.licence.GetData()
+					if obj.licence.GetData().IsLive() then res :+1
+				endif
+			endif
 		Next
 		return res
 	End Function

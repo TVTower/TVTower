@@ -35,6 +35,8 @@ Type TAudienceAttraction Extends TAudience
 	'boolean, outage = 1
 	Field Malfunction:Int
 
+	Global luckModEnabled:int = True
+
 	Const MODINFLUENCE_GENREPOPULARITY:Float = 0.25
 	Const MODINFLUENCE_FLAGPOPULARITY:Float = 0.25
 	Const MODINFLUENCE_TRAILER:Float = 0.25
@@ -83,7 +85,6 @@ Type TAudienceAttraction Extends TAudience
 	Method AddAttraction:TAudienceAttraction(audienceAttr:TAudienceAttraction)
 		If Not audienceAttr Then Return Self
 		Self.Add(audienceAttr)
-
 		Quality	:+ audienceAttr.Quality
 		CastMod :+ audienceAttr.CastMod
 		If GenreTargetGroupMod Then GenreTargetGroupMod.Add(audienceAttr.GenreTargetGroupMod)
@@ -227,7 +228,7 @@ Type TAudienceAttraction Extends TAudience
 		'if QualityOverTimeEffectMod Then result.AddFloat(QualityOverTimeEffectMod)
 
 
-		If LuckMod Then result.Add(LuckMod)
+		If luckModEnabled and LuckMod Then result.Add(LuckMod)
 
 
 		If AudienceFlowBonus Then result.Add(AudienceFlowBonus)
@@ -289,10 +290,14 @@ Type TAudienceAttraction Extends TAudience
 			print " (7. QOVERTIME: -/-)"
 		EndIf
 
-		If LuckMod
+		If luckModEnabled and LuckMod
 			print " 8. LUCK:      + " + LuckMod.ToStringAverage()
 		Else
-			print " 8. LUCK:      -/-"
+			if not luckModEnabled
+				print " 8. LUCK:      disabled"
+			else
+				print " 8. LUCK:      -/-"
+			endif
 		EndIf
 
 		If AudienceFlowBonus
