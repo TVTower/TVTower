@@ -99,10 +99,8 @@ endif
 	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
 		Local resultAudienceAttr:TAudienceAttraction = New TAudienceAttraction
 		resultAudienceAttr.BroadcastType = TVTBroadcastMaterialType.NEWSSHOW
-		resultAudienceAttr.GenrePopularityMod = 0
 		resultAudienceAttr.GenreTargetGroupMod = New TAudience
 		resultAudienceAttr.FlagsTargetGroupMod = New TAudience
-		resultAudienceAttr.FlagsPopularityMod = 0
 		resultAudienceAttr.PublicImageMod = New TAudience
 		resultAudienceAttr.TrailerMod = New TAudience
 		resultAudienceAttr.MiscMod = New TAudience
@@ -112,6 +110,10 @@ endif
 		resultAudienceAttr.FinalAttraction = New TAudience
 		resultAudienceAttr.PublicImageAttraction = New TAudience
 		resultAudienceAttr.LuckMod = New TAudience
+		'attention: set mods to 0 (news mods get _added_)
+		resultAudienceAttr.CastMod = 0
+		resultAudienceAttr.GenrePopularityMod = 0
+		resultAudienceAttr.FlagsPopularityMod = 0
 
 		for local i:int = 0 to 2
 			'RONNY @Manuel: Todo - "Filme" usw. vorbereiten/einplanen
