@@ -942,7 +942,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		For local licence:TProgrammeLicence = eachin subLicences
 			value :+ licence.GetPrice()
 		Next
-		value :* 0.75
+		value :* 0.90
 
 		'individual licence price mod (eg. "special collection discount")
 		value :* GetModifier("price")
