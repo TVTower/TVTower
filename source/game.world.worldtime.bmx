@@ -698,9 +698,7 @@ Type TWorldTime {_exposeToLua="selected"}
 		_timeGone :+ GetDeltaTimer().GetDelta() * GetTimeFactor()
 
 		'backup last update time
-'		_timeGoneLastUpdate = _timeGone
-		'initialize last update value if still at default value
-'		if _timeGoneLastUpdate < 0 then _timeGoneLastUpdate = _timeGone
+		_timeGoneLastUpdate = _timeGone
 	End Method
 End Type
 'endrem

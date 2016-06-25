@@ -165,19 +165,26 @@ Type TSpriteFrameAnimation
 	End Method
 
 
+	Function GetDeltaTime:Float()
+		GetDeltaTimer().GetDelta()
+	End Function
+
+
 	Method Update:int(deltaTime:Float = -1)
 		'skip update if only 1 frame is set
 		'skip if paused
 		If paused or frames.length <= 1 then return 0
 
 		'use given or default deltaTime?
-		if deltaTime < 0 then deltaTime = GetDeltaTimer().GetDelta()
+		if deltaTime < 0 then deltaTime = GetDeltaTime()
 
 		if frameTimer = null then ResetFrameTimer()
 		frameTimer :- deltaTime
 
+		'skip frames if delta is bigger than frame time
 		'time for next frame
-		if frameTimer <= 0.0
+		While frameTimer <= 0
+			local oldFrameTimer:Float = frameTimer
 			local nextPos:int = currentFrame + 1
 			'increase current frameposition but only if frame is set
 			'resets frametimer too
@@ -187,12 +194,16 @@ Type TSpriteFrameAnimation
 			If nextPos >= len(frames)
 				If repeatTimes = 0
 					Pause()	'stop animation
+					exit 'exit the while loop
 				Else
 					setCurrentFrame(0)
 					repeatTimes :-1
 				EndIf
 			EndIf
-		Endif
+
+			'add back what was left before
+			frameTimer = oldFrameTimer + frameTimer
+		Wend
 	End Method
 
 

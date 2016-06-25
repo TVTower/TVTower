@@ -186,6 +186,11 @@ Type TApp
 	Global EscapeMenuWindowTime:Int = 0
 	'Global EscapeMenuWindowEventListeners:TLink[]
 
+	Global DEV_FastForward:int = False
+	Global DEV_FastForward_SpeedFactorBackup:Float = 0.0
+	Global DEV_FastForward_TimeFactorBackup:Float = 0.0
+	Global DEV_FastForward_BuildingTimeSpeedFactorBackup:Float = 0.0
+
 	Global settingsBasePath:String = "config/settings.xml"
 	Global settingsUserPath:String = "config/settings.user.xml"
 
@@ -557,15 +562,36 @@ Type TApp
 					If KEYMANAGER.IsDown(KEY_RIGHT)
 						if not KEYMANAGER.IsDown(KEY_LCONTROL)
 							TEntity.globalWorldSpeedFactor :+ 0.05
-							GetWorldTime().AdjustTimeFactor(+5)
+							GetWorldTime().AdjustTimeFactor(+10)
+							GetBuildingTime().AdjustTimeFactor(+0.05)
 						else
-							'play next song
-							GetSoundManager().FadeOverToNextTitle()
+							'fast forward
+							if not DEV_FastForward
+								DEV_FastForward = true
+								DEV_FastForward_SpeedFactorBackup = TEntity.globalWorldSpeedFactor
+								DEV_FastForward_TimeFactorBackup = GetWorldTime()._timeFactor
+								DEV_FastForward_BuildingTimeSpeedFactorBackup = GetBuildingTime()._timeFactor
+
+								TEntity.globalWorldSpeedFactor :+ 24000
+								GetWorldTime().AdjustTimeFactor(+2000)
+								GetBuildingTime().AdjustTimeFactor(+24000)
+							endif
+						endif
+					else
+						'stop fast forward
+						if DEV_FastForward
+							DEV_FastForward = False
+							TEntity.globalWorldSpeedFactor = DEV_FastForward_SpeedFactorBackup
+							GetWorldTime()._timeFactor = DEV_FastForward_TimeFactorBackup
+							GetBuildingTime()._timeFactor = DEV_FastForward_BuildingTimeSpeedFactorBackup
 						endif
 					EndIf
+
+
 					If KEYMANAGER.IsDown(KEY_LEFT) Then
 						TEntity.globalWorldSpeedFactor = Max( TEntity.globalWorldSpeedFactor - 0.05, 0)
-						GetWorldTime().AdjustTimeFactor(-5)
+						GetWorldTime().AdjustTimeFactor(-10)
+						GetBuildingTime().AdjustTimeFactor(-0.05)
 					EndIf
 
 					If KEYMANAGER.IsHit(KEY_F)

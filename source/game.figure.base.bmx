@@ -2,6 +2,9 @@ SuperStrict
 Import "Dig/base.framework.entity.spriteentity.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
 
+'figures move according the building time, not the world time
+Import "game.building.buildingtime.bmx"
+
 
 Type TFigureBaseCollection extends TEntityCollection
 	Field figuresToRemove:TFigureBase[]
@@ -147,6 +150,11 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Const ACTION_WALK:int = 1
 	Const ACTION_ENTERING:int = 2
 	Const ACTION_LEAVING:int = 3
+
+	Method New()
+		'elevator uses building time and not game time
+		SetCustomSpeedFactorFunc( GetBuildingTimeTimeFactor )
+	End Method
 
 
 	Method GetFloor:Int(pos:TVec2D = Null) abstract
@@ -455,6 +463,12 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		if IsWaitingToEnter() then result = "standBack"
 
 		return result
+	End Method
+
+
+	'override
+	Method GetDeltaTime:Float()
+		return GetDeltaTimer().GetDelta() * GetBuildingTime().GetTimeFactor()
 	End Method
 	
 

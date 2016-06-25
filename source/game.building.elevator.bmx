@@ -59,9 +59,9 @@ Type TElevator Extends TEntity
 	'=== TIMER ===
 	'Wie lange (Millisekunden) werden die Türen offen gelassen
 	'(alt: 650)
-	Field WaitAtFloorTimer:TIntervalTimer = null
+	Field WaitAtFloorTimer:TBuildingIntervalTimer = null
 	'Der Fahrstuhl wartet so lange, bis diese Zeit erreicht ist (in
-	'Millisekunden - basierend auf Time.GetTimeGone() + waitAtFloorTime)
+	'Millisekunden - basierend auf BuildingTime.GetTimeGone() + waitAtFloorTime)
 	Field WaitAtFloorTime:Int = 1500
 
 	'=== GRAFIKELEMENTE ===
@@ -101,6 +101,12 @@ Type TElevator Extends TEntity
 	End Function
 
 
+	Method New()
+		'elevator uses building time and not game time
+		SetCustomSpeedFactorFunc( GetBuildingTimeTimeFactor )
+	End Method
+
+
 	Method Initialize:TElevator()
 		ElevatorStatus = ELEVATOR_AWAITING_TASK
 		DoorStatus = DOOR_CLOSED
@@ -120,7 +126,7 @@ Type TElevator Extends TEntity
 		Local animSpeed:Int = Max(30, Min(100, GameRules.devConfig.GetInt("DEV_ELEVATOR_ANIMSPEED", 60)))
 
 		'create timer
-		WaitAtFloorTimer = TIntervalTimer.Create(WaitAtFloorTime)
+		WaitAtFloorTimer = TBuildingIntervalTimer.Create(WaitAtFloorTime)
 
 		'reset floor route list and passengers
 		FloorRouteList.Clear()
@@ -417,7 +423,7 @@ Type TElevator Extends TEntity
 
 	'Aktualisiert das Offset und bewegt die Figur an die richtige Position
 	Method MovePassengerToPosition()
-		Local deltaTime:Float = GetDeltaTimer().GetDelta() * GetWorldSpeedFactor()
+		Local deltaTime:Float = GetDeltaTime()
 
 		For Local i:Int = 0 To Len(PassengerPosition) - 1
 			Local figureGUID:String = PassengerPosition[i]
@@ -466,7 +472,7 @@ Type TElevator Extends TEntity
 	Method MoveDeboardingPassengersToCenter:int(useFloor:int = -1, limitSimultanoeusDeboardingPersonsTo:int=-1)
 		if useFloor = -1 then useFloor = CurrentFloor
 
-		Local deltaTime:Float = GetDeltaTimer().GetDelta() * GetWorldSpeedFactor()
+		Local deltaTime:Float = GetDeltaTime()
 		local deboardingPersons:int = 0
 	
 		For Local i:Int = 0 To Len(PassengerPosition) - 1
@@ -553,10 +559,15 @@ Type TElevator Extends TEntity
 	End Method
 
 
+	Method GetDeltaTime:Float()
+		return GetDeltaTimer().GetDelta() * GetBuildingTime().GetTimeFactor()
+	End Method
+
+
 	'===== Aktualisierungs-Methoden =====
 
 	Method Update:Int()
-		Local deltaTime:Float = GetDeltaTimer().GetDelta() * GetWorldSpeedFactor()
+		Local deltaTime:Float = GetDeltaTime()
 
 		'the -1 is used for displace the object one pixel higher, so
 		'it has to reach the first pixel of the floor until the
@@ -581,11 +592,10 @@ Type TElevator Extends TEntity
 				If FixDeboardingPassengers()
 'print Millisecs()+"  Elevator: 0) fixed - delay waiting timer"
 					'if there was something to fix - wait a bit more
-					waitAtFloorTimer.SetInterval(int(0.5 * waitAtFloorTime / TEntity.GetGlobalWorldSpeedFactor()), True)
+					waitAtFloorTimer.SetInterval(int(0.5 * waitAtFloorTime), True)
 				EndIf
 			EndIf
 
-	
 			'do we still have deboarding passengers?
 			'-> let them deboard before starting the next route
 			local canCloseDoors:int = True
@@ -685,7 +695,7 @@ Type TElevator Extends TEntity
 				'set time for the doors to keep open
 				'adjust this by worldSpeedFactor at that time
 				'so a higher factor shortens time to wait
-				waitAtFloorTimer.SetInterval(int(waitAtFloorTime / TEntity.GetGlobalWorldSpeedFactor()), True)
+				waitAtFloorTimer.SetInterval(int(waitAtFloorTime), True)
 			EndIf
 
 			'continue door animation for opening doors

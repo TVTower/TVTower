@@ -154,9 +154,9 @@ Type TSpriteEntity extends TEntity
 
 	Method Update:Int()
 		'=== UPDATE ANIMATION ===
-		'instead of deltatime, we use the modified value including the
-		'world speed factor
-		if frameAnimations then frameAnimations.Update()
+		'instead of letting the animation fetch a deltatime, we use the
+		'modified value including the world speed factor
+		if frameAnimations then frameAnimations.Update( GetDeltaTime() )
 
 		'=== UPDATE MOVEMENT / CHILDREN ===
 		Super.Update()

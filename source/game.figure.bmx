@@ -253,7 +253,7 @@ Type TFigure extends TFigureBase
 					velocity.SetX(  (Abs(initialdx)))
 				EndIf
 
-				local dx:float = GetVelocity().GetX() * GetDeltaTimer().GetDelta() * GetWorldSpeedFactor()
+				local dx:float = GetVelocity().GetX() * GetDeltaTime()
 				'move to right and next step is more right than target
 				if dx > 0 and ceil(area.getX() + dx) >= targetX then reachTemporaryTarget=true
 				'move to left and next step is more left than target

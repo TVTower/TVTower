@@ -448,6 +448,8 @@ Type TEntity extends TRenderableEntity
 	Field velocity:TVec2D = new TVec2D
 	'entity specific speedFactor. If < 0 then worldSpeedFactor gets used
 	Field worldSpeedFactor:Float = -1.0
+	Field _worldSpeedFactorFunc:Float()
+	
 	'a world speed factor of 1.0 means realtime, 2.0 = fast forward 
 	Global globalWorldSpeedFactor:Float = 1.0
 	Global globalWorldSpeedFactorMod:Float = 1.0
@@ -466,10 +468,22 @@ Type TEntity extends TRenderableEntity
 	Function GetGlobalWorldSpeedFactor:float()
 		return globalWorldSpeedFactor * globalWorldSpeedFactorMod
 	End Function
-	
+
+
+	Method SetCustomSpeedFactorFunc( _func:Float() )
+		_worldSpeedFactorFunc = _func
+	End Method
+
 
 	Method GetWorldSpeedFactor:float()
-		if worldSpeedFactor < 0 then return GetGlobalWorldSpeedFactor()
+		if worldSpeedFactor < 0
+			'call the individual function if needed
+			if _worldSpeedFactorFunc
+				return _worldSpeedFactorFunc() * globalWorldSpeedFactorMod
+			else
+				return GetGlobalWorldSpeedFactor()
+			endif
+		endif
 		return worldSpeedFactor * globalWorldSpeedFactorMod
 	End Method
 
@@ -490,13 +504,17 @@ Type TEntity extends TRenderableEntity
 	End Method
 
 
-	Method Move:int()
-		local deltaTime:Float = GetDeltaTimer().GetDelta() * GetWorldSpeedFactor()
+	Method GetDeltaTime:Float()
+		return GetDeltaTimer().GetDelta() * GetWorldSpeedFactor()
+	End Method
 
+
+	Method Move:int()
 		'=== UPDATE MOVEMENT ===
 		'backup for tweening
 		oldPosition.SetXY(area.position.x, area.position.y)
 		'set new position
+		local deltaTime:Float = GetDeltaTime()
 		area.position.AddXY( deltaTime * GetVelocity().x, deltaTime * GetVelocity().y )
 	End Method
 

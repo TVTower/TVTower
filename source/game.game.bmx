@@ -46,6 +46,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'fast:   10 game minutes = 10 seconds  -> 1 sec = 60 ingameseconds
 		'set basic game speed to 30 gameseconds per second
 		GetWorldTime().SetTimeFactor(30.0)
+		
+		GetBuildingTime().SetTimeFactor(1.0)
 
 
 		if not GameScreen_World
@@ -1078,6 +1080,7 @@ print "--------------"
 
 	Method SetPaused(bool:Int=False)
 		GetWorldTime().SetPaused(bool)
+		GetBuildingTime().SetPaused(bool)
 	End Method
 
 
@@ -1295,6 +1298,7 @@ print "--------------"
 		Local worldTime:TWorldTime = GetWorldTime()
 		'==== ADJUST TIME ====
 		worldTime.Update()
+		GetBuildingTime().Update()
 
 		'==== UPDATE WORLD ====
 		'only update weather as it affects news etc.
