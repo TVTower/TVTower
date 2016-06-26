@@ -524,12 +524,12 @@ Rem
 			-> add occupant (right when opening the door, avoids
 			                 simultaneous enter of 2+ figures)
 			-> ev: room.onBeginEnter
-			-> ev: room.onEnter (delayed --> door anim)
-				-> room.FinishEnter()
-					-> TFigureCollection.onEnterRoom()
-						-> figure.onEnterRoom()
-							-> ev: figure.onEnterRoom
-							-> figure.SetInRoom(Room)
+		-> room.FinishEnter() (delayed)
+			-> ev: room.onEnter
+				-> TFigureCollection.onEnterRoom()
+					-> figure.onEnterRoom()
+						-> ev: figure.onEnterRoom
+						-> figure.SetInRoom(Room)
 	=== LEAVE ===
 	figure.LeaveRoom()
 		-> figure.CanEnterRoom()
@@ -537,13 +537,12 @@ Rem
 		-> ev: figure.onTryLeaveRoom
 		-> room.BeginLeave()
 			-> ev: room.onBeginLeave
-			-> ev: room.onLeave (delayed --> door anim)
-				-> room.FinishLeave()
-					-> remove occupant (when door closes)
-				-> figureCollection.onLeaveRoom()
-					-> figure.FinishLeaveRoom()
-						-> ev: figure.onLeaveRoom
-						-> figure.SetInRoom(null)
+		-> room.FinishLeave() (delayed --> door anim)
+			-> remove occupant (when door closes)
+			-> figureCollection.onLeaveRoom()
+				-> figure.FinishLeaveRoom()
+					-> ev: figure.onLeaveRoom
+					-> figure.SetInRoom(null)
 End Rem
 
 	Method BeginEnter:int(door:TRoomDoorBase, entity:TEntity, speed:int)

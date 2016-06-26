@@ -428,12 +428,12 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	Method IsWaitingToEnter:Int()
-		Return WaitEnterTimer > Time.GetTimeGone()
+		Return WaitEnterTimer > GetBuildingTime().GetMillisecondsGone()
 	End Method
 
 
 	Method IsWaitingToLeave:Int()
-		Return WaitLeavingTimer > Time.GetTimeGone()
+		Return WaitLeavingTimer > GetBuildingTime().GetMillisecondsGone()
 	End Method
 
 

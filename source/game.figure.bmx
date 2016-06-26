@@ -206,7 +206,7 @@ Type TFigure extends TFigureBase
 	Method customReachTargetStep1:Int()
 		'start waiting in front of the target
 		If TRoomDoorBase(GetTarget()) or THotspot(GetTarget())
-			WaitEnterTimer = Time.GetTimeGone() + WaitEnterLeavingTime
+			WaitEnterTimer = GetBuildingTime().GetMillisecondsGone() + WaitEnterLeavingTime
 		Else
 			Super.customReachTargetStep1()
 		EndIf
@@ -387,18 +387,18 @@ Type TFigure extends TFigureBase
 			'if the greeting type differs
 			'- or enough time has gone for another greet
 			'- or another figure gets greeted
-			if greetType <> lastGreetType or Time.GetTimeGone() - lastGreetTime > greetEvery or lastGreetFigureID <> figure.id
+			if greetType <> lastGreetType or GetBuildingTime().GetMillisecondsGone() - lastGreetTime > greetEvery or lastGreetFigureID <> figure.id
 				lastGreetType = greetType
 				lastGreetFigureID = figure.id
 
-				lastGreetTime = Time.GetTimeGone()
+				lastGreetTime = GetBuildingTime().GetMillisecondsGone()
 			endif
 
 			'show greet for a maximum time of "showGreetTime"
-			if Time.GetTimeGone() - lastGreetTime < greetTime
-				local scale:float = TInterpolation.BackOut(0.0, 1.0, Min(greetTime, Time.GetTimeGone() - lastGreetTime), greetTime)
+			if GetBuildingTime().GetMillisecondsGone() - lastGreetTime < greetTime
+				local scale:float = TInterpolation.BackOut(0.0, 1.0, Min(greetTime, GetBuildingTime().GetMillisecondsGone() - lastGreetTime), greetTime)
 				local oldAlpha:float = GetAlpha()
-				SetAlpha Float(TInterpolation.RegularOut(0.5, 1.0, Min(0.5*greetTime, Time.GetTimeGone() - lastGreetTime), 0.5*greetTime))
+				SetAlpha Float(TInterpolation.RegularOut(0.5, 1.0, Min(0.5*greetTime, GetBuildingTime().GetMillisecondsGone() - lastGreetTime), 0.5*greetTime))
 				'subtract half width from position - figure is drawn centered
 				'figure right of me
 				If Figure.area.GetX() > area.GetX()
@@ -611,7 +611,7 @@ Type TFigure extends TFigureBase
 		if event.IsVeto() then return False
 		
 		'enter is allowed - set time of start
-		changingRoomStart = Time.GetTimeGone()
+		changingRoomStart = GetBuildingTime().GetMillisecondsGone()
 
 		'actually enter the room
 		room.BeginEnter(door, self, TRoomBase.ChangeRoomSpeed/2)
@@ -715,7 +715,6 @@ Type TFigure extends TFigureBase
 		'skip leaving if not allowed to do so
 		if not force and not CanLeaveroom(inroom) then return False
 
-
 		'ask if somebody is against leaving that room
 		'but ignore the result if figure is forced to leave
 		local event:TEventSimple = TEventSimple.Create("figure.onTryLeaveRoom", new TData.Add("door", fromDoor) , self, inroom )
@@ -730,7 +729,7 @@ Type TFigure extends TFigureBase
 
 		'=== LEAVE ===
 		'leave is allowed - set time of start
-		changingRoomStart = Time.GetTimeGone()
+		changingRoomStart = GetBuildingTime().GetMillisecondsGone()
 
 		'inform what the figure does now
 		currentAction = ACTION_LEAVING
@@ -751,10 +750,6 @@ Type TFigure extends TFigureBase
 
 	'gets called when the figure really leaves the room (animation finished etc)
 	Method FinishLeaveRoom(room:TRoomBase)
-		'inform others that a figure left the room
-		'-> triggers Player-AI etc.
-		EventManager.triggerEvent( TEventSimple.Create("figure.onLeaveRoom", null, self, room ) )
-
 		'Debug
 		'print self.name+" FINISHED LEAVING " + inRoom.GetName() +" ["+inRoom.id+"]"
 
@@ -768,7 +763,12 @@ Type TFigure extends TFigureBase
 		currentAction = ACTION_IDLE
 
 		'activate timer to wait a bit after leaving a room
-		WaitLeavingTimer = Time.GetTimeGone() + WaitEnterLeavingTime
+		WaitLeavingTimer = GetBuildingTime().GetMillisecondsGone() + WaitEnterLeavingTime
+
+
+		'inform others that a figure left the room
+		'-> triggers Player-AI etc.
+		EventManager.triggerEvent( TEventSimple.Create("figure.onLeaveRoom", null, self, room ) )
 	End Method
 
 
@@ -1027,7 +1027,7 @@ Type TFigure extends TFigureBase
 
 		local oldAlpha:Float = GetAlpha()
 		if isChangingRoom() and fadeOnChangingRoom
-			local alpha:float = Min(1.0, float(Time.GetTimeGone() - changingRoomStart) / (TRoom.ChangeRoomSpeed / 2.0))
+			local alpha:float = Min(1.0, float(GetBuildingTime().GetMillisecondsGone() - changingRoomStart) / (TRoom.ChangeRoomSpeed / 2.0))
 			'to building -> fade in
 			if currentAction = ACTION_LEAVING
 				'nothing to do
