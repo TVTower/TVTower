@@ -27,7 +27,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Field filterMoviesGood:TProgrammeLicenceFilterGroup
 	Field filterMoviesCheap:TProgrammeLicenceFilterGroup
 	Field filterSeries:TProgrammeLicenceFilter
-	Field filterAuction:TProgrammeLicenceFilter
+	Field filterAuction:TProgrammeLicenceFilterGroup
 
 	'graphical lists for interaction with blocks
 	Global haveToRefreshGuiElements:int = TRUE
@@ -40,8 +40,10 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Global suitcasePos:TVec2D = new TVec2D.Init(350,130)
 	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(14,25)
 	Field programmesPerLine:int	= 13
+	Field movieGoodMoneyMinimum:int = 175000
+	Field movieGoodQualityMinimum:Float = 0.15
 	Field movieCheapMoneyMaximum:int = 100000
-	Field movieCheapQualityMaximum:Float = 0.20
+	Field movieCheapQualityMaximum:Float = 0.25
 
 	Global _instance:RoomHandler_MovieAgency
 	Global _eventListeners:TLink[]
@@ -73,30 +75,43 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			filterMoviesCheap.AddFilter(new TProgrammeLicenceFilter)
 		endif
 		if not filterSeries then filterSeries = new TProgrammeLicenceFilter
-		if not filterAuction then filterAuction = new TProgrammeLicenceFilter
-
-		filterAuction.priceMin = 250000
-		filterAuction.priceMax = -1
-		filterAuction.licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION, TVTProgrammeLicenceType.SERIES]
-		'avoid "too used" licences
-		filterAuction.relativeTopicalityMin = 0.85
-		filterAuction.relativeTopicalityMax = -1.0
-		filterAuction.maxTopicalityMin = 0.50
-		filterAuction.maxTopicalityMax = -1.0
-		filterAuction.checkTradeability = True
-		'maximum of 1 year since release
-		filterAuction.ageMax = TWorldTime.DAYLENGTH * GetWorldTime().GetDaysPerYear()
-		filterAuction.checkAgeMin = False
-		filterAuction.checkAgeMax = True
 		
+		if not filterAuction
+			filterAuction = new TProgrammeLicenceFilterGroup
+			filterAuction.AddFilter(new TProgrammeLicenceFilter)
+			filterAuction.AddFilter(new TProgrammeLicenceFilter)
+		endif
+
+		'auction: either expensive - or - live programme
+		filterAuction.filters[0].priceMin = 250000
+		filterAuction.filters[0].priceMax = -1
+		filterAuction.filters[0].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION, TVTProgrammeLicenceType.SERIES]
+		'avoid "too used" licences
+		filterAuction.filters[0].relativeTopicalityMin = 0.85
+		filterAuction.filters[0].relativeTopicalityMax = -1.0
+		filterAuction.filters[0].maxTopicalityMin = 0.50
+		filterAuction.filters[0].maxTopicalityMax = -1.0
+		filterAuction.filters[0].checkTradeability = True
+		'maximum of 1 year since release
+		filterAuction.filters[1].priceMin = 100000
+		filterAuction.filters[1].priceMax = -1
+		filterAuction.filters[1].licenceTypes = [TVTProgrammeLicenceType.SINGLE]
+		filterAuction.filters[1].SetDataFlag(TVTProgrammeDataFlag.LIVE)
+		filterAuction.filters[1].checkTradeability = True
+		filterAuction.filters[1].timeToReleaseMin = 5 * TWorldTime.DAYLENGTH
+		filterAuction.filters[1].checkTimeToReleaseMin = True
+		filterAuction.filters[1].checkTimeToReleaseMax = False
+		filterAuction.filters[1].checkAgeMin = False
+		filterAuction.filters[1].checkAgeMax = False
+
 
 
 		'good movies must be more expensive than X _and_ of better
 		'quality then Y
-		filterMoviesGood.priceMin = movieCheapMoneyMaximum
+		filterMoviesGood.priceMin = movieGoodMoneyMinimum
 		filterMoviesGood.priceMax = -1
 		filterMoviesGood.licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
-		filterMoviesGood.qualityMin = movieCheapQualityMaximum
+		filterMoviesGood.qualityMin = movieGoodQualityMinimum
 		filterMoviesGood.qualityMax = -1.0
 		filterMoviesGood.relativeTopicalityMin = 0.25
 		filterMoviesGood.relativeTopicalityMax = -1.0
@@ -117,7 +132,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'filterMoviesCheap.filters[0].SetRequiredOwners([TOwnedGameObject.OWNER_NOBODY])
 
 		filterMoviesCheap.filters[0].priceMin = 0
-		filterMoviesCheap.filters[0].priceMax = movieCheapMoneyMaximum
+		filterMoviesCheap.filters[0].priceMax = 0.75*movieCheapMoneyMaximum
 		filterMoviesCheap.filters[0].relativeTopicalityMin = 0.25
 		filterMoviesCheap.filters[0].relativeTopicalityMax = -1.0
 		filterMoviesCheap.filters[0].maxTopicalityMin = 0.25 'avoid older/broadcasted too often
@@ -127,7 +142,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		filterMoviesCheap.filters[1].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
 		'filterMoviesCheap.filters[1].SetRequiredOwners([TOwnedGameObject.OWNER_NOBODY])
 		filterMoviesCheap.filters[1].priceMin = -1
-		filterMoviesCheap.filters[1].priceMax = movieCheapMoneyMaximum
+		filterMoviesCheap.filters[1].priceMax = 1.0*movieCheapMoneyMaximum
 		filterMoviesCheap.filters[1].qualityMin = -1.0
 		filterMoviesCheap.filters[1].qualityMax = movieCheapQualityMaximum
 		filterMoviesCheap.filters[1].relativeTopicalityMin = 0.25
@@ -1066,22 +1081,16 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		endif
 	
 		licence = programmeLicence
-		local filter:TProgrammeLicenceFilter
 
 
 		'try to find a "live" programme first
 		if GetCurrentLiveOffers() < 3
-			filter = RoomHandler_MovieAgency.GetInstance().filterAuction.Copy()
-			filter.SetDataFlag(TVTProgrammeDataFlag.LIVE)
+			local filter:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterAuction.filters[1].Copy()
 			'only take live-programme starting not earlier than 3 days
 			'from now
 			'this is needed to avoid a "live"-programme being no longer
 			'live
 			filter.timeToReleaseMin = 3 * TWorldTime.DAYLENGTH
-			filter.checkTimeToReleaseMin = True
-			filter.checkTimeToReleaseMax = False
-			filter.checkAgeMin = False
-			filter.checkAgeMax = False
 			
 			While Not licence And filter.priceMin >= 0
 				licence = GetProgrammeLicenceCollection().GetRandomByFilter(filter)
@@ -1093,13 +1102,15 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 		'find a normal licence
 		if not licence
-			filter = RoomHandler_MovieAgency.GetInstance().filterAuction.Copy()
-			While Not licence And filter.priceMin >= 0
-				licence = GetProgrammeLicenceCollection().GetRandomByFilter(filter)
+			local filterGroup:TProgrammeLicenceFilterGroup = TProgrammeLicenceFilterGroup(RoomHandler_MovieAgency.GetInstance().filterAuction.Copy())
+			While Not licence And filterGroup.filters[0].priceMin >= 0
+				licence = GetProgrammeLicenceCollection().GetRandomByFilter(filterGroup)
 				'lower the requirements
 				If Not licence
-					filter.priceMin :- 5000
-					filter.ageMax :+ TWorldTime.DAYLENGTH
+					filterGroup.filters[0].priceMin :- 5000
+					filterGroup.filters[0].ageMax :+ TWorldTime.DAYLENGTH
+
+					filterGroup.filters[1].priceMin = Max(0, filterGroup.filters[1].priceMin - 5000)
 				endif
 			Wend
 		endif
