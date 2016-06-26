@@ -4920,6 +4920,8 @@ Function DEV_switchRoom:Int(room:TRoom)
 	'skip if already there
 	If GetPlayer().GetFigure().inRoom = room Then Return False
 
+	TLogger.Log("DEV_switchRoom", "Switching to room ~q"+room.name+"~q.", LOG_DEBUG)
+
 	'to avoid seeing too much animation
 	TInGameScreen_Room.temporaryDisableScreenChangeEffects = True
 
@@ -4934,7 +4936,10 @@ Function DEV_switchRoom:Int(room:TRoom)
 
 	'remove potential elevator passenger 
 	GetElevator().LeaveTheElevator(GetPlayer().GetFigure())
-	
+
+	'stop screen transition
+	'ScreenCollection.targetScreen = null
+
 	'a) add the room as new target before all others
 	'GetPlayer().GetFigure().PrependTarget(TRoomDoor.GetMainDoorToRoom(room))
 	'b) set it as the only route
@@ -4945,6 +4950,7 @@ Function DEV_switchRoom:Int(room:TRoom)
 	'already (instead of next turn - which might have another "dev_key"
 	'pressed)
 	GetPlayer().GetFigure().ReachTargetStep1()
+	GetPlayer().GetFigure().EnterTarget()
 
 	Return True
 End Function

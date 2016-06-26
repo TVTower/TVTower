@@ -85,6 +85,8 @@ Type TScreenCollection
 				if useChangeEffects and currentScreen and currentScreen.HasScreenChangeEffect(screen)
 					return _SetTargetScreen(screen)
 				else
+					'reset a potential existing target screen
+					targetScreen = null
 					return _SetCurrentScreen(screen)
 				endif
 			endif
@@ -163,15 +165,17 @@ endrem
 		'trigger event so others can attach
 		EventManager.triggerEvent(TEventSimple.Create("screen.onDraw", null, GetCurrentScreen()))
 
-		'handle screen change effects (LEAVE) for current screen
-		'keep drawing the last state until the screen is changed
-		if targetScreen and targetScreen <> GetCurrentScreen()
-			if GetCurrentScreen()._leaveScreenEffect
-				GetCurrentScreen()._leaveScreenEffect.Draw(tweenValue)
+		if useChangeEffects
+			'handle screen change effects (LEAVE) for current screen
+			'keep drawing the last state until the screen is changed
+			if targetScreen and targetScreen <> GetCurrentScreen()
+				if GetCurrentScreen()._leaveScreenEffect
+					GetCurrentScreen()._leaveScreenEffect.Draw(tweenValue)
+				endif
+			'handle screen change effects (ENTER) for current screen
+			else if not GetCurrentScreen().FinishedEnterEffect()
+				GetCurrentScreen()._enterScreenEffect.Draw(tweenValue)
 			endif
-		'handle screen change effects (ENTER) for current screen
-		else if not GetCurrentScreen().FinishedEnterEffect()
-			GetCurrentScreen()._enterScreenEffect.Draw(tweenValue)
 		endif
 
 		'draw things on top of everything - eg an ingame interface
@@ -181,29 +185,32 @@ endrem
 
 	Method UpdateCurrent:int(deltaTime:float)
 		'handle screen change (effects finished)
-		if targetScreen and GetCurrentScreen() and GetCurrentScreen().FinishedLeaveEffect()
-			if GetCurrentScreen().state = TScreen.STATE_LEAVING
+		if targetScreen and GetCurrentScreen()
+			if not useChangeEffects or GetCurrentScreen().FinishedLeaveEffect()
+				if GetCurrentScreen().state = TScreen.STATE_LEAVING
 'print "               : finish leave [from: "+GetCurrentScreen().GetName()+"]"
-				GetCurrentScreen().FinishLeave(targetScreen)
+					GetCurrentScreen().FinishLeave(targetScreen)
+				endif
+
+				_SetCurrentScreen(targetScreen)
+				targetScreen = null
 			endif
-			_SetCurrentScreen(targetScreen)
-			targetScreen = null
 		endif
 
 		if not GetCurrentScreen() then return FALSE
 
 		'handle screen change effects (LEAVE) for current screen
 		if targetScreen
-			if not GetCurrentScreen().FinishedLeaveEffect()
+			if useChangeEffects and not GetCurrentScreen().FinishedLeaveEffect()
 				GetCurrentScreen()._leaveScreenEffect.Update(deltaTime)
 			endif
 		'handle screen change effects (ENTER) for current screen
 		else
-			if not GetCurrentScreen().FinishedEnterEffect()
+			if useChangeEffects and not GetCurrentScreen().FinishedEnterEffect()
 				GetCurrentScreen()._enterScreenEffect.Update(deltaTime)
 			endif
 
-			if GetCurrentScreen().state = TScreen.STATE_ENTERING and GetCurrentScreen().FinishedEnterEffect()
+			if GetCurrentScreen().state = TScreen.STATE_ENTERING and (not useChangeEffects or GetCurrentScreen().FinishedEnterEffect())
 'print "               : finish enter [to: "+GetCurrentScreen().GetName()+"]"
 				GetCurrentScreen().FinishEnter()
 'print "----------"
