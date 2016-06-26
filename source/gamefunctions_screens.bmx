@@ -273,6 +273,7 @@ Type TInGameScreen Extends TScreen
 			GetGame().Update(deltaTime)
 			GetInGameInterface().Update(deltaTime)
 			GetElevator().Update()
+			GetRoomBaseCollection().UpdateEnteringAndLeavingStates()
 			GetFigureCollection().UpdateAll()
 		EndIf
 	End Method

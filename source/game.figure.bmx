@@ -656,6 +656,9 @@ Type TFigure extends TFigureBase
 		'Debug
 		'print self.name+" FINISH ENTERING " + room.GetName() +" ["+room.id+"]"
 
+		'backup the used door
+		fromDoor = door
+
 		'reset action
 		currentAction = ACTION_IDLE
 
@@ -715,14 +718,14 @@ Type TFigure extends TFigureBase
 
 		'ask if somebody is against leaving that room
 		'but ignore the result if figure is forced to leave
-		local event:TEventSimple = TEventSimple.Create("figure.onTryLeaveRoom", null , self, inroom )
+		local event:TEventSimple = TEventSimple.Create("figure.onTryLeaveRoom", new TData.Add("door", fromDoor) , self, inroom )
 		EventManager.triggerEvent(event)
 		'stop leaving
 		if not force and event.IsVeto() then return False
 
 		'inform that a figure forcefully leaves a room (so GUI or so can
 		'get cleared)
-		if force then EventManager.triggerEvent(TEventSimple.Create("figure.onForcefullyLeaveRoom", null , self, inroom))
+		if force then EventManager.triggerEvent(TEventSimple.Create("figure.onForcefullyLeaveRoom", new TData.Add("door", fromDoor) , self, inroom))
 
 
 		'=== LEAVE ===
@@ -742,7 +745,7 @@ Type TFigure extends TFigureBase
 		fadeOnChangingRoom = True
 		if inRoom.ShowsOccupants() then fadeOnChangingRoom = False
 
-		inRoom.BeginLeave(null, self, TRoom.ChangeRoomSpeed/2)
+		inRoom.BeginLeave(fromDoor, self, TRoom.ChangeRoomSpeed/2)
 	End Method
 
 
@@ -757,6 +760,9 @@ Type TFigure extends TFigureBase
 
 		'enter target -> null = building
 		SetInRoom( null )
+
+		'remove used door
+		fromDoor = null
 
 		'reset action
 		currentAction = ACTION_IDLE

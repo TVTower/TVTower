@@ -71,14 +71,6 @@ End Function
 ' - Multiple "Doors" to the same room
 Type TRoom extends TRoomBase {_exposeToLua="selected"}
 	Method New()
-		'register all needed events if not done yet
-		if not _initDone
-			'close / open doors
-			EventManager.registerListenerFunction("room.onLeave", onLeave)
-			EventManager.registerListenerFunction("room.onEnter", onEnter)
-			_initDone = TRUE
-		endif
-
 		'do not add the room automatically ... it might lead to
 		'duplicates in the collection when loading games
 		'GetRoomCollection().Add(self)
@@ -152,26 +144,11 @@ Type TRoom extends TRoomBase {_exposeToLua="selected"}
 	End Method
 
 
-	'override to close all doors to a room
-	Method FinishEnter:int(door:TRoomDoorBase, entity:TEntity)
-		'=== CLOSE DOORS ===
-		'close the door (for now: close all doors to this room)
-		'which door to open?
-		if not door
-			For door = eachin GetRoomDoorBaseCollection().GetDoorsToRoom(id)
-				If door.GetDoorType() >= 0 then door.Close(entity)
-			Next
-		else
-			Super.FinishEnter(door, entity)
-		endif
-	End Method
-
-
 	'override to fetch main door if none was given
-	Method FinishLeave:int(door:TRoomDoorBase, entity:TEntity)
+	Method FinishLeave:int()
 		'open the door
-		if not door then door = GetRoomDoorBaseCollection().GetMainDoorToRoom(id)
+		if not leavingDoor then leavingDoor = GetRoomDoorBaseCollection().GetMainDoorToRoom(id)
 
-		Super.FinishLeave(door, entity)
+		Super.FinishLeave()
 	End Method
 End Type

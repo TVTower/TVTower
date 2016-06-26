@@ -145,6 +145,9 @@ Type TRoomDoorBase extends TRenderableEntity  {_exposeToLua="selected"}
 	'door 1-4 on floor (<0 is invisible, -1 is unset)
 	Field doorSlot:Int = -1
 	Field doorType:Int = -1
+	'who opened the door as the last one (this entity also closes the
+	'door then)
+	Field openedByEntityGUID:string
 
 
 	Method GenerateGUID:string()
@@ -175,6 +178,11 @@ Type TRoomDoorBase extends TRenderableEntity  {_exposeToLua="selected"}
 
 	Method Open(entity:TEntity)
 		DoorTimer.reset()
+		if entity
+			openedByEntityGUID = entity.GetGUID()
+		else
+			openedByEntityGUID = ""
+		endif
 	End Method
 
 
