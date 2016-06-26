@@ -1992,7 +1992,7 @@ Type TProgrammeLicenceFilterGroup extends TProgrammeLicenceFilter
 		if TProgrammeLicenceFilterGroup(otherFilter)
 			local otherFilterGroup:TProgrammeLicenceFilterGroup = TProgrammeLicenceFilterGroup(otherFilter)
 			connectionType = otherFilterGroup.connectionType
-			for local f:TProgrammeLicenceFilter = EachIn filters
+			for local f:TProgrammeLicenceFilter = EachIn otherFilterGroup.filters
 				filters :+ [f.Copy()]
 			Next
 		else
