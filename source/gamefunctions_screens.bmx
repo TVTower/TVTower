@@ -326,7 +326,7 @@ Type TInGameScreen_World Extends TInGameScreen
 		_eventListeners = new TLink[0]
 
 		'=== add new event listeners
-		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onLeaveRoom", onLeaveRoom, "TFigure" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onBeginLeaveRoom", onBeginLeaveRoom, "TFigure" ) ]
 	End Method
 
 
@@ -335,7 +335,7 @@ Type TInGameScreen_World Extends TInGameScreen
 	End Method
 
 
-	Function onLeaveRoom:Int( triggerEvent:TEventBase )
+	Function onBeginLeaveRoom:Int( triggerEvent:TEventBase )
 		Local figure:TFigure = TFigure( triggerEvent._sender )
 		If Not figure Or GetPlayerBase().GetFigure() <> figure Then Return False
 
