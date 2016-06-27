@@ -546,14 +546,18 @@ Type TElevator Extends TEntity
 	'===== Fahrstuhl steuern =====
 
 	Method OpenDoor()
-		GetSoundSource().PlayRandomSfx("elevator_door_open")
+		if not GetBuildingTime().TooFastForSound()
+			GetSoundSource().PlayRandomSfx("elevator_door_open")
+		endif
 		door.GetFrameAnimations().SetCurrent("opendoor", True)
 		DoorStatus = DOOR_OPENING
 	End Method
 
 
 	Method CloseDoor()
-		GetSoundSource().PlayRandomSfx("elevator_door_close")
+		if not GetBuildingTime().TooFastForSound()
+			GetSoundSource().PlayRandomSfx("elevator_door_close")
+		endif
 		door.GetFrameAnimations().SetCurrent("closedoor", True)
 		DoorStatus = DOOR_CLOSING
 	End Method

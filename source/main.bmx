@@ -1339,6 +1339,7 @@ End Type
 Type TGameState
 	Field _gameSummary:TData = Null
 	Field _Game:TGame = Null
+	Field _BuildingTime:TBuildingTime = Null
 	Field _WorldTime:TWorldTime = Null
 	Field _World:TWorld = Null
 	Field _GameRules:TGamerules = Null
@@ -1487,6 +1488,7 @@ Type TGameState
 		_Assign(_Betty, TBetty._instance, "Betty", MODE_LOAD)
 		_Assign(_World, TWorld._instance, "World", MODE_LOAD)
 		_Assign(_WorldTime, TWorldTime._instance, "WorldTime", MODE_LOAD)
+		_Assign(_BuildingTime, TBuildingTime._instance, "BuildingTime", MODE_LOAD)
 		_Assign(_GameRules, GameRules, "GameRules", MODE_LOAD)
 		_Assign(_AuctionProgrammeBlocksList, TAuctionProgrammeBlocks.list, "AuctionProgrammeBlocks", MODE_LOAD)
 
@@ -1508,6 +1510,7 @@ Type TGameState
 
 		_Assign(GameRules, _GameRules, "GameRules", MODE_SAVE)
 		_Assign(TWorldTime._instance, _WorldTime, "WorldTime", MODE_SAVE)
+		_Assign(TBuildingTime._instance, _BuildingTime, "BuildingTime", MODE_SAVE)
 
 		'database data for contracts
 		_Assign(TAdContractBaseCollection._instance, _AdContractBaseCollection, "AdContractBaseCollection", MODE_SAVE)

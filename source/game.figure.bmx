@@ -297,7 +297,7 @@ Type TFigure extends TFigureBase
 
 
 		'decide if we have to play sound
-		if GetVelocity().getX() <> 0 and not IsInElevator()
+		if GetVelocity().getX() <> 0 and not IsInElevator() and not GetBuildingTime().TooFastForSound()
 			GetSoundSource().PlayOrContinueRandomSFX("steps")
 		else
 			GetSoundSource().Stop("steps")
@@ -507,7 +507,12 @@ Type TFigure extends TFigureBase
 	Method SetInRoom:Int(room:TRoomBase)
 		'in all cases: close the door (even if we cannot enter)
 		'Ronny TODO: really needed?
-		If room and TRoomDoorBase(GetTarget()) then TRoomDoorBase(GetTarget()).Close(self)
+		'  16/06/27: seems not to be needed
+		If room and TRoomDoorBase(GetTarget())
+			if TRoomDoorBase(GetTarget()).IsOpen()
+				TRoomDoorBase(GetTarget()).Close(self)
+			endif
+		endif
 
 		If room and not room.IsOccupant(self) then room.addOccupant(Self)
 

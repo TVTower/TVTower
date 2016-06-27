@@ -42,6 +42,12 @@ Type TBuildingTime {_exposeToLua="selected"}
 	End Method
 
 
+	Method TooFastForSound:int()
+		if _timeFactor > 5 then return True
+		return False
+	End Method
+	
+
 	Method SetTimeFactor:int(timeFactor:Float)
 		self._timeFactor = Max(0.0, timeFactor)
 	End Method
