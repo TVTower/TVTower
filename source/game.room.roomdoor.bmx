@@ -108,14 +108,16 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 	'override to play sound
 	Method Close(entity:TEntity)
+		Super.Close(entity)
+
 		if not TFigureBase(entity) then return
-		
-		'timer finished
-		If Not DoorTimer.isExpired()
+
+		'timer finished is finished in Super.Close() already
+		'If DoorTimer.isExpired() and not GetBuildingTime().TooFastForSound()
+		if not GetBuildingTime().TooFastForSound()
 			GetSoundSource().PlayCloseDoorSfx(TFigureBase(entity))
 		Endif
-		
-		Super.Close(entity)
+	
 	End Method
 
 
@@ -123,8 +125,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 	Method Open(entity:TEntity)
 		if not TFigureBase(entity) then return
 
-		'timer ticks again
-		If DoorTimer.isExpired()
+		if not GetBuildingTime().TooFastForSound()
 			GetSoundSource().PlayOpenDoorSfx(TFigureBase(entity))
 		Endif
 
@@ -188,8 +189,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 		local doorSprite:TSprite = GetSprite()
 
 		'==== DRAW DOOR ====
-		If getDoorType() >= 5
-			If getDoorType() = 5 AND DoorTimer.isExpired() Then Close(null)
+		If IsOpen()
 			'valign = 1 -> subtract sprite height
 			doorSprite.Draw(xOffset + GetScreenX(), yOffset + GetScreenY(), getDoorType(), ALIGN_LEFT_BOTTOM)
 		EndIf
@@ -290,7 +290,6 @@ End Type
 Type TDoorSoundSource Extends TSoundSourceElement
 	Field door:TRoomDoor
 	Field IsGamePlayerAction:Int
-	Field DoorTimer:TIntervalTimer = TIntervalTimer.Create(1000) '500
 
 
 	Function Create:TDoorSoundSource(door:TRoomDoor)
@@ -302,32 +301,18 @@ Type TDoorSoundSource Extends TSoundSourceElement
 
 
 	Method PlayOpenDoorSfx(figure:TFigureBase)
-		'Die Türsounds brauchen eine spezielle Behandlung wenn es sich
-		'dabei um einen Spieler handelt der einen Raum betritt oder
-		'verlässt.
-		'Diese spezielle Behandlung (der Modus) wird durch
-		'IsGamePlayerAction = true gekenntzeichnet.
-		'Ist dieser Modus aktiv wird ein Timer gestartet welcher das
-		'Schließen der Türe nach einiger Zeit abspielt (siehe Update).
-		'Dies ist nötig da im normalen Codeablauf das "CloseDoor" von
-		'TRooms zu schnell kommt. Dieser Schließensound aus CloseDoor
-		'muss in diesem Modus abgefangen werden
-
-		If figure = GetPlayerBase().GetFigure() 'Dieser Code nur für den aktiven Spieler
-			If Not IsGamePlayerAction 'Wenn wir uns noch nicht im Spezialmodus befinden, dann weiter prüfen ob man ihn gleich aktiv schalten muss
-				If DoorTimer.isExpired() 'Ist der Timer abgelaufen?
-					IsGamePlayerAction = True 'Den Modus starten
-					If not GetPlayerBase().IsInRoom() 'von draußen (Flur) nach drinen (Raum)
-						If door.getRoom() And door.GetRoom().hasOccupant() Then IsGamePlayerAction = False 'Ein kleiner Hack: Wenn der Raum besetzt ist, dann soll das mit dem Modus doch nicht durchgeführt werden
-						PlayRandomSfx("door_open", GetPlayerBeforeDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler vor der Türe (Depth)
-					Else 'von drinnen (Raum) nach draußen (Flur)
-						PlayRandomSfx("door_close", GetPlayerBehindDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler hinter der Türe (Depth) (im Raum)
-					EndIf
-					DoorTimer.reset() 'den Close auf Timer setzen...
-				Else 'In dem Fall ist die Türe also noch offen
-					DoorTimer.reset() 'Den Schließen-Sound verschieben.
-				EndIf
+		If figure = GetPlayerBase().GetFigure()
+			IsGamePlayerAction = True
+			'moving into a room
+			If not GetPlayerBase().IsInRoom()
+				'play a sound with settings as if in the building
+				PlayRandomSfx("door_open", GetPlayerBeforeDoorSettings())
+			'leaving a room
+			Else
+				'play a sound with settings as if in the room
+				PlayRandomSfx("door_open", GetPlayerBehindDoorSettings())
 			EndIf
+			IsGamePlayerAction = False
 		Else
 			PlayRandomSfx("door_open")
 		EndIf
@@ -335,39 +320,21 @@ Type TDoorSoundSource Extends TSoundSourceElement
 
 
 	Method PlayCloseDoorSfx(figure:TFigureBase)
-		'Die Türsounds brauchen eine spezielle Behandlung wenn es sich
-		'dabei um einen Spieler handelt der einen Raum betritt oder
-		'verlässt.
-		'Diese spezielle Behandlung (der Modus) wird durch
-		'IsGamePlayerAction = true gekenntzeichnet.
-		'Ist dieser Modus aktiv wird ein Timer gestartet welcher das
-		'Schließen der Türe nach einiger Zeit abspielt (siehe Update).
-		'Dies ist nötig da im normalen Codeablauf das "CloseDoor" von
-		'TRooms zu schnell kommt. Dieser Schließensound aus CloseDoor
-		'muss in diesem Modus abgefangen werden
-		
-		 'Dieser Code nur für den aktiven Spieler
 		If figure = GetPlayerBase().GetFigure()
-			If Not IsGamePlayerAction Then PlayRandomSfx("door_close")
+			IsGamePlayerAction = True
+			'moving into the room (from building)
+			If not GetPlayerBase().IsInRoom()
+				'play a sound with settings as if in the room
+				PlayRandomSfx("door_close", GetPlayerBehindDoorSettings())
+			'leaving a room
+			Else
+				'play a sound with settings as if in the room
+				PlayRandomSfx("door_close", GetPlayerBeforeDoorSettings())
+			EndIf
+			IsGamePlayerAction = False
 		Else
 			PlayRandomSfx("door_close")
 		EndIf
-	End Method
-
-
-	Method Update()
-		If IsGamePlayerAction
-			If DoorTimer.isExpired() 'Wenn der Timer abgelaufen, dann den Türschließsound spielen
-				If not GetPlayerBase().IsInRoom()
-					PlayRandomSfx("door_close", GetPlayerBeforeDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler vor der Türe (Depth)
-				Else
-					PlayRandomSfx("door_close", GetPlayerBehindDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler hinter der Türe (Depth) (im Raum)
-				EndIf
-				IsGamePlayerAction = False 'Modus beenden
-			EndIf
-		EndIf
-
-		Super.Update()
 	End Method
 
 

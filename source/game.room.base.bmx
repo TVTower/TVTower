@@ -191,7 +191,7 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 
 	'=== CONFIG FOR ALL ROOMS ===
 	'time the change of a room needs (1st half is opening, 2nd closing a door)
-	Global ChangeRoomSpeed:int = 500
+	Global ChangeRoomSpeed:int = 600
 	'game seconds until a bomb will explode
 	Global bombFuseTime:Int = 5*60
 	'realtime milliseconds a bomb visually explodes
@@ -562,7 +562,7 @@ End Rem
 
 		enteringEntity = entity
 		enteringDoor = door
-		enteringFinishTime = GetBuildingTime().GetMillisecondsGone() + speed
+		enteringFinishTime = GetBuildingTime().GetMillisecondsGone() + 2*speed
 	End Method
 	
 
@@ -607,7 +607,7 @@ End Rem
 
 		leavingEntity = entity
 		leavingDoor = door
-		leavingFinishTime = GetBuildingTime().GetMillisecondsGone() + speed
+		leavingFinishTime = GetBuildingTime().GetMillisecondsGone() + 2*speed
 	End Method
 
 

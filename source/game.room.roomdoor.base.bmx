@@ -1,6 +1,7 @@
 SuperStrict
 Import "Dig/base.framework.entity.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
+Import "game.building.buildingtime.bmx"
 
 
 Type TRoomDoorBaseCollection
@@ -137,7 +138,7 @@ End Function
 
 Type TRoomDoorBase extends TRenderableEntity  {_exposeToLua="selected"}
 	'time is set in Init() depending on changeRoomSpeed..
-	Field DoorTimer:TIntervalTimer = TIntervalTimer.Create(1)
+	Field DoorTimer:TBuildingIntervalTimer = TBuildingIntervalTimer.Create(1)
 	'the id of the room
 	Field roomID:int = -1
 	'floor in the building
@@ -162,6 +163,11 @@ Type TRoomDoorBase extends TRenderableEntity  {_exposeToLua="selected"}
 
 	Method GetDoorType:int()
 		if DoorTimer.isExpired() then return doortype else return 5
+	End Method
+
+
+	Method IsOpen:int()
+		return getDoorType() >= 5
 	End Method
 
 
