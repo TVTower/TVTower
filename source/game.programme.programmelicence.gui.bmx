@@ -152,7 +152,7 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 		SetColor 255,255,255
 		SetAlpha 1.0
 
-		Self.licence.ShowSheet(sheetX,sheetY, sheetAlign, TVTBroadcastMaterialType.PROGRAMME)
+		Self.licence.ShowSheet(sheetX,sheetY, sheetAlign, TVTBroadcastMaterialType.PROGRAMME, self.licence.owner)
 	End Method
 
 
