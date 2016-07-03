@@ -495,8 +495,12 @@ endrem
 			parentLicence.licenceType = TVTProgrammeLicenceType.SERIES
 			parentLicence.data.dataType = TVTProgrammeDataType.SERIES
 		else
-			if productionConcept.script.GetParentScript().usedInProgrammeGUID <> parentLicence.GetGUID()
-				Throw "CreateParentalLicence() failed: another programme is already assigned to the parent script."
+			'configured at all?
+			if productionConcept.script.GetParentScript().usedInProgrammeGUID
+				'differs to GUID of parent?
+				if productionConcept.script.GetParentScript().usedInProgrammeGUID <> parentLicence.GetGUID()
+					Throw "CreateParentalLicence() failed: another programme is already assigned to the parent script."
+				endif
 			endif
 		endif
 
