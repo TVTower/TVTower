@@ -95,7 +95,10 @@ Type TPersist
 	Field fileVersion:Int
 
 	Field strictMode:int = True
-	
+	'a special connected type handling conversions of stored field contents
+	'no longer matching up the definitions of a field (= types differing)
+	Field converterTypeID:TTypeID
+	Field converterType:object
 
 	Rem
 	bbdoc: Serializes the specified Object into a String.
@@ -848,7 +851,8 @@ Type TPersist
 														fieldObj.Set(obj, null)
 													else
 														'ask the type for conversion help
-														local newDeserializedObj:object = DelegateDeserializationToType(objType, fieldNode.getAttribute("name"), serializedFieldTypeID.name(), fieldTypeID.name(), deserializedObj)
+														local newDeserializedObj:object = DelegateDeserializationToType(obj, fieldNode.getAttribute("name"), serializedFieldTypeID.name(), fieldTypeID.name(), deserializedObj)
+
 														fieldObj.Set(obj, newDeserializedObj)
 													endif
 												else
@@ -865,7 +869,7 @@ Type TPersist
 												'to "current" type
 												if not strictMode and not objTypeID.ExtendsType(fieldTypeID)
 													'ask the type for conversion help
-													local newDeserializedObj:object = DelegateDeserializationToType(objType, fieldNode.getAttribute("name"), objTypeID.name(), fieldTypeID.name(), deserializedObj)
+													local newDeserializedObj:object = DelegateDeserializationToType(obj, fieldNode.getAttribute("name"), objTypeID.name(), fieldTypeID.name(), deserializedObj)
 
 													fieldObj.Set(obj, newDeserializedObj)
 												'if same or extending, we are able to set it
@@ -893,28 +897,50 @@ Type TPersist
 	End Method
 
 
-	Function DelegateDeserializationToType:object(typeID:TTypeID, fieldName:string, sourceTypeName:string, targetTypeName:string, obj:object)
+	Method DelegateDeserializationToType:object(typeObj:object, fieldName:string, sourceTypeName:string, targetTypeName:string, obj:object)
+		Local typeID:TTypeID = TTypeID.ForObject(typeObj)
 		Local deserializeName:string = "DeSerialize"+ sourceTypeName + "To" + targetTypeName
-		Local deserializeFunction:TFunction = typeID.FindFunction(deserializeName)
+		Local deserializeFunction:TMethod
+		Local functionContainer:object = typeObj
+		if typeID then deserializeFunction = typeID.FindMethod(deserializeName)
 
 		'search for a more generic function if no individual function was
 		'found
 		if not deserializeFunction
 			local deserializeName2:string = "DeSerializeUnknownProperty"
-			Local deserializeFunction:TFunction = typeID.FindFunction(deserializeName2)
+			if typeID then deserializeFunction = typeID.FindMethod(deserializeName2)
+
+			'ask the generic converter
+			if not deserializeFunction
+				if converterTypeID
+					deserializeFunction = converterTypeID.FindMethod(deserializeName)
+					if not deserializeFunction
+						deserializeFunction = converterTypeID.FindMethod(deserializeName2)
+					endif
+
+					if deserializeFunction
+						if not converterType then converterType = converterTypeID.NewObject()
+						functionContainer = converterType
+					endif
+				endif
+			endif
 
 			if not deserializeFunction
-				Throw "~q"+typeID.name()+":"+fieldName+"~q contains incompatible type (~q"+sourceTypeName+"~q). To handle it, create function ~q"+deserializeName+"()~q or ~q"+deserializeName2+"()~q."
+				if typeID
+					Throw "~q"+typeID.name()+":"+fieldName+"~q contains incompatible type (~q"+sourceTypeName+"~q). To handle it, create function ~q"+deserializeName+"()~q or ~q"+deserializeName2+"()~q."
+				else
+					Throw "~qunknown:"+fieldName+"~q contains incompatible type (~q"+sourceTypeName+"~q). To handle it, create function ~q"+deserializeName+"()~q or ~q"+deserializeName2+"()~q."
+				endif
 			endif
 		endif
 
-		local res:object = deserializeFunction.Invoke([object(sourceTypeName), object(targetTypeName), obj])
+		local res:object = deserializeFunction.Invoke(functionContainer, [object(sourceTypeName), object(targetTypeName), obj])
 		if not res
 			Throw "Failed to deserialize ~q" + fieldName + "~q. Function ~q" + deserializeFunction.name() + "~q does not handle that type."
 		endif
 
 		return res
-	End Function
+	End Method
 
 
 	Function GetObjRef:String(obj:Object)
