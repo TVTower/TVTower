@@ -1620,7 +1620,7 @@ Type TSaveGame Extends TGameState
 		'save a short summary of the game at the begin of the file
 		_gameSummary = new TData
 		_gameSummary.Add("game_version", VersionString)
-		_gameSummary.Add("game_date", VersionDate)
+		_gameSummary.Add("game_builddate", VersionDate)
 		_gameSummary.Add("game_mode", "singleplayer")
 		_gameSummary.AddNumber("game_timeGone", GetWorldTime().GetTimeGone())
 		_gameSummary.Add("player_name", GetPlayer().name)
@@ -1693,6 +1693,50 @@ Type TSaveGame Extends TGameState
 	End Function
 
 
+	Function GetGameSummary:TData(fileURI:string)
+		local stream:TStream = ReadStream(fileURI)
+		if not stream
+			print "file not found: "+fileURI
+			return null
+		endif
+
+
+		local lines:string[]
+		local line:string = ""
+		local lineNum:int = 0
+		While not EOF(stream)
+			line = stream.ReadLine()
+			
+			if line.Find("name=~q_Game~q type=~qTGame~q>") > 0
+				exit
+			endif
+			
+			lines :+ [line]
+			lineNum :+ 1
+
+			if lineNum = 4 and not line.Find("name=~q_gameSummary~q type=~qTData~q>") > 0
+				print "unknown savegamefile"
+				return null
+			endif
+		Wend
+		'remove line 3 and 4
+		lines[2] = ""
+		lines[3] = ""
+		'remove last line / let the bmo-file end there
+		lines[lines.length-1] = "</bmo>"
+		
+		local content:string = "~n".Join(lines)
+
+		local p:TPersist = new TPersist
+		local res:TData = TData(p.DeserializeObject(content))
+		if not res then res = new TData
+		res.Add("fileURI", fileURI)
+		res.AddNumber("fileTime", FileTime(fileURI))
+
+		return res
+	End Function
+	
+
 	Function Load:Int(saveName:String="savegame.xml")
 		ShowMessage(True)
 
@@ -1704,6 +1748,22 @@ Type TSaveGame Extends TGameState
 		
 		TPersist.maxDepth = 4096*4
 		Local persist:TPersist = New TPersist
+
+		local savegameSummary:TData = GetGameSummary(savename)
+		'invalid savegame
+		if not savegameSummary
+			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is corrupt.", LOG_SAVELOAD | LOG_ERROR)
+			return False
+		endif
+
+
+		'try to repair older savegames
+		if savegameSummary.GetString("game_version") <> VersionString or savegameSummary.GetString("game_builddate") <> VersionDate
+			TLogger.Log("Savegame.Load()", "Savegame was created with an older TVTower-build. Enabling basic compatibility mode.", LOG_SAVELOAD | LOG_DEBUG)
+			persist.strictMode = False
+		endif
+
+
 		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(savename))
 		If Not saveGame
 			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is corrupt.", LOG_SAVELOAD | LOG_ERROR)

@@ -662,46 +662,9 @@ Type TGUISavegameListItem extends TGUISelectListItem
 		return 0
 	End Method
 
-	
+
 	Method SetSavegameFile(fileURI:string)
-		local stream:TStream = ReadStream(fileURI)
-		if not stream
-			print "file not found: "+fileURI
-			return
-		endif
-
-		local lines:string[]
-		local line:string = ""
-		local lineNum:int = 0
-		While not EOF(stream)
-			line = stream.ReadLine()
-			
-			if line.Find("name=~q_Game~q type=~qTGame~q>") > 0
-				exit
-			endif
-			
-			lines :+ [line]
-			lineNum :+ 1
-
-			if lineNum = 4 and not line.Find("name=~q_gameSummary~q type=~qTData~q>") > 0
-				print "unknown savegamefile"
-				fileInformation = new TData
-				return
-			endif
-		Wend
-		'remove line 3 and 4
-		lines[2] = ""
-		lines[3] = ""
-		'remove last line / let the bmo-file end there
-		lines[lines.length-1] = "</bmo>"
-		
-		local content:string = "~n".Join(lines)
-
-		local p:TPersist = new TPersist
-		fileInformation = TData(p.DeserializeObject(content))
-
-		fileInformation.Add("fileURI", fileURI)
-		fileInformation.AddNumber("fileTime", FileTime(fileURI))
+		fileInformation = TSavegame.GetGameSummary(fileURI)
 	End Method
 
 
