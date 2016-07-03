@@ -151,11 +151,21 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Const ACTION_ENTERING:int = 2
 	Const ACTION_LEAVING:int = 3
 
-	Method New()
-		'elevator uses building time and not game time
-		SetCustomSpeedFactorFunc( GetBuildingTimeTimeFactor )
+	'override
+	'figures use building time and not game time
+	'Method GetCustomSpeedFactorFunc:Float()()
+	'	return GetBuildingTimeTimeFactor
+	'End Method
+
+	'until BMX-NG allows for returned function pointers
+	Method HasCustomSpeedFactorFunc:int()
+		return True
 	End Method
 
+	Method RunCustomSpeedFactorFunc:float()
+		return GetBuildingTimeTimeFactor()
+	End Method
+	
 
 	Method GetFloor:Int(pos:TVec2D = Null) abstract
 

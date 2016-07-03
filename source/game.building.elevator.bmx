@@ -99,13 +99,23 @@ Type TElevator Extends TEntity
 		If Not _instance Then _instance = New TElevator
 		Return _instance
 	End Function
+	
 
+	'override
+	'elevator uses building time and not game time
+	'Method GetCustomSpeedFactorFunc:Float()()
+	'	return GetBuildingTimeTimeFactor
+	'End Method
 
-	Method New()
-		'elevator uses building time and not game time
-		SetCustomSpeedFactorFunc( GetBuildingTimeTimeFactor )
+	'until BMX-NG allows for returned function pointers
+	Method HasCustomSpeedFactorFunc:int()
+		return True
 	End Method
 
+	Method RunCustomSpeedFactorFunc:float()
+		return GetBuildingTimeTimeFactor()
+	End Method
+	
 
 	Method Initialize:TElevator()
 		ElevatorStatus = ELEVATOR_AWAITING_TASK

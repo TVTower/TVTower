@@ -448,7 +448,6 @@ Type TEntity extends TRenderableEntity
 	Field velocity:TVec2D = new TVec2D
 	'entity specific speedFactor. If < 0 then worldSpeedFactor gets used
 	Field worldSpeedFactor:Float = -1.0
-	Field _worldSpeedFactorFunc:Float()
 	
 	'a world speed factor of 1.0 means realtime, 2.0 = fast forward 
 	Global globalWorldSpeedFactor:Float = 1.0
@@ -470,16 +469,25 @@ Type TEntity extends TRenderableEntity
 	End Function
 
 
-	Method SetCustomSpeedFactorFunc( _func:Float() )
-		_worldSpeedFactorFunc = _func
+	'until BMX-NG allows for returned function pointers
+	'Method GetCustomSpeedFactorFunc:Float()()
+	'	return Null
+	'End Method
+
+	Method HasCustomSpeedFactorFunc:int()
+		return False
+	End Method
+
+	Method RunCustomSpeedFactorFunc:float()
+		return 0
 	End Method
 
 
 	Method GetWorldSpeedFactor:float()
 		if worldSpeedFactor < 0
 			'call the individual function if needed
-			if _worldSpeedFactorFunc
-				return _worldSpeedFactorFunc() * globalWorldSpeedFactorMod
+			if HasCustomSpeedFactorFunc()
+				return RunCustomSpeedFactorFunc() * globalWorldSpeedFactorMod
 			else
 				return GetGlobalWorldSpeedFactor()
 			endif
