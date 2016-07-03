@@ -1619,6 +1619,8 @@ Type TSaveGame Extends TGameState
 	Method BackupGameData:Int()
 		'save a short summary of the game at the begin of the file
 		_gameSummary = new TData
+		_gameSummary.Add("game_version", VersionString)
+		_gameSummary.Add("game_date", VersionDate)
 		_gameSummary.Add("game_mode", "singleplayer")
 		_gameSummary.AddNumber("game_timeGone", GetWorldTime().GetTimeGone())
 		_gameSummary.Add("player_name", GetPlayer().name)
