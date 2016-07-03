@@ -11,12 +11,6 @@
 
 extern "C"{
 
-/* Brucey */
-BBArray * bbRefArrayNull() {
-	return &bbEmptyArray;
-}
-
-
 void *bbRefFieldPtr( BBObject *obj,int index ){
 	return (char*)obj+index;
 }
@@ -27,6 +21,10 @@ void *bbRefMethodPtr( BBObject *obj,int index ){
 
 void *bbRefArrayElementPtr( int sz,BBArray *array,int index ){
 	return (char*)BBARRAYDATA( array,array->dims )+sz*index;
+}
+
+BBArray* bbRefArrayNull() {
+	return &bbEmptyArray;
 }
 
 int bbRefArrayClass(){
@@ -53,10 +51,10 @@ int bbRefArrayDimensions( BBArray *array ){
 BBArray *bbRefArrayCreate( const char *type,BBArray *arrDims ){
 //	assert( arrDims->dims==1 );
 //	assert( arrDims->type[0]=='i' );
-
+	
 	int dims=arrDims->scales[0];
 	int *lens=(int*)BBARRAYDATA( arrDims,1 );
-
+	
 	return bbArrayNewEx( type,dims,lens );
 }
 

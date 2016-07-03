@@ -40,16 +40,29 @@ Strict
 
 Rem
 bbdoc: BASIC/Reflection
-End Rem
-Rem
+
 Module BRL.Reflection
 
-ModuleInfo "Version: 1.17"
+ModuleInfo "Version: 1.25"
 ModuleInfo "Author: Mark Sibly"
 ModuleInfo "License: zlib/libpng"
 ModuleInfo "Copyright: Blitz Research Ltd"
 ModuleInfo "Modserver: BRL"
 
+ModuleInfo "History: 1.25 [grable]"
+ModuleInfo "History: Fixed linux version of bbCallMethod"
+ModuleInfo "History: Added macos version of bbCallMethod"
+ModuleInfo "History: 1.24 [grable]"
+ModuleInfo "History: Added linux version of bbCallMethod"
+ModuleInfo "History: 1.23 [grable]"
+ModuleInfo "History: Added _bbCallMethod() asm function for calling with proper number of arguments"
+ModuleInfo "History: Increased maximum argument count to 30"
+ModuleInfo "History: 1.22 [grable]"
+ModuleInfo "History: Fixed _Call not working with Long/Double return types"
+ModuleInfo "History: 1.21 [grable]"
+ModuleInfo "History: Fixed _Push not setting bbEmptyArray for Null arrays."
+ModuleInfo "History: 1.20 [derron]"
+ModuleInfo "History: Fixed typo, and added Null argument to TMethod.Invoke()"
 ModuleInfo "History: 1.19 [grable]"
 ModuleInfo "History: Fixed TTypeId.PointerType() recursing over root PointerTypeId"
 ModuleInfo "History: 1.18 [grable]"
@@ -92,14 +105,27 @@ ModuleInfo "History: 1.02 Release"
 ModuleInfo "History: Added Brucey's size fix to GetArrayElement()/SetArrayElement()"
 ModuleInfo "History: 1.01 Release"
 ModuleInfo "History: Fixed NewArray using temp type name"
-EndRem
+End Rem
 
 Import BRL.LinkedList
 Import BRL.Map
 
 Import "reflection.cpp"
 
+?Not x86
+	Throw "callmethod assembly is x86 only!"
+?
+?Linux
+Import "callmethod.linux.x86.s"
+?Win32
+Import "callmethod.win32.x86.s"
+?MacOS
+Import "callmethod.macos.x86.s"
+?
+
 Private
+
+Const MAX_CALL_ARGS:Int = 30 ' original=8
 
 Extern
 
@@ -130,6 +156,11 @@ Function bbRefAssignObject( p:Byte Ptr,obj:Object )
 
 Function bbRefGetObjectClass( obj:Object )
 Function bbRefGetSuperClass( class )
+
+Function bbCallMethod:Int( p:Byte Ptr, args:Byte Ptr, sz:Int)
+Function bbCallMethod_Float:Float( p:Byte Ptr, args:Byte Ptr, sz:Int) = "bbCallMethod"
+Function bbCallMethod_Object:Object( p:Byte Ptr, args:Byte Ptr, sz:Int) = "bbCallMethod"
+Function bbCallMethod_Double:Double( p:Byte Ptr, args:Byte Ptr, sz:Int) = "bbCallMethod"
 
 End Extern
 
@@ -202,6 +233,8 @@ Function _Push:Byte Ptr( sp:Byte Ptr,typeId:TTypeId,value:Object )
 				(Int Ptr sp)[0]=Int Byte Ptr NullFunctionError
 			EndIf
 			Return sp+4
+		ElseIf typeId.ExtendsType(ArrayTypeId)
+			If Not value Then value = bbRefArrayNull()
 		EndIf
 		If value
 			Local c=typeId._class
@@ -264,45 +297,58 @@ Function _Assign( p:Byte Ptr,typeId:TTypeId,value:Object )
 End Function
 
 Function _Call:Object( callableP:Byte Ptr, retTypeId:TTypeId, obj:Object=Null, args:Object[], argtypes:TTypeId[])
-	Local q:Int[10], sp:Byte Ptr = q
+	Local q:Int[MAX_CALL_ARGS + 2], sp:Byte Ptr = q
 
 	If obj 'method call of an instance
 		bbRefPushObject sp,obj
 		sp:+4
 	EndIf
+	
+	Local lret:Long
+	If retTypeId = LongTypeId Then
+		Byte Ptr Ptr(sp)[0] = Byte Ptr Varptr lret
+		sp :+ 4
+	EndIf
 
-	If retTypeId = LongTypeId Then sp :+ 8
 	For Local i:Int = 0 Until args.Length
-		If Int Ptr(sp) >= Int Ptr(q)+8 Then Throw "ERROR"
+		If Int Ptr(sp) >= Int Ptr(q)+MAX_CALL_ARGS Then Throw "ERROR"
 		sp = _Push( sp, argtypes[i], args[i])
 	Next
-	If Int Ptr(sp) > Int Ptr(q)+8 Then Throw "ERROR"
+	If Int Ptr(sp) > Int Ptr(q)+MAX_CALL_ARGS Then Throw "ERROR"
 	Select retTypeId
 		Case ByteTypeId, ShortTypeId, IntTypeId
-			Local f(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
-			Return String.FromInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+'			Local f(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
+'			Return String.FromInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+			Return String.FromInt( bbCallMethod( callableP, q, sp - Byte Ptr q) )
 		Case LongTypeId
-			'Throw "TODO"
-			Local f:Long(p0,p1,p2,p3,p4,p5,p6,p7) = callableP
-			Return String.FromLong( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )					
+'			Local r:Long
+'			If obj Then
+'				Local f( p0, r:Long Var, p1,p2,p3,p4,p5,p6,p7) = callableP
+'				f( q[0], r, q[1],q[2],q[3],q[4],q[5],q[6],q[7] )
+'			Else
+'				Local f( r:Long Var, p0, p1,p2,p3,p4,p5,p6,p7) = callableP
+'				f( r, q[0], q[1],q[2],q[3],q[4],q[5],q[6],q[7] )
+'			EndIf
+'			Return String.FromLong(r)
+			bbCallMethod( callableP, q, sp - Byte Ptr q)
+			Return String.FromInt( lret )
 		Case FloatTypeId
-			Local f:Float(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
-			Return String.FromFloat( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+'			Local f:Float(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
+'			Return String.FromFloat( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+			Return String.FromFloat( bbCallMethod_Float( callableP, q, sp - Byte Ptr q) )
 		Case DoubleTypeId
-			Local f:Double(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
-			Return String.FromDouble( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+'			Local f:Double(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
+'			Return String.FromDouble( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+			Return String.FromDouble( bbCallMethod_Double( callableP, q, sp - Byte Ptr q) )
 		Default
 			If retTypeId.ExtendsType(PointerTypeId) Or retTypeId.ExtendsType(FunctionTypeId) Then
-				If Not obj 'function call
-					Local f:Int(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
-					Return String.FromInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
-				Else 'method call
-					Local f:Byte Ptr(p0,p1,p2,p3,p4,p5,p6,p7) = callableP
-					Return String.FromInt( Int f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
-				EndIf
+'				Local f:Int(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
+'				Return String.FromInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+				Return String.FromInt( bbCallMethod( callableP, q, sp - Byte Ptr q) )
 			Else
-				Local f:Object(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
-				Return f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] )
+'				Local f:Object(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
+'				Return f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] )
+				Return bbCallMethod_Object( callableP, q, sp - Byte Ptr q)
 			EndIf
 	End Select
 End Function
@@ -1434,3 +1480,4 @@ EndRem
 	Global _count,_nameMap:TMap=New TMap,_classMap:TMap=New TMap
 	
 End Type
+
