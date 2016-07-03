@@ -94,6 +94,9 @@ Type TPersist
 
 	Field fileVersion:Int
 
+	Field strictMode:int = True
+	
+
 	Rem
 	bbdoc: Serializes the specified Object into a String.
 	End Rem
@@ -815,7 +818,65 @@ Type TPersist
 												Throw "Reference not mapped yet : " + ref
 											End If
 										Else
-											fieldObj.Set(obj, DeSerializeObject("", fieldNode))
+											'check if the given object is of the same type
+											'without you get errors if the type's field is now
+											'based on a different type
+											'eg. "field bla:MyObject" now is "field bla:OtherObject"
+											'ATTENTION: check for the type's field-typeID, not for the
+											'           serialized type (fieldType)
+											local fieldTypeID:TTypeId = fieldObj._typeID
+											if not fieldTypeID
+												Throw "Cannot evaluate type for field ~q"+fieldNode.getAttribute("name")+"~q"
+											endif
+
+
+											local deserializedObj:object = DeSerializeObject("", fieldNode)
+											'if deserialization failed:
+											'- the object was null
+											'- the object was of an unknown type
+											if not deserializedObj
+												'check if the current programme knows the stored
+												'data structure / type
+												local serializedFieldTypeID:TTypeId = TTypeId.ForName(fieldType)
+												if not serializedFieldTypeID
+													'if it does not contain additional information
+													'it is "null" - which is what we could handle
+													if fieldNode.getChildren().Count() = 0 and ..
+													   fieldNode.getAttribute("serialized") = "" and ..
+													   fieldNode.GetContent() = ""
+
+														fieldObj.Set(obj, null)
+													else
+														'ask the type for conversion help
+														local newDeserializedObj:object = DelegateDeserializationToType(objType, fieldNode.getAttribute("name"), serializedFieldTypeID.name(), fieldTypeID.name(), deserializedObj)
+														fieldObj.Set(obj, newDeserializedObj)
+													endif
+												else
+													fieldObj.Set(obj, null)
+												endif
+
+											'deserialization was successful
+											else
+
+												local objTypeID:TTypeId = TTypeId.ForObject(deserializedObj)
+												'if there is no compatible type definition (might
+												'have been replaced now) check if there is a helper
+												'function available to handle conversion from "old"
+												'to "current" type
+												if not strictMode and not objTypeID.ExtendsType(fieldTypeID)
+													'ask the type for conversion help
+													local newDeserializedObj:object = DelegateDeserializationToType(objType, fieldNode.getAttribute("name"), objTypeID.name(), fieldTypeID.name(), deserializedObj)
+
+													fieldObj.Set(obj, newDeserializedObj)
+												'if same or extending, we are able to set it
+												elseif objTypeID.ExtendsType(fieldTypeID)
+													fieldObj.Set(obj, deserializedObj)
+												'should not be needed
+												else
+													print "DeSerializeObject(): ~q"+node.GetName()+":"+fieldNode.getAttribute("name")+"~q assigning unknown value as NULL."
+													fieldObj.Set(obj, null)
+												endif
+											endif
 										End If
 									End If
 							End Select
@@ -830,6 +891,30 @@ Type TPersist
 		Return obj
 
 	End Method
+
+
+	Function DelegateDeserializationToType:object(typeID:TTypeID, fieldName:string, sourceTypeName:string, targetTypeName:string, obj:object)
+		Local deserializeName:string = "DeSerialize"+ sourceTypeName + "To" + targetTypeName
+		Local deserializeFunction:TFunction = typeID.FindFunction(deserializeName)
+
+		'search for a more generic function if no individual function was
+		'found
+		if not deserializeFunction
+			local deserializeName2:string = "DeSerializeUnknownProperty"
+			Local deserializeFunction:TFunction = typeID.FindFunction(deserializeName2)
+
+			if not deserializeFunction
+				Throw "~q"+typeID.name()+":"+fieldName+"~q contains incompatible type (~q"+sourceTypeName+"~q). To handle it, create function ~q"+deserializeName+"()~q or ~q"+deserializeName2+"()~q."
+			endif
+		endif
+
+		local res:object = deserializeFunction.Invoke([object(sourceTypeName), object(targetTypeName), obj])
+		if not res
+			Throw "Failed to deserialize ~q" + fieldName + "~q. Function ~q" + deserializeFunction.name() + "~q does not handle that type."
+		endif
+
+		return res
+	End Function
 
 
 	Function GetObjRef:String(obj:Object)
