@@ -1761,6 +1761,7 @@ Type TSaveGame Extends TGameState
 		if savegameSummary.GetString("game_version") <> VersionString or savegameSummary.GetString("game_builddate") <> VersionDate
 			TLogger.Log("Savegame.Load()", "Savegame was created with an older TVTower-build. Enabling basic compatibility mode.", LOG_SAVELOAD | LOG_DEBUG)
 			persist.strictMode = False
+			persist.converterTypeID = TTypeID.ForObject( new TSavegameConverter )
 		endif
 
 
@@ -1906,6 +1907,25 @@ Type TSaveGame Extends TGameState
 	End Function
 End Type
 
+
+Type TSavegameConverter
+	Method DeSerializeTIntervalTimerToTBuildingIntervalTimer:object(oldType:string, newType:string, obj:object, parentObj:object)
+		return new TBuildingIntervalTimer
+	End Method
+
+
+	Method DeSerializeUnknownProperty:object(oldType:string, newType:string, obj:object, parentObj:object)
+		local convert:string = (oldType+">"+newType).ToLower()
+
+		Select convert
+			case "TProgrammeLicenceFilter>TProgrammeLicenceFilterGroup".ToLower()
+				if parentObj and TTypeID.ForObject(parentObj).name().ToLower() = "RoomHandler_MovieAgency".ToLower()
+					return RoomHandler_MovieAgency.InitializeAuctionFilter()
+				endif
+		End Select
+		return null
+	End Method
+End Type
 
 
 

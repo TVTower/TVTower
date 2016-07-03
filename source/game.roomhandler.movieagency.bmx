@@ -76,34 +76,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		endif
 		if not filterSeries then filterSeries = new TProgrammeLicenceFilter
 		
-		if not filterAuction
-			filterAuction = new TProgrammeLicenceFilterGroup
-			filterAuction.AddFilter(new TProgrammeLicenceFilter)
-			filterAuction.AddFilter(new TProgrammeLicenceFilter)
-		endif
-
-		'auction: either expensive - or - live programme
-		filterAuction.filters[0].priceMin = 250000
-		filterAuction.filters[0].priceMax = -1
-		filterAuction.filters[0].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION, TVTProgrammeLicenceType.SERIES]
-		'avoid "too used" licences
-		filterAuction.filters[0].relativeTopicalityMin = 0.85
-		filterAuction.filters[0].relativeTopicalityMax = -1.0
-		filterAuction.filters[0].maxTopicalityMin = 0.50
-		filterAuction.filters[0].maxTopicalityMax = -1.0
-		filterAuction.filters[0].checkTradeability = True
-		'maximum of 1 year since release
-		filterAuction.filters[1].priceMin = 100000
-		filterAuction.filters[1].priceMax = -1
-		filterAuction.filters[1].licenceTypes = [TVTProgrammeLicenceType.SINGLE]
-		filterAuction.filters[1].SetDataFlag(TVTProgrammeDataFlag.LIVE)
-		filterAuction.filters[1].checkTradeability = True
-		filterAuction.filters[1].timeToReleaseMin = 5 * TWorldTime.DAYLENGTH
-		filterAuction.filters[1].checkTimeToReleaseMin = True
-		filterAuction.filters[1].checkTimeToReleaseMax = False
-		filterAuction.filters[1].checkAgeMin = False
-		filterAuction.filters[1].checkAgeMax = False
-
+		if not filterAuction then filterAuction = InitializeAuctionFilter()
 
 
 		'good movies must be more expensive than X _and_ of better
@@ -275,6 +248,37 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		endif
 		return False
 	End Method
+
+
+	Function InitializeAuctionFilter:TProgrammeLicenceFilterGroup()
+		local filter:TProgrammeLicenceFilterGroup = new TProgrammeLicenceFilterGroup
+		filter.AddFilter(new TProgrammeLicenceFilter)
+		filter.AddFilter(new TProgrammeLicenceFilter)
+
+		'auction: either expensive - or - live programme
+		filter.filters[0].priceMin = 250000
+		filter.filters[0].priceMax = -1
+		filter.filters[0].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION, TVTProgrammeLicenceType.SERIES]
+		'avoid "too used" licences
+		filter.filters[0].relativeTopicalityMin = 0.85
+		filter.filters[0].relativeTopicalityMax = -1.0
+		filter.filters[0].maxTopicalityMin = 0.50
+		filter.filters[0].maxTopicalityMax = -1.0
+		filter.filters[0].checkTradeability = True
+		'maximum of 1 year since release
+		filter.filters[1].priceMin = 100000
+		filter.filters[1].priceMax = -1
+		filter.filters[1].licenceTypes = [TVTProgrammeLicenceType.SINGLE]
+		filter.filters[1].SetDataFlag(TVTProgrammeDataFlag.LIVE)
+		filter.filters[1].checkTradeability = True
+		filter.filters[1].timeToReleaseMin = 5 * TWorldTime.DAYLENGTH
+		filter.filters[1].checkTimeToReleaseMin = True
+		filter.filters[1].checkTimeToReleaseMax = False
+		filter.filters[1].checkAgeMin = False
+		filter.filters[1].checkAgeMax = False
+
+		return filter
+	End Function
 
 
 	Method onSaveGameBeginLoad:int( triggerEvent:TEventBase )

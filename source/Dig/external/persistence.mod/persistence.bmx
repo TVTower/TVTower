@@ -697,13 +697,22 @@ Type TPersist
 							Local fieldObj:TField = objType.FindField(fieldNode.getAttribute("name"))
 
 							'Ronny: skip unknown fields (no longer existing in the type)
-							If Not fieldObj Then
-								Print "[WARNING] TPersistence: field ~q"+fieldNode.getAttribute("name")+"~q is no longer available."
+							If Not fieldObj
+
+								local serializedFieldTypeID:TTypeId = TTypeId.ForName(fieldNode.getAttribute("type"))
+								if not strictMode and serializedFieldTypeID
+									Print "[WARNING] TPersistence: field ~q"+fieldNode.getAttribute("name")+"~q is no longer available. Created WorkAround-Storage."
+
+									'deserialize it, so that its reference exists
+									DeSerializeObject("", fieldNode)
+								else
+									Print "[WARNING] TPersistence: field ~q"+fieldNode.getAttribute("name")+"~q is no longer available."
+								endif
 								Continue
 							End If
 
 							'Ronny: skip loading elements having "nosave" metadata
-							If fieldObj.MetaData("nosave") Then
+							If fieldObj.MetaData("nosave") and not fieldObj.MetaData("doload") Then
 								Continue
 							End If
 
@@ -934,7 +943,7 @@ Type TPersist
 			endif
 		endif
 
-		local res:object = deserializeFunction.Invoke(functionContainer, [object(sourceTypeName), object(targetTypeName), obj])
+		local res:object = deserializeFunction.Invoke(functionContainer, [object(sourceTypeName), object(targetTypeName), obj, typeObj])
 		if not res
 			Throw "Failed to deserialize ~q" + fieldName + "~q. Function ~q" + deserializeFunction.name() + "~q does not handle that type."
 		endif

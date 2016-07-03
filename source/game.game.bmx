@@ -224,8 +224,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 	Method SetPlayerBankrupt(playerID:int)
-print "SetPlayerBankrupt("+playerID+")"
-
 		local player:TPlayer = GetPlayer(playerID)
 		if not player then return
 
