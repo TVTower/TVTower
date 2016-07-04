@@ -239,6 +239,10 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 			'load savestate
 			playerAI.CallOnLoad()
 		endif
+
+		'repair broken figure sprites (eg. through savegame)
+		'TODO: find out why this happens
+		if not figure.sprite.parent.image then figure.OnLoad()
 	End Method
 
 
