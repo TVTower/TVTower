@@ -163,6 +163,16 @@ Type TFigure extends TFigureBase
 	End Method
 
 
+	Method onReachTarget:int()
+		'stub
+	End Method
+
+
+	Method onReachElevator:int()
+		'stub
+	End Method
+
+
 	Method HasToChangeFloor:Int()
 		if not GetTarget() then return FALSE
 		Return GetFloor( GetTargetMoveToPosition() ) <> GetFloor()
@@ -273,11 +283,17 @@ Type TFigure extends TFigureBase
 					If not IsInElevator()
 						ReachTargetStep1()
 					endif
+
+					if not reachedTemporaryTarget then onReachTarget()
 				else
 					'set to elevator-targetx
 					oldPosition.setX(targetX) 'set tween position too
 					area.position.setX(targetX)
+
+					if not reachedTemporaryTarget then onReachElevator()
 				endif
+
+				reachedTemporaryTarget = True
 			endif
 		endif
 
@@ -885,6 +901,8 @@ Type TFigure extends TFigureBase
 
 		'if player is in elevator dont accept changes
 		if not forceChange and IsInElevator() Then Return False
+
+		reachedTemporaryTarget = False
 
 		'=== CALCULATE NEW TARGET/TARGET-OBJECT ===
 		local newTarget:object = Null

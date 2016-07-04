@@ -108,6 +108,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	'still waiting to enter a room)
 	Field currentReachTargetStep:int = 0
 	Field currentAction:int = 0
+	Field reachedTemporaryTarget:int = False
 	'remove figure from game when it reached the final target
 	Field removeOnReachTarget:int = False
 	'figure alive? "false" to remove the figure from game
@@ -163,7 +164,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 	Method RunCustomSpeedFactorFunc:float()
-		return GetBuildingTimeTimeFactor()
+		return TBuildingTime.GetInstance().GetTimeFactor()
 	End Method
 	
 
@@ -327,6 +328,8 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		'is controlling allowed (eg. figure MUST go to a specific target)
 		if not forceChange and not IsControllable() then Return False
 
+		reachedTemporaryTarget = False
+		
 		'emit an event
 		EventManager.triggerEvent( TEventSimple.Create("figure.onChangeTarget", self ) )
 	End Method

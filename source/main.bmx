@@ -1974,6 +1974,8 @@ Type TScreen_MainMenu Extends TGameScreen
 		guiButtonsPanel.AddChild(guiButtonSettings)
 		guiButtonsPanel.AddChild(guiButtonQuit)
 
+		'for main menu janitor
+		GetBuildingTime().SetTimeFactor(1.0)
 
 		If TLocalization.languagesCount > 0
 			guiLanguageDropDown = New TGUISpriteDropDown.Create(New TVec2D.Init(620, 560), New TVec2D.Init(170,-1), "Sprache", 128, name)
@@ -2188,7 +2190,10 @@ Type TScreen_MainMenu Extends TGameScreen
 
 		GUIManager.Update(Self.name)
 
-		If MainMenuJanitor Then  MainMenuJanitor.Update()
+		If MainMenuJanitor
+			GetBuildingTime().Update() 'figure uses this timer
+			MainMenuJanitor.Update()
+		EndIf
 	End Method
 End Type
 

@@ -8,7 +8,7 @@ Import "game.player.programmeplan.bmx"
 
 
 Type TFigurePostman Extends TFigure
-	Field nextActionTimer:TIntervalTimer = TIntervalTimer.Create(1500, 0, 0, 5000)
+	Field nextActionTimer:TBuildingIntervalTimer = new TBuildingIntervalTimer.Init(1500, 0, 0, 5000)
 
 	'we need to overwrite it to have a custom type - with custom update routine
 	Method Create:TFigurePostman(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int)
@@ -57,7 +57,7 @@ End Type
 
 Type TFigureJanitor Extends TFigure
 	Field currentAction:Int	= 0		'0=nothing,1=cleaning,...
-	Field nextActionTimer:TIntervalTimer = TIntervalTimer.Create(2500,0, -500, 500) '500ms randomness
+	Field nextActionTimer:TBuildingIntervalTimer = new TBuildingIntervalTimer.Init(2500,0, -500, 500) '500ms randomness
 	Field nextActionTime:Int = 2500
 	Field nextActionRandomTime:Int = 500
 	Field useElevator:Int = True
@@ -66,9 +66,9 @@ Type TFigureJanitor Extends TFigure
 	Field NormalCleanChance:Int = 30
 	Field MovementRangeMinX:Int	= 20
 	Field MovementRangeMaxX:Int	= 420
-	'how many seconds does the janitor wait at the elevator
+	'how many seconds does the janitor waits at the elevator
 	'until he goes to elsewhere
-	Field WaitAtElevatorTimer:TIntervalTimer = TIntervalTimer.Create(20000)
+	Field WaitAtElevatorTimer:TBuildingIntervalTimer = new TBuildingIntervalTimer.Init(35000, 0, -10000, 10000)
 
 
 	'we need to overwrite it to have a custom type - with custom update routine
@@ -110,10 +110,15 @@ Type TFigureJanitor Extends TFigure
 	End Method
 
 
+	Method onReachElevator:int()
+		WaitAtElevatorTimer.Reset()
+	End Method
+
+
 	Method UpdateCustom:Int()
 		'waited to long - change target (returns false while in elevator)
-		If hasToChangeFloor() And WaitAtElevatorTimer.isExpired()
-			If ChangeTarget(Rand(MovementRangeMinX, MovementRangeMaxX), GetBuildingBase().GetFloorY2(GetFloor()))
+		If hasToChangeFloor() And IsAtElevator() And WaitAtElevatorTimer.isExpired()
+			If ChangeTarget(RandRange(MovementRangeMinX, MovementRangeMaxX), GetBuildingBase().GetFloorY2(GetFloor()))
 				WaitAtElevatorTimer.Reset()
 			EndIf
 		EndIf
@@ -126,37 +131,33 @@ Type TFigureJanitor Extends TFigure
 		'reached target - and time to do something
 		If IsIdling() And nextActionTimer.isExpired()
 			If Not hasToChangeFloor()
-
-				'reset is done later - we want to catch isExpired there too
-				'nextActionTimer.Reset()
-
-				Local zufall:Int = Rand(0, 100)	'what to do?
-				Local zufallx:Int = 0			'where to go?
+				'what to do?
+				Local randomAction:Int = RandRange(0, 100)
+				'where to go?
+				Local randomX:Int = 0
 
 				'move to a spot further away than just some pixels
 				Repeat
-					zufallx = Rand(MovementRangeMinX, MovementRangeMaxX)
-				Until Abs(area.GetX() - zufallx) > 75
+					randomX = RandRange(MovementRangeMinX, MovementRangeMaxX)
+				Until Abs(area.GetX() - randomX) > 75
 
 				'move to a different floor (only if doing nothing special)
-				If useElevator And currentAction=0 And zufall > 80 And Not IsAtElevator()
+				If useElevator And currentAction = 0 And randomAction > 80 And Not IsAtElevator()
 					Local sendToFloor:Int = GetFloor() + 1
 					If sendToFloor > 13 Then sendToFloor = 0
-					ChangeTarget(zufallx, GetBuildingBase().GetFloorY2(sendToFloor))
-					WaitAtElevatorTimer.Reset()
+					ChangeTarget(randomX, GetBuildingBase().GetFloorY2(sendToFloor))
 				'move to a different X on same floor - if not cleaning now
-				Else If currentAction=0
-					ChangeTarget(zufallx, GetBuildingBase().GetFloorY2(GetFloor()))
+				ElseIf currentAction = 0
+					ChangeTarget(randomX, GetBuildingBase().GetFloorY2(GetFloor()))
 				EndIf
 			EndIf
 
 		EndIf
 
 		If Not inRoom And nextActionTimer.isExpired() And Not hasToChangeFloor()
-			nextActionTimer.SetRandomness(int(-nextActionRandomTime / TEntity.GetGlobalWorldSpeedFactor()), int(nextActionRandomTime * TEntity.GetGlobalWorldSpeedFactor()))
-			nextActionTimer.SetInterval(int(nextActionTime / TEntity.GetGlobalWorldSpeedFactor()))
+			nextActionTimer.SetRandomness(-nextActionRandomTime, nextActionRandomTime)
+			nextActionTimer.SetInterval(nextActionTime)
 			nextActionTimer.Reset()
-
 			
 			currentAction = 0
 
@@ -167,10 +168,10 @@ Type TFigureJanitor Extends TFigure
 				'and do not clean if target is a room near figure
 				Local targetDoor:TRoomDoor = TRoomDoor(GetTarget())
 				If GetTarget() And (Not targetDoor Or (20 < Abs(targetDoor.GetScreenX() - area.GetX()) Or targetDoor.GetOnFloor() <> GetFloor()))
-					If Rand(0,100) < NormalCleanChance Then currentAction = 1
+					If RandRange(0,100) < NormalCleanChance Then currentAction = 1
 				EndIf
 				'if just standing around give a chance to clean
-				If Not GetTarget() And Rand(0,100) < BoredCleanChance Then currentAction = 1
+				If Not GetTarget() And RandRange(0,100) < BoredCleanChance Then currentAction = 1
 			EndIf
 		EndIf
 
@@ -193,7 +194,7 @@ Type TFigureDeliveryBoy Extends TFigure
 	'was the "package" delivered already?
 	Field deliveryDone:Int = True
 	'time to wait between doing something
-	Field nextActionTimer:TIntervalTimer = TIntervalTimer.Create(1500, 0, 0, 5000)
+	Field nextActionTimer:TBuildingIntervalTimer = new TBuildingIntervalTimer.Init(1500, 0, 0, 5000)
 
 
 	'we need to overwrite it to have a custom type - with custom update routine
