@@ -267,6 +267,11 @@ End Type
 
 
 '===== CONVENIENCE REGISTRY ACCESSORS =====
+Function GetSpritePackFromRegistry:TSpritePack(name:string, defaultNameOrSpritePack:object = Null)
+	Return TSpritePack( GetRegistry().Get(name, defaultNameOrSpritePack, "spritepack") )
+End Function
+
+
 Function GetSpriteFromRegistry:TSprite(name:string, defaultNameOrSprite:object = Null)
 	Return TSprite( GetRegistry().Get(name, defaultNameOrSprite, "sprite") )
 End Function

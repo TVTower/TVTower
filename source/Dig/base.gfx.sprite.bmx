@@ -459,6 +459,8 @@ Type TSprite
 		'give back whole image if no frames are configured
 		if frames <= 0 then frame = -1
 
+		if not parent.image then Throw "TSprite.GetPixmap() failed: invalid parent.image"
+
 		Local DestPixmap:TPixmap
 		if frame >= 0
 			DestPixmap = LockImage(parent.image, 0, False, True).Window(int(area.GetX() + frame * framew), int(area.GetY()), framew, int(area.GetH()))

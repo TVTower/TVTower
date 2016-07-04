@@ -172,9 +172,10 @@ Type TLogger
 			endif
 
 			'message = StringHelper.UTF8toISO8859(message)
-			?Win32
+'			?Win32
+'			message = StringHelper.RemoveUmlauts(message)
+'			?
 			message = StringHelper.RemoveUmlauts(message)
-			?
 
 			local text:string = "[" + CurrentTime() + "] " + debugtext + Upper(showFunctionText) + ": " + message
 			?android
