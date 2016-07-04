@@ -138,7 +138,7 @@ End Function
 
 Type TRoomDoorBase extends TRenderableEntity  {_exposeToLua="selected"}
 	'time is set in Init() depending on changeRoomSpeed..
-	Field DoorTimer:TBuildingIntervalTimer = TBuildingIntervalTimer.Create(1)
+	Field DoorTimer:TBuildingIntervalTimer = new TBuildingIntervalTimer.Init(1)
 	'the id of the room
 	Field roomID:int = -1
 	'floor in the building

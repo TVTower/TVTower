@@ -1,34 +1,23 @@
 SuperStrict
-Import "Dig/base.util.deltatimer.bmx"
 Import "Dig/base.util.localization.bmx"
+Import "game.world.worldtime.base.bmx"
+
+
 
 'rem
-Type TWorldTime {_exposeToLua="selected"}
+Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	'time (seconds) used when starting 
 	Field _timeStart:Double = 0.0
-	'time (seconds) gone at all 
-	Field _timeGone:Double
-	'time (seconds) of the last update
-	'(enables calculation of missed time between two updates)
-	Field _timeGoneLastUpdate:Double = -1.0
 	'how many days does each season have? (year = 4 * value)
 	Field _daysPerSeason:int = 3
 	'how many days does a week have?
 	Field _daysPerWeek:int = 7
 	 
-	'Speed of the world in "virtual seconds per real-time second"
-	'1.0 = realtime - a virtual day would take 86400 real-time seconds
-	'3600.0 = a virtual day takes 24 real-time seconds
-	'60.0 : 1 virtual minute = 1 real-time second
-	Field _timeFactor:Float = 60.0
-	Field _timeFactorMod:Float = 1.0
 	'current "phase" of the day: 0=Dawn  1=Day  2=Dusk  3=Night
 	Field currentPhase:int
 	'time at which the dawn starts
 	'negative = automatic calculation
 	Field _dawnTime:Int = -1
-	'does time go by?
-	Field _paused:Int = False
 
 	Global _instance:TWorldTime
 
@@ -58,15 +47,13 @@ Type TWorldTime {_exposeToLua="selected"}
 
 
 	Method Initialize:int()
+		Super.Initialize()
+		
 		_timeStart = 0:double
-		_timeGone = 0:double
-		_timeGoneLastUpdate = -1:double
 		_daysPerSeason = 4
 		_daysPerWeek = 7
-		_timeFactor = 60.0
 		currentPhase = 0
 		_dawnTime = -1
-		_paused = False
 	End Method
 
 
@@ -98,55 +85,6 @@ Type TWorldTime {_exposeToLua="selected"}
 		_timeGone :+ add
 		'also set last update
 		_timeGoneLastUpdate :+ add
-	End Method
-
-
-	Method SetTimeFactor:int(timeFactor:Float)
-		self._timeFactor = Max(0.0, timeFactor)
-	End Method
-
-
-	Method AdjustTimeFactor:int(adjustBy:Float = 0.0)
-		SetTimeFactor(_timeFactor + adjustBy)
-	End Method
-
-
-	'returns how many "virtual seconds" equal to one "real time second"
-	Method GetTimeFactor:Float()
-		Return self._timeFactor * self.GetTimeFactorMod() * (not _paused)
-	End Method
-
-
-	Method GetRawTimeFactor:Float()
-		Return self._timeFactor
-	End Method
-
-
-	Method SetTimeFactorMod:int(timeFactorMod:Float)
-		self._timeFactorMod = Max(0.0, timeFactorMod)
-	End Method
-
-
-	Method AdjustTimeFactorMod:int(adjustBy:Float = 0.0)
-		SetTimeFactorMod(_timeFactorMod + adjustBy)
-	End Method
-
-
-	Method GetTimeFactorMod:Float()
-		Return self._timeFactorMod
-	End Method
-
-
-	'returns how many "virtual minutes" equal to one "real time second"
-	Method GetVirtualMinutesPerSecond:Float()
-		Return GetTimeFactor()/60.0
-	End Method
-
-
-	'returns how many "real time seconds" pass for one "virtual minute"
-	Method GetSecondsPerVirtualMinute:Float()
-		If GetTimeFactor() = 0 Then Return 0
-		Return 1.0 / GetTimeFactor()
 	End Method
 
 
@@ -188,17 +126,6 @@ Type TWorldTime {_exposeToLua="selected"}
 		
 		return GetWorldTime().MakeTime(years, int(days), hours, minutes, seconds)
 	End Method
-	
-
-	Method IsPaused:int()
-		return self._paused
-		'return GetTimeFactor() = 0
-	End Method
-
-
-	Method SetPaused:int(bool:int)
-		self._paused = bool
-	End Method
 
 
 	Method SetDawnTimeBegin:int(hour:int)
@@ -223,25 +150,6 @@ Type TWorldTime {_exposeToLua="selected"}
 	Method GetStartYear:Int()
 		return GetYear(_timeStart)
 	End Method
-		
-
-	Method SetTimeGone(timeGone:Double)
-		_timeGone = timeGone
-		'also set last update
-		_timeGoneLastUpdate = timeGone
-	End Method
-
-
-	Method GetTimeGone:Double() {_exposeToLua}
-		Return _timeGone
-	End Method
-	
-	
-	Method GetTimeGoneAsMinute:Double(sinceStart:Int=False) {_exposeToLua}
-		Local useTime:Double = _timeGone
-		If sinceStart Then useTime = (_timeGone - _timeStart)	
-		Return Int(Floor(useTime / 60))
-	End Method	
 
 
 	Method SetTimeStart(timeStart:Double)
@@ -252,7 +160,14 @@ Type TWorldTime {_exposeToLua="selected"}
 	Method GetTimeStart:Double() {_exposeToLua}
 		Return _timeStart
 	End Method
-
+	
+	
+	Method GetTimeGoneAsMinute:Double(sinceStart:Int=False) {_exposeToLua}
+		Local useTime:Double = _timeGone
+		If sinceStart Then useTime = (_timeGone - _timeStart)	
+		Return Int(Floor(useTime / 60))
+	End Method
+	
 
 	Method GetYearLength:int() {_exposeToLua}
 		return DAYLENGTH * GetDaysPerYear()
@@ -694,11 +609,9 @@ Type TWorldTime {_exposeToLua="selected"}
 					'print GetDayHour()+":"+GetDayMinute()+"  DAWN" + "  NEXT DAY: "+GetDayHour(GetDayPhaseBegin())+":"+GetDayMinute(GetDayPhaseBegin())
 			End Select
 		endif
-		'Update the time (includes pausing)
-		_timeGone :+ GetDeltaTimer().GetDelta() * GetTimeFactor()
 
-		'backup last update time
-		_timeGoneLastUpdate = _timeGone
+		'actually update the time
+		Super.Update()
 	End Method
 End Type
 'endrem

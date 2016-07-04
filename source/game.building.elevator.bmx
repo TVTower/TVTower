@@ -113,7 +113,7 @@ Type TElevator Extends TEntity
 	End Method
 
 	Method RunCustomSpeedFactorFunc:float()
-		return GetBuildingTimeTimeFactor()
+		return TBuildingTime.GetInstance().GetTimeFactor()
 	End Method
 	
 
@@ -136,7 +136,7 @@ Type TElevator Extends TEntity
 		Local animSpeed:Int = Max(30, Min(100, GameRules.devConfig.GetInt("DEV_ELEVATOR_ANIMSPEED", 60)))
 
 		'create timer
-		WaitAtFloorTimer = TBuildingIntervalTimer.Create(WaitAtFloorTime)
+		WaitAtFloorTimer = new TBuildingIntervalTimer.Init(WaitAtFloorTime)
 
 		'reset floor route list and passengers
 		FloorRouteList.Clear()
