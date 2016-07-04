@@ -40,6 +40,7 @@ Type TPlayerFinanceCollection
 		local finance:TPlayerFinance
 		For local day:int = GetWorldTime().GetStartDay() to GetWorldTime().GetDay()
 			finance = Get(playerID, day)
+			if not finance then continue
 
 			totalFinance.expense_programmeLicences :+ finance.expense_programmeLicences
 			totalFinance.expense_stations :+ finance.expense_stations
@@ -97,8 +98,7 @@ Type TPlayerFinanceCollection
 		endif
 
 		If (arrayIndex = 0 And Not finances[playerIndex][0]) Or arrayIndex >= finances[playerIndex].length
-			'print "Adding a new finance to player "+playerID+" for day "+day+ " at index "+arrayIndex
-			'TLogger.Log("TPlayer.GetFinance()", "Adding a new finance to player "+playerID+" for day "+day+ " at index "+arrayIndex, LOG_DEBUG)
+			TLogger.Log("TPlayer.GetFinance()", "Adding a new finance to player "+playerID+" for day "+day+ " at index "+arrayIndex, LOG_DEBUG)
 			If arrayIndex >= finances[playerIndex].length
 				'resize array
 				finances[playerIndex] = finances[playerIndex][..arrayIndex+1]
