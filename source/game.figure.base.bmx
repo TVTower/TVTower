@@ -174,6 +174,14 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Method onLoad:int()
 		'reassign sprite
 		if sprite and sprite.name then sprite = GetSpriteFromRegistry(sprite.name)
+
+		'repair timers based on old "GetTime()"
+		if WaitEnterTimer - GetBuildingTime().GetMillisecondsGone() > WaitEnterLeavingTime
+			WaitEnterTimer = GetBuildingTime().GetMillisecondsGone() + WaitEnterLeavingTime
+		endif
+		if WaitLeavingTimer - GetBuildingTime().GetMillisecondsGone() > WaitEnterLeavingTime
+			WaitLeavingTimer = GetBuildingTime().GetMillisecondsGone() + WaitEnterLeavingTime
+		endif
 	End Method
 
 
@@ -329,7 +337,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		if not forceChange and not IsControllable() then Return False
 
 		reachedTemporaryTarget = False
-		
+
 		'emit an event
 		EventManager.triggerEvent( TEventSimple.Create("figure.onChangeTarget", self ) )
 	End Method
@@ -356,11 +364,6 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		if TVec2D(target) then return TVec2D(target)
 
 		return Null
-	End Method
-
-
-	'call this as soon as 
-	Method OnFinishGoTargetTask:int()
 	End Method
 
 
