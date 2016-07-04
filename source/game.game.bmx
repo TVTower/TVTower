@@ -246,7 +246,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				local colors:TPlayerColor[] = TPlayerColor.getUnowned(TPlayerColor.Create(255,255,255))
 				local newColor:TPlayerColor = colors[RandRange(0, colors.length-1)]
 				if newColor
-					Player.color.SetOwner(0).RemoveFromList()
+					'set color free to use again
+					Player.color.SetOwner(0)
 					Player.color = newcolor.SetOwner(playerID).AddToList()
 					Player.RecolorFigure(Player.color)
 				endif
