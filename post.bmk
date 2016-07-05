@@ -33,24 +33,25 @@
 			outFile = outFile .. "_Linux32"
 		elseif bmk.CPU() == "x64" then
 			outFile = outFile .. "_Linux64"
+		else
+			outFile = outFile .. "_Linux"
 		end
+
+		#copying with "sys" does not copy file attributes (like x-bit) 
+		#sys.CopyFile(inFile, outFile)
 		bmk.Sys("cp " .. bmk.Quote(inFile) .. " " .. bmk.Quote(outFile))
 	elseif bmk.Platform() == "win32" and bmk.IsDebugBuild() == 0 then
-		#My MicroXP only accepts backslashes for the copy command
-		# ":" to make a replace without "pattern"
-		inFile = inFile:gsub("/", "\\")
-		outFile = outFile:gsub("/", "\\")
-
 		inFile = inFile .. ".exe"
 
 		if bmk.CPU() == "x86" then
 			outFile = outFile .. "_Win32.exe"
 		elseif bmk.CPU() == "x64" then
-			outFile = outFile .. "_Win32.exe"
+			outFile = outFile .. "_Win64.exe"
 		else
 			outFile = outFile .. "_Win.exe"
 		end
-		bmk.Sys("copy /Y " .. bmk.Quote(inFile) .. " " .. bmk.Quote(outFile))
+
+		sys.CopyFile(inFile, outFile)
 	end
 @end
 
