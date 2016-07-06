@@ -1808,8 +1808,7 @@ Type TSaveGame Extends TGameState
 		'without this, the game shows the building while the figure
 		'is in.
 		If GetPlayer().GetFigure().isChangingRoom()
-			Local playerScreen:TScreen = ScreenCollection.GetScreen(saveGame._CurrentScreenName)
-			ScreenCollection._SetCurrentScreen(playerScreen)
+			ScreenCollection._SetCurrentScreen(GameScreen_World)
 
 			if TRoomDoorBase(GetPlayer().GetFigure().GetTarget())
 				local door:TRoomDoorBase = TRoomDoorBase(GetPlayer().GetFigure().GetTarget())

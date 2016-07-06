@@ -23,7 +23,7 @@ Type TSequenceCalculation
 			For local genderIndex:int = 0 to 1
 				local gender:int = TVTPersonGender.FEMALE
 				if genderIndex = 1 then gender = TVTPersonGender.MALE
-				If Predecessor
+				If Predecessor and Predecessor.FinalAttraction
 					predecessorValue = Predecessor.FinalAttraction.GetGenderValue(targetGroupID, gender)
 				Else
 					predecessorValue = 0

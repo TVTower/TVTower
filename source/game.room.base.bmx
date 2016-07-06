@@ -94,10 +94,10 @@ Type TRoomBaseCollection
 	Method UpdateEnteringAndLeavingStates()
 		For Local room:TRoomBase = EachIn GetInstance().list
 			'someone entering / leaving the room?
-			if room.enteringEntity and room.enteringFinishTime > 0 and room.enteringFinishTime < GetBuildingTime().GetMillisecondsGone()
+			if room.enteringEntity and room.enteringFinishTime > 0 and room.enteringFinishTime <= GetBuildingTime().GetMillisecondsGone()
 				room.FinishEnter()
 			endif
-			if room.leavingEntity and room.leavingFinishTime > 0 and room.leavingFinishTime < GetBuildingTime().GetMillisecondsGone()
+			if room.leavingEntity and room.leavingFinishTime > 0 and room.leavingFinishTime <= GetBuildingTime().GetMillisecondsGone()
 				room.FinishLeave()
 			endif
 		Next

@@ -298,15 +298,32 @@ Type TFigure extends TFigureBase
 		endif
 
 		'we have a target and are in this moment entering it
-		if GetTarget() and currentReachTargetStep = 1
+		if GetTarget() and currentReachTargetStep = 1 'and not isChangingRoom()
 			if not TargetNeedsToGetEntered()
 				ReachTargetStep2()
 			else
 				'if waitingtime is over, start going-into-animation (takes
 				'some time too -> FinishEnterRoom is called when that is
 				'finished too)
-				if not IsWaitingToEnter()
-					if CanEnterTarget() then EnterTarget()
+				'CanEnterTarget also checks for "IsWaitingToEnter()"
+				if not IsWaitingToEnter() and CanEnterTarget()
+					'TODO: find reason for the need of the following fix
+					'      (Ronny: I assume it happens when saving while
+					'       a figure enters a room)
+					'fix broken savegames
+					if WaitEnterTimer > 0 and GetBuildingTime().GetMillisecondsGone() > WaitEnterTimer + WaitEnterLeavingTime + 100
+						print "FIX figure ~q"+name+"~q (playerID: "+playerID+")"
+						currentReachTargetStep = 0
+						currentAction = ACTION_IDLE
+						if TRoomDoorBase(GetTarget())
+							local door:TRoomDoorBase = TRoomDoorBase(GetTarget())
+							local room:TRoomBase = GetRoomBaseCollection().Get(door.roomID)
+							room.RemoveOccupant(self)
+						endif
+					else
+						WaitEnterTimer = -1
+						EnterTarget()
+					endif
 				endif
 			endif
 		endif
@@ -640,6 +657,9 @@ Type TFigure extends TFigureBase
 		'inform what the figure does now
 		currentAction = ACTION_ENTERING
 
+		'reset wait timer
+		WaitEnterTimer = -1
+
 		'Debug
 		'print self.name+" START ENTERING " + room.GetName() +" ["+room.id+"]"
 
@@ -683,6 +703,7 @@ Type TFigure extends TFigureBase
 		'reset action
 		currentAction = ACTION_IDLE
 
+
 		'=== SET IN ROOM ===
 		SetInRoom(room)
 
@@ -702,6 +723,8 @@ Type TFigure extends TFigureBase
 
 		'reset action
 		currentAction = ACTION_IDLE
+		'reset wait timer
+		WaitEnterTimer = -1
 
 		'stay in building
 		SetInRoom(null)
@@ -995,8 +1018,8 @@ Type TFigure extends TFigureBase
 	Method EnterTarget:Int()
 		if not GetTarget() then return False
 
-		'emit an event
-		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterTarget", null, self, GetTarget() ) )
+		'emit event
+		Super.EnterTarget()
 
 		local targetDoor:TRoomDoor = TRoomDoor(GetTarget())
 		if targetDoor
