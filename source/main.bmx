@@ -1748,6 +1748,7 @@ Type TSaveGame Extends TGameState
 		
 		TPersist.maxDepth = 4096*4
 		Local persist:TPersist = New TPersist
+		persist.serializer = new TSavegameSerializer
 
 		local savegameSummary:TData = GetGameSummary(savename)
 		'invalid savegame
@@ -1802,6 +1803,22 @@ Type TSaveGame Extends TGameState
 				ScreenCollection._SetCurrentScreen(playerScreen)
 			EndIf
 		EndIf
+
+		'if saved during screen change, try to recreate the transition
+		'without this, the game shows the building while the figure
+		'is in.
+		If GetPlayer().GetFigure().isChangingRoom()
+			Local playerScreen:TScreen = ScreenCollection.GetScreen(saveGame._CurrentScreenName)
+			ScreenCollection._SetCurrentScreen(playerScreen)
+
+			if TRoomDoorBase(GetPlayer().GetFigure().GetTarget())
+				local door:TRoomDoorBase = TRoomDoorBase(GetPlayer().GetFigure().GetTarget())
+				local room:TRoomBase = GetRoomBaseCollection().Get(door.roomID)
+				if room
+					ScreenCollection.GoToScreen( ScreenCollection.GetScreen(room.screenName) )
+				endif
+			endif
+		endif
 
 		'=== CLEANUP ===
 		'only needed until all "old savegames" run the current one
@@ -1880,7 +1897,9 @@ Type TSaveGame Extends TGameState
 		TPersist.maxDepth = 4096
 		'save the savegame data as xml
 		'TPersist.format=False
-		New TPersist.SerializeToFile(saveGame, saveName)
+		local p:TPersist = New TPersist
+		p.serializer = new TSavegameSerializer
+		p.SerializeToFile(saveGame, saveName)
 		'TPersistJSON.format=False
 		'New TPersistJSON.SerializeToFile(saveGame, saveName+".json")
 		'tell everybody we finished saving
@@ -1931,6 +1950,34 @@ Type TSavegameConverter
 	End Method
 End Type
 
+
+Type TSavegameSerializer
+	Method SerializeTSpriteToString:string(obj:object)
+		local sprite:TSprite = TSprite(obj)
+		if not sprite then return ""
+		'Of sprite data, we only need an identifier and all data, which
+		'is differing between games. This works because sprites are
+		'the same between games - so we just reassign them on load
+
+		'individual data: nothing
+		'identifier: name
+		local res:string = sprite.name
+
+		return res
+	End Method
+
+
+	Method DeSerializeTSpriteFromString:object(serialized:String, targetObj:object)
+		'local sprite:TSprite = TSprite(targetObj)
+		'if not sprite then return null
+
+		'only consists of name
+		local name:string = serialized
+		targetObj = GetSpriteFromRegistry(name)
+
+		return targetObj
+	End Method
+End Type
 
 
 'MENU: MAIN MENU SCREEN
