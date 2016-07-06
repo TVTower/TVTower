@@ -217,9 +217,7 @@ Type TDatabaseLoader
 
 
 		'===== IMPORT ALL PROGRAMMES (MOVIES/SERIES) =====
-		'!!!!
-		'attention: LOAD PERSONS FIRST !!
-		'!!!!
+		'ATTENTION: LOAD PERSONS FIRST !!
 		local nodeAllProgrammes:TxmlNode = xml.FindRootChild("allprogrammes")
 		if nodeAllProgrammes
 			For local nodeProgramme:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllProgrammes)
