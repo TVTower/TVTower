@@ -369,7 +369,9 @@ Type TPersist
 					endif
 				endif
 				If mth and mth2 and serializedString
-					serializedString = doc.encodeEntities(serializedString)
+					'attributes are already encoded, so encoding it now
+					'would lead to double-encoding
+					'serializedString = doc.encodeEntities(serializedString)
 
 					node.setAttribute("serialized" ,serializedString)
 					serialized = True
