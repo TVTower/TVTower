@@ -108,6 +108,10 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	'still waiting to enter a room)
 	Field currentReachTargetStep:int = 0
 	Field currentAction:int = 0
+
+	Field changingRoomStart:Long = 0
+	Field changingRoomTime:int = 500
+
 	Field reachedTemporaryTarget:int = False
 	'remove figure from game when it reached the final target
 	Field removeOnReachTarget:int = False

@@ -95,7 +95,6 @@ End Function
 'all kind of characters walking through the building
 '(players, terrorists and so on)
 Type TFigure extends TFigureBase
-	Field changingRoomStart:Long = 0 {nosave}
 	Field fadeOnChangingRoom:int = False
 	
 	'the door used (there might be multiple)
@@ -300,30 +299,17 @@ Type TFigure extends TFigureBase
 		'we have a target and are in this moment entering it
 		if GetTarget() and currentReachTargetStep = 1 'and not isChangingRoom()
 			if not TargetNeedsToGetEntered()
+				'aendert currentReachTargetStep auf 0
 				ReachTargetStep2()
 			else
+
 				'if waitingtime is over, start going-into-animation (takes
 				'some time too -> FinishEnterRoom is called when that is
 				'finished too)
 				'CanEnterTarget also checks for "IsWaitingToEnter()"
-				if not IsWaitingToEnter() and CanEnterTarget()
-					'TODO: find reason for the need of the following fix
-					'      (Ronny: I assume it happens when saving while
-					'       a figure enters a room)
-					'fix broken savegames
-					if WaitEnterTimer > 0 and GetBuildingTime().GetMillisecondsGone() > WaitEnterTimer + WaitEnterLeavingTime + 100
-						print "FIX figure ~q"+name+"~q (playerID: "+playerID+")"
-						currentReachTargetStep = 0
-						currentAction = ACTION_IDLE
-						if TRoomDoorBase(GetTarget())
-							local door:TRoomDoorBase = TRoomDoorBase(GetTarget())
-							local room:TRoomBase = GetRoomBaseCollection().Get(door.roomID)
-							room.RemoveOccupant(self)
-						endif
-					else
-						WaitEnterTimer = -1
-						EnterTarget()
-					endif
+				if not IsWaitingToEnter() and CanEnterTarget() 'and currentAction = ACTION_IDLE  
+					WaitEnterTimer = -1
+					EnterTarget()
 				endif
 			endif
 		endif
@@ -703,6 +689,7 @@ Type TFigure extends TFigureBase
 		'reset action
 		currentAction = ACTION_IDLE
 
+		changingRoomStart = -1
 
 		'=== SET IN ROOM ===
 		SetInRoom(room)
@@ -725,6 +712,8 @@ Type TFigure extends TFigureBase
 		currentAction = ACTION_IDLE
 		'reset wait timer
 		WaitEnterTimer = -1
+
+		changingRoomStart = -1
 
 		'stay in building
 		SetInRoom(null)
@@ -1031,7 +1020,57 @@ Type TFigure extends TFigureBase
 	End Method
 
 
+	Method FixBrokenEnterLeavingStates()
+		if currentAction = ACTION_ENTERING and not inRoom
+			if WaitEnterTimer > 0 and WaitEnterTimer + 5000 < GetBuildingTime().GetMillisecondsGone()
+				print "FIX: figure ~q"+name+"~q forcefully enter room again."
+
+				currentReachTargetStep = 0
+				currentAction = ACTION_IDLE
+				if TRoomDoorBase(GetTarget())
+					local door:TRoomDoorBase = TRoomDoorBase(GetTarget())
+					local room:TRoomBase = GetRoomBaseCollection().Get(door.roomID)
+					room.RemoveOccupant(self)
+				endif
+				
+'				FinishLeaveRoom( inRoom )
+			endif
+		endif
+
+
+		'we have a target and are in this moment entering it
+		if GetTarget() and currentReachTargetStep = 1 'and not isChangingRoom()
+			if TargetNeedsToGetEntered()
+				'if waitingtime is over, start going-into-animation (takes
+				'some time too -> FinishEnterRoom is called when that is
+				'finished too)
+				'CanEnterTarget also checks for "IsWaitingToEnter()"
+				if not IsWaitingToEnter() and CanEnterTarget()
+					'TODO: find reason for the need of the following fix
+					'      (Ronny: I assume it happens when saving while
+					'       a figure enters a room)
+					'fix broken savegames
+					if WaitEnterTimer > 0 and GetBuildingTime().GetMillisecondsGone() > WaitEnterTimer + WaitEnterLeavingTime + 100
+						print "FIX ENTER state for figure ~q"+name+"~q (playerID: "+playerID+")"
+						currentReachTargetStep = 0
+						currentAction = ACTION_IDLE
+						if TRoomDoorBase(GetTarget())
+							local door:TRoomDoorBase = TRoomDoorBase(GetTarget())
+							local room:TRoomBase = GetRoomBaseCollection().Get(door.roomID)
+							room.RemoveOccupant(self)
+						endif
+					endif
+				endif
+			endif
+		endif
+	End Method
+
+
 	Method Update:int()
+		'TODO: make obsolete ;-)
+		'ATTENTION: Call _before_ figure movement
+		FixBrokenEnterLeavingStates()
+
 		'call figureBase update (does movement and updates current animation)
 		local result:int = Super.Update()
 
