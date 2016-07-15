@@ -43,12 +43,14 @@ bbdoc: BASIC/Reflection
 
 Module BRL.Reflection
 
-ModuleInfo "Version: 1.25"
+ModuleInfo "Version: 1.26"
 ModuleInfo "Author: Mark Sibly"
 ModuleInfo "License: zlib/libpng"
 ModuleInfo "Copyright: Blitz Research Ltd"
 ModuleInfo "Modserver: BRL"
 
+ModuleInfo "History: 1.26 [grable]"
+ModuleInfo "History: Fixed TFunction.FunctionPtr() accessing supertype of Null"
 ModuleInfo "History: 1.25 [grable]"
 ModuleInfo "History: Fixed linux version of bbCallMethod"
 ModuleInfo "History: Added macos version of bbCallMethod"
@@ -880,7 +882,11 @@ Type TFunction Extends TMember
 	Method FunctionPtr:Byte Ptr( obj:Object)
 		If _fptr Then Return _fptr
 		If _index < 65536 Then
-			_fptr = bbRefMethodPtr( obj ,_index)
+			If Not obj Then
+				_fptr = Byte Ptr Int Ptr(_selfTypeId._class + _index)[0]
+			Else
+				_fptr = bbRefMethodPtr( obj ,_index)
+			EndIf
 		EndIf
 		Return _fptr
 	End Method
