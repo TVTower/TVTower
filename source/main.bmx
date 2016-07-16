@@ -75,6 +75,8 @@ Import "game.production.script.gui.bmx"
 Import "game.production.productionconcept.gui.bmx"
 Import "game.production.productionmanager.bmx"
 
+Import "game.achievements.bmx"
+
 Import "game.betty.bmx"
 Import "game.building.bmx"
 Import "game.ingameinterface.bmx"
@@ -3808,7 +3810,7 @@ Type GameEvents
 
 				Local changed:String = ""
 				If paramS <> ""
-					player.GetFinance().ChangeMoney(Int(paramS), TVTPlayerFinanceEntryType.CHEAT)
+					player.GetFinance().CheatMoney(Int(paramS))
 
 					If Int(paramS) > 0 Then paramS = "+"+Int(paramS)
 					changed = " ("+paramS+")"
@@ -4447,6 +4449,10 @@ Type GameEvents
 		'the popularity manager takes care itself whether to do something
 		'or not (update intervals)
 		GetPopularityManager().Update(triggerEvent)
+
+
+		'=== UPDATE ACHIEVEMENTS ===
+		GetAchievementCollection().Update(time)
 
 
 		'=== UPDATE NEWS AGENCY ===

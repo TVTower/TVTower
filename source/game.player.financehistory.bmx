@@ -107,6 +107,10 @@ Type TPlayerFinanceHistoryEntry
 			Case TVTPlayerFinanceEntryType.SELL_MISC, ..
 			     TVTPlayerFinanceEntryType.PAY_MISC
 				return GetLocale("FINANCES_HISTORY_FOR_MISC")
+			case TVTPlayerFinanceEntryType.CHEAT
+				return GetLocale("FINANCES_HISTORY_BY_CHEAT")
+			Case TVTPlayerFinanceEntryType.GRANTED_BENEFITS
+				return GetLocale("FINANCES_HISTORY_OF_GRANTED_BENEFITS")
 			Case TVTPlayerFinanceEntryType.SELL_PROGRAMMELICENCE, ..
 			     TVTPlayerFinanceEntryType.PAY_PROGRAMMELICENCE
 				local title:string = "unknown licence"

@@ -63,6 +63,7 @@ Type TPlayerFinanceCollection
 			totalFinance.income_scripts :+ finance.income_scripts
 			totalFinance.income_sponsorshipRevenue :+ finance.income_sponsorshipRevenue
 			totalFinance.income_misc :+ finance.income_misc
+			totalFinance.income_granted_benefits :+ finance.income_granted_benefits
 			totalFinance.income_stations :+ finance.income_stations
 			totalFinance.income_creditTaken :+ finance.income_creditTaken
 			totalFinance.income_balanceInterest :+ finance.income_balanceInterest
@@ -155,6 +156,7 @@ Type TPlayerFinance {_exposeToLua="selected"}
 	Field income_scripts:Long            = 0
 	Field income_sponsorshipRevenue:Long = 0
 	Field income_misc:Long               = 0
+	Field income_granted_benefits:Long   = 0
 	Field income_stations:Long           = 0
 	Field income_creditTaken:Long        = 0	'freshly taken credit today
 	Field income_balanceInterest:Long    = 0	'interest for money "on the bank"
@@ -582,12 +584,44 @@ Type TPlayerFinance {_exposeToLua="selected"}
 
 	'refreshs stats about paid money from paying misc things
 	Method PayMisc:Int(price:Long)
-		TLogger.Log("TFinancial.PayStationFees()", "Player "+playerID+" paid "+price+" for misc", LOG_DEBUG)
+		TLogger.Log("TFinancial.PayMisc()", "Player "+playerID+" paid "+price+" for misc", LOG_DEBUG)
 		'add this to our history
 		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAY_MISC, -price).AddTo(playerID)
 
 		expense_misc :+ price
 		AddExpense(price, TVTPlayerFinanceEntryType.PAY_MISC)
+		Return True
+	End Method
+
+
+	'refreshs stats about paid money from paying misc things
+	Method EarnGrantedBenefits:Int(price:Long)
+		TLogger.Log("TFinancial.EarnGrantedBenefits()", "Player "+playerID+" earned "+price+" of granted benefits", LOG_DEBUG)
+		'add this to our history
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.GRANTED_BENEFITS, price).AddTo(playerID)
+
+		income_granted_benefits :+ price
+		AddIncome(price, TVTPlayerFinanceEntryType.GRANTED_BENEFITS)
+		
+		Return True
+	End Method
+
+
+	'refreshs stats about paid money from paying misc things
+	Method CheatMoney:Int(price:Long)
+		TLogger.Log("TFinancial.CheatMoney()", "Player "+playerID+" cheated balance by "+price, LOG_DEBUG)
+		'add this to our history
+		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.CHEAT, price).AddTo(playerID)
+
+		if price > 0
+			income_misc :+ price
+			AddIncome(price, TVTPlayerFinanceEntryType.CHEAT)
+		else
+			'negate price!
+			expense_misc :+ -price
+			AddExpense(-price, TVTPlayerFinanceEntryType.CHEAT)
+		endif
+		
 		Return True
 	End Method
 End Type
