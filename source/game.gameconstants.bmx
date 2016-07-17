@@ -337,33 +337,35 @@ Type TVTPlayerFinanceEntryType {_exposeToLua}
 
 	Const SELL_MISC:int = 31                    '6
 	Const PAY_MISC:int = 32                     '7
+	Const GRANTED_BENEFITS:int = 33             '8
 
-	Const SELL_PROGRAMMELICENCE:int = 41        '8
-	Const PAY_PROGRAMMELICENCE:int = 42         '9
-	Const PAYBACK_AUCTIONBID:int = 43           '10
-	Const PAY_AUCTIONBID:int = 44               '11
+	Const SELL_PROGRAMMELICENCE:int = 41        '9
+	Const PAY_PROGRAMMELICENCE:int = 42         '10
+	Const PAYBACK_AUCTIONBID:int = 43           '11
+	Const PAY_AUCTIONBID:int = 44               '12
 
-	Const EARN_CALLERREVENUE:int = 51           '12
-	Const EARN_INFOMERCIALREVENUE:int = 52      '13
-	Const EARN_ADPROFIT:int = 53                '14
-	Const EARN_SPONSORSHIPREVENUE:int = 54      '15
-	Const PAY_PENALTY:int = 55                  '16
+	Const EARN_CALLERREVENUE:int = 51           '13
+	Const EARN_INFOMERCIALREVENUE:int = 52      '14
+	Const EARN_ADPROFIT:int = 53                '15
+	Const EARN_SPONSORSHIPREVENUE:int = 54      '16
+	Const PAY_PENALTY:int = 55                  '17
 
-	Const PAY_SCRIPT:int = 61                   '17
-	Const SELL_SCRIPT:int = 62                  '18
-	Const PAY_RENT:int = 63                     '19
-	Const PAY_PRODUCTIONSTUFF:int = 64          '20
+	Const PAY_SCRIPT:int = 61                   '18
+	Const SELL_SCRIPT:int = 62                  '19
+	Const PAY_RENT:int = 63                     '20
+	Const PAY_PRODUCTIONSTUFF:int = 64          '21
 
-	Const PAY_NEWS:int = 71                     '21
-	Const PAY_NEWSAGENCIES:int = 72             '22
+	Const PAY_NEWS:int = 71                     '22
+	Const PAY_NEWSAGENCIES:int = 72             '23
 
-	Const PAY_CREDITINTEREST:int = 81           '23
-	Const PAY_DRAWINGCREDITINTEREST:int = 82    '24
-	Const EARN_BALANCEINTEREST:int = 83         '25
+	Const PAY_CREDITINTEREST:int = 81           '24
+	Const PAY_DRAWINGCREDITINTEREST:int = 82    '25
+	Const EARN_BALANCEINTEREST:int = 83         '26
+
 	
-	Const CHEAT:int = 1000                      '26
+	Const CHEAT:int = 1000                      '27
 
-	Const count:int = 27                        'index 0 - 26
+	Const count:int = 28                        'index 0 - 27
 
 	'groups
 	Const GROUP_NEWS:int = 1
@@ -407,6 +409,7 @@ Type TVTPlayerFinanceEntryType {_exposeToLua}
 
 			case SELL_MISC                  return "sell_misc"
 			case PAY_MISC                   return "pay_misc"
+			case GRANTED_BENEFITS           return "granted_benefits"
 
 			case SELL_PROGRAMMELICENCE      return "sell_programmelicence"
 			case PAY_PROGRAMMELICENCE       return "pay_programmelicence"
@@ -446,6 +449,8 @@ Type TVTPlayerFinanceEntryType {_exposeToLua}
 			Case PAY_STATION, SELL_STATION, PAY_STATIONFEES
 				Return GROUP_STATION
 			Case SELL_MISC, PAY_MISC
+				Return GROUP_DEFAULT
+			Case GRANTED_BENEFITS
 				Return GROUP_DEFAULT
 			Case SELL_PROGRAMMELICENCE, ..
 			     PAY_PROGRAMMELICENCE, ..

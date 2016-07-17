@@ -132,7 +132,10 @@ Type TScreenHandler_Financials
 			else
 				logCol = "color=35,130,30"
 			Endif
-			logFont.DrawBlock("|"+logCol+"|"+TFunctions.dottedValue(abs(history.GetMoney()))+" "+getLocale("CURRENCY")+"|/color| "+history.GetDescription(), 501 + screenOffsetX + 5, 41 + screenOffsetY + logSlot*logH, 258 - 2*5, logH, ALIGN_LEFT_CENTER, clLog)
+			'ronny: do not "abs()" the value - this helps color-blind
+			'       people to distinguish positive and negative
+			logFont.DrawBlock("|"+logCol+"|"+TFunctions.dottedValue(history.GetMoney())+" "+getLocale("CURRENCY")+"|/color| "+history.GetDescription(), 501 + screenOffsetX + 5, 41 + screenOffsetY + logSlot*logH, 258 - 2*5, logH, ALIGN_LEFT_CENTER, clLog)
+			'logFont.DrawBlock("|"+logCol+"|"+TFunctions.dottedValue(abs(history.GetMoney()))+" "+getLocale("CURRENCY")+"|/color| "+history.GetDescription(), 501 + screenOffsetX + 5, 41 + screenOffsetY + logSlot*logH, 258 - 2*5, logH, ALIGN_LEFT_CENTER, clLog)
 			logSlot:+1
 		Next
 
@@ -233,7 +236,8 @@ Type TScreenHandler_Financials
 		'studios: generate no income
 		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_balanceInterest), valueIncomeX, valueStartY + 10*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
 		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_creditTaken), valueIncomeX, valueStartY + 11*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
-		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_misc), valueIncomeX, valueStartY + 12*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
+		'misc contains "granted benefits"
+		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_misc + finance.income_granted_benefits), valueIncomeX, valueStartY + 12*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
 		'spacer for total
 		textBoldFont.drawBlock(TFunctions.dottedValue(finance.income_total), valueIncomeX, valueStartY + 14*valueH +4, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
 
