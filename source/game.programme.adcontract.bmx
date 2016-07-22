@@ -328,10 +328,13 @@ Type TAdContractBase extends TBroadcastMaterialSourceBase {_exposeToLua}
 		Local a1:TAdContractBase = TAdContractBase(o1)
 		Local a2:TAdContractBase = TAdContractBase(o2)
 		If Not a2 Then Return 1
-		if a1.GetTitle() = a2.GetTitle() 
+
+		if a1.GetTitle().ToLower() = a2.GetTitle().ToLower()
 			return a1.minAudienceBase > a2.minAudienceBase
+		elseif a1.GetTitle().ToLower() > a2.GetTitle().ToLower()
+			return 1
 		endif
-        Return a1.GetTitle().ToLower() > a2.GetTitle().ToLower()
+		return -1
 	End Function
 
 
@@ -593,6 +596,20 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	End Method
 
 
+	Function SortByName:Int(o1:Object, o2:Object)
+		Local a1:TAdContract = TAdContract(o1)
+		Local a2:TAdContract = TAdContract(o2)
+		If Not a2 Then Return 1
+
+		if a1.GetTitle().ToLower() = a2.GetTitle().ToLower()
+			return a1.base.minAudienceBase > a2.base.minAudienceBase
+		elseif a1.GetTitle().ToLower() > a2.GetTitle().ToLower()
+			return 1
+		endif
+		return -1
+	End Function
+
+
 	Function SortByClassification:Int(o1:Object, o2:Object)
 		Local a1:TAdContract = TAdContract(o1)
 		Local a2:TAdContract = TAdContract(o2)
@@ -626,6 +643,30 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
         Return a1.GetMinAudience() - a2.GetMinAudience()
 	End Function
 
+
+	Function SortByDaysLeft:Int(o1:Object, o2:Object)
+		Local a1:TAdContract = TAdContract(o1)
+		Local a2:TAdContract = TAdContract(o2)
+		If Not a2 Then Return 1
+
+		if a1.GetDaysLeft() = a2.GetDaysLeft() 
+			return a1.GetTitle() > a2.GetTitle()
+		endif
+        Return a1.GetDaysLeft() - a2.GetDaysLeft()
+	End Function
+
+
+	Function SortBySpotsToSend:Int(o1:Object, o2:Object)
+		Local a1:TAdContract = TAdContract(o1)
+		Local a2:TAdContract = TAdContract(o2)
+		If Not a2 Then Return 1
+
+		if a1.GetSpotsSent() = a2.GetSpotsSent() 
+			return a1.GetTitle() > a2.GetTitle()
+		endif
+        Return a1.GetSpotsToSend() - a2.GetSpotsToSend()
+	End Function
+	
 
 	'what to earn each hour for each viewer
 	'(broadcasted as "infomercial")

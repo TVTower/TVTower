@@ -9,20 +9,117 @@ Import "game.screen.programmeplanner.gui.bmx"
 'the adspot/contractlist shown in the programmeplaner
 Type TgfxContractlist Extends TPlannerList
 	Field hoveredAdContract:TAdContract = Null
+	Field ListSortMode:int = 0
+	'ATTENTION: for now the "visibility state" is not saved in savegames
+	'           as we assume to have sortbuttons for all players
+	Field ListSortVisible:int = True
+	Field ListSortDirection:int = 0
+	Field sortSymbols:string[] = ["gfx_datasheet_icon_az", "gfx_datasheet_icon_minAudience", "gfx_datasheet_icon_money", "gfx_datasheet_icon_duration", "gfx_datasheet_icon_spotsAired"]
+	Field sortKeys:int[] = [0, 1, 2, 3, 4]
+	'cache
+	Global _contracts:TList {nosave}
+	Global _contractsCacheKey:string = "" {nosave}
+	Global _contractsOwner:int = 0 {nosave}
+	Global _registeredListeners:TList = CreateList() {nosave}
+	Global registeredEvents:int = False
+
 
 	Method Create:TgfxContractlist(x:Int, y:Int)
-		entrySize = GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.dimension.copy()
-
+		entrySize = null
+		entriesRect = null
+		
 		'right align the list
-		Pos.SetXY(x - entrySize.GetX(), y)
-
-		'recalculate dimension of the area of all entries (also if not all slots occupied)
-		entriesRect = New TRectangle.Init(Pos.GetX(), Pos.GetY(), entrySize.GetX(), 0)
-		entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
-		entriesRect.dimension.y :+ GameRules.maxContracts * entrySize.GetY()
-		entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
+		Pos.SetXY(x - GetEntrySize().GetX(), y)
 
 		Return Self
+	End Method
+
+
+	Method New()
+		RegisterEvents()
+	End Method
+
+
+	Method Delete()
+		UnRegisterEvents()
+	End Method
+	
+
+	Method RegisterEvents:Int()
+		'register events for all lists
+		if not registeredEvents
+			'handle changes to the programme collections (add/removal
+			'of contracts)
+			EventManager.registerListenerFunction("programmecollection.addAdContract", OnChangeProgrammeCollection)
+			EventManager.registerListenerFunction("programmecollection.removeAdContract", OnChangeProgrammeCollection)
+
+			registeredEvents = True
+		endif
+	End Method
+
+
+	Method UnRegisterEvents:Int()
+		For local link:TLink = EachIn _registeredListeners
+			'variant a: link.Remove()
+			'variant b: we never know if there happens something else
+			EventManager.unregisterListenerByLink(link)
+		Next
+	End Method
+
+
+	Method GetEntrySize:TVec2D()
+		if not entrySize
+			entrySize = GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.dimension.copy()
+		endif
+
+		return entrySize
+	End Method
+
+
+	Method GetEntriesRect:TRectangle()
+		if not entriesRect
+			'recalculate dimension of the area of all entries (also if not all slots occupied)
+			entriesRect = New TRectangle.Init(Pos.GetX(), Pos.GetY(), GetEntrySize().GetX(), 0)
+			if ListSortVisible
+				entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_topButton.default").area.GetH()
+			else
+				entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
+			endif
+			entriesRect.dimension.y :+ GameRules.maxContracts * GetEntrySize().GetY()
+			entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
+		endif
+
+		return entriesRect
+	End Method
+
+
+	Method GetContracts:TList(owner:int)
+		local cacheKey:string = ListSortDirection+"_"+ListSortMode+"_"+owner 
+		'create cached var?
+		if not _contracts or cacheKey <> _contractsCacheKey
+			_contracts = GetPlayerProgrammeCollection(owner).GetAdContracts().Copy()
+
+			'sort
+			Select ListSortMode
+				case 0
+					_contracts.Sort(not ListSortDirection, TAdContract.SortByName)
+				case 1
+					_contracts.Sort(not ListSortDirection, TAdContract.SortByMinAudience)
+				case 2
+					_contracts.Sort(not ListSortDirection, TAdContract.SortByProfit)
+				case 3
+					_contracts.Sort(not ListSortDirection, TAdContract.SortByDaysLeft)
+				case 4
+					_contracts.Sort(not ListSortDirection, TAdContract.SortBySpotsToSend)
+				default
+					_contracts.Sort(not ListSortDirection, TAdContract.SortByName)
+			End Select
+			
+			_contractsCacheKey = cacheKey
+			_contractsOwner = owner
+		endif
+
+		return _contracts
 	End Method
 
 
@@ -33,15 +130,16 @@ Type TgfxContractlist Extends TPlannerList
 
 		Local currSprite:TSprite
 		'maybe it has changed since initialization
-		entrySize = GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.dimension.copy()
-		Local currX:Int = entriesRect.GetX()
-		Local currY:Int = entriesRect.GetY()
+		entrySize = null
+		Local currX:Int = GetEntriesRect().GetX()
+		Local currY:Int = GetEntriesRect().GetY()
 		Local font:TBitmapFont = GetBitmapFont("Default", 10)
 
-		Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(owner)
+		Local contracts:TList = GetContracts(owner)
 		'draw slots, even if empty
 		For Local i:Int = 0 Until 10 'GameRules.maxContracts
-			Local contract:TAdContract = programmeCollection.GetAdContractAtIndex(i)
+			Local contract:TAdContract
+			if i < contracts.Count() then contract = TAdContract( contracts.ValueAtIndex(i) )
 
 			Local entryPositionType:String = "entry"
 			If i = 0 Then entryPositionType = "first"
@@ -53,7 +151,11 @@ Type TgfxContractlist Extends TPlannerList
 			'do this in the for loop, so the entrydrawType is known
 			'(top-portion could contain color code of the drawType)
 			If i = 0
-				currSprite = GetSpriteFromRegistry("gfx_programmeentries_top.default")
+				if ListSortVisible
+					currSprite = GetSpriteFromRegistry("gfx_programmeentries_topButton.default")
+				else
+					currSprite = GetSpriteFromRegistry("gfx_programmeentries_top.default")
+				endif
 				currSprite.draw(currX, currY)
 				currY :+ currSprite.area.GetH()
 			EndIf
@@ -69,7 +171,7 @@ Type TgfxContractlist Extends TPlannerList
 				if contract.GetDaysLeft() <= 0 then SetColor 255,220,220
 				
 				'hovered - draw hover effect if hovering
-				If THelper.MouseIn(currX, currY, int(entrySize.GetX()), int(entrySize.GetY())-1)
+				If THelper.MouseIn(currX, currY, int(GetEntrySize().GetX()), int(GetEntrySize().GetY())-1)
 					GetSpriteFromRegistry("gfx_programmetape_movie.hovered").draw(currX + 8, currY+1)
 				Else
 					GetSpriteFromRegistry("gfx_programmetape_movie."+drawType).draw(currX + 8, currY+1)
@@ -86,7 +188,7 @@ Type TgfxContractlist Extends TPlannerList
 
 
 			'advance to next line
-			currY:+ entrySize.y
+			currY:+ GetEntrySize().y
 
 			'add "bottom" portion when drawing last item
 			'do this in the for loop, so the entrydrawType is known
@@ -97,6 +199,37 @@ Type TgfxContractlist Extends TPlannerList
 				currY :+ currSprite.area.GetH()
 			EndIf
 		Next
+
+
+
+		'draw sort symbols
+		if ListSortVisible
+			local buttonX:int = GetEntriesRect().GetX() + 2
+			local buttonY:int = GetEntriesRect().GetY() + 4
+			local buttonWidth:int = 32
+			local buttonPadding:int = 2
+
+			For local i:int = 0 until sortKeys.length
+				local spriteName:string = "gfx_gui_button.datasheet"
+				if ListSortMode = sortKeys[i]
+					spriteName = "gfx_gui_button.datasheet.positive"
+				endif
+
+				if THelper.MouseIn(buttonX + 5 + i*(buttonWidth + buttonPadding), buttonY, buttonWidth, 27)
+					spriteName :+ ".hover"
+				endif
+				GetSpriteFromRegistry(spriteName).DrawArea(buttonX + 5 + i*(buttonWidth + buttonPadding), buttonY, buttonWidth,27)
+				GetSpriteFromRegistry(sortSymbols[ sortKeys[i] ]).Draw(buttonX + 9 + i*(buttonWidth + buttonPadding), buttonY+2)
+				'sort
+				if ListSortMode = sortKeys[i]
+					if ListSortDirection = 0
+						GetSpriteFromRegistry("gfx_datasheet_icon_arrow_down").Draw(buttonX + 10 + i*(buttonWidth + buttonPadding), buttonY+2)
+					else
+						GetSpriteFromRegistry("gfx_datasheet_icon_arrow_up").Draw(buttonX + 10 + i*(buttonWidth + buttonPadding), buttonY+2)
+					endif
+				endif
+			Next
+		endif
 	End Method
 
 
@@ -109,13 +242,19 @@ Type TgfxContractlist Extends TPlannerList
 		If Not owner Then Return False
 
 		If Self.openState >= 1
-			Local currY:Int = entriesRect.GetY() + GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
+			Local currY:Int
+			if ListSortVisible
+				currY = GetEntriesRect().GetY() + GetSpriteFromRegistry("gfx_programmeentries_topButton.default").area.GetH()
+			else
+				currY = GetEntriesRect().GetY() + GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
+			endif
 
-			Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(owner)
-			For Local i:Int = 0 Until GameRules.maxContracts
-				Local contract:TAdContract = programmeCollection.GetAdContractAtIndex(i)
+			local contracts:TList = GetContracts(owner)
+			'sort
+			For Local i:Int = 0 Until Min(contracts.Count(), GameRules.maxContracts)
+				Local contract:TAdContract = TAdContract(contracts.ValueAtIndex(i))
 
-				If contract And THelper.MouseIn(int(entriesRect.GetX()), currY, int(entrySize.GetX()), int(entrySize.GetY())-1)
+				If contract And THelper.MouseIn(int(GetEntriesRect().GetX()), currY, int(GetEntrySize().GetX()), int(GetEntrySize().GetY())-1)
 					'store for outside use (eg. displaying a sheet)
 					hoveredAdContract = contract
 
@@ -131,9 +270,34 @@ Type TgfxContractlist Extends TPlannerList
 				EndIf
 
 				'next tape
-				currY :+ entrySize.y
+				currY :+ GetEntrySize().y
 			Next
 		EndIf
+
+
+		'handle sort buttons (if still open)
+		If Self.openState >= 1
+			local buttonX:int = GetEntriesRect().GetX() + 2
+			local buttonY:int = GetEntriesRect().GetY() + 4
+			local buttonWidth:int = 32
+			local buttonPadding:int = 2
+
+			if THelper.MouseIn(buttonX + 5, buttonY, sortKeys.length * (buttonWidth + buttonPadding), 27)
+				if MouseManager.isShortClicked(1)
+					For local i:int = 0 until sortKeys.length
+						If THelper.MouseIn(buttonX + i * (buttonWidth + buttonPadding), buttonY, 35, 27)
+							'sort now
+							if ListSortMode <> sortKeys[i]
+								ListSortMode = sortKeys[i]
+							else
+								ListSortDirection = 1 - ListSortDirection
+							endif
+						endif
+					Next
+				endif
+			endif
+		endif
+
 
 		If MOUSEMANAGER.IsClicked(2) or MouseManager.IsLongClicked(1)
 			SetOpen(0)
@@ -143,7 +307,7 @@ Type TgfxContractlist Extends TPlannerList
 
 		'close if mouse hit outside - simple mode: so big rect
 		If MouseManager.IsHit(1)
-			If Not entriesRect.containsXY(MouseManager.x, MouseManager.y)
+			If Not GetEntriesRect().containsXY(MouseManager.x, MouseManager.y)
 				SetOpen(0)
 				'MouseManager.ResetKey(1)
 			EndIf
@@ -156,4 +320,14 @@ Type TgfxContractlist Extends TPlannerList
 		If newState <= 0 Then enabled = 0 Else enabled = 1
 		Self.openState = newState
 	End Method
+
+
+	'=== EVENT LISTENERS ===
+	Function OnChangeProgrammeCollection:int( triggerEvent:TEventBase )
+		local collection:TPlayerProgrammeCollection = TPlayerProgrammeCollection(triggerEvent.GetSender())
+		if not collection or collection.owner <> _contractsOwner then return False
+
+		'invalidate players list
+		_contracts = null
+	End Function
 End Type

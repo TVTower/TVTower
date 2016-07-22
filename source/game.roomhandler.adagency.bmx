@@ -1144,7 +1144,7 @@ endrem
 			if THelper.MouseIn(5, 335, boxWidth, boxHeight)
 				ListSortVisible = True
 
-				if MouseManager.isClicked(1) and not MouseManager.IsLongClicked(1)
+				if MouseManager.isShortClicked(1)
 					local contentX:int = 5 + skin.GetContentX()
 					local sortKeys:int[] = [0, 1, 2]
 					For local i:int = 0 to 2

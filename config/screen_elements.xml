@@ -339,8 +339,10 @@
 				<child name="gfx_programmegenres_last.highlighted"		x="0" 	y="455" 	w="194" h="17" />
 				<child name="gfx_programmegenres_bottom.highlighted"	x="0"	y="472" 	w="194" h="8" />
 
+				<!-- tapes/entries: top when sort buttons are visible -->
 				<!-- tapes/entries: the default view -->
 				<child name="gfx_programmeentries_top.default"			x="0"	y="0"	 	w="184" h="5" />
+				<child name="gfx_programmeentries_topButton.default"    x="185"	y="170" 	w="194" h="32" />
 				<child name="gfx_programmeentries_first.default"		x="0"	y="5"	 	w="184" h="19" />
 				<child name="gfx_programmeentries_entry.default"		x="0"	y="24"	 	w="184" h="19" />
 				<child name="gfx_programmeentries_last.default"			x="0"	y="43"	 	w="184" h="19" />
@@ -348,18 +350,21 @@
 				<child name="gfx_programmeentries_bottomButton.default"	x="185"	y="145" 	w="194" h="24" />
 				<!-- tapes/entries: the planned view -->
 				<child name="gfx_programmeentries_top.planned"			x="0"	y="71"	 	w="184" h="5" />
+				<child name="gfx_programmeentries_topButton.planned"    x="185"	y="170" 	w="194" h="32" />
 				<child name="gfx_programmeentries_first.planned"		x="0"	y="76"	 	w="184" h="19" />
 				<child name="gfx_programmeentries_entry.planned"		x="0"	y="95"	 	w="184" h="19" />
 				<child name="gfx_programmeentries_last.planned"			x="0"	y="114"	 	w="184" h="19" />
 				<child name="gfx_programmeentries_bottom.planned"		x="0"	y="133"	 	w="184" h="8" />
-				<child name="gfx_programmeentries_bottomButton.planned"	x="185"	y="145" 	w="194" h="24" />
+				<child name="gfx_programmeentries_bottomButton.planned" x="185"	y="145" 	w="194" h="24" />
 				<!-- tapes/entries: the "is new" view -->
 				<child name="gfx_programmeentries_top.new"				x="0"	y="142"	 	w="184" h="5" />
+				<child name="gfx_programmeentries_topButton.new"	    x="185"	y="170" 	w="194" h="32" />
 				<child name="gfx_programmeentries_first.new"			x="0"	y="147"	 	w="184" h="19" />
 				<child name="gfx_programmeentries_entry.new"			x="0"	y="166"	 	w="184" h="19" />
 				<child name="gfx_programmeentries_last.new"				x="0"	y="185"	 	w="184" h="19" />
 				<child name="gfx_programmeentries_bottom.new"			x="0"	y="204"	 	w="184" h="8" />
 				<child name="gfx_programmeentries_bottomButton.new"     x="185"	y="145" 	w="194" h="24" />
+				<child name="gfx_programmeentries_topButton.new"        x="185"	y="170" 	w="194" h="20" />
 
 				<child name="gfx_programmetape_movie.default"			x="185"	y="0"	 	w="166" h="18" />
 				<child name="gfx_programmetape_series.default"			x="185"	y="18"	 	w="166" h="18" />
