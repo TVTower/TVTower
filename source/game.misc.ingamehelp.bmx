@@ -60,9 +60,9 @@ Type TIngameHelpWindowCollection
 			if currentIngameHelpWindow.helpGUID.ToLower() = helpGUID.ToLower()
 				if currentIngameHelpWindow.active then return
 			endif
-			currentIngameHelpWindow.Show(force)
-
-			EventManager.triggerEvent(TEventSimple.Create("InGameHelp.ShowHelpWindow", new TData.Add("window", currentIngameHelpWindow) , Self))
+			if currentIngameHelpWindow.Show(force)
+				EventManager.triggerEvent(TEventSimple.Create("InGameHelp.ShowHelpWindow", new TData.Add("window", currentIngameHelpWindow) , Self))
+			endif
 		endif
 	End Method
 
