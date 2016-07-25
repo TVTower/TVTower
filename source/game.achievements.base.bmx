@@ -32,6 +32,7 @@ End Function
 
 Type TAchievementBaseType Extends TGameObject
 	Field title:TLocalizedString
+	Field text:TLocalizedString
 	Field flags:int
 
 	Const STATE_UNKNOWN:int = 0
@@ -49,7 +50,19 @@ Type TAchievementBaseType Extends TGameObject
 		self.title = title
 		return self
 	End Method
-	
+
+
+	Method GetText:string()
+		if text then return text.Get()
+		return ""
+	End Method
+
+
+	Method SetText:TAchievementBaseType(text:TLocalizedString)
+		self.text = text
+		return self
+	End Method
+		
 
 	Method HasFlag:Int(flag:Int) {_exposeToLua}
 		Return flags & flag

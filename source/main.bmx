@@ -1019,7 +1019,7 @@ Type TApp
 		if GetGame().IsPaused() and App.pausedBy = 0
 			GetGame().SetPaused(False)
 		endif
-			
+		
 
 		GUIManager.EndUpdates() 'reset modal window states
 
@@ -1388,6 +1388,7 @@ Type TGameState
 	Field _ProgrammeLicenceCollection:TProgrammeLicenceCollection = Null
 
 	Field _NewsEventCollection:TNewsEventCollection = Null
+	Field _AchievementCollection:TAchievementCollection = Null
 	Field _FigureCollection:TFigureCollection = Null
 	Field _PlayerCollection:TPlayerCollection = Null
 	Field _PlayerFinanceCollection:TPlayerFinanceCollection = Null
@@ -1444,6 +1445,7 @@ Type TGameState
 
 		GetDailyBroadcastStatisticCollection().Initialize()
 		GetFigureCollection().Initialize()
+		'GetAchievementCollection().Initialize()
 		GetNewsAgency().Initialize()
 		GetPublicImageCollection().Initialize()
 		GetBroadcastManager().Initialize()
@@ -1503,6 +1505,7 @@ Type TGameState
 
 		_Assign(_NewsEventCollection, TNewsEventCollection._instance, "NewsEventCollection", MODE_LOAD)
 		_Assign(_NewsAgency, TNewsAgency._instance, "NewsAgency", MODE_LOAD)
+		_Assign(_AchievementCollection, TAchievementCollection._instance, "AchievementCollection", MODE_LOAD)
 		_Assign(_Building, TBuilding._instance, "Building", MODE_LOAD)
 		_Assign(_Elevator, TElevator._instance, "Elevator", MODE_LOAD)
 		_Assign(_RoomBoard, TRoomBoard._instance, "RoomBoard", MODE_LOAD)
@@ -1579,6 +1582,7 @@ Type TGameState
 
 		_Assign(TNewsEventCollection._instance, _NewsEventCollection, "NewsEventCollection", MODE_SAVE)
 		_Assign(TNewsAgency._instance, _NewsAgency, "NewsAgency", MODE_SAVE)
+		_Assign(TAchievementCollection._instance, _AchievementCollection, "AchievementCollection", MODE_SAVE)
 		_Assign(EventManager._events, _EventManagerEvents, "Events", MODE_SAVE)
 		_Assign(TPopularityManager._instance, _PopularityManager, "PopularityManager", MODE_SAVE)
 		_Assign(TBroadcastManager._instance, _BroadcastManager, "BroadcastManager", MODE_SAVE)
@@ -3737,6 +3741,7 @@ Type GameEvents
 		'-> create ingame notifications
 		_eventListeners :+ [ EventManager.registerListenerFunction("publicAuthorities.onStopXRatedBroadcast", publicAuthorities_onStopXRatedBroadcast) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("publicAuthorities.onConfiscateProgrammeLicence", publicAuthorities_onConfiscateProgrammeLicence) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("Achievement.OnComplete", Achievement_OnComplete) ]
 
 		'visually inform that selling the last station is impossible
 		_eventListeners :+ [ EventManager.registerListenerFunction("StationMap.onTrySellLastStation", StationMap_OnTrySellLastStation) ]
@@ -4168,6 +4173,53 @@ Type GameEvents
 		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 	End Function
 
+
+	Function Achievement_OnComplete:Int(triggerEvent:TEventBase)
+		Local achievement:TAchievement = TAchievement(triggerEvent.GetSender())
+		if not achievement then return False
+
+		Local playerID:Int = triggerEvent.GetData().GetInt("playerID", 0)
+		if not GetPlayerCollection().IsPlayer(playerID) then return False
+
+		local player:TPlayer = GetPlayer(playerID)
+		if not player then return False
+
+
+		'inform ai
+		If player.isLocalAI() Then player.playerAI.CallOnAchievementCompleted(achievement)
+
+		'only interest in active players achievements
+		If player <> GetPlayer() Then Return False
+
+
+		local rewardText:string
+		For local i:int = 0 until achievement.rewards.length
+			rewardText :+ achievement.rewards[i].GetTitle()
+		Next
+
+		rem
+			TODO: Bilder fuer toastmessages (+ Pokal)
+			 _________
+			|[ ] text |
+			|    text |
+			'---------'
+		endrem
+		
+		local text:string = GetLocale("YOU_JUST_COMPLETED_ACHIEVEMENTTITLE").Replace("%ACHIEVEMENTTITLE%", achievement.GetTitle())
+		if rewardText
+			text :+ "~n" + GetLocale("REWARD") + ":" + rewardText
+		endif
+
+
+		Local toast:TGameToastMessage = New TGameToastMessage
+		'show it for some seconds
+		toast.SetLifeTime(15)
+		toast.SetMessageType(2) 'positive
+		toast.SetCaption(GetLocale("ACHIEVEMENT_COMPLETED"))
+		toast.SetText( text )
+		GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
+	End Function
+	
 
 	Function Room_OnBombExplosion:Int(triggerEvent:TEventBase)
 		GetRoomBoard().ResetPositions()
