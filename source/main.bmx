@@ -172,6 +172,9 @@ Type TApp
 	Field OnLoadMusicListener:TLink
 
 	Field openEscapeMenu:int = False
+	'bitmask defining what elements set the game to paused (eg. escape
+	'menu, ingame help ...)
+	Field pausedBy:int = 0
 
 	'able to draw loading screen?
 	Global baseResourcesLoaded:Int = 0
@@ -195,6 +198,13 @@ Type TApp
 
 	Global settingsBasePath:String = "config/settings.xml"
 	Global settingsUserPath:String = "config/settings.user.xml"
+
+	Const PAUSED_BY_ESCAPEMENU:int = 1
+	Const PAUSED_BY_EXITDIALOGUE:int = 2
+	Const PAUSED_BY_INGAMEHELP:int = 4
+	Const PAUSED_BY_MODALWINDOW:int = 8
+	
+	
 
 	Function Create:TApp(updatesPerSecond:Int = 60, framesPerSecond:Int = 30, vsync:Int=True, initializeGUI:Int=True)
 		Local obj:TApp = New TApp
@@ -425,6 +435,21 @@ Type TApp
 		?
 	End Method
 
+
+
+	Method IsPausedBy:Int(origin:Int)
+		Return pausedBy & origin
+	End Method
+
+
+	Method SetPausedBy(origin:Int, enable:Int=True)
+		If enable
+			pausedBy :| origin
+		Else
+			pausedBy :& ~origin
+		EndIf
+	End Method
+	
 
 	Method SetLanguage:Int(languageCode:String="de")
 		Local oldLang:String = TLocalization.GetCurrentLanguageCode()
@@ -983,6 +1008,19 @@ Type TApp
 
 		If GetGame().networkGame Then Network.Update()
 
+
+		'in single player: pause game
+		if Not GetGame().networkgame
+			If not GetGame().IsPaused() and App.pausedBy > 0
+				GetGame().SetPaused(True)
+			endif
+		endif
+
+		if GetGame().IsPaused() and App.pausedBy = 0
+			GetGame().SetPaused(False)
+		endif
+			
+
 		GUIManager.EndUpdates() 'reset modal window states
 
 		TProfiler.Leave("Update")
@@ -1217,13 +1255,7 @@ Type TApp
 		'remove connection to global value (guimanager takes care of fading)
 		TApp.EscapeMenuWindow = Null
 
-		'in single player: resume game
-		If TGame._instance And Not GetGame().networkgame
-			'only unpause if there is no exit-dialogue open
-			if not TApp.ExitAppDialogue and not IngameHelpWindowCollection.GetCurrent()
-				GetGame().SetPaused(False)
-			endif
-		Endif
+		App.SetPausedBy(PAUSED_BY_ESCAPEMENU, False)
 
 		Return True
 	End Function
@@ -1235,10 +1267,8 @@ Type TApp
 		If MilliSecs() - EscapeMenuWindowTime < 100 Then Return False
 
 		EscapeMenuWindowTime = MilliSecs()
-		'in single player: pause game
-		If TGame._instance And Not GetGame().networkgame
-			GetGame().SetPaused(True)
-		endif
+
+		App.SetPausedBy(TApp.PAUSED_BY_ESCAPEMENU)
 
 		TGUISavegameListItem.SetTypeFont(GetBitmapFont(""))
 
@@ -1293,13 +1323,7 @@ Type TApp
 		'remove connection to global value (guimanager takes care of fading)
 		TApp.ExitAppDialogue = Null
 
-		'in single player: resume game
-		If TGame._instance And Not GetGame().networkgame
-			'only unpause if there is no escape-menu open or ingame help
-			if not TApp.EscapeMenuWindow and not IngameHelpWindowCollection.GetCurrent()
-				GetGame().SetPaused(False)
-			endif
-		Endif
+		App.SetPausedBy(TApp.PAUSED_BY_EXITDIALOGUE, False)
 
 		Return True
 	End Function
@@ -1310,8 +1334,8 @@ Type TApp
 		If MilliSecs() - ExitAppDialogueTime < 100 Then Return False
 
 		ExitAppDialogueTime = MilliSecs()
-		'in single player: pause game
-		If TGame._instance And Not GetGame().networkgame Then GetGame().SetPaused(True)
+
+		App.SetPausedBy(TApp.PAUSED_BY_EXITDIALOGUE)
 
 		ExitAppDialogue = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D.Init(400,150), "SYSTEM")
 		ExitAppDialogue.SetDialogueType(2)
@@ -1853,12 +1877,6 @@ Type TSaveGame Extends TGameState
 
 		'call game that game continues/starts now
 		GetGame().StartLoadedSaveGame()
-
-		'only unpause if there is no exit-dialogue open (or ingame help)
-		if not TApp.ExitAppDialogue and not TApp.EscapeMenuWindow and not IngameHelpWindowCollection.GetCurrent()
-
-			GetGame().SetPaused(False)
-		endif
 
 		Return True
 	End Function
@@ -3691,7 +3709,10 @@ Type GameEvents
 		'pause on modal windows
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiModalWindow.onOpen", OnOpenModalWindow) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiModalWindow.onClose", OnCloseModalWindow) ]
-
+		'pause on ingame help
+		_eventListeners :+ [ EventManager.registerListenerFunction("InGameHelp.ShowHelpWindow", OnOpenIngameHelp) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("InGameHelp.CloseHelpWindow", OnCloseIngameHelp) ]
+			
 		'=== REGISTER TIME EVENTS ===
 		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnDay", OnDay) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnHour", OnHour) ]
@@ -3744,22 +3765,23 @@ Type GameEvents
 	End Function
 
 
-	Function OnOpenModalWindow:int(triggerEvent:TEventBase)
-		'only pause in single-player games
-		if not GetGame() or GetGame().networkgame then return False
+	Function OnOpenIngameHelp:int(triggerEvent:TEventBase)
+		App.SetPausedBy(TApp.PAUSED_BY_INGAMEHELP, True)
+	End Function
 
-		If not GetGame().IsPaused() Then GetGame().SetPaused(True)
+
+	Function OnCloseIngameHelp:int(triggerEvent:TEventBase)
+		App.SetPausedBy(TApp.PAUSED_BY_INGAMEHELP, False)
+	End Function
+	
+
+	Function OnOpenModalWindow:int(triggerEvent:TEventBase)
+		App.SetPausedBy(TApp.PAUSED_BY_MODALWINDOW)
 	End Function
 
 
 	Function OnCloseModalWindow:int(triggerEvent:TEventBase)
-		'only pause in single-player games
-		if not GetGame() or GetGame().networkgame then return False
-
-		'they are handled individually
-		if TApp.ExitAppDialogue or TApp.EscapeMenuWindow then return False
-
-		If GetGame().IsPaused() Then GetGame().SetPaused(False)
+		App.SetPausedBy(TApp.PAUSED_BY_MODALWINDOW, False)
 	End Function
 
 
@@ -4127,7 +4149,7 @@ Type GameEvents
 		'inform ai before
 		If player.isLocalAI() Then player.playerAI.CallOnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedProgrammeLicence, targetProgrammeLicence)
 
-		'only interest in active players contracts
+		'only interest in active players licences
 		If confiscatedProgrammeLicence.owner <> GetPlayerCollection().playerID Then Return False
 
 		Local toast:TGameToastMessage = New TGameToastMessage

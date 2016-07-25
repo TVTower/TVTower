@@ -61,6 +61,8 @@ Type TIngameHelpWindowCollection
 				if currentIngameHelpWindow.active then return
 			endif
 			currentIngameHelpWindow.Show(force)
+
+			EventManager.triggerEvent(TEventSimple.Create("InGameHelp.ShowHelpWindow", new TData.Add("window", currentIngameHelpWindow) , Self))
 		endif
 	End Method
 
@@ -85,9 +87,15 @@ Type TIngameHelpWindowCollection
 
 	Method Update:int()
 		if currentIngameHelpWindow
+			local wasClosing:int = currentIngameHelpWindow.IsClosing()
+
 			currentIngameHelpWindow.Update()
 
 			if currentIngameHelpWindow.IsClosing()
+				if not wasClosing
+					EventManager.triggerEvent(TEventSimple.Create("InGameHelp.CloseHelpWindow", new TData.Add("window", currentIngameHelpWindow) , Self))
+				endif
+				
 				currentIngameHelpWindowLocked = False
 
 				'disable this help
@@ -99,6 +107,8 @@ Type TIngameHelpWindowCollection
 					showHelp = False
 				endif
 			elseif currentIngameHelpWindow.IsClosed()
+				EventManager.triggerEvent(TEventSimple.Create("InGameHelp.ClosedHelpWindow", new TData.Add("window", currentIngameHelpWindow) , Self))
+
 				currentIngameHelpWindow = null
 			endif
 		endif
@@ -278,7 +288,7 @@ Type TIngameHelpWindow
 
 	Method IsClosing:int()
 		if not modalDialogue then return False
-		return modalDialogue.closeActionStarted
+		return modalDialogue.closeActionStarted and not IsClosed()
 	End Method
 
 
