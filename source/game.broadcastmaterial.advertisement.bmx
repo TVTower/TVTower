@@ -162,7 +162,7 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 		Else
 			setState(STATE_OK)
 			'successful sent - so increase the value the contract
-			contract.spotsSent:+1
+			contract.SetSpotsSent(contract.spotsSent + 1)
 			'TLogger.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" sent SUCCESSFUL spot "+contract.spotsSent+"/"+contract.GetSpotCount()+". Title: "+contract.GetTitle()+". Time: day "+(day-GetWorldTime().GetStartDay())+", "+hour+":"+minute+".", LOG_DEBUG)
 		EndIf
 		return TRUE

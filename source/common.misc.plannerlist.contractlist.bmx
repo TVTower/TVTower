@@ -53,6 +53,12 @@ Type TgfxContractlist Extends TPlannerList
 			EventManager.registerListenerFunction("programmecollection.addAdContract", OnChangeProgrammeCollection)
 			EventManager.registerListenerFunction("programmecollection.removeAdContract", OnChangeProgrammeCollection)
 
+			'handle changes to the contracts to avoid outdated information
+			EventManager.registerListenerFunction("adContract.onSetSpotsSent", OnChangeContractData)
+
+			'handle savegame loading (reset cache)
+			EventManager.registerListenerFunction("SaveGame.OnLoad", OnLoadSaveGame)
+		
 			registeredEvents = True
 		endif
 	End Method
@@ -327,7 +333,22 @@ Type TgfxContractlist Extends TPlannerList
 		local collection:TPlayerProgrammeCollection = TPlayerProgrammeCollection(triggerEvent.GetSender())
 		if not collection or collection.owner <> _contractsOwner then return False
 
-		'invalidate players list
+		'invalidate contracts list
+		_contracts = null
+	End Function
+
+
+	Function OnChangeContractData:int( triggerEvent:TEventBase )
+		local adContract:TAdContract = TAdContract(triggerEvent.GetSender())
+		if not adContract or adContract.owner <> _contractsOwner then return False
+
+		'invalidate contracts list
+		_contracts = null
+	End Function
+
+
+	Function OnLoadSaveGame:int( triggerEvent:TEventBase )
+		'invalidate contracts list
 		_contracts = null
 	End Function
 End Type

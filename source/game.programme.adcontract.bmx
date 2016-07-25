@@ -666,7 +666,18 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		endif
         Return a1.GetSpotsToSend() - a2.GetSpotsToSend()
 	End Function
-	
+
+
+	Method SetSpotsSent:int(value:int)
+		if spotsSent = value then return False
+		
+		spotsSent = value
+		'emit an event so eg. ContractList-caches can get recreated
+		EventManager.triggerEvent(TEventSimple.Create("adContract.onSetSpotsSent", null, Self))
+
+		return True
+	End Method
+		
 
 	'what to earn each hour for each viewer
 	'(broadcasted as "infomercial")
