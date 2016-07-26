@@ -101,6 +101,7 @@ Type TAiBase
 	Method CallOnBossCallsForced() abstract
 	Method CallOnPublicAuthoritiesStopXRatedBroadcast() abstract
 	Method CallOnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedLicence:object, targetLicence:object) abstract
+	Method CallOnAchievementCompleted(achievement:object) abstract
 	Method CallOnLeaveRoom(roomId:int) abstract
 	Method CallOnReachRoom(roomId:Int) abstract
 	Method CallOnBeginEnterRoom(roomId:int, result:int) abstract

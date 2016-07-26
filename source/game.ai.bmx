@@ -20,6 +20,8 @@ Import "game.newsagency.bmx"
 Import "game.misc.roomboardsign.bmx"
 Import "game.game.base.bmx"
 
+Import "game.achievements.base.bmx"
+
 Import "game.roomhandler.movieagency.bmx"
 Import "game.roomhandler.adagency.bmx"
 
@@ -192,6 +194,16 @@ Type TAi extends TAiBase
 		args[1] = TProgrammeLicence(targetLicence)
 
 		CallLuaFunction("OnPublicAuthoritiesConfiscateProgrammeLicence", args)
+	End Method
+
+
+	Method CallOnAchievementCompleted(achievement:object)
+		if not AiRunning then return
+
+		Local args:Object[1]
+		args[0] = TAchievement(achievement)
+
+		CallLuaFunction("CallOnAchievementCompleted", args)
 	End Method
 
 
