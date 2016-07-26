@@ -33,6 +33,14 @@ Type TgfxProgrammelist Extends TPlannerList
 	'licence 
 	Field hoveredLicence:TProgrammeLicence = Null
 
+	'cache
+	Global _licences:TList {nosave}
+	Global _licencesCacheKey:string = "" {nosave}
+	Global _licencesOwner:int = 0 {nosave}
+
+	Global _registeredListeners:TList = CreateList() {nosave}
+	Global registeredEvents:int = False
+
 	Const MAX_LICENCES_PER_PAGE:int= 8
 	Const MODE_PROGRAMMEPLANNER:Int=0	'creates a GuiProgrammePlanElement
 	Const MODE_ARCHIVE:Int=1			'creates a GuiProgrammeLicence
@@ -40,20 +48,84 @@ Type TgfxProgrammelist Extends TPlannerList
 	
 
 	Method Create:TgfxProgrammelist(x:Int, y:Int)
-		genreSize = GetSpriteFromRegistry("gfx_programmegenres_entry.default").area.dimension.copy()
-		entrySize = GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.dimension.copy()
+		genreSize = null
+		entrySize = null
+		entriesRect = null
+		genresRect = null
 
 		'right align the list
-		Pos.SetXY(x - genreSize.GetX(), y)
-
-		'recalculate dimension of the area of all genres
-		genresRect = New TRectangle.Init(Pos.GetX(), Pos.GetY(), genreSize.GetX(), 0)
-		genresRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmegenres_top.default").area.GetH()
-		genresRect.dimension.y :+ TProgrammeLicenceFilter.GetVisibleCount() * genreSize.GetY()
-		genresRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmegenres_bottom.default").area.GetH()
-
+		Pos.SetXY(x - GetGenreSize().GetX(), y)
 
 		Return Self
+	End Method
+
+
+	Method New()
+		sortSymbols = ["gfx_datasheet_icon_az", "gfx_datasheet_icon_runningTime", "gfx_datasheet_icon_topicality"]
+		sortKeys = [0, 1, 2]
+
+		RegisterEvents()
+	End Method
+
+
+	Method UnRegisterEvents:Int()
+		For local link:TLink = EachIn _registeredListeners
+			'variant a: link.Remove()
+			'variant b: we never know if there happens something else
+			EventManager.unregisterListenerByLink(link)
+		Next
+	End Method
+
+
+	Method RegisterEvents:Int()
+		'register events for all lists
+		if not registeredEvents
+			'handle changes to the programme collections (add/removal
+			'of contracts)
+			EventManager.registerListenerFunction("programmecollection.addProgrammeLicence", OnChangeProgrammeCollection)
+			EventManager.registerListenerFunction("programmecollection.removeProgrammeLicence", OnChangeProgrammeCollection)
+
+			'handle broadcasts of the programme
+			EventManager.registerListenerFunction("broadcast.programme.BeginBroadcasting", OnBroadcastProgramme)
+			EventManager.registerListenerFunction("broadcast.programme.BeginBroadcastingAsAdvertisement", OnBroadcastProgramme)
+
+			'handle savegame loading (reset cache)
+			EventManager.registerListenerFunction("SaveGame.OnLoad", OnLoadSaveGame)
+
+			registeredEvents = True
+		endif
+	End Method	
+
+
+	Method GetGenreSize:TVec2D()
+		if not genreSize
+			genreSize = GetSpriteFromRegistry("gfx_programmegenres_entry.default").area.dimension.copy()
+		endif
+
+		return genreSize
+	End Method
+
+
+	Method GetGenresRect:TRectangle()
+		if not genresRect
+			'recalculate dimension of the area of all genres
+			genresRect = New TRectangle.Init(Pos.GetX(), Pos.GetY(), GetGenreSize().GetX(), 0)
+			genresRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmegenres_top.default").area.GetH()
+			genresRect.dimension.y :+ TProgrammeLicenceFilter.GetVisibleCount() * GetGenreSize().GetY()
+			genresRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmegenres_bottom.default").area.GetH()
+		endif
+
+		return genresRect
+	End Method
+	
+	
+	'override
+	Method GetEntrySize:TVec2D()
+		if not entrySize
+			entrySize = GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.dimension.copy()
+		endif
+
+		return entrySize
 	End Method
 
 
@@ -61,10 +133,14 @@ Type TgfxProgrammelist Extends TPlannerList
 	Method GetEntriesRect:TRectangle()
 		if not entriesRect
 			'recalculate dimension of the area of all entries (also if not all slots occupied)
-			entriesRect = New TRectangle.Init(genresRect.GetX() - 175, genresRect.GetY(), entrySize.GetX(), 0)
-			entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
+			entriesRect = New TRectangle.Init(GetGenresRect().GetX() - 175, GetGenresRect().GetY(), GetEntrySize().GetX(), 0)
+			if ListSortVisible
+				entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_topButton.default").area.GetH()
+			else
+				entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
+			endif
 			'max 10 licences per page
-			entriesRect.dimension.y :+ MAX_LICENCES_PER_PAGE * entrySize.GetY()
+			entriesRect.dimension.y :+ MAX_LICENCES_PER_PAGE * GetEntrySize().GetY()
 
 			if entriesPages > 1
 				entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_bottomButton.default").area.GetH()
@@ -83,17 +159,45 @@ Type TgfxProgrammelist Extends TPlannerList
 	Method GetSubEntriesRect:TRectangle()
 		if not subEntriesRect
 			'recalculate dimension of the area of all entries (also if not all slots occupied)
-			subEntriesRect = New TRectangle.Init(GetEntriesRect().GetX() + 175, GetEntriesRect().GetY(), entrySize.GetX(), 0)
+			subEntriesRect = New TRectangle.Init(GetEntriesRect().GetX() + 175, GetEntriesRect().GetY(), GetEntrySize().GetX(), 0)
 			subEntriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 			'max 10 licences per page
-			subEntriesRect.dimension.y :+ MAX_LICENCES_PER_PAGE * entrySize.GetY()
+			subEntriesRect.dimension.y :+ MAX_LICENCES_PER_PAGE * GetEntrySize().GetY()
 			subEntriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
 			'height added when button visible
 			'subEntriesRectButtonH = GetSpriteFromRegistry("gfx_programmeentries_bottomButton.default").area.GetH() - GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
 		endif
 		return subEntriesRect
 	End Method
-	
+
+
+
+	Method GetLicences:TList(owner:int, filterIndex:int)
+		local cacheKey:string = ListSortDirection+"_"+ListSortMode+"_"+filterIndex+"_"+owner 
+		'create cached var?
+		if not _licences or cacheKey <> _licencesCacheKey
+			Local filter:TProgrammeLicenceFilter = TProgrammeLicenceFilter.GetAtIndex(filterIndex)
+			_licences = ListFromArray( GetPlayerProgrammeCollection(owner).GetLicencesByFilter(filter) )
+
+			'sort
+			Select ListSortMode
+				case 0
+					_licences.Sort(not ListSortDirection, TProgrammeLicence.SortByName)
+				case 1
+					_licences.Sort(not ListSortDirection, TProgrammeLicence.SortByBlocks)
+				case 2
+					_licences.Sort(not ListSortDirection, TProgrammeLicence.SortByTopicality)
+				default
+					_licences.Sort(not ListSortDirection, TProgrammeLicence.SortByName)
+			End Select
+			
+			_licencesCacheKey = cacheKey
+			_licencesOwner = owner
+		endif
+
+		return _licences
+	End Method
+		
 
 	Method SetEntriesPages(pages:int)
 		if entriesPages <> pages
@@ -144,9 +248,9 @@ Type TgfxProgrammelist Extends TPlannerList
 			Local currSprite:TSprite
 			'maybe it has changed since initialization
 			genreSize = GetSpriteFromRegistry("gfx_programmegenres_entry.default").area.dimension.copy()
-			Local currY:Int = genresRect.GetY()
-			Local currX:Int = genresRect.GetX()
-			Local textRect:TRectangle = New TRectangle.Init(currX + 13, currY, genreSize.x - 12 - 5, genreSize.y)
+			Local currY:Int = GetGenresRect().GetY()
+			Local currX:Int = GetGenresRect().GetX()
+			Local textRect:TRectangle = New TRectangle.Init(currX + 13, currY, GetGenreSize().x - 12 - 5, GetGenreSize().y)
 			 
 			Local oldAlpha:Float = GetAlpha()
 
@@ -164,7 +268,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				If i = currentGenre Then entryDrawType = "active"
 				'hovered - draw hover effect if hovering
 				'can only haver if no episode list is open
-				If Self.openState <3 And THelper.MouseIn(currX, currY, int(genreSize.GetX()), int(genreSize.GetY())-1) Then entryDrawType="hovered"
+				If Self.openState <3 And THelper.MouseIn(currX, currY, int(GetGenreSize().GetX()), int(GetGenreSize().GetY())-1) Then entryDrawType="hovered"
 
 				'add "top" portion when drawing first item
 				'do this in the for loop, so the entrydrawType is known
@@ -194,7 +298,7 @@ Type TgfxProgrammelist Extends TPlannerList
 					SetAlpha 4 * GetAlpha()
 				EndIf
 				'advance to next line
-				currY:+ genreSize.y
+				currY:+ GetGenreSize().y
 
 				'add "bottom" portion when drawing last item
 				'do this in the for loop, so the entrydrawType is known
@@ -225,12 +329,11 @@ Type TgfxProgrammelist Extends TPlannerList
 		If filterIndex < 0 Then Return False
 
 		If not owner then Return False 
-			 
-		Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(owner)
-		Local filter:TProgrammeLicenceFilter = TProgrammeLicenceFilter.GetAtIndex(filterIndex)
-		Local licences:TProgrammeLicence[] = programmeCollection.GetLicencesByFilter(filter)
 
-		SetEntriesPages( int(ceil(licences.length / Float(MAX_LICENCES_PER_PAGE))) )
+		Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(owner) 
+		Local licences:TList = GetLicences(owner, filterIndex)
+
+		SetEntriesPages( int(ceil(licences.Count() / Float(MAX_LICENCES_PER_PAGE))) )
 
 		Local currSprite:TSprite
 		'maybe it has changed since initialization
@@ -244,23 +347,26 @@ Type TgfxProgrammelist Extends TPlannerList
 		local startIndex:int = (entriesPage-1)*MAX_LICENCES_PER_PAGE
 		local endIndex:int = entriesPage*MAX_LICENCES_PER_PAGE -1
 		For Local i:Int = startIndex To endIndex
+			local licence:TProgrammeLicence
+			if i < licences.Count() and i >= 0 then licence = TProgrammeLicence(licences.ValueAtIndex(i))
+
 			Local entryPositionType:String = "entry"
 			If i = startIndex Then entryPositionType = "first"
 			If i = endIndex Then entryPositionType = "last"
 
 			Local entryDrawType:String = "default"
 			Local tapeDrawType:String = "default"
-			If licences and i < licences.length 
+			If licence 
 				'== BACKGROUND ==
 				'planned is more important than new - both only happen
 				'on startprogrammes
-				If licences[i].IsPlanned()
+				If licence.IsPlanned()
 					entryDrawType = "planned"
 					tapeDrawType = "planned"
 				Else
 					'switch background to "new" if the licence is a just-added-one
-					For Local licence:TProgrammeLicence = EachIn programmeCollection.justAddedProgrammeLicences
-						If licences[i] = licence
+					For Local newLicence:TProgrammeLicence = EachIn programmeCollection.justAddedProgrammeLicences
+						If licence = newLicence
 							entryDrawType = "new"
 							tapeDrawType = "new"
 							Exit
@@ -275,7 +381,12 @@ Type TgfxProgrammelist Extends TPlannerList
 			'do this in the for loop, so the entrydrawType is known
 			'(top-portion could contain color code of the drawType)
 			If i = startIndex
-				currSprite = GetSpriteFromRegistry("gfx_programmeentries_top."+entryDrawType)
+				if ListSortVisible
+					currSprite = GetSpriteFromRegistry("gfx_programmeentries_topButton."+entryDrawType)
+				else
+					currSprite = GetSpriteFromRegistry("gfx_programmeentries_top."+entryDrawType)
+				endif
+
 				currSprite.draw(currX, currY)
 				currY :+ currSprite.area.GetH()
 			EndIf
@@ -283,7 +394,7 @@ Type TgfxProgrammelist Extends TPlannerList
 
 
 			'=== DRAW TAPE===
-			If licences and i < licences.length
+			If licence
 				'== ADJUST TAPE TYPE ==
 				'do that afterwards because now "new" and "planned" are
 				'already handled
@@ -292,21 +403,21 @@ Type TgfxProgrammelist Extends TPlannerList
 				If i = currentEntry Then tapeDrawType = "hovered"
 				'hovered - draw hover effect if hovering
 				'we add 1 pixel to height - to hover between tapes too
-				If THelper.MouseIn(currX, currY + 1, int(entrySize.GetX()), int(entrySize.GetY())) Then tapeDrawType="hovered"
+				If THelper.MouseIn(currX, currY + 1, int(GetEntrySize().GetX()), int(GetEntrySize().GetY())) Then tapeDrawType="hovered"
 
 
-				If licences[i].isSingle()
+				If licence.isSingle()
 					GetSpriteFromRegistry("gfx_programmetape_movie."+tapeDrawType).draw(currX + 8, currY+1)
 				Else
 					GetSpriteFromRegistry("gfx_programmetape_series."+tapeDrawType).draw(currX + 8, currY+1)
 				EndIf
-				font.drawBlock(licences[i].GetTitle(), currX + 22, currY + 3, 150,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
+				font.drawBlock(licence.GetTitle(), currX + 22, currY + 3, 150,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
 
 			EndIf
 
 
 			'advance to next line
-			currY:+ entrySize.y
+			currY:+ GetEntrySize().y
 
 			'add "bottom" portion when drawing last item
 			'do this in the for loop, so the entrydrawType is known
@@ -322,6 +433,39 @@ Type TgfxProgrammelist Extends TPlannerList
 			EndIf
 		Next
 
+
+
+
+		'draw sort symbols
+		if ListSortVisible
+			local buttonX:int = GetEntriesRect().GetX() + 2
+			local buttonY:int = GetEntriesRect().GetY() + 4
+			local buttonWidth:int = 32
+			local buttonPadding:int = 2
+
+			For local i:int = 0 until sortKeys.length
+				local spriteName:string = "gfx_gui_button.datasheet"
+				if ListSortMode = sortKeys[i]
+					spriteName = "gfx_gui_button.datasheet.positive"
+				endif
+
+				if THelper.MouseIn(buttonX + 5 + i*(buttonWidth + buttonPadding), buttonY, buttonWidth, 27)
+					spriteName :+ ".hover"
+				endif
+				GetSpriteFromRegistry(spriteName).DrawArea(buttonX + 5 + i*(buttonWidth + buttonPadding), buttonY, buttonWidth,27)
+				GetSpriteFromRegistry(sortSymbols[ sortKeys[i] ]).Draw(buttonX + 9 + i*(buttonWidth + buttonPadding), buttonY+2)
+				'sort
+				if ListSortMode = sortKeys[i]
+					if ListSortDirection = 0
+						GetSpriteFromRegistry("gfx_datasheet_icon_arrow_down").Draw(buttonX + 10 + i*(buttonWidth + buttonPadding), buttonY+2)
+					else
+						GetSpriteFromRegistry("gfx_datasheet_icon_arrow_up").Draw(buttonX + 10 + i*(buttonWidth + buttonPadding), buttonY+2)
+					endif
+				endif
+			Next
+		endif
+
+		
 		'handle page buttons
 		if entriesPages > 1
 			local w:int = 0.5 * GetSubEntriesRect().GetW() - 14 - 20
@@ -401,15 +545,13 @@ Type TgfxProgrammelist Extends TPlannerList
 		If not owner Then Return False  
 
 		Local currY:Int = GetEntriesRect().GetY()
-		Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(owner)
-		Local filter:TProgrammeLicenceFilter = TProgrammeLicenceFilter.GetAtIndex(filterIndex)
-		Local licences:TProgrammeLicence[] = programmeCollection.GetLicencesByFilter(filter)
-		if not licences
+		Local licences:TList = GetLicences(owner, filterIndex)
+		if not licences or licences.count() = 0
 			SetEntriesPages( 1 )
 			return False
 		endif
 		
-		SetEntriesPages( int(ceil(licences.length / Float(MAX_LICENCES_PER_PAGE))) )
+		SetEntriesPages( int(ceil(licences.Count() / Float(MAX_LICENCES_PER_PAGE))) )
 
 		'handle page buttons (before other click handling here)
 		if entriesPages > 1
@@ -449,40 +591,50 @@ Type TgfxProgrammelist Extends TPlannerList
 
 
 		local startIndex:int = (entriesPage-1)*MAX_LICENCES_PER_PAGE
-		local endIndex:int = Min(licences.length-1, entriesPage*MAX_LICENCES_PER_PAGE -1)
+		local endIndex:int = Min(licences.Count()-1, entriesPage*MAX_LICENCES_PER_PAGE -1)
 		For Local i:Int = startIndex to endIndex
+			local licence:TProgrammeLicence
+			if i < licences.Count() and i >= 0 then licence = TProgrammeLicence(licences.ValueAtIndex(i))
+
 			If i = startIndex
 				Local currSprite:TSprite
-				If licences[startIndex].IsPlanned()
-					currSprite = GetSpriteFromRegistry("gfx_programmeentries_top.planned")
+				Local spriteKey:string = ""
+				if ListSortVisible
+					spriteKey = "gfx_programmeentries_topButton"
+				else
+					spriteKey = "gfx_programmeentries_top"
+				endif
+
+				If licence and licence.IsPlanned()
+					currSprite = GetSpriteFromRegistry(spriteKey+".planned")
 				Else
 					'switch background to "new" if the licence is a just-added-one
-					For Local licence:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(owner).justAddedProgrammeLicences
-						If licences[i] = licence
-							currSprite = GetSpriteFromRegistry("gfx_programmeentries_top.new")
+					For Local newLicence:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(owner).justAddedProgrammeLicences
+						If licence = newLicence
+							currSprite = GetSpriteFromRegistry(spriteKey+".new")
 							Exit
 						EndIf
 					Next
-					currSprite = GetSpriteFromRegistry("gfx_programmeentries_top.default")
+					currSprite = GetSpriteFromRegistry(spriteKey+".default")
 				EndIf
 
 				currY :+ currSprite.area.GetH()
 			EndIf
 
 			'we add 1 pixel to height - to hover between tapes too
-			If THelper.MouseIn(int(GetEntriesRect().GetX()), currY+1, int(entrySize.GetX()), int(entrySize.GetY()))
+			If THelper.MouseIn(int(GetEntriesRect().GetX()), currY+1, int(GetEntrySize().GetX()), int(GetEntrySize().GetY()))
 				GetGameBase().cursorstate = 1
 				Local doneSomething:Int = False
 				'store for sheet-display
-				hoveredLicence = licences[i]
+				hoveredLicence = licence
 
 				'only interact if allowed
 				If clicksAllowed
 					If MOUSEMANAGER.IsShortClicked(1)
 						If mode = MODE_PROGRAMMEPLANNER
-							If licences[i].isSingle()
+							If licence.isSingle()
 								'create and drag new block
-								local programme:TProgramme = TProgramme.Create(licences[i])
+								local programme:TProgramme = TProgramme.Create(licence)
 								if programme
 									New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( programme, "programmePlanner" ).drag()
 									SetOpen(0)
@@ -490,13 +642,13 @@ Type TgfxProgrammelist Extends TPlannerList
 								endif
 							Else
 								'set the hoveredParentalLicence so the episodes-list is drawn
-								hoveredParentalLicence = licences[i]
+								hoveredParentalLicence = licence
 								SetOpen(3)
 								doneSomething = True
 							EndIf
 						ElseIf mode = MODE_ARCHIVE
 							'create a dragged block
-							Local obj:TGUIProgrammeLicence = New TGUIProgrammeLicence.CreateWithLicence(licences[i])
+							Local obj:TGUIProgrammeLicence = New TGUIProgrammeLicence.CreateWithLicence(licence)
 							obj.SetLimitToState("archive")
 							obj.drag()
 
@@ -514,9 +666,14 @@ Type TgfxProgrammelist Extends TPlannerList
 			EndIf
 
 			'next tape
-			currY :+ entrySize.y
+			currY :+ GetEntrySize().y
 		Next
 
+
+		'handle sort buttons (if still open)
+		If Self.openState >= 1
+			UpdateSortButtons()
+		endif
 
 		Return False
 	End Method
@@ -579,7 +736,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				'active - if tape is the currently used
 				If i = currentSubEntry Then tapeDrawType = "hovered"
 				'hovered - draw hover effect if hovering
-				If THelper.MouseIn(currX, currY + 1, int(entrySize.GetX()), int(entrySize.GetY())) Then tapeDrawType="hovered"
+				If THelper.MouseIn(currX, currY + 1, int(GetEntrySize().GetX()), int(GetEntrySize().GetY())) Then tapeDrawType="hovered"
 
 				If licence.isSingle()
 					GetSpriteFromRegistry("gfx_programmetape_movie."+tapeDrawType).draw(currX + 8, currY+1)
@@ -591,7 +748,7 @@ Type TgfxProgrammelist Extends TPlannerList
 
 
 			'advance to next line
-			currY:+ entrySize.y
+			currY:+ GetEntrySize().y
 
 			'add "bottom" portion when drawing last item
 			'do this in the for loop, so the entrydrawType is known
@@ -743,7 +900,7 @@ Type TgfxProgrammelist Extends TPlannerList
 
 			
 			If licence
-				If THelper.MouseIn(int(GetSubEntriesRect().GetX()), currY + 1, int(entrySize.GetX()), int(entrySize.GetY()))
+				If THelper.MouseIn(int(GetSubEntriesRect().GetX()), currY + 1, int(GetEntrySize().GetX()), int(GetEntrySize().GetY()))
 					GetGameBase().cursorstate = 1 'mouse-over-hand
 
 					'store for sheet-display
@@ -763,7 +920,7 @@ Type TgfxProgrammelist Extends TPlannerList
 			EndIf
 
 			'next tape
-			currY :+ entrySize.y
+			currY :+ GetEntrySize().y
 		Next
 
 		'handle page buttons
@@ -838,5 +995,31 @@ Type TgfxProgrammelist Extends TPlannerList
 
 		Self.openState = newState
 	End Method
+
+
+	'=== EVENT LISTENERS ===
+
+	Function OnChangeProgrammeCollection:int( triggerEvent:TEventBase )
+		local collection:TPlayerProgrammeCollection = TPlayerProgrammeCollection(triggerEvent.GetSender())
+		if not collection or collection.owner <> _licencesOwner then return False
+
+		'invalidate list to enforce cache recreation
+		_licences = null
+	End Function
+
+
+	Function OnBroadcastProgramme:int( triggerEvent:TEventBase )
+		local programme:TProgramme = TProgramme(triggerEvent.GetSender())
+		if not programme or programme.owner <> _licencesOwner then return False
+
+		'invalidate list to enforce cache recreation
+		_licences = null
+	End Function
+
+
+	Function OnLoadSaveGame:int( triggerEvent:TEventBase )
+		'invalidate list to enforce cache recreation
+		_licences = null
+	End Function	
 End Type
 

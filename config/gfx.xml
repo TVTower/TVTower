@@ -36,6 +36,7 @@
 				<child name="gfx_datasheet_icon_ok2"                x="313"  y="72"   w="24"  h="23" />
 				<child name="gfx_datasheet_icon_pencil"             x="339"  y="72"   w="24"  h="23" />
 				<child name="gfx_datasheet_icon_az"                 x="365"  y="72"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_topicality"         x="443"  y="72"   w="24"  h="23" />
 				<!-- sort indicators -->
 				<child name="gfx_datasheet_icon_arrow_up"           x="391"  y="72"   w="24"  h="23" />
 				<child name="gfx_datasheet_icon_arrow_down"         x="417"  y="72"   w="24"  h="23" />

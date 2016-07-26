@@ -9,17 +9,11 @@ Import "game.screen.programmeplanner.gui.bmx"
 'the adspot/contractlist shown in the programmeplaner
 Type TgfxContractlist Extends TPlannerList
 	Field hoveredAdContract:TAdContract = Null
-	Field ListSortMode:int = 0
-	'ATTENTION: for now the "visibility state" is not saved in savegames
-	'           as we assume to have sortbuttons for all players
-	Field ListSortVisible:int = True
-	Field ListSortDirection:int = 0
-	Field sortSymbols:string[] = ["gfx_datasheet_icon_az", "gfx_datasheet_icon_minAudience", "gfx_datasheet_icon_money", "gfx_datasheet_icon_duration", "gfx_datasheet_icon_spotsAired"]
-	Field sortKeys:int[] = [0, 1, 2, 3, 4]
 	'cache
 	Global _contracts:TList {nosave}
 	Global _contractsCacheKey:string = "" {nosave}
 	Global _contractsOwner:int = 0 {nosave}
+
 	Global _registeredListeners:TList = CreateList() {nosave}
 	Global registeredEvents:int = False
 
@@ -36,15 +30,22 @@ Type TgfxContractlist Extends TPlannerList
 
 
 	Method New()
+		sortSymbols = ["gfx_datasheet_icon_az", "gfx_datasheet_icon_minAudience", "gfx_datasheet_icon_money", "gfx_datasheet_icon_duration", "gfx_datasheet_icon_spotsAired"]
+		sortKeys = [0, 1, 2, 3, 4]
+
 		RegisterEvents()
-	End Method
-
-
-	Method Delete()
-		UnRegisterEvents()
 	End Method
 	
 
+	Method UnRegisterEvents:Int()
+		For local link:TLink = EachIn _registeredListeners
+			'variant a: link.Remove()
+			'variant b: we never know if there happens something else
+			EventManager.unregisterListenerByLink(link)
+		Next
+	End Method
+
+	
 	Method RegisterEvents:Int()
 		'register events for all lists
 		if not registeredEvents
@@ -52,6 +53,10 @@ Type TgfxContractlist Extends TPlannerList
 			'of contracts)
 			EventManager.registerListenerFunction("programmecollection.addAdContract", OnChangeProgrammeCollection)
 			EventManager.registerListenerFunction("programmecollection.removeAdContract", OnChangeProgrammeCollection)
+
+			'handle broadcasts of advertisements with our contracts
+			EventManager.registerListenerFunction("broadcast.advertisement.BeginBroadcasting", OnBroadcastAdvertisement)
+			EventManager.registerListenerFunction("broadcast.advertisement.BeginBroadcastingAsProgramme", OnBroadcastAdvertisement)
 
 			'handle changes to the contracts to avoid outdated information
 			EventManager.registerListenerFunction("adContract.onSetSpotsSent", OnChangeContractData)
@@ -64,15 +69,7 @@ Type TgfxContractlist Extends TPlannerList
 	End Method
 
 
-	Method UnRegisterEvents:Int()
-		For local link:TLink = EachIn _registeredListeners
-			'variant a: link.Remove()
-			'variant b: we never know if there happens something else
-			EventManager.unregisterListenerByLink(link)
-		Next
-	End Method
-
-
+	'override
 	Method GetEntrySize:TVec2D()
 		if not entrySize
 			entrySize = GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.dimension.copy()
@@ -82,6 +79,7 @@ Type TgfxContractlist Extends TPlannerList
 	End Method
 
 
+	'override
 	Method GetEntriesRect:TRectangle()
 		if not entriesRect
 			'recalculate dimension of the area of all entries (also if not all slots occupied)
@@ -283,25 +281,7 @@ Type TgfxContractlist Extends TPlannerList
 
 		'handle sort buttons (if still open)
 		If Self.openState >= 1
-			local buttonX:int = GetEntriesRect().GetX() + 2
-			local buttonY:int = GetEntriesRect().GetY() + 4
-			local buttonWidth:int = 32
-			local buttonPadding:int = 2
-
-			if THelper.MouseIn(buttonX + 5, buttonY, sortKeys.length * (buttonWidth + buttonPadding), 27)
-				if MouseManager.isShortClicked(1)
-					For local i:int = 0 until sortKeys.length
-						If THelper.MouseIn(buttonX + i * (buttonWidth + buttonPadding), buttonY, 35, 27)
-							'sort now
-							if ListSortMode <> sortKeys[i]
-								ListSortMode = sortKeys[i]
-							else
-								ListSortDirection = 1 - ListSortDirection
-							endif
-						endif
-					Next
-				endif
-			endif
+			UpdateSortButtons()
 		endif
 
 
@@ -329,6 +309,7 @@ Type TgfxContractlist Extends TPlannerList
 
 
 	'=== EVENT LISTENERS ===
+
 	Function OnChangeProgrammeCollection:int( triggerEvent:TEventBase )
 		local collection:TPlayerProgrammeCollection = TPlayerProgrammeCollection(triggerEvent.GetSender())
 		if not collection or collection.owner <> _contractsOwner then return False
@@ -346,6 +327,15 @@ Type TgfxContractlist Extends TPlannerList
 		_contracts = null
 	End Function
 
+
+	Function OnBroadcastAdvertisement:int( triggerEvent:TEventBase )
+		local advertisement:TAdvertisement = TAdvertisement(triggerEvent.GetSender())
+		if not advertisement or advertisement.owner <> _contractsOwner then return False
+
+		'invalidate contracts list
+		_contracts = null
+	End Function
+	
 
 	Function OnLoadSaveGame:int( triggerEvent:TEventBase )
 		'invalidate contracts list

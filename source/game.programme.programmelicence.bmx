@@ -365,22 +365,6 @@ Type TProgrammeLicenceCollection
 		Next
 		Return GetRandomFromList(resultList)
 	End Method	
-
-
-	Function SortByName:Int(o1:Object, o2:Object)
-		Local p1:TProgrammeLicence = TProgrammeLicence(o1)
-		Local p2:TProgrammeLicence = TProgrammeLicence(o2)
-		If Not p2 Then Return 1
-		if p1.GetTitle() = p2.GetTitle() 
-			return p1.GetGUID() > p2.GetGUID()
-		endif
-        If p1.GetTitle().ToLower() > p2.GetTitle().ToLower()
-			return 1
-        elseif p1.GetTitle().ToLower() < p2.GetTitle().ToLower()
-			return -1
-		endif
-		return 0
-	End Function
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -431,6 +415,48 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		return self.ID
 	End Method
 
+
+	Function SortByName:Int(o1:Object, o2:Object)
+		Local p1:TProgrammeLicence = TProgrammeLicence(o1)
+		Local p2:TProgrammeLicence = TProgrammeLicence(o2)
+		If Not p2 Then Return 1
+		If Not p1 Then Return -1
+		if p1.GetTitle() = p2.GetTitle() 
+			return p1.GetGUID() > p2.GetGUID()
+		endif
+        If p1.GetTitle().ToLower() > p2.GetTitle().ToLower()
+			return 1
+        elseif p1.GetTitle().ToLower() < p2.GetTitle().ToLower()
+			return -1
+		endif
+		return 0
+	End Function
+	
+
+	Function SortByTopicality:Int(o1:Object, o2:Object)
+		Local p1:TProgrammeLicence = TProgrammeLicence(o1)
+		Local p2:TProgrammeLicence = TProgrammeLicence(o2)
+		If p2 and p1
+			if p1.GetTopicality() < p2.GetTopicality()
+				return -1
+			elseif p1.GetTopicality() > p2.GetTopicality()
+				return 1
+			endif
+			'return int(Floor((p1.GetTopicality() - p2.GetTopicality()) + 0.5))
+		Endif
+		return SortByName(o1, o2)
+	End Function	
+	
+
+	Function SortByBlocks:Int(o1:Object, o2:Object)
+		Local p1:TProgrammeLicence = TProgrammeLicence(o1)
+		Local p2:TProgrammeLicence = TProgrammeLicence(o2)
+		If p2 and p1 and p2.data and p1.data
+			return p1.data.GetBlocks() - p2.data.GetBlocks()
+		Endif
+		return SortByName(o1, o2)
+	End Function	
+	
 
 	'connect programmedata to a licence
 	Method SetData:int(data:TProgrammeData)
