@@ -170,6 +170,12 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			licence.GetBroadcastStatistic().RemoveLastAudienceResult(owner)
 			'store audience for this block
 			licence.GetBroadcastStatistic().SetAudienceResult(owner, currentBlockBroadcasting, audienceResult)
+
+			'inform others
+			EventManager.triggerEvent(TEventSimple.Create("broadcast.programme.BeginBroadcasting", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
+		elseif usedAsType = TVTBroadcastMaterialType.ADVERTISEMENT
+			'inform others
+			EventManager.triggerEvent(TEventSimple.Create("broadcast.programme.BeginBroadcastingAsAdvertisement", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
 		endif
 	End Method
 

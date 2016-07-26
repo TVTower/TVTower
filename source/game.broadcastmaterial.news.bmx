@@ -58,6 +58,9 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		For local newsEntry:TBroadcastMaterial = EachIn news
 			newsEntry.BeginBroadcasting(day, hour, minute, audienceData)
 		Next
+
+		'inform others
+		EventManager.triggerEvent(TEventSimple.Create("broadcast.newsshow.BeginBroadcasting", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
 	End Method
 
 
@@ -92,6 +95,9 @@ endif
 			endif
 
 		Next
+
+		'inform others
+		EventManager.triggerEvent(TEventSimple.Create("broadcast.newsshow.FinishBroadcasting", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
 	End Method
 
 
@@ -166,6 +172,10 @@ endif
 		elseif slotsUsed = 2
 			resultAudienceAttr.MultiplyFloat(0.96)
 		endif
+
+		'Ronny 2016/06/29: should we mark it as a malfunction?
+		'mark malfunction if nothing is send
+		if slotsUsed = 0 then resultAudienceAttr.malfunction = True
 
 		'already one with "addAttraction"
 		'resultAudienceAttr.Quality = GetQuality()
