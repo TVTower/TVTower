@@ -121,6 +121,8 @@ Type TScreenHandler_ProgrammePlanner
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropProgrammePlanElementOnDayButton, "TGUIProgrammePlanElement") ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropFreshProgrammePlanElementOnRunningSlot, "TGUIProgrammePlanElement") ]
 
+		'savegame loaded - clear gui elements
+		_eventListeners :+ [ EventManager.registerListenerFunction("SaveGame.OnLoad", onLoadSavegame) ]
 		'player enters screen - reset the guilists
 		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onEnter", onEnterProgrammePlannerScreen, screen) ]
 		'player leaves screen - only without dragged blocks
@@ -441,6 +443,16 @@ Type TScreenHandler_ProgrammePlanner
 	End Function
 
 	'=== EVENTS ===
+
+
+	'clear the guilist once a savegame was loaded
+	'(this avoids empty programme planners if loaded a savegame
+	' with "planner" as active screen while already being there)
+	Function onLoadSavegame:int(triggerEvent:TEventBase)
+		'important: change back to current planning day
+		ChangePlanningDay(GetWorldTime().GetDay())
+	End Function
+	
 
 	'clear the guilist if a player enters
 	'screens are only handled by real players
