@@ -162,6 +162,45 @@ Type TFigure extends TFigureBase
 	End Method
 
 
+	Method onGameStart:int()
+		'we do this on game start, not on "savegame load" as we need
+		'to be sure "AI" is connected already (else it wont get informed)
+		if IsLeavingRoom()
+			if not inRoom
+				TLogger.Log("TFigure.onGameStart", "Cannot fix broken LeavingRoom-State, figure not in a room!", LOG_ERROR)
+				return False
+			endif
+
+			TLogger.Log("TFigure.onGameStart", "Fixed LeaveRoom-State for figure: "+name+".", LOG_DEBUG)
+
+			LeaveRoom(True)
+			if inRoom then inRoom.FinishLeave(self)
+			FinishLeaveRoom(inRoom)
+'			WaitEnterTimer = -1
+'			WaitLeavingTimer = -1
+		endif		
+rem
+		if IsEnteringRoom()
+			print "fix EnterRoom-State for figure: "+name
+
+			currentReachTargetStep = 0
+			currentAction = ACTION_IDLE
+				if TRoomDoorBase(GetTarget())
+					local door:TRoomDoorBase = TRoomDoorBase(GetTarget())
+					local room:TRoomBase = GetRoomBaseCollection().Get(door.roomID)
+					room.RemoveOccupant(self)
+				endif
+				
+'				FinishLeaveRoom( inRoom )
+			endif
+		endif
+endrem
+
+'			FinishEnterRoom(room, door)
+'		endif
+	End Method
+
+
 	Method onReachTarget:int()
 		'stub
 	End Method
@@ -1033,7 +1072,7 @@ Type TFigure extends TFigureBase
 					room.RemoveOccupant(self)
 				endif
 				
-'				FinishLeaveRoom( inRoom )
+'				FinishEnterRoom( inRoom )
 			endif
 		endif
 

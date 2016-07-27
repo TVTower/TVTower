@@ -142,13 +142,4 @@ Type TRoom extends TRoomBase {_exposeToLua="selected"}
 
 		return res
 	End Method
-
-
-	'override to fetch main door if none was given
-	Method FinishLeave:int()
-		'open the door
-		if not leavingDoor then leavingDoor = GetRoomDoorBaseCollection().GetMainDoorToRoom(id)
-
-		Super.FinishLeave()
-	End Method
 End Type

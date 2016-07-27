@@ -1115,9 +1115,9 @@ Type TApp
 					local change:string = ""
 					if fig.isChangingRoom()
 						if fig.inRoom
-							change = " <<" 'Chr(8646) '⇆
+							change = "<-[]" 'Chr(8646) '⇆
 						else
-							change = " >>" 'Chr(8646) '⇆
+							change = "->[]" 'Chr(8646) '⇆
 						endif
 					endif
 

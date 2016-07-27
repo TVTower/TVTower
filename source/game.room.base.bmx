@@ -94,12 +94,16 @@ Type TRoomBaseCollection
 	Method UpdateEnteringAndLeavingStates()
 		For Local room:TRoomBase = EachIn GetInstance().list
 			'someone entering / leaving the room?
-			if room.enteringEntity and room.enteringFinishTime > 0 and room.enteringFinishTime <= GetBuildingTime().GetMillisecondsGone()
-				room.FinishEnter()
-			endif
-			if room.leavingEntity and room.leavingFinishTime > 0 and room.leavingFinishTime <= GetBuildingTime().GetMillisecondsGone()
-				room.FinishLeave()
-			endif
+			For local action:TEnterLeaveAction = EachIn room.enteringStack
+				if action.finishTime <= GetBuildingTime().GetMillisecondsGone()
+					room.FinishEnter(action.entity)
+				endif
+			Next
+			For local action:TEnterLeaveAction = EachIn room.leavingStack
+				if action.finishTime <= GetBuildingTime().GetMillisecondsGone()
+					room.FinishLeave(action.entity)
+				endif
+			Next
 		Next
 	End Method
 
@@ -160,19 +164,10 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 	Field screenName:string = ""
 
 	'== ENTER / LEAVE VARIABLES ==
-	'currently entering entity
-	Field enteringEntity:TEntity =  null
-	'door the currently entering entity used (if any)
-	Field enteringDoor:TRoomDoorBase
-	'when does the entity finish entering?
-	Field enteringFinishTime:Long
-	'currently leaving entity
-	Field leavingEntity:TEntity =  null
-	'door the currently leave entity used (if any)
-	Field leavingDoor:TRoomDoorBase
-	'when does the entity finish leaving?
-	Field leavingFinishTime:Long
-
+	'currently entering/leaving entities
+	Field enteringStack:TEnterLeaveAction[]
+	Field leavingStack:TEnterLeaveAction[]
+	
 	'the image used in the room (store individual backgrounds depending on "money")
 	Field _background:TSprite {nosave}
 	Field backgroundSpriteName:string
@@ -513,6 +508,97 @@ Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method _AddEnterLeaveEntity:int(direction:int = 1, entity:TEntity, door:TRoomDoorBase, finishTime:Long)
+		if _HasEnterLeaveEntity(direction, entity) then _RemoveEnterLeaveEntity(direction, entity)
+
+		local action:TEnterLeaveAction = new TEnterLeaveAction
+		action.entity = entity
+		action.door = door
+		action.finishTime = finishTime
+
+		if direction = 1
+			enteringStack :+ [action]
+		elseif direction = 2
+			leavingStack :+ [action]
+		endif
+		return True
+	End Method
+
+
+	Method _RemoveEnterLeaveEntity:int(direction:int = 1, entity:TEntity)
+		if not _HasEnterLeaveEntity(direction, entity) then return False
+
+		local newStack:TEnterLeaveAction[]
+		local stack:TEnterLeaveAction[]
+		if direction = 1
+			stack = enteringStack
+		elseif direction = 2
+			stack = leavingStack
+		endif
+		
+		For local action:TEnterLeaveAction = EachIn stack
+			if not action or action.entity = entity then continue
+
+			newStack :+ [action]
+		Next
+
+		if direction = 1
+			enteringStack = newStack
+		elseif direction = 2
+			leavingStack = newStack
+		endif
+
+		return True
+	End Method
+
+
+	Method _HasEnterLeaveEntity:int(direction:int = 1, entity:TEntity)
+		local stack:TEnterLeaveAction[]
+		if direction = 1
+			stack = enteringStack
+		elseif direction = 2
+			stack = leavingStack
+		endif
+
+		For local action:TEnterLeaveAction = EachIn stack
+			if not action then continue
+
+			if action.entity = entity then return True
+		Next
+		return False
+	End Method
+
+
+	Method AddEnteringEntity:int(entity:TEntity, door:TRoomDoorBase, finishTime:Long)
+		return _AddEnterLeaveEntity(1, entity, door, finishTime)
+	End Method
+
+
+	Method RemoveEnteringEntity:int(entity:TEntity)
+		return _RemoveEnterLeaveEntity(1, entity)
+	End Method
+
+
+	Method HasEnteringEntity:int(entity:TEntity)
+		return _HasEnterLeaveEntity(1, entity)
+	End Method
+
+
+	Method AddLeavingEntity:int(entity:TEntity, door:TRoomDoorBase, finishTime:Long)
+		return _AddEnterLeaveEntity(2, entity, door, finishTime)
+	End Method
+
+
+	Method RemoveLeavingEntity:int(entity:TEntity)
+		return _RemoveEnterLeaveEntity(2, entity)
+	End Method
+
+
+	Method HasLeavingEntity:int(entity:TEntity)
+		return _HasEnterLeaveEntity(2, entity)
+	End Method
+
+
 	'==== ENTER / LEAVE PROCESS ====
 Rem
     === ENTER ===
@@ -549,7 +635,6 @@ End Rem
 		if door and entity
 			door.Open(entity)
 		Endif
-
  		'set the room used in that moment to avoid that two entities
  		'opening the door at the same time will both get into the room
  		'(occupied check is done in "TFigureBase.EnterRoom()")
@@ -557,38 +642,41 @@ End Rem
 
 		addOccupant(entity)
 
+		AddEnteringEntity(entity, door, GetBuildingTime().GetMillisecondsGone() + 2*speed)
+
 		'inform others that we start going into the room (eg. for animations)
 		EventManager.triggerEvent( TEventSimple.Create("room.onBeginEnter", null, self, entity ) )
-
-		enteringEntity = entity
-		enteringDoor = door
-		enteringFinishTime = GetBuildingTime().GetMillisecondsGone() + 2*speed
 	End Method
 	
 
-	Method FinishEnter:int()
-		if not enteringDoor and not enteringEntity
+	Method FinishEnter:int(enteringEntity:TEntity)
+		if not enteringEntity
 			TLogger.Log("TRoomBase.FinishEnter", "Called without an entity entering", LOG_ERROR)
 			return False
 		endif
 		
 		'=== CLOSE DOORS ===
-		if enteringDoor and enteringDoor.GetDoorType() >= 0
-			'only close the door if it was the entity (or nobody) who
-			'opened it...
-			if enteringDoor.openedByEntityGUID = "" or (enteringEntity and enteringDoor.openedByEntityGUID = enteringEntity.GetGUID())
-				enteringDoor.Close(enteringEntity)
-			endif
-		endif
+		local enteringDoor:TRoomDoorBase
+		for local action:TEnterLeaveAction = Eachin enteringStack
+			'set a default door
+			if not enteringDoor then enteringDoor = action.door
+			
+			if action.door.GetDoorType() >= 0
+				'only close the door if it was the entity (or nobody) who
+				'opened it...
+				if action.door.openedByEntityGUID = "" or action.door.openedByEntityGUID = enteringEntity.GetGUID()
+					action.door.Close(enteringEntity)
 
+					'use a closed door
+					enteringDoor = action.door
+				endif
+			endif
+		next
+
+		RemoveEnteringEntity(enteringEntity)
 
 		'inform that the figure enters the room - eg for AI-scripts
 		EventManager.triggerEvent( TEventSimple.Create("room.onEnter", new TData.Add("door", enteringDoor), self, enteringEntity ) )
-
-		'reset vars again
-		enteringDoor = null
-		enteringEntity = null
-		enteringFinishTime = -1
 	End Method
 
 
@@ -602,47 +690,53 @@ End Rem
 		'figure isn't in that room - so just leave
 		if not isOccupant(entity) then return TRUE
 
+		AddLeavingEntity(entity, door, GetBuildingTime().GetMillisecondsGone() + 2*speed)
+
 		'inform others that we start going out of that room (eg. for animations)
 		EventManager.triggerEvent( TEventSimple.Create("room.onBeginLeave", null, self, entity ) )
-
-		leavingEntity = entity
-		leavingDoor = door
-		leavingFinishTime = GetBuildingTime().GetMillisecondsGone() + 2*speed
 	End Method
 
 
-	Method FinishLeave:int()
-		if not leavingDoor and not leavingEntity
-			TLogger.Log("TRoomBase.FinishEnter", "Called without an entity entering", LOG_ERROR)
+	Method FinishLeave:int(leavingEntity:TEntity)
+		if not leavingEntity
+			TLogger.Log("TRoomBase.FinishEnter", "Called without an entity leaving", LOG_ERROR)
 			return False
 		endif
 		
 		'=== CLOSE DOORS ===
-		if not leavingDoor
-			print "Finish Leave - no door given, close all doors - should NOT happen"
-			For local doorToRoom:TRoomDoorBase = eachin GetRoomDoorBaseCollection().GetDoorsToRoom(id)
-				if doorToRoom.openedByEntityGUID = "" or (leavingEntity and doorToRoom.openedByEntityGUID = leavingEntity.GetGUID())
-					doorToRoom.Close(leavingEntity)
+		local leavingDoor:TRoomDoorBase
+		for local action:TEnterLeaveAction = Eachin leavingStack
+			'set a default door
+			if not leavingDoor then leavingDoor = action.door
+			
+			if action.door.GetDoorType() >= 0
+				'only close the door if it was the entity (or nobody) who
+				'opened it...
+				if action.door.openedByEntityGUID = "" or action.door.openedByEntityGUID = leavingEntity.GetGUID()
+					action.door.Close(leavingEntity)
+
+					'use a closed door
+					leavingDoor = action.door
 				endif
-			Next
-		endif
-		if leavingDoor and leavingDoor.GetDoorType() >= 0
-			'only close the door if it was the entity (or nobody) who
-			'opened it...
-			if leavingDoor.openedByEntityGUID = "" or (leavingEntity and leavingDoor.openedByEntityGUID = leavingEntity.GetGUID())
-				leavingDoor.Close(leavingEntity)
 			endif
-		endif
+		next
+		'no door used? use default one!
+		if not leavingDoor then leavingDoor = GetRoomDoorBaseCollection().GetMainDoorToRoom(id)
 
 		'remove the occupant from the rooms list after animation finished
 		'and entity really left that room
 		removeOccupant(leavingEntity)
 
-		EventManager.triggerEvent( TEventSimple.Create("room.onLeave", new TData.Add("door", leavingDoor), self, leavingEntity ) )
+		RemoveLeavingEntity(leavingEntity)
 
-		'reset vars again
-		leavingDoor = null
-		leavingEntity = null
-		leavingFinishTime = -1
+		EventManager.triggerEvent( TEventSimple.Create("room.onLeave", new TData.Add("door", leavingDoor), self, leavingEntity ) )
 	End Method
 End Type
+
+
+Type TEnterLeaveAction
+	Field entity:TEntity
+	Field door:TRoomDoorBase
+	Field finishTime:Long = -1
+End Type
+	

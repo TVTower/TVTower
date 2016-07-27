@@ -45,6 +45,7 @@ Type TAiBase
 		'register source and available objects
 		LuaEngine.RegisterToLua()
 	End Method
+	
 
 	Method Stop()
 '		scriptEnv.ShutDown()
@@ -78,6 +79,11 @@ Type TAiBase
 
 
 	Method CallLuaFunction:object(name:string, args:object[])
+		if not LuaEngine
+			TLogger.Log("TAiBase.CallLuaFunction", "No LuaEngine assigned. Cannot call lua function ~q"+name+"~q.", LOG_ERROR)
+			return Null
+		endif
+		
 '	    Try
 			return LuaEngine.CallLuaFunction(name, args)
 '		Catch ex:Object

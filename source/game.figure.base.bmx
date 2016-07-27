@@ -16,6 +16,8 @@ Type TFigureBaseCollection extends TEntityCollection
 		if not _eventsRegistered
 			'handle savegame loading (assign sprites)
 			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
+			'handle begin of a game (fix borked savegame information)
+			EventManager.registerListenerFunction("Game.OnStart", onGameStart)
 
 			_eventsRegistered = TRUE
 		Endif
@@ -76,6 +78,14 @@ Type TFigureBaseCollection extends TEntityCollection
 		TLogger.Log("TFigureBaseCollection", "Savegame loaded - reassigning sprites", LOG_DEBUG | LOG_SAVELOAD)
 		For local figure:TFigureBase = eachin _instance.entries.Values()
 			figure.onLoad()
+		Next
+	End Function
+
+
+	'run when a game starts
+	Function onGameStart(triggerEvent:TEventBase)
+		For local figure:TFigureBase = eachin _instance.entries.Values()
+			figure.onGameStart()
 		Next
 	End Function
 End Type
@@ -186,6 +196,11 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		if WaitLeavingTimer - GetBuildingTime().GetMillisecondsGone() > WaitEnterLeavingTime
 			WaitLeavingTimer = GetBuildingTime().GetMillisecondsGone() + WaitEnterLeavingTime
 		endif
+	End Method
+
+
+	Method onGameStart:int()
+		'
 	End Method
 
 
