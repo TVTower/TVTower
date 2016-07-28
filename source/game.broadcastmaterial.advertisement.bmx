@@ -177,7 +177,6 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 	'-> min audience, target groups, ...
 	'returns "OK" when passing, or another String with the reason for failing
 	Method IsPassingRequirements:String(audienceResult:TAudienceResult, previouslyRunningBroadcastMaterial:TBroadcastMaterial = Null)
-debugstop
 		'checks against audience
 		If audienceResult
 			'programme broadcasting outage = ad fails too!

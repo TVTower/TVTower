@@ -453,6 +453,7 @@ endrem
 
 		if owner and GetPlayerProgrammeCollection(owner)
 			GetPlayerProgrammeCollection(owner).AddProgrammeLicence(addLicence, False)
+			GetPlayerProgrammeCollection(owner)._programmeLicences = null 'cache
 		endif
 
 
