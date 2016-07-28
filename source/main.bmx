@@ -1877,7 +1877,28 @@ Type TSaveGame Extends TGameState
 			GetScriptCollection().Remove(s)
 		Next
 		'print "Cleanup: removed "+unused+" unused scripts."
-		
+
+
+		'repair broken custom productions
+		For local licence:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().series
+			if not licence.subLicences or licence.subLicences.length = 0 then continue 
+
+			local hasToFix:int = 0
+			For local subIndex:int = 0 until licence.subLicences.length
+				if not licence.subLicences[subIndex] then hasToFix :+ 1
+			Next
+
+			if hasToFix > 0
+				print "Repairing series ~q"+licence.GetTitle()+"~q"
+				local newSubLicences:TProgrammeLicence[]
+				For local subIndex:int = 0 until licence.subLicences.length
+					if licence.subLicences[subIndex] then newSubLicences :+ [ licence.subLicences[subIndex] ]
+				Next
+				licence.subLicences = newSubLicences
+			endif
+		Next
+			
+			
 
 		'call game that game continues/starts now
 		GetGame().StartLoadedSaveGame()
