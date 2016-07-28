@@ -149,6 +149,10 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 		endif
 
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
+		if not audienceResult
+			print "BeginBroadcasting: audienceResult is null!"
+			return False
+		endif
 
 		'check if the ad satisfies all requirements
 		local successful:int = False
@@ -173,6 +177,7 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 	'-> min audience, target groups, ...
 	'returns "OK" when passing, or another String with the reason for failing
 	Method IsPassingRequirements:String(audienceResult:TAudienceResult, previouslyRunningBroadcastMaterial:TBroadcastMaterial = Null)
+debugstop
 		'checks against audience
 		If audienceResult
 			'programme broadcasting outage = ad fails too!
