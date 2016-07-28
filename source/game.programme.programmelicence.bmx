@@ -498,13 +498,18 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		if index = -1 or subLicences.length = 0
 			subLicences :+ [licence]
 		'set at the given index and move the existing ones +1
+		'exception: if slot is unused (pre-reserved already)
 		'[1,2,3] + add(x, 2) = [1,2,x,3]
 		else
-			if index = 0
-				subLicences = [licence] + sublicences
+			if subLicences.length > index and not subLicences[index]
+				subLicences[index] = licence
 			else
-				subLicences = subLicences[.. index] + [licence] + subLicences[index ..]
-			endif 
+				if index = 0
+					subLicences = [licence] + sublicences
+				else
+					subLicences = subLicences[.. index] + [licence] + subLicences[index ..]
+				endif
+			endif
 		endif
 		
 		Return TRUE
