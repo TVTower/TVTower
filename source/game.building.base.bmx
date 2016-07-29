@@ -50,6 +50,11 @@ Type TBuildingBase Extends TRenderableEntity
 	End Function
 
 
+	Method GetTravelDuration:int(entity:TEntity, targetX:int, targetFloor:int)
+		return 0
+	End Method
+
+
 	Method CenterToFloor:Int(floornumber:Int)
 		area.position.y = ((13 - floornumber) * floorHeight) - 115
 	End Method

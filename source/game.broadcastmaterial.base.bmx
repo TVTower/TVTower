@@ -402,8 +402,10 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 			borderMax = new TAudience.InitValue(0.15, 0.15)
 			borderMin = new TAudience.InitValue(-0.15, -0.15)
 		EndIf
+
 		ret = seqCal.GetSequenceDefault(seqMod, seqMod)
 		ret.CutBorders(borderMin, borderMax)
+
 		Return ret
 	End Method
 

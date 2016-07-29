@@ -364,7 +364,6 @@
 				<child name="gfx_programmeentries_last.new"				x="0"	y="185"	 	w="184" h="19" />
 				<child name="gfx_programmeentries_bottom.new"			x="0"	y="204"	 	w="184" h="8" />
 				<child name="gfx_programmeentries_bottomButton.new"     x="185"	y="145" 	w="194" h="24" />
-				<child name="gfx_programmeentries_topButton.new"        x="185"	y="170" 	w="194" h="20" />
 
 				<child name="gfx_programmetape_movie.default"			x="185"	y="0"	 	w="166" h="18" />
 				<child name="gfx_programmetape_series.default"			x="185"	y="18"	 	w="166" h="18" />

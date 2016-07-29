@@ -339,3 +339,118 @@ Function CopyImage:TImage(src:TImage)
 
 	Return dst
 End Function
+
+
+Function TrimImage:TImage(src:object, offset:TRectangle var, trimColor:TColor = null, paddingSize:int = 0)
+	local pix:TPixmap
+	if TImage(src) then pix = LockImage(TImage(src))
+	if TPixmap(src) then pix = TPixmap(src)
+	if not pix then return Null
+
+	if pix.width = 0 or pix.height = 0 then return Null
+
+	'=== convert pixmap to correct format ===
+	pix = ConvertPixmap(pix, PF_RGBA8888)
+	
+	'without given trimColor, we use the color at pixel 0,0
+	if not trimColor then trimColor = new TColor.FromInt(pix.ReadPixel(0,0))
+
+	'=== find trimmable portions ===
+	local pixel:int
+	local contentTop:int = 0, contentBottom:int = pix.height
+	local contentLeft:int = 0, contentRight:int = pix.width
+
+
+	'= left =
+	For Local x:Int = 0 until pix.width
+		local found:int = False
+		For Local y:Int = 0 until pix.height
+			pixel = pix.ReadPixel(x,y)
+
+			'other color than the one to trim?
+			if (trimColor.a >= 0 and (pixel Shr 24) & $ff <> int(trimColor.a)) or ..
+			   (trimColor.r >= 0 and (pixel Shr 16) & $ff <> trimColor.b) or ..
+			   (trimColor.g >= 0 and (pixel Shr 8) & $ff <> trimColor.g) or ..
+			   (trimColor.b >= 0 and pixel & $ff <> trimColor.b)
+			     contentLeft = x
+			     found = True
+			     exit
+			endif
+		Next
+		if found then exit
+	Next
+	'= right =
+	For Local x:Int = pix.width-1 to 0 step -1
+		local found:int = False
+		For Local y:Int = 0 until pix.height
+			pixel = pix.ReadPixel(x,y)
+
+			'other color than the one to trim?
+			if (trimColor.a >= 0 and (pixel Shr 24) & $ff <> int(trimColor.a)) or ..
+			   (trimColor.r >= 0 and (pixel Shr 16) & $ff <> trimColor.b) or ..
+			   (trimColor.g >= 0 and (pixel Shr 8) & $ff <> trimColor.g) or ..
+			   (trimColor.b >= 0 and pixel & $ff <> trimColor.b)
+			     contentRight = x
+			     found = True
+			     exit
+			endif
+		Next
+		if found then exit
+	Next
+	'= top =
+	For Local y:Int = 0 until pix.height
+		local found:int = False
+		For Local x:Int = 0 until pix.width
+			pixel = pix.ReadPixel(x,y)
+
+			'other color than the one to trim?
+			if (trimColor.a >= 0 and (pixel Shr 24) & $ff <> int(trimColor.a)) or ..
+			   (trimColor.r >= 0 and (pixel Shr 16) & $ff <> trimColor.b) or ..
+			   (trimColor.g >= 0 and (pixel Shr 8) & $ff <> trimColor.g) or ..
+			   (trimColor.b >= 0 and pixel & $ff <> trimColor.b)
+			     contentTop = y
+			     found = True
+			     exit
+			endif
+		Next
+		if found then exit
+	Next
+	'= bottom =
+	For Local y:Int = pix.height-1 to 0 step -1
+		local found:int = False
+		For Local x:Int = 0 until pix.width
+			pixel = pix.ReadPixel(x,y)
+
+			'other color than the one to trim?
+			if (trimColor.a >= 0 and (pixel Shr 24) & $ff <> int(trimColor.a)) or ..
+			   (trimColor.r >= 0 and (pixel Shr 16) & $ff <> trimColor.b) or ..
+			   (trimColor.g >= 0 and (pixel Shr 8) & $ff <> trimColor.g) or ..
+			   (trimColor.b >= 0 and pixel & $ff <> trimColor.b)
+			     contentBottom = y
+			     found = True
+			     exit
+			endif
+		Next
+		if found then exit
+	Next
+
+	'=== actually trim it ===
+	local newPix:TPixmap = PixmapWindow(pix, contentLeft, contentTop, contentRight - contentLeft + 1, contentBottom - ContentTop + 1)
+
+	if paddingSize > 0
+	print "padding"
+		local paddedPix:TPixmap = CreatePixmap(newPix.width + 2*paddingSize, newPix.height + 2*paddingSize, newPix.format)
+		paddedPix.ClearPixels(0)
+
+		paddedPix.Paste(newPix, paddingSize, paddingSize)
+
+		newPix = paddedPix
+	endif
+
+	
+	local trimmedImage:TImage = LoadImage(newPix)
+
+	offset.SetTLBR(contentTop, contentLeft, contentBottom, contentRight)
+
+	return trimmedImage
+End Function

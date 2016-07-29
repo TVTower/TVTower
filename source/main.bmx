@@ -1879,6 +1879,10 @@ Type TSaveGame Extends TGameState
 		'print "Cleanup: removed "+unused+" unused scripts."
 
 
+		rem
+			would "break" unfinished series productions with re-ordered
+			production orders (1,3,2) and missing episodes ([1,null,3])
+			
 		'repair broken custom productions
 		For local licence:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().series
 			if not licence.subLicences or licence.subLicences.length = 0 then continue 
@@ -1897,7 +1901,7 @@ Type TSaveGame Extends TGameState
 				licence.subLicences = newSubLicences
 			endif
 		Next
-			
+		endrem
 			
 
 		'call game that game continues/starts now
@@ -4225,7 +4229,7 @@ Type GameEvents
 			|    text |
 			'---------'
 		endrem
-		
+		debugstop
 		local text:string = GetLocale("YOU_JUST_COMPLETED_ACHIEVEMENTTITLE").Replace("%ACHIEVEMENTTITLE%", achievement.GetTitle())
 		if rewardText
 			text :+ "~n" + GetLocale("REWARD") + ":" + rewardText

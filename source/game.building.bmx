@@ -331,6 +331,34 @@ Type TBuilding Extends TBuildingBase
 	End Function
 
 
+	'override
+	Method GetTravelDuration:int(entity:TEntity, targetX:int, targetFloor:int)
+		if not TFigureBase(entity) then return Super.GetTravelDuration(entity, targetX, targetFloor)
+
+		local figure:TFigureBase = TFigureBase(entity)
+
+		'same floor ?
+		if figure.GetFloor() = targetFloor
+			local pixelsPerSecond:Float = figure.initialdx * GetBuildingTime().GetTimeFactor()
+			local pixelDistance:int = int(abs(figure.area.GetX() - targetX))
+			local buildingSeconds:Float = pixelDistance / pixelsPerSecond
+'Ausrechnen, wie "Haussekunden" sich in "Spielsekunden" ausdruecken lassen
+'(Verhaeltnis)
+			return figure.initialdx * GetBuildingTime().GetTimeFactor()
+		endif
+
+		'other floor:
+		'- check elevator and its current route-list
+		'- if figure is on the list already (and target floor is the same)
+		'  then use this in the calculation !
+		'  Wichtig: wenn Fahrstuhl zu nutzen: Hinweg + Rueckweg
+		
+
+		
+		return 0
+	End Method
+
+
 	Method ActivateSoftdrinkMachine:Int()
 		softDrinkMachineActive = True
 	End Method

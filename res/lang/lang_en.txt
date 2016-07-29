@@ -770,3 +770,7 @@ BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES_TEXT = After the attack in the famous TVT
 
 INGAME_HELP_TEXT_SCREEN_EMPTYROOM = Sorry\n\nThis room is still without function. We are working on it!
 INGAME_HELP_TITLE_SCREEN_EMPTYROOM = OUT OF ORDER
+
+YOU_JUST_COMPLETED_ACHIEVEMENTTITLE = You just completed "%ACHIEVEMENTTITLE%".
+ACHIEVEMENT_COMPLETED = Achievement completed
+REWARD = Reward

@@ -780,3 +780,7 @@ INGAME_HELP_TITLE_SCREEN_OFFICE_PROGRAMMEPLANNER = Der Programmplaner
 
 INGAME_HELP_TEXT_SCREEN_NEWSSTUDIO_NEWSPLANNER = Zur Planung einer Nachrichtensendung stehen rechtseitig drei Nachrichtenplätze zur Verfügung. Die Wichtigkeit dieser Plätze nimmt nach unten hin ab. Auf der linken Seite sind verfügbare, aber nicht in der Sendung verwendete Nchrichten gelistet. Mit der linken Maustaste kann die gewünschte Nachricht aufgenommen werden und mit rechten Maustaste entgültig gelöscht. Falls Du eine Nachricht später nochmal ausstrahlen möchtest, so lasse sie einfach mit der linken Maustaste im linken Nachrichtenbereich fallen.\n\nAusgestrahlte Nachrichten verlieren an Aktualität bzw. Brisanz (als roter Balken auf dem Tickerabriss angedeutet). Weniger Aktualität sorgt für geringere Zuschauerzahlen. Ersetze also abgenutzte Nachrichten rechtzeitig mit frischen Neuzugängen.
 INGAME_HELP_TITLE_SCREEN_NEWSSTUDIO_NEWSPLANNER = Die Nachrichtensendung
+
+YOU_JUST_COMPLETED_ACHIEVEMENTTITLE = Du hast soeben "%ACHIEVEMENTTITLE%" erfüllt.
+ACHIEVEMENT_COMPLETED = Erfolg errungen
+REWARD = Belohnung

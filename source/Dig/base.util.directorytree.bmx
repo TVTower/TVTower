@@ -242,8 +242,12 @@ Type TDirectoryTree
 				Case 2
 					'skip forbidden directories
 					If _excludeDirectoryNames.Contains( file.toLower() ) Then Continue
+					'skip forbidden paths
+					If _excludeDirectoryNames.Contains( uri.toLower() ) Then Continue
 					'skip directories with non-enabled directory names
 					If Not _includeDirectoryNames.Contains( file.toLower() ) And Not _includeDirectoryNames.Contains("*") Then Continue
+					'skip paths with non-enabled directory names
+					If Not _includeDirectoryNames.Contains( uri.toLower() ) And Not _includeDirectoryNames.Contains("*") Then Continue
 
 					AddDirectory( GetURI(uri) )
 					ScanDir(uri)
