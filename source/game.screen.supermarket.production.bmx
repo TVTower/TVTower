@@ -1485,7 +1485,7 @@ Type TGUIProductionEditTextsModalWindow extends TGUIProductionModalWindow
 		buttonOK.SetValue(GetLocale("EDIT_TEXTS"))
 		buttonCancel.SetValue(GetLocale("CANCEL"))
 
-		_eventListeners :+ [ EventManager.registerListenerMethod("guiinput.onChangeValue", self, "onChangeInputValues", "TGUIInput" ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod("guiobject.onChange", self, "onChangeInputValues", "TGUIInput" ) ]
 
 		Return self
 	End Method

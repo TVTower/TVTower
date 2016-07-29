@@ -569,7 +569,7 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 	
 
 	Method onChangeSavegameNameInputValue:int( triggerEvent:TEventBase )
-		local newName:string = TGUIObject(triggerEvent._sender).GetValue()
+		local newName:string = TGUIInput(triggerEvent._sender).GetCurrentValue()
 
 		'loop through all savegames and select the one with the name
 		'(if there is none, select nothing)
