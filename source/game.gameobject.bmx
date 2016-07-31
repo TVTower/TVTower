@@ -45,19 +45,30 @@ Type TGameObjectCollection
 
 
 	Method Add:int(obj:TGameObject)
-		if entries.Insert(obj.GetGUID(), obj)
+		if not obj then return False
+		
+		entries.Insert(obj.GetGUID(), obj)
+		'invalidate count
+		entriesCount = -1
+
+		return TRUE
+	End Method
+
+
+	Method Remove:int(obj:TGameObject)
+		if obj.GetGuid() and entries.Remove(obj.GetGUID())
 			'invalidate count
 			entriesCount = -1
 
-			return TRUE
+			return True
 		endif
 
 		return False
 	End Method
 
 
-	Method Remove:int(obj:TGameObject)
-		if obj.GetGuid() and entries.Remove(obj.GetGUID())
+	Method RemoveByGuid:int(guid:string)
+		if guid and entries.Remove(guid)
 			'invalidate count
 			entriesCount = -1
 
