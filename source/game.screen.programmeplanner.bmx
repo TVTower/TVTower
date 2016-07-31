@@ -1,79 +1,79 @@
 'import "common.misc.plannerlist.contractlist.bmx"
 
 Type TScreenHandler_ProgrammePlanner
-	Global showPlannerShortCutHintTime:int = 0
-	Global showPlannerShortCutHintFadeAmount:int = 1
-	Global planningDay:int = -1
-	Global talkToProgrammePlanner:int = TRUE		'set to FALSE for deleting gui objects without modifying the plan
-	Global DrawnOnProgrammePlannerBG:int = 0
+	Global showPlannerShortCutHintTime:Int = 0
+	Global showPlannerShortCutHintFadeAmount:Int = 1
+	Global planningDay:Int = -1
+	Global talkToProgrammePlanner:Int = True		'set to FALSE for deleting gui objects without modifying the plan
+	Global DrawnOnProgrammePlannerBG:Int = 0
 	Global ProgrammePlannerButtons:TGUIButton[6]
 	Global PPprogrammeList:TgfxProgrammelist
 	Global PPcontractList:TgfxContractlist
-	Global overlayedAdSlots:int[24]
-	Global overlayedProgrammeSlots:int[24]
+	Global overlayedAdSlots:Int[24]
+	Global overlayedProgrammeSlots:Int[24]
 	Global fastNavigateTimer:TIntervalTimer = TIntervalTimer.Create(250)
-	Global fastNavigateInitialTimer:int = 250
-	Global fastNavigationUsedContinuously:int = FALSE
+	Global fastNavigateInitialTimer:Int = 250
+	Global fastNavigationUsedContinuously:Int = False
 	Global plannerNextDayButton:TGUIButton
 	Global plannerPreviousDayButton:TGUIButton
-	Global openedProgrammeListThisVisit:int = False
+	Global openedProgrammeListThisVisit:Int = False
 	Global currentRoom:TRoomBase
 	'indicator whether an item just got dropped and therefor the next
 	'check should ignore "shift/ctrl"-shortcuts
-	Global ignoreCopyOrEpisodeShortcut:int = False
+	Global ignoreCopyOrEpisodeShortcut:Int = False
 
-	Global hoveredGuiProgrammePlanElement:TGuiProgrammePlanElement = null
-	Global draggedGuiProgrammePlanElement:TGuiProgrammePlanElement = null
+	Global hoveredGuiProgrammePlanElement:TGuiProgrammePlanElement = Null
+	Global draggedGuiProgrammePlanElement:TGuiProgrammePlanElement = Null
 	'graphical lists for interaction with blocks
-	Global haveToRefreshGuiElements:int = TRUE
+	Global haveToRefreshGuiElements:Int = True
 	Global GuiListProgrammes:TGUIProgrammePlanSlotList
 	Global GuiListAdvertisements:TGUIProgrammePlanSlotList
 
 	Global _eventListeners:TLink[]
 
 
-	Function Initialize:int()
-		local screen:TScreen = ScreenCollection.GetScreen("screen_office_programmeplanner")
-		if not screen then return False
+	Function Initialize:Int()
+		Local screen:TScreen = ScreenCollection.GetScreen("screen_office_programmeplanner")
+		If Not screen Then Return False
 		
 		'add gfx to background image
 		If Not DrawnOnProgrammePlannerBG
 			InitProgrammePlannerBackground()
-			DrawnOnProgrammePlannerBG = true
-		endif
+			DrawnOnProgrammePlannerBG = True
+		EndIf
 		
 
 		'=== create gui elements if not done yet
-		if GuiListProgrammes
+		If GuiListProgrammes
 			'clear gui lists etc
 			RemoveAllGuiElements(True)
-			hoveredGuiProgrammePlanElement = null
-			draggedGuiProgrammePlanElement = null
-		else
+			hoveredGuiProgrammePlanElement = Null
+			draggedGuiProgrammePlanElement = Null
+		Else
 			'=== create programme/ad-slot lists
 			'the visual gap between 0-11 and 12-23 hour
-			local gapBetweenHours:int = 45
-			local area:TRectangle = new TRectangle.Init(45,5,625,12 * GetSpriteFromRegistry("pp_programmeblock1").area.GetH())
+			Local gapBetweenHours:Int = 45
+			Local area:TRectangle = New TRectangle.Init(45,5,625,12 * GetSpriteFromRegistry("pp_programmeblock1").area.GetH())
 
-			GuiListProgrammes = new TGUIProgrammePlanSlotList.Create(area.position, area.dimension, "programmeplanner")
-			GuiListProgrammes.Init("pp_programmeblock1", int(GetSpriteFromRegistry("pp_adblock1").area.GetW() + gapBetweenHours))
+			GuiListProgrammes = New TGUIProgrammePlanSlotList.Create(area.position, area.dimension, "programmeplanner")
+			GuiListProgrammes.Init("pp_programmeblock1", Int(GetSpriteFromRegistry("pp_adblock1").area.GetW() + gapBetweenHours))
 			GuiListProgrammes.isType = TVTBroadcastMaterialType.PROGRAMME
 
-			GuiListAdvertisements = new TGUIProgrammePlanSlotList.Create(new TVec2D.Init(area.GetX() + GetSpriteFromRegistry("pp_programmeblock1").area.GetW(), area.GetY()), area.dimension, "programmeplanner")
-			GuiListAdvertisements.Init("pp_adblock1", int(GetSpriteFromRegistry("pp_programmeblock1").area.GetW() + gapBetweenHours))
+			GuiListAdvertisements = New TGUIProgrammePlanSlotList.Create(New TVec2D.Init(area.GetX() + GetSpriteFromRegistry("pp_programmeblock1").area.GetW(), area.GetY()), area.dimension, "programmeplanner")
+			GuiListAdvertisements.Init("pp_adblock1", Int(GetSpriteFromRegistry("pp_programmeblock1").area.GetW() + gapBetweenHours))
 			GuiListAdvertisements.isType = TVTBroadcastMaterialType.ADVERTISEMENT
 
 
 			'=== create programme/contract lists
-			PPprogrammeList	= new TgfxProgrammelist.Create(669, 8)
-			PPcontractList = new TgfxContractlist.Create(669, 8)
+			PPprogrammeList	= New TgfxProgrammelist.Create(669, 8)
+			PPcontractList = New TgfxContractlist.Create(669, 8)
 
 
 			'=== create buttons
-			plannerNextDayButton = new TGUIButton.Create(new TVec2D.Init(768, 6), new TVec2D.Init(28, 28), ">", "programmeplanner_buttons")
+			plannerNextDayButton = New TGUIButton.Create(New TVec2D.Init(768, 6), New TVec2D.Init(28, 28), ">", "programmeplanner_buttons")
 			plannerNextDayButton.spriteName = "gfx_gui_button.datasheet"
 
-			plannerPreviousDayButton = new TGUIButton.Create(new TVec2D.Init(684, 6), new TVec2D.Init(28, 28), "<", "programmeplanner_buttons")
+			plannerPreviousDayButton = New TGUIButton.Create(New TVec2D.Init(684, 6), New TVec2D.Init(28, 28), "<", "programmeplanner_buttons")
 			plannerPreviousDayButton.spriteName = "gfx_gui_button.datasheet"
 
 			'so we can handle clicks to the daychange-buttons while some
@@ -84,37 +84,37 @@ Type TScreenHandler_ProgrammePlanner
 			plannerPreviousDayButton.SetOption(GUI_OBJECT_ACCEPTS_DROP)
 
 
-			ProgrammePlannerButtons[0] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 0*54), null, GetLocale("PLANNER_ADS"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[0] = New TGUIButton.Create(New TVec2D.Init(686, 41 + 0*54), Null, GetLocale("PLANNER_ADS"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[0].spriteName = "gfx_programmeplanner_btn_ads"
 
-			ProgrammePlannerButtons[1] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 1*54), null, GetLocale("PLANNER_PROGRAMME"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[1] = New TGUIButton.Create(New TVec2D.Init(686, 41 + 1*54), Null, GetLocale("PLANNER_PROGRAMME"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[1].spriteName = "gfx_programmeplanner_btn_programme"
 
-			ProgrammePlannerButtons[2] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 2*54), null, GetLocale("PLANNER_FINANCES"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[2] = New TGUIButton.Create(New TVec2D.Init(686, 41 + 2*54), Null, GetLocale("PLANNER_FINANCES"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[2].spriteName = "gfx_programmeplanner_btn_financials"
 
-			ProgrammePlannerButtons[3] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 3*54), null, GetLocale("PLANNER_STATISTICS"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[3] = New TGUIButton.Create(New TVec2D.Init(686, 41 + 3*54), Null, GetLocale("PLANNER_STATISTICS"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[3].spriteName = "gfx_programmeplanner_btn_statistics"
 
-			ProgrammePlannerButtons[4] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 4*54), null, GetLocale("PLANNER_MESSAGES"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[4] = New TGUIButton.Create(New TVec2D.Init(686, 41 + 4*54), Null, GetLocale("PLANNER_MESSAGES"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[4].spriteName = "gfx_programmeplanner_btn_messages"
 
-			ProgrammePlannerButtons[5] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 5*54), null, GetLocale("PLANNER_UNKNOWN"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[5] = New TGUIButton.Create(New TVec2D.Init(686, 41 + 5*54), Null, GetLocale("PLANNER_UNKNOWN"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[5].spriteName = "gfx_programmeplanner_btn_unknown"
 
-			for local i:int = 0 to 5
+			For Local i:Int = 0 To 5
 				ProgrammePlannerButtons[i].SetAutoSizeMode(TGUIButton.AUTO_SIZE_MODE_SPRITE, TGUIButton.AUTO_SIZE_MODE_SPRITE)
 				ProgrammePlannerButtons[i].caption.SetContentPosition(ALIGN_CENTER, ALIGN_TOP)
 				ProgrammePlannerButtons[i].caption.SetFont( GetBitmapFont("Default", 10, BOLDFONT) )
 
 				ProgrammePlannerButtons[i].SetCaptionOffset(0,42)
 			Next
-		endif
+		EndIf
 
 
 		'=== remove all registered event listeners
 		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		_eventListeners = New TLink[0]
 
 
 		'=== register event listeners
@@ -182,95 +182,95 @@ Type TScreenHandler_ProgrammePlanner
 
 	Function SetLanguage()
 		'programmeplanner
-		if ProgrammePlannerButtons[0]
+		If ProgrammePlannerButtons[0]
 			ProgrammePlannerButtons[0].SetCaption(GetLocale("PLANNER_ADS"))
 			ProgrammePlannerButtons[1].SetCaption(GetLocale("PLANNER_PROGRAMME"))
 			ProgrammePlannerButtons[2].SetCaption(GetLocale("PLANNER_FINANCES"))
 			ProgrammePlannerButtons[3].SetCaption(GetLocale("PLANNER_STATISTICS"))
 			ProgrammePlannerButtons[4].SetCaption(GetLocale("PLANNER_MESSAGES"))
 			ProgrammePlannerButtons[5].SetCaption(GetLocale("PLANNER_UNKNOWN"))
-		endif
+		EndIf
 	End Function
 
 
-	Function IsMyRoom:int(room:TRoomBase)
-		For local i:int = 1 to 4
-			if room = GetRoomCollection().GetFirstByDetails("office", i) then return True
+	Function IsMyRoom:Int(room:TRoomBase)
+		For Local i:Int = 1 To 4
+			If room = GetRoomCollection().GetFirstByDetails("office", i) Then Return True
 		Next
-		return False
+		Return False
 	End Function
 
 
-	Function ResetSlotOverlays:int(slotType:int = -1)
-		For local i:int = 0 to 23
-			if slotType = TVTBroadcastMaterialType.PROGRAMME
+	Function ResetSlotOverlays:Int(slotType:Int = -1)
+		For Local i:Int = 0 To 23
+			If slotType = TVTBroadcastMaterialType.PROGRAMME
 				overlayedProgrammeSlots[i] = 0
-			elseif slotType = TVTBroadcastMaterialType.ADVERTISEMENT
+			ElseIf slotType = TVTBroadcastMaterialType.ADVERTISEMENT
 				overlayedAdSlots[i] = 0
-			else
+			Else
 				overlayedProgrammeSlots[i] = 0
 				overlayedAdSlots[i] = 0
-			endif
+			EndIf
 		Next
 	End Function
 
 
-	Function EnableSlotOverlays:int(hours:int[] = null, slotType:int = -1, mode:int=1)
-		If hours and hours.length > 0
-			For local hour:int = EachIn hours
-				if slotType = TVTBroadcastMaterialType.PROGRAMME
+	Function EnableSlotOverlays:Int(hours:Int[] = Null, slotType:Int = -1, mode:Int=1)
+		If hours And hours.length > 0
+			For Local hour:Int = EachIn hours
+				If slotType = TVTBroadcastMaterialType.PROGRAMME
 					overlayedProgrammeSlots[hour] = mode
-				elseif slotType = TVTBroadcastMaterialType.ADVERTISEMENT
+				ElseIf slotType = TVTBroadcastMaterialType.ADVERTISEMENT
 					overlayedAdSlots[hour] = mode
-				else
+				Else
 					overlayedProgrammeSlots[hour] = mode
 					overlayedAdSlots[hour] = mode
-				endif
+				EndIf
 			Next
-		Endif
+		EndIf
 	End Function
 
 
-	Function DisableSlotOverlays:int(hours:int[] = null, slotType:int = 0)
-		If hours and hours.length > 0
-			For local hour:int = EachIn hours
-				if slotType = TVTBroadcastMaterialType.PROGRAMME
+	Function DisableSlotOverlays:Int(hours:Int[] = Null, slotType:Int = 0)
+		If hours And hours.length > 0
+			For Local hour:Int = EachIn hours
+				If slotType = TVTBroadcastMaterialType.PROGRAMME
 					overlayedProgrammeSlots[hour] = 0
-				elseif slotType = TVTBroadcastMaterialType.ADVERTISEMENT
+				ElseIf slotType = TVTBroadcastMaterialType.ADVERTISEMENT
 					overlayedAdSlots[hour] = 0
-				else
+				Else
 					overlayedProgrammeSlots[hour] = 0
 					overlayedAdSlots[hour] = 0
-				endif
+				EndIf
 			Next
-		Endif
+		EndIf
 	End Function
 
 
-	Function HasSlotOverlay:int(hour:int, slotType:int = 0)
-		if slotType = TVTBroadcastMaterialType.PROGRAMME
-			return overlayedProgrammeSlots[hour] <> 0
-		else
-			return overlayedAdSlots[hour] <> 0
-		endif
+	Function HasSlotOverlay:Int(hour:Int, slotType:Int = 0)
+		If slotType = TVTBroadcastMaterialType.PROGRAMME
+			Return overlayedProgrammeSlots[hour] <> 0
+		Else
+			Return overlayedAdSlots[hour] <> 0
+		EndIf
 	End Function
 
 
-	Function GetSlotOverlay:int(hour:int, slotType:int = 0)
-		if slotType = TVTBroadcastMaterialType.PROGRAMME
-			return overlayedProgrammeSlots[hour]
-		else
-			return overlayedAdSlots[hour]
-		endif
+	Function GetSlotOverlay:Int(hour:Int, slotType:Int = 0)
+		If slotType = TVTBroadcastMaterialType.PROGRAMME
+			Return overlayedProgrammeSlots[hour]
+		Else
+			Return overlayedAdSlots[hour]
+		EndIf
 	End Function
 
 
 	'called as soon as a players figure is forced to leave a room
-	Function onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
+	Function onForcefullyLeaveRoom:Int( triggerEvent:TEventBase )
 		'only handle the players figure
-		if TFigure(triggerEvent.GetSender()) <> GetPlayer().figure then return False
+		If TFigure(triggerEvent.GetSender()) <> GetPlayer().figure Then Return False
 		'only handle offices
-		if not IsMyRoom(TRoomBase(triggerEvent.GetReceiver())) then return False
+		If Not IsMyRoom(TRoomBase(triggerEvent.GetReceiver())) Then Return False
 
 
 		'=== PROGRAMMEPLANNER ===
@@ -287,21 +287,21 @@ Type TScreenHandler_ProgrammePlanner
 	'clear the screen (remove dragged elements)
 	Function AbortScreenActions:Int()
 		'=== PROGRAMMEPLANNER ===
-		if draggedGuiProgrammePlanElement
+		If draggedGuiProgrammePlanElement
 			'Try to drop back the element, except it is a freshly
 			'created one
-			if draggedGuiProgrammePlanElement.inList
+			If draggedGuiProgrammePlanElement.inList
 				draggedGuiProgrammePlanElement.dropBackToOrigin()
-			endif
+			EndIf
 			'successful or not - get rid of the gui element
 			'(if it was a clone with no dropback-possibility this
 			'just removes the clone, no worries)
-			draggedGuiProgrammePlanElement = null
-			hoveredGuiProgrammePlanElement = null
-		endif
+			draggedGuiProgrammePlanElement = Null
+			hoveredGuiProgrammePlanElement = Null
+		EndIf
 
 		'Try to drop back dragged elements
-		For local obj:TGUIProgrammePlanElement = eachIn GuiManager.ListDragged.Copy()
+		For Local obj:TGUIProgrammePlanElement = EachIn GuiManager.ListDragged.Copy()
 			obj.dropBackToOrigin()
 			'successful or not - get rid of the gui element
 			obj.Remove()
@@ -317,127 +317,127 @@ Type TScreenHandler_ProgrammePlanner
 	End Function
 
 
-	Function RefreshHoveredProgrammePlanElement:int()
-		For local guiObject:TGuiProgrammePlanElement = eachin GuiListProgrammes._slots
-			if guiObject.isDragged() or guiObject.isHovered()
+	Function RefreshHoveredProgrammePlanElement:Int()
+		For Local guiObject:TGuiProgrammePlanElement = EachIn GuiListProgrammes._slots
+			If guiObject.isDragged() Or guiObject.isHovered()
 				hoveredGuiProgrammePlanElement = guiObject
-				return True
-			endif
+				Return True
+			EndIf
 		Next
-		For local guiObject:TGuiProgrammePlanElement = eachin GuiListAdvertisements._slots
-			if guiObject.isDragged() or guiObject.isHovered()
+		For Local guiObject:TGuiProgrammePlanElement = EachIn GuiListAdvertisements._slots
+			If guiObject.isDragged() Or guiObject.isHovered()
 				hoveredGuiProgrammePlanElement = guiObject
-				return True
-			endif
+				Return True
+			EndIf
 		Next
-		For local guiObject:TGuiProgrammePlanElement = eachin GuiManager.ListDragged
-			if guiObject.isDragged() or guiObject.isHovered()
+		For Local guiObject:TGuiProgrammePlanElement = EachIn GuiManager.ListDragged
+			If guiObject.isDragged() Or guiObject.isHovered()
 				hoveredGuiProgrammePlanElement = guiObject
-				return True
-			endif
+				Return True
+			EndIf
 		Next
-		return False
+		Return False
 	End Function
 
 
 	Function DrawSlotHints()
-		local hintColor:TColor = new TColor.CreateGrey(100)
-		local f:TBitmapFont = GetBitmapFont("default", 10)
-		local oldA:float = GetAlpha()
-		local plan:TPlayerProgrammePlan = GetPlayerProgrammePlan(currentRoom.owner)
+		Local hintColor:TColor = New TColor.CreateGrey(100)
+		Local f:TBitmapFont = GetBitmapFont("default", 10)
+		Local oldA:Float = GetAlpha()
+		Local plan:TPlayerProgrammePlan = GetPlayerProgrammePlan(currentRoom.owner)
 
-		setAlpha 0.5 * oldA
-		For local i:int = 0 to 23
+		SetAlpha 0.5 * oldA
+		For Local i:Int = 0 To 23
 			'skip drawing the hint, if something is on this slot (on that day)
-			if plan.GetObject(TVTBroadcastMaterialType.PROGRAMME, planningDay, i) then continue
-			if i <= 5
-				f.DrawBlock(GetLocale("NIGHTPROGRAMME")+chr(13)+"|color=120,100,100|("+GetLocale("LOW_AUDIENCE")+")|/color|", 45 + 10, 5 + i*30 + 3, 205 - 2*10, 30, ALIGN_LEFT_TOP, hintColor)
-			elseif i >= 19 and i <= 23
-				f.DrawBlock(GetLocale("PRIMETIME")+chr(13)+"|color=100,120,100|("+GetLocale("HIGH_AUDIENCE")+")|/color|", 380 + 10, 5 + (i-12)*30 + 3, 205 - 2*10, 30, ALIGN_LEFT_TOP, hintColor)
-			endif
+			If plan.GetObject(TVTBroadcastMaterialType.PROGRAMME, planningDay, i) Then Continue
+			If i <= 5
+				f.DrawBlock(GetLocale("NIGHTPROGRAMME")+Chr(13)+"|color=120,100,100|("+GetLocale("LOW_AUDIENCE")+")|/color|", 45 + 10, 5 + i*30 + 3, 205 - 2*10, 30, ALIGN_LEFT_TOP, hintColor)
+			ElseIf i >= 19 And i <= 23
+				f.DrawBlock(GetLocale("PRIMETIME")+Chr(13)+"|color=100,120,100|("+GetLocale("HIGH_AUDIENCE")+")|/color|", 380 + 10, 5 + (i-12)*30 + 3, 205 - 2*10, 30, ALIGN_LEFT_TOP, hintColor)
+			EndIf
 		Next
-		setAlpha oldA
+		SetAlpha oldA
 	End Function
 	
 
-	Function DrawSlotOverlays(invert:int = False)
-		local oldCol:TColor = new TColor.get()
-		SetAlpha oldCol.a * 0.65 + float(Min(0.15, Max(-0.20, sin(Millisecs() / 6) * 0.20)))
+	Function DrawSlotOverlays(invert:Int = False)
+		Local oldCol:TColor = New TColor.get()
+		SetAlpha oldCol.a * 0.65 + Float(Min(0.15, Max(-0.20, Sin(MilliSecs() / 6) * 0.20)))
 
 		Local blockOverlay:TSprite = GetSpriteFromRegistry("gfx_programmeplanner_blockoverlay.highlighted")
 		Local clockOverlay1:TSprite = GetSpriteFromRegistry("gfx_programmeplanner_clockoverlay1.highlighted")
 		Local clockOverlay2:TSprite = GetSpriteFromRegistry("gfx_programmeplanner_clockoverlay2.highlighted")
 
 
-		For local i:int = 0 to 23
-			local overlayedCount:int = 0
-			local mode1:int = GetSlotOverlay(i, TVTBroadcastMaterialType.PROGRAMME)
-			local mode2:int = GetSlotOverlay(i, TVTBroadcastMaterialType.ADVERTISEMENT)
+		For Local i:Int = 0 To 23
+			Local overlayedCount:Int = 0
+			Local mode1:Int = GetSlotOverlay(i, TVTBroadcastMaterialType.PROGRAMME)
+			Local mode2:Int = GetSlotOverlay(i, TVTBroadcastMaterialType.ADVERTISEMENT)
 			overlayedCount = (mode1<>0) + (mode2<>0)
-			if invert then overlayedCount = 2 - overlayedCount
-			if not overlayedCount then continue
+			If invert Then overlayedCount = 2 - overlayedCount
+			If Not overlayedCount Then Continue
 
 
-			local x:int, y:int
+			Local x:Int, y:Int
 
-			if i < 12
+			If i < 12
 				x = 5
 				y = 5 + i*30
-			else
+			Else
 				x = 340
 				y = 5 + (i - 12)*30
-			endif
+			EndIf
 
 			'clock overlay
-			if mode1 = mode2
-				if mode1 = 1 then SetColor 110, 255, 110
-				if mode1 = 2 then SetColor 255,200,75
-			else
+			If mode1 = mode2
+				If mode1 = 1 Then SetColor 110, 255, 110
+				If mode1 = 2 Then SetColor 255,200,75
+			Else
 				SetColor 255,190,75
-			endif
-			if i mod 2 = 0
+			EndIf
+			If i Mod 2 = 0
 				clockOverlay1.Draw(x, y)
-			else
+			Else
 				clockOverlay2.Draw(x, y)
-			endif
+			EndIf
 
 			'programme overlay
-			if (mode1<>0) = not invert
-				if mode1 = 1 then SetColor 110, 255, 110
-				if mode1 = 2 then SetColor 255,200,75
+			If (mode1<>0) = Not invert
+				If mode1 = 1 Then SetColor 110, 255, 110
+				If mode1 = 2 Then SetColor 255,200,75
 
 				blockOverlay.DrawArea(x+40, y, 205, 30)
-			endif
+			EndIf
 
 			'ad overlay
-			if (mode2<>0) = not invert
-				if mode2 = 1 then SetColor 110, 255, 110
-				if mode2 = 2 then SetColor 255,200,75
+			If (mode2<>0) = Not invert
+				If mode2 = 1 Then SetColor 110, 255, 110
+				If mode2 = 2 Then SetColor 255,200,75
 
 				blockOverlay.DrawArea(x+40 + 205, y, 85, 30)
-			endif
+			EndIf
 		Next
 
 
 
-		local plan:TPlayerProgrammePlan = GetPlayerProgrammePlan(currentRoom.owner)
+		Local plan:TPlayerProgrammePlan = GetPlayerProgrammePlan(currentRoom.owner)
 		SetAlpha oldCol.a * 0.30
 		SetColor 170,30,0
-		For local i:int = 0 to 23
-			if plan.IsLockedSlot(TVTBroadcastMaterialType.PROGRAMME, GetWorldTime().GetDay(), i)
-				if i < 12
+		For Local i:Int = 0 To 23
+			If plan.IsLockedSlot(TVTBroadcastMaterialType.PROGRAMME, GetWorldTime().GetDay(), i)
+				If i < 12
 					blockOverlay.DrawArea(45, 5 + i*30, 205, 30)
-				else
+				Else
 					blockOverlay.DrawArea(380, 5 + i*30, 205, 30)
-				endif
-			endif
-			if plan.IsLockedSlot(TVTBroadcastMaterialType.ADVERTISEMENT, GetWorldTime().GetDay(), i)
-				if i < 12
+				EndIf
+			EndIf
+			If plan.IsLockedSlot(TVTBroadcastMaterialType.ADVERTISEMENT, GetWorldTime().GetDay(), i)
+				If i < 12
 					blockOverlay.DrawArea(45 + 205, 5 + i*30, 85, 30)
-				else
+				Else
 					blockOverlay.DrawArea(380 + 205, 5 + i*30, 85, 30)
-				endif
-			endif
+				EndIf
+			EndIf
 		Next
 		oldCol.SetRGBA()
 	End Function
@@ -448,7 +448,7 @@ Type TScreenHandler_ProgrammePlanner
 	'clear the guilist once a savegame was loaded
 	'(this avoids empty programme planners if loaded a savegame
 	' with "planner" as active screen while already being there)
-	Function onLoadSavegame:int(triggerEvent:TEventBase)
+	Function onLoadSavegame:Int(triggerEvent:TEventBase)
 		'important: change back to current planning day
 		ChangePlanningDay(GetWorldTime().GetDay())
 	End Function
@@ -456,14 +456,14 @@ Type TScreenHandler_ProgrammePlanner
 
 	'clear the guilist if a player enters
 	'screens are only handled by real players
-	Function onEnterProgrammePlannerScreen:int(triggerEvent:TEventBase)
+	Function onEnterProgrammePlannerScreen:Int(triggerEvent:TEventBase)
 		currentRoom = GetPlayer().GetFigure().inRoom
 	
 		'==== EMPTY/DELETE GUI-ELEMENTS =====
-		hoveredGuiProgrammePlanElement = null
-		draggedGuiProgrammePlanElement = null
+		hoveredGuiProgrammePlanElement = Null
+		draggedGuiProgrammePlanElement = Null
 		'remove all entries, also the dragged ones
-		RemoveAllGuiElements(true)
+		RemoveAllGuiElements(True)
 
 
 		'local plan:TPlayerProgrammePlan = GetPlayerProgrammePlan(currentRoom.owner)
@@ -481,38 +481,38 @@ Type TScreenHandler_ProgrammePlanner
 	End Function
 
 
-	Function onTryLeaveProgrammePlannerScreen:int( triggerEvent:TEventBase )
+	Function onTryLeaveProgrammePlannerScreen:Int( triggerEvent:TEventBase )
 		'do not allow leaving with a list open
-		if PPprogrammeList.enabled Or PPcontractList.enabled
+		If PPprogrammeList.enabled Or PPcontractList.enabled
 			PPprogrammeList.SetOpen(0)
 			PPcontractList.SetOpen(0)
 			triggerEvent.SetVeto()
-			return FALSE
-		endif
+			Return False
+		EndIf
 
 		'do not allow leaving as long as we have a dragged block
-		if draggedGuiProgrammePlanElement
+		If draggedGuiProgrammePlanElement
 			triggerEvent.setVeto()
-			return FALSE
-		endif
+			Return False
+		EndIf
 
 
-		if openedProgrammeListThisVisit and TRoomHandler.IsPlayersRoom(currentRoom)
+		If openedProgrammeListThisVisit And TRoomHandler.IsPlayersRoom(currentRoom)
 			GetPlayerProgrammeCollection(currentRoom.owner).ClearJustAddedProgrammeLicences()
-		endif
+		EndIf
 
-		return TRUE
+		Return True
 	End Function	
 
 
 	'if players are in the office during changes
 	'to their programme plan, react to...
-	Function onChangeProgrammePlan:int( triggerEvent:TEventBase )
-		if not TRoomHandler.CheckPlayerInRoom("office") then return FALSE
+	Function onChangeProgrammePlan:Int( triggerEvent:TEventBase )
+		If Not TRoomHandler.CheckPlayerInRoom("office") Then Return False
 
 		'is it our plan?
-		local plan:TPlayerProgrammePlan = TPlayerProgrammePlan(triggerEvent.GetSender())
-		if not plan or plan.owner <> GetPlayerCollection().playerID then return FALSE
+		Local plan:TPlayerProgrammePlan = TPlayerProgrammePlan(triggerEvent.GetSender())
+		If Not plan Or plan.owner <> GetPlayerCollection().playerID Then Return False
 
 		'recreate gui elements
 		RefreshGuiElements()
@@ -526,244 +526,244 @@ Type TScreenHandler_ProgrammePlanner
 	'handle dragging dayChange elements (give them to GuiManager)
 	'this way the newly dragged item is kind of a "newly" created
 	'item without history of a former slot etc.
-	Function onDragProgrammePlanElement:int(triggerEvent:TEventBase)
+	Function onDragProgrammePlanElement:Int(triggerEvent:TEventBase)
 		'do not react if in other players rooms
-		if not TRoomHandler.IsPlayersRoom(currentRoom) return False
+		If Not TRoomHandler.IsPlayersRoom(currentRoom) Return False
 
-		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
-		if not item then return FALSE
+		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
+		If Not item Then Return False
 
 		'check if we somehow dragged a dayChange element
 		'if so : remove it from the list and let the GuiManager manage it
-		if item = GuiListProgrammes.dayChangeGuiProgrammePlanElement
+		If item = GuiListProgrammes.dayChangeGuiProgrammePlanElement
 			GuiManager.AddDragged(GuiListProgrammes.dayChangeGuiProgrammePlanElement)
-			GuiListProgrammes.dayChangeGuiProgrammePlanElement = null
-			return TRUE
-		endif
-		if item = GuiListAdvertisements.dayChangeGuiProgrammePlanElement
+			GuiListProgrammes.dayChangeGuiProgrammePlanElement = Null
+			Return True
+		EndIf
+		If item = GuiListAdvertisements.dayChangeGuiProgrammePlanElement
 			GuiManager.AddDragged(GuiListAdvertisements.dayChangeGuiProgrammePlanElement)
-			GuiListAdvertisements.dayChangeGuiProgrammePlanElement = null
-			return TRUE
-		endif
-		return FALSE
+			GuiListAdvertisements.dayChangeGuiProgrammePlanElement = Null
+			Return True
+		EndIf
+		Return False
 	End Function
 
 
-	Function onTryDragProgrammePlanElement:int(triggerEvent:TEventBase)
+	Function onTryDragProgrammePlanElement:Int(triggerEvent:TEventBase)
 		'do not react if in other players rooms
-		if not TRoomHandler.IsPlayersRoom(currentRoom) return False
+		If Not TRoomHandler.IsPlayersRoom(currentRoom) Return False
 
-		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
-		if not item then return FALSE
+		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
+		If Not item Then Return False
 
 		'stop dragging from locked slots
-		if GetPlayerProgrammePlan(currentRoom.owner).IsLockedBroadcastMaterial(item.broadcastMaterial)
+		If GetPlayerProgrammePlan(currentRoom.owner).IsLockedBroadcastMaterial(item.broadcastMaterial)
 			triggerEvent.SetVeto()
-			return FALSE
-		endif
+			Return False
+		EndIf
 
-		if not ignoreCopyOrEpisodeShortcut and CreateNextEpisodeOrCopyByShortcut(item)
+		If Not ignoreCopyOrEpisodeShortcut And CreateNextEpisodeOrCopyByShortcut(item)
 			triggerEvent.SetVeto()
-			return FALSE
-		endif
+			Return False
+		EndIf
 
 		'dragging is ok
-		return TRUE
+		Return True
 	End Function
 
 
 	'handle adding items at the end of a day
 	'so the removed material can be recreated as dragged gui items
-	Function onProgrammePlanAddObject:int(triggerEvent:TEventBase)
+	Function onProgrammePlanAddObject:Int(triggerEvent:TEventBase)
 		'do not react if not the players Programme Plan
 		'this is important, as you are _never_ able to control other
 		'players plans
-		local plan:TPlayerProgrammePlan = TPlayerProgrammePlan(triggerEvent.GetSender())
-		if not plan or plan.owner <> GetPlayer().playerID then return False
+		Local plan:TPlayerProgrammePlan = TPlayerProgrammePlan(triggerEvent.GetSender())
+		If Not plan Or plan.owner <> GetPlayer().playerID Then Return False
 
 		'do not react if in other players rooms
-		if not TRoomHandler.IsPlayersRoom(currentRoom) return False
+		If Not TRoomHandler.IsPlayersRoom(currentRoom) Return False
 
 
-		local removedObjects:object[] = object[](triggerEvent.GetData().get("removedObjects"))
-		local addedObject:TBroadcastMaterial = TBroadcastMaterial(triggerEvent.GetData().get("object"))
-		if not removedObjects then return FALSE
-		if not addedObject then return FALSE
+		Local removedObjects:Object[] = Object[](triggerEvent.GetData().get("removedObjects"))
+		Local addedObject:TBroadcastMaterial = TBroadcastMaterial(triggerEvent.GetData().get("object"))
+		If Not removedObjects Then Return False
+		If Not addedObject Then Return False
 		'also not interested if the programme ends before midnight
-		if addedObject.programmedHour + addedObject.getBlocks() <= 24 then return FALSE
+		If addedObject.programmedHour + addedObject.getBlocks() <= 24 Then Return False
 
 		'create new gui items for all removed ones
 		'this also includes todays programmes:
 		'ex: added 5block to 21:00 - removed programme from 23:00-24:00 gets added again too
-		for local i:int = 0 to removedObjects.length-1
-			local material:TBroadcastMaterial = TBroadcastMaterial(removedObjects[i])
-			if material then new TGUIProgrammePlanElement.CreateWithBroadcastMaterial(material, "programmePlanner").drag()
+		For Local i:Int = 0 To removedObjects.length-1
+			Local material:TBroadcastMaterial = TBroadcastMaterial(removedObjects[i])
+			If material Then New TGUIProgrammePlanElement.CreateWithBroadcastMaterial(material, "programmePlanner").drag()
 		Next
-		return FALSE
+		Return False
 	End Function
 
 
 	'intercept if item does not allow dropping on specific lists
 	'eg. certain ads as programme if they do not allow no commercial shows
 	'eg. a live programme can only be dropped to a specific slot
-	Function onTryDropProgrammePlanElement:int(triggerEvent:TEventBase)
+	Function onTryDropProgrammePlanElement:Int(triggerEvent:TEventBase)
 		'do not react if in other players rooms
-		if not TRoomHandler.IsPlayersRoom(currentRoom) return False
+		If Not TRoomHandler.IsPlayersRoom(currentRoom) Return False
 
-		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
-		if not item then return FALSE
+		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
+		If Not item Then Return False
 		
-		local list:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent.GetReceiver())
-		if not list then return FALSE
+		Local list:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent.GetReceiver())
+		If Not list Then Return False
 
 
 		'check if that item is allowed to get dropped on such a list
-		local receiverList:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent._receiver)
-		if receiverList
-			local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", new TVec2D.Init(-1,-1)))
-			local slot:int = receiverList.GetSlotByCoord(coord)
+		Local receiverList:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent._receiver)
+		If receiverList
+			Local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", New TVec2D.Init(-1,-1)))
+			Local slot:Int = receiverList.GetSlotByCoord(coord)
 
 			'check if it is a live programme (dropped on the programme slots)
-			if receiverList = GuiListProgrammes
-				if TProgramme(item.broadcastMaterial) and TProgramme(item.broadcastMaterial).data.IsLive()
-					local releaseTime:long = TProgramme(item.broadcastMaterial).data.releaseTime
-					if planningDay <> GetWorldTime().GetDay( releaseTime ) or ..
+			If receiverList = GuiListProgrammes
+				If TProgramme(item.broadcastMaterial) And TProgramme(item.broadcastMaterial).data.IsLive()
+					Local releaseTime:Long = TProgramme(item.broadcastMaterial).data.releaseTime
+					If planningDay <> GetWorldTime().GetDay( releaseTime ) Or ..
 					   slot <> GetWorldTime().GetDayHour( releaseTime )
 						triggerEvent.SetVeto()
-						return False
-					endif
-				endif
-			endif
-		endif
+						Return False
+					EndIf
+				EndIf
+			EndIf
+		EndIf
 
 
 		'mark that something was dropped this round and no shortcuts should
 		'get used
-		ignoreCopyOrEpisodeShortcut = true
+		ignoreCopyOrEpisodeShortcut = True
 
 		'up to now: all are allowed
-		return TRUE
+		Return True
 	End Function
 
 
 	'intercept if a freshly created element is dropped on a not modifyable
 	'slot
-	Function onTryDropFreshProgrammePlanElementOnRunningSlot:int(triggerEvent:TEventBase)
-		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
-		if not item then return FALSE
-		if not currentRoom then return False
+	Function onTryDropFreshProgrammePlanElementOnRunningSlot:Int(triggerEvent:TEventBase)
+		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
+		If Not item Then Return False
+		If Not currentRoom Then Return False
 
-		local receiverList:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent._receiver)
-		if receiverList
-			local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", new TVec2D.Init(-1,-1)))
-			local slot:int = receiverList.GetSlotByCoord(coord)
+		Local receiverList:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent._receiver)
+		If receiverList
+			Local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", New TVec2D.Init(-1,-1)))
+			Local slot:Int = receiverList.GetSlotByCoord(coord)
 
 			'loop over all slots affected by this event
-			local pp:TPlayerProgrammePlan = GetPlayerProgrammePlan(currentRoom.owner)
-			For local currentSlot:int = slot until slot + item.broadcastMaterial.GetBlocks(receiverList.isType)
+			Local pp:TPlayerProgrammePlan = GetPlayerProgrammePlan(currentRoom.owner)
+			For Local currentSlot:Int = slot Until slot + item.broadcastMaterial.GetBlocks(receiverList.isType)
 				'stop adding to a locked slots or slots occupied by a partially
 				'locked programme
 				'also stops if the slot is used by a not-controllable programme
-				if not pp.IsModifyableSlot(receiverList.isType, planningDay, currentSlot)
+				If Not pp.IsModifyableSlot(receiverList.isType, planningDay, currentSlot)
 					triggerEvent.SetVeto()
-				endif
+				EndIf
 			Next
 
 			'old "slotstate"-check approach
-			if receiverList.GetSlotState(slot) = 2
+			If receiverList.GetSlotState(slot) = 2
 				triggerEvent.SetVeto()
-			endif
-		endif
+			EndIf
+		EndIf
 	End Function
 
 
-	Function onTryDropProgrammePlanElementOnDayButton:int(triggerEvent:TEventBase)
+	Function onTryDropProgrammePlanElementOnDayButton:Int(triggerEvent:TEventBase)
 		'do not react if in other players rooms
-		if not TRoomHandler.IsPlayersRoom(currentRoom) return False
+		If Not TRoomHandler.IsPlayersRoom(currentRoom) Return False
 
-		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
-		if not item then return FALSE
+		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
+		If Not item Then Return False
 
 		'dropping on daychangebuttons means trying to change the day
 		'while elements are dragged
-		if plannerPreviousDayButton = triggerEvent.GetReceiver() or ..
+		If plannerPreviousDayButton = triggerEvent.GetReceiver() Or ..
 		   plannerNExtDayButton = triggerEvent.GetReceiver()
 		
 			triggerEvent.SetVeto()
 
-			if plannerPreviousDayButton = triggerEvent.GetReceiver()
+			If plannerPreviousDayButton = triggerEvent.GetReceiver()
 				ChangePlanningDay(planningDay-1)
-			else
+			Else
 				ChangePlanningDay(planningDay+1)
-			endif
+			EndIf
 
 			'remove that programme from plan now
 			'do this to avoid "handleDropBack()" returning true
-			if item.lastList = GuiListAdvertisements
+			If item.lastList = GuiListAdvertisements
 				GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(item.broadcastMaterial)
 				GuiListAdvertisements.RemoveItem(item)
-			elseif item.lastList = GuiListProgrammes
+			ElseIf item.lastList = GuiListProgrammes
 				GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
 				GuiListProgrammes.RemoveItem(item)
-			endif
+			EndIf
 
 			'reset mousebutton
 			MouseManager.ResetKey(1)
 
-			return False
-		endif
+			Return False
+		EndIf
 	End Function
 	
 
 	'remove the material from the programme plan
-	Function onRemoveItemFromSlotList:int(triggerEvent:TEventBase)
-		local list:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent.GetSender())
-		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetData().get("item"))
-		local slot:int = triggerEvent.GetData().getInt("slot", -1)
+	Function onRemoveItemFromSlotList:Int(triggerEvent:TEventBase)
+		Local list:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent.GetSender())
+		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetData().get("item"))
+		Local slot:Int = triggerEvent.GetData().getInt("slot", -1)
 
-		if not list or not item or slot = -1 then return FALSE
+		If Not list Or Not item Or slot = -1 Then Return False
 
 		'we removed the item but do not want the planner to know
-		if not talkToProgrammePlanner then return TRUE
+		If Not talkToProgrammePlanner Then Return True
 
-		if list = GuiListProgrammes
-			if not GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
+		If list = GuiListProgrammes
+			If Not GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
 				TLogger.Log("onRemoveItemFromSlotList()", "Dragged item from programmelist - removing from programmeplan at "+slot+":00 - FAILED", LOG_WARNING)
-			endif
-		elseif list = GuiListAdvertisements
-			if not GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(item.broadcastMaterial)
+			EndIf
+		ElseIf list = GuiListAdvertisements
+			If Not GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(item.broadcastMaterial)
 				TLogger.Log("onRemoveItemFromSlotList()", "Dragged item from adlist - removing from programmeplan at "+slot+":00 - FAILED", LOG_WARNING)
-			endif
-		else
+			EndIf
+		Else
 			TLogger.Log("onRemoveItemFromSlotList()", "Dragged item from unknown list - removing from programmeplan at "+slot+":00 - FAILED", LOG_WARNING)
-		endif
+		EndIf
 
-		return TRUE
+		Return True
 	End Function
 
 
 	'handle if a programme is dropped on the same slot but different
 	'planning day
-	Function onDropProgrammePlanElementBack:int(triggerEvent:TEventBase)
-		local list:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent.GetReceiver())
-		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
+	Function onDropProgrammePlanElementBack:Int(triggerEvent:TEventBase)
+		Local list:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent.GetReceiver())
+		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
 
 		'is the gui item coming from another day?
 		'remove it from there (was "silenced" during automatic mode)
-		if List = GuiListProgrammes or list = GuiListAdvertisements
-			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
-				if item.lastList = GuiListAdvertisements
-					if not GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(item.broadcastMaterial)
+		If List = GuiListProgrammes Or list = GuiListAdvertisements
+			If item.plannedOnDay >= 0 And item.plannedOnDay <> list.planDay
+				If item.lastList = GuiListAdvertisements
+					If Not GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(item.broadcastMaterial)
 						TLogger.Log("onDropProgrammePlanElementBack()", "Dropped item from another day on active day - removal in other days adlist FAILED", LOG_ERROR)
-						return False
-					Endif
+						Return False
+					EndIf
 				ElseIf item.lastList = GuiListProgrammes
-					if not GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
+					If Not GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
 						TLogger.Log("onDropProgrammePlanElementBack()", "Dropped item from another day on active day - removal in other days programmelist FAILED", LOG_ERROR)
-						return False
-					Endif
-				Endif
-			Endif
+						Return False
+					EndIf
+				EndIf
+			EndIf
 		EndIf
 
 	End Function
@@ -772,190 +772,190 @@ Type TScreenHandler_ProgrammePlanner
 	'added shortcuts for faster placement here as this event
 	'is emitted on successful placements (avoids multiple dragged blocks
 	'while dropping not possible)
-	Function onAddItemToSlotList:int(triggerEvent:TEventBase)
-		local list:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent.GetSender())
-		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetData().get("item"))
-		local slot:int = triggerEvent.GetData().getInt("slot", -1)
-		if not list or not item or slot = -1 then return FALSE
+	Function onAddItemToSlotList:Int(triggerEvent:TEventBase)
+		Local list:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent.GetSender())
+		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetData().get("item"))
+		Local slot:Int = triggerEvent.GetData().getInt("slot", -1)
+		If Not list Or Not item Or slot = -1 Then Return False
 
 
 		'set indicator on which day the item is planned
 		'  (this saves some processing time - else we could request
 		'   the day from the players ProgrammePlan)
-		if List = GuiListProgrammes or list = GuiListAdvertisements
+		If List = GuiListProgrammes Or list = GuiListAdvertisements
 			item.plannedOnDay = list.planDay
-		endif
+		EndIf
 
 		'we removed the item but do not want the planner to know
-		if not talkToProgrammePlanner then return TRUE
+		If Not talkToProgrammePlanner Then Return True
 
 
 		'is the gui item coming from another day?
 		'remove it from there (was "silenced" during automatic mode)
-		if List = GuiListProgrammes or list = GuiListAdvertisements
-			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
-				if item.lastList = GuiListAdvertisements
-					if not GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(item.broadcastMaterial)
+		If List = GuiListProgrammes Or list = GuiListAdvertisements
+			If item.plannedOnDay >= 0 And item.plannedOnDay <> list.planDay
+				If item.lastList = GuiListAdvertisements
+					If Not GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(item.broadcastMaterial)
 						TLogger.Log("onAddItemToSlotList()", "Dropped item from another day on active day - removal in other days adlist FAILED", LOG_ERROR)
-						return False
-					Endif
+						Return False
+					EndIf
 				ElseIf item.lastList = GuiListProgrammes
-					if not GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
+					If Not GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
 						TLogger.Log("onAddItemToSlotList()", "Dropped item from another day on active day - removal in other days programmelist FAILED", LOG_ERROR)
-						return False
-					Endif
-				Endif
-			Endif
+						Return False
+					EndIf
+				EndIf
+			EndIf
 		EndIf
 
 
-		if list = GuiListProgrammes
+		If list = GuiListProgrammes
 			'is the gui item coming from another day?
 			'remove it from there (was "silenced" during automatic mode)
-			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
-				if not GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
+			If item.plannedOnDay >= 0 And item.plannedOnDay <> list.planDay
+				If Not GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
 					TLogger.Log("onAddItemToSlotList()", "Dropped item on programmelist - removal from other day FAILED", LOG_ERROR)
-					return False
-				endif
-			Endif
+					Return False
+				EndIf
+			EndIf
 
-			if not GetPlayerProgrammePlan(currentRoom.owner).SetProgrammeSlot(item.broadcastMaterial, planningDay, slot)
+			If Not GetPlayerProgrammePlan(currentRoom.owner).SetProgrammeSlot(item.broadcastMaterial, planningDay, slot)
 				TLogger.Log("onAddItemToSlotList()", "Dropped item on programmelist - adding to programmeplan at "+slot+":00 - FAILED", LOG_WARNING)
-				return FALSE
-			endif
-		elseif list = GuiListAdvertisements
-			if not GetPlayerProgrammePlan(currentRoom.owner).SetAdvertisementSlot(item.broadcastMaterial, planningDay, slot)
+				Return False
+			EndIf
+		ElseIf list = GuiListAdvertisements
+			If Not GetPlayerProgrammePlan(currentRoom.owner).SetAdvertisementSlot(item.broadcastMaterial, planningDay, slot)
 				TLogger.Log("onAddItemToSlotList()", "Dropped item on adlist - adding to programmeplan at "+slot+":00 - FAILED", LOG_ERROR)
-				return FALSE
-			endif
-		else
+				Return False
+			EndIf
+		Else
 			TLogger.Log("onAddItemToSlotList()", "Dropped item on unknown list - adding to programmeplan at "+slot+":00 - FAILED", LOG_ERROR)
-			return FALSE
-		endif
+			Return False
+		EndIf
 
-		return TRUE
+		Return True
 	End Function
 
 
 	'checks if it is allowed to occupy the the targeted slot (eg. slot lies in the past)
-	Function onTryAddItemToSlotList:int(triggerEvent:TEventBase)
-		local list:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent.GetSender())
-		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetData().get("item"))
-		local slot:int = triggerEvent.GetData().getInt("slot", -1)
-		if not list or not item or slot = -1 then return FALSE
-		if not item.broadcastMaterial then return False
+	Function onTryAddItemToSlotList:Int(triggerEvent:TEventBase)
+		Local list:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent.GetSender())
+		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetData().get("item"))
+		Local slot:Int = triggerEvent.GetData().getInt("slot", -1)
+		If Not list Or Not item Or slot = -1 Then Return False
+		If Not item.broadcastMaterial Then Return False
 
-		local pp:TPlayerProgrammePlan = GetPlayerProgrammePlan(currentRoom.owner)
+		Local pp:TPlayerProgrammePlan = GetPlayerProgrammePlan(currentRoom.owner)
 		'loop over all slots affected by this event - except
 		'the broadcastmaterial is already placed at the given spot
-		if item.broadcastMaterial <> pp.GetObject(list.isType, planningDay, slot)
-			For local currentSlot:int = slot until slot + item.broadcastMaterial.GetBlocks()
+		If item.broadcastMaterial <> pp.GetObject(list.isType, planningDay, slot)
+			For Local currentSlot:Int = slot Until slot + item.broadcastMaterial.GetBlocks()
 				'stop adding to a locked slots or slots occupied by a partially
 				'locked programme
 				'also stops if the slot is used by a not-controllable programme
-				if not pp.IsModifyableSlot(list.isType, planningDay, currentSlot)
+				If Not pp.IsModifyableSlot(list.isType, planningDay, currentSlot)
 					triggerEvent.SetVeto()
-					return FALSE
-				endif
+					Return False
+				EndIf
 			Next
-		endif
+		EndIf
 
 		'only check slot state if interacting with the programme planner
-		if talkToProgrammePlanner
+		If talkToProgrammePlanner
 			'already running or in the past
-			if list.GetSlotState(slot) = 2
+			If list.GetSlotState(slot) = 2
 				triggerEvent.SetVeto()
-				return FALSE
-			endif
-		endif
-		return TRUE
+				Return False
+			EndIf
+		EndIf
+		Return True
 	End Function
 
 
 	'right mouse button click: remove the block from the player's programmePlan
 	'left mouse button click: check shortcuts and create a copy/nextepisode-block
-	Function onClickProgrammePlanElement:int(triggerEvent:TEventBase)
+	Function onClickProgrammePlanElement:Int(triggerEvent:TEventBase)
 		'do not react if in other players rooms
-		if not TRoomHandler.IsPlayersRoom(currentRoom) return False
+		If Not TRoomHandler.IsPlayersRoom(currentRoom) Return False
 
-		local item:TGUIProgrammePlanElement= TGUIProgrammePlanElement(triggerEvent._sender)
+		Local item:TGUIProgrammePlanElement= TGUIProgrammePlanElement(triggerEvent._sender)
 
 		'left mouse button
-		if triggerEvent.GetData().getInt("button",0) = 1
+		If triggerEvent.GetData().getInt("button",0) = 1
 			'special handling for special items
 			'-> remove dayChangeObjects from plan if dragging (and allowed)
-			if not item.isDragged() and item.isDragable() and talkToProgrammePlanner
-				if item = GuiListAdvertisements.dayChangeGuiProgrammePlanElement
-					if GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(item.broadcastMaterial)
-						GuiListAdvertisements.dayChangeGuiProgrammePlanElement = null
-					endif
-				elseif item = GuiListProgrammes.dayChangeGuiProgrammePlanElement
-					if GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
-						GuiLisTProgrammes.dayChangeGuiProgrammePlanElement = null
-					endif
-				endif
-			endif
+			If Not item.isDragged() And item.isDragable() And talkToProgrammePlanner
+				If item = GuiListAdvertisements.dayChangeGuiProgrammePlanElement
+					If GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(item.broadcastMaterial)
+						GuiListAdvertisements.dayChangeGuiProgrammePlanElement = Null
+					EndIf
+				ElseIf item = GuiListProgrammes.dayChangeGuiProgrammePlanElement
+					If GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
+						GuiLisTProgrammes.dayChangeGuiProgrammePlanElement = Null
+					EndIf
+				EndIf
+			EndIf
 
 
 			'if shortcut is used on a dragged item ... it gets executed
 			'on a successful drop, no need to do it here before
-			if item.isDragged() then return FALSE
+			If item.isDragged() Then Return False
 
 			'assisting shortcuts create new guiobjects
-			if CreateNextEpisodeOrCopyByShortcut(item)
+			If CreateNextEpisodeOrCopyByShortcut(item)
 				'do not try to drag the object - we did something special
 				triggerEvent.SetVeto()
-				return FALSE
-			endif
+				Return False
+			EndIf
 
-			return TRUE
-		endif
+			Return True
+		EndIf
 
 		'right mouse button - delete
-		if triggerEvent.GetData().getInt("button",0) = 2
+		If triggerEvent.GetData().getInt("button",0) = 2
 			'ignore wrong types and NON-dragged items
-			if not item.isDragged() then return FALSE
+			If Not item.isDragged() Then Return False
 
 			'remove if special
-			if item = GuiListAdvertisements.dayChangeGuiProgrammePlanElement then GuiListAdvertisements.dayChangeGuiProgrammePlanElement = null
-			if item = GuiListProgrammes.dayChangeGuiProgrammePlanElement then GuiListProgrammes.dayChangeGuiProgrammePlanElement = null
+			If item = GuiListAdvertisements.dayChangeGuiProgrammePlanElement Then GuiListAdvertisements.dayChangeGuiProgrammePlanElement = Null
+			If item = GuiListProgrammes.dayChangeGuiProgrammePlanElement Then GuiListProgrammes.dayChangeGuiProgrammePlanElement = Null
 
 			'will automatically rebuild at correct spot if needed
 			item.remove()
-			item = null
+			item = Null
 
 			'remove right click - to avoid leaving the room
 			MouseManager.ResetKey(2)
 			'also avoid long click (touch screen)
 			MouseManager.ResetLongClicked(1)
-		endif
+		EndIf
 	End Function
 
 
-	Function onMouseOverProgrammePlanElement:int(triggerEvent:TEventBase)
-		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
-		if not item then return FALSE
+	Function onMouseOverProgrammePlanElement:Int(triggerEvent:TEventBase)
+		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
+		If Not item Then Return False
 
 		'only assign the first hovered item (to avoid having the lowest of a stack)
-		if not hoveredGuiProgrammePlanElement
+		If Not hoveredGuiProgrammePlanElement
 			hoveredGuiProgrammePlanElement = item
 			TGUIProgrammePlanElement.hoveredElement = item
 
-			if item.isDragged()
+			If item.isDragged()
 				draggedGuiProgrammePlanElement = item
 				'if we have an item dragged... we cannot have a menu open
 				PPprogrammeList.SetOpen(0)
 				PPcontractList.SetOpen(0)
-			endif
-		endif
+			EndIf
+		EndIf
 
-		return TRUE
+		Return True
 	End Function
 
 
-	Function onDrawProgrammePlanner:int( triggerEvent:TEventBase )
-		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
-		if not room then return 0
+	Function onDrawProgrammePlanner:Int( triggerEvent:TEventBase )
+		Local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
+		If Not room Then Return 0
 
 		currentRoom = room
 
@@ -981,7 +981,7 @@ Type TScreenHandler_ProgrammePlanner
 		If planningDay = GetWorldTime().GetDay() Then SetColor 0,100,0
 		If planningDay < GetWorldTime().GetDay() Then SetColor 100,100,0
 		If planningDay > GetWorldTime().GetDay() Then SetColor 0,0,0
-		local day:int = 1+ planningDay - GetWorldTime().GetDay(GetWorldTime().GetTimeStart())
+		Local day:Int = 1+ planningDay - GetWorldTime().GetDay(GetWorldTime().GetTimeStart())
 		'GetBitmapFont("default", 11).drawBlock(day+". "+GetLocale("DAY")+"~n"+GetWorldTime().GetFormattedDayLong(day),712, 6, 56, 30, ALIGN_CENTER_CENTER)
 		GetBitmapFont("default", 11).drawBlock(day+". "+GetLocale("DAY"),712, 7, 56, 26, ALIGN_CENTER_TOP)
 		GetBitmapFont("default", 10).drawBlock(GetWorldTime().GetFormattedDayLong(day),712, 7, 56, 26, ALIGN_CENTER_BOTTOM)
@@ -997,39 +997,39 @@ Type TScreenHandler_ProgrammePlanner
 			PPprogrammeList.Draw()
 			If TRoomHandler.IsPlayersRoom(currentRoom)
 				openedProgrammeListThisVisit = True
-			endif
-		endif
+			EndIf
+		EndIf
 
 		If PPcontractList.GetOpen() > 0
 			PPcontractList.owner = currentRoom.owner
 			PPcontractList.Draw()
-		endif
+		EndIf
 
 		'draw lists sheet
-		If PPprogrammeList.GetOpen() and PPprogrammeList.hoveredLicence
+		If PPprogrammeList.GetOpen() And PPprogrammeList.hoveredLicence
 			PPprogrammeList.hoveredLicence.ShowSheet(30,20)
-		endif
+		EndIf
 
 		'If PPcontractList.GetOpen() and
-		if PPcontractList.hoveredAdContract
+		If PPcontractList.hoveredAdContract
 			PPcontractList.hoveredAdContract.ShowSheet(30,20)
-		endif
+		EndIf
 
 
 		'if not hoveredGuiProgrammePlanElement then RefreshHoveredProgrammePlanElement()
-		if hoveredGuiProgrammePlanElement
+		If hoveredGuiProgrammePlanElement
 			'draw the current sheet
 			hoveredGuiProgrammePlanElement.DrawSheet(30, 35, 700)
-		endif
+		EndIf
 
 
-		local oldAlpha:Float = GetAlpha()
-		if showPlannerShortCutHintTime > 0
+		Local oldAlpha:Float = GetAlpha()
+		If showPlannerShortCutHintTime > 0
 			SetAlpha Min(1.0, 2.0*showPlannerShortCutHintTime/100.0)
-			GetBitmapFont("Default", 11, BOLDFONT).drawBlock(GetLocale("HINT_PROGRAMMEPLANER_SHORTCUTS"), 3, 368, 660, 15, new TVec2D.Init(ALIGN_CENTER), TColor.CreateGrey(75),2,1,0.20)
-		endif
+			GetBitmapFont("Default", 11, BOLDFONT).drawBlock(GetLocale("HINT_PROGRAMMEPLANER_SHORTCUTS"), 3, 368, 660, 15, New TVec2D.Init(ALIGN_CENTER), TColor.CreateGrey(75),2,1,0.20)
+		EndIf
 
-		local pulse:Float = Sin(Time.GetAppTimeGone() / 10)
+		Local pulse:Float = Sin(Time.GetAppTimeGone() / 10)
 		SetAlpha Max(0.75, -pulse) * oldAlpha
 		DrawOval(5+pulse,367+pulse,15-2*pulse,15-2*pulse)
 		SetAlpha oldAlpha
@@ -1037,155 +1037,155 @@ Type TScreenHandler_ProgrammePlanner
 	End Function
 
 
-	Function onUpdateProgrammePlanner:int( triggerEvent:TEventBase )
-		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
-		if not room then return 0
+	Function onUpdateProgrammePlanner:Int( triggerEvent:TEventBase )
+		Local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
+		If Not room Then Return 0
 
 		currentRoom = room
 
 		'if not initialized, do so
-		if planningDay = -1 then planningDay = GetWorldTime().GetDay()
+		If planningDay = -1 Then planningDay = GetWorldTime().GetDay()
 
 		'reset and refresh locked slots of this day
 		ResetSlotOverlays()
-		local pp:TPlayerProgrammePlan = GetPlayerProgrammePlan(room.owner)
-		local hrs:int[]
-		for local h:int = 0 to 23
-			if pp.IsLockedSlot(TVTBroadcastMaterialType.PROGRAMME, planningDay, h)
+		Local pp:TPlayerProgrammePlan = GetPlayerProgrammePlan(room.owner)
+		Local hrs:Int[]
+		For Local h:Int = 0 To 23
+			If pp.IsLockedSlot(TVTBroadcastMaterialType.PROGRAMME, planningDay, h)
 				hrs :+ [h]
-			endif
+			EndIf
 		Next
-		if hrs.length > 0 then DisableSlotOverlays(hrs, TVTBroadcastMaterialType.PROGRAMME)
+		If hrs.length > 0 Then DisableSlotOverlays(hrs, TVTBroadcastMaterialType.PROGRAMME)
 
 		'enable slot overlay if a dragged element is "live"
-		if draggedGuiProgrammePlanElement
-			local programme:TProgramme = TProgramme(draggedGuiProgrammePlanElement.broadcastMaterial)
+		If draggedGuiProgrammePlanElement
+			Local programme:TProgramme = TProgramme(draggedGuiProgrammePlanElement.broadcastMaterial)
 
-			if programme
-				if KEYMANAGER.IsHit(KEY_SPACE)
+			If programme
+				If KEYMANAGER.IsHit(KEY_SPACE)
 					'set live time to 11:00
 					programme.data.releaseTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(), 11, 0,0)
 					programme.data.SetFlag(TVTProgrammeDataFlag.LIVE, True)
 					programme.data.distributionChannel = TVTProgrammeDistributionChannel.TV
-				endif
+				EndIf
 
 				'live and not planning day in the past
-				if programme.data.IsLive() and GetWorldTime().GetDay() <= planningDay 
-					local hourSlots:int[]
-					local blockTime:Long = programme.data.releaseTime
-					if GameRules.onlyExactLiveProgrammeTimeAllowedInProgrammePlan
+				If programme.data.IsLive() And GetWorldTime().GetDay() <= planningDay 
+					Local hourSlots:Int[]
+					Local blockTime:Long = programme.data.releaseTime
+					If GameRules.onlyExactLiveProgrammeTimeAllowedInProgrammePlan
 						'mark allowed slots
-						For local i:int = 0 until programme.GetBlocks()
-							if GetWorldTime().GetDay(blockTime) = planningDay 
+						For Local i:Int = 0 Until programme.GetBlocks()
+							If GetWorldTime().GetDay(blockTime) = planningDay 
 								hourSlots :+ [ GetWorldTime().GetDayHour(blockTime) ]
-							endif
+							EndIf
 							blockTime :+ 3600
 						Next
 						EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.PROGRAMME, 1)
 
 
 						'mark all future ad-slots allowed
-						hourSlots = new Int[0]
-						local start:int = GetWorldTime().GetDayHour()+1
-						if GetWorldTime().GetDayMinute() < 55 then start :- 1
-						if GetWorldTime().GetDay() < planningDay then start = 0
-						For local i:int = start to 23
+						hourSlots = New Int[0]
+						Local start:Int = GetWorldTime().GetDayHour()+1
+						If GetWorldTime().GetDayMinute() < 55 Then start :- 1
+						If GetWorldTime().GetDay() < planningDay Then start = 0
+						For Local i:Int = start To 23
 							hourSlots :+ [i]
 						Next
 						EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.ADVERTISEMENT, 1)
-					else
+					Else
 						'mark all forbidden slots
-						local start:int = GetWorldTime().GetDayHour()+1
-						if GetWorldTime().GetDayMinute() < 5 then start :-1
-						if GetWorldTime().GetDay() < planningDay then start = 0
-						For local i:int = 0 until GetWorldTime().GetDayHour(blockTime)
+						Local start:Int = GetWorldTime().GetDayHour()+1
+						If GetWorldTime().GetDayMinute() < 5 Then start :-1
+						If GetWorldTime().GetDay() < planningDay Then start = 0
+						For Local i:Int = 0 Until GetWorldTime().GetDayHour(blockTime)
 							hourSlots :+ [ i ]
 						Next
 						EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.PROGRAMME, 2)
-					endif
-				endif
-			endif
-		endif
+					EndIf
+				EndIf
+			EndIf
+		EndIf
 		
 		GetGameBase().cursorstate = 0
 
-		ignoreCopyOrEpisodeShortcut  = false
+		ignoreCopyOrEpisodeShortcut  = False
 
 		'set all slots occupied or not
-		local day:int = GetWorldTime().GetDay()
-		local hour:int = GetWorldTime().GetDayHour()
-		local minute:int = GetWorldTime().GetDayMinute()
-		for local i:int = 0 to 23
-			if not TPlayerProgrammePlan.IsUseableTimeSlot(TVTBroadcastMaterialType.PROGRAMME, planningDay, i, day, hour, minute)
+		Local day:Int = GetWorldTime().GetDay()
+		Local hour:Int = GetWorldTime().GetDayHour()
+		Local minute:Int = GetWorldTime().GetDayMinute()
+		For Local i:Int = 0 To 23
+			If Not TPlayerProgrammePlan.IsUseableTimeSlot(TVTBroadcastMaterialType.PROGRAMME, planningDay, i, day, hour, minute)
 				GuiListProgrammes.SetSlotState(i, 2)
-			else
+			Else
 				GuiListProgrammes.SetSlotState(i, 0)
-			endif
-			if not TPlayerProgrammePlan.IsUseableTimeSlot(TVTBroadcastMaterialType.ADVERTISEMENT, planningDay, i, day, hour, minute)
+			EndIf
+			If Not TPlayerProgrammePlan.IsUseableTimeSlot(TVTBroadcastMaterialType.ADVERTISEMENT, planningDay, i, day, hour, minute)
 				GuiListAdvertisements.SetSlotState(i, 2)
-			else
+			Else
 				GuiListAdvertisements.SetSlotState(i, 0)
-			endif
+			EndIf
 		Next
 
 		'delete unused and create new gui elements
-		if haveToRefreshGuiElements
+		If haveToRefreshGuiElements
 			RefreshGuiElements()
 			'reassign a potential hovered/dragged element
 			FindHoveredPlanElement()
-		endif
+		EndIf
 
-		if planningDay-1 < GetWorldTime().GetDay(GetWorldTime().GetTimeStart())
+		If planningDay-1 < GetWorldTime().GetDay(GetWorldTime().GetTimeStart())
 			plannerPreviousDayButton.disable()
-		else
+		Else
 			plannerPreviousDayButton.enable()
-		endif
+		EndIf
 
 		'reset hovered and dragged gui objects - gets repopulated automagically
-		hoveredGuiProgrammePlanElement = null
-		draggedGuiProgrammePlanElement = null
-		TGUIProgrammePlanElement.hoveredElement = null
+		hoveredGuiProgrammePlanElement = Null
+		draggedGuiProgrammePlanElement = Null
+		TGUIProgrammePlanElement.hoveredElement = Null
 
 		'RON
 		'fast movement is possible with keys
 		'we use doAction as this allows a decreasing time
 		'while keeping the original interval backupped
-		if fastNavigateTimer.isExpired()
-			if not KEYMANAGER.isDown(KEY_PAGEUP) and not KEYMANAGER.isDown(KEY_PAGEDOWN)
-				fastNavigationUsedContinuously = FALSE
-			endif
-			if KEYMANAGER.isDown(KEY_PAGEUP)
+		If fastNavigateTimer.isExpired()
+			If Not KEYMANAGER.isDown(KEY_PAGEUP) And Not KEYMANAGER.isDown(KEY_PAGEDOWN)
+				fastNavigationUsedContinuously = False
+			EndIf
+			If KEYMANAGER.isDown(KEY_PAGEUP)
 				ChangePlanningDay(planningDay-1)
-				fastNavigationUsedContinuously = TRUE
-			endif
-			if KEYMANAGER.isDown(KEY_PAGEDOWN)
+				fastNavigationUsedContinuously = True
+			EndIf
+			If KEYMANAGER.isDown(KEY_PAGEDOWN)
 				ChangePlanningDay(planningDay+1)
-				fastNavigationUsedContinuously = TRUE
-			endif
+				fastNavigationUsedContinuously = True
+			EndIf
 
 			'modify action time AND reset timer
-			if fastNavigationUsedContinuously
+			If fastNavigationUsedContinuously
 				'decrease action time each time a bit more...
-				fastNavigateTimer.setInterval( Int(Max(50, fastNavigateTimer.GetInterval() * 0.9)), true )
-			else
+				fastNavigateTimer.setInterval( Int(Max(50, fastNavigateTimer.GetInterval() * 0.9)), True )
+			Else
 				'set to initial value
-				fastNavigateTimer.setInterval( fastNavigateInitialTimer, true )
-			endif
-		endif
+				fastNavigateTimer.setInterval( fastNavigateInitialTimer, True )
+			EndIf
+		EndIf
 
 
-		local listsOpened:int = (PPprogrammeList.enabled Or PPcontractList.enabled)
+		Local listsOpened:Int = (PPprogrammeList.enabled Or PPcontractList.enabled)
 		'only handly programmeblocks if the lists are closed
 		'else you will end up with nearly no space on the screen not showing
 		'a licence sheet.
-		if not listsOpened
+		If Not listsOpened
 			GUIManager.Update("programmeplanner|programmeplanner_buttons")
 		'if a list is opened, we cannot have a hovered gui element
-		else
-			hoveredGuiProgrammePlanElement = null
+		Else
+			hoveredGuiProgrammePlanElement = Null
 			'but still have to check for clicks on the buttons
 			GUIManager.Update("programmeplanner_buttons")
-		endif
+		EndIf
 
 
 		'do not allow interaction for other players (even with master key)
@@ -1195,7 +1195,7 @@ Type TScreenHandler_ProgrammePlanner
 			PPprogrammeList.clicksAllowed = True
 			PPcontractList.clicksAllowed = True
 			GuiListProgrammes.setOption(GUI_OBJECT_CLICKABLE, True)
-		else
+		Else
 			'disable List interaction
 			PPprogrammeList.clicksAllowed = False
 			PPcontractList.clicksAllowed = False
@@ -1210,23 +1210,23 @@ Type TScreenHandler_ProgrammePlanner
 
 
 		'hide or show help
-		If THelper.IsIn(int(MouseManager.x), int(MouseManager.y), 0,365,20,20)
+		If THelper.IsIn(Int(MouseManager.x), Int(MouseManager.y), 0,365,20,20)
 			showPlannerShortCutHintTime = 90
 			showPlannerShortCutHintFadeAmount = 1
-		else
+		Else
 			showPlannerShortCutHintTime = Max(showPlannerShortCutHintTime-showPlannerShortCutHintFadeAmount, 0)
 			showPlannerShortCutHintFadeAmount:+1
-		endif
+		EndIf
 	End Function
 
 
-	Function onProgrammePlannerButtonClick:int( triggerEvent:TEventBase )
-		local button:TGUIButton = TGUIButton( triggerEvent._sender )
-		if not button then return 0
+	Function onProgrammePlannerButtonClick:Int( triggerEvent:TEventBase )
+		Local button:TGUIButton = TGUIButton( triggerEvent._sender )
+		If Not button Then Return 0
 
 		'ignore other buttons than the plan buttons
-		if not GUIManager.IsState(button, "programmeplanner_buttons") then return 0
-		rem
+		If Not GUIManager.IsState(button, "programmeplanner_buttons") Then Return 0
+		Rem
 		local validButton:int = False
 		for local b:TGUIButton = EachIn ProgrammePlannerButtons
 			if button = b then validButton = True; exit
@@ -1236,20 +1236,20 @@ Type TScreenHandler_ProgrammePlanner
 		endrem
 
 		'only react if the click came from the left mouse button
-		if triggerEvent.GetData().getInt("button",0) <> 1 then return TRUE
+		If triggerEvent.GetData().getInt("button",0) <> 1 Then Return True
 
 
-		if button = plannerNextDayButton
+		If button = plannerNextDayButton
 			ChangePlanningDay(planningDay+1)
 			'reset mousebutton
 			MouseManager.ResetKey(1)
-			return True
-		elseif button = plannerPreviousDayButton
+			Return True
+		ElseIf button = plannerPreviousDayButton
 			ChangePlanningDay(planningDay-1)
 			'reset mousebutton
 			MouseManager.ResetKey(1)
-			return True
-		endif
+			Return True
+		EndIf
 			
 
 
@@ -1261,11 +1261,11 @@ Type TScreenHandler_ProgrammePlanner
 		MouseManager.ResetKey(1)
 
 		'open others?
-		If button = ProgrammePlannerButtons[0] Then return PPcontractList.SetOpen(1)		'opens contract list
-		If button = ProgrammePlannerButtons[1] Then return PPprogrammeList.SetOpen(1)		'opens programme genre list
+		If button = ProgrammePlannerButtons[0] Then Return PPcontractList.SetOpen(1)		'opens contract list
+		If button = ProgrammePlannerButtons[1] Then Return PPprogrammeList.SetOpen(1)		'opens programme genre list
 
-		If button = ProgrammePlannerButtons[2] then return ScreenCollection.GoToSubScreen("screen_office_financials")
-		If button = ProgrammePlannerButtons[3] then return ScreenCollection.GoToSubScreen("screen_office_statistics")
+		If button = ProgrammePlannerButtons[2] Then Return ScreenCollection.GoToSubScreen("screen_office_financials")
+		If button = ProgrammePlannerButtons[3] Then Return ScreenCollection.GoToSubScreen("screen_office_statistics")
 		'If button = ProgrammePlannerButtons[4] then return ScreenCollection.GoToSubScreen("screen_office_messages")
 		'If button = ProgrammePlannerButtons[5] then return ScreenCollection.GoToSubScreen("screen_office_unknown")
 	End Function
@@ -1274,33 +1274,33 @@ Type TScreenHandler_ProgrammePlanner
 	'=== COMMON FUNCTIONS / HELPERS ===
 
 
-	Function CreateNextEpisodeOrCopyByShortcut:int(item:TGUIProgrammePlanElement)
-		if not item then return FALSE
+	Function CreateNextEpisodeOrCopyByShortcut:Int(item:TGUIProgrammePlanElement)
+		If Not item Then Return False
 		'only react to items which got freshly created
-		if not item.inList then return FALSE
+		If Not item.inList Then Return False
 
 		'assisting shortcuts create new guiobjects
 		'shift: next episode
 		'ctrl : programme again
-		if KEYMANAGER.IsDown(KEY_LSHIFT) OR KEYMANAGER.IsDown(KEY_RSHIFT)
+		If KEYMANAGER.IsDown(KEY_LSHIFT) Or KEYMANAGER.IsDown(KEY_RSHIFT)
 			'reset key
 			KEYMANAGER.ResetKey(KEY_LSHIFT)
 			KEYMANAGER.ResetKey(KEY_RSHIFT)
-			CreateNextEpisodeOrCopy(item, FALSE)
-			return TRUE
-		elseif KEYMANAGER.IsDown(KEY_LCONTROL) OR KEYMANAGER.IsDown(KEY_RCONTROL)
+			CreateNextEpisodeOrCopy(item, False)
+			Return True
+		ElseIf KEYMANAGER.IsDown(KEY_LCONTROL) Or KEYMANAGER.IsDown(KEY_RCONTROL)
 			KEYMANAGER.ResetKey(KEY_LCONTROL)
 			KEYMANAGER.ResetKey(KEY_RCONTROL)
-			CreateNextEpisodeOrCopy(item, TRUE)
-			return TRUE
-		endif
+			CreateNextEpisodeOrCopy(item, True)
+			Return True
+		EndIf
 		'nothing clicked
-		return FALSE
+		Return False
 	End Function
 
 
-	Function CreateNextEpisodeOrCopy:int(item:TGUIProgrammePlanElement, createCopy:int=TRUE)
-		local newMaterial:TBroadcastMaterial = null
+	Function CreateNextEpisodeOrCopy:Int(item:TGUIProgrammePlanElement, createCopy:Int=True)
+		Local newMaterial:TBroadcastMaterial = Null
 
 		'copy:         for ads and programmes create a new object based
 		'              on licence or contract
@@ -1308,42 +1308,42 @@ Type TScreenHandler_ProgrammePlanner
 		'              for movies and series: rely on a licence-function
 		'              which returns the next licence of a series/collection
 		'              OR the first one if already on the latest spot
-		local pCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(item.broadcastMaterial.owner)
-		if not pCollection then Return False
+		Local pCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(item.broadcastMaterial.owner)
+		If Not pCollection Then Return False
 
-		select item.broadcastMaterial.materialType
-			case TVTBroadcastMaterialType.ADVERTISEMENT
+		Select item.broadcastMaterial.materialType
+			Case TVTBroadcastMaterialType.ADVERTISEMENT
 				'skip if you do no longer own the licence
-				if not pCollection.HasAdContract(TAdvertisement(item.broadcastMaterial).contract) then return false
+				If Not pCollection.HasAdContract(TAdvertisement(item.broadcastMaterial).contract) Then Return False
 
-				newMaterial = new TAdvertisement.Create(TAdvertisement(item.broadcastMaterial).contract)
+				newMaterial = New TAdvertisement.Create(TAdvertisement(item.broadcastMaterial).contract)
 
-			case TVTBroadcastMaterialType.PROGRAMME
+			Case TVTBroadcastMaterialType.PROGRAMME
 				'skip if you do no longer own the licence
-				if not pCollection.HasProgrammeLicence(TProgramme(item.broadcastMaterial).licence) then return false
+				If Not pCollection.HasProgrammeLicence(TProgramme(item.broadcastMaterial).licence) Then Return False
 
-				if CreateCopy
-					newMaterial = new TProgramme.Create(TProgramme(item.broadcastMaterial).licence)
-				else
-					local licence:TProgrammeLicence = TProgramme(item.broadcastMaterial).licence.GetNextSubLicence()
+				If CreateCopy
+					newMaterial = New TProgramme.Create(TProgramme(item.broadcastMaterial).licence)
+				Else
+					Local licence:TProgrammeLicence = TProgramme(item.broadcastMaterial).licence.GetNextSubLicence()
 					'if no licence was given, the licence is for a normal movie...
-					if not licence then licence = TProgramme(item.broadcastMaterial).licence
-					newMaterial = new TProgramme.Create(licence)
-				endif
-		end select
+					If Not licence Then licence = TProgramme(item.broadcastMaterial).licence
+					newMaterial = New TProgramme.Create(licence)
+				EndIf
+		End Select
 
 		'create and drag
-		if newMaterial
-			local guiObject:TGUIProgrammePlanElement = new TGUIProgrammePlanElement.CreateWithBroadcastMaterial(newMaterial, "programmePlanner")
+		If newMaterial
+			Local guiObject:TGUIProgrammePlanElement = New TGUIProgrammePlanElement.CreateWithBroadcastMaterial(newMaterial, "programmePlanner")
 			guiObject.drag()
 			'remove position backup so a "dropback" does not work, and
 			'the item does not drop back to "0,0"
-			guiObject.positionBackup = null
-		endif
+			guiObject.positionBackup = Null
+		EndIf
 	End Function
 
 
-	Function ChangePlanningDay:int(day:int=0)
+	Function ChangePlanningDay:Int(day:Int=0)
 		planningDay = day
 		'limit to start day
 		If planningDay < GetWorldTime().GetDay(GetWorldTime().GetTimeStart()) Then planningDay = GetWorldTime().GetDay(GetWorldTime().GetTimeStart())
@@ -1353,247 +1353,247 @@ Type TScreenHandler_ProgrammePlanner
 		GuiListAdvertisements.planDay = planningDay
 
 		'only do the gui stuff with the player being in the office
-		if TRoomHandler.CheckPlayerInRoom("office")
+		If TRoomHandler.CheckPlayerInRoom("office")
 			'FALSE: without removing dragged
 			'->ONLY keeps newly created, not ones dragged from a slot
-			RemoveAllGuiElements(FALSE)
+			RemoveAllGuiElements(False)
 
 			RefreshGuiElements()
 			FindHoveredPlanElement()
-		endif
-	end Function
+		EndIf
+	End Function
 
 
 	'deletes all gui elements (eg. for rebuilding)
-	Function RemoveAllGuiElements:int(removeDragged:int=TRUE)
+	Function RemoveAllGuiElements:Int(removeDragged:Int=True)
 		'do not inform programmeplanner!
-		local oldTalk:int =	talkToProgrammePlanner
+		Local oldTalk:Int =	talkToProgrammePlanner
 		talkToProgrammePlanner = False
 
 '		Rem
 '			this is problematic as this could bug out the programmePlan
 		'keep the dragged entries if wanted so
-		For local guiObject:TGuiProgrammePlanElement = eachin GuiListProgrammes._slots
-			if not guiObject then continue
-			if removeDragged or not guiObject.IsDragged()
+		For Local guiObject:TGuiProgrammePlanElement = EachIn GuiListProgrammes._slots
+			If Not guiObject Then Continue
+			If removeDragged Or Not guiObject.IsDragged()
 				guiObject.remove()
-				guiObject = null
-			endif
+				guiObject = Null
+			EndIf
 		Next
-		For local guiObject:TGuiProgrammePlanElement = eachin GuiListAdvertisements._slots
-			if not guiObject then continue
-			if removeDragged or not guiObject.IsDragged()
+		For Local guiObject:TGuiProgrammePlanElement = EachIn GuiListAdvertisements._slots
+			If Not guiObject Then Continue
+			If removeDragged Or Not guiObject.IsDragged()
 				guiObject.remove()
-				guiObject = null
-			endif
+				guiObject = Null
+			EndIf
 		Next
 '		End Rem
 
 		'remove dragged ones of gui manager
-		if removeDragged
-			For local guiObject:TGuiProgrammePlanElement = eachin GuiManager.listDragged.Copy()
+		If removeDragged
+			For Local guiObject:TGuiProgrammePlanElement = EachIn GuiManager.listDragged.Copy()
 				guiObject.remove()
-				guiObject = null
+				guiObject = Null
 			Next
-		endif
+		EndIf
 
 		'to recreate everything during next update...
-		haveToRefreshGuiElements = TRUE
+		haveToRefreshGuiElements = True
 
 		'set to backupped value
 		talkToProgrammePlanner = oldTalk
 	End Function
 
 
-	Function FindHoveredPlanElement:int()
+	Function FindHoveredPlanElement:Int()
 '		hoveredGuiProgrammePlanElement = Null
 
-		local obj:TGUIProgrammePlanElement
-		For obj = eachin GuiManager.ListDragged
-			if obj.containsXY(MouseManager.x, MouseManager.y)
+		Local obj:TGUIProgrammePlanElement
+		For obj = EachIn GuiManager.ListDragged
+			If obj.containsXY(MouseManager.x, MouseManager.y)
 				hoveredGuiProgrammePlanElement = obj
-				return True
-			endif
+				Return True
+			EndIf
 		Next
-		For obj = eachin GuiListProgrammes._slots
-			if obj.containsXY(MouseManager.x, MouseManager.y)
+		For obj = EachIn GuiListProgrammes._slots
+			If obj.containsXY(MouseManager.x, MouseManager.y)
 				hoveredGuiProgrammePlanElement = obj
-				return True
-			endif
+				Return True
+			EndIf
 		Next
-		For obj = eachin GuiListAdvertisements._slots
-			if obj.containsXY(MouseManager.x, MouseManager.y)
+		For obj = EachIn GuiListAdvertisements._slots
+			If obj.containsXY(MouseManager.x, MouseManager.y)
 				hoveredGuiProgrammePlanElement = obj
-				return True
-			endif
+				Return True
+			EndIf
 		Next
 	End Function
 
 
-	Function RefreshGuiElements:int()
+	Function RefreshGuiElements:Int()
 		'do not inform programmeplanner!
-		local oldTalk:int =	talkToProgrammePlanner
+		Local oldTalk:Int =	talkToProgrammePlanner
 		talkToProgrammePlanner = False
 
 
 		'fix not-yet-set-currentroom and set to players office
-		if not currentRoom then currentRoom = GetRoomCollection().GetFirstByDetails("office", GetPlayer().playerID)
+		If Not currentRoom Then currentRoom = GetRoomCollection().GetFirstByDetails("office", GetPlayer().playerID)
 
 		'===== REMOVE UNUSED =====
 		'remove overnight
-		if GuiListProgrammes.daychangeGuiProgrammePlanElement
+		If GuiListProgrammes.daychangeGuiProgrammePlanElement
 			GuiListProgrammes.daychangeGuiProgrammePlanElement.remove()
-			GuiListProgrammes.daychangeGuiProgrammePlanElement = null
-		endif
-		if GuiListAdvertisements.daychangeGuiProgrammePlanElement
+			GuiListProgrammes.daychangeGuiProgrammePlanElement = Null
+		EndIf
+		If GuiListAdvertisements.daychangeGuiProgrammePlanElement
 			GuiListAdvertisements.daychangeGuiProgrammePlanElement.remove()
-			GuiListAdvertisements.daychangeGuiProgrammePlanElement = null
-		endif
+			GuiListAdvertisements.daychangeGuiProgrammePlanElement = Null
+		EndIf
 
-		local currDay:int = planningDay
-		if currDay = -1 then currDay = GetWorldTime().GetDay()
+		Local currDay:Int = planningDay
+		If currDay = -1 Then currDay = GetWorldTime().GetDay()
 
 		
-		For local guiObject:TGuiProgrammePlanElement = eachin GuiListProgrammes._slots
-			if guiObject.isDragged() then continue
+		For Local guiObject:TGuiProgrammePlanElement = EachIn GuiListProgrammes._slots
+			If guiObject.isDragged() Then Continue
 			'check if programmed on the current day
-			if guiObject.broadcastMaterial.isProgrammedForDay(currDay) then continue
+			If guiObject.broadcastMaterial.isProgrammedForDay(currDay) Then Continue
 			'print "GuiListProgramme has obsolete programme: "+guiObject.broadcastMaterial.GetTitle()
 			guiObject.remove()
-			guiObject = null
+			guiObject = Null
 		Next
-		For local guiObject:TGuiProgrammePlanElement = eachin GuiListAdvertisements._slots
-			if guiObject.isDragged() then continue
+		For Local guiObject:TGuiProgrammePlanElement = EachIn GuiListAdvertisements._slots
+			If guiObject.isDragged() Then Continue
 			'check if programmed on the current day
-			if guiObject.broadcastMaterial.isProgrammedForDay(currDay) then continue
+			If guiObject.broadcastMaterial.isProgrammedForDay(currDay) Then Continue
 			'print "GuiListAdvertisement has obsolete ad: "+guiObject.broadcastMaterial.GetTitle()
 			guiObject.remove()
-			guiObject = null
+			guiObject = Null
 		Next
 
 
 		'===== CREATE NEW =====
 		'create missing gui elements for all programmes/ads
-		local daysProgramme:TBroadcastMaterial[] = GetPlayerProgrammePlan(currentRoom.owner).GetProgrammesInTimeSpan(currDay, 0, currDay, 23)
-		local repairBrokenAd:int = False
-		local repairBrokenProgramme:int = False
-		For local obj:TBroadcastMaterial = eachin daysProgramme
-			if not obj then continue
+		Local daysProgramme:TBroadcastMaterial[] = GetPlayerProgrammePlan(currentRoom.owner).GetProgrammesInTimeSpan(currDay, 0, currDay, 23)
+		Local repairBrokenAd:Int = False
+		Local repairBrokenProgramme:Int = False
+		For Local obj:TBroadcastMaterial = EachIn daysProgramme
+			If Not obj Then Continue
 			'if already included - skip it
-			if GuiListProgrammes.ContainsBroadcastMaterial(obj) then continue
+			If GuiListProgrammes.ContainsBroadcastMaterial(obj) Then Continue
 
 			'repair broken hours (could happen up to v0.2.7 because
 			'of days=0 hours>24 params )
-			if obj.programmedHour > 23
-				obj.programmedDay :+ int(obj.programmedHour / 24)
-				obj.programmedHour = obj.programmedHour mod 24
-			endif
+			If obj.programmedHour > 23
+				obj.programmedDay :+ Int(obj.programmedHour / 24)
+				obj.programmedHour = obj.programmedHour Mod 24
+			EndIf
 			'repair broken ones
-			if obj.programmedDay = -1 and obj.programmedHour = -1
+			If obj.programmedDay = -1 And obj.programmedHour = -1
 				repairBrokenProgramme = True
-				continue
+				Continue
 			'today or yesterday ending after midnight
-			elseif obj.programmedDay = currDay or (obj.programmedDay+1 = currDay and obj.programmedHour + obj.GetBlocks() > 24)
+			ElseIf obj.programmedDay = currDay Or (obj.programmedDay+1 = currDay And obj.programmedHour + obj.GetBlocks() > 24)
 				'ok
 			'someday _not_ today or yesterday+endingToday
-			else
+			Else
 				repairBrokenProgramme = True
-				continue
-			endif
+				Continue
+			EndIf
 
 						
 			'DAYCHANGE
 			'skip programmes started yesterday (they are stored individually)
-			if obj.programmedDay < currDay and currDay  > 0
+			If obj.programmedDay < currDay And currDay  > 0
 				'set to the obj still running at the begin of the current day
 				GuiListProgrammes.SetDayChangeBroadcastMaterial(obj, currDay)
-				continue
-			endif
+				Continue
+			EndIf
 
 			'DRAGGED
 			'check if we find it in the GuiManagers list of dragged items
-			local foundInDragged:int = FALSE
-			for local draggedGuiProgrammePlanElement:TGUIProgrammePlanElement = eachin GuiManager.ListDragged
-				if draggedGuiProgrammePlanElement.broadcastMaterial = obj
-					foundInDragged = TRUE
-					continue
-				endif
+			Local foundInDragged:Int = False
+			For Local draggedGuiProgrammePlanElement:TGUIProgrammePlanElement = EachIn GuiManager.ListDragged
+				If draggedGuiProgrammePlanElement.broadcastMaterial = obj
+					foundInDragged = True
+					Continue
+				EndIf
 			Next
-			if foundInDragged then continue
+			If foundInDragged Then Continue
 
 			'NORMAL MISSING
-			if GuiListProgrammes.getFreeSlot() < 0
-				print "[ERROR] ProgrammePlanner: should add programme but no empty slot left"
-				continue
-			endif
+			If GuiListProgrammes.getFreeSlot() < 0
+				Print "[ERROR] ProgrammePlanner: should add programme but no empty slot left"
+				Continue
+			EndIf
 
-			local block:TGUIProgrammePlanElement = new TGUIProgrammePlanElement.CreateWithBroadcastMaterial(obj)
+			Local block:TGUIProgrammePlanElement = New TGUIProgrammePlanElement.CreateWithBroadcastMaterial(obj)
 			'print "ADD GuiListProgramme - missed new programme: "+obj.GetTitle() +" (programmedDay="+obj.programmedDay+", currDay="+currDay+") -> created block:"+block._id
 
-			if not GuiListProgrammes.addItem(block, string(obj.programmedHour))
-				print "ADD ERROR - could not add programme"
-			else
+			If Not GuiListProgrammes.addItem(block, String(obj.programmedHour))
+				Print "ADD ERROR - could not add programme"
+			Else
 				'set value so a dropped block will get the correct ghost image
 				block.lastListType = GuiListProgrammes.isType
-			endif
+			EndIf
 		Next
 
 
 		'ad list (can contain ads, programmes, ...)
-		local daysAdvertisements:TBroadcastMaterial[] = GetPlayerProgrammePlan(currentRoom.owner).GetAdvertisementsInTimeSpan(currDay, 0, currDay, 23)
-		For local obj:TBroadcastMaterial = eachin daysAdvertisements
-			if not obj then continue
+		Local daysAdvertisements:TBroadcastMaterial[] = GetPlayerProgrammePlan(currentRoom.owner).GetAdvertisementsInTimeSpan(currDay, 0, currDay, 23)
+		For Local obj:TBroadcastMaterial = EachIn daysAdvertisements
+			If Not obj Then Continue
 
 			'if already included - skip it
-			if GuiListAdvertisements.ContainsBroadcastMaterial(obj) then continue
+			If GuiListAdvertisements.ContainsBroadcastMaterial(obj) Then Continue
 			'repair broken ones
-			if obj.programmedDay = -1 and obj.programmedHour = -1
+			If obj.programmedDay = -1 And obj.programmedHour = -1
 				repairBrokenAd = True
-				continue
-			endif
+				Continue
+			EndIf
 			
 			'DAYCHANGE
 			'skip programmes started yesterday (they are stored individually)
-			if obj.programmedDay < currDay and currDay > 0
+			If obj.programmedDay < currDay And currDay > 0
 				'set to the obj still running at the begin of the planning day
 				GuiListAdvertisements.SetDayChangeBroadcastMaterial(obj, currDay)
-				continue
-			endif
+				Continue
+			EndIf
 
 			'DRAGGED
 			'check if we find it in the GuiManagers list of dragged items
-			local foundInDragged:int = FALSE
-			for local draggedGuiProgrammePlanElement:TGUIProgrammePlanElement = eachin GuiManager.ListDragged
-				if draggedGuiProgrammePlanElement.broadcastMaterial = obj
-					foundInDragged = TRUE
-					continue
-				endif
+			Local foundInDragged:Int = False
+			For Local draggedGuiProgrammePlanElement:TGUIProgrammePlanElement = EachIn GuiManager.ListDragged
+				If draggedGuiProgrammePlanElement.broadcastMaterial = obj
+					foundInDragged = True
+					Continue
+				EndIf
 			Next
-			if foundInDragged then continue
+			If foundInDragged Then Continue
 
 			'NORMAL MISSING
-			if GuiListAdvertisements.getFreeSlot() < 0
-				print "[ERROR] ProgrammePlanner: should add advertisement but no empty slot left"
-				continue
-			endif
+			If GuiListAdvertisements.getFreeSlot() < 0
+				Print "[ERROR] ProgrammePlanner: should add advertisement but no empty slot left"
+				Continue
+			EndIf
 
-			local block:TGUIProgrammePlanElement = new TGUIProgrammePlanElement.CreateWithBroadcastMaterial(obj, "programmePlanner")
+			Local block:TGUIProgrammePlanElement = New TGUIProgrammePlanElement.CreateWithBroadcastMaterial(obj, "programmePlanner")
 			'print "ADD GuiListAdvertisements - missed new advertisement: "+obj.GetTitle()
 
-			if not GuiListAdvertisements.addItem(block, string(obj.programmedHour))
-				print "ADD ERROR - could not add advertisement"
-			endif
+			If Not GuiListAdvertisements.addItem(block, String(obj.programmedHour))
+				Print "ADD ERROR - could not add advertisement"
+			EndIf
 		Next
 
 
-		if repairBrokenAd or repairBrokenProgramme
-			if GetPlayerProgrammePlan(currentRoom.owner).RemoveBrokenObjects()
+		If repairBrokenAd Or repairBrokenProgramme
+			If GetPlayerProgrammePlan(currentRoom.owner).RemoveBrokenObjects()
 				Notify "Ronny: Du hattest Programme/Werbung im Programmplan die als ~qnicht programmiert~q deklariert waren."
-			endif
-		endif
+			EndIf
+		EndIf
 
 
-		haveToRefreshGuiElements = FALSE
+		haveToRefreshGuiElements = False
 
 		'set to backupped value
 		talkToProgrammePlanner = oldTalk
@@ -1601,14 +1601,14 @@ Type TScreenHandler_ProgrammePlanner
 
 
 	'add gfx to background
-	Function InitProgrammePlannerBackground:int()
+	Function InitProgrammePlannerBackground:Int()
 		Local roomImg:TImage             = GetSpriteFromRegistry("screen_bg_programmeplanner").parent.image
 		Local Pix:TPixmap                = LockImage(roomImg)
 		Local gfx_ProgrammeBlock1:TImage = GetSpriteFromRegistry("pp_programmeblock1").GetImage()
 		Local gfx_AdBlock1:TImage        = GetSpriteFromRegistry("pp_adblock1").GetImage()
 
 		'block"shade" on bg
-		local shadeColor:TColor = TColor.CreateGrey(200, 0.3)
+		Local shadeColor:TColor = TColor.CreateGrey(200, 0.3)
 		For Local j:Int = 0 To 11
 			DrawImageOnImage(gfx_Programmeblock1, Pix, 45, 5 + j * 30, shadeColor)
 			DrawImageOnImage(gfx_Programmeblock1, Pix, 380, 5 + j * 30, shadeColor)
@@ -1620,7 +1620,7 @@ Type TScreenHandler_ProgrammePlanner
 		'set target for font
 		TBitmapFont.setRenderTarget(roomImg)
 
-		local fontColor:TColor = TColor.CreateGrey(240)
+		Local fontColor:TColor = TColor.CreateGrey(240)
 
 		SetAlpha 0.75
 
@@ -1629,13 +1629,13 @@ Type TScreenHandler_ProgrammePlanner
 			'right side
 			GetBitmapFontManager().baseFontBold.DrawBlock( (i + 12), 341, 5 + i * 30, 39, 30, ALIGN_CENTER_CENTER, fontColor, 2,1,0.25)
 			'left side
-			local text:string = i
-			If i < 10 then text = "0" + text
+			Local text:String = i
+			If i < 10 Then text = "0" + text
 			GetBitmapFontManager().baseFontBold.DrawBlock( text, 6, 5 + i * 30, 39, 30, ALIGN_CENTER_CENTER, fontColor, 2,1,0.25)
 		Next
 		SetAlpha 1.0
 
 		'reset target for font
-		TBitmapFont.setRenderTarget(null)
+		TBitmapFont.setRenderTarget(Null)
 	End Function
 End Type

@@ -43,18 +43,18 @@ Const GUI_OBJECT_CHILDREN_CHANGE_GUIORDER:Int	= 2^15
 Const GUI_OBJECT_STATIC_CHILDREN:Int            = 2^16
 
 '===== GUI STATUS CONSTANTS =====
-CONST GUI_OBJECT_STATUS_HOVERED:Int	= 2^0
-CONST GUI_OBJECT_STATUS_SELECTED:Int = 2^1
-CONST GUI_OBJECT_STATUS_APPEARANCE_CHANGED:Int	= 2^2
+Const GUI_OBJECT_STATUS_HOVERED:Int	= 2^0
+Const GUI_OBJECT_STATUS_SELECTED:Int = 2^1
+Const GUI_OBJECT_STATUS_APPEARANCE_CHANGED:Int	= 2^2
 
 Const GUI_OBJECT_ORIENTATION_VERTICAL:Int   = 0
 Const GUI_OBJECT_ORIENTATION_HORIZONTAL:Int = 1
 
 '===== GUI MANAGER =====
 'for each "List" of the guimanager
-Const GUIMANAGER_TYPES_DRAGGED:int    = 2^0
-Const GUIMANAGER_TYPES_NONDRAGGED:int = 2^1
-Const GUIMANAGER_TYPES_ALL:int        = GUIMANAGER_TYPES_DRAGGED | GUIMANAGER_TYPES_NONDRAGGED
+Const GUIMANAGER_TYPES_DRAGGED:Int    = 2^0
+Const GUIMANAGER_TYPES_NONDRAGGED:Int = 2^1
+Const GUIMANAGER_TYPES_ALL:Int        = GUIMANAGER_TYPES_DRAGGED | GUIMANAGER_TYPES_NONDRAGGED
 
 
 Type TGUIManager
@@ -62,7 +62,7 @@ Type TGUIManager
 	'which state are we currently handling?
 	Field currentState:String = ""
 	'config about specific gui settings (eg. panelGap)
-	Field config:TData = new TData
+	Field config:TData = New TData
 	Field List:TList = CreateList()
 	'contains dragged objects (above normal)
 	Field ListDragged:TList = CreateList()
@@ -88,20 +88,20 @@ Type TGUIManager
 
 
 	Method New()
-		if not _instance then self.Init()
+		If Not _instance Then Self.Init()
 	End Method
 
 
 	Function GetInstance:TGUIManager()
-		if not _instance then _instance = new TGUIManager
-		return _instance
+		If Not _instance Then _instance = New TGUIManager
+		Return _instance
 	End Function
 
 
 	Method Init:TGUIManager()
 		'=== remove all registered event listeners
 		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		_eventListeners = New TLink[0]
 
 
 		'is something dropping on a gui element?
@@ -110,17 +110,17 @@ Type TGUIManager
 		'gui specific settings
 		config.AddNumber("panelGap",10)
 
-		Return self
+		Return Self
 	End Method
 
 
-	Method SetDefaultFont:int(font:TBitmapFont)
+	Method SetDefaultFont:Int(font:TBitmapFont)
 		_defaultFont = font
 	End Method
 
 
 	Method GetDefaultFont:TBitmapFont()
-		If Not _defaultFont then _defaultFont = GetBitmapFontManager().GetDefaultFont()
+		If Not _defaultFont Then _defaultFont = GetBitmapFontManager().GetDefaultFont()
 		Return _defaultFont
 	End Method
 
@@ -176,7 +176,7 @@ Type TGUIManager
 		Local source:TGuiObject = guiobject._parent
 
 
-		if not triggerEvent.isAccepted()
+		If Not triggerEvent.isAccepted()
 			For Local potentialDropTarget:TGUIobject = EachIn potentialDropTargets
 				'do not ask other targets if there was already one handling that drop
 				If triggerEvent.isAccepted() Then Continue
@@ -190,13 +190,13 @@ Type TGUIManager
 					dropTarget = potentialDropTarget
 					'modify event to hold dropTarget now
 					triggerEvent.GetData().Add("dropTarget", dropTarget)
-				endif
+				EndIf
 			Next
-		endif
+		EndIf
 
 		'if we haven't found a dropTarget and nobody already cares for it
 		'stop processing that event
-		If Not dropTarget and not triggerEvent.isAccepted()
+		If Not dropTarget And Not triggerEvent.isAccepted()
 			triggerEvent.setVeto()
 			Return False
 		EndIf
@@ -204,11 +204,11 @@ Type TGUIManager
 		'we found an object accepting the drop
 
 		'ask if something does not want that drop to happen
-		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDropOnTarget", new TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget)
+		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDropOnTarget", New TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget)
 		EventManager.triggerEvent( event )
 		'if there is no problem ...just start dropping
 		If Not event.isVeto()
-			event = TEventSimple.Create("guiobject.onDropOnTarget", new TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget)
+			event = TEventSimple.Create("guiobject.onDropOnTarget", New TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget)
 			EventManager.triggerEvent( event )
 		EndIf
 
@@ -216,11 +216,11 @@ Type TGUIManager
 		'also veto the onDropOnTarget-event
 		If event.isVeto()
 			triggerEvent.setVeto()
-			EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropOnTargetDeclined", new TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget ))
+			EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropOnTargetDeclined", New TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget ))
 			Return False
 		Else
 			'inform others: we successfully dropped the object to a target#
-			EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropOnTargetAccepted", new TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget ))
+			EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropOnTargetAccepted", New TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget ))
 
 			'also add this drop target as receiver of the original-drop-event
 			triggerEvent._receiver = dropTarget
@@ -263,8 +263,8 @@ Type TGUIManager
 
 		'if one is the parent of the other, sort so, that the parent
 		'comes last (child on top of parent -> handled before parent)
-		if objA.HasParent(objB) then Return 1
-		if objB.HasParent(objA) then Return -1
+		If objA.HasParent(objB) Then Return 1
+		If objB.HasParent(objA) Then Return -1
 
 		'if objA and objB are dragged elements
 		If objA._flags & GUI_OBJECT_DRAGGED And objB._flags & GUI_OBJECT_DRAGGED
@@ -299,7 +299,7 @@ Type TGUIManager
 		List.sort(True, SortObjects)
 	End Method
 
-rem
+Rem
 	Method DeleteObject(obj:TGUIObject var)
 		if not obj then return 
 		obj.remove()
@@ -310,7 +310,7 @@ endrem
 
 	'only remove from lists (object cleanup has to get called separately)
 	Method Remove:Int(obj:TGUIObject)
-		if not obj then return False
+		If Not obj Then Return False
 		
 		obj.setOption(GUI_OBJECT_MANAGED, False)
 
@@ -364,7 +364,7 @@ endrem
 
 		Local guiObjects:TGuiObject[]
 		'from TOP to BOTTOM (user clicks to visible things - which are at the top)
-		local listReversed:TList = list.Reversed()
+		Local listReversed:TList = list.Reversed()
 		For Local obj:TGUIobject = EachIn listReversed
 			'return array if we reached the limit
 			If limit > 0 And guiObjects.length >= limit Then Return guiObjects
@@ -424,17 +424,17 @@ endrem
 
 	Method SetFocus:Int(obj:TGUIObject)
 		'in all cases: set the foundFocus for this cycle
-		if obj then UpdateState_foundFocusObject = true
+		If obj Then UpdateState_foundFocusObject = True
 
 		'skip setting focus if already focused
-		if TGUIObject.GetFocusedObject() = obj then return False
+		If TGUIObject.GetFocusedObject() = obj Then Return False
 
 		TGUIObject.SetFocusedObject(obj)
 
 		'try to set as potential keystroke receiver
 		SetKeystrokeReceiver(obj)
 
-		return True
+		Return True
 	End Method
 
 
@@ -465,12 +465,12 @@ endrem
 	Method EndUpdates:Int()
 		'if we had a click this cycle and an gui element is focused,
 		'remove focus from it
-		if MouseManager.isClicked(1)
-			if not UpdateState_foundFocusObject and GUIManager.GetFocus()
+		If MouseManager.isClicked(1)
+			If Not UpdateState_foundFocusObject And GUIManager.GetFocus()
 				GUIManager.ResetFocus()
 				'GUIManager.setFocus(Null)
-			endif
-		endif
+			EndIf
+		EndIf
 
 		'ignoreMouse can be useful for objects which know, that nothing
 		'else should take care of mouse movement/clicks
@@ -478,7 +478,7 @@ endrem
 	End Method
 
 
-	Method Update(State:String = "", fromZ:Int=-1000, toZ:Int=-1000, updateTypes:int=GUIMANAGER_TYPES_ALL)
+	Method Update(State:String = "", fromZ:Int=-1000, toZ:Int=-1000, updateTypes:Int=GUIMANAGER_TYPES_ALL)
 		'_lastUpdateTick :+1
 		'if _lastUpdateTick >= 100000 then _lastUpdateTick = 0
 
@@ -489,7 +489,7 @@ endrem
 		Local ListDraggedBackup:TList = ListDragged.Copy()
 
 		'first update all dragged objects...
-		if GUIMANAGER_TYPES_DRAGGED & updateTypes
+		If GUIMANAGER_TYPES_DRAGGED & updateTypes
 			For Local obj:TGUIobject = EachIn ListDraggedBackup
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
@@ -502,13 +502,13 @@ endrem
 				'fire event
 				EventManager.triggerEvent( TEventSimple.Create( "guiobject.onUpdate", Null, obj ) )
 			Next
-		endif
+		EndIf
 
 		'then the rest
-		if GUIMANAGER_TYPES_NONDRAGGED & updateTypes
+		If GUIMANAGER_TYPES_NONDRAGGED & updateTypes
 			'from top to bottom
 			'traverse through a backup to avoid concurrent modification
-			local listBackupReversed:TList = List.Reversed()
+			Local listBackupReversed:TList = List.Reversed()
 			For Local obj:TGUIobject = EachIn listBackupReversed
 				'all dragged objects got already updated...
 				If ListDraggedBackup.contains(obj) Then Continue
@@ -522,24 +522,24 @@ endrem
 				'fire event
 				EventManager.triggerEvent( TEventSimple.Create( "guiobject.onUpdate", Null, obj ) )
 			Next
-		endif
+		EndIf
 	End Method
 
 
-	Method Draw:Int(State:String = "", fromZ:Int=-1000, toZ:Int=-1000, drawTypes:int=GUIMANAGER_TYPES_ALL)
+	Method Draw:Int(State:String = "", fromZ:Int=-1000, toZ:Int=-1000, drawTypes:Int=GUIMANAGER_TYPES_ALL)
 		'_lastDrawTick :+1
 		'if _lastDrawTick >= 100000 then _lastDrawTick = 0
 
 		currentState = State
 
-		if GUIMANAGER_TYPES_NONDRAGGED & drawTypes
+		If GUIMANAGER_TYPES_NONDRAGGED & drawTypes
 			For Local obj:TGUIobject = EachIn List
 				'all special objects get drawn separately
 				If ListDragged.contains(obj) Then Continue
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
 				'skip invisible objects
-				if not obj.IsVisible() then continue
+				If Not obj.IsVisible() Then Continue
 
 				'avoid getting drawn multiple times
 				'this can be overcome with a manual "obj.Draw()"-call
@@ -555,12 +555,12 @@ endrem
 				'fire event
 				EventManager.triggerEvent( TEventSimple.Create( "guiobject.onDraw", Null, obj ) )
 			Next
-		endif
+		EndIf
 
 
-		if GUIMANAGER_TYPES_DRAGGED & drawTypes
+		If GUIMANAGER_TYPES_DRAGGED & drawTypes
 			'draw all dragged objects above normal objects...
-			local listReversed:TList = ListDragged.Reversed()
+			Local listReversed:TList = ListDragged.Reversed()
 			For Local obj:TGUIobject = EachIn listReversed
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
@@ -574,7 +574,7 @@ endrem
 				'fire event
 				EventManager.triggerEvent( TEventSimple.Create( "guiobject.onDraw", Null, obj ) )
 			Next
-		endif
+		EndIf
 	End Method
 End Type
 Global GUIManager:TGUIManager = TGUIManager.GetInstance()
@@ -583,29 +583,29 @@ Global GUIManager:TGUIManager = TGUIManager.GetInstance()
 
 
 Type TGUIobject
-	Field rect:TRectangle = new TRectangle.Init(-1,-1,-1,-1)
-	Field zIndex:int = 0
+	Field rect:TRectangle = New TRectangle.Init(-1,-1,-1,-1)
+	Field zIndex:Int = 0
 	Field positionBackup:TVec2D = Null
 	'storage for additional data
-	Field data:TData = new TData
+	Field data:TData = New TData
 	Field scale:Float = 1.0
 	Field alpha:Float = 1.0
 	'where to attach the object [unused]
-	Field handlePosition:TVec2D	= new TVec2D.Init(0, 0)
+	Field handlePosition:TVec2D	= New TVec2D.Init(0, 0)
 	'where to attach the content within the object
-	Field contentPosition:TVec2D = new TVec2D.Init(0.5, 0.5)
+	Field contentPosition:TVec2D = New TVec2D.Init(0.5, 0.5)
 	Field state:String = ""
 	Field value:String = ""
 	Field mouseIsClicked:TVec2D	= Null			'null = not clicked
-	Field mouseIsDown:TVec2D = new TVec2D.Init(-1,-1)
+	Field mouseIsDown:TVec2D = New TVec2D.Init(-1,-1)
 	Field screenRect:TRectangle
 	Field _children:TList = Null
 	Field _childrenReversed:TList = Null
 	Field _id:Int
-	Field _padding:TRectangle = null 'by default no padding
+	Field _padding:TRectangle = Null 'by default no padding
 	Field _flags:Int = 0
 	'status of the widget: eg. GUI_OBJECT_STATUS_APPEARANCE_CHANGED
-	Field _status:int = 0
+	Field _status:Int = 0
 	'the font used to display text in the widget
 	Field _font:TBitmapFont
 	'the font used in the last display call
@@ -625,11 +625,11 @@ Type TGUIobject
 
 	'=== HOOKS ===
 	'allow custom functions to get hooked in
-	Field _customDraw:int(obj:TGUIObject)
-	Field _customDrawBackground:int(obj:TGUIObject)
-	Field _customDrawContent:int(obj:TGUIObject)
-	Field _customDrawChildren:int(obj:TGUIObject)
-	Field _customDrawOverlay:int(obj:TGUIObject)
+	Field _customDraw:Int(obj:TGUIObject)
+	Field _customDrawBackground:Int(obj:TGUIObject)
+	Field _customDrawContent:Int(obj:TGUIObject)
+	Field _customDrawChildren:Int(obj:TGUIObject)
+	Field _customDrawOverlay:Int(obj:TGUIObject)
 
 
 	Global ghostAlpha:Float			= 0.5
@@ -661,8 +661,8 @@ Type TGUIobject
 
 	Method CreateBase:TGUIobject(pos:TVec2D, dimension:TVec2D, limitState:String="")
 		'create missing params
-		If Not pos Then pos = new TVec2D.Init(0,0)
-		If Not dimension Then dimension = new TVec2D.Init(-1,-1)
+		If Not pos Then pos = New TVec2D.Init(0,0)
+		If Not dimension Then dimension = New TVec2D.Init(-1,-1)
 
 		rect.position.setXY(pos.x, pos.y)
 		'resize widget, dimension of (-1,-1) is "auto dimension"
@@ -679,46 +679,46 @@ Type TGUIobject
 
 	'override in extended classes if wanted
 	Function GetTypeFont:TBitmapFont()
-		return Null
+		Return Null
 	End Function
 
 
 	Method SetFont:Int(font:TBitmapFont)
-		self._font = font
+		Self._font = font
 	End Method
 
 
 	Method GetFont:TBitmapFont()
-		local newFont:TBitmapFont
-		if not _font
-			if hasOption(GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE)
-				if _parent
+		Local newFont:TBitmapFont
+		If Not _font
+			If hasOption(GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE)
+				If _parent
 					newFont = _parent.GetFont()
-				elseif GetTypeFont()
+				ElseIf GetTypeFont()
 					newFont = GetTypeFont()
-				else
+				Else
 					newFont = GUIManager.GetDefaultFont()
-				endif
-			else
-				if GetTypeFont()
+				EndIf
+			Else
+				If GetTypeFont()
 					newFont = GetTypeFont()
-				elseif _parent
+				ElseIf _parent
 					newFont = _parent.GetFont()
-				else
+				Else
 					newFont = GUIManager.GetDefaultFont()
-				endif
-			endif
-		else
+				EndIf
+			EndIf
+		Else
 			newFont = _font
-		endif
+		EndIf
 
 		'font differs - inform gui object
-		if newfont <> _lastFont
+		If newfont <> _lastFont
 			_lastFont = newFont
-			if not isAppearanceChanged() then SetAppearanceChanged(true)
-		endif
+			If Not isAppearanceChanged() Then SetAppearanceChanged(True)
+		EndIf
 
-		return newFont
+		Return newFont
 	End Method
 
 
@@ -734,10 +734,10 @@ Type TGUIobject
 	'cleanup function, makes it ready for getting set to null
 	Method Remove:Int()
 		'unlink all potential event listeners concerning that object
-		EventManager.unregisterListenerByLimit(self,self)
+		EventManager.unregisterListenerByLimit(Self,Self)
 
 		EventManager.unregisterListenersByLinks(_registeredEventListener)
-		_registeredEventListener = new TLink[0]
+		_registeredEventListener = New TLink[0]
 
 		'maybe our parent takes care of us...
 '		If _parent Then _parent.DeleteChild(Self)
@@ -746,7 +746,7 @@ Type TGUIobject
 		'remove children (so they might inform their children and so on)
 		If _children
 			'traverse along a copy to avoid concurrent modification
-			For local child:TGUIObject = eachin _children.Copy()
+			For Local child:TGUIObject = EachIn _children.Copy()
 				child.Remove()
 			Next
 			_children.Clear()
@@ -760,7 +760,7 @@ Type TGUIobject
 	End Method
 
 
-	Method AddEventListener:int(listenerLink:TLink)
+	Method AddEventListener:Int(listenerLink:TLink)
 		_registeredEventListener :+ [listenerLink]
 	End Method
 
@@ -771,10 +771,10 @@ Type TGUIobject
 	End Method
 
 
-	Method HasParent:int(parent:TGUIObject)
-		if not _parent then return False
-		if _parent = parent then return True
-		return _parent.HasParent(parent)
+	Method HasParent:Int(parent:TGUIObject)
+		If Not _parent Then Return False
+		If _parent = parent Then Return True
+		Return _parent.HasParent(parent)
 	End Method
 
 
@@ -782,8 +782,8 @@ Type TGUIobject
 	Method GetUppermostParent:TGUIObject()
 		'also possible:
 		'getParent("someunlikelyname")
-		if _parent then return _parent.GetUppermostParent()
-		return self
+		If _parent Then Return _parent.GetUppermostParent()
+		Return Self
 	End Method
 
 
@@ -793,9 +793,9 @@ Type TGUIobject
 	Method GetParent:TGUIobject(parentClassName:String="", strictMode:Int=False)
 		'if no special parent is requested, just return the direct parent or self
 		If parentClassName=""
-			if _parent then Return _parent
-			return self
-		endif
+			If _parent Then Return _parent
+			Return Self
+		EndIf
 
 		If _parent
 			If _parent.getClassName().toLower() = parentClassName.toLower() Then Return _parent
@@ -813,12 +813,12 @@ Type TGUIobject
 
 
 	Method onFinishDrag:Int(triggerEvent:TEventBase)
-		return True
+		Return True
 	End Method
 
 
 	Method onFinishDrop:Int(triggerEvent:TEventBase)
-		return True
+		Return True
 	End Method
 	
 
@@ -887,13 +887,13 @@ Type TGUIobject
 			_childrenReversed.sort(False, TGUIManager.SortObjects)
 
 			'maybe zindex changed now
-			if hasOption(GUI_OBJECT_CHILDREN_CHANGE_GUIORDER)
+			If hasOption(GUI_OBJECT_CHILDREN_CHANGE_GUIORDER)
 				GuiManager.SortLists()
-			endif
-		endif
+			EndIf
+		EndIf
 
 		'inform object
-		child.onAddAsChild(self)
+		child.onAddAsChild(Self)
 	End Method
 
 
@@ -904,7 +904,7 @@ Type TGUIobject
 		_childrenReversed.Remove(child)
 
 		'inform object
-		child.onRemoveAsChild(self)
+		child.onRemoveAsChild(Self)
 	End Method
 	
 
@@ -920,16 +920,16 @@ Type TGUIobject
 		'GuiManager.Add(child)
 
 		'inform object
-		child.onRemoveAsChild(self)
+		child.onRemoveAsChild(Self)
 	End Method
 
 
 	Method UpdateChildren:Int()
-		If Not _children or _children.Count() = 0 Then Return False
-		if HasOption(GUI_OBJECT_STATIC_CHILDREN) then return False
+		If Not _children Or _children.Count() = 0 Then Return False
+		If HasOption(GUI_OBJECT_STATIC_CHILDREN) Then Return False
 
 		'traverse through a backup to avoid concurrent modification
-		local childrenReversedBackup:TList = _childrenReversed.Copy()
+		Local childrenReversedBackup:TList = _childrenReversed.Copy()
 		'update added elements
 		For Local obj:TGUIobject = EachIn childrenReversedBackup
 			'avoid getting updated multiple times
@@ -942,22 +942,22 @@ Type TGUIobject
 	End Method
 
 
-	Method onAddAsChild:int(parent:TGUIObject)
+	Method onAddAsChild:Int(parent:TGUIObject)
 		'stub
 	End Method
 
 
-	Method onRemoveAsChild:int(parent:TGUIObject)
+	Method onRemoveAsChild:Int(parent:TGUIObject)
 		'stub
 	End Method
 		
 
 	Method RestrictContentViewport:Int()
 		GUIManager.RestrictViewport(..
-			int(GetContentScreenX()), ..
-			int(GetContentScreenY()), ..
-			int(GetContentScreenWidth()), ..
-			int(GetContentScreenHeight()) ..
+			Int(GetContentScreenX()), ..
+			Int(GetContentScreenY()), ..
+			Int(GetContentScreenWidth()), ..
+			Int(GetContentScreenHeight()) ..
 		)
 	End Method
 	
@@ -966,10 +966,10 @@ Type TGUIobject
 		Local screenRect:TRectangle = GetScreenRect()
 		If screenRect
 			GUIManager.RestrictViewport(..
-				int(screenRect.getX()), ..
-				int(screenRect.getY()), ..
-				int(screenRect.getW()), ..
-				int(screenRect.getH()) ..
+				Int(screenRect.getX()), ..
+				Int(screenRect.getY()), ..
+				Int(screenRect.getW()), ..
+				Int(screenRect.getH()) ..
 			)
 			Return True
 		Else
@@ -989,19 +989,19 @@ Type TGUIobject
 		If (obj <> _focusedObject) And _focusedObject
 			'sender = previous focused object
 			'receiver = newly focused object
-			EventManager.triggerEvent(TEventSimple.Create("guiobject.onRemoveFocus", null , _focusedObject, obj))
+			EventManager.triggerEvent(TEventSimple.Create("guiobject.onRemoveFocus", Null , _focusedObject, obj))
 			_focusedObject.removeFocus()
-		endif
+		EndIf
 
 		'inform about a new object getting focused
 		'sender = newly focused object
 		'receiver = previous focused object
-		if obj then EventManager.triggerEvent(TEventSimple.Create("guiobject.onSetFocus", null , obj, _focusedObject))
+		If obj Then EventManager.triggerEvent(TEventSimple.Create("guiobject.onSetFocus", Null , obj, _focusedObject))
 
 		'set new focused object
 		_focusedObject = obj
 		'if there is a focused object now - inform about gain of focus
-		If _focusedObject then _focusedObject.setFocus()
+		If _focusedObject Then _focusedObject.setFocus()
 
 		GuiManager.SortLists()
 	End Function
@@ -1036,8 +1036,8 @@ Type TGUIobject
 	End Method
 
 
-	Method SetValue(value:string)
-		self.value = value
+	Method SetValue(value:String)
+		Self.value = value
 	End Method
 
 
@@ -1074,7 +1074,7 @@ Type TGUIobject
 	End Method
 
 
-	Method SetHovered:Int(bool:int)
+	Method SetHovered:Int(bool:Int)
 		SetStatus(GUI_OBJECT_STATUS_HOVERED, bool)
 	End Method
 
@@ -1084,18 +1084,18 @@ Type TGUIobject
 	End Method
 
 
-	Method SetSelected:Int(bool:int)
+	Method SetSelected:Int(bool:Int)
 		'skip if already done
-		if IsSelected() = bool then return True
+		If IsSelected() = bool Then Return True
 
-		if bool
+		If bool
 			onSelect()
-		else
+		Else
 			onDeselect()
-		endif
+		EndIf
 		SetStatus(GUI_OBJECT_STATUS_SELECTED, bool)
 
-		return True
+		Return True
 	End Method
 
 
@@ -1104,22 +1104,22 @@ Type TGUIobject
 	End Method
 
 
-	Method SetAppearanceChanged:Int(bool:int)
+	Method SetAppearanceChanged:Int(bool:Int)
 		SetStatus(GUI_OBJECT_STATUS_APPEARANCE_CHANGED, bool)
 
-		If bool = true
+		If bool = True
 			'inform parent (and its grandparent and...)
-			If _parent and not _parent.IsAppearanceChanged()
+			If _parent And Not _parent.IsAppearanceChanged()
 				_parent.SetAppearanceChanged(bool)
-			Endif
+			EndIf
 			'inform children
 			If _children
-				For local child:TGUIobject = EachIn _children
-					if child.IsAppearanceChanged() then continue
+				For Local child:TGUIobject = EachIn _children
+					If child.IsAppearanceChanged() Then Continue
 					child.SetAppearanceChanged(bool)
 				Next
-			Endif
-		endif
+			EndIf
+		EndIf
 	End Method
 
 
@@ -1128,18 +1128,18 @@ Type TGUIobject
 	'do not call this directly, this is handled at the end of
 	'each "update" call so multiple things can set "appearanceChanged"
 	'but this function is called only "once"
-	Method onStatusAppearanceChange:int()
+	Method onStatusAppearanceChange:Int()
 		'
 	End Method
 
 
 	Method onSelect:Int()
-		EventManager.triggerEvent( TEventSimple.Create( "GUIObject.onSelect", null, Self ) )
+		EventManager.triggerEvent( TEventSimple.Create( "GUIObject.onSelect", Null, Self ) )
 	End Method
 
 
 	Method onDeselect:Int()
-		EventManager.triggerEvent( TEventSimple.Create( "GUIObject.onDeselect", null, Self ) )
+		EventManager.triggerEvent( TEventSimple.Create( "GUIObject.onDeselect", Null, Self ) )
 	End Method
 
 
@@ -1153,8 +1153,8 @@ Type TGUIobject
 	End Method
 
 
-	Method IsClickable:int()
-		return (_flags & GUI_OBJECT_CLICKABLE) <> 0
+	Method IsClickable:Int()
+		Return (_flags & GUI_OBJECT_CLICKABLE) <> 0
 	End Method
 
 
@@ -1196,16 +1196,16 @@ Type TGUIobject
 			'no longer clicked
 			mouseIsClicked = Null
 			'no longer hovered or active
-			if IsHovered() then SetHovered(False)
+			If IsHovered() Then SetHovered(False)
 			setState("")
 			'remove focus
-			if HasFocus() then removeFocus()
+			If HasFocus() Then removeFocus()
 		EndIf
 	End Method
 
 
-	Method IsEnabled:int()
-		return (_flags & GUI_OBJECT_ENABLED) <> 0
+	Method IsEnabled:Int()
+		Return (_flags & GUI_OBJECT_ENABLED) <> 0
 	End Method
 	
 
@@ -1228,31 +1228,31 @@ Type TGUIobject
 	'set the anchor of the gui object
 	'valid values are 0-1.0 (percentage)
 	Method SetHandlePosition:Int(handleLeft:Float=0.0, handleTop:Float=0.0)
-		handlePosition = new TVec2D.init(handleLeft, handleTop)
+		handlePosition = New TVec2D.init(handleLeft, handleTop)
 	End Method
 
 
 	'set the anchor of the gui objects content
 	'valid values are 0-1.0 (percentage)
 	Method SetContentPosition:Int(contentLeft:Float=0.0, contentTop:Float=0.0)
-		contentPosition = new TVec2D.Init(contentLeft, contentTop)
+		contentPosition = New TVec2D.Init(contentLeft, contentTop)
 	End Method
 
 
-	Method GetZIndex:int()
-		if zIndex = 0
+	Method GetZIndex:Int()
+		If zIndex = 0
 			'each children is at least 1 zindex higher
-			if _parent then return _parent.GetZIndex() + 1
+			If _parent Then Return _parent.GetZIndex() + 1
 		'-1 means: try to get the zindex from parent
-		elseif zIndex = -1
-			if _parent then return _parent.GetZIndex()
-		endif
-		return zIndex
+		ElseIf zIndex = -1
+			If _parent Then Return _parent.GetZIndex()
+		EndIf
+		Return zIndex
 	End Method
 
 
 	Method SetZIndex(zindex:Int)
-		self.zIndex = zindex
+		Self.zIndex = zindex
 		GUIManager.SortLists()
 	End Method
 
@@ -1266,24 +1266,24 @@ Type TGUIobject
 	End Method
 
 
-	Method GetState:string()
-		if state <> "" then return Mid(state, 1)
-		return ""
+	Method GetState:String()
+		If state <> "" Then Return Mid(state, 1)
+		Return ""
 	End Method
 
 
-	Method SetPadding:Int(top:Float, left:Float, bottom:Float, right:Float)
-		if not _padding
-			_padding = new TRectangle.Init(top, left, bottom, right)
-		else
-			_padding.setTLBR(top, left, bottom, right)
-		endif
+	Method SetPadding:Int(top:Float, Left:Float, bottom:Float, Right:Float)
+		If Not _padding
+			_padding = New TRectangle.Init(top, Left, bottom, Right)
+		Else
+			_padding.setTLBR(top, Left, bottom, Right)
+		EndIf
 		resize()
 	End Method
 
 
 	Method GetPadding:TRectangle()
-		if not _padding then _padding = new TRectangle.Init(0,0,0,0)
+		If Not _padding Then _padding = New TRectangle.Init(0,0,0,0)
 		Return _padding
 	End Method
 
@@ -1291,15 +1291,15 @@ Type TGUIobject
 	Method drag:Int(coord:TVec2D=Null)
 		If Not isDragable() Or isDragged() Then Return False
 
-		positionBackup = new TVec2D.Init( GetScreenX(), GetScreenY() )
+		positionBackup = New TVec2D.Init( GetScreenX(), GetScreenY() )
 
 
-		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDrag", new TData.Add("coord", coord), self)
+		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDrag", New TData.Add("coord", coord), Self)
 		EventManager.triggerEvent( event )
 		'if there is no problem ...just start dropping
 		If Not event.isVeto()
 			'trigger an event immediately - if the event has a veto afterwards, do not drag!
-			Local event:TEventSimple = TEventSimple.Create( "guiobject.onDrag", new TData.Add("coord", coord), Self )
+			Local event:TEventSimple = TEventSimple.Create( "guiobject.onDrag", New TData.Add("coord", coord), Self )
 			EventManager.triggerEvent( event )
 			If event.isVeto() Then Return False
 
@@ -1308,14 +1308,14 @@ Type TGUIobject
 			GUIManager.SortLists()
 
 			'inform others - item finished dragging
-			local ev:TEventSimple = TEventSimple.Create("guiobject.onFinishDrag", new TData.Add("coord", coord), Self)
+			Local ev:TEventSimple = TEventSimple.Create("guiobject.onFinishDrag", New TData.Add("coord", coord), Self)
 			EventManager.triggerEvent(ev)
-			self.onFinishDrag(ev)
+			Self.onFinishDrag(ev)
 
 			Return True
-		else
-			Return FALSE
-		endif
+		Else
+			Return False
+		EndIf
 	End Method
 
 
@@ -1330,38 +1330,38 @@ Type TGUIobject
 	Method drop:Int(coord:TVec2D=Null, force:Int=False)
 		If Not isDragged() Then Return False
 
-		If coord And coord.getX()=-1 Then coord = new TVec2D.Init(MouseManager.x, MouseManager.y)
+		If coord And coord.getX()=-1 Then coord = New TVec2D.Init(MouseManager.x, MouseManager.y)
 
 
-		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDrop", new TData.Add("coord", coord), self)
+		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDrop", New TData.Add("coord", coord), Self)
 		EventManager.triggerEvent( event )
 		'if there is no problem ...just start dropping
 		If Not event.isVeto()
 			'fire an event - if the event has a veto afterwards, do not drop!
 			'exception is, if the action is forced
-			Local event:TEventSimple = TEventSimple.Create("guiobject.onDrop", new TData.Add("coord", coord), Self)
+			Local event:TEventSimple = TEventSimple.Create("guiobject.onDrop", New TData.Add("coord", coord), Self)
 			EventManager.triggerEvent( event )
 
 			If Not force And event.isVeto()
 				'inform others - item failed dropping, GetReceiver might
 				'contain the item it should have been dropped to
-				EventManager.triggerEvent(TEventSimple.Create("guiobject.onDropFailed", new TData.Add("coord", coord), Self, event.GetReceiver()))
+				EventManager.triggerEvent(TEventSimple.Create("guiobject.onDropFailed", New TData.Add("coord", coord), Self, event.GetReceiver()))
 				Return False
-			Endif
+			EndIf
 
 			'nobody said "no" to drop, so drop it
 			GUIManager.RemoveDragged(Self)
 			GUIManager.SortLists()
 
 			'inform others - item finished dropping - Receiver of "event" may now be helding the guiobject dropped on
-			local ev:TEventSimple = TEventSimple.Create("guiobject.onFinishDrop", new TData.Add("coord", coord), Self, event.GetReceiver())
+			Local ev:TEventSimple = TEventSimple.Create("guiobject.onFinishDrop", New TData.Add("coord", coord), Self, event.GetReceiver())
 			EventManager.triggerEvent(ev)
-			self.onFinishDrop(ev)
+			Self.onFinishDrop(ev)
 
 			Return True
-		else
-			Return FALSE
-		endif
+		Else
+			Return False
+		EndIf
 	End Method
 
 
@@ -1398,8 +1398,8 @@ Type TGUIobject
 
 	'takes parent alpha into consideration
 	Method GetScreenAlpha:Float()
-		if _parent then return alpha * _parent.GetScreenAlpha()
-		return alpha
+		If _parent Then Return alpha * _parent.GetScreenAlpha()
+		Return alpha
 	End Method
 
 
@@ -1409,7 +1409,7 @@ Type TGUIobject
 
 
 	Method GetScreenPos:TVec2D()
-		Return new TVec2D.Init(GetScreenX(), GetScreenY())
+		Return New TVec2D.Init(GetScreenX(), GetScreenY())
 	End Method
 
 
@@ -1464,12 +1464,12 @@ Type TGUIobject
 
 
 	Method GetScreenX2:Float()
-		return GetScreenX() + GetScreenWidth()
+		Return GetScreenX() + GetScreenWidth()
 	End Method
 
 
 	Method GetScreenY2:Float()
-		return GetScreenY() + GetScreenHeight()
+		Return GetScreenY() + GetScreenHeight()
 	End Method
 
 
@@ -1515,7 +1515,7 @@ Type TGUIobject
 
 
 	Method GetContentScreenRect:TRectangle()
-		return new TRectangle.Init(..
+		Return New TRectangle.Init(..
 			GetContentScreenX(), ..
 			GetContentScreenY(), ..
 			GetContentScreenWidth(), ..
@@ -1526,21 +1526,21 @@ Type TGUIobject
 
 	'get a rectangle describing the objects area on the screen
 	Method GetScreenRect:TRectangle()
-		if screenRect then return screenRect
+		If screenRect Then Return screenRect
 
-		screenRect = new TRectangle
+		screenRect = New TRectangle
 
 		'dragged items ignore parents but take care of mouse position...
 		If isDragged()
 			screenRect.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight() )
-			return screenRect.Copy()
-		endif
+			Return screenRect.Copy()
+		EndIf
 
 		'if the item ignores parental limits, just return its very own screen rect
 		If HasOption(GUI_OBJECT_IGNORE_PARENTLIMITS)
 			screenRect.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight() )
-			return screenRect.Copy()
-		endif
+			Return screenRect.Copy()
+		EndIf
 
 		'no other limiting object - just return the object's area
 		'(no move needed as it is already oriented to screen 0,0)
@@ -1555,7 +1555,7 @@ Type TGUIobject
 		'only try to intersect if the parent gaves back an intersection (or self if no parent)
 		If resultRect
 			'create a sourceRect which is a screen-rect (=visual!)
-			Local sourceRect:TRectangle = new TRectangle.Init( ..
+			Local sourceRect:TRectangle = New TRectangle.Init( ..
 										    GetScreenX(),..
 										    GetScreenY(),..
 										    GetScreenWidth(),..
@@ -1580,38 +1580,38 @@ Type TGUIobject
 
 
 	Method Draw()
-		if _customDraw
-			_customDraw(self)
-		else
-			if _customDrawBackground
-				_customDrawBackground(self)
-			else
+		If _customDraw
+			_customDraw(Self)
+		Else
+			If _customDrawBackground
+				_customDrawBackground(Self)
+			Else
 				DrawBackground()
-			endif
+			EndIf
 
-			if _customDrawContent
-				_customDrawContent(self)
-			else
+			If _customDrawContent
+				_customDrawContent(Self)
+			Else
 				DrawContent()
-			endif
+			EndIf
 			
-			if _customDrawOverlay
-				_customDrawChildren(self)
-			else
+			If _customDrawOverlay
+				_customDrawChildren(Self)
+			Else
 				DrawChildren()
-			endif
+			EndIf
 			
-			if _customDrawOverlay
-				_customDrawOverlay(self)
-			else
+			If _customDrawOverlay
+				_customDrawOverlay(Self)
+			Else
 				DrawOverlay()
-			endif
-		endif
+			EndIf
+		EndIf
 	End Method
 
 
 	'has to get implemented in each widget
-	Method DrawContent() abstract
+	Method DrawContent() Abstract
 
 
 	Method DrawBackground()
@@ -1642,7 +1642,7 @@ Type TGUIobject
 		If Not _children Then Return False
 
 		'skip children if self not visible
-		if not IsVisible() then return false
+		If Not IsVisible() Then Return False
 
 		'draw children
 		For Local obj:TGUIobject = EachIn _children
@@ -1652,7 +1652,7 @@ Type TGUIobject
 			If obj.isDragged() Then Continue
 
 			'skip invisible objects
-			if not obj.IsVisible() then continue
+			If Not obj.IsVisible() Then Continue
 
 			'tint image if object is disabled
 			If Not(obj._flags & GUI_OBJECT_ENABLED) Then SetAlpha 0.5*GetAlpha()
@@ -1673,7 +1673,7 @@ Type TGUIobject
 
 
 	Method Update:Int()
-		screenRect = null
+		screenRect = Null
 	
 		'to recognize clicks/hovers/actions on child elements:
 		'ask them first!
@@ -1683,30 +1683,30 @@ Type TGUIobject
 		'if appearance changed since last update tick: inform widget
 		If isAppearanceChanged()
 			onStatusAppearanceChange()
-			SetAppearanceChanged(false)
-		Endif
+			SetAppearanceChanged(False)
+		EndIf
 
 
-		If GUIManager._ignoreMouse then return FALSE
+		If GUIManager._ignoreMouse Then Return False
 
 
 		'=== HANDLE MOUSE ===
-		if not GUIManager.UpdateState_mouseButtonDown[1]
+		If Not GUIManager.UpdateState_mouseButtonDown[1]
 			mouseIsDown	= Null
 			'remove hover/active state
 			setState("")
-		endif
+		EndIf
 
 		'mouse position could have changed since a begin of a "click"
 		'-> eg when clicking + moving the cursor very fast
 		'   in that case the mouse position should be the one of the
 		'   moment the "click" begun
-		local mousePos:TVec2D = new TVec2D.Init(MouseManager.x, MouseManager.y)
-		If MouseManager.IsClicked(1) or MouseManager.GetClicks(1) > 0
+		Local mousePos:TVec2D = New TVec2D.Init(MouseManager.x, MouseManager.y)
+		If MouseManager.IsClicked(1) Or MouseManager.GetClicks(1) > 0
 			mousePos = MouseManager.GetClickPosition(1)
-		Endif
+		EndIf
 
-		local containsMouse:int = containsXY(mousePos.x, mousePos.y)
+		Local containsMouse:Int = containsXY(mousePos.x, mousePos.y)
 
 
 		'=== HANDLE MOUSE OVER ===
@@ -1717,12 +1717,12 @@ Type TGUIobject
 
 			'avoid fast mouse movement to get interpreted incorrect
 			'-> only "unhover" undragged elements
-			if not isDragged()
+			If Not isDragged()
 				'reset clicked position as soon as leaving the widget
 				mouseIsClicked = Null
-				SetHovered(false)
+				SetHovered(False)
 				setState("")
-			endif
+			EndIf
 			'mouseclick somewhere - should deactivate active object
 			'no need to use the cached mouseButtonDown[] as we want the
 			'general information about a click
@@ -1731,7 +1731,7 @@ Type TGUIobject
 		Else
 			'inform others about a scroll with the mousewheel
 			If GUIManager.UpdateState_mouseScrollwheelMovement <> 0
-				Local event:TEventSimple = TEventSimple.Create("guiobject.OnScrollwheel", new TData.AddNumber("value", GUIManager.UpdateState_mouseScrollwheelMovement).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+				Local event:TEventSimple = TEventSimple.Create("guiobject.OnScrollwheel", New TData.AddNumber("value", GUIManager.UpdateState_mouseScrollwheelMovement).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 				EventManager.triggerEvent(event)
 				'a listener handles the scroll - so remove it for others
 				If event.isAccepted()
@@ -1744,7 +1744,7 @@ Type TGUIobject
 		'=== HANDLE MOUSE CLICKS / POSITION ===
 		'skip objects the mouse is not over (except it is already dragged).
 		'ATTENTION: this differs to self.isHovered() (which is set later on)
-		if not containsMouse and not isDragged() then return FALSE
+		If Not containsMouse And Not isDragged() Then Return False
 
 
 		'handle mouse clicks / button releases / hover state
@@ -1761,9 +1761,9 @@ Type TGUIobject
 					'create a new "event"
 					If Not MouseIsDown
 						'as soon as someone clicks on a object it is getting focused
-						if HasOption(GUI_OBJECT_CAN_GAIN_FOCUS)
+						If HasOption(GUI_OBJECT_CAN_GAIN_FOCUS)
 							GUImanager.setFocus(Self)
-						endif
+						EndIf
 
 						MouseIsDown = mousePos.Copy()
 					EndIf
@@ -1784,21 +1784,21 @@ Type TGUIobject
 				'do not create "hovered" for dragged objects
 				If Not isDragged()
 					'create event: onmouseenter
-					If not isHovered()
-						EventManager.triggerEvent( TEventSimple.Create( "guiobject.OnMouseEnter", null, Self ) )
-						SetHovered(true)
+					If Not isHovered()
+						EventManager.triggerEvent( TEventSimple.Create( "guiobject.OnMouseEnter", Null, Self ) )
+						SetHovered(True)
 					EndIf
 					GUIManager.UpdateState_foundHoverObject = True
 				EndIf
 				'create event: onmouseover
-				local mouseOverEvent:TEventSimple = TEventSimple.Create("guiobject.OnMouseOver", new TData.Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self )
+				Local mouseOverEvent:TEventSimple = TEventSimple.Create("guiobject.OnMouseOver", New TData.Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self )
 				OnMouseOver(mouseOverEvent)
 				EventManager.triggerEvent(mouseOverEvent)
 
 				'somone decided to say the button is pressed above the object
 				If MouseIsDown
 					setState("active")
-					EventManager.triggerEvent( TEventSimple.Create("guiobject.OnMouseDown", new TData.AddNumber("button", 1), Self ) )
+					EventManager.triggerEvent( TEventSimple.Create("guiobject.OnMouseDown", New TData.AddNumber("button", 1), Self ) )
 				Else
 					setState("hover")
 				EndIf
@@ -1807,8 +1807,8 @@ Type TGUIobject
 					'inform others about a right guiobject click
 					'we do use a "cached hit state" so we can reset it if
 					'we found a one handling it
-					If (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1)) and not GUIManager.UpdateState_foundHitObject[2 -1]
-						Local clickEvent:TEventSimple = TEventSimple.Create("guiobject.OnClick", new TData.AddNumber("button",2).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+					If (MouseManager.IsClicked(2) Or MouseManager.IsLongClicked(1)) And Not GUIManager.UpdateState_foundHitObject[2 -1]
+						Local clickEvent:TEventSimple = TEventSimple.Create("guiobject.OnClick", New TData.AddNumber("button",2).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 						OnClick(clickEvent)
 						'fire onClickEvent
 						EventManager.triggerEvent(clickEvent)
@@ -1817,12 +1817,12 @@ Type TGUIobject
 						'have to modify the event IF they accepted the click
 
 						'reset Button
-						if MouseManager.IsLongClicked(1)
+						If MouseManager.IsLongClicked(1)
 							GUIManager.UpdateState_mouseButtonHit[1] = False
 							'MouseManager.ResetClicked(1) 'long and normal
-						else
+						Else
 							GUIManager.UpdateState_mouseButtonHit[2] = False
-						endif
+						EndIf
 
 						GUIManager.UpdateState_foundHitObject[2 -1] = True
 					EndIf
@@ -1830,19 +1830,19 @@ Type TGUIobject
 
 					'IsClicked does not include waiting time - so check for
 					'single and double clicks too
-					If not GUIManager.UpdateState_foundHitObject[0]
-						local isHit:int = False
-						if not MouseManager.IsLongClicked(1)
+					If Not GUIManager.UpdateState_foundHitObject[0]
+						Local isHit:Int = False
+						If Not MouseManager.IsLongClicked(1)
 							If MouseManager.IsHit(1)
-								local hitEvent:TEvenTsimple = TEventSimple.Create("guiobject.OnHit", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+								Local hitEvent:TEvenTsimple = TEventSimple.Create("guiobject.OnHit", New TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 								'let the object handle the click
 								OnHit(hitEvent)
 								'fire onClickEvent
 								EventManager.triggerEvent(hitEvent)
 								isHit = True
-							endif
+							EndIf
 							
-							If MOUSEMANAGER.IsClicked(1) or MOUSEMANAGER.GetClicks(1) > 0
+							If MOUSEMANAGER.IsClicked(1) Or MOUSEMANAGER.GetClicks(1) > 0
 								'=== SET CLICKED VAR ====
 								mouseIsClicked = MouseManager.GetClickposition(1)
 
@@ -1853,16 +1853,16 @@ Type TGUIobject
 								'again "onSingleClick" AND "onClick"
 								Local clickEvent:TEventSimple
 								If MOUSEMANAGER.IsDoubleClicked(1)
-									clickEvent = TEventSimple.Create("guiobject.OnDoubleClick", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+									clickEvent = TEventSimple.Create("guiobject.OnDoubleClick", New TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 									'let the object handle the click
 									OnDoubleClick(clickEvent)
 								ElseIf MOUSEMANAGER.IsSingleClicked(1)
-									clickEvent = TEventSimple.Create("guiobject.OnSingleClick", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+									clickEvent = TEventSimple.Create("guiobject.OnSingleClick", New TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 									'let the object handle the click
 									OnSingleClick(clickEvent)
 								'only "hit" if done the first time
 								Else 'if not GUIManager.UpdateState_foundHitObject
-									clickEvent = TEventSimple.Create("guiobject.OnClick", new TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+									clickEvent = TEventSimple.Create("guiobject.OnClick", New TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 									'let the object handle the click
 									OnClick(clickEvent)
 								EndIf
@@ -1892,7 +1892,7 @@ Type TGUIobject
 
 								GUIManager.UpdateState_foundHitObject[0] = True
 							EndIf
-						endif
+						EndIf
 					EndIf
 				EndIf
 			EndIf
@@ -1910,32 +1910,32 @@ Type TGUIobject
 
 
 	'returns true if the conversion was successful
-	Function ConvertKeystrokesToText:Int(value:String Var, skipEnterKey:int = False)
+	Function ConvertKeystrokesToText:Int(value:String Var, skipEnterKey:Int = False)
 		'remove with backspace
 		If KEYWRAPPER.pressedKey(KEY_BACKSPACE)
 			value = value[..value.length -1]
-			return TRUE
-		Endif
+			Return True
+		EndIf
 		'abort with ESCAPE
-		If KEYWRAPPER.pressedKey(KEY_ESCAPE) then Return False
+		If KEYWRAPPER.pressedKey(KEY_ESCAPE) Then Return False
 
 		'read special keys (shift + altgr) to enable special key handling
 		Local shiftPressed:Int = KEYMANAGER.IsDown(160) Or KEYMANAGER.IsDown(161)
-		?not Linux
+		?Not Linux
 		'windows and mac
-		Local altGrPressed:int = KEYMANAGER.IsDown(164) Or KEYMANAGER.IsDown(165)
+		Local altGrPressed:Int = KEYMANAGER.IsDown(164) Or KEYMANAGER.IsDown(165)
 		?Linux
 		'linux
-		Local altGrPressed:int = KEYMANAGER.IsDown(3)
+		Local altGrPressed:Int = KEYMANAGER.IsDown(3)
 		?
 
 		'charCode is "0" if no key is recognized
-		local charCode:int = int(GetChar())
+		Local charCode:Int = Int(GetChar())
 
 		'loop through all chars of the getchar-queue
 		While charCode <>0
 			'charCode is < 0 for me when umlauts are pressed
-			if charCode < 0
+			If charCode < 0
 				?Win32
 				If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
 				If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
@@ -1950,22 +1950,22 @@ Type TGUIobject
 				If KEYWRAPPER.pressedKey(163) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
 				?
 			'handle normal "keys" (excluding umlauts)
-			elseif charCode > 0
-				local addChar:int = True
+			ElseIf charCode > 0
+				Local addChar:Int = True
 				'skip "backspace"
-				if chr(KEY_BACKSPACE) = chr(charCode) then addChar = False
+				If Chr(KEY_BACKSPACE) = Chr(charCode) Then addChar = False
 				'skip enter if whished so
-				if skipEnterKey and chr(KEY_ENTER) = chr(charCode) then addChar = False
+				If skipEnterKey And Chr(KEY_ENTER) = Chr(charCode) Then addChar = False
 
-				if addChar then value :+ chr(charCode)
-			endif
-			charCode = int(GetChar())
+				If addChar Then value :+ Chr(charCode)
+			EndIf
+			charCode = Int(GetChar())
 		Wend
 
 		'special chars - recognized on Mac, but not Linux
 		'euro sign
 		?Linux
-		If KEYWRAPPER.pressedKey(69) And altGrPressed Then value :+ chr(8364)
+		If KEYWRAPPER.pressedKey(69) And altGrPressed Then value :+ Chr(8364)
 		?
 		Return True
 	End Function
@@ -1992,7 +1992,7 @@ Type TGUISimpleRect Extends TGUIobject
 
 	Method DrawDebug()
 		SetAlpha 0.5
-		DrawRect(self.GetScreenX(), self.GetScreenY(), self.GetScreenWidth(), self.GetScreenHeight())
+		DrawRect(Self.GetScreenX(), Self.GetScreenY(), Self.GetScreenWidth(), Self.GetScreenHeight())
 		SetAlpha 1.0
 	End Method
 End Type

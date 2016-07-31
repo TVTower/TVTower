@@ -96,14 +96,14 @@ Type TEventManager
 	End Method
 
 
-	Method GetRegisteredListenersCount:int()
-		local count:int = 0
-		For local list:TList = EachIn _listeners.Values()
-			For local listener:TEventListenerBase = EachIn list
+	Method GetRegisteredListenersCount:Int()
+		Local count:Int = 0
+		For Local list:TList = EachIn _listeners.Values()
+			For Local listener:TEventListenerBase = EachIn list
 				count :+1
 			Next
 		Next
-		return count
+		Return count
 	End Method
 
 
@@ -179,7 +179,7 @@ Type TEventManager
 
 	'removes a listener using a list of links
 	Method unregisterListenersByLinkList(linkList:TList)
-		For local l:TLink = EachIn linkList
+		For Local l:TLink = EachIn linkList
 			l.remove()
 		Next
 	End Method
@@ -187,7 +187,7 @@ Type TEventManager
 
 	'removes a listener using an array of links
 	Method unregisterListenersByLinks(links:TLink[])
-		For local l:TLink = EachIn links
+		For Local l:TLink = EachIn links
 			l.remove()
 		Next
 	End Method
@@ -201,7 +201,7 @@ Type TEventManager
 
 	'runs all listeners NOW ...returns amount of listeners
 	Method triggerEvent:Int(triggeredByEvent:TEventBase)
-		if not triggeredByEvent then return 0
+		If Not triggeredByEvent Then Return 0
 		
 		?Threaded
 		'if we have systemonly-event we cannot do it in a subthread
@@ -221,7 +221,7 @@ Type TEventManager
 				'stop triggering the event if ONE of them vetos
 				If triggeredByEvent.isVeto() Then Exit
 			Next
-		endif
+		EndIf
 
 		'run individual event method
 		If Not triggeredByEvent.IsVeto()
@@ -238,7 +238,7 @@ Type TEventManager
 
 	'update the event manager - call this each cycle of your app loop
 	Method update(onlyChannel:Int=Null)
-		if not isStarted() then Init()
+		If Not isStarted() Then Init()
 		'Assert _ticks >= 0, "TEventManager: updating event manager that hasn't been prepared"
 		_processEvents(onlyChannel)
 		_ticks = Time.GetTimeGone()
@@ -279,28 +279,28 @@ Type TEventManager
 	'1) is the same object
 	'2) is of the same type
 	'3) is extended from same type
-	Function ObjectsAreEqual:int(checkedObject:object, limit:object)
+	Function ObjectsAreEqual:Int(checkedObject:Object, limit:Object)
 		'one of both is empty
-		if not checkedObject then return FALSE
-		if not limit then return FALSE
+		If Not checkedObject Then Return False
+		If Not limit Then Return False
 		'same object
-		if checkedObject = limit then return TRUE
+		If checkedObject = limit Then Return True
 
 		'check if both are strings
-		if string(limit) and string(checkedObject)
-			return string(limit) = string(checkedObject)
-		endif
+		If String(limit) And String(checkedObject)
+			Return String(limit) = String(checkedObject)
+		EndIf
 
 		'check if classname / type is the same (type-name given as limit )
-		if string(limit)<>null
-			local typeId:TTypeId = TTypeId.ForName(string(limit))
+		If String(limit)<>Null
+			Local typeId:TTypeId = TTypeId.ForName(String(limit))
 			'if we haven't got a valid classname
-			if not typeId then return FALSE
+			If Not typeId Then Return False
 			'if checked object is same type or does extend from that type
-			if TTypeId.ForObject(checkedObject).ExtendsType(typeId) then return TRUE
-		endif
+			If TTypeId.ForObject(checkedObject).ExtendsType(typeId) Then Return True
+		EndIf
 
-		return FALSE
+		Return False
 	End Function
 End Type
 
@@ -372,13 +372,13 @@ Type TEventListenerRunMethod Extends TEventListenerBase
 		If Not Self.ignoreEvent(triggerEvent)
 			Local id:TTypeId		= TTypeId.ForObject( _objectInstance )
 			Local update:TMethod	= id.FindMethod( _methodName )
-			if update
+			If update
 				update.Invoke(_objectInstance ,[triggerEvent])
 				Return True
-			else
+			Else
 				TLogger.Log("TEventListener.OnEvent", "Tried to call non-existing method ~q"+_methodName+"~q.", LOG_WARNING | LOG_DEBUG)
 				Return False
-			endif
+			EndIf
 		EndIf
 
 		Return True
@@ -389,7 +389,7 @@ End Type
 
 
 Type TEventListenerRunFunction Extends TEventListenerBase
-	Field _function:int(triggeredByEvent:TEventBase)
+	Field _function:Int(triggeredByEvent:TEventBase)
 
 
 	Function Create:TEventListenerRunFunction(_function(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
@@ -504,14 +504,14 @@ Type TEventBase
 
 
 	Method Trigger:TEventBase()
-		EventManager.triggerEvent(self)
-		return self
+		EventManager.triggerEvent(Self)
+		Return Self
 	End Method
 
 
 	Method Register:TEventBase()
-		EventManager.registerEvent(self)
-		return self
+		EventManager.registerEvent(Self)
+		Return Self
 	End Method
 
 

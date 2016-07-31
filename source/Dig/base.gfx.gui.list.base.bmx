@@ -15,16 +15,16 @@ Import "base.util.helper.bmx"
 
 
 '=== LIST SPECIFIC CONSTANTS ===
-CONST GUILIST_AUTOSCROLL:Int        = 2^0
+Const GUILIST_AUTOSCROLL:Int        = 2^0
 'hide scroller if mouse not over parent
-CONST GUILIST_AUTOHIDE_SCROLLER:Int = 2^1
-CONST GUILIST_MULTICOLUMN:Int       = 2^2
-CONST GUILIST_AUTOSORT_ITEMS:Int    = 2^3
+Const GUILIST_AUTOHIDE_SCROLLER:Int = 2^1
+Const GUILIST_MULTICOLUMN:Int       = 2^2
+Const GUILIST_AUTOSORT_ITEMS:Int    = 2^3
 'flag to do a "one time" auto scroll
-CONST GUILIST_SCROLLER_USED:Int     = 2^4
-CONST GUILIST_SCROLLING_ENABLED:Int = 2^5
+Const GUILIST_SCROLLER_USED:Int     = 2^4
+Const GUILIST_SCROLLING_ENABLED:Int = 2^5
 'scroll to the very first element as soon as the scrollbars get hidden ?
-CONST GUILIST_SCROLL_TO_BEGIN_WITHOUT_SCROLLBARS:Int = 2^6
+Const GUILIST_SCROLL_TO_BEGIN_WITHOUT_SCROLLBARS:Int = 2^6
 
 
 
@@ -36,9 +36,9 @@ Type TGUIListBase Extends TGUIobject
 	Field guiEntriesPanel:TGUIScrollablePanel = Null
 	Field guiScrollerH:TGUIScroller = Null
 	Field guiScrollerV:TGUIScroller	= Null
-	Field entriesDimension:TVec2D = new TVec2D.Init(0,0)
+	Field entriesDimension:TVec2D = New TVec2D.Init(0,0)
 
-	Field _listFlags:int = 0
+	Field _listFlags:Int = 0
 
 	'amount (percentage) a list is scrolled based on item height 
 	Field scrollItemHeightPercentage:Float = 0.5
@@ -49,9 +49,9 @@ Type TGUIListBase Extends TGUIobject
 	Field _mouseOverArea:Int = False
 	Field _dropOnTargetListenerLink:TLink = Null
 	'displace each entry by (z-value is stepping)...
-	Field _entryDisplacement:TVec3D	= new TVec3D.Init(0, 0, 1)
+	Field _entryDisplacement:TVec3D	= New TVec3D.Init(0, 0, 1)
 	'displace the entriesblock by x,y...
-	Field _entriesBlockDisplacement:TVec2D = new TVec2D.Init(0, 0)
+	Field _entriesBlockDisplacement:TVec2D = New TVec2D.Init(0, 0)
 	'orientation of the list: 0 means vertical, 1 is horizontal
 	Field _orientation:Int = 0
 
@@ -67,7 +67,7 @@ Type TGUIListBase Extends TGUIobject
 	End Method
 	
 
-    Method Create:TGUIListBase(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
+    Method Create:TGUIListBase(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
 		Super.CreateBase(position, dimension, limitState)
 
 		setZIndex(0)
@@ -77,7 +77,7 @@ Type TGUIListBase Extends TGUIobject
 		'orientation of horizontal scroller has to get set manually
 		guiScrollerH.SetOrientation(GUI_OBJECT_ORIENTATION_HORIZONTAL)
 
-		guiEntriesPanel = New TGUIScrollablePanel.Create(null, new TVec2D.Init(rect.GetW() - guiScrollerV.rect.getW(), rect.GetH() - guiScrollerH.rect.getH()), self.state)
+		guiEntriesPanel = New TGUIScrollablePanel.Create(Null, New TVec2D.Init(rect.GetW() - guiScrollerV.rect.getW(), rect.GetH() - guiScrollerH.rect.getH()), Self.state)
 
 		AddChild(guiEntriesPanel) 'manage by our own
 
@@ -95,7 +95,7 @@ Type TGUIListBase Extends TGUIobject
 		'- we are interested in certain events from the scroller or self
 		AddEventListener(EventManager.registerListenerFunction( "guiobject.onScrollPositionChanged", onScroll, guiScrollerH ))
 		AddEventListener(EventManager.registerListenerFunction( "guiobject.onScrollPositionChanged", onScroll, guiScrollerV ))
-		AddEventListener(EventManager.registerListenerFunction( "guiobject.onScrollPositionChanged", onScroll, self ))
+		AddEventListener(EventManager.registerListenerFunction( "guiobject.onScrollPositionChanged", onScroll, Self ))
 
 
 		'is something dropping - check if it this list
@@ -120,12 +120,12 @@ Type TGUIListBase Extends TGUIobject
 	End Method
 
 
-	Method Remove:int()
-		super.Remove()
+	Method Remove:Int()
+		Super.Remove()
 
-		if guiEntriesPanel then guiEntriesPanel.Remove()
-		if guiScrollerH then guiScrollerH.Remove()
-		if guiScrollerV then guiScrollerV.Remove()
+		If guiEntriesPanel Then guiEntriesPanel.Remove()
+		If guiScrollerH Then guiScrollerH.Remove()
+		If guiScrollerV Then guiScrollerV.Remove()
 
 		'set all entries free
 		EmptyList()
@@ -138,7 +138,7 @@ Type TGUIListBase Extends TGUIobject
 			'call the objects cleanup-method and unsets the object
 			obj.remove()
 			GUIManager.Remove(obj)
-			obj = null
+			obj = Null
 		Next
 		entries.Clear()
 
@@ -162,27 +162,27 @@ Type TGUIListBase Extends TGUIobject
 	End Method
 
 
-	Method SetMultiColumn(bool:int=FALSE)
-		if hasListOption(GUILIST_MULTICOLUMN) <> bool
+	Method SetMultiColumn(bool:Int=False)
+		If hasListOption(GUILIST_MULTICOLUMN) <> bool
 			setListOption(GUILIST_MULTICOLUMN, bool)
 			'maybe now more or less elements fit into the visible
 			'area, so elements position need to get recalculated
 			RecalculateElements()
-		endif
+		EndIf
 	End Method
 
 
-	Method SetAutosortItems(bool:int=FALSE)
-		if hasListOption(GUILIST_AUTOSORT_ITEMS) <> bool
+	Method SetAutosortItems(bool:Int=False)
+		If hasListOption(GUILIST_AUTOSORT_ITEMS) <> bool
 			setListOption(GUILIST_AUTOSORT_ITEMS, bool)
-		endif
+		EndIf
 	End Method
 
 
-	Method SetAutoscroll(bool:int=FALSE)
-		if hasListOption(GUILIST_AUTOSCROLL) <> bool
+	Method SetAutoscroll(bool:Int=False)
+		If hasListOption(GUILIST_AUTOSCROLL) <> bool
 			setListOption(GUILIST_AUTOSCROLL, bool)
-		endif
+		EndIf
 	End Method
 
 
@@ -205,8 +205,8 @@ Type TGUIListBase Extends TGUIobject
 		Super.Resize(w,h)
 
 		'cache enabled state of both scrollers
-		local showScrollerH:int = 0<(guiScrollerH and guiScrollerH.hasOption(GUI_OBJECT_ENABLED))
-		local showScrollerV:int = 0<(guiScrollerV and guiScrollerV.hasOption(GUI_OBJECT_ENABLED))
+		Local showScrollerH:Int = 0<(guiScrollerH And guiScrollerH.hasOption(GUI_OBJECT_ENABLED))
+		Local showScrollerV:Int = 0<(guiScrollerV And guiScrollerV.hasOption(GUI_OBJECT_ENABLED))
 
 		'resize panel - but use resulting dimensions, not given (maybe restrictions happening!)
 		If guiEntriesPanel
@@ -223,22 +223,22 @@ Type TGUIListBase Extends TGUIobject
 		EndIf
 
 		'move horizontal scroller --
-		If showScrollerH and not guiScrollerH.hasOption(GUI_OBJECT_POSITIONABSOLUTE)
+		If showScrollerH And Not guiScrollerH.hasOption(GUI_OBJECT_POSITIONABSOLUTE)
 			guiScrollerH.rect.position.setXY(_entriesBlockDisplacement.x, GetContentScreenHeight() + _entriesBlockDisplacement.y - guiScrollerH.guiButtonMinus.rect.getH())
-			if showScrollerV
+			If showScrollerV
 				guiScrollerH.Resize(GetScreenWidth() - guiScrollerV.GetScreenWidth(), 0)
-			else
+			Else
 				guiScrollerH.Resize(GetScreenWidth())
-			endif
+			EndIf
 		EndIf
 		'move vertical scroller |
-		If showScrollerV and not guiScrollerV.hasOption(GUI_OBJECT_POSITIONABSOLUTE)
+		If showScrollerV And Not guiScrollerV.hasOption(GUI_OBJECT_POSITIONABSOLUTE)
 			guiScrollerV.rect.position.setXY( GetContentScreenWidth() + _entriesBlockDisplacement.x - guiScrollerV.guiButtonMinus.rect.getW(), _entriesBlockDisplacement.y)
-			if showScrollerH
+			If showScrollerH
 				guiScrollerV.Resize(0, GetContentScreenHeight() - guiScrollerH.GetScreenHeight()-03)
-			else
+			Else
 				guiScrollerV.Resize(0, GetContentScreenHeight())
-			endif
+			EndIf
 		EndIf
 
 		If guiBackground
@@ -250,7 +250,7 @@ Type TGUIListBase Extends TGUIobject
 		EndIf
 
 		'recalculate scroll limits etc.
-		if guiEntriesPanel then RefreshListLimits()
+		If guiEntriesPanel Then RefreshListLimits()
 
 		'let the children properly refresh their size
 		'(eg. because the scrollbars are visible now)
@@ -305,16 +305,16 @@ Type TGUIListBase Extends TGUIobject
 		'so a normal AddItem-handler can work with calculated dimensions from now on
 		'Local dimension:TVec2D = item.getDimension()
 
-		EventManager.triggerEvent(TEventSimple.Create("guiList.addItem", new TData.Add("item", item) , Self))
+		EventManager.triggerEvent(TEventSimple.Create("guiList.addItem", New TData.Add("item", item) , Self))
 
 		entries.addLast(item)
 
 		'run the custom compare method
-		if hasListOption(GUILIST_AUTOSORT_ITEMS)
+		If hasListOption(GUILIST_AUTOSORT_ITEMS)
 			entries.sort()
-		endif
+		EndIf
 
-		EventManager.triggerEvent(TEventSimple.Create("guiList.addedItem", new TData.Add("item", item) , Self))
+		EventManager.triggerEvent(TEventSimple.Create("guiList.addedItem", New TData.Add("item", item) , Self))
 
 		Return True
 	End Method
@@ -323,12 +323,12 @@ Type TGUIListBase Extends TGUIobject
 	'base handling of remove item
 	Method _RemoveItem:Int(item:TGUIobject)
 		If entries.Remove(item)
-			EventManager.triggerEvent(TEventSimple.Create("guiList.removeItem", new TData.Add("item", item) , Self))
+			EventManager.triggerEvent(TEventSimple.Create("guiList.removeItem", New TData.Add("item", item) , Self))
 
 			'remove from panel and item gets managed by guimanager
 			guiEntriesPanel.removeChild(item)
 
-			EventManager.triggerEvent(TEventSimple.Create("guiList.removedItem", new TData.Add("item", item) , Self))
+			EventManager.triggerEvent(TEventSimple.Create("guiList.removedItem", New TData.Add("item", item) , Self))
 			
 			Return True
 		Else
@@ -370,34 +370,34 @@ Type TGUIListBase Extends TGUIobject
 	End Method
 
 
-	Method IsAtListBottom:int()
-		local result:int = 1 > Floor(Abs(guiEntriesPanel.scrollLimit.GetY() - guiEntriesPanel.scrollPosition.getY()))
+	Method IsAtListBottom:Int()
+		Local result:Int = 1 > Floor(Abs(guiEntriesPanel.scrollLimit.GetY() - guiEntriesPanel.scrollPosition.getY()))
 
 		'if all items fit on the screen, scroll limit will be
 		'lower than the container panel 
-		if Abs(guiEntriesPanel.scrollLimit.GetY()) < guiEntriesPanel.GetScreenHeight()
+		If Abs(guiEntriesPanel.scrollLimit.GetY()) < guiEntriesPanel.GetScreenHeight()
 			'if scrolled = 0 this could also mean we scrolled up to the top part
 			'in this case we check if the last item in the list fits into the
 			'panel
-			if guiEntriesPanel.scrollPosition.getY() = 0
+			If guiEntriesPanel.scrollPosition.getY() = 0
 				result = 1
-				local lastItem:TGUIListItem = TGUIListItem(entries.Last())
-				if lastItem and lastItem.GetScreenY() > guiEntriesPanel.getScreenY() + guiEntriesPanel.getScreenheight()
+				Local lastItem:TGUIListItem = TGUIListItem(entries.Last())
+				If lastItem And lastItem.GetScreenY() > guiEntriesPanel.getScreenY() + guiEntriesPanel.getScreenheight()
 					result = 0
-				endif
-			endif
-		endif
-		return result
+				EndIf
+			EndIf
+		EndIf
+		Return result
 	End Method
 
 
 	'recalculate scroll maximas, item positions...
 	Method RecalculateElements:Int()
-		local startPos:TVec2D = _entriesBlockDisplacement.copy()
+		Local startPos:TVec2D = _entriesBlockDisplacement.copy()
 		Local entryNumber:Int = 1
 		Local nextPos:TVec2D = startPos.copy()
 		Local currentPos:TVec2D
-		local columnPadding:int = 5
+		Local columnPadding:Int = 5
 
 		'reset current entriesDimension ...
 		entriesDimension.CopyFrom(_entriesBlockDisplacement)
@@ -413,44 +413,44 @@ Type TGUIListBase Extends TGUIobject
 					'             new column on the right is started.
 
 					'advance the next position starter
-					if hasListOption(GUILIST_MULTICOLUMN)
+					If hasListOption(GUILIST_MULTICOLUMN)
 						'if entry does not fit, try the next line
-						if currentPos.GetX() + entry.rect.GetW() > GetContentScreenWidth()
+						If currentPos.GetX() + entry.rect.GetW() > GetContentScreenWidth()
 							currentPos.SetXY(startPos.GetX(), currentPos.GetY() + entry.rect.GetH())
 							'new lines increase dimension of container
 							entriesDimension.AddXY(0, entry.rect.GetH())
-						endif
+						EndIf
 
 						nextPos.CopyFrom(currentPos)
 						nextPos.AddXY(entry.rect.GetW() + columnPadding, 0)
-					else
+					Else
 						nextPos.CopyFrom(currentPos)
 						nextPos.AddXY(0, entry.rect.GetH())
 						'new lines increase dimension of container
 						entriesDimension.AddXY(0, entry.rect.GetH())
-					endif
+					EndIf
 
 				Case GUI_OBJECT_ORIENTATION_HORIZONTAL
 					'MultiColumn: from top to bottom, if space left a
 					'             new line below is started.
 
 					'advance the next position starter
-					if hasListOption(GUILIST_MULTICOLUMN)
+					If hasListOption(GUILIST_MULTICOLUMN)
 						'if entry does not fit, try the next row
-						if currentPos.GetY() + entry.rect.GetH() > GetContentScreenHeight()
+						If currentPos.GetY() + entry.rect.GetH() > GetContentScreenHeight()
 							currentPos.SetXY(currentPos.GetX() + entry.rect.GetW(), startPos.GetY())
 							'new lines increase dimension of container
 							entriesDimension.AddXY(entry.rect.GetW(), 0 )
-						endif
+						EndIf
 
 						nextPos.CopyFrom(currentPos)
 						nextPos.AddXY(0, entry.rect.GetH() + columnPadding)
-					else
+					Else
 						nextPos.CopyFrom(currentPos)
 						nextPos.AddXY(entry.rect.GetW(),0)
 						'new lines increase dimension of container
 						entriesDimension.AddXY(entry.rect.GetW(), 0 )
-					endif
+					EndIf
 			End Select
 
 			'==== ADD POTENTIAL DISPLACEMENT ====
@@ -481,20 +481,20 @@ Type TGUIListBase Extends TGUIobject
 	End Method
 
 
-	Method RefreshListLimits:int()
-		if not guiEntriesPanel then return False
+	Method RefreshListLimits:Int()
+		If Not guiEntriesPanel Then Return False
 		'if entriesDimension.GetX() = 0 then return false
 		
 		Select _orientation
 			'===== VERTICAL ALIGNMENT =====
-			case GUI_OBJECT_ORIENTATION_VERTICAL
+			Case GUI_OBJECT_ORIENTATION_VERTICAL
 				'determine if we did not scroll the list to a middle
 				'position so this is true if we are at the very bottom
 				'of the list aka "the end"
 				Local atListBottom:Int = IsAtListBottom()
 
 				'set scroll limits:
-				if entriesDimension.getY() < guiEntriesPanel.getScreenheight()
+				If entriesDimension.getY() < guiEntriesPanel.getScreenheight()
 					'if there are only some elements, they might be
 					'"less high" than the available area - no need to
 					'align them at the bottom
@@ -503,22 +503,22 @@ Type TGUIListBase Extends TGUIobject
 					'maximum is at the bottom of the area, not top - so
 					'subtract height
 					'old: guiEntriesPanel.SetLimits(0, -(dimension.getY() - guiEntriesPanel.getScreenheight()) )
-					local lastItem:TGUIListItem = TGUIListItem(entries.Last())
-					if not lastItem
+					Local lastItem:TGUIListItem = TGUIListItem(entries.Last())
+					If Not lastItem
 						guiEntriesPanel.SetLimits(0, 0)
-					else
+					Else
 '						if not autoScroll
 '							guiEntriesPanel.SetLimits(0, - (dimension.getY() - guiEntriesPanel.getScreenheight() - lastItem.GetScreenHeight()))
 '						else
 							guiEntriesPanel.SetLimits(0, - (entriesDimension.getY() - guiEntriesPanel.getScreenheight()))
 '						endif
-					endif
+					EndIf
 					'in case of auto scrolling we should consider
 					'scrolling to the next visible part
 					If hasListOption(GUILIST_AUTOSCROLL) And (Not hasListOption(GUILIST_SCROLLER_USED) Or atListBottom) Then scrollToLastItem()
 				EndIf
 			'===== HORIZONTAL ALIGNMENT =====
-			case GUI_OBJECT_ORIENTATION_HORIZONTAL
+			Case GUI_OBJECT_ORIENTATION_HORIZONTAL
 				'determine if we did not scroll the list to a middle
 				'position so this is true if we are at the very right
 				'of the list aka "the end"
@@ -534,12 +534,12 @@ Type TGUIListBase Extends TGUIobject
 					'maximum is at the bottom of the area, not top - so
 					'subtract height
 					'old: guiEntriesPanel.SetLimits(-(dimension.getX() - guiEntriesPanel.getScreenWidth()), 0)
-					local lastItem:TGUIListItem = TGUIListItem(entries.Last())
-					if not lastItem
+					Local lastItem:TGUIListItem = TGUIListItem(entries.Last())
+					If Not lastItem
 						guiEntriesPanel.SetLimits(0, 0)
-					else
+					Else
 						guiEntriesPanel.SetLimits(- (entriesDimension.getX() - guiEntriesPanel.getScreenWidth() - lastItem.GetScreenWidth()), 0)
-					endif
+					EndIf
 
 					'in case of auto scrolling we should consider
 					'scrolling to the next visible part
@@ -553,20 +553,20 @@ Type TGUIListBase Extends TGUIobject
 	End Method
 
 
-	Method SetScrollerState:int(boolH:int, boolV:int)
+	Method SetScrollerState:Int(boolH:Int, boolV:Int)
 		'set scrolling as enabled or disabled
-		SetListOption(GUILIST_SCROLLING_ENABLED, (boolH or boolV))
+		SetListOption(GUILIST_SCROLLING_ENABLED, (boolH Or boolV))
 
-		local changed:int = FALSE
-		if boolH <> guiScrollerH.hasOption(GUI_OBJECT_ENABLED) then changed = TRUE
-		if boolV <> guiScrollerV.hasOption(GUI_OBJECT_ENABLED) then changed = TRUE
+		Local changed:Int = False
+		If boolH <> guiScrollerH.hasOption(GUI_OBJECT_ENABLED) Then changed = True
+		If boolV <> guiScrollerV.hasOption(GUI_OBJECT_ENABLED) Then changed = True
 
 		'as soon as the scroller gets disabled, we scroll to the first
 		'item.
 		'ATTENTION: if you do not want this behaviour, set the variable below
 		'           accordingly
-		if changed and HasListOption(GUILIST_SCROLL_TO_BEGIN_WITHOUT_SCROLLBARS)
-			if not HasListOption(GUILIST_SCROLLING_ENABLED) then ScrollToFirstItem()
+		If changed And HasListOption(GUILIST_SCROLL_TO_BEGIN_WITHOUT_SCROLLBARS)
+			If Not HasListOption(GUILIST_SCROLLING_ENABLED) Then ScrollToFirstItem()
 		End If
 
 
@@ -581,16 +581,16 @@ Type TGUIListBase Extends TGUIobject
 
 
 	Function FindGUIListBaseParent:TGUIListBase(guiObject:TGUIObject)
-		if not guiObject then return null
+		If Not guiObject Then Return Null
 		
-		local guiList:TGUIListBase = TGUIListBase(guiObject)
-		if guiList then return guiList
+		Local guiList:TGUIListBase = TGUIListBase(guiObject)
+		If guiList Then Return guiList
 		
-		local obj:TGUIObject = guiObject.GetParent()
-		while obj <> guiObject and not TGUIListBase(obj) 
+		Local obj:TGUIObject = guiObject.GetParent()
+		While obj <> guiObject And Not TGUIListBase(obj) 
 			obj = obj.GetParent()
-		wend
-		return TGUIListBase(obj)
+		Wend
+		Return TGUIListBase(obj)
 	End Function
 	
 
@@ -619,7 +619,7 @@ Type TGUIListBase Extends TGUIobject
 		'Keep this in mind when sorting the items
 
 		'only handle if coming from another list ?
-		local fromList:TGUIListBase = FindGUIListBaseParent(item._parent)
+		Local fromList:TGUIListBase = FindGUIListBaseParent(item._parent)
 		'if not fromList then return FALSE
 
 		Local toList:TGUIListBase = TGUIListBase(triggerEvent.GetReceiver())
@@ -633,9 +633,9 @@ Type TGUIListBase Extends TGUIobject
 			'removing and adding the item
 			If fromList.HandleDropBack(triggerEvent)
 				'inform others about that dropback
-				EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropBack", null , item, toList))
+				EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropBack", Null , item, toList))
 				Return True
-			endif
+			EndIf
 		EndIf
 'method A
 		'move item if possible
@@ -643,18 +643,18 @@ Type TGUIListBase Extends TGUIobject
 		'try to add the item, if not able, readd
 		If Not toList.addItem(item, data)
 			If fromList
-				if fromList.addItem(item) Then Return True
+				If fromList.addItem(item) Then Return True
 
 				'not able to add to "toList" but also not to "fromList"
 				'so set veto and keep the item dragged
 				triggerEvent.setVeto()
-				return False
-			endif
+				Return False
+			EndIf
 		EndIf
 
 
 'method B
-rem
+Rem
 		'-> this does not work as an "removal" might start things
 		'   the "add" needs to know
 		'also a list might only be able to add the object if that
@@ -677,24 +677,24 @@ endrem
 		Local value:Int = triggerEvent.GetData().getInt("value",0)
 		If Not list Or value=0 Then Return False
 		'emit event that the scroller position has changed
-		local direction:string = ""
-		select list._orientation
-			case GUI_OBJECT_ORIENTATION_VERTICAL
-				If value < 0 then direction = "up"
-				If value > 0 then direction = "down"
-			case GUI_OBJECT_ORIENTATION_HORIZONTAL
-				If value < 0 then direction = "left"
-				If value > 0 then direction = "right"
+		Local direction:String = ""
+		Select list._orientation
+			Case GUI_OBJECT_ORIENTATION_VERTICAL
+				If value < 0 Then direction = "up"
+				If value > 0 Then direction = "down"
+			Case GUI_OBJECT_ORIENTATION_HORIZONTAL
+				If value < 0 Then direction = "left"
+				If value > 0 Then direction = "right"
 		End Select
-		if direction <> ""
-			local scrollAmount:int = 25
+		If direction <> ""
+			Local scrollAmount:Int = 25
 			'try to scroll by 0.5 of an item height
-			local item:TGUIObject
-			if list.entries.Count() > 0 then item = TGUIObject(list.entries.First())
-			if item then scrollAmount = item.rect.GetH() * list.scrollItemHeightPercentage
+			Local item:TGUIObject
+			If list.entries.Count() > 0 Then item = TGUIObject(list.entries.First())
+			If item Then scrollAmount = item.rect.GetH() * list.scrollItemHeightPercentage
 			
-			EventManager.registerEvent(TEventSimple.Create("guiobject.onScrollPositionChanged", new TData.AddString("direction", direction).AddNumber("scrollAmount", scrollAmount), list))
-		endif
+			EventManager.registerEvent(TEventSimple.Create("guiobject.onScrollPositionChanged", New TData.AddString("direction", direction).AddNumber("scrollAmount", scrollAmount), list))
+		EndIf
 		'set to accepted so that nobody else receives the event
 		triggerEvent.SetAccepted(True)
 	End Function
@@ -702,11 +702,11 @@ endrem
 
 	'handle events from the connected scroller
 	Function onScroll:Int( triggerEvent:TEventBase )
-		local guiSender:TGUIObject = TGUIObject(triggerEvent.GetSender())
-		if not guiSender then return False
+		Local guiSender:TGUIObject = TGUIObject(triggerEvent.GetSender())
+		If Not guiSender Then Return False
 
 		'search a TGUIListBase-parent
-		local guiList:TGUIListBase = FindGUIListBaseParent(guiSender)
+		Local guiList:TGUIListBase = FindGUIListBaseParent(guiSender)
 		If Not guiList Then Return False
 
 		'do not allow scrolling if not enabled
@@ -717,7 +717,7 @@ endrem
 
 
 		'by default scroll by 2 pixels
-		Local baseScrollSpeed:int = 2
+		Local baseScrollSpeed:Int = 2
 		'the longer you pressed the mouse button, the "speedier" we get
 		'1px per 100ms. Start speeding up after 500ms, limit to 20px per scroll
 		baseScrollSpeed :+ Min(20, Max(0, MOUSEMANAGER.GetDownTime(1) - 500)/100.0)
@@ -732,20 +732,20 @@ endrem
 		'maybe data was given in percents - so something like a
 		'"scrollTo"-value
 		If data.getString("changeType") = "percentage"
-			local percentage:Float = data.GetFloat("percentage", 0)
-			if guiSender = guiList.guiScrollerH
+			Local percentage:Float = data.GetFloat("percentage", 0)
+			If guiSender = guiList.guiScrollerH
 				guiList.SetScrollPercentageX(percentage)
-			elseif guiSender = guiList.guiScrollerV
+			ElseIf guiSender = guiList.guiScrollerV
 				guiList.SetScrollPercentageY(percentage)
-			endif
-		endif
+			EndIf
+		EndIf
 		'from now on the user decides if he wants the end of the chat or stay inbetween
 		guiList.SetListOption(GUILIST_SCROLLER_USED, True)
 	End Function
 
 
 	'positive values scroll to top or left
-	Method ScrollEntries(dx:float, dy:float)
+	Method ScrollEntries(dx:Float, dy:Float)
 		guiEntriesPanel.scrollBy(dx,dy)
 
 		'refresh scroller values (for "progress bar" on the scroller)
@@ -755,24 +755,24 @@ endrem
 
 
 	Method GetScrollPercentageY:Float()
-		return guiEntriesPanel.GetScrollPercentageY()
+		Return guiEntriesPanel.GetScrollPercentageY()
 	End Method
 
 
 	Method GetScrollPercentageX:Float()
-		return guiEntriesPanel.GetScrollPercentageX()
+		Return guiEntriesPanel.GetScrollPercentageX()
 	End Method
 
 
-	Method SetScrollPercentageX:Float(percentage:float = 0.0)
+	Method SetScrollPercentageX:Float(percentage:Float = 0.0)
 		guiScrollerH.SetRelativeValue(percentage)
-		return guiEntriesPanel.SetScrollPercentageX(percentage)
+		Return guiEntriesPanel.SetScrollPercentageX(percentage)
 	End Method
 
 
-	Method SetScrollPercentageY:Float(percentage:float = 0.0)
+	Method SetScrollPercentageY:Float(percentage:Float = 0.0)
 		guiScrollerH.SetRelativeValue(percentage)
-		return guiEntriesPanel.SetScrollPercentageY(percentage)
+		Return guiEntriesPanel.SetScrollPercentageY(percentage)
 	End Method
 
 
@@ -783,9 +783,9 @@ endrem
 
 	Method ScrollToLastItem()
 		Select _orientation
-			case GUI_OBJECT_ORIENTATION_VERTICAL
+			Case GUI_OBJECT_ORIENTATION_VERTICAL
 				ScrollEntries(0, guiEntriesPanel.scrollLimit.GetY() )
-			case GUI_OBJECT_ORIENTATION_HORIZONTAL
+			Case GUI_OBJECT_ORIENTATION_HORIZONTAL
 				ScrollEntries(guiEntriesPanel.scrollLimit.GetX(), 0 )
 		End Select
 	End Method
@@ -801,12 +801,12 @@ endrem
 
 		'enable/disable buttons of scrollers if they reached the
 		'limits of the scrollable panel
-		if guiScrollerH.hasOption(GUI_OBJECT_ENABLED)
-			guiScrollerH.SetButtonStates(not guiEntriesPanel.ReachedLeftLimit(), not guiEntriesPanel.ReachedRightLimit())
-		endif
-		if guiScrollerV.hasOption(GUI_OBJECT_ENABLED)
-			guiScrollerV.SetButtonStates(not guiEntriesPanel.ReachedTopLimit(), not guiEntriesPanel.ReachedBottomLimit())
-		endif
+		If guiScrollerH.hasOption(GUI_OBJECT_ENABLED)
+			guiScrollerH.SetButtonStates(Not guiEntriesPanel.ReachedLeftLimit(), Not guiEntriesPanel.ReachedRightLimit())
+		EndIf
+		If guiScrollerV.hasOption(GUI_OBJECT_ENABLED)
+			guiScrollerV.SetButtonStates(Not guiEntriesPanel.ReachedTopLimit(), Not guiEntriesPanel.ReachedBottomLimit())
+		EndIf
 				
 
 		_mouseOverArea = THelper.MouseIn(Int(GetScreenX()), Int(GetScreenY()), Int(rect.GetW()), Int(rect.GetH()))
@@ -827,17 +827,17 @@ endrem
 		If guiBackground
 			guiBackground.Draw()
 		Else
-			Local oldCol:TColor = new TColor.Get()
-			Local rect:TRectangle = new TRectangle.Init(guiEntriesPanel.GetScreenX(), guiEntriesPanel.GetScreenY(), Min(rect.GetW(), guiEntriesPanel.rect.GetW()), Min(rect.GetH(), guiEntriesPanel.rect.GetH()) )
+			Local oldCol:TColor = New TColor.Get()
+			Local rect:TRectangle = New TRectangle.Init(guiEntriesPanel.GetScreenX(), guiEntriesPanel.GetScreenY(), Min(rect.GetW(), guiEntriesPanel.rect.GetW()), Min(rect.GetH(), guiEntriesPanel.rect.GetH()) )
 
 			If _mouseOverArea
 				backgroundColorHovered.setRGBA()
 			Else
 				backgroundColor.setRGBA()
 			EndIf
-			if GetAlpha() > 0
+			If GetAlpha() > 0
 				DrawRect(rect.GetX(), rect.GetY(), rect.GetW(), rect.GetH())
-			endif
+			EndIf
 
 			oldCol.SetRGBA()
 		EndIf
@@ -852,14 +852,14 @@ endrem
 	Method DrawDebug()
 		If _debugMode
 			SetAlpha 0.2
-			Local rect:TRectangle = new TRectangle.Init(guiEntriesPanel.GetScreenX(), guiEntriesPanel.GetScreenY(), Min(rect.GetW(), guiEntriesPanel.rect.GetW()), Min(rect.GetH(), guiEntriesPanel.rect.GetH()) )
+			Local rect:TRectangle = New TRectangle.Init(guiEntriesPanel.GetScreenX(), guiEntriesPanel.GetScreenY(), Min(rect.GetW(), guiEntriesPanel.rect.GetW()), Min(rect.GetH(), guiEntriesPanel.rect.GetH()) )
 			DrawRect(rect.GetX(), rect.GetY(), rect.GetW(), rect.GetH())
 			SetColor 255,0,0
 			DrawRect(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())
 			SetColor 255,255,255
 			SetAlpha 1.0
 
-			Local oldCol:TColor = new TColor.Get()
+			Local oldCol:TColor = New TColor.Get()
 			Local offset:Int = GetScreenY()
 			For Local entry:TGUIListItem = EachIn entries
 				'move entry's y position to current one
@@ -902,14 +902,14 @@ Type TGUIListItem Extends TGUIobject
 	'how long until hiding (initial value)
 	Field initialShowtime:Int = 0
 	'color of the displayed value
-	Field valueColor:TColor	= new TColor
+	Field valueColor:TColor	= New TColor
 
 	Field positionNumber:Int = 0
 
 
-    Method Create:TGUIListItem(pos:TVec2D=null, dimension:TVec2D=null, value:String="")
+    Method Create:TGUIListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
 		'have a basic size (specify a dimension in your custom type)
-		if not dimension then dimension = new TVec2D.Init(80,20)
+		If Not dimension Then dimension = New TVec2D.Init(80,20)
 
 		'limit this items to nothing - as soon as we parent it, it will
 		'follow the parents limits
@@ -931,14 +931,14 @@ Type TGUIListItem Extends TGUIobject
 
 		'also remove itself from the list it may belong to
 		'this adds the object back to the guimanager
-		local guiList:TGUIListBase = TGUIListBase.FindGUIListBaseParent(self._parent)
-		if guiList and guiList.HasItem(self) then guiList.RemoveItem(self)
+		Local guiList:TGUIListBase = TGUIListBase.FindGUIListBaseParent(Self._parent)
+		If guiList And guiList.HasItem(Self) Then guiList.RemoveItem(Self)
 		Return True
 	End Method
 
 
 	'override onClick to emit a special event
-	Method OnClick:int(triggerEvent:TEventBase)
+	Method OnClick:Int(triggerEvent:TEventBase)
 		Super.OnClick(triggerEvent)
 
 
@@ -946,7 +946,7 @@ Type TGUIListItem Extends TGUIobject
 		If Not data Then Return False
 
 		'skip reaction if parental list is disabled
-		if TGUIListBase.FindGUIListBaseParent(self) and not TGUIListBase.FindGUIListBaseParent(self).IsEnabled() then return False
+		If TGUIListBase.FindGUIListBaseParent(Self) And Not TGUIListBase.FindGUIListBaseParent(Self).IsEnabled() Then Return False
 
 		'only react on clicks with left mouse button
 		If data.getInt("button") <> 1 Then Return False
@@ -969,10 +969,10 @@ Type TGUIListItem Extends TGUIobject
 		'this makes the "listitem-clicked"-event filterable even
 		'if the itemclass gets extended (compared to the general approach
 		'of "guiobject.onclick")
-		EventManager.triggerEvent(TEventSimple.Create("GUIListItem.onClick", null, Self, triggerEvent.GetReceiver()) )
+		EventManager.triggerEvent(TEventSimple.Create("GUIListItem.onClick", Null, Self, triggerEvent.GetReceiver()) )
 	End Method
 
-rem
+Rem
 	'override to ask list first
 	Method IsClickable:int()
 		Local parent:TGUIobject = Self._parent
@@ -1036,24 +1036,24 @@ endrem
 
 
 	Method Draw()
-		if not isDragged()
+		If Not isDragged()
 			'this allows to use a list in a modal dialogue
-			local upperParent:TGUIObject = TGUIListBase.FindGUIListBaseParent(self)
-			if upperParent then upperParent.RestrictViewPort()
+			Local upperParent:TGUIObject = TGUIListBase.FindGUIListBaseParent(Self)
+			If upperParent Then upperParent.RestrictViewPort()
 
 			Super.Draw()
 
-			if upperParent then upperParent.ResetViewPort()
-		else
+			If upperParent Then upperParent.ResetViewPort()
+		Else
 			Super.Draw()
-		endif
+		EndIf
 	End Method
 
 
 	Method DrawValue()
 		'draw value
 		Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
-		GetFont().drawBlock(value + " [" + Self._id + "]", GetScreenX() + 5, GetScreenY() + 2 + 0.5*(rect.getH() - GetFont().getHeight(value)), maxWidth-2, rect.GetH(), null, valueColor)
+		GetFont().drawBlock(value + " [" + Self._id + "]", GetScreenX() + 5, GetScreenY() + 2 + 0.5*(rect.getH() - GetFont().getHeight(value)), maxWidth-2, rect.GetH(), Null, valueColor)
 	End Method
 	
 
