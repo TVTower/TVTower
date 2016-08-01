@@ -4218,8 +4218,8 @@ Type GameEvents
 
 
 		local rewardText:string
-		For local i:int = 0 until achievement.rewards.length
-			rewardText :+ achievement.rewards[i].GetTitle()
+		For local i:int = 0 until achievement.GetRewards().length
+			rewardText :+ achievement.GetRewards()[i].GetTitle()
 		Next
 
 		rem
@@ -4229,10 +4229,9 @@ Type GameEvents
 			|    text |
 			'---------'
 		endrem
-		debugstop
-		local text:string = GetLocale("YOU_JUST_COMPLETED_ACHIEVEMENTTITLE").Replace("%ACHIEVEMENTTITLE%", achievement.GetTitle())
+		local text:string = GetLocale("YOU_JUST_COMPLETED_ACHIEVEMENTTITLE").Replace("%ACHIEVEMENTTITLE%", "|b|"+achievement.GetTitle()+"|/b|")
 		if rewardText
-			text :+ "~n" + GetLocale("REWARD") + ":" + rewardText
+			text :+ "~n|b|" + GetLocale("REWARD") + ":|/b|" + rewardText
 		endif
 
 

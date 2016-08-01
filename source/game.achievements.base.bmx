@@ -6,8 +6,15 @@ Import "../source/Dig/base.util.event.bmx"
 Import "../source/Dig/base.util.localization.bmx"
 
 
-Type TAchievementCollection Extends TGameObjectCollection
+Type TAchievementCollection
+	Field achievements:TGameObjectCollection = new TGameObjectCollection
+	Field tasks:TGameObjectCollection = new TGameObjectCollection
+	Field rewards:TGameObjectCollection = new TGameObjectCollection
+	
 	Global _instance:TAchievementCollection
+	'as achievements / taks / rewards base on TAchievementBaseType
+	'they can share a map
+	Global registeredElements:TMap = CreateMap()
 
 
 	Function GetInstance:TAchievementCollection()
@@ -16,12 +23,118 @@ Type TAchievementCollection Extends TGameObjectCollection
 	End Function
 
 
+
+	'=== ACHIEVEMENTS ===
+	
+	Method GetAchievement:TAchievement(guid:string)
+		return TAchievement(achievements.GetByGUID(guid))
+	End Method
+
+
+	Method AddAchievement:int(obj:TGameObject)
+		if TAchievement(obj) then return achievements.Add(obj)
+		return False
+	End Method
+
+
+	Method RemoveAchievement:int(obj:TGameObject)
+		if TAchievement(obj) then return achievements.Remove(obj)
+		return False
+	End Method
+
+
+	Method RemoveAchievementByGuid:int(guid:string)
+		return achievements.RemoveByGuid(guid)
+	End Method
+		
+
+	'=== TASKS ===
+	Method GetTask:TAchievementTask(guid:string)
+		return TAchievementTask(tasks.GetByGUID(guid))
+	End Method
+
+
+	Method AddTask:int(obj:TGameObject)
+		if TAchievementTask(obj) then return tasks.Add(obj)
+		return False
+	End Method
+
+
+	Method RemoveTask:int(obj:TGameObject)
+		if TAchievementTask(obj) then return tasks.Remove(obj)
+		return False
+	End Method
+
+
+	Method RemoveTaskByGuid:int(guid:string)
+		return tasks.RemoveByGuid(guid)
+	End Method
+
+
+
+	'=== REWARDS ===
+	
+	Method GetReward:TAchievementReward(guid:string)
+		return TAchievementReward(rewards.GetByGUID(guid))
+	End Method
+
+
+	Method AddReward:int(obj:TGameObject)
+		if TAchievementReward(obj) then return rewards.Add(obj)
+		return False
+	End Method
+
+
+	Method RemoveReward:int(obj:TGameObject)
+		if TAchievementReward(obj) then return rewards.Remove(obj)
+		return False
+	End Method
+
+
+	Method RemoveRewardByGuid:int(guid:string)
+		return rewards.RemoveByGuid(guid)
+	End Method
+
+
+
+	'=== ELEMENT CREATOR ===
+
+	'register an achievement/task/reward by passing the name + creator function
+	Function RegisterElement(elementName:string, baseType:TAchievementBaseType)
+		registeredElements.insert(elementName.ToLower(), basetype)
+	End Function
+
+
+	Function CreateElement:TAchievementBaseType(elementName:string, data:TData)
+		local element:TAchievementBaseType = TAchievementBaseType(registeredElements.ValueForKey( elementName.Tolower() ))
+		if element
+			'create/return a specific instance (of the same type)
+			return element.CreateNewInstance().Init(data)
+		endif
+		return null
+	End Function
+
+
+	Function CreateTask:TAchievementTask(elementName:string, data:TData)
+		return TAchievementTask(CreateElement(elementName, data))
+	End Function
+
+
+	Function CreateReward:TAchievementReward(elementName:string, data:TData)
+		return TAchievementReward(CreateElement(elementName, data))
+	End Function
+
+
+
+	'=== GENERIC STUFF ===
+	
 	Method Update:int(time:Long)
-		For local a:TAchievement = EachIn entries.Values()
+		For local a:TAchievement = EachIn achievements.entries.Values()
 			a.Update(time)
 		Next
 	End Method
 End Type
+
 
 '===== CONVENIENCE ACCESSOR =====
 'return collection instance
@@ -30,14 +143,21 @@ Function GetAchievementCollection:TAchievementCollection()
 End Function
 
 
+
+
 Type TAchievementBaseType Extends TGameObject
 	Field title:TLocalizedString
 	Field text:TLocalizedString
 	Field flags:int
 
-	Const STATE_UNKNOWN:int = 0
-	Const STATE_COMPLETED:int = 1
-	Const STATE_FAILED:int = 2
+	Function CreateNewInstance:TAchievementBaseType()
+		return new TAchievementBaseType
+	End Function
+
+
+	Method Init:TAchievementBaseType(data:object)
+		'stub
+	End Method
 
 
 	Method GetTitle:string()
@@ -82,11 +202,12 @@ End Type
 
 Type TAchievement Extends TAchievementBaseType
 
-	Field rewards:TAchievementReward[]
-	Field tasks:TAchievementTask[]
-	Field state:Int[] = [0,0,0,0]
-	'time of when a player completed/failed that achievement
-	Field stateTime:Long[] = [--1:Long,-1:Long,-1:Long,-1:Long]
+	Field rewardGUIDs:string[]
+	Field taskGUIDs:string[]
+	Field stateSet:TAchievementStateSet = new TAchievementStateSet
+	'cache
+	Field _rewards:TAchievementReward[] {nosave}
+	Field _tasks:TAchievementTask[] {nosave}
 
 	Const FLAG_CANFAIL:int = 1
 	Const FLAG_EXCLUSIVEWINNER:int = 2
@@ -95,7 +216,17 @@ Type TAchievement Extends TAchievementBaseType
 	Method New()
 		flags = FLAG_CANFAIL
 	End Method
+
 	
+	Function CreateNewInstance:TAchievement()
+		return new TAchievement
+	End Function
+
+
+	Method Init:TAchievement(data:object)
+		return self
+	End Method
+
 
 	Method SetGUID:Int(GUID:String)
 		If GUID="" Then GUID = "gameachievement-"+id
@@ -106,6 +237,7 @@ Type TAchievement Extends TAchievementBaseType
 	Method ToString:string()
 		local res:string = ""
 		res :+ "Achievement ~q" + GetTitle() + "~q (" + GetGuid() + ")" + "~n"
+		local tasks:TAchievementTask[] = GetTasks()
 		if not tasks or tasks.length = 0
 			res :+ "  Tasks:" + "~n"
 			res :+ "    -/-" + "~n"
@@ -137,30 +269,43 @@ Type TAchievement Extends TAchievementBaseType
 	End Method
 
 
-	Method AddReward:TAchievement(reward:TAchievementReward)
-		If reward And Not HasReward(reward) Then rewards :+ [reward]
+	'=== REWARDS ===
+	Method GetRewards:TAchievementReward[]()
+		if not _rewards and rewardGUIDs
+			_rewards = new TAchievementReward[ 0 ]
+			for local guid:string = EachIn rewardGUIDs
+				local r:TAchievementReward = GetAchievementCollection().GetReward( guid )
+				if r then _rewards :+ [r]
+			next
+		endif
+		return _rewards
+	End Method
+	
+
+	Method AddReward:TAchievement(guid:string)
+		If guid And Not HasReward(null, guid)
+			rewardGUIDs :+ [guid]
+			'invalidate cache
+			_rewards = null
+		EndIf
 		Return Self
 	End Method
 
 
 	Method GetReward:TAchievementReward(rewardGUID:string, index:int = 0)
 		if rewardGUID then index = GetRewardIndex(null, rewardGUID)
-		if index < 0 then return Null
-		return rewards[index]
+		if index < 0 or index >= rewardGUIDs.length then return Null
+		return GetRewards()[index]
 	End Method
 
 
 	Method GetRewardIndex:Int(reward:TAchievementReward=null, rewardGUID:String="")
-		if not rewards or rewards.length = 0 then return -1
-		If reward
-			For Local index:Int = 0 Until rewards.length
-				If rewards[index] = reward Then Return index
-			Next
-		ElseIf rewardGUID
-			For Local index:Int = 0 Until rewards.length
-				If rewards[index] And rewards[index].GetGUID() = rewardGUID Then Return index
-			Next
-		EndIf
+		if not rewardGUIDs then return -1 'this also is "not" for rewardGUIDs.length = 0
+		If reward then rewardGUID = reward.GetGUID()
+
+		For Local index:Int = 0 Until rewardGUIDs.length
+			If rewardGUIDs[index] = rewardGUID Then Return index
+		Next
 		Return -1
 	End Method
 
@@ -174,41 +319,56 @@ Type TAchievement Extends TAchievementBaseType
 		Local removeIndex:Int = GetRewardIndex(reward, rewardGUID)
 		If removeIndex = -1 Then Return Self
 
-		If rewards.length = 0
+		If not rewardGUIDs 'includes rewardGUIDs.length = 0
 			Return Self
-		ElseIf rewards.length = 1
-			rewards = New TAchievementReward[0]
+		ElseIf rewardGUIDs.length = 1
+			rewardGUIDs = New string[0]
 		Else
-			rewards = rewards[.. removeIndex] + rewards[removeIndex+1 ..]
+			rewardGUIDs = rewardGUIDs[.. removeIndex] + rewardGUIDs[removeIndex+1 ..]
 		EndIf
+
+		'invalidate cache
+		_rewards = null
 	End Method
 
 
 
-	Method AddTask:TAchievement(task:TAchievementTask)
-		If task And Not HasTask(task) Then tasks :+ [task]
+	'=== TASKS ===
+	Method GetTasks:TAchievementTask[]()
+		if not _tasks and taskGUIDs
+			for local guid:string = EachIn taskGUIDs
+				local t:TAchievementTask = GetAchievementCollection().GetTask( guid )
+				if t then _tasks :+ [t]
+			next
+		endif
+		return _tasks
+	End Method
+
+
+	Method AddTask:TAchievement(guid:string)
+		If guid And Not HasTask(null, guid)
+			taskGUIDs :+ [guid]
+			'invalidate cache
+			_tasks = null
+		EndIf
 		Return Self
 	End Method
 
 
 	Method GetTask:TAchievementTask(taskGUID:string, index:int = 0)
 		if taskGUID then index = GetTaskIndex(null, taskGUID)
-		if index < 0 then return Null
-		return tasks[index]
+		if index < 0 or index >= taskGUIDs.length then return Null
+		return GetTasks()[index]
 	End Method
 
 
 	Method GetTaskIndex:Int(task:TAchievementTask=null, taskGUID:String="")
-		if not tasks or tasks.length = 0 then return -1
-		If task
-			For Local index:Int = 0 Until tasks.length
-				If tasks[index] = task Then Return index
-			Next
-		ElseIf taskGUID
-			For Local index:Int = 0 Until tasks.length
-				If tasks[index] And tasks[index].GetGUID() = taskGUID Then Return index
-			Next
-		EndIf
+		if not taskGUIDs then return -1 'this also is "not" for taskGUIDs.length = 0
+		If task then taskGUID = task.GetGUID()
+
+		For Local index:Int = 0 Until taskGUIDs.length
+			If taskGUIDs[index] = taskGUID Then Return index
+		Next
 		Return -1
 	End Method
 
@@ -222,21 +382,30 @@ Type TAchievement Extends TAchievementBaseType
 		Local removeIndex:Int = GetTaskIndex(task, taskGUID)
 		If removeIndex = -1 Then Return Self
 
-		If tasks.length = 0
+		If not taskGUIDs 'includes taskGUIDs.length = 0
 			Return Self
-		ElseIf tasks.length = 1
-			tasks = New TAchievementTask[0]
+		ElseIf taskGUIDs.length = 1
+			taskGUIDs = New string[0]
 		Else
-			tasks = tasks[.. removeIndex] + tasks[removeIndex+1 ..]
+			taskGUIDs = taskGUIDs[.. removeIndex] + taskGUIDs[removeIndex+1 ..]
 		EndIf
+
+		'invalidate cache
+		_tasks = null
 	End Method
 
+	
 
 	Method GiveRewards:int(playerID:int, time:Long=0)
 		print "  Achievement.GiveRewards: "+playerID
-		For local r:TAchievementReward = eachin rewards
+		For local r:TAchievementReward = eachin GetRewards()
 			r.GiveToPlayer(playerID)
 		Next
+	End Method
+
+
+	Method IsCompleted:int(playerID:int, time:Long=0)
+		
 	End Method
 
 
@@ -263,31 +432,33 @@ Type TAchievement Extends TAchievementBaseType
 
 
 	Method Update(time:Long = 0)
+		'you cannot complete or fail an achievement if there is no task
+		if taskGUIDs.length = 0 then return
+		
 		'=== UPDATE & CHECK TASK COMPLETITION ===
-		For local t:TAchievementTask = eachIn tasks
+		For local t:TAchievementTask = eachIn GetTasks()
 			t.Update(time)
 		Next
 
 		For local i:int = 1 to 4
+			local state:int = stateSet.GetState(i, time)
 			'already completed - you cannot fail afterwards
-			if stateTime[i-1] >= 0 and state[i-1] = STATE_COMPLETED then continue
+			if state = stateSet.STATE_COMPLETED then continue
 			
 			local completedCount:int = 0
 			local failedCount:int = 0
-			For local t:TAchievementTask = eachIn tasks
+			For local t:TAchievementTask = eachIn GetTasks()
 				if t.IsCompleted(i, time) then completedCount :+ 1
 				if t.IsFailed(i, time) then failedCount :+ 1
 			Next
 
-			if completedCount = tasks.length and state[i-i] <> STATE_COMPLETED
-				stateTime[i-1] = time
-				state[i-1] = STATE_COMPLETED
+			if completedCount = taskGUIDs.length and state <> stateSet.STATE_COMPLETED
+				stateSet.SetState(i, time, True)
 
 				OnComplete(i, time)
 				GiveRewards(i, time)
-			elseif failedCount = tasks.length and CanFail() and state[i-1] <> STATE_FAILED
-				stateTime[i-1] = time
-				state[i-1] = STATE_FAILED
+			elseif failedCount = taskGUIDs.length and CanFail() and state <> stateSet.STATE_FAILED
+				stateSet.SetState(i, time, False)
 
 				OnFail(i, time)
 			endif
@@ -301,17 +472,19 @@ End Type
 
 'the individual jobs which have to get done for a specific achievement
 Type TAchievementTask Extends TAchievementBaseType
-	'ALL ARRAYS: 0=generic, 1-4 = players
-
-	'current states
-	Field state:Int[] = [0,0,0,0,0]
-	'time of when a player completed that task
-	Field stateTime:Long[] = [-1:Long, -1:Long,-1:Long,-1:Long,-1:Long]
-	'indicators whether the state just changed
-	Field stateChanged:int[] = [0,0,0,0,0]
-
+	Field stateSet:TAchievementStateSet = new TAchievementStateSet
 	Field timeCreated:Long = -1
 	Field timeLimit:Long = -1
+
+
+	Function CreateNewInstance:TAchievementTask()
+		return new TAchievementTask
+	End Function
+
+
+	Method Init:TAchievementTask(config:object)
+		'stub
+	End Method
 
 
 	Method ToString:string()
@@ -319,7 +492,7 @@ Type TAchievementTask Extends TAchievementBaseType
 		res :+ "Task (" + GetGuid() + ")" + "~n"
 
 		local completedString:string = ""
-		for local i:int = 0 To stateTime.length 'include 0 + arrayLength
+		for local i:int = 0 To stateSet.stateTime.length 'include 0 + arrayLength
 			if completedString then completedString :+ "  "
 			if IsCompleted(i)
 				completedString :+ i+"=Y"
@@ -331,11 +504,6 @@ Type TAchievementTask Extends TAchievementBaseType
 		res :+ "  completed: "+completedString + "~n"
 
 		return res
-	End Method
-
-
-	Method Init:TAchievementTask(config:object)
-		'stub
 	End Method
 
 
@@ -352,101 +520,33 @@ Type TAchievementTask Extends TAchievementBaseType
 
 
 	Method SetCompleted:TAchievementTask(playerID:int=0, time:long)
-		return SetState(playerID, time, True)
-	End Method
-
-
-	Method SetFailed:TAchievementTask(playerID:int=0, time:long)
-		return SetState(playerID, time, False)
-	End Method
-
-
-	Method SetState:TAchievementTask(playerID:int=0, time:long, bool:int=True)
-		If stateTime.length < playerID Then Return self
-
-		if playerID < 0 then playerID = 0
-
-		if playerID = 0
-			For local i:int = 1 until stateTime.length-1 'skip [0]
-				stateTime[playerID] = time
-				'instead of calling SetCompleted recursively we avoid
-				'multiple cache-resets by just adjusting the required
-				'values here
-				if bool
-					state[playerID] = STATE_COMPLETED
-				else
-					state[playerID] = STATE_FAILED
-				endif
-			Next
-		endif
-
-		stateTime[playerID] = time
-
-		if bool
-			state[playerID] = STATE_COMPLETED
-		else
-			state[playerID] = STATE_FAILED
-		endif
-		
+		stateSet.SetState(playerID, time, True)
 		return self
 	End Method
 
 
-	Method GetState:int(playerID:int, time:long)
-		If state[0] <> STATE_UNKNOWN then return state[0]
-
-		If stateTime.length < playerID Then Return False
-		If playerID < 0 then playerID = 0
-
-
-		If playerID = 0
-			local stateMask:int = 0
-			For Local i:Int = 1 until state.length 'skip [0]
-				stateMask :| GetState(i, time)
-			Next
-
-			if stateMask = STATE_COMPLETED
-				state[0] = STATE_COMPLETED
-			elseif stateMask = STATE_FAILED
-				state[0] = STATE_FAILED
-			else
-				state[0] = STATE_UNKNOWN
-			endif
-		EndIf
-
-		'did the adjustment happen already?
-		if (stateTime[playerID] >= 0 and stateTime[playerID] <= time)
-			Return state[playerID]
-		else
-			Return STATE_UNKNOWN
-		endif
+	Method SetFailed:TAchievementTask(playerID:int=0, time:long)
+		stateSet.SetState(playerID, time, False)
+		return self
 	End Method
-		
+
 
 	'without playerID, it returns whether ALL have completed the task
 	Method IsCompleted:Int(playerID:Int=0, time:Long=0)
-		return GetState(playerID, time) = STATE_COMPLETED
+		return stateSet.IsCompleted(playerID, time)
 	End Method
 
 
 	'without playerID, it returns whether ALL have failed the task
 	Method IsFailed:Int(playerID:Int=0, time:Long=0)
-		return GetState(playerID, time) = STATE_FAILED
+		return stateSet.IsFailed(playerID, time)
 	End Method
 
 
 	Method isStateChanged:int(playerID:int=-1)
-		if playerID <= 0 or playerID >= stateChanged.length
-			playerID = 0
-		endif
-
-		return stateChanged[playerID] <> STATE_UNKNOWN
+		return stateSet.IsStateChanged(playerID)
 	End Method
 
-
-	Method GetStates:int[]()
-		return state
-	End Method
 
 
 	Method OnComplete:int(playerID:int, time:Long)
@@ -465,25 +565,19 @@ Type TAchievementTask Extends TAchievementBaseType
 		'check all entries/player whether they just completed/failed a
 		'task
 		'if so, run a custom method
-		For local i:Int = 1 until stateTime.length
-			if stateChanged[i] <> STATE_COMPLETED
-				if IsCompleted(i, time)
-					'generic and specific indicators
-					stateChanged[0] = STATE_COMPLETED
-					stateChanged[i] = STATE_COMPLETED
+		stateSet.ResetStateChanged()
+		stateSet.Update(time)
 
-					OnComplete(i, time)
+		'someone changed their state...
+		if stateSet.GetStateChanged(0) <> stateSet.STATE_UNKNOWN
+			For local playerID:int = 1 to 4
+				if not stateSet.IsCompleted(playerID, time) and stateSet.GetStateChanged(playerID) = stateSet.STATE_COMPLETED
+					OnComplete(playerID, time)
+				elseif not stateSet.IsFailed(playerID, time) and stateSet.GetStateChanged(playerID) = stateSet.STATE_FAILED
+					OnFail(playerID, time)
 				endif
-			else 'if stateChanged[i] = STATE_COMPLETED)
-				if IsFailed(i, time)
-					'generic and specific indicators
-					stateChanged[0] = STATE_FAILED
-					stateChanged[i] = STATE_FAILED
-
-					OnFail(i, time)
-				endif
-			endif
-		Next
+			Next
+		endif
 	End Method
 End Type
 
@@ -496,6 +590,11 @@ Type TAchievementReward Extends TAchievementBaseType
 
 	'players can only get this reward once in a game
 	Const FLAG_ONETIMEREWARD:int = 1
+
+
+	Function CreateNewInstance:TAchievementReward()
+		return new TAchievementReward
+	End Function
 
 
 	Method Init:TAchievementReward(config:object)
@@ -543,3 +642,147 @@ Type TAchievementReward Extends TAchievementBaseType
 End Type
 
 
+
+
+Type TAchievementStateSet
+	Field state:Int[] = [0,0,0,0,0]
+	'time of when a player completed/failed that achievement
+	Field stateTime:Long[] = [-1:Long,-1:Long,-1:Long,-1:Long,-1:Long]
+	'indicators whether the state just changed
+	Field stateChanged:int[] = [0,0,0,0,0]
+
+	Const STATE_UNKNOWN:int = 0
+	Const STATE_COMPLETED:int = 1
+	Const STATE_FAILED:int = 2
+
+
+	Method GetStates:int[]()
+		return state
+	End Method
+	
+
+	'for playerID=0 it sets the state for all
+	Method SetState:TAchievementStateSet(playerID:int=0, time:long, bool:int=True)
+		If stateTime.length < playerID Then Return self
+
+		if playerID < 0 then playerID = 0
+
+		if playerID = 0
+			For local i:int = 1 until stateTime.length-1 'skip [0]
+				stateTime[playerID] = time
+				'instead of calling SetCompleted recursively we avoid
+				'multiple cache-resets by just adjusting the required
+				'values here
+				if bool
+					state[playerID] = STATE_COMPLETED
+				else
+					state[playerID] = STATE_FAILED
+				endif
+			Next
+		endif
+
+		stateTime[playerID] = time
+
+		if bool
+			state[playerID] = STATE_COMPLETED
+		else
+			state[playerID] = STATE_FAILED
+		endif
+		
+		return self
+	End Method
+
+
+	'for playerID=0 it returns if _all_ have the same value
+	Method GetState:int(playerID:int, time:long)
+		If stateTime.length < playerID Then Return False
+		If playerID < 0 then playerID = 0
+
+
+		If playerID = 0
+			'loop over all players and if they have a specific state
+			'add this to the bitmask
+			'set the state to a defined one if _all_ have the same state
+			'(so stateMask is exactly the option's value)
+			local stateMask:int = 0
+			For Local i:Int = 1 until state.length 'skip [0]
+				local s:int = GetState(i, time)
+				if s = STATE_UNKNOWN
+					stateMask = 0
+					exit
+				endif
+				
+				stateMask :| s
+			Next
+
+			if stateMask = STATE_COMPLETED
+				state[0] = STATE_COMPLETED
+			elseif stateMask = STATE_FAILED
+				state[0] = STATE_FAILED
+			else
+				state[0] = STATE_UNKNOWN
+			endif
+		EndIf
+
+		'did the adjustment happen already?
+		if (stateTime[playerID] >= 0 and stateTime[playerID] <= time)
+			Return state[playerID]
+		else
+			Return STATE_UNKNOWN
+		endif
+	End Method
+
+
+	Method GetStateChanged:int(playerID:int)
+		If stateChanged.length < playerID Then Return 0
+		If playerID < 0 then playerID = 0
+
+		return stateChanged[playerID]
+	End Method
+
+
+	Method ResetStateChanged:int()
+		For local i:Int = 0 until stateTime.length
+			stateChanged[i] = STATE_UNKNOWN
+		Next
+	End Method
+
+
+	Method IsCompleted:int(playerID:int, time:Long)
+		return GetState(playerID, time) = STATE_COMPLETED
+	End Method
+
+	
+	Method IsFailed:int(playerID:int, time:Long)
+		return GetState(playerID, time) = STATE_FAILED
+	End Method
+
+
+	Method IsStateChanged:int(playerID:int)
+		return GetStateChanged(playerID) <> STATE_UNKNOWN
+	End Method
+
+
+	Method Update:int(time:long)
+		'check all entries/player whether they just completed/failed a
+		'task
+		'if so, run a custom method
+		For local i:Int = 1 until stateTime.length
+			if stateChanged[i] <> STATE_COMPLETED
+				if IsCompleted(i, time)
+					'generic and specific indicators
+					stateChanged[0] = STATE_COMPLETED
+					stateChanged[i] = STATE_COMPLETED
+				endif
+			endif
+			'you can only fail if you completed before...
+			if stateChanged[i] <> STATE_FAILED
+				if IsFailed(i, time)
+					'generic and specific indicators
+					stateChanged[0] = STATE_FAILED
+					stateChanged[i] = STATE_FAILED
+				endif
+			endif
+		Next
+	End Method	
+End Type

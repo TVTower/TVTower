@@ -5,6 +5,7 @@ Import "Dig/base.util.xmlhelper.bmx"
 Import "Dig/base.util.hashes.bmx"
 Import "Dig/base.util.mersenne.bmx"
 
+Import "game.achievements.bmx"
 Import "game.production.scripttemplate.bmx"
 Import "game.programme.programmelicence.bmx"
 Import "game.programme.adcontract.bmx"
@@ -20,6 +21,7 @@ Type TDatabaseLoader
 	Field moviesCount:Int, totalMoviesCount:Int
 	Field seriesCount:Int, totalSeriesCount:Int
 	Field newsCount:Int, totalNewsCount:Int
+	Field achievementCount:Int, totalAchievementCount:Int
 	Field contractsCount:Int, totalContractsCount:Int
 
 	Field loadError:String = ""
@@ -112,6 +114,7 @@ Type TDatabaseLoader
 
 		'add that files at the top
 		'(in reversed order as each is added at top of the others!)
+		dirTree.AddFile(dbDirectory+"/database_achievements.xml", True) '5
 		dirTree.AddFile(dbDirectory+"/database_programmes.xml", True) '4
 		dirTree.AddFile(dbDirectory+"/database_news.xml", True) '3
 		dirTree.AddFile(dbDirectory+"/database_ads.xml", True) '2
@@ -151,6 +154,7 @@ Type TDatabaseLoader
 		moviesCount = 0
 		seriesCount = 0
 		newsCount = 0
+		achievementCount = 0
 		contractsCount = 0
 
 		'recognize version
@@ -274,6 +278,18 @@ Type TDatabaseLoader
 				If nodeScriptTemplate.getName() <> "scripttemplate" then continue
 
 				LoadV3ScriptTemplateFromNode(nodeScriptTemplate, xml)
+			Next
+		endif
+
+
+
+		'===== IMPORT ALL ACHIEVEMENTS =====
+		local nodeAllAchievements:TxmlNode = xml.FindRootChild("allachievements")
+		if nodeAllAchievements
+			For local nodeAchievement:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllAchievements)
+				If nodeAchievement.getName() <> "achievement" then continue
+
+				LoadV3AchievementFromNode(nodeAchievement, xml)
 			Next
 		endif
 
@@ -514,6 +530,149 @@ Type TDatabaseLoader
 		return newsEvent
 	End Method	
 
+
+	Method LoadV3AchievementFromNode:TAchievement(node:TxmlNode, xml:TXmlHelper)
+		local GUID:String = xml.FindValue(node,"id", "")
+		local doAdd:int = True
+
+		'fetch potential meta data
+		LoadV3AchievementElementsMetaDataFromNode(GUID, node, xml)
+
+		'try to fetch an existing one
+		local achievement:TAchievement = GetAchievementCollection().GetAchievement(GUID)
+		if not achievement
+			achievement = new TAchievement
+			achievement.title = new TLocalizedString
+			achievement.text = new TLocalizedString
+			achievement.GUID = GUID
+		else
+			doAdd = False
+
+			TLogger.Log("LoadV3AchievementFromNode()", "Extending achievement ~q"+achievement.GetTitle()+"~q. GUID="+achievement.GetGUID(), LOG_XML)
+		endif
+		
+		'=== LOCALIZATION DATA ===
+		achievement.title.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "title")) )
+		achievement.text.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "text")) )
+
+		'=== DATA ===
+		local nodeData:TxmlNode = xml.FindChild(node, "data")
+		local data:TData = new TData
+		xml.LoadValuesToData(nodeData, data, ["flags"])
+
+		achievement.flags = data.GetInt("flags", achievement.flags)
+
+
+		'=== TASKS ===
+		local nodeTasks:TxmlNode = xml.FindChild(node, "tasks")
+		For local nodeElement:TxmlNode = EachIn xml.GetNodeChildElements(nodeTasks)
+			If nodeElement.getName() <> "task" then continue
+
+			LoadV3AchievementElementFromNode("task", achievement, nodeElement, xml)
+		Next
+
+
+		'=== REWARDS ===
+		local nodeRewards:TxmlNode = xml.FindChild(node, "rewards")
+		For local nodeElement:TxmlNode = EachIn xml.GetNodeChildElements(nodeRewards)
+			If nodeElement.getName() <> "reward" then continue
+
+			LoadV3AchievementElementFromNode("reward", achievement, nodeElement, xml)
+		Next
+
+
+		'debug
+		rem
+		print "==== ACHIEVEMENT ===="
+		print achievement.GetTitle()+ " ("+achievement.GetGUID()+")"
+		print "  tasks: "+achievement.taskGUIDs.length
+		print "  rewards: "+achievement.rewardGUIDs.length
+		endrem
+
+	
+		'=== ADD TO COLLECTION ===
+		if doAdd
+			GetAchievementCollection().AddAchievement(achievement)
+			achievementCount :+ 1
+			totalAchievementCount :+ 1
+		endif
+
+		return achievement
+	End Method
+
+
+
+	Method LoadV3AchievementElementFromNode:int(elementName:string="task", source:TAchievement, node:TxmlNode, xml:TXmlHelper)
+		local GUID:String = xml.FindValue(node,"id", "")
+
+		'fetch potential meta data
+		local metaData:TData = LoadV3AchievementElementsMetaDataFromNode(GUID, node, xml)
+
+		Local reuseExisting:int = False
+
+		'skip forbidden users (DEV)
+		'if not IsAllowedUser(metaData.GetString("createdBy"), "achievement") then return Null
+
+
+		'try to fetch an existing one
+		local element:TAchievementBaseType
+		if elementName = "task"
+			element = GetAchievementCollection().GetTask(GUID)
+		elseif elementName = "reward"
+			element = GetAchievementCollection().GetReward(GUID)
+		endif
+		if element
+			reuseExisting = True
+			TLogger.Log("LoadV3AchievementElementFromNode()", "Extending achievement "+elementName+" ~q"+element.GetTitle()+"~q. GUID="+element.GetGUID(), LOG_XML)
+		endif
+
+
+		'=== DATA ===
+		local nodeData:TxmlNode = xml.FindChild(node, "data")
+		local data:TData = new TData
+		xml.LoadAllValuesToData(nodeData, data)
+		'check if the element has all needed configurations
+		'for now this is only "type"
+		For local f:string = EachIn ["type"]
+			if not data.Has(f) then ThrowNodeError("DB: <"+elementName+"> is missing ~q" + f+"~q.", nodeData)
+		Next
+
+		local elementType:string = data.GetString("type")
+		if not element and not elementType then return False
+
+
+		if not element
+			element = GetAchievementCollection().CreateElement(elementName+"::"+elementType, data)
+			if not element then return False
+		endif
+
+
+		if not reuseExisting
+			if not element.title then element.title = new TLocalizedString
+			if not element.text then element.text = new TLocalizedString
+			element.SetGUID( GUID )
+		endif
+
+
+		'=== LOCALIZATION DATA ===
+		if element
+			element.title.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "title")) )
+			element.text.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "text")) )
+		endif
+		
+
+		if elementName = "task"
+			source.AddTask( GUID )
+			GetAchievementCollection().AddTask( element )
+		elseif elementName = "reward"
+			source.AddReward( GUID ) 
+			GetAchievementCollection().AddReward( element )
+		endif
+
+
+		return True
+	End Method
+		
 
 	Method LoadV3AdContractBaseFromNode:TAdContractBase(node:TxmlNode, xml:TXmlHelper)
 		local GUID:String = xml.FindValue(node,"id", "")
@@ -1348,6 +1507,18 @@ Type TDatabaseLoader
 		local data:TData = new TData
 		'only set creator if it is the "non overridden" one
 		if not GetNewsEventCollection().GetByGUID(GUID)
+			data = LoadV3CreatorMetaDataFromNode(GUID, data, node, xml)
+		endif
+		return data
+	End Method
+
+
+	Method LoadV3AchievementElementsMetaDataFromNode:TData(GUID:string, node:TxmlNode, xml:TXmlHelper)
+		local data:TData = new TData
+		'only set creator if it is the "non overridden" one
+		if not GetAchievementCollection().GetAchievement(GUID) and ..
+		   not GetAchievementCollection().GetTask(GUID) and ..
+		   not GetAchievementCollection().GetReward(GUID)	   
 			data = LoadV3CreatorMetaDataFromNode(GUID, data, node, xml)
 		endif
 		return data
