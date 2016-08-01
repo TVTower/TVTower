@@ -785,6 +785,3 @@ YOU_JUST_COMPLETED_ACHIEVEMENTTITLE = Du hast soeben "%ACHIEVEMENTTITLE%" erfül
 ACHIEVEMENT_COMPLETED = Erfolg errungen
 REWARD = Belohnung
 TASK = Aufgabe
-
-REACH_AUDIENCE_QUOTE_OF_VALUE = Erreiche eine Zuschauerquote von %VALUE%.
-REACH_AUDIENCE_NUMBER_OF_VALUE = Erreiche eine Zuschauerzahl von %VALUE%.

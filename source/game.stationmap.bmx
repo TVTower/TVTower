@@ -547,6 +547,7 @@ Type TStationMapCollection
 				returnValue:+ populationmap[point.x, point.y]
 			EndIf
 		Next
+
 		Return returnValue
 	End Method
 
@@ -703,6 +704,10 @@ Type TStationMap {_exposeToLua="selected"}
 	'returns maximum audience a player's stations cover
 	Method RecalculateAudienceSum:Int() {_exposeToLua}
 		reach = GetStationMapCollection().RecalculateAudienceSum(stations)
+
+		'inform others
+		EventManager.triggerEvent( TEventSimple.Create( "StationMap.onRecalculateAudienceSum", new TData.addNumber("reach", reach), Self ) )
+
 		return reach
 	End Method
 

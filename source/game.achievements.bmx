@@ -113,20 +113,16 @@ Type TAchievementTask_ReachAudience extends TAchievementTask
 	'override
 	Method GetTitle:string()
 		local t:string = Super.GetTitle()
-		if not t
-			if minAudienceAbsolute >= 0
-				t = GetLocale("REACH_AUDIENCE_NUMBER_OF_VALUE").Replace("%VALUE%", TFunctions.dottedValue(minAudienceAbsolute))
-			elseif minAudienceQuote >= 0
-				t = GetLocale("REACH_AUDIENCE_QUOTE_OF_VALUE").Replace("%VALUE%", MathHelper.NumberToString(minAudienceQuote*100.0,2, True)+"%")
-			else
-				t = "Unknown ReachAudience-Task"
-			endif
+		if minAudienceAbsolute >= 0
+			t = t.Replace("%VALUE%", TFunctions.dottedValue(minAudienceAbsolute))
+		elseif minAudienceQuote >= 0
+			t = t.Replace("%VALUE%", MathHelper.NumberToString(minAudienceQuote*100.0,2, True)+"%")
 		endif
 		return t
 	End Method
 		
 
-	Method Init:TAchievementTask(config:object)
+	Method Init:TAchievementTask_ReachAudience(config:object)
 		local configData:TData = TData(config)
 		if not configData then return null
 
@@ -165,6 +161,75 @@ Type TAchievementTask_ReachAudience extends TAchievementTask
 
 		return Super.Update(time)
 	End Method
+End Type
+
+
+
+
+Type TAchievementTask_ReachBroadcastArea extends TAchievementTask
+	Field minReachAbsolute:Int = -1
+	Field minReachPercentage:Float = -1.0
+
+
+	'override
+	Function CreateNewInstance:TAchievementTask_ReachBroadcastArea()
+		local instance:TAchievementTask_ReachBroadcastArea = new TAchievementTask_ReachBroadcastArea
+
+		'instead of registering them in "new()" (which is run for the
+		'"creator instance" too) we do it here
+		instance.eventListeners :+ [EventManager.registerListenerMethod( "StationMap.onRecalculateAudienceSum", instance, "onRecalculateAudienceSum" ) ]
+
+		return instance
+	End Function
+
+		
+	'override
+	Method GetTitle:string()
+		local t:string = Super.GetTitle()
+		if minReachAbsolute >= 0
+			t = t.Replace("%VALUE%", TFunctions.dottedValue(minReachAbsolute))
+		elseif minReachPercentage >= 0
+			t = t.Replace("%VALUE%", MathHelper.NumberToString(minReachPercentage*100.0,2, True)+"%")
+		endif
+		return t
+	End Method
+		
+
+	Method Init:TAchievementTask_ReachBroadcastArea(config:object)
+		local configData:TData = TData(config)
+		if not configData then return null
+
+		minReachAbsolute = configData.GetInt("minReachAbsolute", minReachAbsolute)
+		minReachPercentage = configData.GetFloat("minReachPercentage", minReachPercentage)
+
+		return self
+	End Method
+
+
+	Method onRecalculateAudienceSum:int(triggerEvent:TEventBase)
+print "onRecalculateAudienceSum"
+		local map:TStationMap = TStationMap(triggerEvent.GetSender())
+		if not map then return False
+
+		local time:Long = GetWorldTime().GetTimeGone()
+
+
+		if IsCompleted(map.owner, time) or IsFailed(map.owner, time) then return False
+
+		if minReachAbsolute >= 0 and map.GetReach() >= minReachAbsolute
+print "complete: " + GetWorldTime().GetFormattedTime()
+			SetCompleted(map.owner, time)
+		endif
+		if minReachPercentage >= 0 and map.getCoverage() >= minReachPercentage
+print "???? complete: " + GetWorldTime().GetFormattedTime()
+			SetCompleted(map.owner, time)
+		endif
+
+		return True
+	End Method
+
+	'not needed
+	'Method Update:int(time:long)
 End Type
 
 
@@ -214,6 +279,7 @@ End Type
 '=== REGISTER CREATORS ===
 'TASKS
 GetAchievementCollection().RegisterElement("task::ReachAudience", new TAchievementTask_ReachAudience)
+GetAchievementCollection().RegisterElement("task::ReachBroadcastArea", new TAchievementTask_ReachBroadcastArea)
 'REWARDS
 GetAchievementCollection().RegisterElement("reward::Money", new TAchievementReward_Money)
 

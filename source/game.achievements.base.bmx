@@ -399,6 +399,7 @@ Type TAchievement Extends TAchievementBaseType
 	Method GiveRewards:int(playerID:int, time:Long=0)
 		print "  Achievement.GiveRewards: "+playerID
 		For local r:TAchievementReward = eachin GetRewards()
+		print "       reward:" + r.GetTitle()
 			r.GiveToPlayer(playerID)
 		Next
 	End Method
@@ -420,14 +421,14 @@ Type TAchievement Extends TAchievementBaseType
 
 	Method OnComplete:int(playerID:int, time:Long=0)
 		EventManager.triggerEvent(TEventSimple.Create("Achievement.OnComplete", New TData.addNumber("playerID", playerID).addNumber("time", time), Self))
-		print "  Achievement.OnComplete: "+playerID
+'		print "  Achievement.OnComplete: "+playerID
 	End Method
 
 
 	'called if a one-time-chance-achievement fails
 	Method OnFail:int(playerID:int, time:Long=0)
 		EventManager.triggerEvent(TEventSimple.Create("Achievement.OnFail", New TData.addNumber("playerID", playerID).addNumber("time", time), Self))
-		print "  Achievement.OnFail: "+playerID
+'		print "  Achievement.OnFail: "+playerID
 	End Method
 
 
@@ -475,6 +476,12 @@ Type TAchievementTask Extends TAchievementBaseType
 	Field stateSet:TAchievementStateSet = new TAchievementStateSet
 	Field timeCreated:Long = -1
 	Field timeLimit:Long = -1
+	Field eventListeners:TLink[] {nosave}
+
+
+	Method Delete()
+		EventManager.unregisterListenersByLinks(eventListeners)
+	End Method
 
 
 	Function CreateNewInstance:TAchievementTask()

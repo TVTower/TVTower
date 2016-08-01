@@ -2,35 +2,222 @@
 <tvtdb>
 	<version value="3" />
 	<allachievements>
-		<achievement id="tvt-gameachievement-1" creator="5578" created_by="Ronny">
+		<achievement id="tvt-gameachievement-audience1" creator="5578" created_by="Ronny">
 			<title>
-				<de>100.000 Zuschauer</de>
-				<en>Audience of 100.000</en>
+				<de>Lokalsender</de>
+				<en>Regional broadcaster</en>
 			</title>
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
 			<tasks>
 				<task id="tvt-gameachievement-task-audience1" creator="5578" created_by="Ronny">
 					<title>
-						<de>Erreiche 100.000 Zuschauer</de>
-						<en>Reach an audience of 100.000</en>
+						<de>Erreiche 250.000 Zuschauer</de>
+						<en>Reach an audience of 250.000</en>
 					</title>
 					<text>
-						<de>Strahle ein Programm aus und erreiche damit mindestens 100.000 Zuschauer.</de>
-						<en>Broadcast a programme and reach an audience of at least 100.000.</en>
+						<de>Strahle ein Programm aus und erreiche damit mindestens 250.000 Zuschauer.</de>
+						<en>Broadcast a programme and reach an audience of at least 250.000.</en>
 					</text>
-					<data type="reachAudience" minAudienceAbsolute="100000" />
+					<data type="reachAudience" minAudienceAbsolute="250000" checkMinute="5" />
 				</task>
 			</tasks>
 			<rewards>
-				<reward id="tvt-gameachievement-reward-money1" creator="5578" created_by="Ronny">
+				<reward id="tvt-gameachievement-reward-audience1" creator="5578" created_by="Ronny">
 					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
 					<data type="money" money="50000" />
 				</reward>
 			</rewards>
-			<data flags="1" />
+			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
+			<data flags="0" />
+		</achievement>
+		<achievement id="tvt-gameachievement-audience2" creator="5578" created_by="Ronny">
+			<title>
+				<de>Sender auf Überholspur</de>
+				<en>Broadcaster in the fast track</en>
+			</title>
+			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
+			<text />
+			<tasks>
+				<task id="tvt-gameachievement-task-audience2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Erreiche 2,5 Millionen Zuschauer</de>
+						<en>Reach an audience of 2.5 million</en>
+					</title>
+					<text>
+						<de>Strahle ein Programm aus und erreiche damit mindestens 2,5 Millionen Zuschauer.</de>
+						<en>Broadcast a programme and reach an audience of at least 2.5 million.</en>
+					</text>
+					<data type="reachAudience" minAudienceAbsolute="2500000" checkMinute="5" />
+				</task>
+			</tasks>
+			<rewards>
+				<reward id="tvt-gameachievement-reward-audience2" creator="5578" created_by="Ronny">
+					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
+					<title />
+					<text />
+					<data type="money" money="100000" />
+				</reward>
+			</rewards>
+			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
+			<data flags="0" />
+		</achievement>
+		<achievement id="tvt-gameachievement-newsaudience1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Wald- und Wiesenjournalismus</de>
+				<en>Every day journalism</en>
+			</title>
+			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
+			<text />
+			<tasks>
+				<task id="tvt-gameachievement-task-newsaudience1" creator="5578" created_by="Ronny">
+					<title>
+						<de>Erreiche 150.000 Zuschauer mit Nachrichten</de>
+						<en>Reach an audience of 150.000 with a news show</en>
+					</title>
+					<text>
+						<de>Strahle eine Nachrichtensendung aus und erreiche damit mindestens 150.000 Zuschauer.</de>
+						<en>Broadcast a news show and reach an audience of at least 150.000.</en>
+					</text>
+					<data type="reachAudience" minAudienceAbsolute="150000" checkMinute="0" />
+				</task>
+			</tasks>
+			<rewards>
+				<reward id="tvt-gameachievement-reward-newsaudience1" creator="5578" created_by="Ronny">
+					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
+					<title />
+					<text />
+					<data type="money" money="25000" />
+				</reward>
+			</rewards>
+			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
+			<data flags="0" />
+		</achievement>
+		<achievement id="tvt-gameachievement-newsaudience2" creator="5578" created_by="Ronny">
+			<title>
+				<de>Lokaljournalismus</de>
+				<en>Regional journalism</en>
+			</title>
+			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
+			<text />
+			<tasks>
+				<task id="tvt-gameachievement-task-newsaudience2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Erreiche 1 Million Zuschauer mit Nachrichten</de>
+						<en>Reach an audience of 1 million with a news show</en>
+					</title>
+					<text>
+						<de>Strahle eine Nachrichtensendung aus und erreiche damit mindestens 1 Million Zuschauer.</de>
+						<en>Broadcast a news show and reach an audience of at least 1 million.</en>
+					</text>
+					<data type="reachAudience" minAudienceAbsolute="1000000" checkMinute="0" />
+				</task>
+			</tasks>
+			<rewards>
+				<reward id="tvt-gameachievement-reward-newsaudience2" creator="5578" created_by="Ronny">
+					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
+					<title />
+					<text />
+					<data type="money" money="50000" />
+				</reward>
+			</rewards>
+			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
+			<data flags="0" />
+		</achievement>
+		<achievement id="tvt-gameachievement-reachBroadcastArea1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Reichweite "Bronze"</de>
+				<en>Broadcast Area "Bronze"</en>
+			</title>
+			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
+			<text />
+			<tasks>
+				<task id="tvt-gameachievement-task-reachBroadcastArea1" creator="5578" created_by="Ronny">
+					<title>
+						<de>Sendegebiet mit 5 Millionen Einwohnern</de>
+						<en>Broadcast area with 5 million inhabitants</en>
+					</title>
+					<text>
+						<de>Erhöhe das Sendegebiet auf über 5 Millionen Einwohner.</de>
+						<en>Increase the broadcast area to more than 5 million inhabitants.</en>
+					</text>
+					<data type="reachBroadcastArea" minReachAbsolute="5000000" checkMinute="5" />
+				</task>
+			</tasks>
+			<rewards>
+				<reward id="tvt-gameachievement-reward-reachBroadcastArea1" creator="5578" created_by="Ronny">
+					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
+					<title />
+					<text />
+					<data type="money" money="100000" />
+				</reward>
+			</rewards>
+			<!-- flags = 2. "2" fuer "nur der erste bekommt die Belohnung" -->
+			<data flags="2" />
+		</achievement>
+		<achievement id="tvt-gameachievement-reachBroadcastArea2" creator="5578" created_by="Ronny">
+			<title>
+				<de>Reichweite "Silber"</de>
+				<en>Broadcast Area "Silver"</en>
+			</title>
+			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
+			<text />
+			<tasks>
+				<task id="tvt-gameachievement-task-reachBroadcastArea2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Sendegebiet mit 10 Millionen Einwohnern</de>
+						<en>Broadcast area with 10 million inhabitants</en>
+					</title>
+					<text>
+						<de>Erhöhe das Sendegebiet auf über 10 Millionen Einwohner.</de>
+						<en>Increase the broadcast area to more than 10 million inhabitants.</en>
+					</text>
+					<data type="reachBroadcastArea" minReachAbsolute="10000000" />
+				</task>
+			</tasks>
+			<rewards>
+				<reward id="tvt-gameachievement-reward-reachBroadcastArea2" creator="5578" created_by="Ronny">
+					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
+					<title />
+					<text />
+					<data type="money" money="150000" />
+				</reward>
+			</rewards>
+			<!-- flags = 2. "2" fuer "nur der erste bekommt die Belohnung" -->
+			<data flags="2" />
+		</achievement>
+		<achievement id="tvt-gameachievement-reachBroadcastArea3" creator="5578" created_by="Ronny">
+			<title>
+				<de>Reichweite "Gold"</de>
+				<en>Broadcast Area "Gold"</en>
+			</title>
+			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
+			<text />
+			<tasks>
+				<task id="tvt-gameachievement-task-reachBroadcastArea3" creator="5578" created_by="Ronny">
+					<title>
+						<de>Sendegebiet mit 25 Millionen Einwohnern</de>
+						<en>Broadcast area with 25 million inhabitants</en>
+					</title>
+					<text>
+						<de>Erhöhe das Sendegebiet auf über 15 Millionen Einwohner.</de>
+						<en>Increase the broadcast area to more than 15 million inhabitants.</en>
+					</text>
+					<data type="reachBroadcastArea" minReachAbsolute="25000000" />
+				</task>
+			</tasks>
+			<rewards>
+				<reward id="tvt-gameachievement-reward-reachBroadcastArea3" creator="5578" created_by="Ronny">
+					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
+					<title />
+					<text />
+					<data type="money" money="500000" />
+				</reward>
+			</rewards>
+			<!-- flags = 2. "2" fuer "nur der erste bekommt die Belohnung" -->
+			<data flags="2" />
 		</achievement>
 	</allachievements>
 </tvtdb>
