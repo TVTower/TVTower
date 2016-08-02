@@ -232,6 +232,7 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 	End Method
 
 
+	'quality when send as programme (infomercial)
 	Method GetQuality:Float() {_exposeToLua}
 		return contract.GetQuality()
 	End Method

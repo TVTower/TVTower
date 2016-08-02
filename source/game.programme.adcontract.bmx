@@ -775,7 +775,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 	'the quality is higher for "better paid" advertisements with
 	'higher audience requirements... no cheap "car seller" ad :D
-	Method GetQuality:Float() {_exposeToLua}
+	Method GetQualityRaw:Float() {_exposeToLua}
 		Local quality:Float = 0.05
 
 		'TODO: switch to Percentages + modifiers for TargetGroup-Limits
@@ -790,8 +790,27 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 		'a portion of the resulting quality is based on the "better"
 		'advertisements (minAudience and minImage)
+		quality = 0.70 * base.GetQuality() + 0.15 * quality + 0.15 * GetMinImage()
+
+		Return MathHelper.Clamp(quality, 0.01, 1.0)
+	End Method
+
+
+	Method GetQuality:Float() {_exposeToLua}
+		local quality:Float = GetQualityRaw()
+
+		'the more the infomercial got repeated, the lower the quality in
+		'that moment (^2 increases loss per air)
+		'but a "good" infomercial should benefit from being good - so the
+		'influence of repetitions gets lower by higher raw quality
+		'-> an infomercial with 100% base quality will have at least 25%
+		'   of quality no matter how many times it got aired
+		'-> infomercials with 0% base quality will cut to up to 75% of
+		'   that - resulting in <= 25% quality
+		quality :* (0.25 + 0.75 * base.GetInfomercialTopicality() ^ 2)
+
 		'at least 1% quality
-		Return MathHelper.Clamp(0.70 * base.GetQuality() + 0.15 * quality + 0.15 * GetMinImage(), 0.01, 1.0)
+		Return MathHelper.Clamp(quality, 0.01, 1.0)
 	End Method
 
 
@@ -1225,7 +1244,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		contentY :+ barAreaPaddingY
 
 		'quality
-		skin.RenderBar(contentX + 5, contentY, 200, 12, GetQuality())
+		skin.RenderBar(contentX + 5, contentY, 200, 12, GetQualityRaw())
 		skin.fontSemiBold.drawBlock(GetLocale("AD_QUALITY"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
 		contentY :+ barH
 
