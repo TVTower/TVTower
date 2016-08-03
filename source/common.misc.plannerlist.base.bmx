@@ -23,6 +23,14 @@ Type TPlannerList extends TOwnedGameObject
 	'whether the player can click / create elements? 
 	Field clicksAllowed:int = True
 
+
+	Method Initialize:int()
+		ListSortDirection = 0
+		ListSortMode = 0
+		ListSortVisible = True
+	End Method
+	
+
 	Method getOpen:Int()
 		Return Self.openState And enabled
 	End Method

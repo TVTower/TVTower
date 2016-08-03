@@ -68,6 +68,16 @@ Type TgfxProgrammelist Extends TPlannerList
 	End Method
 
 
+	Method Initialize:int()
+		Super.Initialize()
+
+		'invalidate contracts list
+		_licences = null
+		_licencesCacheKey = ""
+		_licencesOwner = 0
+	End Method
+
+
 	Method UnRegisterEvents:Int()
 		For local link:TLink = EachIn _registeredListeners
 			'variant a: link.Remove()

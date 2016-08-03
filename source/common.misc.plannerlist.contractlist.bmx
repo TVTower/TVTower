@@ -35,6 +35,16 @@ Type TgfxContractlist Extends TPlannerList
 
 		RegisterEvents()
 	End Method
+
+
+	Method Initialize:int()
+		Super.Initialize()
+
+		'invalidate contracts list
+		_contracts = null
+		_contractsCacheKey = ""
+		_contractsOwner = 0
+	End Method
 	
 
 	Method UnRegisterEvents:Int()

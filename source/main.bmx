@@ -1414,6 +1414,11 @@ Type TGameState
 	Field _RoomBaseCollection:TRoomBaseCollection
 	Field _PlayerColorList:TList
 	Field _CurrentScreenName:String
+	Field _adAgencySortMode:int
+	Field _officeProgrammeSortMode:int
+	Field _officeProgrammeSortDirection:int
+	Field _officeContractSortMode:int
+	Field _officeContractSortDirection:int
 	Const MODE_LOAD:Int = 0
 	Const MODE_SAVE:Int = 1
 
@@ -1468,6 +1473,14 @@ Type TGameState
 		'initialize known room handlers + event registration
 		RegisterRoomHandlers()
 		GetRoomHandlerCollection().Initialize()
+
+
+		if TScreenHandler_ProgrammePlanner.PPprogrammeList
+			TScreenHandler_ProgrammePlanner.PPprogrammeList.Initialize()
+		endif
+		if TScreenHandler_ProgrammePlanner.PPcontractList
+			TScreenHandler_ProgrammePlanner.PPcontractList.Initialize()
+		endif
 	End Method
 
 
@@ -1525,6 +1538,13 @@ Type TGameState
 		_Assign(_RoomHandler_MovieAgency, RoomHandler_MovieAgency._instance, "MovieAgency", MODE_LOAD)
 		_Assign(_RoomHandler_AdAgency, RoomHandler_AdAgency._instance, "AdAgency", MODE_LOAD)
 		_Assign(_Game, TGame._instance, "Game")
+
+
+		RoomHandler_AdAgency.ListSortMode = _adAgencySortMode
+		TScreenHandler_ProgrammePlanner.PPprogrammeList.ListSortMode = _officeProgrammeSortMode
+		TScreenHandler_ProgrammePlanner.PPprogrammeList.ListSortDirection = _officeProgrammeSortDirection
+		TScreenHandler_ProgrammePlanner.PPcontractList.ListSortMode = _officeContractSortMode
+		TScreenHandler_ProgrammePlanner.PPcontractList.ListSortDirection = _officeContractSortDirection
 	End Method
 
 
@@ -1536,6 +1556,13 @@ Type TGameState
 	
 		'name of the current screen (or base screen)
 		_CurrentScreenName = ScreenCollection.GetCurrentScreen().name
+
+		_adAgencySortMode = RoomHandler_AdAgency.ListSortMode
+		_officeProgrammeSortMode = TScreenHandler_ProgrammePlanner.PPprogrammeList.ListSortMode
+		_officeProgrammeSortDirection = TScreenHandler_ProgrammePlanner.PPprogrammeList.ListSortDirection
+		_officeContractSortMode = TScreenHandler_ProgrammePlanner.PPcontractList.ListSortMode
+		_officeContractSortDirection = TScreenHandler_ProgrammePlanner.PPcontractList.ListSortDirection
+
 
 		_Assign(GameRules, _GameRules, "GameRules", MODE_SAVE)
 		_Assign(TWorldTime._instance, _WorldTime, "WorldTime", MODE_SAVE)
