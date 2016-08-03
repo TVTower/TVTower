@@ -23,6 +23,7 @@ Type TWorldTimeBase
 		return self
 	End Method
 
+
 	Method Initialize:int()
 		_timeGone = 0:double
 		_timeGoneLastUpdate = -1:double

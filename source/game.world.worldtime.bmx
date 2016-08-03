@@ -79,12 +79,18 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method AddTime:int(year:int, day:int, hour:Double, minute:Double, second:Double)
+	Method AddTimeGone:int(year:int, day:int, hour:Double, minute:Double, second:Double)
 		local add:Double = second + 60*(minute + 60*(hour + 24*(day + year*GetDaysPerYear())))
 		
 		_timeGone :+ add
 		'also set last update
 		_timeGoneLastUpdate :+ add
+	End Method
+
+
+	Method ModifyTime:Long(time:Long = -1, year:int=0, day:int=0, hour:Long=0, minute:Long=0, second:Long=0)
+		if time = -1 then time = GetTimeGone()
+		return time + Long(MakeTime(year, day, hour, minute, second))
 	End Method
 
 

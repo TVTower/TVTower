@@ -298,16 +298,25 @@ Type TInGameInterface
 
 					ElseIf GetWorldTime().GetDayMinute()>=55 Or GetWorldTime().GetDayMinute()<5
 						'upcoming programme hint
-						Local obj:TBroadcastMaterial = programmePlan.GetProgramme()
+						Local obj:TBroadcastMaterial
+						Local upcomingProgDay:int = -1
+						Local upcomingProgHour:int = -1
+						if GetWorldTime().GetDayMinute()>= 55
+							local nextHourTime:Long = GetWorldTime().ModifyTime(-1, 0, 0, 1)
+							upcomingProgDay = GetWorldTime().GetDay(nextHourTime)
+							upcomingProgHour = GetWorldTime().GetDayHour(nextHourTime)
+						endif
+						obj = programmePlan.GetProgramme(upcomingProgDay, upcomingProgHour)
+						
 						If TProgramme(obj)
 							content :+ "~n ~n|b|"+getLocale("NEXT_PROGRAMME")+":|/b|~n"
 							If TProgramme(obj) And TProgramme(obj).isSeries() and TProgramme(obj).licence.parentLicenceGUID
-								content :+ TProgramme(obj).licence.GetParentLicence().data.GetTitle() + ": " + obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
+								content :+ TProgramme(obj).licence.GetParentLicence().data.GetTitle() + ": " + obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock(upcomingProgDay, upcomingProgHour) + "/" + obj.GetBlocks() + ")"
 							Else
-								content :+ obj.GetTitle() + " (" + getLocale("BLOCK")+" " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
+								content :+ obj.GetTitle() + " (" + getLocale("BLOCK")+" " + programmePlan.GetProgrammeBlock(upcomingProgDay, upcomingProgHour) + "/" + obj.GetBlocks() + ")"
 							EndIf
 						ElseIf TAdvertisement(obj)
-							content :+ "~n ~n|b|"+getLocale("NEXT_PROGRAMME")+":|/b|~n"+ GetLocale("PROGRAMME_PRODUCT_INFOMERCIAL")+": " + obj.GetTitle() + " (" + getLocale("BLOCK")+" " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
+							content :+ "~n ~n|b|"+getLocale("NEXT_PROGRAMME")+":|/b|~n"+ GetLocale("PROGRAMME_PRODUCT_INFOMERCIAL")+": " + obj.GetTitle() + " (" + getLocale("BLOCK")+" " + programmePlan.GetProgrammeBlock(upcomingProgDay, upcomingProgHour) + "/" + obj.GetBlocks() + ")"
 						Else
 							content :+ "~n ~n|b||color=200,100,100|"+getLocale("NEXT_PROGRAMME")+":|/color||/b|~n"+ GetLocale("NEXT_NOTHINGSET")
 						EndIf
