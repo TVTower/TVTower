@@ -234,7 +234,8 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 
 	'quality when send as programme (infomercial)
 	Method GetQuality:Float() {_exposeToLua}
-		return contract.GetQuality()
+		'a 100% quality compares to a 35% quality movie
+		return 0.35 * contract.GetQuality()
 	End Method
 
 

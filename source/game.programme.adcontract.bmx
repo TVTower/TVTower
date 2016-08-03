@@ -269,7 +269,7 @@ Type TAdContractBase extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Field penaltyBase:Float
 	'the quality of the advertisement (cheap one or hollywood style?)
 	'also might affect infomercial audience rating
-	Field quality:Float = 0.15 'default is 15%
+	Field quality:Float = 0.10 'default is 10%
 	'=== infomercials / shopping shows ===
 	'is the broadcast of an infomercial allowed?
 	Field infomercialAllowed:int = TRUE

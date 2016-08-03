@@ -1403,10 +1403,10 @@
 					<audienceAttraction id="Children" value="-1" />
 					<audienceAttraction id="Teenagers" value="-0.6" />
 					<audienceAttraction id="HouseWives" men="0" women="0.1" />
-					<audienceAttraction id="Employees" men="-0.4" women="-0.2" />
-					<audienceAttraction id="Unemployed" men="-0.1" women="0.2" />
+					<audienceAttraction id="Employees" men="-0.5" women="-0.3" />
+					<audienceAttraction id="Unemployed" men="-0.1" women="0.1" />
 					<audienceAttraction id="Manager" value="-0.7" />
-					<audienceAttraction id="Pensioners" value="-0.1" />
+					<audienceAttraction id="Pensioners" value="-0.2" />
 				</audienceAttractions>
 			</flag>
 		</flags>

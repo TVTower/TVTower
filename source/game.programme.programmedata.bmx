@@ -10,6 +10,7 @@ Import "game.programme.programmeperson.base.bmx"
 Import "game.broadcast.genredefinition.movie.bmx"
 Import "game.broadcastmaterialsource.base.bmx"
 Import "game.gameconstants.bmx"
+Import "basefunctions.bmx"
 
 
 Type TProgrammeDataCollection Extends TGameObjectCollection
@@ -1118,45 +1119,130 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		releaseTime = GetWorldTime().MakeTime(GetYear(), dayOfYear mod GetWorldTime().GetDaysPerYear(), 0, 0)
 	End Method
 
-
+global printDebug:int = False
 	Method GetPrice:int()
+		Local value:int = 0
+		local priceMod:Float = GetQuality() 'this includes age-adjustments
+
+		'=== FRESHNESS ===
+		'this is ~1 yrs
+		If (GetMaxTopicality() >= 0.98) Then priceMod :* 1.15
+		'this is ~2 yrs
+		If (GetMaxTopicality() >= 0.96) Then priceMod :* 1.10
+		'this is ~3 yrs
+		If (GetMaxTopicality() >= 0.93) Then priceMod :* 1.05
+
+
+		'=== QUALITY FRESHNESS ===
+		'A high quality programme is more expensive if very young.
+		'The older the programme gets, the less important is a high
+		'quality, they then all are relatively "equal"
+		local highQualityIndex:Float = 0.40 * GetQualityRaw() + 0.60 * GetQualityRaw() ^ 4
+		local highTopicalityIndex:Float = 0.30 * GetMaxTopicality() + 0.70 * GetMaxTopicality() ^ 4
+
+local found:int = 0
+if GetTitle().Find("Brenz") >= 0 or GetTitle().Find("Dschungel") >= 0
+	print GetTitle()
+	print "priceMod           : "+priceMod
+	print "highTopicalityIndex: "+GetMaxTopicality()+"  ->  " + highTopicalityIndex
+	print "highQualityIndex   : "+GetQualityRaw()+"  ->  " + highQualityIndex
+endif
+
+		priceMod :* highTopicalityIndex * highQualityIndex
+
+		'=== FLAGS ===
+		'BMovies lower the price
+		If Self.IsBMovie() then priceMod :* 0.90
+		'Cult movies increase price
+		If Self.IsCult() then priceMod :* 1.05
+		'Income generating programmes (infomercials) increase the price
+		If Self.IsPaid() then priceMod :* 1.30
+
+
+		If isType(TVTProgrammeProductType.MOVIE)
+			value = 30000 + 1750000 * priceMod
+		 'shows, productions, series...
+		Else
+			value = 25000 + 1500000 * priceMod
+		EndIf
+
+
+		'1 Block = 0 + 0.85^0 = 1.0
+		'2 Blocks = 1.0 + 0.85 = 1.85
+		'3 Blocks = 2.0 + 0.85*0.85 = 2.7225 ...
+		value :* (GetBlocks()-1 + (0.90^(GetBlocks()-1)))
+
+
+		'=== BEAUTIFY ===
+		'round to next "1000" block
+'		value = Int(Floor(value / 1000) * 1000)
+		value = TFunctions.RoundToBeautifulValue(value)
+
+'if printDebug then print GetTitle()
+'if printDebug then print "  value = "+value+"  (priceMod="+priceMod+"   q="+GetQuality()+"   qRaw="+GetQualityRaw()+")"
+
+		'print GetTitle()+"  value1: "+value + "  outcome:"+GetOutcome()+"  review:"+GetReview() + " maxTop:"+GetMaxTopicality()+" year:"+GetYear()
+if GetTitle().Find("Brenz") >= 0 or GetTitle().Find("Dschungel") >= 0
+	found :+1
+	print "end price          : "+value
+	print "------------------------------------"
+
+'	if found=2 then end
+endif
+
+		return value		
+
+rem
 		Local value:int = 0
 
 		'price is based on quality
 		local priceMod:float = GetQualityRaw()
 
+		'the here created value is the "maximum" without price-modifier
+		'for a movie/series with 100% quality on premiere date
 		'movies run in cinema (outcome >0)
 		If isType(TVTProgrammeProductType.MOVIE) ' and GetOutcome() > 0
-			priceMod = THelper.LogisticalInfluence_Euler(priceMod, 0.5)
-			value = 45000 + 1200000 * priceMod
+			priceMod = THelper.ATanFunction(priceMod, 2)
+			value = 45000 + 5000000 * priceMod
 		 'shows, productions, series...
 		Else
-			priceMod = THelper.LogisticalInfluence_Euler(priceMod, 0.5)
+			priceMod = THelper.ATanFunction(priceMod, 2)
 			'basefactor * priceFactor
-			value = 25000 + 400000 * priceMod
+			value = 25000 + 500000 * priceMod
 		EndIf
 
+if printDebug then print GetTitle()
+if printDebug then print "  base value = "+value+"  (priceMod="+priceMod+")"
 		'=== MODIFIERS ===
-		'price modifier just influences price by 90% (to avoid "0" prices)
-		value :* (0.10 + 0.90 * GetModifier("price", 1.0))
+		'price modifier just influences price by 95% (to avoid "0" prices)
+		value :* (0.05 + 0.95 * GetModifier("price", 1.0))
+'print "  * modPrice = "+value
 
 
 		'=== TOPICALITY ===
 		'the more current the more expensive
 		'multipliers "stack"
-		local topicalityModifier:Float = 1.0
-		If (GetMaxTopicality() >= 0.80) Then topicalityModifier :+ 0.04
-		If (GetMaxTopicality() >= 0.85) Then topicalityModifier :+ 0.08
-		If (GetMaxTopicality() >= 0.90) Then topicalityModifier :+ 0.16
-		If (GetMaxTopicality() >= 0.94) Then topicalityModifier :+ 0.24
-		If (GetMaxTopicality() >= 0.98) Then topicalityModifier :+ 0.48
+		'-> the older, the more is cut from the original price
+		'   this also counts for "times broadcasted"
+		local topicalityCutModifier:Float = 1.0
 		'make just released programmes even more expensive
-		If (GetMaxTopicality() > 0.99)  Then topicalityModifier :+ 0.80
+		If (GetMaxTopicality() < 0.99) Then topicalityCutModifier :- 0.20
+		If (GetMaxTopicality() < 0.98) Then topicalityCutModifier :- 0.13
+		If (GetMaxTopicality() < 0.94) Then topicalityCutModifier :- 0.11
+		If (GetMaxTopicality() < 0.90) Then topicalityCutModifier :- 0.09
+		If (GetMaxTopicality() < 0.85) Then topicalityCutModifier :- 0.07
+		If (GetMaxTopicality() < 0.75) Then topicalityCutModifier :- 0.05
+		If (GetMaxTopicality() < 0.65) Then topicalityCutModifier :- 0.03
+		If (GetMaxTopicality() < 0.50) Then topicalityCutModifier :- 0.01
 
-		value :* topicalityModifier
+		value :* topicalityCutModifier
+if printDebug then print "  * topCutMod= "+value+"  (topicalityCutModifier="+topicalityCutModifier+")"
+
 
 		'topicality has a certain value influence
 		value :* GetTopicality()
+if printDebug then print "  * topical. = "+value+"  (topicality="+GetTopicality()+")"
+
 
 		'the older the less a licence costs
 		'shrinkage: fast shrinking at the begin (low distance) and slow
@@ -1165,7 +1251,10 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		'the modifier "price::age" increases the "age" used in _this_
 		'calculation 
 		Local ageDistance:Float = 0.01 * Max(0, 100 - Max(0, GetModifier("price::age") * (GetWorldTime().GetYear() - GetYear())))
-		value :* (1.0 - THelper.LogisticalInfluence_Euler(1.0 - Max(0.30, ageDistance), 0.85))
+		'value :* (1.0 - THelper.LogisticalInfluence_Euler(1.0 - Max(0.30, ageDistance), 0.85))
+		value :* (1.0 - THelper.ATanFunction(1.0 - Max(0.25, ageDistance), 10))
+if printDebug then print "  * ageDist  = "+value+"  (ageDistance="+ageDistance+"   atan="+((1.0 - THelper.ATanFunction(1.0 - Max(0.25, ageDistance), 7)))+")"
+
 		
 		'=== FLAGS ===
 		'BMovies lower the price
@@ -1178,10 +1267,12 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 			
 		'round to next "1000" block
 		value = Int(Floor(value / 1000) * 1000)
+if printDebug then print "    result  = "+value
 
 		'print GetTitle()+"  value1: "+value + "  outcome:"+GetOutcome()+"  review:"+GetReview() + " maxTop:"+GetMaxTopicality()+" year:"+GetYear()
 
 		return value
+endrem
 	End Method
 
 
