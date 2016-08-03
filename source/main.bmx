@@ -4085,7 +4085,7 @@ Type GameEvents
 		
 			'until 2 hours
 			toast.SetCloseAtWorldTime(latestTime)
-			toast.SetCloseAtWorldTimeText("CLOSES_AT_TIME")
+			toast.SetCloseAtWorldTimeText("MESSAGE_CLOSES_AT_TIME")
 			toast.SetMessageType(1)
 			toast.SetPriority(10)
 
@@ -4362,7 +4362,7 @@ Type GameEvents
 			local midnight:long = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(), 23, 59, 59)
 
 			toast.SetCloseAtWorldTime(midnight)
-			toast.SetCloseAtWorldTimeText("CLOSES_AT_TIME")
+			toast.SetCloseAtWorldTimeText("MESSAGE_CLOSES_AT_TIME")
 			toast.SetPriority(10)
 			
 			toast.SetMessageType(1) 'negative
@@ -4482,12 +4482,12 @@ Type GameEvents
 
 
 		local readyTime:String = GetWorldTime().GetFormattedTime(station.GetActivationTime())
-		local closeText:string = "CLOSES_AT_TIME"
+		local closeText:string = "MESSAGE_CLOSES_AT_TIME"
 		local readyText:string = "NEW_STATION_WILL_BE_READY_AT_TIME_X"
 		'prepend day if it does not finish today
 		if GetWorldTime().GetDay() < GetWorldTime().GetDay(station.GetActivationTime())
 			readyTime = GetWorldTime().GetFormattedDay(GetWorldTime().GetDaysRun(station.GetActivationTime()) +1) + " " + readyTime
-			closeText = "CLOSES_AT_DAY"
+			closeText = "MESSAGE_CLOSES_AT_DAY"
 			readyText = "NEW_STATION_WILL_BE_READY_AT_DAY_X"
 		endif
 		

@@ -42,8 +42,8 @@ STARTHINT_TEXT2 = The success of a broadcast is heavily based on the quality/rat
 STARTHINT_TITLE3 = Ad contracts
 STARTHINT_TEXT3 = Ad contracts have defined requirements to the minimum audience. This and of course profits/penalties are directly attached to the maximum audience a channel can reach currently.\n\nTherefore it is sometimes better to sign new contracts right before buying new stations.
 
-CLOSES_AT_TIME = Closes at %TIME%
-CLOSES_AT_DAY = Closes at %TIME%
+MESSAGE_CLOSES_AT_TIME = Message closes at %TIME%
+MESSAGE_CLOSES_AT_DAY = Message closes at %TIME%
 
 GAME_TITLE = Game title
 START_YEAR = Start year
@@ -531,8 +531,8 @@ UNDER_CONSTRUCTION = Under Construction
 READY_AT_TIME_X = Ready at %ACTIVATIONTIME%
 READY_AT_DAY_X = Ready at %ACTIVATIONTIME%
 STATION_UNDER_CONSTRUCTION = Station under construction
-NEW_STATION_WILL_BE_READY_AT_TIME_X = New station will be ready at %TIME% 
-NEW_STATION_WILL_BE_READY_AT_DAY_X = New station will be ready at %TIME%
+NEW_STATION_WILL_BE_READY_AT_TIME_X = New station will be ready at %TIME%.
+NEW_STATION_WILL_BE_READY_AT_DAY_X = New station will be ready at %TIME%.
 
 BUY_AND_SELL = Buy and sell
 AND_STATISTICS = and statistics

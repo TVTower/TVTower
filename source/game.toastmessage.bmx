@@ -201,7 +201,7 @@ Type TGameToastMessage extends TToastMessage
 			endif
 			text = text.Replace("%TIME%", timeString)
 			
-			GetBitmapFontManager().baseFontBold.DrawBlock(text, contentX, contentY2 - GetBitmapFontManager().baseFontBold.GetMaxCharHeight(), contentX2 - contentX, -1, null, TColor.CreateGrey(50))
+			GetBitmapFontManager().baseFontItalic.DrawBlock(text, contentX, contentY2 - GetBitmapFontManager().baseFontBold.GetMaxCharHeight(), contentX2 - contentX, -1, null, TColor.CreateGrey(40))
 		endif
 		
 		'lifetime bar

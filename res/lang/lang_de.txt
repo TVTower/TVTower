@@ -43,8 +43,8 @@ STARTHINT_TEXT2 = Der Erfolg einer Ausstrahlung hängt maßgeblich von der Quali
 STARTHINT_TITLE3 = Werbeverträge
 STARTHINT_TEXT3 = Werbeverträge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und natürlich auch die Prämien/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.\n\nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbeverträge abzuschließen.
 
-CLOSES_AT_TIME = Schließt sich um %TIME%
-CLOSES_AT_DAY = Schließt sich am %TIME%
+MESSAGE_CLOSES_AT_TIME = Nachricht schließt sich um %TIME% Uhr
+MESSAGE_CLOSES_AT_DAY = Nachricht schließt sich am %TIME%
 
 GAME_TITLE = Spieltitel
 START_YEAR = Startjahr
@@ -531,8 +531,8 @@ UNDER_CONSTRUCTION = Im Bau
 READY_AT_TIME_X = Bereit ab %TIME% Uhr
 READY_AT_DAY_X = Bereit am %TIME% Uhr
 STATION_UNDER_CONSTRUCTION = Sendemast im Bau
-NEW_STATION_WILL_BE_READY_AT_TIME_X = Der neue Sendemast wird fertig um %TIME% 
-NEW_STATION_WILL_BE_READY_AT_DAY_X = Der neue Sendemast wird fertig am %TIME%
+NEW_STATION_WILL_BE_READY_AT_TIME_X = Der neue Sendemast wird um %TIME% Uhr fertiggestellt. 
+NEW_STATION_WILL_BE_READY_AT_DAY_X = Der neue Sendemast wird am %TIME% fertiggestellt.
 
 BUY_AND_SELL = Kaufen und Verkaufen
 AND_STATISTICS = und Statistiken
