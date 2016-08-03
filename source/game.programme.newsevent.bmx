@@ -845,9 +845,10 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method ComputeBasePrice:Int() {_exposeToLua}
-		'price ranges from 500-10.000
-		Return Max(500, 100 * ceil(100 * GetAttractiveness() * GetModifier("price") ) )
+	'returns price based on a "per 5 million" approach
+	Method GetPrice:Int() {_exposeToLua}
+		'price ranges from 0 to ~2000
+		Return Max(0, 2000 * GetAttractiveness() * GetModifier("price") )
 	End Method
 End Type
 

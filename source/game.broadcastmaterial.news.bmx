@@ -6,6 +6,7 @@ Import "game.broadcastmaterial.base.bmx"
 'for TNewsEvent
 Import "game.programme.newsevent.bmx"
 Import "game.publicimage.bmx"
+Import "game.stationmap.bmx" 'to access current broadcast area
 
 
 
@@ -330,24 +331,32 @@ endrem
 
 	'returns the price of this news
 	'price differs from the (base) price of the newsEvent
-	Method GetPrice:int() {_exposeToLua}
+	Method GetPrice:int(owner:int) {_exposeToLua}
 		'the price is fixed in the moment of getting bought
 		if paid and paidPrice<>0 then return paidPrice
 
 		'calculate the price including modifications
-		local price:int = newsEvent.ComputeBasePrice()
+		local price:int = newsEvent.GetPrice()
 		'add modificators
 		price :+ priceModRelativeNewsAgency * price
 		price :+ priceModAbsoluteNewsAgency
+
+		'adjust by broadcast area
+		'multiply by amount of "5 million" people blocks
+		local map:TStationMap = GetStationMap(owner)
+		if map then price :* int(ceil(map.GetReach() / 5000000.0))
+
+		price = TFunctions.RoundToBeautifulValue(price)
+		
 		return price
 	End Method
 
 
     Method Pay:int()
 		'only pay if not already done
-		if not paid then paid = GetPlayerFinance(owner).PayNews(GetPrice(), self)
+		if not paid then paid = GetPlayerFinance(owner).PayNews(GetPrice(owner), self)
 		'store the paid price as the price "sinks" during aging
-		if paid and paidPrice = 0 then paidPrice = GetPrice()
+		if paid and paidPrice = 0 then paidPrice = GetPrice(owner)
 		return paid
     End Method
 

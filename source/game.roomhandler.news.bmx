@@ -761,10 +761,10 @@ Type TGUINews Extends TGUIGameListItem
 
 			'===== DRAW NON-CACHED TEXTS =====
 			If Not news.paid
-				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice() + ",-", screenX + 262, screenY + 70, 90, -1, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
+				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice(GetPlayerBaseCollection().playerID) + ",-", screenX + 262, screenY + 70, 90, -1, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
 			Else
 				SetAlpha GetAlpha()*0.75
-				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice() + ",-", screenX + 262, screenY + 70, 90, -1, New TVec2D.Init(ALIGN_RIGHT), TColor.CreateGrey(100))
+				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice(GetPlayerBaseCollection().playerID) + ",-", screenX + 262, screenY + 70, 90, -1, New TVec2D.Init(ALIGN_RIGHT), TColor.CreateGrey(100))
 				SetAlpha GetAlpha()*2.0
 			EndIf
 
@@ -812,7 +812,7 @@ Type TGUINews Extends TGUIGameListItem
 			
 			fontBold.draw("News: " + news.newsEvent.GetTitle(), screenX + 5, textY)
 			textY :+ 14	
-			fontNormal.draw("Preis: " + news.GetPrice()+"  (PreisMod: "+MathHelper.NumberToString(news.newsEvent.GetModifier("price"),4)+")", screenX + 5, textY)
+			fontNormal.draw("Preis: " + news.GetPrice(GetPlayerBaseCollection().playerID)+"  (PreisMod: "+MathHelper.NumberToString(news.newsEvent.GetModifier("price"),4)+")", screenX + 5, textY)
 			textY :+ 11	
 			fontNormal.draw("Qualitaet: " + MathHelper.NumberToString(news.GetQuality(), 4) + " (Event:" + MathHelper.NumberToString(news.newsEvent.GetQuality(),4) + ", roh=" + MathHelper.NumberToString(news.newsEvent.GetQualityRaw(), 4) + ")", screenX + 5, textY)
 			textY :+ 11	
