@@ -59,7 +59,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 	'create a time in seconds
 	'attention: there are only GetDaysPerYear() days per year, not 365!
-	Method MakeTime:Double(year:Int, day:Int, hour:Int, minute:Int, second:int = 0) {_exposeToLua}
+	Method MakeTime:Double(year:Int, day:Int, hour:Long, minute:Long, second:Long = 0) {_exposeToLua}
 		'old:
 		'year=1, day=1, hour=0, minute=1 should result in "1*yearInSeconds+1*60"
 		'as it is 1 minute after end of last year - new years eve ;D

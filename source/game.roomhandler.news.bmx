@@ -780,9 +780,11 @@ Type TGUINews Extends TGUIGameListItem
 			SetAlpha oldAlpha
 			SetColor 255,255,255
 			DrawRect(screenX + 16, screenY + 68, 150, 1)
-			SetColor 255,100,100
-			SetAlpha oldAlpha * 0.5
+			SetColor 230,150,100
+			SetAlpha oldAlpha * 0.4
 			DrawRect(screenX + 16, screenY + 68, news.newsEvent.GetMaxTopicality()*150, 1)
+			SetAlpha oldAlpha
+			DrawRect(screenX + 16 + news.newsEvent.GetMaxTopicality()*150 - 1, screenY + 68, 2, 1)
 			SetAlpha oldAlpha
 			DrawRect(screenX + 16, screenY + 68, news.newsEvent.GetTopicality()*150, 1)
 
