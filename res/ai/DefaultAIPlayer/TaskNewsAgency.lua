@@ -207,7 +207,7 @@ function JobNewsAgency:Tick()
 	local price = 0
 
 	if (table.count(self.Newslist) > 0) then
-		price = self.Newslist[1].GetPrice()
+		price = self.Newslist[1].GetPrice(TVT.ME)
 		if (self.Task.CurrentBudget >= price) then			
 			debugMsg("Kaufe Nachricht: " .. self.Newslist[1].GetTitle() .. " (" .. self.Newslist[1].GetID() .. ") - Slot: 1 - Preis: " .. price)
 			TVT.addToLog("Kaufe Nachricht: " .. self.Newslist[1].GetTitle() .. " (" .. self.Newslist[1].GetID() .. ") - Slot: 1 - Preis: " .. price)
@@ -217,7 +217,7 @@ function JobNewsAgency:Tick()
 		end
 	end
 	if (table.count(self.Newslist) > 1) then
-		price = self.Newslist[2].GetPrice()
+		price = self.Newslist[2].GetPrice(TVT.ME)
 		if (self.Task.CurrentBudget >= price) then
 			debugMsg("Kaufe Nachricht: " .. self.Newslist[2].GetTitle() .. " (" .. self.Newslist[2].GetID() .. ") - Slot: 2 - Preis: " .. price)
 			TVT.addToLog("Kaufe Nachricht: " .. self.Newslist[2].GetTitle() .. " (" .. self.Newslist[2].GetID() .. ") - Slot: 2 - Preis: " .. price)
@@ -227,7 +227,7 @@ function JobNewsAgency:Tick()
 		end
 	end
 	if (table.count(self.Newslist) > 2) then
-		price = self.Newslist[3].GetPrice()
+		price = self.Newslist[3].GetPrice(TVT.ME)
 		if (self.Task.CurrentBudget >= price) then
 			debugMsg("Kaufe Nachricht: " .. self.Newslist[3].GetTitle() .. " (" .. self.Newslist[3].GetID() .. ") - Slot: 3 - Preis: " .. price)
 			TVT.addToLog("Kaufe Nachricht: " .. self.Newslist[3].GetTitle() .. " (" .. self.Newslist[3].GetID() .. ") - Slot: 3 - Preis: " .. price)
