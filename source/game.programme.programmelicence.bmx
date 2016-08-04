@@ -403,11 +403,6 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 '	Field cacheTextOverlay:TImage 			{nosave}
 '	Field cacheTextOverlayMode:string = ""	{nosave}	'for which mode the text was cached
 
-	'hide movies of 2012 when in 1985?
-	Global ignoreUnreleasedProgrammes:int = TRUE
-	Global _filterReleaseDateStart:int = 1900
-	Global _filterReleaseDateEnd:int = 2100
-
 
 	Method GetReferenceID:int() {_exposeToLua}
 		'return own licence id as referenceID - programme.id is not
@@ -566,13 +561,6 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 
 
-	Function setIgnoreUnreleasedProgrammes(ignore:int=TRUE, releaseStart:int=1900, releaseEnd:int=2100)
-		ignoreUnreleasedProgrammes = ignore
-		_filterReleaseDateStart = releaseStart
-		_filterReleaseDateEnd = releaseEnd
-	End Function
-
-
 	'override default method to add sublicences
 	Method SetOwner:int(owner:int=0)
 		self.owner = owner
@@ -707,8 +695,6 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 
 	Method isReleased:int() {_exposeToLua}
-		if not self.ignoreUnreleasedProgrammes then return TRUE
-
 		'single-licence
 		if GetSubLicenceCount() = 0 and GetData() then return GetData().isReleased()
 

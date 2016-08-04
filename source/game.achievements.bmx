@@ -207,7 +207,6 @@ Type TAchievementTask_ReachBroadcastArea extends TAchievementTask
 
 
 	Method onRecalculateAudienceSum:int(triggerEvent:TEventBase)
-print "onRecalculateAudienceSum"
 		local map:TStationMap = TStationMap(triggerEvent.GetSender())
 		if not map then return False
 
@@ -217,11 +216,9 @@ print "onRecalculateAudienceSum"
 		if IsCompleted(map.owner, time) or IsFailed(map.owner, time) then return False
 
 		if minReachAbsolute >= 0 and map.GetReach() >= minReachAbsolute
-print "complete: " + GetWorldTime().GetFormattedTime()
 			SetCompleted(map.owner, time)
 		endif
 		if minReachPercentage >= 0 and map.getCoverage() >= minReachPercentage
-print "???? complete: " + GetWorldTime().GetFormattedTime()
 			SetCompleted(map.owner, time)
 		endif
 

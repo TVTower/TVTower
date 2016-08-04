@@ -468,6 +468,11 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Field cachedDirectors:TProgrammePersonBase[] {nosave}
 	Field genreDefinitionCache:TMovieGenreDefinition = Null {nosave}
 
+	'hide movies of 2012 when in 1985?
+	Global ignoreUnreleasedProgrammes:int = TRUE
+	Global _filterReleaseDateStart:int = 1900
+	Global _filterReleaseDateEnd:int = 2100
+
 
 	Rem
 	"modifiers" : extra data block containing various information (if set)
@@ -478,6 +483,13 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	"wearoff" - changes how much a programme loses during sending it
 	"refresh" - changes how much a programme "regenerates" (multiplied with genreModifier)
 	endrem
+
+
+	Function setIgnoreUnreleasedProgrammes(ignore:int=TRUE, releaseStart:int=1900, releaseEnd:int=2100)
+		ignoreUnreleasedProgrammes = ignore
+		_filterReleaseDateStart = releaseStart
+		_filterReleaseDateEnd = releaseEnd
+	End Function
 
 
 	'what to earn for each viewer
@@ -1139,7 +1151,7 @@ global printDebug:int = False
 		'quality, they then all are relatively "equal"
 		local highQualityIndex:Float = 0.40 * GetQualityRaw() + 0.60 * GetQualityRaw() ^ 4
 		local highTopicalityIndex:Float = 0.30 * GetMaxTopicality() + 0.70 * GetMaxTopicality() ^ 4
-
+rem
 local found:int = 0
 if GetTitle().Find("Brenz") >= 0 or GetTitle().Find("Dschungel") >= 0
 	print GetTitle()
@@ -1147,7 +1159,7 @@ if GetTitle().Find("Brenz") >= 0 or GetTitle().Find("Dschungel") >= 0
 	print "highTopicalityIndex: "+GetMaxTopicality()+"  ->  " + highTopicalityIndex
 	print "highQualityIndex   : "+GetQualityRaw()+"  ->  " + highQualityIndex
 endif
-
+endrem
 		priceMod :* highTopicalityIndex * highQualityIndex
 
 		'=== FLAGS ===
@@ -1178,10 +1190,8 @@ endif
 '		value = Int(Floor(value / 1000) * 1000)
 		value = TFunctions.RoundToBeautifulValue(value)
 
-'if printDebug then print GetTitle()
-'if printDebug then print "  value = "+value+"  (priceMod="+priceMod+"   q="+GetQuality()+"   qRaw="+GetQualityRaw()+")"
-
 		'print GetTitle()+"  value1: "+value + "  outcome:"+GetOutcome()+"  review:"+GetReview() + " maxTop:"+GetMaxTopicality()+" year:"+GetYear()
+rem
 if GetTitle().Find("Brenz") >= 0 or GetTitle().Find("Dschungel") >= 0
 	found :+1
 	print "end price          : "+value
@@ -1189,7 +1199,7 @@ if GetTitle().Find("Brenz") >= 0 or GetTitle().Find("Dschungel") >= 0
 
 '	if found=2 then end
 endif
-
+endrem
 		return value		
 
 rem
@@ -1601,6 +1611,8 @@ endrem
 	Method isReleased:int()
 		'call-in shows are kind of "live"
 		if HasFlag(TVTProgrammeDataFlag.PAID) then return True
+
+		if not ignoreUnreleasedProgrammes then return True
 
 		return GetWorldTime().GetTimeGone() >= releaseTime
 	End Method

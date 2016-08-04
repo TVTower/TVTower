@@ -1419,6 +1419,9 @@ Type TGameState
 	Field _officeProgrammeSortDirection:int
 	Field _officeContractSortMode:int
 	Field _officeContractSortDirection:int
+	Field _programmeDataIgnoreUnreleasedProgrammes:int = False
+	Field _programmeDataFilterReleaseDateStart:int = False
+	Field _programmeDataFilterReleaseDateEnd:int = False
 	Const MODE_LOAD:Int = 0
 	Const MODE_SAVE:Int = 1
 
@@ -1545,6 +1548,10 @@ Type TGameState
 		TScreenHandler_ProgrammePlanner.PPprogrammeList.ListSortDirection = _officeProgrammeSortDirection
 		TScreenHandler_ProgrammePlanner.PPcontractList.ListSortMode = _officeContractSortMode
 		TScreenHandler_ProgrammePlanner.PPcontractList.ListSortDirection = _officeContractSortDirection
+
+		TProgrammeData.ignoreUnreleasedProgrammes = _programmeDataIgnoreUnreleasedProgrammes
+		TProgrammeData._filterReleaseDateStart = _programmeDataFilterReleaseDateStart
+		TProgrammeData._filterReleaseDateEnd = _programmeDataFilterReleaseDateEnd
 	End Method
 
 
@@ -1562,6 +1569,10 @@ Type TGameState
 		_officeProgrammeSortDirection = TScreenHandler_ProgrammePlanner.PPprogrammeList.ListSortDirection
 		_officeContractSortMode = TScreenHandler_ProgrammePlanner.PPcontractList.ListSortMode
 		_officeContractSortDirection = TScreenHandler_ProgrammePlanner.PPcontractList.ListSortDirection
+
+		_programmeDataIgnoreUnreleasedProgrammes = TProgrammeData.ignoreUnreleasedProgrammes
+		_programmeDataFilterReleaseDateStart = TProgrammeData._filterReleaseDateStart
+		_programmeDataFilterReleaseDateEnd = TProgrammeData._filterReleaseDateEnd
 
 
 		_Assign(GameRules, _GameRules, "GameRules", MODE_SAVE)
@@ -2578,7 +2589,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		Select sender
 			Case guiFilterUnreleased
 					'ATTENTION: use "not" as checked means "not ignore"
-					TProgrammeLicence.setIgnoreUnreleasedProgrammes( not sender.isChecked())
+					TProgrammeData.setIgnoreUnreleasedProgrammes( not sender.isChecked() )
 		End Select
 
 		'only inform when in settings menu
