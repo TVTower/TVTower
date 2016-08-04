@@ -105,6 +105,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 	Method EndGame:int()
+		If Self.gamestate = TGAme.STATE_RUNNING
+			'start playing the menu music again
+			GetSoundManager().PlayMusicPlaylist("menu")
+		endif
+
 		SetGameState(TGame.STATE_MAINMENU)
 		GetToastMessageCollection().RemoveAllMessages()
 		TLogger.Log("TGame", "====== END CURRENT GAME ======", LOG_DEBUG)
