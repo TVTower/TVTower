@@ -212,8 +212,8 @@ Type TBroadcastManager
 		if playerID <= 0 then return False
 
 		if playerID > audienceResults.length then audienceResults = audienceResults[..playerID]
-		
-		If audienceResult and audienceResult.AudienceAttraction Then
+
+		If audienceResult.AudienceAttraction
 			audienceResult.AudienceAttraction.SetPlayerId(playerID)
 		EndIf
 
@@ -402,6 +402,13 @@ Type TBroadcast
 '		GetAudienceResult(playerId).Reset()
 
 		ComputeAndSetPlayersProgrammeAttractionForPlayer(playerId, lastMovieBroadcast, lastNewsShowBroadcast)
+
+		'Ronny: when a player gets a manually set malfunction, the
+		'       audience attraction is missing - and then bugging out
+		'       a lot of things
+		'store attaction id audience result (eg. on outages)
+		local ad:TAudienceResult = GetAudienceResult(playerId)
+		if not ad.audienceAttraction then ad.audienceAttraction = Attractions[playerId - 1]	
 
 		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
 			market.ComputeAudience(Time)
