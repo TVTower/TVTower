@@ -2631,5 +2631,26 @@
 			<review min="20" max="50" slope="30" />
 			<speed min="28" max="49" slope="25" />
 		</scripttemplate>
+		<scripttemplate product="16" licence_type="1" guid="TheRob-Script-Show-GeburtdesSenders">
+			<title>
+				<de>Geburt des Senders</de>
+				<en>Birth of the channel</en>
+			</title>
+			<description>
+				<de>Sie haben die Eröffnungsshow verpasst? Hier sind die besten Szenen, Outtakes und Erinnerungen der Teilnehmer.</de>
+				<en>You missed the starting-show of our channel? Here are the best scenes, out takes and some participants remember their time in the show.</en>
+			</description>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="8" required="1" gender="1" />
+			</jobs>
+			<genres maingenre="204" subgenres="0" />
+			<blocks min="1" max="2" slope="25" />
+			<price min="5000" max="9500" slope="20" />
+			<potential min="28" max="66" slope="20" />
+			<outcome min="0" max="0" slope="40" />
+			<review min="30" max="70" slope="30" />
+			<speed min="40" max="62" slope="25" />
+		</scripttemplate>
 	 </scripttemplates>
 </tvgdb>
