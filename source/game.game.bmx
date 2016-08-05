@@ -582,7 +582,8 @@ print "--------------"
 		programmeData.speed = 0.4
 		programmeData.outcome = 0.5
 		programmeData.country = "D" 'make depending on station map?
-		programmeData.releaseTime = GetWorldTime().MakeTime(GetWorldTime().GetYear(), 0, 0, 5)
+		'time is adjusted during adding (as we know the time then)
+		'programmeData.releaseTime = GetWorldTime().MakeTime(GetWorldTime().GetYear(), 0, 0, 5)
 		programmeData.SetFlag(TVTProgrammeDataFlag.LIVE, True)
 		programmeData.distributionChannel = TVTProgrammeDistributionChannel.TV
 		'hide from player/vendor/...
@@ -621,8 +622,15 @@ print "--------------"
 			if GetWorldTime().GetStartDay() <> GetWorldTime().GetDay() or GetWorldTime().GetDayTime() > 60*5 
 				startDay = GetWorldTime().GetDay()
 				startHour = GetWorldTime().GetDayHour() + 1
+				if startHour > 23
+					startHour :- 24
+					startDay :+ 1
+				endif
 			endif
 
+			'adjust opener live-time
+			programmeData.releaseTime = GetWorldTime().MakeTime(GetWorldTime().GetYear(), startDay - GetWorldTime().GetStartDay(), startHour, 5)
+			
 			Local broadcast:TProgramme = TProgramme.Create(currentLicence)
 			playerPlan.SetProgrammeSlot(broadcast, startDay, startHour )
 			'disable control of that programme
@@ -630,10 +638,6 @@ print "--------------"
 			if broadcast.isControllable() then Throw "controllable!"
 			'disable availability
 			broadcast.data.available = False
-			'additionally lock slots
-'				for local i:int = 0 until broadcast.GetBlocks()
-'					playerPlan.LockSlot(TVTBroadcastMaterialType.PROGRAMME, GetWorldTime().GetStartDay(), currentHour + i )
-'				Next
 
 			currentHour:+ currentLicence.getData().getBlocks()
 
