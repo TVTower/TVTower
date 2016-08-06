@@ -11,12 +11,15 @@ Type TDebugAudienceInfos
 
 		'GetBitmapFontManager().baseFont.Draw("Bevölkerung", 25, startY)
 
-		Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult( GetPlayerCollection().playerID )
+		local playerID:int = TIngameInterface.GetInstance().ShowChannel
+		if playerID <= 0 then playerID = GetPlayerBaseCollection().playerID
+
+		Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult( playerID )
 
 		Local x:Int = 200
 		Local y:Int = 25
 		Local font:TBitmapFont = GetBitmapFontManager().baseFontSmall
-		GetBitmapFontManager().baseFont.drawBlock("|b|Taste |color=255,100,0|~qQ~q|/color| drücken|/b| um (Debug-)Quotenbildschirm wieder auszublenden.", 0, 355, GetGraphicsManager().GetWidth(), 25, ALIGN_CENTER_CENTER, TColor.clRed)
+		GetBitmapFontManager().baseFont.drawBlock("|b|Taste |color=255,100,0|~qQ~q|/color| drücken|/b| um (Debug-)Quotenbildschirm wieder auszublenden. Spielerwechsel: Strg+(1-4)", 0, 360, GetGraphicsManager().GetWidth(), 25, ALIGN_CENTER_CENTER, TColor.clRed)
 
 		font.drawBlock("Gesamt", x, y, 65, 25, ALIGN_RIGHT_TOP, TColor.clRed)
 		font.drawBlock("Kinder", x + (70*1), y, 65, 25, ALIGN_RIGHT_TOP, TColor.clWhite)
@@ -28,13 +31,13 @@ Type TDebugAudienceInfos
 		font.drawBlock("Rentner", x + (70*7), y, 65, 25, ALIGN_RIGHT_TOP, TColor.clWhite)
 
 
-		font.Draw("Bevölkerung", 25, 50, TColor.clWhite);
-		DrawAudience(audienceResult.WholeMarket, 200, 50);
+		font.Draw("Bevölkerung", 25, 50, TColor.clWhite)
+		DrawAudience(audienceResult.WholeMarket, 200, 50)
 
 		Local percent:String = MathHelper.NumberToString(audienceResult.GetPotentialMaxAudienceQuotePercentage()*100,2) + "%"
-		font.Draw("Potentielle Zuschauer", 25, 70, TColor.clWhite);
-		font.Draw(percent, 160, 70, TColor.clWhite);
-		DrawAudience(audienceResult.PotentialMaxAudience, 200, 70);
+		font.Draw("Potentielle Zuschauer", 25, 70, TColor.clWhite)
+		font.Draw(percent, 160, 70, TColor.clWhite)
+		DrawAudience(audienceResult.PotentialMaxAudience, 200, 70)
 
 		local colorLight:TColor = TColor.CreateGrey(150)
 
@@ -87,7 +90,7 @@ Type TDebugAudienceInfos
 
 		Local offset:Int = 110
 
-		GetBitmapFontManager().baseFontBold.drawStyled("Sendung: " + audienceResult.GetTitle() + "     (" + genre + ")", 25, offset, TColor.clRed);
+		GetBitmapFontManager().baseFontBold.drawStyled("Sendung: " + audienceResult.GetTitle() + "     (" + genre + ") [Spieler: "+playerID+"]", 25, offset, TColor.clRed);
 		offset :+ 20
 
 		font.Draw("1. Programmqualität & Aktual.", 25, offset, TColor.clWhite)
@@ -198,7 +201,7 @@ rem
 		endrem
 
 		Local currBroadcast2:TBroadcast = GetBroadcastManager().GetCurrentBroadcast()
-		Local feedback:TBroadcastFeedback = currBroadcast2.GetFeedback(GetPlayerCollection().playerID)
+		Local feedback:TBroadcastFeedback = currBroadcast2.GetFeedback(playerID)
 
 		Local minute:Int = GetWorldTime().GetDayMinute()
 

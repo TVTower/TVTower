@@ -145,16 +145,19 @@ Type TInGameInterface
 			EndIf
 		Next
 
-			'channel selection (tvscreen on interface)
-		If MOUSEMANAGER.IsClicked(1)
-			For Local i:Int = 1 To 4
-				If THelper.MouseIn( 75 + i * 33, 171 + 383, 33, 41)
+		'channel selection (tvscreen on interface)
+		For Local i:Int = 0 To 4
+			If THelper.MouseIn( 75 + i * 33, 171 + 383 + 16 - i*4, 33, 25)
+				'hover state
+				GetGameBase().cursorstate = 1
+				
+				If MOUSEMANAGER.IsClicked(1)
 					ShowChannel = i
 					BottomImgDirty = True
 					exit
 				EndIf
-			Next
-		EndIf
+			EndIf
+		Next
 
 
 		'reset current programme sprites
