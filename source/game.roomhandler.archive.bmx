@@ -342,7 +342,12 @@ Type RoomHandler_Archive extends TRoomHandler
 			'when entering the archive, all scripts are moved from the
 			'suitcase to the collection
 			'TODO: mark these scripts as "new" 
-			GetPlayerProgrammeCollection(figure.playerID).MoveScriptsFromSuitcaseToArchive()
+
+			'RONNY 2016/08/06:
+			'disabled because there is - for now - now way to move them
+			'back into the suitcase
+			'TODO: add wayback option (dialogue + archive-script-box ?)
+			'GetPlayerProgrammeCollection(figure.playerID).MoveScriptsFromSuitcaseToArchive()
 		endif
 
 		'empty the guilist / delete gui elements

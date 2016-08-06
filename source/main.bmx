@@ -673,6 +673,17 @@ Type TApp
 					
 
 					If KEYMANAGER.IsHit(KEY_Y)
+						'GetGame().SetPlayerBankrupt(2)
+						rem
+						local m:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID("ronny-programme-kartoffeln-01")
+						print "Olympiade available: "+m.IsAvailable()
+						print "Olympiade released: "+m.IsReleased()
+						m.SetOwner(0)
+						RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(m, 1)
+						print "added Summerolympiade to player1's suitcase"
+						endrem
+
+
 						'GetWorld().Weather.SetPressure(-14)
 						'GetWorld().Weather.SetTemperature(-10)
 
@@ -1905,16 +1916,18 @@ Type TSaveGame Extends TGameState
 		'print "Cleanup: removed "+unused+" unused AdContracts."
 
 
-		unused = 0
-		used = GetScriptCollection().GetAvailableScriptList().Count()
-		local scriptList:TList = RoomHandler_ScriptAgency.GetInstance().GetScriptsInStock()
-		if not scriptList then scriptList = CreateList()
+		print "Cleanup Scriptcollection"
+		'used = GetScriptCollection().GetAvailableScriptList().Count()
+		'local scriptList:TList = RoomHandler_ScriptAgency.GetInstance().GetScriptsInStock()
+		'if not scriptList then scriptList = CreateList()
 		local availableScripts:TScript[] = TScript[](GetScriptCollection().GetAvailableScriptList().ToArray())
+		unused = 0
 		For local s:TScript = EachIn availableScripts
 			unused :+1
 			GetScriptCollection().Remove(s)
+			print " - removing script: "+s.GetTitle()+"  ["+s.GetGUID()+"]"
 		Next
-		'print "Cleanup: removed "+unused+" unused scripts."
+		print "Cleanup: removed "+unused+" generated but unused scripts from collection."
 
 
 		rem

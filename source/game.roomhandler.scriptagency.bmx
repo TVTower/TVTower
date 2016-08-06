@@ -250,6 +250,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 		'add back the scripts from the suitcase?
 		'currently this is done when entering the archive room
+		'TODO: add wayback option, for now this is disabled in the
+		'      archive room
 
 
 		return TRUE

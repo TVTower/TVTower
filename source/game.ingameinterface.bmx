@@ -444,6 +444,11 @@ Type TInGameInterface
 		Local feedback:TBroadcastFeedback = GetBroadcastManager().GetCurrentBroadcast().GetFeedback(GetPlayerBase().playerID)
 
 		local result:String[]
+		if not feedback or not feedback.AudienceInterest
+			print "Interface.GetWatchingFamily: no AudienceInterest!"
+			debugstop
+			return result
+		endif
 
 		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Children) > 0)
 			'maybe sent to bed ? :D
