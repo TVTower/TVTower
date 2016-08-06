@@ -112,7 +112,7 @@ Type TScreenHandler_Statistics
 		'add 1 to "today" as we are on this day then
 		local today:Double = GetWorldTime().MakeTime(0, showDay, 0, 0)
 		local todayText:string = GetWorldTime().GetDayOfYear(today)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().GetYear(today)
-		textFont.DrawBlock(GetLocale("GAMEDAY")+" "+todayText, 50, 25, 160, 20, ALIGN_CENTER_CENTER, TColor.CreateGrey(90), 2, 1, 0.2)
+		textFont.DrawBlock(GetLocale("GAMEDAY")+" "+todayText, 50, 24, 160, 20, ALIGN_CENTER_CENTER, TColor.CreateGrey(30), 0, 1, 0.5)
 
 
 		'=== UNAVAILABLE STATISTICS ===
@@ -169,9 +169,9 @@ Type TScreenHandler_Statistics
 				'row entries
 				if hoveredHour < 0 or hoveredHour > 23 or futureHour
 					if progNewsIterator = 1
-						captionFont.DrawBlock(GetLocale("PROGRAMME")+": "+GetLocale("AUDIENCE_RATING"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), ALIGN_CENTER_CENTER, captionColor, 1,,0.5)
+						captionFont.DrawBlock(GetLocale("PROGRAMME")+": "+GetLocale("AUDIENCE_RATING"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), ALIGN_CENTER_CENTER, captionColor, 1,,0.7)
 					else
-						captionFont.DrawBlock(GetLocale("NEWS")+": "+GetLocale("AUDIENCE_RATING"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), ALIGN_CENTER_CENTER, captionColor, 1,,0.5)
+						captionFont.DrawBlock(GetLocale("NEWS")+": "+GetLocale("AUDIENCE_RATING"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), ALIGN_CENTER_CENTER, captionColor, 1,,0.7)
 					endif
 				elseif not audienceResult
 					if progNewsIterator = 1
@@ -225,14 +225,14 @@ Type TScreenHandler_Statistics
 
 
 			'=== DRAW MONEY CURVE ===
-			startY = 252
+			startY = 253
 			backupColor.Get()
 
 			captionFont.DrawBlock(GetLocale("AUDIENCE_RATINGS"), 30, startY,  740, captionHeight, ALIGN_LEFT_CENTER, captionColor, 1,, 0.5)
 
 			local dim:TVec2D
 			local rightX:int = 0
-			dim = smallTextFont.DrawBlock(GetLocale("PROGRAMME"), 30 + 370, startY, 370, 20, ALIGN_RIGHT_CENTER, TColor.CreateGrey(150), 2, 1, 0.2)
+			dim = smallTextFont.DrawBlock(GetLocale("PROGRAMME"), 30 + 370, startY+1, 370, 20, ALIGN_RIGHT_CENTER, TColor.CreateGrey(50), 1, 1, 0.7)
 			rightX :+ dim.x + 5
 
 			SetAlpha 0.5 * backupColor.a
@@ -243,7 +243,7 @@ Type TScreenHandler_Statistics
 			DrawRect(30 + 740 - rightX - 15, startY+3, 15, 14)
 			rightX :+ 15 + 20
 
-			dim = smallTextFont.DrawBlock(GetLocale("NEWS"), 30 + 370 , startY, 370 - rightX, 20, ALIGN_RIGHT_CENTER, TColor.CreateGrey(150), 2, 1, 0.2)
+			dim = smallTextFont.DrawBlock(GetLocale("NEWS"), 30 + 370 , startY+1, 370 - rightX, 20, ALIGN_RIGHT_CENTER, TColor.CreateGrey(50), 1, 1, 0.7)
 			rightX :+ dim.x + 5
 
 			SetAlpha 0.5 * backupColor.a
