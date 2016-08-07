@@ -994,8 +994,8 @@ Horror vom Feinsten</de>
 				<en></en>
 			</description>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="BEL" year="2011" distribution="2" maingenre="0" subgenre="0" flags="128" blocks="2" price_mod="0.13" />
-			<ratings critics="3" speed="2" outcome="0" />
+			<data country="BEL" year="2011" distribution="2" maingenre="0" subgenre="0" flags="128" blocks="2" price_mod="0.85" />
+			<ratings critics="7" speed="10" outcome="0" />
 		</programme>
 		<programme id="d9bd6851-b70d-4130-8f79-230e2df0a910" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0104779" rt_id="0" creator="">
 			<title>
@@ -1476,7 +1476,7 @@ Bunte Action mit [1|Full]</de>
 			</description>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="2000" distribution="2" maingenre="0" subgenre="0" flags="128" blocks="2" price_mod="0.9" />
-			<ratings critics="5" speed="7" outcome="0" />
+			<ratings critics="7" speed="11" outcome="8" />
 		</programme>
 		<programme id="33739403-cb16-4dfc-b9da-42658c40f261" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0138447" rt_id="0" creator="">
 			<title>
@@ -4774,19 +4774,19 @@ Aufwendiges Actionspektakel von Regisseur [0|Full]</de>
 		</programme>
 		<programme id="6cab2c62-39d7-4e0a-b957-191d54fc78f9" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
-				<de>TED am Morgen</de>
-				<en></en>
+				<de>TED des Tages</de>
+				<en>TED of the day</en>
 			</title>
 			<description>
-				<de>Der Tele Dialog am Morgen befragt Zuschauer zu brisanten Themen. Meinungsbildend und Gewinnbringend.</de>
-				<en></en>
+				<de>Der Teledialog befragt Zuschauer zu brisanten Themen. Meinungsbildend und Gewinnbringend.</de>
+				<en>The teledialogue surveys viewers to topics of high significance. Opinion-forming and gainful.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">11c74211-662a-4817-b5b5-ec2c635d0158</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="2001" distribution="1" maingenre="0" subgenre="0" flags="128" blocks="1" price_mod="1.0" />
-			<ratings critics="25" speed="10" outcome="0" />
+			<ratings critics="25" speed="10" outcome="15" />
 		</programme>
 		<programme id="3a0c9fba-3b1e-49e1-afdf-340e4aa1f913" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0093409" rt_id="0" creator="">
 			<title>
@@ -6039,7 +6039,7 @@ Tragische Liebesgeschichte</de>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="2009" distribution="2" maingenre="0" subgenre="0" flags="128" blocks="1" price_mod="0.85" />
-			<ratings critics="4" speed="25" outcome="15" />
+			<ratings critics="5" speed="25" outcome="15" />
 			<children>
 				<programme id="8aedcc43-c63d-4ab3-aec9-dfd858ba3f1e" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6213,7 +6213,7 @@ Tragische Liebesgeschichte</de>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1999" distribution="2" maingenre="0" subgenre="0" flags="128" blocks="2" price_mod="1.05" />
-			<ratings critics="2" speed="15" outcome="8" />
+			<ratings critics="3" speed="15" outcome="8" />
 			<children>
 				<programme id="36bdc248-0924-4c43-9fd2-2aab51a804b1" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6224,7 +6224,7 @@ Tragische Liebesgeschichte</de>
 						<de>Zwar kommt der Anruf aus der Regie, dennoch erreicht Mariusz angeblich den verstorbenen Vater</de>
 						<en></en>
 					</description>
-					<ratings critics="1" speed="18" />
+					<ratings critics="2" speed="18" />
 				</programme>
 				<programme id="358da90b-2c5c-4796-acb3-6ae69490d7cf" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
@@ -6235,7 +6235,7 @@ Tragische Liebesgeschichte</de>
 						<de>Marlene aus Berlin möchte wissen, ob der entlaufene Pudel Rudi je wieder nach Hause kommen wird. </de>
 						<en></en>
 					</description>
-					<ratings critics="5" speed="12" />
+					<ratings critics="5" speed="13" />
 				</programme>
 				<programme id="eeaf10fd-4105-4e53-b70d-c1a32316176e" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
