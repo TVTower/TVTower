@@ -636,8 +636,8 @@ Type TNewsAgency
 			localizeDescription = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_DESCRIPTION")
 		'default
 		else
-			localizeTitle = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_DESCRIPTION")
-			localizeDescription = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_TITLE")
+			localizeTitle = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_TITLE")
+			localizeDescription = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_DESCRIPTION")
 		EndIf
 
 		'replace data
