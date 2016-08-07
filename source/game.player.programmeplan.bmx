@@ -1584,13 +1584,14 @@ endrem
 			'targeting the current advertisement/trailer
 			local oldAudienceResult:TAudienceResult = audienceResult
 			audienceResult = new TAudienceResult
-			audienceResult.broadcastMaterial = obj
 			'copy base things
 			audienceResult.CopyFrom(oldAudienceResult)
 			'reuse some values by directly linking to it
 			audienceResult.ChannelSurferToShare = oldAudienceResult.ChannelSurferToShare
 			audienceResult.AudienceAttraction = oldAudienceResult.AudienceAttraction
 			audienceResult.EffectiveAudienceAttraction = oldAudienceResult.EffectiveAudienceAttraction
+			'use advertisement instead of programme
+			audienceResult.broadcastMaterial = obj
 
 			if not obj
 				audienceResult.broadcastOutage = True
