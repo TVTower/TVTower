@@ -85,6 +85,24 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 
 
 	'override
+	'add targetgroup bonus
+	Method GetTargetGroupAttractivityMod:TAudience()
+		Local result:TAudience = Super.GetTargetGroupAttractivityMod()
+
+		if contract.base.limitedToTargetGroup > 0
+			Local tgAudience:TAudience = New TAudience.InitValue(1, 1)
+			'for women/men this only is run for the
+			'female/male portion of the audience
+			tgAudience.ModifyTotalValue(contract.base.limitedToTargetGroup, 0.5)
+
+			result.Multiply(tgAudience)
+		EndIf
+
+		Return result
+	End Method
+	
+
+	'override
 	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		Super.FinishBroadcasting(day,hour,minute, audienceData)
 
@@ -234,8 +252,8 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 
 	'quality when send as programme (infomercial)
 	Method GetQuality:Float() {_exposeToLua}
-		'a 100% quality compares to a 35% quality movie
-		return 0.35 * contract.GetQuality()
+		'a 100% quality compares to a 100% quality movie
+		return 1.0 * contract.GetQuality()
 	End Method
 
 
