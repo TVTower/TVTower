@@ -1,10 +1,14 @@
 SuperStrict
-Import "Dig/base.framework.entity.bmx"
+Import "Dig/base.framework.entity.spriteentity.bmx"
 Import "Dig/base.util.math.bmx"
 
 
 Type TBuildingBase Extends TRenderableEntity
 	Global _instance:TBuildingBase
+
+	'an entity with the area spawning the whole inner part of
+	'the building (for proper alignment)
+	Field buildingInner:TRenderableEntity
 
 	'position at which the figure is offscren (walked out of screen
 	'along the pavement)

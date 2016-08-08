@@ -553,6 +553,11 @@ endrem
 	End Method
 
 
+	Method GetInRoom:object()
+		return inRoom
+	End Method
+
+
 	'override to add buildingsupport
 	Method CanMove:int()
 		If not IsInBuilding() then return False

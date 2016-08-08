@@ -252,6 +252,11 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Method GetInRoomID:Int()
 		return 0
 	End Method
+
+
+	Method GetInRoom:object()
+		return null
+	End Method
 	
 
 	Method CanMove:int()

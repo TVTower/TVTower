@@ -111,7 +111,6 @@ import "common.misc.plannerlist.contractlist.bmx"
 '		- base class For buttons And extension newsbutton
 Include "gamefunctions.bmx"
 
-Include "gamefunctions_screens.bmx"
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
 Include "gamefunctions_debug.bmx"

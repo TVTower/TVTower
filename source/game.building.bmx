@@ -1,6 +1,5 @@
 SuperStrict
 Import "basefunctions.bmx" 'catmullromspline
-Import "Dig/base.framework.entity.spriteentity.bmx"
 Import "Dig/base.framework.tooltip.bmx"
 Import "Dig/base.util.profiler.bmx"
 Import "common.misc.hotspot.bmx"
@@ -39,10 +38,6 @@ Type TBuilding Extends TBuildingBase
 	'the room used for the building
 	Field room:TRoomBase = Null
 	Field roomUsedTooltip:TTooltip = Null
-
-	'an entity with the area spawning the whole inner part of
-	'the building (for proper alignment)
-	Field buildingInner:TRenderableEntity
 
 	Global softDrinkMachineActive:Int = False
 	Global softDrinkMachine:TSpriteEntity
