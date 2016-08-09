@@ -42,7 +42,6 @@ Type TBuilding Extends TBuildingBase
 	Global softDrinkMachineActive:Int = False
 	Global softDrinkMachine:TSpriteEntity
 
-	Global _instance:TBuilding
 	Global _backgroundModified:Int = False
 	Global _eventListeners:TLink[]
 
@@ -51,7 +50,10 @@ Type TBuilding Extends TBuildingBase
 	Function GetInstance:TBuilding()
 		'we skip reusing field data because we "initialize" it anyways
 		'if not done already
-		If Not TBuilding(_instance) then _instance = New TBuilding
+		if not TBuilding(_instance)
+			_instance = new TBuilding
+			'else we would take over values here
+		endif
 		Return TBuilding(_instance)
 	End Function
 
