@@ -92,6 +92,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Field lockedSlots:TMap = CreateMap()
 	Field owner:Int
 
+	Field _daysPlanned:int = -1 {nosave}
+
 	'FALSE to avoid recursive handling (network)
 	Global fireEvents:Int = True
 
@@ -556,18 +558,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 				If material.GetReferenceID() = obj.GetReferenceID() Then Return obj
 			Next
 		EndIf
-Rem
-		if startAtLatestTime
-			For local i:int = minIndex to maxIndex
-				if not TBroadcastMaterial(GetObjectAtIndex(slotType, i)) then continue
-				if material = TBroadcastMaterial(GetObjectAtIndex(slotType, i)) then return material
-			Next
-		else
-			For local i:int = maxIndex to minIndex step -1
-				if material = TBroadcastMaterial(GetObjectAtIndex(slotType, i)) then return material
-			Next
-		endif
-endrem
+
 		Return Null
 	End Method
 
@@ -656,7 +647,12 @@ endrem
 
 		'special for programmelicences: set a maximum planned time
 		'setting does not require special calculations
-		If TProgramme(obj) Then TProgramme(obj).licence.SetPlanned(day*24+hour+obj.GetBlocks(slotType))
+		If TProgramme(obj)
+			TProgramme(obj).licence.SetPlanned(day*24+hour+obj.GetBlocks(slotType))
+			'ProgrammeLicences: recalculate the latest planned hour
+			RecalculatePlannedProgramme(TProgramme(obj))
+		EndIf
+			
 		'Advertisements: adjust planned (when placing in contract-slot
 		If slotType = TVTBroadcastMaterialType.ADVERTISEMENT and TAdvertisement(obj)
 			TAdvertisement(obj).contract.SetSpotsPlanned( GetAdvertisementsPlanned(TAdvertisement(obj).contract) )
@@ -667,7 +663,10 @@ endrem
 		else
 			'TLogger.Log("PlayerProgrammePlan.AddObject()", "Plan #"+owner+" added object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") to PROGRAMMES, index="+arrayIndex+", day="+day+", hour="+hour+". Removed "+removedObjects.length+" objects before.", LOG_DEBUG)
 		endif
-		
+
+		'invalidate cache
+		_daysPlanned = -1
+
 		'emit an event
 		If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("programmeplan.addObject", New TData.add("object", obj).add("removedObjects", removedObjects).addNumber("slotType", slotType).addNumber("day", day).addNumber("hour", hour), Self))
 
@@ -734,6 +733,8 @@ endrem
 				TLogger.Log("PlayerProgrammePlan.RemoveObject()", "Plan #"+owner+" removed object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from PROGRAMMES, index="+GetArrayIndex(programmedDay*24 + programmedHour)+", programmedDay="+programmedDay+", programmedHour="+programmedHour+".", LOG_DEBUG)
 			endif
 
+			'invalidate cache
+			_daysPlanned = -1
 
 			'inform others
 			If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("programmeplan.removeObject", New TData.add("object", obj).addNumber("slotType", slotType).addNumber("day", programmedDay).addNumber("hour", programmedHour), Self))
@@ -910,6 +911,32 @@ endrem
 	End Method
 
 
+	Method GetDaysPlanned:int()
+		if _daysPlanned = -1
+			For local i:int = programmes.length -1 to 0 step -1
+				if not programmes[i] then continue
+				local endDay:int = programmes[i].programmedDay
+				local endHour:int = programmes[i].programmedHour + programmes[i].GetBlocks( TVTBroadcastMaterialType.PROGRAMME )
+				FixDayHour(endDay, endHour)
+				
+				_daysPlanned = Max(_daysPlanned, endDay)
+				exit
+			Next
+			For local i:int = advertisements.length -1 to 0 step -1
+				if not advertisements[i] then continue
+				local endDay:int = advertisements[i].programmedDay
+				local endHour:int = advertisements[i].programmedHour + advertisements[i].GetBlocks( TVTBroadcastMaterialType.ADVERTISEMENT )
+				FixDayHour(endDay, endHour)
+				
+				_daysPlanned = Max(_daysPlanned, endDay)
+				exit
+			Next
+		endif
+
+		return _daysPlanned
+	End Method
+
+
 	'===== PROGRAMME FUNCTIONS =====
 	'mostly wrapping the commong object functions
 
@@ -1022,7 +1049,16 @@ endrem
 
 	'refreshes the programme's licence "latestPlannedEndHour"
 	Method RecalculatePlannedProgramme:Int(programme:TProgramme, dayStart:Int=-1, hourStart:Int=-1)
+		'done in "ObjectPlannedInTimeSpan()" calls already
 		FixDayHour(dayStart, hourStart)
+		'FixDayHour(dayEnd, hourEnd)
+
+		'dayEnd = -1 means, only check the current day
+		local dayEnd:Int = -1
+		local hourEnd:int = 23
+
+		'override dayEnd to check ALL already planned days
+		dayEnd = GetDaysPlanned()
 
 		If programme.licence.owner <= 0
 			programme.licence.SetPlanned(-1)
@@ -1030,14 +1066,15 @@ endrem
 			'find "longest running" in all available type slots
 			'if none is found, the planned value contains "-1"
 			Local instance:TBroadcastMaterial
+			'latestHour then contains "hours since startDay 0:00"
 			Local latestHour:Int = -1
 
 			'check ad usage - but only for ads!
-			instance = ObjectPlannedInTimeSpan(programme, TVTBroadcastMaterialType.ADVERTISEMENT, dayStart, hourStart, -1, 23, True)
+			instance = ObjectPlannedInTimeSpan(programme, TVTBroadcastMaterialType.ADVERTISEMENT, dayStart, hourStart, dayEnd, hourEnd, True)
 			If instance Then latestHour = Max(latestHour, instance.programmedDay*24+instance.programmedHour + instance.GetBlocks(TVTBroadcastMaterialType.ADVERTISEMENT))
 
 			'check prog usage
-			instance = ObjectPlannedInTimeSpan(programme, TVTBroadcastMaterialType.PROGRAMME, dayStart, hourStart, -1, 23, True)
+			instance = ObjectPlannedInTimeSpan(programme, TVTBroadcastMaterialType.PROGRAMME, dayStart, hourStart, dayEnd, hourEnd, True)
 			If instance Then latestHour = Max(latestHour, instance.programmedDay*24+instance.programmedHour + instance.GetBlocks(TVTBroadcastMaterialType.PROGRAMME))
 
 			programme.licence.SetPlanned(latestHour)

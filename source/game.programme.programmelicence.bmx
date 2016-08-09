@@ -739,7 +739,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 
 	'instead of asking the programmeplan about each licence
-	'we cache that information directly within the programmeplan
+	'we cache that information directly within the programme
 	Method isPlanned:int() {_exposeToLua}
 		'single-licence
 		if GetSubLicenceCount() = 0 and GetData()
