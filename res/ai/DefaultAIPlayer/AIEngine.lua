@@ -629,6 +629,7 @@ function debugMsg(pMessage)
 	if TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
 		--TVT.PrintOutDebug(pMessage)
 		TVT.PrintOut(pMessage)
+		TVT.addToLog(pMessage)
 		--TVT.SendToChat(TVT.ME .. ": " .. pMessage)
 	end
 end

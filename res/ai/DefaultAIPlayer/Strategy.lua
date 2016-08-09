@@ -5,8 +5,8 @@ _G["AIStrategy"] = class(KIDataObjekt, function(c)
 --	c.TodayStartAccountBalance = 0 -- Kontostand zu Beginn des Tages
 
 	--amount to spend for start programme
-	c.startProgrammePriceMax = 70000
-	c.startProgrammeBudget = 280000
+	c.startProgrammePriceMax = 90000
+	c.startProgrammeBudget = 300000
 	c.startProgrammeAmount = 4
 	c.initDone = false
 end)
@@ -37,9 +37,9 @@ end
 function DefaultStrategy:initialize()
 	if playerAI == nil then playerAI = _G["globalPlayer"] end
 
-	-- a risky player (Ventruesome = 10) will spend 25000 less for each
-	-- programme, a non-risky one up to 25000 more
-	self.startProgrammePriceMax = self.startProgrammePriceMax + 2500 * (5 - playerAI.Ventruesome)
+	-- a risky player (Ventruesome = 10) will spend 30000 less for each
+	-- programme, a non-risky one up to 30000 more
+	self.startProgrammePriceMax = self.startProgrammePriceMax + 3000 * (5 - playerAI.Ventruesome)
 
 	if playerAI.Ventruesome > 7 then
 		self.startProgrammeAmount = 4 

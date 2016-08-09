@@ -158,7 +158,6 @@ function JobBuyStartProgramme:Tick()
 		--else each one should be cheaper than the single licence limit
 		if (table.count(buyStartMovies) >= moviesNeeded or v.GetPrice() < startMovieBudget) then
 			debugMsg("Kaufe Startprogramm: " .. v.GetTitle() .. " (" .. v.GetId() .. ") - Preis: " .. v:GetPrice())
-			TVT.addToLog("Kaufe Startprogramm: " .. v.GetTitle() .. " (" .. v.GetId() .. ") - Preis: " .. v:GetPrice())
 			TVT.md_doBuyProgrammeLicence(v.GetId())
 			
 			self.MovieDistributorTask:PayFromBudget(v:GetPrice())
