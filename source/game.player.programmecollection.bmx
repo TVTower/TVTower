@@ -368,20 +368,16 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Method RemoveProgrammeLicenceFromSuitcase:int(licence:TProgrammeLicence)
 		if not suitcaseProgrammeLicences.Contains(licence) then return FALSE
 
-		If licence.isSingle() Then singleLicences.AddLast(licence)
-		if licence.isSeries() then seriesLicences.AddLast(licence)
-		if licence.isCollection() then collectionLicences.AddLast(licence)
+		if AddProgrammeLicence(licence, FALSE)
+			suitcaseProgrammeLicences.Remove(licence)
 
-		'invalidate
-		_programmeLicences = null
-		
-		justAddedProgrammeLicences.AddLast(licence)
+			'emit an event so eg. network can recognize the change
+			if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.removeProgrammeLicenceFromSuitcase", new TData.add("programmeLicence", licence), self))
 
-		suitcaseProgrammeLicences.Remove(licence)
-
-		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.removeProgrammeLicenceFromSuitcase", new TData.add("programmeLicence", licence), self))
-		return TRUE
+			return True
+		else
+			return False
+		endif
 	End Method
 
 
