@@ -1376,7 +1376,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		news[slot] = newsObject
 
 		'remove that news from the collection
-		GetPlayerProgrammeCollectionCollection().Get(owner).RemoveNews(newsObject)
+		GetPlayerProgrammeCollection(owner).RemoveNews(newsObject)
 
 
 		'emit an event so eg. network can recognize the change
@@ -1650,7 +1650,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 						'remove contract from collection (and suitcase)
 						'contract is still stored within advertisements (until they get deleted)
-						GetPlayerProgrammeCollectionCollection().Get(owner).RemoveAdContract(TAdvertisement(obj).contract)
+						GetPlayerProgrammeCollection(owner).RemoveAdContract(TAdvertisement(obj).contract)
 					EndIf
 					'eventKey = "broadcasting.begin"
 				Else

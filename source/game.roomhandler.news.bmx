@@ -460,6 +460,8 @@ Type RoomHandler_News extends TRoomHandler
 
 			if not guiNewsListAvailable.ContainsNews(news)
 				'only add for news NOT planned in the news show
+				'Ronny: should not be needed, as news are removed from the
+				'       collection when they got added to the news show
 				if not GetPlayerProgrammePlan(owner).HasNews(news)
 					local guiNews:TGUINews = new TGUINews.Create(null,null, news.GetTitle())
 					guiNews.SetNews(news)

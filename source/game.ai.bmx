@@ -814,7 +814,19 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
-	Method ne_doNewsInPlan:Int(slot:int=1, ObjectID:Int = -1)
+	Method ne_getAvailableNews:TLuaFunctionResult(arrayIndex:Int=-1)
+		If Not (_PlayerInRoom("newsroom") or _PlayerInRoom("news")) Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
+
+		local availableNews:TNews[] = GetPlayerProgrammeCollection(self.ME).GetNewsArray()
+		If availableNews
+			Return TLuaFunctionResult.Create(self.RESULT_OK, availableNews)
+		else
+			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+		endif
+	End Method
+
+
+	Method ne_doNewsInPlan:Int(slot:int = 0, ObjectID:Int = -1)
 		If Not (_PlayerInRoom("newsroom") or _PlayerInRoom("news")) Then Return self.RESULT_WRONGROOM
 
 		local player:TPlayerBase = GetPlayerBase(self.ME)
@@ -823,7 +835,7 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 		'Es ist nur schauen erlaubt fuer "Fremde"
 		If Self.ME <> TFigure(player.GetFigure()).inRoom.owner Then Return self.RESULT_WRONGROOM
 
-		If ObjectID = 0 'News bei slotID loeschen
+		If ObjectID <= 0 or slot < 0 'News bei slotID loeschen
 			if GetPlayerProgrammePlan(self.ME).RemoveNews(null, slot)
 				Return self.RESULT_OK
 			else

@@ -1094,7 +1094,7 @@ endrem
 					'      (Ronny: I assume it happens when saving while
 					'       a figure enters a room)
 					'fix broken savegames
-					if WaitEnterTimer > 0 and GetBuildingTime().GetMillisecondsGone() > WaitEnterTimer + WaitEnterLeavingTime + 100
+					if WaitEnterTimer > 0 and GetBuildingTime().GetMillisecondsGone() > WaitEnterTimer + WaitEnterLeavingTime + 100 and GetBuildingTime().GetTimeFactor() < 100
 						print "FIX ENTER state for figure ~q"+name+"~q (playerID: "+playerID+")"
 						currentReachTargetStep = 0
 						currentAction = ACTION_IDLE

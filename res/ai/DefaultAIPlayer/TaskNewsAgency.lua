@@ -210,8 +210,6 @@ function JobNewsAgency:Tick()
 		price = self.Newslist[1].GetPrice(TVT.ME)
 		if (self.Task.CurrentBudget >= price) then			
 			debugMsg("Kaufe Nachricht: " .. self.Newslist[1].GetTitle() .. " (" .. self.Newslist[1].GetID() .. ") - Slot: 1 - Preis: " .. price)
-			TVT.addToLog("Kaufe Nachricht: " .. self.Newslist[1].GetTitle() .. " (" .. self.Newslist[1].GetID() .. ") - Slot: 1 - Preis: " .. price)
-			TVT.ne_doNewsInPlan(0)
 			TVT.ne_doNewsInPlan(0, self.Newslist[1].GetID())
 			--self.Task:PayFromBudget(price)
 		end
@@ -220,8 +218,6 @@ function JobNewsAgency:Tick()
 		price = self.Newslist[2].GetPrice(TVT.ME)
 		if (self.Task.CurrentBudget >= price) then
 			debugMsg("Kaufe Nachricht: " .. self.Newslist[2].GetTitle() .. " (" .. self.Newslist[2].GetID() .. ") - Slot: 2 - Preis: " .. price)
-			TVT.addToLog("Kaufe Nachricht: " .. self.Newslist[2].GetTitle() .. " (" .. self.Newslist[2].GetID() .. ") - Slot: 2 - Preis: " .. price)
-			TVT.ne_doNewsInPlan(1)
 			TVT.ne_doNewsInPlan(1, self.Newslist[2].GetID())
 			--self.Task:PayFromBudget(price)
 		end
@@ -230,8 +226,6 @@ function JobNewsAgency:Tick()
 		price = self.Newslist[3].GetPrice(TVT.ME)
 		if (self.Task.CurrentBudget >= price) then
 			debugMsg("Kaufe Nachricht: " .. self.Newslist[3].GetTitle() .. " (" .. self.Newslist[3].GetID() .. ") - Slot: 3 - Preis: " .. price)
-			TVT.addToLog("Kaufe Nachricht: " .. self.Newslist[3].GetTitle() .. " (" .. self.Newslist[3].GetID() .. ") - Slot: 3 - Preis: " .. price)
-			TVT.ne_doNewsInPlan(2)
 			TVT.ne_doNewsInPlan(2, self.Newslist[3].GetID())
 			--self.Task:PayFromBudget(price)
 		end
@@ -242,11 +236,16 @@ end
 function JobNewsAgency:GetNewsList()
 	local currentNewsList = {}
 
-	for i = 0, MY.GetProgrammeCollection().GetNewsCount() - 1 do
-		local news = MY.GetProgrammeCollection().GetNewsAtIndex(i)
-		if (news.IsReadyToPublish() == 1) then
-			table.insert(currentNewsList, news)
-		end
+	--fetch all news, insert all available to a list
+	local response = TVT.ne_getAvailableNews()
+	if ((response.result == TVT.RESULT_WRONGROOM) or (response.result == TVT.RESULT_NOTFOUND)) then
+		return {}
+	end
+
+	local allNews = response.DataArray()
+
+	for i, news in ipairs(allNews) do
+		table.insert(currentNewsList, news)
 	end
 
 	local sortMethod = function(a, b)

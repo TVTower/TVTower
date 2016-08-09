@@ -1043,6 +1043,20 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
+	Method GetNewsArray:TNews[]() {_exposeToLua}
+		'would return an array of type "object[]"
+		'Return news.toArray()
+
+		local result:TNews[ news.Count() ]
+		local pos:int = 0
+		For local n:TNews = eachin news
+			result[pos] = n
+			pos :+ 1
+		Next
+		return result
+	End Method
+
+
 	'returns the amount of news currently available
 	Method GetNewsCount:Int() {_exposeToLua}
 		Return news.count()
