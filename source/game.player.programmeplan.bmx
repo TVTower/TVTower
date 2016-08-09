@@ -1363,10 +1363,12 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'if just dropping on the own slot ...do nothing
 		If news[slot] = newsObject Then Return True
 
-		'remove this news from a slot if it occupies one
+		'remove this news from slots if it occupies some of them
 		'do not add it back to the collection
-		RemoveNews(newsObject,-1,False)
-
+		'-> this avoids "duplicate news" in one show
+		For Local i:Int = 0 To news.length-1
+			if GetNews(i) = newsObject Then RemoveNews(Null, i, False)
+		Next
 
 		'is there an other newsblock, remove that first
 		'and adding that back to the collection
