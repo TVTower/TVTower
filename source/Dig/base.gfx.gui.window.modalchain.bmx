@@ -57,7 +57,7 @@ Type TGUIModalWindowChain Extends TGUIObject
 	'the time a close action started
 	Field closeActionTime:Long = 0
 	'the time a close action runs
-	Field closeActionDuration:int = 1000
+	Field closeActionDuration:int = 650
 	'the position of the widget when closing
 	Field closeActionStartPosition:TVec2D = new TVec2D
 
