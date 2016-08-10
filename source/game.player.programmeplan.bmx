@@ -817,8 +817,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			if p.data.IsLive()
 				'hour or day incorrect
 				if GameRules.onlyExactLiveProgrammeTimeAllowedInProgrammePlan
-					if GetWorldTime().GetDayHour( p.data.releaseTime ) <> hour then return False 
-					if GetWorldTime().GetDay( p.data.releaseTime ) <> day then return False
+					if GetWorldTime().GetDayHour( p.data.releaseTime ) <> hour then return -1
+					if GetWorldTime().GetDay( p.data.releaseTime ) <> day then return -1
 				'all times after the live event are allowed too
 				else
 					'live happens on a later day
@@ -826,7 +826,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 						return False
 					'live happens on that day but on a later hour
 					elseif GetWorldTime().GetDay( p.data.releaseTime ) = day
-						if GetWorldTime().GetDayHour( p.data.releaseTime ) > hour then return False 
+						if GetWorldTime().GetDayHour( p.data.releaseTime ) > hour then return -1
 					endif
 				endif
 			endif
@@ -836,10 +836,10 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'check all slots the obj will occupy...
 		For Local i:Int = 0 To obj.GetBlocks() - 1
 			'... and if there is already an object, return the information
-			If GetObject(slotType, day, hour + i) Then Return False
+			If GetObject(slotType, day, hour + i) Then Return -2
 		Next
 
-		Return True
+		Return 1
 	End Method
 
 
@@ -1123,12 +1123,11 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method SetProgrammeSlot:Int(obj:TBroadcastMaterial, day:Int=-1, hour:Int=-1)
 		'if nothing is given, we have to reset that slot
 		If Not obj Then Return (Null<>RemoveObject(Null, TVTBroadcastMaterialType.PROGRAMME, day, hour))
-'		if not obj then return FALSE
 
 		'check if we are allowed to place it there
-		'(eg. live-programme)
-		if not ProgrammePlaceable(obj, day, hour) then return False
-		
+		'for now, only skip if failing live programme (-1)
+		'- if also interested in "other programme on slots", this is -2
+		if ProgrammePlaceable(obj, day, hour) = -1 then return False
 
 		Return AddObject(obj, TVTBroadcastMaterialType.PROGRAMME, day, hour)
 	End Method
