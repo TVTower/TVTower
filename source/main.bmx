@@ -672,6 +672,52 @@ Type TApp
 					
 
 					If KEYMANAGER.IsHit(KEY_Y)
+						local fCheap:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesCheap
+						local fGood:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesGood
+						local fAuction:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterAuction
+						local total:int = 0
+						local foundCheap:int = 0
+						local foundGood:int = 0
+						local foundAuction:int = 0
+						local foundSkipped:int = 0
+						local skippedFilterCount:int = 0
+						For local p:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().licences
+							if p.IsEpisode() then continue
+							if not p.IsReleased() then continue
+							if p.IsSeries() then continue
+
+							skippedFilterCount = 0
+							
+							total :+1
+							if fCheap.DoesFilter(p)
+								'print p.GetTitle()
+								foundCheap :+ 1
+							else
+								skippedFilterCount :+ 1
+							endif
+
+							if fGood.DoesFilter(p)
+								'print p.GetTitle()
+								foundGood :+ 1
+							else
+								skippedFilterCount :+ 1
+							endif
+
+							if fAuction.DoesFilter(p)
+								'print p.GetTitle()
+								foundAuction :+ 1
+							else
+								skippedFilterCount :+ 1
+							endif
+
+							if skippedFilterCount = 3
+								print "unavailable: "+ p.GetTitle()+"  [year="+p.data.GetYear()+"  price="+p.GetPrice()+"  topicality="+p.GetTopicality()+"/"+p.GetMaxTopicality()+"  quality="+p.GetQuality()+"]"
+								foundSkipped :+ 1
+							endif
+						Next
+						print "found cheap:"+foundCheap+", good:"+foundGood+", auction:"+foundAuction+", skipped:"+foundSkipped+" movies/series for 1985. Total="+total
+
+						
 						'GetGame().SetPlayerBankrupt(2)
 						rem
 						local m:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID("ronny-programme-kartoffeln-01")
@@ -2041,7 +2087,7 @@ Type TSavegameConverter
 
 			case "TProgrammeLicenceFilter>TProgrammeLicenceFilterGroup".ToLower()
 				if parentObj and TTypeID.ForObject(parentObj).name().ToLower() = "RoomHandler_MovieAgency".ToLower()
-					return RoomHandler_MovieAgency.InitializeAuctionFilter()
+					return RoomHandler_MovieAgency.GetInstance().filterAuction
 				endif
 		End Select
 		return null
