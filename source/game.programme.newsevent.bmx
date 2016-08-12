@@ -552,6 +552,7 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	Field title:TLocalizedString
 	Field description:TLocalizedString
 	Field genre:Int = 0
+	Field keywords:string = ""
 	Field qualityRaw:Float = -1.0 'none
 	'time when something happened or will happen. "-1" = not happened
 	Field happenedTime:Long = -1
@@ -647,6 +648,26 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		maxTopicality :- 0.5 * timesBroadcastedInfluence
 
 		return MathHelper.Clamp(maxTopicality, 0.0, 1.0)
+	End Method
+
+
+	Method AddKeyword:int(keyword:string)
+		if HasKeyword(keyword, True) then return False
+
+		if keywords then keywords :+ ","
+		keywords :+ keyword.ToLower()
+		Return True
+	End Method
+
+
+	Method HasKeyword:int(keyword:string, exactMode:int = False)
+		if not keyword or keyword="," then return False
+		
+		if exactMode
+			return (keywords+",").Find(( keyword+",").ToLower() ) >= 0
+		else
+			return keywords.Find(keyword.ToLower()) >= 0
+		endif
 	End Method
 
 

@@ -415,6 +415,8 @@ Type TNewsAgency
 		'send without delay!
 		NewsEvent.SetFlag(TVTNewsFlag.SEND_IMMEDIATELY, True)
 
+		NewsEvent.AddKeyword("TERRORIST")
+
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
 		Return NewsEvent
 	End Method
@@ -594,6 +596,8 @@ Type TNewsAgency
 		'This is 2 hours after the next forecast (a bit overlapping)
 		NewsEvent.SetModifier("topicality::age", 2.5)
 
+		NewsEvent.AddKeyword("WEATHERFORECAST")
+
 		'TODO
 		'add weather->audience effects
 		'rain = more audience
@@ -657,6 +661,8 @@ Type TNewsAgency
 		'after 20 hours a news topicality is 0 - so accelerating it by
 		'2 means it reaches topicality of 0 at 10 hours after creation.
 		NewsEvent.SetModifier("topicality::age", 2)
+
+		NewsEvent.AddKeyword("MOVIE")
 
 
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
