@@ -95,12 +95,13 @@ Type TRoomBaseCollection
 		For Local room:TRoomBase = EachIn GetInstance().list
 			'someone entering / leaving the room?
 			For local action:TEnterLeaveAction = EachIn room.enteringStack
-				if action.finishTime <= GetBuildingTime().GetMillisecondsGone()
+				if action.finishTime <= GetBuildingTime().GetMillisecondsGone() or GetBuildingTime().GetTimeFactor() < 0.25
 					room.FinishEnter(action.entity)
 				endif
 			Next
 			For local action:TEnterLeaveAction = EachIn room.leavingStack
-				if action.finishTime <= GetBuildingTime().GetMillisecondsGone()
+				'if time is running slow, finish without waiting 
+				if action.finishTime <= GetBuildingTime().GetMillisecondsGone() or GetBuildingTime().GetTimeFactor() < 0.25
 					room.FinishLeave(action.entity)
 				endif
 			Next
