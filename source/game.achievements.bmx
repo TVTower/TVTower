@@ -3,6 +3,7 @@ Import "game.achievements.base.bmx"
 
 Import "game.broadcast.audienceresult.bmx"
 Import "game.broadcast.base.bmx"
+Import "game.broadcastmaterial.news.bmx" 'TNewsshow
 Import "game.world.worldtime.bmx"
 Import "game.player.finance.bmx"
 
@@ -177,10 +178,19 @@ Type TAchievementTask_ReachBroadcastArea extends TAchievementTask
 
 		'instead of registering them in "new()" (which is run for the
 		'"creator instance" too) we do it here
-		instance.eventListeners :+ [EventManager.registerListenerMethod( "StationMap.onRecalculateAudienceSum", instance, "onRecalculateAudienceSum" ) ]
+		instance.RegisterEventListeners()
 
 		return instance
 	End Function
+
+
+	Method RegisterEventListeners:int()
+		Super.RegisterEventListeners()
+
+		eventListeners :+ [EventManager.registerListenerMethod( "StationMap.onRecalculateAudienceSum", self, "onRecalculateAudienceSum" ) ]
+
+		return True
+	End Method
 
 		
 	'override
@@ -231,6 +241,103 @@ End Type
 
 
 
+Type TAchievementTask_BroadcastNewsShow extends TAchievementTask
+	Field genre:int[] = [-1,-1,-1]
+	Field minQuality:Float[] = [-1.0, -1.0, -1.0]
+	Field maxQuality:Float[] = [-1.0, -1.0, -1.0]
+	'news must have given keyword?
+	Field keyword:string[] = ["", "", ""]
+
+
+	'override
+	Function CreateNewInstance:TAchievementTask_BroadcastNewsShow()
+		local instance:TAchievementTask_BroadcastNewsShow = new TAchievementTask_BroadcastNewsShow
+
+		'instead of registering them in "new()" (which is run for the
+		'"creator instance" too) we do it here
+		instance.RegisterEventListeners()
+
+		return instance
+	End Function
+
+
+	Method RegisterEventListeners:int()
+		Super.RegisterEventListeners()
+
+		eventListeners :+ [EventManager.registerListenerMethod( "broadcast.newsshow.BeginBroadcasting", self, "onNewsShowBeginBroadcasting" ) ]
+
+		return True
+	End Method
+
+		
+	'override
+	Method GetTitle:string()
+		local t:string = Super.GetTitle()
+
+		For local i:int = 1 to 3
+			t = t.Replace("%GENRE"+i+"%", GetLocale(TVTNewsGenre.GetAsString(genre[i-1])))
+		Next
+
+		return t
+	End Method
+		
+
+	Method Init:TAchievementTask_BroadcastNewsShow(config:object)
+		local configData:TData = TData(config)
+		if not configData then return null
+
+		For local i:int = 1 to 3
+			genre[i-1] = configData.GetInt("genre"+i, genre[i-1])
+
+			minQuality[i-1] = configData.GetFloat("minQuality"+i, minQuality[i-1])
+			maxQuality[i-1] = configData.GetFloat("maxQuality"+i, maxQuality[i-1])
+
+			keyword[i-1] = configData.GetString("keyword"+i, keyword[i-1])
+		Next
+
+		return self
+	End Method
+
+
+	Method onNewsShowBeginBroadcasting:int(triggerEvent:TEventBase)
+		local show:TNewsShow = TNewsShow(triggerEvent.GetSender())
+		if not show then return False
+
+		local playerID:int = show.owner
+		local time:Long = GetWorldTime().GetTimeGone()
+
+		if IsCompleted(playerID, time) or IsFailed(playerID, time) then return False
+'if playerID = 1 then debugstop
+		local ok:int = True
+		For local i:int = 0 to 2
+			local news:TNews = TNews(show.news[i])
+
+			'check genres
+			if genre[i] >= 0 and ok
+				if not news or news.newsEvent.genre <> genre[i] then ok = False
+			endif
+
+
+			'check minQuality
+			if ok and minQuality[i] >= 0 and (not news or news.GetQuality() < minQuality[i]) then ok = False
+
+
+			'check maxQuality
+			if ok and maxQuality[i] >= 0 and (not news or news.GetQuality() > maxQuality[i]) then ok = False
+
+
+			'check keyword
+			if ok and keyword[i] and (not news or not news.newsEvent.HasKeyword(keyword[i])) then ok = False
+
+			if not ok then exit
+		Next
+		if ok then SetCompleted(playerID, time)
+
+		return ok
+	End Method
+End Type
+
+
 
 Type TAchievementReward_Money extends TAchievementReward
 	Field money:int
@@ -277,6 +384,7 @@ End Type
 'TASKS
 GetAchievementCollection().RegisterElement("task::ReachAudience", new TAchievementTask_ReachAudience)
 GetAchievementCollection().RegisterElement("task::ReachBroadcastArea", new TAchievementTask_ReachBroadcastArea)
+GetAchievementCollection().RegisterElement("task::BroadcastNewsShow", new TAchievementTask_BroadcastNewsShow)
 'REWARDS
 GetAchievementCollection().RegisterElement("reward::Money", new TAchievementReward_Money)
 

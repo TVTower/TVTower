@@ -133,7 +133,7 @@ Type TDatabaseLoader
 		Next
 
 		if required or validURIs > 0
-			TLogger.log("TDatabase.Load()", "Loaded from "+validURIs + " DBs. Found " + totalSeriesCount + " series, " + totalMoviesCount + " movies, " + totalContractsCount + " advertisements, " + totalNewsCount + " news, " + totalProgrammeRolesCount + " roles in scripts, " + totalScriptTemplatesCount + " script templates. Loading time: " + stopWatchAll.GetTime() + "ms", LOG_LOADING)
+			TLogger.log("TDatabase.Load()", "Loaded from "+validURIs + " DBs. Found " + totalSeriesCount + " series, " + totalMoviesCount + " movies, " + totalContractsCount + " advertisements, " + totalNewsCount + " news, " + totalProgrammeRolesCount + " roles in scripts, " + totalScriptTemplatesCount + " script templates and "+ totalAchievementCount+" achievements. Loading time: " + stopWatchAll.GetTime() + "ms", LOG_LOADING)
 		endif
 
 		if required and (totalSeriesCount = 0 or totalMoviesCount = 0 or totalNewsCount = 0 or totalContractsCount = 0)
@@ -294,7 +294,7 @@ Type TDatabaseLoader
 		endif
 
 
-		TLogger.log("TDatabase.Load()", "Loaded DB ~q" + xml.filename + "~q (version 3). Found " + seriesCount + " series, " + moviesCount + " movies, " + contractsCount + " advertisements, " + newsCount + " news. loading time: " + stopWatch.GetTime() + "ms", LOG_LOADING)
+		TLogger.log("TDatabase.Load()", "Loaded DB ~q" + xml.filename + "~q (version 3). Found " + seriesCount + " series, " + moviesCount + " movies, " + contractsCount + " advertisements, " + newsCount + " news, " + achievementCount+" achievements. loading time: " + stopWatch.GetTime() + "ms", LOG_LOADING)
 	End Method
 
 
@@ -482,11 +482,12 @@ Type TDatabaseLoader
 		local data:TData = new TData
 		'price and topicality are outdated
 		xml.LoadValuesToData(nodeData, data, [..
-			"genre", "price", "quality", "available" ..
+			"genre", "price", "quality", "available", "keywords" ..
 		])
 
 		newsEvent.flags = data.GetInt("flags", newsEvent.flags)
 		newsEvent.genre = data.GetInt("genre", newsEvent.genre)
+		newsEvent.keywords = data.GetString("keywords", newsEvent.keywords).ToLower()
 		newsEvent.available = data.GetBool("available", newsEvent.available)
 		'topicality is "quality" here
 		newsEvent.qualityRaw = 0.01 * data.GetFloat("quality", 100 * newsEvent.qualityRaw)
@@ -558,9 +559,11 @@ Type TDatabaseLoader
 		'=== DATA ===
 		local nodeData:TxmlNode = xml.FindChild(node, "data")
 		local data:TData = new TData
-		xml.LoadValuesToData(nodeData, data, ["flags"])
+		xml.LoadValuesToData(nodeData, data, ["flags", "sprite_finished", "sprite_unfinished"])
 
 		achievement.flags = data.GetInt("flags", achievement.flags)
+		achievement.spriteFinished = data.GetString("sprite_finished", achievement.spriteFinished)
+		achievement.spriteUnfinished = data.GetString("sprite_unfinished", achievement.spriteUnfinished)
 
 
 		'=== TASKS ===
@@ -633,9 +636,11 @@ Type TDatabaseLoader
 		xml.LoadAllValuesToData(nodeData, data)
 		'check if the element has all needed configurations
 		'for now this is only "type"
-		For local f:string = EachIn ["type"]
-			if not data.Has(f) then ThrowNodeError("DB: <"+elementName+"> is missing ~q" + f+"~q.", nodeData)
-		Next
+		if not reuseExisting
+			For local f:string = EachIn ["type"]
+				if not data.Has(f) then ThrowNodeError("DB: <"+elementName+"> is missing ~q" + f+"~q.", nodeData)
+			Next
+		endif
 
 		local elementType:string = data.GetString("type")
 		if not element and not elementType then return False
