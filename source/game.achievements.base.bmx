@@ -15,6 +15,7 @@ Type TAchievementCollection
 	'as achievements / taks / rewards base on TAchievementBaseType
 	'they can share a map
 	Global registeredElements:TMap = CreateMap()
+	Global eventListeners:TLink[] {nosave}
 
 
 	Function GetInstance:TAchievementCollection()
@@ -22,6 +23,14 @@ Type TAchievementCollection
 		Return _instance
 	End Function
 
+
+	Method New()
+		if not eventListeners or eventListeners.length = 0
+			'handle savegame loading (assign sprites)
+			eventListeners :+ [EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)]
+		endif
+	End Method
+	
 
 	'=== ACHIEVEMENTS ===
 	
@@ -145,6 +154,21 @@ Type TAchievementCollection
 			a.Update(time)
 		Next
 	End Method
+
+
+	'run when loading finished
+	Function onSaveGameLoad(triggerEvent:TEventBase)
+		TLogger.Log("TFigureBaseCollection", "Savegame loaded - reassigning achievement event listeners", LOG_DEBUG | LOG_SAVELOAD)
+		For local a:TAchievement = eachin _instance.achievements
+			a.onLoad()
+		Next
+		For local at:TAchievementTask = eachin _instance.tasks
+			at.onLoad()
+		Next
+		For local ar:TAchievementReward = eachin _instance.rewards
+			ar.onLoad()
+		Next
+	End Function
 End Type
 
 
@@ -174,6 +198,11 @@ Type TAchievementBaseType Extends TGameObject
 
 
 	Method Reset:int() abstract
+
+
+	Method onLoad:int()
+		'stub
+	End Method
 
 
 	Method GetTitle:string()
@@ -421,9 +450,9 @@ Type TAchievement Extends TAchievementBaseType
 	
 
 	Method GiveRewards:int(playerID:int, time:Long=0)
-		print "  Achievement.GiveRewards: "+playerID
+		'print "  Achievement.GiveRewards: "+playerID
 		For local r:TAchievementReward = eachin GetRewards()
-		print "       reward:" + r.GetTitle()
+			'print "       reward:" + r.GetTitle()
 			r.GiveToPlayer(playerID)
 		Next
 	End Method
@@ -503,6 +532,13 @@ Type TAchievementTask Extends TAchievementBaseType
 	Field eventListeners:TLink[] {nosave}
 
 
+	'DO NOT DO THIS as this also would register listeners for the "creator"
+	'instances
+	'Method New()
+	'	RegisterEventListeners()
+	'End Method
+
+
 	Method Delete()
 		EventManager.unregisterListenersByLinks(eventListeners)
 	End Method
@@ -515,6 +551,20 @@ Type TAchievementTask Extends TAchievementBaseType
 
 	Method Init:TAchievementTask(config:object)
 		'stub
+	End Method
+
+
+	Method RegisterEventListeners:int()
+		'remove old ones
+		EventManager.unregisterListenersByLinks(eventListeners)
+
+		return True
+	End Method
+
+
+	'override
+	Method onLoad:int()
+		RegisterEventListeners()
 	End Method
 
 
