@@ -56,6 +56,7 @@ Type RoomHandler_Office extends TRoomHandler
 		TScreenHandler_ProgrammePlanner.Initialize()
 		TScreenHandler_StationMap.Initialize()
 		TScreenHandler_Statistics.Initialize()		
+		TScreenHandler_OfficeAchievements.GetInstance().Initialize()		
 
 
 		'=== REGISTER HANDLER ===
@@ -106,6 +107,7 @@ Type RoomHandler_Office extends TRoomHandler
 		TScreenHandler_ProgrammePlanner.SetLanguage()
 		TScreenHandler_StationMap.SetLanguage()
 		TScreenHandler_Statistics.SetLanguage()
+		TScreenHandler_OfficeAchievements.GetInstance().SetLanguage()
 	End Method
 
 

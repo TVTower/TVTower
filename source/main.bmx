@@ -104,6 +104,8 @@ Import "game.broadcastmaterial.programme.bmx"
 'remove when planner screen is importable
 import "common.misc.plannerlist.contractlist.bmx"
 
+Import "game.screen.achievements.bmx"
+
 
 '===== Includes =====
 
