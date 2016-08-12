@@ -307,7 +307,7 @@ Type TAchievementTask_BroadcastNewsShow extends TAchievementTask
 		local time:Long = GetWorldTime().GetTimeGone()
 
 		if IsCompleted(playerID, time) or IsFailed(playerID, time) then return False
-'if playerID = 1 then debugstop
+
 		local ok:int = True
 		For local i:int = 0 to 2
 			local news:TNews = TNews(show.news[i])

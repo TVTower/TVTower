@@ -1269,6 +1269,10 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 			skin.fontNormal.draw("TKP: "+int(1000*GetPerViewerRevenue()) +" Eur  ("+MathHelper.NumberToString(GetPerViewerRevenue(),4)+" Eur/Zuschauer)", contentX + 5, contentY)
 			contentY :+ 12	
 			skin.fontNormal.draw("Aktualitaet: "+MathHelper.NumberToString(base.GetInfomercialTopicality()*100,2)+"%", contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Qualitaet roh: "+MathHelper.NumberToString(GetQualityRaw()*100,2)+"%", contentX + 5, contentY)
+			contentY :+ 12	
+		skin.fontNormal.draw("Qualitaet wahrgenommen: "+MathHelper.NumberToString(GetQuality()*100,2)+"%", contentX + 5, contentY)
 		Endif
 
 

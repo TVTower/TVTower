@@ -1131,10 +1131,11 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		releaseTime = GetWorldTime().MakeTime(GetYear(), dayOfYear mod GetWorldTime().GetDaysPerYear(), 0, 0)
 	End Method
 
-global printDebug:int = False
+
 	Method GetPrice:int()
 		Local value:int = 0
 		local priceMod:Float = GetQuality() 'this includes age-adjustments
+
 
 		'=== FRESHNESS ===
 		'this is ~1 yrs
@@ -1151,15 +1152,16 @@ global printDebug:int = False
 		'quality, they then all are relatively "equal"
 		local highQualityIndex:Float = 0.40 * GetQualityRaw() + 0.60 * GetQualityRaw() ^ 4
 		local highTopicalityIndex:Float = 0.30 * GetMaxTopicality() + 0.70 * GetMaxTopicality() ^ 4
-rem
-local found:int = 0
-if GetTitle().Find("Brenz") >= 0 or GetTitle().Find("Dschungel") >= 0
-	print GetTitle()
-	print "priceMod           : "+priceMod
-	print "highTopicalityIndex: "+GetMaxTopicality()+"  ->  " + highTopicalityIndex
-	print "highQualityIndex   : "+GetQualityRaw()+"  ->  " + highQualityIndex
-endif
-endrem
+	rem
+	local found:int = 0
+	if GetTitle().Find("Brenz") >= 0 or GetTitle().Find("Dschungel") >= 0
+		print GetTitle()
+		print "priceMod           : "+priceMod
+		print "highTopicalityIndex: "+GetMaxTopicality()+"  ->  " + highTopicalityIndex
+		print "highQualityIndex   : "+GetQualityRaw()+"  ->  " + highQualityIndex
+	endif
+	endrem
+
 		priceMod :* highTopicalityIndex * highQualityIndex
 
 		'=== FLAGS ===
@@ -1169,6 +1171,7 @@ endrem
 		If Self.IsCult() then priceMod :* 1.05
 		'Income generating programmes (infomercials) increase the price
 		If Self.IsPaid() then priceMod :* 1.30
+
 
 
 		If isType(TVTProgrammeProductType.MOVIE)
@@ -1201,96 +1204,32 @@ if GetTitle().Find("Brenz") >= 0 or GetTitle().Find("Dschungel") >= 0
 endif
 endrem
 		return value		
-
-rem
-		Local value:int = 0
-
-		'price is based on quality
-		local priceMod:float = GetQualityRaw()
-
-		'the here created value is the "maximum" without price-modifier
-		'for a movie/series with 100% quality on premiere date
-		'movies run in cinema (outcome >0)
-		If isType(TVTProgrammeProductType.MOVIE) ' and GetOutcome() > 0
-			priceMod = THelper.ATanFunction(priceMod, 2)
-			value = 45000 + 5000000 * priceMod
-		 'shows, productions, series...
-		Else
-			priceMod = THelper.ATanFunction(priceMod, 2)
-			'basefactor * priceFactor
-			value = 25000 + 500000 * priceMod
-		EndIf
-
-if printDebug then print GetTitle()
-if printDebug then print "  base value = "+value+"  (priceMod="+priceMod+")"
-		'=== MODIFIERS ===
-		'price modifier just influences price by 95% (to avoid "0" prices)
-		value :* (0.05 + 0.95 * GetModifier("price", 1.0))
-'print "  * modPrice = "+value
-
-
-		'=== TOPICALITY ===
-		'the more current the more expensive
-		'multipliers "stack"
-		'-> the older, the more is cut from the original price
-		'   this also counts for "times broadcasted"
-		local topicalityCutModifier:Float = 1.0
-		'make just released programmes even more expensive
-		If (GetMaxTopicality() < 0.99) Then topicalityCutModifier :- 0.20
-		If (GetMaxTopicality() < 0.98) Then topicalityCutModifier :- 0.13
-		If (GetMaxTopicality() < 0.94) Then topicalityCutModifier :- 0.11
-		If (GetMaxTopicality() < 0.90) Then topicalityCutModifier :- 0.09
-		If (GetMaxTopicality() < 0.85) Then topicalityCutModifier :- 0.07
-		If (GetMaxTopicality() < 0.75) Then topicalityCutModifier :- 0.05
-		If (GetMaxTopicality() < 0.65) Then topicalityCutModifier :- 0.03
-		If (GetMaxTopicality() < 0.50) Then topicalityCutModifier :- 0.01
-
-		value :* topicalityCutModifier
-if printDebug then print "  * topCutMod= "+value+"  (topicalityCutModifier="+topicalityCutModifier+")"
-
-
-		'topicality has a certain value influence
-		value :* GetTopicality()
-if printDebug then print "  * topical. = "+value+"  (topicality="+GetTopicality()+")"
-
-
-		'the older the less a licence costs
-		'shrinkage: fast shrinking at the begin (low distance) and slow
-		'           shrinking the more it gets to ageDistance = 0.0
-		'the age factor is also used in "GetMaxTopicality())
-		'the modifier "price::age" increases the "age" used in _this_
-		'calculation 
-		Local ageDistance:Float = 0.01 * Max(0, 100 - Max(0, GetModifier("price::age") * (GetWorldTime().GetYear() - GetYear())))
-		'value :* (1.0 - THelper.LogisticalInfluence_Euler(1.0 - Max(0.30, ageDistance), 0.85))
-		value :* (1.0 - THelper.ATanFunction(1.0 - Max(0.25, ageDistance), 10))
-if printDebug then print "  * ageDist  = "+value+"  (ageDistance="+ageDistance+"   atan="+((1.0 - THelper.ATanFunction(1.0 - Max(0.25, ageDistance), 7)))+")"
-
-		
-		'=== FLAGS ===
-		'BMovies lower the price
-		If Self.IsBMovie() then value :* 0.85
-
-		'Income generating programmes (infomercials) increase the price
-		If Self.IsPaid() then value :* 1.2
-
-
-			
-		'round to next "1000" block
-		value = Int(Floor(value / 1000) * 1000)
-if printDebug then print "    result  = "+value
-
-		'print GetTitle()+"  value1: "+value + "  outcome:"+GetOutcome()+"  review:"+GetReview() + " maxTop:"+GetMaxTopicality()+" year:"+GetYear()
-
-		return value
-endrem
 	End Method
 
 
 	'override
 	Method GetMaxTopicality:Float()
-		Local age:Int = Max(0, GetWorldTime().GetYear() - GetYear())
-		'maximum of 25 broadcasts decrease up to "50%" of max topicality
-		Local timesBroadcasted:Int = 0.5 * Min(100, GetTimesBroadcasted() * 4)
+		local res:Float = 1.0
+
+		local age:Int = 0
+		local timesBroadcasted:Int = 0
+		local weightAge:Float = 0.5
+		local weightTimesBroadcasted:Float = 0.5
+
+		if IsPaid()
+			'always age = 0 ... so just decrease by broadcasts
+			weightAge = 0.0
+
+			'maximum of 40 broadcasts decrease up to "80%" of max topicality
+			timesBroadcasted = 0.8 * Min(100, Int(GetTimesBroadcasted() * 2.5))
+			weightTimesBroadcasted = 1.0
+
+		else
+			age = Max(0, GetWorldTime().GetYear() - GetYear())
+
+			'maximum of 25 broadcasts decrease up to "50%" of max topicality
+			timesBroadcasted = 0.5 * Min(100, GetTimesBroadcasted() * 4)
+		endif
 
 		'modifiers could increase or decrease influences of age/aired/...
 		local ageInfluence:Float = age * GetModifier("topicality::age")
@@ -1302,7 +1241,7 @@ endrem
 			timesBroadcastedInfluence :* 0.50
 		EndIf
 
-		local influencePercentage:Float = 0.01 * MathHelper.Clamp(ageInfluence + timesBroadcastedInfluence, 0, 100)
+		local influencePercentage:Float = 0.01 * MathHelper.Clamp(weightAge * ageInfluence + weightTimesBroadcasted * timesBroadcastedInfluence, 0, 100)
 		return 1.0 - THelper.ATanFunction(influencePercentage, 2)
 	End Method
 
