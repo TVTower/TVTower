@@ -1434,7 +1434,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 
 	Method ProduceNewsShow:TBroadcastMaterial(allowAddToPast:Int=False)
-		Local show:TNewsShow = TNewsShow.Create("Nachrichten", owner, GetNews(0),GetNews(1),GetNews(2))
+		Local show:TNewsShow = TNewsShow.Create("News show " + GetWorldTime().GetFormattedTime(), owner, GetNews(0),GetNews(1),GetNews(2))
 		'if
 		AddObject(show, TVTBroadcastMaterialType.NEWSSHOW,-1,-1, False)
 			'print "Production of news show for player "+owner + " OK."

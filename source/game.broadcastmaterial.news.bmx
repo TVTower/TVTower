@@ -49,6 +49,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		For local n:TNews = EachIn news
 			if not n.IsControllable() then return False
 		Next
+		return True
 	End Method
 
 
