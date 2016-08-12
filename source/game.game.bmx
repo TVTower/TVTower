@@ -693,7 +693,6 @@ print "--------------"
 		LoadDatabase("res/maps/germany/database", False)
 
 
-
 		'=== FIGURES ===
 		'create/move other figures of the building
 		'all of them are created at "offscreen position"

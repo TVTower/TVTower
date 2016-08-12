@@ -1527,6 +1527,9 @@ Type TGameState
 		GetPlayerFinanceCollection().Initialize()
 		GetPlayerFinanceHistoryListCollection().Initialize()
 
+		'reset all achievements
+		GetAchievementCollection().Reset()
+
 		GetBetty().Initialize()
 
 		'initialize known room handlers + event registration

@@ -23,7 +23,6 @@ Type TAchievementCollection
 	End Function
 
 
-
 	'=== ACHIEVEMENTS ===
 	
 	Method GetAchievement:TAchievement(guid:string)
@@ -127,6 +126,19 @@ Type TAchievementCollection
 
 
 	'=== GENERIC STUFF ===
+
+	Method Reset:int()
+		For local a:TAchievement = EachIn achievements.entries.Values()
+			a.Reset()
+		Next
+		For local at:TAchievementTask = EachIn tasks.entries.Values()
+			at.Reset()
+		Next
+		For local ar:TAchievementReward = EachIn rewards.entries.Values()
+			ar.Reset()
+		Next
+	End Method
+
 	
 	Method Update:int(time:Long)
 		For local a:TAchievement = EachIn achievements.entries.Values()
@@ -151,13 +163,17 @@ Type TAchievementBaseType Extends TGameObject
 	Field flags:int
 
 	Function CreateNewInstance:TAchievementBaseType()
-		return new TAchievementBaseType
+		return null
+'		return new TAchievementBaseType
 	End Function
 
 
 	Method Init:TAchievementBaseType(data:object)
 		'stub
 	End Method
+
+
+	Method Reset:int() abstract
 
 
 	Method GetTitle:string()
@@ -201,10 +217,13 @@ End Type
 
 
 Type TAchievement Extends TAchievementBaseType
-
 	Field rewardGUIDs:string[]
 	Field taskGUIDs:string[]
 	Field stateSet:TAchievementStateSet = new TAchievementStateSet
+
+	Field spriteFinished:string = ""
+	Field spriteUnfinished:string = ""
+
 	'cache
 	Field _rewards:TAchievementReward[] {nosave}
 	Field _tasks:TAchievementTask[] {nosave}
@@ -225,6 +244,11 @@ Type TAchievement Extends TAchievementBaseType
 
 	Method Init:TAchievement(data:object)
 		return self
+	End Method
+
+
+	Method Reset:int()
+		stateSet.Initialize()
 	End Method
 
 
@@ -494,6 +518,13 @@ Type TAchievementTask Extends TAchievementBaseType
 	End Method
 
 
+	Method Reset:int()
+		stateSet.Initialize()
+		timeCreated = -1
+		timeLimit = -1
+	End Method
+	
+
 	Method ToString:string()
 		local res:string = ""
 		res :+ "Task (" + GetGuid() + ")" + "~n"
@@ -609,6 +640,11 @@ Type TAchievementReward Extends TAchievementBaseType
 	End Method
 
 
+	Method Reset:int()
+		rewardGiven = [-1:Long,-1:Long,-1:Long,-1:Long]
+	End Method
+	
+
 	Method GiveToPlayer:int(playerID:int, time:Long=0)
 		If playerID <= 0 or playerID > rewardGiven.length Then Return False
 
@@ -661,6 +697,14 @@ Type TAchievementStateSet
 	Const STATE_UNKNOWN:int = 0
 	Const STATE_COMPLETED:int = 1
 	Const STATE_FAILED:int = 2
+
+
+	Method Initialize:TAchievementStateSet()
+		state = [0,0,0,0,0]
+		stateTime = [-1:Long,-1:Long,-1:Long,-1:Long,-1:Long]
+		stateChanged = [0,0,0,0,0]
+	End Method
+		
 
 
 	Method GetStates:int[]()
