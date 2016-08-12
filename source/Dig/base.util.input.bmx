@@ -145,8 +145,9 @@ Type TMouseManager
 	End Method
 
 
-	Method ResetLongClicked(key:int)
+	Method ResetLongClicked(key:int, resetTime:int=False)
 		_keyLongClicked[key] = 0
+		if resetTime then _keyHitTime[key] = 0
 	End Method
 
 

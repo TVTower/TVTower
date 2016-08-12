@@ -231,6 +231,10 @@ Type TGUIScroller Extends TGUIobject
 			EndIf
 		EndIf
 
+
+		'avoid long left-mousebutton clicks
+		MouseManager.ResetLongClicked(1, True)
+
 		'emit event that the scroller position has changed
 		If sender = guiScroller.guiButtonMinus or sender = guiScroller.guiButtonPlus
 			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("direction", sender.direction.ToLower()), guiScroller ) )
@@ -260,6 +264,14 @@ Type TGUIScroller Extends TGUIobject
 	'override to add progressRect-click support
 	Method Update:int()
 		Super.Update()
+rem
+		if (guiButtonMinus and guiButtonMinus.isHovered()) or (guiButtonPlus and guiButtonPlus.isHovered())
+			'process long clicks to avoid odd "right click behaviour"
+			if MouseManager.IsLongClicked(1)
+				MouseManager.ResetClicked(1)
+			endif
+		endif
+endrem
 
 		'check if mouse over progressRect
 		if not isHovered()
