@@ -59,6 +59,14 @@
 				<child name="gfx_datasheet_cast_bar_sympathy_filled"    x="131" y="158" w="28"  h="8"  ninepatch="true" offsetLeft="2" />
 				<child name="gfx_datasheet_cast_bar_sympathy_unfilled"  x="131" y="166" w="28"  h="8"  ninepatch="true" />
 
+				<!-- achievement stuff -->
+				<child name="gfx_datasheet_achievement_bg"              x="242" y="97" w="106"  h="67"  ninepatch="true" />
+				<child name="gfx_datasheet_achievement_img_ok"          x="349" y="202" w="81"  h="52" />
+				<child name="gfx_datasheet_achievement_img_level0"      x="349" y="149" w="81"  h="52" />
+				<child name="gfx_datasheet_achievement_img_level1"      x="431" y="149" w="81"  h="52" />
+				<child name="gfx_datasheet_achievement_img_level2"      x="431" y="96" w="81"  h="52" />
+				<child name="gfx_datasheet_achievement_img_level3"      x="349" y="96" w="81"  h="52" />
+
 				<!-- button sprites -->
 				<child name="gfx_gui_button.datasheet"						x="0"	y="130"	w="30"	h="30" ninepatch="true" />
 				<child name="gfx_gui_button.datasheet.hover"				x="30"	y="130"	w="30"	h="30" ninepatch="true" />
