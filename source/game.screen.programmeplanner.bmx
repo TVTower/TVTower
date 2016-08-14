@@ -96,10 +96,10 @@ Type TScreenHandler_ProgrammePlanner
 			ProgrammePlannerButtons[3] = New TGUIButton.Create(New TVec2D.Init(686, 41 + 3*54), Null, GetLocale("PLANNER_STATISTICS"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[3].spriteName = "gfx_programmeplanner_btn_statistics"
 
-			ProgrammePlannerButtons[4] = New TGUIButton.Create(New TVec2D.Init(686, 41 + 4*54), Null, GetLocale("PLANNER_MESSAGES"), "programmeplanner_buttons")
-			ProgrammePlannerButtons[4].spriteName = "gfx_programmeplanner_btn_messages"
+			ProgrammePlannerButtons[4] = New TGUIButton.Create(New TVec2D.Init(686, 41 + 4*54), Null, GetLocale("PLANNER_ACHIEVEMENTS"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[4].spriteName = "gfx_programmeplanner_btn_achievements"
 
-			ProgrammePlannerButtons[5] = New TGUIButton.Create(New TVec2D.Init(686, 41 + 5*54), Null, GetLocale("PLANNER_ACHIEVEMENTS"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[5] = New TGUIButton.Create(New TVec2D.Init(686, 41 + 5*54), Null, GetLocale("PLANNER_UNKNOWN"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[5].spriteName = "gfx_programmeplanner_btn_unknown"
 
 			For Local i:Int = 0 To 5
@@ -187,8 +187,8 @@ Type TScreenHandler_ProgrammePlanner
 			ProgrammePlannerButtons[1].SetCaption(GetLocale("PLANNER_PROGRAMME"))
 			ProgrammePlannerButtons[2].SetCaption(GetLocale("PLANNER_FINANCES"))
 			ProgrammePlannerButtons[3].SetCaption(GetLocale("PLANNER_STATISTICS"))
-			ProgrammePlannerButtons[4].SetCaption(GetLocale("PLANNER_MESSAGES"))
-			ProgrammePlannerButtons[5].SetCaption(GetLocale("PLANNER_ACHIEVEMENTS"))
+			ProgrammePlannerButtons[4].SetCaption(GetLocale("PLANNER_ACHIEVEMENTS"))
+			ProgrammePlannerButtons[5].SetCaption(GetLocale("PLANNER_UNKNOWN"))
 		EndIf
 	End Function
 
@@ -1266,8 +1266,8 @@ Type TScreenHandler_ProgrammePlanner
 
 		If button = ProgrammePlannerButtons[2] Then Return ScreenCollection.GoToSubScreen("screen_office_financials")
 		If button = ProgrammePlannerButtons[3] Then Return ScreenCollection.GoToSubScreen("screen_office_statistics")
-		'If button = ProgrammePlannerButtons[4] then return ScreenCollection.GoToSubScreen("screen_office_messages")
-		If button = ProgrammePlannerButtons[5] then return ScreenCollection.GoToSubScreen("screen_office_achievements")
+		If button = ProgrammePlannerButtons[4] then return ScreenCollection.GoToSubScreen("screen_office_achievements")
+		'If button = ProgrammePlannerButtons[5] then return ScreenCollection.GoToSubScreen("screen_office_messages")
 	End Function
 
 
