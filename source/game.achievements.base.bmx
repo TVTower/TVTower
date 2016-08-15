@@ -4,6 +4,7 @@ Import "game.modifier.base.bmx"
 Import "../source/Dig/base.util.data.bmx"
 Import "../source/Dig/base.util.event.bmx"
 Import "../source/Dig/base.util.localization.bmx"
+Import "game.world.worldtime.bmx"
 
 
 Type TAchievementCollection
@@ -248,6 +249,9 @@ End Type
 Type TAchievement Extends TAchievementBaseType
 	Field rewardGUIDs:string[]
 	Field taskGUIDs:string[]
+	Field index:int = 0
+	Field group:int = 0
+	Field category:int = 0
 	Field stateSet:TAchievementStateSet = new TAchievementStateSet
 
 	Field spriteFinished:string = ""
@@ -318,6 +322,20 @@ Type TAchievement Extends TAchievementBaseType
 			next
 		endif
 
+		return res
+	End Method
+
+
+	'override
+	Method GetText:string()
+		local res:string = Super.GetText()
+		if res then return res
+
+		For local at:TAchievementTask = Eachin GetTasks()
+'			res :+ Chr(183)+" " +at.GetTitle() + "~n"
+			if res <> "" then res :+ " / "
+			res :+ at.GetTitle()
+		Next
 		return res
 	End Method
 
@@ -459,7 +477,14 @@ Type TAchievement Extends TAchievementBaseType
 
 
 	Method IsCompleted:int(playerID:int, time:Long=0)
-		
+		return stateSet.IsCompleted(playerID, time)
+	End Method
+
+
+	Method IsFailed:int(playerID:int, time:Long=0)
+		if not CanFail() then return False
+
+		return stateSet.IsFailed(playerID, time)
 	End Method
 
 
@@ -485,6 +510,32 @@ Type TAchievement Extends TAchievementBaseType
 	End Method
 
 
+	Method SetCompleted:int(playerID:int, time:long, overrideCompleted:int=False)
+		'skip setting again
+		if not overrideCompleted and stateSet.GetState(playerID, time) = stateSet.STATE_COMPLETED then return False
+
+		stateSet.SetState(playerID, time, True)
+
+		OnComplete(playerID, time)
+		GiveRewards(playerID, time)
+
+		return True
+	End Method
+
+
+	Method SetFailed:int(playerID:int, time:long, overrideCompleted:int=False)
+		'skip setting again
+		if not overrideCompleted and stateSet.GetState(playerID, time) = stateSet.STATE_FAILED then return False
+
+		stateSet.SetState(playerID, time, False)
+
+		OnFail(playerID, time)
+
+		return True
+	End Method
+
+
+
 	Method Update(time:Long = 0)
 		'you cannot complete or fail an achievement if there is no task
 		if taskGUIDs.length = 0 then return
@@ -507,18 +558,87 @@ Type TAchievement Extends TAchievementBaseType
 			Next
 
 			if completedCount = taskGUIDs.length and state <> stateSet.STATE_COMPLETED
-				stateSet.SetState(i, time, True)
-
-				OnComplete(i, time)
-				GiveRewards(i, time)
+				SetCompleted(i, time)
 			elseif failedCount = taskGUIDs.length and CanFail() and state <> stateSet.STATE_FAILED
-				stateSet.SetState(i, time, False)
-
-				OnFail(i, time)
+				SetFailed(i, time, False)
 			endif
 		Next
 	
 	End Method
+
+
+	Function SortByGUID:int(o1:Object, o2:Object)
+		Local a1:TAchievement = TAchievement(o1)
+		Local a2:TAchievement = TAchievement(o2)
+		If Not a2 Then Return 1
+		If Not a1 Then Return -1
+		if a1.GetGUID() = a2.GetGUID()
+			'shouldnt happen at all
+			return 0
+		endif
+        If a1.GetGUID() > a2.GetGUID()
+			return 1
+        elseif a1.GetGUID() < a2.GetGUID()
+			return -1
+		endif
+		return 0
+	End Function
+
+
+	Function SortByIndex:Int(o1:Object, o2:Object)
+		Local a1:TAchievement = TAchievement(o1)
+		Local a2:TAchievement = TAchievement(o2)
+		if a1 and a2
+			If a1.index > a2.index
+				return 1
+			elseif a1.index < a2.index
+				return -1
+			endif
+		endif
+		return SortByGUID(o1,o2)
+	End Function
+
+
+	Function SortByName:Int(o1:Object, o2:Object)
+		Local a1:TAchievement = TAchievement(o1)
+		Local a2:TAchievement = TAchievement(o2)
+		if a1 and a2
+			If a1.GetTitle().ToLower() > a2.GetTitle().ToLower()
+				return 1
+			elseif a1.GetTitle().ToLower() < a2.GetTitle().ToLower()
+				return -1
+			endif
+		endif
+		return SortByIndex(o1,o2)
+	End Function
+	
+
+	Function SortByGroup:int(o1:object, o2:object)
+		Local a1:TAchievement = TAchievement(o1)
+		Local a2:TAchievement = TAchievement(o2)
+		If a2 and a1
+			if a1.group < a2.group
+				return -1
+			elseif a1.group > a2.group
+				return 1
+			endif
+		Endif
+		return SortByIndex(o1, o2)
+	End Function
+
+
+	Function SortByCategory:int(o1:object, o2:object)
+		Local a1:TAchievement = TAchievement(o1)
+		Local a2:TAchievement = TAchievement(o2)
+		If a2 and a1
+			if a1.category < a2.category
+				return -1
+			elseif a1.category > a2.category
+				return 1
+			endif
+		Endif
+		return SortByGroup(o1, o2)
+	End Function
 End Type
 
 
@@ -849,12 +969,14 @@ Type TAchievementStateSet
 	End Method
 
 
-	Method IsCompleted:int(playerID:int, time:Long)
+	Method IsCompleted:int(playerID:int, time:Long = 0)
+		if time = 0 then time = GetWorldTime().GetTimeGone()
 		return GetState(playerID, time) = STATE_COMPLETED
 	End Method
 
 	
-	Method IsFailed:int(playerID:int, time:Long)
+	Method IsFailed:int(playerID:int, time:Long = 0)
+		if time = 0 then time = GetWorldTime().GetTimeGone()
 		return GetState(playerID, time) = STATE_FAILED
 	End Method
 

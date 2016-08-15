@@ -559,9 +559,15 @@ Type TDatabaseLoader
 		'=== DATA ===
 		local nodeData:TxmlNode = xml.FindChild(node, "data")
 		local data:TData = new TData
-		xml.LoadValuesToData(nodeData, data, ["flags", "sprite_finished", "sprite_unfinished"])
+		xml.LoadValuesToData(nodeData, data, [ ..
+			"flags", "category", "group", "index", ..
+			"sprite_finished", "sprite_unfinished" ..
+		])
 
 		achievement.flags = data.GetInt("flags", achievement.flags)
+		achievement.group = data.GetInt("group", achievement.group)
+		achievement.index = data.GetInt("index", achievement.index)
+		achievement.category = data.GetInt("category", achievement.category)
 		achievement.spriteFinished = data.GetString("sprite_finished", achievement.spriteFinished)
 		achievement.spriteUnfinished = data.GetString("sprite_unfinished", achievement.spriteUnfinished)
 

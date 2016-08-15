@@ -31,7 +31,7 @@
 				</reward>
 			</rewards>
 			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
-			<data flags="0" sprite_finished="gfx_datasheet_achievement_img_level1" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
+			<data flags="0" group="1" category="1" index="1" sprite_finished="gfx_datasheet_achievement_img_level1" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
 		</achievement>
 		<achievement id="tvt-gameachievement-audience2" creator="5578" created_by="Ronny">
 			<title>
@@ -62,7 +62,7 @@
 				</reward>
 			</rewards>
 			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
-			<data flags="0" sprite_finished="gfx_datasheet_achievement_img_level2" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
+			<data flags="0" group="1" category="1" index="2" sprite_finished="gfx_datasheet_achievement_img_level2" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
 		</achievement>
 		<achievement id="tvt-gameachievement-audience3" creator="5578" created_by="Ronny">
 			<title>
@@ -93,7 +93,7 @@
 				</reward>
 			</rewards>
 			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
-			<data flags="0" sprite_finished="gfx_datasheet_achievement_img_level3" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
+			<data flags="0" group="1" category="1" index="3" sprite_finished="gfx_datasheet_achievement_img_level3" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
 		</achievement>
 		<achievement id="tvt-gameachievement-newsaudience1" creator="5578" created_by="Ronny">
 			<title>
@@ -124,7 +124,7 @@
 				</reward>
 			</rewards>
 			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
-			<data flags="0" sprite_finished="gfx_datasheet_achievement_img_level1" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
+			<data flags="0" group="2" category="2" index="1" sprite_finished="gfx_datasheet_achievement_img_level1" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
 		</achievement>
 		<achievement id="tvt-gameachievement-newsaudience2" creator="5578" created_by="Ronny">
 			<title>
@@ -155,7 +155,7 @@
 				</reward>
 			</rewards>
 			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
-			<data flags="0" sprite_finished="gfx_datasheet_achievement_img_level2" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
+			<data flags="0" group="2" category="2" index="2" sprite_finished="gfx_datasheet_achievement_img_level2" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
 		</achievement>
 		<achievement id="tvt-gameachievement-newsaudience3" creator="5578" created_by="Ronny">
 			<title>
@@ -186,7 +186,7 @@
 				</reward>
 			</rewards>
 			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
-			<data flags="0" sprite_finished="gfx_datasheet_achievement_img_level3" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
+			<data flags="0" group="2" category="2" index="3" sprite_finished="gfx_datasheet_achievement_img_level3" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
 		</achievement>
 		<achievement id="tvt-gameachievement-reachBroadcastArea1" creator="5578" created_by="Ronny">
 			<title>
@@ -217,7 +217,7 @@
 				</reward>
 			</rewards>
 			<!-- flags = 2. "2" fuer "nur der erste bekommt die Belohnung" -->
-			<data flags="2" sprite_finished="gfx_datasheet_achievement_img_level1" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
+			<data flags="2" group="3" category="4" index="1" sprite_finished="gfx_datasheet_achievement_img_level1" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
 		</achievement>
 		<achievement id="tvt-gameachievement-reachBroadcastArea2" creator="5578" created_by="Ronny">
 			<title>
@@ -248,7 +248,7 @@
 				</reward>
 			</rewards>
 			<!-- flags = 2. "2" fuer "nur der erste bekommt die Belohnung" -->
-			<data flags="2" sprite_finished="gfx_datasheet_achievement_img_level2" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
+			<data flags="2" group="3" category="4" index="2" sprite_finished="gfx_datasheet_achievement_img_level2" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
 		</achievement>
 		<achievement id="tvt-gameachievement-reachBroadcastArea3" creator="5578" created_by="Ronny">
 			<title>
@@ -279,7 +279,7 @@
 				</reward>
 			</rewards>
 			<!-- flags = 2. "2" fuer "nur der erste bekommt die Belohnung" -->
-			<data flags="2" sprite_finished="gfx_datasheet_achievement_img_level3" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
+			<data flags="2" group="3" category="4" index="3" sprite_finished="gfx_datasheet_achievement_img_level3" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
 		</achievement>
 
 		<achievement id="tvt-gameachievement-broadcastNewsShow-weather1" creator="5578" created_by="Ronny">
@@ -310,7 +310,7 @@
 					<data type="money" money="15000" />
 				</reward>
 			</rewards>
-			<data flags="0" />
+			<data flags="0" group="4" category="2" index="1" />
 		</achievement>
 		<achievement id="tvt-gameachievement-broadcastNewsShow-showbiz1" creator="5578" created_by="Ronny">
 			<title>
@@ -336,7 +336,7 @@
 				<!-- gleiche Belohnung wie "Wetterfrosch" -->
 				<reward id="tvt-gameachievement-reward-broadcastNewsShow-15000" />
 			</rewards>
-			<data flags="0" />
+			<data flags="0" group="5" category="2" index="1" />
 		</achievement>
 	</allachievements>
 </tvtdb>

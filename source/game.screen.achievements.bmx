@@ -9,13 +9,28 @@ Import "game.achievements.base.bmx"
 
 
 Type TScreenHandler_OfficeAchievements extends TScreenHandler
+	Field showCategory:int = 0
+	Field showCategoryIndex:int = 0
+	Field showGroup:int = 0
+	Field showMode:int = 0
+	Field roomOwner:int = 0
+	Field categoryCountCompleted:int[]
+	Field categoryCountMax:int[]
+
+	Field highlightNavigationEntry:int = -1
+
 	Global achievementList:TGUISelectList
-	Field currentAchievement:TAchievement
 
 	Global hoveredGuiAchievement:TGUIAchievementListItem
 
 	Global _eventListeners:TLink[]
 	Global _instance:TScreenHandler_OfficeAchievements
+
+	Const SHOW_ALL:int = 0
+	Const SHOW_COMPLETED:int = 1
+	Const SHOW_FAILED:int = 2
+	Const SHOW_INCOMPLETED:int = 4
+	
 
 
 	Function GetInstance:TScreenHandler_OfficeAchievements()
@@ -74,11 +89,21 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 
 
 	Function onUpdate:int( triggerEvent:TEventBase )
+		local room:TOwnedGameObject = TOwnedGameObject( triggerEvent.GetData().get("room") )
+		if not room then return 0
+
+		GetInstance().roomOwner = room.owner
+
 		GetInstance().Update()
 	End Function
 
 
 	Function onDraw:int( triggerEvent:TEventBase )
+		local room:TOwnedGameObject = TOwnedGameObject( triggerEvent.GetData().get("room") )
+		if not room then return 0
+
+		GetInstance().roomOwner = room.owner
+
 		GetInstance().Render()
 	End Function
 
@@ -104,14 +129,12 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 
 
 	Method InitGUIElements()
-		local screenDefaultFont:TBitmapFont = GetBitmapFontManager().Get("default", 12)
-
 		if not achievementList
 			achievementList = new TGUISelectList.Create(new TVec2D.Init(210,60), new TVec2D.Init(525, 280), "office_achievements")
 		endif
 
 		achievementList.scrollItemHeightPercentage = 1.0
-		achievementList.SetAutosortItems(true) 'sort achievements
+		achievementList.SetAutosortItems(False) 'already sorted achievements
 		achievementList.SetOrientation(GUI_OBJECT_ORIENTATION_Vertical)
 
 
@@ -132,7 +155,33 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 '		Next
 '		productionConcepts.Sort(true)
 
+		categoryCountCompleted = new int[TVTAchievementCategory.count+1]
+		categoryCountMax = new int[TVTAchievementCategory.count+1]
+
+		local achievements:TList = CreateList()
 		For local achievement:TAchievement = EachIn GetAchievementCollection().achievements.entries.values()
+			categoryCountMax[0] :+ 1
+			categoryCountMax[TVTAchievementCategory.GetIndex(achievement.category)] :+ 1
+			if achievement.IsCompleted(roomOwner)
+				categoryCountCompleted[0] :+ 1
+				categoryCountCompleted[TVTAchievementCategory.GetIndex(achievement.category)] :+ 1
+			endif
+
+			if showCategory > 0 and achievement.category <> showCategory then continue
+			if showGroup > 0 and achievement.group <> showGroup then continue
+			if showMode > 0
+				if showMode & SHOW_COMPLETED > 0 and not achievement.IsCompleted(roomOwner) then continue
+				if showMode & SHOW_FAILED > 0 and not achievement.IsFailed(roomOwner) then continue
+				if showMode & SHOW_INCOMPLETED > 0 and achievement.IsCompleted(roomOwner) then continue
+			endif
+
+			achievements.AddLast(achievement)
+		Next
+		achievements.Sort( True, TAchievement.SortByCategory )
+
+
+		For local achievement:TAchievement = EachIn achievements
+'print "adding c:"+achievement.category+" g:"+achievement.group+" i:"+achievement.index+"  " + achievement.GetTitle()
 			'base items do not have a size - so we have to give a manual one
 			local item:TGUIAchievementListItem = new TGUIAchievementListItem.Create(null, null, achievement.GetTitle())
 			item.data = new TData.Add("achievement", achievement)
@@ -150,6 +199,24 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 		'gets refilled in gui-updates
 		hoveredGuiAchievement = null
 
+		highlightNavigationEntry = -1
+		if THelper.MouseIn(50,50,100,300)
+			'0 to ... because we include "all" (which is 0)
+			For local i:int = 0 to TVTAchievementCategory.count
+				if THelper.MouseIn(50, 65 + i*20 -5, 100, 20)
+					highlightNavigationEntry = i
+
+					if MouseManager.IsClicked(1)
+						showCategory = TVTAchievementCategory.GetAtIndex(i)
+						showCategoryIndex = i
+						ReloadAchievements()
+						MouseManager.ResetKey(1)
+					endif
+				endif
+			Next
+		endif
+		
+
 		GuiManager.Update("office_achievements")
 
 		if (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
@@ -162,7 +229,27 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 	Method Render()
 		SetColor(255,255,255)
 
-		local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
+
+		'=== CATEGORY SELECTION ===
+
+		GetBitmapFont("default", 13, BOLDFONT).DrawStyled(GetLocale("ACHIEVEMENTCATEGORY_CATEGORIES"), 40, 35, TColor.CreateGrey(140), TBitmapFont.STYLE_EMBOSS, 1, 0.5)
+
+		For local i:int = 0 to TVTAchievementCategory.count
+			local title:string = GetLocale( "ACHIEVEMENTCATEGORY_" + TVTAchievementCategory.GetAsString(TVTAchievementCategory.GetAtIndex(i)) )
+			if highlightNavigationEntry = i
+				GetBitmapFont("default", 13, BOLDFONT).DrawStyled(Chr(183) + " " + title, 40, 65 + i*20, TColor.CreateGrey(50), TBitmapFont.STYLE_EMBOSS, 1, 0.5)
+			elseif i = showCategoryIndex
+				GetBitmapFont("default", 13, BOLDFONT).DrawStyled(Chr(183) + " " + title, 40, 65 + i*20, TColor.Create(90,180,220), TBitmapFont.STYLE_EMBOSS, 1, 0.5)
+			else
+				GetBitmapFont("default", 13, BOLDFONT).DrawStyled(Chr(183) + " " + title, 40, 65 + i*20, TColor.CreateGrey(120), TBitmapFont.STYLE_EMBOSS, 1, 0.5)
+			endif
+		Next
+
+
+
+		'=== ACHIEVEMENT LIST ===
+
+		local skin:TDatasheetSkin = GetDatasheetSkin("achievements")
 
 		'where to draw
 		local outer:TRectangle = new TRectangle
@@ -186,14 +273,21 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 
 		local listH:int = contentH - titleH
 
+		local caption:string = GetLocale("ACHIEVEMENTS")
+		caption :+ " ~q" + GetLocale( "ACHIEVEMENTCATEGORY_" + TVTAchievementCategory.GetAsString(showCategory) ) + "~q"
+		if categoryCountCompleted.length > showCategoryIndex
+			caption :+ " [" + categoryCountCompleted[showCategoryIndex] + "/" + categoryCountMax[showCategoryIndex] + "]"
+		endif
+		
+
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-		GetBitmapFontManager().Get("default", 13	, BOLDFONT).drawBlock(GetLocale("ACHIEVEMENTS"), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		GetBitmapFontManager().Get("default", 13	, BOLDFONT).drawBlock(caption, contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		contentY :+ titleH
 		skin.RenderContent(contentX, contentY, contentW, listH , "2")
 		'reposition list
 		if achievementList.rect.getX() <> contentX + 5
 			achievementList.rect.SetXY(contentX + 5, contentY + 3)
-			achievementList.Resize(contentW - 10, listH - 6)
+			achievementList.Resize(contentW - 8, listH - 6)
 		endif
 		contentY :+ listH
 
@@ -213,8 +307,8 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 	Field achievement:TAchievement
 	Field displayName:string = ""
 
-	Const paddingBottom:Int	= 5
-	Const paddingTop:Int = 0
+	Const paddingBottom:Int	= 2
+	Const paddingTop:Int = 3
 
 
 	Method CreateSimple:TGUIAchievementListItem(achievement:TAchievement)
@@ -290,7 +384,7 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 
 
 	Function DrawAchievement(x:Float, y:Float, w:Float, h:Float, achievement:TAchievement)
-		local title:string = achievement.GetTitle()
+		local title:string = achievement.GetTitle() ' + " [c:"+achievement.category+" > g:"+achievement.group+" > i:"+achievement.index+"   "+achievement.GetGUID()+"]"
 		local text:string = achievement.GetText()
 
 		local skin:TDatasheetSkin = GetDatasheetSkin("achievement")
@@ -300,7 +394,6 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 
 		local sprite:TSprite = GetSpriteFromRegistry("gfx_datasheet_achievement_bg")
 		sprite.DrawArea(x,y,w,h)
-		
 		local achievementSprite:TSprite
 		if achievement.IsCompleted( GetPlayerBaseCollection().playerID )
 			if achievement.spriteFinished
@@ -342,7 +435,7 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 			y + titleOffsetY + border.GetTop(), .. '-1 to align it more properly
 			w - textOffsetX - (border.GetRight() + border.GetLeft()),  ..
 			Max(15, sprite.GetHeight() - (border.GetTop() + border.GetBottom())), ..
-			ALIGN_RIGHT_CENTER, skin.textColorNeutral)
+			ALIGN_LEFT_CENTER, skin.textColorNeutral)
 
 		SetAlpha (oldCol.a)
 	End Function

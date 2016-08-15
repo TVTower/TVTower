@@ -2,9 +2,7 @@ TODO
 =============
 
 * Spieler
-	- Rauswurf fuer andere Spieler ("Neustart" fuer KI)
 	- Spielziel erreichen (Betty heiraten, X Millionen Gewinn, ...)
-	- GameOver (zu lange in den Miesen)
 
 * Werbung:
 	- Imageverlust moeglich
@@ -40,3 +38,33 @@ TODO
 * Fensterverschiebung in Windows stoppt Programmablauf bis loslassen
 	- DirectX -> eigene WindowDeco - stylen
 	- OpenGL ... - WindowDeco nicht stylebar
+
+
+
+rem
+TODO: CustomProduction(script, qualityMin, qualityMax, slope)
+-> eigentliche Qualitaet des Drehbuchs egal, innerhalb der Funktion werden so lange die
+Werte abgeaendert, bis die Qualitaet "erreicht"wird.
+dran denken: Cast auf Produktion hinweisen
+
+oder man kann Produktionen eine Zielvorgabe mitgeben und es passt sie automatisch an?
+
+Option, ob automatisch gewaehlte Schauspieler "upgradefaehig" sein muessen.
+
+Fruehstueckssendungen: Personen generieren (nicht upgradefaehig) ? Was aber, wenn keiner
+die Sendung nutzt - Person dann "umsonst". Oder einfach die Sendungsattribute bei
+Tageswechsel anpassen?
+
+
+Optional: "internal"-Drehbuecher - die nur fuer kuenstliche Produktionen zur Verfuegung
+stehen. Flag "internal".
+
+
+Sendungen:
+- Fruehstuecksfernsehen
+- Boerse am Morgen / am Mittag
+- Sport am Morgen / Mittag / Abend
+- Mittagsmagazin
+- Nachtmagazin
+- 18-Uhr-Hauptnachrichten
+endrem

@@ -166,6 +166,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'TLogger.Log("Game.PrepareStart()", "preparing all room handlers and screens for new game", LOG_DEBUG)
 		'GetRoomHandlerCollection().PrepareGameStart()
 
+		'load the most current official achievements, so old savegames
+		'get the new ones / adjustments too
+		TLogger.Log("Game.PrepareStart()", "loading most current (official) achievements", LOG_DEBUG)
+		LoadDB(["database_achievements.xml"])
+
 
 		TLogger.Log("Game.PrepareStart()", "colorizing images corresponding to playercolors", LOG_DEBUG)
 		Local gray:TColor = TColor.Create(200, 200, 200)

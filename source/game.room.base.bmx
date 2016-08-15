@@ -1,5 +1,4 @@
 SuperStrict
-Import "Dig/base.framework.entity.bmx"
 Import "Dig/base.gfx.sprite.bmx"
 Import "Dig/base.util.mersenne.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
@@ -7,6 +6,7 @@ Import "game.world.worldtime.bmx"
 Import "game.room.roomdoor.base.bmx"
 Import "game.building.buildingtime.bmx"
 Import "common.misc.hotspot.bmx"
+Import "game.gameobject.bmx"
 
 
 Type TRoomBaseCollection
@@ -136,7 +136,7 @@ End Function
 
 
 
-Type TRoomBase extends TEntityBase {_exposeToLua="selected"}
+Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Field name:string
 	Field originalName:string
 	'description, eg. "Bettys bureau" (+ "name of the owner" for "adagency ... owned by X")

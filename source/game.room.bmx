@@ -90,7 +90,7 @@ Type TRoom extends TRoomBase {_exposeToLua="selected"}
 		'draw current screen
 		'ScreenCollection.DrawCurrent(App.timer.getTween())
 		'emit event so custom functions can run after screen draw, sender = screen
-		EventManager.triggerEvent( TEventSimple.Create("room.onScreenDraw", new TData.Add("room", self) , ScreenCollection.GetCurrentScreen() ) )
+		EventManager.triggerEvent( TEventSimple.Create("room.onScreenDraw", new TData.Add("room", self).AddNumber("owner", self.owner) , ScreenCollection.GetCurrentScreen() ) )
 
 		return Super.Draw()
 	End Method
@@ -100,7 +100,7 @@ Type TRoom extends TRoomBase {_exposeToLua="selected"}
 	Method Update:Int()
 		'emit event so custom functions can run after screen update, sender = screen
 		'also this event has "room" as payload
-		EventManager.triggerEvent( TEventSimple.Create("room.onScreenUpdate", new TData.Add("room", self) , ScreenCollection.GetCurrentScreen() ) )
+		EventManager.triggerEvent( TEventSimple.Create("room.onScreenUpdate", new TData.Add("room", self).AddNumber("owner", self.owner) , ScreenCollection.GetCurrentScreen() ) )
 
 		return Super.Update()
 	End Method
