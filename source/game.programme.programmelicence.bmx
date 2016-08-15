@@ -297,28 +297,6 @@ Type TProgrammeLicenceCollection
 	End Method
 
 
-	Method GetRandomWithPrice:TProgrammeLicence(MinPrice:int=0, MaxPrice:Int=-1, programmeLicenceType:int=0, includeEpisodes:int=FALSE)
-		'filter to entries we need
-		Local Licence:TProgrammeLicence
-		Local sourceList:TList = _GetList(programmeLicenceType)
-		Local resultList:TList = CreateList()
-
-		For Licence = EachIn sourceList
-			'ignore if filtered out
-			If Licence.IsOwned() Then continue
-			'ignoring episodes
-			If not includeEpisodes and Licence.isEpisode() Then continue
-
-			'skip if to expensive
-			if MaxPrice > 0 and Licence.getPrice() > MaxPrice then continue
-
-			'if available (unbought, released..), add it to candidates list
-			If Licence.getPrice() >= MinPrice Then resultList.addLast(Licence)
-		Next
-		Return GetRandomFromList(resultList)
-	End Method
-
-
 	Method GetRandomWithGenre:TProgrammeLicence(genre:Int=0, programmeLicenceType:int=0, includeEpisodes:int=FALSE)
 		Local Licence:TProgrammeLicence
 		Local sourceList:TList = _GetList(programmeLicenceType)
@@ -615,7 +593,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		local finance:TPlayerFinance = GetPlayerFinance(owner)
 		if not finance then return False
 
-		finance.SellProgrammeLicence(getPrice(), self)
+		finance.SellProgrammeLicence(getPrice(owner), self)
 
 		'set unused again
 		SetOwner( TOwnedGameObject.OWNER_NOBODY )
@@ -629,7 +607,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		local finance:TPlayerFinance = GetPlayerFinance(playerID, -1)
 		if not finance then return False
 
-		If finance.PayProgrammeLicence(getPrice(), self)
+		If finance.PayProgrammeLicence(getPrice(playerID), self)
 			SetOwner(playerID)
 			Return TRUE
 		EndIf
@@ -950,14 +928,17 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 
 
-	Method GetPrice:Int() {_exposeToLua}
+	Method GetPrice:Int(playerID:int) {_exposeToLua}
+		if playerID = 0 and owner > 0 then playerID = owner 
+		if playerID = 0 then playerID = GetPlayerBaseCollection().playerID
+
 		'single-licence
-		if GetSubLicenceCount() = 0 and GetData() then return GetData().GetPrice()
+		if GetSubLicenceCount() = 0 and GetData() then return GetData().GetPrice(playerID)
 
 		'licence for a package or series
 		Local value:Float
 		For local licence:TProgrammeLicence = eachin subLicences
-			value :+ licence.GetPrice()
+			value :+ licence.GetPrice(playerID)
 		Next
 		value :* 0.90
 
@@ -1051,7 +1032,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		elseif useOwner > 0
 			canAfford = True
 		'not our licence but enough money to buy
-		elseif finance and finance.canAfford(GetPrice())
+		elseif finance and finance.canAfford(GetPrice(GetPlayerBaseCollection().playerID))
 			canAfford = True
 		endif
 		
@@ -1313,9 +1294,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		'price
 		if IsTradeable()
 			if canAfford
-				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(GetPrice()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(GetPrice(useOwner)), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 			else
-				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(GetPrice()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
+				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(GetPrice(useOwner)), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
 			endif
 		else
 			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, "- ?? -", "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
@@ -1363,7 +1344,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 			contentY :+ 12	
 			skin.fontNormal.draw("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(useOwner, -1).audience.GetTotalSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetTotalSum())+" (alle)", contentX + 5, contentY)
 			contentY :+ 12	
-			skin.fontNormal.draw("Preis: "+GetPrice(), contentX + 5, contentY)
+			skin.fontNormal.draw("Preis: "+GetPrice(useOwner), contentX + 5, contentY)
 			contentY :+ 12	
 			skin.fontNormal.draw("Trailerakt.-modifikator: "+MathHelper.NumberToString(data.GetTrailerMod().GetTotalAverage(), 4), contentX + 5, contentY)
 		endif
@@ -1583,6 +1564,7 @@ Type TProgrammeLicenceFilter
 	Field checkTimeToReleaseMax:int = False
 	Field timeToReleaseMin:Long = 0
 	Field timeToReleaseMax:Long = 0
+	Field playerID:int = 0
 	Field displayInMenu:int = False
 	Field id:int = 0
 
@@ -1924,8 +1906,8 @@ Type TProgrammeLicenceFilter
 		if maxTopicalityMax >= 0 and licence.GetMaxTopicality() > maxTopicalityMax then return False
 
 		'check price
-		if priceMin >= 0 and licence.GetPrice() < priceMin then return False
-		if priceMax >= 0 and licence.GetPrice() > priceMax then return False
+		if priceMin >= 0 and licence.GetPrice(playerID) < priceMin then return False
+		if priceMax >= 0 and licence.GetPrice(playerID) > priceMax then return False
 
 		'check release time (absolute value)
 		if releaseTimeMin >= 0 and licence.data.GetReleaseTime() < releaseTimeMin then return False

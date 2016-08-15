@@ -462,10 +462,11 @@ print "--------------"
 			player = GetPlayer(playerID)
 		endif
 
-
 		'get names from settings
 		GetPlayer(playerID).Name = ScreenGameSettings.guiPlayerNames[playerID-1].Value
 		GetPlayer(playerID).channelname = ScreenGameSettings.guiChannelNames[playerID-1].Value
+
+		local difficulty:TPlayerDifficulty = player.GetDifficulty()
 
 
 		'colorize figure, signs, ...
@@ -476,6 +477,11 @@ print "--------------"
 		TPublicImage.Create(Player.playerID)
 		new TPlayerProgrammeCollection.Create(playerID)
 		new TPlayerProgrammePlan.Create(playerID)
+
+
+		local boss:TPlayerBoss = GetPlayerBoss(playerID)
+		boss.Initialize()
+		boss.creditMaximum = difficulty.creditMaximum
 
 
 		'=== FIGURE ===
@@ -518,7 +524,12 @@ print "--------------"
 
 		'=== FINANCE ===
 		if not GetPlayerFinance(playerID) then print "finance "+playerID+" failed."
-		GetPlayerFinance(playerID).TakeCredit(500000)
+		if difficulty.startMoney > 0 
+			GetPlayerFinance(playerID).EarnGrantedBenefits( difficulty.startMoney )
+		endif
+		if difficulty.startCredit > 0 
+			GetPlayerFinance(playerID).TakeCredit( difficulty.startCredit )
+		endif
 
 
 

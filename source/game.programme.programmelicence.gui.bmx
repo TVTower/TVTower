@@ -129,7 +129,7 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 
 
 	Method IsAffordable:Int()
-		Return GetPlayerBase().getFinance().canAfford(licence.getPrice())
+		Return GetPlayerBase().getFinance().canAfford(licence.getPrice( GetPlayerBase().playerID ))
 	End Method
 
 

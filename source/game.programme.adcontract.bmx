@@ -575,6 +575,10 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	' 2,3 - avg daytime + primetime
 	' 4,5 - best daytime + primetime
 	Field adAgencyClassification:int = 0
+
+	const PRICETYPE_PROFIT:int = 1
+	const PRICETYPE_PENALTY:int = 2
+	const PRICETYPE_INFOMERCIALPROFIT:int = 3
 	
 
 	'create UNSIGNED (adagency)
@@ -857,7 +861,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		If playerID=-1 and profit >= 0 Then Return profit
 
 		'calculate
-		Return CalculatePrices(base.profitBase, playerID) * GetSpotCount()
+		Return CalculatePrices(base.profitBase, playerID, PRICETYPE_PROFIT) * GetSpotCount()
 	End Method
 
 
@@ -870,7 +874,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		if base.fixedInfomercialProfit
 			result = base.infomercialProfitBase
 		else
-			result = CalculatePrices(base.infomercialProfitBase, playerID)
+			result = CalculatePrices(base.infomercialProfitBase, playerID, PRICETYPE_INFOMERCIALPROFIT)
 		endif
 
 		'DEV:
@@ -888,7 +892,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		If playerID=-1 and penalty >= 0 Then Return penalty
 
 		'calculate
-		Return CalculatePrices(base.penaltyBase, playerID) * GetSpotCount()
+		Return CalculatePrices(base.penaltyBase, playerID, PRICETYPE_PENALTY) * GetSpotCount()
 	End Method
 
 
@@ -908,7 +912,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 
 	'calculate prices (profits, penalties...)
-	Method CalculatePrices:Int(baseValue:Float=0, playerID:Int=-1) {_exposeToLua}
+	Method CalculatePrices:Int(baseValue:Float=0, playerID:Int=-1, priceType:int = 0) {_exposeToLua}
 		'=== FIXED PRICE ===
 		'ad is with fixed price - only available without minimum restriction
 		If base.fixedPrice
@@ -957,6 +961,11 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		If GetLimitedToGenre() > 0 Then price :* limitedToGenreMultiplier
 		'limiting to specific flags change the price too
 		If GetLimitedToProgrammeFlag() > 0 Then price :* limitedToProgrammeFlagMultiplier
+
+		'adjust by a player difficulty
+		if priceType = PRICETYPE_PROFIT
+			price :* GetPlayerDifficulty(string(playerID)).advertisementProfitMod
+		endif
 
 		'print GetTitle()+": minAud%="+GetMinAudiencePercentage() +"  price=" +price +"  rawAud="+getRawMinAudience(playerID) +"  targetGroup="+GetLimitedToTargetGroup()
 

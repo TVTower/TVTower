@@ -5,6 +5,7 @@
 ENDREM
 SuperStrict
 Import "Dig/base.util.localization.bmx"
+Import "game.player.difficulty.bmx"
 Import "game.world.worldtime.bmx"
 Import "game.programme.programmeperson.base.bmx"
 Import "game.broadcast.genredefinition.movie.bmx"
@@ -1132,7 +1133,7 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	End Method
 
 
-	Method GetPrice:int()
+	Method GetPrice:int(playerID:int)
 		Local value:int = 0
 		local priceMod:Float = GetQuality() 'this includes age-adjustments
 
@@ -1194,6 +1195,10 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		'9 Blocks = 8.0 + 0.9^8 = 8.43       9 * 0.9^8 = 3.87
 		'value :* (GetBlocks()-1 + (0.90^(GetBlocks()-1)))
 		value :* GetBlocks() * 0.92^(GetBlocks()-1)
+
+
+		'=== DIFFICULTY ===
+		value :* GetPlayerDifficulty(string(playerID)).programmePriceMod
 
 
 		'=== BEAUTIFY ===

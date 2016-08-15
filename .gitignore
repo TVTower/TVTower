@@ -8,7 +8,8 @@
 *.bak
 *.app
 *.bmx/
-/log.*.txt
+log.*.txt
+tests/
 *savegames/
 source/version.txt
 TVTowerSolution.BLIdeUS.layout

@@ -713,7 +713,7 @@ Type TApp
 							endif
 
 							if skippedFilterCount = 3
-								print "unavailable: "+ p.GetTitle()+"  [year="+p.data.GetYear()+"  price="+p.GetPrice()+"  topicality="+p.GetTopicality()+"/"+p.GetMaxTopicality()+"  quality="+p.GetQuality()+"]"
+								print "unavailable: "+ p.GetTitle()+"  [year="+p.data.GetYear()+"  price="+p.GetPrice(GetPlayerBase().playerID)+"  topicality="+p.GetTopicality()+"/"+p.GetMaxTopicality()+"  quality="+p.GetQuality()+"]"
 								foundSkipped :+ 1
 							endif
 						Next
@@ -2415,13 +2415,14 @@ Type TScreen_GameSettings Extends TGameScreen
 	Field guiChatWindow:TGUIChatWindow
 	Field guiPlayerNames:TGUIinput[4]
 	Field guiChannelNames:TGUIinput[4]
+	Field guiDifficulty:TGUIDropDown[4]
 	Field guiFigureArrows:TGUIArrowButton[8]
 	Field modifiedPlayers:Int = False
 	Global headerSize:Int = 35
 	Global guiSettingsPanel:TGUIBackgroundBox
 	Global guiPlayersPanel:TGUIBackgroundBox
 	Global settingsArea:TRectangle = New TRectangle.Init(10,10,780,0) 'position of the panel
-	Global playerBoxDimension:TVec2D = New TVec2D.Init(165,150) 'size of each player area
+	Global playerBoxDimension:TVec2D = New TVec2D.Init(165,177) 'size of each player area
 	Global playerColors:Int = 10
 	Global playerColorHeight:Int = 10
 	Global playerSlotGap:Int = 25
@@ -2520,17 +2521,35 @@ Type TScreen_GameSettings Extends TGameScreen
 			guiPlayerNames[i].SetOverlay(GetSpriteFromRegistry("gfx_gui_overlay_player"))
 
 			guiChannelNames[i] = New TGUIinput.Create(New TVec2D.Init(0, 0), New TVec2D.Init(playerPanel.GetContentScreenWidth(), -1), "channel", 16, name)
-			guiChannelNames[i].rect.position.SetY(playerPanel.GetContentScreenHeight() - guiChannelNames[i].rect.GetH())
+			guiChannelNames[i].rect.position.SetY(100)
 			guiChannelNames[i].SetOverlay(GetSpriteFromRegistry("gfx_gui_overlay_tvchannel"))
 
+
+			guiDifficulty[i] = New TGUIDropDown.Create(New TVec2D.Init(0, 0), New TVec2D.Init(playerPanel.GetContentScreenWidth(), -1), "Leicht", 16, name)
+			guiDifficulty[i].rect.position.SetY(playerPanel.GetContentScreenHeight() - guiDifficulty[i].rect.GetH() + 4)
+			local difficultyValues:string[] = ["easy", "normal", "hard"]
+			local itemHeight:int = 0
+			For local s:string = EachIn difficultyValues
+				local item:TGUIDropDownItem = new TGUIDropDownItem.Create(new TVec2D, new TVec2D.Init(100,20), GetLocale("DIFFICULTY_"+s))
+				item.data.Add("value", s)
+
+				guiDifficulty[i].AddItem( item )
+				If itemHeight = 0 Then itemHeight = item.GetScreenHeight()
+
+				'we want to have max "difficulty-variant" items visible at once
+				guiDifficulty[i].SetListContentHeight(itemHeight * Min(difficultyValues.length,5))
+			Next
+
+
 			'left arrow
-			guiFigureArrows[i*2 + 0] = New TGUIArrowButton.Create(New TVec2D.Init(0 + 10, 50), New TVec2D.Init(24, 24), "LEFT", name)
+			guiFigureArrows[i*2 + 0] = New TGUIArrowButton.Create(New TVec2D.Init(0 + 10, 40), New TVec2D.Init(24, 24), "LEFT", name)
 			'right arrow
-			guiFigureArrows[i*2 + 1] = New TGUIArrowButton.Create(New TVec2D.Init(playerPanel.GetContentScreenWidth() - 10, 50), New TVec2D.Init(24, 24), "RIGHT", name)
+			guiFigureArrows[i*2 + 1] = New TGUIArrowButton.Create(New TVec2D.Init(playerPanel.GetContentScreenWidth() - 10, 40), New TVec2D.Init(24, 24), "RIGHT", name)
 			guiFigureArrows[i*2 + 1].rect.position.AddXY(-guiFigureArrows[i*2 + 1].GetScreenWidth(),0)
 
 			playerPanel.AddChild(guiPlayerNames[i])
 			playerPanel.AddChild(guiChannelNames[i])
+			playerPanel.AddChild(guiDifficulty[i])
 			playerPanel.AddChild(guiFigureArrows[i*2 + 0])
 			playerPanel.AddChild(guiFigureArrows[i*2 + 1])
 		Next
@@ -2552,6 +2571,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		For Local i:Int = 0 To 3
 			EventManager.registerListenerMethod("guiobject.onChange", Self, "onChangeGameSettingsInputs", guiPlayerNames[i])
 			EventManager.registerListenerMethod("guiobject.onChange", Self, "onChangeGameSettingsInputs", guiChannelNames[i])
+			EventManager.registerListenerMethod("GUIDropDown.onSelectEntry", Self, "onChangeGameSettingsInputs", guiDifficulty[i])
 		Next
 
 		'handle clicks on the gui objects
@@ -2566,9 +2586,19 @@ Type TScreen_GameSettings Extends TGameScreen
 	Method Start()
 		'assign player/channel names
 		For Local i:Int = 0 To 3
-			GetPlayer(i+1)
-			guiPlayerNames[i].SetValue( GetPlayer(i+1).name )
-			guiChannelNames[i].SetValue( GetPlayer(i+1).channelName )
+			GetPlayer(i+1) 'create the player
+			guiPlayerNames[i].SetValue( GetPlayerBase(i+1).name )
+			guiChannelNames[i].SetValue( GetPlayerBase(i+1).channelName )
+
+			local selectedDropDownItem:TGUIDropDownItem 
+			For Local item:TGUIDropDownItem = EachIn guiDifficulty[i].GetEntries()
+				Local s:string = item.data.GetString("value")
+				if s = GetPlayerBase(i+1).difficultyGUID
+					selectedDropDownItem = item
+					Exit
+				endif
+			Next
+			if selectedDropDownItem then guiDifficulty[i].SetSelectedEntry(selectedDropDownItem)
 		Next
 
 		guiGameTitle.SetValue(GetGame().title)
@@ -2672,8 +2702,15 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		'name or channel changed?
 		For Local i:Int = 0 To 3
-			If sender = guiPlayerNames[i] Then GetPlayerCollection().Get(i+1).Name = value
-			If sender = guiChannelNames[i] Then GetPlayerCollection().Get(i+1).channelName = value
+			If sender = guiPlayerNames[i] Then GetPlayer(i+1).Name = value
+			If sender = guiChannelNames[i] Then GetPlayer(i+1).channelName = value
+
+			If sender = guiDifficulty[i]
+				local item:TGUIDropDownItem = TGUIDropDownItem(guiDifficulty[i].GetSelectedEntry())
+				if item
+					GetPlayer(i+1).SetDifficulty( item.data.GetString("value") )
+				endif
+			endif
 		Next
 
 		'start year changed

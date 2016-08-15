@@ -3,6 +3,7 @@ Import "Dig/base.util.color.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
 Import "game.player.color.bmx"
 Import "game.player.finance.bmx"
+Import "game.player.difficulty.bmx"
 Import "game.figure.base.bmx"
 Import "game.gamerules.bmx"
 Import "game.ai.base.bmx"
@@ -94,6 +95,9 @@ Type TPlayerBase {_exposeToLua="selected"}
 	Field figurebase:Int = 0
 	'actual figure the player uses
 	Field Figure:TFigureBase {_exposeToLua}
+
+	Field difficulty:TPlayerDifficulty {nosave}
+	Field difficultyGUID:string = "normal"
 
 	Field playerAI:TAiBase
 
@@ -302,6 +306,28 @@ Type TPlayerBase {_exposeToLua="selected"}
 		color = newColor
 		color.ownerID = playerID
 		UpdateFigureBase(figurebase)
+	End Method
+
+
+	Method SetDifficulty:int(difficultyGUID:string)
+		local diff:TPlayerDifficulty = GetPlayerDifficulty(difficultyGUID)
+		if diff
+			difficulty = diff
+			self.difficultyGUID = difficultyGUID
+
+			GetPlayerDifficultyCollection().AddToPlayer(playerID, diff)
+		endif
+	End Method
+
+
+	Method GetDifficulty:TPlayerDifficulty()
+		if not difficulty
+			SetDifficulty(difficultyGUID)
+
+			if not difficulty then Throw "TPlayerBase.GetDifficulty() failed: difficulty ~q"+difficultyGUID+"~q not found."
+		endif
+
+		return difficulty
 	End Method
 
 
