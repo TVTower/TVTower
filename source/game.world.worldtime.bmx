@@ -50,7 +50,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		Super.Initialize()
 		
 		_timeStart = 0:double
-		_daysPerSeason = 4
+		_daysPerSeason = 3
 		_daysPerWeek = 7
 		currentPhase = 0
 		_dawnTime = -1
