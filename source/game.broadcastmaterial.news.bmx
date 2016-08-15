@@ -333,8 +333,10 @@ endrem
 	'returns the price of this news
 	'price differs from the (base) price of the newsEvent
 	Method GetPrice:int(owner:int) {_exposeToLua}
+		'Ronny 15.08.2016: deactivated, news are now displaying the
+		'                  current price (for easier comparison)
 		'the price is fixed in the moment of getting bought
-		if paid and paidPrice<>0 then return paidPrice
+		'if paid and paidPrice<>0 then return paidPrice
 
 		'calculate the price including modifications
 		local price:int = newsEvent.GetPrice()
