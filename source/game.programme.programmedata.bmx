@@ -1139,19 +1139,19 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 		'=== FRESHNESS ===
 		'this is ~1 yrs
-		If (GetMaxTopicality() >= 0.98) Then priceMod :* 1.15
+		If (GetMaxTopicality() >= 0.98) Then priceMod :* 1.30
 		'this is ~2 yrs
-		If (GetMaxTopicality() >= 0.96) Then priceMod :* 1.10
+		If (GetMaxTopicality() >= 0.96) Then priceMod :* 1.25
 		'this is ~3 yrs
-		If (GetMaxTopicality() >= 0.93) Then priceMod :* 1.05
+		If (GetMaxTopicality() >= 0.93) Then priceMod :* 1.20
 
 
 		'=== QUALITY FRESHNESS ===
 		'A high quality programme is more expensive if very young.
 		'The older the programme gets, the less important is a high
 		'quality, they then all are relatively "equal"
-		local highQualityIndex:Float = 0.40 * GetQualityRaw() + 0.60 * GetQualityRaw() ^ 4
-		local highTopicalityIndex:Float = 0.30 * GetMaxTopicality() + 0.70 * GetMaxTopicality() ^ 4
+		local highQualityIndex:Float = 0.38 * GetQualityRaw() + 0.62 * GetQualityRaw() ^ 4
+		local highTopicalityIndex:Float = 0.25 * GetMaxTopicality() + 0.75 * GetMaxTopicality() ^ 4
 	rem
 	local found:int = 0
 	if GetTitle().Find("Brenz") >= 0 or GetTitle().Find("Dschungel") >= 0
@@ -1175,17 +1175,25 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 
 		If isType(TVTProgrammeProductType.MOVIE)
-			value = 30000 + 1750000 * priceMod
+			value = 30000 + 1600000 * priceMod
 		 'shows, productions, series...
 		Else
-			value = 25000 + 1500000 * priceMod
+			value = 25000 + 1400000 * priceMod
 		EndIf
 
 
-		'1 Block = 0 + 0.85^0 = 1.0
-		'2 Blocks = 1.0 + 0.85 = 1.85
-		'3 Blocks = 2.0 + 0.85*0.85 = 2.7225 ...
-		value :* (GetBlocks()-1 + (0.90^(GetBlocks()-1)))
+		'@ 0.9:
+		'variant 1: blocks-1 + x^(blocks-1)
+		'variant 2: blocks * x^(blocks-1)
+		'           variant 1                variant 2
+		'1 Block  = 0.0 + 0.9^0 = 1.00       1 * 0.9^0 = 1
+		'2 Blocks = 1.0 + 0.9^1 = 1.90       2 * 0.9^1 = 1.8
+		'3 Blocks = 2.0 + 0.9^2 = 2.81       3 * 0.9^2 = 2.43
+		'4 Blocks = 3.0 + 0.9^3 = 3.73       4 * 0.9^3 = 2.92
+		'5 Blocks = 4.0 + 0.9^4 = 4.66       5 * 0.9^4 = 3.28
+		'9 Blocks = 8.0 + 0.9^8 = 8.43       9 * 0.9^8 = 3.87
+		'value :* (GetBlocks()-1 + (0.90^(GetBlocks()-1)))
+		value :* GetBlocks() * 0.92^(GetBlocks()-1)
 
 
 		'=== BEAUTIFY ===
@@ -1197,10 +1205,11 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 rem
 if GetTitle().Find("Brenz") >= 0 or GetTitle().Find("Dschungel") >= 0
 	found :+1
+	print "block mod          : "+(GetBlocks() * 0.90^(GetBlocks()-1))
 	print "end price          : "+value
 	print "------------------------------------"
 
-'	if found=2 then end
+	if found=2 then end
 endif
 endrem
 		return value		
@@ -1213,8 +1222,8 @@ endrem
 
 		local age:Int = 0
 		local timesBroadcasted:Int = 0
-		local weightAge:Float = 0.5
-		local weightTimesBroadcasted:Float = 0.5
+		local weightAge:Float = 0.8
+		local weightTimesBroadcasted:Float = 0.4
 
 		if IsPaid()
 			'always age = 0 ... so just decrease by broadcasts
@@ -1399,6 +1408,7 @@ endrem
 		cutModifier = 1.0 - MathHelper.Clamp(toCut, minimumAbsoluteCut, 1.0)
 
 		'(trailers do not inherit "aged" topicality, so 1 is max)
+		trailerTopicality = GetTrailerTopicality()
 		trailerTopicality = MathHelper.Clamp(trailerTopicality * cutModifier, 0.0, 1.0)
 
 		Return trailerTopicality
@@ -1416,6 +1426,7 @@ endrem
 		refreshModifier :* GetFlagsRefreshModifier()
 
 		refreshModifier = Max(refreshModifier, minimumRelativeRefresh)
+		topicality = GetTopicality() 'limit to max topicality
 
 		topicality :+ Max(topicality * (refreshModifier-1.0), minimumAbsoluteRefresh)
 		topicality = MathHelper.Clamp(topicality, 0, GetMaxTopicality())
@@ -1435,6 +1446,7 @@ endrem
 
 		refreshModifier = Max(refreshModifier, minimumRelativeRefresh)
 
+		trailerTopicality = GetTrailerTopicality() 'account for limits
 		trailerTopicality :+ Max(trailerTopicality * (refreshModifier-1.0), minimumAbsoluteRefresh)
 		trailerTopicality = MathHelper.Clamp(trailerTopicality, 0, 1.0)
 
@@ -1852,8 +1864,3 @@ endrem
 
 
 End Type
-
-
-
-
-
