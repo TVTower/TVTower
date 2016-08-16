@@ -133,6 +133,9 @@ Type TAchievementTask_ReachAudience extends TAchievementTask
 		limitToGenres = configData.GetInt("limitToGenres", limitToGenres)
 		limitToFlags = configData.GetInt("limitToFlags", limitToFlags)
 
+		checkMinute = configData.GetInt("checkMinute", checkMinute)
+		checkHour = configData.GetInt("checkHour", checkHour)
+
 		return self
 	End Method
 

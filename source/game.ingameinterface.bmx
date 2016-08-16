@@ -560,7 +560,7 @@ Type TInGameInterface
 					GetSpriteFromRegistry("gfx_interface_channelbuttons_off_"+i).Draw(75 + i * 33, 559)
 				EndIf
 				'hover effect
-				If THelper.MouseIn( 75 + i * 33, 171 + 383, 33, 41)
+				If THelper.MouseIn( 75 + i * 33, 171 + 383 + 16 - i*4, 33, 25)
 					SetBlend LightBlend
 					SetAlpha 0.35 * oldAlpha
 					If i = ShowChannel
