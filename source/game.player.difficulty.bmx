@@ -54,7 +54,12 @@ Type TPlayerDifficultyCollection Extends TGameObjectCollection
 		'from savegames
 		if not _initializedDefaults then InitializeDefaults()
 
-		Return TPlayerDifficulty( Super.GetByGUID(GUID) )
+		local diff:TPlayerDifficulty = TPlayerDifficulty( Super.GetByGUID(GUID) )
+		'fall back to "normal" if requested (maybe individual) was not found
+		'-> eg. older savegames without difficulty stored
+		if not diff then diff = TPlayerDifficulty( Super.GetByGUID("normal") )
+
+		return diff
 	End Method
 
 

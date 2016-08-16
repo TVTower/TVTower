@@ -240,6 +240,9 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 			playerAI.CallOnLoad()
 		endif
 
+		'reassign difficulty (and store in collection)
+'		GetDifficulty()
+
 		'repair broken figure sprites (eg. through savegame)
 		'TODO: find out why this happens
 		if not figure.sprite.parent.image then figure.OnLoad()

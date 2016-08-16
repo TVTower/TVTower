@@ -314,7 +314,6 @@ Type TPlayerBase {_exposeToLua="selected"}
 		if diff
 			difficulty = diff
 			self.difficultyGUID = difficultyGUID
-
 			GetPlayerDifficultyCollection().AddToPlayer(playerID, diff)
 		endif
 	End Method

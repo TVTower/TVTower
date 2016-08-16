@@ -1454,6 +1454,7 @@ Type TGameState
 	Field _PlayerProgrammePlanCollection:TPlayerProgrammePlanCollection = Null
 	Field _PlayerProgrammeCollectionCollection:TPlayerProgrammeCollectionCollection = Null
 	Field _PlayerBossCollection:TPlayerBossCollection = Null
+	Field _PlayerDifficultyCollection:TPlayerDifficultyCollection = Null
 	Field _PublicImageCollection:TPublicImageCollection = Null
 	Field _EventManagerEvents:TList = Null
 	Field _PopularityManager:TPopularityManager = Null
@@ -1573,6 +1574,7 @@ Type TGameState
 		_Assign(_ProgrammeLicenceCollection, TProgrammeLicenceCollection._instance, "ProgrammeLicenceCollection", MODE_LOAD)
 
 		_Assign(_PlayerCollection, TPlayerCollection._instance, "PlayerCollection", MODE_LOAD)
+		_Assign(_PlayerDifficultyCollection, TPlayerDifficultyCollection._instance, "PlayerDifficultyCollection", MODE_LOAD)
 		_Assign(_PlayerFinanceCollection, TPlayerFinanceCollection._instance, "PlayerFinanceCollection", MODE_LOAD)
 		_Assign(_PlayerFinanceHistoryListCollection, TPlayerFinanceHistoryListCollection._instance, "PlayerFinanceHistoryListCollection", MODE_LOAD)
 		_Assign(_PlayerProgrammeCollectionCollection, TPlayerProgrammeCollectionCollection._instance, "PlayerProgrammeCollectionCollection", MODE_LOAD)
@@ -1669,6 +1671,7 @@ Type TGameState
 		_Assign(TRoomDoorBaseCollection._instance, _RoomDoorBaseCollection, "RoomDoorBaseCollection", MODE_SAVE)
 		_Assign(TFigureCollection._instance, _FigureCollection, "FigureCollection", MODE_SAVE)
 		_Assign(TPlayerCollection._instance, _PlayerCollection, "PlayerCollection", MODE_SAVE)
+		_Assign(TPlayerDifficultyCollection._instance, _PlayerDifficultyCollection, "TPlayerDifficultyCollection", MODE_SAVE)
 		_Assign(TPlayerFinanceCollection._instance, _PlayerFinanceCollection, "PlayerFinanceCollection", MODE_SAVE)
 		_Assign(TPlayerFinanceHistoryListCollection._instance, _PlayerFinanceHistoryListCollection, "PlayerFinanceHistoryListCollection", MODE_SAVE)
 		_Assign(TPlayerProgrammeCollectionCollection._instance, _PlayerProgrammeCollectionCollection, "PlayerProgrammeCollectionCollection", MODE_SAVE)
