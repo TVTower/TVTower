@@ -369,33 +369,38 @@ end
 
 function JobBuyMovies:Prepare(pParams)
 	--debugMsg("Kaufe Filme")
-
-	local sortMethod = function(a, b)
-		return a.GetAttractiveness() > b.GetAttractiveness()
+	if (self.MovieDistributorTask.MoviesAtDistributor ~= nil) then
+		local sortMethod = function(a, b)
+			return a.GetAttractiveness() > b.GetAttractiveness()
+		end
+		table.sort(self.MovieDistributorTask.MoviesAtDistributor, sortMethod)
 	end
-	table.sort(self.MovieDistributorTask.MoviesAtDistributor, sortMethod)
 end
 
 function JobBuyMovies:Tick()
 	local movies = self.MovieDistributorTask.MoviesAtDistributor
 
-	for k,v in pairs(movies) do		
-		if (v:GetPrice() <= self.MovieDistributorTask.CurrentBudget) then
-			-- Tagesbudget für gute Angebote ohne konkreten Bedarf
-			if v:GetPrice() <= self.MovieDistributorTask.CurrentBargainBudget then
-				if (v.GetAttractiveness() > 1) then
-					debugMsg("Kaufe Film: " .. v.GetTitle() .. " (" .. v.GetId() .. ") - Preis: " .. v:GetPrice())
-					TVT.addToLog("Kaufe Film: " .. v.GetTitle() .. " (" .. v.GetId() .. ") - Preis: " .. v:GetPrice())
-					TVT.md_doBuyProgrammeLicence(v.GetId())
-					
-					self.MovieDistributorTask:PayFromBudget(v:GetPrice())
-					self.MovieDistributorTask.CurrentBargainBudget = self.MovieDistributorTask.CurrentBargainBudget - v:GetPrice()							
+	if (movies ~= nil) then
+		for k,v in pairs(movies) do		
+			if (v:GetPrice() <= self.MovieDistributorTask.CurrentBudget) then
+				-- Tagesbudget für gute Angebote ohne konkreten Bedarf
+				if v:GetPrice() <= self.MovieDistributorTask.CurrentBargainBudget then
+					if (v.GetAttractiveness() > 1) then
+						debugMsg("Kaufe Film: " .. v.GetTitle() .. " (" .. v.GetId() .. ") - Preis: " .. v:GetPrice())
+						TVT.addToLog("Kaufe Film: " .. v.GetTitle() .. " (" .. v.GetId() .. ") - Preis: " .. v:GetPrice())
+						TVT.md_doBuyProgrammeLicence(v.GetId())
+						
+						self.MovieDistributorTask:PayFromBudget(v:GetPrice())
+						self.MovieDistributorTask.CurrentBargainBudget = self.MovieDistributorTask.CurrentBargainBudget - v:GetPrice()							
 
-					--increase counter to skip buying more "needed ones"
-					self.MovieDistributorTask.ProgrammesPossessed = self.MovieDistributorTask.ProgrammesPossessed + 1
-				end			
+						--increase counter to skip buying more "needed ones"
+						self.MovieDistributorTask.ProgrammesPossessed = self.MovieDistributorTask.ProgrammesPossessed + 1
+					end			
+				end
 			end
 		end
+	else
+		TVT.addToLog("Keine Filme beim Filmhaendler")
 	end
 
 	self.Status = JOB_STATUS_DONE
