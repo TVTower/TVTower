@@ -403,7 +403,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 		'set unused again (give back to pool), do this regardless of
 		'"sell" result
-		licence.SetOwner( TOwnedGameObject.OWNER_NOBODY )
+		'refills broadcast limits, optionally refreshes topicality etc.
+		licence.GiveBackToLicencePool()
+
 
 		'emit an event so eg. network can recognize the change
 		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.removeProgrammeLicence", new TData.add("programmeLicence", licence).addNumber("sell", sell), self))

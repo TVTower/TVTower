@@ -361,8 +361,6 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	Field data:TProgrammeData				{_exposeToLua}
 	'the latest hour-(from-start) one of the planned programmes ends
 	Field latestPlannedEndHour:int = -1
-	'the maximum amount of broadcasts possible for this licence (0 = disabled)
-	Field broadcastLimit:int = 0
 	'is this licence a: collection, series, episode or single element?
 	'you cannot distinguish between "series" and "collections" without
 	'as both could contain "shows" or "episodes"
@@ -374,9 +372,10 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	Field episodeNumber:int = -1
 	'store stats for each owner
 	Field broadcastStatistics:TBroadcastStatistic[]
+	'flags:
 	'is this licence tradeable? if not, licence cannot get sold.
 	'use this eg. for opening programme
-	Field tradeable:int = True
+	Field licenceFlags:int = TVTProgrammeLicenceFlag.TRADEABLE
 
 '	Field cacheTextOverlay:TImage 			{nosave}
 '	Field cacheTextOverlayMode:string = ""	{nosave}	'for which mode the text was cached
@@ -429,6 +428,20 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		Endif
 		return SortByName(o1, o2)
 	End Function	
+
+
+	Method hasLicenceFlag:Int(flag:Int) {_exposeToLua}
+		Return licenceFlags & flag
+	End Method
+
+
+	Method setLicenceFlag(flag:Int, enable:Int=True)
+		If enable
+			licenceFlags :| flag
+		Else
+			licenceFlags :& ~flag
+		EndIf
+	End Method
 	
 
 	'connect programmedata to a licence
@@ -509,6 +522,27 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 
 
+	Method GiveBackToLicencePool:int()
+		SetOwner( TOwnedGameObject.OWNER_NOBODY )
+
+		'refill broadcast limits - or disable tradeability
+		if broadcastLimitMax > 0 and isExceedingBroadcastLimit()
+			if HasLicenceFlag(TVTProgrammeLicenceFlag.LICENCEPOOL_REFILLS_BROADCASTLIMITS)
+				SetBroadcastLimit(broadcastLimitMax)
+			else
+				setLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE, False)
+			endif
+		endif
+
+		'refill topicality?
+		if HasLicenceFlag(TVTProgrammeLicenceFlag.LICENCEPOOL_REFILLS_TOPICALITY)
+			GetData().topicality = GetData().GetMaxTopicality()
+		endif
+
+		return True
+	End Method
+
+
 	Method isProgrammeType:int(programmeDataType:int) {_exposeToLua}
 		return GetData() and GetData().isType(programmeDataType)
 	End Method
@@ -550,6 +584,48 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 
 
+	'override
+	Method GetBroadcastLimit:int() {_exposeToLua}
+		if GetSubLicenceCount() = 0 and GetData()
+			'licence-invidividual limit or base-defined limit?
+			if self.broadcastLimit <= 0 then return data.GetBroadcastLimit()
+
+			return self.broadcastLimit
+		else
+			local maxLimit:int = 0
+			local foundLimit:int = 0
+			'find smalles limit
+			For local licence:TProgrammeLicence = eachin subLicences
+				if not foundLimit
+					maxLimit = licence.GetBroadcastLimit()
+					foundLimit = True
+				else
+					maxLimit = Max(maxLimit, licence.GetBroadcastLimit())
+				endif
+			Next
+
+			return maxLimit
+		endif
+	End Method
+
+
+	'override
+	Method IsExceedingBroadcastLimit:int() {_exposeToLua}
+		if GetSubLicenceCount() = 0 and GetData()
+			if data.IsExceedingBroadcastLimit() then return True
+
+			return Super.IsExceedingBroadcastLimit()
+		else
+			'it is enough if one licence is exceeding
+			For local licence:TProgrammeLicence = eachin subLicences
+				if licence.IsExceedingBroadcastLimit() then return True
+			Next
+
+			return False
+		endif
+	End Method
+
+
 	Method IsVisible:int()
 		if GetSubLicenceCount() = 0 and GetData()
 			return GetData().IsVisible()
@@ -565,7 +641,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 	Method IsTradeable:int()
 		if GetSubLicenceCount() = 0 and GetData()
-			if not tradeable then return False
+			if not hasLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE) then return False
 
 			'disallow selling a custom production until it was
 			'broadcasted at least once
@@ -659,8 +735,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 		if GetData() and not GetData().isAvailable() then return False
 
-		'exceeded broadcastLimit
-		if broadcastLimit > 0 and GetTimesBroadcasted() >= broadcastLimit then return False
+		if isExceedingBroadcastLimit() then return False
 
 		'if licence is a collection: ask subs
 		'one single available entry is enough to return True
@@ -965,6 +1040,16 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		'round upwards, the first broadcast already return "1"
 		return int(ceil(float(sum) / GetSubLicenceCount()))
 	End Method
+
+
+	'override
+	'called as soon as the last block of a programme ends
+	Method doFinishBroadcast(playerID:int = -1, broadcastType:int = 0)
+		'=== BROADCAST LIMITS ===
+		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
+			if broadcastLimit > 0 then broadcastLimit :- 1
+		endif
+	End Method
 	
 
 	Method ShowSheet:Int(x:Int,y:Int, align:int=0, showMode:int=0, useOwner:int=-1, extraData:TData = null)
@@ -1039,6 +1124,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		Local showMsgPlannedWarning:Int = False
 		Local showMsgEarnInfo:Int = False
 		Local showMsgLiveInfo:Int = False
+		Local showMsgBroadcastLimit:Int = False
 		
 		'only if planned and in archive
 		'if useOwner > 0 and GetPlayer().figure.inRoom
@@ -1074,6 +1160,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 				endif
 			endif
 		endif
+		If GetBroadcastLimit() > 0 then showMsgBroadcastLimit= True
 
 
 		'=== CALCULATE SPECIAL AREA HEIGHTS ===
@@ -1094,6 +1181,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		If showMsgEarnInfo then msgAreaH :+ msgH
 		If showMsgPlannedWarning then msgAreaH :+ msgH
 		If showMsgLiveInfo then msgAreaH :+ msgH
+		If showMsgBroadcastLimit then msgAreaH :+ msgH
 		'if there are messages, add padding of messages
 		if msgAreaH > 0 then msgAreaH :+ 2* msgAreaPaddingY
 
@@ -1261,6 +1349,18 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 			contentY :+ msgH
 		EndIf
 
+		if showMsgBroadcastLimit
+			local broadcastsLeft:int =  GetBroadcastLimit() - GetTimesBroadcasted()
+			if broadcastsLeft <= 0
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("NO_MORE_BROADCASTS_ALLOWED"), "spotsPlanned", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			elseif broadcastsLeft = 1
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_1_BROADCAST_POSSIBLE"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			else
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").replace("%X%", GetBroadcastLimit()), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			endif
+			contentY :+ msgH
+		endif
+
 		If showMsgEarnInfo
 			'convert back cents to euros and round it
 			'value is "per 1000" - so multiply with that too
@@ -1274,6 +1374,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PROGRAMME_IN_PROGRAMME_PLAN"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		endif
+
 
 		'if there is a message then add padding to the bottom
 		if msgAreaH > 0 then contentY :+ msgAreaPaddingY
@@ -1295,8 +1396,16 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		endif
 		'record
 		skin.RenderBox(contentX + 5 + 107, contentY, 83, -1, TFunctions.convertValue(GetBroadcastStatistic(useOwner).GetBestAudienceResult(useOwner, -1).audience.GetTotalSum(),2), "maxAudience", "neutral", skin.fontBold)
+
 		'price
-		if IsTradeable()
+		local showPrice:int = not data.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.HIDE_PRICE)
+		'- hide for custom productions until aired
+		if showPrice and data.IsTVDistribution() and data.GetOutcomeTV() < 0 then showPrice = False
+		'- hide unowned and not tradeable ones
+		'-> disabled because of "Opener show"
+		'if showPrice not IsOwned() and not IsTradeable() then showPrice = False
+		
+		if showPrice
 			if canAfford
 				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(GetPrice(useOwner)), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 			else

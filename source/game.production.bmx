@@ -311,7 +311,7 @@ Type TProduction Extends TOwnedGameObject
 		programmeData.country = GetStationMapCollection().config.GetString("nameShort", "UNK")
 		programmeData.distributionChannel = TVTProgrammeDistributionChannel.TV
 		programmeData.releaseTime = GetWorldTime().GetTimeGone()
-		programmeData.available = true
+		programmeData.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, False)
 		programmeData.producedByPlayerID = owner
 		programmeData.dataType = productionConcept.script.scriptLicenceType
 
@@ -335,6 +335,19 @@ Type TProduction Extends TOwnedGameObject
 				endif
 			Next
 		endif
+
+		'add flags given in script
+		For local i:int = 1 to TVTBroadcastMaterialSourceFlag.count
+			local flag:int = TVTBroadcastMaterialSourceFlag.GetAtIndex(i)
+			if productionConcept.script.productionBroadcastFlags & flag
+				programmeData.broadcastFlags :| flag
+			endif
+		Next
+
+		'add broadcast limits
+		programmeData.SetBroadcastLimit(productionConcept.script.productionBroadcastLimit)
+		
+
 
 		'use the defined liveHour, the production is then ready on the
 		'next day
@@ -389,8 +402,17 @@ Type TProduction Extends TOwnedGameObject
 		local programmeLicence:TProgrammeLicence = new TProgrammeLicence
 		programmeLicence.SetGUID(programmeGUID)
 		programmeLicence.SetData(programmeData)
-		programmeLicence.available = true
+		programmeLicence.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, False)
 		programmeLicence.licenceType = productionConcept.script.scriptLicenceType
+
+		'add flags given in script
+		For local i:int = 1 to TVTProgrammeLicenceFlag.count
+			local flag:int = TVTProgrammeLicenceFlag.GetAtIndex(i)
+			if productionConcept.script.productionLicenceFlags & flag
+				programmeLicence.licenceFlags :| flag
+			endif
+		Next
+
 
 		local addLicence:TProgrammeLicence = programmeLicence
 		if programmeLicence.IsEpisode()

@@ -90,6 +90,8 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 		'inform data that it got broadcasted by a player
 		data.doFinishBroadcast(owner, usedAsType)
+		'inform licence that it got broadcasted by a player
+		licence.doFinishBroadcast(owner, usedAsType)
 
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 
@@ -250,7 +252,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		Next
 		
 		
-		'Image-Strafe
+		'Image-Penalty
 		If data.IsPaid()
 			'-1 = for both genders
 			Local penalty:TAudience = new TAudience.Init(-1,  -0.25, -0.25, -0.15, -0.35, -0.15, -0.55, -0.15)
@@ -273,6 +275,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		'for data and licence
 		data.SetTimesBroadcasted(data.GetTimesBroadcasted(owner)+1, owner)
 		licence.SetTimesBroadcasted(licence.GetTimesBroadcasted(owner)+1, owner)
+
 
 		'reset trailer count
 		data.trailerAiredSinceShown = 0

@@ -612,9 +612,11 @@ print "--------------"
 
 		local programmeLicence:TProgrammeLicence = new TProgrammeLicence
 		programmeLicence.setData(programmeData)
-		programmeLicence.broadcastLimit = 1
-		'disable sellability
-		programmeLicence.tradeable = False
+		'disable sellability (for player and vendor)
+		programmeLicence.setLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE, False)
+		'remove after broadcasting
+		programmeLicence.setLicenceFlag(TVTProgrammeLicenceFlag.REMOVE_ON_REACHING_BROADCASTLIMIT, True)
+		programmeLicence.SetBroadcastLimit(1)
 		programmeLicence.licenceType = TVTProgrammeLicenceType.SINGLE
 		GetPlayerProgrammeCollection(playerID).AddProgrammeLicence(programmeLicence)
 
@@ -653,7 +655,7 @@ print "--------------"
 			broadcast.licence.SetControllable(False)
 			if broadcast.isControllable() then Throw "controllable!"
 			'disable availability
-			broadcast.data.available = False
+			broadcast.data.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, True)
 
 			currentHour:+ currentLicence.getData().getBlocks()
 

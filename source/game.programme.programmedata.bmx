@@ -1746,6 +1746,11 @@ endrem
 			endif
 		endif
 
+		'=== BROADCAST LIMITS ===
+		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
+			if broadcastLimit > 0 then broadcastLimit :- 1
+		endif
+
 
 		'=== EFFECTS ===
 		'trigger broadcastEffects

@@ -488,7 +488,10 @@ Type TDatabaseLoader
 		newsEvent.flags = data.GetInt("flags", newsEvent.flags)
 		newsEvent.genre = data.GetInt("genre", newsEvent.genre)
 		newsEvent.keywords = data.GetString("keywords", newsEvent.keywords).ToLower()
-		newsEvent.available = data.GetBool("available", newsEvent.available)
+
+		local available:int = data.GetBool("available", not newsEvent.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
+		newsEvent.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, not available)		
+
 		'topicality is "quality" here
 		newsEvent.qualityRaw = 0.01 * data.GetFloat("quality", 100 * newsEvent.qualityRaw)
 		'price is "priceModifier" here (so add 1.0 until that is done in DB)
@@ -729,7 +732,9 @@ Type TDatabaseLoader
 
 		adContract.infomercialAllowed = data.GetBool("infomercial", adContract.infomercialAllowed)
 		adContract.quality = 0.01 * data.GetFloat("quality", adContract.quality * 100.0)
-		adContract.available = data.GetBool("available", adContract.available)
+
+		local available:int = data.GetBool("available", not adContract.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
+		adContract.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, not available)		
 
 		'old -> now stored in "availability
 		adContract.availableYearRangeFrom = data.GetInt("year_range_from", adContract.availableYearRangeFrom)
@@ -898,7 +903,7 @@ Type TDatabaseLoader
 		xml.LoadValuesToData(nodeData, data, [..
 			"country", "distribution", "blocks", ..
 			"maingenre", "subgenre", "price_mod", ..
-			"available", "flags" ..
+			"available", "flags", "licenceFlags", "broadcastFlags" ..
 		]) 'also allow a "<live>" block
 		'], ["live"]) 'also allow a "<live>" block
 		
@@ -906,8 +911,17 @@ Type TDatabaseLoader
 		
 		programmeData.distributionChannel = data.GetInt("distribution", programmeData.distributionChannel)
 		programmeData.blocks = data.GetInt("blocks", programmeData.blocks)
-		programmeData.available = data.GetBool("available", programmeData.available)
-		programmeLicence.available = programmeData.available
+
+		'both - data and licence - get the same flags
+		programmeData.broadcastFlags = data.GetInt("broadcastFlags", programmeData.broadcastFlags)
+		programmeLicence.broadcastFlags = data.GetInt("broadcastFlags", programmeLicence.broadcastFlags)
+
+		programmeLicence.licenceFlags = data.GetInt("licenceFlags", programmeLicence.licenceFlags)
+
+		local available:int = data.GetBool("available", not programmeData.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
+		programmeData.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, not available)
+		programmeLicence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, not available)
+
 		'compatibility: load price mod from "price_mod" first... later
 		'override with "modifiers"-data
 		programmeData.SetModifier("price", data.GetFloat("price_mod", programmeData.GetModifier("price")))
@@ -1353,10 +1367,14 @@ Type TDatabaseLoader
 		nodeData = xml.FindChild(node, "data")
 		data = new TData
 		xml.LoadValuesToData(nodeData, data, [..
-			"flags", "flags_optional" ..
+			"flags", "flags_optional", "productionBroadcastFlags", "productionLicenceFlags", "productionBroadcastLimit" ..
 		])
 		scriptTemplate.flags = data.GetInt("flags", 0)
 		scriptTemplate.flagsOptional = data.GetInt("flags_optional", 0)
+
+		scriptTemplate.productionBroadcastFlags = data.GetInt("productionBroadcastFlags", 0)
+		scriptTemplate.productionLicenceFlags = data.GetInt("productionLicenceFlags", 0)
+		scriptTemplate.productionBroadcastLimit = data.GetInt("productionBroadcastLimit", -1)
 
 
 		rem

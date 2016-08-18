@@ -1047,7 +1047,7 @@ Type TGameModifierNews_ModifyAvailability extends TGameModifierBase
 			print "TGameModifierNews_ModifyAvailability: Undo failed, newsEvent ~q"+newsGUID+"~q not found."
 		endif
 
-		newsEvent.available = enableBackup
+		if enableBackup then newsEvent.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, False)
 	End Method
 
 
@@ -1058,9 +1058,10 @@ Type TGameModifierNews_ModifyAvailability extends TGameModifierBase
 			print "TGameModifierNews_ModifyAvailability: Run failed, newsEvent ~q"+newsGUID+"~q not found."
 		endif
 
-		enableBackup = newsEvent.available
-		
-		newsEvent.available = enable
+		'available?
+		enableBackup = not newsEvent.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE)
+
+		newsEvent.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, not enable)
 	End Method
 End Type
 	

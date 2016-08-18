@@ -15,8 +15,10 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	Field topicality:Float = 1.0
 	Field flags:int = 0
 	Field broadcastFlags:int = 0
-	'is the source available at all?
-	Field available:int = True
+	'the maximum _current_ amount of broadcasts possible for this licence (0 = disabled)
+	Field broadcastLimit:int = 0
+	'the maximum amount of broadcasts possible for this licence after reset
+	Field broadcastLimitMax:int = 0
 
 
 	Method Initialize:int()
@@ -48,6 +50,22 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 		timesBroadcasted[playerID] = times
 	End Method
 
+
+	Method SetBroadcastLimit:int(broadcastLimit:int = -1)
+		self.broadcastLimitMax = broadcastLimit
+		self.broadcastLimit = broadcastLimit
+	End Method
+
+
+	Method GetBroadcastLimit:int() {_exposeToLua}
+		return self.broadcastLimit
+	End Method
+		
+
+
+	Method isExceedingBroadcastLimit:int() {_exposeToLua}
+		return broadcastLimit > 0 and GetTimesBroadcasted() >= broadcastLimit
+	End Method
 
 
 	'returns the stored value for a modifier - defaults to "100%"
@@ -151,7 +169,7 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 
 
 	Method IsAvailable:int()
-		return available
+		return not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE)
 	End Method
 
 

@@ -33,6 +33,11 @@ Type TScriptBase Extends TNamedGameObject
 	'could get produced)
 	Field usedInProductionsLimit:int = 1
 
+	'flags for the created production
+	Field productionBroadcastFlags:int = 0
+	Field productionLicenceFlags:int = 0
+	Field productionBroadcastLimit:int = 0
+
 
 	'override to add another generic naming
 	Method SetGUID:Int(GUID:String)

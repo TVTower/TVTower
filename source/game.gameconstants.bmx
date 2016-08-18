@@ -31,7 +31,8 @@ Type TVTGameConstants {_exposeToLua}
 	Field ProgrammeProductType:TVTProgrammeProductType = new TVTProgrammeProductType
 	Field ProgrammeState:TVTProgrammeState = new TVTProgrammeState 
 	Field ProgrammeGenre:TVTProgrammeGenre = new TVTProgrammeGenre 
-	Field ProgrammeFlag:TVTProgrammeDataFlag = new TVTProgrammeDataFlag 
+	Field ProgrammeDataFlag:TVTProgrammeDataFlag = new TVTProgrammeDataFlag 
+	Field ProgrammeLicenceFlag:TVTProgrammeLicenceFlag = new TVTProgrammeLicenceFlag
 	Field ProgrammeLicenceType:TVTProgrammeLicenceType = new TVTProgrammeLicenceType
 	Field ProgrammeDistributionChannel:TVTProgrammeDistributionChannel = new TVTProgrammeDistributionChannel
 
@@ -266,7 +267,34 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 	Const BROADCAST_FIRST_TIME_SPECIAL:int = 8
 	Const BROADCAST_FIRST_TIME_DONE:int = 16
 	Const BROADCAST_FIRST_TIME_SPECIAL_DONE:int = 32
-	
+
+	'is the material not available at all?
+	Const NOT_AVAILABLE:int = 64
+	'expose price of the material - eg. not-yet-aired custom productions
+	Const HIDE_PRICE:int = 128
+
+	Const count:int = 8
+
+
+	Function GetAtIndex:int(index:int = 0)
+		if index <= 0 then return 0
+		return 2^(index-1)
+	End Function	
+
+
+	Function GetIndex:int(key:int)
+		Select key
+			case   1	return 1
+			case   2	return 2
+			case   4	return 3
+			case   8	return 4
+			case  16	return 5
+			case  32	return 6
+			case  64	return 7
+			case 128	return 8
+		End Select
+		return 0
+	End Function
 End Type
 
 	
@@ -341,6 +369,64 @@ Type TVTProgrammeLicenceType {_exposeToLua}
 	End Function
 End Type
 
+
+
+Type TVTProgrammeLicenceFlag {_exposeToLua}
+	Const NONE:int = 0
+	Const TRADEABLE:int = 1
+	'give back to vendor AND SELL it
+	Const SELL_ON_REACHING_BROADCASTLIMIT:int = 2
+	'give back to vendor WITHOUT SELLING it
+	Const REMOVE_ON_REACHING_BROADCASTLIMIT:int = 4
+	'when given to pool/vendor, the broadcast limits are refreshed to max
+	Const LICENCEPOOL_REFILLS_BROADCASTLIMITS:int = 8
+	'when given to pool/vendor, the topicality is refreshed to max
+	Const LICENCEPOOL_REFILLS_TOPICALITY:int = 16
+	
+	Const count:int = 5
+
+
+	Function GetAtIndex:int(index:int = 0)
+		if index <= 0 then return 0
+		return 2^(index-1)
+	End Function	
+
+
+	Function GetIndex:int(key:int)
+		Select key
+			case   1	return 1
+			case   2	return 2
+			case   4	return 3
+			case   8	return 4
+			case  16	return 5
+		End Select
+		return 0
+	End Function
+
+
+	Function GetAsString:String(key:int = 0)
+		Select key
+			case TRADEABLE                            return "tradeable"
+			case SELL_ON_REACHING_BROADCASTLIMIT      return "sell_on_reaching_broadcastlimit"
+			case REMOVE_ON_REACHING_BROADCASTLIMIT    return "remove_on_reaching_broadcastlimit"
+			case LICENCEPOOL_REFILLS_BROADCASTLIMITS  return "licencepool_refills_broadcastlimits"
+			case LICENCEPOOL_REFILLS_TOPICALITY       return "licencepool_refills_topicality"
+
+			default
+				'loop through all entries and add them if contained
+				local result:string
+				local index:int = 0
+				'do NOT start with 0 ("none")
+				For local i:int = 1 to count
+					index = GetAtIndex(i)
+					if key & index then result :+ GetAsString(index) + ","
+				Next
+				if result = "" then return "none"
+				'remove last comma
+				return result[.. result.length-1]
+		End Select
+	End Function
+End Type
 
 
 

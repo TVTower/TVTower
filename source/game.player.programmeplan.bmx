@@ -1600,6 +1600,23 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 						If TProgramme(obj)
 							'refresh planned state (for next hour)
 							RecalculatePlannedProgramme(TProgramme(obj), -1, hour+1)
+
+							'removal of limited programme licences
+							local licence:TProgrammeLicence = TProgramme(obj).licence
+							if licence.isExceedingBroadcastLimit()
+
+								if licence.HasLicenceFlag(TVTProgrammeLicenceFlag.SELL_ON_REACHING_BROADCASTLIMIT)
+									GetPlayerProgrammeCollection(owner).RemoveProgrammeLicence(licence, True)
+								elseif licence.HasLicenceFlag(TVTProgrammeLicenceFlag.REMOVE_ON_REACHING_BROADCASTLIMIT)
+									GetPlayerProgrammeCollection(owner).RemoveProgrammeLicence(licence, False)
+								else
+									'just keep the now exceeded licence
+									'(maybe it gets extended somehow)
+								endif
+
+								'inform others
+								EventManager.triggerEvent(TEventSimple.Create("programmelicence.ExceedingBroadcastLimit", null, licence))
+							endif
 						EndIf
 					EndIf
 				Else
