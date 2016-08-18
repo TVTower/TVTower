@@ -870,7 +870,7 @@ Type TBitmapFont
 
 			currentLine:+1
 
-			local lineWidth:int = 0
+			local lineWidth:Float = 0
 
 			For Local i:Int = 0 Until text.length
 				charCode = int(text[i])
@@ -893,13 +893,13 @@ Type TBitmapFont
 						currentControlCommand = commandData[0]
 						if commandData.length>1 then currentControlCommandPayload = commandData[1]
 
-						if doDraw
 							ProcessCommand(currentControlCommand, currentControlCommandPayload, fontStyle)
 							if fontStyle.GetColor()
 								color = fontStyle.GetColor().Copy()
-								color.SetRGBA()
+								if doDraw
+									color.SetRGBA()
+								endif
 							endif
-						endif
 						'cache font to speed up processing
 						font = fontStyle.GetFont()
 
