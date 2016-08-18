@@ -707,16 +707,18 @@ Type TGUISavegameListItem extends TGUISelectListItem
 		local col:TColor = TColor.Create(120,125,160)
 		local playerCol:TColor = TColor.Create(80, 85, 120)
 		local headCol:TColor = TColor.clWhite 'TColor.Create(150,90,0)
-		local width:int = GetScreenWidth()
+		local width:int = GetContentScreenWidth()
 
-		GetBitmapFont("",-1, BOLDFONT).DrawBlock(StripDir(GetFileInformation().GetString("fileURI")), GetScreenX(), GetScreenY() + self.paddingTop, width, 15, null, headCol, TBitmapFont.STYLE_SHADOW, 1, 0.5, TRUE)
-		GetFont().DrawBlock("|b|"+GetLocale("GAMETIME")+":|/b| "+gameTime, GetScreenX() + 0.45 * width, GetScreenY() + self.paddingTop, 0.55 * width, 15, ALIGN_RIGHT_CENTER, col, 0, 1, 0.5, TRUE)
-		GetFont().DrawBlock("|b|"+GetLocale("PLAYER")+":|/b| " + GetFileInformation().GetString("player_name", "unknown player"), GetScreenX(), GetScreenY() + 15 + self.paddingTop, 0.25 * width, 15, null, playerCol, TBitmapFont.STYLE_SHADOW, 1, 0.2, TRUE)
-		GetFont().DrawBlock("|b|"+GetLocale("MONEY")+":|/b| "+GetFileInformation().GetInt("player_money", 0), GetScreenX() + 0.45 * width, GetScreenY() + 15 + self.paddingTop, 0.55 * width, 15, ALIGN_RIGHT_CENTER, col, 0, 1, 0.5, TRUE)
+		local leftX:int = GetContentScreenX()
+
+		GetBitmapFont("",-1, BOLDFONT).DrawBlock(StripDir(GetFileInformation().GetString("fileURI")), leftX, GetScreenY() + self.paddingTop, 0.55*width, 15, null, headCol, TBitmapFont.STYLE_SHADOW, 1, 0.5, TRUE)
+		GetFont().DrawBlock("|b|"+GetLocale("PLAYER")+":|/b| " + GetFileInformation().GetString("player_name", "unknown player"), leftX, GetScreenY() + 15 + self.paddingTop, 0.25 * width, 15, null, playerCol, TBitmapFont.STYLE_SHADOW, 1, 0.2, TRUE)
+		GetFont().DrawBlock("|b|"+GetLocale("GAMETIME")+":|/b| "+gameTime, leftX + 0.55 * width, GetScreenY() + self.paddingTop, 0.45 * width, 15, ALIGN_RIGHT_CENTER, col, 0, 1, 0.5, TRUE)
+		GetFont().DrawBlock("|b|"+GetLocale("MONEY")+":|/b| "+GetFileInformation().GetInt("player_money", 0), leftX + 0.55 * width, GetScreenY() + 15 + self.paddingTop, 0.45 * width, 15, ALIGN_RIGHT_CENTER, col, 0, 1, 0.5, TRUE)
 
 		local oldAlpha:Float = GetAlpha()
 		SetAlpha oldAlpha * 0.25
-		DrawRect(GetScreenX(), GetScreenY() + GetScreenHeight() - 1, GetContentScreenWidth(), 1)
+		DrawRect(leftX, GetScreenY() + GetScreenHeight() - 1, width, 1)
 		SetAlpha oldAlpha
 	End Method
 End Type
