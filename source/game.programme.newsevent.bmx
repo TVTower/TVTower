@@ -549,8 +549,6 @@ End Function
 
 
 Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
-	Field title:TLocalizedString
-	Field description:TLocalizedString
 	Field genre:Int = 0
 	Field keywords:string = ""
 	Field qualityRaw:Float = -1.0 'none
@@ -593,17 +591,6 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 	Method ToString:String()
 		return "newsEvent: title=" + GetTitle() + "  quality=" + GetQualityRaw() + "  priceMod=" + GetModifier("price")
-	End Method
-
-
-	Method GetTitle:string() {_exposeToLua}
-		if title then return title.Get()
-	End Method
-
-
-	Method GetDescription:string() {_exposeToLua}
-		if description then return description.Get()
-		return ""
 	End Method
 
 	

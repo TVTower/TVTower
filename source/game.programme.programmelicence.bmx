@@ -943,15 +943,18 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 	
 
+	'override
 	Method GetTitle:string() {_exposeToLua}
-		if GetData() then return GetData().GetTitle()
-		return ""
+		if not title and GetData() then return GetData().GetTitle()
+
+		return Super.GetTitle()
 	End Method
 
 
 	Method GetDescription:string() {_exposeToLua}
-		if GetData() then return GetData().GetDescription()
-		return ""
+		if not description and GetData() then return GetData().GetDescription()
+
+		return Super.GetDescription()
 	End Method
 
 
@@ -1160,7 +1163,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 				endif
 			endif
 		endif
-		If GetBroadcastLimit() > 0 then showMsgBroadcastLimit= True
+		If HasBroadcastLimit() then showMsgBroadcastLimit= True
 
 
 		'=== CALCULATE SPECIAL AREA HEIGHTS ===
@@ -1350,7 +1353,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		EndIf
 
 		if showMsgBroadcastLimit
-			local broadcastsLeft:int =  GetBroadcastLimit() - GetTimesBroadcasted()
+			local broadcastsLeft:int =  GetBroadcastLimit()
 			if broadcastsLeft <= 0
 				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("NO_MORE_BROADCASTS_ALLOWED"), "spotsPlanned", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			elseif broadcastsLeft = 1

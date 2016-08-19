@@ -400,8 +400,6 @@ End Function
 'but also series-headers, collection-headers,...
 Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Field originalTitle:TLocalizedString
-	Field title:TLocalizedString
-	Field description:TLocalizedString
 	'contains the title with placeholders replaced
 	Field titleProcessed:TLocalizedString {nosave}
 	Field descriptionProcessed:TLocalizedString {nosave}

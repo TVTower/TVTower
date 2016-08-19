@@ -6,6 +6,9 @@ Import "game.broadcastmaterial.base.bmx"
 
 'could be done as "interface"
 Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="selected"}
+	Field title:TLocalizedString
+	Field description:TLocalizedString
+
 	'contains "numeric" modifiers (simple key:num-pairs)
 	Field modifiers:TData = new TData
 	Field effects:TGameModifierGroup = New TGameModifierGroup
@@ -15,7 +18,7 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	Field topicality:Float = 1.0
 	Field flags:int = 0
 	Field broadcastFlags:int = 0
-	'the maximum _current_ amount of broadcasts possible for this licence (0 = disabled)
+	'the maximum _current_ amount of broadcasts possible for this licence
 	Field broadcastLimit:int = 0
 	'the maximum amount of broadcasts possible for this licence after reset
 	Field broadcastLimitMax:int = 0
@@ -52,6 +55,8 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 
 
 	Method SetBroadcastLimit:int(broadcastLimit:int = -1)
+		SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.HAS_BROADCAST_LIMIT, broadcastLimit > 0)
+
 		self.broadcastLimitMax = broadcastLimit
 		self.broadcastLimit = broadcastLimit
 	End Method
@@ -60,11 +65,15 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	Method GetBroadcastLimit:int() {_exposeToLua}
 		return self.broadcastLimit
 	End Method
-		
+
+
+	Method HasBroadcastLimit:int() {_exposeToLua}
+		return HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.HAS_BROADCAST_LIMIT)
+	End Method
 
 
 	Method isExceedingBroadcastLimit:int() {_exposeToLua}
-		return broadcastLimit > 0 and GetTimesBroadcasted() >= broadcastLimit
+		return broadcastLimit <= 0 and HasBroadcastLimit()
 	End Method
 
 
@@ -82,6 +91,18 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 		
 		modifiers.AddNumber(modifierKey, value)
 		Return True
+	End Method
+
+
+	Method GetTitle:string() {_exposeToLua}
+		if title then return title.Get()
+		return ""
+	End Method
+
+
+	Method GetDescription:string() {_exposeToLua}
+		if description then return description.Get()
+		return ""
 	End Method
 
 
@@ -148,7 +169,7 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	End Method
 
 
-	Method setBroadcastFlag(flag:Int, enable:Int=True)
+	Method SetBroadcastFlag(flag:Int, enable:Int=True)
 		If enable
 			broadcastFlags :| flag
 		Else
@@ -179,7 +200,7 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 
 
 	Method SetControllable(bool:int = True)
-		setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE, not bool)
+		SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE, not bool)
 	End Method
 
 

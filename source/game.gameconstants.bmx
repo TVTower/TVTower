@@ -273,7 +273,9 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 	'expose price of the material - eg. not-yet-aired custom productions
 	Const HIDE_PRICE:int = 128
 
-	Const count:int = 8
+	Const HAS_BROADCAST_LIMIT:int = 256
+
+	Const count:int = 9
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -292,6 +294,7 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 			case  32	return 6
 			case  64	return 7
 			case 128	return 8
+			case 256	return 9
 		End Select
 		return 0
 	End Function

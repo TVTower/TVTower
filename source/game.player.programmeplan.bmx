@@ -1614,6 +1614,9 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 									'(maybe it gets extended somehow)
 								endif
 
+								'remove _upcoming_ planned programmes with that licence
+								RemoveProgrammeInstancesByLicence(licence, False)
+
 								'inform others
 								EventManager.triggerEvent(TEventSimple.Create("programmelicence.ExceedingBroadcastLimit", null, licence))
 							endif

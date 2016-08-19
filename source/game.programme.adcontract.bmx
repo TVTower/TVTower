@@ -220,8 +220,6 @@ End Function
 'contracts bases for advertisement - straight from the DB
 'they just contain data to base new contracts of
 Type TAdContractBase extends TBroadcastMaterialSourceBase {_exposeToLua}
-	Field title:TLocalizedString
-	Field description:TLocalizedString
 	'days to fullfill a (signed) contract
 	Field daysToFinish:Int = 0
 	'spots to send
@@ -379,17 +377,6 @@ Type TAdContractBase extends TBroadcastMaterialSourceBase {_exposeToLua}
 		endif
 
 		timesBroadcastedAsInfomercial[playerID] = times
-	End Method
-
-
-	Method GetTitle:string() {_exposeToLua}
-		if title then return title.Get()
-	End Method
-
-
-	Method GetDescription:string() {_exposeToLua}
-		if description then return description.Get()
-		return ""
 	End Method
 
 
@@ -710,13 +697,17 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 	'overwrite method from base
 	Method GetTitle:string() {_exposeToLua}
-		Return base.GetTitle()
+		if not title and base then return base.GetTitle()
+
+		return Super.GetTitle()
 	End Method
 
 
 	'overwrite method from base
 	Method GetDescription:string() {_exposeToLua}
-		Return base.GetDescription()
+		if not description and base then return base.GetDescription()
+
+		return Super.GetDescription()
 	End Method
 
 

@@ -820,6 +820,8 @@ Type TDatabaseLoader
 
 	Method LoadV3ProgrammeLicenceFromNode:TProgrammeLicence(node:TxmlNode, xml:TXmlHelper, parentLicence:TProgrammeLicence = Null)
 		local GUID:String = TXmlHelper.FindValue(node,"id", "")
+		'referencing an already existing programmedata? Or just use "data-GUID"
+		local dataGUID:String = TXmlHelper.FindValue(node,"programmedata_id", "data-"+GUID)
 
 		'fetch potential meta data
 		local metaData:TData = LoadV3ProgrammeLicenceMetaDataFromNode(GUID, node, xml, parentLicence)
@@ -837,32 +839,36 @@ Type TDatabaseLoader
 
 		'=== PROGRAMME DATA ===
 		'try to fetch an existing licence with the entries GUID
-		'TODO: SPLIT LICENCES FROM DATA
 		programmeLicence = GetProgrammeLicenceCollection().GetByGUID(GUID)
+
+		'check if we reuse an existing programmedata (for series
+		'episodes we cannot rely on existence of licences, as they
+		'all get added at the end, not on load of an episode)
+		programmeData = GetProgrammeDataCollection().GetByGUID(dataGUID)
+		if programmeData
+			TLogger.Log("LoadV3ProgrammeLicenceFromNode()", "Extending programmeLicence's data ~q"+programmeData.GetTitle()+"~q. dataGUID="+dataGUID+"  GUID="+GUID, LOG_XML)
+		endif
+
+
 		if not programmeLicence
-			'check if we reuse an existing programmedata (for series
-			'episodes we cannot rely on existence of licences, as they
-			'all get added at the end, not on load of an episode)
-			local existingProgrammeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID("data-"+GUID)
-			if existingProgrammeData
-				TLogger.Log("LoadV3ProgrammeLicenceFromNode()", "Extending programmeLicence ~q"+existingProgrammeData.GetTitle()+"~q. GUID="+GUID, LOG_XML)
-			endif
-		
-			'try to clone the parent's data - if that fails, create
-			'a new instance
-			if parentLicence then programmeData = TProgrammeData(THelper.CloneObject(parentLicence.data, "id"))
 			if not programmeData
-				programmeData = new TProgrammeData
+				'try to clone the parent's data - if that fails, create
+				'a new instance
+				if parentLicence then programmeData = TProgrammeData(THelper.CloneObject(parentLicence.data, "id"))
+				'if failed, create new data
+				if not programmeData then programmeData = new TProgrammeData
+
+				programmeData.GUID = dataGUID
+				programmeData.title = new TLocalizedString
+				programmeData.originalTitle = new TLocalizedString
+				programmeData.description = new TLocalizedString
+				programmeData.titleProcessed = Null
+				programmeData.descriptionProcessed = Null
 			else
 				'reuse old one
 				productType = programmeData.productType
 			endif
-			programmeData.GUID = "data-"+GUID
-			programmeData.title = new TLocalizedString
-			programmeData.originalTitle = new TLocalizedString
-			programmeData.description = new TLocalizedString
-			programmeData.titleProcessed = Null
-			programmeData.descriptionProcessed = Null
+			
 			programmeLicence = new TProgrammeLicence
 			programmeLicence.GUID = GUID
 		else
@@ -903,7 +909,9 @@ Type TDatabaseLoader
 		xml.LoadValuesToData(nodeData, data, [..
 			"country", "distribution", "blocks", ..
 			"maingenre", "subgenre", "price_mod", ..
-			"available", "flags", "licenceFlags", "broadcastFlags" ..
+			"available", "flags", "licence_flags", ..
+			"broadcast_limit", "data_broadcast_limit", "licence_broadcast_limit", ..
+			"broadcast_flags", "data_broadcast_flags", "licence_broadcast_flags" ..
 		]) 'also allow a "<live>" block
 		'], ["live"]) 'also allow a "<live>" block
 		
@@ -912,11 +920,15 @@ Type TDatabaseLoader
 		programmeData.distributionChannel = data.GetInt("distribution", programmeData.distributionChannel)
 		programmeData.blocks = data.GetInt("blocks", programmeData.blocks)
 
-		'both - data and licence - get the same flags
-		programmeData.broadcastFlags = data.GetInt("broadcastFlags", programmeData.broadcastFlags)
-		programmeLicence.broadcastFlags = data.GetInt("broadcastFlags", programmeLicence.broadcastFlags)
+		'both get the same limit (except individually configured)
+		programmeData.SetBroadcastLimit( data.GetInt("data_broadcast_limit", data.GetInt("broadcast_imit", programmeData.broadcastLimit)) )
+		programmeLicence.SetBroadcastLimit( data.GetInt("licence_broadcast_limit", data.GetInt("broadcast_limit", programmeLicence.broadcastLimit)) )
 
-		programmeLicence.licenceFlags = data.GetInt("licenceFlags", programmeLicence.licenceFlags)
+		'both get the same flags (except individually configured)
+		programmeData.broadcastFlags = data.GetInt("data_broadcast_flags", data.GetInt("broadcast_flags", programmeData.broadcastFlags))
+		programmeLicence.broadcastFlags = data.GetInt("licence_broadcast_flags", data.GetInt("broadcast_flags", programmeLicence.broadcastFlags))
+
+		programmeLicence.licenceFlags = data.GetInt("licence_flags", programmeLicence.licenceFlags)
 
 		local available:int = data.GetBool("available", not programmeData.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
 		programmeData.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, not available)
