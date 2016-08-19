@@ -168,8 +168,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'load the most current official achievements, so old savegames
 		'get the new ones / adjustments too
-		TLogger.Log("Game.PrepareStart()", "loading most current (official) achievements", LOG_DEBUG)
-		LoadDB(["database_achievements.xml"])
+		if not startNewGame
+			TLogger.Log("Game.PrepareStart()", "loading most current (official) achievements", LOG_DEBUG)
+			LoadDB(["database_achievements.xml"])
+		endif
 
 
 		TLogger.Log("Game.PrepareStart()", "colorizing images corresponding to playercolors", LOG_DEBUG)
