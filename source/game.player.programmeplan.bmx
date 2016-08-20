@@ -810,6 +810,16 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		If Not obj Then Return 0
 		FixDayHour(day, hour)
 
+		'check timeslot limits
+		if slotType = TVTBroadcastMaterialType.PROGRAMME and TProgramme(obj)
+			local p:TProgramme = TProgramme(obj)
+			if p.data.HasBroadcastTimeSlot()
+				'hour incorrect?
+				if p.data.broadcastTimeSlotStart >= 0 and p.data.broadcastTimeSlotStart > hour then return -1
+				if p.data.broadcastTimeSlotEnd >= 0 and p.data.broadcastTimeSlotEnd < (hour + obj.GetBlocks()-1) then return -1
+			endif
+		endif
+
 
 		'check live-programme
 		if slotType = TVTBroadcastMaterialType.PROGRAMME and TProgramme(obj)
@@ -1125,7 +1135,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		If Not obj Then Return (Null<>RemoveObject(Null, TVTBroadcastMaterialType.PROGRAMME, day, hour))
 
 		'check if we are allowed to place it there
-		'for now, only skip if failing live programme (-1)
+		'for now, only skip if failing live programme or time slot fails (-1)
 		'- if also interested in "other programme on slots", this is -2
 		if ProgrammePlaceable(obj, day, hour) = -1 then return False
 

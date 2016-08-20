@@ -208,6 +208,7 @@ PROGRAMME_IN_PROGRAMME_PLAN = Programm im Sendeplan!
 ONLY_1_BROADCAST_POSSIBLE = Nur 1 Ausstrahlung möglich!
 ONLY_X_BROADCASTS_POSSIBLE = Nur %X% Ausstrahlungen möglich!
 NO_MORE_BROADCASTS_ALLOWED = Keine weiteren Ausstrahlungen möglich!
+BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y = Ausstrahlung nur von %X% bis %Y% Uhr möglich!
 
 
 AD_PROFIT		= Prämie

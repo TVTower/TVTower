@@ -910,6 +910,7 @@ Type TDatabaseLoader
 			"country", "distribution", "blocks", ..
 			"maingenre", "subgenre", "price_mod", ..
 			"available", "flags", "licence_flags", ..
+			"broadcast_time_slot_start", "broadcast_time_slot_end", ..
 			"broadcast_limit", "data_broadcast_limit", "licence_broadcast_limit", ..
 			"broadcast_flags", "data_broadcast_flags", "licence_broadcast_flags" ..
 		]) 'also allow a "<live>" block
@@ -919,6 +920,13 @@ Type TDatabaseLoader
 		
 		programmeData.distributionChannel = data.GetInt("distribution", programmeData.distributionChannel)
 		programmeData.blocks = data.GetInt("blocks", programmeData.blocks)
+
+		programmeData.broadcastTimeSlotStart = data.GetInt("broadcast_time_slot_start", programmeData.broadcastTimeSlotStart)
+		programmeData.broadcastTimeSlotEnd = data.GetInt("broadcast_time_slot_end", programmeData.broadcastTimeSlotEnd)
+		if programmeData.broadcastTimeSlotStart = programmeData.broadcastTimeSlotEnd
+			programmeData.broadcastTimeSlotStart = -1
+			programmeData.broadcastTimeSlotEnd = -1
+		endif
 
 		'both get the same limit (except individually configured)
 		programmeData.SetBroadcastLimit( data.GetInt("data_broadcast_limit", data.GetInt("broadcast_imit", programmeData.broadcastLimit)) )

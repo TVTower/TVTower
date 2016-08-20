@@ -275,7 +275,10 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 
 	Const HAS_BROADCAST_LIMIT:int = 256
 
-	Const count:int = 9
+	'material never changes from LIVE To LIVEONTAPE 
+	Const ALWAYS_LIVE:int = 512
+
+	Const count:int = 10
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -295,6 +298,7 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 			case  64	return 7
 			case 128	return 8
 			case 256	return 9
+			case 512	return 10
 		End Select
 		return 0
 	End Function
@@ -821,7 +825,7 @@ Type TVTProgrammeDataFlag {_exposeToLua}
 	Const CUSTOMPRODUCTION:Int = 512
 	'these programmes are hidden from the planner selection
 	Const INVISIBLE:Int = 1024
-	'these programmes are hidden from the planner selection
+	'a previously "live" programme is now only a "recorded live programme"
 	Const LIVEONTAPE:Int = 2048
 
 	Const count:int = 12

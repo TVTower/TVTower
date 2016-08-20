@@ -1011,6 +1011,10 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		'cannot update as long somebody is broadcasting that programme
 		if playersLiveBroadcasting > 0 then return False
 
+		'stay "LIVE" forever
+		if hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.ALWAYS_LIVE)
+			return False
+		endif
 		
 		' xx:05 - movies begin then
 		if IsLive() and GetWorldTime().GetTimeGone() > releaseTime + 5*60

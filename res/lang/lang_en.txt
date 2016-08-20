@@ -207,6 +207,7 @@ PROGRAMME_IN_PROGRAMME_PLAN = Programme in programme plan!
 ONLY_1_BROADCAST_POSSIBLE = Only 1 broadcast possible!
 ONLY_X_BROADCASTS_POSSIBLE = Only %X% broadcast possible!
 NO_MORE_BROADCASTS_ALLOWED = No more broadcasts allowed!
+BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y = Broadcast only allowed from %X%:00 to %Y%:00!
 
 
 AD_PROFIT				= Profit

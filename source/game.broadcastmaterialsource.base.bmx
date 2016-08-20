@@ -23,6 +23,11 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	'the maximum amount of broadcasts possible for this licence after reset
 	Field broadcastLimitMax:int = 0
 
+	'from when to when you are allowed to broadcast this material
+	Field broadcastTimeSlotStart:int = -1
+	Field broadcastTimeSlotEnd:int = -1
+	
+
 
 	Method Initialize:int()
 		timesBroadcasted = [0]
@@ -76,6 +81,21 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 		return broadcastLimit <= 0 and HasBroadcastLimit()
 	End Method
 
+
+	Method GetBroadcastTimeSlotStart:int() {_exposeToLua}
+		return self.broadcastTimeSlotStart
+	End Method
+
+
+	Method GetBroadcastTimeSlotEnd:int() {_exposeToLua}
+		return self.broadcastTimeSlotEnd
+	End Method
+
+
+	Method HasBroadcastTimeSlot:int()
+		return broadcastTimeSlotStart <> -1 or broadcastTimeSlotEnd <> -1
+	End Method
+	
 
 	'returns the stored value for a modifier - defaults to "100%"
 	Method GetModifier:Float(modifierKey:string, defaultValue:Float = 1.0)

@@ -610,6 +610,41 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 
 	'override
+	Method GetBroadcastTimeSlotStart:int()
+		local result:int = Super.GetBroadcastTimeSlotStart()
+		if result = -1 and data then return data.GetBroadcastTimeSlotStart()
+
+		return result
+	End Method
+
+
+	'override
+	Method GetBroadcastTimeSlotEnd:int()
+		local result:int = Super.GetBroadcastTimeSlotEnd()
+		if result = -1 and data then return data.GetBroadcastTimeSlotEnd()
+
+		return result
+	End Method
+
+
+	'override
+	Method HasBroadcastTimeSlot:int()
+		if GetSubLicenceCount() = 0 and GetData()
+			if data.HasBroadcastTimeSlot() then return True
+
+			return Super.HasBroadcastTimeSlot()
+		else
+			'it is enough if one licence has a time slot
+			For local licence:TProgrammeLicence = eachin subLicences
+				if licence.HasBroadcastTimeSlot() then return True
+			Next
+
+			return False
+		endif
+	End Method
+
+
+	'override
 	Method IsExceedingBroadcastLimit:int() {_exposeToLua}
 		if GetSubLicenceCount() = 0 and GetData()
 			if data.IsExceedingBroadcastLimit() then return True
@@ -1094,14 +1129,15 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		local contentX:int = x + skin.GetContentY()
 		local contentY:int = y + skin.GetContentY()
 
+		local currentPlayerID:int = GetPlayerBaseCollection().playerID
 		'save checks on data availability...
 		local data:TProgrammeData = GetData()
 		'save on requests to the player finance
 		local finance:TPlayerFinance
 		'only check finances if it is no other player (avoids exposing
 		'that information to us)
-		if useOwner <= 0 or GetPlayerBaseCollection().playerID = useOwner
-			finance = GetPlayerFinance(GetPlayerBaseCollection().playerID)
+		if useOwner <= 0 or currentPlayerID = useOwner
+			finance = GetPlayerFinance(currentPlayerID)
 		endif
 
 		local title:string
@@ -1114,13 +1150,13 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		'can player afford this licence?
 		local canAfford:int = False
 		'possessing player always can
-		if GetPlayerBaseCollection().playerID = useOwner
+		if currentPlayerID = useOwner
 			canAfford = True
 		'if it is another player... just display "can afford"
 		elseif useOwner > 0
 			canAfford = True
 		'not our licence but enough money to buy
-		elseif finance and finance.canAfford(GetPrice(GetPlayerBaseCollection().playerID))
+		elseif finance and finance.canAfford(GetPrice(currentPlayerID))
 			canAfford = True
 		endif
 		
@@ -1128,6 +1164,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		Local showMsgEarnInfo:Int = False
 		Local showMsgLiveInfo:Int = False
 		Local showMsgBroadcastLimit:Int = False
+		Local showMsgBroadcastTimeSlot:Int = False
 		
 		'only if planned and in archive
 		'if useOwner > 0 and GetPlayer().figure.inRoom
@@ -1135,7 +1172,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		if useOwner > 0 and self.IsPlanned() then showMsgPlannedWarning = True
 		'if licence is for a specific programme it might contain a flag...
 		'TODO: do this for "all" via licence.HasFlag() doing recursive checks?
-		If data.HasFlag(TVTProgrammeDataFlag.PAID) then showMsgEarnInfo = True
+		If data.IsPaid() then showMsgEarnInfo = True
 		If data.IsLive() or data.IsLiveOnTape()
 			local programmedDay:int = -1
 			local programmedHour:int = -1
@@ -1164,6 +1201,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 			endif
 		endif
 		If HasBroadcastLimit() then showMsgBroadcastLimit= True
+		If HasBroadcastTimeSlot() then showMsgBroadcastTimeSlot= True
 
 
 		'=== CALCULATE SPECIAL AREA HEIGHTS ===
@@ -1185,6 +1223,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		If showMsgPlannedWarning then msgAreaH :+ msgH
 		If showMsgLiveInfo then msgAreaH :+ msgH
 		If showMsgBroadcastLimit then msgAreaH :+ msgH
+		If showMsgBroadcastTimeSlot then msgAreaH :+ msgH
 		'if there are messages, add padding of messages
 		if msgAreaH > 0 then msgAreaH :+ 2* msgAreaPaddingY
 
@@ -1361,6 +1400,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 			else
 				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").replace("%X%", GetBroadcastLimit()), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			endif
+			contentY :+ msgH
+		endif
+
+		if showMsgBroadcastTimeSlot
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()) , "spotsPlanned", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		endif
 

@@ -606,6 +606,7 @@ Type TScreenHandler_ProgrammePlanner
 	'intercept if item does not allow dropping on specific lists
 	'eg. certain ads as programme if they do not allow no commercial shows
 	'eg. a live programme can only be dropped to a specific slot
+	'eg. a programme with a time slot can only be dropped to a specific slots
 	Function onTryDropProgrammePlanElement:Int(triggerEvent:TEventBase)
 		'do not react if in other players rooms
 		If Not TRoomHandler.IsPlayersRoom(currentRoom) Return False
@@ -623,16 +624,27 @@ Type TScreenHandler_ProgrammePlanner
 			Local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", New TVec2D.Init(-1,-1)))
 			Local slot:Int = receiverList.GetSlotByCoord(coord)
 
-			'check if it is a live programme (dropped on the programme slots)
+			'check if dropping on that slot is allowed slots
+			'eg. live programme or programmes with a time slot
 			If receiverList = GuiListProgrammes
+				local plan:TPlayerProgrammePlan = GetPlayerProgrammePlan( GetPlayerBase().playerID )
+
+				if plan and plan.ProgrammePlaceable(item.broadcastMaterial, planningDay, slot) = -1
+					triggerEvent.SetVeto()
+					Return False
+				endif
+				
+				rem
 				If TProgramme(item.broadcastMaterial) And TProgramme(item.broadcastMaterial).data.IsLive()
 					Local releaseTime:Long = TProgramme(item.broadcastMaterial).data.releaseTime
+
 					If planningDay <> GetWorldTime().GetDay( releaseTime ) Or ..
 					   slot <> GetWorldTime().GetDayHour( releaseTime )
 						triggerEvent.SetVeto()
 						Return False
 					EndIf
 				EndIf
+				endrem
 			EndIf
 		EndIf
 
@@ -1057,11 +1069,13 @@ Type TScreenHandler_ProgrammePlanner
 		Next
 		If hrs.length > 0 Then DisableSlotOverlays(hrs, TVTBroadcastMaterialType.PROGRAMME)
 
-		'enable slot overlay if a dragged element is "live"
+		'enable slot overlay if a dragged element is "live" or has a
+		'"time slot" defining allowed times
 		If draggedGuiProgrammePlanElement
 			Local programme:TProgramme = TProgramme(draggedGuiProgrammePlanElement.broadcastMaterial)
 
 			If programme
+				'RONNY
 				If KEYMANAGER.IsHit(KEY_SPACE)
 					'set live time to 11:00
 					programme.data.releaseTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(), 11, 0,0)
@@ -1069,9 +1083,25 @@ Type TScreenHandler_ProgrammePlanner
 					programme.data.distributionChannel = TVTProgrammeDistributionChannel.TV
 				EndIf
 
-				'live and not planning day in the past
-				If programme.data.IsLive() And GetWorldTime().GetDay() <= planningDay 
+				'if it has a given time slot, mark these
+				If programme.data.HasBroadcastTimeSlot()
 					Local hourSlots:Int[]
+					Local startHour:int = programme.data.broadcastTimeSlotStart
+					Local endHour:int = programme.data.broadcastTimeSlotEnd
+					If startHour < 0 Then startHour = 0
+					If endHour < 0 Then endHour = 23
+
+					For local hour:int = startHour to endHour
+						hourSlots :+ [hour]
+					Next
+					EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.PROGRAMME, 1)
+'					EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.ADVERTISEMENT, 1)
+
+				'else mark the exact live time (releasetime + blocks) slots
+				'(if planning day not in the past)
+				ElseIf programme.data.IsLive() And GetWorldTime().GetDay() <= planningDay 
+					Local hourSlots:Int[]
+				
 					Local blockTime:Long = programme.data.releaseTime
 					If GameRules.onlyExactLiveProgrammeTimeAllowedInProgrammePlan
 						'mark allowed slots
