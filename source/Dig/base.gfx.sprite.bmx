@@ -619,14 +619,20 @@ Type TSprite
 		if height=-1 then height = area.GetH()
 		if frames <= 0 then frame = -1
 
+		'nothing to draw?
+		if width <= 0 or height <= 0 then return False
+
 		'normal sprites draw their image stretched to area
 		if not ninePatchEnabled
 			DrawResized(new TRectangle.Init(x, y, width, height), null, frame)
 		else
-			'minimal dimension has to be same or bigger than all 4 borders + 0.5 of the stretch portion
+			Local middleW:int = area.GetW() - ninePatch_borderDimensionScale*(ninePatch_borderDimension.GetLeft()+ninePatch_borderDimension.GetRight())
+			Local middleH:int = area.GetW() - ninePatch_borderDimensionScale*(ninePatch_borderDimension.GetLeft()+ninePatch_borderDimension.GetRight())
+
+			'minimal dimension has to be same or bigger than all 4 borders + 0.1* the stretch portion
 			'if borders are disabled, ignore them in minWidth-calculation
-			width = Max(width, 0.5 + ninePatch_borderDimensionScale*(((skipBorders & BORDER_LEFT)>0)*ninePatch_borderDimension.GetLeft() + ((skipBorders & BORDER_RIGHT)>0)*ninePatch_borderDimension.GetRight()))
-			height = Max(height, 0.5 + ninePatch_borderDimensionScale*(((skipBorders & BORDER_TOP)>0) * ninePatch_borderDimension.GetTop() + ((skipBorders & BORDER_BOTTOM)>0)*ninePatch_borderDimension.GetBottom()))
+			width = Max(width, Max(0.2*middleW, 2) + ninePatch_borderDimensionScale*((1-(skipBorders & BORDER_LEFT)>0)*ninePatch_borderDimension.GetLeft() + (1-(skipBorders & BORDER_RIGHT)>0)*ninePatch_borderDimension.GetRight()))
+			height = Max(height, Max(0.2*middleH, 2) + ninePatch_borderDimensionScale*((1-(skipBorders & BORDER_TOP)>0) * ninePatch_borderDimension.GetTop() + (1-(skipBorders & BORDER_BOTTOM)>0)*ninePatch_borderDimension.GetBottom()))
 
 			'dimensions of the stretch-parts (the middle elements)
 			'adjusted by a potential border scale
@@ -638,19 +644,19 @@ Type TSprite
 
 			if skipBorders <> 0
 				'disable the borders by setting their size to 0
-				if skipBorders & BORDER_LEFT = 1
+				if skipBorders & BORDER_LEFT > 0
 					stretchDestW :+ borderSize.GetLeft() * ninePatch_borderDimensionScale
 					borderSize.SetLeft(0)
 				endif
-				if skipBorders & BORDER_RIGHT
+				if skipBorders & BORDER_RIGHT > 0
 					stretchDestW :+ borderSize.GetRight() * ninePatch_borderDimensionScale
 					borderSize.SetRight(0)
 				endif
-				if skipBorders & BORDER_TOP
+				if skipBorders & BORDER_TOP > 0
 					stretchDestH :+ borderSize.GetTop() * ninePatch_borderDimensionScale
 					borderSize.SetTop(0)
 				endif
-				if skipBorders & BORDER_BOTTOM
+				if skipBorders & BORDER_BOTTOM > 0
 					stretchDestH :+ borderSize.GetBottom() * ninePatch_borderDimensionScale
 					borderSize.SetBottom(0)
 				endif
@@ -743,10 +749,11 @@ Type TSprite
 					source.Init( sourceX3, sourceY3, ninePatch_borderDimension.GetRight(), ninePatch_borderDimension.GetBottom() )
 					DrawResized( target, source, frame, false, clipRect )
 				endif
+			endif
 
-				if clipRect and vpRect
-					GetGraphicsManager().SetViewport(int(vpRect.GetX()), int(vpRect.GetY()), int(vpRect.GetW()), int(vpRect.GetH()))
-				endif
+			'reset viewport if it was modified
+			if vpRect
+				GetGraphicsManager().SetViewport(int(vpRect.GetX()), int(vpRect.GetY()), int(vpRect.GetW()), int(vpRect.GetH()))
 			endif
 		endif
 	End Method

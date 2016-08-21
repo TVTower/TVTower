@@ -147,7 +147,9 @@ Type TDatasheetSkin
 			GetSpriteFromRegistry(spriteBaseKey+"_"+barSkin+"_filled").DrawArea(x + unfilled.GetNinePatchContentBorder().GetLeft(), y, barW, h, -1, 0, new TRectangle.Init(x + unfilled.GetNinePatchContentBorder().GetLeft() + progress*barW, y, barW*(secondProgress-progress), h))
 			SetAlpha GetAlpha()*4.0
 		endif
-		GetSpriteFromRegistry(spriteBaseKey+"_"+barSkin+"_filled").DrawArea(x + unfilled.GetNinePatchContentBorder().GetLeft(), y, barW, h, -1, 0, new TRectangle.Init(x+unfilled.GetNinePatchContentBorder().GetLeft(), y, barW*progress, h))
+		if progress > 0
+			GetSpriteFromRegistry(spriteBaseKey+"_"+barSkin+"_filled").DrawArea(x + unfilled.GetNinePatchContentBorder().GetLeft(), y, barW, h, -1, 0, new TRectangle.Init(x+unfilled.GetNinePatchContentBorder().GetLeft(), y, barW*progress, h))
+		endif
 	End Method
 
 
