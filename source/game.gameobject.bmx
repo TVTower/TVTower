@@ -164,6 +164,11 @@ Type TOwnedGameObject Extends TGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method IsOwner:int(owner:int)
+		return self.owner = owner
+	End Method
+
+
 	Method IsOwned:int()
 		return owner <> OWNER_NOBODY
 	End Method

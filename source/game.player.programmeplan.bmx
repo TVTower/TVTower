@@ -176,14 +176,14 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			Local advertisement:TBroadcastMaterial = GetAdvertisement(0, currentHour)
 			If advertisement
 				Local startHour:Int = advertisement.programmedDay*24 + advertisement.programmedHour
-				adString = " -> " + advertisement.GetTitle() + " [" + (currentHour - startHour + 1) + "/" + advertisement.GetBlocks() + "]"
+				adString = " -> " + advertisement.GetTitle() + " [" + (currentHour - startHour + 1) + "/" + advertisement.GetBlocks(TVTBroadcastMaterialType.ADVERTISEMENT) + "]"
 			EndIf
 
 
 			Local programme:TBroadcastMaterial = GetProgramme(0, currentHour)
 			If programme
 				Local startHour:Int = programme.programmedDay*24 + programme.programmedHour
-				progString = programme.GetTitle() + " ["+ (currentHour - startHour + 1) + "/" + programme.GetBlocks() +"]"
+				progString = programme.GetTitle() + " ["+ (currentHour - startHour + 1) + "/" + programme.GetBlocks(TVTBroadcastMaterialType.PROGRAMME) +"]"
 			EndIf
 
 			'only show if ONE is set
@@ -808,7 +808,13 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'without disturbing others
 	Method ObjectPlaceable:Int(obj:TBroadcastMaterial, slotType:Int=0, day:Int=-1, hour:Int=-1)
 		If Not obj Then Return 0
+		'you cannot place an object you do not own
+		'TODO: check how to work out objects of 3rd parties, maybe we
+		'      should add a force-param
+		if not obj.IsOwner(owner) then return False 
+
 		FixDayHour(day, hour)
+
 
 		'check timeslot limits
 		if slotType = TVTBroadcastMaterialType.PROGRAMME and TProgramme(obj)
@@ -1008,22 +1014,32 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		EndIf
 
 		'first of all we need to find a user of our licence
-		Local array:TBroadcastMaterial[] = GetObjectArray(TVTBroadcastMaterialType.PROGRAMME)
-		Local currentHour:Int = GetWorldTime().GetHour()
-		Local earliestIndex:Int = Max(0, GetArrayIndex(currentHour - licence.GetData().GetBlocks()))
-		Local currentIndex:Int = Max(0, GetArrayIndex(currentHour))
-		Local latestIndex:Int = array.length - 1
+		'read: find a programme which uses the licence
+		'loop other all potential slot types so to find programmes
+		'which are not planned, but eg. promoted by trailers
+		local slotTypes:int[] = [TVTBroadcastMaterialType.PROGRAMME, TVTBroadcastMaterialType.ADVERTISEMENT]
 		Local programme:TBroadcastMaterial
-		'lock back in the history (programme may have started some blocks ago and is
-		'still running
-		For Local i:Int = earliestIndex To latestIndex
-			'skip other programmes
-			If Not TBroadcastMaterial(array[i]) Then Continue
+		Local currentHour:Int = GetWorldTime().GetHour()
 
-			If array[i].GetReferenceID() <> licence.GetReferenceID() Then Continue
+		For local slotType:int = EachIn slotTypes
+			Local array:TBroadcastMaterial[] = GetObjectArray(slotType)
+			Local earliestIndex:Int = Max(0, GetArrayIndex(currentHour - licence.GetBlocks(slotType)))
+			Local currentIndex:Int = Max(0, GetArrayIndex(currentHour))
+			Local latestIndex:Int = array.length - 1
+			'lock back in the history (programme may have started some blocks ago and is
+			'still running
+			For Local i:Int = earliestIndex To latestIndex
+				'skip other programmes
+				If Not TBroadcastMaterial(array[i]) Then Continue
 
-			programme = TBroadcastMaterial(array[i])
-			Exit
+				If array[i].GetReferenceID() <> licence.GetReferenceID() Then Continue
+
+				programme = TBroadcastMaterial(array[i])
+				Exit
+			Next
+
+			'skip checking advertisement-slots if already found something
+			If programme Then exit
 		Next
 
 		'no instance found - no need to call the programmeRemover
@@ -1052,7 +1068,10 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			EndIf
 			doneSomething = True
 		EndIf
-		If RemoveObjectInstances(obj, TVTBroadcastMaterialType.ADVERTISEMENT, -1, removeCurrentRunning) Then doneSomething = True
+		'also remove from advertisement slots (Trailers)
+		If RemoveObjectInstances(obj, TVTBroadcastMaterialType.ADVERTISEMENT, -1, removeCurrentRunning)
+			doneSomething = True
+		EndIF
 		Return doneSomething
 	End Method
 

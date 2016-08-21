@@ -529,16 +529,9 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 	'override default to use blocksamount of programme instead
 	Method GetBlocks:int(broadcastType:int=0) {_exposeToLua}
-		'nothing special requested? use the currently used type
 		if broadcastType = 0 then broadcastType = usedAsType
-		if broadcastType & TVTBroadcastMaterialType.PROGRAMME
-			Return data.GetBlocks()
-		'trailers are 1 block long
-		elseif broadcastType & TVTBroadcastMaterialType.ADVERTISEMENT
-			return 1
-		endif
 
-		return data.GetBlocks()
+		return licence.GetBlocks(broadcastType)
 	End Method
 
 

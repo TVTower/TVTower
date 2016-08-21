@@ -986,6 +986,19 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 
 
+	'overwrite method from base
+	Method GetBlocks:int(broadcastType:int = 0) {_exposeToLua}
+		Select broadcastType
+			'trailer?
+			Case TVTBroadcastMaterialType.ADVERTISEMENT
+				Return 1
+			'programme?
+			Default
+				Return GetData().GetBlocks()
+		End Select
+	End Method
+
+
 	Method GetDescription:string() {_exposeToLua}
 		if not description and GetData() then return GetData().GetDescription()
 
