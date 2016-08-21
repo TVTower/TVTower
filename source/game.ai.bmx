@@ -839,7 +839,14 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 		'either if a slot was defined but no news, or if a news but no
 		'slot was passed
 		If (not objectGUID and slot >= 0) or (objectGUID and slot < 0)
-			Local newsObject:TNews = TNews(GetPlayerProgrammeCollection(self.ME).GetNews(objectGUID))
+			Local newsObject:TNews
+
+			if objectGUID
+				'news has to be in plan, not collection
+				newsObject = TNews(GetPlayerProgrammePlan(self.ME).GetNews(objectGUID))
+			elseif slot >= 0
+				newsObject = TNews(GetPlayerProgrammePlan(self.ME).GetNewsAtIndex(slot))
+			endif
 			If not newsObject then Return self.RESULT_NOTFOUND
 
 			if GetPlayerProgrammePlan(self.ME).RemoveNews(newsObject, slot)
@@ -849,6 +856,7 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 			endif
 		'place given news in slot
 		Else
+			'news has to be in collection, not plan
 			Local news:TNews = TNews(GetPlayerProgrammeCollection(self.ME).GetNews(objectGUID))
 			If not news then Return self.RESULT_NOTFOUND
 

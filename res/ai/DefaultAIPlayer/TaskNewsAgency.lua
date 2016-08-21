@@ -124,9 +124,9 @@ function JobCheckEventNews:Tick()
 	local terrorLevel = TVT.ne_getTerroristAggressionLevel()
 	local maxTerrorLevel = TVT.ne_getTerroristAggressionLevelMax()
 
-	if terrorLevel >= 4 then
-		kiMsg("Terroranschlag geplant! Terror-Level: " .. terrorLevel)
-	end	
+--	if terrorLevel >= 4 then
+--		kiMsg("Terroranschlag geplant! Terror-Level: " .. terrorLevel)
+--	end	
 	
 	local player = _G["globalPlayer"] --Zugriff die globale Variable
 	if player.TaskList[TASK_ROOMBOARD] ~= nil then
@@ -198,43 +198,63 @@ function JobNewsAgency:typename()
 end
 
 function JobNewsAgency:Prepare(pParams)
-	--debugMsg("Bewerte/Kaufe Nachrichten")
-	self.Newslist = self.GetNewsList()
+
+	-- instead of refreshing the news list each time we adjusted a slot
+	-- (which might add back a previously send news to the collection which
+	--  is still better than the other existing ones)
+	-- we just unset all news right before placing the best 3 of them
+
+	-- debugMsg("Remove current news")
+	TVT.ne_doNewsInPlan(0, "")
+	TVT.ne_doNewsInPlan(1, "")
+	TVT.ne_doNewsInPlan(2, "")
 end
 
 function JobNewsAgency:Tick()
-	--TODO: EInfache Lösung
 	local price = 0
 
-	if (table.count(self.Newslist) > 0) then
-		price = self.Newslist[1].GetPrice(TVT.ME)
-		if (self.Task.CurrentBudget >= price) then			
-			debugMsg("Kaufe Nachricht: " .. self.Newslist[1].GetTitle() .. " (" .. self.Newslist[1].GetID() .. ") - Slot: 1 - Preis: " .. price)
-			TVT.ne_doNewsInPlan(0, self.Newslist[1].GetID())
-			--self.Task:PayFromBudget(price)
-		end
-	end
-	if (table.count(self.Newslist) > 1) then
-		price = self.Newslist[2].GetPrice(TVT.ME)
-		if (self.Task.CurrentBudget >= price) then
-			debugMsg("Kaufe Nachricht: " .. self.Newslist[2].GetTitle() .. " (" .. self.Newslist[2].GetID() .. ") - Slot: 2 - Preis: " .. price)
-			TVT.ne_doNewsInPlan(1, self.Newslist[2].GetID())
-			--self.Task:PayFromBudget(price)
-		end
-	end
-	if (table.count(self.Newslist) > 2) then
-		price = self.Newslist[3].GetPrice(TVT.ME)
-		if (self.Task.CurrentBudget >= price) then
-			debugMsg("Kaufe Nachricht: " .. self.Newslist[3].GetTitle() .. " (" .. self.Newslist[3].GetID() .. ") - Slot: 3 - Preis: " .. price)
-			TVT.ne_doNewsInPlan(2, self.Newslist[3].GetID())
-			--self.Task:PayFromBudget(price)
+	-- loop over all 3 slots
+	for slot=1,3,1 do
+		-- fetch a list of all news, sorted by attractivity
+		-- and modified by a bonus for already paid news (so a news
+		-- is preferred if just a bit less good but already paid)
+		self.Newslist = self.GetNewsList(0.2)
+
+		if (table.count(self.Newslist) > 0) then
+			local selectedNews = nil
+
+			-- find the best one we can afford
+			for i, news in ipairs(self.Newslist) do
+				price = news.GetPrice(TVT.ME)
+				if (self.Task.CurrentBudget >= price or news.IsPaid() == 1) then			
+					if (news.IsPaid() == 1) then
+						debugMsg("NewsAgency: filling slot "..slot..". Re-use news: ~q" .. news.GetTitle() .. "~q (" .. news.GetGUID() .. ")")
+					else
+						debugMsg("NewsAgency: filling slot "..slot..". Buying news: " .. news.GetTitle() .. " (" .. news.GetGUID() .. ") "..slot.." - Price: " .. price)
+					end
+					TVT.ne_doNewsInPlan(slot-1, news.GetGUID())
+					--self.Task:PayFromBudget(price)
+
+					selectedNews = news
+				end
+				-- do not search any longer
+				if selectedNews ~= nil then break end
+			end
+		else
+			debugMsg("NewsAgency: filling slot "..slot..". No news available, skipping slot.")
 		end
 	end
 	self.Status = JOB_STATUS_DONE
 end
 
-function JobNewsAgency:GetNewsList()
+function JobNewsAgency:GetNewsList(paidBonus)
 	local currentNewsList = {}
+
+	if (paidBonus == nil) then
+		paidBonus = 0.1 --10%
+	end
+	paidBonus = tonumber(paidBonus)
+		
 
 	--fetch all news, insert all available to a list
 	local response = TVT.ne_getAvailableNews()
@@ -248,8 +268,9 @@ function JobNewsAgency:GetNewsList()
 		table.insert(currentNewsList, news)
 	end
 
+	-- sort by attractivity modifed by paid-state-bonus
 	local sortMethod = function(a, b)
-		return a.GetAttractiveness() > b.GetAttractiveness()
+		return a.GetAttractiveness()*(1.0 + a.IsPaid()*paidBonus) > b.GetAttractiveness()*(1.0 + b.IsPaid()*paidBonus)
 	end
 	table.sort(currentNewsList, sortMethod)
 

@@ -1494,6 +1494,14 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetNews:TBroadcastMaterial(GUID:string) {_exposeToLua}
+		For local news:TBroadcastMaterial = EachIn news
+			if news.GetGUID() = GUID then Return news
+		Next
+		Return Null
+	End Method
+	
+
 	Method GetNewsAtIndex:TBroadcastMaterial(index:Int) {_exposeToLua}
 		'out of bounds check
 		If index < 0 Or index >= news.length Then Return Null

@@ -355,6 +355,11 @@ endrem
 	End Method
 
 
+	Method IsPaid:int() {_exposeToLua}
+		return paid
+	End Method
+
+
     Method Pay:int()
 		'only pay if not already done
 		if not paid then paid = GetPlayerFinance(owner).PayNews(GetPrice(owner), self)
