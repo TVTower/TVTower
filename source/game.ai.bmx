@@ -826,28 +826,40 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
-	Method ne_doNewsInPlan:Int(slot:int = 0, ObjectID:Int = -1)
+	Method ne_doNewsInPlan:Int(slot:int = 0, objectGUID:String = "")
 		If Not (_PlayerInRoom("newsroom") or _PlayerInRoom("news")) Then Return self.RESULT_WRONGROOM
 
 		local player:TPlayerBase = GetPlayerBase(self.ME)
 
-		'Es ist egal ob ein Spieler einen Schluessel fuer den Raum hat,
-		'Es ist nur schauen erlaubt fuer "Fremde"
+		'It does not matter if a player has a master key for the room,
+		'only observing is allowed for them
 		If Self.ME <> TFigure(player.GetFigure()).inRoom.owner Then Return self.RESULT_WRONGROOM
 
-		If ObjectID <= 0 or slot < 0 'News bei slotID loeschen
-			if GetPlayerProgrammePlan(self.ME).RemoveNews(null, slot)
+		'remove news from given slot
+		'either if a slot was defined but no news, or if a news but no
+		'slot was passed
+		If (not objectGUID and slot >= 0) or (objectGUID and slot < 0)
+			Local newsObject:TNews = TNews(GetPlayerProgrammeCollection(self.ME).GetNews(objectGUID))
+			If not newsObject then Return self.RESULT_NOTFOUND
+
+			if GetPlayerProgrammePlan(self.ME).RemoveNews(newsObject, slot)
 				Return self.RESULT_OK
 			else
 				Return self.RESULT_NOTFOUND
 			endif
+		'place given news in slot
 		Else
-			Local news:TBroadcastMaterial = GetPlayerProgrammeCollection(self.ME).GetNews(ObjectID)
-			If not news or not TNews(news) then Return self.RESULT_NOTFOUND
-			GetPlayerProgrammePlan(self.ME).SetNews(TNews(news), slot)
+			Local news:TNews = TNews(GetPlayerProgrammeCollection(self.ME).GetNews(objectGUID))
+			If not news then Return self.RESULT_NOTFOUND
 
-			Return self.RESULT_OK
+			if not GetPlayerProgrammePlan(self.ME).SetNews(news, slot)
+				return self.RESULT_FAILED
+			else
+				Return self.RESULT_OK
+			endif
 		EndIf
+
+		Return self.RESULT_NOTFOUND
 	End Method
 
 

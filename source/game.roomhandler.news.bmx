@@ -470,7 +470,7 @@ Type RoomHandler_News extends TRoomHandler
 			endif
 		Next
 		For Local i:int = 0 to GetPlayerProgrammePlan(owner).news.length - 1
-			local news:TNews = TNews(GetPlayerProgrammePlan(owner).GetNews(i))
+			local news:TNews = TNews(GetPlayerProgrammePlan(owner).GetNewsAtIndex(i))
 			'skip if news is dragged
 			if news and draggedNewsList.contains(news) then continue
 
@@ -533,7 +533,7 @@ Type RoomHandler_News extends TRoomHandler
 
 		'remove from plan (with addBackToCollection=FALSE) and collection
 		if GetPlayerBaseCollection().IsPlayer(guiNews.news.owner)
-			GetPlayerProgrammePlan(guiNews.news.owner).RemoveNews(guiNews.news, -1, FALSE)
+			GetPlayerProgrammePlan(guiNews.news.owner).RemoveNewsByGUID(guiNews.news.GetGUID(), FALSE)
 			GetPlayerProgrammeCollection(guiNews.news.owner).RemoveNews(guiNews.news)
 		endif
 
@@ -556,7 +556,7 @@ Type RoomHandler_News extends TRoomHandler
 		if not GetPlayerBaseCollection().IsPlayer(guiNews.news.owner) return False
 
 		if receiverList = guiNewsListAvailable
-			GetPlayerProgrammePlan(guiNews.news.owner).RemoveNews(guiNews.news, -1, TRUE)
+			GetPlayerProgrammePlan(guiNews.news.owner).RemoveNewsByGUID(guiNews.news.GetGUID(), TRUE)
 		elseif receiverList = guiNewsListUsed
 			local slot:int = -1
 			'check drop position

@@ -1061,8 +1061,17 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
+	'returns the news with the given GUID or Null if not found 
+	Method GetNews:TNews(GUID:string) {_exposeToLua}
+		For Local obj:TNews = EachIn news
+			If obj.GetGUID() = GUID Then Return obj
+		Next
+		Return Null
+	End Method
+
+
 	'returns the block with the given id
-	Method GetNews:TNews(id:Int) {_exposeToLua}
+	Method GetNewsByID:TNews(id:Int) {_exposeToLua}
 		For Local obj:TNews = EachIn news
 			If obj.id = id Then Return obj
 		Next

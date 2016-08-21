@@ -1379,9 +1379,23 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'===== NEWS FUNCTIONS =====
 
+    Method SetNewsByGUID:Int(newsGUID:string, slot:Int) {_exposeToLua}
+		'use RemoveNews() to unset a news
+		If not newsGUID then return False
+
+		local news:TNews = GetPlayerProgrammeCollection(owner).GetNews(newsGUID)
+		if not news then return False
+
+		return SetNews(news, slot)
+	End Method
+
+
 	'set the slot of the given newsblock
 	'if not paid yet, it will only continue if pay is possible
     Method SetNews:Int(newsObject:TNews, slot:Int) {_exposeToLua}
+		'use RemoveNews() to unset a news
+		If not newsObject then return False
+
 		'out of bounds check
 		If slot < 0 Or slot >= news.length Then Return False
 
@@ -1395,12 +1409,12 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'do not add it back to the collection
 		'-> this avoids "duplicate news" in one show
 		For Local i:Int = 0 To news.length-1
-			if GetNews(i) = newsObject Then RemoveNews(Null, i, False)
+			if GetNewsAtIndex(i) = newsObject Then RemoveNewsBySlot(i, False)
 		Next
 
 		'is there an other newsblock, remove that first
 		'and adding that back to the collection
-		If news[slot] Then RemoveNews(Null, slot, True)
+		If news[slot] Then RemoveNewsBySlot(slot, True)
 
 		'nothing is against using that slot (payment, ...) - so assign it
 		news[slot] = newsObject
@@ -1416,19 +1430,38 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
     End Method
 
 
+	Method RemoveNewsBySlot:Int(slot:Int, addToCollection:Int=True) {_exposeToLua}
+		return RemoveNews(null, slot, addToCollection)
+	End Method
+	
+
+	Method RemoveNewsByGUID:Int(newsGUID:string="", addToCollection:Int=True) {_exposeToLua}
+		For Local i:Int = 0 To news.length-1
+			local news:TNews = TNews(GetNewsAtIndex(i))
+			If not news or news.GetGUID() <> newsGUID Then continue
+
+			return RemoveNews(news, i, addToCollection)
+		Next
+
+		Return False
+	End Method
+
+
 	'Remove the news from the plan
 	'by default the news gets added back to the collection, this can
 	'be controlled with the third param "addToCollection"
-	Method RemoveNews:Int(newsObject:TBroadcastMaterial=Null, slot:Int=-1, addToCollection:Int=True) {_exposeToLua}
+	Method RemoveNews:Int(newsObject:TNews=null, slot:Int=-1, addToCollection:Int=True) {_exposeToLua}
 		Local newsSlot:Int = slot
-		If newsObject
-			'try to find the slot occupied by the news
+		'try to find the slot occupied by the news
+		If newsObject and slot < 0
 			For Local i:Int = 0 To news.length-1
-				If GetNews(i) = newsObject Then newsSlot = i;Exit
+				local news:TBroadcastMaterial = GetNewsAtIndex(i)
+				If news = newsObject Then newsSlot = i;Exit
 			Next
 		EndIf
+
 		'was the news planned (-> in a slot) ?
-		If newsSlot >= 0 And newsSlot < news.length And news[newsSlot]
+		If GetNewsAtIndex(newsSlot)
 			Local deletedNews:TBroadcastMaterial = news[newsSlot]
 
 			'add that news back to the collection ?
@@ -1446,24 +1479,31 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
-	Method HasNews:Int(newsObject:TBroadcastMaterial) {_exposeToLua}
-		For Local i:Int = 0 To news.length-1
-			If GetNews(i) = newsObject Then Return True
+	Method HasNews:Int(newsObjectOrGUID:object) {_exposeToLua}
+		local guid:string = ""
+		if TBroadcastMaterial(newsObjectOrGUID)
+			guid = TBroadcastMaterial(newsObjectOrGUID).GetGUID()
+		else
+			guid = string(newsObjectOrGUID)
+		endif
+		
+		For local news:TBroadcastMaterial = EachIn news
+			if news.GetGUID() = guid then Return True
 		Next
 		Return False
 	End Method
 
 
-	Method GetNews:TBroadcastMaterial(slot:Int) {_exposeToLua}
+	Method GetNewsAtIndex:TBroadcastMaterial(index:Int) {_exposeToLua}
 		'out of bounds check
-		If slot < 0 Or slot >= news.length Then Return Null
+		If index < 0 Or index >= news.length Then Return Null
 
-		Return news[slot]
+		Return news[index]
 	End Method
 
 
 	Method ProduceNewsShow:TBroadcastMaterial(allowAddToPast:Int=False)
-		Local show:TNewsShow = TNewsShow.Create("News show " + GetWorldTime().GetFormattedTime(), owner, GetNews(0),GetNews(1),GetNews(2))
+		Local show:TNewsShow = TNewsShow.Create("News show " + GetWorldTime().GetFormattedTime(), owner, GetNewsAtIndex(0),GetNewsAtIndex(1),GetNewsAtIndex(2))
 		'if
 		AddObject(show, TVTBroadcastMaterialType.NEWSSHOW,-1,-1, False)
 			'print "Production of news show for player "+owner + " OK."

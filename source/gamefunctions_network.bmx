@@ -990,7 +990,7 @@ endrem
 		local owningPlayer:TPlayer = GetPlayerCollection().Get(blockOwnerID)
 		if not owningPlayer then return Null
 
-		Local news:TNews = owningPlayer.GetProgrammeCollection().getNews(blockID)
+		Local news:TNews = owningPlayer.GetProgrammeCollection().getNewsAtIndex(blockID)
 		'do not automagically create new blocks for others...
 		'all do it independently from each other (for intact randomizer base )
 		if not news then return TRUE
