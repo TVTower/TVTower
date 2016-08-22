@@ -563,9 +563,17 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	' 4,5 - best daytime + primetime
 	Field adAgencyClassification:int = 0
 
-	const PRICETYPE_PROFIT:int = 1
-	const PRICETYPE_PENALTY:int = 2
-	const PRICETYPE_INFOMERCIALPROFIT:int = 3
+	'for statistics
+	Field stateTime:Long = -1
+	Field state:int = 0
+
+
+	Const PRICETYPE_PROFIT:int = 1
+	Const PRICETYPE_PENALTY:int = 2
+	Const PRICETYPE_INFOMERCIALPROFIT:int = 3
+	'same as in TBroadcastMaterialBase
+	Const STATE_OK:int = 1
+	Const STATE_FAILED:int = 2
 	
 
 	'create UNSIGNED (adagency)
@@ -761,6 +769,16 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method IsCompleted:int()
+		return state = STATE_OK
+	End Method
+
+
+	Method IsFailed:int()
+		return state = STATE_FAILED
+	End Method
+
+
 	'percents = 0.0 - 1.0 (0-100%)
 	Method GetMinAudiencePercentage:Float(dbvalue:Float = -1) {_exposeToLua}
 		If dbvalue < 0 Then dbvalue = Self.base.minAudienceBase
@@ -828,6 +846,10 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		'pay penalty
 		GetPlayerFinance(owner, GetWorldTime().GetDay(time)).PayPenalty(GetPenalty(), self)
 
+		'store for statistics
+		stateTime = time
+		state = STATE_FAILED
+
 		'clean up (eg. decrease usage counter)
 		Remove()
 	End Method
@@ -840,6 +862,10 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 		'give money
 		GetPlayerFinance(owner, GetWorldTime().GetDay(time)).EarnAdProfit(GetProfit(), self)
+
+		'store for statistics
+		stateTime = time
+		state = STATE_OK
 
 		'clean up (eg. decrease usage counter)
 		Remove()
