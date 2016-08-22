@@ -228,62 +228,8 @@ function TaskSchedule:GetBroadcastSourceFromTable(referenceID, l)
 end
 
 function TaskSchedule:GetMaxAudiencePercentage(day, hour)
--- neue Fassung...
--- Eventuell mit ein wenig "Unsicherheit" versehen (schon in Blitzmax)
+	-- Eventuell mit ein wenig "Unsicherheit" versehen (schon in Blitzmax)
 	return TVT.getPotentialAudiencePercentage(day, hour)
-
--- alte Fassung...
---[[
-	if hour == 0 then
-		return 11.40 / 100
-	elseif hour == 1 then
-		return 6.50 / 100
-	elseif hour == 2 then
-		return 3.80 / 100
-	elseif hour == 3 then
-		return 3.60 / 100
-	elseif hour == 4 then
-		return 2.25 / 100
-	elseif hour == 5 then
-		return 3.45 / 100
-	elseif hour == 6 then
-		return 3.25 / 100
-	elseif hour == 7 then
-		return 4.45 / 100
-	elseif hour == 8 then
-		return 5.05 / 100
-	elseif hour == 9 then
-		return 5.60 / 100
-	elseif hour == 10 then
-		return 5.85 / 100
-	elseif hour == 11 then
-		return 6.70 / 100
-	elseif hour == 12 then
-		return 7.85 / 100
-	elseif hour == 13 then
-		return 9.10 / 100
-	elseif hour == 14 then
-		return 10.20 / 100
-	elseif hour == 15 then
-		return 10.90 / 100
-	elseif hour == 16 then
-		return 11.45 / 100
-	elseif hour == 17 then
-		return 14.10 / 100
-	elseif hour == 18 then
-		return 22.95 / 100
-	elseif hour == 19 then
-		return 33.45 / 100
-	elseif hour == 20 then
-		return 38.70 / 100
-	elseif hour == 21 then
-		return 37.60 / 100
-	elseif hour == 22 then
-		return 28.60 / 100
-	elseif hour == 23 then
-		return 18.80 / 100
-	end
-]]--
 end
 
 -- Returns an assumption about potential audience for the given hour and
@@ -299,7 +245,7 @@ function TaskSchedule:GuessedAudienceForHourAndLevel(day, hour, broadcast)
 	local globalPercentageByHour = self:GetMaxAudiencePercentage(day, hour) -- Die Maximalquote: Entspricht ungefähr "maxAudiencePercentage"
 	local averageMovieQualityByLevel = self:GetAverageMovieQualityByLevel(level) -- Die Durchschnittsquote dieses Qualitätslevels
 	local broadcastQuality = 0
-	local riskyness = 0.60 -- 1.0 means assuming to get all
+	local riskyness = 0.70 -- 1.0 means assuming to get all
 
 	--TODO: check advertisements (audience lower than with programmes)
 	if (broadcast ~= nil) then
@@ -313,19 +259,18 @@ function TaskSchedule:GuessedAudienceForHourAndLevel(day, hour, broadcast)
 	local guessedAudience = riskyness * broadcastQuality * globalPercentageByHour * MY.GetMaxAudience()
 
 	--debugMsg("GuessedAudienceForHourAndLevel - Hour: " .. hour .. "  Level: " .. level .. "  globalPercentageByHour: " .. globalPercentageByHour .. "  averageMovieQualityByLevel: " .. averageMovieQualityByLevel .. "  broadcastQuality: " .. broadcastQuality .. "  MaxAudience: " .. MY.GetMaxAudience() .."  guessedAudience: " .. guessedAudience)
-	--debugMsg("GuessedAudienceForHourAndLevel - Hour: " .. hour .. "  Level: " .. level .. "  globalPercentageByHour: " .. globalPercentageByHour .. "  averageMovieQualityByLevel: " .. averageMovieQualityByLevel .. "  broadcastQuality: " .. broadcastQuality .. "  MaxAudience: " .. MY.GetMaxAudience() .."  guessedAudience: " .. guessedAudience)
 	return guessedAudience
 end
 
 function TaskSchedule:GetQualityLevel(day, hour)
 	local maxAudience = self:GetMaxAudiencePercentage(day, hour)
-	if (maxAudience <= 0.05) then
+	if (maxAudience <= 0.06) then
 		return 1 --Nachtprogramm
-	elseif (maxAudience <= 0.10) then
+	elseif (maxAudience <= 0.12) then
 		return 2 --Mitternacht + Morgen
-	elseif (maxAudience <= 0.15) then
+	elseif (maxAudience <= 0.18) then
 		return 3 -- Nachmittag
-	elseif (maxAudience <= 0.25) then
+	elseif (maxAudience <= 0.24) then
 		return 4 -- Vorabend / Spät
 	else
 		return 5 -- Primetime
@@ -335,15 +280,15 @@ end
 --TODO später dynamisieren
 function TaskSchedule:GetAverageMovieQualityByLevel(level)
 	if (level == 1) then
-		return 0.03 --Nachtprogramm
+		return 0.04 --Nachtprogramm
 	elseif (level == 2) then
-		return 0.08 --Mitternacht + Morgen
+		return 0.10 --Mitternacht + Morgen
 	elseif (level == 3) then
-		return 0.13 -- Nachmittag
+		return 0.15 -- Nachmittag
 	elseif (level == 4) then
-		return 0.18 -- Vorabend / Spät
+		return 0.20 -- Vorabend / Spät
 	elseif (level == 5) then
-		return 0.22 -- Primetime
+		return 0.25 -- Primetime
 	end
 end
 
@@ -356,7 +301,7 @@ function TaskSchedule:AddSpotRequisition(guessedAudience, level, day, hour)
 	local slotReq = SpotSlotRequisition()
 	slotReq.Day = day;
 	slotReq.Hour = hour;
-	slotReq.Minute = 55; -- xx:55 faengt die Werbung an
+	slotReq.Minute = 55; -- xx:55 adspots start
 	slotReq.GuessedAudience = guessedAudience
 	slotReq.Level = level
 
@@ -460,12 +405,12 @@ function JobFulfillRequisition:Tick()
 			local contract = TVT.of_getAdContractByID(value.ContractId)
 
 			if (contract ~= nil) then
-				debugMsg("Setze Werbespot: " .. value.Day .. "/" .. value.Hour .. ":" .. value.Minute .. "  contract: " .. contract.GetTitle() .. " [" .. contract.GetID() .."]  MinAud: " .. contract.GetMinAudience())
+				debugMsg("Set advertisement: " .. value.Day .. "/" .. value.Hour .. ":" .. value.Minute .. "  contract: " .. contract.GetTitle() .. " [" .. contract.GetID() .."]  MinAud: " .. contract.GetMinAudience() .. "  acuteness: " .. contract.GetAcuteness())
 				if (value.Day > gameDay or (value.Day == gameDay and value.Hour > gameHour) or (value.Day == gameDay and value.Hour == gameHour and value.Minute > gameMinute)) then
 					local result = TVT.of_setAdvertisementSlot(contract, value.Day, value.Hour) --Setzt den neuen Eintrag
 					if (result < 0) then debugMsg("###### ERROR 2: " .. value.Day .. "/" .. value.Hour .. ":55  contractID:" .. value.ContractId .. "   Result: " .. result) end
 				else
-					debugMsg("Setze Werbespot: Zu spät dran. Geplant:" .. value.Day .. "/" .. value.Hour .. ":" .. value.Minute .. "  Zeit:" .. gameHour .. ":" .. gameMinute .. "  contract: " .. contract.GetTitle() .. " [" .. contract.GetID() .."]")
+					debugMsg("Set advertisement. Too late!. Failed:" .. value.Day .. "/" .. value.Hour .. ":" .. value.Minute .. "  GameTime:" .. gameHour .. ":" .. gameMinute .. "  contract: " .. contract.GetTitle() .. " [" .. contract.GetID() .."]")
 				end
 			end
 			value:Complete()
@@ -480,7 +425,7 @@ end
 _G["JobEmergencySchedule"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
 	c.ScheduleTask = nil
-	c.SlotsToCheck = 12 --4,
+	c.SlotsToCheck = 18
 	--c.testCase = 0
 end)
 
@@ -590,17 +535,17 @@ function JobEmergencySchedule:SetContractOrTrailerToEmptyBlock(choosenSpot, day,
 	end
 
 	if (choosenSpot ~= nil) then
-		debugMsg("Setze Werbespot (Notfallplan): " .. fixedDay .. "/" .. fixedHour .. ":55  contract: " .. choosenSpot.GetTitle() .. " [" ..choosenSpot.GetID() .."]  MinAud: " .. choosenSpot.GetMinAudience())
+		debugMsg("Set advertisement (emergency plan): " .. fixedDay .. "/" .. fixedHour .. ":55  contract: " .. choosenSpot.GetTitle() .. " [" ..choosenSpot.GetID() .."]  MinAud: " .. choosenSpot.GetMinAudience() .. "  acuteness: " .. choosenSpot.GetAcuteness())
 --		local result = TVT.of_setAdvertisementSlot(TVT.of_getAdContractByID(choosenSpot.GetID()), fixedDay, fixedHour)
 		local result = TVT.of_setAdvertisementSlot(choosenSpot, fixedDay, fixedHour)
 	else
 		--nochmal ohne Filter!
 		choosenSpot = self:GetBestMatchingSpot(currentSpotList)
 		if (choosenSpot ~= nil) then
-			debugMsg("Setze Werbespot (Notfallplan - ungefiltert): " .. fixedDay .. "/" .. fixedHour .. ":55  Name: " .. choosenSpot.GetTitle())
+			debugMsg("Set advertisement (emergency plan - unfiltered): " .. fixedDay .. "/" .. fixedHour .. ":55  contract: " .. choosenSpot.GetTitle() .. "  acuteness: " .. choosenSpot.GetAcuteness())
 			local result = TVT.of_setAdvertisementSlot(TVT.of_getAdContractByID(choosenSpot.GetID()), fixedDay, fixedHour)
 		else
-			debugMsg("Keinen Werbespot (Notfallplan - ungefiltert) gefunden: " .. fixedDay .. "/" .. fixedHour .. ":55")
+			debugMsg("Set advertisement (emergency plan - unfiltered): " .. fixedDay .. "/" .. fixedHour .. ":55  NONE FOUND")
 		end
 	end
 end
@@ -620,11 +565,10 @@ function JobEmergencySchedule:SetMovieOrInfomercialToEmptyBlock(day, hour)
 	end
 
 	if (choosenLicence ~= nil) then
-		debugMsg("Setze Film: ".. fixedDay .. "/" .. fixedHour .. ":05  Lizenz: " .. choosenLicence.GetTitle() .. "  quality: " .. choosenLicence.GetQuality())
+		debugMsg("Set Programme: ".. fixedDay .. "/" .. fixedHour .. ":05  licence: " .. choosenLicence.GetTitle() .. "  quality: " .. choosenLicence.GetQuality())
 		TVT.of_setProgrammeSlot(choosenLicence, fixedDay, fixedHour)
 	else
-		TVT.PrintOut("Kein Film/Dauerwerbesendung gefunden: " .. fixedDay .. "/" .. fixedHour ..":05")
-		debugMsg("Kein Film gefunden: " .. fixedDay .. "/" .. fixedHour ..":05")
+		debugMsg("Set Programme: " .. fixedDay .. "/" .. fixedHour ..":05  NO PROGRAMME FOUND")
 	end
 end
 
