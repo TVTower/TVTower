@@ -384,11 +384,13 @@ endrem
 		playerControlledByID = GetPlayerCollection().playerID
 		SetPlayerType(PLAYERTYPE_LOCAL_AI)
 	End Method
+
 	
 	Method SetInactive()
 		playerControlledByID = GetPlayerCollection().playerID
 		SetPlayerType(PLAYERTYPE_INACTIVE)
 	End Method
+
 
 	Method SetRemoteHumanControlled(remotePlayerID:int)
 		playerAI = Null

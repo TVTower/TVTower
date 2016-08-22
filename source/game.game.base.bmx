@@ -1,5 +1,6 @@
 SuperStrict
 Import "Dig/base.util.mersenne.bmx" 'randrange
+Import "game.gameconstants.bmx"
 Import "game.figure.base.bmx"
 
 'Game - holds time, audience, money and other variables (typelike structure makes it easier to save the actual state)
@@ -54,7 +55,6 @@ Type TGameBase {_exposeToLua="selected"}
 	Field startNetworkGame:Int = 0
 	'playing over internet? 0=false
 	Field onlinegame:Int = 0
-
 
 	Field terrorists:TFigureBase[2]
 	Field marshals:TFigureBase[2]  
@@ -173,7 +173,7 @@ Type TGameBase {_exposeToLua="selected"}
 	Method IsGameOver:int()
 		return gameOver = True
 	End Method
-	
+
 
 	Method SetPlayerBankruptLevel:int(playerID:int, level:int, time:Long=-1)
 		if playerID < 1 then return False

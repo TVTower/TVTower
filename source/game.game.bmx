@@ -1255,7 +1255,7 @@ print "--------------"
 			Case TGame.STATE_RUNNING
 				'when a game is loaded we should try set the right screen
 				'not just the default building screen
-				If GetPlayer().GetFigure().inRoom
+				If GetObservedFigure().GetInRoom()
 					ScreenCollection.GoToScreen(ScreenCollection.GetCurrentScreen())
 				Else
 					ScreenCollection.GoToScreen(GameScreen_world)
@@ -1282,6 +1282,15 @@ print "--------------"
 			Default
 				'
 		EndSelect
+	End Method
+
+
+	Method GetObservedFigure:TFigureBase()
+		if not TFigureBase(GameConfig.GetObservedObject())
+			return GetPlayerBase().GetFigure()
+		else
+			return TFigureBase(GameConfig.GetObservedObject())
+		endif
 	End Method
 
 

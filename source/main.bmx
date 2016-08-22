@@ -588,7 +588,7 @@ Type TApp
 					If KEYMANAGER.IsDown(KEY_DOWN) Then GetWorldTime().AdjustTimeFactor(-5)
 
 					If KEYMANAGER.IsDown(KEY_RIGHT)
-						if not KEYMANAGER.IsDown(KEY_LCONTROL)
+						if not KEYMANAGER.IsDown(KEY_LCONTROL) and not KEYMANAGER.Isdown(KEY_RCONTROL)
 							TEntity.globalWorldSpeedFactor :+ 0.05
 							GetWorldTime().AdjustTimeFactor(+10)
 							GetBuildingTime().AdjustTimeFactor(+0.05)
@@ -600,9 +600,15 @@ Type TApp
 								DEV_FastForward_TimeFactorBackup = GetWorldTime()._timeFactor
 								DEV_FastForward_BuildingTimeSpeedFactorBackup = GetBuildingTime()._timeFactor
 
-								TEntity.globalWorldSpeedFactor :+ 24000
-								GetWorldTime().AdjustTimeFactor(+2000)
-								GetBuildingTime().AdjustTimeFactor(+24000)
+								if KEYMANAGER.IsDown(KEY_RCONTROL)
+									TEntity.globalWorldSpeedFactor :+ 96000
+									GetWorldTime().AdjustTimeFactor(+8000)
+									GetBuildingTime().AdjustTimeFactor(+96000)
+								elseif KEYMANAGER.IsDown(KEY_LCONTROL)
+									TEntity.globalWorldSpeedFactor :+ 24000
+									GetWorldTime().AdjustTimeFactor(+2000)
+									GetBuildingTime().AdjustTimeFactor(+24000)
+								endif
 							endif
 						endif
 					else
@@ -646,7 +652,7 @@ Type TApp
 							else
 								'single overview - only today
 								
-								local text:string[] = GetPlayerFinanceOverviewText(GetPlayer().playerID, GetWorldTime().GetOnDay() )
+								local text:string[] = GetPlayerFinanceOverviewText(GetPlayer().playerID, GetWorldTime().GetOnDay() -1 )
 								For local s:string = EachIn text
 									print s
 								Next
@@ -896,13 +902,31 @@ endrem
 '						PrintCurrentTranslationState("en")
 					EndIf
 
+
+					If KEYMANAGER.isDown(KEY_LCONTROL)
+						if KEYMANAGER.IsHit(KEY_O)
+							GameConfig.observerMode = 1 - GameConfig.observerMode
+
+							KEYMANAGER.ResetKey(KEY_O)
+							KEYMANAGER.BlockKey(KEY_O, 150)
+						endif
+'				GetPlayer(playerID).InitAI( new TAI.Create(playerID, "res/ai/DefaultAIPlayer/DefaultAIPlayer.lua") )
+					endif
+
 				
 					If Not GetPlayer().GetFigure().isChangingRoom()
 						if not KEYMANAGER.IsDown(KEY_LSHIFT)
-							If KEYMANAGER.IsHit(KEY_1) Then GetGame().SetActivePlayer(1)
-							If KEYMANAGER.IsHit(KEY_2) Then GetGame().SetActivePlayer(2)
-							If KEYMANAGER.IsHit(KEY_3) Then GetGame().SetActivePlayer(3)
-							If KEYMANAGER.IsHit(KEY_4) Then GetGame().SetActivePlayer(4)
+							if GameConfig.observerMode
+								If KEYMANAGER.IsHit(KEY_1) Then GameConfig.SetObservedObject( GetPlayer(1).GetFigure() )
+								If KEYMANAGER.IsHit(KEY_2) Then GameConfig.SetObservedObject( GetPlayer(2).GetFigure() )
+								If KEYMANAGER.IsHit(KEY_3) Then GameConfig.SetObservedObject( GetPlayer(3).GetFigure() )
+								If KEYMANAGER.IsHit(KEY_4) Then GameConfig.SetObservedObject( GetPlayer(4).GetFigure() )
+							else
+								If KEYMANAGER.IsHit(KEY_1) Then GetGame().SetActivePlayer(1)
+								If KEYMANAGER.IsHit(KEY_2) Then GetGame().SetActivePlayer(2)
+								If KEYMANAGER.IsHit(KEY_3) Then GetGame().SetActivePlayer(3)
+								If KEYMANAGER.IsHit(KEY_4) Then GetGame().SetActivePlayer(4)
+							endif
 						elseif KEYMANAGER.IsDown(KEY_RSHIFT)
 							If KEYMANAGER.IsHit(Key_1) And GetPlayer(1).isLocalAI() Then GetPlayer(1).PlayerAI.reloadScript()
 							If KEYMANAGER.IsHit(Key_2) And GetPlayer(2).isLocalAI() Then GetPlayer(2).PlayerAI.reloadScript()
@@ -930,6 +954,7 @@ endrem
 						If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", GetPlayerCollection().playerID))
 						If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("boss", GetPlayerCollection().playerID))
 						If KEYMANAGER.isHit(KEY_G) Then TVTGhostBuildingScrollMode = 1 - TVTGhostBuildingScrollMode
+rem
 						If KEYMANAGER.isHit(KEY_X)
 							print "Player: #" + GetPlayer().GetFigure().playerID + "   time: " + GetWorldTime().GetFormattedTime()
 							print "IsControllable: " + GetPlayer().GetFigure().IsControllable()
@@ -941,7 +966,7 @@ endrem
 							print "currentReachStep: " + GetPlayer().GetFigure().currentReachTargetStep
 							print "-----------------"
 						EndIf
-						
+endrem						
 						If KEYMANAGER.isHit(KEY_D)
 							If KEYMANAGER.IsDown(KEY_RSHIFT)
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", 2))
@@ -1299,8 +1324,34 @@ endrem
 				'GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
 			EndIf
 
-			if not GetPlayerCollection().IsHuman( GetPlayerCollection().playerID )
-				GetBitmapFont("default", 20).DrawBlock("OBSERVING AI PLAYER #" +GetPlayerCollection().playerID, 20,20, GetGraphicsManager().GetWidth()-40, 355, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+			if GameConfig.observerMode
+				local playerNum:int = 0
+				For local i:int = 1 to 4
+					if GameConfig.IsObserved( GetPlayer(i).GetFigure() )
+						playerNum = i
+						exit
+					endif
+				Next
+				GetBitmapFont("default", 20).DrawBlock("OBSERVING PLAYER #"+playerNum, 0, 0, GetGraphicsManager().GetWidth(), 355, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+				GetBitmapFont("default", 14).DrawBlock("(~qL-Ctrl + O~q to deactivate)", 0, 0, GetGraphicsManager().GetWidth(), 375, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+			else
+				if not GetPlayerCollection().IsHuman( GetPlayerCollection().playerID )
+					GetBitmapFont("default", 20).DrawBlock("SWITCHED TO AI PLAYER #" +GetPlayerCollection().playerID, 0, 0, GetGraphicsManager().GetWidth(), 355, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+
+					local localHumanNum:int = 0
+					For local i:int = 1 to 4
+						if GetPlayerCollection().IsLocalHuman( 1 )
+							localHumanNum = i
+							exit
+						endif
+					Next
+
+					if localHumanNum > 0
+						GetBitmapFont("default", 14).DrawBlock("(~q"+localHumanNum+"~q to switch back)", 0, 0, GetGraphicsManager().GetWidth(), 375, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+					else
+						GetBitmapFont("default", 14).DrawBlock("(all players are AI controlled)", 0, 0, GetGraphicsManager().GetWidth(), 375, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+					endif
+				endif
 			endif
 
 			'show quotes even without "DEV_OSD = true"
@@ -1489,6 +1540,7 @@ Type TGameState
 	Field _WorldTime:TWorldTime = Null
 	Field _World:TWorld = Null
 	Field _GameRules:TGamerules = Null
+	Field _GameConfig:TGameConfig = Null
 	Field _Betty:TBetty = Null
 
 	Field _GameInformationCollection:TGameInformationCollection = Null
@@ -1660,6 +1712,7 @@ Type TGameState
 		_Assign(_WorldTime, TWorldTime._instance, "WorldTime", MODE_LOAD)
 		_Assign(_BuildingTime, TBuildingTime._instance, "BuildingTime", MODE_LOAD)
 		_Assign(_GameRules, GameRules, "GameRules", MODE_LOAD)
+		_Assign(_GameConfig, GameConfig, "GameConfig", MODE_LOAD)
 		_Assign(_AuctionProgrammeBlocksList, TAuctionProgrammeBlocks.list, "AuctionProgrammeBlocks", MODE_LOAD)
 
 		_Assign(_RoomHandler_Studio, RoomHandler_Studio._instance, "Studios", MODE_LOAD)
@@ -1701,6 +1754,7 @@ Type TGameState
 
 
 		_Assign(GameRules, _GameRules, "GameRules", MODE_SAVE)
+		_Assign(GameConfig, _GameConfig, "GameConfig", MODE_SAVE)
 		_Assign(TWorldTime._instance, _WorldTime, "WorldTime", MODE_SAVE)
 		_Assign(TBuildingTime._instance, _BuildingTime, "BuildingTime", MODE_SAVE)
 
@@ -1987,28 +2041,30 @@ Type TSaveGame Extends TGameState
 		'payload is saveName and saveGame-object
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnLoad", New TData.addString("saveName", saveName).add("saveGame", saveGame)))
 
-		'only set the screen if the figure is in this room ... this
-		'allows modifying the player in the savegame
-		If GetPlayer().GetFigure().inRoom
-			Local playerScreen:TScreen = ScreenCollection.GetScreen(saveGame._CurrentScreenName)
-			If playerScreen.HasParentScreen(GetPlayer().GetFigure().inRoom.screenName)
-				ScreenCollection.GoToScreen(playerScreen)
-				'just set the current screen... no animation
-				ScreenCollection._SetCurrentScreen(playerScreen)
+		if GameConfig.IsObserved( GetPlayer().GetFigure() )
+			'only set the screen if the figure is in this room ... this
+			'allows modifying the player in the savegame
+			If GetPlayer().GetFigure().inRoom
+				Local playerScreen:TScreen = ScreenCollection.GetScreen(saveGame._CurrentScreenName)
+				If playerScreen.HasParentScreen(GetPlayer().GetFigure().inRoom.screenName)
+					ScreenCollection.GoToScreen(playerScreen)
+					'just set the current screen... no animation
+					ScreenCollection._SetCurrentScreen(playerScreen)
+				EndIf
 			EndIf
-		EndIf
 
-		'if saved during screen change, try to recreate the transition
-		'without this, the game shows the building while the figure
-		'is in.
-		If GetPlayer().GetFigure().isChangingRoom()
-			ScreenCollection._SetCurrentScreen(GameScreen_World)
+			'if saved during screen change, try to recreate the transition
+			'without this, the game shows the building while the figure
+			'is in.
+			If GetPlayer().GetFigure().isChangingRoom()
+				ScreenCollection._SetCurrentScreen(GameScreen_World)
 
-			if TRoomDoorBase(GetPlayer().GetFigure().GetTarget())
-				local door:TRoomDoorBase = TRoomDoorBase(GetPlayer().GetFigure().GetTarget())
-				local room:TRoomBase = GetRoomBaseCollection().Get(door.roomID)
-				if room
-					ScreenCollection.GoToScreen( ScreenCollection.GetScreen(room.screenName) )
+				if TRoomDoorBase(GetPlayer().GetFigure().GetTarget())
+					local door:TRoomDoorBase = TRoomDoorBase(GetPlayer().GetFigure().GetTarget())
+					local room:TRoomBase = GetRoomBaseCollection().Get(door.roomID)
+					if room
+						ScreenCollection.GoToScreen( ScreenCollection.GetScreen(room.screenName) )
+					endif
 				endif
 			endif
 		endif
@@ -4048,6 +4104,34 @@ Type GameEvents
 		Local PLAYER_NOT_FOUND:String = "[DEV] player not found."
 
 		Select command.Trim().toLower()
+			Case "playerai"
+				if GetGame().networkGame
+					GetGame().SendSystemMessage("[DEV] Cannot adjust AI in network games.")
+					return False
+				endif
+
+				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
+
+				If Int(params) = 1
+					if not player.IsLocalAI()
+						player.SetLocalAIControlled()
+						if not player.playerAI
+							player.InitAI( new TAI.Create(player.playerID, "res/ai/DefaultAIPlayer/DefaultAIPlayer.lua") )
+						endif
+						GetGame().SendSystemMessage("[DEV] Enabled AI for player "+player.playerID)
+					else
+						GetGame().SendSystemMessage("[DEV] Already enabled AI for player "+player.playerID)
+					endif
+				else
+					if player.IsLocalAI()
+						'do not call "SetLocalHumanControlled()" as it deletes AI too
+						player.SetPlayerType(TPlayerBase.PLAYERTYPE_LOCAL_HUMAN)
+						GetGame().SendSystemMessage("[DEV] Disabled AI for player "+player.playerID)
+					else
+						GetGame().SendSystemMessage("[DEV] Already disabled AI for player "+player.playerID)
+					endif
+				endif
+
 			Case "bossmood"
 				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
 
@@ -5014,7 +5098,7 @@ Type GameEvents
 			'=== PRINT OUT FINANCIAL STATS ===
 
 			For local playerID:int = 1 to 4
-				local text:string[] = GetPlayerFinanceOverviewText(playerID, day)
+				local text:string[] = GetPlayerFinanceOverviewText(playerID, day - 1)
 				For local s:string = EachIn text
 					TLogger.Log("OnDay Financials", s, LOG_DEBUG)
 				Next
@@ -5316,7 +5400,7 @@ Function GetPlayerFinanceOverviewText:string[](playerID:int, day:int)
 	local now:Long = GetWorldTime().MakeTime(0, day, latestHour, 0, 0)
 
 
-	local finance:TPlayerFinance = GetPlayer(playerID).GetFinance(day - 1)
+	local finance:TPlayerFinance = GetPlayer(playerID).GetFinance(day)
 	local financeTotal:TPlayerFinance = GetPlayerFinanceCollection().GetTotal(playerID)
 
 	local title:string = LSet("Finance Stats for player #"+playerID+" on day "+(1 + day - GetWorldTime().GetStartDay()) +". Time: 0 - " + (latestHour+1), 79)
@@ -5334,7 +5418,7 @@ Function GetPlayerFinanceOverviewText:string[](playerID:int, day:int)
 
 	local titleLength:int = 30
 	text :+ ["|---------------------------------------------------------.----------------------|"]
-	text :+ ["| Money:              "+Rset(GetPlayer().GetMoney(), 9)+"  |                       |         TOTAL         |"]
+	text :+ ["| Money:              "+Rset(finance.GetMoney(), 9)+"  |                       |         TOTAL         |"]
 	text :+ ["|--------------------------------|-----------.-----------|-----------.-----------|"]
 	text :+ ["|                                |   INCOME  |  EXPENSE  |   INCOME  |  EXPENSE  |"]
 	text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_TRADING_PROGRAMMELICENCES")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_programmeLicences), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_programmeLicences),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_programmeLicences), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_programmeLicences),9)+ " |"]

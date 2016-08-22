@@ -13,6 +13,7 @@ Global TVTDebugInfos:int = False
 Global TVTDebugQuoteInfos:int = False	
 Global TVTGhostBuildingScrollMode:int = False
 
+
 'collection of all constants types (so it could be exposed
 'to LUA in one step)
 Type TVTGameConstants {_exposeToLua}

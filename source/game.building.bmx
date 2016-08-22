@@ -9,6 +9,7 @@ Import "game.player.base.bmx"
 Import "game.room.bmx"
 Import "game.room.roomdoor.bmx"
 Import "game.world.bmx"
+Import "game.gameconfig.bmx"
 
 'TODO: split TBuilding into TBuilding + TBuildingArea
 '      TBuildingArea then contains background buildings, ufo ...
@@ -366,11 +367,17 @@ Type TBuilding Extends TBuildingBase
 		softDrinkMachine.Update()
 	
 		'center player
-		If not GetPlayerBase().IsInRoom()
+		If not GetPlayerBase().IsInRoom() or GameConfig.observerMode
 			if not TVTGhostBuildingScrollMode
+				'something observed?
+				local entity:TSpriteEntity = TSpriteEntity(GameConfig.observedObject)
+				if not entity or not GameConfig.observerMode
+					entity = GetPlayerBase().GetFigure()
+				endif
+				
 				'subtract 7 because of missing "wall" in last floor
+				area.position.y =  2 * floorHeight - 7 + 50 - entity.area.GetY()
 				'add 50 for roof
-				area.position.y =  2 * floorHeight - 7 + 50 - GetPlayerBase().GetFigure().area.GetY()
 			else
 				if MouseManager.y <= 20 then area.position.y :+ ((20 - MouseManager.y) * 0.75)
 				if MouseManager.y >= GetGraphicsManager().GetHeight() - 20 then area.position.y :- ((20 - (GetGraphicsManager().GetHeight() - MouseManager.y)) * 0.75)
