@@ -109,6 +109,9 @@ Type TPlayerBase {_exposeToLua="selected"}
 	'in which room was the programme suitcase filled the last time? 
 	Field emptyProgrammeSuitcaseFromRoom:string = ""
 
+	'times at which the player was brankrupt (game over)
+	Field bankruptcyTimes:Long[]
+
 	'1=ready, 0=not set, ...
 	Field networkstate:Int = 0
 
@@ -179,14 +182,13 @@ Type TPlayerBase {_exposeToLua="selected"}
 	Method GetNewsAbonnementFees:int() {_exposeToLua}
 		return 0
 	End Method
+	
 
 	'return CURRENT newsAbonnement
 	Method GetNewsAbonnement:Int(genre:Int) {_exposeToLua}
 		If genre > 5 Then Return 0 'max 6 categories 0-5
 		Return Self.newsabonnements[genre]
 	End Method
-
-
 
 
 	'return which is the highest level for the given genre today
@@ -254,6 +256,26 @@ Type TPlayerBase {_exposeToLua="selected"}
 		EndIf
 
 		return False
+	End Method
+
+
+	Method GetBankruptcyAmount:int(untilTime:Long=-1)
+		if bankruptcyTimes.length = 0 then return 0
+		
+		if untilTime = -1 then untilTime = GetWorldTime().GetTimeGone()
+
+		local result:int = 0
+		for local i:int = 0 until bankruptcyTimes.length
+			if bankruptcyTimes[i] < untilTime then result :+ 1
+		Next
+		return result
+	End Method
+
+
+	Method GetBankruptcyTime:int(bankruptcyNumber:int=0)
+		if bankruptcyNumber < 1 or bankruptcyTimes.length < bankruptcyNumber then return -1
+
+		return bankruptcyTimes[bankruptcyNumber-1]
 	End Method
 	
 
