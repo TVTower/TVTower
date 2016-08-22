@@ -280,7 +280,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 			'=== PRODUCTION FOCUS POINTS ===
 			if takeOverConcept.productionFocus
-				for local i:int = 0 until takeOverConcept.productionFocus.focusPoints.length
+				For local i:int = 1 to takeOverConcept.productionFocus.focusPoints.length
 					currentProductionConcept.productionFocus.SetFocus(i, takeOverConcept.productionFocus.GetFocus(i) )
 				Next
 			endif
