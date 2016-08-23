@@ -601,13 +601,13 @@ Type TApp
 								DEV_FastForward_BuildingTimeSpeedFactorBackup = GetBuildingTime()._timeFactor
 
 								if KEYMANAGER.IsDown(KEY_RCONTROL)
-									TEntity.globalWorldSpeedFactor :+ 96000
+									TEntity.globalWorldSpeedFactor :+ 144000
 									GetWorldTime().AdjustTimeFactor(+8000)
-									GetBuildingTime().AdjustTimeFactor(+96000)
+									GetBuildingTime().AdjustTimeFactor(+144000)
 								elseif KEYMANAGER.IsDown(KEY_LCONTROL)
-									TEntity.globalWorldSpeedFactor :+ 24000
+									TEntity.globalWorldSpeedFactor :+ 36000
 									GetWorldTime().AdjustTimeFactor(+2000)
-									GetBuildingTime().AdjustTimeFactor(+24000)
+									GetBuildingTime().AdjustTimeFactor(+36000)
 								endif
 							endif
 						endif
@@ -4650,6 +4650,8 @@ Type GameEvents
 
 			toast.SetCloseAtWorldTime(midnight)
 			toast.SetCloseAtWorldTimeText("MESSAGE_CLOSES_AT_TIME")
+			'show it for a very long time, but keep it closeable
+			toast.SetLifeTime(30)
 			toast.SetPriority(10)
 			
 			toast.SetMessageType(1) 'negative
