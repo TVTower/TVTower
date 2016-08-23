@@ -804,8 +804,12 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 
 	'AI/LUA-helper
+	'while "GetPrice()" could change, this function should have some kind
+	'of "nearly linear" connection to the really used quality
 	Method GetAttractiveness:Float() {_exposeToLua}
-		return 0.35*GetQualityRaw() + 0.6*GetTopicality() + 0.05
+		'the AI only sees something like the "price" and not the real
+		'quality - this is what the player is able to see too
+		return GetQuality() * GetModifier("price")
 	End Method
 
 
@@ -856,7 +860,7 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	'returns price based on a "per 5 million" approach
 	Method GetPrice:Int() {_exposeToLua}
 		'price ranges from 0 to ~2000
-		Return Max(0, 2000 * GetAttractiveness() * GetModifier("price") )
+		Return Max(0, 2000 * GetQuality() * GetModifier("price") )
 	End Method
 End Type
 
