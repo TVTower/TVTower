@@ -4998,6 +4998,10 @@ Type GameEvents
 
 	'things happening each hour
 	Function OnHour:Int(triggerEvent:TEventBase)
+		local time:Long = triggerEvent.GetData().GetLong("time",-1)
+		Local day:Int = GetWorldTime().GetDay(time)
+		Local hour:Int = GetWorldTime().GetHour(time)
+
 		'=== REMOVE ENDED NEWSEVENTS  ===
 		'newsevents might have a "happenedEndTime" indicating that
 		'the event is only a temporary one (eg. storm warning)
@@ -5026,6 +5030,54 @@ Type GameEvents
 				EndIf
 			Next
 			endrem
+
+
+			'=== REMOVE OLD NEWS AND NEWSEVENTS ===
+			'news and newsevents both have a "happenedTime" but they must
+			'not be the same (multiple news with the same event but happened
+			'to different times)
+			Local hoursToKeep:Int
+			Local minTopicalityToKeep:Float
+	
+			'remove old news from the all player plans and collections
+			For Local pBase:TPlayerBase = EachIn GetPlayerBaseCollection().players
+				local p:TPlayer = TPlayer(pBase)
+				if not p then continue
+				
+				'COLLECTION
+				'news could stay there for 2 days (including today)
+				hoursToKeep = 24
+				minTopicalityToKeep = 0.05
+				
+				'loop through a copy to avoid concurrent modification
+				For Local news:TNews = EachIn p.GetProgrammeCollection().news.Copy()
+					If hour - GetWorldTime().GetHour(news.GetHappenedTime()) > hoursToKeep
+						p.GetProgrammeCollection().RemoveNews(news)
+					elseif news.newsevent.GetTopicality() < minTopicalityToKeep
+						p.GetProgrammeCollection().RemoveNews(news)
+					EndIf
+				Next
+
+				'PLAN
+				'news could get send a bit longer
+				hoursToKeep = 36
+				minTopicalityToKeep = 0.01
+				'no need to copy the array because it has a fixed length
+				For Local news:TNews = EachIn p.GetProgrammePlan().news
+					If hour - GetWorldTime().GetHour(news.GetHappenedTime()) > hoursToKeep
+						p.GetProgrammePlan().RemoveNewsByGUID(news.GetGUID(), False)
+					elseif news.newsevent.GetTopicality() < minTopicalityToKeep
+						p.GetProgrammePlan().RemoveNewsByGUID(news.GetGUID(), False)
+					EndIf
+				Next
+			Next
+
+			'NEWSEVENTS
+			'remove old news events - wait a day more than "plan time"
+			'this also gets rid of "one time" news events which should
+			'have been "triggered" then
+			local daysToKeep:int = int(ceil((2 * hoursToKeep)/48.0))
+			GetNewsEventCollection().RemoveOutdatedNewsEvents(daysToKeep)
 		Next
 		'remove from collection (reuse if possible)
 		GetNewsEventCollection().RemoveEndedNewsEvents()
@@ -5105,45 +5157,6 @@ Type GameEvents
 					TLogger.Log("OnDay Financials", s, LOG_DEBUG)
 				Next
 			Next
-
-			'=== REMOVE OLD NEWS AND NEWSEVENTS ===
-			'news and newsevents both have a "happenedTime" but they must
-			'not be the same (multiple news with the same event but happened
-			'to different times)
-			Local daysToKeep:Int = 2
-	
-			'remove old news from the all player plans and collections
-			For Local pBase:TPlayerBase = EachIn GetPlayerBaseCollection().players
-				local p:TPlayer = TPlayer(pBase)
-				if not p then continue
-				
-				'COLLECTION
-				'news could stay there for 2 days (including today)
-				daysToKeep = 2
-				'loop through a copy to avoid concurrent modification
-				For Local news:TNews = EachIn p.GetProgrammeCollection().news.Copy()
-					If day - GetWorldTime().GetDay(news.GetHappenedTime()) >= daysToKeep
-						p.GetProgrammeCollection().RemoveNews(news)
-					EndIf
-				Next
-
-				'PLAN
-				'news could get send a day longer (3 days incl. today)
-				daysToKeep = 3
-				'no need to copy the array because it has a fixed length
-				For Local news:TNews = EachIn p.GetProgrammePlan().news
-					If day - GetWorldTime().GetDay(news.GetHappenedTime()) >= daysToKeep
-						p.GetProgrammePlan().RemoveNewsByGUID(news.GetGUID(), False)
-					EndIf
-				Next
-			Next
-
-			'NEWSEVENTS
-			'remove old news events - wait a day more than "plan time"
-			'this also gets rid of "one time" news events which should
-			'have been "triggered" then
-			daysToKeep = 4
-			GetNewsEventCollection().RemoveOutdatedNewsEvents(daysToKeep)
 		EndIf
 
 		Return True

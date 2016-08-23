@@ -651,8 +651,8 @@ Type TNewsAgency
 		
 		'quality and price are based on the movies data
 		'quality of movie news never can reach quality of "real" news
-		'so cut them to a specific range (0-0.75) 
-		local quality:Float = 0.75*licence.GetData().review
+		'so cut them to a specific range (0.10 - 0.80) 
+		local quality:Float = 0.1  + 0.70*licence.GetData().review
 		'if outcome is less than 50%, it subtracts the price, else it increases
 		local priceModifier:Float = 1.0 + 0.2 * (licence.GetData().outcome - 0.5)
 		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TVTNewsGenre.SHOWBIZ, quality, null, TVTNewsType.InitialNewsByInGameEvent)
