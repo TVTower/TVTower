@@ -1635,7 +1635,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		Local spotsToBroadcast:int = self.GetSpotCount() - self.GetSpotsToSend()
 		Local daysLeft:int = self.getDaysLeft() + 1 'In diesem Zusammenhang nicht 0-basierend
 		If daysLeft <= 0 then return 0 'no "acuteness" for obsolete contracts
-		Return spotsToBroadcast  / daysLeft * daysLeft  * 100
+		Return spotsToBroadcast  / Float(daysLeft * daysLeft  * 100)
 	End Method
 
 
@@ -1648,7 +1648,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		If daysLeft <= 0 then return 0 'no "blocks" for obsolete contracts
 
 		If (acuteness >= 100)
-			Return int(spotsToBroadcast / daysLeft) 'int rundet
+			Return ceil(spotsToBroadcast / float(daysLeft)) 'int rundet
 		Elseif (acuteness >= 70)
 			Return 1
 		Else
