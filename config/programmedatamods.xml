@@ -906,8 +906,109 @@
 					<audienceAttraction id="Pensioners" men="0.1" women="0.2" />
 				</audienceAttractions>
 				<castAttributes>
+					<host attribute="humor" value="0.1" />
+					<host attribute="charisma" value="0.15" />
+					<host attribute="appearance" value="0.1" />
 					<actor attribute="humor" value="0.1" />
 					<actor attribute="appearance" value="0.1" />
+					<supportingactor attribute="humor" value="0.1" />
+					<supportingactor attribute="appearance" value="0.1" />
+				</castAttributes>
+			</genre>
+			<genre id="101" name="show_politics" outcome-mod="0.2" review-mod="0.6" speed-mod="0.2">
+				<goodFollower>4,6,17</goodFollower>
+				<badFollower>15</badFollower>
+				<timeMods>
+					<timeMod time="0" value="0.05"/>
+					<timeMod time="1" value="0"/>
+					<timeMod time="2" value="0"/>
+					<timeMod time="3" value="0"/>
+					<timeMod time="4" value="0"/>
+					<timeMod time="5" value="0"/>
+					<timeMod time="6" value="0"/>
+					<timeMod time="7" value="0"/>
+					<timeMod time="8" value="0"/>
+					<timeMod time="9" value="0"/>
+					<timeMod time="10" value="0"/>
+					<timeMod time="11" value="0"/>
+					<timeMod time="12" value="0"/>
+					<timeMod time="13" value="0"/>
+					<timeMod time="14" value="0"/>
+					<timeMod time="15" value="0"/>
+					<timeMod time="16" value="0"/>
+					<timeMod time="17" value="0"/>
+					<timeMod time="18" value="0.05"/>
+					<timeMod time="19" value="0.05"/>
+					<timeMod time="20" value="0.1"/>
+					<timeMod time="21" value="0.15"/>
+					<timeMod time="22" value="0.2"/>
+					<timeMod time="23" value="0.1"/>
+				</timeMods>
+				<audienceAttractions>
+					<audienceAttraction id="Children" value="-1" />
+					<audienceAttraction id="Teenagers" value="-0.7" />
+					<audienceAttraction id="HouseWives" men="-0.2" women="-0.35" />
+					<audienceAttraction id="Employees" men="0.2" women="0" />
+					<audienceAttraction id="Unemployed" men="-0.3" women="-0.5" />
+					<audienceAttraction id="Manager" men="0.6" women="0.4" />
+					<audienceAttraction id="Pensioners" men="0.5" women="0.3" />
+				</audienceAttractions>
+				<castAttributes>
+					<host attribute="humor" value="0.1" />
+					<host attribute="charisma" value="0.15" />
+					<host attribute="appearance" value="0.1" />
+					<actor attribute="charisma" value="0.1" />
+					<actor attribute="appearance" value="0.1" />
+					<supportingactor attribute="charisma" value="0.1" />
+					<supportingactor attribute="appearance" value="0.1" />
+				</castAttributes>
+			</genre>
+			<genre id="103" name="show_talk" outcome-mod="0.2" review-mod="0.30" speed-mod="0.50">
+				<goodFollower>5,9</goodFollower>
+				<badFollower>12,13</badFollower>
+				<timeMods>
+					<timeMod time="0" value="0.1"/>
+					<timeMod time="1" value="0"/>
+					<timeMod time="2" value="0"/>
+					<timeMod time="3" value="0"/>
+					<timeMod time="4" value="0"/>
+					<timeMod time="5" value="0"/>
+					<timeMod time="6" value="0"/>
+					<timeMod time="7" value="0"/>
+					<timeMod time="8" value="0"/>
+					<timeMod time="9" value="0"/>
+					<timeMod time="10" value="0"/>
+					<timeMod time="11" value="0"/>
+					<timeMod time="12" value="0"/>
+					<timeMod time="13" value="0"/>
+					<timeMod time="14" value="0"/>
+					<timeMod time="15" value="0"/>
+					<timeMod time="16" value="0.05"/>
+					<timeMod time="17" value="0.05"/>
+					<timeMod time="18" value="0.1"/>
+					<timeMod time="19" value="0.15"/>
+					<timeMod time="20" value="0.25"/>
+					<timeMod time="21" value="0.3"/>
+					<timeMod time="22" value="0.3"/>
+					<timeMod time="23" value="0.2"/>
+				</timeMods>
+				<audienceAttractions>
+					<audienceAttraction id="Children" value="-1" />
+					<audienceAttraction id="Teenagers" value="-0.4" />
+					<audienceAttraction id="HouseWives" men="-0.05" women="-0.15" />
+					<audienceAttraction id="Employees" men="0.1" women="0.1" />
+					<audienceAttraction id="Unemployed" men="-0.1" women="-0.1" />
+					<audienceAttraction id="Manager" men="0.2" women="0.2" />
+					<audienceAttraction id="Pensioners" men="0.7" women="0.6" />
+				</audienceAttractions>
+				<castAttributes>
+					<host attribute="humor" value="0.1" />
+					<host attribute="charisma" value="0.15" />
+					<host attribute="appearance" value="0.1" />
+					<actor attribute="humor" value="0.1" />
+					<actor attribute="charisma" value="0.1" />
+					<actor attribute="appearance" value="0.1" />
+					<supportingactor attribute="charisma" value="0.1" />
 					<supportingactor attribute="humor" value="0.1" />
 					<supportingactor attribute="appearance" value="0.1" />
 				</castAttributes>
@@ -956,53 +1057,7 @@
 					<supportingactor attribute="charisma" value="0.1" />
 					<supportingactor attribute="appearance" value="0.1" />
 				</castAttributes>
-			</genre>
-			<genre id="102" name="show_music" outcome-mod="0.2" review-mod="0.35" speed-mod="0.45">
-				<goodFollower>5,9</goodFollower>
-				<badFollower>12,13</badFollower>
-				<timeMods>
-					<timeMod time="0" value="0.1"/>
-					<timeMod time="1" value="0"/>
-					<timeMod time="2" value="0"/>
-					<timeMod time="3" value="0"/>
-					<timeMod time="4" value="0"/>
-					<timeMod time="5" value="0"/>
-					<timeMod time="6" value="0"/>
-					<timeMod time="7" value="0"/>
-					<timeMod time="8" value="0"/>
-					<timeMod time="9" value="0"/>
-					<timeMod time="10" value="0"/>
-					<timeMod time="11" value="0"/>
-					<timeMod time="12" value="0"/>
-					<timeMod time="13" value="0"/>
-					<timeMod time="14" value="0"/>
-					<timeMod time="15" value="0"/>
-					<timeMod time="16" value="0.05"/>
-					<timeMod time="17" value="0.05"/>
-					<timeMod time="18" value="0.1"/>
-					<timeMod time="19" value="0.2"/>
-					<timeMod time="20" value="0.3"/>
-					<timeMod time="21" value="0.3"/>
-					<timeMod time="22" value="0.2"/>
-					<timeMod time="23" value="0.15"/>
-				</timeMods>
-				<audienceAttractions>
-					<audienceAttraction id="Children" value="0.2" />
-					<audienceAttraction id="Teenagers" men="0.2" women="0.6" />
-					<audienceAttraction id="HouseWives" men="0.1" women="0.7" />
-					<audienceAttraction id="Employees" men="0.2" women="0.7" />
-					<audienceAttraction id="Unemployed" men="0.1" women="0.4" />
-					<audienceAttraction id="Manager" men="-0.5" women="-0.2" />
-					<audienceAttraction id="Pensioners" men="0.15" women="0.3" />
-				</audienceAttractions>
-				<castAttributes>
-					<actor attribute="humor" value="0.1" />
-					<actor attribute="appearance" value="0.1" />
-					<supportingactor attribute="humor" value="0.1" />
-					<supportingactor attribute="appearance" value="0.1" />
-				</castAttributes>
-			</genre>
-			
+			</genre>			
 
 			<genre id="200" name="event" outcome-mod="0" review-mod="0.5" speed-mod="0.5">
 				<goodFollower>5,9,11</goodFollower>

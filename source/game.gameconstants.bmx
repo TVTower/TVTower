@@ -666,16 +666,17 @@ Type TVTProgrammeGenre {_exposeToLua}
 	Const Western:int = 18
 
 	'Show-Genre 100+
-	Const Show:int = 100			'Shows Allgemein
+	Const Show:int = 100			'Shows in general
 	Const Show_Politics:int = 101	'Polit-Talks
-	Const Show_Music:int = 102		'Musik-Sendungen
+	Const Show_Music:int = 102		'Music shows ("Best of the 50s")
+	Const Show_Talk:int = 103		'Generic talks ("smalltalk")
 
 	'Event-Genre 200+
-	Const Event:int	= 200			'allgemeine "Ereignisse"
-	Const Event_Politics:int = 201	'Wahlen, Große Reden, Bundestagsdebatte
-	Const Event_Music:int = 202		'AC/DC-Konzert
-	Const Event_Sport:int = 203		'Fussball WM, Olymische Spiele
-	Const Event_Showbiz:int = 204	'Oscarverleihung, Golden Globes, Gala-Abend
+	Const Event:int	= 200			'generic events
+	Const Event_Politics:int = 201	'Votings, Speeches, Debates
+	Const Event_Music:int = 202		'AC/DC-conzert
+	Const Event_Sport:int = 203		'Soccer-WM, Olympic Games
+	Const Event_Showbiz:int = 204	'Oscars, Golden Globes, red-carpet-events
  
 	'Reportage-Genre 300+
 	Const Feature:int = 300
