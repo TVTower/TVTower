@@ -822,6 +822,8 @@ Type TDatabaseLoader
 		local GUID:String = TXmlHelper.FindValue(node,"id", "")
 		'referencing an already existing programmedata? Or just use "data-GUID"
 		local dataGUID:String = TXmlHelper.FindValue(node,"programmedata_id", "data-"+GUID)
+		'forgot to prepend "data-" ?
+		if dataGUID.Find("data-") <> 0 then dataGUID = "data-"+dataGUID
 
 		'fetch potential meta data
 		local metaData:TData = LoadV3ProgrammeLicenceMetaDataFromNode(GUID, node, xml, parentLicence)

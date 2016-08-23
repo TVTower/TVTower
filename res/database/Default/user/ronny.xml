@@ -2,13 +2,7 @@
 <tvgdb>
 	<version value="3" comment="Ronnys Programme" />
     <insignificantpeople>
-		<person id="test1" generator="de,2" last_name="Mueller" />
-		<person id="test2" generator="de,2" last_name="Mueller" />
-		<person id="test3" generator="de,2" last_name="Mueller" />
-		<person id="test4" generator="de,2" last_name="Mueller" />
-		<person id="test5" generator="de,2" last_name="Mueller" />
-		<person id="test6" generator="de,2" last_name="Mueller" />
-		<person id="test7" generator="de,2" last_name="Mueller" />
+		<person id="ronny-people-generated-01" generator="de,2" last_name="Mueller" />
 	</insignificantpeople>
     <celebritypeople>
         <person id="ronny-programmeperson-gertkalischke" fictional="1" creator="5578" created_by="Ronny">
@@ -283,6 +277,79 @@ Educational precious and absolutly ecological.</en>
 			<data country="D" year="1985" distribution="2" maingenre="15" subgenre="0" flags="16" blocks="2" price_mod="0.95" />
 			<ratings critics="32" speed="28" outcome="42" />
 		</programme>
+
+		<!-- added 23.08.2016 -->
+		<programme id="ronny-programme-kaugummitest-01" product="4" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Der große Kaugummitest</de>
+				<en>The Great Chewing Gum Check</en>
+			</title>
+			<description>
+				<de>Es gibt sie in rot, weiss und vielen anderen Farben. Mal mit Zucker und mal ohne. Im großen Kaugummitest werden 200 Kaugummisorten auf Geschmack, Viskosität und Schuhsohlentauglichkeit getestet.</de>
+				<en>They exist in red, white and many other colors. Sometimes with sugar and sometimes without. In the great chewing gum check 200 bubblegums are tested for taste, viscosity and shoe sole suitability.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
+			</staff>
+			<groups target_groups="23" />
+			<data country="D" year="0" year_relative="-2" year_relative_min="1980" year_relative_max="2000" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="2" price_mod="0.9" />
+			<ratings critics="18" speed="25" />
+		</programme>
+		<programme id="ronny-programme-feilschen-01" product="4" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Feilschen will gelernt sein</de>
+				<en>Haggling is a skill</en>
+			</title>
+			<description>
+				<de>Einführung in das Feilschen auf dem Orientbasar - oder dem heimischen Wochenmarkt.</de>
+				<en>Introduction to haggling on oriental bazaars - or the local farmer's market..</en>
+			</description>
+			<staff>
+				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="0" year_relative="-8" year_relative_min="1976" year_relative_max="1990" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="1" price_mod="1.05" />
+			<ratings critics="35" speed="15" />
+		</programme>
+		<programme id="ronny-programme-recyclingfueranfaenger-01" product="4" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Recycling für Anfänger</de>
+				<en>Recycling for beginners</en>
+			</title>
+			<description>
+				<de>Es ist neu, es ist trendy und es ist ökologisch wichtig. [1|Full] zeigt was in die Tonne kann.</de>
+				<en>It's new, it's trendy - and it is of ecological importance. [1|Full] shows what can be put in the trash bin.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="1" function="8">ronny-people-generated-01</member>
+			</staff>
+			<!-- pensioners and housewives -->
+			<groups target_groups="68" />
+			<data country="D" year="1991" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="1" price_mod="1.05" />
+			<ratings critics="35" speed="8" />
+		</programme>
+		<programme id="ronny-programme-versandkataloge-01" product="4" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Versandkataloge: Woher, wofür?</de>
+				<en>Mail-order catalogues: Whence and for what?</en>
+			</title>
+			<description>
+				<de>Der Traum einer jeden Hausfrau: Versandkataloge aus dem Hause ATTA und Qualle. Wie werden sie hergestellt, was kann man damit anstellen?
+Mit praktischen Tipps Ramschware zu erkennen.</de>
+				<en>The dream of every Housewife: Mail-order catalogues by ATTA or Qualle. How they are made and what could you do with them?
+With practical tricks to identify junk goods.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
+				<member index="1" function="8">ronny-people-generated-01</member>
+			</staff>
+			<!-- pensioners and housewives -->
+			<groups target_groups="68" />
+			<data country="D" year="193" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="2" price_mod="1.00" />
+			<ratings critics="18" speed="12" />
+		</programme>
+
 		<!-- Series -->
 		<programme id="ronny-programme-kochenmitpatty-01" product="7" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
 			<title>
