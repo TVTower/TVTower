@@ -5073,10 +5073,10 @@ Type GameEvents
 			Next
 
 			'NEWSEVENTS
-			'remove old news events - wait a day more than "plan time"
+			'remove old news events - wait a bit more than "plan time"
 			'this also gets rid of "one time" news events which should
 			'have been "triggered" then
-			local daysToKeep:int = int(ceil((2 * hoursToKeep)/48.0))
+			local daysToKeep:int = int(ceil((3 * hoursToKeep)/48.0))
 			GetNewsEventCollection().RemoveOutdatedNewsEvents(daysToKeep)
 		Next
 		'remove from collection (reuse if possible)

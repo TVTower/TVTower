@@ -903,10 +903,7 @@ Type TNewsAgency
 			If not skipNews or forceAdd
 				announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone() + adjustHappenedTime, forceAdd)
 				announced = True
-				?debug
-				Print "[NEWSAGENCY | LOCAL] AnnounceNewNews: added news title="+newsEvent.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
-				?
-				TLogger.Log("NewsAgency", "Added news: ~q"+newsEvent.GetTitle()+"~q for time "+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)+".", LOG_DEBUG)
+				TLogger.Log("NewsAgency", "Added news: ~q"+newsEvent.GetTitle()+"~q for day "+GetWorldTime().getDay(newsEvent.happenedtime)+" at "+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)+".", LOG_DEBUG)
 			EndIf
 		EndIf
 

@@ -320,8 +320,8 @@ Type TNewsEventCollection
 
 
 		'if no news is available, make older ones available again
-		'start with 5 days ago and lower until we got a news
-		local days:int = 5
+		'start with 4 days ago and lower until we got a news
+		local days:int = 4
 		While GetAvailableNewsList(genre).Count() = 0 and days >= 0
 			RemoveOutdatedNewsEvents(days, genre)
 			days :- 1
