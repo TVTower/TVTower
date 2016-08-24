@@ -98,6 +98,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		filterMoviesGood.filters[0].maxTopicalityMin = 0.35 'avoid older/broadcasted too often
 		filterMoviesGood.filters[0].maxTopicalityMax = -1.0
 		filterMoviesGood.filters[0].checkTradeability = True
+		filterMoviesGood.filters[0].requiredOwners = [TOwnedGameObject.OWNER_NOBODY]
 		'filter 2 requires min-Quality
 		filterMoviesGood.filters[1].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
 		filterMoviesGood.filters[1].qualityMin = movieCheapQualityMaximum
@@ -107,6 +108,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		filterMoviesGood.filters[1].maxTopicalityMin = 0.35 'avoid older/broadcasted too often
 		filterMoviesGood.filters[1].maxTopicalityMax = -1.0
 		filterMoviesGood.filters[1].checkTradeability = True
+		filterMoviesGood.filters[1].requiredOwners = [TOwnedGameObject.OWNER_NOBODY]
 
 		'cheap movies must be cheaper than X _or_ of lower quality than Y
 		filterMoviesCheap.connectionType = TProgrammeLicenceFilterGroup.CONNECTION_TYPE_OR
@@ -120,6 +122,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		filterMoviesCheap.filters[0].maxTopicalityMin = 0.15 'avoid older/broadcasted too often
 		filterMoviesCheap.filters[0].maxTopicalityMax = -1.0
 		filterMoviesCheap.filters[0].checkTradeability = True
+		filterMoviesCheap.filters[0].requiredOwners = [TOwnedGameObject.OWNER_NOBODY]
 
 		filterMoviesCheap.filters[1].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
 		'filterMoviesCheap.filters[1].SetRequiredOwners([TOwnedGameObject.OWNER_NOBODY])
@@ -132,6 +135,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		filterMoviesCheap.filters[1].maxTopicalityMin = 0.20 'avoid older/broadcasted too often
 		filterMoviesCheap.filters[1].maxTopicalityMax = -1.0
 		filterMoviesCheap.filters[1].checkTradeability = True
+		filterMoviesCheap.filters[1].requiredOwners = [TOwnedGameObject.OWNER_NOBODY]
 		
 		'filter them by price too - eg. for auction ?
 		filterSeries.licenceTypes = [TVTProgrammeLicenceType.SERIES]
@@ -142,6 +146,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		filterSeries.maxTopicalityMin = 0.25 'avoid older/broadcasted too often
 		filterSeries.maxTopicalityMax = -1.0
 		filterSeries.checkTradeability = True
+		filterSeries.requiredOwners = [TOwnedGameObject.OWNER_NOBODY]
 
 
 		if not filterAuction
@@ -159,6 +164,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			filterAuction.filters[0].maxTopicalityMin = 0.50
 			filterAuction.filters[0].maxTopicalityMax = -1.0
 			filterAuction.filters[0].checkTradeability = True
+			filterAuction.filters[0].requiredOwners = [TOwnedGameObject.OWNER_NOBODY]
+
 			'maximum of 1 year since release
 			filterAuction.filters[1].priceMin = 100000
 			filterAuction.filters[1].priceMax = -1
@@ -170,6 +177,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			filterAuction.filters[1].checkTimeToReleaseMax = False
 			filterAuction.filters[1].checkAgeMin = False
 			filterAuction.filters[1].checkAgeMax = False
+			filterAuction.filters[1].requiredOwners = [TOwnedGameObject.OWNER_NOBODY]
 		endif
 
 	End Method
