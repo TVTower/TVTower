@@ -1058,21 +1058,39 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		if playerID = 0 and owner > 0 then playerID = owner 
 		if playerID = 0 then playerID = GetPlayerBaseCollection().playerID
 
-		'single-licence
-		if GetSubLicenceCount() = 0 and GetData() then return GetData().GetPrice(playerID)
-
-		'licence for a package or series
 		Local value:Float
-		For local licence:TProgrammeLicence = eachin subLicences
-			value :+ licence.GetPrice(playerID)
-		Next
-		value :* 0.90
 
+		'single-licence
+		if GetSubLicenceCount() = 0 and GetData()
+			value = GetData().GetPrice(playerID)
+		else
+			'licence for a package or series
+			For local licence:TProgrammeLicence = eachin subLicences
+				value :+ licence.GetPrice(playerID)
+			Next
+			value :* 0.90
+		endif
+
+
+		'=== INDIVIDUAL PRICE ===
 		'individual licence price mod (eg. "special collection discount")
 		value :* GetModifier("price")
 
+		'=== AUCTION PRICE ===
+		'if this licence was won in an auction, this price is modifying
+		'the real one
+		value :* GetModifier("auctionPrice")
+
+		'=== DIFFICULTY ===
+		'eg. "auctions" set this flag
+		if not HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORE_PLAYERDIFFICULTY)
+			value :* GetPlayerDifficulty(string(playerID)).programmePriceMod
+		endif
+
+		'=== BEAUTIFY ===
 		'round to next "1000" block
-		value = Int(Floor(value / 1000) * 1000)
+		'value = Int(Floor(value / 1000) * 1000)
+		value = TFunctions.RoundToBeautifulValue(value)
 
 
 		Return value

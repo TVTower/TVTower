@@ -279,7 +279,9 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 	'material never changes from LIVE To LIVEONTAPE 
 	Const ALWAYS_LIVE:int = 512
 
-	Const count:int = 10
+	Const IGNORE_PLAYERDIFFICULTY:int = 1024
+
+	Const count:int = 11
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -290,16 +292,17 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 
 	Function GetIndex:int(key:int)
 		Select key
-			case   1	return 1
-			case   2	return 2
-			case   4	return 3
-			case   8	return 4
-			case  16	return 5
-			case  32	return 6
-			case  64	return 7
-			case 128	return 8
-			case 256	return 9
-			case 512	return 10
+			case    1	return 1
+			case    2	return 2
+			case    4	return 3
+			case    8	return 4
+			case   16	return 5
+			case   32	return 6
+			case   64	return 7
+			case  128	return 8
+			case  256	return 9
+			case  512	return 10
+			case 1024	return 11
 		End Select
 		return 0
 	End Function

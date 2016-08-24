@@ -1199,15 +1199,6 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 		value :* GetBlocks() * 0.92^(GetBlocks()-1)
 
 
-		'=== DIFFICULTY ===
-		value :* GetPlayerDifficulty(string(playerID)).programmePriceMod
-
-
-		'=== BEAUTIFY ===
-		'round to next "1000" block
-'		value = Int(Floor(value / 1000) * 1000)
-		value = TFunctions.RoundToBeautifulValue(value)
-
 		'print GetTitle()+"  value1: "+value + "  outcome:"+GetOutcome()+"  review:"+GetReview() + " maxTop:"+GetMaxTopicality()+" year:"+GetYear()
 rem
 if GetTitle().Find("Brenz") >= 0 or GetTitle().Find("Dschungel") >= 0

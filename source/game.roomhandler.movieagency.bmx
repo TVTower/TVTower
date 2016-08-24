@@ -1108,6 +1108,8 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		'turn back licence if nobody bought the old one
 		if licence and licence.owner = TOwnedGameObject.OWNER_VENDOR
 			licence.SetOwner( TOwnedGameObject.OWNER_NOBODY )
+			'no longer ignore player difficulty
+			licence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORE_PLAYERDIFFICULTY, False)
 		endif
 	
 		licence = programmeLicence
@@ -1152,6 +1154,13 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		if licence
 			'set licence owner to "-1" so it gets not returned again from Random-Getter
 			licence.SetOwner( TOwnedGameObject.OWNER_VENDOR )
+
+			'reset auctionPrice-Mod
+			'ATTENTION: during "filtering" the price might have been
+			'           modified by this modifier - for now we ignore
+			'           the fact it could not have passed the filter...
+			licence.SetModifier("auctionPrice", 1.0)
+			licence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORE_PLAYERDIFFICULTY, True)
 		endif
 		
 		'reset cache
@@ -1177,6 +1186,10 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 		
 		If bestBidder and GetPlayerBaseCollection().IsPlayer(bestBidder)
+			'modify licences new price until a new auction of this licence
+			'might reset it
+			licence.SetModifier("auctionPrice", Float(bestBid) / licence.GetPrice(0))
+			
 			Local player:TPlayerBase = GetPlayerBase(bestBidder)
 			GetPlayerProgrammeCollection(player.playerID).AddProgrammeLicence(licence)
 
@@ -1276,6 +1289,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		'no bid done yet, next bid is the licences price cut by 25%
 		If bestBid = 0
 			nextBid = licence.getPrice(0) * 0.75
+			nextBid = TFunctions.RoundToBeautifulValue(nextBid)
 		Else
 			nextBid = bestBid
 
