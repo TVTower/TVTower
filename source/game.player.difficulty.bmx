@@ -45,6 +45,8 @@ Type TPlayerDifficultyCollection Extends TGameObjectCollection
 		Add(easy)
 		Add(normal)
 		Add(hard)
+
+		_initializedDefaults = True
 	End Method
 	
 
