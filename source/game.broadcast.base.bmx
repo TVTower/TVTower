@@ -493,6 +493,9 @@ Type TBroadcast
 			Attractions[playerId - 1] = CalculateMalfunction(lastMovieAttraction)
 		End If
 
+		'limit attraction values to 0-1.0
+		Attractions[playerId - 1].CutBordersFloat(0, 1.0)
+
 		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
 			If market.Players.Contains(String(playerId))
 				market.SetPlayersProgrammeAttraction(playerId, Attractions[playerId-1])
@@ -1009,6 +1012,7 @@ Type TAudienceMarketCalculation
 				Local attraction:TAudience = TAudience(MapValueForKey(AudienceAttractions, currKey))
 				'Die effectiveAttraction (wegen Konkurrenz) entspricht der Quote!
 				Local effectiveAttraction:TAudience = attraction.Copy().Multiply(reduceFactor)
+				effectiveAttraction.CutBordersFloat(0, 1.0)
 
 				'Anteil an der "erbeuteten" Zapper berechnen
 				Local channelSurfer:TAudience = ChannelSurferToShare.Copy().Multiply(effectiveAttraction)
@@ -1027,7 +1031,7 @@ Type TAudienceMarketCalculation
 				'Keine ChannelSurferSum, dafür
 				AudienceResults[currKeyInt-1].ChannelSurferToShare = ChannelSurferToShare
 				AudienceResults[currKeyInt-1].AudienceAttraction = TAudienceAttraction(MapValueForKey(AudienceAttractions, currKey))
-				AudienceResults[currKeyInt-1].EffectiveAudienceAttraction	= effectiveAttraction
+				AudienceResults[currKeyInt-1].EffectiveAudienceAttraction = effectiveAttraction
 
 				'Print "Attraction für " + currKey + ": " + attraction.ToString()
 				'Print "ReduceFactor für " + currKey + ": " + GetReduceFactor().ToString()

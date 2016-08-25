@@ -178,7 +178,7 @@ Type TAudienceAttraction Extends TAudience
 
 		result.Multiply( targetGroupAttractivityMod )
 
-		result.CutMinimumFloat(0)
+		result.CutBordersFloat(0, 1.0)
 
 		Return result
 	End Method

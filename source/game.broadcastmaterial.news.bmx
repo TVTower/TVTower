@@ -143,6 +143,8 @@ endif
 			endif
 
 			Local tempAudienceAttr:TAudienceAttraction = currentNews.GetAudienceAttraction(hour, block, lastMovieBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect)			
+			'limit attraction values to 0-1.0
+			tempAudienceAttr.CutBordersFloat(0, 1.0)
 
 			'different weight for news slots
 			If i = 0 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(NEWS_WEIGHT_1))
