@@ -1217,14 +1217,16 @@ endrem
 
 		If GameRules.devConfig.GetBool("DEV_OSD", False)
 			GetBitmapFontManager().baseFont.draw("Loop: "+Int(GetDeltaTimer().getLoopTimeAverage())+"ms", textX,0)
-			textX:+100
+			textX:+85
 			'update time per second
-			GetBitmapFontManager().baseFont.draw("UTPS: " + Int(GetDeltaTimer()._currentUpdateTimePerSecond), 560,0)
-			textX:+60
+			GetBitmapFontManager().baseFont.draw("UTPS: " + Int(GetDeltaTimer()._currentUpdateTimePerSecond), textX,0)
+			textX:+65
 			'render time per second
-			GetBitmapFontManager().baseFont.draw("RTPS: " + Int(GetDeltaTimer()._currentRenderTimePerSecond), 620,0)
-			textX:+60
+			GetBitmapFontManager().baseFont.draw("RTPS: " + Int(GetDeltaTimer()._currentRenderTimePerSecond), textX,0)
+			textX:+65
 
+			GetBitmapFontManager().baseFont.draw("gobject-Max: "+ TGameObject.lastID, textX,0)
+			textX:+115
 
 			'RON: debug purpose - see if the managed guielements list increase over time
 			If TGUIObject.GetFocusedObject()

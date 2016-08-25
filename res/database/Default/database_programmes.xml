@@ -4774,8 +4774,8 @@ Aufwendiges Actionspektakel von Regisseur [0|Full]</de>
 		</programme>
 		<programme id="6cab2c62-39d7-4e0a-b957-191d54fc78f9" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
-				<de>TED des Tages</de>
-				<en>TED of the day</en>
+				<de>TED am Morgen</de>
+				<en>TED in the morning</en>
 			</title>
 			<description>
 				<de>Der Teledialog befragt Zuschauer zu brisanten Themen. Meinungsbildend und Gewinnbringend.</de>
@@ -4785,7 +4785,23 @@ Aufwendiges Actionspektakel von Regisseur [0|Full]</de>
 				<member index="0" function="1">11c74211-662a-4817-b5b5-ec2c635d0158</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2001" distribution="1" maingenre="0" subgenre="0" flags="128" blocks="1" price_mod="1.0" />
+			<data country="D" year="2001" distribution="1" maingenre="0" subgenre="0" flags="128" blocks="1" broadcast_time_slot_start="6" broadcast_time_slot_end="10" price_mod="1.0" />
+			<ratings critics="25" speed="10" outcome="15" />
+		</programme>
+		<programme id="ffdbdca2-7ad9-bbfc-b1a1-af1d24ee7ab5" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+			<title>
+				<de>TED am Abend</de>
+				<en>TED in the evening</en>
+			</title>
+			<description>
+				<de>Der Teledialog befragt Zuschauer zu brisanten Themen. Meinungsbildend und Gewinnbringend.</de>
+				<en>The teledialogue surveys viewers to topics of high significance. Opinion-forming and gainful.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">11c74211-662a-4817-b5b5-ec2c635d0158</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="2001" distribution="1" maingenre="0" subgenre="0" flags="128" blocks="1" broadcast_time_slot_start="17" broadcast_time_slot_end="21" price_mod="1.0" />
 			<ratings critics="25" speed="10" outcome="15" />
 		</programme>
 		<programme id="3a0c9fba-3b1e-49e1-afdf-340e4aa1f913" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0093409" rt_id="0" creator="">
