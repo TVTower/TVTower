@@ -186,7 +186,10 @@ Type RoomHandler_Office extends TRoomHandler
 
 				'planner - reachable for all
 				If THelper.MouseIn(600,140,128,210)
-					If not PlannerToolTip Then PlannerToolTip = TTooltip.Create(GetLocale("ROOM_PROGRAMMEPLANNER"), GetLocale("AND_STATISTICS"), 580, 140)
+					If not PlannerToolTip
+						PlannerToolTip = TTooltip.Create(GetLocale("ROOM_PROGRAMMEPLANNER"), GetLocale("AND_STATISTICS"), 580, 140)
+						PlannerTooltip._minContentWidth = 150
+					endif
 					PlannerToolTip.enabled = 1
 					PlannerToolTip.Hover()
 					GetGameBase().cursorstate = 1
@@ -198,7 +201,11 @@ Type RoomHandler_Office extends TRoomHandler
 				EndIf
 
 				If THelper.MouseIn(732,45,160,170)
-					If not StationsToolTip Then StationsToolTip = TTooltip.Create(GetLocale("ROOM_STATIONMAP"), GetLocale("BUY_AND_SELL"), 650, 80, 0, 0)
+					If not StationsToolTip
+						StationsToolTip = TTooltip.Create(GetLocale("ROOM_STATIONMAP"), GetLocale("BUY_AND_SELL"), 650, 80, 0, 0)
+						StationsToolTip._minContentWidth = 150
+					endif
+						
 					StationsToolTip.enabled = 1
 					StationsToolTip.Hover()
 					GetGameBase().cursorstate = 1

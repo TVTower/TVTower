@@ -184,7 +184,7 @@ Type TTooltip Extends TEntity
 
 		'auto width calculation
 		If area.GetW() <= 0
-			return Max(GetTitleWidth(), GetContentwidth())
+			return Max(GetTitleWidth(), GetContentWidth())
 		EndIf
 	End Method
 
@@ -235,17 +235,12 @@ Type TTooltip Extends TEntity
 		return Max(GetTitleWidth(), GetContentInnerWidth()) + padding.GetLeft() + padding.GetRight()
 	End Method
 
-rem
-tooltip: contentbreiten richtig berechnen -
-- ueberpruefen dass sie in "Doortooltips", "im-raum-tooltips" und die
-quoten (+details)-tooltips richtig funktionieren
 
-die Toastmessages sind nicht richtig von den Dimensionen (Cheftext ueberlappt)
-endrem
 	Method GetContentInnerWidth:Int()
 		'return minimum
 		'if all fits in one line use content width, else minimum tooltip width
-		if content <> "" then return Min(UseFont.getWidth(content), _minContentWidth - padding.GetLeft() - padding.GetRight())
+		if content <> "" then return Min(ceil(UseFont.getWidth(content)), _minContentWidth - padding.GetLeft() - padding.GetRight())
+
 		Return 0
 	End Method
 
