@@ -816,14 +816,14 @@ Type TAchievementReward Extends TAchievementBaseType
 	
 
 	Method GiveToPlayer:int(playerID:int, time:Long=0)
-		If playerID <= 0 or playerID > rewardGiven.length Then Return False
+		If playerID < 1 or playerID > rewardGiven.length Then Return False
 
 		'only reward once?
 		if HasFlag(FLAG_ONETIMEREWARD)
-			if rewardGiven[playerID] >=0 then return False
+			if rewardGiven[playerID-1] >=0 then return False
 		endif
 
-		rewardGiven[playerID] = time
+		rewardGiven[playerID-1] = time
 
 		EventManager.triggerEvent(TEventSimple.Create("AchievementReward.OnBeginGiveToPlayer", New TData.addNumber("playerID", playerID), Self))
 
