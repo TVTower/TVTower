@@ -8,6 +8,11 @@ Type TGUIModalMainMenu extends TGUIModalWindowChainElement
 	Global speedFactor:Int[] = [15, 30, 180, 600]
 
 
+	Method New()
+		className= "TGUIModalMainMenu"
+	End Method
+	
+
 	Method Create:TGUIModalMainMenu(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
@@ -70,8 +75,14 @@ Type TGUIModalMainMenu extends TGUIModalWindowChainElement
 	'override to remove all known submenus
 	Method Remove:int()
 		super.Remove()
-		if chainSaveMenu then chainSaveMenu.Remove()
-		if chainLoadMenu then chainLoadMenu.Remove()
+		if chainSaveMenu
+			chainSaveMenu.Remove()
+			chainSaveMenu = null
+		endif
+		if chainLoadMenu
+			chainLoadMenu.Remove()
+			chainLoadMenu = null
+		endif
 	End Method
 	
 

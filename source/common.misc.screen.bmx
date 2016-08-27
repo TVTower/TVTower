@@ -79,6 +79,7 @@ Type TScreenCollection
 			local event:TEventSimple = TEventSimple.Create("screen.onTryEnter", new TData.Add("fromScreen", currentScreen), screen)
 			EventManager.triggerEvent(event)
 			if not event.isVeto()
+				EventManager.triggerEvent( TEventSimple.Create("screen.onLeave", new TData.Add("toScreen", screen), currentScreen) )
 				'instead of assigning currentScreen directly we use a setter
 				'so visual effects can happen first
 				'there is an effect to handle first - so set target instead of current screen
@@ -89,6 +90,10 @@ Type TScreenCollection
 					targetScreen = null
 					return _SetCurrentScreen(screen)
 				endif
+
+				'screen.onFinishLeave is called via "_SetCurrentScreen"
+				'which is also called via _SetTargetScreen and when then
+				'finishing the animation
 			endif
 		endif
 		return FALSE
@@ -109,7 +114,9 @@ endrem
 'print "                : begin enter"
 				screen.BeginEnter(currentScreen)
 			EndIf
+			local oldScreen:TScreen = currentScreen
 			currentScreen = screen
+			EventManager.triggerEvent( TEventSimple.Create("screen.onFinishLeave", new TData.Add("toScreen", currentScreen), oldScreen) )
 
 			'if not currentScreen then currentScreen = baseScreen
 		endif
@@ -385,16 +392,12 @@ Type TScreen
 	Method BeginLeave:int(toScreen:TScreen=null)
 		state = TScreen.STATE_LEAVING
 
-		EventManager.triggerEvent( TEventSimple.Create("screen.onLeave", new TData.Add("toScreen", toScreen), self) )
-
 		if _leaveScreenEffect then _leaveScreenEffect.Reset()
 	End Method
 
 
 	Method FinishLeave:int(toScreen:TScreen=null)
 		state = TScreen.STATE_NONE
-
-		EventManager.triggerEvent( TEventSimple.Create("screen.onFinishLeave", new TData.Add("toScreen", toScreen), self) )
 	End Method
 
 

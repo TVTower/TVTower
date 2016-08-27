@@ -180,6 +180,23 @@ Type RoomHandler_News extends TRoomHandler
 	End Method
 
 
+	Function IsMyScreen:Int(screen:TScreen)
+		if not screen then return False
+		if screen.name = "screen_newsstudio_newsplanner" then return True
+		if screen.name = "screen_newsstudio" then return True
+
+		return False
+	End Function
+
+
+	Function IsMyRoom:Int(room:TRoomBase)
+		For Local i:Int = 1 To 4
+			If room = GetRoomCollection().GetFirstByDetails("news", i) Then Return True
+		Next
+		Return False
+	End Function
+	
+
 	Method onSaveGameBeginLoad:int( triggerEvent:TEventBase )
 		'for further explanation of this, check
 		'RoomHandler_Office.onSaveGameBeginLoad()
@@ -399,6 +416,14 @@ Type RoomHandler_News extends TRoomHandler
 
 
 	Function onChangeNews:int( triggerEvent:TEventBase )
+		'is it the plan of the room owner?
+		Local plan:TPlayerProgrammePlan = TPlayerProgrammePlan(triggerEvent.GetSender())
+		If Not plan Or plan.owner <> currentRoom.owner Then Return False
+
+		'only adjust GUI if we are displaying that screen (eg. AI skips that)
+		If not IsMyScreen( ScreenCollection.GetCurrentScreen() ) Then Return False
+
+		'our plan?
 		'something changed -- refresh  gui elements
 		RefreshGuiElements()
 	End Function

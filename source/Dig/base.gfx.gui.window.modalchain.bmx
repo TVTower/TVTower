@@ -62,6 +62,10 @@ Type TGUIModalWindowChain Extends TGUIObject
 	Field closeActionStartPosition:TVec2D = new TVec2D
 
 
+	Method New()
+		className= "TGUIModalWindowChain"
+	End Method
+
 
 	Method Create:TGUIModalWindowChain(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.CreateBase(pos, dimension, limitState)

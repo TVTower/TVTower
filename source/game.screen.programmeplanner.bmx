@@ -30,10 +30,11 @@ Type TScreenHandler_ProgrammePlanner
 	Global GuiListAdvertisements:TGUIProgrammePlanSlotList
 
 	Global _eventListeners:TLink[]
+	Global screenName:string = "screen_office_programmeplanner"
 
 
 	Function Initialize:Int()
-		Local screen:TScreen = ScreenCollection.GetScreen("screen_office_programmeplanner")
+		Local screen:TScreen = ScreenCollection.GetScreen(screenName)
 		If Not screen Then Return False
 		
 		'add gfx to background image
@@ -127,6 +128,8 @@ Type TScreenHandler_ProgrammePlanner
 		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onEnter", onEnterProgrammePlannerScreen, screen) ]
 		'player leaves screen - only without dragged blocks
 		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnTryLeave", onTryLeaveProgrammePlannerScreen, screen) ]
+		'player leaves screen - clean GUI (especially dragged ones)
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnLeave", onLeaveProgrammePlannerScreen, screen) ]
 		'player leaves office forcefully - clean up
 		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onForcefullyLeaveRoom", onForcefullyLeaveRoom) ]
 
@@ -190,6 +193,14 @@ Type TScreenHandler_ProgrammePlanner
 			ProgrammePlannerButtons[4].SetCaption(GetLocale("PLANNER_ACHIEVEMENTS"))
 			ProgrammePlannerButtons[5].SetCaption(GetLocale("PLANNER_UNKNOWN"))
 		EndIf
+	End Function
+
+
+	Function IsMyScreen:Int(screen:TScreen)
+		if not screen then return False
+		if screen.name = screenName then return True
+
+		return False
 	End Function
 
 
@@ -265,7 +276,7 @@ Type TScreenHandler_ProgrammePlanner
 	End Function
 
 
-	'called as soon as a players figure is forced to leave a room
+	'called as soon as a player's figure is forced to leave a room
 	Function onForcefullyLeaveRoom:Int( triggerEvent:TEventBase )
 		'only handle the players figure
 		If TFigure(triggerEvent.GetSender()) <> GetPlayer().figure Then Return False
@@ -279,8 +290,28 @@ Type TScreenHandler_ProgrammePlanner
 		PPcontractList.SetOpen(0)
 
 		AbortScreenActions()
-	End Function	
+	End Function
 
+
+	'called as soon as a player leaves a screen
+	Function onLeaveProgrammePlannerScreen:Int( triggerEvent:TEventBase )
+print "onLeaveProgrammePlannerScreen()"
+		'=== UNSET GUI ELEMENTS ===
+		If draggedGuiProgrammePlanElement
+			draggedGuiProgrammePlanElement.Remove()
+			draggedGuiProgrammePlanElement = null
+			print "unset a dragged plan element"
+			debugstop
+		endif
+		hoveredGuiProgrammePlanElement = null
+
+		For Local obj:TGUIProgrammePlanElement = EachIn GuiManager.ListDragged.Copy()
+			obj.Remove()
+			print "unset another dragged plan element"
+			debugstop
+		Next
+	End Function
+	
 
 	'call this function if the visual user actions need to get
 	'aborted
@@ -307,10 +338,10 @@ Type TScreenHandler_ProgrammePlanner
 			obj.Remove()
 		Next
 
-		'=== STATIONMAP ===
+		'=== IMAGE SCREEN ===
 		'...
 
-		'=== IMAGE SCREEN ===
+		'=== FINANCIAL SCREEN ===
 		'...
 
 		'...
@@ -509,6 +540,8 @@ Type TScreenHandler_ProgrammePlanner
 	'to their programme plan, react to...
 	Function onChangeProgrammePlan:Int( triggerEvent:TEventBase )
 		If Not TRoomHandler.CheckPlayerInRoom("office") Then Return False
+		'only adjust GUI if we are displaying that screen (eg. AI skips that)
+		If not IsMyScreen( ScreenCollection.GetCurrentScreen() ) Then Return False
 
 		'is it our plan?
 		Local plan:TPlayerProgrammePlan = TPlayerProgrammePlan(triggerEvent.GetSender())
@@ -529,6 +562,8 @@ Type TScreenHandler_ProgrammePlanner
 	Function onDragProgrammePlanElement:Int(triggerEvent:TEventBase)
 		'do not react if in other players rooms
 		If Not TRoomHandler.IsPlayersRoom(currentRoom) Return False
+		'only adjust GUI if we are displaying that screen (eg. AI skips that)
+		If not IsMyScreen( ScreenCollection.GetCurrentScreen() ) Then Return False
 
 		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
 		If Not item Then Return False
@@ -552,6 +587,8 @@ Type TScreenHandler_ProgrammePlanner
 	Function onTryDragProgrammePlanElement:Int(triggerEvent:TEventBase)
 		'do not react if in other players rooms
 		If Not TRoomHandler.IsPlayersRoom(currentRoom) Return False
+		'only adjust GUI if we are displaying that screen (eg. AI skips that)
+		If not IsMyScreen( ScreenCollection.GetCurrentScreen() ) Then Return False
 
 		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
 		If Not item Then Return False
@@ -575,6 +612,9 @@ Type TScreenHandler_ProgrammePlanner
 	'handle adding items at the end of a day
 	'so the removed material can be recreated as dragged gui items
 	Function onProgrammePlanAddObject:Int(triggerEvent:TEventBase)
+		'only adjust GUI if we are displaying that screen (eg. AI skips that)
+		If not IsMyScreen( ScreenCollection.GetCurrentScreen() ) Then Return False
+
 		'do not react if not the players Programme Plan
 		'this is important, as you are _never_ able to control other
 		'players plans
@@ -608,6 +648,9 @@ Type TScreenHandler_ProgrammePlanner
 	'eg. a live programme can only be dropped to a specific slot
 	'eg. a programme with a time slot can only be dropped to a specific slots
 	Function onTryDropProgrammePlanElement:Int(triggerEvent:TEventBase)
+		'only adjust GUI if we are displaying that screen (eg. AI skips that)
+		If not IsMyScreen( ScreenCollection.GetCurrentScreen() ) Then Return False
+
 		'do not react if in other players rooms
 		If Not TRoomHandler.IsPlayersRoom(currentRoom) Return False
 
@@ -690,6 +733,9 @@ Type TScreenHandler_ProgrammePlanner
 
 
 	Function onTryDropProgrammePlanElementOnDayButton:Int(triggerEvent:TEventBase)
+		'only adjust GUI if we are displaying that screen (eg. AI skips that)
+		If not IsMyScreen( ScreenCollection.GetCurrentScreen() ) Then Return False
+
 		'do not react if in other players rooms
 		If Not TRoomHandler.IsPlayersRoom(currentRoom) Return False
 
@@ -887,6 +933,9 @@ Type TScreenHandler_ProgrammePlanner
 	'right mouse button click: remove the block from the player's programmePlan
 	'left mouse button click: check shortcuts and create a copy/nextepisode-block
 	Function onClickProgrammePlanElement:Int(triggerEvent:TEventBase)
+		'only adjust GUI if we are displaying that screen (eg. AI skips that)
+		If not IsMyScreen( ScreenCollection.GetCurrentScreen() ) Then Return False
+
 		'do not react if in other players rooms
 		If Not TRoomHandler.IsPlayersRoom(currentRoom) Return False
 
@@ -1096,7 +1145,14 @@ Type TScreenHandler_ProgrammePlanner
 					Next
 					EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.PROGRAMME, 1)
 '					EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.ADVERTISEMENT, 1)
+rem
+Ueberpruefen:
+- Lizenzen "Live" setzen und Zeitfenster erlauben
+- Zeigt datenblatt dann "Live morgen 0:05 Uhr" _und_ "Nursendbar 0-6"?
 
+- KI muss auch damit klarkommen (ausfiltern solcher Sendungen in der
+"verfuegbar fuer jetzt" Liste
+endrem
 				'else mark the exact live time (releasetime + blocks) slots
 				'(if planning day not in the past)
 				ElseIf programme.data.IsLive() And GetWorldTime().GetDay() <= planningDay 
@@ -1384,12 +1440,15 @@ Type TScreenHandler_ProgrammePlanner
 
 		'only do the gui stuff with the player being in the office
 		If TRoomHandler.CheckPlayerInRoom("office")
-			'FALSE: without removing dragged
-			'->ONLY keeps newly created, not ones dragged from a slot
-			RemoveAllGuiElements(False)
+			'only adjust GUI if we are displaying that screen (eg. AI skips that)
+			If not IsMyScreen( ScreenCollection.GetCurrentScreen() )
+				'FALSE: without removing dragged
+				'->ONLY keeps newly created, not ones dragged from a slot
+				RemoveAllGuiElements(False)
 
-			RefreshGuiElements()
-			FindHoveredPlanElement()
+				RefreshGuiElements()
+				FindHoveredPlanElement()
+			EndIf
 		EndIf
 	End Function
 

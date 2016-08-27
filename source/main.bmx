@@ -1439,6 +1439,13 @@ endrem
 		'100ms since last window
 		If MilliSecs() - EscapeMenuWindowTime < 100 Then Return False
 
+		'remove gui objects in a broken "dragged" state (removal missed
+		'somehow)
+		For Local obj:TGUIObject = EachIn GuiManager.ListDragged.Copy()
+			obj.Remove()
+			print "Removed forgotten dragged element " + obj.GetClassName()
+		Next
+
 		EscapeMenuWindowTime = MilliSecs()
 
 		App.SetPausedBy(TApp.PAUSED_BY_ESCAPEMENU)

@@ -158,7 +158,9 @@ Type TGUIManager
 		obj.setOption(GUI_OBJECT_DRAGGED, False)
 		obj._timeDragged = 0
 		ListDragged.Remove(obj)
-		ListDragged.sort(False, SortObjects)
+		'removing should not need a sort-call as the rest is still
+		'sorted
+		'ListDragged.sort(False, SortObjects)
 
 		Return True
 	End Method
