@@ -193,8 +193,6 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 				Print "[" + GetArrayIndex(int(time / 3600)) + "] " + GetWorldTime().GetYear(time) + " " + GetWorldTime().GetDayOfYear(time) + ".Tag " + GetWorldTime().GetDayHour(time) + ":00 : " + progString + adString
 			EndIf
 		Next
-		For Local i:Int = 0 To programmes.length - 1
-		Next
 		Print "=== ----------------------- ==="
 	End Method
 
@@ -508,6 +506,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'loop through the given range
 		Local minIndex:Int = GetArrayIndex(dayStart*24 + hourStart)
 		Local maxIndex:Int = GetArrayIndex(dayEnd*24 + hourEnd)
+		if maxIndex - minIndex < 0 then return result
+		
 		For Local i:Int = minIndex To maxIndex
 			material = TBroadcastMaterial(GetObjectAtIndex(objectType, i))
 			If Not material Then Continue
@@ -516,7 +516,27 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 			result = result[..result.length+1]
 			result[result.length-1] = material
+		Next
 
+		Return result
+	End Method
+
+
+	Method GetObjectSlotsInTimeSpan:TBroadcastMaterial[](objectType:Int=0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1) {_exposeToLua}
+		FixDayHour(dayStart, hourStart)
+		FixDayHour(dayEnd, hourEnd)
+
+		Local material:TBroadcastMaterial = Null
+		Local result:TBroadcastMaterial[]
+
+		'loop through the given range
+		Local minIndex:Int = GetArrayIndex(dayStart*24 + hourStart)
+		Local maxIndex:Int = GetArrayIndex(dayEnd*24 + hourEnd)
+		if maxIndex - minIndex < 0 then return result
+		
+		result = new TBroadcastMaterial[ maxIndex-minIndex +1 ]
+		For Local i:Int = minIndex To maxIndex
+			result[i-minIndex] = GetObject(objectType, 0, GetHourFromArrayIndex(i))
 		Next
 
 		Return result
@@ -1133,6 +1153,13 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
+	'returns an array of broadcast material (or null) for all slots in the
+	'given time frame
+	Method GetProgrammeSlotsInTimeSpan:TBroadcastMaterial[](dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1) {_exposeToLua}
+		Return GetObjectSlotsInTimeSpan(TVTBroadcastMaterialType.PROGRAMME, dayStart, hourStart, dayEnd, hourEnd)
+	End Method
+
+
 	Method ProgrammePlannedInTimeSpan:Int(material:TBroadcastMaterial, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1) {_exposeToLua}
 		'check if planned as programme
 		If ObjectPlannedInTimeSpan(material, TVTBroadcastMaterialType.PROGRAMME, dayStart, hourStart, dayEnd, hourEnd)
@@ -1329,6 +1356,13 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'in the advertisement list
 	Method GetRealAdvertisementsInTimeSpan:TAdvertisement[](dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1, includeStartingEarlierObject:Int=True) {_exposeToLua}
 		Return TAdvertisement[](GetObjectsInTimeSpan(TVTBroadcastMaterialType.ADVERTISEMENT, dayStart, hourStart, dayEnd, hourEnd, includeStartingEarlierObject, True))
+	End Method
+
+
+	'returns an array of broadcast material (or null) for all slots in the
+	'given time frame
+	Method GetAdvertisementSlotsInTimeSpan:TBroadcastMaterial[](dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1) {_exposeToLua}
+		Return GetObjectSlotsInTimeSpan(TVTBroadcastMaterialType.ADVERTISEMENT, dayStart, hourStart, dayEnd, hourEnd)
 	End Method
 
 

@@ -295,20 +295,15 @@ Type TScreenHandler_ProgrammePlanner
 
 	'called as soon as a player leaves a screen
 	Function onLeaveProgrammePlannerScreen:Int( triggerEvent:TEventBase )
-print "onLeaveProgrammePlannerScreen()"
 		'=== UNSET GUI ELEMENTS ===
 		If draggedGuiProgrammePlanElement
 			draggedGuiProgrammePlanElement.Remove()
 			draggedGuiProgrammePlanElement = null
-			print "unset a dragged plan element"
-			debugstop
 		endif
 		hoveredGuiProgrammePlanElement = null
 
 		For Local obj:TGUIProgrammePlanElement = EachIn GuiManager.ListDragged.Copy()
 			obj.Remove()
-			print "unset another dragged plan element"
-			debugstop
 		Next
 	End Function
 	

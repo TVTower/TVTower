@@ -11,6 +11,7 @@ SuperStrict
 
 Global TVTDebugInfos:int = False
 Global TVTDebugQuoteInfos:int = False	
+Global TVTDebugProgrammePlan:int = False	
 Global TVTGhostBuildingScrollMode:int = False
 
 

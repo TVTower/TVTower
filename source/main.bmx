@@ -1041,7 +1041,10 @@ endrem
 					TSaveGame.Load("savegames/quicksave.xml")
 				endif
 
-				If KEYMANAGER.IsHit(KEY_TAB) Then TVTDebugInfos = 1 - TVTDebugInfos
+				If KEYMANAGER.IsHit(KEY_TAB)
+					TVTDebugInfos = 1 - TVTDebugInfos
+					TVTDebugProgrammePlan = False
+				endif
 
 				If KEYMANAGER.Ishit(KEY_K)
 					TLogger.Log("KickAllFromRooms", "Player kicks all figures out of the rooms.", LOG_DEBUG)
@@ -1357,7 +1360,15 @@ endrem
 			endif
 
 			'show quotes even without "DEV_OSD = true"
-			If TVTDebugQuoteInfos Then debugAudienceInfos.Draw()
+			If TVTDebugQuoteInfos
+				debugAudienceInfos.Draw()
+			elseif TVTDebugProgrammePlan
+				local playerID:int = GetObservedPlayerID()
+				if playerID <= 0 then playerID = GetPlayerBase().playerID
+
+				DrawDebugProgrammePlan(playerID, 15, 15)
+				DrawDebugProgrammePlan((playerID + 1) mod 4, 415, 15)
+			endif
 		endif
 		
 		'draw loading resource information
@@ -4113,6 +4124,14 @@ Type GameEvents
 		Local PLAYER_NOT_FOUND:String = "[DEV] player not found."
 
 		Select command.Trim().toLower()
+			Case "debug"
+				local what:string = payload
+				Select what.Trim().ToLower()
+					case "programmeplan"
+						TVTDebugProgrammePlan = True
+						TVTDebugQuoteInfos = False
+				End Select
+				
 			Case "playerai"
 				if GetGame().networkGame
 					GetGame().SendSystemMessage("[DEV] Cannot adjust AI in network games.")
@@ -5984,4 +6003,65 @@ TProfiler.Leave("GameLoop")
 
 	'take care of network
 	If GetGame().networkgame Then Network.DisconnectFromServer()
+End Function
+
+
+Function GetObservedPlayerID:int()
+	for local i:int = 1 to 4
+		if GameConfig.IsObserved( GetPlayer(i).GetFigure() )
+			return i
+		endif
+	Next
+	return -1
+End Function
+
+
+Function DrawDebugProgrammePlan(playerID:int, x:int, y:int)
+	if playerID <= 0 then playerID = GetPlayerBase().playerID
+	local currDay:int = GetWorldTime().GetDay()
+	Local daysProgramme:TBroadcastMaterial[] = GetPlayerProgrammePlan( playerID ).GetProgrammeSlotsInTimeSpan(currDay, 0, currDay, 23)
+	Local daysAdvertisements:TBroadcastMaterial[] = GetPlayerProgrammePlan( playerID ).GetAdvertisementSlotsInTimeSpan(currDay, 0, currDay, 23)
+	Local lineHeight:int = 15
+
+	For local hour:int = 0 until daysProgramme.length
+		Local adString:String = ""
+		Local progString:String = ""
+
+		'use "0" as day param because currentHour includes days already
+		Local advertisement:TBroadcastMaterial = daysAdvertisements[hour]
+		If advertisement
+			local spotNumber:string
+			local ad:TAdvertisement = TAdvertisement(advertisement)
+			if ad
+				spotNumber = GetPlayerProgrammePlan(advertisement.owner).GetAdvertisementSpotNumber(ad) + "/" + ad.contract.GetSpotCount()
+			else
+				spotNumber = (hour - advertisement.programmedHour + 1) + "/" + advertisement.GetBlocks(TVTBroadcastMaterialType.ADVERTISEMENT)
+			endif
+			adString = advertisement.GetTitle() + " [" + spotNumber + "]"
+		EndIf
+
+		Local programme:TBroadcastMaterial = daysProgramme[hour]
+		If programme
+			progString = programme.GetTitle() + " ["+ (hour - programme.programmedHour + 1) + "/" + programme.GetBlocks(TVTBroadcastMaterialType.PROGRAMME) +"]"
+		EndIf
+
+		If progString = "" and GetWorldTime().GetDayHour() > hour Then progString = "PROGRAMME OUTAGE"
+		If adString = "" and GetWorldTime().GetDayHour() > hour Then adString = "AD OUTAGE"
+
+		local oldAlpha:Float = GetAlpha()
+		if hour mod 2 = 0
+			SetColor 0,0,0
+		else
+			SetColor 60,60,60
+		endif
+		SetAlpha 0.75 * GetAlpha()
+		DrawRect(x, y + hour * lineHeight, 20, lineHeight-1)
+		DrawRect(x+25, y + hour * lineHeight, 190, lineHeight-1)
+		DrawRect(x+220, y + hour * lineHeight, 150, lineHeight-1)
+		SetAlpha oldAlpha
+		SetColor 255,255,255
+		GetBitmapFont("default", 11).Draw( Rset(hour,2).Replace(" ", "0"), x+5, y+1 + hour*lineHeight)
+		GetBitmapFont("default", 11).DrawBlock( progString, x+30, y+1 + hour*lineHeight, 185, lineHeight)
+		GetBitmapFont("default", 11).DrawBlock( adString, x+225, y+1 + hour*lineHeight, 145, lineHeight)
+	Next
 End Function
