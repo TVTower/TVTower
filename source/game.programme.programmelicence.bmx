@@ -986,7 +986,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 
 
-	'overwrite method from base
+	'override
 	Method GetBlocks:int(broadcastType:int = 0) {_exposeToLua}
 		Select broadcastType
 			'trailer?
@@ -996,6 +996,27 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 			Default
 				Return GetData().GetBlocks()
 		End Select
+	End Method
+
+
+	Method GetBlocksTotal:int(broadcastType:int = 0) {_exposeToLua}
+		if GetSubLicenceCount() = 0
+			Select broadcastType
+				'trailer?
+				Case TVTBroadcastMaterialType.ADVERTISEMENT
+					Return 1
+				'programme?
+				Default
+					Return GetData().GetBlocks()
+			End Select
+		else
+			local blocksTotal:Float = 0
+			For local licence:TProgrammeLicence = eachin subLicences
+				blocksTotal :+ licence.GetBlocksTotal(broadcastType)
+			Next
+
+			return blocksTotal
+		endif
 	End Method
 
 
@@ -1675,19 +1696,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 
 	'Wird bisher nur in der LUA-KI verwendet
-	Method GetPricePerBlock:Int() {_exposeToLua}
-		'single-licence
-		if GetSubLicenceCount() = 0 and GetData() then return GetData().GetBlocks()
-
-		'if licence is a collection: ask subs
-		local ppB:int = 0
-		local ppBcount:int = 0
-		For local licence:TProgrammeLicence = eachin subLicences
-			ppB:+ licence.GetPricePerBlock()
-			ppBcount:+1
-		Next
-		if ppBcount > 0 then Return ppB/ppBcount
-		Return 0
+	Method GetPricePerBlock:Int(broadcastType:int) {_exposeToLua}
+		if broadcastType = 0 then broadcastType = TVTBroadcastMaterialType.PROGRAMME
+		return GetPrice(owner) / GetBlocksTotal(broadcastType)
 	End Method
 
 

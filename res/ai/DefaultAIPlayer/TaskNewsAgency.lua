@@ -228,9 +228,9 @@ function JobNewsAgency:Tick()
 				price = news.GetPrice(TVT.ME)
 				if (self.Task.CurrentBudget >= price or news.IsPaid() == 1) then			
 					if (news.IsPaid() == 1) then
-						debugMsg("NewsAgency: filling slot "..slot..". Re-use news: ~q" .. news.GetTitle() .. "~q (" .. news.GetGUID() .. ")")
+						debugMsg("NewsAgency: filling slot "..slot..". Re-use news: \"" .. news.GetTitle() .. "\" (" .. news.GetGUID() .. ")")
 					else
-						debugMsg("NewsAgency: filling slot "..slot..". Buying news: " .. news.GetTitle() .. " (" .. news.GetGUID() .. ") "..slot.." - Price: " .. price)
+						debugMsg("NewsAgency: filling slot "..slot..". Buying news: \"" .. news.GetTitle() .. "\" (" .. news.GetGUID() .. ") "..slot.." - Price: " .. price)
 					end
 					TVT.ne_doNewsInPlan(slot-1, news.GetGUID())
 					--self.Task:PayFromBudget(price)
