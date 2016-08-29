@@ -93,6 +93,15 @@ Type TGUIinput Extends TGUIobject
 
 
 	'override
+	Method SetValue(value:String)
+		if value <> GetValue()
+			_valueChanged = True
+		endif
+		Super.SetValue(value)
+	End Method
+
+
+	'override
 	Method GetValue:string()
 		'return the original value until edit was finished (or aborted)
 		if _valueChanged then return _valueBeforeEdit
