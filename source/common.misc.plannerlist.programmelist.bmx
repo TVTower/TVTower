@@ -94,6 +94,9 @@ Type TgfxProgrammelist Extends TPlannerList
 			'of contracts)
 			EventManager.registerListenerFunction("programmecollection.addProgrammeLicence", OnChangeProgrammeCollection)
 			EventManager.registerListenerFunction("programmecollection.removeProgrammeLicence", OnChangeProgrammeCollection)
+			'also clear cache if licences get moved from/to suitcase
+			EventManager.registerListenerFunction("programmecollection.addProgrammeLicenceToSuitcase", OnChangeProgrammeCollection)
+			EventManager.registerListenerFunction("programmecollection.removeProgrammeLicenceFromSuitcase", OnChangeProgrammeCollection)
 
 			'handle broadcasts of the programme
 			EventManager.registerListenerFunction("broadcast.programme.BeginBroadcasting", OnBroadcastProgramme)
