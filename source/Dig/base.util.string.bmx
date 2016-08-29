@@ -145,6 +145,19 @@ Type StringHelper
 	End Function
 
 
+	Function NumericFromString:Long(str:string)
+		local resultString:string = ""
+		'take over numbers
+		For local i:int = 0 until str.length
+			local ch:int = str[i]
+			if (ch >= Asc("0") And ch <= Asc("9")) or ch = Asc("-")
+				resultString :+ Chr(ch)
+			endif
+		Next
+		return Long(resultString)
+	End Function
+
+
 	Function RemoveArrayIndex:int(index:int, arr:string[] var)
 		if not arr or arr.length = 0
 			return False
