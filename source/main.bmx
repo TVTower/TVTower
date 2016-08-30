@@ -1642,6 +1642,7 @@ Type TGameState
 		GetProductionConceptCollection().Initialize()
 		GetProductionManager().Initialize()
 		GetProgrammeRoleCollection().Initialize()
+		GetPersonGenerator().Initialize()
 		GetProgrammePersonBaseCollection().Initialize()
 		GetProgrammeDataCollection().Initialize()
 		GetProgrammeLicenceCollection().Initialize()

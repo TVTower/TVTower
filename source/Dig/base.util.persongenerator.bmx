@@ -32,6 +32,12 @@ Type TPersonGenerator
 	Const GENDER_FEMALE:int = 2
 
 
+	Method Initialize:int()
+		protectedNames.Clear()
+		_countryCodes = null
+	End Method
+
+
 	Method GetUniqueDataset:TPersonGeneratorEntry(countryCode:string, gender:int)
 		local provider:TPersonGeneratorCountry = GetProvider(countryCode)
 		if gender = 0 then gender = RandRange(1, 2) 'male or female

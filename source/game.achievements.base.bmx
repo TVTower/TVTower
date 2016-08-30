@@ -13,7 +13,7 @@ Type TAchievementCollection
 	Field rewards:TGameObjectCollection = new TGameObjectCollection
 	
 	Global _instance:TAchievementCollection
-	'as achievements / taks / rewards base on TAchievementBaseType
+	'as achievements / tasks / rewards base on TAchievementBaseType
 	'they can share a map
 	Global registeredElements:TMap = CreateMap()
 	Global eventListeners:TLink[] {nosave}
@@ -30,6 +30,14 @@ Type TAchievementCollection
 			'handle savegame loading (assign sprites)
 			eventListeners :+ [EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)]
 		endif
+	End Method
+
+
+	'reset contents
+	Method Initialize:int()
+		achievements.Initialize()
+		tasks.Initialize()
+		rewards.Initialize()
 	End Method
 	
 
