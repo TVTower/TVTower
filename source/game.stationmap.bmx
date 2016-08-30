@@ -676,13 +676,22 @@ Type TStationMap {_exposeToLua="selected"}
 
 
 	'return a station at the given coordinates (eg. used by network)
-	Method getStation:TStation(x:Int=0,y:Int=0) {_exposeToLua}
+	Method getStationsByXY:TStation[](x:Int=0,y:Int=0) {_exposeToLua}
+		local res:TStation[]
 		Local pos:TVec2D = new TVec2D.Init(x, y)
 		For Local station:TStation = EachIn stations
 			If Not station.pos.isSame(pos) Then Continue
-			Return station
+			res :+ [station]
 		Next
-		Return Null
+		Return res
+	End Method
+
+
+	Method getStation:TStation(stationGUID:string) {_exposeToLua}
+		For Local station:TStation = EachIn stations
+			If station.GetGUID() = stationGUID Then return station
+		Next
+		Return null
 	End Method
 
 

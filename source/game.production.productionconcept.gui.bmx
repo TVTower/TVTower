@@ -1,6 +1,6 @@
 SuperStrict
 Import "Dig/base.util.graphicsmanager.bmx"
-Import "common.misc.gamelist.bmx"
+Import "common.misc.gamegui.bmx"
 Import "game.production.productionconcept.bmx"
 Import "game.player.base.bmx"
 Import "game.game.base.bmx" 'to change game cursor

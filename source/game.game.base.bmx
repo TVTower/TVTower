@@ -2,6 +2,8 @@ SuperStrict
 Import "Dig/base.util.mersenne.bmx" 'randrange
 Import "game.gameconstants.bmx"
 Import "game.figure.base.bmx"
+Import "game.world.worldtime.bmx"
+
 
 'Game - holds time, audience, money and other variables (typelike structure makes it easier to save the actual state)
 Type TGameBase {_exposeToLua="selected"}
@@ -234,6 +236,37 @@ Type TGameBase {_exposeToLua="selected"}
 		Self.gamestate = gamestate
 	End Method
 
+
+	Method IsGameState:Int(gamestate:int)
+		return Self.gamestate = gamestate
+	End Method
+
+
+	Method IsGameLeader:Int()
+		return True
+	End Method
+
+
+	Method IsControllingPlayer:Int(playerID:Int)
+		return True
+	End Method
+
+
+	Function SendSystemMessage:Int(message:String)
+		'stub
+	End Function
+
+
+	Method SetStartYear(year:int)
+		year = Max(1980, year)
+		'set start year
+		GetWorldTime().SetStartYear(year)
+	End Method
+
+
+	Method GetStartYear:Int()
+		return GetWorldTime().GetStartYear()
+	End Method
 
 	Method PlayingAGame:Int()
 		If gamestate <> STATE_RUNNING Then Return False

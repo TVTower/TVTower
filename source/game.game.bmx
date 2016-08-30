@@ -944,18 +944,6 @@ print "--------------"
 	End Function
 
 
-	Method SetStartYear(year:int)
-		year = Max(1980, year)
-		'set start year
-		GetWorldTime().SetStartYear(year)
-	End Method
-
-
-	Method GetStartYear:Int()
-		return GetWorldTime().GetStartYear()
-	End Method
-
-
 	Function CreateStartTips:Int()
 		TLogger.Log("TGame", "Creating start tip GUIelement", LOG_DEBUG)
 		Local StartTips:TList = CreateList()
@@ -1361,7 +1349,7 @@ print "--------------"
 
 		'send state to clients
 		If IsGameLeader() And networkgame And stateSyncTime < Time.GetTimeGone()
-			NetworkHelper.SendGameState()
+			GetNetworkHelper().SendGameState()
 			stateSyncTime = Time.GetTimeGone() + stateSyncTimer
 		EndIf
 

@@ -193,6 +193,14 @@ Type TAdContractCollection
 	End Method
 
 
+	Method GetByGUID:TAdContract(guid:String)
+		For Local contract:TAdContract = EachIn list
+			If contract.GetGUID() = guid Then Return contract
+		Next
+		Return Null
+	End Method
+
+
 	Method Remove:int(obj:TAdContract)
 		return list.Remove(obj)
 	End Method

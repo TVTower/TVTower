@@ -1,6 +1,6 @@
 SuperStrict
 Import "Dig/base.gfx.gui.list.base.bmx"
-Import "common.misc.gamelist.bmx"
+Import "common.misc.gamegui.bmx"
 Import "game.programme.programmelicence.bmx"
 
 

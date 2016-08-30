@@ -1,6 +1,6 @@
 SuperStrict
 
-Import "common.misc.gamelist.bmx"
+Import "common.misc.gamegui.bmx"
 Import "game.broadcastmaterial.base.bmx"
 Import "game.broadcastmaterial.programme.bmx"
 Import "game.broadcastmaterial.advertisement.bmx"

@@ -58,6 +58,11 @@ Type TFigureCollection extends TFigureBaseCollection
 	End Method
 
 
+	Method GetByGUID:TFigure(guid:string)
+		Return TFigure(Super.GetByGUID(guid))
+	End Method
+
+
 	'=== EVENTS ===
 
 	'gets called when the figure really enters a room (fadeout animation finished etc)
@@ -555,6 +560,31 @@ endrem
 
 	Method GetInRoom:object()
 		return inRoom
+	End Method
+
+
+	'override
+	Method GetFromRoomID:Int()
+		if fromRoom then return fromRoom.id
+
+		return Super.GetFromRoomID()
+	End Method
+
+
+	Method GetFromRoom:object()
+		return fromRoom
+	End Method
+
+
+	Method GetFromDoorID:Int()
+		if fromDoor then return fromDoor.id
+
+		return Super.GetFromDoorID()
+	End Method
+
+
+	Method GetFromDoor:object()
+		return fromDoor
 	End Method
 
 

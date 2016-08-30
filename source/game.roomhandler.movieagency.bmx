@@ -1028,10 +1028,10 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	End Function
 	
 
-	Function GetByLicence:TAuctionProgrammeBlocks(licence:TProgrammeLicence, licenceID:Int=-1)
+	Function GetByLicence:TAuctionProgrammeBlocks(licence:TProgrammeLicence, licenceGUID:string="")
 		For Local obj:TAuctionProgrammeBlocks = EachIn List
 			If licence And obj.licence = licence Then Return obj
-			If obj.licence and obj.licence.id = licenceID Then Return obj
+			If obj.licence and obj.licence.GetGUID() = licenceGUID Then Return obj
 		Next
 		Return Null
 	End Function

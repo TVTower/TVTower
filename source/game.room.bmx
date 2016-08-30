@@ -38,6 +38,11 @@ Type TRoomCollection Extends TRoomBaseCollection
 	End Function
 
 
+	Function GetByGUID:TRoom(guid:string)
+		Return TRoom(Super.GetByGUID(guid))
+	End Function
+
+
 	'returns all room fitting to the given details
 	Function GetAllByDetails:TRoom[]( name:String, owner:Int=-1000 ) {_exposeToLua}
 		local rooms:TRoomBase[] = Super.GetAllByDetails(name, owner)

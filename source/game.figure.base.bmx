@@ -254,10 +254,30 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetFromRoomID:Int()
+		return 0
+	End Method
+
+
+	Method GetFromDoorID:Int()
+		return 0
+	End Method
+
+
 	Method GetInRoom:object()
 		return null
 	End Method
-	
+
+
+	Method GetFromRoom:object()
+		return null
+	End Method
+
+
+	Method GetFromDoor:object()
+		return null
+	End Method
+
 
 	Method CanMove:int()
 		if IsWaitingToEnter() then return False

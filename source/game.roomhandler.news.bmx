@@ -2,7 +2,7 @@ SuperStrict
 Import "Dig/base.util.registry.spriteentityloader.bmx"
 Import "Dig/base.gfx.gui.button.bmx"
 Import "Dig/base.gfx.gui.list.base.bmx"
-Import "common.misc.gamelist.bmx"
+Import "common.misc.gamegui.bmx"
 Import "game.roomhandler.base.bmx"
 Import "game.broadcastmaterial.news.bmx"
 Import "game.newsagency.bmx"
