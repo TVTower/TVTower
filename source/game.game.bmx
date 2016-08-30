@@ -52,6 +52,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		endif
 
 
+		startAdContractBaseGUIDs = new string[3]
+		startProgrammeGUIDs = new string[0]
+
+
 		'=== SETUP TOOLTIPS ===
 		TTooltip.UseFontBold = GetBitmapFontManager().baseFontBold
 		TTooltip.UseFont = GetBitmapFontManager().baseFont

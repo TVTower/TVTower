@@ -127,8 +127,6 @@ Type TDatabaseLoader
 		for local fileURI:String = EachIn fileURIs
 			'skip non-existent files
 			if FileType(fileURI) <> 1 then continue
-print "Load DB: "+fileURI + "  "+ RandRange(0,100)
-
 			validURIs :+ 1
 			Load(fileURI)
 		Next
