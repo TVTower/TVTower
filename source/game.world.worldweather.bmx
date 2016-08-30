@@ -43,6 +43,11 @@ Type TWorldWeather
 
 
 	Method Init:TWorldWeather(pressure:Float = 0.0, temperature:Float = 18.0, windVelocity:Float = 0.0, weatherInterval:Int = 3600)
+		currentWeather = null
+		upcomingWeather.Clear()
+		nextUpdateTime = -1
+		lastUpdateTime = -1
+		
 		currentWeather = new TWorldWeatherEntry.Init(pressure, temperature, windVelocity, GetWorldTime().GetTimeGone(), new TWorldWeatherConfiguration)
 
 		SetWeatherInterval(weatherInterval)
