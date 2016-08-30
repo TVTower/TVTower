@@ -16,6 +16,14 @@ Type TMovieGenreDefinitionCollection
 
 
 	Method Initialize()
+		'reset previously created ones
+		For local def:TGenreDefinitionBase = EachIn definitions
+			def.Reset()
+		Next
+		For local def:TGenreDefinitionBase = EachIn flagDefinitions
+			def.Reset()
+		Next
+
 		'clear old definitions
 		definitions = new TMovieGenreDefinition[0]
 		flagDefinitions = new TMovieFlagDefinition[0]

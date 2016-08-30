@@ -16,6 +16,11 @@ Type TNewsGenreDefinitionCollection
 
 
 	Method Initialize()
+		'reset previously created ones
+		For local def:TGenreDefinitionBase = EachIn definitions
+			def.Reset()
+		Next
+		
 		'clear old definitions
 		definitions = new TNewsGenreDefinition[0]
 

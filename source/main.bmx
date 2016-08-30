@@ -1629,7 +1629,8 @@ Type TGameState
 		GetRoomBaseCollection().Initialize()
 		GetStationMapCollection().InitializeAll()
 		GetPopularityManager().Initialize()
-
+		GetNewsGenreDefinitionCollection().Initialize()
+		GetMovieGenreDefinitionCollection().Initialize()
 		AudienceManager.Initialize()
 
 		GetAdContractBaseCollection().Initialize()

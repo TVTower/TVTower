@@ -22,6 +22,13 @@ Type TGenreDefinitionBase extends TGameObject
 	Method GetGUIDBaseName:string()
 		return "genredefinitionbase"
 	End Method
+
+
+	Method Reset:int()
+		'reset popularity so it gets reconnected correctly
+		'after a new game / savegame
+		_popularity = null
+	End Method
 	
 
 	Method LoadFromMap(data:TMap)
