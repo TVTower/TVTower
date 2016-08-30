@@ -35,10 +35,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	Method Initialize()
 		Super.Initialize()
 
-		'do this every new game - or like now,just on a new "app start"?
-		SetRandomizerBase( Millisecs() )
-
-
 		'=== GAME TIME / SPEED ===
 		'MAD TV speed:
 		'slow:   10 game minutes = 30 seconds  -> 1 sec = 20 ingameseconds
@@ -91,7 +87,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	'=== START A GAME ===
 
 	Method StartNewGame:Int()
-		'print "====== START NEW GAME ======"
+		TLogger.Log("TGame", "====== START NEW GAME ======", LOG_DEBUG)
 		'Preparation is done before (to share data in network games)
 		_Start(True)
 	End Method
@@ -153,14 +149,17 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	'run this before EACH started game
 	Method PrepareStart(startNewGame:Int)
 		If startNewGame
-			GetGame().InitWorld()
-			GetGame().InitRoomsAndDoors()
+			'print "INITIALIZE: SET RANDOMIZER BASE =" + GetRandomizerBase()
+			'reset randomizer to defined value
+			SetRandomizerBase( GetRandomizerBase() )
+			InitWorld()
+			InitRoomsAndDoors()
 		endif
 
 		
 		'Game screens
 		GameScreen_World.Initialize()
-		
+
 
 		'=== ALL GAMES ===
 		'TLogger.Log("Game.PrepareStart()", "preparing all room handlers and screens for new game", LOG_DEBUG)
@@ -700,8 +699,6 @@ print "--------------"
 	Method PrepareNewGame:Int()
 		SetStartYear(userStartYear)
 
-		PlayerDetailsTimer = 0
-		
 		'=== START TIPS ===
 		'maybe show this window each game? or only on game start or ... ?
 		Local showStartTips:Int = False

@@ -131,7 +131,6 @@ Global APP_NAME:string = "TVTower"
 Global LOG_NAME:string = "log.profiler.txt"
 
 Global App:TApp = Null
-Global PlayerDetailsTimer:Int = 0
 Global MainMenuJanitor:TFigureJanitor
 Global ScreenGameSettings:TScreen_GameSettings = Null
 Global ScreenMainMenu:TScreen_MainMenu = Null
@@ -1042,8 +1041,13 @@ endrem
 				endif
 
 				If KEYMANAGER.IsHit(KEY_TAB)
-					TVTDebugInfos = 1 - TVTDebugInfos
-					TVTDebugProgrammePlan = False
+					if not KEYMANAGER.IsDown(KEY_LCONTROL)
+						TVTDebugInfos = 1 - TVTDebugInfos
+						TVTDebugProgrammePlan = False
+					else
+						TVTDebugInfos = False
+						TVTDebugProgrammePlan = 1 - TVTDebugProgrammePlan
+					endif
 				endif
 
 				If KEYMANAGER.Ishit(KEY_K)
@@ -1366,8 +1370,8 @@ endrem
 				local playerID:int = GetObservedPlayerID()
 				if playerID <= 0 then playerID = GetPlayerBase().playerID
 
-				DrawDebugProgrammePlan(playerID, 15, 15)
-				DrawDebugProgrammePlan((playerID + 1) mod 4, 415, 15)
+				debugProgrammePlanInfos.Draw(playerID, 15, 15)
+				debugProgrammePlanInfos.Draw((playerID + 1) mod 4, 415, 15)
 			endif
 		endif
 		
@@ -1646,7 +1650,7 @@ Type TGameState
 
 		GetDailyBroadcastStatisticCollection().Initialize()
 		GetFigureCollection().Initialize()
-		'GetAchievementCollection().Initialize()
+		GetAchievementCollection().Initialize()
 		GetNewsAgency().Initialize()
 		GetPublicImageCollection().Initialize()
 		GetBroadcastManager().Initialize()
@@ -2558,7 +2562,14 @@ Type TScreen_GameSettings Extends TGameScreen
 	Field guiChannelNames:TGUIinput[4]
 	Field guiDifficulty:TGUIDropDown[4]
 	Field guiFigureArrows:TGUIArrowButton[8]
+	Field guiGameSeedLabel:TGuiLabel
+	Field guiGameSeed:TGUIinput
 	Field modifiedPlayers:Int = False
+	Field modifiedGameOptions:Int = False
+
+	Field PlayerDetailsTimer:Long = 0
+	Field OptionsTimer:Long = 0
+
 	Global headerSize:Int = 35
 	Global guiSettingsPanel:TGUIBackgroundBox
 	Global guiPlayersPanel:TGUIBackgroundBox
@@ -2583,13 +2594,16 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiPlayersPanel = guiSettingsWindow.AddContentBox(0,0,-1, int(playerBoxDimension.GetY() + 2 * panelGap))
 		guiSettingsPanel = guiSettingsWindow.AddContentBox(0,0,-1, 100)
 
-		guiGameTitleLabel	= New TGUILabel.Create(New TVec2D.Init(0, 0), "", TColor.CreateGrey(90), name)
-		guiGameTitle		= New TGUIinput.Create(New TVec2D.Init(0, 12), New TVec2D.Init(300, -1), "", 32, name)
-		guiStartYearLabel	= New TGUILabel.Create(New TVec2D.Init(310, 0), "", TColor.CreateGrey(90), name)
-		guiStartYear		= New TGUIinput.Create(New TVec2D.Init(310, 12), New TVec2D.Init(80, -1), "", 4, name)
+		guiGameTitleLabel = New TGUILabel.Create(New TVec2D.Init(0, 0), "", TColor.CreateGrey(90), name)
+		guiGameTitle = New TGUIinput.Create(New TVec2D.Init(0, 12), New TVec2D.Init(250, -1), "", 32, name)
+		guiStartYearLabel = New TGUILabel.Create(New TVec2D.Init(255, 0), "", TColor.CreateGrey(90), name)
+		guiStartYear = New TGUIinput.Create(New TVec2D.Init(255, 12), New TVec2D.Init(70, -1), "", 4, name)
+		guiGameSeedLabel = New TGUILabel.Create(New TVec2D.Init(330, 0), "", TColor.CreateGrey(90), name)
+		guiGameSeed = New TGUIinput.Create(New TVec2D.Init(330, 12), New TVec2D.Init(75, -1), "", 12, name)
 
 		guiGameTitleLabel.SetFont( GetBitmapFontManager().Get("DefaultThin", 14, BOLDFONT) )
 		guiStartYearLabel.SetFont( GetBitmapFontManager().Get("DefaultThin", 14, BOLDFONT) )
+		guiGameSeedLabel.SetFont( GetBitmapFontManager().Get("DefaultThin", 14, BOLDFONT) )
 
 
 		Local checkboxHeight:Int = 0
@@ -2615,6 +2629,8 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiSettingsPanel.AddChild(guiGameTitle)
 		guiSettingsPanel.AddChild(guiStartYearLabel)
 		guiSettingsPanel.AddChild(guiStartYear)
+		guiSettingsPanel.AddChild(guiGameSeedLabel)
+		guiSettingsPanel.AddChild(guiGameSeed)
 		guiSettingsPanel.AddChild(guiAnnounce)
 		guiSettingsPanel.AddChild(gui24HoursDay)
 		guiSettingsPanel.AddChild(guiSpecialFormats)
@@ -2705,6 +2721,8 @@ Type TScreen_GameSettings Extends TGameScreen
 		'===== REGISTER EVENTS =====
 		'register changes to GameSettingsStartYear-guiInput
 		EventManager.registerListenerMethod("guiobject.onChange", Self, "onChangeGameSettingsInputs", guiStartYear)
+		'and to game seed
+		EventManager.registerListenerMethod("guiobject.onChange", Self, "onChangeGameSettingsInputs", guiGameSeed)
 		'register checkbox changes
 		EventManager.registerListenerMethod("guiCheckBox.onSetChecked", Self, "onCheckCheckboxes", "TGUICheckbox")
 
@@ -2746,6 +2764,8 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiStartYear.SetValue(GetGame().userStartYear)
 		guiPlayerNames[0].SetValue(GetGame().username)
 		guiChannelNames[0].SetValue(GetGame().userchannelname)
+
+		guiGameSeed.SetValue( string(Rand(0, 10000000)) )
 
 		GetPlayer(1).Name = GetGame().username
 		GetPlayer(1).Channelname = GetGame().userchannelname
@@ -2854,6 +2874,15 @@ Type TScreen_GameSettings Extends TGameScreen
 			endif
 		Next
 
+
+		if sender = guiGameSeed
+			local valueNumeric:string = string(StringHelper.NumericFromString(value))
+			if value <> valueNumeric then sender.SetValue(valueNumeric)
+
+			GetGame().SetRandomizerBase( int(valueNumeric)  )
+		endif
+
+
 		'start year changed
 		If sender = guiStartYear
 			GetGame().SetStartYear( int(sender.GetValue()) )
@@ -2874,6 +2903,7 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		guiGameTitleLabel.SetValue(GetLocale("GAME_TITLE")+":")
 		guiStartYearLabel.SetValue(GetLocale("START_YEAR")+":")
+		guiGameSeedLabel.SetValue(GetLocale("GAME")+" #:")
 
 		gui24HoursDay.SetValue(GetLocale("24_HOURS_GAMEDAY"))
 		guiSpecialFormats.SetValue(GetLocale("ALLOW_TRAILERS_AND_INFOMERCIALS"))
@@ -3048,7 +3078,7 @@ Type TScreen_GameSettings Extends TGameScreen
 					'only allow mod if you control the player or if the
 					'player is AI and you are the master player
 					If GetGame().IsControllingPlayer(i+1)
-						modifiedPlayers=True
+						modifiedPlayers = True
 						GetPlayer(i+1).RecolorFigure(pc)
 					EndIf
 				Next
@@ -3060,15 +3090,18 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		If GetGame().networkgame = 1
 			'sync if the player got modified
-			If modifiedPlayers
+			If modifiedPlayers or Time.GetTimeGone() >= PlayerDetailsTimer + 2000
 				NetworkHelper.SendPlayerDetails()
 				PlayerDetailsTimer = MilliSecs()
+				modifiedPlayers = False
 			EndIf
-			'sync in all cases every 1 second
-			If MilliSecs() >= PlayerDetailsTimer + 1000
-				NetworkHelper.SendPlayerDetails()
-				PlayerDetailsTimer = MilliSecs()
-			EndIf
+			If modifiedGameOptions or Time.GetTimeGone() >= OptionsTimer + 2000
+				print "NET: TODO - NetworkHelper.SendGameOptions()"
+				'NetworkHelper.SendGameOptions()
+				OptionsTimer = MilliSecs()
+
+				modifiedPlayers = False
+			endif
 		EndIf
 	End Method
 End Type
@@ -3471,8 +3504,6 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 			If GetGame().networkGame Then Print "[NET] StartNewGame"
 			'just switch to the game, preparation is done
 			GetGame().StartNewGame()
-			'reset randomizer
-			GetGame().SetRandomizerBase( GetGame().GetRandomizerBase() )
 			startGameCalled = True
 		EndIf
 	End Method
@@ -6013,55 +6044,4 @@ Function GetObservedPlayerID:int()
 		endif
 	Next
 	return -1
-End Function
-
-
-Function DrawDebugProgrammePlan(playerID:int, x:int, y:int)
-	if playerID <= 0 then playerID = GetPlayerBase().playerID
-	local currDay:int = GetWorldTime().GetDay()
-	Local daysProgramme:TBroadcastMaterial[] = GetPlayerProgrammePlan( playerID ).GetProgrammeSlotsInTimeSpan(currDay, 0, currDay, 23)
-	Local daysAdvertisements:TBroadcastMaterial[] = GetPlayerProgrammePlan( playerID ).GetAdvertisementSlotsInTimeSpan(currDay, 0, currDay, 23)
-	Local lineHeight:int = 15
-
-	For local hour:int = 0 until daysProgramme.length
-		Local adString:String = ""
-		Local progString:String = ""
-
-		'use "0" as day param because currentHour includes days already
-		Local advertisement:TBroadcastMaterial = daysAdvertisements[hour]
-		If advertisement
-			local spotNumber:string
-			local ad:TAdvertisement = TAdvertisement(advertisement)
-			if ad
-				spotNumber = GetPlayerProgrammePlan(advertisement.owner).GetAdvertisementSpotNumber(ad) + "/" + ad.contract.GetSpotCount()
-			else
-				spotNumber = (hour - advertisement.programmedHour + 1) + "/" + advertisement.GetBlocks(TVTBroadcastMaterialType.ADVERTISEMENT)
-			endif
-			adString = advertisement.GetTitle() + " [" + spotNumber + "]"
-		EndIf
-
-		Local programme:TBroadcastMaterial = daysProgramme[hour]
-		If programme
-			progString = programme.GetTitle() + " ["+ (hour - programme.programmedHour + 1) + "/" + programme.GetBlocks(TVTBroadcastMaterialType.PROGRAMME) +"]"
-		EndIf
-
-		If progString = "" and GetWorldTime().GetDayHour() > hour Then progString = "PROGRAMME OUTAGE"
-		If adString = "" and GetWorldTime().GetDayHour() > hour Then adString = "AD OUTAGE"
-
-		local oldAlpha:Float = GetAlpha()
-		if hour mod 2 = 0
-			SetColor 0,0,0
-		else
-			SetColor 60,60,60
-		endif
-		SetAlpha 0.75 * GetAlpha()
-		DrawRect(x, y + hour * lineHeight, 20, lineHeight-1)
-		DrawRect(x+25, y + hour * lineHeight, 190, lineHeight-1)
-		DrawRect(x+220, y + hour * lineHeight, 150, lineHeight-1)
-		SetAlpha oldAlpha
-		SetColor 255,255,255
-		GetBitmapFont("default", 11).Draw( Rset(hour,2).Replace(" ", "0"), x+5, y+1 + hour*lineHeight)
-		GetBitmapFont("default", 11).DrawBlock( progString, x+30, y+1 + hour*lineHeight, 185, lineHeight)
-		GetBitmapFont("default", 11).DrawBlock( adString, x+225, y+1 + hour*lineHeight, 145, lineHeight)
-	Next
 End Function

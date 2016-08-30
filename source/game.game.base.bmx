@@ -246,6 +246,7 @@ Type TGameBase {_exposeToLua="selected"}
 		Return randomSeedValue
 	End Method
 
+
 	Method SetRandomizerBase( value:Int=0 )
 		randomSeedValue = value
 		'seed the random base for MERSENNE TWISTER (seedrnd for the internal one)

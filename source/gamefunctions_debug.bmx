@@ -1,5 +1,8 @@
 ﻿
 Global debugAudienceInfos:TDebugAudienceInfos = New TDebugAudienceInfos
+Global debugProgrammePlanInfos :TDebugProgrammePlanInfos = new TDebugProgrammePlanInfos
+
+
 Type TDebugAudienceInfos
 	Field currentStatement:TBroadcastFeedbackStatement
 	Field lastCheckedMinute:Int
@@ -294,6 +297,146 @@ endrem
 		for local i:int = 1 to TVTTargetGroup.baseGroupCount
 			val = MathHelper.NumberToString(0.5 * audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)),2)
 			font.drawBlock(val, x2 + 70*(i-1), y, 65, 25, ALIGN_RIGHT_TOP, color)
+		Next
+	End Function
+End Type
+
+
+
+Type TDebugProgrammePlanInfos
+	Global programmeBroadcasts:TMap = CreateMap()
+	Global adBroadcasts:TMap = CreateMap()
+	Global oldestEntryTime:Long
+	Global _eventListeners:TLink[]
+
+	
+	Method New()
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+		
+		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.addObject", onChangeProgrammePlan) ]
+'		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.removeObject", onChangeProgrammePlan) ]
+
+	End Method
+
+
+	Function onChangeProgrammePlan:Int(triggerEvent:TEventBase)
+		local broadcast:TBroadcastMaterial = TBroadcastMaterial(triggerEvent.GetData().Get("object"))
+		local slotType:int = triggerEvent.GetData().GetInt("slotType", -1)
+		if not broadcast or slotType <= 0 then return False
+
+		if slotType = TVTBroadcastMaterialType.ADVERTISEMENT
+			adBroadcasts.Insert(broadcast.GetGUID(), string(Time.GetTimeGone()) )
+		else
+			programmeBroadcasts.Insert(broadcast.GetGUID(), string(Time.GetTimeGone()) )
+		endif
+
+		RemoveOutdated()
+	End Function
+
+
+	Function RemoveOutdated()
+		local maps:TMap[] = [programmeBroadcasts, adBroadcasts]
+
+		oldestEntryTime = -1
+
+		'remove outdated ones (older than 30 seconds))
+		For local map:TMap = EachIn maps
+			For local guid:String = EachIn map.Copy().Keys()
+				local broadcastTime:Long = Long( string(map.ValueForKey(guid)) )
+				if broadcastTime + 10000 < Time.GetTimeGone()
+					map.Remove(guid)
+				else
+					if oldestEntryTime = -1 then oldestEntryTime = broadcastTime
+					oldestEntryTime = Min(oldestEntryTime, broadcastTime)
+				endif
+			Next
+		Next
+	End Function
+	
+
+
+	Function GetAddedTime:Long(guid:string, slotType:int=0)
+		if slotType = TVTBroadcastMaterialType.PROGRAMME
+			return int( string(programmeBroadcasts.ValueForKey(guid)) )
+		else
+			return int( string(adBroadcasts.ValueForKey(guid)) )
+		endif
+	End Function
+
+	
+	Function Draw(playerID:int, x:int, y:int)
+		if playerID <= 0 then playerID = GetPlayerBase().playerID
+		local currDay:int = GetWorldTime().GetDay()
+		Local daysProgramme:TBroadcastMaterial[] = GetPlayerProgrammePlan( playerID ).GetProgrammeSlotsInTimeSpan(currDay, 0, currDay, 23)
+		Local daysAdvertisements:TBroadcastMaterial[] = GetPlayerProgrammePlan( playerID ).GetAdvertisementSlotsInTimeSpan(currDay, 0, currDay, 23)
+		Local lineHeight:int = 15
+
+		'clean up if needed
+		if oldestEntryTime >= 0 and oldestEntryTime + 10000 < Time.GetTimeGone() then RemoveOutdated()
+
+		For local hour:int = 0 until daysProgramme.length
+			Local adString:String = ""
+			Local progString:String = ""
+
+			'use "0" as day param because currentHour includes days already
+			Local advertisement:TBroadcastMaterial = daysAdvertisements[hour]
+			If advertisement
+				local spotNumber:string
+				local ad:TAdvertisement = TAdvertisement(advertisement)
+				if ad
+					spotNumber = GetPlayerProgrammePlan(advertisement.owner).GetAdvertisementSpotNumber(ad) + "/" + ad.contract.GetSpotCount()
+				else
+					spotNumber = (hour - advertisement.programmedHour + 1) + "/" + advertisement.GetBlocks(TVTBroadcastMaterialType.ADVERTISEMENT)
+				endif
+				adString = advertisement.GetTitle() + " [" + spotNumber + "]"
+			EndIf
+
+			Local programme:TBroadcastMaterial = daysProgramme[hour]
+			If programme
+				progString = programme.GetTitle() + " ["+ (hour - programme.programmedHour + 1) + "/" + programme.GetBlocks(TVTBroadcastMaterialType.PROGRAMME) +"]"
+			EndIf
+
+			If progString = "" and GetWorldTime().GetDayHour() > hour Then progString = "PROGRAMME OUTAGE"
+			If adString = "" and GetWorldTime().GetDayHour() > hour Then adString = "AD OUTAGE"
+
+			local oldAlpha:Float = GetAlpha()
+			if hour mod 2 = 0
+				SetColor 0,0,0
+			else
+				SetColor 60,60,60
+			endif
+			SetAlpha 0.75 * GetAlpha()
+			DrawRect(x, y + hour * lineHeight, 20, lineHeight-1)
+			DrawRect(x+25, y + hour * lineHeight, 190, lineHeight-1)
+			DrawRect(x+220, y + hour * lineHeight, 150, lineHeight-1)
+
+
+			local progTime:Long = 0, adTime:Long = 0
+			if advertisement then adTime = GetAddedTime(advertisement.GetGUID(), TVTBroadcastMaterialType.ADVERTISEMENT)
+			if programme then progTime = GetAddedTime(programme.GetGUID(), TVTBroadcastMaterialType.PROGRAMME)
+
+			SetColor 255,235,20
+			if progTime <> 0
+				local alphaValue:Float = 1.0 - Min(1.0, ((Time.GetTimeGone() - progTime) / 5000.0))
+				SetAlpha 0.4 * Min(1.0, 2 * alphaValue^3)
+				SetBlend LIGHTBLEND
+				DrawRect(x+25, y + hour * lineHeight, 190, lineHeight-1)
+				SetBlend ALPHABLEND
+			endif
+			if adTime <> 0
+				local alphaValue:Float = 1.0 - Min(1.0, ((Time.GetTimeGone() - adTime) / 5000.0))
+				SetAlpha 0.4 * Min(1.0, 2 * alphaValue^3)
+				SetBlend LIGHTBLEND
+				DrawRect(x+220, y + hour * lineHeight, 150, lineHeight-1)
+				SetBlend ALPHABLEND
+			endif
+			
+			SetColor 255,255,255
+			SetAlpha oldAlpha
+			GetBitmapFont("default", 11).Draw( Rset(hour,2).Replace(" ", "0"), x+5, y+1 + hour*lineHeight)
+			GetBitmapFont("default", 11).DrawBlock( progString, x+30, y+1 + hour*lineHeight, 185, lineHeight)
+			GetBitmapFont("default", 11).DrawBlock( adString, x+225, y+1 + hour*lineHeight, 145, lineHeight)
 		Next
 	End Function
 End Type
