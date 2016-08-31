@@ -1008,7 +1008,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		if playerID <= 0
 			useAudience = GetStationMapCollection().GetAverageReach()
 		else
-			useAudience = GetStationMapCollection().GetMap(playerID).GetReach()
+			useAudience = GetStationMap(playerID).GetReach()
 		endif
 
 		if not getTotalAudience 

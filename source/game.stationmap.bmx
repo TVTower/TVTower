@@ -67,6 +67,8 @@ Type TStationMapCollection
 		For local map:TStationMap = eachin stationMaps
 			map.Initialize()
 		Next
+		'optional:
+		'stationMaps = new TStationMap[0]
 	End Method
 
 
@@ -234,6 +236,10 @@ Type TStationMapCollection
 		local reach:int = 0
 		local mapCount:int = 0
 		For local map:TStationMap = eachin stationMaps
+			'skip empty maps
+			'TODO: what happens with satellites?
+			'if map.GetStationCount() = 0 then continue
+			
 			reach :+ map.GetReach()
 			mapCount :+ 1
 		Next

@@ -294,7 +294,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'reset everything of that player
 			ResetPlayer(playerID)
 			'prepare new player data (take credit, give starting programme...)
-			PreparePlayer(playerID)
+			PreparePlayerStep1(playerID)
+			PreparePlayerStep2(playerID)
 		endif
 
 		if player.IsLocalHuman()
@@ -463,7 +464,8 @@ print "--------------"
 	End Method
 
 
-	Method PreparePlayer(playerID:int)
+	'prepare player basics
+	Method PreparePlayerStep1(playerID:int)
 		local player:TPlayer = GetPlayer(playerID)
 		'create player if not done yet
 		if not player
@@ -539,9 +541,14 @@ print "--------------"
 		if difficulty.startCredit > 0 
 			GetPlayerFinance(playerID).TakeCredit( difficulty.startCredit )
 		endif
+	End Method
 
 
-
+	'can be run after _all_ other players have run PreparePlayerStep1()
+	'Reason: when signing ad contracts, the average reach of the stations
+	'        is used, but if only one player exists yet, the average is
+	'        incorrect -> create all stations first in PreparePlayerStep1()
+	Method PreparePlayerStep2(playerID:int)
 		'=== SETUP NEWS + ABONNEMENTS ===
 		'have a level 1 abonnement for currents
 		GetPlayer(playerID).SetNewsAbonnement(4, 1)
@@ -818,8 +825,15 @@ print "--------------"
 		'GetNewsAgency().ResetNextEventTime(-1)
 
 
+		'first create basics (player, finances, stationmap)
 		For local playerID:int = 1 to 4
-			PreparePlayer(playerID)
+			PreparePlayerStep1(playerID)
+		Next
+		'then prepare plan, news abonnements, ...
+		'this is needed because adcontracts use average reach of
+		'stationmaps on sign - which needs 4 stationmaps to be "set up"
+		For local playerID:int = 1 to 4
+			PreparePlayerStep2(playerID)
 		Next
 
 		

@@ -385,7 +385,11 @@ Type TDebugProgrammePlanInfos
 				local spotNumber:string
 				local ad:TAdvertisement = TAdvertisement(advertisement)
 				if ad
-					spotNumber = GetPlayerProgrammePlan(advertisement.owner).GetAdvertisementSpotNumber(ad) + "/" + ad.contract.GetSpotCount()
+					if ad.IsState(TAdvertisement.STATE_FAILED)
+						spotNumber = "-/" + ad.contract.GetSpotCount()
+					else
+						spotNumber = GetPlayerProgrammePlan(advertisement.owner).GetAdvertisementSpotNumber(ad) + "/" + ad.contract.GetSpotCount()
+					endif
 				else
 					spotNumber = (hour - advertisement.programmedHour + 1) + "/" + advertisement.GetBlocks(TVTBroadcastMaterialType.ADVERTISEMENT)
 				endif
