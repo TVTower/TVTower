@@ -797,3 +797,5 @@ DIFFICULTY_CUSTOM = Custom
 
 GAMETIME = Time
 PLAYER = Player
+
+GAME = Game

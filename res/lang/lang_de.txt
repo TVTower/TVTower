@@ -807,3 +807,5 @@ DIFFICULTY_CUSTOM = Angepasst
 
 GAMETIME = Zeit
 PLAYER = Spieler
+
+GAME = Spiel

@@ -8,9 +8,9 @@ Rem
 EndRem	
 SuperStrict
 
-Global VersionDate:String = LoadText("incbin::source/version.txt").Trim()
-Global VersionString:String = "v0.3.3-Dev Build ~q" + VersionDate+"~q"
-Global CopyrightString:String = "by Ronny Otto & Team"
+Global VersionDate:String = "unknown"
+Global VersionString:String = ""
+Global CopyrightString:String = ""
 
 
 
