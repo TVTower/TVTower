@@ -2,9 +2,9 @@
 -- ============================
 -- Autoren: Manuel Vögele (STARS_crazy@gmx.de)
 --          Ronny Otto
--- Version: 25.05.2016
+-- Version: 28.08.2016
 
-APP_VERSION = "1.4"
+APP_VERSION = "1.5"
 
 -- ##### INCLUDES #####
 -- use slash for directories - windows accepts it, linux needs it
@@ -94,7 +94,10 @@ function DefaultAIPlayer:resume()
 		self.Ventruesome = 5
 	end
 	if (self.BrainSpeed == 0) then
-		self.BrainSpeed = 1
+		self.BrainSpeed = 3
+	end
+	if (self.NewsPriority == 0) then
+		self.NewsPriority = 5
 	end
 	
 	self:CleanUp()
@@ -336,7 +339,7 @@ end
 
 
 -- ###################################################################################################
--- Events die aus dem BlitzBasic-Programm aufgerufen werden
+-- Events die aus dem BlitzMax-Programm aufgerufen werden
 -- ###################################################################################################
 
 function getAIPlayer()
@@ -482,32 +485,34 @@ function OnMinute(number)
 --	end
 
 	--Zum Test
-	--[[
-	if (number == "4") then
-		local task = getAIPlayer().TaskList[TASK_SCHEDULE]
-		local guessedAudience = task:GuessedAudienceForHourAndLevel(WorldTime.GetDayHour())
+	if (number == 6) then
+		local task = getAIPlayer().TaskList[_G["TASK_SCHEDULE"]]
+		local fixedDay, fixedHour = FixDayAndHour(WorldTime.GetDay(), WorldTime.GetDayHour())
 
-		local fixedDay, fixedHour = FixDayAndHour(Worldtime.GetDay(), Worldtime.GetDayHour())
 		local programme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
+		local guessedAudience = task:GuessedAudienceForHourAndLevel(fixedDay, fixedHour, programme, true)
+
+		local audience = MY.GetProgrammePlan().GetAudience()
 
 		-- RON: changed as "programme" is NIL if not existing/placed
 		local averageMovieQualityByLevel = 0
 		if ( programme ~= nil) then
-			averageMovieQualityByLevel = programme.GetQuality(0) -- Die Durchschnittsquote dieses Qualitätslevels
+			-- Die Durchschnittsquote dieses Qualitätslevels
+			averageMovieQualityByLevel = programme.GetQuality(0)
 		end
 
-		local level = task:GetQualityLevel(WorldTime.GetDayHour()) --Welchen Qualitätslevel sollte ein Film/Werbung um diese Uhrzeit haben
-		local globalPercentageByHour = task:GetMaxAudiencePercentageByHour(WorldTime.GetDayHour()) -- Die Maximalquote: Entspricht ungefähr "maxAudiencePercentage"
-		--local averageMovieQualityByLevel = task:GetAverageMovieQualityByLevel(level) -- Die Durchschnittsquote dieses Qualitätslevels
+		-- Welchen Qualitätslevel sollte ein Film/Werbung um diese Uhrzeit haben
+		local level = task:GetQualityLevel(WorldTime.GetDayHour())
+		-- Die Maximalquote: Entspricht ungefähr "maxAudiencePercentage"
+		local globalPercentageByHour = task:GetMaxAudiencePercentage(fixedDay, fixedHour)
+		-- Die Durchschnittsquote dieses Qualitätslevels
+		--local averageMovieQualityByLevel = task:GetAverageMovieQualityByLevel(level)
 		local guessedAudience2 = averageMovieQualityByLevel * globalPercentageByHour * MY.GetMaxAudience()
 
-		if ( programme ~= nil) then
-			TVT.addToLog("LUA-Audience (" .. programme.GetID() .. ") : " .. math.round(guessedAudience2) .. " => averageMovieQualityByLevel (" .. averageMovieQualityByLevel .. ") ; globalPercentageByHour (" .. globalPercentageByHour .. ")")
-		else
-			TVT.addToLog("LUA-Audience (NO PROG) : " .. math.round(guessedAudience2) .. " => averageMovieQualityByLevel (" .. averageMovieQualityByLevel .. ") ; globalPercentageByHour (" .. globalPercentageByHour .. ")")
-		end
+		local title = "OUTAGE / NO PROG"
+		if (programme ~= nil) then title = programme.GetTitle(); end
+		debugMsg("LUA-Audience (" .. title .. ") :  audience: guessed=" .. math.round(guessedAudience2) .. " real=" .. audience .. "   avgMovieQualityByLevel=" .. averageMovieQualityByLevel .. "  globalPercentageByHour=" .. math.round(globalPercentageByHour*100) .. "%")
 	end
-	]]--
 end
 
 function OnMalfunction()

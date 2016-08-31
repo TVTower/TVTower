@@ -22,7 +22,7 @@ _G["TaskSchedule"] = class(AITask, function(c)
       c.guessedAudienceAccuracy[i] = 0
       c.guessedAudienceAccuracyCount[i] = 0
     end
-    ]]-
+    ]]--
 end)
 
 
@@ -217,7 +217,7 @@ function TaskSchedule:GetAvailableContractsList(hoursFromNow, includePlannedEnds
 			if contract.GetDaysLeft(day) < 0 then break end
 			--contract might end earlier (all needed slots planned
 			--before the designated time)
-			if not includePlannedEnds and contract.GetSpotCount() <= MY.GetProgrammePlan().GetAdvertisementsPlanned(contract, -1, day*24 + hour, true) then break end
+			if not includePlannedEnds and contract.GetSpotCount() <= MY.GetProgrammePlan().GetAdvertisementsPlanned(contract, day, hour, true) then break end
 
 			table.insert(possibleContracts, contract)
 		until true
@@ -418,11 +418,15 @@ function JobFulfillRequisition:Tick()
 
 			if (contract ~= nil) then
 				debugMsg("Set advertisement: " .. value.Day .. "/" .. value.Hour .. ":" .. value.Minute .. "  contract: " .. contract.GetTitle() .. " [" .. contract.GetID() .."]  MinAud: " .. contract.GetMinAudience() .. "  acuteness: " .. contract.GetAcuteness())
-				if (value.Day > gameDay or (value.Day == gameDay and value.Hour > gameHour) or (value.Day == gameDay and value.Hour == gameHour and value.Minute > gameMinute)) then
-					local result = TVT.of_setAdvertisementSlot(contract, value.Day, value.Hour) --Setzt den neuen Eintrag
-					if (result < 0) then debugMsg("###### ERROR 2: " .. value.Day .. "/" .. value.Hour .. ":55  contractID:" .. value.ContractId .. "   Result: " .. result) end
-				else
-					debugMsg("Set advertisement. Too late!. Failed:" .. value.Day .. "/" .. value.Hour .. ":" .. value.Minute .. "  GameTime:" .. gameHour .. ":" .. gameMinute .. "  contract: " .. contract.GetTitle() .. " [" .. contract.GetID() .."]")
+				local result = TVT.of_setAdvertisementSlot(contract, value.Day, value.Hour) --Setzt den neuen Eintrag
+				if (result == TVT.RESULT_WRONGROOM) then
+					debugMsg("Set advertisement: failed - wrong room.")
+				elseif (result == TVT.RESULT_FAILED) then
+					debugMsg("Set advertisement: corresponding contract not found.")
+				elseif (result == TVT.RESULT_SKIPPED) then
+					debugMsg("Set advertisement: skipped, already placed at this spot.")
+				elseif (result == TVT.RESULT_NOTALLOWED) then
+					debugMsg("Set advertisement: too late / not allowed.")
 				end
 			end
 			value:Complete()
@@ -533,29 +537,41 @@ function JobEmergencySchedule:SetContractOrTrailerToEmptyBlock(choosenSpot, day,
 
 	if (choosenSpot == nil) then
 		if (table.count(currentSpotList) == 0) then
-			--Neue Anfoderung stellen: Passenden Werbevertrag abschließen (für die Zukunft)
-		--	debugMsg("Melde Bedarf für Spots bis " .. guessedAudience .. " Zuschauer an.")
-		--	local requisition = SpotRequisition()
-		--	requisition.guessedAudience = guessedAudience
-		--	local player = _G["globalPlayer"]
-		--	player:AddRequisition(requisition)
-			currentSpotList = self:GetFittingSpotList(guessedAudience, true, false)
+			-- Add new requisition for the future: sign fitting contract
+			--[[
+			debugMsg"Signal need for spots with audience of " .. guessedAudience .. ".")
+			local requisition = SpotRequisition()
+			requisition.guessedAudience = guessedAudience
+			local player = _G["globalPlayer"]
+			player:AddRequisition(requisition)
+			]]--
+
+			-- this time ignore broadcast limits (spot 5 of 3)
+			--currentSpotList = self:GetFittingSpotList(guessedAudience, true, false)
+
+			currentSpotList = self:GetFittingSpotList(guessedAudience * 0.5, true, false)
+			if (table.count(currentSpotList) == 0) then
+				currentSpotList = self:GetFittingSpotList(guessedAudience * 0.1, true, false)
+			end
 		end
 
-		local filteredCurrentSpotList = self:FilterSpotList(currentSpotList)
+		local filteredCurrentSpotList = self:FilterSpotList(currentSpotList, day, hour)
 		local choosenSpot = self:GetBestMatchingSpot(filteredCurrentSpotList)
 	end
 
 	if (choosenSpot ~= nil) then
 		debugMsg("Set advertisement (emergency plan): " .. fixedDay .. "/" .. fixedHour .. ":55  contract: " .. choosenSpot.GetTitle() .. " [" ..choosenSpot.GetID() .."]  MinAud: " .. choosenSpot.GetMinAudience() .. "  acuteness: " .. choosenSpot.GetAcuteness())
---		local result = TVT.of_setAdvertisementSlot(TVT.of_getAdContractByID(choosenSpot.GetID()), fixedDay, fixedHour)
 		local result = TVT.of_setAdvertisementSlot(choosenSpot, fixedDay, fixedHour)
 	else
-		--nochmal ohne Filter!
-		choosenSpot = self:GetBestMatchingSpot(currentSpotList)
+		--choose spot without any audience requirements
+		local currentSpotList = self:GetFittingSpotList(0, false, true, 0, fixedDay, fixedHour)
+		--remove ads without left spots 
+		local filteredCurrentSpotList = self:FilterSpotList(currentSpotList, fixedDay, fixedHour)
+
+		choosenSpot = self:GetBestMatchingSpot(filteredCurrentSpotList)
 		if (choosenSpot ~= nil) then
 			debugMsg("Set advertisement (emergency plan - unfiltered): " .. fixedDay .. "/" .. fixedHour .. ":55  contract: " .. choosenSpot.GetTitle() .. "  acuteness: " .. choosenSpot.GetAcuteness())
-			local result = TVT.of_setAdvertisementSlot(TVT.of_getAdContractByID(choosenSpot.GetID()), fixedDay, fixedHour)
+			local result = TVT.of_setAdvertisementSlot(choosenSpot, fixedDay, fixedHour)
 		else
 			debugMsg("Set advertisement (emergency plan - unfiltered): " .. fixedDay .. "/" .. fixedHour .. ":55  NONE FOUND")
 		end
@@ -569,7 +585,7 @@ function JobEmergencySchedule:SetMovieOrInfomercialToEmptyBlock(day, hour)
 	local fixedDay, fixedHour = self.ScheduleTask:FixDayAndHour(day, hour)
 
 	if (choosenLicence == nil) then
-		debugMsg("Kein Film / Keine Dauerwerbesendung gefunden. Nehme irgendeine Dauerwerbesendung: " .. fixedDay .. "/" .. fixedHour ..":05")
+		debugMsg("No Programme / Infomercial found. Choosing a random infomercial: " .. fixedDay .. "/" .. fixedHour ..":05")
 		local licenceList = self.ScheduleTask:GetInfomercialLicenceList(-1, fixedDay)
 		if table.count(licenceList) > 0 then
 			choosenLicence = table.first(licenceList)
@@ -663,6 +679,7 @@ end
 
 function JobEmergencySchedule:GetMatchingSpotList(guessedAudience, minFactor, noAudienceRestrictions, noBroadcastRestrictions)
 	local currentSpotList = {}
+	local currentDay = WorldTime.GetDay()
 	for i = 0, TVT.of_getAdContractCount() - 1 do
 		local contract = TVT.of_getAdContractAtIndex(i)
 
@@ -671,8 +688,9 @@ function JobEmergencySchedule:GetMatchingSpotList(guessedAudience, minFactor, no
 			local minAudience = contract.GetMinAudience()
 			--debugMsg("GetMatchingSpotList - MinAud: " .. minAudience .. " <= " .. guessedAudience)
 			if ((minAudience <= guessedAudience) and (minAudience >= guessedAudience * minFactor)) or noAudienceRestrictions then
-				local count = MY.GetProgrammePlan().GetAdvertisementsSent(contract, -1, 23, 1)
-				--debugMsg("GetMatchingSpotList: " .. contract.GetTitle() .. ". SpotsSent: " .. count)
+				local count = MY.GetProgrammePlan().GetAdvertisementsPlanned(contract, -1, -1, 1)
+				--debugMsg("GetMatchingSpotList: " .. contract.GetTitle() .. ". SpotsPlanned: " .. count)
+	
 				if (count < contract.GetSpotCount() or noBroadcastRestrictions) then
 					table.insert(currentSpotList, contract)
 				end
@@ -682,11 +700,17 @@ function JobEmergencySchedule:GetMatchingSpotList(guessedAudience, minFactor, no
 	return currentSpotList
 end
 
-function JobEmergencySchedule:FilterSpotList(spotList)
+function JobEmergencySchedule:FilterSpotList(spotList, day, hour)
+	local fixedDay, fixedHour = self.ScheduleTask:FixDayAndHour(day, hour)
+
 	local currentSpotList = {}
 	for k,v in pairs(spotList) do
-		if v.SendMinimalBlocksToday() > 0 then --TODO: Die Anzahl der bereits geplanten Sendungen von MinBlocksToday abziehen
-			table.insert(currentSpotList, v)
+		if v.SendMinimalBlocksToday() > 0 then
+			-- only add, if there is another spot left
+			local count = MY.GetProgrammePlan().GetAdvertisementsPlanned(contract, day, hour, 1)
+			if (count < contract.GetSpotCount()) then
+				table.insert(currentSpotList, v)
+			end
 		end
 	end
 	--TODO: Optimum hinzufügen
@@ -696,6 +720,7 @@ function JobEmergencySchedule:FilterSpotList(spotList)
 		return spotList
 	end
 end
+
 
 function JobEmergencySchedule:GetBestMatchingSpot(spotList)
 	local bestAcuteness = -1
