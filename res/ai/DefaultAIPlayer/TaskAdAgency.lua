@@ -284,8 +284,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 
 			if ((minAudience < guessedAudience) and (minAudience > minguessedAudience)) then
 				--Passender Spot... also kaufen
-				debugMsg("SignRequisitedContracts: Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil benötigt. Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  MinAudience: " .. minAudience .. "  GuessedAudience: " .. minguessedAudience .. " - " .. guessedAudience)
-				TVT.addToLog("SignRequisitedContracts: Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil benötigt. Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  MinAudience: " .. minAudience .. "  GuessedAudience: " .. minguessedAudience .. " - " .. guessedAudience)
+				debugMsg("Signing a \"necessary\" contract: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil benötigt. Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  MinAudience: " .. minAudience .. "  GuessedAudience: " .. minguessedAudience .. " - " .. guessedAudience)
 				TVT.sa_doBuySpot(value.GetID())
 				requisition:UseThisContract(value)
 				table.insert(buyedContracts, value)
@@ -360,8 +359,7 @@ function SignContracts:Tick()
 			if MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.maxContracts then break end
 			if (openSpots > 0) then
 				openSpots = openSpots - value.GetSpotCount()
-				TVT.addToLog("SignContracts: Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. "). MinAudience: " .. value.GetMinAudience())
-				debugMsg("SignContracts: Schließe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. "). MinAudience: " .. value.GetMinAudience())
+				TVT.addToLog("Signing a \"good\" contract: " .. value.GetTitle() .. " (" .. value.GetID() .. "). MinAudience: " .. value.GetMinAudience())
 				TVT.sa_doBuySpot(value.GetID())
 			end
 		end

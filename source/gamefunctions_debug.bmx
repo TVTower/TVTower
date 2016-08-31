@@ -390,11 +390,15 @@ Type TDebugProgrammePlanInfos
 					spotNumber = (hour - advertisement.programmedHour + 1) + "/" + advertisement.GetBlocks(TVTBroadcastMaterialType.ADVERTISEMENT)
 				endif
 				adString = advertisement.GetTitle() + " [" + spotNumber + "]"
+
+				if TProgramme(advertisement) then adString = "T: "+adString
 			EndIf
 
 			Local programme:TBroadcastMaterial = daysProgramme[hour]
 			If programme
 				progString = programme.GetTitle() + " ["+ (hour - programme.programmedHour + 1) + "/" + programme.GetBlocks(TVTBroadcastMaterialType.PROGRAMME) +"]"
+				
+				if TAdvertisement(programme) then progString = "I: "+progString
 			EndIf
 
 			If progString = "" and GetWorldTime().GetDayHour() > hour Then progString = "PROGRAMME OUTAGE"

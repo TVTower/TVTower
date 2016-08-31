@@ -54,7 +54,8 @@ Type TInGameInterface
 		if not chat
 			'TLogger.Log("TGame", "Creating ingame GUIelements", LOG_DEBUG)
 			chat = New TGUIGameChat.Create(New TVec2D.Init(518, 404), New TVec2D.Init(275,180), "InGame")
-			chat.setDefaultHideEntryTime(10000)
+			'keep the chat entries visible
+			'chat.setDefaultHideEntryTime(10000)
 			chat.setOption(GUI_OBJECT_CLICKABLE, False)
 			chat.SetDefaultTextColor( TColor.Create(255,255,255) )
 			'bugged:

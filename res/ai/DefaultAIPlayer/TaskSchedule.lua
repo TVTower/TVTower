@@ -13,6 +13,16 @@ _G["TaskSchedule"] = class(AITask, function(c)
 	c.SpotInventory = {}
 	c.SpotRequisition = {}
 	c.Player = nil
+
+	-- one entry per hour
+	--[[
+    c.guessedAudienceAccuracy = {}
+    c.guessedAudienceAccuracyCount = {}
+    for i=1, 24 do
+      c.guessedAudienceAccuracy[i] = 0
+      c.guessedAudienceAccuracyCount[i] = 0
+    end
+    ]]-
 end)
 
 
@@ -235,9 +245,11 @@ end
 -- Returns an assumption about potential audience for the given hour and
 -- (optional) broadcast
 -- without given broadcast, an average quality for the hour is used
-function TaskSchedule:GuessedAudienceForHourAndLevel(day, hour, broadcast)
+function TaskSchedule:GuessedAudienceForHourAndLevel(day, hour, broadcast, guessCurrentHour)
+	if (guessCurrentHour == nil) then guessCurrentHour = true; end
+	
 	--requesting audience for the current broadcast?
-	if (WorldTime.GetDay() == day and WorldTime.GetDayHour() == hour and WorldTime.GetDayMinute() >= 5) then
+	if (guessCurrentHour == false) and (WorldTime.GetDay() == day and WorldTime.GetDayHour() == hour and WorldTime.GetDayMinute() >= 5) then
 		return MY.GetProgrammePlan().GetAudience()
 	end
 	
@@ -245,7 +257,7 @@ function TaskSchedule:GuessedAudienceForHourAndLevel(day, hour, broadcast)
 	local globalPercentageByHour = self:GetMaxAudiencePercentage(day, hour) -- Die Maximalquote: Entspricht ungefähr "maxAudiencePercentage"
 	local averageMovieQualityByLevel = self:GetAverageMovieQualityByLevel(level) -- Die Durchschnittsquote dieses Qualitätslevels
 	local broadcastQuality = 0
-	local riskyness = 0.70 -- 1.0 means assuming to get all
+	local riskyness = 0.60 -- 1.0 means assuming to get all
 
 	--TODO: check advertisements (audience lower than with programmes)
 	if (broadcast ~= nil) then
@@ -700,6 +712,41 @@ function JobEmergencySchedule:GetBestMatchingSpot(spotList)
 	return bestSpot
 end
 
+
+function JobEmergencySchedule:GetBroadcastTypeCount(slotType, broadcastType, day)
+	if (slotType) == nil then return 0 end
+
+	local result = 0
+
+	if (day == nil) then
+		day = WorldTime.GetDay()
+	end
+	if (broadcastType) == nil then
+		broadcastType = 0
+	end
+	
+	for hour = 0, 23 do
+		local currentBroadcastMaterial
+		if slotType == TVT.Constants.BroadcastMaterialType.ADVERTISEMENT then
+			currentBroadcastMaterial = MY.GetProgrammePlan().GetAdvertisement(day, hour)
+		elseif slotType == TVT.Constants.BroadcastMaterialType.PROGRAMME then
+			currentBroadcastMaterial = MY.GetProgrammePlan().GetProgramme(day, hour)
+		end
+
+		if (currentBroadcastMaterial ~= nil) then
+			if (currentBroadcastMaterial.isType(broadcastType) == 1) then
+				result = result + 1
+			end
+		end
+	end
+	return result
+end
+
+
+function JobEmergencySchedule:GetTrailerCount(day)
+	return self:GetBroadcastTypeCount(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT, TVT.Constants.BroadcastMaterialType.PROGRAMME, day)
+end
+
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -729,6 +776,13 @@ function JobSchedule:OptimizeAdSchedule()
 	local replaceBadAdsWithTrailerRatePrimeTime = 0.05
 	local replaceBadAdsWithTrailerRateDay = 0.20
 	local replaceBadAdsWithTrailerRateNight = 0.30
+
+	-- do not send more than X trailers a day
+	-- if reaching that limit, keep sending "low requirement" ad spots
+	local totalTrailerCount = self.ScheduleTask.EmergencyScheduleJob:GetTrailerCount(currentDay)
+	local totalTrailerMax = 6
+	local placedTrailerCount = 0 
+
 	for i = currentHour, currentHour + 12 do
 		fixedDay, fixedHour = self.ScheduleTask:FixDayAndHour(currentDay, i)
 
@@ -739,7 +793,7 @@ function JobSchedule:OptimizeAdSchedule()
 		elseif (fixedHour >= 19 and fixedHour <= 23) then
 			replaceBadAdsWithTrailerRate = replaceBadAdsWithTrailerRatePrimeTime
 		end
-		--without programme, we cannot send trailers
+		-- without programme, we cannot send trailers
 		if TVT.of_getProgrammeLicenceCount() <= 1 then replaceBadAdsWithTrailerRate = 0 end
 
 
@@ -759,21 +813,38 @@ function JobSchedule:OptimizeAdSchedule()
 		-- ===============
 		-- (to avoid outages ... later stages might set an advertisement
 		--  instead)
-		
+		-- a) outage / no ad
+		-- b) not satisfiable advertisement
+		-- c) replace existing trailer with better one
+
+
+		-- a)
+		-------------
 		-- send trailer: if nothing is send
+		-- ignore trailer limit here
 		if (currentBroadcastMaterial == nil) then
 			sendTrailerReason = "no ad"
 			sendTrailer = true
+
+		-- b)
+		-------------
 		-- send trailer: if a planned advertisement is not satisfiable
+		-- take care of trailer limit!
 		elseif (currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) == 1) then
-			local adContract = TVT.of_getAdContractByID( currentBroadcastMaterial.GetReferenceID() )
-			if (previousProgramme ~= nil and adContract ~= nil) then
-				if guessedAudience < adContract.GetMinAudience() then
-					sendTrailerReason = "unsatisfiable ad (aud "..math.floor(guessedAudience) .. "  <  minAud " .. adContract.GetMinAudience() .. ")"
-					sendTrailer = true
+			if totalTrailerCount < totalTrailerMax then
+				local adContract = TVT.of_getAdContractByID( currentBroadcastMaterial.GetReferenceID() )
+				if (previousProgramme ~= nil and adContract ~= nil) then
+					if guessedAudience < adContract.GetMinAudience() then
+						sendTrailerReason = "unsatisfiable ad (aud "..math.floor(guessedAudience) .. "  <  minAud " .. adContract.GetMinAudience() .. ")"
+						sendTrailer = true
+					end
 				end
 			end
+
+		-- c)
+		-------------
 		-- send trailer: if there is a better one available?
+		-- ignore trailer limit here (replacing trailer with trailer)
 		elseif (currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.PROGRAMME) == 1) then
 			local upcomingProgrammesLicences = self.ScheduleTask:GetUpcomingProgrammesLicenceList()
 			local licenceID = currentBroadcastMaterial.GetReferenceID()
@@ -781,11 +852,12 @@ function JobSchedule:OptimizeAdSchedule()
 			if (not self.ScheduleTask:GetBroadcastSourceFromTable(licenceID, upcomingProgrammesLicences)) then
 				-- is there something planned in the future?
 				if (table.count(upcomingProgrammesLicences) > 0) then 
-					sendTrailerReason = "better trailer (of upcoming)"
+					sendTrailerReason = "better trailer (of upcoming programme)"
 					sendTrailer = true
 				end
 			end
 		end
+
 
 
 		-- find better suiting ad
@@ -800,9 +872,6 @@ function JobSchedule:OptimizeAdSchedule()
 
 		local betterAdContractList = self.ScheduleTask.EmergencyScheduleJob:GetMatchingSpotList(guessedAudience, minAudienceFactor, false, false)
 		if (table.count(betterAdContractList) > 0) then
---if fixedHour >= 19 and fixedHour <= 23 then
---	debugMsg( fixedHour..":55  " .. table.count(betterAdContractList) .. "  guessed: "..guessedAudience .. "  minAudFac: "..  minAudienceFactor)
---end
 			local oldAdContract
 			local oldMinAudience = 0
 			if (currentBroadcastMaterial and currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) == 1) then
@@ -824,9 +893,6 @@ function JobSchedule:OptimizeAdSchedule()
 				if oldAudienceCoverage > 1 then oldAudienceCoverage = -1 end
 			end
 			local audienceCoverageIncrease = newAudienceCoverage - oldAudienceCoverage
---if fixedHour >= 19 and fixedHour <= 23 then
---	debugMsg( fixedHour..":55  newAudienceCoverage: ".. newAudienceCoverage .. "  replaceBadAdsWithTrailerRate: "..  replaceBadAdsWithTrailerRate .. "  audienceCoverageIncrease: ".. audienceCoverageIncrease)
---end
 
 			-- if new spot only covers <x% of guessed Audience, do not place
 			-- an ad, better place a trailer
@@ -835,12 +901,13 @@ function JobSchedule:OptimizeAdSchedule()
 				-- only different spots - and when audience requirement is at better
 				if (newAdContract ~= oldAdContract and audienceCoverageIncrease > 0) then
 					choosenBroadcastSource = newAdContract
-					choosenBroadcastLog = "Setze Werbespot (optimiert): " .. fixedDay .. "/" .. fixedHour .. ":55  " .. newAdContract.GetTitle() .. " [" .. newAdContract.GetID() .."]  MinAud: " .. newAdContract.GetMinAudience() .. " (vorher: " .. oldMinAudience .. ")"
+					choosenBroadcastLog = "Set ad (optimized): " .. fixedDay .. "/" .. fixedHour .. ":55  " .. newAdContract.GetTitle() .. " [" .. newAdContract.GetID() .."]  MinAud: " .. newAdContract.GetMinAudience() .. " (vorher: " .. oldMinAudience .. ")"
 					sendTrailer = false
 				end
 			else
 				-- only place a trailer, if previous is an advertisement
-				if (oldSpot ~= nil) then
+				-- take care of trailer limit here
+				if (oldSpot ~= nil and totalTrailerCount < totalTrailerMax) then
 					sendTrailerReason = "new ad below ReplaceWithTrailerRate"
 					sendTrailer = true
 				end
@@ -857,7 +924,7 @@ function JobSchedule:OptimizeAdSchedule()
 
 
 		-- avoid outage and set to send a trailer in all cases
-		if (choosenBroadcastSource == nil and (currentBroadcastMaterial ~= nil)) then
+		if (choosenBroadcastSource == nil and currentBroadcastMaterial == nil and sendTrailer ~= True) then
 			sendTrailer = true
 			sendTrailerReason = "avoid outage"
 		end
@@ -899,7 +966,7 @@ function JobSchedule:OptimizeAdSchedule()
 					local choosenLicence = upcomingProgrammesLicences[ math.random( #upcomingProgrammesLicences ) ]
 					if (choosenLicence ~= nil) then
 						choosenBroadcastSource = choosenLicence
-						choosenBroadcastLog = "Setze Trailer: " .. fixedDay .. "/" .. fixedHour .. ":55  " .. choosenLicence.GetTitle() .. "  Reason: " .. sendTrailerReason
+						choosenBroadcastLog = "Set trailer: " .. fixedDay .. "/" .. fixedHour .. ":55  " .. choosenLicence.GetTitle() .. "  Reason: " .. sendTrailerReason
 					end
 				end
 			else
@@ -920,7 +987,7 @@ function JobSchedule:OptimizeAdSchedule()
 		if (choosenBroadcastSource == nil and currentBroadcastMaterial == nil) then
 			if TVT.of_getAdContractCount() > 0 then
 				choosenBroadcastSource = TVT.of_getAdContractAtIndex( math.random(0, TVT.of_getAdContractCount()-1) )
-				choosenBroadcastLog = "Setze Werbespot (Alternativlosigkeit): " .. fixedDay .. "/" .. fixedHour .. ":55  " .. choosenBroadcastSource.GetTitle() .. " [" ..choosenBroadcastSource.GetID() .."]  MinAud: " .. choosenBroadcastSource.GetMinAudience()
+				choosenBroadcastLog = "Set ad (no alternative): " .. fixedDay .. "/" .. fixedHour .. ":55  " .. choosenBroadcastSource.GetTitle() .. " [" ..choosenBroadcastSource.GetID() .."]  MinAud: " .. choosenBroadcastSource.GetMinAudience()
 			end
 		end
 
@@ -933,6 +1000,9 @@ function JobSchedule:OptimizeAdSchedule()
 				debugMsg(choosenBroadcastLog)
 			end
 		end
+
+		-- refresh trailer count for next hour
+		totalTrailerCount = self.ScheduleTask.EmergencyScheduleJob:GetTrailerCount(currentDay)
 	end
 end
 
