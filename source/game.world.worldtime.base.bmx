@@ -1,5 +1,6 @@
 Superstrict
 Import "Dig/base.util.deltatimer.bmx"
+Import "Dig/base.util.mersenne.bmx"
 
 Type TWorldTimeBase
 	'time (seconds) gone at all 
@@ -207,7 +208,7 @@ Type TWorldTimeBaseIntervalTimer
 
 
 	Method reset()
-		intervalToUse = interval + rand(randomnessMin, randomnessMax)
+		intervalToUse = interval + RandRange(randomnessMin, randomnessMax)
 
 		timer = GetTime().GetMillisecondsGone()
 	End Method

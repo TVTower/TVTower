@@ -890,7 +890,7 @@ Type TBroadcastFeedback
 			ImportanceSum :+ statement.Importance
 		Next
 
-		Local randomValue:Int = Rand(1,ImportanceSum)
+		Local randomValue:Int = RandRange(1,ImportanceSum)
 
 		Local currCount:Int
 		For local statement:TBroadcastFeedbackStatement = eachin FeedbackStatements

@@ -746,33 +746,43 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	'=== GETTERS ===
 
-	Method GetRandomProgrammeLicence:TProgrammeLicence() {_exposeToLua}
+	Method GetRandomProgrammeLicence:TProgrammeLicence()
+		'do not expose to LUA/AI - uses RandRange()
+
 		if GetProgrammeLicenceCount() = 0 then return NULL
-		Return TProgrammeLicence(GetProgrammeLicences().ValueAtIndex(rand(0, GetProgrammeLicences().Count() - 1)))
+		Return TProgrammeLicence(GetProgrammeLicences().ValueAtIndex(RandRange(0, GetProgrammeLicences().Count() - 1)))
 	End Method
 
 
-	Method GetRandomSingleLicence:TProgrammeLicence() {_exposeToLua}
+	Method GetRandomSingleLicence:TProgrammeLicence()
+		'do not expose to LUA/AI - uses RandRange()
+
 		if singleLicences.count() = 0 then return NULL
-		Return TProgrammeLicence(singleLicences.ValueAtIndex(rand(0, singleLicences.count() - 1)))
+		Return TProgrammeLicence(singleLicences.ValueAtIndex(RandRange(0, singleLicences.count() - 1)))
 	End Method
 
 
-	Method GetRandomSerieLicence:TProgrammeLicence() {_exposeToLua}
+	Method GetRandomSeriesLicence:TProgrammeLicence()
+		'do not expose to LUA/AI - uses RandRange()
+
 		if seriesLicences.count() = 0 then return NULL
-		Return TProgrammeLicence(seriesLicences.ValueAtIndex(rand(0, seriesLicences.count() - 1)))
+		Return TProgrammeLicence(seriesLicences.ValueAtIndex(RandRange(0, seriesLicences.count() - 1)))
 	End Method
 
 
-	Method GetRandomAdContract:TAdContract() {_exposeToLua}
+	Method GetRandomAdContract:TAdContract()
+		'do not expose to LUA/AI - uses RandRange()
+
 		if adContracts.count() = 0 then return NULL
-		Return TAdContract(adContracts.ValueAtIndex(rand(0, adContracts.count() - 1)))
+		Return TAdContract(adContracts.ValueAtIndex(RandRange(0, adContracts.count() - 1)))
 	End Method
 
 
 	Method GetRandomScript:TScript() {_exposeToLua}
+		'do not expose to LUA/AI - uses RandRange()
+
 		if scripts.count() = 0 then return Null
-		Return TScript(scripts.ValueAtIndex(rand(0, scripts.count() - 1)))
+		Return TScript(scripts.ValueAtIndex(RandRange(0, scripts.count() - 1)))
 	End Method
 
 

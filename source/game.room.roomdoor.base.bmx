@@ -113,7 +113,7 @@ Type TRoomDoorBaseCollection
 
 
 	Method GetRandom:TRoomDoorBase()
-		return TRoomDoorBase( list.ValueAtIndex( Rand(list.Count() - 1) ) )
+		return TRoomDoorBase( list.ValueAtIndex( RandRange(0, list.Count() - 1) ) )
 	End Method
 
 

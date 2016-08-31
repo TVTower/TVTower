@@ -66,7 +66,7 @@ Type TRoomBaseCollection
 
 
 	Function GetRandom:TRoomBase()
-		return TRoomBase( GetInstance().list.ValueAtIndex( Rand(GetInstance().list.Count() - 1) ) )
+		return TRoomBase( GetInstance().list.ValueAtIndex( RandRange(0, GetInstance().list.Count() - 1) ) )
 	End Function
 
 

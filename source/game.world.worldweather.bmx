@@ -273,8 +273,7 @@ Type TWorldWeatherEntry
 	Method Update()
 		'=== GENERATE RANDOM VALUES ===
 		'randRange in network games so all clients get the same weather
-		local randomPressure:int = randRange(0, _config.multiplier * _config.steps - 1) / 8 - (_config.multiplier/2) + GetPressure()
-		'local random:int = rand(0, multiplier * steps - 1) / 8 - offset + GetPressure()
+		local randomPressure:int = RandRange(0, _config.multiplier * _config.steps - 1) / 8 - (_config.multiplier/2) + GetPressure()
 
 
 		'=== UPDATE WIND VELOCITY ===
