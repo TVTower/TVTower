@@ -45,7 +45,7 @@ Type TGUIModalMainMenu extends TGUIModalWindowChainElement
 		buttons[3].disable()
 
 		If guiCaptionTextBox
-			guiCaptionTextBox.SetFont(.headerFont)
+			guiCaptionTextBox.SetFont(headerFont)
 			guiCaptionTextBox.Resize(-1,-1)
 			SetCaptionArea(New TRectangle.Init(-1, 5, -1, 25))
 		Endif
@@ -168,7 +168,7 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 
 
 		If guiCaptionTextBox
-			guiCaptionTextBox.SetFont(.headerFont)
+			guiCaptionTextBox.SetFont(headerFont)
 			guiCaptionTextBox.Resize(-1,-1)
 			SetCaptionArea(New TRectangle.Init(-1, 5, -1, 25))
 		Endif
@@ -356,7 +356,7 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 
 
 		If guiCaptionTextBox
-			guiCaptionTextBox.SetFont(.headerFont)
+			guiCaptionTextBox.SetFont(headerFont)
 			SetCaptionArea(New TRectangle.Init(-1, 5, -1, 25))
 			guiCaptionTextBox.Resize(-1,-1)
 		Endif
@@ -501,7 +501,7 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 	Method CreateConfirmOverwriteDialogue:int(fileURI:string)
 		if _confirmOverwriteDialogue then return False
 		_confirmOverwriteDialogue = New TGUIModalWindow.Create(New TVec2D, New TVec2D.Init(400,150), "SYSTEM")
-		_confirmOverwriteDialogue.guiCaptionTextBox.SetFont(.headerFont)
+		_confirmOverwriteDialogue.guiCaptionTextBox.SetFont(headerFont)
 
 		_confirmOverwriteDialogue._defaultValueColor = TColor.clBlack.copy()
 		_confirmOverwriteDialogue.defaultCaptionColor = TColor.clWhite.copy()

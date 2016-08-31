@@ -427,14 +427,14 @@ Type TDebugProgrammePlanInfos
 			SetColor 255,235,20
 			if progTime <> 0
 				local alphaValue:Float = 1.0 - Min(1.0, ((Time.GetTimeGone() - progTime) / 5000.0))
-				SetAlpha 0.4 * Min(1.0, 2 * alphaValue^3)
+				SetAlpha Float(0.4 * Min(1.0, 2 * alphaValue^3))
 				SetBlend LIGHTBLEND
 				DrawRect(x+25, y + hour * lineHeight, 190, lineHeight-1)
 				SetBlend ALPHABLEND
 			endif
 			if adTime <> 0
 				local alphaValue:Float = 1.0 - Min(1.0, ((Time.GetTimeGone() - adTime) / 5000.0))
-				SetAlpha 0.4 * Min(1.0, 2 * alphaValue^3)
+				SetAlpha Float(0.4 * Min(1.0, 2 * alphaValue^3))
 				SetBlend LIGHTBLEND
 				DrawRect(x+220, y + hour * lineHeight, 150, lineHeight-1)
 				SetBlend ALPHABLEND
