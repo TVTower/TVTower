@@ -1116,7 +1116,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		newsObject.owner = owner
 		news.AddLast(newsObject)
 
-		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addNews", new TData, newsObject))
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addNews", new TData.Add("news", newsObject), self))
 
 		return TRUE
 	End Method
@@ -1129,7 +1129,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			newsObject.Remove()
 
 			'emit an event so eg. network can recognize the change
-			if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.removeNews", new TData, newsObject ) )
+			if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.removeNews", new TData.Add("news", newsObject), self ) )
 			return TRUE
 		endif
 		return FALSE

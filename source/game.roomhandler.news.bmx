@@ -418,7 +418,12 @@ Type RoomHandler_News extends TRoomHandler
 	Function onChangeNews:int( triggerEvent:TEventBase )
 		'is it the plan of the room owner?
 		Local plan:TPlayerProgrammePlan = TPlayerProgrammePlan(triggerEvent.GetSender())
-		If Not plan Or plan.owner <> currentRoom.owner Then Return False
+		Local collection:TPlayerProgrammeCollection = TPlayerProgrammeCollection(triggerEvent.GetSender())
+		Local owner:int = 0
+		if plan then owner = plan.owner
+		if collection then owner = collection.owner
+
+		If Not owner Or owner <> currentRoom.owner Then Return False
 
 		'only adjust GUI if we are displaying that screen (eg. AI skips that)
 		If not IsMyScreen( ScreenCollection.GetCurrentScreen() ) Then Return False

@@ -1458,7 +1458,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 
 		'emit an event so eg. network can recognize the change
-		If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("programmeplan.SetNews", New TData.AddNumber("slot", slot), newsObject))
+		If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("programmeplan.SetNews", New TData.Add("news",newsObject).AddNumber("slot", slot), self))
 
 		Return True
     End Method
@@ -1506,7 +1506,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			'empty the slot
 			news[newsSlot] = Null
 
-			If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("programmeplan.RemoveNews", New TData.AddNumber("slot", newsSlot), deletedNews))
+			If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("programmeplan.RemoveNews", New TData.Add("news", deletedNews).AddNumber("slot", newsSlot), self))
 			Return True
 		EndIf
 		Return False
