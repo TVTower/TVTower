@@ -442,9 +442,31 @@ Type TDebugProgrammePlanInfos
 			
 			SetColor 255,255,255
 			SetAlpha oldAlpha
+
 			GetBitmapFont("default", 11).Draw( Rset(hour,2).Replace(" ", "0"), x+5, y+1 + hour*lineHeight)
+			if programme then SetStateColor(programme)
 			GetBitmapFont("default", 11).DrawBlock( progString, x+30, y+1 + hour*lineHeight, 185, lineHeight)
+			if advertisement then SetStateColor(advertisement)
 			GetBitmapFont("default", 11).DrawBlock( adString, x+225, y+1 + hour*lineHeight, 145, lineHeight)
+			SetColor 255,255,255
 		Next
+	End Function
+
+	Function SetStateColor(material:TBroadcastMaterial)
+		if not material
+			SetColor 255,255,255
+			return
+		endif
+			
+		Select material.state
+			Case TBroadcastMaterial.STATE_RUNNING
+				SetColor 255,230,120
+			Case TBroadcastMaterial.STATE_OK
+				SetColor 200,255,200
+			Case TBroadcastMaterial.STATE_FAILED
+				SetColor 250,150,120
+			default
+				SetColor 255,255,255
+		End select
 	End Function
 End Type
