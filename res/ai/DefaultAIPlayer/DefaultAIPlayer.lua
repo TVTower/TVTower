@@ -498,7 +498,7 @@ function OnMinute(number)
 		local averageMovieQualityByLevel = 0
 		if ( programme ~= nil) then
 			-- Die Durchschnittsquote dieses Qualitätslevels
-			averageMovieQualityByLevel = programme.GetQuality(0)
+			averageMovieQualityByLevel = programme.GetQuality()
 		end
 
 		-- Welchen Qualitätslevel sollte ein Film/Werbung um diese Uhrzeit haben

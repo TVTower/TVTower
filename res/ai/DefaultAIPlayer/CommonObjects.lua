@@ -130,6 +130,7 @@ function AIToolsClass:GetAverageMovieQualityByLevel(level)
 	elseif (level == 5) then
 		return 0.22 -- Primetime
 	end
+	return 0.00
 end
 
 function AIToolsClass:GetMaxAudiencePercentageByLevel(level)
@@ -144,6 +145,7 @@ function AIToolsClass:GetMaxAudiencePercentageByLevel(level)
 	elseif level == 5 then
 		return 0.3459
 	end
+	return 0.00
 end
 
 function AIToolsClass:GuessedAudienceForLevel(level)
