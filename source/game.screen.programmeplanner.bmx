@@ -1436,7 +1436,7 @@ endrem
 		'only do the gui stuff with the player being in the office
 		If TRoomHandler.CheckPlayerInRoom("office")
 			'only adjust GUI if we are displaying that screen (eg. AI skips that)
-			If not IsMyScreen( ScreenCollection.GetCurrentScreen() )
+			If IsMyScreen( ScreenCollection.GetCurrentScreen() )
 				'FALSE: without removing dragged
 				'->ONLY keeps newly created, not ones dragged from a slot
 				RemoveAllGuiElements(False)
