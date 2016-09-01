@@ -64,7 +64,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiStartYearLabel = New TGUILabel.Create(New TVec2D.Init(255, 0), "", TColor.CreateGrey(90), name)
 		guiStartYear = New TGUIinput.Create(New TVec2D.Init(255, 12), New TVec2D.Init(70, -1), "", 4, name)
 		guiGameSeedLabel = New TGUILabel.Create(New TVec2D.Init(330, 0), "", TColor.CreateGrey(90), name)
-		guiGameSeed = New TGUIinput.Create(New TVec2D.Init(330, 12), New TVec2D.Init(75, -1), "", 12, name)
+		guiGameSeed = New TGUIinput.Create(New TVec2D.Init(330, 12), New TVec2D.Init(75, -1), "", 9, name)
 
 		guiGameTitleLabel.SetFont( GetBitmapFontManager().Get("DefaultThin", 14, BOLDFONT) )
 		guiStartYearLabel.SetFont( GetBitmapFontManager().Get("DefaultThin", 14, BOLDFONT) )
@@ -228,6 +228,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiPlayerNames[0].SetValue(GetGameBase().username)
 		guiChannelNames[0].SetValue(GetGameBase().userchannelname)
 
+		SeedRnd(Millisecs())
 		guiGameSeed.SetValue( string(Rand(0, 10000000)) )
 
 		GetPlayerBase(1).Name = GetGameBase().username
@@ -341,7 +342,6 @@ Type TScreen_GameSettings Extends TGameScreen
 		if sender = guiGameSeed
 			local valueNumeric:string = string(StringHelper.NumericFromString(value))
 			if value <> valueNumeric then sender.SetValue(valueNumeric)
-
 			GetGameBase().SetRandomizerBase( int(valueNumeric)  )
 		endif
 
