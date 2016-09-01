@@ -330,7 +330,7 @@ Type TPlayerBoss
 		ChefDialog.AddTexts(Chefdialoge)
 
 
-		ChefDialog.SetArea(new TRectangle.Init(300, 60, 400, 100))
+		ChefDialog.SetArea(new TRectangle.Init(300, 60, 400, 140))
 		ChefDialog.SetAnswerArea(new TRectangle.Init(400, 220, 380, 110))
 		ChefDialog.SetGrow(1,-1)
 
