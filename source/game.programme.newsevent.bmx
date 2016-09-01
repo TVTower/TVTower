@@ -34,7 +34,7 @@ Type TNewsEventCollection
 	'(with whole audience, so 100%, watching)
 	'a value > 1.0 means, it decreases to 0 with less than 100% watching
 	'ex.: 0.9 = 10% cut, 0.85 = 15% cut
-	Field wearoffFactor:float = 0.4
+	Field wearoffFactor:float = 0.25
 	'=== CACHE ===
 	'cache for faster access
 
@@ -851,7 +851,7 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 '		Local quality:Float = 0.05 * GetQualityRaw() + 0.95 * GetQualityRaw() * GetTopicality() ^ 2
 
 		'topicality also includes "topicality loss" by lower-quality events
-		Local quality:Float = GetQualityRaw() * GetTopicality() ^ 2
+		Local quality:Float = GetQualityRaw() * (0.75 * GetTopicality() + 0.25 * GetTopicality() ^ 2)
 
 		Return Max(0, quality)
 	End Method
@@ -860,7 +860,7 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	'returns price based on a "per 5 million" approach
 	Method GetPrice:Int() {_exposeToLua}
 		'price ranges from 0 to ~2000
-		Return Max(0, 2000 * GetQuality() * GetModifier("price") )
+		Return Max(0, 4000 * GetQuality() * GetModifier("price") )
 	End Method
 End Type
 
