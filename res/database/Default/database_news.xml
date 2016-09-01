@@ -398,7 +398,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="7d63161c-7937-4cce-95c6-2c82529c06ac" />
 			</effects>
-			<data genre="1" price="1.0" quality="9" />
+			<data genre="1" price="1.0" quality="13" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="7d63161c-7937-4cce-95c6-2c82529c06ac" thread_id="0acccc29-1ef7-4613-8f78-1c0ad3b601e5" type="2" creator="">
@@ -413,7 +413,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="296f6aca-a031-4f2f-b6a5-2317abadbb40" />
 			</effects>
-			<data genre="1" price="1.0" quality="9" />
+			<data genre="1" price="1.0" quality="13" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="296f6aca-a031-4f2f-b6a5-2317abadbb40" thread_id="0acccc29-1ef7-4613-8f78-1c0ad3b601e5" type="2" creator="">
@@ -428,7 +428,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="ec53534e-da72-4cbe-ab00-f2f4e3005ed1" />
 			</effects>
-			<data genre="1" price="1.0" quality="9" />
+			<data genre="1" price="1.0" quality="15" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="ec53534e-da72-4cbe-ab00-f2f4e3005ed1" thread_id="0acccc29-1ef7-4613-8f78-1c0ad3b601e5" type="2" creator="">
@@ -441,7 +441,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>Kidd was buried today in the southern city of Cologne. The burial in the car cemetery attracted tens of thousands of mourners. They had to embrace David Hasseldorf.</en>
 			</description>
 			<effects />
-			<data genre="1" price="1.0" quality="6" />
+			<data genre="1" price="1.0" quality="11" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="6bba8dff-b5da-40b1-9db8-0e3cc655c14b" thread_id="0f4bf47b-dd51-4c3e-8d44-47ed0908ae37" type="0" creator="">
@@ -588,7 +588,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="a4f30290-dc9f-49e0-ad44-727e00e44693" time="2,1,1,16,23" />
 			</effects>
-			<data genre="4" price="1.0" quality="19" />
+			<data genre="4" price="1.0" quality="26" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="a4f30290-dc9f-49e0-ad44-727e00e44693" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
@@ -601,7 +601,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>After his spectacular trip the set free rhinoceros arrived back safely at the zoo.</en>
 			</description>
 			<effects />
-			<data genre="4" price="1.0" quality="15" />
+			<data genre="4" price="1.0" quality="23" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 
@@ -662,7 +662,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="1135edbe-daf4-4ed7-8817-b352b9ee7442" time="1,8,12" />
 			</effects>
-			<data genre="3" price="1.0" quality="19" />
+			<data genre="3" price="1.0" quality="27" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="1135edbe-daf4-4ed7-8817-b352b9ee7442" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
@@ -906,7 +906,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>According to insider information bottles and deposit collectors will have to pay income tax for their activities immediately. The Association of German bottle collectors lodges an appeal.</en>
 			</description>
 			<effects />
-			<data genre="4" price="1.0" quality="9" />
+			<data genre="4" price="1.0" quality="11" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="b6b215f8-17de-44f0-b3f5-a23e06794705" thread_id="4ea94528-27be-4366-9f5b-80e6893a3e9b" type="0" creator="">
@@ -919,7 +919,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>By purchasing eight silicon syringes at the hardware store an unemployed person wants to leverage his daughter a breast surgery.</en>
 			</description>
 			<effects />
-			<data genre="4" price="1.05" quality="9" />
+			<data genre="4" price="1.05" quality="11" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="6b9c5dc4-d2ca-4f09-9eb7-794765ccd584" thread_id="4edc7a2f-4387-43f8-be1c-5119d4a4fa29" type="0" creator="">
@@ -1264,7 +1264,7 @@ Verlost wird dabei noch ein NASA-Topfset.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="1" price="1.15" quality="9" />
+			<data genre="1" price="1.15" quality="14" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="22e00cc1-288d-4405-815b-51da1e25f6e5" thread_id="902e3964-abe0-41cd-8f80-18a09e7e4aea" type="0" creator="">
@@ -1290,7 +1290,7 @@ Verlost wird dabei noch ein NASA-Topfset.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="4" price="1.3" quality="1" />
+			<data genre="4" price="1.3" quality="25" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="1a4d7fd8-855a-47e4-871a-dc72eb4680ba" thread_id="94e573ec-1350-405c-b2f6-8684958e6e8b" type="0" creator="">
@@ -1724,7 +1724,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="4" price="0.90" quality="9" />
+			<data genre="4" price="1.20" quality="14" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		
@@ -2090,7 +2090,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="0" price="1.0" quality="9" />
+			<data genre="0" price="1.1" quality="12" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="a6ac4b6c-83a0-433a-9336-c7256b6e3165" thread_id="d4c54bd0-cecf-4f40-bb10-7cda64543f3d" type="0" creator="">
@@ -2252,7 +2252,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="91a7a88b-b4ff-47b3-b709-6e98d6232cbb" time="1,8,19" />
 			</effects>
-			<data genre="1" price="1.0" quality="9" />
+			<data genre="1" price="1.0" quality="13" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="91a7a88b-b4ff-47b3-b709-6e98d6232cbb" thread_id="d8ca951a-2240-488a-8913-ddb5b75c8add" type="2" creator="">
@@ -2267,7 +2267,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="a0104185-2bc8-4b05-90e1-383418c8d66d" time="2,1,3,5,23" />
 			</effects>
-			<data genre="1" price="1.0" quality="0" />
+			<data genre="1" price="1.0" quality="11" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="a0104185-2bc8-4b05-90e1-383418c8d66d" thread_id="d8ca951a-2240-488a-8913-ddb5b75c8add" type="2" creator="">
@@ -2308,7 +2308,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<de>Da sich so viele Terroristen bei Anschlägen auf Duban verirren, sollten sie ab sofort mit GPS ausgestattet werden. Dieses Gerücht wurde im Internet gefunden.</de>
 				<en></en>
 			</description>
-			<data genre="0" price="1.0" quality="0" />
+			<data genre="0" price="1.0" quality="21" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="05cb2eba-bad9-424c-920e-5d2772497069" thread_id="de6fcb92-7b35-4a6a-9daf-7d5904d622fa" type="0" creator="">
@@ -2409,7 +2409,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="4" price="1.0" quality="9" />
+			<data genre="4" price="0.9" quality="21" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="bc7adf97-1b60-4745-99b3-f18604837103" thread_id="f0228a97-bf9b-4d35-9723-9dcbbbc99b1b" type="0" creator="">
@@ -2552,8 +2552,8 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="1" price="1.0" quality="0" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<data genre="1" price="1.0" quality="12" />
+			<conditions year_range_from="1998" year_range_to="2005" />
 		</news>
 		<news id="f9188a93-fa5d-4062-badb-6dba0d25f2ec" thread_id="fc0cbc46-ddf2-470a-95f7-b4329fc7004b" type="0" creator="">
 			<title>
