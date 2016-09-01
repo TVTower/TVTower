@@ -5,7 +5,7 @@
 	<playername>Player</playername>
 	<channelname>My Channel</channelname>
 	<startyear>1985</startyear>
-	<database>res/database.xml</database>
+	<databaseDir>res/database/Default</databaseDir>
 	<stationmap>germany.xml</stationmap>
 
 	<gamename>New Game</gamename>

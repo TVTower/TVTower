@@ -126,7 +126,7 @@ Include "game.escapemenu.bmx"
 
 '===== Globals =====
 VersionDate = LoadText("incbin::source/version.txt").Trim()
-VersionString = "v0.3.4 Build ~q" + VersionDate+"~q"
+VersionString = "v0.3.4.2 Build ~q" + VersionDate+"~q"
 CopyrightString = "by Ronny Otto & Team"
 
 Global APP_NAME:string = "TVTower"
@@ -3070,6 +3070,9 @@ Type TSettingsWindow
 		inputChannelName.SetValue(data.GetString("channelname", "My Channel"))
 		inputStartYear.SetValue(data.GetInt("startyear", 1985))
 		'inputStationmap.SetValue(data.GetString("stationmap", "res/maps/germany.xml"))
+		if FileType(data.GetString("databaseDir")) <> 2
+			data.AddString("databaseDir", "res/database/Default")
+		endif
 		inputDatabase.SetValue(data.GetString("databaseDir", "res/database/Default"))
 		inputInRoomSlowdown.SetValue(data.GetInt("inroomslowdown", 100))
 		checkMusic.SetChecked(data.GetBool("sound_music", True))

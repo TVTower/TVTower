@@ -96,8 +96,10 @@ Type TGUIinput Extends TGUIobject
 	Method SetValue(value:String)
 		if value <> GetValue()
 			_valueChanged = True
+			_valueBeforeEdit = value
+
+			Super.SetValue(value)
 		endif
-		Super.SetValue(value)
 	End Method
 
 

@@ -327,6 +327,8 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		'name or channel changed?
 		For Local i:Int = 0 To 3
+			if not GetPlayerBase(i+1) then continue
+			
 			If sender = guiPlayerNames[i] Then GetPlayerBase(i+1).Name = value
 			If sender = guiChannelNames[i] Then GetPlayerBase(i+1).channelName = value
 
