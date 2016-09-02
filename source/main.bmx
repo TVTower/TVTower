@@ -4547,12 +4547,17 @@ Type GameEvents
 				if not p then continue
 				
 				'COLLECTION
-				'news could stay there for 2 days (including today)
-				hoursToKeep = 24
-				minTopicalityToKeep = 0.05
+				'news could stay there for 1.5 days (including today)
+				hoursToKeep = 36
 				
 				'loop through a copy to avoid concurrent modification
 				For Local news:TNews = EachIn p.GetProgrammeCollection().news.Copy()
+					'if paid for the news, keep it a bit longer
+					if news.IsPaid()
+						minTopicalityToKeep = 0.01
+					else
+						minTopicalityToKeep = 0.07
+					endif
 					If hour - GetWorldTime().GetHour(news.GetHappenedTime()) > hoursToKeep
 						p.GetProgrammeCollection().RemoveNews(news)
 					elseif news.newsevent.GetTopicality() < minTopicalityToKeep
@@ -4562,14 +4567,14 @@ Type GameEvents
 
 				'PLAN
 				'news could get send a bit longer
-				hoursToKeep = 36
-				minTopicalityToKeep = 0.01
+				hoursToKeep = 48
+				'minTopicalityToKeep = 0.01
 				'no need to copy the array because it has a fixed length
 				For Local news:TNews = EachIn p.GetProgrammePlan().news
 					If hour - GetWorldTime().GetHour(news.GetHappenedTime()) > hoursToKeep
 						p.GetProgrammePlan().RemoveNewsByGUID(news.GetGUID(), False)
-					elseif news.newsevent.GetTopicality() < minTopicalityToKeep
-						p.GetProgrammePlan().RemoveNewsByGUID(news.GetGUID(), False)
+					'elseif news.newsevent.GetTopicality() < minTopicalityToKeep
+					'	p.GetProgrammePlan().RemoveNewsByGUID(news.GetGUID(), False)
 					EndIf
 				Next
 			Next
@@ -4578,7 +4583,7 @@ Type GameEvents
 			'remove old news events - wait a bit more than "plan time"
 			'this also gets rid of "one time" news events which should
 			'have been "triggered" then
-			local daysToKeep:int = int(ceil((3 * hoursToKeep)/48.0))
+			local daysToKeep:int = int(ceil((hoursToKeep)/48.0) + 1)
 			GetNewsEventCollection().RemoveOutdatedNewsEvents(daysToKeep)
 		Next
 		'remove from collection (reuse if possible)
