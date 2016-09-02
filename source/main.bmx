@@ -4772,19 +4772,13 @@ End Function
 
 Function GetPlayerPerformanceOverviewText:string[](day:int)
 	if day = -1 then day = GetWorldTime().GetDay()
-	local latestHour:int = 23
+	local latestHour:int = 24
 	if day = GetWorldTime().GetDay()
 		latestHour = GetWorldTime().GetDayHour()
-		'no complete programme known for this hour
-		if GetWorldTime().GetDayMinute() < 55
-			latestHour = Max(0, GetWorldTime().GetDayHour() -1)
-		endif
 	endif
 	local now:Long = GetWorldTime().MakeTime(0, day, latestHour, 0, 0)
 
 
-'	local finance:TPlayerFinance = GetPlayer(playerID).GetFinance(day - 1)
-'	local financeTotal:TPlayerFinance = GetPlayerFinanceCollection().GetTotal(playerID)
 	local text:string[]
 
 	local title:string = LSet("Performance Stats for day "+(1 + day - GetWorldTime().GetStartDay()) +". Time: 0 - " + (latestHour+1), 83)
@@ -4906,54 +4900,59 @@ End Function
 
 Function GetPlayerFinanceOverviewText:string[](playerID:int, day:int)
 	if day = -1 then day = GetWorldTime().GetDay()
-	local latestHour:int = 23
+	local latestHour:int = 24
 	if day = GetWorldTime().GetDay()
 		latestHour = GetWorldTime().GetDayHour()
-		'no complete programme known for this hour
-		if GetWorldTime().GetDayMinute() < 55
-			latestHour = Max(0, GetWorldTime().GetDayHour() -1)
-		endif
 	endif
 	local now:Long = GetWorldTime().MakeTime(0, day, latestHour, 0, 0)
 
 
-	local finance:TPlayerFinance = GetPlayer(playerID).GetFinance(day)
+	local finance:TPlayerFinance = GetPlayerFinance(playerID, day)
 	local financeTotal:TPlayerFinance = GetPlayerFinanceCollection().GetTotal(playerID)
-
-	local title:string = LSet("Finance Stats for player #"+playerID+" on day "+(1 + day - GetWorldTime().GetStartDay()) +". Time: 0 - " + (latestHour+1), 79)
+	
+	local title:string = LSet("Finance Stats for player #"+playerID+" on day "+(1 + day - GetWorldTime().GetStartDay()) +". Time: 0 - " + latestHour, 79)
 	local text:string[]
 	
 	text :+ [".--------------------------------------------------------------------------------."]
 	text :+ ["| " + title                                          + "|"]
+	if not finance
+		text :+ ["| " + LSet("No Financial overview available for the requested day.", 79) + "|"]
+	endif
 
 	local bankruptcyCount:int = GetPlayer(playerID).GetBankruptcyAmount(now)
 	local bankruptcyTime:long = GetPlayer(playerID).GetBankruptcyTime(bankruptcyCount)
 	'bankruptcy happened today?
 	if bankruptcyCount > 0 and GetWorldTime().GetDay(bankruptcyTime) = GetWorldTime().GetDay()
-		text :+ ["|" + LSet("* Player #"+playerID+"+ restarted today at "+GetWorldTime().GetFormattedTime(bankruptcyTime)+" !", 79) + "|"]
+		text :+ ["| " + LSet("* Player #"+playerID+"+ restarted today at "+GetWorldTime().GetFormattedTime(bankruptcyTime)+" !", 79) + "|"]
 	endif
 
-	local titleLength:int = 30
-	text :+ ["|---------------------------------------------------------.----------------------|"]
-	text :+ ["| Money:              "+Rset(finance.GetMoney(), 9)+"  |                       |         TOTAL         |"]
-	text :+ ["|--------------------------------|-----------.-----------|-----------.-----------|"]
-	text :+ ["|                                |   INCOME  |  EXPENSE  |   INCOME  |  EXPENSE  |"]
-	text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_TRADING_PROGRAMMELICENCES")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_programmeLicences), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_programmeLicences),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_programmeLicences), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_programmeLicences),9)+ " |"]
-	text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_AD_INCOME__CONTRACT_PENALTY")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_ads), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_penalty),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_ads), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_penalty),9)+ " |"]
-	text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_CALL_IN_SHOW_INCOME")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_callerRevenue), 9) + " | " + Rset("-",9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_callerRevenue), 9) + " | " + Rset("-",9)+ " |"]
-	text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_SPONSORSHIP_INCOME__PENALTY")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_sponsorshipRevenue), 9) + " | " + Rset("-",9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_sponsorshipRevenue), 9) + " | " + Rset("-",9)+ " |"]
-	text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_NEWS")), titleLength) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_news),9) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_news),9)+ " |"]
-	text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_NEWSAGENCIES")), titleLength) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_newsAgencies),9)+ " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_newsAgencies),9)+ " |"]
-	text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_STATIONS")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_stations), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_stationFees),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_stations), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_stationFees),9)+ " |"]
-	text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_SCRIPTS")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_scripts), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_scripts),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_scripts), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_scripts),9)+ " |"]
-	text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_ACTORS_AND_PRODUCTIONSTUFF")), titleLength) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_productionStuff),9) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_productionStuff),9)+ " |"]
-	text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_STUDIO_RENT")), titleLength) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_rent),9) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_rent),9)+ " |"]
-	text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_INTEREST_BALANCE__CREDIT")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_balanceInterest), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_drawingCreditInterest),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_balanceInterest), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_drawingCreditInterest),9)+ " |"]
-	text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_CREDIT_TAKEN__REPAYED")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_creditTaken), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_creditRepayed),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_creditTaken), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_creditRepayed),9)+ " |"]
-	text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_MISC")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_misc), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_misc),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_misc), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_misc),9)+ " |"]
-	text :+ ["|--------------------------------|-----------|-----------|-----------|-----------|"]
-	text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_TOTAL")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_total), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_total),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_total), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_total),9)+ " |"]
-	text :+ ["'--------------------------------'-----------'-----------'-----------'-----------'"]
+
+	if finance and financeTotal
+		local titleLength:int = 30
+
+		text :+ ["|---------------------------------------------------------.----------------------|"]
+		text :+ ["| Money:              "+Rset(finance.GetMoney(), 9)+"  |                       |         TOTAL         |"]
+		text :+ ["|--------------------------------|-----------.-----------|-----------.-----------|"]
+		text :+ ["|                                |   INCOME  |  EXPENSE  |   INCOME  |  EXPENSE  |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_TRADING_PROGRAMMELICENCES")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_programmeLicences), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_programmeLicences),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_programmeLicences), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_programmeLicences),9)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_AD_INCOME__CONTRACT_PENALTY")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_ads), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_penalty),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_ads), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_penalty),9)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_CALL_IN_SHOW_INCOME")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_callerRevenue), 9) + " | " + Rset("-",9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_callerRevenue), 9) + " | " + Rset("-",9)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_SPONSORSHIP_INCOME__PENALTY")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_sponsorshipRevenue), 9) + " | " + Rset("-",9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_sponsorshipRevenue), 9) + " | " + Rset("-",9)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_NEWS")), titleLength) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_news),9) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_news),9)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_NEWSAGENCIES")), titleLength) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_newsAgencies),9)+ " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_newsAgencies),9)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_STATIONS")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_stations), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_stationFees),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_stations), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_stationFees),9)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_SCRIPTS")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_scripts), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_scripts),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_scripts), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_scripts),9)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_ACTORS_AND_PRODUCTIONSTUFF")), titleLength) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_productionStuff),9) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_productionStuff),9)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_STUDIO_RENT")), titleLength) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_rent),9) + " | " + RSet("-", 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_rent),9)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_INTEREST_BALANCE__CREDIT")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_balanceInterest), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_drawingCreditInterest),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_balanceInterest), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_drawingCreditInterest),9)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_CREDIT_TAKEN__REPAYED")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_creditTaken), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_creditRepayed),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_creditTaken), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_creditRepayed),9)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_MISC")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_misc), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_misc),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_misc), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_misc),9)+ " |"]
+		text :+ ["|--------------------------------|-----------|-----------|-----------|-----------|"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_TOTAL")), titleLength) + " | " + RSet(TFunctions.dottedValue(finance.income_total), 9) + " | " + Rset(TFunctions.dottedValue(finance.expense_total),9) + " | " + RSet(TFunctions.dottedValue(financeTotal.income_total), 9) + " | " + Rset(TFunctions.dottedValue(financeTotal.expense_total),9)+ " |"]
+		text :+ ["'--------------------------------'-----------'-----------'-----------'-----------'"]
+	else
+		text :+ ["'--------------------------------------------------------------------------------'"]
+	endif
 	return text
 End Function
 

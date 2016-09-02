@@ -266,7 +266,9 @@ Type TPlayerBase {_exposeToLua="selected"}
 
 		local result:int = 0
 		for local i:int = 0 until bankruptcyTimes.length
-			if bankruptcyTimes[i] < untilTime then result :+ 1
+			' use "<=" to also include bankruptcy happened just in that
+			' moment - or 0.xx ms ago, aka the same time
+			if bankruptcyTimes[i] <= untilTime then result :+ 1
 		Next
 		return result
 	End Method

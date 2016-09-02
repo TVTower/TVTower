@@ -423,7 +423,7 @@ Type RoomHandler_News extends TRoomHandler
 		if plan then owner = plan.owner
 		if collection then owner = collection.owner
 
-		If Not owner Or owner <> currentRoom.owner Then Return False
+		If Not owner or not currentRoom Or owner <> currentRoom.owner Then Return False
 
 		'only adjust GUI if we are displaying that screen (eg. AI skips that)
 		If not IsMyScreen( ScreenCollection.GetCurrentScreen() ) Then Return False

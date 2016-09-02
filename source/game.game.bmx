@@ -287,9 +287,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'only start a new player if it is a local ai player
 		if player.IsLocalAI()
-			local player:TPlayer = GetPlayer(playerID)
 			'store time of game over
-			if player then player.bankruptcyTimes :+ [ Long(GetWorldTime().GetTimeGone()) ]
+			player.bankruptcyTimes :+ [ Long(GetWorldTime().GetTimeGone()) ]
 
 			'reset everything of that player
 			ResetPlayer(playerID)
