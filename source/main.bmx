@@ -413,6 +413,13 @@ Type TApp
 		TSoundManager.GetInstance().MuteMusic(Not config.GetBool("sound_music", True))
 		TSoundManager.GetInstance().MuteSfx(Not config.GetBool("sound_effects", True))
 
+		if not TSoundManager.GetInstance().HasMutedMusic()
+			'if no music is played yet, try to get one from the "menu"-playlist
+			If Not GetSoundManager().isPlaying()
+				GetSoundManager().PlayMusicPlaylist("menu")
+			endif
+		endif
+
 		MouseManager._minSwipeDistance = config.GetInt("touchClickRadius", 10)
 		MouseManager._ignoreFirstClick = config.GetBool("touchInput", False)
 		MouseManager._longClickModeEnabled = config.GetBool("longClickMode", True)
