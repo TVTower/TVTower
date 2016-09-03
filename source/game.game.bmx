@@ -456,7 +456,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'=== RESET FINANCES ===
 		'disabled: we keep the finances of older players for easier
 		'AI improvement because of financial log files
-		'GetPlayerFinanceCollection().ResetFinance(playerID)
+		'GetPlayerFinanceCollection().ResetFinances(playerID)
+
+		'set current day's finance to zero
+		GetPlayerFinance(playerID, GetWorldTime().GetDay()).Reset()
 		
 		'keep history of previous player (if linked somewhere)
 		'and instead of "GetPlayerFinanceHistoryList(playerID).clear()"

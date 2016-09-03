@@ -29,7 +29,7 @@ Type TPlayerFinanceCollection
 	End Method
 
 
-	Method ResetFinance(playerID:int)
+	Method ResetFinances(playerID:int)
 		local playerIndex:int = playerID -1
 
 		if finances.length > playerIndex
@@ -203,20 +203,45 @@ Type TPlayerFinance {_exposeToLua="selected"}
 	Global balanceInterestRate:float     = 0.01 '1% a day
 	Global drawingCreditRate:float       = 0.03 '3% a day  - rate for having a negative balance
 
-	Method Create:TPlayerFinance(playerID:int) ', startmoney:Long=500000, startcredit:Int = 500000)
-'		money = startmoney
-'		revenue_before = startmoney
-'		revenue_after = startmoney
-
-'		credit = startcredit
-
-		money = 0
-		revenue_before = 0
-		revenue_after = 0
-		credit = 0
+	Method Create:TPlayerFinance(playerID:int)
+		Reset()
 
 		Self.playerID = playerID
 		Return Self
+	End Method
+
+
+	Method Reset()
+		expense_programmeLicences = 0
+		expense_stations = 0
+		expense_scripts = 0
+		expense_productionstuff = 0
+		expense_penalty = 0
+		expense_rent = 0
+		expense_news = 0
+		expense_newsagencies = 0
+		expense_stationfees = 0
+		expense_misc = 0
+		expense_creditRepayed = 0
+		expense_creditInterest = 0
+		expense_drawingCreditInterest = 0
+		expense_total = 0
+
+		income_programmeLicences = 0
+		income_ads = 0
+		income_callerRevenue = 0
+		income_scripts = 0
+		income_sponsorshipRevenue = 0
+		income_misc = 0
+		income_granted_benefits = 0
+		income_stations = 0
+		income_creditTaken = 0
+		income_balanceInterest = 0
+		income_total = 0
+		revenue_before = 0
+		revenue_after = 0
+		money = 0
+		credit = 0
 	End Method
 
 
