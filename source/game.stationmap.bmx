@@ -29,6 +29,7 @@ Type TStationMapCollection
 	Field populationmap:Int[,] {nosave}
 	Field populationMapSize:TVec2D = new TVec2D.Init() {nosave}
 	Field config:TData = new TData
+	Field cityNames:TData = new TData
 
 	Field mapConfigFile:string = ""
 	'does the shareMap has to get regenerated during the next
@@ -106,13 +107,16 @@ Type TStationMapCollection
 		Local configNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "config")
 		If not configNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><config>-entry.")
 
+		Local cityNamesNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "citynames")
+		If not cityNamesNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><citynames>-entry.")
+
 		'directly load the given resources
 		registryLoader.LoadSingleResourceFromXML(densityNode, TRUE, new TData.AddString("name", "map_PopulationDensity"))
 		registryLoader.LoadSingleResourceFromXML(surfaceNode, TRUE, new TData.AddString("name", "map_Surface"))
 
 		TXmlHelper.LoadAllValuesToData(configNode, _instance.config)
-		'TODO: citynames
-		'TXmlHelper.LoadAllValuesToData(cityNamesNode, _instance.cityNames)
+		TXmlHelper.LoadAllValuesToData(cityNamesNode, _instance.cityNames)
+
 
 		'=== LOAD STATES ===
 		'remove old states
@@ -412,6 +416,35 @@ Type TStationMapCollection
 
 
 		Return result
+	End Method
+
+
+	Method GenerateCity:string(glue:string="")
+		local part1:string[] = cityNames.GetString("part1").Split(", ")
+		local part2:string[] = cityNames.GetString("part2").Split(", ")
+		local part3:string[] = cityNames.GetString("part3").Split(", ")
+
+		local result:string = ""
+		'use part 1?
+		if RandRange(0,100) < 35
+			result :+ StringHelper.UCFirst(part1[RandRange(0, part1.length-1)])
+		endif
+
+		'no prefix, or " " or "-" (Bad Blaken, Alt-Drueben)
+		if not result or Chr(result[result.length-1]) = " " or Chr(result[result.length-1]) = "-"
+			if result <> "" then result :+ glue
+			result :+ StringHelper.UCFirst(part2[RandRange(0, part2.length-1)])
+		else
+			if result <> "" then result :+ glue
+			result :+ part2[RandRange(0, part2.length-1)]
+		endif
+
+		if RandRange(0,100) < 35
+			result :+ glue
+			result :+ part3[RandRange(0, part3.length-1)]
+		endif
+
+		return result
 	End Method
 
 
