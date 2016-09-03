@@ -4784,26 +4784,41 @@ End Function
 
 Function GetPlayerPerformanceOverviewText:string[](day:int)
 	if day = -1 then day = GetWorldTime().GetDay()
-	local latestHour:int = 24
+	local latestHour:int = 23
+	local latestMinute:int = 59
 	if day = GetWorldTime().GetDay()
 		latestHour = GetWorldTime().GetDayHour()
+		latestMinute = GetWorldTime().GetDayMinute()
 	endif
-	local now:Long = GetWorldTime().MakeTime(0, day, latestHour, 0, 0)
+	local now:Long = GetWorldTime().MakeTime(0, day, latestHour, latestMinute, 0)
+	local midnight:Long = GetWorldTime().MakeTime(0, day+1, 0, 0, 0)
+	local latestTime:string = RSet(latestHour,2).Replace(" ","0") + ":" + RSet(latestMinute,2).Replace(" ", "0") 
 
 
 	local text:string[]
 
-	local title:string = LSet("Performance Stats for day "+(1 + day - GetWorldTime().GetStartDay()) +". Time: 0 - " + (latestHour+1), 83)
+	local title:string = LSet("Performance Stats for day " + (GetWorldTime().GetDaysRun(midnight)+1) + ". Time: 00:00 - " + latestTime, 83)
 	
 	text :+ [".-----------------------------------------------------------------------------------."]
 	text :+ ["|" + title                                          + "|"]
 
-	For local i:int = 1 to 4
-		local bankruptcyCount:int = GetPlayer(i).GetBankruptcyAmount(now)
-		local bankruptcyTime:long = GetPlayer(i).GetBankruptcyTime(bankruptcyCount)
+	For local playerID:int = 1 to 4
+		local bankruptcyCount:int = GetPlayer(playerID).GetBankruptcyAmount(midnight)
+		local bankruptcyTime:long = GetPlayer(playerID).GetBankruptcyTime(bankruptcyCount)
 		'bankruptcy happened today?
-		if bankruptcyCount > 0 and GetWorldTime().GetDay(bankruptcyTime) = GetWorldTime().GetDay()
-			text :+ ["|" + LSet("* Player #"+i+"+ restarted today at "+GetWorldTime().GetFormattedTime(bankruptcyTime)+" !", 83) + "|"]
+		if bankruptcyCount > 0
+			local restartTime:Long = bankruptcyTime 'GetWorldTime().ModifyTime(bankruptcyTime, 0, 1, 0, 0, 0)
+
+			'bankruptcy on that day (or more detailed: right on midnight the
+			'next day)
+			if GetWorldTime().GetDay(bankruptcyTime) = GetWorldTime().GetDay(midnight)
+				text :+ ["| " + LSet("* Player #"+playerID+" went into bankruptcy that day !", 83) + "|"]
+			endif
+
+			'restarted later on?
+			if GetWorldTime().GetDay(restartTime) = GetWorldTime().GetDay(midnight)
+				text :+ ["| " + LSet("* Player #"+playerID+" (re)started at "+GetWorldTime().GetFormattedTime(restartTime) +" on day " + (GetWorldTime().getDaysRun(restartTime)+1)+" !", 83) + "|"]
+			endif
 		endif
 	Next
 		
@@ -4912,17 +4927,23 @@ End Function
 
 Function GetPlayerFinanceOverviewText:string[](playerID:int, day:int)
 	if day = -1 then day = GetWorldTime().GetDay()
-	local latestHour:int = 24
+	local latestHour:int = 23
+	local latestMinute:int = 59
 	if day = GetWorldTime().GetDay()
 		latestHour = GetWorldTime().GetDayHour()
+		latestMinute = GetWorldTime().GetDayMinute()
 	endif
-	local now:Long = GetWorldTime().MakeTime(0, day, latestHour, 0, 0)
+	local now:Long = GetWorldTime().MakeTime(0, day, latestHour, latestMinute, 0)
+	local midnight:Long = GetWorldTime().MakeTime(0, day+1, 0, 0, 0)
+	local latestTime:string = RSet(latestHour,2).Replace(" ","0") + ":" + RSet(latestMinute,2).Replace(" ", "0") 
 
 
-	local finance:TPlayerFinance = GetPlayerFinance(playerID, day)
+	'ignore player start day and fetch information about "older incarnations"
+	'of that player too (bankruptcies)
+	local finance:TPlayerFinance = GetPlayerFinance(playerID, day, True)
 	local financeTotal:TPlayerFinance = GetPlayerFinanceCollection().GetTotal(playerID)
 	
-	local title:string = LSet("Finance Stats for player #"+playerID+" on day "+(1 + day - GetWorldTime().GetStartDay()) +". Time: 0 - " + latestHour, 79)
+	local title:string = LSet("Finance Stats for player #" + playerID + " on day " + GetWorldTime().GetDaysRun(midnight) + ". Time: 00:00 - " + latestTime, 79)
 	local text:string[]
 	
 	text :+ [".--------------------------------------------------------------------------------."]
@@ -4931,11 +4952,22 @@ Function GetPlayerFinanceOverviewText:string[](playerID:int, day:int)
 		text :+ ["| " + LSet("No Financial overview available for the requested day.", 79) + "|"]
 	endif
 
-	local bankruptcyCount:int = GetPlayer(playerID).GetBankruptcyAmount(now)
+	local bankruptcyCount:int = GetPlayer(playerID).GetBankruptcyAmount(midnight)
 	local bankruptcyTime:long = GetPlayer(playerID).GetBankruptcyTime(bankruptcyCount)
 	'bankruptcy happened today?
-	if bankruptcyCount > 0 and GetWorldTime().GetDay(bankruptcyTime) = GetWorldTime().GetDay()
-		text :+ ["| " + LSet("* Player #"+playerID+"+ restarted today at "+GetWorldTime().GetFormattedTime(bankruptcyTime)+" !", 79) + "|"]
+	if bankruptcyCount > 0
+		local restartTime:Long = bankruptcyTime 'GetWorldTime().ModifyTime(bankruptcyTime, 0, 1, 0, 0, 0)
+
+		'bankruptcy on that day (or more detailed: right on midnight the
+		'next day)
+		if GetWorldTime().GetDay(bankruptcyTime) = GetWorldTime().GetDay(midnight)
+			text :+ ["| " + LSet("* Player #"+playerID+" went into bankruptcy that day !", 79) + "|"]
+		endif
+
+		'restarted later on?
+		if GetWorldTime().GetDay(restartTime) = GetWorldTime().GetDay(midnight)
+			text :+ ["| " + LSet("* Player #"+playerID+" (re)started at "+GetWorldTime().GetFormattedTime(restartTime) +" on day " + (GetWorldTime().getDaysRun(restartTime)+1)+" !", 79) + "|"]
+		endif
 	endif
 
 
