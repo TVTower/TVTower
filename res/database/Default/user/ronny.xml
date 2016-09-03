@@ -901,5 +901,86 @@ Terrific final.</en>
 
 			<data genre="4" price="1.10" quality="28" />
 		</news>
+
+
+		<!-- Kulturnachrichten - wenn Kulturgenre eroeffnet, Genre wechseln) -->
+		<news id="ronny-news-katschminski-01" type="0" creator="5578" created_by="Ronny">
+			<title>
+				<de>Leser lesen wieder, Dank Katschminski</de>
+				<en>Readers read again. Thanks to Katschinski</en>
+			</title>
+			<description>
+				<de>Das Buch des unbekannten Autoren Franco Katschminski begeistert die Leserschaft. In „Das Herzklopfen“ verwebt er eine banale Liebesgeschichte mit expliziter Philosophie.</de>
+				<en>The book of infamous author Franco Katschinski elated worldwide readership. In "The Throbbing" he inweaves a banal love story with explicit philosophy.</en>
+			</description>
+			<effects>
+				<!-- "morgen/uebermorgen 9-18 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,2,9,18" news="ronny-news-katschminski-02" />
+			</effects>
+			<data genre="4" price="1.0" quality="28" />
+		</news>
+		<news id="ronny-news-katschminski-02" type="2" creator="5578" created_by="Ronny">
+			<title>
+				<de>Ansturm auf neues Buch</de>
+				<en>Rush for new book</en>
+			</title>
+			<description>
+				<de>Nach seinem letzten Bestseller legt Katschminski nach. Mit „Immer wieder Herzrasen“ trifft er erneut den Nerv der Zeit - und seiner geriatrisch angehauchten Leserschaft.</de>
+				<en>After his last bestseller Katschinski fans the flames. With "Time and again palpitations" he again meets the spirit of the times - and his geriatrically tinged readership.</en>
+			</description>
+			<effects>
+				<!-- "morgen/uebermorgen 9-18 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,2,9,18" news="ronny-news-katschminski-03" />
+			</effects>
+			<data genre="4" price="1.0" quality="24" />
+		</news>
+		<news id="ronny-news-katschminski-03" type="2" creator="5578" created_by="Ronny">
+			<title>
+				<de>Katschminski veröffentlicht neues Buch</de>
+				<en>Katschinski releases new book</en>
+			</title>
+			<description>
+				<de>Der Bestsellerautor Katschminski veröffentlicht sein neues Buch „Das Herzzerreissen“. Irgendwie nur noch banal und kaum aushaltbare Salbaderei.</de>
+				<en>The bestselling author Katschinski published his new book "The heart rending". Somehow only banal and hardly bearable twaddle.</en>
+			</description>
+			<data genre="4" price="1.10" quality="22" />
+		</news>
+		<news id="ronny-news-pipelaho-01" type="0" creator="5578" created_by="Ronny">
+			<title>
+				<de>Pipé-Laho Nummer 1</de>
+				<en>Pipé-Laho number 1</en>
+			</title>
+			<description>
+				<de>Das frankoindonesische Popsternchen Pipé-Laho erreicht mit "Moi? J'arrive." Platz 1 der hiesigen Charts. Moderne Arrangements und traditionelle indonesische Instrumente werden zum Trend.</de>
+				<en>The French-Indonesian pop starlet Pipé-Laho achieved with "Moi? J'arrive." No. 1 on the local charts. Modern arrangements and traditional Indonesian instruments create a new trend.</en>
+			</description>
+			<data genre="1" price="0.9" quality="32" />
+		</news>
+		<news id="ronny-news-karldingensbummens-01" type="0" creator="5578" created_by="Ronny">
+			<title>
+				<de>Plastik „Karl Dingensbummens“ gestohlen</de>
+				<en>Plastic "Joe Thingamabob" stolen</en>
+			</title>
+			<description>
+				<de>Die weltbekannte Plastikskulptur des Künstlers Jean-Peter Fleusch wurde aus dem Museum für strittige Kunst in Flunde/Südafrika gestohlen.</de>
+				<en>The world-renowned plastic sculpture by the artist Jean-Peter Fleusch was stolen from the Museum of Art in Flunde/South Africa.</en>
+			</description>
+			<effects>
+				<!-- "morgen/uebermorgen 6-12 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,2,6,12" news="ronny-news-karldingensbummens-02" />
+			</effects>
+			<data genre="4" price="1.0" quality="22" />
+		</news>
+		<news id="ronny-news-karldingensbummens-02" type="2" creator="5578" created_by="Ronny">
+			<title>
+				<de>„Karl Dingensbummens“ wieder da</de>
+				<en>"Joe Thingamabob" is back</en>
+			</title>
+			<description>
+				<de>Jean-Peter Fleusch ("Kunst der unscharfen Ränder") meldet Rückkehr der Skulptur "Karl Dingensbummens". Putzkräfte hätten es für Verpackungsmaterial gehalten und in einem Lager deponiert.</de>
+				<en>Jean-Peter Fleusch ("Art of blurred edges") announces return of Sculpture "Joe Thingamabob". Cleaners thought it was packaging material and deposited it in a warehouse.</en>
+			</description>
+			<data genre="4" price="1.0" quality="20" />
+		</news>
 	</allnews>
 </tvgdb>
