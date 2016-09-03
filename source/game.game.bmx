@@ -306,10 +306,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 	Method ResetPlayer(playerID:int)
-print "ResetPlayer("+playerID+")"
-print "--------------"
 		local player:TPlayer = GetPlayer(playerID)
 		if not player then return
+
+		TLogger.Log("ResetPlayer()", "Resetting Player #"+playerID, LOG_DEBUG)
+		TLogger.Log("ResetPlayer()", "-------------------", LOG_DEBUG)
 
 
 		Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerID)
@@ -337,9 +338,9 @@ print "--------------"
 			'remove regardless of a successful sale
 			programmePlan.RemoveProgrammeInstancesByLicence(licence, True)
 			if licence.sell()
-				print "ResetPlayer("+playerID+"): sold licence: "+licence.getTitle()
+				TLogger.Log("ResetPlayer()", "Sold licence: "+licence.getTitle(), LOG_DEBUG)
 			else
-				print "ResetPlayer("+playerID+"): cannot sell licence: "+licence.getTitle()
+				TLogger.Log("ResetPlayer()", "Cannot sell licence: "+licence.getTitle(), LOG_DEBUG)
 			
 				'absolutely remove non-tradeable data?
 				'for now: no! We want to be able to retrieve information
@@ -364,7 +365,7 @@ print "--------------"
 		Next
 		For local contract:TAdContract = EachIn contracts
 			contract.Fail( GetWorldTime().GetTimeGone() )
-			print "ResetPlayer("+playerID+"): aborted contract: "+contract.getTitle()
+			TLogger.Log("ResetPlayer()", "Aborted contract: "+contract.getTitle(), LOG_DEBUG)
 		Next
 
 
@@ -383,7 +384,7 @@ print "--------------"
 			'remove script, sell it and destroy production concepts
 			'linked to that script
 			programmeCollection.RemoveScript(script, True)
-			print "ResetPlayer("+playerID+"): sold script: "+script.getTitle()
+			TLogger.Log("ResetPlayer()", "Sold script: "+script.getTitle(), LOG_DEBUG)
 		Next
 
 
@@ -397,13 +398,13 @@ print "--------------"
 			GetProductionManager().AbortProduction(p)
 			'delete corresponding concept too
 			GetProductionConceptCollection().Remove(p.productionConcept)
-			print "ResetPlayer("+playerID+"): stopped production: "+p.productionConcept.GetTitle()
+			TLogger.Log("ResetPlayer()", "Stopped production: "+p.productionConcept.getTitle(), LOG_DEBUG)
 		Next
 		
 
 
 		'=== STOP ROOM RENT CONTRACTS ===
-		print "ResetPlayer("+playerID+"): TODO - stop room rental"
+		TLogger.Log("ResetPlayer()", "TODO - stop rented rooms", LOG_DEBUG)
 
 
 
@@ -413,7 +414,7 @@ print "--------------"
 
 		GetBetty().AwardWinner[PlayerID-1] = 0
 		GetBetty().AdjustAward(playerID, 0) 'recalc other things
-		print "ResetPlayer("+playerID+"): Adjusted betty love and awards"
+		TLogger.Log("ResetPlayer()", "Adjusted Betty love and awards", LOG_DEBUG)
 
 
 
@@ -435,9 +436,9 @@ print "--------------"
 		local map:TStationMap = GetStationMap(playerID, True)
 		For local station:TStation = EachIn map.stations
 			map.Removestation(station, True, True)
-			print "ResetPlayer("+playerID+"): sold station"
 		Next
 		GetStationMapCollection().Update()
+		TLogger.Log("ResetPlayer()", "Sold stations", LOG_DEBUG)
 
 
 
@@ -453,7 +454,10 @@ print "--------------"
 
 
 		'=== RESET FINANCES ===
-		GetPlayerFinanceCollection().ResetFinance(playerID)
+		'disabled: we keep the finances of older players for easier
+		'AI improvement because of financial log files
+		'GetPlayerFinanceCollection().ResetFinance(playerID)
+		
 		'keep history of previous player (if linked somewhere)
 		'and instead of "GetPlayerFinanceHistoryList(playerID).clear()"
 		'just create a new one
@@ -533,6 +537,8 @@ print "--------------"
 
 
 		'=== FINANCE ===
+		'adjust start day (days after game start)
+		GetPlayerFinanceCollection().SetPlayerStartDay(playerID, GetWorldTime().GetDaysRun() )
 		if not GetPlayerFinance(playerID) then print "finance "+playerID+" failed."
 		if difficulty.startMoney > 0 
 			GetPlayerFinance(playerID).EarnGrantedBenefits( difficulty.startMoney )

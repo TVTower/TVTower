@@ -6,6 +6,8 @@ Import "game.player.financehistory.bmx"
 
 Type TPlayerFinanceCollection
 	Field finances:TPlayerFinance[][]
+	'adjust if a player starts at a later day
+	Field playerStartIndex:int[] =[0,0,0,0]
 
 	Global _instance:TPlayerFinanceCollection
 
@@ -23,6 +25,7 @@ Type TPlayerFinanceCollection
 
 	Method Initialize:int()
 		finances = finances[..0]
+		playerStartIndex = [0,0,0,0]
 	End Method
 
 
@@ -32,14 +35,37 @@ Type TPlayerFinanceCollection
 		if finances.length > playerIndex
 			finances[playerIndex] = new TPlayerFinance[0]
 		endif
+
+		SetPlayerStartDay(playerID, 0)
+	End Method
+
+
+	Method SetPlayerStartDay:int(playerID:int, day:int)
+		if playerID > 0 and playerStartIndex.length >= playerID
+			playerStartIndex[playerID] = Max(0, day)
+			return True
+		endif
+		return False
+	End Method
+
+
+	'returns how many days later than "day zero" a player started
+	Method GetPlayerStartDay:int(playerID:int)
+		Local playerStartDay:Int = 0
+		if playerID > 0 and playerStartIndex.length >= playerID
+			playerStartDay = playerStartIndex[playerID -1]
+		endif
+		return playerStartDay
 	End Method
 
 
 	Method GetTotal:TPlayerFinance(playerID:int)
 		local totalFinance:TPlayerFinance = New TPlayerFinance
 		local finance:TPlayerFinance
+		local playerStartDay:int = GetPlayerStartDay(playerID)
+
 		For local day:int = GetWorldTime().GetStartDay() to GetWorldTime().GetDay()
-			finance = Get(playerID, day)
+			finance = Get(playerID, day + playerStartDay)
 			if not finance then continue
 
 			totalFinance.expense_programmeLicences :+ finance.expense_programmeLicences
@@ -73,30 +99,36 @@ Type TPlayerFinanceCollection
 	End Method
 
 
-	Method Get:TPlayerFinance(playerID:int, day:int=-1)
+	Method Get:TPlayerFinance(playerID:int, day:int=-1, ignorePlayerStartDay:int = False)
 		If day <= 0 Then day = GetWorldTime().GetDay()
-		return _Get(playerID, day)
+		return _Get(playerID, day, ignorePlayerStartDay)
 	End Method
 
 
-	Method _Get:TPlayerFinance(playerID:int, day:int)
+	'ignoring the player's start day allows to read finances of older
+	'incarnations of the player (before bankruptcies)
+	Method _Get:TPlayerFinance(playerID:int, day:int, ignorePlayerStartDay:int = False)
 		if playerID <= 0 then return Null
 
-		'subtract start day to get a index starting at 0, add 1 as
-		'we also have financials for the day before game start
-		Local arrayIndex:Int = day - GetWorldTime().GetStartDay() + 1
-
 		local playerIndex:int = playerID -1
-
-		'if the array is less than allowed: return finance from day 0
-		'which is the day before "start"
-		If arrayIndex < 0 Then Return _Get(playerID, GetWorldTime().GetStartDay() - 1)
 
 		'create entry if player misses its finance entry
 		if finances.length < playerID
 			finances = finances[..playerID]
 			finances[playerIndex] = new TPlayerFinance[0]
 		endif
+		if playerStartIndex.length < playerID
+			playerStartIndex = playerStartIndex[..playerID]
+		endif
+
+		'subtract start day to get a index starting at 0, add 1 as
+		'we also have financials for the day before game start
+		Local arrayIndex:Int = day - GetWorldTime().GetStartDay() + 1 - (not ignorePlayerStartDay)*playerStartIndex[playerIndex]
+
+		'if the array is less than allowed: return finance from day 0
+		'which is the day before "start"
+		If arrayIndex < 0 Then Return _Get(playerID, GetWorldTime().GetStartDay() - 1 + (not ignorePlayerStartDay)*playerStartIndex[playerIndex])
+
 
 		If (arrayIndex = 0 And Not finances[playerIndex][0]) Or arrayIndex >= finances[playerIndex].length
 			TLogger.Log("TPlayer.GetFinance()", "Adding a new finance to player "+playerID+" for day "+day+ " at index "+arrayIndex, LOG_DEBUG)
@@ -126,8 +158,8 @@ Function GetPlayerFinanceCollection:TPlayerFinanceCollection()
 	Return TPlayerFinanceCollection.GetInstance()
 End Function
 
-Function GetPlayerFinance:TPlayerFinance(playerID:int, day:int=-1)
-	Return TPlayerFinanceCollection.GetInstance().Get(playerID, day)
+Function GetPlayerFinance:TPlayerFinance(playerID:int, day:int=-1, ignorePlayerStartDay:int = False)
+	Return TPlayerFinanceCollection.GetInstance().Get(playerID, day, ignorePlayerStartDay)
 End Function
 
 
