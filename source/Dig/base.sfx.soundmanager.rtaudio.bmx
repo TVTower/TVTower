@@ -673,6 +673,9 @@ Type TSfxChannel
 
 
 	Method PlaySfx(sfx:String, settings:TSfxSettings=Null)
+		'skip adjustments and loading the sound
+		if TSoundManager.GetInstance().HasMutedSfx() then return
+		
 		CurrentSfx = sfx
 		CurrentSettings = settings
 
@@ -684,6 +687,9 @@ Type TSfxChannel
 
 
 	Method PlayRandomSfx(playlist:String, settings:TSfxSettings=Null)
+		'skip adjustments and loading the sound
+		if TSoundManager.GetInstance().HasMutedSfx() then return
+
 		CurrentSfx = playlist
 		CurrentSettings = settings
 
