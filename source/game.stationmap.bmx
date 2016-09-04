@@ -1,4 +1,4 @@
-REM
+Rem
 	===========================================================
 	code for stationmap and broadcasting stations
 	===========================================================
@@ -27,45 +27,45 @@ Type TStationMapCollection
 	Field stationRadius:Int = 18
 	Field population:Int = 0 {nosave}
 	Field populationmap:Int[,] {nosave}
-	Field populationMapSize:TVec2D = new TVec2D.Init() {nosave}
-	Field config:TData = new TData
-	Field cityNames:TData = new TData
+	Field populationMapSize:TVec2D = New TVec2D.Init() {nosave}
+	Field config:TData = New TData
+	Field cityNames:TData = New TData
 
-	Field mapConfigFile:string = ""
+	Field mapConfigFile:String = ""
 	'does the shareMap has to get regenerated during the next
 	'update cycle?
-	Field _regenerateMap:int = False
+	Field _regenerateMap:Int = False
 
 	'difference between screen0,0 and pixmap
 	'->needed movement to have population-pixmap over country
-	Global populationMapOffset:TVec2D = new TVec2D.Init(0, 0)
-	Global _initDone:int = FALSE
+	Global populationMapOffset:TVec2D = New TVec2D.Init(0, 0)
+	Global _initDone:Int = False
 	Global _instance:TStationMapCollection
 
 
 	Method New()
-		if not _initDone
+		If Not _initDone
 			'handle savegame loading (reload the map configuration)
 			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
 			'handle <stationmapdata>-area in loaded xml files
-			EventManager.registerListenerFunction("RegistryLoader.onLoadResourceFromXML", onLoadStationMapData, null, "STATIONMAPDATA" )
+			EventManager.registerListenerFunction("RegistryLoader.onLoadResourceFromXML", onLoadStationMapData, Null, "STATIONMAPDATA" )
 			'handle activation of stations
 			EventManager.registerListenerFunction("station.onSetActive", onSetStationActiveState)
 			EventManager.registerListenerFunction("station.onSetInactive", onSetStationActiveState)
 
-			_initdone = TRUE
-		Endif
+			_initdone = True
+		EndIf
 	End Method
 
 
 	Function GetInstance:TStationMapCollection()
-		if not _instance then _instance = new TStationMapCollection
-		return _instance
+		If Not _instance Then _instance = New TStationMapCollection
+		Return _instance
 	End Function
 
 
-	Method InitializeAll:int()
-		For local map:TStationMap = eachin stationMaps
+	Method InitializeAll:Int()
+		For Local map:TStationMap = EachIn stationMaps
 			map.Initialize()
 		Next
 		'optional:
@@ -79,8 +79,8 @@ Type TStationMapCollection
 		GetInstance()._regenerateMap = True
 		'also set the owning stationmap to "changed" so only this single
 		'audience sum only gets recalculated (saves cpu time)
-		local station:TStation = TStation(triggerEvent.GetSender())
-		if station then GetInstance().GetMap(station.owner).changed = True
+		Local station:TStation = TStation(triggerEvent.GetSender())
+		If station Then GetInstance().GetMap(station.owner).changed = True
 	End Function
 
 
@@ -93,26 +93,26 @@ Type TStationMapCollection
 
 
 	'run when an xml contains an <stationmapdata>-area
-	Function onLoadStationMapData:int(triggerEvent:TEventBase)
+	Function onLoadStationMapData:Int(triggerEvent:TEventBase)
 		Local mapDataRootNode:TxmlNode = TxmlNode(triggerEvent.GetData().Get("xmlNode"))
 		Local registryLoader:TRegistryLoader = TRegistryLoader(triggerEvent.GetSender())
-		if not mapDataRootNode or not registryLoader then return FALSE
+		If Not mapDataRootNode Or Not registryLoader Then Return False
 
 		Local densityNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "densitymap")
-		If not densityNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><densitymap>-entry.")
+		If Not densityNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><densitymap>-entry.")
 
 		Local surfaceNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "surface")
-		If not surfaceNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><surface>-entry.")
+		If Not surfaceNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><surface>-entry.")
 
 		Local configNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "config")
-		If not configNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><config>-entry.")
+		If Not configNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><config>-entry.")
 
 		Local cityNamesNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "citynames")
-		If not cityNamesNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><citynames>-entry.")
+		If Not cityNamesNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><citynames>-entry.")
 
 		'directly load the given resources
-		registryLoader.LoadSingleResourceFromXML(densityNode, TRUE, new TData.AddString("name", "map_PopulationDensity"))
-		registryLoader.LoadSingleResourceFromXML(surfaceNode, TRUE, new TData.AddString("name", "map_Surface"))
+		registryLoader.LoadSingleResourceFromXML(densityNode, True, New TData.AddString("name", "map_PopulationDensity"))
+		registryLoader.LoadSingleResourceFromXML(surfaceNode, True, New TData.AddString("name", "map_Surface"))
 
 		TXmlHelper.LoadAllValuesToData(configNode, _instance.config)
 		TXmlHelper.LoadAllValuesToData(cityNamesNode, _instance.cityNames)
@@ -124,16 +124,16 @@ Type TStationMapCollection
 
 		'find and load states configuration
 		Local statesNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "states")
-		If not statesNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <map><states>-area.")
+		If Not statesNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <map><states>-area.")
 
 		For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(statesNode)
 			Local name:String	= TXmlHelper.FindValue(child, "name", "")
 			Local sprite:String	= TXmlHelper.FindValue(child, "sprite", "")
-			Local pos:TVec2D	= new TVec2D.Init( TXmlHelper.FindValueInt(child, "x", 0), TXmlHelper.FindValueInt(child, "y", 0) )
+			Local pos:TVec2D	= New TVec2D.Init( TXmlHelper.FindValueInt(child, "x", 0), TXmlHelper.FindValueInt(child, "y", 0) )
 			'add state section if data is ok
 			If name<>"" And sprite<>""
 				New TStationMapSection.Create(pos,name, sprite).add()
-			Endif
+			EndIf
 		Next
 	End Function
 
@@ -141,13 +141,13 @@ Type TStationMapCollection
 	'load a map configuration from a specific xml file
 	'eg. "germany.xml"
 	'we use xmlLoader so image ressources in the file get autoloaded
-	Method LoadMapFromXML:int(xmlFile:string="", baseUri:string = "")
-		if xmlFile <> "" then mapConfigFile = xmlFile
+	Method LoadMapFromXML:Int(xmlFile:String="", baseUri:String = "")
+		If xmlFile <> "" Then mapConfigFile = xmlFile
 
 		'=== LOAD XML CONFIG ===
-		local registryLoader:TRegistryLoader = new TRegistryLoader
+		Local registryLoader:TRegistryLoader = New TRegistryLoader
 		registryLoader.baseURI = baseURI
-		registryLoader.LoadFromXML(mapConfigFile, TRUE)
+		registryLoader.LoadFromXML(mapConfigFile, True)
 		'TLogger.Log("TGetStationMapCollection().LoadMapFromXML", "config parsed", LOG_LOADING)
 
 		'=== INIT MAP DATA ===
@@ -158,24 +158,24 @@ Type TStationMapCollection
 	
 
 	Method CreatePopulationMap()
-		local stopWatch:TStopWatch = new TStopWatch.Init()
+		Local stopWatch:TStopWatch = New TStopWatch.Init()
 		Local srcPix:TPixmap = GetPixmapFromRegistry("map_PopulationDensity")
-		if not srcPix
+		If Not srcPix
 			TLogger.Log("TGetStationMapCollection().CreatePopulationMap", "pixmap ~qmap_PopulationDensity~q is missing.", LOG_LOADING)
 			Throw("TStationMap: ~qmap_PopulationDensity~q missing.")
-			return
-		endif
+			Return
+		EndIf
 
 		'move pixmap so it overlays the rest
-		Local pix:TPixmap = CreatePixmap(int(srcPix.width + populationMapOffset.x), int(srcPix.height + populationMapOffset.y), srcPix.format)
+		Local pix:TPixmap = CreatePixmap(Int(srcPix.width + populationMapOffset.x), Int(srcPix.height + populationMapOffset.y), srcPix.format)
 		pix.ClearPixels(0)
-		pix.paste(srcPix, int(populationMapOffset.x), int(populationMapOffset.y))
+		pix.paste(srcPix, Int(populationMapOffset.x), Int(populationMapOffset.y))
 
-		populationMap = new Int[pix.width, pix.height]
+		populationMap = New Int[pix.width, pix.height]
 		populationMapSize.SetXY(pix.width, pix.height)
 
 		'read all inhabitants of the map
-		Local i:Int, j:Int, c:int, s:int = 0
+		Local i:Int, j:Int, c:Int, s:Int = 0
 		population = 0
 		For j = 0 To pix.height-1
 			For i = 0 To pix.width-1
@@ -189,22 +189,22 @@ Type TStationMapCollection
 	End Method
 
 
-	Method Add:int(map:TStationMap)
+	Method Add:Int(map:TStationMap)
 		'check boundaries
-		If map.owner < 1 then return False
+		If map.owner < 1 Then Return False
 
 		'resize if needed
-		if map.owner > stationMaps.length then stationMaps = stationMaps[ .. map.owner+1]
+		If map.owner > stationMaps.length Then stationMaps = stationMaps[ .. map.owner+1]
 
 		'add to array array - zerobased
 		stationMaps[map.owner-1] = map
-		return TRUE
+		Return True
 	End Method
 
 
-	Method Remove:int(map:TStationMap)
+	Method Remove:Int(map:TStationMap)
 		'check boundaries
-		If map.owner < 1 or map.owner > stationMaps.length return FALSE
+		If map.owner < 1 Or map.owner > stationMaps.length Return False
 		'remove from array - zero based
 		stationMaps[map.owner-1] = Null
 
@@ -213,22 +213,22 @@ Type TStationMapCollection
 		'shareMap.Clear()
 		GenerateShareMap()
 		
-		return TRUE
+		Return True
 	End Method
 
 
 	'return the stationmap of other channels
 	'do not expose to Lua... else they get access to buy/sell
-	Method GetMap:TStationMap(channelNumber:Int, createIfMissing:int = False)
+	Method GetMap:TStationMap(channelNumber:Int, createIfMissing:Int = False)
 		'check boundaries
-		If channelNumber < 1 or (not createIfMissing and channelNumber > stationMaps.length)
+		If channelNumber < 1 Or (Not createIfMissing And channelNumber > stationMaps.length)
 			Throw "GetStationMapCollection().GetMap: channelNumber ~q"+channelNumber+"~q is out of bounds."
-		Endif
+		EndIf
 
 		'create if missing
-		if (channelNumber > stationMaps.length or not stationMaps[channelNumber-1]) and createIfMissing
+		If (channelNumber > stationMaps.length Or Not stationMaps[channelNumber-1]) And createIfMissing
 			Add(TStationMap.Create(channelNumber))
-		endif
+		EndIf
 		
 		'zero based
 		Return stationMaps[channelNumber-1]
@@ -236,10 +236,10 @@ Type TStationMapCollection
 
 
 	'returns the average reach of all stationmaps
-	Method GetAverageReach:int()
-		local reach:int = 0
-		local mapCount:int = 0
-		For local map:TStationMap = eachin stationMaps
+	Method GetAverageReach:Int()
+		Local reach:Int = 0
+		Local mapCount:Int = 0
+		For Local map:TStationMap = EachIn stationMaps
 			'skip empty maps
 			'TODO: what happens with satellites?
 			'if map.GetStationCount() = 0 then continue
@@ -247,7 +247,7 @@ Type TStationMapCollection
 			reach :+ map.GetReach()
 			mapCount :+ 1
 		Next
-		return reach/mapCount
+		Return reach/mapCount
 	End Method
 
 
@@ -264,11 +264,11 @@ Type TStationMapCollection
 		Local stationY:Int	= 0
 		Local mapKey:String	= ""
 		Local mapValue:TVec3D = Null
-		Local rect:TRectangle = new TRectangle.Init(0,0,0,0)
+		Local rect:TRectangle = New TRectangle.Init(0,0,0,0)
 		For Local stationmap:TStationMap = EachIn stationMaps
 			For Local station:TStation = EachIn stationmap.stations
 				'skip inactive stations
-				if not station.IsActive() then continue
+				If Not station.IsActive() Then Continue
 
 				'mark the area within the stations circle
 				posX = 0
@@ -286,7 +286,7 @@ Type TStationMapCollection
 						'insert the players bitmask-number into the field
 						'and if there is already one ... add the number
 						mapKey = posX+","+posY
-						mapValue = new TVec3D.Init(posX,posY, getMaskIndex(stationmap.owner) )
+						mapValue = New TVec3D.Init(posX,posY, getMaskIndex(stationmap.owner) )
 						If shareMap.Contains(mapKey)
 							mapValue.z = Int(mapValue.z) | Int(TVec3D(shareMap.ValueForKey(mapKey)).z)
 						EndIf
@@ -313,7 +313,7 @@ Type TStationMapCollection
 	'returns a share between channels, encoded in a TVec3D containing:
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
 	Method GetShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
-		If channelNumbers.length <1 Then Return new TVec3D.Init(0,0,0.0)
+		If channelNumbers.length <1 Then Return New TVec3D.Init(0,0,0.0)
 		If Not withoutChannelNumbers Then withoutChannelNumbers = New Int[0]
 
 		Local result:TVec3D
@@ -326,22 +326,22 @@ Type TStationMapCollection
 		For Local i:Int = 0 To channelNumbers.length-1
 			cacheKey:+ "_"+channelNumbers[i]
 		Next
-		if withoutChannelNumbers.length > 0
+		If withoutChannelNumbers.length > 0
 			cacheKey:+"_without_"
 			For Local i:Int = 0 To withoutChannelNumbers.length-1
 				cacheKey:+ "_"+withoutChannelNumbers[i]
 			Next
-		endif
+		EndIf
 
 		'== LOAD CACHE ==
-		If shareCache and shareCache.contains(cacheKey)
+		If shareCache And shareCache.contains(cacheKey)
 			result = TVec3D(shareCache.ValueForKey(cacheKey))
-		endif
+		EndIf
 
 
 		'== GENERATE CACHE ==
-		if not result
-			result = new TVec3D.Init(0,0,0.0)
+		If Not result
+			result = New TVec3D.Init(0,0,0.0)
 			Local map:TMap = GetShareMap()
 			Local share:Int	= 0
 			Local total:Int	= 0
@@ -405,53 +405,55 @@ Type TStationMapCollection
 			If total = 0 Then result.z = 0.0 Else result.z = Float(share)/Float(total)
 
 			'store new cached data
-			if shareCache then shareCache.insert(cacheKey, result )
+			If shareCache Then shareCache.insert(cacheKey, result )
 
 			'print "uncached: "+cacheKey
 			'print "share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
 		'else
 			'print "cached: "+cacheKey
 			'print "share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
-		endif
+		EndIf
 
 
 		Return result
 	End Method
 
 
-	Method GenerateCity:string(glue:string="")
-		local part1:string[] = cityNames.GetString("part1").Split(", ")
-		local part2:string[] = cityNames.GetString("part2").Split(", ")
-		local part3:string[] = cityNames.GetString("part3").Split(", ")
+	Method GenerateCity:String(glue:String="")
+		Local part1:String[] = String(cityNames.Get("part1")).Split(", ")
+		Local part2:String[] = String(cityNames.Get("part2")).Split(", ")
+		Local part3:String[] = String(cityNames.Get("part3")).Split(", ")
+		if part2.length = 0 then return "part2Missing-Town"
+		if part3.length = 0 then return "part3Missing-Town"
 
-		local result:string = ""
+		Local result:String = ""
 		'use part 1?
-		if RandRange(0,100) < 35
+		If part1.length > 0 and RandRange(0,100) < 35
 			result :+ StringHelper.UCFirst(part1[RandRange(0, part1.length-1)])
-		endif
+		EndIf
 
 		'no prefix, or " " or "-" (Bad Blaken, Alt-Drueben)
-		if not result or Chr(result[result.length-1]) = " " or Chr(result[result.length-1]) = "-"
-			if result <> "" then result :+ glue
+		If Not result Or Chr(result[result.length-1]) = " " Or Chr(result[result.length-1]) = "-"
+			If result <> "" Then result :+ glue
 			result :+ StringHelper.UCFirst(part2[RandRange(0, part2.length-1)])
-		else
-			if result <> "" then result :+ glue
+		Else
+			If result <> "" Then result :+ glue
 			result :+ part2[RandRange(0, part2.length-1)]
-		endif
+		EndIf
 
-		if RandRange(0,100) < 35
+		If RandRange(0,100) < 35
 			result :+ glue
 			result :+ part3[RandRange(0, part3.length-1)]
-		endif
+		EndIf
 
-		return result
+		Return result
 	End Method
 
 
-	Method Update:int()
+	Method Update:Int()
 		'update all stationmaps (and their stations)
-		For local i:int = 0 until stationMaps.length
-			if not stationMaps[i] then continue
+		For Local i:Int = 0 Until stationMaps.length
+			If Not stationMaps[i] Then Continue
 
 			stationMaps[i].Update()
 		Next
@@ -467,16 +469,16 @@ Type TStationMapCollection
 			'gets regenerated)
 			'this individual way saves calculation time (only do what
 			'is needed)
-			local m:TStationMap
-			For local i:int = 1 to stationMaps.length
+			Local m:TStationMap
+			For Local i:Int = 1 To stationMaps.length
 				m = GetMap(i)
-				if not m then continue
+				If Not m Then Continue
 				
-				if m.changed
+				If m.changed
 					m.RecalculateAudienceSum()
 					'we handled the changed flag
 					m.changed = False
-				endif
+				EndIf
 			Next
 
 			'we handled regenerating the map
@@ -497,7 +499,7 @@ Type TStationMapCollection
 			For posY = Max(y - stationRadius,stationRadius) To Min(y + stationRadius, populationMapSize.y-stationRadius)
 				' noch innerhalb des Kreises?
 				If Self.calculateDistance( posX - x, posY - y ) <= stationRadius
-					map.Insert(String((posX) + "," + (posY)), new TVec3D.Init((posX) , (posY), color ))
+					map.Insert(String((posX) + "," + (posY)), New TVec3D.Init((posX) , (posY), color ))
 				EndIf
 			Next
 		Next
@@ -505,7 +507,7 @@ Type TStationMapCollection
 
 
 	Method CalculateAudienceDecrease:Int(stations:TList, removeStation:TStation)
-		if not removeStation then return 0
+		If Not removeStation Then Return 0
 
 		Local Points:TMap = New TMap
 		Local returnValue:Int = 0
@@ -514,7 +516,7 @@ Type TStationMapCollection
 		'mark all others (except the given one) as "white"
 		'-> then count pop on all spots "just blue" and not "white"
 		
-		Self._FillPoints(Points, int(removeStation.pos.x), int(removeStation.pos.y), ARGB_Color(255, 0, 255, 255))
+		Self._FillPoints(Points, Int(removeStation.pos.x), Int(removeStation.pos.y), ARGB_Color(255, 0, 255, 255))
 
 		'overwrite with stations owner already has - red pixels get overwritten with white,
 		'count red at the end for increase amount
@@ -524,16 +526,16 @@ Type TStationMapCollection
 			'non-finished stations too
 
 			'exclude the station to remove...
-			if _Station = removeStation then continue
+			If _Station = removeStation Then Continue
 		
-			If THelper.IsIn(int(removeStation.pos.x), int(removeStation.pos.y), int(_station.pos.x - 2*stationRadius), int(_station.pos.y - 2 * stationRadius), int(4*stationRadius), int(4*stationRadius))
-				Self._FillPoints(Points, int(_Station.pos.x), int(_Station.pos.y), ARGB_Color(255, 255, 255, 255))
+			If THelper.IsIn(Int(removeStation.pos.x), Int(removeStation.pos.y), Int(_station.pos.x - 2*stationRadius), Int(_station.pos.y - 2 * stationRadius), Int(4*stationRadius), Int(4*stationRadius))
+				Self._FillPoints(Points, Int(_Station.pos.x), Int(_Station.pos.y), ARGB_Color(255, 255, 255, 255))
 			EndIf
 		Next
 
 		'count all "exclusively blue" spots
 		For Local point:TVec3D = EachIn points.Values()
-			If ARGB_Red(int(point.z)) = 0 'And ARGB_Blue(point.z) = 255
+			If ARGB_Red(Int(point.z)) = 0 'And ARGB_Blue(point.z) = 255
 				returnvalue:+ populationmap[point.x, point.y]
 			EndIf
 		Next
@@ -556,13 +558,13 @@ Type TStationMapCollection
 			'increases are for estimations - so they should include
 			'non-finished stations too
 		
-			If THelper.IsIn(int(_x), int(_y), int(_station.pos.x - 2*stationRadius), int(_station.pos.y - 2 * stationRadius), int(4*stationRadius), int(4*stationRadius))
-				Self._FillPoints(Points, int(_Station.pos.x), int(_Station.pos.y), ARGB_Color(255, 255, 255, 255))
+			If THelper.IsIn(Int(_x), Int(_y), Int(_station.pos.x - 2*stationRadius), Int(_station.pos.y - 2 * stationRadius), Int(4*stationRadius), Int(4*stationRadius))
+				Self._FillPoints(Points, Int(_Station.pos.x), Int(_Station.pos.y), ARGB_Color(255, 255, 255, 255))
 			EndIf
 		Next
 
 		For Local point:TVec3D = EachIn points.Values()
-			If ARGB_Red(int(point.z)) = 0 And ARGB_Blue(int(point.z)) = 255
+			If ARGB_Red(Int(point.z)) = 0 And ARGB_Blue(Int(point.z)) = 255
 				returnvalue:+ populationmap[point.x, point.y]
 			EndIf
 		Next
@@ -575,14 +577,14 @@ Type TStationMapCollection
 		Local Points:TMap = New TMap
 		For Local station:TStation = EachIn stations
 			'skip inactive stations
-			if not station.IsActive() then continue
+			If Not station.IsActive() Then Continue
 
-			Self._FillPoints(Points, int(station.pos.x), int(station.pos.y), ARGB_Color(255, 255, 255, 255))
+			Self._FillPoints(Points, Int(station.pos.x), Int(station.pos.y), ARGB_Color(255, 255, 255, 255))
 		Next
 		Local returnValue:Int = 0
 
 		For Local point:TVec3D = EachIn points.Values()
-			If ARGB_Red(int(point.z)) = 255 And ARGB_Blue(int(point.z)) = 255
+			If ARGB_Red(Int(point.z)) = 255 And ARGB_Blue(Int(point.z)) = 255
 				returnValue:+ populationmap[point.x, point.y]
 			EndIf
 		Next
@@ -591,8 +593,8 @@ Type TStationMapCollection
 	End Method
 
 
-	Method GetPopulation:int()
-		return population
+	Method GetPopulation:Int()
+		Return population
 	End Method
 
 
@@ -655,7 +657,7 @@ Function GetStationMapCollection:TStationMapCollection()
 	Return TStationMapCollection.GetInstance()
 End Function
 
-Function GetStationMap:TStationMap(playerID:int, createIfMissing:int = False)
+Function GetStationMap:TStationMap(playerID:Int, createIfMissing:Int = False)
 	Return TStationMapCollection.GetInstance().GetMap(playerID, createIfMissing)
 End Function
 
@@ -667,16 +669,16 @@ Type TStationMap {_exposeToLua="selected"}
 	Field showStations:Int[4]
 	'maximum audience possible
 	Field reach:Int	= 0
-	Field owner:int	= 0
+	Field owner:Int	= 0
 	'all stations of the map owner
 	Field stations:TList = CreateList()
-	Field changed:int = False
+	Field changed:Int = False
 
 	'FALSE to avoid recursive handling (network)
 	Global fireEvents:Int = True
 
 
-	Function Create:TStationMap(playerID:int)
+	Function Create:TStationMap(playerID:Int)
 		Local obj:TStationMap = New TStationMap
 		obj.owner = playerID
 
@@ -710,14 +712,14 @@ Type TStationMap {_exposeToLua="selected"}
 	'returns a station-object wich can be used for further
 	'information getting (share etc)
 	Method getTemporaryStation:TStation(x:Int,y:Int)  {_exposeToLua}
-		Return TStation.Create(new TVec2D.Init(x,y),-1, GetStationMapCollection().stationRadius, owner)
+		Return TStation.Create(New TVec2D.Init(x,y),-1, GetStationMapCollection().stationRadius, owner)
 	End Method
 
 
 	'return a station at the given coordinates (eg. used by network)
 	Method getStationsByXY:TStation[](x:Int=0,y:Int=0) {_exposeToLua}
-		local res:TStation[]
-		Local pos:TVec2D = new TVec2D.Init(x, y)
+		Local res:TStation[]
+		Local pos:TVec2D = New TVec2D.Init(x, y)
 		For Local station:TStation = EachIn stations
 			If Not station.pos.isSame(pos) Then Continue
 			res :+ [station]
@@ -726,11 +728,11 @@ Type TStationMap {_exposeToLua="selected"}
 	End Method
 
 
-	Method getStation:TStation(stationGUID:string) {_exposeToLua}
+	Method getStation:TStation(stationGUID:String) {_exposeToLua}
 		For Local station:TStation = EachIn stations
-			If station.GetGUID() = stationGUID Then return station
+			If station.GetGUID() = stationGUID Then Return station
 		Next
-		Return null
+		Return Null
 	End Method
 
 
@@ -754,22 +756,22 @@ Type TStationMap {_exposeToLua="selected"}
 		reach = GetStationMapCollection().RecalculateAudienceSum(stations)
 
 		'inform others
-		EventManager.triggerEvent( TEventSimple.Create( "StationMap.onRecalculateAudienceSum", new TData.addNumber("reach", reach), Self ) )
+		EventManager.triggerEvent( TEventSimple.Create( "StationMap.onRecalculateAudienceSum", New TData.addNumber("reach", reach), Self ) )
 
-		return reach
+		Return reach
 	End Method
 
 
 	'returns additional audience when placing a station at the given coord
 	Method CalculateAudienceIncrease:Int(x:Int, y:Int) {_exposeToLua}
-		return GetStationMapCollection().CalculateAudienceIncrease(stations, x, y)
+		Return GetStationMapCollection().CalculateAudienceIncrease(stations, x, y)
 	End Method
 
 	'returns audience loss when selling a station at the given coord
 	'param is station (not coords) to avoid ambiguity of multiple
 	'stations at the same spot
 	Method CalculateAudienceDecrease:Int(station:TStation) {_exposeToLua}
-		return GetStationMapCollection().CalculateAudienceDecrease(stations, station)
+		Return GetStationMapCollection().CalculateAudienceDecrease(stations, station)
 	End Method
 
 
@@ -783,7 +785,7 @@ Type TStationMap {_exposeToLua="selected"}
 	Method SellStation:Int(position:Int)
 		Local station:TStation = getStationAtIndex(position)
 		If station Then Return RemoveStation(station, True)
-		return False
+		Return False
 	End Method
 
 
@@ -809,25 +811,25 @@ Type TStationMap {_exposeToLua="selected"}
 		TLogger.Log("TStationMap.AddStation", "Player"+owner+" buys broadcasting station for " + station.price + " Euro (increases reach by " + station.reach + ")", LOG_DEBUG)
 
 		'emit an event so eg. network can recognize the change
-		If fireEvents Then EventManager.triggerEvent( TEventSimple.Create( "stationmap.addStation", new TData.add("station", station), Self ) )
+		If fireEvents Then EventManager.triggerEvent( TEventSimple.Create( "stationmap.addStation", New TData.add("station", station), Self ) )
 
 		Return True
 	End Method
 
 
-	Method RemoveStation:Int(station:TStation, sell:Int=False, forcedRemoval:int=False)
+	Method RemoveStation:Int(station:TStation, sell:Int=False, forcedRemoval:Int=False)
 		If Not station Then Return False
 
-		if not forcedRemoval
+		If Not forcedRemoval
 			'not allowed to sell this station
-			If not station.HasFlag(TStation.FLAG_SELLABLE) then Return False
+			If Not station.HasFlag(TStation.FLAG_SELLABLE) Then Return False
 
 			'check if we try to sell our last station...
 			If stations.count() = 1
-				EventManager.triggerEvent(TEventSimple.Create("StationMap.onTrySellLastStation", null, self))
+				EventManager.triggerEvent(TEventSimple.Create("StationMap.onTrySellLastStation", Null, Self))
 				Return False
 			EndIf
-		endif
+		EndIf
 
 		If sell And Not station.sell() Then Return False
 
@@ -851,7 +853,7 @@ Type TStationMap {_exposeToLua="selected"}
 		'-> handled in main.bmx with a listener to "stationmap.removeStation"
 
 		'emit an event so eg. network can recognize the change
-		If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("StationMap.removeStation", new TData.add("station", station), Self))
+		If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("StationMap.removeStation", New TData.add("station", station), Self))
 
 		Return True
     End Method
@@ -862,20 +864,20 @@ Type TStationMap {_exposeToLua="selected"}
 		For Local Station:TStation = EachIn stations
 			costs:+1000 * Ceil(station.price / 50000) ' price / 50 = cost
 		Next
-		if costs = 0 then Throw "CalculateStationCosts: Player without stations (or station costs) was found."
+		If costs = 0 Then Throw "CalculateStationCosts: Player without stations (or station costs) was found."
 		Return costs
 	End Method
 
 
-	Method GetShowStation:int(channelNumber:int)
-		if showStations.length > channelNumber or channelNumber <= 0 then return False
+	Method GetShowStation:Int(channelNumber:Int)
+		If showStations.length > channelNumber Or channelNumber <= 0 Then Return False
 
-		return showStations[channelNumber-1]
+		Return showStations[channelNumber-1]
 	End Method
 
 
-	Method SetShowStation(channelNumber:int, enable:int)
-		if showStations.length > channelNumber or channelNumber <= 0 then return
+	Method SetShowStation(channelNumber:Int, enable:Int)
+		If showStations.length > channelNumber Or channelNumber <= 0 Then Return
 
 		showStations[channelNumber-1] = enable
 	End Method
@@ -883,9 +885,9 @@ Type TStationMap {_exposeToLua="selected"}
 
 
 	Method Update()
-		if GetStationMapCollection().stationMaps.length <> showStations.length
+		If GetStationMapCollection().stationMaps.length <> showStations.length
 			showStations = showStations[.. GetStationMapCollection().stationMaps.length + 1]
-		endif
+		EndIf
 	
 		UpdateStations()
 	End Method
@@ -907,14 +909,14 @@ Type TStationMap {_exposeToLua="selected"}
 
 	'draw a players stationmap
 	Method Draw()
-		if GetStationMapCollection().stationMaps.length <> showStations.length
+		If GetStationMapCollection().stationMaps.length <> showStations.length
 			showStations = showStations[.. GetStationMapCollection().stationMaps.length + 1]
-		endif
+		EndIf
 		
 		SetColor 255,255,255
 
 		'draw all stations from all players (except filtered)
-		For local map:TStationMap = eachin GetStationMapCollection().stationMaps
+		For Local map:TStationMap = EachIn GetStationMapCollection().stationMaps
 			'show stations is zero based
 			If Not showStations[map.owner-1] Then Continue
 			map.DrawStations()
@@ -944,14 +946,14 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	Field radius:Int = 0
 	Field federalState:String = ""
 	'various settings (paid, fixed price, sellable, active...)
-	Field _flags:int = 0
+	Field _flags:Int = 0
 
 	'=== FLAGS ===
-	Const FLAG_PAID:int         = 1
+	Const FLAG_PAID:Int         = 1
 	'fixed prices are kept during refresh
-	Const FLAG_FIXED_PRICE:int  = 2
-	Const FLAG_SELLABLE:int     = 4
-	Const FLAG_ACTIVE:int       = 8
+	Const FLAG_FIXED_PRICE:Int  = 2
+	Const FLAG_SELLABLE:Int     = 4
+	Const FLAG_ACTIVE:Int       = 8
 	
 
 	Function Create:TStation( pos:TVec2D, price:Int=-1, radius:Int, owner:Int)
@@ -1011,14 +1013,14 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 
 	Method GetActivationTime:Double()
-		return activationTime
+		Return activationTime
 	End Method
 
 
 	'get the reach of that station
 	Method getReach:Int(refresh:Int=False) {_exposeToLua}
 		If reach >= 0 And Not refresh Then Return reach
-		reach = GetStationMapCollection().CalculateStationReach(int(pos.x), int(pos.y))
+		reach = GetStationMapCollection().CalculateStationReach(Int(pos.x), Int(pos.y))
 
 		Return reach
 	End Method
@@ -1026,8 +1028,8 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 	'get the relative reach increase of that station
 	Method getRelativeReachIncrease:Int(refresh:Int=False) {_exposeToLua}
-		local r:float = getReach(refresh)
-		if r = 0 then return 0
+		Local r:Float = getReach(refresh)
+		If r = 0 Then Return 0
 
 		Return getReachIncrease(refresh) / r
 	End Method
@@ -1036,12 +1038,12 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	Method getReachIncrease:Int(refresh:Int=False) {_exposeToLua}
 		If reachIncrease >= 0 And Not refresh Then Return reachIncrease
 
-		if owner <= 0
+		If owner <= 0
 			Print "getReachIncrease: owner is not a player."
 			Return 0
 		EndIf
 
-		reachIncrease = GetStationMap(owner).CalculateAudienceIncrease(int(pos.x), int(pos.y))
+		reachIncrease = GetStationMap(owner).CalculateAudienceIncrease(Int(pos.x), Int(pos.y))
 
 		Return reachIncrease
 	End Method
@@ -1050,12 +1052,12 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	Method getReachDecrease:Int(refresh:Int=False) {_exposeToLua}
 		If reachDecrease >= 0 And Not refresh Then Return reachDecrease
 
-		if owner <= 0
+		If owner <= 0
 			Print "getReachDecrease: owner is not a player."
 			Return 0
 		EndIf
 
-		reachDecrease = GetStationMapCollection().GetMap(owner).CalculateAudienceDecrease(self)
+		reachDecrease = GetStationMapCollection().GetMap(owner).CalculateAudienceDecrease(Self)
 
 		Return reachDecrease
 	End Method
@@ -1063,14 +1065,14 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 	'if nobody needs that info , remove the method
 	Method GetHoveredMapSection:TStationMapSection()
-		Return TStationMapSection.get(int(pos.x), int(pos.y))
+		Return TStationMapSection.get(Int(pos.x), Int(pos.y))
 	End Method
 
 
 	Method getFederalState:String(refresh:Int=False) {_exposeToLua}
 		If federalState <> "" And Not refresh Then Return federalState
 
-		Local hoveredSection:TStationMapSection = TStationMapSection.get(int(pos.x), int(pos.y))
+		Local hoveredSection:TStationMapSection = TStationMapSection.get(Int(pos.x), Int(pos.y))
 		If hoveredSection Then federalState = hoveredSection.name
 
 		Return federalState
@@ -1094,57 +1096,57 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method IsActive:int()
-		return HasFlag(FLAG_ACTIVE)
+	Method IsActive:Int()
+		Return HasFlag(FLAG_ACTIVE)
 	End Method
 
 
 	'set time a station begins to work (broadcast)
-	Method SetActivationTime:int(activationTime:Double = -1)
-		if activationTime < 0 then activationTime = GetWorldTime().GetTimeGone()
-		self.activationTime = activationTime
+	Method SetActivationTime:Int(activationTime:Double = -1)
+		If activationTime < 0 Then activationTime = GetWorldTime().GetTimeGone()
+		Self.activationTime = activationTime
 
-		if activationTime < GetWorldTime().GetTimeGone() then SetActive()
+		If activationTime < GetWorldTime().GetTimeGone() Then SetActive()
 	End Method
 
 
 	'set time a station begins to work (broadcast)
-	Method SetActive:int()
-		if IsActive() then return False
+	Method SetActive:Int()
+		If IsActive() Then Return False
 
-		self.activationTime = GetWorldTime().GetTimeGone()
+		Self.activationTime = GetWorldTime().GetTimeGone()
 		SetFlag(FLAG_ACTIVE, True)
 
 		'inform others (eg. to recalculate audience)
-		EventManager.triggerEvent(TEventSimple.Create("station.onSetActive", null, Self))
+		EventManager.triggerEvent(TEventSimple.Create("station.onSetActive", Null, Self))
 	End Method
 
 
-	Method SetInactive:int()
-		if not IsActive() then return False
+	Method SetInactive:Int()
+		If Not IsActive() Then Return False
 
 		SetFlag(FLAG_ACTIVE, False)
 
 		'inform others (eg. to recalculate audience)
-		EventManager.triggerEvent(TEventSimple.Create("station.onSetInactive", null, Self))
+		EventManager.triggerEvent(TEventSimple.Create("station.onSetInactive", Null, Self))
 	End Method
 
 
-	Method GetConstructionTime:int()
-		if GameRules.stationConstructionTime = 0 then return 0
+	Method GetConstructionTime:Int()
+		If GameRules.stationConstructionTime = 0 Then Return 0
 
-		local r:int = GetReach()
-		if r < 500000
-			return 1 * GameRules.stationConstructionTime
-		elseif r < 1000000
-			return 2 * GameRules.stationConstructionTime
-		elseif r < 2500000
-			return 3 * GameRules.stationConstructionTime
-		elseif r < 5000000
-			return 4 * GameRules.stationConstructionTime
-		else
-			return 5 * GameRules.stationConstructionTime
-		endif
+		Local r:Int = GetReach()
+		If r < 500000
+			Return 1 * GameRules.stationConstructionTime
+		ElseIf r < 1000000
+			Return 2 * GameRules.stationConstructionTime
+		ElseIf r < 2500000
+			Return 3 * GameRules.stationConstructionTime
+		ElseIf r < 5000000
+			Return 4 * GameRules.stationConstructionTime
+		Else
+			Return 5 * GameRules.stationConstructionTime
+		EndIf
 	End Method
 
 
@@ -1163,23 +1165,23 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		'set activation time (and refresh built time)
 		built = GetWorldTime().GetTimeGone()
 
-		local constructionTime:int = GetConstructionTime()
+		Local constructionTime:Int = GetConstructionTime()
 		'do not allow negative values as a "ready now" is not possible
 		'because it affects broadcasted audience then.
 		'if constructionTime <  0
 		'	SetActivationTime( GetWorldTime().GetTimeGone()-1)
 		'else
-			if constructionTime <  0 then constructionTime = 0
+			If constructionTime <  0 Then constructionTime = 0
 
 			constructionTime :+ 1
 
 			'next hour (+construction hours) at xx:00
-			if GetWorldTime().GetDayMinute() >= 5
+			If GetWorldTime().GetDayMinute() >= 5
 				SetActivationTime( GetWorldTime().MakeTime(0, 0, GetWorldTime().GetHour(built + constructionTime*3600), 0))
 			'this hour (+construction hours) at xx:05
-			else
+			Else
 				SetActivationTime( GetWorldTime().MakeTime(0, 0, GetWorldTime().GetHour() + (constructionTime-1), 5, 0))
-			endif
+			EndIf
 		'endif
 
 
@@ -1201,9 +1203,9 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		Local textH:Int =  GetBitmapFontManager().baseFontBold.getHeight( "Tg" )
 		Local tooltipW:Int = 180
 		Local tooltipH:Int = textH * 4 + 10 + 5
-		if GetConstructionTime() > 0
+		If GetConstructionTime() > 0
 			tooltipH :+ textH
-		endif
+		EndIf
 
 		Local tooltipX:Int = pos.x +20 - tooltipW/2
 		Local tooltipY:Int = pos.y - radius - tooltipH
@@ -1227,39 +1229,39 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		textY:+ textH + 5
 
 		GetBitmapFontManager().baseFont.draw(GetLocale("REACH")+": ", textX, textY)
-		GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(getReach(), 2), textX, textY, textW, 20, new TVec2D.Init(ALIGN_RIGHT), colorWhite)
+		GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(getReach(), 2), textX, textY, textW, 20, New TVec2D.Init(ALIGN_RIGHT), colorWhite)
 		textY:+ textH
 
 		GetBitmapFontManager().baseFont.draw(GetLocale("INCREASE")+": ", textX, textY)
-		GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(getReachIncrease(), 2), textX, textY, textW, 20, new TVec2D.Init(ALIGN_RIGHT), colorWhite)
+		GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(getReachIncrease(), 2), textX, textY, textW, 20, New TVec2D.Init(ALIGN_RIGHT), colorWhite)
 		textY:+ textH
 
-		if GetConstructionTime() > 0
+		If GetConstructionTime() > 0
 			GetBitmapFontManager().baseFont.draw(GetLocale("CONSTRUCTION_TIME")+": ", textX, textY)
-			GetBitmapFontManager().baseFontBold.drawBlock(GetConstructionTime()+"h", textX, textY, textW, 20, new TVec2D.Init(ALIGN_RIGHT), colorWhite)
+			GetBitmapFontManager().baseFontBold.drawBlock(GetConstructionTime()+"h", textX, textY, textW, 20, New TVec2D.Init(ALIGN_RIGHT), colorWhite)
 			textY:+ textH
-		Endif
+		EndIf
 
 		GetBitmapFontManager().baseFont.draw(GetLocale("PRICE")+": ", textX, textY)
-		GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(getPrice(), 2), textX, textY, textW, 20, new TVec2D.Init(ALIGN_RIGHT), colorWhite)
+		GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(getPrice(), 2), textX, textY, textW, 20, New TVec2D.Init(ALIGN_RIGHT), colorWhite)
 
 	End Method
 
 
 	Method DrawActivationTooltip()
-		local textCaption:string = getLocale("STATION_UNDER_CONSTRUCTION")
-		local textContent:string = GetLocale("READY_AT_TIME_X")
-		local readyTime:String = GetWorldTime().GetFormattedTime(GetActivationTime())
+		Local textCaption:String = getLocale("STATION_UNDER_CONSTRUCTION")
+		Local textContent:String = GetLocale("READY_AT_TIME_X")
+		Local readyTime:String = GetWorldTime().GetFormattedTime(GetActivationTime())
 		'prepend day if it does not finish today
-		if GetWorldTime().GetDay() < GetWorldTime().GetDay(GetActivationTime())
+		If GetWorldTime().GetDay() < GetWorldTime().GetDay(GetActivationTime())
 			readyTime = GetWorldTime().GetFormattedDay(GetWorldTime().GetDaysRun(GetActivationTime()) +1) + " " + readyTime
 			textContent = GetLocale("READY_AT_DAY_X")
-		endif
-		textContent = textContent.REPLACE("%TIME%", readyTime)
+		EndIf
+		textContent = textContent.Replace("%TIME%", readyTime)
 
 
 		Local textH:Int = GetBitmapFontManager().baseFontBold.getHeight( "Tg" )
-		local textW:Int = GetBitmapFontManager().baseFontBold.getWidth(textCaption)
+		Local textW:Int = GetBitmapFontManager().baseFontBold.getWidth(textCaption)
 		textW = Max(textW, GetBitmapFontManager().baseFont.getWidth(textContent))
 		Local tooltipW:Int = textW + 10
 		Local tooltipH:Int = textH * 2 + 10 + 5
@@ -1302,7 +1304,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 			SetAlpha 0.4 * oldAlpha
 		EndIf
 
-		local color:TColor
+		Local color:TColor
 		Select owner
 			Case 1,2,3,4	color = TPlayerColor.GetByOwner(owner)
 							sprite = GetSpriteFromRegistry("stationmap_antenna"+owner)
@@ -1321,14 +1323,14 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method Update:int()
+	Method Update:Int()
 		'check if it becomes ready
-		If not IsActive()
+		If Not IsActive()
 			'TODO: if wanted, check for RepairStates or such things
 
-			if GetActivationTime() < GetWorldTime().GetTimeGone()
+			If GetActivationTime() < GetWorldTime().GetTimeGone()
 				SetActive()
-			endif
+			EndIf
 		EndIf
 	End Method
 End Type
@@ -1339,14 +1341,14 @@ End Type
 Type TStationMapSection
 	Field rect:TRectangle
 	Field sprite:TSprite
-	Field spriteName:string
+	Field spriteName:String
 	Field name:String
 	Global sections:TList = CreateList()
 
 
-	Method Create:TStationMapSection(pos:TVec2D, name:String, spriteName:string)
+	Method Create:TStationMapSection(pos:TVec2D, name:String, spriteName:String)
 		Self.spriteName = spriteName
-		Self.rect = new TRectangle.Init(pos.x,pos.y, 0, 0)
+		Self.rect = New TRectangle.Init(pos.x,pos.y, 0, 0)
 		Self.name = name
 		Self.sprite = sprite
 		Return Self
@@ -1362,11 +1364,11 @@ Type TStationMapSection
 
 	Function get:TStationMapSection(x:Int,y:Int)
 		For Local section:TStationMapSection = EachIn sections
-			if not section.sprite then section.LoadSprite()
-			if not section.sprite then continue
+			If Not section.sprite Then section.LoadSprite()
+			If Not section.sprite Then Continue
 
 			If section.rect.containsXY(x,y)
-				If section.sprite.PixelIsOpaque(int(x-section.rect.getX()), int(y-section.rect.getY())) > 0
+				If section.sprite.PixelIsOpaque(Int(x-section.rect.getX()), Int(y-section.rect.getY())) > 0
 					Return section
 				EndIf
 			EndIf
@@ -1376,18 +1378,18 @@ Type TStationMapSection
 
 
 	Function DrawAll()
-		if not sections then return
-		local oldA:float = Getalpha()
+		If Not sections Then Return
+		Local oldA:Float = GetAlpha()
 		SetAlpha oldA * 0.8
-		For local section:TStationMapSection = EachIn sections
-			if not section.sprite then continue
+		For Local section:TStationMapSection = EachIn sections
+			If Not section.sprite Then Continue
 			section.sprite.Draw(section.rect.getx(), section.rect.gety())
 		Next
-		Setalpha oldA
+		SetAlpha oldA
 	End Function
 	
 
-	Function Reset:int()
+	Function Reset:Int()
 		sections = CreateList()
 	End Function
 

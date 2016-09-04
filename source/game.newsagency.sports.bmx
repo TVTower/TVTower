@@ -11,6 +11,8 @@ Type TNewsEventSport
 	'for each league-to-league connection we create a fake season
 	'for the playoffs
 	Field playoffSeasons:TNewsEventSportSeason[]
+	Field playOffStartTime:Long
+	Field playOffEndTime:Long
 
 
 	'updates all leagues of this sport
@@ -21,22 +23,16 @@ Type TNewsEventSport
 		Next
 
 		if IsSeasonFinished() and playoffsStep = 0
-			print "Relegationsspiele"
+			print "PLAYOFFS"
 			CreatePlayoffSeasons()
 			AssignPlayoffTimes()
+
 			playoffsStep = 1
+			StartPlayoffs()
 		endif
 
 		'=== playoff matches ===
 		if playoffsStep = 1
-rem
-waehrend der playoffs haben irgendwie alle die gleichen punkte...
-eventuell stimmt was mit der match time nicht
-
-Planen, dass jedes Team "Staerken" hat - und diese Staerken nutzen
-um einen BiasedRandRange zu machen:
-Gewichtung = staerkeA / (staerkeA + staerkeB)
-endrem
 			if not UpdatePlayoffs()
 				playoffsStep = 2
 				'move loosing teams one lower, winners one higher
@@ -82,7 +78,22 @@ endrem
 	End Method
 
 
+	Method StartPlayoffs()
+		For local season:TNewsEventSportSeason = EachIn playoffSeasons
+			season.StartSeason()
+		Next
+
+		playoffsRunning = True
+
+		EventManager.triggerEvent(TEventSimple.Create("Sport.StartPlayoffs", null, Self))
+	End Method
+
+
 	Method FinishPlayoffs()
+		For local season:TNewsEventSportSeason = EachIn playoffSeasons
+			season.FinishSeason()
+		Next
+
 		'move the last of #1 one down
 		'move the first of #2 one up
 		For local i:int = 0 until leagues.length-1
@@ -108,16 +119,39 @@ endrem
 			print "Relegation: "+(i+1)+"->"+(i+2)
 			print "  abstieg: "+looser.name
 			print "  aufstieg: "+winner.name
+
+			print "EVENT fuer Playoffs losschicken, Gewinner/Verlierer nur wenn Ligawechsel"
 		Next
+
+
+		For local i:int = 0 until playoffSeasons.length -1
+			print "  " + "-------------------------"
+			print "  Leaderboard Playoffs League "+(i+1)+"->"+(i+2)
+			print "  " + LSet("Score", 8) + LSet("Team", 40)
+
+			local season:TNewsEventSportSeason = playoffSeasons[i]
+			local seasonData:TNewsEventSportSeasonData = playoffSeasons[i].data
+			debugstop
+
+			For local rank:TNewsEventSportLeagueRank = EachIn playoffSeasons[i].data.GetLeaderboard( playOffStartTime )
+				print "  " + LSet(rank.score, 8) + LSet(rank.team.nameInitials, 5)+" "+LSet(rank.team.name, 40)
+			Next
+			print "  " + "-------------------------"
+		Next
+
+		EventManager.triggerEvent(TEventSimple.Create("Sport.FinishPlayoffs", null, Self))
 	End Method
 
 
 	Method CreatePlayoffSeasons()
 		'we need leagues-1 seasons (1->2, 2->3, loosers of league 3 stay)
 		playoffSeasons = new TNewsEventSportSeason[ leagues.length - 1 ]
-
+		playOffStartTime = GetWorldTime().GetTimeGone()
+		
 		For local i:int = 0 to playoffSeasons.length -1
 			playoffSeasons[i] = new TNewsEventSportSeason.Init()
+			'mark as playoff season
+			playoffSeasons[i].seasonType = TNewsEventSportSeason.SEASONTYPE_PLAYOFF
 
 			'add second to last of first league
 			playoffSeasons[i].AddTeam( leagues[i].GetCurrentSeason().GetTeamAtRank( -2 ) )
@@ -135,7 +169,12 @@ endrem
 			print "  " + "-------------------------"
 			print "  Leaderboard Playoffs League "+(i+1)+"->"+(i+2)
 			print "  " + LSet("Score", 8) + LSet("Team", 40)
-			For local rank:TNewsEventSportLeagueRank = EachIn playoffSeasons[i].data.GetLeaderboard()
+
+			local season:TNewsEventSportSeason = playoffSeasons[i]
+			local seasonData:TNewsEventSportSeasonData = playoffSeasons[i].data
+			debugstop
+
+			For local rank:TNewsEventSportLeagueRank = EachIn playoffSeasons[i].data.GetLeaderboard( playOffStartTime )
 				print "  " + LSet(rank.score, 8) + LSet(rank.team.nameInitials, 5)+" "+LSet(rank.team.name, 40)
 			Next
 			print "  " + "-------------------------"
@@ -144,8 +183,8 @@ endrem
 	End Method
 
 
-	Method AssignPlayoffTimes(time:Double = 0)
-		local allPlayOffsTime:Double = time
+	Method AssignPlayoffTimes(time:Long = 0)
+		local allPlayOffsTime:Long = time
 
 		'playoff times use the "upper leagues" starting times
 		
@@ -157,19 +196,20 @@ endrem
 
 			leagues[i].AssignMatchTimes(playoffSeasons[i], time)
 
-			print " Create matches: League "+(i+1)+"->"+(i+2)
-			local mIndex:int = 0
-			For local m:TNewsEventSportMatch = EachIn playoffSeasons[i].data.matchPlan
-				mIndex :+1
-				print "  match #"+RSet(mIndex,2).Replace(" ", "0")+": "+ m.teams[0].nameInitials+"-"+m.teams[1].nameInitials
-			Next
-
+			?debug
+				print " Create matches: League "+(i+1)+"->"+(i+2)
+				local mIndex:int = 0
+				For local m:TNewsEventSportMatch = EachIn playoffSeasons[i].data.matchPlan
+					mIndex :+1
+					print "  match #"+RSet(mIndex,2).Replace(" ", "0")+": "+ m.teams[0].nameInitials+"-"+m.teams[1].nameInitials
+				Next
+			?
 		Next
 	End Method	
 
 
-	Method StartSeason:int(time:Double = 0)
-		?not debug
+	Method StartSeason:int(time:Long = 0)
+		?debug
 			print "Start Season: " + TTypeId.ForObject(self).Name()+"   time "+GetWorldTime().GetFormattedDate(time)
 		?
 
@@ -184,7 +224,7 @@ endrem
 
 
 	Method FinishSeason()
-		?not debug
+		?debug
 			print "Finish Season: " + TTypeId.ForObject(self).Name()
 		?
 
@@ -213,6 +253,11 @@ endrem
 			if not l.IsSeasonFinished() then return False
 		Next
 		return True
+	End Method
+
+
+	Method ArePlayoffsRunning:int()
+		return playoffsStep = 1
 	End Method
 
 
@@ -341,9 +386,11 @@ Type TNewsEventSportSeasonData
 
 	'=== playoffs data ===
 	'store who moved up a league, and who moved down
-	Field playoffLosers:TNewsEventSportTeam[]
-	Field playoffWinners:TNewsEventSportTeam[]
-	Field playoffMatchPlan:TNewsEventSportMatch[]
+	'-- not used up to now, move that into a special type
+	'   for playoff seasons?
+	'Field playoffLosers:TNewsEventSportTeam[]
+	'Field playoffWinners:TNewsEventSportTeam[]
+	'Field playoffMatchPlan:TNewsEventSportMatch[]
 	
 
 
@@ -380,8 +427,8 @@ Type TNewsEventSportSeasonData
 	End Method
 
 
-	Method GetTeamAtRank:TNewsEventSportTeam(rank:int)
-		local board:TNewsEventSportLeagueRank[] = GetLeaderboard()
+	Method GetTeamAtRank:TNewsEventSportTeam(rank:int, upToMatchTime:Long = 0)
+		local board:TNewsEventSportLeagueRank[] = GetLeaderboard(upToMatchTime)
 		if rank < 0
 			return board[ board.length + rank ].team
 		else
@@ -390,7 +437,7 @@ Type TNewsEventSportSeasonData
 	End Method
 
 
-	Method GetLeaderboard:TNewsEventSportLeagueRank[](upToMatchTime:Double = 0)
+	Method GetLeaderboard:TNewsEventSportLeagueRank[](upToMatchTime:Long = 0)
 		'return cache if possible
 		if _leaderboard and _leaderboard.length = teams.length
 			return _leaderboard
@@ -400,9 +447,8 @@ Type TNewsEventSportSeasonData
 
 		'sum up the scores of each team in the matches
 		For local match:TNewsEventSportMatch = EachIn matchPlan
-			'upToMatchTime = 0 means, no limit on match time
-			if upToMatchTime <> 0 and match.GetMatchTime() > upToMatchTime then continue
-
+			'create entries for all teams
+			'ignore whether they played already or not
 			for local team:TNewsEventSportTeam = Eachin match.teams
 				local teamIndex:int = GetTeamIndex(team)
 				'team not in the league?
@@ -412,6 +458,20 @@ Type TNewsEventSportSeasonData
 					_leaderboard[teamIndex] = new TNewsEventSportLeagueRank
 					_leaderboard[teamIndex].team = team
 				endif
+			Next
+
+			'add scores
+
+			'check if it is run somewhen in the past
+			if not match.IsRun() then continue
+			'upToMatchTime = 0 means, no limit on match time
+			if upToMatchTime <> 0 and match.GetMatchTime() > upToMatchTime then continue
+
+			for local team:TNewsEventSportTeam = Eachin match.teams
+				local teamIndex:int = GetTeamIndex(team)
+				'team not in the league?
+				if teamIndex = -1 then continue
+
 				_leaderboard[teamIndex].score :+ match.GetScore(team)
 			Next
 		Next
@@ -429,7 +489,7 @@ Type TNewsEventSportSeason
 	Field data:TNewsEventSportSeasonData = new TNewsEventSportSeasonData
 	Field started:int = False
 	Field finished:int = True
-	Field updateTime:Double 
+	Field updateTime:Long 
 	Field part:int = 0
 	Field partMax:int = 2
 
@@ -437,6 +497,11 @@ Type TNewsEventSportSeason
 	Field upcomingMatches:TList
 	'contains matches already run
 	Field doneMatches:TList
+
+	Field seasonType:int = 1
+	Const SEASONTYPE_NORMAL:int = 1
+	Const SEASONTYPE_PLAYOFF:int = 2
+	
 
 
 	Method Init:TNewsEventSportSeason()
@@ -447,7 +512,7 @@ Type TNewsEventSportSeason
 	End Method
 
 
-	Method Start(time:Double)
+	Method Start(time:Long)
 		data.startTime = time
 		finished = False
 		started = True
@@ -455,7 +520,7 @@ Type TNewsEventSportSeason
 	End Method
 
 
-	Method Finish(time:Double)
+	Method Finish(time:Long)
 		data.endTime = time
 		finished = True
 		started = False
@@ -557,8 +622,8 @@ Type TNewsEventSportLeague
 	End Method
 	
 
-	Method GetNextMatchStartTime:Double(time:Double = 0)
-		if time = 0 then time = GetWorldTime().GetTimeGone()
+	Method GetNextMatchStartTime:Long(time:Double = 0)
+		if time = 0 then time = Long(GetWorldTime().GetTimeGone())
 		return time + 3600
 	End Method
 
@@ -572,25 +637,29 @@ Type TNewsEventSportLeague
 		if not GetCurrentSeason() then return False
 		if GetCurrentSeason().upcomingMatches.Count() = 0 then return False
 
-		if time = 0 then time = GetWorldTime().GetTimeGone()
+		if time = 0 then time = Long(GetWorldTime().GetTimeGone())
 
 		'starting a new group?
+rem
 		local startingMatchGroup:int = False
 		local startingMatchTime:Double
 		For local nextMatch:TNewsEventSportMatch = EachIn GetCurrentSeason().upcomingMatches
 			if nextMatch.GetMatchTime() < GetWorldTime().GetTimeGone()
 				startingMatchTime = nextMatch.GetMatchTime()
 				startingMatchGroup = True
+print "--starting new group--"
 				exit
 			endif
 		Next
+endrem
 
 		local matchesRun:int = 0
-		if startingMatchGroup
+'		if startingMatchGroup
 			'if _onStartMatchGroup then _onStartMatchGroup(self, nextMatch.GetMatchTime())
 			'EventManager.triggerEvent(TEventSimple.Create("SportLeague.StartMatchGroup", New TData.addNumber("matchTime", match.GetMatchTime()).add("match", match), Self))
 
 			local endingMatchTime:Double
+			local runMatches:TNewsEventSportMatch[]
 			For local nextMatch:TNewsEventSportMatch = EachIn GetCurrentSeason().upcomingMatches
 				if nextMatch.GetMatchTime() < GetWorldTime().GetTimeGone()
 					GetCurrentSeason().updateTime = nextMatch.GetMatchTime()
@@ -612,12 +681,16 @@ Type TNewsEventSportLeague
 						FinishSeasonPart(1)
 					endif
 
+					runMatches :+ [nextMatch]
+					
 					matchesRun :+ 1
 				endif
 			Next
 
-			'EventManager.triggerEvent(TEventSimple.Create("SportLeague.StartMatchGroup", New TData.addNumber("matchTime", match.GetMatchTime()).add("match", match), Self))
-		endif
+			if runMatches.length > 0
+				EventManager.triggerEvent(TEventSimple.Create("SportLeague.FinishMatchGroup", New TData.add("matches", runMatches), Self))
+			endif
+'		endif
 
 		'finish season?
 		if GetCurrentSeason().upcomingMatches.Count() = 0
@@ -632,8 +705,8 @@ Type TNewsEventSportLeague
 	End Method
 
 
-	Method StartSeason:int(time:Double = 0)
-		if time = 0 then time = GetWorldTime().GetTimeGone()
+	Method StartSeason:int(time:Long = 0)
+		if time = 0 then time = Long(GetWorldTime().GetTimeGone())
 
 		'archive old season
 		if currentSeason then pastSeasons :+ [currentSeason.data]
@@ -732,12 +805,16 @@ Type TNewsEventSportLeague
 		'setup match plan array (if not done)
 		if not GetCurrentSeason().data.matchPlan then GetCurrentSeason().data.matchPlan = new TNewsEventSportMatch[GetCurrentSeason().GetMatchCount()]
 
-		TNewsEventSport_Soccer.CreateMatchSets(GetCurrentSeason().GetMatchCount(), GetCurrentSeason().GetTeams(), GetCurrentSeason().data.matchPlan, TNewsEventSport_Soccer.CreateMatch)
+'		TNewsEventSport_Soccer.CreateMatchSets(GetCurrentSeason().GetMatchCount(), GetCurrentSeason().GetTeams(), GetCurrentSeason().data.matchPlan, TNewsEventSport_Soccer.CreateMatch)
+		Custom_CreateUpcomingMatches()
 
 		for local match:TNewsEventSportMatch = EachIn GetCurrentSeason().data.matchPlan
 			GetCurrentSeason().upcomingMatches.addLast(match)
 		next		
 	End Method
+
+
+	Method Custom_CreateUpcomingMatches:int() abstract
 	
 
 	Method AssignMatchTimes(season:TNewsEventSportSeason, time:Double = 0)
@@ -833,12 +910,17 @@ Type TNewsEventSportMatch
 	'when the match takes place
 	Field matchTime:Double
 	Field matchNumber:int
+	Field matchState:int = STATE_NORMAL
+	Const STATE_NORMAL:int = 0
+	Const STATE_RUN:int = 1
+
 
 	Method Run:int()
 		duration = duration + 60 * BiasedRandRange(0,8, 0.3)
 		For local i:int = 0 until points.length
 			points[i] = BiasedRandRange(0, 8, 0.18)
 		Next
+		matchState = STATE_RUN
 	End Method
 
 
@@ -859,22 +941,26 @@ Type TNewsEventSportMatch
 	End Method
 
 
-	Method SetMatchTime(time:Double)
+	Method SetMatchTime(time:Long)
 		matchTime = time
 	End Method
 
 
-	Method GetMatchTime:Double()
+	Method GetMatchTime:Long()
 		return matchTime
 	End Method
 	
 
 	Method GetScore:int(team:TNewsEventSportTeam)
+		if not IsRun() then return 0
+
 		if GetRank(team) = 1 then return GetWinnerScore()
 	End Method
 
 
 	Method GetRank:int(team:TNewsEventSportTeam)
+		if not IsRun() then return 0
+
 		local rank:int = 1
 		For local i:int = 0 until teams.length
 			if teams[i] <> team then continue
@@ -889,7 +975,15 @@ Type TNewsEventSportMatch
 	End Method
 
 
+	Method IsRun:int()
+		return matchState = STATE_RUN
+'		if matchTime = -1 then return False
+'		return matchTime < time
+	End Method
+
+
 	Method HasLooser:int()
+		if not IsRun() then return False
 		if not points or points.length = 0 then return False
 
 		'check if one of the teams has less points than the others
@@ -902,11 +996,13 @@ Type TNewsEventSportMatch
 
 
 	Method HasWinner:int()
+		if not IsRun() then return False
 		return GetWinner() <> -1
 	End Method
 
 
 	Method GetWinner:int()
+		if not IsRun() then return -1
 		if not points or points.length = 0 then return -1
 
 		'check if one of the teams has most points
@@ -946,8 +1042,11 @@ Type TNewsEventSportMatch
 
 
 	Method GetReport:string()
-		throw "wrong"
-		return ""
+		return "override GetReport()"
+	End Method
+
+	Method GetReportShort:string()
+		return "override GetReportShort()"
 	End Method
 End Type
 
@@ -965,6 +1064,9 @@ Type TNewsEventSportTeam
 	Field clubName:string
 	'eg. "FC"
 	Field clubNameInitials:string
+	'if singular, in German the "Der" is used, else "Die"
+	'-> "Der Klub" (the club), "Die Kicker" (the kickers)
+	Field clubNameSingular:int
 
 	Field members:TNewsEventSportTeamMember[]
 	Field trainer:TNewsEventSportTeamMember
@@ -1004,212 +1106,5 @@ Type TNewsEventSportTeamMember Extends TProgrammePersonBase
 		self.gender = gender
 		self.fictional = fictional
 		return self
-	End Method
-End Type
-
-
-
-'=== SOCCER ===
-Type TNewsEventSport_Soccer extends TNewsEventSport
-	Function CreateMatch:TNewsEventSportMatch_Soccer()
-		return new TNewsEventSportMatch_Soccer
-	End Function
-End Type
-
-
-
-Type TNewsEventSportLeague_Soccer extends TNewsEventSportLeague
-	Field seasonJustBegun:int = False
-	Field timeSlots:int[] = [14,20]
-	Field matchesPerTimeSlot:int = 2
-	Field startDay:int = 9
-
-
-	Method StartSeason:int(time:Double = 0)
-		seasonJustBegun = True
-		return Super.StartSeason(time)
-	End Method
-
-
-	'override
-	'2 matches per "time slot" instead of 1
-	Method AssignMatchTimes(season:TNewsEventSportSeason, time:Double = 0)
-		if time = 0 then time = GetNextMatchStartTime(time)
-		if not season then season = GetCurrentSeason()
-
-		local matches:int = 0
-		For local m:TNewsEventSportMatch = EachIn season.data.matchPlan
-			matches :+1
-
-			m.SetMatchTime(time)
-			'every x-th match we increase time
-			if matches mod matchesPerTimeSlot = 0 then time = GetNextMatchStartTime(time)
-		Next
-	End Method
-
-
-	Method GetNextMatchStartTime:Double(time:Double = 0)
-		if time = 0 then time = GetWorldTime().GetTimeGone()
-		local weekday:string = GetWorldTime().GetDayName( GetWorldTime().GetWeekday( GetWorldTime().GetOnDay(time) ) )
-		'playtimes:
-		'0 monday:    x
-		'1 tuesday:   -
-		'2 wednesday: x
-		'3 thursday:  -
-		'4 friday:    x
-		'5 saturday:  x
-		'6 sunday:    -
-		local matchDay:int = 0
-		local matchHour:int = -1
-
-		'search the next possible time slot
-		For local t:int = EachIn timeSlots
-			if GetWorldTime().GetDayHour(time) < t then matchHour = t
-			if matchHour <> -1 then exit
-		Next
-		if matchHour = -1 then matchHour = timeSlots[0]
-
-
-		Select weekday
-			case "FRIDAY"
-				'next match on saturday
-				if GetWorldTime().GetDayHour(time) >= 20 then matchDay = 1
-			case  "SATURDAY", "MONDAY", "WEDNESDAY"
-				'next match 2 days later
-				if GetWorldTime().GetDayHour(time) >= 20 then matchDay = 2
-			Default
-				'next day at 14:00
-				matchDay = 1
-				matchHour = timeSlots[0]
-		End Select
-
-		local matchTime:Double = 0
-		'match time: 14. 8. - 14.5.
-		'winter break: 21.12. - 21.1.
-
-		'first match
-		if seasonJustBegun
-			matchTime = GetWorldTime().MakeTime(GetWorldTime().Getyear(time), startDay, timeslots[0], 0)
-		else
-			matchTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(time) + matchDay, matchHour, 0)
-		endif
-
-		'check if we are in winter now
-		local winterBreak:int = False
-		local monthCode:int = int((RSet(GetWorldTime().GetMonth(matchTime),2) + RSet(GetWorldTime().GetDayOfMonth(matchTime),2)).Replace(" ", 0))
-		'from 5th of december
-		if 1220 < monthCode then winterBreak = True
-		'till 22th of january
-		if  122 > monthCode then winterBreak = True
-
-		if winterBreak and not seasonJustBegun
-			local t:Long
-			'next match starts in february
-			'take time of 2 months later (either february or march - so
-			'guaranteed to be the "next" year - when still in december)
-			t = matchTime + GetWorldTime().MakeRealTime(0, 2, 0, 0, 0)
-			'set time to "next year" begin of february - use "MakeRealTime"
-			'to get the time of the ingame "5th february" (or the next
-			'possible day)
-			t = GetWorldTime().MakeRealTime(GetWorldTime().GetYear(t), 2, 5, 0, 0)
-			'use this time then to calculate the gameday and 14:00hr
-			matchTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(t), timeSlots[0], 0)
-		endif
-		
-		seasonJustBegun = False
-
-		return matchTime
-	End Method
-End Type
-
-
-
-
-Type TNewsEventSportMatch_Soccer extends TNewsEventSportMatch
-	Global matchWin:string[] = ["besiegt dank %TEAM1STAR%", ..
-	                            "und Stürmer %TEAM1STAR% gewinnen %MATCHKIND% gegen", ..
-	                            "schlägt %MATCHKIND%", ..
-	                            "schlägt dank verwandelter Ecke durch %TEAM1STARSHORT% %MATCHKIND%", ..
-	                            "besiegt dank gehaltenem Elfmeter von Torwart %TEAM1KEEPERSHORT% %MATCHKIND%", ..
-	                            "schlägt dank genialer Paraden von Torwart %TEAM1KEEPERSHORT% %MATCHKIND%", ..
-	                            "holt 3 Punkte gegen", ..
-	                            "bezwingt" ..
-	                           ]
-	Global matchDraw:string[] = ["verspielt die Chance auf 3 Punkte gegen", ..
-	                             "erreicht nur ein Unentschieden gegen", ..
-	                             "holt %MATCHKIND% 1 Punkt gegen" ..
-	                            ]
-	Global matchLoose:string[] = ["unterliegt durch Schusselfehler von Torwart %TEAM1KEEPERSHORT% und %MATCHKIND% gegen", ..
-	                              "unterliegt trotz guter Leistungen vom Keeper %TEAM1KEEPERSHORT% %MATCHKIND% gegen", ..
-	                              "verliert mit enttäuschtem Torwart %TEAM1KEEPER% %MATCHKIND% gegen", ..
-	                              "gibt %MATCHKIND% 3 wertvolle Punkte an", ..
-	                              "blamiert sich %MATCHKIND% gegen", ..
-	                              "verschenken %MATCHKIND% 3 Punkte an" ..
-	                             ]
-	Global matchKind:string[] = ["verdient", ..
-	                             "unverdient", ..
-	                             "nach %PLAYTIMEMINUTES% Minuten zweifelhaften Fussballs", ..
-	                             "nach %PLAYTIMEMINUTES% Min taktischer Zweikämpfe", ..
-	                             "nach langen %PLAYTIMEMINUTES% Min Spielzeit", ..
-	                             "nach spannenden %PLAYTIMEMINUTES% Minuten Rasensport", ..
-	                             "in einem Spektakel von Spiel", ..
-	                             "in einer Zitterpartie", ..
-	                             "im ausverkauften Stadion", ..
-	                             "vor voller Kulisse", ..
-	                             "vor skandierenden Zuschauern", ..
-	                             "vor frenetischem Publikum", ..
-	                             "bei nahezu leerem Fanblock", ..
-	                             "vor gefüllten Stadionrängen" ..
-	                            ]
-	Global matchResult:string = "%TEAMARTICLE1% %TEAM1% %MATCHRESULT% %TEAMARTICLE2% %TEAM2% mit %FINALSCORE%."
-	Global teamNameSPText1:string = "der"
-	Global teamNameSPText2:string = "den"
-
-
-	Function CreateMatch:TNewsEventSportMatch_Soccer()
-		return new TNewsEventSportMatch_Soccer
-	End Function
-
-
-	Method GetReport:string()
-		local matchResultText:string = ""
-		if points[0] > points[1]
-			matchResultText = matchWin[RandRange(0, matchWin.length-1)]
-		elseif points[0] < points[1]
-			matchResultText = matchLoose[RandRange(0, matchLoose.length-1)]
-		else
-			matchResultText = matchDraw[RandRange(0, matchDraw.length-1)]
-		endif
-		
-			
-		local matchText:string = matchResult
-		matchText = matchText.Replace("%MATCHRESULT%", matchResultText)
-		if RandRange(0,10) < 7
-			matchText = matchText.Replace("%MATCHKIND%", matchKind[ RandRange(0, matchKind.length-1) ])
-		else
-			matchText = matchText.Replace("%MATCHKIND%", " ")
-		endif
-		matchText = matchText.Replace("%TEAM1%", teams[0].name)
-		matchText = matchText.Replace("%TEAM1SHORT%", teams[0].nameInitials)
-		matchText = matchText.Replace("%TEAM2%", teams[1].name)
-		matchText = matchText.Replace("%TEAM2SHORT%", teams[1].nameInitials)
-		if points[0] <> 0 or points[1] <> 0
-			matchText = matchText.Replace("%FINALSCORE%", points[0]+":"+points[1]+" ("+int(Max(0,floor(points[0]/2)-RandRange(0,2)))+":"+int(Max(0,floor(points[1]/2)-RandRange(0,2)))+")")
-		else
-			matchText = matchText.Replace("%FINALSCORE%", points[0]+":"+points[1])
-		endif
-		matchText = matchText.Replace("%TEAMARTICLE1%", StringHelper.UCFirst(teamNameSPText1))
-		matchText = matchText.Replace("%TEAMARTICLE2%", teamNameSPText2)
-		matchText = matchText.Replace("%TEAM1STAR%", teams[0].GetMemberAtIndex(-1).GetFullName() )
-		matchText = matchText.Replace("%TEAM2STAR%", teams[1].GetMemberAtIndex(-1).GetFullName() )
-		matchText = matchText.Replace("%TEAM1STARSHORT%", teams[0].GetMemberAtIndex(-1).GetLastName() )
-		matchText = matchText.Replace("%TEAM2STARSHORT%", teams[1].GetMemberAtIndex(-1).GetLastName() )
-		matchText = matchText.Replace("%TEAM1KEEPER%", teams[0].GetMemberAtIndex(0).GetFullName() )
-		matchText = matchText.Replace("%TEAM2KEEPER%", teams[1].GetMemberAtIndex(0).GetFullName() )
-		matchText = matchText.Replace("%TEAM1KEEPERSHORT%", teams[0].GetMemberAtIndex(0).GetLastName() )
-		matchText = matchText.Replace("%TEAM2KEEPERSHORT%", teams[1].GetMemberAtIndex(0).GetLastName() )
-		matchText = matchText.Replace("%PLAYTIMEMINUTES%", int(duration / 60) )
-		matchText = matchText.Trim().Replace("  ", " ") 'remove space if no team article...
-		return matchText
 	End Method
 End Type
