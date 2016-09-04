@@ -197,6 +197,9 @@ Type TPlayerFinance {_exposeToLua="selected"}
 	Field revenue_after:Long             = 0
 	Field money:Long                     = 0
 	Field credit:Int                     = 0
+	Field creditMaxToday:Long            = 0
+	Field creditMaxYesterday:Long        = 0
+	Field creditDaysMax:Long             = 0
 	Field playerID:int                   = 0
 
 	Global creditInterestRate:float      = 0.05 '5% a day
@@ -242,6 +245,8 @@ Type TPlayerFinance {_exposeToLua="selected"}
 		revenue_after = 0
 		money = 0
 		credit = 0
+		creditMaxToday = 0
+		creditMaxYesterday = 0
 	End Method
 
 
@@ -259,6 +264,10 @@ Type TPlayerFinance {_exposeToLua="selected"}
 			toFinance.revenue_before = fromFinance.money
 			toFinance.revenue_after = fromFinance.money
 			toFinance.credit = fromFinance.credit
+
+			'yesterdays credit is the current maximum of today
+			toFinance.creditMaxToday = fromFinance.credit
+			toFinance.creditMaxYesterday = fromFinance.creditMaxToday
 		EndIf
 	End Function
 
@@ -285,9 +294,22 @@ Type TPlayerFinance {_exposeToLua="selected"}
 		return credit
 	End Method
 
-	
-	Method GetCreditInterest:Long() 'Taegliche Zinsen
-		return GetCredit() * TPlayerFinance.creditInterestRate
+
+	Method GetCreditMaxToday:Long() {_exposeToLua}
+		return creditMaxToday
+	End Method
+
+
+	Method GetCreditMaxYesterday:Long() {_exposeToLua}
+		return creditMaxYesterday
+	End Method
+
+
+	'daily interest for taken credit
+	'you pay the interest for the biggest credit value you had on this
+	'day
+	Method GetCreditInterest:Long()
+		return GetCreditMaxYesterday() * TPlayerFinance.creditInterestRate
 	End Method	
 
 
@@ -338,6 +360,9 @@ Type TPlayerFinance {_exposeToLua="selected"}
 		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.CREDIT_TAKE, +value).AddTo(playerID)
 
 		credit :+ value
+		'store heighest value
+		creditMaxToday = Max(creditMaxToday, credit)
+
 		income_creditTaken :+ value
 		income_total :+ value
 		ChangeMoney(+value, TVTPlayerFinanceEntryType.CREDIT_TAKE)
