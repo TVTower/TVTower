@@ -458,6 +458,14 @@ Type TNewsEventSportSeasonData
 
 	'cache
 	Field _leaderboard:TNewsEventSportLeagueRank[] {nosave}
+
+	'=== playoffs data ===
+	'store who moved up a league, and who moved down
+	'-- not used up to now, move that into a special type
+	'   for playoff seasons?
+	'Field playoffLosers:TNewsEventSportTeam[]
+	'Field playoffWinners:TNewsEventSportTeam[]
+	'Field playoffMatchPlan:TNewsEventSportMatch[]
 	
 
 
