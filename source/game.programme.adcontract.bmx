@@ -1701,6 +1701,7 @@ Type TAdContractBaseFilter
 	Field limitedToTargetGroups:int[]
 	Field skipLimitedProgrammeGenre:int = False
 	Field skipLimitedTargetGroup:int = False
+	Field forbiddenContractGUIDs:string[]
 
 
 	Global filters:TList = CreateList()
@@ -1757,6 +1758,27 @@ Type TAdContractBaseFilter
 		Return self
 	End Method
 
+
+	Method IsForbiddenContractGUID:int(guid:string)
+		if forbiddenContractGUIDs.length = 0 then return False
+
+		guid = guid.ToLower()
+		For local forbiddenGUID:string = EachIn forbiddenContractGUIDs
+			if forbiddenGUID = guid then return True
+		Next
+		return False
+	End Method
+
+
+	Method AddForbiddenContractGUID:int(guid:string)
+		if not IsForbiddenContractGUID(guid)
+			forbiddenContractGUIDs :+ [guid.ToLower()]
+			return True
+		else
+			return False
+		endif
+	End Method
+		
 
 	Function GetCount:Int()
 		return filters.Count()
@@ -1822,6 +1844,12 @@ Type TAdContractBaseFilter
 				if contract.limitedToProgrammeGenre = genre then return True
 			Next
 			return False
+		endif
+
+
+		'forbidden one? (eg. to avoid fetching the same again)
+		if forbiddenContractGUIDs.length > 0
+			if IsForbiddenContractGUID(contract.GetGUID()) then return False
 		endif
 
 

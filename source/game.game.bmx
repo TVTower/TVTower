@@ -1047,6 +1047,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				continue
 			endif
 			startAdContractBaseGUIDs[i] = addContract.GetGUID()
+
+			'mark this ad as used
+			if limitInstances <> 0
+				cheapFilter.AddForbiddenContractGUID(addContract.GetGUID())
+			endif
 		Next
 
 		'override with DEV.xml
