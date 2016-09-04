@@ -139,6 +139,13 @@ Type TScreenHandler_ProgrammePlanner
 		'also react on "group changes" like removing unneeded adspots
 		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.removeObjectInstances", onChangeProgrammePlan) ]
 
+		'to react on changes in the programmeCollection (eg. contract finished)
+		'contrary to the programmeplan this triggers also for removed ad
+		'contracts if only a dragged advertisement is "on" the plan
+		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeAdContract", onChangeProgrammeCollection) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeProgrammeLicence", onChangeProgrammeCollection) ]
+
+
 
 		'1) begin drop - to intercept if dropping ad to programme which does not allow Ad-Show
 		'2) drop on a list - mark to ignore shortcuts if "replacing" an
@@ -531,6 +538,26 @@ Type TScreenHandler_ProgrammePlanner
 	End Function	
 
 
+	Function onChangeProgrammeCollection:Int( triggerEvent:TEventBase )
+		If Not TRoomHandler.CheckPlayerInRoom("office") Then Return False
+		'only adjust GUI if we are displaying that screen (eg. AI skips that)
+		If not IsMyScreen( ScreenCollection.GetCurrentScreen() ) Then Return False
+
+		'is it the collection of the room owner?
+		Local collection:TPlayerProgrammeCollection = TPlayerProgrammeCollection(triggerEvent.GetSender())
+		If Not collection Or not currentRoom or collection.owner <> currentRoom.owner Then Return False
+
+		'recreate gui elements
+		RefreshGuiElements()
+		'refetch the hovered element (if there was one before)
+		'so it can get drawn correctly in the render calls until the
+		'next update call would fetch the hovered item again
+		FindHoveredPlanElement()
+	End Function
+	
+
+
+
 	'if players are in the office during changes
 	'to their programme plan, react to...
 	Function onChangeProgrammePlan:Int( triggerEvent:TEventBase )
@@ -538,9 +565,9 @@ Type TScreenHandler_ProgrammePlanner
 		'only adjust GUI if we are displaying that screen (eg. AI skips that)
 		If not IsMyScreen( ScreenCollection.GetCurrentScreen() ) Then Return False
 
-		'is it our plan?
+		'is it the plan of the room owner?
 		Local plan:TPlayerProgrammePlan = TPlayerProgrammePlan(triggerEvent.GetSender())
-		If Not plan Or plan.owner <> GetPlayerCollection().playerID Then Return False
+		If Not plan or not currentRoom Or plan.owner <> currentRoom.owner Then Return False
 
 		'recreate gui elements
 		RefreshGuiElements()
@@ -1533,6 +1560,16 @@ endrem
 			GuiListAdvertisements.daychangeGuiProgrammePlanElement.remove()
 			GuiListAdvertisements.daychangeGuiProgrammePlanElement = Null
 		EndIf
+
+		'remove dragged ones we do no longer own / have access too
+		For Local obj:TGUIProgrammePlanElement = EachIn GuiManager.ListDragged.Copy()
+			if not GetPlayerProgrammeCollection(currentRoom.owner).HasBroadcastMaterial(obj.broadcastMaterial)
+				obj.Remove()
+			endif
+		Next
+		draggedGuiProgrammePlanElement = Null
+		hoveredGuiProgrammePlanElement = Null
+
 
 		Local currDay:Int = planningDay
 		If currDay = -1 Then currDay = GetWorldTime().GetDay()

@@ -899,6 +899,18 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		return amount
 	End Method
 
+
+	Method HasBroadcastMaterial:int(obj:TBroadcastMaterial) {_exposeToLua}
+		if TProgramme(obj)
+			return HasProgrammeLicence( TProgramme(obj).licence )
+		elseif TAdvertisement(obj)
+			return HasAdContract( TAdvertisement(obj).contract )
+		elseif TNews(obj)
+			return HasNewsEvent( TNews(obj).newsEvent )
+		endif
+		return False
+	End Method
+
 	
 	Method HasProgrammeLicence:int(licence:TProgrammeLicence) {_exposeToLua}
 		return GetProgrammeLicences().contains(licence)
