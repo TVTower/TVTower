@@ -1014,6 +1014,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'do not allow limited ones
 		cheapFilter.SetSkipLimitedToProgrammeGenre()
 		cheapFilter.SetSkipLimitedToTargetGroup()
+		'the dev value is defining how many simultaneously are allowed
+		'while the filter filters contracts already having that much (or
+		'more) contracts, that's why we subtract 1
+		local limitInstances:int = GameRules.devConfig.GetInt("DEV_ADAGENCY_LIMIT_CONTRACT_INSTANCES", GameRules.maxContractInstances)
+		if limitInstances > 0 then cheapFilter.SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		local addContract:TAdContractBase
 		For Local i:Int = 0 until startAdContractBaseGUIDs.length

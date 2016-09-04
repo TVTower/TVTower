@@ -726,7 +726,10 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'cheap contracts should in now case limit genre/groups
 		cheapListFilter.SetSkipLimitedToProgrammeGenre()
 		cheapListFilter.SetSkipLimitedToTargetGroup()
-		if limitInstances > 0 cheapListFilter.SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
+		'the dev value is defining how many simultaneously are allowed
+		'while the filter filters contracts already having that much (or
+		'more) contracts, that's why we subtract 1
+		if limitInstances > 0 then cheapListFilter.SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		'the 12 contracts are divided into 6 groups
 		'4x fitting the lowest requirements (2x day, 2x prime)
