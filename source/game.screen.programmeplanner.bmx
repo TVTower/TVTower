@@ -121,6 +121,7 @@ Type TScreenHandler_ProgrammePlanner
 		'=== register event listeners
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropProgrammePlanElementOnDayButton, "TGUIProgrammePlanElement") ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropFreshProgrammePlanElementOnRunningSlot, "TGUIProgrammePlanElement") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropUnownedElement, "TGUIProgrammePlanElement") ]
 
 		'savegame loaded - clear gui elements
 		_eventListeners :+ [ EventManager.registerListenerFunction("SaveGame.OnLoad", onLoadSavegame) ]
@@ -722,6 +723,21 @@ Type TScreenHandler_ProgrammePlanner
 		Return True
 	End Function
 
+
+	'intercept if we do not own that element
+	Function onTryDropUnownedElement:int(triggerEvent:TEventBase)
+		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
+		If Not item Then Return False
+		If Not currentRoom Then Return False
+
+		if not GetPlayerProgrammeCollection(currentRoom.owner).HasBroadcastMaterial(item.broadcastMaterial)
+			triggerEvent.SetVeto()
+			return False
+		endif
+
+		return True
+	End Function
+	
 
 	'intercept if a freshly created element is dropped on a not modifyable
 	'slot
