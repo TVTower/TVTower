@@ -43,13 +43,17 @@ bbdoc: BASIC/Reflection
 
 Module BRL.Reflection
 
-ModuleInfo "Version: 1.26"
+ModuleInfo "Version: 1.28"
 ModuleInfo "Author: Mark Sibly"
 ModuleInfo "License: zlib/libpng"
 ModuleInfo "Copyright: Blitz Research Ltd"
 ModuleInfo "Modserver: BRL"
 
-ModuleInfo "History: 1.26 [grable]"
+ModuleInfo "History: 1.28 [grable]"
+ModuleInfo "History: Reverted back to old _Call() before assembly (max 8 arguments) for MacOSX"
+ModuleInfo "History: 1.27 [Derron]"
+ModuleInfo "History: Fixed MacOSX assembly not compiling"
+ModuleInfo "History: 1.26 [Derron]"
 ModuleInfo "History: Fixed TFunction.FunctionPtr() accessing supertype of Null"
 ModuleInfo "History: 1.25 [grable]"
 ModuleInfo "History: Fixed linux version of bbCallMethod"
@@ -122,12 +126,17 @@ Import "callmethod.linux.x86.s"
 ?Win32
 Import "callmethod.win32.x86.s"
 ?MacOS
-Import "callmethod.macos.x86.s"
+' disabled until i can figure out what special voodoo macs require
+'Import "callmethod.macos.x86.s"
 ?
 
 Private
 
-Const MAX_CALL_ARGS:Int = 30 ' original=8
+?MacOS
+Const MAX_CALL_ARGS:Int = 8
+?Not MacOS
+Const MAX_CALL_ARGS:Int = 30
+?
 
 Extern
 
@@ -159,11 +168,12 @@ Function bbRefAssignObject( p:Byte Ptr,obj:Object )
 Function bbRefGetObjectClass( obj:Object )
 Function bbRefGetSuperClass( class )
 
+?Not MacOS
 Function bbCallMethod:Int( p:Byte Ptr, args:Byte Ptr, sz:Int)
 Function bbCallMethod_Float:Float( p:Byte Ptr, args:Byte Ptr, sz:Int) = "bbCallMethod"
 Function bbCallMethod_Object:Object( p:Byte Ptr, args:Byte Ptr, sz:Int) = "bbCallMethod"
 Function bbCallMethod_Double:Double( p:Byte Ptr, args:Byte Ptr, sz:Int) = "bbCallMethod"
-
+?
 End Extern
 
 Type TClass
@@ -244,7 +254,7 @@ Function _Push:Byte Ptr( sp:Byte Ptr,typeId:TTypeId,value:Object )
 			While t And t<>c
 				t=bbRefGetSuperClass( t )
 			Wend
-			If Not t Throw "ERROR"
+			If Not t Throw "_Push() ERROR"
 		EndIf
 		bbRefPushObject sp,value
 		Return sp+4
@@ -292,15 +302,21 @@ Function _Assign( p:Byte Ptr,typeId:TTypeId,value:Object )
 			While t And t<>c
 				t=bbRefGetSuperClass( t )
 			Wend
-			If Not t Throw "ERROR"
+			If Not t Throw "_Assign() ERROR"
 		EndIf
 		bbRefAssignObject p,value
 	End Select
 End Function
 
+'
+' bmx fallback path for calling methods. for macos
+'
+?MacOS
 Function _Call:Object( callableP:Byte Ptr, retTypeId:TTypeId, obj:Object=Null, args:Object[], argtypes:TTypeId[])
-	Local q:Int[MAX_CALL_ARGS + 2], sp:Byte Ptr = q
+	Assert args.Length = argtypes.Length
 
+	Local q:Int[MAX_CALL_ARGS + 2], sp:Byte Ptr = q
+	
 	If obj 'method call of an instance
 		bbRefPushObject sp,obj
 		sp:+4
@@ -313,47 +329,89 @@ Function _Call:Object( callableP:Byte Ptr, retTypeId:TTypeId, obj:Object=Null, a
 	EndIf
 
 	For Local i:Int = 0 Until args.Length
-		If Int Ptr(sp) >= Int Ptr(q)+MAX_CALL_ARGS Then Throw "ERROR"
+		If Int Ptr(sp) >= Int Ptr(q)+MAX_CALL_ARGS Then Throw "_Call() ERROR: Exceeded max args #1"
 		sp = _Push( sp, argtypes[i], args[i])
 	Next
-	If Int Ptr(sp) > Int Ptr(q)+MAX_CALL_ARGS Then Throw "ERROR"
+	If Int Ptr(sp) > Int Ptr(q)+MAX_CALL_ARGS Then Throw "_Call() ERROR: Exceeded max args #2"
+	
 	Select retTypeId
 		Case ByteTypeId, ShortTypeId, IntTypeId
-'			Local f(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
-'			Return String.FromInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
-			Return String.FromInt( bbCallMethod( callableP, q, sp - Byte Ptr q) )
+			Local f(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
+			Return String.FromInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
 		Case LongTypeId
-'			Local r:Long
-'			If obj Then
-'				Local f( p0, r:Long Var, p1,p2,p3,p4,p5,p6,p7) = callableP
-'				f( q[0], r, q[1],q[2],q[3],q[4],q[5],q[6],q[7] )
-'			Else
-'				Local f( r:Long Var, p0, p1,p2,p3,p4,p5,p6,p7) = callableP
-'				f( r, q[0], q[1],q[2],q[3],q[4],q[5],q[6],q[7] )
-'			EndIf
-'			Return String.FromLong(r)
-			bbCallMethod( callableP, q, sp - Byte Ptr q)
-			Return String.FromInt( lret )
+			Local r:Long
+			If obj Then
+				Local f( p0, r:Long Var, p1,p2,p3,p4,p5,p6,p7) = callableP
+				f( q[0], r, q[1],q[2],q[3],q[4],q[5],q[6],q[7] )
+			Else
+				Local f( r:Long Var, p0, p1,p2,p3,p4,p5,p6,p7) = callableP
+				f( r, q[0], q[1],q[2],q[3],q[4],q[5],q[6],q[7] )
+			EndIf
+			Return String.FromLong(r)
 		Case FloatTypeId
-'			Local f:Float(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
-'			Return String.FromFloat( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
-			Return String.FromFloat( bbCallMethod_Float( callableP, q, sp - Byte Ptr q) )
+			Local f:Float(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
+			Return String.FromFloat( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
 		Case DoubleTypeId
-'			Local f:Double(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
-'			Return String.FromDouble( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
-			Return String.FromDouble( bbCallMethod_Double( callableP, q, sp - Byte Ptr q) )
+			Local f:Double(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
+			Return String.FromDouble( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
 		Default
 			If retTypeId.ExtendsType(PointerTypeId) Or retTypeId.ExtendsType(FunctionTypeId) Then
-'				Local f:Int(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
-'				Return String.FromInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
-				Return String.FromInt( bbCallMethod( callableP, q, sp - Byte Ptr q) )
+				Local f:Int(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
+				Return String.FromInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
 			Else
-'				Local f:Object(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
-'				Return f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] )
-				Return bbCallMethod_Object( callableP, q, sp - Byte Ptr q)
+				Local f:Object(p0, p1, p2, p3, p4, p5, p6, p7) = callableP
+				Return f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] )
 			EndIf
 	End Select
 End Function
+?
+
+'
+' asembly path for calling methods. for linux and win32
+'
+?Not MacOS
+Function _Call:Object( callableP:Byte Ptr, retTypeId:TTypeId, obj:Object=Null, args:Object[], argtypes:TTypeId[])
+	Assert args.Length = argtypes.Length
+
+	Local q:Int[MAX_CALL_ARGS + 2], sp:Byte Ptr = q
+	
+	If obj 'method call of an instance
+		bbRefPushObject sp,obj
+		sp:+4
+	EndIf
+	
+	Local lret:Long
+	If retTypeId = LongTypeId Then
+		Byte Ptr Ptr(sp)[0] = Byte Ptr Varptr lret
+		sp :+ 4
+	EndIf
+
+	For Local i:Int = 0 Until args.Length
+		If Int Ptr(sp) >= Int Ptr(q)+MAX_CALL_ARGS Then Throw "_Call() ERROR: Exceeded max args #1"
+		sp = _Push( sp, argtypes[i], args[i])
+	Next
+	If Int Ptr(sp) > Int Ptr(q)+MAX_CALL_ARGS Then Throw "_Call() ERROR: Exceeded max args #2"
+	
+	Local size:Int = sp - Byte Ptr q
+	Select retTypeId
+		Case ByteTypeId, ShortTypeId, IntTypeId
+			Return String.FromInt( bbCallMethod( callableP, q, size) )
+		Case LongTypeId
+			bbCallMethod( callableP, q, size)
+			Return String.FromInt( lret )
+		Case FloatTypeId
+			Return String.FromFloat( bbCallMethod_Float( callableP, q, size) )
+		Case DoubleTypeId
+			Return String.FromDouble( bbCallMethod_Double( callableP, q, size) )
+		Default
+			If retTypeId.ExtendsType(PointerTypeId) Or retTypeId.ExtendsType(FunctionTypeId) Then
+				Return String.FromInt( bbCallMethod( callableP, q, size) )
+			Else
+				Return bbCallMethod_Object( callableP, q, size)
+			EndIf
+	End Select
+End Function
+?
 
 Function TypeTagForId$( id:TTypeId )
 	If id.ExtendsType( ArrayTypeId )
@@ -1486,4 +1544,3 @@ EndRem
 	Global _count,_nameMap:TMap=New TMap,_classMap:TMap=New TMap
 	
 End Type
-
