@@ -36,9 +36,6 @@ Rem
 EndRem
 SuperStrict
 Import brl.Graphics
-?android
-Import sdl.gl2sdlmax2d
-?
 ?MacOs
 Import BRL.GLMax2D
 ?Win32
@@ -47,6 +44,10 @@ Import "base.util.graphicsmanager.win32.bmx"
 ?Linux
 Import BRL.GLMax2D
 'Import "../source/external/bufferedglmax2d/bufferedglmax2d.bmx"
+?
+?bmxng
+'?android
+Import sdl.gl2sdlmax2d
 ?
 
 Import "base.util.virtualgraphics.bmx"
@@ -259,12 +260,14 @@ Type TGraphicsManager
 	Method _InitGraphicsDefault:Int()
 		Select renderer
 			'buffered gl?
-			?android
+			'?android
+			?bmxng
 			Default
 				TLogger.Log("GraphicsManager.InitGraphics()", "SetGraphicsDriver ~qGL2SDL~q.", LOG_DEBUG)
 				SetGraphicsDriver GL2Max2DDriver()
 				renderer = RENDERER_GL2SDL
-			?Not android
+			'?Not android
+			?not bmxng
 			Default
 				TLogger.Log("GraphicsManager.InitGraphics()", "SetGraphicsDriver ~qOpenGL~q.", LOG_DEBUG)
 				SetGraphicsDriver GLMax2DDriver()
@@ -334,7 +337,7 @@ Type TGraphicsManager
 
 
 	Method EnableSmoothLines:Int()
-		If renderer = RENDERER_OPENGL Or renderer = RENDERER_BUFFEREDOPENGL
+		If renderer = RENDERER_OPENGL or renderer = RENDERER_GL2SDL Or renderer = RENDERER_BUFFEREDOPENGL
 			?Not android
 			GlEnable(GL_LINE_SMOOTH)
 			?

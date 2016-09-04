@@ -1,1 +1,1 @@
-.globl _bbCallMethod_memcpy.text	_bbCallMethod:	push %ebp	mov %esp, %ebp	sub 16(%ebp), %esp	push 16(%ebp)	push 12(%ebp)	push %esp	call _memcpy	add 4, %esp	call *8(%ebp)	mov %ebp, %esp	pop %ebp	ret
+.globl _bbCallMethod.text_bbCallMethod:	pushl   %ebp	movl    %esp,%ebp	subl    0x10(%ebp),%esp	pushl  0x10(%ebp)	pushl  0xc(%ebp)	pushl   %esp	calll   _memcpy	addl    $0x4,%esp	calll   *0x8(%ebp)	movl    %ebp,%esp	popl    %ebp	ret
