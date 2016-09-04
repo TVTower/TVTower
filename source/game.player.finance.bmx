@@ -42,7 +42,7 @@ Type TPlayerFinanceCollection
 
 	Method SetPlayerStartDay:int(playerID:int, day:int)
 		if playerID > 0 and playerStartIndex.length >= playerID
-			playerStartIndex[playerID] = Max(0, day)
+			playerStartIndex[playerID -1] = Max(0, day)
 			return True
 		endif
 		return False
