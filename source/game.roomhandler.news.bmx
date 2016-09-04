@@ -802,8 +802,10 @@ Type TGUINews Extends TGUIGameListItem
 
 			Select GetWorldTime().GetDay() - GetWorldTime().GetDay(news.GetHappenedtime())
 				Case 0	GetBitmapFontManager().baseFont.drawBlock(GetLocale("TODAY")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack )
-				Case 1	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("YESTERDAY")+" "+ GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
-				Case 2	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("TWO_DAYS_AGO")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
+				'Case 1	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("YESTERDAY")+" "+ GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
+				'Case 2	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("TWO_DAYS_AGO")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
+				Case 1	GetBitmapFontManager().baseFont.drawBlock(GetLocale("YESTERDAY")+" "+ GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
+				Case 2	GetBitmapFontManager().baseFont.drawBlock(GetLocale("TWO_DAYS_AGO")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
 			End Select
 
 			SetAlpha oldAlpha * 0.5
