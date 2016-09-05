@@ -1,4 +1,4 @@
-SuperStrict
+﻿SuperStrict
 Import "Dig/base.util.time.bmx" 'interval timer
 Import "game.roomhandler.base.bmx"
 
@@ -38,22 +38,22 @@ Type RoomHandler_Credits extends TRoomHandler
 
 		role = CreateRole("Programmierung", TColor.Create(200,200,0))
 		role.addCast("Ronny Otto~n(Engine, Spielmechanik)")
-		role.addCast("Manuel Vögele~n(Quotenberechnung, Sendermarkt)")
+		role.addCast("Manuel Vögele~n(Quotenberechnung, Sendermarkt)~n(bis 2015)")
 		role.addCast("Bruce A. Henderson~n(BlitzMax-NG + Code-Module)")
 
 		role = CreateRole("Grafik", TColor.Create(240,160,150))
 		role.addCast("Ronny Otto")
 
 		role = CreateRole("KI-Entwicklung", TColor.Create(140,240,250))
-		role.addCast("Ronny Otto~n(KI-Anbindung)")
-		role.addCast("Manuel Vögele~n(KI-Verhalten & -Anbindung)")
+		role.addCast("Ronny Otto~n(KI-Verhalten, KI-Anbindung)")
+		role.addCast("Manuel Vögele~n(KI-Verhalten & -Anbindung)~n(bis 2015)")
 
 		role = CreateRole("Handbuch", TColor.Create(170,210,250))
 		role.addCast("Själe")
 
 		role = CreateRole("Datenbank-Team", TColor.Create(210,120,250))
+		role.addCast("Martin Rackow~n(bis 2007)")
 		role.addCast("Ronny Otto")
-		role.addCast("Martin Rackow")
 		role.addCast("Själe")
 		role.addCast("SpeedMinister")
 		role.addCast("TheRob")
@@ -66,9 +66,12 @@ Type RoomHandler_Credits extends TRoomHandler
 		'role.addCast("Ceddy")
 		'role.addCast("dirkw")
 		'role.addCast("djmetzger")
+
 		role.addCast("Basti")
 		role.addCast("domi")
+		role.addCast("Helmut")
 		role.addCast("Kurt TV")
+		role.addCast("Ratz")
 		role.addCast("red")
 		role.addCast("Själe")
 		role.addCast("SushiTV")
@@ -83,7 +86,7 @@ Type RoomHandler_Credits extends TRoomHandler
 		role.addCast("")
 
 		role = CreateRole("Besucht uns im Netz", TColor.clWhite)
-		role.addCast("http://www.tvgigant.de")
+		role.addCast("http://www.tvgigant.de~noder~nhttp://www.tvtower.org")
 
 		role = CreateRole("", TColor.clWhite)
 		role.addCast("")
