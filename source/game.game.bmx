@@ -659,16 +659,14 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			Local startHour:Int = 0
 			Local currentHour:int = 0
 			local startDay:Int = GetWorldTime().GetStartDay()
-			'starting while game is already running?
-			'-> either another day, or on start day but after 0:05
-			if GetWorldTime().GetStartDay() <> GetWorldTime().GetDay() or GetWorldTime().GetDayTime() > 60*5 
-				startDay = GetWorldTime().GetDay()
+			'find the next possible programme hour
+			if GetWorldTime().GetDayMinute() >= 5
 				startHour = GetWorldTime().GetDayHour() + 1
 				if startHour > 23
 					startHour :- 24
 					startDay :+ 1
 				endif
-			endif
+			endif			
 
 			'adjust opener live-time
 			programmeData.releaseTime = GetWorldTime().MakeTime(GetWorldTime().GetYear(), startDay - GetWorldTime().GetStartDay(), startHour, 5)
