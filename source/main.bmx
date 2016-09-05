@@ -4365,6 +4365,7 @@ Type GameEvents
 		'countdown for the refillers
 		GetGame().refillMovieAgencyTime :-1
 		GetGame().refillAdAgencyTime :-1
+		GetGame().refillScriptAgencyTime :-1
 		'refill if needed
 		If GetGame().refillMovieAgencyTime <= 0
 			'delay if there is one in this room
@@ -4376,6 +4377,18 @@ Type GameEvents
 
 				TLogger.Log("GameEvents.OnMinute", "partly refilling movieagency", LOG_DEBUG)
 				RoomHandler_movieagency.GetInstance().ReFillBlocks(True, 0.5)
+			EndIf
+		EndIf
+		If GetGame().refillScriptAgencyTime <= 0
+			'delay if there is one in this room
+			If GetRoomCollection().GetFirstByDetails("scriptagency").hasOccupant()
+				GetGame().refillScriptAgencyTime :+ 15
+			Else
+				'reset but with a bit randomness
+				GetGame().refillScriptAgencyTime = GetGame().refillScriptAgencyTimer + randrange(0,20)-10
+
+				TLogger.Log("GameEvents.OnMinute", "partly refilling scriptagency", LOG_DEBUG)
+				RoomHandler_scriptagency.GetInstance().ReFillBlocks(True, 0.65)
 			EndIf
 		EndIf
 		If GetGame().refillAdAgencyTime <= 0

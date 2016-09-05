@@ -41,6 +41,11 @@ Type TGameBase {_exposeToLua="selected"}
 	'minutes till movie agency gets refilled again
 	Field refillMovieAgencyTime:Int = 180
 
+	'refill script agency every X Minutes
+	Field refillScriptAgencyTimer:Int = -1
+	'minutes till script agency gets refilled again
+	Field refillScriptAgencyTime:Int = -1
+
 	'refill ad agency every X Minutes
 	Field refillAdAgencyTimer:Int = 240
 	'minutes till ad agency gets refilled again
@@ -109,6 +114,9 @@ Type TGameBase {_exposeToLua="selected"}
 
 		refillMovieAgencyTimer = 180
 		refillMovieAgencyTime = 180
+
+		refillScriptAgencyTimer = 300
+		refillScriptAgencyTime = 300
 
 		refillAdAgencyTimer = 240
 		refillAdAgencyTime = 240
