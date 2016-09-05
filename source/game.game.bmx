@@ -485,6 +485,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		local difficulty:TPlayerDifficulty = player.GetDifficulty()
 
+		GetPlayer(playerID).SetStartDay(GetWorldTime().GetDaysRun())
 
 		'colorize figure, signs, ...
 		ColorizePlayerExtras(playerID)

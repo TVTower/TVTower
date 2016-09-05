@@ -115,6 +115,8 @@ Type TPlayerBase {_exposeToLua="selected"}
 	'1=ready, 0=not set, ...
 	Field networkstate:Int = 0
 
+	Field startDay:Int = 0
+
 	'=== NEWS ABONNEMENTS ===
 	'abonnementlevels for the newsgenres
 	Field newsabonnements:Int[6]
@@ -256,6 +258,22 @@ Type TPlayerBase {_exposeToLua="selected"}
 		EndIf
 
 		return False
+	End Method
+
+
+
+	Method SetStartDay:int(day:int)
+		'inform finance too
+		GetPlayerFinanceCollection().SetPlayerStartDay(self.playerID, day )
+
+		startDay = Max(0, day)
+		return True
+	End Method
+
+
+	'returns how many days later than "day zero" a player started
+	Method GetStartDay:int()
+		return startDay
 	End Method
 
 
