@@ -1468,9 +1468,11 @@ endrem
 
 
 	Function ChangePlanningDay:Int(day:Int=0)
-		planningDay = day
+		local earliestDay:int = GetWorldTime().GetDay(GetWorldTime().GetTimeStart())
+		if currentRoom then earliestDay :+ Max(0, GetPlayer(currentRoom.owner).GetStartDay())
+
 		'limit to start day
-		If planningDay < GetWorldTime().GetDay(GetWorldTime().GetTimeStart()) Then planningDay = GetWorldTime().GetDay(GetWorldTime().GetTimeStart())
+		planningDay = Max(earliestDay, day)
 
 		'adjust slotlists (to hide ghosts on differing days)
 		GuiListProgrammes.planDay = planningDay
