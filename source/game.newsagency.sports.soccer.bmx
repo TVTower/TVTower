@@ -18,6 +18,11 @@ Type TNewsEventSport_Soccer extends TNewsEventSport
 	                                "Werksportverein|WSV|s" ..
 	                               ]
 
+	Method New()
+		name = "SOCCER"
+	End Method
+
+
 	Function CreateMatch:TNewsEventSportMatch_Soccer()
 		return new TNewsEventSportMatch_Soccer
 	End Function
@@ -93,7 +98,25 @@ Type TNewsEventSport_Soccer extends TNewsEventSport
 			local league:TNewsEventSportLeague_Soccer = new TNewsEventSportLeague_Soccer
 			league.Init((leagueIndex+1) + ". " + GetLocale("SOCCER_LEAGUE"), leagueIndex+".", teams)
 			league.matchesPerTimeSlot = 2
-			league.timeSlots = [20]
+			if leagueIndex = 0
+				league.timeSlots = [ ..
+				                    "0_16", "0_20", ..
+				                    "2_16", "2_20", ..
+				                    "4_16", "4_20", ..
+				                    "5_16", "5_20" ..
+				                   ]
+				league.seasonStartDay = 14
+				league.seasonStartMonth = 8
+			elseif leagueIndex > 0
+				league.timeSlots = [ ..
+				                    "0_14", "0_18", ..
+				                    "2_14", "2_18", ..
+				                    "4_14", "4_18", ..
+				                    "5_14", "5_18" ..
+				                   ]
+				league.seasonStartDay = 29
+				league.seasonStartMonth = 7
+			endif
 
 			AddLeague( league )
 		Next
@@ -104,7 +127,15 @@ End Type
 
 Type TNewsEventSportLeague_Soccer extends TNewsEventSportLeague
 	Field seasonJustBegun:int = False
-	Field timeSlots:int[] = [14,20]
+	'0 = monday, 2 = wednesday ...
+	Field timeSlots:string[] = [ ..
+	                            "0_14", "0_20", ..
+	                            "2_14", "2_20", ..
+	                            "4_14", "4_20", ..
+	                            "5_14", "5_20" ..
+	                           ]
+    Field seasonStartMonth:int = 8
+    Field seasonStartDay:int = 14
 	Field matchesPerTimeSlot:int = 2
 	Field startDay:int = 9
 
@@ -114,32 +145,53 @@ Type TNewsEventSportLeague_Soccer extends TNewsEventSportLeague
 	End Method
 	
 
-	Method StartSeason:int(time:Double = 0)
+	Method StartSeason:int(time:Long = 0)
 		seasonJustBegun = True
 		return Super.StartSeason(time)
 	End Method
 
 
+	Method GetFirstMatchTime:Long(time:Long)
+		'take year of the given time and use the defined months for a
+		'soccer season
+		'match time: 14. 8. - 14.5. (1. Liga)
+		'match time: 29. 7. -       (3. Liga)
+		Return GetWorldTime().MakeRealTime(GetWorldTime().GetYear(time), seasonStartMonth, seasonStartDay, 0, 0)
+	End Method
+
+
 	'override
 	'2 matches per "time slot" instead of 1
-	Method AssignMatchTimes(season:TNewsEventSportSeason, time:Double = 0)
-		if time = 0 then time = GetNextMatchStartTime(time)
+	Method AssignMatchTimes(season:TNewsEventSportSeason, time:Long = 0)
+		'time = GetNextMatchStartTime(time)
+
 		if not season then season = GetCurrentSeason()
 
 		local matches:int = 0
 		For local m:TNewsEventSportMatch = EachIn season.data.matchPlan
-			matches :+1
-
 			m.SetMatchTime(time)
-			'every x-th match we increase time
-			if matches mod matchesPerTimeSlot = 0 then time = GetNextMatchStartTime(time)
+
+			'every x-th match we increase time - so matches get "grouped"
+			if matches > 1 and matches mod matchesPerTimeSlot = 0
+				'also append some minutes, es we would not move forward
+				'without (same time returned again and again)
+				time = GetNextMatchStartTime(time + 10 * 60)
+			endif
+rem
+if name = "1. SOCCER_LEAGUE" and GetWorldTime().GetDay(time) >= GetWorldTime().GetStartDay()
+	local weekday:string = GetWorldTime().GetDayName( GetWorldTime().GetWeekday( time ) )
+	print "   "+ name+ "  match: "+GetWorldTime().GetFormattedDate(time) + "  gameday="+ GetWorldTime().GetDaysRun(time) + "  " + weekday
+endif
+endrem
+			matches :+1
 		Next
+'end
 	End Method
 
 
-	Method GetNextMatchStartTime:Double(time:Double = 0)
+	Method GetNextMatchStartTime:Long(time:Long = 0, ignoreSeasonBreaks:int = False)
 		if time = 0 then time = GetWorldTime().GetTimeGone()
-		local weekday:string = GetWorldTime().GetDayName( GetWorldTime().GetWeekday( GetWorldTime().GetOnDay(time) ) )
+		local weekday:int = GetWorldTime().GetWeekday( time )
 		'playtimes:
 		'0 monday:    x
 		'1 tuesday:   -
@@ -151,61 +203,90 @@ Type TNewsEventSportLeague_Soccer extends TNewsEventSportLeague
 		local matchDay:int = 0
 		local matchHour:int = -1
 
+'if name = "1. SOCCER_LEAGUE" then print "find next possible for day " + GetWorldTime().GetDay(time)+"  "+GetWorldTime().GetDayName(weekday)+" ["+weekday+"]  at "+GetWorldTime().GetFormattedTime(time)
 		'search the next possible time slot
-		For local t:int = EachIn timeSlots
-			if GetWorldTime().GetDayHour(time) < t then matchHour = t
+		For local t:string = EachIn timeSlots
+			local information:string[] = t.Split("_")
+			local weekdayIndex:int = int(information[0])
+			local hour:int = 0
+			if information.length > 1 then hour = int(information[1])
+
+			'the same day => next possible hour
+			if GetWorldTime().GetWeekday(time) = weekdayIndex
+				'earlier or at least before xx:05
+				if GetWorldTime().GetDayHour(time) < hour or (GetWorldTime().GetDayHour(time) = hour and GetWorldTime().GetDayMinute(time) < 5)
+					matchDay = 0
+					matchHour = hour
+'if name = "1. SOCCER_LEAGUE" then print "  same day at " + matchHour
+					exit
+				endif
+			endif
+
+			'future day => earliest hour that day
+			if GetWorldTime().GetWeekday(time) < weekdayIndex
+				matchDay = weekdayIndex - GetWorldTime().GetWeekday(time)
+				matchHour = hour
+'if name = "1. SOCCER_LEAGUE" then print "  future day "+matchDay+" at " + matchHour+":00"+ "   " + t +"  weekdayIndex="+weekdayIndex +"  weekday="+GetWorldTime().GetWeekday(time)
+				exit
+			endif
+				
 			if matchHour <> -1 then exit
 		Next
-		if matchHour = -1 then matchHour = timeSlots[0]
+		'if nothing was found yet, we might have had a time after the
+		'last time slot -- so use the first one
+		if matchHour = -1 and timeSlots.length > 0
+			local information:string[] = timeSlots[0].Split("_")
+			matchDay = GetWorldTime().GetDaysPerWeek() + int(information[0]) - GetWorldTime().GetWeekday(time)
+			matchHour = 0
+			if information.length > 1 then matchHour = int(information[1])
+'if name = "1. SOCCER_LEAGUE" then print "  next week at day "+matchDay+" at " + matchHour+":00"
+		endif
 
 
-		Select weekday
-			case "FRIDAY"
-				'next match on saturday
-				if GetWorldTime().GetDayHour(time) >= 20 then matchDay = 1
-			case  "SATURDAY", "MONDAY", "WEDNESDAY"
-				'next match 2 days later
-				if GetWorldTime().GetDayHour(time) >= 20 then matchDay = 2
-			Default
-				'next day at 14:00
-				matchDay = 1
-				matchHour = timeSlots[0]
-		End Select
 
-		local matchTime:Double = 0
+		local matchTime:Long = 0
 		'match time: 14. 8. - 14.5.
 		'winter break: 21.12. - 21.1.
 
-		'first match
-		if seasonJustBegun
-			matchTime = GetWorldTime().MakeTime(GetWorldTime().Getyear(time), startDay, timeslots[0], 0)
-		else
-			matchTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(time) + matchDay, matchHour, 0)
+
+		local firstDayStartHour:int = 0
+		if timeSlots.length > 0
+			local firstTime:string[] = timeSlots[0].Split("_")
+			if firstTime.length > 1 then firstDayStartHour = int(firstTime[1])
 		endif
 
-		'check if we are in winter now
-		local winterBreak:int = False
-		local monthCode:int = int((RSet(GetWorldTime().GetMonth(matchTime),2) + RSet(GetWorldTime().GetDayOfMonth(matchTime),2)).Replace(" ", 0))
-		'from 5th of december
-		if 1220 < monthCode then winterBreak = True
-		'till 22th of january
-		if  122 > monthCode then winterBreak = True
 
-		if winterBreak and not seasonJustBegun
-			local t:Long
-			'next match starts in february
-			'take time of 2 months later (either february or march - so
-			'guaranteed to be the "next" year - when still in december)
-			t = matchTime + GetWorldTime().MakeRealTime(0, 2, 0, 0, 0)
-			'set time to "next year" begin of february - use "MakeRealTime"
-			'to get the time of the ingame "5th february" (or the next
-			'possible day)
-			t = GetWorldTime().MakeRealTime(GetWorldTime().GetYear(t), 2, 5, 0, 0)
-			'use this time then to calculate the gameday and 14:00hr
-			matchTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(t), timeSlots[0], 0)
+		matchTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(time) + matchDay, matchHour, 0)
+
+
+		'check if we are in winter now
+		if not ignoreSeasonBreaks
+			local winterBreak:int = False
+			local monthCode:int = int((RSet(GetWorldTime().GetMonth(matchTime),2) + RSet(GetWorldTime().GetDayOfMonth(matchTime),2)).Replace(" ", 0))
+			'from 5th of december
+			if 1220 < monthCode then winterBreak = True
+			'till 22th of january
+			if  122 > monthCode then winterBreak = True
+
+			if winterBreak and not seasonJustBegun
+				local t:Long
+				'next match starts in february
+				'take time of 2 months later (either february or march - so
+				'guaranteed to be the "next" year - when still in december)
+				t = matchTime + GetWorldTime().MakeRealTime(0, 2, 0, 0, 0)
+				'set time to "next year" begin of february - use "MakeRealTime"
+				'to get the time of the ingame "5th february" (or the next
+				'possible day)
+				t = GetWorldTime().MakeRealTime(GetWorldTime().GetYear(t), 2, 5, 0, 0)
+				'calculate next possible match time (after winter break)
+				matchTime = GetNextMatchStartTime(t)
+'if name = "1. SOCCER_LEAGUE" then print "   -> winterbreak delay"
+			endif
 		endif
 		
 		seasonJustBegun = False
+
+'if name = "1. SOCCER_LEAGUE" then print "   -> day="+GetWorldTime().GetDay(matchTime) +"  " +GetWorldTime().GetDayName(GetWorldTime().GetWeekday(matchTime))+" ["+GetWorldTime().GetWeekday(matchTime)+"]  at "+GetWorldTime().GetFormattedTime(matchTime)
 
 		return matchTime
 	End Method

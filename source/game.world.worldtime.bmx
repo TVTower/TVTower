@@ -318,9 +318,14 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetWeekday:Int(_day:Int = -1) {_exposeToLua}
+	Method GetWeekday:Int(useTime:Double = -1.0) {_exposeToLua}
+		Return Max(0, GetDay(useTime)) Mod _daysPerWeek
+	End Method
+
+
+	Method GetWeekdayByDay:Int(_day:Int = -1) {_exposeToLua}
 		If _day < 0 Then _day = GetOnDay()
-		Return Max(0,_day-1) Mod _daysPerWeek
+		Return Max(0,_day) Mod _daysPerWeek
 	End Method
 
 
@@ -369,15 +374,28 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetDayFromName:int(name:string) {_exposeToLua}
+		Select name.ToUpper()
+			Case "MONDAY"    Return 0
+			Case "TUESDAY"   Return 1
+			Case "WEDNESDAY" Return 2
+			Case "THURSDAY"  Return 3
+			Case "FRIDAY"    Return 4
+			Case "SATURDAY"  Return 5
+			Case "SUNDAY"    Return 6
+			Default          Return 0
+		End Select
+	End Method
+
 	'returns day of the week including gameday
 	Method GetFormattedDay:String(_day:Int = -1) {_exposeToLua}
 		if _day = -1 then _day = GetDaysRun()
-		Return _day+"."+GetLocale("DAY")+" ("+ GetLocale("WEEK_SHORT_"+GetDayName(GetWeekday(_day)))+ ")"
+		Return _day+"."+GetLocale("DAY")+" ("+ GetLocale("WEEK_SHORT_"+GetDayName(GetWeekdayByDay(_day)))+ ")"
 	End Method
 
 
 	Method GetFormattedDayLong:String(_day:Int = -1) {_exposeToLua}
-		Return GetLocale("WEEK_LONG_"+GetDayName(GetWeekday(_day)))
+		Return GetLocale("WEEK_LONG_"+GetDayName(GetWeekdayByDay(_day)))
 	End Method
 
 
