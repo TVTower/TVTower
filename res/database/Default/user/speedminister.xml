@@ -90,7 +90,7 @@
     
     <allprogrammes>	
         <!-- ***** Serie: Die Stars der volksirrtümlichen Hitparade (fiktiv) ***** -->		
-        <programme id="SpeedMinister-Serie-volksirrtuemliche-01" product="2" fictional="1" creator="8605" created_by="SpeedMinister">
+        <programme id="SpeedMinister-Serie-volksirrtuemliche-01" product="2" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
             <title>
                 <de>Die Stars der volksirrtümlichen Hitparade</de>
                 <en></en>
@@ -108,7 +108,7 @@
             <ratings critics="55" speed="60" />
             <!-- Episodes -->
             <children>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-01" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-01" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Die Debreciner Kuhfladen Schnüffler</de>
                         <en></en>
@@ -119,7 +119,7 @@
                     </description>
                     <ratings critics="59" speed="70" />
                 </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-02" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-02" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Tuba Tinitus</de>
                         <en></en>
@@ -130,7 +130,7 @@
                     </description>
                     <ratings critics="40" speed="50" />
                 </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-03" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-03" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Karl Maische</de>
                         <en></en>
@@ -141,7 +141,7 @@
                     </description>
                     <ratings critics="49" speed="51" />
                 </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-04" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-04" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>				
                         <de>Frantius F. Freudius</de>
                         <en></en>
@@ -152,7 +152,7 @@
                     </description>
                     <ratings critics="62" speed="65" />
                 </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-05" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-05" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Bingo Bumerang</de>
                         <en></en>
@@ -163,7 +163,7 @@
                     </description>
                     <ratings critics="42" speed="70" />
                 </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-06" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-06" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>					
                         <de>Fette Fritten</de>
                         <en></en>
@@ -174,7 +174,7 @@
                     </description>
                     <ratings critics="60" speed="68" />
                 </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-07" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-07" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>					
                         <de>Edmondia und die Schwanenhalsdreher</de>
                         <en></en>
@@ -185,7 +185,7 @@
                     </description>
                     <ratings critics="45" speed="60" />
                 </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-08" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-08" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>					
                         <de>Finale</de>
                         <en></en>
@@ -202,7 +202,7 @@
             </children>
         </programme>
         <!-- ***** Talkrunde, Serie: Andauernd Käse (fiktiv) ***** -->		
-        <programme id="SpeedMinister-Serie-andauernd-käse-01" product="2" creator="8605" created_by="SpeedMinister">
+        <programme id="SpeedMinister-Serie-andauernd-käse-01" product="2" licence_type="3" creator="8605" created_by="SpeedMinister">
             <title>
                 <de>Andauernd Käse</de>
                 <en>Cheese all around</en>
@@ -220,7 +220,7 @@
             <ratings critics="55" speed="30" />
             <!-- Episodes -->
             <children>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-01" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-01" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Analogkäse</de>
                         <en></en>
@@ -236,7 +236,7 @@
                     </staff>					
                     <ratings critics="59" speed="30" />
                 </programme>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-02" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-02" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Frischkäse</de>
                         <en></en>
@@ -251,7 +251,7 @@
                     </staff>
                     <ratings critics="50" speed="25" />
                 </programme>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-03" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-03" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Weichkäse</de>
                         <en></en>
@@ -266,7 +266,7 @@
                     </staff>
                     <ratings critics="49" speed="31" />
                 </programme>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-04" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-04" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>				
                         <de>Halbfester Schnittkäse</de>
                         <en></en>
@@ -281,7 +281,7 @@
                     </staff>
                     <ratings critics="45" speed="35" />
                 </programme>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-05" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-05" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Schnittkäse</de>
                         <en></en>
@@ -298,7 +298,7 @@
                     </staff>
                     <ratings critics="42" speed="33" />
                 </programme>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-06" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-06" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>					
                         <de>Hartkäse</de>
                         <en></en>
@@ -313,7 +313,7 @@
                     </staff>
                     <ratings critics="60" speed="30" />
                 </programme>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-07" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-07" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>					
                         <de>Sauermilchkäse</de>
                         <en></en>
@@ -328,7 +328,7 @@
                     </staff>
                     <ratings critics="45" speed="25" />
                 </programme>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-08" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-08" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>					
                         <de>Schmelzkäse</de>
                         <en></en>
@@ -343,7 +343,7 @@
                     </staff>
                     <ratings critics="48" speed="30" />
                 </programme>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-09" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-09" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>					
                         <de>Schafs- und Ziegenkäse</de>
                         <en></en>
@@ -358,7 +358,7 @@
                     </staff>
                     <ratings critics="45" speed="29" />
                 </programme>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-10" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-10" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>					
                         <de>Ofen- und Grillkäse</de>
                         <en></en>
@@ -374,7 +374,7 @@
                     </staff>
                     <ratings critics="55" speed="35" />
                 </programme>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-11" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-11" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>					
                         <de>Andauernd Käse</de>
                         <en></en>
@@ -396,7 +396,7 @@
             </children>
         </programme>
         <!-- ***** Serie: Soldaten, Paviane und Co. (fiktiv) ***** -->		
-        <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01" product="2" creator="8605" created_by="SpeedMinister">
+        <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01" product="2" licence_type="3" creator="8605" created_by="SpeedMinister">
             <title>
                 <de>Soldaten, Paviane und Co.</de>
                 <en></en>
@@ -414,7 +414,7 @@
             <ratings critics="29" speed="35" />
             <!-- Episodes -->
             <children>
-                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-01" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-01" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Rundgang im Zoo Kabul</de>
                         <en></en>
@@ -428,7 +428,7 @@
                     </staff>
                     <ratings critics="29" speed="30" />
                 </programme>
-                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-02" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-02" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Das neue Bärenhaus</de>
                         <en></en>
@@ -443,7 +443,7 @@
                     </staff>
                     <ratings critics="36" speed="35" />
                 </programme>
-                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-03" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-03" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Die chinesische Spende</de>
                         <en></en>
@@ -459,7 +459,7 @@
                     </staff>
                     <ratings critics="29" speed="24" />
                 </programme>
-                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-04" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-04" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>				
                         <de>Auf Streife mit den GIs</de>
                         <en></en>
@@ -473,7 +473,7 @@
                     </staff>
                     <ratings critics="25" speed="32" />
                 </programme>
-                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-05" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-05" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Medikamente aus Amerika</de>
                         <en></en>
@@ -487,7 +487,7 @@
                     </staff>
                     <ratings critics="28" speed="34" />
                 </programme>
-                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-06" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-06" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>					
                         <de>Da waren's nur noch 13</de>
                         <en></en>
@@ -502,7 +502,7 @@
                     </staff>
                     <ratings critics="40" speed="40" />
                 </programme>
-                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-07" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-07" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>					
                         <de>Das improvisierte Affengehege</de>
                         <en></en>
@@ -517,7 +517,7 @@
                     </staff>
                     <ratings critics="40" speed="40" />
                 </programme>
-                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-08" product="4" fictional="1" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-08" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
                     <title>					
                         <de>Ein Dank ans Personal</de>
                         <en></en>
@@ -536,7 +536,7 @@
         </programme>
 
         <!-- ***** Serie: Expeditionen ins Tierreich, Dokumentation (Originaltitel der Episoden nicht mehr verfügbar) (real) ***** -->		
-        <programme id="SpeedMinister-Serie-Expeditionen-01" product="2" creator="8605" created_by="SpeedMinister">
+        <programme id="SpeedMinister-Serie-Expeditionen-01" product="2" licence_type="3" creator="8605" created_by="SpeedMinister">
             <title>
                 <de>Ausflüge ins Tierreich</de>
                 <en>Excursions into the animal kingdom</en>
@@ -560,7 +560,7 @@
             <ratings critics="75" speed="45" />
             <!-- Episodes -->
             <children>
-                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-01" product="4" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-01" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Deutschlands Wälder</de>
                         <en>The forests of Germany</en>
@@ -571,7 +571,7 @@
                     </description>
                     <ratings critics="65" speed="40" />
                 </programme>
-                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-02" product="4" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-02" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Die Alpen</de>
                         <en>The Alps</en>
@@ -582,7 +582,7 @@
                     </description>
                     <ratings critics="60" speed="35" />
                 </programme>
-                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-03" product="4" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-03" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Die Alligatoren der Everglades</de>
                         <en>Alligators of the Everglades</en>
@@ -593,7 +593,7 @@
                     </description>
                     <ratings critics="80" speed="50" />
                 </programme>
-                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-04" product="4" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-04" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
                     <title>				
                         <de>Die Füchse Londons</de>
                         <en>Foxes of London</en>
@@ -604,7 +604,7 @@
                     </description>
                     <ratings critics="76" speed="45" />
                 </programme>
-                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-05" product="4" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-05" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
                     <title>
                         <de>Madagaskar</de>
                         <en>Madagascar</en>
@@ -615,7 +615,7 @@
                     </description>
                     <ratings critics="75" speed="48" />
                 </programme>
-                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-06" product="4" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-06" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
                     <title>					
                         <de>Die Schmetterlinge Südamerikas</de>
                         <en>The butterflies of South America</en>
@@ -626,7 +626,7 @@
                     </description>
                     <ratings critics="77" speed="39" />
                 </programme>
-                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-07" product="4" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-07" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
                     <title>					
                         <de>Das Great Barrier Riff</de>
                         <en>The Great Barrier Reef</en>
@@ -637,7 +637,7 @@
                     </description>
                     <ratings critics="76" speed="42" />
                 </programme>
-                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-0de8" product="4" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-0de8" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
                     <title>					
                         <de>Die Bären Alaskas</de>
                         <en>The bears of Alaska</en>
@@ -648,7 +648,7 @@
                     </description>
                     <ratings critics="75" speed="40" />
                 </programme>
-                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-09" product="4" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-09" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
                     <title>					
                         <de>Haie</de>
                         <en>Sharks</en>
@@ -659,7 +659,7 @@
                     </description>
                     <ratings critics="80" speed="52" />
                 </programme>
-                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-10" product="4" creator="8605" created_by="SpeedMinister">
+                <programme id="SpeedMinister-Serie-Expeditionen-01-ep-10" product="4" licence_type="2" creator="8605" created_by="SpeedMinister">
                     <title>					
                         <de>Wale</de>
                         <en>Whales</en>
