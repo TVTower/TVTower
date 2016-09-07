@@ -7,6 +7,7 @@ Import "Dig/base.util.mersenne.bmx"
 
 '=== SOCCER ===
 Type TNewsEventSport_Soccer extends TNewsEventSport
+	Global teamsPerLeague:int = 4
 	'name | abbreviation | singular/plural 
 	Global teamPrefixes:string[] = ["Fussballverein|FV|s",..
 	                                "Fussballfreunde|FF|p", ..
@@ -36,7 +37,7 @@ Type TNewsEventSport_Soccer extends TNewsEventSport
 		For local leagueIndex:int = 0 to leagueCount
 			local teamNames:string[]
 
-			For local i:int = 0 until 5 '8
+			For local i:int = 0 until teamsPerLeague
 				local name:string
 				local tries:int = 0
 				repeat
