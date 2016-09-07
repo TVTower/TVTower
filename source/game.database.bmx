@@ -829,8 +829,22 @@ Type TDatabaseLoader
 	
 		local productType:int = TXmlHelper.FindValueInt(node,"product", TVTProgrammeProductType.MOVIE)
 		'old type - stay compatible with old v3-db
-		local oldType:int = TXmlHelper.FindValueInt(node,"type", TVTProgrammeLicenceType.SINGLE)
+		local oldType:int = TXmlHelper.FindValueInt(node,"type", -1)
 		local licenceType:int = TXmlHelper.FindValueInt(node,"licence_type", oldType)
+		'episode or single element of a collection?
+		'(single movies without parent are converted later on)
+		if licenceType = -1
+			if parentLicence
+				if parentLicence.IsSeries()
+					print "autocorrect: "+GUID+" to EPISODE"
+					licenceType = TVTProgrammeLicenceType.EPISODE
+				else
+					print "autocorrect: "+GUID+" to SINGLE"
+					licenceType = TVTProgrammeLicenceType.SINGLE
+				endif
+			endif
+		endif
+			
 		local programmeData:TProgrammeData
 		local programmeLicence:TProgrammeLicence
 
@@ -1104,6 +1118,14 @@ Type TDatabaseLoader
 		For local nodeEpisode:TxmlNode = EachIn xml.GetNodeChildElements(nodeEpisodes)
 			'skip other elements than programme data
 			If nodeEpisode.getName() <> "programme" then continue
+
+			'if until now the licence type was not defined, define it now
+			'-> collections cannot get autorecognized, they NEED to get
+			'   defined correctly
+			if licenceType = -1
+				print "autocorrect: "+GUID+" to SERIES HEADER"
+				licenceType = TVTProgrammeLicenceType.SERIES
+			endif
 
 			'recursively load the episode - parent is the new programmeLicence
 			local episodeLicence:TProgrammeLicence = LoadV3ProgrammeLicenceFromNode(nodeEpisode, xml, programmeLicence)
