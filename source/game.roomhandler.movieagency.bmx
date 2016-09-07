@@ -1192,17 +1192,21 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			
 			Local player:TPlayerBase = GetPlayerBase(bestBidder)
 			GetPlayerProgrammeCollection(player.playerID).AddProgrammeLicence(licence)
+			if not GetPlayerProgrammeCollection(player.playerID).HasProgrammeLicence(licence)
+				TLogger.Log("EndAuction", "Not able to add won auction to programmeCollection: ~q"+ licence.GetGUID()+"~q.", LOG_ERROR)
+			else
 
-			If player.isLocalAI()
-				player.PlayerAI.CallOnProgrammeLicenceAuctionWin(licence, bestBid)
-			EndIf
+				If player.isLocalAI()
+					player.PlayerAI.CallOnProgrammeLicenceAuctionWin(licence, bestBid)
+				EndIf
 
-			'emit event so eg. toastmessages could attach
-			Local evData:TData = New TData
-			evData.Add("licence", licence)
-			evData.AddNumber("bestBidder", player.playerID)
-			evData.AddNumber("bestBid", bestBid)
-			EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.onWin", evData, Self))
+				'emit event so eg. toastmessages could attach
+				Local evData:TData = New TData
+				evData.Add("licence", licence)
+				evData.AddNumber("bestBidder", player.playerID)
+				evData.AddNumber("bestBid", bestBid)
+				EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.onWin", evData, Self))
+			endif
 		End If
 
 		'emit event

@@ -335,7 +335,10 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	Method AddProgrammeLicenceToSuitcase:int(programmeLicence:TProgrammeLicence)
 		'do not add if already "full"
-		if suitcaseProgrammeLicences.count() >= GameRules.maxContracts then return FALSE
+		if suitcaseProgrammeLicences.count() >= GameRules.maxProgrammeLicencesInSuitcase
+			TLogger.Log("AddProgrammeLicenceToSuitcase", "Not enough space to add licence to suitcase", LOG_DEBUG)
+			return FALSE
+		endif
 
 		if not programmeLicence.IsOwnedByPlayer(owner)
 			if not programmeLicence.IsOwnedByVendor()
