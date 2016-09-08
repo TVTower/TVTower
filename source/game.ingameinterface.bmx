@@ -277,6 +277,10 @@ Type TInGameInterface
 								content :+ "~n ~n|b||color=200,100,100|"+getLocale("NEXT_ADBLOCK")+":|/color||/b|~n" + obj.GetTitle()+" ("+ GetLocale("INVALID_BY_BROADCAST_OUTAGE") +")"
 							Else
 								local minAudienceText:string = TFunctions.convertValue(TAdvertisement(obj).contract.getMinAudience())
+								if TAdvertisement(obj).contract.GetLimitedToTargetGroup() > 0
+									minAudienceText :+" " + TAdvertisement(obj).contract.GetLimitedToTargetGroupString()
+								endif
+								
 								'check if the ad passes all checks for the current broadcast
 								local passingRequirements:String = TAdvertisement(obj).IsPassingRequirements(GetBroadcastManager().GetAudienceResult(programmePlan.owner))
 								if passingRequirements = "OK"
