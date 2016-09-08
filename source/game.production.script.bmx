@@ -116,7 +116,7 @@ Type TScriptCollection Extends TGameObjectCollection
 				if not s.basedOnScriptTemplateGUID or not StringHelper.InArray(s.basedOnScriptTemplateGUID, avoidTemplateGUIDs)
 					possibleScripts :+ [s]
 				else
-					print "skipped: " + s.GetTitle() +" as template ~q"+s.basedOnScriptTemplateGUID+"~q is to avoid."
+					'print "skipped: " + s.GetTitle() +" as template ~q"+s.basedOnScriptTemplateGUID+"~q is to avoid."
 				endif
 			next
 			if possibleScripts.length = 0 then return GenerateRandom(avoidTemplateGUIDs)
@@ -908,6 +908,8 @@ endrem
 			skin.fontNormal.draw("Potential: "+MathHelper.NumberToString(GetPotential(), 4), contentX + 5, contentY)
 			contentY :+ 12	
 			skin.fontNormal.draw("Preis: "+GetPrice(), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("IsProduced: "+IsProduced(), contentX + 5, contentY)
 		endif
 
 		'=== OVERLAY / BORDER ===

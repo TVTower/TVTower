@@ -419,7 +419,7 @@ Type TProduction Extends TOwnedGameObject
 			'set episode according to script-episode-index
 			programmeLicence.episodeNumber = productionConcept.script.GetParentScript().GetSubScriptPosition(productionConcept.script) + 1
 
-			local parentLicence:TProgrammeLicence = CreateParentalLicence(programmeLicence)
+			local parentLicence:TProgrammeLicence = CreateParentalLicence(programmeLicence, TVTProgrammeLicenceType.SERIES)
 			'add the episode
 			if parentLicence
 				'add licence at the position of the defined episode no.
@@ -427,11 +427,14 @@ Type TProduction Extends TOwnedGameObject
 				addLicence = parentLicence
 
 				'fill that licence with episode specific data
-				'(averages, cast)
+				'(averages, cast, country of production)
 				FillParentalLicence(parentLicence)
 
 				GetProgrammeDataCollection().Add(parentLicence.data)
 				GetProgrammeLicenceCollection().AddAutomatic(parentLicence)
+			else
+				debugstop
+				Throw "Failed to create parentLicence"
 			endif
 		endif
 		GetProgrammeDataCollection().Add(programmeLicence.data)
@@ -494,13 +497,11 @@ endrem
 	End Method
 
 
-	Method CreateParentalLicence:TProgrammeLicence(programmeLicence:TProgrammeLicence)
-		if not programmeLicence.IsEpisode() then return Null
-		'TODO: collections
+	Method CreateParentalLicence:TProgrammeLicence(programmeLicence:TProgrammeLicence, parentLicenceType:int)
 
 		if productionConcept.script = productionConcept.script.GetParentScript() then Throw "script and parent same : IsEpisode() failed."
 
-		'check if there is a licence already
+		'check if there is already a licence
 		local parentProgrammeGUID:string = "customProduction-header-"+productionConcept.script.GetParentScript().GetGUID() 
 		local parentLicence:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID(parentProgrammeGUID)
 
@@ -512,12 +513,30 @@ endrem
 			parentLicence.SetData(new TProgrammeData)
 			'optional
 			parentLicence.GetData().SetGUID("data-"+parentProgrammeGUID)
+
+			'some basic data for the header of series/collections
+			parentLicence.GetData().distributionChannel = TVTProgrammeDistributionChannel.TV
+			parentLicence.GetData().setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, False)
+			parentLicence.GetData().producedByPlayerID = programmeLicence.GetData().producedByPlayerID
+			parentLicence.GetData().SetFlag(TVTProgrammeDataFlag.CUSTOMPRODUCTION, True)
+
 			'fill with basic data (title, description, ...)
 			FillProgrammeDataByScript(parentLicence.GetData(), productionConcept.script.GetParentScript())
 
-			parentLicence.licenceType = TVTProgrammeLicenceType.SERIES
-			parentLicence.data.dataType = TVTProgrammeDataType.SERIES
+			if parentLicenceType = TVTProgrammeLicenceType.SERIES
+				parentLicence.licenceType = TVTProgrammeLicenceType.SERIES
+				parentLicence.data.dataType = TVTProgrammeDataType.SERIES
+			elseif parentLicenceType = TVTProgrammeLicenceType.COLLECTION
+				parentLicence.licenceType = TVTProgrammeLicenceType.COLLECTION
+				parentLicence.data.dataType = TVTProgrammeDataType.COLLECTION
+			else
+				print "UNKNOWN LICENCE TYPE GIVEN: "+parentLicenceType+". Fail back to series"
+				parentLicence.licenceType = TVTProgrammeLicenceType.SERIES
+				parentLicence.data.dataType = TVTProgrammeDataType.SERIES
+			endif
 		else
+			'we already created the parental licence before
+
 			'configured at all?
 			if productionConcept.script.GetParentScript().usedInProgrammeGUID
 				'differs to GUID of parent?
@@ -539,6 +558,23 @@ endrem
 		productionConcept.script.GetParentScript().FinishProduction(parentLicence.GetGUID())
 
 		local parentData:TProgrammeData = parentLicence.GetData()
+
+
+		local countries:string[]
+		local releaseTime:Long = -1
+		For local subLicence:TProgrammeLicence = eachin parentLicence.subLicences
+			local c:string = subLicence.GetData().country
+			if not StringHelper.InArray(c, countries) then countries :+ [c]
+
+			if releaseTime = -1
+				releaseTime = subLicence.GetData().releaseTime
+			else
+				releaseTime = Min(releaseTime, subLicence.GetData().releaseTime)
+			endif
+		Next
+		if countries.length = 0 then countries :+ ["UNK"]
+		parentData.country = " / ".Join(countries)
+		parentData.releaseTime = releaseTime
 
 		'=== CAST ===
 		'only list "visible" persons: HOST, ACTOR, SUPPORTINGACTOR, GUEST, REPORTER

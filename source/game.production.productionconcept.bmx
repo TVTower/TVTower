@@ -198,7 +198,7 @@ Type TProductionConcept Extends TOwnedGameObject
 
 
 	Method hasFlag:Int(flag:Int)
-		Return flags & flag
+		Return (flags & flag) <> 0
 	End Method
 
 
@@ -725,16 +725,16 @@ Type TProductionConcept Extends TOwnedGameObject
 
 
 	Method IsDepositPaid:int()
-		return hasFlag(TVTProductionConceptFlag.DEPOSIT_PAID)
+		return hasFlag(TVTProductionConceptFlag.DEPOSIT_PAID)<>0
 	End Method
 
 	Method IsBalancePaid:int()
-		return hasFlag(TVTProductionConceptFlag.BALANCE_PAID)
+		return hasFlag(TVTProductionConceptFlag.BALANCE_PAID)<>0
 	End Method
 
 
 	Method IsProduced:int()
-		return hasFlag(TVTProductionConceptFlag.PRODUCED)
+		return hasFlag(TVTProductionConceptFlag.PRODUCED)<>0
 	End Method
 
 

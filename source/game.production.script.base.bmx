@@ -1,6 +1,7 @@
 SuperStrict
 Import "Dig/base.util.localization.bmx"
 Import "Dig/base.util.string.bmx"
+Import "Dig/base.util.logger.bmx"
 Import "game.gameobject.bmx"
 Import "game.gameconstants.bmx" 'to access type-constants
 
@@ -154,6 +155,11 @@ Type TScriptBase Extends TNamedGameObject
 
 
 	Method FinishProduction(programmeLicenceGUID:string)
+		if not programmeLicenceGUID
+			TLogger.Log("FinishProduction", "Cannot set production of script finished, programmeLicenceGUID is empty.", LOG_ERROR)
+			return
+		endif
+		
 		'series header? - check if children were produced +1 than the
 		'header
 		'So if series is produced 2 times and there are some episodes
