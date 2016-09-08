@@ -456,7 +456,7 @@ endrem
 		endif
 
 		'=== GENRE AREA ===
-		skin.RenderContent(contentX, contentY, contentW, subTitleH, "1")
+		skin.RenderContent(contentX, contentY, contentW, genreH, "1")
 			local productionTypeText:string = productionConcept.script.GetProductionTypeString()
 			local genreText:string = productionConcept.script.GetMainGenreString()
 			local text:string = productionTypeText
