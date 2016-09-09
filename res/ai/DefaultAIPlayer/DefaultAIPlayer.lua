@@ -296,7 +296,7 @@ function BusinessStats:OnDayBegins()
 end
 
 function BusinessStats:ReadStats()
-	local currentAudience = MY.GetProgrammePlan().GetAudience()
+	local currentAudience = TVT.GetCurrentAudience()
 	if (currentAudience == 0) then
 		return;
 	end
@@ -463,26 +463,55 @@ function OnMinute(number)
 	--param "number" is passed as string
 	number = tonumber(number)
 
-	if number == 6 then 
+	-- on xx:06 check if there is an unsatisfiable ad planned for this
+	-- hour
+	if number == 6 then
 		local task = getAIPlayer().TaskList[_G["TASK_SCHEDULE"]]
 		if task then
 			local broadcast = TVT.GetCurrentAdvertisement()
 			if broadcast ~= nil then
 				-- only for ads
 				if broadcast.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) then
-					local audience = MY.GetProgrammePlan().GetAudience()
+					local audience = TVT.GetCurrentAudience()
 					if audience < TVT.GetCurrentAdvertisementMinAudience() then
-						debugMsg("ProgrammeBegin: FixAdvertisement " .. WorldTime.GetDayHour() .. ":55 !!!   minAudience=" .. TVT.GetCurrentAdvertisementMinAudience() .. " < " .. audience)
-						task:FixAdvertisement(WorldTime.GetDay(), WorldTime.GetDayHour())
+						-- we can only fix if we have licences for trailers
+						-- or adcontracts for ad spots
+						if (TVT.GetAdContractCount() > 0) or (TVT.GetProgrammeLicenceCount() > 0)  then 
+							debugMsg("ProgrammeBegin: FixAdvertisement " .. WorldTime.GetDayHour() .. ":55  (minAudience=" .. TVT.GetCurrentAdvertisementMinAudience() .. " > " .. audience .. ")")
+							task:FixAdvertisement(WorldTime.GetDay(), WorldTime.GetDayHour())
+						else
+							debugMsg("ProgrammeBegin: FixAdvertisement " .. WorldTime.GetDayHour() .. ":55 not possible (no contracts/licences)")
+						end
 					end
+				end
+			-- outage? want to get this fixed too
+			else
+				-- we can only fix if we have licences for programmes
+				-- or adcontracts for infomercials
+				if (TVT.GetAdContractCount() > 0) or (TVT.GetProgrammeLicenceCount() > 0)  then 
+					debugMsg("ProgrammeBegin: FixImminentOutage " .. WorldTime.GetDayHour() .. ":55  (avoid broadcast outage)")
+					task:FixImminentOutage(WorldTime.GetDay(), WorldTime.GetDayHour())
+				else
+					debugMsg("ProgrammeBegin: FixImminentOutage " .. WorldTime.GetDayHour() .. ":55 not possible (no contracts/licences)")
 				end
 			end
 		end
 	end
---	debugMsg("OnMinute " .. number)
---	if (aiIsActive) then
---		getAIPlayer():Tick()
---	end
+
+	-- check next hour if there is an imminent outage 
+	if (number == 6) then
+		local task = getAIPlayer().TaskList[_G["TASK_SCHEDULE"]]
+		local fixedDay, fixedHour = FixDayAndHour(WorldTime.GetDay(), WorldTime.GetDayHour() + 1)
+
+		local programme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
+		if (programme == nil) then
+			--make sure we have enough programme to fix it
+			
+			debugMsg("ProgrammeBegin: FixAdvertisement " .. WorldTime.GetDayHour() .. ":55  (avoid broadcast outage)")
+			task:FixImminentOutage(fixedDay, fixedHour)
+		end
+	end
+
 
 	--Zum Test
 	if (number == 6) then
@@ -492,7 +521,7 @@ function OnMinute(number)
 		local programme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
 		local guessedAudience = task:GuessedAudienceForHourAndLevel(fixedDay, fixedHour, programme, true)
 
-		local audience = MY.GetProgrammePlan().GetAudience()
+		local audience = TVT.GetCurrentAudience()
 
 		-- RON: changed as "programme" is NIL if not existing/placed
 		local averageMovieQualityByLevel = 0
@@ -509,9 +538,13 @@ function OnMinute(number)
 		--local averageMovieQualityByLevel = task:GetAverageMovieQualityByLevel(level)
 		local guessedAudience2 = averageMovieQualityByLevel * globalPercentageByHour * MY.GetMaxAudience()
 
+		local previousFixedDay, previousFixedHour = FixDayAndHour(WorldTime.GetDay(), WorldTime.GetDayHour() - 1)
+		local previousProgramme = MY.GetProgrammePlan().GetProgramme(previousFixedDay, previousFixedHour)
+		local guessedAudience3 = task:GuessedAudienceForHourAndLevel(previousFixedDay, previousFixedHour, previousProgramme)
+
 		local title = "OUTAGE / NO PROG"
 		if (programme ~= nil) then title = programme.GetTitle(); end
-		debugMsg("LUA-Audience (" .. title .. ") :  audience: guessed=" .. math.round(guessedAudience2) .. " real=" .. audience .. "   avgMovieQualityByLevel=" .. averageMovieQualityByLevel .. "  globalPercentageByHour=" .. math.round(globalPercentageByHour*100) .. "%")
+		debugMsg("LUA-Audience (" .. title .. ") :  audience: guessedAvg=" .. math.round(guessedAudience2) .. "  guessedPlan=" .. math.round(guessedAudience3) .."  real=" .. audience .. "  avgMovieQualityByLevel=" .. averageMovieQualityByLevel .. "  globalPercentageByHour=" .. math.round(globalPercentageByHour*100) .. "%")
 	end
 end
 

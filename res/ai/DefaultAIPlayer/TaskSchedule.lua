@@ -350,6 +350,12 @@ function TaskSchedule:FixAdvertisement(day, hour)
 	self.SituationPriority = 80
 end
 
+function TaskSchedule:FixImminentOutage(day, hour)
+	debugMsg("FixOutage: " .. day .."/".. hour)
+	--increase importance of schedule task!
+	self.SituationPriority = 60
+end
+
 --function TaskSchedule:GetMovieByLevel
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
