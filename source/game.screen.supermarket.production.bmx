@@ -1650,27 +1650,34 @@ Type TGUICastSlotList Extends TGUISlotList
 
 	'override
 	Method SetItemLimit:Int(limit:Int)
-		slotJob = slotJob[.. limit + 1]
-
+		if not slotJob
+			slotJob = new TProgrammePersonJob[ limit ]
+		else
+			slotJob = slotJob[.. limit]
+		endif
 		return Super.SetItemLimit(limit)
 	End Method
 
 
 	Method SetSlotJob:int(job:TProgrammePersonJob, slotIndex:int)
-		if slotIndex >= slotJob.length then return False
+		if slotIndex < 0 or slotIndex >= slotJob.length then return False
+
+		if not slotJob then slotJob = new TProgrammePersonJob[0]
 		slotJob[slotIndex] = job
 	End Method
 
 
 	Method GetSlotJob:TProgrammePersonJob(slotIndex:int)
-		if slotIndex >= slotJob.length then return null
+		if not slotJob or slotIndex < 0 or slotIndex >= slotJob.length then return null
 		return slotJob[slotIndex]
 	End Method
 
 
 	Method GetSlotJobID:int(slotIndex:int)
-		if slotIndex >= slotJob.length then return 0
-		if slotJob[slotIndex] then return slotJob[slotIndex].job
+		local j:TProgrammePersonJob = GetSlotJob(slotIndex)
+
+		if j then return j.job
+
 		return 0
 	End Method
 
@@ -1705,8 +1712,10 @@ Type TGUICastSlotList Extends TGUISlotList
 
 
 		if person
+			'create gui even without a valid jobID (0).
+
 			'print "SetSlotCast: AddItem " + slotIndex +"  "+person.GetFullName()
-			i = new TGUICastListItem.CreateSimple(person, GetSlotJob(slotIndex).job )
+			i = new TGUICastListItem.CreateSimple(person, GetSlotJobID(slotIndex) )
 			'hide the name of amateurs
 			if not TProgrammePerson(person) then i.isAmateur = True
 			i.SetOption(GUI_OBJECT_DRAGABLE, True)

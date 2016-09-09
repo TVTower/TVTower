@@ -76,6 +76,8 @@ GetWorldTime().SetStartYear(1985)
 'the start year and are therefore able to refresh who has
 'done which programme yet)
 GetProgrammeDataCollection().UpdateAll()
+'create players collections
+new TPlayerProgrammeCollection.Create(1)
 
 
 TLocalization.LoadLanguageFiles(registryLoader.baseURI + "res/lang/lang_*.txt")
@@ -236,7 +238,11 @@ Function Update:Int()
 
 			if KeyManager.IsHit(KEY_P)
 				if TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.IsProduceable()
-					local count:int = GetProductionManager().StartProductionInStudio("test", TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script)
+					local script:TScript = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script
+					'produce the series, not the episode
+					if script.IsEpisode() then script = script.GetParentScript()
+
+					local count:int = GetProductionManager().StartProductionInStudio("test", script)
 					print "added "+count+" productions to shoot"
 				else
 					print TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.GetTitle()+"  not ready"
@@ -275,15 +281,24 @@ Function Update:Int()
 			Next
 
 			'pay for it
+			'-> does only work with enough money 
+			'-> reset finance for a player
+			GetPlayerFinance(1, -1).money = 10000000
 			TScreenHandler_SupermarketProduction.GetInstance().PayCurrentProductionConceptDeposit()
-			
+
 			if TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.IsProduceable()
-				local count:int = GetProductionManager().StartProductionInStudio("test", TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script)
+				local script:TScript = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script
+				'produce the series, not the episode
+				if script.IsEpisode() then script = script.GetParentScript()
+
+
+				local count:int = GetProductionManager().StartProductionInStudio("test", script)
 
 				local production:TProduction = GetProductionManager().GetProductionInStudio("test")
 				if production
 					'1 minute production time
 					production.endDate = production.startDate + 60*1
+					print "end: "+ GetWorldTime().GetFormattedDate(production.endDate)
 				endif
 
 				print "added "+count+" productions to shoot"
@@ -360,10 +375,11 @@ Function Render:int()
 	endif
 
 
-	DrawText("Tasten:", 50,525)
-	DrawText("1-5: Zufallsbesetzung #1-5   Num1-7: Focus #1-7   Num8/9: FocusPoints +/-", 50,540)
-	DrawText("Q/W/E: Produktionsfirma #1-3   R: Zufallsproduktionsfirma", 50,555)
-	DrawText("Leertaste: Neue Zufallsproduktion", 50,570)
+	DrawText("Tasten:", 20,505)
+	DrawText("1-5: Zufallsbesetzung #1-5   Num1-7: Focus #1-7   Num8/9: FocusPoints +/-", 20,520)
+	DrawText("Q/W/E: Produktionsfirma #1-3   R: Zufallsproduktionsfirma", 20,535)
+	DrawText("Leertaste: Neue Zufallsproduktion", 20,550)
+	DrawText("o: Drehe Zufallsprogramm (+lShift für Zufallsepisode)", 20,565)
 
 
 
