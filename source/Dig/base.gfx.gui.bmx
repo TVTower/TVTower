@@ -72,7 +72,7 @@ Type TGUIManager
 	Field UpdateState_mouseButtonDown:Int[]
 	Field UpdateState_mouseButtonHit:Int[]
 	Field UpdateState_mouseScrollwheelMovement:Int = 0
-	Field UpdateState_foundHitObject:TGUIObject[] = new TGUIObject[3] '[null,null,null]
+	Field UpdateState_foundHitObject:TGUIObject[]
 	Field UpdateState_foundHoverObject:TGUIObject = null
 	Field UpdateState_foundFocusObject:TGUIObject = null
 
@@ -109,6 +109,11 @@ Type TGUIManager
 
 		'gui specific settings
 		config.AddNumber("panelGap",10)
+
+
+		UpdateState_mouseButtonDown = New Int[ MouseManager.GetButtonCount() ]
+		UpdateState_mouseButtonHit = New Int[ MouseManager.GetButtonCount() ]
+		UpdateState_foundHitObject = New TGUIObject[ MouseManager.GetButtonCount() ]
 
 		Return Self
 	End Method

@@ -124,6 +124,10 @@ Type TMouseManager
 	Global processedAppSuspend:int = False
 
 
+	Method GetButtonCount:int()
+		return _keyStatus.length
+	End Method
+
 
 	'reset the state of the given button
 	Method ResetKey:Int(key:Int)
