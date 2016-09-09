@@ -110,7 +110,7 @@ function TaskSchedule:GetMovieOrInfomercialForBlock(day, hour)
 	local choosenLicence = nil
 	
 	licenceList = self.EmergencyScheduleJob:GetFilteredProgrammeLicenceList(level, level, 0, fixedDay, fixedHour)		
-	--Bedarf erhöhen
+	--TODO: raise interest in this level if not enough licences are available
 
 	--use worse programmes if you cannot choose from a big pool
 	if TVT.of_getProgrammeLicenceCount() < 6 then
@@ -318,7 +318,7 @@ function TaskSchedule:AddSpotRequisition(guessedAudience, level, day, hour)
 	slotReq.Level = level
 
 	-- increase priority if guessedAudience/level is requested again
---	debugMsg("Erhöhe Bedarf an Spots des Levels " .. level .. " (Audience: " .. guessedAudience .. ") für Sendeplatz " .. day .. "/" .. hour .. ":55")
+	debugMsg("Raise demand on spots of level " .. level .. " (Audience: " .. math.ceil(guessedAudience) .. "). " .. day .. "/" .. hour .. ":55")
 	for k,v in pairs(self.SpotRequisition) do
 		if (v.Level == level and math.floor(v.GuessedAudience/2500) <= math.floor(guessedAudience/2500)) then
 --		if (v.Level == level) then
@@ -564,7 +564,7 @@ function JobEmergencySchedule:SetContractOrTrailerToEmptyBlock(choosenSpot, day,
 		local result = TVT.of_setAdvertisementSlot(choosenSpot, fixedDay, fixedHour)
 	else
 		--choose spot without any audience requirements
-		local currentSpotList = self:GetFittingSpotList(0, false, true, 0, fixedDay, fixedHour)
+		local currentSpotList = self:GetFittingSpotList(0, false, false, 0, fixedDay, fixedHour)
 		--remove ads without left spots 
 		local filteredCurrentSpotList = self:FilterSpotList(currentSpotList, fixedDay, fixedHour)
 
