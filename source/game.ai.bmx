@@ -586,6 +586,21 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
+	Method GetProgrammeLicenceCount:Int()
+		Return GetPlayerProgrammeCollection(Self.ME).GetProgrammeLicenceCount()
+	End Method
+
+
+	Method GetAdContractCount:Int()
+		Return GetPlayerProgrammeCollection(Self.ME).GetAdContractCount()
+	End Method
+
+
+	Method GetCurrentAudience:Int()
+		Return GetPlayerProgrammePlan(Self.ME).GetAudience()
+	End Method
+
+
 	'=== OFFICE ===
 	'players bureau
 
@@ -784,7 +799,7 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	Method of_getProgrammeLicenceCount:Int()
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 
-		Return GetPlayerProgrammeCollection(Self.ME).GetProgrammeLicenceCount()
+		Return getProgrammeLicenceCount()
 	End Method
 
 
