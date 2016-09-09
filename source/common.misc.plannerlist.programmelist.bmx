@@ -695,7 +695,7 @@ Type TgfxProgrammelist Extends TPlannerList
 	Method DrawSubTapes:Int(parentLicence:TProgrammeLicence)
 		If Not parentLicence Then Return False
 
-		SetSubEntriesPages( int(ceil(parentLicence.GetSubLicenceCount() / Float(MAX_LICENCES_PER_PAGE))) )
+		SetSubEntriesPages( int(ceil(parentLicence.GetSubLicenceSlots() / Float(MAX_LICENCES_PER_PAGE))) )
 
 		Local hoveredLicence:TProgrammeLicence = Null
 		Local currSprite:TSprite
@@ -710,7 +710,7 @@ Type TgfxProgrammelist Extends TPlannerList
 		'(to have consistent button coordinates we show empty slots on
 		' subsequent pages)
 		if subEntriesPage = 1
-			endIndex = Min(parentLicence.GetSubLicenceCount()-1, endIndex)
+			endIndex = Min(parentLicence.GetSubLicenceSlots()-1, endIndex)
 		endif
 
 		For Local i:Int = startIndex to endIndex				
@@ -756,7 +756,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				Else
 					GetSpriteFromRegistry("gfx_programmetape_series."+tapeDrawType).draw(currX + 8, currY+1)
 				EndIf
-				font.drawBlock("(" + (i+1) + "/" + parentLicence.GetSubLicenceCount() + ") " + licence.GetTitle(), currX + 22, currY + 3, 150,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
+				font.drawBlock("(" + (i+1) + "/" + parentLicence.GetEpisodeCount() + ") " + licence.GetTitle(), currX + 22, currY + 3, 150,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
 			EndIf
 
 
@@ -854,7 +854,7 @@ Type TgfxProgrammelist Extends TPlannerList
 			return False
 		endif
 
-		SetSubEntriesPages( int(ceil(parentLicence.GetSubLicenceCount() / Float(MAX_LICENCES_PER_PAGE))) )
+		SetSubEntriesPages( int(ceil(parentLicence.GetSubLicenceSlots() / Float(MAX_LICENCES_PER_PAGE))) )
 
 
 		'handle page buttons (before other click handling here)
@@ -897,7 +897,7 @@ Type TgfxProgrammelist Extends TPlannerList
 		Local currY:Int = GetSubEntriesRect().GetY() '+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 
 		local startIndex:int = (subEntriesPage-1)*MAX_LICENCES_PER_PAGE
-		local endIndex:int = Min(parentLicence.GetSubLicenceCount()-1, subEntriesPage*MAX_LICENCES_PER_PAGE -1)
+		local endIndex:int = Min(parentLicence.GetSubLicenceSlots()-1, subEntriesPage*MAX_LICENCES_PER_PAGE -1)
 		For Local i:Int = startIndex to endIndex				
 			Local licence:TProgrammeLicence = parentLicence.GetSubLicenceAtIndex(i)
 
