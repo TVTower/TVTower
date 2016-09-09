@@ -1026,7 +1026,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'If removeCurrentRunning is true, also the current block can be affected
 	Method RemoveProgrammeInstancesByLicence:Int(licence:TProgrammeLicence, removeCurrentRunning:Int=False)
 		'Maybe we got a collection/series - so revoke all sublicences
-		If licence.GetSubLicenceCount() > 0
+		If licence.GetSubLicenceSlots() > 0
 			For Local subLicence:TProgrammeLicence = EachIn licence.subLicences
 				RemoveProgrammeInstancesByLicence(subLicence, removeCurrentRunning)
 			Next

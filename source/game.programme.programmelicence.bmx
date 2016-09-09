@@ -456,8 +456,33 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 
 
-	Method GetSubLicenceCount:int() {_exposeToLua}
+	'returns how many slots for sublicences are reserved yet
+	'ex.: [null, null, licence] returns 3
+	Method GetSubLicenceSlots:int() {_exposeToLua}
+		if not subLicences then return 0
+
 		return subLicences.length
+	End Method
+
+
+	'returns how many sub licences EXIST
+	Method GetSubLicenceCount:int() {_exposeToLua}
+		if not subLicences then return 0
+
+		local result:int = 0
+		For local i:int = 0 until subLicences.length
+			if subLicences[i] then result :+ 1
+		Next
+		return result
+	End Method
+
+
+	Method GetSubLicences:TProgrammeLicence[]() {_exposeToLua}
+		local result:TProgrammeLicence[]
+		For local i:int = 0 until subLicences.length
+			if subLicences[i] then result :+ [subLicences[i]]
+		Next
+		return result
 	End Method
 
 
@@ -479,9 +504,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 			licence.data.parentGUID = self.data.GetGUID()
 		endif
 
-
-		'add to array of sublicences
-		if index = -1 or subLicences.length = 0
+		if index = -1
 			subLicences :+ [licence]
 		'set at the given index and move the existing ones +1
 		'exception: if slot is unused (pre-reserved already)
@@ -497,7 +520,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 				endif
 			endif
 		endif
-		
+				
 		Return TRUE
 	End Method
 
@@ -733,11 +756,10 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 
 	Method GetSubLicencePosition:int(licence:TProgrammeLicence) {_exposeToLua}
-		'find my position and add 1
-		For local i:int = 0 to GetSubLicenceCount() - 1
+		For local i:int = 0 until GetSubLicenceSlots()
 			if GetSubLicenceAtIndex(i) = licence then return i
 		Next
-		return 0
+		return -1
 	End Method
 
 
@@ -760,6 +782,17 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		if episodeNumber > 0 then return episodeNumber
 
 		return GetParentLicence().GetSubLicencePosition(self)+1
+	End Method
+
+
+	Method GetEpisodeCount:int() {_exposeToLua}
+		if not parentLicenceGUID then return 1
+		'returns the _current_ amount of licences, so if you did not
+		'finish a custom production yet, the number represents the current
+		'state, not the final one!
+		return GetParentLicence().GetSubLicenceCount()
+		'to return the amount of currently "planned" episodes use:
+		'return GetParentLicence().GetSubLicenceSlots()
 	End Method
 
 
@@ -1125,7 +1158,6 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		For local sub:TProgrammeLicence = EachIn subLicences
 			sum :+ sub.GetTimesBroadcasted(owner)
 		Next
-		if GetSubLicenceCount() = 0 then return 0
 
 		'round upwards, the first broadcast already return "1"
 		return int(ceil(float(sum) / GetSubLicenceCount()))
@@ -1313,12 +1345,12 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		'=== SUBTITLE AREA ===
 		if isSeries()
 			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")
-			skin.fontNormal.drawBlock(GetLocale("SERIES_WITH_X_EPISODES").Replace("%EPISODESCOUNT%", GetSubLicenceCount()), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontNormal.drawBlock(GetLocale("SERIES_WITH_X_EPISODES").Replace("%EPISODESCOUNT%", GetEpisodeCount()), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			contentY :+ subtitleH
 		elseif isEpisode()
 			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")
 			'episode num/max + episode title
-			skin.fontNormal.drawBlock(GetEpisodeNumber() + "/" + GetParentLicence().GetSubLicenceCount() + ": " + data.GetTitle(), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontNormal.drawBlock(GetEpisodeNumber() + "/" + GetParentLicence().GetEpisodeCount() + ": " + data.GetTitle(), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			contentY :+ subtitleH
 		endif
 		

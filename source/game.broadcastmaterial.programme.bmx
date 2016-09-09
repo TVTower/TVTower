@@ -554,14 +554,12 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	Method GetEpisodeNumber:int() {_exposeToLua}
-		if not licence.parentLicenceGUID then return 1
-		return licence.GetParentLicence().GetSubLicencePosition(licence)
+		return licence.GetEpisodeNumber()
 	End Method
 
 
 	Method GetEpisodeCount:int() {_exposeToLua}
-		if not licence.parentLicenceGUID then return 1
-		return licence.GetParentLicence().GetSubLicenceCount()
+		return licence.GetEpisodeCount()
 	End Method
 
 

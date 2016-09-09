@@ -442,19 +442,24 @@ Type TProduction Extends TOwnedGameObject
 
 		'set owner of licence (and sublicences)
 		if owner
+
 			addLicence.SetOwner(owner)
 		endif
 
-rem
-print "produziert: " + programmeLicence.GetTitle() + "  (Preis: "+programmeLicence.GetPrice()+")"
+'rem
+print "produziert: " + programmeLicence.GetTitle() + "  (Preis: "+programmeLicence.GetPrice(1)+")"
 if programmeLicence.IsEpisode()
 	print "Serie besteht nun aus den Folgen:"
-	For local epIndex:int = 0 until addLicence.GetSubLicenceCount()
-		print "subLicences["+epIndex+"] = " + addLicence.subLicences[epIndex].episodeNumber+" | " + addLicence.subLicences[epIndex].GetTitle()
+	For local epIndex:int = 0 until addLicence.subLicences.length
+		if addLicence.subLicences[epIndex]
+			print "subLicences["+epIndex+"] = " + addLicence.subLicences[epIndex].episodeNumber+" | " + addLicence.subLicences[epIndex].GetTitle()
+		else
+			print "subLicences["+epIndex+"] = /"
+		endif
 	Next
 endif
-endrem
-	
+'endrem
+
 		'=== 3. INFORM / REMOVE SCRIPT ===
 		'inform production company
 		productionConcept.productionCompany.FinishProduction(programmeData.GetGUID())
@@ -467,7 +472,11 @@ endrem
 			'if the script does not allow further productions, it is finished
 			'and should be removed from the player
 			if productionConcept.script.GetParentScript().IsProduced()
-				GetPlayerProgrammeCollection(owner).RemoveScript(productionConcept.script.GetParentScript(), False)
+print "Production komplettiert, alles abgedreht."
+				local parentScript:TScript = productionConcept.script.GetParentScript()
+				local ppc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(owner)
+				if ppc then ppc.RemoveScript(parentscript, False)
+				if not ppc then print "collection fehlt"
 			else
 				'remove finished concepts
 			endif
@@ -518,6 +527,8 @@ endrem
 			parentLicence.GetData().distributionChannel = TVTProgrammeDistributionChannel.TV
 			parentLicence.GetData().setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, False)
 			parentLicence.GetData().producedByPlayerID = programmeLicence.GetData().producedByPlayerID
+'RONNY
+print "parentLicence.GetData().producedByPlayerID:" + parentLicence.GetData().producedByPlayerID
 			parentLicence.GetData().SetFlag(TVTProgrammeDataFlag.CUSTOMPRODUCTION, True)
 
 			'fill with basic data (title, description, ...)
@@ -602,15 +613,16 @@ endrem
 		parentData.review = 0
 		parentData.speed = 0
 		parentData.outcome = 0
-		if parentLicence.GetSubLicenceCount() > 0
+		local subLicenceCount:int = parentLicence.GetSubLicenceCount()
+		if subLicenceCount > 0
 			For local subLicence:TProgrammeLicence = eachin parentLicence.subLicences
 				parentData.review :+ subLicence.GetData().review
 				parentData.speed :+ subLicence.GetData().speed
 				parentData.outcome :+ subLicence.GetData().outcome
 			Next
-			parentData.review :/ parentLicence.GetSubLicenceCount()
-			parentData.speed :/ parentLicence.GetSubLicenceCount()
-			parentData.outcome :/ parentLicence.GetSubLicenceCount()
+			parentData.review :/ subLicenceCount
+			parentData.speed :/ subLicenceCount
+			parentData.outcome :/ subLicenceCount
 		endif
 	End Method
 
