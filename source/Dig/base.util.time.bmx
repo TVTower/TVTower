@@ -94,6 +94,9 @@ Type Time
 	
 	
 
+	'%H ... 24 Hour | %I ... 12 Hour
+	'%M ... Minutes
+	'%S ... Seconds
 	Function GetSystemTime:String(format:String="%d %B %Y")
 		Local time:Byte[256]
 		Local buff:Byte[256]

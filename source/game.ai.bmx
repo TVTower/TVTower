@@ -56,6 +56,13 @@ Type TAi extends TAiBase
 	End Method
 
 
+	'override
+	Method AddLog(title:string, text:string, logLevel:int)
+		Super.AddLog(title, text, logLevel)
+		AiLog[Self.playerID-1].AddLog(text, True)
+	End Method
+
+
 	'only calls the AI "onTick" if the calculated interval passed
 	'in our case this is:
 	'- more than 1 RealTime second passed since last tick
@@ -74,10 +81,13 @@ Type TAi extends TAiBase
 			'store time of this tick
 			LastTickTime = Time.GetTimeGone()
 
+			Ticks :+ 1
+
 			if not AiRunning then return
 
-			Local args:Object[1]
+			Local args:Object[2]
 			args[0] = String(LastTickTime)
+			args[1] = String(Ticks)
 
 			CallLuaFunction("OnTick", args)
 		endif
@@ -526,8 +536,11 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 
 
 	Method addToLog:int(text:string)
+		text = StringHelper.RemoveUmlauts(text)
+		'text = StringHelper.UTF8toISO8859(text)
+
 		'print "AILog "+Self.ME+": "+text
-		return AiLog[Self.ME-1].AddLog(text)
+		return AiLog[Self.ME-1].AddLog(text, True)
 	End Method
 
 

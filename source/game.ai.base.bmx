@@ -12,6 +12,7 @@ Type TAiBase
 	Field scriptSaveState:string
 	'time in milliseconds of the last "onTick"-call
 	Field LastTickTime:Long
+	Field Ticks:Long
 
 	Global AiRunning:Int = true
 
@@ -64,12 +65,16 @@ Type TAiBase
 
 		'if there is content set, print it
 		If LuaEngine.GetSource() <> ""
-			TLogger.log("KI.LoadScript", "ReLoaded LUA AI for player "+playerID+". Loading Time: " + loadingStopWatch.GetTime() + "ms", LOG_DEBUG | LOG_LOADING)
+			AddLog("KI.LoadScript", "ReLoaded LUA AI for player "+playerID+". Loading Time: " + loadingStopWatch.GetTime() + "ms", LOG_DEBUG | LOG_LOADING)
 		else
-			TLogger.log("KI.LoadScript", "Loaded LUA AI for player "+playerID+". Loading Time: " + loadingStopWatch.GetTime() + "ms", LOG_DEBUG | LOG_LOADING)
+			AddLog("KI.LoadScript", "Loaded LUA AI for player "+playerID+". Loading Time: " + loadingStopWatch.GetTime() + "ms", LOG_DEBUG | LOG_LOADING)
 		endif
 	End Method
 
+
+	Method AddLog(title:string, text:string, logLevel:int)
+		TLogger.log(title, text, logLevel)
+	End Method
 
 	'loads the current file again
 	Method ReloadScript:int()
