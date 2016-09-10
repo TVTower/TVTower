@@ -333,7 +333,6 @@ Type TGUIChatEntry Extends TGUIListItem
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
 		Local dimension:TVec2D = GetBitmapFontManager().baseFont.drawBlock(GetValue(), getScreenX()+move.x, getScreenY()+move.y, maxWidth-move.X, maxHeight, Null, Null, 2, 0)
-
 		'add padding
 		dimension.addXY(0, paddingBottom)
 
@@ -343,8 +342,9 @@ Type TGUIChatEntry Extends TGUIListItem
 			'resize item
 			Resize(dimension.getX(), dimension.getY())
 			'recalculate item positions and scroll limits
-'			local list:TGUIListBase = TGUIListBase(self.getParent("tguilistbase"))
-'			if list then list.RecalculateElements()
+			'-> without multi-line entries would be not completely visible
+			local list:TGUIListBase = TGUIListBase(self.getParent("tguilistbase"))
+			if list then list.RecalculateElements()
 		EndIf
 
 		Return dimension
