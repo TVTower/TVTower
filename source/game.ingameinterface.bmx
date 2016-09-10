@@ -135,271 +135,263 @@ Type TInGameInterface
 
 	Method Update(deltaTime:Float=1.0)
 		local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan(ShowChannel)
-		'show the channels tooltip on hovering the button
-		For Local i:Int = 1 To 4
-			'already done
-			if ShowChannel = i then continue
 
-			'tooltip to show (regardless of currently shown channel)
-			If THelper.MouseIn( 75 + i * 33, 171 + 383, 33, 41)
-				programmePlan = GetPlayerProgrammePlan(i)
-			EndIf
-		Next
+		if not GetWorldTime().IsPaused()
+			'show the channels tooltip on hovering the button
+			For Local i:Int = 1 To 4
+				'already done
+				if ShowChannel = i then continue
 
-		'channel selection (tvscreen on interface)
-		For Local i:Int = 0 To 4
-			If THelper.MouseIn( 75 + i * 33, 171 + 383 + 16 - i*4, 33, 25)
-				'hover state
-				GetGameBase().cursorstate = 1
-				
-				If MOUSEMANAGER.IsClicked(1)
-					ShowChannel = i
-					BottomImgDirty = True
-					exit
+				'tooltip to show (regardless of currently shown channel)
+				If THelper.MouseIn( 75 + i * 33, 171 + 383, 33, 41)
+					programmePlan = GetPlayerProgrammePlan(i)
 				EndIf
-			EndIf
-		Next
+			Next
 
-
-		'reset current programme sprites
-		CurrentProgrammeOverlay = Null
-		CurrentProgramme = Null
-		
-		if programmePlan	'similar to "ShowChannel<>0"
-			If GetWorldTime().GetDayMinute() >= 55
-				Local obj:TBroadcastMaterial = programmePlan.GetAdvertisement()
-			    If obj
-					CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_ads")
-					'real ad
-					If TAdvertisement(obj)
-						CurrentProgrammeToolTip.TitleBGtype = 1
-						CurrentProgrammeText = getLocale("ADVERTISMENT") + ": " + obj.GetTitle()
-					Else
-						If(TProgramme(obj))
-							CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_" + TProgramme(obj).data.GetGenre(), "gfx_interface_tv_programme_none")
-						EndIf
-						CurrentProgrammeOverlay = GetSpriteFromRegistry("gfx_interface_tv_programme_traileroverlay")
-						CurrentProgrammeToolTip.TitleBGtype = 1
-						CurrentProgrammeText = getLocale("TRAILER") + ": " + obj.GetTitle()
+			'channel selection (tvscreen on interface)
+			For Local i:Int = 0 To 4
+				If THelper.MouseIn( 75 + i * 33, 171 + 383 + 16 - i*4, 33, 25)
+					'hover state
+					GetGameBase().cursorstate = 1
+					
+					If MOUSEMANAGER.IsClicked(1)
+						ShowChannel = i
+						BottomImgDirty = True
+						exit
 					EndIf
-				Else
-					CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_ads_none")
-
-					CurrentProgrammeToolTip.TitleBGtype	= 2
-					CurrentProgrammeText = getLocale("BROADCASTING_OUTAGE")
 				EndIf
-			ElseIf GetWorldTime().GetDayMinute() < 5
-				CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_news")
-				CurrentProgrammeToolTip.TitleBGtype	= 3
-				CurrentProgrammeText = getLocale("NEWS")
-			Else
-				Local obj:TBroadcastMaterial = programmePlan.GetProgramme()
-				If obj
-					CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
-					CurrentProgrammeToolTip.TitleBGtype	= 0
-					'real programme
-					If TProgramme(obj)
-						Local programme:TProgramme = TProgramme(obj)
-						CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_genre_" + TVTProgrammeGenre.GetAsString(programme.data.GetGenre()), "gfx_interface_tv_programme_none")
-						If programme.isSeries() and programme.licence.parentLicenceGUID
-							CurrentProgrammeText = programme.licence.GetParentLicence().GetTitle() + " ("+ (programme.GetEpisodeNumber()+1) + "/" + programme.GetEpisodeCount()+"): " + programme.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
-						Else
-							CurrentProgrammeText = programme.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
-						EndIf
-					ElseIf TAdvertisement(obj)
+			Next
+
+
+			'reset current programme sprites
+			CurrentProgrammeOverlay = Null
+			CurrentProgramme = Null
+			
+			if programmePlan	'similar to "ShowChannel<>0"
+				If GetWorldTime().GetDayMinute() >= 55
+					Local obj:TBroadcastMaterial = programmePlan.GetAdvertisement()
+					If obj
 						CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_ads")
-						CurrentProgrammeOverlay = GetSpriteFromRegistry("gfx_interface_tv_programme_infomercialoverlay")
-						CurrentProgrammeText = GetLocale("PROGRAMME_PRODUCT_INFOMERCIAL")+": "+obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
-					ElseIf TNews(obj)
-						CurrentProgrammeText = GetLocale("SPECIAL_NEWS_BROADCAST")+": "+obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
-					EndIf
-				Else
-					CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
-					CurrentProgrammeToolTip.TitleBGtype	= 2
-					CurrentProgrammeText = getLocale("BROADCASTING_OUTAGE")
-				EndIf
-			EndIf
-		Else
-			CurrentProgrammeToolTip.TitleBGtype = 3
-			CurrentProgrammeText = getLocale("TV_OFF")
-		EndIf 'no programmePlan found -> invalid player / tv off
-
-		For local tip:TTooltip = eachin tooltips
-			If tip.enabled Then tip.Update()
-		Next
-		tooltips.Sort() 'sort according lifetime
-
-
-		'skip adjusting the noise if the tv is off
-		If programmePlan
-			'noise on interface-tvscreen
-			ChangeNoiseTimer :+ deltaTime
-			If ChangeNoiseTimer >= 0.20
-				noiseDisplace.position.SetXY(Rand(0, int(noiseDisplace.dimension.GetX())),Rand(0, int(noiseDisplace.dimension.GetY())))
-				ChangeNoiseTimer = 0.0
-				NoiseAlpha = 0.45 - (Rand(0,20)*0.01)
-			EndIf
-		EndIf
-
-
-		If THelper.MouseIn(20,382,280,200)
-			CurrentProgrammeToolTip.SetTitle(CurrentProgrammeText)
-			local content:String = ""
-			If programmePlan
-				content	= GetLocale("AUDIENCE_NUMBER")+": "+programmePlan.getFormattedAudience()+ " ("+MathHelper.NumberToString(programmePlan.GetAudiencePercentage()*100,2)+"%)"
-
-				'Newsshow details
-				If GetWorldTime().GetDayMinute()<5
-					local newsCount:int = 0
-					Local show:TNewsShow = TNewsShow(programmePlan.GetNewsShow())
-
-					if show and show.news then newsCount = show.news.length
-
-					If newsCount > 0
-						content :+ "~n"
-						For local i:int = 0 until newsCount
-							if show.news[i]
-								content :+ "~n"+(i+1)+"/"+newsCount+": " + show.news[i].GetTitle()
-							else
-								content :+ "~n"+(i+1)+"/"+newsCount+": -/-"
-							endif
-						Next
-					endif
-				EndIf
-
-				'show additional information if channel is player's channel
-				If programmePlan.owner = GetPlayerBaseCollection().playerID
-					If GetWorldTime().GetDayMinute() >= 5 And GetWorldTime().GetDayMinute() < 55
-						Local obj:TBroadcastMaterial = programmePlan.GetAdvertisement()
+						'real ad
 						If TAdvertisement(obj)
-							'outage before?
-							If not programmePlan.GetProgramme()
-								content :+ "~n ~n|b||color=200,100,100|"+getLocale("NEXT_ADBLOCK")+":|/color||/b|~n" + obj.GetTitle()+" ("+ GetLocale("INVALID_BY_BROADCAST_OUTAGE") +")"
-							Else
-								local minAudienceText:string = TFunctions.convertValue(TAdvertisement(obj).contract.getMinAudience())
-								if TAdvertisement(obj).contract.GetLimitedToTargetGroup() > 0
-									minAudienceText :+" " + TAdvertisement(obj).contract.GetLimitedToTargetGroupString()
-								endif
-								
-								'check if the ad passes all checks for the current broadcast
-								local passingRequirements:String = TAdvertisement(obj).IsPassingRequirements(GetBroadcastManager().GetAudienceResult(programmePlan.owner))
-								if passingRequirements = "OK"
-									minAudienceText = "|color=100,200,100|" + minAudienceText + "|/color|"
-								else
-									Select passingRequirements
-										case "TARGETGROUP"
-											minAudienceText = "|color=200,100,100|" + minAudienceText + " " + TAdvertisement(obj).contract.GetLimitedToTargetGroupString()+ "!|/color|"
-										case "GENRE"
-											minAudienceText = "|color=200,100,100|" + minAudienceText + " " + TAdvertisement(obj).contract.GetLimitedToGenreString()+ "!|/color|"
-										default
-											minAudienceText = "|color=200,100,100|" + minAudienceText + "|/color|"
-									End Select
-								endif
-								
-								content :+ "~n ~n|b||color=100,150,100|"+getLocale("NEXT_ADBLOCK")+":|/color||/b|~n" + "|b|"+obj.GetTitle()+"|/b|~n" + GetLocale("MIN_AUDIENCE") +": "+ minAudienceText
-							EndIf
-						ElseIf TProgramme(obj)
-							content :+ "~n ~n|b|"+getLocale("NEXT_ADBLOCK")+":|/b|~n"+ GetLocale("TRAILER")+": " + obj.GetTitle()
+							CurrentProgrammeToolTip.TitleBGtype = 1
+							CurrentProgrammeText = getLocale("ADVERTISMENT") + ": " + obj.GetTitle()
 						Else
-							content :+ "~n ~n|b||color=200,100,100|"+getLocale("NEXT_ADBLOCK")+":|/color||/b|~n"+ GetLocale("NEXT_NOTHINGSET")
+							If(TProgramme(obj))
+								CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_" + TProgramme(obj).data.GetGenre(), "gfx_interface_tv_programme_none")
+							EndIf
+							CurrentProgrammeOverlay = GetSpriteFromRegistry("gfx_interface_tv_programme_traileroverlay")
+							CurrentProgrammeToolTip.TitleBGtype = 1
+							CurrentProgrammeText = getLocale("TRAILER") + ": " + obj.GetTitle()
 						EndIf
+					Else
+						CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_ads_none")
 
-					ElseIf GetWorldTime().GetDayMinute()>=55 Or GetWorldTime().GetDayMinute()<5
-						'upcoming programme hint
-						Local obj:TBroadcastMaterial
-						Local upcomingProgDay:int = -1
-						Local upcomingProgHour:int = -1
-						if GetWorldTime().GetDayMinute()>= 55
-							local nextHourTime:Long = GetWorldTime().ModifyTime(-1, 0, 0, 1)
-							upcomingProgDay = GetWorldTime().GetDay(nextHourTime)
-							upcomingProgHour = GetWorldTime().GetDayHour(nextHourTime)
-						endif
-						obj = programmePlan.GetProgramme(upcomingProgDay, upcomingProgHour)
-						
+						CurrentProgrammeToolTip.TitleBGtype	= 2
+						CurrentProgrammeText = getLocale("BROADCASTING_OUTAGE")
+					EndIf
+				ElseIf GetWorldTime().GetDayMinute() < 5
+					CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_news")
+					CurrentProgrammeToolTip.TitleBGtype	= 3
+					CurrentProgrammeText = getLocale("NEWS")
+				Else
+					Local obj:TBroadcastMaterial = programmePlan.GetProgramme()
+					If obj
+						CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
+						CurrentProgrammeToolTip.TitleBGtype	= 0
+						'real programme
 						If TProgramme(obj)
-							content :+ "~n ~n|b|"+getLocale("NEXT_PROGRAMME")+":|/b|~n"
-							If TProgramme(obj) And TProgramme(obj).isSeries() and TProgramme(obj).licence.parentLicenceGUID
-								content :+ TProgramme(obj).licence.GetParentLicence().data.GetTitle() + ": " + obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock(upcomingProgDay, upcomingProgHour) + "/" + obj.GetBlocks() + ")"
+							Local programme:TProgramme = TProgramme(obj)
+							CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_genre_" + TVTProgrammeGenre.GetAsString(programme.data.GetGenre()), "gfx_interface_tv_programme_none")
+							If programme.isSeries() and programme.licence.parentLicenceGUID
+								CurrentProgrammeText = programme.licence.GetParentLicence().GetTitle() + " ("+ (programme.GetEpisodeNumber()+1) + "/" + programme.GetEpisodeCount()+"): " + programme.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
 							Else
-								content :+ obj.GetTitle() + " (" + getLocale("BLOCK")+" " + programmePlan.GetProgrammeBlock(upcomingProgDay, upcomingProgHour) + "/" + obj.GetBlocks() + ")"
+								CurrentProgrammeText = programme.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
 							EndIf
 						ElseIf TAdvertisement(obj)
-							content :+ "~n ~n|b|"+getLocale("NEXT_PROGRAMME")+":|/b|~n"+ GetLocale("PROGRAMME_PRODUCT_INFOMERCIAL")+": " + obj.GetTitle() + " (" + getLocale("BLOCK")+" " + programmePlan.GetProgrammeBlock(upcomingProgDay, upcomingProgHour) + "/" + obj.GetBlocks() + ")"
-						Else
-							content :+ "~n ~n|b||color=200,100,100|"+getLocale("NEXT_PROGRAMME")+":|/color||/b|~n"+ GetLocale("NEXT_NOTHINGSET")
+							CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_ads")
+							CurrentProgrammeOverlay = GetSpriteFromRegistry("gfx_interface_tv_programme_infomercialoverlay")
+							CurrentProgrammeText = GetLocale("PROGRAMME_PRODUCT_INFOMERCIAL")+": "+obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
+						ElseIf TNews(obj)
+							CurrentProgrammeText = GetLocale("SPECIAL_NEWS_BROADCAST")+": "+obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 						EndIf
+					Else
+						CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
+						CurrentProgrammeToolTip.TitleBGtype	= 2
+						CurrentProgrammeText = getLocale("BROADCASTING_OUTAGE")
 					EndIf
 				EndIf
 			Else
-				content = getLocale("TV_TURN_IT_ON")
-			EndIf
+				CurrentProgrammeToolTip.TitleBGtype = 3
+				CurrentProgrammeText = getLocale("TV_OFF")
+			EndIf 'no programmePlan found -> invalid player / tv off
 
-			CurrentProgrammeToolTip.SetContent(content)
-			CurrentProgrammeToolTip.enabled = 1
-			CurrentProgrammeToolTip.Hover()
-	    EndIf
-		If THelper.MouseIn(355,413,130,34)
-			MoneyToolTip.title = getLocale("MONEY")
-			local content:String = ""
-			content	= "|b|"+getLocale("MONEY")+":|/b| "+TFunctions.DottedValue(GetPlayerBase().GetMoney()) + getLocale("CURRENCY")
-			content	:+ "~n"
-			content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ TFunctions.DottedValue(GetPlayerBase().GetCredit()) + getLocale("CURRENCY")+"|/color|"
-			MoneyTooltip.SetContent(content)
-			MoneyToolTip.enabled 	= 1
-			MoneyToolTip.Hover()
-		EndIf
-		If THelper.MouseIn(355,457,130,37)
-			local playerProgrammePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan( GetPlayerBaseCollection().playerID )
-			if playerProgrammePlan
-				CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_NUMBER")+": "+playerProgrammePlan.getFormattedAudience()+ " ("+MathHelper.NumberToString(playerProgrammePlan.GetAudiencePercentage() * 100,2)+"%)")
-				CurrentAudienceToolTip.SetAudienceResult(GetBroadcastManager().GetAudienceResult(playerProgrammePlan.owner))
-				CurrentAudienceToolTip.enabled = 1
-				CurrentAudienceToolTip.Hover()
-				'force redraw
-				CurrentTimeToolTip.dirtyImage = True
-			endif
-		EndIf
-		If THelper.MouseIn(355,508,130,13)
-			BettyToolTip.SetTitle(getLocale("BETTY_FEELINGS"))
-			local bettyLove:Float = GetBetty().GetInLovePercentage( GetPlayerBase().playerID )
-			if bettyLove = 0
-				BettyToolTip.SetContent(getLocale("THERE_IS_NO_LOVE_IN_THE_AIR_YET"))
-			elseif bettyLove < 0.1
-				BettyToolTip.SetContent(getLocale("BETTY_KNOWS_WHO_YOU_ARE"))
-			elseif bettyLove < 0.2
-				BettyToolTip.SetContent(getLocale("BETTY_SEEMS_TO_LIKE_YOU"))
-			elseif bettyLove < 0.4
-				BettyToolTip.SetContent(getLocale("BETTY_SEEMS_TO_LIKE_YOU_A_BIT_MORE"))
-			elseif bettyLove < 0.75
-				BettyToolTip.SetContent(getLocale("BETTY_LOVES_YOU"))
-			else
-				BettyToolTip.SetContent(getLocale("BETTY_REALLY_LOVES_YOU"))
-			endif
-			BettyToolTip.enabled = 1
-			BettyToolTip.Hover()
-		EndIf
-		If THelper.MouseIn(355,535,130,37)
-			CurrentTimeToolTip.SetTitle(getLocale("GAME_TIME")+": " + GetWorldTime().getFormattedTime())
-			local content:string = ""
-			content :+ "|b|"+GetLocale("GAMEDAY")+":|/b| "+(GetWorldTime().GetDaysRun()+1)
-			content :+ "~n"
-			content :+ "|b|"+GetLocale("DAY_OF_YEAR")+":|/b| "+GetWorldTime().getDayOfYear()+"/"+GetWorldTime().GetDaysPerYear()
-			content :+ "~n"
-			content :+ "|b|"+GetLocale("DATE")+":|/b| "+GetWorldTime().GetFormattedDate(-1,"d.m.y")+" ("+GetLocale("SEASON_"+GetWorldTime().GetSeasonName())+")"
-			CurrentTimeToolTip.SetContent(content)
-			CurrentTimeToolTip.enabled = 1
-			CurrentTimeToolTip.Hover()
-		EndIf
-		If THelper.MouseIn(385,577,70,23)
-			MenuToolTip.SetTitle(getLocale("MENU"))
-			MenuToolTip.SetContent(getLocale("OPEN_MENU"))
-			MenuToolTip.enabled = 1
-			MenuToolTip.Hover()
-			If MouseManager.IsClicked(1)
-				openEscapeMenuViaInterface = True
-				MouseManager.ResetKey(1)
+
+			If THelper.MouseIn(20,382,280,200)
+				CurrentProgrammeToolTip.SetTitle(CurrentProgrammeText)
+				local content:String = ""
+				If programmePlan
+					content	= GetLocale("AUDIENCE_NUMBER")+": "+programmePlan.getFormattedAudience()+ " ("+MathHelper.NumberToString(programmePlan.GetAudiencePercentage()*100,2)+"%)"
+
+					'Newsshow details
+					If GetWorldTime().GetDayMinute()<5
+						local newsCount:int = 0
+						Local show:TNewsShow = TNewsShow(programmePlan.GetNewsShow())
+
+						if show and show.news then newsCount = show.news.length
+
+						If newsCount > 0
+							content :+ "~n"
+							For local i:int = 0 until newsCount
+								if show.news[i]
+									content :+ "~n"+(i+1)+"/"+newsCount+": " + show.news[i].GetTitle()
+								else
+									content :+ "~n"+(i+1)+"/"+newsCount+": -/-"
+								endif
+							Next
+						endif
+					EndIf
+
+					'show additional information if channel is player's channel
+					If programmePlan.owner = GetPlayerBaseCollection().playerID
+						If GetWorldTime().GetDayMinute() >= 5 And GetWorldTime().GetDayMinute() < 55
+							Local obj:TBroadcastMaterial = programmePlan.GetAdvertisement()
+							If TAdvertisement(obj)
+								'outage before?
+								If not programmePlan.GetProgramme()
+									content :+ "~n ~n|b||color=200,100,100|"+getLocale("NEXT_ADBLOCK")+":|/color||/b|~n" + obj.GetTitle()+" ("+ GetLocale("INVALID_BY_BROADCAST_OUTAGE") +")"
+								Else
+									local minAudienceText:string = TFunctions.convertValue(TAdvertisement(obj).contract.getMinAudience())
+									if TAdvertisement(obj).contract.GetLimitedToTargetGroup() > 0
+										minAudienceText :+" " + TAdvertisement(obj).contract.GetLimitedToTargetGroupString()
+									endif
+									
+									'check if the ad passes all checks for the current broadcast
+									local passingRequirements:String = TAdvertisement(obj).IsPassingRequirements(GetBroadcastManager().GetAudienceResult(programmePlan.owner))
+									if passingRequirements = "OK"
+										minAudienceText = "|color=100,200,100|" + minAudienceText + "|/color|"
+									else
+										Select passingRequirements
+											case "TARGETGROUP"
+												minAudienceText = "|color=200,100,100|" + minAudienceText + " " + TAdvertisement(obj).contract.GetLimitedToTargetGroupString()+ "!|/color|"
+											case "GENRE"
+												minAudienceText = "|color=200,100,100|" + minAudienceText + " " + TAdvertisement(obj).contract.GetLimitedToGenreString()+ "!|/color|"
+											default
+												minAudienceText = "|color=200,100,100|" + minAudienceText + "|/color|"
+										End Select
+									endif
+									
+									content :+ "~n ~n|b||color=100,150,100|"+getLocale("NEXT_ADBLOCK")+":|/color||/b|~n" + "|b|"+obj.GetTitle()+"|/b|~n" + GetLocale("MIN_AUDIENCE") +": "+ minAudienceText
+								EndIf
+							ElseIf TProgramme(obj)
+								content :+ "~n ~n|b|"+getLocale("NEXT_ADBLOCK")+":|/b|~n"+ GetLocale("TRAILER")+": " + obj.GetTitle()
+							Else
+								content :+ "~n ~n|b||color=200,100,100|"+getLocale("NEXT_ADBLOCK")+":|/color||/b|~n"+ GetLocale("NEXT_NOTHINGSET")
+							EndIf
+
+						ElseIf GetWorldTime().GetDayMinute()>=55 Or GetWorldTime().GetDayMinute()<5
+							'upcoming programme hint
+							Local obj:TBroadcastMaterial
+							Local upcomingProgDay:int = -1
+							Local upcomingProgHour:int = -1
+							if GetWorldTime().GetDayMinute()>= 55
+								local nextHourTime:Long = GetWorldTime().ModifyTime(-1, 0, 0, 1)
+								upcomingProgDay = GetWorldTime().GetDay(nextHourTime)
+								upcomingProgHour = GetWorldTime().GetDayHour(nextHourTime)
+							endif
+							obj = programmePlan.GetProgramme(upcomingProgDay, upcomingProgHour)
+							
+							If TProgramme(obj)
+								content :+ "~n ~n|b|"+getLocale("NEXT_PROGRAMME")+":|/b|~n"
+								If TProgramme(obj) And TProgramme(obj).isSeries() and TProgramme(obj).licence.parentLicenceGUID
+									content :+ TProgramme(obj).licence.GetParentLicence().data.GetTitle() + ": " + obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock(upcomingProgDay, upcomingProgHour) + "/" + obj.GetBlocks() + ")"
+								Else
+									content :+ obj.GetTitle() + " (" + getLocale("BLOCK")+" " + programmePlan.GetProgrammeBlock(upcomingProgDay, upcomingProgHour) + "/" + obj.GetBlocks() + ")"
+								EndIf
+							ElseIf TAdvertisement(obj)
+								content :+ "~n ~n|b|"+getLocale("NEXT_PROGRAMME")+":|/b|~n"+ GetLocale("PROGRAMME_PRODUCT_INFOMERCIAL")+": " + obj.GetTitle() + " (" + getLocale("BLOCK")+" " + programmePlan.GetProgrammeBlock(upcomingProgDay, upcomingProgHour) + "/" + obj.GetBlocks() + ")"
+							Else
+								content :+ "~n ~n|b||color=200,100,100|"+getLocale("NEXT_PROGRAMME")+":|/color||/b|~n"+ GetLocale("NEXT_NOTHINGSET")
+							EndIf
+						EndIf
+					EndIf
+				Else
+					content = getLocale("TV_TURN_IT_ON")
+				EndIf
+
+				CurrentProgrammeToolTip.SetContent(content)
+				CurrentProgrammeToolTip.enabled = 1
+				CurrentProgrammeToolTip.Hover()
 			EndIf
-		EndIf
+			If THelper.MouseIn(355,413,130,34)
+				MoneyToolTip.title = getLocale("MONEY")
+				local content:String = ""
+				content	= "|b|"+getLocale("MONEY")+":|/b| "+TFunctions.DottedValue(GetPlayerBase().GetMoney()) + getLocale("CURRENCY")
+				content	:+ "~n"
+				content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ TFunctions.DottedValue(GetPlayerBase().GetCredit()) + getLocale("CURRENCY")+"|/color|"
+				MoneyTooltip.SetContent(content)
+				MoneyToolTip.enabled 	= 1
+				MoneyToolTip.Hover()
+			EndIf
+			If THelper.MouseIn(355,457,130,37)
+				local playerProgrammePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan( GetPlayerBaseCollection().playerID )
+				if playerProgrammePlan
+					CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_NUMBER")+": "+playerProgrammePlan.getFormattedAudience()+ " ("+MathHelper.NumberToString(playerProgrammePlan.GetAudiencePercentage() * 100,2)+"%)")
+					CurrentAudienceToolTip.SetAudienceResult(GetBroadcastManager().GetAudienceResult(playerProgrammePlan.owner))
+					CurrentAudienceToolTip.enabled = 1
+					CurrentAudienceToolTip.Hover()
+					'force redraw
+					CurrentTimeToolTip.dirtyImage = True
+				endif
+			EndIf
+			If THelper.MouseIn(355,508,130,13)
+				BettyToolTip.SetTitle(getLocale("BETTY_FEELINGS"))
+				local bettyLove:Float = GetBetty().GetInLovePercentage( GetPlayerBase().playerID )
+				if bettyLove = 0
+					BettyToolTip.SetContent(getLocale("THERE_IS_NO_LOVE_IN_THE_AIR_YET"))
+				elseif bettyLove < 0.1
+					BettyToolTip.SetContent(getLocale("BETTY_KNOWS_WHO_YOU_ARE"))
+				elseif bettyLove < 0.2
+					BettyToolTip.SetContent(getLocale("BETTY_SEEMS_TO_LIKE_YOU"))
+				elseif bettyLove < 0.4
+					BettyToolTip.SetContent(getLocale("BETTY_SEEMS_TO_LIKE_YOU_A_BIT_MORE"))
+				elseif bettyLove < 0.75
+					BettyToolTip.SetContent(getLocale("BETTY_LOVES_YOU"))
+				else
+					BettyToolTip.SetContent(getLocale("BETTY_REALLY_LOVES_YOU"))
+				endif
+				BettyToolTip.enabled = 1
+				BettyToolTip.Hover()
+			EndIf
+			If THelper.MouseIn(355,535,130,37)
+				CurrentTimeToolTip.SetTitle(getLocale("GAME_TIME")+": " + GetWorldTime().getFormattedTime())
+				local content:string = ""
+				content :+ "|b|"+GetLocale("GAMEDAY")+":|/b| "+(GetWorldTime().GetDaysRun()+1)
+				content :+ "~n"
+				content :+ "|b|"+GetLocale("DAY_OF_YEAR")+":|/b| "+GetWorldTime().getDayOfYear()+"/"+GetWorldTime().GetDaysPerYear()
+				content :+ "~n"
+				content :+ "|b|"+GetLocale("DATE")+":|/b| "+GetWorldTime().GetFormattedDate(-1,"d.m.y")+" ("+GetLocale("SEASON_"+GetWorldTime().GetSeasonName())+")"
+				CurrentTimeToolTip.SetContent(content)
+				CurrentTimeToolTip.enabled = 1
+				CurrentTimeToolTip.Hover()
+			EndIf
+			If THelper.MouseIn(385,577,70,23)
+				MenuToolTip.SetTitle(getLocale("MENU"))
+				MenuToolTip.SetContent(getLocale("OPEN_MENU"))
+				MenuToolTip.enabled = 1
+				MenuToolTip.Hover()
+				If MouseManager.IsClicked(1)
+					openEscapeMenuViaInterface = True
+					MouseManager.ResetKey(1)
+				EndIf
+			EndIf
+		endif
+
+
+
+		'=== THINGS DONE REGARDLESS OF PAUSED STATE ===
+
+
 
 		'=== SHOW / HIDE / LOCK CHAT ===
 		if not ChatShow
@@ -443,6 +435,23 @@ Type TInGameInterface
 		endif
 		'====
 
+
+		For local tip:TTooltip = eachin tooltips
+			If tip.enabled Then tip.Update()
+		Next
+		tooltips.Sort() 'sort according lifetime
+
+
+		'skip adjusting the noise if the tv is off
+		If programmePlan
+			'noise on interface-tvscreen
+			ChangeNoiseTimer :+ deltaTime
+			If ChangeNoiseTimer >= 0.20
+				noiseDisplace.position.SetXY(Rand(0, int(noiseDisplace.dimension.GetX())),Rand(0, int(noiseDisplace.dimension.GetY())))
+				ChangeNoiseTimer = 0.0
+				NoiseAlpha = 0.45 - (Rand(0,20)*0.01)
+			EndIf
+		EndIf
 	End Method
 
 
