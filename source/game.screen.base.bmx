@@ -301,11 +301,12 @@ Type TInGameScreen Extends TScreen
 
 		If Not GetWorldTime().IsPaused()
 			GetGameBase().Update(deltaTime)
-			GetInGameInterface().Update(deltaTime)
 			GetElevator().Update()
 			GetRoomBaseCollection().UpdateEnteringAndLeavingStates()
 			GetFigureBaseCollection().UpdateAll()
 		EndIf
+		'update interface + tooltips also if paused
+		GetInGameInterface().Update(deltaTime)
 	End Method
 
 
