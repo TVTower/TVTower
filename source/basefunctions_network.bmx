@@ -668,7 +668,7 @@ Type TDigNetwork
 	Field UpdateTime:Int
 	' Main Update Timer
 	Field MainSyncTime:Int
-	Field LastOnlineRequestTimer:Int = 0
+	Field LastOnlineRequestTimer:Long = 0
 	'time until next action (getlist, announce...)
 	Field LastOnlineRequestTime:Int = 10000
 	Field LastOnlineHashCode:String = ""

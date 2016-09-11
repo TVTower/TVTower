@@ -1,6 +1,6 @@
 SuperStrict
 Import "game.network.networkhelper.base.bmx"
-Import "game.figure.bmx"
+'Import "game.figure.bmx" 'via game.player.bmx
 Import "game.stationmap.bmx"
 Import "game.broadcastmaterial.news.bmx"
 Import "game.player.programmecollection.bmx"

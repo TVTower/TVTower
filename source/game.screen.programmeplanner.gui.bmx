@@ -398,7 +398,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 						'uncomment if you wish episode number in title
 						'titleAppend = " (" + programme.GetEpisodeNumber() + "/" + programme.GetEpisodeCount() + ")"
 						text:+"-"+GetLocale("SERIES_SINGULAR")
-						text2 = "Ep.: " + (programme.GetEpisodeNumber()+1) + "/" + programme.GetEpisodeCount()
+						text2 = "Ep.: " + (programme.GetEpisodeNumber()) + "/" + programme.GetEpisodeCount()
 					EndIf
 				EndIf
 			'we got an advertisement used as programme (aka Tele-Shopping)
