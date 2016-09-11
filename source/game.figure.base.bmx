@@ -430,7 +430,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		currentReachTargetStep = 1
 
 		'emit an event
-		EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", null, self, GetTarget() ) )
+		EventManager.triggerEvent( TEventSimple.Create("figure.onBeginReachTarget", null, self, GetTarget() ) )
 
 		'run custom onReachTarget method - eg to wait until entering a door
 		'or just remove the current target
@@ -443,11 +443,14 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		'reset current step to 0 so figure can call step 1 again
 		currentReachTargetStep = 0
 		RemoveCurrentTarget()
-		
+
 		'regain control if there is no other target waiting
 		'TODO: place this in a custom "Route"-object? so there could
 		'      be a chain of targets which you cannot skip
 		if not GetTarget() then controllable = True
+
+		'emit an event
+		EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", null, self, GetTarget() ) )
 
 		if removeOnReachTarget then alive = False
 	End Method

@@ -24,8 +24,8 @@ end
 function TaskMovieDistributor:ResetDefaults()
 	self.BudgetWeight = 10
 	self.BasePriority = 8	
-	self.NeededInvestmentBudget = 150000
-	self.InvestmentPriority = 5
+	self.NeededInvestmentBudget = 130000
+	self.InvestmentPriority = 6
 end
 
 function TaskMovieDistributor:Activate()
@@ -63,11 +63,13 @@ function TaskMovieDistributor:GetNextJobInTargetRoom()
 		return self.BidAuctions		
 	end
 
-	self:SetWait()
+	--self:SetWait()
+	self:SetDone()
 end
 
 function TaskMovieDistributor:BudgetSetup()
-	self.CurrentBargainBudget = self.BudgetWholeDay / 2 -- Tagesbudget für gute Angebote ohne konkreten Bedarf
+	-- Tagesbudget für gute Angebote ohne konkreten Bedarf
+	self.CurrentBargainBudget = self.BudgetWholeDay / 2
 end
 
 function TaskMovieDistributor:OnMoneyChanged(value, reason, reference)
@@ -105,7 +107,8 @@ function JobBuyStartProgramme:Tick()
 	local player = _G["globalPlayer"]
 	
 	--try to buy at least 4-x cheap start programmes
-	local moviesNeeded = 4 - (TVT.Rules.startProgrammeAmount + self.MovieDistributorTask.ProgrammesPossessed)
+	local start
+	local moviesNeeded = player.Strategy.startProgrammeAmount - (TVT.Rules.startProgrammeAmount + self.MovieDistributorTask.ProgrammesPossessed)
 	if moviesNeeded <= 0 then
 		self.Status = JOB_STATUS_DONE
 		return True
@@ -122,7 +125,7 @@ function JobBuyStartProgramme:Tick()
 	-- we might buy more than needed
 	local startMovieBudget = player.Strategy.startProgrammePriceMax
 	local startMovieBudgetMax = 2 * startMovieBudget
-	local startMoviesBudget = moviesNeeded * player.Strategy.startProgrammeBudget / 4
+	local startMoviesBudget = player.Strategy.startProgrammeBudget
 		
 
 	local movies = TVT.convertToProgrammeLicences(licencesResponse.data)	
@@ -319,7 +322,6 @@ function JobAppraiseMovies:AppraiseCurrentAuction()
 end
 
 function JobAppraiseMovies:AppraiseMovie(licence)
-	--debugMsg("RON: AppraiseMovie")
 	local player = _G["globalPlayer"]
 	local stats = player.Stats
 	local pricePerBlockStats = nil

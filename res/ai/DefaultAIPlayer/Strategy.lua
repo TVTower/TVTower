@@ -42,18 +42,18 @@ function DefaultStrategy:initialize()
 	self.startProgrammePriceMax = self.startProgrammePriceMax + 3000 * (5 - playerAI.Ventruesome)
 
 	if playerAI.Ventruesome > 7 then
-		self.startProgrammeAmount = 4 
-	elseif playerAI.Ventruesome >= 5 then
 		self.startProgrammeAmount = 5 
+	elseif playerAI.Ventruesome >= 5 then
+		self.startProgrammeAmount = 6 
 	else
-		self.startProgrammeAmount = 6
+		self.startProgrammeAmount = 7
 	end 
 	self.startProgrammeBudget = self.startProgrammeAmount * self.startProgrammePriceMax + 8000 * (5 - playerAI.Ventruesome)
 
 	TVT.PrintOut(TVT.ME .. ": startProgramme=" .. self.startProgrammeAmount .. "  priceMax=" .. self.startProgrammePriceMax .. "  totalBudget=" .. self.startProgrammeBudget)
 
 	local mdTask = playerAI.TaskList[TASK_MOVIEDISTRIBUTOR]
-	local moviesNeeded = 4 - (TVT.Rules.startProgrammeAmount + mdTask.ProgrammesPossessed)
+	local moviesNeeded = self.startProgrammeAmount - (TVT.Rules.startProgrammeAmount + mdTask.ProgrammesPossessed)
 	if moviesNeeded > 0 then
 		mdTask.SituationPriority = 10 + moviesNeeded * 5 
 		debugMsg("Startprogramm fehlt: erhoehe Prio fuer Filmhaendler! " .. mdTask.SituationPriority)			

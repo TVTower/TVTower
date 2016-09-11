@@ -47,7 +47,8 @@ function TaskAdAgency:GetNextJobInTargetRoom()
 		return self.SignContracts
 	end
 
-	self:SetWait()
+--	self:SetWait()
+	self:SetDone()
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 

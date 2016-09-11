@@ -43,7 +43,8 @@ end)
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["AIPlayer"] = class(KIDataObjekt, function(c)
 	KIDataObjekt.init(c)	-- must init base!
-	--c.CurrentTask = nil
+	c.CurrentTask = nil
+	c.WorldTicks = 0
 end)
 
 function AIPlayer:typename()
@@ -65,6 +66,52 @@ end
 
 function AIPlayer:initializeTasks()
 	--Zum überschreiben
+end
+
+--stop a current task and start the next one
+function AIPlayer:ForceNextTask()
+	debugMsg("ForceNextTask")
+	if self.CurrentTask ~= nil then
+		local nextTask = self:SelectTask()
+		local nextTaskName = ""
+		if (nextTask ~= nil) then
+			nextTaskName = nextTask:typename()
+
+			local cancelTask = true
+		
+			if nextTaskName == self.CurrentTask:typename() then
+				-- not "already doing something" (like in between of choosing
+				-- programme licences)
+				if self.CurrentTask.Status == TASK_STATUS_PREPARE or
+				   self.CurrentTask.Status == TASK_STATUS_NEW then
+					cancelTask = false
+				end
+			else
+				-- only cancel if still in preparation (moving to the tasks
+				-- target room)
+				cancelTask = true
+				if self.CurrentTask.Status ~= TASK_STATUS_PREPARE and
+				   self.CurrentTask.Status ~= TASK_STATUS_NEW and
+				   self.CurrentTask.Status ~= TASK_STATUS_RUN then
+					cancelTask = false
+				end
+			end
+			-- cancel old one
+			if cancelTask then 
+				debugMsg("ForceNextTask: Cancel current task...")
+				self.CurrentTask:SetCancel()
+			end
+
+			--assign next task
+			self.CurrentTask = nextTask
+			--activate it
+			self.CurrentTask:CallActivate()
+			--start the next job of the new task
+			self.CurrentTask:StartNextJob()
+		else
+			debugMsg("ForceNextTask() failed: no follow up task found...")
+		end
+	end
 end
 
 function AIPlayer:ValidateRound()
@@ -127,6 +174,10 @@ function AIPlayer:OnEnterRoom(roomId)
 	self.CurrentTask:OnEnterRoom(roomId)
 end
 
+function AIPlayer:OnReachTarget()
+	self.CurrentTask:OnReachTarget()
+end
+
 function AIPlayer:OnMoneyChanged(value, reason, reference)
 	--Zum überschreiben
 end
@@ -143,7 +194,9 @@ _G["AITask"] = class(KIDataObjekt, function(c)
 	c.BasePriority = 0 -- Grundlegende Priorität der Aufgabe (zwischen 1 und 10)
 	c.SituationPriority = 0 -- Dieser Wert kann sich ändern, wenn besondere Ereignisse auftreten, die von einer bestimmen Aufgabe eine höhere Priorität erfordert. Üblicherweise zwischen 0 und 10. Hat aber kein Maximum
 	c.CurrentPriority = 0 -- Berechnet: Aktuelle Priorität dieser Aufgabe
+	c.LastDoneWorldTicks = 0 -- WorldTicks, wann der Task zuletzt abgeschlossen wurde
 	c.LastDone = 0 -- Zeit, wann der Task zuletzt abgeschlossen wurde
+	c.StartTaskWorldTicks = 0 -- WorldTicks, wann der Task zuletzt gestartet wurde
 	c.StartTask = 0 -- Zeit, wann der Task zuletzt gestartet wurde
 	c.TickCounter = 0 -- Gibt die Anzahl der Ticks an seit dem der Task läuft
 	c.MaxTicks = 30 --Wie viele Ticks darf der Task maximal laufen?
@@ -175,6 +228,11 @@ end
 
 function AITask:getStrategicPriority()
 	return 1.0
+end
+
+function AITask:getWorldTicks()
+	local player = _G["globalPlayer"]
+	return player.WorldTicks
 end
 
 function AITask:PayFromBudget(value)
@@ -222,6 +280,7 @@ function AITask:StartNextJob()
 		self.CurrentJob = self:getGotoJob()
 	else
 		self.Status = TASK_STATUS_RUN
+		self.StartTaskWorldTicks = self:getWorldTicks()
 		self.StartTask = WorldTime.GetTimeGoneAsMinute()
 		self.CurrentJob = self:GetNextJobInTargetRoom()
 
@@ -287,35 +346,43 @@ end
 
 function AITask:RecalcPriority()
 	if (self.LastDone == 0) then self.LastDone = WorldTime.GetTimeGoneAsMinute() end
+	if (self.LastDoneWorldTicks == 0) then self.LastDoneWorldTicks = self:getWorldTicks() end
 
+	local player = _G["globalPlayer"]
 	local Ran1 = math.random(75, 125) / 100
 	local TimeDiff = math.round(WorldTime.GetTimeGoneAsMinute() - self.LastDone)
-	local player = _G["globalPlayer"]
+	local TicksDiff = math.round(self:getWorldTicks() - self.LastDoneWorldTicks)
 	local requisitionPriority = player:GetRequisitionPriority(self.Id)
 
 	local calcPriority = (self.BasePriority + self.SituationPriority) * Ran1 + requisitionPriority
 	local timeFactor = (20 + TimeDiff) / 20
+	local ticksFactor = (20 + TicksDiff) / 20
 
-	self.CurrentPriority = self.getStrategicPriority()  * calcPriority * timeFactor
+	local timePriority = self.getStrategicPriority()  * calcPriority * timeFactor
+	local ticksPriority = self.getStrategicPriority()  * calcPriority * ticksFactor
 
-	--debugMsg("Task: " .. self:typename() .. " - Prio: " .. self.CurrentPriority .. " - TimeDiff:" .. TimeDiff .. " (c: " .. calcPriority .. ")")
+	self.CurrentPriority = math.max(timePriority, ticksPriority)
+
+	--debugMsg("Task: " .. self:typename() .. " - Prio: " .. self.CurrentPriority .. " - TimeDiff:" .. TimeDiff .. "  TicksDiff:" .. TicksDiff.." (c: " .. calcPriority .. ")")
 end
 
 function AITask:TooMuchTicks()
-	debugMsg("... lange genug gewartet.")
+	debugMsg("... waited long enough.")
 	self:SetDone()
 end
 
 function AITask:SetWait()
-	debugMsg("Warten...")
+	debugMsg("Waiting...")
 	self.Status = TASK_STATUS_WAIT
 end
 
 function AITask:SetDone()
 	debugMsg("### Task abgeschlossen!")
+	local player = _G["globalPlayer"]
 	self.Status = TASK_STATUS_DONE
 	self.SituationPriority = 0
 	self.LastDone = WorldTime.GetTimeGoneAsMinute()
+	self.LastDoneWorldTicks = self:getWorldTicks()
 end
 
 function AITask:SetCancel()
@@ -325,7 +392,7 @@ function AITask:SetCancel()
 end
 
 function AITask:OnEnterRoom(roomId)
-	--debugMsg("OnReachRoom!")
+	--debugMsg("OnEnterRoom!")
 	if (self.CurrentJob ~= nil) then
 		self.CurrentJob:OnEnterRoom(roomId)
 	end
@@ -335,6 +402,13 @@ function AITask:OnBeginEnterRoom(roomId, result)
 	--debugMsg("OnBeginEnterRoom!")
 	if (self.CurrentJob ~= nil) then
 		self.CurrentJob:OnBeginEnterRoom(roomId, result)
+	end
+end
+
+
+function AITask:OnReachTarget()
+	if (self.CurrentJob ~= nil) then
+		self.CurrentJob:OnReachTarget()
 	end
 end
 
@@ -361,12 +435,19 @@ _G["AIJob"] = class(KIDataObjekt, function(c)
 	c.Status = JOB_STATUS_NEW
 	c.StartJob = 0
 	c.LastCheck = 0
+	c.StartJobWorldTicks = 0
+	c.LastCheckWorldTicks = 0
 	c.Ticks = 0
 	c.StartParams = nil
 end)
 
 function AIJob:typename()
 	return "AIJob"
+end
+
+function AIJob:getWorldTicks()
+	local player = _G["globalPlayer"]
+	return player.WorldTicks
 end
 
 function AIJob:resume()
@@ -384,6 +465,8 @@ function AIJob:Start(pParams)
 	self.StartParams = pParams
 	self.StartJob = WorldTime.GetTimeGoneAsMinute()
 	self.LastCheck = WorldTime.GetTimeGoneAsMinute()
+	self.StartJobWorldTicks = 0
+	self.LastCheckWorldTicks = 0
 	self.Ticks = 0
 	self:Prepare(pParams)
 end
@@ -401,10 +484,11 @@ function AIJob:Tick()
 	--Kann ueberschrieben werden
 end
 
-function AIJob:ReDoCheck(pWait)
-	if ((self.LastCheck + pWait) < WorldTime.GetTimeGoneAsMinute()) then
-		--debugMsg("ReDoCheck: (" .. self.LastCheck .. " + " .. pWait .. ") < " .. WorldTime.GetTimeGoneAsMinute())
+function AIJob:ReDoCheck(minutesWait, ticksWait)
+	if ((self.LastCheckWorldTicks + ticksWait) < self:getWorldTicks() or (self.LastCheck + minutesWait) < WorldTime.GetTimeGoneAsMinute()) then
+		--debugMsg("ReDoCheck: (time: " .. self.LastCheck .. " + " .. minutesWait .. " < " .. WorldTime.GetTimeGoneAsMinute() .."    ticks: " ..self.LastCheckWorldTicks .. " + " .. ticksWait .." < " .. self:getWorldTicks())
 		self.Status = JOB_STATUS_REDO
+		self.LastCheckWorldTicks = self:getWorldTicks()
 		self.LastCheck = WorldTime.GetTimeGoneAsMinute()
 		self:Prepare(self.StartParams)
 	end
@@ -422,6 +506,11 @@ function AIJob:OnEnterRoom(roomId)
 	--wird aufgerufen, sobald die Figur IM Raum ist
 end
 
+function AIJob:OnReachTarget()
+	--Kann überschrieben werden
+	--wird aufgerufen, sobald die Figur ihr Ziel erreicht
+end
+
 function AIJob:SetCancel()
 	debugMsg("SetCancel(): Implementiere mich: " .. type(self))
 end
@@ -434,7 +523,9 @@ _G["AIJobGoToRoom"] = class(AIJob, function(c)
 	c.TargetRoom = 0
 	c.IsWaiting = false
 	c.WaitSince = -1
+	c.WaitSinceWorldTicks = -1
 	c.WaitTill = -1
+	c.WaitTillWorldTicks = -1
 end)
 
 function AIJobGoToRoom:typename()
@@ -445,35 +536,40 @@ function AIJobGoToRoom:OnBeginEnterRoom(roomId, result)
 	local resultId = tonumber(result)
 	if (resultId == TVT.RESULT_INUSE) then
 		if (self.IsWaiting) then
-			debugMsg("Okay... aber nur noch 'n kleines bisschen...")
+			debugMsg("BeginEnterRoom: Room still in use. Will continue to wait...a bit")
 		elseif (self:ShouldIWait()) then
 			--debugMsg("Raum besetzt! Dann wart ich eben...")
 			self.IsWaiting = true
 			self.WaitSince = WorldTime.GetTimeGoneAsMinute()
+			self.WaitSinceWorldTicks = self:getWorldTicks()
 			self.WaitTill = self.WaitSince + 3 + (self.Task.CurrentPriority / 6)
+			self.WaitTillWorldTicks = self.WaitSinceWorldTicks + 3 + (self.Task.CurrentPriority / 6)
 			if ((self.WaitTill - self.WaitSince) > 20) then
 				self.WaitTill = self.WaitSince + 20
 			end
+			if ((self.WaitTillWorldTicks - self.WaitSinceWorldTicks) > 20) then
+				self.WaitTillWorldTicks = self.WaitSinceWorldTicks + 20
+			end
 			local rand = math.random(50, 75)
-			debugMsg("Raum besetzt! Dann wart ich eben... ( Pixel: " .. rand .. " Warten bis " .. self.WaitTill .. ")")
+			debugMsg("BeginEnterRoom: Room occupied! Will wait a bit. Moving to pixel " .. rand .. ". Waiting time: " .. self.WaitTill .. "/" .. WorldTime.GetTimeGoneAsMinute().."  /  ticks: " .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ")")
 			TVT.doGoToRelative(rand)
 		else
-			debugMsg("Raum besetzt! Ich warte nicht...")
+			debugMsg("BeginEnterRoom: Room occupied! Won't wait this time.")
 			self.Status = JOB_STATUS_CANCEL
 		end
 	elseif(resultId == TVT.RESULT_OK) then
-		--debugMsg("Darf Raum betreten " .. roomId)
+		--debugMsg("BeginEnterRoom: Entering allowed. roomId: " .. roomId)
 	end
 end
 
 function AIJobGoToRoom:OnEnterRoom(roomId)
-	debugMsg("Betrete Raum " .. roomId)
+	--debugMsg("EnterRoom: Entering roomId: " .. roomId)
 	--debugMsg("AIJobGoToRoom DONE!")
 	self.Status = JOB_STATUS_DONE
 end
 
 function AIJobGoToRoom:ShouldIWait()
-	--debugMsg("Warte vor dem Raum... (Prio: " .. self.Task.CurrentPriority .. ")")
+	debugMsg("Warte vor dem Raum... (Prio: " .. self.Task.CurrentPriority .. ")")
 	if (self.Task.CurrentPriority >= 60) then
 		return true
 	elseif (self.Task.CurrentPriority >= 30) then
@@ -488,6 +584,16 @@ function AIJobGoToRoom:ShouldIWait()
 	end
 end
 
+--override
+function AIJobGoToRoom:OnReachTarget()
+	-- if we reached the target, just set it again
+	if (self.Status == JOB_STATUS_REDO) or (self.Status == JOB_STATUS_RUN) then
+		--debugMsg("OnReachTarget - GoToRoom again")
+		TVT.DoGoToRoom(self.TargetRoom)
+	end
+end
+
+
 function AIJobGoToRoom:Prepare(pParams)
 	if ((self.Status == JOB_STATUS_NEW) or (self.Status == TASK_STATUS_PREPARE) or (self.Status == JOB_STATUS_REDO)) then
 		--debugMsg("DoGoToRoom: " .. self.TargetRoom .. " => " .. self.Status)
@@ -498,20 +604,21 @@ end
 
 function AIJobGoToRoom:Tick()
 	if (self.IsWaiting) then
-		--TODO: Einfach versuchen, wenn der Raum leer wurde
+		--debugMsg("AIJobGoToRoom:Tick ... waiting")
 		if (TVT.isRoomUnused(self.TargetRoom) == 1) then
-			debugMsg("Jetzt ist frei!")
+			--debugMsg("Room is unused now")
 			self.IsWaiting = false
 			TVT.DoGoToRoom(self.TargetRoom)
-		elseif ((self.WaitTill - WorldTime.GetTimeGoneAsMinute()) <= 0) then
-			debugMsg("Ach... ich geh...")
+		elseif ((self.WaitTill - WorldTime.GetTimeGoneAsMinute()) <= 0 or (self.WaitTillWorldTicks - self:getWorldTicks()) <= 0) then
+			debugMsg("Room is still used. I do not want to wait anylonger.")
 			self.IsWaiting = false
 			self.Status = JOB_STATUS_CANCEL
 		else
-			--debugMsg("Warten... " .. self.WaitTill .. "/" .. WorldTime.GetTimeGoneAsMinute())
+			debugMsg("Waiting to enter the room. Waiting till time: " .. self.WaitTill .. "/" .. WorldTime.GetTimeGoneAsMinute() .. "  /  ticks: " .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ".")
 		end
+	-- while walking / going by elevator
 	elseif (self.Status ~= JOB_STATUS_DONE) then
-		self:ReDoCheck(10)
+		self:ReDoCheck(10, 10)
 	end
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

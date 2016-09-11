@@ -257,6 +257,13 @@ Type TAi extends TAiBase
 		CallLuaFunction("OnEnterRoom", args)
 	End Method
 
+
+	Method CallOnReachTarget()
+		if not AiRunning then return
+
+		CallLuaFunction("OnReachTarget", Null)
+	End Method
+	
 	
 	Method CallOnDayBegins()
 		if not AiRunning then return
