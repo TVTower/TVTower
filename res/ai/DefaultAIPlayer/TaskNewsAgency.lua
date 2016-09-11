@@ -35,7 +35,8 @@ function TaskNewsAgency:GetNextJobInTargetRoom()
 		return self.NewsAgencyJob
 	end
 
-	self:SetWait()
+--	self:SetWait()
+	self:SetDone()
 end
 
 --override

@@ -114,6 +114,7 @@ Type TAiBase
 	Method CallOnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedLicence:object, targetLicence:object) abstract
 	Method CallOnAchievementCompleted(achievement:object) abstract
 	Method CallOnLeaveRoom(roomId:int) abstract
+	Method CallOnReachTarget() abstract
 	Method CallOnReachRoom(roomId:Int) abstract
 	Method CallOnBeginEnterRoom(roomId:int, result:int) abstract
 	Method CallOnEnterRoom(roomId:int) abstract

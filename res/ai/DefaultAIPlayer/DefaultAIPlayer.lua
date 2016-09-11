@@ -50,7 +50,6 @@ _G["TASK_ROOMBOARD"] = TASK_ROOMBOARD
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["DefaultAIPlayer"] = class(AIPlayer, function(c)
 	AIPlayer.init(c)	-- must init base!
-	c.CurrentTask = nil
 	c.Strategy = nil
 	--c.Budget = nil  --darf nicht überschrieben werden
 	--c.Stats = nil  --darf nicht überschrieben werden
@@ -122,6 +121,7 @@ function DefaultAIPlayer:initializeTasks()
 
 	--TODO: WarteTask erstellen. Gehört aber in AIEngine
 end
+
 
 function DefaultAIPlayer:TickAnalyse()
 	self.Stats:ReadStats()
@@ -425,6 +425,14 @@ function OnEnterRoom(roomId)
 	end
 end
 
+-- figure is now at the desired target
+function OnReachTarget()
+	--debugMsg("OnReachTarget")
+	if (aiIsActive) then
+		getAIPlayer():OnReachTarget()
+	end
+end
+
 function OnSave()
 	SLFManager.StoreDefinition.Player = getAIPlayer()
 	return SLFManager:save()
@@ -448,8 +456,10 @@ function OnRealTimeSecond(millisecondsPassed)
 end
 
 
-function OnTick(timeGone)
-	--debugMsg("tick" .. timeGone)
+function OnTick(timeGone, ticksGone)
+	--debugMsg("OnTick  time:" .. timeGone .." ticks:" .. ticksGone)
+	getAIPlayer().WorldTicks = tonumber(ticksGone)
+	
 	if (aiIsActive) then
 		-- the faster the brain, the more it does per tick
 		for i=1,getAIPlayer().BrainSpeed do
@@ -475,12 +485,13 @@ function OnMinute(number)
 					local audience = TVT.GetCurrentAudience()
 					if audience < TVT.GetCurrentAdvertisementMinAudience() then
 						-- we can only fix if we have licences for trailers
-						-- or adcontracts for ad spots
-						if (TVT.GetAdContractCount() > 0) or (TVT.GetProgrammeLicenceCount() > 0)  then 
-							debugMsg("ProgrammeBegin: FixAdvertisement " .. WorldTime.GetDayHour() .. ":55  (minAudience=" .. TVT.GetCurrentAdvertisementMinAudience() .. " > " .. audience .. ")")
+						-- or adcontracts for ad spots (and this means 1
+						-- contract MORE than just the unsatisfying one)
+						-- -> FixAdvertisement takes care of that 
+						if (TVT.GetAdContractCount() > 1) or (TVT.GetProgrammeLicenceCount() > 0)  then 
 							task:FixAdvertisement(WorldTime.GetDay(), WorldTime.GetDayHour())
 						else
-							debugMsg("ProgrammeBegin: FixAdvertisement " .. WorldTime.GetDayHour() .. ":55 not possible (no contracts/licences)")
+							debugMsg("ProgrammeBegin: FixAdvertisement " .. WorldTime.GetDay() .. "/" .. WorldTime.GetDayHour() .. ":55 - NOT POSSIBLE, not enough adcontracts (>1) or licences.")
 						end
 					end
 				end
@@ -488,27 +499,25 @@ function OnMinute(number)
 			else
 				-- we can only fix if we have licences for programmes
 				-- or adcontracts for infomercials
-				if (TVT.GetAdContractCount() > 0) or (TVT.GetProgrammeLicenceCount() > 0)  then 
-					debugMsg("ProgrammeBegin: FixImminentOutage " .. WorldTime.GetDayHour() .. ":55  (avoid broadcast outage)")
-					task:FixImminentOutage(WorldTime.GetDay(), WorldTime.GetDayHour())
-				else
-					debugMsg("ProgrammeBegin: FixImminentOutage " .. WorldTime.GetDayHour() .. ":55 not possible (no contracts/licences)")
-				end
+				-- -> FixImminentAdOutage takes care of that 
+				task:FixImminentAdOutage(WorldTime.GetDay(), WorldTime.GetDayHour())
 			end
 		end
 	end
 
-	-- check next hour if there is an imminent outage 
+	-- check next 3 hours if there will be an imminent outage 
 	if (number == 6) then
 		local task = getAIPlayer().TaskList[_G["TASK_SCHEDULE"]]
 		local fixedDay, fixedHour = FixDayAndHour(WorldTime.GetDay(), WorldTime.GetDayHour() + 1)
 
-		local programme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
-		if (programme == nil) then
-			--make sure we have enough programme to fix it
+		for i=0,2 do
+			local programme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour + i)
+			if (programme == nil) then
+				--make sure we have enough programme to fix it
 			
-			debugMsg("ProgrammeBegin: FixAdvertisement " .. WorldTime.GetDayHour() .. ":55  (avoid broadcast outage)")
-			task:FixImminentOutage(fixedDay, fixedHour)
+				debugMsg("ProgrammeBegin: Avoid imminent programme outage at " .. fixedDay .."/" .. fixedHour .. ":55")
+				task:FixImminentProgrammeOutage(fixedDay, fixedHour)
+			end
 		end
 	end
 

@@ -37,7 +37,8 @@ function TaskStationMap:GetNextJobInTargetRoom()
 		return self.AdjustStationInvestmentJob		
 	end
 
-	self:SetWait()
+--	self:SetWait()
+	self:SetDone()
 end
 
 function TaskStationMap:BeforeBudgetSetup()

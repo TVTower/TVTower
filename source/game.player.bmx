@@ -18,6 +18,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 			EventManager.registerListenerFunction("figure.onBeginEnterRoom", OnFigureBeginEnterRoom)
 			EventManager.registerListenerFunction("figure.onEnterRoom", OnFigureEnterRoom)
 			EventManager.registerListenerFunction("figure.onLeaveRoom", OnFigureLeaveRoom)
+			EventManager.registerListenerFunction("figure.onReachTarget", OnFigureReachTarget)
 			_registeredEvents = True
 		endif
 	End Method
@@ -96,6 +97,16 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		local player:TPlayer = GetPlayer(figure.playerID)
 		if not player then return False
 
+		'=== REACH TARGET EVENT ===
+		EventManager.triggerEvent( TEventSimple.Create("player.onReachTarget", null, player) )
+
+		'inform player AI
+		If player.isLocalAI()
+			player.PlayerAI.CallOnReachTarget()
+		endif
+
+
+		'=== REACH ROOM EVENT ===
 		'only interested in target of type "door" (rooms)
 		local roomDoor:TRoomDoorBase = TRoomDoorBase(triggerEvent.GetReceiver())
 		if not roomDoor then return False

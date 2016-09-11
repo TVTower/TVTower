@@ -32,7 +32,8 @@ function TaskBoss:GetNextJobInTargetRoom()
 		return self.CheckCreditJob
 	end
 
-	self:SetWait()
+--	self:SetWait()
+	self:SetDone()
 end
 
 function TaskBoss:BeforeBudgetSetup()
