@@ -786,7 +786,10 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 
 	Method GetEpisodeCount:int() {_exposeToLua}
-		if not parentLicenceGUID then return 1
+		'disabled: do not skip calculations as you could have a collection
+		'          of series
+		'if parentLicenceGUID then return 1
+		
 		'returns the _current_ amount of licences, so if you did not
 		'finish a custom production yet, the number represents the current
 		'state, not the final one!

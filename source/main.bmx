@@ -12,7 +12,6 @@ Import brl.eventqueue
 Import brl.Threads
 ?
 'Import "Dig/external/persistence.mod/persistence_json.bmx"
-Import "Dig/base.util.registry.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
 Import "Dig/base.util.registry.imageloader.bmx"
 Import "Dig/base.util.registry.bitmapfontloader.bmx"
@@ -64,8 +63,8 @@ Import "game.misc.roomboardsign.bmx"
 Import "game.figure.bmx"
 Import "game.figure.customfigures.bmx"
 Import "game.player.finance.bmx"
-Import "game.player.boss.bmx"
-Import "game.player.bmx"
+'Import "game.player.boss.bmx"
+'Import "game.player.bmx"
 Import "game.ai.bmx"
 
 Import "game.database.bmx"
@@ -83,7 +82,7 @@ Import "game.ingameinterface.bmx"
 Import "game.newsagency.bmx"
 Import "game.stationmap.bmx"
 
-Import "game.roomhandler.base.bmx"
+'Import "game.roomhandler.base.bmx"
 Import "game.roomhandler.adagency.bmx"
 Import "game.roomhandler.archive.bmx"
 Import "game.roomhandler.betty.bmx"
@@ -126,7 +125,7 @@ Include "game.escapemenu.bmx"
 
 '===== Globals =====
 VersionDate = LoadText("incbin::source/version.txt").Trim()
-VersionString = "v0.3.4.3 Build ~q" + VersionDate+"~q"
+VersionString = "v0.3.4.4-dev Build ~q" + VersionDate+"~q"
 CopyrightString = "by Ronny Otto & Team"
 
 Global APP_NAME:string = "TVTower"
@@ -168,7 +167,7 @@ Type TApp
 	Field prepareScreenshot:Int	= 0
 
 	'only used for debug purpose (loadingtime)
-	Field creationTime:Int
+	Field creationTime:Long
 	'store listener for music loaded in "startup"
 	Field OnLoadMusicListener:TLink
 
@@ -185,11 +184,11 @@ Type TApp
 	Global ExitApp:Int = 0
 	Global ExitAppDialogue:TGUIModalWindow = Null
 	'creation time for "double escape" to abort
-	Global ExitAppDialogueTime:Int = 0
+	Global ExitAppDialogueTime:Long = 0
 	'Global ExitAppDialogueEventListeners:TLink = TLink[]
 	Global EscapeMenuWindow:TGUIModalWindowChain = Null
 	'creation time for "double escape" to abort
-	Global EscapeMenuWindowTime:Int = 0
+	Global EscapeMenuWindowTime:Long = 0
 	'Global EscapeMenuWindowEventListeners:TLink[]
 
 	Global DEV_FastForward:int = False
@@ -209,7 +208,7 @@ Type TApp
 
 	Function Create:TApp(updatesPerSecond:Int = 60, framesPerSecond:Int = 30, vsync:Int=True, initializeGUI:Int=True)
 		Local obj:TApp = New TApp
-		obj.creationTime = MilliSecs()
+		obj.creationTime = Time.MillisecsLong()
 
 		If initializeGUI Then
 			'register to quit confirmation dialogue
@@ -488,7 +487,7 @@ Type TApp
 		'as we are no longer in the loading screen (-> silent loading)
 		If OnLoadMusicListener Then EventManager.unregisterListenerByLink( OnLoadMusicListener )
 
-		TLogger.Log("TApp.Start()", "loading time: "+(MilliSecs() - creationTime) +"ms", LOG_INFO)
+		TLogger.Log("TApp.Start()", "loading time: "+(Time.MillisecsLong() - creationTime) +"ms", LOG_INFO)
 	End Method
 
 
@@ -917,7 +916,6 @@ endrem
 							KEYMANAGER.ResetKey(KEY_O)
 							KEYMANAGER.BlockKey(KEY_O, 150)
 						endif
-'				GetPlayer(playerID).InitAI( new TAI.Create(playerID, "res/ai/DefaultAIPlayer/DefaultAIPlayer.lua") )
 					endif
 
 				
@@ -1143,6 +1141,13 @@ endrem
 			'ask to exit to main menu
 			'TApp.CreateConfirmExitAppDialogue(True)
 			If GetGame().gamestate = TGame.STATE_RUNNING
+				'RONNY: debug
+				if openEscapeMenuViaInterface
+					TLogger.Log("Dialogues", "Open Escape-Menu via button hit.", LOG_DEBUG)
+				else
+					TLogger.Log("Dialogues", "Open Escape-Menu via ESC key hit.", LOG_DEBUG)
+				endif
+
 				'TApp.CreateConfirmExitAppDialogue(True)
 				'create escape-menu
 				TApp.CreateEscapeMenuwindow()
@@ -1158,9 +1163,13 @@ endrem
 			TApp.ExitApp = True
 		endif
 
-		If AppTerminate() and not TApp.ExitAppDialogue
-			'ask to exit the app
-			TApp.CreateConfirmExitAppDialogue(False)
+		If AppTerminate()
+			if not TApp.ExitAppDialogue
+				'ask to exit the app
+				TApp.CreateConfirmExitAppDialogue(False)
+			else
+				TLogger.Log("Dialogues", "Skip opening Exit-dialogue, was opened <100ms before.", LOG_DEBUG)
+			endif
 		endif
 
 		'check if we need to make a screenshot
@@ -1188,30 +1197,7 @@ endrem
 
 
 
-
-	Function Render:Int()
-		'cls only needed if virtual resolution is enabled, else the
-		'background covers everything
-		If GetGraphicsManager().HasBlackBars()
-			SetClsColor 0,0,0
-			'use graphicsmanager's cls as it resets virtual resolution
-			'first
-			'Cls()
-			GetGraphicsManager().Cls()
-		Endif
-
-		TProfiler.Enter("Draw")
-		ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
-
-		'=== RENDER TOASTMESSAGES ===
-		'below everything else of the interface: our toastmessages
-		GetToastMessageCollection().Render(0,0)
-
-
-		'=== RENDER INGAME HELP ===
-		IngameHelpWindowCollection.Render()
-
-'		SetBlend AlphaBlend
+	Function RenderDevOSD()
 		Local textX:Int = 5
 		Local oldCol:TColor = New TColor.Get()
 		SetAlpha oldCol.a * 0.25
@@ -1256,90 +1242,123 @@ endrem
 				textX:+50
 			EndIf
 		EndIf
+	End Function
+
+
+	Function RenderSideDebug()
+		if TVTDebugInfos And Not GetPlayer().GetFigure().inRoom
+			SetAlpha GetAlpha() * 0.5
+			SetColor 0,0,0
+			DrawRect(0,0,160,385)
+			SetColor 255, 255, 255
+			SetAlpha GetAlpha() * 2.0
+			GetBitmapFontManager().baseFontBold.draw("Debug information:", 5,10)
+			GetBitmapFontManager().baseFont.draw("Renderer: "+GetGraphicsManager().GetRendererName(), 5,30)
+
+			'GetBitmapFontManager().baseFont.draw(Network.stream.UDPSpeedString(), 662,490)
+			GetBitmapFontManager().baseFont.draw("Player positions:", 5,55)
+			Local roomName:String = ""
+			Local fig:TFigure
+			For Local i:Int = 0 To 3
+				fig = GetPlayerCollection().Get(i+1).GetFigure()
+
+				local change:string = ""
+				if fig.isChangingRoom()
+					if fig.inRoom
+						change = "<-[]" 'Chr(8646) '⇆
+					else
+						change = "->[]" 'Chr(8646) '⇆
+					endif
+				endif
+
+				roomName = "Building"
+				If fig.inRoom
+					roomName = fig.inRoom.Name
+				ElseIf fig.IsInElevator()
+					roomName = "InElevator"
+				ElseIf fig.IsAtElevator()
+					roomName = "AtElevator"
+				EndIf
+				GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName+change, 5, 70 + i * 11)
+			Next
+
+			If ScreenCollection.GetCurrentScreen()
+				GetBitmapFontManager().baseFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 5, 120)
+			Else
+				GetBitmapFontManager().baseFont.draw("onScreen: Main", 5, 120)
+			EndIf
+
+
+			GetBitmapFontManager().baseFont.draw("Elevator routes:", 5,140)
+			Local routepos:Int = 0
+			Local startY:Int = 155
+			If GetGame().networkgame Then startY :+ 4*11
+
+			Local callType:String = ""
+
+			Local directionString:String = "up"
+			If GetElevator().Direction = 1 Then directionString = "down"
+			Local debugString:String =	"floor:" + GetElevator().currentFloor +..
+										"->" + GetElevator().targetFloor +..
+										" status:"+GetElevator().ElevatorStatus
+
+			GetBitmapFontManager().baseFont.draw(debugString, 5, startY)
+
+
+			If GetElevator().RouteLogic.GetSortedRouteList() <> Null
+				For Local FloorRoute:TFloorRoute = EachIn GetElevator().RouteLogic.GetSortedRouteList()
+					If floorroute.call = 0 Then callType = " 'send' " Else callType= " 'call' "
+					GetBitmapFontManager().baseFont.draw(FloorRoute.floornumber + callType + FloorRoute.who.Name, 5, startY + 15 + routepos * 11)
+					routepos:+1
+				Next
+			Else
+				GetBitmapFontManager().baseFont.draw("recalculate", 5, startY + 15)
+			EndIf
+
+
+			For Local i:Int = 0 To 3
+				GetBitmapFontManager().baseFont.Draw("Image #"+i+": "+MathHelper.NumberToString(GetPublicImageCollection().Get(i+1).GetAverageImage(), 4)+" %", 10, 320 + i*13)
+			Next
+
+			For Local i:Int = 0 To 3
+				GetBitmapFontManager().baseFont.Draw("Boss #"+i+": "+MathHelper.NumberToString(GetPlayerBoss(i+1).mood,4), 10, 270 + i*13)
+			Next
+
+
+			GetWorld().RenderDebug(660,0, 140, 160)
+			'GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
+		EndIf
+	End Function
+
+
+	Function Render:Int()
+		'cls only needed if virtual resolution is enabled, else the
+		'background covers everything
+		If GetGraphicsManager().HasBlackBars()
+			SetClsColor 0,0,0
+			'use graphicsmanager's cls as it resets virtual resolution
+			'first
+			'Cls()
+			GetGraphicsManager().Cls()
+		Endif
+
+		TProfiler.Enter("Draw")
+		ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
+
+		'=== RENDER TOASTMESSAGES ===
+		'below everything else of the interface: our toastmessages
+		GetToastMessageCollection().Render(0,0)
+
+
+		'=== RENDER INGAME HELP ===
+		IngameHelpWindowCollection.Render()
+
+
+		RenderDevOSD()
+
 
 		If GetGame().gamestate = TGame.STATE_RUNNING
-			if TVTDebugInfos And Not GetPlayer().GetFigure().inRoom
-				SetAlpha GetAlpha() * 0.5
-				SetColor 0,0,0
-				DrawRect(0,0,160,385)
-				SetColor 255, 255, 255
-				SetAlpha GetAlpha() * 2.0
-				GetBitmapFontManager().baseFontBold.draw("Debug information:", 5,10)
-				GetBitmapFontManager().baseFont.draw("Renderer: "+GetGraphicsManager().GetRendererName(), 5,30)
-
-				'GetBitmapFontManager().baseFont.draw(Network.stream.UDPSpeedString(), 662,490)
-				GetBitmapFontManager().baseFont.draw("Player positions:", 5,55)
-				Local roomName:String = ""
-				Local fig:TFigure
-				For Local i:Int = 0 To 3
-					fig = GetPlayerCollection().Get(i+1).GetFigure()
-
-					local change:string = ""
-					if fig.isChangingRoom()
-						if fig.inRoom
-							change = "<-[]" 'Chr(8646) '⇆
-						else
-							change = "->[]" 'Chr(8646) '⇆
-						endif
-					endif
-
-					roomName = "Building"
-					If fig.inRoom
-						roomName = fig.inRoom.Name
-					ElseIf fig.IsInElevator()
-						roomName = "InElevator"
-					ElseIf fig.IsAtElevator()
-						roomName = "AtElevator"
-					EndIf
-					GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName+change, 5, 70 + i * 11)
-				Next
-
-				If ScreenCollection.GetCurrentScreen()
-					GetBitmapFontManager().baseFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 5, 120)
-				Else
-					GetBitmapFontManager().baseFont.draw("onScreen: Main", 5, 120)
-				EndIf
-
-
-				GetBitmapFontManager().baseFont.draw("Elevator routes:", 5,140)
-				Local routepos:Int = 0
-				Local startY:Int = 155
-				If GetGame().networkgame Then startY :+ 4*11
-
-				Local callType:String = ""
-
-				Local directionString:String = "up"
-				If GetElevator().Direction = 1 Then directionString = "down"
-				Local debugString:String =	"floor:" + GetElevator().currentFloor +..
-											"->" + GetElevator().targetFloor +..
-											" status:"+GetElevator().ElevatorStatus
-
-				GetBitmapFontManager().baseFont.draw(debugString, 5, startY)
-
-
-				If GetElevator().RouteLogic.GetSortedRouteList() <> Null
-					For Local FloorRoute:TFloorRoute = EachIn GetElevator().RouteLogic.GetSortedRouteList()
-						If floorroute.call = 0 Then callType = " 'send' " Else callType= " 'call' "
-						GetBitmapFontManager().baseFont.draw(FloorRoute.floornumber + callType + FloorRoute.who.Name, 5, startY + 15 + routepos * 11)
-						routepos:+1
-					Next
-				Else
-					GetBitmapFontManager().baseFont.draw("recalculate", 5, startY + 15)
-				EndIf
-
-
-				For Local i:Int = 0 To 3
-					GetBitmapFontManager().baseFont.Draw("Image #"+i+": "+MathHelper.NumberToString(GetPublicImageCollection().Get(i+1).GetAverageImage(), 4)+" %", 10, 320 + i*13)
-				Next
-
-				For Local i:Int = 0 To 3
-					GetBitmapFontManager().baseFont.Draw("Boss #"+i+": "+MathHelper.NumberToString(GetPlayerBoss(i+1).mood,4), 10, 270 + i*13)
-				Next
-
-
-				GetWorld().RenderDebug(660,0, 140, 160)
-				'GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
-			EndIf
+			RenderSideDebug()
 
 			if GameConfig.observerMode
 				local playerNum:int = 0
@@ -1414,7 +1433,28 @@ endrem
 			App.SaveScreenshot(GetSpriteFromRegistry("gfx_startscreen_logoSmall"))
 			App.prepareScreenshot = False
 		EndIf
+rem
 
+		SetColor 100,0,0
+		DrawRect(0,520,250,80)
+		SetColor 255,255,255
+		GetBitmapFont("Default", 16).Draw("[x] wurde "+ appTerminateRegistered+"x geklickt.", 20, 525)
+		if not App.pausedBy
+			GetBitmapFont("Default", 16).Draw("Keine Pause", 20, 540)
+		else
+			GetBitmapFont("Default", 16).Draw("Grund fuer Pause: "+ App.pausedBy, 20, 540)
+		endif
+		if App.ExitAppDialogue
+			GetBitmapFont("Default", 16).Draw("ExitDialog existiert", 20, 555)
+		else
+			GetBitmapFont("Default", 16).Draw("kein ExitDialog vorhanden", 20, 555)
+		endif
+		if App.EscapeMenuWindow
+			GetBitmapFont("Default", 16).Draw("EscapeMenue existiert", 20, 570)
+		else
+			GetBitmapFont("Default", 16).Draw("kein EscapeMenue vorhanden", 20, 570)
+		endif
+endrem
 
 		GetGraphicsManager().Flip(GetDeltaTimer().HasLimitedFPS())
 
@@ -1443,13 +1483,16 @@ endrem
 		'store closing time of this modal window (does not matter which
 		'one) to skip creating another menu window  within a certain
 		'timeframe
-		EscapeMenuWindowTime = MilliSecs()
+		EscapeMenuWindowTime = Time.MilliSecsLong()
 
 		'not interested in other windows
 		If window <> EscapeMenuWindow Then Return False
 
 		'remove connection to global value (guimanager takes care of fading)
 		TApp.EscapeMenuWindow = Null
+
+		'RONNY: debug
+		TLogger.Log("Dialogues", "Closing Escape-Menu, continuing game.", LOG_DEBUG)
 
 		App.SetPausedBy(PAUSED_BY_ESCAPEMENU, False)
 
@@ -1460,7 +1503,7 @@ endrem
 
 	Function CreateEscapeMenuwindow:Int()
 		'100ms since last window
-		If MilliSecs() - EscapeMenuWindowTime < 100 Then Return False
+		If Time.MillisecsLong() - EscapeMenuWindowTime < 100 Then Return False
 
 		'remove gui objects in a broken "dragged" state (removal missed
 		'somehow)
@@ -1469,21 +1512,38 @@ endrem
 			print "Removed forgotten dragged element " + obj.GetClassName()
 		Next
 
-		EscapeMenuWindowTime = MilliSecs()
+		EscapeMenuWindowTime = Time.MilliSecsLong()
 
 		App.SetPausedBy(TApp.PAUSED_BY_ESCAPEMENU)
 
 		TGUISavegameListItem.SetTypeFont(GetBitmapFont(""))
-
+rem
 		EscapeMenuWindow = New TGUIModalWindowChain.Create(New TVec2D, New TVec2D.Init(400,150), "SYSTEM")
 		EscapeMenuWindow.SetZIndex(99000)
 		EscapeMenuWindow.SetCenterLimit(new TRectangle.setTLBR(20,0,0,0))
 		EscapeMenuWindow.Open()
 
-		'append menu after creation of screen ares, so it recenters properly
+		'append menu after creation of screen area, so it recenters properly
 		local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New TVec2D, New TVec2D.Init(300,355), "SYSTEM")
 		EscapeMenuWindow.SetContentElement(mainMenu)
 		mainMenu.SetCaption(GetLocale("MENU"))
+
+		'menu is always ingame...
+		EscapeMenuWindow.SetDarkenedArea(New TRectangle.Init(0,0,800,385))
+		'center to this area
+		EscapeMenuWindow.SetScreenArea(New TRectangle.Init(0,0,800,385))
+endrem
+
+		
+		EscapeMenuWindow = New TGUIModalWindowChain.Create(New TVec2D, New TVec2D.Init(400,150), "SYSTEM")
+		EscapeMenuWindow.SetZIndex(99000)
+		EscapeMenuWindow.SetCenterLimit(new TRectangle.setTLBR(20,0,0,0))
+
+		'append menu after creation of screen area, so it recenters properly
+		local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New TVec2D, New TVec2D.Init(300,355), "SYSTEM")
+		mainMenu.SetCaption(GetLocale("MENU"))
+
+		EscapeMenuWindow.SetContentElement(mainMenu)
 
 		'menu is always ingame...
 		EscapeMenuWindow.SetDarkenedArea(New TRectangle.Init(0,0,800,385))
@@ -1499,7 +1559,7 @@ endrem
 		'store closing time of this modal window (does not matter which
 		'one) to skip creating another exit dialogue within a certain
 		'timeframe
-		ExitAppDialogueTime = MilliSecs()
+		ExitAppDialogueTime = Time.MilliSecsLong()
 
 		'not interested in other dialogues
 		If dialogue <> ExitAppDialogue Then Return False
@@ -1534,9 +1594,15 @@ endrem
 
 	Function CreateConfirmExitAppDialogue:Int(quitToMainMenu:int=True)
 		'100ms since last dialogue
-		If MilliSecs() - ExitAppDialogueTime < 100 Then Return False
+		If Time.MilliSecsLong() - ExitAppDialogueTime < 100
+			TLogger.Log("Dialogues", "Skip opening Exit-dialogue, was opened <100ms before.", LOG_DEBUG)
+			Return False
+		endif
 
-		ExitAppDialogueTime = MilliSecs()
+		TLogger.Log("Dialogues", "User hit [x], create Exit-dialogue.", LOG_DEBUG)
+
+
+		ExitAppDialogueTime = Time.MilliSecsLong()
 
 		App.SetPausedBy(TApp.PAUSED_BY_EXITDIALOGUE)
 
@@ -1544,7 +1610,7 @@ endrem
 		ExitAppDialogue.SetDialogueType(2)
 		ExitAppDialogue.SetZIndex(100000)
 		ExitAppDialogue.data.AddNumber("quitToMainMenu", quitToMainMenu)
-		ExitAppDialogue.Open()
+	'	ExitAppDialogue.Open()
 
 		'limit to "screen" area
 		If GetGame().gamestate = TGame.STATE_RUNNING
@@ -2500,6 +2566,9 @@ Type TScreen_MainMenu Extends TGameScreen
 
 		App.EscapeMenuWindow = loadGameMenuWindow
 		loadGameMenuWindow = null
+
+		'RONNY: debug
+		TLogger.Log("Dialogues", "Created LoadGame-Menu.", LOG_DEBUG)
 	End Method
 	
 
@@ -2711,11 +2780,11 @@ Type TScreen_NetworkLobby Extends TGameScreen
 
 	Method GetOnlineIP:Int()
 		Local Onlinestream:TStream	= ReadStream("http::www.tvgigant.de/lobby/lobby.php?action=MyIP")
-		Local timeouttimer:Int		= MilliSecs()+5000 '5 seconds okay?
+		Local timeouttimer:Long		= Time.MilliSecsLong()+5000 '5 seconds okay?
 		Local timeout:Byte			= False
 		If Not Onlinestream Then Throw ("Not Online?")
 		While Not Eof(Onlinestream) Or timeout
-			If timeouttimer < MilliSecs() Then timeout = True
+			If timeouttimer < Time.MilliSecsLong() Then timeout = True
 			Local responsestring:String = ReadLine(Onlinestream)
 			Local responseArray:String[] = responsestring.split("|")
 			If responseArray <> Null
@@ -2743,17 +2812,17 @@ Type TScreen_NetworkLobby Extends TGameScreen
 			If Network.OnlineIP = "" Then GetOnlineIP()
 
 			If Network.OnlineIP
-				If Network.LastOnlineRequestTimer + Network.LastOnlineRequestTime < MilliSecs()
+				If Network.LastOnlineRequestTimer + Network.LastOnlineRequestTime < Time.MilliSecsLong()
 	'TODO: [ron] rewrite handling
-					Network.LastOnlineRequestTimer = MilliSecs()
+					Network.LastOnlineRequestTimer = Time.MilliSecsLong()
 					Local Onlinestream:TStream   = ReadStream("http::www.tvgigant.de/lobby/lobby.php?action=ListGames")
-					Local timeOutTimer:Int = MilliSecs()+2500 '2.5 seconds okay?
+					Local timeOutTimer:Long = Time.MillisecsLong()+2500 '2.5 seconds okay?
 					Local timeOut:Int = False
 					
 					If Not Onlinestream Then Throw ("Not Online?")
 
 					While Not Eof(Onlinestream) Or timeout
-						If timeouttimer < MilliSecs() Then timeout = True
+						If timeouttimer < Time.MilliSecsLong() Then timeout = True
 						
 						Local responsestring:String = ReadLine(Onlinestream)
 						Local responseArray:String[] = responsestring.split("|")
