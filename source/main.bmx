@@ -920,7 +920,7 @@ endrem
 
 				
 					If Not GetPlayer().GetFigure().isChangingRoom()
-						if not KEYMANAGER.IsDown(KEY_LSHIFT)
+						if not KEYMANAGER.IsDown(KEY_LSHIFT) and not KEYMANAGER.IsDown(KEY_RSHIFT)
 							if GameConfig.observerMode
 								If KEYMANAGER.IsHit(KEY_1) Then GameConfig.SetObservedObject( GetPlayer(1).GetFigure() )
 								If KEYMANAGER.IsHit(KEY_2) Then GameConfig.SetObservedObject( GetPlayer(2).GetFigure() )
