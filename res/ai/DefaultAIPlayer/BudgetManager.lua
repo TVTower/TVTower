@@ -22,9 +22,14 @@ function BudgetManager:typename()
 end
 
 function BudgetManager:ResetDefaults()
-	self.BudgetMinimum = 0  -- Minimalbetrag des Budgets
-	self.BudgetMaximum = 0  -- Maximalbetrag des Budgets
-	self.SavingParts = 0.2 -- Wie viel Prozent des Budgets werden für Investitionen aufgespart?
+	-- Minimum value of the budgets
+	self.BudgetMinimum = 0
+	-- Maximum value of the budget 
+	self.BudgetMaximum = 0
+	-- Percentage of the budget to save for investments
+	self.SavingParts = 0.2
+	-- Percentage to add on fixed costs "to make sure it is enough"
+	self.ExtraFixedCostsSavingsPercentage = 0.6
 end
 
 function BudgetManager:Initialize()
@@ -155,7 +160,8 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 	end
 	
 	TVT.addToLog(string.left("Echte Fixkosten:", 20, true) .. string.right(allFixedCostsSavings, 10, true))
-	allFixedCostsSavings = allFixedCostsSavings * 0.7 --Später einstellbar, je nach Charakter: Im Moment 70% der Fixkosten auf jeden Fall bereit halten.
+	--character riskyness defines how much to save "extra"
+	allFixedCostsSavings = allFixedCostsSavings * self.ExtraFixedCostsSavingsPercentage
 	TVT.addToLog(string.left("Fixkosten-Reserve:", 20, true) .. string.right(allFixedCostsSavings, 10, true))
 	
 	if budgetUnits == 0 then budgetUnits = 1 end	
@@ -248,9 +254,9 @@ end
 
 function BudgetManager:OnMoneyChanged(value, reason, reference)
 	if (reference ~= nil) then
-		TVT.addToLog("$$ Ueberweisung: " .. value .. " fuer " .. reason .. ": " .. reference:GetTitle())	
+		TVT.addToLog("$$ Money changed (" .. TVT.Constants.PlayerFinanceEntryType.GetAsString(reason) ..") : " .. value .. " for \"" .. reference:GetTitle() .. "\"")	
 	else
-		TVT.addToLog("$$ Ueberweisung: " .. value .. " fuer " .. reason)	
+		TVT.addToLog("$$ Money changed (" .. TVT.Constants.PlayerFinanceEntryType.GetAsString(reason) ..") : " .. value)
 	end
 
 	local renewBudget = false

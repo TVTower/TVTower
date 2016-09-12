@@ -553,6 +553,19 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	End Method
 
 
+	Method HasSource:int(obj:object) {_exposeToLua}
+		if TProgrammeLicence(obj)
+			return TProgrammeLicence(obj) = licence
+		endif
+		return Super.HasSource(obj)
+	End Method
+
+
+	Method GetSource:object() {_exposeToLua}
+		return self.licence
+	End Method
+	
+
 	Method GetEpisodeNumber:int() {_exposeToLua}
 		return licence.GetEpisodeNumber()
 	End Method
