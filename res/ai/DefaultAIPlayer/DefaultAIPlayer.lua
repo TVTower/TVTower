@@ -81,6 +81,11 @@ function DefaultAIPlayer:initializePlayer()
 	--Handlungsgeschwindigkeit 2-4
 	self.BrainSpeed = math.random(2,4)
 	self.Strategy = DefaultStrategy()
+
+	-- budget saving from 10-30%
+	self.Budget.SavingParts = 0.1 + 0.05 * math.random(0,4)
+	-- extra safety add-to-fixed-costs from 40-70%
+	self.Budget.ExtraFixedCostsSavingsPercentage = 0.4 + 0.10 * math.random(0,3)
 end
 
 function DefaultAIPlayer:resume()

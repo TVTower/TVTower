@@ -188,6 +188,16 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method HasSource:int(obj:object) {_exposeToLua}
+		return obj = self
+	End Method
+
+
+	Method GetSource:object() {_exposeToLua}
+		return self
+	End Method
+
+
 	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		self.SetState(self.STATE_RUNNING)
 	End Method

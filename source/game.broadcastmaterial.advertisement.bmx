@@ -50,6 +50,19 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 	End Method
 
 
+	Method HasSource:int(obj:object) {_exposeToLua}
+		if TAdContract(obj)
+			return TAdContract(obj) = self.contract
+		endif
+		return Super.HasSource(obj)
+	End Method
+
+
+	Method GetSource:object() {_exposeToLua}
+		return self.contract
+	End Method
+
+
 	'override default getter
 	Method GetDescription:string() {_exposeToLua}
 		Return contract.GetDescription()

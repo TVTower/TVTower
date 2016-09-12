@@ -47,6 +47,9 @@ function TaskMovieDistributor:Activate()
 
 	self.MoviesAtDistributor = {}
 	self.MoviesAtAuctioneer = {}
+
+
+	debugMsg("    Task information: CurrentBudget=" .. self.CurrentBudget .. "  CurrentBargainBudget=" .. self.CurrentBargainBudget .. "  ProgrammesPossessed=" .. self.ProgrammesPossessed)
 end
 
 
@@ -162,7 +165,9 @@ function JobBuyStartProgramme:Tick()
 		if (table.count(buyStartMovies) >= moviesNeeded or v.GetPrice(TVT.ME) < startMovieBudget) then
 			debugMsg("Buying start programme licence: " .. v.GetTitle() .. " (" .. v.GetId() .. ") - Price: " .. v:GetPrice(TVT.ME))
 			TVT.md_doBuyProgrammeLicence(v.GetId())
-			
+
+			--attention: we subtract from the overall "buying programme"
+			--           budget!
 			self.MovieDistributorTask:PayFromBudget(v:GetPrice(TVT.ME))
 			self.MovieDistributorTask.CurrentBargainBudget = self.MovieDistributorTask.CurrentBargainBudget - v:GetPrice(TVT.ME)							
 
@@ -278,19 +283,19 @@ function JobAppraiseMovies:Tick()
 	self.Status = JOB_STATUS_DONE
 end
 
+
 function JobAppraiseMovies:AdjustMovieNiveau()
 	local player = _G["globalPlayer"]
 	local stats = player.Stats
 	local movieBudget = self.MovieDistributorTask.BudgetWholeDay
-	local maxPrice = movieBudget / 2;
 
-	local maxQualityMovies = stats.MovieQualityAcceptable.MaxValue;
-	local minQualityMovies = stats.MovieQualityAcceptable.MinValue;
-	local maxQualitySeries = stats.SeriesQualityAcceptable.MaxValue;
-	local minQualitySeries = stats.SeriesQualityAcceptable.MinValue;
+	local maxQualityMovies = stats.MovieQualityAcceptable.MaxValue
+	local minQualityMovies = stats.MovieQualityAcceptable.MinValue
+	local maxQualitySeries = stats.SeriesQualityAcceptable.MaxValue
+	local minQualitySeries = stats.SeriesQualityAcceptable.MinValue
 
-	self.MovieMaxPrice = maxPrice
-	self.SeriesMaxPrice = maxPrice
+	self.MovieMaxPrice = movieBudget * 0.75
+	self.SeriesMaxPrice = movieBudget * 0.9
 
 	local ScopeMovies = maxQualityMovies - minQualityMovies
 	self.PrimetimeMovieMinQuality = math.round(minQualityMovies + (ScopeMovies * 0.75))
@@ -299,9 +304,14 @@ function JobAppraiseMovies:AdjustMovieNiveau()
 	local ScopeSeries = maxQualitySeries - minQualitySeries
 	self.PrimetimeSeriesMinQuality = math.round(minQualitySeries + (ScopeSeries * 0.75))
 	self.DaySeriesMinQuality = math.round(minQualitySeries + (ScopeSeries * 0.4))
+
+	debugMsg("Adjusted movies niveau:  MovieMaxPrice=" .. math.floor(self.MovieMaxPrice) .."  PrimetimeMovieMinQuality=" .. self.PrimetimeMovieMinQuality .. "  DayMovieMinQuality=" .. self.DayMovieMinQuality)
+	debugMsg("         series niveau:  SeriesMaxPrice=" .. math.floor(self.SeriesMaxPrice) .."  PrimetimeSeriesMinQuality=" .. self.PrimetimeSeriesMinQuality .. "  DaySeriesMinQuality=" .. self.DaySeriesMinQuality)
 end
 
+
 function JobAppraiseMovies:AppraiseCurrentMovie()
+	--debugMsg("AppraiseCurrentMovie #" .. self.CurrentMovieIndex)
 	local movie = self.MovieDistributorTask.MoviesAtDistributor[self.CurrentMovieIndex]
 	if (movie ~= nil) then
 		self:AppraiseMovie(movie)
@@ -310,6 +320,7 @@ function JobAppraiseMovies:AppraiseCurrentMovie()
 		self.AllMoviesChecked = true
 	end
 end
+
 
 function JobAppraiseMovies:AppraiseCurrentAuction()
 	local movie = self.MovieDistributorTask.MoviesAtAuctioneer[self.CurrentAuctionIndex]
@@ -321,14 +332,21 @@ function JobAppraiseMovies:AppraiseCurrentAuction()
 	end
 end
 
+
+-- sets attractiveness of licences ... if fitting
 function JobAppraiseMovies:AppraiseMovie(licence)
+	--debugMsg("  AppraiseMovie \"" .. licence.GetTitle() .. "\"")
 	local player = _G["globalPlayer"]
 	local stats = player.Stats
 	local pricePerBlockStats = nil
 	local qualityStats = nil
 
+	-- reset attractiveness, if it fits to the CURRENT conditions, it
+	-- gets updated accordingly
+	licence.SetAttractiveness(0)
+
 	-- satisfied basic requirements?
-	if (licence.IsSingle()) then
+	if (licence.IsSingle() == 1) then
 		if (CheckMovieBuyConditions(licence, self.MovieMaxPrice, self.DayMovieMinQuality)) then
 			pricePerBlockStats = stats.MoviePricePerBlockAcceptable
 			qualityStats = stats.MovieQualityAcceptable
@@ -347,14 +365,15 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 	-- the cheaper the better
 	local financeFactor = licence:GetPricePerBlock() / pricePerBlockStats.AverageValue
 	financeFactor = CutFactor(financeFactor, 0.2, 2)
-	--debugMsg("licence.GetPricePerBlock: " .. licence.GetPricePerBlock() .. " ; pricePerBlockStats.AverageValue: " .. pricePerBlockStats.AverageValue)
+	--debugMsg("licence: GetPricePerBlock=" .. licence.GetPricePerBlock() .. "  pricePerBlockStats.AverageValue=" .. pricePerBlockStats.AverageValue)
 
 	-- the higher the quality the better
 	local qualityFactor = licence.GetQuality() / qualityStats.AverageValue
 	qualityFactor = CutFactor(qualityFactor, 0.2, 2)
-	--debugMsg("licence.Quality: " .. licence.GetQuality() .. " ; qualityStats.AverageValue: " .. qualityStats.AverageValue)
+	--debugMsg("licence: Quality=" .. licence.GetQuality() .. "  qualityStats.AverageValue=" .. qualityStats.AverageValue)
+
 	licence.SetAttractiveness(financeFactor * qualityFactor)
-	--debugMsg("MovieLicence-Attractiveness: ===== " .. licence.GetAttractiveness() .. " ===== ; financeFactor: " .. financeFactor .. " ; qualityFactor: " .. qualityFactor)
+	--debugMsg("Licence: Attractiveness=" .. licence.GetAttractiveness() .. "  financeFactor=" .. financeFactor .. "  qualityFactor=" .. qualityFactor)
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
