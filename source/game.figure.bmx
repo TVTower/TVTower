@@ -16,10 +16,7 @@ Type TFigureCollection extends TFigureBaseCollection
 
 	Method New()
 		if not _eventsRegistered
-			'TFigure can handle rooms, TFigureBase not - so listen only
-			'in this collection
-			EventManager.registerListenerFunction("room.onLeave", onLeaveRoom)
-			EventManager.registerListenerFunction("room.onEnter", onEnterRoom)
+			'...
 
 			_eventsRegistered = TRUE
 		Endif
@@ -61,30 +58,6 @@ Type TFigureCollection extends TFigureBaseCollection
 	Method GetByGUID:TFigure(guid:string)
 		Return TFigure(Super.GetByGUID(guid))
 	End Method
-
-
-	'=== EVENTS ===
-
-	'gets called when the figure really enters a room (fadeout animation finished etc)
-	Function onEnterRoom:Int(triggerEvent:TEventBase)
-		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
-		local room:TRoomBase = TRoomBase(triggerEvent.getSender())
-		if not figure or not room then return FALSE
-
-		local door:TRoomDoorBase = TRoomDoorBase( triggerEvent.getData().get("door") )
-
-		figure.FinishEnterRoom(room, door)
-	End Function
-
-
-	'gets called when the figure really leaves a room (fadein animation finished etc)
-	Function onLeaveRoom:Int(triggerEvent:TEventBase)
-		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
-		local room:TRoom = TRoom(triggerEvent.getSender())
-		if not figure or not room then return FALSE
-
-		figure.FinishLeaveRoom(room)
-	End Function
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -103,9 +76,10 @@ Type TFigure extends TFigureBase
 	Field fadeOnChangingRoom:int = False
 	
 	'the door used (there might be multiple)
-	Field fromDoor:TRoomDoorBase = Null
+	Field usedDoor:TRoomDoorBase = Null
 	'coming from room
 	Field fromRoom:TRoomBase = Null
+	'going to room
 	Field inRoom:TRoomBase = Null
 
 	'network sync position timer
@@ -155,8 +129,7 @@ Type TFigure extends TFigureBase
 
 		'reassign rooms
 		if inRoom then inRoom = GetRoomCollection().Get(inRoom.id)
-		if fromRoom then fromRoom = GetRoomCollection().Get(fromRoom.id)
-		if fromDoor then fromDoor = GetRoomDoorBaseCollection().Get(fromDoor.id)
+		if usedDoor then usedDoor = GetRoomDoorBaseCollection().Get(usedDoor.id)
 		For local target:object = EachIn targets
 			if TRoomDoorBase(target) then target = GetRoomDoorBaseCollection().Get(TRoomDoorBase(target).id)
 		Next
@@ -168,41 +141,15 @@ Type TFigure extends TFigureBase
 
 
 	Method onGameStart:int()
-		'we do this on game start, not on "savegame load" as we need
-		'to be sure "AI" is connected already (else it wont get informed)
-		if IsLeavingRoom()
-			if not inRoom
-				TLogger.Log("TFigure.onGameStart", "Cannot fix broken LeavingRoom-State, figure not in a room!", LOG_ERROR)
-				return False
-			endif
 
-			TLogger.Log("TFigure.onGameStart", "Fixed LeaveRoom-State for figure: "+name+".", LOG_DEBUG)
-
-			LeaveRoom(True)
-			if inRoom then inRoom.FinishLeave(self)
-			FinishLeaveRoom(inRoom)
-'			WaitEnterTimer = -1
-'			WaitLeavingTimer = -1
-		endif		
-rem
-		if IsEnteringRoom()
-			print "fix EnterRoom-State for figure: "+name
-
-			currentReachTargetStep = 0
-			currentAction = ACTION_IDLE
-				if TRoomDoorBase(GetTarget())
-					local door:TRoomDoorBase = TRoomDoorBase(GetTarget())
-					local room:TRoomBase = GetRoomBaseCollection().Get(door.roomID)
-					room.RemoveOccupant(self)
-				endif
-				
-'				FinishLeaveRoom( inRoom )
-			endif
+		're-start leavin/entering actions
+		if currentAction = ACTION_ENTERING
+			'SetInRoom(null)
+			'BeginEnterRoom(usedDoor, inRoom)
+		elseif currentAction = ACTION_LEAVING
+			SetInRoom(inRoom)
+			BeginLeaveRoom()
 		endif
-endrem
-
-'			FinishEnterRoom(room, door)
-'		endif
 	End Method
 
 
@@ -521,31 +468,18 @@ endrem
 
 	'override to add room support
 	Method IsInBuilding:int()
-		If isChangingRoom() Then Return False
-		If inRoom Then Return False
+		If IsChangingRoom() Then Return False
+		If isInRoom() Then Return False
 		Return True
 	End Method
 
 
 	'override to add support for rooms
-	Method IsInRoom:Int(roomName:String="", checkFromRoom:Int=False)
-		If checkFromRoom
-			'when checking "fromRoom", fromRoom has to be set AND
-			'inroom <> null (then figure is NOT in the building!)
-
-			'check for specified room
-			If roomName <> ""
-				Return (inRoom And inRoom.Name.toLower() = roomname.toLower()) Or (inRoom And fromRoom And fromRoom.Name.toLower() = roomname.toLower())
-			'just check if we are in a unspecified room
-			Else
-				Return inRoom <> null
-			Endif
+	Method IsInRoom:Int(roomName:String="")
+		If roomName <> ""
+			Return (inRoom And inRoom.Name.toLower() = roomname.toLower())
 		Else
-			If roomName <> ""
-				Return (inRoom And inRoom.Name.toLower() = roomname.toLower())
-			Else
-				Return inRoom <> null
-			EndIf
+			Return inRoom <> null
 		EndIf
 	End Method
 
@@ -563,28 +497,15 @@ endrem
 	End Method
 
 
-	'override
-	Method GetFromRoomID:Int()
-		if fromRoom then return fromRoom.id
+	Method GetUsedDoorID:Int()
+		if usedDoor then return usedDoor.id
 
-		return Super.GetFromRoomID()
+		return Super.GetUsedDoorID()
 	End Method
 
 
-	Method GetFromRoom:object()
-		return fromRoom
-	End Method
-
-
-	Method GetFromDoorID:Int()
-		if fromDoor then return fromDoor.id
-
-		return Super.GetFromDoorID()
-	End Method
-
-
-	Method GetFromDoor:object()
-		return fromDoor
+	Method GetUsedDoor:object()
+		return usedDoor
 	End Method
 
 
@@ -598,15 +519,6 @@ endrem
 
 	'player is now in room "room"
 	Method SetInRoom:Int(room:TRoomBase)
-		'in all cases: close the door (even if we cannot enter)
-		'Ronny TODO: really needed?
-		'  16/06/27: seems not to be needed
-		If room and TRoomDoorBase(GetTarget())
-			if TRoomDoorBase(GetTarget()).IsOpen()
-				TRoomDoorBase(GetTarget()).Close(self)
-			endif
-		endif
-
 		If room and not room.IsOccupant(self) then room.addOccupant(Self)
 
 		'backup old room as origin
@@ -616,7 +528,7 @@ endrem
 	 	inRoom = room
 
 		'inform others that room is changed
-		EventManager.triggerEvent( TEventSimple.Create("figure.SetInRoom", self, inroom) )
+		EventManager.triggerEvent( TEventSimple.Create("figure.SetInRoom", null, self, inroom) )
 	End Method
 
 
@@ -625,7 +537,7 @@ endrem
 		If kickFigure = self then return FALSE
 
 		'fetch at least the main door if none is provided
-		local door:TRoomDoorBase = kickFigure.fromDoor
+		local door:TRoomDoorBase = kickFigure.usedDoor
 		if not door and room then door = GetRoomDoorCollection().GetMainDoorToRoom(room.id)
 
 		TLogger.log("TFigure.KickFigureFromRoom()", name+" kicks "+ kickFigure.name + " out of room: "+room.name, LOG_DEBUG)
@@ -641,7 +553,6 @@ endrem
 		kickFigure.LeaveRoom(True)
 		Return True
 	End Method
-
 
 
 	'overridden to add support for roombase and roomdoorbase
@@ -666,12 +577,35 @@ endrem
 		'need a room and a door
 		if not room or not door then return False
 
+		'figure is already in that room - so just enter
+		if room.isOccupant(self) or inRoom = room then return TRUE
+
+		'=== INFORM OTHERS ===
+		'inform that figure now begins entering the room
+		'(eg. for players informing the ai)
+		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterRoom", new TData.Add("room", room).Add("door", door) , self, room) )
+
+		'Debug
+		'print "--------------------------------------------"
+		'print self.name+" ENTERING " + room.GetName() +" ["+room.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
 
 		'if already in another room, leave that first
-		if inRoom then LeaveRoom(True)
+		if inRoom
+			'print "         LEAVE FIRST: " + inRoom.name
+			LeaveRoom(True)
+		endif
 
-		'figure is already in that room - so just enter
-		if room.isOccupant(self) then return TRUE
+
+		'try to enter the room 
+		if not TryEnterRoom(door, room, forceEnter)
+			return False
+		endif
+
+		BeginEnterRoom(door, room)
+	End Method
+
+
+	Method TryEnterRoom:int(door:TRoomDoorBase, room:TRoomBase, forceEnter:int = False)
 
 		'something (bomb, renovation, ...) does not allow access to this
 		'room for now
@@ -707,12 +641,17 @@ endrem
 		EventManager.triggerEvent(event)
 		'stop entering
 		if event.IsVeto() then return False
-		
-		'enter is allowed - set time of start
-		changingRoomStart = GetBuildingTime().GetMillisecondsGone()
 
-		'actually enter the room
-		room.BeginEnter(door, self, TRoomBase.ChangeRoomSpeed/2)
+		return True
+	End Method
+
+
+	Method BeginEnterRoom:int(door:TRoomDoorBase, room:TRoomBase)
+		'set time of start
+		changingRoomBuildingTimeStart = GetBuildingTime().GetMillisecondsGone()
+		changingRoomBuildingTimeEnd = GetBuildingTime().GetMillisecondsGone() + changingRoomTime
+		changingRoomRealTimeStart = Time.GetTimeGone()
+		changingRoomRealTimeEnd = Time.GetTimeGone() + changingRoomTime
 
 		'inform what the figure does now
 		currentAction = ACTION_ENTERING
@@ -721,12 +660,8 @@ endrem
 		WaitEnterTimer = -1
 
 		'Debug
-		'print self.name+" START ENTERING " + room.GetName() +" ["+room.id+"]"
-
-		'inform ALL about this
-		EventManager.triggerEvent(TEventSimple.Create("figure.onBeginEnterRoom", null, self, room))
-
-
+		'print self.name+" START ENTERING " + room.GetName() +" ["+room.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
+	
 		'do not fade when it is a fake room
 		fadeOnChangingRoom = True
 		if room.ShowsOccupants() then fadeOnChangingRoom = False
@@ -744,32 +679,52 @@ endrem
 				endif
 			next
 		EndIf
+
+		'set figure already "inRoom" in that moment
+		'(room adds occupant too on "BeginEnter")
+		'print self.name+" SET IN ROOM  (" + Time.GetSystemTime("%H:%I:%S") +")"
+		SetInRoom(room)
+
+		'inform room
+		room.BeginEnter(door, self, changingRoomTime)
+
+		'=== INFORM OTHERS ===
+		'inform that figure now begins entering the room
+		'(eg. for players informing the ai)
+		EventManager.triggerEvent(TEventSimple.Create("figure.onBeginEnterRoom", null, self, room))
 	End Method
 
 
-
-	Method FinishEnterRoom:Int(room:TRoomBase, door:TRoomDoorBase)
-		'=== INFORM OTHERS ===
-		'inform that figure now enters the room
-		'(eg. for players informing the ai)
-		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterRoom", new TData.Add("room", room).Add("door", door) , self, room) )
+	Method FinishEnterRoom:Int()
+		local door:TRoomDoorBase = TRoomDoorBase( GetTarget() )
+		if not door then print "FinishEnterRoom : NO DOOR" 
+		local room:TRoomBase = GetRoomBaseCollection().Get(door.roomID)
+		if not room then print "FinishEnterRoom : NO ROOM" 
 
 		'Debug
-		'print self.name+" FINISH ENTERING " + room.GetName() +" ["+room.id+"]"
+		'print self.name+" FINISH ENTERING " + room.GetName() +" ["+room.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
+		'print "--------------------------------------------"
 
 		'backup the used door
-		fromDoor = door
+		usedDoor = door
 
 		'reset action
 		currentAction = ACTION_IDLE
 
-		changingRoomStart = -1
-
-		'=== SET IN ROOM ===
-		SetInRoom(room)
+		changingRoomBuildingTimeStart = -1
+		changingRoomRealTimeStart = -1
 
 		'finish reaching-target-steps (and remove current target)
 		ReachTargetStep2()
+
+		'inform room
+		room.FinishEnter(self)
+
+
+		'=== INFORM OTHERS ===
+		'inform that figure now entered the room
+		'(eg. for players informing the ai)
+		EventManager.triggerEvent( TEventSimple.Create("figure.onFinishEnterRoom", new TData.Add("room", room).Add("door", door) , self, room) )
 	End Method
 
 
@@ -784,10 +739,12 @@ endrem
 
 		'reset action
 		currentAction = ACTION_IDLE
+
 		'reset wait timer
 		WaitEnterTimer = -1
 
-		changingRoomStart = -1
+		changingRoomBuildingTimeStart = -1
+		changingRoomRealTimeStart = -1
 
 		'stay in building
 		SetInRoom(null)
@@ -814,57 +771,85 @@ endrem
 
 
 	'command to leave a room - "onLeaveRoom" is called when successful
-	Method LeaveRoom:Int(force:Int=False)
+	Method LeaveRoom:Int(forceLeave:Int=False)
 		'skip command if in no room or already leaving
-		if not inroom or isChangingRoom() then return True
+		if not inRoom or isChangingRoom() then return True
+
+		'=== INFORM OTHERS ===
+		'inform that figure now begins entering the room
+		'(eg. for players informing the ai)
+		EventManager.triggerEvent( TEventSimple.Create("figure.onLeaveRoom", null, self, inRoom ) )
+
+		'Debug
+		'print self.name+" LEAVING " + inRoom.GetName() +" ["+inRoom.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
 
 		'=== CHECK IF LEAVING IS ALLOWED ===
 		'skip leaving if not allowed to do so
-		if not force and not CanLeaveroom(inroom) then return False
+		if not forceLeave and not CanLeaveroom(inroom) then return False
 
 		'ask if somebody is against leaving that room
-		'but ignore the result if figure is forced to leave
-		local event:TEventSimple = TEventSimple.Create("figure.onTryLeaveRoom", new TData.Add("door", fromDoor) , self, inroom )
-		EventManager.triggerEvent(event)
-		'stop leaving
-		if not force and event.IsVeto() then return False
+		if not TryLeaveRoom( forceLeave )
+			return False
+		endif
 
 		'inform that a figure forcefully leaves a room (so GUI or so can
 		'get cleared)
-		if force then EventManager.triggerEvent(TEventSimple.Create("figure.onForcefullyLeaveRoom", new TData.Add("door", fromDoor) , self, inroom))
+		if forceLeave
+			EventManager.triggerEvent(TEventSimple.Create("figure.onForcefullyLeaveRoom", new TData.Add("door", usedDoor) , self, inroom))
+		endif
+
+		BeginLeaveRoom()
+	End Method
 
 
-		'=== LEAVE ===
-		'leave is allowed - set time of start
-		changingRoomStart = GetBuildingTime().GetMillisecondsGone()
+	Method TryLeaveRoom:int(forceLeave:int = False)
+		'but ignore the result if figure is forced to leave
+		local event:TEventSimple = TEventSimple.Create("figure.onTryLeaveRoom", new TData.Add("door", usedDoor) , self, inroom )
+		EventManager.triggerEvent(event)
+		'stop leaving
+		if event.IsVeto() then return False
+
+		return True
+	End Method
+
+
+	Method BeginLeaveRoom:int()
+		'set time of start
+		changingRoomBuildingTimeStart = GetBuildingTime().GetMillisecondsGone()
+		changingRoomBuildingTimeEnd = GetBuildingTime().GetMillisecondsGone() + changingRoomTime
+		changingRoomRealTimeStart = Time.GetTimeGone()
+		changingRoomRealTimeEnd = Time.GetTimeGone() + changingRoomTime
 
 		'inform what the figure does now
 		currentAction = ACTION_LEAVING
 
 		'Debug
-		'print self.name+" START LEAVING " + inRoom.GetName() +" ["+inRoom.id+"]"
-
-		'inform ALL about this
-		EventManager.triggerEvent(TEventSimple.Create("figure.onBeginLeaveRoom", null, self, inroom))
+		'print self.name+" START LEAVING " + inRoom.GetName() +" ["+inRoom.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
 
 		'do not fade when it is a fake room
 		fadeOnChangingRoom = True
 		if inRoom.ShowsOccupants() then fadeOnChangingRoom = False
 
-		inRoom.BeginLeave(fromDoor, self, TRoom.ChangeRoomSpeed/2)
+		inRoom.BeginLeave(usedDoor, self, changingRoomTime)
+
+		'=== INFORM OTHERS ===
+		'inform that figure now leaves the room
+		'(eg. for players informing the ai)
+		EventManager.triggerEvent(TEventSimple.Create("figure.onBeginLeaveRoom", null, self, inroom))
 	End Method
 
 
-	'gets called when the figure really leaves the room (animation finished etc)
-	Method FinishLeaveRoom(room:TRoomBase)
+	'gets called when the figure really left the room
+	Method FinishLeaveRoom()
+		local inRoomBackup:TRoomBase = inRoom
 		'Debug
-		'print self.name+" FINISHED LEAVING " + inRoom.GetName() +" ["+inRoom.id+"]"
+		'print self.name+" FINISHED LEAVING " + inRoom.GetName() +" ["+inRoom.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
 
 		'enter target -> null = building
 		SetInRoom( null )
 
 		'remove used door
-		fromDoor = null
+		usedDoor = null
 
 		'reset action
 		currentAction = ACTION_IDLE
@@ -872,10 +857,12 @@ endrem
 		'activate timer to wait a bit after leaving a room
 		WaitLeavingTimer = GetBuildingTime().GetMillisecondsGone() + WaitEnterLeavingTime
 
+		inRoomBackup.FinishLeave(self)
 
-		'inform others that a figure left the room
-		'-> triggers Player-AI etc.
-		EventManager.triggerEvent( TEventSimple.Create("figure.onLeaveRoom", null, self, room ) )
+		'=== INFORM OTHERS ===
+		'inform that figure now leaves the room
+		'(eg. for players informing the ai)
+		EventManager.triggerEvent( TEventSimple.Create("figure.onFinishLeaveRoom", null, self, inRoomBackup ) )
 	End Method
 
 
@@ -884,7 +871,7 @@ endrem
 		if not room.CanEntityLeave(self) then return False
 
 		return True
-	End Method 
+	End Method
 
 
 	Method SendToDoor:Int(door:TRoomDoorBase, forceSend:Int=False)
@@ -1141,6 +1128,20 @@ endrem
 
 
 	Method Update:int()
+		if IsChangingRoom()
+			if GetBuildingTime().GetMillisecondsGone() > changingRoomBuildingTimeEnd or ..
+			   Time.GetTimeGone() > changingRoomRealTimeEnd
+				if currentAction = ACTION_ENTERING
+					FinishEnterRoom()
+				elseif currentAction = ACTION_LEAVING
+					FinishLeaveRoom()
+				else
+					print "UNKNOWN ROOM CHANGE ACTIONSTATE"
+				endif
+			endif
+		endif
+		
+
 		'TODO: make obsolete ;-)
 		'ATTENTION: Call _before_ figure movement
 		FixBrokenEnterLeavingStates()
@@ -1186,7 +1187,11 @@ endrem
 
 		local oldAlpha:Float = GetAlpha()
 		if isChangingRoom() and fadeOnChangingRoom
-			local alpha:float = Min(1.0, float(GetBuildingTime().GetMillisecondsGone() - changingRoomStart) / (TRoom.ChangeRoomSpeed / 2.0))
+			'either use the building time or the real world time
+			'this allows to fade out also with building time = 0
+			local smallestTime:Long = GetBuildingTime().GetMillisecondsGone() - changingRoomBuildingTimeStart
+			smallestTime = Min(smallestTime, Time.GetTimeGone() - changingRoomRealTimeStart)
+			local alpha:float = Min(1.0, smallestTime / (float(changingRoomTime) / 2.0))
 			'to building -> fade in
 			if currentAction = ACTION_LEAVING
 				'nothing to do
@@ -1249,13 +1254,11 @@ endrem
 		DrawRect(pos.x, pos.y, 140, 110)
 
 
-		local fromDoorText:string = ""
-		local fromRoomText:string = ""
+		local usedDoorText:string = ""
 		local inRoomText:string = ""
 		local targetText:string = ""
 		local targetObjText:string = ""
-		if TRoomDoor(fromDoor) then fromDoorText = TRoomDoor(fromDoor).GetRoom().GetName()
-		if TRoom(fromRoom) then fromRoomText = TRoom(fromRoom).GetName()
+		if TRoomDoor(usedDoor) then usedDoorText = TRoomDoor(usedDoor).GetRoom().GetName()
 		if TRoom(inRoom) then inRoomText = TRoom(inRoom).GetName()
 		if GetTarget()
 			targetText = int(GetTargetMovetoPosition().x)+", "+int(GetTargetMovetoPosition().y)
@@ -1272,8 +1275,7 @@ endrem
 		GetBitMapFont("default").Draw("isChangingRoom: "+isChangingRoom(), pos.x+ 5, pos.y + 5 + 1*12)
 		GetBitmapFont("default").draw("IsControllable(): " + IsControllable(), pos.x + 5, pos.y + 5 + 2 * 12)
 		GetBitmapFont("default").draw("CanMove(): " + CanMove(), pos.x + 5, pos.y + 5 + 3 * 12)
-		GetBitmapFont("default").draw("fromDoor: " + fromDoorText, pos.x + 5, pos.y + 5 + 4 * 12)
-		GetBitmapFont("default").draw("fromRoom: " + fromRoomText, pos.x + 5, pos.y + 5 + 5 * 12)
+		GetBitmapFont("default").draw("usedDoor: " + usedDoorText, pos.x + 5, pos.y + 5 + 4 * 12)
 		GetBitmapFont("default").draw("inRoom: " + inRoomText, pos.x + 5, pos.y + 5 + 6 * 12)
 		GetBitmapFont("default").draw("target: " + targetText, pos.x + 5, pos.y + 5 + 7 * 12)
 		GetBitmapFont("default").draw("targetObj: " + targetObjText, pos.x + 5, pos.y + 5 + 8 * 12)

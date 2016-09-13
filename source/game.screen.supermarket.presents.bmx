@@ -64,7 +64,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 		'listen to clicks on the four buttons
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickButtons, "TGUIButton") ]
 		'reset button text when entering a screen
-		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onEnter", onEnterScreen, screen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onBeginEnter", onEnterScreen, screen) ]
 
 		'to update/draw the screen
 		_eventListeners :+ _RegisterScreenHandler( onUpdate, onDraw, screen )

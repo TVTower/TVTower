@@ -126,11 +126,11 @@ Type TScreenHandler_ProgrammePlanner
 		'savegame loaded - clear gui elements
 		_eventListeners :+ [ EventManager.registerListenerFunction("SaveGame.OnLoad", onLoadSavegame) ]
 		'player enters screen - reset the guilists
-		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onEnter", onEnterProgrammePlannerScreen, screen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onBeginEnter", onEnterProgrammePlannerScreen, screen) ]
 		'player leaves screen - only without dragged blocks
 		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnTryLeave", onTryLeaveProgrammePlannerScreen, screen) ]
 		'player leaves screen - clean GUI (especially dragged ones)
-		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnLeave", onLeaveProgrammePlannerScreen, screen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnFinishLeave", onLeaveProgrammePlannerScreen, screen) ]
 		'player leaves office forcefully - clean up
 		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onForcefullyLeaveRoom", onForcefullyLeaveRoom) ]
 

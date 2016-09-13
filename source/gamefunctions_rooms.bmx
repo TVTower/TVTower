@@ -152,8 +152,6 @@ Type RoomHandler_Office extends TRoomHandler
 		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
-
-		GetPlayer().GetFigure().fromroom = Null
 		If MOUSEMANAGER.IsClicked(1)
 			'emulated right click or clicked door
 			If MOUSEMANAGER.IsLongClicked(1) or THelper.MouseIn(25,40,150,295)
@@ -176,7 +174,7 @@ Type RoomHandler_Office extends TRoomHandler
 					SafeToolTip.SetMinTitleAndContentWidth(90, 120)
 					SafeToolTip.Hover()
 					GetGameBase().cursorstate = 1
-					If MOUSEMANAGER.IsClicked(1)
+					If MOUSEMANAGER.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
 						MOUSEMANAGER.resetKey(1)
 						GetGameBase().cursorstate = 0
 
@@ -193,7 +191,7 @@ Type RoomHandler_Office extends TRoomHandler
 					PlannerToolTip.enabled = 1
 					PlannerToolTip.Hover()
 					GetGameBase().cursorstate = 1
-					If MOUSEMANAGER.IsClicked(1)
+					If MOUSEMANAGER.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
 						MOUSEMANAGER.resetKey(1)
 						GetGameBase().cursorstate = 0
 						ScreenCollection.GoToSubScreen("screen_office_programmeplanner")
@@ -209,9 +207,10 @@ Type RoomHandler_Office extends TRoomHandler
 					StationsToolTip.enabled = 1
 					StationsToolTip.Hover()
 					GetGameBase().cursorstate = 1
-					If MOUSEMANAGER.IsClicked(1)
+					If MOUSEMANAGER.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
 						MOUSEMANAGER.resetKey(1)
 						GetGameBase().cursorstate = 0
+print "Player "+GetPlayer().playerID + "   GoToSubscreen: stationmap"
 						ScreenCollection.GoToSubScreen("screen_office_stationmap")
 					endif
 				EndIf
@@ -307,8 +306,6 @@ Type RoomHandler_Boss extends TRoomHandler
 
 
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
-		GetPlayer().GetFigure().fromroom = Null
-
 		smokeEmitter.Update()
 
 		local room:TRoom = TRoom(triggerEvent._sender)

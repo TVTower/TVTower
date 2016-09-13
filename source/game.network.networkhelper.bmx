@@ -491,8 +491,7 @@ Type TNetworkHelper extends TNetworkHelperBase
 		obj.SetFloat( 2, figure.area.GetX() )	'position.x
 		obj.SetFloat( 3, figure.area.GetY() )	'...
 		obj.setInt( 4, figure.GetInRoomID())
-		obj.setInt( 5, figure.GetFromRoomID())
-		obj.setInt( 6, figure.GetFromDoorID())
+		obj.setInt( 5, figure.GetUsedDoorID())
 		Network.BroadcastNetworkObject( obj )
 	End Method
 	
@@ -505,8 +504,7 @@ Type TNetworkHelper extends TNetworkHelperBase
 		local posX:Float = obj.getFloat(2)
 		local posY:Float = obj.getFloat(3)
 		local inRoomID:int = obj.getInt( 4, -1, TRUE )
-		local fromRoomID:int = obj.getInt( 5, -1, TRUE )
-		local fromDoorID:int = obj.getInt( 6, -1, TRUE )
+		local usedDoorID:int = obj.getInt( 5, -1, TRUE )
 
 		If inRoomID <= 0 Then figure.inRoom = Null
 		If figure.inRoom
@@ -514,6 +512,7 @@ Type TNetworkHelper extends TNetworkHelperBase
 				figure.inRoom = GetRoomCollection().Get(inRoomID)
 			EndIf
 		EndIf
+		figure.usedDoor = GetRoomDoorBaseCollection().Get( usedDoorID )
 
 
 		if figure.GetTarget()
@@ -528,14 +527,6 @@ Type TNetworkHelper extends TNetworkHelperBase
 			endif
 		endif
 		
-		
-		If fromRoomID <= 0 Then figure.fromRoom = Null
-		If fromRoomID > 0 And figure.fromroom
-			If figure.fromRoom.id <> fromRoomID
-				figure.fromRoom = GetRoomCollection().Get( fromRoomID )
-				figure.fromDoor = GetRoomDoorBaseCollection().Get( fromDoorID )
-			endif
-		EndIf
 	End Method
 
 

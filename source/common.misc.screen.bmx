@@ -12,7 +12,10 @@ Type TScreenCollection
 	Field baseScreen:TScreen
 	Field currentScreen:TScreen
 	Field targetScreen:TScreen = null
-	Field screens:TMap = CreateMap()					'containing all screens
+	'containing all screens
+	Field screens:TMap = CreateMap()
+	Field screenTransitionActive:int = False
+	
 	Global instance:TScreenCollection
 	Global _screenDimension:TVec2D = new TVec2D.Init(0,0)
 	Global useChangeEffects:int = TRUE
@@ -64,6 +67,11 @@ Type TScreenCollection
 	End Method
 
 
+	Method IsScreenTransitionActive:int()
+		return screenTransitionActive
+	End Method
+	
+
 	Method GoToScreen:int(screen:TScreen=null, screenName:string="")
 		'skip if current screen has same name
 		if currentScreen and currentScreen.name = lower(screenName) then return TRUE
@@ -73,29 +81,40 @@ Type TScreenCollection
 		if currentScreen = screen then return TRUE
 
 		'trigger event so others can attach
-		local event:TEventSimple = TEventSimple.Create("screen.onTryLeave", new TData.Add("toScreen", screen), currentScreen)
-		EventManager.triggerEvent(event)
-		if not event.isVeto()
+		EventManager.triggerEvent( TEventSimple.Create("screen.onLeave", new TData.Add("toScreen", screen), currentScreen) )
+
+		'if on a screen, try to leave first
+		if currentScreen
+			local event:TEventSimple = TEventSimple.Create("screen.onTryLeave", new TData.Add("toScreen", screen), currentScreen)
+			EventManager.triggerEvent(event)
+			if event.isVeto() then return False
+		endif
+
+		'if entering a screen, try to enter
+		if screen
 			local event:TEventSimple = TEventSimple.Create("screen.onTryEnter", new TData.Add("fromScreen", currentScreen), screen)
 			EventManager.triggerEvent(event)
-			if not event.isVeto()
-				EventManager.triggerEvent( TEventSimple.Create("screen.onLeave", new TData.Add("toScreen", screen), currentScreen) )
-				'instead of assigning currentScreen directly we use a setter
-				'so visual effects can happen first
-				'there is an effect to handle first - so set target instead of current screen
-				if useChangeEffects and currentScreen and currentScreen.HasScreenChangeEffect(screen)
-					return _SetTargetScreen(screen)
-				else
-					'reset a potential existing target screen
-					targetScreen = null
-					return _SetCurrentScreen(screen)
-				endif
-
-				'screen.onFinishLeave is called via "_SetCurrentScreen"
-				'which is also called via _SetTargetScreen and when then
-				'finishing the animation
-			endif
+			if event.isVeto() then return False
 		endif
+
+		EventManager.triggerEvent( TEventSimple.Create("screen.onBeginLeave", new TData.Add("toScreen", screen), currentScreen) )
+	
+
+		'instead of assigning currentScreen directly we use a setter
+		'so visual effects can happen first
+		'there is an effect to handle first - so set target instead of current screen
+		if useChangeEffects and currentScreen and currentScreen.HasScreenChangeEffect(screen)
+			return _SetTargetScreen(screen)
+		else
+			'reset a potential existing target screen
+			targetScreen = null
+			return _SetCurrentScreen(screen)
+		endif
+
+		'screen.onFinishLeave is called via "_SetCurrentScreen"
+		'which is also called via _SetTargetScreen and when then
+		'finishing the animation
+
 		return FALSE
 	End Method
 
@@ -111,7 +130,7 @@ print "_SetCurrentScreen ["+currentName+" -> "+screenName+"]"
 endrem
 		if screen <> currentScreen
 			if screen
-'print "                : begin enter"
+'print "               : begin enter [to: " + screen.name+"]"
 				screen.BeginEnter(currentScreen)
 			EndIf
 			local oldScreen:TScreen = currentScreen
@@ -120,11 +139,18 @@ endrem
 
 			'if not currentScreen then currentScreen = baseScreen
 		endif
+
+		'finished transition in all cases
+		screenTransitionActive = False
+
 		return TRUE
 	End Method
 
 
 	Method _SetTargetScreen:int(screen:TScreen)
+		'starting transition in all cases
+		screenTransitionActive = True
+
 rem
 local screenName:string = "NULL"
 local currentName:string = "NULL"
@@ -209,12 +235,12 @@ endrem
 		'handle screen change effects (LEAVE) for current screen
 		if targetScreen
 			if useChangeEffects and not GetCurrentScreen().FinishedLeaveEffect()
-				GetCurrentScreen()._leaveScreenEffect.Update(deltaTime)
+				GetCurrentScreen()._leaveScreenEffect.Update()
 			endif
 		'handle screen change effects (ENTER) for current screen
 		else
 			if useChangeEffects and not GetCurrentScreen().FinishedEnterEffect()
-				GetCurrentScreen()._enterScreenEffect.Update(deltaTime)
+				GetCurrentScreen()._enterScreenEffect.Update()
 			endif
 
 			if GetCurrentScreen().state = TScreen.STATE_ENTERING and (not useChangeEffects or GetCurrentScreen().FinishedEnterEffect())
@@ -374,7 +400,7 @@ Type TScreen
 	Method BeginEnter:int(fromScreen:TScreen=null)
 		state = TScreen.STATE_ENTERING
 
-		EventManager.triggerEvent( TEventSimple.Create("screen.onEnter", new TData.Add("fromScreen", fromScreen), self) )
+		EventManager.triggerEvent( TEventSimple.Create("screen.onBeginEnter", new TData.Add("fromScreen", fromScreen), self) )
 
 		Start()
 		if _enterScreenEffect then _enterScreenEffect.Reset()
@@ -417,21 +443,21 @@ End Type
 
 'base class for screen change effects
 Type TScreenChangeEffect
-	Field _finished:int       = FALSE
-	Field _duration:int       = 0		'time the effect runs (in milliseconds)
-	Field _timeLeft:int       = 0
-	Field _waitAtBegin:int    = 0
-	Field _waitAtEnd:int      = 0
-	Field _name:string        = "TScreenChangeEffect"
-	Field _direction:int      = 0
-	Field _progress:float     = 0.0		'0-1.0
-	'Field _progressMax:float  = 1.0		'0-1.0
-	Field _progressOld:float  = 0.0		'for tweening
-	Field _area:TRectangle    = null
+	Field _finished:int = FALSE
+	'time the effect runs (in milliseconds)
+	Field _timeStart:Long = -1
+	Field _duration:int = 0
+	Field _waitAtBegin:int = 0
+	Field _waitAtEnd:int = 0
+	Field _name:string = "TScreenChangeEffect"
+	Field _direction:int = 0
+	'for tweening
+	Field _progressOld:float = 0.0
+	Field _area:TRectangle = null
 	Field ID:int = 0
 	const DIRECTION_CLOSE:int = 0
-	const DIRECTION_OPEN:int  = 1
-	global _lastID:int  = 0
+	const DIRECTION_OPEN:int = 1
+	global _lastID:int = 0
 
 
 	Method New()
@@ -444,9 +470,14 @@ Type TScreenChangeEffect
 		return _duration
 	End Method
 
-	'amount a value has to change per millisecond
-	Method GetSpeed:float()
-		return 1000.0/ (_duration - _waitAtBegin - _waitAtEnd)
+	'returns the duration it takes in realtime
+	Method GetRealtimeDuration:int()
+		return _duration
+	End Method
+
+
+	Method GetCurrentTime:Long()
+		return Time.GetAppTimeGone()
 	End Method
 
 
@@ -468,11 +499,7 @@ Type TScreenChangeEffect
 
 
 	Method SetDuration(milliseconds:int=250)
-		'incorporate potentially gone time
-		local timeGone:int = _duration - _timeLeft
-		_duration = milliseconds - timeGone
-
-		_timeLeft = _duration
+		_duration = milliseconds
 	End Method
 
 
@@ -486,11 +513,21 @@ Type TScreenChangeEffect
 	End Method
 
 
+	Method GetTimeStart:Long()
+		if _timeStart = -1 then _timeStart = GetCurrentTime()
+		return _timeStart
+	End Method
+
+
 	Method Reset()
 		_finished = FALSE
-		_timeLeft = _duration
-		_progress = 0.0
+		_timeStart = GetCurrentTime()
 		_progressOld = 0.0
+	End Method
+
+
+	Method Initialize()
+		Reset()
 	End Method
 
 
@@ -500,29 +537,28 @@ Type TScreenChangeEffect
 	End Method
 
 
+	Method GetProgress:Float()
+		local actionTime:Long = GetDuration() - _waitAtBegin - _waitAtEnd
+		if actionTime <= 0 then return 1.0
+		
+		return Float( Min(1.0, Max(0, double(GetCurrentTime() - GetTimeStart() - _waitAtBegin) / actionTime)))
+	End Method
+	
+
 	Method Draw:int(tweenValue:Float=1.0)	abstract
 
 
-	Method Update:int(deltaTime:float)
+	Method Update:int()
 		if Finished() then return TRUE
 
-		if _duration - _timeLeft  < _waitAtBegin
-			'wait begin
-		elseif _duration - _timeLeft  > _waitAtEnd
-			'move on
-			_progressOld = _progress 'for tweening
-			_progress :+ deltaTime * GetSpeed()
-		else
-			'wait end
+		_progressOld = GetProgress() 'for tweening
+
+		if GetCurrentTime() > GetTimeStart() + GetDuration() or GetProgress() >= 1.0
+			SetFinished(TRUE)
+			return True
 		endif
-		_timeLeft :- int(deltaTime*1000)
 
-
-		'doing this finishes without guarantee of having it rendered
-		'in that moment!
-		'if _progress > _progressMax then SetFinished(TRUE)
-
-		if _timeLeft < 0 then SetFinished(TRUE)
+		return False
 	End Method
 End Type
 
@@ -534,17 +570,29 @@ Type TScreenChangeEffect_SimpleFader extends TScreenChangeEffect
 
 	Method Create:TScreenChangeEffect_SimpleFader(direction:int=0, area:TRectangle=null)
 		_direction = direction
-		SetDuration(350)
+
 		_area = null
 		if area then _area = area.copy()
+
+		Initialize()
+
 		_name = "TScreenChangeEffect_SimpleFader"
 		return self
 	End Method
 
 
+	Method Initialize()
+		Reset()
+		SetDuration(350)
+	End Method
+
+
 	Method Draw:int(tweenValue:Float=1.0)
+		'skip drawing if whole thing takes less than 10 ms
+		if GetRealtimeDuration() < 10 then return False
+		
 		local oldCol:TColor = new TColor.Get()
-		local tweenProgress:float = MathHelper.Tween(_progressOld, _progress, tweenValue)
+		local tweenProgress:float = MathHelper.Tween(_progressOld, GetProgress(), tweenValue)
 		if _direction = DIRECTION_OPEN then tweenProgress = Max(0, 1.0 - tweenProgress)
 
 		SetAlpha tweenProgress
@@ -561,23 +609,33 @@ Type TScreenChangeEffect_ClosingRects extends TScreenChangeEffect_SimpleFader
 	Method Create:TScreenChangeEffect_ClosingRects(direction:int=0, area:TRectangle=null)
 		Super.Create(direction, area)
 		_name = "TScreenChangeEffect_ClosingRects"
-		SetDuration(600)
-		'so it is full black a bit longer
-		if direction = DIRECTION_CLOSE
-			SetWaitAtBegin(0)
-			SetWaitAtEnd(200)
-		else
-			SetWaitAtBegin(200)
-			SetWaitAtEnd(0) 'so it is full black a bit longer
-		endif
+
 		return self
 	End Method
 
 
+	Method Initialize()
+		Super.Initialize()
+
+		SetDuration(500)
+		'so it is full black a bit longer
+		if _direction = DIRECTION_CLOSE
+			SetWaitAtBegin(0)
+			SetWaitAtEnd(100)
+		else
+			SetWaitAtBegin(100)
+			SetWaitAtEnd(0) 'so it is full black a bit longer
+		endif
+	End Method
+
+
 	Method Draw:int(tweenValue:Float=1.0)
+		'skip drawing if whole thing takes less than 100 ms
+		if GetRealtimeDuration() < 100 then return False
+
 		local oldCol:TColor = new TColor.Get()
 		'use a non-linear tween
-		local currentProgress:float = MathHelper.Clamp(MathHelper.Tween(_progressOld, _progress, tweenValue), 0,1)
+		local currentProgress:float = MathHelper.Clamp(MathHelper.Tween(_progressOld, GetProgress(), tweenValue), 0,1)
 		if _direction = DIRECTION_OPEN
 			currentProgress = 1.0 - currentProgress
 		endif
