@@ -127,7 +127,7 @@ Type RoomHandler_News extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverNews, "TGUINews" ) ]
 
 		'figure enters screen - reset the guilists, limit listening to the 4 rooms
-		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onEnter", onEnterNewsPlannerScreen, plannerScreen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onBeginEnter", onEnterNewsPlannerScreen, plannerScreen) ]
 		'also we want to interrupt leaving a room with dragged items
 		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnTryLeave", onTryLeaveNewsPlannerScreen, plannerScreen) ]
 		

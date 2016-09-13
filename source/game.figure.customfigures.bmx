@@ -18,8 +18,8 @@ Type TFigurePostman Extends TFigure
 
 
 	'override to make the figure stay in the room for a random time
-	Method FinishEnterRoom:Int(room:TRoomBase, door:TRoomDoorBase)
-		Super.FinishEnterRoom(room, door)
+	Method FinishEnterRoom:Int()
+		Super.FinishEnterRoom()
 
 		'reset timer so figure stays in room for some time
 		nextActionTimer.Reset()
@@ -84,8 +84,8 @@ Type TFigureJanitor Extends TFigure
 
 
 	'override to make the figure stay in the room for a random time
-	Method FinishEnterRoom:Int(room:TRoomBase, door:TRoomDoorBase)
-		Super.FinishEnterRoom(room, door)
+	Method FinishEnterRoom:Int()
+		Super.FinishEnterRoom()
 
 		'reset timer so figure stays in room for some time
 		nextActionTimer.Reset()
@@ -217,13 +217,13 @@ Type TFigureDeliveryBoy Extends TFigure
 
 
 	'override to make the figure stay in the room for a random time
-	Method FinishEnterRoom:Int(room:TRoomBase, door:TRoomDoorBase)
-		Super.FinishEnterRoom(room, door)
+	Method FinishEnterRoom:Int()
+		Super.FinishEnterRoom()
 
 		'figure now knows where to "deliver"
 		If Not checkedRoomboard Then checkedRoomboard = True
 		'figure entered the intended room -> delivery is finished
-		If room = deliverToRoom Then deliveryDone = True
+		If inRoom = deliverToRoom Then deliveryDone = True
 			
 		'reset timer so figure stays in room for some time
 		nextActionTimer.Reset()

@@ -48,7 +48,7 @@ Type TScreenHandler_Financials
 		'to listen to clicks on the four buttons
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickFinanceButtons, "TGUIArrowButton") ]
 		'to reset finance history scroll position when entering a screen
-		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onEnter", onEnterFinancialScreen, screen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onBeginEnter", onEnterFinancialScreen, screen) ]
 
 		'to update/draw the screens
 		_eventListeners :+ TRoomHandler._RegisterScreenHandler( onUpdateFinancials, onDrawFinancials, screen)

@@ -360,31 +360,36 @@ Type TBuilding Extends TBuildingBase
 	Method ActivateSoftdrinkMachine:Int()
 		softDrinkMachineActive = True
 	End Method
-	
+
+
+	Method CenterToPlayer()
+		if not TVTGhostBuildingScrollMode
+			'something observed?
+			local entity:TSpriteEntity = TSpriteEntity(GameConfig.observedObject)
+			if not entity or not GameConfig.observerMode
+				entity = GetPlayerBase().GetFigure()
+			endif
+			
+			'subtract 7 because of missing "wall" in last floor
+			area.position.y =  2 * floorHeight - 7 + 50 - entity.area.GetY()
+			'add 50 for roof
+		else
+			if MouseManager.y <= 20 then area.position.y :+ ((20 - MouseManager.y) * 0.75)
+			if MouseManager.y >= GetGraphicsManager().GetHeight() - 20 then area.position.y :- ((20 - (GetGraphicsManager().GetHeight() - MouseManager.y)) * 0.75)
+'				ghostScrollingPosition = MathHelper.Clamp(ghostScrollingPosition, - 637, 88)
+
+'				area.position.y = ghostScrollingPosition
+		endif
+	End Method
+
 
 	Method Update:Int()
 		'update softdrinkmachine
 		softDrinkMachine.Update()
 	
 		'center player
-		If not GetPlayerBase().IsInRoom() or GameConfig.observerMode
-			if not TVTGhostBuildingScrollMode
-				'something observed?
-				local entity:TSpriteEntity = TSpriteEntity(GameConfig.observedObject)
-				if not entity or not GameConfig.observerMode
-					entity = GetPlayerBase().GetFigure()
-				endif
-				
-				'subtract 7 because of missing "wall" in last floor
-				area.position.y =  2 * floorHeight - 7 + 50 - entity.area.GetY()
-				'add 50 for roof
-			else
-				if MouseManager.y <= 20 then area.position.y :+ ((20 - MouseManager.y) * 0.75)
-				if MouseManager.y >= GetGraphicsManager().GetHeight() - 20 then area.position.y :- ((20 - (GetGraphicsManager().GetHeight() - MouseManager.y)) * 0.75)
-'				ghostScrollingPosition = MathHelper.Clamp(ghostScrollingPosition, - 637, 88)
-
-'				area.position.y = ghostScrollingPosition
-			endif
+		If not GetPlayerBase().GetFigure().IsInRoom() or GetPlayerBase().GetFigure().IsChangingRoom() or GameConfig.observerMode
+			CenterToPlayer()
 		EndIf
 
 

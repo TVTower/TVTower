@@ -146,9 +146,9 @@ AppTitle = "TVTower: " + VersionString
 TLogger.Log("CORE", "Starting "+APP_NAME+", "+VersionString+".", LOG_INFO )
 
 '===== SETUP LOGGER FILTER =====
-TLogger.setLogMode(LOG_ALL )
-TLogger.setPrintMode(LOG_ALL ) '(LOG_AI | LOG_ERROR | LOG_SAVELOAD )
-'TLogger.SetPrintMode(0) 'all messages off
+'TLogger.setLogMode(LOG_ALL )
+'TLogger.setPrintMode(LOG_ALL ) '(LOG_AI | LOG_ERROR | LOG_SAVELOAD )
+TLogger.SetPrintMode(0) 'all messages off
 'TLogger.SetPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
 'TLogger.changePrintMode(LOG_DEV, FALSE)
@@ -607,13 +607,13 @@ Type TApp
 								DEV_FastForward_BuildingTimeSpeedFactorBackup = GetBuildingTime()._timeFactor
 
 								if KEYMANAGER.IsDown(KEY_RCONTROL)
-									TEntity.globalWorldSpeedFactor :+ 144000
+									TEntity.globalWorldSpeedFactor :+ 200
 									GetWorldTime().AdjustTimeFactor(+8000)
-									GetBuildingTime().AdjustTimeFactor(+144000)
+									GetBuildingTime().AdjustTimeFactor(+200)
 								elseif KEYMANAGER.IsDown(KEY_LCONTROL)
-									TEntity.globalWorldSpeedFactor :+ 36000
+									TEntity.globalWorldSpeedFactor :+ 50
 									GetWorldTime().AdjustTimeFactor(+2000)
-									GetBuildingTime().AdjustTimeFactor(+36000)
+									GetBuildingTime().AdjustTimeFactor(+50)
 								endif
 							endif
 						endif
@@ -1735,6 +1735,7 @@ Type TGameState
 		GetBuilding().Initialize()
 		GetRoomBoard().Initialize()
 		GetWorldTime().Initialize()
+		GetBuildingTime().Initialize()
 		GetWorld().Initialize()
 		GetGame().Initialize()
 
@@ -2141,18 +2142,18 @@ Type TSaveGame Extends TGameState
 		'payload is saveName and saveGame-object
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnLoad", New TData.addString("saveName", saveName).add("saveGame", saveGame)))
 
-		if GameConfig.IsObserved( GetPlayer().GetFigure() )
+		if GetGame().GetObservedFigure() = GetPlayer().GetFigure()
 			'only set the screen if the figure is in this room ... this
 			'allows modifying the player in the savegame
 			If GetPlayer().GetFigure().inRoom
 				Local playerScreen:TScreen = ScreenCollection.GetScreen(saveGame._CurrentScreenName)
-				If playerScreen.HasParentScreen(GetPlayer().GetFigure().inRoom.screenName)
-					ScreenCollection.GoToScreen(playerScreen)
+				If playerScreen.name = GetPlayer().GetFigure().inRoom.screenName or playerScreen.HasParentScreen(GetPlayer().GetFigure().inRoom.screenName)
+					'ScreenCollection.GoToScreen(playerScreen)
 					'just set the current screen... no animation
 					ScreenCollection._SetCurrentScreen(playerScreen)
 				EndIf
 			EndIf
-
+rem
 			'if saved during screen change, try to recreate the transition
 			'without this, the game shows the building while the figure
 			'is in.
@@ -2167,6 +2168,7 @@ Type TSaveGame Extends TGameState
 					endif
 				endif
 			endif
+endrem
 		endif
 
 		'=== CLEANUP ===
@@ -3561,6 +3563,11 @@ Type GameEvents
 		'react on right clicks during a rooms update (leave room)
 		_eventListeners :+ [ EventManager.registerListenerFunction("room.onUpdate", RoomOnUpdate) ]
 
+		'forcefully set current screen (eg. after loading a "currently
+		'leaving a screen" savegame, or with a faulty timing between
+		'doors and screen-transition-animation)
+		_eventListeners :+ [ EventManager.registerListenerFunction("figure.SetInRoom", onFigureSetInRoom) ]
+
 		'refresh ingame help
 		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnFinishEnter", OnEnterNewScreen) ]
 
@@ -3644,10 +3651,24 @@ Type GameEvents
 	End Function
 
 
+	'correct potentially "broken" (eg. savegame inbetween a "leaving" state)
+	'screen assignments
+	Function onFigureSetInRoom:int(triggerEvent:TEventBase)
+		local fig:TFigureBase = TFigureBase(triggerEvent.GetSender())
+
+		if GetGame().GetObservedFigure() = fig
+			If fig.GetInRoom()
+				ScreenCollection._SetCurrentScreen(ScreenCollection.GetCurrentScreen())
+			Else
+				ScreenCollection._SetCurrentScreen(GameScreen_world)
+			EndIf
+		endif
+	End Function
+
+
 	Function OnEnterNewScreen:int(triggerEvent:TEventBase)
 		local screen:TScreen = TScreen(triggerEvent.GetSender())
 		if not screen then return False
-		
 		'try to show the ingame help for that screen (if there is any)
 		IngameHelpWindowCollection.ShowByHelpGUID( screen.GetName() )
 	End Function
@@ -5200,7 +5221,7 @@ Function DEV_switchRoom:Int(room:TRoom)
 
 	'to avoid seeing too much animation
 	TInGameScreen_Room.temporaryDisableScreenChangeEffects = True
-
+rem
 	'leave first
 	If GetPlayer().GetFigure().inRoom
 		'force leave?
@@ -5209,6 +5230,7 @@ Function DEV_switchRoom:Int(room:TRoom)
 		'which means it signs contracts, buys programme etc
 		GetPlayer().GetFigure().LeaveRoom(False)
 	EndIf
+endrem
 
 	'remove potential elevator passenger 
 	GetElevator().LeaveTheElevator(GetPlayer().GetFigure())

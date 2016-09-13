@@ -214,7 +214,9 @@ Type TInGameScreen Extends TScreen
 				If group.toUpper() = "ExGame".toUpper()
 					_enterScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_OPEN)
 				Else
-					_enterScreenEffect = New TScreenChangeEffect_ClosingRects.Create(TScreenChangeEffect.DIRECTION_OPEN, _contentArea)
+					'for ingame screens, we take care of "building time",
+					'so use an IngameScreenChangeEffect
+					_enterScreenEffect = New TInGameScreenChangeEffect_ClosingRects.Create(TScreenChangeEffect.DIRECTION_OPEN, _contentArea)
 				EndIf
 			Default
 				'print "-> FADE default"
@@ -258,7 +260,9 @@ Type TInGameScreen Extends TScreen
 					_leaveScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_CLOSE)
 				Else
 					'InGame::World => InGame::*
-					_leaveScreenEffect = New TScreenChangeEffect_ClosingRects.Create(TScreenChangeEffect.DIRECTION_CLOSE, _contentArea)
+					'for ingame screens, we take care of "building time",
+					'so use an IngameScreenChangeEffect
+					_leaveScreenEffect = New TInGameScreenChangeEffect_ClosingRects.Create(TScreenChangeEffect.DIRECTION_CLOSE, _contentArea)
 				EndIf
 			Default
 				_leaveScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_CLOSE)
@@ -550,5 +554,83 @@ Type TInGameScreen_Room Extends TInGameScreen
 		If GetBackground() And Not room.GetBackground() Then GetBackground().Draw(0, 0)
 		room.Draw()
 		'TProfiler.Leave("Draw-Room")
+	End Method
+End Type
+
+
+
+'extend base effects to make the effect "building time aware"
+Type TIngameScreenChangeEffect_SimpleFader extends TScreenChangeEffect_SimpleFader
+	Field _timeStartRealTime:Long = 0
+
+	
+	Method GetCurrentTime:Long()
+		GetBuildingTime().GetMillisecondsGone()
+	End Method
+
+
+	Method Reset:int()
+		Super.Reset()
+		_timeStartRealTime = Time.GetAppTimeGone() + GetDuration()
+	End Method
+
+
+	Method GetProgress:Float()
+		'slower than realtime
+		if GetBuildingTime().GetTimeFactor() < 1.0
+			local actionTime:Long = GetDuration() - _waitAtBegin - _waitAtEnd
+			if actionTime <= 0 then return 1.0
+			
+			return Float( Min(1.0, Max(0, double(Time.GetAppTimeGone() - _timeStartRealTime - _waitAtBegin) / actionTime)))
+		endif
+
+		return Super.GetProgress()
+	End Method
+End Type
+
+Type TIngameScreenChangeEffect_ClosingRects extends TScreenChangeEffect_ClosingRects
+	Field _timeStartRealTime:Long = 0
+
+	
+	Method GetCurrentTime:Long()
+		return GetBuildingTime().GetMillisecondsGone()
+	End Method
+
+
+	Method Reset:int()
+		Super.Reset()
+		_timeStartRealTime = Time.GetAppTimeGone()
+	End Method
+
+
+	Method Initialize:int()
+		Super.Initialize()
+
+'		SetDuration( GetPlayerBase().GetFigure().changingRoomTime / 2 )
+	End Method
+
+
+	Method GetRealtimeDuration:int()
+		If GetBuildingTime().GetTimeFactor() > 1.0
+			return GetDuration() / GetBuildingTime().GetTimeFactor()
+		Endif
+
+		return Super.GetRealtimeDuration()
+	End Method
+
+
+	Method GetProgress:Float()
+		'just skip animating at all then
+		if GetBuildingTime().GetTimeFactor() > 6 then return 1.0
+
+		'slower than realtime
+		if GetBuildingTime().GetTimeFactor() < 1.0
+			local actionTime:Long = GetDuration() - _waitAtBegin - _waitAtEnd
+			if actionTime <= 0 then return 1.0
+			
+			return Float( Min(1.0, Max(0, double(Time.GetAppTimeGone() - _timeStartRealTime - _waitAtBegin) / actionTime)))
+		endif
+
+		return Super.GetProgress()
 	End Method
 End Type

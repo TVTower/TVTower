@@ -122,6 +122,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'state (eg. when loaded)
 		GetGame().SetGamestate(TGame.STATE_RUNNING, True)
 
+		TSoundManager.GetInstance().PlayMusicPlaylist("default")
+
+
 		If startNewGame
 			'refresh states of old programme productions (now we now
 			'the start year and are therefore able to refresh who has
@@ -136,6 +139,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			EventManager.registerEvent(TEventSimple.Create("Game.OnHour", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().GetDay()) ))
 		EndIf
 
+		'so we could add news etc.
 		EventManager.registerEvent(TEventSimple.Create("Game.OnStart", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().GetDay()) ))
 	End Method
 
@@ -1293,15 +1297,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 		Self.gamestate = gamestate
-		Select gamestate
-			Case TGame.STATE_RUNNING
-					'so we could add news etc.
-					EventManager.triggerEvent( TEventSimple.Create("Game.OnStart") )
-
-					TSoundManager.GetInstance().PlayMusicPlaylist("default")
-			Default
-				'
-		EndSelect
 	End Method
 
 

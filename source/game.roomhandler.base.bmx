@@ -51,8 +51,8 @@ Type TRoomHandlerCollection
 		'=== register event listeners
 		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onUpdate", onHandleRoom ) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onDraw", onHandleRoom ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onEnter", onHandleRoom ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onLeave", onHandleRoom ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onFinishEnter", onHandleRoom ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onFinishLeave", onHandleRoom ) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction( "figure.onTryLeaveRoom", onHandleFigureInRoom ) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction( "figure.onForcefullyLeaveRoom", onHandleFigureInRoom ) ]
 
@@ -166,9 +166,9 @@ Type TRoomHandlerCollection
 				currentHandler.onUpdateRoom( triggerEvent )
 			case "room.ondraw"
 				currentHandler.onDrawRoom( triggerEvent )
-			case "room.onenter"
+			case "room.onbeginenter"
 				currentHandler.onEnterRoom( triggerEvent )
-			case "room.onleave"
+			case "room.onfinishleave"
 				currentHandler.onLeaveRoom( triggerEvent )
 		End Select
 	End Function

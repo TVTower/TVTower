@@ -186,7 +186,6 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Global _initDone:int = FALSE
 
 	'=== CONFIG FOR ALL ROOMS ===
-	'time the change of a room needs (1st half is opening, 2nd closing a door)
 	Global ChangeRoomSpeed:int = 600
 	'game seconds until a bomb will explode
 	Global bombFuseTime:Int = 5*60
@@ -606,17 +605,20 @@ Rem
 	figure.EnterRoom()
 		-> figure.CanEnterRoom()
 			-> room.CanEntityEnter()
-		-> ev: figure.onTryEnterRoom
-		-> room.BeginEnter()
-			-> add occupant (right when opening the door, avoids
-			                 simultaneous enter of 2+ figures)
-			-> ev: room.onBeginEnter
-		-> room.FinishEnter() (delayed)
-			-> ev: room.onEnter
-				-> TFigureCollection.onEnterRoom()
-					-> figure.onEnterRoom()
-						-> ev: figure.onEnterRoom
-						-> figure.SetInRoom(Room)
+		-> figure.TryEnterRoom()
+			-> ev: figure.onTryEnterRoom
+		-> figure.BeginEnterRoom()
+			-> ev: figure.onBeginEnterRoom
+			-> room.BeginEnter()
+				-> add occupant (right when opening the door, avoids
+								 simultaneous enter of 2+ figures)
+				-> ev: room.onBeginEnter
+
+		-> figure.FinishEnterRoom() (when time has passed, via Updat())
+			-> ev: figure.onFinishEnterRoom
+			-> figure.SetInRoom(Room)
+			-> room.FinishEnter()
+				-> ev: room.onEnter
 	=== LEAVE ===
 	figure.LeaveRoom()
 		-> figure.CanEnterRoom()
@@ -643,7 +645,7 @@ End Rem
 
 		addOccupant(entity)
 
-		AddEnteringEntity(entity, door, GetBuildingTime().GetMillisecondsGone() + 2*speed)
+		AddEnteringEntity(entity, door, GetBuildingTime().GetMillisecondsGone() + speed)
 
 		'inform others that we start going into the room (eg. for animations)
 		EventManager.triggerEvent( TEventSimple.Create("room.onBeginEnter", null, self, entity ) )
@@ -676,8 +678,8 @@ End Rem
 
 		RemoveEnteringEntity(enteringEntity)
 
-		'inform that the figure enters the room - eg for AI-scripts
-		EventManager.triggerEvent( TEventSimple.Create("room.onEnter", new TData.Add("door", enteringDoor), self, enteringEntity ) )
+		'inform that the figure finished entering the room - eg for AI-scripts
+		EventManager.triggerEvent( TEventSimple.Create("room.onFinishEnter", new TData.Add("door", enteringDoor), self, enteringEntity ) )
 	End Method
 
 
@@ -730,7 +732,7 @@ End Rem
 
 		RemoveLeavingEntity(leavingEntity)
 
-		EventManager.triggerEvent( TEventSimple.Create("room.onLeave", new TData.Add("door", leavingDoor), self, leavingEntity ) )
+		EventManager.triggerEvent( TEventSimple.Create("room.onFinishLeave", new TData.Add("door", leavingDoor), self, leavingEntity ) )
 	End Method
 End Type
 

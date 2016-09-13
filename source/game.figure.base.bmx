@@ -119,8 +119,13 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Field currentReachTargetStep:int = 0
 	Field currentAction:int = 0
 
-	Field changingRoomStart:Long = 0
-	Field changingRoomTime:int = 500
+	'when did the current change start
+	Field changingRoomBuildingTimeStart:Long = 0
+	Field changingRoomRealTimeStart:Long = 0
+	'and when does it have to finish
+	Field changingRoomBuildingTimeEnd:Long = 0
+	Field changingRoomRealTimeEnd:Long = 0
+	Field changingRoomTime:int = 1000
 
 	Field reachedTemporaryTarget:int = False
 	'remove figure from game when it reached the final target
@@ -243,7 +248,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
-	Method IsInRoom:Int(roomName:String="", checkFromRoom:Int=False)
+	Method IsInRoom:Int(roomName:String="")
 		'a figureBase cannot be in a room (is always in building)
 		return False
 	End Method
@@ -254,27 +259,17 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetFromRoomID:Int()
-		return 0
-	End Method
-
-
-	Method GetFromDoorID:Int()
-		return 0
-	End Method
-
-
 	Method GetInRoom:object()
 		return null
 	End Method
 
 
-	Method GetFromRoom:object()
-		return null
+	Method GetUsedDoorID:Int()
+		return 0
 	End Method
 
 
-	Method GetFromDoor:object()
+	Method GetUsedDoor:object()
 		return null
 	End Method
 

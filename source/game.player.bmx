@@ -16,8 +16,8 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		if not _registeredEvents
 			EventManager.registerListenerFunction("figure.onFailEnterRoom", OnFigureFailEnterRoom)
 			EventManager.registerListenerFunction("figure.onBeginEnterRoom", OnFigureBeginEnterRoom)
-			EventManager.registerListenerFunction("figure.onEnterRoom", OnFigureEnterRoom)
-			EventManager.registerListenerFunction("figure.onLeaveRoom", OnFigureLeaveRoom)
+			EventManager.registerListenerFunction("figure.onFinishEnterRoom", OnFigureFinishEnterRoom)
+			EventManager.registerListenerFunction("figure.onFinishLeaveRoom", OnFigureFinishLeaveRoom)
 			EventManager.registerListenerFunction("figure.onReachTarget", OnFigureReachTarget)
 			_registeredEvents = True
 		endif
@@ -123,7 +123,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 	End Function
 
 
-	Function OnFigureLeaveRoom:int(triggerEvent:TEventBase)
+	Function OnFigureFinishLeaveRoom:int(triggerEvent:TEventBase)
 		local figure:TFigure = TFigure(triggerEvent.GetSender())
 		if not figure or figure.playerID = 0 then return False
 		local player:TPlayer = GetPlayer(figure.playerID)
@@ -205,7 +205,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 	End Function
 	
 
-	Function OnFigureEnterRoom:int(triggerEvent:TEventBase)
+	Function OnFigureFinishEnterRoom:int(triggerEvent:TEventBase)
 		local figure:TFigure = TFigure(triggerEvent.GetSender())
 		if not figure or figure.playerID = 0 then return False
 

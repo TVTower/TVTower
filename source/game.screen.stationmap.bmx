@@ -71,7 +71,7 @@ Type TScreenHandler_StationMap
 		_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.addStation", OnChangeStationMapStation ) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction( "GUISelectList.onSelectEntry", OnSelectEntry_StationMapStationList, stationList ) ]
 		'player enters station map screen - set checkboxes according to station map config
-		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onEnter", onEnterStationMapScreen, screen ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onBeginEnter", onEnterStationMapScreen, screen ) ]
 
 		For Local i:Int = 0 To 3
 			'register checkbox changes
@@ -371,7 +371,7 @@ Type TScreenHandler_StationMap
 		'1. searching
 		If stationMapMode = 1
 			'create a temporary station if not done yet
-			if not StationMapMouseoverStation then StationMapMouseoverStation = GetStationMapCollection().getMap(room.owner).getTemporaryStation( MouseManager.GetPosition().GetIntX(), MouseManager.GetPosition().GetIntY() )
+			if not StationMapMouseoverStation then StationMapMouseoverStation = GetStationMap(room.owner).getTemporaryStation( MouseManager.GetPosition().GetIntX(), MouseManager.GetPosition().GetIntY() )
 			local mousePos:TVec2D = new TVec2D.Init( MouseManager.x, MouseManager.y)
 
 			'if the mouse has moved - refresh the station data and move station
@@ -612,8 +612,19 @@ Type TScreenHandler_StationMap
 	Function onEnterStationMapScreen:int(triggerEvent:TEventBase)
 		'only players can "enter screens" - so just use "inRoom"
 
+print "onEnterStationMapScreen - player:"+GetPlayer().playerID
+'if GetPlayer().GetFigure().inRoom
+	print "onEnterStationMapScreen: inRoom = " + GetPlayer().GetFigure().inRoom.name
+'else
+'	print "onEnterStationMapScreen: inRoom = /"
+'endif
+
+		local owner:int = 0
+		if GetPlayer().GetFigure().inRoom then owner = GetPlayer().GetFigure().inRoom.owner
+		if owner = 0 then owner = GetPlayer().playerID
+		
 		For local i:int = 0 to 3
-			local show:int = GetStationMapCollection().GetMap(GetPlayerCollection().Get().GetFigure().inRoom.owner).GetShowStation(i+1)
+			local show:int = GetStationMap(GetPlayer().GetFigure().inRoom.owner).GetShowStation(i+1)
 			stationMapShowStations[i].SetChecked(show)
 		Next
 	End Function
