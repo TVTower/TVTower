@@ -49,7 +49,8 @@ function TaskMovieDistributor:Activate()
 	self.MoviesAtAuctioneer = {}
 
 
-	debugMsg("    Task information: CurrentBudget=" .. self.CurrentBudget .. "  CurrentBargainBudget=" .. self.CurrentBargainBudget .. "  ProgrammesPossessed=" .. self.ProgrammesPossessed)
+	local player = _G["globalPlayer"]
+	debugMsg("    Task information: CurrentBudget=" .. self.CurrentBudget .. "  CurrentBargainBudget=" .. self.CurrentBargainBudget .. "  ProgrammesPossessed=" .. self.ProgrammesPossessed .. "  startProgrammeAmount=" .. player.Strategy.startProgrammeAmount)
 end
 
 

@@ -146,9 +146,9 @@ AppTitle = "TVTower: " + VersionString
 TLogger.Log("CORE", "Starting "+APP_NAME+", "+VersionString+".", LOG_INFO )
 
 '===== SETUP LOGGER FILTER =====
-'TLogger.setLogMode(LOG_ALL )
-'TLogger.setPrintMode(LOG_ALL ) '(LOG_AI | LOG_ERROR | LOG_SAVELOAD )
-TLogger.SetPrintMode(0) 'all messages off
+TLogger.setLogMode(LOG_ALL )
+TLogger.setPrintMode(LOG_ALL ) '(LOG_AI | LOG_ERROR | LOG_SAVELOAD )
+'TLogger.SetPrintMode(0) 'all messages off
 'TLogger.SetPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
 'TLogger.changePrintMode(LOG_DEV, FALSE)
@@ -3715,7 +3715,7 @@ Type GameEvents
 					if not player.IsLocalAI()
 						player.SetLocalAIControlled()
 						if not player.playerAI
-							player.InitAI( new TAI.Create(player.playerID, "res/ai/DefaultAIPlayer/DefaultAIPlayer.lua") )
+							player.InitAI( new TAI.Create(player.playerID, GetGame().GetPlayerAIFileURI(player.playerID)) )
 						endif
 						GetGame().SendSystemMessage("[DEV] Enabled AI for player "+player.playerID)
 					else
