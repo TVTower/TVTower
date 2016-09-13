@@ -474,6 +474,25 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetPlayerAIFileURI:string(playerID:int)
+		local defaultFile:string = "res/ai/DefaultAIPlayer/DefaultAIPlayer.lua"
+		local luaFile:string = GameRules.devConfig.GetString("playerAIScript" + playerID, defaultFile)
+
+		if FileType(luaFile) = 1
+			return luaFile
+		else
+			TLogger.Log("GetPlayerAIFileURI", "File ~q" + luaFile + "~q does not exist.", LOG_ERROR)
+			print "GetPlayerAIFileURI: File ~q" + luaFile + "~q does not exist."
+		endif
+
+		if FileType(defaultFile) <> 1
+			TLogger.Log("GetPlayerAIFileURI", "File ~q" + defaultFile + "~q does not exist.", LOG_ERROR)
+			Throw "AI File ~q" + defaultFile + "~q does not exist."
+		endif
+		return defaultFile
+	End Method
+
+
 	'prepare player basics
 	Method PreparePlayerStep1(playerID:int)
 		local player:TPlayer = GetPlayer(playerID)
@@ -509,7 +528,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'=== FIGURE ===
 		If isGameLeader()
 			If GetPlayer(playerID).IsLocalAI()
-				GetPlayer(playerID).InitAI( new TAI.Create(playerID, "res/ai/DefaultAIPlayer/DefaultAIPlayer.lua") )
+				GetPlayer(playerID).InitAI( new TAI.Create(playerID, GetPlayerAIFileURI(playerID)) )
 			EndIf
 		EndIf
 

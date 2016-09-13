@@ -499,6 +499,11 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
+	Method isControllableFigure:Int()
+		return GetPlayerBase(self.ME).GetFigure().IsControllable()
+	End Method
+
+
 	'send figure to a specific room
 	'attention: the first found door is used
 	Method doGoToRoom:Int(roomId:Int = 0)
@@ -506,9 +511,6 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 		If room
 			Local door:TRoomDoorBase = GetRoomDoorCollection().GetMainDoorToRoom(room.id)
 			If door
-if self.ME = 2
-	print "doGoToRoom " + roomId
-endif
 				TFigure(GetPlayerBase(self.ME).GetFigure()).SendToDoor(door)
 				Return self.RESULT_OK
 			EndIf

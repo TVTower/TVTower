@@ -97,6 +97,12 @@
 			<!-- shortcuts DEV_NEWS_GUID1 - DEV_NEWS_GUID100 possible -->
 			<DEV_NEWS_GUID1 value="ronny-news-sandsturm-01" />
 			<DEV_NEWS_GUID2 value="ronny-news-usbratte-01" />
+
+
+			<!-- use another AI script for player #2 -->
+			<!--
+			<PLAYERAISCRIPT2 value="res/ai/Sample/Sample.lua" />
+			-->
 		</data>
 	</resources>
 </tvt>
