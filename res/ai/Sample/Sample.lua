@@ -73,6 +73,24 @@ function OnEnterRoom(roomId)
 		TVT.SendToChat("Nix neues vom Chef, ab ins Buero!")
 		TVT.doGoToRoom(TVT.ROOM_OFFICE_PLAYER_ME)
 	end
+
+	-- wir muessen "tonumber()" nutzen, da parameter automatisch als
+	-- string bzw "object" von TVTower/Blitzmax uebergeben werden
+	if tonumber(roomId) == TVT.ROOM_OFFICE_PLAYER_ME then
+		-- rufe die Funktion von TVTower auf
+		-- -1, -1 = aktueller Tag, aktuelle Stunde
+		local request = TVT.of_getAdvertisementSlot(-1, -1)
+		local result = request.result
+		local ad = request.data
+		--wichtig: als Zahl ansprechen
+		if result == TVT.RESULT_OK then
+			if ad ~= nil then
+				TVT.SendToChat("aktuelle Werbung: " .. ad.GetTitle())
+			end
+		else
+			TVT.SendToChat("Abfrage fehlgeschlagen. Grund: " .. result)
+		end
+	end
 end
 
 -- figure is now at the desired target
