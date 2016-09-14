@@ -1702,6 +1702,11 @@ Type TGameState
 
 		'reset player colors
 		TPlayerColor.Initialize()
+		'initialize times before other things, as they might rely
+		'on that time (eg. TBuildingIntervalTimer) and they would else
+		'init with wrong times
+		GetWorldTime().Initialize()
+		GetBuildingTime().Initialize()
 		GetRoomDoorBaseCollection().Initialize()
 		GetRoomBaseCollection().Initialize()
 		GetStationMapCollection().InitializeAll()
@@ -1734,8 +1739,6 @@ Type TGameState
 		GetElevator().Initialize()
 		GetBuilding().Initialize()
 		GetRoomBoard().Initialize()
-		GetWorldTime().Initialize()
-		GetBuildingTime().Initialize()
 		GetWorld().Initialize()
 		GetGame().Initialize()
 
