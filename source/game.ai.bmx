@@ -709,7 +709,7 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
-	Method of_getAdContracts:TLuaFunctionResult(arrayIndex:Int=-1)
+	Method of_getAdContracts:TLuaFunctionResult()
 		If Not _PlayerInRoom("office") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
 		local contracts:TAdContract[] = GetPlayerProgrammeCollection(self.ME).GetAdContractsArray()
