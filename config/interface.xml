@@ -35,6 +35,13 @@
 				<child name="gfx_interface_audience_unemployed.bored"	x="485"	y="151"	w="80"	h="150" />
 
 
+				<!-- interface buttons -->
+				<child name="gfx_interface_button_settings"     x="252"	y="402"	w="45"	h="23" />
+				<child name="gfx_interface_button_help"         x="300"	y="402"	w="42"	h="23" />
+				<child name="gfx_interface_button_speed1"		x="343"	y="402"	w="29"	h="23" />
+				<child name="gfx_interface_button_speed2"		x="372"	y="402"	w="30"	h="23" />
+				<child name="gfx_interface_button_speed3"		x="400"	y="402"	w="30"	h="23" />
+
 				<!-- target group icons -->
 				<child name="gfx_targetGroup_children"   x="252" y="386" w="15" h="15" />
 				<child name="gfx_targetGroup_teenagers"  x="267" y="386" w="15" h="15" />
