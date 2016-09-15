@@ -943,8 +943,12 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 
 		local contract:TAdContract = RoomHandler_AdAgency.GetInstance().GetContractByID(contractID)
 		'this DOES sign in that moment
-		if contract and RoomHandler_AdAgency.GetInstance().GiveContractToPlayer( contract, self.ME, TRUE )
-			return self.RESULT_OK
+		if contract
+			if RoomHandler_AdAgency.GetInstance().GiveContractToPlayer( contract, self.ME, TRUE )
+				return self.RESULT_OK
+			else
+				return self.RESULT_NOTALLOWED
+			endif
 		endif
 		Return self.RESULT_NOTFOUND
 	End Method
@@ -957,8 +961,12 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 
 		local contract:TAdContract = RoomHandler_AdAgency.GetInstance().GetContractByID(contractID)
 		'this DOES NOT sign - signing is done when leaving the room!
-		if contract and RoomHandler_AdAgency.GetInstance().GiveContractToPlayer( contract, self.ME )
-			return self.RESULT_OK
+		if contract
+			if RoomHandler_AdAgency.GetInstance().GiveContractToPlayer( contract, self.ME )
+				return self.RESULT_OK
+			else
+				return self.RESULT_NOTALLOWED
+			endif
 		endif
 		Return self.RESULT_NOTFOUND
 	End Method

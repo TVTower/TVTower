@@ -1505,6 +1505,8 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 				skin.fontNormal.draw("Genre: " + GetLimitedToGenre() + " (keine Einschraenkung)", contentX + 5, contentY)
 			endif
 			contentY :+ 12
+			skin.fontNormal.draw("Vertraege mit dieser Werbung: " + base.GetCurrentlyUsedByContractCount(), contentX + 5, contentY)
+			contentY :+ 12
 			skin.fontNormal.draw("Verfuegbarkeitszeitraum: --- noch nicht integriert ---", contentX + 5, contentY)
 			contentY :+ 12
 			if owner > 0
