@@ -1480,8 +1480,8 @@ Available in any well-stocked drugstore.</en>
 			<description>
 				<de>Echt genial: Unser Doppelbock gibt's jetzt auch alkoholfrei! Oans, zwoa, droa, g'suffa!</de>
 			</description>
-			<conditions min_audience="4.1617" min_image="0" target_group="0"/>
-			<data infomercial="1" quality="22" repetitions="5" duration="2" profit="568" penalty="932" infomercial_profit="56" fix_infomercial_profit="1"/>
+			<conditions min_audience="4.1617" min_image="40" target_group="0"/>
+			<data infomercial="1" quality="22" repetitions="5" duration="2" profit="580" penalty="932" infomercial_profit="76" fix_infomercial_profit="1" year_range_from="2006"/>
 		</ad>
 		<ad id="speedminister-ad-Hopfengurgler2" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -1490,8 +1490,8 @@ Available in any well-stocked drugstore.</en>
 			<description>
 				<de>Echt genial: Pilsner, Export und Weizen jetzt auch als Zäpfchen erhältlich! Praktisch im 40er Party-Pack! Das zieht! Oans, zwoa, droa, ziags!</de>
 			</description>
-			<conditions min_audience="4.17" min_image="40" target_group="0"/>
-			<data infomercial="1" quality="15" repetitions="5" duration="4" profit="580" penalty="450" fix_infomercial_profit="1"/>
+			<conditions min_audience="4.17" min_image="0" target_group="0"/>
+			<data infomercial="1" quality="15" repetitions="5" duration="4" profit="568" penalty="450" fix_infomercial_profit="1" year_range_to="2005"/>
 		</ad>
 		<ad id="speedminister-ad-Hummeldoof" creator="8605" created_by="SpeedMinister">
 			<title>
