@@ -799,3 +799,9 @@ GAMETIME = Time
 PLAYER = Player
 
 GAME = Game
+
+GAMESPEED = Game speed
+SET_SPEED_TO_X = Set speed to %SPEED%
+MANUAL = Manual
+HELP = Help
+SHOW_HELP = Show help
