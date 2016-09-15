@@ -72,24 +72,37 @@ end
 function JobCheckSpots:Tick()
 	while self.Status ~= JOB_STATUS_DONE do
 		self:CheckSpot()
+
+		-- checked last spot?
+		if self.CurrentSpotIndex >= TVT.sa_getSpotCount() then
+			self.Status = JOB_STATUS_DONE
+		end
 	end
 end
 
 function JobCheckSpots:CheckSpot()
 	local response = TVT.sa_getSpot(self.CurrentSpotIndex)
-	if ((response.result == TVT.RESULT_WRONGROOM) or (response.result == TVT.RESULT_NOTFOUND)) then
+	if (response.result == TVT.RESULT_WRONGROOM) then
 		self.Status = JOB_STATUS_DONE
 		return
 	end
 
-	local spot = TVT.convertToAdContract(response.data)
-	if (spot.IsAvailableToSign(TVT.ME) == 1) then
-		--debugMsg("Signable")
-		local player = _G["globalPlayer"]
-		self.AdAgencyTask.SpotsInAgency[self.CurrentSpotIndex] = spot
-		player.Stats:AddSpot(spot)
+
+	if (response.result == TVT.RESULT_OK) then
+		local spot = TVT.convertToAdContract(response.data)
+		local spot2 = response.data
+		if (spot2.IsAvailableToSign(TVT.ME) == 1) then
+			TVT.SendToChat("ist verfuegbar : " .. spot2.GetTitle())
+		end
+		if (spot.IsAvailableToSign(TVT.ME) == 1) then
+			local player = _G["globalPlayer"]
+			self.AdAgencyTask.SpotsInAgency[self.CurrentSpotIndex] = spot
+			player.Stats:AddSpot(spot)
+		end
 	end
 
+	-- continue with next spot, even with TVT.RESULT_NOT_ALLOWED (channel
+	-- image not satisfied or another requirement)
 	self.CurrentSpotIndex = self.CurrentSpotIndex + 1
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -128,8 +141,6 @@ function AppraiseSpots:AppraiseCurrentSpot()
 end
 
 function AppraiseSpots:AppraiseSpot(spot)
-	--return nil --!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 	--debugMsg("AppraiseSpot")
 	--debugMsg("===================")
 	local player = _G["globalPlayer"]
@@ -212,7 +223,7 @@ function SignRequisitedContracts:Tick()
 		--RONNY: Achtung, es muss ueberprueft werden, ob die Liste NULL-
 		--       Eintraege enthaelt (evtl "verschwunden", oder durch einen
 		--       "Refill"-Aufruf nicht mehr beim Makler zu haben.)
-		--       Dach kann sortiert werden, ohne "Null-Zugriffe" innerhalb
+		--       Danach kann sortiert werden, ohne "Null-Zugriffe" innerhalb
 		--       der Sortiermethode.
 		for i=#self.AdAgencyTask.SpotsInAgency,1,-1 do
 			if self.AdAgencyTask.SpotsInAgency[i] == nil then

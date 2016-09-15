@@ -360,7 +360,11 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 	Method GiveContractToPlayer:int(contract:TAdContract, playerID:int, sign:int=FALSE)
+		'alreay owning?
 		if contract.owner = playerID then return FALSE
+		'does not satisfy eg. "channel image"
+		if not contract.IsAvailableToSign(playerID) then return False
+
 		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerID)
 		if not programmeCollection then return FALSE
 
