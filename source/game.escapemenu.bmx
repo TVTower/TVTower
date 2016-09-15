@@ -4,8 +4,6 @@ Type TGUIModalMainMenu extends TGUIModalWindowChainElement
 	Field speedButtons:TGUIButton[]
 	Field chainLoadMenu:TGUIModalWindowChainElement
 	Field chainSaveMenu:TGUIModalWindowChainElement
-	'0.25*60, 0.5*60, 3*60, 10*60
-	Global speedFactor:Int[] = [15, 30, 180, 600]
 
 
 	Method New()
@@ -63,7 +61,7 @@ Type TGUIModalMainMenu extends TGUIModalWindowChainElement
 		For local i:int = 0 until speedButtons.length
 			speedButtons[i].SetState("")
 
-			if speedFactor[i] = int(GetWorldTime().GetRawTimeFactor())
+			if GameRules.worldTimeSpeedPresets[i] = int(GetWorldTime().GetRawTimeFactor())
 				speedButtons[i].disable()
 			else
 				speedButtons[i].enable()
@@ -92,16 +90,16 @@ Type TGUIModalMainMenu extends TGUIModalWindowChainElement
 
 		Select clickedButton
 			case speedButtons[0] 'slower
-				GetWorldTime().SetTimeFactor(speedFactor[0])
+				GetWorldTime().SetTimeFactor(GameRules.worldTimeSpeedPresets[0])
 				Close()
 			case speedButtons[1] 'default 
-				GetWorldTime().SetTimeFactor(speedFactor[1])
+				GetWorldTime().SetTimeFactor(GameRules.worldTimeSpeedPresets[1])
 				Close()
 			case speedButtons[2]
-				GetWorldTime().SetTimeFactor(speedFactor[2])
+				GetWorldTime().SetTimeFactor(GameRules.worldTimeSpeedPresets[2])
 				Close()
 			case speedButtons[3]
-				GetWorldTime().SetTimeFactor(speedFactor[3])
+				GetWorldTime().SetTimeFactor(GameRules.worldTimeSpeedPresets[3])
 				Close()
 			
 			case buttons[0]
