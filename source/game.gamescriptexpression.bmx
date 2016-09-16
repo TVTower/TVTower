@@ -54,7 +54,7 @@ Function GameScriptExpression_Handle_Time:string(variable:string, params:string[
 		case "time_isdusk"
 			return string( GetWorldTime().IsDusk() )
 		default
-			print "GameScriptExpression_Handle_Time: unknown variable ~q"+variable+"~q."
+			GetGameScriptExpression()._error :+ "GameScriptExpression_Handle_Time: unknown variable ~q"+variable+"~q.~n"
 	End Select
 
 	return ""

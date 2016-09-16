@@ -517,6 +517,12 @@ Type TDatabaseLoader
 		newsEvent.availableYearRangeFrom = data.GetInt("year_range_from", newsEvent.availableYearRangeFrom)
 		newsEvent.availableYearRangeTo = data.GetInt("year_range_to", newsEvent.availableYearRangeTo)
 
+		if newsEvent.availableScript
+			if not GetScriptExpression().IsValid(newsEvent.availableScript)
+				TLogger.Log("DB", "Script of NewsEvent ~q" + newsEvent.GetGUID() + "~q contains errors:", LOG_WARNING)
+				TLogger.Log("DB", GetScriptExpression()._error, LOG_WARNING)
+			endif
+		endif
 
 
 		'=== EFFECTS ===
@@ -770,6 +776,14 @@ Type TDatabaseLoader
 		adContract.availableScript = data.GetString("script", adContract.availableScript)
 		adContract.availableYearRangeFrom = data.GetInt("year_range_from", adContract.availableYearRangeFrom)
 		adContract.availableYearRangeTo = data.GetInt("year_range_to", adContract.availableYearRangeTo)
+
+		if adContract.availableScript
+			if not GetScriptExpression().IsValid(adContract.availableScript)
+				TLogger.Log("DB", "Script of AdContract ~q" + adContract.GetGUID() + "~q contains errors:", LOG_WARNING)
+				TLogger.Log("DB", GetScriptExpression()._error, LOG_WARNING)
+			endif
+		endif
+
 
 		'=== CONDITIONS ===
 		local nodeConditions:TxmlNode = xml.FindChild(node, "conditions")
