@@ -519,14 +519,14 @@ Type TScreenChangeEffect
 	End Method
 
 
-	Method Reset()
+	Method Reset:int()
 		_finished = FALSE
 		_timeStart = GetCurrentTime()
 		_progressOld = 0.0
 	End Method
 
 
-	Method Initialize()
+	Method Initialize:int()
 		Reset()
 	End Method
 
@@ -581,7 +581,7 @@ Type TScreenChangeEffect_SimpleFader extends TScreenChangeEffect
 	End Method
 
 
-	Method Initialize()
+	Method Initialize:int()
 		Reset()
 		SetDuration(350)
 	End Method
@@ -614,7 +614,7 @@ Type TScreenChangeEffect_ClosingRects extends TScreenChangeEffect_SimpleFader
 	End Method
 
 
-	Method Initialize()
+	Method Initialize:int()
 		Super.Initialize()
 
 		SetDuration(500)

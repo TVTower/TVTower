@@ -142,7 +142,7 @@ Type TScriptExpression
 			
 			if op <> ">=" and op <> "<=" and op <> "=" and op <> ">" and op <> "<" and op <> "<>"
 				_errorCount :+ 1
-				_error = "Incorrect conditional ~q"+op+"~q. Valid are ~q>=~q, ~q<=q, ~q=~q, ~q>~q and ~q<~q."
+				_error :+ "Incorrect conditional ~q"+op+"~q. Valid are ~q>=~q, ~q<=q, ~q=~q, ~q>~q and ~q<~q.~n"
 				return False
 			endif
 
@@ -242,7 +242,7 @@ Type TScriptExpression
 			local res:int = ParseConnectors()
 			if GetCurrentChar() <> ")"
 				_errorCount :+ 1
-				_error = "Unmatched bracket. Make sure to close with ~q)~q."
+				_error :+ "Unmatched bracket. Make sure to close with ~q)~q.~n"
 				return -1
 			else
 				'skip ending bracket
@@ -331,7 +331,7 @@ Type TScriptExpression
 		endif
 
 		_errorCount :+ 1
-		_error = "Invalid characters used. Allowed: alphanumeric characters, brackets, comparators (<, >, =, >=, <=) and connectors (&&, ||)."
+		_error :+ "Invalid characters used. Allowed: alphanumeric characters, brackets, comparators (<, >, =, >=, <=) and connectors (&&, ||).~n"
 
 		return -1
 	End Method
@@ -394,8 +394,8 @@ Type TScriptExpression
 		if _variableHandler then return _variableHandler(variable, null, resultType)
 
 		_errorCount :+1
-		_error = "Cannot handle variable ~q"+variable+"~q. Defaulting to 0."
-		print _error
+		_error :+ "Cannot handle variable ~q"+variable+"~q. Defaulting to 0.~n"
+		'print _error
 
 		return "0"
 	End Method
@@ -405,8 +405,8 @@ Type TScriptExpression
 		if _variableHandler then return _variableHandler(variable, params, resultType)
 
 		_errorCount :+1
-		_error = "Cannot handle function ~q"+variable+"~q with params ~q" + ",".Join(params) +"~q. Defaulting to 0."
-		print _error
+		_error :+ "Cannot handle function ~q"+variable+"~q with params ~q" + ",".Join(params) +"~q. Defaulting to 0.~n"
+		'print _error
 
 		return "0"
 	End Method

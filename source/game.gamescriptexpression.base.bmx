@@ -39,8 +39,8 @@ endrem
 			return wrapper.func(variable, null, resultElementType)
 		else
 			_errorCount :+1
-			_error = "Cannot handle variable ~q"+variable+"~q. Defaulting to 0."
-			print _error
+			_error :+ "Cannot handle variable ~q"+variable+"~q. Defaulting to 0.~n"
+			'print _error
 
 			return "0"
 		endif
@@ -54,8 +54,8 @@ endrem
 			return wrapper.func(variable, params, resultElementType)
 		else
 			_errorCount :+1
-			_error = "Cannot handle function ~q"+variable+"~q. Defaulting to 0."
-			print _error
+			_error :+ "Cannot handle function ~q"+variable+"~q. Defaulting to 0.~n"
+			'print _error
 
 			return "0"
 		endif
