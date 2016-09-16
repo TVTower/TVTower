@@ -697,9 +697,13 @@ Type TFigure extends TFigureBase
 
 	Method FinishEnterRoom:Int()
 		local door:TRoomDoorBase = TRoomDoorBase( GetTarget() )
-		if not door then print "FinishEnterRoom : NO DOOR" 
-		local room:TRoomBase = GetRoomBaseCollection().Get(door.roomID)
-		if not room then print "FinishEnterRoom : NO ROOM" 
+		local room:TRoomBase
+		if not door and not THotspot( GetTarget() )
+			print "FinishEnterRoom : NO DOOR/HOTSPOT"
+			return False
+		endif
+		if door then room = GetRoomBaseCollection().Get(door.roomID)
+		if door and not room then print "FinishEnterRoom : NO ROOM" 
 
 		'Debug
 		'print self.name+" FINISH ENTERING " + room.GetName() +" ["+room.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
@@ -718,7 +722,7 @@ Type TFigure extends TFigureBase
 		ReachTargetStep2()
 
 		'inform room
-		room.FinishEnter(self)
+		if room then room.FinishEnter(self)
 
 
 		'=== INFORM OTHERS ===
