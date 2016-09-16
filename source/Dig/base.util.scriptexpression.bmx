@@ -47,14 +47,19 @@ Import Brl.Retro
 'based on the approach described at
 'http://www.strchr.com/expression_evaluator (author: Peter Kankowski)
 '
-Type ScriptExpression
+Type TScriptExpression
 	global _expression:string
 	global _expressionIndex:int = 0
 	global _errorCount:int = 0
 	global _error:string = ""
-	global _variableHandler:int(variable:string)
-	
-	Function Eval:int(expression:string, variableHandler:int(variable:string) = null)
+	global _variableHandler:string(variable:string, params:string[], resultType:int var)
+	Const ELEMENTTYPE_NONE:int = 0
+	Const ELEMENTTYPE_NUMERIC:int = 1
+	Const ELEMENTTYPE_STRING:int = 2
+	Const ELEMENTTYPE_VARIABLE:int = 3
+	Const ELEMENTTYPE_OBJECT:int = 4
+
+	Method Eval:int(expression:string, variableHandler:string(variable:string, params:string[], resultType:int var) = null)
 		_expression = expression
 		_expressionIndex = 0
 		_errorCount = 0
@@ -62,11 +67,11 @@ Type ScriptExpression
 		_variableHandler = variableHandler
 
 		return ParseConnectors()
-	End Function
+	End Method
 
 
 	'check for "&&" and "||" connected conditions
-	Function ParseConnectors:Int()
+	Method ParseConnectors:int()
 		local cond1:int = ParseConditionals()
 
 		While True
@@ -96,51 +101,118 @@ Type ScriptExpression
 		Wend
 
 		'level :- 1
-	End Function
+	End Method
 	
 
 	'check for conditionals (a ">, >=, <, <=, =" b)
-	Function ParseConditionals:int()
-		local num1:int = ParseElement()
-
+	Method ParseConditionals:int()
+		local elementType1:int = 0
+		local element1:object = object(ParseElement(elementType1))
+		'print "e1: " + string(element1)
 		While True
 			SkipSpaces()
 
 			'Save the operation
 			local op:string = GetCurrentChar()
 			if (op <> ">" and op <> "<" and op <> "=")
-				return num1
+				'print "op: n.a."
+				return (element1 <> null)
 			endif
 			_expressionIndex :+ 1
 			'>= and <=
-			if GetCharAtPos(_expressionIndex + 1) = "="
+			if GetCharAtPos(_expressionIndex) = "="
 				op :+ "="
 				_expressionIndex :+ 1
+			'<>
+			elseif GetCharAtPos(_expressionIndex) = ">"
+				op :+ ">"
+				_expressionIndex :+ 1
 			endif
+			'print "op: "+op
 			
-			if op <> ">=" and op <> "<=" and op <> "=" and op <> ">" and op <> "<"
+			if op <> ">=" and op <> "<=" and op <> "=" and op <> ">" and op <> "<" and op <> "<>"
 				_errorCount :+ 1
 				_error = "Incorrect conditional ~q"+op+"~q. Valid are ~q>=~q, ~q<=q, ~q=~q, ~q>~q and ~q<~q."
 				return False
 			endif
 
 
-			local num2:int = ParseElement()
+			local elementType2:int = 0
+			local element2:object = object(ParseElement(elementType2))
+			'print "e2: " + string(element2)
+
 			'apply saved operation
-			Select op
-				case ">="  return num1 >= num2
-				case ">"   return num1 >  num2
-				case "<="  return num1 <= num2
-				case "<"   return num1 <  num2
-				case "="   return num1 =  num2
-			End Select
+
+			'if at least one is a string, use string comparison
+			if elementType1 = ELEMENTTYPE_STRING or elementType2 = ELEMENTTYPE_STRING 
+				Select op
+					case ">="  return string(element1) >= string(element2)
+					case ">"   return string(element1) >  string(element2)
+					case "<="  return string(element1) <= string(element2)
+					case "<"   return string(element1) <  string(element2)
+					case "<>"   return string(element1) <>  string(element2)
+					case "="
+						print string(element1)+" = " + string(element2) +" ??"
+						return (string(element1) =  string(element2))
+				End Select
+
+			'both not "strings", so check if both are numeric
+			elseif elementType1 = ELEMENTTYPE_NUMERIC and elementType2 = ELEMENTTYPE_NUMERIC 
+				Select op
+					case ">="  return double(string(element1)) >= double(string(element2))
+					case ">"   return double(string(element1)) >  double(string(element2))
+					case "<="  return double(string(element1)) <= double(string(element2))
+					case "<"   return double(string(element1)) <  double(string(element2))
+					case "<>"  return double(string(element1)) <>  double(string(element2))
+					case "="   return double(string(element1)) =  double(string(element2))
+				End Select
+
+			'object comparison
+			else
+				Select op
+					case "<>"  return element1 <> element2
+					case "="   return element1 =  element2
+				End Select
+			endif
 		Wend
-	End Function
+	End Method
 
 
 	'parse single element or an expression within brackets
-	Function ParseElement:int()
+	Method ParseElement:string(elementType:int var)
 		SkipSpaces()
+
+		'opened an string
+		if GetCurrentChar() = "'"
+			_expressionIndex :+1
+			local variable:string = ""
+			local escapeNext:int = False
+			local char:string = GetCurrentChar()
+			while char <> "" and (char <> "'" or escapeNext)
+				if char = "\"
+					if not escapeNext
+						escapeNext = true
+					
+						_expressionIndex :+1
+						char = GetCurrentChar()
+						continue
+					endif
+				else
+					escapeNext = false
+				endif
+
+				variable :+ char
+				_expressionIndex :+1
+				char = GetCurrentChar()
+			wend
+			 'eat the "'" sign
+			_expressionIndex :+1
+
+			elementType = ELEMENTTYPE_STRING
+			'print "string: ~q"+ variable+"~q"
+			return variable
+		endif
+
 
 		'starting bracket - parse for contained expression/element
 		if GetCurrentChar() = "("
@@ -157,11 +229,10 @@ Type ScriptExpression
 			return int(res)
 		endif
 
-
 		'extract variables / "functions"
 		if IsAlpha( GetCurrentCharCode() )
-			local variable:string = ""
 			local openBracket:int = false
+			local variable:string = ""
 			local char:string
 			while GetCurrentChar() <> "" and (openBracket or not IsSpace( GetCurrentCharcode() ))
 				char = GetCurrentChar()
@@ -169,7 +240,7 @@ Type ScriptExpression
 					openBracket = true
 				elseif char = ")"
 					openBracket = false
-				'ignore spaced within the function bracket
+				'ignore spaces within the function bracket
 				elseif openBracket and IsSpace(Asc(char))
 					_expressionIndex :+ 1
 					continue
@@ -177,9 +248,51 @@ Type ScriptExpression
 				variable :+ char
 				_expressionIndex :+ 1
 			wend
-			'print "variable: "+variable + " = " + HandleVariable(variable)
+			'elementType = ELEMENTTYPE_VARIABLE
+			local res:string
+			local variableParts:string[] = variable.split("(")
+			if variableParts.length > 1
+				local functionName:string = variableParts[0]
+				local functionParams:string[] = null
 
-			return HandleVariable(variable)
+				local p:string[] = variableParts[1].Split(")")
+				functionParams = p[0].Split(",")
+				for local i:int = 0 until functionParams.length
+					functionParams[i] = functionParams[i].trim()
+					if functionParams[i].length = 0 then continue
+
+					local escapeNextC:int = False
+					local newValue:string
+					for local cIndex:int = 0 until functionParams[i].length
+						local c:string = chr(functionParams[i][cIndex])
+						if c = "'" and not escapeNextC
+							continue
+						endif
+						if c = "\"
+							if not escapeNextC
+								escapeNextC = True
+								continue
+							endif
+						else
+							escapeNextC = false
+						endif
+
+						newValue :+ c
+					next
+					'print "old: ~q"+ functionParams[i]+"~q   new: ~q"+newValue+"~q"
+					functionParams[i] = newValue
+				Next
+
+
+
+				res = HandleFunction(functionName, functionParams, elementType)
+				'print "function(): ~q" + functionName + "~q with params ~q" + ",".Join(functionParams) + "~q  (result=" + res+")"
+			else
+				res = HandleVariable(variableParts[0], elementType)
+				'print "variable: ~q" + variableParts[0] + "~q  (result=" + res+")"
+			endif
+
+			return res
 		endif
 
 		
@@ -190,15 +303,16 @@ Type ScriptExpression
 				variable :+ GetCurrentChar()
 				_expressionIndex :+ 1
 			wend
+			elementType = ELEMENTTYPE_NUMERIC
 			'print "numeric: "+ variable
-			return Int(variable)
+			return variable
 		endif
 
 		_errorCount :+ 1
 		_error = "Invalid characters used. Allowed: alphanumeric characters, brackets, comparators (<, >, =, >=, <=) and connectors (&&, ||)."
 
 		return -1
-	End Function
+	End Method
 
 
 	'=== HELPER FUNCTIONS ===
@@ -254,18 +368,32 @@ Type ScriptExpression
 	End Function
 
 
-	Function HandleVariable:int(variable:string)
-		if _variableHandler then return _variableHandler(variable)
+	Method HandleVariable:string(variable:string, resultType:int var)
+		if _variableHandler then return _variableHandler(variable, null, resultType)
 
 		_errorCount :+1
 		_error = "Cannot handle variable ~q"+variable+"~q. Defaulting to 0."
 		print _error
-		return 0
-	End Function
+
+		return "0"
+	End Method
 
 
-	Function IsValid:int(expression:string)
+	Method HandleFunction:string(variable:string, params:string[], resultType:int var)
+		if _variableHandler then return _variableHandler(variable, params, resultType)
+
+		_errorCount :+1
+		_error = "Cannot handle function ~q"+variable+"~q with params ~q" + ",".Join(params) +"~q. Defaulting to 0."
+		print _error
+
+		return "0"
+	End Method
+
+
+	Method IsValid:int(expression:string)
 		Eval(expression)
 		return _errorCount = 0
-	End Function
+	End Method
 End Type
+
+global ScriptExpression:TScriptExpression = new TScriptExpression
