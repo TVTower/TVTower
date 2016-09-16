@@ -124,8 +124,8 @@ Type TElevator Extends TEntity
 		TargetFloor = 0
 		Direction:Int = 1
 		ReadyForBoarding = False
-		Speed = 130
-		WaitAtFloorTime = 1500
+		Speed = GameRules.elevatorSpeed
+		WaitAtFloorTime = GameRules.elevatorWaitAtFloorTime
 
 		'limit speed between 50 - 240 pixels per second, default 120
 		Speed = Max(50, Min(240, GameRules.devConfig.GetInt("DEV_ELEVATOR_SPEED", int(Self.speed))))
