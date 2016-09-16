@@ -6,6 +6,7 @@ EndRem
 SuperStrict
 Import "Dig/base.util.mersenne.bmx"
 Import "Dig/base.util.math.bmx"
+Import "Dig/base.util.scriptexpression.bmx"
 'for TBroadcastSequence
 Import "game.broadcast.base.bmx"
 Import "game.broadcastmaterialsource.base.bmx"
@@ -562,6 +563,10 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	Field newsType:int = 0 'initialNews
 	Field availableYearRangeFrom:int = -1
 	Field availableYearRangeTo:int = -1
+	'special expression defining whether a contract is available for
+	'ad vendor or not (eg. "YEAR > 2000" or "YEARSPLAYED > 2")
+	Field availableScript:string = ""
+
 	Field _genreDefinitionCache:TNewsGenreDefinition = Null {nosave}
 	
 
@@ -598,7 +603,24 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		if GUID="" then GUID = "generic-newsevent-"+id
 		self.GUID = GUID
 	End Method
+	
 
+	Method IsAvailable:int()
+		'field "available" = false ?
+		if not super.IsAvailable() then return False
+		
+		if availableYearRangeFrom >= 0 and availableYearRangeTo >= 0
+			if GetWorldTime().GetYear() < availableYearRangeFrom or GetWorldTime().GetYear() > availableYearRangeTo then return False
+		endif
+
+		'a special script expression defines custom rules for adcontracts
+		'to be available or not
+		if availableScript and not GetScriptExpression().Eval(availableScript)
+			return False
+		endif
+
+		return True
+	End Method
 
 	Method SetQualityRaw:Int(quality:Float)
 		'clamp between 0-1.0

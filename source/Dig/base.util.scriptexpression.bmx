@@ -53,11 +53,21 @@ Type TScriptExpression
 	global _errorCount:int = 0
 	global _error:string = ""
 	global _variableHandler:string(variable:string, params:string[], resultType:int var)
+
+	global _instance:TScriptExpression
+
 	Const ELEMENTTYPE_NONE:int = 0
 	Const ELEMENTTYPE_NUMERIC:int = 1
 	Const ELEMENTTYPE_STRING:int = 2
 	Const ELEMENTTYPE_VARIABLE:int = 3
 	Const ELEMENTTYPE_OBJECT:int = 4
+
+
+	Function GetInstance:TScriptExpression()
+		if not _instance then _instance = new TScriptExpression
+		return _instance
+	End Function
+
 
 	Method Eval:int(expression:string, variableHandler:string(variable:string, params:string[], resultType:int var) = null)
 		_expression = expression
@@ -146,32 +156,44 @@ Type TScriptExpression
 			'if at least one is a string, use string comparison
 			if elementType1 = ELEMENTTYPE_STRING or elementType2 = ELEMENTTYPE_STRING 
 				Select op
-					case ">="  return string(element1) >= string(element2)
-					case ">"   return string(element1) >  string(element2)
-					case "<="  return string(element1) <= string(element2)
-					case "<"   return string(element1) <  string(element2)
-					case "<>"   return string(element1) <>  string(element2)
+					case ">=", "=>"
+						return string(element1) >= string(element2)
+					case ">"
+						return string(element1) >  string(element2)
+					case "<=", "=<"
+						return string(element1) <= string(element2)
+					case "<"
+						return string(element1) <  string(element2)
+					case "<>"
+						return string(element1) <>  string(element2)
 					case "="
-						print string(element1)+" = " + string(element2) +" ??"
 						return (string(element1) =  string(element2))
 				End Select
 
 			'both not "strings", so check if both are numeric
 			elseif elementType1 = ELEMENTTYPE_NUMERIC and elementType2 = ELEMENTTYPE_NUMERIC 
 				Select op
-					case ">="  return double(string(element1)) >= double(string(element2))
-					case ">"   return double(string(element1)) >  double(string(element2))
-					case "<="  return double(string(element1)) <= double(string(element2))
-					case "<"   return double(string(element1)) <  double(string(element2))
-					case "<>"  return double(string(element1)) <>  double(string(element2))
-					case "="   return double(string(element1)) =  double(string(element2))
+					case ">=", "=>"
+						return double(string(element1)) >= double(string(element2))
+					case ">"
+						return double(string(element1)) >  double(string(element2))
+					case "<=", "=<"
+						return double(string(element1)) <= double(string(element2))
+					case "<"
+						return double(string(element1)) <  double(string(element2))
+					case "<>"
+						return double(string(element1)) <>  double(string(element2))
+					case "="
+						return double(string(element1)) =  double(string(element2))
 				End Select
 
 			'object comparison
 			else
 				Select op
-					case "<>"  return element1 <> element2
-					case "="   return element1 =  element2
+					case "<>"
+						return element1 <> element2
+					case "="
+						return element1 =  element2
 				End Select
 			endif
 		Wend
@@ -230,7 +252,7 @@ Type TScriptExpression
 		endif
 
 		'extract variables / "functions"
-		if IsAlpha( GetCurrentCharCode() )
+		if IsAlpha( GetCurrentCharCode() ) or GetCurrentChar() = "_"
 			local openBracket:int = false
 			local variable:string = ""
 			local char:string
@@ -396,4 +418,7 @@ Type TScriptExpression
 	End Method
 End Type
 
-global ScriptExpression:TScriptExpression = new TScriptExpression
+
+Function GetScriptExpression:TScriptExpression()
+	return TScriptExpression.GetInstance()
+End Function

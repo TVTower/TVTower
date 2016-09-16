@@ -355,7 +355,7 @@ Type TAdContractBase extends TBroadcastMaterialSourceBase {_exposeToLua}
 
 		'a special script expression defines custom rules for adcontracts
 		'to be available or not
-		if availableScript and not ScriptExpression.Eval(availableScript, TAdContractBaseFilter.HandleScriptVariables)
+		if availableScript and not GetScriptExpression().Eval(availableScript)
 			return False
 		endif
 
@@ -1701,6 +1701,7 @@ Type TAdContractBaseFilter
 	Field currentlyUsedByContractsLimitMax:int = -1
 	Field limitedToProgrammeGenres:int[]
 	Field limitedToTargetGroups:int[]
+	Field checkAvailability:int = True
 	Field skipLimitedProgrammeGenre:int = False
 	Field skipLimitedTargetGroup:int = False
 	Field forbiddenContractGUIDs:string[]
@@ -1801,16 +1802,12 @@ Type TAdContractBaseFilter
 	End Method
 
 
-	Function HandleScriptVariables:int(variable:string)
-	End Function
-
-
 	'checks if the given adcontract fits into the filter criteria
 	Method DoesFilter:Int(contract:TAdContractBase)
 		if not contract then return False
 
 		'skip contracts not available (year or by script expression)
-		if not contract.IsAvailable() then return False
+		if checkAvailability and not contract.IsAvailable() then return False
 
 
 		if minAudienceMin >= 0 and contract.minAudienceBase < minAudienceMin then return False
