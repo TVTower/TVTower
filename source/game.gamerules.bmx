@@ -31,9 +31,13 @@ Type TGameRules {_exposeToLua}
 	'speed of the world (1.0 means "normal", 2.0 = double as fast)
 	'speed is used for figures, elevator, ...
 	Field worldSpeed:float = 1.0
-
 	'0.25*60, 0.5*60, 3*60, 10*60
 	Field worldTimeSpeedPresets:Int[] = [15, 30, 180, 600]
+
+	'pixelsp er "second"
+	Field elevatorSpeed:int = 160
+	'how long in MS to wait until closing the door
+	Field elevatorWaitAtFloorTime:int = 1500
 
 	'if disabled, player is allowed to place a live programme
 	'also at later times (eg. 2 hours later)
