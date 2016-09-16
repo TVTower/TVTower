@@ -1,63 +1,61 @@
 SuperStrict
-Import "Dig/base.util.scriptexpression.bmx"
-Import Brl.Map
+Import "game.gamescriptexpression.base.bmx"
+Import "game.world.worldtime.bmx"
 
 
-Type TGameScriptExpression extends TScriptExpression
-	Global variableHandlers:TMap = CreateMap()
+GetGameScriptExpression().RegisterHandler("TIME_YEAR", GameScriptExpression_Handle_Time)
+GetGameScriptExpression().RegisterHandler("TIME_DAY", GameScriptExpression_Handle_Time)
+GetGameScriptExpression().RegisterHandler("TIME_HOUR", GameScriptExpression_Handle_Time)
+GetGameScriptExpression().RegisterHandler("TIME_MINUTE", GameScriptExpression_Handle_Time)
+GetGameScriptExpression().RegisterHandler("TIME_WEEKDAY", GameScriptExpression_Handle_Time)
+GetGameScriptExpression().RegisterHandler("TIME_SEASON", GameScriptExpression_Handle_Time)
+GetGameScriptExpression().RegisterHandler("TIME_DAYSPLAYED", GameScriptExpression_Handle_Time)
+GetGameScriptExpression().RegisterHandler("TIME_YEARSPLAYED", GameScriptExpression_Handle_Time)
+GetGameScriptExpression().RegisterHandler("TIME_DAYOFMONTH", GameScriptExpression_Handle_Time)
+GetGameScriptExpression().RegisterHandler("TIME_DAYOFYEAR", GameScriptExpression_Handle_Time)
+GetGameScriptExpression().RegisterHandler("TIME_ISNIGHT", GameScriptExpression_Handle_Time)
+GetGameScriptExpression().RegisterHandler("TIME_ISDAWN", GameScriptExpression_Handle_Time)
+GetGameScriptExpression().RegisterHandler("TIME_ISDAY", GameScriptExpression_Handle_Time)
+GetGameScriptExpression().RegisterHandler("TIME_ISDUSK", GameScriptExpression_Handle_Time)
 
 
-	Function RegisterHandler(variable:string, handler:string(variable:string, params:string[], resultElementType:int var))
-		variableHandlers.insert(variable.toLower(), TGameScriptExpressionFunctionWrapper.Create(handler))
-	End Function
-
-rem
-	Function RunHandler:int(variable:string, params:string[], resultElementType:int var)
-		local wrapper:GameScriptExpressionFunctionWrapper = GameScriptExpressionFunctionWrapper(variableHandlers.ValueForKey(variable.ToLower()))
-		if wrapper then return wrapper.func(variable, params, resultElementType)
-	End Function
-endrem
-
-	'override
-	Method HandleVariable:string(variable:string, resultElementType:int var)
-		local wrapper:TGameScriptExpressionFunctionWrapper = TGameScriptExpressionFunctionWrapper(variableHandlers.ValueForKey(variable.ToLower()))
-		if wrapper
-			return wrapper.func(variable, null, resultElementType)
-		else
-			_errorCount :+1
-			_error = "Cannot handle variable ~q"+variable+"~q. Defaulting to 0."
-			print _error
-
-			return "0"
-		endif
-	End Method
 
 
-	'override
-	Method HandleFunction:string(variable:string, params:string[], resultElementType:int var)
-		local wrapper:TGameScriptExpressionFunctionWrapper = TGameScriptExpressionFunctionWrapper(variableHandlers.ValueForKey(variable))
-		if wrapper
-			return wrapper.func(variable, params, resultElementType)
-		else
-			_errorCount :+1
-			_error = "Cannot handle function ~q"+variable+"~q. Defaulting to 0."
-			print _error
+Function GameScriptExpression_Handle_Time:string(variable:string, params:string[], resultElementType:int var)
+	resultElementType = TScriptExpression.ELEMENTTYPE_NUMERIC
 
-			return "0"
-		endif
-	End Method
-End Type
+	Select variable.ToLower()
+		case "time_year"
+			return string( GetWorldTime().GetYear() )
+		case "time_day"
+			return string( GetWorldTime().GetDay() )
+		case "time_hour"
+			return string( GetWorldTime().GetDayHour() )
+		case "time_minute"
+			return string( GetWorldTime().GetDayMinute() )
+		case "time_daysplayed"
+			return string( GetWorldTime().GetDaysRun() )
+		case "time_yearsplayed"
+			return string( floor(GetWorldTime().GetDaysRun() / GetWorldTime().GetDaysPerYear()) )
+		case "time_weekday"
+			return string( GetWorldTime().GetWeekday() )
+		case "time_season"
+			return string( GetWorldTime().GetSeason() )
+		case "time_dayofmonth"
+			return string( GetWorldTime().GetDayOfMonth() )
+		case "time_dayofyear"
+			return string( GetWorldTime().GetDayOfYear() )
+		case "time_isnight"
+			return string( GetWorldTime().IsNight() )
+		case "time_isdawn"
+			return string( GetWorldTime().IsDawn() )
+		case "time_isday"
+			return string( GetWorldTime().IsDay() )
+		case "time_isdusk"
+			return string( GetWorldTime().IsDusk() )
+		default
+			print "GameScriptExpression_Handle_Time: unknown variable ~q"+variable+"~q."
+	End Select
 
-
-Type TGameScriptExpressionFunctionWrapper
-	Field func:string(variable:string, params:string[], resultElementType:int var)
-
-	Function Create:TGameScriptExpressionFunctionWrapper(func:string(variable:string, params:string[], resultElementType:int var))
-		local obj:TGameScriptExpressionFunctionWrapper = new TGameScriptExpressionFunctionWrapper
-		obj.func = func
-		return obj
-	End Function
-End Type
-
-
-Global GameScriptExpression:TGameScriptExpression = new TGameScriptExpression
+	return ""
+End Function

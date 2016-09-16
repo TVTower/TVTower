@@ -509,6 +509,14 @@ Type TDatabaseLoader
 		newsEvent.availableYearRangeFrom = data.GetInt("year_range_from", newsEvent.availableYearRangeFrom)
 		newsEvent.availableYearRangeTo = data.GetInt("year_range_to", newsEvent.availableYearRangeTo)
 
+		'=== AVAILABILITY ===
+		xml.LoadValuesToData(xml.FindChild(node, "availability"), data, [..
+			"script", "year_range_from", "year_range_to" ..
+		])
+		newsEvent.availableScript = data.GetString("script", newsEvent.availableScript)
+		newsEvent.availableYearRangeFrom = data.GetInt("year_range_from", newsEvent.availableYearRangeFrom)
+		newsEvent.availableYearRangeTo = data.GetInt("year_range_to", newsEvent.availableYearRangeTo)
+
 
 
 		'=== EFFECTS ===
