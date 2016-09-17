@@ -776,7 +776,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 
 
-	Method GetEpisodeNumber:int()
+	Method GetEpisodeNumber:int() {_exposeToLua}
 		if not self.parentLicenceGUID then return 1
 
 		if episodeNumber > 0 then return episodeNumber
@@ -796,6 +796,41 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		return GetParentLicence().GetSubLicenceCount()
 		'to return the amount of currently "planned" episodes use:
 		'return GetParentLicence().GetSubLicenceSlots()
+	End Method
+
+
+
+	Method CanBroadcastAtTime:int(broadcastType:int, day:int, hour:int) {_exposeToLua}
+		'check timeslot limits
+		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
+			if HasBroadcastTimeSlot()
+				'hour incorrect?
+				if GetBroadcastTimeSlotStart() >= 0 and GetBroadcastTimeSlotStart() > hour then return False
+				if GetBroadcastTimeSlotEnd() >= 0 and GetBroadcastTimeSlotEnd() < (hour + GetBlocks(broadcastType)-1) then return False
+			endif
+		endif
+
+		'check live-programme
+		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
+			if data.IsLive()
+				'hour or day incorrect
+				if GameRules.onlyExactLiveProgrammeTimeAllowedInProgrammePlan
+					if GetWorldTime().GetDayHour( data.releaseTime ) <> hour then return False
+					if GetWorldTime().GetDay( data.releaseTime ) <> day then return False
+				'all times after the live event are allowed too
+				else
+					'live happens on a later day
+					if GetWorldTime().GetDay( data.releaseTime ) > day
+						return False
+					'live happens on that day but on a later hour
+					elseif GetWorldTime().GetDay( data.releaseTime ) = day
+						if GetWorldTime().GetDayHour( data.releaseTime ) > hour then return False
+					endif
+				endif
+			endif
+		endif
+
+		return Super.CanBroadcastAtTime(broadcastType, day, hour)
 	End Method
 
 

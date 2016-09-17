@@ -835,39 +835,10 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		FixDayHour(day, hour)
 
-
-		'check timeslot limits
-		if slotType = TVTBroadcastMaterialType.PROGRAMME and TProgramme(obj)
-			local p:TProgramme = TProgramme(obj)
-			if p.data.HasBroadcastTimeSlot()
-				'hour incorrect?
-				if p.data.broadcastTimeSlotStart >= 0 and p.data.broadcastTimeSlotStart > hour then return -1
-				if p.data.broadcastTimeSlotEnd >= 0 and p.data.broadcastTimeSlotEnd < (hour + obj.GetBlocks()-1) then return -1
-			endif
+		'check live programme
+		if not obj.GetSource().CanBroadcastAtTime(slotType, day, hour)
+			return False
 		endif
-
-
-		'check live-programme
-		if slotType = TVTBroadcastMaterialType.PROGRAMME and TProgramme(obj)
-			local p:TProgramme = TProgramme(obj)
-			if p.data.IsLive()
-				'hour or day incorrect
-				if GameRules.onlyExactLiveProgrammeTimeAllowedInProgrammePlan
-					if GetWorldTime().GetDayHour( p.data.releaseTime ) <> hour then return -1
-					if GetWorldTime().GetDay( p.data.releaseTime ) <> day then return -1
-				'all times after the live event are allowed too
-				else
-					'live happens on a later day
-					if GetWorldTime().GetDay( p.data.releaseTime ) > day
-						return False
-					'live happens on that day but on a later hour
-					elseif GetWorldTime().GetDay( p.data.releaseTime ) = day
-						if GetWorldTime().GetDayHour( p.data.releaseTime ) > hour then return -1
-					endif
-				endif
-			endif
-		endif
-
 	
 		'check all slots the obj will occupy...
 		For Local i:Int = 0 To obj.GetBlocks() - 1
@@ -877,8 +848,6 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		Return 1
 	End Method
-
-
 
 
 	Method RemoveBrokenObjects:int()

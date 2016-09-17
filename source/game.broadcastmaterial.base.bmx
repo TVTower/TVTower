@@ -3,6 +3,7 @@ Import "game.gameobject.bmx"
 Import "game.broadcast.genredefinition.base.bmx"
 Import "game.broadcast.audienceattraction.bmx"
 Import "game.broadcast.sequencecalculation.bmx"
+Import "game.broadcastmaterialsource.base.bmx"
 Import "game.publicimage.bmx"
 
 
@@ -193,8 +194,8 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetSource:object() {_exposeToLua}
-		return self
+	Method GetSource:TBroadcastMaterialSourceBase() {_exposeToLua}
+		return null
 	End Method
 
 

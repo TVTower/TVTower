@@ -92,7 +92,7 @@ function JobCheckSpots:CheckSpot()
 		local spot = TVT.convertToAdContract(response.data)
 		local spot2 = response.data
 		if (spot2.IsAvailableToSign(TVT.ME) == 1) then
-			TVT.SendToChat("ist verfuegbar : " .. spot2.GetTitle())
+			--TVT.SendToChat("ist verfuegbar : " .. spot2.GetTitle())
 		end
 		if (spot.IsAvailableToSign(TVT.ME) == 1) then
 			local player = _G["globalPlayer"]

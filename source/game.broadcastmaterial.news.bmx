@@ -269,6 +269,11 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	End Function
 
 
+	Method GetSource:TBroadcastMaterialSourceBase() {_exposeToLua}
+		return newsEvent
+	End Method
+
+
 	'override
 	Method SourceHasBroadcastFlag:int(flag:Int) {_exposeToLua}
 		return newsEvent.HasBroadcastFlag(flag)

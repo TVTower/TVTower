@@ -652,36 +652,46 @@ end
 function JobEmergencySchedule:GetProgrammeLicenceList(level, maxRerunsToday, day, hour)
 	local allLicences = {}
 	local useableLicences = {}
+	local fixedDay, fixedHour = self.ScheduleTask:FixDayAndHour(day, hour)
 
+	-- add every licence broadcastable at the given time
 	for i=0,TVT.of_getProgrammeLicenceCount()-1 do
 		local licence = TVT.of_getProgrammeLicenceAtIndex(i)
 		if (licence ~= nil) then
-			-- add the single licences, ignore collection/series headers
-			if ( licence.GetSubLicenceCount() == 0 ) then
-				-- skip xrated programme during daytime
-				if (hour >= 22 or hour + licence.data.GetBlocks() <= 5 or licence.GetData().IsXRated() == 0) then
-					table.insert(allLicences, licence)
-				end
+			local addIt = true
+			-- ignore collection/series headers
+			if ( licence.GetSubLicenceCount() > 0 ) then addIt = false; end
+			-- ignore when exceeding broadcast limits
+			if ( licence.isExceedingBroadcastLimit() == 1 ) then addIt = false; end
+			-- ignore programme licences not allowed for that time
+			if ( licence.CanBroadcastAtTime(TVT.Constants.BroadcastMaterialType.PROGRAMME, fixedDay, fixedHour) ~= 1 ) then
+				debugMsg("broadcast failed: " .. licence.GetTitle())
+				addIt = false
+			end
+			-- skip xrated programme during daytime
+			if (licence.GetData().IsXRated() == 1) and (fixedHour < 22 and fixedHour + licence.data.GetBlocks() > 5) then addIt = false; end
+			-- skip if no new broadcast is possible (controllable and available)
+			if (licence.isNewBroadcastPossible() == 0) then addIt = false; end
+			
+			if ( addIt == true ) then
+				table.insert(allLicences, licence)
 			end
 		end
 	end
 
 
 	for k,licence in pairs(allLicences) do
-		if (licence.isNewBroadcastPossible() == 1) then
-			--TVT.PrintOut("licence is broadcastable: " .. licence.GetTitle() .. "   " .. licence.isNewBroadcastPossible() .. "  " .. licence.GetData().IsControllable())
-			if licence.GetQualityLevel() == level then
-				local sentAndPlannedToday = TVT.of_GetBroadcastMaterialInProgrammePlanCount(licence.GetID(), day, 1)
-				if (sentAndPlannedToday <= maxRerunsToday) then
-					--debugMsg("GetProgrammeLicenceList: " .. licence.GetTitle() .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday .. " - A:" .. licence.GetAttractiveness() .. " Qa:" .. licence.GetQualityLevel() .. " Qo:" .. licence.GetQuality() .. " T:" .. licence.GetTopicality())
-					table.insert(useableLicences, licence)
-				else
-					--debugMsg("GetProgrammeLicenceList: " .. licence.GetTitle() .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday ..  " - A:" .. licence.GetAttractiveness() .. " Qa:" .. licence.GetQualityLevel() .. " Qo:" .. licence.GetQuality() .. " T:" .. licence.GetTopicality() .. "   failed Runs " .. maxRerunsToday)
-				end
-			--else
-				--local sentAndPlannedToday = TVT.of_GetBroadcastMaterialInProgrammePlanCount(licence.GetID(), day, 1)
-				--debugMsg("GetProgrammeLicenceList: " .. licence.GetTitle() .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday ..  " - A:" .. licence.GetAttractiveness() .. " Qa:" .. licence.GetQualityLevel() .. " Qo:" .. licence.GetQuality() .. " T:" .. licence.GetTopicality() .. "   failed level " .. level)
+		if licence.GetQualityLevel() == level then
+			local sentAndPlannedToday = TVT.of_GetBroadcastMaterialInProgrammePlanCount(licence.GetID(), day, 1)
+			if (sentAndPlannedToday <= maxRerunsToday) then
+				--debugMsg("GetProgrammeLicenceList: " .. licence.GetTitle() .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday .. " - A:" .. licence.GetAttractiveness() .. " Qa:" .. licence.GetQualityLevel() .. " Qo:" .. licence.GetQuality() .. " T:" .. licence.GetTopicality())
+				table.insert(useableLicences, licence)
+			else
+				--debugMsg("GetProgrammeLicenceList: " .. licence.GetTitle() .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday ..  " - A:" .. licence.GetAttractiveness() .. " Qa:" .. licence.GetQualityLevel() .. " Qo:" .. licence.GetQuality() .. " T:" .. licence.GetTopicality() .. "   failed Runs " .. maxRerunsToday)
 			end
+		--else
+			--local sentAndPlannedToday = TVT.of_GetBroadcastMaterialInProgrammePlanCount(licence.GetID(), day, 1)
+			--debugMsg("GetProgrammeLicenceList: " .. licence.GetTitle() .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday ..  " - A:" .. licence.GetAttractiveness() .. " Qa:" .. licence.GetQualityLevel() .. " Qo:" .. licence.GetQuality() .. " T:" .. licence.GetTopicality() .. "   failed level " .. level)
 		end
 	end
 
