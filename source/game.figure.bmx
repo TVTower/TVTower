@@ -591,8 +591,14 @@ Type TFigure extends TFigureBase
 
 		'if already in another room, leave that first
 		if inRoom
-			'print "         LEAVE FIRST: " + inRoom.name
-			LeaveRoom(True)
+			'first try to leave "non forcefully" (signing contracts
+			'and so on)
+			'if that fails, forcefully leave (skip contracts)
+			print "         LEAVE FIRST: " + inRoom.name
+			if not LeaveRoom(False)
+				print "         LEAVE FIRST FORCEFULLY: " + inRoom.name
+				LeaveRoom(True)
+			endif
 		endif
 
 
@@ -602,6 +608,8 @@ Type TFigure extends TFigureBase
 		endif
 
 		BeginEnterRoom(door, room)
+
+		return True
 	End Method
 
 
@@ -692,6 +700,8 @@ Type TFigure extends TFigureBase
 		'inform that figure now begins entering the room
 		'(eg. for players informing the ai)
 		EventManager.triggerEvent(TEventSimple.Create("figure.onBeginEnterRoom", null, self, room))
+
+		return True
 	End Method
 
 
@@ -729,6 +739,8 @@ Type TFigure extends TFigureBase
 		'inform that figure now entered the room
 		'(eg. for players informing the ai)
 		EventManager.triggerEvent( TEventSimple.Create("figure.onFinishEnterRoom", new TData.Add("room", room).Add("door", door) , self, room) )
+
+		return True
 	End Method
 
 
@@ -803,6 +815,8 @@ Type TFigure extends TFigureBase
 		endif
 
 		BeginLeaveRoom()
+
+		return True
 	End Method
 
 
@@ -840,6 +854,8 @@ Type TFigure extends TFigureBase
 		'inform that figure now leaves the room
 		'(eg. for players informing the ai)
 		EventManager.triggerEvent(TEventSimple.Create("figure.onBeginLeaveRoom", null, self, inroom))
+
+		return True
 	End Method
 
 
