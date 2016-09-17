@@ -94,6 +94,30 @@ Type TAi extends TAiBase
 	End Method
 
 
+	Method CallOnLoadState()
+		if not AiRunning then return
+
+		Local args:Object[1]
+		args[0] = self.scriptSaveState
+
+		CallLuaFunction("OnLoadState", args)
+	End Method
+
+
+	Method CallOnSaveState()
+		if not AiRunning then return
+
+		'reset (potential old) save state
+		scriptSaveState = ""
+
+		Local args:Object[1]
+		args[0] = string(GetWorldTime().GetTimeGone())
+
+		scriptSaveState = string(CallLuaFunction("OnSaveState", args))
+	End Method
+
+
+	'for now OnLoad and OnSave are equal to OnLoadState and OnSaveState
 	Method CallOnLoad()
 		if not AiRunning then return
 

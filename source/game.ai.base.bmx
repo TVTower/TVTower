@@ -79,7 +79,14 @@ Type TAiBase
 	'loads the current file again
 	Method ReloadScript:int()
 		if scriptFileName="" then return FALSE
+
+		'save current state
+		CallOnSaveState()
+
 		LoadScript(scriptFileName)
+
+		'restore current state
+		CallOnLoadState()
 	End Method
 
 
@@ -101,6 +108,8 @@ Type TAiBase
 
 
 	Method ConditionalCallOnTick() abstract
+	Method CallOnLoadState() abstract
+	Method CallOnSaveState() abstract
 	Method CallOnLoad() abstract
 	Method CallOnSave() abstract
 	Method CallOnRealtimeSecond(millisecondsGone:Int=0) abstract
