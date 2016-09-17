@@ -438,19 +438,30 @@ function OnReachTarget()
 	end
 end
 
-function OnSave()
+
+-- called before "reloading" a script
+function OnSaveState(timeGone)
 	SLFManager.StoreDefinition.Player = getAIPlayer()
 	return SLFManager:save()
 end
 
-function OnLoad(data)
+function OnLoadState(data)
 	SLFManager:load(data)
 	if SLFManager.LoadedData.Player:typename() == "DefaultAIPlayer" then
-		infoMsg("Successfully Loaded!")
+		infoMsg("Successfully restored AI state!")
 		_G["globalPlayer"] = SLFManager.LoadedData.Player
 	else
-		infoMsg("Loaded failed!")
+		infoMsg("Restoring AI state failed!")
 	end
+end
+
+-- called when "saving" a game
+function OnSave(timeGone)
+	return OnSaveState()
+end
+
+function OnLoad(data)
+	OnLoadState(data)
 end
 
 
