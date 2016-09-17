@@ -5224,16 +5224,20 @@ Function DEV_switchRoom:Int(room:TRoom)
 
 	'to avoid seeing too much animation
 	TInGameScreen_Room.temporaryDisableScreenChangeEffects = True
-rem
+
 	'leave first
+	'RONNY: disabled, EnterRoom does already take care of leaving first
+Rem
 	If GetPlayer().GetFigure().inRoom
 		'force leave?
 		'GetPlayer().GetFigure().LeaveRoom(True)
 		'not forcing a leave is similar to "right-click"-leaving
 		'which means it signs contracts, buys programme etc
-		GetPlayer().GetFigure().LeaveRoom(False)
+		if not GetPlayer().GetFigure().LeaveRoom(False)
+			GetGame().SendSystemMessage("[DEV] cannot switch rooms: Leaving old room failed")
+		endif
 	EndIf
-endrem
+EndRem
 
 	'remove potential elevator passenger 
 	GetElevator().LeaveTheElevator(GetPlayer().GetFigure())

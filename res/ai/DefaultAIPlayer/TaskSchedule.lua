@@ -664,10 +664,7 @@ function JobEmergencySchedule:GetProgrammeLicenceList(level, maxRerunsToday, day
 			-- ignore when exceeding broadcast limits
 			if ( licence.isExceedingBroadcastLimit() == 1 ) then addIt = false; end
 			-- ignore programme licences not allowed for that time
-			if ( licence.CanBroadcastAtTime(TVT.Constants.BroadcastMaterialType.PROGRAMME, fixedDay, fixedHour) ~= 1 ) then
-				debugMsg("broadcast failed: " .. licence.GetTitle())
-				addIt = false
-			end
+			if ( licence.CanBroadcastAtTime(TVT.Constants.BroadcastMaterialType.PROGRAMME, fixedDay, fixedHour) ~= 1 ) then addIt = false; end
 			-- skip xrated programme during daytime
 			if (licence.GetData().IsXRated() == 1) and (fixedHour < 22 and fixedHour + licence.data.GetBlocks() > 5) then addIt = false; end
 			-- skip if no new broadcast is possible (controllable and available)
