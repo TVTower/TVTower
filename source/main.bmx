@@ -992,11 +992,11 @@ endrem
 						If KEYMANAGER.IsHit(KEY_R) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("roomboard"))
 					EndIf
 				EndIf
-				If KEYMANAGER.IsHit(KEY_5) Then GetWorldTime().SetTimeFactor(60*60.0)  '60 virtual minutes per realtime second
-				If KEYMANAGER.IsHit(KEY_6) Then GetWorldTime().SetTimeFactor(120*60.0) '120 minutes per second
-				If KEYMANAGER.IsHit(KEY_7) Then GetWorldTime().SetTimeFactor(180*60.0) '180 minutes per second
-				If KEYMANAGER.IsHit(KEY_8) Then GetWorldTime().SetTimeFactor(240*60.0) '240 minute per second
-				If KEYMANAGER.IsHit(KEY_9) Then GetWorldTime().SetTimeFactor(1*60.0)   '1 minute per second
+				If KEYMANAGER.IsHit(KEY_5) Then GetGame().SetGameSpeed( 60 )  '60 virtual minutes per realtime second
+				If KEYMANAGER.IsHit(KEY_6) Then GetGame().SetGameSpeed( 120 ) '120 minutes per second
+				If KEYMANAGER.IsHit(KEY_7) Then GetGame().SetGameSpeed( 180 ) '180 minutes per second
+				If KEYMANAGER.IsHit(KEY_8) Then GetGame().SetGameSpeed( 240 ) '240 minute per second
+				If KEYMANAGER.IsHit(KEY_9) Then GetGame().SetGameSpeed( 1 )   '1 minute per second
 				If KEYMANAGER.IsHit(KEY_Q) Then TVTDebugQuoteInfos = 1 - TVTDebugQuoteInfos
 
 				If KEYMANAGER.IsHit(KEY_P)

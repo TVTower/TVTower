@@ -34,6 +34,8 @@ Type TGameRules {_exposeToLua}
 	'0.25*60, 0.5*60, 3*60, 10*60
 	Field worldTimeSpeedPresets:Int[] = [15, 30, 180, 600]
 
+	Field globalEntityWorldSpeedFactor:Float = 1.0
+
 	'pixelsp er "second"
 	Field elevatorSpeed:int = 160
 	'how long in MS to wait until closing the door
