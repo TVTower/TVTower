@@ -51,7 +51,7 @@ Type TRoomHandlerCollection
 		'=== register event listeners
 		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onUpdate", onHandleRoom ) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onDraw", onHandleRoom ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onFinishEnter", onHandleRoom ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onBeginEnter", onHandleRoom ) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onFinishLeave", onHandleRoom ) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction( "figure.onTryLeaveRoom", onHandleFigureInRoom ) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction( "figure.onForcefullyLeaveRoom", onHandleFigureInRoom ) ]
