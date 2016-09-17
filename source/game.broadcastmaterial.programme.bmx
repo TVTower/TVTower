@@ -561,7 +561,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetSource:object() {_exposeToLua}
+	Method GetSource:TBroadcastMaterialSourceBase() {_exposeToLua}
 		return self.licence
 	End Method
 	

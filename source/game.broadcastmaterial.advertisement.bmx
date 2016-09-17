@@ -58,7 +58,7 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 	End Method
 
 
-	Method GetSource:object() {_exposeToLua}
+	Method GetSource:TBroadcastMaterialSourceBase() {_exposeToLua}
 		return self.contract
 	End Method
 

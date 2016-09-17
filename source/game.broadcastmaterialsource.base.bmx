@@ -1,7 +1,8 @@
 SuperStrict
+Import "Dig/base.util.math.bmx"
 Import "game.gameobject.bmx"
+Import "game.gameconstants.bmx"
 Import "game.modifier.base.bmx"
-Import "game.broadcastmaterial.base.bmx"
 
 
 'could be done as "interface"
@@ -64,6 +65,11 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 
 		self.broadcastLimitMax = broadcastLimit
 		self.broadcastLimit = broadcastLimit
+	End Method
+
+
+	Method CanBroadcastAtTime:int(broadcastType:int, day:int, hour:int) {_exposeToLua}
+		return True
 	End Method
 
 
