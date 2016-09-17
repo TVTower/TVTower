@@ -145,6 +145,14 @@ Type TGameBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method SetGameSpeedPreset(preset:int)
+		'stub
+	End Method
+
+	Method SetGameSpeed(timeFactor:int = 15)
+		'stub
+	End Method
+
 	'run this before EACH started game
 	Method PrepareStart(startNewGame:Int)
 		'stub

@@ -41,9 +41,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'middle: 10 game minutes = 20 seconds  -> 1 sec = 30 ingameseconds
 		'fast:   10 game minutes = 10 seconds  -> 1 sec = 60 ingameseconds
 		'set basic game speed to 30 gameseconds per second
-		GetWorldTime().SetTimeFactor(30.0)
-		
-		GetBuildingTime().SetTimeFactor(1.0)
+		'GetWorldTime().SetTimeFactor(30.0)
+		'GetBuildingTime().SetTimeFactor(1.0)
+		SetGameSpeedPreset(1)
 
 
 		if not GameScreen_World
@@ -86,6 +86,22 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerFinance.onChangeMoney", onPlayerChangeMoney) ]
 	End Method
 
+
+	Method SetGameSpeedPreset(preset:int)
+		preset = Max(Min(GameRules.worldTimeSpeedPresets.length-1, preset), 0)
+		SetGameSpeed(GameRules.worldTimeSpeedPresets[preset])
+	End Method
+
+
+	Method SetGameSpeed(timeFactor:int = 15)
+		local modifier:Float = float(timeFactor) / GameRules.worldTimeSpeedPresets[0]
+
+		GetWorldTime().SetTimeFactor(modifier * GameRules.worldTimeSpeedPresets[0])
+
+		TEntity.globalWorldSpeedFactor = GameRules.globalEntityWorldSpeedFactor + 0.005 * modifier
+		'move as fast as on level 2 (to avoid odd looking figures)
+		GetBuildingTime().SetTimeFactor( Max(1.0, (modifier-1) * 1.0) )
+	End Method
 
 
 	'=== START A GAME ===

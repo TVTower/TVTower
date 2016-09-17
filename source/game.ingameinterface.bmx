@@ -425,7 +425,7 @@ Type TInGameInterface
 				MenuToolTip.enabled = 1
 				MenuToolTip.Hover()
 				If MouseManager.IsClicked(1)
-					GetWorldTime().SetTimeFactor(GameRules.worldTimeSpeedPresets[0])
+					GetGameBase().SetGameSpeedPreset(0)
 					MouseManager.ResetKey(1)
 				EndIf
 
@@ -439,7 +439,7 @@ Type TInGameInterface
 				MenuToolTip.enabled = 1
 				MenuToolTip.Hover()
 				If MouseManager.IsClicked(1)
-					GetWorldTime().SetTimeFactor(GameRules.worldTimeSpeedPresets[1])
+					GetGameBase().SetGameSpeedPreset(1)
 					MouseManager.ResetKey(1)
 				EndIf
 
@@ -453,7 +453,7 @@ Type TInGameInterface
 				MenuToolTip.enabled = 1
 				MenuToolTip.Hover()
 				If MouseManager.IsClicked(1)
-					GetWorldTime().SetTimeFactor(GameRules.worldTimeSpeedPresets[2])
+					GetGameBase().SetGameSpeedPreset(2)
 					MouseManager.ResetKey(1)
 				EndIf
 			EndIf
