@@ -710,6 +710,13 @@ Type TApp
 
 					If KEYMANAGER.IsHit(KEY_Y)
 rem
+						local adContractBase:TAdContractBase = GetAdContractBaseCollection().GetByGUID("ronny-ad-allhits-02")
+						if adContractBase
+							'forcefully add to the collection (skips requirements checks)
+							GetPlayerProgrammeCollection(1).AddAdContract(New TAdContract.Create(adContractBase), True)
+						endif
+endrem
+rem
 '						local m:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID("ronny-programme-pantoffeln-01-copy"+RandRange(20,25))
 						local m:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID("ffdbdca2-7ad9-bbfc-b1a1-af1d24ee7ab5")
 						if m.owner <> GetPlayer().playerID
