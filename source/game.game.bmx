@@ -126,6 +126,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			GetSoundManager().PlayMusicPlaylist("menu")
 		endif
 
+		'reset speeds (so janitor in main menu moves "normal" again)
+		SetGameSpeedPreset(1)
+
 		SetGameState(TGame.STATE_MAINMENU)
 		GetToastMessageCollection().RemoveAllMessages()
 		TLogger.Log("TGame", "====== END CURRENT GAME ======", LOG_DEBUG)
