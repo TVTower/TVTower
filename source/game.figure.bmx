@@ -710,7 +710,14 @@ Type TFigure extends TFigureBase
 		local room:TRoomBase
 		if not door and not THotspot( GetTarget() )
 			print "FinishEnterRoom : NO DOOR/HOTSPOT"
-			return False
+			if GetTarget()
+				print "Bitte an Ronny melden: ~qFinishEnterRoom : NO DOOR/HOTSPOT. Type=" + TTypeID.ForObject( GetTarget() ).name()+"~q."
+				Notify "Bitte an Ronny melden: ~qFinishEnterRoom : NO DOOR/HOTSPOT. Type=" + TTypeID.ForObject( GetTarget() ).name()+"~q."
+			else
+				print "Bitte an Ronny melden: ~qFinishEnterRoom : NO DOOR/HOTSPOT. Type=NULL"
+				Notify "Bitte an Ronny melden: ~qFinishEnterRoom : NO DOOR/HOTSPOT. Type=NULL"
+			endif
+'			return False
 		endif
 		if door then room = GetRoomBaseCollection().Get(door.roomID)
 		if door and not room then print "FinishEnterRoom : NO ROOM" 
@@ -1118,7 +1125,7 @@ Type TFigure extends TFigureBase
 			endif
 		endif
 
-
+rem
 		'we have a target and are in this moment entering it
 		if GetTarget() and currentReachTargetStep = 1 'and not isChangingRoom()
 			if TargetNeedsToGetEntered()
@@ -1144,6 +1151,7 @@ Type TFigure extends TFigureBase
 				endif
 			endif
 		endif
+endrem
 	End Method
 
 
