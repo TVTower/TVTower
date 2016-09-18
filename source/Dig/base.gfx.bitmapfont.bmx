@@ -175,8 +175,8 @@ Type TBitmapFont
 	'the original imagefont
 	Field FImageFont:TImageFont
 
-	Field chars:TMap = CreateMap()
-	Field charsSprites:Tmap	= CreateMap()
+	Field chars:TIntMap = new TIntMap
+	Field charsSprites:TIntmap	= new TIntMap
 	Field spriteSet:TSpritePack
 	'by default only the first 256 chars get loaded
 	'as soon as an "utf8"-code is requested, the font will re-init with
@@ -193,7 +193,7 @@ Type TBitmapFont
 	Field spaceWidthModifier:float = 1.0
 	'whether to use ints or floats for coords
 	Field drawAtFixedPoints:int = true
-	Field _charsEffectFunc:TBitmapFontChar(font:TBitmapFont, charKey:string, char:TBitmapFontChar, config:TData)[]
+	Field _charsEffectFunc:TBitmapFontChar(font:TBitmapFont, charKey:int, char:TBitmapFontChar, config:TData)[]
 	Field _charsEffectFuncConfig:TData[]
 	'by default this is 8bit alpha only
 	Field _pixmapFormat:int = PF_A8
@@ -244,7 +244,7 @@ Type TBitmapFont
 	End Function
 
 
-	Method SetCharsEffectFunction(position:int, _func:TBitmapFontChar(font:TBitmapFont, charKey:string, char:TBitmapFontChar, config:TData), config:TData=null)
+	Method SetCharsEffectFunction(position:int, _func:TBitmapFontChar(font:TBitmapFont, charKey:int, char:TBitmapFontChar, config:TData), config:TData=null)
 		position :-1 '0 based
 		if _charsEffectFunc.length <= position
 			_charsEffectFunc = _charsEffectFunc[..position+1]
@@ -259,11 +259,12 @@ Type TBitmapFont
 	Method ApplyCharsEffect(config:TData=null)
 		'if instead of overriding a function was provided - use this
 		if _charsEffectFunc.length > 0
-			for local charKey:string = eachin chars.keys()
+			for local _charKey:TIntKey = eachin chars.keys()
+				local charKey:Int = _charKey.Value
 				local char:TBitmapFontChar = TBitmapFontChar(chars.ValueForKey(charKey))
 
 				'manipulate char
-				local _func:TBitmapFontChar(font:TBitmapFont, charKey:string, char:TBitmapFontChar, config:TData)
+				local _func:TBitmapFontChar(font:TBitmapFont, charKey:int, char:TBitmapFontChar, config:TData)
 				local _config:TData
 				for local i:int = 0 to _charsEffectFunc.length-1
 					_func = _charsEffectFunc[i]
@@ -339,14 +340,14 @@ Type TBitmapFont
 			'base displacement calculated with A-Z (space between
 			'TOPLEFT of 'ABCDE' and TOPLEFT of 'acen'...)
 			if i >= 65 AND i < 95 then displaceY = Min(displaceY, glyph._y)
-			chars.insert(string(i), new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance))
+			chars.insert(i, new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance))
 		Next
 		For Local charNum:Int = 0 Until ExtraChars.length
 			n = imgFont.CharToGlyph( ExtraChars[charNum] )
 			If n < 0 or n > glyphCount then Continue
 			glyph = imgFont.LoadGlyph(n)
 			If not glyph then continue
-			chars.insert(string(ExtraChars[charNum]) , new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance) )
+			chars.insert(ExtraChars[charNum] , new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance) )
 		Next
 	End Method
 
@@ -356,7 +357,8 @@ Type TBitmapFont
 	Method CreateCharmap:TSpriteAtlas(spaceBetweenChars:int=0)
 		local charmap:TSpriteAtlas = TSpriteAtlas.Create(64,64)
 		local bitmapFontChar:TBitmapFontChar
-		for local charKey:string = eachin chars.keys()
+		for local _charKey:TIntKey = eachin chars.keys()
+			local charKey:Int = _charKey.Value
 			bitmapFontChar = TBitmapFontChar(chars.ValueForKey(charKey))
 			if not bitmapFontChar then continue
 			charmap.AddElement(charKey, int(bitmapFontChar.area.GetW()+spaceBetweenChars), int(bitmapFontChar.area.GetH()+spaceBetweenChars) ) 'add box of char and package atlas
@@ -370,8 +372,9 @@ Type TBitmapFont
 	Method CreateCharmapImage(charmap:TSpriteAtlas)
 		local pix:TPixmap = CreatePixmap(charmap.w,charmap.h, _pixmapFormat) ; pix.ClearPixels(0)
 		'loop through atlas boxes and add chars
-		For local charKey:string = eachin charmap.elements.Keys()
-			local rect:TRectangle = TRectangle(charmap.elements.ValueForKey(charKey))
+		For local _charKey:String = eachin charmap.elements.Keys()
+			local rect:TRectangle = TRectangle(charmap.elements.ValueForKey(_charKey))
+			Local charKey:Int = _charKey.ToInt()
 			'skip missing data
 			if not chars.ValueForKey(charKey) then continue
 			if not TBitmapFontChar(chars.ValueForKey(charKey)).img then continue
@@ -925,12 +928,12 @@ Type TBitmapFont
 					continue
 				endif
 
-				Local bm:TBitmapFontChar = TBitmapFontChar( font.chars.ValueForKey(string(charCode)) )
+				Local bm:TBitmapFontChar = TBitmapFontChar( font.chars.ValueForKey(charCode) )
 				if bm
 					displayCharCode = charCode
 				else
 					displayCharCode = Asc("?")
-					bm = TBitmapFontChar( font.chars.ValueForKey(string(displayCharCode)) )
+					bm = TBitmapFontChar( font.chars.ValueForKey(displayCharCode) )
 				endif
 				if bm <> null
 					Local tx:Float = bm.area.GetX() * gfx.tform_ix + bm.area.GetY() * gfx.tform_iy
@@ -939,7 +942,7 @@ Type TBitmapFont
 					if text[i] > 32
 						lineHeight = MAX(lineHeight, bm.area.GetH())
 						if doDraw
-							sprite = TSprite(font.charsSprites.ValueForKey(string(displayCharCode)))
+							sprite = TSprite(font.charsSprites.ValueForKey(displayCharCode))
 							if sprite
 								if drawToPixmap
 									sprite.DrawOnImage(drawToPixmap, int(pixmapOrigin.x + x+lineWidth+tx), int(pixmapOrigin.y + y+height+ty+styleDisplaceY - font.displaceY), -1, null, color)

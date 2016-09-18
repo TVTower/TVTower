@@ -1,4 +1,4 @@
-Function Font_AddGradient:TBitmapFontChar(font:TBitmapFont, charKey:String, char:TBitmapFontChar, config:TData=Null)
+Function Font_AddGradient:TBitmapFontChar(font:TBitmapFont, charKey:Int, char:TBitmapFontChar, config:TData=Null)
 	If Not char.img Then Return char 'for "space" and other empty signs
 	Local pixmap:TPixmap	= LockImage(char.img)
 	'convert to rgba
@@ -31,7 +31,7 @@ Function Font_AddGradient:TBitmapFontChar(font:TBitmapFont, charKey:String, char
 End Function
 
 
-Function Font_AddShadow:TBitmapFontChar(font:TBitmapFont, charKey:String, char:TBitmapFontChar, config:TData=Null)
+Function Font_AddShadow:TBitmapFontChar(font:TBitmapFont, charKey:Int, char:TBitmapFontChar, config:TData=Null)
 	If Not char.img Then Return char 'for "space" and other empty signs
 
 	If Not config Then config = New TData
