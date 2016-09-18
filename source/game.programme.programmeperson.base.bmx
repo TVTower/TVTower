@@ -234,10 +234,8 @@ Type TProgrammePersonBase extends TGameObject
 	End Method
 
 
-	'override to add another generic naming
-	Method SetGUID:Int(GUID:String)
-		if GUID="" then GUID = "programmeperson-"+id
-		self.GUID = GUID
+	Method GenerateGUID:string()
+		return "programmeperson-base-"+id
 	End Method
 
 

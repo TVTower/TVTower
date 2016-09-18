@@ -234,6 +234,11 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Field basedOnScriptTemplateGUID:String = ""
 
 
+	Method GenerateGUID:string()
+		return "script-"+id
+	End Method
+
+
 	Function CreateFromTemplate:TScript(template:TScriptTemplate)
 		local script:TScript = new TScript
 		script.title = template.GenerateFinalTitle()
@@ -278,13 +283,6 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		
 		return script
 	End Function
-
-
-	'override to add another generic naming
-	Method SetGUID:Int(GUID:String)
-		if GUID="" then GUID = "script-"+id
-		self.GUID = GUID
-	End Method
 
 
 	'override

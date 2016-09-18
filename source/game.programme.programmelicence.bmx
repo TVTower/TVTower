@@ -381,6 +381,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 '	Field cacheTextOverlayMode:string = ""	{nosave}	'for which mode the text was cached
 
 
+	Method GenerateGUID:string()
+		return "broadcastmaterialsource-programmelicence-"+id
+	End Method
+
+
 	Method GetReferenceID:int() {_exposeToLua}
 		'return own licence id as referenceID - programme.id is not
 		'possible for collections/series

@@ -568,6 +568,11 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	Field availableScript:string = ""
 
 	Field _genreDefinitionCache:TNewsGenreDefinition = Null {nosave}
+
+
+	Method GenerateGUID:string()
+		return "broadcastmaterialsource-newsevent-"+id
+	End Method
 	
 
 	Method Init:TNewsEvent(GUID:string, title:TLocalizedString, description:TLocalizedString, Genre:Int, quality:Float=-1, modifiers:TData=null, newsType:int=0)
@@ -596,12 +601,6 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 	Method ToString:String()
 		return "newsEvent: title=" + GetTitle() + "  quality=" + GetQualityRaw() + "  priceMod=" + GetModifier("price")
-	End Method
-
-	
-	Method SetGUID:Int(GUID:String)
-		if GUID="" then GUID = "generic-newsevent-"+id
-		self.GUID = GUID
 	End Method
 	
 

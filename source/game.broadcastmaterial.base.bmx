@@ -36,6 +36,11 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 	Method SourceHasBroadcastFlag:int(flag:Int) abstract {_exposeToLua}
 
 
+	Method GenerateGUID:string()
+		return "broadcastmaterial-base-"+id
+	End Method
+
+
 	Method IsControllable:int()
 		return True
 	End Method

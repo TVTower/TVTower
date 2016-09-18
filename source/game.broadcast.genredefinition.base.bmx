@@ -12,15 +12,8 @@ Type TGenreDefinitionBase extends TGameObject
 	Field _popularity:TPopularity {nosave}
 
 
-	'override
-	Method SetGUID:Int(GUID:String)
-		if GUID="" then GUID = GetGUIDBaseName()+"-"+id
-		self.GUID = GUID
-	End Method
-
-
-	Method GetGUIDBaseName:string()
-		return "genredefinitionbase"
+	Method GenerateGUID:string()
+		return "genredefinition-base-"+id
 	End Method
 
 
@@ -40,7 +33,7 @@ Type TGenreDefinitionBase extends TGameObject
 	Method InitBasic:TGenreDefinitionBase(referenceID:int, data:TData = null)
 		if not data then data = new TData
 
-		SetGUID(GetGUIDBaseName() +"-"+ referenceID)
+		SetGUID("genredefinition-base-" + referenceID)
 		self.referenceID = referenceID
 
 		TimeMods = TimeMods[..24]

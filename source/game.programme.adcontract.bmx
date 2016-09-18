@@ -311,6 +311,11 @@ Type TAdContractBase extends TBroadcastMaterialSourceBase {_exposeToLua}
 	endrem
 	
 
+	Method GenerateGUID:string()
+		return "broadcastmaterialsource-adcontractbase-"+id
+	End Method
+		
+
 	Method Create:TAdContractBase(GUID:String, title:TLocalizedString, description:TLocalizedString, daysToFinish:Int, spotCount:Int, targetgroup:Int, minAudience:Float, minImage:Float, fixedPrice:Int, profit:Float, penalty:Float)
 		self.SetGUID(GUID)
 		self.title = title
@@ -582,6 +587,11 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	'same as in TBroadcastMaterialBase
 	Const STATE_OK:int = 1
 	Const STATE_FAILED:int = 2
+
+
+	Method GenerateGUID:string()
+		return "broadcastmaterialsource-adcontract-"+id
+	End Method
 	
 
 	'create UNSIGNED (adagency)

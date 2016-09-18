@@ -29,6 +29,10 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	Field broadcastTimeSlotEnd:int = -1
 	
 
+	Method GenerateGUID:string()
+		return "broadcastmaterialsource-base-"+id
+	End Method
+
 
 	Method Initialize:int()
 		timesBroadcasted = [0]

@@ -483,6 +483,10 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	"refresh" - changes how much a programme "regenerates" (multiplied with genreModifier)
 	endrem
 
+	Method GenerateGUID:string()
+		return "broadcastmaterialsource-programmedata-"+id
+	End Method
+
 
 	Function setIgnoreUnreleasedProgrammes(ignore:int=TRUE, releaseStart:int=1900, releaseEnd:int=2100)
 		ignoreUnreleasedProgrammes = ignore

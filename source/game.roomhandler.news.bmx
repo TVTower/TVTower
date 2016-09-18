@@ -563,7 +563,11 @@ Type RoomHandler_News extends TRoomHandler
 
 		'remove from plan (with addBackToCollection=FALSE) and collection
 		if GetPlayerBaseCollection().IsPlayer(guiNews.news.owner)
-			GetPlayerProgrammePlan(guiNews.news.owner).RemoveNewsByGUID(guiNews.news.GetGUID(), FALSE)
+			'avoid calling this for old savegames (guid-duplication bug)
+			'GetPlayerProgrammePlan(guiNews.news.owner).RemoveNewsByGUID(guiNews.news.GetGUID(), FALSE)
+			'and meanwhile check "objects"
+			GetPlayerProgrammePlan(guiNews.news.owner).RemoveNews(guiNews.news,-1, FALSE)
+			
 			GetPlayerProgrammeCollection(guiNews.news.owner).RemoveNews(guiNews.news)
 		endif
 

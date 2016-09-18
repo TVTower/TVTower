@@ -117,6 +117,11 @@ Type TScriptTemplate Extends TScriptBase
 	Field productionTimes:int = 0
 
 
+	Method GenerateGUID:string()
+		return "scripttemplate-"+id
+	End Method
+
+
 	'reset things used for random data
 	'like placeholders (which are stored there so that children could
 	'reuse it)
@@ -131,13 +136,6 @@ Type TScriptTemplate Extends TScriptBase
 		endif
 	End Method
 	
-
-	'override to add another generic naming
-	Method SetGUID:Int(GUID:String)
-		if GUID="" then GUID = "scripttemplate-"+id
-		self.GUID = GUID
-	End Method
-
 
 	Method GetParentScript:TScriptTemplate()
 		if not parentScriptGUID then return self

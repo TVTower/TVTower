@@ -209,6 +209,11 @@ Type TProgrammePerson extends TProgrammePersonBase
 	Const MAX_XP:int = 10000
 
 
+	Method GenerateGUID:string()
+		return "programmeperson-"+id
+	End Method
+
+
 	Method GetTopGenre:Int()
 		'if there was no topGenre defined...
 		if topGenre1 <= 0

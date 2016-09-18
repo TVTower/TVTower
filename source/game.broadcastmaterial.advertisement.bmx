@@ -30,6 +30,10 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 	'gesendet worden ist ... dann koennen die "GUI"-Bloecke darauf reagieren
 	'und ihre Werte aktualisieren
 
+	Method GenerateGUID:string()
+		return "broadcastmaterial-advertisement-"+id
+	End Method
+
 
 	Method Create:TAdvertisement(contract:TAdContract)
 		self.contract = contract

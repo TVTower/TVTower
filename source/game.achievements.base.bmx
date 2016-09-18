@@ -273,6 +273,11 @@ Type TAchievement Extends TAchievementBaseType
 	Const FLAG_EXCLUSIVEWINNER:int = 2
 
 
+	Method GenerateGUID:string()
+		return "gameachievement-"+id
+	End Method
+
+
 	Method New()
 		flags = FLAG_CANFAIL
 	End Method
@@ -290,12 +295,6 @@ Type TAchievement Extends TAchievementBaseType
 
 	Method Reset:int()
 		stateSet.Initialize()
-	End Method
-
-
-	Method SetGUID:Int(GUID:String)
-		If GUID="" Then GUID = "gameachievement-"+id
-		Self.GUID = GUID
 	End Method
 
 

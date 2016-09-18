@@ -125,6 +125,17 @@ Type TGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method GenerateGUID:string()
+		return "gameobject-"+id
+	End Method
+
+
+	Method SetGUID:Int(GUID:String="")
+		if GUID="" then GUID = GenerateGUID()
+		self.GUID = GUID
+	End Method
+
+	
 	Method GetID:Int() {_exposeToLua}
 		Return id
 	End Method
@@ -132,12 +143,6 @@ Type TGameObject {_exposeToLua="selected"}
 
 	Method GetGUID:String() {_exposeToLua}
 		Return GUID
-	End Method
-
-
-	Method SetGUID:Int(GUID:String)
-		if GUID="" then GUID = "gameobject-"+id
-		self.GUID = GUID
 	End Method
 
 
