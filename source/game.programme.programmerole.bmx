@@ -72,6 +72,11 @@ Type TProgrammeRole extends TGameObject {_exposeToLua}
 	Field fictional:int = False
 
 
+	Method GenerateGUID:string()
+		return "programmerole-"+id
+	End Method
+
+
 	Method Init:TProgrammeRole(firstName:string, lastName:string, title:string="", countryCode:string="", gender:int=0, fictional:int = False)
 		self.firstName = firstName
 		self.lastName = lastName
@@ -81,12 +86,6 @@ Type TProgrammeRole extends TGameObject {_exposeToLua}
 		self.fictional = fictional
 		return self
 	End Method
-
-
-	Method SetGUID:Int(GUID:String)
-		if GUID="" then GUID = "programmerole-"+id
-		self.GUID = GUID
-	End Method	
 
 
 	Method GetFirstName:String()

@@ -20,6 +20,11 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 	CONST NEWS_WEIGHT_3:float = 0.2
 
 
+	Method GenerateGUID:string()
+		return "broadcastmaterial-newsshow-"+id
+	End Method
+
+
 	Function Create:TNewsShow(title:String="", owner:int=0, newsA:TBroadcastMaterial, newsB:TBroadcastMaterial, newsC:TBroadcastMaterial)
 		Local obj:TNewsShow = New TNewsShow
 		obj.news[0] = newsA
@@ -246,6 +251,9 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
     Field paid:int = 0
 
 
+	Method GenerateGUID:string()
+		return "broadcastmaterial-news-"+id
+	End Method
 
 
 	Function Create:TNews(text:String="unknown", publishdelay:Int=0, useNewsEvent:TNewsEvent=Null)

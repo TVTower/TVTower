@@ -15,6 +15,11 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Field data:TProgrammeData				{_exposeToLua}
 	Field maxWholeMarketAudiencePercentage:Float = 0.0
 
+	Method GenerateGUID:string()
+		return "broadcastmaterial-programme-"+id
+	End Method
+
+
 	Function Create:TProgramme(licence:TProgrammeLicence)
 		Local obj:TProgramme = New TProgramme
 		obj.licence = licence
@@ -257,11 +262,13 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			'-1 = for both genders
 			Local penalty:TAudience = new TAudience.Init(-1,  -0.25, -0.25, -0.15, -0.35, -0.15, -0.55, -0.15)
 			penalty.MultiplyFloat(data.blocks)
-			GetPublicImage(owner).ChangeImage(penalty)			
+			GetPublicImage(owner).ChangeImage(penalty)
+print "DW Strafe: " + penalty.ToString()
 		ElseIf data.IsTrash()
 			Local penalty:TAudience = new TAudience.Init(-1,  0, 0, +0.2, -0.2, +0.2, -0.5, -0.1)
 			penalty.MultiplyFloat(data.blocks)			
 			GetPublicImage(owner).ChangeImage(penalty)						
+print "Trash Strafe: " + penalty.ToString()
 		End If
 
 

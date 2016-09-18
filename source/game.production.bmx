@@ -77,10 +77,8 @@ Type TProduction Extends TOwnedGameObject
 	Global fireEvents:int = TRUE
 	
 
-
-	Method SetGUID:Int(GUID:String)
-		if GUID="" then GUID = "production-"+id
-		self.GUID = GUID
+	Method GenerateGUID:string()
+		return "production-"+id
 	End Method
 
 

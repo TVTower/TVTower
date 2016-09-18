@@ -1955,15 +1955,21 @@ Type TSaveGame Extends TGameState
 
 	'override to add time adjustment
 	Method RestoreGameData:Int()
-		Super.RestoreGameData()
+		'restore basics _before_ normal data restoration
+		'eg. entities might get recreated, so we need to make sure
+		'that the "lastID" is restored before
+		
 		'restore "time gone since start"
 		Time.SetTimeGone(_Time_timeGone)
 		'set event manager to the ticks of that time
 		EventManager._ticks = _Time_timeGone
-
+		
 		'restore entity speed
 		TEntity.globalWorldSpeedFactor = _Entity_globalWorldSpeedFactor
 		TEntity.globalWorldSpeedFactorMod = _Entity_globalWorldSpeedFactorMod
+
+		'restore game data
+		Super.RestoreGameData()
 	End Method
 
 
@@ -1979,6 +1985,16 @@ Type TSaveGame Extends TGameState
 		_gameSummary.Add("player_channelName", GetPlayer().channelName)
 		_gameSummary.AddNumber("player_money", GetPlayer().GetMoney())
 		_gameSummary.Add("savegame_version", SAVEGAME_VERSION)
+		'store last ID of all entities, to avoid duplicates
+		'store them in game summary to be able to reset before "restore"
+		'takes place
+		'- game 1 run till ID 1000 and is saved then
+		'- whole game is restarted then, ID is again 0
+		'- load in game 1 (having game objects with ID 1 - 1000) 
+		'- new entities would again get ID 1 - 1000
+		'  -> duplicates
+		_gameSummary.AddNumber("entitybase_lastID", TEntityBase.lastID)
+		_gameSummary.AddNumber("gameobject_lastID", TGameObject.LastID)
 
 		Super.BackupGameData()
 
@@ -2108,6 +2124,11 @@ Type TSaveGame Extends TGameState
 			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is corrupt.", LOG_SAVELOAD | LOG_ERROR)
 			return False
 		endif
+
+		'reset entity ID
+		'this avoids duplicate GUIDs
+		TEntityBase.lastID = savegameSummary.GetInt("entitybase_lastID", 3000000)
+		TGameObject.LastID = savegameSummary.GetInt("gameobject_lastID", 3000000)
 
 
 		'try to repair older savegames

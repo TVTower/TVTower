@@ -40,10 +40,8 @@ Type TScriptBase Extends TNamedGameObject
 	Field productionBroadcastLimit:int = 0
 
 
-	'override to add another generic naming
-	Method SetGUID:Int(GUID:String)
-		if GUID="" then GUID = "scriptbase-"+id
-		self.GUID = GUID
+	Method GenerateGUID:string()
+		return "scriptbase-"+id
 	End Method
 
 
