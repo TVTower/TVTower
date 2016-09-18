@@ -141,15 +141,18 @@ Type TFigure extends TFigureBase
 
 
 	Method onGameStart:int()
-
+		'would bug out in multiplayer games as states are only
+		'locally adjusted
+		rem
 		're-start leavin/entering actions
 		if currentAction = ACTION_ENTERING
 			'SetInRoom(null)
 			'BeginEnterRoom(usedDoor, inRoom)
 		elseif currentAction = ACTION_LEAVING
-			SetInRoom(inRoom)
-			BeginLeaveRoom()
+			'SetInRoom(inRoom)
+			'BeginLeaveRoom()
 		endif
+		endrem
 	End Method
 
 
@@ -220,6 +223,20 @@ Type TFigure extends TFigureBase
 		if THotSpot(GetTarget()) then return THotSpot(GetTarget()).IsEnterable()
 
 		return Super.TargetNeedsToGetEntered()
+	End Method
+
+
+	Method IsInFrontOfTarget:int()
+		if not HasToChangeFloor() and GetTarget()
+			'get target coordinate
+			Local targetX:Int = GetTargetMoveToPosition().getIntX()
+
+			'we stand in front of the target -> reach target!
+			if GetVelocity().GetX() = 0 and abs(area.getX() - targetX) < 1.0
+				return True
+			endif
+		endif
+		return False
 	End Method
 
 
@@ -355,8 +372,9 @@ Type TFigure extends TFigureBase
 			'show the backside if at elevator to change floor
 			If hasToChangeFloor() And Not IsInElevator() And IsAtElevator()
 				result = "standBack"
-			'not moving but wants to go to somewhere
-			ElseIf currentAction = ACTION_ENTERING
+			'not moving but wants to go to somewhere (also show back if
+			'room is used and enter not possible "for now".
+			ElseIf currentAction = ACTION_ENTERING or IsInFrontOfTarget()
 				result = "standBack"
 			'in a room (or standing in front of a fake room - looking at plan)
 			ElseIf inRoom and inRoom.ShowsOccupants()
@@ -726,6 +744,8 @@ Type TFigure extends TFigureBase
 		'print self.name+" FINISH ENTERING " + room.GetName() +" ["+room.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
 		'print "--------------------------------------------"
 
+		if not room then room = inRoom
+
 		'backup the used door
 		usedDoor = door
 
@@ -796,7 +816,7 @@ Type TFigure extends TFigureBase
 	'command to leave a room - "onLeaveRoom" is called when successful
 	Method LeaveRoom:Int(forceLeave:Int=False)
 		'skip command if in no room or already leaving
-		if not inRoom or isChangingRoom() then return True
+		if not inRoom or IsLeavingRoom() then return True
 
 		'=== INFORM OTHERS ===
 		'inform that figure now begins entering the room
@@ -1072,7 +1092,13 @@ Type TFigure extends TFigureBase
 		'if still in a room, but targetting another one ... leave first
 		'this is needed as computer players do not "leave a room", they
 		'just change targets
-		If targetRoom and targetRoom <> inRoom Then LeaveRoom(forceChange)
+'		If targetRoom and targetRoom <> inRoom Then LeaveRoom(forceChange)
+		'if still in a room, but targetting something else ... leave first
+		'this is needed as computer players do not "leave a room", they
+		'just change targets
+		If newTarget <> inRoom
+			LeaveRoom(forceChange)
+		endif
 
 		'emit an event
 		EventManager.triggerEvent( TEventSimple.Create("figure.onChangeTarget", new TData.AddNumber("x", x).AddNumber("y", y).AddNumber("forceChange", forceChange), self, null ) )

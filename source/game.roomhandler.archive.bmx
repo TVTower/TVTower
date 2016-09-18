@@ -6,6 +6,7 @@ Import "game.roomhandler.base.bmx"
 Import "game.programme.programmelicence.gui.bmx"
 'Import "game.broadcastmaterial.programme.bmx"
 'Import "game.player.programmecollection.bmx"
+Import "game.gameconfig.bmx"
 
 Import "common.misc.plannerlist.programmelist.bmx"
 
@@ -335,7 +336,7 @@ Type RoomHandler_Archive extends TRoomHandler
 	Method onEnterRoom:int( triggerEvent:TEventBase )
 		'we are not interested in other figures than our player's
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
-		if not figure or GetPlayerBase().GetFigure() <> figure then return FALSE
+		if not GameConfig.IsObserved(figure) and GetPlayerBase().GetFigure() <> figure Then Return False
 
 		'handle interactivity only for own room
 		if IsRoomOwner(figure, TRoom(triggerEvent.GetSender()))

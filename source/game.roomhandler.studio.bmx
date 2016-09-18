@@ -7,6 +7,7 @@ Import "game.player.programmecollection.bmx"
 Import "game.production.script.gui.bmx"
 Import "game.production.productionconcept.gui.bmx"
 Import "game.production.productionmanager.bmx"
+Import "game.gameconfig.bmx"
 
 
 'Studio: emitting and receiving the production concepts for specific
@@ -201,7 +202,7 @@ Type RoomHandler_Studio extends TRoomHandler
 	Method onEnterRoom:int( triggerEvent:TEventBase )
 		'we are not interested in other figures than our player's
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
-		if not figure or GetPlayerBase().GetFigure() <> figure then return FALSE
+		if not GameConfig.IsObserved(figure) and GetPlayerBase().GetFigure() <> figure Then Return False
 
 		'empty the guilist / delete gui elements so they can get rebuild
 		RemoveAllGuiElements()
