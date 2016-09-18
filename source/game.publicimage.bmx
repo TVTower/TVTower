@@ -128,7 +128,7 @@ Type TPublicImage {_exposeToLua="selected"}
 	End Method
 
 
-	Function ChangeForTargetGroup(playerAudience:TMap, targetGroup:Int, attrList:TList, compareFunc:int( o1:Object,o2:Object )=CompareObjects)
+	Function ChangeForTargetGroup(playerAudience:TMap, targetGroup:Int, attrList:TList, weightModifier:Float = 1.0, compareFunc:int( o1:Object,o2:Object )=CompareObjects)
 		Local tempList:TList = attrList.Copy()
 		SortList(tempList,False,compareFunc)
 		'RONNY:
@@ -138,17 +138,17 @@ Type TPublicImage {_exposeToLua="selected"}
 		'BUT ... there should be situations in which image gets lost (broadcasting
 		'outtage, sending Xrated before 22:00, sending infomercials ...)
 		If (tempList.Count() = 4)
-			TAudience(playerAudience.ValueForKey( string(TAudience(tempList.ValueAtIndex(0)).Id) )).SetTotalValue(targetGroup, 0.7)
-			TAudience(playerAudience.ValueForKey( string(TAudience(tempList.ValueAtIndex(1)).Id) )).SetTotalValue(targetGroup, 0.4)
-			TAudience(playerAudience.ValueForKey( string(TAudience(tempList.ValueAtIndex(2)).Id) )).SetTotalValue(targetGroup, 0.1)
-			TAudience(playerAudience.ValueForKey( string(TAudience(tempList.ValueAtIndex(3)).Id) )).SetTotalValue(targetGroup, -0.2)
+			TAudience(playerAudience.ValueForKey( string(TAudience(tempList.ValueAtIndex(0)).Id) )).SetTotalValue(targetGroup, 0.7 * weightModifier)
+			TAudience(playerAudience.ValueForKey( string(TAudience(tempList.ValueAtIndex(1)).Id) )).SetTotalValue(targetGroup, 0.4 * weightModifier)
+			TAudience(playerAudience.ValueForKey( string(TAudience(tempList.ValueAtIndex(2)).Id) )).SetTotalValue(targetGroup, 0.1 * weightModifier)
+			TAudience(playerAudience.ValueForKey( string(TAudience(tempList.ValueAtIndex(3)).Id) )).SetTotalValue(targetGroup, -0.2 * weightModifier)
 		Elseif (tempList.Count() = 3) Then
-			TAudience(playerAudience.ValueForKey( string(TAudience(tempList.ValueAtIndex(0)).Id) )).SetTotalValue(targetGroup, 0.7)
-			TAudience(playerAudience.ValueForKey( string(TAudience(tempList.ValueAtIndex(1)).Id) )).SetTotalValue(targetGroup, 0.3)
-			TAudience(playerAudience.ValueForKey( string(TAudience(tempList.ValueAtIndex(2)).Id) )).SetTotalValue(targetGroup, -0.2)
+			TAudience(playerAudience.ValueForKey( string(TAudience(tempList.ValueAtIndex(0)).Id) )).SetTotalValue(targetGroup, 0.7 * weightModifier)
+			TAudience(playerAudience.ValueForKey( string(TAudience(tempList.ValueAtIndex(1)).Id) )).SetTotalValue(targetGroup, 0.3 * weightModifier)
+			TAudience(playerAudience.ValueForKey( string(TAudience(tempList.ValueAtIndex(2)).Id) )).SetTotalValue(targetGroup, -0.2 * weightModifier)
 		Elseif (tempList.Count() = 2) Then
-			TAudience(playerAudience.ValueForKey( string(TAudience(tempList.ValueAtIndex(0)).Id) )).SetTotalValue(targetGroup, 0.75)
-			TAudience(playerAudience.ValueForKey( string(TAudience(tempList.ValueAtIndex(1)).Id) )).SetTotalValue(targetGroup, -0.2)
+			TAudience(playerAudience.ValueForKey( string(TAudience(tempList.ValueAtIndex(0)).Id) )).SetTotalValue(targetGroup, 0.75 * weightModifier)
+			TAudience(playerAudience.ValueForKey( string(TAudience(tempList.ValueAtIndex(1)).Id) )).SetTotalValue(targetGroup, -0.2 * weightModifier)
 		EndIf
 	End Function
 End Type

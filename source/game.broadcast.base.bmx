@@ -268,14 +268,14 @@ Type TBroadcastManager
 		Next
 
 		bc.FindTopValues()
-		ChangeImageCauseOfBroadcast(bc)
+		ChangeImageCauseOfBroadcast(bc, broadcastType)
 		'store current broadcast
 		'currentBroadcast = bc
 		Return bc
 	End Method
 
 
-	Function ChangeImageCauseOfBroadcast(bc:TBroadcast)
+	Function ChangeImageCauseOfBroadcast(bc:TBroadcast, broadcastType:int)
 		If (bc.GetTopAudience() > 1000) 'Nur etwas ändern, wenn auch ein paar Zuschauer einschalten und nicht alle Sendeausfall haben.
 			Local modification:TAudience = TBroadcast.GetPotentialAudienceModifier(bc.time)
 
@@ -290,13 +290,20 @@ Type TBroadcastManager
 					EndIf
 				Next
 
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.CHILDREN, attrList, TAudience.ChildrenSort)
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.TEENAGERS, attrList, TAudience.TeenagersSort)
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.HOUSEWIVES, attrList, TAudience.HouseWivesSort)
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.EMPLOYEES, attrList, TAudience.EmployeesSort)
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.UNEMPLOYED, attrList, TAudience.UnemployedSort)
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.MANAGER, attrList, TAudience.ManagerSort)
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.PENSIONERS, attrList, TAudience.PensionersSort)
+				local weight:Float = 1.0
+				'for news, give a bit less images (less expensive to
+				'get "good ones")
+				if broadcastType = TVTBroadcastMaterialType.NEWSSHOW
+					weight = 0.5
+				endif
+
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.CHILDREN, attrList, weight, TAudience.ChildrenSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.TEENAGERS, attrList, weight, TAudience.TeenagersSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.HOUSEWIVES, attrList, weight, TAudience.HouseWivesSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.EMPLOYEES, attrList, weight, TAudience.EmployeesSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.UNEMPLOYED, attrList, weight, TAudience.UnemployedSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.MANAGER, attrList, weight, TAudience.ManagerSort)
+				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.PENSIONERS, attrList, weight, TAudience.PensionersSort)
 
 				For Local i:Int = 1 To 4 'TODO: Was passiert wenn ein Spieler ausscheidet?
 					Local audience:TAudience = TAudience(map.ValueForKey(string.FromInt(i)))
