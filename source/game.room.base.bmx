@@ -10,7 +10,8 @@ Import "game.gameobject.bmx"
 
 
 Type TRoomBaseCollection
-	Field list:TList = CreateList()
+	Field list:TIntMap = New TIntMap
+	Field count:int
 	Global _eventsRegistered:int= FALSE
 	Global _instance:TRoomBaseCollection
 
@@ -32,25 +33,28 @@ Type TRoomBaseCollection
 
 	Method Initialize:int()
 		list.Clear()
+		count = 0
 		'also set back the ids
 		TRoomBase.LastID = 0
 	End Method
 	
 
 	Method Add:int(room:TRoomBase)
-		List.AddLast(room)
+		List.Insert(room.id, room)
+		count :+ 1
 		return TRUE
 	End Method
 
 
 	Method Remove:int(room:TRoomBase)
-		List.Remove(room)
+		List.Remove(room.id)
+		count :- 1
 		return TRUE
 	End Method
 
 
 	Function GetByGUID:TRoomBase(guid:string)
-		For Local room:TRoomBase = EachIn GetInstance().list
+		For Local room:TRoomBase = EachIn GetInstance().list.Values()
 			If room.GetGUID() = guid Then Return room
 		Next
 		Return Null
@@ -58,22 +62,30 @@ Type TRoomBaseCollection
 
 
 	Function Get:TRoomBase(ID:int)
-		For Local room:TRoomBase = EachIn GetInstance().list
-			If room.id = ID Then Return room
-		Next
-		Return Null
+		return TRoomBase(GetInstance().list.ValueForKey(ID))
+		'For Local room:TRoomBase = EachIn GetInstance().list
+		'	If room.id = ID Then Return room
+		'Next
+		'Return Null
 	End Function
 
 
 	Function GetRandom:TRoomBase()
-		return TRoomBase( GetInstance().list.ValueAtIndex( RandRange(0, GetInstance().list.Count() - 1) ) )
+		local i:Int = RandRange(0, GetInstance().count - 1) 
+		For Local room:TRoomBase = EachIn GetInstance().list.Values()
+			if not i then
+				return room
+			end if
+			i :- 1
+		next
+'		return TRoomBase( GetInstance().list.ValueAtIndex( RandRange(0, GetInstance().list.Count() - 1) ) )
 	End Function
 
 
 	'returns all room fitting to the given details
 	Function GetAllByDetails:TRoomBase[]( name:String, owner:Int=-1000 ) {_exposeToLua}
 		local rooms:TRoomBase[]
-		For Local room:TRoomBase = EachIn GetInstance().list
+		For Local room:TRoomBase = EachIn GetInstance().list.Values()
 			'print name+" <> "+room.name+"   "+owner+" <> "+room.owner
 			'skip wrong owners
 			if owner <> -1000 and room.owner <> owner then continue
@@ -92,7 +104,7 @@ Type TRoomBaseCollection
 
 
 	Method UpdateEnteringAndLeavingStates()
-		For Local room:TRoomBase = EachIn GetInstance().list
+		For Local room:TRoomBase = EachIn GetInstance().list.Values()
 			'someone entering / leaving the room?
 			For local action:TEnterLeaveAction = EachIn room.enteringStack
 				if action.finishTime <= GetBuildingTime().GetMillisecondsGone() or GetBuildingTime().GetTimeFactor() < 0.25
@@ -114,7 +126,7 @@ Type TRoomBaseCollection
 	'run when loading finished
 	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
 		TLogger.Log("TRoomCollection", "Savegame started loading - clean occupants list", LOG_DEBUG | LOG_SAVELOAD)
-		For local room:TRoomBase = eachin GetInstance().list
+		For local room:TRoomBase = eachin GetInstance().list.Values()
 			room.occupants.Clear()
 		Next
 	End Function
