@@ -612,14 +612,6 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 	'set checkboxes according to stationmap config
 	Function onEnterStationMapScreen:int(triggerEvent:TEventBase)
 		'only players can "enter screens" - so just use "inRoom"
-
-print "onEnterStationMapScreen - player:"+GetPlayer().playerID
-'if GetPlayer().GetFigure().inRoom
-	print "onEnterStationMapScreen: inRoom = " + GetPlayer().GetFigure().inRoom.name
-'else
-'	print "onEnterStationMapScreen: inRoom = /"
-'endif
-
 		local owner:int = 0
 		if GetPlayer().GetFigure().inRoom then owner = GetPlayer().GetFigure().inRoom.owner
 		if owner = 0 then owner = GetPlayer().playerID
@@ -632,15 +624,9 @@ print "onEnterStationMapScreen - player:"+GetPlayer().playerID
 
 
 	Function OnSetChecked_StationMapFilters:int(triggerEvent:TEventBase)
-print "onSetChecked"
 		Local button:TGUICheckBox = TGUICheckBox(triggerEvent._sender)
 		if not button then return FALSE
-print " is checked: " + button.isChecked()
-print "show 1?: " + GetPlayer().GetStationMap().GetShowStation(1)
-print "show 2?: " + GetPlayer().GetStationMap().GetShowStation(2)
-print "show 3?: " + GetPlayer().GetStationMap().GetShowStation(3)
-print "show 4?: " + GetPlayer().GetStationMap().GetShowStation(4)
-'hier spinnts
+
 		'ignore clicks if not in the own office
 		if GetPlayer().GetFigure().inRoom.owner <> GetPlayer().playerID then return FALSE
 

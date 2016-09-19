@@ -835,14 +835,14 @@ Type TStationMap {_exposeToLua="selected"}
 
 
 	Method GetShowStation:int(channelNumber:int)
-		if showStations.length > channelNumber or channelNumber <= 0 then return False
+		if channelNumber > showStations.length or channelNumber <= 0 then return False
 
 		return showStations[channelNumber-1]
 	End Method
 
 
 	Method SetShowStation(channelNumber:int, enable:int)
-		if showStations.length > channelNumber or channelNumber <= 0 then return
+		if channelNumber > showStations.length or channelNumber <= 0 then return
 
 		showStations[channelNumber-1] = enable
 	End Method
@@ -850,8 +850,18 @@ Type TStationMap {_exposeToLua="selected"}
 
 
 	Method Update()
-		if GetStationMapCollection().stationMaps.length <> showStations.length
+		'delete unused
+		if GetStationMapCollection().stationMaps.length < showStations.length
 			showStations = showStations[.. GetStationMapCollection().stationMaps.length + 1]
+		'add new one (show them by default)
+		elseif GetStationMapCollection().stationMaps.length > showStations.length
+			local add:int = GetStationMapCollection().stationMaps.length - showStations.length
+
+			showStations = showStations[.. showStations.length + add]
+
+			For local i:int = 0 until add
+				showStations[showStations.length - 1 - i] = 1
+			Next
 		endif
 	
 		UpdateStations()
@@ -874,16 +884,11 @@ Type TStationMap {_exposeToLua="selected"}
 
 	'draw a players stationmap
 	Method Draw()
-		if GetStationMapCollection().stationMaps.length <> showStations.length
-			showStations = showStations[.. GetStationMapCollection().stationMaps.length + 1]
-		endif
-		
 		SetColor 255,255,255
 
 		'draw all stations from all players (except filtered)
 		For local map:TStationMap = eachin GetStationMapCollection().stationMaps
-			'show stations is zero based
-			If Not showStations[map.owner-1] Then Continue
+			If Not GetShowStation(map.owner) Then Continue
 			map.DrawStations()
 		Next
 	End Method
