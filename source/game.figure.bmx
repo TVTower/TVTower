@@ -678,7 +678,6 @@ Type TFigure extends TFigureBase
 		changingRoomBuildingTimeEnd = GetBuildingTime().GetMillisecondsGone() + changingRoomTime
 		changingRoomRealTimeStart = Time.GetTimeGone()
 		changingRoomRealTimeEnd = Time.GetTimeGone() + changingRoomTime
-
 		'inform what the figure does now
 		currentAction = ACTION_ENTERING
 
@@ -726,23 +725,24 @@ Type TFigure extends TFigureBase
 	Method FinishEnterRoom:Int()
 		local door:TRoomDoorBase = TRoomDoorBase( GetTarget() )
 		local room:TRoomBase
-		if not door and not THotspot( GetTarget() )
-			print "FinishEnterRoom : NO DOOR/HOTSPOT"
-			if GetTarget()
-				print "Bitte an Ronny melden: ~qFinishEnterRoom : NO DOOR/HOTSPOT. Type=" + TTypeID.ForObject( GetTarget() ).name()+"~q."
-				Notify "Bitte an Ronny melden: ~qFinishEnterRoom : NO DOOR/HOTSPOT. Type=" + TTypeID.ForObject( GetTarget() ).name()+"~q."
-			else
-				print "Bitte an Ronny melden: ~qFinishEnterRoom : NO DOOR/HOTSPOT. Type=NULL"
-				Notify "Bitte an Ronny melden: ~qFinishEnterRoom : NO DOOR/HOTSPOT. Type=NULL"
-			endif
-'			return False
+		'send to offscreen?
+		if TVec2D( GetTarget() )
+			print "Send To Offscreen while entering a door!!!"
 		endif
 		if door then room = GetRoomBaseCollection().Get(door.roomID)
-		if door and not room then print "FinishEnterRoom : NO ROOM" 
+		if door and not room then print "FinishEnterRoom : NO ROOM"
 
 		'Debug
-		'print self.name+" FINISH ENTERING " + room.GetName() +" ["+room.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
+		rem
+		local roomName:string = "UNKNOWN"
+		if room
+			roomName = room.name + " ["+room.id+"]"
+		else
+			if inRoom then roomName = inRoom.name+" [inRoom] ["+inRoom.id+"]"
+		endif
+		print self.name+" FINISH ENTERING " + roomName +"  (" + Time.GetSystemTime("%H:%I:%S") +")"
 		'print "--------------------------------------------"
+		endrem
 
 		if not room then room = inRoom
 
@@ -766,6 +766,15 @@ Type TFigure extends TFigureBase
 		'inform that figure now entered the room
 		'(eg. for players informing the ai)
 		EventManager.triggerEvent( TEventSimple.Create("figure.onFinishEnterRoom", new TData.Add("room", room).Add("door", door) , self, room) )
+
+		'another target to do?
+		if GetTarget()
+			print "Figure " +name " got another target - going to it now"
+			local targetPos:TVec2D = GetTargetMoveToPosition()
+			'remove that target, so we can add it again
+			RemoveCurrentTarget()
+			ForceChangeTarget( targetPos.x, targetPos.y)
+		endif
 
 		return True
 	End Method
@@ -1089,16 +1098,10 @@ Type TFigure extends TFigureBase
 		'new target - so go to it, remove other previously set targets
 		SetTarget(newTarget)
 
-		'if still in a room, but targetting another one ... leave first
-		'this is needed as computer players do not "leave a room", they
-		'just change targets
-'		If targetRoom and targetRoom <> inRoom Then LeaveRoom(forceChange)
 		'if still in a room, but targetting something else ... leave first
 		'this is needed as computer players do not "leave a room", they
 		'just change targets
-		If newTarget <> inRoom
-			LeaveRoom(forceChange)
-		endif
+		If newTarget <> inRoom then LeaveRoom(forceChange)
 
 		'emit an event
 		EventManager.triggerEvent( TEventSimple.Create("figure.onChangeTarget", new TData.AddNumber("x", x).AddNumber("y", y).AddNumber("forceChange", forceChange), self, null ) )

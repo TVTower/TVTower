@@ -406,6 +406,13 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
+	Method IsAtCurrentTarget:int()
+		local pos:TVec2D = GetTargetMoveToPosition()
+		if TVec2D(area.position).isSame(pos) then return True
+		return False
+	End Method
+
+
 	Method LeaveRoom:Int(force:Int=False)
 		return True
 	End Method
@@ -437,7 +444,17 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Method ReachTargetStep2:int()
 		'reset current step to 0 so figure can call step 1 again
 		currentReachTargetStep = 0
-		RemoveCurrentTarget()
+
+		if IsAtCurrentTarget()
+		'	print name +" is at target, removing it"
+			RemoveCurrentTarget()
+		'else
+		'	if GetTarget()
+		'		print name +" is NOT at target, keeping current Target " + GetTarget().ToString()
+		'	else
+		'		print name +" is NOT at target, keeping current Target NONE"
+		'	endif
+		endif
 
 		'regain control if there is no other target waiting
 		'TODO: place this in a custom "Route"-object? so there could
