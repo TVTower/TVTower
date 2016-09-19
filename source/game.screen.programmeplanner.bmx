@@ -1052,6 +1052,9 @@ Type TScreenHandler_ProgrammePlanner
 	End Function
 
 
+global LS_programmeplanner:TLowerString = TLowerString.Create("programmeplanner")
+global LS_programmeplanner_buttons:TLowerString = TLowerString.Create("programmeplanner_buttons")
+global LS_programmeplanner_and_programmeplanner_buttons:TLowerString = TLowerString.Create("programmeplanner|programmeplanner_buttons")
 	Function onDrawProgrammePlanner:Int( triggerEvent:TEventBase )
 		Local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		If Not room Then Return 0
@@ -1060,7 +1063,7 @@ Type TScreenHandler_ProgrammePlanner
 
 		DrawSlotHints()
 		
-		GUIManager.Draw("programmeplanner",,, GUIMANAGER_TYPES_NONDRAGGED)
+		GUIManager.Draw( LS_programmeplanner,,, GUIMANAGER_TYPES_NONDRAGGED)
 
 		DrawSlotOverlays()
 
@@ -1086,8 +1089,8 @@ Type TScreenHandler_ProgrammePlanner
 		GetBitmapFont("default", 10).drawBlock(GetWorldTime().GetFormattedDayLong(day),712, 7, 56, 26, ALIGN_CENTER_BOTTOM)
 		SetColor 255,255,255
 
-		GUIManager.Draw("programmeplanner_buttons",,, GUIMANAGER_TYPES_NONDRAGGED)
-		GUIManager.Draw("programmeplanner|programmeplanner_buttons",,, GUIMANAGER_TYPES_DRAGGED)
+		GUIManager.Draw(LS_programmeplanner_buttons,,, GUIMANAGER_TYPES_NONDRAGGED)
+		GUIManager.Draw(LS_programmeplanner_and_programmeplanner_buttons,,, GUIMANAGER_TYPES_DRAGGED)
 
 
 		SetColor 255,255,255
@@ -1303,12 +1306,12 @@ endrem
 		'else you will end up with nearly no space on the screen not showing
 		'a licence sheet.
 		If Not listsOpened
-			GUIManager.Update("programmeplanner|programmeplanner_buttons")
+			GUIManager.Update( LS_programmeplanner_and_programmeplanner_buttons )
 		'if a list is opened, we cannot have a hovered gui element
 		Else
 			hoveredGuiProgrammePlanElement = Null
 			'but still have to check for clicks on the buttons
-			GUIManager.Update("programmeplanner_buttons")
+			GUIManager.Update( LS_programmeplanner_buttons)
 		EndIf
 
 
@@ -1349,7 +1352,7 @@ endrem
 		If Not button Then Return 0
 
 		'ignore other buttons than the plan buttons
-		If Not GUIManager.IsState(button, "programmeplanner_buttons") Then Return 0
+		If Not GUIManager.IsState(button, LS_programmeplanner_buttons) Then Return 0
 		Rem
 		local validButton:int = False
 		for local b:TGUIButton = EachIn ProgrammePlannerButtons

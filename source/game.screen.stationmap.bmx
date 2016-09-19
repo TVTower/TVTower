@@ -289,7 +289,8 @@ Type TScreenHandler_StationMap
 	End Function
 
 
-	Function onDrawStationMap:int( triggerEvent:TEventBase )
+global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
+ 	Function onDrawStationMap:int( triggerEvent:TEventBase )
 		'local screen:TScreen	= TScreen(triggerEvent._sender)
 		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
@@ -314,7 +315,7 @@ Type TScreenHandler_StationMap
 		If stationMapSelectedStation then stationMapSelectedStation.Draw(true)
 
 
-		GUIManager.Draw("STATIONMAP")
+		GUIManager.Draw( LS_stationmap )
 
 		For Local i:Int = 0 To 3
 			SetColor 100, 100, 100
@@ -399,7 +400,7 @@ Type TScreenHandler_StationMap
 			endif
 		endif
 
-		GUIManager.Update("STATIONMAP")
+		GUIManager.Update( LS_stationmap )
 	End Function
 
 
@@ -631,19 +632,25 @@ print "onEnterStationMapScreen - player:"+GetPlayer().playerID
 
 
 	Function OnSetChecked_StationMapFilters:int(triggerEvent:TEventBase)
+print "onSetChecked"
 		Local button:TGUICheckBox = TGUICheckBox(triggerEvent._sender)
 		if not button then return FALSE
-
+print " is checked: " + button.isChecked()
+print "show 1?: " + GetPlayer().GetStationMap().GetShowStation(1)
+print "show 2?: " + GetPlayer().GetStationMap().GetShowStation(2)
+print "show 3?: " + GetPlayer().GetStationMap().GetShowStation(3)
+print "show 4?: " + GetPlayer().GetStationMap().GetShowStation(4)
+'hier spinnts
 		'ignore clicks if not in the own office
-		if GetPlayerCollection().Get().GetFigure().inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
+		if GetPlayer().GetFigure().inRoom.owner <> GetPlayer().playerID then return FALSE
 
 		local player:int = button.data.GetInt("playerNumber", -1)
 		if not GetPlayerCollection().IsPlayer(player) then return FALSE
 
 		'only set if not done already
-		if GetPlayerCollection().Get().GetStationMap().GetShowStation(player) <> button.isChecked()
+		if GetPlayer().GetStationMap().GetShowStation(player) <> button.isChecked()
 			TLogger.Log("StationMap", "show stations for player "+player+": "+button.isChecked(), LOG_DEBUG)
-			GetPlayerCollection().Get().GetStationMap().SetShowStation(player, button.isChecked())
+			GetPlayer().GetStationMap().SetShowStation(player, button.isChecked())
 		endif
 	End Function
 End Type

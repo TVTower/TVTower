@@ -100,6 +100,7 @@ End Rem
 SuperStrict
 Import "base.util.math.bmx"
 
+Import "external/string_comp.bmx"
 
 Type StringHelper
 	'extracts and returns all placeholders in a text

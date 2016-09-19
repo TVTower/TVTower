@@ -73,6 +73,7 @@ Type TScreenHandler_Financials
 	End function
 
 
+global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinancialScreen")
 	Function onDrawFinancials:int( triggerEvent:TEventBase )
 		'local screen:TScreen	= TScreen(triggerEvent._sender)
 		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
@@ -400,7 +401,7 @@ Type TScreenHandler_Financials
 		textSmallFont.drawBlock(TFunctions.convertValue(minvalue,2,0), curveArea.GetX(), curveArea.GetY() + curveArea.GetH()-20, curveArea.GetW(), 20, new TVec2D.Init(ALIGN_RIGHT, ALIGN_BOTTOM), labelColor)
 
 
-		GuiManager.Draw("officeFinancialScreen")
+		GuiManager.Draw( LS_officeFinancialScreen )
 	End Function
 
 
@@ -440,7 +441,7 @@ Type TScreenHandler_Financials
 
 
 		GetGameBase().cursorstate = 0
-		GuiManager.Update("officeFinancialScreen")
+		GuiManager.Update( LS_officeFinancialScreen )
 	End Function
 
 

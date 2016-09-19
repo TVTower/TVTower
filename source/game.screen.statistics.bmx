@@ -76,6 +76,7 @@ Type TScreenHandler_Statistics
 	End Function
 
 
+global LS_officeStatisticsScreen:TLowerString = TLowerString.Create("officeStatisticsScreen")
 	Function onDraw:int( triggerEvent:TEventBase )
 		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
@@ -373,7 +374,7 @@ Type TScreenHandler_Statistics
 			smallTextFont.drawBlock(TFunctions.convertValue(0 ,2,0), curveArea.GetX(), curveArea.GetY() + curveArea.GetH() - 19, curveArea.GetW() - 1, 20, ALIGN_RIGHT_BOTTOM, labelColor)
 		endif
 
-		GuiManager.Draw("officeStatisticsScreen")
+		GuiManager.Draw( LS_officeStatisticsScreen )
 	End Function
 	
 
@@ -395,6 +396,6 @@ Type TScreenHandler_Statistics
 		endif
 
 		GetGameBase().cursorstate = 0
-		GuiManager.Update("officeStatisticsScreen")
+		GuiManager.Update( LS_officeStatisticsScreen)
 	End Function
 End Type

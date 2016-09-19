@@ -1043,6 +1043,8 @@ endrem
 		return TRUE
 	End Function
 
+'RONNY
+global LS_adagency:TLowerString = TLowerString.Create("adagency")
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		GetSpriteFromRegistry("gfx_screen_adagency_vendor").Draw(VendorArea.getScreenX(), VendorArea.getScreenY())
@@ -1106,7 +1108,7 @@ endrem
 			GetSpriteFromRegistry(sortSymbols[ availableSortKeys[i] ]).Draw(contentX + 10 + i*38, 344)
 		Next
 
-		GUIManager.Draw("adagency")
+		GUIManager.Draw( LS_adagency )
 
 		skin.RenderBorder(5, 330, boxWidth, boxHeight)
 
@@ -1178,7 +1180,7 @@ endrem
 		'reset dragged block too
 		draggedGuiAdContract = null
 
-		GUIManager.Update("adagency")
+		GUIManager.Update( LS_adagency )
 	End Method
 
 End Type

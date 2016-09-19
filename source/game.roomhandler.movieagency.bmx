@@ -846,6 +846,7 @@ endrem
 	End function
 
 
+global LS_movieagency:TLowerString = TLowerString.Create("movieagency")	
 	Function onDrawMovieAgency:int( triggerEvent:TEventBase )
 		if AuctionEntity Then AuctionEntity.Render()
 		if VendorEntity Then VendorEntity.Render()
@@ -893,7 +894,7 @@ endrem
 		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SERIES"), 		642, 223+3, 108,20, new TVec2D.Init(ALIGN_CENTER), fontColor)
 		SetAlpha 1.0
 
-		GUIManager.Draw("movieagency")
+		GUIManager.Draw( LS_movieagency )
 
 		if hoveredGuiProgrammeLicence
 			'draw the current sheet
@@ -937,7 +938,7 @@ endrem
 		'reset dragged block too
 		draggedGuiProgrammeLicence = null
 
-		GUIManager.Update("movieagency")
+		GUIManager.Update( LS_movieagency )
 
 		If AuctionToolTip Then AuctionToolTip.Update()
 	End Function
@@ -960,7 +961,7 @@ endrem
 		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SERIES"), 		642, 223+3, 108,20, new TVec2D.Init(ALIGN_CENTER), fontColor)
 		SetAlpha 1.0
 
-		GUIManager.Draw("movieagency")
+		GUIManager.Draw( LS_movieagency )
 		SetAlpha 0.2;SetColor 0,0,0
 		DrawRect(0,0,800,385)
 		SetAlpha 1.0;SetColor 255,255,255

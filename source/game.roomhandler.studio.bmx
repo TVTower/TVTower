@@ -974,6 +974,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		SetAlpha 1.0
 	End Function	
 
+global LS_studio:TLowerString = TLowerString.Create("studio")	
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		local roomGUID:string = TRoom(triggerEvent.GetSender()).GetGUID()
@@ -1012,7 +1013,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		local roomOwner:int = TRoom(triggerEvent.GetSender()).owner
 		if not GetPlayerBaseCollection().IsPlayer(roomOwner) then roomOwner = 0
 
-		GUIManager.Draw("studio")
+		GUIManager.Draw( LS_studio )
 
 		'draw data sheets for scripts or production concepts
 		if not studioManagerDialogue 
@@ -1088,6 +1089,6 @@ Type RoomHandler_Studio extends TRoomHandler
 		hoveredGuiProductionConcept = null
 		draggedGuiProductionConcept = null
 
-		GUIManager.Update("studio")
+		GUIManager.Update( LS_studio )
 	End Method
 End Type
