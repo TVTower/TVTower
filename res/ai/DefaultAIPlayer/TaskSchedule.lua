@@ -358,6 +358,8 @@ function TaskSchedule:FixAdvertisement(day, hour)
 		--increase importance of schedule task!
 		self.SituationPriority = 75
 
+		-- assign player (if called from outside, this is not set yet)
+		self.Player = _G["globalPlayer"]
 		-- should start schedule then
 		self.Player:ForceNextTask()
 	end
@@ -372,6 +374,8 @@ function TaskSchedule:_FixImminentOutage(day, hour, minute, situationPriority)
 		--increase importance of schedule task!
 		self.SituationPriority = situationPriority
 
+		-- assign player (if called from outside, this is not set yet)
+		self.Player = _G["globalPlayer"]
 		-- should start schedule then
 		self.Player:ForceNextTask()
 	end
