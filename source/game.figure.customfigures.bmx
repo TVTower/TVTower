@@ -56,7 +56,7 @@ End Type
 
 
 Type TFigureJanitor Extends TFigure
-	Field currentAction:Int	= 0		'0=nothing,1=cleaning,...
+	Field currentJanitorAction:Int = 0		'0=nothing,1=cleaning,...
 	Field nextActionTimer:TBuildingIntervalTimer = new TBuildingIntervalTimer.Init(2500,0, -500, 500) '500ms randomness
 	Field nextActionTime:Int = 2500
 	Field nextActionRandomTime:Int = 500
@@ -84,8 +84,10 @@ Type TFigureJanitor Extends TFigure
 
 
 	'override to make the figure stay in the room for a random time
-	Method FinishEnterRoom:Int()
-		Super.FinishEnterRoom()
+	'ATTENTION: use BeginEnterRoom instead of FinishEnterRoom()
+	'           to avoid "resets" while Entering
+	Method BeginEnterRoom:int(door:TRoomDoorBase, room:TRoomBase)
+		Super.BeginEnterRoom(door, room)
 
 		'reset timer so figure stays in room for some time
 		nextActionTimer.Reset()
@@ -96,7 +98,7 @@ Type TFigureJanitor Extends TFigure
 	Method getAnimationToUse:String()
 		Local result:String = Super.getAnimationToUse()
 
-		If currentAction = 1
+		If currentJanitorAction = 1
 			If result = "walkRight" Then result = "cleanRight" Else result="cleanLeft"
 		EndIf
 		Return result
@@ -105,13 +107,14 @@ Type TFigureJanitor Extends TFigure
 
 	'overwrite default to stop moving when cleaning
 	Method GetVelocity:TVec2D()
-		If currentAction = 1 Then Return New TVec2D
+		If currentJanitorAction = 1 Then Return New TVec2D
 		Return velocity
 	End Method
 
 
 	Method onReachElevator:int()
 		WaitAtElevatorTimer.Reset()
+		nextActionTimer.isExpired()
 	End Method
 
 
@@ -124,7 +127,7 @@ Type TFigureJanitor Extends TFigure
 		EndIf
 
 		'waited long enough in room ... go out
-		If inRoom And nextActionTimer.isExpired()
+		If inRoom and not IsChangingRoom() And nextActionTimer.isExpired()
 			LeaveRoom()
 		EndIf
 
@@ -142,12 +145,12 @@ Type TFigureJanitor Extends TFigure
 				Until Abs(area.GetX() - randomX) > 75
 
 				'move to a different floor (only if doing nothing special)
-				If useElevator And currentAction = 0 And randomAction > 80 And Not IsAtElevator()
+				If useElevator And currentJanitorAction = 0 And randomAction > 80 And Not IsAtElevator()
 					Local sendToFloor:Int = GetFloor() + 1
 					If sendToFloor > 13 Then sendToFloor = 0
 					ChangeTarget(randomX, GetBuildingBase().GetFloorY2(sendToFloor))
 				'move to a different X on same floor - if not cleaning now
-				ElseIf currentAction = 0
+				ElseIf currentJanitorAction = 0
 					ChangeTarget(randomX, GetBuildingBase().GetFloorY2(GetFloor()))
 				EndIf
 			EndIf
@@ -159,7 +162,7 @@ Type TFigureJanitor Extends TFigure
 			nextActionTimer.SetInterval(nextActionTime)
 			nextActionTimer.Reset()
 			
-			currentAction = 0
+			currentJanitorAction = 0
 
 			'chose actions
 			'- only if not outside the building
@@ -168,10 +171,10 @@ Type TFigureJanitor Extends TFigure
 				'and do not clean if target is a room near figure
 				Local targetDoor:TRoomDoor = TRoomDoor(GetTarget())
 				If GetTarget() And (Not targetDoor Or (20 < Abs(targetDoor.GetScreenX() - area.GetX()) Or targetDoor.GetOnFloor() <> GetFloor()))
-					If RandRange(0,100) < NormalCleanChance Then currentAction = 1
+					If RandRange(0,100) < NormalCleanChance Then currentJanitorAction = 1
 				EndIf
 				'if just standing around give a chance to clean
-				If Not GetTarget() And RandRange(0,100) < BoredCleanChance Then currentAction = 1
+				If Not GetTarget() And RandRange(0,100) < BoredCleanChance Then currentJanitorAction = 1
 			EndIf
 		EndIf
 
