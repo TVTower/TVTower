@@ -4477,10 +4477,6 @@ Type GameEvents
 		GetPopularityManager().Update(triggerEvent)
 
 
-		'=== UPDATE ACHIEVEMENTS ===
-		GetAchievementCollection().Update(time)
-
-
 		'=== UPDATE NEWS AGENCY ===
 		'check if it is time for new news
 		GetNewsAgency().Update()
@@ -4643,6 +4639,12 @@ Type GameEvents
 		' knows whether it is broadcasted currently or not)
 		'remove LIVE-status from programmes once they started
 		GetProgrammeDataCollection().UpdateLive()
+
+
+		'=== UPDATE ACHIEVEMENTS ===
+		'(do that AFTER setting the broadcasts and calculating the
+		' audience as some achievements check audience of a broadcast)
+		GetAchievementCollection().Update(time)
 	
 		Return True
 	End Function
