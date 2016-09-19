@@ -536,7 +536,7 @@ function AIJobGoToRoom:OnBeginEnterRoom(roomId, result)
 	local resultId = tonumber(result)
 	if (resultId == TVT.RESULT_INUSE) then
 		if (self.IsWaiting) then
-			debugMsg("BeginEnterRoom: Room still in use. Will continue to wait...a bit")
+			-- debugMsg( TVT.ME .. " BeginEnterRoom: Room still in use. Will continue to wait...a bit. Waiting time: " .. self.WaitTill .. "/" .. WorldTime.GetTimeGoneAsMinute().."  ticks=" .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ")")
 		elseif (self:ShouldIWait()) then
 			--debugMsg("Raum besetzt! Dann wart ich eben...")
 			self.IsWaiting = true
@@ -614,7 +614,7 @@ function AIJobGoToRoom:Tick()
 			self.IsWaiting = false
 			self.Status = JOB_STATUS_CANCEL
 		else
-			debugMsg("Waiting to enter the room. Waiting till time: " .. self.WaitTill .. "/" .. WorldTime.GetTimeGoneAsMinute() .. "  /  ticks: " .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ".")
+			--debugMsg("Waiting to enter the room. Waiting till time: " .. self.WaitTill .. "/" .. WorldTime.GetTimeGoneAsMinute() .. "  /  ticks: " .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ".")
 		end
 	-- while walking / going by elevator
 	elseif (self.Status ~= JOB_STATUS_DONE) then

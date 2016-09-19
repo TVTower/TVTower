@@ -769,7 +769,7 @@ Type TFigure extends TFigureBase
 
 		'another target to do?
 		if GetTarget()
-			print "Figure " +name " got another target - going to it now"
+			print "Figure "  + name + " got another target - going to it now"
 			local targetPos:TVec2D = GetTargetMoveToPosition()
 			'remove that target, so we can add it again
 			RemoveCurrentTarget()
