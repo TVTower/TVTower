@@ -339,6 +339,8 @@ Type TAudienceBase
 			'print "unknown targetID"
 			Throw TArgumentException.Create("targetID", String.FromInt(targetIDs))
 		endif
+
+		return result
 	End Method
 
 
