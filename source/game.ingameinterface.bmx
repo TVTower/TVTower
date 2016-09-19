@@ -46,6 +46,7 @@ Type TInGameInterface
 
 	Global _instance:TInGameInterface
 
+	Field ingameState:TLowerString = TLowerString.Create("InGame")
 
 	Function GetInstance:TInGameInterface()
 		if not _instance then _instance = new TInGameInterface.Init()
@@ -783,7 +784,7 @@ Type TInGameInterface
 		'===
 
 		
-	    GUIManager.Draw("InGame")
+	    GUIManager.Draw(ingameState)
 
 		For local tip:TTooltip = eachin tooltips
 			If tip.enabled Then tip.Render()

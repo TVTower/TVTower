@@ -236,8 +236,9 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 	End Method
 
 
+global LS_modalLoadMenu:TLowerString = TLowerString.Create("modalloadmenu")
 	Method Update:int()
-		GuiManager.Update("MODALLOADMENU")
+		GuiManager.Update( LS_modalLoadMenu )
 
 		'disable/enable load-button
 		if not TGUISaveGameListItem(savegameList.getSelectedEntry())
@@ -264,7 +265,7 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 	Method DrawContent()
 		Super.DrawContent()
 
-		GuiManager.Draw("MODALLOADMENU")
+		GuiManager.Draw( LS_modalLoadMenu )
 	End Method
 
 
@@ -464,8 +465,9 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 	End Method
 
 
+global LS_modalSaveMenu:TLowerString = TLowerString.Create("modalsavemenu")
 	Method Update:int()
-		GuiManager.Update("MODALSAVEMENU")
+		GuiManager.Update( LS_modalSaveMenu )
 
 		'disable/enable load-button
 		if savegameName.GetValue() = ""
@@ -492,7 +494,7 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 	Method DrawContent()
 		Super.DrawContent()
 
-		GuiManager.Draw("MODALSAVEMENU")
+		GuiManager.Draw( LS_modalSaveMenu )
 	End Method
 
 

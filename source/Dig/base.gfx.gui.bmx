@@ -60,7 +60,7 @@ Const GUIMANAGER_TYPES_ALL:Int        = GUIMANAGER_TYPES_DRAGGED | GUIMANAGER_TY
 Type TGUIManager
 	Field globalScale:Float	= 1.0
 	'which state are we currently handling?
-	Field currentState:String = ""
+	Field currentState:TLowerString = Null
 	'config about specific gui settings (eg. panelGap)
 	Field config:TData = New TData
 	Field List:TList = CreateList()
@@ -73,8 +73,8 @@ Type TGUIManager
 	Field UpdateState_mouseButtonHit:Int[]
 	Field UpdateState_mouseScrollwheelMovement:Int = 0
 	Field UpdateState_foundHitObject:TGUIObject[]
-	Field UpdateState_foundHoverObject:TGUIObject = null
-	Field UpdateState_foundFocusObject:TGUIObject = null
+	Field UpdateState_foundHoverObject:TGUIObject = Null
+	Field UpdateState_foundFocusObject:TGUIObject = Null
 
 	'=== PRIVATE PROPERTIES ===
 
@@ -329,24 +329,15 @@ endrem
 	End Method
 
 
-	Method IsState:Int(obj:TGUIObject, State:String)
-		If State = "" Then Return True
-
-		State = state.toLower()
-		Local states:String[] = state.split("|")
-		Local objStates:String[] = obj.GetLimitToState().toLower().split("|")
-		For Local limit:String = EachIn states
-			For Local objLimit:String = EachIn objStates
-				If limit = objLimit Then Return True
-			Next
-		Next
-		Return False
+	Method IsState:Int(obj:TGUIObject, State:TLowerString)
+		If Not State Then Return True
+		Return State.HasSplitFieldInSplitText("|", obj.GetLimitToState(), "|")
 	End Method
 
 
 	'returns whether an object is hidden/invisible/inactive and therefor
 	'does not have to get handled now
-	Method haveToHandleObject:Int(obj:TGUIObject, State:String="", fromZ:Int=-1000, toZ:Int=-1000)
+	Method haveToHandleObject:Int(obj:TGUIObject, State:TLowerString=Null, fromZ:Int=-1000, toZ:Int=-1000)
 		'skip if parent has not to get handled
 		If(obj._parent And Not haveToHandleObject(obj._parent,State,fromZ,toZ)) Then Return False
 
@@ -358,7 +349,7 @@ endrem
 
 		'limit display by state - skip if object is hidden in that state
 		'deep check only if a specific state is wanted AND the object is limited to states
-		If(state<>"" And obj.GetLimitToState() <> "")
+		If(state<>Null And obj.GetLimitToState() <> "")
 			Return IsState(obj, state)
 		EndIf
 		Return True
@@ -366,7 +357,7 @@ endrem
 
 
 	'returns an array of objects at the given point
-	Method GetObjectsByPos:TGuiObject[](coord:TVec2D, limitState:String=Null, ignoreDragged:Int=True, requiredFlags:Int=0, limit:Int=0)
+	Method GetObjectsByPos:TGuiObject[](coord:TVec2D, limitState:TLowerString=Null, ignoreDragged:Int=True, requiredFlags:Int=0, limit:Int=0)
 		If limitState=Null Then limitState = currentState
 
 		Local guiObjects:TGuiObject[]
@@ -395,14 +386,14 @@ endrem
 	End Method
 
 
-	Method GetFirstObjectByPos:TGuiObject(coord:TVec2D, limitState:String=Null, ignoreDragged:Int=True, requiredFlags:Int=0)
+	Method GetFirstObjectByPos:TGuiObject(coord:TVec2D, limitState:TLowerString=Null, ignoreDragged:Int=True, requiredFlags:Int=0)
 		Local guiObjects:TGuiObject[] = GetObjectsByPos(coord, limitState, ignoreDragged, requiredFlags, 1)
 
 		If guiObjects.length = 0 Then Return Null Else Return guiObjects[0]
 	End Method
 
 
-	Method DisplaceGUIobjects(State:String = "", x:Int = 0, y:Int = 0)
+	Method DisplaceGUIobjects(State:TLowerString = null, x:Int = 0, y:Int = 0)
 		For Local obj:TGUIobject = EachIn List
 			If isState(obj, State) Then obj.rect.position.AddXY( x,y )
 		Next
@@ -462,9 +453,9 @@ endrem
 		UpdateState_mouseButtonDown = MOUSEMANAGER.GetAllStatusDown()
 		UpdateState_mouseButtonHit = MOUSEMANAGER.GetAllStatusHit() 'single and double clicks!
 
-		UpdateState_foundFocusObject = null
-		UpdateState_foundHitObject = new TGUIObject[3] '[null,null,null]
-		UpdateState_foundHoverObject = null
+		UpdateState_foundFocusObject = Null
+		UpdateState_foundHitObject = New TGUIObject[3] '[null,null,null]
+		UpdateState_foundHoverObject = Null
 	End Method
 
 
@@ -485,7 +476,7 @@ endrem
 	End Method
 
 
-	Method Update(State:String = "", fromZ:Int=-1000, toZ:Int=-1000, updateTypes:Int=GUIMANAGER_TYPES_ALL)
+	Method Update(State:TLowerString = Null, fromZ:Int=-1000, toZ:Int=-1000, updateTypes:Int=GUIMANAGER_TYPES_ALL)
 		'_lastUpdateTick :+1
 		'if _lastUpdateTick >= 100000 then _lastUpdateTick = 0
 
@@ -533,7 +524,7 @@ endrem
 	End Method
 
 
-	Method Draw:Int(State:String = "", fromZ:Int=-1000, toZ:Int=-1000, drawTypes:Int=GUIMANAGER_TYPES_ALL)
+	Method Draw:Int(State:TLowerString = Null, fromZ:Int=-1000, toZ:Int=-1000, drawTypes:Int=GUIMANAGER_TYPES_ALL)
 		'_lastDrawTick :+1
 		'if _lastDrawTick >= 100000 then _lastDrawTick = 0
 
@@ -1795,7 +1786,7 @@ Type TGUIobject
 						EventManager.triggerEvent( TEventSimple.Create( "guiobject.OnMouseEnter", Null, Self ) )
 						SetHovered(True)
 					EndIf
-					GUIManager.UpdateState_foundHoverObject = self
+					GUIManager.UpdateState_foundHoverObject = Self
 				EndIf
 				'create event: onmouseover
 				Local mouseOverEvent:TEventSimple = TEventSimple.Create("guiobject.OnMouseOver", New TData.Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self )
@@ -1831,7 +1822,7 @@ Type TGUIobject
 							GUIManager.UpdateState_mouseButtonHit[2] = False
 						EndIf
 
-						GUIManager.UpdateState_foundHitObject[2 -1] = self
+						GUIManager.UpdateState_foundHitObject[2 -1] = Self
 					EndIf
 
 
@@ -1897,7 +1888,7 @@ Type TGUIobject
 								'Ronny: 2014/05/11 - commented out, still needed?
 								'If Not HasFocus() Then GUIManager.ResetFocus()
 
-								GUIManager.UpdateState_foundHitObject[0] = self
+								GUIManager.UpdateState_foundHitObject[0] = Self
 							EndIf
 						EndIf
 					EndIf

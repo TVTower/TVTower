@@ -45,10 +45,14 @@ Type TScreen_GameSettings Extends TGameScreen
 	Global playerSlotGap:Int = 25
 	Global playerSlotInnerGap:Int = 10 'the gap between inner canvas and inputs
 
+	Field nameState:TLowerString
+	Field settingsState:TLowerString = TLowerString.Create("GameSettings")
 
 	Method Create:TScreen_GameSettings(name:String)
 		Super.Create(name)
 		SetGroupName("ExGame", "GameSettings")
+		
+		nameState = TLowerString.Create(name)
 
 		'===== CREATE AND SETUP GUI =====
 		guiSettingsWindow = New TGUIGameWindow.Create(settingsArea.position, settingsArea.dimension, name)
@@ -399,7 +403,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		DrawMenuBackground(True)
 
 		'background gui items
-		GUIManager.Draw(name, 0, 100)
+		GUIManager.Draw(nameState, 0, 100)
 
 		Local slotPos:TVec2D = New TVec2D.Init(guiPlayersPanel.GetContentScreenX(),guiPlayersPanel.GetContentScreeny())
 		For Local i:Int = 1 To 4
@@ -438,7 +442,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		Next
 
 		'overlay gui items (higher zindex)
-		GUIManager.Draw(name, 101)
+		GUIManager.Draw(nameState, 101)
 	End Method
 
 
@@ -509,7 +513,7 @@ Type TScreen_GameSettings Extends TGameScreen
 			EndIf
 		Next
 
-		GUIManager.Update("GameSettings")
+		GUIManager.Update(settingsState)
 
 
 		'not final !

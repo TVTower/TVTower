@@ -832,12 +832,12 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			endif
 		endif
 
-		GuiManager.Update("supermarket_customproduction_castbox_modal")
-		GuiManager.Update("supermarket_customproduction_productionbox_modal")
-		GuiManager.Update("supermarket_customproduction_productionconceptbox")
-		GuiManager.Update("supermarket_customproduction_newproduction")
-		GuiManager.Update("supermarket_customproduction_productionbox")
-		GuiManager.Update("supermarket_customproduction_castbox")
+		GuiManager.Update( TLowerString.Create("supermarket_customproduction_castbox_modal") )
+		GuiManager.Update( TLowerString.Create("supermarket_customproduction_productionbox_modal") )
+		GuiManager.Update( TLowerString.Create("supermarket_customproduction_productionconceptbox") )
+		GuiManager.Update( TLowerString.Create("supermarket_customproduction_newproduction") )
+		GuiManager.Update( TLowerString.Create("supermarket_customproduction_productionbox") )
+		GuiManager.Update( TLowerString.Create("supermarket_customproduction_castbox") )
 
 		if (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
 			'leaving room now
@@ -1142,22 +1142,22 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			endif
 			skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
 
-			GuiManager.Draw("supermarket_customproduction_productionconceptbox")
-			GuiManager.Draw("supermarket_customproduction_newproduction")
-			GuiManager.Draw("supermarket_customproduction_productionbox")
-			GuiManager.Draw("supermarket_customproduction_castbox")
-	'		GuiManager.Draw("supermarket_customproduction_castbox", -1000,-1000, GUIMANAGER_TYPES_NONDRAGGED)
+			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_productionconceptbox") )
+			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_newproduction") )
+			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_productionbox") )
+			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_castbox") )
+	'		GuiManager.Draw( TLowerString.Create("supermarket_customproduction_castbox"), -1000,-1000, GUIMANAGER_TYPES_NONDRAGGED)
 
-			GuiManager.Draw("supermarket_customproduction")
-	'		GuiManager.Draw("supermarket_customproduction_castbox", -1000,-1000, GUIMANAGER_TYPES_DRAGGED)
-			GuiManager.Draw("supermarket_customproduction_castbox_modal")
-			GuiManager.Draw("supermarket_customproduction_productionbox_modal")
+			GuiManager.Draw( TLowerString.Create("supermarket_customproduction") )
+	'		GuiManager.Draw( TLowerString.Create("supermarket_customproduction_castbox", -1000,-1000, GUIMANAGER_TYPES_DRAGGED) )
+			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_castbox_modal") )
+			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_productionbox_modal") )
 
 			'draw datasheet if needed
 			if hoveredGuiCastItem then hoveredGuiCastItem.DrawDatasheet(hoveredGuiCastItem.GetScreenX() - 230, hoveredGuiCastItem.GetScreenX() - 170 )
 
 		else
-			GuiManager.Draw("supermarket_customproduction_productionconceptbox")
+			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_productionconceptbox") )
 		endif
 
 		'draw script-sheet

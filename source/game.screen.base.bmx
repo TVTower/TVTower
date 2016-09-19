@@ -140,6 +140,7 @@ Type TInGameScreen Extends TScreen
     'Field hotspots:THotspots     'clickable areas on the screen
 	Field _contentArea:TRectangle
 
+	Field ingameState:TLowerString = TLowerString.Create("InGame")
 
 	Method Create:TInGameScreen(name:String)
 		Super.Create(name)
@@ -286,7 +287,7 @@ Type TInGameScreen Extends TScreen
 
 	Method Update:Int(deltaTime:Float)
 		'check for clicks on items BEFORE others check and use it
-		GUIManager.Update("InGame")
+		GUIManager.Update(ingameState)
 
 		UpdateContent(deltaTime)
 

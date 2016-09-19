@@ -357,6 +357,7 @@ Type RoomHandler_Archive extends TRoomHandler
 	End Method
 
 
+global LS_archive:TLowerString = TLowerString.Create("archive")	
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		'only draw custom elements for players room
 		local room:TRoom = TRoom(triggerEvent._sender)
@@ -371,7 +372,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		'draw suitcase
 		GetSpriteFromRegistry("gfx_suitcase"+glowSuitcase).Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
-		GUIManager.Draw("archive")
+		GUIManager.Draw( LS_archive )
 
 		'draw dude tooltip
 		If openCollectionTooltip Then openCollectionTooltip.Render()
@@ -442,7 +443,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		'reset dragged block too
 		draggedGuiProgrammeLicence = null
 
-		GUIManager.Update("archive")
+		GUIManager.Update( LS_archive )
 	End Method
 End Type
 

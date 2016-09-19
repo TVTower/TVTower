@@ -194,6 +194,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 		achievementList.Resize(-1, -1)
 	End Method
 
+global LS_office_achievements:TLowerString = TLowerString.Create("office_achievements")	
 
 	Method Update()
 		'gets refilled in gui-updates
@@ -217,7 +218,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 		endif
 		
 
-		GuiManager.Update("office_achievements")
+		GuiManager.Update( LS_office_achievements )
 
 		if (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
 			'leaving room now
@@ -293,7 +294,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 
 		skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
 
-		GuiManager.Draw("office_achievements")
+		GuiManager.Draw( LS_office_achievements )
 
 		'draw achievement-sheet
 		'if hoveredGuiProductionConcept then hoveredGuiProductionConcept.DrawSupermarketSheet()

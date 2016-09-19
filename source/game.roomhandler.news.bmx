@@ -212,9 +212,10 @@ Type RoomHandler_News extends TRoomHandler
 	'News: room screen
 	'===================================
 
+global LS_newsroom:TLowerString = TLowerString.Create("newsroom")	
 
 	Function onDrawNews:int( triggerEvent:TEventBase )
-		GUIManager.Draw("newsroom")
+		GUIManager.Draw( LS_newsroom )
 
 		'no interaction for other players newsrooms
 		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
@@ -245,7 +246,7 @@ Type RoomHandler_News extends TRoomHandler
 		'store current room for later access (in guiobjects)
 		currentRoom = room
 
-		GUIManager.Update("newsroom")
+		GUIManager.Update( LS_newsroom )
 
 		GetGameBase().cursorstate = 0
 		If PlannerToolTip Then PlannerToolTip.Update()
@@ -368,6 +369,7 @@ Type RoomHandler_News extends TRoomHandler
 	'===================================
 	'News: NewsPlanner screen
 	'===================================
+global LS_newsplanner:TLowerString = TLowerString.Create("newsplanner")	
 
 	Function onDrawNewsPlanner:int( triggerEvent:TEventBase )
 		'local screen:TScreen	= TScreen(triggerEvent._sender)
@@ -391,7 +393,7 @@ Type RoomHandler_News extends TRoomHandler
 		SetRotation(0)
 
 		SetColor 255,255,255  'normal
-		GUIManager.Draw("Newsplanner")
+		GUIManager.Draw( LS_newsplanner )
 
 		if draggedGuiNews
 			'wait to show hint
@@ -534,7 +536,7 @@ Type RoomHandler_News extends TRoomHandler
 		if not IsPlayersRoom(room) then return False
 
 		'general newsplanner elements
-		GUIManager.Update("Newsplanner")
+		GUIManager.Update( LS_newsplanner )
 	End Function
 
 

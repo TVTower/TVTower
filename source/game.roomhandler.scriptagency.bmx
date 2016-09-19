@@ -847,6 +847,7 @@ endrem
 	End Function
 
 
+global LS_scriptagency:TLowerString = TLowerString.Create("scriptagency")	
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		if VendorEntity Then VendorEntity.Render()
 		GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
@@ -883,7 +884,7 @@ endrem
 		'DrawRect(GuiListSuitcase.GetScreenX(),GuiListSuitcase.GetScreenY(), GuiListSuitcase.GetScreenWidth(), GuiListSuitcase.GetScreenHeight())
 
 		
-		GUIManager.Draw("scriptagency")
+		GUIManager.Draw( LS_scriptagency )
 
 		if hoveredGuiScript
 			'draw the current sheet
@@ -903,7 +904,7 @@ endrem
 		'reset dragged block too
 		draggedGuiScript = null
 
-		GUIManager.Update("scriptagency")
+		GUIManager.Update( LS_scriptagency )
 	End Method
 
 End Type

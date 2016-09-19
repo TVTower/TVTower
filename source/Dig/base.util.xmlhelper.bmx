@@ -48,24 +48,24 @@ Type TXmlHelper
 
 	Function Create:TXmlHelper(filename:String, rootNode:String="", createIfMissing:Int=True)
 		Local obj:TXmlHelper = New TXmlHelper
-		if filesize(filename) >= 0
+		If FileSize(filename) >= 0
 			obj.filename = filename
 			obj.xmlDoc = TxmlDoc.parseFile(filename)
-		else
+		Else
 			obj.filename = filename
 
 			'try to load it via a stream (maybe SDL wants to help out)
-			local stream:TStream = OpenStream(filename)
-			if stream
+			Local stream:TStream = OpenStream(filename)
+			If stream
 				obj.xmlDoc = TxmlDoc.ReadDoc(stream)
 				stream.Close()
-			else
-				if createIfmissing
+			Else
+				If createIfmissing
 					obj.xmlDoc = TxmlDoc.newDoc("1.0")
-					if rootNode <> "" then obj.CreateRootNode(rootNode)
-				endif
-			endif
-		endif
+					If rootNode <> "" Then obj.CreateRootNode(rootNode)
+				EndIf
+			EndIf
+		EndIf
 		Return obj
 	End Function
 
@@ -79,19 +79,19 @@ Type TXmlHelper
 
 
 	Method GetRootNode:TxmlNode()
-		if xmlDoc then return xmlDoc.getRootElement()
-		return Null
+		If xmlDoc Then Return xmlDoc.getRootElement()
+		Return Null
 	End Method
 
 
-	Method CreateRootNode:TxmlNode(key:string)
-		if key = "" then key = "root"
-		local result:TxmlNode = TxmlNode.newNode(key)
+	Method CreateRootNode:TxmlNode(key:String)
+		If key = "" Then key = "root"
+		Local result:TxmlNode = TxmlNode.newNode(key)
 		xmlDoc.setRootElement(result)
 		'add a new line within <key></key>" so children get added on
 		'the next line
 		GetRootNode().AddContent("~n")
-		return result
+		Return result
 	End Method
 
 
@@ -99,10 +99,10 @@ Type TXmlHelper
 	Method FindElementNode:TxmlNode(startNode:TXmlNode, nodeName:String)
 		nodeName = nodeName.ToLower()
 		If Not startNode Then startNode = GetRootNode()
-		if Not startNode Then return Null
+		If Not startNode Then Return Null
 
 		'maybe we are searching for start node
-		if startNode.getName().ToLower() = nodeName then return startNode
+		If startNode.getName().ToLower() = nodeName Then Return startNode
 
 		'traverse through children
 		For Local child:TxmlNode = EachIn GetNodeChildElements(startNode)
@@ -140,7 +140,7 @@ Type TXmlHelper
 
 	'non recursive child finding
 	Function FindChild:TxmlNode(node:TxmlNode, nodeName:String)
-		if not node then return Null
+		If Not node Then Return Null
 		nodeName = nodeName.ToLower()
 		For Local child:TxmlNode = EachIn GetNodeChildElements(node)
 			If child.getName().ToLower() = nodeName Then Return child
@@ -150,8 +150,8 @@ Type TXmlHelper
 
 
 	'loads values of a node into a tdata object
-	Function LoadValuesToData:TData(node:TXmlNode, data:TData, fieldNames:String[], searchInChildNodeNames:string[] = null)
-		if not node then return data
+	Function LoadValuesToData:TData(node:TXmlNode, data:TData, fieldNames:String[], searchInChildNodeNames:String[] = Null)
+		If Not node Then Return data
 
 		For Local fieldName:String = EachIn fieldNames
 			If Not TXmlHelper.HasValue(node, fieldName, searchInChildNodeNames) Then Continue
@@ -160,19 +160,19 @@ Type TXmlHelper
 
 			data.Add(names[0], FindValue(node, fieldName, "", "", searchInChildNodeNames))
 		Next
-		return data
+		Return data
 	End Function
 	
 
 	'loads values of a node into a tdata object
-	Function LoadAllValuesToData:TData(node:TXmlNode, data:TData, ignoreNames:String[] = null)
-		if not node then return data
+	Function LoadAllValuesToData:TData(node:TXmlNode, data:TData, ignoreNames:String[] = Null)
+		If Not node Then Return data
 
 
 		'=== ATTRIBUTES ===
 		Local att:TList = node.GetAttributeList()
 		For Local attribute:TxmlBase = EachIn att
-			if StringHelper.InArray(attribute.GetName(), ignoreNames, False) then continue
+			If StringHelper.InArray(attribute.GetName(), ignoreNames, False) Then Continue
 
 			data.Add(attribute.GetName().toLower(), node.GetAttribute(attribute.GetName()))
 		Next
@@ -180,30 +180,34 @@ Type TXmlHelper
 
 		'=== CHILD ELEMENTS ===
 		For Local subNode:TxmlNode = EachIn GetNodeChildElements(node)
-			if StringHelper.InArray(subNode.GetName(), ignoreNames, False) then continue
+			If StringHelper.InArray(subNode.GetName(), ignoreNames, False) Then Continue
 
 			If subNode.getName().ToLower() = "data"
-				local subData:TData = new TData
+				Local subData:TData = New TData
 				LoadAllValuesToData(subNode, subData, ignoreNames)
 				data.Add("data", subData)
-			endif
+			EndIf
 
 			data.Add(subNode.getName().ToLower(), subNode.getContent())
 		Next
 
-		return data
+		Return data
 	End Function
 	
 
 	'search for an attribute
 	'(compared to node.HasAttribute() this is NOT case sensitive!)
 	Function HasAttribute:Int(node:TXmlNode, fieldName:String)
-		if not node then return False
+		If Not node Then Return False
 
 		Local att:TList = node.GetAttributeList()
-		fieldName = fieldName.ToLower()
+		'fieldName = fieldName.ToLower()
+		'For Local attribute:TxmlBase = EachIn att
+		'	If attribute.GetName().toLower() = fieldname Then Return True
+		'Next
+		Local name:TLowerString = TLowerString.Create(fieldName)
 		For Local attribute:TxmlBase = EachIn att
-			If attribute.GetName().toLower() = fieldname Then Return True
+			If name.EqualsLower(attribute.GetName()) Then Return True
 		Next
 
 		Return False
@@ -222,8 +226,8 @@ Type TXmlHelper
 	End Function
 
 
-	Function HasValue:Int(node:TXmlNode, fieldName:String, searchInChildNodeNames:string[] = null)
-		if not node then return False
+	Function HasValue:Int(node:TXmlNode, fieldName:String, searchInChildNodeNames:String[] = Null)
+		If Not node Then Return False
 
 		'loop through all potential fieldnames ("frames|f" -> "frames", "f")
 		Local fieldNames:String[] = fieldName.ToLower().Split("|")
@@ -235,11 +239,11 @@ Type TXmlHelper
 				If subNode.getType() = XML_TEXT_NODE Then Continue
 				If subNode.getName().ToLower() = name Then Return True
 				If subNode.getName().ToLower() = "data" And HasAttribute(subNode, name) Then Return True
-				If searchInChildNodeNames and searchInChildNodeNames.length > 0
-					if searchInChildNodeNames[0] = "*" or StringHelper.InArray(subNode.getName(), searchInChildNodeNames, False)
-						return HasValue(subNode, fieldName, searchInChildNodeNames)
-					endif
-				endif
+				If searchInChildNodeNames And searchInChildNodeNames.length > 0
+					If searchInChildNodeNames[0] = "*" Or StringHelper.InArray(subNode.getName(), searchInChildNodeNames, False)
+						Return HasValue(subNode, fieldName, searchInChildNodeNames)
+					EndIf
+				EndIf
 			Next
 		Next
 		Return False
@@ -254,8 +258,8 @@ Type TXmlHelper
 	'- in one of the children defined in "searchInChildNodeNames" (recursive!)
 	'  ["other"] or ["*"] 
 	'  <obj><other><FIELDNAME>bla</FIELDNAME></other></obj>
-	Function FindValue:String(node:TxmlNode, fieldName:String, defaultValue:String, logString:String="", searchInChildNodeNames:string[] = null)
-		if node 
+	Function FindValue:String(node:TxmlNode, fieldName:String, defaultValue:String, logString:String="", searchInChildNodeNames:String[] = Null)
+		If node 
 			'loop through all potential fieldnames ("frames|f" -> "frames", "f")
 			Local fieldNames:String[] = fieldName.ToLower().Split("|")
 
@@ -266,34 +270,34 @@ Type TXmlHelper
 				For Local subNode:TxmlNode = EachIn GetNodeChildElements(node)
 					If subNode.getName().ToLower() = name Then Return subNode.getContent()
 					If subNode.getName().ToLower() = "data" And HasAttribute(subNode, name) Then Return GetAttribute(subNode, name)
-					If searchInChildNodeNames and searchInChildNodeNames.length > 0
-						if searchInChildNodeNames[0] = "*" or StringHelper.InArray(subNode.getName(), searchInChildNodeNames, False)
-							return FindValue(subNode, fieldName, defaultValue, logString, searchInChildNodeNames)
-						endif
-					endif					
+					If searchInChildNodeNames And searchInChildNodeNames.length > 0
+						If searchInChildNodeNames[0] = "*" Or StringHelper.InArray(subNode.getName(), searchInChildNodeNames, False)
+							Return FindValue(subNode, fieldName, defaultValue, logString, searchInChildNodeNames)
+						EndIf
+					EndIf					
 				Next
 			Next
-		endif
+		EndIf
 		If logString <> "" Then Print logString
 		Return defaultValue
 	End Function
 
 
-	Function FindValueInt:Int(node:TxmlNode, fieldName:String, defaultValue:Int, logString:String="", searchInChildNodeNames:string[] = null)
+	Function FindValueInt:Int(node:TxmlNode, fieldName:String, defaultValue:Int, logString:String="", searchInChildNodeNames:String[] = Null)
 		Local result:String = FindValue(node, fieldName, String(defaultValue), logString, searchInChildNodeNames)
 		If result = Null Then Return defaultValue
 		Return Int( result )
 	End Function
 
 
-	Function FindValueFloat:Float(node:TxmlNode, fieldName:String, defaultValue:Int, logString:String="", searchInChildNodeNames:string[] = null)
+	Function FindValueFloat:Float(node:TxmlNode, fieldName:String, defaultValue:Int, logString:String="", searchInChildNodeNames:String[] = Null)
 		Local result:String = FindValue(node, fieldName, String(defaultValue), logString, searchInChildNodeNames)
 		If result = Null Then Return defaultValue
 		Return Float( result )
 	End Function
 
 
-	Function FindValueBool:Float(node:TxmlNode, fieldName:String, defaultValue:Int, logString:String="", searchInChildNodeNames:string[] = null)
+	Function FindValueBool:Float(node:TxmlNode, fieldName:String, defaultValue:Int, logString:String="", searchInChildNodeNames:String[] = Null)
 		Local result:String = FindValue(node, fieldName, String(defaultValue), logString, searchInChildNodeNames)
 		Select result.toLower()
 			Case "0", "false"	Return False

@@ -204,7 +204,7 @@ Type TApp
 	Const PAUSED_BY_INGAMEHELP:int = 4
 	Const PAUSED_BY_MODALWINDOW:int = 8
 	
-	
+	Global systemState:TLowerString = TLowerString.Create("SYSTEM")
 
 	Function Create:TApp(updatesPerSecond:Int = 60, framesPerSecond:Int = 30, vsync:Int=True, initializeGUI:Int=True)
 		Local obj:TApp = New TApp
@@ -547,7 +547,7 @@ Type TApp
 		MouseManager.Enable(1)
 		MouseManager.Enable(2)
 
-		GUIManager.Update("SYSTEM")
+		GUIManager.Update(systemState)
 
 
 		'=== UPDATE INGAME HELP ===
@@ -782,7 +782,8 @@ endrem
 						Next
 						print "found cheap:"+foundCheap+", good:"+foundGood+", auction:"+foundAuction+", skipped:"+foundSkipped+" movies/series for 1985. Total="+total
 						endrem
-						
+
+						'print "DEV: Set Player 2 bankrupt"
 						'GetGame().SetPlayerBankrupt(2)
 						rem
 						local m:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID("ronny-programme-kartoffeln-01")
@@ -1414,7 +1415,7 @@ endrem
 
 
 		'draw system things at last (-> on top)
-		GUIManager.Draw("SYSTEM")
+		GUIManager.Draw(systemState)
 
 		'instead of using mousemanager.x and mousemanager.y (read
 		'on last Update() - which might have been some millisecs ago)
@@ -2394,6 +2395,8 @@ Type TScreen_MainMenu Extends TGameScreen
 	Field guiLanguageDropDown:TGUISpriteDropDown
 	Field settingsWindow:TSettingsWindow
 	Field loadGameMenuWindow:TGUImodalWindowChain
+	
+	Field stateName:TLowerString
 
 	Method Create:TScreen_MainMenu(name:String)
 		Super.Create(name)
@@ -2401,6 +2404,7 @@ Type TScreen_MainMenu Extends TGameScreen
 
 		Self.SetScreenChangeEffects(Null,Null) 'menus do not get changers
 
+		stateName = TLowerString.Create(name)
 		Local guiButtonsWindow:TGUIGameWindow
 		Local guiButtonsPanel:TGUIBackgroundBox
 		Local panelGap:Int = GUIManager.config.GetInt("panelGap", 10)
@@ -2623,7 +2627,7 @@ Type TScreen_MainMenu Extends TGameScreen
 		'draw the janitor BEHIND the panels
 		If MainMenuJanitor Then MainMenuJanitor.Draw(tweenValue)
 
-		GUIManager.Draw(Self.name)
+		GUIManager.Draw(stateName)
 	End Method
 
 
@@ -2645,7 +2649,7 @@ Type TScreen_MainMenu Extends TGameScreen
 
 
 
-		GUIManager.Update(Self.name)
+		GUIManager.Update(stateName)
 
 		If MainMenuJanitor
 			GetBuildingTime().Update() 'figure uses this timer
@@ -2667,11 +2671,13 @@ Type TScreen_NetworkLobby Extends TGameScreen
 	'available games list
 	Field guiGameList:TGUIGameEntryList
 
+	Field stateName:TLowerString
 
 	Method Create:TScreen_NetworkLobby(name:String)
 		Super.Create(name)
 		SetGroupName("ExGame", "NetworkLobby")
 
+		stateName = TLowerString.Create(name)
 		'create and setup GUI objects
 		Local guiButtonsWindow:TGUIGameWindow
 		Local guiButtonsPanel:TGUIBackgroundBox
@@ -2807,7 +2813,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 			guiGamelistWindow.SetCaption(GetLocale("MENU_ONLINEGAME")+" : "+GetLocale("MENU_AVAILABLE_GAMES"))
 		EndIf
 
-		GUIManager.Draw(Self.name)
+		GUIManager.Draw(stateName)
 	End Method
 
 
@@ -2876,7 +2882,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 			EndIf
 		EndIf
 
-		GUIManager.Update(Self.name)
+		GUIManager.Update(stateName)
 	End Method
 End Type
 
@@ -2905,6 +2911,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 	'can "startGame()" get called?
 	Field canStartGame:Int = False
 
+	Field stateName:TLowerString
 
 	Method Create:TScreen_PrepareGameStart(name:String)
 		Super.Create(name)
@@ -2914,6 +2921,8 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		'messageWindow.DarkenedArea = new TRectangle.Init(0,0,800,385)
 		messageWindow.SetCaptionAndValue("title", "")
 		messageWindow.SetDialogueType(0) 'no buttons
+		
+		stateName = TLowerString.Create(name)
 
 		Return Self
 	End Method
@@ -2925,7 +2934,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		ScreenCollection.GetScreen("GameSettings").Draw(tweenValue)
 
 		'draw messageWindow
-		GUIManager.Draw(name)
+		GUIManager.Draw(stateName)
 
 		'rect of the message window's content area 
 		Local messageRect:TRectangle = messageWindow.GetContentScreenRect()
@@ -2987,7 +2996,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 	'override default update
 	Method Update:Int(deltaTime:Float)
 		'update messagewindow
-		GUIManager.Update(name)
+		GUIManager.Update(stateName)
 
 
 		'=== STEPS ===

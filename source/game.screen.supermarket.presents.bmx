@@ -123,6 +123,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 		GetInstance().Render()
 	End Function
 
+global LS_supermarket_presents:TLowerString = TLowerString.Create("supermarket_presents")	
 
 	Method Render()
 		local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
@@ -139,7 +140,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 		contentY :+ contentH - 20 - 30
 		skin.RenderContent(contentX, contentY, contentW, 30 , "1_bottom")
 
-		GuiManager.Draw("supermarket_presents")
+		GuiManager.Draw( LS_supermarket_presents )
 		
 		skin.RenderBorder(box.GetIntX(), box.GetIntY(), box.GetIntW(), box.GetIntH())
 	End Method
@@ -171,6 +172,6 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 				if not buyButton.IsEnabled() then buyButton.Enable(); lastSelectedPresent = -1
 			endif
 		endif
-		GuiManager.Update("supermarket_presents")
+		GuiManager.Update( LS_supermarket_presents )
 	End Method
 End Type
