@@ -869,15 +869,15 @@ Type TStationMap {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetShowStation:Int(channelNumber:Int)
-		If showStations.length > channelNumber Or channelNumber <= 0 Then Return False
+	Method GetShowStation:int(channelNumber:int)
+		if channelNumber > showStations.length or channelNumber <= 0 then return False
 
 		Return showStations[channelNumber-1]
 	End Method
 
 
-	Method SetShowStation(channelNumber:Int, enable:Int)
-		If showStations.length > channelNumber Or channelNumber <= 0 Then Return
+	Method SetShowStation(channelNumber:int, enable:int)
+		if channelNumber > showStations.length or channelNumber <= 0 then return
 
 		showStations[channelNumber-1] = enable
 	End Method
@@ -885,9 +885,19 @@ Type TStationMap {_exposeToLua="selected"}
 
 
 	Method Update()
-		If GetStationMapCollection().stationMaps.length <> showStations.length
+		'delete unused
+		if GetStationMapCollection().stationMaps.length < showStations.length
 			showStations = showStations[.. GetStationMapCollection().stationMaps.length + 1]
-		EndIf
+		'add new one (show them by default)
+		elseif GetStationMapCollection().stationMaps.length > showStations.length
+			local add:int = GetStationMapCollection().stationMaps.length - showStations.length
+
+			showStations = showStations[.. showStations.length + add]
+
+			For local i:int = 0 until add
+				showStations[showStations.length - 1 - i] = 1
+			Next
+		endif
 	
 		UpdateStations()
 	End Method
@@ -909,16 +919,11 @@ Type TStationMap {_exposeToLua="selected"}
 
 	'draw a players stationmap
 	Method Draw()
-		If GetStationMapCollection().stationMaps.length <> showStations.length
-			showStations = showStations[.. GetStationMapCollection().stationMaps.length + 1]
-		EndIf
-		
 		SetColor 255,255,255
 
 		'draw all stations from all players (except filtered)
-		For Local map:TStationMap = EachIn GetStationMapCollection().stationMaps
-			'show stations is zero based
-			If Not showStations[map.owner-1] Then Continue
+		For local map:TStationMap = eachin GetStationMapCollection().stationMaps
+			If Not GetShowStation(map.owner) Then Continue
 			map.DrawStations()
 		Next
 	End Method
