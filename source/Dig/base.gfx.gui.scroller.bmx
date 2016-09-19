@@ -161,7 +161,7 @@ Type TGUIScroller Extends TGUIobject
 
 
 	Method SetCurrentValue(currentValue:Double)
-		EventManager.registerEvent( TEventSimple.Create( "guiobject.onChangeValue", null, self ) )
+		EventManager.triggerEvent( TEventSimple.Create( "guiobject.onChangeValue", null, self ) )
 		self.currentValue = Max(minValue, Min(maxValue, currentValue))
 	End Method
 
@@ -211,7 +211,7 @@ Type TGUIScroller Extends TGUIobject
 
 		'emit event that the scroller position has changed
 		If sender = guiScroller.guiButtonMinus or sender = guiScroller.guiButtonPlus
-			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("direction", sender.direction.ToLower()).AddNumber("scrollAmount", 15), guiScroller ) )
+			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("direction", sender.direction.ToLower()).AddNumber("scrollAmount", 15), guiScroller ) )
 		EndIf
 	End Function
 
@@ -237,7 +237,7 @@ Type TGUIScroller Extends TGUIobject
 
 		'emit event that the scroller position has changed
 		If sender = guiScroller.guiButtonMinus or sender = guiScroller.guiButtonPlus
-			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("direction", sender.direction.ToLower()), guiScroller ) )
+			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("direction", sender.direction.ToLower()), guiScroller ) )
 		EndIf
 	End Function
 
@@ -309,7 +309,7 @@ endrem
 					'scroll to the percentage
 					SetRelativeValue(progress)
 					'inform others
-					EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("changeType", "percentage").AddNumber("percentage", GetRelativeValue()), self ) )
+					EventManager.triggerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("changeType", "percentage").AddNumber("percentage", GetRelativeValue()), self ) )
 
 					'reset clicked state and button state
 					mouseIsClicked = Null

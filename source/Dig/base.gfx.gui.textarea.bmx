@@ -404,7 +404,7 @@ Type TGUITextArea Extends TGUIobject
 			'try to scroll by 1.0 of a text line height
 			local scrollAmount:Float = abs(value) * 1.0 * textArea.GetFont().getMaxCharHeight() '25
 			
-			EventManager.registerEvent(TEventSimple.Create("guiobject.onScrollPositionChanged", new TData.AddString("direction", direction).AddNumber("scrollAmount", scrollAmount), textArea))
+			EventManager.triggerEvent(TEventSimple.Create("guiobject.onScrollPositionChanged", new TData.AddString("direction", direction).AddNumber("scrollAmount", scrollAmount), textArea))
 		endif
 		'set to accepted so that nobody else receives the event
 		triggerEvent.SetAccepted(True)

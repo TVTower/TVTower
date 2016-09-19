@@ -170,7 +170,7 @@ Type TGUIinput Extends TGUIobject
 
 					if _valueAtLastUpdate <> value
 						'explicitely inform about a change of the displayed value
-						EventManager.registerEvent( TEventSimple.Create( "guiinput.onChangeValue", new TData.AddNumber("type", 1).AddString("value", value).AddString("originalValue", _valueBeforeEdit).AddString("previousValue", _valueAtLastUpdate), Self ) )
+						EventManager.triggerEvent( TEventSimple.Create( "guiinput.onChangeValue", new TData.AddNumber("type", 1).AddString("value", value).AddString("originalValue", _valueBeforeEdit).AddString("previousValue", _valueAtLastUpdate), Self ) )
 						onChangeValueSent = True
 						_valueAtLastUpdate = value
 					endif
@@ -186,10 +186,10 @@ Type TGUIinput Extends TGUIobject
 				'only send this once
 				if not onChangeValueSent
 					'fire onChange-event (text changed)
-					EventManager.registerEvent( TEventSimple.Create( "guiobject.onChange", new TData.AddNumber("type", 1).AddString("value", value).AddString("originalValue", _valueBeforeEdit), Self ) )
+					EventManager.triggerEvent( TEventSimple.Create( "guiobject.onChange", new TData.AddNumber("type", 1).AddString("value", value).AddString("originalValue", _valueBeforeEdit), Self ) )
 				endif
 				'explicitely inform about a change of the displayed value
-				EventManager.registerEvent( TEventSimple.Create( "guiinput.onChangeValue", new TData.AddNumber("type", 1).AddString("value", value).AddString("originalValue", _valueBeforeEdit), Self ) )
+				EventManager.triggerEvent( TEventSimple.Create( "guiinput.onChangeValue", new TData.AddNumber("type", 1).AddString("value", value).AddString("originalValue", _valueBeforeEdit), Self ) )
 			EndIf
 		EndIf
 		'set to "active" look
