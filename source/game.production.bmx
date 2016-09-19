@@ -219,7 +219,7 @@ Type TProduction Extends TOwnedGameObject
 
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent(TEventSimple.Create("production.start", null, self))
+		if fireEvents then EventManager.triggerEvent(TEventSimple.Create("production.start", null, self))
 
 		return self
 	End Method
@@ -231,7 +231,7 @@ Type TProduction Extends TOwnedGameObject
 		TLogger.Log("TProduction.Abort()", "Aborted shooting.", LOG_DEBUG)
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent(TEventSimple.Create("production.abort", null, self))
+		if fireEvents then EventManager.triggerEvent(TEventSimple.Create("production.abort", null, self))
 
 		return self
 	End Method
@@ -498,7 +498,7 @@ print "Production komplettiert, alles abgedreht."
 
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent(TEventSimple.Create("production.finalize", null, self))
+		if fireEvents then EventManager.triggerEvent(TEventSimple.Create("production.finalize", null, self))
 
 		return self
 	End Method

@@ -175,7 +175,7 @@ Type TGUISlider extends TGUIObject
 		
 		'only adjust when different
 		if value <> string(newValueD)
-			EventManager.registerEvent( TEventSimple.Create( "guiobject.onChangeValue", null, self ) )
+			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onChangeValue", null, self ) )
 			value = newValueD
 		endif
 	End Method

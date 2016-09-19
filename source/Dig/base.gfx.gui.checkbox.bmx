@@ -49,7 +49,7 @@ Type TGUICheckBox Extends TGUIButton
 
 		self.checked = checked
 
-		If informOthers then EventManager.registerEvent(TEventSimple.Create("guiCheckBox.onSetChecked", new TData.AddNumber("checked", checked), Self ) )
+		If informOthers then EventManager.triggerEvent(TEventSimple.Create("guiCheckBox.onSetChecked", new TData.AddNumber("checked", checked), Self ) )
 	End Method
 
 

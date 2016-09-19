@@ -152,14 +152,14 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 			'Begin Game - fire Events
 			'so we start at day "1"
-			EventManager.registerEvent(TEventSimple.Create("Game.OnDay", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().GetDay()) ))
+			EventManager.triggerEvent(TEventSimple.Create("Game.OnDay", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().GetDay()) ))
 			'time after day
-			EventManager.registerEvent(TEventSimple.Create("Game.OnMinute", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().GetDay()) ))
-			EventManager.registerEvent(TEventSimple.Create("Game.OnHour", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().GetDay()) ))
+			EventManager.triggerEvent(TEventSimple.Create("Game.OnMinute", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().GetDay()) ))
+			EventManager.triggerEvent(TEventSimple.Create("Game.OnHour", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().GetDay()) ))
 		EndIf
 
 		'so we could add news etc.
-		EventManager.registerEvent(TEventSimple.Create("Game.OnStart", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().GetDay()) ))
+		EventManager.triggerEvent(TEventSimple.Create("Game.OnStart", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().GetDay()) ))
 	End Method
 
 
@@ -1318,6 +1318,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				'when a game is loaded we should try set the right screen
 				'not just the default building screen
 				If GetObservedFigure().GetInRoom()
+print "goto screen: " + GetObservedFigure().GetInRoomID() + " screen="+ScreenCollection.GetCurrentScreen().name
 					ScreenCollection.GoToScreen(ScreenCollection.GetCurrentScreen())
 				Else
 					ScreenCollection.GoToScreen(GameScreen_world)

@@ -693,7 +693,7 @@ endrem
 			If list.entries.Count() > 0 Then item = TGUIObject(list.entries.First())
 			If item Then scrollAmount = item.rect.GetH() * list.scrollItemHeightPercentage
 			
-			EventManager.registerEvent(TEventSimple.Create("guiobject.onScrollPositionChanged", New TData.AddString("direction", direction).AddNumber("scrollAmount", scrollAmount), list))
+			EventManager.triggerEvent(TEventSimple.Create("guiobject.onScrollPositionChanged", New TData.AddString("direction", direction).AddNumber("scrollAmount", scrollAmount), list))
 		EndIf
 		'set to accepted so that nobody else receives the event
 		triggerEvent.SetAccepted(True)
