@@ -1046,16 +1046,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 
 	Method GetAdContractsArray:TAdContract[]() {_exposeToLua}
-		'would return an array of type "object[]"
-		'Return adContracts.toArray()
-
-		local result:TAdContract[ adContracts.Count() ]
-		local pos:int = 0
-		For local a:TAdContract = eachin adContracts
-			result[pos] = a
-			pos :+ 1
-		Next
-		return result
+		Return TAdContract[](adContracts.toArray())
 	End Method
 	
 
