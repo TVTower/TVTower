@@ -2334,7 +2334,6 @@ End Type
 Type TSavegameConverter
 	Method DeSerializeUnknownProperty:object(oldType:string, newType:string, obj:object, parentObj:object)
 		local convert:string = (oldType+">"+newType).ToLower()
-
 		Select convert
 			case "TIntervalTimer>TBuildingIntervalTimer".ToLower()
 				local old:TIntervalTimer = TIntervalTimer(obj)
@@ -4359,22 +4358,25 @@ Type GameEvents
 
 	'called each time a room (the active player visits) is updated
 	Function RoomOnUpdate:Int(triggerEvent:TEventBase)
-		'handle normal right click
-		If MOUSEMANAGER.IsClicked(2) or MOUSEMANAGER.IsLongClicked(1)
-			'check subrooms
-			'only leave a room if not in a subscreen
-			'if in subscreen, go to parent one
-			If ScreenCollection.GetCurrentScreen().parentScreen
-				ScreenCollection.GoToParentScreen()
-				MOUSEMANAGER.ResetKey(2)
-				'also avoid long click (touch screen)
-				MouseManager.ResetLongClicked(1)
-			Else
-				'leaving allowed - reset button
-				If GetPlayer().GetFigure().LeaveRoom()
-					MOUSEMANAGER.resetKey(2)
+
+		if not GetPlayer().GetFigure().IsChangingRoom()
+			'handle normal right click
+			If MOUSEMANAGER.IsClicked(2) or MOUSEMANAGER.IsLongClicked(1)
+				'check subrooms
+				'only leave a room if not in a subscreen
+				'if in subscreen, go to parent one
+				If ScreenCollection.GetCurrentScreen().parentScreen
+					ScreenCollection.GoToParentScreen()
+					MOUSEMANAGER.ResetKey(2)
 					'also avoid long click (touch screen)
 					MouseManager.ResetLongClicked(1)
+				Else
+					'leaving allowed - reset button
+					If GetPlayer().GetFigure().LeaveRoom()
+						MOUSEMANAGER.resetKey(2)
+						'also avoid long click (touch screen)
+						MouseManager.ResetLongClicked(1)
+					EndIf
 				EndIf
 			EndIf
 		EndIf
@@ -5266,23 +5268,24 @@ Function DEV_switchRoom:Int(room:TRoom)
 
 	'leave first
 	'RONNY: disabled, EnterRoom does already take care of leaving first
-Rem
+
 	If GetPlayer().GetFigure().inRoom
+		TLogger.Log("DEV_switchRoom", "Leaving room ~q"+GetPlayer().GetFigure().inRoom.name+"~q first.", LOG_DEBUG)
 		'force leave?
 		'GetPlayer().GetFigure().LeaveRoom(True)
 		'not forcing a leave is similar to "right-click"-leaving
 		'which means it signs contracts, buys programme etc
-		if not GetPlayer().GetFigure().LeaveRoom(False)
+		if GetPlayer().GetFigure().LeaveRoom(False)
+			'finish leaving room in the same moment
+			GetPlayer().GetFigure().FinishLeaveRoom()
+		else
 			GetGame().SendSystemMessage("[DEV] cannot switch rooms: Leaving old room failed")
 		endif
 	EndIf
-EndRem
+
 
 	'remove potential elevator passenger 
 	GetElevator().LeaveTheElevator(GetPlayer().GetFigure())
-
-	'stop screen transition
-	'ScreenCollection.targetScreen = null
 
 	'a) add the room as new target before all others
 	'GetPlayer().GetFigure().PrependTarget(TRoomDoor.GetMainDoorToRoom(room))
