@@ -10,15 +10,17 @@ Import "game.gameobject.bmx"
 
 
 Type TRoomBaseCollection
-	Field list:TIntMap = New TIntMap
-	Field count:int
+	Field list:TList = new TList
+	'caches for faster traversal
+	Field _guidMap:TMap = null {nosave}
+	Field _idMap:TIntMap = null {nosave}
 	Global _eventsRegistered:int= FALSE
 	Global _instance:TRoomBaseCollection
 
 
 	Method New()
 		if not _eventsRegistered
-			'handle savegame loading (assign sprites)
+			'handle savegame loading (clear room occupants)
 			EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
 			_eventsRegistered = TRUE
 		Endif
@@ -33,49 +35,91 @@ Type TRoomBaseCollection
 
 	Method Initialize:int()
 		list.Clear()
-		count = 0
+		_idMap = null
+		_guidMap = null
+
 		'also set back the ids
 		TRoomBase.LastID = 0
 	End Method
 	
 
 	Method Add:int(room:TRoomBase)
-		if not Get(room.ID)
-			count :+ 1
+		if not room then return False
+		
+		'map-based approach
+		'if not Get(room.ID)
+		'	count :+ 1
+		'endif
+		'List.Insert(room.id, room)
+
+		'list-based approach
+		if not list.contains(room)
+			GetIDMap().Insert(room.id, room)
+			GetGUIDMap().Insert(room.GetLowerStringGUID(), room)
+			list.AddLast(room)
 		endif
-		List.Insert(room.id, room)
+		
 		return TRUE
 	End Method
 
 
 	Method Remove:int(room:TRoomBase)
-		if Get(room.ID)
-			List.Remove(room.id)
-			count :- 1
-			return TRUE
-		endif
+		'map-based approach
+		'if Get(room.ID)
+		'	List.Remove(room.id)
+		'	count :- 1
+		'	return TRUE
+		'endif
+
+		if list.Remove(room)
+			_idMap.Remove(room.id)
+			_guidMap.Remove( room.GetLowerStringGUID() )
+			return True
+		Endif
+		
 		return False
 	End Method
 
 
-	Function GetByGUID:TRoomBase(guid:string)
-		For Local room:TRoomBase = EachIn GetInstance().list.Values()
-			If room.GetGUID() = guid Then Return room
-		Next
-		Return Null
-	End Function
+	Method GetIDMap:TIntMap()
+		if not _idMap
+			_idMap = new TIntMap
+			for local r:TRoomBase = EachIn list
+				_idMap.insert(r.id, r)
+			next
+		endif
+		return _idMap
+	End Method
 
 
-	Function Get:TRoomBase(ID:int)
-		return TRoomBase(GetInstance().list.ValueForKey(ID))
+	Method GetGUIDMap:TMap()
+		if not _guidMap
+			_guidMap = new TMap
+			for local r:TRoomBase = EachIn list
+				_guidMap.insert(r.GetLowerStringGUID(), r)
+			next
+		endif
+		return _guidMap
+	End Method
+
+
+	Method GetByGUID:TRoomBase(LS_guid:TLowerString)
+		Return TRoomBase( GetGUIDMap().ValueForKey( LS_guid ) )
+	End Method
+
+
+	Method Get:TRoomBase(ID:int)
+		Return TRoomBase( GetIDMap().ValueForKey(ID) )
 		'For Local room:TRoomBase = EachIn GetInstance().list
 		'	If room.id = ID Then Return room
 		'Next
 		'Return Null
-	End Function
+	End Method
 
 
-	Function GetRandom:TRoomBase()
+	Method GetRandom:TRoomBase()
+		rem
+		'map-based approach
 		local i:Int = RandRange(0, GetInstance().count - 1) 
 		For Local room:TRoomBase = EachIn GetInstance().list.Values()
 			if not i then
@@ -83,33 +127,37 @@ Type TRoomBaseCollection
 			end if
 			i :- 1
 		next
-'		return TRoomBase( GetInstance().list.ValueAtIndex( RandRange(0, GetInstance().list.Count() - 1) ) )
-	End Function
+		endrem
+		'list-based approach
+		return TRoomBase( list.ValueAtIndex( RandRange(0, list.Count() - 1) ) )
+	End Method
 
 
 	'returns all room fitting to the given details
-	Function GetAllByDetails:TRoomBase[]( name:String, owner:Int=-1000 ) {_exposeToLua}
+	Function GetAllByDetails:TRoomBase[]( name:String, owner:Int=-1000, limit:int=0 ) {_exposeToLua}
 		local rooms:TRoomBase[]
-		For Local room:TRoomBase = EachIn GetInstance().list.Values()
+		For Local room:TRoomBase = EachIn GetInstance().list
 			'print name+" <> "+room.name+"   "+owner+" <> "+room.owner
 			'skip wrong owners
 			if owner <> -1000 and room.owner <> owner then continue
 
 			If room.name = name Then rooms :+ [room]
+
+			if limit > 0 and rooms.length = limit then return rooms
 		Next
 		Return rooms
 	End Function
 
 
 	Function GetFirstByDetails:TRoomBase( name:String, owner:Int=-1000 ) {_exposeToLua}
-		local rooms:TRoomBase[] = GetAllByDetails(name,owner)
+		local rooms:TRoomBase[] = GetAllByDetails(name, owner, 1)
 		if not rooms or rooms.length = 0 then return Null
 		return rooms[0]
 	End Function
 
 
 	Method UpdateEnteringAndLeavingStates()
-		For Local room:TRoomBase = EachIn GetInstance().list.Values()
+		For Local room:TRoomBase = EachIn GetInstance().list
 			'someone entering / leaving the room?
 			For local action:TEnterLeaveAction = EachIn room.enteringStack
 				if action.finishTime <= GetBuildingTime().GetMillisecondsGone() or GetBuildingTime().GetTimeFactor() < 0.25
@@ -128,10 +176,10 @@ Type TRoomBaseCollection
 
 	'=== EVENTS ===
 
-	'run when loading finished
+	'run when loading starts
 	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
 		TLogger.Log("TRoomCollection", "Savegame started loading - clean occupants list", LOG_DEBUG | LOG_SAVELOAD)
-		For local room:TRoomBase = eachin GetInstance().list.Values()
+		For local room:TRoomBase = eachin GetInstance().list
 			room.occupants.Clear()
 		Next
 	End Function
@@ -148,13 +196,18 @@ Function GetRoomBase:TRoomBase(roomID:Int)
 End Function
 
 Function GetRoomBaseByGUID:TRoomBase(guid:string)
-	Return TRoomBaseCollection.GetInstance().GetByGUID(guid)
+	Return TRoomBaseCollection.GetInstance().GetByGUID( TLowerString.Create(guid) )
+End Function
+
+Function GetRoomBaseByLSGUID:TRoomBase(LS_guid:TLowerString)
+	Return TRoomBaseCollection.GetInstance().GetByGUID( LS_guid )
 End Function
 
 
 
 Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Field name:string
+	Field LS_guid:TLowerString
 	Field originalName:string
 	'description, eg. "Bettys bureau" (+ "name of the owner" for "adagency ... owned by X")
 	Field description:String[] = ["", ""]
@@ -227,12 +280,20 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		'default studio rooms
 		if name = "studio" then SetUsableAsStudio(true)
 
+		LS_guid = TLowerString.Create( GetGUID() )
+
 		return self
 	End Method
 
 
 	Method GenerateGUID:string()
 		return "roombase-"+name+"-"+owner
+	End Method
+
+
+	Method GetLowerStringGUID:TLowerString()
+		if not LS_guid then LS_guid = TLowerString.Create( GetGUID() )
+		return LS_guid
 	End Method
 
 

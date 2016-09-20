@@ -28,24 +28,24 @@ Type TRoomCollection Extends TRoomBaseCollection
 	End Function
 
 
-	Function Get:TRoom(ID:int)
+	Method Get:TRoom(ID:int)
 		Return TRoom(Super.Get(ID))
-	End Function
+	End Method
 
 
-	Function GetRandom:TRoom()
+	Method GetRandom:TRoom()
 		Return TRoom(Super.GetRandom())
-	End Function
+	End Method
 
 
-	Function GetByGUID:TRoom(guid:string)
-		Return TRoom(Super.GetByGUID(guid))
-	End Function
+	Method GetByGUID:TRoom(LS_guid:TLowerString)
+		Return TRoom(Super.GetByGUID(LS_guid))
+	End Method
 
 
 	'returns all room fitting to the given details
-	Function GetAllByDetails:TRoom[]( name:String, owner:Int=-1000 ) {_exposeToLua}
-		local rooms:TRoomBase[] = Super.GetAllByDetails(name, owner)
+	Function GetAllByDetails:TRoom[]( name:String, owner:Int=-1000, limit:int = 0 ) {_exposeToLua}
+		local rooms:TRoomBase[] = Super.GetAllByDetails(name, owner, limit)
 		local result:TRoom[]
 		For Local room:TRoom = EachIn rooms
 			result :+ [room]

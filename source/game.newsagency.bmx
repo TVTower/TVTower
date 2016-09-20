@@ -126,7 +126,7 @@ Type TNewsAgency
 		local bombRedirectedByPlayers:int = triggerEvent.GetData().GetInt("roomSignMovedByPlayers")
 		local bombLastRedirectedByPlayerID:int = triggerEvent.GetData().GetInt("roomSignLastMoveByPlayerID")
 
-		local room:TRoomBase = GetRoomCollection().GetByGUID(roomGUID)
+		local room:TRoomBase = GetRoomCollection().GetByGUID( TLowerString.Create(roomGUID) )
 		if not room
 			TLogger.Log("NewsAgency", "Failed to create news for bomb explosion: no room found for roomGUID ~q"+roomGUID+"~q", LOG_ERROR)
 			return False

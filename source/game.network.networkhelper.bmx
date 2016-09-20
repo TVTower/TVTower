@@ -701,7 +701,7 @@ Type TNetworkHelper extends TNetworkHelperBase
 		local action:int = obj.getInt(2)
 		local newOwner:int = obj.getInt(3)
 
-		local room:TRoom = GetRoomCollection().GetByGUID(roomGUID)
+		local room:TRoom = GetRoomCollection().GetByGUID( TLowerString.Create(roomGUID) )
 		if not room then return False
 
 		'disable events - ignore it to avoid recursion
