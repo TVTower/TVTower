@@ -363,7 +363,7 @@ endrem
 		Local guiObjects:TGuiObject[]
 		'from TOP to BOTTOM (user clicks to visible things - which are at the top)
 		'Local listReversed:TList = list.Reversed()
-		Local listReversed:TGUIObject[] = list.ToArray()
+		Local listReversed:TGUIObject[] = TGUIObject[](list.ToArray())
 		local i:int = listReversed.Length
 		while i
 			i :- 1
@@ -489,7 +489,7 @@ endrem
 		'store a list of special elements - maybe the list gets changed
 		'during update... some elements will get added/destroyed...
 		'Local ListDraggedBackup:TList = ListDragged.Copy()
-		Local ListDraggedBackup:TGUIObject[] = ListDragged.ToArray()
+		Local ListDraggedBackup:TGUIObject[] = TGUIObject[](ListDragged.ToArray())
 
 		'first update all dragged objects...
 		If GUIMANAGER_TYPES_DRAGGED & updateTypes
@@ -512,7 +512,7 @@ endrem
 			'from top to bottom
 			'traverse through a backup to avoid concurrent modification
 			'Local listBackupReversed:TList = List.Reversed()
-			Local listBackupReversed:TGUIObject[] = List.ToArray()
+			Local listBackupReversed:TGUIObject[] = TGUIObject[](List.ToArray())
 			Local i:Int = listBackupReversed.Length
 			'For Local obj:TGUIobject = EachIn listBackupReversed
 			While i
@@ -577,7 +577,7 @@ endrem
 		If GUIMANAGER_TYPES_DRAGGED & drawTypes
 			'draw all dragged objects above normal objects...
 			'Local listReversed:TList = ListDragged.Reversed()
-			Local listReversed:TGUIObject[] = ListDragged.ToArray()
+			Local listReversed:TGUIObject[] = TGUIObject[](ListDragged.ToArray())
 			Local i:Int = listReversed.Length
 			While i
 			'For Local obj:TGUIobject = EachIn listReversed
@@ -767,7 +767,7 @@ Type TGUIobject
 		'remove children (so they might inform their children and so on)
 		If _children
 			'traverse along a copy to avoid concurrent modification
-			Local childrenCopy:TGUIObject[] = _children.ToArray()
+			Local childrenCopy:TGUIObject[] = TGUIObject[](_children.ToArray())
 			For Local child:TGUIObject = EachIn childrenCopy
 				child.Remove()
 			Next
@@ -952,7 +952,7 @@ Type TGUIobject
 
 		'traverse through a backup to avoid concurrent modification
 		'Local childrenReversedBackup:TList = _childrenReversed.Copy()
-		Local childrenReversedBackup:TGUIobject[] = _childrenReversed.ToArray()
+		Local childrenReversedBackup:TGUIobject[] = TGUIObject[](_childrenReversed.ToArray())
 		'update added elements
 		For Local obj:TGUIobject = EachIn childrenReversedBackup
 			'avoid getting updated multiple times
