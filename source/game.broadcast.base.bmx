@@ -280,15 +280,21 @@ Type TBroadcastManager
 			Local modification:TAudience = TBroadcast.GetPotentialAudienceModifier(bc.time)
 
 			'If (broadcastType = 0) Then 'Movies
-				Local map:TMap = CreateMap()
+				'allocate a Taudience-object for each channel and fill it
+				'with the values to add to the image
+				Local channelImageChanges:TAudience[4]
+				Local channelAudiences:TAudience[4]
 
-				Local attrList:TList = CreateList()
-				For Local i:Int = 1 To 4 'TODO: Was passiert wenn ein Spieler ausscheidet?
-					map.Insert(string.FromInt(i), new TAudience.InitValue(0, 0))
-					If bc.GetAudienceResult(i).AudienceAttraction Then
-						attrList.AddLast(bc.GetAudienceResult(i).AudienceAttraction.PublicImageAttraction)
-					EndIf
+				Local attractionList:TList = CreateList()
+				For Local i:Int = 1 To 4
+					channelImageChanges[i-1] = new TAudience.InitValue(0, 0)
+					channelAudiences[i-1] = bc.GetAudienceResult(i).audience
+					'store playerID if not done yet
+					if channelAudiences[i-1] and channelAudiences[i-1].id <= 0
+						channelAudiences[i-1].id = i
+					endif
 				Next
+
 
 				local weight:Float = 1.0
 				'for news, give a bit less images (less expensive to
@@ -297,19 +303,24 @@ Type TBroadcastManager
 					weight = 0.5
 				endif
 
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.CHILDREN, attrList, weight, TAudience.ChildrenSort)
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.TEENAGERS, attrList, weight, TAudience.TeenagersSort)
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.HOUSEWIVES, attrList, weight, TAudience.HouseWivesSort)
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.EMPLOYEES, attrList, weight, TAudience.EmployeesSort)
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.UNEMPLOYED, attrList, weight, TAudience.UnemployedSort)
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.MANAGER, attrList, weight, TAudience.ManagerSort)
-				TPublicImage.ChangeForTargetGroup(map, TVTTargetGroup.PENSIONERS, attrList, weight, TAudience.PensionersSort)
+				local audience:TAudience = new TAudience 'bc.GetAudienceResult(i).audience
+				'the list order gets modified within ChangeForTargetGroup()
+				'calls
+				Local channelAudiencesList:TList = new TList.FromArray(channelAudiences)
+
+				TPublicImage.ChangeForTargetGroup(channelImageChanges, channelAudiencesList, TVTTargetGroup.CHILDREN, weight)
+				TPublicImage.ChangeForTargetGroup(channelImageChanges, channelAudiencesList, TVTTargetGroup.TEENAGERS, weight)
+				TPublicImage.ChangeForTargetGroup(channelImageChanges, channelAudiencesList, TVTTargetGroup.HOUSEWIVES, weight)
+				TPublicImage.ChangeForTargetGroup(channelImageChanges, channelAudiencesList, TVTTargetGroup.EMPLOYEES, weight)
+				TPublicImage.ChangeForTargetGroup(channelImageChanges, channelAudiencesList, TVTTargetGroup.UNEMPLOYED, weight)
+				TPublicImage.ChangeForTargetGroup(channelImageChanges, channelAudiencesList, TVTTargetGroup.MANAGER, weight)
+				TPublicImage.ChangeForTargetGroup(channelImageChanges, channelAudiencesList, TVTTargetGroup.PENSIONERS, weight)
 
 				For Local i:Int = 1 To 4 'TODO: Was passiert wenn ein Spieler ausscheidet?
-					Local audience:TAudience = TAudience(map.ValueForKey(string.FromInt(i)))
-					audience.Multiply(modification)
+					Local channelImageChange:TAudience = channelImageChanges[i-1]
+					channelImageChange.Multiply(modification)
 					Local publicImage:TPublicImage = GetPublicImageCollection().Get(i)
-					If publicImage Then publicImage.ChangeImage(audience)
+					If publicImage Then publicImage.ChangeImage(channelImageChange)
 				Next
 			'Endif
 		End If
