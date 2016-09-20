@@ -154,6 +154,7 @@ Type THelper
 
 	Global ListTypeID:TTypeId=TTypeId.ForObject(new TList)
 	Global MapTypeID:TTypeId=TTypeId.ForObject(new TMap)
+	Global IntMapTypeID:TTypeId=TTypeId.ForObject(new TIntMap)
 
 	'clones the given object
 	'function is calling itself recursively for each property
@@ -243,6 +244,15 @@ Type THelper
 				local map:TMap = CreateMap()
 				For local key:string = EachIn TMap(obj).Keys()
 					map.Insert(key, CloneObject(TMap(obj).ValueForKey(key)) )
+				Next
+				return map
+			EndIf	
+
+			'=== TINTMAPS ===
+			If objTypeID.ExtendsType(IntMapTypeID)
+				local map:TIntMap = new TIntMap
+				For local key:TIntKey = EachIn TMap(obj).Keys()
+					map.Insert(key.value, CloneObject(TIntMap(obj).ValueForKey(key.value)) )
 				Next
 				return map
 			EndIf	
