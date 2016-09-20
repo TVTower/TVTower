@@ -2348,6 +2348,22 @@ Type TSavegameConverter
 				if parentObj and TTypeID.ForObject(parentObj).name().ToLower() = "RoomHandler_MovieAgency".ToLower()
 					return RoomHandler_MovieAgency.GetInstance().filterAuction
 				endif
+			case "TList>TIntMap".ToLower()
+				'room(base)collection?
+				if parentObj and TTypeID.ForObject(parentObj).name().ToLower() = "TRoomCollection".ToLower()
+					local list:TList = TList(obj)
+					if list
+						local intMap:TIntMap = new TIntMap
+						For local r:TRoomBase = EachIn list
+							intMap.Insert(r.id, r)
+						Next
+
+						if TRoomBaseCollection(parentObj)
+							TRoomBaseCollection(parentObj).count = list.Count()
+						endif
+						return intMap
+					endif
+				endif
 		End Select
 		return null
 	End Method

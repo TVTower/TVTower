@@ -40,16 +40,21 @@ Type TRoomBaseCollection
 	
 
 	Method Add:int(room:TRoomBase)
+		if not Get(room.ID)
+			count :+ 1
+		endif
 		List.Insert(room.id, room)
-		count :+ 1
 		return TRUE
 	End Method
 
 
 	Method Remove:int(room:TRoomBase)
-		List.Remove(room.id)
-		count :- 1
-		return TRUE
+		if Get(room.ID)
+			List.Remove(room.id)
+			count :- 1
+			return TRUE
+		endif
+		return False
 	End Method
 
 
