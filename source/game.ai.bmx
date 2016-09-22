@@ -699,17 +699,27 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 
 	'counts how many times a licence is planned as programme (this
 	'includes infomercials and movies/series/programmes)
-	Method of_GetBroadcastMaterialInProgrammePlanCount:Int(referenceID:Int, day:Int=-1, includePlanned:Int=False, includeStartedYesterday:Int=True)
+	Method of_GetBroadcastMaterialInProgrammePlanCount:Int(referenceID:Int, day:Int=-1, includePlanned:Int=False, includeStartedYesterday:Int=True, slotType:int = 0)
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 
-		return GetPlayerProgrammePlan(self.ME).GetBroadcastMaterialInProgrammePlanCount(referenceID, day, includePlanned, includeStartedYesterday)
+		if slotType = 0 then slotType = TVTBroadcastMaterialType.PROGRAMME
+
+		return GetPlayerProgrammePlan(self.ME).GetBroadcastMaterialInPlanCount(referenceID, day, includePlanned, includeStartedYesterday, slotType)
 	End Method
+
 
 	Method of_GetBroadcastMaterialInTimeSpan:TLuaFunctionResult(objectType:Int=0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1, includeStartingEarlierObject:Int=True, requireSameType:Int=False) {_exposeToLua}
 		If Not _PlayerInRoom("office") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
 		local bm:TBroadcastMaterial[] = GetPlayerProgrammePlan(self.ME).GetObjectsInTimeSpan(objectType, dayStart, hourStart, dayEnd, hourEnd, includeStartingEarlierObject, requireSameType)
 		Return TLuaFunctionResult.Create(self.RESULT_OK, bm)
+	End Method
+
+
+	Method of_GetBroadcastMaterialProgrammedCountInTimeSpan:int(materialSource:TBroadcastMaterialSourceBase, slotType:Int=0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1)
+		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
+		
+		Return GetPlayerProgrammePlan(self.ME).GetBroadcastMaterialSourceProgrammedCountInTimeSpan(materialSource, slotType, dayStart, hourStart, dayEnd, hourEnd)
 	End Method
 
 

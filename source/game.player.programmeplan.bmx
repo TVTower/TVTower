@@ -583,6 +583,39 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
+
+	'returns the amount of source-users in the time span
+	Method GetBroadcastMaterialSourceProgrammedCountInTimeSpan:int(materialSource:TBroadcastMaterialSourceBase, slotType:Int=0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1) {_exposeToLua}
+		FixDayHour(dayStart, hourStart)
+		FixDayHour(dayEnd, hourEnd)
+
+		'check if the starting time includes a block of a programme starting earlier
+		'if so: adjust starting time
+		'StartHour is "hours since day0"
+		Local earlierStartHour:Int = GetObjectStartHour(slotType, dayStart, hourStart)
+		If earlierStartHour > -1
+			hourStart = earlierStartHour Mod 24
+			dayStart = Floor(earlierStartHour / 24)
+		EndIf
+
+		'loop through the given range
+		Local minIndex:Int = GetArrayIndex(dayStart*24 + hourStart)
+		Local maxIndex:Int = GetArrayIndex(dayEnd*24 + hourEnd)
+
+		local result:int = 0
+
+		'materials might differ from each other
+		'instead of comparing objects we compare their content
+		For Local i:Int = minIndex To maxIndex
+			Local obj:TBroadcastMaterial = TBroadcastMaterial(GetObjectAtIndex(slotType, i))
+			If Not obj Then Continue
+			If materialSource = obj.GetSource() Then result :+ 1
+		Next
+
+		Return result
+	End Method
+
+
 	'returns the hour a object at the given time slot really starts
 	'attention: that is not a gamedayHour from 0-24 but in hours since day0
 	'returns -1 if no object was found
@@ -1167,7 +1200,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'counts how many times a licence is planned as programme (this
 	'includes infomercials and movies/series/programmes)
-	Method GetBroadcastMaterialInProgrammePlanCount:Int(referenceID:Int, day:Int=-1, includePlanned:Int=False, includeStartedYesterday:Int=True) {_exposeToLua}
+	Method GetBroadcastMaterialInPlanCount:Int(referenceID:Int, day:Int=-1, includePlanned:Int=False, includeStartedYesterday:Int=True, slotType:int = 0) {_exposeToLua}
 		If day = -1 Then day = GetWorldTime().GetDay()
 		'no filter for other days than today ... would be senseless
 		If day <> GetWorldTime().GetDay() Then includePlanned = True
@@ -1187,17 +1220,21 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'and still run the next day - so we have to check that too
 		If includeStartedYesterday
 			'we just compare the programme started 23:00 or earlier the day before
-			material = GetProgramme(day - 1, 23)
-			If material And material.GetReferenceID() = referenceID And material.GetBlocks() > 1
+			if slotType = TVTBroadcastMaterialType.PROGRAMME
+				material = GetProgramme(day - 1, 23)
+			elseif slotType = TVTBroadcastMaterialType.ADVERTISEMENT
+				material = GetAdvertisement(day - 1, 23)
+			endif
+			If material And material.GetReferenceID() = referenceID And material.GetBlocks(slotType) > 1
 				count:+1
 				'add the hours the programme "takes over" to the next day
-				minHour = (GetProgrammeStartHour(day - 1, 23) + material.GetBlocks()) Mod 24
+				minHour = (GetObjectStartHour(slotType, day - 1, 23) + material.GetBlocks(slotType)) Mod 24
 			EndIf
 		EndIf
 
 		Local midnightIndex:Int = GetArrayIndex(day * 24)
 		For Local i:Int = minHour To maxHour
-			material = GetObjectAtIndex(TVTBroadcastMaterialType.PROGRAMME, midnightIndex + i)
+			material = GetObjectAtIndex(slotType, midnightIndex + i)
 			'no need to skip blocks as only the first block of a programme
 			'is stored in the array
 			If material And material.GetReferenceID() = referenceID Then count:+1
