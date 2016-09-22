@@ -324,8 +324,8 @@ endrem
 	
 	Method GetNewsAbonnementFees:int() {_exposeToLua}
 		Local newsagencyfees:Int =0
-		For Local i:Int = 0 To 5
-			newsagencyfees:+ TNewsAgency.GetNewsAbonnementPrice( GetNewsAbonnementDaysMax(i) )
+		For Local i:Int = 0 To TVTNewsGenre.count
+			newsagencyfees:+ TNewsAgency.GetNewsAbonnementPrice(playerID, TVTNewsGenre.GetAtIndex(i), GetNewsAbonnementDaysMax(i) )
 		Next
 		return newsagencyfees
 	end Method 	

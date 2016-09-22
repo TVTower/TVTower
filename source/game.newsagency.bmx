@@ -787,7 +787,7 @@ Type TNewsAgency
 
 
 	'Returns the price for this level of a news abonnement
-	Function GetNewsAbonnementPrice:Int(level:Int=0)
+	Function GetNewsAbonnementPrice:Int(playerID:int, newsGenreID:int, level:Int=0)
 		if level = 1 then return 10000
 		if level = 2 then return 20000
 		if level = 3 then return 35000
