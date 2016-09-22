@@ -67,10 +67,11 @@ end
 
 
 function TaskSchedule:FixDayAndHour(day, hour)
-	local moduloHour = hour
-	if (hour > 23) then
-		moduloHour = hour % 24
-	end
+	local moduloHour = hour % 24
+	--local moduloHour = hour
+	--if (hour > 23) then
+	--	moduloHour = hour % 24
+	--end
 	local newDay = day + (hour - moduloHour) / 24
 	return newDay, moduloHour
 end
@@ -874,9 +875,27 @@ function JobSchedule:GetBestAvailableInfomercial(hour)
 	--  means the contract is gone then)
 	local availableInfomercialLicences = self.ScheduleTask:GetAvailableContractsList(hour, false, true)
 
+	local nowDay = WorldTime.GetDay()
+	--local nowHour = WorldTime.GetDayHour()
+	
 	-- sort by PerViewerRevenue and quality (because of attactivity/topicality)
 	local sortMethod = function(a, b)
-		return a.GetPerViewerRevenue() * a.GetQuality() > b.GetPerViewerRevenue() * b.GetQuality()
+		-- also take into consideration the amount of planned infomercials
+		-- from begin of day till now-1h
+		-- skip calculation for hours 0 and 1 (-1h: not planned yet or
+		-- already refreshed)
+		local plannedA = 0
+		local plannedB = 0
+		if hour > 1 then
+			plannedA = tonumber( TVT.of_GetBroadcastMaterialProgrammedCountInTimeSpan(a, TVT.Constants.BroadcastMaterialType.PROGRAMME, nowDay,0, nowDay, hour-1) )
+			plannedB = tonumber( TVT.of_GetBroadcastMaterialProgrammedCountInTimeSpan(b, TVT.Constants.BroadcastMaterialType.PROGRAMME, nowDay,0, nowDay, hour-1) )
+		end
+		local weightA = a.GetPerViewerRevenue() * a.GetQuality() * 0.8 ^ plannedA
+		local weightB = b.GetPerViewerRevenue() * b.GetQuality() * 0.8 ^ plannedB
+
+		--debugMsg(a.GetTitle() ..": " .. weightA .. "  >  " .. b.GetTitle() .. ": " .. weightB .. "    plannedA=" .. plannedA .." plannedB=" .. plannedB )
+
+		return weightA > weightB
 	end
 
 	table.sort(availableInfomercialLicences, sortMethod)
