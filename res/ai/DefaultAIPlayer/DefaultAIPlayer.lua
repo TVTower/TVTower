@@ -521,18 +521,28 @@ function OnMinute(number)
 		end
 	end
 
-	-- check next 3 hours if there will be an imminent outage 
+	-- check next 2 hours if there will be an imminent outage 
 	if (number == 6) then
 		local task = getAIPlayer().TaskList[_G["TASK_SCHEDULE"]]
 		local fixedDay, fixedHour = FixDayAndHour(WorldTime.GetDay(), WorldTime.GetDayHour() + 1)
 
-		for i=0,2 do
+		for i=0,1 do
 			local programme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour + i)
 			if (programme == nil) then
-				--make sure we have enough programme to fix it
-			
-				debugMsg("ProgrammeBegin: Avoid imminent programme outage at " .. fixedDay .."/" .. fixedHour .. ":55")
-				task:FixImminentProgrammeOutage(fixedDay, fixedHour)
+
+				local fixProbability = 100
+				-- the later, the less probable the fix will be tried
+				if i == 1 then fixProbability = 65; end
+
+				if math.random(0,100) < fixProbability then
+					--make sure we have enough programme to fix it
+					if (TVT.GetAdContractCount() > 1) or (TVT.GetProgrammeLicenceCount() > 0) then 
+						debugMsg("ProgrammeBegin: Avoid imminent programme outage at " .. fixedDay .."/" .. fixedHour .. ":55")
+						task:FixImminentProgrammeOutage(fixedDay, fixedHour)
+					else
+						debugMsg("ProgrammeBegin: Cannot avoid imminent programme outage at " .. fixedDay .."/" .. fixedHour .. ":55 - not enough programme licences and adcontracts.")
+					end
+				end
 			end
 		end
 	end
