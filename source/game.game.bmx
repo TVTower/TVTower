@@ -1195,7 +1195,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'interest rate for your current credit
 			finance.PayCreditInterest( finance.GetCreditInterest() )
 			'newsagencyfees			
-			finance.PayNewsAgencies(Player.GetNewsAbonnementFees())
+			finance.PayNewsAgencies(Player.GetTotalNewsAbonnementFees())
 		Next
 	End Method
 

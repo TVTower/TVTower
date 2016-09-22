@@ -181,7 +181,7 @@ Type TPlayerBase {_exposeToLua="selected"}
 	End Method
 	
 	
-	Method GetNewsAbonnementFees:int() {_exposeToLua}
+	Method GetTotalNewsAbonnementFees:int() {_exposeToLua}
 		return 0
 	End Method
 	
