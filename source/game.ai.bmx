@@ -872,6 +872,35 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 
 	'=== NEWS ROOM ===
 
+	Method ne_getTotalNewsAbonnementFees:Int()
+		If Not (_PlayerInRoom("newsroom") or _PlayerInRoom("news")) Then Return self.RESULT_WRONGROOM
+
+		return GetPlayerBase(self.ME).GetTotalNewsAbonnementFees()
+	End Method
+
+
+	Method ne_getNewsAbonnementFee:Int(newsGenreID:int, level:int)
+		If Not (_PlayerInRoom("newsroom") or _PlayerInRoom("news")) Then Return self.RESULT_WRONGROOM
+
+		return GetNewsAgency().GetNewsAbonnementPrice(self.ME, newsGenreID, level)
+	End Method
+
+
+	Method ne_getNewsAbonnement:Int(newsGenreID:int)
+		If Not (_PlayerInRoom("newsroom") or _PlayerInRoom("news")) Then Return self.RESULT_WRONGROOM
+
+		return GetPlayerBase(self.ME).GetNewsAbonnement(newsGenreID)
+	End Method
+
+
+	Method ne_setNewsAbonnement:Int(newsGenreID:int, level:int)
+		If Not (_PlayerInRoom("newsroom") or _PlayerInRoom("news")) Then Return self.RESULT_WRONGROOM
+
+		if GetPlayerBase(self.ME).SetNewsAbonnement(newsGenreID, level)
+			return self.RESULT_OK
+		endif
+	End Method	
+
 	'returns the aggression level of the given terrorist group.
 	'Invalid groups return the maximum of all.
 	'Currently valid are "0" and "1"

@@ -3,9 +3,17 @@
 _G["TaskNewsAgency"] = class(AITask, function(c)
 	AITask.init(c)	-- must init base!
 	c.TargetRoom = TVT.ROOM_NEWSAGENCY_PLAYER_ME
-	c.BudgetWeight = 3
-	c.BasePriority = 8
+	c.BudgetWeight = 2
+	c.BasePriority = 80 --8
 	c.AbonnementBudget = 0
+
+	c.newsGenrePriority = {
+	                        TVT.Constants.NewsGenre.CURRENTAFFAIRS,
+	                        TVT.Constants.NewsGenre.POLITICS_ECONOMY,
+	                        TVT.Constants.NewsGenre.SPORT,
+	                        TVT.Constants.NewsGenre.SHOWBIZ,
+	                        TVT.Constants.NewsGenre.TECHNICS_MEDIA
+	                      }
 end)
 
 function TaskNewsAgency:typename()
@@ -62,19 +70,24 @@ function TaskNewsAgency:BeforeBudgetSetup()
 	local player = _G["globalPlayer"]
 
 	if player.NewsPriority > 7 then
-		self.BudgetWeight = 6 
-	elseif player.NewsPriority >= 6 then
 		self.BudgetWeight = 5 
-	elseif player.NewsPriority >= 5 then
+	elseif player.NewsPriority >= 6 then
 		self.BudgetWeight = 4 
+	elseif player.NewsPriority >= 5 then
+		self.BudgetWeight = 3 
 	else
 		self.BudgetWeight = 2
 	end 
 end
 
 function TaskNewsAgency:BudgetSetup()
-	local tempAbonnementBudget = self.BudgetWholeDay * 0.45
-	self.AbonnementBudget = (tempAbonnementBudget - (tempAbonnementBudget % 10000))
+	local baseFee = TVT.ne_getNewsAbonnementFee(TVT.Constants.NewsGenre.CURRENTAFFAIRS, 1)
+	
+	-- calculate abonnement budget
+	-- to have at least news, we need a minimum budget to be able to sub-
+	-- scribe to current affairs
+	local tempAbonnementBudget = math.max(baseFee, self.BudgetWholeDay * 0.45)
+	self.AbonnementBudget = tempAbonnementBudget
 	self.CurrentBudget = self.CurrentBudget - self.AbonnementBudget
 	debugMsg("BudgetSetup: AbonnementBudget: " .. self.AbonnementBudget .. "   - CurrentBudget: " .. self.CurrentBudget)
 end
@@ -103,7 +116,7 @@ function TaskNewsAgency:OnMoneyChanged(value, reason, reference)
 end
 
 function TaskNewsAgency:SetFixedCosts()
-	self.FixedCosts = MY.GetNewsAbonnementFees()
+	self.FixedCosts = TVT.ne_getTotalNewsAbonnementFees()
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -118,7 +131,7 @@ function JobCheckEventNews:typename()
 end
 
 function JobCheckEventNews:Prepare(pParams)
-	debugMsg("Schau nach Terror-News")
+	debugMsg("Looking for news about special events")
 end
 
 function JobCheckEventNews:Tick()
@@ -155,26 +168,71 @@ function JobNewsAgencyAbonnements:typename()
 end
 
 function JobNewsAgencyAbonnements:Prepare(pParams)
-	--debugMsg("Prüfe/Schließe Nachrichtenabonnements")
+	debugMsg("Adjusting news abonnements")
 end
 
 function JobNewsAgencyAbonnements:Tick()
-	-- how many different abonnements could we sign?
-	local abonnementCount = self.Task.AbonnementBudget / 10000
+	local availableBudget = self.Task.AbonnementBudget
 
-	--set abonnements for all available news genres
-	for i = 0, TVT.Constants.NewsGenre.count - 1 do
-		local level = self:GetAbonnementLevel(abonnementCount, i)
-		MY.SetNewsAbonnement(TVT.Constants.NewsGenre.GetAtIndex(i), level)
-		debugMsg("Bestelle Nachrichtenabonnement: " .. TVT.Constants.NewsGenre.GetAtIndex(i) .. " Level: " .. level)
+	local oldFees = TVT.ne_getTotalNewsAbonnementFees()
+
+
+	-- loop over all genres and try to subscribe as much as possible
+	local newSubscriptionLevels = {}
+	-- start with level 0
+	for genreIndex, genreID in ipairs(self.Task.newsGenrePriority) do
+		newSubscriptionLevels[genreID] = 0
 	end
-	--self.Task.CurrentBudget = self.Task.CurrentBudget - (abonnementCount * 10000)
+	local budgetLeft = true
+	local tempAvailableBudget = availableBudget
+	-- do NEVER stop abonnements to current affairs
+	-- so budget must be minimimum at level 1
+	tempAvailableBudget = math.max(tempAvailableBudget, TVT.ne_getNewsAbonnementFee(TVT.Constants.NewsGenre.CURRENTAFFAIRS, 1))
 
+	-- fill a "plan" (allows optimization before real adjustment is done)
+	while budgetLeft == true do
+		budgetLeft = false
+		for genreIndex, genreID in ipairs(self.Task.newsGenrePriority) do
+
+			local nextLevel = newSubscriptionLevels[genreID] + 1
+			local nextLevelFee = TVT.ne_getNewsAbonnementFee(genreID, nextLevel)
+			if nextLevel <= 3 and tempAvailableBudget > nextLevelFee then
+				if tempAvailableBudget > nextLevelFee then
+					budgetLeft = true
+				end
+				newSubscriptionLevels[genreID] = nextLevel
+				tempAvailableBudget = tempAvailableBudget - nextLevelFee
+			end
+		end
+	end
+
+	-- finally adjust levels
+	for genreIndex, genreID in ipairs(self.Task.newsGenrePriority) do
+		local oldLevel = TVT.ne_getNewsAbonnement(genreID)
+		local newFee = TVT.ne_getNewsAbonnementFee(genreID, newSubscriptionLevels[i])
+		if oldLevel ~= newSubscriptionLevels[genreID] then
+			TVT.ne_setNewsAbonnement(i, newSubscriptionLevels[genreID])
+			debugMsg("- Changing genre " ..genreID.. " abonnement level from " .. oldLevel .. " to " .. newSubscriptionLevels[genreID])
+		else
+			--debugMsg("- Keeping genre " ..genreID.. " abonnement level at " .. oldLevel)
+		end
+	end
+
+	local newFees = TVT.ne_getTotalNewsAbonnementFees()
+
+	-- subract new expenses
+	if newFees ~= oldFees then
+		debugMsg("- Adjusted news budget by " .. (newFees - oldFees) .. ". CurrentBudget=" .. self.Task.CurrentBudget)
+		self.Task.CurrentBudget = self.Task.CurrentBudget - (newFees - oldFees)
+	else
+		--debugMsg("- News budget stays the same. CurrentBudget=" .. self.Task.CurrentBudget)
+	end
+	
 	self.Status = JOB_STATUS_DONE
 end
 
+
 function JobNewsAgencyAbonnements:GetAbonnementLevel(abonnementCount, dividend)
-	--debugMsg("dividend: " .. dividend .. " (" .. abonnementCount .. ")")
 	if (abonnementCount >= (dividend + 10)) then
 		return 3
 	elseif (abonnementCount >= (dividend + 5)) then
@@ -199,13 +257,13 @@ function JobNewsAgency:typename()
 end
 
 function JobNewsAgency:Prepare(pParams)
+	debugMsg("Search best news for news show")
 
 	-- instead of refreshing the news list each time we adjusted a slot
 	-- (which might add back a previously send news to the collection which
 	--  is still better than the other existing ones)
 	-- we just unset all news right before placing the best 3 of them
 
-	-- debugMsg("Remove current news")
 	TVT.ne_doNewsInPlan(0, "")
 	TVT.ne_doNewsInPlan(1, "")
 	TVT.ne_doNewsInPlan(2, "")
@@ -229,9 +287,9 @@ function JobNewsAgency:Tick()
 				price = news.GetPrice(TVT.ME)
 				if (self.Task.CurrentBudget >= price or news.IsPaid() == 1) then			
 					if (news.IsPaid() == 1) then
-						debugMsg("NewsAgency: filling slot "..slot..". Re-use news: \"" .. news.GetTitle() .. "\" (" .. news.GetGUID() .. ")")
+						debugMsg("- filling slot "..slot..". Re-use news: \"" .. news.GetTitle() .. "\" (" .. news.GetGUID() .. ")")
 					else
-						debugMsg("NewsAgency: filling slot "..slot..". Buying news: \"" .. news.GetTitle() .. "\" (" .. news.GetGUID() .. ") "..slot.." - Price: " .. price)
+						debugMsg("- filling slot "..slot..". Buying news: \"" .. news.GetTitle() .. "\" (" .. news.GetGUID() .. ") "..slot.." - Price: " .. price)
 					end
 					TVT.ne_doNewsInPlan(slot-1, news.GetGUID())
 					--self.Task:PayFromBudget(price)
@@ -242,7 +300,7 @@ function JobNewsAgency:Tick()
 				if selectedNews ~= nil then break end
 			end
 		else
-			debugMsg("NewsAgency: filling slot "..slot..". No news available, skipping slot.")
+			debugMsg("- filling slot "..slot..". No news available, skipping slot.")
 		end
 	end
 	self.Status = JOB_STATUS_DONE
