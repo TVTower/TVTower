@@ -607,19 +607,6 @@ Type TFigure extends TFigureBase
 		'print "--------------------------------------------"
 		'print self.name+" ENTERING " + room.GetName() +" ["+room.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
 
-		'if already in another room, leave that first
-		if inRoom
-			'first try to leave "non forcefully" (signing contracts
-			'and so on)
-			'if that fails, forcefully leave (skip contracts)
-			print "         LEAVE FIRST: " + inRoom.name
-			if not LeaveRoom(False)
-				print "         LEAVE FIRST FORCEFULLY: " + inRoom.name
-				LeaveRoom(True)
-			endif
-		endif
-
-
 		'try to enter the room 
 		if not TryEnterRoom(door, room, forceEnter)
 			return False
