@@ -731,9 +731,10 @@ function JobEmergencySchedule:GetFittingSpotList(guessedAudience, noBroadcastRes
 			currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.4, false, noBroadcastRestrictions)
 			if (table.count(currentSpotList) == 0) then
 				currentSpotList = self:GetMatchingSpotList(guessedAudience, 0, false, noBroadcastRestrictions)
-				if (table.count(currentSpotList) == 0) then
-					currentSpotList = self:GetMatchingSpotList(guessedAudience, 0, true, noBroadcastRestrictions)
-				end
+-- Helmut: AI performs better without. TESTING NOW
+--				if (table.count(currentSpotList) == 0) then
+--					currentSpotList = self:GetMatchingSpotList(guessedAudience, 0, true, noBroadcastRestrictions)
+--				end
 			end
 		end
 	end
