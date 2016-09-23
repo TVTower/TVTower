@@ -1,6 +1,7 @@
 ﻿
 Global debugAudienceInfos:TDebugAudienceInfos = New TDebugAudienceInfos
 Global debugProgrammePlanInfos :TDebugProgrammePlanInfos = new TDebugProgrammePlanInfos
+Global debugProgrammeCollectionInfos :TDebugProgrammeCollectionInfos = new TDebugProgrammeCollectionInfos
 
 
 Type TDebugAudienceInfos
@@ -299,6 +300,250 @@ endrem
 			font.drawBlock(val, x2 + 70*(i-1), y, 65, 25, ALIGN_RIGHT_TOP, color)
 		Next
 	End Function
+End Type
+
+
+
+
+Type TDebugProgrammeCollectionInfos
+	Field initialized:Int = False
+	Global addedProgrammeLicences:TMap = CreateMap()
+	Global removedProgrammeLicences:TMap = CreateMap()
+	Global availableProgrammeLicences:TMap = CreateMap()
+	Global addedAdContracts:TMap = CreateMap()
+	Global removedAdContracts:TMap = CreateMap()
+	Global availableAdContracts:TMap = CreateMap()
+	Global oldestEntryTime:Long
+	Global _eventListeners:TLink[]
+
+	
+	Method New()
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+		
+		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeAdContract", onChangeProgrammeCollection) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.addAdContract", onChangeProgrammeCollection) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.addUnsignedAdContractToSuitcase", onChangeProgrammeCollection) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeUnsignedAdContractFromSuitcase", onChangeProgrammeCollection) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.addProgrammeLicenceToSuitcase", onChangeProgrammeCollection) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeProgrammeLicenceFromSuitcase", onChangeProgrammeCollection) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeProgrammeLicence", onChangeProgrammeCollection) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.addProgrammeLicence", onChangeProgrammeCollection) ]
+	End Method
+
+
+	Function onChangeProgrammeCollection:Int(triggerEvent:TEventBase)
+		local prog:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().Get("programmelicence"))
+		local contract:TAdContract = TAdContract(triggerEvent.GetData().Get("adcontract"))
+		local broadcastSource:TBroadcastMaterialSourceBase = prog
+		if not broadcastSource then broadcastSource = contract
+
+		if not broadcastSource then print "TDebugProgrammeCollectionInfos.onChangeProgrammeCollection: invalid broadcastSourceMaterial."
+
+
+		local map:TMap = null
+		if triggerEvent.IsTrigger("programmecollection.removeAdContract")
+			map = removedAdContracts
+			'remove on outdated
+			'availableAdContracts.Remove(broadcastSource.GetGUID())
+		elseif triggerEvent.IsTrigger("programmecollection.addAdContract")
+			map = addedAdContracts
+			availableAdContracts.Insert(broadcastSource.GetGUID(), broadcastSource)
+'		elseif triggerEvent.IsTrigger("programmecollection.addUnsignedAdContractToSuitcase")
+'			map = addedAdContracts
+'		elseif triggerEvent.IsTrigger("programmecollection.removeUnsignedAdContractFromSuitcase")
+'			map = addedAdContracts
+'		elseif triggerEvent.IsTrigger("programmecollection.addProgrammeLicenceToSuitcase")
+'			map = addedAdContracts
+'		elseif triggerEvent.IsTrigger("programmecollection.removeProgrammeLicenceFromSuitcase")
+'			map = addedAdContracts
+		elseif triggerEvent.IsTrigger("programmecollection.removeProgrammeLicence")
+			map = removedProgrammeLicences
+			'remove on outdated
+			'availableProgrammeLicences.Remove(broadcastSource.GetGUID())
+		elseif triggerEvent.IsTrigger("programmecollection.addProgrammeLicence")
+			map = addedProgrammeLicences
+			availableProgrammeLicences.Insert(broadcastSource.GetGUID(), broadcastSource)
+		endif
+		if not map then return False
+
+		map.Insert(broadcastSource.GetGUID(), string(Time.GetTimeGone()) )
+
+		RemoveOutdated()
+	End Function
+
+
+	Function RemoveOutdated()
+		local maps:TMap[] = [removedProgrammeLicences, removedAdContracts, addedProgrammeLicences, addedAdContracts]
+
+		oldestEntryTime = -1
+
+		'remove outdated ones (older than 30 seconds))
+		For local map:TMap = EachIn maps
+			For local guid:String = EachIn map.Copy().Keys()
+				local changeTime:Long = Long( string(map.ValueForKey(guid)) )
+
+				if changeTime + 3000 < Time.GetTimeGone()
+					map.Remove(guid)
+
+					if map = removedProgrammeLicences then availableProgrammeLicences.Remove(guid)
+					if map = removedAdContracts then availableAdContracts.Remove(guid)
+				else
+					if oldestEntryTime = -1 then oldestEntryTime = changeTime
+					oldestEntryTime = Min(oldestEntryTime, changeTime)
+				endif
+			Next
+		Next
+	End Function
+	
+
+
+	Function GetAddedTime:Long(guid:string, materialType:int=0)
+		if materialType = TVTBroadcastMaterialType.PROGRAMME
+			return int( string(addedProgrammeLicences.ValueForKey(guid)) )
+		else
+			return int( string(addedAdContracts.ValueForKey(guid)) )
+		endif
+	End Function
+
+
+	Function GetRemovedTime:Long(guid:string, materialType:int=0)
+		if materialType = TVTBroadcastMaterialType.PROGRAMME
+			return int( string(removedProgrammeLicences.ValueForKey(guid)) )
+		else
+			return int( string(removedAdContracts.ValueForKey(guid)) )
+		endif
+	End Function
+
+
+	Function GetChangedTime:Long(guid:string, materialType:int=0)
+		local addedTime:Long = GetAddedTime(guid, materialType)
+		local removedTime:Long = GetRemovedTime(guid, materialType)
+		if addedTime <> 0 then return addedTime
+		return removedTime
+	End Function
+
+
+	Method Initialize:int()
+		'on savegame loads, the maps would be empty without 
+		for local i:int = 1 until 4
+			local coll:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(i)
+			for local l:TProgrammeLicence = EachIn coll.GetProgrammeLicences()
+				availableProgrammeLicences.insert(l.GetGUID(), l)
+			next
+			for local a:TAdContract = EachIn coll.GetAdContracts()
+				availableAdContracts.insert(a.GetGUID(), a)
+			next
+		next
+
+		initialized = True
+	End Method
+
+	
+	Method Draw(playerID:int, x:int, y:int)
+		if not initialized then Initialize()
+	
+		if playerID <= 0 then playerID = GetPlayerBase().playerID
+		Local lineHeight:int = 15
+
+		'clean up if needed
+		if oldestEntryTime >= 0 and oldestEntryTime + 3000 < Time.GetTimeGone() then RemoveOutdated()
+
+		local collection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerID)
+		local secondLineCol:TColor = TColor.CreateGrey(220)
+
+		local entryPos:int = 0
+		local oldAlpha:Float = GetAlpha()
+		for local l:TProgrammeLicence = EachIn availableProgrammeLicences.Values() 'collection.GetProgrammeLicences()
+			if l.owner <> playerID then continue
+			'skip starting programme
+			if not l.isControllable() then continue
+			
+			local oldAlpha:Float = GetAlpha()
+			if entryPos mod 2 = 0
+				SetColor 0,0,0
+			else
+				SetColor 60,60,60
+			endif
+			SetAlpha 0.75 * oldAlpha
+			DrawRect(x, y + entryPos * lineHeight, 180, lineHeight-1)
+
+			local changedTime:int = GetChangedTime(l.GetGUID(), TVTBroadcastMaterialType.PROGRAMME) 
+			if changedTime <> 0
+				SetColor 255,235,20
+				local alphaValue:Float = 1.0 - Min(1.0, ((Time.GetTimeGone() - changedTime) / 5000.0))
+				SetAlpha Float(0.4 * Min(1.0, 2 * alphaValue^3))
+				SetBlend LIGHTBLEND
+				DrawRect(x, y + entryPos * lineHeight, 180, lineHeight-1)
+				SetBlend ALPHABLEND
+			endif
+
+			'draw in topicality
+			SetColor 220,110,110
+			SetAlpha 0.50 * oldAlpha
+			DrawRect(x, y + entryPos * lineHeight + lineHeight-4, 180 * l.GetTopicality(), 2)
+			SetAlpha 0.75 * oldAlpha
+			DrawRect(x, y + entryPos * lineHeight + lineHeight-4, 180 * l.GetMaxTopicality(), 2)
+
+			SetAlpha oldalpha
+			SetColor 255,255,255
+
+			local progString:string = l.GetTitle()
+			GetBitmapFont("default", 11).DrawBlock( progString, x+5, y+1 + entryPos*lineHeight, 170, lineHeight)
+
+			entryPos :+ 1
+		next
+
+		entryPos = 0
+		for local a:TAdContract = EachIn availableAdContracts.Values() 'collection.GetAdContracts()
+			if a.owner <> playerID then continue
+
+			if entryPos mod 2 = 0
+				SetColor 0,0,0
+			else
+				SetColor 60,60,60
+			endif
+			SetAlpha 0.75 * oldAlpha
+			DrawRect(x+190, y + entryPos * lineHeight*2, 175, lineHeight*2-1)
+
+			local changedTime:int = GetChangedTime(a.GetGUID(), TVTBroadcastMaterialType.ADVERTISEMENT) 
+			if changedTime <> 0
+				local alphaValue:Float = 1.0 - Min(1.0, ((Time.GetTimeGone() - changedTime) / 5000.0))
+				SetAlpha Float(0.4 * Min(1.0, 2 * alphaValue^3))
+				SetBlend LIGHTBLEND
+
+				SetColor 255,235,20
+				if GetRemovedTime(a.GetGUID(), TVTBroadcastMaterialType.ADVERTISEMENT) <> 0
+					if a.state = a.STATE_FAILED
+						SetColor 255,0,0
+					elseif a.state = a.STATE_OK
+						SetColor 0,255,0
+					endif
+				endif
+
+				DrawRect(x+190, y + entryPos * lineHeight*2, 175, lineHeight*2-1)
+				SetBlend ALPHABLEND
+			endif
+			SetAlpha oldalpha
+			SetColor 255,255,255
+
+			local adString1a:string = a.GetTitle()
+			local adString1b:string = "R: "+(a.GetDaysLeft()+1)+"D"
+			local adString2a:string = "Min: " +TFunctions.DottedValue(a.GetMinAudience())
+			local adString2b:string = "Acu: " +MathHelper.NumberToString(a.GetAcuteness()*100.0)
+			local adString2c:string = a.GetSpotsSent() + "/" + a.GetSpotCount()
+			GetBitmapFont("default", 11).DrawBlock( adString1a, x+195, y+1 + entryPos*lineHeight*2 + lineHeight*0, 128, lineHeight)
+			GetBitmapFont("default", 11).DrawBlock( adString1b, x+195 + 133, y+1 + entryPos*lineHeight*2 + lineHeight*0, 32, lineHeight, ALIGN_RIGHT_CENTER, secondLineCol)
+
+			GetBitmapFont("default", 11).DrawBlock( adString2a, x+195, y+1 + entryPos*lineHeight*2 + lineHeight*1, 55, lineHeight, ALIGN_LEFT_CENTER, secondLineCol)
+			GetBitmapFont("default", 11).DrawBlock( adString2b, x+195 + 60, y+1 + entryPos*lineHeight*2 + lineHeight*1, 55, lineHeight, ALIGN_CENTER_CENTER, secondLineCol)
+			GetBitmapFont("default", 11).DrawBlock( adString2c, x+195 + 110, y+1 + entryPos*lineHeight*2 + lineHeight*1, 55, lineHeight, ALIGN_RIGHT_CENTER, secondLineCol)
+
+			entryPos :+ 1
+		next
+		SetAlpha oldAlpha
+		SetColor 255,255,255
+	End Method
 End Type
 
 

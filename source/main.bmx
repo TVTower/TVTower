@@ -1406,7 +1406,8 @@ endrem
 				if playerID <= 0 then playerID = GetPlayerBase().playerID
 
 				debugProgrammePlanInfos.Draw(playerID, 15, 15)
-				debugProgrammePlanInfos.Draw((playerID + 1) mod 4, 415, 15)
+				debugProgrammeCollectionInfos.Draw(playerID, 415, 15)
+'				debugProgrammePlanInfos.Draw((playerID + 1) mod 4, 415, 15)
 			endif
 		endif
 		
