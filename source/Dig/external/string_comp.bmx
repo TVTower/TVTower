@@ -25,7 +25,7 @@ Import "string_comp.c"
 Type TLowerString
 
 	Field orig:String
-	Field data:Byte Ptr
+	Field data:Byte Ptr {nosave}
 
 	Function Create:TLowerString(s:String)
 		Local this:TLowerString = New TLowerString
@@ -52,7 +52,19 @@ Type TLowerString
 	Method Delete()
 		bmx_stringcomp_free(data)
 	End Method
-	
+
+
+	'=== serialization stuff ===
+	Method SerializeTLowerStringToString:string()
+		return orig
+	End Method
+
+	Method DeSerializeTLowerStringFromString(text:String)
+		'get rid of old objects to avoid mem leaks
+		if data then bmx_stringcomp_free(data)
+		
+		data = bmx_stringcomp_init(text)
+	End Method
 End Type
 
 Extern
