@@ -1652,7 +1652,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	'Wird bisher nur in der LUA-KI verwendet
 	'Wie dringend ist es diese Spots zu senden
 	Method GetAcuteness:float() {_exposeToLua}
-		Local spotsToBroadcast:int = self.GetSpotCount() - self.GetSpotsToSend()
+		Local spotsToBroadcast:int = self.GetSpotsToSend()
 		Local daysLeft:int = self.getDaysLeft() + 1 'In diesem Zusammenhang nicht 0-basierend
 		If daysLeft <= 0 then return 0 'no "acuteness" for obsolete contracts
 		Return spotsToBroadcast  / Float(daysLeft * daysLeft  * 100)
@@ -1662,7 +1662,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	'Wird bisher nur in der LUA-KI verwendet
 	'Wie viele Spots sollten heute mindestens gesendet werden
 	Method SendMinimalBlocksToday:int() {_exposeToLua}
-		Local spotsToBroadcast:int = self.GetSpotCount() - self.GetSpotsToSend()
+		Local spotsToBroadcast:int = self.GetSpotsToSend()
 		Local acuteness:int = self.GetAcuteness()
 		Local daysLeft:int = self.getDaysLeft() + 1 'In diesem Zusammenhang nicht 0-basierend
 		If daysLeft <= 0 then return 0 'no "blocks" for obsolete contracts
@@ -1680,7 +1680,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	'Wird bisher nur in der LUA-KI verwendet
 	'Wie viele Spots sollten heute optimalerweise gesendet werden
 	Method SendOptimalBlocksToday:int() {_exposeToLua}
-		Local spotsToBroadcast:int = self.GetSpotCount() - self.GetSpotsToSend()
+		Local spotsToBroadcast:int = self.GetSpotsToSend()
 		Local daysLeft:int = self.getDaysLeft() + 1 'In diesem Zusammenhang nicht 0-basierend
 		If daysLeft <= 0 then return 0 'no "blocks" for obsolete contracts
 
