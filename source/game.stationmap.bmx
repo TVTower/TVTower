@@ -306,6 +306,15 @@ Type TStationMapCollection
 	End Method
 
 
+	Method GetChannelExclusiveAudience:Int(channelNumber:int)
+		local without:int[]
+		for local i:int = 1 until 4
+			if i <> channelNumber then without :+ [i]
+		next
+		return GetShare([channelNumber], without).x
+	End Method
+
+
 	'returns a share between channels, encoded in a TVec3D containing:
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
 	Method GetShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
