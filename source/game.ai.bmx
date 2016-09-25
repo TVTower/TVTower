@@ -599,6 +599,16 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
+	Method getExclusiveMaxAudience:int()
+		return GetStationMapCollection().GetChannelExclusiveAudience(self.ME)
+	End Method
+
+
+	Method getMoney:int()
+		return GetPlayerFinance(self.ME, -1).money
+	End Method
+	
+
 	Method convertToAdContract:TAdContract(obj:object)
 		return TAdContract(obj)
 	End Method
@@ -929,6 +939,45 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
+	Method ne_getBroadcastedNews:TLuaFunctionResult(arrayIndex:Int=-1)
+		If Not (_PlayerInRoom("newsroom") or _PlayerInRoom("news")) Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
+
+		local broadcastedNews:TBroadcastMaterial[] = GetPlayerProgrammePlan(self.ME).GetNewsArray()
+		If broadcastedNews
+			Return TLuaFunctionResult.Create(self.RESULT_OK, broadcastedNews)
+		else
+			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+		endif
+	End Method
+
+
+	Method ne_doRemoveNewsFromPlan:Int(slot:int = 0, objectGUID:String = "")
+		If Not (_PlayerInRoom("newsroom") or _PlayerInRoom("news")) Then Return self.RESULT_WRONGROOM
+
+		local player:TPlayerBase = GetPlayerBase(self.ME)
+
+		'It does not matter if a player has a master key for the room,
+		'only observing is allowed for them
+		If Self.ME <> TFigure(player.GetFigure()).inRoom.owner Then Return self.RESULT_WRONGROOM
+
+
+		Local newsObject:TNews
+		if objectGUID
+			'news has to be in plan, not collection
+			newsObject = TNews(GetPlayerProgrammePlan(self.ME).GetNews(objectGUID))
+		elseif slot >= 0
+			newsObject = TNews(GetPlayerProgrammePlan(self.ME).GetNewsAtIndex(slot))
+		endif
+		If not newsObject then Return self.RESULT_NOTFOUND
+
+		if GetPlayerProgrammePlan(self.ME).RemoveNews(newsObject, slot)
+			Return self.RESULT_OK
+		else
+			Return self.RESULT_NOTFOUND
+		endif
+	End Method
+
+
 	Method ne_doNewsInPlan:Int(slot:int = 0, objectGUID:String = "")
 		If Not (_PlayerInRoom("newsroom") or _PlayerInRoom("news")) Then Return self.RESULT_WRONGROOM
 
@@ -938,39 +987,27 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 		'only observing is allowed for them
 		If Self.ME <> TFigure(player.GetFigure()).inRoom.owner Then Return self.RESULT_WRONGROOM
 
-		'remove news from given slot
-		'either if a slot was defined but no news, or if a news but no
-		'slot was passed
-		If (not objectGUID and slot >= 0) or (objectGUID and slot < 0)
-			Local newsObject:TNews
 
-			if objectGUID
-				'news has to be in plan, not collection
-				newsObject = TNews(GetPlayerProgrammePlan(self.ME).GetNews(objectGUID))
-			elseif slot >= 0
-				newsObject = TNews(GetPlayerProgrammePlan(self.ME).GetNewsAtIndex(slot))
-			endif
-			If not newsObject then Return self.RESULT_NOTFOUND
+		'news has to be in collection, not plan
+		Local news:TNews = TNews(GetPlayerProgrammeCollection(self.ME).GetNews(objectGUID))
+		If not news
+			'if not found, someone is switching from plan slot x to slot y?
+			news = TNews(GetPlayerProgrammePlan(self.ME).GetNews(objectGUID))
+			if not news then Return self.RESULT_NOTFOUND
+		endif
 
-			if GetPlayerProgrammePlan(self.ME).RemoveNews(newsObject, slot)
-				Return self.RESULT_OK
-			else
-				Return self.RESULT_NOTFOUND
-			endif
-		'place given news in slot
-		Else
-			'news has to be in collection, not plan
-			Local news:TNews = TNews(GetPlayerProgrammeCollection(self.ME).GetNews(objectGUID))
-			If not news then Return self.RESULT_NOTFOUND
+		'skip if on same slot
+		if GetPlayerProgrammePlan(self.ME).GetNewsAtIndex(slot) = news
+			Return self.RESULT_OK
+		endif
 
-			if not GetPlayerProgrammePlan(self.ME).SetNews(news, slot)
-				return self.RESULT_FAILED
-			else
-				Return self.RESULT_OK
-			endif
-		EndIf
 
-		Return self.RESULT_NOTFOUND
+		'place it (and remove from other slots before - if needed)
+		if not GetPlayerProgrammePlan(self.ME).SetNews(news, slot)
+			return self.RESULT_FAILED
+		else
+			Return self.RESULT_OK
+		endif
 	End Method
 
 

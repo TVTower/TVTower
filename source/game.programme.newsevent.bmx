@@ -577,7 +577,6 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 
 	Method GenerateGUID:string()
-		LS_guid = TLowerString.Create( "broadcastmaterialsource-newsevent-"+id )
 		return "broadcastmaterialsource-newsevent-"+id
 	End Method
 	

@@ -1447,9 +1447,10 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		'remove this news from slots if it occupies some of them
 		'do not add it back to the collection
-		'-> this avoids "duplicate news" in one show
+		'-> this avoids duplicate "cannot remove" messages
+		'-> the news is already removed from the collection some lines later 
 		For Local i:Int = 0 To news.length-1
-			if GetNewsAtIndex(i) = newsObject Then RemoveNewsBySlot(i, False)
+			if GetNewsAtIndex(i) = newsObject then RemoveNewsBySlot(i, False)
 		Next
 
 		'is there an other newsblock, remove that first
@@ -1527,18 +1528,23 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			guid = string(newsObjectOrGUID)
 		endif
 		
-		For local news:TBroadcastMaterial = EachIn news
-			if news.GetGUID() = guid then Return True
+		For local newsEntry:TBroadcastMaterial = EachIn news
+			if newsEntry.GetGUID() = guid then Return True
 		Next
 		Return False
 	End Method
 
 
 	Method GetNews:TBroadcastMaterial(GUID:string) {_exposeToLua}
-		For local news:TBroadcastMaterial = EachIn news
-			if news.GetGUID() = GUID then Return news
+		For local newsEntry:TBroadcastMaterial = EachIn news
+			if newsEntry.GetGUID() = GUID then Return newsEntry
 		Next
 		Return Null
+	End Method
+
+
+	Method GetNewsArray:TBroadcastMaterial[]() {_exposeToLua}
+		Return news
 	End Method
 	
 
