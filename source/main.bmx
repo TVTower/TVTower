@@ -3983,7 +3983,7 @@ Type GameEvents
 		If playerID = -1 Or Not player Then Return False
 
 		'create an visual error
-		If player.isActivePlayer() Then TError.CreateNotEnoughMoneyError()
+		If player.isActivePlayer() and not player.IsLocalAI() Then TError.CreateNotEnoughMoneyError()
 	End Function
 
 
