@@ -212,7 +212,7 @@ function JobNewsAgencyAbonnements:Tick()
 		local newFee = TVT.ne_getNewsAbonnementFee(genreID, newSubscriptionLevels[i])
 		if oldLevel ~= newSubscriptionLevels[genreID] then
 			TVT.ne_setNewsAbonnement(i, newSubscriptionLevels[genreID])
-			debugMsg("- Changing genre " ..genreID.. " abonnement level from " .. oldLevel .. " to " .. newSubscriptionLevels[genreID])
+			debugMsg("- Changing genre " ..genreID.. " abonnement level from " .. oldLevel .. " to " .. newSubscriptionLevels[genreID] .. " (new level=" .. TVT.ne_getNewsAbonnement(genreID) .. ")")
 		else
 			--debugMsg("- Keeping genre " ..genreID.. " abonnement level at " .. oldLevel)
 		end
@@ -248,7 +248,6 @@ end
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["JobNewsAgency"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
-	c.Newslist = null
 	c.Task = nil
 end)
 
@@ -259,31 +258,36 @@ end
 function JobNewsAgency:Prepare(pParams)
 	debugMsg("Search best news for news show")
 
+	-- RONNY 25.09.2016:
+	-- disabled, all news are now returned by
+	-- "GetNewsList()" and should be automatically removed from other
+	-- slots upon placement
+                  
 	-- instead of refreshing the news list each time we adjusted a slot
 	-- (which might add back a previously send news to the collection which
 	--  is still better than the other existing ones)
 	-- we just unset all news right before placing the best 3 of them
 
-	TVT.ne_doNewsInPlan(0, "")
-	TVT.ne_doNewsInPlan(1, "")
-	TVT.ne_doNewsInPlan(2, "")
+	--TVT.ne_doRemoveNewsFromPlan(0, "")
+	--TVT.ne_doRemoveNewsFromPlan(1, "")
+	--TVT.ne_doRemoveNewsFromPlan(2, "")
 end
 
 function JobNewsAgency:Tick()
 	local price = 0
 
+	-- fetch a list of all news, sorted by attractivity
+	-- and modified by a bonus for already paid news (so a news
+	-- is preferred if just a bit less good but already paid)
+	local newsList = self.GetNewsList(0.2)
+
 	-- loop over all 3 slots
 	for slot=1,3,1 do
-		-- fetch a list of all news, sorted by attractivity
-		-- and modified by a bonus for already paid news (so a news
-		-- is preferred if just a bit less good but already paid)
-		self.Newslist = self.GetNewsList(0.2)
-
-		if (table.count(self.Newslist) > 0) then
+		if (table.count(newsList) > 0) then
 			local selectedNews = nil
 
 			-- find the best one we can afford
-			for i, news in ipairs(self.Newslist) do
+			for i, news in ipairs(newsList) do
 				price = news.GetPrice(TVT.ME)
 				if (self.Task.CurrentBudget >= price or news.IsPaid() == 1) then			
 					if (news.IsPaid() == 1) then
@@ -295,6 +299,9 @@ function JobNewsAgency:Tick()
 					--self.Task:PayFromBudget(price)
 
 					selectedNews = news
+
+					-- remove from list, so next slot wont use that again
+					table.remove(newsList, i)
 				end
 				-- do not search any longer
 				if selectedNews ~= nil then break end
@@ -303,6 +310,7 @@ function JobNewsAgency:Tick()
 			debugMsg("- filling slot "..slot..". No news available, skipping slot.")
 		end
 	end
+
 	self.Status = JOB_STATUS_DONE
 end
 
@@ -315,17 +323,29 @@ function JobNewsAgency:GetNewsList(paidBonus)
 	paidBonus = tonumber(paidBonus)
 		
 
-	--fetch all news, insert all available to a list
+	-- fetch all news, insert all available to a list
+	-- fetch available ones
 	local response = TVT.ne_getAvailableNews()
 	if ((response.result == TVT.RESULT_WRONGROOM) or (response.result == TVT.RESULT_NOTFOUND)) then
 		return {}
 	end
-
 	local allNews = response.DataArray()
-
 	for i, news in ipairs(allNews) do
 		table.insert(currentNewsList, news)
 	end
+
+	-- fetch news show news
+	response = TVT.ne_getBroadcastedNews()
+	if ((response.result == TVT.RESULT_WRONGROOM) or (response.result == TVT.RESULT_NOTFOUND)) then
+		return {}
+	end
+	local broadcastedNews = response.DataArray()
+	-- "pairs", not "ipairs" as the result might contains empty slots
+	-- which "ipairs" does not like 
+	for i, news in pairs(broadcastedNews) do
+		table.insert(currentNewsList, news)
+	end
+
 
 	-- sort by attractivity modifed by paid-state-bonus
 	local sortMethod = function(a, b)

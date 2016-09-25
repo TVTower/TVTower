@@ -3856,7 +3856,7 @@ Type GameEvents
 				endif
 
 				local news:TNewsEvent = GetNewsEventCollection().GetByGUID(newsGUID)
-				if not news then news = GetNewsEventCollection().SearchByGUID(newsGUID)
+				if not news then news = GetNewsEventCollection().SearchByPartialGUID(newsGUID)
 				if not news
 					GetGame().SendSystemMessage("No news with GUID ~q"+newsGUID+"~q found.")
 					return False
