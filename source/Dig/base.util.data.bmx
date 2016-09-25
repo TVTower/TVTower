@@ -36,27 +36,25 @@ EndRem
 SuperStrict
 Import brl.Map
 Import brl.Retro
+Import BaH.StringBuffer
 
-
+Import "external/string_comp.bmx"
 
 Type TData
-	field data:TMap = CreateMap()
+	field data:TMap = New TMap
 
 	Method Init:TData(data:TMap=null)
 		if data
-			'convert all keys to lower case
-			'attention: do not directly modify the data set (modification
-			'while iteration might be bad)
-			local modifyKeys:string[]
-			For local k:string = EachIn data.Keys()
-				if k <> k.toLower() then modifyKeys :+ [k]
-			Next
-			For local k:string = EachIn modifyKeys
-				data.Insert(k.ToLower(), data.ValueForKey(k))
-				data.Remove(k)
-			Next
+			self.data.Clear()
 			
-			self.data = data
+			For local k:object = EachIn data.Keys()
+				local ls:TLowerString = TLowerString(k)
+				If Not ls Then
+					ls = TLowerString.Create(String(k))
+				End If
+				
+				self.data.Insert(ls, data.ValueForKey(k))
+			Next
 		endif
 
 		return self
@@ -69,29 +67,32 @@ Type TData
 
 
 	Method ToStringFormat:String(depth:int = 0)
-		local depthString:string = ""
+		local depthString:TStringBuffer = new TStringBuffer
+		'local depthString:string = ""
 		For local i:int = 0 until depth
-			depthString :+ "|  "
+			depthString.Append("|  ")
 		Next
 
-		local res:string = "TData~n"
-		For local key:String = eachin data.Keys()
+		local res:TStringBuffer = new TStringBuffer
+		res.Append("TData~n")
+		'local res:string = "TData~n"
+		For local key:TLowerString = eachin data.Keys()
 			if TData(data.ValueForKey(key))
-				res :+ depthString+"|- "+key+" = "+TData(data.ValueForKey(key)).ToStringFormat(depth + 1)
+				res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(TData(data.ValueForKey(key)).ToStringFormat(depth + 1))
 			else
-				res :+ depthString+"|- "+key+" = " + string(data.ValueForKey(key)) + "~n"
+				res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(data.ValueForKey(key).ToString()).Append("~n")
 			endif
 		Next
-		res :+ depthString + "'-------~n"
-		return res
+		res.AppendObject(depthString).Append("'-------~n")
+		return res.ToString()
 	End Method
 
 
 	Method Copy:TData()
 		local dataCopy:TData = new TData
 
-		For local key:string = eachin data.Keys()
-			key = key.ToLower()
+		For local key:TLowerString = eachin data.Keys()
+			'key = key.ToLower()
 			local value:object = data.ValueForKey(key)
 			if TData(value)
 				dataCopy.Add(key, TData(value).Copy())
@@ -107,8 +108,8 @@ Type TData
 	Function JoinData:int(dataSource:TData, dataTarget:TData)
 		if not dataSource then return False
 		if not dataTarget then return False
-		For local key:string = eachin dataSource.data.Keys()
-			key = key.ToLower()
+		For local key:TLowerString = eachin dataSource.data.Keys()
+			'key = key.ToLower()
 			dataTarget.Add(key, dataSource.data.ValueForKey(key))
 		Next
 		return True
@@ -151,7 +152,7 @@ Type TData
 		if not customized then customized = new TData
 
 		'add all data available in "customized" but not in "original"
-		For Local key:String = EachIn customized.data.Keys()
+		For Local key:TLowerString = EachIn customized.data.Keys()
 			'skip if original contains value too
 			if original.Get(key) then continue
 
@@ -161,7 +162,7 @@ Type TData
 
 		'add all data differing in "customized" compared to "original"
 		'iterate through original to skip already "added ones"
-		For Local key:String = EachIn original.data.Keys()
+		For Local key:TLowerString = EachIn original.data.Keys()
 			local newValue:object = customized.Get(key)
 			'if customized does not contain that value yet - skip
 			if not newValue then continue
@@ -190,20 +191,26 @@ Type TData
 	End Method
 
 
-	Method Add:TData(key:string, data:object)
-		self.data.insert(key.ToLower(), data)
+	Method Add:TData(key:Object, data:object)
+		local ls:TLowerString = TLowerString(key)
+		If Not ls Then
+			ls = TLowerString.Create(String(key))
+		End If
+		self.data.insert(ls, data)
 		return self
 	End Method
 
 
-	Method AddString:TData(key:string, data:string)
-		Add( key, object(data) )
+	Method AddString:TData(key:Object, data:string)
+		Add( key, data )
 		return self
 	End Method
 
 
-	Method AddNumber:TData(key:string, data:Double)
-		Add( key, object( string(data) ) )
+	Method AddNumber:TData(key:Object, data:Double)
+		Local dd:TDoubleData = new TDoubleData
+		dd.value = data
+		Add( key, dd )
 		return self
 	End Method
 	
@@ -219,42 +226,70 @@ Type TData
 	End Method
 
 
-	Method Remove:object(key:string)
+	Method Remove:object(key:object)
 		local removed:object = Get(key)
 		data.Remove(key)
 		return removed
 	End Method
 
 
-	Method Has:int(key:string)
-		return data.Contains(key)
+	Method Has:int(key:Object)
+		Local ls:TLowerString = TLowerString(key)
+		if not ls then
+			ls = TLowerString.Create(String(key))
+		end if
+		return data.Contains(ls)
 	End Method
 	
 
-	Method Get:object(key:string, defaultValue:object=null)
+	Method Get:object(k:Object, defaultValue:object=null)
 		'only react if the "::" is in the middle of something
-		if key.Find("::") > 0
+		
+		Local ls:TLowerString = TLowerString(k)
+		if ls then
+			local key:TLowerString = ls
 			local pos:int = key.Find("::")
-			local group:string = Left(key,pos)
-			local groupData:TData = TData(Get(group))
-			if groupData
-				return groupData.Get(Right(key, pos+1))
+			
+			if pos > 0
+				local group:string = Left(key.orig,pos)
+				local groupData:TData = TData(Get(group))
+				if groupData
+					return groupData.Get(Right(key.orig, pos+1))
+				endif
 			endif
-		endif
-		local result:object = data.ValueForKey(key.ToLower())
-		if result then return result
+		Else
+			Local key:String = String(k)
+			local pos:int = key.Find("::")
+			
+			if pos > 0
+				local group:string = Left(key,pos)
+				local groupData:TData = TData(Get(group))
+				if groupData
+					return groupData.Get(Right(key, pos+1))
+				endif
+			endif
+		End if
+		if String(k) then
+			k = TLowerString.Create(String(k))
+		end if
+		local result:object = data.ValueForKey(k)
+		if result then
+			return result
+		end if
 		return defaultValue
 	End Method
 
 
-	Method GetString:string(key:string, defaultValue:string=null)
+	Method GetString:string(key:object, defaultValue:string=null)
 		local result:object = Get(key)
-		if result then return String( result )
+		if result then
+			return result.ToString()
+		End If
 		return defaultValue
 	End Method
 
 
-	Method GetBool:int(key:string, defaultValue:int=FALSE)
+	Method GetBool:int(key:object, defaultValue:int=FALSE)
 		local result:object = Get(key)
 		if not result then return defaultValue
 		Select String(result).toLower()
@@ -269,30 +304,54 @@ Type TData
 	End Method
 
 
-	Method GetDouble:Double(key:string, defaultValue:Double = 0.0)
+	Method GetDouble:Double(key:object, defaultValue:Double = 0.0)
 		local result:object = Get(key)
-		if result then return Double( String( result ) )
+		if result then
+			local dd:TDoubleData = TDoubleData(result)
+			if dd Then
+				Return dd.value
+			End if
+			return Double( String( result ) )
+		End If
 		return defaultValue
 	End Method
 
 
-	Method GetLong:Long(key:string, defaultValue:Long = 0)
+	Method GetLong:Long(key:object, defaultValue:Long = 0)
 		local result:object = Get(key)
-		if result then return Long( String( result ) )
+		if result then
+			Local dd:TDoubleData = TDoubleData(result)
+			if dd then
+				return Long(dd.value)
+			end if
+			return Long( String( result ) )
+		end if
 		return defaultValue
 	End Method
 
 
-	Method GetFloat:float(key:string, defaultValue:float = 0.0)
+	Method GetFloat:float(key:object, defaultValue:float = 0.0)
 		local result:object = Get(key)
-		if result then return float( String( result ) )
+		if result then
+			local dd:TDoubleData = TDoubleData(result)
+			if dd then
+				return Float(dd.value)
+			end if 
+			return float( String( result ) )
+		End If
 		return defaultValue
 	End Method
 
 
-	Method GetInt:int(key:string, defaultValue:int = null)
+	Method GetInt:int(key:object, defaultValue:int = null)
 		local result:object = Get(key)
-		if result then return Int( String( result ) )
+		if result then
+			Local dd:TDoubleData = TDoubleData(result)
+			if dd Then
+				return Int(dd.value)
+			End If
+			return Int( String( result ) )
+		end if
 		return defaultValue
 	End Method
 
@@ -301,3 +360,12 @@ Type TData
 		return TData(Get(key, defaultValue))
 	End Method
 End Type
+
+Type TDoubleData
+	Field value:Double
+	
+	Method ToString:String()
+		return String(value)
+	End Method
+End Type
+

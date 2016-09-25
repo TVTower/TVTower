@@ -96,7 +96,10 @@ Type TXmlHelper
 
 
 	'find a "<tag>"-element within a given start node
-	Method FindElementNode:TxmlNode(startNode:TXmlNode, nodeName:String)
+	Method FindElementNode:TxmlNode(startNode:TXmlNode, _nodeName:String)
+		local nodeName:TLowerString = TLowerString.Create(_nodeName)
+		return FindElementNodeLS(startNode, nodeName)
+rem		
 		nodeName = nodeName.ToLower()
 		If Not startNode Then startNode = GetRootNode()
 		If Not startNode Then Return Null
@@ -113,8 +116,29 @@ Type TXmlHelper
 			Next
 		Next
 		Return Null
+end rem
 	End Method
 
+	Method FindElementNodeLS:TxmlNode(startNode:TXmlNode, nodeName:TLowerString)
+		'nodeName = nodeName.ToLower()
+		If Not startNode Then startNode = GetRootNode()
+		If Not startNode Then Return Null
+
+		'maybe we are searching for start node
+		'If startNode.getName().ToLower() = nodeName Then Return startNode
+		If nodeName.EqualsLower(startNode.getName()) Then Return startNode
+
+		'traverse through children
+		For Local child:TxmlNode = EachIn GetNodeChildElements(startNode)
+			'If child.getName().ToLower() = nodeName Then Return child
+			If nodeName.EqualsLower(child.getName()) Then Return child
+			For Local subStartNode:TxmlNode = EachIn GetNodeChildElements(child)
+				Local subChild:TXmlNode = FindElementNodeLS(subStartNode, nodeName)
+				If subChild Then Return subChild
+			Next
+		Next
+		Return Null
+	End Method
 
 	Method FindRootChild:TxmlNode(nodeName:String)
 		Return FindChild(GetRootNode(), nodeName)
@@ -157,7 +181,7 @@ Type TXmlHelper
 			If Not TXmlHelper.HasValue(node, fieldName, searchInChildNodeNames) Then Continue
 			'use the first fieldname ("frames|f" -> add as "frames")
 			Local names:String[] = fieldName.ToLower().Split("|")
-
+			'Local names:String[] = fieldName.Split("|")
 			data.Add(names[0], FindValue(node, fieldName, "", "", searchInChildNodeNames))
 		Next
 		Return data
@@ -174,7 +198,7 @@ Type TXmlHelper
 		For Local attribute:TxmlBase = EachIn att
 			If StringHelper.InArray(attribute.GetName(), ignoreNames, False) Then Continue
 
-			data.Add(attribute.GetName().toLower(), node.GetAttribute(attribute.GetName()))
+			data.Add(attribute.GetName(), node.GetAttribute(attribute.GetName()))
 		Next
 
 
@@ -188,9 +212,8 @@ Type TXmlHelper
 				data.Add("data", subData)
 			EndIf
 
-			data.Add(subNode.getName().ToLower(), subNode.getContent())
+			data.Add(subNode.getName(), subNode.getContent())
 		Next
-
 		Return data
 	End Function
 	
