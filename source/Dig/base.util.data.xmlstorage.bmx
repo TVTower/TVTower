@@ -47,7 +47,7 @@ Type TDataXmlStorage
 	Field ignoreKeysStartingWith:string = "DEV_"
 	'the tag to use to save the data
 	'eg. "config" results in: <config><key /><key2 /></config>
-	Field rootNodeKey:TLowerString = new TLowerString.Create("data")
+	Field rootNodeKey:TLowerString = TLowerString.Create("data")
 
 
 	Method Load:TData(file:string)
@@ -158,7 +158,7 @@ Type TDataXmlStorage
 		if TLowerString(key) then
 			rootNodeKey = TLowerString(key)
 		else
-			rootNodeKey = new TLowerString.Create(String(key))
+			rootNodeKey = TLowerString.Create(String(key))
 		end if
 	End Method
 
