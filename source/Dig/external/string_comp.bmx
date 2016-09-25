@@ -67,7 +67,10 @@ Type TLowerString
 	End Method
 
 	Method Delete()
-		bmx_stringcomp_free(data)
+		if data then
+			bmx_stringcomp_free(data)
+			data = null
+		end if
 	End Method
 
 	Method StartsWithLower:Int(txt:String)
