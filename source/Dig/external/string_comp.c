@@ -390,4 +390,82 @@ void bmx_stringcomp_free(comp_data * data) {
 	free(data);
 }
 
+int bmx_stringcomp_compare_string(comp_data * data, BBString * obj) {
+	int i;
+	int n;
+	int size = data->length < obj->length ? data->length : obj->length;
+
+	BBChar * src = data->text;
+	for (i = 0; i < size; ++i ) {
+		if (data->converted <= i) {
+			*src = bmx_stringcomp_convert(*src);
+			data->converted ++;
+		}
+
+		n = *src - bmx_stringcomp_convert(obj->buf[i]);
+		src++;
+		if (n) {
+			return n;
+		}
+	}
+	return data->length - obj->length;
+}
+
+int bmx_stringcomp_compare_lowerstring(comp_data * data, comp_data * other) {
+	int i;
+	int n;
+	int size = data->length < other->length ? data->length : other->length;
+	
+	BBChar * d1 = data->text;
+	BBChar * d2 = other->text;
+	for (i = 0; i < size; ++i ) {
+		if (data->converted <= i) {
+			*d1 = bmx_stringcomp_convert(*d1);
+			data->converted ++;
+		}
+
+		if (other->converted <= i) {
+			*d2 = bmx_stringcomp_convert(*d2);
+			other->converted ++;
+		}
+		
+		if (n=*d1 - *d2) {
+			return n;
+		}
+		d1++;
+		d2++;
+	}
+	return data->length - other->length;
+}
+
+int bmx_stringcomp_find(comp_data * data, BBString * txt, int i) {
+	if (i < 0) {
+		i = 0;
+	}
+	while( i + txt->length <= data->length ){
+		if( charsEqual( data->text + i, txt->buf, txt->length ) ) return i;
+		++i;
+	}
+	return -1;
+}
+
+int bmx_stringcomp_startswith(comp_data * data, BBString * txt) {
+	BBChar *p,*q;
+	int i;
+	int size = txt->length;
+	if( data->length < size ) {
+		return 0;
+	}
+	p = data->text;
+	q = txt->buf;
+	for( i=0; i < size; ++i ) {
+		if (data->converted <= i) {
+			*p = bmx_stringcomp_convert(*p);
+			data->converted ++;
+		}
+
+		if( *p++ != bmx_stringcomp_convert(*q++) ) return 0;
+	}
+	return 1;
+}
 

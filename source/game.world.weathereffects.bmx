@@ -564,6 +564,11 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 	Field cloudColorBase:TColor = new TColor.Create(255,255,255)
 	Field cloudBrightness:int = 100
 	Field skyBrightness:Float = 1.0
+	
+	Field LSVelocityX:TLowerString = TLowerString.Create("velocityX")
+	Field LSVelocityStrengthX:TLowerString = TLowerString.Create("velocityStrengthX")
+	Field LSAlpha:TLowerString = TLowerString.Create("alpha")
+	Field LSSpriteEntity:TLowerString = TLowerString.Create("spriteEntity")
 
 	Method Init:TWeatherEffectClouds(area:TRectangle, cloudAmount:int = 30, useSprites:TSprite[])
 		SetUseSprites(useSprites)
@@ -590,7 +595,7 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 
 		local entity:TSpriteEntity
 		For local cloud:TData = eachin clouds
-			entity = TSpriteEntity(cloud.Get("spriteEntity"))
+			entity = TSpriteEntity(cloud.Get(LSSpriteEntity))
 			'fetch sprite with given name again - or use random one
 			local useSprite:TSprite
 			For local sprite:TSprite = eachin sprites
@@ -624,11 +629,11 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 		spriteEntity.area.position.SetXY(Rand(-200,800) + area.GetX(), - 30 + Rand(0,40) + area.GetY())
 		spriteEntity.velocity.SetX(2.3 + Rand(0, 20)/10.0)
 
-		cloud.AddNumber("velocityX", spriteEntity.velocity.GetX())
-		cloud.AddNumber("velocityStrengthX", abs(spriteEntity.velocity.GetX()))
-		cloud.AddNumber("alpha", Float(Rand(85,100))/100.0)
+		cloud.AddNumber(LSVelocityX, spriteEntity.velocity.GetX())
+		cloud.AddNumber(LSVelocityStrengthX, abs(spriteEntity.velocity.GetX()))
+		cloud.AddNumber(LSAlpha, Float(Rand(85,100))/100.0)
 		'assign spriteentity
-		cloud.Add("spriteEntity", spriteEntity)
+		cloud.Add(LSSpriteEntity, spriteEntity)
 
 		clouds.AddLast(cloud)
 	End Method
@@ -636,7 +641,7 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 
 	Method StoreCloudVelocity()
 		For local cloud:TData = eachin clouds
-			cloud.AddNumber("velocityX", TSpriteEntity(cloud.Get("spriteEntity")).velocity.GetX())
+			cloud.AddNumber(LSVelocityX, TSpriteEntity(cloud.Get(LSSpriteEntity)).velocity.GetX())
 		Next
 	End Method
 
@@ -647,10 +652,10 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 		local entity:TSpriteEntity
 
 		For local cloud:TData = eachin clouds
-			entity = TSpriteEntity(cloud.Get("spriteEntity"))
+			entity = TSpriteEntity(cloud.Get(LSSpriteEntity))
 			entity.velocity.SetX(Float(TInterpolation.Linear(..
-				cloud.GetFloat("velocityX"),..
-				cloud.GetFloat("velocityStrengthX") * windStrength,..
+				cloud.GetFloat(LSVelocityX),..
+				cloud.GetFloat(LSVelocityStrengthX) * windStrength,..
 				Float(Min(1800, timeSinceLastUpdate)), 1800)..
 			))
 			'do not use the global worldSpeed
@@ -688,7 +693,7 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 		local entity:TSpriteEntity
 		local cloudNumber:int = 0
 		For local cloud:TData = eachin clouds
-			entity = TSpriteEntity(cloud.Get("spriteEntity"))
+			entity = TSpriteEntity(cloud.Get(LSSpriteEntity))
 			'skip invisible ones
 			if entity.area.GetX() > 801 then continue
 			if entity.area.GetX() < - (entity.area.GetW()+1) then continue
