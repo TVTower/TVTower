@@ -410,13 +410,21 @@ Type TLocalizedString
 	Global fallbackLanguage:string = "de"
 	Global defaultLanguage:string = "en"
 	Global currentLanguage:string = "de"
-
+	Global _nilNode:TNode = New TNode._parent
 
 	Method Copy:TLocalizedString()
 		local c:TLocalizedString = New TLocalizedString
-		For local k:string = EachIn values.Keys()
-			c.values.insert(k, values.ValueForKey(k))
-		Next
+
+		Local node:TNode = values._FirstNode()
+		While node And node <> _nilNode
+			c.values.insert(node._key, node._value)
+			node = node.NextNode()
+		Wend
+
+		'For local k:string = EachIn values.Keys()
+		'	c.values.insert(k, values.ValueForKey(k))
+		'Next
+
 		return c
 	End Method
 	
@@ -435,22 +443,27 @@ Type TLocalizedString
 
 	'to ease "setting" (mystring.set(value)) the language
 	'comes after the value.
-	Method Set:TLocalizedString(value:String, language:String="")
-		if language="" then language = defaultLanguage
+	Method Set:TLocalizedString(value:String, language:object=null)
+		if not language then language = defaultLanguage
 		values.insert(language, value)
 		return self
 	End Method
 
 
-	Method Get:String(language:String="", returnDefault:int = True)
-		if language="" then language = currentLanguage
-		if values.Contains(language)
-			return string(values.ValueForKey(language))
+	Method Get:String(language:object=null, returnDefault:int = True)
+		if not language then language = currentLanguage
+		local value:object = values.ValueForKey(language)
+		if value
+			return string(value)
 		elseif returnDefault
-			if values.Contains(defaultLanguage)
-				return string(values.ValueForKey(defaultLanguage))
-			elseif fallbackLanguage <> defaultLanguage and values.Contains(fallbackLanguage)
-				return string(values.ValueForKey(fallbackLanguage))
+			value = values.ValueForKey(defaultLanguage)
+			if value
+				return string(value)
+			elseif fallbackLanguage <> defaultLanguage
+				value = values.ValueForKey(fallbackLanguage)
+				if value
+					return string(value)
+				endif
 			endif
 		endif
 		return ""
@@ -458,17 +471,21 @@ Type TLocalizedString
 
 
 	Method Replace:TLocalizedString(source:string, replacement:string)
-		For local k:string = EachIn values.Keys()
-			values.insert(k, string(values.ValueForKey(k)).replace(source, replacement))
-		Next
+		Local node:TNode = values._FirstNode()
+		While node And node <> _nilNode
+			node._value = string(node._value).replace(source, replacement)
+			node = node.NextNode()
+		Wend
 		return self
 	End Method
 
 
 	Method ReplaceLocalized:TLocalizedString(source:string, replacement:TLocalizedString)
-		For local k:string = EachIn values.Keys()
-			values.insert(k, string(values.ValueForKey(k)).replace(source, replacement.Get(k) ))
-		Next
+		Local node:TNode = values._FirstNode()
+		While node And node <> _nilNode
+			node._value = string(node._value).replace(source, replacement.Get(node._value))
+			node = node.NextNode()
+		Wend
 		return self
 	End Method
 
@@ -516,10 +533,13 @@ Type TLocalizedString
 
 	Method Append:TLocalizedString(other:TLocalizedString)
 		if other
-			For local language:String = EachIn other.values.Keys()
+			Local node:TNode = other.values._FirstNode()
+			While node And node <> _nilNode
 				'this might overwrite previous values of the same language
-				Set(string(other.values.ValueForKey(language)), language)
-			Next
+				Set(string(node._value), node._key)
+
+				node = node.NextNode()
+			Wend
 		endif
 		return self
 	End Method

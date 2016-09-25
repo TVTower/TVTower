@@ -111,8 +111,8 @@ Type TNewsEventCollection
 	Method Add:int(obj:TNewsEvent)
 		'add to common maps
 		'special lists get filled when using their Getters
-		managedNewsEvents.Insert(obj.GetGUID(), obj)
-		allNewsEvents.Insert(obj.GetGUID(), obj)
+		managedNewsEvents.Insert(obj.GetGUID().ToLower(), obj)
+		allNewsEvents.Insert(obj.GetGUID().ToLower(), obj)
 
 		_InvalidateCaches()
 
@@ -145,8 +145,8 @@ Type TNewsEventCollection
 
 
 	Method Remove:int(obj:TNewsEvent)
-		allNewsEvents.Remove(obj.GetGUID())
-		managedNewsEvents.Remove(obj.GetGUID())
+		allNewsEvents.Remove(obj.GetGUID().ToLower())
+		managedNewsEvents.Remove(obj.GetGUID().ToLower())
 
 		_InvalidateCaches()
 
@@ -155,7 +155,7 @@ Type TNewsEventCollection
 
 
 	Method RemoveManaged:int(obj:TNewsEvent)
-		managedNewsEvents.Remove(obj.GetGUID())
+		managedNewsEvents.Remove(obj.GetGUID().ToLower())
 
 		_InvalidateCaches()
 
@@ -173,22 +173,28 @@ Type TNewsEventCollection
 	
 
 	Method GetByGUID:TNewsEvent(GUID:String)
+		GUID = GUID.ToLower()
 		Return TNewsEvent(allNewsEvents.ValueForKey(GUID))
 	End Method
 
 
-	Method SearchByGUID:TNewsEvent(GUIDpart:String)
+	Global nilNode:TNode = New TNode._parent
+	Method SearchByPartialGUID:TNewsEvent(GUID:String)
 		'skip searching if there is nothing to search
-		if GUIDPart.trim() = "" then return Null
+		if GUID.trim() = "" then return Null
 		
-		GUIDpart = GUIDpart.ToLower()
+		GUID = GUID.ToLower()
 
 		'find first hit
-		For local key:string = EachIn allNewsEvents.Keys()
-			if key.ToLower().Find(GUIDpart) >= 0
-				return TNewsEvent(allNewsEvents.ValueForKey(key))
+		Local node:TNode = allNewsEvents._FirstNode()
+		While node And node <> nilNode
+			if string(node._key).Find(GUID) >= 0
+				return TNewsEvent(node._value)
 			endif
-		Next
+
+			'move on to next node
+			node = node.NextNode()
+		Wend
 
 		return Null
 	End Method
@@ -312,7 +318,7 @@ Type TNewsEventCollection
 			if c = 0
 				for local e:TNewsEvent = EachIn allNewsEvents.Values()
 					if e.IsReuseable() or not e.HasHappened()
-						managedNewsEvents.insert(e.GetGUID(), e)
+						managedNewsEvents.insert(e.GetGUID().ToLower(), e)
 					endif
 				Next
 				_InvalidateAvailableNewsEvents()
@@ -571,6 +577,7 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 
 	Method GenerateGUID:string()
+		LS_guid = TLowerString.Create( "broadcastmaterialsource-newsevent-"+id )
 		return "broadcastmaterialsource-newsevent-"+id
 	End Method
 	

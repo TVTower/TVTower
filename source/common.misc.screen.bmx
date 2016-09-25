@@ -353,13 +353,13 @@ Type TScreen
 
 	Method AddSubScreen:int(screen:TScreen)
 		screen.parentScreen = self
-		subScreens.insert(screen.name, screen)
+		subScreens.insert(screen.name.ToLower(), screen)
 	End Method
 
 
 	Method RemoveSubScreen:int(screen:TScreen)
 		screen.parentScreen = null
-		subScreens.Remove(screen.name)
+		subScreens.Remove(screen.name.ToLower())
 	End Method
 
 
@@ -367,7 +367,7 @@ Type TScreen
 		screenName = lower(screenName)
 		'checking my subs
 		For local key:string = eachin subScreens.Keys()
-			if lower(key) = screenName then return TScreen(subScreens.ValueForKey(key))
+			if key = screenName then return TScreen(subScreens.ValueForKey(key))
 		Next
 		'not found? - checking the subs of my subs
 		For local screen:TScreen = eachin subScreens.Values()
