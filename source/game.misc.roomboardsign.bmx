@@ -71,8 +71,9 @@ Type TRoomBoard
 	End Function
 
 
-	Method ResetImageCaches:int()
+	Method ResetImageCaches:int(owner:int = -2)
 		For Local obj:TRoomBoardSign = EachIn list
+			if owner <> -2 and obj.GetOwner() <> owner then continue
 			obj.imageCache = null
 			obj.imageDraggedCache = null
 		Next
