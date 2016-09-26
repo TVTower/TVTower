@@ -289,14 +289,23 @@ function JobNewsAgency:Tick()
 			-- find the best one we can afford
 			for i, news in ipairs(newsList) do
 				price = news.GetPrice(TVT.ME)
-				if (self.Task.CurrentBudget >= price or news.IsPaid() == 1) then			
-					if (news.IsPaid() == 1) then
-						debugMsg("- filling slot "..slot..". Re-use news: \"" .. news.GetTitle() .. "\" (" .. news.GetGUID() .. ")")
+				if (self.Task.CurrentBudget >= price or news.IsPaid() == 1) then
+					--skip setting if already done
+					local existingNews = TVT.ne_getBroadcastedNews(slot-1).data
+
+					-- we cannot compare objects generally, as their
+					-- memory adress is different
+					if existingNews == news then
+						--debugMsg("- SKIP filling slot "..slot..". Already set there.")
 					else
-						debugMsg("- filling slot "..slot..". Buying news: \"" .. news.GetTitle() .. "\" (" .. news.GetGUID() .. ") "..slot.." - Price: " .. price)
+						if (news.IsPaid() == 1) then
+							debugMsg("- filling slot "..slot..". Re-use news: \"" .. news.GetTitle() .. "\" (" .. news.GetGUID() .. ")")
+						else
+							debugMsg("- filling slot "..slot..". Buying news: \"" .. news.GetTitle() .. "\" (" .. news.GetGUID() .. ") "..slot.." - Price: " .. price)
+						end
+						TVT.ne_doNewsInPlan(slot-1, news.GetGUID())
+						--self.Task:PayFromBudget(price)
 					end
-					TVT.ne_doNewsInPlan(slot-1, news.GetGUID())
-					--self.Task:PayFromBudget(price)
 
 					selectedNews = news
 
@@ -325,7 +334,7 @@ function JobNewsAgency:GetNewsList(paidBonus)
 
 	-- fetch all news, insert all available to a list
 	-- fetch available ones
-	local response = TVT.ne_getAvailableNews()
+	local response = TVT.ne_getAllAvailableNews()
 	if ((response.result == TVT.RESULT_WRONGROOM) or (response.result == TVT.RESULT_NOTFOUND)) then
 		return {}
 	end
@@ -335,7 +344,7 @@ function JobNewsAgency:GetNewsList(paidBonus)
 	end
 
 	-- fetch news show news
-	response = TVT.ne_getBroadcastedNews()
+	response = TVT.ne_getAllBroadcastedNews()
 	if ((response.result == TVT.RESULT_WRONGROOM) or (response.result == TVT.RESULT_NOTFOUND)) then
 		return {}
 	end

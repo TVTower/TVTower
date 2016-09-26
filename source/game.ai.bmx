@@ -580,6 +580,11 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
+	Method AreEqual:int(o1:object, o2:object)
+		return o1 = o2
+	End Method
+
+
 	Method getPotentialAudiencePercentage:Float(day:int = - 1, hour:int = -1)
 		if day = -1 then day = GetWorldTime().GetDay()
 		if hour = -1 then hour = GetWorldTime().GetDayHour()
@@ -608,7 +613,6 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 		return GetPlayerFinance(self.ME, -1).money
 	End Method
 	
-
 	Method convertToAdContract:TAdContract(obj:object)
 		return TAdContract(obj)
 	End Method
@@ -927,7 +931,7 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
-	Method ne_getAvailableNews:TLuaFunctionResult(arrayIndex:Int=-1)
+	Method ne_getAllAvailableNews:TLuaFunctionResult()
 		If Not (_PlayerInRoom("newsroom") or _PlayerInRoom("news")) Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
 		local availableNews:TNews[] = GetPlayerProgrammeCollection(self.ME).GetNewsArray()
@@ -937,12 +941,36 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
 		endif
 	End Method
+	
+
+	Method ne_getAvailableNews:TLuaFunctionResult(arrayIndex:Int=-1)
+		If Not (_PlayerInRoom("newsroom") or _PlayerInRoom("news")) Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
+
+		local availableNews:TNews = GetPlayerProgrammeCollection(self.ME).GetNewsAtIndex(arrayIndex)
+		If availableNews
+			Return TLuaFunctionResult.Create(self.RESULT_OK, availableNews)
+		else
+			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+		endif
+	End Method
+
+
+	Method ne_getAllBroadcastedNews:TLuaFunctionResult()
+		If Not (_PlayerInRoom("newsroom") or _PlayerInRoom("news")) Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
+
+		local broadcastedNews:TNews[] = TNews[](GetPlayerProgrammePlan(self.ME).GetNewsArray())
+		If broadcastedNews
+			Return TLuaFunctionResult.Create(self.RESULT_OK, broadcastedNews)
+		else
+			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+		endif
+	End Method
 
 
 	Method ne_getBroadcastedNews:TLuaFunctionResult(arrayIndex:Int=-1)
 		If Not (_PlayerInRoom("newsroom") or _PlayerInRoom("news")) Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
-		local broadcastedNews:TBroadcastMaterial[] = GetPlayerProgrammePlan(self.ME).GetNewsArray()
+		local broadcastedNews:TNews = TNews(GetPlayerProgrammePlan(self.ME).GetNewsAtIndex(arrayIndex))
 		If broadcastedNews
 			Return TLuaFunctionResult.Create(self.RESULT_OK, broadcastedNews)
 		else
