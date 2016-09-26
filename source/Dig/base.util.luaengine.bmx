@@ -226,6 +226,8 @@ Type TLuaEngine
 		lua_setfield(getLuaState(), -2, "__index")
 		lua_pushcfunction(getLuaState(), NewIndexSelf)
 		lua_setfield(getLuaState(), -2, "__newindex")
+		lua_pushcfunction(getLuaState(), CompareObjectsSelf)
+		lua_setfield(getLuaState(), -2, "__eq")
 
 		'BlackListLuaModules()
 
@@ -345,6 +347,8 @@ Type TLuaEngine
 			lua_setfield(getLuaState(), -2, "__index")
 			lua_pushcfunction(getLuaState(), NewIndexObject)
 			lua_setfield(getLuaState(), -2, "__newindex")
+			lua_pushcfunction(getLuaState(), CompareObjectsObject)
+			lua_setfield(getLuaState(), -2, "__eq")
 			_objMetaTable = luaL_ref(getLuaState(), LUA_REGISTRYINDEX)
 
 			_initDone = True
@@ -478,6 +482,30 @@ Type TLuaEngine
 	End Method
 
 
+	Method CompareObjects:Int()
+		Local obj1:Object, obj2:object
+
+		if lua_isnil(getLuaState(), -1)
+			print "CompareObjects: obj1 is nil"
+			TLogger.Log("TLuaEngine", "CompareObjects: param #1 is nil.", LOG_DEBUG)
+		else
+			obj1 = lua_unboxobject(getLuaState(), -1)
+		endif
+		if lua_isnil(getLuaState(), 1)
+			print "CompareObjects: obj2 is nil"
+			TLogger.Log("TLuaEngine", "CompareObjects: param #2 is nil.", LOG_DEBUG)
+		else
+			obj2 = lua_unboxobject(getLuaState(), 1)
+		endif
+
+		lua_pushboolean(getLuaState(), obj1 = obj2)
+'		lua_pushinteger(getLuaState(), obj1 = obj2)
+		
+		return True
+		' obj1 = obj2
+	End Method
+
+	
 	Method NewIndex:Int( )
 		Local obj:Object = lua_unboxobject(getLuaState(), 1)
 		Local typeId:TTypeId = TTypeId.ForObject(obj)
@@ -563,6 +591,11 @@ Type TLuaEngine
 		Throw "newindexobject ERROR"
 	End Function
 
+	Function CompareObjectsObject:Int(fromLuaState:Byte Ptr)
+		Local engine:TLuaEngine = TLuaEngine.FindEngine(fromLuaState)
+		If engine then return engine.CompareObjects()
+	End Function
+
 	Function IndexSelf:Int(fromLuaState:Byte Ptr)
 		Local engine:TLuaEngine = TLuaEngine.FindEngine(fromLuaState)
 
@@ -578,6 +611,11 @@ Type TLuaEngine
 	Function NewIndexSelf(fromLuaState:Byte Ptr)
 		'local engine:TLuaEngine = TLuaEngine.FindEngine(fromLuaState)
 		lua_rawset(fromLuaState, 1)
+	End Function
+
+	Function CompareObjectsSelf:Int(fromLuaState:Byte Ptr)
+		Local engine:TLuaEngine = TLuaEngine.FindEngine(fromLuaState)
+		Return engine.CompareObjectsObject(fromLuaState)
 	End Function
 
 	Function Invoke:Int(fromLuaState:Byte Ptr)
