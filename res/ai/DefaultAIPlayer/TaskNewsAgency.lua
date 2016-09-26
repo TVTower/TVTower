@@ -211,7 +211,7 @@ function JobNewsAgencyAbonnements:Tick()
 		local oldLevel = TVT.ne_getNewsAbonnement(genreID)
 		local newFee = TVT.ne_getNewsAbonnementFee(genreID, newSubscriptionLevels[i])
 		if oldLevel ~= newSubscriptionLevels[genreID] then
-			TVT.ne_setNewsAbonnement(i, newSubscriptionLevels[genreID])
+			TVT.ne_setNewsAbonnement(genreID, newSubscriptionLevels[genreID])
 			debugMsg("- Changing genre " ..genreID.. " abonnement level from " .. oldLevel .. " to " .. newSubscriptionLevels[genreID] .. " (new level=" .. TVT.ne_getNewsAbonnement(genreID) .. ")")
 		else
 			--debugMsg("- Keeping genre " ..genreID.. " abonnement level at " .. oldLevel)
