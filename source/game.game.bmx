@@ -429,6 +429,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'=== STOP ROOM RENT CONTRACTS ===
 		TLogger.Log("ResetPlayer()", "TODO - stop rented rooms", LOG_DEBUG)
 
+		'=== RESET ROOM BOARD IMAGES ===
+		GetRoomBoard().ResetImageCaches(PlayerID)
 
 
 		'=== RESET BETTY FEELINGS ===
@@ -1318,7 +1320,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				'when a game is loaded we should try set the right screen
 				'not just the default building screen
 				If GetObservedFigure().GetInRoom()
-print "goto screen: " + GetObservedFigure().GetInRoomID() + " screen="+ScreenCollection.GetCurrentScreen().name
 					ScreenCollection.GoToScreen(ScreenCollection.GetCurrentScreen())
 				Else
 					ScreenCollection.GoToScreen(GameScreen_world)
