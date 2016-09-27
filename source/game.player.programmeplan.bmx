@@ -780,11 +780,13 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			'Advertisements: adjust planned amount
 			If TAdvertisement(obj) Then TAdvertisement(obj).contract.SetSpotsPlanned( GetAdvertisementsPlanned(TAdvertisement(obj).contract) )
 
+			rem
 			if slotType = TVTBroadcastMaterialType.ADVERTISEMENT
 				TLogger.Log("PlayerProgrammePlan.RemoveObject()", "Plan #"+owner+" removed object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from ADVERTISEMENTS, index="+GetArrayIndex(programmedDay*24 + programmedHour)+", programmedDay="+programmedDay+", programmedHour="+programmedHour+".", LOG_DEBUG)
 			else
 				TLogger.Log("PlayerProgrammePlan.RemoveObject()", "Plan #"+owner+" removed object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from PROGRAMMES, index="+GetArrayIndex(programmedDay*24 + programmedHour)+", programmedDay="+programmedDay+", programmedHour="+programmedHour+".", LOG_DEBUG)
 			endif
+			endrem
 
 			'invalidate cache
 			_daysPlanned = -1
