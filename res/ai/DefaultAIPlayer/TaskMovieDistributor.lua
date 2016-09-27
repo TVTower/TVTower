@@ -71,6 +71,18 @@ function TaskMovieDistributor:GetNextJobInTargetRoom()
 	self:SetDone()
 end
 
+
+function TaskMovieDistributor:getStrategicPriority()
+	--debugMsg("TaskMovieDistributor:getStrategicPriority")
+
+	-- no money to buy things? skip even looking...
+	if TVT.getMoney() <= 0 then
+		return 0.0
+	end
+	return 1.0
+end
+
+
 function TaskMovieDistributor:BudgetSetup()
 	-- Tagesbudget für gute Angebote ohne konkreten Bedarf
 	self.CurrentBargainBudget = self.BudgetWholeDay / 2

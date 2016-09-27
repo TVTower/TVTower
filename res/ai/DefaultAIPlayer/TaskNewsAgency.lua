@@ -4,7 +4,7 @@ _G["TaskNewsAgency"] = class(AITask, function(c)
 	AITask.init(c)	-- must init base!
 	c.TargetRoom = TVT.ROOM_NEWSAGENCY_PLAYER_ME
 	c.BudgetWeight = 2
-	c.BasePriority = 80 --8
+	c.BasePriority = 8
 	c.AbonnementBudget = 0
 
 	c.newsGenrePriority = {
