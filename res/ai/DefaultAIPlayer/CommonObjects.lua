@@ -120,19 +120,19 @@ end
 
 function AIToolsClass:GetAverageMovieQualityByLevel(level)
 	if (level == 1) then
-		return 0.03 --Nachtprogramm
+		return 0.05 --Nachtprogramm
 	elseif (level == 2) then
-		return 0.08 --Mitternacht + Morgen
+		return 0.10 --Mitternacht + Morgen
 	elseif (level == 3) then
-		return 0.13 -- Nachmittag
+		return 0.14 -- Nachmittag
 	elseif (level == 4) then
 		return 0.18 -- Vorabend / Spät
 	elseif (level == 5) then
-		return 0.22 -- Primetime
+		return 0.24 -- Primetime
 	end
 	return 0.00
 end
-
+--[[
 function AIToolsClass:GetMaxAudiencePercentageByLevel(level)
 	if level == 1 then
 		return 0.0347
@@ -161,6 +161,6 @@ function AIToolsClass:GuessedAudienceForLevel(level)
 
 	return guessedAudience
 end
-
+]]--
 AITools = AIToolsClass()
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

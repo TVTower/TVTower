@@ -239,6 +239,8 @@ table.getKey = function(pTable, item)
     return nil
 end
 
+
+-- return the ZERO based index of an item in a table 
 table.getIndex = function(pTable, item)
 	if pTable == nil then return -1 end
 	local index = 0
@@ -264,8 +266,15 @@ end
 
 table.removeCollection = function(t, c)
     for key, value in pairs(c) do
-        local index = table.getIndex(t, value)
-		table.remove(t, index)
+        local tKey = table.getKey(t, value)
+
+		if tKey ~= nil then
+			--if t[tKey] ~= nil then
+			--	debugMsg("removeCollection: removing t[" ..tKey.."] = " .. t[tKey].GetTitle())
+			--end
+
+			t[tKey] = nil
+		end
     end
 end
 
