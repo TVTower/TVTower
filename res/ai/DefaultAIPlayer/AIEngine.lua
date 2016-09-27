@@ -3,7 +3,8 @@
 -- === AI Engine ===
 -- ============================
 -- Author: Manuel Vögele (STARS_crazy@gmx.de)
--- Last modified: 22.01.2015
+--         Ronny Otto
+-- Last modified: 25.09.2016
 -- Created at: 12.12.2007
 
 -- ##### INCLUDES #####
@@ -112,10 +113,6 @@ function AIPlayer:ForceNextTask()
 			debugMsg("ForceNextTask() failed: no follow up task found...")
 		end
 	end
-end
-
-function AIPlayer:ValidateRound()
-	--Zum überschreiben
 end
 
 function AIPlayer:Tick()
@@ -232,6 +229,10 @@ end
 
 function AITask:getWorldTicks()
 	local player = _G["globalPlayer"]
+	if player == nil then
+		debugMsg("_G[\"globalPlayer\"] is NIL!")
+		return 0
+	end
 	return player.WorldTicks
 end
 
@@ -363,7 +364,7 @@ function AITask:RecalcPriority()
 
 	self.CurrentPriority = math.max(timePriority, ticksPriority)
 
-	--debugMsg("Task: " .. self:typename() .. " - Prio: " .. self.CurrentPriority .. " - TimeDiff:" .. TimeDiff .. "  TicksDiff:" .. TicksDiff.." (c: " .. calcPriority .. ")")
+--	debugMsg("Task: " .. self:typename() .. " - Prio: " .. self.CurrentPriority .. " - TimeDiff:" .. TimeDiff .. "  TicksDiff:" .. TicksDiff.." (c: " .. calcPriority .. ")")
 end
 
 function AITask:TooMuchTicks()
