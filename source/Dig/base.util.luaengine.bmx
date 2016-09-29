@@ -651,7 +651,11 @@ Type TLuaEngine
 				Case StringTypeId
 					args[i] = lua_tostring(getLuaState(), i + 1)
 				Default
-					args[i] = lua_unboxobject(getLuaState(), i + 1)
+					if lua_isnil(getLuaState(), i + 1)
+						args[i] = null
+					else
+						args[i] = lua_unboxobject(getLuaState(), i + 1)
+					endif
 rem
 					if lua_isnil(getLuaState(), i + 1)
 						'print "LUA: "+funcOrMeth.name()+"() got null param #"+i+"."
