@@ -562,9 +562,6 @@ end
 
 -- fills empty slots for the given amount of hours
 function JobEmergencySchedule:FillIntervals(howManyHours)
-	--Aufgabe: So schnell wie möglich die Lücken füllen
-	--Zuschauerberechnung: ZuschauerquoteAufGrundderStunde * Programmquali * MaximalzuschauerproSpieler
-
 	local fixedDay, fixedHour = 0
 	local currentDay = WorldTime.GetDay()
 	local currentHour = WorldTime.GetDayHour()
@@ -573,16 +570,16 @@ function JobEmergencySchedule:FillIntervals(howManyHours)
 		fixedDay, fixedHour = self.ScheduleTask:FixDayAndHour(currentDay, i)
 		--debugMsg("FillIntervals --- Tag: " .. fixedDay .. " - Stunde: " .. fixedHour)
 
-		--Werbung: Prüfen ob ne Lücke existiert, wenn ja => füllen
-		local ad = MY.GetProgrammePlan().GetAdvertisement(fixedDay, fixedHour)
-		if (ad == nil) then
-			self:SetContractOrTrailerToEmptyBlock(nil, fixedDay, fixedHour)
-		end
-
-		--Film: Prüfen ob ne Lücke existiert, wenn ja => füllen
+		-- place programmes BEFORE ads (because ads need audience numbers...)
 		local programme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
 		if (programme == nil) then
 			self:SetMovieOrInfomercialToEmptyBlock(fixedDay, fixedHour)
+		end
+
+		-- place ads in empty slots
+		local ad = MY.GetProgrammePlan().GetAdvertisement(fixedDay, fixedHour)
+		if (ad == nil) then
+			self:SetContractOrTrailerToEmptyBlock(nil, fixedDay, fixedHour)
 		end
 	end
 end
@@ -591,10 +588,17 @@ function JobEmergencySchedule:SetContractOrTrailerToEmptyBlock(choosenSpot, day,
 	local fixedDay, fixedHour = self.ScheduleTask:FixDayAndHour(day, hour)
 	local level = self.ScheduleTask:GetQualityLevel(fixedDay, fixedHour)
 
+	-- fetch the programme aired before the ad
+	local guessedAudience = 0
+	local currentSpotList
 	local previousProgramme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
-	local guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousProgramme)
-
-	local currentSpotList = self:GetFittingSpotList(guessedAudience, false, true, level, fixedDay, fixedHour)
+	if previousProgramme == nil then
+		debugMsg("outage ... skip setting a slot " .. fixedDay .. "/" .. fixedHour .. ":55")
+		return false
+	else
+		guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousProgramme)
+		local currentSpotList = self:GetFittingSpotList(guessedAudience, false, true, level, fixedDay, fixedHour)
+	end
 
 
 	if (choosenSpot == nil) then
@@ -743,6 +747,7 @@ function JobEmergencySchedule:GetFittingSpotList(guessedAudience, noBroadcastRes
 				end
 
 				if allSpotsBelowCount <= 4 then
+					--debugMsg("GetFittingSpotList: adding spot requisition, allSpotsBelowCount="..allSpotsBelowCount.." audience="..guessedAudience)
 					self.ScheduleTask:AddSpotRequisition(guessedAudience, requisitionLevel, day, hour)
 				else
 					debugMsg("GetFittingSpotList: skip adding spot requisition, enough lower adcontracts available (" .. allSpotsBelowCount .."x)")
