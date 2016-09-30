@@ -301,14 +301,12 @@ function BusinessStats:OnDayBegins()
 end
 
 function BusinessStats:ReadStats()
-	local currentAudience = TVT.GetCurrentAudience()
-	if (currentAudience == 0) then
-		return;
+	-- read in new audience stats
+	if WorldTime.GetDayMinute() == 5 then
+		local currentAudience = TVT.GetCurrentAudience()
+		self.Audience:AddValue(currentAudience)
+		debugMsg("BusinessStats: Audience (current="..currentAudience.."  avg=" .. self.Audience.AverageValue .. "  min/max=" .. self.Audience.MinValue .. " - " .. self.Audience.MaxValue .. ")")
 	end
-
-	--debugMsg("currentAudience: " .. currentAudience)
-	self.Audience:AddValue(currentAudience)
-	--debugMsg("Stats: " .. self.Audience.AverageValue .. " (" .. self.Audience.MinValue .. " - " .. self.Audience.MaxValue .. ")")
 end
 
 function BusinessStats:AddSpot(spot)
@@ -351,6 +349,8 @@ function getAIPlayer()
 	if globalPlayer == nil then
 		globalPlayer = DefaultAIPlayer()
 		globalPlayer:initialize()
+
+		globalPlayer.logs = {}
 		_G["globalPlayer"] = globalPlayer --Macht "GlobalPlayer" als globale Variable verfügbar auch in eingebundenen Dateien				
 	end
 	return globalPlayer
@@ -387,6 +387,12 @@ function OnDayBegins()
 		debugMsg("KI-Event: OnDayBegins")
 		getAIPlayer():OnDayBegins()
 	end
+
+	for i=0, #globalPlayer.logs do
+		debugMsg(globalPlayer.logs[i])
+	end
+	--reset
+	globalPlayer.logs = {}
 end
 
 
@@ -550,38 +556,38 @@ function OnMinute(number)
 
 	--Zum Test
 	if (number == 6) then
+
 		local task = getAIPlayer().TaskList[_G["TASK_SCHEDULE"]]
 		local fixedDay, fixedHour = FixDayAndHour(WorldTime.GetDay(), WorldTime.GetDayHour())
 
 		local programme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
-		local guessedAudience = task:GuessedAudienceForHourAndLevel(fixedDay, fixedHour, programme, true)
+		local programmeAttraction = programme.GetStaticAudienceAttraction(fixedHour, 1, nil, nil)
+
+		local avgQuality = math.round(100 * task:GetAverageBroadcastQualityByLevel(level))
+		-- assume they all send at least as good programme as we do
+		avgQuality = math.max(avgQuality, programme.GetQuality())
+
+		-- todo: refresh markets when "office is visited" (stationmap)
+		TVT.audiencePredictor.RefreshMarkets()
+		TVT.audiencePredictor.SetAverageValueAttraction(1, avgQuality)
+		TVT.audiencePredictor.SetAverageValueAttraction(2, avgQuality)
+		TVT.audiencePredictor.SetAverageValueAttraction(3, avgQuality)
+		TVT.audiencePredictor.SetAverageValueAttraction(4, avgQuality)
+		TVT.audiencePredictor.SetAttraction(TVT.ME, programmeAttraction)
+		TVT.audiencePredictor.RunPrediction(fixedDay, fixedHour)
+		local guessedAudience = TVT.audiencePredictor.GetAudience(TVT.ME).GetTotalSum()
+
 
 		local audience = TVT.GetCurrentAudience()
 
-		-- RON: changed as "programme" is NIL if not existing/placed
-		local averageMovieQualityByLevel = 0
-		if ( programme ~= nil) then
-			-- Die Durchschnittsquote dieses Qualitätslevels
-			averageMovieQualityByLevel = programme.GetQuality()
-		end
-
-		-- Welchen Qualitätslevel sollte ein Film/Werbung um diese Uhrzeit haben
-		local level = task:GetQualityLevel(WorldTime.GetDayHour())
-		-- Die Maximalquote: Entspricht ungefähr "maxAudiencePercentage"
-		local globalPercentageByHour = task:GetMaxAudiencePercentage(fixedDay, fixedHour)
-		-- Die Durchschnittsquote dieses Qualitätslevels
-		--local averageMovieQualityByLevel = task:GetAverageMovieQualityByLevel(level)
-		local previousFixedDay, previousFixedHour = FixDayAndHour(WorldTime.GetDay(), WorldTime.GetDayHour() - 1)
-		local previousProgramme = MY.GetProgrammePlan().GetProgramme(previousFixedDay, previousFixedHour)
-		local guessedAudience2 = task.guessedAudienceRiskyness * task:GuessedAudienceForHourAndLevel(previousFixedDay, previousFixedHour, previousProgramme)
-
 		local title = "OUTAGE / NO PROG"
 		if (programme ~= nil) then title = programme.GetTitle(); end
-		debugMsg("LUA-Audience (" .. title .. ") :  audience: guessedAvg=" .. math.round(guessedAudience) .. "  guessedPlan=" .. math.round(guessedAudience2) .."  real=" .. audience .. "  avgMovieQualityByLevel=" .. averageMovieQualityByLevel .. "  globalPercentageByHour=" .. math.round(globalPercentageByHour*100) .. "%")
-		if TVT.ME == 2 then
-			--TVT.SendToChat(fixedHour..":05 \"" .. title .. "\" (guessedAvg=".. math.round(guessedAudience) .. "  guessedPlan=" .. math.round(guessedAudience2) .."  real=" .. audience .. ")")
-			--debugMsg("Send to chat OK")
-		end
+
+		debugMsg("GUESSING AUDIENCE: " .. fixedHour .. ":05 \"" .. title .. "\"")
+		debugMsg("  realAudience= " .. audience .. "  guessedAudience=" .. guessedAudience .. "  guessRealFactor=" .. math.round(100 * audience/guessedAudience) .."%" )
+
+		table.insert(globalPlayer.logs, "GUESSING AUDIENCE: " .. fixedHour .. ":05 \"" .. title .. "\"")
+		table.insert(globalPlayer.logs, "  realAudience= " .. audience .. "  guessedAudience=" .. guessedAudience .. "  guessRealFactor=" .. math.round(100 * audience/guessedAudience) .."%" )
 	end
 end
 

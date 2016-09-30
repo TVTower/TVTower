@@ -118,17 +118,17 @@ function AIToolsClass:typename()
 	return "AIToolsClass"
 end
 
-function AIToolsClass:GetAverageMovieQualityByLevel(level)
+function AIToolsClass:GetAverageBroadcastQualityByLevel(level)
 	if (level == 1) then
-		return 0.05 --Nachtprogramm
+		return 0.08 --Nachtprogramm
 	elseif (level == 2) then
-		return 0.10 --Mitternacht + Morgen
+		return 0.12 --Mitternacht + Morgen
 	elseif (level == 3) then
-		return 0.14 -- Nachmittag
+		return 0.15 -- Nachmittag
 	elseif (level == 4) then
-		return 0.18 -- Vorabend / Spät
+		return 0.20 -- Vorabend / Spät
 	elseif (level == 5) then
-		return 0.24 -- Primetime
+		return 0.26 -- Primetime
 	end
 	return 0.00
 end
@@ -152,12 +152,12 @@ function AIToolsClass:GuessedAudienceForLevel(level)
 	--debugMsg("GuessedAudienceForLevel - level: " .. level)
 	local globalPercentageByHour = self:GetMaxAudiencePercentageByLevel(level) -- Die Maximalquote: Entspricht ungefähr "maxAudiencePercentage"
 	--debugMsg("globalPercentageByHour: " .. globalPercentageByHour)
-	local averageMovieQualityByLevel = self:GetAverageMovieQualityByLevel(level) -- Die Durchschnittsquote dieses Qualitätslevels
+	local averageBroadcastQualityByLevel = self:GetAverageBroadcastQualityByLevel(level) -- Die Durchschnittsquote dieses Qualitätslevels
 
 	--Formel: Filmqualität * Potentielle Quote nach Uhrzeit (maxAudiencePercentage) * Echte Maximalzahl der Zuschauer
-	local guessedAudience = averageMovieQualityByLevel * globalPercentageByHour * MY.GetMaxAudience()
+	local guessedAudience = averageBroadcastQualityByLevel * globalPercentageByHour * MY.GetMaxAudience()
 
-	--debugMsg("GuessedAudienceForLevel: " .. guessedAudience .. " = averageMovieQualityByLevel (" .. averageMovieQualityByLevel .. ") * globalPercentageByHour (" .. globalPercentageByHour .. ") *  MY.GetMaxAudience() (" .. MY.GetMaxAudience() .. ")")
+	--debugMsg("GuessedAudienceForLevel: " .. guessedAudience .. " = averageBroadcastQualityByLevel (" .. averageBroadcastQualityByLevel .. ") * globalPercentageByHour (" .. globalPercentageByHour .. ") *  MY.GetMaxAudience() (" .. MY.GetMaxAudience() .. ")")
 
 	return guessedAudience
 end
