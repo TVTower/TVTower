@@ -33,6 +33,7 @@ function TaskAdAgency:Activate()
 	self.SpotsInAgency = {}
 end
 
+
 function TaskAdAgency:GetNextJobInTargetRoom()
 	if (MY.GetProgrammeCollection().GetAdContractCount() >= 8) then
 		self:SetDone()
@@ -49,6 +50,18 @@ function TaskAdAgency:GetNextJobInTargetRoom()
 
 --	self:SetWait()
 	self:SetDone()
+end
+
+
+function TaskAdAgency:getStrategicPriority()
+	--debugMsg("TaskAdAgency:getStrategicPriority")
+
+	-- we cannot sign new contracts at the ad agency - make the task
+	-- not important for now
+	if MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.maxContracts then
+		return 0.0
+	end
+	return 1.0
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -89,15 +102,11 @@ function JobCheckSpots:CheckSpot()
 
 
 	if (response.result == TVT.RESULT_OK) then
-		local spot = TVT.convertToAdContract(response.data)
-		local spot2 = response.data
-		if (spot2.IsAvailableToSign(TVT.ME) == 1) then
-			--TVT.SendToChat("ist verfuegbar : " .. spot2.GetTitle())
-		end
-		if (spot.IsAvailableToSign(TVT.ME) == 1) then
+		local adContract = response.data
+		if (adContract.IsAvailableToSign(TVT.ME) == 1) then
 			local player = _G["globalPlayer"]
-			self.AdAgencyTask.SpotsInAgency[self.CurrentSpotIndex] = spot
-			player.Stats:AddSpot(spot)
+			self.AdAgencyTask.SpotsInAgency[self.CurrentSpotIndex] = adContract
+			player.Stats:AddSpot(adContract)
 		end
 	end
 
@@ -235,35 +244,27 @@ function SignRequisitedContracts:Tick()
 		table.sort(self.AdAgencyTask.SpotsInAgency, sortMethod)
 	end
 
-
 	for k,requisition in pairs(self.SpotRequisitions) do
 		local neededSpotCount = requisition.Count
 
-		--old: use a level-based-approach
-		--local guessedAudience = AITools:GuessedAudienceForLevel(requisition.Level)
-		--new: use the estimated audience from the game and a bit of the
-		--    old approach
-		local guessedAudience = 0.75 * requisition.GuessedAudience + 0.25 * AITools:GuessedAudienceForLevel(requisition.Level)
+		local guessedAudience = requisition.GuessedAudience
 
 		local signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.8))
 		if (signedContracts == 0) then
 			signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.6))
 			if (signedContracts == 0) then
-				guessedAudience = guessedAudience + 5000 -- Die 5000 sind einfach ein Erfahrungswert, denn es gibt kaum kleinere Werbeverträge... die Sinnhaftigkeit sollte nochmal geprüft werden
-				signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.6))
+				signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.5))
 				if (signedContracts == 0) then
-					guessedAudience = guessedAudience + 5000 -- Die 5000 sind einfach ein Erfahrungswert, denn es gibt kaum kleinere Werbeverträge... die Sinnhaftigkeit sollte nochmal geprüft werden
-					signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.6))
+					signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.4))
 				end
 			end
 		end
 	end
-
 	self.Status = JOB_STATUS_DONE
 end
 
 function SignRequisitedContracts:GetMinGuessedAudience(guessedAudience, minFactor)
-	if (guessedAudience < 10000) then
+	if (guessedAudience < 2500) then
 		return 0
 	else
 		return (guessedAudience * minFactor)
@@ -272,7 +273,7 @@ end
 
 function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudience, minguessedAudience)
 	local signed = 0
-	local buyedContracts = {}
+	local boughtContracts = {}
 	local neededSpotCount = requisition.Count
 
 	if (neededSpotCount <= 0) then
@@ -280,31 +281,45 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 		return 0
 	end
 	
-	for key, value in pairs(self.AdAgencyTask.SpotsInAgency) do
+	for key, adContract in pairs(self.AdAgencyTask.SpotsInAgency) do
 		-- do not try to get more contracts than allowed
 		if MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.maxContracts then break end
 
 		local contractDoable = true
 		-- skip limited target groups / programme genres
 		-- TODO: get breakdown of audience and compare this then
-		if (value.GetLimitedToTargetGroup() > 0 or value.GetLimitedToGenre() > 0) then
+		if (adContract.GetLimitedToTargetGroup() > 0 or adContract.GetLimitedToGenre() > 0) then
 			contractDoable = false
 		end
 
 		if (contractDoable) then
-			local minAudience = value.GetMinAudience()
+			local minAudience = adContract.GetMinAudience()
 
-			if ((minAudience < guessedAudience) and (minAudience > minguessedAudience)) then
+
+			local maxSurplusSpots = math.floor(0.5 * adContract.GetSpotCount())
+			if requisition.level == 5 then
+				maxSurplusSpots = math.max( maxSurplusSpots, math.random(1,3))
+			elseif requisition.level == 4 then
+				maxSurplusSpots = math.max( maxSurplusSpots, math.random(1,4))
+			else
+				maxSurplusSpots = math.max( maxSurplusSpots, math.random(2,4))
+			end
+			
+			-- skip if contract requires too many spots for the given level
+			if adContract.GetSpotCount() > requisition.Count + maxSurplusSpots then 
+				--debugMsg("   Skipping a \"necessary\" contract (too many spots: " .. adContract.GetSpotCount() .. " > ".. requisition.Count .." + "..maxSurplusSpots .. "): " .. adContract.GetTitle() .. " (" .. adContract.GetID() .. "). Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  MinAudience: " .. minAudience .. "  GuessedAudience: " .. math.floor(minguessedAudience) .. " - " .. math.floor(guessedAudience))
+			-- sign if audience requirements are OK
+			elseif ((minAudience < guessedAudience) and (minAudience > minguessedAudience)) then
 				--Passender Spot... also kaufen
-				debugMsg("Signing a \"necessary\" contract: " .. value.GetTitle() .. " (" .. value.GetID() .. ") weil benötigt. Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  MinAudience: " .. minAudience .. "  GuessedAudience: " .. minguessedAudience .. " - " .. guessedAudience)
-				TVT.sa_doBuySpot(value.GetID())
-				requisition:UseThisContract(value)
-				table.insert(buyedContracts, value)
+				debugMsg("   Signing a \"necessary\" contract: " .. adContract.GetTitle() .. " (" .. adContract.GetID() .. "). Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  MinAudience: " .. minAudience .. "  GuessedAudience: " .. math.floor(minguessedAudience) .. " - " .. math.floor(guessedAudience))
+				TVT.sa_doBuySpot(adContract.GetID())
+				requisition:UseThisContract(adContract)
+				table.insert(boughtContracts, adContract)
 				signed = signed + 1
 
 				-- remove available spots from the total amount of
 				-- spots needed for this requirements
-				neededSpotCount = neededSpotCount - value.GetSpotCount()
+				neededSpotCount = neededSpotCount - adContract.GetSpotCount()
 			end
 
 			if (neededSpotCount <= 0) then
@@ -317,9 +332,9 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 		end
 	end
 
-	if (table.count(buyedContracts) > 0) then
-		--debugMsg("Entferne " .. table.count(buyedContracts) .. " abgeschlossene Werbeverträge aus der Shop-Liste.")
-		table.removeCollection(self.AdAgencyTask.SpotsInAgency, buyedContracts)
+	if (table.count(boughtContracts) > 0) then
+		--debugMsg("  -> Remove " .. table.count(boughtContracts) .. " signed contracts from the agency-contract-list.")
+		table.removeCollection(self.AdAgencyTask.SpotsInAgency, boughtContracts)
 	end
 
 	return signed
@@ -355,6 +370,11 @@ function SignContracts:Tick()
 
 	--Sortieren
 	local sortMethod = function(a, b)
+		if a == nil then
+			return false 
+		elseif b == nil then
+			return true
+		end
 		return a.GetAttractiveness() > b.GetAttractiveness()
 	end
 	table.sort(self.AdAgencyTask.SpotsInAgency, sortMethod)

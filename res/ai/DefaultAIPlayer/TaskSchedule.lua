@@ -13,6 +13,7 @@ _G["TaskSchedule"] = class(AITask, function(c)
 	c.SpotInventory = {}
 	c.SpotRequisition = {}
 	c.Player = nil
+	c.log = {}
 
 	c.guessedAudienceRiskyness = 0.75 -- 1.0 means assuming to get all
 
@@ -253,78 +254,60 @@ end
 -- Returns an assumption about potential audience for the given hour and
 -- (optional) broadcast
 -- without given broadcast, an average quality for the hour is used
-function TaskSchedule:GuessedAudienceForHourAndLevel(day, hour, broadcast, guessCurrentHour)
+function TaskSchedule:GuessedAudienceForHour(day, hour, broadcast, guessCurrentHour)
+	local fixedDay, fixedHour = FixDayAndHour(day, hour)
+
 	if (guessCurrentHour == nil) then guessCurrentHour = true; end
 	
 	--requesting audience for the current broadcast?
-	if (guessCurrentHour == false) and (WorldTime.GetDay() == day and WorldTime.GetDayHour() == hour and WorldTime.GetDayMinute() >= 5) then
+	if (guessCurrentHour == false) and (WorldTime.GetDay() == fixedDay and WorldTime.GetDayHour() == fixedHour and WorldTime.GetDayMinute() >= 5) then
 		return MY.GetProgrammePlan().GetAudience()
 	end
 	
 	--Welchen Qualitätslevel sollte ein Film/Werbung um diese Uhrzeit haben
-	local level = self:GetQualityLevel(day, hour)
-	-- Die Maximalquote: Entspricht ungefähr "maxAudiencePercentage"
-	local globalPercentageByHour = self:GetMaxAudiencePercentage(day, hour)
+	local globalPercentageByHour = self:GetMaxAudiencePercentage(fixedDay, fixedHour)
+	local level = self:GetQualityLevel(fixedDay, fixedHour)
 	-- Die Durchschnittsquote dieses Qualitätslevels
-	local averageMovieQualityByLevel = self:GetAverageMovieQualityByLevel(level)
-	local broadcastQuality = 0
+	local averageBroadcastQualityByLevel = self:GetAverageBroadcastQualityByLevel(level)
+	local avgQuality = averageBroadcastQualityByLevel
 
-	--TODO: check advertisements (audience lower than with programmes)
-	if (broadcast ~= nil) then
-		if broadcast.isType(TVT.Constants.BroadcastMaterialType.PROGRAMME) then
-			broadcastQuality = broadcast.GetQuality()
-		-- advertisement has lower "effective" quality
-		else
-			broadcastQuality = 0.3 * broadcast.GetQuality()
-		end
-	else
-		broadcastQuality = 1.0 * averageMovieQualityByLevel
+	local broadcastAttraction
+	local guessedAudience = 0
+	if broadcast ~= nil then 
+		broadcastAttraction = broadcast.GetStaticAudienceAttraction(fixedHour, 1, nil, nil)
+		-- assume they all send at least as good programme as we do
+		avgQuality = math.max(avgQuality, broadcast.GetQuality())
+
+		-- todo: refresh markets when "office is visited" (stationmap)
+		TVT.audiencePredictor.RefreshMarkets()
+		TVT.audiencePredictor.SetAverageValueAttraction(1, avgQuality)
+		TVT.audiencePredictor.SetAverageValueAttraction(2, avgQuality)
+		TVT.audiencePredictor.SetAverageValueAttraction(3, avgQuality)
+		TVT.audiencePredictor.SetAverageValueAttraction(4, avgQuality)
+		TVT.audiencePredictor.SetAttraction(TVT.ME, broadcastAttraction)
+		TVT.audiencePredictor.RunPrediction(fixedDay, fixedHour)
+		guessedAudience = TVT.audiencePredictor.GetAudience(TVT.ME).GetTotalSum()
 	end
 
 	--Formel: Filmqualität * Potentielle Quote nach Uhrzeit (maxAudiencePercentage) * Echte Maximalzahl der Zuschauer
 	--TODO: Auchtung! Muss eventuell an die neue Quotenberechnung angepasst werden
 	local exclusiveMaxAudience = TVT.getExclusiveMaxAudience()
 	local sharedMaxAudience = MY.GetMaxAudience() - exclusiveMaxAudience
-	-- if all 4 channels send same broadcastQuality, you will reach ~25%
-	-- instead of "broadcastQuality * maxAudience" person
-	-- -> assume "averageMovieQualityByLevel" for other channels and adjust
-	--    assumptions by "being better"
 
-	-- TODO: individual assumptions on player qualities
-	--       or check their programme: on block 2/X we know the quality
-	--       or at least could assume on last audience ratings...
-	-- RONNY: TEST
-	--        for now we assume that "others" send good programme too,
-	--        if we send above average. They at least wont send worse
-	--        programme.
-	averageMovieQualityByLevel = math.max(averageMovieQualityByLevel, 0.9*broadcastQuality)
-	local playersBroadcastQuality = {averageMovieQualityByLevel,
-	                                 averageMovieQualityByLevel,
-	                                 averageMovieQualityByLevel,
-	                                 averageMovieQualityByLevel}
-	playersBroadcastQuality[TVT.ME] = broadcastQuality
-
-	local sumBroadcastQuality = playersBroadcastQuality[1] + playersBroadcastQuality[2] + playersBroadcastQuality[3] + playersBroadcastQuality[4]
-	--local avgBroadcastQuality = sumBroadcastQuality / table.count(playersBroadcastQuality)
-	local playerBroadcastQualityShare = broadcastQuality / sumBroadcastQuality
-	
-	local guessedSharedAudience = 0.65* playerBroadcastQualityShare * globalPercentageByHour * sharedMaxAudience
-	local guessedExclusiveAudience = 0.65 * broadcastQuality * globalPercentageByHour * exclusiveMaxAudience
-	local guessedAudience = guessedSharedAudience + guessedExclusiveAudience
-	
-	--debugMsg("GuessedAudienceForHourAndLevel - Hour=" .. hour .. "  Level=" .. level .. "  globalPercentage=" .. math.floor(100*globalPercentageByHour) .. "%  averageMovieQualityByLevel=" .. averageMovieQualityByLevel .. "  playerBroadcastQualityShare=" .. playerBroadcastQualityShare .. "  broadcastQuality="..broadcastQuality.."  guessedAudience=" .. guessedAudience .. "  maxAudience="..MY.GetMaxAudience() .. " (shared=" .. sharedMaxAudience .. "  exclusive="..exclusiveMaxAudience ..")")
+	self.log["GuessedAudienceForHour"] = "Hour=" .. hour .. "  Lvl=" .. level .. "  %  guessedAudience=" .. math.round(guessedAudience) .. "  aud=".. math.round(MY.GetMaxAudience()*globalPercentageByHour) .. " (".. math.floor(100*globalPercentageByHour) .."% of max="..MY.GetMaxAudience()..")"
+	--debugMsg( self.log["GuessedAudienceForHour"] )
 	return guessedAudience
 end
 
 function TaskSchedule:GetQualityLevel(day, hour)
 	local maxAudience = self:GetMaxAudiencePercentage(day, hour)
-	if (maxAudience <= 0.06) then
-		return 1 --Nachtprogramm
-	elseif (maxAudience <= 0.12) then
+	if (maxAudience <= 0.04) then
+		return 1 --Nachtprogramm (2-6)
+	elseif (maxAudience <= 0.14) then
 		return 2 --Mitternacht + Morgen
-	elseif (maxAudience <= 0.18) then
+	elseif (maxAudience <= 0.19) then
 		return 3 -- Nachmittag
-	elseif (maxAudience <= 0.24) then
+	elseif (maxAudience <= 0.23) then
 		return 4 -- Vorabend / Spät
 	else
 		return 5 -- Primetime
@@ -332,18 +315,19 @@ function TaskSchedule:GetQualityLevel(day, hour)
 end
 
 --TODO später dynamisieren
-function TaskSchedule:GetAverageMovieQualityByLevel(level)
+function TaskSchedule:GetAverageBroadcastQualityByLevel(level)
 	if (level == 1) then
 		return 0.04 --Nachtprogramm
 	elseif (level == 2) then
-		return 0.10 --Mitternacht + Morgen
+		return 0.09 --Mitternacht + Morgen
 	elseif (level == 3) then
-		return 0.15 -- Nachmittag
+		return 0.13 -- Nachmittag
 	elseif (level == 4) then
-		return 0.20 -- Vorabend / Spät
+		return 0.18 -- Vorabend / Spät
 	elseif (level == 5) then
-		return 0.25 -- Primetime
+		return 0.23 -- Primetime
 	end
+	return 0.00
 end
 
 -- add the requirement for a (new) specific ad contract
@@ -608,7 +592,7 @@ function JobEmergencySchedule:SetContractOrTrailerToEmptyBlock(choosenSpot, day,
 	local level = self.ScheduleTask:GetQualityLevel(fixedDay, fixedHour)
 
 	local previousProgramme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
-	local guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHourAndLevel(fixedDay, fixedHour, previousProgramme)
+	local guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousProgramme)
 
 	local currentSpotList = self:GetFittingSpotList(guessedAudience, false, true, level, fixedDay, fixedHour)
 
@@ -852,7 +836,8 @@ function JobEmergencySchedule:GetBestMatchingSpot(spotList)
 		if b.GetSpotsToSend() <= 2 then
 			weightB = weightB * (1.0 + 0.1 * (3 - b.GetSpotsToSend()))
 		end
-		return weightA > weightB
+--		return weightA > weightB
+		return a.GetAcuteness() > b.GetAcuteness()
 	end
 	table.sort(orderedList, sortMethod)
 
@@ -1009,7 +994,7 @@ function JobSchedule:OptimizeAdSchedule()
 		local sendAd = true
 
 		local previousProgramme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
-		local guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHourAndLevel(fixedDay, fixedHour, previousProgramme)
+		local guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousProgramme)
 	
 
 		-- send a trailer:
@@ -1239,7 +1224,7 @@ function JobSchedule:OptimizeProgrammeSchedule()
 			local sendProgrammeReason = ""
 
 			local previousBroadcastMaterial = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour - 1)
-			local guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHourAndLevel(fixedDay, fixedHour, previousBroadcastMaterial)
+			local guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousBroadcastMaterial)
 --[[
 local prevText = ""
 local currText = ""
