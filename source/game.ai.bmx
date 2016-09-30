@@ -1466,7 +1466,7 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	Method ar_AddProgrammeLicenceToSuitcase:Int(position:Int = -1)
 		If Not _PlayerInRoom("archive") Then Return self.RESULT_WRONGROOM
 
-		local licence:TProgrammeLicence = GetPlayerProgrammeCollection(self.ME).GetProgrammeLicence(position)
+		local licence:TProgrammeLicence = GetPlayerProgrammeCollection(self.ME).GetProgrammeLicenceAtIndex(position)
 		if not licence then return self.RESULT_NOTFOUND
 
 		Return GetPlayerProgrammeCollection(self.ME).AddProgrammeLicenceToSuitcase(licence)
@@ -1529,7 +1529,7 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	Method ar_GetSuitcaseProgrammeLicences:TLuaFunctionResult(position:Int = -1)
 		If Not _PlayerInRoom("archive") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
-		local licences:TProgrammeLicence[] = GetPlayerProgrammeCollection(self.ME).GetSuitcaserogrammeLicencesArray()
+		local licences:TProgrammeLicence[] = GetPlayerProgrammeCollection(self.ME).GetSuitcaseProgrammeLicencesArray()
 		Return TLuaFunctionResult.Create(self.RESULT_OK, licences)
 	End Method
 End Type

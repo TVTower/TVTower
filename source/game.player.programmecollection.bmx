@@ -191,7 +191,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
-	Method GetSuitcaserogrammeLicencesArray:TProgrammeLicence[]() {_exposeToLua}
+	Method GetSuitcaseProgrammeLicencesArray:TProgrammeLicence[]() {_exposeToLua}
 		'would return an array of type "object[]"
 		'Return suitcaseProgrammeLicences.toArray()
 
