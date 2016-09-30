@@ -2349,6 +2349,15 @@ Type TSavegameConverter
 				if parentObj and TTypeID.ForObject(parentObj).name().ToLower() = "RoomHandler_MovieAgency".ToLower()
 					return RoomHandler_MovieAgency.GetInstance().filterAuction
 				endif
+			case "TMap>TAudienceAttraction[]".ToLower()
+				if parentObj and TTypeID.ForObject(parentObj).name().ToLower() = "TAudienceMarketCalculation".ToLower()
+					local oldMap:TMap = TMap(obj)
+					local newArr:TAudienceAttraction[]
+					for local att:TAudienceAttraction = EachIn oldMap.Values()
+						newArr :+ [att]
+					next
+					return newArr
+				endif
 			rem
 			case "TList>TIntMap".ToLower()
 				'room(base)collection?

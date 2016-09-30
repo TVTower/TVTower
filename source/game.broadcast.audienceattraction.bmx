@@ -9,19 +9,27 @@ Import "game.broadcast.genredefinition.base.bmx"
 Type TAudienceAttraction Extends TAudience
 	'types: -1 (outage), 1 (movie, 2 (news)
 	Field BroadcastType:Int
-	'0 - 100
+	'=== SEMISTATIC ===
+	'(things changing with additional broadcasts like "perceived Quality")
+	'quality: 0 - 100
 	Field Quality:Float
+	Field TrailerMod:TAudience
+
+	'=== STATIC mods ==
+	'(based on broadcast material itself)
 	Field GenreTargetGroupMod:TAudience
+	Field FlagsTargetGroupMod:TAudience
+	Field targetGroupAttractivityMod:TAudience
+	Field GenreTimeMod:Float
+
+	'=== DYNAMIC mods ==
+	'(based on broadcast time / popularity )
 	Field GenrePopularityMod:Float = 1.0
 	Field CastMod:Float = 1.0
-	Field FlagsTargetGroupMod:TAudience
 	Field FlagsPopularityMod:Float = 1.0
-	Field targetGroupAttractivityMod:TAudience
 	Field PublicImageMod:TAudience
-	Field TrailerMod:TAudience
 	Field MiscMod:TAudience
 	Field QualityOverTimeEffectMod:Float
-	Field GenreTimeMod:Float
 	Field LuckMod:TAudience
 
 	Field AudienceFlowBonus:TAudience
@@ -185,13 +193,7 @@ Type TAudienceAttraction Extends TAudience
 	
 
 	Method Recalculate()
-		Local tmpAudience:TAudience
-
-
-
 		'=== FINAL CALCULATION ===
-
-
 		Local result:TAudience = New TAudience
 		'start with an attraction of "100%"
 		result.AddFloat(1.0)
@@ -328,22 +330,13 @@ Type TAudienceAttraction Extends TAudience
 	End Method
 
 
-	Method CopyBaseAttractionFrom(otherAudienceAttraction:TAudienceAttraction)
+	Method CopyStaticBaseAttractionFrom(otherAudienceAttraction:TAudienceAttraction)
 		'ATTENTION: we _copy_ the objects instead of referencing it
 		'Why?:
 		'broadcastmaterial "TNewsShow" is modifying the attraction by
 		'multiplying them for each slot (1-3) with a factor. When using
 		'references, we also lower the effects of the "surrounding"
 		'programme (eg movieBlock1 news movieBlock2)
-
-		'float values do not need a copy (*1 is done to avoid ambiguity if changing
-		'one of the objects - eg. float to TAudience)
-		Quality = otherAudienceAttraction.Quality * 1
-		CastMod = otherAudienceAttraction.CastMod * 1
-		GenrePopularityMod = otherAudienceAttraction.GenrePopularityMod * 1
-		FlagsPopularityMod = otherAudienceAttraction.FlagsPopularityMod * 1
-
-
 		If otherAudienceAttraction.targetGroupAttractivityMod
 			targetGroupAttractivityMod = otherAudienceAttraction.targetGroupAttractivityMod.Copy()
 		Else
@@ -360,6 +353,24 @@ Type TAudienceAttraction Extends TAudience
 		Else
 			FlagsTargetGroupMod = Null
 		EndIf
+	End Method
+
+
+	Method CopyDynamicBaseAttractionFrom(otherAudienceAttraction:TAudienceAttraction)
+		'ATTENTION: we _copy_ the objects instead of referencing it
+		'Why?:
+		'broadcastmaterial "TNewsShow" is modifying the attraction by
+		'multiplying them for each slot (1-3) with a factor. When using
+		'references, we also lower the effects of the "surrounding"
+		'programme (eg movieBlock1 news movieBlock2)
+
+		'float values do not need a copy (*1 is done to avoid ambiguity if changing
+		'one of the objects - eg. float to TAudience)
+		Quality = otherAudienceAttraction.Quality * 1
+		CastMod = otherAudienceAttraction.CastMod * 1
+		GenrePopularityMod = otherAudienceAttraction.GenrePopularityMod * 1
+		FlagsPopularityMod = otherAudienceAttraction.FlagsPopularityMod * 1
+
 		If otherAudienceAttraction.TrailerMod
 			TrailerMod = otherAudienceAttraction.TrailerMod.Copy()
 		else

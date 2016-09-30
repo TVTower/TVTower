@@ -153,10 +153,8 @@ Type TGUIChat Extends TGUIPanel
 
 	Method onAddEntry:Int( triggerEvent:TEventBase )
 		Local guiChat:TGUIChat = TGUIChat(triggerEvent.getReceiver())
-		'if event has a specific receiver and this is not a chat - we are not interested
-		If triggerEvent.getReceiver() And Not guiChat Then Return False
-		'found a chat - but it is another chat
-		If guiChat And guiChat <> Self Then Return False
+		'if event has a specific receiver and this is not this chat
+		If triggerEvent.getReceiver() and guiChat <> Self Then Return False
 
 		'DO NOT WRITE COMMANDS !
 		If GetCommandFromText(triggerEvent.GetData().GetString("text")) <> CHAT_COMMAND_NONE
@@ -370,25 +368,29 @@ Type TGUIChatEntry Extends TGUIListItem
 
 
 	Method DrawContent()
-		If Self.showtime <> Null Then SetAlpha Float(Self.showtime - Time.GetTimeGone())/500.0
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
+		local screenY:int = GetScreenY()
+		if GetParent().GetScreenY() > screenY + rect.GetH() then return  
+		if GetParent().GetScreenY() + GetParent().GetScreenHeight() < screenY then return  
+
 		Local maxWidth:Int = parentPanel.getContentScreenWidth()-Self.rect.getX()
 
 		'local maxWidth:int = self.getParentWidth("tguiscrollablepanel")-self.rect.getX()
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
 		Local move:TVec2D = New TVec2D.Init(0,0)
+
+		If Self.showtime <> Null Then SetAlpha Float(Self.showtime - Time.GetTimeGone())/500.0
 		If Self.Data.getString("senderName",Null)
 			Local senderColor:TColor = TColor(Self.Data.get("senderColor"))
 			If Not senderColor Then senderColor = TColor.Create(0,0,0)
-			move = GetBitmapFontManager().baseFontBold.drawStyled(Self.Data.getString("senderName", "")+":", Self.getScreenX(), Self.getScreenY(), senderColor, 2, 1)
+			move = GetBitmapFontManager().baseFontBold.drawStyled(Self.Data.getString("senderName", "")+":", Self.getScreenX(), screenY, senderColor, 2, 1)
 			'move the x so we get space between name and text
 			'move the y point 1 pixel as bold fonts are "higher"
 			move.setXY( move.x+5, 1)
 		EndIf
-		GetBitmapFontManager().baseFont.drawBlock(GetValue(), getScreenX()+move.x, getScreenY()+move.y, maxWidth-move.X, maxHeight, Null, valueColor, 2, 1, 0.5)
-
+		GetBitmapFontManager().baseFont.drawBlock(GetValue(), getScreenX()+move.x, screenY+move.y, maxWidth-move.X, maxHeight, Null, valueColor, 2, 1, 0.5)
 		SetAlpha 1.0
 	End Method
 End Type

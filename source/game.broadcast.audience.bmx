@@ -143,7 +143,7 @@ Global AudienceManager:TAudienceManager = new TAudienceManager
 'Die Klasse kann sowohl Zuschauerzahlen als auch Faktoren/Quoten beinhalten
 'und stellt einige Methoden bereit die Berechnung mit Faktoren und anderen
 'TAudience-Klassen ermöglichen.
-Type TAudienceBase
+Type TAudienceBase {_exposeToLua="selected"}
 	Field Children:Float    = 0 'Kinder
 	Field Teenagers:Float	= 0	'Teenager
 	Field HouseWives:Float	= 0	'Hausfrauen
@@ -232,7 +232,7 @@ Type TAudienceBase
 	End Method
 
 
-	Method GetAverage:Float()
+	Method GetAverage:Float() {_exposeToLua}
 		local result:Float = GetSum()
 		if result = 0
 			return 0.0
@@ -293,7 +293,7 @@ Type TAudienceBase
 	End Method
 
 
-	Method GetValue:Float(targetID:int)
+	Method GetValue:Float(targetID:int) {_exposeToLua}
 		Select targetID
 			Case TVTTargetGroup.All
 				Return GetSum()
@@ -323,7 +323,7 @@ Type TAudienceBase
 
 
 	'returns the sum value of a group of targetIDS
-	Method GetGroupValue:Float(targetIDs:int)
+	Method GetGroupValue:Float(targetIDs:int) {_exposeToLua}
 		'loop through all targetGroup-entries and add them if contained
 		local result:Float
 		local oneFound:int = false
@@ -366,13 +366,13 @@ Type TAudienceBase
 	End Method
 
 
-	Method GetSum:Float()
+	Method GetSum:Float() {_exposeToLua}
 		'ignore gender in base variant
 		Return Children + Teenagers + HouseWives + Employees + Unemployed + Manager + Pensioners
 	End Method
 
 
-	Method GetWeightedAverage:Float(audienceBreakdown:TAudienceBase = null)
+	Method GetWeightedAverage:Float(audienceBreakdown:TAudienceBase = null) {_exposeToLua}
 		'fetch current breakdown if nothing was given
 		if not audienceBreakdown then audienceBreakdown = AudienceManager.GetAudienceBreakdown()
 
@@ -685,7 +685,7 @@ End Type
 
 
 
-Type TAudience
+Type TAudience {_exposeToLua="selected"}
 	'Optional: Eine Id zur Identifikation (z.B. PlayerId). Nur bei Bedarf füllen!
 	Field Id:Int
 	Field audienceMale:TAudienceBase
@@ -772,13 +772,13 @@ Type TAudience
 
 
 	'=== PUBLIC ===
-	Method GetAudienceFemale:TAudienceBase()
+	Method GetAudienceFemale:TAudienceBase() {_exposeToLua}
 		if not audienceFemale then audienceFemale = new TAudienceBase
 		return audienceFemale
 	End Method
 
 
-	Method GetAudienceMale:TAudienceBase()
+	Method GetAudienceMale:TAudienceBase() {_exposeToLua}
 		if not audienceMale then audienceMale = new TAudienceBase
 		return audienceMale
 	End Method
@@ -805,7 +805,7 @@ Type TAudience
 	End Method
 
 
-	Method GetTotalValue:Float(targetID:int)
+	Method GetTotalValue:Float(targetID:int) {_exposeToLua}
 		if targetID = TVTTargetGroup.Women
 			return GetGenderValue(targetID, TVTPersonGender.FEMALE)
 		elseif targetID = TVTTargetGroup.Men
@@ -819,7 +819,7 @@ Type TAudience
 	End Method
 
 
-	Method GetGenderValue:Float(targetID:int, gender:int)
+	Method GetGenderValue:Float(targetID:int, gender:int) {_exposeToLua}
 		if targetID = TVTTargetGroup.Women
 			if not audienceFemale or gender = TVTPersonGender.MALE then return 0
 			return audienceFemale.GetSum()
@@ -868,7 +868,7 @@ Type TAudience
 	End Method	
 
 
-	Method GetTotalSum:Float()
+	Method GetTotalSum:Float() {_exposeToLua}
 		local res:float = 0
 		if audienceFemale then res :+ audienceFemale.GetSum()
 		if audienceMale then res :+ audienceMale.GetSum()
@@ -876,7 +876,7 @@ Type TAudience
 	End Method
 	
 
-	Method GetGenderSum:Float(gender:int)
+	Method GetGenderSum:Float(gender:int) {_exposeToLua}
 		if gender = TVTPersonGender.MALE
 			if audienceMale then return audienceMale.GetSum()
 		elseif gender = TVTPersonGender.FEMALE
@@ -886,12 +886,12 @@ Type TAudience
 	End Method
 
 
-	Method GetTotalAverage:Float()
+	Method GetTotalAverage:Float() {_exposeToLua}
 		return 0.5 * (GetAudienceMale().GetAverage() + GetAudienceFemale().GetAverage())
 	End Method
 
 
-	Method GetGenderAverage:Float(gender:int)
+	Method GetGenderAverage:Float(gender:int) {_exposeToLua}
 		if gender = TVTPersonGender.MALE
 			return GetAudienceMale().GetAverage()
 		elseif gender = TVTPersonGender.FEMALE
@@ -901,7 +901,7 @@ Type TAudience
 	End Method
 
 
-	Method GetWeightedAverage:Float(audienceBreakdown:TAudienceBase = null)
+	Method GetWeightedAverage:Float(audienceBreakdown:TAudienceBase = null) {_exposeToLua}
 		'fetch current breakdown if nothing was given
 		if not audienceBreakdown then audienceBreakdown = AudienceManager.GetAudienceBreakdown()
 

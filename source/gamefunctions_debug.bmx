@@ -23,7 +23,7 @@ Type TDebugAudienceInfos
 		Local x:Int = 200
 		Local y:Int = 25
 		Local font:TBitmapFont = GetBitmapFontManager().baseFontSmall
-		GetBitmapFontManager().baseFont.drawBlock("|b|Taste |color=255,100,0|~qQ~q|/color| drücken|/b| um (Debug-)Quotenbildschirm wieder auszublenden. Spielerwechsel: Strg+(1-4)", 0, 360, GetGraphicsManager().GetWidth(), 25, ALIGN_CENTER_CENTER, TColor.clRed)
+		GetBitmapFontManager().baseFont.drawBlock("|b|Taste |color=255,100,0|~qQ~q|/color| drücken|/b| um (Debug-)Quotenbildschirm wieder auszublenden. Spielerwechsel: TV-Kanalbuttons", 0, 360, GetGraphicsManager().GetWidth(), 25, ALIGN_CENTER_CENTER, TColor.clRed)
 
 		font.drawBlock("Gesamt", x, y, 65, 25, ALIGN_RIGHT_TOP, TColor.clRed)
 		font.drawBlock("Kinder", x + (70*1), y, 65, 25, ALIGN_RIGHT_TOP, TColor.clWhite)
@@ -329,8 +329,14 @@ Type TDebugProgrammeCollectionInfos
 		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeProgrammeLicenceFromSuitcase", onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeProgrammeLicence", onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.addProgrammeLicence", onChangeProgrammeCollection) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnStart", onGameStart) ]
 	End Method
 
+
+	Function onGameStart:Int(triggerEvent:TEventBase)
+		debugProgrammeCollectionInfos.Initialize()
+	End Function
+		
 
 	Function onChangeProgrammeCollection:Int(triggerEvent:TEventBase)
 		local prog:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().Get("programmelicence"))
@@ -425,6 +431,8 @@ Type TDebugProgrammeCollectionInfos
 
 
 	Method Initialize:int()
+		availableProgrammeLicences.Clear()
+		availableAdContracts.Clear()
 		'on savegame loads, the maps would be empty without 
 		for local i:int = 1 until 4
 			local coll:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(i)
