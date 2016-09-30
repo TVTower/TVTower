@@ -633,6 +633,11 @@ Type TDebugProgrammePlanInfos
 		if oldestEntryTime >= 0 and oldestEntryTime + 10000 < Time.GetTimeGone() then RemoveOutdated()
 
 		For local hour:int = 0 until daysProgramme.length
+			local audienceResult:TAudienceResultBase
+			if hour <= currHour
+				audienceResult = dailyBroadcastStatistic.GetAudienceResult(playerID, hour)
+			endif
+
 			Local adString:String = ""
 			Local progString:String = ""
 			Local adString2:String = ""
@@ -653,7 +658,12 @@ Type TDebugProgrammePlanInfos
 					spotNumber = (hour - advertisement.programmedHour + 1) + "/" + advertisement.GetBlocks(TVTBroadcastMaterialType.ADVERTISEMENT)
 				endif
 				adString = advertisement.GetTitle()
+				if ad then adString = int(ad.contract.GetMinAudience()/1000) +"k " + adString
 				adString2 = "[" + spotNumber + "]"
+
+'- Startwerbung ANLEGEN 20k...
+'- Startnachrichten festlegen?
+
 
 				if TProgramme(advertisement) then adString = "T: "+adString
 			EndIf
@@ -661,9 +671,19 @@ Type TDebugProgrammePlanInfos
 			Local programme:TBroadcastMaterial = daysProgramme[hour]
 			If programme
 				progString = programme.GetTitle()
-				progString2 = "["+ (hour - programme.programmedHour + 1) + "/" + programme.GetBlocks(TVTBroadcastMaterialType.PROGRAMME) +"]"
-				
 				if TAdvertisement(programme) then progString = "I: "+progString
+
+				progString2 = "["+ (hour - programme.programmedHour + 1) + "/" + programme.GetBlocks(TVTBroadcastMaterialType.PROGRAMME) +"]"
+				if audienceResult
+					progString2 = int(audienceResult.audience.GetTotalSum()/1000) +"k"
+				endif
+
+				local player:TPlayer = GetPlayer(playerID)
+				local guessedAudience:int = -1
+				if player then guessedAudience = player.aiData.GetInt("guessedaudience_"+currDay+"_"+hour, -1)
+				if guessedAudience <> -1 
+					progString2 = progString2 + " ("+int(guessedAudience/1000)+"k)"
+				endif
 			EndIf
 
 			If progString = "" and GetWorldTime().GetDayHour() > hour Then progString = "PROGRAMME OUTAGE"
@@ -701,8 +721,7 @@ Type TDebugProgrammePlanInfos
 				SetBlend ALPHABLEND
 			endif
 			
-			if hour < currHour and TAdvertisement(advertisement)
-				local audienceResult:TAudienceResultBase = dailyBroadcastStatistic.GetAudienceResult(playerID, hour)
+			if hour < currHour and TAdvertisement(advertisement) and audienceResult
 				local reachedAudience:int = audienceResult.audience.GetTotalSum()
 				local adMinAudience:int = TAdvertisement(advertisement).contract.GetMinAudience()
 				SetColor 160,160,255
@@ -715,8 +734,8 @@ Type TDebugProgrammePlanInfos
 
 			GetBitmapFont("default", 11).Draw( Rset(hour,2).Replace(" ", "0"), x+5, y+1 + hour*lineHeight)
 			if programme then SetStateColor(programme)
-			GetBitmapFont("default", 11).DrawBlock( progString, x+30, y+1 + hour*lineHeight, 145, lineHeight)
-			GetBitmapFont("default", 11).DrawBlock( progString2, x+180, y+1 + hour*lineHeight, 30, lineHeight, ALIGN_RIGHT_CENTER)
+			GetBitmapFont("default", 11).DrawBlock( progString, x+30, y+1 + hour*lineHeight, 110, lineHeight)
+			GetBitmapFont("default", 11).DrawBlock( progString2, x+145, y+1 + hour*lineHeight, 65, lineHeight, ALIGN_RIGHT_CENTER)
 			if advertisement then SetStateColor(advertisement)
 			GetBitmapFont("default", 11).DrawBlock( adString, x+225, y+1 + hour*lineHeight, 105, lineHeight)
 			GetBitmapFont("default", 11).DrawBlock( adString2, x+335, y+1 + hour*lineHeight, 30, lineHeight, ALIGN_RIGHT_CENTER)
