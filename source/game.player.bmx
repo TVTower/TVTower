@@ -241,7 +241,11 @@ End Function
 Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	'ID of a remote player who controls this (ai) player
 	field playerControlledByID:int = -1
+	Field aiData:TData = new TData {_exposeToLua}
 
+	Method SetAIData(key:string, value:string) {_exposeToLua}
+		aiData.Add(key, value)
+	End Method
 
 	Method onLoad:int(triggerEvent:TEventBase)
 		if IsLocalAi()

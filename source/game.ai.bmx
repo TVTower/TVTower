@@ -690,6 +690,15 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	'=== OFFICE ===
 	'players bureau
 
+	Method of_getAudience:Int(day:int, hour:int)
+		local broadcastStat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(day)
+		if not broadcastStat then return 0
+		local audience:TAudienceResultBase = broadcastStat.GetAudienceResult(self.ME, hour, false)
+		if not audience then return 0
+		Return audience.audience.GetTotalSum()
+	End Method
+
+
 	'== STATIONMAP ==
 	Method of_buyStation:int(x:int, y:int)
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM

@@ -622,7 +622,7 @@ function JobEmergencySchedule:SetContractOrTrailerToEmptyBlock(choosenSpot, day,
 	end
 
 	if (choosenSpot ~= nil) then
-		debugMsg("Set advertisement (emergency plan): " .. fixedDay .. "/" .. fixedHour .. ":55  contract: " .. choosenSpot.GetTitle() .. " [" ..choosenSpot.GetID() .."]  MinAud: " .. choosenSpot.GetMinAudience() .. "  acuteness: " .. choosenSpot.GetAcuteness())
+		debugMsg("Set advertisement (emergency plan): " .. fixedDay .. "/" .. fixedHour .. ":55  contract=\"" .. choosenSpot.GetTitle() .. "\" [" ..choosenSpot.GetID() .."]  MinAud=" .. choosenSpot.GetMinAudience() .. "  guessedAud=" .. guessedAudience .."  acuteness=" .. choosenSpot.GetAcuteness())
 		local result = TVT.of_setAdvertisementSlot(choosenSpot, fixedDay, fixedHour)
 	else
 		--choose spot without any audience requirements
@@ -632,10 +632,10 @@ function JobEmergencySchedule:SetContractOrTrailerToEmptyBlock(choosenSpot, day,
 
 		choosenSpot = self:GetBestMatchingSpot(filteredCurrentSpotList)
 		if (choosenSpot ~= nil) then
-			debugMsg("Set advertisement (emergency plan - unfiltered): " .. fixedDay .. "/" .. fixedHour .. ":55  contract: " .. choosenSpot.GetTitle() .. "  acuteness: " .. choosenSpot.GetAcuteness())
+			debugMsg("Set advertisement (emergency plan - unfiltered): " .. fixedDay .. "/" .. fixedHour .. ":55  contract=\"" .. choosenSpot.GetTitle() .. "\"  guessedAud=" .. guessedAudience.."  acuteness=" .. choosenSpot.GetAcuteness())
 			local result = TVT.of_setAdvertisementSlot(choosenSpot, fixedDay, fixedHour)
 		else
-			debugMsg("Set advertisement (emergency plan - unfiltered): " .. fixedDay .. "/" .. fixedHour .. ":55  NONE FOUND")
+			debugMsg("Set advertisement (emergency plan - unfiltered): " .. fixedDay .. "/" .. fixedHour .. ":55  guessedAud=" .. guessedAudience .."  NONE FOUND")
 		end
 	end
 end
@@ -995,7 +995,8 @@ function JobSchedule:OptimizeAdSchedule()
 
 		local previousProgramme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
 		local guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousProgramme)
-	
+
+		MY.SetAIData("guessedaudience_" .. fixedDay .."_".. fixedHour, guessedAudience)
 
 		-- send a trailer:
 		-- ===============
@@ -1023,7 +1024,7 @@ function JobSchedule:OptimizeAdSchedule()
 				local adContract = TVT.of_getAdContractByID( currentBroadcastMaterial.GetReferenceID() )
 				if (previousProgramme ~= nil and adContract ~= nil) then
 					if guessedAudience < adContract.GetMinAudience() then
-						sendTrailerReason = "unsatisfiable ad (aud "..math.floor(guessedAudience) .. "  <  minAud " .. adContract.GetMinAudience() .. ")"
+						sendTrailerReason = "unsatisfiable ad (guessedAud "..math.floor(guessedAudience) .. "  <  minAud " .. adContract.GetMinAudience() .. ")"
 						sendTrailer = true
 					end
 				end
@@ -1089,7 +1090,7 @@ function JobSchedule:OptimizeAdSchedule()
 				-- only different spots - and when audience requirement is at better
 				if (newAdContract ~= oldAdContract and audienceCoverageIncrease > 0) then
 					choosenBroadcastSource = newAdContract
-					choosenBroadcastLog = "Set ad (optimized): " .. fixedDay .. "/" .. fixedHour .. ":55  " .. newAdContract.GetTitle() .. " [" .. newAdContract.GetID() .."]  MinAud: " .. newAdContract.GetMinAudience() .. " (vorher: " .. oldMinAudience .. ")"
+					choosenBroadcastLog = "Set ad (optimized): " .. fixedDay .. "/" .. fixedHour .. ":55  " .. newAdContract.GetTitle() .. " [" .. newAdContract.GetID() .."]  MinAud=" .. newAdContract.GetMinAudience() .. " (old=" .. oldMinAudience .. ")  guessedAud="..guessedAudience
 					sendTrailer = false
 				end
 			else
