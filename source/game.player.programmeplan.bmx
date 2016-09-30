@@ -1770,9 +1770,9 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			'copy base things
 			audienceResult.CopyFrom(oldAudienceResult)
 			'reuse some values by directly linking to it
-			audienceResult.ChannelSurferToShare = oldAudienceResult.ChannelSurferToShare
+			audienceResult.PotentialMaxAudience = oldAudienceResult.PotentialMaxAudience
 			audienceResult.AudienceAttraction = oldAudienceResult.AudienceAttraction
-			audienceResult.EffectiveAudienceAttraction = oldAudienceResult.EffectiveAudienceAttraction
+			audienceResult.competitionAttractionModifier = oldAudienceResult.competitionAttractionModifier
 			'use advertisement instead of programme
 			audienceResult.broadcastMaterial = obj
 

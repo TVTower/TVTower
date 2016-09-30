@@ -354,6 +354,8 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	Field Constants:TVTGameConstants
 	'gets instantiated during "new"
 	Field ME:Int
+
+	Field audiencePredictor:TBroadcastAudiencePrediction = new TBroadcastAudiencePrediction
 	
 	Field ROOM_TOWER:Int = 0
 	Field ROOM_MOVIEAGENCY:Int
@@ -589,7 +591,6 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 		if day = -1 then day = GetWorldTime().GetDay()
 		if hour = -1 then hour = GetWorldTime().GetDayHour()
 		local time:Long = GetWorldTime().MakeTime(0, day, hour, 0, 0)
-
 		'percentage of each population group watching now
 		'local percentage:TAudience = TBroadcast.GetPotentialAudiencePercentageForHour(hour).GetAvg()
 
@@ -603,6 +604,28 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 		return population.GetTotalSum()
 	End Method
 
+
+	'only for DEBUG
+	'allows access to information of OTHER PLAYERS !!
+	Method getBroadcastedProgrammeQuality:Float(day:int = - 1, hour:int = -1, playerID:int)
+		local plan:TPlayerProgrammePlan = GetPlayerProgrammePlan(playerID)
+		if not plan then return 0.0
+		
+		local broadcastMaterial:TBroadcastMaterial = plan.GetProgramme(day, hour)
+		if not broadcastMaterial then return 0.0
+
+		if TAdvertisement(broadcastMaterial)
+			return 0.6 * broadcastMaterial.GetQuality()
+		endif
+		return broadcastMaterial.GetQuality()
+	End Method
+
+
+	Method getAudienceAttraction:string(hour:int, broadcastMaterial:TBroadcastMaterial, lastMovieAttraction:TAudienceAttraction = null, lastNewsShowAttraction:TAudienceAttraction = null, withSequenceEffect:Int=False, withLuckEffect:Int=False)
+		if not broadcastMaterial then return ""
+		return broadcastMaterial.GetAudienceAttraction(hour, broadcastMaterial.currentBlockBroadcasting, lastMovieAttraction, lastNewsShowAttraction, withSequenceEffect, withLuckEffect).ToString()
+	End Method
+	
 
 	Method getExclusiveMaxAudience:int()
 		return GetStationMapCollection().GetChannelExclusiveAudience(self.ME)
@@ -722,7 +745,7 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
-	Method of_GetBroadcastMaterialInTimeSpan:TLuaFunctionResult(objectType:Int=0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1, includeStartingEarlierObject:Int=True, requireSameType:Int=False) {_exposeToLua}
+	Method of_GetBroadcastMaterialInTimeSpan:TLuaFunctionResult(objectType:Int=0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1, includeStartingEarlierObject:Int=True, requireSameType:Int=False)
 		If Not _PlayerInRoom("office") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
 		local bm:TBroadcastMaterial[] = GetPlayerProgrammePlan(self.ME).GetObjectsInTimeSpan(objectType, dayStart, hourStart, dayEnd, hourEnd, includeStartingEarlierObject, requireSameType)

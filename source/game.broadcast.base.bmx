@@ -258,16 +258,10 @@ Type TBroadcastManager
 			Local audienceResult:TAudienceResult = bc.GetAudienceResult(playerID)
 			'add to current set of results
 			SetAudienceResult(playerID, audienceResult)
-
-			If audienceResult.AudienceAttraction			
-				'if there is a malfunction, inform others
-				If audienceResult.AudienceAttraction.Malfunction
-					EventManager.triggerEvent(TEventSimple.Create("BroadcastManager.BroadcastMalfunction", new TData.addNumber("playerID", playerID), self))
-				Endif
-			EndIf
 		Next
 
 		bc.FindTopValues()
+
 		ChangeImageCauseOfBroadcast(bc, broadcastType)
 		'store current broadcast
 		'currentBroadcast = bc
@@ -337,6 +331,83 @@ End Function
 
 
 
+Type TBroadcastAudiencePrediction {_exposeToLua="selected"}
+	Field attractions:TAudienceAttraction[]
+	Field broadcastType:int = 0
+	Field bc:TBroadcast
+	Field lastProgrammeBroadcast:TBroadcast
+	Field lastNewsBroadcast:TBroadcast
+
+
+	Method SetAttraction(playerID:int, attraction:TAudienceAttraction) {_exposeToLua}
+		if playerID < 0 then return
+
+		if attractions.length < playerID then attractions = attractions[.. playerID + 1]
+		attractions[playerID - 1] = attraction
+	End Method
+
+
+	Method SetBaseAttraction(playerID:int, audience:TAudience) {_exposeToLua}
+		local attr:TAudienceAttraction = new TAudienceAttraction
+		attr.SetValuesFrom(audience)
+
+		SetAttraction(playerID, attr)
+	End Method
+
+
+	Method SetAverageValueAttraction(playerID:int, avgValue:Float=1.0) {_exposeToLua}
+		SetBaseAttraction(playerID, new TAudience.InitValue(avgValue, avgValue))
+	End Method
+
+
+	Method SetBroadcastType(broadcastType:int) {_exposeToLua}
+		self.broadcastType = broadcastType
+	End Method
+
+
+	Method RefreshMarkets:int() {_exposeToLua}
+		if bc = Null then bc = new TBroadcast
+		bc.AscertainPlayerMarkets()
+	End Method
+
+
+	Method GetAudienceResult:TAudienceResult(playerID:int) {_exposeToLua}
+		if not bc then return new TAudienceResult
+		return bc.GetAudienceResult(playerID)
+	End Method
+
+
+	Method GetAudience:TAudience(playerID:int) {_exposeToLua}
+		if not bc then return new TAudience
+		return bc.GetAudienceResult(playerID).audience
+	End Method
+
+
+	Method GetAudienceTotalSum:int(playerID:int) {_exposeToLua}
+		if not bc then return 0
+		return bc.GetAudienceResult(playerID).audience.GetTotalSum()
+	End Method
+
+
+	Method RunPrediction(day:int, hour:int) {_exposeToLua}
+		if bc = Null then bc = new TBroadcast
+		if bc.AudienceMarkets.Count() = 0 then RefreshMarkets()
+	
+		if day < 0 then day = GetWorldTime().GetDay()
+		bc.Time = GetWorldTime().MakeTime(0, day, hour, 0, 0)
+
+		'even if currentBroadcastMaterialdd is empty - fill
+		'playersBroadcasts to a length of 4
+		'-> access to playersBroadcast[0-3] is valid
+		if attractions.length < 4
+			attractions = attractions[..4]
+		endif
+	
+		'compute the audience for the given broadcasts
+		bc.ComputeAudience(lastProgrammeBroadcast, lastNewsBroadcast, attractions)
+	End Method
+End Type
+
 
 'In dieser Klasse und in TAudienceMarketCalculation findet die eigentliche
 'Quotenberechnung statt und es wird das Ergebnis gecached, so dass man die
@@ -394,13 +465,25 @@ Type TBroadcast
 
 
 	'Hiermit wird die eigentliche Zuschauerzahl berechnet (mit allen Features)
-	Method ComputeAudience( lastMovieBroadcast:TBroadcast,lastNewsShowBroadcast:TBroadcast )
+	Method ComputeAudience( lastMovieBroadcast:TBroadcast,lastNewsShowBroadcast:TBroadcast, attractions:TAudienceAttraction[] = null )
 		AudienceResults[0] = New TAudienceResult
 		AudienceResults[1] = New TAudienceResult
 		AudienceResults[2] = New TAudienceResult
 		AudienceResults[3] = New TAudienceResult
 
-		ComputeAndSetPlayersProgrammeAttraction(lastMovieBroadcast, lastNewsShowBroadcast)
+		if not attractions
+			attractions = New TAudienceAttraction[4]
+		elseif attractions.length < 4
+			attractions = attractions[.. 4]
+		endif
+
+		'Calculate missing attraction of a broadcast per player
+		'and assign attraction (also informs markets about the attraction)
+		For Local i:Int = 1 to 4
+			if not attractions[i-1] then attractions[i-1] = ComputeAttraction(i, lastMovieBroadcast, lastNewsShowBroadcast)
+			SetAttraction(i, attractions[i-1])
+		Next
+
 
 		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
 			market.ComputeAudience(Time)
@@ -419,7 +502,7 @@ Type TBroadcast
 		SetAudienceResult(playerId, New TAudienceResult)
 '		GetAudienceResult(playerId).Reset()
 
-		ComputeAndSetPlayersProgrammeAttractionForPlayer(playerId, lastMovieBroadcast, lastNewsShowBroadcast)
+		SetAttraction(playerId, ComputeAttraction(playerId, lastMovieBroadcast, lastNewsShowBroadcast))
 
 		'Ronny: when a player gets a manually set malfunction, the
 		'       audience attraction is missing - and then bugging out
@@ -470,8 +553,8 @@ Type TBroadcast
 	'===== Hilfsmethoden =====
 
 	Method AssimilateResults(market:TAudienceMarketCalculation)
-		For Local playerId:String = EachIn market.Players
-			AssimilateResultsForPlayer(playerId.ToInt(), market)
+		For Local playerID:int = EachIn market.playerIDs
+			AssimilateResultsForPlayer(playerID, market)
 		Next
 	End Method
 
@@ -481,16 +564,8 @@ Type TBroadcast
 		If result Then GetAudienceResult(playerId).AddResult(result)
 	End Method	
 
-
-	'Berechnet die Attraktivität des Programmes pro Spieler (mit Glücksfaktor) und setzt diese Infos an die Märktkalkulationen (TAudienceMarketCalculation) weiter.
-	Method ComputeAndSetPlayersProgrammeAttraction(lastMovieBroadcast:TBroadcast, lastNewsShowBroadcast:TBroadcast)		
-		For Local i:Int = 1 To 4
-			ComputeAndSetPlayersProgrammeAttractionForPlayer(i, lastMovieBroadcast, lastNewsShowBroadcast)
-		Next
-	End Method
 	
-	
-	Method ComputeAndSetPlayersProgrammeAttractionForPlayer(playerId:Int, lastMovieBroadcast:TBroadcast, lastNewsShowBroadcast:TBroadcast)
+	Method ComputeAttraction:TAudienceAttraction(playerId:Int, lastMovieBroadcast:TBroadcast, lastNewsShowBroadcast:TBroadcast)
 		Local broadcastedMaterial:TBroadcastMaterial = PlayersBroadcasts[playerId-1]
 
 		Local lastMovieAttraction:TAudienceAttraction = null
@@ -499,26 +574,19 @@ Type TBroadcast
 		Local lastNewsShowAttraction:TAudienceAttraction = null
 		If lastNewsShowBroadcast then lastNewsShowAttraction = lastNewsShowBroadcast.Attractions[playerId-1]
 
+		local attraction:TAudienceAttraction
 		If broadcastedMaterial Then
 			GetAudienceResult(playerId).broadcastMaterial = broadcastedMaterial
 			'3. Qualität meines Programmes
-			Attractions[playerId-1] = broadcastedMaterial.GetAudienceAttraction(GetWorldTime().GetDayHour(), broadcastedMaterial.currentBlockBroadcasting, lastMovieAttraction, lastNewsShowAttraction, True, true)
+			attraction = broadcastedMaterial.GetAudienceAttraction(GetWorldTime().GetDayHour(), broadcastedMaterial.currentBlockBroadcasting, lastMovieAttraction, lastNewsShowAttraction, True, true)
 		Else 'dann Sendeausfall! TODO: Chef muss böse werden!
 			TLogger.Log("TBroadcast.ComputeAndSetPlayersProgrammeAttraction()", "Player '" + playerId + "': Malfunction!", LOG_DEBUG)
 			'outage
 			GetAudienceResult(playerId).Title = "Malfunction!"
 			GetAudienceResult(playerId).broadcastOutage = True
-			Attractions[playerId - 1] = CalculateMalfunction(lastMovieAttraction)
+			attraction = CalculateMalfunction(lastMovieAttraction)
 		End If
-
-		'limit attraction values to 0-1.0
-		Attractions[playerId - 1].CutBordersFloat(0, 1.0)
-
-		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
-			If market.Players.Contains(String(playerId))
-				market.SetPlayersProgrammeAttraction(playerId, Attractions[playerId-1])
-			EndIf
-		Next
+		return attraction
 	End Method	
 
 
@@ -541,6 +609,21 @@ Type TBroadcast
 	End Method
 
 
+	Method SetAttraction(playerID:int, audienceAttraction:TAudienceAttraction)
+		Attractions[playerID-1] = audienceAttraction
+		if audienceAttraction
+			'limit attraction values to 0-1.0
+			Attractions[playerID-1].CutBordersFloat(0, 1.0)
+		endif
+
+		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
+			If market.GetPlayerIndex(playerID) >= 0
+				market.SetPlayersProgrammeAttraction(playerID, Attractions[playerID-1])
+			EndIf
+		Next
+	End Method
+	
+
 	Method AddMarket(playerIDs:Int[])
 		'create array of players not existing in "playerIDs"
 		Local withoutPlayerIDs:Int[]
@@ -553,8 +636,8 @@ Type TBroadcast
 		If audience > 0
 			Local market:TAudienceMarketCalculation = New TAudienceMarketCalculation
 			market.maxAudience = new TAudience.InitWithBreakdown(audience)
-			For Local i:Int = 0 To playerIDs.length - 1
-				market.AddPlayer(playerIDs[i])
+			For Local playerID:Int = EachIn playerIDs
+				market.AddPlayer(playerID)
 			Next
 
 			AudienceMarkets.AddLast(market)
@@ -970,126 +1053,152 @@ End Type
 
 'Diese Klasse repräsentiert einen Markt um den 1 bis 4 Spieler konkurieren.
 Type TAudienceMarketCalculation
-	Field Players:TList = CreateList()				'Die Liste der Spieler die um diesen Markt kämpfen
-	Field AudienceAttractions:TMap = CreateMap()	'Die Attraktivität des Programmes nach Zielgruppen. Für jeden Spieler der um diesen Markt mitkämpft gibt's einen Eintrag in der Liste
-	Field MaxAudience:TAudience						'Die Einwohnerzahl (max. Zuschauer) in diesem Markt
-	Field PotentialChannelSurfer:TAudience			'Die Anzahl der Leute die mal das Programm durchzappen und potentielle Zuschauer sind.
-	Field AudienceResults:TAudienceResult[4]		'Die Ergebnisse in diesem Markt
+	'participating playerIDs
+	Field playerIDs:Int[]
+	'attractivity of a broadcasts for each target group
+	'for each active player there needs to be an entry
+	Field audienceAttractions:TAudienceAttraction[]
+	'population of this market
+	Field maxAudience:TAudience
+	'results of the calculation
+	Field audienceResults:TAudienceResult[]
+	Field _id:string = "" {nosave} 
 
 	'===== Öffentliche Methoden =====
 
 	Method GetId:String()
-		Local result:String
-		For Local playerId:String = EachIn Players
-			result :+ playerId
-		Next
-		Return result
+		if playerIDs.length > 0 and _id = ""
+			For Local playerID:int = EachIn playerIDs
+				_id :+ playerID
+			Next
+		endif
+		Return _id
 	End Method
 
 
 	Method ToString:string()
 		local result:string
-		For Local playerId:String = EachIn Players
-			result :+ playerId+" "
+		For Local playerID:int = EachIn playerIDs
+			result :+ playerID+" "
 		Next
 		return "TAudienceMarketCalculation: players=["+result.trim()+"], population: m="+maxAudience.GetGenderSum(TVTPersonGender.MALE)+" w="+maxAudience.GetGenderSum(TVTPersonGender.FEMALE)
 	End Method
 
 
-	Method AddPlayer(playerId:String)
-		Players.AddLast(playerId)
+	Method AddPlayer(playerID:int)
+		playerIDs :+ [playerID]
+		audienceAttractions = audienceAttractions[ .. playerIDs.length]
+		audienceResults = audienceResults[ .. playerIDs.length]
 	End Method
 
 
-	Method SetPlayersProgrammeAttraction(playerId:String, audienceAttraction:TAudienceAttraction)
-		If AudienceAttractions.Contains(playerId) Then AudienceAttractions.Remove(playerId)
-		AudienceAttractions.insert(playerId, audienceAttraction)
+	Method GetPlayerIndex:int(playerID:int)
+		For Local i:int = 0 until playerIDs.length
+			if playerIDs[i] = playerID then return i
+		Next
+		return -1
+	End Method
+	
+
+	Method SetPlayersProgrammeAttraction(playerID:int, audienceAttraction:TAudienceAttraction)
+		local i:int = GetPlayerIndex(playerID)
+		if i >= 0
+			audienceAttractions[i] = audienceAttraction
+		endif
 	End Method
 
 
-	Method GetAudienceResultOfPlayer:TAudienceResult(playerId:Int)
-		Return AudienceResults[playerId-1]
+	Method GetAudienceResultOfPlayer:TAudienceResult(playerID:Int)
+		local i:int = GetPlayerIndex(playerID)
+		if i < 0 then return null
+		Return AudienceResults[i]
 	End Method
 
 
 	Method ComputeAudience(time:Double = -1)
 		If time <= 0 Then time = GetWorldTime().GetTimeGone()
 
-		CalculatePotentialChannelSurfer(time)
-
 		'Die Zapper, um die noch gekämpft werden kann.
-		Local ChannelSurferToShare:TAudience = PotentialChannelSurfer.Copy()
-		ChannelSurferToShare.Round()
+		Local ChannelSurferToShare:TAudience = GetPotentialChannelSurfer(time)
 
 		'Ermittle wie viel ein Attractionpunkt auf Grund der Konkurrenz-
 		'situation wert ist bzw. Quote bringt.
-		Local reduceFactor:TAudience = GetReduceFactor()
-		If reduceFactor Then
-			For Local currKey:String = EachIn AudienceAttractions.Keys()
-				'Die außerhalb berechnete Attraction
-				Local attraction:TAudience = TAudience(MapValueForKey(AudienceAttractions, currKey))
-				'Die effectiveAttraction (wegen Konkurrenz) entspricht der Quote!
-				Local effectiveAttraction:TAudience = attraction.Copy().Multiply(reduceFactor)
-				effectiveAttraction.CutBordersFloat(0, 1.0)
+		Local competitionAttractionModifier:TAudience = GetCompetitionAttractionModifier()
+		If not competitionAttractionModifier then return
 
-				'Anteil an der "erbeuteten" Zapper berechnen
-				Local channelSurfer:TAudience = ChannelSurferToShare.Copy().Multiply(effectiveAttraction)
-				channelSurfer.Round()
+		
+		For Local i:int = 0 until playerIDs.length
+			'Die außerhalb berechnete Attraction
+			Local attraction:TAudienceAttraction = audienceAttractions[i]
+			'Die effectiveAttraction (wegen Konkurrenz) entspricht der Quote!
+			Local effectiveAttraction:TAudience = attraction.Copy().Multiply(competitionAttractionModifier)
+			effectiveAttraction.CutBordersFloat(0, 1.0)
 
-				'Ergebnis in das AudienceResult schreiben
-				Local currKeyInt:Int = currKey.ToInt()
-				AudienceResults[currKeyInt-1] = New TAudienceResult
-				AudienceResults[currKeyInt-1].PlayerId = currKeyInt
-				AudienceResults[currKeyInt-1].Time = Time
+			'Anteil an der "erbeuteten" Zapper berechnen
+			Local channelSurfer:TAudience = ChannelSurferToShare.Copy().Multiply(effectiveAttraction)
+			channelSurfer.Round()
 
-				AudienceResults[currKeyInt-1].WholeMarket = MaxAudience
-				AudienceResults[currKeyInt-1].PotentialMaxAudience = ChannelSurferToShare 'die 100% der Quote
-				AudienceResults[currKeyInt-1].Audience = channelSurfer 'Die tatsächliche Zuschauerzahl
+		
+			local audienceResult:TAudienceResult = New TAudienceResult
+			audienceResult.PlayerId = playerIDs[i]
+			audienceResult.Time = Time
 
-				'Keine ChannelSurferSum, dafür
-				AudienceResults[currKeyInt-1].ChannelSurferToShare = ChannelSurferToShare
-				AudienceResults[currKeyInt-1].AudienceAttraction = TAudienceAttraction(MapValueForKey(AudienceAttractions, currKey))
-				AudienceResults[currKeyInt-1].EffectiveAudienceAttraction = effectiveAttraction
+			audienceResult.WholeMarket = MaxAudience
+			'100% of the audience
+			audienceResult.PotentialMaxAudience = ChannelSurferToShare
+			'actual audience
+			audienceResult.Audience = channelSurfer
 
-				'Print "Attraction für " + currKey + ": " + attraction.ToString()
-				'Print "ReduceFactor für " + currKey + ": " + GetReduceFactor().ToString()
-				'Print "Effektive Quote für " + currKey + ": " + effectiveAttraction.ToString()
-				'Print "Zuschauer fuer " + currKey + ": " + AudienceResults[currKeyInt-1].ToString()
-			Next
-		End If
+			audienceResult.AudienceAttraction = attraction
+			audienceResult.competitionAttractionModifier = competitionAttractionModifier
+
+			audienceResults[i] = audienceResult
+
+			'Print "Attraction #" + currKey + ": " + audienceResult.AudienceAttraction.ToString()
+			'Print "Effektive Attraction #" + currKey + ": " + effectiveAttraction.ToString()
+			'Print "Audience #" + currKey + ": " + audienceResult.Audience.ToString()
+		Next
+		'Print "competitionAttractionModifier: " + competitionAttractionModifier.ToString()
 	End Method
 
 
-	Method CalculatePotentialChannelSurfer(time:Double)
-		MaxAudience.Round()
-
+	'returns amount of people zapping through the programmes
+	Method GetPotentialChannelSurfer:TAudience(time:Double)
 		'Die Anzahl der potentiellen/üblichen Zuschauer um diese Zeit
-		PotentialChannelSurfer = MaxAudience.Copy()
-		PotentialChannelSurfer.Multiply(TBroadcast.GetPotentialAudienceModifier(time))
+		local potentialChannelSurfer:TAudience
+		potentialChannelSurfer = MaxAudience.Copy().Round()
+		potentialChannelSurfer.Multiply( TBroadcast.GetPotentialAudienceModifier(time) )
 
 		Local audienceFlowSum:TAudience = new TAudience
-		For Local attractionTemp:TAudienceAttraction = EachIn AudienceAttractions.Values()
+		For Local attractionTemp:TAudienceAttraction = EachIn audienceAttractions
 			audienceFlowSum.Add(attractionTemp.AudienceFlowBonus)
 		Next
-		audienceFlowSum.DivideFloat(Float(Players.Count()))
+		audienceFlowSum.DivideFloat(Float(playerIDs.length))
 
 		'Es erhöht sich die Gesamtanzahl der Zuschauer etwas.
-		PotentialChannelSurfer.Add(audienceFlowSum.Copy().MultiplyFloat(0.25))
+		potentialChannelSurfer.Add(audienceFlowSum.MultiplyFloat(0.25))
+
+		potentialChannelSurfer.Round()
+
+		return potentialChannelSurfer
 	End Method
 
 
-	Method GetReduceFactor:TAudience()
-		Local attrSum:TAudience = Null		'Die Summe aller Attractionwerte
-		Local attrRange:TAudience = Null	'Wie viel Prozent der Zapper bleibt bei mindestens einem Programm
+	Method GetCompetitionAttractionModifier:TAudience()
+		'Die Summe aller Attractionwerte
+		Local attrSum:TAudience = Null
+		'Wie viel Prozent der Zapper bleibt bei mindestens einem Programm
+		Local attrRange:TAudience = Null
+		Local result:TAudience
 
-		For Local attraction:TAudienceAttraction = EachIn AudienceAttractions.Values()
-			If attrSum = Null Then
+		For Local attraction:TAudienceAttraction = EachIn audienceAttractions
+			If attrSum = Null
 				attrSum = attraction.Copy()
 			Else
 				attrSum.Add(attraction)
 			EndIf
 
-			If attrRange = Null Then
+			If attrRange = Null
 				attrRange = attraction.Copy()
 			Else
 				For local i:int = 1 to TVTTargetGroup.baseGroupCount
@@ -1105,9 +1214,8 @@ Type TAudienceMarketCalculation
 			EndIf
 		Next
 
-		Local result:TAudience
 
-		If attrSum Then
+		If attrSum
 			result = attrRange.Copy()
 
 			For local genderIndex:int = 0 to 1
@@ -1180,9 +1288,8 @@ Type TBroadcastSequence
 					For local i:int = 0 to 3
 						'keep potential - for history analysis (market share)
 						'curr.AudienceResults[i].PotentialMaxAudience = null
-						curr.AudienceResults[i].ChannelSurferToShare = null
 						curr.AudienceResults[i].AudienceAttraction = null
-						curr.AudienceResults[i].EffectiveAudienceAttraction = null
+						curr.AudienceResults[i].competitionAttractionModifier = null
 					Next
 				endif
 			endif
@@ -1196,9 +1303,8 @@ Type TBroadcastSequence
 					curr.Attractions = new TAudienceAttraction[4]
 					For local i:int = 0 to 3
 						'curr.AudienceResults[i].PotentialMaxAudience = null
-						curr.AudienceResults[i].ChannelSurferToShare = null
 						curr.AudienceResults[i].AudienceAttraction = null
-						curr.AudienceResults[i].EffectiveAudienceAttraction = null
+						curr.AudienceResults[i].competitionAttractionModifier = null
 					Next
 				endif
 			endif
