@@ -585,7 +585,7 @@ Type TInGameInterface
 			If CurrentProgramme Then CurrentProgramme.Draw(45, 405)
 			If CurrentProgrammeOverlay Then CurrentProgrammeOverlay.Draw(45, 405)
 
-			If programmePlan and programmePlan.GetAudience() > 0
+			If programmePlan and GetBroadcastManager().GetCurrentAudience(showChannel) > 0
 
 				'fetch a list of watching family members
 				local members:string[] = GetWatchingFamily()

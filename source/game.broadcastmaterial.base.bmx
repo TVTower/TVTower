@@ -61,7 +61,7 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	'needed for all extending objects
-	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False ) Abstract
+	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastProgrammeBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False ) Abstract
 	
 	'needed for all extending objects
 	Method GetQuality:Float() Abstract {_exposeToLua}	
@@ -158,6 +158,11 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 
 	Method isUsedAsType:int(typeID:int) {_exposeToLua}
 		return self.usedAsType = typeID
+	End Method
+
+
+	Method getType:int() {_exposeToLua}
+		return self.materialType
 	End Method
 
 
@@ -368,9 +373,9 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 
 	
 	'default implementation
-	Method GetAudienceFlowBonus:TAudience(block:Int, result:TAudienceAttraction, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction)
-		If lastMovieBlockAttraction And lastMovieBlockAttraction.AudienceFlowBonus Then
-			Return lastMovieBlockAttraction.AudienceFlowBonus.Copy().MultiplyFloat(0.25)
+	Method GetAudienceFlowBonus:TAudience(block:Int, result:TAudienceAttraction, lastProgrammeBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction) {_exposeToLua}
+		If lastProgrammeBlockAttraction And lastProgrammeBlockAttraction.AudienceFlowBonus Then
+			Return lastProgrammeBlockAttraction.AudienceFlowBonus.Copy().MultiplyFloat(0.25)
 		Else
 			Return Null
 		EndIf		
@@ -399,13 +404,13 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	'default implementation
 	global borderMaxDefault:TAudience = new Taudience.InitValue(0.15, 0.15)
 	global borderMinDefault:TAudience = new Taudience.InitValue(-0.15, -0.15)
-	Method GetSequenceEffect:TAudience(block:Int, genreDefinition:TGenreDefinitionBase, predecessor:TAudienceAttraction, currentProgramme:TAudienceAttraction, lastMovieBlockAttraction:TAudienceAttraction )
+	Method GetSequenceEffect:TAudience(block:Int, genreDefinition:TGenreDefinitionBase, predecessor:TAudienceAttraction, currentProgramme:TAudienceAttraction, lastProgrammeBlockAttraction:TAudienceAttraction )
 		Local ret:TAudience
 		Local seqCal:TSequenceCalculation = New TSequenceCalculation
 		seqCal.Predecessor = predecessor
 		seqCal.Successor = currentProgramme
 
-		SetSequenceCalculationPredecessorShare(seqCal, (block = 1 And lastMovieBlockAttraction))		
+		SetSequenceCalculationPredecessorShare(seqCal, (block = 1 And lastProgrammeBlockAttraction))		
 
 		Local seqMod:TAudience
 		Local borderMax:TAudience
@@ -440,10 +445,11 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	End Method
 
 	
-	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
+	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastProgrammeBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False ) {_exposeToLua}
 		Local result:TAudienceAttraction = New TAudienceAttraction
-		AssignStaticAudienceAttraction(result, hour, block, lastMovieBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect )
-		AssignDynamicAudienceAttraction(result, hour, block, lastMovieBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect )
+		AssignStaticAudienceAttraction(result, hour, block, lastProgrammeBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect )
+		AssignDynamicAudienceAttraction(result, hour, block, lastProgrammeBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect )
+		AssignSequentialAudienceAttraction(result, hour, block, lastProgrammeBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect)
 		'calculate final result
 		result.Recalculate()
 
@@ -451,22 +457,23 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	End Method
 
 
-	Method GetStaticAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False ) {_exposeToLua}
+	Method GetStaticAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastProgrammeBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False ) {_exposeToLua}
 		Local result:TAudienceAttraction = New TAudienceAttraction
-		AssignStaticAudienceAttraction(result, hour, block, lastMovieBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect )
+		AssignStaticAudienceAttraction(result, hour, block, lastProgrammeBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect )
+		AssignSequentialAudienceAttraction(result, hour, block, lastProgrammeBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect)
 		result.Recalculate()
 		return result
 	End Method
 		
 	
-	Method AssignStaticAudienceAttraction(audienceAttraction:TAudienceAttraction var, hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
+	Method AssignStaticAudienceAttraction(audienceAttraction:TAudienceAttraction var, hour:Int, block:Int, lastProgrammeBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
 		If owner <= 0 then Throw TNullObjectExceptionExt.Create("The broadcast '" + GetTitle() + "' has no owner.")
 		If block <= 0 And usedAsType = TVTBroadcastMaterialType.PROGRAMME then Throw TNullObjectExceptionExt.Create("GetAudienceAttractionInternal: Invalid block param: '" + block + ".")
 
 		audienceAttraction.BroadcastType = Self.materialType
 		audienceAttraction.GenreDefinition = GetGenreDefinition()
 
-		If block = 1 Or Not lastMovieBlockAttraction Or usedAsType = TVTBroadcastMaterialType.NEWS
+		If block = 1 Or Not lastProgrammeBlockAttraction Or usedAsType = TVTBroadcastMaterialType.NEWS
 			'1 - Qualität des Programms/Newsevents
 			audienceAttraction.Quality = GetQuality()
 
@@ -484,7 +491,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 			'COPY, not reference the childelements to avoid news manipulating
 			'movie-attraction-data ... if done on "reference base" keep
 			'paying attention to this when modifying the attraction
-			audienceAttraction.CopyStaticBaseAttractionFrom(lastMovieBlockAttraction)
+			audienceAttraction.CopyStaticBaseAttractionFrom(lastProgrammeBlockAttraction)
 		endif
 
 		'Genre-Time-fit
@@ -494,7 +501,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	End Method
 
 
-	Method AssignDynamicAudienceAttraction(audienceAttraction:TAudienceAttraction, hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
+	Method AssignDynamicAudienceAttraction(audienceAttraction:TAudienceAttraction, hour:Int, block:Int, lastProgrammeBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
 		If owner <= 0 then Throw TNullObjectExceptionExt.Create("The broadcast '" + GetTitle() + "' has no owner.")
 		If block <= 0 And usedAsType = TVTBroadcastMaterialType.PROGRAMME then Throw TNullObjectExceptionExt.Create("GetAudienceAttractionInternal: Invalid block param: '" + block + ".")
 
@@ -502,7 +509,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		audienceAttraction.GenreDefinition = GetGenreDefinition()
 
 		'begin of a programme, begin of broadcast - or news show
-		If block = 1 Or Not lastMovieBlockAttraction Or usedAsType = TVTBroadcastMaterialType.NEWS
+		If block = 1 Or Not lastProgrammeBlockAttraction Or usedAsType = TVTBroadcastMaterialType.NEWS
 			'1 - Qualität des Programms/Newsevents
 			audienceAttraction.Quality = GetQuality()
 
@@ -528,7 +535,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 			'COPY, not reference the childelements to avoid news manipulating
 			'movie-attraction-data ... if done on "reference base" keep
 			'paying attention to this when modifying the attraction
-			audienceAttraction.CopyDynamicBaseAttractionFrom(lastMovieBlockAttraction)
+			audienceAttraction.CopyDynamicBaseAttractionFrom(lastProgrammeBlockAttraction)
 		Endif
 
 		'8 - Over time effects
@@ -538,17 +545,20 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 
 		'10 - Luck/Random adjustments
 		If withLuckEffect Then audienceAttraction.LuckMod = GetLuckMod()
+	End Method
 
+
+	Method AssignSequentialAudienceAttraction(audienceAttraction:TAudienceAttraction, hour:Int, block:Int, lastProgrammeBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
 		'calculate intermediary result for AudienceFlowBonus-calculation
 		audienceAttraction.Recalculate()
 
 		'11 - Audience Flow
-		audienceAttraction.AudienceFlowBonus = GetAudienceFlowBonus(block, audienceAttraction, lastMovieBlockAttraction, lastNewsBlockAttraction) 		
+		audienceAttraction.AudienceFlowBonus = GetAudienceFlowBonus(block, audienceAttraction, lastProgrammeBlockAttraction, lastNewsBlockAttraction) 		
 
 		'12 - Sequence
 		If withSequenceEffect
 			audienceAttraction.Recalculate()
-			audienceAttraction.SequenceEffect = GetSequenceEffect(block, audienceAttraction.genreDefinition, lastNewsBlockAttraction, audienceAttraction, lastMovieBlockAttraction)
+			audienceAttraction.SequenceEffect = GetSequenceEffect(block, audienceAttraction.genreDefinition, lastNewsBlockAttraction, audienceAttraction, lastProgrammeBlockAttraction)
 		EndIf
-	End Method	
+	End Method
 End Type

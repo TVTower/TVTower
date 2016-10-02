@@ -117,7 +117,10 @@ end
 
 function AIPlayer:Tick()
 	self:TickAnalyse()
+	self:TickProcessTask()
+end
 
+function AIPlayer:TickProcessTask()
 	if (self.CurrentTask == nil)  then
 		self:BeginNewTask()
 	else
@@ -625,12 +628,98 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- >>>>> BROADCAST STATS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+_G["BroadcastStatistics"] = class(SLFDataObject, function(c)
+	SLFDataObject.init(c)	-- must init base!
+
+	-- storage for attraction types of news/programmes for 0-23
+	c.hourlyNewsAttraction = {}
+	c.hourlyProgrammeAttraction = {}
+
+	c.hourlyNewsAudience = {}
+	c.hourlyProgrammeAudience = {}
+end)
+
+function BroadcastStatistics:typename()
+	return "BroadcastStatistics"
+end
+
+function BroadcastStatistics:AddBroadcast(day, hour, broadcastTypeID, attraction, audience)
+	local currentI = tostring(day) .. string.format("%02d", hour)
+
+	if broadcastTypeID == TVT.Constants.BroadcastMaterialType.NEWSSHOW then
+		-- remove everything older than yesterday
+		local lastDaysI = tonumber(tostring(day-1).."00")
+
+		for k,v in pairs(self.hourlyNewsAudience) do
+			if tonumber(k) < lastDaysI then
+				self.hourlyNewsAudience[k] = nil
+			end
+		end
+		for k,v in pairs(self.hourlyNewsAttraction) do
+			if tonumber(k) < lastDaysI then
+				self.hourlyNewsAttraction[k] = nil
+			end
+		end
+
+		self.hourlyNewsAttraction[currentI] = attraction
+		self.hourlyNewsAudience[currentI] = audience
+		return true
+	elseif broadcastTypeID == TVT.Constants.BroadcastMaterialType.PROGRAMME then
+		-- remove everything older than yesterday
+		local lastDaysI = tonumber(tostring(day-1).."00")
+		for k,v in pairs(self.hourlyProgrammeAudience) do
+			if tonumber(k) < lastDaysI then
+				self.hourlyProgrammeAudience[k] = nil
+			end
+		end
+		for k,v in pairs(self.hourlyProgrammeAttraction) do
+			if tonumber(k) < lastDaysI then
+				self.hourlyProgrammeAttraction[k] = nil
+			end
+		end
+
+		self.hourlyProgrammeAttraction[currentI] = attraction
+		self.hourlyProgrammeAudience[currentI] = audience
+		return true
+	end
+	debugMsg("   -> ADDING FAILED at " .. currentI .. "  unknown broadcastTypeID " .. broadcastTypeID)
+end
+
+function BroadcastStatistics:GetAttraction(day, hour, broadcastType)
+	local currentI = tostring(day) .. string.format("%02d", hour)
+	if broadcastType == TVT.Constants.BroadcastMaterialType.NEWSSHOW then
+		return self.hourlyNewsAttraction[currentI]
+	elseif broadcastType == TVT.Constants.BroadcastMaterialType.PROGRAMME then
+--debugMsg("   -> GET PROG at " .. currentI)
+	--	for k,v in pairs(self.hourlyProgrammeAttraction) do
+		--	debugMsg("      existing: " .. k)
+		--end
+		return self.hourlyProgrammeAttraction[currentI]
+	end
+end
+
+function BroadcastStatistics:GetAudience(hour, broadcastType)
+	local currentI = tostring(day) .. string.format("%02d", hour)
+	if broadcastType == TVT.Constants.BroadcastMaterialType.NEWSSHOW then
+		return self.hourlyNewsAudience[currentI]
+	elseif broadcastType == TVT.Constants.BroadcastMaterialType.PROGRAMME then
+		return self.hourlyNewsAudience[currentI]
+	end
+end
+
+
+-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+-- >>>>> STATISTIC EVALUATOR >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["StatisticEvaluator"] = class(SLFDataObject, function(c)
 	SLFDataObject.init(c)	-- must init base!
 	c.MinValue = -1
 	c.AverageValue = -1
 	c.MaxValue = -1
+	c.CurrentValue = -1
 
 	c.MinValueTemp = 100000000000000
 	c.AverageValueTemp = -1
@@ -649,9 +738,16 @@ function StatisticEvaluator:Adjust()
 	self.AverageValueTemp = -1
 	self.MaxValueTemp = -1
 	self.Values = 0
+	-- do not reset "CurrentValue"!
+	--self.CurrentValue = -1
 end
 
 function StatisticEvaluator:AddValue(value)
+if value == nil then
+	debugMsg("########## StatisticEvaluator:AddValue - NIL VALUE #############")
+	return
+end
+
 	self.Values = self.Values + 1
 
 	if value < self.MinValueTemp then
@@ -663,11 +759,14 @@ function StatisticEvaluator:AddValue(value)
 		self.MaxValueTemp = value
 	end
 
+	self.CurrentValue = value
 	self.TotalSum = self.TotalSum + value
 	self.AverageValueTemp = math.round(self.TotalSum / self.Values, 0)
 	self.AverageValue = self.AverageValueTemp
 end
--- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["Requisition"] = class(SLFDataObject, function(c)

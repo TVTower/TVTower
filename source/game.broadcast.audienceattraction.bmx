@@ -6,7 +6,7 @@ Import "game.broadcast.genredefinition.base.bmx"
 'class represents attractivity of a broadcast (it is content of TAudience)
 'It also contains additional information on how it is calculated (for
 'statistics, debugging and recalculation)
-Type TAudienceAttraction Extends TAudience
+Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 	'types: -1 (outage), 1 (movie, 2 (news)
 	Field BroadcastType:Int
 	'=== SEMISTATIC ===
@@ -330,6 +330,13 @@ Type TAudienceAttraction Extends TAudience
 	End Method
 
 
+	Method CopyStaticBaseAttraction:TAudienceAttraction()
+		local c:TAudienceAttraction = new TAudienceAttraction
+		c.CopyStaticBaseAttractionFrom(self)
+		return c
+	End Method
+
+
 	Method CopyStaticBaseAttractionFrom(otherAudienceAttraction:TAudienceAttraction)
 		'ATTENTION: we _copy_ the objects instead of referencing it
 		'Why?:
@@ -352,6 +359,12 @@ Type TAudienceAttraction Extends TAudience
 			FlagsTargetGroupMod = otherAudienceAttraction.FlagsTargetGroupMod.Copy()
 		Else
 			FlagsTargetGroupMod = Null
+		EndIf
+
+		If otherAudienceAttraction.FinalAttraction
+			FinalAttraction = otherAudienceAttraction.FinalAttraction.Copy()
+		Else
+			FinalAttraction = Null
 		EndIf
 	End Method
 

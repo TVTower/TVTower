@@ -244,6 +244,7 @@ end
 _G["BusinessStats"] = class(SLFDataObject, function(c)
 	SLFDataObject.init(c)	-- must init base!
 	c.Audience = nil;
+	c.BroadcastStatistics = nil;
 	c.SpotProfit = nil;
 	c.SpotProfitPerSpot = nil;
 	c.SpotProfitPerSpotAcceptable = nil;
@@ -258,6 +259,8 @@ _G["BusinessStats"] = class(SLFDataObject, function(c)
 	c.ProgramQualityLevel3 = nil;
 	c.ProgramQualityLevel4 = nil;
 	c.ProgramQualityLevel5 = nil;
+
+	c.lastStatsReadMinute = -1
 end)
 
 function BusinessStats:typename()
@@ -266,6 +269,7 @@ end
 
 function BusinessStats:Initialize()
 	self.Audience = StatisticEvaluator()
+	self.BroadcastStatistics = BroadcastStatistics()
 	self.SpotProfit = StatisticEvaluator()
 	self.SpotProfitPerSpot = StatisticEvaluator()
 	self.SpotProfitPerSpotAcceptable = StatisticEvaluator()
@@ -301,11 +305,26 @@ function BusinessStats:OnDayBegins()
 end
 
 function BusinessStats:ReadStats()
-	-- read in new audience stats
-	if WorldTime.GetDayMinute() == 5 then
-		local currentAudience = TVT.GetCurrentAudience()
-		self.Audience:AddValue(currentAudience)
-		debugMsg("BusinessStats: Audience (current="..currentAudience.."  avg=" .. self.Audience.AverageValue .. "  min/max=" .. self.Audience.MinValue .. " - " .. self.Audience.MaxValue .. ")")
+	if self.lastStatsReadMinute ~= WorldTime.GetDayMinute() then
+		-- read in new audience stats
+		if WorldTime.GetDayMinute() == 0 then
+			local currentBroadcast = TVT.GetCurrentNewsShow()
+			local currentAudience = TVT.GetCurrentNewsAudience()
+			local currentAttraction = TVT.GetCurrentNewsAudienceAttraction()
+			self.BroadcastStatistics:AddBroadcast(WorldTime.GetDay(), WorldTime.GetDayHour(), TVT.Constants.BroadcastMaterialType.NEWSSHOW, currentAttraction, currentAudience)
+		end
+		if WorldTime.GetDayMinute() == 5 then
+			local currentBroadcast = TVT.GetCurrentProgramme()
+			local currentAudience = TVT.GetCurrentProgrammeAudience()
+			local currentAttraction = TVT.GetCurrentProgrammeAudienceAttraction()
+			self.BroadcastStatistics:AddBroadcast(WorldTime.GetDay(), WorldTime.GetDayHour(), TVT.Constants.BroadcastMaterialType.PROGRAMME, currentAttraction, currentAudience)
+
+
+			self.Audience:AddValue(currentAudience)
+			--debugMsg("BusinessStats: Audience (current="..self.Audience.CurrentValue.."  avg=" .. self.Audience.AverageValue .. "  min/max=" .. self.Audience.MinValue .. " - " .. self.Audience.MaxValue .. ")")
+		end
+
+		self.lastStatsReadMinute = WorldTime.GetDayMinute()
 	end
 end
 
@@ -479,13 +498,18 @@ end
 
 
 function OnTick(timeGone, ticksGone)
-	--debugMsg("OnTick  time:" .. timeGone .." ticks:" .. ticksGone)
+	--debugMsg("OnTick  time:" .. timeGone .." ticks:" .. ticksGone .. " gameMinute:" .. WorldTime.GetDayMinute())
 	getAIPlayer().WorldTicks = tonumber(ticksGone)
 	
 	if (aiIsActive) then
-		-- the faster the brain, the more it does per tick
-		for i=1,getAIPlayer().BrainSpeed do
-			getAIPlayer():Tick()
+		-- run tick analyze (read/save stats)
+		-- also run 1 TickProcessTask()
+		getAIPlayer():Tick()
+
+		-- the faster the brain, the more tasks it does per tick
+		-- 1 Task processing is done already in "Tick()"
+		for i=1,getAIPlayer().BrainSpeed-1 do
+			getAIPlayer():TickProcessTask()
 		end
 	end
 end
@@ -504,7 +528,7 @@ function OnMinute(number)
 			if broadcast ~= nil then
 				-- only for ads
 				if broadcast.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) then
-					local audience = TVT.GetCurrentAudience()
+					local audience = TVT.GetCurrentProgrammeAudience()
 					if audience < TVT.GetCurrentAdvertisementMinAudience() then
 						-- we can only fix if we have licences for trailers
 						-- or adcontracts for ad spots (and this means 1
@@ -578,7 +602,7 @@ function OnMinute(number)
 		local guessedAudience = TVT.audiencePredictor.GetAudience(TVT.ME).GetTotalSum()
 
 
-		local audience = TVT.GetCurrentAudience()
+		local audience = TVT.GetCurrentProgrammeAudience()
 
 		local title = "OUTAGE / NO PROG"
 		if (programme ~= nil) then title = programme.GetTitle(); end
