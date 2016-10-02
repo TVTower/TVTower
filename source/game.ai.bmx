@@ -72,14 +72,16 @@ Type TAi extends TAiBase
 		'time between two ticks = time between two GameMinutes or maximum
 		'1 second (eg. if speed is 0)
 		local tickInterval:Long = 1000
-		if GetWorldTime().GetVirtualMinutesPerSecond() > 0
-			tickInterval = Min(1000.0 , 1000.0 / GetWorldTime().GetVirtualMinutesPerSecond())
-		endif
+		'if GetWorldTime().GetVirtualMinutesPerSecond() > 0
+		'	tickInterval = Min(1000.0 , 1000.0 / GetWorldTime().GetVirtualMinutesPerSecond())
+		'endif
 
 		'more time gone than the set interval?
-		if abs(Time.GetTimeGone() - LastTickTime) > tickInterval
-			'store time of this tick
+		if abs(Time.GetTimeGone() - LastTickTime) > tickInterval or LastTickMinute <> GetWorldTime().GetDayMinute()
+			'store time/minute of this tick so waiting-period starts
+			'all over
 			LastTickTime = Time.GetTimeGone()
+			LastTickMinute = GetWorldTime().GetDayMinute()
 
 			Ticks :+ 1
 
@@ -660,6 +662,12 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
+	'player could eg. see in interface / tooltips
+	Method GetCurrentNewsShow:TBroadcastMaterial()
+		return GetPlayerProgrammePlan(self.ME).GetNewsShow()
+	End Method
+
+
 	Method GetCurrentAdvertisement:TBroadcastMaterial()
 		return GetPlayerProgrammePlan(self.ME).GetAdvertisement()
 	End Method
@@ -682,8 +690,43 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
-	Method GetCurrentAudience:Int()
-		Return GetPlayerProgrammePlan(Self.ME).GetAudience()
+	Method GetCurrentProgrammeAudience:Int()
+		return GetBroadcastManager().GetCurrentAudience(Self.ME)
+rem
+		local stat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(GetWorldTime().GetDay(), GetWorldTime.GetDayHour())
+		if not stat then return 0
+		local audienceResult:TAudienceResultBase = stat.GetAudienceResult(Self.ME, GetWorldTime().GetDayHour(), false)
+		If Not audienceResult Then Return 0
+		Return audienceResult.Audience.GetTotalSum()
+endrem
+	End Method
+
+
+	'TODO: really expose that information to the player?
+	Method GetCurrentProgrammeAudienceAttraction:TAudienceAttraction()
+		local stat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(GetWorldTime().GetDay(), GetWorldTime().GetDayHour())
+		if not stat then return null
+		local audienceResult:TAudienceResult = TAudienceResult(stat.GetNewsAudienceResult(Self.ME, GetWorldTime().GetDayHour(), false))
+		If Not audienceResult Then Return null
+		Return audienceResult.AudienceAttraction
+	End Method
+
+
+	Method GetCurrentNewsAudience:Int()
+		local stat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(GetWorldTime().GetDay(), GetWorldTime().GetDayHour())
+		if not stat then return 0
+		local audienceResult:TAudienceResultBase = stat.GetNewsAudienceResult(Self.ME, GetWorldTime().GetDayHour(), false)
+		If Not audienceResult Then Return 0
+		Return audienceResult.Audience.GetTotalSum()
+	End Method
+
+
+	Method GetCurrentNewsAudienceAttraction:TAudienceAttraction()
+		local stat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(GetWorldTime().GetDay(), GetWorldTime().GetDayHour())
+		if not stat then return null
+		local audienceResult:TAudienceResult = TAudienceResult(stat.GetNewsAudienceResult(Self.ME, GetWorldTime().GetDayHour(), false))
+		If Not audienceResult Then Return null
+		Return audienceResult.AudienceAttraction
 	End Method
 
 
@@ -691,9 +734,22 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	'players bureau
 
 	Method of_getAudience:Int(day:int, hour:int)
+		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
+
 		local broadcastStat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(day)
 		if not broadcastStat then return 0
 		local audience:TAudienceResultBase = broadcastStat.GetAudienceResult(self.ME, hour, false)
+		if not audience then return 0
+		Return audience.audience.GetTotalSum()
+	End Method
+
+
+	Method of_getNewsAudience:Int(day:int, hour:int)
+		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
+
+		local broadcastStat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(day)
+		if not broadcastStat then return 0
+		local audience:TAudienceResultBase = broadcastStat.GetNewsAudienceResult(self.ME, hour, false)
 		if not audience then return 0
 		Return audience.audience.GetTotalSum()
 	End Method
