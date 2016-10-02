@@ -497,7 +497,7 @@ Type TDebugProgrammeCollectionInfos
 			SetColor 255,255,255
 
 			local progString:string = l.GetTitle()
-			GetBitmapFont("default", 11).DrawBlock( progString, x+5, y+1 + entryPos*lineHeight, 170, lineHeight)
+			GetBitmapFont("default", 11).DrawBlock( progString, x+2, y+1 + entryPos*lineHeight, 175, lineHeight)
 
 			entryPos :+ 1
 		next
@@ -540,12 +540,12 @@ Type TDebugProgrammeCollectionInfos
 			local adString2a:string = "Min: " +TFunctions.DottedValue(a.GetMinAudience())
 			local adString2b:string = "Acu: " +MathHelper.NumberToString(a.GetAcuteness()*100.0)
 			local adString2c:string = a.GetSpotsSent() + "/" + a.GetSpotCount()
-			GetBitmapFont("default", 11).DrawBlock( adString1a, x+195, y+1 + entryPos*lineHeight*2 + lineHeight*0, 128, lineHeight)
-			GetBitmapFont("default", 11).DrawBlock( adString1b, x+195 + 133, y+1 + entryPos*lineHeight*2 + lineHeight*0, 32, lineHeight, ALIGN_RIGHT_CENTER, secondLineCol)
+			GetBitmapFont("default", 11).DrawBlock( adString1a, x+192, y+1 + entryPos*lineHeight*2 + lineHeight*0, 130, lineHeight)
+			GetBitmapFont("default", 11).DrawBlock( adString1b, x+192 + 133, y+1 + entryPos*lineHeight*2 + lineHeight*0, 35, lineHeight, ALIGN_RIGHT_CENTER, secondLineCol)
 
-			GetBitmapFont("default", 11).DrawBlock( adString2a, x+195, y+1 + entryPos*lineHeight*2 + lineHeight*1, 55, lineHeight, ALIGN_LEFT_CENTER, secondLineCol)
-			GetBitmapFont("default", 11).DrawBlock( adString2b, x+195 + 60, y+1 + entryPos*lineHeight*2 + lineHeight*1, 55, lineHeight, ALIGN_CENTER_CENTER, secondLineCol)
-			GetBitmapFont("default", 11).DrawBlock( adString2c, x+195 + 110, y+1 + entryPos*lineHeight*2 + lineHeight*1, 55, lineHeight, ALIGN_RIGHT_CENTER, secondLineCol)
+			GetBitmapFont("default", 11).DrawBlock( adString2a, x+192, y+1 + entryPos*lineHeight*2 + lineHeight*1, 60, lineHeight, ALIGN_LEFT_CENTER, secondLineCol)
+			GetBitmapFont("default", 11).DrawBlock( adString2b, x+192 + 65, y+1 + entryPos*lineHeight*2 + lineHeight*1, 55, lineHeight, ALIGN_CENTER_CENTER, secondLineCol)
+			GetBitmapFont("default", 11).DrawBlock( adString2c, x+192 + 110, y+1 + entryPos*lineHeight*2 + lineHeight*1, 55, lineHeight, ALIGN_RIGHT_CENTER, secondLineCol)
 
 			entryPos :+ 1
 		next
@@ -696,8 +696,8 @@ Type TDebugProgrammePlanInfos
 				SetColor 60,60,60
 			endif
 			SetAlpha 0.75 * GetAlpha()
-			DrawRect(x, y + hour * lineHeight, 20, lineHeight-1)
-			DrawRect(x+25, y + hour * lineHeight, 190, lineHeight-1)
+			DrawRect(x, y + hour * lineHeight, 15, lineHeight-1)
+			DrawRect(x+20, y + hour * lineHeight, 195, lineHeight-1)
 			DrawRect(x+220, y + hour * lineHeight, 150, lineHeight-1)
 
 
@@ -710,7 +710,7 @@ Type TDebugProgrammePlanInfos
 				local alphaValue:Float = 1.0 - Min(1.0, ((Time.GetTimeGone() - progTime) / 5000.0))
 				SetAlpha Float(0.4 * Min(1.0, 2 * alphaValue^3))
 				SetBlend LIGHTBLEND
-				DrawRect(x+25, y + hour * lineHeight, 190, lineHeight-1)
+				DrawRect(x+20, y + hour * lineHeight, 195, lineHeight-1)
 				SetBlend ALPHABLEND
 			endif
 			if adTime <> 0
@@ -726,19 +726,19 @@ Type TDebugProgrammePlanInfos
 				local adMinAudience:int = TAdvertisement(advertisement).contract.GetMinAudience()
 				SetColor 160,160,255
 				Setalpha 0.85 * oldAlpha
-				DrawRect(x+220, y + hour * lineHeight + lineHeight - 4, 150 * Min(1.0,  reachedAudience / float(adMinAudience)), 2)
+				DrawRect(x+225, y + hour * lineHeight + lineHeight - 4, 150 * Min(1.0,  reachedAudience / float(adMinAudience)), 2)
 			endif
 
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
-			GetBitmapFont("default", 11).Draw( Rset(hour,2).Replace(" ", "0"), x+5, y+1 + hour*lineHeight)
+			GetBitmapFont("default", 11).Draw( Rset(hour,2).Replace(" ", "0"), x+2, y+1 + hour*lineHeight)
 			if programme then SetStateColor(programme)
-			GetBitmapFont("default", 11).DrawBlock( progString, x+30, y+1 + hour*lineHeight, 110, lineHeight)
-			GetBitmapFont("default", 11).DrawBlock( progString2, x+145, y+1 + hour*lineHeight, 65, lineHeight, ALIGN_RIGHT_CENTER)
+			GetBitmapFont("default", 11).DrawBlock( progString, x+22, y+1 + hour*lineHeight, 120, lineHeight, ALIGN_LEFT_TOP)
+			GetBitmapFont("default", 11).DrawBlock( progString2, x+145, y+1 + hour*lineHeight, 68, lineHeight, ALIGN_RIGHT_TOP)
 			if advertisement then SetStateColor(advertisement)
-			GetBitmapFont("default", 11).DrawBlock( adString, x+225, y+1 + hour*lineHeight, 105, lineHeight)
-			GetBitmapFont("default", 11).DrawBlock( adString2, x+335, y+1 + hour*lineHeight, 30, lineHeight, ALIGN_RIGHT_CENTER)
+			GetBitmapFont("default", 11).DrawBlock( adString, x+222, y+1 + hour*lineHeight, 110, lineHeight, ALIGN_LEFT_TOP)
+			GetBitmapFont("default", 11).DrawBlock( adString2, x+335, y+1 + hour*lineHeight, 33, lineHeight, ALIGN_RIGHT_TOP)
 			SetColor 255,255,255
 		Next
 	End Function
