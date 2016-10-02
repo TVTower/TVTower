@@ -251,8 +251,20 @@ Type TBroadcastManager
 		'-> access to playersBroadcast[0-3] is valid
 		bc.PlayersBroadcasts = bc.PlayersBroadcasts[..4]
 
+
+		bc.AudienceResults[0] = New TAudienceResult
+		bc.AudienceResults[1] = New TAudienceResult
+		bc.AudienceResults[2] = New TAudienceResult
+		bc.AudienceResults[3] = New TAudienceResult
+
+		'compute attractions for each player's broadcasts
+		local attractions:TAudienceAttraction[4]
+		For local i:int = 1 to 4
+			attractions[i-1] = bc.ComputeAttraction(i, Sequence.GetBeforeProgrammeBroadcast(), Sequence.GetBeforeNewsShowBroadcast())
+		Next
+
 		'compute the audience for the given broadcasts
-		bc.ComputeAudience(Sequence.GetBeforeProgrammeBroadcast(), Sequence.GetBeforeNewsShowBroadcast())
+		bc.ComputeAudience( attractions )
 
 		For local playerID:int = 1 to 4
 			Local audienceResult:TAudienceResult = bc.GetAudienceResult(playerID)
@@ -321,7 +333,12 @@ Type TBroadcastManager
 	End Function
 
 
-
+	'=== AUDIENCE HELPERS ===
+	Method GetCurrentAudience:Int(owner:int)
+		Local audienceResult:TAudienceResult = GetAudienceResult(owner)
+		If Not audienceResult Then Return 0
+		Return audienceResult.Audience.GetTotalSum()
+	End Method
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -404,7 +421,7 @@ Type TBroadcastAudiencePrediction {_exposeToLua="selected"}
 		endif
 	
 		'compute the audience for the given broadcasts
-		bc.ComputeAudience(lastProgrammeBroadcast, lastNewsBroadcast, attractions)
+		bc.ComputeAudience(attractions)
 	End Method
 End Type
 
@@ -465,7 +482,7 @@ Type TBroadcast
 
 
 	'Hiermit wird die eigentliche Zuschauerzahl berechnet (mit allen Features)
-	Method ComputeAudience( lastMovieBroadcast:TBroadcast,lastNewsShowBroadcast:TBroadcast, attractions:TAudienceAttraction[] = null )
+	Method ComputeAudience( attractions:TAudienceAttraction[] = null )
 		AudienceResults[0] = New TAudienceResult
 		AudienceResults[1] = New TAudienceResult
 		AudienceResults[2] = New TAudienceResult
@@ -480,7 +497,7 @@ Type TBroadcast
 		'Calculate missing attraction of a broadcast per player
 		'and assign attraction (also informs markets about the attraction)
 		For Local i:Int = 1 to 4
-			if not attractions[i-1] then attractions[i-1] = ComputeAttraction(i, lastMovieBroadcast, lastNewsShowBroadcast)
+			if not attractions[i-1] then attractions[i-1] = CalculateMalfunction( null )
 			SetAttraction(i, attractions[i-1])
 		Next
 
@@ -565,11 +582,11 @@ Type TBroadcast
 	End Method	
 
 	
-	Method ComputeAttraction:TAudienceAttraction(playerId:Int, lastMovieBroadcast:TBroadcast, lastNewsShowBroadcast:TBroadcast)
+	Method ComputeAttraction:TAudienceAttraction(playerId:Int, lastProgrammeBroadcast:TBroadcast, lastNewsShowBroadcast:TBroadcast)
 		Local broadcastedMaterial:TBroadcastMaterial = PlayersBroadcasts[playerId-1]
 
-		Local lastMovieAttraction:TAudienceAttraction = null
-		If lastMovieBroadcast then lastMovieAttraction = lastMovieBroadcast.Attractions[playerId-1]
+		Local lastProgrammeAttraction:TAudienceAttraction = null
+		If lastProgrammeBroadcast then lastProgrammeAttraction = lastProgrammeBroadcast.Attractions[playerId-1]
 
 		Local lastNewsShowAttraction:TAudienceAttraction = null
 		If lastNewsShowBroadcast then lastNewsShowAttraction = lastNewsShowBroadcast.Attractions[playerId-1]
@@ -578,13 +595,13 @@ Type TBroadcast
 		If broadcastedMaterial Then
 			GetAudienceResult(playerId).broadcastMaterial = broadcastedMaterial
 			'3. Qualität meines Programmes
-			attraction = broadcastedMaterial.GetAudienceAttraction(GetWorldTime().GetDayHour(), broadcastedMaterial.currentBlockBroadcasting, lastMovieAttraction, lastNewsShowAttraction, True, true)
+			attraction = broadcastedMaterial.GetAudienceAttraction(GetWorldTime().GetDayHour(), broadcastedMaterial.currentBlockBroadcasting, lastProgrammeAttraction, lastNewsShowAttraction, True, true)
 		Else 'dann Sendeausfall! TODO: Chef muss böse werden!
 			TLogger.Log("TBroadcast.ComputeAndSetPlayersProgrammeAttraction()", "Player '" + playerId + "': Malfunction!", LOG_DEBUG)
 			'outage
 			GetAudienceResult(playerId).Title = "Malfunction!"
 			GetAudienceResult(playerId).broadcastOutage = True
-			attraction = CalculateMalfunction(lastMovieAttraction)
+			attraction = CalculateMalfunction(lastProgrammeAttraction)
 		End If
 		return attraction
 	End Method	

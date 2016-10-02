@@ -372,6 +372,12 @@ Type TAudienceBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetAbsSum:Float() {_exposeToLua}
+		'ignore gender in base variant
+		Return abs(Children) + abs(Teenagers) + abs(HouseWives) + abs(Employees) + abs(Unemployed) + abs(Manager) + abs(Pensioners)
+	End Method
+
+
 	Method GetWeightedAverage:Float(audienceBreakdown:TAudienceBase = null) {_exposeToLua}
 		'fetch current breakdown if nothing was given
 		if not audienceBreakdown then audienceBreakdown = AudienceManager.GetAudienceBreakdown()
@@ -784,7 +790,7 @@ Type TAudience {_exposeToLua="selected"}
 	End Method
 	
 
-	Method Copy:TAudience()
+	Method Copy:TAudience() {_exposeToLua}
 		Local result:TAudience = New TAudience
 		result.Id = Id
 		result.SetValuesFrom(Self)
@@ -872,6 +878,14 @@ Type TAudience {_exposeToLua="selected"}
 		local res:float = 0
 		if audienceFemale then res :+ audienceFemale.GetSum()
 		if audienceMale then res :+ audienceMale.GetSum()
+		Return res
+	End Method
+
+
+	Method GetTotalAbsSum:Float() {_exposeToLua}
+		local res:float = 0
+		if audienceFemale then res :+ audienceFemale.GetAbsSum()
+		if audienceMale then res :+ audienceMale.GetAbsSum()
 		Return res
 	End Method
 	

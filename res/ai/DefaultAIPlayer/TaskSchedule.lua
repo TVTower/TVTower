@@ -15,7 +15,7 @@ _G["TaskSchedule"] = class(AITask, function(c)
 	c.Player = nil
 	c.log = {}
 
-	c.guessedAudienceRiskyness = 0.75 -- 1.0 means assuming to get all
+	c.guessedAudienceRiskyness = 0.85 -- 1.0 means assuming to get all
 
     c.guessedAudienceAccuracyTotal = 0.25
     c.guessedAudienceAccuracyTotalCount = 0
@@ -254,50 +254,118 @@ end
 -- Returns an assumption about potential audience for the given hour and
 -- (optional) broadcast
 -- without given broadcast, an average quality for the hour is used
-function TaskSchedule:GuessedAudienceForHour(day, hour, broadcast, guessCurrentHour)
+function TaskSchedule:GuessedAudienceForHour(day, hour, broadcast, block, guessCurrentHour)
 	local fixedDay, fixedHour = FixDayAndHour(day, hour)
 
 	if (guessCurrentHour == nil) then guessCurrentHour = true; end
 	
 	--requesting audience for the current broadcast?
 	if (guessCurrentHour == false) and (WorldTime.GetDay() == fixedDay and WorldTime.GetDayHour() == fixedHour and WorldTime.GetDayMinute() >= 5) then
-		return MY.GetProgrammePlan().GetAudience()
+		return TVT.GetCurrentAudience()
 	end
 	
-	--Welchen Qualitätslevel sollte ein Film/Werbung um diese Uhrzeit haben
-	local globalPercentageByHour = self:GetMaxAudiencePercentage(fixedDay, fixedHour)
+	-- predicted level of the news show for the given time
 	local level = self:GetQualityLevel(fixedDay, fixedHour)
-	-- Die Durchschnittsquote dieses Qualitätslevels
-	local averageBroadcastQualityByLevel = self:GetAverageBroadcastQualityByLevel(level)
-	local avgQuality = averageBroadcastQualityByLevel
+	-- average quality of a broadcast with the predicted level
+	local avgQuality = self:GetAverageBroadcastQualityByLevel(level)
+	
+	local qualities = {avgQuality, avgQuality, avgQuality, avgQuality}
+	local guessedAudience = self:PredictAudience(broadcast, qualities, fixedDay, fixedHour, block, nil, nil)
 
-	local broadcastAttraction
-	local guessedAudience = 0
-	if broadcast ~= nil then 
-		broadcastAttraction = broadcast.GetStaticAudienceAttraction(fixedHour, 1, nil, nil)
-		-- assume they all send at least as good programme as we do
-		avgQuality = math.max(avgQuality, broadcast.GetQuality())
+	local globalPercentageByHour = self:GetMaxAudiencePercentage(fixedDay, fixedHour)
+	local exclusiveMaxAudience = TVT.getExclusiveMaxAudience()
+	local sharedMaxAudience = MY.GetMaxAudience() - exclusiveMaxAudience
+	self.log["GuessedAudienceForHour"] = "Hour=" .. hour .. "  Lvl=" .. level .. "  %  guessedAudience=" .. math.round(guessedAudience) .. "  aud=".. math.round(MY.GetMaxAudience()*globalPercentageByHour) .. " (".. math.floor(100*globalPercentageByHour) .."% of max="..MY.GetMaxAudience()..")"
+	--debugMsg( self.log["GuessedAudienceForHour"] )
+
+	return guessedAudience
+end
+
+-- Returns an assumption about potential audience for the given hour and
+-- (optional) broadcast
+-- without given broadcast, an average quality for the hour is used
+function TaskSchedule:GuessedNewsAudienceForHour(day, hour, newsBroadcast, guessCurrentHour)
+	local fixedDay, fixedHour = FixDayAndHour(day, hour)
+
+	if (guessCurrentHour == nil) then guessCurrentHour = true; end
+	
+	--requesting audience for the current broadcast?
+	if (guessCurrentHour == false) and (WorldTime.GetDay() == fixedDay and WorldTime.GetDayHour() == fixedHour and WorldTime.GetDayMinute() < 5) then
+		return TVT.GetCurrentNewsAudience()
+	end
+	
+	-- predicted level of the news show for the given time
+	local level = self:GetQualityLevel(fixedDay, fixedHour)
+	-- average quality of a broadcast with the predicted level
+	local avgQuality = self:GetAverageBroadcastQualityByLevel(level)
+	
+	local qualities = {avgQuality, avgQuality, avgQuality, avgQuality}
+	local guessedAudience = self:PredictAudience(broadcast, qualities, fixedDay, fixedHour, 1, nil, nil)
+
+
+	local globalPercentageByHour = self:GetMaxAudiencePercentage(fixedDay, fixedHour)
+	local exclusiveMaxAudience = TVT.getExclusiveMaxAudience()
+	local sharedMaxAudience = MY.GetMaxAudience() - exclusiveMaxAudience
+	self.log["GuessedAudienceForHour"] = "Hour=" .. hour .. "  Lvl=" .. level .. "  %  guessedAudience=" .. math.round(guessedAudience) .. "  aud=".. math.round(MY.GetMaxAudience()*globalPercentageByHour) .. " (".. math.floor(100*globalPercentageByHour) .."% of max="..MY.GetMaxAudience()..")"
+	--debugMsg( self.log["GuessedAudienceForHour"] )
+
+	return guessedAudience
+end
+
+function TaskSchedule:PredictAudience(broadcast, qualities, day, hour, block, previousBroadcastAttraction, previousNewsBroadcastAttraction, storePrediction)
+	if broadcast ~= nil then
+		if block == nil then block = 1; end
 
 		-- todo: refresh markets when "office is visited" (stationmap)
 		TVT.audiencePredictor.RefreshMarkets()
-		TVT.audiencePredictor.SetAverageValueAttraction(1, avgQuality)
-		TVT.audiencePredictor.SetAverageValueAttraction(2, avgQuality)
-		TVT.audiencePredictor.SetAverageValueAttraction(3, avgQuality)
-		TVT.audiencePredictor.SetAverageValueAttraction(4, avgQuality)
+		for i=1,4 do
+			-- assume they all send at least as good programme/news as we do
+			local q = math.max(qualities[i], broadcast.GetQuality()) -- Lua-arrays are 1 based
+			TVT.audiencePredictor.SetAverageValueAttraction(i, q)
+		end
+		local previousDay, previousHour = self:FixDayAndHour(day, hour-1)
+		if previousBroadcastAttraction == nil then
+			previousBroadcastAttraction = self.Player.Stats.BroadcastStatistics:GetAttraction(previousDay, previousHour, TVT.Constants.BroadcastMaterialType.PROGRAMME)
+		end
+		if previousNewsBroadcastAttraction == nil then
+			previousNewsBroadcastAttraction = self.Player.Stats.BroadcastStatistics:GetAttraction(previousDay, previousHour, TVT.Constants.BroadcastMaterialType.NEWSSHOW)
+			if previousNewsBroadcastAttraction == nil then
+				--check for older news show (up to 6 hours) but with less
+				--attractivity the older the news is
+				for i = 1, 6 do
+					local lastNewsDay, lastNewsHour = self:FixDayAndHour(previousDay, previousHour - i)
+					previousNewsBroadcastAttraction = self.Player.Stats.BroadcastStatistics:GetAttraction(lastNewsDay, lastNewsHour, TVT.Constants.BroadcastMaterialType.NEWSSHOW)
+					if previousNewsBroadcastAttraction ~= nil then
+						previousNewsBroadcastAttraction = TVT.CopyBasicAudienceAttraction(previousNewsBroadcastAttraction, 1.0 - i*0.15)
+						break
+					end
+				end
+			end
+		end
+
+		-- assign our well known basic attraction (this already includes
+		-- audience flow assumptions)
+		local broadcastAttraction = broadcast.GetStaticAudienceAttraction(hour, block, previousBroadcastAttraction, previousNewsBroadcastAttraction)
 		TVT.audiencePredictor.SetAttraction(TVT.ME, broadcastAttraction)
-		TVT.audiencePredictor.RunPrediction(fixedDay, fixedHour)
-		guessedAudience = TVT.audiencePredictor.GetAudience(TVT.ME).GetTotalSum()
+		-- do the real prediction work
+		TVT.audiencePredictor.RunPrediction(day, hour)
+
+		--store predicted attraction
+		if storePrediction ~= false then
+			if broadcast.isUsedAsType(TVT.Constants.BroadcastMaterialType.NEWSSHOW) == 1 then
+				debugMsg("STORE PREDICT - "..day.."/"..hour)
+				self.Player.Stats.BroadcastStatistics:AddBroadcast(day, hour, TVT.Constants.BroadcastMaterialType.NEWSSHOW, broadcastAttraction, TVT.audiencePredictor.GetAudience(TVT.ME).GetTotalSum())
+			elseif broadcast.isUsedAsType(TVT.Constants.BroadcastMaterialType.PROGRAMME) == 1 then
+				self.Player.Stats.BroadcastStatistics:AddBroadcast(day, hour, TVT.Constants.BroadcastMaterialType.PROGRAMME, broadcastAttraction, TVT.audiencePredictor.GetAudience(TVT.ME).GetTotalSum())
+			end
+		end
+
+		return TVT.audiencePredictor.GetAudience(TVT.ME).GetTotalSum()
+	else
+		return 0
 	end
-
-	--Formel: Filmqualität * Potentielle Quote nach Uhrzeit (maxAudiencePercentage) * Echte Maximalzahl der Zuschauer
-	--TODO: Auchtung! Muss eventuell an die neue Quotenberechnung angepasst werden
-	local exclusiveMaxAudience = TVT.getExclusiveMaxAudience()
-	local sharedMaxAudience = MY.GetMaxAudience() - exclusiveMaxAudience
-
-	self.log["GuessedAudienceForHour"] = "Hour=" .. hour .. "  Lvl=" .. level .. "  %  guessedAudience=" .. math.round(guessedAudience) .. "  aud=".. math.round(MY.GetMaxAudience()*globalPercentageByHour) .. " (".. math.floor(100*globalPercentageByHour) .."% of max="..MY.GetMaxAudience()..")"
-	--debugMsg( self.log["GuessedAudienceForHour"] )
-	return guessedAudience
 end
+
 
 function TaskSchedule:GetQualityLevel(day, hour)
 	local maxAudience = self:GetMaxAudiencePercentage(day, hour)
@@ -596,7 +664,8 @@ function JobEmergencySchedule:SetContractOrTrailerToEmptyBlock(choosenSpot, day,
 		debugMsg("outage ... skip setting a slot " .. fixedDay .. "/" .. fixedHour .. ":55")
 		return false
 	else
-		guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousProgramme)
+		local previousProgrammeBlock = math.max(1, MY.GetProgrammePlan().GetProgrammeBlock(fixedDay, fixedHour))
+		guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousProgramme, previousProgrammeBlock)
 		local currentSpotList = self:GetFittingSpotList(guessedAudience, false, true, level, fixedDay, fixedHour)
 	end
 
@@ -999,8 +1068,10 @@ function JobSchedule:OptimizeAdSchedule()
 		local sendAd = true
 
 		local previousProgramme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
-		local guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousProgramme)
+		local previousProgrammeBlock = math.max(1, MY.GetProgrammePlan().GetProgrammeBlock(fixedDay, fixedHour))
+		local guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousProgramme, block)
 
+		-- add to debug data of the 
 		MY.SetAIData("guessedaudience_" .. fixedDay .."_".. fixedHour, guessedAudience)
 
 		-- send a trailer:
@@ -1230,7 +1301,8 @@ function JobSchedule:OptimizeProgrammeSchedule()
 			local sendProgrammeReason = ""
 
 			local previousBroadcastMaterial = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour - 1)
-			local guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousBroadcastMaterial)
+			local previousBroadcastBlock = math.max(1, MY.GetProgrammePlan().GetProgrammeBlock(fixedDay, fixedHour - 1))
+			local guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousBroadcastMaterial, previousBroadcastBlock)
 --[[
 local prevText = ""
 local currText = ""

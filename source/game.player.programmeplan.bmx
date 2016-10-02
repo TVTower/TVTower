@@ -1588,7 +1588,6 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		EndIf
 	End Method
 
-
 	'that method could be externalized to "main.bmx" or another common
 	'function, there is no need to place it in this file
 	'
@@ -1835,16 +1834,13 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'=== AUDIENCE ===
 	'maybe move that helpers to TBroadcastManager
-	Method GetAudience:Int() {_exposeToLua}
-		Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
-		If Not audienceResult Then Return 0
-		Return audienceResult.Audience.GetTotalSum()
-	End Method
 
 
 	'returns formatted value of actual audience
 	Method GetFormattedAudience:String() {_exposeToLua}
-		Return TFunctions.convertValue(GetAudience(), 2)
+		Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
+		If audienceResult Then return TFunctions.convertValue(audienceResult.audience.GetTotalSum(), 2)
+		return "0"
 	End Method
 
 

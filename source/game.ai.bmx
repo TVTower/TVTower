@@ -655,6 +655,16 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
+	'helper to allow modification of a predicted audience attraction
+	'without affecting the original one
+	Method CopyBasicAudienceAttraction:TAudienceAttraction(attraction:TAudienceAttraction, multiplyFactor:Float = 1.0)
+		if not attraction then return null
+		local copyAttraction:TAudienceAttraction = attraction.CopyStaticBaseAttraction()
+		if multiplyFactor <> 1.0 then copyAttraction.MultiplyAttrFactor(multiplyFactor)
+		return copyAttraction
+	End Method
+
+
 	'=== GENERIC INFORMATION RETRIEVERS ===
 	'player could eg. see in interface / tooltips
 	Method GetCurrentProgramme:TBroadcastMaterial()
