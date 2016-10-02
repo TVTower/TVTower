@@ -104,6 +104,9 @@ Type TPublicImage {_exposeToLua="selected"}
 			return
 		endif
 
+		'skip changing if there is nothing to change
+		if imageChange.GetTotalAbsSum() = 0 then return
+
 		ImageValues.Multiply( new TAudience.InitValue(1.0, 1.0).Add(imageChange) )
 		'avoid negative values -> cut to at least 0
 		'also avoid values > 100
@@ -118,6 +121,9 @@ Type TPublicImage {_exposeToLua="selected"}
 			TLogger.Log("ChangePublicImage()", "Change player" + playerID + "'s public image failed: no parameter given.", LOG_ERROR)
 			return
 		endif
+
+		'skip changing if there is nothing to change
+		if imageChange.GetTotalAbsSum() = 0 then return
 
 		ImageValues.Add(imageChange)
 		'avoid negative values -> cut to at least 0
