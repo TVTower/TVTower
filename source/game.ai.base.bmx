@@ -12,6 +12,8 @@ Type TAiBase
 	Field scriptSaveState:string
 	'time in milliseconds of the last "onTick"-call
 	Field LastTickTime:Long
+	'game minute of the last "onTick"-call
+	Field LastTickMinute:int
 	Field Ticks:Long
 
 	Global AiRunning:Int = true
