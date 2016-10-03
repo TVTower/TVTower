@@ -11,7 +11,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2014 Ronny Otto, digidea.de
+	Copyright (C) 2002-2016 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -36,8 +36,8 @@ EndRem
 SuperStrict
 Import brl.Map
 Import brl.Retro
-Import BaH.StringBuffer
-
+'Import BaH.StringBuffer
+Import "external/stringbuffer.mod/stringbuffer.bmx"
 Import "external/string_comp.bmx"
 
 Type TData
