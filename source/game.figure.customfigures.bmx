@@ -37,7 +37,7 @@ Type TFigurePostman Extends TFigure
 				door = GetRoomDoorBaseCollection().GetRandom()
 			Until door.doorType > 0
 
-			TLogger.Log("TFigurePostman", "nothing to do -> send to door of " + door.roomID, LOG_DEBUG | LOG_AI, True)
+			'TLogger.Log("TFigurePostman", "nothing to do -> send to door of " + door.roomID, LOG_DEBUG | LOG_AI, True)
 			SendToDoor(door)
 		EndIf
 

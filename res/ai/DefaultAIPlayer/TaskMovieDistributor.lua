@@ -51,11 +51,18 @@ function TaskMovieDistributor:Activate()
 
 	local player = _G["globalPlayer"]
 	debugMsg("    Task information: CurrentBudget=" .. self.CurrentBudget .. "  CurrentBargainBudget=" .. self.CurrentBargainBudget .. "  ProgrammesPossessed=" .. self.ProgrammesPossessed .. "  startProgrammeAmount=" .. player.Strategy.startProgrammeAmount)
+
+	--added entry for movie selling 
+	self.SellSuitcaseLicences = JobSellSuitcaseLicences()
+	self.SellSuitcaseLicences.MovieDistributorTask = self
 end
 
 
 function TaskMovieDistributor:GetNextJobInTargetRoom()
-	if (self.BuyStartProgrammeJob.Status ~= JOB_STATUS_DONE) then
+	--added entry for programme licence selling, needs to come first
+	if (self.SellSuitcaseLicences.Status ~= JOB_STATUS_DONE) then
+		return self.SellSuitcaseLicences
+	elseif (self.BuyStartProgrammeJob.Status ~= JOB_STATUS_DONE) then
 		return self.BuyStartProgrammeJob
 	elseif (self.CheckMoviesJob.Status ~= JOB_STATUS_DONE) then
 		return self.CheckMoviesJob
@@ -481,6 +488,51 @@ function JobBidAuctions:Tick()
 			end
 		end
 	end
+
+	self.Status = JOB_STATUS_DONE
+end
+-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+_G["JobSellSuitcaseLicences"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.MovieDistributorTask = nil	
+end)
+
+
+function JobSellSuitcaseLicences:typename()
+	return "JobSellSuitcaseLicences"
+end
+
+
+function JobSellSuitcaseLicences:Prepare(pParams)
+
+end
+
+
+function JobSellSuitcaseLicences:Tick()
+	--sell content of suitcase
+	debugMsg("JobSellLicences Tick")
+	local myPC = MY.GetProgrammeCollection()
+	local nCase = myPC.GetSuitcaseProgrammeLicenceCount()
+	local case = myPC.GetSuitcaseProgrammeLicencesArray()
+	debugMsg("md case has: "..#case)
+
+	--for i=1, #case do debugMsg("md case "..i.." : "..tostring(case[i])) end
+	if case ~= nil and #case > 0 then
+		--debugMsg("attempt sale")
+		for i=1,#case 
+		do
+			local v = case[i]
+			if v ~= nil 
+			then 
+				err = TVT.md_doSellProgrammeLicence(v.GetId()) 
+				debugMsg("sold "..v.GetTitle().." id "..v.GetId().." with error code: "..err)
+			else debugMsg("md sale: nil value")	end
+		end
+	else debugMsg ("md: empty suitcase") end
 
 	self.Status = JOB_STATUS_DONE
 end
