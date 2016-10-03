@@ -18,8 +18,10 @@ Type TFigurePostman Extends TFigure
 
 
 	'override to make the figure stay in the room for a random time
-	Method FinishEnterRoom:Int()
-		Super.FinishEnterRoom()
+	'ATTENTION: use BeginEnterRoom instead of FinishEnterRoom()
+	'           to avoid "resets" while Entering
+	Method BeginEnterRoom:int(door:TRoomDoorBase, room:TRoomBase)
+		Super.BeginEnterRoom(door, room)
 
 		'reset timer so figure stays in room for some time
 		nextActionTimer.Reset()
@@ -35,7 +37,7 @@ Type TFigurePostman Extends TFigure
 				door = GetRoomDoorBaseCollection().GetRandom()
 			Until door.doorType > 0
 
-			'TLogger.Log("TFigurePostman", "nothing to do -> send to door of " + door.room.name, LOG_DEBUG | LOG_AI, True)
+			TLogger.Log("TFigurePostman", "nothing to do -> send to door of " + door.roomID, LOG_DEBUG | LOG_AI, True)
 			SendToDoor(door)
 		EndIf
 
@@ -220,8 +222,10 @@ Type TFigureDeliveryBoy Extends TFigure
 
 
 	'override to make the figure stay in the room for a random time
-	Method FinishEnterRoom:Int()
-		Super.FinishEnterRoom()
+	'ATTENTION: use BeginEnterRoom instead of FinishEnterRoom()
+	'           to avoid "resets" while Entering
+	Method BeginEnterRoom:int(door:TRoomDoorBase, room:TRoomBase)
+		Super.BeginEnterRoom(door, room)
 
 		'figure now knows where to "deliver"
 		If Not checkedRoomboard Then checkedRoomboard = True
