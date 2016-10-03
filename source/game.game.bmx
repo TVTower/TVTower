@@ -540,7 +540,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		new TPlayerProgrammeCollection.Create(playerID)
 		new TPlayerProgrammePlan.Create(playerID)
 
-
 		local boss:TPlayerBoss = GetPlayerBoss(playerID)
 		boss.Initialize()
 		boss.creditMaximum = difficulty.creditMaximum
@@ -739,6 +738,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				Next
 			EndIf
 		endif
+
+		EventManager.triggerEvent( TEventSimple.Create("Game.PreparePlayer", new TData.AddNumber("playerID", playerID), GetPlayer(playerID), self) )
 	End Method
 
 
