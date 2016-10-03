@@ -760,7 +760,7 @@ Type TFigure extends TFigureBase
 			local targetPos:TVec2D = GetTargetMoveToPosition()
 			'remove that target, so we can add it again
 			RemoveCurrentTarget()
-			ForceChangeTarget( targetPos.x, targetPos.y)
+			ForceChangeTarget( int(targetPos.x), int(targetPos.y))
 		endif
 
 		return True
