@@ -184,12 +184,6 @@ Type TDialogue
 	
 
 	Method Update:Int()
-		Local clicked:Int = 0
-		if MouseManager.isClicked(1)
-			clicked = 1
-			MouseManager.resetKey(1)
-		endif
-
 		Local nextTextIndex:Int = _currentTextIndex
 
 		local dialogueText:TDialogueTexts = GetDialogueText(_currentTextIndex)
@@ -202,7 +196,7 @@ Type TDialogue
 				endif
 			endif
 
-			Local returnValue:Int = dialogueText.Update(GetContentRect(), GetAnswerContentRect(), clicked)
+			Local returnValue:Int = dialogueText.Update(GetContentRect(), GetAnswerContentRect())
 			If returnValue <> -1 Then nextTextIndex = returnValue
 		EndIf
 		if _currentTextIndex <> nextTextIndex
@@ -268,7 +262,7 @@ Type TDialogueAnswer
 	End Function
 
 
-	Method Update:Int(screenRect:TRectangle, clicked:Int = 0)
+	Method Update:Int(screenRect:TRectangle)
 		Self._highlighted = False
 
 		if not _size and _boldFont
@@ -279,11 +273,14 @@ Type TDialogueAnswer
 		'texts 
 		If THelper.MouseIn(int(screenRect.GetX()), int(screenRect.GetY() + _pos.y), int(screenRect.GetW()), int(_size.y))
 			Self._highlighted = True
-			If clicked
+			If MouseManager.isClicked(1)
 				'emit the event if there is one
 				If _onUseEvent Then EventManager.triggerEvent(_onUseEvent)
 				'run callback if there is one
 				If _triggerFunction Then _triggerFunction(_triggerFunctionData)
+
+				MouseManager.ResetKey(1)
+
 				Return _leadsTo
 			EndIf
 		EndIf
@@ -356,7 +353,7 @@ Type TDialogueTexts
 	End Method
 		
 
-	Method Update:Int(textRect:TRectangle, answerRect:TRectangle, clicked:Int = 0)
+	Method Update:Int(textRect:TRectangle, answerRect:TRectangle)
 		'move answers within the answerRect
 		local advanceY:int = 0
 		For Local answer:TDialogueAnswer = EachIn(Self._answers)
@@ -368,11 +365,9 @@ Type TDialogueTexts
 
 		_goTo = -1
 		For Local answer:TDialogueAnswer = EachIn(Self._answers)
-			Local returnValue:Int = answer.Update(answerRect, clicked)
+			Local returnValue:Int = answer.Update(answerRect)
 			If returnValue <> - 1
 				_goTo = returnValue
-				'handled click
-				clicked = False
 			endif
 		Next
 		Return _goTo
