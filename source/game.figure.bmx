@@ -815,7 +815,7 @@ Type TFigure extends TFigureBase
 		if not inRoom or IsLeavingRoom() then return True
 
 		'=== INFORM OTHERS ===
-		'inform that figure now begins entering the room
+		'inform that figure now begins leaving the room
 		'(eg. for players informing the ai)
 		EventManager.triggerEvent( TEventSimple.Create("figure.onLeaveRoom", null, self, inRoom ) )
 
@@ -1075,20 +1075,28 @@ Type TFigure extends TFigureBase
 
 		'=== CHECK IF ALREADY THERE ===
 		'check if figure is already at this target
-		if newTarget and newTarget = GetTarget() then return False
+		'RONNY: REALLY NEEDED? - bugs out AI in rooms (sometimes) as
+		'       GetTarget() might return a new one already
+		'if newTarget and newTarget = GetTarget() then return False
+		'-> alternative: check coordinates
+		if newTarget and newTarget = GetTarget()
+			if newTargetCoord.IsSame(area.position) then return False
+		endif
 		'new target and current target are positions and the same?
 		if TVec2D(newTarget) and TVec2D(GetTarget()) and TVec2D(newTarget).isSame(TVec2D(GetTarget())) then return False
 		'or if already in this room
 		if targetRoom and targetRoom = inRoom then return False
 
-		'=== SET NEW TARGET ===
-		'new target - so go to it, remove other previously set targets
-		SetTarget(newTarget)
 
+		'=== SET NEW TARGET ===
 		'if still in a room, but targetting something else ... leave first
 		'this is needed as computer players do not "leave a room", they
 		'just change targets
 		If newTarget <> inRoom then LeaveRoom(forceChange)
+
+		'new target - so go to it, remove other previously set targets
+		SetTarget(newTarget)
+
 
 		'emit an event
 		EventManager.triggerEvent( TEventSimple.Create("figure.onChangeTarget", new TData.AddNumber("x", x).AddNumber("y", y).AddNumber("forceChange", forceChange), self, null ) )
