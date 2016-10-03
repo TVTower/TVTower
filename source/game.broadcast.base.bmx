@@ -497,7 +497,7 @@ Type TBroadcast
 		'Calculate missing attraction of a broadcast per player
 		'and assign attraction (also informs markets about the attraction)
 		For Local i:Int = 1 to 4
-			if not attractions[i-1] then attractions[i-1] = CalculateMalfunction( null )
+			if not attractions[i-1] then attractions[i-1] = TBroadcast.CalculateMalfunction( null )
 			SetAttraction(i, attractions[i-1])
 		Next
 
@@ -608,7 +608,7 @@ Type TBroadcast
 
 
 	'Sendeausfall
-	Method CalculateMalfunction:TAudienceAttraction(lastMovieAttraction:TAudienceAttraction)
+	Function CalculateMalfunction:TAudienceAttraction(lastMovieAttraction:TAudienceAttraction)
 		Local attraction:TAudienceAttraction = new TAudienceAttraction
 		attraction.BroadcastType = 0
 		If lastMovieAttraction
@@ -623,7 +623,7 @@ Type TBroadcast
 		attraction.Recalculate()
 		attraction.Malfunction :+ 1
 		Return attraction
-	End Method
+	End Function
 
 
 	Method SetAttraction(playerID:int, audienceAttraction:TAudienceAttraction)
@@ -1145,8 +1145,10 @@ Type TAudienceMarketCalculation
 
 		
 		For Local i:int = 0 until playerIDs.length
-			'Die außerhalb berechnete Attraction
+			'maybe a player just went bankrupt, so create a malfunction for him
+			if not audienceAttractions[i] then audienceAttractions[i] = TBroadcast.CalculateMalfunction(null)
 			Local attraction:TAudienceAttraction = audienceAttractions[i]
+			
 			'Die effectiveAttraction (wegen Konkurrenz) entspricht der Quote!
 			Local effectiveAttraction:TAudience = attraction.Copy().Multiply(competitionAttractionModifier)
 			effectiveAttraction.CutBordersFloat(0, 1.0)

@@ -330,10 +330,16 @@ Type TDebugProgrammeCollectionInfos
 		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeProgrammeLicence", onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.addProgrammeLicence", onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnStart", onGameStart) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("Game.PreparePlayer", onPreparePlayer) ]
 	End Method
 
 
 	Function onGameStart:Int(triggerEvent:TEventBase)
+		debugProgrammeCollectionInfos.Initialize()
+	End Function
+
+	'called if a player restarts
+	Function onPreparePlayer:Int(triggerEvent:TEventBase)
 		debugProgrammeCollectionInfos.Initialize()
 	End Function
 		
