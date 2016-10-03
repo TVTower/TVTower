@@ -1606,9 +1606,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Pemto1" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Pemto Taschentücher</de>
+				<de>Pemto Tissues</de>
 			</title>
 			<description>
-				<de>Reißfest und kugelsicher. Pemto - wenn's mal pressiert.</de>
+				<de>Reißfest und kugelsicher. Pemto - stoppt auch 150 km/h-Nieser.</de>
+				<en>Tear-resistant and bulletproof. Pemto - even stops 150mph sneezers.</en>
 			</description>
 			<conditions min_audience="14.07" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="22" repetitions="3" duration="3" profit="262" penalty="425" fix_infomercial_profit="1"/>
@@ -1616,9 +1618,14 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Pemto2" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Pemto Toilettenpapier</de>
+				<en>Pemto Toilet Paper</en>
 			</title>
+			<description>
+				<de>Reißfest und kugelsicher. Pemto - wenn's mal pressiert.</de>
+				<en>Tear-resistant and bulletproof. Pemto - if something is urgent.</en>
+			</description>
 			<conditions min_audience="14.07" min_image="32" target_group="0"/>
-			<data infomercial="1" quality="24" repetitions="5" duration="4" profit="70" penalty="120" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="24" repetitions="5" duration="4" profit="270" penalty="420" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Pillreis" creator="8605" created_by="SpeedMinister">
 			<title>

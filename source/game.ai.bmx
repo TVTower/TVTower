@@ -53,6 +53,9 @@ Type TAi extends TAiBase
 		LuaEngine.RegisterBlitzmaxObject("Game", GetGameBase())
 		'the game object
 		LuaEngine.RegisterBlitzmaxObject("WorldTime", GetWorldTime())
+
+		'register source and available objects
+		LuaEngine.RegisterToLua()
 	End Method
 
 
@@ -742,6 +745,15 @@ endrem
 
 	'=== OFFICE ===
 	'players bureau
+	Method of_IsModifyableProgrammePlanSlot:int(slotType:int, day:int, hour:int)
+		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
+
+		if GetPlayerProgrammePlan(self.ME).IsModifyableSlot(slotType, day, hour)
+			return self.RESULT_OK
+		endif
+		return self.RESULT_NOTALLOWED
+	End Method
+
 
 	Method of_getAudience:Int(day:int, hour:int)
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM

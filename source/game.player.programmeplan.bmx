@@ -669,13 +669,13 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'do not allow adding to a locked slot
 		If checkModifyableSlot
 			if not BelongsToModifiyableSlot(slotType, day, hour)
-				TLogger.Log("TPlayerProgrammePlan.AddObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+") cannot get modified - belongs to not-modifyable broadcast. GameTime:" + GetWorldTime().GetFormattedTime(), LOG_INFO)
+				'TLogger.Log("TPlayerProgrammePlan.AddObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+") cannot get modified - belongs to not-modifyable broadcast. GameTime:" + GetWorldTime().GetFormattedTime(), LOG_INFO)
 				return False
 			endif
 
 			For Local i:Int = 0 To obj.GetBlocks(slotType) -1
 				if Not IsModifyableSlot(slotType, day, hour + i)
-					TLogger.Log("TPlayerProgrammePlan.AddObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+", block="+i+", blockHour="+(hour+i)+") cannot get modified - is in the past or locked. GameTime:" + GetWorldTime().GetFormattedTime(), LOG_INFO)
+					'TLogger.Log("TPlayerProgrammePlan.AddObject", "Failed: slot (type="+slotType+", day="+day+", hour="+hour+", block="+i+", blockHour="+(hour+i)+") cannot get modified - is in the past or locked. GameTime:" + GetWorldTime().GetFormattedTime(), LOG_INFO)
 					Return False
 				endif
 			Next
@@ -1400,6 +1400,11 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method SetAdvertisementSlot:Int(obj:TBroadcastMaterial, day:Int=-1, hour:Int=-1)
 		'if nothing is given, we have to reset that slot
 		If Not obj Then Return (Null<>RemoveObject(Null, TVTBroadcastMaterialType.ADVERTISEMENT, day, hour))
+
+		'check if we are allowed to place it there
+		'ATTENTION: check for -1 as "-2" means there is another
+		'           broadcastmaterial at the desired slot
+		if AdvertisementPlaceable(obj, day, hour) = -1 then return False
 
 		'add it
 		Return AddObject(obj, TVTBroadcastMaterialType.ADVERTISEMENT, day, hour)
