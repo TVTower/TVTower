@@ -138,23 +138,26 @@ Type MathHelper
 		if digitsAfterDecimalPoint <= 0 then return RoundLong(value)
 
 		Local t:Long = 10 ^ digitsAfterDecimalPoint
-		local s:string = RoundLong(Abs(value) * t)
+		local valueBig:Double = value * t
+		local valueRounded:Long = RoundLong(valueBig)
+		local s:string = Abs(valueRounded)
 		'instead of comparing "value" we use the rounded one - a value
 		'of "0.000" is sometimes represented using "-2xxxxxxx.xxxx"
-		local minus:int = (RoundLong(value * t) < 0)
+		local minus:int = (valueRounded < 0)
 
 		'after rounding, fill the front of the number with zeros,
 		'this avoids "0.001 * 1000" to get "1" (wrong length) but "0001"
 		if s.length < digitsAfterDecimalPoint
 			s = RSet(s, digitsAfterDecimalPoint).Replace(" ", "0")
 		endif
-
 		
 		'calculate amount of digits before "."
 		'instead of just string(int(value))).length we use the "Abs"-value
 		'and compare the original value if it is negative
 		'- this is needed because "-0.1" would be "0" as int (one char less)
-		local lengthBeforeDecimalPoint:int = string(abs(int(value))).length
+		local lengthBeforeDecimalPoint:int = string(abs(Long(value))).length
+		'compare if truncated parts differ (9.99 becomes 10.00 during rounding)
+		if string(valueRounded).length <> string(Long(ValueBig)).length then lengthBeforeDecimalPoint :+ 1
 
 		'remove unneeded digits (length = BEFORE + . + AFTER)
 		if s = "0"
