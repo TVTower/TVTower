@@ -91,9 +91,9 @@ Type TMouseManager
 	'current status of the buttons
 	Field _keyStatus:Int[] = [0,0,0,0]
 	'time since when the button is pressed
-	Field _keyDownTime:Int[] = [0,0,0,0]
+	Field _keyDownTime:Long[] = [0:long,0:long,0:long,0:long]
 	'time when the button was last hit
-	Field _keyHitTime:Int[]	= [0,0,0,0]
+	Field _keyHitTime:Long[]	= [0:long,0:long,0:long,0:long]
 	'amount of hits until "doubleClickTime" was over without another hit
 	Field _keyHitCount:Int[] = [0,0,0,0]
 	'amount of clicks (hits until doubleClickTime was over)
@@ -276,7 +276,7 @@ Type TMouseManager
 	
 
 	'returns how many milliseconds a button is down
-	Method GetDownTime:Int(key:Int)
+	Method GetDownTime:Long(key:Int)
 		If _keyDownTime[key] > 0
 			return Time.GetAppTimeGone() - _keyDownTime[key]
 		else
@@ -510,7 +510,7 @@ EndType
 Type TKeyManager
 	'status of all keys
 	Field _keyStatus:Int[256]
-	Field _blockKeyTime:Int[256]
+	Field _blockKeyTime:Long[256]
 
 	Global processedAppSuspend:int = False
 
@@ -558,7 +558,7 @@ Type TKeyManager
 		endif
 
 
-		local time:int = Time.GetAppTimeGone()
+		local time:Long = Time.GetAppTimeGone()
 		For Local i:Int = 1 To 255
 			'ignore key if it is blocked
 			'or set back to "normal" afterwards
@@ -625,7 +625,7 @@ Type TKeyWrapper
 		2 - time to wait for next "hold" after "hold"
 		3 - total time till next hold
 	EndRem
-	Field _keySet:Int[256, 4]
+	Field _keySet:Long[256, 4]
 
 
 	Method allowKey(key:Int, rule:Int=KEYWRAP_ALLOW_BOTH, hitTime:Int=600, holdtime:Int=100)
@@ -674,7 +674,7 @@ Type TKeyWrapper
 
 		If _keySet[key, 0] & KEYWRAP_ALLOW_HOLD
 			'time which has to be gone until hold is set
-			Local holdTime:Int = _keySet[key, 3]
+			Local holdTime:Long = _keySet[key, 3]
 			If Time.GetAppTimeGone() > holdTime
 				'refresh time until next "hold"
 				_keySet[key, 3] = Time.GetAppTimeGone() + _keySet[key, 2]
