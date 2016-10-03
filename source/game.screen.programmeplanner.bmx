@@ -518,8 +518,8 @@ Type TScreenHandler_ProgrammePlanner
 	Function onTryLeaveProgrammePlannerScreen:Int( triggerEvent:TEventBase )
 		'do not allow leaving with a list open
 		If PPprogrammeList.enabled Or PPcontractList.enabled
-			PPprogrammeList.SetOpen(0)
-			PPcontractList.SetOpen(0)
+			PPprogrammeList.SetOpen( Max(0, PPprogrammeList.openState - 1) )
+			PPcontractList.SetOpen( Max(0, PPcontractList.openState - 1) )
 			triggerEvent.SetVeto()
 			Return False
 		EndIf
