@@ -85,7 +85,8 @@ Type TLowerString
 	Method DeSerializeTLowerStringFromString(text:String)
 		'get rid of old objects to avoid mem leaks
 		if data then bmx_stringcomp_free(data)
-		
+
+		orig = text
 		data = bmx_stringcomp_init(text)
 	End Method
 End Type
