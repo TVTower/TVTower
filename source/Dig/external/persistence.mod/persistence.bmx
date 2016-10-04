@@ -368,7 +368,10 @@ Type TPersist
 						serializedString = String( mth.Invoke(obj) )
 					endif
 				endif
-				If mth and mth2 and serializedString
+				'no need to check wether "serialized" is <> "" (might be
+				'empty on purpose!) - if mth/mth2 exist, then we trust
+				'that methods to serialize properly
+				If mth and mth2 'and serializedString
 					'attributes are already encoded, so encoding it now
 					'would lead to double-encoding
 					'serializedString = doc.encodeEntities(serializedString)
@@ -718,8 +721,9 @@ Type TPersist
 
 
 				' serialized data in attribute?
-				local serialized:string = node.GetAttribute("serialized")
-				If serialized Then
+				If node.HasAttribute("serialized") Then
+					'serialized might be "" (eg. an empty TLowerString)
+					local serialized:string = node.GetAttribute("serialized")
 					'check if there is a special "DeSerialize[classname]ToString" Method
 					'defined for the object
 					Local mth:TMethod
