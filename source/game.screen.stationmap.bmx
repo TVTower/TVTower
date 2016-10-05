@@ -330,12 +330,15 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 		if stationMapMouseoverStation then stationMapMouseoverStation.DrawInfoTooltip()
 
 		'draw activation tooltip for all other stations
-		For Local station:TStation = EachIn GetPlayer(room.owner).GetStationMap().Stations
-			if stationMapMouseoverStation = station then continue
-			if station.IsActive() then continue
+		'- only draw them while NOT placing a new one (to ease spot finding)
+		if stationMapMode <> 1
+			For Local station:TStation = EachIn GetPlayer(room.owner).GetStationMap().Stations
+				if stationMapMouseoverStation = station then continue
+				if station.IsActive() then continue
 
-			station.DrawActivationTooltip()
-		Next
+				station.DrawActivationTooltip()
+			Next
+		endif
 	End Function
 
 
