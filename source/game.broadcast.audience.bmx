@@ -725,14 +725,14 @@ Type TAudience {_exposeToLua="selected"}
 	End Method
 
 	
-	Method InitValue:TAudience(valueMale:Float, valueFemale:Float)
+	Method InitValue:TAudience(valueMale:Float, valueFemale:Float) {_exposeToLua}
 		Init(TVTPersonGender.Male, valueMale, valueMale, valueMale, valueMale, valueMale, valueMale, valueMale)
 		Init(TVTPersonGender.Female, valueFemale, valueFemale, valueFemale, valueFemale, valueFemale, valueFemale, valueFemale)
 		return self
 	End Method
 
 
-	Method InitWithBreakdown:TAudience(audience:Int)
+	Method InitWithBreakdown:TAudience(audience:Int) {_exposeToLua}
 		local breakdown:TAudienceBase = new TAudienceBase.InitValue(1)
 		breakdown.Multiply( AudienceManager.GetAudienceBreakdown() )
 
@@ -812,6 +812,8 @@ Type TAudience {_exposeToLua="selected"}
 
 
 	Method GetTotalValue:Float(targetID:int) {_exposeToLua}
+		if targetID <= 0 then return GetTotalSum()
+		
 		if targetID = TVTTargetGroup.Women
 			return GetGenderValue(targetID, TVTPersonGender.FEMALE)
 		elseif targetID = TVTTargetGroup.Men
@@ -1026,7 +1028,7 @@ Type TAudience {_exposeToLua="selected"}
 	End Method
 
 
-	Method MultiplyFloat:TAudience(factor:Float)
+	Method MultiplyFloat:TAudience(factor:Float) {_exposeToLua}
 		GetAudienceMale().MultiplyFloat(factor)
 		GetAudienceFemale().MultiplyFloat(factor)
 		return self

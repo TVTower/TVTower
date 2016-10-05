@@ -123,7 +123,7 @@ function JobSellMovies:Tick()
 	-- send figure to movie dealer now
 	local player = _G["globalPlayer"]
 	if player ~= nil then 
-		local task = getAIPlayer().TaskList[_G["TASK_MOVIEDISTRIBUTOR"]]
+		local task = player.TaskList[_G["TASK_MOVIEDISTRIBUTOR"]]
 		if task ~= nil then
 			debugMsg("Increasing SituationPriority for movie distributor task")
 			task.SituationPriority = 150 --arbitrary value, maybe needs higher one

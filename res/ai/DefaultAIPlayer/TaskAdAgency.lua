@@ -246,9 +246,9 @@ function SignRequisitedContracts:Tick()
 
 	for k,requisition in pairs(self.SpotRequisitions) do
 		local neededSpotCount = requisition.Count
-
 		local guessedAudience = requisition.GuessedAudience
 
+		debugMsg(" AdAgencyTick - requisition: Spots="..neededSpotCount .."  Audience="..math.floor(guessedAudience.GetTotalSum()))
 		local signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.8))
 		if (signedContracts == 0) then
 			signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.6))
@@ -264,14 +264,18 @@ function SignRequisitedContracts:Tick()
 end
 
 function SignRequisitedContracts:GetMinGuessedAudience(guessedAudience, minFactor)
-	if (guessedAudience < 2500) then
-		return 0
+	if minFactor == 1.0 then
+		return guessedAudience
+	end
+	
+	if (guessedAudience.GetTotalSum() < 1000) then
+		return TVT.audiencePredictor.GetEmptyAudience()
 	else
-		return (guessedAudience * minFactor)
+		return guessedAudience.Copy().MultiplyFloat(minFactor)
 	end
 end
 
-function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudience, minguessedAudience)
+function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudience, minGuessedAudience)
 	local signed = 0
 	local boughtContracts = {}
 	local neededSpotCount = requisition.Count
@@ -290,10 +294,14 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 		-- TODO: get breakdown of audience and compare this then
 		if (adContract.GetLimitedToTargetGroup() > 0 or adContract.GetLimitedToGenre() > 0) then
 			contractDoable = false
+debugMsg("contract NOT DOABLE: " .. adContract.GetTitle() .. "  targetgroup="..adContract.GetLimitedToTargetGroup() .."  genre="..adContract.GetLimitedToGenre())
 		end
 
 		if (contractDoable) then
-			local minAudience = adContract.GetMinAudience()
+			-- this value is already taking care of target group limits
+			local minAudienceValue = adContract.GetMinAudience()
+			local minGuessedAudienceValue = minGuessedAudience.GetTotalValue( adContract.GetLimitedToTargetGroup() )
+			local guessedAudienceValue = guessedAudience.GetTotalValue( adContract.GetLimitedToTargetGroup() )
 
 
 			local maxSurplusSpots = math.floor(0.5 * adContract.GetSpotCount())
@@ -307,11 +315,11 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 			
 			-- skip if contract requires too many spots for the given level
 			if adContract.GetSpotCount() > requisition.Count + maxSurplusSpots then 
-				--debugMsg("   Skipping a \"necessary\" contract (too many spots: " .. adContract.GetSpotCount() .. " > ".. requisition.Count .." + "..maxSurplusSpots .. "): " .. adContract.GetTitle() .. " (" .. adContract.GetID() .. "). Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  MinAudience: " .. minAudience .. "  GuessedAudience: " .. math.floor(minguessedAudience) .. " - " .. math.floor(guessedAudience))
+				--debugMsg("   Skipping a \"necessary\" contract (too many spots: " .. adContract.GetSpotCount() .. " > ".. requisition.Count .." + "..maxSurplusSpots .. "): " .. adContract.GetTitle() .. " (" .. adContract.GetID() .. "). Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  MinAudience: " .. minAudienceValue .. "  GuessedAudience: " .. math.floor(minGuessedAudience) .. " - " .. math.floor(guessedAudience))
 			-- sign if audience requirements are OK
-			elseif ((minAudience < guessedAudience) and (minAudience > minguessedAudience)) then
+			elseif ((minAudienceValue < guessedAudienceValue) and (minAudienceValue > minGuessedAudienceValue)) then
 				--Passender Spot... also kaufen
-				debugMsg("   Signing a \"necessary\" contract: " .. adContract.GetTitle() .. " (" .. adContract.GetID() .. "). Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  MinAudience: " .. minAudience .. "  GuessedAudience: " .. math.floor(minguessedAudience) .. " - " .. math.floor(guessedAudience))
+				debugMsg("   Signing a \"necessary\" contract: " .. adContract.GetTitle() .. " (" .. adContract.GetID() .. "). Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  MinAudienceValue: " .. minAudienceValue .. "  GuessedAudience: " .. math.floor(minGuessedAudienceValue) .. " - " .. math.floor(guessedAudienceValue) .." (total="..math.floor(guessedAudience.GetTotalSum())..")")
 				TVT.sa_doBuySpot(adContract.GetID())
 				requisition:UseThisContract(adContract)
 				table.insert(boughtContracts, adContract)

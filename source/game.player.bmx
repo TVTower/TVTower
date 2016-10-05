@@ -243,7 +243,7 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	field playerControlledByID:int = -1
 	Field aiData:TData = new TData {_exposeToLua}
 
-	Method SetAIData(key:string, value:string) {_exposeToLua}
+	Method SetAIData(key:string, value:object) {_exposeToLua}
 		aiData.Add(key, value)
 	End Method
 

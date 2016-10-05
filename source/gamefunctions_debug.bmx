@@ -544,6 +544,11 @@ Type TDebugProgrammeCollectionInfos
 			local adString1a:string = a.GetTitle()
 			local adString1b:string = "R: "+(a.GetDaysLeft()+1)+"D"
 			local adString2a:string = "Min: " +TFunctions.DottedValue(a.GetMinAudience())
+			if a.GetLimitedToTargetGroup() > 0 or a.GetLimitedToGenre() > 0  or a.GetLimitedToProgrammeFlag() > 0
+				adString2a = "**" + adString2a
+				'adString1a :+ a.GetLimitedToTargetGroup()+","+a.GetLimitedToGenre()+","+a.GetLimitedToProgrammeFlag()
+			endif
+
 			local adString2b:string = "Acu: " +MathHelper.NumberToString(a.GetAcuteness()*100.0)
 			local adString2c:string = a.GetSpotsSent() + "/" + a.GetSpotCount()
 			GetBitmapFont("default", 11).DrawBlock( adString1a, x+192, y+1 + entryPos*lineHeight*2 + lineHeight*0, 130, lineHeight)
@@ -653,6 +658,7 @@ Type TDebugProgrammePlanInfos
 			Local advertisement:TBroadcastMaterial = daysAdvertisements[hour]
 			If advertisement
 				local spotNumber:string
+				local specialMarker:string = ""
 				local ad:TAdvertisement = TAdvertisement(advertisement)
 				if ad
 					if ad.IsState(TAdvertisement.STATE_FAILED)
@@ -660,16 +666,16 @@ Type TDebugProgrammePlanInfos
 					else
 						spotNumber = GetPlayerProgrammePlan(advertisement.owner).GetAdvertisementSpotNumber(ad) + "/" + ad.contract.GetSpotCount()
 					endif
+
+					if ad.contract.GetLimitedToTargetGroup()>0 or ad.contract.GetLimitedToGenre()>0 or ad.contract.GetLimitedToProgrammeFlag()>0
+						specialMarker = "**"
+					endif
 				else
 					spotNumber = (hour - advertisement.programmedHour + 1) + "/" + advertisement.GetBlocks(TVTBroadcastMaterialType.ADVERTISEMENT)
 				endif
 				adString = advertisement.GetTitle()
 				if ad then adString = int(ad.contract.GetMinAudience()/1000) +"k " + adString
-				adString2 = "[" + spotNumber + "]"
-
-'- Startwerbung ANLEGEN 20k...
-'- Startnachrichten festlegen?
-
+				adString2 = specialMarker + "[" + spotNumber + "]"
 
 				if TProgramme(advertisement) then adString = "T: "+adString
 			EndIf
@@ -685,10 +691,10 @@ Type TDebugProgrammePlanInfos
 				endif
 
 				local player:TPlayer = GetPlayer(playerID)
-				local guessedAudience:int = -1
-				if player then guessedAudience = player.aiData.GetInt("guessedaudience_"+currDay+"_"+hour, -1)
-				if guessedAudience <> -1 
-					progString2 = progString2 + " ("+int(guessedAudience/1000)+"k)"
+				local guessedAudience:TAudience
+				if player then guessedAudience = TAudience(player.aiData.Get("guessedaudience_"+currDay+"_"+hour, null))
+				if guessedAudience
+					progString2 = progString2 + " ("+int(guessedAudience.GetTotalSum()/1000)+"k)"
 				endif
 			EndIf
 

@@ -275,7 +275,7 @@ function TaskSchedule:GuessedAudienceForHour(day, hour, broadcast, block, guessC
 	local globalPercentageByHour = self:GetMaxAudiencePercentage(fixedDay, fixedHour)
 	local exclusiveMaxAudience = TVT.getExclusiveMaxAudience()
 	local sharedMaxAudience = MY.GetMaxAudience() - exclusiveMaxAudience
-	self.log["GuessedAudienceForHour"] = "Hour=" .. hour .. "  Lvl=" .. level .. "  %  guessedAudience=" .. math.round(guessedAudience) .. "  aud=".. math.round(MY.GetMaxAudience()*globalPercentageByHour) .. " (".. math.floor(100*globalPercentageByHour) .."% of max="..MY.GetMaxAudience()..")"
+	self.log["GuessedAudienceForHour"] = "Hour=" .. hour .. "  Lvl=" .. level .. "  %  guessedAudience=" .. math.round(guessedAudience.GetTotalSum()) .. "  aud=".. math.round(MY.GetMaxAudience()*globalPercentageByHour) .. " (".. math.floor(100*globalPercentageByHour) .."% of max="..MY.GetMaxAudience()..")"
 	--debugMsg( self.log["GuessedAudienceForHour"] )
 
 	return guessedAudience
@@ -306,7 +306,7 @@ function TaskSchedule:GuessedNewsAudienceForHour(day, hour, newsBroadcast, guess
 	local globalPercentageByHour = self:GetMaxAudiencePercentage(fixedDay, fixedHour)
 	local exclusiveMaxAudience = TVT.getExclusiveMaxAudience()
 	local sharedMaxAudience = MY.GetMaxAudience() - exclusiveMaxAudience
-	self.log["GuessedAudienceForHour"] = "Hour=" .. hour .. "  Lvl=" .. level .. "  %  guessedAudience=" .. math.round(guessedAudience) .. "  aud=".. math.round(MY.GetMaxAudience()*globalPercentageByHour) .. " (".. math.floor(100*globalPercentageByHour) .."% of max="..MY.GetMaxAudience()..")"
+	self.log["GuessedAudienceForHour"] = "Hour=" .. hour .. "  Lvl=" .. level .. "  %  guessedAudience=" .. math.round(guessedAudience.GetTotalSum()) .. "  aud=".. math.round(MY.GetMaxAudience()*globalPercentageByHour) .. " (".. math.floor(100*globalPercentageByHour) .."% of max="..MY.GetMaxAudience()..")"
 	--debugMsg( self.log["GuessedAudienceForHour"] )
 
 	return guessedAudience
@@ -360,9 +360,9 @@ function TaskSchedule:PredictAudience(broadcast, qualities, day, hour, block, pr
 			end
 		end
 
-		return TVT.audiencePredictor.GetAudience(TVT.ME).GetTotalSum()
+		return TVT.audiencePredictor.GetAudience(TVT.ME)
 	else
-		return 0
+		return TVT.audiencePredictor.GetEmptyAudience()
 	end
 end
 
@@ -411,15 +411,19 @@ function TaskSchedule:AddSpotRequisition(guessedAudience, level, day, hour)
 	slotReq.GuessedAudience = guessedAudience
 	slotReq.Level = level
 
+	-- TODO Ronny: for now it groups by total sum - find a way to group
+	--             by the various target groups 
 	-- increase priority if guessedAudience/level is requested again
-	debugMsg("Raise demand on spots of level " .. level .. " (Audience: " .. math.ceil(guessedAudience) .. "). " .. day .. "/" .. hour .. ":55")
+	debugMsg("Raise demand on spots of level " .. level .. " (Audience: " .. math.floor(guessedAudience.GetTotalSum()) .. "). " .. day .. "/" .. hour .. ":55")
 	for k,v in pairs(self.SpotRequisition) do
-		if (v.Level == level and math.floor(v.GuessedAudience/2500) <= math.floor(guessedAudience/2500)) then
---		if (v.Level == level) then
+--		if (v.Level == level and math.floor(v.GuessedAudience.GetTotalSum()/2500) <= math.floor(guessedAudience.GetTotalSum()/2500)) then
+		if (v.Level == level) then
 			v.Count = v.Count + 1
 			if (v.Priority < 5) then
 				v.Priority = v.Priority + 1
 			end
+			
+			debugMsg("  -> insert into reqs table: level=" .. level .. "  guessedAudience=" .. math.floor(guessedAudience.GetTotalSum()))
 			table.insert(v.SlotReqs, slotReq)
 			return
 		end
@@ -547,7 +551,7 @@ function JobFulfillRequisition:Tick()
 			local contract = TVT.of_getAdContractByID(value.ContractId)
 
 			if (contract ~= nil) then
-				debugMsg("Set advertisement: " .. value.Day .. "/" .. value.Hour .. ":" .. value.Minute .. "  contract: " .. contract.GetTitle() .. " [" .. contract.GetID() .."]  MinAud: " .. contract.GetMinAudience() .. "  acuteness: " .. contract.GetAcuteness())
+				debugMsg("Set advertisement: " .. value.Day .. "/" .. value.Hour .. ":" .. value.Minute .. "  contract: " .. contract.GetTitle() .. " [" .. contract.GetID() .."]  MinAud: " .. math.floor(contract.GetMinAudience()) .. "  acuteness: " .. contract.GetAcuteness())
 				local result = TVT.of_setAdvertisementSlot(contract, value.Day, value.Hour) --Setzt den neuen Eintrag
 				if (result == TVT.RESULT_WRONGROOM) then
 					debugMsg("Set advertisement: failed - wrong room.")
@@ -658,6 +662,7 @@ function JobEmergencySchedule:SetContractOrTrailerToEmptyBlock(choosenSpot, day,
 
 	-- fetch the programme aired before the ad
 	local guessedAudience = 0
+	local guessedAudienceSum = 0
 	local currentSpotList
 	local previousProgramme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
 	if previousProgramme == nil then
@@ -665,7 +670,9 @@ function JobEmergencySchedule:SetContractOrTrailerToEmptyBlock(choosenSpot, day,
 		return false
 	else
 		local previousProgrammeBlock = math.max(1, MY.GetProgrammePlan().GetProgrammeBlock(fixedDay, fixedHour))
-		guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousProgramme, previousProgrammeBlock)
+		guessedAudience = self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousProgramme, previousProgrammeBlock)
+		guessedAudience.MultiplyFloat(self.ScheduleTask.guessedAudienceRiskyness)
+		guessedAudienceSum = guessedAudience.GetTotalSum()
 		local currentSpotList = self:GetFittingSpotList(guessedAudience, false, true, level, fixedDay, fixedHour)
 	end
 
@@ -682,11 +689,11 @@ function JobEmergencySchedule:SetContractOrTrailerToEmptyBlock(choosenSpot, day,
 			]]--
 
 			-- this time ignore broadcast limits (spot 5 of 3)
-			--currentSpotList = self:GetFittingSpotList(guessedAudience, true, false)
+			--currentSpotList = self:GetFittingSpotList(guessedAudience, s, true, false)
 
-			currentSpotList = self:GetFittingSpotList(guessedAudience * 0.5, true, false)
+			currentSpotList = self:GetFittingSpotList(guessedAudience.Copy().MultiplyFloat(0.5), true, false)
 			if (table.count(currentSpotList) == 0) then
-				currentSpotList = self:GetFittingSpotList(guessedAudience * 0.1, true, false)
+				currentSpotList = self:GetFittingSpotList(guessedAudience.Copy().MultiplyFloat(0.1), true, false)
 			end
 		end
 
@@ -695,7 +702,7 @@ function JobEmergencySchedule:SetContractOrTrailerToEmptyBlock(choosenSpot, day,
 	end
 
 	if (choosenSpot ~= nil) then
-		debugMsg("Set advertisement (emergency plan): " .. fixedDay .. "/" .. fixedHour .. ":55  contract=\"" .. choosenSpot.GetTitle() .. "\" [" ..choosenSpot.GetID() .."]  MinAud=" .. choosenSpot.GetMinAudience() .. "  guessedAud=" .. guessedAudience .."  acuteness=" .. choosenSpot.GetAcuteness())
+		debugMsg("Set advertisement (emergency plan): " .. fixedDay .. "/" .. fixedHour .. ":55  contract=\"" .. choosenSpot.GetTitle() .. "\" [" ..choosenSpot.GetID() .."]  MinAud=" .. choosenSpot.GetMinAudience() .. "  guessedAud=" .. guessedAudienceSum .."  acuteness=" .. choosenSpot.GetAcuteness())
 		local result = TVT.of_setAdvertisementSlot(choosenSpot, fixedDay, fixedHour)
 	else
 		--choose spot without any audience requirements
@@ -705,10 +712,10 @@ function JobEmergencySchedule:SetContractOrTrailerToEmptyBlock(choosenSpot, day,
 
 		choosenSpot = self:GetBestMatchingSpot(filteredCurrentSpotList)
 		if (choosenSpot ~= nil) then
-			debugMsg("Set advertisement (emergency plan - unfiltered): " .. fixedDay .. "/" .. fixedHour .. ":55  contract=\"" .. choosenSpot.GetTitle() .. "\"  guessedAud=" .. guessedAudience.."  acuteness=" .. choosenSpot.GetAcuteness())
+			debugMsg("Set advertisement (emergency plan - unfiltered): " .. fixedDay .. "/" .. fixedHour .. ":55  contract=\"" .. choosenSpot.GetTitle() .. "\"  guessedAud=" .. guessedAudienceSum.."  acuteness=" .. choosenSpot.GetAcuteness())
 			local result = TVT.of_setAdvertisementSlot(choosenSpot, fixedDay, fixedHour)
 		else
-			debugMsg("Set advertisement (emergency plan - unfiltered): " .. fixedDay .. "/" .. fixedHour .. ":55  guessedAud=" .. guessedAudience .."  NONE FOUND")
+			debugMsg("Set advertisement (emergency plan - unfiltered): " .. fixedDay .. "/" .. fixedHour .. ":55  guessedAud=" .. guessedAudienceSum .."  NONE FOUND")
 		end
 	end
 end
@@ -799,6 +806,11 @@ end
 -- - if there is no spot available, the requirements are lowered and
 --   and a request for new spot contracts is created
 function JobEmergencySchedule:GetFittingSpotList(guessedAudience, noBroadcastRestrictions, lookForRequisition, requisitionLevel, day, hour)
+	-- convert number to audience-object
+	if type(guessedAudience) == "number" or guessedAudience == nil then
+		guessedAudience = TVT.audiencePredictor.GetEmptyAudience().InitWithBreakdown(guessedAudience)
+	end
+
 	-- 0.8, 0.6 ... lowers how "near" the minAudience should be at
 	-- the guessed audience
 	local currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.8, false, noBroadcastRestrictions)
@@ -816,7 +828,7 @@ function JobEmergencySchedule:GetFittingSpotList(guessedAudience, noBroadcastRes
 				end
 
 				if allSpotsBelowCount <= 4 then
-					--debugMsg("GetFittingSpotList: adding spot requisition, allSpotsBelowCount="..allSpotsBelowCount.." audience="..guessedAudience)
+					debugMsg("GetFittingSpotList: adding spot requisition, allSpotsBelowCount="..allSpotsBelowCount.." audience="..math.floor(guessedAudience.GetTotalSum()))
 					self.ScheduleTask:AddSpotRequisition(guessedAudience, requisitionLevel, day, hour)
 				else
 					debugMsg("GetFittingSpotList: skip adding spot requisition, enough lower adcontracts available (" .. allSpotsBelowCount .."x)")
@@ -830,7 +842,7 @@ function JobEmergencySchedule:GetFittingSpotList(guessedAudience, noBroadcastRes
 				currentSpotList = self:GetMatchingSpotList(guessedAudience, 0, false, noBroadcastRestrictions)
 -- Helmut: AI performs better without. TESTING NOW
 --				if (table.count(currentSpotList) == 0) then
---					currentSpotList = self:GetMatchingSpotList(guessedAudience, 0, true, noBroadcastRestrictions)
+--					currentSpotList = self:GetMatchingSpotList(guessedAudienceMod, 0, true, noBroadcastRestrictions)
 --				end
 			end
 		end
@@ -839,6 +851,16 @@ function JobEmergencySchedule:GetFittingSpotList(guessedAudience, noBroadcastRes
 end
 
 function JobEmergencySchedule:GetMatchingSpotList(guessedAudience, minFactor, noAudienceRestrictions, noBroadcastRestrictions)
+	-- convert number to audience-object
+	if type(guessedAudience) == "number" or guessedAudience == nil then
+		if guessedAudience == nil then 
+			debugMsg("Converting NIL to object")
+		else
+			debugMsg("Converting number " .. guessedAudience .." to object")
+		end
+		guessedAudience = TVT.audiencePredictor.GetEmptyAudience().InitWithBreakdown(guessedAudience)
+	end
+
 	local currentSpotList = {}
 	local currentDay = WorldTime.GetDay()
 	for i = 0, TVT.of_getAdContractCount() - 1 do
@@ -847,8 +869,10 @@ function JobEmergencySchedule:GetMatchingSpotList(guessedAudience, minFactor, no
 		--only add contracts
 		if (contract ~= nil) then
 			local minAudience = contract.GetMinAudience()
-			--debugMsg("GetMatchingSpotList - MinAud: " .. minAudience .. " <= " .. guessedAudience)
-			if ((minAudience <= guessedAudience) and (minAudience >= guessedAudience * minFactor)) or noAudienceRestrictions then
+			-- TODO RONNY: Targetgroup limits
+			local guessedAudienceValue = guessedAudience.GetTotalSum()
+			--debugMsg("GetMatchingSpotList - minAud("..minAudience..") <= guessedAud(".. guessedAudienceValue .. ") and minAud >= guessedAudMin(" .. (guessedAudienceValue*minFactor) .. ")")
+			if ((minAudience <= guessedAudienceValue) and (minAudience >= guessedAudienceValue * minFactor)) or noAudienceRestrictions then
 				local count = MY.GetProgrammePlan().GetAdvertisementsPlanned(contract, -1, -1, 1)
 				--debugMsg("GetMatchingSpotList: " .. contract.GetTitle() .. ". SpotsPlanned: " .. count)
 	
@@ -1069,7 +1093,9 @@ function JobSchedule:OptimizeAdSchedule()
 
 		local previousProgramme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
 		local previousProgrammeBlock = math.max(1, MY.GetProgrammePlan().GetProgrammeBlock(fixedDay, fixedHour))
-		local guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousProgramme, block)
+		local guessedAudience = self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousProgramme, block)
+		guessedAudience.MultiplyFloat(self.ScheduleTask.guessedAudienceRiskyness)
+		local guessedAudienceSum = guessedAudience.GetTotalSum()
 
 		-- add to debug data of the 
 		MY.SetAIData("guessedaudience_" .. fixedDay .."_".. fixedHour, guessedAudience)
@@ -1099,8 +1125,9 @@ function JobSchedule:OptimizeAdSchedule()
 			if totalTrailerCount < totalTrailerMax then
 				local adContract = TVT.of_getAdContractByID( currentBroadcastMaterial.GetReferenceID() )
 				if (previousProgramme ~= nil and adContract ~= nil) then
-					if guessedAudience < adContract.GetMinAudience() then
-						sendTrailerReason = "unsatisfiable ad (guessedAud "..math.floor(guessedAudience) .. "  <  minAud " .. adContract.GetMinAudience() .. ")"
+					local guessedAudienceValue = guessedAudience.GetTotalValue(adContract.GetLimitedToTargetGroup())
+					if guessedAudienceValue < adContract.GetMinAudience() then
+						sendTrailerReason = "unsatisfiable ad (guessedAud "..math.floor(guessedAudienceValue) .. "  <  minAud " .. adContract.GetMinAudience() .. ")"
 						sendTrailer = true
 					end
 				end
@@ -1139,10 +1166,12 @@ function JobSchedule:OptimizeAdSchedule()
 		if (table.count(betterAdContractList) > 0) then
 			local oldAdContract
 			local oldMinAudience = 0
+			local oldMinAudienceTargetGroup = -1
 			if (currentBroadcastMaterial ~= nil and currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) == 1) then
 				oldAdContract = TVT.of_getAdContractByID( currentBroadcastMaterial.GetReferenceID() )
 				if (oldAdContract ~= nil) then
 					oldMinAudience = oldAdContract.GetMinAudience()
+					oldMinAudienceTargetGroup = oldAdContract.GetLimitedToTargetGroup()
 				end
 			end
 
@@ -1151,9 +1180,9 @@ function JobSchedule:OptimizeAdSchedule()
 			local oldAudienceCoverage = 1.0
 			local newAudienceCoverage = 1.0 --a 0-guessedAudience is always covered by 100%
 			if oldAdContract == nil then oldAudienceCoverage = 0 end
-			if guessedAudience > 0 then
-				newAudienceCoverage = newAdContract.GetMinAudience() / guessedAudience
-				oldAudienceCoverage = oldMinAudience / guessedAudience
+			if guessedAudienceSum > 0 then
+				newAudienceCoverage = newAdContract.GetMinAudience() / guessedAudience.GetTotalValue(newAdContract.GetLimitedToTargetGroup())
+				oldAudienceCoverage = oldMinAudience / guessedAudience.GetTotalValue(oldMinAudienceTargetGroup)
 				--if the old ad would not get satisfied, it does not cover anything 
 				if oldAudienceCoverage > 1 then oldAudienceCoverage = -1 end
 			end
@@ -1166,7 +1195,7 @@ function JobSchedule:OptimizeAdSchedule()
 				-- only different spots - and when audience requirement is at better
 				if (newAdContract ~= oldAdContract and audienceCoverageIncrease > 0) then
 					choosenBroadcastSource = newAdContract
-					choosenBroadcastLog = "Set ad (optimized): " .. fixedDay .. "/" .. fixedHour .. ":55  " .. newAdContract.GetTitle() .. " [" .. newAdContract.GetID() .."]  MinAud=" .. newAdContract.GetMinAudience() .. " (old=" .. oldMinAudience .. ")  guessedAud="..guessedAudience
+					choosenBroadcastLog = "Set ad (optimized): " .. fixedDay .. "/" .. fixedHour .. ":55  " .. newAdContract.GetTitle() .. " [" .. newAdContract.GetID() .."]  MinAud=" .. newAdContract.GetMinAudience() .. " (old=" .. oldMinAudience .. ")  guessedAud="..guessedAudience.GetTotalValue(newAdContract.GetLimitedToTargetGroup())
 					sendTrailer = false
 				end
 			else
@@ -1302,7 +1331,7 @@ function JobSchedule:OptimizeProgrammeSchedule()
 
 			local previousBroadcastMaterial = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour - 1)
 			local previousBroadcastBlock = math.max(1, MY.GetProgrammePlan().GetProgrammeBlock(fixedDay, fixedHour - 1))
-			local guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousBroadcastMaterial, previousBroadcastBlock)
+			local guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousBroadcastMaterial, previousBroadcastBlock).GetTotalSum()
 --[[
 local prevText = ""
 local currText = ""
