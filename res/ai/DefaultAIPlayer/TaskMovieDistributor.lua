@@ -60,7 +60,9 @@ end
 
 function TaskMovieDistributor:GetNextJobInTargetRoom()
 	--added entry for programme licence selling, needs to come first
-	if (self.SellSuitcaseLicences.Status ~= JOB_STATUS_DONE) then
+	--add "existence check" to skip errors in older savegames not knowing
+	--the new job
+	if (self.SellSuitcaseLicences ~= nil and self.SellSuitcaseLicences.Status ~= JOB_STATUS_DONE) then
 		return self.SellSuitcaseLicences
 	elseif (self.BuyStartProgrammeJob.Status ~= JOB_STATUS_DONE) then
 		return self.BuyStartProgrammeJob

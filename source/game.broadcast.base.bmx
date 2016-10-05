@@ -400,6 +400,11 @@ Type TBroadcastAudiencePrediction {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetEmptyAudience:TAudience() {_exposeToLua}
+		return new TAudience
+	End Method
+
+
 	Method GetAudienceTotalSum:int(playerID:int) {_exposeToLua}
 		if not bc then return 0
 		return bc.GetAudienceResult(playerID).audience.GetTotalSum()

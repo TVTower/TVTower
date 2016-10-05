@@ -587,21 +587,24 @@ function OnMinute(number)
 		local fixedDay, fixedHour = FixDayAndHour(WorldTime.GetDay(), WorldTime.GetDayHour())
 
 		local programme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
-		local programmeAttraction = programme.GetStaticAudienceAttraction(fixedHour, 1, nil, nil)
+		local guessedAudience = 0
+		if programme ~= nil then 
+			local programmeAttraction = programme.GetStaticAudienceAttraction(fixedHour, 1, nil, nil)
 
-		local avgQuality = math.round(100 * task:GetAverageBroadcastQualityByLevel(level))
-		-- assume they all send at least as good programme as we do
-		avgQuality = math.max(avgQuality, programme.GetQuality())
+			local avgQuality = math.round(100 * task:GetAverageBroadcastQualityByLevel(level))
+			-- assume they all send at least as good programme as we do
+			avgQuality = math.max(avgQuality, programme.GetQuality())
 
-		-- todo: refresh markets when "office is visited" (stationmap)
-		TVT.audiencePredictor.RefreshMarkets()
-		TVT.audiencePredictor.SetAverageValueAttraction(1, avgQuality)
-		TVT.audiencePredictor.SetAverageValueAttraction(2, avgQuality)
-		TVT.audiencePredictor.SetAverageValueAttraction(3, avgQuality)
-		TVT.audiencePredictor.SetAverageValueAttraction(4, avgQuality)
-		TVT.audiencePredictor.SetAttraction(TVT.ME, programmeAttraction)
-		TVT.audiencePredictor.RunPrediction(fixedDay, fixedHour)
-		local guessedAudience = TVT.audiencePredictor.GetAudience(TVT.ME).GetTotalSum()
+			-- todo: refresh markets when "office is visited" (stationmap)
+			TVT.audiencePredictor.RefreshMarkets()
+			TVT.audiencePredictor.SetAverageValueAttraction(1, avgQuality)
+			TVT.audiencePredictor.SetAverageValueAttraction(2, avgQuality)
+			TVT.audiencePredictor.SetAverageValueAttraction(3, avgQuality)
+			TVT.audiencePredictor.SetAverageValueAttraction(4, avgQuality)
+			TVT.audiencePredictor.SetAttraction(TVT.ME, programmeAttraction)
+			TVT.audiencePredictor.RunPrediction(fixedDay, fixedHour)
+			guessedAudience = TVT.audiencePredictor.GetAudience(TVT.ME).GetTotalSum()
+		end
 
 
 		local audience = TVT.GetCurrentProgrammeAudience()
