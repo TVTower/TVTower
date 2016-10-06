@@ -458,7 +458,7 @@ Type TDebugProgrammeCollectionInfos
 		if not initialized then Initialize()
 	
 		if playerID <= 0 then playerID = GetPlayerBase().playerID
-		Local lineHeight:int = 15
+		Local lineHeight:int = 12
 
 		'clean up if needed
 		if oldestEntryTime >= 0 and oldestEntryTime + 3000 < Time.GetTimeGone() then RemoveOutdated()
@@ -503,7 +503,7 @@ Type TDebugProgrammeCollectionInfos
 			SetColor 255,255,255
 
 			local progString:string = l.GetTitle()
-			GetBitmapFont("default", 11).DrawBlock( progString, x+2, y+1 + entryPos*lineHeight, 175, lineHeight)
+			GetBitmapFont("default", 10).DrawBlock( progString, x+2, y+1 + entryPos*lineHeight, 175, lineHeight)
 
 			entryPos :+ 1
 		next
@@ -515,9 +515,9 @@ Type TDebugProgrammeCollectionInfos
 			if entryPos mod 2 = 0
 				SetColor 0,0,0
 			else
-				SetColor 60,60,60
+				SetColor 50,50,50
 			endif
-			SetAlpha 0.75 * oldAlpha
+			SetAlpha 0.85 * oldAlpha
 			DrawRect(x+190, y + entryPos * lineHeight*2, 175, lineHeight*2-1)
 
 			local changedTime:int = GetChangedTime(a.GetGUID(), TVTBroadcastMaterialType.ADVERTISEMENT) 
@@ -551,12 +551,12 @@ Type TDebugProgrammeCollectionInfos
 
 			local adString2b:string = "Acu: " +MathHelper.NumberToString(a.GetAcuteness()*100.0)
 			local adString2c:string = a.GetSpotsSent() + "/" + a.GetSpotCount()
-			GetBitmapFont("default", 11).DrawBlock( adString1a, x+192, y+1 + entryPos*lineHeight*2 + lineHeight*0, 130, lineHeight)
-			GetBitmapFont("default", 11).DrawBlock( adString1b, x+192 + 133, y+1 + entryPos*lineHeight*2 + lineHeight*0, 35, lineHeight, ALIGN_RIGHT_CENTER, secondLineCol)
+			GetBitmapFont("default", 10).DrawBlock( adString1a, x+192, y+1 + entryPos*lineHeight*2 + lineHeight*0, 130, lineHeight)
+			GetBitmapFont("default", 10).DrawBlock( adString1b, x+192 + 133, y+1 + entryPos*lineHeight*2 + lineHeight*0, 35, lineHeight, ALIGN_RIGHT_CENTER, secondLineCol)
 
-			GetBitmapFont("default", 11).DrawBlock( adString2a, x+192, y+1 + entryPos*lineHeight*2 + lineHeight*1, 60, lineHeight, ALIGN_LEFT_CENTER, secondLineCol)
-			GetBitmapFont("default", 11).DrawBlock( adString2b, x+192 + 65, y+1 + entryPos*lineHeight*2 + lineHeight*1, 55, lineHeight, ALIGN_CENTER_CENTER, secondLineCol)
-			GetBitmapFont("default", 11).DrawBlock( adString2c, x+192 + 110, y+1 + entryPos*lineHeight*2 + lineHeight*1, 55, lineHeight, ALIGN_RIGHT_CENTER, secondLineCol)
+			GetBitmapFont("default", 10).DrawBlock( adString2a, x+192, y+1 + entryPos*lineHeight*2 + lineHeight*1, 60, lineHeight, ALIGN_LEFT_CENTER, secondLineCol)
+			GetBitmapFont("default", 10).DrawBlock( adString2b, x+192 + 65, y+1 + entryPos*lineHeight*2 + lineHeight*1, 55, lineHeight, ALIGN_CENTER_CENTER, secondLineCol)
+			GetBitmapFont("default", 10).DrawBlock( adString2c, x+192 + 110, y+1 + entryPos*lineHeight*2 + lineHeight*1, 55, lineHeight, ALIGN_RIGHT_CENTER, secondLineCol)
 
 			entryPos :+ 1
 		next
@@ -570,6 +570,7 @@ End Type
 Type TDebugProgrammePlanInfos
 	Global programmeBroadcasts:TMap = CreateMap()
 	Global adBroadcasts:TMap = CreateMap()
+	Global newsInShow:TMap = CreateMap()
 	Global oldestEntryTime:Long
 	Global _eventListeners:TLink[]
 
@@ -579,10 +580,23 @@ Type TDebugProgrammePlanInfos
 		_eventListeners = new TLink[0]
 		
 		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.addObject", onChangeProgrammePlan) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.SetNews", onChangeNewsShow) ]
+'		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.RemoveNews", onChangeNewsShow) ]
 '		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.removeObject", onChangeProgrammePlan) ]
 
 	End Method
 
+
+	Function onChangeNewsShow:Int(triggerEvent:TEventBase)
+		local broadcast:TBroadcastMaterial = TBroadcastMaterial(triggerEvent.GetData().Get("news"))
+		local slot:int = triggerEvent.GetData().GetInt("slot", -1)
+		if not broadcast or slot < 0 then return False
+
+		newsInShow.Insert(broadcast.GetGUID(), string(Time.GetTimeGone()) )
+
+		RemoveOutdated()
+	End Function
+	
 
 	Function onChangeProgrammePlan:Int(triggerEvent:TEventBase)
 		local broadcast:TBroadcastMaterial = TBroadcastMaterial(triggerEvent.GetData().Get("object"))
@@ -600,7 +614,7 @@ Type TDebugProgrammePlanInfos
 
 
 	Function RemoveOutdated()
-		local maps:TMap[] = [programmeBroadcasts, adBroadcasts]
+		local maps:TMap[] = [programmeBroadcasts, adBroadcasts, newsInShow]
 
 		oldestEntryTime = -1
 
@@ -608,7 +622,7 @@ Type TDebugProgrammePlanInfos
 		For local map:TMap = EachIn maps
 			For local guid:String = EachIn map.Copy().Keys()
 				local broadcastTime:Long = Long( string(map.ValueForKey(guid)) )
-				if broadcastTime + 10000 < Time.GetTimeGone()
+				if broadcastTime + 8000 < Time.GetTimeGone()
 					map.Remove(guid)
 				else
 					if oldestEntryTime = -1 then oldestEntryTime = broadcastTime
@@ -619,13 +633,16 @@ Type TDebugProgrammePlanInfos
 	End Function
 	
 
-
 	Function GetAddedTime:Long(guid:string, slotType:int=0)
-		if slotType = TVTBroadcastMaterialType.PROGRAMME
-			return int( string(programmeBroadcasts.ValueForKey(guid)) )
-		else
-			return int( string(adBroadcasts.ValueForKey(guid)) )
-		endif
+		Select slotType
+			case TVTBroadcastMaterialType.PROGRAMME
+				return int( string(programmeBroadcasts.ValueForKey(guid)) )
+			case TVTBroadcastMaterialType.ADVERTISEMENT
+				return int( string(adBroadcasts.ValueForKey(guid)) )
+			case TVTBroadcastMaterialType.NEWS
+				return int( string(newsInShow.ValueForKey(guid)) )
+		End Select
+		return 0
 	End Function
 
 	
@@ -635,8 +652,8 @@ Type TDebugProgrammePlanInfos
 		local currHour:int = GetWorldTime().GetDayHour()
 		Local daysProgramme:TBroadcastMaterial[] = GetPlayerProgrammePlan( playerID ).GetProgrammeSlotsInTimeSpan(currDay, 0, currDay, 23)
 		Local daysAdvertisements:TBroadcastMaterial[] = GetPlayerProgrammePlan( playerID ).GetAdvertisementSlotsInTimeSpan(currDay, 0, currDay, 23)
-		Local lineHeight:int = 15
-
+		Local lineHeight:int = 12
+		
 		'statistic for today
 		local dailyBroadcastStatistic:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(currDay, true)
 
@@ -705,9 +722,9 @@ Type TDebugProgrammePlanInfos
 			if hour mod 2 = 0
 				SetColor 0,0,0
 			else
-				SetColor 60,60,60
+				SetColor 50,50,50
 			endif
-			SetAlpha 0.75 * GetAlpha()
+			SetAlpha 0.85 * oldAlpha
 			DrawRect(x, y + hour * lineHeight, 15, lineHeight-1)
 			DrawRect(x+20, y + hour * lineHeight, 195, lineHeight-1)
 			DrawRect(x+220, y + hour * lineHeight, 150, lineHeight-1)
@@ -744,16 +761,59 @@ Type TDebugProgrammePlanInfos
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
-			GetBitmapFont("default", 11).Draw( Rset(hour,2).Replace(" ", "0"), x+2, y+1 + hour*lineHeight)
+			GetBitmapFont("default", 10).Draw( Rset(hour,2).Replace(" ", "0"), x+2, y + hour*lineHeight)
 			if programme then SetStateColor(programme)
-			GetBitmapFont("default", 11).DrawBlock( progString, x+22, y+1 + hour*lineHeight, 120, lineHeight, ALIGN_LEFT_TOP)
-			GetBitmapFont("default", 11).DrawBlock( progString2, x+145, y+1 + hour*lineHeight, 68, lineHeight, ALIGN_RIGHT_TOP)
+			GetBitmapFont("default", 10).DrawBlock( progString, x+22, y + hour*lineHeight, 120, lineHeight, ALIGN_LEFT_TOP)
+			GetBitmapFont("default", 10).DrawBlock( progString2, x+145, y + hour*lineHeight, 68, lineHeight, ALIGN_RIGHT_TOP)
 			if advertisement then SetStateColor(advertisement)
-			GetBitmapFont("default", 11).DrawBlock( adString, x+222, y+1 + hour*lineHeight, 110, lineHeight, ALIGN_LEFT_TOP)
-			GetBitmapFont("default", 11).DrawBlock( adString2, x+335, y+1 + hour*lineHeight, 33, lineHeight, ALIGN_RIGHT_TOP)
+			GetBitmapFont("default", 10).DrawBlock( adString, x+222, y + hour*lineHeight, 110, lineHeight, ALIGN_LEFT_TOP)
+			GetBitmapFont("default", 10).DrawBlock( adString2, x+335, y + hour*lineHeight, 33, lineHeight, ALIGN_RIGHT_TOP)
 			SetColor 255,255,255
 		Next
+
+		'a bit space between programme plan and news show plan
+		local newsY:int = y + daysProgramme.length * lineHeight + lineHeight
+		For local newsSlot:int = 0 to 2
+			local news:TBroadcastMaterial = GetPlayerProgrammePlan( playerID ).GetNewsAtIndex(newsSlot)
+			local oldAlpha:Float = GetAlpha()
+			if newsSlot mod 2 = 0
+				SetColor 0,0,40
+			else
+				SetColor 50,50,90
+			endif
+			SetAlpha 0.85 * oldAlpha
+			DrawRect(x, newsY + newsSlot * lineHeight, 15, lineHeight-1)
+			DrawRect(x+20, newsY + newsSlot * lineHeight, 195, lineHeight-1)
+
+
+			if TNews(news)
+				local newsTime:Long = GetAddedTime(news.GetGUID(), TVTBroadcastMaterialType.NEWS)
+				if newsTime <> 0
+					local alphaValue:Float = 1.0 - Min(1.0, ((Time.GetTimeGone() - newsTime) / 5000.0))
+					SetColor 255,255,255
+					SetAlpha Float(0.4 * Min(1.0, 2 * alphaValue^3))
+					SetBlend LIGHTBLEND
+					DrawRect(x+20, newsY + newsSlot * lineHeight, 195, lineHeight-1)
+					SetBlend ALPHABLEND
+				endif
+
+				SetColor 220,110,110
+				SetAlpha 0.50 * oldAlpha
+				DrawRect(x+22, newsY + newsSlot * lineHeight + lineHeight-4, 192 * TNews(news).newsEvent.GetTopicality(), 2)
+			endif
+
+			SetColor 255,255,255
+			SetAlpha oldAlpha
+
+			GetBitmapFont("default", 10).DrawBlock( newsSlot+1 , x+2, newsY + newsSlot*lineHeight, 11, lineHeight, ALIGN_CENTER_TOP)
+			if news
+				GetBitmapFont("default", 10).DrawBlock(news.GetTitle(), x+22, newsY + newsSlot*lineHeight, 192, lineHeight, ALIGN_LEFT_TOP)
+			else
+				GetBitmapFont("default", 10).DrawBlock("NEWS OUTAGE", x+22, newsY + newsSlot*lineHeight, 192, lineHeight, ALIGN_LEFT_TOP, TColor.clRed)
+			endif
+		Next
 	End Function
+	
 
 	Function SetStateColor(material:TBroadcastMaterial)
 		if not material
