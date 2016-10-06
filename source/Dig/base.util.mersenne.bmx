@@ -20,13 +20,14 @@ End Extern
 
 'Const MAX_INT:int = 2^31-1
 'Const MIN_INT:int = -2^31
-
+global MersenneSeed:int = 0
 
 'custom wrapped functions to be sure to pass only "unsigned" integers
 '(within the range of the "signed integers" BlitzMax uses)
 
 Function SeedRand(seed:int)
 	if seed < 0 then Throw "SeedRand got passed a negative seed ~q"+seed+"~q. not allowed."
+	MersenneSeed = seed
 	mt_SeedRand(seed)
 End Function
 

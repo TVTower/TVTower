@@ -673,8 +673,21 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'hide from player/vendor/...
 		programmeData.SetFlag(TVTProgrammeDataFlag.INVISIBLE, True)
 
-		programmeData.AddCast( New TProgrammePersonJob.Init("9104f9c1-7a0f-4bc0-a34c-389ce282eebf", TVTProgrammePersonJob.GUEST) )
-		programmeData.AddCast( New TProgrammePersonJob.Init("9104f9c1-7a0f-4bc0-a34c-389ce282eebf", TVTProgrammePersonJob.MUSICIAN) )
+		programmeData.AddCast( New TProgrammePersonJob.Init("Ronny-person-various-sjaele", TVTProgrammePersonJob.DIRECTOR) )
+		programmeData.AddCast( New TProgrammePersonJob.Init("9104f9c1-7a0f-4bc0-a34c-389ce282eebf", TVTProgrammePersonJob.HOST) )
+		programmeData.AddCast( New TProgrammePersonJob.Init("Ronny-person-various-ukuleleorchesterstarscrazy", TVTProgrammePersonJob.MUSICIAN) )
+		'select 3 guests out of the listed ones
+		local randomGuests:string[] = ["Ronny-person-various-helmut", ..
+		                               "Ronny-person-various-ratz", ..
+		                               "Ronny-person-various-sushitv", ..
+		                               "Ronny-person-various-teppic", ..
+		                               "Ronny-person-various-therob" ..
+		                              ]
+		local startIndex:int = (GetWorldTime().GetTimeGone() + MersenneSeed) mod randomGuests.length
+		For local guestIndex:int = 0 to 2
+			local index:int = (startIndex + guestIndex) mod randomGuests.length
+			programmeData.AddCast( New TProgrammePersonJob.Init(randomGuests[index], TVTProgrammePersonJob.GUEST) )
+		Next
 		
 		GetProgrammeDataCollection().Add(programmeData)
 
@@ -725,18 +738,20 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 			currentHour:+ currentLicence.getData().getBlocks()
 
-			'add two infomercials after that programme
-			playerPlan.SetProgrammeSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), startDay, startHour + currentHour )
-			currentHour :+ 1
-			playerPlan.SetProgrammeSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), startDay, startHour + currentHour )
-			currentHour :+ 1
+			'add the last ad as infomercial (all others should be finished
+			'then)
+			playerPlan.SetProgrammeSlot(New TAdvertisement.Create(playerCollection.GetAdContractAtIndex(2)), startDay, startHour + currentHour )
 
 			'place ads for all broadcasted hours
-			If playerCollection.GetRandomAdContract()
-				For local i:int = 0 to currentHour-1
-					playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), startDay, startHour + i )
-				Next
-			EndIf
+			local currentAdIndex:int = 0
+			local currentAdSpotIndex:int = 0
+			local currentAdHour:int = 0
+			for local adContract:TAdContract = EachIn playerCollection.GetAdContracts()
+				for local spotIndex:int = 1 to adContract.GetSpotCount()
+					playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(adContract), startDay, currentAdHour )
+					currentAdHour :+ 1
+				next
+			next
 		endif
 
 		EventManager.triggerEvent( TEventSimple.Create("Game.PreparePlayer", new TData.AddNumber("playerID", playerID), GetPlayer(playerID), self) )
@@ -1038,6 +1053,16 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 	Method GenerateStartAdContracts:Int()
+		startAdContractBaseGUIDs = startAdContractBaseGUIDs[..3]
+		startAdContractBaseGUIDs[0] = "ronny-ad-startad-bmxng"
+		startAdContractBaseGUIDs[1] = "ronny-ad-startad-gamezworld"
+		startAdContractBaseGUIDs[2] = "ronny-ad-startad-digidea"
+		
+
+		'assign a random one, if the predefined ones are missing
+
+		rem
+		'OLD - only useable for "completely random contracts"
 		'remove invalidated/obsolete/no-longer-available entries
 		For local i:int = 0 until startAdContractBaseGUIDs.length
 			local adContractBase:TAdContractBase = GetAdContractBaseCollection().GetByGUID(startAdContractBaseGUIDs[i])
@@ -1045,6 +1070,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				startAdContractBaseGUIDs[i] = null
 			endif
 		Next
+		end rem
 		
 		
 		'all players get the same adContractBase (but of course another
@@ -1067,7 +1093,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		local addContract:TAdContractBase
 		For Local i:Int = 0 until startAdContractBaseGUIDs.length
 			'already assigned (and available - others are already removed)
-			if startAdContractBaseGUIDs[i] then continue
+			if startAdContractBaseGUIDs[i] and GetAdContractBaseCollection().GetByGUID(startAdContractBaseGUIDs[i]) then continue
 
 			if i < startAdContractBaseGUIDs.length-1
 				addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, False)
