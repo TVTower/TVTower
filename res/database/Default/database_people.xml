@@ -2693,6 +2693,16 @@
 		<person id="Freddy-realperson-denniscampball" first_name="Dennis" last_name="Campball" nick_name="Dirk" fictional="0" imdb_id="nm0132392" creator="8667" created_by="Rumpelfreddy" />
 		<!-- Steven Hilliard Stern -->
 		<person id="Freddy-realperson-stevstar" first_name="Stev" last_name="Star" nick_name="Canadian Star" fictional="0" imdb_id="nm0827854" creator="8667" created_by="Rumpelfreddy" />
+
+		<!-- start programme -->
+        <person id="Ronny-person-various-sjaele" first_name="Själe" last_name="Fjieldsgröhn" fictional="1" gender="1" country="D" job="1" face_code="1:2:3:FEDCCF:-1:-1:2:-1:11#0590B0:14:6:-1:4:7:3:7#45240C:-1:-1"/>
+        <!-- start programme - not available for custom productions --> 
+        <person id="Ronny-person-various-ukuleleorchesterstarscrazy" first_name="Ukuleleorchester STARSCrazy" last_name="" nick_name="" fictional="1" gender="1" bookable="0" job="16" /> 
+        <person id="Ronny-person-various-helmut" first_name="Helmut" last_name="" nick_name="Helmut" fictional="1" gender="1" bookable="0" country="D" job="64" /> 
+        <person id="Ronny-person-various-ratz" first_name="Ratz" last_name="" nick_name="Ratz" fictional="1" gender="1" bookable="0" country="D" job="64" /> 
+        <person id="Ronny-person-various-teppic" first_name="Teppic" last_name="" nick_name="Teppic" fictional="1" gender="1" bookable="0" country="D" job="64" /> 
+        <person id="Ronny-person-various-therob" first_name="TheRob" last_name="" nick_name="TheRob" fictional="1" gender="1" bookable="0" country="D" job="64" /> 
+        <person id="Ronny-person-various-sushitv" first_name="SushiTV" last_name="" nick_name="SushiTV" fictional="1" gender="1" bookable="0" country="D" job="64" /> 
 	</insignificantpeople>
 
 	<exportOptions onlyFakes="true" onlyCustom="false" dataStructure="FakeData" />

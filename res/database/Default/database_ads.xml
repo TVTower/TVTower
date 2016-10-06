@@ -2148,5 +2148,41 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="20.84" min_image="4" target_group="128"/>
 			<data infomercial="1" quality="15" repetitions="2" duration="5" profit="210" penalty="359" infomercial_profit="47" fix_infomercial_profit="1"/>
 		</ad>
+
+
+		<!-- opening contracts - not available for "normal adagency business" -->
+		<ad id="ronny-ad-startad-bmxng" creator="5578" created_by="Ronny" comment="TKP 1000, Quote 25000">
+			<title>
+				<de>BMX NG</de>
+			</title>
+			<description>
+				<de>Einen Guten Senderstart wünscht Bruceys BlitzMax NG-Compiler. Nur echt mit 64 Bit!</de>
+				<en>Brucey's BlitzMax NG-Compiler wishes all the best for the channel opening. BlitzMax' first true 64 Bit compiler!</en>
+			</description>
+			<conditions min_audience="1.3015" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="45" repetitions="1" duration="0" profit="1000" penalty="490" infomercial_profit="134" fix_infomercial_profit="1" available="0"/>
+		</ad>
+		<ad id="ronny-ad-startad-gamezworld" creator="7430" created_by="Sjaele" comment="TKP 1800, Quote 12000">
+			<title>
+				<de>GamezWorld</de>
+			</title>
+			<description>
+				<de>Zum Sendestart stellen wir 1000 Einheiten unseres beliebten Open-Source und Freeware-Spieles "TVTower" kostenlos zum Download bereit. Viel Spaß!</de>
+				<en>We will be offering free downloads for 1000 units of our popular open-source and freeware game "TVTower". Have fun!</en>
+			</description>
+			<conditions min_audience="0.6242" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="45" repetitions="2" duration="0" profit="1800" penalty="690" infomercial_profit="220" fix_infomercial_profit="1" available="0"/>
+		</ad>
+		<ad id="ronny-ad-startad-digidea" creator="7430" created_by="Sjaele" comment="TKP 7000, Quote 2500">
+			<title>
+				<de>Digidea</de>
+			</title>
+			<description>
+				<de>Ihre Idee in Code gegossen! Digidea.de hofft auf wenig Bugs und gute Einschaltquoten.</de>
+				<en>Your Idea poured into code! Digidea.de hopes for less bugs and good audience ratings.</en>
+			</description>
+			<conditions min_audience="0.3898" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
+			<data quality="45" repetitions="3" duration="0" profit="2500" penalty="790" infomercial_profit="300" fix_infomercial_profit="1" available="0" />
+		</ad>
 	</allads>
 </tvgdb>
