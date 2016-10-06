@@ -185,7 +185,7 @@ Type TgfxContractlist Extends TPlannerList
 				if contract.GetDaysLeft() <= 0 then SetColor 255,220,220
 				
 				'hovered - draw hover effect if hovering
-				If THelper.MouseIn(currX, currY, int(GetEntrySize().GetX()), int(GetEntrySize().GetY())-1)
+				If THelper.MouseIn(currX, currY, int(GetEntrySize().GetX()), int(GetEntrySize().GetY()))
 					GetSpriteFromRegistry("gfx_programmetape_movie.hovered").draw(currX + 8, currY+1)
 				Else
 					GetSpriteFromRegistry("gfx_programmetape_movie."+drawType).draw(currX + 8, currY+1)
@@ -272,7 +272,8 @@ Type TgfxContractlist Extends TPlannerList
 			For Local i:Int = 0 Until Min(contracts.Count(), GameRules.maxContracts)
 				Local contract:TAdContract = TAdContract(contracts.ValueAtIndex(i))
 
-				If contract And THelper.MouseIn(int(GetEntriesRect().GetX()), currY, int(GetEntrySize().GetX()), int(GetEntrySize().GetY())-1)
+				'we add 1 pixel to height (aka not subtracting -1) - to hover between tapes too
+				If contract And THelper.MouseIn(int(GetEntriesRect().GetX()), currY, int(GetEntrySize().GetX()), int(GetEntrySize().GetY()))
 					'store for outside use (eg. displaying a sheet)
 					hoveredAdContract = contract
 

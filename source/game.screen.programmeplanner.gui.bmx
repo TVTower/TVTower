@@ -522,7 +522,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 
 	Method DrawSheet(leftX:Int=30, rightX:Int=30, width:Int=0)
-		Local sheetY:Int = 20
+		Local sheetY:Int = 10
 		Local sheetX:Int = leftX
 		Local sheetAlign:Int= 0
 		If width = 0 Then width = GetGraphicsManager().GetWidth()

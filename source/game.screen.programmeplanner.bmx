@@ -1109,12 +1109,12 @@ global LS_programmeplanner_and_programmeplanner_buttons:TLowerString = TLowerStr
 
 		'draw lists sheet
 		If PPprogrammeList.GetOpen() And PPprogrammeList.hoveredLicence
-			PPprogrammeList.hoveredLicence.ShowSheet(30,20)
+			PPprogrammeList.hoveredLicence.ShowSheet(15-3, 10)
 		EndIf
 
 		'If PPcontractList.GetOpen() and
 		If PPcontractList.hoveredAdContract
-			PPcontractList.hoveredAdContract.ShowSheet(30,20)
+			PPcontractList.hoveredAdContract.ShowSheet(15-3, 10)
 		EndIf
 
 
@@ -1122,7 +1122,7 @@ global LS_programmeplanner_and_programmeplanner_buttons:TLowerString = TLowerStr
 		'only draw, if not over the right side button
 		If hoveredGuiProgrammePlanElement and MouseX() < 680
 			'draw the current sheet
-			hoveredGuiProgrammePlanElement.DrawSheet(30, 35, 700)
+			hoveredGuiProgrammePlanElement.DrawSheet(15-3, 15-3, 680) ' +/-3 for dropshadow
 		EndIf
 
 

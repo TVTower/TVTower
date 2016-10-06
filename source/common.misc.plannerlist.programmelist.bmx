@@ -146,7 +146,7 @@ Type TgfxProgrammelist Extends TPlannerList
 	Method GetEntriesRect:TRectangle()
 		if not entriesRect
 			'recalculate dimension of the area of all entries (also if not all slots occupied)
-			entriesRect = New TRectangle.Init(GetGenresRect().GetX() - 175, GetGenresRect().GetY(), GetEntrySize().GetX(), 0)
+			entriesRect = New TRectangle.Init(GetGenresRect().GetX() - 170, GetGenresRect().GetY()+1, GetEntrySize().GetX(), 0)
 			if ListSortVisible
 				entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_topButton.default").area.GetH()
 			else
@@ -172,7 +172,7 @@ Type TgfxProgrammelist Extends TPlannerList
 	Method GetSubEntriesRect:TRectangle()
 		if not subEntriesRect
 			'recalculate dimension of the area of all entries (also if not all slots occupied)
-			subEntriesRect = New TRectangle.Init(GetEntriesRect().GetX() + 175, GetEntriesRect().GetY(), GetEntrySize().GetX(), 0)
+			subEntriesRect = New TRectangle.Init(GetEntriesRect().GetX() + 174, GetEntriesRect().GetY() + 27, GetEntrySize().GetX(), 0)
 			subEntriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 			'max 10 licences per page
 			subEntriesRect.dimension.y :+ MAX_LICENCES_PER_PAGE * GetEntrySize().GetY()
@@ -281,7 +281,9 @@ Type TgfxProgrammelist Extends TPlannerList
 				If i = currentGenre Then entryDrawType = "active"
 				'hovered - draw hover effect if hovering
 				'can only haver if no episode list is open
-				If Self.openState <3 And THelper.MouseIn(currX, currY, int(GetGenreSize().GetX()), int(GetGenreSize().GetY())-1) Then entryDrawType="hovered"
+				If Self.openState <3 And THelper.MouseIn(currX, currY, int(GetGenreSize().GetX()), int(GetGenreSize().GetY()))
+					entryDrawType="hovered"
+				endif
 
 				'add "top" portion when drawing first item
 				'do this in the for loop, so the entrydrawType is known
@@ -416,7 +418,9 @@ Type TgfxProgrammelist Extends TPlannerList
 				If i = currentEntry Then tapeDrawType = "hovered"
 				'hovered - draw hover effect if hovering
 				'we add 1 pixel to height - to hover between tapes too
-				If THelper.MouseIn(currX, currY + 1, int(GetEntrySize().GetX()), int(GetEntrySize().GetY())) Then tapeDrawType="hovered"
+				If THelper.MouseIn(currX, currY + 1, int(GetEntrySize().GetX()), int(GetEntrySize().GetY()))
+					tapeDrawType="hovered"
+				endif
 
 
 				If licence.isSingle()
@@ -424,7 +428,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				Else
 					GetSpriteFromRegistry("gfx_programmetape_series."+tapeDrawType).draw(currX + 8, currY+1)
 				EndIf
-				font.drawBlock(licence.GetTitle(), currX + 22, currY + 3, 150,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
+				font.drawBlock(licence.GetTitle(), currX + 22, currY + 3, 145,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
 
 			EndIf
 
@@ -634,7 +638,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				currY :+ currSprite.area.GetH()
 			EndIf
 
-			'we add 1 pixel to height - to hover between tapes too
+			'we add 1 pixel to height (aka not subtracting -1) - to hover between tapes too
 			If THelper.MouseIn(int(GetEntriesRect().GetX()), currY+1, int(GetEntrySize().GetX()), int(GetEntrySize().GetY()))
 				GetGameBase().cursorstate = 1
 				Local doneSomething:Int = False
@@ -756,7 +760,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				Else
 					GetSpriteFromRegistry("gfx_programmetape_series."+tapeDrawType).draw(currX + 8, currY+1)
 				EndIf
-				font.drawBlock("(" + (i+1) + "/" + parentLicence.GetEpisodeCount() + ") " + licence.GetTitle(), currX + 22, currY + 3, 150,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
+				font.drawBlock("(" + (i+1) + "/" + parentLicence.GetEpisodeCount() + ") " + licence.GetTitle(), currX + 22, currY + 3, 145,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
 			EndIf
 
 

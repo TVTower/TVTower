@@ -1207,7 +1207,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 	Method ShowInfomercialSheet:Int(x:Int,y:Int, align:int=0)
 		'=== PREPARE VARIABLES ===
-		local sheetWidth:int = 310
+		local sheetWidth:int = 320
 		local sheetHeight:int = 0 'calculated later
 		'move sheet to left when right-aligned
 		if align = 1 then x = x - sheetWidth
@@ -1289,12 +1289,12 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 		'quality
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetQualityRaw())
-		skin.fontSemiBold.drawBlock(GetLocale("AD_QUALITY"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+		skin.fontSemiBold.drawBlock(GetLocale("AD_QUALITY"), contentX + 5 + 200 + 5, contentY, 85, 15, null, skin.textColorLabel)
 		contentY :+ barH
 
 		'topicality
 		skin.RenderBar(contentX + 5, contentY, 200, 12, base.GetInfomercialTopicality(), 1.0)
-		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY, 85, 15, null, skin.textColorLabel)
 
 
 		If TVTDebugInfos
@@ -1327,7 +1327,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 	Method ShowAdvertisementSheet:Int(x:Int,y:Int, align:int=0)
 		'=== PREPARE VARIABLES ===
-		local sheetWidth:int = 310
+		local sheetWidth:int = 320
 		local sheetHeight:int = 0 'calculated later
 		'move sheet to left when right-aligned
 		if align = 1 then x = x - sheetWidth
@@ -1443,23 +1443,23 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 		'=== BOX LINE 1 ===
 		'days left for this contract
-		If daysLeft > 1
-			skin.RenderBox(contentX + 5, contentY, 93, -1, daysLeft +" "+ getLocale("DAYS"), "runningTime", "neutral", skin.fontBold)
+		If daysLeft > 1 or daysLeft = 0
+			skin.RenderBox(contentX + 5, contentY, 96, -1, daysLeft +" "+ getLocale("DAYS"), "runningTime", "neutral", skin.fontBold)
 		Else
-			skin.RenderBox(contentX + 5, contentY, 93, -1, daysLeft +" "+ getLocale("DAY"), "runningTime", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 96, -1, daysLeft +" "+ getLocale("DAY"), "runningTime", "neutral", skin.fontBold)
 		EndIf
 
 		'spots successfully sent
 		if owner < 0
 			'show how many we have to send
-			skin.RenderBox(contentX + 5 + 97, contentY, 89, -1, GetSpotCount() + "x", "spotsAired", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 100, contentY, 92, -1, GetSpotCount() + "x", "spotsAired", "neutral", skin.fontBold)
 		else
-			skin.RenderBox(contentX + 5 + 97, contentY, 89, -1, GetSpotsSent() + "/" + GetSpotCount(), "spotsAired", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 100, contentY, 92, -1, GetSpotsSent() + "/" + GetSpotCount(), "spotsAired", "neutral", skin.fontBold)
 		endif
 
 		'planned
 		if owner > 0
-			skin.RenderBox(contentX + 5 + 190, contentY, 89, -1, GetSpotsPlanned() + "/" + GetSpotCount(), "spotsPlanned", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 196, contentY, 93, -1, GetSpotsPlanned() + "/" + GetSpotCount(), "spotsPlanned", "neutral", skin.fontBold)
 		endif
 
 
@@ -1467,11 +1467,11 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		contentY :+ boxH
 
 		'minAudience
-		skin.RenderBox(contentX + 5, contentY, 93, -1, TFunctions.convertValue(GetMinAudience(), 2), "minAudience", "neutral", skin.fontBold)
+		skin.RenderBox(contentX + 5, contentY, 96, -1, TFunctions.convertValue(GetMinAudience(), 2), "minAudience", "neutral", skin.fontBold)
 		'penalty
-		skin.RenderBox(contentX + 5 + 97, contentY, 89, -1, TFunctions.convertValue(GetPenalty(), 2), "money", "bad", skin.fontBold, ALIGN_RIGHT_CENTER)
+		skin.RenderBox(contentX + 5 + 100, contentY, 92, -1, TFunctions.convertValue(GetPenalty(), 2), "money", "bad", skin.fontBold, ALIGN_RIGHT_CENTER)
 		'profit
-		skin.RenderBox(contentX + 5 + 190, contentY, 89, -1, TFunctions.convertValue(GetProfit(), 2), "money", "good", skin.fontBold, ALIGN_RIGHT_CENTER)
+		skin.RenderBox(contentX + 5 + 196, contentY, 93, -1, TFunctions.convertValue(GetProfit(), 2), "money", "good", skin.fontBold, ALIGN_RIGHT_CENTER)
 
 
 		'=== DEBUG ===
