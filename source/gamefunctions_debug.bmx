@@ -503,7 +503,7 @@ Type TDebugProgrammeCollectionInfos
 			SetColor 255,255,255
 
 			local progString:string = l.GetTitle()
-			GetBitmapFont("default", 10).DrawBlock( progString, x+2, y+1 + entryPos*lineHeight, 175, lineHeight)
+			GetBitmapFont("default", 10).DrawBlock( progString, x+2, y+1 + entryPos*lineHeight, 175, lineHeight, ALIGN_LEFT_CENTER,,,,,False)
 
 			entryPos :+ 1
 		next
@@ -551,10 +551,10 @@ Type TDebugProgrammeCollectionInfos
 
 			local adString2b:string = "Acu: " +MathHelper.NumberToString(a.GetAcuteness()*100.0)
 			local adString2c:string = a.GetSpotsSent() + "/" + a.GetSpotCount()
-			GetBitmapFont("default", 10).DrawBlock( adString1a, x+192, y+1 + entryPos*lineHeight*2 + lineHeight*0, 130, lineHeight)
+			GetBitmapFont("default", 10).DrawBlock( adString1a, x+192, y+1 + entryPos*lineHeight*2 + lineHeight*0, 130, lineHeight, ALIGN_LEFT_CENTER,,,,,False)
 			GetBitmapFont("default", 10).DrawBlock( adString1b, x+192 + 133, y+1 + entryPos*lineHeight*2 + lineHeight*0, 35, lineHeight, ALIGN_RIGHT_CENTER, secondLineCol)
 
-			GetBitmapFont("default", 10).DrawBlock( adString2a, x+192, y+1 + entryPos*lineHeight*2 + lineHeight*1, 60, lineHeight, ALIGN_LEFT_CENTER, secondLineCol)
+			GetBitmapFont("default", 10).DrawBlock( adString2a, x+192, y+1 + entryPos*lineHeight*2 + lineHeight*1, 60, lineHeight, ALIGN_LEFT_CENTER, secondLineCol,,,,False)
 			GetBitmapFont("default", 10).DrawBlock( adString2b, x+192 + 65, y+1 + entryPos*lineHeight*2 + lineHeight*1, 55, lineHeight, ALIGN_CENTER_CENTER, secondLineCol)
 			GetBitmapFont("default", 10).DrawBlock( adString2c, x+192 + 110, y+1 + entryPos*lineHeight*2 + lineHeight*1, 55, lineHeight, ALIGN_RIGHT_CENTER, secondLineCol)
 
@@ -763,10 +763,10 @@ Type TDebugProgrammePlanInfos
 
 			GetBitmapFont("default", 10).Draw( Rset(hour,2).Replace(" ", "0"), x+2, y + hour*lineHeight)
 			if programme then SetStateColor(programme)
-			GetBitmapFont("default", 10).DrawBlock( progString, x+22, y + hour*lineHeight, 120, lineHeight, ALIGN_LEFT_TOP)
+			GetBitmapFont("default", 10).DrawBlock( progString, x+22, y + hour*lineHeight, 120, lineHeight, ALIGN_LEFT_TOP,,,,,False)
 			GetBitmapFont("default", 10).DrawBlock( progString2, x+145, y + hour*lineHeight, 68, lineHeight, ALIGN_RIGHT_TOP)
 			if advertisement then SetStateColor(advertisement)
-			GetBitmapFont("default", 10).DrawBlock( adString, x+222, y + hour*lineHeight, 110, lineHeight, ALIGN_LEFT_TOP)
+			GetBitmapFont("default", 10).DrawBlock( adString, x+222, y + hour*lineHeight, 110, lineHeight, ALIGN_LEFT_TOP,,,,,False)
 			GetBitmapFont("default", 10).DrawBlock( adString2, x+335, y + hour*lineHeight, 33, lineHeight, ALIGN_RIGHT_TOP)
 			SetColor 255,255,255
 		Next
@@ -807,7 +807,7 @@ Type TDebugProgrammePlanInfos
 
 			GetBitmapFont("default", 10).DrawBlock( newsSlot+1 , x+2, newsY + newsSlot*lineHeight, 11, lineHeight, ALIGN_CENTER_TOP)
 			if news
-				GetBitmapFont("default", 10).DrawBlock(news.GetTitle(), x+22, newsY + newsSlot*lineHeight, 192, lineHeight, ALIGN_LEFT_TOP)
+				GetBitmapFont("default", 10).DrawBlock(news.GetTitle(), x+22, newsY + newsSlot*lineHeight, 192, lineHeight, ALIGN_LEFT_TOP,,,,False)
 			else
 				GetBitmapFont("default", 10).DrawBlock("NEWS OUTAGE", x+22, newsY + newsSlot*lineHeight, 192, lineHeight, ALIGN_LEFT_TOP, TColor.clRed)
 			endif
