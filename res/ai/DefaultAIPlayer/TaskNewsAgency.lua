@@ -196,8 +196,8 @@ function JobNewsAgencyAbonnements:Tick()
 
 			local nextLevel = newSubscriptionLevels[genreID] + 1
 			local nextLevelFee = TVT.ne_getNewsAbonnementFee(genreID, nextLevel)
-			if nextLevel <= 3 and tempAvailableBudget > nextLevelFee then
-				if tempAvailableBudget > nextLevelFee then
+			if nextLevel <= 3 and tempAvailableBudget >= nextLevelFee then
+				if tempAvailableBudget >= nextLevelFee then
 					budgetLeft = true
 				end
 				newSubscriptionLevels[genreID] = nextLevel
