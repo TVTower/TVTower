@@ -424,6 +424,11 @@ Type TBroadcastAudiencePrediction {_exposeToLua="selected"}
 		if attractions.length < 4
 			attractions = attractions[..4]
 		endif
+
+		'create a new audience result set for each player
+		for local i:int = 1 to attractions.length
+			bc.SetAudienceResult(i, New TAudienceResult)
+		next
 	
 		'compute the audience for the given broadcasts
 		bc.ComputeAudience(attractions)
@@ -488,11 +493,6 @@ Type TBroadcast
 
 	'Hiermit wird die eigentliche Zuschauerzahl berechnet (mit allen Features)
 	Method ComputeAudience( attractions:TAudienceAttraction[] = null )
-		AudienceResults[0] = New TAudienceResult
-		AudienceResults[1] = New TAudienceResult
-		AudienceResults[2] = New TAudienceResult
-		AudienceResults[3] = New TAudienceResult
-
 		if not attractions
 			attractions = New TAudienceAttraction[4]
 		elseif attractions.length < 4
@@ -586,7 +586,7 @@ Type TBroadcast
 		If result Then GetAudienceResult(playerId).AddResult(result)
 	End Method	
 
-	
+
 	Method ComputeAttraction:TAudienceAttraction(playerId:Int, lastProgrammeBroadcast:TBroadcast, lastNewsShowBroadcast:TBroadcast)
 		Local broadcastedMaterial:TBroadcastMaterial = PlayersBroadcasts[playerId-1]
 
