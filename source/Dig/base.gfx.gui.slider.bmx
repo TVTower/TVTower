@@ -60,6 +60,8 @@ Type TGUISlider extends TGUIObject
 	Field _handleSprite:TSprite
 	Field _handleDim:TVec2D = new TVec2D
 	Field _gaugeOffset:TVec2D = new TVec2D.Init(3,3)
+	Field _gaugeAlpha:Float = 1.0
+	Field _showFilledGauge:int = True
 	Const DIRECTION_RIGHT:int = 0
 	Const DIRECTION_LEFT:int = 1 
 	Const DIRECTION_UP:int = 2
@@ -218,6 +220,8 @@ Type TGUISlider extends TGUIObject
 			case DIRECTION_DOWN
 				SetRelativeValue( Max(0.0, scale * Min(1.0, (mousePos.y) / GetGaugeH())) )
 		End Select
+
+		EventManager.triggerEvent( TEventSimple.Create( "guislider.setValueByMouse", null, self ) )
 	End Method
 
 
@@ -366,9 +370,15 @@ Type TGUISlider extends TGUIObject
 
 	Method DrawGaugeHorizontal(position:TVec2D, switchDirection:int = 0)
 		Local gaugeSprite:TSprite = GetGaugeSprite()
-		Local gaugeFilledSprite:TSprite = GetGaugeFilledSprite()
-		'assign default gauge sprite if no "filled" is defined
-		if gaugeSprite and (not gaugeFilledSprite or gaugeFilledSprite.GetName()) = "defaultsprite"
+		Local gaugeFilledSprite:TSprite
+
+		if _showFilledGauge
+			gaugeFilledSprite = GetGaugeFilledSprite()
+			'assign default gauge sprite if no "filled" is defined
+			if gaugeSprite and (not gaugeFilledSprite or gaugeFilledSprite.GetName()) = "defaultsprite"
+				gaugeFilledSprite = gaugeSprite
+			endif
+		else
 			gaugeFilledSprite = gaugeSprite
 		endif
 
@@ -439,9 +449,15 @@ Type TGUISlider extends TGUIObject
 
 	Method DrawGaugeVertical(position:TVec2D, switchDirection:int = 0)
 		Local gaugeSprite:TSprite = GetGaugeSprite()
-		Local gaugeFilledSprite:TSprite = GetGaugeFilledSprite()
-		'assign default gauge sprite if no "filled" is defined
-		if gaugeSprite and (not gaugeFilledSprite or gaugeFilledSprite.GetName()) = "defaultsprite"
+		Local gaugeFilledSprite:TSprite
+
+		if _showFilledGauge
+			gaugeFilledSprite = GetGaugeFilledSprite()
+			'assign default gauge sprite if no "filled" is defined
+			if gaugeSprite and (not gaugeFilledSprite or gaugeFilledSprite.GetName()) = "defaultsprite"
+				gaugeFilledSprite = gaugeSprite
+			endif
+		else
 			gaugeFilledSprite = gaugeSprite
 		endif
 
@@ -470,7 +486,7 @@ Type TGUISlider extends TGUIObject
 						if switchDirection
 							gaugeSprite.DrawArea(position.getX() + GetGaugeOffsetX(), position.getY() + GetGaugeOffsetY(), GetGaugeW(), filledH, -1, TSprite.BORDER_BOTTOM)
 						else
-							gaugeFilledSprite.DrawArea(position.getX() + GetGaugeOffsetX(), position.getY() + GetGaugeOffsetY(), GetGaugeW(), filledH, -1, TSprite.BORDER_BOTTOM)
+							gaugeFilledSprite.DrawArea(position.getX() + GetGaugeOffsetX(), position.getY() + GetGaugeOffsetY(), GetGaugeW(), Min(filledH, h - 1.5*gaugeSprite.GetMinHeight()), -1, TSprite.BORDER_BOTTOM)
 						endif
 					endif
 
@@ -567,16 +583,9 @@ Type TGUISlider extends TGUIObject
 		Local oldCol:TColor = new TColor.Get()
 
 		SetColor 255, 255, 255
-		SetAlpha oldCol.a * GetScreenAlpha()
-rem
-		SetColor 0,0,0
-		DrawRect(atPoint.x, atPoint.y, rect.GetW(), 1)
-		DrawRect(atPoint.x, atPoint.y + rect.GetH(), rect.GetW(), 1)
-		DrawRect(atPoint.x, atPoint.y, 1, rect.GetH())
-		DrawRect(atPoint.x + rect.GetW(), atPoint.y, 1, rect.GetH())
-		SetColor 255, 255, 255
-endrem
+		SetAlpha oldCol.a * GetScreenAlpha() * _gaugeAlpha
 		DrawGauge(atPoint)
+		SetAlpha oldCol.a * GetScreenAlpha()
 		DrawHandle(atPoint)
 
 		oldCol.SetRGBA()

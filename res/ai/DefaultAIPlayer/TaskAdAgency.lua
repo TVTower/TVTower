@@ -245,6 +245,11 @@ function SignRequisitedContracts:Tick()
 	end
 
 	for k,requisition in pairs(self.SpotRequisitions) do
+		-- old savegames? convert to new audience-object-approach
+		if type(requisition.GuessedAudience) == "number" then
+			requisition.GuessedAudience = TVT.audiencePredictor.GetEmptyAudience().InitWithBreakdown(requisition.GuessedAudience)
+		end
+
 		local neededSpotCount = requisition.Count
 		local guessedAudience = requisition.GuessedAudience
 
