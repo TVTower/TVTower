@@ -130,7 +130,7 @@ global LS_officeStatisticsScreen:TLowerString = TLowerString.Create("officeStati
 				'the small added/subtracted numbers are for padding of the text
 				local labelArea:TRectangle = new TRectangle.Init(tableX + 4, 80 + 1, 175-4, 19)
 				local valueArea:TRectangle = new TRectangle.Init(labelArea.GetX2(), labelArea.GetY(), 155 - 5, 19)
-				local captionArea:TRectangle = new TRectangle.Init(labelArea.GetX(), 57, 325, captionHeight)
+				local captionArea:TRectangle = new TRectangle.Init(labelArea.GetX(), 57, 323, captionHeight)
 				local bgArea:TRectangle = labelArea.Copy()
 				bgArea.SetW( valueArea.GetX2() - labelArea.GetX() + 6)
 				bgArea.position.SetXY( bgArea.GetX() - 3, bgArea.GetY() - 1 )
@@ -181,7 +181,27 @@ global LS_officeStatisticsScreen:TLowerString = TLowerString.Create("officeStati
 						captionFont.DrawBlock(GetLocale("NEWS")+": "+GetLocale("BROADCASTING_OUTAGE"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), ALIGN_CENTER_CENTER, captionColor, 1,,0.5)
 					endif
 				else
-					captionFont.DrawBlock(audienceResult.GetTitle(), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), ALIGN_CENTER_CENTER, captionColor, 1,,0.5)
+					local title:string = audienceResult.GetTitle()
+					if audienceResult.broadcastMaterial
+						local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan(room.owner)
+						'real programme
+						If TProgramme(audienceResult.broadcastMaterial)
+							Local programme:TProgramme = TProgramme(audienceResult.broadcastMaterial)
+							local blockText:string = " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock(showDay, hoveredHour) + "/" + programme.GetBlocks() + ")"
+							If programme.isSeries() and programme.licence.parentLicenceGUID
+								title = programme.licence.GetParentLicence().GetTitle() + " ("+ programme.GetEpisodeNumber() + "/" + programme.GetEpisodeCount()+"): " + programme.GetTitle() + blockText
+							Else
+								title = programme.GetTitle() + blockText
+							EndIf
+						ElseIf TAdvertisement(audienceResult.broadcastMaterial)
+							title = GetLocale("PROGRAMME_PRODUCT_INFOMERCIAL")+": "+audienceResult.broadcastMaterial.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock(showDay, hoveredHour) + "/" + audienceResult.broadcastMaterial.GetBlocks() + ")"
+						ElseIf TNews(audienceResult.broadcastMaterial)
+							title = GetLocale("SPECIAL_NEWS_BROADCAST")+": "+audienceResult.broadcastMaterial.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock(showDay, hoveredHour) + "/" + audienceResult.broadcastMaterial.GetBlocks() + ")"
+						ElseIf TNewsShow(audienceResult.broadcastMaterial)
+							title = GetLocale("NEWS")+" - "+Rset(hoveredHour,2).Replace(" ","0")+":05"
+						EndIf
+					endif
+					captionFont.DrawBlock(title, captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), ALIGN_CENTER_CENTER, captionColor, 1,,0.5)
 
 					textFont.DrawBlock(GetLocale("AUDIENCE_NUMBER")+":", labelArea.GetX(), labelArea.GetY() + 0*labelArea.GetH(), labelArea.GetW(), labelArea.GetH(), ALIGN_LEFT_CENTER, fontColor)
 					textFont.DrawBlock(GetLocale("POTENTIAL_AUDIENCE_NUMBER")+":", labelArea.GetX(), labelArea.GetY() + 1*labelArea.GetH(), labelArea.GetW(), labelArea.GetH(), ALIGN_LEFT_CENTER, fontColor)
