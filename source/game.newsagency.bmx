@@ -79,6 +79,8 @@ Type TNewsAgency
 					NextEventTimeIntervals[i] = [200, 300]
 				case TVTNewsGenre.TECHNICS_MEDIA
 					NextEventTimeIntervals[i] = [220, 350]
+				case TVTNewsGenre.CULTURE
+					NextEventTimeIntervals[i] = [240, 380]
 				'default
 			'	case TVTNewsGenre.CURRENT_AFFAIRS
 			'		NextEventTimeIntervals[i] = [180, 300]
@@ -740,7 +742,7 @@ Type TNewsAgency
 
 			'iterate over copy
 			For local news:TNews = EachIn delayedLists[playerID-1].Copy()
-				local subscriptionDelay:int = GetNewsAbonnementDelay(news.newsEvent.genre, player.newsabonnements[news.newsEvent.genre] )
+				local subscriptionDelay:int = GetNewsAbonnementDelay(news.newsEvent.genre, player.GetNewsAbonnement(news.newsEvent.genre) )
 				local maxSubscriptionDelay:int = GetNewsAbonnementDelay(news.newsEvent.genre, 1)
 
 				'if playerID=1 then print "ProcessDelayedNews: " + news.GetTitle() + "  happened="+GetWorldTime().GetFormattedDate( news.GetHappenedTime())+"  announceToPlayer="+ GetWorldTime().GetFormattedDate( news.GetPublishTime() + subscriptionDelay )+ "  autoRemove=" + GetWorldTime().GetFormattedDate( news.GetPublishTime() + maxSubscriptionDelay + 1000 )
@@ -757,7 +759,7 @@ Type TNewsAgency
 				'skip news events not for publishing yet - or if not
 				'subscribed to it NOW
 				'alternatively also check: "or subscriptionDelay < 0"
-				If (player.newsabonnements[news.newsEvent.genre] <= 0 and not news.newsEvent.HasFlag(TVTNewsFlag.SEND_TO_ALL)) ..
+				If (player.GetNewsabonnement(news.newsEvent.genre) <= 0 and not news.newsEvent.HasFlag(TVTNewsFlag.SEND_TO_ALL)) ..
 				   or Not news.IsReadyToPublish(subscriptionDelay)
 					'print "ProcessDelayedNews #"+playerID+": NOT subscribed or not ready yet: " + news.GetTitle() + "   announceToPlayer="+ GetWorldTime().GetFormattedDate( news.GetPublishTime() + subscriptionDelay )
 					continue
@@ -901,7 +903,7 @@ Type TNewsAgency
 			If skipNews
 				For Local player:TPlayerBase = eachin GetPlayerBaseCollection().players
 					'a player listens to this genre, disallow skipping
-					If player.newsabonnements[newsEvent.genre] > 0 Then skipNews = False
+					If player.GetNewsabonnement(newsEvent.genre) > 0 Then skipNews = False
 				Next
 				if not forceAdd and not skipIfUnsubscribed
 					?debug

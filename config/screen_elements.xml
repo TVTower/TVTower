@@ -32,6 +32,7 @@
 				<script do="ColorizeCopy"	dest="gfx_news_sheet2"	r="220"	g="30"	b="30" />
 				<script do="ColorizeCopy"	dest="gfx_news_sheet3"	r="170"	g="30"	b="220" />
 				<script do="ColorizeCopy"	dest="gfx_news_sheet4"	r="60"	g="160"	b="60" />
+				<script do="ColorizeCopy"	dest="gfx_news_sheet5"	r="255"	g="100"	b="0" />
 			</scripts>
 		</sprite>
 
