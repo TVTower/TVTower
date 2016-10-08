@@ -917,7 +917,7 @@ Terrific final.</en>
 				<!-- "morgen/uebermorgen 9-18 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,2,9,18" news="ronny-news-katschminski-02" />
 			</effects>
-			<data genre="4" price="1.0" quality="28" />
+			<data genre="5" price="1.0" quality="28" />
 		</news>
 		<news id="ronny-news-katschminski-02" type="2" creator="5578" created_by="Ronny">
 			<title>
@@ -932,7 +932,7 @@ Terrific final.</en>
 				<!-- "morgen/uebermorgen 9-18 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,2,9,18" news="ronny-news-katschminski-03" />
 			</effects>
-			<data genre="4" price="1.0" quality="24" />
+			<data genre="5" price="1.0" quality="24" />
 		</news>
 		<news id="ronny-news-katschminski-03" type="2" creator="5578" created_by="Ronny">
 			<title>
@@ -943,7 +943,7 @@ Terrific final.</en>
 				<de>Der Bestsellerautor Katschminski veröffentlicht sein neues Buch „Das Herzzerreissen“. Irgendwie nur noch banal und kaum aushaltbare Salbaderei.</de>
 				<en>The bestselling author Katschinski published his new book "The heart rending". Somehow only banal and hardly bearable twaddle.</en>
 			</description>
-			<data genre="4" price="1.10" quality="22" />
+			<data genre="5" price="1.10" quality="22" />
 		</news>
 		<news id="ronny-news-pipelaho-01" type="0" creator="5578" created_by="Ronny">
 			<title>
@@ -954,7 +954,7 @@ Terrific final.</en>
 				<de>Das frankoindonesische Popsternchen Pipé-Laho erreicht mit "Moi? J'arrive." Platz 1 der hiesigen Charts. Moderne Arrangements und traditionelle indonesische Instrumente werden zum Trend.</de>
 				<en>The French-Indonesian pop starlet Pipé-Laho achieved with "Moi? J'arrive." No. 1 on the local charts. Modern arrangements and traditional Indonesian instruments create a new trend.</en>
 			</description>
-			<data genre="1" price="0.9" quality="32" />
+			<data genre="2" price="0.9" quality="32" />
 		</news>
 		<news id="ronny-news-karldingensbummens-01" type="0" creator="5578" created_by="Ronny">
 			<title>
@@ -969,7 +969,7 @@ Terrific final.</en>
 				<!-- "morgen/uebermorgen 6-12 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,2,6,12" news="ronny-news-karldingensbummens-02" />
 			</effects>
-			<data genre="4" price="1.0" quality="22" />
+			<data genre="5" price="1.0" quality="22" />
 		</news>
 		<news id="ronny-news-karldingensbummens-02" type="2" creator="5578" created_by="Ronny">
 			<title>
@@ -980,7 +980,35 @@ Terrific final.</en>
 				<de>Jean-Peter Fleusch ("Kunst der unscharfen Ränder") meldet Rückkehr der Skulptur "Karl Dingensbummens". Putzkräfte hätten es für Verpackungsmaterial gehalten und in einem Lager deponiert.</de>
 				<en>Jean-Peter Fleusch ("Art of blurred edges") announces return of Sculpture "Joe Thingamabob". Cleaners thought it was packaging material and deposited it in a warehouse.</en>
 			</description>
-			<data genre="4" price="1.0" quality="20" />
+			<data genre="5" price="1.0" quality="20" />
+		</news>
+
+
+		<news id="ronny-news-frauenbart-01" type="0" creator="5578" created_by="Ronny">
+			<title>
+				<de>Ausstellung zum Thema Frauenbärte</de>
+				<en>Exhibition on Women's Beards</en>
+			</title>
+			<description>
+				<de>Sie sind der Trend des kommenden Sommers: Frauenbärte. Emily Santé widmet dem Trend schon jetzt eine Ausstellung. Frauen mit Bart erhalten kostenlosen Zutritt.</de>
+				<en>They are the trend of the coming summer: women's beards. Emily Santé is devoting an exhibition to the trend. Women with beard receive free access.</en>
+			</description>
+			<effects>
+				<!-- "morgen/uebermorgen 11-17 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,2,11,17" news="ronny-news-frauenbart-02" />
+			</effects>
+			<data genre="5" price="1.0" quality="15" />
+		</news>
+		<news id="ronny-news-frauenbart-02" type="2" creator="5578" created_by="Ronny">
+			<title>
+				<de>Ausstellung "Frauenbärte" lockt Betrüger</de>
+				<en>Exhibition "Women's Beards" lures cheats</en>
+			</title>
+			<description>
+				<de>Heute versuchten zwei mit Bärten getarnte Männer sich kostenlosen Zugang zur Ausstellung "Frauenbärte" zu erschleichen. Beim Handgemenge wurde einer Wachfrau der Schnurrbart gezupft.</de>
+				<en>Today two men, masked with beards, tried to sneak free access to the exhibition "Women's Beards". In the brawl a security woman's mustache was plucked.</en>
+			</description>
+			<data genre="5" price="1.0" quality="17" />
 		</news>
 	</allnews>
 </tvgdb>
