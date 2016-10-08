@@ -138,7 +138,8 @@ Type TVTNewsGenre {_exposeToLua}
 	Const SPORT:int = 2
 	Const TECHNICS_MEDIA:int = 3
 	Const CURRENTAFFAIRS:int = 4
-	Const count:int = 5
+	Const CULTURE:int = 5 'not COUNTED yet
+	Const count:int = 6
 
 
 	Function GetAtIndex:int(index:int)
@@ -154,6 +155,7 @@ Type TVTNewsGenre {_exposeToLua}
 			case SPORT              return "sport"
 			case TECHNICS_MEDIA     return "technics_media"
 			case CURRENTAFFAIRS     return "currentaffairs"
+			case CULTURE            return "culture"
 			default                 return "unknown"
 		end select
 	End Function

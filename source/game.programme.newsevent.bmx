@@ -515,6 +515,8 @@ Type TNewsEventCollection
 				return 1.05
 			case TVTNewsGenre.CURRENTAFFAIRS
 				return 1.0
+			case TVTNewsGenre.CULTURE
+				return 1.0
 			default
 				return 1.0
 		End Select

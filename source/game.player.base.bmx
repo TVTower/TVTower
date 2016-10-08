@@ -189,6 +189,9 @@ Type TPlayerBase {_exposeToLua="selected"}
 	'return CURRENT newsAbonnement
 	Method GetNewsAbonnement:Int(genre:Int) {_exposeToLua}
 		If genre > 5 Then Return 0 'max 6 categories 0-5
+		'for NOW culture is current affair (until there are enough news
+		'for it)
+		if genre = TVTNewsGenre.CULTURE then genre = TVTNewsGenre.CURRENTAFFAIRS
 		Return Self.newsabonnements[genre]
 	End Method
 
@@ -198,15 +201,17 @@ Type TPlayerBase {_exposeToLua="selected"}
 	'if the last time a abonnement level was set was before today
 	'use the current level value
 	Method GetNewsAbonnementDaysMax:Int(genre:Int) {_exposeToLua}
-		If genre > 5 Then Return 0 'max 6 categories 0-5
+		If genre >= TVTNewsGenre.count or genre < 0 Then Return 0
+		
+		local abonnementLevel:int = GetNewsAbonnement(genre)
 
 		'not set yet - use the current abonnement
 		if newsabonnementsDayMax[genre] = -1
-			SetNewsAbonnementDaysMax(genre, newsabonnements[genre])
+			SetNewsAbonnementDaysMax(genre, abonnementLevel)
 		endif
 
 		'if level of genre changed - adjust maximum
-		if newsabonnementsDayMax[genre] <> newsabonnements[genre]
+		if newsabonnementsDayMax[genre] <> abonnementLevel
 			'if the "set time" is not the current day, we assume
 			'the current abonnement level as maxium
 			'eg.: genre set 23:50 - not catched by the "30 min check"
@@ -216,7 +221,7 @@ Type TPlayerBase {_exposeToLua="selected"}
 			if GetWorldTime().GetDay(newsabonnementsSetTime[genre]) < GetWorldTime().GetDay()
 				'NOT 0:00 (the time daily costs are computed)
 				if GetWorldTime().GetDayMinute() > 0
-					SetNewsAbonnementDaysMax(genre, newsabonnements[genre])
+					SetNewsAbonnementDaysMax(genre, abonnementLevel)
 				EndIf
 			EndIf
 
@@ -224,8 +229,8 @@ Type TPlayerBase {_exposeToLua="selected"}
 			if GetWorldTime().GetTimeGone() - newsabonnementsSetTime[genre] > 30*60
 				'only set maximum if the new level is higher than the
 				'current days maxmimum.
-				if newsabonnementsDayMax[genre] < newsabonnements[genre]
-					SetNewsAbonnementDaysMax(genre, newsabonnements[genre])
+				if newsabonnementsDayMax[genre] < abonnementLevel
+					SetNewsAbonnementDaysMax(genre, abonnementLevel)
 				EndIf
 			EndIf
 		EndIf
