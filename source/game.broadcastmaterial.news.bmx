@@ -407,8 +407,8 @@ endrem
     End Method
 
 
-	Method IsReadyToPublish:Int() {_exposeToLua}
-		Return (GetHappenedtime() + publishDelay <= GetWorldTime().GetTimeGone())
+	Method IsReadyToPublish:Int(subscriptionDelay:Long = 0) {_exposeToLua}
+		Return (GetPublishTime() + subscriptionDelay <= GetWorldTime().GetTimeGone())
 	End Method
 
 

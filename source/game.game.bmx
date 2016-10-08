@@ -866,11 +866,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'create 3 random news happened some time before today ...
 		'Limit to CurrentAffairs as this is the starting abonnement of
 		'all players
-		'Create one which is available at start in all cases (>3h old)
-		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(180,210), True)
-		For local i:int = 0 to 1
-			GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(5,15)*RandRange(5,10), True)
-		Next
+		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(80,120) - 3600*0, True, False, False, True)
+		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(80,120) - 3600*1, True, False, False, True)
+		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(80,120) - 3600*2, True, False, False, True)
 
 		
 		'create 3 starting news with random genre (for starting news show)
