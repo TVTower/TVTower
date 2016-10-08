@@ -2248,7 +2248,8 @@
 			<data country="D" year="1971" distribution="1" maingenre="11" subgenre="0" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="71" speed="37" outcome="0" />
 		</programme>
-	
+
+		<!--
 		<programme id="TheRob-Mon-TvTower-EinmonumentalerVersuch" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<de>Ein Monumentaler Versuch</de>
@@ -2269,6 +2270,7 @@
 			<data country="DK" year="1951" distribution="2" maingenre="13" subgenre="9" flags="12" blocks="24" price_mod="1.00" />
 			<ratings critics="81" speed="17" outcome="2" />
 		</programme>
+		-->
 	
 		<programme id="TheRob-a4d6-hor-Glog" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0051418" rt_id="0" creator="8751" created_by="TheRob">
 			<title>

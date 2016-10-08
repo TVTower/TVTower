@@ -709,33 +709,31 @@ Type TApp
 					
 
 					If KEYMANAGER.IsHit(KEY_Y)
-rem
-						local adContractBase:TAdContractBase = GetAdContractBaseCollection().GetByGUID("ronny-ad-allhits-02")
-						if adContractBase
-							'forcefully add to the collection (skips requirements checks)
-							GetPlayerProgrammeCollection(1).AddAdContract(New TAdContract.Create(adContractBase), True)
-						endif
-endrem
-rem
-'						local m:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID("ronny-programme-pantoffeln-01-copy"+RandRange(20,25))
-						local m:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID("ffdbdca2-7ad9-bbfc-b1a1-af1d24ee7ab5")
-						if m.owner <> GetPlayer().playerID
-							m.SetOwner(0)
-							RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(m, 1)
-							print "added movie: "+m.GetTitle()+" ["+m.GetGUID()+"]"
-						else
-							print "already had movie: "+m.GetTitle()+" ["+m.GetGUID()+"]"
-						endif
+						local addLicences:string[]
+						local addContracts:string[]
 
-						m = GetProgrammeLicenceCollection().GetByGUID("6cab2c62-39d7-4e0a-b957-191d54fc78f9")
-						if m.owner <> GetPlayer().playerID
-							m.SetOwner(0)
-							RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(m, 1)
-							print "added movie: "+m.GetTitle()+" ["+m.GetGUID()+"]"
-						else
-							print "already had movie: "+m.GetTitle()+" ["+m.GetGUID()+"]"
-						endif
-endrem
+						'addLicences :+ ["TheRob-Mon-TvTower-EinmonumentalerVersuch"]
+						'addContracts :+ ["ronny-ad-allhits-02"]
+
+						for local l:string = EachIn addContracts
+							local adContractBase:TAdContractBase = GetAdContractBaseCollection().GetByGUID("ronny-ad-allhits-02")
+							if adContractBase
+								'forcefully add to the collection (skips requirements checks)
+								GetPlayerProgrammeCollection(1).AddAdContract(New TAdContract.Create(adContractBase), True)
+							endif
+						next
+
+						for local l:string = EachIn addLicences
+							local p:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID(l)
+							if p.owner <> GetPlayer().playerID
+								p.SetOwner(0)
+								RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(p, 1)
+								print "added movie: "+p.GetTitle()+" ["+p.GetGUID()+"]"
+							else
+								print "already had movie: "+p.GetTitle()+" ["+p.GetGUID()+"]"
+							endif
+						next
+						
 						rem
 						local fCheap:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesCheap
 						local fGood:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesGood
@@ -783,18 +781,9 @@ endrem
 						print "found cheap:"+foundCheap+", good:"+foundGood+", auction:"+foundAuction+", skipped:"+foundSkipped+" movies/series for 1985. Total="+total
 						endrem
 
-						'print "DEV: Set Player 2 bankrupt"
-						'GetGame().SetPlayerBankrupt(2)
-						rem
-						local m:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID("ronny-programme-kartoffeln-01")
-						print "Olympiade available: "+m.IsAvailable()
-						print "Olympiade released: "+m.IsReleased()
-						m.SetOwner(0)
-						RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(m, 1)
-						print "added Summerolympiade to player1's suitcase"
-						endrem
-
-
+'						print "DEV: Set Player 2 bankrupt"
+'						GetGame().SetPlayerBankrupt(2)
+						
 						'GetWorld().Weather.SetPressure(-14)
 						'GetWorld().Weather.SetTemperature(-10)
 
@@ -904,13 +893,6 @@ endrem
 						local news:TNewsEvent = GetNewsEventCollection().GetByGUID("ronny-news-sandsturm-01")
 						GetNewsAgency().announceNewsEvent(news, 0, False)
 						print "happen: "+ news.GetTitle() + "  at: "+GetWorldTime().GetformattedTime(news.happenedTime)
-						endrem
-
-						rem
-						local m:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID("TheRob-b0db-439c-a852-Goaaaaal")
-						m.SetOwner(0)
-						RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(m, 1)
-						print "added Goaaal to player1's suitcase"
 						endrem
 
 '						PrintCurrentTranslationState("en")
@@ -4736,9 +4718,9 @@ Type GameEvents
 				For Local news:TNews = EachIn p.GetProgrammeCollection().news.Copy()
 					'if paid for the news, keep it a bit longer
 					if news.IsPaid()
-						minTopicalityToKeep = 0.01
+						minTopicalityToKeep = 0.04
 					else
-						minTopicalityToKeep = 0.07
+						minTopicalityToKeep = 0.012
 					endif
 					If hour - GetWorldTime().GetHour(news.GetHappenedTime()) > hoursToKeep
 						p.GetProgrammeCollection().RemoveNews(news)
