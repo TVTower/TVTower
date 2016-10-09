@@ -866,24 +866,24 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'create 3 random news happened some time before today ...
 		'Limit to CurrentAffairs as this is the starting abonnement of
 		'all players
-		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(80,120) - 3600*0, True, False, False, True)
-		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(80,120) - 3600*1, True, False, False, True)
-		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(80,120) - 3600*2, True, False, False, True)
+		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(0,60) - 3600*1, True, False, False, True)
+		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(60,120) - 3600*1, True, False, False, True)
+		'this is added to the "left side" (> 2,5h)
+		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(31,60) - 3600*2, True, False, False, True)
 
-		
+
 		'create 3 starting news with random genre (for starting news show)
 		for local i:int = 0 until 3
 			'genre = -1 to use a random genre
 			local newsEvent:TNewsEvent = GetNewsAgency().GenerateNewNewsEvent(-1)
-			'local newsEvent:TNewsEvent = GetNewsAgency().GetMovieNewsEvent()
 			if newsEvent
 				'time must be lower than for the "current affairs" news
 				'so they are recognizeable as the latest ones
-				local adjustMinutes:int = (-10*(i+1) + RandRange(-10, 10)) * 60
+				local adjustMinutes:int = - 60 * RandRange(0, 60)
 				newsEvent.doHappen( GetWorldTime().GetTimeGone() + adjustMinutes )
 			endif
 		Next
-	
+
 		'adjust news agency to wait some time until next news
 		'RON: disabled, no longer needed as AnnounceNewNewsEvent() already
 		'resets next event times
