@@ -657,8 +657,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		local averageChannelReach:Int = GetStationMapCollection().GetAverageReach()
 		local averageChannelQuoteDayTime:Float = 0.0
 		local averageChannelQuotePrimeTime:Float = 0.0
-		local dayWithoutPrimeTime:int[] = [0,1,2,3,4,5, 18,19,20,21,22]
-		local dayOnlyPrimeTime:int[] = [0,1,2,3,4,5,  6,7,8,9,10,11,12,13,14,15,16,17,  23]
+		local dayWithoutPrimeTime:int[] = [6,7,8,9,10,11,12,13,14,15,16,17]
+		local dayOnlyPrimeTime:int[] = [18,19,20,21,22,23]
 		if averageChannelReach > 0
 			averageChannelQuoteDayTime = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(-1, dayWithoutPrimeTime).GetTotalSum() / averageChannelReach
 			averageChannelQuotePrimeTime = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(-1, dayOnlyPrimeTime).GetTotalSum() / averageChannelReach
