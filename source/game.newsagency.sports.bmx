@@ -24,9 +24,31 @@ Type TNewsEventSportCollection extends TGameObjectCollection
 	End Method
 
 
+	Method InitializeAll:int()
+		For local sport:TNewsEventSport = EachIn entries.Values()
+			sport.Initialize()
+		Next
+	End Method
+
+
+	Method CreateAllLeagues:int()
+		For local sport:TNewsEventSport = EachIn entries.Values()
+			sport.CreateDefaultLeagues()
+		Next
+	End Method
+
+
 	Method UpdateAll:int()
 		For local sport:TNewsEventSport = EachIn entries.Values()
 			sport.Update()
+			rem
+			local nextMatchTime:Long = sport.GetNextMatchTime()
+			if nextMatchTime <> -1
+				print "sport: "+sport.name+"  nextMatch at " + (GetWorldTime().GetDaysRun(nextMatchTime)+1)+"/"+GetWorldTime().GetFormattedTime(nextMatchTime)
+			else
+				print "sport: "+sport.name+"  NO next match"
+			endif
+			endrem
 		Next
 	End Method
 
@@ -65,6 +87,25 @@ Type TNewsEventSport extends TGameObject
 	Method SetGUID:Int(GUID:String)
 		if GUID="" then GUID = "NewsEventSport-"+id
 		self.GUID = GUID
+	End Method
+
+
+	Method Initialize:TNewsEventSport()
+		'For local l:TNewsEventSportLeague = EachIn leagues
+		'	l.Initialize()
+		'Next
+		leagues = leagues[..0]
+		playoffsState = 0
+		playoffSeasons = playoffSeasons[..0]
+		playOffStartTime = 0
+		playOffEndTime = 0
+
+		return self
+	End Method
+
+
+	Method CreateDefaultLeagues:int()
+		print "override in custom sport"
 	End Method
 
 	
@@ -225,7 +266,7 @@ Type TNewsEventSport extends TGameObject
 			'if time = 0 then time = leagues[i].GetNextMatchStartTime(time, True)
 
 			local playoffsTime:Long = leagues[i].GetNextMatchStartTime(time, True)
-			leagues[i].AssignMatchTimes(playoffSeasons[i], playoffsTime)
+			leagues[i].AssignMatchTimes(playoffSeasons[i], playoffsTime, True)
 
 			?debug
 				print " Create matches: League "+(i+1)+"->"+(i+2)
@@ -299,6 +340,8 @@ Type TNewsEventSport extends TGameObject
 
 	Method AddLeague:TNewsEventSport(league:TNewsEventSportLeague)
 		leagues :+ [league]
+		league._sportGUID = self.GetGUID()
+		league._leaguesIndex = leagues.length-1
 		EventManager.triggerEvent(TEventSimple.Create("Sport.AddLeague", New TData.add("league", league), Self))
 	End Method
 
@@ -317,8 +360,26 @@ Type TNewsEventSport extends TGameObject
 	End Method
 
 
+	Method GetMatchNameShort:string(match:TNewsEventSportMatch)
+		return match.GetNameShort()
+	End Method
+
+
 	Method GetMatchReport:string(match:TNewsEventSportMatch)
 		return match.GetReport()
+	End Method
+
+
+	Method GetNextMatchTime:Long()
+		local lowestTime:long = -1
+		For local league:TNewsEventSportLeague = EachIn leagues
+			For local nextMatch:TNewsEventSportMatch = EachIn league.GetCurrentSeason().upcomingMatches
+				if lowestTime = -1 or nextMatch.GetMatchTime() < lowestTime
+					lowestTime = nextMatch.GetMatchTime()
+				endif
+			Next
+		Next
+		return lowestTime
 	End Method
 
 
@@ -661,13 +722,18 @@ Type TNewsEventSportLeague
 	Field currentSeason:TNewsEventSportSeason
 	'teams in then nex season (maybe after relegation matches)
 	Field nextSeasonTeams:TNewsEventSportTeam[]
+
+	'guid of the parental sport
+	Field _sportGUID:string = ""
+	'index of this league in the parental sport
+	Field _leaguesIndex:int = 0
 	
 	'callbacks
-	Field _onRunMatch:int(league:TNewsEventSportLeague, match:TNewsEventSportMatch)
-	Field _onStartSeason:int(league:TNewsEventSportLeague)
-	Field _onFinishSeason:int(league:TNewsEventSportLeague)
-	Field _onFinishSeasonPart:int(league:TNewsEventSportLeague, part:int)
-	Field _onStartSeasonPart:int(league:TNewsEventSportLeague, part:int)
+	Field _onRunMatch:int(league:TNewsEventSportLeague, match:TNewsEventSportMatch) {nosave}
+	Field _onStartSeason:int(league:TNewsEventSportLeague) {nosave}
+	Field _onFinishSeason:int(league:TNewsEventSportLeague) {nosave}
+	Field _onFinishSeasonPart:int(league:TNewsEventSportLeague, part:int) {nosave}
+	Field _onStartSeasonPart:int(league:TNewsEventSportLeague, part:int) {nosave}
 
 
 	Method Init:TNewsEventSportLeague(name:string, nameShort:string, initialSeasonTeams:TNewsEventSportTeam[])
@@ -777,7 +843,7 @@ endrem
 
 			if runMatches.length > 0
 				if endingMatchTime = 0 then endingMatchTime = GetWorldTime().GetTimeGone()
-				EventManager.triggerEvent(TEventSimple.Create("SportLeague.FinishMatchGroup", New TData.add("matches", runMatches).AddNumber("time", endingMatchTime), Self))
+				EventManager.triggerEvent(TEventSimple.Create("SportLeague.FinishMatchGroup", New TData.add("matches", runMatches).AddNumber("time", endingMatchTime).Add("season", GetCurrentSeason()), Self))
 			endif
 '		endif
 
@@ -920,7 +986,7 @@ endrem
 	End Method
 	
 
-	Method AssignMatchTimes(season:TNewsEventSportSeason, time:Long = 0)
+	Method AssignMatchTimes(season:TNewsEventSportSeason, time:Long = 0, isPlayoffSeason:int = False)
 		if time = 0 then time = GetNextMatchStartTime(time)
 		if not season then season = GetCurrentSeason()
 
@@ -957,7 +1023,7 @@ endrem
 		GetCurrentSeason().doneMatches.AddLast(match)
 
 		if _onRunMatch then _onRunMatch(self, match)
-		EventManager.triggerEvent(TEventSimple.Create("SportLeague.RunMatch", New TData.addNumber("matchTime", match.GetMatchTime()).add("match", match), Self))
+		EventManager.triggerEvent(TEventSimple.Create("SportLeague.RunMatch", New TData.addNumber("matchTime", match.GetMatchTime()).add("match", match).Add("season", GetCurrentSeason()), Self))
 
 		return True
 	End Method
@@ -1141,6 +1207,11 @@ Type TNewsEventSportMatch
 
 	Method GetLooserScore:int()
 		return 0
+	End Method
+	
+
+	Method GetNameShort:string()
+		return "override GetReport()"
 	End Method
 
 

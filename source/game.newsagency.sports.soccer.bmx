@@ -13,6 +13,14 @@ Type TNewsEventSport_Soccer extends TNewsEventSport
 	                                "Fussballfreunde|FF|p", ..
 	                                "Hallenkicker|HK|p", ..
 	                                "Freizeitkicker|FK|p", ..
+	                                "Spielvereinigung|SpVgg|p", ..
+	                                "1. Fussballclub|1.FC|s", ..
+	                                "2. Fussballclub|2.FC|s", ..
+	                                "Ballsportfreunde|BSV|p", ..
+	                                "Sportverein|SV|s", ..
+	                                "Kickers|K|p", ..
+	                                "Dynamo|D|s", ..
+	                                "Barfuss|Bf|s", ..
 	                                "Bolzclub|BC|s", ..
 	                                "Fussballclub|FC|s", ..
 	                                "Fussballsportverein|FSV|s", ..
@@ -21,6 +29,32 @@ Type TNewsEventSport_Soccer extends TNewsEventSport
 
 	Method New()
 		name = "SOCCER"
+	End Method
+
+
+	Method Initialize:TNewsEventSport_Soccer()
+		Super.Initialize()
+		return self
+	End Method
+
+
+	Method CreateDefaultLeagues:int()
+		'create 3 leagues
+		CreateLeagues( 3 )
+		TNewsEventSportLeague_Soccer(GetLeagueAtIndex(0)).name = "1. Bundesliga"
+		TNewsEventSportLeague_Soccer(GetLeagueAtIndex(1)).name = "2. Bundesliga"
+		TNewsEventSportLeague_Soccer(GetLeagueAtIndex(2)).name = "3. Liga"
+		TNewsEventSportLeague_Soccer(GetLeagueAtIndex(3)).name = "Regionalliga"
+		TNewsEventSportLeague_Soccer(GetLeagueAtIndex(0)).nameShort = "1. Liga"
+		TNewsEventSportLeague_Soccer(GetLeagueAtIndex(1)).nameShort = "2. Liga"
+		TNewsEventSportLeague_Soccer(GetLeagueAtIndex(2)).nameShort = "3. Liga"
+		TNewsEventSportLeague_Soccer(GetLeagueAtIndex(3)).nameShort = "RL"
+
+print "Soccer: Initialized sport and leagues."
+TNewsEventSportLeague_Soccer(GetLeagueAtIndex(0)).seasonStartMonth = 1
+TNewsEventSportLeague_Soccer(GetLeagueAtIndex(1)).seasonStartMonth = 1
+TNewsEventSportLeague_Soccer(GetLeagueAtIndex(2)).seasonStartMonth = 1
+TNewsEventSportLeague_Soccer(GetLeagueAtIndex(3)).seasonStartMonth = 1
 	End Method
 
 
@@ -163,7 +197,7 @@ Type TNewsEventSportLeague_Soccer extends TNewsEventSportLeague
 
 	'override
 	'2 matches per "time slot" instead of 1
-	Method AssignMatchTimes(season:TNewsEventSportSeason, time:Long = 0)
+	Method AssignMatchTimes(season:TNewsEventSportSeason, time:Long = 0, isPlayoffSeason:int=0)
 		'time = GetNextMatchStartTime(time)
 
 		if not season then season = GetCurrentSeason()
@@ -173,7 +207,7 @@ Type TNewsEventSportLeague_Soccer extends TNewsEventSportLeague
 			m.SetMatchTime(time)
 
 			'every x-th match we increase time - so matches get "grouped"
-			if matches > 1 and matches mod matchesPerTimeSlot = 0
+			if isPlayoffSeason or (matches > 1 and matches mod matchesPerTimeSlot = 0)
 				'also append some minutes, es we would not move forward
 				'without (same time returned again and again)
 				time = GetNextMatchStartTime(time + 10 * 60)
@@ -184,6 +218,7 @@ if name = "1. SOCCER_LEAGUE" and GetWorldTime().GetDay(time) >= GetWorldTime().G
 	print "   "+ name+ "  match: "+GetWorldTime().GetFormattedDate(time) + "  gameday="+ GetWorldTime().GetDaysRun(time) + "  " + weekday
 endif
 endrem
+	print "   "+ name+ "  match: "+GetWorldTime().GetFormattedDate(time) + "  gameday="+ GetWorldTime().GetDaysRun(time) + "  " + m.GetNameShort()
 			matches :+1
 		Next
 'end
@@ -258,7 +293,6 @@ endrem
 
 
 		matchTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(time) + matchDay, matchHour, 0)
-
 
 		'check if we are in winter now
 		if not ignoreSeasonBreaks
@@ -436,6 +470,16 @@ Type TNewsEventSportMatch_Soccer extends TNewsEventSportMatch
 		matchText = matchText.Replace("%PLAYTIMEMINUTES%", int(duration / 60) )
 		matchText = matchText.Trim().Replace("  ", " ") 'remove space if no team article...
 		return matchText
+	End Method
+
+
+	Method GetNameShort:string()
+		local result:string
+		for local i:int = 0 until points.length
+			if result <> "" then result :+ " - "
+			result :+ teams[i].nameInitials
+		Next
+		return result
 	End Method
 
 

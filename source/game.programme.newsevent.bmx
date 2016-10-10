@@ -598,6 +598,26 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method SetTitle(title:TLocalizedString)
+		self.title = title
+	End Method
+
+
+	Method SetDescription(description:TLocalizedString)
+		self.description = description
+	End Method
+
+
+	Method SetGenre(genre:int)
+		self.genre = genre
+	End Method
+
+
+	Method SetQuality(quality:Float)
+		if quality >= 0 then SetQualityRaw(quality)
+	End Method
+
+
 	Method Reuse()
 		'reset happenedTime so it is available again
 		happenedTime = -1

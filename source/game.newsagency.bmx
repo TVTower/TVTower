@@ -1,7 +1,201 @@
 ﻿SuperStrict
 Import "game.newsagency.base.bmx"
+Import "game.newsagency.sports.soccer.bmx"
 
 GetNewsAgency().AddNewsProvider( new TNewsAgencyNewsProvider_Weather )
+GetNewsAgency().AddNewsProvider( TNewsAgencyNewsProvider_Sport.GetInstance() )
+
+
+
+'=== CREATE SPORTS ===
+'SOCCER
+Global sportSoccer:TNewsEventSport_Soccer = New TNewsEventSport_Soccer
+GetNewsEventSportCollection().Add(sportSoccer)
+
+
+'EventManager.registerListenerFunction( "Sport.StartPlayoffs", onStartPlayoffs )
+'EventManager.registerListenerFunction( "Sport.FinishPlayoffs", onFinishPlayoffs )
+'EventManager.registerListenerFunction( "SportLeague.StartSeasonPart", onStartSeasonPart )
+'EventManager.registerListenerFunction( "SportLeague.FinishSeasonPart", onFinishSeasonPart )
+'EventManager.registerListenerFunction( "SportLeague.FinishMatchGroup", onFinishMatchGroup )
+
+
+Function onStartPlayoffs:Int(event:TEventBase)
+
+	Local sport:TNewsEventSport = TNewsEventSport(event.GetSender())
+	Local time:Long = event.GetData().GetLong("time", -1)
+	If Not sport Or Not sport.playoffSeasons Then Return False
+	Print "onStartPlayoffs : "+sport.name
+Return False
+	Print "  " + "-------------------------"
+	For Local i:Int = 0 Until sport.playoffSeasons.length
+		Print "  Leaderboard Playoffs League "+(i+1)+"->"+(i+2)
+		Print "  " + LSet("Score", 8) + LSet("Team", 40)
+
+		Local season:TNewsEventSportSeason = sport.playoffSeasons[i]
+If Not season Then Print "season null"
+		Local seasonData:TNewsEventSportSeasonData = sport.playoffSeasons[i].data
+If Not seasonData Then Print "seasonData null"
+
+		For Local rank:TNewsEventSportLeagueRank = EachIn sport.playoffSeasons[i].data.GetLeaderboard( time )
+			Print "  " + LSet(rank.score, 8) + LSet(rank.team.nameInitials, 5)+" "+LSet(rank.team.name, 40)
+		Next
+		Print "  " + "-------------------------"
+	Next
+End Function
+
+Function onFinishPlayoffs:Int(event:TEventBase)
+	Local sport:TNewsEventSport = TNewsEventSport(event.GetSender())
+	Print "onFinishPlayoffs: "+sport.name
+End Function
+
+
+Function onStartSeasonPart:Int(event:TEventBase)
+	Local league:TNewsEventSportLeague = TNewsEventSportLeague(event.GetSender())
+	If sportSoccer.ContainsLeague(league)
+		Local time:Double = event.GetData().GetDouble("time")
+
+		if GetWorldTime().getDay(time) < GetWorldTime().GetStartDay() then return False
+
+		print "onStartSeasonPart: "+league.GetCurrentSeason().part+"/"+league.GetCurrentSeason().partMax+"  "+league.name
+	EndIf
+End Function
+
+Function onFinishSeasonPart:Int(event:TEventBase)
+	Local league:TNewsEventSportLeague = TNewsEventSportLeague(event.GetSender())
+
+	If sportSoccer.ContainsLeague(league)
+		Local time:Double = event.GetData().GetDouble("time")
+
+		if GetWorldTime().getDay(time) < GetWorldTime().GetStartDay() then return False
+
+		If league.GetCurrentSeason().part = league.GetCurrentSeason().partMax
+			Print "FINISH SEASON: "+league.name +"   day:"+GetWorldTime().GetDay(time)
+		Else
+'			print "FINISH SEASON PART: "+league.seasonPart+"/"+league.seasonPartMax+"  "+league.name
+		EndIf
+
+		'only final leaderboard
+		If league.GetCurrentSeason().part = league.GetCurrentSeason().partMax
+			Print "  " + "-------------------------"
+			Print "  Leaderboard "+league.name+":"
+			Print "  " + LSet("Score", 8) + LSet("Team", 40)
+			For Local rank:TNewsEventSportLeagueRank = EachIn league.GetLeaderboard()
+				Print "  " + LSet(rank.score, 8) + LSet(rank.team.nameInitials, 5)+" "+LSet(rank.team.name, 40)
+			Next
+			Print "  " + "-------------------------"
+		EndIf
+	EndIf
+End Function
+
+
+'==== OPTION 2: wait for match groups ====
+Function onFinishMatchGroup:Int(event:TEventBase)
+	Local league:TNewsEventSportLeague = TNewsEventSportLeague(event.GetSender())
+	Local matches:TNewsEventSportMatch[] = TNewsEventSportMatch[](event.GetData().Get("matches"))
+	If Not matches Or matches.length = 0 Or Not league Then Return False
+	'ignore games of the past
+	Local time:Long = event.GetData().GetLong("time")
+	if GetWorldTime().getDay(time) < GetWorldTime().GetStartDay() then return False
+
+	Print league.name+"  MatchGroup  gameDay="+RSet(GetWorldTime().GetDaysRun(time),2)+"  " + GetWorldTime().GetFormattedTime(time)
+
+	Local weekday:String = GetWorldTime().GetDayName( GetWorldTime().GetWeekday( GetWorldTime().GetOnDay(matches[0].GetMatchTime()) ) )
+	For Local match:TNewsEventSportMatch = EachIn matches
+'RONNY
+		Print "    Match: "+GetWorldTime().GetFormattedDate(match.GetMatchTime())+"  "+LSet(weekday,10) + match.teams[0].nameInitials + " " + match.points[0]+" : " + match.points[1] + " " + match.teams[1].nameInitials
+	Next
+End Function
+
+
+
+
+
+
+
+
+
+
+
+
+
+Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
+	Global _eventListeners:TLink[]
+	Global _instance:TNewsAgencyNewsProvider_Sport
+
+
+	Method New()
+		'=== REGISTER EVENTS ===
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
+		_eventListeners :+ [EventManager.registerListenerFunction( "SportLeague.RunMatch", onRunMatch )]
+	End Method
+
+
+	Function GetInstance:TNewsAgencyNewsProvider_Sport()
+		if not _instance then _instance = new TNewsAgencyNewsProvider_Sport
+		return _instance
+	End Function
+
+
+	'==== OPTION 1: directly wait for matches ====
+	Function onRunMatch:Int(event:TEventBase)
+		Local league:TNewsEventSportLeague = TNewsEventSportLeague(event.GetSender())
+		Local match:TNewsEventSportMatch = TNewsEventSportMatch(event.GetData().Get("match"))
+		Local sport:TNewsEventSport = GetNewsEventSportCollection().GetByGUID( league._sportGUID )
+		Local season:TNewsEventSportSeason = league.GetCurrentSeason()
+
+		If Not match Or Not league or not sport Then Return False
+		'ignore games of the past
+		if GetWorldTime().getDay(match.GetMatchTime()) < GetWorldTime().GetStartDay() then return False
+
+		'ignore leagues >= 3 ("Regionalliga")
+		if league._leaguesIndex > 2 then return False
+		
+		Local weekday:String = GetWorldTime().GetDayName( GetWorldTime().GetWeekday( GetWorldTime().GetOnDay(match.GetMatchTime()) ) )
+
+
+		Local NewsEvent:TNewsEvent = new TNewsEvent
+		local localizeTitle:TLocalizedString = new TLocalizedString
+		local localizeDescription:TLocalizedString = new TLocalizedString
+		'quality gets lower the higher the league index (less important)
+		Local quality:Float = 0.01 * randRange(50,60) * 0.9 ^ league._leaguesIndex
+		Local price:Float = 1.0 + 0.01 * randRange(-5,10) * 1.05 ^ league._leaguesIndex
+		
+
+		localizeTitle.Set(Getlocale("SPORT_"+sport.name) +" ["+league.nameShort+"]: " +match.GetReportShort())
+		if season and season.seasonType = TNewsEventSportSeason.SEASONTYPE_PLAYOFF
+			localizeDescription.Set("Relegationsspiel:~n"+match.GetReport())
+		elseif not season
+			localizeDescription.Set("unbekannt:~n"+match.GetReport())
+		else
+			localizeDescription.Set(match.GetReport())
+		endif
+		NewsEvent.Init("", localizeTitle, localizeDescription, TVTNewsGenre.SPORT, quality, null, TVTNewsType.InitialNewsByInGameEvent)
+		NewsEvent.SetModifier("price", price)
+		'3.0 means it reaches topicality of 0 at ~5 hours after creation.
+		NewsEvent.SetModifier("topicality::age", 3.0)
+		NewsEvent.AddKeyword("SPORT")
+		'let the game finish first
+		NewsEvent.happenedTime = GetWorldTime().GetTimeGone() + 60 * (90 + RandRange(0,10))
+
+		NewsEvent.eventDuration = 5*3600 'only for 8 hours
+		NewsEvent.SetFlag(TVTNewsFlag.UNIQUE_EVENT, True) 'one time event
+		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
+
+		GetInstance().AddNewNewsEvent(newsEvent)
+		print "  Match: gameday="+RSet(GetWorldTime().GetDaysRun(),2)+"  "+ GetWorldTime().GetFormattedDate(NewsEvent.happenedTime)+"  "+Lset(weekday,10) + " " + match.GetReportshort() + "  " + match.GetReport()
+	End Function
+
+
+
+	Method Update:int()
+		_instance = self
+		'nothing for now, sports updates are handled by TGame
+	End Method
+End Type
+
 
 
 

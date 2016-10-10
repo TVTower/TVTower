@@ -815,3 +815,5 @@ SET_SPEED_TO_X = Setze Geschwindigkeit auf Level %SPEED%
 MANUAL = Handbuch
 HELP = Hilfe
 SHOW_HELP = Zeige die Hilfe an
+
+SPORT_SOCCER = Fussball

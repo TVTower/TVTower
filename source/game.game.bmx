@@ -145,9 +145,16 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 		If startNewGame
+			'=== CREATE / INIT SPORTS ("life outside")===
+			TLogger.Log("TGame", "Starting all sports (and their leagues) -1 year before now.", LOG_DEBUG)
+			GetNewsEventSportCollection().CreateAllLeagues()
+			GetNewsEventSportCollection().StartAll( GetWorldTime().MakeRealTime(GetWorldTime().GetYear()-1,0,0,0,0) )
+
+
 			'refresh states of old programme productions (now we now
 			'the start year and are therefore able to refresh who has
 			'done which programme yet)
+			TLogger.Log("TGame", "Refreshing production/cinema states of programmes (refreshing cast-information)", LOG_DEBUG)
 			GetProgrammeDataCollection().UpdateAll()
 
 			'Begin Game - fire Events

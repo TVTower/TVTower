@@ -4,6 +4,7 @@ Import "game.programme.newsevent.bmx"
 Import "game.figure.customfigures.bmx"
 Import "game.world.bmx"
 Import "game.game.base.bmx"
+Import "game.newsagency.sports.bmx"
 
 
 'likely a kind of agency providing news...
@@ -553,20 +554,26 @@ Type TNewsAgency
 
 	'update external news sources and fetch their generated news
 	Method ProcessNewsProviders:Int()
+		local delayed:int = 0
 		local announced:int = 0
 		For local nP:TNewsAgencyNewsProvider = EachIn newsProviders
 			nP.Update()
-
 			For local newsEvent:TNewsEvent = EachIn nP.GetNewNewsEvents()
-				announceNewsEvent(newsEvent)
-				announced:+1
+				'skip news events not happening yet
+				If not newsEvent.HasHappened()
+					delayed:+1
+					continue
+				else
+					announceNewsEvent(newsEvent)
+					announced :+ 1
+				endif
 			Next
 			
 			nP.ClearNewNewsEvents()
 		Next
 
 		'invalidate upcoming list 
-		if announced > 0 then GetNewsEventCollection()._InvalidateUpcomingNewsEvents()
+		if delayed > 0 then GetNewsEventCollection()._InvalidateUpcomingNewsEvents()
 	
 		Return announced
 	End Method

@@ -429,9 +429,9 @@ Type TStationMapCollection
 
 
 	Method GenerateCity:String(glue:String="")
-		Local part1:String[] = String(cityNames.Get("part1")).Split(", ")
-		Local part2:String[] = String(cityNames.Get("part2")).Split(", ")
-		Local part3:String[] = String(cityNames.Get("part3")).Split(", ")
+		Local part1:String[] = cityNames.GetString("part1").Split(", ")
+		Local part2:String[] = cityNames.GetString("part2").Split(", ")
+		Local part3:String[] = cityNames.GetString("part3").Split(", ")
 		if part2.length = 0 then return "part2Missing-Town"
 		if part3.length = 0 then return "part3Missing-Town"
 

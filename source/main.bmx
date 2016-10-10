@@ -982,11 +982,11 @@ endrem
 						If KEYMANAGER.IsHit(KEY_R) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("roomboard"))
 					EndIf
 				EndIf
-				If KEYMANAGER.IsHit(KEY_5) Then GetGame().SetGameSpeed( 60 )  '60 virtual minutes per realtime second
-				If KEYMANAGER.IsHit(KEY_6) Then GetGame().SetGameSpeed( 120 ) '120 minutes per second
-				If KEYMANAGER.IsHit(KEY_7) Then GetGame().SetGameSpeed( 180 ) '180 minutes per second
-				If KEYMANAGER.IsHit(KEY_8) Then GetGame().SetGameSpeed( 240 ) '240 minute per second
-				If KEYMANAGER.IsHit(KEY_9) Then GetGame().SetGameSpeed( 1 )   '1 minute per second
+				If KEYMANAGER.IsHit(KEY_5) Then GetGame().SetGameSpeed( 60*15 )  '60 virtual minutes per realtime second
+				If KEYMANAGER.IsHit(KEY_6) Then GetGame().SetGameSpeed( 120*15 ) '120 minutes per second
+				If KEYMANAGER.IsHit(KEY_7) Then GetGame().SetGameSpeed( 180*15 ) '180 minutes per second
+				If KEYMANAGER.IsHit(KEY_8) Then GetGame().SetGameSpeed( 240*15 ) '240 minute per second
+				If KEYMANAGER.IsHit(KEY_9) Then GetGame().SetGameSpeed( 1*15 )   '1 minute per second
 				If KEYMANAGER.IsHit(KEY_Q) Then TVTDebugQuoteInfos = 1 - TVTDebugQuoteInfos
 
 				If KEYMANAGER.IsHit(KEY_P)
@@ -1631,6 +1631,7 @@ Type TGameState
 	Field _GameRules:TGamerules = Null
 	Field _GameConfig:TGameConfig = Null
 	Field _Betty:TBetty = Null
+	Field _NewsEventSportCollection:TNewsEventSportCollection = Null
 
 	Field _GameInformationCollection:TGameInformationCollection = Null
 	Field _IngameHelpWindowCollection:TIngameHelpWindowCollection = Null
@@ -1724,6 +1725,7 @@ Type TGameState
 		GetFigureCollection().Initialize()
 		GetAchievementCollection().Initialize()
 		GetNewsAgency().Initialize()
+		GetNewsEventSportCollection().InitializeAll()
 		GetPublicImageCollection().Initialize()
 		GetBroadcastManager().Initialize()
 
@@ -1802,6 +1804,7 @@ Type TGameState
 		_Assign(_BroadcastManager, TBroadcastManager._instance, "BroadcastManager", MODE_LOAD)
 		_Assign(_DailyBroadcastStatisticCollection, TDailyBroadcastStatisticCollection._instance, "DailyBroadcastStatisticCollection", MODE_LOAD)
 		_Assign(_StationMapCollection, TStationMapCollection._instance, "StationMapCollection", MODE_LOAD)
+		_Assign(_NewsEventSportCollection, TNewsEventSportCollection._instance, "NewsEventSportCollection", MODE_LOAD)
 		_Assign(_Betty, TBetty._instance, "Betty", MODE_LOAD)
 		_Assign(_World, TWorld._instance, "World", MODE_LOAD)
 		_Assign(_WorldTime, TWorldTime._instance, "WorldTime", MODE_LOAD)
@@ -1901,6 +1904,7 @@ Type TGameState
 		_Assign(TBroadcastManager._instance, _BroadcastManager, "BroadcastManager", MODE_SAVE)
 		_Assign(TDailyBroadcastStatisticCollection._instance, _DailyBroadcastStatisticCollection, "DailyBroadcastStatisticCollection", MODE_SAVE)
 		_Assign(TStationMapCollection._instance, _StationMapCollection, "StationMapCollection", MODE_SAVE)
+		_Assign(TNewsEventSportCollection._instance, _NewsEventSportCollection, "NewsEventSportCollection", MODE_SAVE)
 		_Assign(TBetty._instance, _Betty, "Betty", MODE_SAVE)
 		_Assign(TWorld._instance, _World, "World", MODE_SAVE)
 		_Assign(TAuctionProgrammeBlocks.list, _AuctionProgrammeBlocksList, "AuctionProgrammeBlocks", MODE_Save)
@@ -4487,6 +4491,11 @@ Type GameEvents
 		'the popularity manager takes care itself whether to do something
 		'or not (update intervals)
 		GetPopularityManager().Update(triggerEvent)
+
+		'=== UPDATE SPORTS ===
+		'this collection contains sports emitting news events to
+		'the news agency (but also for live-programme-creation)
+		GetNewsEventSportCollection().UpdateAll()
 
 
 		'=== UPDATE NEWS AGENCY ===
