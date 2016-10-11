@@ -196,27 +196,53 @@ Type TNewsEventSport extends TGameObject
 
 			leagues[i].ReplaceNextSeasonTeam(looser, winner)
 			leagues[i+1].ReplaceNextSeasonTeam(winner, looser)
-'			print "Liga: "+(i+1)+"->"+(i+2)
-'			print "  abstieg: "+looser.name
-'			print "  aufstieg: "+winner.name
+			'print "Liga: "+(i+1)+"->"+(i+2)
+			'print "  abstieg: "+looser.name
+			'print "  aufstieg: "+winner.name
 		Next
 
 		'set winner of relegation to #1
 		'set looser of relegation to #2
 		For local i:int = 0 until playoffSeasons.length -1
+			'i=0 => playoff between league 0 and league 1
 			local looser:TNewsEventSportTeam = playoffSeasons[i].GetTeamAtRank( -1 )
-			local winner:TNewsEventSportTeam = playoffSeasons[i+1].GetTeamAtRank( 1 )
+			local winner:TNewsEventSportTeam = playoffSeasons[i].GetTeamAtRank( 1 )
 
-			'print "Relegation: "+(i+1)+"->"+(i+2)
-			'print "  abstieg: "+looser.name
-			'print "  aufstieg: "+winner.name
+			local winnerMovesUp:int = leagues[i].GetNextSeasonTeamIndex(winner) = -1
+			local looserMovesDown:int = leagues[i+1].GetNextSeasonTeamIndex(looser) = -1
+
+			?debug
+			local in1:string, in2:string
+			for local t:TNewsEventSportLeagueRank = Eachin leagues[i].GetCurrentSeason().data.GetLeaderboard()
+				in1 :+ t.team.name+" / "
+			next
+			for local t:TNewsEventSportLeagueRank = Eachin leagues[i+1].GetCurrentSeason().data.GetLeaderboard()
+				in2 :+ t.team.name+" / "
+			next
+
+			print "Relegation: "+(i+1)+"->"+(i+2)
+			print "  in "+(i+1)+": " + in1
+			print "  in "+(i+2)+": " + in2
+			if winnerMovesUp
+				print "  abstieg: "+looser.name
+				print "  aufstieg: "+winner.name
+			else
+				print "  bleibt in "+i+": "+winner.name
+				print "  bleibt in "+(i+1)+": "+looser.name
+			endif
+			?
 
 			'only switch teams if possible for both leagues
 			'else you would add a team to two leagues
-			if leagues[i].ReplaceNextSeasonTeam(looser, winner)
-				if not leagues[i+1].ReplaceNextSeasonTeam(winner, looser)
-					leagues[i].ReplaceNextSeasonTeam(winner, looser)
-					print "could not replace next season team"
+			if winnerMovesUp 'and looserMovesDown
+				if leagues[i].ReplaceNextSeasonTeam(looser, winner)
+					'print "league " + i+": replaced "+looser.name+" with " + winner.name
+					if not leagues[i+1].ReplaceNextSeasonTeam(winner, looser)
+						'print "could not replace next season team in league"+(i+1)
+					endif
+				else
+					'print "could not replace next season team in league"+i
+				
 				endif
 			endif
 
@@ -243,12 +269,15 @@ Type TNewsEventSport extends TGameObject
 			playoffSeasons[i].AddTeam( leagues[i].GetCurrentSeason().GetTeamAtRank( -2 ) )
 			'add second placed team of next league
 			playoffSeasons[i].AddTeam( leagues[i+1].GetCurrentSeason().GetTeamAtRank( 2 ) )
+'print "playoff #"+i+"  add from loosers in league "+i+": "+ leagues[i].GetCurrentSeason().GetTeamAtRank( -2 ).name
+'print "playoff #"+i+"  add from winners in league "+(i+1)+": "+ leagues[i+1].GetCurrentSeason().GetTeamAtRank( 2 ).name
 	
 			playoffSeasons[i].data.matchPlan = new TNewsEventSportMatch[playoffSeasons[i].GetMatchCount()]
 
 			CreateMatchSets(playoffSeasons[i].GetMatchCount(), playoffSeasons[i].GetTeams(), playoffSeasons[i].data.matchPlan, CreateMatch)
 
 			for local match:TNewsEventSportMatch = EachIn playoffSeasons[i].data.matchPlan
+'print "playoff #"+i+"  match: " + match.teams[0].name + " - " + match.teams[1].name 
 				playoffSeasons[i].upcomingMatches.addLast(match)
 			next
 		Next
@@ -809,13 +838,20 @@ Type TNewsEventSportLeague
 	End Method
 
 
-	Method ReplaceNextSeasonTeam:int(oldTeam:TNewsEventSportTeam, newTeam:TNewsEventSportTeam)
+	Method GetNextSeasonTeamIndex:int(team:TNewsEventSportTeam)
 		For local i:int = 0 until nextSeasonTeams.length
-			if not nextSeasonTeams[i] or nextSeasonTeams[i] <> oldTeam then continue
-
-			nextSeasonTeams[i] = newTeam
-			return True
+			if nextSeasonTeams[i] and nextSeasonTeams[i] = team then return i
 		Next
+		return -1
+	End Method
+
+
+	Method ReplaceNextSeasonTeam:int(oldTeam:TNewsEventSportTeam, newTeam:TNewsEventSportTeam)
+		local nextSeasonTeamIndex:int = GetNextSeasonTeamIndex(oldTeam)
+		if nextSeasonTeamIndex >= 0
+			nextSeasonTeams[nextSeasonTeamIndex] = newTeam
+			return True
+		endif
 		return False
 	End Method
 

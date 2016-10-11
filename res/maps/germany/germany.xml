@@ -43,15 +43,15 @@
 			</citynames>
 			<sports>
 				<soccer leagueCount="4">
-					<league1 name="1. Liga">
+					<league1 name="1. Bunte Liga" nameShort="1. BL">
 						<team1 prefix="Fussballclub|FC|s" name="Ronnsen" city="Chemnitz" nameInitials="R" /> 
 						<team2 prefix="Bolzfreunde|BF|p" name="Själen" city="Själingen" nameInitials="S" /> 
 					</league1>
-					<league2 name="2. Liga">
+					<league2 name="2. Bunte Liga" nameShort="2. BL">
 						<team1 prefix="Fussballfreunde|FF|p" name="Dingelsheim" nameInitials="D" /> 
 					</league2>
-					<league3 name="3. Liga" />
-					<league4 name="Regionalliga" />
+					<league3 name="3. Liga" nameShort="3. L" />
+					<league4 name="Regionalliga" nameShort="RL" />
 				</soccer>
 			</sports>
 

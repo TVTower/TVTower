@@ -39,16 +39,17 @@ Type TNewsEventSport_Soccer extends TNewsEventSport
 
 
 	Method CreateDefaultLeagues:int()
-		'create 3 leagues
-		CreateLeagues( 3 )
-		TNewsEventSportLeague_Soccer(GetLeagueAtIndex(0)).name = "1. Bundesliga"
-		TNewsEventSportLeague_Soccer(GetLeagueAtIndex(1)).name = "2. Bundesliga"
-		TNewsEventSportLeague_Soccer(GetLeagueAtIndex(2)).name = "3. Liga"
-		TNewsEventSportLeague_Soccer(GetLeagueAtIndex(3)).name = "Regionalliga"
-		TNewsEventSportLeague_Soccer(GetLeagueAtIndex(0)).nameShort = "1. Liga"
-		TNewsEventSportLeague_Soccer(GetLeagueAtIndex(1)).nameShort = "2. Liga"
-		TNewsEventSportLeague_Soccer(GetLeagueAtIndex(2)).nameShort = "3. Liga"
-		TNewsEventSportLeague_Soccer(GetLeagueAtIndex(3)).nameShort = "RL"
+		local soccerConfig:TData = GetStationMapCollection().GetSportData("soccer", new TData)
+		'create 4 leagues (if not overridden)
+		local leagueCount:Int = soccerConfig.GetInt("leagueCount", 4)
+
+		CreateLeagues( leagueCount )
+
+		for local i:int = 1 to leagueCount
+			local l:TNewsEventSportLeague_Soccer = TNewsEventSportLeague_Soccer(GetLeagueAtIndex(i-1))
+			l.name = soccerConfig.GetData("league"+i).GetString("name", i+". Liga")
+			l.nameShort = soccerConfig.GetData("league"+i).GetString("nameShort", i+". L")
+		Next
 
 print "Soccer: Initialized sport and leagues."
 TNewsEventSportLeague_Soccer(GetLeagueAtIndex(0)).seasonStartMonth = 1
@@ -121,7 +122,7 @@ TNewsEventSportLeague_Soccer(GetLeagueAtIndex(3)).seasonStartMonth = 1
 		local predefinedSportData:TData = GetStationMapCollection().GetSportData("soccer", emptyData)
 'print predefinedSportData.ToString()
 		
-		For local leagueIndex:int = 0 to leagueCount
+		For local leagueIndex:int = 0 until leagueCount
 			local cityNames:string[]
 			local predefinedLeagueData:TData = predefinedSportData.GetData("league"+(leagueIndex+1), emptyData)
 
