@@ -405,13 +405,10 @@ Type TNewsEventSport extends TGameObject
 
 	'helper: creates a "round robin"-matchset (all vs all)
 	Function CreateMatchSets(matchCount:int, teams:TNewsEventSportTeam[], matchPlan:TNewsEventSportMatch[], createMatchFunc:TNewsEventSportMatch())
-		'based on the description (which took it from the "championship
-		'manager forum") at:
-		'http://www.blitzmax.com/Community/post.php?topic=51796&post=578319
-
 		if not createMatchFunc then createMatchFunc = CreateMatch
 
 		local useTeams:TNewsEventSportTeam[] = teams[ .. teams.length]
+		local useTeamIndices:int[] = new int[teams.length]
 		local ghostTeam:TNewsEventSportTeam
 		'if odd we add a ghost team
 		if teams.length mod 2 = 1
@@ -419,75 +416,142 @@ Type TNewsEventSport extends TGameObject
 			useTeams :+ [ghostTeam]
 		endif
 
+		For local i:int = 0 until useTeams.length
+			useTeamIndices[i] = i
+		Next
+
 		?debug
 			print "CreateMatchSets:"
 			print "  teams: "+teams.length
 			print "  useTeams: "+useTeams.length
 			print "  matchCount: "+matchCount
 			For local i:int = 0 until useTeams.length
-				useTeams[i].nameInitials = i+1
+				useTeams[i].nameInitials = i
 				if useTeams[i] = ghostTeam then useTeams[i].nameInitials = "G"
 			Next
 		?
 
-		local matchIndex:int = 0
-		local loopLength:int = useTeams.length - 1
+		local teamAIndices:int[matchCount]
+		local teamBIndices:int[matchCount]
+		local matchNumber:int = 0
+
+
+		'approach described here: http://spvgkade.de/ssonst/ssa0.html?haupt=Son&sub=PaT&sub=Root
+		'results in: 1-4, 3-2   4-3, 2-1   2-4, 1-3
+		for local roundNumber:int = 1 to useTeams.length-1
+			for local roundMatchNumber:int = 1 to useTeams.length/2
+				matchNumber :+ 1
+
+				local GR:int = roundNumber mod 2 = 0
+				local UR:int = roundNumber mod 2 = 1
+				local team1Index:int
+				local team2Index:int
+
+				if roundNumber mod 2 = 0
+					if roundMatchNumber = 1
+						team1Index = useTeams.length - roundMatchNumber + 1
+						team2Index = (useTeams.length + roundNumber)/2 - roundMatchNumber + 1
+					else
+						team1Index = (useTeams.length + roundNumber)/2 + roundMatchNumber - useTeams.length
+						team2Index = (useTeams.length + roundNumber)/2 - roundMatchNumber + 1
+						if team1Index < 1 then team1Index = team1Index + (useTeams.length-1)
+					endif
+				else
+					if roundMatchNumber=1
+						team1Index = (1 + roundNumber)/2 + roundMatchNumber - 1
+						team2Index = useTeams.length + roundMatchNumber - 1
+					else
+						team1Index = (1 + roundNumber)/2 + roundMatchNumber - 1
+						team2Index = (1 + roundNumber)/2 - roundMatchNumber + useTeams.length
+						if team2Index > (useTeams.length-1) then team2Index = team2Index - (useTeams.length-1)
+					endif
+				endif
+
+				'swap home/away
+				if roundMatchNumber mod 2 = 0
+					local tmp:int = team1Index
+					team1Index = team2Index
+					team2Index = tmp
+				endif
+
+				'home
+				teamAIndices[ matchNumber-1 ] = team1Index-1
+				teamBIndices[ matchNumber-1 ] = team2Index-1
+				'away
+				teamAIndices[ matchNumber-1 + matchCount/2 ] = team2Index-1
+				teamBIndices[ matchNumber-1 + matchCount/2 ] = team1Index-1
+
+				'print roundNumber+"/"+matchNumber+": " + team1Index + " - " + team2Index
+			next
+		next
+
+
+		rem
+		'based on the description (which took it from the "championship
+		'manager forum") at:
+		'http://www.blitzmax.com/Community/post.php?topic=51796&post=578319
+		matchNumber = 0
 		'loop over all teams (fight versus all other teams)
-		For local opponentNumber:int = 1 to loopLength
+		For local opponentNumber:int = 1 to useTeams.length - 1
 			'we have to shift around all entries except the first one
 			'so "first team" is always the same, all others shift their
 			'position one step to the right on each loop
 			'1) 1 2 3 4
 			'2) 1 4 2 3
 			'3) 1 3 4 2
-			useTeams = useTeams[.. 1] + useTeams[useTeams.length-1 ..] + useTeams[1 .. useTeams.length -1]
-
+			if opponentNumber > 1
+				useTeams = useTeams[.. 1] + useTeams[useTeams.length-1 ..] + useTeams[1 .. useTeams.length -1]
+				useTeamIndices = useTeamIndices[.. 1] + useTeamIndices[useTeamIndices.length-1 ..] + useTeamIndices[1 .. useTeamIndices.length -1]
+			endif
 
 			?debug
-				local shifted:string = ""
-				for local j:int = 0 until useTeams.length
-					if shifted<>"" then shifted :+ " "
-					shifted :+ useTeams[j].nameInitials
-				next
-				print "shifted: "+shifted
+			local shifted:string = ""
+			for local j:int = 0 until useTeams.length
+				if shifted<>"" then shifted :+ " "
+				shifted :+ useTeamIndices[j]
+			next
+			print "shifted: "+shifted
 			?
 
-			'setup: 1st vs last, 2nd vs last-1, 3rd vs last-2 ...
+'			'setup: 1st vs last, 2nd vs last-1, 3rd vs last-2 ...
 			'skip match when playing vs the dummy/ghost team
 			For local teamOffset:int = 0 until ceil(useTeams.length/2)
-				local teamA:TNewsEventSportTeam = useTeams[0 + teamOffset]
-				local teamB:TNewsEventSportTeam = useTeams[useTeams.length-1 - teamOffset]
+				matchNumber :+ 1
+
+				local team1Index:int = useTeamIndices[ 0 + teamOffset ]
+				local team2Index:int = useTeamIndices[ useTeams.length-1 - teamOffset ]
 				'skip matches with the ghost team
-				if teamA = ghostTeam or teamB = ghostTeam then continue
+				if useTeams[team1Index] = ghostTeam or useTeams[team2Index] = ghostTeam then continue
 
-				?debug
-					print " -> "+Rset(matchIndex,2)+"/" + matchCount+") " + teamA.nameInitials +" - " + teamB.nameInitials
-					print " <- "+Rset(matchIndex+ matchCount/2,2)+"/" + matchCount+") " + teamB.nameInitials +" - " + teamA.nameInitials
-				?
-
-				'create an entry for home and away matches
-				'switch every second game so the first team does not get
-				'a home match everytime
-				local matchA:TNewsEventSportMatch = createMatchFunc()
-				local matchB:TNewsEventSportMatch = createMatchFunc()
-				if matchIndex mod 2 = 0 
-					matchA.AddTeams( [teamA, teamB] )
-					matchB.AddTeams( [teamB, teamA] )
-				else
-					matchA.AddTeams( [teamB, teamA] )
-					matchB.AddTeams( [teamA, teamB] )
+				'swap home/away
+				if teamOffset mod 2 = 0
+					local tmp:int = team1Index
+					team1Index = team2Index
+					team2Index = tmp
 				endif
+							
+				teamAIndices[ matchNumber-1 ] = team1Index
+				teamBIndices[ matchNumber-1 ] = team2Index
 
-				'home match
-				matchPlan[matchIndex] = matchA
-				'away match
-				matchPlan[matchIndex + matchCount/2] = matchB
-
-				matchA.matchNumber = matchIndex
-				matchB.matchNumber = matchIndex + matchCount/2
-
-				matchIndex :+ 1
+				teamAIndices[ matchNumber-1 + matchCount/2 ] = team2Index
+				teamBIndices[ matchNumber-1 + matchCount/2 ] = team1Index
 			Next
+		Next
+		endrem
+
+		for local matchIndex:int = 0 until teamAIndices.length
+			local teamA:TNewsEventSportTeam = useTeams[ teamAIndices[matchIndex] ]
+			local teamB:TNewsEventSportTeam = useTeams[ teamBIndices[matchIndex] ]
+
+			'skip matches with the ghost team
+			if teamA = ghostTeam or teamB = ghostTeam then continue
+
+			local match:TNewsEventSportMatch = createMatchFunc()
+			match.matchNumber = matchIndex
+			match.AddTeams( [teamA, teamB] )
+
+			matchPlan[matchIndex] = match
+			'print (teamA.nameInitials)+"-"+(teamB.nameInitials) + "  " + (teamAIndices[matchIndex]+1) +"-"+(teamBIndices[matchIndex]+1)
 		Next
 
 		?debug
