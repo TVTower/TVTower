@@ -1294,9 +1294,9 @@ End Type
 Type TNewsEventSportTeam
 	'eg. "Exampletown"
 	Field city:string
-	'eg. "FC Exampletown"
+	'eg. "Saxony Exampletown"
 	Field name:string
-	'eg. "FCE"
+	'eg. "SE"
 	Field nameInitials:string
 	'eg. "Football club"
 	Field clubName:string
@@ -1328,6 +1328,16 @@ Type TNewsEventSportTeam
 		if index < 0 then index = members.length + index '-1 = last one
 		if index < 0 or index >= members.length then return Null
 		return members[index]
+	End Method
+
+
+	Method GetTeamName:string()
+		return clubName+" " + name
+	End Method
+
+
+	Method GetTeamNameShort:string()
+		return clubNameInitials + nameInitials
 	End Method
 End Type
 

@@ -41,6 +41,19 @@
 				<part2>annen, bewen, bitter, blaken, blujers, bonter, breiden, brilten, brimps, brokken, brus, brustel, bruwen, budas, cabels, demer, dratten, dri, drokel, druell, epp, etern, euden, euker, euter, fehls, flantz, foden, foll, freschen, froben, frusen, fuisers, füjers, gamb, geier, gigs, gitter, glex, gliangs, glog, greiders, grewels, griten, grokel, hauschen, hennen, heuels, hevels, hotten, huhsen, juisen, jützen, kacker, kags, kehls, keiers, ketis, kregen, kregis, kroners, larnings, lessen, luntzel, martes, masen, medes, moneys, mub, musen, nargs, nasings, ne, nörden, opo, piels, prilmers, priners, pügen, quachten, ragers, reckes, ries, rizen, rons, rucks, rujers, ruk, saden, saides, sain, salgis, schaab, schabels, schaugis, schaven, schekers, schloners, schlugel, schoschen, schrannen, schrihs, schrinners, schrunden, schrungen, schuges, schwieden, schwieven, schwilges, schwilter, spamen, spree, sprels, spreus, spriewers, spruges, spruggen, sprüsch, spuels, spys, stabers, stannen, stelles, stieten, strail, strakels, stravers, striber, striels, strus, strüt, stuv, stüters, tachs, tatt, totten, tren, trichten, troskers, trükis, vanen, vurren, wagols, woben, wotten, zaven, ziggen, ziven, zunnen, zyden</part2>
 				<part3>, a, ach, au, bach, bad, beck, bek, berg, born, borstel, broich, bruck, brunn, brunnen, brück, burg, by, büttel, dorf, ecke, ede, en, feld, felde, ford, forst, furt, gast, hagen, hain, ham, hausen, heide, heim, hof, hofen, horn, hoven, hude, huden, husen, hütten, ikon, in, ing, ingen, ingsen, itz, kirchen, leben, lust, moor, moos, mund, mühle, mühlen, münde, ow, rade, raden, rath, reuth, rich, rode, roden, sand, scheid, scheidt, see, sen, stadt, stede, steden, stedt, stedten, stein, stetten, städt, tal, thal, torf, trop, trup, walde, weiler, werder, werth, wik, wil, witz, worth, wörth</part3>
 			</citynames>
+			<sports>
+				<soccer leagueCount="4">
+					<league1 name="1. Liga">
+						<team1 prefix="Fussballclub|FC|s" name="Ronnsen" city="Chemnitz" nameInitials="R" /> 
+						<team2 prefix="Bolzfreunde|BF|p" name="Själen" city="Själingen" nameInitials="S" /> 
+					</league1>
+					<league2 name="2. Liga">
+						<team1 prefix="Fussballfreunde|FF|p" name="Dingelsheim" nameInitials="D" /> 
+					</league2>
+					<league3 name="3. Liga" />
+					<league4 name="Regionalliga" />
+				</soccer>
+			</sports>
 
 			<!-- map with graytone values of population density,
 				 colordepth must be RGBA, not Grayscale !!

@@ -63,57 +63,101 @@ TNewsEventSportLeague_Soccer(GetLeagueAtIndex(3)).seasonStartMonth = 1
 	End Function
 
 
+	Method CreateTeam:TNewsEventSportTeam(prefix:String="", cityName:string="", teamName:string="", teamNameInitials:string="")
+		if not prefix then prefix = teamPrefixes[RandRange(0, teamPrefixes.length-1)]
+
+		local team:TNewsEventSportTeam = new TNewsEventSportTeam
+		local teamPrefix:string[] = prefix.Split("|")
+
+
+		if cityName 
+			team.city = cityName
+		else
+			'fall back to teamname if someone forgot to define a city
+			team.city = teamName
+		endif
+		if teamName
+			team.name = teamName
+		else
+			team.name = team.city
+		endif
+
+		local capitalLetters:string = teamNameInitials
+		if capitalLetters = ""
+			'method 1 - only capital letters
+			rem
+			For local ch:int = EachIn teamNames[i]
+				if (ch>=Asc("A") And ch<=Asc("Z")) then capitalLetters :+ Chr(ch)
+			Next
+			endrem
+			'method 2 - name-parts ("Bad |Klein|grunda" = "BKG")
+			For local part:string = EachIn team.name.split("|")
+				capitalLetters :+ Chr(StringHelper.UCFirst(part)[0])
+			Next
+		endif
+
+		team.nameInitials = capitalLetters
+		'clean potential "splitters" (now we created "capital letters")
+		team.city = team.city.replace("|","")
+		team.name = team.name.replace("|","")
+
+		team.clubName = teamPrefix[0]
+		team.clubNameInitials = teamPrefix[1]
+		if teamPrefix.length < 2 or teamPrefix[2] = "s" 
+			team.clubNameSingular = True
+		else
+			team.clubNameSingular = False
+		endif
+
+		return team
+	End Method
+
+
 	Method CreateLeagues(leagueCount:int)
 		'select and fill teams
-		local allUsedTeamNames:string[]
+		local allUsedCityNames:string[]
 		local countryCodes:string[] = GetPersonGenerator().GetCountryCodes()
+		local emptyData:TData = new TData
+		local predefinedSportData:TData = GetStationMapCollection().GetSportData("soccer", emptyData)
+'print predefinedSportData.ToString()
 		
 		For local leagueIndex:int = 0 to leagueCount
-			local teamNames:string[]
+			local cityNames:string[]
+			local predefinedLeagueData:TData = predefinedSportData.GetData("league"+(leagueIndex+1), emptyData)
 
 			For local i:int = 0 until teamsPerLeague
-				local name:string
-				local tries:int = 0
-				repeat
-					name = GetStationMapCollection().GenerateCity("|") 'split parts
-					tries :+ 1
-				until not StringHelper.InArray(name, allUsedTeamNames) or tries > 1000
-				if tries > 1000 then name = "unknown-"+Millisecs()+"-" + RandRange(0,100000)
-				teamNames :+ [name]
-				allUsedTeamNames :+ [name]
+				local cityName:string
+				'skip random name generation, if a team is defined already
+				local predefinedTeamData:TData = predefinedLeagueData.GetData("team"+(i+1), emptyData)
+				cityName = predefinedTeamData.GetString("name")
+				
+
+				if cityName = ""
+					local tries:int = 0
+					repeat
+						cityName = GetStationMapCollection().GenerateCity("|") 'split parts
+						tries :+ 1
+					until not StringHelper.InArray(cityName, allUsedCityNames) or tries > 1000
+					if tries > 1000 then cityName = "unknown-"+Millisecs()+"-" + RandRange(0,100000)
+				endif
+				cityNames :+ [cityName]
+				allUsedCityNames :+ [cityName]
 			Next
 
 
 			local teams:TNewsEventSportTeam[]
-			For local i:int = 0 until teamNames.length
-				local team:TNewsEventSportTeam = new TNewsEventSportTeam
-				local teamPrefix:string[] = teamPrefixes[RandRange(0, teamPrefixes.length-1)].Split("|")
+			For local i:int = 0 until cityNames.length
+				'use predefined data if possible
+				local predefinedTeamData:TData = predefinedLeagueData.GetData("team"+(i+1), emptyData)
 
-				local capitalLetters:string = ""
-				'method 1 - only capital letters
-				rem
-				For local ch:int = EachIn teamNames[i]
-					if (ch>=Asc("A") And ch<=Asc("Z")) then capitalLetters :+ Chr(ch)
-				Next
-				endrem
-				'method 2 - name-parts ("Bad |Klein|grunda" = "BKG")
-				For local part:string = EachIn teamNames[i].split("|")
-					capitalLetters :+ Chr(StringHelper.UCFirst(part)[0])
-				Next
-
-				team.city = teamNames[i].replace("|","")
-				team.name = teamPrefix[0] + " " + teamNames[i].replace("|","")
-				team.nameInitials = teamPrefix[1] + capitalLetters
-				team.clubName = teamPrefix[0] 
-				team.clubNameInitials = teamPrefix[1]
-				if teamPrefix.length < 2 or teamPrefix[2] = "s" 
-					team.clubNameSingular = True
-				else
-					team.clubNameSingular = False
-				endif
-
+				local team:TNewsEventSportTeam
+				team = CreateTeam(predefinedTeamData.GetString("prefix", ""), ..
+				                  predefinedTeamData.GetString("city", cityNames[i]), ..
+				                  predefinedTeamData.GetString("name", ""), ..
+				                  predefinedTeamData.GetString("nameInitials", "") ..
+				                 )
 				teams :+ [team]
-
+print "league="+(leagueIndex+1)+"  team="+(i+1)+"  name=" + team.name+"  city="+team.city+"  nameInitials="+team.nameInitials+"  clubName="+team.clubName+"  clubNameInitials="+team.clubNameInitials
 
 				For local j:int = 0 to 12 '0 is trainer
 					local cCode:string = "de"
@@ -430,20 +474,20 @@ Type TNewsEventSportMatch_Soccer extends TNewsEventSportMatch
 			matchText = matchText.Replace("%MATCHKIND%", "")
 		endif
 		if RandRange(0,100) < 75
-			matchText = matchText.Replace("%TEAM1%", teams[0].name)
+			matchText = matchText.Replace("%TEAM1%", teams[0].GetTeamName())
 		else
-			matchText = matchText.Replace("%TEAM1%", teams[0].clubNameInitials +" "+ teams[0].city)
+			matchText = matchText.Replace("%TEAM1%", teams[0].clubNameInitials +" "+ teams[0].name)
 		endif
-		matchText = matchText.Replace("%TEAM1SHORT%", teams[0].nameInitials)
-		matchText = matchText.Replace("%TEAM1LONG%", teams[0].name)
+		matchText = matchText.Replace("%TEAM1SHORT%", teams[0].GetTeamNameShort())
+		matchText = matchText.Replace("%TEAM1LONG%", teams[0].GetTeamName())
 
 		if RandRange(0,100) < 75
-			matchText = matchText.Replace("%TEAM2%", teams[1].name)
+			matchText = matchText.Replace("%TEAM2%", teams[1].GetTeamName())
 		else
-			matchText = matchText.Replace("%TEAM2%", teams[1].clubNameInitials +" "+ teams[1].city)
+			matchText = matchText.Replace("%TEAM2%", teams[1].clubNameInitials +" "+ teams[1].name)
 		endif
-		matchText = matchText.Replace("%TEAM2LONG%", teams[1].name)
-		matchText = matchText.Replace("%TEAM2SHORT%", teams[1].nameInitials)
+		matchText = matchText.Replace("%TEAM2SHORT%", teams[1].GetTeamNameShort())
+		matchText = matchText.Replace("%TEAM2LONG%", teams[1].GetTeamName())
 		if points[0] <> 0 or points[1] <> 0
 			matchText = matchText.Replace("%FINALSCORE%", points[0]+":"+points[1]+" ("+int(Max(0,floor(points[0]/2)-RandRange(0,2)))+":"+int(Max(0,floor(points[1]/2)-RandRange(0,2)))+")")
 		else
@@ -477,7 +521,7 @@ Type TNewsEventSportMatch_Soccer extends TNewsEventSportMatch
 		local result:string
 		for local i:int = 0 until points.length
 			if result <> "" then result :+ " - "
-			result :+ teams[i].nameInitials
+			result :+ teams[i].GetTeamNameShort()
 		Next
 		return result
 	End Method
@@ -488,9 +532,9 @@ Type TNewsEventSportMatch_Soccer extends TNewsEventSportMatch
 		for local i:int = 0 until points.length
 			if result <> ""
 				result :+ " : "
-				result :+ points[i] + " " + teams[i].nameInitials
+				result :+ points[i] + " " + teams[i].GetTeamNameShort()
 			else
-				result :+ teams[i].nameInitials + " " + points[i]
+				result :+ teams[i].GetTeamNameShort() + " " + points[i]
 			endif
 		Next
 		return result

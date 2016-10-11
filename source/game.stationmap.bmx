@@ -30,6 +30,7 @@ Type TStationMapCollection
 	Field populationMapSize:TVec2D = New TVec2D.Init() {nosave}
 	Field config:TData = New TData
 	Field cityNames:TData = New TData
+	Field sportsData:TData = New TData
 
 	Field mapConfigFile:String = ""
 	'does the shareMap has to get regenerated during the next
@@ -110,13 +111,19 @@ Type TStationMapCollection
 		Local cityNamesNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "citynames")
 		If Not cityNamesNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><citynames>-entry.")
 
+		Local sportsDataNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "sports")
+		'not mandatory
+		'If Not sportsDataNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><sports>-entry.")
+
 		'directly load the given resources
 		registryLoader.LoadSingleResourceFromXML(densityNode, True, New TData.AddString("name", "map_PopulationDensity"))
 		registryLoader.LoadSingleResourceFromXML(surfaceNode, True, New TData.AddString("name", "map_Surface"))
 
 		TXmlHelper.LoadAllValuesToData(configNode, _instance.config)
 		TXmlHelper.LoadAllValuesToData(cityNamesNode, _instance.cityNames)
-
+		if sportsDataNode
+			TXmlHelper.LoadAllValuesToData(sportsDataNode, _instance.sportsData)
+		endif
 
 		'=== LOAD STATES ===
 		'remove old states
@@ -425,6 +432,11 @@ Type TStationMapCollection
 
 
 		Return result
+	End Method
+
+
+	Method GetSportData:TData(sport:string, defaultData:TData = null)
+		return sportsData.GetData(sport, defaultData)
 	End Method
 
 
