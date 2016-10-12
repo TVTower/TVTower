@@ -1,26 +1,230 @@
 ﻿SuperStrict
-Import Brl.LinkedList
-Import "game.programme.newsevent.bmx"
-Import "game.figure.customfigures.bmx"
-Import "game.world.bmx"
-Import "game.game.base.bmx"
+Import "game.newsagency.base.bmx"
+Import "game.newsagency.sports.soccer.bmx"
+
+GetNewsAgency().AddNewsProvider( new TNewsAgencyNewsProvider_Weather )
+GetNewsAgency().AddNewsProvider( TNewsAgencyNewsProvider_Sport.GetInstance() )
 
 
-'likely a kind of agency providing news...
-'at the moment only a base object
-Type TNewsAgency
-	'when to announce a new newsevent
-'	Field NextEventTime:Double = -1
-	'check for a new news every x-y minutes
-'	Field NextEventTimeInterval:int[] = [90, 140]
 
-	Field NextEventTimes:Double[]
-	'check for a new news every x-y minutes
-	Field NextEventTimeIntervals:int[][]
+EventManager.registerListenerFunction( "SaveGame.OnLoad", onSavegameLoadAddMissingProviders)
 
-	Field delayedLists:TList[]
+Function onSavegameLoadAddMissingProviders:int(triggerEvent:TEventBase)
+	local found:int = False
+	For local np:TNewsAgencyNewsProvider_Weather = EachIn GetNewsAgency().newsProviders
+
+		found = True; exit
+	Next
+	if not found
+		GetNewsAgency().AddNewsProvider( new TNewsAgencyNewsProvider_Weather )
+		print "Recreated NewsProvider_Weather"
+	endif
+
+	found = False
+	For local np:TNewsAgencyNewsProvider_Sport = EachIn GetNewsAgency().newsProviders
+		found = True; exit
+	Next
+	if not found
+		GetNewsAgency().AddNewsProvider( new TNewsAgencyNewsProvider_Sport )
+		print "Recreated NewsProvider_Sport"
+	endif
+End Function
 
 
+
+'=== CREATE SPORTS ===
+'SOCCER
+Global sportSoccer:TNewsEventSport_Soccer = New TNewsEventSport_Soccer
+GetNewsEventSportCollection().Add(sportSoccer)
+
+
+'EventManager.registerListenerFunction( "Sport.StartPlayoffs", onStartPlayoffs )
+'EventManager.registerListenerFunction( "Sport.FinishPlayoffs", onFinishPlayoffs )
+'EventManager.registerListenerFunction( "SportLeague.StartSeasonPart", onStartSeasonPart )
+'EventManager.registerListenerFunction( "SportLeague.FinishSeasonPart", onFinishSeasonPart )
+'EventManager.registerListenerFunction( "SportLeague.FinishMatchGroup", onFinishMatchGroup )
+
+
+Function onStartPlayoffs:Int(event:TEventBase)
+
+	Local sport:TNewsEventSport = TNewsEventSport(event.GetSender())
+	Local time:Long = event.GetData().GetLong("time", -1)
+	If Not sport Or Not sport.playoffSeasons Then Return False
+	Print "onStartPlayoffs : "+sport.name
+Return False
+	Print "  " + "-------------------------"
+	For Local i:Int = 0 Until sport.playoffSeasons.length
+		Print "  Leaderboard Playoffs League "+(i+1)+"->"+(i+2)
+		Print "  " + LSet("Score", 8) + LSet("Team", 40)
+
+		Local season:TNewsEventSportSeason = sport.playoffSeasons[i]
+If Not season Then Print "season null"
+		Local seasonData:TNewsEventSportSeasonData = sport.playoffSeasons[i].data
+If Not seasonData Then Print "seasonData null"
+
+		For Local rank:TNewsEventSportLeagueRank = EachIn sport.playoffSeasons[i].data.GetLeaderboard( time )
+			Print "  " + LSet(rank.score, 8) + LSet(rank.team.nameInitials, 5)+" "+LSet(rank.team.name, 40)
+		Next
+		Print "  " + "-------------------------"
+	Next
+End Function
+
+Function onFinishPlayoffs:Int(event:TEventBase)
+	Local sport:TNewsEventSport = TNewsEventSport(event.GetSender())
+	Print "onFinishPlayoffs: "+sport.name
+End Function
+
+
+Function onStartSeasonPart:Int(event:TEventBase)
+	Local league:TNewsEventSportLeague = TNewsEventSportLeague(event.GetSender())
+	If sportSoccer.ContainsLeague(league)
+		Local time:Double = event.GetData().GetDouble("time")
+
+		if GetWorldTime().getDay(time) < GetWorldTime().GetStartDay() then return False
+
+		print "onStartSeasonPart: "+league.GetCurrentSeason().part+"/"+league.GetCurrentSeason().partMax+"  "+league.name
+	EndIf
+End Function
+
+Function onFinishSeasonPart:Int(event:TEventBase)
+	Local league:TNewsEventSportLeague = TNewsEventSportLeague(event.GetSender())
+
+	If sportSoccer.ContainsLeague(league)
+		Local time:Double = event.GetData().GetDouble("time")
+
+		if GetWorldTime().getDay(time) < GetWorldTime().GetStartDay() then return False
+
+		If league.GetCurrentSeason().part = league.GetCurrentSeason().partMax
+			Print "FINISH SEASON: "+league.name +"   day:"+GetWorldTime().GetDay(time)
+		Else
+'			print "FINISH SEASON PART: "+league.seasonPart+"/"+league.seasonPartMax+"  "+league.name
+		EndIf
+
+		'only final leaderboard
+		If league.GetCurrentSeason().part = league.GetCurrentSeason().partMax
+			Print "  " + "-------------------------"
+			Print "  Leaderboard "+league.name+":"
+			Print "  " + LSet("Score", 8) + LSet("Team", 40)
+			For Local rank:TNewsEventSportLeagueRank = EachIn league.GetLeaderboard()
+				Print "  " + LSet(rank.score, 8) + LSet(rank.team.nameInitials, 5)+" "+LSet(rank.team.name, 40)
+			Next
+			Print "  " + "-------------------------"
+		EndIf
+	EndIf
+End Function
+
+
+'==== OPTION 2: wait for match groups ====
+Function onFinishMatchGroup:Int(event:TEventBase)
+	Local league:TNewsEventSportLeague = TNewsEventSportLeague(event.GetSender())
+	Local matches:TNewsEventSportMatch[] = TNewsEventSportMatch[](event.GetData().Get("matches"))
+	If Not matches Or matches.length = 0 Or Not league Then Return False
+	'ignore games of the past
+	Local time:Long = event.GetData().GetLong("time")
+	if GetWorldTime().getDay(time) < GetWorldTime().GetStartDay() then return False
+
+	Print league.name+"  MatchGroup  gameDay="+RSet(GetWorldTime().GetDaysRun(time),2)+"  " + GetWorldTime().GetFormattedTime(time)
+
+	Local weekday:String = GetWorldTime().GetDayName( GetWorldTime().GetWeekday( GetWorldTime().GetOnDay(matches[0].GetMatchTime()) ) )
+	For Local match:TNewsEventSportMatch = EachIn matches
+'RONNY
+		Print "    Match: "+GetWorldTime().GetFormattedDate(match.GetMatchTime())+"  "+LSet(weekday,10) + match.teams[0].nameInitials + " " + match.points[0]+" : " + match.points[1] + " " + match.teams[1].nameInitials
+	Next
+End Function
+
+
+
+
+
+
+
+
+
+
+
+
+
+Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
+	Global _eventListeners:TLink[]
+	Global _instance:TNewsAgencyNewsProvider_Sport
+
+
+	Method New()
+		'=== REGISTER EVENTS ===
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
+		_eventListeners :+ [EventManager.registerListenerFunction( "SportLeague.RunMatch", onRunMatch )]
+	End Method
+
+
+	Function GetInstance:TNewsAgencyNewsProvider_Sport()
+		if not _instance then _instance = new TNewsAgencyNewsProvider_Sport
+		return _instance
+	End Function
+
+
+	'==== OPTION 1: directly wait for matches ====
+	Function onRunMatch:Int(event:TEventBase)
+		Local league:TNewsEventSportLeague = TNewsEventSportLeague(event.GetSender())
+		Local match:TNewsEventSportMatch = TNewsEventSportMatch(event.GetData().Get("match"))
+		Local sport:TNewsEventSport = GetNewsEventSportCollection().GetByGUID( league._sportGUID )
+		Local season:TNewsEventSportSeason = league.GetCurrentSeason()
+
+		If Not match Or Not league or not sport Then Return False
+		'ignore games of the past
+		if GetWorldTime().getDay(match.GetMatchTime()) < GetWorldTime().GetStartDay() then return False
+
+		'ignore leagues >= 3 ("Regionalliga")
+		if league._leaguesIndex > 2 then return False
+		
+		Local weekday:String = GetWorldTime().GetDayName( GetWorldTime().GetWeekday( GetWorldTime().GetOnDay(match.GetMatchTime()) ) )
+
+
+		Local NewsEvent:TNewsEvent = new TNewsEvent
+		local localizeTitle:TLocalizedString = new TLocalizedString
+		local localizeDescription:TLocalizedString = new TLocalizedString
+		'quality gets lower the higher the league index (less important)
+		Local quality:Float = 0.01 * randRange(50,60) * 0.9 ^ league._leaguesIndex
+		Local price:Float = 1.0 + 0.01 * randRange(-5,10) * 1.05 ^ league._leaguesIndex
+		
+
+		localizeTitle.Set(Getlocale("SPORT_"+sport.name) +" ["+league.nameShort+"]: " +match.GetReportShort())
+		if season and season.seasonType = TNewsEventSportSeason.SEASONTYPE_PLAYOFF
+			localizeDescription.Set("Relegationsspiel:~n"+match.GetReport())
+		elseif not season
+			localizeDescription.Set("unbekannt:~n"+match.GetReport())
+		else
+			localizeDescription.Set(match.GetReport())
+		endif
+		NewsEvent.Init("", localizeTitle, localizeDescription, TVTNewsGenre.SPORT, quality, null, TVTNewsType.InitialNewsByInGameEvent)
+		NewsEvent.SetModifier("price", price)
+		'3.0 means it reaches topicality of 0 at ~5 hours after creation.
+		NewsEvent.SetModifier("topicality::age", 3.0)
+		NewsEvent.AddKeyword("SPORT")
+		'let the game finish first
+		NewsEvent.happenedTime = GetWorldTime().GetTimeGone() + 60 * (90 + RandRange(0,10))
+
+		NewsEvent.eventDuration = 5*3600 'only for 8 hours
+		NewsEvent.SetFlag(TVTNewsFlag.UNIQUE_EVENT, True) 'one time event
+		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
+
+		GetInstance().AddNewNewsEvent(newsEvent)
+		print "  Match: gameday="+RSet(GetWorldTime().GetDaysRun(),2)+"  "+ GetWorldTime().GetFormattedDate(NewsEvent.happenedTime)+"  "+Lset(weekday,10) + " " + match.GetReportshort() + "  " + match.GetReport()
+	End Function
+
+
+
+	Method Update:int()
+		_instance = self
+		'nothing for now, sports updates are handled by TGame
+	End Method
+End Type
+
+
+
+
+Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 	'=== WEATHER HANDLING ===
 	'time of last weather event/news
 	Field weatherUpdateTime:Double = 0
@@ -28,418 +232,44 @@ Type TNewsAgency
 	Field weatherUpdateTimeInterval:int[] = [270, 300]
 	Field weatherType:int = 0
 
-	
-	'=== TERRORIST HANDLING ===
-	'both parties (VR and FR) have their own array entry
-	'when to update aggression the next time
-	Field terroristUpdateTime:Double[] = [Double(0),Double(0)]
-	'update terrorists aggression every x-y minutes
-	Field terroristUpdateTimeInterval:int[] = [30, 45]
-	'level of terrorists aggression (each level = new news)
-	'party 2 starts later
-	Field terroristAggressionLevel:Int[] = [0, -1]
-	Field terroristAggressionLevelMax:Int = 5
-	'progress in the given aggression level (0 - 1.0)
-	Field terroristAggressionLevelProgress:Float[] = [0.0, 0.0]
-	'rate the aggression level progresses each game hour
-	Field terroristAggressionLevelProgressRate:Float[][] = [ [0.05,0.09], [0.05,0.09] ]	
-
 	Global _eventListeners:TLink[]
-	Global _instance:TNewsAgency
-
-
-	Function GetInstance:TNewsAgency()
-		if not _instance then _instance = new TNewsAgency
-		return _instance
-	End Function
-
-
-	Method New()
-		NextEventTimes = new Double[ TVTNewsGenre.count ]
-		NextEventTimeIntervals = NextEventTimeIntervals[.. TVTNewsGenre.count]
-		For local i:int = 0 until TVTNewsGenre.count
-			NextEventTimeIntervals[i] = [180, 300]
-		Next
-	End Method
 
 
 	Method Initialize:int()
-		'=== RESET TO INITIAL STATE ===
-		For local i:int = 0 until TVTNewsGenre.count
-			'NextEventTimes[i] = GetWorldTime().GetTimeGone() - 60 * RandRange(60,180) 
-			NextEventTimes[i] = -1
-			NextEventTimeIntervals[i] = [180, 300]
-
-			Select i
-				case TVTNewsGenre.POLITICS_ECONOMY
-					NextEventTimeIntervals[i] = [210, 330]
-				case TVTNewsGenre.SHOWBIZ
-					NextEventTimeIntervals[i] = [180, 290]
-				case TVTNewsGenre.SPORT
-					NextEventTimeIntervals[i] = [200, 300]
-				case TVTNewsGenre.TECHNICS_MEDIA
-					NextEventTimeIntervals[i] = [220, 350]
-				case TVTNewsGenre.CULTURE
-					NextEventTimeIntervals[i] = [240, 380]
-				'default
-			'	case TVTNewsGenre.CURRENT_AFFAIRS
-			'		NextEventTimeIntervals[i] = [180, 300]
-			End Select
-		Next
-
+		Super.Initialize()
+		
 		weatherUpdateTime = 0
 		weatherUpdateTimeInterval = [270, 300]
 		weatherType = 0
 
-		terroristUpdateTime = [Double(0),Double(0)]
-		terroristUpdateTimeInterval = [30, 45]
-		terroristAggressionLevel = [0, -1]
-		terroristAggressionLevelMax = 5
-		terroristAggressionLevelProgress = [0.0, 0.0]
-		terroristAggressionLevelProgressRate = [ [0.05,0.09], [0.05,0.09] ]
-
-
-		'register custom game modifier functions
-		GetGameModifierFunctionsCollection().RegisterRunFunction("TFigureTerrorist.SendFigureToRoom", TFigureTerrorist.SendFigureToRoom)
-
-
 		'=== REGISTER EVENTS ===
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
-
-		'react to confiscations
-		_eventListeners :+ [ EventManager.registerListenerMethod( "publicAuthorities.onConfiscateProgrammeLicence", self, "onPublicAuthoritiesConfiscateProgrammeLicence") ]
-		_eventListeners :+ [ EventManager.registerListenerMethod( "room.onBombExplosion", self, "onRoomBombExplosion") ]
-
-
-		delayedLists = New TList[4]
 	End Method
 
-
-	Method onPublicAuthoritiesConfiscateProgrammeLicence:int(triggerEvent:TEventBase)
-		local targetProgrammeGUID:string = triggerEvent.GetData().GetString("targetProgrammeGUID")
-		local confiscatedProgrammeGUID:string = triggerEvent.GetData().GetString("confiscatedProgrammeGUID")
-		local player:TPlayerBase = TPlayerBase(triggerEvent.GetSender())
-	End Method
-
-
-	Method onRoomBombExplosion:int(triggerEvent:TEventBase)
-		local roomGUID:string = triggerEvent.GetData().GetString("roomGUID")
-		local bombRedirectedByPlayers:int = triggerEvent.GetData().GetInt("roomSignMovedByPlayers")
-		local bombLastRedirectedByPlayerID:int = triggerEvent.GetData().GetInt("roomSignLastMoveByPlayerID")
-
-		local room:TRoomBase = GetRoomCollection().GetByGUID( TLowerString.Create(roomGUID) )
-		if not room
-			TLogger.Log("NewsAgency", "Failed to create news for bomb explosion: no room found for roomGUID ~q"+roomGUID+"~q", LOG_ERROR)
-			return False
-		endif
-
-		'collect all channels having done this
-		local caughtChannels:string = ""
-		local caughtChannelIDs:string = ""
-		local caughtChannelIDsArray:int[]
-		For local i:int = 1 to 4
-			local playerBitmask:int = 2^(i-1)
-			if bombRedirectedByPlayers & playerBitmask > 0
-				if caughtChannels <> "" then caughtChannels :+ ", "
-				caughtChannels :+ GetPlayerBase(i).channelname
-
-				if caughtChannelIDs <> "" then caughtChannelIDs :+ ","
-				caughtChannelIDs :+ string(i)
-				
-				caughtChannelIDsArray :+ [i]
-			endif
-		Next
-
-
-		Local quality:Float = 0.01 * randRange(75,90)
-		Local price:Float = 1.0 + 0.01 * randRange(-5,15)
-		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", null, null, TVTNewsGenre.CURRENTAFFAIRS, quality, null, TVTNewsType.InitialNewsByInGameEvent)
-		Local newsChain1GUID:string = NewsEvent.GetGUID()+"-1"
-		NewsEvent.title = GetRandomLocalizedString("BOMB_DETONATION_IN_TVTOWER")
-		NewsEvent.description = GetRandomLocalizedString("BOMB_DETONATION_IN_TVTOWER_TEXT")
-		NewsEvent.description.ReplaceLocalized("%ROOM%", room.GetDescriptionLocalized())
-
-		NewsEvent.SetModifier("price", price)
-		NewsEvent.SetModifier("topicality::age", 1.25)
-		NewsEvent.SetFlag(TVTNewsFlag.SEND_TO_ALL, True)
-
-		'add news chain 2 ?
-		local data:TData = new TData
-		data.AddString("trigger", "happen")
-		data.AddString("type", "TriggerNews")
-		data.AddNumber("probability", 100)
-		'time = in 3-7 hrs
-		data.AddString("time", "1,3,7")
-
-		data.AddString("news", newsChain1GUID)
-
-		NewsEvent.AddEffectByData(data)
-
-		'not strictly "happened", but "journalists wrote about it"
-		NewsEvent.happenedTime = GetWorldTime().GetTimeGone() + 60 * RandRange(5,20)
-
-		Local NewsChainEvent1:TNewsEvent
-		if bombRedirectedByPlayers = 0 or RandRange(0,90) < 90
-			'chain 1
-			Local qualityChain1:Float = 0.01 * randRange(50,60)
-			Local priceChain1:Float = 1.0 + 0.01 * randRange(-5,10)
-			NewsChainEvent1 = new TNewsEvent.Init(newsChain1GUID, null, null, TVTNewsGenre.CURRENTAFFAIRS, qualityChain1, null, TVTNewsType.FollowingNews)
-			NewsChainEvent1.title = GetRandomLocalizedString("BOMB_DETONATION_IN_TVTOWER_NO_CLUES")
-			NewsChainEvent1.description = GetRandomLocalizedString("BOMB_DETONATION_IN_TVTOWER_NO_CLUES_TEXT")
-			NewsChainEvent1.SetModifier("price", priceChain1)
-		else
-			'chain 2
-			Local qualityChain1:Float = 0.01 * randRange(60,80)
-			Local priceChain1:Float = 1.0 + 0.01 * randRange(0,15)
-			NewsChainEvent1 = new TNewsEvent.Init(newsChain1GUID, null, null, TVTNewsGenre.CURRENTAFFAIRS, qualityChain1, null, TVTNewsType.FollowingNews)
-			NewsChainEvent1.title = GetRandomLocalizedString("BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES")
-			NewsChainEvent1.description = GetRandomLocalizedString("BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES_TEXT")
-			NewsChainEvent1.SetModifier("price", priceChain1)
-
-
-			local data:TData
-
-			'do this for all caught ones
-			for local pID:int = EachIn caughtChannelIDsArray
-				data = new TData
-				'decrease image for all caught channels
-				data.AddString("trigger", "broadcastFirstTime")
-				data.AddString("type", "ModifyChannelPublicImage")
-				data.AddNumber("value", -0.04)
-				data.AddNumber("valueIsRelative", True)
-				data.AddNumber("playerID", pID)
-				data.AddString("log", "decrease image for all caught channels")
-				NewsChainEvent1.AddEffectByData(data)
-			Next
-
-			'increase image for a broadcasting channel not being caught
-			data = new TData
-			data.AddString("trigger", "broadcastFirstTime")
-			data.AddString("type", "ModifyChannelPublicImage")
-			data.AddNumber("value", 0.08)
-			data.AddNumber("valueIsRelative", True)
-			'use playerID of broadcasting player
-			data.AddNumber("playerID", 0)
-			data.Add("conditions", new TData.AddString("broadcaster_notInPlayerIDs", caughtChannelIDs))
-			data.AddString("log", "increase image for a broadcasting channel not being caught")
-
-			NewsChainEvent1.AddEffectByData(data)
-
-			'increase image (a bit less) for a broadcasting channel being
-			'caught but brave enough to send it...
-			data = new TData
-			data.AddString("trigger", "broadcastFirstTime")
-			data.AddString("type", "ModifyChannelPublicImage")
-			data.AddNumber("value", 0.04)
-			data.AddNumber("valueIsRelative", True)
-			'use playerID of broadcasting player
-			data.AddNumber("playerID", 0)
-			data.AddString("log", "increase for broadcasting channel")
-			data.Add("conditions", new TData.AddString("broadcaster_inPlayerIDs", caughtChannelIDs))
-			NewsChainEvent1.AddEffectByData(data)
-		endif
-		NewsChainEvent1.SetModifier("topicality::age", 1.4)
-
-		NewsChainEvent1.description.ReplaceLocalized("%ROOM%", room.GetDescriptionLocalized())
-		NewsChainEvent1.description.Replace("%CHANNELS%", caughtChannels)
-
-
-		GetNewsEventCollection().AddOneTimeEvent(NewsChainEvent1)
-		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
-	End Method
-	
 
 	Method Update:int()
-		'All players update their newsagency on their own.
-		'As we use "randRange" this will produce the same random values
-		'on all clients - so they should be sync'd all the time.
-		
-		ProcessUpcomingNewsEvents()
-
-		'send out delayed news to players
-		ProcessDelayedNews()
-
-'		If NextEventTime < GetWorldTime().GetTimeGone() Then AnnounceNewNewsEvent()
-		for local i:int = 0 until TVTNewsGenre.count
-			if NextEventTimes[i] = -1
-				TLogger.Log("NewsAgency", "Initialize NextEventTime for genre "+i, LOG_DEBUG)
-				ResetNextEventTime(i, RandRange(-120, 0))
-			endif
+		If weatherUpdateTime < GetWorldTime().GetTimeGone()
+			weatherUpdateTime = GetWorldTime().GetTimeGone() + 60 * randRange(weatherUpdateTimeInterval[0], weatherUpdateTimeInterval[1])
+			'limit weather forecasts to get created between xx:10-xx:40
+			'to avoid forecasts created just before the news show
+			If GetWorldTime().GetDayMinute(weatherUpdateTime) > 40
+				local newTime:Long = GetWorldTime().MakeTime(0, GetWorldtime().GetDay(weatherUpdateTime), GetWorldtime().GetDayHour(weatherUpdateTime), RandRange(10, 40), 0)
+				weatherUpdateTime = newTime
+			EndIf
 			
-			If NextEventTimes[i] < GetWorldTime().GetTimeGone() Then AnnounceNewNewsEvent(i)
-		Next
-		If weatherUpdateTime < GetWorldTime().GetTimeGone() Then UpdateWeather()
-
-		UpdateTerrorists()
-	End Method
-
-
-	Method UpdateTerrorists:int()
-		'who is the mainaggressor? - this parties levelProgress grows faster
-		local mainAggressor:int = (terroristAggressionLevel[1] + terroristAggressionLevelProgress[1] > terroristAggressionLevel[0] + terroristAggressionLevelProgress[0])
-
-		For local i:int = 0 to 1
-			If terroristUpdateTime[i] >= GetWorldTime().GetTimeGone() then continue
-			UpdateTerrorist(i, mainAggressor)
-		Next
-	End Method
-	
-
-	Method UpdateTerrorist:int(terroristNumber:int, mainAggressor:int)
-		'set next update time (between min-max interval)
-		terroristUpdateTime[terroristNumber] = GetWorldTime().GetTimeGone() + 60*randRange(terroristUpdateTimeInterval[0], terroristUpdateTimeInterval[1])
-
-
-		'adjust level progress
-
-		'randRange uses "ints", so convert 1.0 to 100
-		local increase:Float = 0.01 * randRange(int(terroristAggressionLevelProgressRate[terroristNumber][0]*100), int(terroristAggressionLevelProgressRate[terroristNumber][1]*100))
-		'if not the mainaggressor, grow slower
-		if terroristNumber <> mainAggressor then increase :* 0.5
-
-		'each level has its custom increasement
-		'so responses come faster and faster
-		Select terroristAggressionLevel[terroristNumber]
-			case 1
-				terroristAggressionLevelProgress[terroristNumber] :+ 1.1 * increase
-			case 2
-				terroristAggressionLevelProgress[terroristNumber] :+ 1.2 * increase
-			case 3
-				terroristAggressionLevelProgress[terroristNumber] :+ 1.3 * increase
-			case 4
-				terroristAggressionLevelProgress[terroristNumber] :+ 1.5 * increase
-			default
-				terroristAggressionLevelProgress[terroristNumber] :+ increase
-		End Select
-
-
-		'handle "level ups"
-
-		'nothing to do if no level up happens
-		if terroristAggressionLevelProgress[terroristNumber] < 1.0 then return False
-
-
-		'set to next level
-		terroristAggressionLevel[terroristNumber] :+ 1
-		'if progress was 1.05, keep the 0.05 for the new level
-		terroristAggressionLevelProgress[terroristNumber] :- 1.0
-
-		'announce news for levels 1-4
-		if terroristAggressionLevel[terroristNumber] < terroristAggressionLevelMax
-			local newsEvent:TNewsEvent = GetTerroristNewsEvent(terroristNumber)
-			If newsEvent then announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone() + 0)
-		endif
-
-		'reset level if limit reached, also delay next Update so things
-		'do not happen one after another
-		if terroristAggressionLevel[terroristNumber] >= terroristAggressionLevelMax -1
-			'reset to level 0
-			terroristAggressionLevel[terroristNumber] = 0
-			'5 * normal random "interval"
-			terroristUpdateTime[terroristNumber] :+ + 5 * 60*randRange(terroristUpdateTimeInterval[0], terroristUpdateTimeInterval[1])
-		endif
-	End Method
-
-	
-	Method SetTerroristAggressionLevel:int(terroristGroup:int, level:int)
-		if terroristGroup >= 0 and terroristGroup <= 1
-			terroristAggressionLevel[terroristGroup] = level
-		endif
-	End Method
-	
-
-	Method GetTerroristAggressionLevel:int(terroristGroup:int = -1)
-		if terroristGroup >= 0 and terroristGroup <= 1
-			'the level might be 0 already after the terrorist got his
-			'command to go to a room ... so we check the figure too
-			local level:int = terroristAggressionLevel[terroristGroup]
-			local fig:TFigureTerrorist = TFigureTerrorist(GetGameBase().terrorists[terroristGroup])
-			'figure is just delivering a bomb?
-			if fig and fig.HasToDeliver() then return terroristAggressionLevelMax
-			return level
-		else
-			return Max( GetTerroristAggressionLevel(0), GetTerroristAggressionLevel(1) )
-		endif
-	End Method
-
-
-	Method GetTerroristNewsEvent:TNewsEvent(terroristGroup:int = 0)
-		Local aggressionLevel:int = terroristAggressionLevel[terroristGroup]
-		Local quality:Float = 0.01 * (randRange(50,60) + aggressionLevel * 5)
-		Local price:Float = 1.0 + 0.01 * (randRange(45,50) + aggressionLevel * 5)
-		Local title:String
-		Local description:String
-		local genre:int = TVTNewsGenre.POLITICS_ECONOMY
-
-		local localizeTitle:TLocalizedString
-		local localizeDescription:TLocalizedString
-
-		Select aggressionLevel
-			case 1,2,3,4
-				localizeTitle = GetRandomLocalizedString("NEWS_TERROR_GROUP"+(terroristGroup+1)+"_LEVEL"+aggressionLevel+"_TITLE")
-				localizeDescription = GetRandomLocalizedString("NEWS_TERROR_GROUP"+(terroristGroup+1)+"_LEVEL"+aggressionLevel+"_TEXT")
-
-				if aggressionLevel = 4
-					'currents instead of politics
-					genre = TVTNewsGenre.CURRENTAFFAIRS
-				endif
-			default
-				return null
-		End Select
-
-
-		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, genre, quality, null, TVTNewsType.InitialNewsByInGameEvent)
-		NewsEvent.SetModifier("price", price)
-
-		'send out terrorist
-		if aggressionLevel = 4
-			local effect:TGameModifierBase = new TGameModifierBase
-
-			effect.GetData().Add("figure", GetGameBase().terrorists[terroristGroup])
-			effect.GetData().AddNumber("group", terroristGroup)
-			'effect.GetData().Add("room", GetRoomCollection().GetRandom())
-			if terroristGroup = 0
-				effect.GetData().Add("room", GetRoomCollection().GetFirstByDetails("frduban")) 'TODO: Hier m�sste doch eigentlich das RoomBoard und die Position des Schildes abgefragt werden
-			else
-				effect.GetData().Add("room", GetRoomCollection().GetFirstByDetails("vrduban")) 'TODO: Hier m�sste doch eigentlich das RoomBoard und die Position des Schildes abgefragt werden
-			endif
-			effect._customRunFuncKey = "TFigureTerrorist.SendFigureToRoom"
-			'mark as a special effect so AI can categorize it accordingly
-			effect.setModifierType(TVTGameModifierBase.TERRORIST_ATTACK)
-
-			NewsEvent.effects.AddEntry("happen", effect)
-		endif
-
-		'send without delay!
-		NewsEvent.SetFlag(TVTNewsFlag.SEND_IMMEDIATELY, True)
-
-		NewsEvent.AddKeyword("TERRORIST")
-
-		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
-		Return NewsEvent
-	End Method
-	
-
-
-	Method UpdateWeather:int()
-		weatherUpdateTime = GetWorldTime().GetTimeGone() + 60 * randRange(weatherUpdateTimeInterval[0], weatherUpdateTimeInterval[1])
-		'limit weather forecasts to get created between xx:10-xx:40
-		'to avoid forecasts created just before the news show
-		if GetWorldTime().GetDayMinute(weatherUpdateTime) > 40
-			local newTime:Long = GetWorldTime().MakeTime(0, GetWorldtime().GetDay(weatherUpdateTime), GetWorldtime().GetDayHour(weatherUpdateTime), RandRange(10, 40), 0)
-			weatherUpdateTime = newTime
-		endif
-		
-		local newsEvent:TNewsEvent = GetWeatherNewsEvent()
-		If newsEvent
-			?debug
-			Print "[NEWSAGENCY | LOCAL] UpdateWeather: added weather news title="+newsEvent.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
-			?
-			announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone())
+			local newsEvent:TNewsEvent = GetWeatherNewsEvent()
+			If newsEvent
+				?debug
+				Print "[NEWSAGENCY | LOCAL] UpdateWeather: added weather news title="+newsEvent.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
+				?
+			EndIf
+			
+			AddNewNewsEvent(newsEvent)
+'				announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone())
 		EndIf
-
 	End Method
+
 
 
 	Method GetWeatherNewsEvent:TNewsEvent()
@@ -611,359 +441,12 @@ Type TNewsAgency
 
 		NewsEvent.eventDuration = 8*3600 'only for 8 hours
 		NewsEvent.SetFlag(TVTNewsFlag.SEND_IMMEDIATELY, True)
+		NewsEvent.SetFlag(TVTNewsFlag.UNIQUE_EVENT, True) 'one time event
 
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
 
 		Return NewsEvent
-	End Method
-
-
-	Method GetMovieNewsEvent:TNewsEvent()
-		Local licence:TProgrammeLicence = Self._GetAnnouncableProgrammeLicence()
-		If Not licence Then Return Null
-		If Not licence.getData() Then Return Null
-
-		licence.GetData().releaseAnnounced = True
-
-		Local localizeTitle:TLocalizedString
-		Local localizeDescription:TLocalizedString
-
-		'no actors
-		'if no actors ...
-		If licence.GetData().getActor(1) = null
-			localizeTitle = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_NO_ACTOR_TITLE")
-			localizeDescription = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_NO_ACTOR_DESCRIPTION")
-		'if same director and main actor...
-		elseif licence.GetData().getActor(1) = licence.GetData().getDirector(1)
-			localizeTitle = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_TITLE")
-			localizeDescription = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_DESCRIPTION")
-		'default
-		else
-			localizeTitle = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_TITLE")
-			localizeDescription = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_DESCRIPTION")
-		EndIf
-
-		'replace data
-		Self._ReplaceProgrammeData(localizeTitle, licence.GetData())
-		Self._ReplaceProgrammeData(localizeDescription, licence.GetData())
-
-		
-		'quality and price are based on the movies data
-		'quality of movie news never can reach quality of "real" news
-		'so cut them to a specific range (0.10 - 0.80) 
-		local quality:Float = 0.1  + 0.70*licence.GetData().review
-		'if outcome is less than 50%, it subtracts the price, else it increases
-		local priceModifier:Float = 1.0 + 0.2 * (licence.GetData().outcome - 0.5)
-		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TVTNewsGenre.SHOWBIZ, quality, null, TVTNewsType.InitialNewsByInGameEvent)
-		NewsEvent.SetModifier("price", priceModifier)
-
-		'after 20 hours a news topicality is 0 - so accelerating it by
-		'2 means it reaches topicality of 0 at 10 hours after creation.
-		NewsEvent.SetModifier("topicality::age", 2)
-
-		NewsEvent.AddKeyword("MOVIE")
-
-
-		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
-		
-		Return NewsEvent
-	End Method
-
-
-	Method _ReplaceProgrammeData:TLocalizedString(text:TLocalizedString, data:TProgrammeData)
-		local actor:TProgrammePersonBase
-		local director:TProgrammePersonBase
-		For Local i:Int = 1 To 2
-			actor = data.GetActor(i)
-			director = data.GetDirector(i)
-			if actor
-				text.Replace("%ACTORNAME"+i+"%", actor.GetFullName())
-			endif
-			if director
-				text.Replace("%DIRECTORNAME"+i+"%", director.GetFullName())
-			endif
-		Next
-		text.Replace("%MOVIETITLE%", data.GetTitle())
-
-		Return text
-	End Method
-
-
-	'helper to get a movie which can be used for a news
-	Method _GetAnnouncableProgrammeLicence:TProgrammeLicence()
-		'filter to entries we need
-		Local resultList:TList = CreateList()
-		For local licence:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().singles
-			'ignore collection and episodes (which should not be in that list)
-			If Not licence.getData() Then Continue
-			'only announce movies...
-			If not licence.IsSingle() Then Continue
-
-			'ignore if filtered out
-			If licence.IsOwned() Then Continue
-			'ignore already announced movies
-			If licence.getData().releaseAnnounced Then Continue
-			'ignore unreleased if outside the given filter
-			If Not licence.GetData().ignoreUnreleasedProgrammes And licence.getData().GetYear() < TProgrammeData._filterReleaseDateStart Or licence.getData().GetYear() > TProgrammeData._filterReleaseDateEnd Then Continue
-
-			If licence.GetData().IsInProduction() then resultList.addLast(licence)
-		Next
-		If resultList.count() > 0 Then Return GetProgrammeLicenceCollection().GetRandomFromList(resultList)
-
-		Return Null
-	End Method
-
-
-	'announces planned news events (triggered by news some time before)
-	Method ProcessUpcomingNewsEvents:Int()
-		Local announced:Int = 0
-
-		For local newsEvent:TNewsEvent = EachIn GetNewsEventCollection().GetUpcomingNewsList()
-			'skip news events not happening yet
-			If Not newsEvent.HasHappened() then continue
-
-			announceNewsEvent(newsEvent)
-			announced:+1
-		Next
-		'invalidate upcoming list 
-		if announced > 0 then GetNewsEventCollection()._InvalidateUpcomingNewsEvents()
-	
-		Return announced
-	End Method
-
-
-	'announces news to players with lower abonnement levels (delay)
-	Method ProcessDelayedNews:Int()
-		Local delayed:Int = 0
-
-		For local playerID:int = 1 to delayedLists.Length
-			local player:TPlayerBase = GetPlayerBase(playerID)
-			if not delayedLists[playerID-1] or not player then continue
-
-			'iterate over copy
-			For local news:TNews = EachIn delayedLists[playerID-1].Copy()
-				local subscriptionDelay:int = GetNewsAbonnementDelay(news.newsEvent.genre, player.GetNewsAbonnement(news.newsEvent.genre) )
-				local maxSubscriptionDelay:int = GetNewsAbonnementDelay(news.newsEvent.genre, 1)
-
-				'if playerID=1 then print "ProcessDelayedNews: " + news.GetTitle() + "  happened="+GetWorldTime().GetFormattedDate( news.GetHappenedTime())+"  announceToPlayer="+ GetWorldTime().GetFormattedDate( news.GetPublishTime() + subscriptionDelay )+ "  autoRemove=" + GetWorldTime().GetFormattedDate( news.GetPublishTime() + maxSubscriptionDelay + 1000 )
-
-				'remove old news which are NOT subscribed on "latest
-				'possible subscription-delay-time"
-				if news.GetPublishTime() + maxSubscriptionDelay + 1000 <  GetWorldTime().GetTimeGone()
-					'remove the news
-					delayedLists[playerID-1].Remove(news)
-					print "ProcessDelayedNews #"+playerID+": Removed OLD/unsubscribed: " + news.GetTitle()
-					continue
-				endif
-
-				'skip news events not for publishing yet - or if not
-				'subscribed to it NOW
-				'alternatively also check: "or subscriptionDelay < 0"
-				If (player.GetNewsabonnement(news.newsEvent.genre) <= 0 and not news.newsEvent.HasFlag(TVTNewsFlag.SEND_TO_ALL)) ..
-				   or Not news.IsReadyToPublish(subscriptionDelay)
-					'print "ProcessDelayedNews #"+playerID+": NOT subscribed or not ready yet: " + news.GetTitle() + "   announceToPlayer="+ GetWorldTime().GetFormattedDate( news.GetPublishTime() + subscriptionDelay )
-					continue
-				endif
-
-
-				'do not charge for immediate news
-				if news.newsEvent.HasFlag(TVTNewsFlag.SEND_IMMEDIATELY)
-					news.priceModRelativeNewsAgency = 0.0
-				else
-					news.priceModRelativeNewsAgency = GetNewsRelativeExtraCharge(news.newsEvent.genre, player.GetNewsAbonnement(news.newsEvent.genre))
-				endif
-
-				announceNews(news, playerID)
-
-				'remove the news
-				delayedLists[playerID-1].Remove(news)
-				delayed:+1
-			Next
-'			if playerID=1 then end
-		Next
-	
-		Return delayed
-	End Method
-
-
-	Method ResetDelayedList(playerID:int=0)
-		if playerID<=0
-			For local i:int = 1 to delayedLists.Length
-				if delayedLists[i-1] then delayedLists[i-1].Clear()
-			Next
-		else
-			if delayedLists.length <= playerID and delayedLists[playerID-1]
-				delayedLists[playerID-1].Clear()
-			endif
-		endif
-	End Method
-
-
-	Function GetNewsAbonnementDelay:Int(genre:Int, level:int) {_exposeToLua}
-		if level = 3 then return 0
-		if level = 2 then return 60*60
-		if level = 1 then return 150*60 'not needed but better overview
-		return -1
-	End Function
-
-
-	'Returns the extra charge for a news
-	Function GetNewsRelativeExtraCharge:Float(genre:Int, level:int) {_exposeToLua}
-		'up to now: ignore genre, all share the same values
-		if level = 3 then return 0.20
-		if level = 2 then return 0.10
-		if level = 1 then return 0.00 'not needed but better overview
-		return 0.00
-	End Function
-
-
-	'Returns the price for this level of a news abonnement
-	Function GetNewsAbonnementPrice:Int(playerID:int, newsGenreID:int, level:Int=0)
-		if level = 1 then return 10000
-		if level = 2 then return 20000
-		if level = 3 then return 35000
-		return 0
-	End Function
-
-
-	Method AddNewsEventToPlayer:Int(newsEvent:TNewsEvent, forPlayer:Int=-1, sendNow:Int=False, fromNetwork:Int=False)
-		local player:TPlayerBase = GetPlayerBase(forPlayer)
-		if not player then return False
-		
-		local news:TNews = TNews.Create("", 0, newsEvent)
-
-		sendNow = sendNow or newsEvent.HasFlag(TVTNewsFlag.SEND_IMMEDIATELY)
-		If sendNow
-			announceNews(news, player.playerID)
-		Else
-			'add to publishLater-List
-			'so dynamical checks of "subscription levels" can take
-			'place - and also "older" new will get added to the
-			'players when they subscribe _after_ happening of the event
-			if not delayedLists[player.playerID-1] then delayedLists[player.playerID-1] = CreateList()
-			delayedLists[player.playerID-1].AddLast(news)
-		EndIf
-	End Method
-
-
-	Method announceNewsEvent:Int(newsEvent:TNewsEvent, happenedTime:Double=0, sendNow:Int=False)
-		newsEvent.doHappen(happenedTime)
-
-		For Local i:Int = 1 To 4
-			AddNewsEventToPlayer(newsEvent, i, sendNow)
-		Next
-	End Method
-
-
-	'make news available for the player
-	Method announceNews:Int(news:TNews, player:int)
-		if not GetPlayerProgrammeCollection(player) then return False
-		return GetPlayerProgrammeCollection(player).AddNews(news)
-	End Method
-
-
-	'generates a new news event from various sources (such as new
-	'movie announcements, actor news ...)
-	Method GenerateNewNewsEvent:TNewsEvent(genre:int = -1)
-		local newsEvent:TNewsEvent = null
-
-		'=== TYPE MOVIE NEWS ===
-		'25% chance: try to load some movie news ("new movie announced...")
-		if genre = -1 or genre = TVTNewsGenre.SHOWBIZ
-			If Not newsEvent And RandRange(1,100) < 25
-				newsEvent = GetMovieNewsEvent()
-			EndIf
-		endif
-
-
-		'=== TYPE RANDOM NEWS ===
-		'if no "special case" triggered, just use a random news
-		If Not newsEvent
-			newsEvent = GetNewsEventCollection().GetRandomAvailable(genre)
-		EndIf
-
-		return newsEvent
-	End Method
-
-	'forceAdd: add regardless of abonnement levels?
-	'sendNow: ignore delay of abonnement levels?
-	'skipIfUnsubscribed: happen regardless of nobody subscribed to the news genre?
-	Method AnnounceNewNewsEvent:TNewsEvent(genre:int=-1, adjustHappenedTime:Int=0, forceAdd:Int=False, sendNow:int=False, skipIfUnsubscribed:Int=True, resetGenreTime:int=True)
-		'=== CREATE A NEW NEWS ===
-		Local newsEvent:TNewsEvent = GenerateNewNewsEvent(genre)
-
-
-		'=== ANNOUNCE THE NEWS ===
-		local announced:int = False
-		'only announce if forced or somebody is listening
-		If newsEvent
-			local skipNews:int = newsEvent.IsSkippable()
-			if skipIfUnsubscribed then skipNews = False
-			
-			If skipNews
-				For Local player:TPlayerBase = eachin GetPlayerBaseCollection().players
-					'a player listens to this genre, disallow skipping
-					If player.GetNewsabonnement(newsEvent.genre) > 0 Then skipNews = False
-				Next
-				if not forceAdd and not skipIfUnsubscribed
-					?debug
-					if skipNews then print "[NEWSAGENCY] Nobody listens to genre "+newsEvent.genre+". Skip news: ~q"+newsEvent.GetTitle()+"~q."
-					?
-					if skipNews then TLogger.Log("NewsAgency", "Nobody listens to genre "+newsEvent.genre+". Skip news: ~q"+newsEvent.GetTitle()+"~q.", LOG_DEBUG)
-				else
-					?debug
-					if skipNews then print "[NEWSAGENCY] Nobody listens to genre "+newsEvent.genre+". Would skip news, but am forced to add: ~q"+newsEvent.GetTitle()+"~q."
-					?
-					if skipNews then TLogger.Log("NewsAgency", "Nobody listens to genre "+newsEvent.genre+". Would skip news, but am forced to add: ~q"+newsEvent.GetTitle()+"~q.", LOG_DEBUG)
-				endif
-			EndIf
-
-			If not skipNews or forceAdd
-				announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone() + adjustHappenedTime, sendNow)
-				announced = True
-				TLogger.Log("NewsAgency", "Added news: ~q"+newsEvent.GetTitle()+"~q for day "+GetWorldTime().getDay(newsEvent.happenedtime)+" at "+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)+".", LOG_DEBUG)
-			EndIf
-		EndIf
-
-
-		'=== ADJUST TIME FOR NEXT NEWS ANNOUNCEMENT ===
-		if resetGenreTime then ResetNextEventTime(genre)
-
-		if announced then return newsEvent
-		return Null
-	End Method
-
-
-	Method ResetNextEventTime:int(genre:int, addMinutes:int = 0)
-		if genre >= TVTNewsGenre.count or genre < 0 then return False
-
-		'during night, news come not that often
-		if GetWorldTime().GetDayHour() < 4
-			addMinutes :+ RandRange(15,45)
-		'during night, news come not that often
-		elseif GetWorldTime().GetDayHour() >= 22
-			addMinutes :+ RandRange(15,30)
-		'work time - even earlier now
-		elseif GetWorldTime().GetDayHour() > 8 and GetWorldTime().GetDayHour() < 14
-			addMinutes :- RandRange(15,30)
-		endif
-
-
-		'adjust time until next news
-		NextEventTimes[genre] = GetWorldTime().GetTimeGone() + 60 * (randRange(NextEventTimeIntervals[genre][0], NextEventTimeIntervals[genre][1]) + addMinutes)
-
-		'25% chance to have an even longer time (up to 2x)
-		If RandRange(0,100) < 25
-			NextEventTimes[genre] :+ randRange(NextEventTimeIntervals[genre][0], NextEventTimeIntervals[genre][1])
-			TLogger.Log("NewsAgency", "Reset NextEventTime for genre "+genre+" to "+ GetWorldTime().GetFormattedTime(NextEventTimes[genre])+" ("+Long(NextEventTimes[genre])+"). DOUBLE TIME.", LOG_DEBUG)
-		else
-			TLogger.Log("NewsAgency", "Reset NextEventTime for genre "+genre+" to "+ GetWorldTime().GetFormattedTime(NextEventTimes[genre])+" ("+Long(NextEventTimes[genre])+")", LOG_DEBUG)
-		EndIf
 	End Method
 End Type
 
-'===== CONVENIENCE ACCESSOR =====
-'return singleton instance
-Function GetNewsAgency:TNewsAgency()
-	Return TNewsAgency.GetInstance()
-End Function
+

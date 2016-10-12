@@ -805,3 +805,5 @@ SET_SPEED_TO_X = Set speed to %SPEED%
 MANUAL = Manual
 HELP = Help
 SHOW_HELP = Show help
+
+SPORT_SOCCER = Soccer

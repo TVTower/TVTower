@@ -341,8 +341,13 @@ Type TNewsEventCollection
 		
 		if GetAvailableNewsList(genre).Count() = 0
 			'This should only happen if no news events were found in the database
-			TLogger.Log("TNewsEventCollection.GetRandom("+genre+")", "no unused news events found.", LOG_ERROR)
-			Throw "TNewsEventCollection.GetRandom("+genre+"): no unused news events found."
+			if genre = 1
+				TLogger.Log("TNewsEventCollection.GetRandom("+genre+")", "no unused news events found.", LOG_ERROR)
+				Throw "TNewsEventCollection.GetRandom("+genre+"): no unused news events found."
+			else
+				TLogger.Log("TNewsEventCollection.GetRandom("+genre+")", "no unused news events found. Falling back to CURRENT AFFAIR news", LOG_ERROR)
+				return GetRandomAvailable(TVTNewsGenre.CURRENTAFFAIRS)
+			endif
 		endif
 		
 		'fetch a random news
@@ -595,6 +600,26 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		if modifiers then self.modifiers = modifiers.Copy()
 
 		Return self
+	End Method
+
+
+	Method SetTitle(title:TLocalizedString)
+		self.title = title
+	End Method
+
+
+	Method SetDescription(description:TLocalizedString)
+		self.description = description
+	End Method
+
+
+	Method SetGenre(genre:int)
+		self.genre = genre
+	End Method
+
+
+	Method SetQuality(quality:Float)
+		if quality >= 0 then SetQualityRaw(quality)
 	End Method
 
 

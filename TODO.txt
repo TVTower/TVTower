@@ -67,4 +67,12 @@ Sendungen:
 - Mittagsmagazin
 - Nachtmagazin
 - 18-Uhr-Hauptnachrichten
-endrem
+
+
+
+
+Tooltips fuer GUI-Buttons (damit man weiss, was sie machen - bspweise Sortierbuttons)
+http://www.gamezworld.de/phpforum/viewtopic.php?pid=84756#p84756
+
+Imagenichterreichen = Textmeldung/Warnsymbol bei Werbung und reduzierter Gewinn
+http://www.gamezworld.de/phpforum/viewtopic.php?pid=84774#p84774
