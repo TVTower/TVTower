@@ -7,6 +7,31 @@ GetNewsAgency().AddNewsProvider( TNewsAgencyNewsProvider_Sport.GetInstance() )
 
 
 
+EventManager.registerListenerFunction( "SaveGame.OnLoad", onSavegameLoadAddMissingProviders)
+
+Function onSavegameLoadAddMissingProviders:int(triggerEvent:TEventBase)
+	local found:int = False
+	For local np:TNewsAgencyNewsProvider_Weather = EachIn GetNewsAgency().newsProviders
+
+		found = True; exit
+	Next
+	if not found
+		GetNewsAgency().AddNewsProvider( new TNewsAgencyNewsProvider_Weather )
+		print "Recreated NewsProvider_Weather"
+	endif
+
+	found = False
+	For local np:TNewsAgencyNewsProvider_Sport = EachIn GetNewsAgency().newsProviders
+		found = True; exit
+	Next
+	if not found
+		GetNewsAgency().AddNewsProvider( new TNewsAgencyNewsProvider_Sport )
+		print "Recreated NewsProvider_Sport"
+	endif
+End Function
+
+
+
 '=== CREATE SPORTS ===
 'SOCCER
 Global sportSoccer:TNewsEventSport_Soccer = New TNewsEventSport_Soccer
