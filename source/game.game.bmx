@@ -717,12 +717,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		Local playerPlan:TPlayerProgrammePlan = GetPlayerProgrammePlan(playerID)
 
 '		SortList(playerCollection.adContracts)
-
 		Local currentLicence:TProgrammeLicence = playerCollection.GetSingleLicenceAtIndex(0)
 		if currentLicence
 			Local startHour:Int = 0
 			Local currentHour:int = 0
-			local startDay:Int = GetWorldTime().GetStartDay()
+			local startDay:Int = GetWorldTime().GetDay()
 			'find the next possible programme hour
 			if GetWorldTime().GetDayMinute() >= 5
 				startHour = GetWorldTime().GetDayHour() + 1
