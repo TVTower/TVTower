@@ -105,22 +105,35 @@ Type TNewsAgency
 		_eventListeners = new TLink[0]
 
 		'react to confiscations
-		_eventListeners :+ [ EventManager.registerListenerMethod( "publicAuthorities.onConfiscateProgrammeLicence", self, "onPublicAuthoritiesConfiscateProgrammeLicence") ]
-		_eventListeners :+ [ EventManager.registerListenerMethod( "room.onBombExplosion", self, "onRoomBombExplosion") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "publicAuthorities.onConfiscateProgrammeLicence", onPublicAuthoritiesConfiscateProgrammeLicence) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onBombExplosion", onRoomBombExplosion) ]
+
+		'resize news genres when loading an older savegame
+		_eventListeners :+ [ EventManager.registerListenerFunction( "SaveGame.OnLoad", onSavegameLoad) ]
 
 
 		delayedLists = New TList[4]
 	End Method
 
 
-	Method onPublicAuthoritiesConfiscateProgrammeLicence:int(triggerEvent:TEventBase)
+	Function onSavegameLoad:int(triggerEvent:TEventBase)
+		local NA:TNewsAgency = GetInstance()
+		if NA.NextEventTimes.length < TVTNewsGenre.count
+			NA.NextEventTimes = NA.NextEventTimes[.. TVTNewsGenre.count]
+			NA.NextEventTimeIntervals = NA.NextEventTimeIntervals[.. TVTNewsGenre.count]
+		endif
+	End Function
+
+
+	Function onPublicAuthoritiesConfiscateProgrammeLicence:int(triggerEvent:TEventBase)
 		local targetProgrammeGUID:string = triggerEvent.GetData().GetString("targetProgrammeGUID")
 		local confiscatedProgrammeGUID:string = triggerEvent.GetData().GetString("confiscatedProgrammeGUID")
 		local player:TPlayerBase = TPlayerBase(triggerEvent.GetSender())
-	End Method
+		'nothing more for now
+	End Function
 
 
-	Method onRoomBombExplosion:int(triggerEvent:TEventBase)
+	Function onRoomBombExplosion:int(triggerEvent:TEventBase)
 		local roomGUID:string = triggerEvent.GetData().GetString("roomGUID")
 		local bombRedirectedByPlayers:int = triggerEvent.GetData().GetInt("roomSignMovedByPlayers")
 		local bombLastRedirectedByPlayerID:int = triggerEvent.GetData().GetInt("roomSignLastMoveByPlayerID")
@@ -244,7 +257,7 @@ Type TNewsAgency
 
 		GetNewsEventCollection().AddOneTimeEvent(NewsChainEvent1)
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
-	End Method
+	End Function
 
 
 	Method AddNewsProvider:int(newsProvider:TNewsAgencyNewsProvider)
