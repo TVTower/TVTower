@@ -341,8 +341,13 @@ Type TNewsEventCollection
 		
 		if GetAvailableNewsList(genre).Count() = 0
 			'This should only happen if no news events were found in the database
-			TLogger.Log("TNewsEventCollection.GetRandom("+genre+")", "no unused news events found.", LOG_ERROR)
-			Throw "TNewsEventCollection.GetRandom("+genre+"): no unused news events found."
+			if genre = 1
+				TLogger.Log("TNewsEventCollection.GetRandom("+genre+")", "no unused news events found.", LOG_ERROR)
+				Throw "TNewsEventCollection.GetRandom("+genre+"): no unused news events found."
+			else
+				TLogger.Log("TNewsEventCollection.GetRandom("+genre+")", "no unused news events found. Falling back to CURRENT AFFAIR news", LOG_ERROR)
+				return GetRandomAvailable(TVTNewsGenre.CURRENTAFFAIRS)
+			endif
 		endif
 		
 		'fetch a random news
