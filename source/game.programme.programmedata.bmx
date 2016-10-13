@@ -409,6 +409,8 @@ Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
 	Field cast:TProgrammePersonJob[]
 	Field country:String = "UNK"
 
+	'fine grained attractivity for target groups (splitted gender)
+	Field targetGroupAttractivityMod:TAudience = null
 	'special targeted audiences?
 	Field targetGroups:int = 0
 	Field proPressureGroups:int = 0
@@ -1455,6 +1457,11 @@ endrem
 		Return trailerTopicality
 	End Method
 
+
+	Method GetTargetGroupAttractivityMod:TAudience()
+		return targetGroupAttractivityMod
+	End Method
+	
 
 	Method GetTargetGroups:int()
 		return targetGroups

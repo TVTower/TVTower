@@ -340,6 +340,11 @@ print "Trash Strafe: " + penalty.ToString()
 			result.Multiply(tgAudience)
 		EndIf
 
+		'modify with a complete fine grained target group setup
+		If data.GetTargetGroupAttractivityMod()
+			result.Multiply( data.GetTargetGroupAttractivityMod() )
+		EndIf
+
 		Return result
 	End Method
 
