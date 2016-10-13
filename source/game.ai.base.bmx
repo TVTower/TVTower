@@ -15,6 +15,10 @@ Type TAiBase
 	'game minute of the last "onTick"-call
 	Field LastTickMinute:int
 	Field Ticks:Long
+	'stores blitzmax objects used in the LUA scripts to ease serialisation
+	'when saving a gamestate
+	Field objectsUsedInLua:object[]
+	Field objectsUsedInLuaCount:int
 
 	Global AiRunning:Int = true
 
@@ -77,6 +81,34 @@ Type TAiBase
 	Method AddLog(title:string, text:string, logLevel:int)
 		TLogger.log(title, text, logLevel)
 	End Method
+
+
+	'there is no "RemoveObjectUsedInLua" as on Savegame creation things
+	'get added and on loading they get retrieved (and then deleted again)
+	Method AddObjectUsedInLua:int(o:object)
+		objectsUsedInLuaCount :+ 1
+
+		if objectsUsedInLua.length < objectsUsedInLuaCount
+			objectsUsedInLua = objectsUsedInLua[.. objectsUsedInLua.length + 10]
+		endif
+		objectsUsedInLua[ objectsUsedInLuaCount-1] = o
+		print "AddObjectUsedInLua: " + (objectsUsedInLuaCount-1)
+		return objectsUsedInLuaCount-1
+	End Method
+
+
+	Method GetObjectUsedInLua:object(index:int)
+		if index < 0 or index >= objectsUsedInLua.length then return null
+
+		return objectsUsedInLua[index]
+	End Method
+
+
+	Method ResetObjectsUsedInLua()
+		objectsUsedInLuaCount = 0
+		objectsUsedInLua = new object[0]
+	End Method
+	
 
 	'loads the current file again
 	Method ReloadScript:int()

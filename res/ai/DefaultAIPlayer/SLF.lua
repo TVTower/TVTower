@@ -156,9 +156,13 @@ function SLFManager:saveAsString(name, value, saved)
 			end
 			for k,v in pairs(value) do
 				k = SLFManager:basicSerialize(k)
-				if type(v) == "userdata" then					
-					return nil, true 
-					--result = result .. string.format("%s[%q]", name, "InvalidDataObject") .. " = true" .. NL
+				if type(v) == "userdata" then
+					local fname = string.format("%s[%s]", name, k)
+					local externalStoreIndex = TVT.SaveExternalObject(v)
+		
+					return fname .. " = TVT.RestoreExternalObject("..externalStoreIndex..")" .. NL
+					-- return "true" -> leading to "InvalidDataObject" = true
+					--return nil, true 
 				else
 					local fname = string.format("%s[%s]", name, k)
 					local data, isInvalidDataObject = SLFManager:saveAsString(fname, v, saved)

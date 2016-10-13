@@ -33,7 +33,6 @@ Next
 
 
 Type TAi extends TAiBase
-
 	'override
 	Method Create:TAi(playerID:Int, luaScriptFileName:String)
 		Super.Create(playerID, luaScriptFileName)
@@ -112,6 +111,8 @@ Type TAi extends TAiBase
 	Method CallOnSaveState()
 		if not AiRunning then return
 
+		'reset
+		ResetObjectsUsedInLua()
 		'reset (potential old) save state
 		scriptSaveState = ""
 
@@ -136,6 +137,8 @@ Type TAi extends TAiBase
 	Method CallOnSave()
 		if not AiRunning then return
 
+		'reset
+		ResetObjectsUsedInLua()
 		'reset (potential old) save state
 		scriptSaveState = ""
 
@@ -350,6 +353,8 @@ Type TLuaFunctionResult {_exposeToLua}
 End Type
 
 
+
+
 Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	'=== CONST + HELPERS 
 
@@ -441,6 +446,16 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 		Return ret
 	End Function
 
+
+	'use this to save blitzmax objects from within a lua script to its AI
+	Method SaveExternalObject:int(o:object)
+		return GetPlayerBase(Self.ME).PlayerAI.AddObjectUsedInLua(o)
+	End Method
+
+	Method RestoreExternalObject:object(index:int)
+		return GetPlayerBase(Self.ME).PlayerAI.GetObjectUsedInLua(index)
+	End Method
+	
 
 	Method GetArchiveIdOfPlayer:Int(id:Int)
 		Return GetRoomCollection().GetFirstByDetails("archive", id).id
