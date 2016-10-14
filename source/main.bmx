@@ -1508,38 +1508,23 @@ endrem
 		App.SetPausedBy(TApp.PAUSED_BY_ESCAPEMENU)
 
 		TGUISavegameListItem.SetTypeFont(GetBitmapFont(""))
-rem
-		EscapeMenuWindow = New TGUIModalWindowChain.Create(New TVec2D, New TVec2D.Init(400,150), "SYSTEM")
-		EscapeMenuWindow.SetZIndex(99000)
-		EscapeMenuWindow.SetCenterLimit(new TRectangle.setTLBR(20,0,0,0))
-		EscapeMenuWindow.Open()
-
-		'append menu after creation of screen area, so it recenters properly
-		local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New TVec2D, New TVec2D.Init(300,355), "SYSTEM")
-		EscapeMenuWindow.SetContentElement(mainMenu)
-		mainMenu.SetCaption(GetLocale("MENU"))
-
-		'menu is always ingame...
-		EscapeMenuWindow.SetDarkenedArea(New TRectangle.Init(0,0,800,385))
-		'center to this area
-		EscapeMenuWindow.SetScreenArea(New TRectangle.Init(0,0,800,385))
-endrem
-
 		
-		EscapeMenuWindow = New TGUIModalWindowChain.Create(New TVec2D, New TVec2D.Init(400,150), "SYSTEM")
+		EscapeMenuWindow = New TGUIModalWindowChain.Create(New TVec2D, New TVec2D.Init(400,130), "SYSTEM")
 		EscapeMenuWindow.SetZIndex(99000)
 		EscapeMenuWindow.SetCenterLimit(new TRectangle.setTLBR(20,0,0,0))
 
 		'append menu after creation of screen area, so it recenters properly
-		local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New TVec2D, New TVec2D.Init(300,355), "SYSTEM")
+		'355 = with speed buttons
+		'local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New TVec2D, New TVec2D.Init(300,355), "SYSTEM")
+		local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New TVec2D, New TVec2D.Init(300,315), "SYSTEM")
 		mainMenu.SetCaption(GetLocale("MENU"))
 
 		EscapeMenuWindow.SetContentElement(mainMenu)
 
 		'menu is always ingame...
-		EscapeMenuWindow.SetDarkenedArea(New TRectangle.Init(0,0,800,385))
+		EscapeMenuWindow.SetDarkenedArea( GameConfig.nonInterfaceRect.Copy() )
 		'center to this area
-		EscapeMenuWindow.SetScreenArea(New TRectangle.Init(0,0,800,385))
+		EscapeMenuWindow.SetScreenArea( GameConfig.nonInterfaceRect.Copy() )
 	End Function
 	
 

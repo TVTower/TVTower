@@ -1,7 +1,10 @@
 'INCLUDED FILE
 Type TGUIModalMainMenu extends TGUIModalWindowChainElement
 	Field buttons:TGUIButton[]
+rem
+'now done via interface
 	Field speedButtons:TGUIButton[]
+endrem
 	Field chainLoadMenu:TGUIModalWindowChainElement
 	Field chainSaveMenu:TGUIModalWindowChainElement
 
@@ -16,7 +19,11 @@ Type TGUIModalMainMenu extends TGUIModalWindowChainElement
 
 		Local canvas:TGUIObject = GetGuiContent()
 
+		local buttonsY:int = 10
 
+rem
+'now done via interface
+		buttonsY = 55
 		local speedButtonsText:string[] = [">", ">>", ">>>", ">>>>"]
 		speedButtons = speedButtons[ .. speedButtonsText.length]
 		local speedButtonWidth:int = floor(canvas.GetContentScreenWidth() / speedButtons.length)
@@ -25,16 +32,16 @@ Type TGUIModalMainMenu extends TGUIModalWindowChainElement
 			canvas.AddChild(speedButtons[i])
 			AddEventListener( EventManager.RegisterListenerMethod("guiobject.onClick", self, "onButtonClick", speedButtons[i]) )
 		next
-
+endrem
 
 		local buttonsText:string[] = ["CONTINUE_GAME", "LOAD_GAME", "SAVE_GAME", "MENU_SETTINGS", "EXIT_TO_MAINMENU", "EXIT_GAME"]
 		buttons = buttons[ .. buttonsText.length]
 		for local i:int = 0 until buttons.length
 			'move exit-buttons a bit down
 			if i >= 4
-				buttons[i] = New TGUIButton.Create(New TVec2D.Init(0, 55 + 10 + i*40), New TVec2D.Init(canvas.GetContentScreenWidth(), -1), GetLocale(buttonsText[i]), "")
+				buttons[i] = New TGUIButton.Create(New TVec2D.Init(0, buttonsY + 10 + i*40), New TVec2D.Init(canvas.GetContentScreenWidth(), -1), GetLocale(buttonsText[i]), "")
 			else
-				buttons[i] = New TGUIButton.Create(New TVec2D.Init(0, 55 + i*40), New TVec2D.Init(canvas.GetContentScreenWidth(), -1), GetLocale(buttonsText[i]), "")
+				buttons[i] = New TGUIButton.Create(New TVec2D.Init(0, buttonsY + i*40), New TVec2D.Init(canvas.GetContentScreenWidth(), -1), GetLocale(buttonsText[i]), "")
 			endif
 			canvas.AddChild(buttons[i])
 			AddEventListener( EventManager.RegisterListenerMethod("guiobject.onClick", self, "onButtonClick", buttons[i]) )
@@ -58,6 +65,8 @@ Type TGUIModalMainMenu extends TGUIModalWindowChainElement
 			buttons[i].SetState("")
 		Next
 
+rem
+'now done via interface
 		For local i:int = 0 until speedButtons.length
 			speedButtons[i].SetState("")
 
@@ -67,6 +76,7 @@ Type TGUIModalMainMenu extends TGUIModalWindowChainElement
 				speedButtons[i].enable()
 			endif
 		Next
+endrem
 	End Method
 
 
@@ -89,19 +99,21 @@ Type TGUIModalMainMenu extends TGUIModalWindowChainElement
 		if not clickedButton then return False
 
 		Select clickedButton
+rem
+'now done via interface
 			case speedButtons[0] 'slower
-				GetWorldTime().SetTimeFactor(GameRules.worldTimeSpeedPresets[0])
+				GetGameBase().SetGameSpeedPreset(0)
 				Close()
 			case speedButtons[1] 'default 
-				GetWorldTime().SetTimeFactor(GameRules.worldTimeSpeedPresets[1])
+				GetGameBase().SetGameSpeedPreset(1)
 				Close()
 			case speedButtons[2]
-				GetWorldTime().SetTimeFactor(GameRules.worldTimeSpeedPresets[2])
+				GetGameBase().SetGameSpeedPreset(2)
 				Close()
 			case speedButtons[3]
-				GetWorldTime().SetTimeFactor(GameRules.worldTimeSpeedPresets[3])
+				GetGameBase().SetGameSpeedPreset(3)
 				Close()
-			
+endrem			
 			case buttons[0]
 				Close()
 
