@@ -461,6 +461,16 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	End Method
 
 
+	Method GetTargetGroupAttractivityMod:TAudience()
+		'return if single element or episode but with own modifier
+		if not self.parentLicenceGUID or data.GetTargetGroupAttractivityMod()
+			return data.GetTargetGroupAttractivityMod()
+		else
+			return GetParentLicence().GetTargetGroupAttractivityMod()
+		endif
+	End Method
+
+
 	'returns how many slots for sublicences are reserved yet
 	'ex.: [null, null, licence] returns 3
 	Method GetSubLicenceSlots:int() {_exposeToLua}

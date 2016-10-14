@@ -1092,6 +1092,49 @@ Type TDatabaseLoader
 		programmeData.proPressureGroups = data.GetInt("pro_pressure_groups", programmeData.proPressureGroups)
 		programmeData.contraPressureGroups = data.GetInt("contra_pressure_groups", programmeData.contraPressureGroups)
 
+
+
+		'=== TARGETGROUP ATTRACTIVITY MOD ===
+		local tgAttractivityNode:TxmlNode = xml.FindChild(node, "targetgroupattractivity")
+		if tgAttractivityNode
+			data = new TData
+			local searchData:string[TVTTargetGroup.baseGroupCount*3] '2 genders + "both"
+			local searchIndex:int = 0
+			for local tgIndex:int = 1 to TVTTargetGroup.baseGroupCount '1-7
+				searchData[searchIndex+0] = TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(tgIndex) )
+				searchData[searchIndex+1] = TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(tgIndex) ) +"_male"
+				searchData[searchIndex+2] = TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(tgIndex) ) +"_female"
+				searchIndex :+ 3
+			Next
+			xml.LoadValuesToData(tgAttractivityNode, data, searchData)
+
+			'loop over all genders (all, male, female) and assign found numbers
+			'- making sure to start with "all" allows assign "base", then
+			'  specific (if desired)
+			if not programmeData.targetGroupAttractivityMod
+				programmeData.targetGroupAttractivityMod = new TAudience.InitValue(1.0, 1.0)
+			endif
+			For local genderIndex:int = 0 to TVTPersonGender.count
+				local genderID:int = TVTPersonGender.GetAtIndex(genderIndex)
+				local genderString:string = TVTpersonGender.GetAsString( genderID )
+
+				for local tgIndex:int = 1 to TVTTargetGroup.baseGroupCount '1-7
+					local tgID:int = TVTTargetGroup.GetAtIndex(tgIndex)
+					local tgName:string = TVTTargetGroup.GetAsString(tgID)
+					local key:string = tgName+"_"+genderString
+					if genderIndex = 0 then key = tgName
+					'to avoid falling back to "1.0" on "female|male" while
+					'generic was set correctly before, we check if the key
+					'was found in the XML
+					if data.Has(key)
+						programmeData.targetGroupAttractivityMod.SetGenderValue(tgID, data.GetFloat(key, 1.0), genderID)
+					endif
+				Next
+			Next
+		endif
+
+
+
 		'=== EFFECTS ===
 		LoadV3EffectsFromNode(programmeData, node, xml)
 
@@ -1180,6 +1223,12 @@ Type TDatabaseLoader
 			programmeLicence.licenceType = TVTProgrammeLicenceType.SINGLE
 			programmeLicence.data.dataType = TVTProgrammeDataType.SINGLE
 			TLogger.Log("LoadV3ProgrammeLicenceFromNode()","Series with 0 episodes found. Converted to single: "+programmeLicence.GetTitle(), LOG_XML)
+		endif
+
+		if programmeLicence.licenceType = -1 and programmeLicence.GetSubLicenceCount() = 0
+			programmeLicence.licenceType = TVTProgrammeLicenceType.SINGLE
+			programmeLicence.data.dataType = TVTProgrammeDataType.SINGLE
+			TLogger.Log("LoadV3ProgrammeLicenceFromNode()","Licence without licenceType=-1 found.  Converted to single: "+programmeLicence.GetTitle(), LOG_XML)
 		endif
 
 		

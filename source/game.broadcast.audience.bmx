@@ -847,6 +847,7 @@ Type TAudience {_exposeToLua="selected"}
 	End Method
 
 
+	'contrary to "SetGenderValue()" this SPLITS the value into female/male
 	Method SetTotalValue(targetID:int, newValue:Float, femalePercentage:float = 0.5)
 		SetGenderValue(targetID, newValue * femalePercentage, TVTPersonGender.FEMALE)
 		SetGenderValue(targetID, newValue * (1.0 - femalePercentage), TVTPersonGender.MALE)
@@ -857,19 +858,15 @@ Type TAudience {_exposeToLua="selected"}
 		Select targetID
 			Case TVTTargetGroup.Women
 				if gender = TVTPersonGender.MALE then return 
-				print "Set all women groups to value " + newValue
-				'GetAudienceFemale().InitValue(newValue)
-				DebugStop
 			Case TVTTargetGroup.Men
 				if gender = TVTPersonGender.FEMALE then return 
-				print "Set all men groups to value " + newValue
-				'GetAudienceMale().InitValue(newValue)
-				DebugStop
-
 			Default
 				if gender = TVTPersonGender.MALE
 					GetAudienceMale().SetValue(targetID, newValue)
 				elseif gender = TVTPersonGender.FEMALE
+					GetAudienceFemale().SetValue(targetID, newValue)
+				else
+					GetAudienceMale().SetValue(targetID, newValue)
 					GetAudienceFemale().SetValue(targetID, newValue)
 				endif
 		End Select
@@ -972,30 +969,30 @@ Type TAudience {_exposeToLua="selected"}
 	End Method
 
 
-	Method ModifyTotalValue(targetID:Int, newValue:Float)
-		ModifyGenderValue(targetID, newValue, TVTPersonGender.MALE)
-		ModifyGenderValue(targetID, newValue, TVTPersonGender.FEMALE)
+	Method ModifyTotalValue(targetID:Int, addValue:Float)
+		ModifyGenderValue(targetID, addValue, TVTPersonGender.MALE)
+		ModifyGenderValue(targetID, addValue, TVTPersonGender.FEMALE)
 	End Method
 	
 
-	Method ModifyGenderValue(targetID:Int, newValue:Float, gender:int)
+	Method ModifyGenderValue(targetID:Int, addValue:Float, gender:int)
 		Select targetID
 			Case TVTTargetGroup.Women
 				if gender = TVTPersonGender.MALE then return
 				For local i:int = 1 to TVTTargetGroup.baseGroupCount
-					ModifyGenderValue( TVTTargetGroup.GetAtIndex(i), newValue, TVTPersonGender.FEMALE )
+					ModifyGenderValue( TVTTargetGroup.GetAtIndex(i), addValue, TVTPersonGender.FEMALE )
 				Next
 			Case TVTTargetGroup.Men
 				if gender = TVTPersonGender.FEMALE then return
 				For local i:int = 1 to TVTTargetGroup.baseGroupCount
-					ModifyGenderValue( TVTTargetGroup.GetAtIndex(i), newValue, TVTPersonGender.MALE  )
+					ModifyGenderValue( TVTTargetGroup.GetAtIndex(i), addValue, TVTPersonGender.MALE  )
 				Next
 
 			Default
 				if gender = TVTPersonGender.MALE
-					GetAudienceMale().SetValue(targetID, GetAudienceMale().GetValue(targetID) + newValue)
+					GetAudienceMale().SetValue(targetID, GetAudienceMale().GetValue(targetID) + addValue)
 				elseif gender = TVTPersonGender.FEMALE
-					GetAudienceFemale().SetValue(targetID, GetAudienceFemale().GetValue(targetID) + newValue)
+					GetAudienceFemale().SetValue(targetID, GetAudienceFemale().GetValue(targetID) + addValue)
 				endif
 		End Select
 	End Method

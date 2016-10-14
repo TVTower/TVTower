@@ -44,7 +44,7 @@
 	</celebritypeople>
 	
 	<allprogrammes>
-		<programme id="ronny-programme-livereportage-raketenstart1" product="4" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="ronny-programme-livereportage-raketenstart1" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Erster Start der Ariane-2</de>
 				<en>First launch of Ariane-2</en>
@@ -59,7 +59,7 @@
 			<ratings critics="45" speed="30" outcome="40" />
 		</programme>
 		<!--TODO: Sport events could be done by a generator -->
-		<programme id="ronny-programme-livesport-olympischesommerspiele1988_1" product="4" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="ronny-programme-livesport-olympischesommerspiele1988_1" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Sommerolympiade 1988 in Seoul</de>
 				<en>Summer Olympics 1988 in Seoul</en>
@@ -73,7 +73,7 @@
 			<releaseTime year="1988" day="10" hour="12" />
 			<ratings critics="65" speed="40" outcome="65" />
 		</programme>
-		<programme id="ronny-programme-doku-kutler-wunderwaffen" product="4" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="ronny-programme-doku-kutler-wunderwaffen" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Kutlers Wunderwaffen</de>
 				<en>Kutlers &quot;magic bullets&quot;</en>
@@ -90,7 +90,7 @@
 			<data country="D" year="0" year_relative="-4" year_relative_min="1975" year_relative_max="1990" distribution="2" maingenre="6" subgenre="11" flags="0" blocks="1" price_mod="0.95" />
 			<ratings critics="45" speed="20" outcome="24" />
 		</programme>
-		<programme id="ronny-programme-doku-kutler-alaaf" product="4" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="ronny-programme-doku-kutler-alaaf" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Keil Kutler und Koelle Alaaf</de>
 				<en>Keil Kutler and &quot;Koelle Alaaf&quot;</en>
@@ -107,7 +107,7 @@
 			<data country="D" year="0" year_relative="-3" year_relative_min="1976" year_relative_max="1991" distribution="2" maingenre="6" subgenre="11" flags="0" blocks="1" price_mod="0.95" />
 			<ratings critics="38" speed="28" outcome="27" />
 		</programme>
-		<programme id="ronny-programme-doku-kutler-untergang" product="4" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="ronny-programme-doku-kutler-untergang" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Kutlers Untergang</de>
 				<en>Kutler's downfall</en>
@@ -124,7 +124,7 @@
 			<data country="D" year="0" year_relative="+2" year_relative_min="1979" year_relative_max="1993" distribution="2" maingenre="6" subgenre="11" flags="0" blocks="1" price_mod="0.95" />
 			<ratings critics="49" speed="30" outcome="20" />
 		</programme>
-		<programme id="ronny-programme-doku-eyebeam-btx-digitalewelt" product="4" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="ronny-programme-doku-eyebeam-btx-digitalewelt" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>BTX - Neue digitale Welt</de>
 				<en>BTX - new digital world</en>
@@ -141,7 +141,7 @@
 			<data country="D" year="0" year_relative="-4" year_relative_min="1981" year_relative_max="1983" distribution="2" maingenre="6" flags="0" blocks="2" price_mod="1.05" />
 			<ratings critics="55" speed="15" outcome="25" />
 		</programme>
-		<programme id="ronny-programme-doku-mikroelektronik" product="4" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="ronny-programme-doku-mikroelektronik" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Mikroelektronik - Willkommen in der Zukunft</de>
 				<en>Microelectronics - Welcome to the future</en>
@@ -160,7 +160,7 @@ Welcome to the future.</en>
 			<data country="D" year="1981" distribution="2" maingenre="6" flags="0" blocks="2" price_mod="1.05" />
 			<ratings critics="40" speed="12" outcome="22" />
 		</programme>
-		<programme id="ronny-programme-doku-fruitinc" product="4" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="ronny-programme-doku-fruitinc" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Fruit Inc. - Heimcomputer aus Cupertino</de>
 				<en>Fruit Inc. - Home computers made in Cupertino</en>
@@ -243,7 +243,7 @@ Educational precious and absolutly ecological.</en>
 				</programme>
 			</children>
 		</programme>
-		<programme id="ronny-programme-pantoffeln-01" product="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="ronny-programme-pantoffeln-01" product="1" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Wahre Pantoffelhelden</de>
 				<en>Truly henpecked</en>
@@ -260,7 +260,7 @@ Educational precious and absolutly ecological.</en>
 			<data country="D" year="1983" distribution="2" maingenre="9" subgenre="15" flags="16" blocks="2" price_mod="0.9" />
 			<ratings critics="40" speed="20" outcome="48" />
 		</programme>
-		<programme id="ronny-programme-kartoffeln-01" product="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="ronny-programme-kartoffeln-01" product="1" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Die Kartoffelkönigin</de>
 				<en>The Potatoqueen</en>
@@ -279,7 +279,7 @@ Educational precious and absolutly ecological.</en>
 		</programme>
 
 		<!-- added 23.08.2016 -->
-		<programme id="ronny-programme-kaugummitest-01" product="4" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="ronny-programme-kaugummitest-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Der große Kaugummitest</de>
 				<en>The Great Chewing Gum Check</en>
@@ -295,7 +295,7 @@ Educational precious and absolutly ecological.</en>
 			<data country="D" year="0" year_relative="-2" year_relative_min="1980" year_relative_max="2000" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="2" price_mod="0.9" />
 			<ratings critics="18" speed="25" />
 		</programme>
-		<programme id="ronny-programme-feilschen-01" product="4" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="ronny-programme-feilschen-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Feilschen will gelernt sein</de>
 				<en>Haggling is a skill</en>
@@ -311,7 +311,7 @@ Educational precious and absolutly ecological.</en>
 			<data country="D" year="0" year_relative="-8" year_relative_min="1976" year_relative_max="1990" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="1" price_mod="1.05" />
 			<ratings critics="35" speed="15" />
 		</programme>
-		<programme id="ronny-programme-recyclingfueranfaenger-01" product="4" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="ronny-programme-recyclingfueranfaenger-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Recycling für Anfänger</de>
 				<en>Recycling for beginners</en>
@@ -329,7 +329,7 @@ Educational precious and absolutly ecological.</en>
 			<data country="D" year="1991" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="1" price_mod="1.05" />
 			<ratings critics="35" speed="8" />
 		</programme>
-		<programme id="ronny-programme-versandkataloge-01" product="4" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="ronny-programme-versandkataloge-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Versandkataloge: Woher, wofür?</de>
 				<en>Mail-order catalogues: Whence and for what?</en>
@@ -346,7 +346,8 @@ With practical tricks to identify junk goods.</en>
 			</staff>
 			<!-- pensioners and housewives -->
 			<groups target_groups="68" />
-			<data country="D" year="193" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="2" price_mod="1.00" />
+			<targetgroupattractivity teenagers="0.7" managers="0.7" housewives="1.15" /> 
+			<data country="D" year="1983" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="18" speed="12" />
 		</programme>
 

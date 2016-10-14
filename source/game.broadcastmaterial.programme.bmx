@@ -334,15 +334,16 @@ print "Trash Strafe: " + penalty.ToString()
 
 					'for women/men this only is run for the
 					'female/male portion of the audience
-					tgAudience.ModifyTotalValue(targetGroupID, 0.5)
+					tgAudience.ModifyTotalValue(targetGroupID, 0.25)
 				EndIf
 			Next
+			'print "multplying with: " + tgAudience.TosTring()
 			result.Multiply(tgAudience)
 		EndIf
 
 		'modify with a complete fine grained target group setup
-		If data.GetTargetGroupAttractivityMod()
-			result.Multiply( data.GetTargetGroupAttractivityMod() )
+		If licence.GetTargetGroupAttractivityMod()
+			result.Multiply( licence.GetTargetGroupAttractivityMod() )
 		EndIf
 
 		Return result

@@ -725,6 +725,11 @@ Type TApp
 
 						for local l:string = EachIn addLicences
 							local p:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID(l)
+							if not p
+								print "DEV: programme licence ~q"+l+"~q not found."
+								continue
+							endif
+							
 							if p.owner <> GetPlayer().playerID
 								p.SetOwner(0)
 								RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(p, 1)
