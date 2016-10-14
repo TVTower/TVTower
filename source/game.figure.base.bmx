@@ -332,6 +332,26 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 	Method RemoveCurrentTarget:int()
 		if targets.length = 0 then return False
+
+		'inform target
+		if TFigureTarget(targets[0]) TFigureTarget(targets[0]).Abort(self)
+		
+		targets = targets[1..]
+		return True
+	End Method
+
+
+	Method FinishCurrentTarget:int()
+		if targets.length = 0 then return False
+
+		'inform target
+		if TFigureTarget(targets[0])
+			TFigureTarget(targets[0]).Finish(self)
+		endif
+
+		'regain control if there is no other target waiting?
+		controllable = true
+		
 		targets = targets[1..]
 		return True
 	End Method
@@ -430,6 +450,8 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		if targetPosition then area.position.setX( targetPosition.getX() )
 
 		currentReachTargetStep = 1
+		'inform target
+		if TFigureTarget(GetTarget()) then TFigureTarget(GetTarget()).Reach(self)
 
 		'emit an event
 		EventManager.triggerEvent( TEventSimple.Create("figure.onBeginReachTarget", null, self, GetTarget() ) )
@@ -446,20 +468,15 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		currentReachTargetStep = 0
 
 		if IsAtCurrentTarget()
-		'	print name +" is at target, removing it"
-			RemoveCurrentTarget()
-		'else
-		'	if GetTarget()
-		'		print name +" is NOT at target, keeping current Target " + GetTarget().ToString()
-		'	else
-		'		print name +" is NOT at target, keeping current Target NONE"
-		'	endif
+			'print name +" is at target, removing it"
+			FinishCurrentTarget()
+		rem
+		else
+			if GetTarget()
+				print name +" is NOT at target, keeping current Target " + GetTarget().ToString()
+			endif
+		endrem
 		endif
-
-		'regain control if there is no other target waiting
-		'TODO: place this in a custom "Route"-object? so there could
-		'      be a chain of targets which you cannot skip
-		if not GetTarget() then controllable = True
 
 		'emit an event
 		EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", null, self, GetTarget() ) )
@@ -561,7 +578,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 		'repair missed "control regain"
 		'TODO: check why figures might miss "ReachTargetStep2" (savegame?)
-		If not controllable and Not GetTarget() then controllable = True
+		'If not controllable and Not GetTarget() then controllable = True
 
 		'this could be overwritten by extended types
 		UpdateCustom()
@@ -577,4 +594,65 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 	Method Draw:int(overwriteAnimation:String="") abstract
 	Method FigureMovement:int() abstract
+End Type
+
+
+
+Type TFigureTarget
+	Field targetObj:object
+	Field currentStep:int = 0
+	Field startCondition:int = 0
+	Field figureState:int = 0
+
+	Const FIGURESTATE_UNCONTROLLABLE:int = 1
+
+	Const CONDITION_MUST_BE_IN_BUILDING:int = 1
+
+
+	Method CanGoTo:int(figure:TFigureBase)
+		if not figure then return False
+		if startCondition = 0 then return True
+
+		if startCondition & CONDITION_MUST_BE_IN_BUILDING > 0
+			return figure.IsInBuilding()
+		endif
+	End Method
+
+
+	Method Start(figure:TFigureBase)
+		currentStep = 0
+
+		if figure and figureState & FIGURESTATE_UNCONTROLLABLE > 0
+			figure.controllable = false
+		endif
+	End Method
+
+
+	Method Abort(figure:TFigureBase)
+		currentStep = 0
+
+		if figure and figureState & FIGURESTATE_UNCONTROLLABLE > 0
+			figure.controllable = true
+		endif
+	End Method
+	
+
+	Method Finish(figure:TFigureBase)
+		currentStep = 2
+
+		if figure and figureState & FIGURESTATE_UNCONTROLLABLE > 0
+			figure.controllable = true
+		endif
+	End Method
+
+
+	Method Reach(figure:TFigureBase)
+		currentStep = 1
+	End Method	
+
+
+	Method GetTargetMoveToPosition:TVec2D()
+		if TVec2D(targetObj) then return TVec2D(targetObj)
+		return null
+	End Method
 End Type

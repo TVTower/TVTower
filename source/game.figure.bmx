@@ -207,8 +207,10 @@ Type TFigure extends TFigureBase
 
 	'override to wait when reaching a target door/hotspot
 	Method customReachTargetStep1:Int()
+		local targetObject:object = GetTarget()
+		if TFigureTarget(GetTarget()) then targetObject = TFigureTarget(GetTarget()).targetObj  
 		'start waiting in front of the target
-		If TRoomDoorBase(GetTarget()) or THotspot(GetTarget())
+		If TRoomDoorBase(targetObject) or THotspot(targetObject)
 			WaitEnterTimer = GetBuildingTime().GetMillisecondsGone() + WaitEnterLeavingTime
 		Else
 			Super.customReachTargetStep1()
@@ -218,9 +220,12 @@ Type TFigure extends TFigureBase
 
 	'override to 
 	Method TargetNeedsToGetEntered:int()
-		if TRoomDoorBase(GetTarget()) then return True
+		local targetObject:object = GetTarget()
+		if TFigureTarget(GetTarget()) then targetObject = TFigureTarget(GetTarget()).targetObj  
+
+		if TRoomDoorBase(targetObject) then return True
 		'if hotspot, ask it whether enter is wanted
-		if THotSpot(GetTarget()) then return THotSpot(GetTarget()).IsEnterable()
+		if THotSpot(targetObject) then return THotSpot(targetObject).IsEnterable()
 
 		return Super.TargetNeedsToGetEntered()
 	End Method
@@ -743,6 +748,7 @@ Type TFigure extends TFigureBase
 		changingRoomRealTimeStart = -1
 
 		'finish reaching-target-steps (and remove current target)
+		'also this might add a new target (eg. via AI)
 		ReachTargetStep2()
 
 		'inform room
@@ -750,18 +756,22 @@ Type TFigure extends TFigureBase
 
 
 		'=== INFORM OTHERS ===
+		local hasT:int = GetTarget() <> null
 		'inform that figure now entered the room
 		'(eg. for players informing the ai)
 		EventManager.triggerEvent( TEventSimple.Create("figure.onFinishEnterRoom", new TData.Add("room", room).Add("door", door) , self, room) )
 
+rem
+'Ronny: "normally" this should not be needed at all
 		'another target to do?
 		if GetTarget()
-			print "Figure "  + name + " got another target - going to it now"
+			print "Figure "  + name + " got another target - going to it now " + hasT
 			local targetPos:TVec2D = GetTargetMoveToPosition()
 			'remove that target, so we can add it again
 			RemoveCurrentTarget()
-			ForceChangeTarget( int(targetPos.x), int(targetPos.y))
+			ChangeTarget( int(targetPos.x), int(targetPos.y))
 		endif
+endrem
 
 		return True
 	End Method

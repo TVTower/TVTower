@@ -1150,6 +1150,7 @@ Type TVTPersonGender {_exposeToLua}
 	Const UNDEFINED:int = 0
 	Const MALE:int = 1
 	Const FEMALE:int = 2
+	Const count:int = 2
 
 
 	Function GetAtIndex:int(index:int = 0)
