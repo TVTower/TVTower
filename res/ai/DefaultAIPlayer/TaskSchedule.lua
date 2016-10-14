@@ -1,5 +1,4 @@
 -- File: TaskSchedule
--- File: TaskSchedule
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["TaskSchedule"] = class(AITask, function(c)
 	AITask.init(c)	-- must init base!

@@ -105,7 +105,7 @@ function SLFManager:save()
 	-- Standard-Methode zum speichern. Zuvor sollten alle zu speichernden globalen Variablen im StoreDefinition hinterlegt werden.
 	-- Format: Exakter VariablenName = Wert
 	local SaveList = {}
-	local ResultData = "--#V " .. getApplicationVersion() .. NL
+	local ResultData = "--#Version " .. getApplicationVersion() .. NL
 	for k,v in pairs(SLFManager.StoreDefinition) do		
 		ResultData = ResultData .. SLFManager:saveAsString(k, v, SaveList)
 		ResultData = ResultData .. string.format("%s[%q]", "SLFManager.LoadedData", k) .. " = " .. k
@@ -159,8 +159,7 @@ function SLFManager:saveAsString(name, value, saved)
 				if type(v) == "userdata" then
 					local fname = string.format("%s[%s]", name, k)
 					local externalStoreIndex = TVT.SaveExternalObject(v)
-		
-					return fname .. " = TVT.RestoreExternalObject("..externalStoreIndex..")" .. NL
+					result = result .. fname .. " = TVT.RestoreExternalObject("..externalStoreIndex..")" .. NL
 					-- return "true" -> leading to "InvalidDataObject" = true
 					--return nil, true 
 				else

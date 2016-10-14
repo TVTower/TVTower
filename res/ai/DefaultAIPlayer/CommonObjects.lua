@@ -15,8 +15,10 @@ end
 _G["SpotRequisition"] = class(Requisition, function(c)
 	Requisition.init(c)	-- must init base!
 	c.TaskId = _G["TASK_ADAGENCY"]
+	c.TaskOwnerId = nil
 	c.Priority = 5
 	c.Count = 0
+	c.GuessedAudience = nil
 	c.FulfilledCount = 0
 	c.Level = -1
 	c.SlotReqs = nil

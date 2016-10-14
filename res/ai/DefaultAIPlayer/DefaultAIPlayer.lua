@@ -2,9 +2,9 @@
 -- ============================
 -- Autoren: Manuel Vögele (STARS_crazy@gmx.de)
 --          Ronny Otto
--- Version: 28.08.2016
+-- Version: 14.10.2016
 
-APP_VERSION = "1.5"
+_G["APP_VERSION"] = "1.6"
 
 -- ##### INCLUDES #####
 -- use slash for directories - windows accepts it, linux needs it
