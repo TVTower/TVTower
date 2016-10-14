@@ -400,17 +400,22 @@ Type TBuilding Extends TBuildingBase
 
 		'update hotspot tooltips
 		If room
-			For Local hotspot:THotspot = EachIn room.hotspots
-				'disable elevatorplan hotspot tooltips in other floors
-				If hotspot.name = "elevatorplan"
-					If GetFloor(hotspot.area.GetY()) <> GetFloor(GetPlayerBase().GetFigure().area.GetY())
-						hotspot.tooltipEnabled = False
-					Else
-						hotspot.tooltipEnabled = True
+			'for now: instead of checking each hotspot versus a the area
+			'without the interface, we just check if the mouse is not
+			'at the interface area and skip updating at all
+			if GameConfig.nonInterfaceRect.ContainsVec( MouseManager.GetPosition() )
+				For Local hotspot:THotspot = EachIn room.hotspots
+					'disable elevatorplan hotspot tooltips in other floors
+					If hotspot.name = "elevatorplan"
+						If GetFloor(hotspot.area.GetY()) <> GetFloor(GetPlayerBase().GetFigure().area.GetY())
+							hotspot.tooltipEnabled = False
+						Else
+							hotspot.tooltipEnabled = True
+						EndIf
 					EndIf
-				EndIf
-				hotspot.update()
-			Next
+					hotspot.update()
+				Next
+			endif
 		EndIf
 
 
@@ -523,6 +528,9 @@ Type TBuilding Extends TBuildingBase
 
 		'draw hotspot tooltips
 		For Local hotspot:THotspot = EachIn room.hotspots
+			'skip if not visible in "game area"
+			if not GameConfig.nonInterfaceRect.Intersects( hotspot.area ) then continue
+
 			hotspot.Render(area.GetX(), area.GetY())
 		Next
 
