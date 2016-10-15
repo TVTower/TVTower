@@ -155,6 +155,7 @@ Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
 		_eventListeners = new TLink[0]
 
 		_eventListeners :+ [EventManager.registerListenerFunction( "SportLeague.RunMatch", onRunMatch )]
+		_eventListeners :+ [EventManager.registerListenerFunction( "Sport.Playoffs.RunMatch", onRunPlayoffMatch )]
 	End Method
 
 
@@ -163,20 +164,56 @@ Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
 		return _instance
 	End Function
 
-
-	'==== OPTION 1: directly wait for matches ====
-	Function onRunMatch:Int(event:TEventBase)
-		Local league:TNewsEventSportLeague = TNewsEventSportLeague(event.GetSender())
+		
+	'==== OPTION 1: directly wait for matches (regular and playoffs) ====
+	Function onRunPlayoffMatch:Int(event:TEventBase)
 		Local match:TNewsEventSportMatch = TNewsEventSportMatch(event.GetData().Get("match"))
-		Local sport:TNewsEventSport = GetNewsEventSportCollection().GetByGUID( league._sportGUID )
-		Local season:TNewsEventSportSeason = league.GetCurrentSeason()
+		Local sport:TNewsEventSport = TNewsEventSport(event.GetSender())
+		Local season:TNewsEventSportSeason = TNewsEventSportSeason(event.GetData().Get("season"))
+		Local leagueIndex:int = event.GetData().GetInt("leagueIndex", 0)
+		Local league:TNewsEventSportLeague = sport.GetLeagueAtIndex(leagueIndex)
 
-		If Not match Or Not league or not sport Then Return False
+		CreateEventFromMatch(match, league, season, sport)
+		'if CreateEventFromMatch(match, league, season, sport)
+		'	print "onRunPlayoffMatch " + GetWorldTime().GetFormattedDate(match.GetMatchTime()) +"  " + match.GetReportShort() +"  OK"
+		'else
+		'	print "onRunPlayoffMatch " + GetWorldTime().GetFormattedDate(match.GetMatchTime()) +"  " + match.GetReportShort() +"  FAILED"
+		'endif 
+	End Function
+
+
+	Function onRunMatch:Int(event:TEventBase)
+		Local match:TNewsEventSportMatch = TNewsEventSportMatch(event.GetData().Get("match"))
+		Local league:TNewsEventSportLeague = TNewsEventSportLeague(event.GetSender())
+		Local sport:TNewsEventSport = GetNewsEventSportCollection().GetByGUID( league._sportGUID )
+		Local season:TNewsEventSportSeason = TNewsEventSportSeason(event.GetData().Get("season"))
+		If Not match Or not season or not sport Then Return False
+
+		CreateEventFromMatch(match, league, season, sport)
+		'if CreateEventFromMatch(match, league, season, sport)
+		'	print "onRunMatch " + GetWorldTime().GetFormattedDate(match.GetMatchTime()) +"  " + match.GetReportShort() +"  OK"
+		'else
+		'	print "onRunMatch " + GetWorldTime().GetFormattedDate(match.GetMatchTime()) +"  " + match.GetReportShort() +"  FAILED"
+		'endif 
+	End Function
+
+
+	Function CreateEventFromMatch:int(match:TNewsEventSportMatch, league:TNewsEventSportLeague, season:TNewsEventSportSeason, sport:TNewsEventSport)
 		'ignore games of the past
 		if GetWorldTime().getDay(match.GetMatchTime()) < GetWorldTime().GetStartDay() then return False
 
+		local leagueIndex:int = league._leaguesIndex
+
 		'ignore leagues >= 3 ("Regionalliga")
-		if league._leaguesIndex > 2 then return False
+		if leagueIndex > 2
+			'except for playoffs of the league #3
+			if leagueIndex = 3 and season and season.seasonType = TNewsEventSportSeason.SEASONTYPE_PLAYOFF
+				'keep that
+			else
+				'print "skipping league: "+leagueIndex+"  " + match.GetReportShort()
+				return False
+			endif
+		endif
 		
 		Local weekday:String = GetWorldTime().GetDayName( GetWorldTime().GetWeekday( GetWorldTime().GetOnDay(match.GetMatchTime()) ) )
 
@@ -185,13 +222,17 @@ Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
 		local localizeTitle:TLocalizedString = new TLocalizedString
 		local localizeDescription:TLocalizedString = new TLocalizedString
 		'quality gets lower the higher the league index (less important)
-		Local quality:Float = 0.01 * randRange(50,60) * 0.9 ^ league._leaguesIndex
-		Local price:Float = 1.0 + 0.01 * randRange(-5,10) * 1.05 ^ league._leaguesIndex
+		Local quality:Float = 0.01 * randRange(50,60) * 0.9 ^ leagueIndex
+		Local price:Float = 1.0 + 0.01 * randRange(-5,10) * 1.05 ^ leagueIndex
 		
 
 		localizeTitle.Set(Getlocale("SPORT_"+sport.name) +" ["+league.nameShort+"]: " +match.GetReportShort())
 		if season and season.seasonType = TNewsEventSportSeason.SEASONTYPE_PLAYOFF
-			localizeDescription.Set("Relegationsspiel:~n"+match.GetReport())
+			local nextLeague:TNewsEventSportLeague = Sport.GetLeagueAtIndex(league._leaguesIndex + 1)
+			if nextLeague
+				localizeTitle.Set(Getlocale("SPORT_"+sport.name) +" [REL]: " +match.GetReportShort())
+			endif
+			localizeDescription.Set("Relegationsspiel:  " + league.nameShort+" -> "+nextLeague.nameShort+"~n"+match.GetReport())
 		elseif not season
 			localizeDescription.Set("unbekannt:~n"+match.GetReport())
 		else
@@ -202,17 +243,28 @@ Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
 		'3.0 means it reaches topicality of 0 at ~5 hours after creation.
 		NewsEvent.SetModifier("topicality::age", 3.0)
 		NewsEvent.AddKeyword("SPORT")
-		'let the game finish first
-		NewsEvent.happenedTime = GetWorldTime().GetTimeGone() + 60 * (90 + RandRange(0,10))
-
-		NewsEvent.eventDuration = 5*3600 'only for 8 hours
+		'let the game finish first (duration + 15 Min break)
+		NewsEvent.happenedTime = GetWorldTime().GetTimeGone() + match.duration + 60 * 15
+	
+		NewsEvent.eventDuration = 6*3600 'only for 8 hours
 		NewsEvent.SetFlag(TVTNewsFlag.UNIQUE_EVENT, True) 'one time event
+		'
+		if league._leaguesIndex = 0 '1. BL
+			NewsEvent.minSubscriptionLevel = 2
+		elseif league._leaguesIndex = 1 '2. BL
+			NewsEvent.minSubscriptionLevel = 1
+		'elseif league._leaguesIndex = 2 '3. L
+		'	NewsEvent.minSubscriptionLevel = 1
+		endif
+		'debug
+		'print NewsEvent.GetTitle() + "  minLevel=" + NewsEvent.minSubscriptionLevel
+		'print "  Match: gameday="+RSet(GetWorldTime().GetDaysRun(),2)+"  "+ GetWorldTime().GetFormattedDate(NewsEvent.happenedTime)+"  "+Lset(weekday,10) + " " + match.GetReportshort() + "  " + match.GetReport()
+
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
 
 		GetInstance().AddNewNewsEvent(newsEvent)
-		print "  Match: gameday="+RSet(GetWorldTime().GetDaysRun(),2)+"  "+ GetWorldTime().GetFormattedDate(NewsEvent.happenedTime)+"  "+Lset(weekday,10) + " " + match.GetReportshort() + "  " + match.GetReport()
+		return True
 	End Function
-
 
 
 	Method Update:int()

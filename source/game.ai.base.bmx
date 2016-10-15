@@ -92,7 +92,6 @@ Type TAiBase
 			objectsUsedInLua = objectsUsedInLua[.. objectsUsedInLua.length + 10]
 		endif
 		objectsUsedInLua[ objectsUsedInLuaCount-1] = o
-		print "AddObjectUsedInLua: " + (objectsUsedInLuaCount-1)
 		return objectsUsedInLuaCount-1
 	End Method
 

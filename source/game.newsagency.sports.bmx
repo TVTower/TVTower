@@ -118,7 +118,7 @@ Type TNewsEventSport extends TGameObject
 		if IsSeasonFinished() and playoffsState = 0
 			CreatePlayoffSeasons()
 			'delay by at least 1 day
-			AssignPlayoffTimes( GetWorldTime().GetTimeGone() + GetWorldTime().DAYLENGTH)
+			AssignPlayoffTimes( Long(GetWorldTime().GetTimeGone() + GetWorldTime().DAYLENGTH))
 
 			StartPlayoffs()
 		endif
@@ -140,7 +140,9 @@ Type TNewsEventSport extends TGameObject
 		local matchesRun:int = 0
 		local matchesToCome:int = 0
 
+		local leagueNumber:int = 0
 		For local season:TNewsEventSportSeason = EachIn playoffSeasons
+			leagueNumber :+ 1
 			if not season.upcomingMatches then continue
 
 			For local nextMatch:TNewsEventSportMatch = EachIn season.upcomingMatches
@@ -154,7 +156,11 @@ Type TNewsEventSport extends TGameObject
 					nextMatch.Run()
 					season.doneMatches.AddLast(nextMatch)
 
+					EventManager.triggerEvent(TEventSimple.Create("Sport.Playoffs.RunMatch", New TData.addNumber("matchTime", nextMatch.GetMatchTime()).add("match", nextMatch).Add("season", season).AddNumber("leagueIndex", leagueNumber -1), Self))
+		
 					matchesRun :+ 1
+				'else
+				'	print "now: " + GetWorldTime().GetFormattedDate()+"  match: " + GetWorldTime().GetFormattedDate( nextMatch.GetMatchTime())
 				endif
 			Next
 
@@ -170,7 +176,7 @@ Type TNewsEventSport extends TGameObject
 
 	Method StartPlayoffs()
 		For local season:TNewsEventSportSeason = EachIn playoffSeasons
-			season.Start( GetWorldTime().GetTimeGone() )
+			season.Start( Long(GetWorldTime().GetTimeGone()) )
 		Next
 
 		playoffsState = 1
@@ -181,7 +187,7 @@ Type TNewsEventSport extends TGameObject
 
 	Method FinishPlayoffs()
 		For local season:TNewsEventSportSeason = EachIn playoffSeasons
-			season.Finish( GetWorldTime().GetTimeGone() )
+			season.Finish( Long(GetWorldTime().GetTimeGone()) )
 		Next
 
 		local leagueWinners:TNewsEventSportTeam[leagues.length]
@@ -259,7 +265,6 @@ Type TNewsEventSport extends TGameObject
 		'we need leagues-1 seasons (1->2, 2->3, loosers of league 3 stay)
 		playoffSeasons = new TNewsEventSportSeason[ leagues.length - 1 ]
 		playOffStartTime = GetWorldTime().GetTimeGone()
-		
 		For local i:int = 0 to playoffSeasons.length -1
 			playoffSeasons[i] = new TNewsEventSportSeason.Init()
 			'mark as playoff season
@@ -371,6 +376,7 @@ Type TNewsEventSport extends TGameObject
 		leagues :+ [league]
 		league._sportGUID = self.GetGUID()
 		league._leaguesIndex = leagues.length-1
+print "adding league: " + league._leaguesIndex
 		EventManager.triggerEvent(TEventSimple.Create("Sport.AddLeague", New TData.add("league", league), Self))
 	End Method
 
@@ -982,6 +988,7 @@ endrem
 		CreateUpcomingMatches()
 		'print "Assign Match Times"
 		local seasonStart:Long = GetFirstMatchTime(time)
+print "SeasonStart: "  + GetworldTime().GetFormattedDate(seasonStart) +"  now=" +GetworldTime().GetFormattedDate(time)
 		AssignMatchTimes(currentSeason, GetNextMatchStartTime(seasonStart))
 		'sort the upcoming matches by match time (ascending)
 		currentSeason.upcomingMatches.Sort(true, SortMatchesByTime)
@@ -1319,7 +1326,7 @@ Type TNewsEventSportMatch
 		return "override GetReport()"
 	End Method
 
-	Method GetReportShort:string()
+	Method GetReportShort:string(mode:string="")
 		return "override GetReportShort()"
 	End Method
 End Type
@@ -1368,11 +1375,16 @@ Type TNewsEventSportTeam
 
 
 	Method GetTeamName:string()
-		return clubName+" " + name
+		return clubName + " " + name
 	End Method
 
 
 	Method GetTeamNameShort:string()
+		return clubNameInitials + " " + name
+	End Method
+
+
+	Method GetTeamInitials:string()
 		return clubNameInitials + nameInitials
 	End Method
 End Type
