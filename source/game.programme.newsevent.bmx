@@ -574,6 +574,10 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	Field eventDuration:Int = -1
 	'type of the news event according to TVTNewsType
 	Field newsType:int = 0 'initialNews
+	'minimum level to receive a news based on this
+	'(eg. filter out soccer news for amateur leagues if only subscribed
+	' to level 1 of 3)
+	Field minSubscriptionLevel:int = 0
 	Field availableYearRangeFrom:int = -1
 	Field availableYearRangeTo:int = -1
 	'special expression defining whether a contract is available for
