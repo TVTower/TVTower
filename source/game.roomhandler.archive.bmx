@@ -137,12 +137,14 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		'handle interactivity for room owners
 		if IsRoomOwner(figure, TRoom(triggerEvent.GetReceiver()))
-			'if the list is open - just close the list and veto against
-			'leaving the room
+			'if the list is open
+			'old: just close the list and veto against leaving the room
+			'now: close the list and continue leaving, the list itself
+			'     handles the right-click-checks and resets
 			if programmeList.openState <> 0
 				programmeList.SetOpen(0)
-				triggerEvent.SetVeto()
-				return FALSE
+	'			triggerEvent.SetVeto()
+	'			return FALSE
 			endif
 
 			'do not allow leaving as long as we have a dragged block

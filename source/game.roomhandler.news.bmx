@@ -6,6 +6,7 @@ Import "common.misc.gamegui.bmx"
 Import "game.roomhandler.base.bmx"
 Import "game.broadcastmaterial.news.bmx"
 Import "game.newsagency.bmx"
+Import "game.gameconfig.bmx"
 
 
 'News room
@@ -613,6 +614,18 @@ global LS_newsplanner:TLowerString = TLowerString.Create("newsplanner")
 		RemoveAllGuiElements()
 		RefreshGUIElements()
 	End Function
+
+
+	'override to do same check as if leaving the planning screen
+	Method onTryLeaveRoom:Int( triggerEvent:TEventBase )
+		'only check a players or a observed figure
+		local figure:TFigureBase = TFigureBase(triggerEvent.GetSender())
+		if not (GameConfig.IsObserved(figure) or GetPlayerBase().GetFigure() = figure) then return False
+		
+		'as long as onTryLeaveProgrammePlannerScreen does not
+		'check for specific event data... just forward the event
+		return onTryLeaveNewsPlannerScreen( triggerEvent )
+	End Method
 
 
 	Function onTryLeaveNewsPlannerScreen:int( triggerEvent:TEventBase )

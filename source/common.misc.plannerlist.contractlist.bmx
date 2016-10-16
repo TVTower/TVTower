@@ -300,8 +300,10 @@ Type TgfxContractlist Extends TPlannerList
 		endif
 
 
-		If MOUSEMANAGER.IsClicked(2) or MouseManager.IsLongClicked(1)
-			SetOpen(0)
+		'react to right click
+		If openState > 0 and (MOUSEMANAGER.IsClicked(2) or MouseManager.IsLongClicked(1))
+			SetOpen( Max(0, openState - 1) )
+
 			MOUSEMANAGER.resetKey(2)
 			MOUSEMANAGER.resetKey(1) 'also normal clicks
 		EndIf

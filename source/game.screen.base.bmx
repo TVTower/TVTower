@@ -272,6 +272,16 @@ Type TInGameScreen Extends TScreen
 	End Method
 
 
+	Function IsPlayerFigure:int(figure:TFigureBase)
+		return GetPlayerBase().GetFigure() = figure
+	End Function
+
+
+	Function IsObservedOrPlayerFigure:int(figure:TFigureBase)
+		return figure and (GameConfig.IsObserved(figure) or GetPlayerBase().GetFigure() = figure)
+	End Function
+	
+
 	Method Draw:Int(tweenValue:Float)
 		DrawContent(tweenValue)
 	End Method
@@ -371,12 +381,11 @@ Type TInGameScreen_World Extends TInGameScreen
 	Method ToString:String()
 		Return "TInGameScreen_World: group="+group+" name="+name
 	End Method
-
+	
 
 	Function onBeginLeaveRoom:Int( triggerEvent:TEventBase )
 		Local figure:TFigureBase = TFigureBase( triggerEvent._sender )
-		If Not figure then return False
-		if not GameConfig.IsObserved(figure) and GetPlayerBase().GetFigure() <> figure Then Return False
+		If not IsObservedOrPlayerFigure(figure) Then Return False
 
 		'Set the players current screen when leaving a room
 		ScreenCollection.GoToScreen(instance)
@@ -394,8 +403,7 @@ Type TInGameScreen_World Extends TInGameScreen
 
 	Function onFinishLeaveRoom:Int( triggerEvent:TEventBase )
 		Local figure:TFigureBase = TFigureBase( triggerEvent._sender )
-		If Not figure then return False
-		if not GameConfig.IsObserved(figure) and GetPlayerBase().GetFigure() <> figure Then Return False
+		If not IsObservedOrPlayerFigure(figure) Then Return False
 
 		'just set the current screen... no animation
 		ScreenCollection.targetScreen = null
@@ -530,8 +538,7 @@ Type TInGameScreen_Room Extends TInGameScreen
 
 		'only interested in figures entering the room
 		Local figure:TFigureBase = TFigureBase(triggerEvent.GetReceiver())
-		if not GameConfig.IsObserved(figure) and GetPlayerBase().GetFigure() <> figure Then Return False
-		'If Not figure Or GetPlayerBase().GetFigure() <> figure Then Return False
+		if not IsObservedOrPlayerFigure(figure) Then Return False
 
 		'try to change played music when entering a room
 		TSoundManager.GetInstance().PlayMusicPlaylist(room.name)
@@ -544,8 +551,7 @@ Type TInGameScreen_Room Extends TInGameScreen
 
 		'only interested in figures entering the room
 		Local figure:TFigureBase = TFigureBase(triggerEvent.GetReceiver())
-		if not GameConfig.IsObserved(figure) and GetPlayerBase().GetFigure() <> figure Then Return False
-		'If Not figure Or GetPlayerBase().GetFigure() <> figure Then Return False
+		if not IsObservedOrPlayerFigure(figure) Then Return False
 
 		'Set the players current screen when changing rooms
 		ScreenCollection.GoToScreen( ScreenCollection.GetScreen(room.screenName) )

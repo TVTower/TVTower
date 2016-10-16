@@ -5278,7 +5278,12 @@ Function DEV_switchRoom:Int(room:TRoom)
 	'leave first
 	'RONNY: disabled, EnterRoom does already take care of leaving first
 
+
 	If GetPlayer().GetFigure().inRoom
+		'abort current screen actions (drop back dragged items etc.)
+		local roomHandler:TRoomHandler = GetRoomHandlerCollection().GetHandler(GetPlayer().GetFigure().inRoom.name)
+		if roomHandler then roomHandler.AbortScreenActions()
+
 		TLogger.Log("DEV_switchRoom", "Leaving room ~q"+GetPlayer().GetFigure().inRoom.name+"~q first.", LOG_DEBUG)
 		'force leave?
 		'GetPlayer().GetFigure().LeaveRoom(True)
@@ -5289,6 +5294,7 @@ Function DEV_switchRoom:Int(room:TRoom)
 			GetPlayer().GetFigure().FinishLeaveRoom()
 		else
 			GetGame().SendSystemMessage("[DEV] cannot switch rooms: Leaving old room failed")
+			return False
 		endif
 	EndIf
 

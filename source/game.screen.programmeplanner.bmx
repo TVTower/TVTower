@@ -131,6 +131,8 @@ Type TScreenHandler_ProgrammePlanner
 		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnTryLeave", onTryLeaveProgrammePlannerScreen, screen) ]
 		'player leaves screen - clean GUI (especially dragged ones)
 		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnFinishLeave", onLeaveProgrammePlannerScreen, screen) ]
+		'player tries to leave the room - check like with screens
+		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onTryLeaveRoom", onTryLeaveRoom) ]
 		'player leaves office forcefully - clean up
 		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onForcefullyLeaveRoom", onForcefullyLeaveRoom) ]
 
@@ -515,13 +517,25 @@ Type TScreenHandler_ProgrammePlanner
 	End Function
 
 
+	Function onTryLeaveRoom:Int( triggerEvent:TEventBase )
+		'only check a players or a observed figure
+		local figure:TFigureBase = TFigureBase(triggerEvent.GetSender())
+		if not (GameConfig.IsObserved(figure) or GetPlayerBase().GetFigure() = figure) then return False
+		
+		'as long as onTryLeaveProgrammePlannerScreen does not
+		'check for specific event data... just forward the event
+		return onTryLeaveProgrammePlannerScreen( triggerEvent )
+	End Function
+
+
 	Function onTryLeaveProgrammePlannerScreen:Int( triggerEvent:TEventBase )
-		'do not allow leaving with a list open
+		'old: do not allow leaving with a list open
+		'new: just close the lists
 		If PPprogrammeList.enabled Or PPcontractList.enabled
-			PPprogrammeList.SetOpen( Max(0, PPprogrammeList.openState - 1) )
-			PPcontractList.SetOpen( Max(0, PPcontractList.openState - 1) )
-			triggerEvent.SetVeto()
-			Return False
+			PPprogrammeList.SetOpen(0)
+			PPcontractList.SetOpen(0)
+			'triggerEvent.SetVeto()
+			'Return False
 		EndIf
 
 		'do not allow leaving as long as we have a dragged block

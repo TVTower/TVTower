@@ -979,6 +979,15 @@ Type TgfxProgrammelist Extends TPlannerList
 			If hoveredParentalLicence Then UpdateSubTapes(hoveredParentalLicence)
 		EndIf
 
+
+		'react to right click
+		If openState > 0 and (MOUSEMANAGER.IsClicked(2) or MouseManager.IsLongClicked(1))
+			SetOpen( Max(0, openState - 1) )
+
+			MOUSEMANAGER.resetKey(2)
+			MOUSEMANAGER.resetKey(1) 'also normal clicks
+		EndIf
+		
 		'close if clicked outside - simple mode: so big rect
 		If MouseManager.isHit(1) ' and mode=MODE_ARCHIVE
 			Local closeMe:Int = True

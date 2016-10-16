@@ -84,10 +84,8 @@ Type TScreenCollection
 		EventManager.triggerEvent( TEventSimple.Create("screen.onLeave", new TData.Add("toScreen", screen), currentScreen) )
 
 		'if on a screen, try to leave first
-		if currentScreen
-			local event:TEventSimple = TEventSimple.Create("screen.onTryLeave", new TData.Add("toScreen", screen), currentScreen)
-			EventManager.triggerEvent(event)
-			if event.isVeto() then return False
+		if currentScreen and not currentScreen.TryLeave(screen)
+			return False
 		endif
 
 		'if entering a screen, try to enter
@@ -424,6 +422,14 @@ Type TScreen
 
 	Method FinishLeave:int(toScreen:TScreen=null)
 		state = TScreen.STATE_NONE
+	End Method
+
+
+	Method TryLeave:int(toScreen:TScreen=null)
+		local event:TEventSimple = TEventSimple.Create("screen.onTryLeave", new TData.Add("toScreen", toScreen), self)
+		EventManager.triggerEvent(event)
+		if event.isVeto() then return False
+		return True
 	End Method
 
 
