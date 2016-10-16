@@ -575,11 +575,10 @@ Type TNewsAgency
 				'skip news events not happening yet
 				If not newsEvent.HasHappened()
 					delayed:+1
-					continue
-				else
-					announceNewsEvent(newsEvent)
-					announced :+ 1
 				endif
+
+				announceNewsEvent(newsEvent)
+				announced :+ 1
 			Next
 			
 			nP.ClearNewNewsEvents()
@@ -681,6 +680,9 @@ Type TNewsAgency
 
 	'Returns the price for this level of a news abonnement
 	Function GetNewsAbonnementPrice:Int(playerID:int, newsGenreID:int, level:Int=0)
+		'for now: ignore genre "culture" (not integrated yet)
+		if newsGenreID = TVTNewsGenre.CULTURE then return 0
+
 		if level = 1 then return 10000
 		if level = 2 then return 20000
 		if level = 3 then return 35000
@@ -709,6 +711,7 @@ Type TNewsAgency
 
 
 	Method announceNewsEvent:Int(newsEvent:TNewsEvent, happenedTime:Double=0, sendNow:Int=False)
+		if happenedTime = 0 then happenedTime = newsEvent.happenedTime
 		newsEvent.doHappen(happenedTime)
 
 		For Local i:Int = 1 To 4
