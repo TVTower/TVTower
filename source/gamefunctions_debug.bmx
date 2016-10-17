@@ -2,11 +2,17 @@
 Global debugAudienceInfos:TDebugAudienceInfos = New TDebugAudienceInfos
 Global debugProgrammePlanInfos :TDebugProgrammePlanInfos = new TDebugProgrammePlanInfos
 Global debugProgrammeCollectionInfos :TDebugProgrammeCollectionInfos = new TDebugProgrammeCollectionInfos
+Global debugPlayerControls :TDebugPlayerControls = new TDebugPlayerControls
 
 
 Type TDebugAudienceInfos
 	Field currentStatement:TBroadcastFeedbackStatement
 	Field lastCheckedMinute:Int
+
+
+	Method Update(playerID:int, x:int, y:int)
+	End Method
+
 
 	Method Draw()
 		SetColor 0,0,0
@@ -453,6 +459,10 @@ Type TDebugProgrammeCollectionInfos
 		initialized = True
 	End Method
 
+
+	Method Update(playerID:int, x:int, y:int)
+	End Method
+
 	
 	Method Draw(playerID:int, x:int, y:int)
 		if not initialized then Initialize()
@@ -645,6 +655,10 @@ Type TDebugProgrammePlanInfos
 		return 0
 	End Function
 
+
+	Method Update(playerID:int, x:int, y:int)
+	End Method
+
 	
 	Function Draw(playerID:int, x:int, y:int)
 		if playerID <= 0 then playerID = GetPlayerBase().playerID
@@ -832,4 +846,81 @@ Type TDebugProgrammePlanInfos
 				SetColor 255,255,255
 		End select
 	End Function
+End Type
+
+
+
+Type TDebugPlayerControls
+	Method Update:int(playerID:int, x:int, y:int)
+		local player:TPlayer = GetPlayer(playerID)
+		if not player then return False
+
+		local buttonX:int = 0
+		if UpdateButton(buttonX, y, 120, 20)
+			player.GetFigure().controllable = not player.GetFigure().controllable
+		endif
+
+		buttonX :+ 120+5
+		if UpdateButton(x+buttonX,y, 120, 20)
+			player.GetFigure().FinishCurrentTarget()
+		endif
+
+		buttonX :+ 120+5
+		if UpdateButton(x+buttonX,y, 120, 20)
+			'forecfully! leave the room
+			player.GetFigure().LeaveRoom(True)
+		endif
+	End Method
+
+	
+	Method Draw:int(playerID:int, x:int, y:int)
+		local player:TPlayer = GetPlayer(playerID)
+		if not player then return False
+
+		local buttonX:int = x
+		if player.GetFigure().IsControllable()
+			DrawButton("kontrollierbar", buttonX, y, 120, 20)
+		else
+			DrawButton("nicht kontrollierbar", buttonX, y, 120, 20)
+		endif
+
+		buttonX :+ 120+5
+		if not player.GetFigure().GetTarget()
+			DrawButton("ohne Ziel", buttonX, y, 120, 20)
+		else
+			DrawButton("Ziel entfernen", buttonX, y, 120, 20)
+		endif
+
+		buttonX :+ 120+5
+		if TRoomBase(player.GetFigure().GetInRoom())
+			DrawButton("in Raum: "+ TRoomBase(player.GetFigure().GetInRoom()).name, buttonX, y, 120, 20)
+		else
+			DrawButton("im Hochhaus", buttonX, y, 120, 20)
+		endif
+	End Method
+
+
+	Method DrawButton(text:string, x:int, y:int, w:int, h:int)
+		SetColor 150,150,150
+		DrawRect(x,y,w,h)
+		if THelper.MouseIn(x,y,w,h)
+			SetColor 50,50,50
+		else
+			SetColor 0,0,0
+		endif
+		DrawRect(x+1,y+1,w-2,h-2)
+		SetColor 255,255,255
+		GetBitmapFont("default", 11).DrawBlock(text, x,y,w,h, ALIGN_CENTER_CENTER)
+	End Method
+
+
+	Method UpdateButton:int(x:int, y:int, w:int, h:int)
+		if THelper.MouseIn(x,y,w,h)
+			if MouseManager.IsHit(1)
+				MouseManager.ResetKey(1)
+				return True
+			endif
+		endif
+		return False
+	End Method
 End Type

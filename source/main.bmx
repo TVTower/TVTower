@@ -550,6 +550,9 @@ Type TApp
 		GUIManager.Update(systemState)
 
 
+		UpdateDebugControls()
+
+
 		'=== UPDATE INGAME HELP ===
 		IngameHelpWindowCollection.Update()
 
@@ -1244,92 +1247,142 @@ endrem
 
 
 	Function RenderSideDebug()
-		if TVTDebugInfos And Not GetPlayer().GetFigure().inRoom
-			SetAlpha GetAlpha() * 0.5
-			SetColor 0,0,0
-			DrawRect(0,0,160,385)
-			SetColor 255, 255, 255
-			SetAlpha GetAlpha() * 2.0
-			GetBitmapFontManager().baseFontBold.draw("Debug information:", 5,10)
-			GetBitmapFontManager().baseFont.draw("Renderer: "+GetGraphicsManager().GetRendererName(), 5,30)
+		SetAlpha GetAlpha() * 0.5
+		SetColor 0,0,0
+		DrawRect(0,0,160,385)
+		SetColor 255, 255, 255
+		SetAlpha GetAlpha() * 2.0
+		GetBitmapFontManager().baseFontBold.draw("Debug information:", 5,10)
+		GetBitmapFontManager().baseFont.draw("Renderer: "+GetGraphicsManager().GetRendererName(), 5,30)
 
-			'GetBitmapFontManager().baseFont.draw(Network.stream.UDPSpeedString(), 662,490)
-			GetBitmapFontManager().baseFont.draw("Player positions:", 5,55)
-			Local roomName:String = ""
-			Local fig:TFigure
-			For Local i:Int = 0 To 3
-				fig = GetPlayerCollection().Get(i+1).GetFigure()
+		'GetBitmapFontManager().baseFont.draw(Network.stream.UDPSpeedString(), 662,490)
+		GetBitmapFontManager().baseFont.draw("Player positions:", 5,55)
+		Local roomName:String = ""
+		Local fig:TFigure
+		For Local i:Int = 0 To 3
+			fig = GetPlayerCollection().Get(i+1).GetFigure()
 
-				local change:string = ""
-				if fig.isChangingRoom()
-					if fig.inRoom
-						change = "<-[]" 'Chr(8646) '⇆
-					else
-						change = "->[]" 'Chr(8646) '⇆
-					endif
-				endif
-
-				roomName = "Building"
-				If fig.inRoom
-					roomName = fig.inRoom.Name
-				ElseIf fig.IsInElevator()
-					roomName = "InElevator"
-				ElseIf fig.IsAtElevator()
-					roomName = "AtElevator"
-				EndIf
-				if fig.isControllable()
-					GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName+change , 5, 70 + i * 11)
+			local change:string = ""
+			if fig.isChangingRoom()
+				if fig.inRoom
+					change = "<-[]" 'Chr(8646) '⇆
 				else
-					GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName+change +" (forced)" , 5, 70 + i * 11)
+					change = "->[]" 'Chr(8646) '⇆
 				endif
-			Next
+			endif
 
-			If ScreenCollection.GetCurrentScreen()
-				GetBitmapFontManager().baseFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 5, 120)
-			Else
-				GetBitmapFontManager().baseFont.draw("onScreen: Main", 5, 120)
+			roomName = "Building"
+			If fig.inRoom
+				roomName = fig.inRoom.Name
+			ElseIf fig.IsInElevator()
+				roomName = "InElevator"
+			ElseIf fig.IsAtElevator()
+				roomName = "AtElevator"
 			EndIf
+			if fig.isControllable()
+				GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName+change , 5, 70 + i * 11)
+			else
+				GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName+change +" (forced)" , 5, 70 + i * 11)
+			endif
+		Next
 
-
-			GetBitmapFontManager().baseFont.draw("Elevator routes:", 5,140)
-			Local routepos:Int = 0
-			Local startY:Int = 155
-			If GetGame().networkgame Then startY :+ 4*11
-
-			Local callType:String = ""
-
-			Local directionString:String = "up"
-			If GetElevator().Direction = 1 Then directionString = "down"
-			Local debugString:String =	"floor:" + GetElevator().currentFloor +..
-										"->" + GetElevator().targetFloor +..
-										" status:"+GetElevator().ElevatorStatus
-
-			GetBitmapFontManager().baseFont.draw(debugString, 5, startY)
-
-
-			If GetElevator().RouteLogic.GetSortedRouteList() <> Null
-				For Local FloorRoute:TFloorRoute = EachIn GetElevator().RouteLogic.GetSortedRouteList()
-					If floorroute.call = 0 Then callType = " 'send' " Else callType= " 'call' "
-					GetBitmapFontManager().baseFont.draw(FloorRoute.floornumber + callType + FloorRoute.who.Name, 5, startY + 15 + routepos * 11)
-					routepos:+1
-				Next
-			Else
-				GetBitmapFontManager().baseFont.draw("recalculate", 5, startY + 15)
-			EndIf
-
-
-			For Local i:Int = 0 To 3
-				GetBitmapFontManager().baseFont.Draw("Image #"+i+": "+MathHelper.NumberToString(GetPublicImageCollection().Get(i+1).GetAverageImage(), 4)+" %", 10, 320 + i*13)
-			Next
-
-			For Local i:Int = 0 To 3
-				GetBitmapFontManager().baseFont.Draw("Boss #"+i+": "+MathHelper.NumberToString(GetPlayerBoss(i+1).mood,4), 10, 270 + i*13)
-			Next
-
-
-			GetWorld().RenderDebug(660,0, 140, 160)
-			'GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
+		If ScreenCollection.GetCurrentScreen()
+			GetBitmapFontManager().baseFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 5, 120)
+		Else
+			GetBitmapFontManager().baseFont.draw("onScreen: Main", 5, 120)
 		EndIf
+
+
+		GetBitmapFontManager().baseFont.draw("Elevator routes:", 5,140)
+		Local routepos:Int = 0
+		Local startY:Int = 155
+		If GetGame().networkgame Then startY :+ 4*11
+
+		Local callType:String = ""
+
+		Local directionString:String = "up"
+		If GetElevator().Direction = 1 Then directionString = "down"
+		Local debugString:String =	"floor:" + GetElevator().currentFloor +..
+									"->" + GetElevator().targetFloor +..
+									" status:"+GetElevator().ElevatorStatus
+
+		GetBitmapFontManager().baseFont.draw(debugString, 5, startY)
+
+
+		If GetElevator().RouteLogic.GetSortedRouteList() <> Null
+			For Local FloorRoute:TFloorRoute = EachIn GetElevator().RouteLogic.GetSortedRouteList()
+				If floorroute.call = 0 Then callType = " 'send' " Else callType= " 'call' "
+				GetBitmapFontManager().baseFont.draw(FloorRoute.floornumber + callType + FloorRoute.who.Name, 5, startY + 15 + routepos * 11)
+				routepos:+1
+			Next
+		Else
+			GetBitmapFontManager().baseFont.draw("recalculate", 5, startY + 15)
+		EndIf
+
+
+		For Local i:Int = 0 To 3
+			GetBitmapFontManager().baseFont.Draw("Image #"+i+": "+MathHelper.NumberToString(GetPublicImageCollection().Get(i+1).GetAverageImage(), 4)+" %", 10, 320 + i*13)
+		Next
+
+		For Local i:Int = 0 To 3
+			GetBitmapFontManager().baseFont.Draw("Boss #"+i+": "+MathHelper.NumberToString(GetPlayerBoss(i+1).mood,4), 10, 270 + i*13)
+		Next
+
+
+		GetWorld().RenderDebug(660,0, 140, 160)
+		'GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
+	End Function
+
+
+	Function UpdateDebugControls()
+		If GetGame().gamestate <> TGame.STATE_RUNNING then return
+
+		if TVTDebugProgrammePlan
+			local playerID:int = GetObservedPlayerID()
+			if GetInGameInterface().ShowChannel > 0
+				playerID = GetInGameInterface().ShowChannel
+			endif
+			if playerID <= 0 then playerID = GetPlayerBase().playerID
+
+			debugProgrammePlanInfos.Update(playerID, 15, 15)
+			debugProgrammeCollectionInfos.Update(playerID, 415, 15)
+			debugPlayerControls.Update(playerID, 15, 365)
+		endif
+	End Function
+
+
+	Function RenderDebugControls()
+		If GetGame().gamestate <> TGame.STATE_RUNNING then return
+		
+		if TVTDebugInfos And Not GetPlayer().GetFigure().inRoom
+			RenderSideDebug()
+
+		'show quotes even without "DEV_OSD = true"
+		elseIf TVTDebugQuoteInfos
+			debugAudienceInfos.Draw()
+
+		elseif TVTDebugProgrammePlan
+			local playerID:int = GetObservedPlayerID()
+			if GetInGameInterface().ShowChannel > 0
+				playerID = GetInGameInterface().ShowChannel
+			endif
+			if playerID <= 0 then playerID = GetPlayerBase().playerID
+
+			debugProgrammePlanInfos.Draw(playerID, 15, 15)
+			debugProgrammeCollectionInfos.Draw(playerID, 415, 15)
+			debugPlayerControls.Draw(playerID, 15, 365)
+
+			local player:TPlayer = GetPlayer(playerID)
+			if player.playerAI
+				SetColor 50,40,0
+				DrawRect(235, 313, 150, 36)
+				SetColor 255,255,255
+				GetBitmapFont("default", 10).Draw("Task: " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", 238,315)
+				GetBitmapFont("default", 10).Draw("Job:   " + player.aiData.GetString("currentTaskJob") + " ["+player.aiData.GetString("currentTaskJobStatus")+"]", 238,325)
+			endif
+		
+'				debugProgrammePlanInfos.Draw((playerID + 1) mod 4, 415, 15)
+		endif
 	End Function
 
 
@@ -1360,8 +1413,6 @@ endrem
 
 
 		If GetGame().gamestate = TGame.STATE_RUNNING
-			RenderSideDebug()
-
 			if GameConfig.observerMode
 				local playerNum:int = 0
 				For local i:int = 1 to 4
@@ -1391,32 +1442,10 @@ endrem
 					endif
 				endif
 			endif
-
-			'show quotes even without "DEV_OSD = true"
-			If TVTDebugQuoteInfos
-				debugAudienceInfos.Draw()
-			elseif TVTDebugProgrammePlan
-				local playerID:int = GetObservedPlayerID()
-				if GetInGameInterface().ShowChannel > 0
-					playerID = GetInGameInterface().ShowChannel
-				endif
-				if playerID <= 0 then playerID = GetPlayerBase().playerID
-
-				debugProgrammePlanInfos.Draw(playerID, 15, 15)
-				debugProgrammeCollectionInfos.Draw(playerID, 415, 15)
-
-				local player:TPlayer = GetPlayer(playerID)
-				if player.playerAI
-					SetColor 50,40,0
-					DrawRect(235, 313, 150, 36)
-					SetColor 255,255,255
-					GetBitmapFont("default", 10).Draw("Task: " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", 238,315)
-					GetBitmapFont("default", 10).Draw("Job:   " + player.aiData.GetString("currentTaskJob") + " ["+player.aiData.GetString("currentTaskJobStatus")+"]", 238,325)
-				endif
-				
-'				debugProgrammePlanInfos.Draw((playerID + 1) mod 4, 415, 15)
-			endif
 		endif
+
+		'rendder debug views and control buttons
+		RenderDebugControls()
 		
 		'draw loading resource information
 		RenderLoadingResourcesInformation()
