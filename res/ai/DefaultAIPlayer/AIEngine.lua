@@ -12,7 +12,7 @@ dofile("res/ai/DefaultAIPlayer/SLF.lua")
 
 -- ##### GLOBALS #####
 globalPlayer = nil
-unitTestMode = true
+unitTestMode = false
 
 -- ##### KONSTANTEN #####
 TASK_STATUS_OPEN	= "T_open"
@@ -100,7 +100,7 @@ function AIPlayer:ForceNextTask()
 			-- cancel old one
 			if cancelTask then 
 				debugMsg("ForceNextTask: Cancel current task...")
-				self.CurrentTask:SetCancel()
+				self.CurrentTask:SetAbort()
 			end
 
 			--assign next task
@@ -244,6 +244,8 @@ function AITask:PayFromBudget(value)
 end
 
 function AITask:resume()
+	-- Ronny 16.10.2016: should no longer be needed as the AI now stores
+	-- its external objects in "TVT.*"
 	if self.InvalidDataObject then
 		if self.Status == TASK_STATUS_PREPARE or self.Status == TASK_STATUS_RUN then
 			infoMsg(type(self) .. ": InvalidDataObject resume => TASK_STATUS_OPEN")
@@ -277,7 +279,8 @@ end
 --Wird aufgerufen, wenn der Task zur Bearbeitung ausgewaehlt wurde (NICHT UEBERSCHREIBEN!)
 function AITask:StartNextJob()
 	--debugMsg("StartNextJob")
-	local roomNumber = TVT.GetPlayerRoom()
+
+	--local roomNumber = TVT.GetPlayerRoom()
 	--debugMsg("Player-Raum: " .. roomNumber .. " - Target-Raum: " .. self.TargetRoom)
 	if TVT.GetPlayerRoom() ~= self.TargetRoom then --sorgt dafür, dass der Spieler in den richtigen Raum geht!
 		self.Status = TASK_STATUS_PREPARE
@@ -315,7 +318,7 @@ function AITask:Tick()
 		end
 	end
 
-	if (self.Status == TASK_STATUS_RUN or (self.Status == TASK_STATUS_PREPARE)) then
+	if ((self.Status == TASK_STATUS_RUN) or (self.Status == TASK_STATUS_PREPARE)) then
 		if (self.CurrentJob == nil) then
 			--debugMsg("----- Kein Job da - Neuen Starten")
 			self:StartNextJob() --Von vorne anfangen
@@ -389,8 +392,15 @@ function AITask:SetDone()
 	self.LastDoneWorldTicks = self:getWorldTicks()
 end
 
+--no priority modification
+function AITask:SetAbort()
+	debugMsg("<<< Task aborted!")
+	self.Status = TASK_STATUS_CANCEL
+end
+
+--with priority modification
 function AITask:SetCancel()
-	debugMsg("<<< Task abgebrochen!")
+	debugMsg("<<< Task canceled!")
 	self.Status = TASK_STATUS_CANCEL
 	self.SituationPriority = self.SituationPriority / 2
 end
@@ -601,8 +611,11 @@ end
 function AIJobGoToRoom:Prepare(pParams)
 	if ((self.Status == JOB_STATUS_NEW) or (self.Status == TASK_STATUS_PREPARE) or (self.Status == JOB_STATUS_REDO)) then
 		--debugMsg("DoGoToRoom: " .. self.TargetRoom .. " => " .. self.Status)
-		TVT.DoGoToRoom(self.TargetRoom)
-		self.Status = JOB_STATUS_RUN
+		if TVT.DoGoToRoom(self.TargetRoom) <= 0 then
+			--debugMsg("DoGoToRoom: failed, eg. not allowed to do so.")
+		else
+			self.Status = JOB_STATUS_RUN
+		end
 	end
 end
 
