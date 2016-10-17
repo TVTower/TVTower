@@ -1021,8 +1021,6 @@ endrem
 		'reset target reach
 		currentReachTargetStep = 0
 
-		'remove control
-		if forceChange then controllable = False
 		'is controlling allowed (eg. figure MUST go to a specific target)
 		if not forceChange and not IsControllable() then Return False
 
@@ -1098,6 +1096,11 @@ endrem
 		'or if already in this room
 		if targetRoom and targetRoom = inRoom then return False
 
+		'=== NEW TARGET IS OK ===
+		'(and differing to current one)
+
+		'remove control
+		if forceChange then controllable = False
 
 		'=== SET NEW TARGET ===
 		'if still in a room, but targetting something else ... leave first

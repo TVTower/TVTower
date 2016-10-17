@@ -337,6 +337,11 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		if TFigureTarget(targets[0])
 			TFigureTarget(targets[0]).Abort(self)
 		endif
+
+		'regain control if there is no other target waiting?
+		'TODO: Remove this as soon as each target has its own
+		'      controllable flag
+		controllable = true
 		
 		targets = targets[1..]
 		return True
@@ -352,6 +357,8 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		endif
 
 		'regain control if there is no other target waiting?
+		'TODO: Remove this as soon as each target has its own
+		'      controllable flag
 		controllable = true
 		
 		targets = targets[1..]
@@ -392,10 +399,13 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	'@forceChange   defines wether the target could change target
 	'               even when not controllable
 	Method _ChangeTarget:Int(x:Int=-1, y:Int=-1, forceChange:Int=False)
-		'remove control
-		if forceChange then controllable = False
 		'is controlling allowed (eg. figure MUST go to a specific target)
 		if not forceChange and not IsControllable() then Return False
+
+		'=== NEW TARGET IS OK ===
+
+		'remove control
+		if forceChange then controllable = False
 
 		reachedTemporaryTarget = False
 
