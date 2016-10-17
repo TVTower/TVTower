@@ -334,7 +334,9 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		if targets.length = 0 then return False
 
 		'inform target
-		if TFigureTarget(targets[0]) TFigureTarget(targets[0]).Abort(self)
+		if TFigureTarget(targets[0])
+			TFigureTarget(targets[0]).Abort(self)
+		endif
 		
 		targets = targets[1..]
 		return True
@@ -467,16 +469,9 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		'reset current step to 0 so figure can call step 1 again
 		currentReachTargetStep = 0
 
-		if IsAtCurrentTarget()
-			'print name +" is at target, removing it"
-			FinishCurrentTarget()
-		rem
-		else
-			if GetTarget()
-				print name +" is NOT at target, keeping current Target " + GetTarget().ToString()
-			endif
-		endrem
-		endif
+		if not GetTarget() then print "ReachingTargetStep2 - WITHOUT target. Figure="+name
+
+		FinishCurrentTarget()
 
 		'emit an event
 		EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", null, self, GetTarget() ) )
@@ -503,6 +498,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Method EnterTarget:int()
 		'emit an event
 		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterTarget", null, self, GetTarget() ) )
+		return True
 	End Method
 
 

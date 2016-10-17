@@ -322,7 +322,7 @@ Type TFigure extends TFigureBase
 				'CanEnterTarget also checks for "IsWaitingToEnter()"
 				if not IsWaitingToEnter() and CanEnterTarget() 'and currentAction = ACTION_IDLE  
 					WaitEnterTimer = -1
-					EnterTarget()
+					if not EnterTarget() then print "Enter target failed. Figure: " + name
 				endif
 			endif
 		endif
@@ -1004,7 +1004,8 @@ endrem
 		elseif TRoomDoorBase(target)
 			return new TVec2D.Init(TRoomDoorBase(target).area.GetX() + TRoomDoorBase(target).area.GetW()/2, TRoomDoorBase(target).area.GetY())
 		elseif THotspot(target)
-			return new TVec2D.Init(THotspot(target).area.GetX() + THotspot(target).area.GetW()/2, THotspot(target).area.GetY())
+			'attention: return GetY2() (bottom point) as this is used for figures too
+			return new TVec2D.Init(THotspot(target).area.GetX() + THotspot(target).area.GetW()/2, THotspot(target).area.GetY2())
 		endif
 		
 		return Null
@@ -1130,7 +1131,7 @@ endrem
 		if not GetTarget() then return False
 
 		'emit event
-		Super.EnterTarget()
+		if not Super.EnterTarget() then return False
 
 		local targetDoor:TRoomDoor = TRoomDoor(GetTarget())
 		if targetDoor
@@ -1139,6 +1140,8 @@ endrem
 			'just trust the method to do it)
 			EnterLocation(targetDoor)
 		EndIf
+
+		return True
 	End Method
 
 
