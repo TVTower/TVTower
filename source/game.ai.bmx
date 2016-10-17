@@ -557,8 +557,11 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 		If room
 			Local door:TRoomDoorBase = GetRoomDoorCollection().GetMainDoorToRoom(room.id)
 			If door
-				TFigure(GetPlayerBase(self.ME).GetFigure()).SendToDoor(door)
-				Return self.RESULT_OK
+				if TFigure(GetPlayerBase(self.ME).GetFigure()).SendToDoor(door)
+					Return self.RESULT_OK
+				else
+					Return self.RESULT_NOTALLOWED
+				endif
 			EndIf
 		endif
 

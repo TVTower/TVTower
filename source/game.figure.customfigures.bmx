@@ -181,7 +181,7 @@ Type TFigureJanitor Extends TFigure
 		EndIf
 
 		If GetTarget()
-			If Not useDoors And TRoomDoor(GetTarget()) Then RemoveCurrentTarget()
+			If Not useDoors And TRoomDoor(GetTarget()) Then FinishCurrentTarget()
 		EndIf
 	End Method
 End Type

@@ -709,6 +709,9 @@ Type TApp
 					
 
 					If KEYMANAGER.IsHit(KEY_Y)
+						print "Force Next Task:"
+						GetPlayer(2).PlayerAI.CallLuaFunction("OnForceNextTask", null)
+
 						local addLicences:string[]
 						local addContracts:string[]
 
@@ -1274,7 +1277,11 @@ endrem
 				ElseIf fig.IsAtElevator()
 					roomName = "AtElevator"
 				EndIf
-				GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName+change, 5, 70 + i * 11)
+				if fig.isControllable()
+					GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName+change , 5, 70 + i * 11)
+				else
+					GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName+change +" (forced)" , 5, 70 + i * 11)
+				endif
 			Next
 
 			If ScreenCollection.GetCurrentScreen()
@@ -1390,10 +1397,23 @@ endrem
 				debugAudienceInfos.Draw()
 			elseif TVTDebugProgrammePlan
 				local playerID:int = GetObservedPlayerID()
+				if GetInGameInterface().ShowChannel > 0
+					playerID = GetInGameInterface().ShowChannel
+				endif
 				if playerID <= 0 then playerID = GetPlayerBase().playerID
 
 				debugProgrammePlanInfos.Draw(playerID, 15, 15)
 				debugProgrammeCollectionInfos.Draw(playerID, 415, 15)
+
+				local player:TPlayer = GetPlayer(playerID)
+				if player.playerAI
+					SetColor 50,40,0
+					DrawRect(235, 313, 150, 36)
+					SetColor 255,255,255
+					GetBitmapFont("default", 10).Draw("Task: " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", 238,315)
+					GetBitmapFont("default", 10).Draw("Job:   " + player.aiData.GetString("currentTaskJob") + " ["+player.aiData.GetString("currentTaskJobStatus")+"]", 238,325)
+				endif
+				
 '				debugProgrammePlanInfos.Draw((playerID + 1) mod 4, 415, 15)
 			endif
 		endif

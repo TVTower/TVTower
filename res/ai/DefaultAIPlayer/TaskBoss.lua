@@ -92,7 +92,7 @@ end
 function JobCheckCredit:Tick()
 	self.Task.LastMoodLevel = TVT.bo_getBossMoodlevel()
 	if self.Task.LastMoodLevel < 3 then
-		TVT.addToLog("TODO: BOss hat schlechte Laune: " .. self.Task.LastMoodLevel)
+		TVT.addToLog("TODO: Boss hat schlechte Laune: " .. self.Task.LastMoodLevel)
 	end
 
 	self.Task.GuessCreditAvailable = TVT.bo_getCreditAvailable()
