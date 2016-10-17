@@ -446,7 +446,7 @@ Type TPlayerBoss
 
 			'check if the player knows he has to visit but did not visit
 			'the boss yet - force him to visit NOW
-			if boss.awaitingPlayerCalled and not boss.awaitingPlayerAccepted and boss.awaitingPlayerVisitTillTime < GetWorldTime().GetTimeGone()
+			if boss.awaitingPlayerCalled and not boss.awaitingPlayerAccepted and (boss.awaitingPlayerVisitTillTime > 0 and boss.awaitingPlayerVisitTillTime < GetWorldTime().GetTimeGone())
 				boss.CallPlayerForced()
 			endif
 		Next
