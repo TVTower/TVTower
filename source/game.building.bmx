@@ -529,7 +529,8 @@ Type TBuilding Extends TBuildingBase
 		'draw hotspot tooltips
 		For Local hotspot:THotspot = EachIn room.hotspots
 			'skip if not visible in "game area"
-			if not GameConfig.nonInterfaceRect.Intersects( hotspot.area ) then continue
+			'attention: check screenrect, not area
+			if not GameConfig.nonInterfaceRect.Intersects( hotspot.GetScreenArea() ) then continue
 
 			hotspot.Render(area.GetX(), area.GetY())
 		Next
