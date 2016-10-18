@@ -347,6 +347,8 @@ Type TFigure extends TFigureBase
 			If area.GetY() < TBuildingBase.GetFloorY2(13) Then area.position.setY( TBuildingBase.GetFloorY2(13) )
 			If area.GetY() - sprite.area.GetH() > TBuildingBase.GetFloorY2(0) Then area.position.setY( TBuildingBase.GetFloorY2(0) )
 		endif
+
+		return true
 	End Method
 
 
@@ -928,12 +930,15 @@ endrem
 
 
 	Method SendToDoor:Int(door:TRoomDoorBase, forceSend:Int=False)
- 		If not door then return FALSE
+ 		If not door then return False
+
+		local moveToPos:TVec2D = GetMoveToPosition(door)
+		if not moveToPos then return False
 
 		If forceSend
-			ForceChangeTarget(int(door.area.GetX() + 5), int(door.area.GetY()))
+			ForceChangeTarget(moveToPos.GetIntX(), moveToPos.GetIntY())
 		Else
-			ChangeTarget(int(door.area.GetX() + 5), int(door.area.GetY()))
+			ChangeTarget(moveToPos.GetIntX(), moveToPos.GetIntY())
 		EndIf
 	End Method
 
@@ -998,7 +1003,11 @@ endrem
 	'returns the coordinate the figure has to walk to, to reach that
 	'target
 	Method GetTargetMoveToPosition:TVec2D()
-		local target:object = GetTarget()
+		return GetMoveToPosition( GetTarget() )
+	End Method
+
+
+	Function GetMoveToPosition:TVec2D(target:object = null)
 		if TVec2D(target)
 			return TVec2D(target)
 		elseif TRoomDoorBase(target)
@@ -1009,7 +1018,7 @@ endrem
 		endif
 		
 		return Null
-	End Method
+	End Function
 
 
 
@@ -1055,9 +1064,10 @@ endrem
 		newTarget = newTargetCoord
 
 		'when targeting a room, set target to center of door
-		if TRoomDoor.GetByCoord(newTargetCoord.x, newTargetCoord.y)
-			newTarget = TRoomDoor.GetByCoord(newTargetCoord.x, newTargetCoord.y)
-			newTargetCoord = TRoomDoor(newTarget).area.position.copy()
+		local targetedDoor:TRoomDoorBase = TRoomDoor.GetByCoord(newTargetCoord.x, newTargetCoord.y)
+		if targetedDoor
+			newTarget = targetedDoor
+			newTargetCoord = GetMoveToPosition(targetedDoor)
 		endif
 
 		'limit target coordinates
@@ -1088,11 +1098,15 @@ endrem
 		'       GetTarget() might return a new one already
 		'if newTarget and newTarget = GetTarget() then return False
 		'-> alternative: check coordinates
-		if newTarget and newTarget = GetTarget()
-			if newTargetCoord.IsSame(area.position) then return False
+
+		if GetTarget()
+			'objects (hotspots, roomdoors..)
+			if newTarget and newTarget = GetTarget()
+				if newTargetCoord.IsSame(GetTargetMovetoPosition()) then return False
+			endif
+			'new target and current target are positions and the same?
+			if TVec2D(newTarget) and TVec2D(GetTarget()) and TVec2D(newTarget).isSame(TVec2D(GetTarget())) then return False
 		endif
-		'new target and current target are positions and the same?
-		if TVec2D(newTarget) and TVec2D(GetTarget()) and TVec2D(newTarget).isSame(TVec2D(GetTarget())) then return False
 		'or if already in this room
 		if targetRoom and targetRoom = inRoom then return False
 

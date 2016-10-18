@@ -480,11 +480,13 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		currentReachTargetStep = 0
 
 		if not GetTarget() then print "ReachingTargetStep2 - WITHOUT target. Figure="+name
+		local targetBackup:object = GetTarget()
 
+		'finish and remove target
 		FinishCurrentTarget()
 
 		'emit an event
-		EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", null, self, GetTarget() ) )
+		EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", null, self, targetBackup ) )
 
 		if removeOnReachTarget then alive = False
 	End Method
