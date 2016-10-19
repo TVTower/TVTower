@@ -228,19 +228,22 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 	Method onEnterRoom:int( triggerEvent:TEventBase )
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
-		if not figure then return FALSE
-
 		'only interested in player figures (they cannot be in one room
 		'simultaneously, others like postman should not refill while you
 		'are in)
-		if not figure.playerID then return False
+		if not figure or not figure.playerID then return FALSE
 
+
+		'=== FOR ALL PLAYERS ===
+		'
 		'refill the empty blocks, also sets haveToRefreshGuiElements=true
 		'so next call the gui elements will be redone
 		GetInstance().ReFillBlocks()
 
-		'reorder AFTER refilling
-		if figure = GetPlayerBase().GetFigure()
+
+		'=== FOR WATCHED PLAYERS ===
+		if IsObservedFigure(figure)
+			'reorder AFTER refilling
 			GetInstance().ResetContractOrder()
 		endif
 	End Method
@@ -268,13 +271,23 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or not figure.playerID then return FALSE
 
+
+		'=== FOR ALL PLAYERS ===
+		'
 		'sign all new contracts
-		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(figure.playerID)
+		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(figure.playerID)
 		For Local contract:TAdContract = EachIn programmeCollection.suitcaseAdContracts
 			'adds a contract to the players collection (gets signed THERE)
 			'if successful, this also removes the contract from the suitcase
 			programmeCollection.AddAdContract(contract)
 		Next
+
+
+		'=== FOR WATCHED PLAYERS ===
+		if IsObservedFigure(figure)
+			'
+		endif
+
 
 		return TRUE
 	End Method
@@ -282,14 +295,23 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 	'called as soon as a players figure is forced to leave the room
 	Method onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
-		'only handle the players figure
-		if TFigure(triggerEvent.GetSender()) <> GetPlayerBase().figure then return False
+		'only handle the player figures
+		local figure:TFigure = TFigure(triggerEvent.GetSender())
+		if not figure or not figure.playerID then return FALSE
 
+
+		'=== FOR ALL PLAYERS ===
 		'instead of leaving the room and accidentially adding contracts
 		'we delete all unsigned contracts from the list
-		GetPlayerProgrammeCollection(GetPlayerBase().playerID).suitcaseAdContracts.Clear()
+		GetPlayerProgrammeCollection(figure.playerID).suitcaseAdContracts.Clear()
 
 		AbortScreenActions()
+
+
+		'=== FOR WATCHED PLAYERS ===
+		if IsObservedFigure(figure)
+			'
+		endif
 	End Method
 
 
