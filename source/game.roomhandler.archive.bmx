@@ -26,6 +26,8 @@ Type RoomHandler_Archive extends TRoomHandler
 	Field suitcasePos:TVec2D				= new TVec2D.Init(40,270)
 	Field suitcaseGuiListDisplace:TVec2D	= new TVec2D.Init(14,25)
 
+	global LS_archive:TLowerString = TLowerString.Create("archive")	
+
 	Global _instance:RoomHandler_Archive
 	Global _eventListeners:TLink[]
 
@@ -130,24 +132,60 @@ Type RoomHandler_Archive extends TRoomHandler
 
 
 	'override
+	'clear the guilist for the suitcase if a player enters
+	Method onEnterRoom:int( triggerEvent:TEventBase )
+		'ignore non-room-owners and non-player-figures
+		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
+		if not figure or not figure.playerID then return FALSE
+		if not IsRoomOwner(figure, TRoom(triggerEvent.GetSender())) then return False
+
+
+		'=== FOR ALL PLAYERS ===
+		'
+		'print "room owner enters room: roomID="+TRoom(triggerEvent.GetSender()).id+"  figure="+figure.name
+
+		
+		'=== FOR WATCHED PLAYERS ===
+		if IsObservedFigure(figure)
+			'when entering the archive, all scripts are moved from the
+			'suitcase to the collection
+			'TODO: mark these scripts as "new" 
+
+			'RONNY 2016/08/06:
+			'disabled because there is - for now - now way to move them
+			'back into the suitcase
+			'TODO: add wayback option (dialogue + archive-script-box ?)
+			'GetPlayerProgrammeCollection(figure.playerID).MoveScriptsFromSuitcaseToArchive()
+		endif
+
+
+		'empty the guilist / delete gui elements
+		'- the real list still may contain elements with gui-references
+		guiListSuitcase.EmptyList()
+	End Method
+
+
+	'override
 	Method onTryLeaveRoom:int( triggerEvent:TEventBase )
 		'non players can always leave
 		local figure:TFigure = TFigure(triggerEvent.GetSender())
 		if not figure or not figure.playerID then return FALSE
+		if not IsRoomOwner(figure, TRoom(triggerEvent.GetReceiver())) then return False
 
-		'handle interactivity for room owners
-		if IsRoomOwner(figure, TRoom(triggerEvent.GetReceiver()))
-			'if the list is open
-			'old: just close the list and veto against leaving the room
-			'now: close the list and continue leaving, the list itself
-			'     handles the right-click-checks and resets
+		'=== FOR ALL PLAYERS ===
+		'
+		'print "room owner tries to leave archive: roomID="+TRoom(triggerEvent.GetReceiver()).id+"  figure="+figure.name
+
+		
+		'=== FOR WATCHED PLAYERS ===
+		if IsObservedFigure(figure)
+			'if the list is open, close it and continue leaving
+			'the list itself handles the right-click-checks and resets
 			if programmeList.openState <> 0
 				programmeList.SetOpen(0)
-	'			triggerEvent.SetVeto()
-	'			return FALSE
 			endif
 
-			'do not allow leaving as long as we have a dragged block
+			'do not allow leaving as long as we have a dragged GUI block
 			if draggedGuiProgrammeLicence
 				triggerEvent.setVeto()
 				return FALSE
@@ -163,15 +201,21 @@ Type RoomHandler_Archive extends TRoomHandler
 		'non players can always leave
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or not figure.playerID then return FALSE
+		if not IsRoomOwner(figure, TRoom(triggerEvent.GetSender())) then return False
 
-		'handle interactivity for room owners
-		if IsRoomOwner(figure, TRoom(triggerEvent.GetSender()))
-			'remove all licences in the suitcase from the programmeplan
-			local plan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(figure.playerID)
-			For local licence:TProgrammeLicence = EachIn GetPlayerProgrammeCollectionCollection().Get(figure.playerID).suitcaseProgrammeLicences
-				plan.RemoveProgrammeInstancesByLicence(licence, true)
-			Next
+		'=== FOR ALL PLAYERS ===
+		'
+		'print "room owner leaves archive: roomID="+TRoom(triggerEvent.GetSender()).id+"  figure="+figure.name
 
+		'remove all licences in the suitcase from the programmeplan
+		local plan:TPlayerProgrammePlan = GetPlayerProgrammePlan(figure.playerID)
+		For local licence:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(figure.playerID).suitcaseProgrammeLicences
+			plan.RemoveProgrammeInstancesByLicence(licence, true)
+		Next
+
+		
+		'=== FOR WATCHED PLAYERS ===
+		if IsObservedFigure(figure)
 			'close the list if open
 			'programmeList.SetOpen(0)
 		endif
@@ -184,12 +228,22 @@ Type RoomHandler_Archive extends TRoomHandler
 	Method onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
 		if not super.onForcefullyLeaveRoom(triggerEvent) then return False
 
-		'handle interactivity for room owners
-		if IsRoomOwner(TFigure(triggerEvent.GetReceiver()), TRoom(triggerEvent.GetSender()))
-			'instead of leaving the room and accidentially removing programmes
-			'from the plan we readd all licences from the suitcase back to
-			'the players collection
-			GetPlayerProgrammeCollection( GetPlayerBase().playerID ).ReaddProgrammeLicencesFromSuitcase()
+		local figure:TFigure = TFigure(triggerEvent.GetSender())
+		if not IsRoomOwner(figure, TRoom(triggerEvent.GetReceiver())) then return False
+
+		'=== FOR ALL PLAYERS ===
+		'
+		print "room owner forcefully leaves archive: roomID="+TRoom(triggerEvent.GetReceiver()).id+"  figure="+figure.name
+
+		'instead of leaving the room and accidentially removing programmes
+		'from the plan we readd all licences from the suitcase back to
+		'the players collection
+		GetPlayerProgrammeCollection( figure.playerID ).ReaddProgrammeLicencesFromSuitcase()
+
+
+		'=== FOR WATCHED PLAYERS ===
+		if IsObservedFigure(figure)
+			'
 		endif
 	End Method
 
@@ -334,32 +388,6 @@ Type RoomHandler_Archive extends TRoomHandler
 	End Function
 
 
-	'clear the guilist for the suitcase if a player enters
-	Method onEnterRoom:int( triggerEvent:TEventBase )
-		'we are not interested in other figures than our player's
-		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
-		if not GameConfig.IsObserved(figure) and GetPlayerBase().GetFigure() <> figure Then Return False
-
-		'handle interactivity only for own room
-		if IsRoomOwner(figure, TRoom(triggerEvent.GetSender()))
-			'when entering the archive, all scripts are moved from the
-			'suitcase to the collection
-			'TODO: mark these scripts as "new" 
-
-			'RONNY 2016/08/06:
-			'disabled because there is - for now - now way to move them
-			'back into the suitcase
-			'TODO: add wayback option (dialogue + archive-script-box ?)
-			'GetPlayerProgrammeCollection(figure.playerID).MoveScriptsFromSuitcaseToArchive()
-		endif
-
-		'empty the guilist / delete gui elements
-		'- the real list still may contain elements with gui-references
-		guiListSuitcase.EmptyList()
-	End Method
-
-
-global LS_archive:TLowerString = TLowerString.Create("archive")	
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		'only draw custom elements for players room
 		local room:TRoom = TRoom(triggerEvent._sender)
