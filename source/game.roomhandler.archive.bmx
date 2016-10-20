@@ -156,12 +156,13 @@ Type RoomHandler_Archive extends TRoomHandler
 			'back into the suitcase
 			'TODO: add wayback option (dialogue + archive-script-box ?)
 			'GetPlayerProgrammeCollection(figure.playerID).MoveScriptsFromSuitcaseToArchive()
+
+			'empty the guilist / delete gui elements
+			'- the real list still may contain elements with gui-references
+			guiListSuitcase.EmptyList()
 		endif
-
-
-		'empty the guilist / delete gui elements
-		'- the real list still may contain elements with gui-references
-		guiListSuitcase.EmptyList()
+	
+		return True
 	End Method
 
 
@@ -243,8 +244,10 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		'=== FOR WATCHED PLAYERS ===
 		if IsObservedFigure(figure)
-			'
+			AbortScreenActions()
 		endif
+
+		return True
 	End Method
 
 
@@ -296,7 +299,7 @@ Type RoomHandler_Archive extends TRoomHandler
 	'in case of right mouse button click we want to add back the
 	'dragged block to the player's programmeCollection
 	Function onClickProgrammeLicence:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom("archive") then return FALSE
+		if not CheckObservedFigureInRoom("archive") then return FALSE
 		'only react if the click came from the right mouse button
 		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE
 
@@ -320,7 +323,7 @@ Type RoomHandler_Archive extends TRoomHandler
 
 
 	Function onDropProgrammeLicence:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom("archive") then return FALSE
+		if not CheckObservedFigureInRoom("archive") then return FALSE
 
 		local guiBlock:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent._sender)
 		local receiverList:TGUIListBase = TGUIListBase(triggerEvent._receiver)
@@ -356,7 +359,7 @@ Type RoomHandler_Archive extends TRoomHandler
 
 	'handle cover block drops on the dude
 	Function onDropProgrammeLicenceOnDude:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom("archive") then return FALSE
+		if not CheckObservedFigureInRoom("archive") then return FALSE
 
 		local guiBlock:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent._sender)
 		local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
@@ -374,6 +377,8 @@ Type RoomHandler_Archive extends TRoomHandler
 
 
 	Function onMouseOverProgrammeLicence:int( triggerEvent:TEventBase )
+		if not CheckObservedFigureInRoom("adagency") then return FALSE
+
 		local item:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent.GetSender())
 		if item = Null then return FALSE
 

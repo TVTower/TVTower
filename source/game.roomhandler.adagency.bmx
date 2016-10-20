@@ -305,13 +305,13 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'we delete all unsigned contracts from the list
 		GetPlayerProgrammeCollection(figure.playerID).suitcaseAdContracts.Clear()
 
-		AbortScreenActions()
-
 
 		'=== FOR WATCHED PLAYERS ===
 		if IsObservedFigure(figure)
-			'
+			AbortScreenActions()
 		endif
+
+		return True
 	End Method
 
 
@@ -937,7 +937,7 @@ endrem
 	'if players are in the agency during changes
 	'to their programme collection, react to...
 	Function onChangeProgrammeCollection:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom("adagency") then return FALSE
+		if not CheckObservedFigureInRoom("adagency") then return FALSE
 
 		GetInstance().RefreshGuiElements()
 	End Function
@@ -968,7 +968,7 @@ endrem
 
 
 	Function onMouseOverContract:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom("adagency") then return FALSE
+		if not CheckObservedFigureInRoom("adagency") then return FALSE
 
 		local item:TGuiAdContract = TGuiAdContract(triggerEvent.GetSender())
 		if item = Null then return FALSE
@@ -982,7 +982,7 @@ endrem
 
 	'handle cover block drops on the vendor ... only sell if from the player
 	Function onDropContractOnVendor:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom("adagency") then return FALSE
+		if not CheckObservedFigureInRoom("adagency") then return FALSE
 
 		local guiBlock:TGuiAdContract = TGuiAdContract( triggerEvent._sender )
 		local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
@@ -1018,7 +1018,7 @@ endrem
 	'in this stage, the item is already added to the new gui list
 	'we now just add or remove it to the player or vendor's list
 	Function onDropContract:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom("adagency") then return FALSE
+		if not CheckObservedFigureInRoom("adagency") then return FALSE
 
 		local guiAdContract:TGuiAdContract = TGuiAdContract(triggerEvent._sender)
 		local receiverList:TGUIAdContractSlotList = TGUIAdContractSlotList(triggerEvent._receiver)

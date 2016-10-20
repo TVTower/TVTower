@@ -109,11 +109,14 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	'0=no boarding, 1=boarding, -1=deboarding
 	Field boardingState:Int = 0
 
-	'could be
+	'deprecated: just in there for savegame compatibility (might contain
+	'            references)
+	Field targets:object[]
+	'could contain
 	'- TVec2D: simple position
 	'- TRoomDoorBase: a room door
 	'- THotspot: a hotspot
-	Field targets:object[]
+	Field figureTargets:TFigureTargetBase[]
 	'indicator whether the current target was reached already (eg. it is
 	'still waiting to enter a room)
 	Field currentReachTargetStep:int = 0
@@ -143,7 +146,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 	Field figureID:Int = 0
 	'does the figure accept manual (AI or user) ChangeTarget-commands?
-	Field controllable:Int = True
+	Field _controllable:Int = True
 	Field alreadyDrawn:Int = 0 			{nosave}
 
 	'whether this figure can move or not (eg. for debugging)
@@ -211,7 +214,8 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 	'return if a figure could change targets or receive commands
 	Method IsControllable:Int()
-		return controllable
+		if GetTarget() and not GetTarget().IsControllable() then return False
+		return _controllable
 	End Method
 
 
@@ -306,68 +310,62 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetTarget:object()
-		if targets.length = 0 then return Null
-		return targets[0]
+	Method GetTarget:TFigureTargetBase()
+		if figureTargets.length = 0 then return Null
+		return figureTargets[0]
+	End Method
+
+
+	Method GetTargetObject:object()
+		if figureTargets.length > 0 and figureTargets[0]
+			return figureTargets[0].targetObj
+		endif
+		return null
 	End Method
 
 
 	'add a target AFTER all others
-	Method AddTarget(target:object)
-		targets :+ [target]
+	Method AddTarget(target:TFigureTargetBase)
+		figureTargets :+ [target]
 	End Method
 
 
 	'sets the current target, removes all other targets
-	Method SetTarget(target:object)
+	Method SetTarget(target:TFigureTargetBase)
 		ClearTargets()
 		AddTarget(target)
 	End Method
 
 
-	Method PrependTarget(target:object)
-		targets = [target] + targets
+	Method PrependTarget(target:TFigureTargetBase)
+		figureTargets = [target] + figureTargets
 	End Method
 	
 
 	Method RemoveCurrentTarget:int()
-		if targets.length = 0 then return False
+		if figureTargets.length = 0 then return False
 
 		'inform target
-		if TFigureTarget(targets[0])
-			TFigureTarget(targets[0]).Abort(self)
-		endif
+		if figureTargets[0] then figureTargets[0].Abort(self)
 
-		'regain control if there is no other target waiting?
-		'TODO: Remove this as soon as each target has its own
-		'      controllable flag
-		controllable = true
-		
-		targets = targets[1..]
+		figureTargets = figureTargets[1..]
 		return True
 	End Method
 
 
 	Method FinishCurrentTarget:int()
-		if targets.length = 0 then return False
+		if figureTargets.length = 0 then return False
 
 		'inform target
-		if TFigureTarget(targets[0])
-			TFigureTarget(targets[0]).Finish(self)
-		endif
+		if figureTargets[0] then figureTargets[0].Finish(self)
 
-		'regain control if there is no other target waiting?
-		'TODO: Remove this as soon as each target has its own
-		'      controllable flag
-		controllable = true
-		
-		targets = targets[1..]
+		figureTargets = figureTargets[1..]
 		return True
 	End Method
 
 
 	Method ClearTargets:int()
-		targets = new object[0]
+		figureTargets = new TFigureTargetBase[0]
 	End Method
 
 
@@ -404,13 +402,12 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 		'=== NEW TARGET IS OK ===
 
-		'remove control
-		if forceChange then controllable = False
-
 		reachedTemporaryTarget = False
 
 		'emit an event
-		EventManager.triggerEvent( TEventSimple.Create("figure.onChangeTarget", self ) )
+		EventManager.triggerEvent( TEventSimple.Create("figure.onChangeTarget", null, self ) )
+
+		return True
 	End Method
 
 
@@ -431,10 +428,10 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	'returns the coordinate the figure has to walk to, to reach that
 	'target
 	Method GetTargetMoveToPosition:TVec2D()
-		local target:object = GetTarget()
-		if TVec2D(target) then return TVec2D(target)
+		local target:TFigureTargetBase = GetTarget()
+		if not target then return Null
 
-		return Null
+		return target.GetMoveToPosition()
 	End Method
 
 
@@ -463,7 +460,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 		currentReachTargetStep = 1
 		'inform target
-		if TFigureTarget(GetTarget()) then TFigureTarget(GetTarget()).Reach(self)
+		if GetTarget() then GetTarget().Reach(self)
 
 		'emit an event
 		EventManager.triggerEvent( TEventSimple.Create("figure.onBeginReachTarget", null, self, GetTarget() ) )
@@ -480,7 +477,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		currentReachTargetStep = 0
 
 		if not GetTarget() then print "ReachingTargetStep2 - WITHOUT target. Figure="+name
-		local targetBackup:object = GetTarget()
+		local targetBackup:TFigureTargetBase = GetTarget()
 
 		'finish and remove target
 		FinishCurrentTarget()
@@ -518,7 +515,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		'cannot enter a non-target
 		if not GetTarget() then return False
 
-		if TVec2D(GetTarget()) then return False
+		if not GetTarget().CanEnter() then return False
 
 		'no waiting needed
 		if WaitEnterTimer = -1 then return True
@@ -606,7 +603,7 @@ End Type
 
 
 
-Type TFigureTarget
+Type TFigureTargetBase
 	Field targetObj:object
 	Field currentStep:int = 0
 	Field startCondition:int = 0
@@ -615,6 +612,14 @@ Type TFigureTarget
 	Const FIGURESTATE_UNCONTROLLABLE:int = 1
 
 	Const CONDITION_MUST_BE_IN_BUILDING:int = 1
+
+
+	Method Init:TFigureTargetBase(target:object, startCondition:int = 0, figureState:int = 0)
+		self.targetObj = target
+		self.startCondition = startCondition
+		self.figureState = figureState
+		return self
+	End Method
 
 
 	Method CanGoTo:int(figure:TFigureBase)
@@ -627,30 +632,35 @@ Type TFigureTarget
 	End Method
 
 
+	Method CanEnter:int()
+		if not targetObj then return False
+		if TVec2D(targetObj) then return False
+
+		return True
+	End Method
+
+
+	Method IsControllable:int()
+		if currentStep < 2 'not finished
+			return figureState & FIGURESTATE_UNCONTROLLABLE = 0
+		else
+			return True
+		endif
+	End Method
+	
+
 	Method Start(figure:TFigureBase)
 		currentStep = 0
-
-		if figure and figureState & FIGURESTATE_UNCONTROLLABLE > 0
-			figure.controllable = false
-		endif
 	End Method
 
 
 	Method Abort(figure:TFigureBase)
 		currentStep = 0
-
-		if figure and figureState & FIGURESTATE_UNCONTROLLABLE > 0
-			figure.controllable = true
-		endif
 	End Method
 	
 
 	Method Finish(figure:TFigureBase)
 		currentStep = 2
-
-		if figure and figureState & FIGURESTATE_UNCONTROLLABLE > 0
-			figure.controllable = true
-		endif
 	End Method
 
 
@@ -659,7 +669,7 @@ Type TFigureTarget
 	End Method	
 
 
-	Method GetTargetMoveToPosition:TVec2D()
+	Method GetMoveToPosition:TVec2D()
 		if TVec2D(targetObj) then return TVec2D(targetObj)
 		return null
 	End Method

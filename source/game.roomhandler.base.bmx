@@ -1,5 +1,6 @@
 SuperStrict
 Import Brl.Map
+Import "game.gameconfig.bmx"
 Import "game.figure.bmx"
 Import "game.player.base.bmx"
 Import "game.room.base.bmx"
@@ -228,9 +229,38 @@ Type TRoomHandler
 	End Function
 
 
+	Function GetObservedFigure:TFigureBase()
+		local figure:TFigureBase = TFigureBase(GetPlayerBase().GetFigure())
+		'if we observe another figure, return this one
+		if TFigureBase(GameConfig.GetObservedObject())
+			return TFigureBase(GameConfig.GetObservedObject())
+		else
+			return TFigureBase(GetPlayerBase().GetFigure())
+		endif
+	End Function
+	
+
+	'returns wheather we observe a player and the player is in the given
+	'room
 	Function CheckPlayerInRoom:int(roomName:string)
-		'check if we are in the correct room
 		local figure:TFigure = TFigure(GetPlayerBase().GetFigure())
+		'if we observe another figure, return false as this check returns
+		'wheather the player is the observed one and in a room
+		if GameConfig.GetObservedObject() and figure <> GameConfig.GetObservedObject() then return False
+
+		'check if we are in the correct room
+		If not figure or figure.isChangingRoom() Then Return False
+		If not figure.inRoom Then Return False
+		if figure.inRoom.name <> roomName then return FALSE
+		return TRUE
+	End Function
+	
+
+	Function CheckObservedFigureInRoom:int(roomName:string)
+		local figure:TFigure = TFigure(GameConfig.GetObservedObject())
+		'when not observing someone, fall back to the players figure
+		if not figure then figure = TFigure(GetPlayerBase().GetFigure())
+		'check if we are in the correct room
 		If not figure or figure.isChangingRoom() Then Return False
 		If not figure.inRoom Then Return False
 		if figure.inRoom.name <> roomName then return FALSE
@@ -248,9 +278,28 @@ Type TRoomHandler
 	End Function
 
 
+	Function IsObservedFiguresRoom:int(room:TRoomBase)
+		if not room then return False
+		
+		local figure:TFigure = TFigure(GameConfig.GetObservedObject())
+		'when not observing someone, fall back to the players figure
+		if not figure then figure = TFigure(GetPlayerBase().GetFigure())
+		if not figure then return False
+
+		'if a figure does not have a playerID it does not necessarily own
+		'the room (postman, janitor ...)
+		return (figure.playerID > 0) and figure.playerID = room.owner
+	End Function
+
+
 	Function IsPlayersRoom:int(room:TRoomBase)
 		if not room then return False
 		return GetPlayerBase().playerID = room.owner
 	End Function
 
+
+	Function IsObservedFigure:int(figure:TFigureBase)
+		if not figure then return false
+		return GameConfig.IsObserved(figure) or GetPlayerBaseCollection().playerID = figure.playerID
+	End Function
 End Type

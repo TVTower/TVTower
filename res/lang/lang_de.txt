@@ -816,6 +816,10 @@ MANUAL = Handbuch
 HELP = Hilfe
 SHOW_HELP = Zeige die Hilfe an
 
+NEWSPLANSIGN_TO_THE_TEAM = An das Team
+NEWSPLANSIGN_SEND_THE_FOLLOWING_NEWS = Folgende Nachrichten senden:
+
+
 SPORT_SOCCER = Fussball
 SPORT_TEAMREPORT_MATCHWIN_S1 = besiegt dank %TEAM1STAR%
 SPORT_TEAMREPORT_MATCHWIN_S2 = und Stürmer %TEAM1STAR% gewinnen %MATCHKIND% gegen

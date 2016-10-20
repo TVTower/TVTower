@@ -135,8 +135,6 @@ Type RoomHandler_Office extends TRoomHandler
 		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
-		'if room.GetBackground() then room.GetBackground().draw(0, 0)
-
 		'allowed for owner only - or with key
 		If GetPlayer().HasMasterKey() OR IsPlayersRoom(room)
 			If StationsToolTip Then StationsToolTip.Render()
@@ -152,6 +150,8 @@ Type RoomHandler_Office extends TRoomHandler
 		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
+		GetGameBase().cursorstate = 0
+
 		If MOUSEMANAGER.IsClicked(1)
 			'emulated right click or clicked door
 			If MOUSEMANAGER.IsLongClicked(1) or THelper.MouseIn(25,40,150,295)
@@ -163,7 +163,6 @@ Type RoomHandler_Office extends TRoomHandler
 
 		'allowed for owner only - or with key
 		If GetPlayer().HasMasterKey() OR IsPlayersRoom(room)
-			GetGameBase().cursorstate = 0
 
 			'only if player does not want to leave room
 			if not MouseManager.IsLongClicked(1)
@@ -210,7 +209,6 @@ Type RoomHandler_Office extends TRoomHandler
 					If MOUSEMANAGER.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
 						MOUSEMANAGER.resetKey(1)
 						GetGameBase().cursorstate = 0
-print "Player "+GetPlayer().playerID + "   GoToSubscreen: stationmap"
 						ScreenCollection.GoToSubScreen("screen_office_stationmap")
 					endif
 				EndIf
@@ -316,25 +314,22 @@ Type RoomHandler_Boss extends TRoomHandler
 		local boss:TPlayerBoss = GetPlayerBoss(room.owner)
 		if not boss then return False
 
+		local figure:TFigureBase = GetObservedFigure()
+		if not figure then return False
 
 		'generate the dialogue if not done yet (and not just leaving)
 		if boss.Dialogues.Count() <= 0 and ..
-		   not GetPlayerBase().GetFigure().isLeavingRoom() and ..
-		   GetPlayerBase().GetFigure().GetInRoomID() > 0
+		   not figure.isLeavingRoom() and figure.GetInRoomID() > 0
 
-			boss.GenerateDialogues(GetPlayer().playerID)
+			'generate for the visiting one
+			boss.GenerateDialogues(figure.playerID)
 		endif
 
 		For Local dialog:TDialogue = EachIn boss.Dialogues
 			If dialog.Update() = 0
-				GetPlayer().GetFigure().LeaveRoom()
+				figure.LeaveRoom()
 				boss.Dialogues.Remove(dialog)
 			endif
 		Next
 	End Method
 End Type
-
-
-
-
-

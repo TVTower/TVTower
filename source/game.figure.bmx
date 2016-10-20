@@ -130,13 +130,21 @@ Type TFigure extends TFigureBase
 		'reassign rooms
 		if inRoom then inRoom = GetRoomCollection().Get(inRoom.id)
 		if usedDoor then usedDoor = GetRoomDoorBaseCollection().Get(usedDoor.id)
-		For local target:object = EachIn targets
+		For local target:object = EachIn figureTargets
 			if TRoomDoorBase(target) then target = GetRoomDoorBaseCollection().Get(TRoomDoorBase(target).id)
 		Next
 		'set as room occupier again (so rooms occupant list gets refilled)
 		if inRoom and not inRoom.isOccupant(self)
 			inRoom.addOccupant(Self)
 		endif
+
+		'convert old targets
+		for local target:object = eachin targets
+			SetTarget( new TFigureTarget.Init(target) )
+		Next
+		'reset - so they are no longer in new savegames (ready to get
+		'deleted later on)
+		targets = null
 	End Method
 
 
@@ -207,8 +215,7 @@ Type TFigure extends TFigureBase
 
 	'override to wait when reaching a target door/hotspot
 	Method customReachTargetStep1:Int()
-		local targetObject:object = GetTarget()
-		if TFigureTarget(GetTarget()) then targetObject = TFigureTarget(GetTarget()).targetObj  
+		local targetObject:object = GetTargetObject()  
 		'start waiting in front of the target
 		If TRoomDoorBase(targetObject) or THotspot(targetObject)
 			WaitEnterTimer = GetBuildingTime().GetMillisecondsGone() + WaitEnterLeavingTime
@@ -220,8 +227,7 @@ Type TFigure extends TFigureBase
 
 	'override to 
 	Method TargetNeedsToGetEntered:int()
-		local targetObject:object = GetTarget()
-		if TFigureTarget(GetTarget()) then targetObject = TFigureTarget(GetTarget()).targetObj  
+		local targetObject:object = GetTargetObject()  
 
 		if TRoomDoorBase(targetObject) then return True
 		'if hotspot, ask it whether enter is wanted
@@ -717,10 +723,10 @@ Type TFigure extends TFigureBase
 
 
 	Method FinishEnterRoom:Int()
-		local door:TRoomDoorBase = TRoomDoorBase( GetTarget() )
+		local door:TRoomDoorBase = TRoomDoorBase( GetTargetObject() )
 		local room:TRoomBase
 		'send to offscreen?
-		if TVec2D( GetTarget() )
+		if TVec2D( GetTargetObject() )
 			print "Send To Offscreen while entering a door!!!"
 		endif
 		if door then room = GetRoomBaseCollection().Get(door.roomID)
@@ -932,9 +938,12 @@ endrem
 	Method SendToDoor:Int(door:TRoomDoorBase, forceSend:Int=False)
  		If not door then return False
 
-		local moveToPos:TVec2D = GetMoveToPosition(door)
-		if not moveToPos then return False
-
+		local moveToPos:TVec2D = GetMoveToPosition( new TFigureTarget.Init(door) )
+		if not moveToPos
+			print "SendToDoor: failed, moveToPos = null"
+			return False
+		endif
+	
 		If forceSend
 			ForceChangeTarget(moveToPos.GetIntX(), moveToPos.GetIntY())
 		Else
@@ -1007,19 +1016,10 @@ endrem
 	End Method
 
 
-	Function GetMoveToPosition:TVec2D(target:object = null)
-		if TVec2D(target)
-			return TVec2D(target)
-		elseif TRoomDoorBase(target)
-			return new TVec2D.Init(TRoomDoorBase(target).area.GetX() + TRoomDoorBase(target).area.GetW()/2, TRoomDoorBase(target).area.GetY())
-		elseif THotspot(target)
-			'attention: return GetY2() (bottom point) as this is used for figures too
-			return new TVec2D.Init(THotspot(target).area.GetX() + THotspot(target).area.GetW()/2, THotspot(target).area.GetY2())
-		endif
-		
-		return Null
+	Function GetMoveToPosition:TVec2D(target:TFigureTargetBase = null)
+		if not target then return Null
+		return target.GetMoveToPosition()
 	End Function
-
 
 
 	'overridden
@@ -1044,9 +1044,9 @@ endrem
 		'only a partial target was given
 		if x=-1 or y=-1
 			'change current target
-			if TVec2D( GetTarget() )
-				If x<>-1 Then x = TVec2D( GetTarget() ).x
-				If y<>-1 Then y = TVec2D( GetTarget() ).y
+			if TVec2D( GetTargetObject() )
+				If x<>-1 Then x = TVec2D( GetTargetObject() ).x
+				If y<>-1 Then y = TVec2D( GetTargetObject() ).y
 			'create a new target
 			else
 				If x=-1 Then x = area.position.x
@@ -1067,7 +1067,7 @@ endrem
 		local targetedDoor:TRoomDoorBase = TRoomDoor.GetByCoord(newTargetCoord.x, newTargetCoord.y)
 		if targetedDoor
 			newTarget = targetedDoor
-			newTargetCoord = GetMoveToPosition(targetedDoor)
+			newTargetCoord = TFigureTarget.GetTargetMoveToPosition(targetedDoor)
 		endif
 
 		'limit target coordinates
@@ -1099,32 +1099,41 @@ endrem
 		'if newTarget and newTarget = GetTarget() then return False
 		'-> alternative: check coordinates
 
-		if GetTarget()
-			'objects (hotspots, roomdoors..)
-			if newTarget and newTarget = GetTarget()
-				if newTargetCoord.IsSame(GetTargetMovetoPosition()) then return False
-			endif
-			'new target and current target are positions and the same?
-			if TVec2D(newTarget) and TVec2D(GetTarget()) and TVec2D(newTarget).isSame(TVec2D(GetTarget())) then return False
+		if GetTargetObject()
+			'new target and current target are the same
+			if newTarget = GetTargetObject() then return False
+			'new target and current target are at the same position?
+			if newTargetCoord.IsSame( GetTargetMoveToPosition() ) then return False
+
+			'print playerID+": targets are different " + newTargetCoord.getIntX()+","+newTargetCoord.getIntY()+" vs " + GetTargetMovetoPosition().GetIntX()+","+GetTargetMovetoPosition().getIntY() 
 		endif
 		'or if already in this room
 		if targetRoom and targetRoom = inRoom then return False
 
+
 		'=== NEW TARGET IS OK ===
 		'(and differing to current one)
+		rem
+		local targetText:string = "unknown"
+		if newTarget then targetText = TTypeId.ForObject(newTarget).name()
+		if TRoomDoorBase(newTarget) then targetText = "RoomDoor (id="+TRoomDoorBase(newTarget).roomID+")"
+		if TVec2D(newTarget) then targetText = "Building (x="+TVec2D(newTarget).GetIntX()+" floor=unk)"
+		if playerID > 0 then print playerID+": _changeTarget = " + targetText+ "   "+ GetWorldTime().GetFormattedDate()
+		endrem
 
-		'remove control
-		if forceChange then controllable = False
 
 		'=== SET NEW TARGET ===
 		'if still in a room, but targetting something else ... leave first
 		'this is needed as computer players do not "leave a room", they
 		'just change targets
-		If newTarget <> inRoom then LeaveRoom(forceChange)
+		If inRoom and targetRoom <> inRoom then LeaveRoom(forceChange)
 
 		'new target - so go to it, remove other previously set targets
-		SetTarget(newTarget)
-
+		if forceChange
+			SetTarget( new TFigureTarget.Init(newTarget, 0, TFigureTargetBase.FIGURESTATE_UNCONTROLLABLE) )
+		else
+			SetTarget( new TFigureTarget.Init(newTarget) )
+		endif
 
 		'emit an event
 		EventManager.triggerEvent( TEventSimple.Create("figure.onChangeTarget", new TData.AddNumber("x", x).AddNumber("y", y).AddNumber("forceChange", forceChange), self, null ) )
@@ -1150,7 +1159,7 @@ endrem
 		'emit event
 		if not Super.EnterTarget() then return False
 
-		local targetDoor:TRoomDoor = TRoomDoor(GetTarget())
+		local targetDoor:TRoomDoor = TRoomDoor(GetTargetObject())
 		if targetDoor
 			'do not remove the target room as it is done during
 			'"entering the room" (which can be animated and so we
@@ -1169,8 +1178,8 @@ endrem
 
 				currentReachTargetStep = 0
 				currentAction = ACTION_IDLE
-				if TRoomDoorBase(GetTarget())
-					local door:TRoomDoorBase = TRoomDoorBase(GetTarget())
+				if TRoomDoorBase(GetTargetObject())
+					local door:TRoomDoorBase = TRoomDoorBase(GetTargetObject())
 					local room:TRoomBase = GetRoomBaseCollection().Get(door.roomID)
 					room.RemoveOccupant(self)
 				endif
@@ -1343,10 +1352,11 @@ endrem
 		if TRoomDoor(usedDoor) then usedDoorText = TRoomDoor(usedDoor).GetRoom().GetName()
 		if TRoom(inRoom) then inRoomText = TRoom(inRoom).GetName()
 		if GetTarget()
+			local t:object = GetTarget()
 			targetText = int(GetTargetMovetoPosition().x)+", "+int(GetTargetMovetoPosition().y)
-			if TRoomDoor(GetTarget())
-				targetObjText = TRoomDoor(GetTarget()).GetRoom().GetName()
-			elseif THotSpot(GetTarget())
+			if TRoomDoor(GetTargetObject())
+				targetObjText = TRoomDoor(GetTargetObject()).GetRoom().GetName()
+			elseif THotSpot(GetTargetObject())
 				targetObjText = "Hotspot"
 			endif
 		endif
@@ -1364,5 +1374,35 @@ endrem
 
 		'restore col/alpha
 		oldCol.SetRGBA()
+	End Method
+End Type
+
+
+
+
+Type TFigureTarget extends TFigureTargetBase
+	'override
+	Method CanEnter:int()
+		If not Super.CanEnter() then return False
+
+		return True
+	End Method
+
+
+	Function GetTargetMoveToPosition:TVec2D(target:object)
+		if TVec2D(target)
+			return TVec2D(target)
+		elseif TRoomDoorBase(target)
+			return new TVec2D.Init(TRoomDoorBase(target).area.GetX() + TRoomDoorBase(target).area.GetW()/2, TRoomDoorBase(target).area.GetY())
+		elseif THotspot(target)
+			'attention: return GetY2() (bottom point) as this is used for figures too
+			return new TVec2D.Init(THotspot(target).area.GetX() + THotspot(target).area.GetW()/2, THotspot(target).area.GetY2())
+		endif
+		return null
+	End Function
+
+
+	Method GetMoveToPosition:TVec2D()
+		return TFigureTarget.GetTargetMovetoPosition( targetObj )
 	End Method
 End Type

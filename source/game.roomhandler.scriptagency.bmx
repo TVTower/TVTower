@@ -24,6 +24,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	Global GuiListNormal2:TGUIScriptSlotList = null
 	Global GuiListSuitcase:TGUIScriptSlotList = null
 
+	global LS_scriptagency:TLowerString = TLowerString.Create("scriptagency")	
+	
 	'configuration
 	Global suitcasePos:TVec2D = new TVec2D.Init(320,270)
 	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(19,32)
@@ -210,20 +212,23 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 	Method onEnterRoom:int( triggerEvent:TEventBase )
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
-		if not figure then return FALSE
-
 		'only interested in player figures (they cannot be in one room
 		'simultaneously, others like postman should not refill while you
 		'are in)
-		if not figure.playerID then return False
+		if not figure or not figure.playerID then return FALSE
 
-		if figure = GetPlayerBase().GetFigure()
-			GetInstance().ResetScriptOrder()
-		endif
 
+		'=== FOR ALL PLAYERS ===
+		'
 		'refill the empty blocks, also sets haveToRefreshGuiElements=true
 		'so next call the gui elements will be redone
 		GetInstance().ReFillBlocks()
+
+
+		'=== FOR WATCHED PLAYERS ===
+		if IsObservedFigure(figure)
+			GetInstance().ResetScriptOrder()
+		endif
 	End Method
 
 
@@ -233,11 +238,23 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		local figure:TFigure = TFigure(triggerEvent.GetSender())
 		if not figure or not figure.playerID then return FALSE
 
-		'do not allow leaving as long as we have a dragged block
-		if draggedGuiScript
-			triggerEvent.setVeto()
-			return FALSE
+
+		'=== FOR ALL PLAYERS ===
+		'
+
+
+		'=== FOR WATCHED PLAYERS ===
+		if IsObservedFigure(figure)
+			'as only 1 player is allowed simultaneously, the limitation
+			'to "observed" is not strictly needed - but does not harm
+
+			'do not allow leaving as long as we have a dragged block
+			if draggedGuiScript
+				triggerEvent.setVeto()
+				return FALSE
+			endif
 		endif
+
 		return TRUE
 	End Method
 
@@ -248,10 +265,17 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or not figure.playerID then return FALSE
 
-		'add back the scripts from the suitcase?
-		'currently this is done when entering the archive room
-		'TODO: add wayback option, for now this is disabled in the
-		'      archive room
+		'=== FOR ALL PLAYERS ===
+		'
+
+
+		'=== FOR WATCHED PLAYERS ===
+		if IsObservedFigure(figure)
+			'add back the scripts from the suitcase?
+			'currently this is done when entering the archive room
+			'TODO: add wayback option, for now this is disabled in the
+			'      archive room
+		endif
 
 
 		return TRUE
@@ -643,7 +667,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	'if players are in the agency during changes
 	'to their programme collection, react to...
 	Function onChangeProgrammeCollection:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom("scriptagency") then return FALSE
+		if not CheckObservedFigureInRoom("scriptagency") then return FALSE
 
 		'refresh the suitcase, not the board shelf!
 		GetInstance().RefreshGuiElements_Suitcase()
@@ -693,13 +717,16 @@ endrem
 
 
 	Function onMouseOverScript:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom("scriptagency") then return FALSE
+		if not CheckObservedFigureInRoom("scriptagency") then return FALSE
 
 		local item:TGUIScript = TGUIScript(triggerEvent.GetSender())
 		if item = Null then return FALSE
 
 		hoveredGuiScript = item
-		if item.isDragged() then draggedGuiScript = item
+		'only handle dragged for the real player
+		if CheckPlayerInRoom("scriptagency")
+			if item.isDragged() then draggedGuiScript = item
+		endif
 
 		return TRUE
 	End Function
@@ -847,7 +874,6 @@ endrem
 	End Function
 
 
-global LS_scriptagency:TLowerString = TLowerString.Create("scriptagency")	
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		if VendorEntity Then VendorEntity.Render()
 		GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
@@ -896,16 +922,17 @@ global LS_scriptagency:TLowerString = TLowerString.Create("scriptagency")
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
 		if VendorEntity Then VendorEntity.Update()
 
-		'delete unused and create new gui elements
-		if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()
+		if CheckPlayerInRoom("scriptagency")
+			'delete unused and create new gui elements
+			if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()
 
-		'reset hovered block - will get set automatically on gui-update
-		hoveredGuiScript = null
-		'reset dragged block too
-		draggedGuiScript = null
+			'reset hovered block - will get set automatically on gui-update
+			hoveredGuiScript = null
+			'reset dragged block too
+			draggedGuiScript = null
 
-		GUIManager.Update( LS_scriptagency )
+			GUIManager.Update( LS_scriptagency )
+		endif
 	End Method
-
 End Type
 

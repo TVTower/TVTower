@@ -25,6 +25,9 @@ Type RoomHandler_News extends TRoomHandler
 	Global draggedGuiNews:TGuiNews = null
 	Global hoveredGuiNews:TGuiNews = null
 
+	global LS_newsplanner:TLowerString = TLowerString.Create("newsplanner")	
+	global LS_newsroom:TLowerString = TLowerString.Create("newsroom")	
+
 	Global _instance:RoomHandler_News
 	Global _eventListeners:TLink[]
 	Global showDeleteHintTimer:Long = 0
@@ -213,14 +216,12 @@ Type RoomHandler_News extends TRoomHandler
 	'News: room screen
 	'===================================
 
-global LS_newsroom:TLowerString = TLowerString.Create("newsroom")	
-
 	Function onDrawNews:int( triggerEvent:TEventBase )
 		GUIManager.Draw( LS_newsroom )
 
-		'no interaction for other players newsrooms
-		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
-		if not IsPlayersRoom(room) then return False
+		'no further interaction for other players newsrooms
+		'local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
+		'if not IsPlayersRoom(room) then return False
 
 		If PlannerToolTip Then PlannerToolTip.Render()
 		If NewsGenreTooltip then NewsGenreTooltip.Render()
@@ -370,11 +371,9 @@ global LS_newsroom:TLowerString = TLowerString.Create("newsroom")
 	'===================================
 	'News: NewsPlanner screen
 	'===================================
-global LS_newsplanner:TLowerString = TLowerString.Create("newsplanner")	
 
 	Function onDrawNewsPlanner:int( triggerEvent:TEventBase )
-		'local screen:TScreen	= TScreen(triggerEvent._sender)
-		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
+		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
 
@@ -384,7 +383,7 @@ global LS_newsplanner:TLowerString = TLowerString.Create("newsplanner")
 			'render to image
 			TBitmapFont.SetRenderTarget(newsPlannerTextImage)
 
-			GetBitmapFont("default", 18).DrawBlock("An das Team~n|b|Folgende News senden:|/b|", 0, 0, 300, 50, ALIGN_CENTER_CENTER, TColor.CreateGrey(100))
+			GetBitmapFont("default", 18).DrawBlock(GetLocale("NEWSPLANSIGN_TO_THE_TEAM")+"~n|b|"+ GetLocale("NEWSPLANSIGN_SEND_THE_FOLLOWING_NEWS")+"|/b|", 0, 0, 300, 50, ALIGN_CENTER_CENTER, TColor.CreateGrey(100))
 
 			'set back to screen Rendering
 			TBitmapFont.SetRenderTarget(null)
@@ -459,6 +458,8 @@ global LS_newsplanner:TLowerString = TLowerString.Create("newsplanner")
 
 	Function RefreshGuiElements:int()
 		local owner:int = GetPlayerBaseCollection().playerID
+		if currentRoom then owner = currentRoom.owner
+		
 		'remove gui elements with news the player does not have anylonger
 		For local guiNews:TGuiNews = eachin guiNewsListAvailable.entries.Copy()
 			if not GetPlayerProgrammeCollection(owner).hasNews(guiNews.news)
@@ -519,8 +520,7 @@ global LS_newsplanner:TLowerString = TLowerString.Create("newsplanner")
 
 
 	Function onUpdateNewsPlanner:int( triggerEvent:TEventBase )
-		'local screen:TScreen	= TScreen(triggerEvent._sender)
-		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
+		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
 		GetGameBase().cursorstate = 0
@@ -544,11 +544,16 @@ global LS_newsplanner:TLowerString = TLowerString.Create("newsplanner")
 	'we need to know whether we dragged or hovered an item - so we
 	'can react to right clicks ("forbid room leaving")
 	Function onMouseOverNews:int( triggerEvent:TEventBase )
+		if not CheckObservedFigureInRoom("newsagency") then return FALSE
+
 		local item:TGUINews = TGUINews(triggerEvent.GetSender())
 		if item = Null then return FALSE
 
 		hoveredGuiNews = item
-		if item.isDragged() then draggedGuiNews = item
+		'only handle dragged for the real player
+		if CheckPlayerInRoom("newsagency")
+			if item.isDragged() then draggedGuiNews = item
+		endif
 
 		return TRUE
 	End Function
@@ -557,6 +562,8 @@ global LS_newsplanner:TLowerString = TLowerString.Create("newsplanner")
 	'in case of right mouse button click we want to remove the
 	'block from the player's programmePlan
 	Function onClickNews:int(triggerEvent:TEventBase)
+		if not CheckObservedFigureInRoom("newsagency") then return FALSE
+
 		'only react if the click came from the right mouse button
 		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE
 
@@ -618,13 +625,23 @@ global LS_newsplanner:TLowerString = TLowerString.Create("newsplanner")
 
 	'override to do same check as if leaving the planning screen
 	Method onTryLeaveRoom:Int( triggerEvent:TEventBase )
-		'only check a players or a observed figure
-		local figure:TFigureBase = TFigureBase(triggerEvent.GetSender())
-		if not (GameConfig.IsObserved(figure) or GetPlayerBase().GetFigure() = figure) then return False
-		
-		'as long as onTryLeaveProgrammePlannerScreen does not
-		'check for specific event data... just forward the event
-		return onTryLeaveNewsPlannerScreen( triggerEvent )
+		'non players can always leave
+		local figure:TFigure = TFigure(triggerEvent.GetSender())
+		if not figure or not figure.playerID then return FALSE
+		if not IsRoomOwner(figure, TRoom(triggerEvent.GetReceiver())) then return False
+
+		'=== FOR ALL PLAYERS ===
+		'
+
+
+		'=== FOR WATCHED PLAYERS ===
+		if IsObservedFigure(figure)
+			'as long as onTryLeaveProgrammePlannerScreen does not
+			'check for specific event data... just forward the event
+			return onTryLeaveNewsPlannerScreen( triggerEvent )
+		endif
+
+		return TRUE
 	End Method
 
 

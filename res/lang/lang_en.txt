@@ -806,4 +806,8 @@ MANUAL = Manual
 HELP = Help
 SHOW_HELP = Show help
 
+NEWSPLANSIGN_TO_THE_TEAM = To the team
+NEWSPLANSIGN_SEND_THE_FOLLOWING_NEWS = send the following news:
+
+
 SPORT_SOCCER = Soccer

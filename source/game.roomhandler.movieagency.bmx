@@ -36,6 +36,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Global GuiListSeries:TGUIProgrammeLicenceSlotList = null
 	Global GuiListSuitcase:TGUIProgrammeLicenceSlotList = null
 
+	global LS_movieagency:TLowerString = TLowerString.Create("movieagency")	
+
 	'configuration
 	Global suitcasePos:TVec2D = new TVec2D.Init(350,130)
 	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(14,25)
@@ -323,15 +325,24 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	'clear the guilist for the suitcase if a player enters
 	Method onEnterRoom:int( triggerEvent:TEventBase )
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
-		if not figure then return FALSE
-
 		'only interested in player figures (they cannot be in one room
 		'simultaneously, others like postman should not refill while you
 		'are in)
-		if not figure.playerID then return False
+		if not figure or not figure.playerID then return FALSE
 
+
+		'=== FOR ALL PLAYERS ===
+		'
 		'fill all open slots in the agency
 		GetInstance().ReFillBlocks()
+
+
+		'=== FOR WATCHED PLAYERS ===
+		if IsObservedFigure(figure)
+			'
+		endif
+
+		return True
 	End Method
 
 
@@ -341,11 +352,23 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		local figure:TFigure = TFigure(triggerEvent.GetSender())
 		if not figure or not figure.playerID then return FALSE
 
-		'do not allow leaving as long as we have a dragged block
-		if draggedGuiProgrammeLicence
-			triggerEvent.setVeto()
-			return FALSE
+
+		'=== FOR ALL PLAYERS ===
+		'
+
+
+		'=== FOR WATCHED PLAYERS ===
+		if IsObservedFigure(figure)
+			'as only 1 player is allowed simultaneously, the limitation
+			'to "observed" is not strictly needed - but does not harm
+			
+			'do not allow leaving as long as we have a dragged block
+			if draggedGuiProgrammeLicence
+				triggerEvent.setVeto()
+				return FALSE
+			endif
 		endif
+
 		return TRUE
 	End Method
 
@@ -356,6 +379,10 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'non players can always leave
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or not figure.playerID then return FALSE
+
+		'=== FOR ALL PLAYERS ===
+		'
+		'print "player #" + figure.playerID +" leaves movieagency."
 
 		'disabled auto-suitcase-readding
 		'now we use
@@ -371,7 +398,32 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			player.emptyProgrammeSuitcaseTime = Time.GetTimeGone() + 20 * 1000
 		endif
 
+
+		'=== FOR WATCHED PLAYERS ===
+		if IsObservedFigure(figure)
+			'
+		endif
+
 		return TRUE
+	End Method
+
+
+	'called as soon as a players figure is forced to leave the room
+	Method onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
+		'only handle the player figures
+		local figure:TFigure = TFigure(triggerEvent.GetSender())
+		if not figure or not figure.playerID then return FALSE
+
+		'=== FOR ALL PLAYERS ===
+		'
+
+
+		'=== FOR WATCHED PLAYERS ===
+		if IsObservedFigure(figure)
+			AbortScreenActions()
+		endif
+
+		return True
 	End Method
 
 
@@ -689,13 +741,17 @@ endrem
 
 
 	Function onMouseOverProgrammeLicence:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom("movieagency") then return FALSE
+		if not CheckObservedFigureInRoom("movieagency") then return FALSE
 
 		local item:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent.GetSender())
 		if item = Null then return FALSE
 
 		hoveredGuiProgrammeLicence = item
-		if item.isDragged() then draggedGuiProgrammeLicence = item
+
+		'only handle dragged for the real player
+		if CheckPlayerInRoom("movieagency")
+			if item.isDragged() then draggedGuiProgrammeLicence = item
+		endif
 
 		return TRUE
 	End Function
@@ -846,7 +902,6 @@ endrem
 	End function
 
 
-global LS_movieagency:TLowerString = TLowerString.Create("movieagency")	
 	Function onDrawMovieAgency:int( triggerEvent:TEventBase )
 		if AuctionEntity Then AuctionEntity.Render()
 		if VendorEntity Then VendorEntity.Render()
@@ -907,40 +962,41 @@ global LS_movieagency:TLowerString = TLowerString.Create("movieagency")
 
 
 	Function onUpdateMovieAgency:int( triggerEvent:TEventBase )
-		'local screen:TScreen	= TScreen(triggerEvent._sender)
-		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
+		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
 		GetGameBase().cursorstate = 0
 
-		'show a auction-tooltip (but not if we dragged a block)
-		if not hoveredGuiProgrammeLicence
-			if not MouseManager.IsLongClicked(1)
-				If THelper.MouseIn(210,220,140,60)
-					If not AuctionToolTip Then AuctionToolTip = TTooltip.Create(GetLocale("AUCTION"), GetLocale("MOVIES_AND_SERIES_AUCTION"), 200, 180, 0, 0)
-					AuctionToolTip.enabled = 1
-					AuctionToolTip.Hover()
-					GetGameBase().cursorstate = 1
-					If MOUSEMANAGER.IsClicked(1)
-						MOUSEMANAGER.resetKey(1)
-						GetGameBase().cursorstate = 0
-						ScreenCollection.GoToSubScreen("screen_movieauction")
-					endif
-				EndIf
+		if CheckPlayerInRoom("movieagency")
+			'show a auction-tooltip (but not if we dragged a block)
+			if not hoveredGuiProgrammeLicence
+				if not MouseManager.IsLongClicked(1)
+					If THelper.MouseIn(210,220,140,60)
+						If not AuctionToolTip Then AuctionToolTip = TTooltip.Create(GetLocale("AUCTION"), GetLocale("MOVIES_AND_SERIES_AUCTION"), 200, 180, 0, 0)
+						AuctionToolTip.enabled = 1
+						AuctionToolTip.Hover()
+						GetGameBase().cursorstate = 1
+						If MOUSEMANAGER.IsClicked(1)
+							MOUSEMANAGER.resetKey(1)
+							GetGameBase().cursorstate = 0
+							ScreenCollection.GoToSubScreen("screen_movieauction")
+						endif
+					EndIf
+				endif
 			endif
+
+			'delete unused and create new gui elements
+			if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()
+
+			'reset hovered block - will get set automatically on gui-update
+			hoveredGuiProgrammeLicence = null
+			'reset dragged block too
+			draggedGuiProgrammeLicence = null
+
+			GUIManager.Update( LS_movieagency )
+
+			If AuctionToolTip Then AuctionToolTip.Update()
 		endif
-
-		'delete unused and create new gui elements
-		if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()
-
-		'reset hovered block - will get set automatically on gui-update
-		hoveredGuiProgrammeLicence = null
-		'reset dragged block too
-		draggedGuiProgrammeLicence = null
-
-		GUIManager.Update( LS_movieagency )
-
-		If AuctionToolTip Then AuctionToolTip.Update()
 	End Function
 
 
@@ -976,9 +1032,13 @@ global LS_movieagency:TLowerString = TLowerString.Create("movieagency")
 		TAuctionProgrammeBlocks.DrawAll()
 	End Function
 
+
 	Function onUpdateMovieAuction:int( triggerEvent:TEventBase )
 		GetGameBase().cursorstate = 0
-		TAuctionProgrammeBlocks.UpdateAll()
+
+		if CheckPlayerInRoom("movieagency")
+			TAuctionProgrammeBlocks.UpdateAll()
+		endif
 
 		'remove old tooltips from previous screens
 		If AuctionToolTip Then AuctionToolTip = null
