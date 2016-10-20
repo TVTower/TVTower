@@ -1683,6 +1683,7 @@ Type TGameState
 	Field _ScriptCollection:TScriptCollection = Null
 	Field _ProductionManager:TProductionManager = Null
 	Field _ProductionConceptCollection:TProductionConceptCollection = Null
+	Field _ProductionCompanyBaseCollection:TProductionCompanyBaseCollection = Null
 	Field _ProgrammeRoleCollection:TProgrammeRoleCollection = Null
 	Field _ProgrammePersonBaseCollection:TProgrammePersonBaseCollection = Null
 	Field _ProgrammeDataCollection:TProgrammeDataCollection = Null
@@ -1751,6 +1752,7 @@ Type TGameState
 		GetScriptTemplateCollection().Initialize()
 		GetScriptCollection().Initialize()
 		GetProductionConceptCollection().Initialize()
+		GetProductionCompanyBaseCollection().Initialize()
 		GetProductionManager().Initialize()
 		GetProgrammeRoleCollection().Initialize()
 		GetPersonGenerator().Initialize()
@@ -1818,6 +1820,7 @@ Type TGameState
 		_Assign(_ScriptTemplateCollection, TScriptTemplateCollection._instance, "ScriptTemplateCollection", MODE_LOAD)
 		_Assign(_ScriptCollection, TScriptCollection._instance, "ScriptCollection", MODE_LOAD)
 		_Assign(_ProductionConceptCollection, TProductionConceptCollection._instance, "ProductionConceptCollection", MODE_LOAD)
+		_Assign(_ProductionCompanyBaseCollection, TProductionCompanyBaseCollection._instance, "ProductionCompanyBaseCollection", MODE_LOAD)
 		_Assign(_ProgrammeRoleCollection, TProgrammeRoleCollection._instance, "ProgrammeRoleCollection", MODE_LOAD)
 		_Assign(_ProgrammePersonBaseCollection, TProgrammePersonBaseCollection._instance, "ProgrammePersonBaseCollection", MODE_LOAD)
 		_Assign(_ProgrammeDataCollection, TProgrammeDataCollection._instance, "ProgrammeDataCollection", MODE_LOAD)
@@ -1901,6 +1904,7 @@ Type TGameState
 		'database data for scripts
 		_Assign(TScriptTemplateCollection._instance, _ScriptTemplateCollection, "ScriptTemplateCollection", MODE_SAVE)
 		_Assign(TScriptCollection._instance, _ScriptCollection, "ScriptCollection", MODE_SAVE)
+		_Assign(TProductionCompanyBaseCollection._instance, _ProductionCompanyBaseCollection, "ProductionCompanyBaseCollection", MODE_SAVE)
 		_Assign(TProductionConceptCollection._instance, _ProductionConceptCollection, "ProductionConceptCollection", MODE_SAVE)
 		'database data for persons and their roles
 		_Assign(TProgrammePersonBaseCollection._instance, _ProgrammePersonBaseCollection, "ProgrammePersonBaseCollection", MODE_SAVE)
