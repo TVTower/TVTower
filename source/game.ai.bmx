@@ -290,10 +290,18 @@ Type TAi extends TAiBase
 	End Method
 
 
-	Method CallOnReachTarget()
+	Method CallOnReachTarget(target:object)
 		if not AiRunning then return
 
-		CallLuaFunction("OnReachTarget", Null)
+		local targetText:string = "unknown"
+		if TRoomDoor(target) then targetText = TRoomDoor(target).roomId
+		if TVec2D(target) then targetText = "Building (x="+TVec2D(target).GetIntX()+" floor="+ GetBuildingBase().GetFloor( TVec2D(target).GetIntY() )+")"
+
+		Local args:Object[2]
+		args[0] = target
+		args[1] = targetText
+
+		CallLuaFunction("OnReachTarget", args)
 	End Method
 	
 	
@@ -525,7 +533,7 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 
 
 	Method getPlayerTargetRoom:Int()
-		local roomDoor:TRoomDoor = TRoomDoor(GetPlayerBase(self.ME).GetFigure().GetTarget())
+		local roomDoor:TRoomDoor = TRoomDoor(GetPlayerBase(self.ME).GetFigure().GetTargetObject())
 		If roomDoor and roomDoor.GetRoom() then Return roomDoor.GetRoom().id
 
 		Return self.RESULT_NOTFOUND

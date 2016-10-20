@@ -857,16 +857,11 @@ Type TDebugPlayerControls
 
 		local buttonX:int = 0
 		if UpdateButton(buttonX, y, 120, 20)
-			player.GetFigure().controllable = not player.GetFigure().controllable
-		endif
-
-		buttonX :+ 120+5
-		if UpdateButton(x+buttonX,y, 120, 20)
 			player.GetFigure().FinishCurrentTarget()
 		endif
 
 		buttonX :+ 120+5
-		if UpdateButton(x+buttonX,y, 120, 20)
+		if UpdateButton(x+buttonX,y, 140, 20)
 			'forecfully! leave the room
 			player.GetFigure().LeaveRoom(True)
 		endif
@@ -878,20 +873,17 @@ Type TDebugPlayerControls
 		if not player then return False
 
 		local buttonX:int = x
-		if player.GetFigure().IsControllable()
-			DrawButton("kontrollierbar", buttonX, y, 120, 20)
-		else
-			DrawButton("nicht kontrollierbar", buttonX, y, 120, 20)
-		endif
-
-		buttonX :+ 120+5
 		if not player.GetFigure().GetTarget()
-			DrawButton("ohne Ziel", buttonX, y, 120, 20)
+			DrawButton("ohne Ziel", buttonX, y, 140, 20)
 		else
-			DrawButton("Ziel entfernen", buttonX, y, 120, 20)
+			if not player.GetFigure().IsControllable()
+				DrawButton("erzw. Ziel entfernen", buttonX, y, 140, 20)
+			else
+				DrawButton("Ziel entfernen", buttonX, y, 140, 20)
+			endif
 		endif
 
-		buttonX :+ 120+5
+		buttonX :+ 140+5
 		if TRoomBase(player.GetFigure().GetInRoom())
 			DrawButton("in Raum: "+ TRoomBase(player.GetFigure().GetInRoom()).name, buttonX, y, 120, 20)
 		else

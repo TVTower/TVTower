@@ -5311,36 +5311,34 @@ End Function
 
 
 Function DEV_switchRoom:Int(room:TRoom)
-	'do not react if already switching
-	if GetPlayer().GetFigure().IsChangingRoom() then return False
-	
 	If Not room Then Return False
 
+	local playerFigure:TFigure = GetPlayer().GetFigure()
+	'do not react if already switching
+	if playerFigure.IsChangingRoom() then return False
+	
 	'skip if already there
-	If GetPlayer().GetFigure().inRoom = room Then Return False
+	If playerFigure.inRoom = room Then Return False
 
-	TLogger.Log("DEV_switchRoom", "Switching to room ~q"+room.name+"~q.", LOG_DEBUG)
+	TLogger.Log("DEV_switchRoom", "Player #"+GetPlayer().playerID+" switching to room ~q"+room.name+"~q.", LOG_DEBUG)
 
 	'to avoid seeing too much animation
 	TInGameScreen_Room.temporaryDisableScreenChangeEffects = True
 
-	'leave first
-	'RONNY: disabled, EnterRoom does already take care of leaving first
 
-
-	If GetPlayer().GetFigure().inRoom
+	If playerFigure.inRoom
 		'abort current screen actions (drop back dragged items etc.)
-		local roomHandler:TRoomHandler = GetRoomHandlerCollection().GetHandler(GetPlayer().GetFigure().inRoom.name)
+		local roomHandler:TRoomHandler = GetRoomHandlerCollection().GetHandler(playerFigure.inRoom.name)
 		if roomHandler then roomHandler.AbortScreenActions()
 
-		TLogger.Log("DEV_switchRoom", "Leaving room ~q"+GetPlayer().GetFigure().inRoom.name+"~q first.", LOG_DEBUG)
+		TLogger.Log("DEV_switchRoom", "Leaving room ~q"+playerFigure.inRoom.name+"~q first.", LOG_DEBUG)
 		'force leave?
-		'GetPlayer().GetFigure().LeaveRoom(True)
+		'playerFigure.LeaveRoom(True)
 		'not forcing a leave is similar to "right-click"-leaving
 		'which means it signs contracts, buys programme etc
-		if GetPlayer().GetFigure().LeaveRoom(False)
+		if playerFigure.LeaveRoom(False)
 			'finish leaving room in the same moment
-			GetPlayer().GetFigure().FinishLeaveRoom()
+			playerFigure.FinishLeaveRoom()
 		else
 			GetGame().SendSystemMessage("[DEV] cannot switch rooms: Leaving old room failed")
 			return False
@@ -5349,19 +5347,19 @@ Function DEV_switchRoom:Int(room:TRoom)
 
 
 	'remove potential elevator passenger 
-	GetElevator().LeaveTheElevator(GetPlayer().GetFigure())
+	GetElevator().LeaveTheElevator(playerFigure)
 
 	'a) add the room as new target before all others
 	'GetPlayer().GetFigure().PrependTarget(TRoomDoor.GetMainDoorToRoom(room))
 	'b) set it as the only route
-	GetPlayer().GetFigure().SetTarget( GetRoomDoorCollection().GetMainDoorToRoom(room.id) )
-	GetPlayer().GetFigure().MoveToCurrentTarget()
+	playerFigure.SetTarget( new TFigureTarget.Init( GetRoomDoorCollection().GetMainDoorToRoom(room.id) ) )
+	playerFigure.MoveToCurrentTarget()
 
 	'call reach step 1 - so it actually reaches the target in this turn
 	'already (instead of next turn - which might have another "dev_key"
 	'pressed)
-	GetPlayer().GetFigure().ReachTargetStep1()
-	GetPlayer().GetFigure().EnterTarget()
+	playerFigure.ReachTargetStep1()
+	playerFigure.EnterTarget()
 
 	Return True
 End Function

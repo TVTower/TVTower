@@ -171,7 +171,7 @@ Type TFigureJanitor Extends TFigure
 			If area.position.GetX() > GetBuildingBase().leftWallX
 				'only clean with a chance of 30% when on the way to something
 				'and do not clean if target is a room near figure
-				Local targetDoor:TRoomDoor = TRoomDoor(GetTarget())
+				Local targetDoor:TRoomDoor = TRoomDoor(GetTargetObject())
 				If GetTarget() And (Not targetDoor Or (20 < Abs(targetDoor.GetScreenX() - area.GetX()) Or targetDoor.GetOnFloor() <> GetFloor()))
 					If RandRange(0,100) < NormalCleanChance Then currentJanitorAction = 1
 				EndIf
@@ -181,7 +181,7 @@ Type TFigureJanitor Extends TFigure
 		EndIf
 
 		If GetTarget()
-			If Not useDoors And TRoomDoor(GetTarget()) Then FinishCurrentTarget()
+			If Not useDoors And TRoomDoor(GetTargetObject()) Then FinishCurrentTarget()
 		EndIf
 	End Method
 End Type

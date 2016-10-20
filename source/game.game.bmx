@@ -330,7 +330,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		if player.IsLocalHuman()
 			GetGame().SetGameOver()
 			'disable figure control (disable changetarget)
-			player.GetFigure().controllable = False
+			player.GetFigure()._controllable = False
 		endif
 	End Method
 

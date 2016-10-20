@@ -442,6 +442,8 @@ function OnReachRoom(roomId)
 end
 
 -- figure is now trying to enter this room ("open door")
+-- this is used for "gotoRoom"-jobs to decide weather to wait or not
+-- at an occupied room
 function OnBeginEnterRoom(roomId, result)
 	--debugMsg("OnBeginEnterRoom" .. roomId .. " result=" .. result)
 	if (aiIsActive) then
@@ -451,6 +453,7 @@ end
 
 -- figure is now in this room
 function OnEnterRoom(roomId)
+	devMsg("OnEnterRoom: roomId="..roomId)
 	--debugMsg("OnEnterRoom " .. roomId)
 	if (aiIsActive) then
 		getAIPlayer():OnEnterRoom(roomId)
@@ -458,7 +461,12 @@ function OnEnterRoom(roomId)
 end
 
 -- figure is now at the desired target
-function OnReachTarget()
+function OnReachTarget(target, targetText)
+	--if target ~= nil then
+	--	devMsg("OnReachTarget: " .. targetText)
+	--else
+	--	devMsg("OnReachTarget: unknown")
+	--end
 	--debugMsg("OnReachTarget")
 	if (aiIsActive) then
 		getAIPlayer():OnReachTarget()

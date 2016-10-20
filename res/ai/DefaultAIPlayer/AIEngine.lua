@@ -552,7 +552,6 @@ function AIJobGoToRoom:OnBeginEnterRoom(roomId, result)
 		if (self.IsWaiting) then
 			-- debugMsg( TVT.ME .. " BeginEnterRoom: Room still in use. Will continue to wait...a bit. Waiting time: " .. self.WaitTill .. "/" .. WorldTime.GetTimeGoneAsMinute().."  ticks=" .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ")")
 		elseif (self:ShouldIWait()) then
-			--debugMsg("Raum besetzt! Dann wart ich eben...")
 			self.IsWaiting = true
 			self.WaitSince = WorldTime.GetTimeGoneAsMinute()
 			self.WaitSinceWorldTicks = self:getWorldTicks()
@@ -859,6 +858,12 @@ function infoMsg(pMessage)
 		TVT.PrintOut(pMessage)
 		--TVT.SendToChat(TVT.ME .. ": " .. pMessage)
 	end
+end
+
+function devMsg(pMessage)
+	TVT.PrintOut("== DEV == : " .. pMessage)
+	--TVT.SendToChat(TVT.ME .. ": " .. pMessage)
+	TVT.addToLog("== DEV == : " .. pMessage)
 end
 
 function CutFactor(factor, minValue, maxValue)

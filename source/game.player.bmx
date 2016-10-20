@@ -102,7 +102,10 @@ Type TPlayerCollection extends TPlayerBaseCollection
 
 		'inform player AI
 		If player.isLocalAI()
-			player.PlayerAI.CallOnReachTarget()
+			local target:TFigureTargetBase = TFigureTargetBase(triggerEvent.GetReceiver())
+			if target
+				player.PlayerAI.CallOnReachTarget( target.targetObj )
+			endif
 		endif
 
 
