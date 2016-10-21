@@ -529,9 +529,11 @@ Type TInGameInterface
 
 
 	'returns a string list of abbreviations for the watching family
-	Function GetWatchingFamily:string[]()
+	Function GetWatchingFamily:string[](playerID:int = 0)
+		'fall back to local player
+		if playerID = 0 then playerID = GetPlayerBase().playerID
 		'fetch feedback to see which test-family member might watch
-		Local feedback:TBroadcastFeedback = GetBroadcastManager().GetCurrentBroadcast().GetFeedback(GetPlayerBase().playerID)
+		Local feedback:TBroadcastFeedback = GetBroadcastManager().GetCurrentBroadcast().GetFeedback(playerID)
 
 		local result:String[]
 		if not feedback or not feedback.AudienceInterest
@@ -588,7 +590,7 @@ Type TInGameInterface
 			If programmePlan and GetBroadcastManager().GetCurrentAudience(showChannel) > 0
 
 				'fetch a list of watching family members
-				local members:string[] = GetWatchingFamily()
+				local members:string[] = GetWatchingFamily( ShowChannel )
 				'later: limit to amount of "places" on couch
 				Local familyMembersUsed:int = members.length
 
