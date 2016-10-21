@@ -127,6 +127,40 @@ Type MathHelper
 
 	'convert a double to a string
 	'double is rounded to the requested amount of digits after comma
+	Function NumberToString:string(number:Double, digitsAfterDecimalPoint:int = 2, truncateZeros:int = False)
+		local pow:int = 10
+		For local i:int = 1 until digitsAfterDecimalPoint
+			pow :* 10
+		Next
+		'slower than the loop!
+		'local pow:int = int(10 ^ digitsAfterDecimalPoint)
+
+		'bring all decimals in front of the dot, add 0.5 to "round"
+		'divide "back" the rounded value
+		local tmp:double = (number * pow + sgn(number) * 0.5) / pow
+
+		'find dot - and keep "digitsAfterDecimalPoint" numbers afterwards
+		local dotPos:int = string(long(tmp)).length  '+1
+		if tmp < 0 then dotPos :+ 1
+		local s:string = string(tmp)[.. dotPos + 1 + digitsAfterDecimalPoint]
+		's = Left(string(tmp), dotPos + 1 + digitsAfterDecimalPoint)
+
+		'remove 0s? 1.23000 => 1.23, 1.00 = 1
+		if truncateZeros
+			while s<>"" and Right(s, 1) = "0"
+				s = s[.. s.length-1]
+			Wend
+			'only "xx." left?
+			if Right(s, 1) = "." then s = s[.. s.length-1]
+		endif
+		return s
+	End Function
+
+	rem
+		OLD - and contains bugs for certain numbers, and slower too ;-)
+		
+	'convert a double to a string
+	'double is rounded to the requested amount of digits after comma
 	Function NumberToString:String(value:Double, digitsAfterDecimalPoint:int = 2, truncateZeros:int = False)
 		'RoundNumber() rounds, but does not handle "floating point", so
 		'1.5999 gets rounded to 1.6, but then it is stored again as
@@ -186,6 +220,7 @@ Type MathHelper
 
 		Return s
 	End Function
+	endrem
 
 	'round to an integer value
 	Function RoundInt:Int(f:Float)
