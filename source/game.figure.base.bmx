@@ -506,7 +506,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 	Method EnterTarget:int()
 		'emit an event
-		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterTarget", null, self, GetTarget() ) )
+		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterTarget", null, self, GetTargetObject() ) )
 		return True
 	End Method
 

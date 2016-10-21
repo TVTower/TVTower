@@ -10,6 +10,7 @@ Import "game.room.bmx"
 Import "game.room.roomdoor.bmx"
 Import "game.world.bmx"
 Import "game.gameconfig.bmx"
+Import "game.figure.bmx" 'TFigureTarget with hotspot support
 
 'TODO: split TBuilding into TBuilding + TBuildingArea
 '      TBuildingArea then contains background buildings, ufo ...
@@ -322,7 +323,7 @@ Type TBuilding Extends TBuildingBase
 		'ignore clicks to elevator plans on OTHER floors
 		'in this case just move to the target, but do not "enter" the room
 		If hotspot.name <> "elevatorplan" Or GetInstance().GetFloor(hotspot.area.GetY()) = GetInstance().GetFloor(GetPlayerBase().GetFigure().area.GetY())
-			GetPlayerBase().GetFigure().SetTarget( new TFigureTargetBase.Init(hotspot) )
+			GetPlayerBase().GetFigure().SetTarget( new TFigureTarget.Init(hotspot) )
 		EndIf
 		
 		MOUSEMANAGER.ResetKey(1)
