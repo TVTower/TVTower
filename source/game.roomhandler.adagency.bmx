@@ -28,6 +28,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Global ListSortMode:int = 0
 	Global ListSortVisible:int = False
 
+	global LS_adagency:TLowerString = TLowerString.Create("adagency")
+
 	'configuration
 	Global suitcasePos:TVec2D = new TVec2D.Init(520,100)
 	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(19,32)
@@ -679,9 +681,10 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		local averageChannelReach:Int = GetStationMapCollection().GetAverageReach()
 		local averageChannelQuoteDayTime:Float = 0.0
 		local averageChannelQuotePrimeTime:Float = 0.0
-		local dayWithoutPrimeTime:int[] = [6,7,8,9,10,11,12,13,14,15,16,17]
+		local dayWithoutPrimeTime:int[] = [6,7,8,9,10,11,12,13,14,15,16,17 ] 'without primetime 18-23 and night time 0-5
 		local dayOnlyPrimeTime:int[] = [18,19,20,21,22,23]
 		if averageChannelReach > 0
+			'GetAverageAudienceForHours expects "hours to skip" !
 			averageChannelQuoteDayTime = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(-1, dayWithoutPrimeTime).GetTotalSum() / averageChannelReach
 			averageChannelQuotePrimeTime = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(-1, dayOnlyPrimeTime).GetTotalSum() / averageChannelReach
 		endif
@@ -873,11 +876,18 @@ endrem
 						contractBase = GetAdContractBaseCollection().GetRandomByFilter(levelFilters[filterNum], False)
 						'if not, then lower minimum and increase maximum audience
 						if not contractBase
-							TLogger.log("AdAgency.RefillBlocks", "Adjusting LevelFilter #"+filterNum+"  Min: " +MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMin,3)+"% - 0.5%   Max: "+ MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMax,3)+"% + 0.5%"  , LOG_DEBUG)
-							levelFilters[filterNum].SetAudience( levelFilters[filterNum].minAudienceMin - rangeStep, levelFilters[filterNum].minAudienceMax + rangeStep)
+							TLogger.log("AdAgency.RefillBlocks", "Adjusting LevelFilter #"+filterNum+"  Min: " +MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMin,3)+"% ("+(100 * levelFilters[filterNum].minAudienceMin)+" - 0.5%   Max: "+ MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMax,3)+"% + 0.5%"  , LOG_DEBUG)
+							levelFilters[filterNum].SetAudience( Max(0.0, levelFilters[filterNum].minAudienceMin - rangeStep), Min(1.0, levelFilters[filterNum].minAudienceMax + rangeStep))
+						endif
+
+						'absolutely nothing available?
+						if not contractBase and levelFilters[filterNum].minAudienceMin = 0.0 and levelFilters[filterNum].minAudienceMax = 1.0
+							TLogger.log("AdAgency.RefillBlocks", "FAILED to find new contract for LevelFilter #"+filterNum+"  Min: " +MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMin,3)+"%   Max: "+ MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMax,3)+"%."  , LOG_DEBUG)
 						endif
 					Wend
-					contract = new TAdContract.Create( contractBase )
+					if contractBase
+						contract = new TAdContract.Create( contractBase )
+					endif
 					'print "refilling ads with filternum="+filternum+"  classification="+classification
 				EndIf
 
@@ -890,10 +900,17 @@ endrem
 						'if not, then lower minimum and increase maximum audience
 						if not contractBase
 							TLogger.log("AdAgency.RefillBlocks", "Adjusting CheapListFilter  Min: " +MathHelper.NumberToString(100 * cheapListFilter.minAudienceMin,3)+"% - 0.5%   Max: "+ MathHelper.NumberToString(100 * cheapListFilter.minAudienceMax,3)+"% + 0.5%"  , LOG_DEBUG)
-							cheapListFilter.SetAudience( cheapListFilter.minAudienceMin - rangeStep, cheapListFilter.minAudienceMax + rangeStep)
+							cheapListFilter.SetAudience( Max(0, cheapListFilter.minAudienceMin - rangeStep), Min(1.0, cheapListFilter.minAudienceMax + rangeStep))
+						endif
+
+						'absolutely nothing available?
+						if not contractBase and cheapListFilter.minAudienceMin = 0.0 and cheapListFilter.minAudienceMax = 1.0
+							TLogger.log("AdAgency.RefillBlocks", "FAILED to find new contract for CheapListFilter  Min: " +MathHelper.NumberToString(100 * cheapListFilter.minAudienceMin,3)+"%   Max: "+ MathHelper.NumberToString(100 * cheapListFilter.minAudienceMax,3)+"%."  , LOG_DEBUG)
 						endif
 					Wend
-					contract = new TAdContract.Create( contractBase )
+					if contractBase
+						contract = new TAdContract.Create( contractBase )
+					endif
 
 					classification = -1
 				endif
@@ -917,7 +934,7 @@ endrem
 		Next
 
 		'now all filters contain "valid ranges"
-		TLogger.log("AdAgency.RefillBlocks", "    Cheap filter: "+cheapListFilter.ToString(), LOG_DEBUG)
+		TLogger.log("AdAgency.RefillBlocks", "    Cheap filter: "+cheapListFilter.ToString() +"   "+cheapListFilter.minAudienceMin, LOG_DEBUG)
 
 		for local i:int = 0 until 6
 			if i mod 2 = 0
@@ -1057,16 +1074,9 @@ endrem
 			endif
 		endIf
 
-		'2014/05/04 (Ronny): commented out, obsolete ?
-		'something changed...refresh missing/obsolete...
-		'GetInstance().RefreshGuiElements()
-
-
 		return TRUE
 	End Function
 
-'RONNY
-global LS_adagency:TLowerString = TLowerString.Create("adagency")
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		GetSpriteFromRegistry("gfx_screen_adagency_vendor").Draw(VendorArea.getScreenX(), VendorArea.getScreenY())

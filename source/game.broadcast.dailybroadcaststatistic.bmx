@@ -180,7 +180,10 @@ Type TDailyBroadcastStatistic
 
 	'returns the average of that days broadcasts audienceresults for the
 	'given player - or all
-	Method _GetAverageAudience:TAudience(channelNumber:int = -1, broadcastedAsType:int = 0, skipHours:int[])
+	Method _GetAverageAudience:TAudience(channelNumber:int = -1, broadcastedAsType:int = 0, hours:int[], hoursMode:int = 1)
+		'hoursMode = 1: skip all non-given hours
+		'hoursMode = 0: skip the given hours
+		
 		local checkPlayers:int[]
 		if channelNumber <= 0
 			checkPlayers = [0,1,2,3]
@@ -194,10 +197,20 @@ Type TDailyBroadcastStatistic
 		For local i:int = EachIn checkPlayers
 			local hour:int = 0
 			For local audienceResult:TAudienceResultBase = EachIn useAllAudiences[i]
-				if InIntArray(hour, skipHours)
-					hour :+ 1
-					continue
+				'skip if hour IS given in the array
+				if hoursMode = 0
+					if InIntArray(hour, hours)
+						hour :+ 1
+						continue
+					endif
+				'skip if hour is NOT given in the array
+				elseif hoursMode = 1
+					if not InIntArray(hour, hours)
+						hour :+ 1
+						continue
+					endif
 				endif
+				
 				
 				result.Add(audienceResult.audience)
 				count :+1
@@ -435,32 +448,32 @@ Type TDailyBroadcastStatistic
 
 
 	Method GetAverageAudience:TAudience(channelNumber:int = -1)
-		return _GetAverageAudience(channelNumber, TVTBroadcastMaterialType.PROGRAMME, null)
+		return _GetAverageAudience(channelNumber, TVTBroadcastMaterialType.PROGRAMME, null, 0)
 	End Method
 
 
-	Method GetAverageAudienceForHours:TAudience(channelNumber:int = -1, skipHours:int[])
-		return _GetAverageAudience(channelNumber, TVTBroadcastMaterialType.PROGRAMME, skipHours)
+	Method GetAverageAudienceForHours:TAudience(channelNumber:int = -1, hours:int[], skipMode:int = 1)
+		return _GetAverageAudience(channelNumber, TVTBroadcastMaterialType.PROGRAMME, hours, skipMode)
 	End Method
 
 
 	Method GetAverageNewsAudience:TAudience(channelNumber:int = -1)
-		return _GetAverageAudience(channelNumber, TVTBroadcastMaterialType.NEWSSHOW, null)
+		return _GetAverageAudience(channelNumber, TVTBroadcastMaterialType.NEWSSHOW, null, 0)
 	End Method
 
 
-	Method GetAverageNewsAudienceForHours:TAudience(channelNumber:int = -1, skipHours:int[])
-		return _GetAverageAudience(channelNumber, TVTBroadcastMaterialType.NEWSSHOW, skipHours)
+	Method GetAverageNewsAudienceForHours:TAudience(channelNumber:int = -1, hours:int[], skipMode:int = 1)
+		return _GetAverageAudience(channelNumber, TVTBroadcastMaterialType.NEWSSHOW, hours, skipMode)
 	End Method
 
 
 	Method GetAverageAdAudience:TAudience(channelNumber:int = -1)
-		return _GetAverageAudience(channelNumber, TVTBroadcastMaterialType.ADVERTISEMENT, null)
+		return _GetAverageAudience(channelNumber, TVTBroadcastMaterialType.ADVERTISEMENT, null, 0)
 	End Method
 
 
-	Method GetAverageAdAudienceForHours:TAudience(channelNumber:int = -1, skipHours:int[])
-		return _GetAverageAudience(channelNumber, TVTBroadcastMaterialType.ADVERTISEMENT, skipHours)
+	Method GetAverageAdAudienceForHours:TAudience(channelNumber:int = -1, hours:int[], skipMode:int = 1)
+		return _GetAverageAudience(channelNumber, TVTBroadcastMaterialType.ADVERTISEMENT, hours, skipMode)
 	End Method
 
 
