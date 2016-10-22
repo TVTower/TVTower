@@ -544,14 +544,14 @@ Type RoomHandler_News extends TRoomHandler
 	'we need to know whether we dragged or hovered an item - so we
 	'can react to right clicks ("forbid room leaving")
 	Function onMouseOverNews:int( triggerEvent:TEventBase )
-		if not CheckObservedFigureInRoom("newsagency") then return FALSE
+		if not CheckObservedFigureInRoom("news") then return FALSE
 
 		local item:TGUINews = TGUINews(triggerEvent.GetSender())
 		if item = Null then return FALSE
 
 		hoveredGuiNews = item
 		'only handle dragged for the real player
-		if CheckPlayerInRoom("newsagency")
+		if CheckPlayerInRoom("news")
 			if item.isDragged() then draggedGuiNews = item
 		endif
 
@@ -562,7 +562,7 @@ Type RoomHandler_News extends TRoomHandler
 	'in case of right mouse button click we want to remove the
 	'block from the player's programmePlan
 	Function onClickNews:int(triggerEvent:TEventBase)
-		if not CheckObservedFigureInRoom("newsagency") then return FALSE
+		if not CheckObservedFigureInRoom("news") then return FALSE
 
 		'only react if the click came from the right mouse button
 		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE
