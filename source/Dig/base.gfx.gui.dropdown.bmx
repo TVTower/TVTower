@@ -44,6 +44,8 @@ Import "base.gfx.gui.list.selectlist.bmx"
 Type TGUIDropDown Extends TGUIInput
 	'height of the opened drop down
 	Field open:int = FALSE
+	'close dropdown as soon as an item gets selected
+	Field closeOnSelect:int = True
 	Field selectedEntry:TGUIObject
 	Field list:TGUISelectList
 	Field listHeight:int = 100
@@ -88,7 +90,7 @@ Type TGUIDropDown Extends TGUIInput
 		list.SetPadding(bg.GetPadding().getTop(), bg.GetPadding().getLeft(),  bg.GetPadding().getBottom(), bg.GetPadding().getRight())
 
 		'=== REGISTER EVENTS ===
-		'to close the list automatically if the budget looses focus
+		'to close the list automatically if the object looses focus
 		AddEventListener(EventManager.registerListenerMethod("guiobject.onRemoveFocus", Self, "onRemoveFocus", self ))
 		'listen to clicks to dropdown-items
 		AddEventListener(EventManager.registerListenerMethod("GUIDropDownItem.onClick",	Self.list, "onClickOnEntry" ))
@@ -130,7 +132,6 @@ Type TGUIDropDown Extends TGUIInput
 			print "clicked"
 		endif
 		EndRem
-
 		'close on click on a list item
 		if receiver and list.HasItem(receiver)
 			SetSelectedEntry(receiver)
@@ -161,7 +162,7 @@ Type TGUIDropDown Extends TGUIInput
 				endif
 			endif
 
-			'keep the widgets list "open" if ne focus is now at a sub element
+			'keep the widgets list "open" if new focus is now at a sub element
 			'of the widget
 			if senderBelongsToWidget and receiverBelongsToWidget then return False
 		endif
@@ -179,6 +180,8 @@ Type TGUIDropDown Extends TGUIInput
 		if not item then return False
 
 		SetSelectedEntry(item)
+
+		if closeOnSelect then SetOpen(0)
 	EndMethod
 
 

@@ -249,12 +249,9 @@ Type TGUIScrollerBase extends TGUIobject
 		if begunAMouseDown
 			if not MouseManager.IsDown(1)
 				begunAMouseDown = False
-			'avoid long left-mousebutton clicks
-			'(do it in an "update" so it also handles "mousedown"
-			' as long as the gui object has focus - else you "long click"
-			' as soon as you leave the scroller for a short time, while the
-			' mouse is still down )
-			elseif ScrollerHasFocus()
+			else
+				'(do it in an "update" so it also handles "mousedown"
+				'avoid long left-mousebutton clicks
 				MouseManager.ResetLongClicked(1, True)
 			endif
 		endif
@@ -340,6 +337,14 @@ Type TGUIScroller Extends TGUIScrollerBase
 					scrollHandle.SetDirection(TGUISlider.DIRECTION_DOWN)
 			End Select
 		endif
+	End Method
+
+
+	'override to also check handle
+	Method IsAppearanceChanged:int()
+		if scrollHandle and scrollHandle.isAppearanceChanged() then return TRUE
+
+		return Super.isAppearanceChanged()
 	End Method
 
 

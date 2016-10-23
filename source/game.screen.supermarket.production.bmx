@@ -1092,7 +1092,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			skin.fontSemiBold.drawBlock(GetLocale("PRODUCTION_COMPANY"), contentX + 5, contentY + 3, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			'reposition dropdown
 			if productionCompanySelect.rect.getX() <> contentX + 5
-				productionCompanySelect.rect.SetXY(contentX + 5, contentY + 20)
+				productionCompanySelect.SetPosition(contentX + 5, contentY + 20)
 				productionCompanySelect.resize(contentW - 10, -1)
 			endif
 			contentY :+ productionCompanyH

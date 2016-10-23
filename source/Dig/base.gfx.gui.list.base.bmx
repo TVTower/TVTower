@@ -34,8 +34,8 @@ Type TGUIListBase Extends TGUIobject
 	Field backgroundColor:TColor = TColor.Create(0,0,0,0)
 	Field backgroundColorHovered:TColor	= TColor.Create(0,0,0,0)
 	Field guiEntriesPanel:TGUIScrollablePanel = Null
-	Field guiScrollerH:TGUIScroller = Null
-	Field guiScrollerV:TGUIScroller	= Null
+	Field guiScrollerH:TGUIScrollerBase = Null
+	Field guiScrollerV:TGUIScrollerBase	= Null
 	Field entriesDimension:TVec2D = New TVec2D.Init(0,0)
 
 	Field _listFlags:Int = 0
@@ -222,9 +222,12 @@ Type TGUIListBase Extends TGUIobject
 			)
 		EndIf
 
+		'move regardless of "showScrollerX" as you might resize elements without
+		'showing them yet
 		'move horizontal scroller --
-		If showScrollerH And Not guiScrollerH.hasOption(GUI_OBJECT_POSITIONABSOLUTE)
-			guiScrollerH.rect.position.setXY(_entriesBlockDisplacement.x, GetContentScreenHeight() + _entriesBlockDisplacement.y - guiScrollerH.guiButtonMinus.rect.getH())
+		'If showScrollerH And Not guiScrollerH.hasOption(GUI_OBJECT_POSITIONABSOLUTE)
+		If guiScrollerH And Not guiScrollerH.hasOption(GUI_OBJECT_POSITIONABSOLUTE)
+			guiScrollerH.SetPosition( _entriesBlockDisplacement.x, GetContentScreenHeight() + _entriesBlockDisplacement.y - guiScrollerH.guiButtonMinus.rect.getH())
 			If showScrollerV
 				guiScrollerH.Resize(GetScreenWidth() - guiScrollerV.GetScreenWidth(), 0)
 			Else
@@ -232,10 +235,13 @@ Type TGUIListBase Extends TGUIobject
 			EndIf
 		EndIf
 		'move vertical scroller |
-		If showScrollerV And Not guiScrollerV.hasOption(GUI_OBJECT_POSITIONABSOLUTE)
-			guiScrollerV.rect.position.setXY( GetContentScreenWidth() + _entriesBlockDisplacement.x - guiScrollerV.guiButtonMinus.rect.getW(), _entriesBlockDisplacement.y)
+		'move regardless of "showScrollerV" as you might resize elements without
+		'showing them yet
+		'If showScrollerV And Not guiScrollerV.hasOption(GUI_OBJECT_POSITIONABSOLUTE)
+		If guiScrollerV And Not guiScrollerV.hasOption(GUI_OBJECT_POSITIONABSOLUTE)
+			guiScrollerV.SetPosition( GetContentScreenWidth() + _entriesBlockDisplacement.x - guiScrollerV.guiButtonMinus.rect.getW(), _entriesBlockDisplacement.y)
 			If showScrollerH
-				guiScrollerV.Resize(0, GetContentScreenHeight() - guiScrollerH.GetScreenHeight()-03)
+				guiScrollerV.Resize(0, GetContentScreenHeight() - guiScrollerH.GetScreenHeight() - 3)
 			Else
 				guiScrollerV.Resize(0, GetContentScreenHeight())
 			EndIf
