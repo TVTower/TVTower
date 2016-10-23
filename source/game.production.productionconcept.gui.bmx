@@ -614,8 +614,11 @@ Type TGuiProductionConceptSelectListItem Extends TGuiProductionConceptListItem
 		if not productionConcept or not productionConcept.script then return 1 'after
 		if otherItem = self then return 0 'no change
 
+		'ATTENTION: productionConcept.script.GetParentScript() might return
+		'           NULL (eg. when cleaning up OLD gui lists)
+
 		'both are episodes of the same series
-		if productionConcept.script.GetParentScript() = otherItem.productionConcept.script.GetParentScript()
+		if productionConcept.script.GetParentScript() and productionConcept.script.GetParentScript() = otherItem.productionConcept.script.GetParentScript()
 			if productionConcept.studioSlot < otherItem.productionConcept.studioSlot
 				return -1 'before other
 			elseif productionConcept.studioSlot > otherItem.productionConcept.studioSlot
@@ -634,8 +637,12 @@ Type TGuiProductionConceptSelectListItem Extends TGuiProductionConceptListItem
 
 		local titleA:string = productionConcept.GetTitle()
 		local titleB:string = otherItem.productionConcept.GetTitle()
-		if productionConcept.script.IsEpisode() then titleA = productionConcept.script.GetParentScript().GetTitle() + titleA
-		if otherItem.productionConcept.script.IsEpisode() then titleB = otherItem.productionConcept.script.GetParentScript().GetTitle() + titleB
+		if productionConcept.script.IsEpisode() and productionConcept.script.GetParentScript()
+			titleA = productionConcept.script.GetParentScript().GetTitle() + titleA
+		endif
+		if otherItem.productionConcept.script.IsEpisode() and otherItem.productionConcept.script.GetParentScript()
+			titleB = otherItem.productionConcept.script.GetParentScript().GetTitle() + titleB
+		endif
 
 		'let the name be sorted alphabetically 
 		if titleA < titleB
