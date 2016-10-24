@@ -518,11 +518,15 @@ Type TEventBase
 	' to sort the event queue by time
 	Method Compare:Int(other:Object)
 		Local event:TEventBase = TEventBase(other)
-		If Not event Then Return Super.Compare(other)
-
-		If getStartTime() > event.getStartTime() Then Return 1 .. 			' i'm newer
-		Else If getStartTime() < event.getStartTime() Then Return -1 ..	' they're newer
-		Else Return 0
+		If event
+			' i'm newer
+			If getStartTime() > event.getStartTime() Then Return 1
+			' they're newer
+			If getStartTime() < event.getStartTime() Then Return -1
+		EndIf
+		
+		' let the basic object decide
+		Return Super.Compare(other)
 	End Method
 End Type
 

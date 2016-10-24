@@ -534,10 +534,11 @@ Type TRegistryUnloadedResource
 	'sort by ID
 	Method Compare:int(Other:Object)
 		local otherResource:TRegistryUnloadedResource = TRegistryUnloadedResource(Other)
-		if not otherResource then return Super.Compare(other)
-		if otherResource.id > id then return -1
-		if otherResource.id < id then return 1
-		return 0
+		if otherResource
+			if otherResource.id > id then return -1
+			if otherResource.id < id then return 1
+		endif
+		return Super.Compare(Other)
 	End Method
 End Type
 

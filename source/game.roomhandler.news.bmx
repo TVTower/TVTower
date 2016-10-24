@@ -722,14 +722,16 @@ Type TGUINews Extends TGUIGameListItem
 
 
 	Method Compare:Int(Other:Object)
+		if Other = self then return 0
+
 		Local otherBlock:TGUINews = TGUINews(Other)
-		If otherBlock<>Null
+		If otherBlock
 			'both items are dragged - check time
 			If Self._flags & GUI_OBJECT_DRAGGED And otherBlock._flags & GUI_OBJECT_DRAGGED
 				'if a drag was earlier -> move to top
 				If Self._timeDragged < otherBlock._timeDragged Then Return 1
 				If Self._timeDragged > otherBlock._timeDragged Then Return -1
-				Return 0
+				Return Super.Compare(Other)
 			EndIf
 
 			If Self.news And otherBlock.news

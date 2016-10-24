@@ -76,8 +76,8 @@ Type TKeyValueNumber
 			Return -1
 		Else If Value > s.Value
 			Return 1
-		Else
-			Return 0
 		EndIf
+
+		Return Super.Compare(other)
 	End Method
 End Type

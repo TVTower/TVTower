@@ -1165,15 +1165,11 @@ Type TNewsEventSportLeagueRank
 
 	Method Compare:int(o:object)
 		local other:TNewsEventSportLeagueRank = TNewsEventSportLeagueRank(o)
-		if not other then return Super.Compare(other)
-
-		if score > other.score
-			return 1
-		elseif score < other.score
-			return -1
-		else
-			return 0
+		if other
+			if score > other.score then return 1
+			if score < other.score then return -1
 		endif
+		return Super.Compare(other)
 	End Method
 End Type
 

@@ -93,14 +93,14 @@ Type TTooltip Extends TEntity
 	'sort tooltips according lifetime (dying ones behind)
 	Method Compare:Int(other:Object)
 		Local otherTip:TTooltip = TTooltip(other)
-		'no weighting
-		If Not otherTip then Return Super.Compare(other)
-		If otherTip = Self then Return 0
-		If otherTip.GetLifePercentage() = GetLifePercentage() Then Return 0
-		'below me
-		If otherTip.GetLifePercentage() < GetLifePercentage() Then Return 1
-		'on top of me
-		Return -1
+		If otherTip
+			'below me
+			If otherTip.GetLifePercentage() < GetLifePercentage() Then Return 1
+			'on top of me
+			If otherTip.GetLifePercentage() > GetLifePercentage() Then Return -1
+		endif
+
+		Return Super.Compare(other)
 	End Method
 
 

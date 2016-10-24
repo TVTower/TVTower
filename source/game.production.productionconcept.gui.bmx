@@ -608,11 +608,12 @@ Type TGuiProductionConceptSelectListItem Extends TGuiProductionConceptListItem
 
 
 	Method Compare:Int(Other:Object)
+		if Other = self then return 0 'no change
+
 		Local otherItem:TGuiProductionConceptSelectListItem = TGuiProductionConceptSelectListItem(Other)
 		if not otherItem then return Super.Compare(other)
 		If not otherItem.productionConcept or not otherItem.productionConcept.script then return -1 'before
 		if not productionConcept or not productionConcept.script then return 1 'after
-		if otherItem = self then return 0 'no change
 
 		'ATTENTION: productionConcept.script.GetParentScript() might return
 		'           NULL (eg. when cleaning up OLD gui lists)
@@ -658,7 +659,7 @@ Type TGuiProductionConceptSelectListItem Extends TGuiProductionConceptListItem
 			endif
 		endif
 
-		Return 0
+		Return Super.Compare(Other)
 	End Method
 
 rem

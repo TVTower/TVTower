@@ -282,16 +282,19 @@ Type TProgrammePersonBase extends TGameObject
 
 
 	Method Compare:Int(o2:Object)
+		if o2 = self then return 0
+
 		Local p2:TProgrammePersonBase = TProgrammePersonBase(o2)
-		If Not p2 Then Return Super.Compare(o2)
-		if GetFullName() = p2.GetFullName() 
-			if GetAge() > p2.GetAge() then return 1
-			if GetAge() < p2.GetAge() then return -1
-			return 0
-		endif
-        if GetFullName().ToLower() > p2.GetFullName().ToLower() return 1
-        if GetFullName().ToLower() < p2.GetFullName().ToLower() return -1
-        return 0
+		If p2
+			if GetFullName() = p2.GetFullName() 
+				if GetAge() > p2.GetAge() then return 1
+				if GetAge() < p2.GetAge() then return -1
+			else
+				if GetFullName().ToLower() > p2.GetFullName().ToLower() then return 1
+				if GetFullName().ToLower() < p2.GetFullName().ToLower() then return -1
+			endif
+		EndIf
+		Return Super.Compare(o2)
 	End Method
 	
 
