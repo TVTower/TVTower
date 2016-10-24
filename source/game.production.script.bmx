@@ -250,7 +250,6 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		script.potential = template.GetPotential()
 		script.blocks = template.GetBlocks()
 		script.price = template.GetPrice()
-		script.cast = template.GetJobs()
 
 		script.flags = template.flags
 		script.flagsOptional = template.flagsOptional
@@ -268,13 +267,79 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		script.title = script._ReplacePlaceholders(script.title)
 		script.description = script._ReplacePlaceholders(script.description)
 
+
 		'add children
 		For local subTemplate:TScriptTemplate = EachIn template.subScripts
 			local subScript:TScript = TScript.CreateFromTemplate(subTemplate)
 			if subScript then script.AddSubScript(subScript)
 		Next
-
 		script.basedOnScriptTemplateGUID = template.GetGUID()
+
+		'this would GENERATE a new block of jobs (including RANDOM ones)
+		'- for single scripts we could use that jobs
+		'- for parental scripts we use the jobs of the children
+		if template.subScripts.length = 0 
+			script.cast = template.GetJobs()
+		else
+			'for now use this approach
+			'and dynamically count individual cast count by using
+			'Max(script-cast-count, max-of-subscripts-cast-count)
+			script.cast = template.GetJobs()
+			rem
+			local myCastCountAll:int[] = new Int[TVTProgrammePersonJob.count]
+			local myCastCountMale:int[] = new Int[TVTProgrammePersonJob.count]
+			local myCastCountFemale:int[] = new Int[TVTProgrammePersonJob.count]
+			local subCastCountAll:int[] = new Int[TVTProgrammePersonJob.count]
+			local subCastCountMale:int[] = new Int[TVTProgrammePersonJob.count]
+			local subCastCountFemale:int[] = new Int[TVTProgrammePersonJob.count]
+			local allCastCountAll:int[] = new Int[TVTProgrammePersonJob.count]
+			local allCastCountMale:int[] = new Int[TVTProgrammePersonJob.count]
+			local allCastCountFemale:int[] = new Int[TVTProgrammePersonJob.count]
+
+			For local j:TProgrammePersonJob = EachIn script.cast
+				'increase count for each associated job
+				For local jobIndex:int = 1 to TVTProgrammePersonJob.count
+					local jobID:int = TVTProgrammePersonJob.GetAtIndex(jobIndex)
+					if jobID & j.job = 0 then continue
+
+					if j.gender = 0
+						myCastCountAll[jobIndex-1] :+ 1
+					elseif j.gender = TVTPersonGender.MALE
+						myCastCountMale[jobIndex-1] :+ 1
+					elseif j.gender = TVTPersonGender.FEMALE
+						myCastCountFemale[jobIndex-1] :+ 1
+					endif
+				Next
+			Next
+
+			'do the same for all subs
+			For local subScript:TScript = EachIn script.subScripts
+				For local j:TProgrammePersonJob = EachIn script.cast
+					'increase count for each associated job
+					For local jobIndex:int = 1 to TVTProgrammePersonJob.count
+						local jobID:int = TVTProgrammePersonJob.GetAtIndex(jobIndex)
+						if jobID & j.job = 0 then continue
+
+						if j.gender = 0
+							subCastCountAll[jobIndex-1] :+ 1
+						elseif j.gender = TVTPersonGender.MALE
+							subCastCountMale[jobIndex-1] :+ 1
+						elseif j.gender = TVTPersonGender.FEMALE
+							subCastCountFemale[jobIndex-1] :+ 1
+						endif
+					Next
+				Next
+
+				'keep the biggest cast count of all subscripts
+				For local jobIndex:int = 1 to TVTProgrammePersonJob.count
+					allCastCountAll[jobIndex-1] = Max(allCastCountAll[jobIndex-1], subCastCountAll[jobIndex-1])
+					allCastCountMale[jobIndex-1] = Max(allCastCountMale[jobIndex-1], subCastCountMale[jobIndex-1])
+					allCastCountFemale[jobIndex-1] = Max(allCastCountFemale[jobIndex-1], subCastCountFemale[jobIndex-1])
+				Next
+			Next
+			endrem
+		endif
+ 
 
 		'reset the state of the template
 		'without that, the following scripts created with this template
@@ -384,7 +449,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetSpecificCastCount:int(job:int, limitPersonGender:int=-1, limitRoleGender:int=-1)
+	Method GetSpecificCastCount:int(job:int, limitPersonGender:int=-1, limitRoleGender:int=-1, ignoreSubScripts:int = False)
 		local result:int = 0
 		For local j:TProgrammePersonJob = EachIn cast
 			'skip roles with wrong gender
@@ -398,6 +463,14 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			'current job is one of the given job(s)
 			if job & j.job then result :+ 1
 		Next
+
+		'override with maximum found in subscripts
+		if not ignoreSubscripts and subScripts
+			For local subScript:TScript = EachIn subScripts
+				result = Max(result, subScript.GetSpecificCastCount(job, limitPersonGender, limitRoleGender))
+			Next
+		endif
+
 		return result
 	End Method
 
@@ -758,13 +831,16 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		For local i:int = 1 to TVTProgrammePersonJob.count
 			local jobID:int = TVTProgrammePersonJob.GetAtIndex(i)
-			local requiredPersons:int = GetSpecificCastCount(jobID)
+			'call with "false" to return maximum required persons within
+			'sub scripts too
+			local requiredPersons:int = GetSpecificCastCount(jobID,-1,-1, False)
 			if requiredPersons <= 0 then continue
 
 			if cast <> "" then cast :+ ", "
 
 			local requiredPersonsMale:int = GetSpecificCastCount(jobID, TVTPersonGender.MALE)
 			local requiredPersonsFemale:int = GetSpecificCastCount(jobID, TVTPersonGender.FEMALE)
+			requiredPersons = Max(requiredPersons, requiredPersonsMale + requiredPersonsFemale)
 
 			if requiredPersons = 1
 				cast :+ "|b|"+requiredPersons+"x|/b| "+GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobID, True))
