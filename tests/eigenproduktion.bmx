@@ -126,6 +126,7 @@ for local i:int = 1 to 4
 Next
 
 global bgImage:TImage = LoadImage("../res/gfx/supermarket/screen_supermarket.png")
+global LS_SYSTEM:TLowerString = TLowerString.Create("SYSTEM")
 
 ScreenCollection.Add( new TScreen.Create("screen_supermarket_production") )
 ScreenCollection.GoToScreen(null, "screen_supermarket_production")
@@ -164,7 +165,7 @@ Function Update:Int()
 
 	'=== UPDATE GUI ===
 	'system wide gui elements
-	GuiManager.Update("SYSTEM")
+	GuiManager.Update( LS_SYSTEM )
 
 
 	if not GuiManager.GetKeystrokeReceiver()
@@ -338,7 +339,7 @@ Function Render:int()
 
 	'=== RENDER GUI ===
 	'system wide gui elements
-	GuiManager.Draw("SYSTEM")
+	GuiManager.Draw( LS_SYSTEM )
 
 
 	'=== DEBUG ===

@@ -688,22 +688,21 @@ Type TProductionConcept Extends TOwnedGameObject
 	Method GetBaseProductionTime:int()
 		local base:int = 9 * 60
 		if productionFocus
-			'SPEED
-			'point decrease:
-			'1/10 = 90min
-			'2/10 = 175min (90 + 85) 
-			'3/10 = 255min (90 + 85 + 80) 
-			'... 
 			local speedPoints:int = productionFocus.GetFocus(TVTProductionFocus.PRODUCTION_SPEED)
-			For local i:int = 0 until speedPoints
-				base :- Max(0, 90 - 5*i)
-			Next
+			' 0 points = 1.0
+			' 1 point = 93%
+			' 2 points = 87% ...
+			'10 points = 50%
+			local speedPointTimeMod:Float = 0.933 ^ speedPoints 
 
 			'TEAM (good teams work a bit more efficient)
 			local teamPoints:int = productionFocus.GetFocus(TVTProductionFocus.TEAM)
-			For local i:int = 0 until teamPoints
-				base :- Max(0, 25 - 2*i)
-			Next
+			' 0 points = 1.0
+			' 1 point = 97%
+			' 2 points = 94% ...
+			'10 points = 75%
+			local teamPointTimeMod:Float = 0.5 + 0.5 * 0.933 ^ teamPoints 
+
 
 			'POINTS ADD TO TIME !
 			local focusPoints:int = productionFocus.GetFocusPointsSet()
@@ -714,13 +713,17 @@ Type TProductionConcept Extends TOwnedGameObject
 					base :+ (10 + i*5)
 				Next
 			endif
+
+			base :* speedPointTimeMod
+			base :* teamPointTimeMod
 		endif
 
 		'live productions are done a bit faster
 		if script.IsLive() then base :* 0.5
 		
 		'round minutes to hours
-		return floor(base/60)
+		'and need at least 1h/60 minutes to produce
+		return floor(Max(1, base/60))
 	End Method
 
 
