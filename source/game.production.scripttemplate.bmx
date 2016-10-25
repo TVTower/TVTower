@@ -92,6 +92,10 @@ Type TScriptTemplate Extends TScriptBase
 	'keyword) instead of returning other random elements ("option1|option2")
 	Field placeHolderVariables:TMap
 
+	'contains generated final job set
+	Field finalJobsGenerated:int = False
+	Field finalJobs:TProgrammePersonJob[]
+
 	'contains all to fill jobs
 	Field jobs:TProgrammePersonJob[]
 	'contains jobs which could get randomly added during generation
@@ -399,8 +403,13 @@ Type TScriptTemplate Extends TScriptBase
 	End Method
 
 
-	'returns the "final" cast ... required + some random
-	Method GetJobs:TProgrammePersonJob[]()
+	Method ResetFinalJobs:int()
+		finalJobs = new TProgrammePersonJob[0]
+		finalJobsGenerated = false
+	End Method
+
+
+	Method GenerateFinalJobs:TProgrammePersonJob[]()
 		local result:TProgrammePersonJob[]
 
 		For local job:TProgrammePersonJob = EachIn jobs
@@ -472,9 +481,21 @@ Type TScriptTemplate Extends TScriptBase
 				randomAssignedRoles :+ [job]
 			endif
 		Next
-		
 
-		return result
+		finalJobs = result
+		finalJobsGenerated = True
+		
+		return finalJobs
+	End Method
+
+
+	'returns the "final" cast ... required + some random
+	Method GetJobs:TProgrammePersonJob[]()
+		if not finalJobsGenerated
+			GenerateFinalJobs()
+		endif
+
+		return finalJobs
 	End Method
 
 

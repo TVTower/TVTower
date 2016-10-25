@@ -922,30 +922,16 @@ Type TBroadcastFeedback
 			Local familyMemberCount:Int = Int((averageAttraction - (averageAttraction Mod attrPerMember)) / attrPerMember)
 
 			For local kv:TKeyValueNumber = eachin sortMap.Content
-				If allowedTemp.GetTotalValue(TVTTargetGroup.Children) >= 1 And kv.Key = "0" Then
-					AudienceInterest.SetTotalValue(TVTTargetGroup.Children, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Children), maxAudience.GetTotalValue(TVTTargetGroup.Children), int(allowedTemp.GetTotalValue(TVTTargetGroup.Children) - 1)))
-					If AudienceInterest.GetTotalValue(TVTTargetGroup.Children) > 0 Then familyMemberCount :- 1
-				ElseIf allowedTemp.GetTotalValue(TVTTargetGroup.Teenagers) >= 1 And kv.Key = "1" Then
-					AudienceInterest.SetTotalValue(TVTTargetGroup.Teenagers, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Teenagers), maxAudience.GetTotalValue(TVTTargetGroup.Teenagers), int(allowedTemp.GetTotalValue(TVTTargetGroup.Teenagers) - 1)))
-					If AudienceInterest.GetTotalValue(TVTTargetGroup.Teenagers) > 0 Then familyMemberCount :- 1
-				ElseIf allowedTemp.GetTotalValue(TVTTargetGroup.HouseWives) >= 1 And kv.Key = "2" Then
-					AudienceInterest.SetTotalValue(TVTTargetGroup.HouseWives, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.HouseWives), maxAudience.GetTotalValue(TVTTargetGroup.HouseWives), int(allowedTemp.GetTotalValue(TVTTargetGroup.HouseWives) - 1)))
-					If AudienceInterest.GetTotalValue(TVTTargetGroup.HouseWives) > 0 Then familyMemberCount :- 1
-				ElseIf allowedTemp.GetTotalValue(TVTTargetGroup.Employees) >= 1 And kv.Key = "3" Then
-					AudienceInterest.SetTotalValue(TVTTargetGroup.Employees, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Employees), maxAudience.GetTotalValue(TVTTargetGroup.Employees), int(allowedTemp.GetTotalValue(TVTTargetGroup.Employees) - 1)))
-					If AudienceInterest.GetTotalValue(TVTTargetGroup.Employees) > 0 Then familyMemberCount :- 1
-				ElseIf allowedTemp.GetTotalValue(TVTTargetGroup.Unemployed) >= 1 And kv.Key = "4" Then
-					AudienceInterest.SetTotalValue(TVTTargetGroup.Unemployed, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Unemployed), maxAudience.GetTotalValue(TVTTargetGroup.Unemployed), int(allowedTemp.GetTotalValue(TVTTargetGroup.Unemployed) - 1)))
-					If AudienceInterest.GetTotalValue(TVTTargetGroup.Unemployed) > 0 Then familyMemberCount :- 1
-				ElseIf allowedTemp.GetTotalValue(TVTTargetGroup.Manager) >= 1 And kv.Key = "5" Then
-					AudienceInterest.SetTotalValue(TVTTargetGroup.Manager, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Manager), maxAudience.GetTotalValue(TVTTargetGroup.Manager), int(allowedTemp.GetTotalValue(TVTTargetGroup.Manager) - 1)))
-					If AudienceInterest.GetTotalValue(TVTTargetGroup.Manager) > 0 Then familyMemberCount :- 1
-				ElseIf allowedTemp.GetTotalValue(TVTTargetGroup.Pensioners) >= 1 And kv.Key = "6" Then
-					AudienceInterest.SetTotalValue(TVTTargetGroup.Pensioners, AttractionToInterest(attr.GetTotalValue(TVTTargetGroup.Pensioners), maxAudience.GetTotalValue(TVTTargetGroup.Pensioners), int(allowedTemp.GetTotalValue(TVTTargetGroup.Pensioners) - 1)))
-					If AudienceInterest.GetTotalValue(TVTTargetGroup.Pensioners) > 0 Then familyMemberCount :- 1
-				EndIf
+				For local targetGroupIndex:int = 1 to TVTTargetGroup.baseGroupCount
+					local targetGroupID:Int = TVTTargetGroup.GetAtIndex(targetGroupIndex)
 
-				If familyMemberCount = 0 Then Return
+					If allowedTemp.GetTotalValue(targetGroupID) >= 1 And kv.Key = string(targetGroupIndex-1) Then
+						AudienceInterest.SetTotalValue(targetGroupID, AttractionToInterest(attr.GetTotalValue(targetGroupID), maxAudience.GetTotalValue(targetGroupID), int(allowedTemp.GetTotalValue(targetGroupID) - 1)))
+						If AudienceInterest.GetTotalValue(targetGroupID) > 0 Then familyMemberCount :- 1
+					endif
+
+					If familyMemberCount = 0 Then Return
+				Next
 			Next
 		Else
 			If highestKVAllowed.Value >= (minAttraction * 2) Then
