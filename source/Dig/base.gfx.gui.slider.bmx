@@ -177,8 +177,8 @@ Type TGUISlider extends TGUIObject
 		
 		'only adjust when different
 		if value <> string(newValueD)
-			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onChangeValue", null, self ) )
 			value = newValueD
+			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onChangeValue", null, self ) )
 		endif
 	End Method
 
@@ -587,6 +587,14 @@ Type TGUISlider extends TGUIObject
 		DrawGauge(atPoint)
 		SetAlpha oldCol.a * GetScreenAlpha()
 		DrawHandle(atPoint)
+
+		?debug
+		SetColor 0,0,0
+		DrawRect(GetScreenX()+40, GetScreenY(), 100,20)
+		SetAlpha 1.0
+		SetColor 255,255,255
+		DrawText(GetValue()+" : " + Left(value, 6), GetScreenX()+42, GetScreenY()+2)
+		?
 
 		oldCol.SetRGBA()
 	End Method
