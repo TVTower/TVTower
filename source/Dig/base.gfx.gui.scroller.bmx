@@ -156,7 +156,6 @@ Type TGUIScrollerBase extends TGUIobject
 	End Method
 
 
-
 	Method SetOrientation:int(orientation:Int=0)
 		if _orientation = orientation then return FALSE
 
@@ -316,6 +315,13 @@ Type TGUIScroller Extends TGUIScrollerBase
 		'inform others (equally to up/down-buttonclicks)
 		EventManager.triggerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("changeType", "percentage").AddNumber("percentage", sender.GetRelativeValue()).Add("sendingSlider", sender), guiScroller ) )
 	End Function
+
+
+	Method SetCurrentValue(currentValue:Double)
+		Super.SetCurrentValue(currentValue)
+		'move handle accordingly
+		if scrollHandle then scrollHandle.SetRelativeValue( GetRelativeValue() )
+	End Method
 
 
 	Method Resize(w:Float = 0, h:Float = 0)
