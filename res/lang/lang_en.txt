@@ -121,6 +121,7 @@ NEWS_POLITICS_ECONOMY	= Politics / Economy
 NEWS_SHOWBIZ			= Showbiz
 NEWS_SPORT				= Sport
 NEWS_CURRENTAFFAIRS		= Current affairs
+NEWS_CULTURE = Culture
 
 PLANNER_UNKNOWN			= comes soon
 PLANNER_PROGRAMME		= Programme

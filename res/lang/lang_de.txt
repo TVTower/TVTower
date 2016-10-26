@@ -122,6 +122,7 @@ NEWS_POLITICS_ECONOMY = Politik/Wirtschaft
 NEWS_SHOWBIZ          = Showbiz
 NEWS_SPORT            = Sport
 NEWS_CURRENTAFFAIRS   = Tagesgeschehen
+NEWS_CULTURE = Kultur
 
 PLANNER_UNKNOWN   = Kommt noch
 PLANNER_PROGRAMME = Programm
