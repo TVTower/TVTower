@@ -773,7 +773,9 @@ end
 
 	self.CurrentValue = value
 	self.TotalSum = self.TotalSum + value
-	self.AverageValueTemp = math.round(self.TotalSum / self.Values, 0)
+	--self.AverageValueTemp = math.round(self.TotalSum / self.Values, 0)
+	-- keep up to 3 decimals
+	self.AverageValueTemp = math.round(self.TotalSum / self.Values, 3)
 	self.AverageValue = self.AverageValueTemp
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

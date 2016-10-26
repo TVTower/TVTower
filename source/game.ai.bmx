@@ -701,6 +701,15 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
+	Method GetCurrentProgrammeQuality:Float(playerID:int = 0)
+		if playerID <= 0 or not GetPlayerProgrammePlan(playerID) then playerID = self.ME
+		local prog:TBroadcastMaterial = GetPlayerProgrammePlan(playerID).GetProgramme()
+
+		if prog then return prog.GetQuality()
+		return 0.0
+	End Method
+
+
 	'player could eg. see in interface / tooltips
 	Method GetCurrentNewsShow:TBroadcastMaterial()
 		return GetPlayerProgrammePlan(self.ME).GetNewsShow()

@@ -9,6 +9,32 @@ function CheckMovieBuyConditions(licence, maxPrice, minQuality)
 	end
 	return true
 end
+
+
+function GetDefaultProgrammeQualityByHour(hour)
+	if hour == 0 then
+		return 0.09
+	elseif hour == 1 then
+		return 0.08
+	elseif hour >= 2 and hour <= 5 then
+		return 0.04
+	elseif hour >= 6 and hour <= 8 then
+		return 0.09
+	elseif hour >= 9 and hour <= 11 then
+		return 0.10
+	elseif hour >= 12 and hour <= 14 then
+		return 0.12
+	elseif hour >= 14 and hour <= 16 then
+		return 0.13
+	elseif hour >= 17 and hour <= 19 then
+		return 0.18
+	elseif hour >= 20 and hour <= 22 then
+		return 0.23
+	elseif hour >= 23 then
+		return 0.18
+	end
+	return 0.00
+end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

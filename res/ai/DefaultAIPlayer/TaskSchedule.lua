@@ -267,15 +267,19 @@ function TaskSchedule:GuessedAudienceForHour(day, hour, broadcast, block, guessC
 	local level = self:GetQualityLevel(fixedDay, fixedHour)
 	-- average quality of a broadcast with the predicted level
 	local avgQuality = self:GetAverageBroadcastQualityByLevel(level)
+	local statQuality1 = self.Player.Stats:GetAverageQualityByHour(1, hour)
+	local statQuality2 = self.Player.Stats:GetAverageQualityByHour(2, hour)
+	local statQuality3 = self.Player.Stats:GetAverageQualityByHour(3, hour)
+	local statQuality4 = self.Player.Stats:GetAverageQualityByHour(4, hour)
 	
-	local qualities = {avgQuality, avgQuality, avgQuality, avgQuality}
+	local qualities = {statQuality1, statQuality2, statQuality3, statQuality4}
 	local guessedAudience = self:PredictAudience(broadcast, qualities, fixedDay, fixedHour, block, nil, nil)
 
 	local globalPercentageByHour = self:GetMaxAudiencePercentage(fixedDay, fixedHour)
 	local exclusiveMaxAudience = TVT.getExclusiveMaxAudience()
 	local sharedMaxAudience = MY.GetMaxAudience() - exclusiveMaxAudience
-	self.log["GuessedAudienceForHour"] = "Hour=" .. hour .. "  Lvl=" .. level .. "  %  guessedAudience=" .. math.round(guessedAudience.GetTotalSum()) .. "  aud=".. math.round(MY.GetMaxAudience()*globalPercentageByHour) .. " (".. math.floor(100*globalPercentageByHour) .."% of max="..MY.GetMaxAudience()..")"
-	--debugMsg( self.log["GuessedAudienceForHour"] )
+	self.log["GuessedAudienceForHour"] = "Hour=" .. hour .. "  Lvl=" .. level .. "  %  guessedAudience=" .. math.round(guessedAudience.GetTotalSum()) .. "  aud=".. math.round(MY.GetMaxAudience()*globalPercentageByHour) .. " (".. math.floor(100*globalPercentageByHour) .."% of max="..MY.GetMaxAudience()..")  avgQuality="..avgQuality .. "  statQuality="..statQuality1.."/"..statQuality2.."/"..statQuality3.."/"..statQuality4
+	debugMsg( self.log["GuessedAudienceForHour"] )
 
 	return guessedAudience
 end
@@ -300,7 +304,6 @@ function TaskSchedule:GuessedNewsAudienceForHour(day, hour, newsBroadcast, guess
 	
 	local qualities = {avgQuality, avgQuality, avgQuality, avgQuality}
 	local guessedAudience = self:PredictAudience(broadcast, qualities, fixedDay, fixedHour, 1, nil, nil)
-
 
 	local globalPercentageByHour = self:GetMaxAudiencePercentage(fixedDay, fixedHour)
 	local exclusiveMaxAudience = TVT.getExclusiveMaxAudience()

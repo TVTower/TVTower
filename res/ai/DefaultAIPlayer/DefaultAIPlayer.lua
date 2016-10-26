@@ -256,11 +256,13 @@ _G["BusinessStats"] = class(SLFDataObject, function(c)
 	c.MovieQualityAcceptable = nil;
 	c.SeriesQualityAcceptable = nil;
 
-	c.ProgramQualityLevel1 = nil;
-	c.ProgramQualityLevel2 = nil;
-	c.ProgramQualityLevel3 = nil;
-	c.ProgramQualityLevel4 = nil;
-	c.ProgramQualityLevel5 = nil;
+    c.playerProgrammeQualities = {}
+    for playerID=1, 4 do
+		c.playerProgrammeQualities[playerID] = {}
+		for hour=1, 24 do --need to be 1 based
+			c.playerProgrammeQualities[playerID][hour] = nil
+		end
+	end
 
 	c.lastStatsReadMinute = -1
 end)
@@ -281,11 +283,13 @@ function BusinessStats:Initialize()
 	self.MovieQualityAcceptable = StatisticEvaluator()
 	self.SeriesQualityAcceptable = StatisticEvaluator()
 
-	self.ProgramQualityLevel1 = StatisticEvaluator()
-	self.ProgramQualityLevel2 = StatisticEvaluator()
-	self.ProgramQualityLevel3 = StatisticEvaluator()
-	self.ProgramQualityLevel4 = StatisticEvaluator()
-	self.ProgramQualityLevel5 = StatisticEvaluator()
+	self.playerProgrammeQualities = {}
+    for playerID=1, 4 do
+		self.playerProgrammeQualities[playerID] = {}
+		for hour=1, 24 do --need to be 1 based
+			self.playerProgrammeQualities[playerID][hour] = StatisticEvaluator()
+		end
+	end
 end
 
 function BusinessStats:OnDayBegins()
@@ -299,11 +303,11 @@ function BusinessStats:OnDayBegins()
 	self.MovieQualityAcceptable:Adjust()
 	self.SeriesQualityAcceptable:Adjust()
 
-	self.ProgramQualityLevel1:Adjust()
-	self.ProgramQualityLevel2:Adjust()
-	self.ProgramQualityLevel3:Adjust()
-	self.ProgramQualityLevel4:Adjust()
-	self.ProgramQualityLevel5:Adjust()
+    for playerID=1, 4 do
+		for hour=1, 24 do --need to be 1 based
+			self.playerProgrammeQualities[playerID][hour]:Adjust()
+		end
+	end
 end
 
 function BusinessStats:ReadStats()
@@ -324,11 +328,24 @@ function BusinessStats:ReadStats()
 
 			self.Audience:AddValue(currentAudience)
 			--debugMsg("BusinessStats: Audience (current="..self.Audience.CurrentValue.."  avg=" .. self.Audience.AverageValue .. "  min/max=" .. self.Audience.MinValue .. " - " .. self.Audience.MaxValue .. ")")
+
+
+			-- add current broadcast qualities to statistics
+			local hour = WorldTime.GetDayHour()
+			local task = getAIPlayer().TaskList[_G["TASK_SCHEDULE"]]
+			if task ~= nil then
+				for playerID=1, 4 do
+					local quality = TVT.GetCurrentProgrammeQuality(playerID)
+					-- attention: hour+1 as tables are 1 based
+					self.playerProgrammeQualities[playerID][hour + 1]:AddValue(quality)
+				end
+			end
 		end
 
 		self.lastStatsReadMinute = WorldTime.GetDayMinute()
 	end
 end
+
 
 function BusinessStats:AddSpot(spot)
 	self.SpotProfit:AddValue(spot.GetProfit())
@@ -338,6 +355,7 @@ function BusinessStats:AddSpot(spot)
 	end
 	self.SpotPenalty:AddValue(spot.GetPenalty())
 end
+
 
 function BusinessStats:AddMovie(licence)
 --RON
@@ -356,8 +374,24 @@ function BusinessStats:AddMovie(licence)
 	end
 end
 
-function BusinessStats:GetAverageQualityByLevel(level)
 
+function BusinessStats:GetAverageQualityByHour(playerID, hour)
+	local dayStats = self.playerProgrammeQualities[playerID]
+	if dayStats then
+		-- default is "-1", so check that too
+		if dayStats[hour + 1] ~= nil and dayStats[hour + 1].AverageValue >= 0 then
+			return dayStats[hour + 1].AverageValue
+		end
+	end
+
+	-- return default values if no stats were found
+	return GetDefaultProgrammeQualityByHour(hour)
+end
+
+
+function BusinessStats:GetAverageQualityByLevel(level)
+	-- todo: if still needed - sum up all averages of hours belonging to
+	--       a level
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
