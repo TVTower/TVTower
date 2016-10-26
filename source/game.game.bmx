@@ -274,6 +274,14 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		local player:TPlayer = GetPlayer(playerID)
 		if not player then return
 
+		'inform all AI players about the bankruptcy (eg. to clear their stats)
+		for local p:TPlayer = EachIn GetPlayerCollection().players
+			if not p.IsLocalAI() or not p.PlayerAI then continue
+			
+			p.PlayerAI.CallOnPlayerGoesBankrupt( playerID )
+		next
+
+
 		local figure:TFigure = player.GetFigure()
 		if figure
 			'remove figure from game once it reaches its target
@@ -326,6 +334,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			PreparePlayerStep1(playerID)
 			PreparePlayerStep2(playerID)
 		endif
+
 
 		if player.IsLocalHuman()
 			GetGame().SetGameOver()

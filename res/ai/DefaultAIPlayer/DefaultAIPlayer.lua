@@ -160,6 +160,20 @@ function DefaultAIPlayer:OnDayBegins()
 	self:CleanUp()
 end
 
+
+-- a player just went bankrupt
+function DefaultAIPlayer:OnPlayerGoesBankrupt(playerID)
+	playerID = tonumber(playerID)
+	if playerID < 1 or playerID > 4 then
+		return
+	end
+
+	-- reset quality stats
+	for hour=1, 24 do
+		self.Stats.playerProgrammeQualities[playerID][hour] = StatisticEvaluator()
+	end
+end
+
 function DefaultAIPlayer:OnMoneyChanged(value, reason, reference)
 	self.Budget:OnMoneyChanged(value, reason, reference)
 	for k,v in pairs(self.TaskList) do
@@ -418,6 +432,10 @@ end
 
 function OnBossCallsForced()
 	infoMsg("Boss calls me NOW!")
+end
+
+function OnPlayerGoesBankrupt(playerID)
+	getAIPlayer():OnPlayerGoesBankrupt(playerID)
 end
 
 

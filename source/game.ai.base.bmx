@@ -165,6 +165,8 @@ Type TAiBase
 	Method CallOnGameBegins() abstract
 	Method CallOnMoneyChanged(value:int, reason:int, reference:object) abstract
 	Method CallOnMalfunction() abstract
+
+	Method CallOnPlayerGoesBankrupt(playerID:int) abstract
 End Type
 
 

@@ -336,6 +336,18 @@ Type TAi extends TAiBase
 
 		CallLuaFunction("OnMalfunction", Null)
 	End Method
+
+
+	Method CallOnPlayerGoesBankrupt(playerID:int)
+		'ignore whether it runs or not - so they can reset their
+		'stats regardless of inactive or not
+		'if not AiRunning then return
+
+		Local args:Object[1]
+		args[0] = String(playerID)
+
+		CallLuaFunction("OnPlayerGoesBankrupt", args)
+	End Method
 End Type
 
 
