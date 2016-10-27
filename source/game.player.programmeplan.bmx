@@ -711,11 +711,11 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			TAdvertisement(obj).contract.SetSpotsPlanned( GetAdvertisementsPlanned(TAdvertisement(obj).contract) )
 		Endif
 
-		if slotType = TVTBroadcastMaterialType.ADVERTISEMENT
+		'if slotType = TVTBroadcastMaterialType.ADVERTISEMENT
 			'TLogger.Log("PlayerProgrammePlan.AddObject()", "Plan #"+owner+" added object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") to ADVERTISEMENTS, index="+arrayIndex+", day="+day+", hour="+hour+". Removed "+removedObjects.length+" objects before.", LOG_DEBUG)
-		else
+		'else
 			'TLogger.Log("PlayerProgrammePlan.AddObject()", "Plan #"+owner+" added object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") to PROGRAMMES, index="+arrayIndex+", day="+day+", hour="+hour+". Removed "+removedObjects.length+" objects before.", LOG_DEBUG)
-		endif
+		'endif
 
 		'invalidate cache
 		_daysPlanned = -1
@@ -744,8 +744,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			Local programmedDay:Int = obj.programmedDay
 			Local programmedHour:Int = obj.programmedHour
 
-			'nothing to remove
-			if not GetObject(slotType, programmedDay, programmedHour)
+			'nothing to remove - or wrong one
+			if obj <> GetObject(slotType, programmedDay, programmedHour)
 				'obj = GetObject(slotType, day, hour)
 				'if not obj
 					TLogger.Log("TPlayerProgrammePlan.RemoveObject", "Failed with programmedDay and programmedHour being invalid.", LOG_ERROR)
@@ -1115,22 +1115,24 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		If programme.licence.owner <= 0
 			programme.licence.SetPlanned(-1)
+			programme.licence.SetTrailerPlanned(-1)
 		Else
 			'find "longest running" in all available type slots
 			'if none is found, the planned value contains "-1"
 			Local instance:TBroadcastMaterial
 			'latestHour then contains "hours since startDay 0:00"
 			Local latestHour:Int = -1
+			Local latestAdHour:Int = -1
 
 			'check ad usage - but only for ads!
 			instance = ObjectPlannedInTimeSpan(programme, TVTBroadcastMaterialType.ADVERTISEMENT, dayStart, hourStart, dayEnd, hourEnd, True)
-			If instance Then latestHour = Max(latestHour, instance.programmedDay*24+instance.programmedHour + instance.GetBlocks(TVTBroadcastMaterialType.ADVERTISEMENT))
-
+			If instance Then latestAdHour = Max(latestAdHour, instance.programmedDay*24+instance.programmedHour + instance.GetBlocks(TVTBroadcastMaterialType.ADVERTISEMENT))
 			'check prog usage
 			instance = ObjectPlannedInTimeSpan(programme, TVTBroadcastMaterialType.PROGRAMME, dayStart, hourStart, dayEnd, hourEnd, True)
 			If instance Then latestHour = Max(latestHour, instance.programmedDay*24+instance.programmedHour + instance.GetBlocks(TVTBroadcastMaterialType.PROGRAMME))
 
 			programme.licence.SetPlanned(latestHour)
+			programme.licence.SetTrailerPlanned(latestAdHour)
 		EndIf
 		Return True
 	End Method
@@ -1801,6 +1803,11 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 						'remove contract from collection (and suitcase)
 						'contract is still stored within advertisements (until they get deleted)
 						GetPlayerProgrammeCollection(owner).RemoveAdContract(TAdvertisement(obj).contract)
+
+					'recalculate planned state for programmes of a trailer
+					ElseIf TProgramme(obj)
+						'refresh planned state (for next hour)
+						RecalculatePlannedProgramme(TProgramme(obj), -1, hour+1)
 					EndIf
 					'eventKey = "broadcasting.begin"
 				Else

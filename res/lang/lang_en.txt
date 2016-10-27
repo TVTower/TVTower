@@ -205,6 +205,8 @@ NEXT_PROGRAMME			= Next programme
 NEXT_NOTHINGSET			= not set!
 
 PROGRAMME_IN_PROGRAMME_PLAN = Programme in programme plan!
+TRAILER_IN_PROGRAMME_PLAN = Trailer in programme plan!
+PROGRAMME_AND_TRAILER_IN_PROGRAMME_PLAN = Programme and trailer in programme plan!
 ONLY_1_BROADCAST_POSSIBLE = Only 1 broadcast possible!
 ONLY_X_BROADCASTS_POSSIBLE = Only %X% broadcast possible!
 NO_MORE_BROADCASTS_ALLOWED = No more broadcasts allowed!

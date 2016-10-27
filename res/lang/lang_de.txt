@@ -206,6 +206,8 @@ NEXT_PROGRAMME		= folgendes Programm
 NEXT_NOTHINGSET		= nicht gesetzt!
 
 PROGRAMME_IN_PROGRAMME_PLAN = Programm im Sendeplan!
+TRAILER_IN_PROGRAMME_PLAN = Trailer im Sendeplan!
+PROGRAMME_AND_TRAILER_IN_PROGRAMME_PLAN = Programm und Trailer im Sendeplan!
 ONLY_1_BROADCAST_POSSIBLE = Nur 1 Ausstrahlung möglich!
 ONLY_X_BROADCASTS_POSSIBLE = Nur %X% Ausstrahlungen möglich!
 NO_MORE_BROADCASTS_ALLOWED = Keine weiteren Ausstrahlungen möglich!

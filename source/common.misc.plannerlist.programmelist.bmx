@@ -375,7 +375,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				'== BACKGROUND ==
 				'planned is more important than new - both only happen
 				'on startprogrammes
-				If licence.IsPlanned()
+				If licence.IsProgrammePlanned()
 					entryDrawType = "planned"
 					tapeDrawType = "planned"
 				Else

@@ -361,6 +361,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 	Field data:TProgrammeData				{_exposeToLua}
 	'the latest hour-(from-start) one of the planned programmes ends
 	Field latestPlannedEndHour:int = -1
+	Field latestPlannedTrailerHour:int = -1
 	'is this licence a: collection, series, episode or single element?
 	'you cannot distinguish between "series" and "collections" without
 	'as both could contain "shows" or "episodes"
@@ -907,14 +908,30 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 			self.latestPlannedEndHour = Max(latestHour, self.latestPlannedEndHour)
 		else
 			'reset
-			self.latestPlannedEndHour = -1
+			latestPlannedEndHour = -1
 		endif
 	End Method
 
 
+	Method setTrailerPlanned:int(latestHour:int=-1)
+		if latestHour >= 0
+			'set to maximum
+			self.latestPlannedTrailerHour = Max(latestHour, self.latestPlannedTrailerHour)
+		else
+			'reset
+			self.latestPlannedTrailerHour = -1
+		endif
+	End Method
+
+
+	Method isPlanned:int() {_exposeToLua}
+		return isProgrammePlanned() or isTrailerPlanned()
+	End Method
+	
+	
 	'instead of asking the programmeplan about each licence
 	'we cache that information directly within the programme
-	Method isPlanned:int() {_exposeToLua}
+	Method isProgrammePlanned:int() {_exposeToLua}
 		'single-licence
 		if GetSubLicenceCount() = 0 and GetData()
 			if (latestPlannedEndHour>=0) then return TRUE
@@ -928,6 +945,27 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 
 		For local licence:TProgrammeLicence = eachin subLicences
 			if licence.isPlanned() then return TRUE
+		Next
+		return FALSE
+	End Method
+
+
+	'instead of asking the programmeplan about each licence
+	'we cache that information directly within the programme
+	Method isTrailerPlanned:int() {_exposeToLua}
+		'single-licence
+		if GetSubLicenceCount() = 0 and GetData()
+			if (latestPlannedTrailerHour>=0) then return TRUE
+			'if self is not planned - ask if parent is set to planned
+			'do not use this for series if used in the programmePlanner-view
+			'to "emphasize" planned programmes
+			'if self.parentLicence then return self.parentLicence.isTrailerPlanned()
+
+			return False
+		endif
+
+		For local licence:TProgrammeLicence = eachin subLicences
+			if licence.isTrailerPlanned() then return TRUE
 		Next
 		return FALSE
 	End Method
@@ -1555,7 +1593,13 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 		EndIf
 
 		if showMsgPlannedWarning
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PROGRAMME_IN_PROGRAMME_PLAN"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			if not isProgrammePlanned()
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("TRAILER_IN_PROGRAMME_PLAN"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			elseif not isTrailerPlanned()
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PROGRAMME_IN_PROGRAMME_PLAN"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			else
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PROGRAMME_AND_TRAILER_IN_PROGRAMME_PLAN"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			endif
 			contentY :+ msgH
 		endif
 
@@ -1618,6 +1662,8 @@ Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selec
 			skin.fontBold.drawBlock("Programm: "+GetTitle(), contentX + 5, contentY, contentW - 10, 28)
 			contentY :+ 28
 			skin.fontNormal.draw("Letzte Stunde im Plan: "+latestPlannedEndHour, contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Letzte Trailerstunde im Plan: "+latestPlannedTrailerHour, contentX + 5, contentY)
 			contentY :+ 12	
 			skin.fontNormal.draw("Tempo: "+MathHelper.NumberToString(data.GetSpeed(), 4), contentX + 5, contentY)
 			contentY :+ 12	
