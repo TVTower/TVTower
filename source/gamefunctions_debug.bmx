@@ -229,8 +229,8 @@ rem
 
 		SetColor 0,0,0
 		DrawRect(520,415,250,40)
-		font.Draw("Statements: " + feedback.AudienceInterest.ToStringMinimal(), 530, 420, TColor.clRed);
-		font.Draw("Statements: " + feedback.FeedbackStatements.Count(), 530, 430, TColor.clRed);
+		font.Draw("Interest: " + feedback.AudienceInterest.ToStringMinimal(), 530, 420, TColor.clRed)
+		font.Draw("Statements: count=" + feedback.FeedbackStatements.Count(), 530, 430, TColor.clRed)
 		If currentStatement Then
 			font.Draw(currentStatement.ToString(), 530, 440, TColor.clRed);
 		Endif
