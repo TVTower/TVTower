@@ -14,7 +14,7 @@ _G["TaskSchedule"] = class(AITask, function(c)
 	c.Player = nil
 	c.log = {}
 
-	c.guessedAudienceRiskyness = 0.85 -- 1.0 means assuming to get all
+	c.guessedAudienceRiskyness = 0.90 -- 1.0 means assuming to get all
 
     c.guessedAudienceAccuracyTotal = 0.25
     c.guessedAudienceAccuracyTotalCount = 0
@@ -424,6 +424,14 @@ function TaskSchedule:AddSpotRequisition(broadcastMaterialGUID, guessedAudience,
 			-- remove outdated slot requisitions (to avoid multiple reqs
 			-- for the same time slot
 			v:RemoveSlotRequisitionByTime(day, hour)
+
+			-- store the "lowest" audience to avoid "hard to fulfill
+			-- contracts" (level 5 contract with 100k min requested by
+			--             70k/level5 predicted programme) 
+			-- TODO: what happens to target groups (a.Total < b.Total but a.children > b.children) ??
+			if v.GuessedAudience.GetTotalSum() > guessedAudience.GetTotalSum() then
+				v.GuessedAudience = guessedAudience
+			end
 
 			v.Count = v.Count + 1
 			if (v.Priority < 5) then
