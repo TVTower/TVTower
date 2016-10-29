@@ -462,6 +462,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		AssignStaticAudienceAttraction(result, hour, block, lastProgrammeBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect )
 		AssignSequentialAudienceAttraction(result, hour, block, lastProgrammeBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect)
 		result.Recalculate()
+
 		return result
 	End Method
 		
@@ -473,10 +474,11 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		audienceAttraction.BroadcastType = Self.materialType
 		audienceAttraction.GenreDefinition = GetGenreDefinition()
 
-		If block = 1 Or Not lastProgrammeBlockAttraction Or usedAsType = TVTBroadcastMaterialType.NEWS
-			'1 - Qualität des Programms/Newsevents
-			audienceAttraction.Quality = GetQuality()
+		'1 - Quality of the broadcast
+		'store it regardless of block or previous broadcast
+		audienceAttraction.Quality = GetQuality()
 
+		If block = 1 Or Not lastProgrammeBlockAttraction Or usedAsType = TVTBroadcastMaterialType.NEWS
 			If audienceAttraction.genreDefinition
 				'Genre-targetgroup-fit
 				audienceAttraction.GenreTargetGroupMod = GetGenreTargetGroupMod(audienceAttraction.genreDefinition)
@@ -508,11 +510,12 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		audienceAttraction.BroadcastType = Self.materialType
 		audienceAttraction.GenreDefinition = GetGenreDefinition()
 
+		'1 - Quality of the broadcast
+		'store it regardless of block or previous broadcast
+		audienceAttraction.Quality = GetQuality()
+
 		'begin of a programme, begin of broadcast - or news show
 		If block = 1 Or Not lastProgrammeBlockAttraction Or usedAsType = TVTBroadcastMaterialType.NEWS
-			'1 - Qualität des Programms/Newsevents
-			audienceAttraction.Quality = GetQuality()
-
 			If audienceAttraction.genreDefinition
 				'Popularity of the programme/news-genre (PAID-flag for ads)
 				audienceAttraction.GenrePopularityMod = GetGenrePopularityMod(audienceAttraction.genreDefinition)
