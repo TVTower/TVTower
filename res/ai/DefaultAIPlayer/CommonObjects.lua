@@ -59,7 +59,7 @@ function SpotRequisition:CheckActuality()
 
 	local removeList = {}
 	for k,v in pairs(self.SlotReqs) do
-		if (v:CheckActuality() == false) then
+		if (v:CheckActuality() == false) or v.level ~= self.Level then
 			table.insert(removeList, v)
 		end
 	end
@@ -82,6 +82,28 @@ function SpotRequisition:Complete()
 	local player = _G["globalPlayer"]
 	player:RemoveRequisition(self)
 end
+
+
+function SpotRequisition:RemoveSlotRequisitionByTime(day, hour)
+	local removeList = {}
+	local oldCount = self.Count
+
+	for k,v in pairs(self.SlotReqs) do
+		if v.Day == day and v.Hour == hour then
+			table.insert(removeList, v)
+		end
+	end
+
+	for k,v in pairs(removeList) do
+		table.removeElement(self.SlotReqs, v)
+		self.Count = self.Count - 1
+		--reduce priority but stay at least at 3 (see default initialization) 
+		self.Priority = math.max(3, self.Priority - 1)
+	end
+
+	return oldCount - self.Count
+end
+
 
 function SpotRequisition:UseThisContract(contract)
 	--debugMsg("SpotRequisition:UseThisContract - Start")
@@ -114,7 +136,14 @@ _G["SpotSlotRequisition"] = class(Requisition, function(c)
 	c.Priority = 3
 	c.Day = -1
 	c.Hour = -1
+	-- the ad contract which should be placed at the given time
 	c.ContractId = -1
+	-- the programme/infomercial broadcasted at that time
+	c.broadcastMaterialGUID = ""
+	-- the audience estimated at that time
+	c.guessedAudience = nil
+	-- the audience level estimated at that time
+	c.level = -1
 end)
 
 function SpotSlotRequisition:typename()
@@ -123,7 +152,16 @@ end
 
 function SpotSlotRequisition:CheckActuality()
 	if (self.Done) then return false end
+	-- a requisition gets invalid as soon as the corresponding broadcast-
+	-- material changed (eg. licence vanished somehow)
+	if self.broadcastMaterialGUID ~= nil and self.broadcastMaterialGUID ~= "" then
+		if TVT.IsBroadcastMaterialInProgrammePlan(self.broadcastMaterialGUID, self.Day, self.Hour) == 0 then
+			self:Complete()
+			return false
+		end
+	end
 
+	-- spot slot requisitions get outdated 2 hours after their "planned" time
 	if (self.Day >= WorldTime.GetDay() or ( self.Day == WorldTime.GetDay() and self.Hour + 2 > WorldTime.GetDayHour())) then
 		return true
 	else

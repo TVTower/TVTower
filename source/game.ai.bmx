@@ -740,6 +740,22 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
+	'TODO: remove by storing "programme plan information" within the AI
+	'      itself (a table in lua, refreshed manually when in office or
+	'      editing the programme plan)
+	Method IsBroadcastMaterialInProgrammePlan:int(materialGUID:string, day:int, hour:int)
+		local bm:TBroadcastMaterial = GetPlayerProgrammePlan(self.ME).GetProgramme(day, hour)
+		if not bm then return False
+		if bm then return bm.GetGUID() = materialGUID
+	End Method
+	'same here
+	Method GetBroadcastMaterialGUIDInProgrammePlan:string(materialGUID:string, day:int, hour:int)
+		local bm:TBroadcastMaterial = GetPlayerProgrammePlan(self.ME).GetProgramme(day, hour)
+		if bm then return bm.GetGUID()
+		return ""
+	End Method
+	
+
 	Method GetProgrammeLicenceCount:Int()
 		Return GetPlayerProgrammeCollection(Self.ME).GetProgrammeLicenceCount()
 	End Method

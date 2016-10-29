@@ -355,7 +355,7 @@ function TaskSchedule:PredictAudience(broadcast, qualities, day, hour, block, pr
 		--store predicted attraction
 		if storePrediction ~= false then
 			if broadcast.isUsedAsType(TVT.Constants.BroadcastMaterialType.NEWSSHOW) == 1 then
-				debugMsg("STORE PREDICT - "..day.."/"..hour)
+				--debugMsg("STORE PREDICT - "..day.."/"..hour)
 				self.Player.Stats.BroadcastStatistics:AddBroadcast(day, hour, TVT.Constants.BroadcastMaterialType.NEWSSHOW, broadcastAttraction, TVT.audiencePredictor.GetAudience(TVT.ME).GetTotalSum())
 			elseif broadcast.isUsedAsType(TVT.Constants.BroadcastMaterialType.PROGRAMME) == 1 then
 				self.Player.Stats.BroadcastStatistics:AddBroadcast(day, hour, TVT.Constants.BroadcastMaterialType.PROGRAMME, broadcastAttraction, TVT.audiencePredictor.GetAudience(TVT.ME).GetTotalSum())
@@ -405,13 +405,14 @@ end
 --   its priority increases
 -- - as soon as the requirement is fulfilled (new contract signed), it
 --   might get placed (if possible)
-function TaskSchedule:AddSpotRequisition(guessedAudience, level, day, hour)
+function TaskSchedule:AddSpotRequisition(broadcastMaterialGUID, guessedAudience, level, day, hour)
 	local slotReq = SpotSlotRequisition()
 	slotReq.Day = day;
 	slotReq.Hour = hour;
 	slotReq.Minute = 55; -- xx:55 adspots start
-	slotReq.GuessedAudience = guessedAudience
-	slotReq.Level = level
+	slotReq.guessedAudience = guessedAudience
+	slotReq.level = level
+	slotReq.broadcastMaterialGUID = broadcastMaterialGUID
 
 	-- TODO Ronny: for now it groups by total sum - find a way to group
 	--             by the various target groups 
@@ -420,6 +421,10 @@ function TaskSchedule:AddSpotRequisition(guessedAudience, level, day, hour)
 	for k,v in pairs(self.SpotRequisition) do
 --		if (v.Level == level and math.floor(v.GuessedAudience.GetTotalSum()/2500) <= math.floor(guessedAudience.GetTotalSum()/2500)) then
 		if (v.Level == level) then
+			-- remove outdated slot requisitions (to avoid multiple reqs
+			-- for the same time slot
+			v:RemoveSlotRequisitionByTime(day, hour)
+
 			v.Count = v.Count + 1
 			if (v.Priority < 5) then
 				v.Priority = v.Priority + 1
@@ -431,6 +436,7 @@ function TaskSchedule:AddSpotRequisition(guessedAudience, level, day, hour)
 		end
 	end
 
+	--create a new if above did not find an existing one
 	local requisition = SpotRequisition()
 	requisition.TaskId = _G["TASK_ADAGENCY"]
 	requisition.TaskOwnerId = _G["TASK_SCHEDULE"]
@@ -675,7 +681,12 @@ function JobEmergencySchedule:SetContractOrTrailerToEmptyBlock(choosenSpot, day,
 		guessedAudience = self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousProgramme, previousProgrammeBlock)
 		guessedAudience.MultiplyFloat(self.ScheduleTask.guessedAudienceRiskyness)
 		guessedAudienceSum = guessedAudience.GetTotalSum()
-		local currentSpotList = self:GetFittingSpotList(guessedAudience, false, true, level, fixedDay, fixedHour)
+
+		-- only add requisition if we broadcast something
+		-- TODO: what happens with "Kultur Heute" (which might have 0 audience)
+		--if guessedAudienceSum >= 0 then
+			currentSpotList = self:GetFittingSpotList(guessedAudience, false, true, level, fixedDay, fixedHour)
+		--end
 	end
 
 
@@ -831,7 +842,7 @@ function JobEmergencySchedule:GetFittingSpotList(guessedAudience, noBroadcastRes
 
 				if allSpotsBelowCount <= 4 then
 					debugMsg("GetFittingSpotList: adding spot requisition, allSpotsBelowCount="..allSpotsBelowCount.." audience="..math.floor(guessedAudience.GetTotalSum()))
-					self.ScheduleTask:AddSpotRequisition(guessedAudience, requisitionLevel, day, hour)
+					self.ScheduleTask:AddSpotRequisition(TVT.GetBroadcastMaterialGUIDInProgrammePlan(), guessedAudience, requisitionLevel, day, hour)
 				else
 					debugMsg("GetFittingSpotList: skip adding spot requisition, enough lower adcontracts available (" .. allSpotsBelowCount .."x)")
 					for k,v in ipairs(allSpotsBelow) do
