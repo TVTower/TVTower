@@ -470,7 +470,6 @@ endif
 			'if the script does not allow further productions, it is finished
 			'and should be removed from the player
 			if productionConcept.script.GetParentScript().IsProduced()
-print "Production komplettiert, alles abgedreht."
 				local parentScript:TScript = productionConcept.script.GetParentScript()
 				local ppc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(owner)
 				if ppc then ppc.RemoveScript(parentscript, False)

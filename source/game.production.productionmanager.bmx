@@ -10,6 +10,7 @@ Type TProductionManager
 	Field productionsToProduce:TList = CreateList()
 
 	Global _instance:TProductionManager
+	Global _eventListeners:TLink[]
 	Global createdEnvironment:int = False
 
 
@@ -25,17 +26,40 @@ Type TProductionManager
 
 	Method New()
 		if not createdEnvironment
-			'create some companies
-			local cnames:string[] = ["Movie World", "Picture Fantasy", "UniPics", "Motion Gems", "Screen Jewel"]
-			For local i:int = 0 until cnames.length
-				local c:TProductionCompany = new TProductionCompany
-				c.name = cnames[i]
-				c.SetExperience( BiasedRandRange(0, int(0.35 * TProductionCompanyBase.MAX_XP), 0.25) )
-				GetProductionCompanyBaseCollection().Add(c)
-			Next
+			CreateProductionCompanies()
+
+			'=== REGISTER EVENTS ===
+			EventManager.unregisterListenersByLinks(_eventListeners)
+			_eventListeners = new TLink[0]
+
+			'resize news genres when loading an older savegame
+			_eventListeners :+ [ EventManager.registerListenerFunction( "SaveGame.OnLoad", onSavegameLoad) ]
+				
 			createdEnvironment = true
 		endif
 	End Method
+
+
+	Function onSavegameLoad:int(triggerEvent:TEventBase)
+		if GetProductionCompanyBaseCollection().GetCount() = 0
+			CreateProductionCompanies
+		endif
+	End Function
+	
+
+	Function CreateProductionCompanies:int()
+		'remove old ones
+		GetProductionCompanyBaseCollection().Initialize()
+
+		'create some companies
+		local cnames:string[] = ["Movie World", "Picture Fantasy", "UniPics", "Motion Gems", "Screen Jewel"]
+		For local i:int = 0 until cnames.length
+			local c:TProductionCompany = new TProductionCompany
+			c.name = cnames[i]
+			c.SetExperience( BiasedRandRange(0, int(0.35 * TProductionCompanyBase.MAX_XP), 0.25) )
+			GetProductionCompanyBaseCollection().Add(c)
+		Next
+	End Function
 	
 
 	Method Update:int()
