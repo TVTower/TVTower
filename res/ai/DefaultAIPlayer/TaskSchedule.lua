@@ -438,7 +438,7 @@ function TaskSchedule:AddSpotRequisition(broadcastMaterialGUID, guessedAudience,
 				v.Priority = v.Priority + 1
 			end
 			
-			debugMsg("  -> insert into reqs table: level=" .. level .. "  guessedAudience=" .. math.floor(guessedAudience.GetTotalSum()))
+			debugMsg("  -> insert into reqs table: level=" .. level .. "  guessedAudience=" .. math.floor(guessedAudience.GetTotalSum()) .. "  req.count="..v.Count.."  req.priority="..v.Priority)
 			table.insert(v.SlotReqs, slotReq)
 			return
 		end

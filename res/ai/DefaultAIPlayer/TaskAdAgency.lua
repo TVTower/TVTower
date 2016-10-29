@@ -309,18 +309,19 @@ debugMsg("contract NOT DOABLE: " .. adContract.GetTitle() .. "  targetgroup="..a
 			local guessedAudienceValue = guessedAudience.GetTotalValue( adContract.GetLimitedToTargetGroup() )
 
 
-			local maxSurplusSpots = math.floor(0.5 * adContract.GetSpotCount())
+			-- the more we need, the more likely we could finish even more
+			local maxSurplusSpots = math.floor(0.5 * requisition.Count)
 			if requisition.level == 5 then
-				maxSurplusSpots = math.max( maxSurplusSpots, math.random(1,3))
+				maxSurplusSpots = math.max( maxSurplusSpots, math.random(0,1))
 			elseif requisition.level == 4 then
-				maxSurplusSpots = math.max( maxSurplusSpots, math.random(1,4))
+				maxSurplusSpots = math.max( maxSurplusSpots, math.random(1,2))
 			else
-				maxSurplusSpots = math.max( maxSurplusSpots, math.random(2,4))
+				maxSurplusSpots = math.max( maxSurplusSpots, math.random(2,3))
 			end
 			
 			-- skip if contract requires too many spots for the given level
 			if adContract.GetSpotCount() > requisition.Count + maxSurplusSpots then 
-				--debugMsg("   Skipping a \"necessary\" contract (too many spots: " .. adContract.GetSpotCount() .. " > ".. requisition.Count .." + "..maxSurplusSpots .. "): " .. adContract.GetTitle() .. " (" .. adContract.GetID() .. "). Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  MinAudience: " .. minAudienceValue .. "  GuessedAudience: " .. math.floor(minGuessedAudience) .. " - " .. math.floor(guessedAudience))
+				debugMsg("   Skipping a \"necessary\" contract (too many spots: " .. adContract.GetSpotCount() .. " > ".. requisition.Count .." + "..maxSurplusSpots .. "): " .. adContract.GetTitle() .. " (" .. adContract.GetID() .. "). Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  MinAudience: " .. minAudienceValue .. "  GuessedAudience: " .. math.floor(minGuessedAudience.GetTotalSum()) .. " - " .. math.floor(guessedAudience.GetTotalSum()))
 			-- sign if audience requirements are OK
 			elseif ((minAudienceValue < guessedAudienceValue) and (minAudienceValue > minGuessedAudienceValue)) then
 				--Passender Spot... also kaufen
