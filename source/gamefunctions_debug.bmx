@@ -446,7 +446,7 @@ Type TDebugProgrammeCollectionInfos
 		availableProgrammeLicences.Clear()
 		availableAdContracts.Clear()
 		'on savegame loads, the maps would be empty without 
-		for local i:int = 1 until 4
+		for local i:int = 1 to 4
 			local coll:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(i)
 			for local l:TProgrammeLicence = EachIn coll.GetProgrammeLicences()
 				availableProgrammeLicences.insert(l.GetGUID(), l)
