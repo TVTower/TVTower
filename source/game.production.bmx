@@ -625,9 +625,18 @@ print "parentLicence.GetData().producedByPlayerID:" + parentLicence.GetData().pr
 
 
 	Function FillProgrammeDataByScript(programmeData:TProgrammeData, script:TScript)
-		'TODO: custom title/description
-		programmeData.title = script.title.Copy()
 		programmeData.description = script.description.Copy()
+		if script.customTitle
+			programmeData.title = new TLocalizedString.Set(script.customTitle)
+		else
+			programmeData.title = script.title.Copy()
+		endif
+		if script.customDescription
+			programmeData.description = new TLocalizedString.Set(script.customDescription)
+		else
+			programmeData.description = script.description.Copy()
+		endif
+	
 		programmeData.blocks = script.GetBlocks()
 		programmeData.flags = script.flags
 		programmeData.genre = script.mainGenre
