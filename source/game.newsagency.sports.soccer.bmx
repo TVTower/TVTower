@@ -87,6 +87,7 @@ Type TNewsEventSport_Soccer extends TNewsEventSport
 			endrem
 			'method 2 - name-parts ("Bad |Klein|grunda" = "BKG")
 			For local part:string = EachIn team.name.split("|")
+				if not part then continue 'happens for second part in "bla|"
 				capitalLetters :+ Chr(StringHelper.UCFirst(part)[0])
 			Next
 		endif

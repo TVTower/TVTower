@@ -1928,7 +1928,7 @@ Type TProgrammeLicenceFilter
 		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([4, 17])		'crime & thriller
 		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([5])			'comedy
 		'documentation & reportage
-		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([6, 300]).SetCaption("PROGRAMME_GENRE_DOCUMENTARIES_AND_FEATURES")
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([6, 300, 301]).SetCaption("PROGRAMME_GENRE_DOCUMENTARIES_AND_FEATURES")
 		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([7])			'drama
 		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([8])			'erotic
 		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([9, 3])			'family & cartoons
@@ -1941,7 +1941,7 @@ Type TProgrammeLicenceFilter
 		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([18])			'western
 		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([0])			'undefined
 		'show/event -> all categories
-		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([100, 101, 102, 200, 201, 202, 203, 204]).SetCaption("PROGRAMME_GENRE_SHOW_AND_EVENTS")
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([100, 101, 102, 103, 200, 201, 202, 203, 204]).SetCaption("PROGRAMME_GENRE_SHOW_AND_EVENTS")
 		CreateVisible().SetDataFlag(TVTProgrammeDataFlag.LIVE)						'live
 '		CreateVisible().SetDataFlag(TVTProgrammeDataFlag.TRASH).AddGenres([301])	'Trash + Yellow Press
 

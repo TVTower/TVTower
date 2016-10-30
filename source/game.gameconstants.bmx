@@ -676,6 +676,10 @@ Type TVTProgrammeGenre {_exposeToLua}
 	Const Thriller:int = 17
 	Const Western:int = 18
 
+	'ATTENTION:
+	'appending new show/event genres needs adjustments in
+	'game.programme.programmelicence.bmx: TProgrammeLicenceFilter.Init()
+
 	'Show-Genre 100+
 	Const Show:int = 100			'Shows in general
 	Const Show_Politics:int = 101	'Polit-Talks
@@ -835,11 +839,11 @@ Type TVTProgrammeDataFlag {_exposeToLua}
 	'Scripted-Shows/Series/Reportages ... Trash-TV!
 	Const SCRIPTED:Int = 512
 	'Scripted-Shows/Series/Reportages ... Trash-TV!
-	Const CUSTOMPRODUCTION:Int = 512
+	Const CUSTOMPRODUCTION:Int = 1024
 	'these programmes are hidden from the planner selection
-	Const INVISIBLE:Int = 1024
+	Const INVISIBLE:Int = 2048
 	'a previously "live" programme is now only a "recorded live programme"
-	Const LIVEONTAPE:Int = 2048
+	Const LIVEONTAPE:Int = 4096
 
 	Const count:int = 12
 
